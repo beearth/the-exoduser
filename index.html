@@ -19,7 +19,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 
 /* 문 이미지 (시네마틱 배경) */
 .cin-gate{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
-.cin-gate img{width:100%;height:100%;object-fit:cover;object-position:center}
+.cin-gate img{width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(-5%)}
 .cin-gate.show{opacity:1}
 .cin-gate.zoom{transform:scale(1.6);transition:transform 0s}
 .cin-gate.zoom-out{transform:scale(1);transition:transform 6s cubic-bezier(0.15,0.5,0.3,1)}
@@ -30,36 +30,38 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 /* 텍스트 오버레이 */
 .cin-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:10;pointer-events:none}
 .cin-text-inner{max-width:800px;padding:0 30px;text-align:center}
-.cin-line{color:#e8d4b8;font-size:1.3rem;line-height:2.2;letter-spacing:.08em;opacity:0;transition:opacity 1.5s ease;margin-bottom:6px;text-shadow:0 0 20px rgba(0,0,0,.9),0 0 40px rgba(0,0,0,.7)}
+.cin-line{color:#e8d4b8;font-size:2rem;line-height:2;letter-spacing:.1em;opacity:0;transition:opacity 1.2s ease;margin-bottom:8px;text-shadow:0 0 20px rgba(0,0,0,.9),0 0 40px rgba(0,0,0,.7);white-space:nowrap}
 .cin-line.show{opacity:1}
 .cin-line.fade{opacity:0;transition:opacity 1s ease}
-.cin-line.red{color:#ff5533;font-weight:700;font-size:1.5rem;text-shadow:0 0 25px rgba(255,50,0,.6)}
-.cin-line.gold{color:#ffcc55;font-size:1.8rem;font-weight:900;letter-spacing:.2em;text-shadow:0 0 40px rgba(255,180,30,.7)}
-.cin-line.dim{color:#aa9977;font-size:1.1rem;font-style:italic}
+.cin-line.red{color:#ff4422;font-weight:900;font-size:3.2rem;letter-spacing:.15em;text-shadow:0 0 30px rgba(255,50,0,.8),0 0 60px rgba(255,30,0,.5),0 0 100px rgba(255,0,0,.3)}
+.cin-line.gold{color:#ffcc55;font-size:3.6rem;font-weight:900;letter-spacing:.25em;text-shadow:0 0 40px rgba(255,180,30,.8),0 0 80px rgba(255,150,20,.4),0 0 120px rgba(255,120,0,.2)}
+.cin-line.dim{color:#ddc8a0;font-size:2.2rem;font-style:italic;font-weight:700;text-shadow:0 0 15px rgba(0,0,0,1),0 0 30px rgba(0,0,0,.9),0 0 60px rgba(0,0,0,.7),2px 2px 4px #000}
+.cin-char{display:inline-block;opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease}
+.cin-char.on{opacity:1;transform:translateY(0)}
 
 /* 프롤로그 이미지 */
 .cin-img{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 1.5s ease;pointer-events:none}
 .cin-img.show{opacity:1}
-.cin-img img{width:100vw;height:100vh;object-fit:cover;filter:brightness(.6) contrast(1.1);mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%)}
+.cin-img img{width:100vw;height:100vh;object-fit:cover;object-position:center 40%;filter:brightness(.6) contrast(1.1);mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%)}
 /* 네메시아: 얼굴 보이게 상단 정렬 + 마스크 위로 확장 */
 #cinImg8 img{object-position:center top !important;mask-image:radial-gradient(ellipse 90% 100% at 50% 55%,#000 55%,transparent 100%) !important;-webkit-mask-image:radial-gradient(ellipse 90% 100% at 50% 55%,#000 55%,transparent 100%) !important}
 
 /* 문 열림 씬 */
 .cin-door-scene{position:absolute;inset:0;perspective:1800px;opacity:0;transition:opacity 1.5s ease;z-index:5}
 .cin-door-scene.show{opacity:1}
-.cin-door{position:absolute;inset:0;background-image:url('img/hellgate.png');background-size:cover;background-position:center;transition:transform 2.5s cubic-bezier(0.4,0,0.1,1);will-change:transform}
-.cin-door-l{clip-path:polygon(0 0,calc(50% + 1px) 0,calc(50% + 1px) 100%,0 100%);transform-origin:left center}
-.cin-door-r{clip-path:polygon(calc(50% - 1px) 0,100% 0,100% 100%,calc(50% - 1px) 100%);transform-origin:right center}
-.cin-door-scene.open .cin-door-l{transform:rotateY(-105deg)}
-.cin-door-scene.open .cin-door-r{transform:rotateY(105deg)}
+.cin-door{position:absolute;inset:0;background-image:url('img/hellgate.png');background-size:cover;background-position:center 40%;transform:scale(1.15) translateX(-5%);transition:transform 2.5s cubic-bezier(0.4,0,0.1,1);will-change:transform}
+.cin-door-l{clip-path:polygon(0 0,calc(40% + 1px) 0,calc(40% + 1px) 100%,0 100%);transform-origin:left center}
+.cin-door-r{clip-path:polygon(calc(40% - 1px) 0,100% 0,100% 100%,calc(40% - 1px) 100%);transform-origin:right center}
+.cin-door-scene.open .cin-door-l{transform:scale(1.15) translateX(-5%) rotateY(-105deg)}
+.cin-door-scene.open .cin-door-r{transform:scale(1.15) translateX(-5%) rotateY(105deg)}
 
 /* 문 중앙 빛줄기 */
 .cin-glow{position:absolute;top:5%;left:50%;width:3px;height:90%;transform:translateX(-50%);background:linear-gradient(180deg,transparent,rgba(255,100,20,.5),rgba(255,60,10,.7),rgba(255,100,20,.5),transparent);z-index:6;pointer-events:none;opacity:0;filter:blur(4px);transition:opacity 1.5s}
 .cin-glow.show{opacity:1}
 
 /* 입장 UI */
-.cin-ui{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;transition:opacity 1.5s}
-.cin-ui.show{opacity:1}
+.cin-ui{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;pointer-events:none;transition:opacity 1.5s}
+.cin-ui.show{opacity:1;pointer-events:all}
 
 .cin-lore{max-width:640px;margin-bottom:40px;padding:0 20px}
 .cin-lore p{color:#aa8866;font-size:.95rem;line-height:2;letter-spacing:.06em;margin-bottom:8px;text-shadow:0 0 15px rgba(0,0,0,.8)}
@@ -139,13 +141,13 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   <div class="cin-lb cin-lb-b"></div>
 
   <!-- 인트로 비디오 (THE EXODUSER) -->
-  <video id="cinVideo" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:20;opacity:1;transition:opacity 1.5s ease;pointer-events:none">
+  <video id="cinVideo" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(-5%);z-index:20;opacity:1;transition:opacity 1.5s ease;pointer-events:none">
     <source src="video/intro.mp4" type="video/mp4">
   </video>
   <!-- 클릭 안내 -->
   <div id="cinClickPrompt" style="position:absolute;inset:0;z-index:25;display:flex;align-items:center;justify-content:center;cursor:pointer">
-    <div style="text-align:center;pointer-events:none">
-      <div style="color:#ff8844;font-size:.8rem;letter-spacing:.4em;opacity:.7;animation:pulse 2.5s ease-in-out infinite">CLICK TO ENTER</div>
+    <div style="text-align:center;pointer-events:none;transform:translateX(-14%)">
+      <div style="color:#ffbb77;font-size:1.5rem;font-weight:900;letter-spacing:.4em;text-indent:.4em;opacity:.9;text-shadow:0 0 10px #000, 0 0 20px rgba(255,80,0,0.8);animation:pulse 2s ease-in-out infinite">CLICK TO HELL</div>
     </div>
   </div>
 
@@ -178,31 +180,17 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   <!-- 클릭/탭 영역 (부분 스킵) -->
   <div class="cin-overlay" style="position:absolute;inset:0;z-index:15;cursor:pointer"></div>
 
-  <!-- 문 열림 (문짝 2개) -->
-  <div class="cin-door-scene" id="cinDoorScene">
-    <div class="cin-door cin-door-l"></div>
-    <div class="cin-door cin-door-r"></div>
-    <div class="cin-glow" id="cinGlow"></div>
-  </div>
-
-  <!-- 입장 UI -->
-  <div class="cin-ui" id="cinUI">
-    <div class="cin-nemesia-bg"></div>
-    <div class="cin-lore">
-      <p>복수의 신 네메시아는 지옥에 떨어진 모든 복수자에게 기회를 준다.</p>
-      <p>지옥의 최하층에서 시작하여 일곱 개의 지옥을 뚫고 올라가라.</p>
-      <p class="lore-dim">탈출자는 극소수일 뿐.</p>
-      <p class="lore-dim">대부분은 끝없는 고통 속에서 의지를 잃고, 포기한다.</p>
-      <p class="lore-gold">너는 어떤가?</p>
-    </div>
-    <div class="cin-prompt">입장하라, 죄인이여</div>
-    <button class="enter-btn" id="enterBtn">
-      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-      Google로 입장
-    </button>
-  </div>
-
   <button class="skip-btn" id="skipBtn">SKIP ></button>
+</div>
+
+<!-- ═══ 챕터 입장 문 열림 (동영상) ═══ -->
+<div id="chapterGate" style="position:fixed;inset:0;z-index:200;display:none;background:#000;overflow:hidden">
+  <video id="chGateVid" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(-5%);z-index:20">
+    <source src="video/intro.mp4" type="video/mp4">
+  </video>
+  <div class="cin-lb cin-lb-t"></div>
+  <div class="cin-lb cin-lb-b"></div>
+  <div class="cin-vig" style="z-index:21"></div>
 </div>
 
 <!-- ═══ Main Content ═══ -->
@@ -256,32 +244,41 @@ let _cinDone=false;
 // ═══ Prologue Script (풀버전) ═══
 // img: 이미지 인덱스 (0~8), -1=어둠, undefined=이전 유지
 const CIN_LINES=[
-  {text:'전쟁에서 살아 돌아온 한 남자.',dur:2800,img:0},
-  {text:'하지만 집은 이미 없다.',dur:2500,img:1},
-  {text:'이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.',dur:3000,img:2},
-  {text:'아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,',dur:3000},
-  {text:'끝내 못 이겨 스스로 목숨을 끊었다.',dur:3000},
-  {text:'아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.',dur:3000},
-  {text:'늙은 부모는 감옥에 갇혀 굶어 죽었다.',dur:3000},
-  {text:'',dur:500,img:-1},
-  {text:'킬루 가문의 모두가 알고 있었다.',dur:2500,img:11},
-  {text:'31명이 보고도 못 본 척했다.',dur:3000},
-  {text:'',dur:500,img:-1},
-  {text:'그날 밤, 킬루 가문을 모두 죽였다.',dur:3500,cls:'red',img:3},
-  {text:'킬루의 팔다리를 잘랐으며,',dur:3000,cls:'red',img:4},
-  {text:'불로 지져 지혈까지 해주며',dur:3000,cls:'red'},
-  {text:'오래오래 살려두었다.',dur:3000,cls:'red'},
-  {text:'',dur:500,img:-1},
-  {text:'"기억하라."',dur:3000,cls:'red',img:12},
-  {text:'"그리고 지옥에서도 후회하라."',dur:3500,cls:'red'},
-  {text:'그리고 지옥에 떨어진다.',dur:3500,img:5},
-  {text:'',dur:1500,img:-1,phase:2},
-  {text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',dur:3500,cls:'dim',img:6},
-  {text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',dur:3500,cls:'dim',img:8},
-  {text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',dur:4000,cls:'dim',img:9},
-  {text:'',dur:500,img:-1},
-  {text:'"너는 왜 지옥에 왔느냐?"',dur:4000,cls:'gold',img:7},
-  {text:'',dur:500},
+  {text:'',dur:1200,img:0},
+  {text:'전쟁에서 살아 돌아온 한 남자.',dur:4000,img:0},
+  {text:'',dur:800},
+  {text:'하지만 집은 모두 불타 사라졌다.',dur:3800,img:1},
+  {text:'',dur:600},
+  {text:'이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.',dur:4200,img:2},
+  {text:'',dur:800},
+  {text:'아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,',dur:4000},
+  {text:'끝내 못 이겨 스스로 목숨을 끊었다.',dur:4000},
+  {text:'',dur:600},
+  {text:'아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.',dur:4200},
+  {text:'늙은 부모는 감옥에 갇혀 굶어 죽었다.',dur:4000},
+  {text:'',dur:1200,img:-1},
+  {text:'킬루 가문의 모두가 알고 있었다.',dur:3800,img:11},
+  {text:'31명이 보고도 못 본 척했다.',dur:4000},
+  {text:'',dur:1200,img:-1},
+  {text:'그날 밤, 킬루 가문을 모두 죽였다.',dur:4500,cls:'red',img:3},
+  {text:'',dur:800},
+   {text:'칼로 킬루의 팔다리를 자르고',dur:3800,cls:'red',img:4},
+   {text:'지혈까지 해주며',dur:3800,cls:'red'},
+  {text:'오래오래 살려두었다.',dur:4000,cls:'red'},
+  {text:'',dur:1000,img:-1},
+  {text:'"기억하라."',dur:3500,cls:'red',img:12},
+  {text:'',dur:600},
+  {text:'"그리고 지옥에서도 후회하라."',dur:4500,cls:'red'},
+  {text:'',dur:1000},
+  {text:'그리고 지옥에 떨어진다.',dur:4500,img:5},
+  {text:'',dur:2000,img:-1,phase:2},
+  {text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',dur:4500,cls:'dim',img:6},
+  {text:'',dur:800},
+  {text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',dur:4500,cls:'dim',img:8},
+  {text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',dur:5000,cls:'dim',img:9},
+  {text:'',dur:1200,img:-1},
+  {text:'"너는 왜 지옥에 왔느냐?"',dur:5000,cls:'gold',img:7},
+  {text:'',dur:800},
   {text:'"지옥을 탈출하라, 죄인이여."',dur:6000,cls:'gold',img:7,end:true},
 ];
 
@@ -313,14 +310,26 @@ function playCinematic(){
     const line=CIN_LINES[idx];
     // 이미지 전환
     if(line.img!==undefined){if(line.img===-1)hideAll();else showImg(line.img);}
-    // 텍스트
+    // 텍스트 — 글자 단위 순차 등장
     textBox.innerHTML='';
     if(line.text){
       const el=document.createElement('div');
       el.className='cin-line'+(line.cls?' '+line.cls:'');
-      el.textContent=line.text;
+      // 글자별 span 생성
+      const chars=line.text.split('');
+      chars.forEach(c=>{
+        const sp=document.createElement('span');
+        sp.className='cin-char';
+        sp.textContent=c===' '?'\u00A0':c;
+        el.appendChild(sp);
+      });
       textBox.appendChild(el);
-      requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));
+      // 줄 페이드인 + 글자 순차 등장 (40ms 간격)
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        el.classList.add('show');
+        const spans=el.querySelectorAll('.cin-char');
+        spans.forEach((s,i)=>setTimeout(()=>s.classList.add('on'),i*40));
+      }));
     }
     // 자동 진행 타이머
     clearTimeout(_cinTimer);
@@ -329,26 +338,17 @@ function playCinematic(){
 
   function finishCin(){
     clearTimeout(_cinTimer);
-    _cinReady=false;
+    _cinReady=false;_cinDone=true;
     textBox.innerHTML='';
-    // 여신 이미지 유지한 채 입장 UI 페이드인, 2초 후 이미지 페이드아웃
-    $('cinUI').classList.add('show');
     skipBtn.classList.remove('show');
-    setTimeout(()=>hideAll(),2000);
+    hideAll();
+    // 시네마틱 끝 → 바로 로비
+    $('cinScene').style.display='none';
+    clearInterval(_emberIv);
+    $('mainWrap').classList.add('show');
+    $('loading').style.display='none';
+    $('loginSection').style.display='block';
   }
-
-  // 클릭/탭 → 다음 줄로 스킵
-  function onSkipClick(){
-    if(_cinDone||!_cinReady)return;
-    clearTimeout(_cinTimer);
-    showLine(_cinIdx+1);
-  }
-  document.querySelector('.cin-overlay').addEventListener('click',onSkipClick);
-  document.querySelector('.cin-overlay').addEventListener('touchend',e=>{e.preventDefault();onSkipClick();});
-  document.addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();onSkipClick();}});
-
-  // 0.5s: 스킵(전체) 버튼 표시
-  setTimeout(()=>skipBtn.classList.add('show'),500);
 
   // 인트로 비디오: 첫 프레임(문 닫힘)에서 멈춤, 클릭 시 재생
   vid.style.opacity='1';
@@ -380,6 +380,27 @@ function playCinematic(){
   }
   prompt.addEventListener('click',onVidClick);
   prompt.addEventListener('touchend',e=>{e.preventDefault();onVidClick();});
+
+  // 클릭/탭 → 다음 줄로 스킵 (비디오 중이면 비디오 건너뛰고 프롤로그 시작)
+  function onSkipClick(){
+    if(_cinDone)return;
+    if(!_cinReady){
+      // 비디오 재생 중 → 비디오 스킵하고 프롤로그 텍스트로 진입
+      if(!_vidStarted){onVidClick();return}
+      _cinReady=true;
+      vid.style.opacity='0';
+      showLine(0);
+      return;
+    }
+    clearTimeout(_cinTimer);
+    showLine(_cinIdx+1);
+  }
+  document.querySelector('.cin-overlay').addEventListener('click',onSkipClick);
+  document.querySelector('.cin-overlay').addEventListener('touchend',e=>{e.preventDefault();onSkipClick();});
+  document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Enter'){e.preventDefault();onSkipClick();}});
+
+  // 0.5s: 스킵(전체) 버튼 표시
+  setTimeout(()=>skipBtn.classList.add('show'),500);
 }
 
 function skipToGate(){
@@ -390,8 +411,13 @@ function skipToGate(){
   if($('cinClickPrompt'))$('cinClickPrompt').style.display='none';
   [1,2,3,4,5,6,7,8,9,10,11,12,13].forEach(i=>{const e=$('cinImg'+i);if(e)e.classList.remove('show')});
   $('cinTextInner').innerHTML='';
-  $('cinUI').classList.add('show');
   $('skipBtn').classList.remove('show');
+  // 시네마틱 끝 → 바로 로비
+  $('cinScene').style.display='none';
+  clearInterval(_emberIv);
+  $('mainWrap').classList.add('show');
+  $('loading').style.display='none';
+  $('loginSection').style.display='block';
 }
 $('skipBtn').onclick=skipToGate;
 
@@ -412,18 +438,6 @@ let _emberIv=setInterval(()=>{
   scene.appendChild(e);
   setTimeout(()=>e.remove(),7000);
 },150);
-
-// ═══ Enter → OAuth ═══
-$('enterBtn').onclick=async()=>{
-  if(gateOpened)return;
-  gateOpened=true;
-  $('cinUI').style.opacity='0';
-  const{error}=await sb.auth.signInWithOAuth({
-    provider:'google',
-    options:{redirectTo:window.location.origin+'/'}
-  });
-  if(error){$('mainWrap').classList.add('show');$('cinScene').style.display='none'}
-};
 
 // ═══ Init ═══
 const _fromGame=new URLSearchParams(window.location.search).get('lobby')==='1';
@@ -480,7 +494,7 @@ async function loadCharacters(){
     const st=stage===0?'시작점':(hell+1)+'장 '+hn[hell]+' '+floor+'층';
     const div=document.createElement('div');div.className='char-item';
     div.innerHTML=`<div><div class="char-name">${escHtml(ch.name)}</div><div class="char-info">Lv.${lv} | ${st}</div></div><div style="display:flex;gap:6px;align-items:center"><button class="char-del">삭제</button></div>`;
-    div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;window.location.href='game.html?char='+ch.id});
+    div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;showCharGate(ch.id)});
     div.querySelector('.char-del').addEventListener('click',async e=>{
       e.stopPropagation();if(!confirm(ch.name+' 캐릭터를 정말 삭제하시겠습니까?'))return;
       const{error:de}=await sb.from('characters').delete().eq('id',ch.id);
@@ -502,6 +516,21 @@ $('createBtn').onclick=async()=>{
 $('charName').addEventListener('keydown',e=>{if(e.key==='Enter')$('createBtn').click()});
 function setStatus(m,err){$('status').textContent=m;$('status').className=err?'status error':'status'}
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+// ═══ 캐릭터 선택 → 문 열림 → 입장 ═══
+function showCharGate(charId){
+  const gate=$('chapterGate');
+  const vid=$('chGateVid');
+  gate.style.display='block';
+  vid.currentTime=0;
+  vid.muted=false;
+  vid.volume=0.6;
+  vid.play().catch(()=>{});
+  // 영상 끝나면 game.html 이동
+  vid.onended=()=>{window.location.href='game.html?char='+charId};
+  // 안전장치: 영상 10초 넘으면 강제 이동
+  setTimeout(()=>{window.location.href='game.html?char='+charId},10000);
+}
 </script>
 </body>
 </html>
