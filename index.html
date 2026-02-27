@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>지옥의 길 — Hell Road</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Cinzel+Decorative:wght@700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden}
+
+/* ═══ Cinematic Scene ═══ */
+.cin-scene{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center}
+
+/* 레터박스 */
+.cin-lb{position:absolute;left:0;right:0;background:#000;z-index:30;pointer-events:none}
+.cin-lb-t{top:0;height:10vh}
+.cin-lb-b{bottom:0;height:10vh}
+
+/* 문 이미지 (시네마틱 배경) */
+.cin-gate{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
+.cin-gate img{width:100%;height:100%;object-fit:cover;object-position:center}
+.cin-gate.show{opacity:1}
+.cin-gate.zoom{transform:scale(1.6);transition:transform 0s}
+.cin-gate.zoom-out{transform:scale(1);transition:transform 6s cubic-bezier(0.15,0.5,0.3,1)}
+
+/* 비네팅 */
+.cin-vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 20%,rgba(0,0,0,.85) 100%);z-index:2;pointer-events:none}
+
+/* 텍스트 오버레이 */
+.cin-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:10;pointer-events:none}
+.cin-text-inner{max-width:800px;padding:0 30px;text-align:center}
+.cin-line{color:#e8d4b8;font-size:1.3rem;line-height:2.2;letter-spacing:.08em;opacity:0;transition:opacity 1.5s ease;margin-bottom:6px;text-shadow:0 0 20px rgba(0,0,0,.9),0 0 40px rgba(0,0,0,.7)}
+.cin-line.show{opacity:1}
+.cin-line.fade{opacity:0;transition:opacity 1s ease}
+.cin-line.red{color:#ff5533;font-weight:700;font-size:1.5rem;text-shadow:0 0 25px rgba(255,50,0,.6)}
+.cin-line.gold{color:#ffcc55;font-size:1.8rem;font-weight:900;letter-spacing:.2em;text-shadow:0 0 40px rgba(255,180,30,.7)}
+.cin-line.dim{color:#aa9977;font-size:1.1rem;font-style:italic}
+
+/* 프롤로그 이미지 */
+.cin-img{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 1.5s ease;pointer-events:none}
+.cin-img.show{opacity:1}
+.cin-img img{width:100vw;height:100vh;object-fit:cover;filter:brightness(.6) contrast(1.1);mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%)}
+/* 네메시아: 얼굴 보이게 상단 정렬 + 마스크 위로 확장 */
+#cinImg8 img{object-position:center top !important;mask-image:radial-gradient(ellipse 90% 100% at 50% 55%,#000 55%,transparent 100%) !important;-webkit-mask-image:radial-gradient(ellipse 90% 100% at 50% 55%,#000 55%,transparent 100%) !important}
+
+/* 문 열림 씬 */
+.cin-door-scene{position:absolute;inset:0;perspective:1800px;opacity:0;transition:opacity 1.5s ease;z-index:5}
+.cin-door-scene.show{opacity:1}
+.cin-door{position:absolute;inset:0;background-image:url('img/hellgate.png');background-size:cover;background-position:center;transition:transform 2.5s cubic-bezier(0.4,0,0.1,1);will-change:transform}
+.cin-door-l{clip-path:polygon(0 0,calc(50% + 1px) 0,calc(50% + 1px) 100%,0 100%);transform-origin:left center}
+.cin-door-r{clip-path:polygon(calc(50% - 1px) 0,100% 0,100% 100%,calc(50% - 1px) 100%);transform-origin:right center}
+.cin-door-scene.open .cin-door-l{transform:rotateY(-105deg)}
+.cin-door-scene.open .cin-door-r{transform:rotateY(105deg)}
+
+/* 문 중앙 빛줄기 */
+.cin-glow{position:absolute;top:5%;left:50%;width:3px;height:90%;transform:translateX(-50%);background:linear-gradient(180deg,transparent,rgba(255,100,20,.5),rgba(255,60,10,.7),rgba(255,100,20,.5),transparent);z-index:6;pointer-events:none;opacity:0;filter:blur(4px);transition:opacity 1.5s}
+.cin-glow.show{opacity:1}
+
+/* 입장 UI */
+.cin-ui{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;transition:opacity 1.5s}
+.cin-ui.show{opacity:1}
+
+.cin-lore{max-width:640px;margin-bottom:40px;padding:0 20px}
+.cin-lore p{color:#aa8866;font-size:.95rem;line-height:2;letter-spacing:.06em;margin-bottom:8px;text-shadow:0 0 15px rgba(0,0,0,.8)}
+.cin-lore p.lore-dim{color:#776655;font-size:.85rem;font-style:italic}
+.cin-lore p.lore-gold{color:#ffcc55;font-size:1.1rem;font-weight:700;margin-top:20px;text-shadow:0 0 25px rgba(255,180,30,.5)}
+
+.cin-nemesia-bg{position:absolute;inset:0;background:url('img/cin_nemesia_hd.png') center top/cover no-repeat;opacity:.15;filter:brightness(.6);pointer-events:none}
+
+.cin-prompt{color:#ff8844;font-size:.85rem;letter-spacing:.5em;margin-bottom:18px;text-shadow:0 0 30px rgba(255,80,30,.8);animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+.enter-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 40px;background:rgba(10,4,2,.92);border:1px solid rgba(255,100,40,.5);color:#ffaa66;font-family:'Noto Sans KR';font-size:.9rem;font-weight:700;cursor:pointer;letter-spacing:.15em;transition:all .4s;backdrop-filter:blur(4px)}
+.enter-btn:hover{border-color:#ff8844;color:#ffddaa;background:rgba(255,80,20,.15);box-shadow:0 0 50px rgba(255,80,20,.3);transform:translateY(-2px)}
+.enter-btn svg{width:22px;height:22px}
+
+/* 스킵 */
+.skip-btn{position:absolute;bottom:3vh;right:3vw;z-index:30;padding:5px 16px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.35);font-family:'Noto Sans KR';font-size:.5rem;cursor:pointer;transition:all .3s;opacity:0}
+.skip-btn.show{opacity:1}
+.skip-btn:hover{color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.3)}
+
+/* 불씨 */
+.ember{position:absolute;border-radius:50%;pointer-events:none;z-index:8}
+@keyframes rise{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-50vh) scale(0.2)}}
+
+/* ═══ Main Content ═══ */
+.main-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;opacity:0;transition:opacity 1.2s ease .5s}
+.main-wrap.show{opacity:1}
+.main-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,rgba(80,20,0,.3),transparent 70%)}
+.main-wrap::after{content:'';position:absolute;inset:0;background:url('img/cin_victory.png') center/cover no-repeat;opacity:.12;filter:brightness(.5);pointer-events:none}
+.container{position:relative;z-index:1;width:420px;max-width:92vw}
+.title{text-align:center;margin-bottom:32px}
+.title h1{font-family:'Cinzel Decorative',serif;font-size:2rem;color:#ff6633;text-shadow:0 0 30px rgba(255,80,30,.4);letter-spacing:.15em;margin-bottom:4px}
+.title p{font-size:.65rem;color:#665544;letter-spacing:.3em}
+.card{background:linear-gradient(135deg,#1a0e08,#221510,#1a0e08);border:1px solid #443322;padding:28px 24px;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff6633,transparent)}
+.login-section{text-align:center}
+.login-section h2{font-size:.8rem;color:#aa7744;letter-spacing:.2em;margin-bottom:20px;font-weight:700}
+.google-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 28px;background:rgba(255,255,255,.05);border:1px solid #554422;color:#ccaa77;font-family:'Noto Sans KR';font-size:.75rem;font-weight:700;cursor:pointer;letter-spacing:.1em;transition:all .3s}
+.google-btn:hover{border-color:#ff8844;color:#ffcc88;background:rgba(255,100,50,.08);transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,80,30,.15)}
+.google-btn svg{width:20px;height:20px}
+.lobby{display:none}
+.lobby-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #332211}
+.lobby-header h2{font-size:.75rem;color:#aa7744;letter-spacing:.15em;font-weight:700}
+.user-info{font-size:.5rem;color:#665544}
+.logout-btn{padding:3px 10px;background:none;border:1px solid #442222;color:#884433;font-size:.48rem;font-family:'Noto Sans KR';cursor:pointer;transition:all .2s}
+.logout-btn:hover{border-color:#cc4433;color:#ff4433}
+.char-list{margin-bottom:16px;max-height:260px;overflow-y:auto}
+.char-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:rgba(0,0,0,.3);border:1px solid #2a2211;margin-bottom:4px;cursor:pointer;transition:all .2s}
+.char-item:hover{border-color:#886644;background:rgba(255,100,0,.04)}
+.char-name{font-weight:700;font-size:.7rem;color:#ccaa77}
+.char-info{font-size:.48rem;color:#887755}
+.char-del{padding:2px 8px;background:none;border:1px solid #442222;color:#884433;font-size:.42rem;font-family:'Noto Sans KR';cursor:pointer;transition:all .2s}
+.char-del:hover{border-color:#cc4433;color:#ff4433}
+.no-chars{text-align:center;padding:20px;color:#554433;font-size:.6rem}
+.create-section{border-top:1px solid #332211;padding-top:14px}
+.create-section h3{font-size:.6rem;color:#886644;letter-spacing:.15em;margin-bottom:10px;font-weight:700}
+.create-row{display:flex;gap:6px}
+.name-input{flex:1;padding:8px 12px;background:rgba(0,0,0,.4);border:1px solid #443322;color:#ccaa77;font-family:'Noto Sans KR';font-size:.7rem;outline:none;transition:border-color .2s}
+.name-input:focus{border-color:#ff8844}
+.name-input::placeholder{color:#554433}
+.create-btn{padding:8px 18px;background:rgba(255,100,50,.08);border:1px solid #884422;color:#ff8844;font-family:'Noto Sans KR';font-size:.65rem;font-weight:700;cursor:pointer;letter-spacing:.1em;transition:all .2s}
+.create-btn:hover{border-color:#ff8844;background:rgba(255,100,50,.15);color:#ffcc88}
+.create-btn:disabled{opacity:.3;cursor:default}
+.status{text-align:center;padding:8px;font-size:.5rem;color:#886644;min-height:24px}
+.status.error{color:#cc4433}
+.loading{display:none;text-align:center;padding:40px}
+.loading .spinner{display:inline-block;width:28px;height:28px;border:2px solid #332211;border-top-color:#ff6633;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{margin-top:10px;font-size:.6rem;color:#886644}
+</style>
+</head>
+<body>
+
+<!-- ═══ Cinematic Scene ═══ -->
+<div class="cin-scene" id="cinScene">
+  <div class="cin-lb cin-lb-t"></div>
+  <div class="cin-lb cin-lb-b"></div>
+
+  <!-- 인트로 비디오 (THE EXODUSER) -->
+  <video id="cinVideo" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:20;opacity:1;transition:opacity 1.5s ease;pointer-events:none">
+    <source src="video/intro.mp4" type="video/mp4">
+  </video>
+  <!-- 클릭 안내 -->
+  <div id="cinClickPrompt" style="position:absolute;inset:0;z-index:25;display:flex;align-items:center;justify-content:center;cursor:pointer">
+    <div style="text-align:center;pointer-events:none">
+      <div style="color:#ff8844;font-size:.8rem;letter-spacing:.4em;opacity:.7;animation:pulse 2.5s ease-in-out infinite">CLICK TO ENTER</div>
+    </div>
+  </div>
+
+  <!-- 문 배경 (줌 인/아웃) -->
+  <div class="cin-gate zoom" id="cinGate">
+    <img src="img/hellgate.png" alt="">
+    <div class="cin-vig"></div>
+  </div>
+
+  <!-- 프롤로그 이미지 (장면별 9장) -->
+  <div class="cin-img" id="cinImg1"><img src="img/cin_war.png" alt=""></div>
+  <div class="cin-img" id="cinImg2"><img src="img/cin_ruins.png" alt=""></div>
+  <div class="cin-img" id="cinImg3"><img src="img/cin_throne.png" alt=""></div>
+  <div class="cin-img" id="cinImg4"><img src="img/cin_bloodbath.png" alt=""></div>
+  <div class="cin-img" id="cinImg5"><img src="img/cin_torture.png" alt=""></div>
+  <div class="cin-img" id="cinImg6"><img src="img/cin_fall_hd.png" alt=""></div>
+  <div class="cin-img" id="cinImg7"><img src="img/cin_labyrinth.png" alt=""></div>
+  <div class="cin-img" id="cinImg8"><img src="img/cin_nemesia_hd.png" alt=""></div>
+  <div class="cin-img" id="cinImg9"><img src="img/cin_demonbattle.png" alt=""></div>
+  <div class="cin-img" id="cinImg10"><img src="img/cin_demonfight.png" alt=""></div>
+  <div class="cin-img" id="cinImg11"><img src="img/cin_victory.png" alt=""></div>
+  <div class="cin-img" id="cinImg12"><img src="img/cin_bystanders.png" alt=""></div>
+  <div class="cin-img" id="cinImg13"><img src="img/cin_remember.png" alt=""></div>
+
+  <!-- 프롤로그 텍스트 -->
+  <div class="cin-text" id="cinText">
+    <div class="cin-text-inner" id="cinTextInner"></div>
+  </div>
+
+  <!-- 클릭/탭 영역 (부분 스킵) -->
+  <div class="cin-overlay" style="position:absolute;inset:0;z-index:15;cursor:pointer"></div>
+
+  <!-- 문 열림 (문짝 2개) -->
+  <div class="cin-door-scene" id="cinDoorScene">
+    <div class="cin-door cin-door-l"></div>
+    <div class="cin-door cin-door-r"></div>
+    <div class="cin-glow" id="cinGlow"></div>
+  </div>
+
+  <!-- 입장 UI -->
+  <div class="cin-ui" id="cinUI">
+    <div class="cin-nemesia-bg"></div>
+    <div class="cin-lore">
+      <p>복수의 신 네메시아는 지옥에 떨어진 모든 복수자에게 기회를 준다.</p>
+      <p>지옥의 최하층에서 시작하여 일곱 개의 지옥을 뚫고 올라가라.</p>
+      <p class="lore-dim">탈출자는 극소수일 뿐.</p>
+      <p class="lore-dim">대부분은 끝없는 고통 속에서 의지를 잃고, 포기한다.</p>
+      <p class="lore-gold">너는 어떤가?</p>
+    </div>
+    <div class="cin-prompt">입장하라, 죄인이여</div>
+    <button class="enter-btn" id="enterBtn">
+      <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Google로 입장
+    </button>
+  </div>
+
+  <button class="skip-btn" id="skipBtn">SKIP ></button>
+</div>
+
+<!-- ═══ Main Content ═══ -->
+<div class="main-wrap" id="mainWrap">
+  <div class="container">
+    <div class="title"><h1>지옥의 길</h1><p>HELL ROAD</p></div>
+    <div class="card">
+      <div class="loading" id="loading"><div class="spinner"></div><p>연결 중...</p></div>
+      <div class="login-section" id="loginSection" style="display:none">
+        <h2>캐릭터를 선택하세요</h2>
+        <button class="google-btn" id="googleBtn">
+          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Google로 입장
+        </button>
+      </div>
+      <div class="lobby" id="lobby">
+        <div class="lobby-header"><h2>캐릭터 선택</h2><div><span class="user-info" id="userEmail"></span><button class="logout-btn" id="logoutBtn">로그아웃</button></div></div>
+        <div class="char-list" id="charList"><div class="no-chars">캐릭터가 없습니다. 새로 생성하세요.</div></div>
+        <div class="create-section"><h3>새 캐릭터 생성</h3><div class="create-row"><input class="name-input" id="charName" placeholder="캐릭터 이름 (2~8자)" maxlength="8"><button class="create-btn" id="createBtn">생성</button></div></div>
+        <div class="status" id="status"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL='https://tevlznuhjqcnzgewlswx.supabase.co';
+const SUPABASE_KEY='sb_publishable_chAwadci1zVQNEKPC__s_w_7K3Oz_WP';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+const lobbyBGM=new Audio('bgm/lobby.mp3');
+lobbyBGM.preload='auto';lobbyBGM.loop=true;lobbyBGM.volume=0.3;
+let bgmStarted=false;
+function _tryBGM(){
+  if(bgmStarted)return;
+  lobbyBGM.play().then(()=>{bgmStarted=true;_rmBGMListeners()}).catch(()=>{});
+}
+function _rmBGMListeners(){['click','keydown','pointerdown','touchstart','mousemove','scroll','wheel'].forEach(e=>document.removeEventListener(e,_tryBGM))}
+// 페이지 로드 시 바로 시도 + 실패하면 아무 인터랙션에 자동 재생
+function startBGM(){
+  _tryBGM();
+  if(!bgmStarted){['click','keydown','pointerdown','touchstart','mousemove','scroll','wheel'].forEach(e=>document.addEventListener(e,_tryBGM,{passive:true}))}
+}
+
+const $=id=>document.getElementById(id);
+let currentUser=null;
+let gateOpened=false;
+let _cinDone=false;
+
+// ═══ Prologue Script (풀버전) ═══
+// img: 이미지 인덱스 (0~8), -1=어둠, undefined=이전 유지
+const CIN_LINES=[
+  {text:'전쟁에서 살아 돌아온 한 남자.',dur:2800,img:0},
+  {text:'하지만 집은 이미 없다.',dur:2500,img:1},
+  {text:'이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.',dur:3000,img:2},
+  {text:'아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,',dur:3000},
+  {text:'끝내 못 이겨 스스로 목숨을 끊었다.',dur:3000},
+  {text:'아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.',dur:3000},
+  {text:'늙은 부모는 감옥에 갇혀 굶어 죽었다.',dur:3000},
+  {text:'',dur:500,img:-1},
+  {text:'킬루 가문의 모두가 알고 있었다.',dur:2500,img:11},
+  {text:'31명이 보고도 못 본 척했다.',dur:3000},
+  {text:'',dur:500,img:-1},
+  {text:'그날 밤, 킬루 가문을 모두 죽였다.',dur:3500,cls:'red',img:3},
+  {text:'킬루의 팔다리를 잘랐으며,',dur:3000,cls:'red',img:4},
+  {text:'불로 지져 지혈까지 해주며',dur:3000,cls:'red'},
+  {text:'오래오래 살려두었다.',dur:3000,cls:'red'},
+  {text:'',dur:500,img:-1},
+  {text:'"기억하라."',dur:3000,cls:'red',img:12},
+  {text:'"그리고 지옥에서도 후회하라."',dur:3500,cls:'red'},
+  {text:'그리고 지옥에 떨어진다.',dur:3500,img:5},
+  {text:'',dur:1500,img:-1,phase:2},
+  {text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',dur:3500,cls:'dim',img:6},
+  {text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',dur:3500,cls:'dim',img:8},
+  {text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',dur:4000,cls:'dim',img:9},
+  {text:'',dur:500,img:-1},
+  {text:'"너는 왜 지옥에 왔느냐?"',dur:4000,cls:'gold',img:7},
+  {text:'',dur:500},
+  {text:'"지옥을 탈출하라, 죄인이여."',dur:6000,cls:'gold',img:7,end:true},
+];
+
+// ═══ Cinematic Sequence ═══
+// 클릭/탭으로 다음 줄 넘기기 (자동 진행 + 부분 스킵)
+let _cinIdx=0,_cinTimer=null,_cinReady=false;
+function playCinematic(){
+  const textBox=$('cinTextInner');
+  const skipBtn=$('skipBtn');
+  const vid=$('cinVideo');
+  const cImgs=[1,2,3,4,5,6,7,8,9,10,11,12,13].map(i=>$('cinImg'+i));
+  let _prevImg=-1;
+  const showImg=(idx)=>{
+    if(idx===_prevImg)return;
+    // 새 이미지를 위에 올려서 페이드인 (z-index로 겹침)
+    cImgs.forEach((el,i)=>{
+      if(i===idx){el.style.zIndex=4;el.classList.add('show');}
+      else if(i===_prevImg){el.style.zIndex=3;setTimeout(()=>el.classList.remove('show'),800);}
+      else{el.classList.remove('show');el.style.zIndex=3;}
+    });
+    _prevImg=idx;
+  };
+  const hideAll=()=>{cImgs.forEach(el=>{el.classList.remove('show');el.style.zIndex=3});_prevImg=-1;};
+
+  function showLine(idx){
+    if(_cinDone)return;
+    if(idx>=CIN_LINES.length){finishCin();return;}
+    _cinIdx=idx;
+    const line=CIN_LINES[idx];
+    // 이미지 전환
+    if(line.img!==undefined){if(line.img===-1)hideAll();else showImg(line.img);}
+    // 텍스트
+    textBox.innerHTML='';
+    if(line.text){
+      const el=document.createElement('div');
+      el.className='cin-line'+(line.cls?' '+line.cls:'');
+      el.textContent=line.text;
+      textBox.appendChild(el);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>el.classList.add('show')));
+    }
+    // 자동 진행 타이머
+    clearTimeout(_cinTimer);
+    _cinTimer=setTimeout(()=>showLine(idx+1),line.dur);
+  }
+
+  function finishCin(){
+    clearTimeout(_cinTimer);
+    _cinReady=false;
+    textBox.innerHTML='';
+    // 여신 이미지 유지한 채 입장 UI 페이드인, 2초 후 이미지 페이드아웃
+    $('cinUI').classList.add('show');
+    skipBtn.classList.remove('show');
+    setTimeout(()=>hideAll(),2000);
+  }
+
+  // 클릭/탭 → 다음 줄로 스킵
+  function onSkipClick(){
+    if(_cinDone||!_cinReady)return;
+    clearTimeout(_cinTimer);
+    showLine(_cinIdx+1);
+  }
+  document.querySelector('.cin-overlay').addEventListener('click',onSkipClick);
+  document.querySelector('.cin-overlay').addEventListener('touchend',e=>{e.preventDefault();onSkipClick();});
+  document.addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();onSkipClick();}});
+
+  // 0.5s: 스킵(전체) 버튼 표시
+  setTimeout(()=>skipBtn.classList.add('show'),500);
+
+  // 인트로 비디오: 첫 프레임(문 닫힘)에서 멈춤, 클릭 시 재생
+  vid.style.opacity='1';
+  vid.currentTime=0;
+  // 첫 프레임 로드 후 pause
+  vid.addEventListener('loadeddata',()=>{vid.pause()},{once:true});
+  vid.load();
+
+  const prompt=$('cinClickPrompt');
+  let _vidStarted=false;
+  function onVidClick(){
+    if(_vidStarted||_cinDone)return;
+    _vidStarted=true;
+    prompt.style.display='none';
+    vid.muted=false; // 영상 자체 사운드(문 열림) 재생
+    vid.volume=0.6;
+    startBGM();
+    vid.play().catch(()=>{});
+
+    // 비디오 페이드아웃 → 프롤로그 시작
+    const videoEnd=8500;
+    vid.onended=()=>{vid.style.opacity='0'};
+    setTimeout(()=>{if(_cinDone)return;vid.style.opacity='0'},videoEnd-1500);
+    setTimeout(()=>{
+      if(_cinDone)return;
+      _cinReady=true;
+      showLine(0);
+    },videoEnd);
+  }
+  prompt.addEventListener('click',onVidClick);
+  prompt.addEventListener('touchend',e=>{e.preventDefault();onVidClick();});
+}
+
+function skipToGate(){
+  _cinDone=true;
+  clearTimeout(_cinTimer);
+  startBGM();
+  $('cinVideo').style.opacity='0';
+  if($('cinClickPrompt'))$('cinClickPrompt').style.display='none';
+  [1,2,3,4,5,6,7,8,9,10,11,12,13].forEach(i=>{const e=$('cinImg'+i);if(e)e.classList.remove('show')});
+  $('cinTextInner').innerHTML='';
+  $('cinUI').classList.add('show');
+  $('skipBtn').classList.remove('show');
+}
+$('skipBtn').onclick=skipToGate;
+
+// ═══ Embers ═══
+let _emberIv=setInterval(()=>{
+  const scene=$('cinScene');
+  if(!scene||scene.style.display==='none')return;
+  const e=document.createElement('div');
+  e.className='ember';
+  e.style.left=(20+Math.random()*60)+'vw';
+  e.style.bottom='-5px';
+  const sz=2+Math.random()*3;
+  e.style.width=sz+'px';e.style.height=sz+'px';
+  const hue=10+Math.random()*25;
+  e.style.background=`hsl(${hue},100%,${50+Math.random()*30}%)`;
+  e.style.boxShadow=`0 0 ${3+Math.random()*6}px hsl(${hue},100%,50%)`;
+  e.style.animation=`rise ${3+Math.random()*4}s ease-out forwards`;
+  scene.appendChild(e);
+  setTimeout(()=>e.remove(),7000);
+},150);
+
+// ═══ Enter → OAuth ═══
+$('enterBtn').onclick=async()=>{
+  if(gateOpened)return;
+  gateOpened=true;
+  $('cinUI').style.opacity='0';
+  const{error}=await sb.auth.signInWithOAuth({
+    provider:'google',
+    options:{redirectTo:window.location.origin+'/'}
+  });
+  if(error){$('mainWrap').classList.add('show');$('cinScene').style.display='none'}
+};
+
+// ═══ Init ═══
+const _fromGame=new URLSearchParams(window.location.search).get('lobby')==='1';
+(async()=>{
+  const{data:{session}}=await sb.auth.getSession();
+  if(session){
+    // 이미 로그인 → 시네마틱 스킵, 바로 로비
+    currentUser=session.user;
+    _cinDone=true;startBGM();
+    $('cinScene').style.display='none';
+    clearInterval(_emberIv);
+    $('mainWrap').classList.add('show');
+    $('loading').style.display='none';
+    showLobby();
+  }else if(_fromGame){
+    // 게임에서 로비 복귀 → 시네마틱 스킵, 로그인 화면 바로 표시
+    _cinDone=true;startBGM();
+    $('cinScene').style.display='none';
+    clearInterval(_emberIv);
+    $('mainWrap').classList.add('show');
+    $('loading').style.display='none';
+    $('loginSection').style.display='block';
+  }else{
+    $('loading').style.display='none';
+    playCinematic();
+  }
+
+  sb.auth.onAuthStateChange((event,session)=>{
+    if(event==='SIGNED_IN'&&session){currentUser=session.user;showLobby()}
+    else if(event==='SIGNED_OUT'){currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='block'}
+  });
+})();
+
+$('googleBtn').onclick=async()=>{
+  const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+'/'}});
+  if(error){$('status').textContent='로그인 실패: '+error.message;$('status').className='status error'}
+};
+$('logoutBtn').onclick=async()=>{await sb.auth.signOut();currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='block'};
+
+async function showLobby(){
+  $('loading').style.display='none';$('loginSection').style.display='none';$('lobby').style.display='block';
+  $('userEmail').textContent=currentUser.email||'';await loadCharacters();
+}
+async function loadCharacters(){
+  const cl=$('charList');cl.innerHTML='<div class="no-chars">불러오는 중...</div>';
+  const{data,error}=await sb.from('characters').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:true});
+  if(error){cl.innerHTML='<div class="no-chars" style="color:#cc4433">오류: '+error.message+'</div>';return}
+  if(!data||data.length===0){cl.innerHTML='<div class="no-chars">캐릭터가 없습니다. 새로 생성하세요.</div>';return}
+  cl.innerHTML='';
+  data.forEach(ch=>{
+    const d=ch.data||{};const lv=d.player?d.player.lv||1:1;const stage=d.game?d.game.stage||0:0;
+    const hell=Math.min(6,~~(stage/10));const floor=stage%10+1;
+    const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
+    const st=stage===0?'시작점':(hell+1)+'장 '+hn[hell]+' '+floor+'층';
+    const div=document.createElement('div');div.className='char-item';
+    div.innerHTML=`<div><div class="char-name">${escHtml(ch.name)}</div><div class="char-info">Lv.${lv} | ${st}</div></div><div style="display:flex;gap:6px;align-items:center"><button class="char-del">삭제</button></div>`;
+    div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;window.location.href='game.html?char='+ch.id});
+    div.querySelector('.char-del').addEventListener('click',async e=>{
+      e.stopPropagation();if(!confirm(ch.name+' 캐릭터를 정말 삭제하시겠습니까?'))return;
+      const{error:de}=await sb.from('characters').delete().eq('id',ch.id);
+      if(de){setStatus('삭제 실패: '+de.message,true);return}await loadCharacters();
+    });
+    cl.appendChild(div);
+  });
+}
+$('createBtn').onclick=async()=>{
+  const name=$('charName').value.trim();
+  if(name.length<2||name.length>8){setStatus('이름은 2~8자여야 합니다.',true);return}
+  if(/[<>"'&]/.test(name)){setStatus('특수문자는 사용할 수 없습니다.',true);return}
+  $('createBtn').disabled=true;setStatus('생성 중...');
+  const{error}=await sb.from('characters').insert({user_id:currentUser.id,name:name,data:{}});
+  $('createBtn').disabled=false;
+  if(error){if(error.code==='23505')setStatus('이미 같은 이름의 캐릭터가 있습니다.',true);else setStatus('생성 실패: '+error.message,true);return}
+  $('charName').value='';setStatus('');await loadCharacters();
+};
+$('charName').addEventListener('keydown',e=>{if(e.key==='Enter')$('createBtn').click()});
+function setStatus(m,err){$('status').textContent=m;$('status').className=err?'status error':'status'}
+function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+</script>
+</body>
+</html>

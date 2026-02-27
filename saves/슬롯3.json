@@ -1,0 +1,431 @@
+{
+  "ver": 2,
+  "ts": 1771995277466,
+  "player": {
+    "lv": 32,
+    "exp": 44,
+    "maxExp": 89,
+    "hp": 169,
+    "mhp": 170,
+    "st": 132,
+    "mst": 132,
+    "mp": 80,
+    "mmp": 80,
+    "baseAtk": 8,
+    "baseDef": 5,
+    "sp": 73,
+    "ap": 5,
+    "facing": 1.8039970935686427,
+    "mpR": 0,
+    "stR": 0.28,
+    "skills": {}
+  },
+  "inv": {
+    "bag": [
+      {
+        "id": 1771995141532.3977,
+        "slot": "helmet",
+        "el": 0,
+        "rarity": 0,
+        "tier": 0,
+        "name": "낡은 투구",
+        "emoji": "⛑️",
+        "beamDmg": 1.5,
+        "elements": [
+          {
+            "el": 0,
+            "dmg": 12
+          }
+        ],
+        "bonusRange": 1,
+        "reqLv": 20,
+        "itemLv": 20
+      },
+      {
+        "id": 1771995243420.5989,
+        "slot": "ring1",
+        "el": 3,
+        "rarity": 1,
+        "tier": 0,
+        "name": "그림자 반지",
+        "emoji": "💍",
+        "stRegen": 0.06,
+        "critRate": 1.2,
+        "reqLv": 20,
+        "itemLv": 20
+      },
+      {
+        "id": 1771995255340.999,
+        "slot": "boots",
+        "el": 1,
+        "rarity": 0,
+        "tier": 0,
+        "name": "불꽃 전투화",
+        "emoji": "👢",
+        "def": 2,
+        "spd": 0,
+        "bonusSt": 4,
+        "chargeDist": 14,
+        "reqLv": 20,
+        "itemLv": 20
+      },
+      {
+        "id": 1771995248021.5063,
+        "slot": "ring2",
+        "el": 0,
+        "rarity": 1,
+        "tier": 0,
+        "name": "녹슨 반지",
+        "emoji": "💍",
+        "stRegen": 0.06,
+        "critRate": 1.18,
+        "reqLv": 20,
+        "itemLv": 20
+      },
+      {
+        "id": 1771995252629.5637,
+        "slot": "helmet",
+        "el": 0,
+        "rarity": 1,
+        "tier": 0,
+        "name": "낡은 투구",
+        "emoji": "⛑️",
+        "stRegen": 0.06,
+        "beamDmg": 1.8,
+        "elements": [
+          {
+            "el": 0,
+            "dmg": 14
+          }
+        ],
+        "splashR": 10,
+        "bonusRange": 2,
+        "reqLv": 20,
+        "itemLv": 20
+      }
+    ],
+    "equipped": {
+      "weapon": {
+        "id": 1771994712392.1895,
+        "slot": "weapon",
+        "el": 4,
+        "rarity": 1,
+        "tier": 0,
+        "name": "전기칼",
+        "emoji": "⚔️",
+        "wtype": "sword",
+        "atk": 35,
+        "spd": 1.32,
+        "wStCost": 14,
+        "wArcW": 0.95,
+        "wRange": 52,
+        "wStagger": 7,
+        "wKb": 4.2,
+        "bonusRange": 1,
+        "stRegen": 0.06,
+        "reqLv": 10,
+        "itemLv": 10
+      },
+      "shield": {
+        "id": 1771994993664.2783,
+        "slot": "shield",
+        "el": 3,
+        "rarity": 2,
+        "tier": 0,
+        "name": "그림자 방패",
+        "emoji": "🛡️",
+        "bonusRange": 2,
+        "blockRate": 72,
+        "shieldWt": 15,
+        "atk": 4,
+        "def": 6,
+        "stagger": 22,
+        "stRegen": 0.1,
+        "mpRegen": 0.015,
+        "reqLv": 20,
+        "itemLv": 20
+      },
+      "boots": {
+        "id": 1771995120513.452,
+        "slot": "boots",
+        "el": 0,
+        "rarity": 2,
+        "tier": 0,
+        "name": "낡은 전투화",
+        "emoji": "👢",
+        "def": 3,
+        "spd": 0,
+        "bonusSt": 7,
+        "chargeDist": 21,
+        "chargeCharge": 1,
+        "stRegen": 0.1,
+        "mpRegen": 0.015,
+        "reqLv": 20,
+        "itemLv": 20
+      },
+      "armor": {
+        "id": 1771994859192.056,
+        "slot": "armor",
+        "el": 3,
+        "rarity": 2,
+        "tier": 1,
+        "name": "암흑 갑주",
+        "emoji": "🦺",
+        "def": 9,
+        "bonusSt": 10,
+        "charge": 18,
+        "chargeDist": 39,
+        "chargeW": 24,
+        "bonusRange": 2,
+        "bonusChargeDist": 2,
+        "stRegen": 0.112,
+        "mpRegen": 0.017,
+        "reqLv": 10,
+        "itemLv": 10
+      },
+      "helmet": {
+        "id": 1771995143593.4353,
+        "slot": "helmet",
+        "el": 3,
+        "rarity": 2,
+        "tier": 0,
+        "name": "그림자 투구",
+        "emoji": "⛑️",
+        "stRegen": 0.1,
+        "mpRegen": 0.015,
+        "beamDmg": 2.3,
+        "elements": [
+          {
+            "el": 3,
+            "dmg": 18
+          },
+          {
+            "el": 2,
+            "dmg": 6
+          }
+        ],
+        "splashR": 10,
+        "splashMul": 0.32,
+        "bonusRange": 2,
+        "reqLv": 20,
+        "itemLv": 20
+      },
+      "bow": {
+        "id": 1771994711779.9353,
+        "slot": "bow",
+        "el": 1,
+        "rarity": 1,
+        "tier": 0,
+        "name": "불꽃 중석궁",
+        "emoji": "🔩",
+        "btype": "hcrossbow",
+        "atk": 5,
+        "bowSpd": 0.72,
+        "bowStCost": 0,
+        "bowRange": 302,
+        "bowProjSpd": 13,
+        "bowStagger": 10,
+        "bowKb": 7.7,
+        "bonusRange": 1,
+        "arrowR": 1,
+        "stRegen": 0.06,
+        "reqLv": 10,
+        "itemLv": 10
+      },
+      "gloves": {
+        "id": 1771993845048.9927,
+        "slot": "gloves",
+        "el": 2,
+        "rarity": 3,
+        "tier": 0,
+        "name": "냉기 장갑",
+        "emoji": "🧤",
+        "atk": 3,
+        "def": 1,
+        "spd": 0,
+        "stRegen": 0.15,
+        "mpRegen": 0.025,
+        "potCd": 0.127,
+        "atkSpd": 0.067,
+        "reqLv": 10,
+        "itemLv": 10
+      },
+      "pants": {
+        "id": 1771995144032.0369,
+        "slot": "pants",
+        "el": 4,
+        "rarity": 3,
+        "tier": 0,
+        "name": "전기 바지",
+        "emoji": "👖",
+        "def": 3,
+        "bonusSt": 5,
+        "stRegen": 0.15,
+        "mpRegen": 0.025,
+        "bonusHp": 24,
+        "reqLv": 20,
+        "itemLv": 20
+      },
+      "necklace": {
+        "id": 1771995095667.1711,
+        "slot": "necklace",
+        "el": 1,
+        "rarity": 1,
+        "tier": 0,
+        "name": "불꽃 부적",
+        "emoji": "📿",
+        "def": 1,
+        "stRegen": 0.06,
+        "expBonus": 0.053,
+        "reqLv": 20,
+        "itemLv": 20
+      },
+      "ring1": {
+        "id": 1771993895081.7314,
+        "slot": "ring1",
+        "el": 2,
+        "rarity": 1,
+        "tier": 0,
+        "name": "냉기 반지",
+        "emoji": "💍",
+        "stRegen": 0.06,
+        "critRate": 1.43,
+        "reqLv": 10,
+        "itemLv": 10
+      },
+      "ring2": {
+        "id": 1771994693360.1833,
+        "slot": "ring2",
+        "el": 2,
+        "rarity": 1,
+        "tier": 0,
+        "name": "냉기 반지",
+        "emoji": "💍",
+        "stRegen": 0.06,
+        "critRate": 1.4,
+        "reqLv": 10,
+        "itemLv": 10
+      }
+    }
+  },
+  "game": {
+    "stage": 1,
+    "kills": 251,
+    "mats": 327,
+    "bossAlive": true,
+    "hellCleared": []
+  },
+  "qslots": [
+    {
+      "type": "hp",
+      "count": 84
+    },
+    {
+      "type": "st",
+      "count": 75
+    },
+    {
+      "type": "mp",
+      "count": 89
+    },
+    {
+      "type": "all",
+      "count": 1
+    }
+  ],
+  "arrows": [
+    57,
+    39,
+    29,
+    39,
+    17
+  ],
+  "arrowSel": 0,
+  "stats": {
+    "str": 10,
+    "dex": 0,
+    "int": 0,
+    "vit": 10,
+    "lck": 0
+  },
+  "upgrades": {
+    "hp": 0,
+    "atk": 0,
+    "def": 0,
+    "mp": 0,
+    "st": 0,
+    "spd": 0
+  },
+  "passives": {
+    "pAtk": 0,
+    "pDef": 1,
+    "pCharge": 0,
+    "pParry": 0,
+    "pMagic": 0,
+    "pBow": 0,
+    "pShield": 0,
+    "pRegen": 0,
+    "pCrit": 0,
+    "pDrop": 0
+  },
+  "forgeGauge": {},
+  "bagMax": 66,
+  "settings": {
+    "binds": {
+      "up": "KeyW",
+      "down": "KeyS",
+      "left": "KeyA",
+      "right": "KeyD",
+      "weapon": "mouse0",
+      "shield": "mouse2",
+      "block": "KeyX",
+      "bow": "Space",
+      "charge": "ShiftLeft",
+      "parry": "KeyF",
+      "beam": "KeyE",
+      "forge": "KeyQ",
+      "inventory": "Tab",
+      "settings": "Escape",
+      "interact": "KeyR",
+      "arrowNext": "KeyG",
+      "storage": "KeyV",
+      "stats": "KeyC",
+      "skill": "KeyK"
+    },
+    "binds2": {
+      "up": null,
+      "down": null,
+      "left": null,
+      "right": null,
+      "weapon": null,
+      "shield": null,
+      "block": null,
+      "bow": null,
+      "charge": null,
+      "parry": null,
+      "beam": null,
+      "forge": null,
+      "inventory": null,
+      "settings": null,
+      "interact": null,
+      "arrowNext": null,
+      "storage": null,
+      "stats": null,
+      "skill": null
+    },
+    "opt": {
+      "shake": 80,
+      "hitStop": 70,
+      "parts": 80,
+      "sfxVol": 60,
+      "diff": 2,
+      "minPickRar": 3
+    }
+  },
+  "qsAuto": [
+    false,
+    false,
+    false,
+    false
+  ]
+}
