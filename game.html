@@ -1146,8 +1146,16 @@ function _benchTick(){
     // combine: min of gpu and fps score
     const combined=Math.min(_gpuScoreCache,fpsScore);
     _hwTier=combined>=4?'S':combined>=3?'A':combined>=2?'B':'C';
-    // auto-apply quality preset
-    _applyTierPreset(_hwTier);
+    // auto-apply quality preset only on first run (no saved settings)
+    const _saved=localStorage.getItem('hellcave_settings');
+    if(!_saved||typeof OPT.bloom==='undefined'){
+      _applyTierPreset(_hwTier);
+    }else{
+      // just update diagnostic UI without overwriting user settings
+      if($('diagTier'))$('diagTier').textContent=_hwTier;
+      if($('diagGpu'))$('diagGpu').textContent=_hwGPU;
+      if($('diagFps'))$('diagFps').textContent=Math.round(avgFps);
+    }
   }
 }
 let _gpuScoreCache=2;
@@ -1664,13 +1672,13 @@ const SLOT_EMOJI=['⚔️','🛡️','👢','🦺','⛑️','🏹','🧤','👖'
 // ═══ WEAPON TYPES ═══
 // wtype: {name, emoji, atkMul, stCost, spdMul, arcW, range, stagger, kb}
 const WTYPES={
-  sword:  {name:'검',   emoji:'⚔️', atkMul:1.4, stCost:9,  spdMul:1.1, arcW:.95, range:50, stagger:6},
-  dagger: {name:'단검', emoji:'🗡️', atkMul:1.0, stCost:6,  spdMul:1.6, arcW:.7,  range:38, stagger:3},
-  hammer: {name:'해머', emoji:'🔨', atkMul:2.2, stCost:14, spdMul:.65, arcW:1.1, range:48, stagger:18},
-  mace:   {name:'철퇴', emoji:'⚒️', atkMul:1.8, stCost:12, spdMul:.8,  arcW:1.0, range:46, stagger:12},
-  club:   {name:'몽둥이',emoji:'🏏',atkMul:1.6, stCost:10, spdMul:.85, arcW:1.1, range:52, stagger:10},
-  axe:    {name:'도끼', emoji:'🪓', atkMul:2.0, stCost:13, spdMul:.7,  arcW:.85, range:45, stagger:14},
-  spear:  {name:'창',   emoji:'🔱', atkMul:1.3, stCost:8,  spdMul:1.0, arcW:.4,  range:70, stagger:5},
+  sword:  {name:'검',   emoji:'⚔️', atkMul:1.4, stCost:5,  spdMul:1.1, arcW:.95, range:50, stagger:6},
+  dagger: {name:'단검', emoji:'🗡️', atkMul:1.0, stCost:3,  spdMul:1.6, arcW:.7,  range:38, stagger:3},
+  hammer: {name:'해머', emoji:'🔨', atkMul:2.2, stCost:7,  spdMul:.65, arcW:1.1, range:48, stagger:18},
+  mace:   {name:'철퇴', emoji:'⚒️', atkMul:1.8, stCost:6,  spdMul:.8,  arcW:1.0, range:46, stagger:12},
+  club:   {name:'몽둥이',emoji:'🏏',atkMul:1.6, stCost:5,  spdMul:.85, arcW:1.1, range:52, stagger:10},
+  axe:    {name:'도끼', emoji:'🪓', atkMul:2.0, stCost:7,  spdMul:.7,  arcW:.85, range:45, stagger:14},
+  spear:  {name:'창',   emoji:'🔱', atkMul:1.3, stCost:4,  spdMul:1.0, arcW:.4,  range:70, stagger:5},
 };
 const WTYPE_KEYS=Object.keys(WTYPES);
 
@@ -2051,20 +2059,8 @@ function poolRender(X,vl,vr,vt,vb){
   X.globalAlpha=1;
 }
 
-// 3) 적 스프라이트 캐시 — 본체+속성링+속성점을 drawImage 1회로
+// 3) 적 스프라이트 캐시 (레거시 — 아틀라스 시스템으로 대체됨)
 const _eSpCache=new Map();
-function _getESpr(col,el,r){
-  const k=col+'_'+el+'_'+r;
-  let c=_eSpCache.get(k);if(c)return c;
-  if(_eSpCache.size>=100)_eSpCache.clear();
-  const pad=8,sz=(r+pad)*2;
-  c=document.createElement('canvas');c.width=sz;c.height=sz;
-  const cx=c.getContext('2d');const cr=r+pad;
-  cx.fillStyle=col;cx.beginPath();cx.arc(cr,cr,r,0,Math.PI*2);cx.fill();
-  cx.strokeStyle=ELC[el];cx.lineWidth=2;cx.beginPath();cx.arc(cr,cr,r+3,0,Math.PI*2);cx.stroke();
-  cx.fillStyle=ELC[el];cx.fillRect(cr-2,cr-r-8,4,4);
-  _eSpCache.set(k,c);return c;
-}
 // 3-b) 절차적 적 바디 렌더링 — etype별 실루엣+다리+눈+특수파츠
 // ETYPE 색상표 (네온 톤)
 const ETYPE_COLS=['#ee5544','#88cc44','#ff8822','#66dd66','#8888aa','#ff5500','#4488dd','#aa44ee','#cc7722','#bb55dd'];
@@ -2419,6 +2415,65 @@ const _ACELL=48,_BCELL=80,_AFRAMES=4,_AELS=6;
 let _atlas=null,_atlasReady=false;
 const _atlasUV=[];  // [typeIdx][el][frame] = {sx,sy,sw,sh}
 
+// ═══ PNG 스프라이트시트 레지스트리 ═══
+const _ESPRITES={};
+
+function _loadESprite(et,src,frames){
+  const spr={img:new Image(),ready:false,frames:frames,fw:0,fh:0};
+  _ESPRITES[et]=spr;
+  spr.img.onload=function(){
+    spr.fw=spr.img.width/frames;
+    spr.fh=spr.img.height;
+    spr.ready=true;
+    console.log('[ESPRITE] etype '+et+' 로드 완료: '+spr.img.width+'×'+spr.img.height+' ('+frames+'프레임, 셀 '+spr.fw+'×'+spr.fh+')');
+    if(_atlasReady)_patchAtlasEtype(et);
+  };
+  spr.img.onerror=function(){
+    console.warn('[ESPRITE] etype '+et+' 로드 실패: '+src);
+    spr.ready=false;
+  };
+  spr.img.src=src;
+}
+
+function _drawSpriteToAtlas(ax,spr,fr,el,cx,cy,cell){
+  const fw=spr.fw,fh=spr.fh;
+  const scale=Math.min(cell/fw,cell/fh)*0.85;
+  const dw=fw*scale,dh=fh*scale;
+  ax.drawImage(spr.img,fr*fw,0,fw,fh,cx-dw/2,cy-dh/2,dw,dh);
+  // 속성 틴트 (물리 el=0 제외)
+  if(el>0){
+    ax.save();
+    ax.globalCompositeOperation='source-atop';
+    ax.globalAlpha=0.35;
+    ax.fillStyle=ELC[el];
+    ax.fillRect(cx-dw/2,cy-dh/2,dw,dh);
+    ax.restore();
+  }
+}
+
+function _patchAtlasEtype(et){
+  if(!_atlas||!_atlasReady)return;
+  const spr=_ESPRITES[et];
+  if(!spr||!spr.ready)return;
+  const ax=_atlas.getContext('2d');
+  for(let el=0;el<_AELS;el++){
+    for(let fr=0;fr<_AFRAMES;fr++){
+      const sx=(el*_AFRAMES+fr)*_ACELL;
+      const sy=et*_ACELL;
+      ax.save();
+      ax.clearRect(sx,sy,_ACELL,_ACELL);
+      ax.beginPath();ax.rect(sx,sy,_ACELL,_ACELL);ax.clip();
+      _drawSpriteToAtlas(ax,spr,fr,el,sx+_ACELL/2,sy+_ACELL/2,_ACELL);
+      ax.restore();
+    }
+  }
+  _atlas._glVer=(_atlas._glVer||0)+1;
+  console.log('[ESPRITE] etype '+et+' 아틀라스 핫패치 완료 ('+_AELS*_AFRAMES+'셀)');
+}
+
+// etype 0: 해골 보병
+_loadESprite(0,'img/etype0_skeleton.png',4);
+
 function _buildAtlas(){
   const normalW=_AELS*_AFRAMES*_ACELL;   // 6*4*48=1152
   const bossW=_AELS*_AFRAMES*_BCELL;     // 6*4*80=1920
@@ -2466,10 +2521,13 @@ function _buildAtlas(){
 
   if(typeof _mapCtx!=='undefined')_mapCtx=_smc;
   _atlasReady=true;
+  _atlas._glVer=(_atlas._glVer||0)+1;
   console.log('[ATLAS] 빌드 완료: '+aw+'×'+ah+' ('+(10*_AELS*_AFRAMES+_AELS*_AFRAMES)+'셀)');
 }
 
 function _renderEToAtlas(ax,et,el,fr,cx,cy){
+  const _spr=_ESPRITES[et];
+  if(_spr&&_spr.ready){_drawSpriteToAtlas(ax,_spr,fr,el,cx,cy,_ACELL);return}
   const r=ETYPE_R[et];
   const fakeE={
     x:cx,y:cy,r:r,etype:et,
@@ -2737,7 +2795,7 @@ function pMagicCost(){return Math.max(.4,1-PASSIVES.pMagic*.06)} // MP비용 -6%
 function pBowMul(){return 1+PASSIVES.pBow*.16}         // 석궁뎀 +16%/lv
 function pBowRange(){return 1+PASSIVES.pBow*.10}       // 석궁사거리 +10%/lv
 function pBowSpd(){return 1+PASSIVES.pBow*.08}         // 석궁공속 +8%/lv
-function pMagicSpd(){return 1+PASSIVES.pMagic*.12}     // 시전속도 +12%/lv
+function pMagicSpd(){return 2+PASSIVES.pMagic*.12}     // 기본 2배속 + 시전속도 +12%/lv
 function pShieldMul(){return 1+PASSIVES.pShield*.20}    // 방패뎀 +20%/lv
 function pShieldBlock(){return PASSIVES.pShield*4}      // 블록률 +4%/lv
 function pRegenMul(){return 1+PASSIVES.pRegen*.16}      // HP/ST리젠 +16%/lv
@@ -2848,7 +2906,7 @@ for(let i=0;i<4;i++){
   });
 }
 
-const STC={weapon:18,shield:28,bow:28,charge:25,beam:1.2,magic:18};
+const STC={weapon:9,shield:14,bow:28,charge:25,beam:1.2,magic:18};
 // ═══ 석궁 즉시 발사 시스템 ═══
 function fireBow(){
   if(G.mats<=0) {P.s='idle'; return false;}
@@ -2898,7 +2956,7 @@ function meleeRef(){return(wp().atk||12)+(wp().enh||0)+15+P.baseAtk}
 const DPS_BAL={bow:0.77,magic:0.475,beam:0.0080};
 // 투구 등급에 따른 MP 소비 스케일링
 function magicCost(){const bd=hm().beamDmg||1.5;return~~((5+bd*2)*pMagicCost())} // 패시브 할인 적용
-function beamCost(){const bd=hm().beamDmg||1.5;return+(((.35+bd*.15)*pMagicCost()).toFixed(2))} // 패시브 할인 적용
+function beamCost(){const bd=hm().beamDmg||1.5;return+(((.28+bd*.12)*pMagicCost()).toFixed(2))} // 20% 감소 + 패시브 할인 적용
 
 function mkP(){
   return{x:0,y:0,r:11,hp:350,mhp:350,st:200,mst:200,stR:.28,mp:160,mmp:160,mpR:0,
@@ -3345,6 +3403,7 @@ const ETYPE_POISE=[12,8,10,4,35,5, 28, 6, 8,  5];
 // etype별 고유 네온 베이스 컬러 (밝고 구분 확실한 톤)
 const ETYPE_COL=['#dd4455','#55cc44','#ff8833','#66ee66','#8888aa','#ff6622','#4477dd','#aa44ee','#dd8833','#bb55dd'];
 //               근접:빨강  궁수:녹   돌격:주황 떼:연녹  탱크:강철  자폭:주황적 방패:파랑 리치:보라  화약:갈주  주술:연보
+_buildAtlas(); // 적 아틀라스 생성 (etype×속성 60칸)
 
 // ═══ 엘리트/모디파이어 시스템 ═══
 const ELITE_TIERS=[
@@ -4006,10 +4065,16 @@ function update(){
       const mdx=Math.cos(P.atkArc),mdy=Math.sin(P.atkArc);
       const mSpd=primary.el===4?10:primary.el===2?6:7;
       const mSize=primary.el===1?7:primary.el===3?6:5;
-      pProjs.push({x:P.x+mdx*14,y:P.y+mdy*14,vx:mdx*mSpd,vy:mdy*mSpd,dmg:mdmg,el:primary.el,
-        maxDist:260+(hm().bonusRange||0)*20,dist:0,r:mSize,stagger:0,kb:0,magic:true});
+      // 2발 발사 (약간 퍼짐)
+      const _spread=0.12;
+      for(let _mi=0;_mi<2;_mi++){
+        const _ang=P.atkArc+(_mi===0?-_spread:_spread);
+        const _mdx=Math.cos(_ang),_mdy=Math.sin(_ang);
+        pProjs.push({x:P.x+_mdx*14,y:P.y+_mdy*14,vx:_mdx*mSpd,vy:_mdy*mSpd,dmg:mdmg,el:primary.el,
+          maxDist:260+(hm().bonusRange||0)*20,dist:0,r:mSize,stagger:0,kb:0,magic:true});
+      }
       SFX.magic(primary.el);
-      P.s='magicRecover';P.st2=24;
+      P.s='magicRecover';P.st2=12;
     }}
     else if(P.s==='magicRecover'){if(P.st2<=0){
       // 홀드 연사: E 누르고 있으면 즉시 재시전 또는 빔 모드 전환
@@ -6172,7 +6237,7 @@ const SKILL_CATS=[
 ];
 const SKILL_LIST=[
   {id:'chargeBoost',name:'돌진 강화',cat:'move',desc:'3회 충전 + 거리 2배 + 데미지 1.5배 + 히트박스 확대 (쿨 20초)',lvReq:5,spCost:5,matCost:20,up:true,upSp:7,upMat:20},
-  {id:'galeSlash',name:'질풍참',cat:'move',desc:'돌진이 독+출혈 참격으로 변환. 넉백 없이 적을 관통, 독+출혈 DOT. DEX 스케일링. 레벨당 DOT뎀+20%',lvReq:25,spCost:12,matCost:200,up:true,upSp:10,upMat:80,requires:'chargeBoost'},
+  {id:'galeSlash',name:'질풍참',cat:'move',desc:'돌진이 독+출혈 참격으로 변환. 넉백 없이 적을 관통, 독+출혈 DOT. DEX 스케일링. 레벨당 DOT뎀+20%',lvReq:25,spCost:12,matCost:200,up:true,upSp:10,upMat:80},
   {id:'magicBlink',name:'마법 블링크',cat:'move',desc:'이동스킬 세팅 후 Shift: DP 소모 순간이동. 착지점에 INT 기반 대폭발 (회전참 2배 범위). 레벨당 뎀+15% 범위+10',lvReq:20,spCost:15,matCost:300,up:true,upSp:10,upMat:100},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',lvReq:12,spCost:8,matCost:50,up:true,upSp:8,upMat:50},
   {id:'detonate',name:'기폭팔',cat:'phys',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발(범위 300) + CC',lvReq:15,spCost:10,matCost:30,up:true,upSp:8,upMat:40},
@@ -8568,15 +8633,15 @@ function drawP(){
       }
       X.restore();
     }else{
-      // ── ARROW projectile + 속성 트레일 ──
+      // ── ARROW projectile + 속성 트레일 (소형) ──
       // 외곽 트레일 (속성 컬러)
-      X.globalAlpha=fa*.2;X.strokeStyle=ac;X.lineWidth=2;
-      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-p.vx*5,p.y-p.vy*5);X.stroke();
+      X.globalAlpha=fa*.15;X.strokeStyle=ac;X.lineWidth=1;
+      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-p.vx*3,p.y-p.vy*3);X.stroke();
       X.save();X.translate(p.x,p.y);X.rotate(ang);
-      X.globalAlpha=fa*.12;X.fillStyle=ac;X.beginPath();X.arc(0,0,7,0,Math.PI*2);X.fill();
-      X.globalAlpha=fa;X.strokeStyle=ac;X.lineWidth=2;X.beginPath();X.moveTo(-8,0);X.lineTo(6,0);X.stroke();
-      X.fillStyle=ag;X.beginPath();X.moveTo(10,0);X.lineTo(4,-3);X.lineTo(4,3);X.closePath();X.fill();
-      X.globalAlpha=fa*.25;X.strokeStyle=ac;X.lineWidth=1.5;X.beginPath();X.moveTo(-8,0);X.lineTo(-8-p.vx*2,0);X.stroke();
+      X.globalAlpha=fa*.08;X.fillStyle=ac;X.beginPath();X.arc(0,0,3.5,0,Math.PI*2);X.fill();
+      X.globalAlpha=fa;X.strokeStyle=ac;X.lineWidth=1;X.beginPath();X.moveTo(-4,0);X.lineTo(3,0);X.stroke();
+      X.fillStyle=ag;X.beginPath();X.moveTo(5.5,0);X.lineTo(2,-1.5);X.lineTo(2,1.5);X.closePath();X.fill();
+      X.globalAlpha=fa*.2;X.strokeStyle=ac;X.lineWidth=.8;X.beginPath();X.moveTo(-4,0);X.lineTo(-4-p.vx*1.2,0);X.stroke();
       X.restore();
     }
   }

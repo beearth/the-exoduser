@@ -1,24 +1,24 @@
 {
-  "ver": 2,
-  "ts": 1771995267931,
+  "ts": 1772354482384,
   "player": {
     "lv": 32,
     "exp": 44,
     "maxExp": 89,
-    "hp": 169,
-    "mhp": 170,
-    "st": 132,
-    "mst": 132,
-    "mp": 80,
-    "mmp": 80,
-    "baseAtk": 8,
-    "baseDef": 5,
     "sp": 73,
     "ap": 5,
-    "facing": 1.8039970935686427,
+    "baseAtk": 23,
+    "baseDef": 4,
     "mpR": 0,
     "stR": 0.28,
-    "skills": {}
+    "hp": 394,
+    "mhp": 394,
+    "mp": 160,
+    "mmp": 160,
+    "st": 232,
+    "mst": 232,
+    "speed": 2.6,
+    "shield": 0,
+    "mshield": 0
   },
   "inv": {
     "bag": [
@@ -216,9 +216,9 @@
         "el": 1,
         "rarity": 1,
         "tier": 0,
-        "name": "불꽃 중석궁",
-        "emoji": "🔩",
-        "btype": "hcrossbow",
+        "name": "석궁",
+        "emoji": "⚙️",
+        "btype": "crossbow",
         "atk": 5,
         "bowSpd": 0.72,
         "bowStCost": 0,
@@ -308,53 +308,12 @@
       }
     }
   },
-  "game": {
-    "stage": 1,
-    "kills": 251,
-    "mats": 327,
-    "bossAlive": true,
-    "hellCleared": []
-  },
-  "qslots": [
-    {
-      "type": "hp",
-      "count": 84
-    },
-    {
-      "type": "st",
-      "count": 75
-    },
-    {
-      "type": "mp",
-      "count": 89
-    },
-    {
-      "type": "all",
-      "count": 1
-    }
-  ],
-  "arrows": [
-    57,
-    39,
-    29,
-    39,
-    17
-  ],
-  "arrowSel": 0,
   "stats": {
     "str": 10,
     "dex": 0,
     "int": 0,
     "vit": 10,
     "lck": 0
-  },
-  "upgrades": {
-    "hp": 0,
-    "atk": 0,
-    "def": 0,
-    "mp": 0,
-    "st": 0,
-    "spd": 0
   },
   "passives": {
     "pAtk": 0,
@@ -368,64 +327,43 @@
     "pCrit": 0,
     "pDrop": 0
   },
-  "forgeGauge": {},
-  "bagMax": 66,
-  "settings": {
-    "binds": {
-      "up": "KeyW",
-      "down": "KeyS",
-      "left": "KeyA",
-      "right": "KeyD",
-      "weapon": "mouse0",
-      "shield": "mouse2",
-      "block": "KeyX",
-      "bow": "Space",
-      "charge": "ShiftLeft",
-      "parry": "KeyF",
-      "beam": "KeyE",
-      "forge": "KeyQ",
-      "inventory": "Tab",
-      "settings": "Escape",
-      "interact": "KeyR",
-      "arrowNext": "KeyG",
-      "storage": "KeyV",
-      "stats": "KeyC",
-      "skill": "KeyK"
+  "qslots": [
+    {
+      "type": "hp",
+      "count": 84
     },
-    "binds2": {
-      "up": null,
-      "down": null,
-      "left": null,
-      "right": null,
-      "weapon": null,
-      "shield": null,
-      "block": null,
-      "bow": null,
-      "charge": null,
-      "parry": null,
-      "beam": null,
-      "forge": null,
-      "inventory": null,
-      "settings": null,
-      "interact": null,
-      "arrowNext": null,
-      "storage": null,
-      "stats": null,
-      "skill": null
+    {
+      "type": null,
+      "count": 0
     },
-    "opt": {
-      "shake": 80,
-      "hitStop": 70,
-      "parts": 80,
-      "sfxVol": 60,
-      "diff": 2,
-      "minPickRar": 3
+    {
+      "type": null,
+      "count": 0
+    },
+    {
+      "type": null,
+      "count": 0
     }
+  ],
+  "game": {
+    "stage": 1,
+    "kills": 251,
+    "mats": 327
   },
-  "qsAuto": [
-    false,
-    false,
-    false,
-    false
-  ]
+  "bagMax": 66,
+  "hellCleared": [],
+  "storage": {},
+  "upgrades": {
+    "hp": 0,
+    "atk": 0,
+    "def": 0,
+    "mp": 0,
+    "st": 0,
+    "spd": 0
+  },
+  "potLv": {
+    "hp": 0
+  },
+  "skills": {},
+  "activeChargeSk": "charge"
 }
