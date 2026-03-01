@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hell V2.0 — Insect Nest</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { background: #000; overflow: hidden; font-family: 'Segoe UI', monospace; }
+      canvas { display: block; image-rendering: pixelated; }
+      #ui {
+        position: fixed; top: 0; left: 0; right: 0;
+        pointer-events: none; color: #ccc;
+        text-shadow: 0 1px 3px #000, 0 0 8px rgba(0,0,0,.8);
+        z-index: 10;
+      }
+      #hud {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 12px 20px;
+      }
+      #floorNum {
+        font-size: 18px; font-weight: bold; color: #5c5;
+        letter-spacing: 1px;
+      }
+      #controls {
+        font-size: 12px; color: #888;
+      }
+      #loading {
+        position: fixed; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        background: #020204; color: #5a5; font-size: 20px;
+        z-index: 100; transition: opacity .5s;
+      }
+      #loading.hide { opacity: 0; pointer-events: none; }
+    </style>
+  </head>
+  <body>
+    <div id="loading">던전 생성 중...</div>
+    <div id="ui">
+      <div id="hud">
+        <div id="floorNum">B1F — 충의 둥지</div>
+        <div id="controls">WASD 이동</div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+    <script>
+      // Hide loading screen after first render
+      setTimeout(() => document.getElementById('loading')?.classList.add('hide'), 1500);
+    </script>
+  </body>
+</html>
