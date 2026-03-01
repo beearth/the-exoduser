@@ -444,18 +444,35 @@ const _qp=new URLSearchParams(window.location.search);
 const _fromGame=_qp.get('lobby')==='1';
 const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
 (async()=>{
-  // ── 로컬 테스트 모드: 로그인 없이 바로 테스트 캐릭터 ──
+  // ── 로컬 테스트 모드: 로그인 없이 로컬 폴더 세이브 ──
   if(_testMode){
     _cinDone=true;startBGM();
     $('cinScene').style.display='none';clearInterval(_emberIv);
     $('mainWrap').classList.add('show');$('loading').style.display='none';
     $('loginSection').style.display='none';$('lobby').style.display='block';
-    $('userEmail').textContent='TEST MODE';
-    const cl=$('charList');cl.innerHTML='';
-    const div=document.createElement('div');div.className='char-item';
-    div.innerHTML='<div><div class="char-name">테스트 캐릭터</div><div class="char-info">Lv.1 | 시작점</div></div>';
-    div.addEventListener('click',()=>showCharGate('test'));
-    cl.appendChild(div);
+    $('userEmail').textContent='LOCAL MODE';
+    // 로컬 캐릭터 목록 로드
+    await loadLocalCharacters();
+    // 생성 버튼 → 로컬 저장
+    $('createBtn').onclick=async()=>{
+      const name=$('charName').value.trim();
+      if(name.length<2||name.length>8){setStatus('이름은 2~8자여야 합니다.',true);return}
+      if(/[<>"'&\/\\]/.test(name)){setStatus('특수문자는 사용할 수 없습니다.',true);return}
+      $('createBtn').disabled=true;setStatus('생성 중...');
+      try{
+        // 이미 같은 이름 존재하는지 체크
+        const chk=await fetch('/api/load/'+encodeURIComponent(name));
+        if(chk.ok){const j=await chk.json();if(j.ok){$('createBtn').disabled=false;setStatus('이미 같은 이름의 캐릭터가 있습니다.',true);return}}
+        // 새 캐릭터 파일 생성
+        const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{name:name,ts:Date.now()}})});
+        const j=await res.json();
+        $('createBtn').disabled=false;
+        if(!j.ok){setStatus('생성 실패: '+(j.error||'unknown'),true);return}
+        $('charName').value='';setStatus('');await loadLocalCharacters();
+      }catch(e){$('createBtn').disabled=false;setStatus('생성 실패: '+e.message,true)}
+    };
+    // 로그아웃 버튼 숨기기
+    $('logoutBtn').style.display='none';
     return;
   }
   const{data:{session}}=await sb.auth.getSession();
@@ -533,6 +550,34 @@ $('charName').addEventListener('keydown',e=>{if(e.key==='Enter')$('createBtn').c
 function setStatus(m,err){$('status').textContent=m;$('status').className=err?'status error':'status'}
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
+// ═══ 로컬 캐릭터 목록 (서버 saves/ 폴더) ═══
+async function loadLocalCharacters(){
+  const cl=$('charList');cl.innerHTML='<div class="no-chars">불러오는 중...</div>';
+  try{
+    const res=await fetch('/api/slots');
+    const j=await res.json();
+    if(!j.ok||!j.slots||j.slots.length===0){cl.innerHTML='<div class="no-chars">캐릭터가 없습니다. 새로 생성하세요.</div>';return}
+    cl.innerHTML='';
+    const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
+    j.slots.forEach(s=>{
+      const stage=s.stage||0;
+      const hell=Math.min(6,~~(stage/10));const floor=stage%10+1;
+      const st=stage===0?'시작점':(hell+1)+'장 '+hn[hell]+' '+floor+'층';
+      const div=document.createElement('div');div.className='char-item';
+      div.innerHTML=`<div><div class="char-name">${escHtml(s.name)}</div><div class="char-info">Lv.${s.lv||1} | ${st}</div></div><div style="display:flex;gap:6px;align-items:center"><button class="char-del">삭제</button></div>`;
+      div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;showCharGate(s.name)});
+      div.querySelector('.char-del').addEventListener('click',async e=>{
+        e.stopPropagation();if(!confirm(s.name+' 캐릭터를 정말 삭제하시겠습니까?'))return;
+        try{
+          await fetch('/api/save/'+encodeURIComponent(s.name),{method:'DELETE'});
+          await loadLocalCharacters();
+        }catch(de){setStatus('삭제 실패: '+de.message,true)}
+      });
+      cl.appendChild(div);
+    });
+  }catch(e){cl.innerHTML='<div class="no-chars" style="color:#cc4433">서버 연결 실패: '+e.message+'</div>'}
+}
+
 // ═══ 캐릭터 선택 → 문 열림 → 입장 ═══
 function showCharGate(charId){
   const gate=$('chapterGate');
@@ -543,7 +588,7 @@ function showCharGate(charId){
   vid.volume=0.6;
   vid.play().catch(()=>{});
   // 영상 끝나면 game.html 이동
-  const _tp=_testMode?'game.html?test=1':'game.html?char='+charId;
+  const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId;
   vid.onended=()=>{window.location.href=_tp};
   // 안전장치: 영상 10초 넘으면 강제 이동
   setTimeout(()=>{window.location.href=_tp},10000);

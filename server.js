@@ -102,7 +102,7 @@ const server = createServer(async (req, res) => {
 
     // GET /api/load/:slot — 게임 로드
     if (path.startsWith('/api/load/') && req.method === 'GET') {
-      const slot = sanitizeSlot(path.slice(10));
+      const slot = sanitizeSlot(decodeURIComponent(path.slice(10)));
       const fp = join(SAVE_DIR, slot + '.json');
       if (!existsSync(fp)) return sendJSON(res, 404, { ok: false, error: 'Not found' });
       const data = JSON.parse(readFileSync(fp, 'utf8'));
@@ -111,7 +111,7 @@ const server = createServer(async (req, res) => {
 
     // DELETE /api/save/:slot — 세이브 삭제
     if (path.startsWith('/api/save/') && req.method === 'DELETE') {
-      const slot = sanitizeSlot(path.slice(10));
+      const slot = sanitizeSlot(decodeURIComponent(path.slice(10)));
       const fp = join(SAVE_DIR, slot + '.json');
       if (existsSync(fp)) unlinkSync(fp);
       return sendJSON(res, 200, { ok: true });
