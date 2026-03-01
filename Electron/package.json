@@ -1,0 +1,45 @@
+{
+  "name": "the-exoduser",
+  "version": "0.1.0",
+  "description": "THE EXODUSER — 지옥의 길 (Hell Road) Action RPG",
+  "main": "main.js",
+  "author": "심도진",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "electron .",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:linux": "electron-builder --linux"
+  },
+  "devDependencies": {
+    "electron": "^35.0.0",
+    "electron-builder": "^25.1.0"
+  },
+  "build": {
+    "appId": "com.exoduser.hellroad",
+    "productName": "THE EXODUSER",
+    "files": [
+      "main.js",
+      "game.html",
+      "img/**/*",
+      "saves/**/*",
+      "icon.png"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "icon.png"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "icon.png"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "icon.png"
+    }
+  }
+}

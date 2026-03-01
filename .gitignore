@@ -1,2 +1,7 @@
 node_modules/
 .claude/
+NUL
+_test_*
+*.pyc
+dist/
+out/
