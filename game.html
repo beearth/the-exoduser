@@ -621,7 +621,8 @@ async function dbSave(){
       potLv:{...POT_LV},
       skills:{...P.skills},
       activeChargeSk:P.activeChargeSk||'charge',
-      activeBowSk:P.activeBowSk||'normal'
+      activeBowSk:P.activeBowSk||'normal',
+      skillSlots:SKILL_SLOTS
     };
     const{error}=await sb.from('characters').update({
       data:saveData,
@@ -707,23 +708,53 @@ function dbRestore(d){
   if(d.activeBowSk)P.activeBowSk=d.activeBowSk;
   if(!P.activeBowSk)P.activeBowSk='normal';
   if(P.activeBowSk!=='normal'&&!(P.skills[P.activeBowSk]>=1))P.activeBowSk='normal';
+  // 악의포격 배웠는데 normal이면 자동 세팅
+  if(P.activeBowSk==='normal'&&P.skills.maliceMortar>=1)P.activeBowSk='maliceMortar';
+  // 숫자 스킬 슬롯 복원
+  if(d.skillSlots&&Array.isArray(d.skillSlots)){
+    for(let _si=0;_si<4;_si++){SKILL_SLOTS[_si]=d.skillSlots[_si]||null}
+  }
+  // 미습득 스킬 슬롯 정리 + 액티브 스킬 자동 배정
+  for(let _si=0;_si<4;_si++){if(SKILL_SLOTS[_si]&&!(P.skills[SKILL_SLOTS[_si]]>=1))SKILL_SLOTS[_si]=null}
+  // 배운 액티브 스킬이 슬롯에 없으면 자동 배정
+  const _actIds=SKILL_LIST.filter(sk=>sk.act&&P.skills[sk.id]>=1).map(sk=>sk.id);
+  ['explosiveBolt','maliceMortar'].forEach(id=>{if(P.skills[id]>=1&&!_actIds.includes(id))_actIds.push(id)});
+  _actIds.forEach(id=>{
+    if(!SKILL_SLOTS.includes(id)){const _ei=SKILL_SLOTS.findIndex(s=>s===null);if(_ei>=0)SKILL_SLOTS[_ei]=id}
+  });
   return true;
+}
+
+// ═══ 자동저장 (60초 쿨다운) ═══
+function doAutoSave(){
+  const now=Date.now();
+  if(now-_lastSaveTime<60000)return;
+  _lastSaveTime=now;
+  if(G.on&&_dbReady)dbSave();
 }
 
 // ═══ Start autosave timer ═══
 function startAutoSave(){
   if(_autoSaveTimer)clearInterval(_autoSaveTimer);
-  _autoSaveTimer=setInterval(()=>{
-    if(G.on&&_dbReady)dbSave();
-  },30000); // 30초마다
+  _autoSaveTimer=setInterval(doAutoSave,30000); // 30초마다 체크, 60초 쿨다운
 }
 
 // ═══ 즉시 저장 (디바운스 3초) — 중요 행동마다 호출 ═══
 let _saveDebounce=null;
 function dbSaveNow(){
   if(!_dbReady)return;
+  const now=Date.now();
+  if(now-_lastSaveTime<60000){
+    // 쿨다운 중이면 디바운스만 예약
+    if(_saveDebounce)clearTimeout(_saveDebounce);
+    _saveDebounce=setTimeout(()=>{
+      const n2=Date.now();
+      if(n2-_lastSaveTime>=60000){_lastSaveTime=n2;dbSave()}
+    },Math.max(500,60000-(now-_lastSaveTime)));
+    return;
+  }
   if(_saveDebounce)clearTimeout(_saveDebounce);
-  _saveDebounce=setTimeout(()=>dbSave(),500);
+  _saveDebounce=setTimeout(()=>{_lastSaveTime=Date.now();dbSave()},500);
 }
 
 // ═══════════════════════════════════════
@@ -1017,14 +1048,14 @@ return c;}`;
   // ── mid-frame submit (버퍼 가득 찼을 때) ──
   let _submitCount=0,_curFrameView=null;
   function _gpuSubmit(){
-    if(_cmds.length===0)return;
+    if(_cmds.length===0&&_bufOff===0)return;
+    if(!_curFrameView)_curFrameView=_gpuCtx.getCurrentTexture().createView();
     GPU.queue.writeBuffer(uniBuf,0,new Float32Array([C.width,C.height]));
     GPU.queue.writeBuffer(vBuf,0,_buf.buffer,0,_bufOff*4*_FPV*4);
     const enc=GPU.createCommandEncoder();
     const loadOp=_submitCount===0?'clear':'load';
-    const view=_curFrameView||(_curFrameView=_gpuCtx.getCurrentTexture().createView());
     const pass=enc.beginRenderPass({colorAttachments:[{
-      view,loadOp,storeOp:'store',clearValue:{r:0,g:0,b:0,a:1}}]});
+      view:_curFrameView,loadOp,storeOp:'store',clearValue:{r:0,g:0,b:0,a:1}}]});
     pass.setVertexBuffer(0,vBuf);
     pass.setIndexBuffer(iBuf,'uint16');
     pass.setBindGroup(0,uniBG);
@@ -1042,7 +1073,8 @@ return c;}`;
   // ★ _glFlush: 프레임 끝. 남은 명령 제출 + 리셋.
   _glFlush=function(){
     _flush();
-    _gpuSubmit();
+    if(!_curFrameView)_curFrameView=_gpuCtx.getCurrentTexture().createView();
+    if(_cmds.length>0||_bufOff>0)_gpuSubmit();
     _submitCount=0;_curFrameView=null;_bufOff=0;_qCnt=0;
   };
   _clearFrame=function(){_cmds=[];_curBG=whiteBG;_curPipe=pipeN;_bufOff=0;_qCnt=0;_submitCount=0;_curFrameView=null};
@@ -1871,9 +1903,17 @@ addEventListener('keydown',e=>{
   if(['Space','Tab','Escape','KeyE','KeyQ','KeyZ','KeyX','KeyC','KeyB','KeyN','KeyH','KeyJ','KeyK','KeyL','KeyR','KeyF','KeyG','KeyV','ControlLeft','ControlRight','ShiftLeft','ShiftRight','CapsLock'].includes(e.code))e.preventDefault();
   for(let _di=0;_di<4;_di++){if(e.code==='Digit'+(_di+1)){
     const _sid=SKILL_SLOTS[_di];
-    if(_sid==='explosiveBolt'&&P.skills.explosiveBolt&&G.mats>=10&&!P._ebActive&&!P._ebAiming){activateExplosiveBolt('Digit'+(_di+1));e.preventDefault()}
-    else if(_sid==='maliceMortar'&&P.skills.maliceMortar&&G.mats>=10&&P.st>=50&&(P._mmCd||0)<=0&&!P._mmAiming){P._mmAiming=true;P._mmCharging=false;P._mmDist=150;P._mmKey='Digit'+(_di+1);e.preventDefault()}
-    else{useQuickslot(_di);e.preventDefault()}
+    if(_sid==='explosiveBolt'&&P.skills.explosiveBolt){
+      if(G.mats>=10&&!P._ebActive&&!P._ebAiming){activateExplosiveBolt('Digit'+(_di+1))}
+      else if(G.mats<10)showPH('악의 부족! (10)','#ff4444');
+      e.preventDefault();
+    } else if(_sid==='maliceMortar'&&P.skills.maliceMortar){
+      if(G.mats>=10&&P.st>=50&&(P._mmCd||0)<=0&&!P._mmAiming){P._mmAiming=true;P._mmCharging=false;P._mmDist=150;P._mmKey='Digit'+(_di+1)}
+      else if(G.mats<10)showPH('악의 부족! (10)','#ff4444');
+      else if((P._mmCd||0)>0)showPH('쿨다운 중','#ff8844');
+      e.preventDefault();
+    } else if(!_sid){useQuickslot(_di);e.preventDefault()}
+    else{e.preventDefault()} // 스킬 배정됐지만 미습득
   }}
   const _ec=e.code;const _bm=(a)=>_ec===BINDS[a]||_ec===BINDS2[a];
   if(_bm('settings')){togglePanel('settings');e.preventDefault()}
@@ -2954,7 +2994,9 @@ function _patchAtlasEtypeNew(et){
 // etype 0: 해골 보병
 _loadESprite(0,'img/etype0_skeleton.png',4);
 
+let _booted=false;
 function _buildAtlas(){
+  if(_booted)return;_booted=true;
   const normalW=_AELS*_AFRAMES*_ACELL;   // 6*4*48=1152
   const bossW=_AELS*_AFRAMES*_BCELL;     // 6*4*80=1920
   const aw=Math.max(normalW,bossW);       // 1920
@@ -3029,7 +3071,9 @@ function _renderBToAtlas(ax,el,fr,cx,cy){
 }
 
 // ═══ 신규 적 아틀라스 빌드 (_atlasE: 가변프레임 × 7팔레트) ═══
+let _bootedE=false;
 function _buildAtlasE(){
+  if(_bootedE)return;_bootedE=true;
   const W=1024;
   // 1) 팔레트당 총 프레임 수 계산 + 빈패킹
   let totalCells=0;
@@ -3125,7 +3169,9 @@ function _buildAtlasE(){
 }
 
 // ═══ 신규 보스 아틀라스 빌드 (_atlasB: 27프레임 × 7팔레트) ═══
+let _bootedB=false;
 function _buildAtlasB(){
+  if(_bootedB)return;_bootedB=true;
   const W=1024;
   const cell=ATLAS_BOSS_LAYOUT.cell; // 64
   const totalFr=ATLAS_BOSS_LAYOUT.totalFrames; // 27
@@ -3511,6 +3557,18 @@ function addPotion(type,count){
 function updateQS(){
   for(let i=0;i<4;i++){
     const el=$('qs'+i),s=QSLOTS[i];
+    // ── 스킬 슬롯 우선 표시 ──
+    const _ssid=SKILL_SLOTS[i];
+    if(_ssid){
+      const _ssk=SKILL_LIST.find(sk=>sk.id===_ssid);
+      if(_ssk&&P.skills[_ssid]>=1){
+        el.className='qs';
+        el.style.borderColor='#cc6622';
+        el.style.boxShadow='inset 0 0 10px rgba(204,102,34,.3)';
+        el.innerHTML=`<span class="qs-key" style="color:#ff8844">${i+1}</span><span style="font-size:16px">${_ssk.emoji||'🔮'}</span><span class="qs-cnt" style="color:#cc8844;font-size:.7rem">${_ssk.name.slice(0,3)}</span>`;
+        continue;
+      } else { SKILL_SLOTS[i]=null; } // 미습득 스킬 제거
+    }
     if(!s.type){
       el.className='qs empty'+(_qsSwapSel===i?' swap-sel':'');
       el.innerHTML=`<span class="qs-key">${i+1}</span><span class="qs-auto">A</span><span class="qs-cnt"></span>`;
@@ -3534,6 +3592,13 @@ for(let i=0;i<4;i++){
   if(!el)continue;
   el.addEventListener('click',(ev)=>{
     ev.stopPropagation();
+    // 스킬 슬롯이면 클릭으로 해제
+    if(SKILL_SLOTS[i]){
+      const _oldSk=SKILL_LIST.find(s=>s.id===SKILL_SLOTS[i]);
+      SKILL_SLOTS[i]=null;
+      addTxt(P.x,P.y-20,'슬롯'+(i+1)+' 스킬 해제','#ff6644',30);
+      updateQS();dbSaveNow();return;
+    }
     qsAuto[i]=!qsAuto[i];
     if(qsAuto[i])addTxt(P.x,P.y-20,'슬롯'+(i+1)+' 자동 ON','#44ff88',30);
     else addTxt(P.x,P.y-20,'슬롯'+(i+1)+' 자동 OFF','#888',30);
@@ -3541,17 +3606,8 @@ for(let i=0;i<4;i++){
   });
   el.addEventListener('contextmenu',(ev)=>{
     ev.preventDefault();ev.stopPropagation();
-    if(_qsSwapSel<0){_qsSwapSel=i;updateQS()}
-    else{
-      if(_qsSwapSel!==i){
-        // 스왑 실행
-        const tmp=QSLOTS[i];QSLOTS[i]=QSLOTS[_qsSwapSel];QSLOTS[_qsSwapSel]=tmp;
-        const tmpA=qsAuto[i];qsAuto[i]=qsAuto[_qsSwapSel];qsAuto[_qsSwapSel]=tmpA;
-        const tmpC=qsCooldown[i];qsCooldown[i]=qsCooldown[_qsSwapSel];qsCooldown[_qsSwapSel]=tmpC;
-        addTxt(P.x,P.y-20,'슬롯 교체!','#ffcc44',30);
-      }
-      _qsSwapSel=-1;updateQS();
-    }
+    // 우클릭: 스킬 배정 팝업
+    _openSkillSlotPop(i);
   });
 }
 
@@ -4471,7 +4527,7 @@ function update(){
     else if(isJust('block')&&P.st>=1){P.s='sBlock';P.st2=999;SFX.shieldBash();addTxt(P.x,P.y-20,'🛡️','#66ccff',25)} // X키 즉시 방패
     else if(isJust('bow')&&!P._ebAiming&&!P._mmAiming){
       const _abs=P.activeBowSk||'normal';
-      if(_abs==='maliceMortar'&&P.skills.maliceMortar&&G.mats>=10&&P.st>=50&&(P._mmCd||0)<=0){P._mmAiming=true;P._mmCharging=false;P._mmDist=150;P._mmKey='Space'}
+      if(_abs==='maliceMortar'&&P.skills.maliceMortar&&G.mats>=10&&P.st>=100&&(P._mmCd||0)<=0){P._mmAiming=true;P._mmCharging=false;P._mmDist=150;P._mmKey='Space'}
       else if(_abs==='explosiveBolt'&&P.skills.explosiveBolt&&G.mats>=10&&!P._ebActive){activateExplosiveBolt('Space')}
       else if(G.mats>0&&useSt(STC.bow+((BOWTYPES[bw().btype]||{}).stCost||0))){fireBow()}
     }
@@ -7166,7 +7222,7 @@ const SKILL_LIST=[
   {id:'guardian',name:'악의 보호자',cat:'magic',desc:'3초마다 악의 구체 3개 생성. 몸에 밀착하여 적 투사체를 자동 방어(파괴). 레벨당 구체+1',lvReq:25,spCost:12,matCost:150,up:true,upSp:10,upMat:80},
   {id:'maliceHunt',name:'악의 사냥',cat:'magic',desc:'E탭 시 암흑 덩어리 발사 (악의 3 소모). 추적+관통 3회(Lv당+1). 공전 지속뎀 5초. 사거리 400',lvReq:35,spCost:15,matCost:200,up:true,upSp:10,upMat:90},
   {id:'explosiveBolt',name:'악의폭탄',cat:'bow',act:true,emoji:'💥',desc:'스킬키 꾹 눌러 거리 조절 → 놓으면 투척! 폭발 후 유도화살 난사 (악의 10 소모)',lvReq:20,spCost:5,matCost:70,cd:1200,up:true,upSp:5,upMat:50},
-  {id:'maliceMortar',name:'악의포격',cat:'bow',desc:'Space 홀드: 조준 폭격 (악의 10, ST 50 소모, 쿨 1초)',lvReq:40,spCost:12,matCost:200,up:true,upSp:8,upMat:60}
+  {id:'maliceMortar',name:'악의포격',cat:'bow',act:true,emoji:'☄️',desc:'스킬키 홀드: 조준 폭격 (악의 10, ST 50 소모, 쿨 1초)',lvReq:40,spCost:12,matCost:200,up:true,upSp:8,upMat:60}
 ];
 
 // ═══ 스킬 슬롯 시스템 ═══
@@ -7229,6 +7285,47 @@ function openBowSlotPop(){
   pop.style.display='flex';
 }
 
+// ═══ 숫자 슬롯 스킬 배정 팝업 ═══
+function _openSkillSlotPop(slotIdx){
+  // 습득된 액티브 스킬 + bow 스킬 목록
+  const _actSkills=SKILL_LIST.filter(sk=>sk.act&&P.skills[sk.id]>=1);
+  // bow 슬롯 스킬도 포함 (maliceMortar)
+  const _bowAct=['explosiveBolt','maliceMortar'];
+  _bowAct.forEach(id=>{
+    if(P.skills[id]>=1&&!_actSkills.find(s=>s.id===id)){
+      const sk=SKILL_LIST.find(s=>s.id===id);
+      if(sk)_actSkills.push(sk);
+    }
+  });
+  if(_actSkills.length===0){addTxt(P.x,P.y-20,'배정 가능한 스킬 없음','#888',30);return}
+  // 기존 팝업 재활용 (skSlotPop)
+  let pop=$('skSlotPop');if(!pop)return;
+  pop.innerHTML='';
+  // 해제 옵션
+  const dNone=document.createElement('div');
+  dNone.className='sk-opt';dNone.innerHTML='<span class="sk-opt-emoji">❌</span><span class="sk-opt-name">해제</span><span class="sk-opt-desc">포션 슬롯으로 복원</span>';
+  dNone.onclick=()=>{SKILL_SLOTS[slotIdx]=null;pop.style.display='none';updateQS();dbSaveNow();addTxt(P.x,P.y-20,'슬롯'+(slotIdx+1)+' 해제','#888',30)};
+  pop.appendChild(dNone);
+  // 스킬 옵션
+  _actSkills.forEach(sk=>{
+    const active=SKILL_SLOTS[slotIdx]===sk.id;
+    const d=document.createElement('div');
+    d.className='sk-opt'+(active?' active':'');
+    d.innerHTML=`<span class="sk-opt-emoji">${sk.emoji||'🔮'}</span><span class="sk-opt-name">${sk.name}</span><span class="sk-opt-desc">${sk.desc.slice(0,30)}</span>`;
+    d.onclick=()=>{
+      // 다른 슬롯에서 제거
+      for(let j=0;j<4;j++){if(SKILL_SLOTS[j]===sk.id)SKILL_SLOTS[j]=null}
+      SKILL_SLOTS[slotIdx]=sk.id;
+      pop.style.display='none';updateQS();dbSaveNow();
+      addTxt(P.x,P.y-20,'슬롯'+(slotIdx+1)+': '+sk.name,'#ff8844',40);SFX.pickup();
+    };
+    pop.appendChild(d);
+  });
+  pop.style.left='50%';pop.style.top='50%';pop.style.bottom='';
+  pop.style.transform='translate(-50%,-50%)';
+  pop.style.display='flex';
+}
+
 // ═══ 악의폭탄 발동 (조준 모드) ═══
 function activateExplosiveBolt(key){
   if(G.mats<10){showPH('악의 부족! (10 필요)','#ff4444');return}
@@ -7250,7 +7347,7 @@ function fireExplosiveBolt(){
 // ═══ 악의포격 발사 ═══
 function fireMaliceMortar(){
   const dist=P._mmDist;P._mmAiming=false;G.mats-=10;
-  P.st=Math.max(0,P.st-50);P._mmCd=60;
+  P.st=Math.max(0,P.st-100);P._mmCd=60;
   const tx=P.x+Math.cos(P.facing)*dist,ty=P.y+Math.sin(P.facing)*dist;
   G._mmBomb={sx:P.x,sy:P.y,tx:tx,ty:ty,x:P.x,y:P.y,t:0,maxT:60,r:150};
   SFX.detonate();addTxt(P.x,P.y-30,'\u{2604}\u{FE0F} 악의포격!','#ff4400',50);
@@ -7388,6 +7485,11 @@ function _renderSkillRow(sk,grid){
           // 돌진류 스킬 습득 시 자동 세팅
           if(SKILL_SLOT_DEFS.charge.skills.includes(sk.id)){P.activeChargeSk=sk.id;updateSkSlot()}
           if(SKILL_SLOT_DEFS.bow&&SKILL_SLOT_DEFS.bow.skills.includes(sk.id)){P.activeBowSk=sk.id;if(typeof updateBowSlot==='function')updateBowSlot()}
+          // 액티브 스킬 → 숫자 슬롯 자동 배정
+          if(sk.act){
+            const _emptyIdx=SKILL_SLOTS.findIndex(s=>s===null);
+            if(_emptyIdx>=0&&!SKILL_SLOTS.includes(sk.id)){SKILL_SLOTS[_emptyIdx]=sk.id;addTxt(P.x,P.y-50,'슬롯 '+ (_emptyIdx+1)+' 배정!','#ff8844',40);updateQS()}
+          }
         } else if(_isSynth){
           // 합성 강화: 낮은 레벨 우선 (회전참/기폭팔 교대)
           const _dSlv=P.skills.detonate||1;const _detSk=SKILL_LIST.find(s=>s.id==='detonate');
@@ -10230,7 +10332,18 @@ function _bossDbgDraw(){
 // ═══ LOOP ═══
 let _now=0,_lastFrame=0;
 var _prof={u:0,d:0,f:0,t:0};
+let _looping=false;
+let _perfFrames=0,_perfLast=performance.now();
+function _startLoop(){if(_looping){console.warn('[LOOP] 중복 시작 무시');return}_looping=true;console.log('[LOOP] 시작');loop()}
+let _loopRunning=false;
 function loop(){
+  if(!_loopRunning){_loopRunning=true;console.log('[LOOP] 루프 최초 진입')}
+  _perfFrames++;
+  const _pn=performance.now();
+  if(_pn-_perfLast>5000){
+    console.log('[PERF] fps:'+(_perfFrames/5).toFixed(0));
+    _perfFrames=0;_perfLast=_pn;
+  }
   if(document.hidden){requestAnimationFrame(loop);return}
   const _t=performance.now();
   if(OPT.fpsCap>0){const _minInterval=1000/OPT.fpsCap;
@@ -10381,7 +10494,7 @@ await _bootRenderer();
 _buildAtlas();
 _buildAtlasE();
 _buildAtlasB();
-loop();
+_startLoop();
 const _isLocal=location.hostname==='localhost'||location.hostname==='127.0.0.1';
 if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   // ── 로컬 테스트: 서버 saves/ 폴더에 파일 저장 ──
@@ -10390,9 +10503,12 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   const _origDbSave=dbSave;
   dbSave=async function(){
     if(!P)return;
+    const now=Date.now();
+    if(_saving||now-_lastSaveTime<60000)return;
+    _saving=true;
     try{
       const saveData={
-        ts:Date.now(),
+        ts:now,
         player:{lv:P.lv,exp:P.exp,maxExp:P.maxExp,sp:P.sp,ap:P.ap||0,
           baseAtk:P.baseAtk,baseDef:P.baseDef,mpR:P.mpR,stR:P.stR,
           hp:P.hp,mhp:P.mhp,mp:P.mp,mmp:P.mmp,st:P.st,mst:P.mst,speed:P.speed,
@@ -10404,13 +10520,15 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:STORAGE||{},
         upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
         activeChargeSk:P.activeChargeSk||'charge',
-        activeBowSk:P.activeBowSk||'normal'
+        activeBowSk:P.activeBowSk||'normal',
+        skillSlots:SKILL_SLOTS
       };
       const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:_SLOT,data:saveData})});
       const j=await res.json();
       if(j.ok){_lastSaveTime=Date.now();console.log('[LOCAL] 저장 완료 → saves/'+_SLOT+'.json')}
       else console.error('[LOCAL] Save failed:',j.error);
     }catch(e){console.error('[LOCAL] Save failed:',e)}
+    finally{_saving=false}
   };
   // 초기화 (게임 시작 전 세이브 먼저 로드)
   P=mkP();
@@ -10459,7 +10577,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
 }else{
   startGameFromDB();
 }
-})().catch(function(e){console.error('[BOOT] Fatal:',e);if(!X)X=C.getContext('2d');_buildAtlas();_buildAtlasE();_buildAtlasB();loop()});
+})().catch(function(e){console.error('[BOOT] Fatal:',e);if(!X)X=C.getContext('2d');_buildAtlas();_buildAtlasE();_buildAtlasB();_startLoop()});
 </script>
 </body>
 </html>
