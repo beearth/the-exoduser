@@ -342,12 +342,19 @@ function playCinematic(){
     textBox.innerHTML='';
     skipBtn.classList.remove('show');
     hideAll();
-    // 시네마틱 끝 → 바로 로비
+    // 시네마틱 끝 → 로비 또는 로그인
     $('cinScene').style.display='none';
     clearInterval(_emberIv);
     $('mainWrap').classList.add('show');
     $('loading').style.display='none';
-    $('loginSection').style.display='block';
+    if(_testMode){
+      $('loginSection').style.display='none';$('lobby').style.display='block';
+      $('userEmail').textContent='LOCAL MODE';loadLocalCharacters();
+    } else if(currentUser){
+      showLobby();
+    } else {
+      $('loginSection').style.display='block';
+    }
   }
 
   // 인트로 비디오: 첫 프레임(문 닫힘)에서 멈춤, 클릭 시 재생
@@ -412,12 +419,19 @@ function skipToGate(){
   [1,2,3,4,5,6,7,8,9,10,11,12,13].forEach(i=>{const e=$('cinImg'+i);if(e)e.classList.remove('show')});
   $('cinTextInner').innerHTML='';
   $('skipBtn').classList.remove('show');
-  // 시네마틱 끝 → 바로 로비
+  // 시네마틱 끝 → 로비 또는 로그인
   $('cinScene').style.display='none';
   clearInterval(_emberIv);
   $('mainWrap').classList.add('show');
   $('loading').style.display='none';
-  $('loginSection').style.display='block';
+  if(_testMode){
+    $('loginSection').style.display='none';$('lobby').style.display='block';
+    $('userEmail').textContent='LOCAL MODE';loadLocalCharacters();
+  } else if(currentUser){
+    showLobby();
+  } else {
+    $('loginSection').style.display='block';
+  }
 }
 $('skipBtn').onclick=skipToGate;
 
@@ -446,13 +460,6 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
 (async()=>{
   // ── 로컬 테스트 모드: 로그인 없이 로컬 폴더 세이브 ──
   if(_testMode){
-    _cinDone=true;startBGM();
-    $('cinScene').style.display='none';clearInterval(_emberIv);
-    $('mainWrap').classList.add('show');$('loading').style.display='none';
-    $('loginSection').style.display='none';$('lobby').style.display='block';
-    $('userEmail').textContent='LOCAL MODE';
-    // 로컬 캐릭터 목록 로드
-    await loadLocalCharacters();
     // 생성 버튼 → 로컬 저장
     $('createBtn').onclick=async()=>{
       const name=$('charName').value.trim();
@@ -473,27 +480,33 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
     };
     // 로그아웃 버튼 숨기기
     $('logoutBtn').style.display='none';
+    if(_fromGame){
+      // 게임에서 로비 복귀 → 인트로 스킵, 바로 로비
+      _cinDone=true;startBGM();
+      $('cinScene').style.display='none';clearInterval(_emberIv);
+      $('mainWrap').classList.add('show');$('loading').style.display='none';
+      $('loginSection').style.display='none';$('lobby').style.display='block';
+      $('userEmail').textContent='LOCAL MODE';
+      await loadLocalCharacters();
+    } else {
+      // 새로고침/첫 접속 → 배포와 동일하게 인트로 재생
+      $('loading').style.display='none';
+      playCinematic();
+    }
     return;
   }
   const{data:{session}}=await sb.auth.getSession();
-  if(session){
-    // 이미 로그인 → 시네마틱 스킵, 바로 로비
-    currentUser=session.user;
+  if(session) currentUser=session.user;
+  if(_fromGame){
+    // 게임에서 로비 복귀 → 시네마틱 스킵, 바로 로비
     _cinDone=true;startBGM();
     $('cinScene').style.display='none';
     clearInterval(_emberIv);
     $('mainWrap').classList.add('show');
     $('loading').style.display='none';
-    showLobby();
-  }else if(_fromGame){
-    // 게임에서 로비 복귀 → 시네마틱 스킵, 로그인 화면 바로 표시
-    _cinDone=true;startBGM();
-    $('cinScene').style.display='none';
-    clearInterval(_emberIv);
-    $('mainWrap').classList.add('show');
-    $('loading').style.display='none';
-    $('loginSection').style.display='block';
+    if(session){showLobby()}else{$('loginSection').style.display='block'}
   }else{
+    // 첫 접속 / 새로고침 → 항상 인트로 재생
     $('loading').style.display='none';
     playCinematic();
   }

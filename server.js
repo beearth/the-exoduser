@@ -8,7 +8,7 @@ import { join, extname } from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
-const PORT = parseInt(process.argv[2]) || process.env.PORT || 3000;
+const PORT = parseInt(process.argv[2]) || process.env.PORT || 3333;
 const SAVE_DIR = join(__dirname, 'saves');
 const GAME_FILE = join(__dirname, 'game.html');
 
