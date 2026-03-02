@@ -1,18 +1,18 @@
 {
-  "ts": 1772446660479,
+  "ts": 1772454854457,
   "player": {
-    "lv": 454,
-    "exp": 7819,
-    "maxExp": 11455,
-    "sp": 29,
-    "ap": 10,
+    "lv": 491,
+    "exp": 11,
+    "maxExp": 13296,
+    "sp": 80,
+    "ap": 14,
     "baseAtk": 23,
     "baseDef": 2,
     "mpR": 0.882,
     "stR": 0.906,
-    "hp": 586,
+    "hp": 579.7714060000525,
     "mhp": 586,
-    "mp": 454,
+    "mp": 440.29188799973605,
     "mmp": 454,
     "st": 308,
     "mst": 308,
@@ -87,6 +87,1042 @@
         "maxDurability": 400,
         "durability": 400,
         "_pickT": 1772443916553
+      },
+      {
+        "id": 1772445131752.8176,
+        "slot": "necklace",
+        "el": 3,
+        "rarity": 4,
+        "tier": 0,
+        "name": "그림자 부적",
+        "emoji": "📿",
+        "def": 2,
+        "eDef": 2,
+        "stRegen": 0.28,
+        "mpRegen": 0.05,
+        "expBonus": 0.11,
+        "bDex": 15,
+        "bInt": 13,
+        "bStr": 20,
+        "prefix": {
+          "name": "맹렬한",
+          "stat": "bStr",
+          "val": 8
+        },
+        "suffix": {
+          "name": "회복",
+          "stat": "stRegen",
+          "val": 0.06
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772445133338
+      },
+      {
+        "id": 1772445144712.627,
+        "slot": "ring1",
+        "el": 4,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전기 반지",
+        "emoji": "💍",
+        "eDef": 2,
+        "stRegen": 0.28,
+        "mpRegen": 0.04,
+        "critRate": 3.8,
+        "critDmg": 0.131,
+        "bStr": 14,
+        "bDex": 16,
+        "bInt": 13,
+        "prefix": {
+          "name": "날카로운",
+          "stat": "bDex",
+          "val": 4
+        },
+        "suffix": {
+          "name": "회복",
+          "stat": "stRegen",
+          "val": 0.06
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772445155785
+      },
+      {
+        "id": 1772445239614.9133,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "나무 방패",
+        "emoji": "🛡️",
+        "bonusRange": 2,
+        "blockRate": 90,
+        "shieldWt": 13,
+        "atk": 6,
+        "def": 9,
+        "stagger": 33,
+        "stRegen": 0.25,
+        "mpRegen": 0.04,
+        "bInt": 13,
+        "bStr": 16,
+        "bDex": 14,
+        "prefix": {
+          "name": "분노의",
+          "stat": "bStr",
+          "val": 4
+        },
+        "suffix": {
+          "name": "활력",
+          "stat": "stRegen",
+          "val": 0.03
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772445540258
+      },
+      {
+        "id": 1772445239612.037,
+        "slot": "necklace",
+        "el": 2,
+        "rarity": 4,
+        "tier": 0,
+        "name": "냉기 부적",
+        "emoji": "📿",
+        "def": 2,
+        "eDef": 2,
+        "stRegen": 0.25,
+        "mpRegen": 0.05,
+        "expBonus": 0.115,
+        "bInt": 13,
+        "bDex": 12,
+        "bStr": 17,
+        "prefix": {
+          "name": "분노의",
+          "stat": "bStr",
+          "val": 4
+        },
+        "suffix": {
+          "name": "활력",
+          "stat": "stRegen",
+          "val": 0.03
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772445545068
+      },
+      {
+        "id": 1772445233731.6726,
+        "slot": "bow",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "낡은 연사석궁",
+        "emoji": "⚡",
+        "btype": "repeater",
+        "atk": 3,
+        "bowSpd": 7.04,
+        "bowStCost": 0,
+        "bowRange": 209,
+        "bowProjSpd": 10,
+        "bonusRange": 2,
+        "bowPierce": 0.18,
+        "stRegen": 0.25,
+        "mpRegen": 0.04,
+        "bInt": 11,
+        "bStr": 15,
+        "bDex": 19,
+        "prefix": {
+          "name": "민첩한",
+          "stat": "bDex",
+          "val": 8
+        },
+        "suffix": {
+          "name": "활력",
+          "stat": "stRegen",
+          "val": 0.03
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772445546951
+      },
+      {
+        "id": 1772445256335.0615,
+        "slot": "cape",
+        "el": 2,
+        "rarity": 4,
+        "tier": 0,
+        "name": "냉기 망토",
+        "emoji": "🧣",
+        "def": 4,
+        "eDef": 2,
+        "spd": 0,
+        "stRegen": 0.22,
+        "mpRegen": 0.08,
+        "bStr": 14,
+        "bInt": 15,
+        "bDex": 19,
+        "prefix": {
+          "name": "민첩한",
+          "stat": "bDex",
+          "val": 8
+        },
+        "suffix": {
+          "name": "지혜",
+          "stat": "mpRegen",
+          "val": 0.04
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772445549358
+      },
+      {
+        "id": 1772445211867.5898,
+        "slot": "cape",
+        "el": 3,
+        "rarity": 4,
+        "tier": 0,
+        "name": "그림자 망토",
+        "emoji": "🧣",
+        "def": 4,
+        "eDef": 2,
+        "spd": 0,
+        "stRegen": 0.22,
+        "mpRegen": 0.08,
+        "bDex": 15,
+        "bInt": 17,
+        "bStr": 13,
+        "prefix": {
+          "name": "현명한",
+          "stat": "bInt",
+          "val": 4
+        },
+        "suffix": {
+          "name": "지혜",
+          "stat": "mpRegen",
+          "val": 0.04
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772445552006
+      },
+      {
+        "id": 1772445226404.9404,
+        "slot": "ring2",
+        "el": 3,
+        "rarity": 4,
+        "tier": 4,
+        "name": "무간의 반지",
+        "emoji": "💍",
+        "eDef": 11,
+        "stRegen": 0.326,
+        "mpRegen": 0.056,
+        "critRate": 4.97,
+        "critDmg": 0.178,
+        "bDex": 21,
+        "bInt": 30,
+        "bStr": 20,
+        "prefix": {
+          "name": "총명한",
+          "stat": "bInt",
+          "val": 8
+        },
+        "suffix": {
+          "name": "수호",
+          "stat": "bonusSt",
+          "val": 6
+        },
+        "bonusSt": 6,
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772445553306
+      },
+      {
+        "id": 1772445211091.006,
+        "slot": "boots",
+        "el": 4,
+        "rarity": 4,
+        "tier": 3,
+        "name": "뇌신 전투화",
+        "emoji": "👢",
+        "def": 18,
+        "spd": 0.53,
+        "bonusSt": 33,
+        "chargeDist": 50,
+        "chargeCharge": 2,
+        "stRegen": 0.299,
+        "mpRegen": 0.092,
+        "bInt": 23,
+        "bStr": 17,
+        "bDex": 31,
+        "prefix": {
+          "name": "민첩한",
+          "stat": "bDex",
+          "val": 8
+        },
+        "suffix": {
+          "name": "지혜",
+          "stat": "mpRegen",
+          "val": 0.04
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772445554306
+      },
+      {
+        "id": 1772445893533.5322,
+        "slot": "helmet",
+        "el": 1,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전지전능의 투구",
+        "emoji": "⛑️",
+        "eDef": 4,
+        "stRegen": 0.28,
+        "mpRegen": 0.04,
+        "beamDmg": 3.3,
+        "elements": [
+          {
+            "el": 1,
+            "dmg": 26
+          },
+          {
+            "el": 4,
+            "dmg": 10
+          },
+          {
+            "el": 3,
+            "dmg": 11
+          },
+          {
+            "el": 2,
+            "dmg": 11
+          }
+        ],
+        "splashR": 10,
+        "splashMul": 0.51,
+        "magicPen": 2,
+        "bonusRange": 4,
+        "bDex": 21,
+        "bInt": 16,
+        "bStr": 15,
+        "prefix": {
+          "name": "민첩한",
+          "stat": "bDex",
+          "val": 8
+        },
+        "suffix": {
+          "name": "회복",
+          "stat": "stRegen",
+          "val": 0.06
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772445909965
+      },
+      {
+        "id": 1772446121610.4465,
+        "slot": "helmet",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전지전능의 투구",
+        "emoji": "⛑️",
+        "eDef": 4,
+        "stRegen": 0.22,
+        "mpRegen": 0.04,
+        "beamDmg": 3.3,
+        "elements": [
+          {
+            "el": 0,
+            "dmg": 26
+          },
+          {
+            "el": 1,
+            "dmg": 11
+          },
+          {
+            "el": 5,
+            "dmg": 10
+          },
+          {
+            "el": 2,
+            "dmg": 12
+          }
+        ],
+        "splashR": 10,
+        "splashMul": 0.49,
+        "magicPen": 2,
+        "bonusRange": 4,
+        "bStr": 13,
+        "bInt": 12,
+        "bDex": 20,
+        "prefix": {
+          "name": "민첩한",
+          "stat": "bDex",
+          "val": 8
+        },
+        "suffix": {
+          "name": "수호",
+          "stat": "bonusSt",
+          "val": 6
+        },
+        "bonusSt": 6,
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772446269179
+      },
+      {
+        "id": 1772446559538.355,
+        "slot": "boots",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "낡은 전투화",
+        "emoji": "👢",
+        "def": 4,
+        "spd": 0,
+        "bonusSt": 11,
+        "chargeDist": 30,
+        "chargeCharge": 1,
+        "stRegen": 0.25,
+        "mpRegen": 0.04,
+        "bStr": 22,
+        "bInt": 16,
+        "bDex": 12,
+        "prefix": {
+          "name": "맹렬한",
+          "stat": "bStr",
+          "val": 8
+        },
+        "suffix": {
+          "name": "활력",
+          "stat": "stRegen",
+          "val": 0.03
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772446571136
+      },
+      {
+        "id": 1772446560360.2126,
+        "slot": "bow",
+        "el": 2,
+        "rarity": 4,
+        "tier": 0,
+        "name": "냉기 마력석궁",
+        "emoji": "✨",
+        "btype": "arcane",
+        "atk": 8,
+        "bowSpd": 4.18,
+        "bowStCost": 6,
+        "bowRange": 262,
+        "bowProjSpd": 11,
+        "bonusRange": 3,
+        "bowPierce": 0.2,
+        "stRegen": 0.22,
+        "mpRegen": 0.08,
+        "bStr": 12,
+        "bInt": 19,
+        "bDex": 16,
+        "prefix": {
+          "name": "총명한",
+          "stat": "bInt",
+          "val": 8
+        },
+        "suffix": {
+          "name": "지혜",
+          "stat": "mpRegen",
+          "val": 0.04
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772446572286
+      },
+      {
+        "id": 1772447008481.6567,
+        "slot": "bow",
+        "el": 5,
+        "rarity": 4,
+        "tier": 3,
+        "name": "연사석궁",
+        "emoji": "⚡",
+        "btype": "repeater",
+        "atk": 12,
+        "bowSpd": 7.04,
+        "bowStCost": 0,
+        "bowRange": 191,
+        "bowProjSpd": 10,
+        "bonusRange": 3,
+        "bowPierce": 0.3,
+        "stRegen": 0.299,
+        "mpRegen": 0.052,
+        "bInt": 16,
+        "bStr": 27,
+        "bDex": 22,
+        "prefix": {
+          "name": "분노의",
+          "stat": "bStr",
+          "val": 4
+        },
+        "suffix": {
+          "name": "수호",
+          "stat": "bonusSt",
+          "val": 6
+        },
+        "bonusSt": 6,
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772447016487
+      },
+      {
+        "id": 1772448806362.0364,
+        "slot": "ring1",
+        "el": 1,
+        "rarity": 4,
+        "tier": 0,
+        "name": "불꽃 반지",
+        "emoji": "💍",
+        "eDef": 2,
+        "stRegen": 0.28,
+        "mpRegen": 0.04,
+        "critRate": 3.53,
+        "critDmg": 0.144,
+        "bInt": 24,
+        "bDex": 12,
+        "bStr": 15,
+        "prefix": {
+          "name": "총명한",
+          "stat": "bInt",
+          "val": 8
+        },
+        "suffix": {
+          "name": "회복",
+          "stat": "stRegen",
+          "val": 0.06
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772448806663
+      },
+      {
+        "id": 1772448834736.736,
+        "slot": "cape",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "낡은 망토",
+        "emoji": "🧣",
+        "def": 4,
+        "eDef": 2,
+        "spd": 0,
+        "stRegen": 0.22,
+        "mpRegen": 0.04,
+        "bInt": 11,
+        "bDex": 18,
+        "bStr": 15,
+        "prefix": {
+          "name": "날카로운",
+          "stat": "bDex",
+          "val": 4
+        },
+        "suffix": {
+          "name": "강인",
+          "stat": "bonusSt",
+          "val": 12
+        },
+        "bonusSt": 12,
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772448835852
+      },
+      {
+        "id": 1772448888938.3096,
+        "slot": "helmet",
+        "el": 2,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전지전능의 투구",
+        "emoji": "⛑️",
+        "eDef": 4,
+        "stRegen": 0.22,
+        "mpRegen": 0.06,
+        "beamDmg": 3.3,
+        "elements": [
+          {
+            "el": 2,
+            "dmg": 26
+          },
+          {
+            "el": 4,
+            "dmg": 10
+          },
+          {
+            "el": 3,
+            "dmg": 12
+          },
+          {
+            "el": 1,
+            "dmg": 11
+          }
+        ],
+        "splashR": 10,
+        "splashMul": 0.45,
+        "magicPen": 2,
+        "bonusRange": 4,
+        "bDex": 15,
+        "bInt": 19,
+        "bStr": 11,
+        "prefix": {
+          "name": "현명한",
+          "stat": "bInt",
+          "val": 4
+        },
+        "suffix": {
+          "name": "마력",
+          "stat": "mpRegen",
+          "val": 0.02
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772448889772
+      },
+      {
+        "id": 1772448901704.5388,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "녹슨 검",
+        "emoji": "⚔️",
+        "wtype": "sword",
+        "atk": 56,
+        "spd": 2.42,
+        "wStCost": 6,
+        "wArcW": 0.95,
+        "wRange": 48,
+        "wStagger": 13,
+        "bonusRange": 3,
+        "stRegen": 0.28,
+        "mpRegen": 0.04,
+        "bInt": 19,
+        "bDex": 16,
+        "bStr": 14,
+        "prefix": {
+          "name": "현명한",
+          "stat": "bInt",
+          "val": 4
+        },
+        "suffix": {
+          "name": "회복",
+          "stat": "stRegen",
+          "val": 0.06
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772448902611
+      },
+      {
+        "id": 1772448910325.8613,
+        "slot": "ring2",
+        "el": 2,
+        "rarity": 4,
+        "tier": 0,
+        "name": "냉기 반지",
+        "emoji": "💍",
+        "eDef": 1,
+        "stRegen": 0.22,
+        "mpRegen": 0.08,
+        "critRate": 3.54,
+        "critDmg": 0.15,
+        "bStr": 20,
+        "bInt": 11,
+        "bDex": 14,
+        "prefix": {
+          "name": "맹렬한",
+          "stat": "bStr",
+          "val": 8
+        },
+        "suffix": {
+          "name": "지혜",
+          "stat": "mpRegen",
+          "val": 0.04
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772448910487
+      },
+      {
+        "id": 1772449037839.725,
+        "slot": "cape",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "낡은 망토",
+        "emoji": "🧣",
+        "def": 4,
+        "eDef": 2,
+        "spd": 0,
+        "stRegen": 0.22,
+        "mpRegen": 0.04,
+        "bDex": 15,
+        "bStr": 13,
+        "bInt": 23,
+        "prefix": {
+          "name": "총명한",
+          "stat": "bInt",
+          "val": 8
+        },
+        "suffix": {
+          "name": "강인",
+          "stat": "bonusSt",
+          "val": 12
+        },
+        "bonusSt": 12,
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772449039395
+      },
+      {
+        "id": 1772449037826.8687,
+        "slot": "gloves",
+        "el": 1,
+        "rarity": 4,
+        "tier": 0,
+        "name": "불꽃 장갑",
+        "emoji": "🧤",
+        "atk": 4,
+        "def": 2,
+        "spd": 0,
+        "stRegen": 0.22,
+        "mpRegen": 0.04,
+        "potCd": 0.171,
+        "atkSpd": 0.083,
+        "bInt": 14,
+        "bDex": 16,
+        "bStr": 16,
+        "prefix": {
+          "name": "날카로운",
+          "stat": "bDex",
+          "val": 4
+        },
+        "suffix": {
+          "name": "수호",
+          "stat": "bonusSt",
+          "val": 6
+        },
+        "bonusSt": 6,
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772449039480
+      },
+      {
+        "id": 1772449038398.943,
+        "slot": "necklace",
+        "el": 5,
+        "rarity": 4,
+        "tier": 0,
+        "name": "축복 부적",
+        "emoji": "📿",
+        "def": 2,
+        "eDef": 2,
+        "stRegen": 0.25,
+        "mpRegen": 0.05,
+        "expBonus": 0.117,
+        "bStr": 18,
+        "bInt": 15,
+        "bDex": 12,
+        "prefix": {
+          "name": "분노의",
+          "stat": "bStr",
+          "val": 4
+        },
+        "suffix": {
+          "name": "활력",
+          "stat": "stRegen",
+          "val": 0.03
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772449039606
+      },
+      {
+        "id": 1772449057699.2773,
+        "slot": "cape",
+        "el": 5,
+        "rarity": 4,
+        "tier": 0,
+        "name": "축복 망토",
+        "emoji": "🧣",
+        "def": 4,
+        "eDef": 2,
+        "spd": 0,
+        "stRegen": 0.25,
+        "mpRegen": 0.04,
+        "bDex": 11,
+        "bInt": 11,
+        "bStr": 21,
+        "prefix": {
+          "name": "맹렬한",
+          "stat": "bStr",
+          "val": 8
+        },
+        "suffix": {
+          "name": "활력",
+          "stat": "stRegen",
+          "val": 0.03
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772449057778
+      },
+      {
+        "id": 1772449062516.397,
+        "slot": "boots",
+        "el": 2,
+        "rarity": 4,
+        "tier": 0,
+        "name": "냉기 전투화",
+        "emoji": "👢",
+        "def": 4,
+        "spd": 0,
+        "bonusSt": 10,
+        "chargeDist": 30,
+        "chargeCharge": 2,
+        "stRegen": 0.22,
+        "mpRegen": 0.08,
+        "bStr": 14,
+        "bInt": 19,
+        "bDex": 16,
+        "prefix": {
+          "name": "현명한",
+          "stat": "bInt",
+          "val": 4
+        },
+        "suffix": {
+          "name": "지혜",
+          "stat": "mpRegen",
+          "val": 0.04
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772449062995
+      },
+      {
+        "id": 1772449082375.5881,
+        "slot": "gloves",
+        "el": 4,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전기 장갑",
+        "emoji": "🧤",
+        "atk": 4,
+        "def": 2,
+        "spd": 0,
+        "stRegen": 0.22,
+        "mpRegen": 0.08,
+        "potCd": 0.161,
+        "atkSpd": 0.083,
+        "bDex": 22,
+        "bInt": 14,
+        "bStr": 14,
+        "prefix": {
+          "name": "민첩한",
+          "stat": "bDex",
+          "val": 8
+        },
+        "suffix": {
+          "name": "지혜",
+          "stat": "mpRegen",
+          "val": 0.04
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772449084090
+      },
+      {
+        "id": 1772452397323.0767,
+        "slot": "armor",
+        "el": 2,
+        "rarity": 4,
+        "tier": 0,
+        "name": "냉기 갑옷",
+        "emoji": "🦺",
+        "def": 6,
+        "bonusSt": 21,
+        "charge": 16,
+        "chargeDist": 48,
+        "chargeW": 26,
+        "bonusRange": 2,
+        "bonusChargeDist": 2,
+        "chargeAoE": 39,
+        "stRegen": 0.22,
+        "mpRegen": 0.04,
+        "bStr": 11,
+        "bDex": 16,
+        "bInt": 15,
+        "prefix": {
+          "name": "날카로운",
+          "stat": "bDex",
+          "val": 4
+        },
+        "suffix": {
+          "name": "강인",
+          "stat": "bonusSt",
+          "val": 12
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772452401023
+      },
+      {
+        "id": 1772452768137.4387,
+        "slot": "ring1",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "녹슨 반지",
+        "emoji": "💍",
+        "eDef": 2,
+        "stRegen": 0.25,
+        "mpRegen": 0.04,
+        "critRate": 3.79,
+        "critDmg": 0.147,
+        "bInt": 16,
+        "bDex": 16,
+        "bStr": 15,
+        "prefix": {
+          "name": "날카로운",
+          "stat": "bDex",
+          "val": 4
+        },
+        "suffix": {
+          "name": "활력",
+          "stat": "stRegen",
+          "val": 0.03
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772452769966
+      },
+      {
+        "id": 1772452784044.4153,
+        "slot": "necklace",
+        "el": 3,
+        "rarity": 4,
+        "tier": 3,
+        "name": "나락 목걸이",
+        "emoji": "📿",
+        "def": 9,
+        "eDef": 14,
+        "stRegen": 0.299,
+        "mpRegen": 0.10800000000000001,
+        "expBonus": 0.126,
+        "bDex": 27,
+        "bInt": 20,
+        "bStr": 18,
+        "prefix": {
+          "name": "날카로운",
+          "stat": "bDex",
+          "val": 4
+        },
+        "suffix": {
+          "name": "지혜",
+          "stat": "mpRegen",
+          "val": 0.04
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772452785505
+      },
+      {
+        "id": 1772453074280.2546,
+        "slot": "ring1",
+        "el": 2,
+        "rarity": 4,
+        "tier": 0,
+        "name": "냉기 반지",
+        "emoji": "💍",
+        "eDef": 2,
+        "stRegen": 0.22,
+        "mpRegen": 0.04,
+        "critRate": 3.86,
+        "critDmg": 0.128,
+        "bDex": 23,
+        "bStr": 11,
+        "bInt": 13,
+        "prefix": {
+          "name": "민첩한",
+          "stat": "bDex",
+          "val": 8
+        },
+        "suffix": {
+          "name": "강인",
+          "stat": "bonusSt",
+          "val": 12
+        },
+        "bonusSt": 12,
+        "reqLv": 100,
+        "itemLv": 200,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772453074688
       }
     ],
     "equipped": {
@@ -165,7 +1201,7 @@
         },
         "bonusSt": 20,
         "maxDurability": 400,
-        "durability": 194
+        "durability": 19
       },
       "boots": {
         "id": 1772441303107.8296,
@@ -198,7 +1234,7 @@
         "reqLv": 100,
         "itemLv": 200,
         "maxDurability": 400,
-        "durability": 361,
+        "durability": 186,
         "_pickT": 1772441305086
       },
       "armor": {
@@ -239,7 +1275,7 @@
         "atk": 5,
         "darkDmg": 0.08,
         "maxDurability": 400,
-        "durability": 194
+        "durability": 19
       },
       "helmet": {
         "id": 1772442034789.7488,
@@ -292,7 +1328,7 @@
         "reqLv": 100,
         "itemLv": 200,
         "maxDurability": 400,
-        "durability": 361,
+        "durability": 186,
         "_pickT": 1772442041023
       },
       "bow": {
@@ -333,7 +1369,7 @@
         "def": 10,
         "iceDmg": 0.15,
         "maxDurability": 400,
-        "durability": 391
+        "durability": 382
       },
       "gloves": {
         "id": 1772441485244.6794,
@@ -366,7 +1402,7 @@
         "reqLv": 100,
         "itemLv": 200,
         "maxDurability": 400,
-        "durability": 361,
+        "durability": 186,
         "_pickT": 1772441493450
       },
       "pants": {
@@ -398,7 +1434,7 @@
         "reqLv": 100,
         "itemLv": 200,
         "maxDurability": 400,
-        "durability": 361,
+        "durability": 186,
         "_pickT": 1772441662497
       },
       "necklace": {
@@ -572,9 +1608,9 @@
     }
   ],
   "game": {
-    "stage": 10,
-    "kills": 14126,
-    "mats": 46228
+    "stage": 11,
+    "kills": 19023,
+    "mats": 65468
   },
   "bagMax": 300,
   "hellCleared": [
@@ -597,9 +1633,9 @@
   "skills": {
     "whirlwind": 1,
     "detonate": 1,
-    "magicBlink": 5,
-    "galeSlash": 5,
-    "chargeBoost": 5,
+    "magicBlink": 1,
+    "galeSlash": 1,
+    "chargeBoost": 1,
     "fanShot": 1,
     "omniBeam": 1,
     "shieldTenacity": 1,
@@ -607,22 +1643,22 @@
     "guardian": 1,
     "maliceHunt": 3,
     "explosiveBolt": 1,
-    "maliceMortar": 0,
+    "maliceMortar": 10,
     "holyBlast": 0,
     "blackStar": 0,
     "bladeShot": 2,
     "lavaSummon": 1,
-    "iceOrb": 1
+    "iceOrb": 2
   },
   "activeChargeSk": "magicBlink",
   "activeBowSk": "bladeShot",
   "skillSlots": [
-    "explosiveBolt",
     "maliceHunt",
-    "iceOrb",
-    null,
-    null,
+    "explosiveBolt",
     "bladeShot",
+    "iceOrb",
+    "maliceMortar",
+    null,
     null
   ],
   "ultSlot": "lavaSummon"

@@ -16,10 +16,12 @@ app.commandLine.appendSwitch('enable-unsafe-webgpu');
 // 하드웨어 가속 강제
 app.commandLine.appendSwitch('enable-gpu-rasterization');
 app.commandLine.appendSwitch('enable-zero-copy');
+app.commandLine.appendSwitch('enable-hardware-overlays', 'single-fullscreen');
+app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,CanvasOopRasterization');
 app.commandLine.appendSwitch('enable-webgl');
 app.commandLine.appendSwitch('enable-accelerated-2d-canvas');
-// ANGLE 백엔드 — D3D11 직접 사용 (WARP 폴백 방지)
-app.commandLine.appendSwitch('use-angle', 'gl');
+// ANGLE 백엔드 — 시스템 기본값 사용
+app.commandLine.appendSwitch('use-angle', 'default');
 // GPU 샌드박스 비활성화 (Windows DirectX 초기화 문제 방지)
 app.commandLine.appendSwitch('disable-gpu-sandbox');
 // V-Sync 비활성화 (144fps+ 허용)
@@ -135,7 +137,12 @@ const server = http.createServer(async (req, res) => {
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
       const ext = path.extname(filePath);
       const mime = MIME[ext] || 'application/octet-stream';
-      res.writeHead(200, { 'Content-Type': mime });
+      res.writeHead(200, {
+        'Content-Type': mime,
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
+      });
       return res.end(fs.readFileSync(filePath));
     }
 
@@ -172,6 +179,8 @@ function createWindow() {
       preload: path.join(__dirname, 'preload.js'),
       // 게임 성능용
       backgroundThrottling: false,  // 백그라운드 프레임 제한 해제
+      webgl: true,
+      experimentalFeatures: true,   // WebGPU 활성화
     }
   });
 
@@ -185,11 +194,11 @@ function createWindow() {
   mainWindow.webContents.on('before-input-event', (event, input) => {
     if (input.key === 'F12') mainWindow.webContents.toggleDevTools();
   });
-  // ESC로 전체화면이 풀리면 즉시 복구
-  let _wantFS = false;
-  mainWindow.on('enter-full-screen', () => { _wantFS = true; });
+  // ESC로 전체화면이 풀리는 것 방지: 전체화면 해제 시 즉시 복구
   mainWindow.on('leave-full-screen', () => {
-    if (_wantFS) { _wantFS = false; setTimeout(() => mainWindow.setFullScreen(true), 50); }
+    if (mainWindow.isVisible()) {
+      setTimeout(() => { if (mainWindow && !mainWindow.isDestroyed()) mainWindow.setFullScreen(true); }, 50);
+    }
   });
 
   mainWindow.on('closed', () => { mainWindow = null; });
