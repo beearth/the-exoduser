@@ -1,0 +1,8 @@
+Electron/
+node_modules/
+dist/
+out/
+.claude/
+NUL
+_test_*
+*.pyc

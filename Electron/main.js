@@ -154,9 +154,12 @@ const server = http.createServer(async (req, res) => {
 let mainWindow;
 
 function createWindow() {
+  const { screen } = require('electron');
+  const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
+  const winW = Math.min(sw, 1600), winH = Math.min(sh, 900);
   mainWindow = new BrowserWindow({
-    width: 1920,
-    height: 1080,
+    width: winW,
+    height: winH,
     fullscreenable: true,
     simpleFullscreen: true,
     title: 'THE EXODUSER — 지옥의 길',
@@ -205,7 +208,9 @@ ipcMain.on('set-fullscreen', (e, mode) => {
     // windowed
     mainWindow.setFullScreen(false);
     mainWindow.setSimpleFullScreen(false);
-    mainWindow.setSize(1280, 720);
+    const { screen } = require('electron');
+    const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
+    mainWindow.setSize(Math.min(sw, 1600), Math.min(sh, 900));
     mainWindow.center();
   }
 });

@@ -1,107 +1,58 @@
 {
-  "ts": 1772354482384,
+  "ts": 1772434878472,
   "player": {
-    "lv": 32,
-    "exp": 44,
-    "maxExp": 89,
-    "sp": 73,
-    "ap": 5,
+    "lv": 100,
+    "exp": 763,
+    "maxExp": 765,
+    "sp": 16,
+    "ap": 12,
     "baseAtk": 23,
     "baseDef": 4,
-    "mpR": 0,
-    "stR": 0.28,
+    "mpR": 0.15,
+    "stR": 0.38,
     "hp": 394,
     "mhp": 394,
-    "mp": 160,
-    "mmp": 160,
+    "mp": 210,
+    "mmp": 210,
     "st": 232,
     "mst": 232,
-    "speed": 2.6,
+    "speed": 2.85,
     "shield": 0,
     "mshield": 0
   },
   "inv": {
     "bag": [
       {
-        "id": 1771995141532.3977,
-        "slot": "helmet",
-        "el": 0,
-        "rarity": 0,
-        "tier": 0,
-        "name": "낡은 투구",
-        "emoji": "⛑️",
-        "beamDmg": 1.5,
-        "elements": [
-          {
-            "el": 0,
-            "dmg": 12
-          }
-        ],
-        "bonusRange": 1,
-        "reqLv": 20,
-        "itemLv": 20
-      },
-      {
-        "id": 1771995243420.5989,
+        "id": 1772432071629.236,
         "slot": "ring1",
         "el": 3,
-        "rarity": 1,
+        "rarity": 4,
         "tier": 0,
         "name": "그림자 반지",
         "emoji": "💍",
-        "stRegen": 0.06,
-        "critRate": 1.2,
-        "reqLv": 20,
-        "itemLv": 20
-      },
-      {
-        "id": 1771995255340.999,
-        "slot": "boots",
-        "el": 1,
-        "rarity": 0,
-        "tier": 0,
-        "name": "불꽃 전투화",
-        "emoji": "👢",
-        "def": 2,
-        "spd": 0,
-        "bonusSt": 4,
-        "chargeDist": 14,
-        "reqLv": 20,
-        "itemLv": 20
-      },
-      {
-        "id": 1771995248021.5063,
-        "slot": "ring2",
-        "el": 0,
-        "rarity": 1,
-        "tier": 0,
-        "name": "녹슨 반지",
-        "emoji": "💍",
-        "stRegen": 0.06,
-        "critRate": 1.18,
-        "reqLv": 20,
-        "itemLv": 20
-      },
-      {
-        "id": 1771995252629.5637,
-        "slot": "helmet",
-        "el": 0,
-        "rarity": 1,
-        "tier": 0,
-        "name": "낡은 투구",
-        "emoji": "⛑️",
-        "stRegen": 0.06,
-        "beamDmg": 1.8,
-        "elements": [
-          {
-            "el": 0,
-            "dmg": 14
-          }
-        ],
-        "splashR": 10,
-        "bonusRange": 2,
-        "reqLv": 20,
-        "itemLv": 20
+        "eDef": 2,
+        "stRegen": 0.22,
+        "mpRegen": 0.08,
+        "critRate": 3.51,
+        "critDmg": 0.147,
+        "bStr": 20,
+        "bDex": 12,
+        "bInt": 14,
+        "prefix": {
+          "name": "맹렬한",
+          "stat": "bStr",
+          "val": 8
+        },
+        "suffix": {
+          "name": "지혜",
+          "stat": "mpRegen",
+          "val": 0.04
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "maxDurability": 400,
+        "durability": 400,
+        "_pickT": 1772432072708
       }
     ],
     "equipped": {
@@ -124,7 +75,9 @@
         "bonusRange": 1,
         "stRegen": 0.06,
         "reqLv": 10,
-        "itemLv": 10
+        "itemLv": 10,
+        "maxDurability": 150,
+        "durability": 62
       },
       "shield": {
         "id": 1771994993664.2783,
@@ -143,7 +96,9 @@
         "stRegen": 0.1,
         "mpRegen": 0.015,
         "reqLv": 20,
-        "itemLv": 20
+        "itemLv": 20,
+        "maxDurability": 200,
+        "durability": 0
       },
       "boots": {
         "id": 1771995120513.452,
@@ -161,7 +116,9 @@
         "stRegen": 0.1,
         "mpRegen": 0.015,
         "reqLv": 20,
-        "itemLv": 20
+        "itemLv": 20,
+        "maxDurability": 200,
+        "durability": 70
       },
       "armor": {
         "id": 1771994859192.056,
@@ -181,7 +138,9 @@
         "stRegen": 0.112,
         "mpRegen": 0.017,
         "reqLv": 10,
-        "itemLv": 10
+        "itemLv": 10,
+        "maxDurability": 200,
+        "durability": 70
       },
       "helmet": {
         "id": 1771995143593.4353,
@@ -208,7 +167,9 @@
         "splashMul": 0.32,
         "bonusRange": 2,
         "reqLv": 20,
-        "itemLv": 20
+        "itemLv": 20,
+        "maxDurability": 200,
+        "durability": 70
       },
       "bow": {
         "id": 1771994711779.9353,
@@ -230,7 +191,9 @@
         "arrowR": 1,
         "stRegen": 0.06,
         "reqLv": 10,
-        "itemLv": 10
+        "itemLv": 10,
+        "maxDurability": 150,
+        "durability": 0
       },
       "gloves": {
         "id": 1771993845048.9927,
@@ -248,7 +211,9 @@
         "potCd": 0.127,
         "atkSpd": 0.067,
         "reqLv": 10,
-        "itemLv": 10
+        "itemLv": 10,
+        "maxDurability": 300,
+        "durability": 170
       },
       "pants": {
         "id": 1771995144032.0369,
@@ -264,7 +229,9 @@
         "mpRegen": 0.025,
         "bonusHp": 24,
         "reqLv": 20,
-        "itemLv": 20
+        "itemLv": 20,
+        "maxDurability": 300,
+        "durability": 170
       },
       "necklace": {
         "id": 1771995095667.1711,
@@ -278,40 +245,46 @@
         "stRegen": 0.06,
         "expBonus": 0.053,
         "reqLv": 20,
-        "itemLv": 20
+        "itemLv": 20,
+        "maxDurability": 150,
+        "durability": 150
       },
       "ring1": {
-        "id": 1771993895081.7314,
+        "id": 1771995243420.5989,
         "slot": "ring1",
-        "el": 2,
+        "el": 3,
         "rarity": 1,
         "tier": 0,
-        "name": "냉기 반지",
+        "name": "그림자 반지",
         "emoji": "💍",
         "stRegen": 0.06,
-        "critRate": 1.43,
-        "reqLv": 10,
-        "itemLv": 10
+        "critRate": 1.2,
+        "reqLv": 20,
+        "itemLv": 20,
+        "maxDurability": 150,
+        "durability": 150
       },
       "ring2": {
-        "id": 1771994693360.1833,
+        "id": 1771995248021.5063,
         "slot": "ring2",
-        "el": 2,
+        "el": 0,
         "rarity": 1,
         "tier": 0,
-        "name": "냉기 반지",
+        "name": "녹슨 반지",
         "emoji": "💍",
         "stRegen": 0.06,
-        "critRate": 1.4,
-        "reqLv": 10,
-        "itemLv": 10
+        "critRate": 1.18,
+        "reqLv": 20,
+        "itemLv": 20,
+        "maxDurability": 150,
+        "durability": 150
       }
     }
   },
   "stats": {
     "str": 10,
-    "dex": 0,
-    "int": 0,
+    "dex": 50,
+    "int": 50,
     "vit": 10,
     "lck": 0
   },
@@ -325,7 +298,8 @@
     "pShield": 0,
     "pRegen": 0,
     "pCrit": 0,
-    "pDrop": 0
+    "pDrop": 0,
+    "pPierce": 0
   },
   "qslots": [
     {
@@ -347,12 +321,14 @@
   ],
   "game": {
     "stage": 1,
-    "kills": 251,
-    "mats": 327
+    "kills": 938,
+    "mats": 139
   },
-  "bagMax": 66,
+  "bagMax": 204,
   "hellCleared": [],
-  "storage": {},
+  "storage": {
+    "0": []
+  },
   "upgrades": {
     "hp": 0,
     "atk": 0,
@@ -364,6 +340,19 @@
   "potLv": {
     "hp": 0
   },
-  "skills": {},
-  "activeChargeSk": "charge"
+  "skills": {
+    "fanShot": 1,
+    "chargeBoost": 1
+  },
+  "activeChargeSk": "charge",
+  "activeBowSk": "fanShot",
+  "skillSlots": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "ultSlot": null
 }
