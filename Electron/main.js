@@ -5,6 +5,9 @@ const fs = require('fs');
 const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron');
 const path = require('path');
 
+// ═══ 패키징 감지 — dev vs production 경로 ═══
+const IS_PACKAGED = app.isPackaged;
+
 // ═══ GPU 플래그 — 브라우저 문제 완전 해결 ═══
 // Chrome/Electron GPU 블록리스트 무시 (RX 9070 XT 같은 신규 GPU 지원)
 app.commandLine.appendSwitch('ignore-gpu-blocklist');
@@ -24,8 +27,12 @@ app.commandLine.appendSwitch('disable-frame-rate-limit');
 
 // ═══ 내장 HTTP 서버 (세이브/로드 API + 정적 파일) ═══
 const PORT = 3333;
-const ROOT = path.join(__dirname, '..'); // 프로젝트 루트
-const SAVE_DIR = path.join(ROOT, 'saves');
+const ROOT = IS_PACKAGED
+  ? path.join(process.resourcesPath, 'game')
+  : path.join(__dirname, '..'); // dev: 프로젝트 루트, prod: resources/game
+const SAVE_DIR = IS_PACKAGED
+  ? path.join(app.getPath('userData'), 'saves')
+  : path.join(ROOT, 'saves'); // prod: 사용자 데이터 폴더 (쓰기 가능)
 if (!fs.existsSync(SAVE_DIR)) fs.mkdirSync(SAVE_DIR, { recursive: true });
 
 const MIME = {
@@ -165,8 +172,8 @@ function createWindow() {
     }
   });
 
-  // 내장 서버에서 게임 로드
-  mainWindow.loadURL(`http://localhost:${PORT}/game.html`);
+  // 내장 서버에서 인트로부터 시작
+  mainWindow.loadURL(`http://localhost:${PORT}/`);
 
   // 메뉴바 숨기기
   mainWindow.setMenuBarVisibility(false);

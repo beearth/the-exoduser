@@ -20,26 +20,34 @@
     "productName": "THE EXODUSER",
     "files": [
       "main.js",
-      "game.html",
-      "img/**/*",
-      "saves/**/*",
-      "icon.png"
+      "preload.js"
+    ],
+    "extraResources": [
+      {
+        "from": "../game.html",
+        "to": "game/game.html"
+      },
+      {
+        "from": "../index.html",
+        "to": "game/index.html"
+      },
+      {
+        "from": "../img",
+        "to": "game/img"
+      }
     ],
     "win": {
-      "target": "nsis",
-      "icon": "icon.png"
+      "target": "nsis"
     },
     "mac": {
-      "target": "dmg",
-      "icon": "icon.png"
+      "target": "dmg"
     },
     "linux": {
       "target": "AppImage"
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
-      "installerIcon": "icon.png"
+      "allowToChangeInstallationDirectory": true
     }
   }
 }
