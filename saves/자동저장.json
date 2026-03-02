@@ -1,23 +1,23 @@
 {
-  "ts": 1772444469724,
+  "ts": 1772446660479,
   "player": {
     "lv": 454,
     "exp": 7819,
     "maxExp": 11455,
-    "sp": 44,
+    "sp": 29,
     "ap": 10,
     "baseAtk": 23,
     "baseDef": 2,
     "mpR": 0.882,
     "stR": 0.906,
-    "hp": 119.53603999973177,
+    "hp": 586,
     "mhp": 586,
     "mp": 454,
     "mmp": 454,
     "st": 308,
     "mst": 308,
     "speed": 4.165,
-    "shield": 0,
+    "shield": 635,
     "mshield": 635
   },
   "inv": {
@@ -165,7 +165,7 @@
         },
         "bonusSt": 20,
         "maxDurability": 400,
-        "durability": 209
+        "durability": 194
       },
       "boots": {
         "id": 1772441303107.8296,
@@ -198,7 +198,7 @@
         "reqLv": 100,
         "itemLv": 200,
         "maxDurability": 400,
-        "durability": 376,
+        "durability": 361,
         "_pickT": 1772441305086
       },
       "armor": {
@@ -239,7 +239,7 @@
         "atk": 5,
         "darkDmg": 0.08,
         "maxDurability": 400,
-        "durability": 209
+        "durability": 194
       },
       "helmet": {
         "id": 1772442034789.7488,
@@ -292,7 +292,7 @@
         "reqLv": 100,
         "itemLv": 200,
         "maxDurability": 400,
-        "durability": 376,
+        "durability": 361,
         "_pickT": 1772442041023
       },
       "bow": {
@@ -333,7 +333,7 @@
         "def": 10,
         "iceDmg": 0.15,
         "maxDurability": 400,
-        "durability": 400
+        "durability": 391
       },
       "gloves": {
         "id": 1772441485244.6794,
@@ -366,7 +366,7 @@
         "reqLv": 100,
         "itemLv": 200,
         "maxDurability": 400,
-        "durability": 376,
+        "durability": 361,
         "_pickT": 1772441493450
       },
       "pants": {
@@ -398,7 +398,7 @@
         "reqLv": 100,
         "itemLv": 200,
         "maxDurability": 400,
-        "durability": 376,
+        "durability": 361,
         "_pickT": 1772441662497
       },
       "necklace": {
@@ -559,8 +559,8 @@
       "count": 1
     },
     {
-      "type": "mp",
-      "count": 2
+      "type": null,
+      "count": 0
     },
     {
       "type": null,
@@ -574,7 +574,7 @@
   "game": {
     "stage": 10,
     "kills": 14126,
-    "mats": 46440
+    "mats": 46228
   },
   "bagMax": 300,
   "hellCleared": [
@@ -611,14 +611,15 @@
     "holyBlast": 0,
     "blackStar": 0,
     "bladeShot": 2,
-    "lavaSummon": 1
+    "lavaSummon": 1,
+    "iceOrb": 1
   },
   "activeChargeSk": "magicBlink",
   "activeBowSk": "bladeShot",
   "skillSlots": [
     "explosiveBolt",
     "maliceHunt",
-    null,
+    "iceOrb",
     null,
     null,
     "bladeShot",

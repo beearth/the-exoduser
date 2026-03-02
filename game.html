@@ -348,6 +348,19 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row" style="margin-top:8px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optBossDbg" style="width:16px;height:16px;accent-color:#ff8844"><span class="set-name" style="color:#ff8844">보스 AI 디버그</span></label></div>
         </div>
 
+        <div id="optScreenSection" class="set-section" style="margin-top:20px;border-top:1px solid #443322;padding-top:15px;display:none">
+          <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">화면 설정</div>
+          <div class="set-range-row"><span class="set-name">화면 모드</span>
+            <select id="optDispMode" style="flex:1;background:#1a1008;border:1px solid #443322;color:#ddc;font-family:'Noto Sans KR';font-size:.9rem;padding:4px 8px;border-radius:4px">
+              <option value="windowed">창 모드</option><option value="borderless">보더리스</option><option value="fullscreen">전체화면</option>
+            </select>
+          </div>
+          <div class="set-range-row"><span class="set-name">해상도</span>
+            <select id="optRes" style="flex:1;background:#1a1008;border:1px solid #443322;color:#ddc;font-family:'Noto Sans KR';font-size:.9rem;padding:4px 8px;border-radius:4px">
+            </select>
+          </div>
+        </div>
+
         <div class="set-section" style="margin-top:20px;border-top:1px solid #443322;padding-top:15px">
           <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">🎨 그래픽 품질</div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optBloom" checked style="width:16px;height:16px;accent-color:#ff66aa"><span class="set-name">블룸 효과</span></label></div>
@@ -5452,6 +5465,106 @@ function _drawProjSprite(x,y,idx,sz,ang,alpha){
   X.restore();
   return true;
 }
+// ═══ 3D 프로시저럴 투사체 렌더링 ═══
+function _draw3DProj(x,y,r,el,t,ang,a){
+  X.save();X.translate(x,y);
+  const s=Math.max(r,3);
+  if(el===1){// ── FIRE: 혜성형 플라즈마 ──
+    X.rotate(ang);
+    // 꼬리 (혜성 트레일)
+    X.globalAlpha=a*.25;X.fillStyle='#882200';
+    X.beginPath();X.moveTo(s*.6,0);X.quadraticCurveTo(-s*.3,-s*.8,-s*2.5,0);X.quadraticCurveTo(-s*.3,s*.8,s*.6,0);X.fill();
+    X.globalAlpha=a*.4;X.fillStyle='#ff6600';
+    X.beginPath();X.moveTo(s*.5,0);X.quadraticCurveTo(-s*.2,-s*.5,-s*1.5,0);X.quadraticCurveTo(-s*.2,s*.5,s*.5,0);X.fill();
+    // 본체 구체 (3D 셰이딩)
+    X.globalAlpha=a*.9;X.fillStyle='#cc3300';X.beginPath();X.arc(0,0,s,0,Math.PI*2);X.fill();
+    X.globalAlpha=a;X.fillStyle='#ff7722';X.beginPath();X.arc(-s*.15,-s*.15,s*.75,0,Math.PI*2);X.fill();
+    X.globalAlpha=a*.7;X.fillStyle='#ffcc44';X.beginPath();X.arc(-s*.25,-s*.25,s*.4,0,Math.PI*2);X.fill();
+    X.globalAlpha=a*.5;X.fillStyle='#fff8dd';X.beginPath();X.arc(-s*.2,-s*.22,s*.15,0,Math.PI*2);X.fill();
+  }else if(el===2){// ── ICE: 회전 다면체 크리스탈 ──
+    const rot=t*.004+x*.05;X.rotate(rot);
+    // 외곽 육각
+    X.globalAlpha=a*.5;X.fillStyle='#224466';
+    X.beginPath();for(let i=0;i<6;i++){const a2=Math.PI*2*i/6;X[i?'lineTo':'moveTo'](Math.cos(a2)*(s+2),Math.sin(a2)*(s+2))}X.closePath();X.fill();
+    // 밝은 면 (상단 3면)
+    X.globalAlpha=a*.85;X.fillStyle='#66bbee';
+    X.beginPath();X.moveTo(0,0);
+    for(let i=0;i<3;i++){const a2=Math.PI*2*i/6-Math.PI/2;X.lineTo(Math.cos(a2)*s,Math.sin(a2)*s)}X.closePath();X.fill();
+    // 어두운 면 (하단 3면)
+    X.globalAlpha=a*.7;X.fillStyle='#3377aa';
+    X.beginPath();X.moveTo(0,0);
+    for(let i=3;i<6;i++){const a2=Math.PI*2*i/6-Math.PI/2;X.lineTo(Math.cos(a2)*s,Math.sin(a2)*s)}X.closePath();X.fill();
+    // 스펙큘러 하이라이트
+    X.globalAlpha=a*.5;X.fillStyle='#ccf0ff';X.beginPath();X.arc(-s*.2,-s*.3,s*.25,0,Math.PI*2);X.fill();
+    // 내부 굴절선
+    X.globalAlpha=a*.3;X.strokeStyle='#aaddff';X.lineWidth=.8;
+    X.beginPath();X.moveTo(-s*.5,-s*.2);X.lineTo(s*.3,s*.4);X.moveTo(s*.2,-s*.5);X.lineTo(-s*.3,s*.2);X.stroke();
+  }else if(el===3){// ── DARK: 블랙홀 오브 + 사건의 지평선 링 ──
+    const sw=Math.sin(t*.005+y*.1);
+    // 왜곡 링 (사건의 지평선)
+    X.globalAlpha=a*.4;X.strokeStyle='#bb55ff';X.lineWidth=1.5;
+    X.beginPath();X.ellipse(0,0,s+4,s*.4+sw*2,t*.002,0,Math.PI*2);X.stroke();
+    // 보이드 코어 (검은 구체)
+    X.globalAlpha=a;X.fillStyle='#110022';X.beginPath();X.arc(0,0,s,0,Math.PI*2);X.fill();
+    // 보라색 가장자리 빛
+    X.globalAlpha=a*.6;X.strokeStyle='#9944ee';X.lineWidth=1.5;X.beginPath();X.arc(0,0,s*.9,0,Math.PI*2);X.stroke();
+    // 내부 소용돌이
+    X.globalAlpha=a*.35;X.strokeStyle='#cc66ff';X.lineWidth=1;
+    X.beginPath();X.arc(0,0,s*.5,t*.008,t*.008+Math.PI*1.2);X.stroke();
+    X.beginPath();X.arc(0,0,s*.3,-(t*.012),-(t*.012)+Math.PI);X.stroke();
+    // 빨려들어가는 빛 점
+    for(let i=0;i<3;i++){const pa=t*.003+Math.PI*2*i/3;const pr=s*1.3+Math.sin(t*.006+i)*3;
+      X.globalAlpha=a*.3;X.fillStyle='#dd88ff';X.beginPath();X.arc(Math.cos(pa)*pr,Math.sin(pa)*pr,1,0,Math.PI*2);X.fill()}
+  }else if(el===4){// ── LIGHTNING: 볼 라이트닝 코어 ──
+    // 외곽 전기 방전
+    X.globalAlpha=a*.3;X.strokeStyle='#ffff44';X.lineWidth=1;
+    for(let i=0;i<4;i++){const ba=Math.PI*2*i/4+t*.006;
+      X.beginPath();X.moveTo(Math.cos(ba)*s*.5,Math.sin(ba)*s*.5);
+      const mx=Math.cos(ba+.3)*(s+4)+(Math.sin(t*.02+i*7))*3;
+      const my=Math.sin(ba+.3)*(s+4)+(Math.cos(t*.025+i*5))*3;
+      X.lineTo(mx,my);X.stroke()}
+    // 에너지 코어 (3D 구체)
+    X.globalAlpha=a*.8;X.fillStyle='#887700';X.beginPath();X.arc(0,0,s,0,Math.PI*2);X.fill();
+    X.globalAlpha=a;X.fillStyle='#ddcc00';X.beginPath();X.arc(-s*.12,-s*.12,s*.7,0,Math.PI*2);X.fill();
+    X.globalAlpha=a*.7;X.fillStyle='#ffff88';X.beginPath();X.arc(-s*.2,-s*.2,s*.35,0,Math.PI*2);X.fill();
+    X.globalAlpha=a*.5;X.fillStyle='#ffffff';X.beginPath();X.arc(-s*.15,-s*.18,s*.12,0,Math.PI*2);X.fill();
+    // 깜빡임
+    if(Math.sin(t*.03)>.5){X.globalAlpha=a*.15;X.fillStyle='#ffffcc';X.beginPath();X.arc(0,0,s+2,0,Math.PI*2);X.fill()}
+  }else if(el===5){// ── HOLY: 회전 황금 십자성 ──
+    const rot=t*.003;X.rotate(rot);
+    // 외곽 광휘
+    X.globalAlpha=a*.15;X.fillStyle='#ffdd44';
+    for(let i=0;i<8;i++){const ra=Math.PI*2*i/8;
+      X.beginPath();X.moveTo(0,0);X.lineTo(Math.cos(ra-0.12)*(s+5),Math.sin(ra-0.12)*(s+5));X.lineTo(Math.cos(ra+0.12)*(s+5),Math.sin(ra+0.12)*(s+5));X.fill()}
+    // 십자 코어 (4방향)
+    X.globalAlpha=a*.9;X.fillStyle='#cc9900';
+    X.fillRect(-s*.3,-s*1.1,s*.6,s*2.2);X.fillRect(-s*1.1,-s*.3,s*2.2,s*.6);
+    // 밝은 내부
+    X.globalAlpha=a;X.fillStyle='#ffcc22';
+    X.fillRect(-s*.15,-s*.9,s*.3,s*1.8);X.fillRect(-s*.9,-s*.15,s*1.8,s*.3);
+    // 중심 보석
+    X.globalAlpha=a;X.fillStyle='#fff8cc';X.beginPath();X.arc(0,0,s*.3,0,Math.PI*2);X.fill();
+    X.globalAlpha=a*.6;X.fillStyle='#ffffff';X.beginPath();X.arc(-s*.08,-s*.1,s*.12,0,Math.PI*2);X.fill();
+  }else{// ── PHYSICAL: 회전 정팔면체 ──
+    const rot=t*.003+x*.08;const c=Math.cos(rot),sn=Math.sin(rot);
+    // 팔면체 상단면 (밝은)
+    X.globalAlpha=a*.85;X.fillStyle='#aaaaaa';
+    X.beginPath();X.moveTo(0,-s*1.2);X.lineTo(s*c,0);X.lineTo(0,0);X.closePath();X.fill();
+    X.globalAlpha=a*.6;X.fillStyle='#888888';
+    X.beginPath();X.moveTo(0,-s*1.2);X.lineTo(-s*c,0);X.lineTo(0,0);X.closePath();X.fill();
+    // 팔면체 하단면 (어두운)
+    X.globalAlpha=a*.7;X.fillStyle='#777777';
+    X.beginPath();X.moveTo(0,s*1.2);X.lineTo(s*c,0);X.lineTo(0,0);X.closePath();X.fill();
+    X.globalAlpha=a*.5;X.fillStyle='#555555';
+    X.beginPath();X.moveTo(0,s*1.2);X.lineTo(-s*c,0);X.lineTo(0,0);X.closePath();X.fill();
+    // 엣지 하이라이트
+    X.globalAlpha=a*.4;X.strokeStyle='#dddddd';X.lineWidth=.7;
+    X.beginPath();X.moveTo(0,-s*1.2);X.lineTo(s*c,0);X.lineTo(0,s*1.2);X.lineTo(-s*c,0);X.closePath();X.stroke();
+    // 스펙큘러
+    X.globalAlpha=a*.4;X.fillStyle='#ffffff';X.beginPath();X.arc(-s*.15,-s*.3,s*.18,0,Math.PI*2);X.fill();
+  }
+  X.restore();
+}
 // 3D 프리렌더 PNG 스프라이트 그리기 (아틀라스 폴백 전 시도)
 function _drawProjPNG(x,y,pngType,pngEl,sprFr,sz,ang,alpha){
   const spr=_getProjSprite(pngType,pngEl);
@@ -5599,7 +5712,7 @@ for(const pt of _PROJ_TYPES_LOAD){
     _loadProjSprite(pt,ei,'img/proj_'+pt+'_'+_EL_NAMES[ei]+'.png',_PROJ_FRAMES[pt]);
   }
 }
-_loadProjSprite('redbean',0,'img/proj_redbean.png',4);
+// _loadProjSprite('redbean',0,'img/proj_redbean.png',4); // 주황색이라 비활성화 → 절차적 빨강 렌더링 사용
 _loadProjSprite('blackbean',0,'img/proj_blackbean.png',4);
 _loadProjSprite('bluebean',0,'img/proj_bluebean.png',4);
 
@@ -6006,9 +6119,35 @@ function buildMapCache(){
     // 어둠 가장자리
     c.fillStyle='rgba(0,0,0,.03)';c.fillRect(px,py,T,1);c.fillRect(px,py,1,T);
   }
+  // ── Pass 1.7: 보스 아레나 경계 바닥 (tile=5) — 룬 각인 ──
+  for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){
+    if(map[ty][tx]!==5)continue;
+    const px=tx*T,py=ty*T,R=_tseed(tx+77,ty+77);
+    c.fillStyle='#0a0610';c.fillRect(px,py,T,T);
+    // 룬 각인 노이즈
+    for(let i=0;i<6;i++){
+      const nx=px+R()*T,ny=py+R()*T,sz=2+R()*5;
+      c.fillStyle=`rgba(${40+~~(R()*30)},${10+~~(R()*15)},${50+~~(R()*30)},${.08+R()*.06})`;
+      c.beginPath();c.ellipse(nx,ny,sz,sz*.5,R()*Math.PI,0,Math.PI*2);c.fill();
+    }
+    // 빛나는 룬 라인
+    if(R()<.5){
+      c.strokeStyle=`rgba(${120+~~(R()*60)},${40+~~(R()*30)},${160+~~(R()*60)},${.12+R()*.08})`;
+      c.lineWidth=.8;c.beginPath();
+      let lx=px+R()*T,ly=py+R()*T;c.moveTo(lx,ly);
+      for(let s=0;s<2+~~(R()*2);s++){lx+=R()*12-6;ly+=R()*12-6;c.lineTo(lx,ly)}c.stroke();
+    }
+    // 가장자리 빛 (벽 인접 면에 미세한 보라빛)
+    const gInt=.06;
+    if(ty>0&&map[ty-1][tx]===1){c.fillStyle=`rgba(100,30,160,${gInt})`;c.fillRect(px,py,T,4)}
+    if(ty<mh-1&&map[ty+1][tx]===1){c.fillStyle=`rgba(100,30,160,${gInt})`;c.fillRect(px,py+T-4,T,4)}
+    if(tx>0&&map[ty][tx-1]===1){c.fillStyle=`rgba(100,30,160,${gInt})`;c.fillRect(px,py,4,T)}
+    if(tx<mw-1&&map[ty][tx+1]===1){c.fillStyle=`rgba(100,30,160,${gInt})`;c.fillRect(px+T-4,py,4,T)}
+    c.strokeStyle='rgba(50,20,80,.06)';c.lineWidth=.5;c.strokeRect(px+1,py+1,T-2,T-2);
+  }
   // ── Pass 2: 벽 그림자 (바닥 위에 드리움) ──
   for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){
-    if(map[ty][tx]!==0&&map[ty][tx]!==4)continue;
+    if(map[ty][tx]!==0&&map[ty][tx]!==4&&map[ty][tx]!==5)continue;
     const px=tx*T,py=ty*T;
     if(_isW(tx,ty-1)){const g=c.createLinearGradient(px,py,px,py+14);g.addColorStop(0,'rgba(0,0,0,.35)');g.addColorStop(.5,'rgba(0,0,0,.12)');g.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=g;c.fillRect(px,py,T,14)}
     if(_isW(tx-1,ty)){const g=c.createLinearGradient(px,py,px+8,py);g.addColorStop(0,'rgba(0,0,0,.2)');g.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=g;c.fillRect(px,py,8,T)}
@@ -6081,7 +6220,7 @@ function buildMapCache(){
   }
   // ── Pass 4: 분위기 광원 ──
   for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){
-    if(map[ty][tx]!==0&&map[ty][tx]!==4)continue;
+    if(map[ty][tx]!==0&&map[ty][tx]!==4&&map[ty][tx]!==5)continue;
     const R=_tseed(tx+100,ty+100);
     if(R()<.06){const px=tx*T,py=ty*T;const ac=_hexRgb(th.ac);const rad=20+R()*25;
       const g=c.createRadialGradient(px+T/2,py+T/2,0,px+T/2,py+T/2,rad);
@@ -7013,6 +7152,91 @@ function genGauntlet(fi){
   G.spawnHoles=spawnHoles;
 }
 
+// ═══ 보스 아레나 — 완전 별도 공간 생성 ═══
+function genBossArena(si){
+  const at=si%5;
+  const mw=50,mh=42;
+  const map=[];
+  for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
+  const cx=~~(mw/2),cy=~~(mh/2);
+  const il=3,it=3,ir=mw-3,ib=mh-3;
+  if(at===0){// ── 원형 투기장 ──
+    const rr=Math.min(ir-il,ib-it)/2-1;
+    for(let y=it;y<ib;y++)for(let x=il;x<ir;x++){if((x-cx)*(x-cx)+(y-cy)*(y-cy)<=rr*rr)map[y][x]=4}
+    const pr=~~(rr*.5);
+    [[0,-pr],[0,pr],[-pr,0],[pr,0]].forEach(([dx,dy])=>{
+      for(let py2=cy+dy;py2<=cy+dy+1;py2++)for(let px2=cx+dx;px2<=cx+dx+1;px2++)
+        if(py2>=0&&py2<mh&&px2>=0&&px2<mw)map[py2][px2]=1;
+    });
+  }else if(at===1){// ── 대성당 ──
+    for(let y=it;y<ib;y++)for(let x=il;x<ir;x++)map[y][x]=4;
+    for(let y=it+4;y<ib-4;y+=4){
+      for(let d=0;d<2;d++)for(let d2=0;d2<2;d2++){
+        if(y+d<mh){if(il+4+d2<mw)map[y+d][il+4+d2]=1;if(ir-5+d2>=0)map[y+d][ir-5+d2]=1}
+      }
+    }
+  }else if(at===2){// ── 십자형 ──
+    const armW=~~((ir-il)*.3),armH=~~((ib-it)*.3);
+    for(let y=it;y<ib;y++)for(let x=il;x<ir;x++){if(Math.abs(x-cx)<armW||Math.abs(y-cy)<armH)map[y][x]=4}
+  }else if(at===3){// ── 팔각형 ──
+    const hw=~~((ir-il)/2),hh=~~((ib-it)/2),cut=~~(Math.min(hw,hh)*.38);
+    for(let y=it;y<ib;y++)for(let x=il;x<ir;x++){
+      const dx2=Math.abs(x-cx),dy2=Math.abs(y-cy);
+      if(dx2<=hw&&dy2<=hh&&dx2+dy2<=hw+hh-cut)map[y][x]=4;
+    }
+    const pr2=~~(Math.min(hw,hh)*.5);
+    [[-1,-1],[1,-1],[-1,1],[1,1]].forEach(([sx,sy])=>{
+      const px=cx+sx*pr2,py=cy+sy*pr2;
+      if(py>=0&&py<mh&&px>=0&&px<mw&&map[py][px]===4){map[py][px]=1;if(py+sy>=0&&py+sy<mh)map[py+sy][px]=1}
+    });
+  }else{// ── 타원형 + 기둥 원 ──
+    for(let y=it;y<ib;y++)for(let x=il;x<ir;x++){
+      const nx=(x-cx)/((ir-il)/2),ny=(y-cy)/((ib-it)/2);
+      if(nx*nx+ny*ny<=1)map[y][x]=4;
+    }
+    const pr3=~~(Math.min(ir-il,ib-it)*.22);
+    for(let i=0;i<6;i++){const a=Math.PI*2*i/6;
+      const px=cx+~~(Math.cos(a)*pr3),py=cy+~~(Math.sin(a)*pr3);
+      if(py>=0&&py<mh&&px>=0&&px<mw&&map[py][px]===4)map[py][px]=1;
+    }
+  }
+  // 진입 지점 (하단 중앙) 확보
+  const entY=ib-3;
+  for(let dy=-2;dy<=1;dy++)for(let dx=-3;dx<=3;dx++){
+    const ty=entY+dy,tx=cx+dx;if(ty>=0&&ty<mh&&tx>=0&&tx<mw)map[ty][tx]=4;
+  }
+  // 보스 스폰 지점 (상단 중앙) 확보
+  const bossY=it+5;
+  for(let dy=-2;dy<=2;dy++)for(let dx=-3;dx<=3;dx++){
+    const ty=bossY+dy,tx=cx+dx;if(ty>=0&&ty<mh&&tx>=0&&tx<mw&&map[ty][tx]===1)map[ty][tx]=4;
+  }
+  const exitX=cx,exitY=ib-2;
+  if(exitY>=0&&exitY<mh)map[exitY][exitX]=4;
+  // 아레나 가장자리 — 벽 인접 바닥을 tile=5로 (경계 룬)
+  for(let y=it;y<ib;y++)for(let x=il;x<ir;x++){
+    if(map[y][x]!==4)continue;
+    if((y>0&&map[y-1][x]===1)||(y<mh-1&&map[y+1][x]===1)||(x>0&&map[y][x-1]===1)||(x<mw-1&&map[y][x+1]===1))map[y][x]=5;
+  }
+  return{map,mw,mh,rooms:[{x:il,y:it,w:ir-il,h:ib-it,cx:cx,cy:cy,type:'boss',cleared:false}],exitX,exitY,entryX:cx,entryY:entY,bossX:cx,bossY};
+}
+function _enterBossArena(){
+  const si=G.stage;const arena=genBossArena(si);
+  ens=[];projs=[];pProjs=[];worldItems=[];G.parts=[];G.txts=[];
+  G.hitStop=0;G.slowMo=0;G.curRoom=0;if(typeof _eSpCache!=='undefined')_eSpCache.clear();_impacts=[];
+  G.spawnHoles=[];G.rifts=[];
+  G.map=arena.map;G.mw=arena.mw;G.mh=arena.mh;
+  G.rooms=arena.rooms;G.exits=[];
+  G._bossArena=true;G._bossArenaExit={x:arena.exitX,y:arena.exitY};
+  G.bossGate=null;G.bossGateOpen=true;G.bossSealed=true;
+  P.x=(arena.entryX+.5)*T;P.y=(arena.entryY+.5)*T;
+  P.s='idle';P.iframes=90;P.kb={x:0,y:0};
+  G.cam.x=P.x;G.cam.y=P.y;
+  ens.push(mkEn((arena.bossX+.5)*T,(arena.bossY+.5)*T,si,0,true,STG[si].be,0));
+  G.bossAlive=true;G._bossRef=null;G._crT=0;
+  G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',tIdx:-1,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',tIdx:-1,t:~~(Math.random()*100)}};
+  buildMapCache();
+}
+
 // ═══ 적 타입 정의 ═══
 // 0:하급사도 1:가시사도 2:돌진사도 3:요마 4:갑각사도 5:태아형악마
 // 6:철갑사도 7:현자형사도 8:부풀은사도 9:의식사도
@@ -7458,6 +7682,7 @@ function spawnRoomEns(ri){
   const room=G.rooms[ri];if(!room||room.type==='start'||room.type==='forge')return;
   const si=G.stage;
   const ib=room.type==='boss';
+  if(ib)return; // 보스는 아레나 진입 시 별도 스폰
   // 디아블로식 대량 스폰: 방 크기에 비례 + 보스까지 거리 보정 (가까울수록 많이)
   const area=room.w*room.h;
   let distMul=1;
@@ -7563,7 +7788,7 @@ function initStage(si){
   genGauntlet(si);G.mapType='gauntlet';
   const st=G.rooms[0];P.x=(st.cx+.5)*T;P.y=(st.cy+.5)*T;
   P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle';P.iframes=0;P.kb={x:0,y:0};P._webSlow=0;P._trapSlowT=0;P._freezeSlow=0;P.burnT=0;P.poison=0;P._ioActive=false;P._ioT=0;
-  G.stageCleared=false;G._deathSpawned=false;
+  G.stageCleared=false;G._deathSpawned=false;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;
   G.rooms.forEach((room,ri)=>spawnRoomEns(ri));
   spawnCorridorEns(si);
   const fg=G.rooms.find(r=>r.type==='forge');
@@ -7678,8 +7903,9 @@ function update(){
   const _cbLvSt=P.skills.chargeBoost||0;
   const _hasChargeSk=_cbLvSt>=1||(P.skills.galeSlash||0)>=1||(P.skills.magicBlink||0)>=1;
   const _eqChargeStock=(ar().bonusChargeStock||0)+(bt().bonusChargeStock||0);
-  P.maxChargeStocks=Math.min(5,(_hasChargeSk?3+~~(_cbLvSt/10):1)+_eqChargeStock);
-  const _chargeCdBase=_hasChargeSk?600:300;
+  const _dimB=isDimBreach();
+  P.maxChargeStocks=_dimB?5:Math.min(5,(_hasChargeSk?3+~~(_cbLvSt/10):1)+_eqChargeStock);
+  const _chargeCdBase=_dimB?420:(_hasChargeSk?600:300);
   if(P.chargeStocks<P.maxChargeStocks){if(P.chargeCd>0)P.chargeCd-=sp;else{P.chargeStocks++;if(P.chargeStocks<P.maxChargeStocks)P.chargeCd=~~(_chargeCdBase*pChargeCd())}}
   if(P.blockFlash>0)P.blockFlash-=sp;
   // combo 시스템 제거 — 항상 3타 효과
@@ -7782,6 +8008,10 @@ function update(){
       if(_abs==='maliceMortar'&&P.skills.maliceMortar&&G.mats>=10&&P.mp>=50&&(P._mmCd||0)<=0){P._mmAiming=true;P._mmCharging=false;P._mmDist=150;P._mmKey='Space'}
       else if(_abs==='explosiveBolt'&&P.skills.explosiveBolt&&G.mats>=10&&!P._ebActive&&(P._ebCd||0)<=0){activateExplosiveBolt('Space')}
       else if(G.mats>0&&useSt(STC.bow+((BOWTYPES[bw().btype]||{}).stCost||0))){fireBow()}
+    }
+    else if(isAct('charge')&&_dimB&&P.chargeStocks>0&&P.mp>=magicCost()*2){
+      // ── 차원 돌파: 3이동스킬 합체 ──
+      _execDimBreach();
     }
     else if(isAct('charge')&&P.activeChargeSk==='magicBlink'&&P.skills.magicBlink&&P.chargeStocks>0&&P.mp>=magicCost()*3){
       // ── 마법 블링크: Shift로 발동, 충전스톡+MP 소모 ──
@@ -8211,6 +8441,16 @@ function update(){
     const blms=(P.speed+(bt().spd||0))*sp*.4;
     let blnx=P.x+bldx*blms,blny=P.y+bldy*blms;
     if(canMv(blnx,P.y,P.r))P.x=blnx;if(canMv(P.x,blny,P.r))P.y=blny;
+    if(P.st2<=0)P.s='idle';
+    break}
+  case 'dimBreachLand':{
+    // 차원 돌파 착지 회복 — 느린 이동 가능
+    let dbdx=0,dbdy=0;
+    if(isAct('up'))dbdy=-1;if(isAct('down'))dbdy=1;if(isAct('left'))dbdx=-1;if(isAct('right'))dbdx=1;
+    const dblen=Math.sqrt(dbdx*dbdx+dbdy*dbdy);if(dblen>0){dbdx/=dblen;dbdy/=dblen}
+    const dbms=(P.speed+(bt().spd||0))*sp*.4;
+    let dbnx=P.x+dbdx*dbms,dbny=P.y+dbdy*dbms;
+    if(canMv(dbnx,P.y,P.r))P.x=dbnx;if(canMv(P.x,dbny,P.r))P.y=dbny;
     if(P.st2<=0)P.s='idle';
     break}
   case 'cRecover':{
@@ -11797,65 +12037,39 @@ function checkRooms(){
     const r=G.rooms[i];
     if(px>=r.x&&px<=r.x+r.w&&py>=r.y&&py<=r.y+r.h){G.curRoom=i;break}
   }
-  // ── 보스방 블랙홀 게이트 입장 (다크소울식) ──
-  if(G.bossGate&&G.bossGate.length>0&&!G.bossGateOpen){
-    // 게이트 중심 좌표
+  // ── 보스 아레나 로딩 상태 머신 ──
+  if(G._bossLoadPhase>0){
+    G._bossGateNear=false;P.s='idle';P.st=0;P.st2=0;
+    G._bossLoadT=(G._bossLoadT||0)+sp;
+    if(G._bossLoadPhase===1){// 페이드 아웃
+      G._bossLoadFade=Math.min(1,G._bossLoadT/50);
+      if(G._bossLoadFade>=1){G._bossLoadPhase=2;G._bossLoadT=0;_enterBossArena()}
+    }else if(G._bossLoadPhase===2){// 보스 네임카드
+      G._bossLoadFade=1;
+      if(G._bossLoadT>=130){G._bossLoadPhase=3;G._bossLoadT=0}
+    }else if(G._bossLoadPhase===3){// 페이드 인
+      G._bossLoadFade=Math.max(0,1-G._bossLoadT/50);
+      if(G._bossLoadFade<=0){G._bossLoadPhase=0;G._bossLoadT=0;G._bossLoadFade=0}
+    }
+  }
+  // ── 보스방 블랙홀 게이트 (R키 상호작용) ──
+  else if(G.bossGate&&G.bossGate.length>0&&!G.bossGateOpen){
     const _gCx=G.bossGate.reduce((s,g)=>s+g.x,0)/G.bossGate.length;
     const _gCy=G.bossGate.reduce((s,g)=>s+g.y,0)/G.bossGate.length;
     const _gPx=(_gCx+.5)*T,_gPy=(_gCy+.5)*T;
-    const _gDist=dst(P.x,P.y,_gPx,_gPy);
-    G._bossGateNear=_gDist<T*3.5; // 프롬프트 표시 범위
-    // 흡입 연출 진행 중
-    if(G._bossEntering){
-      G._bossEnterT=(G._bossEnterT||0)+sp;
-      const prog=Math.min(1,G._bossEnterT/60); // 60틱(~1초) 연출
-      // 플레이어를 블랙홀 중심으로 빨아들이기
-      const pull=prog*prog; // ease-in
-      P.x+=((_gPx-P.x)*.08*pull)*sp;
-      P.y+=((_gPy-P.y)*.08*pull)*sp;
-      P.s='idle';P.st=0;P.st2=0;
-      // 슬로모 + 화면 어두워짐
-      G._bossEnterFade=prog;
-      if(prog>=1){
-        // 연출 완료 → 실제 입장
-        G._bossEntering=false;G._bossEnterT=0;G._bossEnterFade=0;
-        for(const g of G.bossGate)G.map[g.y][g.x]=0;
-        G.bossGateOpen=true;
-        P.x=(G._bossCx+.5)*T;P.y=G._bossEntY*T;
-        setTimeout(()=>{
-          if(!G.bossSealed){
-            G.bossSealed=true;
-            for(const g of G.bossGate)G.map[g.y][g.x]=1;
-            for(const g of G.bossGate){if(g.y+1<G.mh)G.map[g.y+1][g.x]=1}
-            buildMapCache();
-          }
-        },400);
-        buildMapCache();
-        addTxt(P.x,P.y-40,'💀 보스방 입장!','#ff2200',80);
-        addTxt(P.x,P.y-25,'⚠ 돌아갈 수 없다!','#ff6644',60);
-        SFX.groggy();G.shake=18*OPT.shake/100;
-        G.cam.x=P.x;G.cam.y=P.y;
-      }
-    }
-    // R키 상호작용으로 진입 시작
-    else if(G._bossGateNear&&isJust('interact')&&!G._bossEntering){
-      G._bossEntering=true;G._bossEnterT=0;G._bossEnterFade=0;
+    G._bossGateNear=dst(P.x,P.y,_gPx,_gPy)<T*2.5;
+    if(G._bossGateNear){
+      G._bossLoadPhase=1;G._bossLoadT=0;G._bossLoadFade=0;
       SFX.groggy();
       for(let k=0;k<15;k++){const a=Math.random()*Math.PI*2;const v=3+Math.random()*5;
         poolPart(P.x+Math.cos(a)*20,P.y+Math.sin(a)*20,-Math.cos(a)*v,-Math.sin(a)*v,'#8833cc',2+Math.random()*3,15+Math.random()*10)}
     }
   }
-  // 보스 처치 후 봉쇄 해제
-  if(G.bossSealed&&!G.bossAlive&&G.bossGate){
-    G.bossSealed=false;
-    for(const g of G.bossGate){G.map[g.y][g.x]=0;if(g.y+1<G.mh&&G.map[g.y+1][g.x]===1)G.map[g.y+1][g.x]=0}
-    buildMapCache();
-  }
   // 무거운 로직은 30프레임마다만 실행
   G._crT=(G._crT||0)+1;
   if(G._crT<30)return;
   G._crT=0;
-  // 보스 처치 → 출구 활성화 + 보물상자 스폰 (보스 생존 직접 체크)
+  // 보스 처치 → 출구 활성화 + 보물상자 스폰
   if(G.bossAlive){
     let _bossLive=false;
     for(let j=0;j<ens.length;j++){if(ens[j].alive&&ens[j].ib){_bossLive=true;break}}
@@ -11864,11 +12078,18 @@ function checkRooms(){
       G.bossAlive=false;
       addTxt(P.x,P.y-40,'출구가 열렸다!','#44ff88',80);
       SFX.victory();G.shake=10*OPT.shake/100;
-      // 보물상자 스폰
       const cx=(bossRoom.cx+.5)*T,cy=(bossRoom.cy+.5)*T;
       worldItems.push({x:cx,y:cy,type:'chest',picked:false,opened:false});
       addTxt(cx,cy-30,'보물상자 출현!','#ffcc00',80);
       addParts(cx,cy,'#ffcc00',12);
+      // 보스 아레나 출구 생성
+      if(G._bossArena&&G._bossArenaExit){
+        const ex=G._bossArenaExit;
+        if(ex.y>=0&&ex.y<G.mh&&ex.x>=0&&ex.x<G.mw)G.map[ex.y][ex.x]=0;
+        G.exits.push({x:ex.x,y:ex.y});
+        buildMapCache();
+        addTxt((ex.x+.5)*T,(ex.y+.5)*T-20,'출구','#44ff88',60);
+      }
     }
   }
   // 출구 진입 체크 (보스 사망 후)
@@ -12025,6 +12246,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
 
   if(dmg > 0) {
     e.hp-=dmg;addTxt(e.x,e.y-12,'-'+dmg,dmg>=20?'#ffaa00':'#ffcc66',25);addParts(e.x,e.y,e.col,Math.min(~~(dmg/3*OPT.parts/100),10));
+    e._hitFlash = 6;
   }
   G.shake=Math.min(G.shake+2,10)*OPT.shake/100;
   
@@ -12628,7 +12850,7 @@ function die(){
   $('dInfo').textContent=`💀 ${G.kills} 처치 | ${HELL_NAMES[STG[G.stage].hell]} ${STG[G.stage].kr} | 경험치 -${expLoss}`;
   $('death').classList.add('on');
 }
-function nextStage(){SFX.beamStop();$('stageClear').style.opacity='0';$('stageClear').style.pointerEvents='none';G.stageCleared=false;G.on=false;ens=[];G.rooms=[];G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G.stage++;showSplash(()=>{initStage(G.stage);G.on=true})}
+function nextStage(){SFX.beamStop();$('stageClear').style.opacity='0';$('stageClear').style.pointerEvents='none';G.stageCleared=false;G.on=false;ens=[];G.rooms=[];G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G.stage++;showSplash(()=>{initStage(G.stage);G.on=true})}
 function doWin(){
   SFX.beamStop();G.on=false;
   BGM.fadeOut(800);setTimeout(()=>BGM.play('victory'),1000);
@@ -12752,7 +12974,85 @@ const SKILL_SLOT_DEFS={
           bladeShot:{name:'칼날살',emoji:'🌀',desc:'스킬키: 회전 칼날 발사 (ST50)'}}}
 };
 
+// ═══ FUSION_RULES — 같은 카테고리 스킬 합체 테이블 ═══
+const FUSION_RULES=[
+  {id:'dimBreach',name:'차원 돌파',cat:'move',skills:['chargeBoost','galeSlash','magicBlink'],minLv:1,
+   desc:'3이동스킬 합체: 독+출혈 관통돌진 → 착지 대폭발',emoji:'🌀'},
+];
+function getFusion(cat){return FUSION_RULES.find(f=>f.cat===cat&&f.skills.every(s=>(P.skills[s]||0)>=f.minLv))||null}
+function isDimBreach(){const f=getFusion('move');return f&&f.id==='dimBreach'}
+// 합체 가능 스킬 보석 색상 매핑 (같은 합체 = 같은색)
+const _FUSE_GEMS={
+  chargeBoost:'#aa66ff',galeSlash:'#aa66ff',magicBlink:'#aa66ff', // 차원 돌파
+  whirlwind:'#ff6633',detonate:'#ff6633', // 회전기폭
+  maliceHunt:'#cc44ff',guardian:'#cc44ff', // 악의 해방
+  fanShot:'#ffaa00',omniBeam:'#ffaa00', // 육선포
+};
+function _fuseGem(skId){return _FUSE_GEMS[skId]||null}
+
+function _execDimBreach(){
+  P.chargeStocks--;
+  P.chargeCd=~~(420*pChargeCd());
+  P.mp=Math.max(0,P.mp-magicCost()*2);
+  const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;
+  const a=Math.atan2(mouse.y-sy,mouse.x-sx);
+  // 블링크식 순간이동 + 경로 관통 히트
+  const _cbLv=P.skills.chargeBoost||0,_gsLv=P.skills.galeSlash||0,_blLv=P.skills.magicBlink||0;
+  const _crDist=(_cbLv>=1?250+_cbLv*30:200)*2; // chargeBoost 2배 거리
+  let _crX=P.x,_crY=P.y;
+  for(let _s=1;_s<=10;_s++){
+    const _tx=P.x+Math.cos(a)*(_crDist*_s/10),_ty=P.y+Math.sin(a)*(_crDist*_s/10);
+    if(canMv(_tx,_ty,P.r+6)){_crX=_tx;_crY=_ty}else break;
+  }
+  if(!canMv(_crX,_crY,P.r)){const _sp=safePt(_crX,_crY,P.r);if(_sp){_crX=_sp.x;_crY=_sp.y}else{_crX=P.x;_crY=P.y}}
+  P.blinkOx=P.x;P.blinkOy=P.y;
+  // 경로상 적 관통 히트 (질풍참식 독+출혈)
+  const _hitW=30+_cbLv*5;
+  const _pathEns=shQuery((P.x+_crX)/2,(P.y+_crY)/2,_crDist/2+60);
+  const _gsDotMul=1+_gsLv*0.2;
+  P._dimBreachHitCount=0;
+  for(let i=0;i<_pathEns.length;i++){
+    const e=_pathEns[i];if(!e.alive)continue;
+    const ex=e.x-P.x,ey=e.y-P.y,lx=_crX-P.x,ly=_crY-P.y;
+    const t2=Math.max(0,Math.min(1,(ex*lx+ey*ly)/(lx*lx+ly*ly)));
+    const px=P.x+lx*t2,py=P.y+ly*t2;
+    if(dst(px,py,e.x,e.y)>_hitW+e.r)continue;
+    const baseDmg=~~(((ar().charge||10)*itemDurMul(ar())+P.baseAtk)*_gsDotMul*2);
+    hurtE(e,baseDmg,Math.atan2(e.y-P.y,e.x-P.x),false,{bleed:true,poison:true},ar().el);
+    e.bleedT=Math.max(e.bleedT||0,300+_gsLv*30);e.poisonT=Math.max(e.poisonT||0,300+_gsLv*30);
+    e.bleed=1;e.poison=1;
+    P._dimBreachHitCount++;
+    for(let j=0;j<6;j++){const ja=Math.PI*2*j/6;poolPart(e.x,e.y,Math.cos(ja)*4,Math.sin(ja)*4,j%2?'#44cc00':'#cc2222',2+Math.random()*3,12)}
+  }
+  P.x=_crX;P.y=_crY;
+  // 착지 폭발 (INT 스케일)
+  P.s='dimBreachLand';P.st2=15;P.iframes=18;P.atkArc=a;
+  const expR=120+statInt()*30+_blLv*10;
+  const expDmg=~~(((ar().charge||10)*itemDurMul(ar())+P.baseAtk)*3+statInt()*60);
+  const nbe=shQuery(P.x,P.y,expR);
+  for(const e of nbe){
+    if(!e.alive)continue;
+    if(dst(P.x,P.y,e.x,e.y)<expR+e.r){
+      hurtE(e,expDmg,Math.atan2(e.y-P.y,e.x-P.x));
+    }
+  }
+  P._dimExpR=expR; // 렌더링용
+  G.shake=18*OPT.shake/100;G.hitStop=~~(8*OPT.hitStop/100);
+  G.chromaT=15;
+  addParts(P.x,P.y,'#8844ff',30);addParts(P.x,P.y,'#ff4488',20);addParts(P.x,P.y,'#44cc00',15);
+  SFX.hit();
+  // 트레일 파티클 (보라+초록)
+  for(let j=0;j<20;j++){const t2=j/20;const tx=P.blinkOx+(P.x-P.blinkOx)*t2,ty=P.blinkOy+(P.y-P.blinkOy)*t2;
+    poolPart(tx+(Math.random()-.5)*12,ty+(Math.random()-.5)*12,(Math.random()-.5)*3,(Math.random()-.5)*3,j%2?'#8844ff':'#44cc00',2+Math.random()*4,12+Math.random()*8)}
+  addTxt(P.x,P.y-30,'🌀 차원 돌파!','#aa66ff',50);
+  if(G._pStats)G._pStats._dC++;
+}
+
 function cycleChargeSk(){
+  if(isDimBreach()){
+    addTxt(P.x,P.y-30,'🌀 차원 돌파','#aa66ff',40);
+    SFX.pickup();return;
+  }
   const def=SKILL_SLOT_DEFS.charge;
   const avail=def.skills.filter(id=>id==='charge'||(P.skills[id]||0)>=1);
   if(avail.length<=1)return;
@@ -12765,6 +13065,13 @@ function cycleChargeSk(){
 
 function updateSkSlot(){
   const el=$('skSlot0');if(!el)return;
+  if(isDimBreach()){
+    el.innerHTML=`<span class="sk-key">${keyName(BINDS.skillCycle)}</span><span class="sk-emoji">🌀</span><span class="sk-name">차원 돌파</span>`;
+    el.title='3이동스킬 합체: 독+출혈 관통돌진 → 착지 대폭발';
+    el.style.borderColor='#8844ff';
+    return;
+  }
+  el.style.borderColor='';
   const sk=P.activeChargeSk||'charge';
   const info=SKILL_SLOT_DEFS.charge.info[sk];
   el.innerHTML=`<span class="sk-key">${keyName(BINDS.skillCycle)}</span><span class="sk-emoji">${info.emoji}</span><span class="sk-name">${info.name}</span>`;
@@ -12952,18 +13259,19 @@ function activateIceShatter(){
   const nBlades=12+(slv-1)*2; // 레벨당 +2 칼날
   const baseDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*3*(1+(slv-1)*0.15));
   const cx=P.x,cy=P.y;
-  // 부채꼴 전방위 칼날 방사
+  // 전방위 얼음파편 방사 (큰 파편)
+  const _ioSpawnR=P.r+32; // 구체 표면에서 발사
   for(let i=0;i<nBlades;i++){
-    const ang=(Math.PI*2/nBlades)*i;
-    const spd=6+Math.random()*2;
-    pProjs.push({x:cx+Math.cos(ang)*18,y:cy+Math.sin(ang)*18,
+    const ang=(Math.PI*2/nBlades)*i+(Math.random()-.5)*.15; // 약간 불규칙
+    const spd=7+Math.random()*3;
+    pProjs.push({x:cx+Math.cos(ang)*_ioSpawnR,y:cy+Math.sin(ang)*_ioSpawnR,
       vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd,
-      dmg:baseDmg,el:EL.I,maxDist:500+(slv-1)*30,dist:0,r:8,
-      magic:true,iceBlade:true,_hitSet:new Set(),pierce:2,stagger:12,kb:6,
+      dmg:baseDmg,el:EL.I,maxDist:550+(slv-1)*30,dist:0,r:12,
+      magic:true,iceBlade:true,_hitSet:new Set(),pierce:2,stagger:14,kb:8,
       _iceAng:ang,_iceT:0});
   }
   // 파쇄 범위 데미지 (근접)
-  const shatterR=80+slv*5;
+  const shatterR=100+slv*5;
   const shatterDmg=~~(baseDmg*0.5);
   for(let i=0;i<ens.length;i++){
     const e=ens[i];if(!e.alive)continue;
@@ -12972,10 +13280,21 @@ function activateIceShatter(){
       hurtE(e,shatterDmg,ang,false,{},EL.I);
     }
   }
-  // 파쇄 이펙트
-  for(let i=0;i<20;i++){
-    const a=Math.PI*2*i/20;
-    poolPart(cx+Math.cos(a)*20,cy+Math.sin(a)*20,Math.cos(a)*6+Math.random()*2,Math.sin(a)*6+Math.random()*2,'#88ddff',3+Math.random()*4,15+Math.random()*10);
+  // 파쇄 이펙트 — 큰 얼음 파편 + 냉기 먼지
+  for(let i=0;i<24;i++){
+    const a=Math.PI*2*i/24;
+    const spd=5+Math.random()*5;
+    poolPart(cx+Math.cos(a)*_ioSpawnR,cy+Math.sin(a)*_ioSpawnR,
+      Math.cos(a)*spd+Math.random()*2,Math.sin(a)*spd+Math.random()*2,
+      i%3===0?'#ddf4ff':i%3===1?'#aaeeff':'#88ddff',
+      3+Math.random()*5,18+Math.random()*12);
+  }
+  // 미세 냉기 먼지
+  for(let i=0;i<16;i++){
+    const a=Math.random()*Math.PI*2;const d=Math.random()*_ioSpawnR;
+    poolPart(cx+Math.cos(a)*d,cy+Math.sin(a)*d,
+      (Math.random()-.5)*4,(Math.random()-.5)*4-1,
+      '#cceeff',1+Math.random()*2,10+Math.random()*8);
   }
   SFX.parry();
   addTxt(cx,cy-30,'❄ 파쇄!','#aaeeff',50);
@@ -13080,6 +13399,17 @@ function fireLavaSummon(){
 function openSkSlotPop(){
   const pop=$('skSlotPop');if(!pop)return;
   if(pop.style.display==='flex'){pop.style.display='none';return}
+  if(isDimBreach()){
+    // 합체 상태: 사이클 불가, 안내만
+    pop.innerHTML='';
+    const d=document.createElement('div');d.className='sk-opt active';
+    d.innerHTML='<span class="sk-opt-emoji">🌀</span><span class="sk-opt-name">차원 돌파</span><span class="sk-opt-desc">3이동스킬 합체 (해제 불가)</span>';
+    d.onclick=()=>{pop.style.display='none'};
+    pop.appendChild(d);
+    pop.style.left='50%';pop.style.top='50%';pop.style.bottom='';
+    pop.style.transform='translate(-50%,-50%)';
+    pop.style.display='flex';return;
+  }
   const def=SKILL_SLOT_DEFS.charge;
   pop.innerHTML='';
   const avail=def.skills.filter(id=>id==='charge'||(P.skills[id]||0)>=1);
@@ -13124,6 +13454,10 @@ function renderSkillPanel(){
   });
 }
 function _renderSkillRow(sk,grid){
+    // 차원 돌파 합체: 3이동스킬 모두 습득 시
+    const _dimFuse=isDimBreach();
+    if((sk.id==='galeSlash'||sk.id==='magicBlink')&&_dimFuse) return;
+    const _isDimFuse=sk.id==='chargeBoost'&&_dimFuse;
     // 스킬 합성: 회전참+기폭팔 둘 다 습득 → 합성 (기폭팔 숨김)
     const _synth=P.skills.whirlwind>=1&&P.skills.detonate>=1;
     if(sk.id==='detonate'&&_synth) return;
@@ -13141,11 +13475,13 @@ function _renderSkillRow(sk,grid){
     const _hasUltLearned=sk.ult&&SKILL_LIST.some(s=>s.ult&&s.id!==sk.id&&(P.skills[s.id]||0)>=1);
     const canLearn=!learned&&_reqMet&&P.lv>=sk.lvReq&&P.sp>=sk.spCost&&G.mats>=sk.matCost&&!_hasUltLearned;
     const _skMaxLv=10;
+    const _dimCanUpGale=_isDimFuse&&(P.skills.galeSlash||0)<_skMaxLv&&P.sp>=(SKILL_LIST.find(s=>s.id==='galeSlash').upSp||10)&&G.mats>=(SKILL_LIST.find(s=>s.id==='galeSlash').upMat||80);
+    const _dimCanUpBlink=_isDimFuse&&(P.skills.magicBlink||0)<_skMaxLv&&P.sp>=(SKILL_LIST.find(s=>s.id==='magicBlink').upSp||10)&&G.mats>=(SKILL_LIST.find(s=>s.id==='magicBlink').upMat||100);
     const _synthCanUpDet=_isSynth&&(P.skills.detonate||0)<_skMaxLv&&P.sp>=(SKILL_LIST.find(s=>s.id==='detonate').upSp||8)&&G.mats>=(SKILL_LIST.find(s=>s.id==='detonate').upMat||40);
     const _sixCanUpOmni=_isSixFuse&&(P.skills.omniBeam||0)<_skMaxLv&&P.sp>=(SKILL_LIST.find(s=>s.id==='omniBeam').upSp||10)&&G.mats>=(SKILL_LIST.find(s=>s.id==='omniBeam').upMat||100);
-    const canUp=(learned&&sk.up&&slv<_skMaxLv&&P.sp>=(sk.upSp||10)&&G.mats>=(sk.upMat||100))||_synthCanUpDet||_sixCanUpOmni;
+    const canUp=(learned&&sk.up&&slv<_skMaxLv&&P.sp>=(sk.upSp||10)&&G.mats>=(sk.upMat||100))||_synthCanUpDet||_sixCanUpOmni||_dimCanUpGale||_dimCanUpBlink;
     const d=document.createElement('div');
-    d.style.cssText='position:relative;padding:12px;margin-bottom:8px;border:1px solid '+(_isSixFuse?'#cc8800':_isBladeFuse?'#6622aa':_isSynth?'#cc6600':learned?'#448833':'#443322')+';background:rgba('+(_isSixFuse?'80,50,0':_isBladeFuse?'40,0,80':_isSynth?'60,30,0':'0,0,0')+',.3);'+((canLearn||canUp)?'cursor:pointer;':'');
+    d.style.cssText='position:relative;padding:12px;margin-bottom:8px;border:1px solid '+(_isDimFuse?'#8844ff':_isSixFuse?'#cc8800':_isBladeFuse?'#6622aa':_isSynth?'#cc6600':learned?'#448833':'#443322')+';background:rgba('+(_isDimFuse?'60,20,100':_isSixFuse?'80,50,0':_isBladeFuse?'40,0,80':_isSynth?'60,30,0':'0,0,0')+',.3);'+((canLearn||canUp)?'cursor:pointer;':'');
     let lockTxt='';
     if(!learned){
       lockTxt=_hasUltLearned?'<span style="color:#ff4444">🔒 다른 필살기 습득됨 (1개만 가능)</span>'
@@ -13155,7 +13491,10 @@ function _renderSkillRow(sk,grid){
     }else if(sk.up){
       const bonusPct=(slv-1)*10;
       let upLabel;
-      if(_isBladeFuse){
+      if(_isDimFuse){
+        const _gsLv=P.skills.galeSlash||1,_blLv=P.skills.magicBlink||1;
+        upLabel='돌진 Lv.'+slv+' 질풍 Lv.'+_gsLv+' 블링크 Lv.'+_blLv+' | 스톡5 쿨7초';
+      }else if(_isBladeFuse){
         const _gSlv=P.skills.guardian||1;
         const _bladeMax=8+(slv>=10||_gSlv>=10?2:0);
         const _regenF=Math.max(40,90-(slv+_gSlv-2)*4);
@@ -13170,16 +13509,18 @@ function _renderSkillRow(sk,grid){
         upLabel=sk.id==='chargeBoost'?'3충전 거리×'+(2+(slv-1)*.05).toFixed(2)+' 뎀×'+(1.5+(slv-1)*.25).toFixed(1)+' 속도+'+(slv-1)*2+' 폭+'+((slv-1)*2.5+12):sk.id==='detonate'?'비율 '+(15+(slv-1)*5)+'% 범위 '+(150+(slv-1)*10):sk.id==='galeSlash'?'DOT뎀 ×'+(1+slv*.2).toFixed(1)+' 독+출혈 (DEX)':sk.id==='magicBlink'?'폭발뎀 ×'+(1+(slv-1)*.15).toFixed(2)+' 범위 '+(130+(slv-1)*10)+' (INT)':sk.id==='fanShot'?'뎀 +'+bonusPct+'% 연사+1':'뎀 +'+bonusPct+'%';
       }
       const _isMax=slv>=_skMaxLv;
-      lockTxt='<span style="color:#'+(_isSixFuse?'ffaa00':_isBladeFuse?'aa66ff':_isSynth?'ff8844':_isMax?'ffdd00':'44cc44')+'">습득 Lv.'+slv+(_isMax?' MAX':'')+' ('+upLabel+')</span>';
+      lockTxt='<span style="color:#'+(_isDimFuse?'aa66ff':_isSixFuse?'ffaa00':_isBladeFuse?'aa66ff':_isSynth?'ff8844':_isMax?'ffdd00':'44cc44')+'">습득 Lv.'+slv+(_isMax?' MAX':'')+' ('+upLabel+')</span>';
       if(canUp&&!_isMax) lockTxt += ' <span style="color:#ffcc44;">[강화 가능: ⭐'+sk.upSp+' 👿'+sk.upMat+']</span>';
     }else{
       lockTxt='<span style="color:#44cc44">✅ 습득 완료</span>';
     }
 
     // 헤더/설명 구성
-    const _dispName=_isSixFuse?'☆ 육선포 [합체]':_isBladeFuse?'⚔ 악의 해방 [합체]':_isSynth?'회전기폭 [합성]':sk.name;
-    const _dispDesc=_isSixFuse?'만화방창 + 멸살광선 합체. E홀드 → 6원소 부채꼴 유도 레이저! 적 자동 추적, 이동 가능':_isBladeFuse?'악의사냥 + 악의보호자 합체. 암흑칼날이 몸 주위를 돌며 투사체 방어. 슬롯 키로 모인 칼날 전부 발사! (만렙 시 +2칼날)':_isSynth?'회전참 + 기폭팔 합성. 회전 중 패링 쉴드 자동 발동 → 적 공격 흡수 → 종료 시 자동 광역 폭발':sk.desc;
-    d.innerHTML='<div style="color:'+(_isSixFuse?'#ffaa00':_isBladeFuse?'#cc88ff':_isSynth?'#ff8844':'#ffcc66')+';font-size:.9rem;font-weight:700;margin-bottom:4px">'+_dispName+'</div>'
+    const _gemCol=_fuseGem(sk.id);
+    const _gemHtml=_gemCol&&!_isDimFuse&&!_isSixFuse&&!_isBladeFuse&&!_isSynth?' <span style="color:'+_gemCol+';font-size:.75rem;text-shadow:0 0 4px '+_gemCol+'">◆</span>':'';
+    const _dispName=_isDimFuse?'🌀 차원 돌파 [합체]':_isSixFuse?'☆ 육선포 [합체]':_isBladeFuse?'⚔ 악의 해방 [합체]':_isSynth?'회전기폭 [합성]':sk.name+_gemHtml;
+    const _dispDesc=_isDimFuse?'돌진강화 + 질풍참 + 블링크 합체. Shift → 독+출혈 관통돌진 후 INT 기반 착지 대폭발! 스톡5, 쿨7초':_isSixFuse?'만화방창 + 멸살광선 합체. E홀드 → 6원소 부채꼴 유도 레이저! 적 자동 추적, 이동 가능':_isBladeFuse?'악의사냥 + 악의보호자 합체. 암흑칼날이 몸 주위를 돌며 투사체 방어. 슬롯 키로 모인 칼날 전부 발사! (만렙 시 +2칼날)':_isSynth?'회전참 + 기폭팔 합성. 회전 중 패링 쉴드 자동 발동 → 적 공격 흡수 → 종료 시 자동 광역 폭발':sk.desc;
+    d.innerHTML='<div style="color:'+(_isDimFuse?'#aa66ff':_isSixFuse?'#ffaa00':_isBladeFuse?'#cc88ff':_isSynth?'#ff8844':'#ffcc66')+';font-size:.9rem;font-weight:700;margin-bottom:4px">'+_dispName+'</div>'
       +'<div style="color:#aa9966;font-size:.85rem;margin-bottom:6px">'+_dispDesc+'</div>'
       +'<div style="color:#886644;font-size:.8rem;margin-bottom:4px">'+(learned?'':'필요: LV.'+sk.lvReq+' | ⭐'+sk.spCost+' SP | 👿'+sk.matCost+' 악의')+'</div>'
       +'<div>'+lockTxt+'</div>';
@@ -13277,6 +13618,20 @@ function _renderSkillRow(sk,grid){
           else if(sk.act){
             const _emptyIdx=SKILL_SLOTS.findIndex(s=>s===null);
             if(_emptyIdx>=0&&!SKILL_SLOTS.includes(sk.id)){SKILL_SLOTS[_emptyIdx]=sk.id;const _asLbl=_emptyIdx<4?'슬롯 '+(_emptyIdx+1):_emptyIdx===4?'SP슬롯':_emptyIdx===5?'Q슬롯':'CT슬롯';addTxt(P.x,P.y-50,_asLbl+' 배정!','#ff8844',40);updateQS()}
+          }
+        } else if(_isDimFuse){
+          // 차원 돌파 합체 강화: 3스킬 교대 (낮은 레벨 우선)
+          const _gsLv2=P.skills.galeSlash||1,_blLv2=P.skills.magicBlink||1;
+          const _gsSk=SKILL_LIST.find(s=>s.id==='galeSlash'),_blSk=SKILL_LIST.find(s=>s.id==='magicBlink');
+          const _trio=[{id:'chargeBoost',lv:slv,sp:sk.upSp,mat:sk.upMat},{id:'galeSlash',lv:_gsLv2,sp:_gsSk.upSp||10,mat:_gsSk.upMat||80},{id:'magicBlink',lv:_blLv2,sp:_blSk.upSp||10,mat:_blSk.upMat||100}];
+          _trio.sort((a,b)=>a.lv-b.lv);
+          for(const t of _trio){
+            if(t.lv<_skMaxLv&&P.sp>=t.sp&&G.mats>=t.mat){
+              P.skills[t.id]++;P.sp-=t.sp;G.mats-=t.mat;
+              const nm=t.id==='chargeBoost'?'돌진':t.id==='galeSlash'?'질풍':'블링크';
+              SFX.levelup();addTxt(P.x,P.y-30,nm+' Lv.'+P.skills[t.id]+(P.skills[t.id]>=_skMaxLv?' MAX!':'!'),'#aa66ff',60);
+              break;
+            }
           }
         } else if(_isSynth){
           // 합성 강화: 낮은 레벨 우선 (회전참/기폭팔 교대)
@@ -13468,6 +13823,43 @@ $('optTrail').onchange=function(){OPT.trail=this.checked;saveSettings()};
 $('optSlash').onchange=function(){OPT.slash=this.checked;saveSettings()};
 $('optPostfx').onchange=function(){OPT.postfx=this.checked;saveSettings()};
 $('optDeathFx').onchange=function(){OPT.deathFx=this.checked;saveSettings()};
+// ── Electron 화면 설정 (해상도 + 화면모드) ──
+if(IS_ELECTRON&&window.electronAPI){
+  $('optScreenSection').style.display='';
+  // 해상도 목록 채우기
+  window.electronAPI.getResolutions().then(info=>{
+    const sel=$('optRes');sel.innerHTML='';
+    info.list.forEach(r=>{const o=document.createElement('option');o.value=r[0]+'x'+r[1];o.textContent=r[0]+' x '+r[1];sel.appendChild(o)});
+    // 현재 해상도 선택
+    const curStr=info.current[0]+'x'+info.current[1];
+    const best=info.list.reduce((prev,r)=>{const d=Math.abs(r[0]-info.current[0])+Math.abs(r[1]-info.current[1]);return d<prev.d?{v:r[0]+'x'+r[1],d}:prev},{v:curStr,d:9999});
+    sel.value=best.v;
+    // 저장된 설정 복원
+    try{const saved=localStorage.getItem('hellcave_screen');
+      if(saved){const d=JSON.parse(saved);
+        if(d.mode)$('optDispMode').value=d.mode;
+        if(d.res)sel.value=d.res;
+      }
+    }catch(e){}
+  });
+  // 화면모드 변경
+  window.electronAPI.getDisplayMode().then(m=>{
+    if(m==='fullscreen')$('optDispMode').value='fullscreen';
+    else if(m==='borderless')$('optDispMode').value='borderless';
+    else $('optDispMode').value='windowed';
+  });
+  $('optDispMode').onchange=function(){
+    window.electronAPI.setFullscreen(this.value);
+    // 전체화면/보더리스면 해상도 선택 비활성
+    $('optRes').disabled=(this.value!=='windowed');
+    try{localStorage.setItem('hellcave_screen',JSON.stringify({mode:this.value,res:$('optRes').value}))}catch(e){}
+  };
+  $('optRes').onchange=function(){
+    const p=this.value.split('x');
+    if(p.length===2)window.electronAPI.setResolution(+p[0],+p[1]);
+    try{localStorage.setItem('hellcave_screen',JSON.stringify({mode:$('optDispMode').value,res:this.value}))}catch(e){}
+  };
+}
 // ── 하드웨어 진단 UI ──
 $('btnRedetect').onclick=function(){
   _gpuScoreCache=detectTier();
@@ -14555,26 +14947,41 @@ function draw(){
     X.strokeStyle='#ee88ff';X.lineWidth=1.5;
     X.beginPath();X.arc(_bhX,_bhY,_bhR*.45,0,Math.PI*2);X.stroke();
     X.globalAlpha=1;
-    // [R] 프롬프트
-    if(G._bossGateNear&&!G._bossEntering){
-      const _prA=.7+Math.sin(_bhT/200)*.3;
-      X.globalAlpha=_prA;X.font='bold 14px "Noto Sans KR"';X.textAlign='center';X.textBaseline='middle';
-      X.fillStyle='#ffcc44';X.fillText('['+keyName(BINDS.interact)+'] 심연으로 들어간다',_bhX,_bhY+_bhR*2+12);
-      X.textAlign='left';X.textBaseline='alphabetic';X.globalAlpha=1;
+  }
+  // ── 보스 아레나 로딩 오버레이 (다크소울 스타일) ──
+  if(G._bossLoadPhase>0){
+    X.save();X.setTransform(1,0,0,1,0,0);
+    const _blF=G._bossLoadFade||0;
+    // 검은 배경
+    X.globalAlpha=_blF;X.fillStyle='#000';X.fillRect(0,0,C.width,C.height);
+    if(G._bossLoadPhase>=2&&_blF>.5){
+      const _si2=G.stage;const _stg2=STG[_si2];
+      const _nt=G._bossLoadPhase===2?Math.min(1,(G._bossLoadT||0)/35):1;
+      const _cw=C.width,_ch=C.height;
+      // 미세한 보라 안개
+      X.globalAlpha=_nt*.15;
+      const _fg=X.createRadialGradient(_cw/2,_ch/2,0,_cw/2,_ch/2,_cw*.4);
+      _fg.addColorStop(0,'rgba(80,20,140,.4)');_fg.addColorStop(1,'rgba(0,0,0,0)');
+      X.fillStyle=_fg;X.fillRect(0,0,_cw,_ch);
+      // 가로 장식선
+      X.globalAlpha=.35*_nt;X.strokeStyle='#886633';X.lineWidth=1;
+      X.beginPath();X.moveTo(_cw*.15,_ch*.46);X.lineTo(_cw*.85,_ch*.46);X.stroke();
+      X.beginPath();X.moveTo(_cw*.15,_ch*.60);X.lineTo(_cw*.85,_ch*.60);X.stroke();
+      // 장식 다이아몬드
+      X.globalAlpha=.25*_nt;X.fillStyle='#aa7744';
+      const _dm=4;X.save();X.translate(_cw/2,_ch*.46);X.rotate(Math.PI/4);X.fillRect(-_dm,-_dm,_dm*2,_dm*2);X.restore();
+      X.save();X.translate(_cw/2,_ch*.60);X.rotate(Math.PI/4);X.fillRect(-_dm,-_dm,_dm*2,_dm*2);X.restore();
+      // 보스 이름
+      X.globalAlpha=_nt;X.font='bold 40px "Noto Sans KR"';X.textAlign='center';X.textBaseline='middle';
+      X.shadowColor='#cc4400';X.shadowBlur=30;X.fillStyle='#ddaa55';
+      X.fillText(_stg2.bn||'???',_cw/2,_ch*.53);
+      X.shadowBlur=0;
+      // 부제
+      X.globalAlpha=_nt*.5;X.font='15px "Noto Sans KR"';X.fillStyle='#887766';
+      X.fillText(_stg2.kr,_cw/2,_ch*.64);
+      X.textAlign='left';X.textBaseline='alphabetic';
     }
-    // 흡입 연출 중 — 화면 어두워짐
-    if(G._bossEnterFade>0){
-      X.save();X.setTransform(1,0,0,1,0,0);
-      X.globalAlpha=G._bossEnterFade*.9;X.fillStyle='#000';
-      X.fillRect(0,0,C.width,C.height);
-      // 중심에 보라빛 잔광
-      const csx=C.width/2,csy=C.height/2;
-      X.globalAlpha=G._bossEnterFade*.4;
-      const _fGrd=X.createRadialGradient(csx,csy,0,csx,csy,200);
-      _fGrd.addColorStop(0,'rgba(140,40,200,.5)');_fGrd.addColorStop(1,'rgba(0,0,0,0)');
-      X.fillStyle=_fGrd;X.beginPath();X.arc(csx,csy,200,0,Math.PI*2);X.fill();
-      X.restore();
-    }
+    X.globalAlpha=1;X.restore();
   }
 
   // ═══ 균열 렌더링 ═══
@@ -14951,6 +15358,16 @@ function draw(){
     // 오라 버프 링 (영향 받는 적)
     if(e._auraL&&e._auraL.alive&&e._auraL.aura){const _ad=_AURA_MAP[e._auraL.aura];if(_ad){
       X.globalAlpha=.2+Math.sin(_now/200)*.1;X.strokeStyle=_ad.col;X.lineWidth=2;X.beginPath();X.arc(e.x,e.y,e.r+2,0,Math.PI*2);X.stroke();X.globalAlpha=sa}}
+    // ═══ 바닥 그림자 ═══
+    if(e.alive && sa > 0.1) {
+      X.save();
+      X.globalAlpha = sa * 0.18;
+      X.fillStyle = '#000000';
+      X.beginPath();
+      X.ellipse(e.x, e.y + e.r * 0.35, e.r * 0.85, e.r * 0.25, 0, 0, Math.PI * 2);
+      X.fill();
+      X.restore();
+    }
     // ═══ 적 바디 렌더링 (신규 아틀라스 → 레거시 아틀라스 → 절차적 폴백) ═══
     let _usedSpr=false;
     if(e.ib){
@@ -15024,6 +15441,17 @@ function draw(){
           drawEnBody(X,e,_now,sa);_usedSpr=true;
         }
       }
+    }
+    // ═══ 피격 플래시 오버레이 ═══
+    if(e._hitFlash > 0) {
+      X.save();
+      X.globalAlpha = Math.min(0.5, e._hitFlash * 0.08);
+      X.fillStyle = '#ffffff';
+      X.beginPath();
+      X.arc(e.x, e.y, e.r, 0, Math.PI * 2);
+      X.fill();
+      X.restore();
+      e._hitFlash -= 1;
     }
     // 자폭 글로우 (절차적 바디 위에 추가)
     if(e.etype===5&&e.s!=='eSelfDestruct'){X.globalAlpha=.3+Math.sin(_now/200)*.2;X.fillStyle='#ff4400';X.beginPath();X.arc(e.x,e.y,e.r+6,0,Math.PI*2);X.fill();X.globalAlpha=sa}
@@ -15384,17 +15812,17 @@ function draw(){
       X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-p.vx*5,p.y-p.vy*5);X.stroke();
       X.globalAlpha=1;continue;
     }
-    // ── 빠른탄: 스프라이트 (작고 빠름) ──
+    // ── 빠른탄: 3D 프로시저럴 ──
     if(p.fast){
       X.globalAlpha=fa*.2;X.strokeStyle=pc;X.lineWidth=1;
       X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-p.vx*4,p.y-p.vy*4);X.stroke();
-      if(!_drawProjPNG(p.x,p.y,'orb',p.el||0,p._sprFr,16*_ps,ra,fa))_drawProjSprite(p.x,p.y,_PA_FAST,16*_ps,ra,fa);
+      if(!_drawProjPNG(p.x,p.y,'orb',p.el||0,p._sprFr,16*_ps,ra,fa))_draw3DProj(p.x,p.y,4*_ps,p.el||0,_now,ra,fa);
       X.globalAlpha=1;continue;
     }
-    // ── 일반탄: 스프라이트 ──
+    // ── 일반탄: 3D 프로시저럴 ──
     X.globalAlpha=fa*.15;X.strokeStyle=pc;X.lineWidth=1;
     X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-p.vx*3,p.y-p.vy*3);X.stroke();
-    if(!_drawProjPNG(p.x,p.y,'orb',p.el||0,p._sprFr,20*_ps,ra,fa))_drawProjSprite(p.x,p.y,_PA_NORM[p.el]||0,20*_ps,ra,fa);
+    if(!_drawProjPNG(p.x,p.y,'orb',p.el||0,p._sprFr,20*_ps,ra,fa))_draw3DProj(p.x,p.y,5*_ps,p.el||0,_now,ra,fa);
     X.globalAlpha=1;
   }
 
@@ -16046,36 +16474,102 @@ function drawP(){
     X.globalAlpha=1;
   }
 
-  // ══ ICE ORB — 얼음보주 이펙트 ══
+  // ══ DIM BREACH LAND — 차원 돌파 착지 폭발 이펙트 ══
+  if(P.s==='dimBreachLand'){
+    const _dbProg=1-P.st2/15;
+    const _dbExpR=P._dimExpR||150;
+    // 이중 폭발링 (보라+핑크)
+    X.globalAlpha=.5*(1-_dbProg);X.strokeStyle='#8844ff';X.lineWidth=4;
+    X.beginPath();X.arc(P.x,P.y,_dbExpR*_dbProg,0,Math.PI*2);X.stroke();
+    X.strokeStyle='#ff4488';X.lineWidth=2;
+    X.beginPath();X.arc(P.x,P.y,_dbExpR*.7*_dbProg,0,Math.PI*2);X.stroke();
+    // 내부 글로우
+    X.globalAlpha=.4*(1-_dbProg);X.fillStyle='#6622aa';
+    X.beginPath();X.arc(P.x,P.y,P.r+25*(1-_dbProg),0,Math.PI*2);X.fill();
+    // 출발점 잔상 연결 (보라+초록 이중선)
+    if(P.blinkOx!==undefined){
+      X.globalAlpha=.25*(1-_dbProg);X.strokeStyle='#8844ff';X.lineWidth=3;
+      X.beginPath();X.moveTo(P.blinkOx,P.blinkOy);X.lineTo(P.x,P.y);X.stroke();
+      X.strokeStyle='#44cc00';X.lineWidth=1;
+      X.beginPath();X.moveTo(P.blinkOx,P.blinkOy);X.lineTo(P.x,P.y);X.stroke();
+      X.globalAlpha=.15*(1-_dbProg);X.fillStyle='#8844ff';
+      X.beginPath();X.arc(P.blinkOx,P.blinkOy,P.r,0,Math.PI*2);X.fill();
+    }
+    // 독+출혈 파티클
+    if(Math.random()>.3){
+      const _dpa=Math.random()*Math.PI*2;const _dpr=Math.random()*_dbExpR*_dbProg;
+      poolPart(P.x+Math.cos(_dpa)*_dpr,P.y+Math.sin(_dpa)*_dpr,(Math.random()-.5)*3,-1-Math.random()*3,
+        Math.random()>.5?'#8844ff':Math.random()>.5?'#44cc00':'#ff4488',2+Math.random()*4,10+Math.random()*8);
+    }
+    X.globalAlpha=1;
+  }
+
+  // ══ ICE ORB — 얼음보주 3D 얼음구체 이펙트 ══
   if(P._ioActive){
     const _ioP=Math.min(1,(P._ioT||0)/180); // 0→1 진행
-    const _ioR=P.r+16+Math.sin(_ioP*Math.PI)*8;
+    const _ioR=P.r+32+Math.sin(_ioP*Math.PI)*10; // 크기 2배 증가
+    const _ioSpin=_ioP*4+t*.008; // 느린 회전
     X.save();
-    // 바깥 얼음 껍질
-    X.globalAlpha=.6+.2*Math.sin(_ioP*8);
-    X.strokeStyle='#88ddff';X.lineWidth=4;
-    X.beginPath();X.arc(P.x,P.y,_ioR,0,Math.PI*2);X.stroke();
-    // 내부 빙결 글로우
-    X.globalAlpha=.35;
-    const _ioGrad=X.createRadialGradient(P.x,P.y,0,P.x,P.y,_ioR);
-    _ioGrad.addColorStop(0,'rgba(170,238,255,.5)');
-    _ioGrad.addColorStop(1,'rgba(100,180,220,0)');
-    X.fillStyle=_ioGrad;
+    // ── 3D 구체 본체 (그라디언트 음영) ──
+    X.globalAlpha=.75+.1*Math.sin(_ioP*6);
+    const _ioG1=X.createRadialGradient(P.x-_ioR*.3,P.y-_ioR*.35,_ioR*.08,P.x,P.y,_ioR);
+    _ioG1.addColorStop(0,'rgba(220,245,255,.95)'); // 하이라이트 (좌상단)
+    _ioG1.addColorStop(.25,'rgba(160,220,240,.8)');
+    _ioG1.addColorStop(.55,'rgba(100,180,220,.65)');
+    _ioG1.addColorStop(.8,'rgba(50,120,170,.5)');
+    _ioG1.addColorStop(1,'rgba(20,60,100,.3)');
+    X.fillStyle=_ioG1;
     X.beginPath();X.arc(P.x,P.y,_ioR,0,Math.PI*2);X.fill();
-    // 얼음 결정 6각
-    X.strokeStyle='#aaeeff';X.lineWidth=2;X.globalAlpha=.5+.2*Math.sin(_ioP*12);
+    // ── 얼음 표면 균열 (회전하는 6각 무늬) ──
+    X.strokeStyle='rgba(200,235,255,.6)';X.lineWidth=1.5;X.globalAlpha=.5+.15*Math.sin(_ioP*10);
     for(let i=0;i<6;i++){
-      const a=Math.PI*2/6*i+_ioP*2;
-      const ix=P.x+Math.cos(a)*(_ioR-4),iy=P.y+Math.sin(a)*(_ioR-4);
-      X.beginPath();X.moveTo(P.x+Math.cos(a)*8,P.y+Math.sin(a)*8);X.lineTo(ix,iy);X.stroke();
-      const ba=a+.4,bb=a-.4;
-      X.beginPath();X.moveTo(P.x+Math.cos(a)*(_ioR*.5),P.y+Math.sin(a)*(_ioR*.5));X.lineTo(P.x+Math.cos(ba)*(_ioR*.75),P.y+Math.sin(ba)*(_ioR*.75));X.stroke();
-      X.beginPath();X.moveTo(P.x+Math.cos(a)*(_ioR*.5),P.y+Math.sin(a)*(_ioR*.5));X.lineTo(P.x+Math.cos(bb)*(_ioR*.75),P.y+Math.sin(bb)*(_ioR*.75));X.stroke();
+      const a=Math.PI*2/6*i+_ioSpin;
+      const ox=P.x+Math.cos(a)*8,oy=P.y+Math.sin(a)*8;
+      const ex=P.x+Math.cos(a)*(_ioR*.85),ey=P.y+Math.sin(a)*(_ioR*.85);
+      X.beginPath();X.moveTo(ox,oy);X.lineTo(ex,ey);X.stroke();
+      // 갈라진 가지
+      for(let j=1;j<=2;j++){
+        const frac=.35+j*.25;
+        const mx=ox+(ex-ox)*frac,my=oy+(ey-oy)*frac;
+        const ba=a+(.3+j*.15)*(j%2?1:-1);
+        const bx=P.x+Math.cos(ba)*(_ioR*(.5+j*.15)),by=P.y+Math.sin(ba)*(_ioR*(.5+j*.15));
+        X.beginPath();X.moveTo(mx,my);X.lineTo(bx,by);X.stroke();
+      }
+    }
+    // ── 3D 하이라이트 (좌상단 빛 반사) ──
+    X.globalAlpha=.6;
+    const _ioHL=X.createRadialGradient(P.x-_ioR*.35,P.y-_ioR*.35,0,P.x-_ioR*.35,P.y-_ioR*.35,_ioR*.45);
+    _ioHL.addColorStop(0,'rgba(255,255,255,.8)');
+    _ioHL.addColorStop(.5,'rgba(220,245,255,.3)');
+    _ioHL.addColorStop(1,'rgba(200,230,255,0)');
+    X.fillStyle=_ioHL;
+    X.beginPath();X.arc(P.x,P.y,_ioR,0,Math.PI*2);X.fill();
+    // ── 하단 반사광 (작은 crescent) ──
+    X.globalAlpha=.25;
+    const _ioHL2=X.createRadialGradient(P.x+_ioR*.2,P.y+_ioR*.3,0,P.x+_ioR*.2,P.y+_ioR*.3,_ioR*.3);
+    _ioHL2.addColorStop(0,'rgba(180,220,255,.5)');
+    _ioHL2.addColorStop(1,'rgba(150,200,240,0)');
+    X.fillStyle=_ioHL2;
+    X.beginPath();X.arc(P.x,P.y,_ioR,0,Math.PI*2);X.fill();
+    // ── 바깥 테두리 (두꺼운 얼음 껍질) ──
+    X.globalAlpha=.7+.15*Math.sin(_ioP*8);
+    X.strokeStyle='rgba(150,210,240,.8)';X.lineWidth=3;
+    X.beginPath();X.arc(P.x,P.y,_ioR,0,Math.PI*2);X.stroke();
+    // 내부 얼음 맥동 링
+    X.globalAlpha=.2+.1*Math.sin(_ioP*14);
+    X.strokeStyle='#cceeff';X.lineWidth=1;
+    X.beginPath();X.arc(P.x,P.y,_ioR*.6+Math.sin(_ioP*6)*4,0,Math.PI*2);X.stroke();
+    // ── 냉기 파티클 (구체 표면에서) ──
+    if(Math.random()>.6){
+      const pa=Math.random()*Math.PI*2;
+      poolPart(P.x+Math.cos(pa)*_ioR,P.y+Math.sin(pa)*_ioR,
+        Math.cos(pa)*1.5+(Math.random()-.5),-1-Math.random()*2,
+        Math.random()>.5?'#aaeeff':'#ddf4ff',1.5+Math.random()*2.5,12+Math.random()*8);
     }
     // 타이머 표시
     const _ioSec=((180-(P._ioT||0))/60).toFixed(1);
-    X.globalAlpha=.8;X.fillStyle='#88ddff';X.font='bold 12px monospace';X.textAlign='center';
-    X.fillText(_ioSec+'s',P.x,P.y-_ioR-8);
+    X.globalAlpha=.9;X.fillStyle='#88ddff';X.font='bold 13px monospace';X.textAlign='center';
+    X.fillText(_ioSec+'s',P.x,P.y-_ioR-10);
     X.restore();
     X.globalAlpha=1;
   }
@@ -16449,7 +16943,7 @@ function drawP(){
       const mt=_now;const me=p.el;
       // PNG 3D 스프라이트 시도 (bladeOrb/bladeShard 제외)
       let _pSprD=false;
-      if(!p.bladeOrb&&!p.bladeShard){
+      if(!p.bladeOrb&&!p.bladeShard&&!p.mhBlade&&!p.iceBlade){
         let _pSprT='orb';if(me===2)_pSprT='shard';if(me===4)_pSprT='bolt';if(p.mhBlade)_pSprT='shard';
         _pSprD=_drawProjPNG(p.x,p.y,_pSprT,me,p._sprFr,(p.r*2+8),(_pSprT==='shard'||_pSprT==='bolt'||p.mhBlade)?ang:0,fa);
         if(_pSprD){
@@ -16525,17 +17019,28 @@ function drawP(){
         X.beginPath();X.moveTo(p.r+5,0);X.lineTo(1,-3);X.lineTo(-p.r-2,0);X.lineTo(1,3);X.closePath();X.fill();
         X.globalAlpha=fa;X.fillStyle='#dddddd';
         X.beginPath();X.moveTo(p.r+3,0);X.lineTo(1,-1.5);X.lineTo(-p.r,0);X.lineTo(1,1.5);X.closePath();X.fill();
-      }else if(p.iceBlade){// ── 얼음보주 칼날 ──
-        X.rotate(ang+_now*.02);
-        // 얼음 칼날 (다이아몬드 형태)
-        X.globalAlpha=fa*.3;X.fillStyle='#88ddff';
-        X.beginPath();X.moveTo(p.r+8,0);X.lineTo(0,-5);X.lineTo(-p.r-4,0);X.lineTo(0,5);X.closePath();X.fill();
-        X.globalAlpha=fa*.8;X.fillStyle='#aaeeff';
-        X.beginPath();X.moveTo(p.r+6,0);X.lineTo(0,-3);X.lineTo(-p.r-2,0);X.lineTo(0,3);X.closePath();X.fill();
+      }else if(p.iceBlade){// ── 얼음보주 파편 (날카로운 얼음 칼날) ──
+        X.rotate(ang+_now*.012);
+        // 외곽 글로우
+        X.globalAlpha=fa*.15;X.fillStyle='#66ccee';
+        X.beginPath();X.moveTo(p.r+14,0);X.lineTo(2,-7);X.lineTo(-p.r-6,1);X.lineTo(2,7);X.closePath();X.fill();
+        // 얼음 파편 본체 — 불규칙 삼각 칼날 (칼날부채와 유사)
+        X.globalAlpha=fa*.5;X.fillStyle='#7cc8e8';
+        X.beginPath();X.moveTo(p.r+12,0);X.lineTo(4,-6);X.lineTo(6,-2);X.lineTo(-p.r-4,1);X.lineTo(-2,2);X.lineTo(-4,6);X.closePath();X.fill();
+        // 중심 밝은 칼날
+        X.globalAlpha=fa*.85;X.fillStyle='#aaeeff';
+        X.beginPath();X.moveTo(p.r+10,0);X.lineTo(3,-4);X.lineTo(5,-1);X.lineTo(-p.r-2,0.5);X.lineTo(-1,1);X.lineTo(-2,4);X.closePath();X.fill();
+        // 하이라이트 (가장 밝은 핵심)
         X.globalAlpha=fa;X.fillStyle='#ddf4ff';
-        X.beginPath();X.moveTo(p.r+4,0);X.lineTo(0,-1.5);X.lineTo(-p.r,0);X.lineTo(0,1.5);X.closePath();X.fill();
-        // 냉기 파티클
-        if(Math.random()>.7)poolPart(p.x+(Math.random()-.5)*8,p.y+(Math.random()-.5)*8,(Math.random()-.5)*2,(Math.random()-.5)*2,'#88ddff',1+Math.random()*2,5+Math.random()*4);
+        X.beginPath();X.moveTo(p.r+7,0);X.lineTo(2,-2);X.lineTo(3,0);X.lineTo(-p.r+2,0.3);X.lineTo(0,0);X.lineTo(-1,2);X.closePath();X.fill();
+        // 날카로운 엣지 라인
+        X.globalAlpha=fa*.6;X.strokeStyle='#ffffff';X.lineWidth=.8;
+        X.beginPath();X.moveTo(p.r+10,0);X.lineTo(-p.r-2,0.5);X.stroke();
+        // 냉기 트레일 파티클
+        if(Math.random()>.5){const _ica=Math.random()*Math.PI*2;
+          poolPart(p.x+Math.cos(_ica)*5,p.y+Math.sin(_ica)*5,
+            -p.vx*.3+(Math.random()-.5)*2,-p.vy*.3+(Math.random()-.5)*2,
+            Math.random()>.5?'#88ddff':'#cceeff',1.5+Math.random()*2,6+Math.random()*5);}
       }else{// ── PHYSICAL: white magic bolt ──
         X.globalAlpha=fa*.04;X.fillStyle='#dddddd';X.beginPath();X.arc(0,0,p.r+2,0,Math.PI*2);X.fill();
         X.globalAlpha=fa*.2;X.fillStyle='#cccccc';X.beginPath();X.arc(0,0,p.r+1,0,Math.PI*2);X.fill();
@@ -16942,7 +17447,7 @@ function startGame(){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
   BAG_MAX=42;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=0;G.kills=0;G.mats=100;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G.hellCleared=[];STORAGE={};
+  G.on=false;G.stage=0;G.kills=0;G.mats=100;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G.hellCleared=[];STORAGE={};
   // ── 초기 장비 지급 ──
   const _defItems=defaultItems();
   for(const it of _defItems)INV.equipped[it.slot]=it;
@@ -16979,7 +17484,7 @@ async function startGameFromDB(){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
   BAG_MAX=42;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=0;G.kills=0;G.mats=100;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G.hellCleared=[];STORAGE={};
+  G.on=false;G.stage=0;G.kills=0;G.mats=100;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G.hellCleared=[];STORAGE={};
   // forge gauge removed (CRAFT_COST system)
 
   // 3) DB에서 캐릭터 데이터 로드
@@ -17112,7 +17617,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
   BAG_MAX=42;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=0;G.kills=0;G.mats=100;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G.hellCleared=[];STORAGE={};
+  G.on=false;G.stage=0;G.kills=0;G.mats=100;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G.hellCleared=[];STORAGE={};
   (async()=>{
     try{
       const res=await fetch('/api/load/'+encodeURIComponent(_SLOT));

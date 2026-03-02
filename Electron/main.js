@@ -156,7 +156,7 @@ let mainWindow;
 function createWindow() {
   const { screen } = require('electron');
   const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
-  const winW = Math.min(sw, 1600), winH = Math.min(sh, 900);
+  const winW = Math.min(sw, 1280), winH = Math.min(sh, 720);
   mainWindow = new BrowserWindow({
     width: winW,
     height: winH,
@@ -210,7 +210,7 @@ ipcMain.on('set-fullscreen', (e, mode) => {
     mainWindow.setSimpleFullScreen(false);
     const { screen } = require('electron');
     const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
-    mainWindow.setSize(Math.min(sw, 1600), Math.min(sh, 900));
+    mainWindow.setSize(Math.min(sw, 1280), Math.min(sh, 720));
     mainWindow.center();
   }
 });
@@ -220,6 +220,28 @@ ipcMain.handle('get-display-mode', () => {
   if (mainWindow.isFullScreen()) return 'fullscreen';
   if (mainWindow.isSimpleFullScreen()) return 'borderless';
   return 'windowed';
+});
+
+// ═══ IPC — 해상도 변경 ═══
+const RES_LIST = [
+  [800, 600],   [1024, 768],  [1280, 720],  [1366, 768],
+  [1600, 900],  [1920, 1080], [2560, 1440], [3200, 1800],
+  [3840, 2160], [5120, 2880]
+];
+
+ipcMain.handle('get-resolutions', () => {
+  const { screen } = require('electron');
+  const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
+  const cur = mainWindow ? mainWindow.getSize() : [sw, sh];
+  return { list: RES_LIST.filter(r => r[0] <= sw && r[1] <= sh), current: cur, workArea: [sw, sh] };
+});
+
+ipcMain.on('set-resolution', (e, w, h) => {
+  if (!mainWindow) return;
+  // 전체화면이면 무시
+  if (mainWindow.isFullScreen() || mainWindow.isSimpleFullScreen()) return;
+  mainWindow.setSize(w, h);
+  mainWindow.center();
 });
 
 // ═══ 앱 시작 — 서버 → 윈도우 순서 ═══
