@@ -954,16 +954,15 @@ function _renderBloom(){
 var _lightCvs=null,_lightCtx=null,_lightW=0,_lightH=0;
 var _lights=[],_lightCnt=0;
 var _lightStamps={}; // {radius: canvas} 프리베이크 스탬프
-var _lightPrevFrame=null; // 고FPS 이전 프레임 재사용
 // 지옥별 어둠 레벨 (r,g,b,alpha) — 0~6지옥
 var _HELL_AMBIENT=[
-  [0,20,45,.55],    // 0지옥: 어두운 파랑
-  [10,30,5,.53],    // 1지옥: 어두운 녹색
-  [45,5,0,.58],     // 2지옥: 어두운 적색
-  [25,0,35,.56],    // 3지옥: 어두운 보라
-  [35,28,0,.55],    // 4지옥: 어두운 황색
-  [25,18,5,.57],    // 5지옥: 어두운 갈색
-  [18,0,30,.62]     // 6지옥: 짙은 보라
+  [0,12,30,.28],    // 0지옥: 은은한 파랑
+  [8,20,3,.30],     // 1지옥: 은은한 녹색
+  [30,3,0,.33],     // 2지옥: 은은한 적색
+  [18,0,22,.35],    // 3지옥: 은은한 보라
+  [24,18,0,.33],    // 4지옥: 은은한 황색
+  [18,12,3,.36],    // 5지옥: 은은한 갈색
+  [12,0,20,.40]     // 6지옥: 약간 짙은 보라
 ];
 // 속성별 광원 RGB (물리/화/빙/암/뇌/신성)
 var _elLightCol=[[255,221,170],[255,102,34],[68,221,255],[170,68,255],[255,255,68],[255,215,0]];
@@ -971,7 +970,7 @@ var _elLightCol=[[255,221,170],[255,102,34],[68,221,255],[170,68,255],[255,255,6
 var _rarLightCol=[[140,140,140],[68,204,68],[68,136,255],[187,68,255],[255,170,0]];
 // 소환굴 등급별 RGB (균열/구멍/심연/나락)
 var _shLightCol=[[136,136,136],[204,51,51],[153,51,204],[30,30,30]];
-var _LIGHT_RADII=[12,20,25,30,40,50,63,75,100,125,175];
+var _LIGHT_RADII=[20,30,40,50,60,80,100,125,175,250,350];
 function _initLightStamps(){
   _lightStamps={};
   for(var i=0;i<_LIGHT_RADII.length;i++){
@@ -998,10 +997,10 @@ function _nearestStamp(r){
   return best;
 }
 function _initLight(){
-  _lightW=~~(C.width/2);_lightH=~~(C.height/2);
+  _lightW=C.width;_lightH=C.height;
   if(!_lightCvs){_lightCvs=document.createElement('canvas');_lightCtx=_lightCvs.getContext('2d')}
   _lightCvs.width=_lightW;_lightCvs.height=_lightH;
-  if(!_lightStamps[12])_initLightStamps();
+  if(!_lightStamps[20])_initLightStamps();
 }
 function _pushLight(wx,wy,r,intensity,cr,cg,cb){
   if(_lightCnt>=200)return;
@@ -1010,8 +1009,8 @@ function _pushLight(wx,wy,r,intensity,cr,cg,cb){
   if(dx<-C.width/2-300||dx>C.width/2+300||dy<-C.height/2-300||dy>C.height/2+300)return;
   if(_lightCnt>=_lights.length)_lights.push({sx:0,sy:0,r:0,a:0,cr:0,cg:0,cb:0});
   var l=_lights[_lightCnt++];
-  l.sx=(dx+C.width/2)/2; l.sy=(dy+C.height/2)/2; // 라이트맵 좌표 (1/2)
-  l.r=~~(r/2); l.a=intensity;
+  l.sx=dx+C.width/2; l.sy=dy+C.height/2; // 라이트맵 좌표 (풀 해상도)
+  l.r=r; l.a=intensity;
   l.cr=cr;l.cg=cg;l.cb=cb;
 }
 function _collectLights(){
@@ -1070,13 +1069,7 @@ function _collectLights(){
 }
 function _renderLighting(){
   if(!OPT.lighting)return;
-  if(!_lightCvs||_lightW!==~~(C.width/2))_initLight();
-  // 고FPS 프레임 스킵: 이전 프레임 재사용
-  if(_hiFPS&&(_drawOdd&1)&&_lightPrevFrame){
-    X.save();X.setTransform(1,0,0,1,0,0);
-    X.drawImage(_lightPrevFrame,0,0,C.width,C.height);
-    X.restore();return;
-  }
+  if(!_lightCvs||_lightW!==C.width)_initLight();
   var lx=_lightCtx;
   // 지옥별 어둠 채우기
   var hell=Math.min(6,~~((G.stage||0)/10));
@@ -1097,15 +1090,8 @@ function _renderLighting(){
   lx.globalCompositeOperation='source-over';lx.globalAlpha=1;
   // 메인 캔버스에 합성
   X.save();X.setTransform(1,0,0,1,0,0);
-  X.drawImage(_lightCvs,0,0,C.width,C.height);
+  X.drawImage(_lightCvs,0,0);
   X.restore();
-  // 고FPS용 캐시 저장
-  if(_hiFPS){
-    if(!_lightPrevFrame){_lightPrevFrame=document.createElement('canvas')}
-    if(_lightPrevFrame.width!==_lightW)_lightPrevFrame.width=_lightW;
-    if(_lightPrevFrame.height!==_lightH)_lightPrevFrame.height=_lightH;
-    _lightPrevFrame.getContext('2d').drawImage(_lightCvs,0,0);
-  }
 }
 
 // ═══ 동적 품질/텍스트 캐시 전역 (WebGL 블록 이전에 선언) ═══
@@ -1234,7 +1220,7 @@ struct O{@builtin(position)p:vec4f,@location(0)u:vec2f,@location(1)c:vec4f,@loca
 @group(1)@binding(1)var smp:sampler;
 @vertex fn vs(v:V)->O{var o:O;let n=v.p/res*2.0-1.0;o.p=vec4f(n.x,-n.y,0,1);o.u=v.u;o.c=v.c;o.s=u32(v.s);o.r=v.r;return o;}
 @fragment fn fs(i:O)->@location(0)vec4f{
-if(i.s==5u){return textureSample(tex,smp,i.u)*i.c;}
+if(i.s==5u){return textureSampleLevel(tex,smp,i.u,0.0)*i.c;}
 var c=i.c;
 if(i.s==1u||i.s==3u){let d=length(i.u-vec2f(.5));if(d>.5){discard;}c.a*=smoothstep(.5,.47,d);}
 else if(i.s==2u){let d=length(i.u-vec2f(.5));let inner=.5-i.r.x;if(d>.5||d<inner){discard;}c.a*=smoothstep(.5,.47,d)*smoothstep(inner,inner+.02,d);}
@@ -9660,12 +9646,23 @@ function update(){
   if(P._gwCd>0)P._gwCd-=sp;
   // ═══ 얼음보주 — 쿨다운 ═══
   if(P._ioCd>0)P._ioCd-=sp;
-  // ═══ 얼음보주 — 자동 파쇄 (3초) ═══
+  // ═══ 얼음보주 — 자동 파쇄 (3초) / Shift 즉시 탈출 ═══
   if(P._ioActive){
     P._ioT+=sp;
     // 얼음 파티클
     if(Math.random()>.6){const a=Math.random()*Math.PI*2;poolPart(P.x+Math.cos(a)*25,P.y+Math.sin(a)*25,(Math.random()-.5)*1.5,-1-Math.random(),'#88ddff',2+Math.random()*2,12+Math.random()*8)}
-    if(P._ioT>=180){activateIceShatter()} // 3초 후 자동 파쇄
+    if(P._ioT>=180){activateIceShatter()} // 3초 자동 파쇄
+    else if(isJust('charge')){ // Shift: 블링크 탈출 + 파쇄
+      const _ox=P.x,_oy=P.y,_blinkD=180;
+      const _bx=P.x+Math.cos(P.facing)*_blinkD,_by=P.y+Math.sin(P.facing)*_blinkD;
+      activateIceShatter(); // 현재(보주) 위치에서 폭발
+      // 블링크 이동 (벽 충돌 체크)
+      P.x=canMv(_bx,_oy,P.r)?_bx:P.x;P.y=canMv(P.x,_by,P.r)?_by:P.y;
+      P.iframes=Math.max(P.iframes,30); // 탈출 무적 0.5초
+      // 잔상 이펙트
+      for(let k=0;k<8;k++){const t=k/8;poolPart(_ox+(_bx-_ox)*t,_oy+(_by-_oy)*t,(Math.random()-.5)*2,(Math.random()-.5)*2,'#88ddff',2+Math.random()*3,10+Math.random()*6)}
+      SFX.charge();addTxt(P.x,P.y-20,'❄ 탈출!','#aaeeff',30);
+    }
   }
   // ═══ 신성폭발 — 쿨다운 ═══
   if(P._hbCd>0)P._hbCd-=sp;
@@ -16899,6 +16896,7 @@ function drawP(){
   const _vl=G.cam.x-C.width/2-60,_vr=G.cam.x+C.width/2+60,_vt=G.cam.y-C.height/2-60,_vb=G.cam.y+C.height/2+60;
   const fl=P.iframes>0&&~~(P.iframes/3)%2;if(fl)X.globalAlpha=.3;
   const t=_now;
+  const _pScale=2,_pR=P.r*_pScale; // 캐릭터 비주얼 2배
 
   // ══ CHARGE — armor element (stylish) ══
   if(P.s==='charge'){
@@ -16906,7 +16904,7 @@ function drawP(){
     const ae=ar().el, ac=_isGaleVis?'#44cc00':ELC[ae];
     const ck=P.chargeKills||0;
     // Outer blast aura (grows with chain kills)
-    const auraR=P.r+10+ck*3;
+    const auraR=_pR+10+ck*3;
     X.globalAlpha=.5+Math.sin(t/30)*.25;X.fillStyle=ac;
     X.beginPath();X.arc(P.x,P.y,auraR,0,Math.PI*2);X.fill();
     // 질풍참: 독/출혈 이중 오라
@@ -16915,11 +16913,11 @@ function drawP(){
     if(ck>0){X.globalAlpha=.3+ck*.08;X.fillStyle='#ffdd44';X.beginPath();X.arc(P.x,P.y,auraR+4,0,Math.PI*2);X.fill()}
     // Inner bright core
     X.globalAlpha=.8;X.fillStyle=_isGaleVis?'#eeffcc':ELG2[ae];
-    X.beginPath();X.arc(P.x,P.y,P.r+3,0,Math.PI*2);X.fill();
+    X.beginPath();X.arc(P.x,P.y,_pR+3,0,Math.PI*2);X.fill();
     // Trail afterimages (5 layers, perspective scaling)
     for(let i=1;i<=5;i++){
       X.globalAlpha=.28/i;X.fillStyle=_isGaleVis?(i%2?'#44cc00':'#cc2222'):(ck>0?'#ffee44':ac);
-      X.beginPath();X.arc(P.x-P.chargeDx*9*i,P.y-P.chargeDy*9*i,P.r+5-i*.8,0,Math.PI*2);X.fill();
+      X.beginPath();X.arc(P.x-P.chargeDx*9*i,P.y-P.chargeDy*9*i,_pR+5-i*.8,0,Math.PI*2);X.fill();
     }
     // Speed lines (radial from movement direction)
     X.globalAlpha=.5;X.strokeStyle=_isGaleVis?'#66dd22':ac;X.lineWidth=2;
@@ -16954,10 +16952,10 @@ function drawP(){
     // Pulsing ready ring
     const pulse=.3+Math.sin(t/50)*.2;
     X.globalAlpha=pulse;X.strokeStyle='#ffcc44';X.lineWidth=2;
-    X.beginPath();X.arc(P.x,P.y,P.r+6+Math.sin(t/60)*3,0,Math.PI*2);X.stroke();
+    X.beginPath();X.arc(P.x,P.y,_pR+6+Math.sin(t/60)*3,0,Math.PI*2);X.stroke();
     // Fading afterimage at last position
     X.globalAlpha=.15;X.fillStyle=ac;
-    X.beginPath();X.arc(P.x-P.chargeDx*8,P.y-P.chargeDy*8,P.r+2,0,Math.PI*2);X.fill();
+    X.beginPath();X.arc(P.x-P.chargeDx*8,P.y-P.chargeDy*8,_pR+2,0,Math.PI*2);X.fill();
     X.globalAlpha=1;
   }
 
@@ -17348,14 +17346,14 @@ function drawP(){
     X.beginPath();X.arc(P.x,P.y,_blR*_blProg,0,Math.PI*2);X.stroke();
     // 내부 마법 글로우
     X.globalAlpha=.5*(1-_blProg);X.fillStyle='#7744cc';
-    X.beginPath();X.arc(P.x,P.y,P.r+20*(1-_blProg),0,Math.PI*2);X.fill();
+    X.beginPath();X.arc(P.x,P.y,_pR+20*(1-_blProg),0,Math.PI*2);X.fill();
     // 출발점→착지점 잔상 연결선
     if(P.blinkOx!==undefined){
       X.globalAlpha=.2*(1-_blProg);X.strokeStyle='#cc88ff';X.lineWidth=2;
       X.beginPath();X.moveTo(P.blinkOx,P.blinkOy);X.lineTo(P.x,P.y);X.stroke();
       // 출발점 잔상
       X.globalAlpha=.15*(1-_blProg);X.fillStyle='#8855cc';
-      X.beginPath();X.arc(P.blinkOx,P.blinkOy,P.r,0,Math.PI*2);X.fill();
+      X.beginPath();X.arc(P.blinkOx,P.blinkOy,_pR,0,Math.PI*2);X.fill();
     }
     // 마법 파티클
     if(Math.random()>.4){
@@ -17376,7 +17374,7 @@ function drawP(){
     X.beginPath();X.arc(P.x,P.y,_dbExpR*.7*_dbProg,0,Math.PI*2);X.stroke();
     // 내부 글로우
     X.globalAlpha=.4*(1-_dbProg);X.fillStyle='#6622aa';
-    X.beginPath();X.arc(P.x,P.y,P.r+25*(1-_dbProg),0,Math.PI*2);X.fill();
+    X.beginPath();X.arc(P.x,P.y,_pR+25*(1-_dbProg),0,Math.PI*2);X.fill();
     // 출발점 잔상 연결 (보라+초록 이중선)
     if(P.blinkOx!==undefined){
       X.globalAlpha=.25*(1-_dbProg);X.strokeStyle='#8844ff';X.lineWidth=3;
@@ -17384,7 +17382,7 @@ function drawP(){
       X.strokeStyle='#44cc00';X.lineWidth=1;
       X.beginPath();X.moveTo(P.blinkOx,P.blinkOy);X.lineTo(P.x,P.y);X.stroke();
       X.globalAlpha=.15*(1-_dbProg);X.fillStyle='#8844ff';
-      X.beginPath();X.arc(P.blinkOx,P.blinkOy,P.r,0,Math.PI*2);X.fill();
+      X.beginPath();X.arc(P.blinkOx,P.blinkOy,_pR,0,Math.PI*2);X.fill();
     }
     // 독+출혈 파티클
     if(Math.random()>.3){
@@ -17402,31 +17400,31 @@ function drawP(){
     // 반투명 유령 오라
     X.save();
     X.globalAlpha=_gwPulse;
-    const _gwGrad=X.createRadialGradient(P.x,P.y,0,P.x,P.y,P.r+25);
+    const _gwGrad=X.createRadialGradient(P.x,P.y,0,P.x,P.y,_pR+25);
     _gwGrad.addColorStop(0,'rgba(150,180,210,.4)');
     _gwGrad.addColorStop(.6,'rgba(100,130,170,.2)');
     _gwGrad.addColorStop(1,'rgba(80,100,140,0)');
-    X.fillStyle=_gwGrad;X.beginPath();X.arc(P.x,P.y,P.r+25,0,Math.PI*2);X.fill();
+    X.fillStyle=_gwGrad;X.beginPath();X.arc(P.x,P.y,_pR+25,0,Math.PI*2);X.fill();
     // 유령 잔상 링
     X.globalAlpha=.2+.1*Math.sin(_gwP*12);
     X.strokeStyle='#aabbcc';X.lineWidth=2;
-    X.beginPath();X.arc(P.x,P.y,P.r+15+Math.sin(_gwP*8)*5,0,Math.PI*2);X.stroke();
+    X.beginPath();X.arc(P.x,P.y,_pR+15+Math.sin(_gwP*8)*5,0,Math.PI*2);X.stroke();
     // 카운트 표시
     if(P._gwCount>0){
       X.globalAlpha=.9;X.fillStyle='#88ddff';X.font='bold 14px monospace';X.textAlign='center';
-      X.fillText('x'+P._gwCount,P.x,P.y-P.r-22);X.textAlign='left';
+      X.fillText('x'+P._gwCount,P.x,P.y-_pR-22);X.textAlign='left';
     }
     // 타이머
     const _gwSec=((300-(P._gwT||0))/60).toFixed(1);
     X.globalAlpha=.7;X.fillStyle='#aabbcc';X.font='bold 11px monospace';X.textAlign='center';
-    X.fillText(_gwSec+'s',P.x,P.y-P.r-10);X.textAlign='left';
+    X.fillText(_gwSec+'s',P.x,P.y-_pR-10);X.textAlign='left';
     X.restore();X.globalAlpha=1;
   }
 
   // ══ ICE ORB — 얼음보주 3D 얼음구체 이펙트 ══
   if(P._ioActive){
     const _ioP=Math.min(1,(P._ioT||0)/180); // 0→1 진행
-    const _ioR=P.r+32+Math.sin(_ioP*Math.PI)*10; // 크기 2배 증가
+    const _ioR=_pR+32+Math.sin(_ioP*Math.PI)*10; // 크기 2배 증가
     const _ioSpin=_ioP*4+t*.008; // 느린 회전
     X.save();
     // ── 3D 구체 본체 (그라디언트 음영) ──
@@ -17558,14 +17556,14 @@ function drawP(){
   const isDead=P.hp<=0;
   const isParry=P.s==='parryWin';
   const isBash=P.s==='sBash'||P.s==='sRecover';
-  // Shadow (동적 크기)
-  const shW=isCharge?P.r+6:P.r+2;
-  X.fillStyle='rgba(0,0,0,.25)';X.beginPath();X.ellipse(_px,_py+P.r+2,shW,P.r*.4,0,0,Math.PI*2);X.fill();
+  // Shadow (동적 크기) — 캐릭터 2배 스케일
+  const shW=isCharge?_pR+6:_pR+2;
+  X.fillStyle='rgba(0,0,0,.25)';X.beginPath();X.ellipse(_px,_py+_pR+2,shW,_pR*.4,0,0,Math.PI*2);X.fill();
   X.globalAlpha=fl?.3:1;
   if(_playerReady){
     // player_idle.png (2816×1536 RGBA): 좌=앞면, 우=뒷면
     // player_action.png (1536×1024 RGBA): 4col×3row — Row0=Attack, Row1=Hit, Row2=Death
-    const bw=32,bh=38;
+    const bw=32*_pScale,bh=38*_pScale;
     X.save();X.translate(_px,_py);
     if(Math.abs(_fa)>Math.PI/2)X.scale(-1,1);
     let _ox=0,_oy=0,_rot=0,_sx=1,_sy=1;
@@ -17599,8 +17597,8 @@ function drawP(){
     X.restore();
     X.globalAlpha=fl?.3:1;
   }else{
-    // 절차적 플레이어 바디 (스프라이트 미로드 폴백)
-    X.save();X.translate(_px,_py);
+    // 절차적 플레이어 바디 (스프라이트 미로드 폴백) — 2배 스케일
+    X.save();X.translate(_px,_py);X.scale(_pScale,_pScale);
     const _pf=P.facing,_pmv=P.s==='idle'&&(Math.abs(P.kb.x)>.2||Math.abs(P.kb.y)>.2)||P.s==='charge';
     const _plt=_pmv?t*3:0;
     // 다리

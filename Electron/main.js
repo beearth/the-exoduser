@@ -187,6 +187,16 @@ function createWindow() {
   // 내장 서버에서 인트로부터 시작
   mainWindow.loadURL(`http://localhost:${PORT}/`);
 
+  // 디버깅: 페이지 로드 실패 감지
+  mainWindow.webContents.on('did-fail-load', (e, code, desc, url) => {
+    console.error(`[LOAD FAIL] code=${code} desc=${desc} url=${url}`);
+  });
+  mainWindow.webContents.on('did-finish-load', () => {
+    console.log('[OK] Page loaded successfully');
+  });
+  // 패키징 빌드에서도 DevTools 자동 오픈 (디버깅용)
+  if (IS_PACKAGED) mainWindow.webContents.openDevTools();
+
   // 메뉴바 숨기기
   mainWindow.setMenuBarVisibility(false);
 

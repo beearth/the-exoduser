@@ -34,6 +34,10 @@
       {
         "from": "../img",
         "to": "game/img"
+      },
+      {
+        "from": "../video",
+        "to": "game/video"
       }
     ],
     "win": {
