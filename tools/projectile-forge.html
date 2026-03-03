@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Projectile Forge — 화염탄 / 암흑탄</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a12;color:#e0e0f0;font-family:'Segoe UI',sans-serif;display:grid;grid-template-columns:1fr 360px;height:100vh;overflow:hidden}
+#gallery{overflow:auto;padding:12px}
+#gallery h1{font-family:monospace;font-size:12px;font-weight:700;color:#e94560;letter-spacing:2px;margin-bottom:10px}
+#gallery h1 span{color:#64dcff}
+#gallery .sub{color:#5a5a7a;font-weight:400;font-size:9px;margin-left:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:8px}
+.card{background:#1a1a2e;border:2px solid #2a2a44;border-radius:8px;cursor:pointer;overflow:hidden;transition:.15s}
+.card.active{border-color:#e94560;box-shadow:0 0 12px #e9456044}
+.card canvas{display:block;width:100%;height:90px;background:#08080f}
+.card .info{padding:4px 8px;display:flex;justify-content:space-between;align-items:center;font-family:monospace;font-size:10px}
+.card .info b{color:#e0e0f0}
+.card .info .dot{width:8px;height:8px;border-radius:50%}
+#editor{background:#12121e;border-left:1px solid #2a2a44;overflow:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+#bigCanvas{display:block;width:100%;height:160px;background:#08080f;border-radius:8px;border:1px solid #2a2a44}
+#eName{font-family:monospace;font-size:13px;font-weight:700}
+#eDesc{font-family:monospace;font-size:9px;color:#5a5a7a}
+.secTitle{font-family:monospace;font-size:10px;font-weight:700;color:#e94560;border-bottom:1px solid #2a2a44;padding-bottom:4px}
+.crow{display:flex;align-items:center;gap:6px;margin:1px 0}
+.crow input[type=color]{width:28px;height:18px;border:1px solid #2a2a44;border-radius:3px;background:#1a1a2e;cursor:pointer;padding:0}
+.crow .ck{font-family:monospace;font-size:9px;color:#5a5a7a;min-width:75px}
+.crow .ck.changed{color:#e94560;font-weight:700}
+.crow .cd{font-family:monospace;font-size:8px;color:#5a5a7a}
+.crow .diff{font-family:monospace;font-size:8px;color:#64dcff;margin-left:auto}
+.btns{display:flex;gap:6px;margin-top:6px}
+.btns button{border-radius:5px;padding:6px 12px;cursor:pointer;font-weight:700;font-size:10px;font-family:monospace}
+#btnReset{border:1px solid #2a2a44;background:#1a1a2e;color:#9a9abb}
+#btnCopy{border:none;background:#333;color:#fff;opacity:.4}
+#btnCopy.has{background:#e94560;opacity:1;cursor:pointer}
+#promptTitle{font-family:monospace;font-size:10px;font-weight:700;color:#5a5a7a;border-bottom:1px solid #2a2a44;padding-bottom:4px;margin-top:4px}
+#promptTitle.has{color:#64dcff}
+#promptBox{background:#0d0d1a;border:1px solid #2a2a44;border-radius:6px;padding:10px;font-family:monospace;font-size:10px;color:#5a5a7a;max-height:260px;overflow:auto;white-space:pre-wrap;line-height:1.7;flex:1}
+#promptBox.has{border-color:#64dcff44;color:#64dcff;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div id="gallery">
+  <h1>⚔ EXODUSER <span>PROJECTILE FORGE</span><span class="sub">커스텀 → 클코 프롬프트</span></h1>
+  <div class="grid" id="grid"></div>
+</div>
+
+<div id="editor">
+  <canvas id="bigCanvas" width="460" height="160"></canvas>
+  <div id="eName"></div>
+  <div id="eDesc"></div>
+  <div class="secTitle">색상 커스텀</div>
+  <div id="colorRows"></div>
+  <div class="btns">
+    <button id="btnReset">↺ 리셋</button>
+    <button id="btnCopy">📋 클코 프롬프트 복사</button>
+  </div>
+  <div id="promptTitle">색상 바꾸면 클코 프롬프트가 자동 생성됩니다</div>
+  <div id="promptBox">// 색상을 바꾸면 여기에 클코 프롬프트가 생성됩니다
+// 예: 5695번째 줄: '#551100' → '#661122' (outerFlame)</div>
+</div>
+
+<script>
+const ELC=['#bbbbbb','#ff5522','#3388ff','#9933cc','#ffee00','#ffd700'];
+const ELN=['물리','화염','빙결','암흑','뇌전','신성'];
+
+const DEFS=[
+  {id:'fire',name:'화염탄',el:1,desc:'혜성형 물방울 화염',fn:'_draw3DProj',fl:5689,
+    colors:{outerFlame:{l:5695,o:'#551100',d:'외곽 화염 꼬리'},midFlame:{l:5698,o:'#cc4400',d:'중간 화염'},hotFlame:{l:5701,o:'#ff7700',d:'뜨거운 내부'},core:{l:5704,o:'#ffaa33',d:'플라즈마 코어'},tip:{l:5707,o:'#ffeeaa',d:'백열 선단'},spark:{l:5710,o:'#ffdd44',d:'불꽃 스파크'}}},
+  {id:'dark',name:'암흑탄',el:3,desc:'블랙홀 보이드 오브',fn:'_draw3DProj',fl:5689,
+    colors:{ring:{l:5737,o:'#bb55ff',d:'사건의 지평선'},fog:{l:5740,o:'#330055',d:'외곽 보라 안개'},void_c:{l:5742,o:'#080010',d:'보이드 코어'},rim:{l:5744,o:'#9944ee',d:'림 라이트'},swirl:{l:5746,o:'#cc66ff',d:'소용돌이'},innerGlow:{l:5750,o:'#7722bb',d:'내부 글로우'},particle:{l:5753,o:'#dd88ff',d:'빨려드는 빛'}}},
+];
+
+// ═══ 상태 ═══
+let curIdx=0;
+const customs={};
+DEFS.forEach(d=>{const c={};for(const k in d.colors)c[k]=d.colors[k].o;customs[d.id]=c});
+
+// ═══ 렌더 (game.html 복제) ═══
+function render(X,cx,cy,def,C,t,s){
+  X.save();X.translate(cx,cy);
+  const ang=t*.002;
+  if(def.id==='fire'){
+    X.rotate(ang);
+    X.globalAlpha=.15;X.fillStyle=C.outerFlame;
+    X.beginPath();X.moveTo(s*.5,0);X.quadraticCurveTo(-s*.5,-s*1.1,-s*3.5,0);X.quadraticCurveTo(-s*.5,s*1.1,s*.5,0);X.fill();
+    X.globalAlpha=.3;X.fillStyle=C.midFlame;
+    X.beginPath();X.moveTo(s*.5,0);X.quadraticCurveTo(-s*.3,-s*.65,-s*2.2,0);X.quadraticCurveTo(-s*.3,s*.65,s*.5,0);X.fill();
+    X.globalAlpha=.5;X.fillStyle=C.hotFlame;
+    X.beginPath();X.moveTo(s*.4,0);X.quadraticCurveTo(-s*.15,-s*.38,-s*1.2,0);X.quadraticCurveTo(-s*.15,s*.38,s*.4,0);X.fill();
+    X.globalAlpha=.85;X.fillStyle=C.core;
+    X.beginPath();X.moveTo(s*.7,0);X.quadraticCurveTo(0,-s*.55,-s*.4,0);X.quadraticCurveTo(0,s*.55,s*.7,0);X.fill();
+    X.globalAlpha=.6;X.fillStyle=C.tip;
+    X.beginPath();X.moveTo(s*.55,0);X.quadraticCurveTo(0,-s*.22,-s*.12,0);X.quadraticCurveTo(0,s*.22,s*.55,0);X.fill();
+    X.globalAlpha=.4;X.fillStyle=C.spark;
+    const ft=t*.01;
+    X.beginPath();X.arc(Math.sin(ft)*s*.35,Math.cos(ft*1.3)*s*.45,s*.1,0,Math.PI*2);X.fill();
+    X.beginPath();X.arc(Math.cos(ft*.7)*s*.25,-Math.sin(ft*1.5)*s*.4,s*.08,0,Math.PI*2);X.fill();
+  }else if(def.id==='dark'){
+    const sw=Math.sin(t*.005);
+    X.globalAlpha=.4;X.strokeStyle=C.ring;X.lineWidth=1.5;
+    X.beginPath();X.ellipse(0,0,s+4,s*.35+sw*2,t*.002,0,Math.PI*2);X.stroke();
+    X.globalAlpha=.12;X.fillStyle=C.fog;
+    X.beginPath();X.arc(0,0,s+2,0,Math.PI*2);X.fill();
+    X.globalAlpha=1;X.fillStyle=C.void_c;
+    X.beginPath();X.arc(0,0,s,0,Math.PI*2);X.fill();
+    X.globalAlpha=.6;X.strokeStyle=C.rim;X.lineWidth=1.5;
+    X.beginPath();X.arc(0,0,s*.9,0,Math.PI*2);X.stroke();
+    X.globalAlpha=.35;X.strokeStyle=C.swirl;X.lineWidth=1;
+    X.beginPath();X.arc(0,0,s*.5,t*.008,t*.008+Math.PI*1.2);X.stroke();
+    X.beginPath();X.arc(0,0,s*.3,-(t*.012),-(t*.012)+Math.PI);X.stroke();
+    X.globalAlpha=.2;X.fillStyle=C.innerGlow;
+    X.beginPath();X.arc(0,0,s*.35,0,Math.PI*2);X.fill();
+    for(let i=0;i<3;i++){
+      const pa=t*.003+Math.PI*2*i/3,pr=s*1.4+Math.sin(t*.006+i)*3;
+      X.globalAlpha=.3;X.fillStyle=C.particle;
+      X.beginPath();X.arc(Math.cos(pa)*pr,Math.sin(pa)*pr,1.2,0,Math.PI*2);X.fill();
+    }
+  }
+  X.restore();
+}
+
+// ═══ 프롬프트 생성 ═══
+function mkPrompt(def,colors){
+  const ch=[];
+  for(const k in colors){
+    const m=def.colors[k];
+    if(m&&colors[k]!==m.o)ch.push({k,l:m.l,from:m.o,to:colors[k],d:m.d});
+  }
+  if(!ch.length)return null;
+  let p=`game.html의 ${def.fn} 함수 (${def.fl}번째 줄 부근) 에서\n`;
+  p+=`${def.name}(${def.desc})의 색상을 다음과 같이 변경해줘:\n\n`;
+  for(const c of ch)p+=`${c.l}번째 줄: '${c.from}' → '${c.to}'  // ${c.d} (${c.k})\n`;
+  p+=`\n다른 로직은 건드리지 말고 색상 hex 문자열만 정확히 교체해.`;
+  return p;
+}
+
+// ═══ DOM ═══
+const grid=document.getElementById('grid');
+const bigCvs=document.getElementById('bigCanvas');
+const bigX=bigCvs.getContext('2d');
+const elName=document.getElementById('eName');
+const elDesc=document.getElementById('eDesc');
+const colorRows=document.getElementById('colorRows');
+const btnReset=document.getElementById('btnReset');
+const btnCopy=document.getElementById('btnCopy');
+const promptTitle=document.getElementById('promptTitle');
+const promptBox=document.getElementById('promptBox');
+
+// 미니 카드 생성
+const cards=[];
+const miniXs=[];
+DEFS.forEach((def,i)=>{
+  const card=document.createElement('div');
+  card.className='card'+(i===0?' active':'');
+  card.innerHTML=`<canvas width="180" height="90"></canvas><div class="info"><b>${def.name}</b><span class="dot" style="background:${ELC[def.el]}"></span></div>`;
+  card.onclick=()=>select(i);
+  grid.appendChild(card);
+  cards.push(card);
+  miniXs.push(card.querySelector('canvas').getContext('2d'));
+});
+
+function select(i){
+  curIdx=i;
+  cards.forEach((c,j)=>c.className='card'+(j===i?' active':''));
+  buildEditor();
+}
+
+// ═══ 에디터 빌드 ═══
+function buildEditor(){
+  const def=DEFS[curIdx],colors=customs[def.id];
+  elName.textContent=def.name;
+  elDesc.textContent=`${def.desc} · ${ELN[def.el]} · ${def.fn} (${def.fl}줄~)`;
+  colorRows.innerHTML='';
+  for(const k in def.colors){
+    const m=def.colors[k];
+    const ch=colors[k]!==m.o;
+    const row=document.createElement('div');
+    row.className='crow';
+    row.innerHTML=`<input type="color" value="${colors[k]}" data-k="${k}"><span class="ck${ch?' changed':''}">${k}</span><span class="cd">${m.d}</span>${ch?`<span class="diff">${m.o}→${colors[k]}</span>`:''}`;
+    row.querySelector('input').addEventListener('input',e=>{
+      customs[def.id][k]=e.target.value;
+      buildEditor();
+    });
+    colorRows.appendChild(row);
+  }
+  updatePrompt();
+}
+
+function updatePrompt(){
+  const def=DEFS[curIdx],colors=customs[def.id];
+  const p=mkPrompt(def,colors);
+  const has=!!p;
+  promptTitle.textContent=has?'⬇ 이걸 클코에 그대로 붙여넣으면 됨':'색상 바꾸면 클코 프롬프트가 자동 생성됩니다';
+  promptTitle.className=has?'has':'';
+  promptBox.textContent=p||"// 색상을 바꾸면 여기에 클코 프롬프트가 생성됩니다\n// 예: 5695번째 줄: '#551100' → '#661122' (outerFlame)";
+  promptBox.className=has?'has':'';
+  btnCopy.className=has?'has':'';
+}
+
+btnReset.onclick=()=>{
+  const def=DEFS[curIdx];
+  const c={};for(const k in def.colors)c[k]=def.colors[k].o;
+  customs[def.id]=c;
+  buildEditor();
+};
+
+btnCopy.onclick=()=>{
+  const def=DEFS[curIdx],p=mkPrompt(def,customs[def.id]);
+  if(!p)return;
+  navigator.clipboard.writeText(p).then(()=>{
+    btnCopy.textContent='✓ 복사됨!';
+    setTimeout(()=>{btnCopy.textContent='📋 클코 프롬프트 복사'},2000);
+  });
+};
+
+promptBox.onclick=()=>{
+  const def=DEFS[curIdx],p=mkPrompt(def,customs[def.id]);
+  if(p)navigator.clipboard.writeText(p);
+};
+
+// ═══ 애니메이션 루프 ═══
+function loop(t){
+  // 미니 프리뷰
+  DEFS.forEach((def,i)=>{
+    const x=miniXs[i],c=x.canvas;
+    x.clearRect(0,0,c.width,c.height);
+    render(x,c.width/2,c.height/2,def,customs[def.id],t,12);
+  });
+  // 큰 프리뷰
+  bigX.clearRect(0,0,bigCvs.width,bigCvs.height);
+  const def=DEFS[curIdx],colors=customs[def.id];
+  [10,18,28].forEach((sc,i)=>{
+    render(bigX,70+i*150,80,def,colors,t,sc);
+    bigX.globalAlpha=.4;bigX.fillStyle='#555';bigX.font='9px monospace';bigX.textAlign='center';
+    bigX.fillText(sc+'px',70+i*150,80+sc*2+16);bigX.globalAlpha=1;
+  });
+  requestAnimationFrame(loop);
+}
+
+buildEditor();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
