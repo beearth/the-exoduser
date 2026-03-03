@@ -970,7 +970,7 @@ var _elLightCol=[[255,221,170],[255,102,34],[68,221,255],[170,68,255],[255,255,6
 var _rarLightCol=[[140,140,140],[68,204,68],[68,136,255],[187,68,255],[255,170,0]];
 // 소환굴 등급별 RGB (균열/구멍/심연/나락)
 var _shLightCol=[[136,136,136],[204,51,51],[153,51,204],[30,30,30]];
-var _LIGHT_RADII=[20,30,40,50,60,80,100,125,175,250,350];
+var _LIGHT_RADII=[10,15,20,25,30,40,50,63,88,125,175];
 function _initLightStamps(){
   _lightStamps={};
   for(var i=0;i<_LIGHT_RADII.length;i++){
@@ -997,7 +997,7 @@ function _nearestStamp(r){
   return best;
 }
 function _initLight(){
-  _lightW=C.width;_lightH=C.height;
+  _lightW=~~(C.width/2);_lightH=~~(C.height/2);
   if(!_lightCvs){_lightCvs=document.createElement('canvas');_lightCtx=_lightCvs.getContext('2d')}
   _lightCvs.width=_lightW;_lightCvs.height=_lightH;
   if(!_lightStamps[20])_initLightStamps();
@@ -1009,8 +1009,8 @@ function _pushLight(wx,wy,r,intensity,cr,cg,cb){
   if(dx<-C.width/2-300||dx>C.width/2+300||dy<-C.height/2-300||dy>C.height/2+300)return;
   if(_lightCnt>=_lights.length)_lights.push({sx:0,sy:0,r:0,a:0,cr:0,cg:0,cb:0});
   var l=_lights[_lightCnt++];
-  l.sx=dx+C.width/2; l.sy=dy+C.height/2; // 라이트맵 좌표 (풀 해상도)
-  l.r=r; l.a=intensity;
+  l.sx=(dx+C.width/2)*.5; l.sy=(dy+C.height/2)*.5;
+  l.r=~~(r*.5); l.a=intensity;
   l.cr=cr;l.cg=cg;l.cb=cb;
 }
 function _collectLights(){
@@ -1069,7 +1069,7 @@ function _collectLights(){
 }
 function _renderLighting(){
   if(!OPT.lighting)return;
-  if(!_lightCvs||_lightW!==C.width)_initLight();
+  if(!_lightCvs||_lightW!==~~(C.width/2))_initLight();
   var lx=_lightCtx;
   // 지옥별 어둠 채우기
   var hell=Math.min(6,~~((G.stage||0)/10));
@@ -1090,7 +1090,7 @@ function _renderLighting(){
   lx.globalCompositeOperation='source-over';lx.globalAlpha=1;
   // 메인 캔버스에 합성
   X.save();X.setTransform(1,0,0,1,0,0);
-  X.drawImage(_lightCvs,0,0);
+  X.drawImage(_lightCvs,0,0,C.width,C.height);
   X.restore();
 }
 
@@ -8933,7 +8933,7 @@ function update(){
       const _omniLv=P.skills.omniBeam||1;
       const _intMul=statInt()*pMagicMul();
       const _dmgMul=2.0+(_omniLv-1)*.1;
-      const _bRng=Math.max(350,((bw().bowRange||200)+(bw().bonusRange||0)*12)*pBowRange()*1.5);
+      const _bRng=Math.max(450,((bw().bowRange||200)+(bw().bonusRange||0)*12)*pBowRange()*1.95);
       const _fan=Math.PI/3;
       if(!P._omniPts)P._omniPts=[];
       for(let bi=0;bi<6;bi++){
@@ -8949,17 +8949,41 @@ function update(){
           const sd=dst(P.x,P.y,se.x,se.y);if(sd<minD&&sd<_bRng){minD=sd;tgtAng=Math.atan2(se.y-P.y,se.x-P.x)}}
         let dAng=tgtAng-op.ang;
         while(dAng>Math.PI)dAng-=Math.PI*2;while(dAng<-Math.PI)dAng+=Math.PI*2;
-        op.ang+=Math.max(-0.04,Math.min(0.04,dAng))*sp;
-        const ca=Math.cos(op.ang),sa=Math.sin(op.ang);
+        op.ang+=Math.max(-0.06,Math.min(0.06,dAng))*sp;
+        // 뱀형 유도 레이저: 벽을 돌아 적을 추적
         op.pts=[];
-        for(let t=0;t<_bRng;t+=4){
-          const px=P.x+ca*t,py=P.y+sa*t;op.pts.push({x:px,y:py});
-          if(isW(px,py))break;
-          const _neB=shQuery(px,py,18);for(let _bi=0;_bi<_neB.length;_bi++){
+        let _bx=P.x,_by=P.y,_bDir=op.ang;
+        const _step=4,_homeR=0.035;
+        for(let t=0;t<_bRng;t+=_step){
+          // 매 40px마다 빔 끝에서 가장 가까운 적 방향으로 호밍
+          if(t%40===0){let _nd=Infinity,_na=_bDir;
+            const _sn=shQuery(_bx,_by,_bRng*0.5);
+            for(let si=0;si<_sn.length;si++){const se=_sn[si];if(!se.alive)continue;
+              const sd=dst(_bx,_by,se.x,se.y);if(sd<_nd){_nd=sd;_na=Math.atan2(se.y-_by,se.x-_bx)}}
+            let _dd=_na-_bDir;while(_dd>Math.PI)_dd-=Math.PI*2;while(_dd<-Math.PI)_dd+=Math.PI*2;
+            _bDir+=Math.max(-_homeR*3,Math.min(_homeR*3,_dd));
+          }
+          // 지렁이 꼬불꼬불
+          const _worm=Math.sin(t*0.03+_now*0.002+bi*2.1)*(5+t*0.01);
+          const _pa=_bDir+Math.PI/2;
+          let nx=_bx+Math.cos(_bDir)*_step+Math.cos(_pa)*_worm*0.08;
+          let ny=_by+Math.sin(_bDir)*_step+Math.sin(_pa)*_worm*0.08;
+          // 벽 충돌 → 방향 꺾어 우회
+          if(isW(nx,ny)){let _esc=false;
+            for(let _ti=1;_ti<=5;_ti++){for(const _s of[1,-1]){
+              const _ta=_bDir+_s*_ti*0.35;
+              const _tx=_bx+Math.cos(_ta)*_step,_ty=_by+Math.sin(_ta)*_step;
+              if(!isW(_tx,_ty)){nx=_tx;ny=_ty;_bDir=_ta;_esc=true;break}}
+              if(_esc)break}
+            if(!_esc)break}
+          op.pts.push({x:nx,y:ny});_bx=nx;_by=ny;
+          // 히트 판정
+          const _neB=shQuery(nx,ny,18);for(let _bi=0;_bi<_neB.length;_bi++){
             const e=_neB[_bi];if(!e.alive||_bHit.has(e))continue;
-            if(dst(px,py,e.x,e.y)<e.r+12){_bHit.add(e);
-              hurtE(e,meleeRef()*DPS_BAL.beam*_dmgMul*_intMul*elMul(bel,e.el),op.ang,true,{beam:true},bel);
-              e.burnT=180;if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);}}}
+            if(dst(nx,ny,e.x,e.y)<e.r+12){_bHit.add(e);
+              hurtE(e,meleeRef()*DPS_BAL.beam*_dmgMul*_intMul*elMul(bel,e.el),_bDir,true,{beam:true},bel);
+              e.burnT=180;if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);}}
+        }
       }
     }else{
       // 일반 빔: INT 스케일링 적용
@@ -9089,12 +9113,13 @@ function update(){
       p.x+=p.vx*0.1*sp; p.y+=p.vy*0.1*sp;
       nx=p.x; ny=p.y;
     } else {
-      // redBean 유도: 플레이어 방향으로 천천히 선회
-      if(p.homing&&!p.friendly&&p.life>30){
+      // 빨콩/녹콩 유도: 플레이어 방향으로 선회 (녹콩은 50% 약한 유도)
+      if((p.homing||p.blackBean)&&!p.friendly&&p.life>30){
         const _hAng=Math.atan2(P.y-p.y,P.x-p.x);
         const _cAng=Math.atan2(p.vy,p.vx);
         let _diff=_hAng-_cAng;while(_diff>Math.PI)_diff-=Math.PI*2;while(_diff<-Math.PI)_diff+=Math.PI*2;
-        const _turn=Math.min(Math.abs(_diff),0.03*sp)*Math.sign(_diff);
+        const _turnRate=p.blackBean?.015:.03; // 녹콩 유도력 50%
+        const _turn=Math.min(Math.abs(_diff),_turnRate*sp)*Math.sign(_diff);
         const _spd=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
         const _nAng=_cAng+_turn;
         p.vx=Math.cos(_nAng)*_spd;p.vy=Math.sin(_nAng)*_spd;
@@ -11954,8 +11979,8 @@ function updateE(e,sp){
     if(e.projT<=0&&d<500){e.projT=e.projCd;
       const pSpd=e.etype===1?4.5:e.etype===7?3.0:3.5;
       const _isFast=Math.random()<.2;const _sz=_isFast?.7:1.5+Math.random()*2.5;
-      // 특수콩: 일반 15%, 엘리트 25%, 레어 35%, 챔피언 45%, 보스 50%
-      const _beanChance=e.isBoss?.5:e.elite>=3?.45:e.elite>=2?.35:e.elite>=1?.25:.15;
+      // 특수콩: 일반 30%, 엘리트 45%, 레어 55%, 챔피언 65%, 보스 70%
+      const _beanChance=e.isBoss?.7:e.elite>=3?.65:e.elite>=2?.55:e.elite>=1?.45:.30;
       const _isBean=!_isFast&&Math.random()<_beanChance;
       const _isBK=_isBean&&Math.random()<.30; // 녹콩 30%
       const _isRB=_isBean&&!_isBK; // 빨콩 70%
@@ -16661,7 +16686,7 @@ function draw(){
   // ══ BEAM: Ultimate magic ══
   if(P.s==='beam'){const bd=Math.cos(P.facing),be=Math.sin(P.facing);
     const _isOmni=!!(P.skills.omniBeam&&P.skills.fanShot);
-    const _bRange=Math.max(_isOmni?500:280,((bw().bowRange||200)+(bw().bonusRange||0)*12)*pBowRange()*(_isOmni?2.5:1.5));
+    const _bRange=Math.max(_isOmni?650:280,((bw().bowRange||200)+(bw().bonusRange||0)*12)*pBowRange()*(_isOmni?3.25:1.5));
     let bl=_isOmni?~~(_bRange/2):_bRange;
     for(let t=0;t<bl;t+=3)if(isW(P.x+bd*t,P.y+be*t)){bl=t;break}
     const t=_now;
