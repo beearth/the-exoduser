@@ -1276,6 +1276,7 @@ return c;}`;
     let e=_tc.get(src);if(e&&e.v===ver)return e.bg;
     const sw=src.width||src.naturalWidth||0,sh=src.height||src.naturalHeight||0;
     if(sw<1||sh<1)return whiteBG;
+    if(sw>_glMaxTex||sh>_glMaxTex)return whiteBG;
     try{const t=GPU.createTexture({size:[sw,sh],format:'rgba8unorm',
       usage:GPUTextureUsage.TEXTURE_BINDING|GPUTextureUsage.COPY_DST|GPUTextureUsage.RENDER_ATTACHMENT});
       GPU.queue.copyExternalImageToTexture({source:src,flipY:false},{texture:t},[sw,sh]);
@@ -6082,7 +6083,7 @@ function _renderBToAtlas(ax,el,fr,cx,cy){
 let _bootedE=false;
 function _buildAtlasE(){
   if(_bootedE)return;_bootedE=true;
-  const W=1024;
+  const W=Math.min(_glMaxTex,4096);
   // 1) 팔레트당 총 프레임 수 계산 + 빈패킹
   let totalCells=0;
   for(let et=0;et<ATLAS_ENEMY_LAYOUT.length;et++) totalCells+=ATLAS_ENEMY_LAYOUT[et].totalFrames;
@@ -6113,10 +6114,11 @@ function _buildAtlasE(){
     }
   }
   const H=curY+rowH;
+  if(H>_glMaxTex)console.warn('[ATLAS-E] 높이 '+H+' > maxTex '+_glMaxTex+' — 텍스처 분할 필요');
 
   // 2) 캔버스 생성
   _atlasE=document.createElement('canvas');
-  _atlasE.width=W;_atlasE.height=H;
+  _atlasE.width=W;_atlasE.height=Math.min(H,_glMaxTex);
   const ax=_atlasE.getContext('2d');
 
   // _mapCtx 일시 비활성 (drawEnBody 트레일 방지)
@@ -6180,7 +6182,7 @@ function _buildAtlasE(){
 let _bootedB=false;
 function _buildAtlasB(){
   if(_bootedB)return;_bootedB=true;
-  const W=1024;
+  const W=Math.min(_glMaxTex,4096);
   const cell=ATLAS_BOSS_LAYOUT.cell; // 64
   const totalFr=ATLAS_BOSS_LAYOUT.totalFrames; // 27
   const colsPerRow=~~(W/cell); // 16
@@ -9170,7 +9172,7 @@ function update(){
           poolPart(P.x,P.y,Math.cos(sa)*sv,Math.sin(sa)*sv,k%3===0?'#ff1100':k%3===1?'#ff6600':'#ffcc00',4+Math.random()*5,14+Math.random()*10)}
       }
     }
-    // ══ 검은콩탄: 폭발 고정뎀. 패링해도 데미지, 막아도 감소 적음, 맞으면 아픔 ══
+    // ══ 녹콩탄: 폭발 고정뎀. 패링해도 데미지, 막아도 감소 적음, 맞으면 아픔 ══
     const _bkHitR=P.s==='wSwing'||P.s==='sBash'?_rbDeflR:_pCollR+16;
     if(p.blackBean&&!_pHit&&_pDist<_bkHitR&&P.iframes<=0){
       {const _bkD=P.s==='sBash'||isPWin()?50:P.s==='whirlwind'?40:100;P.hp-=_bkD;if(P.hp<=0)die();
@@ -11955,7 +11957,7 @@ function updateE(e,sp){
       // 특수콩: 일반 15%, 엘리트 25%, 레어 35%, 챔피언 45%, 보스 50%
       const _beanChance=e.isBoss?.5:e.elite>=3?.45:e.elite>=2?.35:e.elite>=1?.25:.15;
       const _isBean=!_isFast&&Math.random()<_beanChance;
-      const _isBK=_isBean&&Math.random()<.30; // 검콩 30%
+      const _isBK=_isBean&&Math.random()<.30; // 녹콩 30%
       const _isRB=_isBean&&!_isBK; // 빨콩 70%
       if(_isBK){
         projs.push({x:e.x,y:e.y,vx:Math.cos(e.facing)*2.2,vy:Math.sin(e.facing)*2.2,dmg:~~(e.atk*3),el:EL.P,friendly:false,life:400,ml:400,col:'#00aa00',sz:2.0,blackBean:true});
@@ -11999,7 +12001,7 @@ function updateE(e,sp){
     if(e.st2<=0){
       const cnt=~~((8+Math.min(G.stage,8))*(1+(e._bossPhase-1)*.15)); // 최대 ~20발
       for(let i=0;i<cnt;i++){const a=Math.PI*2*i/cnt;
-        const _isBKB=i%10<3; // 빨콩7:검콩3
+        const _isBKB=i%10<3; // 빨콩7:녹콩3
         const _isRB=!_isBKB&&Math.random()<.6; // 나머지 60% 빨콩
         const _isFB=!_isBKB&&!_isRB&&Math.random()<.4; // 나머지 40% 빠른탄
         const _szB=_isBKB?2.0:_isRB?1.8:_isFB?.7:1.5+Math.random()*2;
@@ -12011,7 +12013,7 @@ function updateE(e,sp){
     if(e.st2<=0){
       const fanW=Math.PI*(.7+e._bossPhase*.06);const cnt=~~((5+Math.min(G.stage,6))*(1+(e._bossPhase-1)*.15)); // 최대 ~14발
       for(let i=0;i<cnt;i++){const a=e.facing-fanW/2+fanW*i/(cnt-1);
-        const _isBKF=i%10<3; // 빨콩7:검콩3
+        const _isBKF=i%10<3; // 빨콩7:녹콩3
         const _isRF=!_isBKF&&Math.random()<.6; // 나머지 60% 빨콩
         const _isFF=!_isBKF&&!_isRF&&Math.random()<.4; // 나머지 40% 빠른탄
         const _szF=_isBKF?2.0:_isRF?1.8:_isFF?.7:1.5+Math.random()*2;
@@ -12465,7 +12467,7 @@ function updateE(e,sp){
       for(let i=0;i<cnt;i++){
         const a=baseAng-spread/2+spread*i/(cnt-1)+(Math.random()-.5)*.15;
         const spd=2.5+Math.random()*1.5;
-        const _isBK=i%10<3; // 빨콩7:검콩3
+        const _isBK=i%10<3; // 빨콩7:녹콩3
         projs.push({x:e.x,y:e.y,vx:Math.cos(a)*(_isBK?2.2:spd),vy:Math.sin(a)*(_isBK?2.2:spd),dmg:~~(e.atk*(_isBK?3:2)),el:_isBK?EL.P:e.el,friendly:false,life:350,ml:350,col:_isBK?'#00aa00':'#cc1100',sz:_isBK?2.0:1.8,redBean:!_isBK,blackBean:_isBK,homing:!_isBK});
       }
       addParts(e.x,e.y,'#cc1100',8);SFX.magic(0);G.shake=4*OPT.shake/100;
@@ -12487,7 +12489,7 @@ function updateE(e,sp){
       for(let i=0;i<cnt;i++){
         const a=e.facing+(Math.random()-.5)*1.2;
         const spd=2.2+Math.random()*2;
-        const _isBK=i%10<3; // 빨콩7:검콩3
+        const _isBK=i%10<3; // 빨콩7:녹콩3
         projs.push({x:e.x+(Math.random()-.5)*15,y:e.y+(Math.random()-.5)*15,vx:Math.cos(a)*(_isBK?2.0:spd),vy:Math.sin(a)*(_isBK?2.0:spd),dmg:~~(e.atk*(_isBK?3:1.8)),el:_isBK?EL.P:e.el,friendly:false,life:300,ml:300,col:_isBK?'#00aa00':'#cc1100',sz:_isBK?2.0:1.5,redBean:!_isBK,blackBean:_isBK,homing:!_isBK});
       }
       if(Math.random()<.3)addParts(e.x,e.y,'#ff2200',3);
@@ -16576,7 +16578,7 @@ function draw(){
       }
       X.globalAlpha=1;continue;
     }
-    // ── 검은콩탄 → 녹색 독구슬 ──
+    // ── 녹콩탄 → 녹색 독구슬 ──
     if(p.blackBean){
       const _gb=3.5*_sSc;
       const _gpulse=.8+Math.sin(_now/55+p.x*.25)*.2;
