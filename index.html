@@ -163,7 +163,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   <div class="cin-img" id="cinImg3"><img src="img/cin_throne.png" alt=""></div>
   <div class="cin-img" id="cinImg4"><img src="img/cin_bloodbath.png" alt=""></div>
   <div class="cin-img" id="cinImg5"><img src="img/cin_torture.png" alt=""></div>
-  <div class="cin-img" id="cinImg6"><img src="img/cin_06_fallhell.png" alt=""></div>
+  <div class="cin-img" id="cinImg6"><img src="img/cin_hellwalk.png" alt=""></div>
   <div class="cin-img" id="cinImg7"><img src="img/cin_hellwalk.png" alt=""></div>
   <div class="cin-img" id="cinImg8"><img src="img/cin_nemesia_hd.png" alt=""></div>
   <div class="cin-img" id="cinImg9"><img src="img/cin_demonbattle.png" alt=""></div>
@@ -171,6 +171,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   <div class="cin-img" id="cinImg11"><img src="img/cin_victory.png" alt=""></div>
   <div class="cin-img" id="cinImg12"><img src="img/cin_bystanders.png" alt=""></div>
   <div class="cin-img" id="cinImg13"><img src="img/cin_remember.png" alt=""></div>
+  <div class="cin-img" id="cinImg14"><img src="img/warrior.png" alt=""></div>
 
   <!-- 프롤로그 텍스트 -->
   <div class="cin-text" id="cinText">
@@ -263,7 +264,7 @@ const CIN_LINES=[
   {text:'그날 밤, 킬루 가문을 모두 죽였다.',dur:4500,cls:'red',img:3},
   {text:'',dur:800},
    {text:'칼로 킬루의 팔다리를 자르고',dur:3800,cls:'red',img:4},
-   {text:'앞에 불로 지혈까지 해주며',dur:3800,cls:'red'},
+   {text:'불로 지혈까지 해주며',dur:3800,cls:'red'},
   {text:'오래오래 살려두었다.',dur:4000,cls:'red'},
   {text:'',dur:1000,img:-1},
   {text:'"기억하라."',dur:3500,cls:'red',img:12},
@@ -272,7 +273,7 @@ const CIN_LINES=[
   {text:'',dur:1000},
   {text:'그리고 지옥에 떨어진다.',dur:4500,img:5},
   {text:'',dur:2000,img:-1,phase:2},
-  {text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',dur:4500,cls:'dim',img:6},
+  {text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',dur:4500,cls:'dim',img:14},
   {text:'',dur:800},
   {text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',dur:4500,cls:'dim',img:8},
   {text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',dur:5000,cls:'dim',img:9},
@@ -289,7 +290,7 @@ function playCinematic(){
   const textBox=$('cinTextInner');
   const skipBtn=$('skipBtn');
   const vid=$('cinVideo');
-  const cImgs=[1,2,3,4,5,6,7,8,9,10,11,12,13].map(i=>$('cinImg'+i));
+  const cImgs=[1,2,3,4,5,6,7,8,9,10,11,12,13,14].map(i=>$('cinImg'+i));
   let _prevImg=-1;
   const showImg=(idx)=>{
     if(idx===_prevImg)return;
@@ -307,6 +308,7 @@ function playCinematic(){
     if(_cinDone)return;
     if(idx>=CIN_LINES.length){finishCin();return;}
     _cinIdx=idx;
+    if(idx>=2)_cinSkipLock=false; // 첫 대사 이후 스킵 해금
     const line=CIN_LINES[idx];
     // 이미지 전환
     if(line.img!==undefined){if(line.img===-1)hideAll();else showImg(line.img);}
@@ -389,6 +391,7 @@ function playCinematic(){
   prompt.addEventListener('touchend',e=>{e.preventDefault();onVidClick();});
 
   // 클릭/탭 → 다음 줄로 스킵 (비디오 중이면 비디오 건너뛰고 프롤로그 시작)
+  let _cinSkipLock=true; // 첫 대사 전 스킵 불가
   function onSkipClick(){
     if(_cinDone)return;
     if(!_cinReady){
@@ -399,6 +402,7 @@ function playCinematic(){
       showLine(0);
       return;
     }
+    if(_cinSkipLock)return; // 첫씬 전 클릭/키보드 스킵 차단
     clearTimeout(_cinTimer);
     showLine(_cinIdx+1);
   }
@@ -406,8 +410,9 @@ function playCinematic(){
   document.querySelector('.cin-overlay').addEventListener('touchend',e=>{e.preventDefault();onSkipClick();});
   document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Enter'){e.preventDefault();onSkipClick();}});
 
-  // 0.5s: 스킵(전체) 버튼 표시
-  setTimeout(()=>skipBtn.classList.add('show'),500);
+  // 첫 대사 끝난 후 스킵 버튼 표시 (첫씬 전에는 스킵 불가)
+  const _firstDur=(CIN_LINES[0]?.dur||1200)+(CIN_LINES[1]?.dur||4000);
+  setTimeout(()=>skipBtn.classList.add('show'),_firstDur+500);
 }
 
 function skipToGate(){
@@ -416,7 +421,7 @@ function skipToGate(){
   startBGM();
   $('cinVideo').style.opacity='0';
   if($('cinClickPrompt'))$('cinClickPrompt').style.display='none';
-  [1,2,3,4,5,6,7,8,9,10,11,12,13].forEach(i=>{const e=$('cinImg'+i);if(e)e.classList.remove('show')});
+  [1,2,3,4,5,6,7,8,9,10,11,12,13,14].forEach(i=>{const e=$('cinImg'+i);if(e)e.classList.remove('show')});
   $('cinTextInner').innerHTML='';
   $('skipBtn').classList.remove('show');
   // 시네마틱 끝 → 로비 또는 로그인
