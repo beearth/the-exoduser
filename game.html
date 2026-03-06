@@ -6051,7 +6051,12 @@ const ATLAS_ENEMY_LAYOUT=[
   {etype:76,name:'ashSwarm',      cell:32,states:{idle:2,walk:4,attack:2,hit:2},totalFrames:10},
   {etype:77,name:'lavaGiant',     cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   {etype:78,name:'flamePriest',   cell:48,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
-  {etype:79,name:'dragonApostle', cell:80,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16}
+  {etype:79,name:'dragonApostle', cell:80,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
+  {etype:80,name:'bugSkin',  cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
+  {etype:81,name:'iceSkin',  cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
+  {etype:82,name:'lavaSkin', cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
+  {etype:83,name:'abyssSkin',cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
+  {etype:84,name:'lightSkin',cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14}
 ];
 const ATLAS_BOSS_LAYOUT={
   cell:64,states:{idle:4,windup:4,attack:4,breath:6,stagger:3,death:6},totalFrames:27
@@ -6139,6 +6144,16 @@ function _getEAnimState(e){
   if(s==='eBlock'&&_stateOffsets[e.etype]&&_stateOffsets[e.etype].block)return 'block';
   if(s==='eApproach'||s==='eCircle'||s==='eRetreat'||s==='eFlee')return 'walk';
   return 'idle';
+}
+
+// 몬스터 타입을 스킨 타입으로 매핑 (성능 최적화용)
+function _getMappedEtype(et){
+  if(et>=80 && et<=84) return et;
+  if(et>=20 && et<=29) return 81; // Ice (얼음)
+  if(et>=30 && et<=39) return 83; // Abyss (심연)
+  if(et>=40 && et<=49) return 84; // Lightning (번개)
+  if(et>=70 && et<=79) return 82; // Lava (용암)
+  return 80;                      // Bug / Generic (벌레/기본)
 }
 
 // 적 → 절대 프레임 인덱스 (아틀라스 상의 프레임 위치)
@@ -6497,6 +6512,11 @@ function _patchAtlasEtypeNew(et){
 
 // etype 0: 해골 보병
 _loadESprite(0,'img/etype0_skeleton.png',4);
+_loadESprite(80,'img/벌레.png',14);
+_loadESprite(81,'img/얼음.png',14);
+_loadESprite(82,'img/용암.png',14);
+_loadESprite(83,'img/심연.png',14);
+_loadESprite(84,'img/번개.png',14);
 
 // ═══ 투사체 3D 프리렌더 스프라이트 레지스트리 ═══
 const _PSPRITES={};
@@ -6616,21 +6636,17 @@ let _bootedE=false;
 function _buildAtlasE(){
   if(_bootedE)return;_bootedE=true;
   const W=Math.min(_glMaxTex,4096);
-  // 1) 팔레트당 총 프레임 수 계산 + 빈패킹
+  
+  // 1) 기본 스킨들(80~84)만 아틀라스에 배치
+  const skinTypes = [80, 81, 82, 83, 84];
   let totalCells=0;
-  for(let et=0;et<ATLAS_ENEMY_LAYOUT.length;et++) totalCells+=ATLAS_ENEMY_LAYOUT[et].totalFrames;
-  // 팔레트 7개분 전체 셀
-  const allCells=totalCells*7;
-
-  // 각 행에 몇 셀 들어가는지 계산 (최대 셀 크기 기준)
-  const maxCell=56; // 가장 큰 셀(tank)
-  const colsPerRow=~~(W/maxCell);
-
-  // 높이 계산: 각 etype×pal 조합을 행 단위로 패킹
-  let curX=0,curY=0,rowH=0;
+  for(let et of skinTypes) totalCells+=ATLAS_ENEMY_LAYOUT[et].totalFrames;
+  
+  const maxCell=48; // 스킨 셀 크기 고정
   const _tmpLayout=[]; // [{et,pal,fr,x,y,cell}]
 
-  for(let et=0;et<ATLAS_ENEMY_LAYOUT.length;et++){
+  let curX=0,curY=0,rowH=0;
+  for(let et of skinTypes){
     const lay=ATLAS_ENEMY_LAYOUT[et];
     const cell=lay.cell;
     _atlasEUV[et]=[];
@@ -6645,39 +6661,37 @@ function _buildAtlasE(){
       }
     }
   }
-  const H=curY+rowH;
-  if(H>_glMaxTex)console.warn('[ATLAS-E] 높이 '+H+' > maxTex '+_glMaxTex+' — 텍스처 분할 필요');
 
-  // 2) 캔버스 생성
+  // 타 몬스터들은 매핑된 스킨의 UV를 참조 (데이터 복제 없이 참조만)
+  for(let et=0; et<ATLAS_ENEMY_LAYOUT.length; et++){
+    if(et>=80 && et<=84) continue;
+    const target = _getMappedEtype(et);
+    _atlasEUV[et] = _atlasEUV[target];
+  }
+
+  const H=curY+rowH;
   _atlasE=document.createElement('canvas');
   _atlasE.width=W;_atlasE.height=Math.min(H,_glMaxTex);
   const ax=_atlasE.getContext('2d');
 
-  // _mapCtx 일시 비활성 (drawEnBody 트레일 방지)
   const _smc=typeof _mapCtx!=='undefined'?_mapCtx:null;
   if(typeof _mapCtx!=='undefined')_mapCtx=null;
 
-  // 3) 셀 렌더링 — 팔레트 0(림보)에 프로시저럴 렌더 후, 나머지 팔레트는 틴트
-  // 먼저 pal=0 기준으로 프로시저럴 렌더링
+  // 3) 셀 렌더링 — 스킨 5종만 렌더링 (대규모 최적화)
   for(let i=0;i<_tmpLayout.length;i++){
     const t=_tmpLayout[i];
-    const lay=ATLAS_ENEMY_LAYOUT[t.et];
-    // 프레임 → 상태+로컬프레임으로 매핑
     const offsets=_stateOffsets[t.et];
-    let state='idle',localFr=0;
-    let acc=0;
+    let state='idle',localFr=0,acc=0;
     for(const st in offsets){
       if(t.fr<acc+offsets[st].count){state=st;localFr=t.fr-acc;break}
       acc+=offsets[st].count;
     }
-    // 프로시저럴 렌더 (기존 el 기반 → pal 0은 el=0 물리)
     const spr=_ESPRITES[t.et];
     ax.save();
     ax.beginPath();ax.rect(t.x,t.y,t.cell,t.cell);ax.clip();
     if(spr&&spr.ready&&localFr<spr.frames){
       _drawSpriteToAtlas(ax,spr,localFr,0,t.x+t.cell/2,t.y+t.cell/2,t.cell);
     }else{
-      // 프로시저럴 폴백 — fakeE 생성
       const r=ETYPE_R[t.et];
       const fakeE={
         x:t.x+t.cell/2,y:t.y+t.cell/2,r:r,etype:t.et,
@@ -6690,24 +6704,18 @@ function _buildAtlasE(){
     }
     ax.restore();
 
-    // 팔레트 틴트 적용 (pal>0이면 속성 색상 오버레이)
     if(t.pal>0){
       const palData=HELL_PALETTES[t.pal];
-      // 간단한 컬러 틴트: 팔레트 mid 색상으로 오버레이
-      ax.save();
-      ax.globalCompositeOperation='source-atop';
-      ax.globalAlpha=0.3;
+      ax.save();ax.globalCompositeOperation='source-atop';ax.globalAlpha=0.3;
       ax.fillStyle='rgb('+palData.mid[0]+','+palData.mid[1]+','+palData.mid[2]+')';
-      ax.fillRect(t.x,t.y,t.cell,t.cell);
-      ax.restore();
+      ax.fillRect(t.x,t.y,t.cell,t.cell);ax.restore();
     }
   }
 
   if(typeof _mapCtx!=='undefined')_mapCtx=_smc;
   _atlasEReady=true;
   _atlasE._glVer=1;
-  // 레거시 _atlasUV는 건드리지 않음 — 렌더링 파이프라인이 _atlasEUV 우선 → _atlasUV 폴백으로 동작
-  console.log('[ATLAS-E] 적 아틀라스 빌드 완료: '+W+'×'+H+' ('+_tmpLayout.length+'셀, '+ATLAS_ENEMY_LAYOUT.length+'종×7팔레트)');
+  console.log('[ATLAS-E] 최적화 빌드 완료: 5종 핵심 스킨 기반 매핑 적용 (전체 '+ATLAS_ENEMY_LAYOUT.length+'종 커버)');
 }
 
 // ═══ 신규 보스 아틀라스 빌드 (_atlasB: 27프레임 × 7팔레트) ═══
@@ -22087,7 +22095,8 @@ function draw(){
         const _ePal=_getPalIdx(e.el!=null?e.el:0);
         const _eFr=_getEFrame(e,_now);
         const et=e.etype>=0&&e.etype<ATLAS_ENEMY_LAYOUT.length?e.etype:0;
-        const euv=_atlasEUV[et]&&_atlasEUV[et][_ePal]&&_atlasEUV[et][_ePal][_eFr];
+        const _mEt=_getMappedEtype(et); // 스킨 매핑 적용
+        const euv=_atlasEUV[_mEt]&&_atlasEUV[_mEt][_ePal]&&_atlasEUV[_mEt][_ePal][_eFr];
         if(euv){
           X.save();X.translate(e.x,e.y);X.rotate(e.facing);X.globalAlpha=sa;
           const _aBaseR=ETYPE_R[et];

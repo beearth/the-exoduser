@@ -26,6 +26,8 @@ app.commandLine.appendSwitch('use-angle', 'default');
 app.commandLine.appendSwitch('disable-gpu-sandbox');
 // V-Sync 비활성화 (144fps+ 허용)
 app.commandLine.appendSwitch('disable-frame-rate-limit');
+// DPI 스케일링 강제 1x — Windows 배율(125%,150%) 무시, 1CSS px = 1물리 px
+app.commandLine.appendSwitch('force-device-scale-factor', '1');
 
 // ═══ 내장 HTTP 서버 (세이브/로드 API + 정적 파일) ═══
 const PORT = 3333;
@@ -162,17 +164,19 @@ let mainWindow;
 
 function createWindow() {
   const { screen } = require('electron');
-  const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
-  const winW = Math.min(sw, 1280), winH = Math.min(sh, 720);
+  const primary = screen.getPrimaryDisplay();
+  const { width: sw, height: sh } = primary.size; // 실제 해상도 (workArea 아닌 전체)
   mainWindow = new BrowserWindow({
-    width: winW,
-    height: winH,
+    width: sw,
+    height: sh,
+    fullscreen: true,
     fullscreenable: true,
     simpleFullscreen: true,
     title: 'THE EXODUSER — 지옥의 길',
     icon: path.join(__dirname, 'icon.png'),
     backgroundColor: '#000000',
     autoHideMenuBar: true,
+    frame: false, // 타이틀바 제거 (풀스크린 게임)
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -233,9 +237,9 @@ ipcMain.handle('get-display-mode', () => {
 
 // ═══ IPC — 해상도 변경 ═══
 const RES_LIST = [
-  [800, 600],   [1024, 768],  [1280, 720],  [1366, 768],
-  [1600, 900],  [1920, 1080], [2560, 1440], [3200, 1800],
-  [3840, 2160], [5120, 2880]
+  [1280, 720],  [1366, 768],  [1600, 900],  [1920, 1080],
+  [2560, 1080], [2560, 1440], [3440, 1440], [3840, 1600],
+  [3840, 2160], [5120, 1440], [5120, 2160], [5120, 2880]
 ];
 
 ipcMain.handle('get-resolutions', () => {
