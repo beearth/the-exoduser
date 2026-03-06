@@ -58,13 +58,9 @@ canvas{display:block}
     <button onclick="exportAsFixedMap()" style="background:#1a0030;color:#cc88ff;border-color:#cc88ff">📤 내보내기</button>
     <button onclick="exportAll()">JSON전체</button>
     <button onclick="importAll()">불러오기</button>
-    <div style="display:flex;gap:4px;align-items:center;margin:2px 0">
-      <span style="font-size:10px;color:#888">슬롯</span>
-      <input id="settings-slot" type="number" min="1" max="9" value="1" style="width:44px;background:#111;border:1px solid #444;color:#ddd;font:10px monospace;padding:2px 4px">
-    </div>
-    <button onclick="pickSettingsFolder()" style="background:#2a2400;color:#ffd966;border-color:#ffd966">세이브폴더선택</button>
-    <button onclick="saveEditorSettings(true)" style="background:#1a2a00;color:#aaff66;border-color:#aaff66">세팅저장</button>
-    <button onclick="loadEditorSettings(true)" style="background:#001f2a;color:#66ddff;border-color:#66ddff">세팅불러오기</button>
+    <button onclick="saveEditorSettings(true)" style="background:#1a2a00;color:#aaff66;border-color:#aaff66">덮어쓰기 저장</button>
+    <button onclick="saveSettingsAsFile()" style="background:#2a001a;color:#ff99cc;border-color:#ff99cc">새 파일로 저장</button>
+    <button onclick="loadSettingsFromFile()" style="background:#001f2a;color:#66ddff;border-color:#66ddff">세팅불러오기</button>
     <div style="margin-top:3px;color:#555;font-size:9px" id="stats">-</div>
   </div>
 </div>
@@ -114,10 +110,11 @@ canvas{display:block}
   </div>
   <div class="section">
     <h4>⌨️ 단축키</h4>
-    <div style="color:#555;font-size:9px;line-height:1.8">0~3=높이 []=브러시 C/S/B=모양<br>Ctrl+Z=되돌리기 Ctrl+S=내보내기</div>
+    <div style="color:#555;font-size:9px;line-height:1.8">0~3=높이 []=브러시 C/S/B=모양<br>Ctrl+Z=되돌리기 Ctrl+S=저장 Ctrl+Shift+S=새파일저장</div>
   </div>
 </div>
 <input type="file" id="fileInput" style="display:none" accept=".json">
+<input type="file" id="settingsFileInput" style="display:none" accept=".json">
 <script>
 const C=document.getElementById('c'),X=C.getContext('2d');
 const editor=document.getElementById('editor'),T=8;
@@ -2435,24 +2432,27 @@ function applyBrush(cx,cy){
   const m=getCurrentMap();if(!m)return;
   if(selectedObj){if(cx>=0&&cy>=0&&cx<m.mw&&cy<m.mh){
     m.objs=m.objs.filter(o=>!(Math.abs(o.x-cx)<3&&Math.abs(o.y-cy)<3));
-    if(selectedObj!=='_delete')m.objs.push({x:cx,y:cy,id:selectedObj})}return}
+    if(selectedObj!=='_delete')m.objs.push({x:cx,y:cy,id:selectedObj});_scheduleMapAutosave()}return}
   const r=brushRadius;
   for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){
     if(brushShape==='circle'&&dx*dx+dy*dy>r*r)continue;
     const tx=cx+dx,ty=cy+dy;if(tx>=0&&ty>=0&&tx<m.mw&&ty<m.mh)m.grid[ty][tx]=currentHeight;
   }
   m.dirty=true;
+  _scheduleMapAutosave();
 }
 function applyBox(x1,y1,x2,y2){
   const m=getCurrentMap();if(!m)return;
   const sx=Math.max(0,Math.min(x1,x2)),sy=Math.max(0,Math.min(y1,y2)),ex=Math.min(m.mw-1,Math.max(x1,x2)),ey=Math.min(m.mh-1,Math.max(y1,y2));
   for(let y=sy;y<=ey;y++)for(let x=sx;x<=ex;x++)m.grid[y][x]=currentHeight;m.dirty=true;
+  _scheduleMapAutosave();
 }
 function smoothEdges(){
   saveUndo();const m=getCurrentMap();if(!m)return;
   const tmp=[];for(let y=0;y<m.mh;y++){tmp[y]=new Uint8Array(m.mw);for(let x=0;x<m.mw;x++)tmp[y][x]=m.grid[y][x]}
   for(let y=1;y<m.mh-1;y++)for(let x=1;x<m.mw-1;x++){let s=0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)s+=m.grid[y+dy][x+dx];tmp[y][x]=Math.round(s/9)}
   for(let y=0;y<m.mh;y++)for(let x=0;x<m.mw;x++)m.grid[y][x]=tmp[y][x];m.dirty=true;
+  _scheduleMapAutosave();
 }
 function buildObjPalette(){
   const pal=document.getElementById('obj-palette');pal.innerHTML='';let lc='';
@@ -2477,7 +2477,7 @@ function buildStageListOrig(){
     const bossType=ARENA_TYPES[i%5];
     item.innerHTML=mapMode==='boss'?
       `<div><div class="name">${s.floor}층 보스방</div><div class="size">50×42 [${bossType}]</div></div><div class="badge" style="background:#ff4400">💀</div>`:
-      `<div><div class="name">${s.floor}층 <span style="font-size:9px;color:#888">${s.type==='horiz'?'↔가로':s.type==='grid'?'🔲격자':'↕세로'}</span></div><div class="size">${s.mw}×${s.mh}</div></div><div class="badge" style="background:${s.type==='grid'?'#ff4400':s.type==='horiz'?'#0088ff':HELLS[s.hell].color}">${s.type==='grid'?'👑':s.type==='horiz'?'↔':'↕'}</div>`;
+      `<div><div class="name">${s.floor}층 <span style="font-size:9px;color:#888">${s.type==='horiz'?'↔가로':s.type==='grid'?'🔲격자':'🗺️맵'}</span></div><div class="size">${s.mw}×${s.mh}</div></div><div class="badge" style="background:${s.type==='grid'?'#ff4400':s.type==='horiz'?'#0088ff':HELLS[s.hell].color}">${s.type==='grid'?'👑':s.type==='horiz'?'↔':'🗺️'}</div>`;
     item.onclick=()=>loadStage(i);sl.appendChild(item)}
 }
 function loadStage(sid){
@@ -2493,7 +2493,7 @@ function resize(){C.width=editor.clientWidth;C.height=editor.clientHeight}
 resize();window.onresize=resize;
 function mouseToTile(mx,my){const wx=(mx-C.width/2)/zoom+camX,wy=(my-C.height/2)/zoom+camY;return{tx:Math.floor(wx/T),ty:Math.floor(wy/T)}}
 function saveUndo(){const m=getCurrentMap();if(!m)return;undoStack.push({grid:m.grid.map(r=>new Uint8Array(r)),objs:JSON.parse(JSON.stringify(m.objs))});if(undoStack.length>40)undoStack.shift()}
-function undo(){if(!undoStack.length)return;const m=getCurrentMap(),s=undoStack.pop();for(let y=0;y<m.mh;y++)m.grid[y]=s.grid[y];m.objs=s.objs;m.dirty=true}
+function undo(){if(!undoStack.length)return;const m=getCurrentMap(),s=undoStack.pop();for(let y=0;y<m.mh;y++)m.grid[y]=s.grid[y];m.objs=s.objs;m.dirty=true;_scheduleMapAutosave()}
 
 C.onmousedown=e=>{
   if(e.button===1||e.button===2){dragging=true;lastMX=e.clientX;lastMY=e.clientY;e.preventDefault();return}
@@ -2503,7 +2503,7 @@ C.onmousemove=e=>{const{tx,ty}=mouseToTile(e.offsetX,e.offsetY);hoverTX=tx;hover
   if(dragging){camX-=(e.clientX-lastMX)/zoom;camY-=(e.clientY-lastMY)/zoom;lastMX=e.clientX;lastMY=e.clientY}
   if(painting)applyBrush(tx,ty)};
 C.onmouseup=e=>{if(e.button===1||e.button===2)dragging=false;
-  if(e.button===0){painting=false;if(boxStart&&brushShape==='box'){const{tx,ty}=mouseToTile(e.offsetX,e.offsetY);applyBox(boxStart.tx,boxStart.ty,tx,ty);boxStart=null}}};
+  if(e.button===0){painting=false;if(boxStart&&brushShape==='box'){const{tx,ty}=mouseToTile(e.offsetX,e.offsetY);applyBox(boxStart.tx,boxStart.ty,tx,ty);boxStart=null} _saveLiveMapState(); }};
 C.oncontextmenu=e=>e.preventDefault();
 C.onwheel=e=>{const old=zoom;zoom*=e.deltaY<0?1.15:0.87;zoom=Math.max(.1,Math.min(6,zoom));camX+=(e.offsetX-C.width/2)*(1/old-1/zoom);camY+=(e.offsetY-C.height/2)*(1/old-1/zoom);e.preventDefault()};
 window.onkeydown=e=>{if(e.target.tagName==='INPUT')return;
@@ -2512,7 +2512,11 @@ window.onkeydown=e=>{if(e.target.tagName==='INPUT')return;
   if(e.key==='['){brushRadius=Math.max(1,brushRadius-1);document.getElementById('brushR').value=brushRadius;document.getElementById('brVal').textContent=brushRadius}
   if(e.key===']'){brushRadius=Math.min(25,brushRadius+1);document.getElementById('brushR').value=brushRadius;document.getElementById('brVal').textContent=brushRadius}
   if(e.ctrlKey&&e.key==='z'){e.preventDefault();undo()}
-  if(e.ctrlKey&&e.key==='s'){e.preventDefault();exportCurrent()}};
+  if(e.ctrlKey&&e.key.toLowerCase()==='s'){
+    e.preventDefault();
+    if(e.shiftKey){ saveSettingsAsFile(); }
+    else { saveEditorSettings(true); }
+  }};
 
 function exportCurrent(){
   const s=STAGES[currentStage],m=getCurrentMap();if(!m)return;
@@ -2539,6 +2543,7 @@ document.getElementById('fileInput').onchange=function(e){const file=e.target.fi
       if(sd.objects)m.objs=sd.objects;m.dirty=true}
     if(data.stages){for(const[sid,sd] of Object.entries(data.stages))loadOne(+sid,sd);alert('불러오기 완료')}
     else if(data.stage!==undefined){loadOne(data.stage,data);loadStage(data.stage);alert('불러오기 완료')}
+    _scheduleMapAutosave();
     buildStageListOrig()}catch(err){alert('오류: '+err.message)}};reader.readAsText(file)};
 
 let rCache=null,rStage=-1;
@@ -2982,7 +2987,13 @@ function getCurrentMap() {
 
 const EDITOR_SETTINGS_KEY_PREFIX='tilemap_editor_settings_v1_slot_';
 const EDITOR_SETTINGS_SLOT_KEY='tilemap_editor_selected_slot_v1';
+const LIVE_MAP_KEY_PREFIX='tilemap_editor_livemap_v1_slot_';
+const LIVE_MAP_INDEX_KEY_PREFIX='tilemap_editor_livemap_index_v1_slot_';
+const LIVE_MAP_ENTRY_KEY_PREFIX='tilemap_editor_livemap_entry_v1_slot_';
+const BUILD_STAMP='2026-03-06 16:10';
 let settingsDirHandle=null;
+let settingsFileHandle=null;
+let _mapAutosaveTimer=null;
 function _slotInput(){ return document.getElementById('settings-slot'); }
 function _normalizeSlot(v){
   const n=~~Number(v);
@@ -3000,6 +3011,9 @@ function _setSelectedSlot(slot){
   return s;
 }
 function _settingsKey(slot){ return EDITOR_SETTINGS_KEY_PREFIX + _normalizeSlot(slot); }
+function _liveMapKey(slot){ return LIVE_MAP_KEY_PREFIX + _normalizeSlot(slot); }
+function _liveMapIndexKey(slot){ return LIVE_MAP_INDEX_KEY_PREFIX + _normalizeSlot(slot); }
+function _liveMapEntryKey(slot,mapKey){ return LIVE_MAP_ENTRY_KEY_PREFIX + _normalizeSlot(slot) + '_' + String(mapKey); }
 function _settingsFilename(slot){ return `settings_slot_${_normalizeSlot(slot)}.json`; }
 function _editorSettingsSnapshot(){
   return {
@@ -3007,6 +3021,279 @@ function _editorSettingsSnapshot(){
     currentHeight,brushRadius,brushShape,
     show3d,showObj,showRooms,showGrid
   };
+}
+function _captureCurrentMapState(){
+  const m=getCurrentMap(); if(!m||!m.grid||!m.mw||!m.mh) return null;
+  const st=STAGES[currentStage];
+  const isGridContext = (mapMode==='grid') || (mapMode!=='boss' && st && st.type==='grid');
+  const effectiveGridHell = isGridContext ? (mapMode==='grid' ? currentGridHell : st.hell) : currentGridHell;
+  const flat=[];
+  for(let y=0;y<m.mh;y++) for(let x=0;x<m.mw;x++) flat.push(~~(m.grid[y]?.[x]||0));
+  const rle=[];
+  for(let i=0;i<flat.length;){
+    const v=flat[i]; let c=1;
+    while(i+c<flat.length && flat[i+c]===v && c<65535) c++;
+    rle.push(v,c); i+=c;
+  }
+  const key = mapMode==='boss' ? (currentStage+'_boss') : (isGridContext ? ('grid_'+effectiveGridHell) : String(currentStage));
+  return {
+    version:1,
+    key,
+    mode:mapMode,
+    stage:currentStage,
+    gridHell:effectiveGridHell,
+    mw:m.mw,mh:m.mh,rle,
+    rooms:Array.isArray(m.rooms)?m.rooms:[],
+    objs:Array.isArray(m.objs)?m.objs:[],
+    special:Array.isArray(m.special)?m.special:[]
+  };
+}
+function _restoreCurrentMapState(state){
+  if(!state||!Array.isArray(state.rle)||!state.mw||!state.mh) return false;
+  const mw=~~state.mw,mh=~~state.mh;
+  const grid=[];
+  for(let y=0;y<mh;y++) grid[y]=new Uint8Array(mw);
+  let idx=0;
+  for(let i=0;i<state.rle.length;i+=2){
+    const v=~~state.rle[i], c=Math.max(0,~~state.rle[i+1]);
+    for(let j=0;j<c&&idx<mw*mh;j++,idx++){
+      const y=(idx/mw)|0, x=idx%mw;
+      grid[y][x]=v;
+    }
+  }
+  const key = (state.key!==undefined && state.key!==null) ? String(state.key) :
+    (state.mode==='boss' ? (state.stage+'_boss') : (state.mode==='grid' ? ('grid_'+state.gridHell) : String(state.stage)));
+  const isGridKey = key.startsWith('grid_');
+  const target={
+    grid,mw,mh,
+    rooms:Array.isArray(state.rooms)?state.rooms:[],
+    objs:Array.isArray(state.objs)?state.objs:[],
+    special:Array.isArray(state.special)?state.special:[],
+    dirty:true
+  };
+  if(isGridKey){
+    const hellFromKey=Number(key.slice(5));
+    const h=Number.isFinite(hellFromKey)?Math.max(0,Math.min(6,~~hellFromKey)):Math.max(0,Math.min(6,~~(state.gridHell||0)));
+    gridMapStore[h]=target;
+  }else{
+    mapStore[key]=target;
+  }
+  return true;
+}
+function _saveLiveMapState(){
+  try{
+    const slot=_getSelectedSlot();
+    const live=_captureCurrentMapState();
+    if(live){
+      // 하위호환: 마지막 편집 맵 1개 키
+      localStorage.setItem(_liveMapKey(slot),JSON.stringify(live));
+      // 슬롯별 맵 단위 저장
+      localStorage.setItem(_liveMapEntryKey(slot,live.key),JSON.stringify(live));
+      const idxKey=_liveMapIndexKey(slot);
+      const raw=localStorage.getItem(idxKey);
+      const arr=raw?JSON.parse(raw):[];
+      const set=new Set(Array.isArray(arr)?arr:[]);
+      set.add(String(live.key));
+      localStorage.setItem(idxKey,JSON.stringify(Array.from(set)));
+    }
+    // liveMap 자동저장만 켜져 있어도 로드시 컨텍스트를 복원할 수 있게 세팅 스냅샷도 같이 저장
+    localStorage.setItem(_settingsKey(slot),JSON.stringify(_editorSettingsSnapshot()));
+    localStorage.setItem(EDITOR_SETTINGS_SLOT_KEY,String(slot));
+  }catch(e){}
+}
+function _scheduleMapAutosave(){
+  if(_mapAutosaveTimer)clearTimeout(_mapAutosaveTimer);
+  _mapAutosaveTimer=setTimeout(()=>{ _saveLiveMapState(); },60);
+}
+function _timestampForName(){
+  const d=new Date();
+  const p=n=>String(n).padStart(2,'0');
+  return `${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}_${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
+}
+function _collectSlotLiveMaps(slot){
+  const maps={};
+  try{
+    const idxRaw=localStorage.getItem(_liveMapIndexKey(slot));
+    const idx=idxRaw?JSON.parse(idxRaw):[];
+    if(Array.isArray(idx)){
+      for(const k of idx){
+        const raw=localStorage.getItem(_liveMapEntryKey(slot,k));
+        if(!raw) continue;
+        try{
+          const one=JSON.parse(raw);
+          if(one&&one.key!==undefined) maps[String(one.key)]=one;
+        }catch(e){}
+      }
+    }
+  }catch(e){}
+  try{
+    const raw=localStorage.getItem(_liveMapKey(slot));
+    if(raw){
+      const one=JSON.parse(raw);
+      if(one&&one.key!==undefined && !maps[String(one.key)]) maps[String(one.key)]=one;
+    }
+  }catch(e){}
+  return maps;
+}
+function _buildSlotBackupPayload(slot){
+  let settings=null;
+  try{
+    const raw=localStorage.getItem(_settingsKey(slot));
+    settings=raw?JSON.parse(raw):null;
+  }catch(e){}
+  if(!settings) settings=_editorSettingsSnapshot();
+  const maps=_collectSlotLiveMaps(slot);
+  return {
+    version:3,
+    type:'tilemap_editor_slot_backup',
+    slot,
+    savedAt:Date.now(),
+    build:BUILD_STAMP,
+    settings,
+    maps
+  };
+}
+async function _writeBackupToFileHandle(handle,payload){
+  const writable=await handle.createWritable();
+  await writable.write(JSON.stringify(payload,null,2));
+  await writable.close();
+}
+async function _saveBackupToSameFile(forcePick){
+  const slot=_getSelectedSlot();
+  const payload=_buildSlotBackupPayload(slot);
+  if(!window.showSaveFilePicker){
+    return {ok:false,reason:'no_picker'};
+  }
+  if(forcePick || !settingsFileHandle){
+    settingsFileHandle = await window.showSaveFilePicker({
+      suggestedName:`tilemap_slot${slot}.json`,
+      types:[{description:'JSON',accept:{'application/json':['.json']}}]
+    });
+  }
+  await _writeBackupToFileHandle(settingsFileHandle,payload);
+  const name=(settingsFileHandle&&settingsFileHandle.name)?settingsFileHandle.name:`tilemap_slot${slot}.json`;
+  return {ok:true,name};
+}
+async function saveSettingsAsFile(){
+  try{
+    // 저장 직전에 현재 편집 상태를 먼저 반영
+    _saveLiveMapState();
+    const slot=_getSelectedSlot();
+    const payload=_buildSlotBackupPayload(slot);
+    const defName=`tilemap_slot${slot}_${_timestampForName()}.json`;
+    if(window.showSaveFilePicker){
+      settingsFileHandle = await window.showSaveFilePicker({
+        suggestedName:defName,
+        types:[{description:'JSON',accept:{'application/json':['.json']}}]
+      });
+      await _writeBackupToFileHandle(settingsFileHandle,payload);
+      document.getElementById('stats').textContent=`파일 저장 완료 (${settingsFileHandle.name||defName})`;
+      return;
+    }
+    // 구형 브라우저 fallback: 다운로드 방식
+    const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download=defName;
+    a.click();
+    setTimeout(()=>{ try{ URL.revokeObjectURL(a.href); }catch(e){} },1500);
+    document.getElementById('stats').textContent=`파일 저장 완료 (${defName})`;
+  }catch(e){
+    document.getElementById('stats').textContent='파일 저장 실패';
+  }
+}
+function _mapKeyFromSettingsLike(s){
+  if(!s) return null;
+  if(s.mapMode==='boss') return String((~~s.currentStage)+'_boss');
+  if(s.mapMode==='grid') return 'grid_'+String(~~s.currentGridHell);
+  const st=STAGES[~~s.currentStage];
+  if(st&&st.type==='grid') return 'grid_'+String(~~st.hell);
+  return String(~~s.currentStage);
+}
+function _persistSlotBackup(slot, settings, mapsObj){
+  const s=_normalizeSlot(slot);
+  try{
+    if(settings) localStorage.setItem(_settingsKey(s), JSON.stringify(settings));
+    const idxKey=_liveMapIndexKey(s);
+    const oldRaw=localStorage.getItem(idxKey);
+    const oldIdx=oldRaw?JSON.parse(oldRaw):[];
+    if(Array.isArray(oldIdx)){
+      for(const k of oldIdx){
+        localStorage.removeItem(_liveMapEntryKey(s,k));
+      }
+    }
+    const keys=[];
+    if(mapsObj && typeof mapsObj==='object'){
+      for(const [k,v] of Object.entries(mapsObj)){
+        if(!v||!Array.isArray(v.rle)||!v.mw||!v.mh) continue;
+        const key=String(v.key!==undefined?v.key:k);
+        localStorage.setItem(_liveMapEntryKey(s,key), JSON.stringify(v));
+        keys.push(key);
+      }
+    }
+    localStorage.setItem(idxKey, JSON.stringify(keys));
+    const wantedKey=_mapKeyFromSettingsLike(settings);
+    let live=null;
+    if(wantedKey && mapsObj && mapsObj[wantedKey]) live=mapsObj[wantedKey];
+    if(!live && keys.length>0 && mapsObj) live=mapsObj[keys[0]];
+    if(live) localStorage.setItem(_liveMapKey(s), JSON.stringify(live));
+    localStorage.setItem(EDITOR_SETTINGS_SLOT_KEY, String(s));
+  }catch(e){}
+}
+function _applyLoadedSettingsObject(s){
+  if(!s) return;
+  mapMode=(s.mapMode==='normal'||s.mapMode==='grid'||s.mapMode==='boss')?s.mapMode:'normal';
+  currentHell=Number.isFinite(s.currentHell)?Math.max(0,Math.min(6,~~s.currentHell)):0;
+  currentStage=Number.isFinite(s.currentStage)?Math.max(0,Math.min(69,~~s.currentStage)):0;
+  currentGridHell=Number.isFinite(s.currentGridHell)?Math.max(0,Math.min(6,~~s.currentGridHell)):0;
+  currentHeight=Number.isFinite(s.currentHeight)?Math.max(0,Math.min(3,~~s.currentHeight)):1;
+  brushRadius=Number.isFinite(s.brushRadius)?Math.max(1,Math.min(25,~~s.brushRadius)):5;
+  brushShape=(s.brushShape==='circle'||s.brushShape==='rect'||s.brushShape==='box')?s.brushShape:'circle';
+  show3d=!!s.show3d; showObj=!!s.showObj; showRooms=!!s.showRooms; showGrid=!!s.showGrid;
+}
+function loadSettingsFromFile(){
+  const el=document.getElementById('settingsFileInput');
+  if(!el) return;
+  el.value='';
+  el.click();
+}
+document.getElementById('settingsFileInput').onchange=function(e){
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      let slot=_getSelectedSlot();
+      let settings=null;
+      let maps={};
+      if(data && data.type==='tilemap_editor_slot_backup' && data.version>=3){
+        slot=_normalizeSlot(data.slot||slot);
+        settings=data.settings||null;
+        maps=(data.maps&&typeof data.maps==='object')?data.maps:{};
+      }else if(data && data.version===2 && data.settings){
+        slot=_normalizeSlot(data.slot||slot);
+        settings=data.settings||null;
+        if(data.liveMap && data.liveMap.key!==undefined) maps[String(data.liveMap.key)]=data.liveMap;
+      }else{
+        alert('지원하지 않는 세팅 파일 형식');
+        return;
+      }
+      if(!settings) settings=_editorSettingsSnapshot();
+      _setSelectedSlot(slot);
+      _persistSlotBackup(slot,settings,maps);
+      _applyLoadedSettingsObject(settings);
+      for(const one of Object.values(maps)){ _restoreCurrentMapState(one); }
+      _applyLoadedState();
+      _saveLiveMapState();
+      document.getElementById('stats').textContent=`파일 세팅 불러오기 완료 (슬롯 ${slot})`;
+    }catch(err){
+      alert('세팅 파일 불러오기 오류: '+err.message);
+    }
+  };
+  reader.readAsText(file);
+};
+function _mergeSlotPayload(slot,settings,liveMap){
+  return {version:2,slot:_normalizeSlot(slot),savedAt:Date.now(),settings,liveMap};
 }
 async function pickSettingsFolder(){
   try{
@@ -3044,20 +3331,22 @@ async function saveEditorSettings(manual){
   try{
     const slot=_getSelectedSlot();
     const snap=_editorSettingsSnapshot();
+    const liveMap=_captureCurrentMapState();
     localStorage.setItem(_settingsKey(slot),JSON.stringify(snap));
+    if(liveMap) localStorage.setItem(_liveMapKey(slot),JSON.stringify(liveMap));
     localStorage.setItem(EDITOR_SETTINGS_SLOT_KEY,String(slot));
-    let fileSaved=false;
-    try{
-      if(!settingsDirHandle && manual && window.showDirectoryPicker){
-        // 수동 저장 시 폴더 미선택이면 한 번 물어본다.
-        fileSaved = await pickSettingsFolder();
+    let msg=`세팅 저장 완료 (슬롯 ${slot})`;
+    if(manual){
+      try{
+        const r=await _saveBackupToSameFile(false);
+        if(r.ok) msg=`같은파일 저장 완료 (${r.name})`;
+        else if(r.reason==='no_picker') msg='같은파일 저장 완료 (브라우저 파일저장 미지원: 로컬저장만)';
+      }catch(e){
+        // 사용자가 파일 선택을 취소한 경우에도 로컬저장은 완료됨
+        msg='세팅 저장 완료 (로컬저장, 파일저장은 취소/실패)';
       }
-      if(settingsDirHandle){
-        await _writeSettingsFile(slot,snap);
-        fileSaved=true;
-      }
-    }catch(e){}
-    if(manual)document.getElementById('stats').textContent=`세팅 저장 완료 (슬롯 ${slot})${fileSaved?' + 파일저장':''}`;
+    }
+    if(manual)document.getElementById('stats').textContent=msg;
   }catch(e){
     if(manual)document.getElementById('stats').textContent='세팅 저장 실패';
   }
@@ -3087,11 +3376,43 @@ function _applyLoadedState(){
 async function loadEditorSettings(manual){
   try{
     const slot=_getSelectedSlot();
-    let s=null;
-    if(settingsDirHandle) s = await _readSettingsFile(slot);
+    let s=null, liveMap=null;
+    if(settingsDirHandle){
+      const fp = await _readSettingsFile(slot);
+      if(fp && fp.version===2){ s=fp.settings||null; liveMap=fp.liveMap||null; }
+      else if(fp){ s=fp; }
+    }
     if(!s){
       const raw=localStorage.getItem(_settingsKey(slot));
       if(raw) s=JSON.parse(raw);
+    }
+    if(!liveMap){
+      const rm=localStorage.getItem(_liveMapKey(slot));
+      if(rm) liveMap=JSON.parse(rm);
+    }
+    // 슬롯에 저장된 여러 맵을 먼저 복원
+    try{
+      const idxRaw=localStorage.getItem(_liveMapIndexKey(slot));
+      const idx=idxRaw?JSON.parse(idxRaw):[];
+      if(Array.isArray(idx)){
+        for(const mapKey of idx){
+          const er=localStorage.getItem(_liveMapEntryKey(slot,mapKey));
+          if(!er) continue;
+          const one=JSON.parse(er);
+          _restoreCurrentMapState(one);
+        }
+      }
+    }catch(e){}
+    // 세팅이 없더라도 liveMap이 있으면 그 정보로 복원 진행
+    if(!s && liveMap){
+      s={
+        mapMode:(liveMap.mode==='normal'||liveMap.mode==='grid'||liveMap.mode==='boss')?liveMap.mode:'normal',
+        currentHell:0,
+        currentStage:Number.isFinite(liveMap.stage)?Math.max(0,Math.min(69,~~liveMap.stage)):0,
+        currentGridHell:Number.isFinite(liveMap.gridHell)?Math.max(0,Math.min(6,~~liveMap.gridHell)):0,
+        currentHeight:1,brushRadius:5,brushShape:'circle',
+        show3d:true,showObj:true,showRooms:true,showGrid:true
+      };
     }
     if(!s){ if(manual)document.getElementById('stats').textContent=`저장된 세팅 없음 (슬롯 ${slot})`; return false; }
     mapMode=(s.mapMode==='normal'||s.mapMode==='grid'||s.mapMode==='boss')?s.mapMode:'normal';
@@ -3102,6 +3423,7 @@ async function loadEditorSettings(manual){
     brushRadius=Number.isFinite(s.brushRadius)?Math.max(1,Math.min(25,~~s.brushRadius)):5;
     brushShape=(s.brushShape==='circle'||s.brushShape==='rect'||s.brushShape==='box')?s.brushShape:'circle';
     show3d=!!s.show3d; showObj=!!s.showObj; showRooms=!!s.showRooms; showGrid=!!s.showGrid;
+    if(liveMap)_restoreCurrentMapState(liveMap);
     _applyLoadedState();
     localStorage.setItem(EDITOR_SETTINGS_SLOT_KEY,String(slot));
     if(manual)document.getElementById('stats').textContent=`세팅 불러오기 완료 (슬롯 ${slot})`;
@@ -3145,7 +3467,7 @@ function regenCurrent() {
   }
 }
 function regenAll() {
-  if (!confirm('세로맵+격자맵 전체 랜덤 재생성?')) return;
+  if (!confirm('맵+격자맵 전체 랜덤 재생성?')) return;
   for(let i=0;i<70;i++){FIXED_MAPS[i]=genSnake(i);delete mapStore[i];}
   for(let h=0;h<7;h++){GRID_MAPS[h]=generateGridMap(h,Math.floor(Math.random()*999999));delete gridMapStore[h];}
   if (mapMode==='grid') loadGridStage(currentGridHell);
@@ -3270,7 +3592,7 @@ function exportAsFixedMap(){
   }
   const blob=new Blob([out],{type:'text/plain'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
-  a.download=`EXODUSER_${mapMode==='grid'?'격자':'세로'}맵.txt`;a.click();
+  a.download=`EXODUSER_${mapMode==='grid'?'격자':'일반'}맵.txt`;a.click();
   document.getElementById('stats').textContent='📤 내보내기 완료';
 }
 
@@ -3407,7 +3729,12 @@ try{
     slotEl.addEventListener('change',()=>_setSelectedSlot(slotEl.value));
   }
 }catch(e){}
+window.addEventListener('beforeunload',()=>{ try{ _saveLiveMapState(); }catch(e){} });
+window.addEventListener('pagehide',()=>{ try{ _saveLiveMapState(); }catch(e){} });
+document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden'){ try{ _saveLiveMapState(); }catch(e){} } });
+setInterval(()=>{ try{ _saveLiveMapState(); }catch(e){} }, 5000);
 (async()=>{
+  try{ document.getElementById('stats').textContent=`에디터 빌드 ${BUILD_STAMP}`; }catch(e){}
   const ok = await loadEditorSettings(false);
   if(!ok){ buildChapterTabs(); buildStageListOrig(); loadStage(0); draw(); }
 })();

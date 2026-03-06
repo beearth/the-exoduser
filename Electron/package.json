@@ -24,20 +24,19 @@
     ],
     "extraResources": [
       {
-        "from": "../game.html",
-        "to": "game/game.html"
-      },
-      {
-        "from": "../index.html",
-        "to": "game/index.html"
-      },
-      {
-        "from": "../img",
-        "to": "game/img"
-      },
-      {
-        "from": "../video",
-        "to": "game/video"
+        "from": "..",
+        "to": "game",
+        "filter": [
+          "game.html",
+          "index.html",
+          "img/**/*",
+          "video/**/*",
+          "bgm/**/*",
+          "sfx/**/*",
+          "atlas_*.json",
+          "atlas_*.png",
+          "proj_atlas.png"
+        ]
       }
     ],
     "win": {

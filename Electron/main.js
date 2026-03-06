@@ -1,43 +1,61 @@
-const http = require('http');
+﻿const http = require('http');
 const fs = require('fs');
-// THE EXODUSER — Electron Wrapper
-// GPU 블록리스트 우회 + WebGPU 강제 활성화
+// THE EXODUSER ??Electron Wrapper
+// GPU 釉붾줉由ъ뒪???고쉶 + WebGPU 媛뺤젣 ?쒖꽦??
 const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron');
 const path = require('path');
 
-// ═══ 패키징 감지 — dev vs production 경로 ═══
+// ?먥븧???⑦궎吏?媛먯? ??dev vs production 寃쎈줈 ?먥븧??
 const IS_PACKAGED = app.isPackaged;
 
-// ═══ GPU 플래그 — 브라우저 문제 완전 해결 ═══
-// Chrome/Electron GPU 블록리스트 무시 (RX 9070 XT 같은 신규 GPU 지원)
+// ?먥븧??GPU ?뚮옒洹???釉뚮씪?곗? 臾몄젣 ?꾩쟾 ?닿껐 ?먥븧??
+// Chrome/Electron GPU 釉붾줉由ъ뒪??臾댁떆 (RX 9070 XT 媛숈? ?좉퇋 GPU 吏??
 app.commandLine.appendSwitch('ignore-gpu-blocklist');
-// WebGPU 강제 활성화
+// WebGPU 媛뺤젣 ?쒖꽦??
 app.commandLine.appendSwitch('enable-unsafe-webgpu');
-// 하드웨어 가속 강제
+// ?섎뱶?⑥뼱 媛??媛뺤젣
 app.commandLine.appendSwitch('enable-gpu-rasterization');
 app.commandLine.appendSwitch('enable-zero-copy');
 app.commandLine.appendSwitch('enable-hardware-overlays', 'single-fullscreen');
 app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,CanvasOopRasterization');
 app.commandLine.appendSwitch('enable-webgl');
 app.commandLine.appendSwitch('enable-accelerated-2d-canvas');
-// ANGLE 백엔드 — 시스템 기본값 사용
-app.commandLine.appendSwitch('use-angle', 'default');
-// GPU 샌드박스 비활성화 (Windows DirectX 초기화 문제 방지)
+// ANGLE 諛깆뿏?????쒖뒪??湲곕낯媛??ъ슜
+app.commandLine.appendSwitch('use-angle', 'd3d11');
+app.commandLine.appendSwitch('use-gl', 'angle');
+app.commandLine.appendSwitch('disable-software-rasterizer');
+// GPU ?뚮뱶諛뺤뒪 鍮꾪솢?깊솕 (Windows DirectX 珥덇린??臾몄젣 諛⑹?)
 app.commandLine.appendSwitch('disable-gpu-sandbox');
-// V-Sync 비활성화 (144fps+ 허용)
+// V-Sync 鍮꾪솢?깊솕 (144fps+ ?덉슜)
 app.commandLine.appendSwitch('disable-frame-rate-limit');
-// DPI 스케일링 강제 1x — Windows 배율(125%,150%) 무시, 1CSS px = 1물리 px
+// DPI ?ㅼ??쇰쭅 媛뺤젣 1x ??Windows 諛곗쑉(125%,150%) 臾댁떆, 1CSS px = 1臾쇰━ px
 app.commandLine.appendSwitch('force-device-scale-factor', '1');
 
-// ═══ 내장 HTTP 서버 (세이브/로드 API + 정적 파일) ═══
+// ?먥븧???댁옣 HTTP ?쒕쾭 (?몄씠釉?濡쒕뱶 API + ?뺤쟻 ?뚯씪) ?먥븧??
 const PORT = 3333;
 const ROOT = IS_PACKAGED
   ? path.join(process.resourcesPath, 'game')
-  : path.join(__dirname, '..'); // dev: 프로젝트 루트, prod: resources/game
+  : path.join(__dirname, '..'); // dev: ?꾨줈?앺듃 猷⑦듃, prod: resources/game
 const SAVE_DIR = IS_PACKAGED
   ? path.join(app.getPath('userData'), 'saves')
-  : path.join(ROOT, 'saves'); // prod: 사용자 데이터 폴더 (쓰기 가능)
+  : path.join(ROOT, 'saves'); // prod: ?ъ슜???곗씠???대뜑 (?곌린 媛??
 if (!fs.existsSync(SAVE_DIR)) fs.mkdirSync(SAVE_DIR, { recursive: true });
+
+function loadDotEnv() {
+  const envPath = path.join(ROOT, '.env');
+  if (!fs.existsSync(envPath)) return;
+  const raw = fs.readFileSync(envPath, 'utf8');
+  for (const line of raw.split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const eq = trimmed.indexOf('=');
+    if (eq <= 0) continue;
+    const key = trimmed.slice(0, eq).trim();
+    const value = trimmed.slice(eq + 1).trim().replace(/^['"]|['"]$/g, '');
+    if (!(key in process.env)) process.env[key] = value;
+  }
+}
+loadDotEnv();
 
 const MIME = {
   '.html':'text/html; charset=utf-8','.js':'application/javascript','.css':'text/css',
@@ -68,6 +86,26 @@ function readBody(req) {
   });
 }
 
+const PIXELLAB_BASE_URL = process.env.PIXELLAB_BASE_URL || 'https://api.pixellab.ai';
+const PIXELLAB_API_KEY = process.env.PIXELLAB_API_KEY || process.env.PIXELLAB_KEY || '';
+
+function buildPixelLabRequest({ baseUrl, apiKey, path, method = 'GET', body }) {
+  if (!apiKey || !String(apiKey).trim()) throw new Error('PixelLab API key is missing');
+  if (!baseUrl || !String(baseUrl).trim()) throw new Error('PixelLab base url is missing');
+  if (!path || typeof path !== 'string' || !path.startsWith('/')) throw new Error('path must start with /');
+
+  const base = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+  const normalizedPath = path.replace(/^\/+/, '');
+  const url = new URL(normalizedPath, base).toString();
+  const upperMethod = String(method || 'GET').toUpperCase();
+  const headers = { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' };
+  const init = { method: upperMethod, headers };
+  if (body !== undefined && upperMethod !== 'GET' && upperMethod !== 'HEAD') {
+    init.body = typeof body === 'string' ? body : JSON.stringify(body);
+  }
+  return { url, init };
+}
+
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
   const pathname = url.pathname;
@@ -82,10 +120,15 @@ const server = http.createServer(async (req, res) => {
     return res.end();
   }
 
-  try {
-    // ═══ API 엔드포인트 ═══
+  if (pathname === '/favicon.ico') {
+    res.writeHead(204, { 'Access-Control-Allow-Origin': '*' });
+    return res.end();
+  }
 
-    // GET /api/slots — 세이브 슬롯 목록
+  try {
+    // ?먥븧??API ?붾뱶?ъ씤???먥븧??
+
+    // GET /api/slots ???몄씠釉??щ’ 紐⑸줉
     if (pathname === '/api/slots' && req.method === 'GET') {
       const files = fs.readdirSync(SAVE_DIR).filter(f => f.endsWith('.json'));
       const slots = files.map(f => {
@@ -103,7 +146,7 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(res, 200, { ok: true, slots });
     }
 
-    // POST /api/save — 게임 저장
+    // POST /api/save ??寃뚯엫 ???
     if (pathname === '/api/save' && req.method === 'POST') {
       const body = await readBody(req);
       const slot = sanitizeSlot(body.slot || 'default');
@@ -113,7 +156,40 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(res, 200, { ok: true, slot });
     }
 
-    // GET /api/load/:slot — 게임 로드
+    // GET /api/pixellab/status - ?쎌깘?????ㅼ젙 ?곹깭 ?뺤씤
+    if (pathname === '/api/pixellab/status' && req.method === 'GET') {
+      return sendJSON(res, 200, {
+        ok: true,
+        configured: !!PIXELLAB_API_KEY,
+        baseUrl: PIXELLAB_BASE_URL,
+      });
+    }
+
+    // POST /api/pixellab/proxy - 픽샐랩 API 프록시
+    if (pathname === '/api/pixellab/proxy' && req.method === 'POST') {
+      const body = await readBody(req);
+      try {
+        const reqCfg = buildPixelLabRequest({
+          baseUrl: PIXELLAB_BASE_URL,
+          apiKey: PIXELLAB_API_KEY,
+          path: body.path,
+          method: body.method || 'POST',
+          body: body.body,
+        });
+        const upstream = await fetch(reqCfg.url, reqCfg.init);
+        const ct = upstream.headers.get('content-type') || 'application/json';
+        const raw = Buffer.from(await upstream.arrayBuffer());
+        res.writeHead(upstream.status, {
+          'Content-Type': ct,
+          'Access-Control-Allow-Origin': '*',
+        });
+        return res.end(raw);
+      } catch (e) {
+        return sendJSON(res, 400, { ok: false, error: String(e?.message || e) });
+      }
+    }
+
+    // GET /api/load/:slot ??寃뚯엫 濡쒕뱶
     if (pathname.startsWith('/api/load/') && req.method === 'GET') {
       const slot = sanitizeSlot(decodeURIComponent(pathname.slice(10)));
       const fp = path.join(SAVE_DIR, slot + '.json');
@@ -122,7 +198,7 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(res, 200, { ok: true, data });
     }
 
-    // DELETE /api/save/:slot — 세이브 삭제
+    // DELETE /api/save/:slot ???몄씠釉???젣
     if (pathname.startsWith('/api/save/') && req.method === 'DELETE') {
       const slot = sanitizeSlot(decodeURIComponent(pathname.slice(10)));
       const fp = path.join(SAVE_DIR, slot + '.json');
@@ -130,7 +206,7 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(res, 200, { ok: true });
     }
 
-    // ═══ 정적 파일 서빙 ═══
+    // ?먥븧???뺤쟻 ?뚯씪 ?쒕튃 ?먥븧??
     let filePath;
     if (pathname === '/') filePath = path.join(ROOT, 'index.html');
     else if (pathname === '/game' || pathname === '/game.html') filePath = path.join(ROOT, 'game.html');
@@ -159,56 +235,50 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-// ═══ Electron 윈도우 ═══
+// ?먥븧??Electron ?덈룄???먥븧??
 let mainWindow;
 
 function createWindow() {
   const { screen } = require('electron');
   const primary = screen.getPrimaryDisplay();
-  const { width: sw, height: sh } = primary.size; // 실제 해상도 (workArea 아닌 전체)
+  const { width: sw, height: sh } = primary.size; // ?ㅼ젣 ?댁긽??(workArea ?꾨땶 ?꾩껜)
   mainWindow = new BrowserWindow({
-    width: sw,
-    height: sh,
-    fullscreen: true,
+    width: Math.min(sw, 1280),
+    height: Math.min(sh, 720),
+    fullscreen: false,
     fullscreenable: true,
     simpleFullscreen: true,
-    title: 'THE EXODUSER — 지옥의 길',
+    title: 'THE EXODUSER',
     icon: path.join(__dirname, 'icon.png'),
     backgroundColor: '#000000',
     autoHideMenuBar: true,
-    frame: false, // 타이틀바 제거 (풀스크린 게임)
+    frame: false, // ??댄?諛??쒓굅 (??ㅽ겕由?寃뚯엫)
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
-      // 게임 성능용
-      backgroundThrottling: false,  // 백그라운드 프레임 제한 해제
+      // 寃뚯엫 ?깅뒫??
+      backgroundThrottling: false,  // 諛깃렇?쇱슫???꾨젅???쒗븳 ?댁젣
       webgl: true,
-      experimentalFeatures: true,   // WebGPU 활성화
+      experimentalFeatures: true,   // WebGPU ?쒖꽦??
     }
   });
 
-  // 내장 서버에서 인트로부터 시작
+  // ?댁옣 ?쒕쾭?먯꽌 ?명듃濡쒕????쒖옉
   mainWindow.loadURL(`http://localhost:${PORT}/`);
 
-  // 메뉴바 숨기기
+  // 硫붾돱諛??④린湲?
   mainWindow.setMenuBarVisibility(false);
 
-  // ═══ 키보드 — ESC는 게임에 전달, F12는 DevTools ═══
+  // ?먥븧???ㅻ낫????ESC??寃뚯엫???꾨떖, F12??DevTools ?먥븧??
   mainWindow.webContents.on('before-input-event', (event, input) => {
     if (input.key === 'F12') mainWindow.webContents.toggleDevTools();
   });
-  // ESC로 전체화면이 풀리는 것 방지: 전체화면 해제 시 즉시 복구
-  mainWindow.on('leave-full-screen', () => {
-    if (mainWindow.isVisible()) {
-      setTimeout(() => { if (mainWindow && !mainWindow.isDestroyed()) mainWindow.setFullScreen(true); }, 50);
-    }
-  });
-
+  // ESC濡??꾩껜?붾㈃???由щ뒗 寃?諛⑹?: ?꾩껜?붾㈃ ?댁젣 ??利됱떆 蹂듦뎄
   mainWindow.on('closed', () => { mainWindow = null; });
 }
 
-// ═══ IPC — 화면 모드 전환 ═══
+// ?먥븧??IPC ???붾㈃ 紐⑤뱶 ?꾪솚 ?먥븧??
 ipcMain.on('set-fullscreen', (e, mode) => {
   if (!mainWindow) return;
   if (mode === 'fullscreen') {
@@ -235,7 +305,7 @@ ipcMain.handle('get-display-mode', () => {
   return 'windowed';
 });
 
-// ═══ IPC — 해상도 변경 ═══
+// ?먥븧??IPC ???댁긽??蹂寃??먥븧??
 const RES_LIST = [
   [1280, 720],  [1366, 768],  [1600, 900],  [1920, 1080],
   [2560, 1080], [2560, 1440], [3440, 1440], [3840, 1600],
@@ -251,27 +321,39 @@ ipcMain.handle('get-resolutions', () => {
 
 ipcMain.on('set-resolution', (e, w, h) => {
   if (!mainWindow) return;
-  // 전체화면이면 무시
+  // ?꾩껜?붾㈃?대㈃ 臾댁떆
   if (mainWindow.isFullScreen() || mainWindow.isSimpleFullScreen()) return;
   mainWindow.setSize(w, h);
   mainWindow.center();
 });
 
-// ═══ 앱 시작 — 서버 → 윈도우 순서 ═══
+// ?먥븧?????쒖옉 ???쒕쾭 ???덈룄???쒖꽌 ?먥븧??
 app.whenReady().then(() => {
+  try {
+    const st = app.getGPUFeatureStatus();
+    console.log('[GPU] featureStatus:', st);
+    app.getGPUInfo('basic').then((info) => {
+      console.log('[GPU] basicInfo:', JSON.stringify(info));
+    }).catch((e) => {
+      console.warn('[GPU] getGPUInfo failed:', e?.message || e);
+    });
+  } catch (e) {
+    console.warn('[GPU] status read failed:', e?.message || e);
+  }
+
   server.listen(PORT, () => {
-    console.log(`[Server] http://localhost:${PORT} (Electron 내장)`);
-    // GPU 프로세스 초기화 대기 (100ms)
+    console.log(`[Server] http://localhost:${PORT} (Electron ?댁옣)`);
+    // GPU ?꾨줈?몄뒪 珥덇린???湲?(100ms)
     setTimeout(createWindow, 100);
   });
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      // 이미 서버가 실행 중 (node server.js) → 그냥 윈도우만 생성
-      console.log(`[Server] 포트 ${PORT} 사용 중 — 외부 서버 사용`);
+      // ?대? ?쒕쾭媛 ?ㅽ뻾 以?(node server.js) ??洹몃깷 ?덈룄?곕쭔 ?앹꽦
+      console.log(`[Server] ?ы듃 ${PORT} ?ъ슜 以????몃? ?쒕쾭 ?ъ슜`);
       setTimeout(createWindow, 100);
     } else {
-      console.error('[Server] 서버 시작 실패:', err);
+      console.error('[Server] ?쒕쾭 ?쒖옉 ?ㅽ뙣:', err);
     }
   });
 });
@@ -283,3 +365,4 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
+

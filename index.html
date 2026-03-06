@@ -166,7 +166,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   <div class="cin-img" id="cinImg4"><img src="img/cin_bloodbath.png" alt=""></div>
   <div class="cin-img" id="cinImg5"><img src="img/cin_torture.png" alt=""></div>
   <div class="cin-img" id="cinImg6"><img src="img/cin_fallhell_custom.png" alt=""></div>
-  <div class="cin-img" id="cinImg7"><img src="img/cin_hellwalk.png" alt=""></div>
+  <div class="cin-img" id="cinImg7"><img src="img/cin_dungeon.png" alt=""></div>
   <div class="cin-img" id="cinImg8"><img src="img/cin_nemesia_hd.png" alt=""></div>
   <div class="cin-img" id="cinImg9"><img src="img/cin_demonbattle.png" alt=""></div>
   <div class="cin-img" id="cinImg10"><img src="img/cin_demonfight.png" alt=""></div>
@@ -188,7 +188,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 
 <!-- ═══ 챕터 입장 문 열림 (동영상) ═══ -->
 <div id="chapterGate" style="position:fixed;inset:0;z-index:200;display:none;background:#000;overflow:hidden">
-  <img id="chGateImg" src="img/roding1.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(-5%);z-index:20">
+  <img id="chGateImg" src="img/rording/rd1.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(-5%);z-index:20">
   <div class="cin-lb cin-lb-t"></div>
   <div class="cin-lb cin-lb-b"></div>
   <div class="cin-vig" style="z-index:21"></div>
@@ -614,39 +614,8 @@ async function loadLocalCharacters(){
 
 // ═══ 캐릭터 선택 → 문 열림 → 입장 ═══
 function showCharGate(charId){
-  const gate=$('chapterGate');
   const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId;
-  let _gateDone=false;
-  let _gateTimer=null;
-  function cleanupGate(){
-    gate.removeEventListener('click',skipGate);
-    gate.removeEventListener('touchend',skipGate);
-    gate.removeEventListener('pointerdown',skipGate);
-    document.removeEventListener('keydown',skipGate);
-    if(_gateTimer){clearTimeout(_gateTimer);_gateTimer=null;}
-  }
-  function finishGate(){
-    if(_gateDone)return;
-    _gateDone=true;
-    cleanupGate();
-    gate.style.display='none';
-    window.location.href=_tp;
-  }
-  function skipGate(e){
-    if(e&&e.type==='keydown'){
-      if(!(e.code==='Space'||e.code==='Enter'||e.code==='Escape'))return;
-    }
-    if(e&&typeof e.preventDefault==='function')e.preventDefault();
-    finishGate();
-  }
-  gate.style.display='block';
-  gate.style.cursor='pointer';
-  gate.addEventListener('click',skipGate);
-  gate.addEventListener('touchend',skipGate);
-  gate.addEventListener('pointerdown',skipGate);
-  document.addEventListener('keydown',skipGate);
-  // loading image shown briefly, then move to game.
-  _gateTimer=setTimeout(finishGate,1500);
+  window.location.href=_tp;
 }
 </script>
 </body>
