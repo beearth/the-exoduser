@@ -2062,8 +2062,9 @@ function _applyTierPreset(tier){
 _gpuScoreCache=detectTier();
 // ═══ PET SYSTEM (까마귀=하늘, 고양이=땅 — 항상 두 마리) ═══
 const PETS={
-  crow:{name:'까마귀',col:'#111',pickR:2400,spd:20,orbR:20,orbY:-16,desc:'하늘에서 넓은 범위 수거'},
-  cat:{name:'고양이',col:'#111',pickR:3000,spd:22,orbR:14,orbY:6,desc:'땅에서 수거 + 저등급 자동 분해'}};
+  crow:{name:'Crow',col:'#111',pickR:2400,spd:20,orbR:20,orbY:-16,desc:'Air pickup helper'},
+  cat:{name:'Cat',col:'#111',pickR:3000,spd:22,orbR:14,orbY:6,desc:'Ground pickup + auto-disassemble'}
+};
 const DIFF_MUL=[.5,.75,1,1.4,2]; // enemy hp/atk multiplier
 const DIFF_MOB=[.6,.8,1,1.4,1.8]; // enemy count multiplier
 const DIFF_NAME=['매우 쉬움','쉬움','보통','어려움','지옥'];
@@ -2331,7 +2332,9 @@ let _atlasPReady=false,_atlasP_img=null,_atlasP_frames=null;
 })();
 // ── Atlas E External (외부 적 아틀라스) ──
 let _atlasExtEReady=false,_atlasExtE_img=null,_atlasExtE_frames=null;
+const _USE_EXT_ATLAS=false;
 (function _loadAtlasExtE(){
+  if(!_USE_EXT_ATLAS)return;
   const img=new Image();img.src='atlas_enemies.png';
   img.onload=()=>{fetch('atlas_enemies.json').then(r=>r.json()).then(fm=>{
     _atlasExtE_img=img;_atlasExtE_frames=fm;_atlasExtEReady=true;
@@ -2340,6 +2343,7 @@ let _atlasExtEReady=false,_atlasExtE_img=null,_atlasExtE_frames=null;
 // ── Atlas B External (외부 보스 아틀라스) ──
 let _atlasExtBReady=false,_atlasExtB_img=null,_atlasExtB_frames=null;
 (function _loadAtlasExtB(){
+  if(!_USE_EXT_ATLAS)return;
   const img=new Image();img.src='atlas_bosses.png';
   img.onload=()=>{fetch('atlas_bosses.json').then(r=>r.json()).then(fm=>{
     _atlasExtB_img=img;_atlasExtB_frames=fm;_atlasExtBReady=true;
@@ -2374,15 +2378,7 @@ function _getExtECanvas(palIdx){
 }
 function _clearExtEPalCache(){_extEPalCache={};}
 // ── 맵 배경 패럴랙스 시스템 (DAY 8-9) ──
-const MAP_BG_LAYERS={
-  0:[{src:'img/bg/hell0_far.png',parallax:.3,opacity:.8},{src:'img/bg/hell0_mid.png',parallax:.6,opacity:.9},{src:'img/bg/hell0_near.png',parallax:.9,opacity:1}],
-  1:[{src:'img/bg/hell1_far.png',parallax:.3,opacity:.8},{src:'img/bg/hell1_mid.png',parallax:.6,opacity:.9},{src:'img/bg/hell1_near.png',parallax:.9,opacity:1}],
-  2:[{src:'img/bg/hell2_far.png',parallax:.3,opacity:.8},{src:'img/bg/hell2_mid.png',parallax:.6,opacity:.9},{src:'img/bg/hell2_near.png',parallax:.9,opacity:1}],
-  3:[{src:'img/bg/hell3_far.png',parallax:.3,opacity:.8},{src:'img/bg/hell3_mid.png',parallax:.6,opacity:.9},{src:'img/bg/hell3_near.png',parallax:.9,opacity:1}],
-  4:[{src:'img/bg/hell4_far.png',parallax:.3,opacity:.8},{src:'img/bg/hell4_mid.png',parallax:.6,opacity:.9},{src:'img/bg/hell4_near.png',parallax:.9,opacity:1}],
-  5:[{src:'img/bg/hell5_far.png',parallax:.3,opacity:.8},{src:'img/bg/hell5_mid.png',parallax:.6,opacity:.9},{src:'img/bg/hell5_near.png',parallax:.9,opacity:1}],
-  6:[{src:'img/bg/hell6_far.png',parallax:.3,opacity:.8},{src:'img/bg/hell6_mid.png',parallax:.6,opacity:.9},{src:'img/bg/hell6_near.png',parallax:.9,opacity:1}]
-};
+const MAP_BG_LAYERS={0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
 const _bgImgs={};
 (function _preloadBgLayers(){
   for(const h in MAP_BG_LAYERS){
@@ -2394,15 +2390,7 @@ const _bgImgs={};
   }
 })();
 // ── 환경 데코 시스템 ──
-const MAP_DECOR_DEFS={
-  0:[{src:'img/decor/ice_pillar.png',chance:.03,scale:1},{src:'img/decor/ice_crystal.png',chance:.05,scale:.7}],
-  1:[{src:'img/decor/web.png',chance:.04,scale:.8},{src:'img/decor/cocoon.png',chance:.03,scale:.6}],
-  2:[{src:'img/decor/flame_vent.png',chance:.03,scale:.9},{src:'img/decor/lava_rock.png',chance:.04,scale:.7}],
-  3:[{src:'img/decor/tentacle.png',chance:.03,scale:.8},{src:'img/decor/eye_growth.png',chance:.04,scale:.6}],
-  4:[{src:'img/decor/lightning_rod.png',chance:.03,scale:.9},{src:'img/decor/charged_crystal.png',chance:.04,scale:.7}],
-  5:[{src:'img/decor/bone_pile.png',chance:.04,scale:.8},{src:'img/decor/skull.png',chance:.05,scale:.5}],
-  6:[{src:'img/decor/void_crack.png',chance:.03,scale:.9},{src:'img/decor/dark_crystal.png',chance:.04,scale:.7}]
-};
+const MAP_DECOR_DEFS={0:[],1:[],2:[],3:[],4:[],5:[],6:[]};
 const _decorImgs={};
 (function _preloadDecor(){
   for(const h in MAP_DECOR_DEFS){
@@ -2447,18 +2435,18 @@ const _P_ANIM_MAP={idle:'idle',wWindup:'attack',wSwing:'attack',wRecover:'attack
 const _DIR8=['e','se','s','sw','w','nw','n','ne'];
 function _facingDir8(a){return _DIR8[((Math.round(a/(Math.PI/4))%8)+8)%8];}
 // ── Player sprites ──
-const _playerImg=new Image();_playerImg.src='img/player_idle.png?v=2';let _playerReady=false;
+const _playerImg=new Image();_playerImg.src='img/warrior.png?v=2';let _playerReady=false;
 let _pS=null; // 축소된 idle 캔버스
 _playerImg.onload=()=>{if(!_safeDraw(_playerImg))return;const h=256,s=h/_playerImg.naturalHeight;
   const c=document.createElement('canvas');c.width=~~(_playerImg.naturalWidth*s);c.height=h;
   c.getContext('2d').drawImage(_playerImg,0,0,c.width,c.height);_pS=c;_playerReady=true;};
-const _playerActImg=new Image();_playerActImg.src='img/player_action.png';let _actReady=false;
+const _playerActImg=new Image();_playerActImg.src='img/warrior.png';let _actReady=false;
 let _aS=null; // 축소된 action 캔버스
 _playerActImg.onload=()=>{if(!_safeDraw(_playerActImg))return;const h=256,s=h/_playerActImg.naturalHeight;
   const c=document.createElement('canvas');c.width=~~(_playerActImg.naturalWidth*s);c.height=h;
   c.getContext('2d').drawImage(_playerActImg,0,0,c.width,c.height);_aS=c;_actReady=true;};
 // ── 검기 스프라이트 (단일 이미지, 흰배경→투명 처리) ──
-const _seImg=new Image();_seImg.src='img/sword_energy.png';let _seReady=false;
+const _seImg=new Image();_seImg.src='img/proj_bolt_holy.png';let _seReady=false;
 let _seCvs=null; // 축소+틴팅용 캔버스
 _seImg.onload=()=>{
   if(!_safeDraw(_seImg))return;
@@ -2470,7 +2458,7 @@ _seImg.onload=()=>{
 };
 // ── Archer enemy sprite (4-frame spritesheet, checkered bg → transparent) ──
 const _archerFrames=[];let _archerReady=false;const _archerRaw=new Image();
-_archerRaw.src='img/archer_enemy.png';
+_archerRaw.src='img/etype0_skeleton.png';
 _archerRaw.onload=()=>{
   if(!_safeDraw(_archerRaw))return;
   const fw=~~(_archerRaw.naturalWidth/4),fh=_archerRaw.naturalHeight;
@@ -6692,9 +6680,18 @@ function _getProjSprite(type,el){
 const _PROJ_TYPES_LOAD=['arrow','orb','bomb','shard','bolt'];
 const _EL_NAMES=['phys','fire','ice','dark','ltn','holy'];
 const _PROJ_FRAMES={arrow:1,orb:8,bomb:4,shard:8,bolt:4};
+const _PROJ_SPRITE_OVERRIDES={
+  'arrow_fire':'img/proj_arrow_phys.png',
+  'arrow_dark':'img/proj_arrow_ltn.png',
+  'shard_phys':'img/proj_shard_dark.png',
+  'shard_ltn':'img/proj_shard_ice.png'
+};
 for(const pt of _PROJ_TYPES_LOAD){
   for(let ei=0;ei<6;ei++){
-    _loadProjSprite(pt,ei,'img/proj_'+pt+'_'+_EL_NAMES[ei]+'.png',_PROJ_FRAMES[pt]);
+    const en=_EL_NAMES[ei];
+    const key=pt+'_'+en;
+    const src=_PROJ_SPRITE_OVERRIDES[key]||('img/proj_'+pt+'_'+en+'.png');
+    _loadProjSprite(pt,ei,src,_PROJ_FRAMES[pt]);
   }
 }
 // _loadProjSprite('redbean',0,'img/proj_redbean.png',4); // 주황색이라 비활성화 → 절차적 빨강 렌더링 사용
@@ -11430,10 +11427,19 @@ function dst2(a,b,c,d){return(c-a)**2+(d-b)**2} // 제곱거리 (sqrt 제거)
 function useSt(a){if(P.st<a)return false;P.st-=a;return true}
 // ═══ 퍼센티지 기반 자원 소비 ═══
 let _lastCost=0; // 마지막 소비량 (보너스 데미지용)
-function mpCost(key){return~~(P.mmp*COST_PCT[key]*pMagicCost())}
+const FIXED_MP_COST={blink:20,dimBreach:20};
+const FIXED_ST_COST={bladeDash:20};
+function mpCost(key){
+  if(FIXED_MP_COST[key]!=null)return FIXED_MP_COST[key];
+  return~~(P.mmp*COST_PCT[key]*pMagicCost());
+}
 function useMp(key){const c=mpCost(key),b=P.mp;P.mp=Math.max(0,P.mp-c);_lastCost=b-P.mp;return _lastCost}
 function _stDisc(key){return(key==='bow'||key==='bladeShot'||key==='grenadeShot')?pBowCost():(key==='weapon'||key==='shield'||key==='charge'||key==='finisher'||key==='whirlTick'||key==='sBlockTick'||key==='giantSlam')?pAtkCost():1}
-function stCost(key,m){return~~(P.mst*COST_PCT[key]*(m||1)*_stDisc(key))}
+function stCost(key,m){
+  const mul=(m||1);
+  if(FIXED_ST_COST[key]!=null)return~~(FIXED_ST_COST[key]*mul);
+  return~~(P.mst*COST_PCT[key]*mul*_stDisc(key));
+}
 function useStPct(key,m){const c=stCost(key,m);if(P.st<c){_lastCost=0;return 0;}P.st-=c;_lastCost=c;return c}
 
 // ═══ ITEM DROP ═══
@@ -18901,12 +18907,14 @@ function activateMaliceHunt(){
   // 악의/스택 체크
   if(G.mats<30){showPH('악의 부족! (30)','#ff4444');return}
   if((P._mhStk||0)<=0){showPH('충전 중...','#ff8844');return}
+  const _mhMpCost=50;
   const _mhLv=P.skills.maliceHunt||1;
   const _mhGF=P.skills.guardian>=1&&_isFused('bladeFuse');
   if(_mhGF){
+    if(P.mp<_mhMpCost){showPH('MP ??! (50)','#4488ff');return}
     // 합체: 궤도 칼날 전부 발사
     if(!P._gOrbs||P._gOrbs.length===0){showPH('칼날 없음!','#aa33ff');return}
-    G.mats-=30;P._mhStk--;P._mhRecharge=60;
+    G.mats-=30;P.mp=Math.max(0,P.mp-_mhMpCost);P._mhStk--;P._mhRecharge=60;
     const _isPlagueGF=P.skills.plagueBurst>=1&&_isFused('plagueFuse');
     const _goCnt=P._gOrbs.length;
     const _goR=(34)+P.r;
@@ -18948,7 +18956,7 @@ function activateMaliceHunt(){
     }
   }else{
     // 단독: 기존 5발 발사
-    G.mats-=30;P._mhStk--;P._mhRecharge=60;
+    G.mats-=30;P.mp=Math.max(0,P.mp-_mhMpCost);P._mhStk--;P._mhRecharge=60;
     const _mhDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*3.5);
     const _mhPierce=3+(_mhLv-1);
     const _mhSpread=0.18;
@@ -21242,10 +21250,10 @@ function renderStatPanel(){
     P.ap=(P.ap||0)+(_PCV[cur-1]||5);PASSIVES[k]--;SFX.levelup();renderStatPanel();dbSaveNow();
   };
 }
-$('spCnt').onclick=()=>{if(G.on)togglePanel('statPanel')};
-$('matCnt').onclick=()=>{if(G.on){closeAllPanels();openPanel('forge')}};
-$('keyGuideToggle').onclick=()=>{const g=$('keyGuide');g.style.display=g.style.display==='none'?'block':'none'};
-$('keyGuide').onclick=()=>{$('keyGuide').style.display='none'};
+const _spCntEl=$('spCnt');if(_spCntEl)_spCntEl.onclick=()=>{if(G.on)togglePanel('statPanel')};
+const _matCntEl=$('matCnt');if(_matCntEl)_matCntEl.onclick=()=>{if(G.on){closeAllPanels();openPanel('forge')}};
+const _kgTEl=$('keyGuideToggle');if(_kgTEl)_kgTEl.onclick=()=>{const g=$('keyGuide');if(g)g.style.display=g.style.display==='none'?'block':'none'};
+const _kgEl=$('keyGuide');if(_kgEl)_kgEl.onclick=()=>{_kgEl.style.display='none'};
 
 // ═══ DRAW ═══
 function draw(){
