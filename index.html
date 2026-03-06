@@ -308,8 +308,9 @@ function playCinematic(){
     if(_cinDone)return;
     if(idx>=CIN_LINES.length){finishCin();return;}
     _cinIdx=idx;
-    if(idx>=2)_cinSkipLock=false; // 첫 대사 이후 스킵 해금
     const line=CIN_LINES[idx];
+    // 텍스트가 있는 첫 대사가 나오면 스킵 해금 + 버튼 표시
+    if(line&&line.text&&_cinSkipLock){_cinSkipLock=false;skipBtn.classList.add('show');}
     // 이미지 전환
     if(line.img!==undefined){if(line.img===-1)hideAll();else showImg(line.img);}
     // 텍스트 — 글자 단위 순차 등장
@@ -390,19 +391,19 @@ function playCinematic(){
   prompt.addEventListener('click',onVidClick);
   prompt.addEventListener('touchend',e=>{e.preventDefault();onVidClick();});
 
-  // 클릭/탭 → 다음 줄로 스킵 (비디오 중이면 비디오 건너뛰고 프롤로그 시작)
+  // 클릭/탭 → 다음 줄로 스킵
   let _cinSkipLock=true; // 첫 대사 전 스킵 불가
   function onSkipClick(){
     if(_cinDone)return;
     if(!_cinReady){
-      // 비디오 재생 중 → 비디오 스킵하고 프롤로그 텍스트로 진입
+      // 비디오 재생 중 → 비디오 스킵하고 프롤로그로 진입
       if(!_vidStarted){onVidClick();return}
       _cinReady=true;
       vid.style.opacity='0';
       showLine(0);
       return;
     }
-    if(_cinSkipLock)return; // 첫씬 전 클릭/키보드 스킵 차단
+    if(_cinSkipLock)return; // 첫 대사 나올 때까지 스킵 차단
     clearTimeout(_cinTimer);
     showLine(_cinIdx+1);
   }
@@ -410,9 +411,7 @@ function playCinematic(){
   document.querySelector('.cin-overlay').addEventListener('touchend',e=>{e.preventDefault();onSkipClick();});
   document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Enter'){e.preventDefault();onSkipClick();}});
 
-  // 첫 대사 끝난 후 스킵 버튼 표시 (첫씬 전에는 스킵 불가)
-  const _firstDur=(CIN_LINES[0]?.dur||1200)+(CIN_LINES[1]?.dur||4000);
-  setTimeout(()=>skipBtn.classList.add('show'),_firstDur+500);
+  // 스킵 버튼은 첫 대사 등장 시 showLine 내부에서 표시됨
 }
 
 function skipToGate(){
