@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html><head><meta charset="utf-8"><title>EXODUSER 맵 디자이너</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
@@ -47,7 +47,7 @@ canvas{display:block}
   <h2>맵 디자이너</h2>
   <div id="chapter-tabs"></div>
   <div style="display:flex;border-bottom:1px solid #333">
-    <div id="mode-normal" style="flex:1;padding:4px 2px;text-align:center;cursor:pointer;background:#222;color:#ffea00;font-size:10px;border-bottom:2px solid #ffea00" onclick="setMapMode('normal')">🗺️세로맵</div>
+    <div id="mode-normal" style="flex:1;padding:4px 2px;text-align:center;cursor:pointer;background:#222;color:#ffea00;font-size:10px;border-bottom:2px solid #ffea00" onclick="setMapMode('normal')">🗺️맵</div>
     <div id="mode-grid"   style="flex:1;padding:4px 2px;text-align:center;cursor:pointer;background:#1a1a1a;color:#888;font-size:10px;border-bottom:2px solid transparent" onclick="setMapMode('grid')">🔲격자맵</div>
     <div id="mode-boss"   style="flex:1;padding:4px 2px;text-align:center;cursor:pointer;background:#1a1a1a;color:#888;font-size:10px;border-bottom:2px solid transparent" onclick="setMapMode('boss')">💀보스방</div>
   </div>
@@ -58,6 +58,13 @@ canvas{display:block}
     <button onclick="exportAsFixedMap()" style="background:#1a0030;color:#cc88ff;border-color:#cc88ff">📤 내보내기</button>
     <button onclick="exportAll()">JSON전체</button>
     <button onclick="importAll()">불러오기</button>
+    <div style="display:flex;gap:4px;align-items:center;margin:2px 0">
+      <span style="font-size:10px;color:#888">슬롯</span>
+      <input id="settings-slot" type="number" min="1" max="9" value="1" style="width:44px;background:#111;border:1px solid #444;color:#ddd;font:10px monospace;padding:2px 4px">
+    </div>
+    <button onclick="pickSettingsFolder()" style="background:#2a2400;color:#ffd966;border-color:#ffd966">세이브폴더선택</button>
+    <button onclick="saveEditorSettings(true)" style="background:#1a2a00;color:#aaff66;border-color:#aaff66">세팅저장</button>
+    <button onclick="loadEditorSettings(true)" style="background:#001f2a;color:#66ddff;border-color:#66ddff">세팅불러오기</button>
     <div style="margin-top:3px;color:#555;font-size:9px" id="stats">-</div>
   </div>
 </div>
@@ -66,10 +73,10 @@ canvas{display:block}
   <div id="hud"><span id="hud-text"></span></div>
   <div id="room-info"></div>
   <div id="show-toggles">
-    <label><input type="checkbox" checked onchange="show3d=this.checked;markDirty()"> 입체</label>
-    <label><input type="checkbox" checked onchange="showObj=this.checked"> 오브젝트</label>
-    <label><input type="checkbox" checked onchange="showRooms=this.checked"> 방이름</label>
-    <label><input type="checkbox" onchange="showGrid=this.checked;markDirty()"> 격자</label>
+    <label><input type="checkbox" checked onchange="show3d=this.checked;markDirty();saveEditorSettings(false)"> 입체</label>
+    <label><input type="checkbox" checked onchange="showObj=this.checked;saveEditorSettings(false)"> 오브젝트</label>
+    <label><input type="checkbox" checked onchange="showRooms=this.checked;saveEditorSettings(false)"> 방이름</label>
+    <label><input type="checkbox" onchange="showGrid=this.checked;markDirty();saveEditorSettings(false)"> 격자</label>
   </div>
   <div id="stage-label"></div>
 </div>
@@ -86,7 +93,7 @@ canvas{display:block}
   </div>
   <div class="section">
     <h4>🖌️ 브러시</h4>
-    <div class="slider-row">크기 <input type="range" min="1" max="25" value="5" id="brushR" oninput="brushRadius=+this.value;document.getElementById('brVal').textContent=this.value"> <span id="brVal">5</span></div>
+    <div class="slider-row">크기 <input type="range" min="1" max="25" value="5" id="brushR" oninput="brushRadius=+this.value;document.getElementById('brVal').textContent=this.value;saveEditorSettings(false)"> <span id="brVal">5</span></div>
     <div class="tool-row">
       <div class="tool-btn active" onclick="setBrush('circle')" id="bs-c">● 원형</div>
       <div class="tool-btn" onclick="setBrush('rect')" id="bs-r">■ 사각</div>
@@ -2420,8 +2427,8 @@ function setMapModeOrig(mode){
   document.getElementById('mode-boss').style.borderBottom=mode==='boss'?'2px solid #ff4400':'2px solid transparent';
   loadStage(currentStage);
 }
-function setHeight(h){currentHeight=h;selectedObj=null;for(let i=0;i<=3;i++)document.getElementById('th'+i).classList.toggle('active',i===h);document.querySelectorAll('.obj-btn').forEach(b=>b.classList.remove('active'))}
-function setBrush(s){brushShape=s;boxStart=null;document.getElementById('bs-c').classList.toggle('active',s==='circle');document.getElementById('bs-r').classList.toggle('active',s==='rect');document.getElementById('bs-b').classList.toggle('active',s==='box')}
+function setHeight(h){currentHeight=h;selectedObj=null;for(let i=0;i<=3;i++)document.getElementById('th'+i).classList.toggle('active',i===h);document.querySelectorAll('.obj-btn').forEach(b=>b.classList.remove('active'));saveEditorSettings(false)}
+function setBrush(s){brushShape=s;boxStart=null;document.getElementById('bs-c').classList.toggle('active',s==='circle');document.getElementById('bs-r').classList.toggle('active',s==='rect');document.getElementById('bs-b').classList.toggle('active',s==='box');saveEditorSettings(false)}
 function markDirty(){const m=getCurrentMap();if(m)m.dirty=true}
 
 function applyBrush(cx,cy){
@@ -2480,6 +2487,7 @@ function loadStage(sid){
   document.getElementById('stage-label').textContent=mapMode==='boss'?`${HELLS[s.hell].name} — ${s.floor}층 보스방 [${ARENA_TYPES[sid%5]}] (${m.mw}×${m.mh})`:`${HELLS[s.hell].name} — ${s.floor}층 (${m.mw}×${m.mh})`;
   document.getElementById('stage-label').style.color=HELLS[s.hell].color;
   document.getElementById('room-info').textContent='방: '+m.rooms.map(r=>`${r.id}(${r.type})`).join(' → ');
+  saveEditorSettings(false);
 }
 function resize(){C.width=editor.clientWidth;C.height=editor.clientHeight}
 resize();window.onresize=resize;
@@ -2928,6 +2936,7 @@ function loadGridStage(hell) {
   document.getElementById('stage-label').style.color = HELLS[hell].color;
   document.getElementById('room-info').textContent =
     `방 ${m.rooms.length}개 | 격자 5×5 | 시작:하단중앙  보스:상단중앙  대장간:정중앙`;
+  saveEditorSettings(false);
 }
 
 function buildGridStageList() {
@@ -2961,6 +2970,7 @@ function setMapMode(mode) {
   if (mode==='grid') { buildGridStageList(); loadGridStage(currentGridHell); }
   else if (mode==='boss') { buildStageListOrig(); loadStage(currentStage); }
   else { buildStageListOrig(); loadStage(currentStage); }
+  saveEditorSettings(false);
 }
 
 // ── getCurrentMap 재정의 ──
@@ -2968,6 +2978,138 @@ function getCurrentMap() {
   if (mapMode==='grid') return getGridMap(currentGridHell);
   if (mapMode==='boss') return getBossMap(currentStage);
   return getMap(currentStage);
+}
+
+const EDITOR_SETTINGS_KEY_PREFIX='tilemap_editor_settings_v1_slot_';
+const EDITOR_SETTINGS_SLOT_KEY='tilemap_editor_selected_slot_v1';
+let settingsDirHandle=null;
+function _slotInput(){ return document.getElementById('settings-slot'); }
+function _normalizeSlot(v){
+  const n=~~Number(v);
+  if(!Number.isFinite(n)) return 1;
+  return Math.max(1,Math.min(9,n));
+}
+function _getSelectedSlot(){
+  const el=_slotInput();
+  return _normalizeSlot(el?el.value:1);
+}
+function _setSelectedSlot(slot){
+  const s=_normalizeSlot(slot);
+  const el=_slotInput(); if(el) el.value=String(s);
+  try{ localStorage.setItem(EDITOR_SETTINGS_SLOT_KEY,String(s)); }catch(e){}
+  return s;
+}
+function _settingsKey(slot){ return EDITOR_SETTINGS_KEY_PREFIX + _normalizeSlot(slot); }
+function _settingsFilename(slot){ return `settings_slot_${_normalizeSlot(slot)}.json`; }
+function _editorSettingsSnapshot(){
+  return {
+    mapMode,currentHell,currentStage,currentGridHell,
+    currentHeight,brushRadius,brushShape,
+    show3d,showObj,showRooms,showGrid
+  };
+}
+async function pickSettingsFolder(){
+  try{
+    if(!window.showDirectoryPicker){
+      document.getElementById('stats').textContent='이 브라우저는 폴더 저장을 지원하지 않음';
+      return false;
+    }
+    settingsDirHandle = await window.showDirectoryPicker({mode:'readwrite'});
+    document.getElementById('stats').textContent='세이브 폴더 선택 완료';
+    return true;
+  }catch(e){
+    document.getElementById('stats').textContent='세이브 폴더 선택 취소/실패';
+    return false;
+  }
+}
+async function _writeSettingsFile(slot,dataObj){
+  if(!settingsDirHandle) return false;
+  const f = await settingsDirHandle.getFileHandle(_settingsFilename(slot),{create:true});
+  const w = await f.createWritable();
+  await w.write(JSON.stringify(dataObj,null,2));
+  await w.close();
+  return true;
+}
+async function _readSettingsFile(slot){
+  if(!settingsDirHandle) return null;
+  try{
+    const f = await settingsDirHandle.getFileHandle(_settingsFilename(slot),{create:false});
+    const file = await f.getFile();
+    return JSON.parse(await file.text());
+  }catch(e){
+    return null;
+  }
+}
+async function saveEditorSettings(manual){
+  try{
+    const slot=_getSelectedSlot();
+    const snap=_editorSettingsSnapshot();
+    localStorage.setItem(_settingsKey(slot),JSON.stringify(snap));
+    localStorage.setItem(EDITOR_SETTINGS_SLOT_KEY,String(slot));
+    let fileSaved=false;
+    try{
+      if(!settingsDirHandle && manual && window.showDirectoryPicker){
+        // 수동 저장 시 폴더 미선택이면 한 번 물어본다.
+        fileSaved = await pickSettingsFolder();
+      }
+      if(settingsDirHandle){
+        await _writeSettingsFile(slot,snap);
+        fileSaved=true;
+      }
+    }catch(e){}
+    if(manual)document.getElementById('stats').textContent=`세팅 저장 완료 (슬롯 ${slot})${fileSaved?' + 파일저장':''}`;
+  }catch(e){
+    if(manual)document.getElementById('stats').textContent='세팅 저장 실패';
+  }
+}
+function _syncSettingUi(){
+  const br=document.getElementById('brushR'); if(br)br.value=String(brushRadius);
+  const bv=document.getElementById('brVal'); if(bv)bv.textContent=String(brushRadius);
+  const cb=document.querySelectorAll('#show-toggles input[type=\"checkbox\"]');
+  if(cb&&cb.length>=4){
+    cb[0].checked=!!show3d; cb[1].checked=!!showObj; cb[2].checked=!!showRooms; cb[3].checked=!!showGrid;
+  }
+  setHeight(currentHeight);
+  setBrush(brushShape);
+}
+function _applyLoadedState(){
+  _syncSettingUi();
+  buildChapterTabs();
+  if(mapMode==='grid'){
+    buildGridStageList();
+    loadGridStage(currentGridHell);
+  }else{
+    buildStageListOrig();
+    loadStage(currentStage);
+  }
+  draw();
+}
+async function loadEditorSettings(manual){
+  try{
+    const slot=_getSelectedSlot();
+    let s=null;
+    if(settingsDirHandle) s = await _readSettingsFile(slot);
+    if(!s){
+      const raw=localStorage.getItem(_settingsKey(slot));
+      if(raw) s=JSON.parse(raw);
+    }
+    if(!s){ if(manual)document.getElementById('stats').textContent=`저장된 세팅 없음 (슬롯 ${slot})`; return false; }
+    mapMode=(s.mapMode==='normal'||s.mapMode==='grid'||s.mapMode==='boss')?s.mapMode:'normal';
+    currentHell=Number.isFinite(s.currentHell)?Math.max(0,Math.min(6,~~s.currentHell)):0;
+    currentStage=Number.isFinite(s.currentStage)?Math.max(0,Math.min(69,~~s.currentStage)):0;
+    currentGridHell=Number.isFinite(s.currentGridHell)?Math.max(0,Math.min(6,~~s.currentGridHell)):0;
+    currentHeight=Number.isFinite(s.currentHeight)?Math.max(0,Math.min(3,~~s.currentHeight)):1;
+    brushRadius=Number.isFinite(s.brushRadius)?Math.max(1,Math.min(25,~~s.brushRadius)):5;
+    brushShape=(s.brushShape==='circle'||s.brushShape==='rect'||s.brushShape==='box')?s.brushShape:'circle';
+    show3d=!!s.show3d; showObj=!!s.showObj; showRooms=!!s.showRooms; showGrid=!!s.showGrid;
+    _applyLoadedState();
+    localStorage.setItem(EDITOR_SETTINGS_SLOT_KEY,String(slot));
+    if(manual)document.getElementById('stats').textContent=`세팅 불러오기 완료 (슬롯 ${slot})`;
+    return true;
+  }catch(e){
+    if(manual)document.getElementById('stats').textContent='세팅 불러오기 실패';
+    return false;
+  }
 }
 
 // ── HUD 오버라이드 ──
@@ -3257,7 +3399,19 @@ for(let i=0;i<70;i++){
   }
 }
 for(let h=0;h<7;h++) GRID_MAPS[h]=generateGridMap(h);
-buildChapterTabs(); buildStageListOrig(); loadStage(0); draw();
+try{
+  const savedSlot=localStorage.getItem(EDITOR_SETTINGS_SLOT_KEY);
+  _setSelectedSlot(savedSlot||1);
+  const slotEl=_slotInput();
+  if(slotEl){
+    slotEl.addEventListener('change',()=>_setSelectedSlot(slotEl.value));
+  }
+}catch(e){}
+(async()=>{
+  const ok = await loadEditorSettings(false);
+  if(!ok){ buildChapterTabs(); buildStageListOrig(); loadStage(0); draw(); }
+})();
 
 </script>
 </body></html>
+

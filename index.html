@@ -43,6 +43,8 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 .cin-img{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 1.5s ease;pointer-events:none}
 .cin-img.show{opacity:1}
 .cin-img img{width:100vw;height:100vh;object-fit:cover;object-position:center 40%;filter:brightness(.6) contrast(1.1);mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%)}
+/* head crop fix for specific story stills */
+#cinImg1 img,#cinImg3 img{object-position:center 20% !important}
 /* 네메시아: 얼굴 보이게 상단 정렬 + 마스크 위로 확장 */
 #cinImg8 img{object-position:center top !important;mask-image:radial-gradient(ellipse 90% 100% at 50% 55%,#000 55%,transparent 100%) !important;-webkit-mask-image:radial-gradient(ellipse 90% 100% at 50% 55%,#000 55%,transparent 100%) !important}
 
@@ -163,7 +165,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   <div class="cin-img" id="cinImg3"><img src="img/cin_throne.png" alt=""></div>
   <div class="cin-img" id="cinImg4"><img src="img/cin_bloodbath.png" alt=""></div>
   <div class="cin-img" id="cinImg5"><img src="img/cin_torture.png" alt=""></div>
-  <div class="cin-img" id="cinImg6"><img src="img/cin_hellwalk.png" alt=""></div>
+  <div class="cin-img" id="cinImg6"><img src="img/cin_fallhell_custom.png" alt=""></div>
   <div class="cin-img" id="cinImg7"><img src="img/cin_hellwalk.png" alt=""></div>
   <div class="cin-img" id="cinImg8"><img src="img/cin_nemesia_hd.png" alt=""></div>
   <div class="cin-img" id="cinImg9"><img src="img/cin_demonbattle.png" alt=""></div>
@@ -171,7 +173,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   <div class="cin-img" id="cinImg11"><img src="img/cin_victory.png" alt=""></div>
   <div class="cin-img" id="cinImg12"><img src="img/cin_bystanders.png" alt=""></div>
   <div class="cin-img" id="cinImg13"><img src="img/cin_remember.png" alt=""></div>
-  <div class="cin-img" id="cinImg14"><img src="img/warrior.png" alt=""></div>
+  <div class="cin-img" id="cinImg14"><img src="img/emg1.png" alt=""></div>
 
   <!-- 프롤로그 텍스트 -->
   <div class="cin-text" id="cinText">
@@ -186,9 +188,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 
 <!-- ═══ 챕터 입장 문 열림 (동영상) ═══ -->
 <div id="chapterGate" style="position:fixed;inset:0;z-index:200;display:none;background:#000;overflow:hidden">
-  <video id="chGateVid" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(-5%);z-index:20">
-    <source src="video/intro.mp4" type="video/mp4">
-  </video>
+  <img id="chGateImg" src="img/roding1.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(-5%);z-index:20">
   <div class="cin-lb cin-lb-t"></div>
   <div class="cin-lb cin-lb-b"></div>
   <div class="cin-vig" style="z-index:21"></div>
@@ -241,6 +241,12 @@ const $=id=>document.getElementById(id);
 let currentUser=null;
 let gateOpened=false;
 let _cinDone=false;
+function stopMediaVideo(v){
+  if(!v)return;
+  try{v.pause()}catch(e){}
+  try{v.currentTime=0}catch(e){}
+  try{v.muted=true;v.volume=0}catch(e){}
+}
 
 // ═══ Prologue Script (풀버전) ═══
 // img: 이미지 인덱스 (0~8), -1=어둠, undefined=이전 유지
@@ -273,7 +279,7 @@ const CIN_LINES=[
   {text:'',dur:1000},
   {text:'그리고 지옥에 떨어진다.',dur:4500,img:5},
   {text:'',dur:2000,img:-1,phase:2},
-  {text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',dur:4500,cls:'dim',img:14},
+  {text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',dur:4500,cls:'dim',img:13},
   {text:'',dur:800},
   {text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',dur:4500,cls:'dim',img:8},
   {text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',dur:5000,cls:'dim',img:9},
@@ -341,6 +347,7 @@ function playCinematic(){
 
   function finishCin(){
     clearTimeout(_cinTimer);
+    _clearVidTimers();
     _cinReady=false;_cinDone=true;
     textBox.innerHTML='';
     skipBtn.classList.remove('show');
@@ -369,6 +376,12 @@ function playCinematic(){
 
   const prompt=$('cinClickPrompt');
   let _vidStarted=false;
+  let _vidFadeTimer=null;
+  let _vidStartTimer=null;
+  function _clearVidTimers(){
+    if(_vidFadeTimer){clearTimeout(_vidFadeTimer);_vidFadeTimer=null;}
+    if(_vidStartTimer){clearTimeout(_vidStartTimer);_vidStartTimer=null;}
+  }
   function onVidClick(){
     if(_vidStarted||_cinDone)return;
     _vidStarted=true;
@@ -381,8 +394,8 @@ function playCinematic(){
     // 비디오 페이드아웃 → 프롤로그 시작
     const videoEnd=8500;
     vid.onended=()=>{vid.style.opacity='0'};
-    setTimeout(()=>{if(_cinDone)return;vid.style.opacity='0'},videoEnd-1500);
-    setTimeout(()=>{
+    _vidFadeTimer=setTimeout(()=>{if(_cinDone)return;vid.style.opacity='0'},videoEnd-1500);
+    _vidStartTimer=setTimeout(()=>{
       if(_cinDone)return;
       _cinReady=true;
       showLine(0);
@@ -399,6 +412,8 @@ function playCinematic(){
       // 비디오 재생 중 → 비디오 스킵하고 프롤로그로 진입
       if(!_vidStarted){onVidClick();return}
       _cinReady=true;
+      _clearVidTimers();
+      stopMediaVideo(vid);
       vid.style.opacity='0';
       showLine(0);
       return;
@@ -417,7 +432,9 @@ function playCinematic(){
 function skipToGate(){
   _cinDone=true;
   clearTimeout(_cinTimer);
+  _clearVidTimers();
   startBGM();
+  stopMediaVideo($('cinVideo'));
   $('cinVideo').style.opacity='0';
   if($('cinClickPrompt'))$('cinClickPrompt').style.display='none';
   [1,2,3,4,5,6,7,8,9,10,11,12,13,14].forEach(i=>{const e=$('cinImg'+i);if(e)e.classList.remove('show')});
@@ -598,17 +615,38 @@ async function loadLocalCharacters(){
 // ═══ 캐릭터 선택 → 문 열림 → 입장 ═══
 function showCharGate(charId){
   const gate=$('chapterGate');
-  const vid=$('chGateVid');
-  gate.style.display='block';
-  vid.currentTime=0;
-  vid.muted=false;
-  vid.volume=0.6;
-  vid.play().catch(()=>{});
-  // 영상 끝나면 game.html 이동
   const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId;
-  vid.onended=()=>{window.location.href=_tp};
-  // 안전장치: 영상 10초 넘으면 강제 이동
-  setTimeout(()=>{window.location.href=_tp},10000);
+  let _gateDone=false;
+  let _gateTimer=null;
+  function cleanupGate(){
+    gate.removeEventListener('click',skipGate);
+    gate.removeEventListener('touchend',skipGate);
+    gate.removeEventListener('pointerdown',skipGate);
+    document.removeEventListener('keydown',skipGate);
+    if(_gateTimer){clearTimeout(_gateTimer);_gateTimer=null;}
+  }
+  function finishGate(){
+    if(_gateDone)return;
+    _gateDone=true;
+    cleanupGate();
+    gate.style.display='none';
+    window.location.href=_tp;
+  }
+  function skipGate(e){
+    if(e&&e.type==='keydown'){
+      if(!(e.code==='Space'||e.code==='Enter'||e.code==='Escape'))return;
+    }
+    if(e&&typeof e.preventDefault==='function')e.preventDefault();
+    finishGate();
+  }
+  gate.style.display='block';
+  gate.style.cursor='pointer';
+  gate.addEventListener('click',skipGate);
+  gate.addEventListener('touchend',skipGate);
+  gate.addEventListener('pointerdown',skipGate);
+  document.addEventListener('keydown',skipGate);
+  // loading image shown briefly, then move to game.
+  _gateTimer=setTimeout(finishGate,1500);
 }
 </script>
 </body>
