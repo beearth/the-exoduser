@@ -25,12 +25,10 @@
 body{background:#000;overflow:hidden;font-family:var(--font);user-select:none}
 canvas{display:block;position:fixed;inset:0}
 
-/* ══ HUD: Forged Iron & Ember ══ */
+/* ══ HUD: Orbs of Fate ══ */
 :root {
-  --hud-bar-w: 240px;
-  --hud-bar-h: 14px;
-  --iron-border: inset 0 0 0 2px #1a1a1a, 0 2px 8px rgba(0,0,0,0.8);
-  --ember-glow: 0 0 10px rgba(255, 68, 0, 0.4);
+  --globe-size: 140px;
+  --iron-border: inset 0 0 12px rgba(0,0,0,0.8), 0 2px 10px rgba(0,0,0,0.6);
 }
 
 #hud {
@@ -39,86 +37,155 @@ canvas{display:block;position:fixed;inset:0}
   left: 0;
   right: 0;
   z-index: 20;
-  padding: 24px 30px;
+  padding: 20px 40px;
   pointer-events: none;
   opacity: 0;
-  transition: opacity .5s, transform .5s cubic-bezier(0.18, 0.89, 0.32, 1.28);
-  transform: translateY(20px);
-  transform-origin: bottom center;
+  transition: opacity .5s, transform .6s cubic-bezier(0.15, 0.85, 0.35, 1.15);
+  transform: translateY(30px);
 }
 #hud.on { opacity: 1; transform: translateY(0); }
 
-.hud-bot { display: flex; justify-content: space-between; align-items: flex-end; }
-.hud-left { display: flex; flex-direction: column; gap: 10px; }
-
-.bar-wrap { 
+.hud-bot { 
   display: flex; 
-  align-items: center; 
-  gap: 12px;
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-}
-.bar-label { 
-  color: #aa8866; 
-  font-size: 0.85rem; 
-  width: 40px; 
-  text-align: right; 
-  font-weight: 900;
-  letter-spacing: 0.1em;
-  text-shadow: 0 0 5px rgba(255,136,68,0.3);
+  justify-content: space-between; 
+  align-items: flex-end;
+  max-width: 1400px;
+  margin: 0 auto;
 }
 
-.bar { 
-  height: var(--hud-bar-h); 
-  background: #0d0d0d;
-  border: 1px solid #332211;
-  box-shadow: var(--iron-border);
+/* Orbs */
+.globe-container {
   position: relative;
-  overflow: hidden;
-  border-radius: 1px;
+  width: var(--globe-size);
+  height: var(--globe-size);
+  filter: drop-shadow(0 5px 15px rgba(0,0,0,0.7));
 }
-.bar::after {
-  content: '';
+
+.globe-glass {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(90deg, transparent, transparent 19%, rgba(0,0,0,0.4) 19.5%, rgba(0,0,0,0.4) 20%);
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15) 0%, transparent 60%),
+              radial-gradient(circle at 70% 70%, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.8) 100%);
+  border: 3px solid #2a1a0a;
+  box-shadow: var(--iron-border);
+  z-index: 10;
   pointer-events: none;
-  z-index: 2;
 }
 
-.bar.hp { width: var(--hud-bar-w); }
-.bar.hp .fill { 
-  background: linear-gradient(90deg, #660000, #cc2200, #ff4400); 
-  box-shadow: 0 0 15px rgba(255,0,0,0.4);
-}
-.bar.st { width: calc(var(--hud-bar-w) * 0.85); }
-.bar.st .fill { 
-  background: linear-gradient(90deg, #114400, #44aa00, #88ff44); 
-  box-shadow: 0 0 15px rgba(0,255,0,0.2);
-}
-.bar.mp { width: calc(var(--hud-bar-w) * 0.7); }
-.bar.mp .fill { 
-  background: linear-gradient(90deg, #002266, #4488dd, #00ffff); 
-  box-shadow: 0 0 15px rgba(0,136,255,0.3);
-}
-.bar.sh { width: var(--hud-bar-w); }
-.bar.sh .fill { 
-  background: linear-gradient(90deg, #113366, #44aaff, #ffffff); 
-  box-shadow: 0 0 15px rgba(0,136,255,0.4);
+.globe-liquid-wrap {
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #050200;
+  z-index: 5;
 }
 
-.fill { 
-  height: 100%; 
-  transition: width .25s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
+.globe-liquid {
+  position: absolute;
+  bottom: 0;
+  left: -50%;
+  width: 200%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.3, 1);
+  transform: translateY(100%); /* Changed via JS */
 }
-.fill::before {
+
+.hp-globe .globe-liquid {
+  background: linear-gradient(0deg, #440000 0%, #cc0000 40%, #ff3300 90%, #ff9944 100%);
+  box-shadow: inset 0 20px 30px rgba(255,100,0,0.4);
+}
+.mp-globe .globe-liquid {
+  background: linear-gradient(0deg, #001144 0%, #0044cc 40%, #0088ff 90%, #66ccff 100%);
+  box-shadow: inset 0 20px 30px rgba(0,100,255,0.4);
+}
+
+/* Wave animation */
+.globe-liquid::before {
   content: '';
   position: absolute;
-  top: 0; right: 0; bottom: 0;
-  width: 20px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3));
-  filter: blur(2px);
+  top: -15px; left: 0; width: 100%; height: 30px;
+  background: inherit;
+  filter: blur(8px) brightness(1.2);
+  border-radius: 40% 60% 50% 50% / 30% 30% 70% 70%;
+  animation: waveRotate 6s linear infinite;
+  opacity: 0.8;
 }
+
+@keyframes waveRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.globe-val {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 15;
+  color: #fff;
+  font-family: 'Cinzel Decorative', serif;
+  text-shadow: 0 2px 5px #000, 0 0 10px rgba(0,0,0,0.8);
+}
+.globe-val .cur { font-size: 1.4rem; font-weight: 900; }
+.globe-val .max { font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-top: -4px; }
+
+/* Middle Bars (ST, SH) - Removed bars, added rings around orbs */
+.globe-ring-wrap {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  z-index: 2;
+  pointer-events: none;
+}
+.globe-ring-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 5px solid rgba(20,10,5,0.6);
+  box-shadow: 0 0 15px rgba(0,0,0,0.5), inset 0 0 10px rgba(0,0,0,0.8);
+}
+.globe-ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  /* We use conic-gradient in JS to show progress */
+  background: conic-gradient(var(--ring-col) 0%, transparent 0%);
+  mask: radial-gradient(transparent 64%, #000 65%);
+  -webkit-mask: radial-gradient(transparent 64%, #000 65%);
+  transition: none; /* Smooth via JS requestAnimationFrame or transition in JS */
+}
+
+.hp-globe .globe-ring { --ring-col: #4488ff; } /* Shield color */
+.mp-globe .globe-ring { --ring-col: #ffaa44; } /* ST color */
+
+.hud-center-bars {
+  display: none; /* Hide old bars */
+}
+  font-size: 0.75rem;
+  font-weight: 900;
+  color: #aa8866;
+  width: 25px;
+  text-align: right;
+}
+.mini-bar {
+  flex: 1;
+  height: 10px;
+  background: #0a0500;
+  border: 1px solid #332211;
+  box-shadow: inset 0 0 5px #000;
+  position: relative;
+  overflow: hidden;
+}
+.mini-bar .fill {
+  height: 100%;
+  transition: width .3s ease-out;
+}
+.mini-bar.st .fill { background: linear-gradient(90deg, #114400, #44aa00); }
+.mini-bar.sh .fill { background: linear-gradient(90deg, #002266, #44aaff); }
 #skBar{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%) scale(calc(var(--ui-scale) * .9));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;transform-origin:bottom center}
 #skBar.on{opacity:1}
 .hud-top{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px));left:50%;transform:translateX(-50%) scale(var(--ui-scale));z-index:20;pointer-events:none;display:flex;gap:4px;align-items:center;opacity:0;transition:opacity .5s;transform-origin:top center;font-size:.56rem;white-space:nowrap}
@@ -483,11 +550,41 @@ canvas{display:block;position:fixed;inset:0}
 
 <div id="hud">
   <div class="hud-bot">
-    <div class="hud-left">
-      <div class="bar-wrap"><span class="bar-label">HP</span><div class="bar hp"><div class="fill" id="hpF"></div></div><span id="hpPotCd" style="font-size:.8rem;color:#ff8844;font-weight:700;min-width:38px;margin-left:4px"></span></div>
-      <div class="bar-wrap" id="shWrap" style="display:none"><span class="bar-label">SH</span><div class="bar sh"><div class="fill" id="shF"></div></div></div>
-      <div class="bar-wrap"><span class="bar-label">ST</span><div class="bar st"><div class="fill" id="stF"></div></div></div>
-      <div class="bar-wrap"><span class="bar-label">DP</span><div class="bar mp"><div class="fill" id="mpF"></div></div></div>
+    <!-- Left: Health Globe -->
+    <div class="globe-container hp-globe">
+      <div class="globe-liquid-wrap">
+        <div id="hpLiquid" class="globe-liquid"></div>
+      </div>
+      <div class="globe-glass"></div>
+      <div class="globe-val">
+        <div id="hpCur" class="cur">0</div>
+        <div id="hpMax" class="max">/ 0</div>
+      </div>
+      <span id="hpPotCd" style="position:absolute;top:-25px;left:50%;transform:translateX(-50%);font-size:.9rem;color:#ff8844;font-weight:700;white-space:nowrap"></span>
+    </div>
+
+    <!-- Center: Mini Bars (ST, SH) -->
+    <div class="hud-center-bars">
+      <div class="bar-mini-wrap">
+        <div class="mini-label">ST</div>
+        <div class="mini-bar st"><div id="stF" class="fill" style="width:100%"></div></div>
+      </div>
+      <div class="bar-mini-wrap" id="shWrap" style="display:none">
+        <div class="mini-label">SH</div>
+        <div class="mini-bar sh"><div id="shF" class="fill" style="width:100%"></div></div>
+      </div>
+    </div>
+
+    <!-- Right: Mana Globe -->
+    <div class="globe-container mp-globe">
+      <div class="globe-liquid-wrap">
+        <div id="mpLiquid" class="globe-liquid"></div>
+      </div>
+      <div class="globe-glass"></div>
+      <div class="globe-val">
+        <div id="mpCur" class="cur">0</div>
+        <div id="mpMax" class="max">/ 0</div>
+      </div>
     </div>
   </div>
 </div>
@@ -18625,7 +18722,7 @@ const SKILL_LIST=[
   {id:'bladeShot',name:'붉은꽃',cat:'bow',act:true,emoji:'🌹',desc:'붉은 꽃잎 칼날 발사: 전진하며 주변에 핏빛 꽃잎 방사 (ST 50, 쿨 없음). Lv당 사거리+50 뎀+10%',spCost:12,matCost:100,up:true,upSp:5,upMat:0},
   {id:'iceOrb',name:'얼음보주',cat:'magic',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 12발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',spCost:15,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'grenadeShot',name:'유탄산탄',cat:'bow',act:true,emoji:'💣',desc:'유탄 직선 발사(사거리500). 충돌 시 폭발(범위120,화염)+산탄 7발 방사. 악의 5. Lv당 범위+8 뎀+10% 산탄+1. 쿨 0.5초',spCost:40,matCost:80,cd:30,up:true,upSp:5,upMat:0},
-  {id:'plagueBurst',name:'폭독혈',cat:'bow',act:true,emoji:'🩸',desc:'독혈 칼날 발사: 50마리 관통+튕김. 전염+마지막 적 1000뎀 처형. 감염된 적 사망 시 폭발+연쇄 전염(범위100, INT 스케일링). 악의 15. Lv당 폭발뎀+15% 범위+8. 만렙 2발. 쿨 5초',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
+  {id:'plagueBurst',name:'폭독혈',cat:'bow',act:true,emoji:'🩸',desc:'독혈 칼날 발사: 30마리 관통+튕김. 전염+마지막 적 1000뎀 처형. 감염된 적 사망 시 폭발+연쇄 전염(범위100, INT 스케일링). 악의 15. Lv당 폭발뎀+15% 범위+8. 만렙 2발. 쿨 5초',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
   {id:'maliceStorm',name:'악의폭풍',cat:'magic',act:true,emoji:'🌀',desc:'마우스 조준 설치. 3스택 (8초/1충전). 화면 내 클릭 위치에 전기폭풍 (3초, 10틱, 틱당 100+Lv*20). Lv당 범위+10. 같은 지역 중복 불가',spCost:12,matCost:90,up:true,upSp:5,upMat:0},
   {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'정면 광역 슬램(범위500) → 반동 후면 슬램(범위350). ST 30% + 악의 20. 강넉백+화면흔들림. Lv당 뎀+10% 범위+15 쿨-0.3초',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:480},
   {id:'shieldThrow',name:'방패투척',cat:'phys',fixed:true,emoji:'🛡️',desc:'[고정: 방패치기 합체] 우클릭 방패치기 시 자동 발사. 회전하며 전진, 적 관통+넉백+투사체 반사. 쿨 5초. Lv당 뎀+12% 사거리+30',spCost:0,matCost:80,cd:300,up:true,upSp:5,upMat:0},
@@ -19207,19 +19304,19 @@ function activatePlagueBurst(){
   const slv=P.skills.plagueBurst||1;
   const a=P.atkArc;
   const _pbCount=slv>=10?2:1;
-  // 빨간칼날 (30회 튕김, 강유도) + 보라칼날 (10회 관통, 직진)
-  const _maxRange=T*50;
+  // 빨간칼날 (30회 튕김, 강유도) + 보라칼날 (30회 관통, 직진)
+  const _maxRange=3000;
   for(let _pbi=0;_pbi<_pbCount;_pbi++){
     const _pbAng=a+(_pbCount>1?(_pbi-.5)*.3:0);
     // 빨간칼날: 30회 튕김
     pProjs.push({x:P.x+Math.cos(_pbAng)*16,y:P.y+Math.sin(_pbAng)*16,vx:Math.cos(_pbAng)*12,vy:Math.sin(_pbAng)*12,
       dmg:0,el:EL.D,maxDist:_maxRange,dist:0,r:10,stagger:0,kb:0,magic:true,
       plagueBlade:true,plagueHoming:true,_plagueLv:slv,_plagueHit:0,_plagueMax:30,_maxBounce:30,_hitSet:new Set()});
-    // 보라칼날: 10회 관통 직진
+    // 보라칼날: 30회 관통 직진
     const _ppAng=_pbAng+(Math.random()-.5)*.15;
     pProjs.push({x:P.x+Math.cos(_ppAng)*16,y:P.y+Math.sin(_ppAng)*16,vx:Math.cos(_ppAng)*14,vy:Math.sin(_ppAng)*14,
       dmg:0,el:EL.D,maxDist:_maxRange,dist:0,r:10,stagger:0,kb:0,magic:true,
-      plagueBlade:true,plaguePurple:true,_plagueLv:slv,_plagueHit:0,_plagueMax:10,_maxBounce:999,_hitSet:new Set()});
+      plagueBlade:true,plaguePurple:true,_plagueLv:slv,_plagueHit:0,_plagueMax:30,_maxBounce:999,_hitSet:new Set()});
   }
   SFX.magic(EL.D);addTxt(P.x,P.y-30,'🩸 폭독혈'+(_pbCount>1?' ×2':'')+'!','#cc0033',40);
   G.shake=Math.max(G.shake,3*OPT.shake/100);
@@ -25724,10 +25821,26 @@ function drawMM(){if(!G.on||!G.map)return;
 
 let _hudAlive=0,_hudT=0,_mpMatT=0;
 function updateHUD(slow){
-  // ── 빠른 경로: 바 + 숫자 (매 3프레임 = ~20회/초) ──
+  // ── 빠른 경로: 구슬 수위 + 중앙 바 (매 3프레임 = ~20회/초) ──
   P.hp=~~P.hp;P.mhp=~~P.mhp; // 소수점 방지
-  $('hpF').style.width=(P.hp/P.mhp*100)+'%';$('stF').style.width=(P.st/P.mst*100)+'%';$('mpF').style.width=(P.mp/P.mmp*100)+'%';
+  P.mp=~~P.mp;P.mmp=~~P.mmp;
+  
+  // HP 구슬 업데이트
+  const hpPct = Math.max(0, Math.min(100, (P.hp / P.mhp) * 100));
+  $('hpLiquid').style.transform = `translateY(${100 - hpPct}%)`;
+  $('hpCur').textContent = P.hp;
+  $('hpMax').textContent = `/ ${P.mhp}`;
+  
+  // MP 구슬 업데이트
+  const mpPct = Math.max(0, Math.min(100, (P.mp / P.mmp) * 100));
+  $('mpLiquid').style.transform = `translateY(${100 - mpPct}%)`;
+  $('mpCur').textContent = P.mp;
+  $('mpMax').textContent = `/ ${P.mmp}`;
+
+  // 중앙 미니 바 (ST, SH)
+  $('stF').style.width=(P.st/P.mst*100)+'%';
   if(P.mshield>0){$('shWrap').style.display='';$('shF').style.width=(P.shield/P.mshield*100)+'%'}else{$('shWrap').style.display='none'}
+  
   let _hpPotCdTxt='';
   for(let i=0;i<4;i++){if(QSLOTS[i].type==='hp'&&qsCooldown[i]>0){_hpPotCdTxt='❤️‍🔥'+(qsCooldown[i]/60).toFixed(1)+'s';break}}
   $('hpPotCd').textContent=_hpPotCdTxt;
