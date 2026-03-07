@@ -21142,10 +21142,9 @@ function renderForge(){
     }
 
   }else if(G.forgeTab==='repair'){
-    // ═══ 수리 탭 ═══
     grid.style.gridTemplateColumns='1fr';
     const rHdr=document.createElement('div');rHdr.style.cssText='color:#44ff88;font-size:1rem;font-weight:700;margin-bottom:8px;letter-spacing:.1em;text-align:center';
-    rHdr.textContent='🔧 장비 수리 | 👿 악의 소비';grid.appendChild(rHdr);
+    rHdr.textContent='🔧 장비 수리 센터 | 악의 소비';grid.appendChild(rHdr);
     const eqList=document.createElement('div');eqList.style.cssText='display:flex;flex-direction:column;gap:4px;margin-bottom:8px;max-height:320px;overflow-y:auto';
     let totalRepairCost=0;let hasBroken=false;
     SLOT_NAMES.forEach((slot,i)=>{
@@ -21159,17 +21158,22 @@ function renderForge(){
       d.style.cssText=`padding:6px 10px;border:1px solid ${needRepair?dc:'#1a1100'};background:${needRepair?'rgba(0,0,0,.35)':'rgba(0,0,0,.15)'};border-radius:3px;display:flex;align-items:center;gap:8px;opacity:${it?1:.4}`;
       if(it){
         const rc=RARITY_C[it.rarity||0];
-        let info=`<div style="flex:1"><span style="color:${rc};font-weight:700">${it.emoji||SLOT_EMOJI[i]} ${itemDispName?itemDispName(it):it.name}${it.enh?' <span style="color:'+enhColor(it.enh)+'">+'+it.enh+'</span>':''}</span>`;
-        info+=`<div style="display:flex;align-items:center;gap:6px;margin-top:2px"><div style="flex:1;height:4px;background:#222;border-radius:2px"><div style="width:${dp*100}%;height:100%;background:${dc};border-radius:2px"></div></div><span style="color:${dc};font-size:.8rem;font-weight:700">${it.durability}/${it.maxDurability}</span></div></div>`;
+        const infoCont=document.createElement('div');infoCont.style.flex='1';
+        infoCont.innerHTML=`<span style="color:${rc};font-weight:700">${it.emoji||SLOT_EMOJI[i]} ${itemDispName?itemDispName(it):it.name}${it.enh?' <span style="color:'+enhColor(it.enh)+'">+'+it.enh+'</span>':''}</span>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:2px"><div style="flex:1;height:4px;background:#222;border-radius:2px"><div style="width:${dp*100}%;height:100%;background:${dc};border-radius:2px"></div></div><span style="color:${dc};font-size:.8rem;font-weight:700">${it.durability}/${it.maxDurability}</span></div>`;
+        d.appendChild(infoCont);
         if(needRepair){
           const ok=G.mats>=cost;
-          info+=`<button style="padding:4px 10px;font-size:.8rem;font-family:'Noto Sans KR';font-weight:700;cursor:${ok?'pointer':'not-allowed'};border:1px solid ${ok?'#44ff88':'#332211'};background:${ok?'rgba(68,255,136,.12)':'rgba(0,0,0,.3)'};color:${ok?'#88ffaa':'#554433'};border-radius:4px" onclick="repairItem(INV.equipped['${slot}']);G.mats-=${cost};SFX.forge();addTxt(P.x,P.y-20,'수리 완료!','#44ff88',50);recalcSt();applyStats();renderForge();dbSaveNow()">수리 👿${cost}</button>`;
+          const rBtn=document.createElement('button');
+          rBtn.style.cssText=`padding:4px 10px;font-size:.8rem;font-family:'Noto Sans KR';font-weight:700;cursor:${ok?'pointer':'not-allowed'};border:1px solid ${ok?'#44ff88':'#332211'};background:${ok?'rgba(68,255,136,.12)':'rgba(0,0,0,.3)'};color:${ok?'#88ffaa':'#554433'};border-radius:4px;margin-left:auto`;
+          rBtn.textContent=`수리 👿${cost}`;
+          rBtn.onclick=()=>{ if(G.mats<cost){notify('악의 부족!');return} repairItem(it); G.mats-=cost; SFX.forge(); addTxt(P.x,P.y-20,'수리 완료!','#44ff88',50); recalcSt(); applyStats(); renderForge(); dbSaveNow(); };
+          d.appendChild(rBtn);
         }else{
-          info+=`<span style="color:#336633;font-size:.8rem">양호</span>`;
+          const okSpan=document.createElement('span');okSpan.style.cssText='color:#336633;font-size:.8rem;margin-left:auto';okSpan.textContent='양호';d.appendChild(okSpan);
         }
-        d.innerHTML=info;
       }else{
-        d.innerHTML=`<span style="color:#443322">${SLOT_EMOJI[i]} ${SLOT_KR[i]} — 비어있음</span>`;
+        d.innerHTML=`<span style="color:#443322">${SLOT_EMOJI[i]} ${SLOT_KR[i]} 미장착</span>`;
       }
       eqList.appendChild(d);
     });
@@ -21284,40 +21288,81 @@ $('statResetBtn').onclick=()=>{
 function renderStatPanel(){
   const sg=$('statGrid');sg.innerHTML='';
   $('spRemain').textContent='남은 SP: '+P.sp;
-  // 5대 스탯
   STAT_DEF.forEach(sd=>{
     const v=STATS[sd.key];const _sMax=STAT_MAX[sd.key]||150;const isMax=v>=_sMax;
     const row=document.createElement('div');
     row.className='stat-row';
     row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:10px;background:rgba(0,0,0,.3);border:2px solid #2a2211;border-radius:6px';
     const pct=(v/_sMax*100).toFixed(0);
-    row.innerHTML=`<div class="stat-icon" style="font-size:2.4rem;width:50px;text-align:center">${sd.icon}</div><div class="stat-info" style="flex:1"><div class="stat-name" style="color:${sd.col};font-size:1.6rem;font-weight:700;letter-spacing:.05em">${sd.name}</div><div class="stat-desc" style="font-size:1.1rem;color:#665544;margin-top:4px">${sd.desc}</div><div class="stat-bar" style="height:8px;background:rgba(255,255,255,.05);margin-top:8px;border-radius:4px;overflow:hidden"><div class="stat-bar-fill" style="width:${pct}%;background:${sd.col};height:100%"></div></div></div><div class="stat-val" style="color:${sd.col};font-size:2rem;font-weight:900;min-width:60px;text-align:right">${v}</div><div class="stat-btns" style="display:flex;gap:6px;margin-left:12px">`+
-      `<div class="stat-btn${v<10?' dis':''}" data-k="${sd.key}" data-n="-10" style="width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid #3a2222;color:#cc7777;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center">-10</div>`+
-      `<div class="stat-btn${v<1?' dis':''}" data-k="${sd.key}" data-n="-1" style="width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid #3a2222;color:#cc7777;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center">-1</div>`+
-      `<div class="stat-btn${P.sp<1||isMax?' dis':''}" data-k="${sd.key}" data-n="1" style="width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid #443322;color:#ccaa77;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center">+1</div>`+
-      `<div class="stat-btn${P.sp<10||v+10>_sMax?' dis':''}" data-k="${sd.key}" data-n="10" style="width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid #443322;color:#ccaa77;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center">+10</div>`+
-    `</div>`;
-    sg.appendChild(row);
+    row.innerHTML=`<div class="stat-icon" style="font-size:2.4rem;width:50px;text-align:center">${sd.icon}</div>
+      <div class="stat-info" style="flex:1">
+        <div class="stat-name" style="color:${sd.col};font-size:1.6rem;font-weight:700;letter-spacing:.05em">${sd.name}</div>
+        <div class="stat-desc" style="font-size:1.1rem;color:#665544;margin-top:4px">${sd.desc}</div>
+        <div class="stat-bar" style="height:8px;background:rgba(255,255,255,.05);margin-top:8px;border-radius:4px;overflow:hidden"><div class="stat-bar-fill" style="width:${pct}%;background:${sd.col};height:100%"></div></div>
+      </div>
+      <div class="stat-val" style="color:${sd.col};font-size:2rem;font-weight:900;min-width:60px;text-align:right">${v}</div>`;
+    
+    const btnsDiv=document.createElement('div');btnsDiv.className='stat-btns';btnsDiv.style.cssText='display:flex;gap:6px;margin-left:12px';
+    const mkBtn=(n,txt,col)=>{
+      const can=n>0?(P.sp>=n&&v+n<=_sMax):(v+Math.abs(n)>=0 && v+n>=0);
+      const b=document.createElement('div');
+      b.style.cssText=`width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid ${col};color:${col};font-size:1.4rem;cursor:${can?'pointer':'not-allowed'};display:flex;align-items:center;justify-content:center;opacity:${can?1:.3};border-radius:4px`;
+      b.textContent=txt;
+      if(can)b.onclick=()=>{ STATS[sd.key]+=n; if(n>0)P.sp-=n; else P.sp+=Math.abs(n); SFX.pickup(); applyStats(); renderStatPanel(); };
+      return b;
+    };
+    btnsDiv.appendChild(mkBtn(-10,'-10','#cc7777'));
+    btnsDiv.appendChild(mkBtn(-1,'-1','#cc7777'));
+    btnsDiv.appendChild(mkBtn(1,'+1','#ccaa77'));
+    btnsDiv.appendChild(mkBtn(10,'+10','#ccaa77'));
+    row.appendChild(btnsDiv);sg.appendChild(row);
   });
-  // 스탯 버튼 이벤트 (이벤트 위임)
-  sg.onclick=function(ev){
-    const btn=ev.target.closest('.stat-btn');if(!btn||btn.classList.contains('dis'))return;
-    const k=btn.dataset.k,n=parseInt(btn.dataset.n);
-    if(n>0) {
-      const avail=Math.min(n,P.sp,(STAT_MAX[k]||150)-STATS[k]);if(avail<=0)return;
-      STATS[k]+=avail;P.sp-=avail;
-    } else {
-      const avail=Math.min(-n,STATS[k]);if(avail<=0)return;
-      STATS[k]-=avail;P.sp+=avail;
-    }
-    applyStats();SFX.levelup();renderStatPanel();dbSaveNow();
+  // 패널 다시 그릴 때마다 onclick을 단순히 내용물 display 토글로 덮어씌움
+  $('smToggleBtn').onclick=()=>{
+    const sm=$('statSummary'); if(!sm) return;
+    const _nowExp = sm.style.display==='block';
+    sm.style.display = _nowExp ? 'none' : 'block';
+    $('smToggleBtn').innerHTML = _nowExp ? '📋 능력치 요약 ▼' : '📋 요약 닫기 ▲';
+    SFX.click();
   };
-  // 스탯 요약 토글 버튼
+  // 패시브
+  const pg=$('passiveGrid');pg.innerHTML='';
+  $('apRemain').textContent='남은 AP: '+(P.ap||0);
+  PASSIVE_DEF.forEach(pd=>{
+    const v=PASSIVES[pd.key];const isMax=v>=pd.max;
+    const _PCV=[1,1,1,2,2,2,3,3,3,5];
+    const nextCost=_PCV[v]||5; // 111 222 333 5
+    const canBuy=!isMax&&(P.ap||0)>=nextCost;
+    const row=document.createElement('div');
+    row.className='passive-row'+(isMax?' maxed':canBuy?'':' dis');
+    row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:10px;background:rgba(0,0,0,.3);border:2px solid #2a2211;cursor:pointer;border-radius:6px';
+    let pips='<div class="passive-pips" style="display:flex;gap:4px;margin-left:12px">';for(let i=0;i<pd.max;i++)pips+=`<div class="passive-pip${i<v?' filled':''}" style="width:16px;height:16px;border:2px solid #443322;border-radius:3px;${i<v?'background:#bb66ff;border-color:#bb66ff;box-shadow:0 0 6px rgba(180,80,255,.5)':''}"></div>`;pips+='</div>';
+    const costTxt=isMax?'MAX':`다음: ${nextCost} AP`;
+    row.innerHTML=`<div class="passive-icon" style="font-size:2.4rem;width:50px;text-align:center">${pd.icon}</div><div class="passive-info" style="flex:1"><div class="passive-name" style="color:${pd.col};font-size:1.6rem;font-weight:700">${pd.name}</div><div class="passive-desc" style="font-size:1.2rem;color:#665544;margin-top:4px">${pd.desc} (${v}/${pd.max}) <span style="color:#aa8866;font-size:1.1rem;margin-left:8px;font-weight:700">[${costTxt}]</span></div></div><div class="psv-btn${v<1?' dis':''}" data-pk="${pd.key}" style="width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid #3a2222;color:#cc7777;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:8px;flex-shrink:0">-1</div>${pips}`;
+    if(canBuy){row.onclick=e=>{if(e.target.closest('.psv-btn'))return;P.ap-=nextCost;PASSIVES[pd.key]++;SFX.levelup();renderStatPanel();dbSaveNow()}}
+    pg.appendChild(row);
+  });
+  pg.onclick=function(ev){
+    const btn=ev.target.closest('.psv-btn');if(!btn||btn.classList.contains('dis'))return;
+    ev.stopPropagation();
+    const k=btn.dataset.pk;const cur=PASSIVES[k];if(cur<1)return;
+    const _PCV=[1,1,1,2,2,2,3,3,3,5];
+    P.ap=(P.ap||0)+(_PCV[cur-1]||5);PASSIVES[k]--;SFX.levelup();renderStatPanel();dbSaveNow();
+  };
+}
+// 스탯 요약 토글 버튼
+function toggleStatSummary(){
   const sm=$('statSummary');
   const isExp = sm.style.display==='block';
-  $('smToggleBtn').innerHTML=isExp?'📋 요약 닫기 ▲':'📋 능력치 요약 ▼';
-  
-  {// ═══ 총합 스탯 계산 ═══
+  sm.style.display=isExp?'none':'block';
+  $('smToggleBtn').innerHTML=isExp?'📋 능력치 요약 ▼':'📋 요약 닫기 ▲';
+  if(!isExp) renderStatSummary();
+}
+function renderStatSummary(){
+  const sm=$('statSummary');
+  if(!sm)return;
+  sm.innerHTML='';
+  // ═══ 총합 스탯 계산 ═══
   const _sdS=itemDurMul(sh()),_sdA=itemDurMul(ar()),_sdB=itemDurMul(bt()),_sdG=itemDurMul(gl()),_sdP=itemDurMul(pt()),_sdH=itemDurMul(hm()),_sdN=itemDurMul(nc()),_sdR1=itemDurMul(rg1()),_sdR2=itemDurMul(rg2());
   const _sEnhDef=~~((sh().def||0)*enhMul(sh().enh||0)*_sdS+(ar().def||0)*enhMul(ar().enh||0)*_sdA+(bt().def||0)*enhMul(bt().enh||0)*_sdB+(gl().def||0)*enhMul(gl().enh||0)*_sdG+(pt().def||0)*enhMul(pt().enh||0)*_sdP+(hm().def||0)*enhMul(hm().enh||0)*_sdH+(nc().def||0)*enhMul(nc().enh||0)*_sdN+(rg1().def||0)*enhMul(rg1().enh||0)*_sdR1+(rg2().def||0)*enhMul(rg2().enh||0)*_sdR2);
   const _sTotalPDef=P.baseDef+pDefAdd()+(sh().def||0)*_sdS+(ar().def||0)*_sdA+(bt().def||0)*_sdB+(gl().def||0)*_sdG+(pt().def||0)*_sdP+_sEnhDef;
@@ -21349,39 +21394,7 @@ function renderStatPanel(){
     `<div style="${_sLn}">드롭 보너스: <span style="color:#ffdd44">×${statDropBonus().toFixed(2)}</span> | 악의: <span style="color:#ff6644">${G.mats||0}</span></div>`;
   }
   
-  // 패널 다시 그릴 때마다 onclick을 단순히 내용물 display 토글로 덮어씌움
-  $('smToggleBtn').onclick=()=>{
-    const _nowExp = sm.style.display==='block';
-    sm.style.display = _nowExp ? 'none' : 'block';
-    $('smToggleBtn').innerHTML = _nowExp ? '📋 능력치 요약 ▼' : '📋 요약 닫기 ▲';
-    SFX.click();
-  };
-  // 패시브
-  const pg=$('passiveGrid');pg.innerHTML='';
-  $('apRemain').textContent='남은 AP: '+(P.ap||0);
-  PASSIVE_DEF.forEach(pd=>{
-    const v=PASSIVES[pd.key];const isMax=v>=pd.max;
-    const _PCV=[1,1,1,2,2,2,3,3,3,5];
-    const nextCost=_PCV[v]||5; // 111 222 333 5
-    const canBuy=!isMax&&(P.ap||0)>=nextCost;
-    const row=document.createElement('div');
-    row.className='passive-row'+(isMax?' maxed':canBuy?'':' dis');
-    row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:10px;background:rgba(0,0,0,.3);border:2px solid #2a2211;cursor:pointer;border-radius:6px';
-    let pips='<div class="passive-pips" style="display:flex;gap:4px;margin-left:12px">';for(let i=0;i<pd.max;i++)pips+=`<div class="passive-pip${i<v?' filled':''}" style="width:16px;height:16px;border:2px solid #443322;border-radius:3px;${i<v?'background:#bb66ff;border-color:#bb66ff;box-shadow:0 0 6px rgba(180,80,255,.5)':''}"></div>`;pips+='</div>';
-    const costTxt=isMax?'MAX':`다음: ${nextCost} AP`;
-    row.innerHTML=`<div class="passive-icon" style="font-size:2.4rem;width:50px;text-align:center">${pd.icon}</div><div class="passive-info" style="flex:1"><div class="passive-name" style="color:${pd.col};font-size:1.6rem;font-weight:700">${pd.name}</div><div class="passive-desc" style="font-size:1.2rem;color:#665544;margin-top:4px">${pd.desc} (${v}/${pd.max}) <span style="color:#aa8866;font-size:1.1rem;margin-left:8px;font-weight:700">[${costTxt}]</span></div></div><div class="psv-btn${v<1?' dis':''}" data-pk="${pd.key}" style="width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid #3a2222;color:#cc7777;font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-left:8px;flex-shrink:0">-1</div>${pips}`;
-    if(canBuy){row.onclick=e=>{if(e.target.closest('.psv-btn'))return;P.ap-=nextCost;PASSIVES[pd.key]++;SFX.levelup();renderStatPanel();dbSaveNow()}}
-    pg.appendChild(row);
-  });
-  pg.onclick=function(ev){
-    const btn=ev.target.closest('.psv-btn');if(!btn||btn.classList.contains('dis'))return;
-    ev.stopPropagation();
-    const k=btn.dataset.pk;const cur=PASSIVES[k];if(cur<1)return;
-    const _PCV=[1,1,1,2,2,2,3,3,3,5];
-    P.ap=(P.ap||0)+(_PCV[cur-1]||5);PASSIVES[k]--;SFX.levelup();renderStatPanel();dbSaveNow();
-  };
-}
-const _spCntEl=$('spCnt');if(_spCntEl)_spCntEl.onclick=()=>{if(G.on)togglePanel('statPanel')};
+  const _spCntEl=$('spCnt');if(_spCntEl)_spCntEl.onclick=()=>{if(G.on)togglePanel('statPanel')};
 const _matCntEl=$('matCnt');if(_matCntEl)_matCntEl.onclick=()=>{if(G.on){closeAllPanels();openPanel('forge')}};
 const _kgTEl=$('keyGuideToggle');if(_kgTEl)_kgTEl.onclick=()=>{const g=$('keyGuide');if(g)g.style.display=g.style.display==='none'?'block':'none'};
 const _kgEl=$('keyGuide');if(_kgEl)_kgEl.onclick=()=>{_kgEl.style.display='none'};
