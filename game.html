@@ -552,6 +552,10 @@ canvas{display:block;position:fixed;inset:0}
   <div class="hud-bot">
     <!-- Left: Health Globe -->
     <div class="globe-container hp-globe">
+      <div class="globe-ring-wrap">
+        <div class="globe-ring-bg"></div>
+        <div id="shieldRing" class="globe-ring"></div>
+      </div>
       <div class="globe-liquid-wrap">
         <div id="hpLiquid" class="globe-liquid"></div>
       </div>
@@ -563,20 +567,15 @@ canvas{display:block;position:fixed;inset:0}
       <span id="hpPotCd" style="position:absolute;top:-25px;left:50%;transform:translateX(-50%);font-size:.9rem;color:#ff8844;font-weight:700;white-space:nowrap"></span>
     </div>
 
-    <!-- Center: Mini Bars (ST, SH) -->
-    <div class="hud-center-bars">
-      <div class="bar-mini-wrap">
-        <div class="mini-label">ST</div>
-        <div class="mini-bar st"><div id="stF" class="fill" style="width:100%"></div></div>
-      </div>
-      <div class="bar-mini-wrap" id="shWrap" style="display:none">
-        <div class="mini-label">SH</div>
-        <div class="mini-bar sh"><div id="shF" class="fill" style="width:100%"></div></div>
-      </div>
-    </div>
+    <!-- Center: (Removed old bars, handled via rings) -->
+    <div class="hud-center-bars" style="display:none"></div>
 
     <!-- Right: Mana Globe -->
     <div class="globe-container mp-globe">
+      <div class="globe-ring-wrap">
+        <div class="globe-ring-bg"></div>
+        <div id="stRing" class="globe-ring"></div>
+      </div>
       <div class="globe-liquid-wrap">
         <div id="mpLiquid" class="globe-liquid"></div>
       </div>
@@ -13062,10 +13061,10 @@ function update(){
       const _bMax=p._maxBounce||3;
       const canBounce=p.magic?(p.bounces||0)<_bMax:(!p.explosive&&p.dist<p.maxDist*0.5&&(p.bounces||0)<2);
       if(canBounce){
-        p.x-=p.vx*sp;p.y-=p.vy*sp;p.dist-=spd*sp;
+        p.x-=p.vx*sp;p.y-=p.vy*sp;
         const hWall=isW(p.x+p.vx*sp,p.y),vWall=isW(p.x,p.y+p.vy*sp);
         if(hWall)p.vx=-p.vx; if(vWall)p.vy=-p.vy; if(!hWall&&!vWall){p.vx=-p.vx;p.vy=-p.vy}
-        p.bounces=(p.bounces||0)+1;p.maxDist+=60;
+        p.bounces=(p.bounces||0)+1;
         addParts(p.x,p.y,ELC[p.el]||'#fff',5);
       }else{dead=true}
     }
@@ -13433,7 +13432,7 @@ function update(){
       const dmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*1.75);
       const _lx=P._ebLandX||P.x,_ly=P._ebLandY||P.y;
       pProjs.push({x:_lx,y:_ly,vx:Math.cos(P._ebAng)*10,vy:Math.sin(P._ebAng)*10,
-        dmg:dmg,el:EL.D,r:7,dist:0,maxDist:700,ebHoming:true,homeStr:0.15,
+        maxDist:3000,dist:0,r:7,dist:0,maxDist:3000,ebHoming:true,homeStr:0.15,
         stagger:4,kb:3,magic:true,maliceHunt:true,mhBlade:true,
         _pierced:0,_mhMaxPierce:2+~~((_ebSlv-1)*.5),_hitSet:new Set()});
     }
@@ -18719,10 +18718,10 @@ const SKILL_LIST=[
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발 (MP 30%, 쿨 1분)',spCost:18,matCost:100,cd:3600,up:true,upSp:5,upMat:0},
   {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,emoji:'⛧',desc:'검은 오망성 소환. 범위 내 모든 몬스터를 중심으로 끌어당기며 암흑 데미지 (악의 50, 쿨 1분)',spCost:20,matCost:100,cd:3600,up:true,upSp:5,upMat:0},
   {id:'lavaSummon',name:'용암소환',cat:'ult',act:true,ult:true,emoji:'🌋',desc:'빨간 오망성 시전 → 화면이 빨갛게 물들며 10초간 화상. 틱당 적 최대HP 5% (MP 30%, 쿨 1분)',spCost:18,matCost:100,cd:3600,up:true,upSp:5,upMat:0},
-  {id:'bladeShot',name:'붉은꽃',cat:'bow',act:true,emoji:'🌹',desc:'붉은 꽃잎 칼날 발사: 전진하며 주변에 핏빛 꽃잎 방사 (ST 50, 쿨 없음). Lv당 사거리+50 뎀+10%',spCost:12,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'bladeShot',name:'붉은꽃',cat:'bow',act:true,emoji:'🩸',desc:'핏빛 칼날 발사: 전진하며 주변에 핏빛 조각 방사 (ST 50, 쿨 없음). Lv당 사거리+50 뎀+10% (기본 사거리 4000)',spCost:12,matCost:100,up:true,upSp:5,upMat:0},
   {id:'iceOrb',name:'얼음보주',cat:'magic',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 12발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',spCost:15,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'grenadeShot',name:'유탄산탄',cat:'bow',act:true,emoji:'💣',desc:'유탄 직선 발사(사거리500). 충돌 시 폭발(범위120,화염)+산탄 7발 방사. 악의 5. Lv당 범위+8 뎀+10% 산탄+1. 쿨 0.5초',spCost:40,matCost:80,cd:30,up:true,upSp:5,upMat:0},
-  {id:'plagueBurst',name:'폭독혈',cat:'bow',act:true,emoji:'🩸',desc:'독혈 칼날 발사: 30마리 관통+튕김. 전염+마지막 적 1000뎀 처형. 감염된 적 사망 시 폭발+연쇄 전염(범위100, INT 스케일링). 악의 15. Lv당 폭발뎀+15% 범위+8. 만렙 2발. 쿨 5초',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
+  {id:'plagueBurst',name:'폭독칼날',cat:'bow',act:true,emoji:'🩸',desc:'독혈 칼날 발사: 30마리 관통+튕김. 전염+마지막 적 1000뎀 처형. 감염된 적 사망 시 폭발+연쇄 전염(범위100, INT 스케일링). 악의 15. Lv당 폭발뎀+15% 범위+8. 만렙 2발. 사거리 4000. 쿨 5초',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
   {id:'maliceStorm',name:'악의폭풍',cat:'magic',act:true,emoji:'🌀',desc:'마우스 조준 설치. 3스택 (8초/1충전). 화면 내 클릭 위치에 전기폭풍 (3초, 10틱, 틱당 100+Lv*20). Lv당 범위+10. 같은 지역 중복 불가',spCost:12,matCost:90,up:true,upSp:5,upMat:0},
   {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'정면 광역 슬램(범위500) → 반동 후면 슬램(범위350). ST 30% + 악의 20. 강넉백+화면흔들림. Lv당 뎀+10% 범위+15 쿨-0.3초',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:480},
   {id:'shieldThrow',name:'방패투척',cat:'phys',fixed:true,emoji:'🛡️',desc:'[고정: 방패치기 합체] 우클릭 방패치기 시 자동 발사. 회전하며 전진, 적 관통+넉백+투사체 반사. 쿨 5초. Lv당 뎀+12% 사거리+30',spCost:0,matCost:80,cd:300,up:true,upSp:5,upMat:0},
@@ -19106,11 +19105,11 @@ function activateMaliceHunt(){
       if(_isPlagueOrb){
         const _pfLv=P.skills.plagueBurst||1;
         pProjs.push({x:ox,y:oy,vx:Math.cos(ta)*12,vy:Math.sin(ta)*12,
-          dmg:0,el:EL.D,maxDist:99999,dist:0,r:10,stagger:0,kb:0,magic:true,
+          dmg:0,el:EL.D,maxDist:2000,dist:0,r:10,stagger:0,kb:0,magic:true,
           plagueBlade:true,plagueHoming:true,_plagueLv:_pfLv,_plagueHit:0,_plagueMax:50,_maxBounce:50,_hitSet:new Set()});
       }else{
         pProjs.push({x:ox,y:oy,vx:Math.cos(ta)*12,vy:Math.sin(ta)*12,dmg:_fbDmg,el:EL.D,
-          maxDist:99999,dist:0,r:8,stagger:6,kb:4,magic:true,maliceHunt:true,mhBlade:true,mhFused:true,
+          maxDist:2000,dist:0,r:8,stagger:6,kb:4,magic:true,maliceHunt:true,mhBlade:true,mhFused:true,
           _pierced:0,_mhMaxPierce:_fbPierce,_hitSet:new Set(),_maxBounce:9999,
           bomb:true,bombR:_fbBombR,bombAtk:~~(_fbDmg*0.5)});
       }
@@ -19118,12 +19117,12 @@ function activateMaliceHunt(){
     P._gOrbs.length=0;
     SFX.magic(EL.D);addTxt(P.x,P.y-30,'⚔ 칼날 해방!','#aa33ff',50);
     G.shake=Math.max(G.shake,6*OPT.shake/100);
-    // 독혈해방 합체: 칼날 해방 시 폭독혈 자동 발사
+    // 독혈해방 합체: 칼날 해방 시 폭독칼날 자동 발사
     if(P.skills.plagueBurst>=1&&_isFused('plagueFuse')&&!_isPlagueGF){
       const _pfLv=P.skills.plagueBurst||1;
       const _pfAng=_bestE?Math.atan2(_bestE.y-P.y,_bestE.x-P.x):P.facing;
       pProjs.push({x:P.x+Math.cos(_pfAng)*16,y:P.y+Math.sin(_pfAng)*16,vx:Math.cos(_pfAng)*12,vy:Math.sin(_pfAng)*12,
-        dmg:0,el:EL.D,maxDist:99999,dist:0,r:10,stagger:0,kb:0,magic:true,
+        dmg:0,el:EL.D,maxDist:2000,dist:0,r:10,stagger:0,kb:0,magic:true,
         plagueBlade:true,plagueHoming:true,_plagueLv:_pfLv,_plagueHit:0,_plagueMax:50,_maxBounce:50,_hitSet:new Set()});
     }
   }else{
@@ -19136,16 +19135,16 @@ function activateMaliceHunt(){
       const _mhAng=P.atkArc+(_mi-2)*_mhSpread;
       const _mdx=Math.cos(_mhAng),_mdy=Math.sin(_mhAng);
       pProjs.push({x:P.x+_mdx*16,y:P.y+_mdy*16,vx:_mdx*12,vy:_mdy*12,dmg:_mhDmg,el:EL.D,
-        maxDist:700,dist:0,r:10,stagger:8,kb:6,magic:true,maliceHunt:true,mhBlade:true,
+        maxDist:2000,dist:0,r:10,stagger:8,kb:6,magic:true,maliceHunt:true,mhBlade:true,
         _pierced:0,_mhMaxPierce:_mhPierce,_hitSet:new Set(),_maxBounce:10});
     }
     SFX.magic(EL.D);addTxt(P.x,P.y-25,'⚔ 악의사냥!','#aa33ff',35);
-    // 독혈해방 합체: 칼날 발사 시 폭독혈 자동 발사
+    // 독혈해방 합체: 칼날 발사 시 폭독칼날 자동 발사
     if(P.skills.plagueBurst>=1&&_isFused('plagueFuse')){
       const _pfLv=P.skills.plagueBurst||1;
       const _pfAng=P.atkArc;
       pProjs.push({x:P.x+Math.cos(_pfAng)*16,y:P.y+Math.sin(_pfAng)*16,vx:Math.cos(_pfAng)*12,vy:Math.sin(_pfAng)*12,
-        dmg:0,el:EL.D,maxDist:99999,dist:0,r:10,stagger:0,kb:0,magic:true,
+        dmg:0,el:EL.D,maxDist:2000,dist:0,r:10,stagger:0,kb:0,magic:true,
         plagueBlade:true,plagueHoming:true,_plagueLv:_pfLv,_plagueHit:0,_plagueMax:50,_maxBounce:50,_hitSet:new Set()});
     }
   }
@@ -19211,7 +19210,7 @@ function activateBladeShot(){
   const shardDmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*1.5*(1+(slv-1)*0.1))+~~(_bsBon*.3);
   const dx=Math.cos(P.facing),dy=Math.sin(P.facing);
   const _bsCnt=slv>=10?2:1;
-  const _mxD=700+(slv-1)*50;
+  const _mxD=2000; // 50 tiles (50 * 40px)
   for(let _bsi=0;_bsi<_bsCnt;_bsi++){
     const _off=_bsCnt>1?(_bsi===0?-15:15):0;
     const px=P.x+dx*20+(-dy)*_off, py=P.y+dy*20+(dx)*_off;
@@ -19297,7 +19296,7 @@ function activateBladeDash(dir){
   G.shake=Math.max(G.shake,4*OPT.shake/100);
 }
 
-// ═══ 폭독혈 — 발동 (관통 칼날) ═══
+// ═══ 폭독칼날 — 발동 (관통 칼날) ═══
 function activatePlagueBurst(){
   if(G.mats<15||(P._pbCd||0)>0)return;
   G.mats-=15;P._pbCd=600;
@@ -19305,7 +19304,7 @@ function activatePlagueBurst(){
   const a=P.atkArc;
   const _pbCount=slv>=10?2:1;
   // 빨간칼날 (30회 튕김, 강유도) + 보라칼날 (30회 관통, 직진)
-  const _maxRange=3000;
+  const _maxRange=2000;
   for(let _pbi=0;_pbi<_pbCount;_pbi++){
     const _pbAng=a+(_pbCount>1?(_pbi-.5)*.3:0);
     // 빨간칼날: 30회 튕김
@@ -19318,7 +19317,7 @@ function activatePlagueBurst(){
       dmg:0,el:EL.D,maxDist:_maxRange,dist:0,r:10,stagger:0,kb:0,magic:true,
       plagueBlade:true,plaguePurple:true,_plagueLv:slv,_plagueHit:0,_plagueMax:30,_maxBounce:999,_hitSet:new Set()});
   }
-  SFX.magic(EL.D);addTxt(P.x,P.y-30,'🩸 폭독혈'+(_pbCount>1?' ×2':'')+'!','#cc0033',40);
+  SFX.magic(EL.D);addTxt(P.x,P.y-30,'🩸 폭독칼날'+(_pbCount>1?' ×2':'')+'!','#cc0033',40);
   G.shake=Math.max(G.shake,3*OPT.shake/100);
 }
 
@@ -19483,14 +19482,15 @@ function fireHolyBlast(){
   P._hbCd=Math.max(1800,3600-(slv-1)*180);
   const dmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*15*(1+(slv-1)*0.15));
   const cx=P._hbX,cy=P._hbY;
-  // 화면 전체 — 모든 살아있는 적에게 데미지
+  // 폭발 범위 확장: 1600px -> 2000px (정확히 50타일)
+  const blastR=2000;
   for(let i=0;i<ens.length;i++){
     const e=ens[i];
     if(!e.alive)continue;
     const ang=Math.atan2(e.y-cy,e.x-cx);
     const d=dst(e.x,e.y,cx,cy);
-    if(d>1000)continue;
-    const falloff=Math.max(0.5,1-d/1000);
+    if(d>blastR)continue;
+    const falloff=Math.max(0.5,1-d/blastR);
     hurtE(e,~~(dmg*falloff),ang,false,{},EL.H);
     e.kb.x+=Math.cos(ang)*25*falloff;
     e.kb.y+=Math.sin(ang)*25*falloff;
@@ -19519,7 +19519,8 @@ function fireBlackStar(){
   P._bsCd=Math.max(1800,3600-(slv-1)*180);
   const dmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*12*(1+(slv-1)*0.15));
   const cx=P._bsX,cy=P._bsY;
-  const blastR=1000+(slv-1)*50;
+  // 폭발 범위 확장: 1000px -> 2000px (정확히 50타일)
+  const blastR=2000;
   for(let i=0;i<ens.length;i++){
     const e=ens[i];if(!e.alive)continue;
     const d=dst(e.x,e.y,cx,cy);if(d>blastR)continue;
@@ -19547,12 +19548,14 @@ function fireLavaSummon(){
   P._lvCd=Math.max(1800,3600-(slv-1)*180);
   const cx=P._lvX,cy=P._lvY;
   const dmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*8*(1+(slv-1)*0.15));
+  // 폭발 범위 확장: 1000px -> 2000px (정확히 50타일)
+  const blastR=2000;
   for(let i=0;i<ens.length;i++){
     const e=ens[i];if(!e.alive)continue;
     const ang=Math.atan2(e.y-cy,e.x-cx);
     const d=dst(e.x,e.y,cx,cy);
-    if(d>1000)continue;
-    const falloff=Math.max(0.3,1-d/1000);
+    if(d>blastR)continue;
+    const falloff=Math.max(0.3,1-d/blastR);
     hurtE(e,~~(dmg*falloff),ang,false,{},EL.F);
     e.stunned=Math.max(e.stunned,~~(60*falloff));
   }
@@ -21414,14 +21417,9 @@ function renderStatPanel(){
     btnsDiv.appendChild(mkBtn(10,'+10','#ccaa77'));
     row.appendChild(btnsDiv);sg.appendChild(row);
   });
-  // 패널 다시 그릴 때마다 onclick을 단순히 내용물 display 토글로 덮어씌움
-  $('smToggleBtn').onclick=()=>{
-    const sm=$('statSummary'); if(!sm) return;
-    const _nowExp = sm.style.display==='block';
-    sm.style.display = _nowExp ? 'none' : 'block';
-    $('smToggleBtn').innerHTML = _nowExp ? '📋 능력치 요약 ▼' : '📋 요약 닫기 ▲';
-    SFX.click();
-  };
+  // 패널 다시 그릴 때마다 요약창 상태 업데이트
+  $('smToggleBtn').onclick=toggleStatSummary;
+  if($('statSummary').style.display==='block') renderStatSummary();
   // 패시브
   const pg=$('passiveGrid');pg.innerHTML='';
   $('apRemain').textContent='남은 AP: '+(P.ap||0);
@@ -25821,7 +25819,7 @@ function drawMM(){if(!G.on||!G.map)return;
 
 let _hudAlive=0,_hudT=0,_mpMatT=0;
 function updateHUD(slow){
-  // ── 빠른 경로: 구슬 수위 + 중앙 바 (매 3프레임 = ~20회/초) ──
+  // ── 빠른 경로: 구슬 수위 + 원형 링 (매 3프레임 = ~20회/초) ──
   P.hp=~~P.hp;P.mhp=~~P.mhp; // 소수점 방지
   P.mp=~~P.mp;P.mmp=~~P.mmp;
   
@@ -25831,15 +25829,19 @@ function updateHUD(slow){
   $('hpCur').textContent = P.hp;
   $('hpMax').textContent = `/ ${P.mhp}`;
   
+  // [보호막 링] HP 구슬을 감싸는 쉴드 게이지
+  const shPct = P.mshield > 0 ? Math.max(0, Math.min(100, (P.shield / P.mshield) * 100)) : 0;
+  $('shieldRing').style.background = `conic-gradient(#4488ff ${shPct}%, transparent 0%)`;
+  
   // MP 구슬 업데이트
   const mpPct = Math.max(0, Math.min(100, (P.mp / P.mmp) * 100));
   $('mpLiquid').style.transform = `translateY(${100 - mpPct}%)`;
   $('mpCur').textContent = P.mp;
   $('mpMax').textContent = `/ ${P.mmp}`;
 
-  // 중앙 미니 바 (ST, SH)
-  $('stF').style.width=(P.st/P.mst*100)+'%';
-  if(P.mshield>0){$('shWrap').style.display='';$('shF').style.width=(P.shield/P.mshield*100)+'%'}else{$('shWrap').style.display='none'}
+  // [ST 링] MP 구슬을 감싸는 기력 게이지
+  const stPct = Math.max(0, Math.min(100, (P.st / P.mst) * 100));
+  $('stRing').style.background = `conic-gradient(#ffaa44 ${stPct}%, transparent 0%)`;
   
   let _hpPotCdTxt='';
   for(let i=0;i<4;i++){if(QSLOTS[i].type==='hp'&&qsCooldown[i]>0){_hpPotCdTxt='❤️‍🔥'+(qsCooldown[i]/60).toFixed(1)+'s';break}}

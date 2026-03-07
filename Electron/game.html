@@ -2245,6 +2245,7 @@ function recalcSt(){
   P.mst=base+bonus;P.st=Math.min(P.st,P.mst);
 }
 
+function blt(){return INV.equipped.belt||{}}
 function wp(){return INV.equipped.weapon||{}}
 function sh(){return INV.equipped.shield||{}}
 function bt(){return INV.equipped.boots||{}}
@@ -4842,9 +4843,8 @@ function update(){
         const _mhPierce=3+(_mhLv-1);
         const _mdx=Math.cos(P.atkArc),_mdy=Math.sin(P.atkArc);
         pProjs.push({x:P.x+_mdx*16,y:P.y+_mdy*16,vx:_mdx*6,vy:_mdy*6,dmg:_mhDmg,el:EL.D,
-          maxDist:400,dist:0,r:9,stagger:6,kb:5,magic:true,maliceHunt:true,
-          _pierced:0,_mhMaxPierce:_mhPierce,_hitSet:new Set()});
-        SFX.magic(EL.D);addTxt(P.x,P.y-25,'🟣 악의사냥!','#aa33ff',35);
+         maxDist:2000,dist:0,r:9,stagger:6,kb:5,magic:true,maliceHunt:true,
+         _pierced:0,_mhMaxPierce:_mhPierce,_hitSet:new Set()});        SFX.magic(EL.D);addTxt(P.x,P.y-25,'🟣 악의사냥!','#aa33ff',35);
       } else {
       const elms=hm().elements||[{el:EL.P,dmg:5}];
       const primary=elms[0];const mdmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic);
@@ -7327,7 +7327,7 @@ const SKILL_LIST=[
   {id:'omniBeam',name:'오원소 멸살광선',cat:'magic',desc:'빔이 5원소 5줄기 극굵 레이저로 변환 (사거리 무한, 뎀×3)',lvReq:40,spCost:20,matCost:500,up:true,upSp:10,upMat:100},
   {id:'shieldTenacity',name:'유령방패',cat:'phys',desc:'블록(CapsLock)으로 유령방패 소환. 전방으로 천천히 전진하며 적 투사체 흡수+접촉 데미지. 일정 피해 시 파괴. Lv당 HP+10%, 뎀+15%',lvReq:30,spCost:18,matCost:200,up:true,upSp:10,upMat:100},
   {id:'guardian',name:'악의 보호자',cat:'magic',desc:'3초마다 악의 구체 3개 생성. 몸에 밀착하여 적 투사체를 자동 방어(파괴). 레벨당 구체+1',lvReq:25,spCost:12,matCost:150,up:true,upSp:10,upMat:80},
-  {id:'maliceHunt',name:'악의 사냥',cat:'magic',desc:'E탭 시 암흑 덩어리 발사 (악의 3 소모). 추적+관통 3회(Lv당+1). 공전 지속뎀 5초. 사거리 400',lvReq:35,spCost:15,matCost:200,up:true,upSp:10,upMat:90},
+  {id:'maliceHunt',name:'악의 사냥',cat:'magic',desc:'E탭 시 암흑 덩어리 발사 (악의 3 소모). 추적+관통 3회(Lv당+1). 공전 지속뎀 5초. 사거리 2000',lvReq:35,spCost:15,matCost:200,up:true,upSp:10,upMat:90},
   {id:'explosiveBolt',name:'악의폭탄',cat:'bow',act:true,emoji:'💥',desc:'스킬키 꾹 눌러 거리 조절 → 놓으면 투척! 폭발 후 유도화살 난사 (악의 10 소모)',lvReq:20,spCost:5,matCost:70,cd:1200,up:true,upSp:5,upMat:50},
   {id:'maliceMortar',name:'악의포격',cat:'bow',act:true,emoji:'☄️',desc:'스킬키 홀드: 조준 폭격 (악의 10, ST 50 소모, 쿨 1초)',lvReq:40,spCost:12,matCost:200,up:true,upSp:8,upMat:60}
 ];
@@ -8626,20 +8626,10 @@ function renderStatPanel(){
   const isExp = sm.style.display==='block';
   $('smToggleBtn').innerHTML=isExp?'📋 요약 닫기 ▲':'📋 능력치 요약 ▼';
   
-  sm.innerHTML=
-    `<div style="font-size:1.4rem;line-height:2;margin-bottom:6px">❤️ HP: ${P.mhp} | 🛡️ DEF: ${P.baseDef.toFixed(1)} | ⚔️ ATK: ${P.baseAtk} (×${statStr().toFixed(2)})</div>`+
-    `<div style="font-size:1.4rem;line-height:2;margin-bottom:6px">💚 ST: ${P.mst} | 💙 DP: ${P.mmp} (리젠 ${P.mpR.toFixed(3)}/f)</div>`+
-    `<div style="font-size:1.4rem;line-height:2;margin-bottom:6px">👟 이동: ${P.speed.toFixed(3)} (DEX ×${statDex().toFixed(2)} 공속)</div>`+
-    `<div style="font-size:1.4rem;line-height:2;margin-bottom:6px">💥 크리: ${statCrit().toFixed(1)}% (×${statCritDmg().toFixed(2)} 배율)</div>`+
-    `<div style="font-size:1.4rem;line-height:2">🎁 드롭: ×${statDropBonus().toFixed(2)}</div>`;
-  
-  // 패널 다시 그릴 때마다 onclick을 단순히 내용물 display 토글로 덮어씌움
-  $('smToggleBtn').onclick=()=>{
-    const _nowExp = sm.style.display==='block';
-    sm.style.display = _nowExp ? 'none' : 'block';
-    $('smToggleBtn').innerHTML = _nowExp ? '📋 능력치 요약 ▼' : '📋 요약 닫기 ▲';
-    SFX.click();
-  };
+  // 패널 다시 그릴 때마다 요약창 상태 업데이트
+  $('smToggleBtn').onclick=toggleStatSummary;
+  if($('statSummary').style.display==='block') renderStatSummary();
+
   // 패시브
   const pg=$('passiveGrid');pg.innerHTML='';
   $('apRemain').textContent='남은 AP: '+(P.ap||0);
@@ -8656,6 +8646,50 @@ function renderStatPanel(){
     if(canBuy){row.onclick=()=>{P.ap-=nextCost;PASSIVES[pd.key]++;SFX.levelup();renderStatPanel();dbSaveNow()}}
     pg.appendChild(row);
   });
+}
+function toggleStatSummary(){
+  const sm=$('statSummary');
+  const isExp = sm.style.display==='block';
+  sm.style.display=isExp?'none':'block';
+  $('smToggleBtn').innerHTML=isExp?'📋 능력치 요약 ▼':'📋 요약 닫기 ▲';
+  SFX.click();
+  if(!isExp) renderStatSummary();
+}
+function renderStatSummary(){
+  const sm=$('statSummary');
+  if(!sm)return;
+  sm.innerHTML='';
+  const _sdS=1+STATS.str*0.01,_sdA=1+STATS.agi*0.01,_sdB=1+STATS.dex*0.01,_sdG=1+STATS.vit*0.01,_sdP=1+STATS.int*0.01;
+  const _sdH=1+STATS.agi*0.005,_sdN=1+STATS.int*0.005,_sdR1=1+STATS.vit*0.005,_sdR2=1+STATS.dex*0.005;
+  const _sEnhDef=0,_sEnhAtk=0;
+  const _sTotalPDef=P.baseDef+pDefAdd()+(sh().def||0)*_sdS+(ar().def||0)*_sdA+(bt().def||0)*_sdB+(gl().def||0)*_sdG+(pt().def||0)*_sdP+_sEnhDef;
+  const _sTotalEDef=(hm().eDef||0)*_sdH+(nc().eDef||0)*_sdN+(rg1().eDef||0)*_sdR1+(rg2().eDef||0)*_sdR2;
+  const _sFinalAtk=(P.baseAtk+(wp().atk||0)*_sdS+(bw().atk||0)*_sdB+_sEnhAtk)*(1+pAtkAdd());
+  const _pGl=gl().cdr,_pBl=blt().cdr,_pRg=(rg1().cdr||0)+(rg2().cdr||0);
+  const _pRedPct=Math.min(75,~~((_pGl||0)*100+(_pBl||0)*100+(_pRg||0)*100+STATS.vit*0.2));
+  const _pCdS=(3*(1-_pRedPct/100)).toFixed(2);
+  const _sStR=P.stR*(1+STATS.agi*0.01);
+
+  sm.innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div>
+      <div style="color:#ffcc44;font-weight:700;border-bottom:1px solid #443322;margin-bottom:8px;padding-bottom:4px">⚔️ 공격 (OFFENSE)</div>
+      <div style="font-size:1.3rem">최종 공격력: <span style="color:#ffaa66;font-weight:700">${~~_sFinalAtk}</span></div>
+      <div style="font-size:1.3rem">크리티컬: <span style="color:#ff77aa">${statCrit().toFixed(1)}%</span> (×${statCritDmg().toFixed(2)})</div>
+      <div style="font-size:1.3rem">공격 속도: <span style="color:#66ccff">${(100/statDex()).toFixed(1)}%</span></div>
+    </div>
+    <div>
+      <div style="color:#66ddff;font-weight:700;border-bottom:1px solid #223344;margin-bottom:8px;padding-bottom:4px">🛡️ 방어 (DEFENSE)</div>
+      <div style="font-size:1.3rem">물리 방어: <span style="color:#aabbcc">${_sTotalPDef.toFixed(1)}</span></div>
+      <div style="font-size:1.3rem">원소 저항: <span style="color:#66aaff">${_sTotalEDef.toFixed(1)}</span></div>
+      <div style="font-size:1.3rem">회피 확률: <span style="color:#66ffaa">${(STATS.agi*0.1).toFixed(1)}%</span></div>
+    </div>
+    <div style="grid-column:span 2">
+      <div style="color:#ff6666;font-weight:700;border-bottom:1px solid #442222;margin-bottom:8px;padding-bottom:4px">❤️ 생존 & 유틸리티</div>
+      <div style="font-size:1.3rem">최대 체력: <span style="color:#ff8888">${P.mhp}</span> | 마나 재생: <span style="color:#88aaff">${(P.mpR*60).toFixed(1)}/s</span></div>
+      <div style="font-size:1.3rem">스테미나 재생: <span style="color:#88ff88">${(_sStR*60).toFixed(1)}/s</span></div>
+      <div style="font-size:1.3rem">포션 쿨다운: <span style="color:#66ddaa">${_pCdS}초</span> <span style="color:#887766;font-size:1.1rem">(-${_pRedPct}% | 장갑${_pGl?'-'+~~(_pGl*100)+'%':'-'} 벨트${_pBl?'-'+~~(_pBl*100)+'%':'-'} 회복력${_pRg?'-'+~~(_pRg*100)+'%':'-'})</span></div>
+    </div>
+  </div>`;
 }
 $('spCnt').onclick=()=>{if(G.on)togglePanel('statPanel')};
 $('matCnt').onclick=()=>{if(G.on){closeAllPanels();openPanel('forge')}};

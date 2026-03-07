@@ -69,13 +69,13 @@ const SLOT_EMOJI = ['⚔️', '🛡️', '👢', '🦺', '⛑️', '🏹', '💍
 
 // ═══ WEAPON TYPES ═══
 const WTYPES: any = {
-    sword:  { name: '검',   emoji: '⚔️', atkMul: 1.4, stCost: 9,  spdMul: 1.1, arcW: .95, range: 50, stagger: 6,  kb: 4 },
-    dagger: { name: '단검', emoji: '🗡️', atkMul: 1.0, stCost: 6,  spdMul: 1.6, arcW: .7,  range: 38, stagger: 3,  kb: 2 },
-    hammer: { name: '해머', emoji: '🔨', atkMul: 2.2, stCost: 14, spdMul: .65, arcW: 1.1, range: 48, stagger: 18, kb: 10 },
-    mace:   { name: '철퇴', emoji: '⚒️', atkMul: 1.8, stCost: 12, spdMul: .8,  arcW: 1.0, range: 46, stagger: 12, kb: 7 },
-    club:   { name: '몽둥이', emoji: '🏏', atkMul: 1.6, stCost: 10, spdMul: .85, arcW: 1.1, range: 52, stagger: 10, kb: 6 },
-    axe:    { name: '도끼', emoji: '🪓', atkMul: 2.0, stCost: 13, spdMul: .7,  arcW: .85, range: 45, stagger: 14, kb: 8 },
-    spear:  { name: '창',   emoji: '🔱', atkMul: 1.3, stCost: 8,  spdMul: 1.0, arcW: .4,  range: 70, stagger: 5,  kb: 5 },
+    sword:  { name: '검',   emoji: '⚔️', atkMul: 1.4, stCost: 9,  spdMul: 1.1, arcW: .95, range: 100, stagger: 6,  kb: 4 },
+    dagger: { name: '단검', emoji: '🗡️', atkMul: 1.0, stCost: 6,  spdMul: 1.6, arcW: .7,  range: 100, stagger: 3,  kb: 2 },
+    hammer: { name: '해머', emoji: '🔨', atkMul: 2.2, stCost: 14, spdMul: .65, arcW: 1.1, range: 100, stagger: 18, kb: 10 },
+    mace:   { name: '철퇴', emoji: '⚒️', atkMul: 1.8, stCost: 12, spdMul: .8,  arcW: 1.0, range: 100, stagger: 12, kb: 7 },
+    club:   { name: '몽둥이', emoji: '🏏', atkMul: 1.6, stCost: 10, spdMul: .85, arcW: 1.1, range: 100, stagger: 10, kb: 6 },
+    axe:    { name: '도끼', emoji: '🪓', atkMul: 2.0, stCost: 13, spdMul: .7,  arcW: .85, range: 100, stagger: 14, kb: 8 },
+    spear:  { name: '창',   emoji: '🔱', atkMul: 1.3, stCost: 8,  spdMul: 1.0, arcW: .4,  range: 140, stagger: 5,  kb: 5 },
 };
 const WTYPE_KEYS = Object.keys(WTYPES);
 
