@@ -1,22 +1,22 @@
 {
-  "ts": 1772435388712,
+  "ts": 1772932848816,
   "player": {
-    "lv": 32,
-    "exp": 44,
-    "maxExp": 89,
-    "sp": 73,
-    "ap": 5,
-    "baseAtk": 23,
+    "lv": 93,
+    "exp": 395,
+    "maxExp": 679,
+    "sp": 86,
+    "ap": 12,
+    "baseAtk": 15,
     "baseDef": 4,
-    "mpR": 0,
-    "stR": 0.28,
-    "hp": 394,
-    "mhp": 394,
-    "mp": 160,
-    "mmp": 160,
+    "mpR": 0.06,
+    "stR": 0.32,
+    "hp": 174,
+    "mhp": 174,
+    "mp": 180,
+    "mmp": 180,
     "st": 232,
     "mst": 232,
-    "speed": 2.6,
+    "speed": 2.7,
     "shield": 0,
     "mshield": 0
   },
@@ -112,6 +112,437 @@
         "itemLv": 20,
         "maxDurability": 150,
         "durability": 150
+      },
+      {
+        "id": 1772932405360.878,
+        "slot": "belt",
+        "el": 4,
+        "rarity": 3,
+        "tier": 3,
+        "name": "뇌신 벨트",
+        "emoji": "🪢",
+        "def": 13,
+        "bonusSt": 22,
+        "potCd": 0.165,
+        "bonusHp": 22,
+        "bDex": 33,
+        "bStr": 32,
+        "affixes": [
+          {
+            "id": "maxHPPct",
+            "tier": 1,
+            "value": 0.14
+          },
+          {
+            "id": "barrier",
+            "tier": 1,
+            "value": 28
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 1,
+            "value": 45
+          }
+        ],
+        "reqLv": 0,
+        "itemLv": 100,
+        "_pickT": 1772932405783
+      },
+      {
+        "id": 1772932423437.4092,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "흑요석 창",
+        "emoji": "🔱",
+        "wtype": "spear",
+        "atk": 101,
+        "spd": 1.8,
+        "wStCost": 5,
+        "wArcW": 0.4,
+        "wRange": 73,
+        "wStagger": 11,
+        "bonusRange": 3,
+        "bStr": 35,
+        "bDex": 42,
+        "bInt": 34,
+        "affixes": [
+          {
+            "id": "elemConvert",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "fireDot",
+            "tier": 2,
+            "value": 26
+          },
+          {
+            "id": "killChain",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "lifeSteal",
+            "tier": 2,
+            "value": 0.12
+          }
+        ],
+        "reqLv": 0,
+        "itemLv": 100,
+        "_pickT": 1772932423778
+      },
+      {
+        "id": 1772932494881.9316,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 2,
+        "tier": 2,
+        "name": "흑요석 곤봉",
+        "emoji": "🏏",
+        "wtype": "club",
+        "atk": 99,
+        "spd": 0.75,
+        "wStCost": 7,
+        "wArcW": 1.1,
+        "wRange": 53,
+        "wStagger": 27,
+        "bonusRange": 2,
+        "bDex": 20,
+        "bInt": 26,
+        "affixes": [
+          {
+            "id": "staggerExplosion",
+            "tier": 0,
+            "value": 0.3
+          },
+          {
+            "id": "armorPen",
+            "tier": 0,
+            "value": 0.08
+          }
+        ],
+        "reqLv": 0,
+        "itemLv": 100,
+        "_pickT": 1772932495290
+      },
+      {
+        "id": 1772932558003.7717,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 4,
+        "tier": 3,
+        "name": "미스릴 방패",
+        "emoji": "🛡️",
+        "bonusRange": 3,
+        "blockRate": 90,
+        "shieldWt": 9,
+        "atk": 19,
+        "def": 28,
+        "stagger": 85,
+        "bInt": 45,
+        "bStr": 32,
+        "bDex": 36,
+        "affixes": [
+          {
+            "id": "counterHit",
+            "tier": 2,
+            "value": 0.4
+          },
+          {
+            "id": "physDR",
+            "tier": 2,
+            "value": 0.16
+          }
+        ],
+        "reqLv": 0,
+        "itemLv": 100,
+        "_pickT": 1772932558489
+      },
+      {
+        "id": 1772932559011.2085,
+        "slot": "gloves",
+        "el": 2,
+        "rarity": 4,
+        "tier": 2,
+        "name": "빙하 건틀릿",
+        "emoji": "🧤",
+        "atk": 14,
+        "def": 6,
+        "spd": 0.18,
+        "potCd": 0.309,
+        "atkSpd": 0.082,
+        "bInt": 42,
+        "bStr": 39,
+        "bDex": 42,
+        "affixes": [
+          {
+            "id": "thorns",
+            "tier": 2,
+            "value": 14
+          },
+          {
+            "id": "atkSpeed",
+            "tier": 2,
+            "value": 0.16
+          }
+        ],
+        "reqLv": 0,
+        "itemLv": 100,
+        "_pickT": 1772932559483
+      },
+      {
+        "id": 1772932598952.3757,
+        "slot": "pants",
+        "el": 3,
+        "rarity": 3,
+        "tier": 3,
+        "name": "나락 각반",
+        "emoji": "👖",
+        "def": 21,
+        "bonusSt": 23,
+        "bonusHp": 35,
+        "bInt": 39,
+        "bDex": 32,
+        "affixes": [
+          {
+            "id": "ccRes",
+            "tier": 1,
+            "value": 0.2
+          }
+        ],
+        "reqLv": 0,
+        "itemLv": 100,
+        "_pickT": 1772932599397
+      },
+      {
+        "id": 1772932637083.7422,
+        "slot": "cape",
+        "el": 4,
+        "rarity": 3,
+        "tier": 2,
+        "name": "뇌전 망토",
+        "emoji": "🧣",
+        "def": 9,
+        "eDef": 4,
+        "spd": 0.11,
+        "bInt": 35,
+        "bDex": 24,
+        "affixes": [
+          {
+            "id": "parryBonus",
+            "tier": 1,
+            "value": 0.35
+          },
+          {
+            "id": "iFrameBonus",
+            "tier": 1,
+            "value": 4
+          },
+          {
+            "id": "movSpeed",
+            "tier": 1,
+            "value": 0.09
+          }
+        ],
+        "reqLv": 0,
+        "itemLv": 100,
+        "_pickT": 1772932637485
+      },
+      {
+        "id": 1772932665105.8157,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "녹슨 도끼",
+        "emoji": "🪓",
+        "wtype": "axe",
+        "atk": 70,
+        "spd": 1.43,
+        "wStCost": 9,
+        "wArcW": 0.85,
+        "wRange": 46,
+        "wStagger": 30,
+        "bonusRange": 3,
+        "bStr": 29,
+        "bInt": 31,
+        "bDex": 30,
+        "affixes": [
+          {
+            "id": "parryExplosion",
+            "tier": 2,
+            "value": 1.1
+          },
+          {
+            "id": "chainTarget",
+            "tier": 2,
+            "value": 3
+          },
+          {
+            "id": "killChain",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "atkSpeed",
+            "tier": 2,
+            "value": 0.16
+          }
+        ],
+        "reqLv": 0,
+        "itemLv": 100,
+        "_pickT": 1772932666098
+      },
+      {
+        "id": 1772932679847.4692,
+        "slot": "belt",
+        "el": 3,
+        "rarity": 4,
+        "tier": 0,
+        "name": "그림자 허리띠",
+        "emoji": "🪢",
+        "def": 2,
+        "bonusSt": 9,
+        "potCd": 0.226,
+        "bonusHp": 20,
+        "bDex": 24,
+        "bStr": 26,
+        "bInt": 25,
+        "affixes": [
+          {
+            "id": "fireRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "killHeal",
+            "tier": 2,
+            "value": 25
+          },
+          {
+            "id": "reviveOnce",
+            "tier": 2,
+            "value": 0.3
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 2,
+            "value": 0.22
+          }
+        ],
+        "reqLv": 0,
+        "itemLv": 100,
+        "_pickT": 1772932680545
+      },
+      {
+        "id": 1772932682426.2695,
+        "slot": "armor",
+        "el": 4,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전기 갑옷",
+        "emoji": "🦺",
+        "def": 7,
+        "bonusSt": 9,
+        "charge": 16,
+        "chargeDist": 48,
+        "chargeW": 23,
+        "bonusRange": 2,
+        "bonusChargeDist": 2,
+        "chargeAoE": 42,
+        "bDex": 30,
+        "bInt": 30,
+        "bStr": 23,
+        "affixes": [
+          {
+            "id": "poisonRes",
+            "tier": 2,
+            "value": 0.28
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 2,
+            "value": 75
+          },
+          {
+            "id": "lightRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 2,
+            "value": 0.22
+          }
+        ],
+        "reqLv": 0,
+        "itemLv": 100,
+        "_pickT": 1772932682837
+      },
+      {
+        "id": 1772932690534.44,
+        "slot": "necklace",
+        "el": 2,
+        "rarity": 4,
+        "tier": 0,
+        "name": "냉기 부적",
+        "emoji": "📿",
+        "def": 2,
+        "eDef": 2,
+        "bInt": 30,
+        "bStr": 28,
+        "bDex": 29,
+        "affixes": [
+          {
+            "id": "crisisBoost",
+            "tier": 2,
+            "value": 0.65
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 2,
+            "value": 0.22
+          },
+          {
+            "id": "fireRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "cooldownRed",
+            "tier": 2,
+            "value": -0.22
+          }
+        ],
+        "reqLv": 0,
+        "itemLv": 100,
+        "_pickT": 1772932691070
+      },
+      {
+        "id": 1772932842041.923,
+        "slot": "pants",
+        "el": 4,
+        "rarity": 3,
+        "tier": 3,
+        "name": "뇌신 각반",
+        "emoji": "👖",
+        "def": 17,
+        "bonusSt": 21,
+        "bonusHp": 32,
+        "bInt": 27,
+        "bDex": 39,
+        "affixes": [
+          {
+            "id": "potionPower",
+            "tier": 1,
+            "value": 0.35
+          }
+        ],
+        "reqLv": 0,
+        "itemLv": 100,
+        "_pickT": 1772932842506
       }
     ],
     "equipped": {
@@ -136,7 +567,7 @@
         "reqLv": 10,
         "itemLv": 10,
         "maxDurability": 150,
-        "durability": 148
+        "durability": 46
       },
       "shield": {
         "id": 1771994993664.2783,
@@ -157,7 +588,7 @@
         "reqLv": 20,
         "itemLv": 20,
         "maxDurability": 200,
-        "durability": 199
+        "durability": 120
       },
       "boots": {
         "id": 1771995120513.452,
@@ -177,7 +608,7 @@
         "reqLv": 20,
         "itemLv": 20,
         "maxDurability": 200,
-        "durability": 199
+        "durability": 147
       },
       "armor": {
         "id": 1771994859192.056,
@@ -199,7 +630,7 @@
         "reqLv": 10,
         "itemLv": 10,
         "maxDurability": 200,
-        "durability": 199
+        "durability": 147
       },
       "helmet": {
         "id": 1771995143593.4353,
@@ -228,7 +659,7 @@
         "reqLv": 20,
         "itemLv": 20,
         "maxDurability": 200,
-        "durability": 199
+        "durability": 147
       },
       "bow": {
         "id": 1771994711779.9353,
@@ -252,7 +683,7 @@
         "reqLv": 10,
         "itemLv": 10,
         "maxDurability": 150,
-        "durability": 150
+        "durability": 118
       },
       "gloves": {
         "id": 1771993845048.9927,
@@ -272,7 +703,7 @@
         "reqLv": 10,
         "itemLv": 10,
         "maxDurability": 300,
-        "durability": 299
+        "durability": 247
       },
       "pants": {
         "id": 1771995144032.0369,
@@ -290,7 +721,7 @@
         "reqLv": 20,
         "itemLv": 20,
         "maxDurability": 300,
-        "durability": 299
+        "durability": 247
       },
       "necklace": {
         "id": 1771995095667.1711,
@@ -337,24 +768,26 @@
         "itemLv": 10,
         "maxDurability": 150,
         "durability": 150
-      }
+      },
+      "belt": null
     }
   },
   "stats": {
-    "str": 10,
-    "dex": 0,
-    "int": 0,
+    "str": 20,
+    "dex": 20,
+    "int": 20,
     "vit": 10,
     "lck": 0
   },
   "passives": {
-    "pAtk": 0,
+    "pAtk": 2,
     "pDef": 1,
     "pCharge": 0,
     "pParry": 0,
-    "pMagic": 0,
-    "pBow": 0,
+    "pMagic": 2,
+    "pBow": 1,
     "pShield": 0,
+    "pGuard": 0,
     "pRegen": 0,
     "pCrit": 0,
     "pDrop": 0,
@@ -380,8 +813,8 @@
   ],
   "game": {
     "stage": 1,
-    "kills": 251,
-    "mats": 326
+    "kills": 962,
+    "mats": 62044
   },
   "bagMax": 66,
   "hellCleared": [],
@@ -397,10 +830,20 @@
   "potLv": {
     "hp": 0
   },
-  "skills": {},
+  "skills": {
+    "maliceSwipe": 1,
+    "whirlwind": 0,
+    "fanShot": 1
+  },
+  "fused": {},
   "activeChargeSk": "charge",
   "activeBowSk": "normal",
+  "activeMagicSk": "fanShot",
+  "activeLMBSk": "whirlwind",
+  "activeRMBSk": "shieldBlock",
+  "activeQSk": "parry",
   "skillSlots": [
+    null,
     null,
     null,
     null,

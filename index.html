@@ -19,7 +19,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 
 /* 문 이미지 (시네마틱 배경) */
 .cin-gate{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
-.cin-gate img{width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(-5%)}
+.cin-gate img{width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(5%)}
 .cin-gate.show{opacity:1}
 .cin-gate.zoom{transform:scale(1.6);transition:transform 0s}
 .cin-gate.zoom-out{transform:scale(1);transition:transform 6s cubic-bezier(0.15,0.5,0.3,1)}
@@ -51,11 +51,11 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 /* 문 열림 씬 */
 .cin-door-scene{position:absolute;inset:0;perspective:1800px;opacity:0;transition:opacity 1.5s ease;z-index:5}
 .cin-door-scene.show{opacity:1}
-.cin-door{position:absolute;inset:0;background-image:url('img/hellgate.png');background-size:cover;background-position:center 40%;transform:scale(1.15) translateX(-5%);transition:transform 2.5s cubic-bezier(0.4,0,0.1,1);will-change:transform}
+.cin-door{position:absolute;inset:0;background-image:url('img/hellgate.png');background-size:cover;background-position:center 40%;transform:scale(1.15) translateX(5%);transition:transform 2.5s cubic-bezier(0.4,0,0.1,1);will-change:transform}
 .cin-door-l{clip-path:polygon(0 0,calc(40% + 1px) 0,calc(40% + 1px) 100%,0 100%);transform-origin:left center}
 .cin-door-r{clip-path:polygon(calc(40% - 1px) 0,100% 0,100% 100%,calc(40% - 1px) 100%);transform-origin:right center}
-.cin-door-scene.open .cin-door-l{transform:scale(1.15) translateX(-5%) rotateY(-105deg)}
-.cin-door-scene.open .cin-door-r{transform:scale(1.15) translateX(-5%) rotateY(105deg)}
+.cin-door-scene.open .cin-door-l{transform:scale(1.15) translateX(5%) rotateY(-105deg)}
+.cin-door-scene.open .cin-door-r{transform:scale(1.15) translateX(5%) rotateY(105deg)}
 
 /* 문 중앙 빛줄기 */
 .cin-glow{position:absolute;top:5%;left:50%;width:3px;height:90%;transform:translateX(-50%);background:linear-gradient(180deg,transparent,rgba(255,100,20,.5),rgba(255,60,10,.7),rgba(255,100,20,.5),transparent);z-index:6;pointer-events:none;opacity:0;filter:blur(4px);transition:opacity 1.5s}
@@ -80,9 +80,9 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 .enter-btn svg{width:22px;height:22px}
 
 /* 스킵 */
-.skip-btn{position:absolute;bottom:3vh;right:3vw;z-index:30;padding:5px 16px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.35);font-family:'Noto Sans KR';font-size:.5rem;cursor:pointer;transition:all .3s;opacity:0}
-.skip-btn.show{opacity:1}
-.skip-btn:hover{color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.3)}
+.skip-btn{position:absolute;bottom:4vh;right:4vw;z-index:300;padding:12px 32px;background:rgba(0,0,0,0.8);border:2px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);font-family:'Noto Sans KR';font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.3s;opacity:0;pointer-events:none;border-radius:4px;letter-spacing:0.1em}
+.skip-btn.show{opacity:1;pointer-events:all}
+.skip-btn:hover{color:#fff;border-color:rgba(255,255,255,0.6);background:rgba(50,0,0,0.9);box-shadow:0 0 20px rgba(0,0,0,0.5)}
 
 /* 불씨 */
 .ember{position:absolute;border-radius:50%;pointer-events:none;z-index:8}
@@ -143,13 +143,13 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   <div class="cin-lb cin-lb-b"></div>
 
   <!-- 인트로 비디오 (THE EXODUSER) -->
-  <video id="cinVideo" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(-5%);z-index:20;opacity:1;transition:opacity 1.5s ease;pointer-events:none">
+  <video id="cinVideo" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:20;opacity:1;transition:opacity 1.5s ease;pointer-events:none">
     <source src="video/intro.mp4" type="video/mp4">
   </video>
   <!-- 클릭 안내 -->
-  <div id="cinClickPrompt" style="position:absolute;inset:0;z-index:25;display:flex;align-items:center;justify-content:center;cursor:pointer">
-    <div style="text-align:center;pointer-events:none;transform:translateX(-14%)">
-      <div style="color:#ffbb77;font-size:1.5rem;font-weight:900;letter-spacing:.4em;text-indent:.4em;opacity:.9;text-shadow:0 0 10px #000, 0 0 20px rgba(255,80,0,0.8);animation:pulse 2s ease-in-out infinite">CLICK TO HELL</div>
+  <div id="cinClickPrompt" style="position:absolute;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(0,0,0,0.1)">
+    <div style="pointer-events:none;display:flex;flex-direction:column;align-items:center;transform:translateX(23%)">
+      <div style="color:#ffbb77;font-size:1.5rem;font-weight:900;letter-spacing:.4em;margin-right:-.4em;opacity:.9;text-shadow:0 0 10px #000, 0 0 20px rgba(255,80,0,0.8);animation:pulse 2s ease-in-out infinite">CLICK TO HELL</div>
     </div>
   </div>
 
@@ -188,7 +188,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 
 <!-- ═══ 챕터 입장 문 열림 (동영상) ═══ -->
 <div id="chapterGate" style="position:fixed;inset:0;z-index:200;display:none;background:#000;overflow:hidden">
-  <img id="chGateImg" src="img/rording/rd1.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(-5%);z-index:20">
+  <img id="chGateImg" src="img/lording/rd1.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(5%);z-index:20;background:#000">
   <div class="cin-lb cin-lb-t"></div>
   <div class="cin-lb cin-lb-b"></div>
   <div class="cin-vig" style="z-index:21"></div>
@@ -224,7 +224,10 @@ const SUPABASE_KEY='sb_publishable_chAwadci1zVQNEKPC__s_w_7K3Oz_WP';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 const lobbyBGM=new Audio('bgm/lobby.mp3');
-lobbyBGM.preload='auto';lobbyBGM.loop=true;lobbyBGM.volume=0.3;
+lobbyBGM.preload='auto';lobbyBGM.loop=true;lobbyBGM.volume=0.4;
+const introVoice=new Audio('bgm/intro_voice.mp3');
+introVoice.preload='auto';introVoice.volume=0.7;
+introVoice.playbackRate=0.95;
 let bgmStarted=false;
 function _tryBGM(){
   if(bgmStarted)return;
@@ -247,51 +250,61 @@ function stopMediaVideo(v){
   try{v.currentTime=0}catch(e){}
   try{v.muted=true;v.volume=0}catch(e){}
 }
+function stopIntroVoice(){
+  try{introVoice.pause();introVoice.currentTime=0;}catch(e){}
+}
 
 // ═══ Prologue Script (풀버전) ═══
 // img: 이미지 인덱스 (0~8), -1=어둠, undefined=이전 유지
+// v: 음성 재생 시점 (초), 이 시점에 해당 라인이 시작됨
 const CIN_LINES=[
-  {text:'',dur:1200,img:0},
-  {text:'전쟁에서 살아 돌아온 한 남자.',dur:4000,img:0},
-  {text:'',dur:800},
-  {text:'하지만 집은 모두 불타 사라졌다.',dur:3800,img:1},
-  {text:'',dur:600},
-  {text:'이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.',dur:4200,img:2},
-  {text:'',dur:800},
-  {text:'아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,',dur:4000},
-  {text:'끝내 못 이겨 스스로 목숨을 끊었다.',dur:4000},
-  {text:'',dur:600},
-  {text:'아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.',dur:4200},
-  {text:'늙은 부모는 감옥에 갇혀 굶어 죽었다.',dur:4000},
-  {text:'',dur:1200,img:-1},
-  {text:'킬루 가문의 모두가 알고 있었다.',dur:3800,img:11},
-  {text:'31명이 보고도 못 본 척했다.',dur:4000},
-  {text:'',dur:1200,img:-1},
-  {text:'그날 밤, 킬루 가문을 모두 죽였다.',dur:4500,cls:'red',img:3},
-  {text:'',dur:800},
-   {text:'칼로 킬루의 팔다리를 자르고',dur:3800,cls:'red',img:4},
-   {text:'불로 지혈까지 해주며',dur:3800,cls:'red'},
-  {text:'오래오래 살려두었다.',dur:4000,cls:'red'},
-  {text:'',dur:1000,img:-1},
-  {text:'"기억하라."',dur:3500,cls:'red',img:12},
-  {text:'',dur:600},
-  {text:'"그리고 지옥에서도 후회하라."',dur:4500,cls:'red'},
-  {text:'',dur:1000},
-  {text:'그리고 지옥에 떨어진다.',dur:4500,img:5},
-  {text:'',dur:2000,img:-1,phase:2},
-  {text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',dur:4500,cls:'dim',img:13},
-  {text:'',dur:800},
-  {text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',dur:4500,cls:'dim',img:8},
-  {text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',dur:5000,cls:'dim',img:9},
-  {text:'',dur:1200,img:-1},
-  {text:'"너는 왜 지옥에 왔느냐?"',dur:5000,cls:'gold',img:7},
-  {text:'',dur:800},
-  {text:'"지옥을 탈출하라, 죄인이여."',dur:6000,cls:'gold',img:7,end:true},
+  {v:0,   text:'',dur:3000,img:0},
+  {v:1.5, text:'전쟁에서 살아 돌아온 한 남자.',dur:3000,img:0},
+  {v:4.2, text:'',dur:3000},
+  {v:7.2, text:'하지만 집은 모두 불타 사라졌다.',dur:3000,img:1},
+  {v:10.2,text:'',dur:3000},
+  {v:13.2,text:'이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.',dur:3000,img:2},
+  {v:16.2,text:'',dur:3000},
+  {v:20.2,text:'아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,',dur:3000},
+  {v:24.2,text:'끝내 못 이겨 스스로 목숨을 끊었다.',dur:3000},
+  {v:26.2,text:'',dur:3000},
+  {v:28.2,text:'아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.',dur:3000},
+  {v:33.2,text:'늙은 부모는 감옥에 갇혀 굶어 죽었다.',dur:3000},
+  {v:35,text:'',dur:3000,img:-1},
+  {v:38.5,text:'킬루 가문의 모두가 알고 있었다.',dur:3000,img:11},
+  {v:42,text:'31명이 보고도 못 본 척했다.',dur:3000},
+  {v:44.2,text:'',dur:3000,img:-1},
+  {v:47.2,text:'그날 밤, 킬루 가문을 모두 죽였다.',dur:3000,cls:'red',img:3},
+  {v:50.2,text:'',dur:3000},
+  {v:53.2,text:'칼로 킬루의 팔다리를 자르고',dur:3000,cls:'red',img:4},
+  {v:55.2,text:'불로 지혈까지 해주며',dur:3000,cls:'red'},
+  {v:58.2,text:'오래오래 살려두었다.',dur:3000,cls:'red'},
+  {v:61.2,text:'',dur:3000,img:-1},
+  {v:65,text:'"기억하라."',dur:3000,cls:'red',img:12},
+  {v:67,text:'',dur:3000},
+  {v:71,text:'"그리고 지옥에서도 후회하라."',dur:3000,cls:'red'},
+  {v:73.5,text:'',dur:3000},
+  {v:76.2,text:'그리고 지옥에 떨어진다.',dur:3000,img:5},
+  {v:79,text:'',dur:3000,img:-1,phase:2},
+  {v:82,text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',dur:3000,cls:'dim',img:13},
+  {v:85,text:'',dur:3000},
+  {v:88,text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',dur:3000,cls:'dim',img:8},
+  {v:92,text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',dur:3000,cls:'dim',img:9},
+  {v:95,text:'',dur:3000,img:-1},
+  {v:98,text:'"너는 왜 지옥에 왔느냐?"',dur:3000,cls:'gold',img:7},
+  {v:100,text:'',dur:3000},
+  {v:103,text:'"지옥을 탈출하라, 죄인이여."',dur:3000,cls:'gold',img:7,end:true},
+  {v:107,exit:true} // 3초 뒤 종료 트리거
 ];
 
 // ═══ Cinematic Sequence ═══
 // 클릭/탭으로 다음 줄 넘기기 (자동 진행 + 부분 스킵)
 let _cinIdx=0,_cinTimer=null,_cinReady=false;
+let _vidFadeTimer=null,_vidStartTimer=null;
+function _clearVidTimers(){
+  if(_vidFadeTimer){clearTimeout(_vidFadeTimer);_vidFadeTimer=null;}
+  if(_vidStartTimer){clearTimeout(_vidStartTimer);_vidStartTimer=null;}
+}
 function playCinematic(){
   const textBox=$('cinTextInner');
   const skipBtn=$('skipBtn');
@@ -310,21 +323,131 @@ function playCinematic(){
   };
   const hideAll=()=>{cImgs.forEach(el=>{el.classList.remove('show');el.style.zIndex=3});_prevImg=-1;};
 
-  function showLine(idx){
+  // ─── [DEBUG] 타임스탬프 측정용 초시계 및 탐색바 ───
+  let debugUI = document.getElementById('cinDebugUI');
+  let _sceneStartTime = 0;
+  const VOICE_DELAY = -0.3; // 음성을 앞당기기 위해 음수값 사용 (무음 건너뛰기)
+
+  if(!debugUI){
+    debugUI = document.createElement('div');
+    debugUI.id = 'cinDebugUI';
+    debugUI.style.cssText = 'position:absolute;top:10px;left:10px;z-index:9999;color:#0f0;background:rgba(0,0,0,0.7);padding:10px;border-radius:5px;font-family:monospace;display:flex;flex-direction:column;gap:8px;width:300px;';
+    
+    const info = document.createElement('div');
+    info.id = 'cinDebugInfo';
+    info.textContent = 'Scene Time: 0.00s';
+    debugUI.appendChild(info);
+
+    const controls = document.createElement('div');
+    controls.style.display = 'flex';
+    controls.style.gap = '10px';
+    
+    const playBtn = document.createElement('button');
+    playBtn.textContent = 'PAUSE';
+    playBtn.style.cursor = 'pointer';
+    playBtn.onclick = () => {
+      if(introVoice.paused) { 
+        _sceneStartTime = Date.now() - (introVoice.currentTime + VOICE_DELAY) * 1000;
+        introVoice.play(); 
+        playBtn.textContent = 'PAUSE'; 
+      }
+      else { 
+        introVoice.pause(); 
+        playBtn.textContent = 'PLAY'; 
+      }
+    };
+    controls.appendChild(playBtn);
+
+    const seeker = document.createElement('input');
+    seeker.type = 'range';
+    seeker.id = 'cinSeeker';
+    seeker.min = 0;
+    seeker.step = 0.1;
+    seeker.style.flex = '1';
+    seeker.oninput = () => {
+      const targetSceneTime = parseFloat(seeker.value);
+      _sceneStartTime = Date.now() - targetSceneTime * 1000;
+      
+      const targetVoiceTime = targetSceneTime - VOICE_DELAY;
+      if(targetVoiceTime < 0) {
+        introVoice.pause();
+        introVoice.currentTime = 0;
+      } else {
+        introVoice.currentTime = targetVoiceTime;
+        if(playBtn.textContent === 'PAUSE') introVoice.play();
+      }
+      updateVoiceSync(true);
+    };
+    controls.appendChild(seeker);
+    
+    debugUI.appendChild(controls);
+    $('cinScene').appendChild(debugUI);
+    
+    introVoice.onloadedmetadata = () => { seeker.max = introVoice.duration + (VOICE_DELAY < 0 ? 0 : VOICE_DELAY); };
+  }
+
+  // 통합 동기화 엔진
+  const updateVoiceSync = (force = false) => {
+    if(_cinDone) return;
+    
+    let curSceneTime = (Date.now() - _sceneStartTime) / 1000;
+    if(introVoice && !introVoice.paused) {
+      curSceneTime = introVoice.currentTime + VOICE_DELAY;
+    }
+
+    const info = document.getElementById('cinDebugInfo');
+    const seeker = document.getElementById('cinSeeker');
+    if(info) info.textContent = 'Scene Time: ' + curSceneTime.toFixed(2) + 's';
+    if(seeker) seeker.value = curSceneTime;
+
+    // 목소리 시작 체크
+    if(!_cinDone && introVoice.paused && !introVoice.played.length) {
+      const triggerTime = VOICE_DELAY < 0 ? 0 : VOICE_DELAY;
+      if(curSceneTime >= triggerTime) {
+        if(VOICE_DELAY < 0) introVoice.currentTime = Math.abs(VOICE_DELAY);
+        introVoice.play().catch(()=>{});
+      }
+    }
+
+    // 자막 인덱스 찾기 및 종료 체크
+    let targetIdx = 0;
+    for(let i = 0; i < CIN_LINES.length; i++) {
+      if(curSceneTime >= CIN_LINES[i].v) {
+        if(CIN_LINES[i].exit) { 
+          if(!_cinDone) finishCin(); 
+          return; 
+        }
+        targetIdx = i;
+      } else {
+        break;
+      }
+    }
+    
+    if(targetIdx !== _cinIdx || force) {
+      showLine(targetIdx, true);
+    }
+    
+    if(!_cinDone) requestAnimationFrame(() => updateVoiceSync());
+  };
+
+  function showLine(idx, fromSync = false){
     if(_cinDone)return;
-    if(idx>=CIN_LINES.length){finishCin();return;}
+    if(idx===0 && !fromSync){
+      _sceneStartTime = Date.now();
+      requestAnimationFrame(() => updateVoiceSync());
+    }
+    if(idx>=CIN_LINES.length){ if(!_cinDone) finishCin(); return; }
     _cinIdx=idx;
     const line=CIN_LINES[idx];
-    // 텍스트가 있는 첫 대사가 나오면 스킵 해금 + 버튼 표시
-    if(line&&line.text&&_cinSkipLock){_cinSkipLock=false;skipBtn.classList.add('show');}
-    // 이미지 전환
+
+    // 텍스트가 있는 첫 대사가 나오면 스킵 해금
+    if(line&&line.text&&_cinSkipLock){_cinSkipLock=false;}
     if(line.img!==undefined){if(line.img===-1)hideAll();else showImg(line.img);}
-    // 텍스트 — 글자 단위 순차 등장
+    
     textBox.innerHTML='';
     if(line.text){
       const el=document.createElement('div');
       el.className='cin-line'+(line.cls?' '+line.cls:'');
-      // 글자별 span 생성
       const chars=line.text.split('');
       chars.forEach(c=>{
         const sp=document.createElement('span');
@@ -333,30 +456,35 @@ function playCinematic(){
         el.appendChild(sp);
       });
       textBox.appendChild(el);
-      // 줄 페이드인 + 글자 순차 등장 (40ms 간격)
       requestAnimationFrame(()=>requestAnimationFrame(()=>{
         el.classList.add('show');
         const spans=el.querySelectorAll('.cin-char');
         spans.forEach((s,i)=>setTimeout(()=>s.classList.add('on'),i*40));
       }));
     }
-    // 자동 진행 타이머
     clearTimeout(_cinTimer);
-    _cinTimer=setTimeout(()=>showLine(idx+1),line.dur);
   }
 
   function finishCin(){
+    if(_cinDone) return;
+    _cinDone=true;
     clearTimeout(_cinTimer);
     _clearVidTimers();
-    _cinReady=false;_cinDone=true;
-    textBox.innerHTML='';
-    skipBtn.classList.remove('show');
-    hideAll();
-    // 시네마틱 끝 → 로비 또는 로그인
+    stopIntroVoice();
+    
+    // UI 정리: 모든 시네마틱 관련 요소를 확실히 숨김
+    const debugUI = document.getElementById('cinDebugUI');
+    if(debugUI) debugUI.style.display='none'; 
     $('cinScene').style.display='none';
+    $('cinVideo').style.opacity='0';
+    $('skipBtn').classList.remove('show');
+    
     clearInterval(_emberIv);
+    
+    // 메인 화면 표시
     $('mainWrap').classList.add('show');
     $('loading').style.display='none';
+    
     if(_testMode){
       $('loginSection').style.display='none';$('lobby').style.display='block';
       $('userEmail').textContent='LOCAL MODE';loadLocalCharacters();
@@ -374,14 +502,11 @@ function playCinematic(){
   vid.addEventListener('loadeddata',()=>{vid.pause()},{once:true});
   vid.load();
 
+  // 스킵 버튼 즉시 표시
+  skipBtn.classList.add('show');
+
   const prompt=$('cinClickPrompt');
   let _vidStarted=false;
-  let _vidFadeTimer=null;
-  let _vidStartTimer=null;
-  function _clearVidTimers(){
-    if(_vidFadeTimer){clearTimeout(_vidFadeTimer);_vidFadeTimer=null;}
-    if(_vidStartTimer){clearTimeout(_vidStartTimer);_vidStartTimer=null;}
-  }
   function onVidClick(){
     if(_vidStarted||_cinDone)return;
     _vidStarted=true;
@@ -390,6 +515,9 @@ function playCinematic(){
     vid.volume=0.6;
     startBGM();
     vid.play().catch(()=>{});
+    
+    // 비디오 시작 시 스킵 버튼 즉시 표시
+    skipBtn.classList.add('show');
 
     // 비디오 페이드아웃 → 프롤로그 시작
     const videoEnd=8500;
@@ -401,38 +529,60 @@ function playCinematic(){
       showLine(0);
     },videoEnd);
   }
-  prompt.addEventListener('click',onVidClick);
-  prompt.addEventListener('touchend',e=>{e.preventDefault();onVidClick();});
-
-  // 클릭/탭 → 다음 줄로 스킵
-  let _cinSkipLock=true; // 첫 대사 전 스킵 불가
-  function onSkipClick(){
-    if(_cinDone)return;
-    if(!_cinReady){
-      // 비디오 재생 중 → 비디오 스킵하고 프롤로그로 진입
-      if(!_vidStarted){onVidClick();return}
-      _cinReady=true;
-      _clearVidTimers();
-      stopMediaVideo(vid);
-      vid.style.opacity='0';
-      showLine(0);
-      return;
-    }
-    if(_cinSkipLock)return; // 첫 대사 나올 때까지 스킵 차단
-    clearTimeout(_cinTimer);
-    showLine(_cinIdx+1);
+  
+  // [보정] 클릭 안내가 확실히 작동하도록 다시 연결
+  if(prompt){
+    prompt.style.display = 'flex';
+    prompt.onclick = onVidClick;
   }
-  document.querySelector('.cin-overlay').addEventListener('click',onSkipClick);
-  document.querySelector('.cin-overlay').addEventListener('touchend',e=>{e.preventDefault();onSkipClick();});
-  document.addEventListener('keydown',e=>{if(e.code==='Space'||e.code==='Enter'){e.preventDefault();onSkipClick();}});
 
-  // 스킵 버튼은 첫 대사 등장 시 showLine 내부에서 표시됨
+  // ─── 부분 스킵 (클릭 시 다음 대사 + 음성 점프) ───
+  function onSubSkip(){
+    if(_cinDone || !_cinReady) return;
+    const nextIdx = _cinIdx + 1;
+    if(nextIdx >= CIN_LINES.length) { finishCin(); return; }
+    
+    const nextLine = CIN_LINES[nextIdx];
+    if(nextLine.v !== undefined) {
+      // 음성을 다음 자막 시점으로 강제 점프 (딜레이 보정)
+      const targetAudioTime = nextLine.v - VOICE_DELAY;
+      if(targetAudioTime >= 0 && targetAudioTime <= introVoice.duration) {
+        introVoice.currentTime = targetAudioTime;
+        if(introVoice.paused) introVoice.play().catch(()=>{});
+      }
+    }
+    showLine(nextIdx, true);
+  }
+
+  // 이벤트 리스너 다시 연결
+  const overlay = document.querySelector('.cin-overlay');
+  if(overlay) {
+    overlay.onclick = onSubSkip;
+    overlay.ontouchend = (e) => { e.preventDefault(); onSubSkip(); };
+  }
+  
+  const keyHandler = (e) => {
+    if(!_cinDone && (e.code==='Space'||e.code==='Enter')) {
+      e.preventDefault(); onSubSkip();
+    }
+  };
+  document.addEventListener('keydown', keyHandler);
+  
+  // 종료 시 키 핸들러 제거를 위해 finishCin 수정에 활용
+  const originalFinish = finishCin;
+  finishCin = () => {
+    document.removeEventListener('keydown', keyHandler);
+    originalFinish();
+  };
+
+  let _cinSkipLock=true; 
 }
 
 function skipToGate(){
   _cinDone=true;
   clearTimeout(_cinTimer);
   _clearVidTimers();
+  stopIntroVoice();
   startBGM();
   stopMediaVideo($('cinVideo'));
   $('cinVideo').style.opacity='0';
@@ -474,11 +624,50 @@ let _emberIv=setInterval(()=>{
   setTimeout(()=>e.remove(),7000);
 },150);
 
+// ═══ 로딩 화면 시스템 (전체 화면 이미지) ═══
+function pickRandomLoadingImage(){
+  const totalImages = 15;
+  const randIdx = Math.floor(Math.random() * totalImages) + 1;
+  const ext = (randIdx === 11) ? 'jpg' : 'png';
+  return `img/lording/rd${randIdx}.${ext}`;
+}
+
+function showLoading(msg){
+  const gate = $('chapterGate');
+  const gateImg = $('chGateImg');
+  if(gate && gateImg) {
+    gateImg.src = pickRandomLoadingImage();
+    gate.style.display = 'block';
+    gate.style.opacity = '1';
+  }
+  const loading = $('loading');
+  if(loading) {
+    loading.style.display = 'block';
+    if(msg) {
+      const p = loading.querySelector('p');
+      if(p) p.textContent = msg;
+    }
+  }
+}
+
+function hideLoading(){
+  const gate = $('chapterGate');
+  if(gate) {
+    gate.style.opacity = '0';
+    setTimeout(() => { if(gate.style.opacity === '0') gate.style.display = 'none'; }, 500);
+  }
+  const loading = $('loading');
+  if(loading) loading.style.display = 'none';
+}
+
 // ═══ Init ═══
 const _qp=new URLSearchParams(window.location.search);
 const _fromGame=_qp.get('lobby')==='1';
 const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
 (async()=>{
+  // 시작 시 로딩 표시
+  showLoading('데이터를 불러오는 중...');
+
   // ── 로컬 테스트 모드: 로그인 없이 로컬 폴더 세이브 ──
   if(_testMode){
     // 생성 버튼 → 로컬 저장
@@ -505,13 +694,14 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
       // 게임에서 로비 복귀 → 인트로 스킵, 바로 로비
       _cinDone=true;startBGM();
       $('cinScene').style.display='none';clearInterval(_emberIv);
-      $('mainWrap').classList.add('show');$('loading').style.display='none';
+      $('mainWrap').classList.add('show');
       $('loginSection').style.display='none';$('lobby').style.display='block';
       $('userEmail').textContent='LOCAL MODE';
       await loadLocalCharacters();
+      hideLoading();
     } else {
       // 새로고침/첫 접속 → 배포와 동일하게 인트로 재생
-      $('loading').style.display='none';
+      hideLoading();
       playCinematic();
     }
     return;
@@ -524,11 +714,11 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
     $('cinScene').style.display='none';
     clearInterval(_emberIv);
     $('mainWrap').classList.add('show');
-    $('loading').style.display='none';
-    if(session){showLobby()}else{$('loginSection').style.display='block'}
+    if(session){await showLobby()}else{$('loginSection').style.display='block'}
+    hideLoading();
   }else{
     // 첫 접속 / 새로고침 → 항상 인트로 재생
-    $('loading').style.display='none';
+    hideLoading();
     playCinematic();
   }
 
@@ -545,8 +735,10 @@ $('googleBtn').onclick=async()=>{
 $('logoutBtn').onclick=async()=>{await sb.auth.signOut();currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='block'};
 
 async function showLobby(){
-  $('loading').style.display='none';$('loginSection').style.display='none';$('lobby').style.display='block';
+  showLoading('캐릭터 불러오는 중...');
+  $('loginSection').style.display='none';$('lobby').style.display='block';
   $('userEmail').textContent=currentUser.email||'';await loadCharacters();
+  hideLoading();
 }
 async function loadCharacters(){
   const cl=$('charList');cl.innerHTML='<div class="no-chars">불러오는 중...</div>';
@@ -614,8 +806,14 @@ async function loadLocalCharacters(){
 
 // ═══ 캐릭터 선택 → 문 열림 → 입장 ═══
 function showCharGate(charId){
+  showLoading('지옥으로 입장하는 중...');
+
   const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId;
-  window.location.href=_tp;
+  
+  // 로딩 이미지가 바뀐 것을 브라우저가 인식하고 표시할 충분한 시간을 줌
+  setTimeout(() => {
+    window.location.href=_tp;
+  }, 1200);
 }
 </script>
 </body>

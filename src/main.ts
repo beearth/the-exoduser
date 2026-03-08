@@ -598,15 +598,15 @@ function update() {
             } else if (magicSel === 5) { // 대포 포격 (Cannon)
                 if (P.st2 <= 0) {
                     const tx = mouse.x + G.cam.x - C.width / 2, ty = mouse.y + G.cam.y - C.height / 2;
-                    addParts(tx, ty, '#ffaa00', 15);
+                    addParts(tx, ty, '#ffaa00', 30);
                     setTimeout(() => {
-                        addParts(tx, ty, '#ffcc00', 40);
+                        addParts(tx, ty, '#ffcc00', 100);
                         ens.forEach(e => {
-                            if (e.alive && dst(e.x, e.y, tx, ty) < 70) {
+                            if (e.alive && dst(e.x, e.y, tx, ty) < 2800) { // 70타일 (70 * 40)
                                 hurtE(e, 35 + P.int * 5, Math.atan2(e.y - ty, e.x - tx));
                             }
                         });
-                        G.shake = 12;
+                        G.shake = 25;
                     }, 400);
                     P.st2 = 40;
                 }
