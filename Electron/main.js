@@ -213,15 +213,34 @@ const server = http.createServer(async (req, res) => {
     else filePath = path.join(ROOT, pathname.replace(/\.\./g, ''));
 
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+      const stat = fs.statSync(filePath);
       const ext = path.extname(filePath);
       const mime = MIME[ext] || 'application/octet-stream';
-      res.writeHead(200, {
-        'Content-Type': mime,
-        'Cache-Control': 'no-cache, no-store, must-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0'
-      });
-      return res.end(fs.readFileSync(filePath));
+      const range = req.headers.range;
+
+      if (range) {
+        const parts = range.replace(/bytes=/, "").split("-");
+        const start = parseInt(parts[0], 10);
+        const end = parts[1] ? parseInt(parts[1], 10) : stat.size - 1;
+        const chunksize = (end - start) + 1;
+        const file = fs.createReadStream(filePath, { start, end });
+        res.writeHead(206, {
+          'Content-Range': `bytes ${start}-${end}/${stat.size}`,
+          'Accept-Ranges': 'bytes',
+          'Content-Length': chunksize,
+          'Content-Type': mime,
+        });
+        return file.pipe(res);
+      } else {
+        res.writeHead(200, {
+          'Content-Length': stat.size,
+          'Content-Type': mime,
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        });
+        return fs.createReadStream(filePath).pipe(res);
+      }
     }
 
     // 404
