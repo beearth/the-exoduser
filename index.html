@@ -224,7 +224,7 @@ const SUPABASE_KEY='sb_publishable_chAwadci1zVQNEKPC__s_w_7K3Oz_WP';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 
 const lobbyBGM=new Audio('bgm/lobby.mp3');
-lobbyBGM.preload='auto';lobbyBGM.loop=true;lobbyBGM.volume=0.4;
+lobbyBGM.preload='auto';lobbyBGM.loop=true;lobbyBGM.volume=0.65;
 const introVoice=new Audio('bgm/intro_voice.mp3');
 introVoice.preload='auto';introVoice.volume=0.7;
 introVoice.playbackRate=0.95;
@@ -323,68 +323,8 @@ function playCinematic(){
   };
   const hideAll=()=>{cImgs.forEach(el=>{el.classList.remove('show');el.style.zIndex=3});_prevImg=-1;};
 
-  // ─── [DEBUG] 타임스탬프 측정용 초시계 및 탐색바 ───
-  let debugUI = document.getElementById('cinDebugUI');
   let _sceneStartTime = 0;
   const VOICE_DELAY = -0.3; // 음성을 앞당기기 위해 음수값 사용 (무음 건너뛰기)
-
-  if(!debugUI){
-    debugUI = document.createElement('div');
-    debugUI.id = 'cinDebugUI';
-    debugUI.style.cssText = 'position:absolute;top:10px;left:10px;z-index:9999;color:#0f0;background:rgba(0,0,0,0.7);padding:10px;border-radius:5px;font-family:monospace;display:flex;flex-direction:column;gap:8px;width:300px;';
-    
-    const info = document.createElement('div');
-    info.id = 'cinDebugInfo';
-    info.textContent = 'Scene Time: 0.00s';
-    debugUI.appendChild(info);
-
-    const controls = document.createElement('div');
-    controls.style.display = 'flex';
-    controls.style.gap = '10px';
-    
-    const playBtn = document.createElement('button');
-    playBtn.textContent = 'PAUSE';
-    playBtn.style.cursor = 'pointer';
-    playBtn.onclick = () => {
-      if(introVoice.paused) { 
-        _sceneStartTime = Date.now() - (introVoice.currentTime + VOICE_DELAY) * 1000;
-        introVoice.play(); 
-        playBtn.textContent = 'PAUSE'; 
-      }
-      else { 
-        introVoice.pause(); 
-        playBtn.textContent = 'PLAY'; 
-      }
-    };
-    controls.appendChild(playBtn);
-
-    const seeker = document.createElement('input');
-    seeker.type = 'range';
-    seeker.id = 'cinSeeker';
-    seeker.min = 0;
-    seeker.step = 0.1;
-    seeker.style.flex = '1';
-    seeker.oninput = () => {
-      const targetSceneTime = parseFloat(seeker.value);
-      _sceneStartTime = Date.now() - targetSceneTime * 1000;
-      
-      const targetVoiceTime = targetSceneTime - VOICE_DELAY;
-      if(targetVoiceTime < 0) {
-        introVoice.pause();
-        introVoice.currentTime = 0;
-      } else {
-        introVoice.currentTime = targetVoiceTime;
-        if(playBtn.textContent === 'PAUSE') introVoice.play();
-      }
-      updateVoiceSync(true);
-    };
-    controls.appendChild(seeker);
-    
-    debugUI.appendChild(controls);
-    $('cinScene').appendChild(debugUI);
-    
-    introVoice.onloadedmetadata = () => { seeker.max = introVoice.duration + (VOICE_DELAY < 0 ? 0 : VOICE_DELAY); };
-  }
 
   // 통합 동기화 엔진
   const updateVoiceSync = (force = false) => {
@@ -394,11 +334,6 @@ function playCinematic(){
     if(introVoice && !introVoice.paused) {
       curSceneTime = introVoice.currentTime + VOICE_DELAY;
     }
-
-    const info = document.getElementById('cinDebugInfo');
-    const seeker = document.getElementById('cinSeeker');
-    if(info) info.textContent = 'Scene Time: ' + curSceneTime.toFixed(2) + 's';
-    if(seeker) seeker.value = curSceneTime;
 
     // 목소리 시작 체크
     if(!_cinDone && introVoice.paused && !introVoice.played.length) {
@@ -473,8 +408,6 @@ function playCinematic(){
     stopIntroVoice();
     
     // UI 정리: 모든 시네마틱 관련 요소를 확실히 숨김
-    const debugUI = document.getElementById('cinDebugUI');
-    if(debugUI) debugUI.style.display='none'; 
     $('cinScene').style.display='none';
     $('cinVideo').style.opacity='0';
     $('skipBtn').classList.remove('show');
@@ -767,6 +700,16 @@ $('createBtn').onclick=async()=>{
   if(name.length<2||name.length>8){setStatus('이름은 2~8자여야 합니다.',true);return}
   if(/[<>"'&]/.test(name)){setStatus('특수문자는 사용할 수 없습니다.',true);return}
   $('createBtn').disabled=true;setStatus('생성 중...');
+  if(_testMode){
+    try{
+      const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{ts:Date.now()}})});
+      const j=await res.json();
+      $('createBtn').disabled=false;
+      if(!j.ok){setStatus('생성 실패: '+(j.error||'알 수 없는 오류'),true);return}
+      $('charName').value='';setStatus('');await loadLocalCharacters();
+    }catch(e){$('createBtn').disabled=false;setStatus('생성 실패: '+e.message,true)}
+    return;
+  }
   const{error}=await sb.from('characters').insert({user_id:currentUser.id,name:name,data:{}});
   $('createBtn').disabled=false;
   if(error){if(error.code==='23505')setStatus('이미 같은 이름의 캐릭터가 있습니다.',true);else setStatus('생성 실패: '+error.message,true);return}
