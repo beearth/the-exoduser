@@ -1,5 +1,5 @@
 {
-  "ts": 1773129917321,
+  "ts": 1773320616790,
   "player": {
     "lv": 1000,
     "exp": 3,
@@ -8,14 +8,14 @@
     "ap": 1,
     "baseAtk": 15,
     "baseDef": 52,
-    "mpR": 7.456,
-    "stR": 2.59,
+    "mpR": 7.589,
+    "stR": 2.693,
     "hp": 2614,
     "mhp": 2614,
-    "mp": 1342,
-    "mmp": 1342,
-    "st": 1114,
-    "mst": 1114,
+    "mp": 1282,
+    "mmp": 1282,
+    "st": 1304,
+    "mst": 1304,
     "speed": 5.875,
     "shield": 2230,
     "mshield": 2230
@@ -7345,7 +7345,8 @@
     "pRegen": 10,
     "pCrit": 10,
     "pDrop": 0,
-    "pPierce": 8
+    "pPierce": 8,
+    "pMRegen": 0
   },
   "qslots": [
     {
@@ -7440,17 +7441,19 @@
   "skProf": {
     "bladeDash": 17,
     "maliceSwipe": 1,
-    "shieldThrow": 1
+    "shieldThrow": 1,
+    "guardian": 13
   },
   "activeChargeSk": "magicBlink",
   "activeBowSk": "bladeShot",
-  "activeMagicSk": "fanShot",
+  "activeMagicSk": "beam",
   "activeLMBSk": "whirlwind",
   "activeRMBSk": "shieldBlock",
   "activeQSk": "parry",
+  "activeCtSk": "ghostWalk",
   "skillSlots": [
     "maliceStorm",
-    null,
+    "maliceMortar",
     null,
     "maliceHunt",
     null,

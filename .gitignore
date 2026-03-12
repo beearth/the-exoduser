@@ -2,7 +2,14 @@ node_modules/
 .claude/
 NUL
 _test_*
+test_*
+check_*
 *.pyc
 dist/
 out/
 .env
+server.err.log
+server.out.log
+*_check.png
+*_screenshot.png
+*_result.png
