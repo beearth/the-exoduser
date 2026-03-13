@@ -1,0 +1,109 @@
+{
+  "ts": 1773380264996,
+  "player": {
+    "lv": 500,
+    "exp": 0,
+    "maxExp": -1268686336,
+    "sp": 340,
+    "ap": 100,
+    "baseAtk": 23,
+    "baseDef": 12,
+    "mpR": 6,
+    "stR": 1.78,
+    "hp": 1550,
+    "mhp": 1550,
+    "mp": 680,
+    "mmp": 680,
+    "st": 550,
+    "mst": 550,
+    "speed": 3.35,
+    "shield": 600,
+    "mshield": 600
+  },
+  "inv": {
+    "bag": [],
+    "equipped": {
+      "weapon": null,
+      "shield": null,
+      "boots": null,
+      "armor": null,
+      "helmet": null,
+      "bow": null,
+      "gloves": null,
+      "pants": null,
+      "belt": null,
+      "necklace": null,
+      "ring1": null,
+      "ring2": null,
+      "cape": null
+    }
+  },
+  "stats": {
+    "str": 180,
+    "dex": 150,
+    "int": 120,
+    "vit": 150,
+    "lck": 60
+  },
+  "passives": {},
+  "qslots": [
+    {
+      "type": "hp",
+      "count": 5
+    },
+    {
+      "type": null,
+      "count": 0
+    },
+    {
+      "type": null,
+      "count": 0
+    },
+    {
+      "type": null,
+      "count": 0
+    }
+  ],
+  "game": {
+    "stage": 26,
+    "kills": 5000,
+    "mats": 20000
+  },
+  "bagMax": 42,
+  "hellCleared": [],
+  "storage": {},
+  "upgrades": {
+    "hp": 0,
+    "atk": 0,
+    "def": 0,
+    "mp": 0,
+    "st": 0,
+    "spd": 0
+  },
+  "potLv": {
+    "hp": 0
+  },
+  "skills": {
+    "chargeBoost": 1,
+    "ghostWalk": 1,
+    "whirlwind": 1
+  },
+  "fused": {},
+  "skProf": {},
+  "activeChargeSk": "charge",
+  "activeBowSk": "normal",
+  "activeMagicSk": "beam",
+  "activeLMBSk": "whirlwind",
+  "activeRMBSk": "shieldBlock",
+  "activeQSk": "parry",
+  "activeCtSk": "ghostWalk",
+  "skillSlots": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "ultSlot": null
+}

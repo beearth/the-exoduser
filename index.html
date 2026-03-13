@@ -445,6 +445,8 @@ function playCinematic(){
     vid.volume=0.6;
     startBGM();
     vid.play().catch(()=>{});
+    // 사용자 제스처 컨텍스트에서 introVoice 언락 (자동재생 정책 우회)
+    introVoice.play().then(()=>{introVoice.pause();introVoice.currentTime=0}).catch(()=>{});
     
     // 비디오 시작 시 스킵 버튼 즉시 표시
     skipBtn.classList.add('show');
