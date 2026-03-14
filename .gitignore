@@ -13,3 +13,6 @@ server.out.log
 *_check.png
 *_screenshot.png
 *_result.png
+
+.vercel
+.env*.local

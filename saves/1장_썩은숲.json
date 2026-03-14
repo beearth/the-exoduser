@@ -1,24 +1,24 @@
 {
-  "ts": 1773404255146,
+  "ts": 1773477394921,
   "player": {
-    "lv": 439,
-    "exp": 10310,
-    "maxExp": 10748,
-    "sp": 34,
-    "ap": 6,
-    "baseAtk": 23,
+    "lv": 440,
+    "exp": 3658,
+    "maxExp": 10795,
+    "sp": 24,
+    "ap": 8,
+    "baseAtk": 15,
     "baseDef": 8,
-    "mpR": 6.099,
-    "stR": 1.826,
-    "hp": 2425.983109999987,
-    "mhp": 2434,
-    "mp": 549.6136874625354,
-    "mmp": 954,
-    "st": 2.62929487498086,
-    "mst": 581,
+    "mpR": 6.109,
+    "stR": 1.831,
+    "hp": 2405,
+    "mhp": 2405,
+    "mp": 957,
+    "mmp": 957,
+    "st": 584,
+    "mst": 584,
     "speed": 7.686252,
-    "shield": 1197,
-    "mshield": 1725
+    "shield": 1727,
+    "mshield": 1727
   },
   "inv": {
     "bag": [
@@ -9479,8 +9479,8 @@
   ],
   "game": {
     "stage": 5,
-    "kills": 66865,
-    "mats": 2206322
+    "kills": 67010,
+    "mats": 2215102
   },
   "bagMax": 300,
   "hellCleared": [
@@ -9562,7 +9562,7 @@
     "guardian": 15,
     "fanShot": 15,
     "magicBlink": 3,
-    "holyDome": 2
+    "holyDome": 3
   },
   "activeChargeSk": "magicBlink",
   "activeBowSk": "maliceMortar",
