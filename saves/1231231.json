@@ -1,21 +1,21 @@
 {
-  "ts": 1773489460279,
+  "ts": 1773505740260,
   "player": {
-    "lv": 34,
-    "exp": 93,
-    "maxExp": 157,
-    "sp": 8,
+    "lv": 39,
+    "exp": 92,
+    "maxExp": 188,
+    "sp": 26,
     "ap": 6,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.201,
-    "stR": 0.167,
-    "hp": 167,
-    "mhp": 167,
-    "mp": 117,
-    "mmp": 117,
-    "st": 129,
-    "mst": 129,
+    "mpR": 0.20900000000000002,
+    "stR": 0.171,
+    "hp": 171,
+    "mhp": 171,
+    "mp": 119,
+    "mmp": 119,
+    "st": 121.12825000000004,
+    "mst": 131,
     "speed": 2.69048,
     "shield": 0,
     "mshield": 0
@@ -329,6 +329,101 @@
         "itemLv": 0,
         "_gx": 6,
         "_gy": 4
+      },
+      {
+        "id": 1773505433781.1008,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 3,
+        "name": "심판의 해머",
+        "emoji": "🔨",
+        "wtype": "hammer",
+        "atk": 228,
+        "spd": 0.99,
+        "wStCost": 9,
+        "wArcW": 1.1,
+        "wRange": 49,
+        "wStagger": 48,
+        "bonusRange": 3,
+        "bStr": 36,
+        "bDex": 33,
+        "bInt": 36,
+        "affixes": [
+          {
+            "id": "staggerExplosion",
+            "tier": 2,
+            "value": 0.8
+          },
+          {
+            "id": "chainTarget",
+            "tier": 2,
+            "value": 3
+          },
+          {
+            "id": "elemConvert",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "parryBonus",
+            "tier": 2,
+            "value": 0.55
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 8.87,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": {
+          "ko": "스태거 발동 시 범위 충격파 (ATK×120%)",
+          "stat": "_lHammerShock",
+          "val": 1.2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 8,
+        "_gy": 2,
+        "_pickT": 1773505433798
+      },
+      {
+        "id": 1773505437630.6052,
+        "slot": "ring2",
+        "el": 4,
+        "rarity": 4,
+        "tier": 3,
+        "name": "뇌신 반지",
+        "emoji": "💍",
+        "eDef": 9,
+        "critRate": 4.7,
+        "critDmg": 0.18,
+        "bStr": 47,
+        "bInt": 44,
+        "bDex": 32,
+        "affixes": [
+          {
+            "id": "poisonRes",
+            "tier": 2,
+            "value": 0.28
+          },
+          {
+            "id": "lightRes",
+            "tier": 2,
+            "value": 0.32
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 9.19,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "처치 시 데빌포스 5% 회복",
+          "stat": "_lRingKill",
+          "val": 0.05
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 3,
+        "_pickT": 1773505437651
       }
     ],
     "equipped": {
@@ -627,8 +722,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 197,
-    "mats": 971
+    "kills": 264,
+    "mats": 2283
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -647,7 +742,7 @@
     "hp": 0
   },
   "skills": {
-    "whirlwind": 1,
+    "whirlwind": 0,
     "fanShot": 1,
     "holyDome": 1,
     "maliceSwipe": 1,
@@ -658,8 +753,9 @@
     "maliceSwipe": 30,
     "fanShot": 15,
     "whirlwind": 30,
-    "holyDome": 2,
-    "chargeBoost": 1
+    "holyDome": 4,
+    "chargeBoost": 4,
+    "detonate": 12
   },
   "activeChargeSk": "charge",
   "activeBowSk": "fanShot",

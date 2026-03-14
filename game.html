@@ -1291,10 +1291,10 @@ function dbRestore(d){
   if(ULT_SLOT&&!(P.skills[ULT_SLOT]>=1))ULT_SLOT=null;
   // 고정슬롯 전용 스킬은 선택슬롯에서 제거 (마이그레이션)
   SKILL_SLOTS[4]=null; // Space는 고정 석궁슬롯
-  const _fixedKick=['grenadeShot','bladeShot','fanShot','omniBeam','bladeDash','ghostWalk','iceOrb','maliceMortar'];
+  const _fixedKick=['grenadeShot','bladeShot','fanShot','omniBeam','bladeDash','ghostWalk','iceOrb'];
   for(let _si=0;_si<6;_si++){if(_fixedKick.includes(SKILL_SLOTS[_si]))SKILL_SLOTS[_si]=null}
   // 배운 액티브 스킬이 슬롯에 없으면 자동 배정 (합체 흡수/고정슬롯 제외)
-  const _fixedSlotSk=['grenadeShot','bladeShot','fanShot','omniBeam','bladeDash','shieldThrow','thunderShot','blastShot','ghostWalk','iceOrb','maliceMortar']; // 고정스킬 (슬롯 자동배정 제외)
+  const _fixedSlotSk=['grenadeShot','bladeShot','fanShot','omniBeam','bladeDash','shieldThrow','thunderShot','blastShot','ghostWalk','iceOrb']; // 고정스킬 (슬롯 자동배정 제외)
   const _actIds=SKILL_LIST.filter(sk=>sk.act&&!sk.ult&&P.skills[sk.id]>=1&&!_fKick.includes(sk.id)&&!_fixedSlotSk.includes(sk.id)).map(sk=>sk.id);
   _actIds.forEach(id=>{
     if(!SKILL_SLOTS.includes(id)){const _ei=SKILL_SLOTS.findIndex((s,i)=>s===null&&i!==4);if(_ei>=0)SKILL_SLOTS[_ei]=id}
@@ -2799,15 +2799,15 @@ const SpriteAnimator={
 let _atlasPReady=false,_atlasP_img=null,_atlasP_frames=null;
 (function _loadAtlasP(){
   const img=new Image();img.src='atlas_player.png?v=9';
-  img.onload=()=>{fetch('atlas_player.json?v=9').then(r=>r.json()).then(fm=>{
-    _atlasP_img=img;_atlasP_frames=fm;if(P)P._sa=SpriteAnimator.create(img,fm,'idle');_atlasPReady=true;
+  img.onload=()=>{if(_atlasP_img&&_atlasP_img._gsK)return;fetch('atlas_player.json?v=9').then(r=>r.json()).then(fm=>{
+    if(_atlasP_img&&_atlasP_img._gsK)return;_atlasP_img=img;_atlasP_frames=fm;if(P)P._sa=SpriteAnimator.create(img,fm,'idle');_atlasPReady=true;
   }).catch(()=>{});};img.onerror=()=>{};
 })();
 // ── Greatsword Knight Atlas (PixelLab 8방향) ──
 (function _loadGSKnight(){
   const dirs=['south','south-east','east','north-east','north','north-west','west','south-west'];
   const dks=['s','se','e','ne','n','nw','w','sw'];
-  const FW=48,FH=48,imgs=[];let ld=0;
+  const FW=124,FH=124,imgs=[];let ld=0;
   const anims=['idle','run','atk1','atk2','atk3','hurt','die','bash','block','charge_start','charge_hold',
     'ghost','dodge','crossbow','whirlwind','stun','gSlam1','gSlam2','gSlamRecover'];
   dirs.forEach((d,i)=>{const im=new Image();im.src='img/greatsword_knight/'+d+'.png';
@@ -2821,8 +2821,10 @@ let _atlasPReady=false,_atlasP_img=null,_atlasP_frames=null;
     });
     anims.forEach(a=>{fm[a]=[{x:0,y:0,w:FW,h:FH}];});
     _atlasP_img=c;_atlasP_frames=fm;
-    if(P)P._sa=SpriteAnimator.create(c,fm,'idle');
+    if(P){P._sa=SpriteAnimator.create(c,fm,'idle');P._sa._gsK=true;}
     _atlasPReady=true;_genSpriteOK=false;
+    // atlas_player가 나중에 덮어쓰지 못하도록 마킹
+    _atlasP_img._gsK=true;
   }
 })();
 // ── Atlas E External (외부 적 아틀라스) ──
@@ -10685,8 +10687,10 @@ function mkEn(x,y,si,etype,ib,el,room){
   if(mods.includes('M02'))spd*=1.5; // M02 초속
   const r=(ib?22:_rare?_rd.r+Math.random()*2:ETYPE_R[etype]+Math.random()*2)*2;
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
-  let _hp=~~(hp*lvScale*dm*et.hpMul);
-  const _atk=~~(atk*atkScale*dm*et.atkMul);
+  // 레벨 보정: 몬스터가 항상 플레이어+100 기준
+  const _bossLvMul=Math.max(1,((P.lv||1)+100)/Math.max(1,monLv));
+  let _hp=~~(hp*lvScale*dm*et.hpMul*_bossLvMul);
+  const _atk=~~(atk*atkScale*dm*et.atkMul*_bossLvMul);
   let _projCd=ib?70:_rare?9999:etype===1?(80+Math.random()*40):etype===21?(90+Math.random()*40):etype===23?(100+Math.random()*50):etype===7?(120+Math.random()*60):etype===13?(140+Math.random()*60):etype===29?(100+Math.random()*50):etype===31?(80+Math.random()*40):etype===34?(120+Math.random()*60):etype===71?(100+Math.random()*50):etype===73?(60+Math.random()*30):etype===77?(150+Math.random()*60):etype===78?(180+Math.random()*60):etype===79?(100+Math.random()*50):etype===82?(140+Math.random()*50):etype===86?(100+Math.random()*40):etype===88?(180+Math.random()*60):etype===89?(120+Math.random()*50):((etype===0||etype===6||etype===8||etype===10||etype===11||etype===12||etype===14||etype===15||etype===16||etype===17||etype===18||etype===19||etype===20||etype===22||etype===24||etype===25||etype===27||etype===28||etype===30||etype===32||etype===33||etype===35||etype===36||etype===37||etype===38||etype===39||etype===40||etype===41||etype===42||etype===43||etype===44||etype===45||etype===46||etype===47||etype===48||etype===49||etype===70||etype===72||etype===74||etype===75||etype===76||etype===60||etype===62||etype===63||etype===64||etype===65||etype===66||etype===67||etype===68||etype===69||etype===80||etype===81||etype===83||etype===84||etype===85||etype===87)?9999:200+Math.random()*80);
   if(mods.includes('M02'))_projCd=~~(_projCd*.75); // M02 공격속도+25%
   if(elite>0)_projCd=~~(_projCd*(elite>=3?.3:elite>=2?.4:.5)); // 정예: 2~3배 빈도
@@ -12474,7 +12478,7 @@ function update(){
       if(!_bQuiet){_addBoom(p.x,p.y,br,22,'fire');shake(4);}
       _dead=true;
     }
-    if(!_dead&&p.life<=0){if(p.life<=-900||p.mine||p.bomb)_dead=true;else{const _cdx=p.x-G.cam.x,_cdy=p.y-G.cam.y;if(_cdx*_cdx+_cdy*_cdy>2250000)_dead=true;else p.life=1}}
+    if(!_dead&&p.life<=0){if(p.life<=-900||p.mine||p.bomb)_dead=true;else if(p.redBean){_addBoom(p.x,p.y,40,18,'fire');addParts(p.x,p.y,'#ff4400',8);_dead=true}else{const _cdx=p.x-G.cam.x,_cdy=p.y-G.cam.y;if(_cdx*_cdx+_cdy*_cdy>2250000)_dead=true;else p.life=1}}
     // 히트 임팩트 이펙트 (투사체 소멸 시)
     if(_dead&&OPT.deathFx&&!p.mine&&!p.trap&&!p.dimRift&&!p.web&&!p.poisonZone&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade){
       _addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx));
@@ -12560,7 +12564,7 @@ function update(){
       for(let _ri=0;_ri<ens.length;_ri++){const e=ens[_ri];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d<_rbMin){_rbMin=d;_rbTgt=e}}
       if(_rbTgt){const _rbAng=Math.atan2(_rbTgt.y-P.y,_rbTgt.x-P.x);p.vx=Math.cos(_rbAng)*3.5;p.vy=Math.sin(_rbAng)*3.5}
       else{p.vx*=-2;p.vy*=-2}
-      p.friendly=true;p.life=240;p.ml=240;p.bomb=true;p.bombR=160;p.bombAtk=p.dmg*4;
+      p.friendly=true;p.life=240;p.ml=240;p._aoeR=160;p._aoeDmg=p.dmg*4;
       p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;
       for(let k=0;k<20;k++){const sa=Math.random()*Math.PI*2;const sv=5+Math.random()*8;
         poolPart(P.x,P.y,Math.cos(sa)*sv,Math.sin(sa)*sv,k%4===0?'#00e5ff':k%4===1?'#40f0ff':k%4===2?'#80ffff':'#ffffff',3+Math.random()*4,12+Math.random()*8)}
@@ -12901,6 +12905,12 @@ function update(){
           }
         }
         if(!e.alive&&p.normalBow){if(!p._hitSet)p._hitSet=new Set();p._hitSet.add(e);hit=false;continue} // 석궁 킬관통
+        // ── 블루콩 AoE (패링 반사): 폭약 대신 일반 히트 ──
+        if(p._aoeR>0){const _ar=p._aoeR;const _ad=p._aoeDmg||p.dmg;const _ane=shQuery(p.x,p.y,_ar+20);
+          for(let _ai=0;_ai<_ane.length;_ai++){const ae=_ane[_ai];if(!ae.alive||ae===e)continue;
+            if(dst(ae.x,ae.y,p.x,p.y)<_ar){hurtE(ae,~~(_ad*elMul(p.el,ae.el)),Math.atan2(ae.y-p.y,ae.x-p.x),false,{},p.el)}}
+          for(let k=0;k<12;k++){const a=Math.PI*2*k/12;poolPart(p.x,p.y,Math.cos(a)*5,Math.sin(a)*5,'#00e5ff',3+Math.random()*3,10+Math.random()*6)}
+          shake(8)}
         hit=true;break;
       }
     }
@@ -18337,8 +18347,8 @@ function _slamStormBlast(){
   const _ssLv=P.skills.giantSlam||1;const _ssR=360+(_ssLv-1)*20;
   const _ssStunR=560+(_ssLv-1)*20; // 스턴 범위 600 (만렙3)
   // 대왕치기 데미지 + parryBank 축적분 보너스
-  const _baseDmg=~~(meleeRef()*6*(1+(_ssLv-1)*0.12));
-  const _bankBonus=~~((P.parryBank||0)*1.5);
+  const _baseDmg=~~(meleeRef()*9*(1+(_ssLv-1)*0.15));
+  const _bankBonus=~~((P.parryBank||0)*2.5);
   const _ssDmg=_baseDmg+_bankBonus;
   G._noHitStopT=60;
   _gSlamHit(P.facing,_ssR,Math.PI,_ssDmg,wp().el||0,0,1.5,_ssStunR);
@@ -19066,7 +19076,7 @@ function _openSkillSlotPop(slotIdx){
   if(P.skills.maliceHunt>=1&&P.skills.plagueBurst>=1&&_isFused('plagueFuse'))_fusedOut.push('plagueBurst');
   if(P.skills.chargeBoost>=1&&P.skills.galeSlash>=1&&_isFused('dimHalf'))_fusedOut.push('galeSlash');
   if(_isFused('dimBreach')&&P.skills.magicBlink>=1)_fusedOut.push('magicBlink');
-  const _fixedOnly=['grenadeShot','bladeShot','fanShot','omniBeam','elemMissile','shieldThrow','thunderShot','blastShot','ghostWalk','iceOrb','maliceMortar']; // 고정스킬 (슬롯 배정 불가)
+  const _fixedOnly=['grenadeShot','bladeShot','fanShot','omniBeam','elemMissile','shieldThrow','thunderShot','blastShot','ghostWalk','iceOrb']; // 고정스킬 (슬롯 배정 불가)
   const _actSkills=SKILL_LIST.filter(sk=>sk.act&&!sk.ult&&P.skills[sk.id]>=1&&!_fusedOut.includes(sk.id)&&!_fixedOnly.includes(sk.id));
   if(_actSkills.length===0){addTxt(P.x,P.y-20,'배정 가능한 스킬 없음','#888',30);return}
   // 기존 팝업 재활용 (skSlotPop)
@@ -26581,7 +26591,7 @@ function drawP(){
     // 스프라이트 렌더링
     const _pDx=_pet._pdx||0,_pDy=_pet._pdy||0;
     const _dir8=_petDir8(_pDx,_pDy);
-    const _petSz=16; // 화면 표시 크기 (32px 원본 → 16px)
+    const _petSz=24; // 화면 표시 크기 (16→24, +50%)
     if(isCrow){
       // 까마귀: 8방향 정적 스프라이트
       const _ci=_PET_IMGS.crow[_dir8];
