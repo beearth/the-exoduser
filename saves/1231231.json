@@ -1,21 +1,21 @@
 {
-  "ts": 1773485790683,
+  "ts": 1773489460279,
   "player": {
-    "lv": 28,
-    "exp": 118,
-    "maxExp": 124,
-    "sp": 28,
-    "ap": 4,
+    "lv": 34,
+    "exp": 93,
+    "maxExp": 157,
+    "sp": 8,
+    "ap": 6,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.189,
-    "stR": 0.161,
-    "hp": 160,
-    "mhp": 160,
-    "mp": 114,
-    "mmp": 114,
-    "st": 126,
-    "mst": 126,
+    "mpR": 0.201,
+    "stR": 0.167,
+    "hp": 167,
+    "mhp": 167,
+    "mp": 117,
+    "mmp": 117,
+    "st": 129,
+    "mst": 129,
     "speed": 2.69048,
     "shield": 0,
     "mshield": 0
@@ -627,8 +627,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 136,
-    "mats": 896
+    "kills": 197,
+    "mats": 971
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -648,13 +648,18 @@
   },
   "skills": {
     "whirlwind": 1,
-    "fanShot": 1
+    "fanShot": 1,
+    "holyDome": 1,
+    "maliceSwipe": 1,
+    "detonate": 1
   },
   "fused": {},
   "skProf": {
     "maliceSwipe": 30,
-    "fanShot": 12,
-    "whirlwind": 30
+    "fanShot": 15,
+    "whirlwind": 30,
+    "holyDome": 2,
+    "chargeBoost": 1
   },
   "activeChargeSk": "charge",
   "activeBowSk": "fanShot",
@@ -669,7 +674,7 @@
     null,
     null,
     null,
-    null
+    "holyDome"
   ],
   "ultSlot": null
 }
