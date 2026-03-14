@@ -1,43 +1,440 @@
 {
-  "ts": 1773499531420,
+  "ts": 1773503144144,
   "player": {
-    "lv": 151,
-    "exp": 174,
-    "maxExp": 1532,
-    "sp": 2,
-    "ap": 6,
+    "lv": 199,
+    "exp": 2175,
+    "maxExp": 2492,
+    "sp": 53,
+    "ap": 14,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 2.6990000000000003,
-    "stR": 0.872,
-    "hp": 967.2147750000086,
-    "mhp": 994,
-    "mp": 458,
-    "mmp": 458,
-    "st": 186.9944999999947,
-    "mst": 238,
-    "speed": 5.023601,
-    "shield": 616,
-    "mshield": 683
+    "mpR": 4.491,
+    "stR": 1.4060000000000001,
+    "hp": 405.23495250001656,
+    "mhp": 1831,
+    "mp": 526.675318750006,
+    "mmp": 694,
+    "st": 62.03713749999923,
+    "mst": 319,
+    "speed": 7.0956410000000005,
+    "shield": 964,
+    "mshield": 1237
   },
   "inv": {
     "bag": [
       {
-        "id": 1773496764705.0337,
+        "id": 1773500714519.9592,
         "slot": "necklace",
-        "el": 4,
+        "el": 3,
         "rarity": 4,
-        "tier": 3,
-        "name": "뇌신 목걸이",
+        "tier": 2,
+        "name": "심연 목걸이",
         "emoji": "📿",
-        "def": 8,
-        "eDef": 14,
-        "bInt": 45,
-        "bStr": 46,
+        "def": 6,
+        "eDef": 11,
         "bDex": 37,
+        "bStr": 31,
+        "bInt": 32,
         "affixes": [
           {
-            "id": "iceRes",
+            "id": "crisisBoost",
+            "tier": 2,
+            "value": 0.65
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 2,
+            "value": 75
+          },
+          {
+            "id": "fireRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 2,
+            "value": 0.22
+          }
+        ],
+        "_implicitStat": "_iMaxHPPct",
+        "_implicitVal": 5.36,
+        "_implicitKo": "최대 HP +X%",
+        "legendarySpecial": {
+          "ko": "HP 50% 이하 시 전 스킬 쿨다운 -30%",
+          "stat": "_lNeckLow",
+          "val": 0.3
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 0,
+        "_pickT": 1773500714531
+      },
+      {
+        "id": 1773500764910.2537,
+        "slot": "helmet",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "전지전능의 투구",
+        "emoji": "⛑️",
+        "eDef": 12,
+        "beamDmg": 8.6,
+        "elements": [
+          {
+            "el": 0,
+            "dmg": 120
+          },
+          {
+            "el": 2,
+            "dmg": 68
+          },
+          {
+            "el": 5,
+            "dmg": 60
+          },
+          {
+            "el": 4,
+            "dmg": 51
+          }
+        ],
+        "splashR": 10,
+        "splashMul": 0.53,
+        "magicPen": 3,
+        "bonusRange": 4,
+        "bDex": 35,
+        "bInt": 32,
+        "bStr": 40,
+        "affixes": [
+          {
+            "id": "statusClean",
+            "tier": 2,
+            "value": 2
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 2,
+            "value": 75
+          },
+          {
+            "id": "ccRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "cooldownRed",
+            "tier": 2,
+            "value": -0.22
+          }
+        ],
+        "_implicitStat": "_iMaxHP",
+        "_implicitVal": 10.93,
+        "_implicitKo": "최대 HP +X",
+        "legendarySpecial": {
+          "ko": "스킬 사용 시 20% 확률로 쿨다운 미소모",
+          "stat": "_lHelmFree",
+          "val": 0.2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 1,
+        "_gy": 0,
+        "_pickT": 1773500764913
+      },
+      {
+        "id": 1773500802522.5112,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "나무 방패",
+        "emoji": "🛡️",
+        "bonusRange": 2,
+        "blockRate": 90,
+        "shieldWt": 13,
+        "atk": 6,
+        "def": 8,
+        "stagger": 33,
+        "bStr": 27,
+        "bDex": 25,
+        "bInt": 25,
+        "affixes": [
+          {
+            "id": "physDR",
+            "tier": 2,
+            "value": 0.16
+          },
+          {
+            "id": "counterHit",
+            "tier": 2,
+            "value": 0.4
+          }
+        ],
+        "_implicitStat": "_iBlockPct",
+        "_implicitVal": 5.59,
+        "_implicitKo": "방어율 +X%",
+        "legendarySpecial": {
+          "ko": "패리 성공 시 반격 데미지 ×2",
+          "stat": "_lShieldParry",
+          "val": 2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 3,
+        "_gy": 0,
+        "_pickT": 1773500802539
+      },
+      {
+        "id": 1773500804005.7207,
+        "slot": "boots",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "흑요석 전투화",
+        "emoji": "👢",
+        "def": 14,
+        "spd": 0.35,
+        "bonusSt": 26,
+        "chargeDist": 44,
+        "chargeCharge": 1,
+        "bStr": 40,
+        "bInt": 31,
+        "bDex": 43,
+        "affixes": [
+          {
+            "id": "dropRate",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "movSpeed",
+            "tier": 2,
+            "value": 0.14
+          },
+          {
+            "id": "goldBonus",
+            "tier": 2,
+            "value": 0.4
+          },
+          {
+            "id": "dashBoost",
+            "tier": 2,
+            "value": 0.65
+          }
+        ],
+        "_implicitStat": "_iMovSpd",
+        "_implicitVal": 5.92,
+        "_implicitKo": "이동속도 +X%",
+        "legendarySpecial": {
+          "ko": "회피 직후 첫 공격 데미지 +80%",
+          "stat": "_lBootsEvade",
+          "val": 0.8
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 5,
+        "_gy": 0,
+        "_pickT": 1773500804020
+      },
+      {
+        "id": 1773500866053.0476,
+        "slot": "ring2",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "녹슨 반지",
+        "emoji": "💍",
+        "eDef": 1,
+        "critRate": 4.03,
+        "critDmg": 0.137,
+        "bStr": 32,
+        "bDex": 22,
+        "bInt": 30,
+        "affixes": [
+          {
+            "id": "darkRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "goldBonus",
+            "tier": 2,
+            "value": 0.4
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 11.55,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "처치 시 데빌포스 5% 회복",
+          "stat": "_lRingKill",
+          "val": 0.05
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 7,
+        "_gy": 0,
+        "_pickT": 1773500866072
+      },
+      {
+        "id": 1773501016756.9456,
+        "slot": "helmet",
+        "el": 3,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전지전능의 투구",
+        "emoji": "⛑️",
+        "eDef": 4,
+        "beamDmg": 3.3,
+        "elements": [
+          {
+            "el": 3,
+            "dmg": 26
+          },
+          {
+            "el": 4,
+            "dmg": 9
+          },
+          {
+            "el": 2,
+            "dmg": 11
+          },
+          {
+            "el": 1,
+            "dmg": 10
+          }
+        ],
+        "splashR": 10,
+        "splashMul": 0.45,
+        "magicPen": 2,
+        "bonusRange": 3,
+        "bDex": 29,
+        "bInt": 29,
+        "bStr": 22,
+        "affixes": [
+          {
+            "id": "expBonus",
+            "tier": 2,
+            "value": 0.28
+          },
+          {
+            "id": "cooldownRed",
+            "tier": 2,
+            "value": -0.22
+          },
+          {
+            "id": "ccRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 2,
+            "value": 75
+          }
+        ],
+        "_implicitStat": "_iMaxHP",
+        "_implicitVal": 28.03,
+        "_implicitKo": "최대 HP +X",
+        "legendarySpecial": {
+          "ko": "스킬 사용 시 20% 확률로 쿨다운 미소모",
+          "stat": "_lHelmFree",
+          "val": 0.2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 8,
+        "_gy": 0,
+        "_pickT": 1773501016769
+      },
+      {
+        "id": 1773501068161.375,
+        "slot": "helmet",
+        "el": 3,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전지전능의 투구",
+        "emoji": "⛑️",
+        "eDef": 4,
+        "beamDmg": 3.3,
+        "elements": [
+          {
+            "el": 3,
+            "dmg": 26
+          },
+          {
+            "el": 1,
+            "dmg": 11
+          },
+          {
+            "el": 5,
+            "dmg": 12
+          },
+          {
+            "el": 2,
+            "dmg": 10
+          }
+        ],
+        "splashR": 10,
+        "splashMul": 0.44,
+        "magicPen": 2,
+        "bonusRange": 3,
+        "bDex": 28,
+        "bInt": 27,
+        "bStr": 27,
+        "affixes": [
+          {
+            "id": "statusClean",
+            "tier": 2,
+            "value": 2
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 2,
+            "value": 75
+          },
+          {
+            "id": "barrier",
+            "tier": 2,
+            "value": 45
+          },
+          {
+            "id": "cooldownRed",
+            "tier": 2,
+            "value": -0.22
+          }
+        ],
+        "_implicitStat": "_iMaxHP",
+        "_implicitVal": 26.55,
+        "_implicitKo": "최대 HP +X",
+        "legendarySpecial": {
+          "ko": "스킬 사용 시 20% 확률로 쿨다운 미소모",
+          "stat": "_lHelmFree",
+          "val": 0.2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 2,
+        "_pickT": 1773501068169
+      },
+      {
+        "id": 1773501070103.9275,
+        "slot": "necklace",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "낡은 부적",
+        "emoji": "📿",
+        "def": 2,
+        "eDef": 2,
+        "bStr": 28,
+        "bDex": 33,
+        "bInt": 30,
+        "affixes": [
+          {
+            "id": "lightRes",
             "tier": 2,
             "value": 0.32
           },
@@ -52,13 +449,13 @@
             "value": 0.55
           },
           {
-            "id": "maxHPFlat",
+            "id": "maxHPPct",
             "tier": 2,
-            "value": 75
+            "value": 0.22
           }
         ],
         "_implicitStat": "_iMaxHPPct",
-        "_implicitVal": 8.9,
+        "_implicitVal": 7.51,
         "_implicitKo": "최대 HP +X%",
         "legendarySpecial": {
           "ko": "HP 50% 이하 시 전 스킬 쿨다운 -30%",
@@ -68,10 +465,1489 @@
         "reqLv": 0,
         "itemLv": 100,
         "_gx": 0,
-        "_gy": 0,
-        "_pickT": 1773496764724
+        "_gy": 1,
+        "_pickT": 1773501070118
       },
       {
+        "id": 1773501281775.947,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 4,
+        "name": "천벌의 철퇴",
+        "emoji": "⚒️",
+        "wtype": "mace",
+        "atk": 208,
+        "spd": 1.32,
+        "wStCost": 8,
+        "wArcW": 1,
+        "wRange": 47,
+        "wStagger": 35,
+        "bonusRange": 3,
+        "bDex": 35,
+        "bStr": 48,
+        "bInt": 50,
+        "affixes": [
+          {
+            "id": "killChain",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "armorPen",
+            "tier": 2,
+            "value": 0.22
+          },
+          {
+            "id": "parryExplosion",
+            "tier": 2,
+            "value": 1.1
+          },
+          {
+            "id": "dashBoost",
+            "tier": 2,
+            "value": 0.65
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 10.96,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": {
+          "ko": "스태거 발동 시 범위 충격파 (ATK×100%)",
+          "stat": "_lMaceShock",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 7,
+        "_gy": 1,
+        "_pickT": 1773501281791
+      },
+      {
+        "id": 1773501297158.5645,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "녹슨 검",
+        "emoji": "⚔️",
+        "wtype": "sword",
+        "atk": 39,
+        "spd": 2.2,
+        "wStCost": 6,
+        "wArcW": 0.95,
+        "wRange": 51,
+        "wStagger": 17,
+        "bonusRange": 2,
+        "bInt": 27,
+        "bDex": 26,
+        "bStr": 32,
+        "affixes": [
+          {
+            "id": "staggerExplosion",
+            "tier": 2,
+            "value": 0.8
+          },
+          {
+            "id": "iceDot",
+            "tier": 2,
+            "value": 18
+          },
+          {
+            "id": "parryExplosion",
+            "tier": 2,
+            "value": 1.1
+          },
+          {
+            "id": "killSlayer",
+            "tier": 2,
+            "value": 0.4
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 11.06,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": {
+          "ko": "5타 콤보 완성 시 데빌포스 20% 즉시 충전",
+          "stat": "_lSwordCombo",
+          "val": 0.2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 5,
+        "_gy": 2,
+        "_pickT": 1773501297173
+      },
+      {
+        "id": 1773501663528.2842,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "나무 방패",
+        "emoji": "🛡️",
+        "bonusRange": 3,
+        "blockRate": 90,
+        "shieldWt": 13,
+        "atk": 6,
+        "def": 7,
+        "stagger": 33,
+        "bInt": 28,
+        "bStr": 27,
+        "bDex": 22,
+        "affixes": [
+          {
+            "id": "reflect",
+            "tier": 2,
+            "value": 0.15
+          },
+          {
+            "id": "counterHit",
+            "tier": 2,
+            "value": 0.4
+          }
+        ],
+        "_implicitStat": "_iBlockPct",
+        "_implicitVal": 3.88,
+        "_implicitKo": "방어율 +X%",
+        "legendarySpecial": {
+          "ko": "패리 성공 시 반격 데미지 ×2",
+          "stat": "_lShieldParry",
+          "val": 2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 8,
+        "_gy": 2,
+        "_pickT": 1773501663543
+      },
+      {
+        "id": 1773501818972.9072,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "흑요석 해머",
+        "emoji": "🔨",
+        "wtype": "hammer",
+        "atk": 162,
+        "spd": 0.99,
+        "wStCost": 9,
+        "wArcW": 1.1,
+        "wRange": 46,
+        "wStagger": 48,
+        "bonusRange": 3,
+        "bStr": 34,
+        "bDex": 38,
+        "bInt": 42,
+        "affixes": [
+          {
+            "id": "killChain",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "armorPen",
+            "tier": 2,
+            "value": 0.22
+          },
+          {
+            "id": "elemConvert",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "lightChain",
+            "tier": 2,
+            "value": 35
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 13.94,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": {
+          "ko": "스태거 발동 시 범위 충격파 (ATK×120%)",
+          "stat": "_lHammerShock",
+          "val": 1.2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 3,
+        "_pickT": 1773501818991
+      },
+      {
+        "id": 1773501843772.7537,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "강철 대방패",
+        "emoji": "🛡️",
+        "bonusRange": 3,
+        "blockRate": 90,
+        "shieldWt": 10,
+        "atk": 14,
+        "def": 19,
+        "stagger": 68,
+        "bDex": 36,
+        "bStr": 36,
+        "bInt": 30,
+        "affixes": [
+          {
+            "id": "counterHit",
+            "tier": 2,
+            "value": 0.4
+          },
+          {
+            "id": "reflect",
+            "tier": 2,
+            "value": 0.15
+          }
+        ],
+        "_implicitStat": "_iBlockPct",
+        "_implicitVal": 7.6,
+        "_implicitKo": "방어율 +X%",
+        "legendarySpecial": {
+          "ko": "패리 성공 시 반격 데미지 ×2",
+          "stat": "_lShieldParry",
+          "val": 2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 4,
+        "_pickT": 1773501843788
+      },
+      {
+        "id": 1773501851739.1638,
+        "slot": "necklace",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "흑요석 목걸이",
+        "emoji": "📿",
+        "def": 6,
+        "eDef": 10,
+        "bInt": 36,
+        "bDex": 32,
+        "bStr": 32,
+        "affixes": [
+          {
+            "id": "iceRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 2,
+            "value": 0.22
+          },
+          {
+            "id": "fireRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 2,
+            "value": 75
+          }
+        ],
+        "_implicitStat": "_iMaxHPPct",
+        "_implicitVal": 9.35,
+        "_implicitKo": "최대 HP +X%",
+        "legendarySpecial": {
+          "ko": "HP 50% 이하 시 전 스킬 쿨다운 -30%",
+          "stat": "_lNeckLow",
+          "val": 0.3
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 2,
+        "_pickT": 1773501851753
+      },
+      {
+        "id": 1773501925285.448,
+        "slot": "cape",
+        "el": 1,
+        "rarity": 4,
+        "tier": 0,
+        "name": "불꽃 망토",
+        "emoji": "🧣",
+        "def": 4,
+        "eDef": 2,
+        "spd": 0,
+        "bStr": 23,
+        "bDex": 25,
+        "bInt": 26,
+        "affixes": [
+          {
+            "id": "dropRate",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "movSpeed",
+            "tier": 2,
+            "value": 0.14
+          },
+          {
+            "id": "parryBonus",
+            "tier": 2,
+            "value": 0.55
+          }
+        ],
+        "_implicitStat": "_iDashCd",
+        "_implicitVal": 7.8,
+        "_implicitKo": "회피 쿨다운 -X%",
+        "legendarySpecial": {
+          "ko": "패리 타이밍 판정 +50% 확대",
+          "stat": "_lCapeParry",
+          "val": 0.5
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 4,
+        "_gy": 5,
+        "_pickT": 1773501925307
+      },
+      {
+        "id": 1773501997522.618,
+        "slot": "boots",
+        "el": 4,
+        "rarity": 4,
+        "tier": 3,
+        "name": "뇌신 전투화",
+        "emoji": "👢",
+        "def": 17,
+        "spd": 0.53,
+        "bonusSt": 39,
+        "chargeDist": 50,
+        "chargeCharge": 1,
+        "bInt": 42,
+        "bStr": 34,
+        "bDex": 32,
+        "affixes": [
+          {
+            "id": "goldBonus",
+            "tier": 2,
+            "value": 0.4
+          },
+          {
+            "id": "movSpeed",
+            "tier": 2,
+            "value": 0.14
+          },
+          {
+            "id": "dropRate",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "dashBoost",
+            "tier": 2,
+            "value": 0.65
+          }
+        ],
+        "_implicitStat": "_iMovSpd",
+        "_implicitVal": 7.17,
+        "_implicitKo": "이동속도 +X%",
+        "legendarySpecial": {
+          "ko": "회피 직후 첫 공격 데미지 +80%",
+          "stat": "_lBootsEvade",
+          "val": 0.8
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 6,
+        "_gy": 5,
+        "_pickT": 1773501997537
+      },
+      {
+        "id": 1773502001836.9216,
+        "slot": "bow",
+        "el": 2,
+        "rarity": 4,
+        "tier": 2,
+        "name": "빙하 석궁",
+        "emoji": "⚙️",
+        "btype": "crossbow",
+        "atk": 13,
+        "bowSpd": 2.2,
+        "bowStCost": 0,
+        "bowRange": 412,
+        "bowProjSpd": 11,
+        "bonusRange": 3,
+        "bowPierce": 0.25,
+        "bStr": 34,
+        "bInt": 35,
+        "bDex": 33,
+        "affixes": [
+          {
+            "id": "killChain",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "chainTarget",
+            "tier": 2,
+            "value": 3
+          },
+          {
+            "id": "staggerExplosion",
+            "tier": 2,
+            "value": 0.8
+          },
+          {
+            "id": "skillBoost",
+            "tier": 2,
+            "value": 0.4
+          }
+        ],
+        "_implicitStat": "_iPierce",
+        "_implicitVal": 13.85,
+        "_implicitKo": "관통 확률 +X%",
+        "legendarySpecial": {
+          "ko": "치명타 시 추가 투사체 1발 발사",
+          "stat": "_lBowCrit",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 8,
+        "_gy": 5,
+        "_pickT": 1773502001852
+      },
+      {
+        "id": 1773502252258.349,
+        "slot": "gloves",
+        "el": 4,
+        "rarity": 4,
+        "tier": 2,
+        "name": "뇌전 건틀릿",
+        "emoji": "🧤",
+        "atk": 13,
+        "def": 7,
+        "spd": 0.18,
+        "potCd": 0.3,
+        "atkSpd": 0.082,
+        "bInt": 31,
+        "bStr": 39,
+        "bDex": 32,
+        "affixes": [
+          {
+            "id": "thorns",
+            "tier": 2,
+            "value": 14
+          },
+          {
+            "id": "atkSpeed",
+            "tier": 2,
+            "value": 0.16
+          }
+        ],
+        "_implicitStat": "_iAtkSpd",
+        "_implicitVal": 5.52,
+        "_implicitKo": "공격속도 +X%",
+        "legendarySpecial": {
+          "ko": "공격속도 +20% + 기본공격에 랜덤 원소 추가",
+          "stat": "_lGloveElem",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 7,
+        "_pickT": 1773502252277
+      },
+      {
+        "id": 1773502253542.1902,
+        "slot": "ring2",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "녹슨 반지",
+        "emoji": "💍",
+        "eDef": 2,
+        "critRate": 3.92,
+        "critDmg": 0.146,
+        "bStr": 32,
+        "bInt": 32,
+        "bDex": 23,
+        "affixes": [
+          {
+            "id": "darkRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "goldBonus",
+            "tier": 2,
+            "value": 0.4
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 9.29,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "처치 시 데빌포스 5% 회복",
+          "stat": "_lRingKill",
+          "val": 0.05
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 4,
+        "_gy": 3,
+        "_pickT": 1773502253559
+      },
+      {
+        "id": 1773502253976.1885,
+        "slot": "cape",
+        "el": 1,
+        "rarity": 4,
+        "tier": 0,
+        "name": "불꽃 망토",
+        "emoji": "🧣",
+        "def": 4,
+        "eDef": 2,
+        "spd": 0,
+        "bDex": 32,
+        "bStr": 28,
+        "bInt": 28,
+        "affixes": [
+          {
+            "id": "dropRate",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "movSpeed",
+            "tier": 2,
+            "value": 0.14
+          },
+          {
+            "id": "parryBonus",
+            "tier": 2,
+            "value": 0.55
+          }
+        ],
+        "_implicitStat": "_iDashCd",
+        "_implicitVal": 8.44,
+        "_implicitKo": "회피 쿨다운 -X%",
+        "legendarySpecial": {
+          "ko": "패리 타이밍 판정 +50% 확대",
+          "stat": "_lCapeParry",
+          "val": 0.5
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 7,
+        "_pickT": 1773502253991
+      },
+      {
+        "id": 1773502465639.6335,
+        "slot": "bow",
+        "el": 4,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전기 연사석궁",
+        "emoji": "⚡",
+        "btype": "repeater",
+        "atk": 4,
+        "bowSpd": 3.3,
+        "bowStCost": 0,
+        "bowRange": 358,
+        "bowProjSpd": 10,
+        "bonusRange": 2,
+        "bowPierce": 0.19,
+        "bDex": 31,
+        "bStr": 31,
+        "bInt": 31,
+        "affixes": [
+          {
+            "id": "parryExplosion",
+            "tier": 2,
+            "value": 1.1
+          },
+          {
+            "id": "fireDot",
+            "tier": 2,
+            "value": 26
+          },
+          {
+            "id": "elemConvert",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "chainTarget",
+            "tier": 2,
+            "value": 3
+          }
+        ],
+        "_implicitStat": "_iPierce",
+        "_implicitVal": 10.42,
+        "_implicitKo": "관통 확률 +X%",
+        "legendarySpecial": {
+          "ko": "치명타 시 추가 투사체 1발 발사",
+          "stat": "_lBowCrit",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 4,
+        "_gy": 7,
+        "_pickT": 1773502465658
+      },
+      {
+        "id": 1773502515875.4446,
+        "slot": "bow",
+        "el": 3,
+        "rarity": 4,
+        "tier": 2,
+        "name": "심연 석궁",
+        "emoji": "⚙️",
+        "btype": "crossbow",
+        "atk": 16,
+        "bowSpd": 2.2,
+        "bowStCost": 0,
+        "bowRange": 410,
+        "bowProjSpd": 11,
+        "bonusRange": 3,
+        "bowPierce": 0.24,
+        "bInt": 40,
+        "bStr": 29,
+        "bDex": 33,
+        "affixes": [
+          {
+            "id": "killChain",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "elemFocus",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "parryExplosion",
+            "tier": 2,
+            "value": 1.1
+          },
+          {
+            "id": "darkCurse",
+            "tier": 2,
+            "value": 0.55
+          }
+        ],
+        "_implicitStat": "_iPierce",
+        "_implicitVal": 5.57,
+        "_implicitKo": "관통 확률 +X%",
+        "legendarySpecial": {
+          "ko": "치명타 시 추가 투사체 1발 발사",
+          "stat": "_lBowCrit",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 6,
+        "_gy": 7,
+        "_pickT": 1773502515892
+      },
+      {
+        "id": 1773502517257.5007,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "흑요석검",
+        "emoji": "⚔️",
+        "wtype": "sword",
+        "atk": 80,
+        "spd": 2.2,
+        "wStCost": 6,
+        "wArcW": 0.95,
+        "wRange": 52,
+        "wStagger": 17,
+        "bonusRange": 3,
+        "bStr": 33,
+        "bDex": 33,
+        "bInt": 39,
+        "affixes": [
+          {
+            "id": "staggerExplosion",
+            "tier": 2,
+            "value": 0.8
+          },
+          {
+            "id": "lightChain",
+            "tier": 2,
+            "value": 35
+          },
+          {
+            "id": "killChain",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "staggerBns",
+            "tier": 2,
+            "value": 22
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 11.26,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": {
+          "ko": "5타 콤보 완성 시 데빌포스 20% 즉시 충전",
+          "stat": "_lSwordCombo",
+          "val": 0.2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 8,
+        "_gy": 8,
+        "_pickT": 1773502517277
+      },
+      {
+        "id": 1773502524493.7908,
+        "slot": "ring1",
+        "el": 3,
+        "rarity": 4,
+        "tier": 2,
+        "name": "심연 반지",
+        "emoji": "💍",
+        "eDef": 6,
+        "critRate": 4.62,
+        "critDmg": 0.17,
+        "bStr": 36,
+        "bDex": 31,
+        "bInt": 40,
+        "affixes": [
+          {
+            "id": "lightRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "poisonRes",
+            "tier": 2,
+            "value": 0.28
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 12.82,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "원소 반응 발동 시 추가 폭발 (ATK×80%)",
+          "stat": "_lRingElem",
+          "val": 0.8
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 4,
+        "_gy": 4,
+        "_pickT": 1773502524507
+      },
+      {
+        "id": 1773502647978.4114,
+        "slot": "gloves",
+        "el": 4,
+        "rarity": 4,
+        "tier": 2,
+        "name": "뇌전 건틀릿",
+        "emoji": "🧤",
+        "atk": 13,
+        "def": 6,
+        "spd": 0.18,
+        "potCd": 0.29,
+        "atkSpd": 0.093,
+        "bStr": 33,
+        "bDex": 38,
+        "bInt": 36,
+        "affixes": [
+          {
+            "id": "thorns",
+            "tier": 2,
+            "value": 14
+          },
+          {
+            "id": "atkSpeed",
+            "tier": 2,
+            "value": 0.16
+          }
+        ],
+        "_implicitStat": "_iAtkSpd",
+        "_implicitVal": 6.38,
+        "_implicitKo": "공격속도 +X%",
+        "legendarySpecial": {
+          "ko": "공격속도 +20% + 기본공격에 랜덤 원소 추가",
+          "stat": "_lGloveElem",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 9,
+        "_pickT": 1773502647996
+      },
+      {
+        "id": 1773502650947.3604,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 4,
+        "tier": 3,
+        "name": "미스릴 방패",
+        "emoji": "🛡️",
+        "bonusRange": 3,
+        "blockRate": 90,
+        "shieldWt": 9,
+        "atk": 18,
+        "def": 28,
+        "stagger": 85,
+        "bDex": 44,
+        "bStr": 46,
+        "bInt": 34,
+        "affixes": [
+          {
+            "id": "parryExplosion",
+            "tier": 2,
+            "value": 1.1
+          },
+          {
+            "id": "counterHit",
+            "tier": 2,
+            "value": 0.4
+          }
+        ],
+        "_implicitStat": "_iBlockPct",
+        "_implicitVal": 7.42,
+        "_implicitKo": "방어율 +X%",
+        "legendarySpecial": {
+          "ko": "패리 성공 시 반격 데미지 ×2",
+          "stat": "_lShieldParry",
+          "val": 2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 9,
+        "_pickT": 1773502650963
+      },
+      {
+        "id": 1773502795495.9163,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 3,
+        "name": "심판의 검",
+        "emoji": "⚔️",
+        "wtype": "sword",
+        "atk": 105,
+        "spd": 2.2,
+        "wStCost": 6,
+        "wArcW": 0.95,
+        "wRange": 47,
+        "wStagger": 17,
+        "bonusRange": 3,
+        "bDex": 38,
+        "bInt": 45,
+        "bStr": 39,
+        "affixes": [
+          {
+            "id": "elemConvert",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "dashBoost",
+            "tier": 2,
+            "value": 0.65
+          },
+          {
+            "id": "parryExplosion",
+            "tier": 2,
+            "value": 1.1
+          },
+          {
+            "id": "staggerBns",
+            "tier": 2,
+            "value": 22
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 12.1,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": {
+          "ko": "5타 콤보 완성 시 데빌포스 20% 즉시 충전",
+          "stat": "_lSwordCombo",
+          "val": 0.2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 4,
+        "_gy": 10,
+        "_pickT": 1773502795512
+      },
+      {
+        "id": 1773502805278.9246,
+        "slot": "ring1",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "녹슨 반지",
+        "emoji": "💍",
+        "eDef": 2,
+        "critRate": 3.96,
+        "critDmg": 0.135,
+        "bDex": 22,
+        "bInt": 33,
+        "bStr": 27,
+        "affixes": [
+          {
+            "id": "killChain",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "lightRes",
+            "tier": 2,
+            "value": 0.32
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 11.59,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "원소 반응 발동 시 추가 폭발 (ATK×80%)",
+          "stat": "_lRingElem",
+          "val": 0.8
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 7,
+        "_gy": 4,
+        "_pickT": 1773502805292
+      },
+      {
+        "id": 1773502903250.4736,
+        "slot": "armor",
+        "el": 1,
+        "rarity": 4,
+        "tier": 0,
+        "name": "불꽃 갑옷",
+        "emoji": "🦺",
+        "def": 6,
+        "bonusSt": 8,
+        "charge": 17,
+        "chargeDist": 48,
+        "chargeW": 27,
+        "bonusRange": 3,
+        "bonusChargeDist": 2,
+        "chargeAoE": 41,
+        "bDex": 27,
+        "bInt": 31,
+        "bStr": 29,
+        "affixes": [
+          {
+            "id": "iceRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 2,
+            "value": 0.22
+          },
+          {
+            "id": "counterHit",
+            "tier": 2,
+            "value": 0.4
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 2,
+            "value": 75
+          }
+        ],
+        "_implicitStat": "_iPhysDR",
+        "_implicitVal": 3.88,
+        "_implicitKo": "물리 피해감소 +X%",
+        "legendarySpecial": {
+          "ko": "피격 시 3초 쿨로 HP 5% 즉시 회복",
+          "stat": "_lArmorRegen",
+          "val": 0.05
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 6,
+        "_gy": 10,
+        "_pickT": 1773502903269
+      },
+      {
+        "id": 1773502956983.3203,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 4,
+        "tier": 4,
+        "name": "파멸의 방패",
+        "emoji": "🛡️",
+        "bonusRange": 3,
+        "blockRate": 90,
+        "shieldWt": 8,
+        "atk": 24,
+        "def": 38,
+        "stagger": 103,
+        "bInt": 36,
+        "bDex": 51,
+        "bStr": 50,
+        "affixes": [
+          {
+            "id": "reflect",
+            "tier": 2,
+            "value": 0.15
+          },
+          {
+            "id": "physDR",
+            "tier": 2,
+            "value": 0.16
+          }
+        ],
+        "_implicitStat": "_iBlockPct",
+        "_implicitVal": 7.8,
+        "_implicitKo": "방어율 +X%",
+        "legendarySpecial": {
+          "ko": "패리 성공 시 반격 데미지 ×2",
+          "stat": "_lShieldParry",
+          "val": 2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 11,
+        "_pickT": 1773502956999
+      },
+      {
+        "id": 1773502993631.48,
+        "slot": "helmet",
+        "el": 1,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전지전능의 투구",
+        "emoji": "⛑️",
+        "eDef": 4,
+        "beamDmg": 3.3,
+        "elements": [
+          {
+            "el": 1,
+            "dmg": 26
+          },
+          {
+            "el": 2,
+            "dmg": 12
+          },
+          {
+            "el": 5,
+            "dmg": 10
+          },
+          {
+            "el": 3,
+            "dmg": 11
+          }
+        ],
+        "splashR": 10,
+        "splashMul": 0.47,
+        "magicPen": 2,
+        "bonusRange": 4,
+        "bStr": 28,
+        "bDex": 27,
+        "bInt": 24,
+        "affixes": [
+          {
+            "id": "barrier",
+            "tier": 2,
+            "value": 45
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 2,
+            "value": 75
+          },
+          {
+            "id": "expBonus",
+            "tier": 2,
+            "value": 0.28
+          },
+          {
+            "id": "cooldownRed",
+            "tier": 2,
+            "value": -0.22
+          }
+        ],
+        "_implicitStat": "_iMaxHP",
+        "_implicitVal": 14.42,
+        "_implicitKo": "최대 HP +X",
+        "legendarySpecial": {
+          "ko": "스킬 사용 시 20% 확률로 쿨다운 미소모",
+          "stat": "_lHelmFree",
+          "val": 0.2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 8,
+        "_gy": 11,
+        "_pickT": 1773502993648
+      },
+      {
+        "id": 1773502994036.585,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "흑요석 단검",
+        "emoji": "🗡️",
+        "wtype": "dagger",
+        "atk": 49,
+        "spd": 3.3,
+        "wStCost": 4,
+        "wArcW": 0.7,
+        "wRange": 39,
+        "wStagger": 6,
+        "bonusRange": 3,
+        "bDex": 37,
+        "bInt": 34,
+        "bStr": 41,
+        "affixes": [
+          {
+            "id": "parryExplosion",
+            "tier": 2,
+            "value": 1.1
+          },
+          {
+            "id": "darkCurse",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "elemConvert",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "poisonDot",
+            "tier": 2,
+            "value": 22
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 6.48,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": {
+          "ko": "처치 시 이속 +40%(3초) + 다음 공격 크리 보장",
+          "stat": "_lDaggerKill",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 12,
+        "_pickT": 1773502994048
+      },
+      {
+        "id": 1773503007685.5813,
+        "slot": "gloves",
+        "el": 2,
+        "rarity": 4,
+        "tier": 2,
+        "name": "빙하 건틀릿",
+        "emoji": "🧤",
+        "atk": 12,
+        "def": 6,
+        "spd": 0.18,
+        "potCd": 0.289,
+        "atkSpd": 0.091,
+        "bStr": 32,
+        "bInt": 30,
+        "bDex": 32,
+        "affixes": [
+          {
+            "id": "thorns",
+            "tier": 2,
+            "value": 14
+          },
+          {
+            "id": "atkSpeed",
+            "tier": 2,
+            "value": 0.16
+          }
+        ],
+        "_implicitStat": "_iAtkSpd",
+        "_implicitVal": 3.29,
+        "_implicitKo": "공격속도 +X%",
+        "legendarySpecial": {
+          "ko": "공격속도 +20% + 기본공격에 랜덤 원소 추가",
+          "stat": "_lGloveElem",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 3,
+        "_gy": 13,
+        "_pickT": 1773503007700
+      },
+      {
+        "id": 1773503025251.464,
+        "slot": "gloves",
+        "el": 4,
+        "rarity": 4,
+        "tier": 2,
+        "name": "뇌전 건틀릿",
+        "emoji": "🧤",
+        "atk": 13,
+        "def": 6,
+        "spd": 0.18,
+        "potCd": 0.279,
+        "atkSpd": 0.093,
+        "bStr": 32,
+        "bInt": 32,
+        "bDex": 29,
+        "affixes": [
+          {
+            "id": "thorns",
+            "tier": 2,
+            "value": 14
+          },
+          {
+            "id": "atkSpeed",
+            "tier": 2,
+            "value": 0.16
+          }
+        ],
+        "_implicitStat": "_iAtkSpd",
+        "_implicitVal": 5.74,
+        "_implicitKo": "공격속도 +X%",
+        "legendarySpecial": {
+          "ko": "공격속도 +20% + 기본공격에 랜덤 원소 추가",
+          "stat": "_lGloveElem",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 5,
+        "_gy": 13,
+        "_pickT": 1773503025269
+      }
+    ],
+    "equipped": {
+      "weapon": {
+        "id": 1773500561637.8816,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 4,
+        "name": "천벌의 대도끼",
+        "emoji": "🪓",
+        "wtype": "axe",
+        "atk": 179,
+        "spd": 1.43,
+        "wStCost": 9,
+        "wArcW": 0.85,
+        "wRange": 43,
+        "wStagger": 30,
+        "bonusRange": 3,
+        "bInt": 41,
+        "bDex": 51,
+        "bStr": 35,
+        "affixes": [
+          {
+            "id": "staggerExplosion",
+            "tier": 2,
+            "value": 0.8
+          },
+          {
+            "id": "skillBoost",
+            "tier": 2,
+            "value": 0.4
+          },
+          {
+            "id": "killChain",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "lightChain",
+            "tier": 2,
+            "value": 35
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 12.29,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": {
+          "ko": "출혈 대상 크리 시 잔여 DoT×300% 즉시 폭발",
+          "stat": "_lAxeBleed",
+          "val": 3
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 0,
+        "_pickT": 1773500561651
+      },
+      "shield": {
+        "id": 1773496333003.4983,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 4,
+        "tier": 3,
+        "name": "미스릴 방패",
+        "emoji": "🛡️",
+        "bonusRange": 3,
+        "blockRate": 90,
+        "shieldWt": 9,
+        "atk": 20,
+        "def": 25,
+        "stagger": 85,
+        "bInt": 41,
+        "bStr": 42,
+        "bDex": 46,
+        "affixes": [
+          {
+            "id": "physDR",
+            "tier": 2,
+            "value": 0.16
+          },
+          {
+            "id": "counterHit",
+            "tier": 2,
+            "value": 0.4
+          }
+        ],
+        "_implicitStat": "_iBlockPct",
+        "_implicitVal": 6.15,
+        "_implicitKo": "방어율 +X%",
+        "legendarySpecial": {
+          "ko": "패리 성공 시 반격 데미지 ×2",
+          "stat": "_lShieldParry",
+          "val": 2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 2,
+        "_pickT": 1773496333018
+      },
+      "boots": {
+        "id": 1773497949171.2908,
+        "slot": "boots",
+        "el": 4,
+        "rarity": 4,
+        "tier": 3,
+        "name": "뇌신 전투화",
+        "emoji": "👢",
+        "def": 17,
+        "spd": 0.53,
+        "bonusSt": 37,
+        "chargeDist": 50,
+        "chargeCharge": 2,
+        "bInt": 39,
+        "bStr": 41,
+        "bDex": 44,
+        "affixes": [
+          {
+            "id": "dropRate",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "dashBoost",
+            "tier": 2,
+            "value": 0.65
+          },
+          {
+            "id": "extraDodge",
+            "tier": 2,
+            "value": 2
+          },
+          {
+            "id": "movSpeed",
+            "tier": 2,
+            "value": 0.14
+          }
+        ],
+        "_implicitStat": "_iMovSpd",
+        "_implicitVal": 6.26,
+        "_implicitKo": "이동속도 +X%",
+        "legendarySpecial": {
+          "ko": "회피 직후 첫 공격 데미지 +80%",
+          "stat": "_lBootsEvade",
+          "val": 0.8
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 7,
+        "_gy": 1,
+        "_pickT": 1773497949192
+      },
+      "armor": {
+        "id": 1773500066997.7053,
+        "slot": "armor",
+        "el": 4,
+        "rarity": 4,
+        "tier": 3,
+        "name": "뇌신 갑주",
+        "emoji": "🦺",
+        "def": 36,
+        "bonusSt": 28,
+        "charge": 46,
+        "chargeDist": 74,
+        "chargeW": 62,
+        "bonusRange": 3,
+        "bonusChargeDist": 3,
+        "chargeAoE": 68,
+        "bStr": 36,
+        "bDex": 34,
+        "bInt": 43,
+        "affixes": [
+          {
+            "id": "physDR",
+            "tier": 2,
+            "value": 0.16
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 2,
+            "value": 75
+          },
+          {
+            "id": "poisonRes",
+            "tier": 2,
+            "value": 0.28
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 2,
+            "value": 0.22
+          }
+        ],
+        "_implicitStat": "_iPhysDR",
+        "_implicitVal": 4.89,
+        "_implicitKo": "물리 피해감소 +X%",
+        "legendarySpecial": {
+          "ko": "피격 시 3초 쿨로 HP 5% 즉시 회복",
+          "stat": "_lArmorRegen",
+          "val": 0.05
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 0,
+        "_pickT": 1773500067015
+      },
+      "helmet": {
         "id": 1773497176353.0776,
         "slot": "helmet",
         "el": 3,
@@ -141,1060 +2017,6 @@
         "_gx": 1,
         "_gy": 0,
         "_pickT": 1773497176368
-      },
-      {
-        "id": 1773497187441.93,
-        "slot": "helmet",
-        "el": 4,
-        "rarity": 4,
-        "tier": 3,
-        "name": "전지전능의 투구",
-        "emoji": "⛑️",
-        "eDef": 15,
-        "beamDmg": 11.2,
-        "elements": [
-          {
-            "el": 4,
-            "dmg": 190
-          },
-          {
-            "el": 2,
-            "dmg": 88
-          },
-          {
-            "el": 3,
-            "dmg": 102
-          },
-          {
-            "el": 1,
-            "dmg": 95
-          }
-        ],
-        "splashR": 10,
-        "splashMul": 0.51,
-        "magicPen": 3,
-        "bonusRange": 5,
-        "bDex": 39,
-        "bStr": 34,
-        "bInt": 37,
-        "affixes": [
-          {
-            "id": "expBonus",
-            "tier": 2,
-            "value": 0.28
-          },
-          {
-            "id": "maxHPFlat",
-            "tier": 2,
-            "value": 75
-          },
-          {
-            "id": "ccRes",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "cooldownRed",
-            "tier": 2,
-            "value": -0.22
-          }
-        ],
-        "_implicitStat": "_iMaxHP",
-        "_implicitVal": 14.7,
-        "_implicitKo": "최대 HP +X",
-        "legendarySpecial": {
-          "ko": "스킬 사용 시 20% 확률로 쿨다운 미소모",
-          "stat": "_lHelmFree",
-          "val": 0.2
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 3,
-        "_gy": 0,
-        "_pickT": 1773497187456
-      },
-      {
-        "id": 1773497468699.64,
-        "slot": "ring1",
-        "el": 3,
-        "rarity": 4,
-        "tier": 4,
-        "name": "무간의 반지",
-        "emoji": "💍",
-        "eDef": 11,
-        "critRate": 5.07,
-        "critDmg": 0.17,
-        "bDex": 42,
-        "bInt": 39,
-        "bStr": 42,
-        "affixes": [
-          {
-            "id": "killChain",
-            "tier": 2,
-            "value": 0.55
-          },
-          {
-            "id": "goldBonus",
-            "tier": 2,
-            "value": 0.4
-          }
-        ],
-        "_implicitStat": "_iElemRes",
-        "_implicitVal": 14.99,
-        "_implicitKo": "원소 저항 +X%",
-        "legendarySpecial": {
-          "ko": "원소 반응 발동 시 추가 폭발 (ATK×80%)",
-          "stat": "_lRingElem",
-          "val": 0.8
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 5,
-        "_gy": 0,
-        "_pickT": 1773497468719
-      },
-      {
-        "id": 1773497785124.0115,
-        "slot": "ring2",
-        "el": 0,
-        "rarity": 4,
-        "tier": 2,
-        "name": "흑요석 반지",
-        "emoji": "💍",
-        "eDef": 6,
-        "critRate": 4.43,
-        "critDmg": 0.16,
-        "bInt": 31,
-        "bStr": 36,
-        "bDex": 34,
-        "affixes": [
-          {
-            "id": "iceRes",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "reflect",
-            "tier": 2,
-            "value": 0.15
-          }
-        ],
-        "_implicitStat": "_iElemRes",
-        "_implicitVal": 10.64,
-        "_implicitKo": "원소 저항 +X%",
-        "legendarySpecial": {
-          "ko": "처치 시 데빌포스 5% 회복",
-          "stat": "_lRingKill",
-          "val": 0.05
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 6,
-        "_gy": 0,
-        "_pickT": 1773497785138
-      },
-      {
-        "id": 1773497839955.314,
-        "slot": "belt",
-        "el": 3,
-        "rarity": 4,
-        "tier": 3,
-        "name": "나락 벨트",
-        "emoji": "🪢",
-        "def": 15,
-        "bonusSt": 27,
-        "potCd": 0.223,
-        "bonusHp": 26,
-        "bInt": 36,
-        "bStr": 40,
-        "bDex": 34,
-        "affixes": [
-          {
-            "id": "darkRes",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "maxHPPct",
-            "tier": 2,
-            "value": 0.22
-          },
-          {
-            "id": "reflect",
-            "tier": 2,
-            "value": 0.15
-          },
-          {
-            "id": "maxHPFlat",
-            "tier": 2,
-            "value": 75
-          }
-        ],
-        "_implicitStat": "_iBeltPot",
-        "_implicitVal": 7.83,
-        "_implicitKo": "물약 쿨다운 -X%",
-        "legendarySpecial": {
-          "ko": "물약 사용 시 5초간 피해 +15%",
-          "stat": "_lBeltBuff",
-          "val": 0.15
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 7,
-        "_gy": 0,
-        "_pickT": 1773497839969
-      },
-      {
-        "id": 1773497938463.2388,
-        "slot": "necklace",
-        "el": 4,
-        "rarity": 4,
-        "tier": 2,
-        "name": "뇌전 목걸이",
-        "emoji": "📿",
-        "def": 6,
-        "eDef": 10,
-        "bInt": 35,
-        "bStr": 37,
-        "bDex": 34,
-        "affixes": [
-          {
-            "id": "lightRes",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "maxHPFlat",
-            "tier": 2,
-            "value": 75
-          },
-          {
-            "id": "fireRes",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "cooldownRed",
-            "tier": 2,
-            "value": -0.22
-          }
-        ],
-        "_implicitStat": "_iMaxHPPct",
-        "_implicitVal": 11.62,
-        "_implicitKo": "최대 HP +X%",
-        "legendarySpecial": {
-          "ko": "HP 50% 이하 시 전 스킬 쿨다운 -30%",
-          "stat": "_lNeckLow",
-          "val": 0.3
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 9,
-        "_gy": 0,
-        "_pickT": 1773497938474
-      },
-      {
-        "id": 1773497941855.4746,
-        "slot": "pants",
-        "el": 1,
-        "rarity": 4,
-        "tier": 0,
-        "name": "불꽃 바지",
-        "emoji": "👖",
-        "def": 4,
-        "bonusSt": 6,
-        "bonusHp": 26,
-        "bDex": 30,
-        "bStr": 23,
-        "bInt": 23,
-        "affixes": [
-          {
-            "id": "statusClean",
-            "tier": 2,
-            "value": 2
-          },
-          {
-            "id": "ccRes",
-            "tier": 2,
-            "value": 0.32
-          }
-        ],
-        "_implicitStat": "_iStsRes",
-        "_implicitVal": 9.21,
-        "_implicitKo": "상태이상 저항 +X%",
-        "legendarySpecial": {
-          "ko": "이동 중 지속 HP 재생 (초당 HP의 1%)",
-          "stat": "_lPantsRegen",
-          "val": 0.01
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 5,
-        "_gy": 1,
-        "_pickT": 1773497941871
-      },
-      {
-        "id": 1773497949171.2908,
-        "slot": "boots",
-        "el": 4,
-        "rarity": 4,
-        "tier": 3,
-        "name": "뇌신 전투화",
-        "emoji": "👢",
-        "def": 17,
-        "spd": 0.53,
-        "bonusSt": 37,
-        "chargeDist": 50,
-        "chargeCharge": 2,
-        "bInt": 39,
-        "bStr": 41,
-        "bDex": 44,
-        "affixes": [
-          {
-            "id": "dropRate",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "dashBoost",
-            "tier": 2,
-            "value": 0.65
-          },
-          {
-            "id": "extraDodge",
-            "tier": 2,
-            "value": 2
-          },
-          {
-            "id": "movSpeed",
-            "tier": 2,
-            "value": 0.14
-          }
-        ],
-        "_implicitStat": "_iMovSpd",
-        "_implicitVal": 6.26,
-        "_implicitKo": "이동속도 +X%",
-        "legendarySpecial": {
-          "ko": "회피 직후 첫 공격 데미지 +80%",
-          "stat": "_lBootsEvade",
-          "val": 0.8
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 7,
-        "_gy": 1,
-        "_pickT": 1773497949192
-      },
-      {
-        "id": 1773498033980.1736,
-        "slot": "weapon",
-        "el": 0,
-        "rarity": 4,
-        "tier": 0,
-        "name": "녹슨 도끼",
-        "emoji": "🪓",
-        "wtype": "axe",
-        "atk": 65,
-        "spd": 1.43,
-        "wStCost": 9,
-        "wArcW": 0.85,
-        "wRange": 46,
-        "wStagger": 30,
-        "bonusRange": 2,
-        "bDex": 26,
-        "bInt": 31,
-        "bStr": 28,
-        "affixes": [
-          {
-            "id": "parryExplosion",
-            "tier": 2,
-            "value": 1.1
-          },
-          {
-            "id": "lightChain",
-            "tier": 2,
-            "value": 35
-          },
-          {
-            "id": "elemConvert",
-            "tier": 2,
-            "value": 0.55
-          },
-          {
-            "id": "elemFocus",
-            "tier": 2,
-            "value": 0.32
-          }
-        ],
-        "_implicitStat": "_iAtkPct",
-        "_implicitVal": 7.45,
-        "_implicitKo": "공격력 +X%",
-        "legendarySpecial": {
-          "ko": "출혈 대상 크리 시 잔여 DoT×300% 즉시 폭발",
-          "stat": "_lAxeBleed",
-          "val": 3
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 0,
-        "_gy": 2,
-        "_pickT": 1773498033992
-      },
-      {
-        "id": 1773498191786.2659,
-        "slot": "cape",
-        "el": 0,
-        "rarity": 4,
-        "tier": 0,
-        "name": "낡은 망토",
-        "emoji": "🧣",
-        "def": 4,
-        "eDef": 2,
-        "spd": 0,
-        "bInt": 30,
-        "bStr": 26,
-        "bDex": 33,
-        "affixes": [
-          {
-            "id": "dropRate",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "parryBonus",
-            "tier": 2,
-            "value": 0.55
-          },
-          {
-            "id": "movSpeed",
-            "tier": 2,
-            "value": 0.14
-          }
-        ],
-        "_implicitStat": "_iDashCd",
-        "_implicitVal": 10.45,
-        "_implicitKo": "회피 쿨다운 -X%",
-        "legendarySpecial": {
-          "ko": "패리 타이밍 판정 +50% 확대",
-          "stat": "_lCapeParry",
-          "val": 0.5
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 2,
-        "_gy": 2,
-        "_pickT": 1773498191804
-      },
-      {
-        "id": 1773498539653.5564,
-        "slot": "ring1",
-        "el": 0,
-        "rarity": 4,
-        "tier": 2,
-        "name": "흑요석 반지",
-        "emoji": "💍",
-        "eDef": 6,
-        "critRate": 4.62,
-        "critDmg": 0.153,
-        "bInt": 38,
-        "bStr": 41,
-        "bDex": 38,
-        "affixes": [
-          {
-            "id": "poisonRes",
-            "tier": 2,
-            "value": 0.28
-          },
-          {
-            "id": "goldBonus",
-            "tier": 2,
-            "value": 0.4
-          }
-        ],
-        "_implicitStat": "_iElemRes",
-        "_implicitVal": 10.29,
-        "_implicitKo": "원소 저항 +X%",
-        "legendarySpecial": {
-          "ko": "원소 반응 발동 시 추가 폭발 (ATK×80%)",
-          "stat": "_lRingElem",
-          "val": 0.8
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 0,
-        "_gy": 1,
-        "_pickT": 1773498539671
-      },
-      {
-        "id": 1773498672086.5515,
-        "slot": "bow",
-        "el": 0,
-        "rarity": 4,
-        "tier": 0,
-        "name": "낡은 석궁",
-        "emoji": "⚙️",
-        "btype": "crossbow",
-        "atk": 6,
-        "bowSpd": 2.2,
-        "bowStCost": 0,
-        "bowRange": 382,
-        "bowProjSpd": 11,
-        "bonusRange": 2,
-        "bowPierce": 0.19,
-        "bInt": 22,
-        "bStr": 33,
-        "bDex": 33,
-        "affixes": [
-          {
-            "id": "killChain",
-            "tier": 2,
-            "value": 0.55
-          },
-          {
-            "id": "parryBonus",
-            "tier": 2,
-            "value": 0.55
-          },
-          {
-            "id": "elemConvert",
-            "tier": 2,
-            "value": 0.55
-          },
-          {
-            "id": "elemFocus",
-            "tier": 2,
-            "value": 0.32
-          }
-        ],
-        "_implicitStat": "_iPierce",
-        "_implicitVal": 13.48,
-        "_implicitKo": "관통 확률 +X%",
-        "legendarySpecial": {
-          "ko": "치명타 시 추가 투사체 1발 발사",
-          "stat": "_lBowCrit",
-          "val": 1
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 4,
-        "_gy": 3,
-        "_pickT": 1773498672099
-      },
-      {
-        "id": 1773498871724.9983,
-        "slot": "belt",
-        "el": 0,
-        "rarity": 4,
-        "tier": 0,
-        "name": "낡은 허리띠",
-        "emoji": "🪢",
-        "def": 2,
-        "bonusSt": 9,
-        "potCd": 0.202,
-        "bonusHp": 18,
-        "bStr": 30,
-        "bInt": 25,
-        "bDex": 27,
-        "affixes": [
-          {
-            "id": "iceRes",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "maxHPFlat",
-            "tier": 2,
-            "value": 75
-          },
-          {
-            "id": "lightRes",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "maxHPPct",
-            "tier": 2,
-            "value": 0.22
-          }
-        ],
-        "_implicitStat": "_iBeltPot",
-        "_implicitVal": 5.36,
-        "_implicitKo": "물약 쿨다운 -X%",
-        "legendarySpecial": {
-          "ko": "물약 사용 시 5초간 피해 +15%",
-          "stat": "_lBeltBuff",
-          "val": 0.15
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 6,
-        "_gy": 3,
-        "_pickT": 1773498871748
-      },
-      {
-        "id": 1773498947341.324,
-        "slot": "ring1",
-        "el": 0,
-        "rarity": 4,
-        "tier": 2,
-        "name": "흑요석 반지",
-        "emoji": "💍",
-        "eDef": 6,
-        "critRate": 4.06,
-        "critDmg": 0.163,
-        "bStr": 32,
-        "bDex": 42,
-        "bInt": 39,
-        "affixes": [
-          {
-            "id": "goldBonus",
-            "tier": 2,
-            "value": 0.4
-          },
-          {
-            "id": "reflect",
-            "tier": 2,
-            "value": 0.15
-          }
-        ],
-        "_implicitStat": "_iElemRes",
-        "_implicitVal": 11.38,
-        "_implicitKo": "원소 저항 +X%",
-        "legendarySpecial": {
-          "ko": "원소 반응 발동 시 추가 폭발 (ATK×80%)",
-          "stat": "_lRingElem",
-          "val": 0.8
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 9,
-        "_gy": 1,
-        "_pickT": 1773498947357
-      },
-      {
-        "id": 1773498952124.5156,
-        "slot": "helmet",
-        "el": 3,
-        "rarity": 4,
-        "tier": 3,
-        "name": "전지전능의 투구",
-        "emoji": "⛑️",
-        "eDef": 17,
-        "beamDmg": 11.2,
-        "elements": [
-          {
-            "el": 3,
-            "dmg": 190
-          },
-          {
-            "el": 5,
-            "dmg": 90
-          },
-          {
-            "el": 4,
-            "dmg": 103
-          },
-          {
-            "el": 1,
-            "dmg": 95
-          }
-        ],
-        "splashR": 10,
-        "splashMul": 0.62,
-        "magicPen": 3,
-        "bonusRange": 5,
-        "bStr": 43,
-        "bInt": 46,
-        "bDex": 37,
-        "affixes": [
-          {
-            "id": "ccRes",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "maxHPFlat",
-            "tier": 2,
-            "value": 75
-          },
-          {
-            "id": "barrier",
-            "tier": 2,
-            "value": 45
-          },
-          {
-            "id": "cooldownRed",
-            "tier": 2,
-            "value": -0.22
-          }
-        ],
-        "_implicitStat": "_iMaxHP",
-        "_implicitVal": 25.95,
-        "_implicitKo": "최대 HP +X",
-        "legendarySpecial": {
-          "ko": "스킬 사용 시 20% 확률로 쿨다운 미소모",
-          "stat": "_lHelmFree",
-          "val": 0.2
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 8,
-        "_gy": 3,
-        "_pickT": 1773498952143
-      },
-      {
-        "id": 1773498982309.8093,
-        "slot": "belt",
-        "el": 2,
-        "rarity": 4,
-        "tier": 0,
-        "name": "냉기 허리띠",
-        "emoji": "🪢",
-        "def": 2,
-        "bonusSt": 8,
-        "potCd": 0.203,
-        "bonusHp": 20,
-        "bDex": 26,
-        "bInt": 29,
-        "bStr": 30,
-        "affixes": [
-          {
-            "id": "poisonRes",
-            "tier": 2,
-            "value": 0.28
-          },
-          {
-            "id": "maxHPPct",
-            "tier": 2,
-            "value": 0.22
-          },
-          {
-            "id": "iceRes",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "maxHPFlat",
-            "tier": 2,
-            "value": 75
-          }
-        ],
-        "_implicitStat": "_iBeltPot",
-        "_implicitVal": 3.74,
-        "_implicitKo": "물약 쿨다운 -X%",
-        "legendarySpecial": {
-          "ko": "물약 사용 시 5초간 피해 +15%",
-          "stat": "_lBeltBuff",
-          "val": 0.15
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 2,
-        "_gy": 4,
-        "_pickT": 1773498982328
-      },
-      {
-        "id": 1773499315720.9302,
-        "slot": "necklace",
-        "el": 3,
-        "rarity": 4,
-        "tier": 2,
-        "name": "심연 목걸이",
-        "emoji": "📿",
-        "def": 7,
-        "eDef": 11,
-        "bInt": 38,
-        "bDex": 38,
-        "bStr": 36,
-        "affixes": [
-          {
-            "id": "poisonRes",
-            "tier": 2,
-            "value": 0.28
-          },
-          {
-            "id": "elemFocus",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "iceRes",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "maxHPFlat",
-            "tier": 2,
-            "value": 75
-          }
-        ],
-        "_implicitStat": "_iMaxHPPct",
-        "_implicitVal": 6.85,
-        "_implicitKo": "최대 HP +X%",
-        "legendarySpecial": {
-          "ko": "HP 50% 이하 시 전 스킬 쿨다운 -30%",
-          "stat": "_lNeckLow",
-          "val": 0.3
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 4,
-        "_gy": 2,
-        "_pickT": 1773499315736
-      }
-    ],
-    "equipped": {
-      "weapon": {
-        "id": 1773491403754.4912,
-        "slot": "weapon",
-        "el": 0,
-        "rarity": 4,
-        "tier": 3,
-        "name": "심판의 검",
-        "emoji": "⚔️",
-        "wtype": "sword",
-        "atk": 103,
-        "spd": 2.2,
-        "wStCost": 6,
-        "wArcW": 0.95,
-        "wRange": 51,
-        "wStagger": 17,
-        "bonusRange": 3,
-        "bStr": 34,
-        "bInt": 45,
-        "bDex": 45,
-        "affixes": [
-          {
-            "id": "elemConvert",
-            "tier": 2,
-            "value": 0.55
-          },
-          {
-            "id": "fireDot",
-            "tier": 2,
-            "value": 26
-          },
-          {
-            "id": "killChain",
-            "tier": 2,
-            "value": 0.55
-          },
-          {
-            "id": "iceDot",
-            "tier": 2,
-            "value": 18
-          }
-        ],
-        "_implicitStat": "_iAtkPct",
-        "_implicitVal": 11.53,
-        "_implicitKo": "공격력 +X%",
-        "legendarySpecial": {
-          "ko": "5타 콤보 완성 시 데빌포스 20% 즉시 충전",
-          "stat": "_lSwordCombo",
-          "val": 0.2
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 0,
-        "_gy": 0,
-        "_pickT": 1773491403768
-      },
-      "shield": {
-        "id": 1773496333003.4983,
-        "slot": "shield",
-        "el": 0,
-        "rarity": 4,
-        "tier": 3,
-        "name": "미스릴 방패",
-        "emoji": "🛡️",
-        "bonusRange": 3,
-        "blockRate": 90,
-        "shieldWt": 9,
-        "atk": 20,
-        "def": 25,
-        "stagger": 85,
-        "bInt": 41,
-        "bStr": 42,
-        "bDex": 46,
-        "affixes": [
-          {
-            "id": "physDR",
-            "tier": 2,
-            "value": 0.16
-          },
-          {
-            "id": "counterHit",
-            "tier": 2,
-            "value": 0.4
-          }
-        ],
-        "_implicitStat": "_iBlockPct",
-        "_implicitVal": 6.15,
-        "_implicitKo": "방어율 +X%",
-        "legendarySpecial": {
-          "ko": "패리 성공 시 반격 데미지 ×2",
-          "stat": "_lShieldParry",
-          "val": 2
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 2,
-        "_gy": 2,
-        "_pickT": 1773496333018
-      },
-      "boots": {
-        "id": 1773496209971.1067,
-        "slot": "boots",
-        "el": 0,
-        "rarity": 4,
-        "tier": 2,
-        "name": "흑요석 전투화",
-        "emoji": "👢",
-        "def": 12,
-        "spd": 0.35,
-        "bonusSt": 30,
-        "chargeDist": 44,
-        "chargeCharge": 2,
-        "bStr": 36,
-        "bDex": 37,
-        "bInt": 42,
-        "affixes": [
-          {
-            "id": "extraDodge",
-            "tier": 2,
-            "value": 2
-          },
-          {
-            "id": "dashBoost",
-            "tier": 2,
-            "value": 0.65
-          },
-          {
-            "id": "goldBonus",
-            "tier": 2,
-            "value": 0.4
-          },
-          {
-            "id": "movSpeed",
-            "tier": 2,
-            "value": 0.14
-          }
-        ],
-        "_implicitStat": "_iMovSpd",
-        "_implicitVal": 4.43,
-        "_implicitKo": "이동속도 +X%",
-        "legendarySpecial": {
-          "ko": "회피 직후 첫 공격 데미지 +80%",
-          "stat": "_lBootsEvade",
-          "val": 0.8
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 0,
-        "_gy": 2,
-        "_pickT": 1773496209991
-      },
-      "armor": {
-        "id": 1773490561471.8953,
-        "slot": "armor",
-        "el": 1,
-        "rarity": 1,
-        "tier": 0,
-        "name": "불꽃 갑옷",
-        "emoji": "🦺",
-        "def": 3,
-        "bonusSt": 4,
-        "charge": 9,
-        "chargeDist": 26,
-        "chargeW": 13,
-        "bonusRange": 1,
-        "bonusChargeDist": 1,
-        "affixes": [
-          {
-            "id": "maxHPFlat",
-            "tier": 0,
-            "value": 25
-          }
-        ],
-        "_implicitStat": "_iPhysDR",
-        "_implicitVal": 7.15,
-        "_implicitKo": "물리 피해감소 +X%",
-        "legendarySpecial": null,
-        "reqLv": 0,
-        "itemLv": 0,
-        "_gx": 0,
-        "_gy": 0
-      },
-      "helmet": {
-        "id": 1773493972637.1091,
-        "slot": "helmet",
-        "el": 4,
-        "rarity": 4,
-        "tier": 3,
-        "name": "전지전능의 투구",
-        "emoji": "⛑️",
-        "eDef": 18,
-        "beamDmg": 11.2,
-        "elements": [
-          {
-            "el": 4,
-            "dmg": 190
-          },
-          {
-            "el": 2,
-            "dmg": 91
-          },
-          {
-            "el": 1,
-            "dmg": 96
-          },
-          {
-            "el": 5,
-            "dmg": 84
-          }
-        ],
-        "splashR": 10,
-        "splashMul": 0.54,
-        "magicPen": 3,
-        "bonusRange": 5,
-        "bStr": 33,
-        "bInt": 40,
-        "bDex": 36,
-        "affixes": [
-          {
-            "id": "barrier",
-            "tier": 2,
-            "value": 45
-          },
-          {
-            "id": "maxHPFlat",
-            "tier": 2,
-            "value": 75
-          },
-          {
-            "id": "expBonus",
-            "tier": 2,
-            "value": 0.28
-          },
-          {
-            "id": "cooldownRed",
-            "tier": 2,
-            "value": -0.22
-          }
-        ],
-        "_implicitStat": "_iMaxHP",
-        "_implicitVal": 27.22,
-        "_implicitKo": "최대 HP +X",
-        "legendarySpecial": {
-          "ko": "스킬 사용 시 20% 확률로 쿨다운 미소모",
-          "stat": "_lHelmFree",
-          "val": 0.2
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 2,
-        "_gy": 0,
-        "_pickT": 1773493972654
       },
       "bow": {
         "id": 1773495355653.14,
@@ -1294,108 +2116,221 @@
         "_pickT": 1773495528011
       },
       "pants": {
-        "id": 1773490561471.133,
+        "id": 1773499662219.6733,
         "slot": "pants",
-        "el": 0,
-        "rarity": 0,
-        "tier": 0,
-        "name": "천 바지",
+        "el": 4,
+        "rarity": 4,
+        "tier": 3,
+        "name": "뇌신 각반",
         "emoji": "👖",
-        "def": 2,
-        "bonusSt": 2,
-        "bonusHp": 5,
-        "affixes": [],
-        "_implicitStat": "_iStsRes",
-        "_implicitVal": 7.82,
-        "_implicitKo": "상태이상 저항 +X%",
-        "legendarySpecial": null,
-        "reqLv": 0,
-        "itemLv": 0
-      },
-      "necklace": {
-        "id": 1773490561471.05,
-        "slot": "necklace",
-        "el": 0,
-        "rarity": 0,
-        "tier": 0,
-        "name": "낡은 부적",
-        "emoji": "📿",
-        "def": 0,
-        "eDef": 1,
-        "affixes": [],
-        "_implicitStat": "_iMaxHPPct",
-        "_implicitVal": 11.28,
-        "_implicitKo": "최대 HP +X%",
-        "legendarySpecial": null,
-        "reqLv": 0,
-        "itemLv": 0
-      },
-      "ring1": {
-        "id": 1773490561471.0547,
-        "slot": "ring1",
-        "el": 0,
-        "rarity": 0,
-        "tier": 0,
-        "name": "녹슨 반지",
-        "emoji": "💍",
-        "eDef": 1,
-        "critRate": 0.51,
-        "affixes": [],
-        "_implicitStat": "_iElemRes",
-        "_implicitVal": 13.18,
-        "_implicitKo": "원소 저항 +X%",
-        "legendarySpecial": null,
-        "reqLv": 0,
-        "itemLv": 0
-      },
-      "ring2": {
-        "id": 1773490561471.1028,
-        "slot": "ring2",
-        "el": 0,
-        "rarity": 0,
-        "tier": 0,
-        "name": "녹슨 반지",
-        "emoji": "💍",
-        "eDef": 1,
-        "critRate": 0.5,
-        "affixes": [],
-        "_implicitStat": "_iElemRes",
-        "_implicitVal": 13.45,
-        "_implicitKo": "원소 저항 +X%",
-        "legendarySpecial": null,
-        "reqLv": 0,
-        "itemLv": 0
-      },
-      "cape": {
-        "id": 1773490561471.1072,
-        "slot": "cape",
-        "el": 1,
-        "rarity": 1,
-        "tier": 0,
-        "name": "불꽃 망토",
-        "emoji": "🧣",
-        "def": 2,
-        "eDef": 1,
-        "spd": 0,
-        "bStr": 10,
+        "def": 22,
+        "bonusSt": 28,
+        "bonusHp": 40,
+        "bStr": 40,
+        "bDex": 46,
+        "bInt": 39,
         "affixes": [
           {
+            "id": "potionPower",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "extraDodge",
+            "tier": 2,
+            "value": 2
+          }
+        ],
+        "_implicitStat": "_iStsRes",
+        "_implicitVal": 6.86,
+        "_implicitKo": "상태이상 저항 +X%",
+        "legendarySpecial": {
+          "ko": "이동 중 지속 HP 재생 (초당 HP의 1%)",
+          "stat": "_lPantsRegen",
+          "val": 0.01
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 4,
+        "_gy": 0,
+        "_pickT": 1773499662231
+      },
+      "necklace": {
+        "id": 1773496764705.0337,
+        "slot": "necklace",
+        "el": 4,
+        "rarity": 4,
+        "tier": 3,
+        "name": "뇌신 목걸이",
+        "emoji": "📿",
+        "def": 8,
+        "eDef": 14,
+        "bInt": 45,
+        "bStr": 46,
+        "bDex": 37,
+        "affixes": [
+          {
+            "id": "iceRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "elemFocus",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "elemConvert",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 2,
+            "value": 75
+          }
+        ],
+        "_implicitStat": "_iMaxHPPct",
+        "_implicitVal": 8.9,
+        "_implicitKo": "최대 HP +X%",
+        "legendarySpecial": {
+          "ko": "HP 50% 이하 시 전 스킬 쿨다운 -30%",
+          "stat": "_lNeckLow",
+          "val": 0.3
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 0,
+        "_pickT": 1773496764724
+      },
+      "ring1": {
+        "id": 1773497468699.64,
+        "slot": "ring1",
+        "el": 3,
+        "rarity": 4,
+        "tier": 4,
+        "name": "무간의 반지",
+        "emoji": "💍",
+        "eDef": 11,
+        "critRate": 5.07,
+        "critDmg": 0.17,
+        "bDex": 42,
+        "bInt": 39,
+        "bStr": 42,
+        "affixes": [
+          {
+            "id": "killChain",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "goldBonus",
+            "tier": 2,
+            "value": 0.4
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 14.99,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "원소 반응 발동 시 추가 폭발 (ATK×80%)",
+          "stat": "_lRingElem",
+          "val": 0.8
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 5,
+        "_gy": 0,
+        "_pickT": 1773497468719
+      },
+      "ring2": {
+        "id": 1773497785124.0115,
+        "slot": "ring2",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "흑요석 반지",
+        "emoji": "💍",
+        "eDef": 6,
+        "critRate": 4.43,
+        "critDmg": 0.16,
+        "bInt": 31,
+        "bStr": 36,
+        "bDex": 34,
+        "affixes": [
+          {
+            "id": "iceRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "reflect",
+            "tier": 2,
+            "value": 0.15
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 10.64,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "처치 시 데빌포스 5% 회복",
+          "stat": "_lRingKill",
+          "val": 0.05
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 6,
+        "_gy": 0,
+        "_pickT": 1773497785138
+      },
+      "cape": {
+        "id": 1773498191786.2659,
+        "slot": "cape",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "낡은 망토",
+        "emoji": "🧣",
+        "def": 4,
+        "eDef": 2,
+        "spd": 0,
+        "bInt": 30,
+        "bStr": 26,
+        "bDex": 33,
+        "affixes": [
+          {
+            "id": "dropRate",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "parryBonus",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
             "id": "movSpeed",
-            "tier": 0,
-            "value": 0.05
+            "tier": 2,
+            "value": 0.14
           }
         ],
         "_implicitStat": "_iDashCd",
-        "_implicitVal": 6.44,
+        "_implicitVal": 10.45,
         "_implicitKo": "회피 쿨다운 -X%",
-        "legendarySpecial": null,
+        "legendarySpecial": {
+          "ko": "패리 타이밍 판정 +50% 확대",
+          "stat": "_lCapeParry",
+          "val": 0.5
+        },
         "reqLv": 0,
-        "itemLv": 0,
-        "_gx": 0,
-        "_gy": 0
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 2,
+        "_pickT": 1773498191804
       },
       "belt": {
-        "id": 1773495386932.324,
+        "id": 1773497839955.314,
         "slot": "belt",
         "el": 3,
         "rarity": 4,
@@ -1404,24 +2339,14 @@
         "emoji": "🪢",
         "def": 15,
         "bonusSt": 27,
-        "potCd": 0.239,
+        "potCd": 0.223,
         "bonusHp": 26,
-        "bDex": 40,
-        "bStr": 32,
-        "bInt": 42,
+        "bInt": 36,
+        "bStr": 40,
+        "bDex": 34,
         "affixes": [
           {
-            "id": "fireRes",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "maxHPFlat",
-            "tier": 2,
-            "value": 75
-          },
-          {
-            "id": "lightRes",
+            "id": "darkRes",
             "tier": 2,
             "value": 0.32
           },
@@ -1429,10 +2354,20 @@
             "id": "maxHPPct",
             "tier": 2,
             "value": 0.22
+          },
+          {
+            "id": "reflect",
+            "tier": 2,
+            "value": 0.15
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 2,
+            "value": 75
           }
         ],
         "_implicitStat": "_iBeltPot",
-        "_implicitVal": 7.27,
+        "_implicitVal": 7.83,
         "_implicitKo": "물약 쿨다운 -X%",
         "legendarySpecial": {
           "ko": "물약 사용 시 5초간 피해 +15%",
@@ -1441,9 +2376,9 @@
         },
         "reqLv": 0,
         "itemLv": 100,
-        "_gx": 8,
+        "_gx": 7,
         "_gy": 0,
-        "_pickT": 1773495386949
+        "_pickT": 1773497839969
       }
     }
   },
@@ -1476,7 +2411,7 @@
     },
     {
       "type": "st",
-      "count": 4
+      "count": 34
     },
     {
       "type": null,
@@ -1489,10 +2424,10 @@
   ],
   "game": {
     "stage": 1,
-    "kills": 6583,
-    "mats": 89225
+    "kills": 13928,
+    "mats": 217575
   },
-  "bagMax": 96,
+  "bagMax": 300,
   "hellCleared": [],
   "storage": {
     "0": []
@@ -1509,36 +2444,38 @@
     "hp": 1
   },
   "skills": {
-    "holyDome": 5,
-    "whirlwind": 6,
+    "holyDome": 10,
+    "whirlwind": 1,
     "elemMissile": 5,
     "maliceSwipe": 1,
-    "detonate": 6,
+    "detonate": 1,
     "fanShot": 5,
     "omniBeam": 5,
     "holyBlast": 1,
     "chargeBoost": 1,
-    "plagueBurst": 4,
+    "plagueBurst": 10,
     "galeSlash": 1,
     "maliceStorm": 1,
     "bladeDash": 1,
-    "giantSlam": 6,
+    "giantSlam": 3,
     "ghostWalk": 1,
-    "maliceHunt": 4,
+    "maliceHunt": 10,
     "guardian": 1,
     "boneWall": 1,
     "iceOrb": 1,
-    "maliceMortar": 1
+    "maliceMortar": 1,
+    "magicBlink": 1
   },
   "fused": {
     "sixFuse": true,
     "elemFuse": true,
-    "dimHalf": true,
-    "whirlDet": true,
     "plagueFuse": true,
     "bladeFuse": true,
     "boneStorm": true,
-    "slamStorm": true
+    "dimHalf": true,
+    "dimBreach": true,
+    "whirlDet": true,
+    "iceMortar": true
   },
   "skProf": {
     "maliceSwipe": 30,
@@ -1548,19 +2485,20 @@
     "detonate": 30,
     "omniBeam": 15,
     "fanShot": 15,
-    "holyBlast": 8,
+    "holyBlast": 9,
     "chargeBoost": 30,
     "plagueBurst": 30,
     "galeSlash": 30,
-    "maliceStorm": 28,
+    "maliceStorm": 30,
     "bladeDash": 15,
-    "giantSlam": 9,
+    "giantSlam": 11,
     "ghostWalk": 15,
     "guardian": 15,
-    "maliceHunt": 19
+    "maliceHunt": 30,
+    "maliceMortar": 1
   },
-  "activeChargeSk": "galeSlash",
-  "activeBowSk": "fanShot",
+  "activeChargeSk": "magicBlink",
+  "activeBowSk": "maliceMortar",
   "activeMagicSk": "omniBeam",
   "activeLMBSk": "whirlwind",
   "activeRMBSk": "shieldBlock",
@@ -1570,9 +2508,9 @@
     "maliceStorm",
     "maliceHunt",
     null,
-    "holyDome",
+    "giantSlam",
     null,
-    null
+    "holyDome"
   ],
   "ultSlot": "holyBlast"
 }
