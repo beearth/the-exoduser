@@ -626,10 +626,10 @@ canvas{display:block;position:fixed;inset:0}
   <div><b style="color:#fff">SPACE</b> — 석궁 발사 / 스킬5</div>
   <div><b style="color:#fff">SHIFT</b> — 돌진 공격</div>
   <div><b style="color:#fff">E</b> — 마법 (탭=투사체, 홀드=빔)</div>
-  <div><b style="color:#fff">F</b> — 데빌포스 흡수</div>
+  <div><b style="color:#fff">Q</b> — 데빌포스 흡수</div>
   <div><b style="color:#fff">R</b> — 아이템 줍기</div>
   <div><b style="color:#fff">1~4</b> — 물약 / 스킬슬롯</div>
-  <div><b style="color:#fff">F / Z / L-CTRL</b> — 스킬슬롯 5 / 필살기 / CT스킬</div>
+  <div><b style="color:#fff">Q / Z / L-CTRL</b> — 스킬슬롯 5 / 필살기 / CT스킬</div>
   <div><b style="color:#fff">L</b> — 스킬 슬롯 배정</div>
   <div><b style="color:#fff">K</b> — 스킬  |  <b style="color:#fff">C</b> — 능력치</div>
   <div><b style="color:#fff">TAB</b> — 인벤토리  |  <b style="color:#fff">G</b> — 대장간</div>
@@ -911,14 +911,14 @@ canvas{display:block;position:fixed;inset:0}
         <div style="margin-bottom:3px"><span class="tkey">SHIFT</span> 돌진 공격</div>
         <div style="margin-bottom:3px"><span class="tkey">SPACE</span> 석궁 발사</div>
         <div style="margin-bottom:3px"><span class="tkey">E</span> 마법 (탭=투사체, 홀드=빔)</div>
-        <div><span class="tkey">F</span> 데빌포스 흡수 (HP→에너지)</div>
+        <div><span class="tkey">Q</span> 데빌포스 흡수 (HP→에너지)</div>
       </div>
       <div style="border-bottom:1px solid #332211;padding:8px 0 8px 12px">
         <div style="color:#886644;font-weight:700;margin-bottom:6px;font-size:.9rem;letter-spacing:.1em">이동 / 상호작용</div>
         <div style="margin-bottom:3px"><span class="tkey">W A S D</span> 이동</div>
         <div style="margin-bottom:3px"><span class="tkey">R</span> 아이템 줍기</div>
         <div style="margin-bottom:3px"><span class="tkey">1~4</span> 물약 / 스킬슬롯</div>
-        <div style="margin-bottom:3px"><span class="tkey">F</span> 스킬슬롯 5</div>
+        <div style="margin-bottom:3px"><span class="tkey">Q</span> 스킬슬롯 5</div>
         <div style="margin-bottom:3px"><span class="tkey">Z</span> 필살기</div>
         <div style="margin-bottom:3px"><span class="tkey">L-CTRL</span> CT스킬 (유령걸음/얼음보주)</div>
         <div>&nbsp;</div>
@@ -2300,6 +2300,28 @@ const PETS={
   crow:{name:'Crow',col:'#111',pickR:2400,spd:22,orbR:38,orbY:-22,desc:'Air pickup helper'},
   cat:{name:'Cat',col:'#111',pickR:3000,spd:24,orbR:34,orbY:10,desc:'Ground pickup + auto-disassemble'}
 };
+// ── 펫 스프라이트 프리로드 ──
+const _PET_DIRS=['south','south-west','west','north-west','north','north-east','east','south-east'];
+const _PET_IMGS={crow:{},cat:{}};
+// 까마귀: 8방향 정적
+_PET_DIRS.forEach(d=>{const i=new Image();i.src='img/crow/'+d+'.png';_PET_IMGS.crow[d]=i});
+// 고양이: 8방향 정적(idle fallback) + idle 애니 + run 애니
+_PET_IMGS.cat._static={};_PET_IMGS.cat._idle={};_PET_IMGS.cat._run={};
+_PET_DIRS.forEach(d=>{const i=new Image();i.src='img/cat_pet/'+d+'.png';_PET_IMGS.cat._static[d]=i});
+// 고양이 idle 애니 (south 8프레임, south-west 2프레임)
+['south','south-west'].forEach(d=>{_PET_IMGS.cat._idle[d]=[];
+  const n=d==='south'?8:2;for(let f=0;f<n;f++){const i=new Image();i.src='img/cat_pet_anim/animations/idle/'+d+'/frame_'+String(f).padStart(3,'0')+'.png';_PET_IMGS.cat._idle[d].push(i)}});
+// 고양이 run 애니 (south/south-west/west 4프레임씩) — 미러로 east/south-east/north-west/north-east 커버
+['south','south-west','west'].forEach(d=>{_PET_IMGS.cat._run[d]=[];
+  for(let f=0;f<4;f++){const i=new Image();i.src='img/cat_pet_anim/animations/running-4-frames/'+d+'/frame_'+String(f).padStart(3,'0')+'.png';_PET_IMGS.cat._run[d].push(i)}});
+// 방향 인덱스→이름 (atan2 기반 8방향 변환)
+function _petDir8(dx,dy){if(dx===0&&dy===0)return 'south';const a=Math.atan2(dy,dx);const idx=((Math.round(a/(Math.PI/4))%8)+8)%8;return ['east','south-east','south','south-west','west','north-west','north','north-east'][idx]}
+// run 미러 매핑: east↔west 미러, south-east↔south-west 미러, north-east/north-west→west 미러/원본
+const _CAT_RUN_MIRROR={'east':'west','south-east':'south-west','north-east':'south-west','north-west':'south-west','north':'south','south':'south','south-west':'south-west','west':'west'};
+const _CAT_RUN_FLIP={'east':true,'south-east':true,'north-east':true};
+// idle 미러: south-east→south-west 미러, east/west→south-west, north계→south
+const _CAT_IDLE_MIRROR={'south':'south','south-west':'south-west','south-east':'south-west','west':'south-west','east':'south-west','north-west':'south','north-east':'south','north':'south'};
+const _CAT_IDLE_FLIP={'south-east':true,'east':true,'north-east':true};
 const DIFF_MUL=[.5,.75,1,1.4,2]; // enemy hp/atk multiplier
 const DIFF_MOB=[.6,.8,1,1.4,1.8]; // enemy count multiplier
 const DIFF_NAME=['매우 쉬움','쉬움','보통','어려움','지옥'];
@@ -3263,9 +3285,9 @@ addEventListener('keydown',e=>{
   if(e.code==='Space'&&G.on&&!G.paused&&SKILL_SLOTS[4]){
     if(_dispatchSkillSlot(4,'Space')){K['Space']=false;return}
   }
-  // F키 스킬슬롯 (SKILL_SLOTS[5])
-  if(e.code==='KeyF'&&G.on&&!G.paused&&SKILL_SLOTS[5]){
-    if(_dispatchSkillSlot(5,'KeyF')){K['KeyF']=false;return}
+  // Q키 스킬슬롯 (SKILL_SLOTS[5])
+  if(e.code==='KeyQ'&&G.on&&!G.paused&&SKILL_SLOTS[5]){
+    if(_dispatchSkillSlot(5,'KeyQ')){K['KeyQ']=false;return}
   }
   // Ctrl키 고정스킬 (유령걸음/얼음보주)
   if(e.code==='ControlLeft'&&G.on&&!G.paused&&P.activeCtSk){
@@ -8530,7 +8552,7 @@ const POT={
   hp:{name:'악의 추출',emoji:'👿',col:'#cc2200',colG:'#ff4433',base:100,per:20,desc:'악의를 소모해 지옥의 힘으로 회복합니다 (+100 HP)'},
 };
 let QSLOTS=[{type:'hp',count:1},{type:null,count:0},{type:null,count:0},{type:null,count:0}];
-let SKILL_SLOTS=[null,null,null,null,null,null]; // 스킬슬롯 (1~4,SP,F)
+let SKILL_SLOTS=[null,null,null,null,null,null]; // 스킬슬롯 (1~4,SP,Q)
 let ULT_SLOT=null; // 필살기 슬롯 (R키)
 let qsCooldown=[0,0,0,0]; // per-slot cooldown frames
 let autoPotCd=0; // auto-potion cooldown (5s = 300f)
@@ -8838,7 +8860,7 @@ function updateQS(){
         el.style.boxShadow=_skOnCd?'none':'inset 0 0 10px rgba(204,102,34,.3)';
         const _fuseNm=(_ssid==='maliceHunt'&&P.skills.plagueBurst>=1&&_isFused('plagueFuse'))?'독혈해방':(_ssid==='maliceHunt'&&P.skills.guardian>=1&&_isFused('bladeFuse'))?'악의해방':(_ssid==='maliceMortar'&&P.skills.iceOrb>=1&&_isFused('iceMortar'))?'얼음포격':(_ssid==='fanShot'&&P.skills.omniBeam>=1&&_isFused('sixFuse'))?'육선포':(_ssid==='whirlwind'&&P.skills.detonate>=1&&_isFused('whirlDet'))?'회전기폭':(_ssid==='maliceStorm'&&P.skills.boneWall>=1&&_isFused('boneStorm'))?'해골폭풍':(_ssid==='maliceSwipe'&&P.skills.shieldThrow>=1&&_isFused('shieldFuse'))?'철벽방패':null;
         const _qsSkNm=_fuseNm||_ssk.name;
-        const _skKeyLbl=i<4?(i+1):i===4?'SP':'F';
+        const _skKeyLbl=i<4?(i+1):i===4?'SP':'Q';
         el.innerHTML=`<span class="qs-key" style="color:${_skOnCd?'#666':'#ff8844'};${i>=4?'font-size:.55rem':''}">${_skKeyLbl}</span><span style="font-size:16px;${_skOnCd?'opacity:.4':''}">${_ssk.emoji||'🔮'}</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:${_skOnCd?'#666':'#cc8844'};font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 2px">${_qsSkNm}</div>${_skStkTxt}${_skCdOverlay}${_skCdTxt}`;
         continue;
       } else { SKILL_SLOTS[i]=null; } // 미습득 스킬 제거
@@ -11080,7 +11102,7 @@ function update(){
     else if(isHeld('beam')&&P.mp>=mpCost('magic')){
       const _amsk=P.activeMagicSk||'beam';
       const _isSix=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
-      if(_isSix||_amsk==='omniBeam'){if((P._beamE||0)<36){showPH('빔 충전 중!','#8888ff')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;SFX.beamStart();if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3','voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*5)],1,_r(1,.15))}}}
+      if((_isSix||_amsk==='omniBeam')&&_amsk!=='elemMissile'){if((P._beamE||0)<36){showPH('빔 충전 중!','#8888ff')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;SFX.beamStart();if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3','voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*5)],1,_r(1,.15))}}}
       else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
     }
     // Forge — 게임루프 상단에서 처리 (paused 상태에서도 동작)
@@ -11401,7 +11423,7 @@ function update(){
       else if(isHeld('beam')&&P.mp>=mpCost('magic')){
         const _amsk2=P.activeMagicSk||'beam';
         const _isSix2=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
-        if(_isSix2||_amsk2==='omniBeam'){if((P._beamE||0)<36){showPH('빔 충전 중!','#8888ff')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;SFX.beamStart();if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3','voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*5)],1,_r(1,.15))}}}
+        if((_isSix2||_amsk2==='omniBeam')&&_amsk2!=='elemMissile'){if((P._beamE||0)<36){showPH('빔 충전 중!','#8888ff')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;SFX.beamStart();if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3','voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*5)],1,_r(1,.15))}}}
         else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
       }
       else if(P.st2<=0){
@@ -11455,7 +11477,7 @@ function update(){
       if(isHeld('beam')&&P.mp>=mpCost('magic')){
         const _amsk3=P.activeMagicSk||'beam';
         const _isSix3=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
-        if(_isSix3||_amsk3==='omniBeam'){if((P._beamE||0)<36){showPH('빔 충전 중!','#8888ff')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;SFX.beamStart();if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3','voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*5)],1,_r(1,.15))}}}
+        if((_isSix3||_amsk3==='omniBeam')&&_amsk3!=='elemMissile'){if((P._beamE||0)<36){showPH('빔 충전 중!','#8888ff')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;SFX.beamStart();if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3','voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*5)],1,_r(1,.15))}}}
         else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
       }
       else P.s='idle';
@@ -16963,6 +16985,7 @@ function _updateOnePet(key){
   }
   // 이동 (벽 무시, 델타타임 적용)
   const dx=pet.tx-pet.x,dy=pet.ty-pet.y,d=Math.sqrt(dx*dx+dy*dy);
+  pet._pdx=dx;pet._pdy=dy;pet._moving=d>5;
   if(d>3){const s=Math.min(def.spd*_dtSp,d*.12);pet.x+=dx/d*s;pet.y+=dy/d*s}
   else{pet.x=pet.tx;pet.y=pet.ty}
   // 언스턱: 너무 멀어지면 플레이어 근처로 복귀
@@ -17933,27 +17956,7 @@ function _detonateBlast(label,elSrc){
       addTxt(e.x,e.y-18,'💫 기절!','#ffcc00',32);
     }
   }
-  // 3초 차지 시 폭발 범위 내 적 투사체 패링(반사) — 빨콩→파랑콩 변환
-  if(_chgBars>=3){
-    for(let _pi=projs.length-1;_pi>=0;_pi--){
-      const p=projs[_pi];if(!p||p.friendly)continue;
-      if(dst(P.x,P.y,p.x,p.y)<boomR){
-        if(p.redBean){
-          let _dtTgt=null,_dtMin=600;
-          for(let _ri=0;_ri<ens.length;_ri++){const e=ens[_ri];if(!e.alive)continue;const dd=dst(P.x,P.y,e.x,e.y);if(dd<_dtMin){_dtMin=dd;_dtTgt=e}}
-          if(_dtTgt){const _dtA=Math.atan2(_dtTgt.y-P.y,_dtTgt.x-P.x);p.vx=Math.cos(_dtA)*3.5;p.vy=Math.sin(_dtA)*3.5}
-          else{p.vx*=-2;p.vy*=-2}
-          p.friendly=true;p.life=240;p.ml=240;p.bomb=true;p.bombR=160;p.bombAtk=p.dmg*4;
-          p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;
-        }else{
-          p.vx*=-1.5;p.vy*=-1.5;p.friendly=true;
-          p.dmg=~~(p.dmg*2);p.life=60;p.ml=60;
-        }
-        addParts(p.x,p.y,'#ff4400',4);
-      }
-    }
-    addTxt(P.x,P.y-50,'전탄 반사!','#ffaa00',50);
-  }
+  // 폭발 패링(반사) 삭제 — 패링은 기본 패링 시스템에서만 작동
   P.iframes=Math.max(P.iframes,30);
   P.parryBank=0;P.parryT=0;
 }
@@ -26334,31 +26337,43 @@ function drawP(){
     // 그림자
     X.globalAlpha=isCrow?.08:.15;X.fillStyle='#000';X.beginPath();
     X.ellipse(px,py+(isCrow?10:3),isCrow?4:3,1.2,0,0,Math.PI*2);X.fill();
-    X.globalAlpha=1;X.fillStyle='#111';
+    X.globalAlpha=1;
+    // 스프라이트 렌더링
+    const _pDx=_pet._pdx||0,_pDy=_pet._pdy||0;
+    const _dir8=_petDir8(_pDx,_pDy);
+    const _petSz=16; // 화면 표시 크기 (32px 원본 → 16px)
     if(isCrow){
-      // 까마귀: 작은 V자 날개 (폭~8px)
-      const wF=Math.sin(_pet.t*.12)*.6; // 날갯짓
-      X.beginPath();X.moveTo(px,py);X.lineTo(px-4,py-2-wF);X.lineTo(px-1.5,py-0.5);X.fill();
-      X.beginPath();X.moveTo(px,py);X.lineTo(px+4,py-2-wF);X.lineTo(px+1.5,py-0.5);X.fill();
-      // 몸통
-      X.beginPath();X.arc(px,py,1.8,0,Math.PI*2);X.fill();
-      // 부리
-      X.fillStyle='#333';X.beginPath();X.moveTo(px+2,py-.5);X.lineTo(px+3.5,py);X.lineTo(px+2,py+.5);X.fill();
+      // 까마귀: 8방향 정적 스프라이트
+      const _ci=_PET_IMGS.crow[_dir8];
+      if(_ci&&_ci.complete&&_ci.naturalWidth){
+        X.drawImage(_ci,px-_petSz/2,py-_petSz/2,_petSz,_petSz);
+      }else{
+        X.fillStyle='#111';X.beginPath();X.arc(px,py,2,0,Math.PI*2);X.fill();
+      }
     }else{
-      // 고양이: 작은 실루엣 (폭~6px)
-      // 몸통
-      X.beginPath();X.ellipse(px,py,3,2,0,0,Math.PI*2);X.fill();
-      // 머리
-      X.beginPath();X.arc(px+2.5,py-1,1.8,0,Math.PI*2);X.fill();
-      // 귀 2개
-      X.beginPath();X.moveTo(px+1.8,py-2.5);X.lineTo(px+2.2,py-4);X.lineTo(px+3,py-2.5);X.fill();
-      X.beginPath();X.moveTo(px+3,py-2.5);X.lineTo(px+3.8,py-4);X.lineTo(px+4.2,py-2.3);X.fill();
-      // 꼬리
-      X.strokeStyle='#111';X.lineWidth=1;X.beginPath();X.moveTo(px-3,py);
-      X.quadraticCurveTo(px-5,py-3,px-4,py-4.5);X.stroke();
-      // 눈 2개
-      X.fillStyle='#ee0';X.beginPath();X.arc(px+2,py-1.5,.4,0,Math.PI*2);X.fill();
-      X.beginPath();X.arc(px+3.2,py-1.5,.4,0,Math.PI*2);X.fill();
+      // 고양이: idle/run 애니메이션 + 정적 fallback
+      let _catImg=null,_flip=false;
+      if(_pet._moving){
+        // run 애니
+        const _rKey=_CAT_RUN_MIRROR[_dir8]||'south';
+        const _rFrames=_PET_IMGS.cat._run[_rKey];
+        _flip=!!_CAT_RUN_FLIP[_dir8];
+        if(_rFrames&&_rFrames.length){const fi=~~(_pet.t*.08)%_rFrames.length;_catImg=_rFrames[fi]}
+      }else{
+        // idle 애니
+        const _iKey=_CAT_IDLE_MIRROR[_dir8]||'south';
+        const _iFrames=_PET_IMGS.cat._idle[_iKey];
+        _flip=!!_CAT_IDLE_FLIP[_dir8];
+        if(_iFrames&&_iFrames.length){const fi=~~(_pet.t*.04)%_iFrames.length;_catImg=_iFrames[fi]}
+      }
+      // fallback: 정적 스프라이트
+      if(!_catImg||!_catImg.complete||!_catImg.naturalWidth){_catImg=_PET_IMGS.cat._static[_dir8];_flip=false}
+      if(_catImg&&_catImg.complete&&_catImg.naturalWidth){
+        if(_flip){X.save();X.translate(px,py-_petSz/2);X.scale(-1,1);X.drawImage(_catImg,-_petSz/2,0,_petSz,_petSz);X.restore()}
+        else{X.drawImage(_catImg,px-_petSz/2,py-_petSz/2,_petSz,_petSz)}
+      }else{
+        X.fillStyle='#111';X.beginPath();X.arc(px,py,2,0,Math.PI*2);X.fill();
+      }
     }
     // 수거중 점선
     if(_pet.s==='fetch'&&_pet._tRef&&!_pet._tRef.picked){
