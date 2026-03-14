@@ -629,7 +629,7 @@ canvas{display:block;position:fixed;inset:0}
   <div><b style="color:#fff">Q</b> — 데빌포스 흡수</div>
   <div><b style="color:#fff">R</b> — 아이템 줍기</div>
   <div><b style="color:#fff">1~4</b> — 물약 / 스킬슬롯</div>
-  <div><b style="color:#fff">Q / Z / L-CTRL</b> — 스킬슬롯 5 / 필살기 / CT스킬</div>
+  <div><b style="color:#fff">F / Z / L-CTRL</b> — 스킬슬롯 5 / 필살기 / CT스킬</div>
   <div><b style="color:#fff">L</b> — 스킬 슬롯 배정</div>
   <div><b style="color:#fff">K</b> — 스킬  |  <b style="color:#fff">C</b> — 능력치</div>
   <div><b style="color:#fff">TAB</b> — 인벤토리  |  <b style="color:#fff">G</b> — 대장간</div>
@@ -918,7 +918,7 @@ canvas{display:block;position:fixed;inset:0}
         <div style="margin-bottom:3px"><span class="tkey">W A S D</span> 이동</div>
         <div style="margin-bottom:3px"><span class="tkey">R</span> 아이템 줍기</div>
         <div style="margin-bottom:3px"><span class="tkey">1~4</span> 물약 / 스킬슬롯</div>
-        <div style="margin-bottom:3px"><span class="tkey">Q</span> 스킬슬롯 5</div>
+        <div style="margin-bottom:3px"><span class="tkey">F</span> 스킬슬롯 5</div>
         <div style="margin-bottom:3px"><span class="tkey">Z</span> 필살기</div>
         <div style="margin-bottom:3px"><span class="tkey">L-CTRL</span> CT스킬 (유령걸음/얼음보주)</div>
         <div>&nbsp;</div>
@@ -3285,9 +3285,9 @@ addEventListener('keydown',e=>{
   if(e.code==='Space'&&G.on&&!G.paused&&SKILL_SLOTS[4]){
     if(_dispatchSkillSlot(4,'Space')){K['Space']=false;return}
   }
-  // Q키 스킬슬롯 (SKILL_SLOTS[5])
-  if(e.code==='KeyQ'&&G.on&&!G.paused&&SKILL_SLOTS[5]){
-    if(_dispatchSkillSlot(5,'KeyQ')){K['KeyQ']=false;return}
+  // F키 스킬슬롯 (SKILL_SLOTS[5])
+  if(e.code==='KeyF'&&G.on&&!G.paused&&SKILL_SLOTS[5]){
+    if(_dispatchSkillSlot(5,'KeyF')){K['KeyF']=false;return}
   }
   // Ctrl키 고정스킬 (유령걸음/얼음보주)
   if(e.code==='ControlLeft'&&G.on&&!G.paused&&P.activeCtSk){
@@ -8552,7 +8552,7 @@ const POT={
   hp:{name:'악의 추출',emoji:'👿',col:'#cc2200',colG:'#ff4433',base:100,per:20,desc:'악의를 소모해 지옥의 힘으로 회복합니다 (+100 HP)'},
 };
 let QSLOTS=[{type:'hp',count:1},{type:null,count:0},{type:null,count:0},{type:null,count:0}];
-let SKILL_SLOTS=[null,null,null,null,null,null]; // 스킬슬롯 (1~4,SP,Q)
+let SKILL_SLOTS=[null,null,null,null,null,null]; // 스킬슬롯 (1~4,SP,F)
 let ULT_SLOT=null; // 필살기 슬롯 (R키)
 let qsCooldown=[0,0,0,0]; // per-slot cooldown frames
 let autoPotCd=0; // auto-potion cooldown (5s = 300f)
@@ -8860,7 +8860,7 @@ function updateQS(){
         el.style.boxShadow=_skOnCd?'none':'inset 0 0 10px rgba(204,102,34,.3)';
         const _fuseNm=(_ssid==='maliceHunt'&&P.skills.plagueBurst>=1&&_isFused('plagueFuse'))?'독혈해방':(_ssid==='maliceHunt'&&P.skills.guardian>=1&&_isFused('bladeFuse'))?'악의해방':(_ssid==='maliceMortar'&&P.skills.iceOrb>=1&&_isFused('iceMortar'))?'얼음포격':(_ssid==='fanShot'&&P.skills.omniBeam>=1&&_isFused('sixFuse'))?'육선포':(_ssid==='whirlwind'&&P.skills.detonate>=1&&_isFused('whirlDet'))?'회전기폭':(_ssid==='maliceStorm'&&P.skills.boneWall>=1&&_isFused('boneStorm'))?'해골폭풍':(_ssid==='maliceSwipe'&&P.skills.shieldThrow>=1&&_isFused('shieldFuse'))?'철벽방패':null;
         const _qsSkNm=_fuseNm||_ssk.name;
-        const _skKeyLbl=i<4?(i+1):i===4?'SP':'Q';
+        const _skKeyLbl=i<4?(i+1):i===4?'SP':'F';
         el.innerHTML=`<span class="qs-key" style="color:${_skOnCd?'#666':'#ff8844'};${i>=4?'font-size:.55rem':''}">${_skKeyLbl}</span><span style="font-size:16px;${_skOnCd?'opacity:.4':''}">${_ssk.emoji||'🔮'}</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:${_skOnCd?'#666':'#cc8844'};font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 2px">${_qsSkNm}</div>${_skStkTxt}${_skCdOverlay}${_skCdTxt}`;
         continue;
       } else { SKILL_SLOTS[i]=null; } // 미습득 스킬 제거
