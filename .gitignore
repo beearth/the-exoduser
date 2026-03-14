@@ -16,3 +16,5 @@ server.out.log
 
 .vercel
 .env*.local
+auto-push.sh
+auto-push.log
