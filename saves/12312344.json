@@ -1,24 +1,24 @@
 {
-  "ts": 1773582342420,
+  "ts": 1773585934684,
   "player": {
-    "lv": 116,
-    "exp": 716,
-    "maxExp": 977,
-    "sp": 2,
-    "ap": 0,
+    "lv": 127,
+    "exp": 696,
+    "maxExp": 1138,
+    "sp": 12,
+    "ap": 2,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 1.355,
-    "stR": 0.47,
-    "hp": 571,
-    "mhp": 571,
-    "mp": 265.0271562500063,
-    "mmp": 281,
-    "st": 173.46602500000012,
-    "mst": 187,
+    "mpR": 1.379,
+    "stR": 0.482,
+    "hp": 587,
+    "mhp": 587,
+    "mp": 287,
+    "mmp": 287,
+    "st": 193,
+    "mst": 193,
     "speed": 3.4414740000000004,
-    "shield": 267,
-    "mshield": 267
+    "shield": 273,
+    "mshield": 273
   },
   "inv": {
     "bag": [
@@ -105,6 +105,153 @@
         "_gx": 2,
         "_gy": 0,
         "_pickT": 1773582292226
+      },
+      {
+        "id": 1773582820491.1501,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 4,
+        "tier": 3,
+        "name": "미스릴 방패",
+        "emoji": "🛡️",
+        "bonusRange": 3,
+        "blockRate": 90,
+        "shieldWt": 9,
+        "atk": 21,
+        "def": 29,
+        "stagger": 85,
+        "bInt": 39,
+        "bDex": 35,
+        "bStr": 36,
+        "affixes": [
+          {
+            "id": "physDR",
+            "tier": 2,
+            "value": 0.16
+          },
+          {
+            "id": "reflect",
+            "tier": 2,
+            "value": 0.15
+          }
+        ],
+        "_implicitStat": "_iBlockPct",
+        "_implicitVal": 6.08,
+        "_implicitKo": "방어율 +X%",
+        "legendarySpecial": {
+          "ko": "패리 성공 시 반격 데미지 ×2",
+          "stat": "_lShieldParry",
+          "val": 2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 4,
+        "_gy": 0,
+        "_pickT": 1773582820508
+      },
+      {
+        "id": 1773583141962.8955,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "흑요석 단검",
+        "emoji": "🗡️",
+        "wtype": "dagger",
+        "atk": 52,
+        "spd": 3.3,
+        "wStCost": 4,
+        "wArcW": 0.7,
+        "wRange": 36,
+        "wStagger": 6,
+        "bonusRange": 3,
+        "bStr": 37,
+        "bInt": 41,
+        "bDex": 41,
+        "affixes": [
+          {
+            "id": "killChain",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "lightChain",
+            "tier": 2,
+            "value": 35
+          },
+          {
+            "id": "parryExplosion",
+            "tier": 2,
+            "value": 1.1
+          },
+          {
+            "id": "iceDot",
+            "tier": 2,
+            "value": 18
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 8.6,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": {
+          "ko": "처치 시 이속 +40%(3초) + 다음 공격 크리 보장",
+          "stat": "_lDaggerKill",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 6,
+        "_gy": 0,
+        "_pickT": 1773583141983
+      },
+      {
+        "id": 1773584619280.396,
+        "slot": "necklace",
+        "el": 3,
+        "rarity": 4,
+        "tier": 2,
+        "name": "심연 목걸이",
+        "emoji": "📿",
+        "def": 6,
+        "eDef": 10,
+        "bStr": 38,
+        "bInt": 36,
+        "bDex": 41,
+        "affixes": [
+          {
+            "id": "elemConvert",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 2,
+            "value": 75
+          },
+          {
+            "id": "lightRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "cooldownRed",
+            "tier": 2,
+            "value": -0.22
+          }
+        ],
+        "_implicitStat": "_iMaxHPPct",
+        "_implicitVal": 9.67,
+        "_implicitKo": "최대 HP +X%",
+        "legendarySpecial": {
+          "ko": "HP 50% 이하 시 전 스킬 쿨다운 -30%",
+          "stat": "_lNeckLow",
+          "val": 0.3
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 7,
+        "_gy": 0,
+        "_pickT": 1773584619296
       }
     ],
     "equipped": {
@@ -501,12 +648,12 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 23
+      "type": "mp",
+      "count": 3
     },
     {
-      "type": "mp",
-      "count": 25
+      "type": "st",
+      "count": 2
     },
     {
       "type": null,
@@ -515,8 +662,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 3663,
-    "mats": 10599
+    "kills": 4552,
+    "mats": 17373
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -552,7 +699,8 @@
     "elemMissile": 1,
     "giantSlam": 1,
     "bladeDash": 1,
-    "magicBlink": 1
+    "magicBlink": 1,
+    "bladeShot": 1
   },
   "fused": {
     "whirlDet": true,
@@ -572,13 +720,13 @@
     "maliceStorm": 30,
     "plagueBurst": 30,
     "ghostWalk": 8,
-    "holyBlast": 3,
+    "holyBlast": 4,
     "giantSlam": 5,
     "bladeDash": 15,
-    "elemMissile": 4
+    "elemMissile": 15
   },
   "activeChargeSk": "magicBlink",
-  "activeBowSk": "fanShot",
+  "activeBowSk": "bladeShot",
   "activeTechSk": "spikeTrap",
   "activeMagicSk": "omniBeam",
   "activeLMBSk": "whirlwind",
