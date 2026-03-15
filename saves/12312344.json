@@ -1,21 +1,21 @@
 {
-  "ts": 1773575134265,
+  "ts": 1773576890362,
   "player": {
-    "lv": 103,
-    "exp": 276,
-    "maxExp": 802,
-    "sp": 14,
+    "lv": 106,
+    "exp": 236,
+    "maxExp": 841,
+    "sp": 21,
     "ap": 3,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.337,
-    "stR": 0.31700000000000006,
-    "hp": 319.1471521874999,
-    "mhp": 320,
-    "mp": 136.16712433749925,
-    "mmp": 151,
-    "st": 162.52634968750002,
-    "mst": 164,
+    "mpR": 0.345,
+    "stR": 0.321,
+    "hp": 324,
+    "mhp": 324,
+    "mp": 153,
+    "mmp": 153,
+    "st": 166,
+    "mst": 166,
     "speed": 3.0596940000000004,
     "shield": 0,
     "mshield": 0
@@ -469,12 +469,12 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 72
+      "type": null,
+      "count": 0
     },
     {
-      "type": "mp",
-      "count": 80
+      "type": null,
+      "count": 0
     },
     {
       "type": null,
@@ -483,8 +483,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 2722,
-    "mats": 2369
+    "kills": 2917,
+    "mats": 4524
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -509,7 +509,7 @@
     "spikeTrap": 1,
     "maliceSwipe": 1,
     "detonate": 1,
-    "blastShot": 4,
+    "blastShot": 0,
     "fanShot": 1,
     "omniBeam": 1,
     "plagueBurst": 1,
@@ -519,11 +519,12 @@
     "holyBlast": 1,
     "elemMissile": 1,
     "giantSlam": 1,
-    "bladeDash": 1
+    "bladeDash": 1,
+    "magicBlink": 1
   },
   "fused": {
-    "sixFuse": true,
-    "whirlDet": true
+    "whirlDet": true,
+    "sixFuse": true
   },
   "skProf": {
     "holyDome": 15,
@@ -542,8 +543,8 @@
     "giantSlam": 4,
     "bladeDash": 15
   },
-  "activeChargeSk": "charge",
-  "activeBowSk": "blastShot",
+  "activeChargeSk": "magicBlink",
+  "activeBowSk": "fanShot",
   "activeTechSk": "spikeTrap",
   "activeMagicSk": "omniBeam",
   "activeLMBSk": "whirlwind",
