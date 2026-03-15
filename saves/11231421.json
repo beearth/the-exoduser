@@ -1,21 +1,21 @@
 {
-  "ts": 1773549789194,
+  "ts": 1773553530704,
   "player": {
-    "lv": 31,
-    "exp": 98,
-    "maxExp": 140,
-    "sp": 12,
-    "ap": 6,
+    "lv": 41,
+    "exp": 127,
+    "maxExp": 201,
+    "sp": 27,
+    "ap": 8,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.195,
-    "stR": 0.164,
-    "hp": 156,
-    "mhp": 156,
-    "mp": 115,
-    "mmp": 115,
-    "st": 127,
-    "mst": 127,
+    "mpR": 0.21500000000000002,
+    "stR": 0.17400000000000002,
+    "hp": 166,
+    "mhp": 166,
+    "mp": 99.92040499999977,
+    "mmp": 120,
+    "st": 109.02537499999764,
+    "mst": 132,
     "speed": 2.7617200000000004,
     "shield": 0,
     "mshield": 0
@@ -609,8 +609,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 173,
-    "mats": 963
+    "kills": 310,
+    "mats": 2597
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -630,16 +630,18 @@
     "holyDome": 1,
     "whirlwind": 1,
     "fanShot": 1,
-    "elemMissile": 1
+    "elemMissile": 1,
+    "chargeBoost": 1
   },
   "fused": {},
   "skProf": {
     "maliceSwipe": 30,
-    "holyDome": 10,
-    "chargeBoost": 6,
+    "holyDome": 13,
+    "chargeBoost": 18,
     "fanShot": 15,
     "elemMissile": 15,
-    "whirlwind": 17
+    "whirlwind": 30,
+    "magicBlink": 1
   },
   "activeChargeSk": "charge",
   "activeBowSk": "fanShot",
