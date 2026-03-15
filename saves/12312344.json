@@ -1,29 +1,29 @@
 {
-  "ts": 1773507786441,
+  "ts": 1773560726662,
   "player": {
-    "lv": 35,
-    "exp": 134,
-    "maxExp": 163,
-    "sp": 30,
+    "lv": 37,
+    "exp": 64,
+    "maxExp": 175,
+    "sp": 52,
     "ap": 6,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.201,
-    "stR": 0.167,
-    "hp": -35.95274583333352,
-    "mhp": 163,
-    "mp": 60.9906715416677,
-    "mmp": 117,
+    "mpR": 0.20500000000000002,
+    "stR": 0.169,
+    "hp": 169,
+    "mhp": 169,
+    "mp": 62.57578125000414,
+    "mmp": 118,
     "st": 129,
     "mst": 129,
-    "speed": 2.73598,
+    "speed": 2.70478,
     "shield": 0,
     "mshield": 0
   },
   "inv": {
     "bag": [
       {
-        "id": 1773505746567.558,
+        "id": 1773559336270.8738,
         "slot": "weapon",
         "el": 0,
         "rarity": 1,
@@ -38,6 +38,7 @@
         "wRange": 38,
         "wStagger": 3,
         "bonusRange": 1,
+        "bDex": 11,
         "affixes": [
           {
             "id": "lightChain",
@@ -46,14 +47,14 @@
           }
         ],
         "_implicitStat": "_iAtkPct",
-        "_implicitVal": 11.91,
+        "_implicitVal": 6.43,
         "_implicitKo": "공격력 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       {
-        "id": 1773505746567.5222,
+        "id": 1773559336270.192,
         "slot": "weapon",
         "el": 0,
         "rarity": 1,
@@ -61,29 +62,29 @@
         "name": "녹슨 해머",
         "emoji": "🔨",
         "wtype": "hammer",
-        "atk": 51,
+        "atk": 49,
         "spd": 0.54,
         "wStCost": 11,
         "wArcW": 1.1,
-        "wRange": 46,
+        "wRange": 47,
         "wStagger": 26,
         "bonusRange": 1,
         "affixes": [
           {
-            "id": "parryBonus",
+            "id": "skillBoost",
             "tier": 0,
-            "value": 0.2
+            "value": 0.15
           }
         ],
         "_implicitStat": "_iAtkPct",
-        "_implicitVal": 8.66,
+        "_implicitVal": 7.54,
         "_implicitKo": "공격력 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       {
-        "id": 1773505746567.9521,
+        "id": 1773559336270.8076,
         "slot": "weapon",
         "el": 0,
         "rarity": 1,
@@ -91,29 +92,30 @@
         "name": "녹슨 도끼",
         "emoji": "🪓",
         "wtype": "axe",
-        "atk": 39,
+        "atk": 37,
         "spd": 0.78,
         "wStCost": 11,
         "wArcW": 0.85,
         "wRange": 44,
         "wStagger": 16,
         "bonusRange": 1,
+        "bStr": 10,
         "affixes": [
           {
-            "id": "chainTarget",
+            "id": "poisonDot",
             "tier": 0,
-            "value": 1
+            "value": 8
           }
         ],
         "_implicitStat": "_iAtkPct",
-        "_implicitVal": 11.8,
+        "_implicitVal": 10.6,
         "_implicitKo": "공격력 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       {
-        "id": 1773505746567.1343,
+        "id": 1773559336270.225,
         "slot": "weapon",
         "el": 0,
         "rarity": 1,
@@ -121,30 +123,29 @@
         "name": "녹슨 창",
         "emoji": "🔱",
         "wtype": "spear",
-        "atk": 27,
+        "atk": 29,
         "spd": 0.98,
         "wStCost": 6,
         "wArcW": 0.4,
-        "wRange": 71,
+        "wRange": 67,
         "wStagger": 6,
         "bonusRange": 1,
-        "bDex": 11,
         "affixes": [
           {
-            "id": "comboBoost",
+            "id": "lightChain",
             "tier": 0,
-            "value": 0.2
+            "value": 13
           }
         ],
         "_implicitStat": "_iAtkPct",
-        "_implicitVal": 8.81,
+        "_implicitVal": 9.12,
         "_implicitKo": "공격력 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       {
-        "id": 1773505746567.966,
+        "id": 1773559336270.787,
         "slot": "armor",
         "el": 1,
         "rarity": 1,
@@ -153,7 +154,7 @@
         "emoji": "🦺",
         "def": 3,
         "bonusSt": 4,
-        "charge": 10,
+        "charge": 8,
         "chargeDist": 26,
         "chargeW": 14,
         "bonusRange": 1,
@@ -166,14 +167,14 @@
           }
         ],
         "_implicitStat": "_iPhysDR",
-        "_implicitVal": 5.57,
+        "_implicitVal": 5,
         "_implicitKo": "물리 피해감소 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       {
-        "id": 1773505746567.9167,
+        "id": 1773559336270.4531,
         "slot": "shield",
         "el": 0,
         "rarity": 1,
@@ -181,21 +182,21 @@
         "name": "나무 방패",
         "emoji": "🛡️",
         "bonusRange": 1,
-        "blockRate": 64,
+        "blockRate": 61,
         "shieldWt": 16,
         "atk": 3,
-        "def": 5,
+        "def": 4,
         "stagger": 18,
         "affixes": [],
         "_implicitStat": "_iBlockPct",
-        "_implicitVal": 3.47,
+        "_implicitVal": 7.74,
         "_implicitKo": "방어율 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       {
-        "id": 1773505746567.025,
+        "id": 1773559336270.8088,
         "slot": "helmet",
         "el": 3,
         "rarity": 1,
@@ -220,14 +221,14 @@
           }
         ],
         "_implicitStat": "_iMaxHP",
-        "_implicitVal": 18.53,
+        "_implicitVal": 29.48,
         "_implicitKo": "최대 HP +X",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       {
-        "id": 1773505746567.88,
+        "id": 1773559336270.2476,
         "slot": "boots",
         "el": 4,
         "rarity": 1,
@@ -236,25 +237,26 @@
         "emoji": "👢",
         "def": 2,
         "spd": 0,
-        "bonusSt": 5,
+        "bonusSt": 6,
         "chargeDist": 16,
         "chargeCharge": 1,
+        "bDex": 8,
         "affixes": [
           {
-            "id": "movSpeed",
+            "id": "dashBoost",
             "tier": 0,
-            "value": 0.05
+            "value": 0.25
           }
         ],
         "_implicitStat": "_iMovSpd",
-        "_implicitVal": 4.56,
+        "_implicitVal": 4.08,
         "_implicitKo": "이동속도 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       {
-        "id": 1773505746567.9204,
+        "id": 1773559336270.9138,
         "slot": "cape",
         "el": 1,
         "rarity": 1,
@@ -264,23 +266,22 @@
         "def": 2,
         "eDef": 1,
         "spd": 0,
-        "bInt": 11,
         "affixes": [
           {
-            "id": "parryBonus",
+            "id": "movSpeed",
             "tier": 0,
-            "value": 0.2
+            "value": 0.05
           }
         ],
         "_implicitStat": "_iDashCd",
-        "_implicitVal": 9.42,
+        "_implicitVal": 10.56,
         "_implicitKo": "회피 쿨다운 -X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       {
-        "id": 1773505746567.5042,
+        "id": 1773559336270.1074,
         "slot": "bow",
         "el": 1,
         "rarity": 1,
@@ -291,77 +292,28 @@
         "atk": 3,
         "bowSpd": 1.2,
         "bowStCost": 0,
-        "bowRange": 418,
+        "bowRange": 406,
         "bowProjSpd": 11,
         "bonusRange": 1,
-        "bowPierce": 0.05,
+        "bowPierce": 0.07,
         "affixes": [
           {
-            "id": "lightChain",
+            "id": "killSlayer",
             "tier": 0,
-            "value": 13
+            "value": 0.15
           }
         ],
         "_implicitStat": "_iPierce",
-        "_implicitVal": 7.47,
+        "_implicitVal": 5.36,
         "_implicitKo": "관통 확률 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
-      },
-      {
-        "id": 1773506168898.493,
-        "slot": "necklace",
-        "el": 0,
-        "rarity": 4,
-        "tier": 2,
-        "name": "흑요석 목걸이",
-        "emoji": "📿",
-        "def": 7,
-        "eDef": 10,
-        "bInt": 29,
-        "bDex": 34,
-        "bStr": 42,
-        "affixes": [
-          {
-            "id": "fireRes",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "maxHPFlat",
-            "tier": 2,
-            "value": 75
-          },
-          {
-            "id": "lightRes",
-            "tier": 2,
-            "value": 0.32
-          },
-          {
-            "id": "maxHPPct",
-            "tier": 2,
-            "value": 0.22
-          }
-        ],
-        "_implicitStat": "_iMaxHPPct",
-        "_implicitVal": 7.93,
-        "_implicitKo": "최대 HP +X%",
-        "legendarySpecial": {
-          "ko": "HP 50% 이하 시 전 스킬 쿨다운 -30%",
-          "stat": "_lNeckLow",
-          "val": 0.3
-        },
-        "reqLv": 0,
-        "itemLv": 100,
-        "_gx": 0,
-        "_gy": 0,
-        "_pickT": 1773506168913
       }
     ],
     "equipped": {
       "weapon": {
-        "id": 1773505746567.8708,
+        "id": 1773559336270.8535,
         "slot": "weapon",
         "el": 0,
         "rarity": 0,
@@ -369,23 +321,23 @@
         "name": "녹슨 검",
         "emoji": "⚔️",
         "wtype": "sword",
-        "atk": 21,
+        "atk": 20,
         "spd": 1,
         "wStCost": 8,
         "wArcW": 0.95,
         "wRange": 49,
         "wStagger": 8,
-        "bonusRange": 0,
+        "bonusRange": 1,
         "affixes": [],
         "_implicitStat": "_iAtkPct",
-        "_implicitVal": 8.02,
+        "_implicitVal": 14.83,
         "_implicitKo": "공격력 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       "shield": {
-        "id": 1773505746567.0574,
+        "id": 1773559336270.4395,
         "slot": "shield",
         "el": 0,
         "rarity": 0,
@@ -393,64 +345,64 @@
         "name": "나무 방패",
         "emoji": "🛡️",
         "bonusRange": 1,
-        "blockRate": 46,
+        "blockRate": 49,
         "shieldWt": 17,
         "atk": 2,
-        "def": 3,
+        "def": 4,
         "stagger": 15,
         "affixes": [],
         "_implicitStat": "_iBlockPct",
-        "_implicitVal": 7.3,
+        "_implicitVal": 5.32,
         "_implicitKo": "방어율 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       "boots": {
-        "id": 1773505746567.0032,
+        "id": 1773559336270.2205,
         "slot": "boots",
         "el": 0,
         "rarity": 0,
         "tier": 0,
         "name": "낡은 전투화",
         "emoji": "👢",
-        "def": 1,
+        "def": 2,
         "spd": 0,
-        "bonusSt": 5,
+        "bonusSt": 4,
         "chargeDist": 14,
         "affixes": [],
         "_implicitStat": "_iMovSpd",
-        "_implicitVal": 5.23,
+        "_implicitVal": 4.03,
         "_implicitKo": "이동속도 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       "armor": {
-        "id": 1773505746567.4377,
+        "id": 1773559336270.141,
         "slot": "armor",
         "el": 0,
         "rarity": 0,
         "tier": 0,
         "name": "천 갑옷",
         "emoji": "🦺",
-        "def": 3,
+        "def": 2,
         "bonusSt": 4,
         "charge": 8,
         "chargeDist": 22,
-        "chargeW": 12,
-        "bonusRange": 0,
-        "bonusChargeDist": 0,
+        "chargeW": 11,
+        "bonusRange": 1,
+        "bonusChargeDist": 1,
         "affixes": [],
         "_implicitStat": "_iPhysDR",
-        "_implicitVal": 5.4,
+        "_implicitVal": 6.79,
         "_implicitKo": "물리 피해감소 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       "helmet": {
-        "id": 1773505746567.1733,
+        "id": 1773559336270.809,
         "slot": "helmet",
         "el": 0,
         "rarity": 0,
@@ -465,17 +417,17 @@
             "dmg": 12
           }
         ],
-        "bonusRange": 1,
+        "bonusRange": 0,
         "affixes": [],
         "_implicitStat": "_iMaxHP",
-        "_implicitVal": 11.96,
+        "_implicitVal": 13.04,
         "_implicitKo": "최대 HP +X",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       "bow": {
-        "id": 1773505746567.7266,
+        "id": 1773559336270.121,
         "slot": "bow",
         "el": 0,
         "rarity": 0,
@@ -486,40 +438,40 @@
         "atk": 2,
         "bowSpd": 1,
         "bowStCost": 0,
-        "bowRange": 392,
+        "bowRange": 383,
         "bowProjSpd": 11,
-        "bonusRange": 1,
+        "bonusRange": 0,
         "bowPierce": 0.02,
         "affixes": [],
         "_implicitStat": "_iPierce",
-        "_implicitVal": 8.89,
+        "_implicitVal": 14.64,
         "_implicitKo": "관통 확률 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       "gloves": {
-        "id": 1773505746567.3267,
+        "id": 1773559336270.6821,
         "slot": "gloves",
         "el": 0,
         "rarity": 0,
         "tier": 0,
         "name": "천 장갑",
         "emoji": "🧤",
-        "atk": 1,
+        "atk": 2,
         "def": 0,
         "spd": 0,
-        "potCd": 0.052,
+        "potCd": 0.046,
         "affixes": [],
         "_implicitStat": "_iAtkSpd",
-        "_implicitVal": 3.81,
+        "_implicitVal": 3.45,
         "_implicitKo": "공격속도 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       "pants": {
-        "id": 1773505746567.2078,
+        "id": 1773559336270.83,
         "slot": "pants",
         "el": 0,
         "rarity": 0,
@@ -531,14 +483,14 @@
         "bonusHp": 4,
         "affixes": [],
         "_implicitStat": "_iStsRes",
-        "_implicitVal": 7.85,
+        "_implicitVal": 8.48,
         "_implicitKo": "상태이상 저항 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       "necklace": {
-        "id": 1773505746567.6626,
+        "id": 1773559336270.183,
         "slot": "necklace",
         "el": 0,
         "rarity": 0,
@@ -549,14 +501,14 @@
         "eDef": 0,
         "affixes": [],
         "_implicitStat": "_iMaxHPPct",
-        "_implicitVal": 8.83,
+        "_implicitVal": 11.07,
         "_implicitKo": "최대 HP +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       "ring1": {
-        "id": 1773505746567.1409,
+        "id": 1773559336270.957,
         "slot": "ring1",
         "el": 0,
         "rarity": 0,
@@ -564,17 +516,17 @@
         "name": "녹슨 반지",
         "emoji": "💍",
         "eDef": 1,
-        "critRate": 0.46,
+        "critRate": 0.52,
         "affixes": [],
         "_implicitStat": "_iElemRes",
-        "_implicitVal": 9.35,
+        "_implicitVal": 12.53,
         "_implicitKo": "원소 저항 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       "ring2": {
-        "id": 1773505746567.1858,
+        "id": 1773559336270.1323,
         "slot": "ring2",
         "el": 0,
         "rarity": 0,
@@ -582,17 +534,17 @@
         "name": "녹슨 반지",
         "emoji": "💍",
         "eDef": 1,
-        "critRate": 0.55,
+        "critRate": 0.52,
         "affixes": [],
         "_implicitStat": "_iElemRes",
-        "_implicitVal": 8.3,
+        "_implicitVal": 13.19,
         "_implicitKo": "원소 저항 +X%",
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
       },
       "cape": {
-        "id": 1773505746567.7705,
+        "id": 1773559336270.2744,
         "slot": "cape",
         "el": 0,
         "rarity": 0,
@@ -604,7 +556,7 @@
         "spd": 0,
         "affixes": [],
         "_implicitStat": "_iDashCd",
-        "_implicitVal": 11.73,
+        "_implicitVal": 8.78,
         "_implicitKo": "회피 쿨다운 -X%",
         "legendarySpecial": null,
         "reqLv": 0,
@@ -655,8 +607,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 218,
-    "mats": 378
+    "kills": 237,
+    "mats": 82
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -674,20 +626,19 @@
   },
   "skills": {
     "holyDome": 1,
-    "maliceSwipe": 1,
-    "detonate": 1,
-    "whirlwind": 1
+    "whirlwind": 0,
+    "gasCloud": 1
   },
   "fused": {},
   "skProf": {
+    "holyDome": 2,
     "maliceSwipe": 30,
-    "whirlwind": 30,
-    "detonate": 30,
-    "holyDome": 6,
-    "chargeBoost": 2
+    "chargeBoost": 30,
+    "whirlwind": 30
   },
   "activeChargeSk": "charge",
   "activeBowSk": "normal",
+  "activeTechSk": "gasCloud",
   "activeMagicSk": "beam",
   "activeLMBSk": "whirlwind",
   "activeRMBSk": "shieldBlock",
@@ -699,7 +650,8 @@
     null,
     null,
     null,
-    "holyDome"
+    "gasCloud"
   ],
-  "ultSlot": null
+  "ultSlot": null,
+  "charIdx": 4
 }

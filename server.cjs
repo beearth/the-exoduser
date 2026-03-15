@@ -66,6 +66,7 @@ const server = http.createServer(async (req, res) => {
             lv: data.player?.lv || 1,
             stage: data.game?.stage || 0,
             kills: data.game?.kills || 0,
+            charIdx: data.charIdx ?? 0,
           };
         } catch { return null; }
       }).filter(Boolean);
