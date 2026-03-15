@@ -2340,8 +2340,8 @@ function _applyTierPreset(tier){
 _gpuScoreCache=detectTier();
 // ═══ [S03] PET SYSTEM (까마귀=하늘, 고양이=땅 — 항상 두 마리) ═══
 const PETS={
-  crow:{name:'Crow',col:'#111',pickR:2400,spd:22,orbR:38,orbY:-22,desc:'Air pickup helper'},
-  cat:{name:'Cat',col:'#111',pickR:3000,spd:24,orbR:34,orbY:10,desc:'Ground pickup + auto-disassemble'},
+  crow:{name:'Crow',col:'#111',pickR:1000,spd:22,orbR:38,orbY:-22,desc:'Air pickup helper'},
+  cat:{name:'Cat',col:'#111',pickR:1000,spd:24,orbR:34,orbY:10,desc:'Ground pickup + auto-disassemble'},
   xbow:{name:'GhostXbow',col:'#6688cc',spd:18,orbR:44,orbY:-28,atkR:500,atkCd:120,desc:'Auto-shooting ghost crossbow'}
 };
 // ── 펫 스프라이트 프리로드 ──
@@ -2828,7 +2828,7 @@ const CHAR_LIST=[
   {id:'greatsword_hero',name:'대검 영웅',desc:'풀갑옷 기사. 특대검+빨간 망토',folder:'img/char_greatsword_hero',fw:128,fh:128},
   {id:'colossal_knight',name:'거대검 기사',desc:'검은 갑옷. 초대형 특대검',folder:'img/char_colossal_knight',fw:128,fh:128},
   {id:'greatsword_knight',name:'대검 기사',desc:'표준 기사. 대검+갑옷',folder:'img/char_greatsword_knight48',fw:48,fh:48},
-  {id:'exoduser_warrior',name:'엑소듀서 전사',desc:'다크 판타지 전사. 거대검+검은 갑옷',folder:'img/exoduser_warrior',fw:64,fh:64,idleN:4,walkN:8,atkN:16,whirlN:16,throwN:16},
+  {id:'exoduser_warrior',name:'엑소듀서 전사',desc:'다크 판타지 전사. 거대검+검은 갑옷',folder:'img/exoduser_warrior',fw:64,fh:64,idleN:4,walkN:8,atkN:16,whirlN:16,throwN:15},
 ];
 let _charIdx=0;
 try{const _sv=localStorage.getItem('_charIdx');if(_sv!=null)_charIdx=+_sv;}catch(e){}
@@ -2892,7 +2892,17 @@ function _build8(imgs,FW,FH,cb,animInfo){
       fm['atk1_'+dk]=usedAtk;fm['atk2_'+dk]=usedAtk;fm['atk3_'+dk]=usedAtk;
       fm['bash_'+dk]=usedAtk;fm['gSlam1_'+dk]=usedAtk;fm['gSlam2_'+dk]=usedAtk;
       fm['whirlwind_'+dk]=usedWh;
-      fm['charge_start_'+dk]=usedTh;fm['charge_hold_'+dk]=usedTh;
+      // throw 3단계 분할: 던지기(0~4), 끌려가기(5~10), 착지(11~end)
+      if(thFr.length>=11){
+        const thThrow=thFr.slice(0,5);
+        const thPull=thFr.slice(5,11);
+        const thLand=thFr.slice(11);
+        fm['charge_start_'+dk]=thThrow;
+        fm['charge_hold_'+dk]=thPull;
+        fm['charge_land_'+dk]=thLand;
+      }else{
+        fm['charge_start_'+dk]=usedTh;fm['charge_hold_'+dk]=usedTh;
+      }
       fm['crossbow_'+dk]=usedTh;
     });
     const fb=[];for(let f=0;f<iN;f++)fb.push({x:f*FW,y:0,w:FW,h:FH});
@@ -3543,7 +3553,7 @@ const KH={}; // key held — keyup에서만 해제, isJust가 소비하지 않�
 const MB={}; // mouse button states {0:bool,1:bool,2:bool,...}
 // ── X키 작살이동 (4단계) ──
 // 1단:탭, 2단:0.1초+, 3단:0.5초+, 4단:1초+
-const _HARP_TIER_F=[0,1,6,30,60]; // [미사용, 탭(0f), 0.1초(6f), 0.5초(30f), 1초(60f)]
+const _HARP_TIER_F=[0,1,6,24,48]; // [미사용, 탭(0f), 0.1초(6f), 0.4초(24f), 0.8초(48f)]
 const _HARP_DIST=[0,120,240,400,600]; // 작살 사거리
 const _HARP_IFRAME=[0,6,10,16,24];
 const _HARP_PULL_DUR=[0,8,12,18,24]; // 끌려가는 프레임
@@ -3784,7 +3794,7 @@ addEventListener('keyup',e=>{
       const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;
       const _hDir=Math.atan2(mouse.y-sy,mouse.x-sx);
       const _tier=_isDB?4:_dashTier;
-      _harpActive=true;_harpHit=false;_harpHitE=null;_harpTier=_tier;
+      _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=_tier;
       _harpSk=_isDB?'dimBreach':_hSk;_harpHits=[];
       _harpX=P.x;_harpY=P.y;
       _harpVX=Math.cos(_hDir)*_HARP_SPD;_harpVY=Math.sin(_hDir)*_HARP_SPD;
@@ -4679,11 +4689,21 @@ function eProjAt(e,ang,spd,dmgMult,el,life,col,sz){life=~~(life*1.5);const b=_be
 function drawEnBody(X,e,_now,sa){
   // ── 아틀라스 스킨 우선 (동그라미 방지) ──
   if(_mobAtlas.ready&&e.etype>=0&&e.etype<=99){
-    const _mc=e.etype%_MOB_COLS,_mr=~~(e.etype/_MOB_COLS);
     const _bsz=Math.max(e.r*3.5,30);
     X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
     if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);
-    X.drawImage(_mobAtlas.img,_mc*_MOB_CELL,_mr*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_bsz/2,-_bsz/2,_bsz,_bsz);
+    // etype 0-9: 워킹 애니메이션 사용
+    const _eWalk=e.etype<=9&&_walkAtlas.ready;
+    const _eMoving=e.s==='eApproach'||e.s==='eCircle'||e.s==='eRetreat'||e.s==='eFlee'||e.s==='eCharge';
+    if(_eWalk&&_eMoving){
+      const _wf=~~((_now*.005))%_WALK_COLS;
+      X.drawImage(_walkAtlas.img,_wf*_MOB_CELL,e.etype*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_bsz/2,-_bsz/2,_bsz,_bsz);
+    }else if(_eWalk){
+      X.drawImage(_walkAtlas.img,0,e.etype*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_bsz/2,-_bsz/2,_bsz,_bsz);
+    }else{
+      const _mc=e.etype%_MOB_COLS,_mr=~~(e.etype/_MOB_COLS);
+      X.drawImage(_mobAtlas.img,_mc*_MOB_CELL,_mr*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_bsz/2,-_bsz/2,_bsz,_bsz);
+    }
     X.restore();return;
   }
   const r=e.r,f=e.facing,t=_now*.003,col=e.col,ec=ELC[e.el];
@@ -7372,6 +7392,20 @@ const _MOB_CELL=48,_MOB_COLS=10;
     img.src='img/mobs/atlas_mobs.png?v=2&r='+Math.random();
   },1000)};
 })();
+// ── 워킹 애니메이션 아틀라스 (etype 0-9, 4프레임, 48px) ──
+const _walkAtlas={img:null,ready:false};
+const _WALK_COLS=4;
+(function _loadWalkAtlas(){
+  const img=new Image();
+  img.src='img/mobs/atlas_walk.png?v=1';
+  _walkAtlas.img=img;
+  img.onload=function(){
+    if(img.decode){img.decode().then(function(){_walkAtlas.ready=true;console.log('[WALK_ATLAS] 디코딩 완료 '+img.width+'x'+img.height)}).catch(function(){_walkAtlas.ready=true})}
+    else{_walkAtlas.ready=true}
+  };
+  if(img.complete&&img.naturalWidth>0){_walkAtlas.ready=true}
+  img.onerror=function(){console.warn('[WALK_ATLAS] 로드 실패')};
+})();
 
 // 적 → 절대 프레임 인덱스 (아틀라스 상의 프레임 위치)
 function _getEFrame(e,now){
@@ -8140,7 +8174,9 @@ function _addBurnCorpse(e){
   bc.x=e.x;bc.y=e.y;bc.r=e.r||12;bc.etype=e.etype;bc.col=e.col;bc.ib=!!e.ib;
   bc.mt=e.ib?120:60;bc.t=bc.mt;bc.active=true;
   bc.ctx.clearRect(0,0,48,48);
-  if(_mobAtlas.ready&&_mobAtlas.img&&e.etype>=0&&e.etype<=99){
+  if(e.etype<=9&&_walkAtlas.ready){
+    bc.ctx.drawImage(_walkAtlas.img,0,e.etype*_MOB_CELL,_MOB_CELL,_MOB_CELL,0,0,48,48);
+  }else if(_mobAtlas.ready&&_mobAtlas.img&&e.etype>=0&&e.etype<=99){
     const mc=e.etype%_MOB_COLS,mr=~~(e.etype/_MOB_COLS);
     bc.ctx.drawImage(_mobAtlas.img,mc*_MOB_CELL,mr*_MOB_CELL,_MOB_CELL,_MOB_CELL,0,0,48,48);
   }else{
@@ -8173,7 +8209,9 @@ function _addCorpse(e,killAng,power){
   c.r=a+Math.PI*.5;c.rv=(Math.random()-.5)*.2; // 회전 속도
   c.mt=e.ib?600:420;c.t=c.mt;c.active=true;c.bounced=0;
   c.ctx.clearRect(0,0,48,48);
-  if(_mobAtlas.ready&&_mobAtlas.img&&e.etype>=0&&e.etype<=99){
+  if(e.etype<=9&&_walkAtlas.ready){
+    c.ctx.drawImage(_walkAtlas.img,0,e.etype*_MOB_CELL,_MOB_CELL,_MOB_CELL,0,0,48,48);
+  }else if(_mobAtlas.ready&&_mobAtlas.img&&e.etype>=0&&e.etype<=99){
     const mc=e.etype%_MOB_COLS,mr=~~(e.etype/_MOB_COLS);
     c.ctx.drawImage(_mobAtlas.img,mc*_MOB_CELL,mr*_MOB_CELL,_MOB_CELL,_MOB_CELL,0,0,48,48);
   }else{
@@ -8193,7 +8231,9 @@ function _addGibs(e,boomX,boomY,boomR){
   _gibThrottle++;
   const pw=Math.max(1,(boomR||50)/50);
   _gibX.clearRect(0,0,48,48);
-  if(_mobAtlas.ready&&_mobAtlas.img&&e.etype>=0&&e.etype<=99){
+  if(e.etype<=9&&_walkAtlas.ready){
+    _gibX.drawImage(_walkAtlas.img,0,e.etype*_MOB_CELL,_MOB_CELL,_MOB_CELL,0,0,48,48);
+  }else if(_mobAtlas.ready&&_mobAtlas.img&&e.etype>=0&&e.etype<=99){
     const mc=e.etype%_MOB_COLS,mr=~~(e.etype/_MOB_COLS);
     _gibX.drawImage(_mobAtlas.img,mc*_MOB_CELL,mr*_MOB_CELL,_MOB_CELL,_MOB_CELL,0,0,48,48);
   }else{
@@ -11348,6 +11388,7 @@ function update(){
   if(G._dbgSlam>0){G._dbgSlam--;document.title='[SLAM] s='+P.s+' HS='+G.hitStop+' SM='+G.slowMo+' nhsT='+(G._noHitStopT||0).toFixed(1)+' f='+G._dbgSlam;}
   if(G.pets)updatePet(); // 펫 이동은 항상, 수거는 petAuto 토글
   mergeMatItems(); // 악의 아이템 자동 합체
+  _updateSlimes(); // 슬라임 아이템 포식 + 합체
   // ── 작살 게이지 자동 회복 ──
   if(_harpGauge<_HARP_GAUGE_MAX&&!_dashHold&&!_harpActive&&!_dashActive)_harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+_HARP_GAUGE_REGEN*_dtSp);
   // ── 작살 홀드 차징 (기존 X키 방식 그대로) ──
@@ -11780,7 +11821,7 @@ function update(){
         hitArc(P.atkArc,_wRange,_wArc,~~((P.baseAtk+(wp().atk||12)*(1+enhMul(wp().enh||0))+15)*2),wp().el,'weapon');
       }
       if(P.st2<=0){P.s='wRecover';P.st2=~~(33/((wp().spd||.3)*statDex()))}}
-    else if(P.s==='wRecover'){if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}else if(isAct('parry')&&!_qIsIceOrb()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSub(60,.25,.15,18);playFM(300,60,200,.12,.06,'sine',400)}else if(P.st2<=0)P.s='idle'}
+    else if(P.s==='wRecover'){if(P.st2<=0){if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}else if(isAct('parry')&&!_qIsIceOrb()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSub(60,.25,.15,18);playFM(300,60,200,.12,.06,'sine',400)}else P.s='idle'}}
     else if(P.s==='sBash'){
       if(P.st2<=8&&P.st2+sp>8){
         const _sdLv=P.skills.maliceSwipe||0;
@@ -11897,7 +11938,7 @@ function update(){
         const _cdx=isAct('right')-isAct('left'),_cdy=isAct('down')-isAct('up');
         const _cln=Math.sqrt(_cdx*_cdx+_cdy*_cdy);
         const _hDir=_cln>0?Math.atan2(_cdy,_cdx):P.facing;
-        _harpActive=true;_harpHit=false;_harpHitE=null;_harpTier=Math.min(4,2+~~((P.skills.chargeBoost||0)/3));_harpSk=P.activeChargeSk||'charge';_harpHits=[];
+        _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=Math.min(4,2+~~((P.skills.chargeBoost||0)/3));_harpSk=P.activeChargeSk||'charge';_harpHits=[];
         _harpX=P.x;_harpY=P.y;_harpVX=Math.cos(_hDir)*_HARP_SPD;_harpVY=Math.sin(_hDir)*_HARP_SPD;
         _harpDist=0;_harpMaxDist=_HARP_DIST[_harpTier];
         SFX.slash();addTxt(P.x,P.y-25,'🔱 작살!','#ffaa00',35);_addSkProf('chargeBoost');
@@ -11913,7 +11954,7 @@ function update(){
         const _crdx=isAct('right')-isAct('left'),_crdy=isAct('down')-isAct('up');
         const _crlen=Math.sqrt(_crdx*_crdx+_crdy*_crdy);
         const _hDir=_crlen>0?Math.atan2(_crdy,_crdx):P.facing;
-        _harpActive=true;_harpHit=false;_harpHitE=null;_harpTier=Math.min(4,2+~~((P.skills.chargeBoost||0)/3));_harpSk=P.activeChargeSk||'charge';_harpHits=[];
+        _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=Math.min(4,2+~~((P.skills.chargeBoost||0)/3));_harpSk=P.activeChargeSk||'charge';_harpHits=[];
         _harpX=P.x;_harpY=P.y;_harpVX=Math.cos(_hDir)*_HARP_SPD;_harpVY=Math.sin(_hDir)*_HARP_SPD;
         _harpDist=0;_harpMaxDist=_HARP_DIST[_harpTier];
         SFX.slash();addTxt(P.x,P.y-25,'🔱 작살!','#ffaa00',35);_addSkProf('chargeBoost');
@@ -11936,7 +11977,7 @@ function update(){
         const _cr2dx=isAct('right')-isAct('left'),_cr2dy=isAct('down')-isAct('up');
         const _cr2len=Math.sqrt(_cr2dx*_cr2dx+_cr2dy*_cr2dy);
         const _hDir=_cr2len>0?Math.atan2(_cr2dy,_cr2dx):P.facing;
-        _harpActive=true;_harpHit=false;_harpHitE=null;_harpTier=Math.min(4,2+~~((P.skills.chargeBoost||0)/3));_harpSk=P.activeChargeSk||'charge';_harpHits=[];
+        _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=Math.min(4,2+~~((P.skills.chargeBoost||0)/3));_harpSk=P.activeChargeSk||'charge';_harpHits=[];
         _harpX=P.x;_harpY=P.y;_harpVX=Math.cos(_hDir)*_HARP_SPD;_harpVY=Math.sin(_hDir)*_HARP_SPD;
         _harpDist=0;_harpMaxDist=_HARP_DIST[_harpTier];
         SFX.slash();addTxt(P.x,P.y-25,'🔱 작살!','#ffaa00',35);_addSkProf('chargeBoost');
@@ -12481,7 +12522,9 @@ function update(){
     if(e.alive){
       // 화톳불 배리어: 시작방 영역 진입 시 밀어내기
       if(_bfActive&&!e.ib){const _bfd2=dst2(_bf.x,_bf.y,e.x,e.y);if(_bfd2<_bfR2){const _bfd=Math.sqrt(_bfd2)||1;const _pushStr=(_bf.r-_bfd)*.15*sp;const _bfa=Math.atan2(e.y-_bf.y,e.x-_bf.x);e.x+=Math.cos(_bfa)*_pushStr;e.y+=Math.sin(_bfa)*_pushStr}}
-      const _eox=e.x,_eoy=e.y;if(dst2(P.x,P.y,e.x,e.y)<360000)updateE(e,sp);
+      const _eox=e.x,_eoy=e.y;
+      if(e.reviveIframes>0)e.reviveIframes=Math.max(0,e.reviveIframes-sp);
+      if(dst2(P.x,P.y,e.x,e.y)<360000)updateE(e,sp);
       // 화톳불 배리어: 이동 후에도 재확인
       if(_bfActive&&!e.ib){const _bfd2b=dst2(_bf.x,_bf.y,e.x,e.y);if(_bfd2b<_bfR2){const _bfdb=Math.sqrt(_bfd2b)||1;const _bfa2=Math.atan2(e.y-_bf.y,e.x-_bf.x);e.x=_bf.x+Math.cos(_bfa2)*_bf.r;e.y=_bf.y+Math.sin(_bfa2)*_bf.r}}
       const _edd=(e.x-_eox)*(e.x-_eox)+(e.y-_eoy)*(e.y-_eoy);if(_edd>0)e._walkDist=(e._walkDist||0)+Math.sqrt(_edd)}
@@ -17740,6 +17783,69 @@ function _spawnMatSlime(x,y,matVal){
   /*SFX.hit()*/;
   shake(~~(3*sizeMul));
   for(let k=0;k<12;k++){const a=Math.random()*Math.PI*2;poolPart(x+Math.cos(a)*10,y+Math.sin(a)*10,Math.cos(a)*3,Math.sin(a)*3,'#8833cc',3+Math.random()*3,15+Math.random()*10)}
+}
+// ═══ 슬라임 행동: 아이템 포식 + 슬라임끼리 합체 ═══
+let _slimeUpT=0;
+function _updateSlimes(){
+  if(++_slimeUpT<8)return;_slimeUpT=0; // 8프레임마다
+  for(let i=0;i<ens.length;i++){
+    const e=ens[i];if(!e.alive||!e._isSlime)continue;
+    // ── 1) 주변 아이템 감지 → 이동 + 반경 40 내 포식 ──
+    let _slNearIt=null,_slNearD=400;
+    for(let j=0;j<worldItems.length;j++){
+      const it=worldItems[j];if(it.picked)continue;
+      if(it.type!=='item'&&it.type!=='mat')continue;
+      const d=dst(e.x,e.y,it.x,it.y);
+      if(d<_slNearD){_slNearD=d;_slNearIt=it}
+    }
+    // 아이템 쪽으로 이동 (플레이어보다 아이템 우선)
+    if(_slNearIt&&_slNearD>40){
+      const _slAng=Math.atan2(_slNearIt.y-e.y,_slNearIt.x-e.x);
+      const _slSpd=e.speed*1.5*_dtSp*8;
+      e.x+=Math.cos(_slAng)*_slSpd;e.y+=Math.sin(_slAng)*_slSpd;
+    }
+    for(let j=0;j<worldItems.length;j++){
+      const it=worldItems[j];if(it.picked)continue;
+      if(it.type!=='item'&&it.type!=='mat')continue;
+      const d=dst(e.x,e.y,it.x,it.y);
+      if(d<40){
+        it.picked=true;
+        const gain=it.type==='mat'?(it.matVal||1):20;
+        e.matDrop=(e.matDrop||0)+~~(gain*.3);
+        e.hp=Math.min(e.mhp*2,e.hp+~~(gain*2));
+        e.mhp=Math.max(e.mhp,e.hp);
+        // 커짐
+        const oldSz=e._slimeSz||1;
+        e._slimeSz=Math.min(5,oldSz+gain/800);
+        e.r=8+~~(e._slimeSz*6);
+        e.atk=~~(e.baseAtk*e._slimeSz);
+        addTxt(e.x,e.y-e.r-5,'냠!','#cc66ff',20);
+        for(let k=0;k<4;k++)poolPart(it.x,it.y,(Math.random()-.5)*3,(Math.random()-.5)*3,'#aa44ff',2,8);
+      }
+    }
+    // ── 2) 슬라임끼리 합체 — 반경 60 내 다른 슬라임 흡수 ──
+    for(let j=i+1;j<ens.length;j++){
+      const o=ens[j];if(!o.alive||!o._isSlime)continue;
+      const d=dst(e.x,e.y,o.x,o.y);
+      if(d<60){
+        // 큰 쪽이 작은 쪽 흡수
+        const big=e._slimeSz>=o._slimeSz?e:o;
+        const small=e._slimeSz>=o._slimeSz?o:e;
+        big.hp=Math.min(big.mhp*3,big.hp+small.hp);
+        big.mhp=Math.max(big.mhp,big.hp);
+        big.matDrop=(big.matDrop||0)+(small.matDrop||0);
+        big._slimeSz=Math.min(5,big._slimeSz+(small._slimeSz||1)*.5);
+        big.r=8+~~(big._slimeSz*6);
+        big.atk=~~(big.baseAtk*big._slimeSz);
+        big.exp=(big.exp||0)+(small.exp||0);
+        small.hp=0;small.alive=false;
+        addTxt(big.x,big.y-big.r-5,'합체!','#dd55ff',30);
+        for(let k=0;k<8;k++){const a=Math.random()*Math.PI*2;poolPart(small.x,small.y,Math.cos(a)*4,Math.sin(a)*4,'#8833cc',3,12)}
+        shake(~~(big._slimeSz*2));
+        break; // 한 프레임에 1번만
+      }
+    }
+  }
 }
 function checkRooms(){
   // 현재 방 추적 (매 프레임 — 가벼움)
@@ -23069,13 +23175,21 @@ function draw(){
       let _eDrew=false;
       // ── 몬스터 스킨 아틀라스 렌더링 (etype 0-99, 최우선) ──
       if(!_eDrew&&_mobAtlas.ready&&e.etype>=0&&e.etype<=99){
-        const _mCol=e.etype%_MOB_COLS,_mRow=~~(e.etype/_MOB_COLS);
-        const _sx=_mCol*_MOB_CELL,_sy=_mRow*_MOB_CELL;
         const _minSz=30;
         const _baseSz=Math.max(e.r*3.5,_minSz);
         X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
         if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);
-        X.drawImage(_mobAtlas.img,_sx,_sy,_MOB_CELL,_MOB_CELL,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
+        const _eW2=e.etype<=9&&_walkAtlas.ready;
+        const _eM2=e.s==='eApproach'||e.s==='eCircle'||e.s==='eRetreat'||e.s==='eFlee'||e.s==='eCharge';
+        if(_eW2&&_eM2){
+          const _wf2=~~((_now*.005))%_WALK_COLS;
+          X.drawImage(_walkAtlas.img,_wf2*_MOB_CELL,e.etype*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
+        }else if(_eW2){
+          X.drawImage(_walkAtlas.img,0,e.etype*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
+        }else{
+          const _mCol=e.etype%_MOB_COLS,_mRow=~~(e.etype/_MOB_COLS);
+          X.drawImage(_mobAtlas.img,_mCol*_MOB_CELL,_mRow*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
+        }
         X.restore();_eDrew=true;_usedSpr=true;
       }
       // ── 외부 적 아틀라스 렌더링 (atlas_enemies.png) ──
@@ -26066,13 +26180,19 @@ function drawP(){
     // ── Atlas P 스프라이트 렌더링 (8방향) + Ori 영혼 글로우 ──
     const _apDead=P.hp<=0;const _apMv=P.s==='idle'&&(isAct('up')||isAct('down')||isAct('left')||isAct('right'));
     if(_harpLandT>0)_harpLandT-=_dtSp;
-    let _apAnim=_P_ANIM_MAP[P.s]||'idle';if(_apDead)_apAnim='die';else if(_harpActive||_dashActive||_harpLandT>0)_apAnim='charge_start';else if(_apMv)_apAnim='run';
+    let _apAnim=_P_ANIM_MAP[P.s]||'idle';
+    if(_apDead)_apAnim='die';
+    else if(_harpActive&&!_dashActive)_apAnim='charge_start';
+    else if(_dashActive)_apAnim='charge_hold';
+    else if(_harpLandT>0)_apAnim='charge_land';
+    else if(_apMv)_apAnim='run';
     const _apDir=_facingDir8(P.facing);
     const _apHasDir=!!P._sa.fm[_apAnim+'_'+_apDir];
-    if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam'))?'atk1':'idle';
-    if(!P._sa.fm[_apAnim]&&!P._sa.fm[_apAnim+'_'+_apDir])_apAnim='idle'; // 최종 폴백
-    const _apSpd=_apDead?12:(_apAnim==='charge_start'?4:(_apAnim==='idle'?48:(_apAnim==='run'?12:8)));
-    SpriteAnimator.play(P._sa,_apAnim,_apSpd,_apAnim==='charge_start'?false:!_apDead);
+    if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam')||_apAnim.startsWith('charge'))?'atk1':'idle';
+    if(!P._sa.fm[_apAnim]&&!P._sa.fm[_apAnim+'_'+_apDir])_apAnim='idle';
+    const _isHarp=_apAnim==='charge_start'||_apAnim==='charge_hold'||_apAnim==='charge_land';
+    const _apSpd=_apDead?12:(_isHarp?4:(_apAnim==='idle'?48:(_apAnim==='run'?12:8)));
+    SpriteAnimator.play(P._sa,_apAnim,_apSpd,_isHarp?false:!_apDead);
     if(_apMv){
       const _dFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
       if(_dFr&&_dFr.length)P._sa.f=~~((P._walkDist||0)/32)%_dFr.length;

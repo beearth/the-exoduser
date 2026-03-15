@@ -1,21 +1,21 @@
 {
-  "ts": 1773564343591,
+  "ts": 1773567927089,
   "player": {
-    "lv": 65,
-    "exp": 310,
-    "maxExp": 388,
-    "sp": 18,
-    "ap": 12,
+    "lv": 79,
+    "exp": 135,
+    "maxExp": 524,
+    "sp": 14,
+    "ap": 0,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.257,
-    "stR": 0.21100000000000002,
-    "hp": 217,
-    "mhp": 217,
-    "mp": 131,
-    "mmp": 131,
-    "st": 144,
-    "mst": 144,
+    "mpR": 0.28500000000000003,
+    "stR": 0.22500000000000003,
+    "hp": 232,
+    "mhp": 232,
+    "mp": 138,
+    "mmp": 138,
+    "st": 151,
+    "mst": 151,
     "speed": 2.879712,
     "shield": 0,
     "mshield": 0
@@ -404,15 +404,15 @@
     "lck": 0
   },
   "passives": {
-    "pAtk": 0,
+    "pAtk": 3,
     "pDef": 0,
     "pCharge": 0,
-    "pParry": 0,
-    "pMagic": 0,
-    "pBow": 0,
+    "pParry": 3,
+    "pMagic": 3,
+    "pBow": 3,
     "pShield": 0,
     "pGuard": 0,
-    "pRegen": 0,
+    "pRegen": 2,
     "pCrit": 0,
     "pDrop": 0,
     "pPierce": 0,
@@ -424,12 +424,12 @@
       "count": 1
     },
     {
-      "type": "mp",
-      "count": 39
+      "type": "st",
+      "count": 102
     },
     {
-      "type": "st",
-      "count": 34
+      "type": "mp",
+      "count": 84
     },
     {
       "type": null,
@@ -438,8 +438,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 859,
-    "mats": 126
+    "kills": 1373,
+    "mats": 1326
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -468,11 +468,14 @@
     "fanShot": 1,
     "omniBeam": 1,
     "plagueBurst": 1,
-    "maliceStorm": 1
+    "maliceStorm": 1,
+    "ghostWalk": 1,
+    "chargeBoost": 1,
+    "galeSlash": 1
   },
   "fused": {},
   "skProf": {
-    "holyDome": 3,
+    "holyDome": 7,
     "maliceSwipe": 30,
     "chargeBoost": 30,
     "whirlwind": 30,
@@ -480,9 +483,11 @@
     "detonate": 30,
     "blastShot": 15,
     "fanShot": 15,
-    "omniBeam": 15
+    "omniBeam": 15,
+    "maliceStorm": 14,
+    "plagueBurst": 4
   },
-  "activeChargeSk": "charge",
+  "activeChargeSk": "galeSlash",
   "activeBowSk": "fanShot",
   "activeTechSk": "spikeTrap",
   "activeMagicSk": "omniBeam",
@@ -494,7 +499,7 @@
     "maliceStorm",
     "plagueBurst",
     "spikeTrap",
-    null,
+    "ghostWalk",
     null,
     "holyDome"
   ],
