@@ -1,24 +1,24 @@
 {
-  "ts": 1773546342600,
+  "ts": 1773547737692,
   "player": {
-    "lv": 241,
-    "exp": 1626,
-    "maxExp": 3521,
-    "sp": 15,
+    "lv": 242,
+    "exp": 1723,
+    "maxExp": 3548,
+    "sp": 17,
     "ap": 6,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 4.7010000000000005,
-    "stR": 1.465,
-    "hp": 1965.1880187499783,
-    "mhp": 2278,
-    "mp": 601.1041117499933,
-    "mmp": 731,
-    "st": 302.1634375000005,
-    "mst": 345,
+    "mpR": 4.705,
+    "stR": 1.467,
+    "hp": 2281,
+    "mhp": 2281,
+    "mp": 732,
+    "mmp": 732,
+    "st": 346,
+    "mst": 346,
     "speed": 7.156058,
-    "shield": 0,
-    "mshield": 1297
+    "shield": 1298,
+    "mshield": 1298
   },
   "inv": {
     "bag": [
@@ -547,6 +547,61 @@
         "_gx": 7,
         "_gy": 2,
         "_pickT": 1773546272295
+      },
+      {
+        "id": 1773547459509.9998,
+        "slot": "bow",
+        "el": 1,
+        "rarity": 4,
+        "tier": 2,
+        "name": "염화 연사석궁",
+        "emoji": "⚡",
+        "btype": "repeater",
+        "atk": 10,
+        "bowSpd": 3.3,
+        "bowStCost": 0,
+        "bowRange": 337,
+        "bowProjSpd": 10,
+        "bonusRange": 3,
+        "bowPierce": 0.21,
+        "bDex": 34,
+        "bInt": 42,
+        "bStr": 30,
+        "affixes": [
+          {
+            "id": "killChain",
+            "tier": 2,
+            "value": 0.55
+          },
+          {
+            "id": "staggerBns",
+            "tier": 2,
+            "value": 22
+          },
+          {
+            "id": "staggerExplosion",
+            "tier": 2,
+            "value": 0.8
+          },
+          {
+            "id": "iceDot",
+            "tier": 2,
+            "value": 18
+          }
+        ],
+        "_implicitStat": "_iPierce",
+        "_implicitVal": 10.77,
+        "_implicitKo": "관통 확률 +X%",
+        "legendarySpecial": {
+          "ko": "치명타 시 추가 투사체 1발 발사",
+          "stat": "_lBowCrit",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 3,
+        "_pickT": 1773547459527
       }
     ],
     "equipped": {
@@ -1218,12 +1273,12 @@
       "count": 1
     },
     {
-      "type": "mp",
-      "count": 74
+      "type": null,
+      "count": 0
     },
     {
-      "type": "st",
-      "count": 83
+      "type": null,
+      "count": 0
     },
     {
       "type": null,
@@ -1232,8 +1287,8 @@
   ],
   "game": {
     "stage": 3,
-    "kills": 23531,
-    "mats": 393334
+    "kills": 23805,
+    "mats": 396718
   },
   "bagMax": 300,
   "hellCleared": [],
@@ -1306,7 +1361,7 @@
     "ghostWalk": 15,
     "guardian": 15,
     "maliceHunt": 30,
-    "maliceMortar": 6,
+    "maliceMortar": 8,
     "shieldThrow": 30
   },
   "activeChargeSk": "magicBlink",
