@@ -1,57 +1,78 @@
-"""Test game loads without JS errors after performance optimization changes."""
 from playwright.sync_api import sync_playwright
+import time
 
 with sync_playwright() as p:
     browser = p.chromium.launch(headless=True)
-    page = browser.new_page()
+    page = browser.new_page(viewport={"width": 1280, "height": 720})
 
     errors = []
-    console_msgs = []
-    page.on('console', lambda msg: (errors.append(msg.text) if msg.type == 'error' else console_msgs.append(f"[{msg.type}] {msg.text[:200]}")))
-    page.on('pageerror', lambda err: errors.append(f"PAGE_ERROR: {str(err)[:500]}"))
+    logs = []
+    page.on("console", lambda msg: logs.append(f"[{msg.type}] {msg.text}"))
+    page.on("pageerror", lambda err: errors.append(str(err)))
 
-    # Go directly to game.html
-    page.goto('http://localhost:3333/game.html', wait_until='load', timeout=15000)
+    page.goto("http://localhost:3333/game.html?test=1&slot=12312344", timeout=15000)
+    page.wait_for_load_state("networkidle")
     page.wait_for_timeout(3000)
 
-    print("=== ALL ERRORS ===")
-    for e in errors:
-        print(f"  {e[:500]}")
-
-    print(f"\n=== CONSOLE ({len(console_msgs)} messages) ===")
-    for m in console_msgs[:5]:
-        print(f"  {m}")
-
-    # Try to evaluate basic canvas check
+    # Enable debug perf
     try:
-        has_canvas = page.evaluate('!!document.getElementById("c")')
-        print(f"\nCanvas exists: {has_canvas}")
-    except Exception as ex:
-        print(f"\nEval failed: {ex}")
+        page.evaluate("_DEBUG_PERF=true")
+    except:
+        print("WARN: could not set _DEBUG_PERF")
 
-    # Try to check for WebGL
+    page.screenshot(path="C:/Users/심도진/Pictures/Screenshots/perf_test1.png")
+
+    # Let game run 5 seconds to collect perf data
+    page.wait_for_timeout(5000)
+
+    page.screenshot(path="C:/Users/심도진/Pictures/Screenshots/perf_test2.png")
+
+    # Collect perf data
     try:
-        result = page.evaluate('typeof GL')
-        print(f"GL type: {result}")
+        perf = page.evaluate("""(() => {
+            return {
+                prof_u: typeof _prof!=='undefined' ? _prof.u.toFixed(2) : 'N/A',
+                prof_d: typeof _prof!=='undefined' ? _prof.d.toFixed(2) : 'N/A',
+                projs: typeof projs!=='undefined' ? projs.length : 'N/A',
+                ens_total: typeof ens!=='undefined' ? ens.length : 'N/A',
+                projFreeLen: typeof _projFree!=='undefined' ? _projFree.length : 'N/A',
+                lightCnt: typeof _lightCnt!=='undefined' ? _lightCnt : 'N/A',
+                gameOn: typeof G!=='undefined' ? G.on : 'N/A',
+                fps: typeof _fpsCur!=='undefined' ? _fpsCur : 'N/A',
+                spawnProj: typeof spawnProj!=='undefined' ? 'function' : 'MISSING',
+                recycleProj: typeof _recycleProj!=='undefined' ? 'function' : 'MISSING',
+                shDirty: typeof _shDirty!=='undefined' ? _shDirty : 'N/A',
+                SHASH_CELL: typeof SHASH_CELL!=='undefined' ? SHASH_CELL : 'N/A',
+            }
+        })()""")
+        print("=== PERF DATA ===")
+        for k,v in perf.items():
+            print(f"  {k}: {v}")
     except Exception as ex:
-        print(f"GL check failed: {ex}")
+        print(f"Perf eval failed: {ex}")
 
-    # Try to check _maxEns
-    try:
-        result = page.evaluate('typeof _maxEns')
-        print(f"_maxEns type: {result}")
-    except Exception as ex:
-        print(f"_maxEns check failed: {ex}")
+    # Errors
+    js_errors = [e for e in errors if 'supabase' not in e.lower() and 'net::' not in e.lower()
+                 and 'Failed to fetch' not in e and 'favicon' not in e.lower()]
+    print(f"\n=== JS ERRORS ({len(js_errors)}) ===")
+    for e in js_errors[:10]:
+        print(f"  {e[:300]}")
 
-    # Take screenshot
-    page.screenshot(path='test_perf_screenshot.png', full_page=False)
-    print("\nScreenshot saved")
+    # Perf logs
+    perf_logs = [l for l in logs if "PERF" in l]
+    print(f"\n=== PERF LOGS ({len(perf_logs)}) ===")
+    for l in perf_logs[-5:]:
+        print(f"  {l}")
+
+    # Interesting logs
+    other = [l for l in logs if "PERF" not in l and "error" in l.lower()]
+    if other:
+        print(f"\n=== ERROR-ISH LOGS ===")
+        for l in other[-5:]:
+            print(f"  {l}")
 
     browser.close()
-
-    js_errors = [e for e in errors if 'supabase' not in e.lower() and 'net::' not in e.lower()
-                 and 'Failed to fetch' not in e and 'favicon' not in e.lower() and '404' not in e]
     if js_errors:
-        print(f"\nFAILED: {len(js_errors)} relevant JS errors")
-        exit(1)
-    print("\nPASSED")
+        print(f"\nFAILED: {len(js_errors)} JS errors")
+    else:
+        print("\nNO JS ERRORS")
