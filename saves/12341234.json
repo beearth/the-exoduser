@@ -1,21 +1,21 @@
 {
-  "ts": 1773506733064,
+  "ts": 1773507786441,
   "player": {
-    "lv": 25,
-    "exp": 75,
-    "maxExp": 108,
-    "sp": 10,
-    "ap": 4,
+    "lv": 35,
+    "exp": 134,
+    "maxExp": 163,
+    "sp": 30,
+    "ap": 6,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.17500000000000002,
-    "stR": 0.154,
-    "hp": 149,
-    "mhp": 149,
-    "mp": 110,
-    "mmp": 110,
-    "st": 122,
-    "mst": 122,
+    "mpR": 0.201,
+    "stR": 0.167,
+    "hp": -35.95274583333352,
+    "mhp": 163,
+    "mp": 60.9906715416677,
+    "mmp": 117,
+    "st": 129,
+    "mst": 129,
     "speed": 2.73598,
     "shield": 0,
     "mshield": 0
@@ -655,8 +655,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 110,
-    "mats": 344
+    "kills": 218,
+    "mats": 378
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -681,10 +681,10 @@
   "fused": {},
   "skProf": {
     "maliceSwipe": 30,
-    "whirlwind": 19,
-    "detonate": 13,
-    "holyDome": 2,
-    "chargeBoost": 1
+    "whirlwind": 30,
+    "detonate": 30,
+    "holyDome": 6,
+    "chargeBoost": 2
   },
   "activeChargeSk": "charge",
   "activeBowSk": "normal",
