@@ -2685,67 +2685,86 @@ function sfxVol(){return OPT.sfxVol/100}
 
 // ── Sample-based audio (Web Audio API AudioBuffer pooling — GC-free) ──
 const _sampleFiles={
-  sword_slash:'sfx/sword_slash.mp3',
-  sword_swing1:'sfx/sword_swing1.mp3',
-  sword_swing2:'sfx/sword_swing2.mp3',
-  sword_swing3:'sfx/sword_swing3.mp3',
-  spear_thrust:'sfx/spear_thrust.mp3',
-  heavy_strike:'sfx/heavy_strike.mp3',
-  sword_back:'sfx/sword_back.mp3',
-  magic_deflect:'sfx/magic_deflect.mp3',
-  sword_flat_hit:'sfx/sword_flat_hit.mp3',
-  fire_magic1:'sfx/fire_magic1.mp3',
-  fireball:'sfx/fireball.mp3',
-  spike_trap:'sfx/spike_trap.mp3',
-  voice_bladefuse:'sfx/voice_bladefuse.mp3',
-  voice_plague:'sfx/voice_plague.mp3',
-  voice_move:'sfx/voice_move.mp3',
-  voice_move2:'sfx/voice_move2.mp3',
-  voice_move3:'sfx/voice_move3.mp3',
-  fire_magic2:'sfx/fire_magic2.mp3',
-  chain_land:'sfx/chain_land.mp3',
-  chain_dash:'sfx/chain_dash.mp3',
-  chain_dash2:'sfx/chain_dash2.mp3',
-  chain_dash3:'sfx/chain_dash3.mp3',
-  chain_dash4:'sfx/chain_dash4.mp3',
-  beam_fire:'sfx/beam_fire.mp3',
-  beam_r1:'sfx/beam_r1.mp3',
-  beam_r2:'sfx/beam_r2.mp3',
-  beam_r3:'sfx/beam_r3.mp3',
-  shield_activate:'sfx/shield_activate.mp3',
-  shield_end:'sfx/shield_end.mp3',
-  shield_loop:'sfx/shield_loop.mp3',
-  parry_hit:'sfx/parry_hit.mp3',
-  parry_hit2:'sfx/parry_hit2.mp3',
-  arrow_hit:'sfx/arrow_hit.mp3',
-  bow_shot:'sfx/bow_shot.mp3',
-  male_grunt:'sfx/male_grunt.mp3',
-  monster_hit:'sfx/monster_hit.wav',
-  monster_hurt:'sfx/monster_hurt.wav',
-  crossbow_shot:'sfx/crossbow_shot.wav',
-  arrow_fly:'sfx/crossbow_shot.mp3',
-  player_hurt:'sfx/player_hurt.wav',
-  boss_howl:'sfx/boss_howl.wav',
-  bolt_hit:'sfx/bolt_hit.wav',
-  greatsword_swing:'bgm/swing.mp3',
-  blunt_hit:'sfx/blunt_hit.wav',
-  fire_death:'sfx/fire_death.wav',
-  voice_flee:'sfx/voice_flee.mp3',
-  voice_ult:'sfx/voice_ult.mp3',
-  voice_beam:'sfx/voice_beam.mp3',
-  voice_grunt:'sfx/voice_grunt.mp3',
-  voice_explode:'sfx/voice_explode.mp3',
-  voice_magic:'sfx/voice_magic.mp3',
-  voice_en1:'sfx/voice_en1.mp3',
-  voice_en2:'sfx/voice_en2.mp3',
-  voice_en3:'sfx/voice_en3.mp3',
-  voice_parry1:'sfx/voice_parry1.mp3',
-  voice_parry2:'sfx/voice_parry2.mp3',
-  voice_parry3:'sfx/voice_parry3.mp3',
-  voice_parry4:'sfx/voice_parry4.mp3',
-  voice_holyDome:'sfx/voice_holyDome.mp3',
-  voice_holyDome2:'sfx/voice_holyDome2.mp3',
-  voice_wakeup:'sfx/voice_wakeup.mp3',
+  // swing/ — 휘두르기
+  sword_slash:'sfx/swing/sword_slash.mp3',
+  sword_swing1:'sfx/swing/sword_swing1.mp3',
+  sword_swing2:'sfx/swing/sword_swing2.mp3',
+  sword_swing3:'sfx/swing/sword_swing3.mp3',
+  spear_thrust:'sfx/swing/spear_thrust.mp3',
+  greatsword_swing:'sfx/swing/greatsword_swing.mp3',
+  sword_back:'sfx/swing/sword_back.mp3',
+  sword_back2:'sfx/swing/sword_back2.mp3',
+  sword_back3:'sfx/swing/sword_back3.mp3',
+  // hit/ — 타격
+  heavy_strike:'sfx/hit/heavy_strike.mp3',
+  sword_flat_hit:'sfx/hit/sword_flat_hit.mp3',
+  arrow_hit:'sfx/hit/arrow_hit.mp3',
+  bolt_hit:'sfx/hit/bolt_hit.wav',
+  blunt_hit:'sfx/hit/blunt_hit.wav',
+  bullet_hit:'sfx/hit/bullet_hit.mp3',
+  // q_parry/ — 패링
+  q_end:'sfx/q_parry/q_end.mp3',
+  q_parry:'sfx/q_parry/q_parry.mp3',
+  q_parry2:'sfx/q_parry/q_parry2.mp3',
+  q_parry3:'sfx/q_parry/q_parry3.mp3',
+  q_start:'sfx/q_parry/q_start.mp3',
+  sword_parry:'sfx/sword_parry/sfxsword_parry.mp3',
+  // beam/ — 빔
+  beam_fire:'sfx/beam/beam_fire.mp3',
+  beam_r1:'sfx/beam/beam_r1.mp3',
+  beam_r2:'sfx/beam/beam_r2.mp3',
+  beam_r3:'sfx/beam/beam_r3.mp3',
+  fire_death:'sfx/beam/laser_death.wav',
+  // chain/ — 사슬기동
+  chain_land:'sfx/chain/chain_land.mp3',
+  chain_dash:'sfx/chain/chain_dash.mp3',
+  chain_dash2:'sfx/chain/chain_dash2.mp3',
+  chain_dash3:'sfx/chain/chain_dash3.mp3',
+  chain_dash4:'sfx/chain/chain_dash4.mp3',
+  // voice/ — 보이스
+  male_grunt:'sfx/voice/male_grunt.mp3',
+  voice_bladefuse:'sfx/voice/voice_bladefuse.mp3',
+  voice_plague:'sfx/voice/voice_plague.mp3',
+  voice_move:'sfx/voice/voice_move.mp3',
+  voice_move2:'sfx/voice/voice_move2.mp3',
+  voice_move3:'sfx/voice/voice_move3.mp3',
+  voice_flee:'sfx/voice/voice_flee.mp3',
+  voice_ult:'sfx/voice/voice_ult.mp3',
+  voice_beam:'sfx/voice/voice_beam.mp3',
+  voice_grunt:'sfx/voice/voice_grunt.mp3',
+  voice_explode:'sfx/voice/voice_explode.mp3',
+  voice_magic:'sfx/voice/voice_magic.mp3',
+  voice_en1:'sfx/voice/voice_en1.mp3',
+  voice_en2:'sfx/voice/voice_en2.mp3',
+  voice_en3:'sfx/voice/voice_en3.mp3',
+  voice_parry1:'sfx/voice/voice_parry1.mp3',
+  voice_parry2:'sfx/voice/voice_parry2.mp3',
+  voice_parry3:'sfx/voice/voice_parry3.mp3',
+  voice_parry4:'sfx/voice/voice_parry4.mp3',
+  voice_holyDome:'sfx/voice/voice_holyDome.mp3',
+  voice_holyDome2:'sfx/voice/voice_holyDome2.mp3',
+  voice_wakeup:'sfx/voice/voice_wakeup.mp3',
+  voice_lavaSummon:'sfx/voice/voice_lavaSummon.mp3',
+  // weapon/ — 무기
+  bow_shot:'sfx/weapon/bow_shot.mp3',
+  crossbow_shot:'sfx/weapon/crossbow_shot.wav',
+  arrow_fly:'sfx/weapon/crossbow_shot.mp3',
+  // monster/ — 몬스터
+  monster_hit:'sfx/monster/monster_hit.wav',
+  monster_hurt:'sfx/monster/monster_hurt.wav',
+  boss_howl:'sfx/monster/boss_howl.wav',
+  // shield/ — 보호막
+  shield_activate:'sfx/q_parry/q_start.mp3',
+  shield_end:'sfx/q_parry/q_end.mp3',
+  shield_loop:'sfx/shield/shield_loop.mp3',
+  // magic/ — 마법
+  fire_magic1:'sfx/magic/fire_magic1.mp3',
+  fire_magic2:'sfx/magic/fire_magic2.mp3',
+  fireball:'sfx/magic/fireball.mp3',
+  // misc/ — 기타
+  spike_trap:'sfx/misc/spike_trap.mp3',
+  player_hurt:'sfx/misc/player_hurt.wav',
+  footstep:'sfx/misc/footstep.mp3',
 };
 const _audioBuffers={};
 const _sfxRing={}; // 동시 재생 제한 링버퍼 (key → {arr[8], idx})
@@ -3343,7 +3362,7 @@ function _startShieldLoop(){try{_stopShieldLoop();const c=actx(),buf=_audioBuffe
 function _stopShieldLoop(){if(_shieldLoopSrc){try{if(_shieldLoopGain)_shieldLoopGain.gain.exponentialRampToValueAtTime(.0001,actx().currentTime+.1);setTimeout(()=>{try{_shieldLoopSrc.stop()}catch(e){}},150)}catch(e){}_shieldLoopSrc=null;_shieldLoopGain=null}}
 const SFX={
   // ── Blade slash: 4종 랜덤 ──
-  _swIdx:0,
+  _swIdx:0,_sbIdx:0,
   slash(){
     const _sw=['sword_swing1','sword_swing2','sword_swing3'];
     playSample(_sw[~~(Math.random()*3)],.85,_r(1,.08));
@@ -7427,12 +7446,12 @@ const _MOB_CELL=48,_MOB_COLS=10;
 const _walkAtlas={img:null,ready:false};
 const _WALK_COLS=4;
 const _WA={idle:{s:0,n:4,spd:.003},walk:{s:4,n:4,spd:.005},attack:{s:8,n:6,spd:.008},hit:{s:14,n:6,spd:.007}}; // 상태별 오프셋+속도
-const _WA_ROW={0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,12:10,13:11,18:12}; // etype→아틀라스 행
+const _WA_ROW={0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,12:10,13:11,18:12,41:13,44:14,49:15,56:16}; // etype→아틀라스 행
 function _hasWalkAnim(et){return _WA_ROW[et]!==undefined&&et!==7&&et!==9}
 function _waRow(et){return _WA_ROW[et]||0}
 (function _loadWalkAtlas(){
   const img=new Image();
-  img.src='img/mobs/atlas_walk.png?v=3';
+  img.src='img/mobs/atlas_walk.png?v=4';
   _walkAtlas.img=img;
   img.onload=function(){
     if(img.decode){img.decode().then(function(){_walkAtlas.ready=true;console.log('[WALK_ATLAS] 디코딩 완료 '+img.width+'x'+img.height)}).catch(function(){_walkAtlas.ready=true})}
@@ -11739,7 +11758,7 @@ function update(){
     const _wx0=P.x,_wy0=P.y;
     if(canMv(nx,P.y,P.r))P.x=nx;if(canMv(P.x,ny,P.r))P.y=ny;
     const _wdd=Math.sqrt((P.x-_wx0)*(P.x-_wx0)+(P.y-_wy0)*(P.y-_wy0));
-    if(_wdd>0)P._walkDist=(P._walkDist||0)+_wdd;else P._walkDist=P._walkDist||0;
+    if(_wdd>0){P._walkDist=(P._walkDist||0)+_wdd;if(P._walkDist>28){P._walkDist=0;playSample('footstep',.08,_r(.9,.15))}}else P._walkDist=P._walkDist||0;
     // ═══ 칼날이동 — 더블탭 트리거 소비 ═══
     if(P._bdTrigger!=null){
       if(P.skills.bladeDash>=1&&(P._bdStk==null||(P._bdStk||0)>0)&&P.mp>=~~(P.mmp*COST_PCT.bladeDash)&&!(P._seaParalyzed>0)){
@@ -11753,7 +11772,7 @@ function update(){
     else if(isAct('parry')&&!_qIsIceOrb()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15))} // Q: 보호막 (데미지 감소)
     else if(isHeld('weapon')&&P.skills.whirlwind&&P.st>=2){P.s='whirlwind';P.wwAng=0;SFX._swIdx=0;SFX.slashSeq();if(Math.random()<.35)playSample('voice_flee',1,1);else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}_addSkProf('whirlwind')}
     else if(isAct('weapon')&&useStPct('weapon')){P._atkBon=~~(_lastCost*1.5);P.s='wSwing';P.st2=10;P.swProg=0;P.atkArc=P.facing;if(G._pStats)G._pStats._atkC++;if(Math.random()<.5){const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}}
-    else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=12;_addSkProf('maliceSwipe');playSample('sword_back',.7,_r(1,.1));if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
+    else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=12;_addSkProf('maliceSwipe');playSample(['sword_back','sword_back2','sword_back3'][SFX._sbIdx++%3],.7,_r(1,.1));if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
     else if(isJust('bow')&&!P._ebAiming&&!P._mmAiming&&!P._bwAiming&&!P._msAiming&&!P._isAiming){
       // Space키: 기술 카테고리 (L키로 전환)
       const _ats=P.activeTechSk||'spikeTrap';
@@ -11991,7 +12010,7 @@ function update(){
       else if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}
       else if(isAct('parry')&&!_qIsIceOrb()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
       else if(P.st2<=0){
-        if(isHeld('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=12;_addSkProf('maliceSwipe');playSample('sword_back',.7,_r(1,.1));if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
+        if(isHeld('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=12;_addSkProf('maliceSwipe');playSample(['sword_back','sword_back2','sword_back3'][SFX._sbIdx++%3],.7,_r(1,.1));if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
         else P.s='idle';
       }
     }
@@ -12013,7 +12032,7 @@ function update(){
       }
       else if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}
       else if(isAct('parry')&&!_qIsIceOrb()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
-      else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=12;_addSkProf('maliceSwipe');playSample('sword_back',.7,_r(1,.1));if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
+      else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=12;_addSkProf('maliceSwipe');playSample(['sword_back','sword_back2','sword_back3'][SFX._sbIdx++%3],.7,_r(1,.1));if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
       else if(isHeld('beam')&&P.mp>=mpCost('magic')){
         const _amsk2=P.activeMagicSk||'beam';
         const _isSix2=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
@@ -14991,7 +15010,7 @@ function _bossAI(e,sp,d){
 
 function isPWin(){return P.s==='sBash'||(P.s==='sBlock'&&P._sbParryT>0)||(P.s!=='whirlwind'&&P._sbParryT>0)} // 칼등치기 + 보호막 패링윈도우 (회전 중 제외)
 function _bossPostureHit(e,amt){if(!e.ib||!e._maxPosture)return;e._posture=Math.min(e._maxPosture,(e._posture||0)+(amt||20));e._postureReT=180;if(e._posture>=e._maxPosture){e._posture=0;e.stunned=Math.max(e.stunned,300);e.s='recover';e.st2=300;SFX.groggy();G.hitStop=~~(_HS.postureBreak*OPT.hitStop/100);G.slowMo=40;G.shake=25*OPT.shake/100;addTxt(e.x,e.y-40,'체간 파괴!','#ffcc00',90);bigImpact(e.x,e.y,e.el||0,0);for(let k=0;k<30;k++){const a=Math.PI*2*k/30;const sv=6+Math.random()*8;poolPart(e.x,e.y,Math.cos(a)*sv,Math.sin(a)*sv,k%3===0?'#ffcc00':k%3===1?'#ff6600':'#ffffff',4+Math.random()*4,15+Math.random()*10)}}}
-function doParry(_inDmg){_petOnParry();if(G._pStats)G._pStats._pH++;playSample(Math.random()<.5?'parry_hit':'parry_hit2',.8,_r(1,.1));if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
+function doParry(_inDmg){_petOnParry();if(G._pStats)G._pStats._pH++;if(P.s==='sBlock'||P._sbParryT>0){const _qp=['q_parry','q_parry2','q_parry3'];playSample(_qp[~~(Math.random()*3)],.8,_r(1,.08))}else{playSample('sword_parry',.8,_r(1,.1))}if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
   P.iframes=Math.max(P.iframes,18);P.st=Math.min(P.mst,P.st+25);P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));
   if(P.skills.detonate&&P.parryT!==undefined&&P.parryT>0){G.shake=6*OPT.shake/100} // 기폭 충전 중: hitStop/slowMo 없이 흔들림만
   else{G.hitStop=~~(_HS.parry*OPT.hitStop/100);G.slowMo=25;G.shake=14*OPT.shake/100}
@@ -18773,16 +18792,16 @@ function hurtP(dmg,opts){
   if(G._pStats)G._pStats._pA++;if(P.s==='beam')SFX.beamStop();
   // 해제 패링: sBlock 뗀 직후 패링 윈도우
   if(P.s!=='sBlock'&&P._sbParryT>0){
-    P._sbParryT=0;dmg=0;doParry(dmg);
+    P._sbParryT=0;dmg=0;{const _qp=['q_parry','q_parry2','q_parry3'];playSample(_qp[~~(Math.random()*3)],.8,_r(1,.08))};showPH('PARRY!','#ffdd00');P.iframes=Math.max(P.iframes,18);P.st=Math.min(P.mst,P.st+25);P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+100;_detonateBlast('해제기폭!',wp().el||0)}
     return;
   }
   // 보호막: 데미지 70% 감소 + 방패 DEF 적용 + 기폭팔 축적
   if(P.s==='sBlock'){
-    // ── 보호막 패링: 칼등치기와 동일하게 doParry() 호출 ──
+    // ── 보호막 패링: Q 전용 사운드 ──
     if(P._sbParryT>0){
       P._sbParryT=0;dmg=0;
-      doParry(dmg);
+      {const _qp=['q_parry','q_parry2','q_parry3'];playSample(_qp[~~(Math.random()*3)],.8,_r(1,.08))};showPH('PARRY!','#ffdd00');P.iframes=Math.max(P.iframes,18);P.st=Math.min(P.mst,P.st+25);P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));
       if(P.skills.detonate){P.parryBank=(P.parryBank||0)+100}
       return;
     }
