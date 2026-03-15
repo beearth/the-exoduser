@@ -1,21 +1,21 @@
 {
-  "ts": 1773567927089,
+  "ts": 1773571530367,
   "player": {
-    "lv": 79,
-    "exp": 135,
-    "maxExp": 524,
-    "sp": 14,
-    "ap": 0,
+    "lv": 93,
+    "exp": 584,
+    "maxExp": 679,
+    "sp": 0,
+    "ap": 1,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.28500000000000003,
-    "stR": 0.22500000000000003,
-    "hp": 232,
-    "mhp": 232,
-    "mp": 138,
-    "mmp": 138,
-    "st": 151,
-    "mst": 151,
+    "mpR": 0.319,
+    "stR": 0.24200000000000002,
+    "hp": 251,
+    "mhp": 251,
+    "mp": 146,
+    "mmp": 146,
+    "st": 159,
+    "mst": 159,
     "speed": 2.879712,
     "shield": 0,
     "mshield": 0
@@ -408,11 +408,11 @@
     "pDef": 0,
     "pCharge": 0,
     "pParry": 3,
-    "pMagic": 3,
+    "pMagic": 4,
     "pBow": 3,
     "pShield": 0,
     "pGuard": 0,
-    "pRegen": 2,
+    "pRegen": 3,
     "pCrit": 0,
     "pDrop": 0,
     "pPierce": 0,
@@ -425,11 +425,11 @@
     },
     {
       "type": "st",
-      "count": 102
+      "count": 55
     },
     {
       "type": "mp",
-      "count": 84
+      "count": 80
     },
     {
       "type": null,
@@ -438,8 +438,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 1373,
-    "mats": 1326
+    "kills": 2144,
+    "mats": 3223
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -464,18 +464,23 @@
     "spikeTrap": 1,
     "maliceSwipe": 1,
     "detonate": 1,
-    "blastShot": 0,
+    "blastShot": 4,
     "fanShot": 1,
     "omniBeam": 1,
     "plagueBurst": 1,
     "maliceStorm": 1,
     "ghostWalk": 1,
     "chargeBoost": 1,
-    "galeSlash": 1
+    "holyBlast": 1,
+    "elemMissile": 1,
+    "giantSlam": 1
   },
-  "fused": {},
+  "fused": {
+    "sixFuse": true,
+    "whirlDet": true
+  },
   "skProf": {
-    "holyDome": 7,
+    "holyDome": 14,
     "maliceSwipe": 30,
     "chargeBoost": 30,
     "whirlwind": 30,
@@ -484,11 +489,14 @@
     "blastShot": 15,
     "fanShot": 15,
     "omniBeam": 15,
-    "maliceStorm": 14,
-    "plagueBurst": 4
+    "maliceStorm": 30,
+    "plagueBurst": 17,
+    "ghostWalk": 3,
+    "holyBlast": 2,
+    "giantSlam": 2
   },
-  "activeChargeSk": "galeSlash",
-  "activeBowSk": "fanShot",
+  "activeChargeSk": "charge",
+  "activeBowSk": "blastShot",
   "activeTechSk": "spikeTrap",
   "activeMagicSk": "omniBeam",
   "activeLMBSk": "whirlwind",
@@ -499,10 +507,10 @@
     "maliceStorm",
     "plagueBurst",
     "spikeTrap",
-    "ghostWalk",
+    "giantSlam",
     null,
     "holyDome"
   ],
-  "ultSlot": null,
+  "ultSlot": "holyBlast",
   "charIdx": 4
 }
