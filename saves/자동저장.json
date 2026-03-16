@@ -1,21 +1,21 @@
 {
-  "ts": 1773591173072,
+  "ts": 1773654334855,
   "player": {
-    "lv": 1,
-    "exp": 0,
-    "maxExp": 15,
-    "sp": 0,
-    "ap": 0,
+    "lv": 48,
+    "exp": 227,
+    "maxExp": 250,
+    "sp": 40,
+    "ap": 4,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.135,
-    "stR": 0.134,
-    "hp": 139,
-    "mhp": 139,
-    "mp": 100,
-    "mmp": 100,
-    "st": 110,
-    "mst": 110,
+    "mpR": 0.201,
+    "stR": 0.167,
+    "hp": 174,
+    "mhp": 174,
+    "mp": 117,
+    "mmp": 117,
+    "st": 127,
+    "mst": 127,
     "speed": 2.71362,
     "shield": 0,
     "mshield": 0
@@ -310,6 +310,49 @@
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
+      },
+      {
+        "id": 1773653411582.9795,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 4,
+        "tier": 3,
+        "name": "미스릴 방패",
+        "emoji": "🛡️",
+        "bonusRange": 3,
+        "blockRate": 90,
+        "shieldWt": 9,
+        "atk": 21,
+        "def": 26,
+        "stagger": 85,
+        "bStr": 33,
+        "bDex": 35,
+        "bInt": 46,
+        "affixes": [
+          {
+            "id": "physDR",
+            "tier": 1,
+            "value": 0.1297
+          },
+          {
+            "id": "reflect",
+            "tier": 1,
+            "value": 0.1274
+          }
+        ],
+        "_implicitStat": "_iBlockPct",
+        "_implicitVal": 3.92,
+        "_implicitKo": "방어율 +X%",
+        "legendarySpecial": {
+          "ko": "패리 성공 시 반격 데미지 ×2",
+          "stat": "_lShieldParry",
+          "val": 2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 0,
+        "_pickT": 1773653411597
       }
     ],
     "equipped": {
@@ -562,7 +605,8 @@
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
-      }
+      },
+      "belt": null
     }
   },
   "stats": {
@@ -573,12 +617,12 @@
     "lck": 0
   },
   "passives": {
-    "pAtk": 0,
+    "pAtk": 2,
     "pDef": 0,
     "pCharge": 0,
     "pParry": 0,
-    "pMagic": 0,
-    "pBow": 0,
+    "pMagic": 1,
+    "pBow": 1,
     "pShield": 0,
     "pGuard": 0,
     "pRegen": 0,
@@ -593,8 +637,8 @@
       "count": 1
     },
     {
-      "type": null,
-      "count": 0
+      "type": "st",
+      "count": 69
     },
     {
       "type": null,
@@ -607,8 +651,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 0,
-    "mats": 100
+    "kills": 418,
+    "mats": 5830
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -625,21 +669,39 @@
     "hp": 0
   },
   "skills": {
-    "holyDome": 1
+    "holyDome": 1,
+    "whirlwind": 1,
+    "bladeShot": 1,
+    "maliceSwipe": 1,
+    "elemMissile": 1,
+    "detonate": 1,
+    "maliceStorm": 1,
+    "plagueBurst": 1
   },
   "fused": {},
-  "skProf": {},
+  "skProf": {
+    "maliceSwipe": 30,
+    "whirlwind": 30,
+    "spikeTrap": 5,
+    "holyDome": 4,
+    "bladeShot": 1,
+    "chargeBoost": 10,
+    "detonate": 30,
+    "elemMissile": 15,
+    "maliceStorm": 6,
+    "plagueBurst": 3
+  },
   "activeChargeSk": "charge",
-  "activeBowSk": "normal",
+  "activeBowSk": "bladeShot",
   "activeTechSk": "spikeTrap",
-  "activeMagicSk": "beam",
+  "activeMagicSk": "elemMissile",
   "activeLMBSk": "whirlwind",
   "activeRMBSk": "shieldBlock",
   "activeQSk": "parry",
   "activeCtSk": "ghostWalk",
   "skillSlots": [
-    null,
-    null,
+    "maliceStorm",
+    "plagueBurst",
     null,
     null,
     null,
