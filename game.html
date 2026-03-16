@@ -2769,6 +2769,8 @@ const _sampleFiles={
   chain_dash3:'sfx/chain/chain_dash3.mp3',
   chain_dash4:'sfx/chain/chain_dash4.mp3',
   chain_throw:'sfx/chain/chain_throw.mp3',
+  chain_fly:'sfx/chain/chain_fly.mp3',
+  chain_land2:'sfx/chain/chain_land2.mp3',
   // voice/ — 보이스
   male_grunt:'sfx/voice/male_grunt.mp3',
   voice_bladefuse:'sfx/voice/voice_bladefuse.mp3',
@@ -2829,6 +2831,7 @@ const _sampleFiles={
   spike_trap:'sfx/misc/spike_trap.mp3',
   player_hurt:'sfx/misc/player_hurt.wav',
   footstep:'sfx/misc/footstep_new.mp3',
+  footstep2:'sfx/misc/footstep_stone.mp3',
 };
 const _audioBuffers={};
 const _sfxRing={}; // 동시 재생 제한 링버퍼 (key → {arr[8], idx})
@@ -4034,7 +4037,7 @@ addEventListener('keyup',e=>{
       _harpVX=Math.cos(_hDir)*_HARP_SPD;_harpVY=Math.sin(_hDir)*_HARP_SPD;
       _harpDist=0;_harpMaxDist=_harpDistTier(_tier);
       const _isMB=_hSk==='magicBlink';
-      playSample('chain_throw',.7,_r(1,.12));
+      playSample('chain_throw',.7,_r(1,.12));playSample('chain_fly',.5,_r(1,.1));
       if(_isMB||_isDB){SFX.magic(3);{const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.6,_r(1,.1))};addTxt(P.x,P.y-25,_isDB?'⚡ 사슬이동:강화!':'⚡ 사슬기동:화염!',_isDB?'#8844ff':'#44ddff',40)}
       else{SFX.slash();{const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.6,_r(1,.1))};if(Math.random()<.4){const _vm=['voice_move','voice_move2','voice_move3'];playSample(_vm[~~(Math.random()*3)],1,_r(1,.08))}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))};addTxt(P.x,P.y-25,'🔱 작살!','#ffaa00',35)}
       _addSkProf('chargeBoost');
@@ -4772,7 +4775,7 @@ for(const ch of CHAPTER_STAGES){
 
 let G={on:false,paused:false,stage:0,kills:0,mats:0,cam:{x:0,y:0},shake:0,parts:[],txts:[],
   forgeOpen:false,forgeTab:'upgrade',forgeSort:null,rooms:[],curRoom:0,map:null,mw:0,mh:0,hitStop:0,slowMo:0,stageCleared:false,exits:[],bossAlive:true,
-  _chainCnt:0,_chainT:0,rifts:[],spawnHoles:[],atkTickets:0,maxAtkTickets:9999};
+  _chainCnt:0,_chainT:0,rifts:[],spawnHoles:[],atkTickets:0,maxAtkTickets:3};
 let P=null,ens=[],projs=[],pProjs=[],worldItems=[];// worldItems = items on ground, pProjs = player arrows
 // ── 적 투사체 오브젝트 풀 ──
 const _PROJ_POOL=600;
@@ -11965,6 +11968,7 @@ function update(){
       // 벽이면 약간 뒤로 보정
       if(!canMv(_harpX,_harpY,2)){_harpX-=_harpVX*2;_harpY-=_harpVY*2}
       _harpHit=true;
+      playSample('chain_land2',.8,_r(1,.1));
     }
     // 꽂힘 → 플레이어 끌어당기기 시작
     if(_harpHit&&!_dashActive){
@@ -12332,7 +12336,7 @@ function update(){
     const _wx0=P.x,_wy0=P.y;
     if(canMv(nx,P.y,P.r))P.x=nx;if(canMv(P.x,ny,P.r))P.y=ny;
     const _wdd=Math.sqrt((P.x-_wx0)*(P.x-_wx0)+(P.y-_wy0)*(P.y-_wy0));
-    if(_wdd>0){P._walkDist=(P._walkDist||0)+_wdd;if(P._walkDist>72){P._walkDist=0;playSample('footstep',.08,_r(.9,.15))}}else P._walkDist=P._walkDist||0;
+    if(_wdd>0){P._walkDist=(P._walkDist||0)+_wdd;if(P._walkDist>72){P._walkDist=0;playSample(Math.random()<.5?'footstep':'footstep2',.08,_r(.9,.15))}}else P._walkDist=P._walkDist||0;
     // ═══ 칼날이동 — 더블탭 트리거 소비 ═══
     if(P._bdTrigger!=null){
       if(P.skills.bladeDash>=1&&(P._bdStk==null||(P._bdStk||0)>0)&&P.mp>=~~(P.mmp*COST_PCT.bladeDash)&&!(P._seaParalyzed>0)){
@@ -18098,7 +18102,7 @@ function updateE(e,sp){
     else if(P.s!=='charge'){hurtP(~~(e.atk*elMul(e.el,ar().el)));eModHitP(e);
       // 18:흡혈사도 — 데미지의 30% 체력 회복
       if(e.drainHeal>0){const hl=~~(e.atk*e.drainHeal);e.hp=Math.min(e.mhp,e.hp+hl);addTxt(e.x,e.y-15,'+'+hl,'#ff2266',20);addParts(e.x,e.y,'#ff2266',4)}}}
-    if(e.st2<=0){e.s='recover';e.st2=e.ib?35:50}break;
+    if(e.st2<=0){e.s='recover';e.st2=e.ib?35:80}break;
   // ═══ 지연참 — 랜덤 홀드 후 전방 참격 ═══
   case'bossDelaySlashHold':{
     // 홀드 중 살짝 플레이어 추적
@@ -24966,6 +24970,8 @@ function draw(){
       X.fillText('☆ 육선포 ☆',P.x,P.y-P.r-26);
     }else{
       // ═══ 기본 빔 ═══
+      const bd=Math.cos(P.atkArc),be=Math.sin(P.atkArc);
+      const bl=400+((P.skills.omniBeam||1)-1)*68;
       const elms=hm().elements||[{el:EL.P,dmg:5}];
       const nc=elms.length;
       for(let ei=0;ei<nc;ei++){
@@ -25809,43 +25815,33 @@ function drawP(){
         }
         X.closePath();X.stroke();
       }else if(fz.type==='spikeTrap'){
-        // ═══ 가시덫 — 바닥에 가시 흩뿌림 ═══
+        // ═══ 가시덫 — 은은한 바닥 압정 ═══
         const _stt=_now*.001;
-        // 시드 기반 가시 위치 (최초 1회 생성)
-        if(!fz._spikes){
-          fz._spikes=[];
-          for(let _si=0;_si<20;_si++){
-            const _sa=Math.PI*2*((_si*7+3)%20)/20;
-            const _sd=fz.r*(.15+.75*((_si*13+5)%17)/17);
-            fz._spikes.push({
-              x:fz.x+Math.cos(_sa)*_sd,y:fz.y+Math.sin(_sa)*_sd,
-              h:5+(_si%4)*3,w:1.5+(_si%3),rot:(_si*37%360)*Math.PI/180,
-              col:_si%4===0?'#886633':_si%4===1?'#667744':_si%4===2?'#aa4422':'#556633',
-              delay:_si*2 // 솟아오르는 딜레이
-            });
+        const _deployT=Math.min(1,fz.t/12);
+        // 1) 바닥 — 희미한 어두운 얼룩 (원판X, 산개된 점)
+        X.globalAlpha=.06*_fzFade;X.fillStyle='#333322';
+        X.beginPath();X.arc(fz.x,fz.y,fz.r*_deployT*.7,0,Math.PI*2);X.fill();
+        // 2) 외곽 — 희미한 점선
+        X.globalAlpha=(.15+.05*Math.sin(_stt*4))*_fzFade;
+        X.strokeStyle='#667744';X.lineWidth=1;
+        X.setLineDash([4,6]);X.beginPath();X.arc(fz.x,fz.y,fz.r*_deployT*.95,0,Math.PI*2);X.stroke();X.setLineDash([]);
+        // 3) 압정 — 작은 금속 점
+        if(!fz._tacks){
+          fz._tacks=[];
+          for(let _si=0;_si<12;_si++){
+            const _sa=Math.PI*2*((_si*7+3)%12)/12;
+            const _sd=fz.r*(.2+.6*((_si*13+5)%11)/11);
+            fz._tacks.push({ox:Math.cos(_sa)*_sd,oy:Math.sin(_sa)*_sd,sz:1.5+(_si%3)*.5});
           }
         }
-        for(let _si=0;_si<fz._spikes.length;_si++){
-          const sp=fz._spikes[_si];
-          // 솟아오르는 애니: fz.t 기준
-          const _age=fz.t-sp.delay;
-          if(_age<0)continue;
-          const _rise=Math.min(1,_age/8); // 8프레임에 걸쳐 솟아남
-          const _h=sp.h*_rise;
-          if(_h<1)continue;
-          // 흔들림
-          const _wobble=Math.sin(_stt*6+_si*2)*.5;
-          X.save();X.translate(sp.x,sp.y);X.rotate(sp.rot+_wobble*.05);
-          X.globalAlpha=(.5+.15*Math.sin(_stt*3+_si))*_fzFade;
-          X.fillStyle=sp.col;
-          // 가시 모양: 뾰족한 삼각형 (위로 솟음)
-          X.beginPath();X.moveTo(0,-_h);X.lineTo(-sp.w,1);X.lineTo(sp.w,1);X.closePath();X.fill();
-          // 가시 하이라이트
-          X.globalAlpha=.2*_fzFade;X.fillStyle='#ffddaa';
-          X.beginPath();X.moveTo(0,-_h);X.lineTo(-.3,-.5);X.lineTo(.3,-.5);X.closePath();X.fill();
-          X.restore();
+        for(let _si=0;_si<fz._tacks.length;_si++){
+          const tk=fz._tacks[_si];
+          const tx=fz.x+tk.ox*_deployT,ty=fz.y+tk.oy*_deployT;
+          X.globalAlpha=(.35+.08*Math.sin(_stt*5+_si*1.7))*_fzFade;
+          X.fillStyle='#554a33';X.beginPath();X.arc(tx,ty,tk.sz,0,Math.PI*2);X.fill();
+          X.globalAlpha=.15*_fzFade;
+          X.fillStyle='#998866';X.beginPath();X.arc(tx,ty-.5,tk.sz*.4,0,Math.PI*2);X.fill();
         }
-        // 소멸 직전 (마지막 1초) 가시가 내려감 — globalAlpha로 페이드
       }else if(fz.type==='holyDome'){
         // ═══ 신성한 땅 — 황금 보호막 ═══
         const _hdt=_now*.001;
