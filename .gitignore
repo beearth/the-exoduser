@@ -18,3 +18,4 @@ server.out.log
 .env*.local
 auto-push.sh
 auto-push.log
+EXODUSER_itch.zip
