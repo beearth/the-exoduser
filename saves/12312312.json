@@ -1,21 +1,21 @@
 {
-  "ts": 1773686725444,
+  "ts": 1773690343431,
   "player": {
-    "lv": 77,
-    "exp": 151,
-    "maxExp": 503,
-    "sp": 24,
-    "ap": 10,
+    "lv": 85,
+    "exp": 329,
+    "maxExp": 588,
+    "sp": 28,
+    "ap": 12,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.885,
-    "stR": 0.37900000000000006,
-    "hp": 428,
-    "mhp": 428,
-    "mp": 213,
-    "mmp": 213,
-    "st": 97.81513749999421,
-    "mst": 169,
+    "mpR": 0.903,
+    "stR": 0.38800000000000007,
+    "hp": 438,
+    "mhp": 438,
+    "mp": 217,
+    "mmp": 217,
+    "st": 112.55465000000055,
+    "mst": 173,
     "speed": 3.4491050000000003,
     "shield": 0,
     "mshield": 0
@@ -817,12 +817,12 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 10
+      "type": "mp",
+      "count": 14
     },
     {
-      "type": null,
-      "count": 0
+      "type": "st",
+      "count": 4
     },
     {
       "type": null,
@@ -831,8 +831,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 1321,
-    "mats": 9662
+    "kills": 1684,
+    "mats": 13595
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -852,7 +852,7 @@
   },
   "skills": {
     "holyDome": 1,
-    "iceStorm": 0,
+    "iceStorm": 1,
     "whirlwind": 1,
     "chainAssault": 1,
     "chainSlam": 1,
@@ -876,15 +876,15 @@
     "spikeTrap": 15,
     "holyDome": 15,
     "whirlwind": 30,
-    "iceStorm": 5,
+    "iceStorm": 15,
     "chainAssault": 30,
     "elemMissile": 15,
     "detonate": 30,
     "fanShot": 15,
     "chainSlam": 4,
-    "maliceStorm": 11,
+    "maliceStorm": 24,
     "omniBeam": 15,
-    "plagueBurst": 6
+    "plagueBurst": 10
   },
   "activeChargeSk": "magicBlink",
   "activeBowSk": "normal",
@@ -897,7 +897,7 @@
   "skillSlots": [
     "maliceStorm",
     "plagueBurst",
-    null,
+    "iceStorm",
     null,
     null,
     "holyDome"
