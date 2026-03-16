@@ -1,20 +1,20 @@
 {
-  "ts": 1773652370722,
+  "ts": 1773660902054,
   "player": {
     "lv": 362,
     "exp": 1529,
     "maxExp": 7472,
-    "sp": 58,
+    "sp": 88,
     "ap": 13,
     "baseAtk": 15,
     "baseDef": 2,
     "mpR": 5.609,
     "stR": 1.565,
-    "hp": 2101,
+    "hp": 2073.840168750015,
     "mhp": 2101,
     "mp": 875,
     "mmp": 875,
-    "st": 396,
+    "st": 384.8054062500007,
     "mst": 396,
     "speed": 7.08538,
     "shield": 1566,
@@ -5736,7 +5736,8 @@
     "shieldThrow": 0,
     "holyPrison": 10,
     "grenadeShot": 0,
-    "chainStun": 10
+    "chainStun": 10,
+    "chainAssault": 1
   },
   "fused": {
     "boneStorm": true,
