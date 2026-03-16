@@ -1,21 +1,21 @@
 {
-  "ts": 1773690343431,
+  "ts": 1773693925053,
   "player": {
-    "lv": 85,
-    "exp": 329,
-    "maxExp": 588,
-    "sp": 28,
-    "ap": 12,
+    "lv": 95,
+    "exp": 161,
+    "maxExp": 703,
+    "sp": 4,
+    "ap": 14,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.903,
-    "stR": 0.38800000000000007,
-    "hp": 438,
-    "mhp": 438,
-    "mp": 217,
-    "mmp": 217,
-    "st": 112.55465000000055,
-    "mst": 173,
+    "mpR": 0.923,
+    "stR": 0.398,
+    "hp": 450,
+    "mhp": 450,
+    "mp": 222,
+    "mmp": 222,
+    "st": 138.49140625000172,
+    "mst": 178,
     "speed": 3.4491050000000003,
     "shield": 0,
     "mshield": 0
@@ -435,6 +435,91 @@
         "_gx": 4,
         "_gy": 2,
         "_pickT": 1773668728890
+      },
+      {
+        "id": 1773690778122.409,
+        "slot": "cape",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "강철사 망토",
+        "emoji": "🧣",
+        "def": 12,
+        "eDef": 6,
+        "spd": 0.13,
+        "bInt": 41,
+        "bDex": 30,
+        "bStr": 38,
+        "affixes": [
+          {
+            "id": "dropRate",
+            "tier": 0,
+            "value": 0.1738
+          },
+          {
+            "id": "movSpeed",
+            "tier": 0,
+            "value": 0.0825
+          },
+          {
+            "id": "parryBonus",
+            "tier": 0,
+            "value": 0.2965
+          }
+        ],
+        "_implicitStat": "_iDashCd",
+        "_implicitVal": 6.2,
+        "_implicitKo": "회피 쿨다운 -X%",
+        "legendarySpecial": {
+          "ko": "패리 타이밍 판정 +50% 확대",
+          "stat": "_lCapeParry",
+          "val": 0.5
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 6,
+        "_gy": 2,
+        "_pickT": 1773690778138
+      },
+      {
+        "id": 1773691976183.3926,
+        "slot": "pants",
+        "el": 4,
+        "rarity": 4,
+        "tier": 3,
+        "name": "뇌신 각반",
+        "emoji": "👖",
+        "def": 23,
+        "bonusSt": 27,
+        "bonusHp": 43,
+        "bDex": 38,
+        "bStr": 39,
+        "bInt": 32,
+        "affixes": [
+          {
+            "id": "potionPower",
+            "tier": 1,
+            "value": 0.4553
+          },
+          {
+            "id": "ccRes",
+            "tier": 1,
+            "value": 0.2416
+          }
+        ],
+        "_implicitStat": "_iStsRes",
+        "_implicitVal": 10.96,
+        "_implicitKo": "상태이상 저항 +X%",
+        "legendarySpecial": {
+          "ko": "이동 중 지속 HP 재생 (초당 HP의 1%)",
+          "stat": "_lPantsRegen",
+          "val": 0.01
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 8,
+        "_gy": 2,
+        "_pickT": 1773691976200
       }
     ],
     "equipped": {
@@ -817,12 +902,12 @@
       "count": 1
     },
     {
-      "type": "mp",
-      "count": 14
-    },
-    {
       "type": "st",
       "count": 4
+    },
+    {
+      "type": "mp",
+      "count": 2
     },
     {
       "type": null,
@@ -831,8 +916,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 1684,
-    "mats": 13595
+    "kills": 2176,
+    "mats": 16404
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -859,16 +944,17 @@
     "magicBlink": 1,
     "detonate": 1,
     "maliceSwipe": 1,
-    "elemMissile": 0,
-    "fanShot": 1,
+    "elemMissile": 1,
+    "fanShot": 0,
     "chargeBoost": 1,
     "maliceStorm": 1,
     "plagueBurst": 1,
-    "omniBeam": 1
+    "omniBeam": 0,
+    "boneWall": 1,
+    "spikeTrap": 1
   },
   "fused": {
-    "dimBreach": true,
-    "sixFuse": true
+    "dimBreach": true
   },
   "skProf": {
     "maliceSwipe": 30,
@@ -882,23 +968,24 @@
     "detonate": 30,
     "fanShot": 15,
     "chainSlam": 4,
-    "maliceStorm": 24,
+    "maliceStorm": 30,
     "omniBeam": 15,
-    "plagueBurst": 10
+    "plagueBurst": 16,
+    "boneWall": 4
   },
   "activeChargeSk": "magicBlink",
   "activeBowSk": "normal",
   "activeTechSk": "spikeTrap",
-  "activeMagicSk": "beam",
+  "activeMagicSk": "elemMissile",
   "activeLMBSk": "whirlwind",
   "activeRMBSk": "shieldBlock",
   "activeQSk": "parry",
   "activeCtSk": "ghostWalk",
   "skillSlots": [
     "maliceStorm",
-    "plagueBurst",
     "iceStorm",
-    null,
+    "boneWall",
+    "plagueBurst",
     null,
     "holyDome"
   ],

@@ -1320,10 +1320,10 @@ function dbRestore(d){
   if(ULT_SLOT&&!(P.skills[ULT_SLOT]>=1))ULT_SLOT=null;
   // 고정슬롯 전용 스킬은 선택슬롯에서 제거 (마이그레이션)
   SKILL_SLOTS[4]=null; // Space는 고정 기술슬롯
-  const _fixedKick=['grenadeShot','bladeShot','fanShot','omniBeam','bladeDash','ghostWalk','iceOrb','maliceMortar'];
+  const _fixedKick=['grenadeShot','bladeShot','fanShot','omniBeam','bladeDash','ghostWalk','iceOrb','maliceMortar','spikeTrap'];
   for(let _si=0;_si<6;_si++){if(_fixedKick.includes(SKILL_SLOTS[_si]))SKILL_SLOTS[_si]=null}
   // 배운 액티브 스킬이 슬롯에 없으면 자동 배정 (합체 흡수/고정슬롯 제외)
-  const _fixedSlotSk=['grenadeShot','bladeShot','fanShot','omniBeam','bladeDash','shieldThrow','thunderShot','blastShot','ghostWalk','iceOrb','maliceMortar','chainSlam','chainAssault']; // 고정스킬 (슬롯 자동배정 제외)
+  const _fixedSlotSk=['grenadeShot','bladeShot','fanShot','omniBeam','bladeDash','shieldThrow','thunderShot','blastShot','ghostWalk','iceOrb','maliceMortar','spikeTrap','chainSlam','chainAssault']; // 고정스킬 (슬롯 자동배정 제외)
   const _actIds=SKILL_LIST.filter(sk=>sk.act&&!sk.ult&&P.skills[sk.id]>=1&&!_fKick.includes(sk.id)&&!_fixedSlotSk.includes(sk.id)).map(sk=>sk.id);
   _actIds.forEach(id=>{
     if(!SKILL_SLOTS.includes(id)){const _ei=SKILL_SLOTS.findIndex((s,i)=>s===null&&i!==4);if(_ei>=0)SKILL_SLOTS[_ei]=id}
@@ -2751,6 +2751,7 @@ const _sampleFiles={
   bolt_hit:'sfx/hit/bolt_hit.wav',
   blunt_hit:'sfx/hit/blunt_hit.wav',
   bullet_hit:'sfx/hit/bullet_hit.mp3',
+  fire_hit:'sfx/hit/fire_hit.mp3',
   // q_parry/ — 패링
   q_end:'sfx/q_parry/q_end.mp3',
   q_parry:'sfx/q_parry/q_parry.mp3',
@@ -2825,16 +2826,16 @@ const _sampleFiles={
   die_human2:'sfx/monster/die_human2.wav',
   die_boss:'sfx/monster/die_boss.mp3',
   // death/ — 몬스터 사망 (etype별)
-  death_grunt:'sfx/death_grunt_01.mp3',
-  death_fire:'sfx/death_fire_01.mp3',
-  death_sizzle:'sfx/death_sizzle_01.mp3',
-  death_bone:'sfx/death_bone_crunch.mp3',
-  death_slime:'sfx/death_slime_splat.mp3',
-  death_ice:'sfx/death_ice_shatter.mp3',
-  death_demon:'sfx/death_demon_shriek.mp3',
-  death_heavy:'sfx/death_heavy_thud.mp3',
-  death_boss:'sfx/death_boss_roar.mp3',
-  hit_fire:'sfx/hit_fire_01.mp3',
+  death_grunt:'sfx/death/death_grunt_01.mp3',
+  death_fire:'sfx/death/death_fire_01.mp3',
+  death_sizzle:'sfx/death/death_sizzle_01.mp3',
+  death_bone:'sfx/death/death_bone_crunch.mp3',
+  death_slime:'sfx/death/death_slime_splat.mp3',
+  death_ice:'sfx/death/death_ice_shatter.mp3',
+  death_demon:'sfx/death/death_demon_shriek.mp3',
+  death_heavy:'sfx/death/death_heavy_thud.mp3',
+  death_boss:'sfx/death/death_boss_roar.mp3',
+  hit_fire:'sfx/death/hit_fire_01.mp3',
   // q_parry/ — 보호막
   shield_activate:'sfx/q_parry/q_start.mp3',
   shield_end:'sfx/q_parry/q_end.mp3',
@@ -10254,7 +10255,7 @@ function _tBossDistMap(mw,mh,bossCy){
 // ═══ MAP — 오르막 동굴길 v2 ═══
 function genGauntlet(fi){
   const mw=55+~~(fi*2.5);  // 넓은 가로 (55~225)
-  const mh=80+fi*6;         // 세로 (위로 올라감)
+  const mh=140+fi*10;       // 세로 (위로 올라감)
   const map=[];for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
   const rooms=[];
 
@@ -12141,14 +12142,16 @@ function update(){
   }
   // ── 기동습격: 사슬기동 중(비행+이동) 좌클릭 → 데미지 특화 착지 ──
   if((P._chainSkDelay||0)<=0&&(_harpActive||_dashActive)&&(P.skills.chainAssault||0)>=1&&isJust('weapon')&&!P._chainAssaultReady&&!P._chainSlamReady){
-    if(P.st<50){addTxt(P.x,P.y-25,'ST 부족!','#ff4444',30)}
-    else{P.st-=50;P._chainAssaultReady=true;P._csStunOX=P.x;P._csStunOY=P.y;
+    const _caCost=20+(P.skills.chainAssault||1)*2;
+    if(P.st<_caCost){addTxt(P.x,P.y-25,'ST 부족!','#ff4444',30)}
+    else{P.st-=_caCost;P._chainAssaultReady=true;P._csStunOX=P.x;P._csStunOY=P.y;
     addTxt(P.x,P.y-25,'⚡ 기동습격 준비!','#ffcc00',30)}
   }
   // ── 기동파괴: 사슬기동 중(비행+이동) 우클릭 → 포이즈 특화 착지 ──
   if((P._chainSkDelay||0)<=0&&(_harpActive||_dashActive)&&(P.skills.chainSlam||0)>=1&&isJust('shield')&&!P._chainSlamReady&&!P._chainAssaultReady){
-    if(P.st<50){addTxt(P.x,P.y-25,'ST 부족!','#ff4444',30)}
-    else{P.st-=50;P._chainSlamReady=true;P._csSlamOX=P.x;P._csSlamOY=P.y;
+    const _csCost=20+(P.skills.chainSlam||1)*2;
+    if(P.st<_csCost){addTxt(P.x,P.y-25,'ST 부족!','#ff4444',30)}
+    else{P.st-=_csCost;P._chainSlamReady=true;P._csSlamOX=P.x;P._csSlamOY=P.y;
     addTxt(P.x,P.y-25,'🔨 기동파괴 준비!','#ff8844',30)}
   }
   if(P._chainSlamReady&&!_dashActive&&!_harpActive)P._chainSlamReady=false; // 대시 끝나면 플래그 리셋
@@ -12437,8 +12440,10 @@ function update(){
     const _detLvWW=P.skills.detonate||1;
     const _chgBarsWW=_wwFused?Math.min(3,1+~~(((P.parryT||0))/60)):0;
     const _boomRWW=_wwFused?(150+(_detLvWW-1)*10)*Math.max(1,_chgBarsWW):0;
-    // 15프레임마다 히트
-    if(Math.floor(P.wwAng/.35/15)>Math.floor((P.wwAng-.35*sp)/.35/15)){
+    // 공속 반영 히트 간격 (기본15f, 무기spd×DEX 적용)
+    const _wwTickSpd=(wp().spd||.3)*statDex();
+    const _wwTick=Math.max(6,~~(15/_wwTickSpd)); // 최소6f 캡
+    if(Math.floor(P.wwAng/.35/_wwTick)>Math.floor((P.wwAng-.35*sp)/.35/_wwTick)){
       const _wwBaseR=((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+(_wwLv-1)*11;
       const _wwRangeBase=_wwFused?Math.min(175,_wwBaseR*(1+_wwGrow*3)):_wwBaseR*(1+_wwGrow*2.4);
       const _boomRCap=_wwFused?Math.min(320,_boomRWW):0;
@@ -13171,6 +13176,8 @@ function update(){
       else if(e.aura==='haste'){oe._aSpdM=Math.max(oe._aSpdM,1.3)}
       else if(e.aura==='guardian'){oe._aDefM=Math.min(oe._aDefM,.75)}
     }}
+  // ── 둔화(_webSlow) → 이동속도 50% 감소 ──
+  for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];if(e.alive&&e._webSlow>0)e._aSpdM*=.5}
   // ── 화톳불 배리어 타이머 ──
   if(G._bonfire&&G._bonfire.t>0)G._bonfire.t-=sp;
   // 적 업데이트 (거리별 티어링 + 8ms 타임버짓)
@@ -15561,7 +15568,7 @@ function _bossPhaseCheck(e,sp){
 function _bossIdleMove(e,d,sp){
   if(e.stunned>0)return;
   const ph=BOSS_PHASES[e._bossPhase];
-  const spd=e.speed*(ph.spdM||1)*sp;
+  const spd=e.speed*(ph.spdM||1)*(e._aSpdM||1)*sp;
   if(d>200){
     // approach: 플로우필드 우선, 벽 돌아서 접근
     const _appBoost=Math.min(2.5,1+d/300);
@@ -15737,6 +15744,7 @@ function updateE(e,sp){
     if(e._frozen<=0){e._frozen=0;e._freezeGauge=0;e._frozenImmune=e.ib?600:300} // 해제 후 면역 (보스10초/일반5초)
     return;
   }
+  if(e._webSlow>0)e._webSlow-=sp; // 둔화 타이머
   if(e._frozenImmune>0)e._frozenImmune-=sp; // 프리즌 면역 타이머
   if(e._iceResDown>0)e._iceResDown-=sp; // 아이스스톰 빙결저항 디버프 타이머
   if(e._freezeGauge>0){e._freezeGauge=Math.max(0,e._freezeGauge-sp*.3)} // 안 맞으면 게이지 자연 감소
@@ -16771,7 +16779,7 @@ function updateE(e,sp){
       }
       if(buffed){e._flPriestBuffCd=200+Math.random()*60;SFX.magic(2)}
     }
-    if(d<120){const flee=Math.atan2(e.y-P.y,e.x-P.x);e.x+=Math.cos(flee)*e.speed*sp*1.5;e.y+=Math.sin(flee)*e.speed*sp*1.5}
+    if(d<120){const flee=Math.atan2(e.y-P.y,e.x-P.x);const _fs2=e.speed*(e._aSpdM||1)*sp*1.5;e.x+=Math.cos(flee)*_fs2;e.y+=Math.sin(flee)*_fs2}
   }
   // ── 79:화룡 사도 — 브레스+비행+용암비 ──
   if(e.etype===79&&e.s==='idle'){
@@ -17097,7 +17105,7 @@ function updateE(e,sp){
         }
       }
     }
-    if(e.hp<e.mhp*.5&&d<120){const fa=Math.atan2(e.y-P.y,e.x-P.x);e.x+=Math.cos(fa)*e.speed*sp*1.5;e.y+=Math.sin(fa)*e.speed*sp*1.5}
+    if(e.hp<e.mhp*.5&&d<120){const fa=Math.atan2(e.y-P.y,e.x-P.x);const _fs3=e.speed*(e._aSpdM||1)*sp*1.5;e.x+=Math.cos(fa)*_fs3;e.y+=Math.sin(fa)*_fs3}
   }
   // ── 83:살가죽 수집가 — 고속 접근+연속 베기(높은 데미지) ──
   if(e.etype===83&&e.s==='idle'){
@@ -18990,7 +18998,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // 시체 잔해 — 모든 사망 (화염은 burnCorpse가 대신)
     if(!_isBurnDeath){const _cp=Math.min(8,dmg/Math.max(1,e.mhp)*20);_addCorpse(e,ang!==undefined?ang:Math.atan2(e.y-P.y,e.x-P.x),_cp)}
     // 화염/빔 사망 → 불타는 시체 + 전용 사운드
-    if(_isBurnDeath){_addBurnCorpse(e);playSample(['fire_death','fire_death2','fire_death3'][Math.random()*3|0],.5,_r(1,.15))}
+    if(_isBurnDeath){_addBurnCorpse(e);playSample((opts&&opts.beam)?['fire_death','fire_death2','fire_death3'][Math.random()*3|0]:'fire_hit',.5,_r(1,.15))}
     // 폭발/포이즈스킬 사망 시 gib — explode, poiseHit(기폭팔), noPoise(대왕치기), poiseSkill(칼등치기)
     if(opts&&(opts.explode||opts.poiseHit||opts.noPoise||opts.poiseSkill)){_addGibs(e,P.x,P.y,60)}
     else{for(let _bi=0;_bi<_BOOM_MAX;_bi++){const _bb=_booms[_bi];if(_bb.active&&dst(e.x,e.y,_bb.x,_bb.y)<_bb.r+e.r){_addGibs(e,_bb.x,_bb.y,_bb.r);break}}}
@@ -19793,10 +19801,10 @@ const SKILL_CATS=[
   {id:'ult',name:'💀 필살기',col:'#ff2200'},
 ];
 const SKILL_LIST=[
-  {id:'chargeBoost',name:'사슬기동:파괴',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',spCost:5,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',spCost:15,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'chargeBoost',name:'사슬기동:파괴',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'ghostWalk',name:'뇌전폭',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 뇌전 폭발(+15%/회) + 전기줄기 10발 방사(3회 체인). 쿨 15초. Lv당 뎀+15% 범위+10',spCost:15,matCost:100,cd:900,up:true,upSp:5,upMat:0},
-  {id:'bladeDash',name:'전격이동',cat:'move',desc:'방향키 더블탭 → 500유닛 전기 대시. 10충전 (8초→Lv당-0.5초, 최소3초). 만렙 시 방향키 한번으로 즉시 발동',spCost:6,matCost:60,up:true,upSp:6,upMat:0},
+  {id:'bladeDash',name:'전격이동',cat:'move',desc:'방향키 더블탭 → 500유닛 전기 대시. 10충전 (8초→Lv당-0.5초, 최소3초). 만렙 시 방향키 한번으로 즉시 발동',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',spCost:8,matCost:100,up:true,upSp:5,upMat:0},
   {id:'detonate',name:'기폭팔',cat:'def',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발(범위 150)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceSwipe',name:'칼등 처내기',cat:'def',desc:'우클 처내기 강화. Lv당 반사 데미지 +10%. 홀드 시 연사',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
@@ -19820,8 +19828,8 @@ const SKILL_LIST=[
   {id:'holyPrison',name:'신성한 감옥',cat:'tech',act:true,emoji:'✟',desc:'범위 내 몬스터 부활 차단 (보스 제외). 차단 확률 50%+Lv당2%. Lv1 범위400, Lv10 범위700. Lv당 범위+33. 쿨 30초. 지속 10초',spCost:8,matCost:80,cd:1800,up:true,upSp:5,upMat:0},
   {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,emoji:'❄',desc:'마우스 조준 설치. 2스택 (8초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 3초 지속. MP 40. Lv당 범위+10 축적+10%',spCost:12,matCost:90,up:true,upSp:5,upMat:0},
   {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹 100% 기절, 보스 체간 40%. 회전기폭과 합체→지진폭풍!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:480},
-  {id:'chainAssault',name:'기동습격',cat:'move',desc:'사슬기동 중 좌클릭 → 즉시 착지하며 땅 내려찍기. 범위300 STR 스케일 대데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). Lv당 범위+20 뎀+12%',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
-  {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 우클릭 → 칼 옆으로 땅 내려찍기. 범위200 포이즈 데미지 특화(x3). 일반몹 즉시 기절, 보스 체간 대량 삭감. Lv당 범위+15 포이즈+10%',spCost:8,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'chainAssault',name:'기동습격',cat:'move',desc:'사슬기동 중 좌클릭 → 즉시 착지하며 땅 내려찍기. 범위300 STR 스케일 대데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). Lv당 범위+20 뎀+12%',spCost:30,matCost:0,up:true,upSp:5,upMat:0},
+  {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 우클릭 → 칼 옆으로 땅 내려찍기. 범위200 포이즈 데미지 특화(x3). 일반몹 즉시 기절, 보스 체간 대량 삭감. Lv당 범위+15 포이즈+10%',spCost:30,matCost:100,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'둔격호',cat:'def',fixed:true,emoji:'🛡️',desc:'[고정: 칼등치기 합체] 우클릭 칼등치기 시 자동 발사. 회전하며 전진, 적 관통+넉백+투사체 반사. 쿨 5초. Lv당 뎀+12% 사거리+30',spCost:0,matCost:80,cd:300,up:true,upSp:5,upMat:0},
   {id:'thunderShot',name:'뇌산탄',cat:'bow',fixed:true,emoji:'⚡',desc:'[고정: T 자동] 전기탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 전기줄기 방사(체인). 악의 8. Lv당 뎀+10% 줄기+1. 쿨 0.5초',spCost:12,matCost:80,cd:30,up:true,upSp:5,upMat:0},
   {id:'blastShot',name:'폭산탄',cat:'bow',fixed:true,emoji:'💥',desc:'[고정: T 자동] 폭탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 화염 폭발(범위130). 악의 8. Lv당 범위+10% 뎀+10%. 쿨 0.5초',spCost:12,matCost:80,cd:30,up:true,upSp:5,upMat:0},
@@ -20155,9 +20163,10 @@ function updateCtSlot(){
 }
 // ═══ 만화방창 독립 발사 (Space키, ST소모) ═══
 function _fireFanShot(){
-  if(P.st<stCost('fanShot')){showPH('ST 부족!','#ff4444');return false}
+  const _fsStC=2+(P.skills.fanShot||1); // ST: 1렙3, 업당+1
+  if(P.st<_fsStC){showPH('ST 부족!','#ff4444');return false}
   _addSkProf('fanShot');
-  const _fsCon=useStPct('fanShot');P.atkArc=P.facing;
+  P.st-=_fsStC;P.atkArc=P.facing;
   const _apLv=PASSIVES.pPierce||0;
   const _prc=Math.min(0.95,0.3+_apLv*0.10);
   const _prMax=1+_apLv;
@@ -20165,7 +20174,7 @@ function _fireFanShot(){
   const _fanCnt=Math.min(6,2+_fanLv); // 1렙=3발, 2렙=4, ... 4렙+=6발
   const range=400+(_fanLv-1)*68;const bspd=10;
   const _baseDmg=meleeRef()*pBowMul()*DPS_BAL.bow;
-  const dmg=~~(_baseDmg*(1+(_fanLv-1)*.1)/_fanCnt*2)+~~(_fsCon*1.5);
+  const dmg=~~(_baseDmg*(1+(_fanLv-1)*.1)/_fanCnt*2)+~~(_fsStC*1.5);
   const fanAng=.225;
   const _elArr=[EL.F,EL.I,EL.D,EL.L,EL.H,EL.P];
   const _fanHalf=(_fanCnt-1)/2;
@@ -20335,8 +20344,9 @@ function fireBoneWall(tx,ty){
 // ═══ 칼날살 발사 ═══
 function activateBladeShot(){
   const slv=P.skills.bladeShot||1;
-  const _bsCon=useStPct('bladeShot')
-  const _bsBon=~~(_bsCon*1.5);
+  const _bsStC=2+slv; // ST: 1렙3, 업당+1
+  if(P.st<_bsStC)return;P.st-=_bsStC;
+  const _bsBon=~~(_bsStC*1.5);
   const orbDmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*4*(1+(slv-1)*0.1))+_bsBon;
   const shardDmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*1.5*(1+(slv-1)*0.1))+~~(_bsBon*.3);
   const dx=Math.cos(P.facing),dy=Math.sin(P.facing);
@@ -20354,9 +20364,10 @@ function activateBladeShot(){
 
 // ═══ 뇌산탄 발동 ═══
 function activateThunderShot(){
-  if(G.mats<8||P.st<stCost('thunderShot')||(P._tsCd||0)>0)return;
+  const _tsStCost=2+(P.skills.thunderShot||1); // ST: 1렙3, 업당+1
+  if(G.mats<8||P.st<_tsStCost||(P._tsCd||0)>0)return;
   _addSkProf('thunderShot');
-  G.mats-=8;useStPct('thunderShot');P._tsCd=30;
+  G.mats-=8;P.st-=_tsStCost;P._tsCd=30;
   const slv=P.skills.thunderShot||1;
   const a=P.facing;const spread=.2;
   const _tsCnt=slv>=10?5:Math.min(3,1+~~((slv-1)/4.5)); // 1렙1발, 5렙2발, 10렙5발
@@ -20370,9 +20381,10 @@ function activateThunderShot(){
 }
 // ═══ 폭산탄 발동 ═══
 function activateBlastShot(){
-  if(G.mats<8||P.st<stCost('blastShot')||(P._bsCd2||0)>0)return;
+  const _bsStC=2+(P.skills.blastShot||1); // ST: 1렙3, 업당+1
+  if(G.mats<8||P.st<_bsStC||(P._bsCd2||0)>0)return;
   _addSkProf('blastShot');
-  G.mats-=8;useStPct('blastShot');P._bsCd2=30;
+  G.mats-=8;P.st-=_bsStC;P._bsCd2=30;
   const slv=P.skills.blastShot||1;
   const a=P.facing;const spread=.2;
   const _bsCnt=slv>=10?5:Math.min(3,1+~~((slv-1)/4.5)); // 1렙1발, 5렙2발, 10렙5발
@@ -20386,9 +20398,10 @@ function activateBlastShot(){
 }
 // ═══ 유탄산탄 발동 (즉발 거대 파이어볼) ═══
 function activateGrenadeShot(){
-  if(G.mats<5||P.st<stCost('grenadeShot')||(P._gsCd||0)>0)return;
+  const _gsStC=2+(P.skills.grenadeShot||1); // ST: 1렙3, 업당+1
+  if(G.mats<5||P.st<_gsStC||(P._gsCd||0)>0)return;
   _addSkProf('grenadeShot');
-  G.mats-=5;useStPct('grenadeShot');P._gsCd=60;
+  G.mats-=5;P.st-=_gsStC;P._gsCd=60;
   const slv=P.skills.grenadeShot||1;
   const a=P.facing;
   P._gsCharge=0;P._gsCharging=false;
