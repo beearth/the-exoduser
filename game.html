@@ -1298,8 +1298,9 @@ function dbRestore(d){
   // chainStun→chainAssault 세이브 마이그레이션
   if(P.skills.chainStun&&!P.skills.chainAssault){P.skills.chainAssault=P.skills.chainStun;delete P.skills.chainStun}
   if(P._skProf&&P._skProf.chainStun){P._skProf.chainAssault=P._skProf.chainStun;delete P._skProf.chainStun}
-  // chainAssault 있으면 chainSlam 자동 보장
+  // chainAssault ↔ chainSlam 양방향 자동 보장
   if(P.skills.chainAssault>=1&&!P.skills.chainSlam)P.skills.chainSlam=1;
+  if(P.skills.chainSlam>=1&&!P.skills.chainAssault)P.skills.chainAssault=1;
   // 미습득 스킬 슬롯 정리 + 합체 흡수 스킬 슬롯 제거
   const _fKick=[];
   if(_isFused('dimBreach')&&P.skills.magicBlink>=1)_fKick.push('magicBlink');
@@ -1518,7 +1519,7 @@ var _lights=[],_lightCnt=0;
 var _lightStamps={}; // {radius: canvas} 프리베이크 스탬프
 // 지옥별 어둠 레벨 (r,g,b,alpha) — 0~6지옥
 var _HELL_AMBIENT=[
-  [0,12,30,.08],    // 0지옥: 은은한 파랑
+  [8,25,8,.10],     // 0지옥: 은은한 녹색 (썩은 숲)
   [8,20,3,.09],     // 1지옥: 은은한 녹색
   [30,3,0,.10],     // 2지옥: 은은한 적색
   [18,0,22,.11],    // 3지옥: 은은한 보라
@@ -1550,6 +1551,25 @@ function _initLightStamps(){
     _lightStamps[r]=sc;
   }
 }
+// CH1 amber glow stamps (lighter blend용)
+var _amberStamps={};
+function _initAmberStamps(){
+  _amberStamps={};
+  for(var i=0;i<_LIGHT_RADII.length;i++){
+    var r=_LIGHT_RADII[i];
+    var sc=document.createElement('canvas');
+    sc.width=r*2;sc.height=r*2;
+    var sx=sc.getContext('2d');
+    var g=sx.createRadialGradient(r,r,0,r,r,r);
+    g.addColorStop(0,'rgba(255,200,100,0.85)');
+    g.addColorStop(.35,'rgba(255,160,60,0.55)');
+    g.addColorStop(.6,'rgba(180,120,40,0.25)');
+    g.addColorStop(.85,'rgba(80,20,0,0.06)');
+    g.addColorStop(1,'rgba(60,30,10,0)');
+    sx.fillStyle=g;sx.fillRect(0,0,r*2,r*2);
+    _amberStamps[r]=sc;
+  }
+}
 function _nearestStamp(r){
   var best=_LIGHT_RADII[0],bd=Math.abs(r-best);
   for(var i=1;i<_LIGHT_RADII.length;i++){
@@ -1579,7 +1599,8 @@ function _collectLights(){
   _lightCnt=0;
   if(!P||!G.on)return;
   // 1) 플레이어
-  _pushLight(P.x,P.y,500,1,255,225,180);
+  var _plAmber=SI_TO_HELL[G.stage||0]===0;
+  _pushLight(P.x,P.y,500,1,_plAmber?255:255,_plAmber?200:225,_plAmber?100:180);
   // 2) 플레이어 투사체
   for(var i=0;i<pProjs.length&&_lightCnt<80;i++){
     var p=pProjs[i];if(!p||p.life<=0)continue;
@@ -1668,6 +1689,19 @@ function _renderLighting(){
     var sw=sr*2*scale,sh=sr*2*scale;
     lx.globalAlpha=l.a;
     lx.drawImage(stamp,l.sx-sw/2,l.sy-sh/2,sw,sh);
+  }
+  // CH1 amber glow tint (lighter로 횃불 색감 추가)
+  if(hell===0){
+    if(!_amberStamps[20])_initAmberStamps();
+    lx.globalCompositeOperation='lighter';
+    for(var i=0;i<_lightCnt;i++){
+      var l=_lights[i];
+      var sr=_nearestStamp(l.r);var astamp=_amberStamps[sr];if(!astamp)continue;
+      var ascale=l.r/sr;
+      var asw=sr*2*ascale;
+      lx.globalAlpha=l.a*.35;
+      lx.drawImage(astamp,l.sx-asw/2,l.sy-asw/2,asw,asw);
+    }
   }
   lx.globalCompositeOperation='source-over';lx.globalAlpha=1;
   // 메인 캔버스에 합성
@@ -19831,7 +19865,7 @@ function _isFused(key){return!!(P._fused&&P._fused[key])}
 function _skProfVal(skId){return(P._skProf&&P._skProf[skId])||0}
 function _skProfLv(skId){return~~(_skProfVal(skId)/10)} // 10 숙련도 = 1랩
 function _skProfMul(skId){return 1+_skProfLv(skId)*0.02} // 숙련렙당 +2% (최대 +20%)
-function _addSkProf(skId,v){if(!P||!skId)return;if(!P._skProf)P._skProf={};const _old=P._skProf[skId]||0;const _cap=(skId==='iceOrb'||skId==='chargeBoost'||skId==='giantSlam'||skId==='maliceStorm'||skId==='maliceMortar'||skId==='whirlwind'||skId==='detonate'||skId==='maliceHunt'||skId==='plagueBurst'||skId==='maliceSwipe'||skId==='shieldThrow'||skId==='chainSlam')?30:15;P._skProf[skId]=Math.min(_cap,_old+(v||1));} // 1회 사용 = +1숙련
+function _addSkProf(skId,v){if(!P||!skId)return;if(!P._skProf)P._skProf={};const _old=P._skProf[skId]||0;const _cap=(skId==='iceOrb'||skId==='chargeBoost'||skId==='giantSlam'||skId==='maliceStorm'||skId==='maliceMortar'||skId==='whirlwind'||skId==='detonate'||skId==='maliceHunt'||skId==='plagueBurst'||skId==='maliceSwipe'||skId==='shieldThrow'||skId==='chainSlam'||skId==='chainAssault')?30:15;P._skProf[skId]=Math.min(_cap,_old+(v||1));} // 1회 사용 = +1숙련
 function _addSkProfTick(skId){if(!P||!skId)return;const _st={'whirlwind':'whirlwind','detonate':'whirlwind','omniBeam':'beam','fanShot':'beam','elemMissile':'beam','iceOrb':'iceOrb','ghostWalk':'ghostWalk','guardian':'idle'};if(!P._skProfUsed)P._skProfUsed={};if(P._skProfUsed[skId]===P.s)return;P._skProfUsed[skId]=P.s;_addSkProf(skId,1)} // 발동당 +1숙련, 상태 변하면 리셋
 function _fuseReqProf(key){return 10} // 양쪽 스킬 숙련 10 이상 필요
 function _canFuse(key){
@@ -20990,7 +21024,7 @@ function _renderSkillRow(sk,grid){
     }
     // 숙련도 바 (습득 스킬만)
     const _profV=_skProfVal(sk.id);
-    const _profCap=(sk.id==='iceOrb'||sk.id==='chargeBoost'||sk.id==='giantSlam'||sk.id==='maliceStorm'||sk.id==='maliceMortar'||sk.id==='chainSlam')?30:15;
+    const _profCap=(sk.id==='iceOrb'||sk.id==='chargeBoost'||sk.id==='giantSlam'||sk.id==='maliceStorm'||sk.id==='maliceMortar'||sk.id==='chainSlam'||sk.id==='chainAssault')?30:15;
     if(learned&&_profV<_profCap)lockTxt+='<div style="display:flex;align-items:center;gap:6px;margin-top:4px"><span style="font-size:.7rem;color:#88ccaa;white-space:nowrap">숙련 '+~~_profV+'/'+_profCap+'</span><div style="flex:1;height:8px;background:#1a1a1a;border:1px solid #335544;border-radius:4px;overflow:hidden"><div style="width:'+((_profV/_profCap)*100)+'%;height:100%;background:linear-gradient(90deg,#336644,#44ddaa);border-radius:3px;transition:width .3s"></div></div></div>';
     else if(learned&&_profV>=_profCap)lockTxt+='<div style="margin-top:4px;font-size:.7rem;color:#44ddaa;font-weight:700">숙련 MAX ✦</div>';
 
