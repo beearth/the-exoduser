@@ -11972,14 +11972,14 @@ function update(){
       if(_harpSk==='charge'&&P.activeChargeSk==='magicBlink'){
         // magicBlink는 블링크로 처리
       }
-      // ── 기동파괴: 착지 시 AOE 발동 ──
+      // ── 기동파괴: 착지 시 포이즈 특화 AOE ──
       if(P._chainSlamReady){
         P._chainSlamReady=false;
         const _csLv=P.skills.chainSlam||1;
-        const _csR=300+(_csLv-1)*20;
+        const _csR=200+(_csLv-1)*15;
         const _csTravD=dst(P._csSlamOX||P.x,P._csSlamOY||P.y,P.x,P.y);
         const _csDistMul=1+Math.min(_csTravD/200,3);
-        const _csDmg=~~(meleeRef()*5*(1+(_csLv-1)*0.12)*statStr()*_csDistMul);
+        const _csDmg=~~(meleeRef()*2*(1+(_csLv-1)*0.10)*statStr()*_csDistMul);
         const _csEl=wp().el||0;
         G._noHitStopT=40;
         const _csNe=shQuery(P.x,P.y,_csR+20);
@@ -11987,34 +11987,31 @@ function update(){
           const d=dst(P.x,P.y,e.x,e.y);if(d>_csR+e.r)continue;
           const ang=Math.atan2(e.y-P.y,e.x-P.x);
           const mult=elMul(_csEl,e.el);const fd=~~(_csDmg*mult);
-          hurtE(e,fd,ang,false,{kbMult:3,poiseHit:true,poiseMult:0.3},_csEl);
-          e.kb.x+=Math.cos(ang)*30;e.kb.y+=Math.sin(ang)*30;
-          addTxt(e.x,e.y-18,'💥 기동파괴!','#ff4400',35);
-          if(mult>=2)addTxt(e.x,e.y-28,'약점!',ELC[_csEl],38);
-          const pC=~~(Math.max(4,Math.min(fd/2,12))*OPT.parts/100);
-          for(let j=0;j<pC;j++)poolPart(e.x+(Math.random()-.5)*8,e.y+(Math.random()-.5)*8,Math.cos(ang)*(2+Math.random()*4),Math.sin(ang)*(2+Math.random()*4),ELP[_csEl],3+Math.random()*4,12);
+          hurtE(e,fd,ang,false,{kbMult:2,poiseHit:true,poiseMult:3.0*(1+(_csLv-1)*0.1)},_csEl);
+          e.kb.x+=Math.cos(ang)*15;e.kb.y+=Math.sin(ang)*15;
+          if(!e.isBoss){e.stunned=Math.max(e.stunned,180);addTxt(e.x,e.y-18,'💫 기절!','#ffcc00',35)}
+          else{addTxt(e.x,e.y-18,'⚡ 체간삭감!','#ffcc00',35)}
+          for(let j=0;j<6;j++){const a2=Math.PI*2*j/6;poolPart(e.x,e.y,Math.cos(a2)*3,Math.sin(a2)*3,'#ffcc00',3+Math.random()*3,12)}
         }
-        SFX.slam();{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}
-        addTxt(P.x,P.y-30,'🔨 기동파괴! x'+_csDistMul.toFixed(1),_csDistMul>=3?'#ff0000':_csDistMul>=2?'#ff4400':'#ff8800',45);
-        shake(16);G.chromaT=8;
-        if(!G._gSlamWave)G._gSlamWave=[];
-        const _csIsDim=_isFused('dimSlam')||_isFused('dimThunder');
-        G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_csIsDim?_csR*3:_csR*2,t:0,maxT:_csIsDim?45:35,col:_csIsDim?'#44ddff':null});
-        for(let j=0;j<24;j++){const _a=Math.PI*2*j/24;const _d=40+Math.random()*(_csR-40);
-          poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*7,Math.sin(_a)*7,_csIsDim?'#44ddff':'#ff4400',4+Math.random()*4,14)}
-        addParts(P.x,P.y,_csIsDim?'#44ddff':'#ffaa44',12);addParts(P.x,P.y,_csIsDim?'#0088ff':'#ff6622',10);
+        SFX.slam();playSample('blunt_hit',.8,_r(.7,.1));
+        addTxt(P.x,P.y-30,'⚡ 기동파괴! x'+_csDistMul.toFixed(1),_csDistMul>=3?'#ffaa00':'#ffcc44',45);
+        shake(18);G.chromaT=10;G._flashT=8;G._flashCol='#ffcc00';
+        G._gwPillar={x:P.x,y:P.y,t:0,maxT:40,r:_csR,stk:4};
+        for(let j=0;j<24;j++){const _a=Math.PI*2*j/24;const _d=20+Math.random()*(_csR-20);
+          poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*5,Math.sin(_a)*5,j%3?'#ffee44':'#ffffff',3+Math.random()*4,14)}
+        addParts(P.x,P.y,'#ffee00',12);addParts(P.x,P.y,'#ffffff',8);
         _addSkProf('chainSlam');
         G.hitStop=0;G.slowMo=0;
         MB[2]=false;MBjust[2]=false;P._sbCd=Math.max(P._sbCd||0,30);
       }
-      // ── 기동습격: 착지 시 포이즈 특화 AOE ──
+      // ── 기동습격: 착지 시 데미지 특화 AOE ──
       if(P._chainAssaultReady){
         P._chainAssaultReady=false;
         const _stLv=P.skills.chainAssault||1;
-        const _stR=200+(_stLv-1)*15;
+        const _stR=300+(_stLv-1)*20;
         const _stTravD=dst(P._csStunOX||P.x,P._csStunOY||P.y,P.x,P.y);
         const _stDistMul=1+Math.min(_stTravD/200,3);
-        const _stDmg=~~(meleeRef()*2*(1+(_stLv-1)*0.10)*statStr()*_stDistMul);
+        const _stDmg=~~(meleeRef()*5*(1+(_stLv-1)*0.12)*statStr()*_stDistMul);
         const _stEl=wp().el||0;
         G._noHitStopT=40;
         const _stNe=shQuery(P.x,P.y,_stR+20);
@@ -12022,19 +12019,22 @@ function update(){
           const d=dst(P.x,P.y,e.x,e.y);if(d>_stR+e.r)continue;
           const ang=Math.atan2(e.y-P.y,e.x-P.x);
           const mult=elMul(_stEl,e.el);const fd=~~(_stDmg*mult);
-          hurtE(e,fd,ang,false,{kbMult:2,poiseHit:true,poiseMult:3.0*(1+(_stLv-1)*0.1)},_stEl);
-          e.kb.x+=Math.cos(ang)*15;e.kb.y+=Math.sin(ang)*15;
-          if(!e.isBoss){e.stunned=Math.max(e.stunned,180);addTxt(e.x,e.y-18,'💫 기절!','#ffcc00',35)}
-          else{addTxt(e.x,e.y-18,'⚡ 체간삭감!','#ffcc00',35)}
-          for(let j=0;j<6;j++){const a2=Math.PI*2*j/6;poolPart(e.x,e.y,Math.cos(a2)*3,Math.sin(a2)*3,'#ffcc00',3+Math.random()*3,12)}
+          hurtE(e,fd,ang,false,{kbMult:3,poiseHit:true,poiseMult:0.3},_stEl);
+          e.kb.x+=Math.cos(ang)*30;e.kb.y+=Math.sin(ang)*30;
+          addTxt(e.x,e.y-18,'💥 기동습격!','#ff4400',35);
+          if(mult>=2)addTxt(e.x,e.y-28,'약점!',ELC[_stEl],38);
+          const pC=~~(Math.max(4,Math.min(fd/2,12))*OPT.parts/100);
+          for(let j=0;j<pC;j++)poolPart(e.x+(Math.random()-.5)*8,e.y+(Math.random()-.5)*8,Math.cos(ang)*(2+Math.random()*4),Math.sin(ang)*(2+Math.random()*4),ELP[_stEl],3+Math.random()*4,12);
         }
-        SFX.slam();playSample('blunt_hit',.8,_r(.7,.1));
-        addTxt(P.x,P.y-30,'⚡ 기동습격! x'+_stDistMul.toFixed(1),_stDistMul>=3?'#ffaa00':'#ffcc44',45);
-        shake(18);G.chromaT=10;G._flashT=8;G._flashCol='#ffcc00';
-        G._gwPillar={x:P.x,y:P.y,t:0,maxT:40,r:_stR,stk:4};
-        for(let j=0;j<24;j++){const _a=Math.PI*2*j/24;const _d=20+Math.random()*(_stR-20);
-          poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*5,Math.sin(_a)*5,j%3?'#ffee44':'#ffffff',3+Math.random()*4,14)}
-        addParts(P.x,P.y,'#ffee00',12);addParts(P.x,P.y,'#ffffff',8);
+        SFX.slam();{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}
+        addTxt(P.x,P.y-30,'🔨 기동습격! x'+_stDistMul.toFixed(1),_stDistMul>=3?'#ff0000':_stDistMul>=2?'#ff4400':'#ff8800',45);
+        shake(16);G.chromaT=8;
+        if(!G._gSlamWave)G._gSlamWave=[];
+        const _stIsDim=_isFused('dimSlam')||_isFused('dimThunder');
+        G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_stIsDim?_stR*3:_stR*2,t:0,maxT:_stIsDim?45:35,col:_stIsDim?'#44ddff':null});
+        for(let j=0;j<24;j++){const _a=Math.PI*2*j/24;const _d=40+Math.random()*(_stR-40);
+          poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*7,Math.sin(_a)*7,_stIsDim?'#44ddff':'#ff4400',4+Math.random()*4,14)}
+        addParts(P.x,P.y,_stIsDim?'#44ddff':'#ffaa44',12);addParts(P.x,P.y,_stIsDim?'#0088ff':'#ff6622',10);
         _addSkProf('chainAssault');
         G.hitStop=0;G.slowMo=0;
         MB[0]=false;MBjust[0]=false;
@@ -12042,13 +12042,13 @@ function update(){
       _dashTier=0;_harpTier=0;_harpHits=[];
     }
   }
-  // ── 기동습격: 사슬기동 중(비행+이동) 좌클릭 → 포이즈 특화 착지 ──
+  // ── 기동습격: 사슬기동 중(비행+이동) 좌클릭 → 데미지 특화 착지 ──
   if((P._chainSkDelay||0)<=0&&(_harpActive||_dashActive)&&(P.skills.chainAssault||0)>=1&&isJust('weapon')&&!P._chainAssaultReady&&!P._chainSlamReady){
     if(P.st<50){addTxt(P.x,P.y-25,'ST 부족!','#ff4444',30)}
     else{P.st-=50;P._chainAssaultReady=true;P._csStunOX=P.x;P._csStunOY=P.y;
     addTxt(P.x,P.y-25,'⚡ 기동습격 준비!','#ffcc00',30)}
   }
-  // ── 기동파괴: 사슬기동 중(비행+이동) 우클릭 → 데미지 특화 착지 ──
+  // ── 기동파괴: 사슬기동 중(비행+이동) 우클릭 → 포이즈 특화 착지 ──
   if((P._chainSkDelay||0)<=0&&(_harpActive||_dashActive)&&(P.skills.chainSlam||0)>=1&&isJust('shield')&&!P._chainSlamReady&&!P._chainAssaultReady){
     if(P.st<50){addTxt(P.x,P.y-25,'ST 부족!','#ff4444',30)}
     else{P.st-=50;P._chainSlamReady=true;P._csSlamOX=P.x;P._csSlamOY=P.y;
@@ -19703,8 +19703,8 @@ const SKILL_LIST=[
   {id:'holyPrison',name:'신성한 감옥',cat:'tech',act:true,emoji:'✟',desc:'범위 내 몬스터 부활 차단 (보스 제외). 차단 확률 50%+Lv당2%. Lv1 범위400, Lv10 범위700. Lv당 범위+33. 쿨 30초. 지속 10초',spCost:8,matCost:80,cd:1800,up:true,upSp:5,upMat:0},
   {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,emoji:'❄',desc:'마우스 조준 설치. 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 3초 지속. MP 40, 쿨 12초. Lv당 범위+10 축적+10%',spCost:12,matCost:90,cd:720,up:true,upSp:5,upMat:0},
   {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹 100% 기절, 보스 체간 40%. 회전기폭과 합체→지진폭풍!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:480},
-  {id:'chainAssault',name:'기동습격',cat:'move',desc:'사슬기동 중 좌클릭 → 칼 옆으로 땅 내려찍기. 범위200 포이즈 데미지 특화(x3). 일반몹 즉시 기절, 보스 체간 대량 삭감. Lv당 범위+15 포이즈+10%',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
-  {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 우클릭 → 즉시 착지하며 땅 내려찍기. 범위300 STR 스케일 대데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). Lv당 범위+20 뎀+12%',spCost:8,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'chainAssault',name:'기동습격',cat:'move',desc:'사슬기동 중 좌클릭 → 즉시 착지하며 땅 내려찍기. 범위300 STR 스케일 대데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). Lv당 범위+20 뎀+12%',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
+  {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 우클릭 → 칼 옆으로 땅 내려찍기. 범위200 포이즈 데미지 특화(x3). 일반몹 즉시 기절, 보스 체간 대량 삭감. Lv당 범위+15 포이즈+10%',spCost:8,matCost:100,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'둔격호',cat:'def',fixed:true,emoji:'🛡️',desc:'[고정: 칼등치기 합체] 우클릭 칼등치기 시 자동 발사. 회전하며 전진, 적 관통+넉백+투사체 반사. 쿨 5초. Lv당 뎀+12% 사거리+30',spCost:0,matCost:80,cd:300,up:true,upSp:5,upMat:0},
   {id:'thunderShot',name:'뇌산탄',cat:'bow',fixed:true,emoji:'⚡',desc:'[고정: T 자동] 전기탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 전기줄기 방사(체인). 악의 8. Lv당 뎀+10% 줄기+1. 쿨 0.5초',spCost:12,matCost:80,cd:30,up:true,upSp:5,upMat:0},
   {id:'blastShot',name:'폭산탄',cat:'bow',fixed:true,emoji:'💥',desc:'[고정: T 자동] 폭탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 화염 폭발(범위130). 악의 8. Lv당 범위+10% 뎀+10%. 쿨 0.5초',spCost:12,matCost:80,cd:30,up:true,upSp:5,upMat:0},

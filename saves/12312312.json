@@ -1,16 +1,16 @@
 {
-  "ts": 1773663909981,
+  "ts": 1773664939979,
   "player": {
-    "lv": 35,
-    "exp": 7,
-    "maxExp": 163,
-    "sp": 40,
-    "ap": 2,
+    "lv": 42,
+    "exp": 141,
+    "maxExp": 208,
+    "sp": 19,
+    "ap": 4,
     "baseAtk": 15,
     "baseDef": 2,
     "mpR": 0.8009999999999999,
     "stR": 0.3370000000000001,
-    "hp": 377,
+    "hp": 356.01976562499266,
     "mhp": 377,
     "mp": 192,
     "mmp": 192,
@@ -70,6 +70,46 @@
         "_gx": 0,
         "_gy": 0,
         "_pickT": 1773662417504
+      },
+      {
+        "id": 1773664839937.6018,
+        "slot": "ring2",
+        "el": 4,
+        "rarity": 4,
+        "tier": 3,
+        "name": "뇌신 반지",
+        "emoji": "💍",
+        "eDef": 8,
+        "critRate": 4.61,
+        "critDmg": 0.164,
+        "bDex": 39,
+        "bInt": 37,
+        "bStr": 33,
+        "affixes": [
+          {
+            "id": "iceRes",
+            "tier": 1,
+            "value": 0.2348
+          },
+          {
+            "id": "fireRes",
+            "tier": 0,
+            "value": 0.1932
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 13.72,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "처치 시 데빌포스 5% 회복",
+          "stat": "_lRingKill",
+          "val": 0.05
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 1,
+        "_gy": 0,
+        "_pickT": 1773664839953
       }
     ],
     "equipped": {
@@ -466,8 +506,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 209,
-    "mats": 1984
+    "kills": 314,
+    "mats": 3215
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -488,20 +528,30 @@
   "skills": {
     "holyDome": 1,
     "iceStorm": 1,
-    "whirlwind": 1
+    "whirlwind": 1,
+    "chainAssault": 1,
+    "chainSlam": 0,
+    "magicBlink": 1,
+    "detonate": 1,
+    "maliceSwipe": 1,
+    "elemMissile": 1
   },
   "fused": {},
   "skProf": {
     "maliceSwipe": 30,
     "chargeBoost": 30,
-    "spikeTrap": 5,
-    "holyDome": 4,
-    "whirlwind": 30
+    "spikeTrap": 6,
+    "holyDome": 6,
+    "whirlwind": 30,
+    "iceStorm": 1,
+    "chainAssault": 2,
+    "elemMissile": 15,
+    "detonate": 4
   },
-  "activeChargeSk": "charge",
+  "activeChargeSk": "magicBlink",
   "activeBowSk": "normal",
   "activeTechSk": "spikeTrap",
-  "activeMagicSk": "beam",
+  "activeMagicSk": "elemMissile",
   "activeLMBSk": "whirlwind",
   "activeRMBSk": "shieldBlock",
   "activeQSk": "parry",
