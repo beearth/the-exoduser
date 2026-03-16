@@ -1,10 +1,10 @@
 {
-  "ts": 1773693925053,
+  "ts": 1773697532561,
   "player": {
-    "lv": 95,
-    "exp": 161,
-    "maxExp": 703,
-    "sp": 4,
+    "lv": 96,
+    "exp": 347,
+    "maxExp": 715,
+    "sp": 6,
     "ap": 14,
     "baseAtk": 15,
     "baseDef": 2,
@@ -12,9 +12,9 @@
     "stR": 0.398,
     "hp": 450,
     "mhp": 450,
-    "mp": 222,
+    "mp": 207.19190317499965,
     "mmp": 222,
-    "st": 138.49140625000172,
+    "st": 176.52900000000017,
     "mst": 178,
     "speed": 3.4491050000000003,
     "shield": 0,
@@ -520,6 +520,61 @@
         "_gx": 8,
         "_gy": 2,
         "_pickT": 1773691976200
+      },
+      {
+        "id": 1773694698997.6284,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 3,
+        "name": "심판의 검",
+        "emoji": "⚔️",
+        "wtype": "sword",
+        "atk": 119,
+        "spd": 2.2,
+        "wStCost": 6,
+        "wArcW": 0.95,
+        "wRange": 51,
+        "wStagger": 17,
+        "bonusRange": 3,
+        "bDex": 32,
+        "bStr": 35,
+        "bInt": 37,
+        "affixes": [
+          {
+            "id": "elemConvert",
+            "tier": 1,
+            "value": 0.4855
+          },
+          {
+            "id": "fireDot",
+            "tier": 1,
+            "value": 19.1424
+          },
+          {
+            "id": "staggerExplosion",
+            "tier": 0,
+            "value": 0.4504
+          },
+          {
+            "id": "elemFocus",
+            "tier": 0,
+            "value": 0.1857
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 10.61,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": {
+          "ko": "5타 콤보 완성 시 데빌포스 20% 즉시 충전",
+          "stat": "_lSwordCombo",
+          "val": 0.2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 3,
+        "_pickT": 1773694699013
       }
     ],
     "equipped": {
@@ -902,12 +957,12 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 4
+      "type": "mp",
+      "count": 12
     },
     {
-      "type": "mp",
-      "count": 2
+      "type": "st",
+      "count": 12
     },
     {
       "type": null,
@@ -916,8 +971,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 2176,
-    "mats": 16404
+    "kills": 2249,
+    "mats": 16380
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -970,8 +1025,8 @@
     "chainSlam": 4,
     "maliceStorm": 30,
     "omniBeam": 15,
-    "plagueBurst": 16,
-    "boneWall": 4
+    "plagueBurst": 17,
+    "boneWall": 6
   },
   "activeChargeSk": "magicBlink",
   "activeBowSk": "normal",
