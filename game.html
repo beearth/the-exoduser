@@ -2747,7 +2747,7 @@ const _sampleFiles={
   // hit/ — 타격
   heavy_strike:'sfx/hit/heavy_strike.mp3',
   sword_flat_hit:'sfx/hit/sword_flat_hit.mp3',
-  arrow_hit:'sfx/hit/bullet_hit.mp3',
+  arrow_hit:'sfx/hit/arrow_hit.mp3',
   bolt_hit:'sfx/hit/bolt_hit.wav',
   blunt_hit:'sfx/hit/blunt_hit.wav',
   bullet_hit:'sfx/hit/bullet_hit.mp3',
@@ -2797,9 +2797,10 @@ const _sampleFiles={
   voice_lavaSummon:'sfx/voice/voice_explode.mp3',
   voice_dark_skill:'sfx/voice/voice_dark_skill.mp3',
   // weapon/ — 무기
-  bow_shot:'sfx/weapon/crossbow_shot.wav',
-  crossbow_shot:'sfx/weapon/crossbow_shot.wav',
-  arrow_fly:'sfx/weapon/crossbow_shot.wav',
+  bow_shot:'sfx/weapon/bow_release.mp3',
+  crossbow_shot:'sfx/weapon/crossbow_shot.mp3',
+  arrow_fly:'sfx/weapon/arrow_fly.mp3',
+  shield_bash:'sfx/hit/shield_bash.mp3',
   // monster/ — 몬스터
   monster_crawl:'sfx/monster/monster_crawl.wav',
   m_melee:'sfx/monster/melee_walk.mp3',
@@ -2829,7 +2830,7 @@ const _sampleFiles={
   fireball:'sfx/magic/fireball.mp3',
   // misc/ — 기타
   spike_trap:'sfx/misc/spike_trap.mp3',
-  player_hurt:'sfx/misc/player_hurt.wav',
+  player_hurt:'sfx/hit/player_hurt.wav',
   footstep:'sfx/misc/footstep_new.mp3',
   footstep2:'sfx/misc/footstep_stone.mp3',
 };
@@ -3557,7 +3558,7 @@ const SFX={
   },
   // ── Shield bash: 우클릭 칼등치기 전용 ──
   shieldBash(){
-    playSample(['sword_back','sword_back2','sword_back3'][SFX._sbIdx++%3],.7,_r(1,.1));
+    playSample('shield_bash',.8,_r(1,.1));
   },
   // ── 탄막 반사/방어: Q보호막이면 q_parry, 아니면 bolt_hit ──
   deflect(){
@@ -13679,7 +13680,7 @@ function update(){
         const ang=Math.atan2(e.y-p.y,e.x-p.x);
         const mult=elMul(p.el,e.el);const dmg=~~(p.dmg*mult);
         if(p.explosive && !p.hitTriggered){ p.vx=0; p.vy=0; p.hitTriggered=true; } // 폭발탄은 멈춤
-        hurtE(e,dmg,ang,false,p,p.el); if(p.bladeShard||p.maliceHunt||p.iceBlade||p.arcMissile){}else if(p.magic)SFX.magicHit();else if(p.normalBow)playSample('bolt_hit',.6,_r(1,.15));else SFX.arrowHit();
+        hurtE(e,dmg,ang,false,p,p.el); if(p.bladeShard||p.maliceHunt||p.iceBlade||p.arcMissile){}else if(p.magic)SFX.magicHit();else if(p.normalBow)playSample('arrow_hit',.7,_r(1,.15));else SFX.arrowHit();
         if(p.magic&&!p.maliceHunt&&!p.iceBlade){
         const _pkb=p.kb!=null?p.kb:3;e.kb.x+=Math.cos(ang)*_pkb*mult;e.kb.y+=Math.sin(ang)*_pkb*mult;}
         // 산탄 넉백 + 폭발
@@ -19772,7 +19773,7 @@ const SKILL_LIST=[
   {id:'shieldThrow',name:'둔격호',cat:'def',fixed:true,emoji:'🛡️',desc:'[고정: 칼등치기 합체] 우클릭 칼등치기 시 자동 발사. 회전하며 전진, 적 관통+넉백+투사체 반사. 쿨 5초. Lv당 뎀+12% 사거리+30',spCost:0,matCost:80,cd:300,up:true,upSp:5,upMat:0},
   {id:'thunderShot',name:'뇌산탄',cat:'bow',fixed:true,emoji:'⚡',desc:'[고정: T 자동] 전기탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 전기줄기 방사(체인). 악의 8. Lv당 뎀+10% 줄기+1. 쿨 0.5초',spCost:12,matCost:80,cd:30,up:true,upSp:5,upMat:0},
   {id:'blastShot',name:'폭산탄',cat:'bow',fixed:true,emoji:'💥',desc:'[고정: T 자동] 폭탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 화염 폭발(범위130). 악의 8. Lv당 범위+10% 뎀+10%. 쿨 0.5초',spCost:12,matCost:80,cd:30,up:true,upSp:5,upMat:0},
-  {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (반경150, 10초). 밟은 적 슬로우+출혈. 악의 10, 쿨 10초. Lv당 범위+8 뎀+15%',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0}
+  {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (반경600, 10초). 밟은 적 슬로우+출혈. 악의 10, 쿨 10초. Lv당 범위+32 뎀+15%',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0}
 ];
 
 // ═══ 스킬 슬롯 시스템 ═══
@@ -20408,7 +20409,7 @@ function activateSpikeTrap(){
   _addSkProf('spikeTrap');
   G.mats-=10;P._gcCd=600;
   const lv=P.skills.spikeTrap||1;
-  const r=(150+lv*8)*2;
+  const r=(150+lv*8)*4;
   const dmg=5+lv*2;
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:r,t:0,maxT:600,dmg:dmg,el:EL.P,lv:lv,type:'spikeTrap'});
@@ -25825,22 +25826,29 @@ function drawP(){
         X.globalAlpha=(.15+.05*Math.sin(_stt*4))*_fzFade;
         X.strokeStyle='#667744';X.lineWidth=1;
         X.setLineDash([4,6]);X.beginPath();X.arc(fz.x,fz.y,fz.r*_deployT*.95,0,Math.PI*2);X.stroke();X.setLineDash([]);
-        // 3) 압정 — 작은 금속 점
+        // 3) 은색 표창 — 삼각형 날카로운 압정
         if(!fz._tacks){
           fz._tacks=[];
-          for(let _si=0;_si<12;_si++){
-            const _sa=Math.PI*2*((_si*7+3)%12)/12;
-            const _sd=fz.r*(.2+.6*((_si*13+5)%11)/11);
-            fz._tacks.push({ox:Math.cos(_sa)*_sd,oy:Math.sin(_sa)*_sd,sz:1.5+(_si%3)*.5});
+          for(let _si=0;_si<16;_si++){
+            const _sa=Math.PI*2*((_si*7+3)%16)/16;
+            const _sd=fz.r*(.15+.7*((_si*13+5)%13)/13);
+            fz._tacks.push({ox:Math.cos(_sa)*_sd,oy:Math.sin(_sa)*_sd,sz:2.5+(_si%3),rot:(_si*47%360)*Math.PI/180});
           }
         }
         for(let _si=0;_si<fz._tacks.length;_si++){
           const tk=fz._tacks[_si];
           const tx=fz.x+tk.ox*_deployT,ty=fz.y+tk.oy*_deployT;
-          X.globalAlpha=(.35+.08*Math.sin(_stt*5+_si*1.7))*_fzFade;
-          X.fillStyle='#554a33';X.beginPath();X.arc(tx,ty,tk.sz,0,Math.PI*2);X.fill();
-          X.globalAlpha=.15*_fzFade;
-          X.fillStyle='#998866';X.beginPath();X.arc(tx,ty-.5,tk.sz*.4,0,Math.PI*2);X.fill();
+          const r=tk.rot+_stt*.3*(_si%2?1:-1);
+          X.save();X.translate(tx,ty);X.rotate(r);
+          // 삼각 표창 몸체 — 은색
+          X.globalAlpha=(.55+.1*Math.sin(_stt*5+_si*1.7))*_fzFade;
+          X.fillStyle='#8a9199';
+          X.beginPath();X.moveTo(0,-tk.sz);X.lineTo(-tk.sz*.6,tk.sz*.5);X.lineTo(tk.sz*.6,tk.sz*.5);X.closePath();X.fill();
+          // 날 하이라이트 — 밝은 은색 중앙선
+          X.globalAlpha=.4*_fzFade;
+          X.strokeStyle='#ccd4dd';X.lineWidth=.5;
+          X.beginPath();X.moveTo(0,-tk.sz);X.lineTo(0,tk.sz*.3);X.stroke();
+          X.restore();
         }
       }else if(fz.type==='holyDome'){
         // ═══ 신성한 땅 — 황금 보호막 ═══
