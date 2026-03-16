@@ -12372,13 +12372,14 @@ function update(){
               // 칼등치기: 데미지의 200% 포이즈 데미지
               const poiseDmg=~~(dmg*2.0);
               e.poise-=poiseDmg;e.poiseR=0;
-              const kbAmt=4+_msLv*2;e.kb.x+=Math.cos(ang)*kbAmt*bestMul;e.kb.y+=Math.sin(ang)*kbAmt*bestMul;
+              const kbAmt=6+_msLv*3;e.kb.x+=Math.cos(ang)*kbAmt*bestMul;e.kb.y+=Math.sin(ang)*kbAmt*bestMul;
               if(_wasAtk){
-                const _pushKb=6+_msLv*2.5;e.kb.x+=Math.cos(ang)*_pushKb;e.kb.y+=Math.sin(ang)*_pushKb;
+                const _pushKb=8+_msLv*3;e.kb.x+=Math.cos(ang)*_pushKb;e.kb.y+=Math.sin(ang)*_pushKb;
                 e.stunned=120;e.s='idle';e.st2=0;
                 addTxt(e.x,e.y-10,'밀쳐냄!','#ffaa00',35);
                 shake(8);
               }else if(e.poise<=0){e.poise=0;e.stunned=Math.max(e.stunned,180);SFX.groggy();addTxt(e.x,e.y-20,'💥 그로기!','#ff8800',50)}
+              else{e.stunned=Math.max(e.stunned,30+_msLv*10);e.s='idle';e.st2=0}
             }
           }
         }else{
@@ -14912,7 +14913,7 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
       if(type==='shield'){
         const poiseDmg=~~(dmg*2.0);
         e.poise-=poiseDmg;e.poiseR=0;
-        const kbAmt=6;e.kb.x+=Math.cos(ang)*kbAmt*mult;e.kb.y+=Math.sin(ang)*kbAmt*mult;
+        const kbAmt=8;e.kb.x+=Math.cos(ang)*kbAmt*mult;e.kb.y+=Math.sin(ang)*kbAmt*mult;
         if(e.poise<=0){
           const stunTime=~~(180*mult);
           e.stunned=Math.max(e.stunned,stunTime);e.poise=0;
@@ -14920,7 +14921,7 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
           G.hitStop=~~(_HS.groggy*OPT.hitStop/100);G.slowMo=20;G.shake=16*OPT.shake/100;
           for(let j=0;j<14;j++){const a=Math.PI*2*j/14;poolPart(e.x,e.y,Math.cos(a)*7,Math.sin(a)*7,'#ffaa44',3+Math.random()*4,18)}
         }else{
-          e.stunned+=~~(12*mult);
+          e.stunned=Math.max(e.stunned,30);e.s='idle';e.st2=0;
           addTxt(e.x,e.y-15,'흔들!','#ccaa66',25);
         }
       }
@@ -15552,7 +15553,14 @@ function updateE(e,sp){
   if(!canMv(e.x,e.y,e.r))_pushOutWall(e);
   if(e.reviveIframes>0){e.reviveIframes=Math.max(0,e.reviveIframes-sp);} // 부활 무적 자연 감소
   if(Math.abs(e.kb.x)>.1||Math.abs(e.kb.y)>.1){const nx=e.x+e.kb.x*sp,ny=e.y+e.kb.y*sp;
-    if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}
+    if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny;
+      // 균열 충돌: 넉백 중 균열과 겹치면 추가 데미지
+      if(G.rifts.length>0){const _kbSpd2=Math.sqrt(e.kb.x*e.kb.x+e.kb.y*e.kb.y);if(_kbSpd2>2){
+        for(let _ri2=0;_ri2<G.rifts.length;_ri2++){const rf=G.rifts[_ri2];
+          const rd=dst(e.x,e.y,rf.x,rf.y);const _riftR=15+Math.min(1,rf.t/rf.maxT)*20;
+          if(rd<_riftR+e.r){const _crDmg=~~(_kbSpd2*4);hurtE(e,_crDmg);
+            addTxt(e.x,e.y-18,'균열 충돌! '+_crDmg,'#9933ff',30);addParts(e.x,e.y,'#aa44ff',8);
+            SFX.block();shake(6);e.kb.x=0;e.kb.y=0;break}}}}}
     else{// 벽 충돌 데미지: 넉백 세기에 비례
       const kbSpd=Math.sqrt(e.kb.x*e.kb.x+e.kb.y*e.kb.y);
       if(kbSpd>2){const wallDmg=~~(kbSpd*4);hurtE(e,wallDmg);
@@ -19658,7 +19666,7 @@ const SKILL_LIST=[
   {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,emoji:'❄',desc:'마우스 조준 설치. 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 3초 지속. MP 40, 쿨 12초. Lv당 범위+10 축적+10%',spCost:12,matCost:90,cd:720,up:true,upSp:5,upMat:0},
   {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹 100% 기절, 보스 체간 40%. 회전기폭과 합체→지진폭풍!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:480},
   {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 좌클릭 → 즉시 착지하며 땅 내려찍기. 범위300 STR 스케일 대데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). Lv당 범위+20 뎀+12%',spCost:8,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'chainStun',name:'기동파괴:뇌전',cat:'move',desc:'사슬기동 중 우클릭 → 칼 옆으로 땅 내려찍기. 범위200 포이즈 데미지 특화(x3). 일반몹 즉시 기절, 보스 체간 대량 삭감. Lv당 범위+15 포이즈+10%',spCost:0,matCost:0,up:true,upSp:5,upMat:0,hidden:true},
+  {id:'chainStun',name:'기동파괴:뇌전',cat:'move',desc:'사슬기동 중 우클릭 → 칼 옆으로 땅 내려찍기. 범위200 포이즈 데미지 특화(x3). 일반몹 즉시 기절, 보스 체간 대량 삭감. Lv당 범위+15 포이즈+10%',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'둔격호',cat:'def',fixed:true,emoji:'🛡️',desc:'[고정: 칼등치기 합체] 우클릭 칼등치기 시 자동 발사. 회전하며 전진, 적 관통+넉백+투사체 반사. 쿨 5초. Lv당 뎀+12% 사거리+30',spCost:0,matCost:80,cd:300,up:true,upSp:5,upMat:0},
   {id:'thunderShot',name:'뇌산탄',cat:'bow',fixed:true,emoji:'⚡',desc:'[고정: T 자동] 전기탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 전기줄기 방사(체인). 악의 8. Lv당 뎀+10% 줄기+1. 쿨 0.5초',spCost:12,matCost:80,cd:30,up:true,upSp:5,upMat:0},
   {id:'blastShot',name:'폭산탄',cat:'bow',fixed:true,emoji:'💥',desc:'[고정: T 자동] 폭탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 화염 폭발(범위130). 악의 8. Lv당 범위+10% 뎀+10%. 쿨 0.5초',spCost:12,matCost:80,cd:30,up:true,upSp:5,upMat:0},
@@ -20854,7 +20862,8 @@ function _renderSkillRow(sk,grid){
     const _dimThunderF=_dimSlamF&&P.skills.chainStun>=1&&_isFused('dimThunder');
     if(sk.id==='magicBlink'&&_dimFuse) return; // dimBreach 완성 시 숨김
     if(sk.id==='chainSlam'&&_dimSlamF) return; // dimSlam 완성 시 숨김
-    if(sk.id==='chainStun') return; // chainStun은 chainSlam 습득 시 자동 부여, 패널에서 항상 숨김
+    if(sk.id==='chainStun'&&_dimThunderF) return; // dimThunder 완성 시 숨김
+    if(sk.id==='chainStun'&&!(P.skills.chainSlam>=1)) return; // chainSlam 미습득 시 숨김
     const _isDimThunder=sk.id==='chargeBoost'&&_dimThunderF;
     const _isDimSlam=sk.id==='chargeBoost'&&_dimSlamF&&!_dimThunderF;
     const _isDimFuse=sk.id==='chargeBoost'&&_dimFuse&&!_dimSlamF&&!_dimThunderF;

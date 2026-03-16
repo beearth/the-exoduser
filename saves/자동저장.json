@@ -1,21 +1,21 @@
 {
-  "ts": 1773654334855,
+  "ts": 1773657929005,
   "player": {
     "lv": 48,
     "exp": 227,
     "maxExp": 250,
-    "sp": 40,
+    "sp": 12,
     "ap": 4,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.201,
-    "stR": 0.167,
-    "hp": 174,
-    "mhp": 174,
-    "mp": 117,
-    "mmp": 117,
-    "st": 127,
-    "mst": 127,
+    "mpR": 0.229,
+    "stR": 0.181,
+    "hp": 189,
+    "mhp": 189,
+    "mp": 124,
+    "mmp": 124,
+    "st": 134,
+    "mst": 134,
     "speed": 2.71362,
     "shield": 0,
     "mshield": 0
@@ -637,8 +637,8 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 69
+      "type": null,
+      "count": 0
     },
     {
       "type": null,
@@ -685,7 +685,7 @@
     "spikeTrap": 5,
     "holyDome": 4,
     "bladeShot": 1,
-    "chargeBoost": 10,
+    "chargeBoost": 12,
     "detonate": 30,
     "elemMissile": 15,
     "maliceStorm": 6,
