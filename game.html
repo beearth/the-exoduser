@@ -4823,8 +4823,8 @@ function doHitFlash(col,strength){_hitFlash.a=Math.min(.5,(_hitFlash.a||0)+stren
 // ═══ [BIG-IMPACT] 강타 임팩트 (보스 히트/피니셔 전용) ═══
 function bigImpact(x,y,el,ang){
   const ec=ELC[el]||'#ff6622';
-  if(_impacts.length>=40)_impacts.shift();
-  _impacts.push({x,y,el,ang:ang||0,t:0,ml:32,sz:1.8,type:'explosion'});
+  if(_impacts.length>=40){const im=_impacts[_impNext];im.x=x;im.y=y;im.el=el;im.ang=ang||0;im.t=0;im.ml=32;im.sz=1.8;im.type='explosion';_impNext=(_impNext+1)%40}
+  else _impacts.push({x,y,el,ang:ang||0,t:0,ml:32,sz:1.8,type:'explosion'});
   // 스파크 선 6발 (tp=2)
   for(let i=0;i<6;i++){const a=(ang||0)+(-0.8+i*0.32);const spd=2.5+Math.random()*2.5;poolPart(x,y,Math.cos(a)*spd,Math.sin(a)*spd,i%2?ec:'#ffffff',3+Math.random()*2,14+Math.random()*8,2,a,0.02)}
   // 충격파 링 (tp=3)
@@ -7547,12 +7547,12 @@ const _MOB_CELL=48,_MOB_COLS=10;
 const _walkAtlas={img:null,ready:false};
 const _WALK_COLS=4;
 const _WA={idle:{s:0,n:4,spd:.003},walk:{s:4,n:4,spd:.005},attack:{s:8,n:6,spd:.008},hit:{s:14,n:6,spd:.007}}; // 상태별 오프셋+속도
-const _WA_ROW={0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,12:10,13:11,18:12,41:13,44:14,49:15,56:16,50:17,51:18,52:19,53:20,54:21,57:22,58:23,59:24,55:25,14:26,15:27,16:28,17:29,19:30,40:31,42:32,43:33,45:34,46:35,47:36,48:37}; // etype→아틀라스 행
+const _WA_ROW={0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,12:10,13:11,18:12,41:13,44:14,49:15,56:16,50:17,51:18,52:19,53:20,54:21,57:22,58:23,59:24,55:25,14:26,15:27,16:28,17:29,19:30,40:31,42:32,43:33,45:34,46:35,47:36,48:37,10:38,11:39,22:40,23:41}; // etype→아틀라스 행
 function _hasWalkAnim(et){return _WA_ROW[et]!==undefined&&et!==7&&et!==9}
 function _waRow(et){return _WA_ROW[et]||0}
 (function _loadWalkAtlas(){
   const img=new Image();
-  img.src='img/mobs/atlas_walk.png?v=6';
+  img.src='img/mobs/atlas_walk.png?v=7';
   _walkAtlas.img=img;
   img.onload=function(){
     if(img.decode){img.decode().then(function(){_walkAtlas.ready=true;console.log('[WALK_ATLAS] 디코딩 완료 '+img.width+'x'+img.height)}).catch(function(){_walkAtlas.ready=true})}
@@ -24671,44 +24671,39 @@ function draw(){
     X.save();X.globalAlpha=alpha;X.translate(c.x,c.y);X.rotate(c.r);X.scale(1,.5);
     X.drawImage(c.c,-c.sz/2,-c.sz/2,c.sz,c.sz);X.restore();
   }
-  // 불타는 시체 렌더 — 캔버스 자체가 프레임마다 태워짐
+  // 불타는 시체 렌더 — 본체 + 불경계 분리 (compositeOp 전환 1회)
   for(let bi=0;bi<_BURN_MAX;bi++){const bc=_burnCorpses[bi];if(!bc.active)continue;
     if(bc.x<_vl-30||bc.x>_vr+30||bc.y<_vt-30||bc.y>_vb+30)continue;
     const sz=bc.ib?32:20;
-    X.save();X.translate(bc.x,bc.y);
-    X.globalAlpha=1;
-    X.drawImage(bc.c,-sz/2,-sz/2,sz,sz);
-    // 불 경계 글로우 (작은 additive 라인)
-    const prog=1-bc.t/bc.mt;
-    const burnY=-sz/2+sz*(1-prog);
-    X.globalCompositeOperation='lighter';
-    X.globalAlpha=.4;
-    X.fillStyle='#ff6600';
-    X.fillRect(-sz/2,burnY-2,sz,3);
-    X.globalAlpha=.2;
-    X.fillStyle='#ffaa00';
-    X.fillRect(-sz/2,burnY-4,sz,2);
-    X.globalCompositeOperation='source-over';
-    X.restore();
+    X.drawImage(bc.c,bc.x-sz/2,bc.y-sz/2,sz,sz);
   }
+  X.save();X.globalCompositeOperation='lighter';
+  for(let bi=0;bi<_BURN_MAX;bi++){const bc=_burnCorpses[bi];if(!bc.active)continue;
+    if(bc.x<_vl-30||bc.x>_vr+30||bc.y<_vt-30||bc.y>_vb+30)continue;
+    const sz=bc.ib?32:20;const prog=1-bc.t/bc.mt;const burnY=bc.y-sz/2+sz*(1-prog);
+    X.globalAlpha=.4;X.fillStyle='#ff6600';X.fillRect(bc.x-sz/2,burnY-2,sz,3);
+    X.globalAlpha=.2;X.fillStyle='#ffaa00';X.fillRect(bc.x-sz/2,burnY-4,sz,2);
+  }
+  X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();
   // gib 조각 렌더
   for(let gi=0;gi<_GIB_MAX;gi++){const g=_gibs[gi];if(!g.active||!g.c)continue;if(g.x<_vl-20||g.x>_vr+20||g.y<_vt-20||g.y>_vb+20)continue;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>15?1:g.life/15;const gs=10;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.r);X.drawImage(g.c,-gs*sc,-gs*sc,gs*2*sc,gs*2*sc);X.restore();}
-  // ── VFX 스프라이트시트 렌더 ──
+  // ── VFX 스프라이트시트 렌더 (compositeOp 루프 밖 1회) ──
   if(_vfxAnims.length>0){
     let _vw=0;
+    X.save();X.globalCompositeOperation='lighter';
     for(let vi=0;vi<_vfxAnims.length;vi++){
       const v=_vfxAnims[vi];const sh=_VFX_SHEETS[v.id];
       if(!sh||!sh.img){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
-      const col=v.frame%sh.cols,row=Math.floor(v.frame/sh.cols);
+      const col=v.frame%sh.cols,row=~~(v.frame/sh.cols);
       const dw=sh.fw*v.scale,dh=sh.fh*v.scale;
-      X.save();X.globalCompositeOperation='lighter';
       X.globalAlpha=1-(v.frame/v.maxFrames)*0.5;
-      X.translate(v.x,v.y);if(v.ang)X.rotate(v.ang);
+      X.save();X.translate(v.x,v.y);if(v.ang)X.rotate(v.ang);
       X.drawImage(sh.img,col*sh.fw,row*sh.fh,sh.fw,sh.fh,-dw/2,-dh/2,dw,dh);
       X.restore();
       v.t+=_dtSp;if(v.t>=v.frameTime){v.t=0;v.frame++}
       if(v.frame<v.maxFrames){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++}
     }
+    X.restore();
     _vfxAnims.length=_vw;
   }
   // ── 속도선 (강타 시 화면 효과) ──
@@ -24753,10 +24748,12 @@ function draw(){
         X.globalAlpha=sp2*0.65;X.strokeStyle='#ffffff';X.lineWidth=(2-p*1.5)*sz;
         X.beginPath();X.arc(im.x,im.y,(10+p*8)*sz,ang-0.75,ang+0.75);X.stroke();
       }
-      // Layer 5: 스파크 라인 (magic/explosion)
+      // Layer 5: 스파크 라인 (magic/explosion) — 단일 path로 합침
       if((im.type==='magic'||im.type==='explosion')&&p<0.5){
         X.globalAlpha=inv*0.5;X.strokeStyle=ec;X.lineWidth=1.2*sz;
-        for(let si2=0;si2<6;si2++){const sa=Math.PI*2*si2/6+(im.ang||0);const r0=4*sz,r1=(10+p*14)*sz;X.beginPath();X.moveTo(im.x+Math.cos(sa)*r0,im.y+Math.sin(sa)*r0);X.lineTo(im.x+Math.cos(sa)*r1,im.y+Math.sin(sa)*r1);X.stroke()}
+        X.beginPath();const _ia=im.ang||0;const _ir0=4*sz,_ir1=(10+p*14)*sz;
+        for(let si2=0;si2<6;si2++){const sa=Math.PI*2*si2/6+_ia;X.moveTo(im.x+Math.cos(sa)*_ir0,im.y+Math.sin(sa)*_ir0);X.lineTo(im.x+Math.cos(sa)*_ir1,im.y+Math.sin(sa)*_ir1)}
+        X.stroke();
       }
     }
     X.globalAlpha=1;X.restore();
@@ -25264,7 +25261,16 @@ function drawP(){
         _dpG.addColorStop(0,'rgba(50,180,0,.5)');_dpG.addColorStop(.6,'rgba(30,120,0,.25)');_dpG.addColorStop(1,'rgba(20,60,0,0)');
         X.fillStyle=_dpG;X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.fill();
       }else if(fz.type==='dimLightning'){
-        // 사슬기동:천둥 번개길 — 미니 번개만 (원형 바닥 없음)
+        // 사슬기동:천둥 번개길 — 바닥 원형 + 미니 번개
+        // 바닥 전기장 원형
+        X.globalAlpha=(.18+.06*Math.sin(_now*.008))*_fzFade;
+        const _dlGrd=X.createRadialGradient(fz.x,fz.y,0,fz.x,fz.y,fz.r);
+        _dlGrd.addColorStop(0,'rgba(200,255,60,.35)');_dlGrd.addColorStop(.5,'rgba(100,180,255,.18)');_dlGrd.addColorStop(1,'rgba(60,80,200,0)');
+        X.fillStyle=_dlGrd;X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.fill();
+        // 테두리 링
+        X.globalAlpha=(.3+.15*Math.sin(_now*.012))*_fzFade;
+        X.strokeStyle='#eeff44';X.lineWidth=1.5;X.beginPath();X.arc(fz.x,fz.y,fz.r*.95,0,Math.PI*2);X.stroke();
+        X.globalAlpha=1;
         const _dlSf=~~(fz.t);
         if(!fz._bolts||_dlSf%3===0){
           fz._bolts=[];const _dlBc=3+~~(Math.random()*3);
@@ -27334,21 +27340,7 @@ function drawP(){
     }
     X.globalAlpha=1;
   }}
-  // Additive 글로우 3중 (OPT.bloom)
-  if(OPT.bloom){
-    X.save();X.globalCompositeOperation='lighter';
-    for(let _ppi2=0;_ppi2<pProjs.length;_ppi2++){const p=pProjs[_ppi2];
-      if(p.x<_vl-20||p.x>_vr+20||p.y<_vt-20||p.y>_vb+20)continue;
-      const ac=ELC[p.el]||'#fff';
-      const ag=ELG2[p.el]||'#fff';
-      if(p.bladeShard||p.mhBlade||p.iceBlade)continue;const _glR=p.magic?(p.r+1):(p.bladeOrb?3:2);
-      const pulse=.7+Math.sin(_now/180+p.x*.1)*.3;
-      X.globalAlpha=.001*pulse;X.fillStyle=ac;X.beginPath();X.arc(p.x,p.y,_glR*.5,0,Math.PI*2);X.fill();
-      X.globalAlpha=.002*pulse;X.fillStyle=ac;X.beginPath();X.arc(p.x,p.y,_glR*.3,0,Math.PI*2);X.fill();
-      X.globalAlpha=.003*pulse;X.fillStyle=ag;X.beginPath();X.arc(p.x,p.y,_glR*.15,0,Math.PI*2);X.fill();
-    }
-    X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();
-  }
+  // Additive 글로우 제거됨 (alpha .001~.003 = 보이지 않음, compositeOp 전환 비용만 낭비)
 
   for(let _ppi3=0;_ppi3<pProjs.length;_ppi3++){const p=pProjs[_ppi3];
     if(p.x<_vl-20||p.x>_vr+20||p.y<_vt-20||p.y>_vb+20)continue; // 화면 밖 스킵
@@ -27493,12 +27485,12 @@ function drawP(){
         // 5) 흰 핫스팟
         X.globalAlpha=fa*.8;X.fillStyle='#ffffff';
         X.beginPath();X.moveTo(12,0);X.lineTo(3,-.8);X.lineTo(-4,0);X.lineTo(3,.8);X.closePath();X.fill();
-        // 6) 잔상 (trail 기반, 로컬좌표)
-        if(p._trail){const _tl=p._trail.length;const _ta=ang;
+        // 6) 잔상 (trail 기반, 로컬좌표) — cos/sin 루프 밖 호이스트
+        if(p._trail){const _tl=p._trail.length;
+        const _cs=Math.cos(-ang),_sn=Math.sin(-ang);
         for(let ti=0;ti<_tl;ti++){
           const _tt=p._trail[ti],_tf=1-ti/_tl,_ts=_tf*.7;
           const _dx=_tt.x-p.x,_dy=_tt.y-p.y;
-          const _cs=Math.cos(-_ta),_sn=Math.sin(-_ta);
           const _lx=_dx*_cs-_dy*_sn,_ly=_dx*_sn+_dy*_cs;
           X.save();X.translate(_lx,_ly);
           X.globalAlpha=fa*_tf*.2;X.fillStyle='#aaaaaa';
@@ -27526,12 +27518,12 @@ function drawP(){
         // 5) 흰 핫스팟
         X.globalAlpha=fa*.8;X.fillStyle='#ff8899';
         X.beginPath();X.moveTo(12,0);X.lineTo(3,-.8);X.lineTo(-4,0);X.lineTo(3,.8);X.closePath();X.fill();
-        // 6) 잔상 (trail 기반, 로컬좌표)
-        if(p._trail){const _tl=p._trail.length;const _ta=ang;
+        // 6) 잔상 (trail 기반, 로컬좌표) — cos/sin 루프 밖 호이스트
+        if(p._trail){const _tl=p._trail.length;
+        const _cs=Math.cos(-ang),_sn=Math.sin(-ang);
         for(let ti=0;ti<_tl;ti++){
           const _tt=p._trail[ti],_tf=1-ti/_tl,_ts=_tf*.7;
           const _dx=_tt.x-p.x,_dy=_tt.y-p.y;
-          const _cs=Math.cos(-_ta),_sn=Math.sin(-_ta);
           const _lx=_dx*_cs-_dy*_sn,_ly=_dx*_sn+_dy*_cs;
           X.save();X.translate(_lx,_ly);
           X.globalAlpha=fa*_tf*.2;X.fillStyle='#cc2233';
