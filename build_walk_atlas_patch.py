@@ -15,7 +15,7 @@ CELL = 48
 COLS = 20  # idle4 + walk4 + atk6 + hit6
 
 # 추가할 etype → 새 행 번호
-NEW_ETYPES = [10, 11, 22, 23]
+NEW_ETYPES = [20, 21]
 
 # 방향 매핑 (atlas_walk는 south 기준 단방향)
 DIR_PRIORITY = ['south', 'east', 'west', 'north']

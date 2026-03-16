@@ -1,17 +1,17 @@
 {
-  "ts": 1773636332125,
+  "ts": 1773639937620,
   "player": {
     "lv": 320,
-    "exp": 1752,
+    "exp": 3848,
     "maxExp": 5935,
-    "sp": 4,
+    "sp": 16,
     "ap": 5,
-    "baseAtk": 23,
+    "baseAtk": 15,
     "baseDef": 2,
     "mpR": 5.5249999999999995,
     "stR": 1.5230000000000001,
-    "hp": 2014.9805649999846,
-    "mhp": 2074,
+    "hp": 2038,
+    "mhp": 2038,
     "mp": 854,
     "mmp": 854,
     "st": 375,
@@ -21,7 +21,79 @@
     "mshield": 1545
   },
   "inv": {
-    "bag": [],
+    "bag": [
+      {
+        "id": 1773636623079.0747,
+        "slot": "helmet",
+        "el": 2,
+        "rarity": 4,
+        "tier": 1,
+        "name": "전지전능의 투구",
+        "emoji": "⛑️",
+        "eDef": 8,
+        "beamDmg": 5.9,
+        "elements": [
+          {
+            "el": 2,
+            "dmg": 64
+          },
+          {
+            "el": 5,
+            "dmg": 33
+          },
+          {
+            "el": 4,
+            "dmg": 33
+          },
+          {
+            "el": 3,
+            "dmg": 26
+          }
+        ],
+        "splashR": 10,
+        "splashMul": 0.53,
+        "magicPen": 2,
+        "bonusRange": 5,
+        "bDex": 35,
+        "bStr": 33,
+        "bInt": 35,
+        "affixes": [
+          {
+            "id": "ccRes",
+            "tier": 2,
+            "value": 0.32
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 2,
+            "value": 75
+          },
+          {
+            "id": "barrier",
+            "tier": 2,
+            "value": 45
+          },
+          {
+            "id": "cooldownRed",
+            "tier": 2,
+            "value": -0.22
+          }
+        ],
+        "_implicitStat": "_iMaxHP",
+        "_implicitVal": 25.85,
+        "_implicitKo": "최대 HP +X",
+        "legendarySpecial": {
+          "ko": "스킬 사용 시 20% 확률로 쿨다운 미소모",
+          "stat": "_lHelmFree",
+          "val": 0.2
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "_gx": 0,
+        "_gy": 0,
+        "_pickT": 1773636623094
+      }
+    ],
     "equipped": {
       "weapon": {
         "id": 1773604384261.0154,
@@ -121,7 +193,7 @@
         "_gx": 4,
         "_gy": 0,
         "_pickT": 1773582820508,
-        "enh": 202
+        "enh": 300
       },
       "boots": {
         "id": 1773635446155.7363,
@@ -174,7 +246,7 @@
         "_gx": 4,
         "_gy": 7,
         "_pickT": 1773635446170,
-        "enh": 109
+        "enh": 329
       },
       "armor": {
         "id": 1773612302237.469,
@@ -230,7 +302,7 @@
         "_gx": 0,
         "_gy": 0,
         "_pickT": 1773612302252,
-        "enh": 107
+        "enh": 295
       },
       "helmet": {
         "id": 1773617476194.23,
@@ -302,7 +374,7 @@
         "_gx": 8,
         "_gy": 2,
         "_pickT": 1773617476208,
-        "enh": 110
+        "enh": 291
       },
       "bow": {
         "id": 1773603020627.7495,
@@ -358,7 +430,7 @@
         "_gx": 3,
         "_gy": 36,
         "_pickT": 1773603020641,
-        "enh": 110
+        "enh": 289
       },
       "gloves": {
         "id": 1773582292040.316,
@@ -401,7 +473,7 @@
         "_gx": 0,
         "_gy": 0,
         "_pickT": 1773582292057,
-        "enh": 109
+        "enh": 266
       },
       "pants": {
         "id": 1773595956143.174,
@@ -702,8 +774,8 @@
       "count": 1
     },
     {
-      "type": "mp",
-      "count": 1
+      "type": null,
+      "count": 0
     },
     {
       "type": null,
@@ -716,8 +788,8 @@
   ],
   "game": {
     "stage": 5,
-    "kills": 42834,
-    "mats": 762651
+    "kills": 42912,
+    "mats": 91111
   },
   "bagMax": 300,
   "hellCleared": [
@@ -762,10 +834,11 @@
     "iceOrb": 9,
     "guardian": 10,
     "boneWall": 5,
-    "chainSlam": 10,
+    "chainSlam": 1,
     "shieldThrow": 1,
     "holyPrison": 10,
-    "grenadeShot": 10
+    "grenadeShot": 10,
+    "chainStun": 3
   },
   "fused": {
     "shieldFuse": true,
@@ -775,11 +848,10 @@
     "plagueFuse": true,
     "sixFuse": true,
     "elemFuse": true,
-    "dimBreach": true,
-    "dimSlam": true,
     "holyFuse": true,
     "whirlDet": true,
-    "slamStorm": true
+    "slamStorm": true,
+    "dimBreach": true
   },
   "skProf": {
     "holyDome": 15,
@@ -806,7 +878,8 @@
     "chainSlam": 30,
     "shieldThrow": 30,
     "holyPrison": 15,
-    "grenadeShot": 15
+    "grenadeShot": 15,
+    "chainStun": 11
   },
   "activeChargeSk": "magicBlink",
   "activeBowSk": "grenadeShot",
