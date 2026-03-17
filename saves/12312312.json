@@ -1,21 +1,21 @@
 {
-  "ts": 1773699283820,
+  "ts": 1773708327011,
   "player": {
-    "lv": 96,
-    "exp": 347,
-    "maxExp": 715,
-    "sp": 6,
-    "ap": 14,
+    "lv": 102,
+    "exp": 438,
+    "maxExp": 790,
+    "sp": 4,
+    "ap": 16,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.925,
-    "stR": 0.399,
-    "hp": 452,
-    "mhp": 452,
-    "mp": 223,
-    "mmp": 223,
-    "st": 179,
-    "mst": 179,
+    "mpR": 0.933,
+    "stR": 0.403,
+    "hp": 456,
+    "mhp": 456,
+    "mp": 225,
+    "mmp": 225,
+    "st": 181,
+    "mst": 181,
     "speed": 3.4491050000000003,
     "shield": 0,
     "mshield": 0
@@ -575,6 +575,103 @@
         "_gx": 0,
         "_gy": 3,
         "_pickT": 1773694699013
+      },
+      {
+        "id": 1773705628684.9875,
+        "slot": "bow",
+        "el": 3,
+        "rarity": 4,
+        "tier": 2,
+        "name": "심연 연사석궁",
+        "emoji": "⚡",
+        "btype": "repeater",
+        "atk": 9,
+        "bowSpd": 3.3,
+        "bowStCost": 6,
+        "bowRange": 357,
+        "bowProjSpd": 10,
+        "bonusRange": 3,
+        "bowPierce": 0.27,
+        "bDex": 38,
+        "bInt": 30,
+        "bStr": 31,
+        "affixes": [
+          {
+            "id": "parryExplosion",
+            "tier": 0,
+            "value": 0.4368
+          },
+          {
+            "id": "killSlayer",
+            "tier": 0,
+            "value": 0.2407
+          },
+          {
+            "id": "staggerExplosion",
+            "tier": 0,
+            "value": 0.3124
+          },
+          {
+            "id": "elemFocus",
+            "tier": 1,
+            "value": 0.226
+          }
+        ],
+        "_implicitStat": "_iPierce",
+        "_implicitVal": 14.45,
+        "_implicitKo": "관통 확률 +X%",
+        "legendarySpecial": {
+          "ko": "치명타 시 추가 투사체 1발 발사",
+          "stat": "_lBowCrit",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 4,
+        "_pickT": 1773705628699
+      },
+      {
+        "id": 1773705698090.367,
+        "slot": "gloves",
+        "el": 2,
+        "rarity": 4,
+        "tier": 2,
+        "name": "빙하 건틀릿",
+        "emoji": "🧤",
+        "atk": 13,
+        "def": 7,
+        "spd": 0.18,
+        "potCd": 0.317,
+        "atkSpd": 0.09,
+        "bDex": 30,
+        "bStr": 41,
+        "bInt": 29,
+        "affixes": [
+          {
+            "id": "thorns",
+            "tier": 0,
+            "value": 5
+          },
+          {
+            "id": "atkSpeed",
+            "tier": 0,
+            "value": 0.0818
+          }
+        ],
+        "_implicitStat": "_iAtkSpd",
+        "_implicitVal": 6.28,
+        "_implicitKo": "공격속도 +X%",
+        "legendarySpecial": {
+          "ko": "공격속도 +20% + 기본공격에 랜덤 원소 추가",
+          "stat": "_lGloveElem",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 6,
+        "_gy": 4,
+        "_pickT": 1773705698106
       }
     ],
     "equipped": {
@@ -957,12 +1054,12 @@
       "count": 1
     },
     {
-      "type": null,
-      "count": 0
+      "type": "mp",
+      "count": 36
     },
     {
-      "type": null,
-      "count": 0
+      "type": "st",
+      "count": 29
     },
     {
       "type": null,
@@ -971,8 +1068,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 2249,
-    "mats": 16380
+    "kills": 2602,
+    "mats": 20240
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -993,11 +1090,11 @@
   "skills": {
     "holyDome": 1,
     "iceStorm": 1,
-    "whirlwind": 1,
+    "whirlwind": 2,
     "chainAssault": 1,
     "chainSlam": 1,
     "magicBlink": 1,
-    "detonate": 1,
+    "detonate": 2,
     "maliceSwipe": 1,
     "elemMissile": 1,
     "fanShot": 0,
@@ -1006,10 +1103,15 @@
     "plagueBurst": 1,
     "omniBeam": 0,
     "boneWall": 1,
-    "spikeTrap": 1
+    "spikeTrap": 1,
+    "bladeDash": 1,
+    "ghostWalk": 1,
+    "blastShot": 0,
+    "grenadeShot": 1
   },
   "fused": {
-    "dimBreach": true
+    "dimBreach": true,
+    "whirlDet": true
   },
   "skProf": {
     "maliceSwipe": 30,
@@ -1022,7 +1124,7 @@
     "elemMissile": 15,
     "detonate": 30,
     "fanShot": 15,
-    "chainSlam": 4,
+    "chainSlam": 10,
     "maliceStorm": 30,
     "omniBeam": 15,
     "plagueBurst": 17,

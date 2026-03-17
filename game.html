@@ -1225,7 +1225,7 @@ function dbRestore(d){
   P._skProf=d.skProf||{};
   // 로드 시 숙련도는 세이브 값 그대로 (부스트 제거)
   // 로드 시 상한 초과 클램프
-  for(const _sk in P._skProf){const _c=(_sk==='iceOrb'||_sk==='chargeBoost'||_sk==='giantSlam'||_sk==='maliceStorm'||_sk==='maliceMortar'||_sk==='whirlwind'||_sk==='detonate'||_sk==='maliceHunt'||_sk==='plagueBurst'||_sk==='maliceSwipe'||_sk==='shieldThrow'||_sk==='chainSlam'||_sk==='chainAssault')?30:15;if(P._skProf[_sk]>_c)P._skProf[_sk]=_c;}
+  for(const _sk in P._skProf){const _c=_skProfCap(_sk);if(P._skProf[_sk]>_c)P._skProf[_sk]=_c;}
   // 구세이브 마이그레이션: dimHalf 제거 (galeSlash 삭제됨)
   if(P._fused.dimHalf)delete P._fused.dimHalf;
   if(P.skills.galeSlash){delete P.skills.galeSlash;}
@@ -2820,21 +2820,18 @@ const _sampleFiles={
   monster_hit:'sfx/monster/monster_hit.wav',
   monster_hurt:'sfx/monster/monster_hurt.wav',
   boss_howl:'sfx/monster/boss_howl.wav',
-  monster_die1:'sfx/monster/monster_die1.mp3',
-  monster_die2:'sfx/monster/monster_die2.mp3',
-  die_human2:'sfx/monster/die_human2.wav',
-  die_boss:'sfx/monster/die_boss.mp3',
+  monster_die1:'sfx/death/monster_die1.mp3',
+  monster_die2:'sfx/death/monster_die2.mp3',
+  die_human2:'sfx/death/die_human2.wav',
+  die_boss:'sfx/death/die_boss.mp3',
   // death/ — 몬스터 사망 (etype별)
   death_grunt:'sfx/death/death_grunt_01.mp3',
-  death_fire:'sfx/death/death_fire_01.mp3',
-  death_sizzle:'sfx/death/death_sizzle_01.mp3',
-  death_bone:'sfx/death/death_bone_crunch.mp3',
+  skull_summon:'sfx/death/skull.mp3',
   death_slime:'sfx/death/death_slime_splat.mp3',
   death_ice:'sfx/death/death_ice_shatter.mp3',
   death_demon:'sfx/death/death_demon_shriek.mp3',
   death_heavy:'sfx/death/death_heavy_thud.mp3',
   death_boss:'sfx/death/death_boss_roar.mp3',
-  hit_fire:'sfx/death/hit_fire_01.mp3',
   // q_parry/ — 보호막
   shield_activate:'sfx/q_parry/q_start.mp3',
   shield_end:'sfx/q_parry/q_end.mp3',
@@ -4322,9 +4319,9 @@ const WTYPE_KEYS=Object.keys(WTYPES);
 
 // ═══ BOW TYPES ═══
 const BOWTYPES={
-  crossbow:  {name:'석궁',     emoji:'⚙️', atkMul:1.0, stCost:5,  spdMul:1.0, range:400, projSpd:11},
-  repeater:  {name:'연사석궁', emoji:'⚡', atkMul:.65, stCost:5,  spdMul:1.5, range:350, projSpd:10},
-  arcane:    {name:'마력석궁', emoji:'✨', atkMul:1.4, stCost:5,  spdMul:0.8, range:420, projSpd:11},
+  crossbow:  {name:'석궁',     emoji:'⚙️', atkMul:1.0, stCost:5,  spdMul:1.0, range:400, projSpd:22},
+  repeater:  {name:'연사석궁', emoji:'⚡', atkMul:.65, stCost:5,  spdMul:1.5, range:350, projSpd:20},
+  arcane:    {name:'마력석궁', emoji:'✨', atkMul:1.4, stCost:5,  spdMul:0.8, range:420, projSpd:22},
 };
 const BTYPE_KEYS=Object.keys(BOWTYPES);
 
@@ -8514,26 +8511,22 @@ function _fireballExplode(p){
 }
 // ═══ [S11] 사망 이펙트 (deathFX) ═══
 // 방사형 스파크 링 + 중심 플래시 + 파편
-// ── etype별 사망 사운드 매핑 (범위 기반) ──
-// 0~9:default, 10~19:slime, 20~29:ice, 30~39:fire, 40~49:heavy, 50~59:demon
+// ── etype별 사망 사운드 매핑 (종족+범위 기반) ──
+const _HUMANOID_ET=new Set([0,1,2,6,8,20,21,24,31,34,36,37,41,44,50,54,55,60,65,67,70,71,74,90,93,94]);
 function _deathSfxKey(et){
-  if(et==null)return 'death_grunt';
+  if(et==null)return 'monster_die1';
+  if(_HUMANOID_ET.has(et))return 'die_human2';
   if(et>=50)return 'death_demon';
   if(et>=40)return 'death_heavy';
-  if(et>=30)return 'death_fire';
+  if(et>=30)return 'monster_die1';
   if(et>=20)return 'death_ice';
   if(et>=10)return 'death_slime';
-  return 'death_grunt';
+  return 'monster_die1';
 }
 function deathFX(x,y,r,col,isBoss,noSound,et){
   if(!noSound){
     if(isBoss){playSample('death_boss',.5,_r(.7,.15))}
-    else if(et!=null&&et>=30&&et<40){
-      // 화염 3레이어 연출
-      playSample('hit_fire',_r(.7,.1),_r(1,.1));
-      playSample('death_fire',_r(.5,.1),_r(1,.1));
-      setTimeout(()=>playSample('death_sizzle',_r(.4,.1),_r(1,.1)),100);
-    }else{
+    else{
       const k=_deathSfxKey(et);
       const v=r>=40?.5:.45;
       playSample(k,_r(v,.1),_r(1,.1));
@@ -12001,7 +11994,7 @@ function update(){
       // 벽이면 약간 뒤로 보정
       if(!canMv(_harpX,_harpY,2)){_harpX-=_harpVX*2;_harpY-=_harpVY*2}
       _harpHit=true;
-      playSample('chain_land2',.8,_r(1,.1));
+      playSample(_harpTier>=3?'chain_land2':'chain_land',.8,_r(1,.1));
     }
     // 꽂힘 → 플레이어 끌어당기기 시작
     if(_harpHit&&!_dashActive){
@@ -12063,7 +12056,7 @@ function update(){
       const _slamLand=P._chainSlamReady||P._chainAssaultReady; // 기동파괴/기동습격 준비 시 착지 효과 강제
       _harpLandT=(isDimBreach()&&!_slamLand)?0:20;
       // ── 착지 효과 ──
-      playSample('chain_land',.7,_r(1,.1));
+      playSample(_harpTier>=3?'chain_land2':'chain_land',.7,_r(1,.1));
       if(!isDimBreach()||_slamLand){shake(6);addParts(P.x,P.y,'#ffaa44',8);addTxt(P.x,P.y-20,'💥 착지!','#ffaa00',30)}
       // ── 블링크 스킬 세팅: 착지점에 뇌전길 ──
       if(_harpSk==='charge'&&P.activeChargeSk==='magicBlink'){
@@ -19989,7 +19982,9 @@ function _isFused(key){return!!(P._fused&&P._fused[key])}
 function _skProfVal(skId){return(P._skProf&&P._skProf[skId])||0}
 function _skProfLv(skId){return~~(_skProfVal(skId)/10)} // 10 숙련도 = 1랩
 function _skProfMul(skId){return 1+_skProfLv(skId)*0.02} // 숙련렙당 +2% (최대 +20%)
-function _addSkProf(skId,v){if(!P||!skId)return;if(!P._skProf)P._skProf={};const _old=P._skProf[skId]||0;const _cap=(skId==='iceOrb'||skId==='chargeBoost'||skId==='giantSlam'||skId==='maliceStorm'||skId==='maliceMortar'||skId==='whirlwind'||skId==='detonate'||skId==='maliceHunt'||skId==='plagueBurst'||skId==='maliceSwipe'||skId==='shieldThrow'||skId==='chainSlam'||skId==='chainAssault')?30:15;P._skProf[skId]=Math.min(_cap,_old+(v||1));} // 1회 사용 = +1숙련
+function _skProfCap(skId){return(skId==='iceOrb'||skId==='chargeBoost'||skId==='giantSlam'||skId==='maliceStorm'||skId==='maliceMortar'||skId==='whirlwind'||skId==='detonate'||skId==='maliceHunt'||skId==='plagueBurst'||skId==='maliceSwipe'||skId==='shieldThrow'||skId==='chainSlam'||skId==='chainAssault')?30:15}
+function _skProfMaxed(skId){return _skProfVal(skId)>=_skProfCap(skId)}
+function _addSkProf(skId,v){if(!P||!skId)return;if(!P._skProf)P._skProf={};const _old=P._skProf[skId]||0;const _cap=_skProfCap(skId);P._skProf[skId]=Math.min(_cap,_old+(v||1));} // 1회 사용 = +1숙련
 function _addSkProfTick(skId){if(!P||!skId)return;const _st={'whirlwind':'whirlwind','detonate':'whirlwind','omniBeam':'beam','fanShot':'beam','elemMissile':'beam','iceOrb':'iceOrb','ghostWalk':'ghostWalk','guardian':'idle'};if(!P._skProfUsed)P._skProfUsed={};if(P._skProfUsed[skId]===P.s)return;P._skProfUsed[skId]=P.s;_addSkProf(skId,1)} // 발동당 +1숙련, 상태 변하면 리셋
 function _fuseReqProf(key){return 10} // 양쪽 스킬 숙련 10 이상 필요
 function _canFuse(key){
@@ -20334,7 +20329,7 @@ function fireBoneWall(tx,ty){
   if(!G._boneWalls)G._boneWalls=[];
   G._boneWalls.push({x:tx,y:ty,ringR:ringR,wallThk:14,
     t:0,riseT:30,maxT:duration,dmg:riseDmg,hitSet:new Set(),phase:'rise'});
-  SFX.magic(EL.D);
+  SFX.magic(EL.D);playSample('skull_summon',.6,_r(.9,.15));
   addTxt(P.x,P.y-30,'\u{1F9B4} 해골무덤!','#ddccaa',40);
   shake(6);
   }catch(err){console.error('fireBoneWall ERR:',err);addTxt(P.x,P.y-50,'ERR:'+err.message,'#ff0000',120)}
@@ -21085,9 +21080,9 @@ function _renderSkillRow(sk,grid){
       const _fk2=_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isHolyFuse?'holyFuse':'iceMortar';
       const _fIds2=_fk2==='elemFuse'?['fanShot','omniBeam','elemMissile']:_fk2==='slamStorm'?['whirlwind','detonate','giantSlam']:(_FUSE_PAIRS[_fk2]||[]);
       const _fLv2=Math.min(..._fIds2.map(id=>P.skills[id]||1));
-      _fuseUpSp=_skillUpSpCost(_fLv2,true);
-      _fIds2.forEach(id=>{const fs=SKILL_LIST.find(s=>s.id===id);if(fs){_fuseUpMat+=(fs.upMat||0)}});
-      _fuseCanUp=_fLv2<_skMaxLv&&P.sp>=_fuseUpSp&&G.mats>=_fuseUpMat;
+      const _allProfMaxed=_fIds2.every(id=>_skProfMaxed(id));
+      _fuseUpSp=_fLv2*10; // 1단10, 2단20, 3단30...
+      _fuseCanUp=_fLv2<_skMaxLv&&_allProfMaxed&&P.sp>=_fuseUpSp;
     }
     const _singleUpSp=_skillUpSpCost(slv,false);
     const canUp=(learned&&sk.up&&slv<_skMaxLv&&P.sp>=_singleUpSp&&G.mats>=(sk.upMat||100)&&!_isFuseUp)||_fuseCanUp;
@@ -21147,13 +21142,20 @@ function _renderSkillRow(sk,grid){
       }
       const _isMax=slv>=_skMaxLv;
       lockTxt='<span style="color:#'+(_isDimThunder?'4422ff':_isDimSlam?'6633ff':_isDimFuse?'aa66ff':_isIceFuse?'66ccff':_isElemFuse?'ff66ff':_isSlamStorm?'ff4400':_isSixFuse?'ffaa00':_isBladeFuse?'dddddd':_isSynth?'ff8844':_isBoneStorm?'55cc77':_isShieldFuse?'8899aa':_isPlagueFuse?'aa2244':_isHolyFuse?'ff88aa':_isMax?'ffdd00':'44cc44')+'">습득 Lv.'+slv+(_isMax?' MAX':'')+' ('+upLabel+')</span>';
-      if(canUp&&!_isMax) lockTxt += ' <span style="color:#ffcc44;">[강화 가능: ⭐'+(_isFuseUp?_fuseUpSp:_singleUpSp)+' 👿'+(_isFuseUp?_fuseUpMat:sk.upMat)+']</span>';
+      if(canUp&&!_isMax) lockTxt += ' <span style="color:#ffcc44;">[강화 가능: '+(_isFuseUp?'⭐'+_fuseUpSp:'⭐'+_singleUpSp+' 👿'+sk.upMat)+']</span>';
+      else if(_isFuseUp&&!_isMax&&!canUp){
+        const _fk3=_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isHolyFuse?'holyFuse':'iceMortar';
+        const _fIds3=_fk3==='elemFuse'?['fanShot','omniBeam','elemMissile']:_fk3==='slamStorm'?['whirlwind','detonate','giantSlam']:(_FUSE_PAIRS[_fk3]||[]);
+        const _notMaxed=_fIds3.filter(id=>!_skProfMaxed(id));
+        if(_notMaxed.length>0){const _nmTxt=_notMaxed.map(id=>{const _s=SKILL_LIST.find(s=>s.id===id);return(_s?_s.name:id)+' '+~~_skProfVal(id)+'/'+_skProfCap(id)}).join(', ');lockTxt+=' <span style="color:#ff8844;font-size:.75rem">[숙련도 MAX 필요: '+_nmTxt+']</span>'}
+        else if(P.sp<_fuseUpSp) lockTxt+=' <span style="color:#ff4444;font-size:.75rem">[SP 부족: '+P.sp+'/'+_fuseUpSp+']</span>';
+      }
     }else{
       lockTxt='<span style="color:#44cc44">✅ 습득 완료</span>';
     }
     // 숙련도 바 (습득 스킬만)
     const _profV=_skProfVal(sk.id);
-    const _profCap=(sk.id==='iceOrb'||sk.id==='chargeBoost'||sk.id==='giantSlam'||sk.id==='maliceStorm'||sk.id==='maliceMortar'||sk.id==='chainSlam'||sk.id==='chainAssault')?30:15;
+    const _profCap=_skProfCap(sk.id);
     if(learned&&_profV<_profCap)lockTxt+='<div style="display:flex;align-items:center;gap:6px;margin-top:4px"><span style="font-size:.7rem;color:#88ccaa;white-space:nowrap">숙련 '+~~_profV+'/'+_profCap+'</span><div style="flex:1;height:8px;background:#1a1a1a;border:1px solid #335544;border-radius:4px;overflow:hidden"><div style="width:'+((_profV/_profCap)*100)+'%;height:100%;background:linear-gradient(90deg,#336644,#44ddaa);border-radius:3px;transition:width .3s"></div></div></div>';
     else if(learned&&_profV>=_profCap)lockTxt+='<div style="margin-top:4px;font-size:.7rem;color:#44ddaa;font-weight:700">숙련 MAX ✦</div>';
 
@@ -21362,11 +21364,12 @@ function _renderSkillRow(sk,grid){
           const _fuseSks=_fuseIds.map(id=>SKILL_LIST.find(s=>s.id===id)).filter(Boolean);
           const _fuseLv=Math.min(..._fuseIds.map(id=>P.skills[id]||1));
           if(_fuseLv>=_skMaxLv)return;
-          const _totalSp=_skillUpSpCost(_fuseLv,true);
-          const _totalMat=0;
-          if(P.sp>=_totalSp&&G.mats>=_totalMat){
+          const _allPM=_fuseIds.every(id=>_skProfMaxed(id));
+          if(!_allPM){addTxt(P.x,P.y-30,'숙련도 MAX 필요!','#ff4444',60);return}
+          const _totalSp=_fuseLv*10; // 1단10, 2단20...
+          if(P.sp>=_totalSp){
             _fuseIds.forEach(id=>{P.skills[id]=_fuseLv+1});
-            P.sp-=_totalSp;G.mats-=_totalMat;
+            P.sp-=_totalSp;
             const _fCol=_fGrp?_fGrp.color:'#55ccff';
             SFX.levelup();addTxt(P.x,P.y-30,'합체 Lv.'+(_fuseLv+1)+(_fuseLv+1>=_skMaxLv?' MAX!!':'!'),_fCol,60);
           }
@@ -28248,20 +28251,28 @@ function drawP(){
     const _hcol=_harpHit?'#ffaa00':'#ccddff';
     const _ha=Math.atan2(_harpVY,_harpVX);
     const _hDist=dst(P.x,P.y,_harpX,_harpY);
-    // 체인 링크 (고리 모양)
-    const _linkLen=8,_linkW=2.5;
+    // 체인 링크 (교차 고리 — 실제 사슬 모양)
+    const _linkLen=7,_linkW=3;
     const _nLinks=~~(_hDist/_linkLen);
     const _cx=(_harpX-P.x)/_hDist,_cy=(_harpY-P.y)/_hDist;
-    X.lineWidth=1.2;X.lineCap='round';
+    const nx=-_cy,ny=_cx;
+    X.lineCap='round';
     for(let li=0;li<_nLinks;li++){
       const t=li/_nLinks;
-      const lx=P.x+_cx*_linkLen*li,ly=P.y+_cy*_linkLen*li;
-      const sway=Math.sin(li*1.2+_now*.08)*_linkW*(1-t*.3);
-      const nx=-_cy,ny=_cx; // 법선
-      X.strokeStyle=li%2?'#888899':'#aaaabb';X.globalAlpha=.6+t*.3;
-      X.beginPath();
-      X.ellipse(lx+nx*sway,ly+ny*sway,_linkLen*.4,_linkW*.7,_ha,0,Math.PI*2);
-      X.stroke();
+      const lx=P.x+_cx*_linkLen*(li+.5),ly=P.y+_cy*_linkLen*(li+.5);
+      const sway=Math.sin(li*1.2+_now*.08)*1.5*(1-t*.3);
+      const sx=lx+nx*sway,sy=ly+ny*sway;
+      if(li%2===0){
+        X.lineWidth=1.8;X.strokeStyle='#aaaabb';X.globalAlpha=.7+t*.25;
+        X.beginPath();X.ellipse(sx,sy,_linkLen*.42,_linkW*.55,_ha,0,Math.PI*2);X.stroke();
+        X.lineWidth=.6;X.strokeStyle='#dddde8';X.globalAlpha=.3;
+        X.beginPath();X.ellipse(sx,sy,_linkLen*.25,_linkW*.3,_ha,-1.2,.2);X.stroke();
+      }else{
+        X.lineWidth=1.8;X.strokeStyle='#888899';X.globalAlpha=.7+t*.25;
+        X.beginPath();X.ellipse(sx,sy,_linkW*.55,_linkLen*.42,_ha,0,Math.PI*2);X.stroke();
+        X.lineWidth=.6;X.strokeStyle='#dddde8';X.globalAlpha=.3;
+        X.beginPath();X.ellipse(sx,sy,_linkW*.3,_linkLen*.25,_ha,-.8,.4);X.stroke();
+      }
     }
     // 작살 머리 (삼지창)
     X.save();X.translate(_harpX,_harpY);X.rotate(_ha);
