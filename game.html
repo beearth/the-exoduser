@@ -2803,7 +2803,7 @@ const _sampleFiles={
   // weapon/ — 무기
   bow_shot:'sfx/weapon/bow_release.mp3',
   crossbow_shot:'sfx/weapon/crossbow_shot.mp3',
-  arrow_fly:'sfx/weapon/arrow_fly.mp3',
+  arrow_fly:'sfx/weapon/arrow_fly.wav',
   shield_hit:'sfx/hit/shield_hit.mp3',
   // monster/ — 몬스터
   monster_crawl:'sfx/monster/monster_crawl.wav',
@@ -2821,8 +2821,7 @@ const _sampleFiles={
   monster_hurt:'sfx/monster/monster_hurt.wav',
   boss_howl:'sfx/monster/boss_howl.wav',
   monster_die1:'sfx/death/monster_die1.mp3',
-  monster_die2:'sfx/death/monster_die2.mp3',
-  die_human2:'sfx/death/die_human2.wav',
+  die_human2:'sfx/death/die_human.wav',
   die_boss:'sfx/death/die_boss.mp3',
   // death/ — 몬스터 사망 (etype별)
   death_grunt:'sfx/death/death_grunt_01.mp3',
@@ -2842,7 +2841,7 @@ const _sampleFiles={
   fireball:'sfx/magic/fireball.mp3',
   // misc/ — 기타
   spike_trap:'sfx/misc/spike_trap.mp3',
-  player_hit:'sfx/hit/player_hit.wav',
+  player_hit:'sfx/hit/player_hit.mp3',
   footstep:'sfx/misc/footstep_new.mp3',
   footstep2:'sfx/misc/footstep_stone.mp3',
 };
@@ -3930,7 +3929,10 @@ addEventListener('keydown',e=>{
   // ── T키 석궁 자동발사 토글 ──
   if(e.code==='KeyT'&&G.on&&!G.paused&&!e.repeat){_xbowEquipped=!_xbowEquipped;_xbowTimer=0;_xbowTarget=null;showPH(_xbowEquipped?'석궁 자동발사 ON':'석궁 자동발사 OFF',_xbowEquipped?'#ffe066':'#888888')}
   // ── Shift 작살: 홀드 시작 ──
-  if(e.code==='ShiftLeft'&&G.on&&!G.paused&&!_dashHold&&!_dashActive&&!_harpActive&&!e.repeat&&_harpGauge>=_HARP_GAUGE_COST[1]){_dashHold=true;_dashHoldF=0;_dashTier=0}
+  if(e.code==='ShiftLeft'&&G.on&&!G.paused&&!e.repeat){
+    if(_harpActive&&!_dashActive){_harpActive=false;_dashHold=false;_dashTier=0;P._chainSlamReady=false;P._chainAssaultReady=false;addTxt(P.x,P.y-20,'캔슬','#ff6666',20);playSample('ui_cancel',.4,1)}
+    else if(!_dashHold&&_harpGauge>=_HARP_GAUGE_COST[1]){_dashHold=true;_dashHoldF=0;_dashTier=0}
+  }
   // ═══ 칼날이동 — 방향키 더블탭 감지 ═══
   if(G.on&&!G.paused&&!e.repeat&&P.skills&&P.skills.bladeDash>=1){
     const _bdDirs={[BINDS.up]:0,[BINDS.down]:1,[BINDS.left]:2,[BINDS.right]:3};
@@ -8530,7 +8532,7 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
       const k=_deathSfxKey(et);
       const v=r>=40?.5:.45;
       playSample(k,_r(v,.1),_r(1,.1));
-      if(r>=40&&Math.random()<.2)playSample('monster_die2',.5,_r(.8,.15));
+      if(r>=40&&Math.random()<.2)playSample('monster_die1',.5,_r(.8,.15));
     }
   }
   // 동시 사망 과다 시 파티클 절감
@@ -10106,8 +10108,11 @@ function _autoFireBowSkill(tx,ty){
   else if(_abs==='thunderShot'&&P.skills.thunderShot&&G.mats>=8&&(P._tsCd||0)<=0){activateThunderShot();fired=true}
   else if(_abs==='blastShot'&&P.skills.blastShot&&G.mats>=8&&(P._bsCd2||0)<=0){activateBlastShot();fired=true}
   else if(_abs==='fanShot'&&P.skills.fanShot){_fireFanShot();fired=true}
+  else if(_abs==='needleShot'&&P.skills.needleShot&&(P._ndCd||0)<=0){activateNeedleShot();fired=true}
   if(!fired){_fireXbow(tx,ty)}
-  P.st=_sSt; // 오토석궁: ST 소모 없음
+  // 자동석궁 ST 소모: 기본3 + 레벨당3
+  const _xbStCost=3+(P.skills.fanShot||0)*3;
+  P.st=Math.max(0,_sSt-_xbStCost);
   P.s=_sS;P.st2=_sSt2;
 }
 function meleeRef(){return((wp().atk||12)*(1+enhMul(wp().enh||0))+15+P.baseAtk)*(P._weaponSeal>0?.3:1)}
@@ -13584,7 +13589,7 @@ function update(){
       const dx=e.x-_xbOx,dy=e.y-_xbOy,d=Math.sqrt(dx*dx+dy*dy);
       if(d<_xbNear){_xbNear=d;_xbowTarget=e}
     }}
-    if(_xbowTimer>=XBOW_INTERVAL&&_xbowTarget){
+    if(_xbowTimer>=XBOW_INTERVAL&&_xbowTarget&&P.st>P.stMax*.2){
       _xbowTimer=0;
       _autoFireBowSkill(_xbowTarget.x,_xbowTarget.y);
     }
@@ -14174,6 +14179,7 @@ function update(){
   // ═══ 뇌산탄/폭산탄 — 쿨다운 ═══
   if(P._tsCd>0)P._tsCd-=sp+_hdCdBonus;
   if(P._bsCd2>0)P._bsCd2-=sp+_hdCdBonus;
+  if(P._ndCd>0)P._ndCd-=sp+_hdCdBonus;
   // ═══ 악의포격 — 쿨다운 ═══
   if(P._mmCd>0)P._mmCd-=sp+_hdCdBonus;
   // ═══ 해골무덤 — 2스택 충전 (8초/1충전, Lv10→3스택) ═══
@@ -19814,6 +19820,7 @@ const SKILL_LIST=[
   {id:'bladeShot',name:'붉은꽃',cat:'bow',act:true,emoji:'🩸',desc:'[고정: T 자동] 핏빛 칼날 발사: 전진하며 핏빛 조각 방사 (ST 50, 쿨 0.5초). Lv당 크기+11% 뎀+10%',spCost:12,matCost:100,cd:30,up:true,upSp:5,upMat:0},
   {id:'iceOrb',name:'얼음보주',cat:'def',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',spCost:15,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'grenadeShot',name:'유탄산탄',cat:'bow',act:true,emoji:'💣',desc:'[고정: T 자동] 직선 화염대포 발사+경로 화상+잔류화염. 악의 5. 쿨 1초. Lv당 사거리+22% 폭+22%',spCost:12,matCost:100,cd:60,up:true,upSp:5,upMat:0},
+  {id:'needleShot',name:'바늘출',cat:'bow',act:true,emoji:'🪡',desc:'[고정: T 자동] 최대속도 바늘 5연발. 좁은 간격 초고속 관통. ST 8. 쿨 1.5초. Lv당 뎀+12% 관통+1',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
   {id:'plagueBurst',name:'폭독칼날',cat:'magic',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 1렙 10관통(Lv당+10, 만렙100). 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염(INT 스케일링). 악의 15. 사거리 4000. 쿨 12초',spCost:10,matCost:80,cd:720,up:true,upSp:5,upMat:0},
   {id:'maliceStorm',name:'악의폭풍',cat:'magic',act:true,emoji:'🌀',desc:'마우스 조준 설치. 2스택 (8초/1충전, Lv10→3스택). 화면 내 클릭 위치에 전기폭풍 (3초, 10틱, 틱당 100+Lv*20). Lv당 범위+10. 같은 지역 중복 불가',spCost:12,matCost:90,up:true,upSp:5,upMat:0},
   {id:'holyDome',name:'신성한 땅',cat:'tech',act:true,emoji:'🛡',desc:'현재 위치에 신성한 땅 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+8 지속+0.5초',spCost:12,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
@@ -19837,13 +19844,14 @@ const SKILL_SLOT_DEFS={
     info:{beam:{name:'마법탄',emoji:'🔮',desc:'E: 마법 투사체'},
           omniBeam:{name:'멸살광선',emoji:'☄️',desc:'E 홀드: 5원소 빔'},
           elemMissile:{name:'원소추적탄',emoji:'🎯',desc:'E: 6원소 유도 미사일'}}},
-  bow:{name:'석궁 자동(T)',key:'bow',skills:['normal','grenadeShot','bladeShot','thunderShot','blastShot','fanShot'],
+  bow:{name:'석궁 자동(T)',key:'bow',skills:['normal','grenadeShot','bladeShot','thunderShot','blastShot','fanShot','needleShot'],
     info:{normal:{name:'일반사격',emoji:'🏹',desc:'T자동: 기본 화살'},
           grenadeShot:{name:'유탄산탄',emoji:'💣',desc:'T자동: 화염대포 (악의5, 쿨1초)'},
           bladeShot:{name:'붉은꽃',emoji:'🌹',desc:'T자동: 붉은 꽃잎 칼날 (ST50)'},
           thunderShot:{name:'뇌산탄',emoji:'⚡',desc:'T자동: 전기탄 (악의8, 쿨0.5초)'},
           blastShot:{name:'폭산탄',emoji:'💥',desc:'T자동: 폭탄 (악의8, 쿨0.5초)'},
           fanShot:{name:'만화방창',emoji:'✨',desc:'T자동: 6속성 부채꼴 (ST)'},
+          needleShot:{name:'바늘출',emoji:'🪡',desc:'T자동: 초고속 바늘 5연발 (ST8, 쿨1.5초)'},
           }},
   tech:{name:'기술 스킬',key:'tech',skills:['maliceMortar','spikeTrap'],
     info:{maliceMortar:{name:'악의포격',emoji:'☄️',desc:'Space: 조준 폭격 (ST60, 쿨1초)'},
@@ -20389,6 +20397,27 @@ function activateBlastShot(){
   }
   playSample('crossbow_shot',.7,_r(1,.1));SFX.crossbowLoad();addTxt(P.x,P.y-30,'💥 폭산탄!','#ff6633',40);
   shake(3);
+}
+// ═══ 바늘출 발동 — 최대속도 5연발 ═══
+function activateNeedleShot(){
+  const slv=P.skills.needleShot||1;
+  const _nStC=8;
+  if(P.st<_nStC||(P._ndCd||0)>0)return;
+  _addSkProf('needleShot');
+  P.st-=_nStC;P._ndCd=90;
+  const a=P.facing;const spd=30; // 최대속도
+  const dmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*1.2*(1+(slv-1)*0.12));
+  const _nPierce=Math.min(0.95,0.3+slv*0.05);const _nPMax=2+slv;
+  const range=600;
+  for(let i=0;i<5;i++){
+    const spread=(i-2)*0.06; // 아주 좁은 부채꼴
+    const na=a+spread;
+    const dx=Math.cos(na),dy=Math.sin(na);
+    pProjs.push({x:P.x+dx*12,y:P.y+dy*12,vx:dx*spd,vy:dy*spd,dmg,el:EL.P,
+      maxDist:range,dist:0,r:1.5,stagger:2,kb:0,pierce:_nPierce,pierceMax:_nPMax,normalBow:true,needle:true});
+  }
+  playSample('crossbow_shot',.8,_r(1.4,.1));playSample('arrow_fly',.3,_r(1.5,.1));
+  addTxt(P.x,P.y-30,'🪡 바늘출!','#ccddff',35);shake(2);
 }
 // ═══ 유탄산탄 발동 (즉발 거대 파이어볼) ═══
 function activateGrenadeShot(){
@@ -25896,8 +25925,8 @@ function drawP(){
         // 3) 은색 표창 — 삼각형 날카로운 압정
         if(!fz._tacks){
           fz._tacks=[];
-          for(let _si=0;_si<16;_si++){
-            const _sa=Math.PI*2*((_si*7+3)%16)/16;
+          for(let _si=0;_si<48;_si++){
+            const _sa=Math.PI*2*((_si*7+3)%48)/48;
             const _sd=fz.r*(.15+.7*((_si*13+5)%13)/13);
             fz._tacks.push({ox:Math.cos(_sa)*_sd,oy:Math.sin(_sa)*_sd,sz:2.5+(_si%3),rot:(_si*47%360)*Math.PI/180});
           }
@@ -27356,7 +27385,8 @@ function drawP(){
     if(_harpLandT>0)_harpLandT-=_dtSp;
     let _apAnim=_P_ANIM_MAP[P.s]||'idle';
     if(_apDead)_apAnim='die';
-    else if((P._chainSlamReady||P._chainAssaultReady)&&(_harpActive||_dashActive))_apAnim='chain';
+    else if(P._chainSlamReady&&(_harpActive||_dashActive))_apAnim='chain';
+    else if(P._chainAssaultReady&&(_harpActive||_dashActive))_apAnim='atk1';
     else if(_harpActive&&!_dashActive)_apAnim='charge_start';
     else if(_dashActive)_apAnim='charge_hold';
     else if(_harpLandT>0&&_harpSk!=='dimBreach')_apAnim='charge_land';
@@ -27366,9 +27396,15 @@ function drawP(){
     if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam')||_apAnim.startsWith('charge'))?'atk1':'idle';
     if(!P._sa.fm[_apAnim]&&!P._sa.fm[_apAnim+'_'+_apDir])_apAnim='idle';
     const _isHarp=_apAnim==='charge_start'||_apAnim==='charge_hold'||_apAnim==='charge_land';
-    const _apSpd=_apDead?12:(_isHarp?4:(_apAnim==='idle'?48:(_apAnim==='run'?12:8)));
+    const _isChainAtk=P._chainAssaultReady&&(_harpActive||_dashActive);
+    const _apSpd=_apDead?12:(_isHarp?4:(_isChainAtk?3:(_apAnim==='idle'?48:(_apAnim==='run'?12:8))));
     SpriteAnimator.play(P._sa,_apAnim,_apSpd,_isHarp?false:!_apDead);
-    if(_isHarp){
+    if(_isChainAtk){
+      // 기동습격: atk 프레임 2배속 빠른 칼질 루프
+      P._sa.spd=2;P._sa.loop=true;
+      SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
+      SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
+    }else if(_isHarp){
       // 작살 3단계 프레임 제어: 각 단계 마지막 프레임 홀드
       const _hFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
       if(_hFr&&_hFr.length){
@@ -28416,7 +28452,7 @@ function drawP(){
     const _bPet=G.pets[_petBubble.who];
     const _bIsCrow=_petBubble.who==='crow';
     const _bBob=Math.sin(_bPet.t*(_bIsCrow?.1:.06))*(_bIsCrow?2:1);
-    const _bx=_bPet.x,_by=_bPet.y+_bBob-(_bIsCrow?18:14);
+    const _bx=~~_bPet.x,_by=~~(_bPet.y+_bBob)-(_bIsCrow?18:14);
     const _bTxt=_petBubble.txt;
     X.save();
     X.font='bold 11px "Malgun Gothic",sans-serif';
