@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>Death SFX Test</title>
+<style>
+body{margin:0;background:#111;color:#eee;font-family:monospace;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:16px}
+button{padding:14px 28px;font-size:16px;font-family:monospace;border:2px solid #555;border-radius:6px;cursor:pointer;min-width:200px;transition:all .15s}
+button:hover{transform:scale(1.05)}
+button:active{transform:scale(.95)}
+.insect{background:#2a3a10;color:#8c2;border-color:#6a4}
+.ghost{background:#1a1a2e;color:#88aaff;border-color:#6688cc}
+.armor{background:#2a2a2a;color:#ccc;border-color:#888}
+.ghoul{background:#2a1515;color:#c88;border-color:#864}
+h2{margin:0;color:#888}
+.group{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.tag{font-size:11px;color:#666;margin-top:4px}
+</style>
+</head><body>
+<h2>Death SFX Test (AI Generated MP3)</h2>
+<div class="group">
+<button class="insect" onclick="play('insect')">Insect Death<br><small>갑각 파열+체액</small></button>
+<button class="ghost" onclick="play('ghost')">Ghost Death<br><small>울부짖음+소멸</small></button>
+<button class="armor" onclick="play('armor')">Armor Death<br><small>금속 충돌+낙하</small></button>
+<button class="ghoul" onclick="play('ghoul1')">Ghoul 1 (소)<br><small>소형 구울</small></button>
+<button class="ghoul" onclick="play('ghoul2')">Ghoul 2 (중)<br><small>중형 구울</small></button>
+<button class="ghoul" onclick="play('ghoul3')">Ghoul 3 (대)<br><small>대형 구울</small></button>
+<button class="ghoul" onclick="play('ghoul')">Ghoul (proc)<br><small>프로시저럴</small></button>
+</div>
+<div class="tag">insect/ghost/armor/ghoul1~3 = sfx/death/*.mp3 | ghoul(proc) = Web Audio procedural</div>
+<script>
+const files={
+  insect:'../sfx/death/death_insect.mp3',
+  ghost:'../sfx/death/death_ghost.mp3',
+  armor:'../sfx/death/death_armor.mp3',
+  ghoul1:'../sfx/death/death_ghoul1.mp3',
+  ghoul2:'../sfx/death/death_ghoul2.mp3',
+  ghoul3:'../sfx/death/death_ghoul3.mp3'
+};
+function play(key){
+  if(key==='ghoul'){ghoulDie();return}
+  const a=new Audio(files[key]);
+  a.volume=0.7;
+  a.play();
+}
+
+let _actx=null;
+function actx(){if(!_actx)_actx=new(window.AudioContext||window.webkitAudioContext)();return _actx}
+function playTone(f,d,t,v,fe,a){const c=actx(),o=c.createOscillator(),g=c.createGain(),T=c.currentTime;o.type=t||'sine';o.frequency.setValueAtTime(f,T);if(fe)o.frequency.exponentialRampToValueAtTime(Math.max(1,fe),T+d);g.gain.setValueAtTime(0,T);g.gain.linearRampToValueAtTime(v||.1,T+(a||.005));g.gain.exponentialRampToValueAtTime(.001,T+d);o.connect(g);g.connect(c.destination);o.start(T);o.stop(T+d)}
+function playNoise(d,ff,v,fe,a,ft){const c=actx(),T=c.currentTime,l=~~(c.sampleRate*d),b=c.createBuffer(1,l,c.sampleRate);const D=b.getChannelData(0);for(let i=0;i<l;i++)D[i]=Math.random()*2-1;const s=c.createBufferSource();s.buffer=b;const f=c.createBiquadFilter();f.type=ft||'lowpass';f.frequency.setValueAtTime(ff,T);if(fe)f.frequency.exponentialRampToValueAtTime(Math.max(1,fe),T+d);const g=c.createGain();g.gain.setValueAtTime(0,T);g.gain.linearRampToValueAtTime(v||.1,T+(a||.005));g.gain.exponentialRampToValueAtTime(.001,T+d);s.connect(f);f.connect(g);g.connect(c.destination);s.start(T);s.stop(T+d)}
+function playDist(f,d,t,v,fe,am){const c=actx(),o=c.createOscillator(),ws=c.createWaveShaper(),g=c.createGain(),T=c.currentTime;o.type=t||'sine';o.frequency.setValueAtTime(f,T);if(fe)o.frequency.exponentialRampToValueAtTime(Math.max(1,fe),T+d);const A=am||50,n=44100,cv=new Float32Array(n);for(let i=0;i<n;i++){const x=i*2/n-1;cv[i]=((3+A)*x*20*(Math.PI/180))/(Math.PI+A*Math.abs(x))}ws.curve=cv;g.gain.setValueAtTime(0,T);g.gain.linearRampToValueAtTime(v||.1,T+.005);g.gain.exponentialRampToValueAtTime(.001,T+d);o.connect(ws);ws.connect(g);g.connect(c.destination);o.start(T);o.stop(T+d)}
+function playFM(cf,mf,md,d,v,t,ce){const c=actx(),ca=c.createOscillator(),mo=c.createOscillator(),mg=c.createGain(),g=c.createGain(),T=c.currentTime;ca.type=t||'sine';ca.frequency.setValueAtTime(cf,T);if(ce)ca.frequency.exponentialRampToValueAtTime(Math.max(1,ce),T+d);mo.frequency.setValueAtTime(mf,T);mg.gain.setValueAtTime(md,T);mg.gain.exponentialRampToValueAtTime(1,T+d);g.gain.setValueAtTime(0,T);g.gain.linearRampToValueAtTime(v||.05,T+.005);g.gain.exponentialRampToValueAtTime(.001,T+d);mo.connect(mg);mg.connect(ca.frequency);ca.connect(g);g.connect(c.destination);mo.start(T);ca.start(T);mo.stop(T+d);ca.stop(T+d)}
+function playSub(f,d,v,fe){const c=actx(),o=c.createOscillator(),g=c.createGain(),T=c.currentTime;o.type='sine';o.frequency.setValueAtTime(f,T);if(fe)o.frequency.exponentialRampToValueAtTime(Math.max(1,fe),T+d);g.gain.setValueAtTime(0,T);g.gain.linearRampToValueAtTime(v||.1,T+.003);g.gain.exponentialRampToValueAtTime(.001,T+d);o.connect(g);g.connect(c.destination);o.start(T);o.stop(T+d)}
+
+function ghoulDie(){
+  playSub(35,.3,.15,8);playDist(55,.25,'sawtooth',.08,20,50);playNoise(.2,800,.08,200,.004,'bandpass');playFM(200,80,300,.2,.04,'sawtooth',60);
+  setTimeout(()=>{playNoise(.15,1500,.06,400,.003,'bandpass');playSub(25,.2,.1,6)},80);
+  setTimeout(()=>{playDist(40,.15,'square',.05,12,40);playNoise(.1,600,.04,100,.003)},160);
+}
+</script>
+</body></html>

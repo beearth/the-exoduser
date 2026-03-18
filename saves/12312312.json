@@ -1,24 +1,24 @@
 {
-  "ts": 1773819001495,
+  "ts": 1773822594240,
   "player": {
-    "lv": 382,
-    "exp": 4638,
-    "maxExp": 8266,
-    "sp": 2,
-    "ap": 24,
+    "lv": 398,
+    "exp": 3481,
+    "maxExp": 8930,
+    "sp": 24,
+    "ap": 2,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 5.287000000000001,
-    "stR": 1.6520000000000001,
-    "hp": 1900,
-    "mhp": 1900,
-    "mp": 839,
-    "mmp": 839,
-    "st": 184.80097734500342,
-    "mst": 436,
+    "mpR": 5.321000000000001,
+    "stR": 1.669,
+    "hp": 1901.4350345587743,
+    "mhp": 1925,
+    "mp": 848,
+    "mmp": 848,
+    "st": 445,
+    "mst": 445,
     "speed": 6.4109430000000005,
-    "shield": 757.3869679999901,
-    "mshield": 1463
+    "shield": 155,
+    "mshield": 1471
   },
   "inv": {
     "bag": [
@@ -9456,19 +9456,19 @@
     "lck": 0
   },
   "passives": {
-    "pAtk": 10,
+    "pAtk": 0,
     "pDef": 3,
-    "pCharge": 0,
+    "pCharge": 10,
     "pParry": 0,
     "pMagic": 6,
-    "pBow": 3,
+    "pBow": 5,
     "pShield": 1,
     "pGuard": 0,
-    "pRegen": 3,
-    "pCrit": 5,
+    "pRegen": 7,
+    "pCrit": 7,
     "pDrop": 0,
     "pPierce": 0,
-    "pMRegen": 3
+    "pMRegen": 6
   },
   "qslots": [
     {
@@ -9476,12 +9476,12 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 13
+      "type": "mp",
+      "count": 12
     },
     {
-      "type": "mp",
-      "count": 21
+      "type": "st",
+      "count": 15
     },
     {
       "type": null,
@@ -9490,8 +9490,8 @@
   ],
   "game": {
     "stage": 3,
-    "kills": 85498,
-    "mats": 1376470
+    "kills": 96370,
+    "mats": 1527550
   },
   "bagMax": 300,
   "hellCleared": [],
@@ -9555,8 +9555,8 @@
     "dimBreach": true,
     "dimSlam": true,
     "dimThunder": true,
-    "iceMortar": true,
-    "shieldFuse": true
+    "shieldFuse": true,
+    "iceMortar": true
   },
   "skProf": {
     "maliceSwipe": 15,
@@ -9589,10 +9589,10 @@
     "shieldThrow": 15,
     "magicBlink": 15,
     "giantSlam": 15,
-    "blackStar": 2
+    "blackStar": 3
   },
   "activeChargeSk": "magicBlink",
-  "activeBowSk": "blastShot",
+  "activeBowSk": "needleShot",
   "activeTechSk": "maliceMortar",
   "activeMagicSk": "omniBeam",
   "activeLMBSk": "whirlwind",
