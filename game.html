@@ -10133,7 +10133,8 @@ function _doAiEnhance(){
   const _aiItem=_aiSlot?INV.equipped[_aiSlot]:null;
   if(!_aiItem){addTxt(P.x,P.y-20,'아이템 선택 필요','#cc4444',50);return}
   const target=G._aiTarget||((_aiItem.enh||0)+100);
-  const budget=Math.min(G._aiBudget||1000,G.mats||0);
+  let _expBudget=0;for(let i=(_aiItem.enh||0);i<target;i++){const ec=enhCost(i,_aiItem.rarity||0);_expBudget+=ec.cost/ec.rate}
+  const budget=Math.min(Math.ceil(_expBudget)||1000,G.mats||0);
   if(budget<=0){addTxt(P.x,P.y-20,'악의 부족','#cc4444',50);return}
   const res=aiEnhance(_aiItem,target,budget);
   applyStats();
@@ -10170,7 +10171,6 @@ function _doAiEnhance(){
       addTxt(P.x,P.y-25,'악의 소진...','#cc4444',70);
     }
   }
-  G._aiBudget=null;
   renderForge();
 }
 function salvageVal(it){
@@ -23498,22 +23498,21 @@ function renderForge(){
       const _aiItem=_aiSlot?INV.equipped[_aiSlot]:null;
       const _curEnh=_aiItem?(_aiItem.enh||0):0;
       if(G._aiTarget===undefined||G._aiTarget<=_curEnh)G._aiTarget=_curEnh+100;
-      if(G._aiBudget===undefined)G._aiBudget=1000;
-      const _t=G._aiTarget,_b=Math.min(G._aiBudget||1000,G.mats||0);
+      const _t=G._aiTarget;
+      let _autoExpCost=0;
+      if(_aiItem){for(let i=_curEnh;i<_t;i++){const ec=enhCost(i,_aiItem.rarity||0);_autoExpCost+=ec.cost/ec.rate}}
+      const _b=Math.min(Math.ceil(_autoExpCost)||1000,G.mats||0);
       let _slotBtns='';
       slots.forEach(function(_s){
         const _it=INV.equipped[_s[0]];if(!_it)return;
         const _sel=_aiSlot===_s[0];
         const _ec2=enhColor(_it.enh||0);
-        _slotBtns+='<span onclick="G._aiEnhSlot=\''+_s[0]+'\';G._aiTarget=undefined;G._aiBudget=undefined;renderForge()" style="cursor:pointer;padding:3px 8px;border:1px solid '+(_sel?'#44ccff':'#332211')+';background:'+(_sel?'rgba(68,204,255,.15)':'rgba(0,0,0,.2)')+';border-radius:3px;font-size:.8rem;color:'+(_sel?'#88ddff':'#776655')+'">'+_s[1]+' <span style="color:'+_ec2+'">+'+(_it.enh||0)+'</span></span>';
+        _slotBtns+='<span onclick="G._aiEnhSlot=\''+_s[0]+'\';G._aiTarget=undefined;renderForge()" style="cursor:pointer;padding:3px 8px;border:1px solid '+(_sel?'#44ccff':'#332211')+';background:'+(_sel?'rgba(68,204,255,.15)':'rgba(0,0,0,.2)')+';border-radius:3px;font-size:.8rem;color:'+(_sel?'#88ddff':'#776655')+'">'+_s[1]+' <span style="color:'+_ec2+'">+'+(_it.enh||0)+'</span></span>';
       });
       let _expHtml='';
       if(_aiItem){
-        let expCost=0;
-        for(let i=_curEnh;i<_t;i++){const ec=enhCost(i,_aiItem.rarity||0);expCost+=ec.cost/ec.rate}
-        const pct=expCost>0?Math.min(99.9,(_b/expCost*100)):0;
-        const pc=pct>50?'#44ff88':pct>10?'#ffdd44':'#ff4444';
-        _expHtml='<div style="font-size:.8rem;color:#886644;margin-top:6px">+'+_curEnh+' \u2192 +'+_t+' 기대비용: <span style="color:#ffaa44">~'+Math.round(expCost).toLocaleString()+'악의</span> | 예산 성공률: <span style="color:'+pc+'">'+pct.toFixed(1)+'%</span></div>';
+        const _enoughMats=(G.mats||0)>=Math.ceil(_autoExpCost);
+        _expHtml='<div style="font-size:.8rem;color:#886644;margin-top:6px">+'+_curEnh+' \u2192 +'+_t+' | 보유 악의 '+(_enoughMats?'<span style="color:#44ff88">\u2714 충분</span>':'<span style="color:#ff4444">\u2716 부족 ('+Math.ceil(_autoExpCost-(G.mats||0)).toLocaleString()+' 더 필요)</span>')+'</div>';
       }
       aiSec.innerHTML='<div style="color:#cc8844;font-weight:700;font-size:.95rem;margin-bottom:6px">\u26A1 AI 자동 강화</div>'+
         '<div style="font-size:.8rem;color:#886644;margin-bottom:8px">장비 선택 \u2192 목표치 설정 \u2192 악의 투입 \u2192 자동 시도</div>'+
@@ -23524,9 +23523,9 @@ function renderForge(){
             '<div style="font-size:.78rem;color:#666;margin-bottom:3px">목표 강화치</div>'+
             '<input id="aiTargetInp" type="number" min="'+(_curEnh+1)+'" max="9999" value="'+_t+'" style="width:100%;background:#0a0806;border:1px solid #443322;color:#ffcc88;padding:5px 8px;border-radius:3px;font-size:.9rem;box-sizing:border-box" oninput="G._aiTarget=Math.max('+(_curEnh+1)+',parseInt(this.value)||'+(_curEnh+1)+')" onchange="renderForge()">'+
           '</div>'+
-          '<div style="flex:1;min-width:80px">'+
-            '<div style="font-size:.78rem;color:#666;margin-bottom:3px">투입 악의 (보유: '+(G.mats||0).toLocaleString()+')</div>'+
-            '<input id="aiBudgetInp" type="number" min="1" max="'+(G.mats||0)+'" value="'+_b+'" style="width:100%;background:#0a0806;border:1px solid #443322;color:#ffcc88;padding:5px 8px;border-radius:3px;font-size:.9rem;box-sizing:border-box" oninput="G._aiBudget=Math.max(1,parseInt(this.value)||1)" onchange="renderForge()">'+
+          '<div style="flex:1;min-width:100px">'+
+            '<div style="font-size:.78rem;color:#666;margin-bottom:3px">예상 필요 악의</div>'+
+            '<div style="background:#0a0806;border:1px solid #443322;color:#ffaa44;padding:5px 8px;border-radius:3px;font-size:.9rem">'+Math.ceil(_autoExpCost).toLocaleString()+' <span style="color:#666;font-size:.75rem">/ 보유 '+(G.mats||0).toLocaleString()+'</span></div>'+
           '</div>'+
           '<div><div class="id-btn equip" style="white-space:nowrap" onclick="_doAiEnhance()">강화 시작</div></div>'+
         '</div>'+_expHtml
