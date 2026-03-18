@@ -5,5 +5,8 @@
   "type": "module",
   "devDependencies": {
     "sharp": "^0.34.5"
+  },
+  "dependencies": {
+    "acorn": "^8.16.0"
   }
 }
