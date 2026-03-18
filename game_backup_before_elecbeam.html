@@ -28258,106 +28258,26 @@ function drawP(){
         X.textAlign='left';
       }
     }
-    // ═══ 전기폭풍 렌더: 6원소 추적 번개 — 플라즈마 볼 스타일 ═══
+    // ═══ 전기폭풍 렌더: 6원소 추적 빔 (경로1회 빌드, 글로우+코어 2패스) ═══
     if(_isFused('stormBeam')&&P._sbPtsCnt&&P._sbPts){
-      const _sbGlow=['rgba(100,180,255,.12)','rgba(50,140,255,.12)','rgba(30,200,255,.12)','rgba(80,230,255,.12)','rgba(150,200,255,.12)','rgba(0,170,255,.12)'];
-      const _sbMid=['#55bbff','#3399ff','#22bbff','#55ddff','#99ccff','#0099ff'];
-      const _sbCore=['#cceeff','#aaddff','#88eeff','#bbffff','#eef8ff','#77eeff'];
-      // 시드: 매 프레임 갱신 (빠른 깜빡임)
-      const _elS=(~~(_now/25))&0xFFFF;
-      function _eR(s){s=(s*9301+49297)%233280;return s/233280-.5}
-      // 번쩍임: 랜덤하게 1~2개 빔이 순간 밝아짐
-      const _flashBi=~~(Math.abs(_eR(_elS*3))*6);
-      const _flash2=(_flashBi+3)%6;
+      const _sbElCols=['#88ddff','#44aaff','#22ccff','#66eeff','#aaddff','#00bbff'];
+      // 글로우 패스
+      X.lineWidth=6;X.globalAlpha=.25;
       for(let _bi=0;_bi<6;_bi++){
         const _cnt=P._sbPtsCnt[_bi];if(_cnt<2)continue;
         const _pts=P._sbPts[_bi];
-        const _isFlash=_bi===_flashBi||_bi===_flash2;
-        // ── 메인 줄기: 세그먼트당 4~5 꺾임, 급격한 지터 ──
-        const _zP=[];_zP.push(_pts[0],_pts[1]);
-        for(let _si=0;_si<_cnt-1;_si++){
-          const x0=_pts[_si*2],y0=_pts[_si*2+1];
-          const x1=_pts[(_si+1)*2],y1=_pts[(_si+1)*2+1];
-          const dx=x1-x0,dy=y1-y0;
-          const nl=Math.sqrt(dx*dx+dy*dy)||1;
-          const nnx=-dy/nl,nny=dx/nl;
-          const subs=4+~~(Math.abs(_eR(_elS+_bi*71+_si*13)));
-          for(let k=1;k<=subs;k++){
-            const t=k/(subs+1);
-            // 급격한 꺾임: ±18px + 거리 비례
-            const jit=_eR(_elS+_bi*137+_si*31+k*7)*36;
-            _zP.push(x0+dx*t+nnx*jit, y0+dy*t+nny*jit);
-          }
-          if(_si<_cnt-2)_zP.push(x1,y1);
-        }
-        _zP.push(_pts[(_cnt-1)*2],_pts[(_cnt-1)*2+1]);
-        // 1) 넓은 글로우 (12px, 아주 투명)
-        X.strokeStyle=_sbGlow[_bi];X.lineWidth=_isFlash?16:12;X.globalAlpha=_isFlash?.2:.1;
-        X.beginPath();X.moveTo(_zP[0],_zP[1]);
-        for(let k=2;k<_zP.length;k+=2)X.lineTo(_zP[k],_zP[k+1]);
+        X.beginPath();X.moveTo(_pts[0],_pts[1]);
+        for(let _si=1;_si<_cnt;_si++)X.lineTo(_pts[_si*2],_pts[_si*2+1]);
+        X.strokeStyle=_sbElCols[_bi];X.stroke();
+      }
+      // 코어 패스 (lineWidth/alpha 1회 세팅)
+      X.strokeStyle='#fff';X.lineWidth=2;X.globalAlpha=.7;
+      for(let _bi=0;_bi<6;_bi++){
+        const _cnt=P._sbPtsCnt[_bi];if(_cnt<2)continue;
+        const _pts=P._sbPts[_bi];
+        X.beginPath();X.moveTo(_pts[0],_pts[1]);
+        for(let _si=1;_si<_cnt;_si++)X.lineTo(_pts[_si*2],_pts[_si*2+1]);
         X.stroke();
-        // 2) 중간 글로우 (6px)
-        X.strokeStyle=_sbMid[_bi];X.lineWidth=_isFlash?7:5;X.globalAlpha=_isFlash?.45:.3;
-        X.beginPath();X.moveTo(_zP[0],_zP[1]);
-        for(let k=2;k<_zP.length;k+=2)X.lineTo(_zP[k],_zP[k+1]);
-        X.stroke();
-        // 3) 메인 줄기 (밝은 색 3px)
-        X.strokeStyle=_sbCore[_bi];X.lineWidth=_isFlash?3.5:2.5;X.globalAlpha=_isFlash?.85:.6;
-        X.beginPath();X.moveTo(_zP[0],_zP[1]);
-        for(let k=2;k<_zP.length;k+=2)X.lineTo(_zP[k],_zP[k+1]);
-        X.stroke();
-        // 4) 코어 (흰색 1.5px)
-        X.strokeStyle='#fff';X.lineWidth=_isFlash?2:1.2;X.globalAlpha=_isFlash?.95:.7;
-        X.beginPath();X.moveTo(_zP[0],_zP[1]);
-        for(let k=2;k<_zP.length;k+=2)X.lineTo(_zP[k],_zP[k+1]);
-        X.stroke();
-        // ── 분기 가지: 메인 줄기에서 갈라지는 2차 번개 ──
-        const _brN=4+~~(Math.abs(_eR(_elS+_bi*97))*4); // 4~7개
-        for(let _br=0;_br<_brN;_br++){
-          const _bIdx=(~~(Math.abs(_eR(_elS+_bi*41+_br*19))*(_zP.length/2-2))+1)*2;
-          if(_bIdx>=_zP.length-1)continue;
-          const bx=_zP[_bIdx],by=_zP[_bIdx+1];
-          // 가지 방향: 메인 줄기 수직 ± 랜덤
-          const _prevX=_bIdx>=2?_zP[_bIdx-2]:bx,_prevY=_bIdx>=2?_zP[_bIdx-1]:by;
-          const _segAng=Math.atan2(by-_prevY,bx-_prevX);
-          const _brAng=_segAng+(_eR(_elS+_bi*67+_br*23)>.0?1:-1)*(Math.PI*.3+Math.abs(_eR(_elS+_br*7))*Math.PI*.4);
-          const _brLen=15+Math.abs(_eR(_elS+_bi*89+_br*11))*35;
-          // 가지도 2~3 꺾임
-          const _brSegs=2+~~(Math.abs(_eR(_elS+_bi+_br*3)));
-          const _brPts=[bx,by];
-          for(let _bs=1;_bs<=_brSegs;_bs++){
-            const bt=_bs/_brSegs;
-            const bjit=_eR(_elS+_bi*13+_br*37+_bs*11)*12;
-            _brPts.push(bx+Math.cos(_brAng)*_brLen*bt+Math.cos(_brAng+Math.PI/2)*bjit,
-                        by+Math.sin(_brAng)*_brLen*bt+Math.sin(_brAng+Math.PI/2)*bjit);
-          }
-          // 가지 글로우
-          X.strokeStyle=_sbMid[_bi];X.lineWidth=3;X.globalAlpha=.2;
-          X.beginPath();X.moveTo(_brPts[0],_brPts[1]);
-          for(let k=2;k<_brPts.length;k+=2)X.lineTo(_brPts[k],_brPts[k+1]);
-          X.stroke();
-          // 가지 코어
-          X.strokeStyle=_sbCore[_bi];X.lineWidth=1.5;X.globalAlpha=.5;
-          X.beginPath();X.moveTo(_brPts[0],_brPts[1]);
-          for(let k=2;k<_brPts.length;k+=2)X.lineTo(_brPts[k],_brPts[k+1]);
-          X.stroke();
-          // 가지 끝 흰점 (스파크)
-          X.fillStyle='#fff';X.globalAlpha=.6;
-          const _ex=_brPts[_brPts.length-2],_ey=_brPts[_brPts.length-1];
-          X.beginPath();X.arc(_ex,_ey,1+Math.abs(_eR(_elS+_br))*2,0,Math.PI*2);X.fill();
-        }
-        // ── 타겟 히트 스파크: 적 위치에 작은 전기 폭발 ──
-        if(P._sbTgts&&P._sbTgts[_bi]&&P._sbTgts[_bi].alive){
-          const _te=P._sbTgts[_bi];
-          X.strokeStyle='#fff';X.lineWidth=1;X.globalAlpha=.5;
-          for(let _hi=0;_hi<3;_hi++){
-            const ha=_eR(_elS+_bi*19+_hi*31)*Math.PI*2;
-            const hl=8+Math.abs(_eR(_elS+_bi*23+_hi*17))*12;
-            X.beginPath();X.moveTo(_te.x,_te.y);
-            X.lineTo(_te.x+Math.cos(ha)*hl+_eR(_elS+_hi)*5,_te.y+Math.sin(ha)*hl+_eR(_elS+_hi*3)*5);
-            X.stroke();
-          }
-        }
       }
     }
     X.globalAlpha=1;
