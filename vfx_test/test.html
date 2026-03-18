@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>VFX Test</title>
+<style>
+body{margin:0;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;font-family:monospace;color:#fff}
+canvas{border:1px solid #333;image-rendering:pixelated}
+.controls{margin-top:16px;display:flex;gap:12px;align-items:center}
+label{font-size:14px}
+input[type=range]{width:160px}
+span{min-width:40px;text-align:center}
+</style>
+</head><body>
+<h3>VFX Animation Preview</h3>
+<canvas id="c" width="512" height="512"></canvas>
+<div class="controls">
+  <label>FPS: <input type="range" id="fps" min="2" max="30" value="10"><span id="fpsVal">10</span></label>
+  <label>Scale: <input type="range" id="scale" min="1" max="8" value="4"><span id="scaleVal">4x</span></label>
+  <button id="playBtn">Pause</button>
+  <span id="frameInfo">0/5</span>
+</div>
+<script>
+const ctx=document.getElementById('c').getContext('2d');
+const FRAMES=6;
+const imgs=[];
+let loaded=0,frame=0,playing=true,lastT=0;
+let fps=10,scale=4;
+
+for(let i=0;i<FRAMES;i++){
+  const img=new Image();
+  img.onload=()=>{loaded++;if(loaded===FRAMES)requestAnimationFrame(loop)};
+  img.src='tile_'+i+'.png';
+  imgs.push(img);
+}
+
+const fpsSlider=document.getElementById('fps');
+const scaleSlider=document.getElementById('scale');
+const fpsVal=document.getElementById('fpsVal');
+const scaleVal=document.getElementById('scaleVal');
+const playBtn=document.getElementById('playBtn');
+const frameInfo=document.getElementById('frameInfo');
+
+fpsSlider.oninput=()=>{fps=+fpsSlider.value;fpsVal.textContent=fps};
+scaleSlider.oninput=()=>{scale=+scaleSlider.value;scaleVal.textContent=scale+'x'};
+playBtn.onclick=()=>{playing=!playing;playBtn.textContent=playing?'Pause':'Play'};
+
+function loop(t){
+  requestAnimationFrame(loop);
+  if(!playing&&lastT>0){lastT=t;return}
+  const dt=t-lastT;
+  if(dt<1000/fps)return;
+  lastT=t;
+
+  const cv=ctx.canvas;
+  ctx.clearRect(0,0,cv.width,cv.height);
+  const img=imgs[frame];
+  const w=img.width*scale,h=img.height*scale;
+  const x=(cv.width-w)/2,y=(cv.height-h)/2;
+  ctx.imageSmoothingEnabled=false;
+  ctx.drawImage(img,x,y,w,h);
+
+  // frame indicator
+  ctx.fillStyle='#666';ctx.font='12px monospace';
+  ctx.fillText('Frame '+frame,8,20);
+
+  frameInfo.textContent=frame+'/'+(FRAMES-1);
+  frame=(frame+1)%FRAMES;
+}
+</script>
+</body></html>
