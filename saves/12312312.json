@@ -1,24 +1,24 @@
 {
-  "ts": 1773816290283,
+  "ts": 1773819001495,
   "player": {
-    "lv": 363,
-    "exp": 6968,
-    "maxExp": 7510,
-    "sp": 52,
-    "ap": 20,
+    "lv": 382,
+    "exp": 4638,
+    "maxExp": 8266,
+    "sp": 2,
+    "ap": 24,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 5.251,
-    "stR": 1.6340000000000001,
-    "hp": 684.831347307467,
-    "mhp": 1874,
-    "mp": 1.1460428900000008,
-    "mmp": 830,
-    "st": 327.6990967975144,
-    "mst": 427,
+    "mpR": 5.287000000000001,
+    "stR": 1.6520000000000001,
+    "hp": 1900,
+    "mhp": 1900,
+    "mp": 839,
+    "mmp": 839,
+    "st": 184.80097734500342,
+    "mst": 436,
     "speed": 6.4109430000000005,
-    "shield": 109.88507999999983,
-    "mshield": 1454
+    "shield": 757.3869679999901,
+    "mshield": 1463
   },
   "inv": {
     "bag": [
@@ -9476,12 +9476,12 @@
       "count": 1
     },
     {
-      "type": null,
-      "count": 0
+      "type": "st",
+      "count": 13
     },
     {
-      "type": null,
-      "count": 0
+      "type": "mp",
+      "count": 21
     },
     {
       "type": null,
@@ -9490,8 +9490,8 @@
   ],
   "game": {
     "stage": 3,
-    "kills": 74001,
-    "mats": 1241511
+    "kills": 85498,
+    "mats": 1376470
   },
   "bagMax": 300,
   "hellCleared": [],
@@ -9518,7 +9518,7 @@
     "chainSlam": 10,
     "magicBlink": 10,
     "detonate": 10,
-    "maliceSwipe": 1,
+    "maliceSwipe": 10,
     "elemMissile": 10,
     "fanShot": 10,
     "chargeBoost": 10,
@@ -9528,19 +9528,19 @@
     "boneWall": 10,
     "bladeDash": 1,
     "ghostWalk": 10,
-    "blastShot": 10,
+    "blastShot": 0,
     "grenadeShot": 0,
     "bladeShot": 0,
-    "needleShot": 0,
+    "needleShot": 10,
     "holyBlast": 0,
-    "iceOrb": 1,
+    "iceOrb": 10,
     "holyPrison": 10,
     "giantSlam": 10,
-    "maliceMortar": 1,
+    "maliceMortar": 10,
     "lavaSummon": 0,
     "maliceHunt": 10,
     "guardian": 10,
-    "shieldThrow": 0,
+    "shieldThrow": 10,
     "blackStar": 1
   },
   "fused": {
@@ -9555,7 +9555,8 @@
     "dimBreach": true,
     "dimSlam": true,
     "dimThunder": true,
-    "iceMortar": true
+    "iceMortar": true,
+    "shieldFuse": true
   },
   "skProf": {
     "maliceSwipe": 15,
@@ -9588,7 +9589,7 @@
     "shieldThrow": 15,
     "magicBlink": 15,
     "giantSlam": 15,
-    "blackStar": 1
+    "blackStar": 2
   },
   "activeChargeSk": "magicBlink",
   "activeBowSk": "blastShot",
@@ -9600,7 +9601,7 @@
   "activeCtSk": "ghostWalk",
   "skillSlots": [
     "maliceStorm",
-    null,
+    "needleShot",
     "maliceHunt",
     null,
     "maliceMortar",
