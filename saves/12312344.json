@@ -1,8 +1,8 @@
 {
-  "ts": 1773845489997,
+  "ts": 1773873002473,
   "player": {
     "lv": 571,
-    "exp": 10259,
+    "exp": 14499,
     "maxExp": 17744,
     "sp": 125,
     "ap": 14,
@@ -10,14 +10,14 @@
     "baseDef": 14,
     "mpR": 6.275,
     "stR": 1.944,
-    "hp": 2583,
+    "hp": 2547.6600595000264,
     "mhp": 2583,
-    "mp": 1010,
+    "mp": 849.0869628749927,
     "mmp": 1010,
-    "st": 615.6524600000007,
+    "st": 426.03873716000675,
     "mst": 626,
     "speed": 7.45476,
-    "shield": 1778,
+    "shield": 1730,
     "mshield": 1778
   },
   "inv": {
@@ -3724,6 +3724,49 @@
         "_gx": 4,
         "_gy": 22,
         "_pickT": 1773845318304
+      },
+      {
+        "id": 1773872953289.206,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "강철 대방패",
+        "emoji": "🛡️",
+        "bonusRange": 3,
+        "blockRate": 90,
+        "shieldWt": 10,
+        "atk": 16,
+        "def": 21,
+        "stagger": 68,
+        "bInt": 29,
+        "bStr": 30,
+        "bDex": 38,
+        "affixes": [
+          {
+            "id": "counterHit",
+            "tier": 1,
+            "value": 0.3435
+          },
+          {
+            "id": "reflect",
+            "tier": 1,
+            "value": 0.1466
+          }
+        ],
+        "_implicitStat": "_iBlockPct",
+        "_implicitVal": 7.06,
+        "_implicitKo": "방어율 +X%",
+        "legendarySpecial": {
+          "ko": "패리 성공 시 반격 데미지 ×2",
+          "stat": "_lShieldParry",
+          "val": 2
+        },
+        "reqLv": 200,
+        "itemLv": 300,
+        "_gx": 4,
+        "_gy": 26,
+        "_pickT": 1773872953306
       }
     ],
     "equipped": {
@@ -4407,7 +4450,7 @@
     },
     {
       "type": "st",
-      "count": 6
+      "count": 27
     },
     {
       "type": null,
@@ -4420,8 +4463,8 @@
   ],
   "game": {
     "stage": 11,
-    "kills": 131776,
-    "mats": 5101769
+    "kills": 131870,
+    "mats": 5116785
   },
   "bagMax": 300,
   "hellCleared": [
