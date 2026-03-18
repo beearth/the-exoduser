@@ -166,3 +166,6 @@
 | `index.html` | 로비/시네마틱/캐릭터 선택 |
 | `Electron/main.js` | Electron 메인 프로세스 |
 | `Electron/preload.js` | Electron preload (IPC 브릿지) |
+
+## 출력 설정
+- 작업 표시줄 자동 숨기기: 항상 ON

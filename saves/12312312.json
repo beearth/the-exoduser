@@ -1,24 +1,24 @@
 {
-  "ts": 1773822848473,
+  "ts": 1773876465456,
   "player": {
-    "lv": 399,
-    "exp": 8448,
-    "maxExp": 8972,
-    "sp": 26,
-    "ap": 2,
+    "lv": 401,
+    "exp": 7150,
+    "maxExp": 9057,
+    "sp": 160,
+    "ap": 4,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 5.321000000000001,
-    "stR": 1.669,
-    "hp": 1925,
-    "mhp": 1925,
-    "mp": 848,
-    "mmp": 848,
-    "st": 257.84290915375124,
-    "mst": 445,
+    "mpR": 5.327,
+    "stR": 1.6720000000000002,
+    "hp": 1930,
+    "mhp": 1930,
+    "mp": 849,
+    "mmp": 849,
+    "st": 434.7832343999995,
+    "mst": 446,
     "speed": 6.4109430000000005,
-    "shield": 1360.1450920000939,
-    "mshield": 1471
+    "shield": 1473,
+    "mshield": 1473
   },
   "inv": {
     "bag": [
@@ -9476,12 +9476,12 @@
       "count": 1
     },
     {
-      "type": "mp",
-      "count": 401
+      "type": "st",
+      "count": 17
     },
     {
-      "type": "st",
-      "count": 351
+      "type": "mp",
+      "count": 19
     },
     {
       "type": null,
@@ -9490,8 +9490,8 @@
   ],
   "game": {
     "stage": 3,
-    "kills": 97425,
-    "mats": 1538773
+    "kills": 99163,
+    "mats": 1555463
   },
   "bagMax": 300,
   "hellCleared": [],
@@ -9513,18 +9513,18 @@
     "spikeTrap": 5,
     "holyDome": 10,
     "iceStorm": 0,
-    "whirlwind": 10,
+    "whirlwind": 1,
     "chainAssault": 10,
     "chainSlam": 10,
     "magicBlink": 10,
-    "detonate": 10,
+    "detonate": 1,
     "maliceSwipe": 10,
-    "elemMissile": 10,
-    "fanShot": 10,
+    "elemMissile": 1,
+    "fanShot": 1,
     "chargeBoost": 10,
     "maliceStorm": 10,
     "plagueBurst": 10,
-    "omniBeam": 10,
+    "omniBeam": 1,
     "boneWall": 10,
     "bladeDash": 1,
     "ghostWalk": 10,
@@ -9535,13 +9535,15 @@
     "holyBlast": 0,
     "iceOrb": 10,
     "holyPrison": 10,
-    "giantSlam": 10,
+    "giantSlam": 1,
     "maliceMortar": 10,
     "lavaSummon": 0,
     "maliceHunt": 10,
     "guardian": 10,
     "shieldThrow": 10,
-    "blackStar": 1
+    "blackStar": 1,
+    "peaceShield": 3,
+    "hellRay": 1
   },
   "fused": {
     "boneStorm": true,
@@ -9556,7 +9558,8 @@
     "dimSlam": true,
     "dimThunder": true,
     "shieldFuse": true,
-    "iceMortar": true
+    "iceMortar": true,
+    "stormBeam": true
   },
   "skProf": {
     "maliceSwipe": 15,
@@ -9589,12 +9592,14 @@
     "shieldThrow": 15,
     "magicBlink": 15,
     "giantSlam": 15,
-    "blackStar": 3
+    "blackStar": 3,
+    "peaceShield": 15,
+    "hellRay": 1
   },
   "activeChargeSk": "magicBlink",
   "activeBowSk": "needleShot",
   "activeTechSk": "maliceMortar",
-  "activeMagicSk": "omniBeam",
+  "activeMagicSk": "hellRay",
   "activeLMBSk": "whirlwind",
   "activeRMBSk": "shieldBlock",
   "activeQSk": "parry",
