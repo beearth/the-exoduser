@@ -2847,6 +2847,9 @@ const _sampleFiles={
   chain_fly:'sfx/chain/chain_fly.mp3',
   chain_land2:'sfx/chain/chain_land2.mp3',
   chain_stick:'sfx/chain/chain_stick.wav',
+  // storm/ — 폭풍
+  electric_storm:'sfx/storm/electric_storm.mp3',
+  electric_storm2:'sfx/storm/electric_storm2.mp3',
   // ice/ — 빙결
   ice_storm:'sfx/ice/ice_storm.mp3',
   // voice/ — 보이스
@@ -13541,7 +13544,7 @@ function update(){
           addTxt(e.x,e.y-20,'💫 피니셔!','#ff4466',40);
         }
       }
-      SFX.slash();G.hitStop=~~(_HS.finisher*OPT.hitStop/100);G.shake=12*OPT.shake/100;G.slowMo=15;
+      SFX.slash();G.hitStop=~~(_HS.finisher*OPT.hitStop/100);G.shake=12*OPT.shake/100;if(G.slowMo<=0)G.slowMo=15;
       bigImpact(P.x,P.y,wp().el||0,P._atkAng||0);
       // Spin slash ring particles
       for(let j=0;j<20;j++){const a=Math.PI*2*j/20;poolPart(P.x+Math.cos(a)*sRange*.7,P.y+Math.sin(a)*sRange*.7,Math.cos(a)*5,Math.sin(a)*5,ELP[wp().el||0],3+Math.random()*3,12)}
@@ -14119,7 +14122,7 @@ function update(){
         const _rbR=p.bombR||80;const _rbD=p.bombAtk||p.dmg*2;
         const _isBlue=p.friendly&&p.redBean; // 반사된 빨콩
         addTxt(p.x,p.y-20,_isBlue?'💎유도 폭발!':'💥반사 폭발!',_isBlue?'#00e5ff':'#ff4400',60);SFX.detonate();
-        G.shake=(_isBlue?22:14)*OPT.shake/100;G.slowMo=_isBlue?30:20;G.hitStop=~~((_isBlue?_HS.projBombBlue:_HS.projBomb)*OPT.hitStop/100);
+        G.shake=(_isBlue?22:14)*OPT.shake/100;if(G.slowMo<=0)G.slowMo=_isBlue?30:20;G.hitStop=~~((_isBlue?_HS.projBombBlue:_HS.projBomb)*OPT.hitStop/100);
         const _rbNe=shQuery(p.x,p.y,_rbR);
         for(let _rbi=0;_rbi<_rbNe.length;_rbi++){const re=_rbNe[_rbi];if(!re.alive)continue;
           const rd=dst(p.x,p.y,re.x,re.y);if(rd>_rbR)continue;
@@ -14137,7 +14140,7 @@ function update(){
           hurtE(be,~~(_blD*(.5+bf*.5)),ba,false,{kbMult:2},p.el);
           be.kb.x+=Math.cos(ba)*18*bf;be.kb.y+=Math.sin(ba)*18*bf}
         _addBoom(p.x,p.y,_blR,32,'redbean');SFX.detonate();
-        G.shake=18*OPT.shake/100;G.slowMo=25;
+        G.shake=18*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25;
         addParts(p.x,p.y,'#00ccff',20);addTxt(p.x,p.y-20,'💥반사 폭발!','#00e5ff',50)}
       _pHit=true;break}}}
     if(!_pHit)projs[pw++]=p;else _recycleProj(p);
@@ -15326,7 +15329,7 @@ function update(){
           if(dst(bx,by,e.x,e.y)<br+e.r){const a=Math.atan2(e.y-by,e.x-bx);
             hurtE(e,mmDmg,a,false,{},EL.D);e.kb.x+=Math.cos(a)*20;e.kb.y+=Math.sin(a)*20;
             e.stunned=Math.max(e.stunned,180);}}
-        SFX.detonate();shake(45);G.hitStop=~~(_HS.maliceMortar*OPT.hitStop/100);G.slowMo=20;
+        SFX.detonate();shake(45);G.hitStop=~~(_HS.maliceMortar*OPT.hitStop/100);if(G.slowMo<=0)G.slowMo=20;
         _addBoom(bx,by,br*2,45,'dark');
         spawnMmExp(bx,by,3.0);
         addTxt(bx,by-20,'☄️💥 대폭발!','#cc88ff',70);
@@ -15473,7 +15476,8 @@ function update(){
         }G._fireZones[_fzW++]=fz;continue} // 돔/감옥은 DOT 없음
       // ═══ 아이스스톰: 빙결 저항 -50% + 빙결 게이지 급속 축적 ═══
       if(fz.type==='iceStorm'){
-        if(~~(fz.t)%12<~~(sp)+1){
+        fz._iceTick=(fz._iceTick||0)+sp;
+        if(fz._iceTick>=6){fz._iceTick=0;
           const _isNe=shQuery(fz.x,fz.y,fz.r);
           const _isLv=fz.lv||1;
           for(let _isi=0;_isi<_isNe.length;_isi++){
@@ -18274,7 +18278,7 @@ function updateE(e,sp){
       const _rlDmg=~~(e.atk*3);
       const _rlCnt=36; // 360도/10도 = 36줄기
       const _rlOff=e._rlWave*Math.PI/36; // 2차: 5도 틀어서
-      SFX.beamStart();shake(6);G.hitStop=~~(8*OPT.hitStop/100);G.slowMo=15;
+      SFX.beamStart();shake(6);G.hitStop=~~(8*OPT.hitStop/100);if(G.slowMo<=0)G.slowMo=15;
       // 각 레이저 라인별 히트 판정
       for(let ri=0;ri<_rlCnt;ri++){
         const _rA=Math.PI*2*ri/_rlCnt+_rlOff;
@@ -18655,7 +18659,7 @@ function updateE(e,sp){
           hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
           P.s='pStun';P.st2=180; // 3초 스턴
           SFX.groggy();addTxt(P.x,P.y-22,'💫 기절! 3초','#ffaa00',60);
-          G.hitStop=~~(8*OPT.hitStop/100);G.slowMo=15;
+          G.hitStop=~~(8*OPT.hitStop/100);if(G.slowMo<=0)G.slowMo=15;
           for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}
         }
       }
@@ -20142,7 +20146,7 @@ function _detonateBlast(label,elSrc){
   }else{
     SFX.slash();SFX.detonate();
   }
-  if(!(G._noHitStopT>0)){G.shake=(14+_chgBars*4)*OPT.shake/100;G.slowMo=Math.max(G.slowMo,25+_chgBars*5);G.hitStop=Math.max(G.hitStop,~~((10+_chgBars*3)*OPT.hitStop/100))}  addTxt(P.x,P.y-30,(label||'기폭팔')+(_chgBars>=2?' ×'+_chgBars:'')+' '+boom,'#ff2200',70);
+  if(!(G._noHitStopT>0)){G.shake=(14+_chgBars*4)*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25+_chgBars*5;G.hitStop=Math.max(G.hitStop,~~((10+_chgBars*3)*OPT.hitStop/100))}  addTxt(P.x,P.y-30,(label||'기폭팔')+(_chgBars>=2?' ×'+_chgBars:'')+' '+boom,'#ff2200',70);
   _addBoom(P.x,P.y,boomR,30+_chgBars*5,'fire');for(let _bi=0;_bi<20;_bi++){const _ba=Math.PI*2*_bi/20;poolPart(P.x,P.y,Math.cos(_ba)*(4+Math.random()*6),Math.sin(_ba)*(4+Math.random()*6),'#ff4422',3+Math.random()*3,12+Math.random()*6)}
   const _detEl=elSrc||0;
   const _shDet=shQuery(P.x,P.y,boomR);
@@ -20329,7 +20333,7 @@ function hurtP(dmg,opts){
     P.iframes=0;if(P.s!=='charge'&&P.s!=='sBlock'&&P.s!=='pStun'&&P.s!=='whirlwind'){
       // ═══ 포이즈 감소 → 기절 (D4식) ═══
       const _pd=Math.max(5,~~(a*0.3));P.poise=(P.poise||P.maxPoise)-_pd;P.poiseR=0;
-      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=120;SFX.groggy();addTxt(P.x,P.y-22,'💫 기절!','#ffaa00',60);G.hitStop=~~(_HS.pStun*OPT.hitStop/100);G.slowMo=15;for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=120;SFX.groggy();addTxt(P.x,P.y-22,'💫 기절!','#ffaa00',60);G.hitStop=~~(_HS.pStun*OPT.hitStop/100);if(G.slowMo<=0)G.slowMo=15;for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
       else{P.s='stagger';P.st2=6}
     }
     // 회전 중: 경직/기절 면역, 포이즈 감소 절반만
@@ -21060,9 +21064,9 @@ function fireMaliceMortar(){
   G._mmBomb={sx:P.x,sy:P.y,tx:tx,ty:ty,x:P.x,y:P.y,t:0,maxT:40,r:_mmR,phase:'throw',
     vortex:true,iceFuse:!!_iceFuse,slv:_mmSlv};
   if(_iceFuse){
-    SFX.magic(EL.I);addTxt(P.x,P.y-30,'❄🌪️ 얼음소용돌이!','#66ccff',50);
+    SFX.magic(EL.I);playSample(Math.random()>.5?'electric_storm':'electric_storm2',.5,_r(1.2,.1));addTxt(P.x,P.y-30,'❄🌪️ 얼음소용돌이!','#66ccff',50);
   }else{
-    SFX.magic(EL.D);addTxt(P.x,P.y-30,'🌪️ 폭풍소환!','#cc88ff',50);
+    SFX.magic(EL.D);playSample(Math.random()>.5?'electric_storm':'electric_storm2',.6,_r(1,.1));addTxt(P.x,P.y-30,'🌪️ 폭풍소환!','#cc88ff',50);
   }
   if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))};
   shake(5);
@@ -21487,7 +21491,7 @@ function fireHolyBlast(){
   _addBoom(cx,cy,blastR*.6,50,'lightning');
   SFX.detonate();
   shake(40);
-  G.slowMo=30;G.hitStop=~~(_HS.holyBurst*OPT.hitStop/100);
+  if(G.slowMo<=0)G.slowMo=30;G.hitStop=~~(_HS.holyBurst*OPT.hitStop/100);
   P.iframes=Math.max(P.iframes,60);
   addTxt(cx,cy-40,'✟ 신성폭발!','#ffd700',80);
 }
@@ -21515,7 +21519,7 @@ function fireBlackStar(){
     poolPart(cx+Math.cos(a)*30,cy+Math.sin(a)*30,Math.cos(a)*spd,Math.sin(a)*spd,k%3===0?'#220033':k%3===1?'#aa00ff':'#660099',4+Math.random()*6,25+Math.random()*20);
   }
   SFX.detonate();shake(45);
-  G.slowMo=30;G.hitStop=~~(_HS.blackStar*OPT.hitStop/100);
+  if(G.slowMo<=0)G.slowMo=30;G.hitStop=~~(_HS.blackStar*OPT.hitStop/100);
   P.iframes=Math.max(P.iframes,60);
   addTxt(cx,cy-40,'⛧ 블랙!','#aa00ff',80);
 }
@@ -21544,7 +21548,7 @@ function fireLavaSummon(){
     poolPart(cx+Math.cos(a)*30,cy+Math.sin(a)*30,Math.cos(a)*spd,Math.sin(a)*spd,k%3===0?'#ff2200':k%3===1?'#ff6600':'#ffaa00',4+Math.random()*6,25+Math.random()*20);
   }
   SFX.detonate();shake(35);
-  G.slowMo=20;P.iframes=Math.max(P.iframes,60);
+  if(G.slowMo<=0)G.slowMo=20;P.iframes=Math.max(P.iframes,60);
   addTxt(cx,cy-40,'🌋 용암소환!','#ff4400',80);
   const _lvOy=cy-400; // 기둥 중심 위로 올림
   playVFXAng('lava_erupt',cx,_lvOy,2.6,3,0);
