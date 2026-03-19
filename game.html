@@ -13205,8 +13205,9 @@ function update(){
     else if(isHeld('beam')&&P.mp>=mpCost('magic')){
       const _amsk=P.activeMagicSk||'beam';
       const _isSix=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
-      if((_isSix||_amsk==='omniBeam')&&_amsk!=='elemMissile'){if(_isSix&&(P._beamCd||0)>0){showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}}
-      else if(_amsk==='blueShot'&&P.skills.blueShot>=1){if((P._blueCd||0)>0){showPH('쿨 '+~~((P._blueCd||0)/60)+'초','#00aaff')}else{P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}}
+      if(_amsk==='blueShot'&&P.skills.blueShot>=1){if((P._blueCd||0)>0){showPH('쿨 '+~~((P._blueCd||0)/60)+'초','#00aaff')}else{P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}}
+      else if(_amsk==='elemMissile'&&P.skills.elemMissile>=1){P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
+      else if((_isSix||_amsk==='omniBeam')&&_amsk!=='elemMissile'){if(_isSix&&(P._beamCd||0)>0){showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}}
       else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
     }
     // Forge — 게임루프 상단에서 처리 (paused 상태에서도 동작)
@@ -13518,7 +13519,8 @@ function update(){
       else if(isHeld('beam')&&P.mp>=mpCost('magic')){
         const _amsk2=P.activeMagicSk||'beam';
         const _isSix2=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
-        if((_isSix2||_amsk2==='omniBeam')&&_amsk2!=='elemMissile'){if(_isSix2&&(P._beamCd||0)>0){showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}}
+        if(_amsk2==='blueShot'&&P.skills.blueShot>=1){if((P._blueCd||0)>0){showPH('쿨 '+~~((P._blueCd||0)/60)+'초','#00aaff')}else{P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}}
+        else if((_isSix2||_amsk2==='omniBeam')&&_amsk2!=='elemMissile'){if(_isSix2&&(P._beamCd||0)>0){showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}}
         else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
       }
       else if(P.st2<=0){
@@ -13579,8 +13581,8 @@ function update(){
       if(isHeld('beam')&&P.mp>=mpCost('magic')){
         const _amsk3=P.activeMagicSk||'beam';
         const _isSix3=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
-        if((_isSix3||_amsk3==='omniBeam')&&_amsk3!=='elemMissile'){if(_isSix3&&(P._beamCd||0)>0){showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}}
-        else if(_amsk3==='blueShot'&&P.skills.blueShot>=1){if((P._blueCd||0)>0){showPH('쿨 '+~~((P._blueCd||0)/60)+'초','#00aaff')}else{P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}}
+        if(_amsk3==='blueShot'&&P.skills.blueShot>=1){if((P._blueCd||0)>0){showPH('쿨 '+~~((P._blueCd||0)/60)+'초','#00aaff')}else{P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}}
+        else if((_isSix3||_amsk3==='omniBeam')&&_amsk3!=='elemMissile'){if(_isSix3&&(P._beamCd||0)>0){showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}}
         else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
       }
       else P.s='idle';
@@ -14978,7 +14980,7 @@ function update(){
   let _qsAnyCD=false;
   for(let i=0;i<4;i++){if(qsCooldown[i]>0){qsCooldown[i]-=sp;_qsAnyCD=true;if(qsCooldown[i]<=0){qsCooldown[i]=0;updateQS()}}}
   const _msMax2=(P.skills.maliceStorm>=10)?3:2,_isMax2=(P.skills.iceStorm>=10)?3:2,_bwMax2=(P.skills.boneWall>=10)?3:2;
-  const _anySkCd=((P._mhCd>0)||(P._msStk!=null&&P._msStk<_msMax2)||(P._isStk!=null&&P._isStk<_isMax2)||(P._bwStk!=null&&P._bwStk<_bwMax2)||(P.chargeStocks<P.maxChargeStocks&&P.chargeCd>0)||P._mmCd>0||P._hbCd>0||P._ebCd>0||P._bltCd>0||P._bsCd>0||P._gsCd>0||P._gwCd>0||P._pbCd>0||P._ioCd>0||P._stCd>0||P._lvCd>0||P._bdCd>0||P._gslCd>0||P._hdCd>0);
+  const _anySkCd=((P._mhCd>0)||(P._msStk!=null&&P._msStk<_msMax2)||(P._isStk!=null&&P._isStk<_isMax2)||(P._bwStk!=null&&P._bwStk<_bwMax2)||(P.chargeStocks<P.maxChargeStocks&&P.chargeCd>0)||P._mmCd>0||P._hbCd>0||P._ebCd>0||P._bltCd>0||P._bsCd>0||P._blueCd>0||P._gsCd>0||P._gwCd>0||P._pbCd>0||P._ioCd>0||P._stCd>0||P._lvCd>0||P._bdCd>0||P._gslCd>0||P._hdCd>0);
   if((_qsAnyCD||_anySkCd)&&~~(_now)%3===0)updateQS(); // 쿨다운 중 실시간 표시 갱신
   if(~~(_now)%6===0)_updateActionKeys(); // E/SH/F 슬롯 상태 갱신
   // Auto-potion: qsAuto 켜진 슬롯 자동 사용 (HP ≤ 설정% 이하 시 섭취)
@@ -15030,6 +15032,8 @@ function update(){
   let _hdCdBonus=0;
   if(G._fireZones){for(let _hi=0;_hi<G._fireZones.length;_hi++){const _h=G._fireZones[_hi];if(_h.type==='holyDome'&&dst(P.x,P.y,_h.x,_h.y)<_h.r){_hdCdBonus=sp;break}}}
   // ═══ 파란탄 — 쿨다운 ═══
+  if(P._blueCd>0)P._blueCd-=sp+_hdCdBonus;
+  // ═══ 흑성 — 쿨다운 ═══
   if(P._bsCd>0)P._bsCd-=sp+_hdCdBonus;
   // ═══ 칼날살 — 쿨다운 ═══
   if(P._bltCd>0)P._bltCd-=sp+_hdCdBonus;
@@ -15217,9 +15221,9 @@ function update(){
       const _hrLv=P.skills.hellRay||1;
       const _hrR=500+(_hrLv-1)*50; // 1렙500 +50/렙, 10렙1000
       const _hrElec=_isFused('elecRepent'); // 참회 귀환 합체
-      const _hrDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*5*(1+(_hrLv-1)*0.15)*(_hrElec?1.2:1));
+      const _hrDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*10*(1+(_hrLv-1)*0.15)*(_hrElec?1.2:1));
       P.mp-=100;P._hrStk--;const _hrMx3=_hrElec?(_hrLv>=10?3:_hrLv>=5?2:1):1;if(P._hrStk<_hrMx3&&!P._hrRech)P._hrRech=600;
-      const _hrDur=300+(_hrLv-1)*30; // 5초 + 0.5초/렙 (10렙=9.5초)
+      const _hrDur=600; // 10초 고정
       if(!G._fireZones)G._fireZones=[];
       G._fireZones.push({x:_hrwx,y:_hrwy,r:_hrR,t:0,maxT:_hrDur,
         dmg:_hrDmg,el:_hrElec?EL.L:5,lv:_hrLv,type:'hellRay',ang:0,elec:_hrElec});
@@ -15287,7 +15291,7 @@ function update(){
             G.mats=Math.max(0,G.mats-12);
             // elecRepent: 참회(hellRay)도 같은 포인트에 동시 설치
             if(_erF&&P.skills.hellRay>=1){
-              const _hrDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*5*(1+(_hrLv-1)*0.15)*1.2);
+              const _hrDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*10*(1+(_hrLv-1)*0.15)*1.2);
               G._fireZones.push({x:_mswx,y:_mswy,r:500+(_hrLv-1)*50,t:0,maxT:_syncDur,
                 dmg:_hrDmg,el:EL.L,lv:_hrLv,type:'hellRay',ang:0,elec:true});
               SFX.magic(EL.L);playSample('repentance',.7,_r(1,.08));
@@ -16042,7 +16046,15 @@ function update(){
               const _perp=Math.abs(-_dx*_s+_dy*_c);
               if(_perp>30+e.r)continue;
               e._hrHitT=~~(fz.t); // 같은 틱에 중복 히트 방지
-              hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),false,{dot:true},fz.el);
+              // 참회의 증표: 히트마다 신성저항 -50 누적, 최대 5중첩(-250), 30초 지속(히트시 리셋)
+              if(!e._hrMark)e._hrMark=0;
+              const _hrOld=e._hrMark;
+              if(e._hrMark<250)e._hrMark+=50;
+              e._hrMarkT=1800; // 30초 타이머 리셋
+              const _hrMarkMul=1+e._hrMark/100; // 50→1.5x, 100→2x, ... 250→3.5x
+              const _hrAmpDmg=~~(fz.dmg*_hrMarkMul);
+              hurtE(e,_hrAmpDmg,Math.atan2(e.y-fz.y,e.x-fz.x),false,{dot:true},fz.el);
+              if(_hrOld<e._hrMark){const _stk=e._hrMark/50;addTxt(e.x,e.y-30,'✝ 증표 '+_stk+'/5 (-'+e._hrMark+')','#ffd700',30)}
             }
           }
         }
@@ -16923,6 +16935,8 @@ function updateE(e,sp){
   if(e.burnT>0){ e.burnT-=sp; if(Math.floor(e.burnT/60)<Math.floor((e.burnT+sp)/60)){
     const buDmg=Math.max(1,~~(e.mhp*.01)); hurtE(e,buDmg,undefined,true,{dot:true}); addTxt(e.x,e.y-18,'🔥-'+buDmg,'#ff6600',20); addParts(e.x,e.y,'#ff4400',2);
   } if(e.burnT<=0)e.burnT=0; }
+  // ── 참회의 증표 타이머 ──
+  if(e._hrMarkT>0){e._hrMarkT-=sp;if(e._hrMarkT<=0){e._hrMark=0;e._hrMarkT=0}}
   // ── 냉기 어픽스 DoT ──
   if(e._iceDotT>0){
     e._iceDotT-=sp;
@@ -20784,7 +20798,7 @@ function hurtP(dmg,opts){
       return;
     }
     if(!(opts&&opts.dot))playSample('player_hit'+(1+~~(Math.random()*4)),.6,_r(1,.15));
-    const _psBlkRate=Math.min(.80,pGuardAbsorb()+(sh().blockRate||0)*.002);
+    const _psBlkRate=Math.min(.90,pGuardAbsorb()+(sh().blockRate||0)*.002);
     dmg=Math.max(1,~~(dmg*(1-_psBlkRate)));
     if(PASSIVES.pGuard>0){P.hp=Math.min(P.mhp,P.hp+P.mhp*pGuardRegen())}
     addTxt(P.x,P.y-18,'🕊️ 평화보호 '+~~(_psBlkRate*100)+'%','#ff88bb',22);
