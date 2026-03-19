@@ -1,21 +1,21 @@
 {
-  "ts": 1773876598275,
+  "ts": 1773880186207,
   "player": {
-    "lv": 26,
-    "exp": 66,
-    "maxExp": 113,
-    "sp": 32,
-    "ap": 4,
+    "lv": 30,
+    "exp": 101,
+    "maxExp": 135,
+    "sp": 40,
+    "ap": 6,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.185,
-    "stR": 0.159,
-    "hp": 163,
-    "mhp": 163,
-    "mp": 113,
-    "mmp": 113,
-    "st": 94.24218750000077,
-    "mst": 123,
+    "mpR": 0.193,
+    "stR": 0.163,
+    "hp": 168,
+    "mhp": 168,
+    "mp": 115,
+    "mmp": 115,
+    "st": 125,
+    "mst": 125,
     "speed": 2.68086,
     "shield": 0,
     "mshield": 0
@@ -311,6 +311,61 @@
         "legendarySpecial": null,
         "reqLv": 0,
         "itemLv": 0
+      },
+      {
+        "id": 1773876896868.794,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "흑요석 도끼",
+        "emoji": "🪓",
+        "wtype": "axe",
+        "atk": 134,
+        "spd": 1.43,
+        "wStCost": 9,
+        "wArcW": 0.85,
+        "wRange": 43,
+        "wStagger": 30,
+        "bonusRange": 3,
+        "bStr": 41,
+        "bDex": 36,
+        "bInt": 42,
+        "affixes": [
+          {
+            "id": "killChain",
+            "tier": 0,
+            "value": 0.2713
+          },
+          {
+            "id": "poisonDot",
+            "tier": 1,
+            "value": 14.5658
+          },
+          {
+            "id": "antiRevive",
+            "tier": 0,
+            "value": 0.1268
+          },
+          {
+            "id": "killSlayer",
+            "tier": 1,
+            "value": 0.3641
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 5.59,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": {
+          "ko": "출혈 대상 크리 시 잔여 DoT×300% 즉시 폭발",
+          "stat": "_lAxeBleed",
+          "val": 3
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 0,
+        "_pickT": 1773876896884
       }
     ],
     "equipped": {
@@ -609,8 +664,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 120,
-    "mats": 1076
+    "kills": 161,
+    "mats": 1377
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -633,8 +688,8 @@
   "fused": {},
   "skProf": {
     "maliceSwipe": 15,
-    "chargeBoost": 1,
-    "holyDome": 3
+    "chargeBoost": 5,
+    "holyDome": 5
   },
   "activeChargeSk": "charge",
   "activeBowSk": "normal",
