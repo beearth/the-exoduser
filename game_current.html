@@ -2822,9 +2822,9 @@ const _sampleFiles={
   sword_back2:'sfx/sword_parry/sword_back2.mp3',
   sword_back3:'sfx/sword_parry/sword_back3.mp3',
   // hit/ — 타격
-  heavy_hit:'sfx/skillsound/slam/heavy_hit.mp3',
+  heavy_hit:'sfx/hit/heavy_hit.mp3',
   flat_hit:'sfx/hit/flat_hit.mp3',
-  bow_hit:'sfx/skillsound/bow/bow_hit.mp3',
+  bow_hit:'sfx/weapon/bow_hit.mp3',
   fire_hit:'sfx/hit/fire_hit.mp3',
   // q_parry/ — 패링
   q_end:'sfx/q_parry/q_end.mp3',
@@ -2840,21 +2840,21 @@ const _sampleFiles={
   fire_death2:'sfx/beam/laser_death2.mp3',
   fire_death3:'sfx/beam/laser_death3.mp3',
   // chain/ — 사슬기동
-  chain_land:'sfx/skillsound/chain/chain_land.mp3',
-  chain_dash:'sfx/skillsound/chain/chain_dash.mp3',
-  chain_dash2:'sfx/skillsound/chain/chain_dash2.mp3',
-  chain_dash3:'sfx/skillsound/chain/chain_dash3.mp3',
-  chain_dash4:'sfx/skillsound/chain/chain_dash4.mp3',
+  chain_land:'sfx/chain/chain_land.mp3',
+  chain_dash:'sfx/chain/chain_dash.mp3',
+  chain_dash2:'sfx/chain/chain_dash2.mp3',
+  chain_dash3:'sfx/chain/chain_dash3.mp3',
+  chain_dash4:'sfx/chain/chain_dash4.mp3',
   chain_throw:'sfx/chain/chain_throw.mp3',
   chain_fly:'sfx/chain/chain_fly.mp3',
-  chain_land2:'sfx/skillsound/chain/chain_land2.mp3',
-  chain_stick:'sfx/skillsound/chain/chain_stick.wav',
-  // skillsound/ — 스킬 전용
-  electric_storm:'sfx/skillsound/storm/electric_storm.mp3',
-  electric_storm2:'sfx/skillsound/storm/electric_storm2.mp3',
-  electric_storm3:'sfx/skillsound/storm/electric_storm3.mp3',
-  electric_storm4:'sfx/skillsound/storm/electric_storm4.mp3',
-  repentance:'sfx/skillsound/repentance/repentance.mp3',
+  chain_land2:'sfx/chain/chain_land2.mp3',
+  chain_stick:'sfx/chain/chain_stick.mp3',
+  // storm/ — 폭풍
+  electric_storm:'sfx/storm/electric_storm.mp3',
+  electric_storm2:'sfx/storm/electric_storm2.mp3',
+  electric_storm3:'sfx/storm/electric_storm3.mp3',
+  electric_storm4:'sfx/storm/electric_storm4.mp3',
+  repentance:'sfx/storm/repentance.mp3',
   voice_storm_attack:'sfx/storm/voice_storm_attack.mp3',
   electric_storm_hiss:'sfx/storm/electric_storm_hiss.mp3',
   electric_storm_tail:'sfx/storm/electric_storm_tail.mp3',
@@ -2888,7 +2888,7 @@ const _sampleFiles={
   voice_lavaSummon:'sfx/voice/voice_explode.mp3',
   voice_dark_skill:'sfx/voice/voice_dark_skill.mp3',
   // weapon/ — 무기
-  crossbow_shot:'sfx/skillsound/bow/crossbow_shot.mp3',
+  crossbow_shot:'sfx/weapon/crossbow_shot.mp3',
   shield_hit:'sfx/hit/shield_hit.mp3',
   // monster/ — 몬스터
   monster_crawl:'sfx/monster/monster_crawl.mp3',
@@ -2910,7 +2910,7 @@ const _sampleFiles={
   die_boss:'sfx/death/die_boss.mp3',
   // death/ — 몬스터 사망 (etype별)
   death_grunt:'sfx/death/death_grunt_01.mp3',
-  skull_summon:'sfx/skillsound/bone/skull_summon.mp3',
+  skull_summon:'sfx/death/skull.mp3',
   death_slime:'sfx/death/death_slime_splat.mp3',
   death_ice:'sfx/death/death_ice_shatter.mp3',
   death_demon:'sfx/death/death_demon_shriek.mp3',
@@ -12981,8 +12981,9 @@ function update(){
     else if(isHeld('beam')&&P.mp>=mpCost('magic')&&!_isFused('stormBeam')){
       const _amsk=P.activeMagicSk||'beam';
       const _isSix=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
-      if((_isSix||_amsk==='omniBeam')&&_amsk!=='elemMissile'){_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}
-      else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
+      const _isElem=_isSix&&P.skills.elemMissile>=1&&_isFused('elemFuse');
+      if(_isSix||_isElem||_amsk==='omniBeam'){_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}
+      else{P.s='magicCast';P.st2=0;P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
     }
     // Forge — 게임루프 상단에서 처리 (paused 상태에서도 동작)
 
@@ -13052,8 +13053,8 @@ function update(){
         for(let _bi=0;_bi<6;_bi++)P._sbTgts[_bi]=_sbNearEnts[_bi%_sbNearEnts.length]?_sbNearEnts[_bi%_sbNearEnts.length].e:null;
       }
       P._sbTgtT++;
-      // 빔 포인트 풀 (렌더용)
-      if(!P._sbPts){P._sbPts=[];for(let i=0;i<6;i++)P._sbPts.push(new Float32Array(40))}
+      // 빔 포인트 풀 (렌더용) — 재귀 번개용 확장
+      if(!P._sbPts){P._sbPts=[];for(let i=0;i<6;i++)P._sbPts.push(new Float32Array(128))}
       if(!P._sbPtsCnt)P._sbPtsCnt=new Int32Array(6);
       // MP 소비 (추적육선포의 50% — 메인은 회전참이므로 가볍게)
       const _sbMpCost=(150+(_sbOmniLv-1)*10)/60*pMagicCost()*0.5*sp;
@@ -13066,18 +13067,13 @@ function update(){
         for(let _bi=0;_bi<6;_bi++){
           const _tgt=P._sbTgts[_bi];if(!_tgt||!_tgt.alive)continue;
           const _elIdx=_allEl[_bi];
-          // 빔 경로 포인트 계산
+          // 빔 경로 — 재귀 번개 (3프레임마다 새 형태)
           const _dx=_tgt.x-P.x,_dy=_tgt.y-P.y;
           const _dist=Math.sqrt(_dx*_dx+_dy*_dy);
-          const _steps=Math.min(10,~~(_dist/50)+2);
-          P._sbPtsCnt[_bi]=_steps;
-          const _twist=_now*0.004;
-          for(let _si=0;_si<_steps;_si++){
-            const _t=_si/(_steps-1);
-            const _cx=P.x+_dx*_t+Math.sin(_twist+_bi*1.05+_t*6)*15*(1-_t*.5);
-            const _cy=P.y+_dy*_t+Math.cos(_twist+_bi*1.05+_t*6)*15*(1-_t*.5);
-            P._sbPts[_bi][_si*2]=_cx;P._sbPts[_bi][_si*2+1]=_cy;
-          }
+          const _ltSeed=(~~(_now/50))*131+_bi*71;
+          const _ltB=P._sbPts[_bi];_ltB._n=2;_ltB[0]=P.x;_ltB[1]=P.y;
+          _ltSub(_ltB,P.x,P.y,_tgt.x,_tgt.y,200,4,_ltSeed);
+          P._sbPtsCnt[_bi]=~~(_ltB._n/2);
           // 히트
           if(_sbDoHit&&_dist<_sbRng){
             const _ang=Math.atan2(_dy,_dx);
@@ -13292,8 +13288,9 @@ function update(){
       else if(isHeld('beam')&&P.mp>=mpCost('magic')&&!_isFused('stormBeam')){
         const _amsk2=P.activeMagicSk||'beam';
         const _isSix2=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
-        if((_isSix2||_amsk2==='omniBeam')&&_amsk2!=='elemMissile'){_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}
-        else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
+        const _isElem2=_isSix2&&P.skills.elemMissile>=1&&_isFused('elemFuse');
+        if(_isSix2||_isElem2||_amsk2==='omniBeam'){_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}
+        else{P.s='magicCast';P.st2=0;P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
       }
       else if(P.st2<=0){
         P.s='idle';
@@ -13338,8 +13335,9 @@ function update(){
       if(isHeld('beam')&&P.mp>=mpCost('magic')&&!_isFused('stormBeam')){
         const _amsk3=P.activeMagicSk||'beam';
         const _isSix3=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
-        if((_isSix3||_amsk3==='omniBeam')&&_amsk3!=='elemMissile'){_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}
-        else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
+        const _isElem3=_isSix3&&P.skills.elemMissile>=1&&_isFused('elemFuse');
+        if(_isSix3||_isElem3||_amsk3==='omniBeam'){_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}
+        else{P.s='magicCast';P.st2=0;P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
       }
       else P.s='idle';
     }}
@@ -20832,7 +20830,7 @@ const _FUSE_GEM_GROUPS={
   dimBreach: {color:'#00ddcc',color2:'#0066ff',tier:'clear',minLv:5,skills:['chargeBoost','magicBlink']}, // 청록+파랑
   dimSlam:   {color:'#00ddcc',color2:'#0066ff',tier:'clear',minLv:10,skills:['chargeBoost','magicBlink','chainAssault']}, // 청록+파랑 (dimBreach 상위)
   dimThunder:{color:'#00ddcc',color2:'#0066ff',tier:'clear',minLv:15,skills:['chargeBoost','magicBlink','chainAssault','chainSlam']}, // 청록+파랑 (dimSlam 상위)
-  sixFuse:   {color:'#ffdd00',color2:'#ff6600',tier:'clear',minLv:5,star:2, skills:['fanShot','omniBeam']}, // 금+주황 2성
+  sixFuse:   {color:'#ffdd00',color2:'#ff6600',tier:'clear',minLv:5, skills:['fanShot','omniBeam']}, // 금+주황
   elemFuse:  {color:'#ffdd00',color2:'#ff6600',tier:'clear',minLv:10,skills:['fanShot','omniBeam','elemMissile']}, // 금+주황 (sixFuse와 동일)
   whirlDet:  {color:'#ff7722',color2:'#ffee00',tier:'clear',minLv:5, skills:['whirlwind','detonate']}, // 주황+노랑
   slamStorm: {color:'#ff7722',color2:'#ffee00',tier:'clear',minLv:10,skills:['whirlwind','detonate','giantSlam']}, // 주황+노랑 (whirlDet과 동일)
@@ -20908,7 +20906,7 @@ function _allFuseGemGroups(skId){
           _added[k]=true;
           const _nextGrp={key:k,...g,tier:base.tier};
           _cur=_nextGrp;_found=true;
-          if(!_isFused(k)){result.push({..._nextGrp,_noGem:true});break} // 미합체: 버튼만 표시, 보석 안 올림
+          if(!_isFused(k)){result.push(_nextGrp);break} // 미합체 상위도 push → 합체 버튼 표시
           result.push(_nextGrp); // 합체 완료된 상위만 +1성
           break;
         }
@@ -20922,7 +20920,6 @@ function _gemHtml(skId){
   const groups=_allFuseGemGroups(skId);if(!groups.length)return '';
   let html='';
   for(const g of groups){
-    if(g._noGem)continue; // 미합체 상위: 보석 표시 안 함
     const inner=g.color,inner2=g.color2||g.color;
     const frame=g.tier==='gold'?'#ffd700':g.tier==='silver'?'#ffffff':'rgba(255,255,255,.6)';
     const glow=g.tier==='gold'?'rgba(255,215,0,1)':g.tier==='silver'?'rgba(255,255,255,0.9)':'rgba(255,255,255,0.5)';
@@ -28556,26 +28553,61 @@ function drawP(){
         X.textAlign='left';
       }
     }
-    // ═══ 전기폭풍 렌더: 6원소 추적 빔 (글로우+코어 2패스) ═══
+    // ═══ 전기폭풍 렌더: 6원소 유도 번개 (lighter 블렌드 + 재귀 경로) ═══
     if(_isFused('stormBeam')&&P._sbPtsCnt&&P._sbPts){
-      const _sbElCols=['#88ddff','#44aaff','#22ccff','#66eeff','#aaddff','#00bbff'];
-      // 글로우 패스
-      X.lineWidth=6;X.globalAlpha=.25;
+      // 코어 오브 (플레이어 시작점)
+      X.globalAlpha=.35;X.fillStyle='#4488ff';
+      X.beginPath();X.arc(P.x,P.y,15,0,Math.PI*2);X.fill();
+      X.globalAlpha=.8;X.fillStyle='#fff';
+      X.beginPath();X.arc(P.x,P.y,5,0,Math.PI*2);X.fill();
       for(let _bi=0;_bi<6;_bi++){
-        const _cnt=P._sbPtsCnt[_bi];if(_cnt<2)continue;
+        const _pn=P._sbPtsCnt[_bi]*2;if(_pn<4)continue;
         const _pts=P._sbPts[_bi];
+        // 분기 생성
+        _ltBranchI=_bi*6;
+        const _brSeed=(~~(_now/50))*71+_bi*37;
+        const _brCnt=_ltBranch(null,_pts,_pn,_brSeed,3);
+        // 글로우: #4488ff lw6 a0.3
+        X.strokeStyle='#4488ff';X.lineWidth=6;X.globalAlpha=.3;
         X.beginPath();X.moveTo(_pts[0],_pts[1]);
-        for(let _si=1;_si<_cnt;_si++)X.lineTo(_pts[_si*2],_pts[_si*2+1]);
-        X.strokeStyle=_sbElCols[_bi];X.stroke();
-      }
-      // 코어 패스
-      X.strokeStyle='#fff';X.lineWidth=2;X.globalAlpha=.7;
-      for(let _bi=0;_bi<6;_bi++){
-        const _cnt=P._sbPtsCnt[_bi];if(_cnt<2)continue;
-        const _pts=P._sbPts[_bi];
-        X.beginPath();X.moveTo(_pts[0],_pts[1]);
-        for(let _si=1;_si<_cnt;_si++)X.lineTo(_pts[_si*2],_pts[_si*2+1]);
+        for(let k=2;k<_pn;k+=2)X.lineTo(_pts[k],_pts[k+1]);
         X.stroke();
+        // 메인: #88ccff lw2.5
+        X.strokeStyle='#88ccff';X.lineWidth=2.5;X.globalAlpha=.8;
+        X.beginPath();X.moveTo(_pts[0],_pts[1]);
+        for(let k=2;k<_pn;k+=2)X.lineTo(_pts[k],_pts[k+1]);
+        X.stroke();
+        // 코어: #fff lw1
+        X.strokeStyle='#fff';X.lineWidth=1;X.globalAlpha=.9;
+        X.beginPath();X.moveTo(_pts[0],_pts[1]);
+        for(let k=2;k<_pn;k+=2)X.lineTo(_pts[k],_pts[k+1]);
+        X.stroke();
+        // 분기
+        for(let _bri=0;_bri<_brCnt;_bri++){
+          const br=_LT_BRANCH[_bi*6+_bri];const bn=br._n||0;if(bn<4)continue;
+          X.strokeStyle='#88ccff';X.lineWidth=1;X.globalAlpha=.6;
+          X.beginPath();X.moveTo(br[0],br[1]);
+          for(let k=2;k<bn;k+=2)X.lineTo(br[k],br[k+1]);
+          X.stroke();
+          X.fillStyle='#fff';X.globalAlpha=.7;
+          X.beginPath();X.arc(br[bn-2],br[bn-1],2,0,Math.PI*2);X.fill();
+        }
+        // 히트 스파크 8방향
+        if(P._sbTgts&&P._sbTgts[_bi]&&P._sbTgts[_bi].alive){
+          const _te=P._sbTgts[_bi];
+          const _hS=(~~(_now/50))+_bi*19;
+          X.strokeStyle='#aaddff';X.lineWidth=1;X.globalAlpha=.6;
+          for(let _hi=0;_hi<8;_hi++){
+            let _hs=(_hS+_hi*9301+49297)%233280;
+            const ha=Math.PI*2*_hi/8+(_hs/233280-.5)*.5;
+            _hs=(_hs*9301+49297)%233280;
+            const hl=6+(_hs/233280)*14;
+            X.beginPath();X.moveTo(_te.x,_te.y);
+            X.lineTo(_te.x+Math.cos(ha)*hl,_te.y+Math.sin(ha)*hl);X.stroke();
+          }
+          X.fillStyle='#fff';X.globalAlpha=.5;
+          X.beginPath();X.arc(_te.x,_te.y,4,0,Math.PI*2);X.fill();
+        }
       }
     }
     X.globalAlpha=1;

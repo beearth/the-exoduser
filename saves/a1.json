@@ -1,21 +1,21 @@
 {
-  "ts": 1773883803169,
+  "ts": 1773887392196,
   "player": {
-    "lv": 84,
-    "exp": 192,
-    "maxExp": 577,
-    "sp": 48,
-    "ap": 0,
+    "lv": 99,
+    "exp": 562,
+    "maxExp": 752,
+    "sp": 44,
+    "ap": 2,
     "baseAtk": 15,
     "baseDef": 4,
-    "mpR": 1.061,
-    "stR": 0.37100000000000005,
-    "hp": 424,
-    "mhp": 424,
-    "mp": 237,
-    "mmp": 237,
-    "st": 164,
-    "mst": 164,
+    "mpR": 1.091,
+    "stR": 0.386,
+    "hp": 441,
+    "mhp": 441,
+    "mp": 233.523124374999,
+    "mmp": 244,
+    "st": 171,
+    "mst": 171,
     "speed": 3.365224,
     "shield": 0,
     "mshield": 0
@@ -147,6 +147,98 @@
         "_gx": 2,
         "_gy": 0,
         "_pickT": 1773882253243
+      },
+      {
+        "id": 1773886262919.3586,
+        "slot": "ring1",
+        "el": 3,
+        "rarity": 4,
+        "tier": 2,
+        "name": "심연 반지",
+        "emoji": "💍",
+        "eDef": 6,
+        "critRate": 3.95,
+        "critDmg": 0.161,
+        "bInt": 31,
+        "bStr": 40,
+        "bDex": 35,
+        "affixes": [
+          {
+            "id": "reflect",
+            "tier": 0,
+            "value": 0.0509
+          },
+          {
+            "id": "poisonRes",
+            "tier": 1,
+            "value": 0.2445
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 9.53,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "원소 반응 발동 시 추가 폭발 (ATK×80%)",
+          "stat": "_lRingElem",
+          "val": 0.8
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 4,
+        "_gy": 0,
+        "_pickT": 1773886262934
+      },
+      {
+        "id": 1773886259630.8384,
+        "slot": "boots",
+        "el": 4,
+        "rarity": 4,
+        "tier": 3,
+        "name": "뇌신 전투화",
+        "emoji": "👢",
+        "def": 16,
+        "spd": 0.53,
+        "bonusSt": 39,
+        "chargeDist": 50,
+        "chargeCharge": 1,
+        "bStr": 37,
+        "bDex": 46,
+        "bInt": 34,
+        "affixes": [
+          {
+            "id": "dropRate",
+            "tier": 0,
+            "value": 0.1504
+          },
+          {
+            "id": "dashBoost",
+            "tier": 0,
+            "value": 0.2815
+          },
+          {
+            "id": "goldBonus",
+            "tier": 1,
+            "value": 0.2628
+          },
+          {
+            "id": "movSpeed",
+            "tier": 1,
+            "value": 0.1034
+          }
+        ],
+        "_implicitStat": "_iMovSpd",
+        "_implicitVal": 6.24,
+        "_implicitKo": "이동속도 +X%",
+        "legendarySpecial": {
+          "ko": "회피 직후 첫 공격 데미지 +80%",
+          "stat": "_lBootsEvade",
+          "val": 0.8
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 5,
+        "_gy": 0,
+        "_pickT": 1773886266834
       }
     ],
     "equipped": {
@@ -531,8 +623,8 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 1
+      "type": null,
+      "count": 0
     },
     {
       "type": null,
@@ -545,8 +637,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 1516,
-    "mats": 17504
+    "kills": 2356,
+    "mats": 20245
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -569,23 +661,27 @@
     "holyDome": 1,
     "whirlwind": 1,
     "detonate": 1,
-    "plagueBurst": 1,
+    "plagueBurst": 10,
     "maliceStorm": 1,
     "fanShot": 1,
     "elemMissile": 1,
     "maliceSwipe": 1,
     "omniBeam": 1,
-    "giantSlam": 1
+    "giantSlam": 1,
+    "peaceShield": 1,
+    "hellRay": 1
   },
   "fused": {
     "whirlDet": true,
+    "slamStorm": true,
     "sixFuse": true,
-    "elemFuse": true
+    "elemFuse": true,
+    "stormBeam": true
   },
   "skProf": {
     "maliceSwipe": 15,
     "chargeBoost": 15,
-    "holyDome": 12,
+    "holyDome": 15,
     "detonate": 15,
     "whirlwind": 15,
     "fanShot": 15,
@@ -593,19 +689,21 @@
     "maliceStorm": 15,
     "elemMissile": 15,
     "omniBeam": 15,
-    "giantSlam": 6
+    "giantSlam": 15,
+    "peaceShield": 4,
+    "hellRay": 1
   },
   "activeChargeSk": "charge",
-  "activeBowSk": "fanShot",
+  "activeBowSk": "normal",
   "activeTechSk": "spikeTrap",
-  "activeMagicSk": "omniBeam",
+  "activeMagicSk": "hellRay",
   "activeLMBSk": "whirlwind",
   "activeRMBSk": "shieldBlock",
   "activeQSk": "parry",
   "activeCtSk": "ghostWalk",
   "skillSlots": [
     "maliceStorm",
-    "giantSlam",
+    null,
     null,
     "plagueBurst",
     null,
