@@ -4235,6 +4235,7 @@ addEventListener('keyup',e=>{
   K[e.code]=false;KH[e.code]=false;
   if(e.code==='KeyE'&&P)P._beamHold=false;
   // ── Shift 작살: 릴리즈 → 발사 (ST 퍼센트 소비: 1단25% 2단50% 3단100% 4단300%) ──
+  if(e.code==='ShiftLeft'&&_dashHold&&(_harpActive||_dashActive)){_dashHold=false;_dashHoldF=0;_dashTier=0} // 비행/대시 중 키업 → 홀드만 리셋 (재발사 방지)
   if(e.code==='ShiftLeft'&&_dashHold&&!_harpActive&&!_dashActive){
     _dashHold=false;
     if(_dashHoldF>=_HARP_TIER_F[3])_dashTier=3;
@@ -4295,7 +4296,7 @@ function isHeld(action){return _chkHeld(BINDS[action])||_chkHeld(BINDS2[action])
 // Q키 얼음보주 모드: 선택스킬로 이동됨 (Q는 항상 패링)
 function _qIsIceOrb(){return false}
 function _qIsPeaceShield(){return P.skills.peaceShield>=1&&(P.activeQSk==='peaceShield'||_isFused('stormBeam'))}
-function _enterPeaceShield(){P.s='peaceShield';P._psShieldR=60;P._sbParryT=20;P.parryT=0;P.parryBank=0;playSample('shield_activate',.6,_r(.8,.1));_startShieldLoop();_addSkProf('peaceShield')}
+function _enterPeaceShield(){P.s='peaceShield';P._psShieldR=60;P._psHoldT=0;P._sbParryT=20;P.parryT=0;P.parryBank=0;playSample('shield_activate',.6,_r(.8,.1));_startShieldLoop();_addSkProf('peaceShield')}
 function _qDispatchIceOrb(){
   if(!_qIsIceOrb())return false;
   if(P._ioActive){activateIceShatter();return true}
@@ -12812,7 +12813,7 @@ function update(){
     // ── 기동습격/기동파괴: 이동 중 좌클릭/우클릭 → 플래그 세팅 (아래 착지 블록에서 AOE 발동) ──
     // NOTE: _harpActive 중 준비는 dashActive 밖 공통 블록에서 처리
     if(--_dashLeft<=0){
-      _dashActive=false;_harpActive=false;
+      _dashActive=false;_harpActive=false;_dashHold=false;_dashHoldF=0;
       const _slamLand=P._chainSlamReady||P._chainAssaultReady; // 기동파괴/기동습격 준비 시 착지 효과 강제
       _harpLandT=(isDimBreach()&&!_slamLand)?0:20;
       // ── 착지 효과 ──
@@ -13205,7 +13206,7 @@ function update(){
       const _amsk=P.activeMagicSk||'beam';
       const _isSix=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
       if((_isSix||_amsk==='omniBeam')&&_amsk!=='elemMissile'){if(_isSix&&(P._beamCd||0)>0){showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}}
-      else if(_amsk==='blueShot'&&P.skills.blueShot>=1){if((P._bsCd||0)>0){showPH('쿨 '+~~((P._bsCd||0)/60)+'초','#00aaff')}else{P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}}
+      else if(_amsk==='blueShot'&&P.skills.blueShot>=1){if((P._blueCd||0)>0){showPH('쿨 '+~~((P._blueCd||0)/60)+'초','#00aaff')}else{P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}}
       else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
     }
     // Forge — 게임루프 상단에서 처리 (paused 상태에서도 동작)
@@ -13457,6 +13458,7 @@ function update(){
       // 돌진 캔슬 (히트 후 Shift로 칼등치기 즉시 해제)
       if(P.st2<=14&&isAct('charge')&&P.chargeStocks>0&&!_harpActive&&(P.activeChargeSk==='magicBlink'?P.mp>=mpCost('blink'):useStPct('charge'))){
         // ── 작살 발사 (sBash hit 캔슬) ──
+        _dashHold=false;_dashHoldF=0;_dashTier=0; // 홀드 리셋 (keyup 재발사 방지)
         P.chargeStocks--;if(P.chargeStocks<P.maxChargeStocks&&P.chargeCd<=0)P.chargeCd=~~(300*pChargeCd());
         if(P.activeChargeSk==='magicBlink')useMp('blink');
         const _cdx=isAct('right')-isAct('left'),_cdy=isAct('down')-isAct('up');
@@ -13473,6 +13475,7 @@ function update(){
       // 돌진 캔슬 (Shift 이동기로 즉시 해제)
       if(isAct('charge')&&P.chargeStocks>0&&!_harpActive&&(P.activeChargeSk==='magicBlink'?P.mp>=mpCost('blink'):useStPct('charge'))){
         // ── 작살 발사 (sRecover 캔슬) ──
+        _dashHold=false;_dashHoldF=0;_dashTier=0; // 홀드 리셋
         P.chargeStocks--;if(P.chargeStocks<P.maxChargeStocks&&P.chargeCd<=0)P.chargeCd=~~(300*pChargeCd());
         if(P.activeChargeSk==='magicBlink')useMp('blink');
         const _crdx=isAct('right')-isAct('left'),_crdy=isAct('down')-isAct('up');
@@ -13497,6 +13500,7 @@ function update(){
       if(isAct('weapon')&&useStPct('weapon')){P._atkBon=~~(_lastCost*1.5);P.s='wSwing';P.st2=10;P.swProg=0;P.atkArc=P.facing}
       else if(isAct('charge')&&P.chargeStocks>0&&!_harpActive&&(P.activeChargeSk==='magicBlink'?P.mp>=mpCost('blink'):useStPct('charge'))){
         // ── 작살 발사 (bowRecover 캔슬) ──
+        _dashHold=false;_dashHoldF=0;_dashTier=0; // 홀드 리셋
         P.chargeStocks--;if(P.chargeStocks<P.maxChargeStocks&&P.chargeCd<=0)P.chargeCd=~~(300*pChargeCd());
         if(P.activeChargeSk==='magicBlink')useMp('blink');
         const _cr2dx=isAct('right')-isAct('left'),_cr2dy=isAct('down')-isAct('up');
@@ -13541,7 +13545,7 @@ function update(){
           {const _pp=_getPProj();_pp.x=P.x+Math.cos(_bkA)*18+_perpX;_pp.y=P.y+Math.sin(_bkA)*18+_perpY;_pp.vx=Math.cos(_fwdA)*_mSpd;_pp.vy=Math.sin(_fwdA)*_mSpd;_pp.dmg=~~(mdmg/_emCnt);_pp.el=_mcEl[_mi%6];_pp.maxDist=_mcRange+100;_pp.dist=0;_pp.r=8;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.arcMissile=true;_pp._arcLock=60;_pp._maxBounce=2;pProjs[pProjs.length]=_pp;}
         }
         SFX.magic(2);_addSkProf('elemMissile');P.s='magicRecover';P.st2=12;
-      } else if(_mcSk==='blueShot'&&P.skills.blueShot>=1&&(P._bsCd||0)<=0){
+      } else if(_mcSk==='blueShot'&&P.skills.blueShot>=1&&(P._blueCd||0)<=0){
         // ── 파란탄: 유도 blueBean 발사 (쿨 2초) ──
         const _bsLv=P.skills.blueShot||1;
         const _bsDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*2.5*(1+(_bsLv-1)*.1))+(P._mpBon||0);P._mpBon=0;
@@ -13551,7 +13555,7 @@ function update(){
         spawnProj({x:P.x+Math.cos(_bsA)*16,y:P.y+Math.sin(_bsA)*16,vx:Math.cos(_bsA)*_bsSpd,vy:Math.sin(_bsA)*_bsSpd,
           dmg:_bsDmg,el:EL.P,friendly:true,life:~~(_bsRange/_bsSpd),ml:~~(_bsRange/_bsSpd),
           col:'#00e5ff',sz:2.0,blueBean:true,homing:true,_aoeR:160,_aoeDmg:~~(_bsDmg*.6)});
-        P._bsCd=120; // 2초 쿨
+        P._blueCd=120; // 2초 쿨
         playSample('fireball',.6,_r(1.3,.1));SFX.magic(4);_addSkProf('blueShot');
         addTxt(P.x,P.y-25,'💎 파란탄!','#00e5ff',35);
         for(let _bi=0;_bi<8;_bi++){const _ba=Math.PI*2*_bi/8;poolPart(P.x,P.y,Math.cos(_ba)*4,Math.sin(_ba)*4,'#00e5ff',3,8)}
@@ -13576,7 +13580,7 @@ function update(){
         const _amsk3=P.activeMagicSk||'beam';
         const _isSix3=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
         if((_isSix3||_amsk3==='omniBeam')&&_amsk3!=='elemMissile'){if(_isSix3&&(P._beamCd||0)>0){showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}}
-        else if(_amsk3==='blueShot'&&P.skills.blueShot>=1){if((P._bsCd||0)>0){showPH('쿨 '+~~((P._bsCd||0)/60)+'초','#00aaff')}else{P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}}
+        else if(_amsk3==='blueShot'&&P.skills.blueShot>=1){if((P._blueCd||0)>0){showPH('쿨 '+~~((P._blueCd||0)/60)+'초','#00aaff')}else{P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}}
         else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
       }
       else P.s='idle';
@@ -13618,7 +13622,9 @@ function update(){
   case 'peaceShield':{
     // ═══ 평화의보호: Q 홀드 → 패링+보호막 커짐+힐 (sBlock과 동일한 패링) ═══
     const _psLv=P.skills.peaceShield||1;
-    const _psMpCost=30/60*sp; // MP 초당 30 고정 소모
+    P._psHoldT=(P._psHoldT||0)+sp; // 홀드 시간 누적
+    const _psMpMult=1+Math.floor(P._psHoldT/60)*0.1; // 매초 +10% MP 소모
+    const _psMpCost=30/60*sp*_psMpMult; // 기본 초당 30, 시간갈수록 증가
     if(P._sbParryT>0)P._sbParryT-=sp; // 패링 윈도우 카운트다운
     if(!isAct('parry')||P.mp<=_psMpCost){
       // 평화의보호 해제 시 충격파 (보호막 크기에 비례) — 기폭팔 스타일
@@ -13669,9 +13675,10 @@ function update(){
         }
       }
     }
-    // HP 회복: 초당 100 고정
-    const _psHeal=~~(100/60*sp);
-    if(P.hp<P.mhp){P.hp=Math.min(P.mhp,P.hp+_psHeal);if(G._gcT%60<~~sp+1)addTxt(P.x,P.y-40,'+'+~~(100*sp),'#88ffaa',20)}
+    // HP 회복: Lv별 maxHP 비례 (Lv1=2%, Lv5=10%/초 → 10초면 만피)
+    const _psHealPct=(.02+(_psLv-1)*.02);
+    const _psHeal=~~(P.mhp*_psHealPct/60*sp);
+    if(P.hp<P.mhp){P.hp=Math.min(P.mhp,P.hp+_psHeal);if(G._gcT%60<~~sp+1)addTxt(P.x,P.y-40,'+'+~~(P.mhp*_psHealPct*sp),'#88ffaa',20)}
     // 이동 (느리게)
     let dx=0,dy=0;
     if(isAct('up'))dy=-1;if(isAct('down'))dy=1;if(isAct('left'))dx=-1;if(isAct('right'))dx=1;
