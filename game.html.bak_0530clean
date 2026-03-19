@@ -5054,7 +5054,7 @@ function _mkPProj(){return{x:0,y:0,vx:0,vy:0,dmg:0,el:0,r:4,spd:0,
   magic:false,arcMissile:false,_arcLock:0,_maxBounce:0,
   fireball:false,explR:0,explDmg:0,
   lightning:false,chainMax:0,chainR:0,_chainCount:0,
-  maliceHunt:false,mhBlade:false,mhFused:false,mhPlague:false,_mhMaxPierce:0,
+  maliceHunt:false,mhBlade:false,mhFused:false,_mhMaxPierce:0,
   plagueBlade:false,plagueHoming:false,_plagueLv:0,_plagueHit:0,_plagueMax:0,
   bladeOrb:false,_orbAng:0,_orbEmitT:0,_orbSlv:0,_orbDmg:0,
   bladeShard:false,iceBlade:false,_iceAng:0,_iceT:0,
@@ -5075,7 +5075,7 @@ function _resetPProj(p){
   p.pierce=0;p.pierceMax=0;p.normalBow=p.ghostXbow=p.needle=false;
   p.magic=p.arcMissile=false;p._arcLock=0;p._maxBounce=0;
   p.fireball=false;p.explR=0;p.explDmg=0;
-  p.lightning=p.maliceHunt=p.mhBlade=p.mhFused=p.mhPlague=false;p._mhMaxPierce=0;
+  p.lightning=p.maliceHunt=p.mhBlade=p.mhFused=false;p._mhMaxPierce=0;
   p.plagueBlade=p.plagueHoming=false;p._plagueLv=p._plagueHit=p._plagueMax=0;
   p.bladeOrb=false;p._orbAng=p._orbEmitT=p._orbSlv=p._orbDmg=0;
   p.bladeShard=p.iceBlade=false;p._iceAng=p._iceT=0;
@@ -11401,34 +11401,40 @@ function buildGridMapCache(tmpl){
 // ── FIXED_MAPS 절차적 생성 (격자맵 포함, 전부 고정) ──
 const FIXED_MAPS=[];
 for(let i=0;i<TOTAL_STAGES;i++){const s=STAGES[i];if(s.type==='grid')FIXED_MAPS[i]=generateGridMap(s.hell);else if(s.type==='horiz')FIXED_MAPS[i]=genHoriz(i);else FIXED_MAPS[i]=genSnake(i)}
-// ── 1장1막 에디터 맵 덮어쓰기 ──
-FIXED_MAPS[0]={"mw":200,"mh":200,"rooms":[{"id":"s","type":"start","cx":111,"cy":190,"shape":"ellipse","rx":14,"ry":10},{"id":"a1","type":"combat","cx":38,"cy":175,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"a2","type":"combat","cx":165,"cy":178,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":3,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":0,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"b1","type":"combat","cx":30,"cy":148,"shape":"circle","rx":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"b2","type":"combat","cx":75,"cy":145,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":2,"grade":0},{"dx":-2,"dy":-1,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"b3","type":"combat","cx":130,"cy":148,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":1,"grade":0},{"dx":-1,"dy":-1,"grade":0},{"dx":1,"dy":-3,"grade":0}]},{"id":"b4","type":"combat","cx":178,"cy":142,"shape":"circle","rx":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"c1","type":"combat","cx":25,"cy":118,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":3,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"c2","type":"combat","cx":72,"cy":115,"shape":"circle","rx":14,"spawns":[{"dx":3,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-2,"dy":1,"grade":0},{"dx":-3,"dy":-2,"grade":0},{"dx":0,"dy":-2,"grade":0}]},{"id":"f","type":"forge","cx":118,"cy":112,"shape":"rect","rx":12,"ry":8},{"id":"c3","type":"combat","cx":170,"cy":115,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"d1","type":"combat","cx":40,"cy":88,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-1,"grade":1}]},{"id":"d2","type":"combat","cx":100,"cy":85,"shape":"cross","rx":16,"ry":16,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":1,"dy":2,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":-1,"dy":-2,"grade":1},{"dx":1,"dy":-3,"grade":1}],"armW":8,"armH":8},{"id":"d3","type":"combat","cx":160,"cy":88,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e1","type":"combat","cx":28,"cy":58,"shape":"circle","rx":12,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":0,"grade":1},{"dx":0,"dy":-3,"grade":1}]},{"id":"e2","type":"combat","cx":80,"cy":55,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":1,"dy":3,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e3","type":"combat","cx":140,"cy":55,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":1,"dy":3,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-1,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e4","type":"combat","cx":185,"cy":58,"shape":"circle","rx":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":0,"grade":1},{"dx":0,"dy":-1,"grade":1}]},{"id":"n1","type":"combat","cx":50,"cy":28,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"n2","type":"combat","cx":110,"cy":25,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":4,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"n3","type":"combat","cx":170,"cy":28,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":3,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":0,"dy":-3,"grade":1}]},{"id":"exit","type":"combat","cx":110,"cy":10,"shape":"ellipse","rx":12,"ry":6,"spawns":[{"dx":4,"dy":0,"grade":1},{"dx":-1,"dy":3,"grade":1},{"dx":-1,"dy":-1,"grade":1}]},{"id":"h1","type":"combat","cx":8,"cy":155,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":1}]},{"id":"h2","type":"combat","cx":192,"cy":130,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":1}]},{"id":"h3","type":"combat","cx":8,"cy":42,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":2}]},{"id":"h4","type":"combat","cx":192,"cy":42,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":2}]}],"corridors":[{"from":"s","to":"a1","width":7,"style":"cave","waypoints":[{"x":68,"y":178}]},{"from":"s","to":"a2","width":7,"style":"cave","waypoints":[{"x":132,"y":179}]},{"from":"a1","to":"b1","width":7,"style":"cave","waypoints":[{"x":34,"y":162}]},{"from":"a1","to":"b2","width":7,"style":"cave","waypoints":[{"x":55,"y":160}]},{"from":"s","to":"b2","width":8,"style":"cave","waypoints":[{"x":88,"y":162}]},{"from":"s","to":"b3","width":8,"style":"cave","waypoints":[{"x":115,"y":164}]},{"from":"a2","to":"b3","width":7,"style":"cave","waypoints":[{"x":148,"y":163}]},{"from":"a2","to":"b4","width":7,"style":"cave","waypoints":[{"x":172,"y":160}]},{"from":"a1","to":"h1","width":4,"style":"cave"},{"from":"b1","to":"b2","width":6,"style":"cave","waypoints":[{"x":52,"y":147}]},{"from":"b2","to":"b3","width":7,"style":"cave","waypoints":[{"x":102,"y":146}]},{"from":"b3","to":"b4","width":6,"style":"cave","waypoints":[{"x":154,"y":145}]},{"from":"b1","to":"c1","width":6,"style":"cave","waypoints":[{"x":27,"y":133}]},{"from":"b2","to":"c2","width":7,"style":"cave","waypoints":[{"x":73,"y":130}]},{"from":"b3","to":"f","width":7,"style":"cave","waypoints":[{"x":124,"y":130}]},{"from":"b4","to":"c3","width":6,"style":"cave","waypoints":[{"x":174,"y":128}]},{"from":"b4","to":"h2","width":4,"style":"cave"},{"from":"c1","to":"c2","width":6,"style":"cave","waypoints":[{"x":48,"y":117}]},{"from":"c2","to":"f","width":7,"style":"cave","waypoints":[{"x":95,"y":113}]},{"from":"f","to":"c3","width":7,"style":"cave","waypoints":[{"x":144,"y":114}]},{"from":"c1","to":"d1","width":6,"style":"cave","waypoints":[{"x":32,"y":103}]},{"from":"c2","to":"d1","width":6,"style":"cave","waypoints":[{"x":55,"y":102}]},{"from":"c2","to":"d2","width":7,"style":"cave","waypoints":[{"x":86,"y":100}]},{"from":"f","to":"d2","width":7,"style":"cave","waypoints":[{"x":109,"y":98}]},{"from":"c3","to":"d2","width":6,"style":"cave","waypoints":[{"x":135,"y":100}]},{"from":"c3","to":"d3","width":6,"style":"cave","waypoints":[{"x":165,"y":102}]},{"from":"d1","to":"d2","width":7,"style":"cave","waypoints":[{"x":70,"y":87}]},{"from":"d2","to":"d3","width":7,"style":"cave","waypoints":[{"x":130,"y":87}]},{"from":"d1","to":"e1","width":6,"style":"cave","waypoints":[{"x":34,"y":73}]},{"from":"d1","to":"e2","width":6,"style":"cave","waypoints":[{"x":58,"y":72}]},{"from":"d2","to":"e2","width":7,"style":"cave","waypoints":[{"x":90,"y":70}]},{"from":"d2","to":"e3","width":7,"style":"cave","waypoints":[{"x":120,"y":70}]},{"from":"d3","to":"e3","width":6,"style":"cave","waypoints":[{"x":150,"y":72}]},{"from":"d3","to":"e4","width":6,"style":"cave","waypoints":[{"x":172,"y":73}]},{"from":"e1","to":"e2","width":6,"style":"cave","waypoints":[{"x":54,"y":57}]},{"from":"e2","to":"e3","width":7,"style":"cave","waypoints":[{"x":110,"y":55}]},{"from":"e3","to":"e4","width":6,"style":"cave","waypoints":[{"x":162,"y":57}]},{"from":"e1","to":"h3","width":4,"style":"cave"},{"from":"e4","to":"h4","width":4,"style":"cave"},{"from":"e1","to":"n1","width":6,"style":"cave","waypoints":[{"x":38,"y":43}]},{"from":"e2","to":"n1","width":6,"style":"cave","waypoints":[{"x":65,"y":42}]},{"from":"e2","to":"n2","width":7,"style":"cave","waypoints":[{"x":95,"y":40}]},{"from":"e3","to":"n2","width":7,"style":"cave","waypoints":[{"x":125,"y":40}]},{"from":"e3","to":"n3","width":6,"style":"cave","waypoints":[{"x":155,"y":42}]},{"from":"e4","to":"n3","width":6,"style":"cave","waypoints":[{"x":178,"y":43}]},{"from":"n1","to":"n2","width":7,"style":"cave","waypoints":[{"x":80,"y":26}]},{"from":"n2","to":"n3","width":7,"style":"cave","waypoints":[{"x":140,"y":27}]},{"from":"n1","to":"exit","width":6,"style":"cave","waypoints":[{"x":80,"y":18}]},{"from":"n2","to":"exit","width":8,"style":"cave"},{"from":"n3","to":"exit","width":6,"style":"cave","waypoints":[{"x":140,"y":18}]},{"from":"c3","to":"a2","width":5,"style":"cave","waypoints":[{"x":190,"y":125},{"x":188,"y":160}]},{"from":"e1","to":"b1","width":5,"style":"cave","waypoints":[{"x":10,"y":58},{"x":8,"y":100},{"x":12,"y":148}]},{"from":"exit","to":"s","width":4,"style":"cave","waypoints":[{"x":196,"y":10},{"x":198,"y":95},{"x":196,"y":180},{"x":145,"y":182}]}],"features":[{"type":"alcove","x":6,"y":15,"r":4},{"type":"alcove","x":194,"y":15,"r":4},{"type":"alcove","x":6,"y":40,"r":4},{"type":"alcove","x":194,"y":40,"r":6},{"type":"alcove","x":6,"y":65,"r":6},{"type":"alcove","x":194,"y":65,"r":5},{"type":"alcove","x":6,"y":90,"r":4},{"type":"alcove","x":194,"y":90,"r":5},{"type":"alcove","x":6,"y":115,"r":3},{"type":"alcove","x":194,"y":115,"r":4},{"type":"alcove","x":6,"y":140,"r":3},{"type":"alcove","x":194,"y":140,"r":5},{"type":"alcove","x":6,"y":165,"r":6},{"type":"alcove","x":194,"y":165,"r":5},{"type":"alcove","x":30,"y":194,"r":3},{"type":"alcove","x":30,"y":6,"r":3},{"type":"alcove","x":60,"y":194,"r":5},{"type":"alcove","x":60,"y":6,"r":5},{"type":"alcove","x":90,"y":194,"r":4},{"type":"alcove","x":90,"y":6,"r":3},{"type":"alcove","x":120,"y":194,"r":5},{"type":"alcove","x":120,"y":6,"r":4},{"type":"alcove","x":150,"y":194,"r":4},{"type":"alcove","x":150,"y":6,"r":5}],"corridorSpawns":[{"x":132,"y":179,"grade":0},{"x":115,"y":164,"grade":1},{"x":148,"y":163,"grade":0},{"x":52,"y":147,"grade":0},{"x":102,"y":146,"grade":0},{"x":27,"y":133,"grade":0},{"x":124,"y":130,"grade":0},{"x":174,"y":128,"grade":1},{"x":55,"y":102,"grade":1},{"x":86,"y":100,"grade":1},{"x":165,"y":102,"grade":0},{"x":70,"y":87,"grade":0},{"x":130,"y":87,"grade":1},{"x":58,"y":72,"grade":1},{"x":150,"y":72,"grade":1},{"x":172,"y":73,"grade":1},{"x":110,"y":55,"grade":0},{"x":125,"y":40,"grade":0},{"x":178,"y":43,"grade":0},{"x":80,"y":18,"grade":0},{"x":140,"y":18,"grade":1},{"x":10,"y":58,"grade":0}],"spawnHoles":[{"x":75,"y":182,"type":"S"},{"x":50,"y":170,"type":"M"},{"x":31,"y":166,"type":"L"}],"tileRLE":[1,304,0,13,1,183,0,21,1,179,0,22,1,176,0,25,1,174,0,21,1,1,0,4,1,174,0,6,1,2,0,12,1,3,0,5,1,171,0,8,1,1,0,13,1,1,0,6,1,171,0,30,1,170,0,30,1,169,0,31,1,169,0,30,1,171,0,29,1,171,0,30,1,171,0,29,1,171,0,32,1,169,0,5,1,3,0,24,1,169,0,5,1,1,0,26,1,170,0,31,1,172,0,28,1,174,0,1,1,1,0,1,1,1,0,1,1,3,0,1,1,4,0,14,1,186,0,16,1,185,0,17,1,185,0,15,1,186,0,17,1,184,0,16,1,185,0,16,1,184,0,20,1,181,0,20,1,181,0,19,1,183,0,18,1,184,0,18,1,185,0,17,1,184,0,16,1,186,0,14,1,187,0,14,1,188,0,13,1,188,0,15,1,187,0,14,1,187,0,15,1,186,0,16,1,184,0,16,1,188,0,13,1,188,0,13,1,189,0,12,1,189,0,12,1,189,0,11,1,190,0,11,1,189,0,12,1,188,0,13,1,189,0,12,1,188,0,13,1,187,0,15,1,186,0,14,1,187,0,15,1,185,0,16,1,186,0,1,1,1,0,13,1,187,0,14,1,3,0,3,1,2,0,2,1,177,0,25,1,177,0,24,1,177,0,23,1,176,0,26,1,172,0,31,1,169,0,31,1,169,0,31,1,164,0,2,1,2,0,32,1,157,0,1,1,3,0,39,1,156,0,44,1,138,0,1,1,15,0,46,1,137,0,6,1,5,0,52,1,136,0,64,1,133,0,62,1,1,0,1,1,132,0,1,1,2,0,39,1,1,0,22,1,124,0,1,1,4,0,3,1,1,0,39,1,7,0,22,1,122,0,3,1,1,0,44,1,10,0,19,1,114,0,6,1,2,0,45,1,18,0,2,1,3,0,1,1,2,0,1,1,3,0,2,1,114,0,44,1,1,0,1,1,1,0,5,1,145,0,45,1,153,0,44,1,154,0,43,1,1,0,1,1,151,0,1,1,2,0,42,1,148,0,44,1,1,0,6,1,143,0,44,1,1,0,1,1,153,0,41,1,1,0,1,1,113,0,1,1,1,0,2,1,3,0,1,1,20,0,1,1,1,0,1,1,9,0,1,1,2,0,40,1,114,0,12,1,17,0,10,1,3,0,37,1,1,0,1,1,1,0,1,1,117,0,13,1,14,0,51,1,119,0,18,1,11,0,51,1,120,0,20,1,3,0,1,1,3,0,37,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,3,0,2,1,122,0,63,1,137,0,62,1,137,0,59,1,140,0,51,1,2,0,1,1,146,0,45,1,155,0,43,1,156,0,43,1,158,0,41,1,158,0,31,1,1,0,1,1,1,0,1,1,2,0,3,1,160,0,31,1,7,0,1,1,162,0,32,1,168,0,33,1,166,0,37,1,164,0,37,1,164,0,39,1,162,0,39,1,161,0,42,1,158,0,21,1,1,0,21,1,158,0,19,1,3,0,22,1,159,0,13,1,10,0,21,1,156,0,13,1,11,0,22,1,157,0,1,1,2,0,1,1,19,0,1,1,2,0,18,1,183,0,18,1,184,0,19,1,183,0,18,1,185,0,17,1,184,0,17,1,184,0,18,1,185,0,18,1,183,0,18,1,183,0,21,1,180,0,1,1,1,0,19,1,183,0,18,1,183,0,19,1,182,0,1,1,1,0,17,1,4,0,2,1,179,0,22,1,180,0,20,1,182,0,18,1,182,0,18,1,178,0,2,1,1,0,1,1,1,0,17,1,173,0,27,1,172,0,28,1,173,0,27,1,172,0,28,1,169,0,29,1,171,0,26,1,173,0,27,1,174,0,25,1,174,0,26,1,151,0,4,1,3,0,1,1,1,0,1,1,1,0,1,1,5,0,3,1,3,0,12,1,1,0,2,1,1,0,1,1,2,0,3,1,1,0,1,1,152,0,35,1,164,0,35,1,166,0,34,1,165,0,35,1,162,0,38,1,162,0,35,1,164,0,36,1,149,0,1,1,14,0,36,1,144,0,12,1,8,0,35,1,144,0,13,1,2,0,1,1,1,0,1,1,2,0,12,1,2,0,1,1,3,0,1,1,2,0,1,1,1,0,1,1,3,0,1,1,1,0,1,1,4,0,1,1,142,0,35,1,165,0,34,1,165,0,35,1,165,0,35,1,164,0,36,1,163,0,34,1,1,0,1,1,164,0,33,1,167,0,34,1,166,0,33,1,162,0,2,1,2,0,27,1,2,0,1,1,1,0,1,1,163,0,32,1,167,0,33,1,167,0,33,1,168,0,32,1,168,0,32,1,169,0,2,1,3,0,29,1,1,0,2,1,1,0,2,1,2,0,1,1,162,0,41,1,160,0,40,1,161,0,39,1,162,0,38,1,163,0,37,1,165,0,36,1,165,0,35,1,166,0,33,1,167,0,33,1,173,0,2,1,1,0,1,1,1,0,1,1,1,0,1,1,9,0,11,1,11,0,1,1,2,0,2,1,5,0,1,1,3,0,1,1,4,0,1,1,158,0,43,1,158,0,43,1,156,0,44,1,157,0,42,1,158,0,43,1,157,0,42,1,158,0,42,1,158,0,43,1,157,0,42,1,161,0,2,1,1,0,2,1,1,0,1,1,3,0,3,1,1,0,2,1,1,0,6,1,1,0,1,1,2,0,12,1,190,0,12,1,9,0,2,1,1,0,1,1,4,0,2,1,170,0,32,1,167,0,34,1,166,0,35,1,165,0,36,1,165,0,35,1,164,0,35,1,166,0,34,1,166,0,33,1,167,0,32,1,171,0,2,1,2,0,1,1,1,0,1,1,2,0,5,1,3,0,1,1,2,0,1,1,2,0,1,1,2,0,1,1,886]};
 
 // ═══ MAP — 고정맵 생성기 ═══
 function genFromTemplate(tmpl,si){
   const mw=tmpl.mw,mh=tmpl.mh;
   const map=[];for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
   const rooms=[];
-  // tileRLE가 있으면 타일 직접 로드
-  if(tmpl.tileRLE&&tmpl.tileRLE.length>0){
-    const rle=tmpl.tileRLE;let pos=0;
-    for(let i=0;i<rle.length;i+=2){const v=rle[i],cnt=rle[i+1];for(let j=0;j<cnt;j++){const y=~~(pos/mw),x=pos%mw;if(y<mh&&x<mw)map[y][x]=v;pos++}}
-  }
 
-  // ── 1. 방 카빙 + rooms 구축 ──
-  const _hasTileRLE=tmpl.tileRLE&&tmpl.tileRLE.length>0;
+  // ── 1. 방 카빙 ──
   const roomMap={};// id→index
   for(const rd of tmpl.rooms){
     const cx=rd.cx,cy=rd.cy,rx=rd.rx||8,ry=rd.ry||rx;
-    if(!_hasTileRLE){
-      if(rd.shape==='ellipse') _tCarveEllipse(map,mw,mh,cx,cy,rx,ry);
-      else if(rd.shape==='circle') _tCarveCircle(map,mw,mh,cx,cy,rx);
-      else if(rd.shape==='rect') _tCarveRect(map,mw,mh,cx,cy,rx,ry);
-      else if(rd.shape==='cross'){const aw=rd.armW||~~(rx*.5),ah=rd.armH||~~(ry*.5);_tCarveCross(map,mw,mh,cx,cy,rx,ry,aw,ah)}
-      else if(rd.shape==='custom'&&rd.tiles){for(const[dx,dy]of rd.tiles){const tx=cx+dx,ty=cy+dy;if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=0}}
-      if(rd.pillars){for(const p of rd.pillars){const pw=p.w||2,ph=p.h||2;for(let dy=0;dy<ph;dy++)for(let dx=0;dx<pw;dx++){const tx=cx+p.dx+dx,ty=cy+p.dy+dy;if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=1}}}
+    if(rd.shape==='ellipse') _tCarveEllipse(map,mw,mh,cx,cy,rx,ry);
+    else if(rd.shape==='circle') _tCarveCircle(map,mw,mh,cx,cy,rx);
+    else if(rd.shape==='rect') _tCarveRect(map,mw,mh,cx,cy,rx,ry);
+    else if(rd.shape==='cross'){
+      const aw=rd.armW||~~(rx*.5),ah=rd.armH||~~(ry*.5);
+      _tCarveCross(map,mw,mh,cx,cy,rx,ry,aw,ah);
+    }else if(rd.shape==='custom'&&rd.tiles){
+      for(const[dx,dy]of rd.tiles){
+        const tx=cx+dx,ty=cy+dy;
+        if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=0;
+      }
     }
-    // rooms 배열에 추가 (항상)
+    // 기둥 배치 (방 내부 벽 복원)
+    if(rd.pillars){
+      for(const p of rd.pillars){
+        const pw=p.w||2,ph=p.h||2;
+        for(let dy=0;dy<ph;dy++)for(let dx=0;dx<pw;dx++){
+          const tx=cx+p.dx+dx,ty=cy+p.dy+dy;
+          if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=1;
+        }
+      }
+    }
+    // rooms 배열에 추가 (기존 포맷 호환)
     const rIdx=rooms.length;
     rooms.push({
       x:cx-rx, y:cy-ry, w:rx*2, h:ry*2,
@@ -11438,20 +11444,38 @@ function genFromTemplate(tmpl,si){
     roomMap[rd.id]=rIdx;
   }
 
-  // ── 2. 복도 카빙 (tileRLE 없을 때만) ──
-  if(!_hasTileRLE){
-    for(const cd of tmpl.corridors){
-      const fromR=tmpl.rooms.find(r=>r.id===cd.from);const toR=tmpl.rooms.find(r=>r.id===cd.to);if(!fromR||!toR)continue;
-      const w=cd.width||4,style=cd.style||'cave',pts=[{x:fromR.cx,y:fromR.cy}];
-      if(cd.waypoints)for(const wp of cd.waypoints)pts.push(wp);pts.push({x:toR.cx,y:toR.cy});
-      for(let i=0;i<pts.length-1;i++)_tCarveCorridor(map,mw,mh,pts[i].x,pts[i].y,pts[i+1].x,pts[i+1].y,w,style);
+  // ── 2. 복도 카빙 ──
+  for(const cd of tmpl.corridors){
+    const fromR=tmpl.rooms.find(r=>r.id===cd.from);
+    const toR=tmpl.rooms.find(r=>r.id===cd.to);
+    if(!fromR||!toR)continue;
+    const w=cd.width||4;
+    const style=cd.style||'cave';
+    const pts=[{x:fromR.cx,y:fromR.cy}];
+    if(cd.waypoints)for(const wp of cd.waypoints)pts.push(wp);
+    pts.push({x:toR.cx,y:toR.cy});
+    for(let i=0;i<pts.length-1;i++){
+      _tCarveCorridor(map,mw,mh,pts[i].x,pts[i].y,pts[i+1].x,pts[i+1].y,w,style);
     }
-    if(tmpl.features){for(const ft of tmpl.features){
-      if(ft.type==='alcove')_tCarveCircle(map,mw,mh,ft.x,ft.y,ft.r||3);
-      else if(ft.type==='pillar'){const pw=ft.w||2,ph=ft.h||2;for(let dy=0;dy<ph;dy++)for(let dx=0;dx<pw;dx++){const tx=ft.x+dx,ty=ft.y+dy;if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=1}}
-    }}
-    _tCaveSmooth(map,mw,mh,1);
   }
+
+  // ── 3. 추가 피처 (알코브 등) ──
+  if(tmpl.features){
+    for(const ft of tmpl.features){
+      if(ft.type==='alcove'){
+        _tCarveCircle(map,mw,mh,ft.x,ft.y,ft.r||3);
+      }else if(ft.type==='pillar'){
+        const pw=ft.w||2,ph=ft.h||2;
+        for(let dy=0;dy<ph;dy++)for(let dx=0;dx<pw;dx++){
+          const tx=ft.x+dx,ty=ft.y+dy;
+          if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=1;
+        }
+      }
+    }
+  }
+
+  // ── 4. CA 스무딩 1회 (자연스러운 벽면) ──
+  _tCaveSmooth(map,mw,mh,1);
 
   // ── 5. 보스방 처리 ──
   const bossRd=tmpl.rooms.find(r=>r.type==='boss');
@@ -11515,9 +11539,8 @@ function genFromTemplate(tmpl,si){
     }
   }
 
-  // ── 7. 연결 검증 — 막힌 방까지 복도 강제 뚫기 (tileRLE 없을 때만) ──
+  // ── 7. 연결 검증 — 막힌 방까지 복도 강제 뚫기 ──
   const startRm=rooms.find(r=>r.type==='start');
-  if(!_hasTileRLE)
   if(startRm){for(let _vP=0;_vP<5;_vP++){
     const _vis2=[];for(let y=0;y<mh;y++)_vis2[y]=new Uint8Array(mw);
     const _vq2=[{x:startRm.cx,y:startRm.cy}];_vis2[startRm.cy][startRm.cx]=1;
@@ -11543,10 +11566,6 @@ function genFromTemplate(tmpl,si){
 
   // ── 9. 소환굴 배치 ──
   const spawnHoles=[];
-  if(tmpl.spawnHoles&&tmpl.spawnHoles.length>0){
-    for(const sh of tmpl.spawnHoles){const hSize=sh.type==='S'?.3:sh.type==='M'?.5:.8;
-      spawnHoles.push({x:(sh.x+.5)*T,y:(sh.y+.5)*T,size:hSize,timer:600+Math.random()*60,alive:0,room:-1})}
-  }
   const bossDistMax=bossRm?bossRm.cy:1;
   // 보스 인접 방 찾기 (보스 cy에 가장 가까운 non-boss/start 방)
   let _preBossRm=null,_preBossD=Infinity;
@@ -11913,7 +11932,7 @@ _buildAtlasE(); // 신규 적 아틀라스 (가변프레임 × 7팔레트)
 _buildAtlasB(); // 신규 보스 아틀라스 (27프레임 × 7팔레트)
 
 // ═══ 소환굴 등급 ═══
-const SPAWN_HOLE={name:'소환굴',col:'#aa4444',cnt:{S:50,M:100,L:200}};
+const SPAWN_HOLE={name:'소환굴',col:'#aa4444',cnt:10};
 
 // ═══ 엘리트/모디파이어 시스템 ═══
 const ELITE_TIERS=[
@@ -12796,14 +12815,14 @@ function update(){
       if(_harpSk==='charge'&&P.activeChargeSk==='magicBlink'){
         // magicBlink는 블링크로 처리
       }
-      // ── 기동파괴: 착지 시 고데미지+그로기 특화 AOE ──
+      // ── 기동파괴: 착지 시 포이즈 특화 AOE ──
       if(P._chainSlamReady){
         P._chainSlamReady=false;
         const _csLv=P.skills.chainSlam||1;
-        const _csR=250+(_csLv-1)*20;
+        const _csR=200+(_csLv-1)*15;
         const _csTravD=dst(P._csSlamOX||P.x,P._csSlamOY||P.y,P.x,P.y);
-        const _csDistMul=1+Math.min(_csTravD/150,5);
-        const _csDmg=~~(meleeRef()*8*(1+(_csLv-1)*0.15)*statStr()*_csDistMul*_fuseMul('chainSlam'));
+        const _csDistMul=1+Math.min(_csTravD/200,3);
+        const _csDmg=~~(meleeRef()*4*(1+(_csLv-1)*0.10)*statStr()*_csDistMul*_fuseMul('chainSlam'));
         const _csEl=wp().el||0;
         G._noHitStopT=40;
         const _csNe=shQuery(P.x,P.y,_csR+20);
@@ -12811,15 +12830,15 @@ function update(){
           const d=dst(P.x,P.y,e.x,e.y);if(d>_csR+e.r)continue;
           const ang=Math.atan2(e.y-P.y,e.x-P.x);
           const mult=elMul(_csEl,e.el);const fd=~~(_csDmg*mult);
-          hurtE(e,fd,ang,false,{kbMult:3,poiseHit:true,poiseMult:6.0*(1+(_csLv-1)*0.15)},_csEl);
-          e.kb.x+=Math.cos(ang)*20;e.kb.y+=Math.sin(ang)*20;
-          if(!e.isBoss){e.stunned=Math.max(e.stunned,300);addTxt(e.x,e.y-18,'💫 기절!','#ffcc00',35)}
+          hurtE(e,fd,ang,false,{kbMult:2,poiseHit:true,poiseMult:3.0*(1+(_csLv-1)*0.1)},_csEl);
+          e.kb.x+=Math.cos(ang)*15;e.kb.y+=Math.sin(ang)*15;
+          if(!e.isBoss){e.stunned=Math.max(e.stunned,180);addTxt(e.x,e.y-18,'💫 기절!','#ffcc00',35)}
           else{addTxt(e.x,e.y-18,'⚡ 체간삭감!','#ffcc00',35)}
-          for(let j=0;j<8;j++){const a2=Math.PI*2*j/8;poolPart(e.x,e.y,Math.cos(a2)*4,Math.sin(a2)*4,'#ffcc00',3+Math.random()*4,14)}
+          for(let j=0;j<6;j++){const a2=Math.PI*2*j/6;poolPart(e.x,e.y,Math.cos(a2)*3,Math.sin(a2)*3,'#ffcc00',3+Math.random()*3,12)}
         }
-        playSample('heavy_hit',1,_r(.8,.1));
+        SFX.slam();playSample('impact_hit',.8,_r(.7,.1));
         addTxt(P.x,P.y-30,'⚡ 기동파괴! x'+_csDistMul.toFixed(1),_csDistMul>=3?'#ffaa00':'#ffcc44',45);
-        shake(60);G.chromaT=15;
+        shake(50);G.chromaT=12;
         if(!G._gSlamWave)G._gSlamWave=[];
         G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_csR*2.5,t:0,maxT:35,col:'#ffcc00'});
         for(let j=0;j<24;j++){const _a=Math.PI*2*j/24;const _d=40+Math.random()*(_csR-40);
@@ -13272,7 +13291,7 @@ function update(){
           const _dist=Math.sqrt(_dx*_dx+_dy*_dy);
           const _ltSeed=(~~(_now/50))*131+_bi*71;
           const _ltB=P._sbPts[_bi];_ltB._n=2;_ltB[0]=P.x;_ltB[1]=P.y;
-          _ltSub(_ltB,P.x,P.y,_tgt.x,_tgt.y,250,4,_ltSeed);
+          _ltSub(_ltB,P.x,P.y,_tgt.x,_tgt.y,350,5,_ltSeed);
           P._sbPtsCnt[_bi]=~~(_ltB._n/2);
           // 히트
           if(_sbDoHit&&_dist<_sbRng){
@@ -14803,18 +14822,17 @@ function update(){
     // 신성한 감옥 fireZone 범위 내 → 즉시 제거
     if(G._fireZones){let _hpBlocked=false;for(let _fi=0;_fi<G._fireZones.length;_fi++){const _fz=G._fireZones[_fi];if(_fz.type==='holyPrison'&&dst(h.x,h.y,_fz.x,_fz.y)<_fz.r){addTxt(h.x,h.y-20,'✟ 신성 차단!','#ffdd88',40);G.spawnHoles.splice(hi,1);_hpBlocked=true;break}}if(_hpBlocked)continue}
     const _hd2=dst2(P.x,P.y,h.x,h.y);
-    // 600px 이내 접근 시 트리거 시작
+    // 2000px 이내 접근 시 트리거 시작
     if(!h._triggered){
-      if(_hd2<360000)h._triggered=true; // 600^2
+      if(_hd2<4000000)h._triggered=true; // 2000^2
       continue;
     }
-    // 트리거 후 연출 타이머 (3초 동안 소환굴 빛남)
-    if(h._spawnDelay==null)h._spawnDelay=180;
+    // 트리거 후 연출 타이머 (1.5초 동안 소환굴 빛남)
+    if(h._spawnDelay==null)h._spawnDelay=90;
     if(h._spawnDelay>0){h._spawnDelay-=sp;continue}
     // 몹 스폰
     const _hSi=G.stage;
-    const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';
-    const _hCnt=SPAWN_HOLE.cnt[_hType]||50;
+    const _hCnt=SPAWN_HOLE.cnt;
     for(let _hj=0;_hj<_hCnt;_hj++){
       const _ha=Math.PI*2*Math.random(),_hr=80+Math.random()*200+h.size*120;
       const ne=mkEn(h.x+Math.cos(_ha)*_hr,h.y+Math.sin(_ha)*_hr,_hSi,rollEtype(_hSi),false,undefined,h.room);
@@ -21114,7 +21132,7 @@ const SKILL_LIST=[
   {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,emoji:'❄',desc:'마우스 조준 설치. 2스택 (8초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 3초 지속. MP 40. Lv당 범위+10 축적+10%',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
   {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹 100% 기절, 보스 체간 40%. 회전기폭과 합체→지진폭풍!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:480},
   {id:'chainAssault',name:'기동불꽃',cat:'move',desc:'사슬기동 중 좌클릭 → 즉시 착지하며 화염폭발. 범위300 INT 스케일 화염 마법데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). MP 소모. Lv당 범위+20 뎀+12%',spCost:10,matCost:0,up:true,upSp:5,upMat:0},
-  {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 우클릭 → 땅 내려찍기. 범위250 데미지x8 그로기x6. 이동거리 비례 최대x6. 일반몹 즉시 기절(5초), 보스 체간 대량 삭감. Lv당 범위+20 데미지+15% 그로기+15%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 우클릭 → 칼 옆으로 땅 내려찍기. 범위200 포이즈 데미지 특화(x3). 일반몹 즉시 기절, 보스 체간 대량 삭감. Lv당 범위+15 포이즈+10%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'peaceShield',name:'평화의보호',cat:'def',fixed:true,hidden:true,emoji:'🕊️',desc:'[히든: 뇌전나선 합체] Q 홀드 시 보호막이 점점 커지며 HP 초당 10% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'✝',desc:'[히든: 뇌전나선 합체] E로 조준, 클릭 설치. 신성 십자가를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. Lv당 거리+50',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'둔격호',cat:'def',fixed:true,emoji:'🛡️',desc:'[고정: 칼등치기 합체] 우클릭 칼등치기 시 자동 발사. 회전하며 전진, 적 관통+넉백+투사체 반사. 쿨 5초. Lv당 뎀+12% 사거리+30',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
@@ -21613,7 +21631,7 @@ function activateMaliceHunt(){
       const orbAng=P._gOrbAng+(Math.PI*2/_goCnt)*gi;
       const ox=P.x+Math.cos(orbAng)*_goR,oy=P.y+Math.sin(orbAng)*_goR;
       const ta=_bestE?Math.atan2(_bestE.y-oy,_bestE.x-ox)+(gi-_goCnt/2)*0.08:P.facing+(gi-_goCnt/2)*0.12;
-      {const _pp=_getPProj();_pp.x=ox;_pp.y=oy;_pp.vx=Math.cos(ta)*18;_pp.vy=Math.sin(ta)*18;_pp.dmg=_fbDmg;_pp.el=EL.P;_pp.maxDist=6000;_pp.dist=0;_pp.r=8;_pp.stagger=6;_pp.kb=0;_pp.magic=true;_pp.maliceHunt=true;_pp.mhBlade=true;_pp.mhFused=true;_pp.mhPlague=_isPlagueGF;_pp._pierced=0;_pp._mhMaxPierce=_fbPierce;_pp._hitSet=new Set();_pp._maxBounce=9999;_pp.bomb=true;_pp.bombR=_fbBombR;_pp.bombAtk=~~(_fbDmg*0.5);pProjs[pProjs.length]=_pp;}
+      {const _pp=_getPProj();_pp.x=ox;_pp.y=oy;_pp.vx=Math.cos(ta)*18;_pp.vy=Math.sin(ta)*18;_pp.dmg=_fbDmg;_pp.el=EL.P;_pp.maxDist=6000;_pp.dist=0;_pp.r=8;_pp.stagger=6;_pp.kb=0;_pp.magic=true;_pp.maliceHunt=true;_pp.mhBlade=true;_pp.mhFused=true;_pp._pierced=0;_pp._mhMaxPierce=_fbPierce;_pp._hitSet=new Set();_pp._maxBounce=9999;_pp.bomb=true;_pp.bombR=_fbBombR;_pp.bombAtk=~~(_fbDmg*0.5);pProjs[pProjs.length]=_pp;}
     }
     // 독혈해방 합체: 폭독칼날 1발 동시 발사
     if(_isPlagueGF){
@@ -24844,13 +24862,13 @@ function draw(){
     X.globalAlpha=1;X.restore();
   }
 
+  // ═══ 균열 렌더링 (시각효과 제거) ═══
   // ═══ 소환굴 렌더링 (vfx_void_black 스프라이트) ═══
-  if(_gameFrame>30){const _shVfx=_VFX_SHEETS['void_black'];
-  X.save();X.setTransform(1,0,0,1,C.width/2-G.cam.x,C.height/2-G.cam.y);
+  {const _shVfx=_VFX_SHEETS['void_black'];
   for(let hi=0;hi<G.spawnHoles.length;hi++){
     const h=G.spawnHoles[hi];
-    if(h.x<G.cam.x-C.width/2-150||h.x>G.cam.x+C.width/2+150||h.y<G.cam.y-C.height/2-150||h.y>G.cam.y+C.height/2+150)continue;
-    const _shSize=150+h.size*150; // S=195 M=225 L=270px
+    if(h.x<G.cam.x-C.width/2-200||h.x>G.cam.x+C.width/2+200||h.y<G.cam.y-C.height/2-200||h.y>G.cam.y+C.height/2+200)continue;
+    const _shSize=300+h.size*400; // 사이즈 기반 (300~700)
     if(_shVfx&&_shVfx.img.complete){
       const _shSpd=180-~~(h.size*60);
       const _shFrame=~~((_now+hi*500)/_shSpd)%_shVfx.frames;
@@ -24859,24 +24877,24 @@ function draw(){
       X.globalAlpha=.7+pulse;
       X.drawImage(_shVfx.img,_shCol*_shVfx.fw,_shRow*_shVfx.fh,_shVfx.fw,_shVfx.fh,
         h.x-_shSize/2,h.y-_shSize/2,_shSize,_shSize);
+      // 트리거 후 스폰 대기 중 → 밝게 + 스케일업 + 맥동
       if(h._triggered){
-        const glow=h._spawnDelay!=null?Math.max(0,1-h._spawnDelay/180):1;
+        const glow=h._spawnDelay!=null?Math.max(0,1-h._spawnDelay/90):1;
         X.globalAlpha=glow*.5;
         const _shG=_shSize*(1+glow*.4);
         X.drawImage(_shVfx.img,_shCol*_shVfx.fw,_shRow*_shVfx.fh,_shVfx.fw,_shVfx.fh,
           h.x-_shG/2,h.y-_shG/2,_shG,_shG);
       }
     } else {
+      // 폴백: 검은 원
       X.globalAlpha=.4;X.fillStyle='#000000';X.beginPath();X.arc(h.x,h.y,_shSize/2,0,Math.PI*2);X.fill();
     }
+    // 이름 표시
     X.globalAlpha=.7;X.font='bold 10px monospace';X.textAlign='center';X.fillStyle=SPAWN_HOLE.col;
     X.fillText(SPAWN_HOLE.name,h.x,h.y-_shSize/2-6);X.textAlign='left';
     X.globalAlpha=1;
-  }
-  X.restore();}
-
+  }}
   // ═══ 보스 아레나 동적 FX (보스 생존 시만) ═══
-
   if(G._bossArena&&G.bossAlive&&G.rooms[0]){
     const _br=G.rooms[0],_bcx=(_br.cx+.5)*T,_bcy=(_br.cy+.5)*T;
     const _bh=SI_TO_HELL[G.stage];
@@ -26604,33 +26622,28 @@ function draw(){
       const _ecS='#ffee44'; // 전기 스파크 노란색
       const _egS='#ffffaa';
       if(_isElemR&&P._omniPts){
-        // ═══ 추적뇌전: 유도 경로 → 재귀 번개 (뇌전나선 스타일) ═══
-        const _bSeed3=~~(t/50);
-        _ltPoolI=0;_ltBranchI=0;
+        // ═══ 추적뇌전: 포인트 풀 유도 경로 사용 (전기색) ═══
         for(let bi=0;bi<6;bi++){
           const _cnt=_beamPtsCnt[bi];if(_cnt<2)continue;
           const _pool=_beamPtsPool[bi];
-          const lp=_pool[_cnt-1];
-          const _bp3=_lightningPath(P.x,P.y,lp.x,lp.y,250,4,_bSeed3*131+bi*71);
-          const _bn3=_bp3._n||2;
           // 외곽 글로우
           X.globalAlpha=.25;X.strokeStyle=_ecS;X.lineWidth=10;
-          X.beginPath();X.moveTo(_bp3[0],_bp3[1]);
-          for(let _i=2;_i<_bn3;_i+=2)X.lineTo(_bp3[_i],_bp3[_i+1]);X.stroke();
+          X.beginPath();X.moveTo(_pool[0].x,_pool[0].y);
+          for(let pi=1;pi<_cnt;pi++)X.lineTo(_pool[pi].x,_pool[pi].y);X.stroke();
           // 메인
           X.globalAlpha=.8;X.strokeStyle=_ecS;X.lineWidth=3;
-          X.beginPath();X.moveTo(_bp3[0],_bp3[1]);
-          for(let _i=2;_i<_bn3;_i+=2)X.lineTo(_bp3[_i],_bp3[_i+1]);X.stroke();
+          X.beginPath();X.moveTo(_pool[0].x,_pool[0].y);
+          for(let pi=1;pi<_cnt;pi++)X.lineTo(_pool[pi].x,_pool[pi].y);X.stroke();
           // 백색 코어
           X.globalAlpha=.9;X.strokeStyle='#fff';X.lineWidth=1.2;
-          X.beginPath();X.moveTo(_bp3[0],_bp3[1]);
-          for(let _i=2;_i<_bn3;_i+=2)X.lineTo(_bp3[_i],_bp3[_i+1]);X.stroke();
+          X.beginPath();X.moveTo(_pool[0].x,_pool[0].y);
+          for(let pi=1;pi<_cnt;pi++)X.lineTo(_pool[pi].x,_pool[pi].y);X.stroke();
           // 끝점 글로우
+          const lp=_pool[_cnt-1];
           X.globalAlpha=.7;X.fillStyle=_egS;X.beginPath();X.arc(lp.x,lp.y,8,0,Math.PI*2);X.fill();
           X.globalAlpha=.15;X.fillStyle=_ecS;X.beginPath();X.arc(lp.x,lp.y,16,0,Math.PI*2);X.fill();
-          // 파티클
-          if(Math.random()>.7){const _ri3=Math.min(~~((_bn3/2)*Math.random())*2,Math.max(0,_bn3-2));
-            poolPart(_bp3[_ri3],_bp3[_ri3+1],(Math.random()-.5)*3,(Math.random()-.5)*3,_ecS,2+Math.random()*2,5+Math.random()*5)}
+          if(Math.random()>.7){const _ri=~~(_cnt*Math.random());
+            poolPart(_pool[_ri].x,_pool[_ri].y,(Math.random()-.5)*3,(Math.random()-.5)*3,_ecS,2+Math.random()*2,5+Math.random()*5)}
         }
         X.globalAlpha=.4;X.fillStyle=_ecS;X.beginPath();X.arc(P.x,P.y,10+Math.sin(t/30)*3,0,Math.PI*2);X.fill();
         X.globalAlpha=.7;X.fillStyle=_ecS;X.font='bold 14px "Noto Sans KR"';X.textAlign='center';
@@ -29763,19 +29776,18 @@ function drawP(){
         X.globalAlpha=fa;X.fillStyle='#ccffff';
         X.beginPath();X.moveTo(p.r+2,0);X.lineTo(0,-p.r*.35);X.lineTo(-p.r,0);X.lineTo(0,p.r*.35);X.closePath();X.fill();
         if(Math.random()>.6)poolPart(p.x+(Math.random()-.5)*8,p.y+(Math.random()-.5)*8,(Math.random()-.5),(Math.random()-.5),'#aaeeff',1+Math.random()*2,8+Math.random()*6);
-      }else if(p.mhBlade){// ── BLADE: 악의사냥/독혈해방 물리칼날 ──
+      }else if(p.mhBlade){// ── WHITE BLADE: 악의사냥 물리칼날 (날카로운 캔버스) ──
         X.rotate(ang);
         const _mhF=p.mhFused;
-        const _mhP=p.mhPlague; // 독혈해방 여부
-        // 메인 칼날: 좁고 긴 다이아몬드 (24x3)
+        // 메인 칼날: 좁고 긴 다이아몬드 (24x3) — gradient→고정색 (핫패스)
         X.globalAlpha=fa*.95;
-        X.fillStyle=_mhP?'#cc2244':_mhF?'#ddeeff':'#ccccdd';
+        X.fillStyle=_mhF?'#ddeeff':'#ccccdd';
         X.beginPath();X.moveTo(24,0);X.lineTo(2,-2.5);X.lineTo(-10,0);X.lineTo(2,2.5);X.closePath();X.fill();
         // 칼날 엣지 하이라이트
-        X.globalAlpha=fa*.5;X.strokeStyle=_mhP?'#ff4466':'#ffffff';X.lineWidth=.8;
+        X.globalAlpha=fa*.5;X.strokeStyle='#ffffff';X.lineWidth=.8;
         X.beginPath();X.moveTo(24,0);X.lineTo(2,-2.5);X.lineTo(-10,0);X.stroke();
         // 중심 빛줄기
-        X.globalAlpha=fa*.3;X.strokeStyle=_mhP?'#ff2244':_mhF?'#aaccff':'#ddddee';X.lineWidth=1.2;
+        X.globalAlpha=fa*.3;X.strokeStyle=_mhF?'#aaccff':'#ddddee';X.lineWidth=1.2;
         X.beginPath();X.moveTo(-8,0);X.lineTo(22,0);X.stroke();
         // 트레일: 좁은 잔상
         if(p._trail&&p._trLen>0){
@@ -29785,7 +29797,7 @@ function drawP(){
             const _tf=1-ti/p._trLen,_ts=_tf*.5;
             const _dx=_tt.x-p.x,_dy=_tt.y-p.y;
             const _lx=_dx*_cs-_dy*_sn,_ly=_dx*_sn+_dy*_cs;
-            X.globalAlpha=fa*_tf*.25;X.fillStyle=_mhP?'#882233':_mhF?'#aabbcc':'#bbbbcc';
+            X.globalAlpha=fa*_tf*.25;X.fillStyle=_mhF?'#aabbcc':'#bbbbcc';
             X.beginPath();X.moveTo(_lx+10*_ts,_ly);X.lineTo(_lx-6*_ts,_ly-1.5*_ts);X.lineTo(_lx-6*_ts,_ly+1.5*_ts);X.closePath();X.fill();
           }
         }
