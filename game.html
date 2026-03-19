@@ -1237,6 +1237,8 @@ function dbRestore(d){
   if(P._fused.slamStorm&&!P._fused.whirlDet)P._fused.whirlDet=true;
   // stormBeam 있으면 slamStorm+elemFuse+하위 전부 보장
   if(P._fused.stormBeam){if(!P._fused.slamStorm)P._fused.slamStorm=true;if(!P._fused.whirlDet)P._fused.whirlDet=true;if(!P._fused.elemFuse)P._fused.elemFuse=true;if(!P._fused.sixFuse)P._fused.sixFuse=true;if(!P.skills.peaceShield)P.skills.peaceShield=1;if(!P.skills.hellRay)P.skills.hellRay=1;}
+  // Lv500 히든: 파란탄 자동 해금
+  if(P.lv>=500&&!P.skills.blueShot)P.skills.blueShot=1;
   // elecRepent 있으면 boneStorm 하위 보장
   if(P._fused.elecRepent){if(!P._fused.boneStorm)P._fused.boneStorm=true;if(!P.skills.boneWall)P.skills.boneWall=1;if(!P.skills.hellRay)P.skills.hellRay=1}
   // holyIce 있으면 holyFuse 하위 보장
@@ -1343,7 +1345,7 @@ function dbRestore(d){
   const _fixedKick=['grenadeShot','bladeShot','fanShot','omniBeam','bladeDash','ghostWalk','iceOrb','spikeTrap'];
   for(let _si=0;_si<6;_si++){if(_fixedKick.includes(SKILL_SLOTS[_si]))SKILL_SLOTS[_si]=null}
   // 배운 액티브 스킬이 슬롯에 없으면 자동 배정 (합체 흡수/고정슬롯 제외)
-  const _fixedSlotSk=['grenadeShot','bladeShot','fanShot','omniBeam','bladeDash','shieldThrow','blastShot','ghostWalk','iceOrb','spikeTrap','chainSlam','chainAssault','needleShot','peaceShield','hellRay']; // 고정스킬 (슬롯 자동배정 제외)
+  const _fixedSlotSk=['grenadeShot','bladeShot','fanShot','omniBeam','bladeDash','shieldThrow','blastShot','ghostWalk','iceOrb','spikeTrap','chainSlam','chainAssault','needleShot','peaceShield','hellRay','blueShot']; // 고정스킬 (슬롯 자동배정 제외)
   const _actIds=SKILL_LIST.filter(sk=>sk.act&&!sk.ult&&P.skills[sk.id]>=1&&!_fKick.includes(sk.id)&&!_fixedSlotSk.includes(sk.id)).map(sk=>sk.id);
   _actIds.forEach(id=>{
     if(!SKILL_SLOTS.includes(id)){const _ei=SKILL_SLOTS.findIndex((s)=>s===null);if(_ei>=0)SKILL_SLOTS[_ei]=id}
@@ -3291,7 +3293,7 @@ function handleCharSelectClick(mx,my){
 }
 // ── Atlas E External (외부 적 아틀라스) ──
 let _atlasExtEReady=false,_atlasExtE_img=null,_atlasExtE_frames=null;
-const _USE_EXT_ATLAS=true;
+const _USE_EXT_ATLAS=false;
 (function _loadAtlasExtE(){
   if(!_USE_EXT_ATLAS)return;
   const img=new Image();img.src='atlas_enemies.png';
@@ -4763,15 +4765,16 @@ function _invFindSpace(w,h,skip){
   return null;
 }
 function _invAutoPlace(){
-  // 정렬: 즐겨찾기 → 장착템보다 CP높은 업그레이드 → 나머지 파워순 → 쓰레기
+  // 정렬: 즐겨찾기 → 쓰레기 → 1순위:장착템보다 CP 높은 것 위로 → 2순위:CP 높은 순
   const _eqPow={};
   for(const s of SLOT_NAMES){const eq=INV.equipped[s];_eqPow[s]=eq?itemPower(eq):0}
   INV.bag.sort((a,b)=>{
     if(!!a.fav!==!!b.fav)return a.fav?-1:1;
     if(!!a.junk!==!!b.junk)return a.junk?1:-1;
-    const aGain=itemPower(a)-_eqPow[a.slot];
-    const bGain=itemPower(b)-_eqPow[b.slot];
-    return bGain-aGain; // CP 상승치 높은 순
+    const aUp=itemPower(a)>_eqPow[a.slot]?1:0;
+    const bUp=itemPower(b)>_eqPow[b.slot]?1:0;
+    if(aUp!==bUp)return bUp-aUp; // 업그레이드템 위로
+    return itemPower(b)-itemPower(a); // CP 높은 순
   });
   // 그리드 초기화
   for(let i=0;i<INV.bag.length;i++){INV.bag[i]._gx=null;INV.bag[i]._gy=null}
@@ -5455,7 +5458,7 @@ function findBoss(){if(G._bossRef&&G._bossRef.alive)return G._bossRef;for(let i=
 function teleportE(e,nx,ny,col,n){if(!canMv(nx,ny,e.r))return false;addParts(e.x,e.y,col,n);e.x=nx;e.y=ny;addParts(e.x,e.y,col,n);return true}
 function _beanRoll(el,col,sz,spd,dmgMult){const r=Math.random();if(r<.167)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:dmgMult*1.5,blackBean:true,noParry:true};if(r<.333)return{el:el,col:'#cc1100',sz:1.5,spd:spd,dmgM:dmgMult*1.2,redBean:true,homing:true};if(r<.5)return{el:EL.P,col:'#111111',sz:1.6,spd:spd*1.1,dmgM:dmgMult*1.3,bwBean:true};if(r<.667)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:dmgMult*1.3,gbBean:true};if(r<.833)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:dmgMult};return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:dmgMult*1.1}}
 function radialProjs(e,count,spd,dmgMult,el,life,col,sz){count*=2;life=~~(life*1.5);for(let i=0;i<count;i++){const a=Math.PI*2*i/count;const b=_beanRoll(el,col,sz,spd,dmgMult);spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*b.spd,vy:Math.sin(a)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,noParry:b.noParry})}}
-function eProjAt(e,ang,spd,dmgMult,el,life,col,sz){life=~~(life*1.5);for(let _ep=0;_ep<2;_ep++){const _epa=ang+(_ep-.5)*.15;const b=_beanRoll(el,col,sz,spd,dmgMult);spawnProj({x:e.x,y:e.y,vx:Math.cos(_epa)*b.spd,vy:Math.sin(_epa)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,noParry:b.noParry})}}
+function eProjAt(e,ang,spd,dmgMult,el,life,col,sz){life=~~(life*1.5);const b=_beanRoll(el,col,sz,spd,dmgMult);spawnProj({x:e.x,y:e.y,vx:Math.cos(ang)*b.spd,vy:Math.sin(ang)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,noParry:b.noParry})}
 // ═══ [S09] ENEMY/BOSS/PLAYER BODY DRAWING ═══
 function drawEnBody(X,e,_now,sa){
   // ── 아틀라스 스킨 우선 (동그라미 방지) ──
@@ -8213,7 +8216,7 @@ function _waRow(et){return _WA_ROW[et]||0}
   img.onerror=function(){console.warn('[WALK_ATLAS] 로드 실패')};
 })();
 
-// ── 보스 걷기 아틀라스 (7행 × 20칸, 64px) ──
+// ── 보스 걷기 아틀라스 (35행 × 20칸, 64px) ──
 const _bossWalkAtlas={img:null,ready:false};
 const _BWA_CELL=64,_BWA_COLS=20;
 const _BWA={idle:{s:0,n:4},walk:{s:4,n:4},attack:{s:8,n:6},hit:{s:14,n:6}};
@@ -8228,6 +8231,19 @@ const _BWA={idle:{s:0,n:4},walk:{s:4,n:4},attack:{s:8,n:6},hit:{s:14,n:6}};
   if(img.complete&&img.naturalWidth>0){_bossWalkAtlas.ready=true}
   img.onerror=function(){console.warn('[BOSS_WALK] 로드 실패')};
 })();
+// ── 보스 방향별 아틀라스 (스테이지별 개별 파일, 4행=S/E/N/W × 20칸) ──
+const _bossDirAtlas={};
+(function _loadBossDirAtlases(){
+  const stages=[0]; // 방향 아틀라스가 있는 스테이지 목록
+  stages.forEach(function(si){
+    const a={img:null,ready:false};
+    const img=new Image();img.src='img/mobs/atlas_boss_si'+si+'_dir.png?v=1';
+    a.img=img;
+    img.onload=function(){if(img.decode){img.decode().then(function(){a.ready=true;console.log('[BOSS_DIR] si'+si+' 디코딩 완료 '+img.width+'x'+img.height)}).catch(function(){a.ready=true})}else{a.ready=true}};
+    img.onerror=function(){};
+    _bossDirAtlas[si]=a;
+  });
+})();
 function _getBossWalkState(e){
   const s=e.s;
   if(s==='eHit'||s==='eKB'||s==='eStagger'||s==='eDeath'||e.hp<=0)return 'hit';
@@ -8235,9 +8251,36 @@ function _getBossWalkState(e){
   if(s==='eApproach'||s==='eCircle'||s==='eRetreat'||s==='eFlee'||s==='bossMultiDash')return 'walk';
   return 'idle';
 }
+// facing → 방향 행 (0=S, 1=E, 2=N, 3=W)
+function _facingToDir4(f){
+  const a=((f%(_PI2))+_PI2)%_PI2; // 0~2PI 정규화
+  if(a<_PI4||a>=_PI4*7)return 0;       // south (down)
+  if(a>=_PI4&&a<_PI4*3)return 3;       // west (left)
+  if(a>=_PI4*3&&a<_PI4*5)return 2;     // north (up)
+  return 1;                              // east (right)
+}
+const _PI2=Math.PI*2,_PI4=Math.PI/4;
 function _drawBossWalk(X,e,now,sa,tdY){
-  if(!_bossWalkAtlas.ready)return false;
   const si=G.stage||0;
+  // ── 방향별 아틀라스 (우선) ──
+  const da=_bossDirAtlas[si];
+  if(da&&da.ready){
+    const st=_getBossWalkState(e);
+    const off=_BWA[st]||_BWA.idle;
+    const fi=~~(now/200)%off.n;
+    const col=off.s+fi;
+    const dirRow=_facingToDir4(e.facing);
+    const sx=col*_BWA_CELL,sy=dirRow*_BWA_CELL;
+    const sc=e.r*2/_BWA_CELL*1.2;
+    const dw=_BWA_CELL*sc,dh=_BWA_CELL*sc;
+    X.save();X.translate(e.x,e.y+(tdY||0));
+    X.globalAlpha=sa;
+    X.drawImage(da.img,sx,sy,_BWA_CELL,_BWA_CELL,-dw/2,-dh/2,dw,dh);
+    X.restore();
+    return true;
+  }
+  // ── 기본 걷기 아틀라스 (폴백) ──
+  if(!_bossWalkAtlas.ready)return false;
   if(si<0||si>34)return false;
   const st=_getBossWalkState(e);
   const off=_BWA[st]||_BWA.idle;
@@ -11076,24 +11119,36 @@ function genGauntlet(fi){
   const spawnHoles=[];
   const bossRoomRef=rooms.find(r=>r.type==='boss');
   const bossDistMax=bossRoomRef?bossRoomRef.cy:1;
+  // 보스 방과 인접한 방 찾기 (보스 방 cy와 가장 가까운 non-boss 방)
+  let _preBossRoom=null,_preBossDist=Infinity;
+  for(let ri=0;ri<rooms.length;ri++){
+    const r=rooms[ri];if(r.type==='boss'||r.type==='start')continue;
+    const _d2=Math.abs(r.cy-bossDistMax);
+    if(_d2<_preBossDist){_preBossDist=_d2;_preBossRoom=r}
+  }
   for(let ri=0;ri<rooms.length;ri++){
     const r=rooms[ri];
     if(r.type==='start'||r.type==='boss')continue;
     // 보스까지 Y거리로 등급 결정 (가까울수록 높은 등급)
     const distRatio=bossDistMax>0?Math.max(0,1-(r.cy/bossDistMax)):0;
     const grade=Math.min(3,~~(distRatio*4));
-    // 방 크기에 비례해서 소환굴 2~5개 배치
-    const _rArea=r.w*r.h;
-    const _holeCount=Math.max(2,Math.min(5,~~(_rArea/40)));
+    // [규칙1] 모든 방에 소환굴 최소 1개, 크기 비례 2~5개
+    const _rW=r.w||r.rx*2||12,_rH=r.h||r.ry*2||8;
+    const _rArea=_rW*_rH;
+    let _holeCount=Math.max(1,Math.min(5,~~(_rArea/40)));
+    // [규칙3] 큰 방(15타일 초과)에 추가 1개
+    if(_rW>15||_rH>15)_holeCount++;
+    // [규칙2] 보스 인접 방에 최소 2개
+    if(_preBossRoom&&r===_preBossRoom)_holeCount=Math.max(2,_holeCount);
     for(let _hci=0;_hci<_holeCount;_hci++){
-      const _ox=(Math.random()-.5)*r.w*.7*T;
-      const _oy=(Math.random()-.5)*r.h*.7*T;
+      const _ox=(Math.random()-.5)*_rW*.7*T;
+      const _oy=(Math.random()-.5)*_rH*.7*T;
       const hx=(r.cx+.5)*T+_ox,hy=(r.cy+.5)*T+_oy;
-      const _hGrade=_hci===0?grade:Math.max(0,grade-1); // 첫번째는 원래 등급, 나머지는 1단계 낮게
+      const _hGrade=_hci===0?grade:Math.max(0,grade-1);
       spawnHoles.push({x:hx,y:hy,grade:_hGrade,timer:600+Math.random()*60,alive:0,room:ri});
     }
   }
-  // 복도 spine 전체에 균열 다수 배치 (10~17개)
+  // 복도 spine 전체에 균열 배치 (10~17개)
   const corridorCnt=10+~~(Math.random()*8);
   const spineStep=Math.max(1,~~(spine.length/corridorCnt));
   for(let ci=0;ci<corridorCnt;ci++){
@@ -11101,41 +11156,18 @@ function genGauntlet(fi){
     const sp2=spine[si2];if(!sp2)continue;
     const hx2=(sp2.cx+.5)*T,hy2=(sp2.y+.5)*T;
     let inRoom=false;
-    for(const r of rooms){if(sp2.cx>=r.x&&sp2.cx<=r.x+r.w&&sp2.y>=r.y&&sp2.y<=r.y+r.h){inRoom=true;break}}
+    for(const r of rooms){const rw2=r.w||r.rx*2||12,rh2=r.h||r.ry*2||8;if(sp2.cx>=r.cx-rw2/2&&sp2.cx<=r.cx+rw2/2&&sp2.y>=r.cy-rh2/2&&sp2.y<=r.cy+rh2/2){inRoom=true;break}}
     if(!inRoom)spawnHoles.push({x:hx2,y:hy2,grade:Math.random()<.3?1:0,timer:600+Math.random()*60,alive:0,room:-1});
   }
-  // ── 공터 보충: 기존 소환굴과 최소거리 확보하며 빈 영역에 추가 배치 ──
-  const _minHoleDist=400; // 최소 400px 간격
-  const _fillCnt=2+~~(Math.random()*3); // 2~4개 보충
-  const _walkable=[];
-  for(let _fy=0;_fy<mh;_fy++)for(let _fx=0;_fx<mw;_fx++){if(map[_fy]&&map[_fy][_fx]===0)_walkable.push({x:(_fx+.5)*T,y:(_fy+.5)*T})}
-  for(let _fi=0;_fi<_fillCnt&&_walkable.length>0;_fi++){
-    let bestIdx=-1,bestMinD=0;
-    // 샘플링으로 기존 소환굴과 가장 먼 빈 칸 찾기
-    const _samples=Math.min(80,_walkable.length);
-    for(let _si=0;_si<_samples;_si++){
-      const _ci=~~(Math.random()*_walkable.length);
-      const _wc=_walkable[_ci];
-      let _minD=Infinity;
-      for(const _eh of spawnHoles){const _dd=(_wc.x-_eh.x)*(_wc.x-_eh.x)+(_wc.y-_eh.y)*(_wc.y-_eh.y);if(_dd<_minD)_minD=_dd}
-      if(_minD>bestMinD){bestMinD=_minD;bestIdx=_ci}
-    }
-    if(bestIdx>=0&&bestMinD>_minHoleDist*_minHoleDist){
-      const _bc=_walkable[bestIdx];
-      const _bDistR=bossDistMax>0?Math.max(0,1-(_bc.y/T/bossDistMax)):0;
-      const _bGrade=Math.min(3,~~(_bDistR*4));
-      spawnHoles.push({x:_bc.x,y:_bc.y,grade:_bGrade,timer:600+Math.random()*60,alive:0,room:-1});
-      _walkable.splice(bestIdx,1);
-    }
-  }
-  // ── 보스 문 앞 은신처 영역에도 소환굴 2~3개 ──
-  if(_gateY>0&&bossCx>0){
-    const _gateAreaCnt=2+~~(Math.random()*2);
-    for(let _gi=0;_gi<_gateAreaCnt;_gi++){
-      const _gox=(Math.random()-.5)*300,_goy=3*T+Math.random()*200;
-      const _ghx=(bossCx+.5)*T+_gox,_ghy=(_gateY+.5)*T+_goy;
-      spawnHoles.push({x:_ghx,y:_ghy,grade:Math.min(3,2+~~(Math.random()*2)),timer:600+Math.random()*60,alive:0,room:-1});
-    }
+  // [규칙4] 최소 5개 보장 — 부족하면 랜덤 방에 추가
+  while(spawnHoles.length<5){
+    const _cands=rooms.filter(r=>r.type!=='start'&&r.type!=='boss');
+    if(_cands.length===0)break;
+    const _rr=_cands[~~(Math.random()*_cands.length)];
+    const _rrW=_rr.w||_rr.rx*2||12,_rrH=_rr.h||_rr.ry*2||8;
+    const _ox2=(Math.random()-.5)*_rrW*.5*T,_oy2=(Math.random()-.5)*_rrH*.5*T;
+    const _dr=bossDistMax>0?Math.max(0,1-(_rr.cy/bossDistMax)):0;
+    spawnHoles.push({x:(_rr.cx+.5)*T+_ox2,y:(_rr.cy+.5)*T+_oy2,grade:Math.min(3,~~(_dr*4)),timer:600+Math.random()*60,alive:0,room:-1});
   }
 
   G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
@@ -11172,13 +11204,13 @@ function genSnake(si,forceSeed){
   let pId='s',pX=sX,pY=sY;
   const fAt=Math.max(1,~~(seg*0.38+rng()*seg*0.12));let ci=0;
   for(let i=0;i<seg;i++){
-    const isF=(i===fAt);const id=isF?'f':'r'+(++ci);
-    const rX=isF?xM:xs[i],rY=sY-sH*(i+1);
-    const aW=isF?~~(bW*0.9):arW+~~(rng()*bW*0.6),aH=isF?~~(bW*0.65):arH+~~(rng()*bW*0.35);
-    const sh=isF?'rect':rng()<0.38?'circle':rng()<0.6?'ellipse':'cross';
+    const id='r'+(++ci);
+    const rX=xs[i],rY=sY-sH*(i+1);
+    const aW=arW+~~(rng()*bW*0.6),aH=arH+~~(rng()*bW*0.35);
+    const sh=rng()<0.38?'circle':rng()<0.6?'ellipse':'cross';
     const gr=Math.min(3,~~(i/seg*3.5+hell*0.25));
-    const sp=isF?undefined:[{dx:~~((rng()-0.5)*aW*0.9),dy:~~((rng()-0.5)*aH*0.6),grade:gr},{dx:~~((rng()-0.5)*aW*0.9),dy:~~((rng()-0.5)*aH*0.6),grade:gr},{dx:~~((rng()-0.5)*aW*0.8),dy:~~((rng()-0.5)*aH*0.7),grade:gr},{dx:~~((rng()-0.5)*aW*0.85),dy:~~((rng()-0.5)*aH*0.65),grade:gr},...(gr>=2?[{dx:~~((rng()-0.5)*aW*0.7),dy:~~((rng()-0.5)*aH*0.7),grade:Math.min(3,gr+1)},{dx:~~((rng()-0.5)*aW*0.6),dy:~~((rng()-0.5)*aH*0.6),grade:Math.min(3,gr+1)}]:[])];
-    const rd={id,type:isF?'forge':'combat',cx:rX,cy:rY,shape:sh,rx:aW,ry:aH};
+    const sp=[{dx:~~((rng()-0.5)*aW*0.9),dy:~~((rng()-0.5)*aH*0.6),grade:gr},{dx:~~((rng()-0.5)*aW*0.9),dy:~~((rng()-0.5)*aH*0.6),grade:gr},{dx:~~((rng()-0.5)*aW*0.8),dy:~~((rng()-0.5)*aH*0.7),grade:gr},{dx:~~((rng()-0.5)*aW*0.85),dy:~~((rng()-0.5)*aH*0.65),grade:gr},...(gr>=2?[{dx:~~((rng()-0.5)*aW*0.7),dy:~~((rng()-0.5)*aH*0.7),grade:Math.min(3,gr+1)},{dx:~~((rng()-0.5)*aW*0.6),dy:~~((rng()-0.5)*aH*0.6),grade:Math.min(3,gr+1)}]:[])];
+    const rd={id,type:'combat',cx:rX,cy:rY,shape:sh,rx:aW,ry:aH};
     if(sp)rd.spawns=sp;if(sh==='cross'){rd.armW=~~(aW*0.55+rng()*aW*0.2);rd.armH=~~(aH*0.5+rng()*aH*0.2)}
     rooms.push(rd);
     const wps=[];const wN=1+~~(rng()*2);
@@ -11215,13 +11247,13 @@ function genHoriz(si,forceSeed){
   let pId='s',pX=sX,pY=sY;
   const fAt=Math.max(1,~~(seg*0.38+rng()*seg*0.12));let ci=0;
   for(let i=0;i<seg;i++){
-    const isF=(i===fAt);const id=isF?'f':'r'+(++ci);
-    const rX=lPad+sW*(i+1),rY=isF?yM:ys[i];
-    const aW=isF?~~(arH*0.9):arW+~~(rng()*bW*0.5),aH=isF?~~(arH*1.3):arH+~~(rng()*bW*0.4);
-    const sh=isF?'rect':rng()<0.38?'circle':rng()<0.6?'ellipse':'cross';
+    const id='r'+(++ci);
+    const rX=lPad+sW*(i+1),rY=ys[i];
+    const aW=arW+~~(rng()*bW*0.5),aH=arH+~~(rng()*bW*0.4);
+    const sh=rng()<0.38?'circle':rng()<0.6?'ellipse':'cross';
     const gr=Math.min(3,~~(i/seg*3.5+hell*0.25));
-    const sp=isF?undefined:[{dx:~~((rng()-0.5)*aW*0.7),dy:~~((rng()-0.5)*aH*0.9),grade:gr},{dx:~~((rng()-0.5)*aW*0.7),dy:~~((rng()-0.5)*aH*0.9),grade:gr},{dx:~~((rng()-0.5)*aW*0.6),dy:~~((rng()-0.5)*aH*0.8),grade:gr},{dx:~~((rng()-0.5)*aW*0.65),dy:~~((rng()-0.5)*aH*0.85),grade:gr},...(gr>=2?[{dx:~~((rng()-0.5)*aW*0.6),dy:~~((rng()-0.5)*aH*0.7),grade:Math.min(3,gr+1)},{dx:~~((rng()-0.5)*aW*0.5),dy:~~((rng()-0.5)*aH*0.6),grade:Math.min(3,gr+1)}]:[])];
-    const rd={id,type:isF?'forge':'combat',cx:rX,cy:rY,shape:sh,rx:aW,ry:aH};
+    const sp=[{dx:~~((rng()-0.5)*aW*0.7),dy:~~((rng()-0.5)*aH*0.9),grade:gr},{dx:~~((rng()-0.5)*aW*0.7),dy:~~((rng()-0.5)*aH*0.9),grade:gr},{dx:~~((rng()-0.5)*aW*0.6),dy:~~((rng()-0.5)*aH*0.8),grade:gr},{dx:~~((rng()-0.5)*aW*0.65),dy:~~((rng()-0.5)*aH*0.85),grade:gr},...(gr>=2?[{dx:~~((rng()-0.5)*aW*0.6),dy:~~((rng()-0.5)*aH*0.7),grade:Math.min(3,gr+1)},{dx:~~((rng()-0.5)*aW*0.5),dy:~~((rng()-0.5)*aH*0.6),grade:Math.min(3,gr+1)}]:[])];
+    const rd={id,type:'combat',cx:rX,cy:rY,shape:sh,rx:aW,ry:aH};
     if(sp)rd.spawns=sp;if(sh==='cross'){rd.armW=~~(aW*0.5+rng()*aW*0.2);rd.armH=~~(aH*0.55+rng()*aH*0.2)}
     rooms.push(rd);
     const wps=[];const wN=1+~~(rng()*2);
@@ -11523,24 +11555,46 @@ function genFromTemplate(tmpl,si){
   // ── 9. 소환굴 배치 ──
   const spawnHoles=[];
   const bossDistMax=bossRm?bossRm.cy:1;
+  // 보스 인접 방 찾기 (보스 cy에 가장 가까운 non-boss/start 방)
+  let _preBossRm=null,_preBossD=Infinity;
+  for(let ri=0;ri<rooms.length;ri++){
+    const r=rooms[ri];if(r.type==='boss'||r.type==='start')continue;
+    const _d=Math.abs(r.cy-(bossRm?bossRm.cy:0))+Math.abs(r.cx-(bossRm?bossRm.cx:0));
+    if(_d<_preBossD){_preBossD=_d;_preBossRm=r}
+  }
   // 방 기반 소환굴
   for(let ri=0;ri<rooms.length;ri++){
     const r=rooms[ri];
     if(r.type==='start'||r.type==='boss')continue;
-    // 템플릿에 spawns 정의가 있으면 사용
+    const distRatio=bossDistMax>0?Math.max(0,1-(r.cy/bossDistMax)):0;
+    const grade=Math.min(3,~~(distRatio*4));
+    // 템플릿 spawns 사용
     const rd=tmpl.rooms[ri];
     if(rd&&rd.spawns){
       for(const sp of rd.spawns){
         const hx=(r.cx+sp.dx+.5)*T,hy=(r.cy+sp.dy+.5)*T;
-        const grade=sp.grade!=null?sp.grade:0;
-        spawnHoles.push({x:hx,y:hy,grade,timer:600+Math.random()*60,alive:0,room:ri});
+        const g=sp.grade!=null?sp.grade:grade;
+        spawnHoles.push({x:hx,y:hy,grade:g,timer:600+Math.random()*60,alive:0,room:ri});
       }
-    }else{
-      // 기본: Y거리 기반 등급
-      const distRatio=bossDistMax>0?Math.max(0,1-(r.cy/bossDistMax)):0;
-      const grade=Math.min(3,~~(distRatio*4));
+    }
+    // [규칙1] 모든 방 최소 1개 — spawns가 없거나 빈 방이면 기본 배치
+    const _roomHoles=spawnHoles.filter(h=>h.room===ri).length;
+    if(_roomHoles<1){
       const hx=(r.cx+.5)*T,hy=(r.cy+.5)*T;
       spawnHoles.push({x:hx,y:hy,grade,timer:600+Math.random()*60,alive:0,room:ri});
+    }
+    // [규칙2] 보스 인접 방에 최소 2개
+    if(_preBossRm&&r===_preBossRm){
+      const _bHoles=spawnHoles.filter(h=>h.room===ri).length;
+      for(let _bi=_bHoles;_bi<2;_bi++){
+        const _ox=(Math.random()-.5)*r.w*.5*T,_oy=(Math.random()-.5)*r.h*.5*T;
+        spawnHoles.push({x:(r.cx+.5)*T+_ox,y:(r.cy+.5)*T+_oy,grade:Math.min(3,grade+1),timer:600+Math.random()*60,alive:0,room:ri});
+      }
+    }
+    // [규칙3] 큰 방(15타일 초과)에 추가 1개
+    if(r.w>15||r.h>15){
+      const _ox=(Math.random()-.5)*r.w*.6*T,_oy=(Math.random()-.5)*r.h*.6*T;
+      spawnHoles.push({x:(r.cx+.5)*T+_ox,y:(r.cy+.5)*T+_oy,grade,timer:600+Math.random()*60,alive:0,room:ri});
     }
   }
   // 복도 소환굴
@@ -11549,6 +11603,15 @@ function genFromTemplate(tmpl,si){
       const grade=cs.grade||0;
       spawnHoles.push({x:(cs.x+.5)*T,y:(cs.y+.5)*T,grade,timer:600+Math.random()*60,alive:0,room:-1});
     }
+  }
+  // [규칙4] 최소 5개 보장
+  while(spawnHoles.length<5){
+    const _cands=rooms.filter(r=>r.type!=='start'&&r.type!=='boss');
+    if(_cands.length===0)break;
+    const _rr=_cands[~~(Math.random()*_cands.length)];
+    const _ox=(Math.random()-.5)*_rr.w*.4*T,_oy=(Math.random()-.5)*_rr.h*.4*T;
+    const _dr=bossDistMax>0?Math.max(0,1-(_rr.cy/bossDistMax)):0;
+    spawnHoles.push({x:(_rr.cx+.5)*T+_ox,y:(_rr.cy+.5)*T+_oy,grade:Math.min(3,~~(_dr*4)),timer:600+Math.random()*60,alive:0,room:-1});
   }
 
   // ── 10. G 세팅 ──
@@ -12184,16 +12247,36 @@ function spawnFormation(cx,cy,si,el,ri){
 
 // 적 생성 함수 (initStage 전용 — 리스폰 없음)
 function spawnRoomEns(ri){
-  const room=G.rooms[ri];if(!room||room.type==='start'||room.type==='forge')return;
+  const room=G.rooms[ri];if(!room||room.type==='start')return;
   const si=G.stage;
   const ib=room.type==='boss';
   if(ib)return; // 보스는 아레나 진입 시 별도 스폰
   // 대량 스폰: 방 크기 비례, 거리 무관 균일
   const area=room.w*room.h;
-  const cnt=ib?1:Math.max(10,~~((area/2+si*3+8)*DIFF_MOB[OPT.diff]));
+  const cnt=ib?1:Math.max(10,~~((area+si*3+8)*DIFF_MOB[OPT.diff]));
   let formSpawnCount=0;
+  // ── 그리드 기반 균일 배치: 10타일×10타일 셀 ──
+  const _CELL=10;
+  const _gCols=Math.max(1,Math.floor((room.w-2)/_CELL));
+  const _gRows=Math.max(1,Math.floor((room.h-2)/_CELL));
+  // 그리드 셀 인덱스 배열 생성 후 Fisher-Yates 셔플
+  const _cells=[];
+  for(let _gy=0;_gy<_gRows;_gy++)
+    for(let _gx=0;_gx<_gCols;_gx++)
+      _cells.push({gx:_gx,gy:_gy});
+  for(let _si2=_cells.length-1;_si2>0;_si2--){
+    const _sj=~~(Math.random()*(_si2+1));
+    const _st=_cells[_si2];_cells[_si2]=_cells[_sj];_cells[_sj]=_st;
+  }
   for(let i=0;i<cnt;i++){
-    const ex=(room.x+1+Math.random()*(room.w-2))*T,ey=(room.y+1+Math.random()*(room.h-2))*T;
+    // 셀 순환 + 셀 내 랜덤 지터 (±3타일)
+    const _ci2=i%_cells.length;
+    const _c=_cells[_ci2];
+    const _jx=(Math.random()-0.5)*Math.min(6,_CELL-2);
+    const _jy=(Math.random()-0.5)*Math.min(6,_CELL-2);
+    const ex=(room.x+1+(_c.gx+0.5)*_CELL+_jx)*T;
+    const ey=(room.y+1+(_c.gy+0.5)*_CELL+_jy)*T;
+    if(!canMv(ex,ey,8))continue;
     const el=ib?STG[si].be:rollEl(si);
     // 15% 확률로 포메이션 스폰 (7번째 적마다, 보스방 제외)
     if(!ib&&i>0&&i%7===0&&Math.random()<0.15){
@@ -12221,14 +12304,14 @@ function spawnRoomEns(ri){
       const _twOx=ex+(Math.random()-.5)*30,_twOy=ey+(Math.random()-.5)*30;
       ens.push(mkEn(_twOx,_twOy,si,97,false,el,ri));
     }
-      // 64:익사자 떼 — 8~12마리 그룹 스폰
-      if(etype===64){
-        const _dcnt=7+~~(Math.random()*5); // 추가 7~11마리 (자신 포함 8~12)
-        for(let _di=0;_di<_dcnt;_di++){
-          const _dx=ex+(Math.random()-.5)*40,_dy=ey+(Math.random()-.5)*40;
-          if(canMv(_dx,_dy,6))ens.push(mkEn(_dx,_dy,si,64,false,el,ri));
-        }
+    // 64:익사자 떼 — 8~12마리 그룹 스폰
+    if(etype===64){
+      const _dcnt=7+~~(Math.random()*5); // 추가 7~11마리 (자신 포함 8~12)
+      for(let _di=0;_di<_dcnt;_di++){
+        const _dx=ex+(Math.random()-.5)*40,_dy=ey+(Math.random()-.5)*40;
+        if(canMv(_dx,_dy,6))ens.push(mkEn(_dx,_dy,si,64,false,el,ri));
       }
+    }
   }
   room.cleared=false;
 }
@@ -12345,8 +12428,7 @@ function initStage(si){
       }
     }
   }
-  const fg=G.rooms.find(r=>r.type==='forge');
-  if(fg)worldItems.push({x:(fg.cx+.5)*T,y:(fg.cy+.5)*T,type:'forge'});
+  // forge 삭제됨 — 대장간은 G키로 어디서든 접근
   G.cam.x=P.x;G.cam.y=P.y;
   G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0}};
   buildMapCache(); // 맵 오프스크린 캔버스 캐싱
@@ -13113,7 +13195,7 @@ function update(){
       const _amsk=P.activeMagicSk||'beam';
       const _isSix=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
       if((_isSix||_amsk==='omniBeam')&&_amsk!=='elemMissile'){if(_isSix&&(P._beamCd||0)>0){showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}}
-      else if(_amsk==='beam'){P.s='magicCast';P.st2=3;P.atkArc=P.facing;P._mpBon=useMp('magic')*.6;P._beanBurst=true}
+      else if(_amsk==='blueShot'&&P.skills.blueShot>=1){if((P._bsCd||0)>0){showPH('쿨 '+~~((P._bsCd||0)/60)+'초','#00aaff')}else{P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}}
       else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
     }
     // Forge — 게임루프 상단에서 처리 (paused 상태에서도 동작)
@@ -13139,7 +13221,8 @@ function update(){
     let wnx=P.x+wdx*wms,wny=P.y+wdy*wms;
     if(canMv(wnx,P.y,P.r))P.x=wnx;if(canMv(P.x,wny,P.r))P.y=wny;
     const _wwLv=P.skills.whirlwind||1;
-    P.st-=P.mst*COST_PCT.whirlTick*sp; P.wwAng=(P.wwAng||0)+0.35*sp; // 회전 각도
+    const _wwLvC=P.skills.whirlwind||1;const _wwCostMul=0.5+(_wwLvC-1)*0.078;// 1렙×0.5 5렙×0.81 10렙×1.2
+    P.st-=P.mst*COST_PCT.whirlTick*_wwCostMul*sp; P.wwAng=(P.wwAng||0)+0.35*sp; // 회전 각도
     // 합성: 패링 쉴드 HP 드레인 + parryT 추적
     if(P.skills.detonate&&_isFused('whirlDet')){P.parryT=(P.parryT||0)+sp;P.hp-=P.mhp*.0005*sp;if(P.hp<=0){P.hp=1}}
     // 기 축적: 회전할수록 범위+데미지 증가
@@ -13448,19 +13531,23 @@ function update(){
           {const _pp=_getPProj();_pp.x=P.x+Math.cos(_bkA)*18+_perpX;_pp.y=P.y+Math.sin(_bkA)*18+_perpY;_pp.vx=Math.cos(_fwdA)*_mSpd;_pp.vy=Math.sin(_fwdA)*_mSpd;_pp.dmg=~~(mdmg/_emCnt);_pp.el=_mcEl[_mi%6];_pp.maxDist=_mcRange+100;_pp.dist=0;_pp.r=8;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.arcMissile=true;_pp._arcLock=60;_pp._maxBounce=2;pProjs[pProjs.length]=_pp;}
         }
         SFX.magic(2);_addSkProf('elemMissile');
-      } else if(P._beanBurst){
-        // ── 파란콩 연사: 작고 빠른 마법탄 ──
-        P._beanBurst=false;
-        const _bbEl=(hm().elements||[{el:EL.F}])[0].el;
-        const _bbDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*.35)+(P._mpBon||0);P._mpBon=0;
-        const _bbA=P.atkArc+(Math.random()-.5)*.12; // 약간 산탄
-        const _bbDx=Math.cos(_bbA),_bbDy=Math.sin(_bbA);
-        {const _pp=_getPProj();_pp.x=P.x+_bbDx*12;_pp.y=P.y+_bbDy*12;_pp.vx=_bbDx*11;_pp.vy=_bbDy*11;_pp.dmg=_bbDmg;_pp.el=_bbEl;_pp.maxDist=350+(hm().bonusRange||0)*15;_pp.dist=0;_pp.r=5;_pp.stagger=0;_pp.kb=0;_pp.magic=true;pProjs[pProjs.length]=_pp;}
-        if(Math.random()<.4)playSample('fireball',.3,_r(1.4,.15));
-        P.s='magicRecover';P.st2=3;
+      } else if(_mcSk==='blueShot'&&P.skills.blueShot>=1&&(P._bsCd||0)<=0){
+        // ── 파란탄: 유도 blueBean 발사 (쿨 2초) ──
+        const _bsLv=P.skills.blueShot||1;
+        const _bsDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*2.5*(1+(_bsLv-1)*.1))+(P._mpBon||0);P._mpBon=0;
+        const _bsA=P.atkArc;
+        const _bsSpd=3.5;
+        const _bsRange=500+(_bsLv-1)*30;
+        spawnProj({x:P.x+Math.cos(_bsA)*16,y:P.y+Math.sin(_bsA)*16,vx:Math.cos(_bsA)*_bsSpd,vy:Math.sin(_bsA)*_bsSpd,
+          dmg:_bsDmg,el:EL.P,friendly:true,life:~~(_bsRange/_bsSpd),ml:~~(_bsRange/_bsSpd),
+          col:'#00e5ff',sz:2.0,blueBean:true,homing:true,_aoeR:160,_aoeDmg:~~(_bsDmg*.6)});
+        P._bsCd=120; // 2초 쿨
+        playSample('fireball',.6,_r(1.3,.1));SFX.magic(4);_addSkProf('blueShot');
+        addTxt(P.x,P.y-25,'💎 파란탄!','#00e5ff',35);
+        for(let _bi=0;_bi<8;_bi++){const _ba=Math.PI*2*_bi/8;poolPart(P.x,P.y,Math.cos(_ba)*4,Math.sin(_ba)*4,'#00e5ff',3,8)}
+        P.s='magicRecover';P.st2=10;
       } else {
         // ── 기본 파이어볼: 1발, 범위폭발 ──
-        P._beanBurst=false;
         const elms=hm().elements||[{el:EL.F,dmg:5}];
         const primary=elms[0];const mdmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*1.8)+(P._mpBon||0);P._mpBon=0;
         const _fbDx=Math.cos(P.atkArc),_fbDy=Math.sin(P.atkArc);
@@ -13479,7 +13566,7 @@ function update(){
         const _amsk3=P.activeMagicSk||'beam';
         const _isSix3=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
         if((_isSix3||_amsk3==='omniBeam')&&_amsk3!=='elemMissile'){if(_isSix3&&(P._beamCd||0)>0){showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}}
-        else if(_amsk3==='beam'){P.s='magicCast';P.st2=3;P.atkArc=P.facing;P._mpBon=useMp('magic')*.6;P._beanBurst=true}
+        else if(_amsk3==='blueShot'&&P.skills.blueShot>=1){if((P._bsCd||0)>0){showPH('쿨 '+~~((P._bsCd||0)/60)+'초','#00aaff')}else{P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}}
         else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
       }
       else P.s='idle';
@@ -13852,7 +13939,8 @@ function update(){
     }
     const _isOmni=!!(P.skills.omniBeam&&P.skills.fanShot&&_isFused('sixFuse'));
     const _isElemBeam=_isOmni&&!!(P.skills.elemMissile&&_isFused('elemFuse'));
-    const _bcost=(_isOmni?(150+((P.skills.omniBeam||1)-1)*10)/60*pMagicCost():beamCost())*(_isElemBeam?1.8:2.5);
+    const _bLv=(P.skills.omniBeam||1);const _bMul=_isElemBeam?(0.5+(_bLv-1)*0.078)*.9:(0.5+(_bLv-1)*0.078);
+    const _bcost=(_isOmni?(150+(_bLv-1)*10)/60*pMagicCost():beamCost())*_bMul;
     const _mpBefore=P.mp;
     P.mp=Math.max(0,P.mp-_bcost*sp);
     const _mpDrained=_mpBefore-P.mp; // 실제 소비된 MP (데미지 기반)
@@ -14064,9 +14152,15 @@ function update(){
           e.reviveIframes=180; // 보스 3초 무적
           G.bossAlive=true;G._bossRef=e;
           _reviveVFX(e.x,e.y,'#ffdd44','☠ 지옥에서 귀환!',{partN:16,partSpd:5,shake:10,vfxSize:140,flash:3})
-        }else{
-          // ── 일반몹: 구울로 변환 ──
+        }else if(e._reviveAsGhoul){
+          // ── 일반몹: 구울로 변환 (50%) ──
           _spawnGhoul(e._reviveX,e._reviveY,e);
+        }else{
+          // ── 일반몹: 본모습 부활 (50%) ──
+          e.alive=true;e.x=e._reviveX;e.y=e._reviveY;
+          e.hp=e.mhp;e.s='recover';e.st2=60;e.stunned=0;e.kb={x:0,y:0};
+          e.poise=e.maxPoise;e._reviveChase=true;e._alerted=true;
+          _reviveVFX(e.x,e.y,e.col,'💀본모습 부활!',{partN:12,partSpd:4,shake:4,vfxSize:80})
         }
       }
     }
@@ -14919,6 +15013,8 @@ function update(){
   // ═══ 신성한 땅 — 쿨다운 2배 가속 체크 ═══
   let _hdCdBonus=0;
   if(G._fireZones){for(let _hi=0;_hi<G._fireZones.length;_hi++){const _h=G._fireZones[_hi];if(_h.type==='holyDome'&&dst(P.x,P.y,_h.x,_h.y)<_h.r){_hdCdBonus=sp;break}}}
+  // ═══ 파란탄 — 쿨다운 ═══
+  if(P._bsCd>0)P._bsCd-=sp+_hdCdBonus;
   // ═══ 칼날살 — 쿨다운 ═══
   if(P._bltCd>0)P._bltCd-=sp+_hdCdBonus;
   // ═══ 유탄 — 직선 비행 + 충돌 즉시 폭발 ═══
@@ -20052,7 +20148,10 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       const _revBase=1.0+G.stage*0.05; // 1막100%, 스테이지당+5%
       const _revCh=Math.max(0,_revBase-(e.deaths-1)*0.1-_bSuppress);
       if(Math.random()<_revCh)_doRevive=true;
-      if(!_doRevive&&_bSuppress>0){addTxt(e.x,e.y-40,'✟ 신성력 억제!','#ffdd88',60)}
+      const _revPct=~~(_revCh*100);
+      if(_doRevive){addTxt(e.x,e.y-55,'부활력 '+_revPct+'%',_revPct>=80?'#ff2244':_revPct>=50?'#ff8844':'#ffcc44',50)}
+      else if(_bSuppress>0){addTxt(e.x,e.y-40,'✟ 신성력 억제! ('+_revPct+'%)','#ffdd88',60)}
+      else{addTxt(e.x,e.y-40,'부활 실패 ('+_revPct+'%)','#888888',40)}
       if(_doRevive){
         // 부활마다 최대체력 2배 + 풀피 부활
         e.mhp=~~(e.mhp*(_isH7?2.5:2));
@@ -20115,7 +20214,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     }
     // M21 불사: 삭제됨 (부활 과다 문제)
     // ═══ 일반몹 부활 (1회 제한) — 부활력 vs 억제력 ═══
-    if(!e.ib&&!e._revived){
+    if(!e.ib&&!e._revived&&!e._isGhoul){
       let _revPow=e.elite>0?(e.elite>=2?.6:.5):.5; // 부활력
       let _suppress=_eqAffix('antiRevive'); // 목걸이 억제 (10~30%)
       // 신성한 감옥 범위 내: +50% 억제
@@ -20123,6 +20222,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       const _finalRev=Math.max(0,_revPow-_suppress);
       if(_finalRev>0&&Math.random()<_finalRev){
         e._revived=true;e._reviveTimer=e.elite>0?120:90;e._reviveX=e.x;e._reviveY=e.y;
+        e._reviveAsGhoul=Math.random()<0.5; // 50% 구울, 50% 본모습
       }else if(_suppress>0){
         addTxt(e.x,e.y-30,'✟ 신성력 억제!','#ffdd88',50);
       }
@@ -20524,6 +20624,8 @@ function addExp(v){
     if(apGain>0)lvTxt+=' AP +'+apGain;
     addTxt(P.x,P.y-40,lvTxt,'#ffcc00',60);
     for(let i=0;i<12;i++){const a=Math.PI*2*i/12;poolPart(P.x,P.y,Math.cos(a)*5,Math.sin(a)*5,'#ffaa00',4,20)}
+    // Lv500 히든: 파란탄 자동 해금
+    if(P.lv>=500&&!P.skills.blueShot){P.skills.blueShot=1;showPH('💎 파란탄 해금!','#00e5ff');addTxt(P.x,P.y-60,'💎 파란탄 해금!','#00e5ff',80)}
     dbSaveForce();
   }
 }
@@ -20999,7 +21101,8 @@ const SKILL_LIST=[
   {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'✝',desc:'[히든: 뇌전나선 합체] E로 조준, 클릭 설치. 신성 십자가를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. Lv당 거리+50',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'둔격호',cat:'def',fixed:true,emoji:'🛡️',desc:'[고정: 칼등치기 합체] 우클릭 칼등치기 시 자동 발사. 회전하며 전진, 적 관통+넉백+투사체 반사. 쿨 5초. Lv당 뎀+12% 사거리+30',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
   {id:'blastShot',name:'폭산탄',cat:'bow',fixed:true,emoji:'💥',desc:'[고정: T 자동] 폭탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 화염 폭발(범위130). 악의 8. Lv당 범위+10% 뎀+10%. 쿨 0.5초',spCost:10,matCost:80,cd:30,up:true,upSp:5,upMat:0},
-  {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (반경600, 10초). 밟은 적 슬로우+출혈. 악의 10, 쿨 10초. Lv당 범위+32 뎀+15%',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0}
+  {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (반경600, 10초). 밟은 적 슬로우+출혈. 악의 10, 쿨 10초. Lv당 범위+32 뎀+15%',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},
+  {id:'blueShot',name:'파란탄',cat:'magic',fixed:true,emoji:'💎',desc:'[고정: E, Lv500 해금] 유도 파란탄 발사. 적 추적+AoE 폭발. 쿨 2초. Lv당 뎀+10% 사거리+30',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:500}
 ];
 
 // ═══ 스킬 슬롯 시스템 ═══
@@ -21007,11 +21110,12 @@ const SKILL_SLOT_DEFS={
   charge:{name:'이동스킬',key:'charge',skills:['charge','magicBlink'],
     info:{charge:{name:'작살',emoji:'🔱',desc:'Shift: 작살 발사 → 끌려감'},
           magicBlink:{name:'사슬기동:화염',emoji:'🔥',desc:'Shift: 화염길+화상'}}},
-  magic:{name:'마법스킬',key:'magic',skills:['beam','omniBeam','elemMissile','hellRay'],
+  magic:{name:'마법스킬',key:'magic',skills:['beam','omniBeam','elemMissile','hellRay','blueShot'],
     info:{beam:{name:'마법탄',emoji:'🔮',desc:'E: 마법 투사체'},
           omniBeam:{name:'멸살광선',emoji:'☄️',desc:'E 홀드: 5원소 빔'},
           elemMissile:{name:'원소추적탄',emoji:'🎯',desc:'E: 6원소 유도 미사일'},
-          hellRay:{name:'참회',emoji:'✝',desc:'E: 신성한 선 설치 (시계방향 회전)'}}},
+          hellRay:{name:'참회',emoji:'✝',desc:'E: 신성한 선 설치 (시계방향 회전)'},
+          blueShot:{name:'파란탄',emoji:'💎',desc:'E: 유도 파란탄 발사 (추적+AoE 폭발, 쿨2초)'}}},
   bow:{name:'석궁 자동(T)',key:'bow',skills:['normal','grenadeShot','bladeShot','blastShot','fanShot','needleShot'],
     info:{normal:{name:'일반사격',emoji:'🏹',desc:'T자동: 기본 화살'},
           grenadeShot:{name:'유탄산탄',emoji:'💣',desc:'T자동: 화염대포 (악의5, 쿨1초)'},
@@ -21429,7 +21533,7 @@ function _openSkillSlotPop(slotIdx){
   if(_isFused('dimBreach')&&P.skills.magicBlink>=1)_fusedOut.push('magicBlink');
   if(P.skills.chainAssault>=1&&_isFused('dimSlam'))_fusedOut.push('chainAssault');
   if(P.skills.chainSlam>=1&&_isFused('dimThunder'))_fusedOut.push('chainSlam');
-  const _fixedOnly=['grenadeShot','bladeShot','fanShot','omniBeam','elemMissile','shieldThrow','blastShot','ghostWalk','iceOrb','needleShot','peaceShield','hellRay']; // 고정스킬 (슬롯 배정 불가)
+  const _fixedOnly=['grenadeShot','bladeShot','fanShot','omniBeam','elemMissile','shieldThrow','blastShot','ghostWalk','iceOrb','needleShot','peaceShield','hellRay','blueShot']; // 고정스킬 (슬롯 배정 불가)
   const _actSkills=SKILL_LIST.filter(sk=>sk.act&&!sk.ult&&P.skills[sk.id]>=1&&!_fusedOut.includes(sk.id)&&!_fixedOnly.includes(sk.id));
   if(_actSkills.length===0){addTxt(P.x,P.y-20,'배정 가능한 스킬 없음','#888',30);return}
   // 기존 팝업 재활용 (skSlotPop)
@@ -22302,7 +22406,8 @@ function _renderSkillRow(sk,grid){
     const learned=slv>=1;
     const _reqMet=sk.requires?(P.skills[sk.requires]||0)>=1:true;
     const _hasUltLearned=sk.ult&&SKILL_LIST.some(s=>s.ult&&s.id!==sk.id&&(P.skills[s.id]||0)>=1);
-    const canLearn=!learned&&_reqMet&&P.sp>=sk.spCost&&G.mats>=sk.matCost&&!_hasUltLearned;
+    const _lvMet=sk.reqLv?P.lv>=sk.reqLv:true;
+    const canLearn=!learned&&_reqMet&&_lvMet&&P.sp>=sk.spCost&&G.mats>=sk.matCost&&!_hasUltLearned;
     const _skMaxLv=10;
     // 합체 강화 통합: 구성 스킬 upSp/upMat 합산
     const _isFuseUp=_isStormBeam||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isHolyFuse;
@@ -22327,12 +22432,13 @@ function _renderSkillRow(sk,grid){
     const _bgRgb=_fGrp?(_bgMap[_fGrp.key]||'0,0,0'):'0,0,0';
     d.style.cssText='position:relative;padding:12px;margin-bottom:8px;'+_bdrCss+'background:rgba('+_bgRgb+',.3);'+_gemGlow+((canLearn||canUp)?'cursor:pointer;':'');
     let lockTxt='';
-    const _fixedKeyMap={grenadeShot:'T자동',bladeShot:'T자동',fanShot:'T자동',blastShot:'T자동',omniBeam:'E',elemMissile:'E',beam:'E',whirlwind:'좌클',maliceSwipe:'우클',shieldThrow:'우클',chargeBoost:'SH',magicBlink:'SH',ghostWalk:'CT',iceOrb:'CT',chainAssault:'SH+좌클',chainSlam:'SH+우클',peaceShield:'Q',hellRay:'E'};
+    const _fixedKeyMap={grenadeShot:'T자동',bladeShot:'T자동',fanShot:'T자동',blastShot:'T자동',omniBeam:'E',elemMissile:'E',beam:'E',blueShot:'E',whirlwind:'좌클',maliceSwipe:'우클',shieldThrow:'우클',chargeBoost:'SH',magicBlink:'SH',ghostWalk:'CT',iceOrb:'CT',chainAssault:'SH+좌클',chainSlam:'SH+우클',peaceShield:'Q',hellRay:'E'};
     const _fixedKey=_fixedKeyMap[sk.id];
     const _skTypeLbl=_fixedKey?' <span style="color:#7799bb;font-size:.7rem">[고정:'+_fixedKey+']</span>':sk.act?' <span style="color:#cc8844;font-size:.7rem">[선택]</span>':'';
     if(!learned){
       lockTxt=_hasUltLearned?'<span style="color:#ff4444">🔒 다른 필살기 습득됨 (1개만 가능)</span>'
         :!_reqMet?'<span style="color:#ff4444">🔒 선행스킬 ['+((SKILL_LIST.find(s=>s.id===sk.requires)||{}).name||sk.requires)+'] 필요</span>'
+        :!_lvMet?'<span style="color:#ff4444">🔒 Lv.'+sk.reqLv+' 필요 (현재 Lv.'+P.lv+')</span>'
         :'<span style="color:#ffaa44">습득 가능</span>'+_skTypeLbl;
     }else if(sk.up){
       const bonusPct=(slv-1)*10;
