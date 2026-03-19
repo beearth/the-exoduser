@@ -1,10 +1,10 @@
 {
-  "ts": 1773925387408,
+  "ts": 1773925554905,
   "player": {
     "lv": 682,
-    "exp": 21415,
+    "exp": 21795,
     "maxExp": 24976,
-    "sp": 107,
+    "sp": 111,
     "ap": 0,
     "baseAtk": 15,
     "baseDef": 22,
@@ -17,11 +17,52 @@
     "st": 772,
     "mst": 772,
     "speed": 7.790560000000001,
-    "shield": 1742.7894199999973,
+    "shield": 1953,
     "mshield": 1953
   },
   "inv": {
-    "bag": [],
+    "bag": [
+      {
+        "id": 1773925533463.3015,
+        "slot": "pants",
+        "el": 5,
+        "rarity": 4,
+        "tier": 2,
+        "name": "신성 각반",
+        "emoji": "👖",
+        "def": 18,
+        "bonusSt": 21,
+        "bonusHp": 33,
+        "bDex": 31,
+        "bInt": 30,
+        "bStr": 32,
+        "affixes": [
+          {
+            "id": "potionPower",
+            "tier": 0,
+            "value": 0.2908
+          },
+          {
+            "id": "ccRes",
+            "tier": 0,
+            "value": 0.1857
+          }
+        ],
+        "_implicitStat": "_iStsRes",
+        "_implicitVal": 6.88,
+        "_implicitKo": "상태이상 저항 +X%",
+        "legendarySpecial": {
+          "ko": "이동 중 지속 HP 재생 (초당 HP의 1%)",
+          "stat": "_lPantsRegen",
+          "val": 0.01
+        },
+        "reqLv": 200,
+        "itemLv": 300,
+        "_gx": 0,
+        "_gy": 0,
+        "_pickT": 1773925533478
+      }
+    ],
     "equipped": {
       "weapon": {
         "id": 1773604384261.0154,
@@ -703,7 +744,7 @@
     },
     {
       "type": "st",
-      "count": 2996
+      "count": 5
     },
     {
       "type": null,
@@ -716,8 +757,8 @@
   ],
   "game": {
     "stage": 12,
-    "kills": 175700,
-    "mats": 9170831
+    "kills": 175709,
+    "mats": 9171718
   },
   "bagMax": 300,
   "hellCleared": [
@@ -825,15 +866,16 @@
     "iceStorm": 15,
     "blackStar": 15,
     "peaceShield": 15,
-    "hellRay": 15
+    "hellRay": 15,
+    "blueShot": 7
   },
   "fuseProfSec": {},
   "cardProf": {
-    "bladeFuse": 9685.949999986631,
-    "plagueFuse": 9685.949999986631,
-    "whirlDet": 2694.150000004647,
-    "slamStorm": 2694.150000004647,
-    "stormBeam": 3815.350000011138,
+    "bladeFuse": 9756.916666652745,
+    "plagueFuse": 9756.916666652745,
+    "whirlDet": 2701.7500000046675,
+    "slamStorm": 2701.7500000046675,
+    "stormBeam": 3822.9500000111584,
     "shieldFuse": 129,
     "iceMortar": 72,
     "boneStorm": 162,
