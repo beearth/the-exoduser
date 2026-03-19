@@ -2942,6 +2942,7 @@ const _sampleFiles={
   voice_parry4:'sfx/voice/voice_parry3.mp3',
   voice_holyDome:'sfx/voice/voice_holyDome.mp3',
   voice_holyDome2:'sfx/voice/voice_holyDome2.mp3',
+  voice_holyPrison:'sfx/voice/voice_holyPrison.mp3',
   voice_wakeup:'sfx/voice/voice_wakeup.mp3',
   voice_lavaSummon:'sfx/voice/voice_explode.mp3',
   voice_dark_skill:'sfx/voice/voice_dark_skill.mp3',
@@ -22011,7 +22012,7 @@ function activateHolyPrison(){
   P._hpCd=1800; // 30초 쿨
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:_hpR,t:0,maxT:_hpDur,type:'holyPrison',lv:slv});
-  SFX.pickup();playSample(Math.random()<.5?'voice_holyDome':'voice_holyDome2',1,1);
+  SFX.pickup();playSample('voice_holyPrison',1,1);
   addTxt(P.x,P.y-30,'✟ 신성한 감옥!','#ffdd88',50);
   addParts(P.x,P.y,'#ffdd88',15);shake(4);
   _addSkProf('holyPrison');
@@ -30452,6 +30453,14 @@ function drawMM(){if(!G.on||!G.map)return;
       if(mo.type==='bonfire'){mx.fillStyle=mo.lit?'#ffcc44':'#886622';mx.fillRect(mx2-2,my2-2,4,4)}
       else if(mo.type==='trap'){mx.fillStyle='#ff4444';mx.fillRect(mx2-1,my2-1,2,2)}
       else if(mo.type==='altar'&&!mo.used){mx.fillStyle='#aa44ff';mx.fillRect(mx2-2,my2-2,4,4)}
+    }
+    // 소환굴 마커
+    for(let _shi=0;_shi<G.spawnHoles.length;_shi++){const sh=G.spawnHoles[_shi];
+      const sx=(sh.x/T)*sc,sy=(sh.y/T)*sc;
+      if(sx<0||sx>mapPxW||sy<0||sy>mapPxH)continue;
+      const sg=SPAWN_HOLE[sh.grade]||SPAWN_HOLE[0];
+      mx.fillStyle=sg.col;mx.globalAlpha=.85;mx.beginPath();mx.arc(sx,sy,2,0,Math.PI*2);mx.fill();
+      mx.strokeStyle='#000';mx.lineWidth=.5;mx.stroke();mx.globalAlpha=1;
     }
     _mmCacheStage=G.stage;_mmDirty=0;
     _mmOx=~~((mmW-mapPxW)/2);_mmOy=~~((mmH-mapPxH)/2);_mmSc=sc;

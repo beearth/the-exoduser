@@ -1564,7 +1564,7 @@ var _elLightCol=[[255,221,170],[255,102,34],[68,221,255],[170,68,255],[255,255,6
 // 레어리티별 광원 RGB (일반/고급/희귀/영웅/전설)
 var _rarLightCol=[[140,140,140],[68,204,68],[68,136,255],[187,68,255],[255,170,0]];
 // 소환굴 등급별 RGB (균열/구멍/심연/나락)
-var _shLightCol=[[136,136,136],[204,51,51],[153,51,204],[30,30,30]];
+var _shLightCol=[170,68,68];
 var _LIGHT_RADII=[10,15,20,25,30,40,50,63,88,125,175,250,400];
 function _initLightStamps(){
   _lightStamps={};
@@ -1677,8 +1677,7 @@ function _collectLights(){
   // 6) 소환굴
   for(var i=0;i<G.spawnHoles.length&&_lightCnt<120;i++){
     var h=G.spawnHoles[i];
-    var sc=_shLightCol[h.grade]||_shLightCol[0];
-    _pushLight(h.x,h.y,60,.2,sc[0],sc[1],sc[2]);
+    _pushLight(h.x,h.y,40+h.size*40,.2,_shLightCol[0],_shLightCol[1],_shLightCol[2]);
   }
   // 7) 균열(리프트)
   for(var i=0;i<G.rifts.length&&_lightCnt<120;i++){
@@ -2942,6 +2941,7 @@ const _sampleFiles={
   voice_parry4:'sfx/voice/voice_parry3.mp3',
   voice_holyDome:'sfx/voice/voice_holyDome.mp3',
   voice_holyDome2:'sfx/voice/voice_holyDome2.mp3',
+  voice_holyPrison:'sfx/voice/voice_holyPrison.mp3',
   voice_wakeup:'sfx/voice/voice_wakeup.mp3',
   voice_lavaSummon:'sfx/voice/voice_explode.mp3',
   voice_dark_skill:'sfx/voice/voice_dark_skill.mp3',
@@ -11134,11 +11134,10 @@ function genGauntlet(fi){
   for(let ri=0;ri<rooms.length;ri++){
     const r=rooms[ri];
     if(r.type==='start'||r.type==='boss')continue;
-    // 보스까지 Y거리로 등급 결정 (가까울수록 높은 등급)
-    const distRatio=bossDistMax>0?Math.max(0,1-(r.cy/bossDistMax)):0;
-    const grade=Math.min(3,~~(distRatio*4));
     // [규칙1] 모든 방에 소환굴 2~3개 (큰 방 3개, 작은 방 2개)
     const _rW=r.w||r.rx*2||12,_rH=r.h||r.ry*2||8;
+    const _rArea=_rW*_rH;
+    const _hSize=Math.min(1,Math.max(0,_rArea/400));
     let _holeCount=(_rW>15||_rH>15)?3:2;
     // [규칙2] 보스 인접 방에 최소 2개
     if(_preBossRoom&&r===_preBossRoom)_holeCount=Math.max(2,_holeCount);
@@ -11146,8 +11145,7 @@ function genGauntlet(fi){
       const _ox=(Math.random()-.5)*_rW*.7*T;
       const _oy=(Math.random()-.5)*_rH*.7*T;
       const hx=(r.cx+.5)*T+_ox,hy=(r.cy+.5)*T+_oy;
-      const _hGrade=_hci===0?grade:Math.max(0,grade-1);
-      spawnHoles.push({x:hx,y:hy,grade:_hGrade,timer:600+Math.random()*60,alive:0,room:ri});
+      spawnHoles.push({x:hx,y:hy,size:_hSize,timer:600+Math.random()*60,alive:0,room:ri});
     }
   }
   // 복도 spine 전체에 균열 배치 (12개 고정)
@@ -11159,7 +11157,7 @@ function genGauntlet(fi){
     const hx2=(sp2.cx+.5)*T,hy2=(sp2.y+.5)*T;
     let inRoom=false;
     for(const r of rooms){const rw2=r.w||r.rx*2||12,rh2=r.h||r.ry*2||8;if(sp2.cx>=r.cx-rw2/2&&sp2.cx<=r.cx+rw2/2&&sp2.y>=r.cy-rh2/2&&sp2.y<=r.cy+rh2/2){inRoom=true;break}}
-    if(!inRoom)spawnHoles.push({x:hx2,y:hy2,grade:Math.random()<.3?1:0,timer:600+Math.random()*60,alive:0,room:-1});
+    if(!inRoom)spawnHoles.push({x:hx2,y:hy2,size:.3,timer:600+Math.random()*60,alive:0,room:-1});
   }
   // [규칙4] 총량 정규화 — 방 수 기반 목표치 (방당 3개 기준)
   const _normalRooms=rooms.filter(r=>r.type!=='start'&&r.type!=='boss');
@@ -11172,7 +11170,8 @@ function genGauntlet(fi){
     const _rrW=_rr.w||_rr.rx*2||12,_rrH=_rr.h||_rr.ry*2||8;
     const _ox2=(Math.random()-.5)*_rrW*.5*T,_oy2=(Math.random()-.5)*_rrH*.5*T;
     const _dr=bossDistMax>0?Math.max(0,1-(_rr.cy/bossDistMax)):0;
-    spawnHoles.push({x:(_rr.cx+.5)*T+_ox2,y:(_rr.cy+.5)*T+_oy2,grade:Math.min(3,~~(_dr*4)),timer:600+Math.random()*60,alive:0,room:-1});
+    const _rrW2=_rr.w||_rr.rx*2||12,_rrH2=_rr.h||_rr.ry*2||8;
+    spawnHoles.push({x:(_rr.cx+.5)*T+_ox2,y:(_rr.cy+.5)*T+_oy2,size:Math.min(1,Math.max(0,_rrW2*_rrH2/400)),timer:600+Math.random()*60,alive:0,room:-1});
   }
   // 초과분 제거 — 복도(room===-1)부터 우선 제거
   const _maxHoles=_targetHoles+3;
@@ -11393,8 +11392,8 @@ function buildGridMapCache(tmpl){
     else{for(let gx=bCx+bRx;gx<mw;gx++)for(let gy=bCy-1;gy<=bCy+1;gy++)if(gy>=0&&gy<mh&&gx>=0)map[gy][gx]=0;for(let gy=bCy-1;gy<=bCy+1;gy++)if(gy>=0&&gy<mh){map[gy][mw-1]=3;special.push({x:mw-1,y:gy,type:'gate'})}for(let gy=bCy-1;gy<=bCy+1;gy++)if(gy>=0&&gy<mh&&mw>1){map[gy][mw-2]=2;special.push({x:mw-2,y:gy,type:'exit'})}}}
   const grid=[];for(let y=0;y<mh;y++){grid[y]=new Uint8Array(mw);for(let x=0;x<mw;x++){const v=map[y][x];if(v===0||v===4)grid[y][x]=1;else if(v===3)grid[y][x]=2;else if(v===2)grid[y][x]=1;else grid[y][x]=2}}
   const objs=[];for(const rm of tmpl.rooms){if(rm.type==='start')objs.push({x:rm.cx,y:rm.cy,id:'player_start'})}
-  if(tmpl.corridorSpawns)for(const sp of tmpl.corridorSpawns)objs.push({x:sp.x,y:sp.y,id:'spawn_g'+(sp.grade||0)});
-  for(const rd of tmpl.rooms)if(rd.spawns)for(const sp of rd.spawns)objs.push({x:rd.cx+sp.dx,y:rd.cy+sp.dy,id:'spawn_g'+(sp.grade||0)});
+  if(tmpl.corridorSpawns)for(const sp of tmpl.corridorSpawns)objs.push({x:sp.x,y:sp.y,id:'spawn'});
+  for(const rd of tmpl.rooms)if(rd.spawns)for(const sp of rd.spawns)objs.push({x:rd.cx+sp.dx,y:rd.cy+sp.dy,id:'spawn'});
   return{grid,mw,mh,rooms:tmpl.rooms,objs,special,dirty:true};
 }
 
@@ -11578,15 +11577,13 @@ function genFromTemplate(tmpl,si){
   for(let ri=0;ri<rooms.length;ri++){
     const r=rooms[ri];
     if(r.type==='start'||r.type==='boss')continue;
-    const distRatio=bossDistMax>0?Math.max(0,1-(r.cy/bossDistMax)):0;
-    const grade=Math.min(3,~~(distRatio*4));
+    const _rSize=Math.min(1,Math.max(0,r.w*r.h/400));
     // 템플릿 spawns 사용
     const rd=tmpl.rooms[ri];
     if(rd&&rd.spawns){
       for(const sp of rd.spawns){
         const hx=(r.cx+sp.dx+.5)*T,hy=(r.cy+sp.dy+.5)*T;
-        const g=sp.grade!=null?sp.grade:grade;
-        spawnHoles.push({x:hx,y:hy,grade:g,timer:600+Math.random()*60,alive:0,room:ri});
+        spawnHoles.push({x:hx,y:hy,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri});
       }
     }
     // [규칙1] 모든 방 최소 2개 보장
@@ -11594,22 +11591,21 @@ function genFromTemplate(tmpl,si){
     const _targetPerRoom=(r.w>15||r.h>15)?3:2;
     for(let _fi=_roomHoles;_fi<_targetPerRoom;_fi++){
       const _ox=(Math.random()-.5)*r.w*.6*T,_oy=(Math.random()-.5)*r.h*.6*T;
-      spawnHoles.push({x:(r.cx+.5)*T+_ox,y:(r.cy+.5)*T+_oy,grade,timer:600+Math.random()*60,alive:0,room:ri});
+      spawnHoles.push({x:(r.cx+.5)*T+_ox,y:(r.cy+.5)*T+_oy,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri});
     }
     // [규칙2] 보스 인접 방에 최소 3개
     if(_preBossRm&&r===_preBossRm){
       _roomHoles=spawnHoles.filter(h=>h.room===ri).length;
       for(let _bi=_roomHoles;_bi<3;_bi++){
         const _ox=(Math.random()-.5)*r.w*.5*T,_oy=(Math.random()-.5)*r.h*.5*T;
-        spawnHoles.push({x:(r.cx+.5)*T+_ox,y:(r.cy+.5)*T+_oy,grade:Math.min(3,grade+1),timer:600+Math.random()*60,alive:0,room:ri});
+        spawnHoles.push({x:(r.cx+.5)*T+_ox,y:(r.cy+.5)*T+_oy,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri});
       }
     }
   }
   // 복도 소환굴
   if(tmpl.corridorSpawns){
     for(const cs of tmpl.corridorSpawns){
-      const grade=cs.grade||0;
-      spawnHoles.push({x:(cs.x+.5)*T,y:(cs.y+.5)*T,grade,timer:600+Math.random()*60,alive:0,room:-1});
+      spawnHoles.push({x:(cs.x+.5)*T,y:(cs.y+.5)*T,size:.3,timer:600+Math.random()*60,alive:0,room:-1});
     }
   }
   // [규칙4] 총량 정규화 — 방 수 기반 목표치 (방당 3개)
@@ -11620,7 +11616,7 @@ function genFromTemplate(tmpl,si){
     const _rr=_normalRooms2[~~(Math.random()*_normalRooms2.length)];
     const _ox=(Math.random()-.5)*_rr.w*.4*T,_oy=(Math.random()-.5)*_rr.h*.4*T;
     const _dr=bossDistMax>0?Math.max(0,1-(_rr.cy/bossDistMax)):0;
-    spawnHoles.push({x:(_rr.cx+.5)*T+_ox,y:(_rr.cy+.5)*T+_oy,grade:Math.min(3,~~(_dr*4)),timer:600+Math.random()*60,alive:0,room:-1});
+    spawnHoles.push({x:(_rr.cx+.5)*T+_ox,y:(_rr.cy+.5)*T+_oy,size:Math.min(1,Math.max(0,_rr.w*_rr.h/400)),timer:600+Math.random()*60,alive:0,room:-1});
   }
   const _maxHoles2=_targetHoles2+3;
   while(spawnHoles.length>_maxHoles2){
@@ -11935,12 +11931,7 @@ _buildAtlasE(); // 신규 적 아틀라스 (가변프레임 × 7팔레트)
 _buildAtlasB(); // 신규 보스 아틀라스 (27프레임 × 7팔레트)
 
 // ═══ 소환굴 등급 ═══
-const SPAWN_HOLE=[
-  {name:'균열',    col:'#888888',interval:3600,cnt:50, maxAlive:200, minElite:0},
-  {name:'구멍',    col:'#cc3333',interval:2400,cnt:50, maxAlive:200, minElite:0},
-  {name:'심연',    col:'#9933cc',interval:1500,cnt:100,maxAlive:200,minElite:1},
-  {name:'나락의입',col:'#111111',interval:900, cnt:100,maxAlive:200,minElite:2}
-];
+const SPAWN_HOLE={name:'소환굴',col:'#aa4444',cnt:50,maxAlive:200,minElite:0};
 
 // ═══ 엘리트/모디파이어 시스템 ═══
 const ELITE_TIERS=[
@@ -14827,7 +14818,6 @@ function update(){
   // ═══ 소환굴 업데이트 (근접 트리거: 2000px 이내 접근 시 발동→스폰→소멸) ═══
   for(let hi=G.spawnHoles.length-1;hi>=0;hi--){
     const h=G.spawnHoles[hi];
-    const sh=SPAWN_HOLE[h.grade];
     // 신성한 감옥 fireZone 범위 내 → 즉시 제거
     if(G._fireZones){let _hpBlocked=false;for(let _fi=0;_fi<G._fireZones.length;_fi++){const _fz=G._fireZones[_fi];if(_fz.type==='holyPrison'&&dst(h.x,h.y,_fz.x,_fz.y)<_fz.r){addTxt(h.x,h.y-20,'✟ 신성 차단!','#ffdd88',40);G.spawnHoles.splice(hi,1);_hpBlocked=true;break}}if(_hpBlocked)continue}
     const _hd2=dst2(P.x,P.y,h.x,h.y);
@@ -14841,21 +14831,16 @@ function update(){
     if(h._spawnDelay>0){h._spawnDelay-=sp;continue}
     // 몹 스폰
     const _hSi=G.stage;
-    const _hCnt=sh.cnt;
+    const _hCnt=SPAWN_HOLE.cnt;
     for(let _hj=0;_hj<_hCnt;_hj++){
-      const _ha=Math.PI*2*Math.random(),_hr=80+Math.random()*200+h.grade*40;
+      const _ha=Math.PI*2*Math.random(),_hr=80+Math.random()*200+h.size*120;
       const ne=mkEn(h.x+Math.cos(_ha)*_hr,h.y+Math.sin(_ha)*_hr,_hSi,rollEtype(_hSi),false,undefined,h.room);
-      if(ne.elite<sh.minElite&&!ne.ib&&!isRareEtype(ne.etype)){
-        ne.elite=sh.minElite;const et=ELITE_TIERS[ne.elite];
-        ne.mhp=~~(ne.mhp*et.hpMul);ne.hp=ne.mhp;ne.eShield=ne.mhp;ne.eShieldMax=ne.mhp;
-        ne.baseAtk=~~(ne.baseAtk*et.atkMul);ne.atk=ne.baseAtk;ne.col=et.col;
-      }
       ens.push(ne);
     }
     // 스폰 이펙트 + 소환굴 제거
-    addParts(h.x,h.y,sh.col,15);
-    addTxt(h.x,h.y-20,'⚔ '+sh.name+'!',sh.col,50);
-    shake(5+h.grade*3);
+    addParts(h.x,h.y,SPAWN_HOLE.col,15);
+    addTxt(h.x,h.y-20,'⚔ '+SPAWN_HOLE.name+'!',SPAWN_HOLE.col,50);
+    shake(5+~~(h.size*9));
     G.spawnHoles.splice(hi,1);
   }
   // ═══ 킬 체인 타이머 + 균열 업데이트 ═══
@@ -22011,7 +21996,7 @@ function activateHolyPrison(){
   P._hpCd=1800; // 30초 쿨
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:_hpR,t:0,maxT:_hpDur,type:'holyPrison',lv:slv});
-  SFX.pickup();playSample(Math.random()<.5?'voice_holyDome':'voice_holyDome2',1,1);
+  SFX.pickup();playSample('voice_holyPrison',1,1);
   addTxt(P.x,P.y-30,'✟ 신성한 감옥!','#ffdd88',50);
   addParts(P.x,P.y,'#ffdd88',15);shake(4);
   _addSkProf('holyPrison');
@@ -24880,12 +24865,11 @@ function draw(){
   // ═══ 소환굴 렌더링 (vfx_void_black 스프라이트) ═══
   {const _shVfx=_VFX_SHEETS['void_black'];
   for(let hi=0;hi<G.spawnHoles.length;hi++){
-    const h=G.spawnHoles[hi];const sh=SPAWN_HOLE[h.grade];
+    const h=G.spawnHoles[hi];
     if(h.x<G.cam.x-C.width/2-200||h.x>G.cam.x+C.width/2+200||h.y<G.cam.y-C.height/2-200||h.y>G.cam.y+C.height/2+200)continue;
-    const _shSize=400+h.grade*120; // 등급별 크기 (10배)
+    const _shSize=300+h.size*400; // 사이즈 기반 (300~700)
     if(_shVfx&&_shVfx.img.complete){
-      // 애니메이션 프레임 (등급 높을수록 빠르게)
-      const _shSpd=200-h.grade*30;
+      const _shSpd=180-~~(h.size*60);
       const _shFrame=~~((_now+hi*500)/_shSpd)%_shVfx.frames;
       const _shCol=_shFrame%_shVfx.cols, _shRow=~~(_shFrame/_shVfx.cols);
       const pulse=Math.sin(_now/250+hi)*.15;
@@ -24904,9 +24888,9 @@ function draw(){
       // 폴백: 검은 원
       X.globalAlpha=.4;X.fillStyle='#000000';X.beginPath();X.arc(h.x,h.y,_shSize/2,0,Math.PI*2);X.fill();
     }
-    // 등급 이름 표시
-    X.globalAlpha=.7;X.font='bold 10px monospace';X.textAlign='center';X.fillStyle=sh.col;
-    X.fillText(sh.name,h.x,h.y-_shSize/2-6);X.textAlign='left';
+    // 이름 표시
+    X.globalAlpha=.7;X.font='bold 10px monospace';X.textAlign='center';X.fillStyle=SPAWN_HOLE.col;
+    X.fillText(SPAWN_HOLE.name,h.x,h.y-_shSize/2-6);X.textAlign='left';
     X.globalAlpha=1;
   }}
   // ═══ 보스 아레나 동적 FX (보스 생존 시만) ═══
@@ -30452,6 +30436,14 @@ function drawMM(){if(!G.on||!G.map)return;
       if(mo.type==='bonfire'){mx.fillStyle=mo.lit?'#ffcc44':'#886622';mx.fillRect(mx2-2,my2-2,4,4)}
       else if(mo.type==='trap'){mx.fillStyle='#ff4444';mx.fillRect(mx2-1,my2-1,2,2)}
       else if(mo.type==='altar'&&!mo.used){mx.fillStyle='#aa44ff';mx.fillRect(mx2-2,my2-2,4,4)}
+    }
+    // 소환굴 마커
+    for(let _shi=0;_shi<G.spawnHoles.length;_shi++){const sh=G.spawnHoles[_shi];
+      const sx=(sh.x/T)*sc,sy=(sh.y/T)*sc;
+      if(sx<0||sx>mapPxW||sy<0||sy>mapPxH)continue;
+      const _shR=1.5+sh.size*1.5;
+      mx.fillStyle=SPAWN_HOLE.col;mx.globalAlpha=.85;mx.beginPath();mx.arc(sx,sy,_shR,0,Math.PI*2);mx.fill();
+      mx.strokeStyle='#000';mx.lineWidth=.5;mx.stroke();mx.globalAlpha=1;
     }
     _mmCacheStage=G.stage;_mmDirty=0;
     _mmOx=~~((mmW-mapPxW)/2);_mmOy=~~((mmH-mapPxH)/2);_mmSc=sc;
