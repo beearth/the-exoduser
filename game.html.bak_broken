@@ -2878,7 +2878,7 @@ const _sampleFiles={
   melee_hit:'sfx/hit/melee_hit.mp3',     // 근접 무기 타격 (기본) — hitArc 50%
   melee_hit1:'sfx/hit/melee_hit1.wav',   // 근접 무기 타격 (변형) — hitArc 50%
   flat_hit:'sfx/hit/flat_hit.mp3',       // 방패/칼등치기 타격 — sBash 전용
-  impact_hit:'sfx/hit/impact_hit.mp3',   // 범용 임팩트 — 패링/블록/탈출 등
+
   bullet_hit:'sfx/hit/bullet_hit.mp3',   // 투사체 명중 — 마법탄/화살→적
   heavy_hit:'sfx/skillsound/slam/heavy_hit.mp3', // 강타/슬램
   bow_hit:'sfx/skillsound/bow/bow_hit.mp3',      // 화살 명중
@@ -2905,7 +2905,7 @@ const _sampleFiles={
   chain_throw:'sfx/chain/chain_throw.mp3',
   chain_fly:'sfx/chain/chain_fly.mp3',
   chain_land2:'sfx/skillsound/chain/chain_land2.mp3',
-  chain_stick:'sfx/skillsound/chain/chain_stick.wav',
+  chain_stick:'sfx/skillsound/chain/chain_stick.mp3',
   // skillsound/ — 스킬 전용
   electric_storm:'sfx/skillsound/storm/electric_storm.mp3',
   electric_storm2:'sfx/skillsound/storm/electric_storm2.mp3',
@@ -3769,7 +3769,7 @@ const SFX={
     else playSample('sword_parry',1,_r(1,.1))
   },
   // ── 블록/충격: 몬스터 방어, 벽충돌 등 ──
-  block(){playSample('impact_hit',.6,_r(1,.1))},
+  block(){},
   // ── Boss weapon swing: whoosh + impact ──
   swing(){
     playNoise(.1,2000,.08,800,.002,'bandpass');
@@ -3788,7 +3788,6 @@ const SFX={
   },
   // ── Arrow impact: sample + procedural ──
   arrowHit(){
-    playSample('impact_hit',.85,_r(1,.1));
   },
   // ── Magic cast: sample + element-specific ──
   magic(el){
@@ -11120,65 +11119,37 @@ function genGauntlet(fi){
   const _bdm=_tBossDistMap(mw,mh,bossRoom?bossRoom.cy:0);
   G.cellDistToBoss=_bdm.distMap;G.maxDistToBoss=_bdm.maxD;G.cellW=_bdm.cellW;G.cellH=_bdm.cellH;
 
-  // ── 소환굴 배치 ──
+  // ── 소환굴 배치 (방 크기 기반: 소5/중10/대30) ──
   const spawnHoles=[];
-  const bossRoomRef=rooms.find(r=>r.type==='boss');
-  const bossDistMax=bossRoomRef?bossRoomRef.cy:1;
-  // 보스 방과 인접한 방 찾기 (보스 방 cy와 가장 가까운 non-boss 방)
-  let _preBossRoom=null,_preBossDist=Infinity;
-  for(let ri=0;ri<rooms.length;ri++){
-    const r=rooms[ri];if(r.type==='boss'||r.type==='start')continue;
-    const _d2=Math.abs(r.cy-bossDistMax);
-    if(_d2<_preBossDist){_preBossDist=_d2;_preBossRoom=r}
-  }
   for(let ri=0;ri<rooms.length;ri++){
     const r=rooms[ri];
     if(r.type==='start'||r.type==='boss')continue;
-    // [규칙1] 모든 방에 소환굴 2~3개 (큰 방 3개, 작은 방 2개)
     const _rW=r.w||r.rx*2||12,_rH=r.h||r.ry*2||8;
-    const _rArea=_rW*_rH;
-    const _hSize=Math.min(1,Math.max(0,_rArea/400));
-    let _holeCount=(_rW>15||_rH>15)?3:2;
-    // [규칙2] 보스 인접 방에 최소 2개
-    if(_preBossRoom&&r===_preBossRoom)_holeCount=Math.max(2,_holeCount);
-    for(let _hci=0;_hci<_holeCount;_hci++){
-      const _ox=(Math.random()-.5)*_rW*.7*T;
-      const _oy=(Math.random()-.5)*_rH*.7*T;
-      const hx=(r.cx+.5)*T+_ox,hy=(r.cy+.5)*T+_oy;
-      spawnHoles.push({x:hx,y:hy,size:_hSize,timer:600+Math.random()*60,alive:0,room:ri});
+    const area=_rW*_rH;
+    let holeCnt,hSize;
+    if(area<=150){holeCnt=5;hSize=0.3}
+    else if(area<=500){holeCnt=10;hSize=0.5}
+    else{holeCnt=30;hSize=0.8}
+    const cx=(r.cx+.5)*T,cy=(r.cy+.5)*T;
+    const hw=_rW*.35*T,hh=_rH*.35*T;
+    for(let hi=0;hi<holeCnt;hi++){
+      const ga=hi*2.399963;
+      const rd=Math.sqrt((hi+.5)/holeCnt);
+      const hx=cx+Math.cos(ga)*hw*rd;
+      const hy=cy+Math.sin(ga)*hh*rd;
+      spawnHoles.push({x:hx,y:hy,size:hSize,timer:600+Math.random()*60,alive:0,room:ri});
     }
   }
-  // 복도 spine 전체에 균열 배치 (12개 고정)
-  const corridorCnt=12;
-  const spineStep=Math.max(1,~~(spine.length/corridorCnt));
+  // 복도 소환굴 (spine 기반, 간격 확보)
+  const corridorCnt=Math.min(8,~~(spine.length/10));
+  const spineStep=Math.max(1,~~(spine.length/(corridorCnt||1)));
   for(let ci=0;ci<corridorCnt;ci++){
-    const si2=Math.min(spine.length-1,~~(spineStep*(ci+.5)+Math.random()*3));
+    const si2=Math.min(spine.length-1,~~(spineStep*(ci+.5)));
     const sp2=spine[si2];if(!sp2)continue;
     const hx2=(sp2.cx+.5)*T,hy2=(sp2.y+.5)*T;
     let inRoom=false;
     for(const r of rooms){const rw2=r.w||r.rx*2||12,rh2=r.h||r.ry*2||8;if(sp2.cx>=r.cx-rw2/2&&sp2.cx<=r.cx+rw2/2&&sp2.y>=r.cy-rh2/2&&sp2.y<=r.cy+rh2/2){inRoom=true;break}}
     if(!inRoom)spawnHoles.push({x:hx2,y:hy2,size:.3,timer:600+Math.random()*60,alive:0,room:-1});
-  }
-  // [규칙4] 총량 정규화 — 방 수 기반 목표치 (방당 3개 기준)
-  const _normalRooms=rooms.filter(r=>r.type!=='start'&&r.type!=='boss');
-  const _targetHoles=_normalRooms.length*3;
-  // 최소 보장
-  while(spawnHoles.length<Math.max(5,_targetHoles-3)){
-    const _cands=_normalRooms;
-    if(_cands.length===0)break;
-    const _rr=_cands[~~(Math.random()*_cands.length)];
-    const _rrW=_rr.w||_rr.rx*2||12,_rrH=_rr.h||_rr.ry*2||8;
-    const _ox2=(Math.random()-.5)*_rrW*.5*T,_oy2=(Math.random()-.5)*_rrH*.5*T;
-    const _dr=bossDistMax>0?Math.max(0,1-(_rr.cy/bossDistMax)):0;
-    const _rrW2=_rr.w||_rr.rx*2||12,_rrH2=_rr.h||_rr.ry*2||8;
-    spawnHoles.push({x:(_rr.cx+.5)*T+_ox2,y:(_rr.cy+.5)*T+_oy2,size:Math.min(1,Math.max(0,_rrW2*_rrH2/400)),timer:600+Math.random()*60,alive:0,room:-1});
-  }
-  // 초과분 제거 — 복도(room===-1)부터 우선 제거
-  const _maxHoles=_targetHoles+3;
-  while(spawnHoles.length>_maxHoles){
-    const _ci=spawnHoles.findIndex(h=>h.room===-1);
-    if(_ci>=0)spawnHoles.splice(_ci,1);
-    else spawnHoles.splice(~~(Math.random()*spawnHoles.length),1);
   }
 
   G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
@@ -11397,69 +11368,118 @@ function buildGridMapCache(tmpl){
   return{grid,mw,mh,rooms:tmpl.rooms,objs,special,dirty:true};
 }
 
-// ── FIXED_MAPS 절차적 생성 (격자맵 포함, 전부 고정) ──
+// ── FIXED_MAPS (에디터 내보내기 적용) ──
 const FIXED_MAPS=[];
-for(let i=0;i<TOTAL_STAGES;i++){const s=STAGES[i];if(s.type==='grid')FIXED_MAPS[i]=generateGridMap(s.hell);else if(s.type==='horiz')FIXED_MAPS[i]=genHoriz(i);else FIXED_MAPS[i]=genSnake(i)}
+FIXED_MAPS[0]={"mw":200,"mh":200,"rooms":[{"id":"s","type":"start","cx":100,"cy":180,"shape":"ellipse","rx":14,"ry":10},{"id":"a1","type":"combat","cx":38,"cy":175,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"a2","type":"combat","cx":165,"cy":178,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":3,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":0,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"b1","type":"combat","cx":30,"cy":148,"shape":"circle","rx":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"b2","type":"combat","cx":75,"cy":145,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":2,"grade":0},{"dx":-2,"dy":-1,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"b3","type":"combat","cx":130,"cy":148,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":1,"grade":0},{"dx":-1,"dy":-1,"grade":0},{"dx":1,"dy":-3,"grade":0}]},{"id":"b4","type":"combat","cx":178,"cy":142,"shape":"circle","rx":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"c1","type":"combat","cx":25,"cy":118,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":3,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"c2","type":"combat","cx":72,"cy":115,"shape":"circle","rx":14,"spawns":[{"dx":3,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-2,"dy":1,"grade":0},{"dx":-3,"dy":-2,"grade":0},{"dx":0,"dy":-2,"grade":0}]},{"id":"f","type":"forge","cx":118,"cy":112,"shape":"rect","rx":12,"ry":8},{"id":"c3","type":"combat","cx":170,"cy":115,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"d1","type":"combat","cx":40,"cy":88,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-1,"grade":1}]},{"id":"d2","type":"combat","cx":100,"cy":85,"shape":"cross","rx":16,"ry":16,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":1,"dy":2,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":-1,"dy":-2,"grade":1},{"dx":1,"dy":-3,"grade":1}],"armW":8,"armH":8},{"id":"d3","type":"combat","cx":160,"cy":88,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e1","type":"combat","cx":28,"cy":58,"shape":"circle","rx":12,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":0,"grade":1},{"dx":0,"dy":-3,"grade":1}]},{"id":"e2","type":"combat","cx":80,"cy":55,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":1,"dy":3,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e3","type":"combat","cx":140,"cy":55,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":1,"dy":3,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-1,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e4","type":"combat","cx":185,"cy":58,"shape":"circle","rx":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":0,"grade":1},{"dx":0,"dy":-1,"grade":1}]},{"id":"n1","type":"combat","cx":50,"cy":28,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"n2","type":"combat","cx":110,"cy":25,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":4,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"n3","type":"combat","cx":170,"cy":28,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":3,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":0,"dy":-3,"grade":1}]},{"id":"exit","type":"combat","cx":110,"cy":10,"shape":"ellipse","rx":12,"ry":6,"spawns":[{"dx":4,"dy":0,"grade":1},{"dx":-1,"dy":3,"grade":1},{"dx":-1,"dy":-1,"grade":1}]},{"id":"h1","type":"combat","cx":8,"cy":155,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":1}]},{"id":"h2","type":"combat","cx":192,"cy":130,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":1}]},{"id":"h3","type":"combat","cx":8,"cy":42,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":2}]},{"id":"h4","type":"combat","cx":192,"cy":42,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":2}]}],"corridors":[{"from":"s","to":"a1","width":7,"style":"cave","waypoints":[{"x":68,"y":178}]},{"from":"s","to":"a2","width":7,"style":"cave","waypoints":[{"x":132,"y":179}]},{"from":"a1","to":"b1","width":7,"style":"cave","waypoints":[{"x":34,"y":162}]},{"from":"a1","to":"b2","width":7,"style":"cave","waypoints":[{"x":55,"y":160}]},{"from":"s","to":"b2","width":8,"style":"cave","waypoints":[{"x":88,"y":162}]},{"from":"s","to":"b3","width":8,"style":"cave","waypoints":[{"x":115,"y":164}]},{"from":"a2","to":"b3","width":7,"style":"cave","waypoints":[{"x":148,"y":163}]},{"from":"a2","to":"b4","width":7,"style":"cave","waypoints":[{"x":172,"y":160}]},{"from":"a1","to":"h1","width":4,"style":"cave"},{"from":"b1","to":"b2","width":6,"style":"cave","waypoints":[{"x":52,"y":147}]},{"from":"b2","to":"b3","width":7,"style":"cave","waypoints":[{"x":102,"y":146}]},{"from":"b3","to":"b4","width":6,"style":"cave","waypoints":[{"x":154,"y":145}]},{"from":"b1","to":"c1","width":6,"style":"cave","waypoints":[{"x":27,"y":133}]},{"from":"b2","to":"c2","width":7,"style":"cave","waypoints":[{"x":73,"y":130}]},{"from":"b3","to":"f","width":7,"style":"cave","waypoints":[{"x":124,"y":130}]},{"from":"b4","to":"c3","width":6,"style":"cave","waypoints":[{"x":174,"y":128}]},{"from":"b4","to":"h2","width":4,"style":"cave"},{"from":"c1","to":"c2","width":6,"style":"cave","waypoints":[{"x":48,"y":117}]},{"from":"c2","to":"f","width":7,"style":"cave","waypoints":[{"x":95,"y":113}]},{"from":"f","to":"c3","width":7,"style":"cave","waypoints":[{"x":144,"y":114}]},{"from":"c1","to":"d1","width":6,"style":"cave","waypoints":[{"x":32,"y":103}]},{"from":"c2","to":"d1","width":6,"style":"cave","waypoints":[{"x":55,"y":102}]},{"from":"c2","to":"d2","width":7,"style":"cave","waypoints":[{"x":86,"y":100}]},{"from":"f","to":"d2","width":7,"style":"cave","waypoints":[{"x":109,"y":98}]},{"from":"c3","to":"d2","width":6,"style":"cave","waypoints":[{"x":135,"y":100}]},{"from":"c3","to":"d3","width":6,"style":"cave","waypoints":[{"x":165,"y":102}]},{"from":"d1","to":"d2","width":7,"style":"cave","waypoints":[{"x":70,"y":87}]},{"from":"d2","to":"d3","width":7,"style":"cave","waypoints":[{"x":130,"y":87}]},{"from":"d1","to":"e1","width":6,"style":"cave","waypoints":[{"x":34,"y":73}]},{"from":"d1","to":"e2","width":6,"style":"cave","waypoints":[{"x":58,"y":72}]},{"from":"d2","to":"e2","width":7,"style":"cave","waypoints":[{"x":90,"y":70}]},{"from":"d2","to":"e3","width":7,"style":"cave","waypoints":[{"x":120,"y":70}]},{"from":"d3","to":"e3","width":6,"style":"cave","waypoints":[{"x":150,"y":72}]},{"from":"d3","to":"e4","width":6,"style":"cave","waypoints":[{"x":172,"y":73}]},{"from":"e1","to":"e2","width":6,"style":"cave","waypoints":[{"x":54,"y":57}]},{"from":"e2","to":"e3","width":7,"style":"cave","waypoints":[{"x":110,"y":55}]},{"from":"e3","to":"e4","width":6,"style":"cave","waypoints":[{"x":162,"y":57}]},{"from":"e1","to":"h3","width":4,"style":"cave"},{"from":"e4","to":"h4","width":4,"style":"cave"},{"from":"e1","to":"n1","width":6,"style":"cave","waypoints":[{"x":38,"y":43}]},{"from":"e2","to":"n1","width":6,"style":"cave","waypoints":[{"x":65,"y":42}]},{"from":"e2","to":"n2","width":7,"style":"cave","waypoints":[{"x":95,"y":40}]},{"from":"e3","to":"n2","width":7,"style":"cave","waypoints":[{"x":125,"y":40}]},{"from":"e3","to":"n3","width":6,"style":"cave","waypoints":[{"x":155,"y":42}]},{"from":"e4","to":"n3","width":6,"style":"cave","waypoints":[{"x":178,"y":43}]},{"from":"n1","to":"n2","width":7,"style":"cave","waypoints":[{"x":80,"y":26}]},{"from":"n2","to":"n3","width":7,"style":"cave","waypoints":[{"x":140,"y":27}]},{"from":"n1","to":"exit","width":6,"style":"cave","waypoints":[{"x":80,"y":18}]},{"from":"n2","to":"exit","width":8,"style":"cave"},{"from":"n3","to":"exit","width":6,"style":"cave","waypoints":[{"x":140,"y":18}]},{"from":"c3","to":"a2","width":5,"style":"cave","waypoints":[{"x":190,"y":125},{"x":188,"y":160}]},{"from":"e1","to":"b1","width":5,"style":"cave","waypoints":[{"x":10,"y":58},{"x":8,"y":100},{"x":12,"y":148}]},{"from":"exit","to":"s","width":4,"style":"cave","waypoints":[{"x":196,"y":10},{"x":198,"y":95},{"x":196,"y":180},{"x":145,"y":182}]}],"features":[{"type":"alcove","x":6,"y":15,"r":4},{"type":"alcove","x":194,"y":15,"r":4},{"type":"alcove","x":6,"y":40,"r":4},{"type":"alcove","x":194,"y":40,"r":6},{"type":"alcove","x":6,"y":65,"r":6},{"type":"alcove","x":194,"y":65,"r":5},{"type":"alcove","x":6,"y":90,"r":4},{"type":"alcove","x":194,"y":90,"r":5},{"type":"alcove","x":6,"y":115,"r":3},{"type":"alcove","x":194,"y":115,"r":4},{"type":"alcove","x":6,"y":140,"r":3},{"type":"alcove","x":194,"y":140,"r":5},{"type":"alcove","x":6,"y":165,"r":6},{"type":"alcove","x":194,"y":165,"r":5},{"type":"alcove","x":30,"y":194,"r":3},{"type":"alcove","x":30,"y":6,"r":3},{"type":"alcove","x":60,"y":194,"r":5},{"type":"alcove","x":60,"y":6,"r":5},{"type":"alcove","x":90,"y":194,"r":4},{"type":"alcove","x":90,"y":6,"r":3},{"type":"alcove","x":120,"y":194,"r":5},{"type":"alcove","x":120,"y":6,"r":4},{"type":"alcove","x":150,"y":194,"r":4},{"type":"alcove","x":150,"y":6,"r":5}],"corridorSpawns":[{"x":132,"y":179,"grade":0},{"x":115,"y":164,"grade":1},{"x":148,"y":163,"grade":0},{"x":52,"y":147,"grade":0},{"x":102,"y":146,"grade":0},{"x":27,"y":133,"grade":0},{"x":124,"y":130,"grade":0},{"x":174,"y":128,"grade":1},{"x":55,"y":102,"grade":1},{"x":86,"y":100,"grade":1},{"x":165,"y":102,"grade":0},{"x":70,"y":87,"grade":0},{"x":130,"y":87,"grade":1},{"x":58,"y":72,"grade":1},{"x":150,"y":72,"grade":1},{"x":172,"y":73,"grade":1},{"x":110,"y":55,"grade":0},{"x":125,"y":40,"grade":0},{"x":178,"y":43,"grade":0},{"x":80,"y":18,"grade":0},{"x":140,"y":18,"grade":1},{"x":10,"y":58,"grade":0}],"spawnHoles":[{"x":11,"y":112,"type":"L"},{"x":20,"y":110,"type":"L"},{"x":33,"y":91,"type":"L"},{"x":22,"y":69,"type":"L"},{"x":49,"y":48,"type":"L"},{"x":12,"y":69,"type":"M"},{"x":57,"y":48,"type":"M"},{"x":32,"y":10,"type":"L"},{"x":24,"y":11,"type":"S"},{"x":41,"y":11,"type":"S"}]};
+FIXED_MAPS[1]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":9,"cy":241,"shape":"ellipse","rx":4,"ry":6},{"id":"r1","type":"combat","cx":77,"cy":418,"shape":"circle","rx":11,"ry":6,"spawns":[{"dx":0,"dy":-1,"grade":0},{"dx":1,"dy":0,"grade":0}]},{"id":"r2","type":"combat","cx":145,"cy":79,"shape":"ellipse","rx":9,"ry":7,"spawns":[{"dx":0,"dy":-2,"grade":0},{"dx":0,"dy":0,"grade":0}]},{"id":"f","type":"forge","cx":213,"cy":250,"shape":"rect","rx":5,"ry":7},{"id":"r3","type":"combat","cx":281,"cy":69,"shape":"cross","rx":9,"ry":6,"spawns":[{"dx":-3,"dy":-1,"grade":2},{"dx":0,"dy":-1,"grade":2},{"dx":2,"dy":2,"grade":3}],"armW":4,"armH":3},{"id":"r4","type":"combat","cx":349,"cy":438,"shape":"circle","rx":11,"ry":8,"spawns":[{"dx":-3,"dy":-3,"grade":2},{"dx":1,"dy":1,"grade":2},{"dx":1,"dy":-1,"grade":3}]},{"id":"b","type":"boss","cx":492,"cy":294,"shape":"ellipse","rx":8,"ry":13,"pillars":[{"dx":-4,"dy":-6,"w":3,"h":3},{"dx":4,"dy":-6,"w":3,"h":3},{"dx":-4,"dy":6,"w":3,"h":3},{"dx":4,"dy":6,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":6,"style":"cave","waypoints":[{"x":43,"y":330}]},{"from":"r1","to":"r2","width":8,"style":"cave","waypoints":[{"x":99,"y":299},{"x":122,"y":195}]},{"from":"r2","to":"f","width":6,"style":"cave","waypoints":[{"x":179,"y":160}]},{"from":"f","to":"r3","width":7,"style":"zigzag","waypoints":[{"x":247,"y":159}]},{"from":"r3","to":"r4","width":7,"style":"cave","waypoints":[{"x":303,"y":183},{"x":326,"y":320}]},{"from":"r4","to":"b","width":9,"style":"zigzag","waypoints":[{"x":420,"y":387}]}],"features":[{"type":"alcove","x":143,"y":68,"r":4},{"type":"alcove","x":215,"y":261,"r":5},{"type":"alcove","x":349,"y":450,"r":3}],"corridorSpawns":[{"x":43,"y":330,"grade":0},{"x":179,"y":160,"grade":0},{"x":303,"y":183,"grade":1}]};
+FIXED_MAPS[2]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":225,"cy":490,"shape":"ellipse","rx":7,"ry":4},{"id":"r1","type":"combat","cx":447,"cy":429,"shape":"ellipse","rx":12,"ry":8,"spawns":[{"dx":-1,"dy":1,"grade":0},{"dx":-5,"dy":1,"grade":0}]},{"id":"r2","type":"combat","cx":27,"cy":368,"shape":"cross","rx":11,"ry":7,"spawns":[{"dx":2,"dy":0,"grade":0},{"dx":-2,"dy":0,"grade":0}],"armW":6,"armH":4},{"id":"f","type":"forge","cx":250,"cy":307,"shape":"rect","rx":6,"ry":4},{"id":"r3","type":"combat","cx":73,"cy":246,"shape":"circle","rx":14,"ry":7,"spawns":[{"dx":-1,"dy":0,"grade":1},{"dx":-2,"dy":2,"grade":1}]},{"id":"r4","type":"combat","cx":428,"cy":185,"shape":"circle","rx":11,"ry":9,"spawns":[{"dx":4,"dy":0,"grade":2},{"dx":-3,"dy":0,"grade":2},{"dx":2,"dy":1,"grade":3}]},{"id":"r5","type":"combat","cx":60,"cy":124,"shape":"circle","rx":14,"ry":8,"spawns":[{"dx":0,"dy":-1,"grade":2},{"dx":0,"dy":1,"grade":2},{"dx":-2,"dy":-1,"grade":3}]},{"id":"b","type":"boss","cx":215,"cy":11,"shape":"ellipse","rx":15,"ry":11,"pillars":[{"dx":-7,"dy":-5,"w":3,"h":3},{"dx":7,"dy":-5,"w":3,"h":3},{"dx":-7,"dy":5,"w":3,"h":3},{"dx":7,"dy":5,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":8,"style":"zigzag","waypoints":[{"x":293,"y":469},{"x":370,"y":449}]},{"from":"r1","to":"r2","width":8,"style":"cave","waypoints":[{"x":301,"y":408},{"x":170,"y":388}]},{"from":"r2","to":"f","width":9,"style":"cave","waypoints":[{"x":107,"y":347},{"x":173,"y":327}]},{"from":"f","to":"r3","width":8,"style":"straight","waypoints":[{"x":188,"y":286},{"x":136,"y":266}]},{"from":"r3","to":"r4","width":8,"style":"straight","waypoints":[{"x":199,"y":225},{"x":306,"y":205}]},{"from":"r4","to":"r5","width":9,"style":"cave","waypoints":[{"x":301,"y":164},{"x":181,"y":144}]},{"from":"r5","to":"b","width":9,"style":"straight","waypoints":[{"x":140,"y":67}]}],"features":[{"type":"alcove","x":462,"y":426,"r":8},{"type":"alcove","x":259,"y":308,"r":6}],"corridorSpawns":[{"x":173,"y":327,"grade":0},{"x":301,"y":164,"grade":1}]};
+FIXED_MAPS[4]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":281,"cy":490,"shape":"ellipse","rx":7,"ry":4},{"id":"r1","type":"combat","cx":487,"cy":409,"shape":"circle","rx":11,"ry":8,"spawns":[{"dx":0,"dy":0,"grade":0},{"dx":-3,"dy":-2,"grade":0}]},{"id":"f","type":"forge","cx":250,"cy":328,"shape":"rect","rx":6,"ry":4},{"id":"r2","type":"combat","cx":480,"cy":247,"shape":"circle","rx":14,"ry":8,"spawns":[{"dx":3,"dy":0,"grade":2},{"dx":-5,"dy":1,"grade":2},{"dx":-3,"dy":0,"grade":3}]},{"id":"r3","type":"combat","cx":33,"cy":166,"shape":"circle","rx":13,"ry":7,"spawns":[{"dx":5,"dy":1,"grade":2},{"dx":0,"dy":0,"grade":2},{"dx":-4,"dy":0,"grade":3}]},{"id":"b","type":"boss","cx":288,"cy":9,"shape":"ellipse","rx":15,"ry":9,"pillars":[{"dx":-7,"dy":-4,"w":3,"h":3},{"dx":7,"dy":-4,"w":3,"h":3},{"dx":-7,"dy":4,"w":3,"h":3},{"dx":7,"dy":4,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":7,"style":"straight","waypoints":[{"x":388,"y":449}]},{"from":"r1","to":"f","width":7,"style":"cave","waypoints":[{"x":407,"y":382},{"x":339,"y":355}]},{"from":"f","to":"r2","width":7,"style":"cave","waypoints":[{"x":327,"y":301},{"x":410,"y":274}]},{"from":"r2","to":"r3","width":8,"style":"cave","waypoints":[{"x":330,"y":220},{"x":173,"y":193}]},{"from":"r3","to":"b","width":10,"style":"cave","waypoints":[{"x":174,"y":87}]}],"features":[{"type":"alcove","x":498,"y":250,"r":4}],"corridorSpawns":[{"x":388,"y":449,"grade":0}]};
+FIXED_MAPS[5]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":9,"cy":310,"shape":"ellipse","rx":4,"ry":6},{"id":"r1","type":"combat","cx":77,"cy":53,"shape":"ellipse","rx":11,"ry":7,"spawns":[{"dx":-1,"dy":-1,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"f","type":"forge","cx":145,"cy":250,"shape":"rect","rx":5,"ry":7},{"id":"r2","type":"combat","cx":213,"cy":36,"shape":"cross","rx":9,"ry":7,"spawns":[{"dx":-2,"dy":-1,"grade":1},{"dx":-2,"dy":-1,"grade":1}],"armW":5,"armH":5},{"id":"r3","type":"combat","cx":281,"cy":453,"shape":"cross","rx":9,"ry":6,"spawns":[{"dx":2,"dy":2,"grade":2},{"dx":1,"dy":-1,"grade":2},{"dx":-1,"dy":0,"grade":3}],"armW":4,"armH":4},{"id":"r4","type":"combat","cx":349,"cy":36,"shape":"circle","rx":11,"ry":7,"spawns":[{"dx":-2,"dy":-1,"grade":3},{"dx":-1,"dy":0,"grade":3},{"dx":0,"dy":2,"grade":3}]},{"id":"b","type":"boss","cx":492,"cy":254,"shape":"circle","rx":8,"ry":13,"pillars":[{"dx":-4,"dy":-6,"w":3,"h":3},{"dx":4,"dy":-6,"w":3,"h":3},{"dx":-4,"dy":6,"w":3,"h":3},{"dx":4,"dy":6,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":6,"style":"straight","waypoints":[{"x":31,"y":232},{"x":54,"y":145}]},{"from":"r1","to":"f","width":8,"style":"cave","waypoints":[{"x":111,"y":152}]},{"from":"f","to":"r2","width":6,"style":"straight","waypoints":[{"x":167,"y":180},{"x":190,"y":103}]},{"from":"r2","to":"r3","width":8,"style":"straight","waypoints":[{"x":235,"y":176},{"x":258,"y":319}]},{"from":"r3","to":"r4","width":8,"style":"zigzag","waypoints":[{"x":315,"y":240}]},{"from":"r4","to":"b","width":9,"style":"cave","waypoints":[{"x":420,"y":135}]},{"from":"r1","to":"r3","width":6,"style":"zigzag","waypoints":[{"x":197,"y":252}]}],"features":[{"type":"alcove","x":73,"y":44,"r":4},{"type":"alcove","x":146,"y":260,"r":3},{"type":"alcove","x":211,"y":24,"r":4}],"corridorSpawns":[]};
+FIXED_MAPS[6]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":218,"cy":490,"shape":"ellipse","rx":7,"ry":4},{"id":"r1","type":"combat","cx":47,"cy":429,"shape":"cross","rx":13,"ry":7,"spawns":[{"dx":3,"dy":0,"grade":0},{"dx":-2,"dy":-1,"grade":0}],"armW":7,"armH":3},{"id":"r2","type":"combat","cx":436,"cy":368,"shape":"cross","rx":12,"ry":7,"spawns":[{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":0,"grade":0}],"armW":7,"armH":4},{"id":"f","type":"forge","cx":250,"cy":307,"shape":"rect","rx":6,"ry":4},{"id":"r3","type":"combat","cx":461,"cy":246,"shape":"circle","rx":15,"ry":8,"spawns":[{"dx":-4,"dy":-1,"grade":2},{"dx":-1,"dy":1,"grade":2},{"dx":0,"dy":2,"grade":3}]},{"id":"r4","type":"combat","cx":23,"cy":185,"shape":"ellipse","rx":13,"ry":7,"spawns":[{"dx":-5,"dy":-1,"grade":2},{"dx":5,"dy":0,"grade":2},{"dx":1,"dy":1,"grade":3}]},{"id":"r5","type":"combat","cx":438,"cy":124,"shape":"circle","rx":15,"ry":7,"spawns":[{"dx":2,"dy":-1,"grade":3},{"dx":-1,"dy":1,"grade":3},{"dx":-2,"dy":1,"grade":3}]},{"id":"b","type":"boss","cx":254,"cy":9,"shape":"ellipse","rx":16,"ry":9,"pillars":[{"dx":-8,"dy":-4,"w":3,"h":3},{"dx":8,"dy":-4,"w":3,"h":3},{"dx":-8,"dy":4,"w":3,"h":3},{"dx":8,"dy":4,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":9,"style":"straight","waypoints":[{"x":124,"y":459}]},{"from":"r1","to":"r2","width":7,"style":"cave","waypoints":[{"x":239,"y":398}]},{"from":"r2","to":"f","width":7,"style":"straight","waypoints":[{"x":373,"y":347},{"x":318,"y":327}]},{"from":"f","to":"r3","width":7,"style":"straight","waypoints":[{"x":325,"y":286},{"x":396,"y":266}]},{"from":"r3","to":"r4","width":9,"style":"cave","waypoints":[{"x":322,"y":225},{"x":166,"y":205}]},{"from":"r4","to":"r5","width":7,"style":"cave","waypoints":[{"x":168,"y":164},{"x":297,"y":144}]},{"from":"r5","to":"b","width":10,"style":"zigzag","waypoints":[{"x":311,"y":66}]}],"features":[{"type":"alcove","x":454,"y":368,"r":5},{"type":"alcove","x":479,"y":247,"r":4}],"corridorSpawns":[{"x":396,"y":266,"grade":1},{"x":166,"y":205,"grade":1}]};
+FIXED_MAPS[7]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":310,"cy":490,"shape":"ellipse","rx":7,"ry":4},{"id":"r1","type":"combat","cx":52,"cy":436,"shape":"circle","rx":15,"ry":7,"spawns":[{"dx":5,"dy":0,"grade":0},{"dx":0,"dy":0,"grade":0}]},{"id":"r2","type":"combat","cx":412,"cy":382,"shape":"ellipse","rx":14,"ry":7,"spawns":[{"dx":3,"dy":0,"grade":0},{"dx":4,"dy":-1,"grade":0}]},{"id":"r3","type":"combat","cx":76,"cy":328,"shape":"ellipse","rx":12,"ry":9,"spawns":[{"dx":4,"dy":0,"grade":1},{"dx":0,"dy":0,"grade":1}]},{"id":"f","type":"forge","cx":250,"cy":274,"shape":"rect","rx":6,"ry":4},{"id":"r4","type":"combat","cx":75,"cy":220,"shape":"circle","rx":12,"ry":9,"spawns":[{"dx":2,"dy":1,"grade":2},{"dx":-1,"dy":-2,"grade":2},{"dx":-2,"dy":0,"grade":3}]},{"id":"r5","type":"combat","cx":452,"cy":166,"shape":"ellipse","rx":16,"ry":8,"spawns":[{"dx":4,"dy":1,"grade":2},{"dx":6,"dy":-1,"grade":2},{"dx":2,"dy":0,"grade":3}]},{"id":"r6","type":"combat","cx":26,"cy":112,"shape":"cross","rx":12,"ry":9,"spawns":[{"dx":0,"dy":0,"grade":3},{"dx":-2,"dy":1,"grade":3},{"dx":-2,"dy":-2,"grade":3}],"armW":7,"armH":5},{"id":"b","type":"boss","cx":281,"cy":9,"shape":"ellipse","rx":16,"ry":9,"pillars":[{"dx":-8,"dy":-4,"w":3,"h":3},{"dx":8,"dy":-4,"w":3,"h":3},{"dx":-8,"dy":4,"w":3,"h":3},{"dx":8,"dy":4,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":7,"style":"cave","waypoints":[{"x":223,"y":472},{"x":137,"y":454}]},{"from":"r1","to":"r2","width":8,"style":"cave","waypoints":[{"x":231,"y":409}]},{"from":"r2","to":"r3","width":8,"style":"straight","waypoints":[{"x":247,"y":355}]},{"from":"r3","to":"f","width":9,"style":"cave","waypoints":[{"x":160,"y":301}]},{"from":"f","to":"r4","width":9,"style":"cave","waypoints":[{"x":156,"y":247}]},{"from":"r4","to":"r5","width":8,"style":"straight","waypoints":[{"x":260,"y":193}]},{"from":"r5","to":"r6","width":8,"style":"cave","waypoints":[{"x":317,"y":148},{"x":165,"y":130}]},{"from":"r6","to":"b","width":9,"style":"cave","waypoints":[{"x":166,"y":60}]}],"features":[{"type":"alcove","x":34,"y":440,"r":7},{"type":"alcove","x":8,"y":112,"r":7}],"corridorSpawns":[{"x":247,"y":355,"grade":0}]};
+FIXED_MAPS[8]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":9,"cy":260,"shape":"ellipse","rx":4,"ry":6},{"id":"r1","type":"combat","cx":56,"cy":86,"shape":"ellipse","rx":10,"ry":8,"spawns":[{"dx":0,"dy":1,"grade":0},{"dx":-2,"dy":1,"grade":0}]},{"id":"r2","type":"combat","cx":103,"cy":485,"shape":"ellipse","rx":11,"ry":6,"spawns":[{"dx":-1,"dy":0,"grade":0},{"dx":-1,"dy":2,"grade":0}]},{"id":"r3","type":"combat","cx":150,"cy":62,"shape":"circle","rx":11,"ry":7,"spawns":[{"dx":0,"dy":2,"grade":1},{"dx":0,"dy":-1,"grade":1}]},{"id":"f","type":"forge","cx":197,"cy":250,"shape":"rect","rx":5,"ry":7},{"id":"r4","type":"combat","cx":244,"cy":51,"shape":"ellipse","rx":10,"ry":7,"spawns":[{"dx":1,"dy":2,"grade":2},{"dx":0,"dy":-1,"grade":2},{"dx":1,"dy":1,"grade":3}]},{"id":"r5","type":"combat","cx":291,"cy":431,"shape":"cross","rx":10,"ry":8,"spawns":[{"dx":0,"dy":-1,"grade":2},{"dx":-3,"dy":0,"grade":2},{"dx":2,"dy":-2,"grade":3}],"armW":6,"armH":5},{"id":"r6","type":"combat","cx":338,"cy":67,"shape":"cross","rx":12,"ry":7,"spawns":[{"dx":0,"dy":1,"grade":2},{"dx":4,"dy":-1,"grade":2},{"dx":0,"dy":1,"grade":3}],"armW":8,"armH":5},{"id":"r7","type":"combat","cx":385,"cy":484,"shape":"ellipse","rx":11,"ry":6,"spawns":[{"dx":-1,"dy":0,"grade":3},{"dx":0,"dy":0,"grade":3},{"dx":0,"dy":0,"grade":3}]},{"id":"b","type":"boss","cx":491,"cy":207,"shape":"ellipse","rx":9,"ry":14,"pillars":[{"dx":-4,"dy":-7,"w":3,"h":3},{"dx":4,"dy":-7,"w":3,"h":3},{"dx":-4,"dy":7,"w":3,"h":3},{"dx":4,"dy":7,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":7,"style":"cave","waypoints":[{"x":24,"y":206},{"x":40,"y":139}]},{"from":"r1","to":"r2","width":7,"style":"zigzag","waypoints":[{"x":71,"y":221},{"x":87,"y":350}]},{"from":"r2","to":"r3","width":8,"style":"zigzag","waypoints":[{"x":118,"y":340},{"x":134,"y":201}]},{"from":"r3","to":"f","width":6,"style":"cave","waypoints":[{"x":173,"y":159}]},{"from":"f","to":"r4","width":7,"style":"cave","waypoints":[{"x":220,"y":146}]},{"from":"r4","to":"r5","width":6,"style":"cave","waypoints":[{"x":259,"y":180},{"x":275,"y":304}]},{"from":"r5","to":"r6","width":6,"style":"zigzag","waypoints":[{"x":314,"y":254}]},{"from":"r6","to":"r7","width":8,"style":"cave","waypoints":[{"x":353,"y":201},{"x":369,"y":347}]},{"from":"r7","to":"b","width":9,"style":"cave","waypoints":[{"x":438,"y":373}]}],"features":[{"type":"alcove","x":102,"y":495,"r":3},{"type":"alcove","x":248,"y":42,"r":3},{"type":"alcove","x":288,"y":441,"r":4}],"corridorSpawns":[{"x":87,"y":350,"grade":0},{"x":220,"y":146,"grade":1},{"x":275,"y":304,"grade":1}]};
+FIXED_MAPS[10]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":290,"cy":489,"shape":"ellipse","rx":8,"ry":5},{"id":"r1","type":"combat","cx":419,"cy":408,"shape":"cross","rx":12,"ry":9,"spawns":[{"dx":3,"dy":1,"grade":0},{"dx":0,"dy":0,"grade":0}],"armW":6,"armH":6},{"id":"f","type":"forge","cx":250,"cy":327,"shape":"rect","rx":7,"ry":5},{"id":"r2","type":"combat","cx":466,"cy":246,"shape":"circle","rx":15,"ry":9,"spawns":[{"dx":0,"dy":0,"grade":2},{"dx":-3,"dy":0,"grade":2},{"dx":-4,"dy":0,"grade":3}]},{"id":"r3","type":"combat","cx":71,"cy":165,"shape":"circle","rx":16,"ry":8,"spawns":[{"dx":-4,"dy":-1,"grade":3},{"dx":1,"dy":0,"grade":3},{"dx":-2,"dy":0,"grade":3}]},{"id":"b","type":"boss","cx":289,"cy":10,"shape":"ellipse","rx":17,"ry":10,"pillars":[{"dx":-8,"dy":-5,"w":3,"h":3},{"dx":8,"dy":-5,"w":3,"h":3},{"dx":-8,"dy":5,"w":3,"h":3},{"dx":8,"dy":5,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":10,"style":"cave","waypoints":[{"x":349,"y":448}]},{"from":"r1","to":"f","width":10,"style":"cave","waypoints":[{"x":364,"y":381},{"x":307,"y":354}]},{"from":"f","to":"r2","width":8,"style":"cave","waypoints":[{"x":350,"y":286}]},{"from":"r2","to":"r3","width":9,"style":"cave","waypoints":[{"x":273,"y":205}]},{"from":"r3","to":"b","width":11,"style":"cave","waypoints":[{"x":164,"y":87}]}],"features":[{"type":"alcove","x":435,"y":411,"r":3},{"type":"alcove","x":485,"y":245,"r":3}],"corridorSpawns":[{"x":349,"y":448,"grade":0}]};
+FIXED_MAPS[11]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":9,"cy":272,"shape":"ellipse","rx":4,"ry":6},{"id":"r1","type":"combat","cx":76,"cy":61,"shape":"ellipse","rx":11,"ry":7,"spawns":[{"dx":-1,"dy":-2,"grade":0},{"dx":1,"dy":2,"grade":0}]},{"id":"r2","type":"combat","cx":143,"cy":444,"shape":"ellipse","rx":12,"ry":7,"spawns":[{"dx":0,"dy":0,"grade":1},{"dx":-2,"dy":-2,"grade":1}]},{"id":"f","type":"forge","cx":210,"cy":250,"shape":"rect","rx":5,"ry":7},{"id":"r3","type":"combat","cx":277,"cy":469,"shape":"cross","rx":12,"ry":7,"spawns":[{"dx":-3,"dy":-1,"grade":2},{"dx":1,"dy":-2,"grade":2},{"dx":-3,"dy":2,"grade":3}],"armW":7,"armH":4},{"id":"r4","type":"combat","cx":344,"cy":57,"shape":"cross","rx":11,"ry":6,"spawns":[{"dx":3,"dy":1,"grade":3},{"dx":0,"dy":2,"grade":3},{"dx":3,"dy":0,"grade":3}],"armW":6,"armH":3},{"id":"b","type":"boss","cx":491,"cy":248,"shape":"ellipse","rx":9,"ry":15,"pillars":[{"dx":-4,"dy":-7,"w":3,"h":3},{"dx":4,"dy":-7,"w":3,"h":3},{"dx":-4,"dy":7,"w":3,"h":3},{"dx":4,"dy":7,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":8,"style":"zigzag","waypoints":[{"x":31,"y":204},{"x":53,"y":128}]},{"from":"r1","to":"r2","width":6,"style":"cave","waypoints":[{"x":98,"y":192},{"x":120,"y":308}]},{"from":"r2","to":"f","width":7,"style":"cave","waypoints":[{"x":165,"y":372},{"x":187,"y":316}]},{"from":"f","to":"r3","width":7,"style":"cave","waypoints":[{"x":232,"y":331},{"x":254,"y":396}]},{"from":"r3","to":"r4","width":8,"style":"cave","waypoints":[{"x":299,"y":337},{"x":321,"y":188}]},{"from":"r4","to":"b","width":9,"style":"cave","waypoints":[{"x":417,"y":179}]},{"from":"r2","to":"r3","width":6,"style":"cave","waypoints":[{"x":212,"y":462}]}],"features":[{"type":"alcove","x":78,"y":50,"r":4},{"type":"alcove","x":340,"y":47,"r":6}],"corridorSpawns":[{"x":53,"y":128,"grade":0},{"x":120,"y":308,"grade":0},{"x":165,"y":372,"grade":0},{"x":254,"y":396,"grade":1}]};
+FIXED_MAPS[12]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":290,"cy":489,"shape":"ellipse","rx":8,"ry":5},{"id":"r1","type":"combat","cx":432,"cy":428,"shape":"cross","rx":14,"ry":10,"spawns":[{"dx":-4,"dy":2,"grade":0},{"dx":3,"dy":-2,"grade":0}],"armW":8,"armH":6},{"id":"r2","type":"combat","cx":70,"cy":367,"shape":"cross","rx":15,"ry":9,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":6,"dy":1,"grade":1}],"armW":9,"armH":5},{"id":"f","type":"forge","cx":250,"cy":306,"shape":"rect","rx":7,"ry":5},{"id":"r3","type":"combat","cx":19,"cy":245,"shape":"cross","rx":15,"ry":8,"spawns":[{"dx":5,"dy":0,"grade":2},{"dx":-1,"dy":-1,"grade":2},{"dx":0,"dy":1,"grade":3}],"armW":8,"armH":4},{"id":"r4","type":"combat","cx":460,"cy":184,"shape":"circle","rx":15,"ry":10,"spawns":[{"dx":4,"dy":2,"grade":2},{"dx":-4,"dy":-2,"grade":2},{"dx":0,"dy":0,"grade":3}]},{"id":"r5","type":"combat","cx":42,"cy":123,"shape":"ellipse","rx":17,"ry":9,"spawns":[{"dx":-5,"dy":1,"grade":3},{"dx":-3,"dy":0,"grade":3},{"dx":3,"dy":-1,"grade":3}]},{"id":"b","type":"boss","cx":262,"cy":11,"shape":"circle","rx":17,"ry":11,"pillars":[{"dx":-8,"dy":-5,"w":3,"h":3},{"dx":8,"dy":-5,"w":3,"h":3},{"dx":-8,"dy":5,"w":3,"h":3},{"dx":8,"dy":5,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":8,"style":"zigzag","waypoints":[{"x":369,"y":458}]},{"from":"r1","to":"r2","width":10,"style":"cave","waypoints":[{"x":314,"y":407},{"x":186,"y":387}]},{"from":"r2","to":"f","width":10,"style":"cave","waypoints":[{"x":132,"y":346},{"x":185,"y":326}]},{"from":"f","to":"r3","width":8,"style":"cave","waypoints":[{"x":171,"y":285},{"x":102,"y":265}]},{"from":"r3","to":"r4","width":8,"style":"cave","waypoints":[{"x":164,"y":224},{"x":305,"y":204}]},{"from":"r4","to":"r5","width":9,"style":"cave","waypoints":[{"x":250,"y":153}]},{"from":"r5","to":"b","width":10,"style":"cave","waypoints":[{"x":157,"y":67}]}],"features":[{"type":"alcove","x":450,"y":429,"r":5},{"type":"alcove","x":480,"y":185,"r":7}],"corridorSpawns":[{"x":186,"y":387,"grade":0},{"x":185,"y":326,"grade":0},{"x":171,"y":285,"grade":1},{"x":164,"y":224,"grade":1}]};
+FIXED_MAPS[14]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":267,"cy":489,"shape":"ellipse","rx":8,"ry":5},{"id":"r1","type":"combat","cx":81,"cy":408,"shape":"ellipse","rx":17,"ry":10,"spawns":[{"dx":0,"dy":0,"grade":0},{"dx":-1,"dy":0,"grade":0}]},{"id":"f","type":"forge","cx":250,"cy":327,"shape":"rect","rx":7,"ry":5},{"id":"r2","type":"combat","cx":74,"cy":246,"shape":"ellipse","rx":16,"ry":8,"spawns":[{"dx":-2,"dy":-2,"grade":2},{"dx":-3,"dy":-1,"grade":2},{"dx":4,"dy":2,"grade":3}]},{"id":"r3","type":"combat","cx":479,"cy":165,"shape":"cross","rx":14,"ry":8,"spawns":[{"dx":-2,"dy":0,"grade":3},{"dx":0,"dy":0,"grade":3},{"dx":1,"dy":1,"grade":3}],"armW":8,"armH":5},{"id":"b","type":"boss","cx":255,"cy":13,"shape":"circle","rx":18,"ry":13,"pillars":[{"dx":-9,"dy":-6,"w":3,"h":3},{"dx":9,"dy":-6,"w":3,"h":3},{"dx":-9,"dy":6,"w":3,"h":3},{"dx":9,"dy":6,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":9,"style":"cave","waypoints":[{"x":168,"y":448}]},{"from":"r1","to":"f","width":10,"style":"cave","waypoints":[{"x":131,"y":381},{"x":183,"y":354}]},{"from":"f","to":"r2","width":9,"style":"cave","waypoints":[{"x":202,"y":300},{"x":125,"y":273}]},{"from":"r2","to":"r3","width":8,"style":"cave","waypoints":[{"x":277,"y":205}]},{"from":"r3","to":"b","width":11,"style":"cave","waypoints":[{"x":369,"y":89}]}],"features":[{"type":"alcove","x":259,"y":326,"r":6},{"type":"alcove","x":55,"y":242,"r":7}],"corridorSpawns":[{"x":168,"y":448,"grade":0},{"x":125,"y":273,"grade":1},{"x":277,"y":205,"grade":2}]};
+FIXED_MAPS[15]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":10,"cy":212,"shape":"ellipse","rx":4,"ry":7},{"id":"r1","type":"combat","cx":77,"cy":14,"shape":"ellipse","rx":10,"ry":8,"spawns":[{"dx":3,"dy":3,"grade":0},{"dx":2,"dy":-3,"grade":0}]},{"id":"r2","type":"combat","cx":144,"cy":481,"shape":"ellipse","rx":11,"ry":9,"spawns":[{"dx":0,"dy":0,"grade":1},{"dx":-1,"dy":0,"grade":1}]},{"id":"f","type":"forge","cx":211,"cy":250,"shape":"rect","rx":6,"ry":9},{"id":"r3","type":"combat","cx":278,"cy":480,"shape":"ellipse","rx":12,"ry":9,"spawns":[{"dx":0,"dy":0,"grade":2},{"dx":-3,"dy":0,"grade":2},{"dx":0,"dy":3,"grade":3}]},{"id":"r4","type":"combat","cx":345,"cy":67,"shape":"cross","rx":13,"ry":8,"spawns":[{"dx":1,"dy":-1,"grade":3},{"dx":1,"dy":0,"grade":3},{"dx":-2,"dy":0,"grade":3}],"armW":9,"armH":4},{"id":"b","type":"boss","cx":491,"cy":238,"shape":"ellipse","rx":9,"ry":15,"pillars":[{"dx":-4,"dy":-7,"w":3,"h":3},{"dx":4,"dy":-7,"w":3,"h":3},{"dx":-4,"dy":7,"w":3,"h":3},{"dx":4,"dy":7,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":9,"style":"zigzag","waypoints":[{"x":32,"y":148},{"x":54,"y":73}]},{"from":"r1","to":"r2","width":8,"style":"cave","waypoints":[{"x":110,"y":248}]},{"from":"r2","to":"f","width":8,"style":"cave","waypoints":[{"x":166,"y":409},{"x":188,"y":327}]},{"from":"f","to":"r3","width":7,"style":"cave","waypoints":[{"x":244,"y":358}]},{"from":"r3","to":"r4","width":7,"style":"straight","waypoints":[{"x":300,"y":346},{"x":322,"y":212}]},{"from":"r4","to":"b","width":9,"style":"zigzag","waypoints":[{"x":418,"y":169}]},{"from":"r1","to":"r4","width":6,"style":"cave","waypoints":[{"x":214,"y":51}]}],"features":[{"type":"alcove","x":147,"y":492,"r":6},{"type":"alcove","x":212,"y":264,"r":4},{"type":"alcove","x":271,"y":492,"r":5}],"corridorSpawns":[{"x":54,"y":73,"grade":0},{"x":188,"y":327,"grade":1},{"x":300,"y":346,"grade":2}]};
+FIXED_MAPS[16]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":323,"cy":489,"shape":"ellipse","rx":8,"ry":5},{"id":"r1","type":"combat","cx":470,"cy":428,"shape":"circle","rx":17,"ry":8,"spawns":[{"dx":6,"dy":-1,"grade":0},{"dx":5,"dy":0,"grade":0}]},{"id":"r2","type":"combat","cx":79,"cy":367,"shape":"ellipse","rx":14,"ry":8,"spawns":[{"dx":-5,"dy":2,"grade":1},{"dx":5,"dy":0,"grade":1}]},{"id":"f","type":"forge","cx":250,"cy":306,"shape":"rect","rx":7,"ry":5},{"id":"r3","type":"combat","cx":47,"cy":245,"shape":"circle","rx":15,"ry":9,"spawns":[{"dx":-3,"dy":0,"grade":2},{"dx":0,"dy":0,"grade":2},{"dx":-4,"dy":-2,"grade":3}]},{"id":"r4","type":"combat","cx":414,"cy":184,"shape":"ellipse","rx":15,"ry":8,"spawns":[{"dx":1,"dy":0,"grade":3},{"dx":0,"dy":0,"grade":3},{"dx":-3,"dy":0,"grade":3}]},{"id":"r5","type":"combat","cx":32,"cy":123,"shape":"circle","rx":14,"ry":10,"spawns":[{"dx":5,"dy":0,"grade":3},{"dx":3,"dy":-1,"grade":3},{"dx":-1,"dy":0,"grade":3}]},{"id":"b","type":"boss","cx":256,"cy":12,"shape":"ellipse","rx":18,"ry":12,"pillars":[{"dx":-9,"dy":-6,"w":3,"h":3},{"dx":9,"dy":-6,"w":3,"h":3},{"dx":-9,"dy":6,"w":3,"h":3},{"dx":9,"dy":6,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":10,"style":"zigzag","waypoints":[{"x":378,"y":468},{"x":423,"y":448}]},{"from":"r1","to":"r2","width":10,"style":"zigzag","waypoints":[{"x":334,"y":407},{"x":215,"y":387}]},{"from":"r2","to":"f","width":9,"style":"zigzag","waypoints":[{"x":131,"y":346},{"x":188,"y":326}]},{"from":"f","to":"r3","width":8,"style":"zigzag","waypoints":[{"x":148,"y":275}]},{"from":"r3","to":"r4","width":8,"style":"zigzag","waypoints":[{"x":237,"y":214}]},{"from":"r4","to":"r5","width":10,"style":"zigzag","waypoints":[{"x":282,"y":163},{"x":162,"y":143}]},{"from":"r5","to":"b","width":10,"style":"zigzag","waypoints":[{"x":139,"y":67}]}],"features":[{"type":"alcove","x":30,"y":246,"r":5},{"type":"alcove","x":434,"y":186,"r":7},{"type":"alcove","x":16,"y":120,"r":5}],"corridorSpawns":[{"x":378,"y":468,"grade":0},{"x":215,"y":387,"grade":0},{"x":237,"y":214,"grade":2}]};
+FIXED_MAPS[17]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":191,"cy":489,"shape":"ellipse","rx":8,"ry":5},{"id":"r1","type":"combat","cx":86,"cy":435,"shape":"circle","rx":13,"ry":8,"spawns":[{"dx":3,"dy":-1,"grade":0},{"dx":5,"dy":0,"grade":0}]},{"id":"r2","type":"combat","cx":470,"cy":381,"shape":"cross","rx":14,"ry":10,"spawns":[{"dx":0,"dy":-1,"grade":1},{"dx":0,"dy":-2,"grade":1}],"armW":8,"armH":5},{"id":"r3","type":"combat","cx":57,"cy":327,"shape":"circle","rx":16,"ry":10,"spawns":[{"dx":-2,"dy":1,"grade":1},{"dx":4,"dy":1,"grade":1}]},{"id":"f","type":"forge","cx":250,"cy":273,"shape":"rect","rx":7,"ry":5},{"id":"r4","type":"combat","cx":29,"cy":219,"shape":"cross","rx":15,"ry":9,"spawns":[{"dx":1,"dy":2,"grade":2},{"dx":3,"dy":-2,"grade":2},{"dx":-1,"dy":-2,"grade":3}],"armW":10,"armH":5},{"id":"r5","type":"combat","cx":464,"cy":165,"shape":"cross","rx":16,"ry":8,"spawns":[{"dx":-7,"dy":2,"grade":3},{"dx":0,"dy":1,"grade":3},{"dx":-2,"dy":-1,"grade":3}],"armW":10,"armH":4},{"id":"r6","type":"combat","cx":53,"cy":111,"shape":"circle","rx":13,"ry":8,"spawns":[{"dx":1,"dy":0,"grade":3},{"dx":0,"dy":0,"grade":3},{"dx":2,"dy":-2,"grade":3}]},{"id":"b","type":"boss","cx":201,"cy":12,"shape":"ellipse","rx":19,"ry":12,"pillars":[{"dx":-9,"dy":-6,"w":3,"h":3},{"dx":9,"dy":-6,"w":3,"h":3},{"dx":-9,"dy":6,"w":3,"h":3},{"dx":9,"dy":6,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":10,"style":"straight","waypoints":[{"x":154,"y":471},{"x":114,"y":453}]},{"from":"r1","to":"r2","width":8,"style":"cave","waypoints":[{"x":206,"y":417},{"x":338,"y":399}]},{"from":"r2","to":"r3","width":10,"style":"zigzag","waypoints":[{"x":262,"y":354}]},{"from":"r3","to":"f","width":8,"style":"cave","waypoints":[{"x":124,"y":309},{"x":188,"y":291}]},{"from":"f","to":"r4","width":10,"style":"zigzag","waypoints":[{"x":172,"y":255},{"x":107,"y":237}]},{"from":"r4","to":"r5","width":9,"style":"cave","waypoints":[{"x":166,"y":201},{"x":318,"y":183}]},{"from":"r5","to":"r6","width":10,"style":"cave","waypoints":[{"x":265,"y":138}]},{"from":"r6","to":"b","width":11,"style":"straight","waypoints":[{"x":142,"y":61}]}],"features":[],"corridorSpawns":[{"x":154,"y":471,"grade":0},{"x":262,"y":354,"grade":0},{"x":188,"y":291,"grade":1},{"x":166,"y":201,"grade":2},{"x":265,"y":138,"grade":2}]};
+FIXED_MAPS[18]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":10,"cy":310,"shape":"ellipse","rx":4,"ry":7},{"id":"r1","type":"combat","cx":57,"cy":78,"shape":"circle","rx":11,"ry":7,"spawns":[{"dx":-3,"dy":-1,"grade":0},{"dx":-3,"dy":-2,"grade":0}]},{"id":"r2","type":"combat","cx":104,"cy":458,"shape":"ellipse","rx":12,"ry":9,"spawns":[{"dx":-2,"dy":-2,"grade":1},{"dx":1,"dy":0,"grade":1}]},{"id":"r3","type":"combat","cx":151,"cy":55,"shape":"cross","rx":13,"ry":9,"spawns":[{"dx":-3,"dy":1,"grade":1},{"dx":3,"dy":-3,"grade":1}],"armW":8,"armH":6},{"id":"f","type":"forge","cx":198,"cy":250,"shape":"rect","rx":6,"ry":9},{"id":"r4","type":"combat","cx":245,"cy":61,"shape":"circle","rx":12,"ry":8,"spawns":[{"dx":3,"dy":0,"grade":2},{"dx":0,"dy":-1,"grade":2},{"dx":3,"dy":1,"grade":3}]},{"id":"r5","type":"combat","cx":292,"cy":467,"shape":"ellipse","rx":11,"ry":9,"spawns":[{"dx":2,"dy":-3,"grade":2},{"dx":-1,"dy":-3,"grade":2},{"dx":2,"dy":2,"grade":3}]},{"id":"r6","type":"combat","cx":339,"cy":55,"shape":"circle","rx":12,"ry":7,"spawns":[{"dx":-2,"dy":-2,"grade":3},{"dx":-3,"dy":-1,"grade":3},{"dx":-2,"dy":0,"grade":3}]},{"id":"r7","type":"combat","cx":386,"cy":414,"shape":"ellipse","rx":14,"ry":7,"spawns":[{"dx":1,"dy":-2,"grade":3},{"dx":-3,"dy":1,"grade":3},{"dx":-3,"dy":-1,"grade":3}]},{"id":"b","type":"boss","cx":490,"cy":281,"shape":"circle","rx":10,"ry":16,"pillars":[{"dx":-5,"dy":-8,"w":3,"h":3},{"dx":5,"dy":-8,"w":3,"h":3},{"dx":-5,"dy":8,"w":3,"h":3},{"dx":5,"dy":8,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":7,"style":"cave","waypoints":[{"x":33,"y":195}]},{"from":"r1","to":"r2","width":8,"style":"cave","waypoints":[{"x":72,"y":207},{"x":88,"y":328}]},{"from":"r2","to":"r3","width":7,"style":"straight","waypoints":[{"x":119,"y":326},{"x":135,"y":192}]},{"from":"r3","to":"f","width":8,"style":"straight","waypoints":[{"x":174,"y":157}]},{"from":"f","to":"r4","width":8,"style":"cave","waypoints":[{"x":213,"y":181},{"x":229,"y":124}]},{"from":"r4","to":"r5","width":7,"style":"zigzag","waypoints":[{"x":260,"y":193},{"x":276,"y":331}]},{"from":"r5","to":"r6","width":9,"style":"cave","waypoints":[{"x":307,"y":330},{"x":323,"y":187}]},{"from":"r6","to":"r7","width":8,"style":"cave","waypoints":[{"x":354,"y":176},{"x":370,"y":293}]},{"from":"r7","to":"b","width":9,"style":"zigzag","waypoints":[{"x":438,"y":370}]}],"features":[{"type":"alcove","x":149,"y":43,"r":4},{"type":"alcove","x":391,"y":425,"r":6}],"corridorSpawns":[{"x":33,"y":195,"grade":0},{"x":213,"y":181,"grade":1},{"x":370,"y":293,"grade":2}]};
+FIXED_MAPS[19]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":253,"cy":488,"shape":"ellipse","rx":9,"ry":6},{"id":"r1","type":"combat","cx":428,"cy":440,"shape":"circle","rx":14,"ry":11,"spawns":[{"dx":2,"dy":0,"grade":0},{"dx":5,"dy":-3,"grade":0}]},{"id":"r2","type":"combat","cx":81,"cy":392,"shape":"cross","rx":17,"ry":10,"spawns":[{"dx":-7,"dy":-2,"grade":1},{"dx":2,"dy":0,"grade":1}],"armW":12,"armH":5},{"id":"r3","type":"combat","cx":440,"cy":344,"shape":"ellipse","rx":18,"ry":10,"spawns":[{"dx":4,"dy":-2,"grade":1},{"dx":7,"dy":1,"grade":1}]},{"id":"f","type":"forge","cx":250,"cy":296,"shape":"rect","rx":8,"ry":5},{"id":"r4","type":"combat","cx":460,"cy":248,"shape":"circle","rx":18,"ry":11,"spawns":[{"dx":4,"dy":-2,"grade":2},{"dx":0,"dy":-1,"grade":2},{"dx":4,"dy":3,"grade":3}]},{"id":"r5","type":"combat","cx":57,"cy":200,"shape":"circle","rx":15,"ry":11,"spawns":[{"dx":-2,"dy":-1,"grade":2},{"dx":-5,"dy":-1,"grade":2},{"dx":-2,"dy":-1,"grade":3}]},{"id":"r6","type":"combat","cx":466,"cy":152,"shape":"circle","rx":17,"ry":11,"spawns":[{"dx":7,"dy":2,"grade":3},{"dx":-2,"dy":0,"grade":3},{"dx":-3,"dy":3,"grade":3}]},{"id":"r7","type":"combat","cx":62,"cy":104,"shape":"circle","rx":17,"ry":9,"spawns":[{"dx":-3,"dy":-1,"grade":3},{"dx":0,"dy":0,"grade":3},{"dx":0,"dy":0,"grade":3}]},{"id":"b","type":"boss","cx":259,"cy":14,"shape":"ellipse","rx":19,"ry":14,"pillars":[{"dx":-9,"dy":-7,"w":3,"h":3},{"dx":9,"dy":-7,"w":3,"h":3},{"dx":-9,"dy":7,"w":3,"h":3},{"dx":9,"dy":7,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":11,"style":"zigzag","waypoints":[{"x":344,"y":464}]},{"from":"r1","to":"r2","width":11,"style":"straight","waypoints":[{"x":248,"y":416}]},{"from":"r2","to":"r3","width":9,"style":"cave","waypoints":[{"x":265,"y":368}]},{"from":"r3","to":"f","width":9,"style":"cave","waypoints":[{"x":342,"y":320}]},{"from":"f","to":"r4","width":10,"style":"cave","waypoints":[{"x":355,"y":272}]},{"from":"r4","to":"r5","width":9,"style":"cave","waypoints":[{"x":325,"y":232},{"x":186,"y":216}]},{"from":"r5","to":"r6","width":9,"style":"cave","waypoints":[{"x":187,"y":184},{"x":327,"y":168}]},{"from":"r6","to":"r7","width":10,"style":"zigzag","waypoints":[{"x":269,"y":128}]},{"from":"r7","to":"b","width":12,"style":"straight","waypoints":[{"x":157,"y":59}]}],"features":[{"type":"alcove","x":40,"y":203,"r":4}],"corridorSpawns":[{"x":344,"y":464,"grade":0},{"x":355,"y":272,"grade":1},{"x":186,"y":216,"grade":1},{"x":269,"y":128,"grade":2}]};
+FIXED_MAPS[21]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":284,"cy":488,"shape":"ellipse","rx":9,"ry":6},{"id":"r1","type":"combat","cx":53,"cy":407,"shape":"ellipse","rx":15,"ry":11,"spawns":[{"dx":-1,"dy":1,"grade":1},{"dx":1,"dy":2,"grade":1}]},{"id":"f","type":"forge","cx":250,"cy":326,"shape":"rect","rx":8,"ry":5},{"id":"r2","type":"combat","cx":31,"cy":245,"shape":"cross","rx":14,"ry":10,"spawns":[{"dx":-2,"dy":-1,"grade":2},{"dx":0,"dy":0,"grade":2},{"dx":1,"dy":-1,"grade":3}],"armW":9,"armH":6},{"id":"r3","type":"combat","cx":429,"cy":164,"shape":"cross","rx":17,"ry":10,"spawns":[{"dx":-4,"dy":0,"grade":3},{"dx":-2,"dy":-2,"grade":3},{"dx":4,"dy":-2,"grade":3}],"armW":10,"armH":6},{"id":"b","type":"boss","cx":280,"cy":13,"shape":"ellipse","rx":20,"ry":13,"pillars":[{"dx":-10,"dy":-6,"w":3,"h":3},{"dx":10,"dy":-6,"w":3,"h":3},{"dx":-10,"dy":6,"w":3,"h":3},{"dx":10,"dy":6,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":9,"style":"cave","waypoints":[{"x":179,"y":447}]},{"from":"r1","to":"f","width":10,"style":"cave","waypoints":[{"x":159,"y":366}]},{"from":"f","to":"r2","width":10,"style":"cave","waypoints":[{"x":186,"y":299},{"x":96,"y":272}]},{"from":"r2","to":"r3","width":9,"style":"zigzag","waypoints":[{"x":157,"y":218},{"x":301,"y":191}]},{"from":"r3","to":"b","width":11,"style":"cave","waypoints":[{"x":372,"y":88}]}],"features":[{"type":"alcove","x":35,"y":410,"r":4},{"type":"alcove","x":260,"y":326,"r":6}],"corridorSpawns":[{"x":179,"y":447,"grade":0},{"x":159,"y":366,"grade":0},{"x":157,"y":218,"grade":2}]};
+FIXED_MAPS[22]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":10,"cy":214,"shape":"ellipse","rx":4,"ry":7},{"id":"r1","type":"combat","cx":77,"cy":62,"shape":"cross","rx":14,"ry":8,"spawns":[{"dx":-4,"dy":1,"grade":1},{"dx":-2,"dy":0,"grade":1}],"armW":8,"armH":5},{"id":"r2","type":"combat","cx":144,"cy":480,"shape":"ellipse","rx":14,"ry":8,"spawns":[{"dx":2,"dy":-2,"grade":1},{"dx":3,"dy":0,"grade":1}]},{"id":"f","type":"forge","cx":211,"cy":250,"shape":"rect","rx":6,"ry":9},{"id":"r3","type":"combat","cx":278,"cy":445,"shape":"ellipse","rx":12,"ry":7,"spawns":[{"dx":2,"dy":2,"grade":3},{"dx":2,"dy":0,"grade":3},{"dx":0,"dy":0,"grade":3}]},{"id":"r4","type":"combat","cx":345,"cy":48,"shape":"ellipse","rx":11,"ry":9,"spawns":[{"dx":2,"dy":-3,"grade":3},{"dx":-3,"dy":0,"grade":3},{"dx":-2,"dy":0,"grade":3}]},{"id":"b","type":"boss","cx":489,"cy":206,"shape":"ellipse","rx":11,"ry":17,"pillars":[{"dx":-5,"dy":-8,"w":3,"h":3},{"dx":5,"dy":-8,"w":3,"h":3},{"dx":-5,"dy":8,"w":3,"h":3},{"dx":5,"dy":8,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":9,"style":"zigzag","waypoints":[{"x":43,"y":130}]},{"from":"r1","to":"r2","width":8,"style":"zigzag","waypoints":[{"x":99,"y":202},{"x":121,"y":336}]},{"from":"r2","to":"f","width":9,"style":"cave","waypoints":[{"x":166,"y":405},{"x":188,"y":320}]},{"from":"f","to":"r3","width":7,"style":"straight","waypoints":[{"x":233,"y":321},{"x":255,"y":386}]},{"from":"r3","to":"r4","width":7,"style":"cave","waypoints":[{"x":311,"y":245}]},{"from":"r4","to":"b","width":9,"style":"cave","waypoints":[{"x":417,"y":116}]},{"from":"r2","to":"r3","width":6,"style":"cave","waypoints":[{"x":209,"y":466}]}],"features":[{"type":"alcove","x":283,"y":455,"r":5},{"type":"alcove","x":345,"y":37,"r":8}],"corridorSpawns":[{"x":99,"y":202,"grade":0},{"x":233,"y":321,"grade":2},{"x":311,"y":245,"grade":2}]};
+FIXED_MAPS[23]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":203,"cy":488,"shape":"ellipse","rx":9,"ry":6},{"id":"r1","type":"combat","cx":443,"cy":427,"shape":"ellipse","rx":17,"ry":10,"spawns":[{"dx":3,"dy":-1,"grade":1},{"dx":6,"dy":2,"grade":1}]},{"id":"r2","type":"combat","cx":27,"cy":366,"shape":"cross","rx":16,"ry":12,"spawns":[{"dx":-5,"dy":-3,"grade":1},{"dx":0,"dy":0,"grade":1}],"armW":9,"armH":7},{"id":"f","type":"forge","cx":250,"cy":305,"shape":"rect","rx":8,"ry":5},{"id":"r3","type":"combat","cx":45,"cy":244,"shape":"cross","rx":15,"ry":10,"spawns":[{"dx":4,"dy":-2,"grade":2},{"dx":0,"dy":0,"grade":2},{"dx":0,"dy":0,"grade":3}],"armW":9,"armH":6},{"id":"r4","type":"combat","cx":475,"cy":183,"shape":"circle","rx":18,"ry":9,"spawns":[{"dx":0,"dy":0,"grade":3},{"dx":1,"dy":2,"grade":3},{"dx":1,"dy":0,"grade":3}]},{"id":"r5","type":"combat","cx":32,"cy":122,"shape":"circle","rx":19,"ry":9,"spawns":[{"dx":3,"dy":1,"grade":3},{"dx":6,"dy":2,"grade":3},{"dx":-2,"dy":0,"grade":3}]},{"id":"b","type":"boss","cx":273,"cy":12,"shape":"ellipse","rx":20,"ry":12,"pillars":[{"dx":-10,"dy":-6,"w":3,"h":3},{"dx":10,"dy":-6,"w":3,"h":3},{"dx":-10,"dy":6,"w":3,"h":3},{"dx":10,"dy":6,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":10,"style":"straight","waypoints":[{"x":324,"y":457}]},{"from":"r1","to":"r2","width":9,"style":"cave","waypoints":[{"x":299,"y":406},{"x":165,"y":386}]},{"from":"r2","to":"f","width":10,"style":"cave","waypoints":[{"x":130,"y":335}]},{"from":"f","to":"r3","width":10,"style":"straight","waypoints":[{"x":182,"y":284},{"x":111,"y":264}]},{"from":"r3","to":"r4","width":10,"style":"cave","waypoints":[{"x":182,"y":223},{"x":339,"y":203}]},{"from":"r4","to":"r5","width":10,"style":"zigzag","waypoints":[{"x":260,"y":152}]},{"from":"r5","to":"b","width":12,"style":"zigzag","waypoints":[{"x":183,"y":67}]}],"features":[{"type":"alcove","x":28,"y":249,"r":5},{"type":"alcove","x":497,"y":183,"r":6}],"corridorSpawns":[{"x":324,"y":457,"grade":0},{"x":299,"y":406,"grade":0},{"x":130,"y":335,"grade":1},{"x":111,"y":264,"grade":1},{"x":260,"y":152,"grade":2}]};
+FIXED_MAPS[24]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":184,"cy":488,"shape":"ellipse","rx":9,"ry":6},{"id":"r1","type":"combat","cx":434,"cy":434,"shape":"cross","rx":17,"ry":10,"spawns":[{"dx":5,"dy":2,"grade":1},{"dx":7,"dy":0,"grade":1}],"armW":10,"armH":5},{"id":"r2","type":"combat","cx":46,"cy":380,"shape":"circle","rx":16,"ry":10,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":4,"dy":-1,"grade":1}]},{"id":"r3","type":"combat","cx":468,"cy":326,"shape":"circle","rx":17,"ry":9,"spawns":[{"dx":-1,"dy":2,"grade":2},{"dx":7,"dy":0,"grade":2},{"dx":0,"dy":2,"grade":3}]},{"id":"f","type":"forge","cx":250,"cy":272,"shape":"rect","rx":8,"ry":5},{"id":"r4","type":"combat","cx":442,"cy":218,"shape":"circle","rx":20,"ry":9,"spawns":[{"dx":5,"dy":1,"grade":3},{"dx":4,"dy":0,"grade":3},{"dx":2,"dy":-1,"grade":3}]},{"id":"r5","type":"combat","cx":21,"cy":164,"shape":"circle","rx":15,"ry":10,"spawns":[{"dx":-4,"dy":2,"grade":3},{"dx":5,"dy":1,"grade":3},{"dx":3,"dy":2,"grade":3}]},{"id":"r6","type":"combat","cx":424,"cy":110,"shape":"circle","rx":18,"ry":11,"spawns":[{"dx":6,"dy":3,"grade":3},{"dx":-2,"dy":2,"grade":3},{"dx":-2,"dy":3,"grade":3}]},{"id":"b","type":"boss","cx":219,"cy":13,"shape":"ellipse","rx":20,"ry":13,"pillars":[{"dx":-10,"dy":-6,"w":3,"h":3},{"dx":10,"dy":-6,"w":3,"h":3},{"dx":-10,"dy":6,"w":3,"h":3},{"dx":10,"dy":6,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":11,"style":"zigzag","waypoints":[{"x":302,"y":461}]},{"from":"r1","to":"r2","width":9,"style":"straight","waypoints":[{"x":299,"y":416},{"x":168,"y":398}]},{"from":"r2","to":"r3","width":9,"style":"cave","waypoints":[{"x":191,"y":362},{"x":334,"y":344}]},{"from":"r3","to":"f","width":9,"style":"zigzag","waypoints":[{"x":394,"y":308},{"x":318,"y":290}]},{"from":"f","to":"r4","width":9,"style":"zigzag","waypoints":[{"x":307,"y":254},{"x":382,"y":236}]},{"from":"r4","to":"r5","width":11,"style":"zigzag","waypoints":[{"x":301,"y":200},{"x":166,"y":182}]},{"from":"r5","to":"r6","width":11,"style":"cave","waypoints":[{"x":217,"y":137}]},{"from":"r6","to":"b","width":11,"style":"cave","waypoints":[{"x":323,"y":61}]}],"features":[{"type":"alcove","x":28,"y":376,"r":4},{"type":"alcove","x":260,"y":273,"r":8},{"type":"alcove","x":2,"y":164,"r":8}],"corridorSpawns":[{"x":318,"y":290,"grade":1},{"x":301,"y":200,"grade":2}]};
+FIXED_MAPS[26]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":240,"cy":488,"shape":"ellipse","rx":9,"ry":6},{"id":"r1","type":"combat","cx":468,"cy":407,"shape":"ellipse","rx":17,"ry":10,"spawns":[{"dx":-6,"dy":2,"grade":1},{"dx":-6,"dy":2,"grade":1}]},{"id":"f","type":"forge","cx":250,"cy":326,"shape":"rect","rx":8,"ry":5},{"id":"r2","type":"combat","cx":444,"cy":245,"shape":"circle","rx":16,"ry":10,"spawns":[{"dx":-1,"dy":-1,"grade":3},{"dx":0,"dy":2,"grade":3},{"dx":-3,"dy":1,"grade":3}]},{"id":"r3","type":"combat","cx":88,"cy":164,"shape":"circle","rx":19,"ry":9,"spawns":[{"dx":3,"dy":0,"grade":3},{"dx":0,"dy":-1,"grade":3},{"dx":0,"dy":1,"grade":3}]},{"id":"b","type":"boss","cx":273,"cy":15,"shape":"circle","rx":21,"ry":15,"pillars":[{"dx":-10,"dy":-7,"w":3,"h":3},{"dx":10,"dy":-7,"w":3,"h":3},{"dx":-10,"dy":7,"w":3,"h":3},{"dx":10,"dy":7,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":11,"style":"cave","waypoints":[{"x":348,"y":447}]},{"from":"r1","to":"f","width":10,"style":"straight","waypoints":[{"x":389,"y":380},{"x":323,"y":353}]},{"from":"f","to":"r2","width":9,"style":"cave","waypoints":[{"x":344,"y":285}]},{"from":"r2","to":"r3","width":11,"style":"cave","waypoints":[{"x":323,"y":218},{"x":209,"y":191}]},{"from":"r3","to":"b","width":12,"style":"cave","waypoints":[{"x":171,"y":89}]}],"features":[],"corridorSpawns":[{"x":344,"y":285,"grade":2}]};
+FIXED_MAPS[27]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":11,"cy":196,"shape":"ellipse","rx":5,"ry":8},{"id":"r1","type":"combat","cx":78,"cy":459,"shape":"circle","rx":14,"ry":8,"spawns":[{"dx":3,"dy":3,"grade":1},{"dx":2,"dy":-3,"grade":1}]},{"id":"f","type":"forge","cx":145,"cy":250,"shape":"rect","rx":7,"ry":10},{"id":"r2","type":"combat","cx":212,"cy":413,"shape":"ellipse","rx":14,"ry":8,"spawns":[{"dx":-4,"dy":2,"grade":2},{"dx":4,"dy":-2,"grade":2},{"dx":-2,"dy":2,"grade":3}]},{"id":"r3","type":"combat","cx":279,"cy":63,"shape":"circle","rx":12,"ry":9,"spawns":[{"dx":-2,"dy":-2,"grade":3},{"dx":0,"dy":-1,"grade":3},{"dx":-1,"dy":-1,"grade":3}]},{"id":"r4","type":"combat","cx":346,"cy":480,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":-2,"dy":2,"grade":3},{"dx":3,"dy":-1,"grade":3},{"dx":0,"dy":3,"grade":3}]},{"id":"b","type":"boss","cx":489,"cy":221,"shape":"ellipse","rx":11,"ry":17,"pillars":[{"dx":-5,"dy":-8,"w":3,"h":3},{"dx":5,"dy":-8,"w":3,"h":3},{"dx":-5,"dy":8,"w":3,"h":3},{"dx":5,"dy":8,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":9,"style":"cave","waypoints":[{"x":33,"y":286},{"x":55,"y":377}]},{"from":"r1","to":"f","width":10,"style":"cave","waypoints":[{"x":100,"y":389},{"x":122,"y":316}]},{"from":"f","to":"r2","width":8,"style":"cave","waypoints":[{"x":167,"y":304},{"x":189,"y":354}]},{"from":"r2","to":"r3","width":9,"style":"zigzag","waypoints":[{"x":234,"y":292},{"x":256,"y":177}]},{"from":"r3","to":"r4","width":8,"style":"zigzag","waypoints":[{"x":301,"y":203},{"x":323,"y":341}]},{"from":"r4","to":"b","width":11,"style":"cave","waypoints":[{"x":417,"y":354}]}],"features":[{"type":"alcove","x":148,"y":265,"r":4}],"corridorSpawns":[{"x":323,"y":341,"grade":2}]};
+FIXED_MAPS[28]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":229,"cy":487,"shape":"ellipse","rx":11,"ry":7},{"id":"r1","type":"combat","cx":85,"cy":427,"shape":"cross","rx":17,"ry":11,"spawns":[{"dx":-5,"dy":0,"grade":1},{"dx":0,"dy":0,"grade":1}],"armW":9,"armH":5},{"id":"r2","type":"combat","cx":465,"cy":367,"shape":"cross","rx":15,"ry":10,"spawns":[{"dx":0,"dy":2,"grade":1},{"dx":3,"dy":2,"grade":1}],"armW":9,"armH":6},{"id":"f","type":"forge","cx":250,"cy":307,"shape":"rect","rx":9,"ry":6},{"id":"r3","type":"combat","cx":463,"cy":247,"shape":"circle","rx":18,"ry":11,"spawns":[{"dx":2,"dy":-1,"grade":3},{"dx":-1,"dy":3,"grade":3},{"dx":2,"dy":-2,"grade":3}]},{"id":"r4","type":"combat","cx":23,"cy":187,"shape":"ellipse","rx":18,"ry":13,"spawns":[{"dx":-6,"dy":-1,"grade":3},{"dx":-8,"dy":-3,"grade":3},{"dx":0,"dy":4,"grade":3}]},{"id":"r5","type":"combat","cx":453,"cy":127,"shape":"cross","rx":16,"ry":10,"spawns":[{"dx":5,"dy":-2,"grade":3},{"dx":-1,"dy":0,"grade":3},{"dx":2,"dy":0,"grade":3}],"armW":11,"armH":6},{"id":"b","type":"boss","cx":270,"cy":14,"shape":"ellipse","rx":21,"ry":14,"pillars":[{"dx":-10,"dy":-7,"w":3,"h":3},{"dx":10,"dy":-7,"w":3,"h":3},{"dx":-10,"dy":7,"w":3,"h":3},{"dx":10,"dy":7,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":10,"style":"cave","waypoints":[{"x":165,"y":457}]},{"from":"r1","to":"r2","width":12,"style":"cave","waypoints":[{"x":281,"y":397}]},{"from":"r2","to":"f","width":10,"style":"cave","waypoints":[{"x":357,"y":337}]},{"from":"f","to":"r3","width":12,"style":"zigzag","waypoints":[{"x":358,"y":277}]},{"from":"r3","to":"r4","width":10,"style":"straight","waypoints":[{"x":311,"y":227},{"x":167,"y":207}]},{"from":"r4","to":"r5","width":11,"style":"zigzag","waypoints":[{"x":232,"y":157}]},{"from":"r5","to":"b","width":13,"style":"zigzag","waypoints":[{"x":335,"y":70}]}],"features":[{"type":"alcove","x":3,"y":181,"r":5}],"corridorSpawns":[{"x":165,"y":457,"grade":0},{"x":357,"y":337,"grade":1},{"x":311,"y":227,"grade":2},{"x":232,"y":157,"grade":2}]};
+FIXED_MAPS[29]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":276,"cy":487,"shape":"ellipse","rx":11,"ry":7},{"id":"r1","type":"combat","cx":450,"cy":433,"shape":"circle","rx":19,"ry":10,"spawns":[{"dx":-2,"dy":0,"grade":1},{"dx":-7,"dy":1,"grade":1}]},{"id":"r2","type":"combat","cx":53,"cy":379,"shape":"ellipse","rx":19,"ry":10,"spawns":[{"dx":3,"dy":-2,"grade":1},{"dx":0,"dy":0,"grade":1}]},{"id":"f","type":"forge","cx":250,"cy":325,"shape":"rect","rx":9,"ry":6},{"id":"r3","type":"combat","cx":35,"cy":271,"shape":"ellipse","rx":19,"ry":10,"spawns":[{"dx":-2,"dy":-2,"grade":2},{"dx":4,"dy":-2,"grade":2},{"dx":4,"dy":0,"grade":3}]},{"id":"r4","type":"combat","cx":402,"cy":217,"shape":"ellipse","rx":20,"ry":12,"spawns":[{"dx":-3,"dy":-2,"grade":3},{"dx":-2,"dy":0,"grade":3},{"dx":-6,"dy":3,"grade":3}]},{"id":"r5","type":"combat","cx":65,"cy":163,"shape":"cross","rx":21,"ry":10,"spawns":[{"dx":-8,"dy":2,"grade":3},{"dx":-1,"dy":1,"grade":3},{"dx":6,"dy":0,"grade":3}],"armW":14,"armH":5},{"id":"r6","type":"combat","cx":470,"cy":109,"shape":"circle","rx":16,"ry":13,"spawns":[{"dx":-1,"dy":0,"grade":3},{"dx":-3,"dy":2,"grade":3},{"dx":0,"dy":4,"grade":3}]},{"id":"b","type":"boss","cx":269,"cy":16,"shape":"ellipse","rx":21,"ry":16,"pillars":[{"dx":-10,"dy":-8,"w":3,"h":3},{"dx":10,"dy":-8,"w":3,"h":3},{"dx":-10,"dy":8,"w":3,"h":3},{"dx":10,"dy":8,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":12,"style":"zigzag","waypoints":[{"x":364,"y":460}]},{"from":"r1","to":"r2","width":11,"style":"cave","waypoints":[{"x":312,"y":415},{"x":190,"y":397}]},{"from":"r2","to":"f","width":10,"style":"straight","waypoints":[{"x":116,"y":361},{"x":184,"y":343}]},{"from":"f","to":"r3","width":10,"style":"cave","waypoints":[{"x":143,"y":298}]},{"from":"r3","to":"r4","width":11,"style":"zigzag","waypoints":[{"x":219,"y":244}]},{"from":"r4","to":"r5","width":10,"style":"cave","waypoints":[{"x":282,"y":199},{"x":179,"y":181}]},{"from":"r5","to":"r6","width":12,"style":"straight","waypoints":[{"x":271,"y":136}]},{"from":"r6","to":"b","width":13,"style":"cave","waypoints":[{"x":388,"y":62}]}],"features":[{"type":"alcove","x":474,"y":428,"r":8},{"type":"alcove","x":39,"y":165,"r":6}],"corridorSpawns":[{"x":116,"y":361,"grade":1},{"x":143,"y":298,"grade":1},{"x":219,"y":244,"grade":2},{"x":282,"y":199,"grade":2}]};
+FIXED_MAPS[30]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":11,"cy":203,"shape":"ellipse","rx":5,"ry":8},{"id":"r1","type":"combat","cx":57,"cy":469,"shape":"circle","rx":15,"ry":8,"spawns":[{"dx":-4,"dy":0,"grade":1},{"dx":-2,"dy":-2,"grade":1}]},{"id":"r2","type":"combat","cx":103,"cy":92,"shape":"ellipse","rx":12,"ry":8,"spawns":[{"dx":2,"dy":2,"grade":1},{"dx":-3,"dy":2,"grade":1}]},{"id":"r3","type":"combat","cx":149,"cy":444,"shape":"circle","rx":13,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":2},{"dx":0,"dy":0,"grade":2},{"dx":0,"dy":0,"grade":3}]},{"id":"f","type":"forge","cx":195,"cy":250,"shape":"rect","rx":7,"ry":10},{"id":"r4","type":"combat","cx":241,"cy":467,"shape":"cross","rx":15,"ry":9,"spawns":[{"dx":-2,"dy":-3,"grade":3},{"dx":-4,"dy":0,"grade":3},{"dx":-3,"dy":-2,"grade":3}],"armW":9,"armH":5},{"id":"r5","type":"combat","cx":287,"cy":72,"shape":"cross","rx":12,"ry":9,"spawns":[{"dx":-2,"dy":0,"grade":3},{"dx":-2,"dy":0,"grade":3},{"dx":2,"dy":0,"grade":3}],"armW":6,"armH":5},{"id":"r6","type":"combat","cx":333,"cy":449,"shape":"ellipse","rx":12,"ry":9,"spawns":[{"dx":-2,"dy":-3,"grade":3},{"dx":2,"dy":1,"grade":3},{"dx":2,"dy":2,"grade":3}]},{"id":"r7","type":"combat","cx":379,"cy":26,"shape":"ellipse","rx":13,"ry":10,"spawns":[{"dx":-3,"dy":0,"grade":3},{"dx":1,"dy":-2,"grade":3},{"dx":-2,"dy":0,"grade":3}]},{"id":"b","type":"boss","cx":489,"cy":207,"shape":"ellipse","rx":11,"ry":18,"pillars":[{"dx":-5,"dy":-9,"w":3,"h":3},{"dx":5,"dy":-9,"w":3,"h":3},{"dx":-5,"dy":9,"w":3,"h":3},{"dx":5,"dy":9,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":8,"style":"straight","waypoints":[{"x":34,"y":341}]},{"from":"r1","to":"r2","width":10,"style":"zigzag","waypoints":[{"x":80,"y":276}]},{"from":"r2","to":"r3","width":8,"style":"zigzag","waypoints":[{"x":126,"y":262}]},{"from":"r3","to":"f","width":8,"style":"straight","waypoints":[{"x":164,"y":384},{"x":179,"y":310}]},{"from":"f","to":"r4","width":10,"style":"straight","waypoints":[{"x":218,"y":359}]},{"from":"r4","to":"r5","width":8,"style":"cave","waypoints":[{"x":264,"y":273}]},{"from":"r5","to":"r6","width":8,"style":"zigzag","waypoints":[{"x":302,"y":198},{"x":317,"y":321}]},{"from":"r6","to":"r7","width":9,"style":"straight","waypoints":[{"x":356,"y":241}]},{"from":"r7","to":"b","width":10,"style":"straight","waypoints":[{"x":434,"y":132}]}],"features":[{"type":"alcove","x":105,"y":81,"r":8},{"type":"alcove","x":380,"y":14,"r":7}],"corridorSpawns":[{"x":126,"y":262,"grade":1},{"x":218,"y":359,"grade":2},{"x":264,"y":273,"grade":2},{"x":302,"y":198,"grade":2}]};
+FIXED_MAPS[32]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":299,"cy":487,"shape":"ellipse","rx":11,"ry":7},{"id":"r1","type":"combat","cx":64,"cy":406,"shape":"ellipse","rx":21,"ry":11,"spawns":[{"dx":7,"dy":1,"grade":1},{"dx":7,"dy":2,"grade":1}]},{"id":"f","type":"forge","cx":250,"cy":325,"shape":"rect","rx":9,"ry":6},{"id":"r2","type":"combat","cx":21,"cy":244,"shape":"ellipse","rx":17,"ry":10,"spawns":[{"dx":-5,"dy":0,"grade":3},{"dx":-7,"dy":2,"grade":3},{"dx":5,"dy":1,"grade":3}]},{"id":"r3","type":"combat","cx":426,"cy":163,"shape":"ellipse","rx":19,"ry":12,"spawns":[{"dx":-3,"dy":3,"grade":3},{"dx":8,"dy":0,"grade":3},{"dx":2,"dy":0,"grade":3}]},{"id":"b","type":"boss","cx":221,"cy":16,"shape":"ellipse","rx":22,"ry":16,"pillars":[{"dx":-11,"dy":-8,"w":3,"h":3},{"dx":11,"dy":-8,"w":3,"h":3},{"dx":-11,"dy":8,"w":3,"h":3},{"dx":11,"dy":8,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":11,"style":"cave","waypoints":[{"x":226,"y":460},{"x":146,"y":433}]},{"from":"r1","to":"f","width":10,"style":"cave","waypoints":[{"x":128,"y":379},{"x":180,"y":352}]},{"from":"f","to":"r2","width":10,"style":"cave","waypoints":[{"x":170,"y":298},{"x":89,"y":271}]},{"from":"r2","to":"r3","width":10,"style":"cave","waypoints":[{"x":227,"y":203}]},{"from":"r3","to":"b","width":12,"style":"straight","waypoints":[{"x":328,"y":89}]}],"features":[{"type":"alcove","x":263,"y":325,"r":8},{"type":"alcove","x":2,"y":239,"r":8}],"corridorSpawns":[{"x":226,"y":460,"grade":0},{"x":227,"y":203,"grade":2}]};
+FIXED_MAPS[33]={"mw":500,"mh":500,"rooms":[{"id":"s","type":"start","cx":11,"cy":193,"shape":"ellipse","rx":5,"ry":8},{"id":"r1","type":"combat","cx":77,"cy":63,"shape":"cross","rx":13,"ry":9,"spawns":[{"dx":2,"dy":1,"grade":1},{"dx":0,"dy":3,"grade":1}],"armW":8,"armH":6},{"id":"r2","type":"combat","cx":143,"cy":471,"shape":"cross","rx":15,"ry":9,"spawns":[{"dx":2,"dy":-3,"grade":2},{"dx":1,"dy":2,"grade":2},{"dx":3,"dy":0,"grade":3}],"armW":10,"armH":5},{"id":"f","type":"forge","cx":209,"cy":250,"shape":"rect","rx":7,"ry":10},{"id":"r3","type":"combat","cx":275,"cy":441,"shape":"circle","rx":15,"ry":10,"spawns":[{"dx":2,"dy":-2,"grade":3},{"dx":-1,"dy":3,"grade":3},{"dx":-1,"dy":2,"grade":3}]},{"id":"r4","type":"combat","cx":341,"cy":92,"shape":"cross","rx":14,"ry":8,"spawns":[{"dx":3,"dy":3,"grade":3},{"dx":2,"dy":0,"grade":3},{"dx":1,"dy":1,"grade":3}],"armW":8,"armH":5},{"id":"b","type":"boss","cx":488,"cy":239,"shape":"ellipse","rx":12,"ry":19,"pillars":[{"dx":-6,"dy":-9,"w":3,"h":3},{"dx":6,"dy":-9,"w":3,"h":3},{"dx":-6,"dy":9,"w":3,"h":3},{"dx":6,"dy":9,"w":3,"h":3}]}],"corridors":[{"from":"s","to":"r1","width":9,"style":"straight","waypoints":[{"x":44,"y":123}]},{"from":"r1","to":"r2","width":10,"style":"cave","waypoints":[{"x":99,"y":197},{"x":121,"y":328}]},{"from":"r2","to":"f","width":9,"style":"cave","waypoints":[{"x":176,"y":354}]},{"from":"f","to":"r3","width":8,"style":"cave","waypoints":[{"x":231,"y":321},{"x":253,"y":381}]},{"from":"r3","to":"r4","width":8,"style":"straight","waypoints":[{"x":297,"y":317},{"x":319,"y":214}]},{"from":"r4","to":"b","width":11,"style":"cave","waypoints":[{"x":414,"y":161}]}],"features":[],"corridorSpawns":[{"x":231,"y":321,"grade":2}]};
+// 격자맵은 절차 생성
+for(let i=0;i<TOTAL_STAGES;i++){const s=STAGES[i];if(s.type==="grid"&&!FIXED_MAPS[i])FIXED_MAPS[i]=generateGridMap(s.hell)}
+
 
 // ═══ MAP — 고정맵 생성기 ═══
 function genFromTemplate(tmpl,si){
   const mw=tmpl.mw,mh=tmpl.mh;
-  const map=[];for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
+  const map=[];
   const rooms=[];
-
-  // ── 1. 방 카빙 ──
   const roomMap={};// id→index
-  for(const rd of tmpl.rooms){
-    const cx=rd.cx,cy=rd.cy,rx=rd.rx||8,ry=rd.ry||rx;
-    if(rd.shape==='ellipse') _tCarveEllipse(map,mw,mh,cx,cy,rx,ry);
-    else if(rd.shape==='circle') _tCarveCircle(map,mw,mh,cx,cy,rx);
-    else if(rd.shape==='rect') _tCarveRect(map,mw,mh,cx,cy,rx,ry);
-    else if(rd.shape==='cross'){
-      const aw=rd.armW||~~(rx*.5),ah=rd.armH||~~(ry*.5);
-      _tCarveCross(map,mw,mh,cx,cy,rx,ry,aw,ah);
-    }else if(rd.shape==='custom'&&rd.tiles){
-      for(const[dx,dy]of rd.tiles){
-        const tx=cx+dx,ty=cy+dy;
-        if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=0;
+  const _hasTileRLE=tmpl.tileRLE&&tmpl.tileRLE.length>0;
+
+  if(_hasTileRLE){
+    // ── 에디터 타일 직접 로드 (카빙 건너뜀) ──
+    const rle=tmpl.tileRLE;
+    let idx=0,ri=0;
+    for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
+    let pos=0;
+    for(let i=0;i<rle.length;i+=2){
+      const v=rle[i],cnt=rle[i+1];
+      for(let j=0;j<cnt;j++){
+        const y=~~(pos/mw),x=pos%mw;
+        if(y<mh&&x<mw)map[y][x]=v;
+        pos++;
       }
     }
-    // 기둥 배치 (방 내부 벽 복원)
-    if(rd.pillars){
-      for(const p of rd.pillars){
-        const pw=p.w||2,ph=p.h||2;
-        for(let dy=0;dy<ph;dy++)for(let dx=0;dx<pw;dx++){
-          const tx=cx+p.dx+dx,ty=cy+p.dy+dy;
-          if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=1;
+    // rooms 배열 구축 (카빙 없이)
+    for(const rd of tmpl.rooms){
+      const cx=rd.cx,cy=rd.cy,rx=rd.rx||8,ry=rd.ry||rx;
+      rooms.push({x:cx-rx,y:cy-ry,w:rx*2,h:ry*2,cx:cx,cy:cy,cleared:false,type:rd.type||'combat'});
+      roomMap[rd.id]=rooms.length-1;
+    }
+  } else {
+    // ── 기존 카빙 방식 ──
+    for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
+
+    // ── 1. 방 카빙 ──
+    for(const rd of tmpl.rooms){
+      const cx=rd.cx,cy=rd.cy,rx=rd.rx||8,ry=rd.ry||rx;
+      if(rd.shape==='ellipse') _tCarveEllipse(map,mw,mh,cx,cy,rx,ry);
+      else if(rd.shape==='circle') _tCarveCircle(map,mw,mh,cx,cy,rx);
+      else if(rd.shape==='rect') _tCarveRect(map,mw,mh,cx,cy,rx,ry);
+      else if(rd.shape==='cross'){
+        const aw=rd.armW||~~(rx*.5),ah=rd.armH||~~(ry*.5);
+        _tCarveCross(map,mw,mh,cx,cy,rx,ry,aw,ah);
+      }else if(rd.shape==='custom'&&rd.tiles){
+        for(const[dx,dy]of rd.tiles){
+          const tx=cx+dx,ty=cy+dy;
+          if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=0;
         }
       }
+      if(rd.pillars){
+        for(const p of rd.pillars){
+          const pw=p.w||2,ph=p.h||2;
+          for(let dy=0;dy<ph;dy++)for(let dx=0;dx<pw;dx++){
+            const tx=cx+p.dx+dx,ty=cy+p.dy+dy;
+            if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=1;
+          }
+        }
+      }
+      rooms.push({x:cx-(rd.rx||8),y:cy-(rd.ry||rd.rx||8),w:(rd.rx||8)*2,h:(rd.ry||rd.rx||8)*2,cx:cx,cy:cy,cleared:false,type:rd.type||'combat'});
+      roomMap[rd.id]=rooms.length-1;
     }
-    // rooms 배열에 추가 (기존 포맷 호환)
-    const rIdx=rooms.length;
-    rooms.push({
-      x:cx-rx, y:cy-ry, w:rx*2, h:ry*2,
-      cx:cx, cy:cy, cleared:false,
-      type:rd.type||'combat'
-    });
-    roomMap[rd.id]=rIdx;
+
+    // ── 2. 복도 카빙 ──
+    for(const cd of tmpl.corridors){
+      const fromR=tmpl.rooms.find(r=>r.id===cd.from);
+      const toR=tmpl.rooms.find(r=>r.id===cd.to);
+      if(!fromR||!toR)continue;
+      const w=cd.width||4;
+      const style=cd.style||'cave';
+      const pts=[{x:fromR.cx,y:fromR.cy}];
+      if(cd.waypoints)for(const wp of cd.waypoints)pts.push(wp);
+      pts.push({x:toR.cx,y:toR.cy});
+      for(let i=0;i<pts.length-1;i++){
+        _tCarveCorridor(map,mw,mh,pts[i].x,pts[i].y,pts[i+1].x,pts[i+1].y,w,style);
+      }
+    }
   }
 
-  // ── 2. 복도 카빙 ──
-  for(const cd of tmpl.corridors){
-    const fromR=tmpl.rooms.find(r=>r.id===cd.from);
-    const toR=tmpl.rooms.find(r=>r.id===cd.to);
-    if(!fromR||!toR)continue;
-    const w=cd.width||4;
-    const style=cd.style||'cave';
-    const pts=[{x:fromR.cx,y:fromR.cy}];
-    if(cd.waypoints)for(const wp of cd.waypoints)pts.push(wp);
-    pts.push({x:toR.cx,y:toR.cy});
-    for(let i=0;i<pts.length-1;i++){
-      _tCarveCorridor(map,mw,mh,pts[i].x,pts[i].y,pts[i+1].x,pts[i+1].y,w,style);
-    }
-  }
-
-  // ── 3. 추가 피처 (알코브 등) ──
-  if(tmpl.features){
+  // ── 3. 추가 피처 (알코브 등) — tileRLE 없을 때만 ──
+  if(!_hasTileRLE&&tmpl.features){
     for(const ft of tmpl.features){
       if(ft.type==='alcove'){
         _tCarveCircle(map,mw,mh,ft.x,ft.y,ft.r||3);
@@ -11473,8 +11493,8 @@ function genFromTemplate(tmpl,si){
     }
   }
 
-  // ── 4. CA 스무딩 1회 (자연스러운 벽면) ──
-  _tCaveSmooth(map,mw,mh,1);
+  // ── 4. CA 스무딩 1회 (자연스러운 벽면) — tileRLE 없을 때만 ──
+  if(!_hasTileRLE)_tCaveSmooth(map,mw,mh,1);
 
   // ── 5. 보스방 처리 ──
   const bossRd=tmpl.rooms.find(r=>r.type==='boss');
@@ -11538,8 +11558,9 @@ function genFromTemplate(tmpl,si){
     }
   }
 
-  // ── 7. 연결 검증 — 막힌 방까지 복도 강제 뚫기 ──
+  // ── 7. 연결 검증 — 막힌 방까지 복도 강제 뚫기 (tileRLE 없을 때만) ──
   const startRm=rooms.find(r=>r.type==='start');
+  if(_hasTileRLE){/* 에디터 타일 직접 사용 — 연결 검증 건너뜀 */}else
   if(startRm){for(let _vP=0;_vP<5;_vP++){
     const _vis2=[];for(let y=0;y<mh;y++)_vis2[y]=new Uint8Array(mw);
     const _vq2=[{x:startRm.cx,y:startRm.cy}];_vis2[startRm.cy][startRm.cx]=1;
@@ -11565,64 +11586,38 @@ function genFromTemplate(tmpl,si){
 
   // ── 9. 소환굴 배치 ──
   const spawnHoles=[];
-  const bossDistMax=bossRm?bossRm.cy:1;
-  // 보스 인접 방 찾기 (보스 cy에 가장 가까운 non-boss/start 방)
-  let _preBossRm=null,_preBossD=Infinity;
-  for(let ri=0;ri<rooms.length;ri++){
-    const r=rooms[ri];if(r.type==='boss'||r.type==='start')continue;
-    const _d=Math.abs(r.cy-(bossRm?bossRm.cy:0))+Math.abs(r.cx-(bossRm?bossRm.cx:0));
-    if(_d<_preBossD){_preBossD=_d;_preBossRm=r}
-  }
-  // 방 기반 소환굴 — 방당 2~3개 고정 (큰 방 3개, 작은 방 2개)
-  for(let ri=0;ri<rooms.length;ri++){
-    const r=rooms[ri];
-    if(r.type==='start'||r.type==='boss')continue;
-    const _rSize=Math.min(1,Math.max(0,r.w*r.h/400));
-    // 템플릿 spawns 사용
-    const rd=tmpl.rooms[ri];
-    if(rd&&rd.spawns){
-      for(const sp of rd.spawns){
-        const hx=(r.cx+sp.dx+.5)*T,hy=(r.cy+sp.dy+.5)*T;
-        spawnHoles.push({x:hx,y:hy,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri});
+  if(tmpl.spawnHoles&&tmpl.spawnHoles.length>0){
+    // ── 수동 배치 (에디터에서 지정) ──
+    for(const sh of tmpl.spawnHoles){
+      const hSize=sh.type==='S'?.3:sh.type==='M'?.5:.8;
+      spawnHoles.push({x:(sh.x+.5)*T,y:(sh.y+.5)*T,size:hSize,timer:600+Math.random()*60,alive:0,room:-1});
+    }
+  } else {
+    // ── 자동 배치 (방 크기 기반: 소5/중10/대30) ──
+    for(let ri=0;ri<rooms.length;ri++){
+      const r=rooms[ri];
+      if(r.type==='start'||r.type==='boss')continue;
+      const area=r.w*r.h;
+      let holeCnt,hSize;
+      if(area<=150){holeCnt=5;hSize=0.3}
+      else if(area<=500){holeCnt=10;hSize=0.5}
+      else{holeCnt=30;hSize=0.8}
+      const cx=(r.cx+.5)*T,cy=(r.cy+.5)*T;
+      const hw=r.w*.35*T,hh=r.h*.35*T;
+      for(let hi=0;hi<holeCnt;hi++){
+        const ga=hi*2.399963;
+        const rd=Math.sqrt((hi+.5)/holeCnt);
+        const hx=cx+Math.cos(ga)*hw*rd;
+        const hy=cy+Math.sin(ga)*hh*rd;
+        spawnHoles.push({x:hx,y:hy,size:hSize,timer:600+Math.random()*60,alive:0,room:ri});
       }
     }
-    // [규칙1] 모든 방 최소 2개 보장
-    let _roomHoles=spawnHoles.filter(h=>h.room===ri).length;
-    const _targetPerRoom=(r.w>15||r.h>15)?3:2;
-    for(let _fi=_roomHoles;_fi<_targetPerRoom;_fi++){
-      const _ox=(Math.random()-.5)*r.w*.6*T,_oy=(Math.random()-.5)*r.h*.6*T;
-      spawnHoles.push({x:(r.cx+.5)*T+_ox,y:(r.cy+.5)*T+_oy,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri});
-    }
-    // [규칙2] 보스 인접 방에 최소 3개
-    if(_preBossRm&&r===_preBossRm){
-      _roomHoles=spawnHoles.filter(h=>h.room===ri).length;
-      for(let _bi=_roomHoles;_bi<3;_bi++){
-        const _ox=(Math.random()-.5)*r.w*.5*T,_oy=(Math.random()-.5)*r.h*.5*T;
-        spawnHoles.push({x:(r.cx+.5)*T+_ox,y:(r.cy+.5)*T+_oy,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri});
+    // 복도 소환굴
+    if(tmpl.corridorSpawns){
+      for(const cs of tmpl.corridorSpawns){
+        spawnHoles.push({x:(cs.x+.5)*T,y:(cs.y+.5)*T,size:.3,timer:600+Math.random()*60,alive:0,room:-1});
       }
     }
-  }
-  // 복도 소환굴
-  if(tmpl.corridorSpawns){
-    for(const cs of tmpl.corridorSpawns){
-      spawnHoles.push({x:(cs.x+.5)*T,y:(cs.y+.5)*T,size:.3,timer:600+Math.random()*60,alive:0,room:-1});
-    }
-  }
-  // [규칙4] 총량 정규화 — 방 수 기반 목표치 (방당 3개)
-  const _normalRooms2=rooms.filter(r=>r.type!=='start'&&r.type!=='boss');
-  const _targetHoles2=_normalRooms2.length*3;
-  while(spawnHoles.length<Math.max(5,_targetHoles2-3)){
-    if(_normalRooms2.length===0)break;
-    const _rr=_normalRooms2[~~(Math.random()*_normalRooms2.length)];
-    const _ox=(Math.random()-.5)*_rr.w*.4*T,_oy=(Math.random()-.5)*_rr.h*.4*T;
-    const _dr=bossDistMax>0?Math.max(0,1-(_rr.cy/bossDistMax)):0;
-    spawnHoles.push({x:(_rr.cx+.5)*T+_ox,y:(_rr.cy+.5)*T+_oy,size:Math.min(1,Math.max(0,_rr.w*_rr.h/400)),timer:600+Math.random()*60,alive:0,room:-1});
-  }
-  const _maxHoles2=_targetHoles2+3;
-  while(spawnHoles.length>_maxHoles2){
-    const _ci=spawnHoles.findIndex(h=>h.room===-1);
-    if(_ci>=0)spawnHoles.splice(_ci,1);
-    else spawnHoles.splice(~~(Math.random()*spawnHoles.length),1);
   }
 
   // ── 10. G 세팅 ──
@@ -12835,7 +12830,7 @@ function update(){
           else{addTxt(e.x,e.y-18,'⚡ 체간삭감!','#ffcc00',35)}
           for(let j=0;j<6;j++){const a2=Math.PI*2*j/6;poolPart(e.x,e.y,Math.cos(a2)*3,Math.sin(a2)*3,'#ffcc00',3+Math.random()*3,12)}
         }
-        SFX.slam();playSample('impact_hit',.8,_r(.7,.1));
+        SFX.slam();
         addTxt(P.x,P.y-30,'⚡ 기동파괴! x'+_csDistMul.toFixed(1),_csDistMul>=3?'#ffaa00':'#ffcc44',45);
         shake(50);G.chromaT=12;
         if(!G._gSlamWave)G._gSlamWave=[];
@@ -14072,9 +14067,9 @@ function update(){
     if(P.st2<=0)P.s='idle';break;}
   case 'pStun':{
     // ═══ 기절: Shift/Q/Ctrl로 즉시 탈출, 방향키 연타로 단축 ═══
-    if(isJust('charge')){P.s='idle';P.iframes=30;addTxt(P.x,P.y-20,'탈출!','#ffffff',30);playSample('impact_hit',.7,_r(1,.1));break}
-    if(isJust('parry')){P.s='idle';P.iframes=20;addTxt(P.x,P.y-20,'탈출!','#88ddff',30);playSample('impact_hit',.7,_r(1,.1));break}
-    if(isJust('skill7')){P.s='idle';P.iframes=20;addTxt(P.x,P.y-20,'탈출!','#88aacc',30);playSample('impact_hit',.7,_r(1,.1));break}
+    if(isJust('charge')){P.s='idle';P.iframes=30;addTxt(P.x,P.y-20,'탈출!','#ffffff',30);break}
+    if(isJust('parry')){P.s='idle';P.iframes=20;addTxt(P.x,P.y-20,'탈출!','#88ddff',30);break}
+    if(isJust('skill7')){P.s='idle';P.iframes=20;addTxt(P.x,P.y-20,'탈출!','#88aacc',30);break}
     // 방향키 연타 → 기절 시간 단축 (D4식)
     if(isJust('up')||isJust('down')||isJust('left')||isJust('right'))P.st2-=15;
     if(P.st2<=0){P.s='idle';addTxt(P.x,P.y-15,'기절 해제','#aaaaaa',20)}
@@ -15192,7 +15187,6 @@ function update(){
           p.dmg=~~(p.dmg*1.2);p.life=80;p.ml=80;
           addTxt(p.x,p.y-10,'🛡️반사!','#66ccff',35);
           addParts(p.x,p.y,'#66ccff',5);
-          playSample('impact_hit',.7,_r(1.2,.1));
         }
       }
       // 파티클 방출
@@ -15764,7 +15758,7 @@ function update(){
           poolPart(bx+Math.cos(a)*_ioSpawnR,by+Math.sin(a)*_ioSpawnR,Math.cos(a)*spd+Math.random()*2,Math.sin(a)*spd+Math.random()*2,i%3===0?'#ddf4ff':i%3===1?'#aaeeff':'#88ddff',3+Math.random()*5,18+Math.random()*12)}
         for(let i=0;i<16;i++){const a=Math.random()*Math.PI*2;const d=Math.random()*_ioSpawnR;
           poolPart(bx+Math.cos(a)*d,by+Math.sin(a)*d,(Math.random()-.5)*4,(Math.random()-.5)*4-1,'#cceeff',1+Math.random()*2,10+Math.random()*8)}
-        playSample('impact_hit',.8,_r(1.4,.1));addTxt(bx,by-30,'❄ 파쇄!','#aaeeff',50);
+        addTxt(bx,by-30,'❄ 파쇄!','#aaeeff',50);
         shake(12);
         G._mmBomb=null;
       }
@@ -15961,7 +15955,7 @@ function update(){
               if(e._freezeGauge>=e._freezeMax){
                 e._frozen=e.ib?90:180;e._freezeGauge=0;
                 addTxt(e.x,e.y-25,'❄프리즌!','#44ddff',50);
-                addParts(e.x,e.y,'#88eeff',12);playSampleAt('impact_hit',.6,_r(1.5,.15),e.x,e.y);
+                addParts(e.x,e.y,'#88eeff',12);
               }
             }
             // 감속
@@ -16006,7 +16000,7 @@ function update(){
                 if(!e._freezeGauge)e._freezeGauge=0;
                 e._freezeGauge=Math.min(e._freezeMax,e._freezeGauge+(e.ib?10:25));
                 if(e._freezeGauge>=e._freezeMax){e._frozen=e.ib?90:180;e._freezeGauge=0;
-                  addTxt(e.x,e.y-25,'❄프리즌!','#44ddff',50);addParts(e.x,e.y,'#88eeff',12);playSampleAt('impact_hit',.6,_r(1.5,.15),e.x,e.y)}
+                  addTxt(e.x,e.y-25,'❄프리즌!','#44ddff',50);addParts(e.x,e.y,'#88eeff',12)}
               }
             }else{
               hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.D);
@@ -17870,7 +17864,7 @@ function updateE(e,sp){
       if(d<50+e.r){
         const ang=Math.atan2(P.y-e.y,P.x-e.x);
         P.kb.x+=Math.cos(ang)*8;P.kb.y+=Math.sin(ang)*8;
-        hurtP(~~(e.atk*1.5));addTxt(e.x,e.y-15,'반격!','#ff4400',30);playSampleAt('impact_hit',.8,_r(1,.1),e.x,e.y);
+        hurtP(~~(e.atk*1.5));addTxt(e.x,e.y-15,'반격!','#ff4400',30);
         shake(5);
       }
     }
@@ -18050,7 +18044,7 @@ function updateE(e,sp){
       e._crabGuard=false;
       if(d<50+e.r){
         hurtP(~~(e.atk*1.5));const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*10;P.kb.y+=Math.sin(ka)*10;
-        addTxt(e.x,e.y-15,'집게찍기!','#667744',35);playSampleAt('impact_hit',.8,_r(1,.1),e.x,e.y);shake(5);
+        addTxt(e.x,e.y-15,'집게찍기!','#667744',35);shake(5);
       }
     }
     // 별도 집게 찍기 (방어 아닐 때)
@@ -18321,7 +18315,7 @@ function updateE(e,sp){
           if(pp.dx!==undefined){pp.dx*=-1;pp.dy*=-1}if(pp.vx!==undefined){pp.vx*=-1;pp.vy*=-1}
           pp.friendly=false;pp.reflected=true;
           e._dkParryCd=100+Math.random()*40;
-          addTxt(e.x,e.y-15,'패링!','#222222',35);playSampleAt('impact_hit',.8,_r(1,.1),e.x,e.y);break;
+          addTxt(e.x,e.y-15,'패링!','#222222',35);break;
         }
       }
     }
@@ -19473,7 +19467,7 @@ function updateE(e,sp){
       else if(P.s!=='charge'){
         // 무기 일시 봉인 (10초)
         P._weaponSeal=(P._weaponSeal||0)+600;
-        addTxt(P.x,P.y-25,'무기 봉인!','#cc00ff',60);playSample('impact_hit',.8,_r(.8,.1));
+        addTxt(P.x,P.y-25,'무기 봉인!','#cc00ff',60);
         hurtP(~~(e.atk*.5*elMul(e.el,ar().el)))}
       e.s='recover';e.st2=35;break}
     if(e.st2<=0){e.s='recover';e.st2=25}break}
@@ -19972,13 +19966,13 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(e.ib&&e._mgActive&&e.s==='bossMirrorGuard'){
     e._mgActive=false;const _mgDmg=~~(e.atk*2*elMul(e.el,ar().el));
     hurtP(_mgDmg);addTxt(P.x,P.y-25,'🪞 반격!','#ff2200',55);
-    playSampleAt('impact_hit',.9,_r(.9,.1),e.x,e.y);shake(15);doHitFlash('#00ccff',0.3);P.iframes=15;
+    shake(15);doHitFlash('#00ccff',0.3);P.iframes=15;
     e.s='recover';e.st2=30;return;
   }
   // 폭발반격 중: 공격하면 반격당함
   if(e.ib&&e._bcActive&&e.s==='bossBurstCounter'){
     hurtP(~~(e.atk*1.5*elMul(e.el,ar().el)));addTxt(P.x,P.y-25,'💢 반격!','#cc00ff',55);
-    playSampleAt('impact_hit',.9,_r(.9,.1),e.x,e.y);shake(12);doHitFlash('#00ccff',0.25);P.iframes=15;return;
+    shake(12);doHitFlash('#00ccff',0.25);P.iframes=15;return;
   }
   // ═══ 레어몹 특수 피격 ═══
   // 99:죽음 — 최대 데미지 HP 1%
@@ -20125,7 +20119,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         e._frozen=e.ib?90:180; // 보스 1.5초, 일반 3초
         e._freezeGauge=0;
         if(_txtPerFrame<_TXT_BUDGET)addTxt(e.x,e.y-25,'❄프리즌!','#44ddff',50);
-        addParts(e.x,e.y,'#88eeff',12);playSampleAt('impact_hit',.6,_r(1.5,.15),e.x,e.y);
+        addParts(e.x,e.y,'#88eeff',12);
       }
     }
   }
@@ -22057,7 +22051,6 @@ function activateIceShatter(){
   // 파쇄 VFX — 정순 0→8 빠르게
   {const _ioSh=_VFX_SHEETS['ice_orb'];
   if(_ioSh){const _ioDrawR=((P.r||18)+32)*_ioLvScale*6.6;_vfxAnims.push({id:'ice_orb',x:cx,y:cy,frame:0,maxFrames:_ioSh.frames,t:0,frameTime:13,scale:_ioDrawR/768,ang:0})}}
-  playSample('impact_hit',.8,_r(1.4,.1));
   addTxt(cx,cy-30,'❄ 파쇄!','#aaeeff',50);
   shake(10);
   // 상태 복구
@@ -24858,9 +24851,6 @@ function draw(){
       X.fillText(_stg2.kr,_cw/2,_ch*.64);
       X.textAlign='left';X.textBaseline='alphabetic';
     }
-    X.globalAlpha=1;X.restore();
-  }
-
   // ═══ 균열 렌더링 (시각효과 제거) ═══
   // ═══ 소환굴 렌더링 (vfx_void_black 스프라이트) ═══
   {const _shVfx=_VFX_SHEETS['void_black'];
@@ -24893,6 +24883,10 @@ function draw(){
     X.fillText(SPAWN_HOLE.name,h.x,h.y-_shSize/2-6);X.textAlign='left';
     X.globalAlpha=1;
   }}
+
+    X.globalAlpha=1;X.restore();
+  }
+
   // ═══ 보스 아레나 동적 FX (보스 생존 시만) ═══
   if(G._bossArena&&G.bossAlive&&G.rooms[0]){
     const _br=G.rooms[0],_bcx=(_br.cx+.5)*T,_bcy=(_br.cy+.5)*T;
@@ -26621,93 +26615,102 @@ function draw(){
       const _ecS='#ffee44'; // 전기 스파크 노란색
       const _egS='#ffffaa';
       if(_isElemR&&P._omniPts){
-        // ═══ 추적뇌전: 포인트 풀 유도 경로 사용 (전기색) ═══
+        // ═══ 추적뇌전: 유도 경로 → 재귀 번개 (뇌전나선 스타일) ═══
+        _ltPoolI=0;_ltBranchI=0;
         for(let bi=0;bi<6;bi++){
           const _cnt=_beamPtsCnt[bi];if(_cnt<2)continue;
           const _pool=_beamPtsPool[bi];
+          // 유도 경로의 시작/끝에서 _lightningPath 생성
+          const _sx=_pool[0].x,_sy=_pool[0].y;
+          const lp=_pool[_cnt-1];
+          const _ltSeed3=(~~(t/50))*131+bi*71;
+          const _dist3=Math.sqrt((_sx-lp.x)*(_sx-lp.x)+(_sy-lp.y)*(_sy-lp.y))||100;
+          const _bp3=_lightningPath(_sx,_sy,lp.x,lp.y,250,3,_ltSeed3);
+          const _bn3=_bp3._n||2;
           // 외곽 글로우
           X.globalAlpha=.25;X.strokeStyle=_ecS;X.lineWidth=10;
-          X.beginPath();X.moveTo(_pool[0].x,_pool[0].y);
-          for(let pi=1;pi<_cnt;pi++)X.lineTo(_pool[pi].x,_pool[pi].y);X.stroke();
+          X.beginPath();X.moveTo(_bp3[0],_bp3[1]);
+          for(let _i=2;_i<_bn3;_i+=2)X.lineTo(_bp3[_i],_bp3[_i+1]);X.stroke();
           // 메인
           X.globalAlpha=.8;X.strokeStyle=_ecS;X.lineWidth=3;
-          X.beginPath();X.moveTo(_pool[0].x,_pool[0].y);
-          for(let pi=1;pi<_cnt;pi++)X.lineTo(_pool[pi].x,_pool[pi].y);X.stroke();
+          X.beginPath();X.moveTo(_bp3[0],_bp3[1]);
+          for(let _i=2;_i<_bn3;_i+=2)X.lineTo(_bp3[_i],_bp3[_i+1]);X.stroke();
           // 백색 코어
           X.globalAlpha=.9;X.strokeStyle='#fff';X.lineWidth=1.2;
-          X.beginPath();X.moveTo(_pool[0].x,_pool[0].y);
-          for(let pi=1;pi<_cnt;pi++)X.lineTo(_pool[pi].x,_pool[pi].y);X.stroke();
+          X.beginPath();X.moveTo(_bp3[0],_bp3[1]);
+          for(let _i=2;_i<_bn3;_i+=2)X.lineTo(_bp3[_i],_bp3[_i+1]);X.stroke();
           // 끝점 글로우
-          const lp=_pool[_cnt-1];
           X.globalAlpha=.7;X.fillStyle=_egS;X.beginPath();X.arc(lp.x,lp.y,8,0,Math.PI*2);X.fill();
           X.globalAlpha=.15;X.fillStyle=_ecS;X.beginPath();X.arc(lp.x,lp.y,16,0,Math.PI*2);X.fill();
-          if(Math.random()>.7){const _ri=~~(_cnt*Math.random());
-            poolPart(_pool[_ri].x,_pool[_ri].y,(Math.random()-.5)*3,(Math.random()-.5)*3,_ecS,2+Math.random()*2,5+Math.random()*5)}
+          // 파티클
+          if(Math.random()>.7){const _ri3=Math.min(~~((_bn3/2)*Math.random())*2,Math.max(0,_bn3-2));
+            poolPart(_bp3[_ri3],_bp3[_ri3+1],(Math.random()-.5)*3,(Math.random()-.5)*3,_ecS,2+Math.random()*2,5+Math.random()*5)}
         }
         X.globalAlpha=.4;X.fillStyle=_ecS;X.beginPath();X.arc(P.x,P.y,10+Math.sin(t/30)*3,0,Math.PI*2);X.fill();
         X.globalAlpha=.7;X.fillStyle=_ecS;X.font='bold 14px "Noto Sans KR"';X.textAlign='center';
         X.fillText('⚡ 추적뇌전 ⚡',P.x,P.y-P.r-24);
       }else{
-        // ═══ 뇌전: 멸살광선 그대로 6발 부채꼴 (전기색) ═══
+        // ═══ 뇌전: 6발 재귀 번개 부채꼴 (뇌전나선 스타일) ═══
         const _omLv2=P.skills.omniBeam||1;
         const bl2=~~(500+(_omLv2-1)*55.6);
-        const _bSeed2=~~(t/50);
         const _spread2=.18;
+        const _bSeed2=~~(t/50);
         _ltPoolI=0;_ltBranchI=0;
         for(let _li=0;_li<6;_li++){
           const _ang=P.facing+(_li-2.5)*_spread2;
           const _cx=Math.cos(_ang),_cy=Math.sin(_ang);
           const _ex=P.x+_cx*bl2,_ey=P.y+_cy*bl2;
-          const _bp=_lightningPath(P.x,P.y,_ex,_ey,bl2*.12,5,_bSeed2*7+_li*97+31);
-          const _bn=_bp._n||2;
+          const _bp2=_lightningPath(P.x,P.y,_ex,_ey,250,3,_bSeed2*7+_li*97+31);
+          const _bn2=_bp2._n||2;
+          // 외곽 글로우
           X.globalAlpha=.25;X.strokeStyle=_ecS;X.lineWidth=10;
-          X.beginPath();X.moveTo(_bp[0],_bp[1]);
-          for(let _i=2;_i<_bn;_i+=2)X.lineTo(_bp[_i],_bp[_i+1]);X.stroke();
+          X.beginPath();X.moveTo(_bp2[0],_bp2[1]);
+          for(let _i=2;_i<_bn2;_i+=2)X.lineTo(_bp2[_i],_bp2[_i+1]);X.stroke();
+          // 메인
           X.globalAlpha=.8;X.strokeStyle=_ecS;X.lineWidth=3;
-          X.beginPath();X.moveTo(_bp[0],_bp[1]);
-          for(let _i=2;_i<_bn;_i+=2)X.lineTo(_bp[_i],_bp[_i+1]);X.stroke();
+          X.beginPath();X.moveTo(_bp2[0],_bp2[1]);
+          for(let _i=2;_i<_bn2;_i+=2)X.lineTo(_bp2[_i],_bp2[_i+1]);X.stroke();
+          // 백색 코어
           X.globalAlpha=.9;X.strokeStyle='#fff';X.lineWidth=1.2;
-          X.beginPath();X.moveTo(_bp[0],_bp[1]);
-          for(let _i=2;_i<_bn;_i+=2)X.lineTo(_bp[_i],_bp[_i+1]);X.stroke();
+          X.beginPath();X.moveTo(_bp2[0],_bp2[1]);
+          for(let _i=2;_i<_bn2;_i+=2)X.lineTo(_bp2[_i],_bp2[_i+1]);X.stroke();
+          // 끝점 글로우
           X.globalAlpha=.6;X.fillStyle=_egS;X.beginPath();X.arc(_ex,_ey,8,0,Math.PI*2);X.fill();
           X.globalAlpha=.12;X.fillStyle=_ecS;X.beginPath();X.arc(_ex,_ey,18,0,Math.PI*2);X.fill();
-          if(Math.random()>.7){const _ri2=Math.min(~~((_bn/2)*Math.random())*2,Math.max(0,_bn-2));
-            poolPart(_bp[_ri2],_bp[_ri2+1],(Math.random()-.5)*3,(Math.random()-.5)*3,_ecS,2+Math.random()*2,5+Math.random()*5)}
+          // 파티클
+          if(Math.random()>.7){const _ri2=Math.min(~~((_bn2/2)*Math.random())*2,Math.max(0,_bn2-2));
+            poolPart(_bp2[_ri2],_bp2[_ri2+1],(Math.random()-.5)*3,(Math.random()-.5)*3,_ecS,2+Math.random()*2,5+Math.random()*5)}
         }
         X.globalAlpha=.4;X.fillStyle=_ecS;X.beginPath();X.arc(P.x,P.y,10+Math.sin(t/40)*3,0,Math.PI*2);X.fill();
         X.globalAlpha=.7;X.fillStyle=_ecS;X.font='bold 14px "Noto Sans KR"';X.textAlign='center';
         X.fillText('✦ 뇌전 ✦',P.x,P.y-P.r-24);
       }
     }else{
-      // ═══ 기본 빔 (전기 3가닥 부채꼴) ═══
-      const bd=Math.cos(P.facing),be=Math.sin(P.facing);
+      // ═══ 기본 빔: 3가닥 재귀 번개 부채꼴 (뇌전나선 스타일) ═══
       const bl=~~(500+((P.skills.omniBeam||1)-1)*55.6);
       const elms=hm().elements||[{el:EL.P,dmg:5}];
       const ec0=ELC[elms[0].el];const eg0=ELG2[elms[0].el];
       const _bSeed=~~(t/50);
-      const _spread=.18; // 부채꼴 각도 (만화방창 스타일)
+      const _spread=.18;
       _ltPoolI=0;_ltBranchI=0;
       for(let _li=0;_li<3;_li++){
         const _ang=P.facing+(_li-1)*_spread;
         const _cx=Math.cos(_ang),_cy=Math.sin(_ang);
         const _ex=P.x+_cx*bl,_ey=P.y+_cy*bl;
-        const _bp=_lightningPath(P.x,P.y,_ex,_ey,bl*.12,5,_bSeed*7+_li*97+31);
+        const _bp=_lightningPath(P.x,P.y,_ex,_ey,250,3,_bSeed*7+_li*97+31);
         const _bn=_bp._n||2;
         // 외곽 글로우
         X.globalAlpha=.25;X.strokeStyle=ec0;X.lineWidth=10;
         X.beginPath();X.moveTo(_bp[0],_bp[1]);
-        for(let _i=2;_i<_bn;_i+=2)X.lineTo(_bp[_i],_bp[_i+1]);
-        X.stroke();
+        for(let _i=2;_i<_bn;_i+=2)X.lineTo(_bp[_i],_bp[_i+1]);X.stroke();
         // 메인 번개
         X.globalAlpha=.8;X.strokeStyle=ec0;X.lineWidth=3;
         X.beginPath();X.moveTo(_bp[0],_bp[1]);
-        for(let _i=2;_i<_bn;_i+=2)X.lineTo(_bp[_i],_bp[_i+1]);
-        X.stroke();
+        for(let _i=2;_i<_bn;_i+=2)X.lineTo(_bp[_i],_bp[_i+1]);X.stroke();
         // 백색 코어
         X.globalAlpha=.9;X.strokeStyle='#fff';X.lineWidth=1.2;
         X.beginPath();X.moveTo(_bp[0],_bp[1]);
-        for(let _i=2;_i<_bn;_i+=2)X.lineTo(_bp[_i],_bp[_i+1]);
-        X.stroke();
+        for(let _i=2;_i<_bn;_i+=2)X.lineTo(_bp[_i],_bp[_i+1]);X.stroke();
         // 끝점 글로우
         X.globalAlpha=.6;X.fillStyle=eg0;X.beginPath();X.arc(_ex,_ey,8,0,Math.PI*2);X.fill();
         X.globalAlpha=.12;X.fillStyle=ec0;X.beginPath();X.arc(_ex,_ey,18,0,Math.PI*2);X.fill();
@@ -26718,7 +26721,7 @@ function draw(){
       // 소스 글로우
       X.globalAlpha=.4;X.fillStyle=ec0;X.beginPath();X.arc(P.x,P.y,10+Math.sin(t/40)*3,0,Math.PI*2);X.fill();
       X.globalAlpha=.6+Math.sin(t/200)*.3;X.fillStyle='#ffcc44';X.font='bold 14px "Noto Sans KR"';X.textAlign='center';
-      X.fillText('✦ 최종 마법 ✦',P.x,P.y-P.r-24);
+      X.fillText('✦ 멸살광선 ✦',P.x,P.y-P.r-24);
     }
     X.globalAlpha=1;
   }
@@ -30441,9 +30444,9 @@ function drawMM(){if(!G.on||!G.map)return;
     for(let _shi=0;_shi<G.spawnHoles.length;_shi++){const sh=G.spawnHoles[_shi];
       const sx=(sh.x/T)*sc,sy=(sh.y/T)*sc;
       if(sx<0||sx>mapPxW||sy<0||sy>mapPxH)continue;
-      const _shR=1.5+sh.size*1.5;
-      mx.fillStyle=SPAWN_HOLE.col;mx.globalAlpha=.85;mx.beginPath();mx.arc(sx,sy,_shR,0,Math.PI*2);mx.fill();
-      mx.strokeStyle='#000';mx.lineWidth=.5;mx.stroke();mx.globalAlpha=1;
+      const _shR=2.5+sh.size*2;
+      mx.fillStyle='#ff3333';mx.globalAlpha=1;mx.beginPath();mx.arc(sx,sy,_shR,0,Math.PI*2);mx.fill();
+      mx.strokeStyle='#ff8800';mx.lineWidth=1;mx.stroke();
     }
     _mmCacheStage=G.stage;_mmDirty=0;
     _mmOx=~~((mmW-mapPxW)/2);_mmOy=~~((mmH-mapPxH)/2);_mmSc=sc;
