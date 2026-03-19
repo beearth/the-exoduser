@@ -4489,10 +4489,10 @@ function rollAffixes(grade,slot){
 
 const SLOT_NAMES=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape'];
 // 디아블로식 아이템 크기 [W,H] (그리드 칸 단위)
-const ITEM_SIZE={weapon:[2,2],shield:[2,2],boots:[2,2],armor:[2,2],helmet:[2,2],bow:[2,2],gloves:[2,2],pants:[2,2],belt:[2,2],necklace:[2,2],ring1:[2,2],ring2:[2,2],cape:[2,2]};
+const ITEM_SIZE={weapon:[1,1],shield:[1,1],boots:[1,1],armor:[1,1],helmet:[1,1],bow:[1,1],gloves:[1,1],pants:[1,1],belt:[1,1],necklace:[1,1],ring1:[1,1],ring2:[1,1],cape:[1,1]};
 // 무기 wtype별 크기 (디아블로/PoE식)
-const WTYPE_SIZE={sword:[2,2],dagger:[2,2],hammer:[2,2],mace:[2,2],club:[2,2],axe:[2,2],spear:[2,2]};
-const BTYPE_SIZE={crossbow:[2,2],repeater:[2,2],arcane:[2,2]};
+const WTYPE_SIZE={sword:[1,1],dagger:[1,1],hammer:[1,1],mace:[1,1],club:[1,1],axe:[1,1],spear:[1,1]};
+const BTYPE_SIZE={crossbow:[1,1],repeater:[1,1],arcane:[1,1]};
 const INV_COLS=10;
 const SLOT_KR=['무기','방패','부츠','갑옷','투구','석궁','장갑','바지','벨트','목걸이','반지1','반지2','망토'];
 const SLOT_EMOJI=['⚔️','🛡️','👢','🦺','⛑️','🏹','🧤','👖','🪢','📿','💍','💍','🧣'];
@@ -4736,7 +4736,7 @@ let INV={
   selected:null,
 };
 let BAG_MAX=42;
-function _invRows(){return Math.max(10,Math.ceil(BAG_MAX*4/INV_COLS))}
+function _invRows(){return Math.max(8,Math.ceil(BAG_MAX*2.2/INV_COLS))}
 // ═══ 2D 그리드 인벤토리 ═══
 function _itemSz(it){
   if(it.slot==='weapon'&&it.wtype&&WTYPE_SIZE[it.wtype])return WTYPE_SIZE[it.wtype];
@@ -23833,8 +23833,8 @@ function renderInv(){
   const _IR=_invRows();
   grid.style.width=INV_COLS*_GC+'px';grid.style.height=_IR*_GC+'px';
   $('invCount').textContent=INV.bag.length;
-  // 좌표 없거나 2x2 경계 밖이면 리셋 후 빈 자리에 재배치
-  for(let i=0;i<INV.bag.length;i++){const _it=INV.bag[i];if(!_it)continue;const[w,h]=_itemSz(_it);if(_it._gx==null||_it._gx+w>INV_COLS||_it._gy+h>_invRows()){_it._gx=null;_it._gy=null;const pos=_invFindSpace(w,h,i);if(pos){_it._gx=pos.x;_it._gy=pos.y}}}
+  // 좌표 없는 아이템만 빈 자리에 배치
+  for(let i=0;i<INV.bag.length;i++){if(INV.bag[i]&&INV.bag[i]._gx==null){const[w,h]=_itemSz(INV.bag[i]);const pos=_invFindSpace(w,h,i);if(pos){INV.bag[i]._gx=pos.x;INV.bag[i]._gy=pos.y}}}
   // 유효하지 않은 분해 선택 제거
   for(const idx of[..._invSalSel]){if(idx>=INV.bag.length)_invSalSel.delete(idx)}
   // 배경 격자
