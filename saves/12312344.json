@@ -1,24 +1,24 @@
 {
-  "ts": 1773889805172,
+  "ts": 1773893531994,
   "player": {
-    "lv": 594,
-    "exp": 8768,
-    "maxExp": 19141,
-    "sp": 261,
-    "ap": 18,
+    "lv": 613,
+    "exp": 249,
+    "maxExp": 20335,
+    "sp": 187,
+    "ap": 22,
     "baseAtk": 15,
     "baseDef": 14,
-    "mpR": 6.317,
-    "stR": 1.9649999999999999,
-    "hp": 2523.086147437505,
-    "mhp": 2612,
-    "mp": 563.4909679999887,
-    "mmp": 1021,
-    "st": 51.00459656247601,
-    "mst": 637,
+    "mpR": 6.359,
+    "stR": 1.986,
+    "hp": 2642,
+    "mhp": 2642,
+    "mp": 1031,
+    "mmp": 1031,
+    "st": 647,
+    "mst": 647,
     "speed": 7.45476,
-    "shield": 687,
-    "mshield": 1788
+    "shield": 1799,
+    "mshield": 1799
   },
   "inv": {
     "bag": [
@@ -9809,8 +9809,8 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 354
+      "type": null,
+      "count": 0
     },
     {
       "type": null,
@@ -9823,8 +9823,8 @@
   ],
   "game": {
     "stage": 11,
-    "kills": 141124,
-    "mats": 6922577
+    "kills": 148175,
+    "mats": 9236284
   },
   "bagMax": 300,
   "hellCleared": [
@@ -9848,20 +9848,20 @@
   "skills": {
     "spikeTrap": 2,
     "holyDome": 10,
-    "whirlwind": 1,
+    "whirlwind": 10,
     "gasCloud": 1,
     "maliceSwipe": 10,
-    "detonate": 1,
+    "detonate": 10,
     "blastShot": 0,
-    "fanShot": 1,
-    "omniBeam": 1,
+    "fanShot": 10,
+    "omniBeam": 10,
     "plagueBurst": 10,
     "maliceStorm": 1,
     "ghostWalk": 10,
     "chargeBoost": 10,
     "holyBlast": 0,
-    "elemMissile": 1,
-    "giantSlam": 1,
+    "elemMissile": 10,
+    "giantSlam": 10,
     "bladeDash": 10,
     "magicBlink": 10,
     "bladeShot": 0,
@@ -9879,7 +9879,7 @@
     "iceStorm": 10,
     "blackStar": 1,
     "peaceShield": 1,
-    "hellRay": 1
+    "hellRay": 10
   },
   "fused": {
     "bladeFuse": true,
@@ -9928,7 +9928,7 @@
     "magicBlink": 15,
     "needleShot": 15,
     "iceStorm": 15,
-    "blackStar": 8,
+    "blackStar": 9,
     "peaceShield": 15,
     "hellRay": 15
   },
