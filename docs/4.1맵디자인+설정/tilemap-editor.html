@@ -3633,7 +3633,7 @@ function exportAsFixedMap(){
       if(!FIXED_MAPS[i])continue;
       const s=STAGES[i];
       // 에디터 오브젝트에서 소환굴 추출 → FIXED_MAPS에 삽입
-      const m=mapStore[i];
+      const m=mapStore[i]||getMap(i);
       const fm=JSON.parse(JSON.stringify(FIXED_MAPS[i])); // deep copy
       if(m&&m.objs){
         // 소환굴 추출

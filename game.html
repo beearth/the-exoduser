@@ -11401,41 +11401,48 @@ function buildGridMapCache(tmpl){
 // ── FIXED_MAPS 절차적 생성 (격자맵 포함, 전부 고정) ──
 const FIXED_MAPS=[];
 for(let i=0;i<TOTAL_STAGES;i++){const s=STAGES[i];if(s.type==='grid')FIXED_MAPS[i]=generateGridMap(s.hell);else if(s.type==='horiz')FIXED_MAPS[i]=genHoriz(i);else FIXED_MAPS[i]=genSnake(i)}
-// ── 1장1막 에디터 맵 덮어쓰기 ──
-FIXED_MAPS[0]={"mw":200,"mh":200,"rooms":[{"id":"s","type":"start","cx":111,"cy":190,"shape":"ellipse","rx":14,"ry":10},{"id":"a1","type":"combat","cx":38,"cy":175,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"a2","type":"combat","cx":165,"cy":178,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":3,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":0,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"b1","type":"combat","cx":30,"cy":148,"shape":"circle","rx":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"b2","type":"combat","cx":75,"cy":145,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":2,"grade":0},{"dx":-2,"dy":-1,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"b3","type":"combat","cx":130,"cy":148,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":1,"grade":0},{"dx":-1,"dy":-1,"grade":0},{"dx":1,"dy":-3,"grade":0}]},{"id":"b4","type":"combat","cx":178,"cy":142,"shape":"circle","rx":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"c1","type":"combat","cx":25,"cy":118,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":3,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"c2","type":"combat","cx":72,"cy":115,"shape":"circle","rx":14,"spawns":[{"dx":3,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-2,"dy":1,"grade":0},{"dx":-3,"dy":-2,"grade":0},{"dx":0,"dy":-2,"grade":0}]},{"id":"f","type":"forge","cx":118,"cy":112,"shape":"rect","rx":12,"ry":8},{"id":"c3","type":"combat","cx":170,"cy":115,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"d1","type":"combat","cx":40,"cy":88,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-1,"grade":1}]},{"id":"d2","type":"combat","cx":100,"cy":85,"shape":"cross","rx":16,"ry":16,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":1,"dy":2,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":-1,"dy":-2,"grade":1},{"dx":1,"dy":-3,"grade":1}],"armW":8,"armH":8},{"id":"d3","type":"combat","cx":160,"cy":88,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e1","type":"combat","cx":28,"cy":58,"shape":"circle","rx":12,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":0,"grade":1},{"dx":0,"dy":-3,"grade":1}]},{"id":"e2","type":"combat","cx":80,"cy":55,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":1,"dy":3,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e3","type":"combat","cx":140,"cy":55,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":1,"dy":3,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-1,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e4","type":"combat","cx":185,"cy":58,"shape":"circle","rx":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":0,"grade":1},{"dx":0,"dy":-1,"grade":1}]},{"id":"n1","type":"combat","cx":50,"cy":28,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"n2","type":"combat","cx":110,"cy":25,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":4,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"n3","type":"combat","cx":170,"cy":28,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":3,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":0,"dy":-3,"grade":1}]},{"id":"exit","type":"combat","cx":110,"cy":10,"shape":"ellipse","rx":12,"ry":6,"spawns":[{"dx":4,"dy":0,"grade":1},{"dx":-1,"dy":3,"grade":1},{"dx":-1,"dy":-1,"grade":1}]},{"id":"h1","type":"combat","cx":8,"cy":155,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":1}]},{"id":"h2","type":"combat","cx":192,"cy":130,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":1}]},{"id":"h3","type":"combat","cx":8,"cy":42,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":2}]},{"id":"h4","type":"combat","cx":192,"cy":42,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":2}]}],"corridors":[{"from":"s","to":"a1","width":7,"style":"cave","waypoints":[{"x":68,"y":178}]},{"from":"s","to":"a2","width":7,"style":"cave","waypoints":[{"x":132,"y":179}]},{"from":"a1","to":"b1","width":7,"style":"cave","waypoints":[{"x":34,"y":162}]},{"from":"a1","to":"b2","width":7,"style":"cave","waypoints":[{"x":55,"y":160}]},{"from":"s","to":"b2","width":8,"style":"cave","waypoints":[{"x":88,"y":162}]},{"from":"s","to":"b3","width":8,"style":"cave","waypoints":[{"x":115,"y":164}]},{"from":"a2","to":"b3","width":7,"style":"cave","waypoints":[{"x":148,"y":163}]},{"from":"a2","to":"b4","width":7,"style":"cave","waypoints":[{"x":172,"y":160}]},{"from":"a1","to":"h1","width":4,"style":"cave"},{"from":"b1","to":"b2","width":6,"style":"cave","waypoints":[{"x":52,"y":147}]},{"from":"b2","to":"b3","width":7,"style":"cave","waypoints":[{"x":102,"y":146}]},{"from":"b3","to":"b4","width":6,"style":"cave","waypoints":[{"x":154,"y":145}]},{"from":"b1","to":"c1","width":6,"style":"cave","waypoints":[{"x":27,"y":133}]},{"from":"b2","to":"c2","width":7,"style":"cave","waypoints":[{"x":73,"y":130}]},{"from":"b3","to":"f","width":7,"style":"cave","waypoints":[{"x":124,"y":130}]},{"from":"b4","to":"c3","width":6,"style":"cave","waypoints":[{"x":174,"y":128}]},{"from":"b4","to":"h2","width":4,"style":"cave"},{"from":"c1","to":"c2","width":6,"style":"cave","waypoints":[{"x":48,"y":117}]},{"from":"c2","to":"f","width":7,"style":"cave","waypoints":[{"x":95,"y":113}]},{"from":"f","to":"c3","width":7,"style":"cave","waypoints":[{"x":144,"y":114}]},{"from":"c1","to":"d1","width":6,"style":"cave","waypoints":[{"x":32,"y":103}]},{"from":"c2","to":"d1","width":6,"style":"cave","waypoints":[{"x":55,"y":102}]},{"from":"c2","to":"d2","width":7,"style":"cave","waypoints":[{"x":86,"y":100}]},{"from":"f","to":"d2","width":7,"style":"cave","waypoints":[{"x":109,"y":98}]},{"from":"c3","to":"d2","width":6,"style":"cave","waypoints":[{"x":135,"y":100}]},{"from":"c3","to":"d3","width":6,"style":"cave","waypoints":[{"x":165,"y":102}]},{"from":"d1","to":"d2","width":7,"style":"cave","waypoints":[{"x":70,"y":87}]},{"from":"d2","to":"d3","width":7,"style":"cave","waypoints":[{"x":130,"y":87}]},{"from":"d1","to":"e1","width":6,"style":"cave","waypoints":[{"x":34,"y":73}]},{"from":"d1","to":"e2","width":6,"style":"cave","waypoints":[{"x":58,"y":72}]},{"from":"d2","to":"e2","width":7,"style":"cave","waypoints":[{"x":90,"y":70}]},{"from":"d2","to":"e3","width":7,"style":"cave","waypoints":[{"x":120,"y":70}]},{"from":"d3","to":"e3","width":6,"style":"cave","waypoints":[{"x":150,"y":72}]},{"from":"d3","to":"e4","width":6,"style":"cave","waypoints":[{"x":172,"y":73}]},{"from":"e1","to":"e2","width":6,"style":"cave","waypoints":[{"x":54,"y":57}]},{"from":"e2","to":"e3","width":7,"style":"cave","waypoints":[{"x":110,"y":55}]},{"from":"e3","to":"e4","width":6,"style":"cave","waypoints":[{"x":162,"y":57}]},{"from":"e1","to":"h3","width":4,"style":"cave"},{"from":"e4","to":"h4","width":4,"style":"cave"},{"from":"e1","to":"n1","width":6,"style":"cave","waypoints":[{"x":38,"y":43}]},{"from":"e2","to":"n1","width":6,"style":"cave","waypoints":[{"x":65,"y":42}]},{"from":"e2","to":"n2","width":7,"style":"cave","waypoints":[{"x":95,"y":40}]},{"from":"e3","to":"n2","width":7,"style":"cave","waypoints":[{"x":125,"y":40}]},{"from":"e3","to":"n3","width":6,"style":"cave","waypoints":[{"x":155,"y":42}]},{"from":"e4","to":"n3","width":6,"style":"cave","waypoints":[{"x":178,"y":43}]},{"from":"n1","to":"n2","width":7,"style":"cave","waypoints":[{"x":80,"y":26}]},{"from":"n2","to":"n3","width":7,"style":"cave","waypoints":[{"x":140,"y":27}]},{"from":"n1","to":"exit","width":6,"style":"cave","waypoints":[{"x":80,"y":18}]},{"from":"n2","to":"exit","width":8,"style":"cave"},{"from":"n3","to":"exit","width":6,"style":"cave","waypoints":[{"x":140,"y":18}]},{"from":"c3","to":"a2","width":5,"style":"cave","waypoints":[{"x":190,"y":125},{"x":188,"y":160}]},{"from":"e1","to":"b1","width":5,"style":"cave","waypoints":[{"x":10,"y":58},{"x":8,"y":100},{"x":12,"y":148}]},{"from":"exit","to":"s","width":4,"style":"cave","waypoints":[{"x":196,"y":10},{"x":198,"y":95},{"x":196,"y":180},{"x":145,"y":182}]}],"features":[{"type":"alcove","x":6,"y":15,"r":4},{"type":"alcove","x":194,"y":15,"r":4},{"type":"alcove","x":6,"y":40,"r":4},{"type":"alcove","x":194,"y":40,"r":6},{"type":"alcove","x":6,"y":65,"r":6},{"type":"alcove","x":194,"y":65,"r":5},{"type":"alcove","x":6,"y":90,"r":4},{"type":"alcove","x":194,"y":90,"r":5},{"type":"alcove","x":6,"y":115,"r":3},{"type":"alcove","x":194,"y":115,"r":4},{"type":"alcove","x":6,"y":140,"r":3},{"type":"alcove","x":194,"y":140,"r":5},{"type":"alcove","x":6,"y":165,"r":6},{"type":"alcove","x":194,"y":165,"r":5},{"type":"alcove","x":30,"y":194,"r":3},{"type":"alcove","x":30,"y":6,"r":3},{"type":"alcove","x":60,"y":194,"r":5},{"type":"alcove","x":60,"y":6,"r":5},{"type":"alcove","x":90,"y":194,"r":4},{"type":"alcove","x":90,"y":6,"r":3},{"type":"alcove","x":120,"y":194,"r":5},{"type":"alcove","x":120,"y":6,"r":4},{"type":"alcove","x":150,"y":194,"r":4},{"type":"alcove","x":150,"y":6,"r":5}],"corridorSpawns":[{"x":132,"y":179,"grade":0},{"x":115,"y":164,"grade":1},{"x":148,"y":163,"grade":0},{"x":52,"y":147,"grade":0},{"x":102,"y":146,"grade":0},{"x":27,"y":133,"grade":0},{"x":124,"y":130,"grade":0},{"x":174,"y":128,"grade":1},{"x":55,"y":102,"grade":1},{"x":86,"y":100,"grade":1},{"x":165,"y":102,"grade":0},{"x":70,"y":87,"grade":0},{"x":130,"y":87,"grade":1},{"x":58,"y":72,"grade":1},{"x":150,"y":72,"grade":1},{"x":172,"y":73,"grade":1},{"x":110,"y":55,"grade":0},{"x":125,"y":40,"grade":0},{"x":178,"y":43,"grade":0},{"x":80,"y":18,"grade":0},{"x":140,"y":18,"grade":1},{"x":10,"y":58,"grade":0}],"spawnHoles":[{"x":75,"y":182,"type":"S"},{"x":50,"y":170,"type":"M"},{"x":31,"y":166,"type":"L"}],"tileRLE":[1,304,0,13,1,183,0,21,1,179,0,22,1,176,0,25,1,174,0,21,1,1,0,4,1,174,0,6,1,2,0,12,1,3,0,5,1,171,0,8,1,1,0,13,1,1,0,6,1,171,0,30,1,170,0,30,1,169,0,31,1,169,0,30,1,171,0,29,1,171,0,30,1,171,0,29,1,171,0,32,1,169,0,5,1,3,0,24,1,169,0,5,1,1,0,26,1,170,0,31,1,172,0,28,1,174,0,1,1,1,0,1,1,1,0,1,1,3,0,1,1,4,0,14,1,186,0,16,1,185,0,17,1,185,0,15,1,186,0,17,1,184,0,16,1,185,0,16,1,184,0,20,1,181,0,20,1,181,0,19,1,183,0,18,1,184,0,18,1,185,0,17,1,184,0,16,1,186,0,14,1,187,0,14,1,188,0,13,1,188,0,15,1,187,0,14,1,187,0,15,1,186,0,16,1,184,0,16,1,188,0,13,1,188,0,13,1,189,0,12,1,189,0,12,1,189,0,11,1,190,0,11,1,189,0,12,1,188,0,13,1,189,0,12,1,188,0,13,1,187,0,15,1,186,0,14,1,187,0,15,1,185,0,16,1,186,0,1,1,1,0,13,1,187,0,14,1,3,0,3,1,2,0,2,1,177,0,25,1,177,0,24,1,177,0,23,1,176,0,26,1,172,0,31,1,169,0,31,1,169,0,31,1,164,0,2,1,2,0,32,1,157,0,1,1,3,0,39,1,156,0,44,1,138,0,1,1,15,0,46,1,137,0,6,1,5,0,52,1,136,0,64,1,133,0,62,1,1,0,1,1,132,0,1,1,2,0,39,1,1,0,22,1,124,0,1,1,4,0,3,1,1,0,39,1,7,0,22,1,122,0,3,1,1,0,44,1,10,0,19,1,114,0,6,1,2,0,45,1,18,0,2,1,3,0,1,1,2,0,1,1,3,0,2,1,114,0,44,1,1,0,1,1,1,0,5,1,145,0,45,1,153,0,44,1,154,0,43,1,1,0,1,1,151,0,1,1,2,0,42,1,148,0,44,1,1,0,6,1,143,0,44,1,1,0,1,1,153,0,41,1,1,0,1,1,113,0,1,1,1,0,2,1,3,0,1,1,20,0,1,1,1,0,1,1,9,0,1,1,2,0,40,1,114,0,12,1,17,0,10,1,3,0,37,1,1,0,1,1,1,0,1,1,117,0,13,1,14,0,51,1,119,0,18,1,11,0,51,1,120,0,20,1,3,0,1,1,3,0,37,1,1,0,1,1,1,0,1,1,1,0,1,1,1,0,1,1,3,0,2,1,122,0,63,1,137,0,62,1,137,0,59,1,140,0,51,1,2,0,1,1,146,0,45,1,155,0,43,1,156,0,43,1,158,0,41,1,158,0,31,1,1,0,1,1,1,0,1,1,2,0,3,1,160,0,31,1,7,0,1,1,162,0,32,1,168,0,33,1,166,0,37,1,164,0,37,1,164,0,39,1,162,0,39,1,161,0,42,1,158,0,21,1,1,0,21,1,158,0,19,1,3,0,22,1,159,0,13,1,10,0,21,1,156,0,13,1,11,0,22,1,157,0,1,1,2,0,1,1,19,0,1,1,2,0,18,1,183,0,18,1,184,0,19,1,183,0,18,1,185,0,17,1,184,0,17,1,184,0,18,1,185,0,18,1,183,0,18,1,183,0,21,1,180,0,1,1,1,0,19,1,183,0,18,1,183,0,19,1,182,0,1,1,1,0,17,1,4,0,2,1,179,0,22,1,180,0,20,1,182,0,18,1,182,0,18,1,178,0,2,1,1,0,1,1,1,0,17,1,173,0,27,1,172,0,28,1,173,0,27,1,172,0,28,1,169,0,29,1,171,0,26,1,173,0,27,1,174,0,25,1,174,0,26,1,151,0,4,1,3,0,1,1,1,0,1,1,1,0,1,1,5,0,3,1,3,0,12,1,1,0,2,1,1,0,1,1,2,0,3,1,1,0,1,1,152,0,35,1,164,0,35,1,166,0,34,1,165,0,35,1,162,0,38,1,162,0,35,1,164,0,36,1,149,0,1,1,14,0,36,1,144,0,12,1,8,0,35,1,144,0,13,1,2,0,1,1,1,0,1,1,2,0,12,1,2,0,1,1,3,0,1,1,2,0,1,1,1,0,1,1,3,0,1,1,1,0,1,1,4,0,1,1,142,0,35,1,165,0,34,1,165,0,35,1,165,0,35,1,164,0,36,1,163,0,34,1,1,0,1,1,164,0,33,1,167,0,34,1,166,0,33,1,162,0,2,1,2,0,27,1,2,0,1,1,1,0,1,1,163,0,32,1,167,0,33,1,167,0,33,1,168,0,32,1,168,0,32,1,169,0,2,1,3,0,29,1,1,0,2,1,1,0,2,1,2,0,1,1,162,0,41,1,160,0,40,1,161,0,39,1,162,0,38,1,163,0,37,1,165,0,36,1,165,0,35,1,166,0,33,1,167,0,33,1,173,0,2,1,1,0,1,1,1,0,1,1,1,0,1,1,9,0,11,1,11,0,1,1,2,0,2,1,5,0,1,1,3,0,1,1,4,0,1,1,158,0,43,1,158,0,43,1,156,0,44,1,157,0,42,1,158,0,43,1,157,0,42,1,158,0,42,1,158,0,43,1,157,0,42,1,161,0,2,1,1,0,2,1,1,0,1,1,3,0,3,1,1,0,2,1,1,0,6,1,1,0,1,1,2,0,12,1,190,0,12,1,9,0,2,1,1,0,1,1,4,0,2,1,170,0,32,1,167,0,34,1,166,0,35,1,165,0,36,1,165,0,35,1,164,0,35,1,166,0,34,1,166,0,33,1,167,0,32,1,171,0,2,1,2,0,1,1,1,0,1,1,2,0,5,1,3,0,1,1,2,0,1,1,2,0,1,1,2,0,1,1,886]};
+// ── 1장1막 에디터 맵 ──
+FIXED_MAPS[0]={"mw":200,"mh":200,"rooms":[{"id":"s","type":"start","cx":111,"cy":190,"shape":"ellipse","rx":14,"ry":10},{"id":"a1","type":"combat","cx":38,"cy":175,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"a2","type":"combat","cx":165,"cy":178,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":3,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":0,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"b1","type":"combat","cx":30,"cy":148,"shape":"circle","rx":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"b2","type":"combat","cx":75,"cy":145,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":2,"grade":0},{"dx":-2,"dy":-1,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"b3","type":"combat","cx":130,"cy":148,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":1,"grade":0},{"dx":-1,"dy":-1,"grade":0},{"dx":1,"dy":-3,"grade":0}]},{"id":"b4","type":"combat","cx":178,"cy":142,"shape":"circle","rx":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"c1","type":"combat","cx":25,"cy":118,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":3,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"c2","type":"combat","cx":72,"cy":115,"shape":"circle","rx":14,"spawns":[{"dx":3,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-2,"dy":1,"grade":0},{"dx":-3,"dy":-2,"grade":0},{"dx":0,"dy":-2,"grade":0}]},{"id":"f","type":"forge","cx":118,"cy":112,"shape":"rect","rx":12,"ry":8},{"id":"c3","type":"combat","cx":170,"cy":115,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"d1","type":"combat","cx":40,"cy":88,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-1,"grade":1}]},{"id":"d2","type":"combat","cx":100,"cy":85,"shape":"cross","rx":16,"ry":16,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":1,"dy":2,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":-1,"dy":-2,"grade":1},{"dx":1,"dy":-3,"grade":1}],"armW":8,"armH":8},{"id":"d3","type":"combat","cx":160,"cy":88,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e1","type":"combat","cx":28,"cy":58,"shape":"circle","rx":12,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":0,"grade":1},{"dx":0,"dy":-3,"grade":1}]},{"id":"e2","type":"combat","cx":80,"cy":55,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":1,"dy":3,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e3","type":"combat","cx":140,"cy":55,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":1,"dy":3,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-1,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e4","type":"combat","cx":185,"cy":58,"shape":"circle","rx":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":0,"grade":1},{"dx":0,"dy":-1,"grade":1}]},{"id":"n1","type":"combat","cx":50,"cy":28,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"n2","type":"combat","cx":110,"cy":25,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":4,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"n3","type":"combat","cx":170,"cy":28,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":3,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":0,"dy":-3,"grade":1}]},{"id":"exit","type":"combat","cx":110,"cy":10,"shape":"ellipse","rx":12,"ry":6,"spawns":[{"dx":4,"dy":0,"grade":1},{"dx":-1,"dy":3,"grade":1},{"dx":-1,"dy":-1,"grade":1}]},{"id":"h1","type":"combat","cx":8,"cy":155,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":1}]},{"id":"h2","type":"combat","cx":192,"cy":130,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":1}]},{"id":"h3","type":"combat","cx":8,"cy":42,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":2}]},{"id":"h4","type":"combat","cx":192,"cy":42,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":2}]}],"corridors":[{"from":"s","to":"a1","width":7,"style":"cave","waypoints":[{"x":68,"y":178}]},{"from":"s","to":"a2","width":7,"style":"cave","waypoints":[{"x":132,"y":179}]},{"from":"a1","to":"b1","width":7,"style":"cave","waypoints":[{"x":34,"y":162}]},{"from":"a1","to":"b2","width":7,"style":"cave","waypoints":[{"x":55,"y":160}]},{"from":"s","to":"b2","width":8,"style":"cave","waypoints":[{"x":88,"y":162}]},{"from":"s","to":"b3","width":8,"style":"cave","waypoints":[{"x":115,"y":164}]},{"from":"a2","to":"b3","width":7,"style":"cave","waypoints":[{"x":148,"y":163}]},{"from":"a2","to":"b4","width":7,"style":"cave","waypoints":[{"x":172,"y":160}]},{"from":"a1","to":"h1","width":4,"style":"cave"},{"from":"b1","to":"b2","width":6,"style":"cave","waypoints":[{"x":52,"y":147}]},{"from":"b2","to":"b3","width":7,"style":"cave","waypoints":[{"x":102,"y":146}]},{"from":"b3","to":"b4","width":6,"style":"cave","waypoints":[{"x":154,"y":145}]},{"from":"b1","to":"c1","width":6,"style":"cave","waypoints":[{"x":27,"y":133}]},{"from":"b2","to":"c2","width":7,"style":"cave","waypoints":[{"x":73,"y":130}]},{"from":"b3","to":"f","width":7,"style":"cave","waypoints":[{"x":124,"y":130}]},{"from":"b4","to":"c3","width":6,"style":"cave","waypoints":[{"x":174,"y":128}]},{"from":"b4","to":"h2","width":4,"style":"cave"},{"from":"c1","to":"c2","width":6,"style":"cave","waypoints":[{"x":48,"y":117}]},{"from":"c2","to":"f","width":7,"style":"cave","waypoints":[{"x":95,"y":113}]},{"from":"f","to":"c3","width":7,"style":"cave","waypoints":[{"x":144,"y":114}]},{"from":"c1","to":"d1","width":6,"style":"cave","waypoints":[{"x":32,"y":103}]},{"from":"c2","to":"d1","width":6,"style":"cave","waypoints":[{"x":55,"y":102}]},{"from":"c2","to":"d2","width":7,"style":"cave","waypoints":[{"x":86,"y":100}]},{"from":"f","to":"d2","width":7,"style":"cave","waypoints":[{"x":109,"y":98}]},{"from":"c3","to":"d2","width":6,"style":"cave","waypoints":[{"x":135,"y":100}]},{"from":"c3","to":"d3","width":6,"style":"cave","waypoints":[{"x":165,"y":102}]},{"from":"d1","to":"d2","width":7,"style":"cave","waypoints":[{"x":70,"y":87}]},{"from":"d2","to":"d3","width":7,"style":"cave","waypoints":[{"x":130,"y":87}]},{"from":"d1","to":"e1","width":6,"style":"cave","waypoints":[{"x":34,"y":73}]},{"from":"d1","to":"e2","width":6,"style":"cave","waypoints":[{"x":58,"y":72}]},{"from":"d2","to":"e2","width":7,"style":"cave","waypoints":[{"x":90,"y":70}]},{"from":"d2","to":"e3","width":7,"style":"cave","waypoints":[{"x":120,"y":70}]},{"from":"d3","to":"e3","width":6,"style":"cave","waypoints":[{"x":150,"y":72}]},{"from":"d3","to":"e4","width":6,"style":"cave","waypoints":[{"x":172,"y":73}]},{"from":"e1","to":"e2","width":6,"style":"cave","waypoints":[{"x":54,"y":57}]},{"from":"e2","to":"e3","width":7,"style":"cave","waypoints":[{"x":110,"y":55}]},{"from":"e3","to":"e4","width":6,"style":"cave","waypoints":[{"x":162,"y":57}]},{"from":"e1","to":"h3","width":4,"style":"cave"},{"from":"e4","to":"h4","width":4,"style":"cave"},{"from":"e1","to":"n1","width":6,"style":"cave","waypoints":[{"x":38,"y":43}]},{"from":"e2","to":"n1","width":6,"style":"cave","waypoints":[{"x":65,"y":42}]},{"from":"e2","to":"n2","width":7,"style":"cave","waypoints":[{"x":95,"y":40}]},{"from":"e3","to":"n2","width":7,"style":"cave","waypoints":[{"x":125,"y":40}]},{"from":"e3","to":"n3","width":6,"style":"cave","waypoints":[{"x":155,"y":42}]},{"from":"e4","to":"n3","width":6,"style":"cave","waypoints":[{"x":178,"y":43}]},{"from":"n1","to":"n2","width":7,"style":"cave","waypoints":[{"x":80,"y":26}]},{"from":"n2","to":"n3","width":7,"style":"cave","waypoints":[{"x":140,"y":27}]},{"from":"n1","to":"exit","width":6,"style":"cave","waypoints":[{"x":80,"y":18}]},{"from":"n2","to":"exit","width":8,"style":"cave"},{"from":"n3","to":"exit","width":6,"style":"cave","waypoints":[{"x":140,"y":18}]},{"from":"c3","to":"a2","width":5,"style":"cave","waypoints":[{"x":190,"y":125},{"x":188,"y":160}]},{"from":"e1","to":"b1","width":5,"style":"cave","waypoints":[{"x":10,"y":58},{"x":8,"y":100},{"x":12,"y":148}]},{"from":"exit","to":"s","width":4,"style":"cave","waypoints":[{"x":196,"y":10},{"x":198,"y":95},{"x":196,"y":180},{"x":145,"y":182}]}],"features":[{"type":"alcove","x":6,"y":15,"r":4},{"type":"alcove","x":194,"y":15,"r":4},{"type":"alcove","x":6,"y":40,"r":4},{"type":"alcove","x":194,"y":40,"r":6},{"type":"alcove","x":6,"y":65,"r":6},{"type":"alcove","x":194,"y":65,"r":5},{"type":"alcove","x":6,"y":90,"r":4},{"type":"alcove","x":194,"y":90,"r":5},{"type":"alcove","x":6,"y":115,"r":3},{"type":"alcove","x":194,"y":115,"r":4},{"type":"alcove","x":6,"y":140,"r":3},{"type":"alcove","x":194,"y":140,"r":5},{"type":"alcove","x":6,"y":165,"r":6},{"type":"alcove","x":194,"y":165,"r":5},{"type":"alcove","x":30,"y":194,"r":3},{"type":"alcove","x":30,"y":6,"r":3},{"type":"alcove","x":60,"y":194,"r":5},{"type":"alcove","x":60,"y":6,"r":5},{"type":"alcove","x":90,"y":194,"r":4},{"type":"alcove","x":90,"y":6,"r":3},{"type":"alcove","x":120,"y":194,"r":5},{"type":"alcove","x":120,"y":6,"r":4},{"type":"alcove","x":150,"y":194,"r":4},{"type":"alcove","x":150,"y":6,"r":5}],"corridorSpawns":[{"x":132,"y":179,"grade":0},{"x":115,"y":164,"grade":1},{"x":148,"y":163,"grade":0},{"x":52,"y":147,"grade":0},{"x":102,"y":146,"grade":0},{"x":27,"y":133,"grade":0},{"x":124,"y":130,"grade":0},{"x":174,"y":128,"grade":1},{"x":55,"y":102,"grade":1},{"x":86,"y":100,"grade":1},{"x":165,"y":102,"grade":0},{"x":70,"y":87,"grade":0},{"x":130,"y":87,"grade":1},{"x":58,"y":72,"grade":1},{"x":150,"y":72,"grade":1},{"x":172,"y":73,"grade":1},{"x":110,"y":55,"grade":0},{"x":125,"y":40,"grade":0},{"x":178,"y":43,"grade":0},{"x":80,"y":18,"grade":0},{"x":140,"y":18,"grade":1},{"x":10,"y":58,"grade":0}],"spawnHoles":[{"x":33,"y":105,"type":"S"},{"x":40,"y":160,"type":"S"},{"x":94,"y":129,"type":"S"},{"x":181,"y":66,"type":"S"},{"x":111,"y":12,"type":"S"}],"tileRLE":[1,304,0,13,1,184,0,20,1,178,0,23,1,176,0,25,1,174,0,27,1,173,0,27,1,172,0,29,1,171,0,30,1,170,0,30,1,169,0,31,1,169,0,30,1,171,0,29,1,171,0,30,1,171,0,30,1,170,0,32,1,169,0,32,1,169,0,32,1,170,0,31,1,172,0,28,1,186,0,15,1,186,0,16,1,185,0,16,1,186,0,16,1,185,0,16,1,185,0,16,1,185,0,16,1,184,0,20,1,181,0,20,1,181,0,19,1,183,0,18,1,184,0,18,1,185,0,16,1,185,0,16,1,186,0,14,1,187,0,14,1,188,0,13,1,188,0,15,1,187,0,14,1,187,0,15,1,186,0,15,1,186,0,15,1,188,0,13,1,188,0,13,1,189,0,12,1,189,0,12,1,189,0,11,1,190,0,11,1,189,0,12,1,189,0,12,1,188,0,13,1,188,0,13,1,187,0,14,1,187,0,15,1,186,0,15,1,186,0,15,1,187,0,14,1,187,0,14,1,3,0,3,1,2,0,2,1,177,0,25,1,176,0,25,1,176,0,25,1,175,0,26,1,173,0,29,1,170,0,31,1,169,0,31,1,164,0,2,1,2,0,32,1,161,0,39,1,156,0,44,1,154,0,46,1,137,0,6,1,5,0,52,1,136,0,63,1,134,0,63,1,136,0,63,1,128,0,43,1,7,0,21,1,123,0,48,1,10,0,19,1,114,0,6,1,2,0,45,1,18,0,2,1,10,0,2,1,114,0,52,1,145,0,45,1,153,0,44,1,154,0,44,1,155,0,42,1,148,0,51,1,143,0,45,1,154,0,42,1,115,0,3,1,39,0,40,1,115,0,11,1,17,0,10,1,3,0,39,1,118,0,14,1,14,0,51,1,120,0,17,1,11,0,51,1,120,0,20,1,7,0,41,1,7,0,2,1,122,0,63,1,137,0,62,1,137,0,59,1,140,0,51,1,149,0,45,1,155,0,43,1,157,0,42,1,157,0,42,1,158,0,34,1,3,0,3,1,160,0,33,1,168,0,32,1,168,0,33,1,167,0,36,1,164,0,37,1,164,0,39,1,162,0,39,1,161,0,42,1,158,0,43,1,158,0,19,1,3,0,22,1,158,0,15,1,9,0,21,1,157,0,11,1,12,0,22,1,183,0,18,1,183,0,18,1,184,0,19,1,183,0,18,1,185,0,17,1,184,0,17,1,184,0,18,1,185,0,18,1,183,0,18,1,183,0,21,1,181,0,20,1,183,0,18,1,183,0,19,1,183,0,18,1,4,0,2,1,179,0,22,1,179,0,21,1,179,0,21,1,179,0,21,1,178,0,22,1,174,0,26,1,173,0,27,1,172,0,28,1,171,0,28,1,171,0,28,1,171,0,27,1,173,0,26,1,173,0,26,1,174,0,25,1,152,0,4,1,13,0,3,1,2,0,17,1,3,0,4,1,153,0,35,1,165,0,34,1,165,0,35,1,164,0,36,1,163,0,36,1,163,0,36,1,163,0,36,1,164,0,36,1,144,0,11,1,9,0,35,1,144,0,14,1,6,0,13,1,165,0,34,1,165,0,34,1,165,0,35,1,165,0,35,1,164,0,35,1,164,0,35,1,165,0,34,1,166,0,33,1,167,0,32,1,163,0,2,1,2,0,28,1,167,0,32,1,167,0,33,1,167,0,33,1,168,0,32,1,168,0,33,1,168,0,2,1,2,0,36,1,165,0,40,1,161,0,40,1,161,0,39,1,162,0,38,1,163,0,37,1,165,0,36,1,165,0,35,1,166,0,33,1,168,0,32,1,173,0,5,1,11,0,12,1,14,0,2,1,173,0,43,1,157,0,44,1,157,0,43,1,157,0,43,1,157,0,42,1,158,0,42,1,158,0,42,1,158,0,42,1,159,0,41,1,161,0,6,1,4,0,14,1,3,0,13,1,188,0,13,1,9,0,3,1,5,0,2,1,169,0,33,1,167,0,34,1,166,0,35,1,165,0,36,1,164,0,36,1,165,0,34,1,166,0,34,1,166,0,33,1,168,0,31,1,171,0,2,1,7,0,5,1,899]};
+
+
 
 // ═══ MAP — 고정맵 생성기 ═══
 function genFromTemplate(tmpl,si){
   const mw=tmpl.mw,mh=tmpl.mh;
   const map=[];for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
   const rooms=[];
-  // tileRLE가 있으면 타일 직접 로드
-  if(tmpl.tileRLE&&tmpl.tileRLE.length>0){
+  const _hasTileRLE=tmpl.tileRLE&&tmpl.tileRLE.length>0;
+  const roomMap={};
+
+  if(_hasTileRLE){
+    // ── tileRLE: 타일 직접 로드 ──
     const rle=tmpl.tileRLE;let pos=0;
     for(let i=0;i<rle.length;i+=2){const v=rle[i],cnt=rle[i+1];for(let j=0;j<cnt;j++){const y=~~(pos/mw),x=pos%mw;if(y<mh&&x<mw)map[y][x]=v;pos++}}
-  }
-
-  // ── 1. 방 카빙 + rooms 구축 ──
-  const _hasTileRLE=tmpl.tileRLE&&tmpl.tileRLE.length>0;
-  const roomMap={};// id→index
-  for(const rd of tmpl.rooms){
-    const cx=rd.cx,cy=rd.cy,rx=rd.rx||8,ry=rd.ry||rx;
-    if(!_hasTileRLE){
+    // start room만
+    const sr=tmpl.rooms.find(r=>r.type==='start')||{cx:~~(mw/2),cy:mh-10};
+    rooms.push({x:sr.cx-8,y:sr.cy-6,w:16,h:12,cx:sr.cx,cy:sr.cy,cleared:false,type:'start'});
+    roomMap['s']=0;
+    // boss room (있으면)
+    const br=tmpl.rooms.find(r=>r.type==='boss');
+    if(br){rooms.push({x:br.cx-(br.rx||15),y:br.cy-(br.ry||br.rx||15),w:(br.rx||15)*2,h:(br.ry||br.rx||15)*2,cx:br.cx,cy:br.cy,cleared:false,type:'boss'});roomMap['b']=rooms.length-1}
+    // 바닥 타일 인덱스 구축
+    G._isTileRLE=true;
+    G._floorTiles=[];
+    for(let y=1;y<mh-1;y++)for(let x=1;x<mw-1;x++)if(map[y][x]===0)G._floorTiles.push({tx:x,ty:y});
+  } else {
+    G._isTileRLE=false;G._floorTiles=null;
+    // ── 기존 카빙 방식 ──
+    for(const rd of tmpl.rooms){
+      const cx=rd.cx,cy=rd.cy,rx=rd.rx||8,ry=rd.ry||rx;
       if(rd.shape==='ellipse') _tCarveEllipse(map,mw,mh,cx,cy,rx,ry);
       else if(rd.shape==='circle') _tCarveCircle(map,mw,mh,cx,cy,rx);
       else if(rd.shape==='rect') _tCarveRect(map,mw,mh,cx,cy,rx,ry);
       else if(rd.shape==='cross'){const aw=rd.armW||~~(rx*.5),ah=rd.armH||~~(ry*.5);_tCarveCross(map,mw,mh,cx,cy,rx,ry,aw,ah)}
       else if(rd.shape==='custom'&&rd.tiles){for(const[dx,dy]of rd.tiles){const tx=cx+dx,ty=cy+dy;if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=0}}
       if(rd.pillars){for(const p of rd.pillars){const pw=p.w||2,ph=p.h||2;for(let dy=0;dy<ph;dy++)for(let dx=0;dx<pw;dx++){const tx=cx+p.dx+dx,ty=cy+p.dy+dy;if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=1}}}
+      rooms.push({x:cx-rx,y:cy-ry,w:rx*2,h:ry*2,cx,cy,cleared:false,type:rd.type||'combat'});
+      roomMap[rd.id]=rooms.length-1;
     }
-    // rooms 배열에 추가 (항상)
-    const rIdx=rooms.length;
-    rooms.push({
-      x:cx-rx, y:cy-ry, w:rx*2, h:ry*2,
-      cx:cx, cy:cy, cleared:false,
-      type:rd.type||'combat'
-    });
-    roomMap[rd.id]=rIdx;
   }
 
   // ── 2. 복도 카빙 (tileRLE 없을 때만) ──
@@ -11543,71 +11550,56 @@ function genFromTemplate(tmpl,si){
 
   // ── 9. 소환굴 배치 ──
   const spawnHoles=[];
-  if(tmpl.spawnHoles&&tmpl.spawnHoles.length>0){
-    for(const sh of tmpl.spawnHoles){const hSize=sh.type==='S'?.3:sh.type==='M'?.5:.8;
-      spawnHoles.push({x:(sh.x+.5)*T,y:(sh.y+.5)*T,size:hSize,timer:600+Math.random()*60,alive:0,room:-1})}
-  }
-  const bossDistMax=bossRm?bossRm.cy:1;
-  // 보스 인접 방 찾기 (보스 cy에 가장 가까운 non-boss/start 방)
-  let _preBossRm=null,_preBossD=Infinity;
-  for(let ri=0;ri<rooms.length;ri++){
-    const r=rooms[ri];if(r.type==='boss'||r.type==='start')continue;
-    const _d=Math.abs(r.cy-(bossRm?bossRm.cy:0))+Math.abs(r.cx-(bossRm?bossRm.cx:0));
-    if(_d<_preBossD){_preBossD=_d;_preBossRm=r}
-  }
-  // 방 기반 소환굴 — 방당 2~3개 고정 (큰 방 3개, 작은 방 2개)
-  for(let ri=0;ri<rooms.length;ri++){
-    const r=rooms[ri];
-    if(r.type==='start'||r.type==='boss')continue;
-    const _rSize=Math.min(1,Math.max(0,r.w*r.h/400));
-    // 템플릿 spawns 사용
-    const rd=tmpl.rooms[ri];
-    if(rd&&rd.spawns){
-      for(const sp of rd.spawns){
-        const hx=(r.cx+sp.dx+.5)*T,hy=(r.cy+sp.dy+.5)*T;
-        spawnHoles.push({x:hx,y:hy,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri});
-      }
+  if(_hasTileRLE){
+    // ── tileRLE: 수동 배치 + 바닥 랜덤 배치 ──
+    if(tmpl.spawnHoles&&tmpl.spawnHoles.length>0){
+      for(const sh of tmpl.spawnHoles){const hSize=sh.type==='S'?.3:sh.type==='M'?.5:.8;
+        spawnHoles.push({x:(sh.x+.5)*T,y:(sh.y+.5)*T,size:hSize,timer:600+Math.random()*60,alive:0,room:1})}
     }
-    // [규칙1] 모든 방 최소 2개 보장
-    let _roomHoles=spawnHoles.filter(h=>h.room===ri).length;
-    const _targetPerRoom=(r.w>15||r.h>15)?3:2;
-    for(let _fi=_roomHoles;_fi<_targetPerRoom;_fi++){
-      const _ox=(Math.random()-.5)*r.w*.6*T,_oy=(Math.random()-.5)*r.h*.6*T;
-      spawnHoles.push({x:(r.cx+.5)*T+_ox,y:(r.cy+.5)*T+_oy,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri});
+    // 수동 배치 부족하면 바닥 타일에 랜덤 배치 (최소 15개)
+    const _startCx=(rooms[0].cx+.5)*T,_startCy=(rooms[0].cy+.5)*T;
+    let _tries=0;
+    while(spawnHoles.length<15&&_tries<500){_tries++;
+      const tx=2+~~(Math.random()*(mw-4)),ty=2+~~(Math.random()*(mh-4));
+      if(map[ty][tx]!==0)continue;
+      const px=(tx+.5)*T,py=(ty+.5)*T;
+      if((px-_startCx)*(px-_startCx)+(py-_startCy)*(py-_startCy)<250000)continue; // 시작점 500px 밖
+      let tooClose=false;for(let si2=0;si2<spawnHoles.length;si2++){if((spawnHoles[si2].x-px)*(spawnHoles[si2].x-px)+(spawnHoles[si2].y-py)*(spawnHoles[si2].y-py)<160000){tooClose=true;break}}
+      if(tooClose)continue;
+      spawnHoles.push({x:px,y:py,size:.3+Math.random()*.5,timer:600+Math.random()*60,alive:0,room:1});
     }
-    // [규칙2] 보스 인접 방에 최소 3개
-    if(_preBossRm&&r===_preBossRm){
-      _roomHoles=spawnHoles.filter(h=>h.room===ri).length;
-      for(let _bi=_roomHoles;_bi<3;_bi++){
-        const _ox=(Math.random()-.5)*r.w*.5*T,_oy=(Math.random()-.5)*r.h*.5*T;
-        spawnHoles.push({x:(r.cx+.5)*T+_ox,y:(r.cy+.5)*T+_oy,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri});
-      }
+  } else {
+    // ── 기존 방 기반 배치 ──
+    if(tmpl.spawnHoles&&tmpl.spawnHoles.length>0){
+      for(const sh of tmpl.spawnHoles){const hSize=sh.type==='S'?.3:sh.type==='M'?.5:.8;
+        spawnHoles.push({x:(sh.x+.5)*T,y:(sh.y+.5)*T,size:hSize,timer:600+Math.random()*60,alive:0,room:-1})}
     }
-  }
-  // 복도 소환굴
-  if(tmpl.corridorSpawns){
-    for(const cs of tmpl.corridorSpawns){
-      spawnHoles.push({x:(cs.x+.5)*T,y:(cs.y+.5)*T,size:.3,timer:600+Math.random()*60,alive:0,room:-1});
+    const bossDistMax=bossRm?bossRm.cy:1;
+    let _preBossRm=null,_preBossD=Infinity;
+    for(let ri=0;ri<rooms.length;ri++){const r=rooms[ri];if(r.type==='boss'||r.type==='start')continue;
+      const _d=Math.abs(r.cy-(bossRm?bossRm.cy:0))+Math.abs(r.cx-(bossRm?bossRm.cx:0));if(_d<_preBossD){_preBossD=_d;_preBossRm=r}}
+    for(let ri=0;ri<rooms.length;ri++){const r=rooms[ri];if(r.type==='start'||r.type==='boss')continue;
+      const _rSize=Math.min(1,Math.max(0,r.w*r.h/400));const rd=tmpl.rooms[ri];
+      if(rd&&rd.spawns){for(const sp of rd.spawns){spawnHoles.push({x:(r.cx+sp.dx+.5)*T,y:(r.cy+sp.dy+.5)*T,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri})}}
+      let _roomHoles=spawnHoles.filter(h=>h.room===ri).length;const _targetPerRoom=(r.w>15||r.h>15)?3:2;
+      for(let _fi=_roomHoles;_fi<_targetPerRoom;_fi++){spawnHoles.push({x:(r.cx+.5)*T+(Math.random()-.5)*r.w*.6*T,y:(r.cy+.5)*T+(Math.random()-.5)*r.h*.6*T,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri})}
+      if(_preBossRm&&r===_preBossRm){_roomHoles=spawnHoles.filter(h=>h.room===ri).length;
+        for(let _bi=_roomHoles;_bi<3;_bi++){spawnHoles.push({x:(r.cx+.5)*T+(Math.random()-.5)*r.w*.5*T,y:(r.cy+.5)*T+(Math.random()-.5)*r.h*.5*T,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri})}}
     }
-  }
-  // [규칙4] 총량 정규화 — 방 수 기반 목표치 (방당 3개)
-  const _normalRooms2=rooms.filter(r=>r.type!=='start'&&r.type!=='boss');
-  const _targetHoles2=_normalRooms2.length*3;
-  while(spawnHoles.length<Math.max(5,_targetHoles2-3)){
-    if(_normalRooms2.length===0)break;
-    const _rr=_normalRooms2[~~(Math.random()*_normalRooms2.length)];
-    const _ox=(Math.random()-.5)*_rr.w*.4*T,_oy=(Math.random()-.5)*_rr.h*.4*T;
-    const _dr=bossDistMax>0?Math.max(0,1-(_rr.cy/bossDistMax)):0;
-    spawnHoles.push({x:(_rr.cx+.5)*T+_ox,y:(_rr.cy+.5)*T+_oy,size:Math.min(1,Math.max(0,_rr.w*_rr.h/400)),timer:600+Math.random()*60,alive:0,room:-1});
-  }
-  const _maxHoles2=_targetHoles2+3;
-  while(spawnHoles.length>_maxHoles2){
-    const _ci=spawnHoles.findIndex(h=>h.room===-1);
-    if(_ci>=0)spawnHoles.splice(_ci,1);
-    else spawnHoles.splice(~~(Math.random()*spawnHoles.length),1);
+    if(tmpl.corridorSpawns){for(const cs of tmpl.corridorSpawns)spawnHoles.push({x:(cs.x+.5)*T,y:(cs.y+.5)*T,size:.3,timer:600+Math.random()*60,alive:0,room:-1})}
+    const _normalRooms2=rooms.filter(r=>r.type!=='start'&&r.type!=='boss');const _targetHoles2=_normalRooms2.length*3;
+    while(spawnHoles.length<Math.max(5,_targetHoles2-3)){if(_normalRooms2.length===0)break;const _rr=_normalRooms2[~~(Math.random()*_normalRooms2.length)];
+      spawnHoles.push({x:(_rr.cx+.5)*T+(Math.random()-.5)*_rr.w*.4*T,y:(_rr.cy+.5)*T+(Math.random()-.5)*_rr.h*.4*T,size:Math.min(1,Math.max(0,_rr.w*_rr.h/400)),timer:600+Math.random()*60,alive:0,room:-1})}
+    const _maxHoles2=_targetHoles2+3;
+    while(spawnHoles.length>_maxHoles2){
+      const _ci=spawnHoles.findIndex(h=>h.room===-1);
+      if(_ci>=0)spawnHoles.splice(_ci,1);
+      else spawnHoles.splice(~~(Math.random()*spawnHoles.length),1);
+    }
   }
 
   // ── 10. G 세팅 ──
+  console.log('[MAP] si='+si+' tileRLE='+(tmpl.tileRLE?'Y':'N')+' manualHoles='+(tmpl.spawnHoles?tmpl.spawnHoles.length:0)+' autoHoles='+spawnHoles.length+' rooms='+rooms.length+' bossRm='+(bossRm?'Y':'N'));
   G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
   G.bossGate=_gateTiles;G.bossGateOpen=false;G.bossSealed=false;
   G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
@@ -12244,9 +12236,9 @@ function spawnRoomEns(ri){
   const cnt=ib?1:Math.max(10,~~((area+si*3+8)*DIFF_MOB[OPT.diff]));
   let formSpawnCount=0;
   for(let i=0;i<cnt;i++){
-    // 벽 속 스폰 방지 — 최대 8회 시도하여 walkable 위치 찾기
+    // 벽 속 스폰 방지 — 최대 30회 시도하여 walkable 위치 찾기
     let ex,ey,_valid=false;
-    for(let _try=0;_try<8;_try++){
+    for(let _try=0;_try<30;_try++){
       ex=(room.x+1+Math.random()*(room.w-2))*T;
       ey=(room.y+1+Math.random()*(room.h-2))*T;
       if(canMv(ex,ey,8)){_valid=true;break}
@@ -12291,6 +12283,27 @@ function spawnRoomEns(ri){
   room.cleared=false;
 }
 
+// tileRLE 맵 전용 몹 스폰 — 바닥 타일 밀도 기반
+function spawnTileRLEEns(si){
+  const ft=G._floorTiles;if(!ft||!ft.length)return;
+  const cnt=Math.max(40,~~(ft.length*0.012*DIFF_MOB[OPT.diff]))+si*2;
+  const startX=(G.rooms[0].cx+.5)*T,startY=(G.rooms[0].cy+.5)*T;
+  const safeR2=500*500;
+  let placed=0;
+  for(let i=0;i<cnt&&placed<cnt;i++){
+    const f=ft[~~(Math.random()*ft.length)];
+    const ex=(f.tx+.5)*T,ey=(f.ty+.5)*T;
+    if((ex-startX)*(ex-startX)+(ey-startY)*(ey-startY)<safeR2)continue;
+    if(!canMv(ex,ey,8))continue;
+    let etype=rollEtype(si);
+    const hell=SI_TO_HELL[si];
+    const rareChance=hell>=6?.10:.05;
+    if(Math.random()<.005&&!G._deathSpawned){etype=99;G._deathSpawned=true}
+    else if(Math.random()<rareChance){etype=90+~~(Math.random()*9)}
+    ens.push(mkEn(ex,ey,si,etype,false,rollEl(si),-1));
+    placed++;
+  }
+}
 // 복도 몹 스폰 — 출구 방향 밀도 그라디언트 (몹 많은쪽 = 출구)
 function spawnCorridorEns(si){
   const corridorTiles=[];
@@ -12344,8 +12357,8 @@ function initStage(si){
   G.stageCleared=false;G._deathSpawned=false;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;
   if(typeof _clearExtEPalCache==='function')_clearExtEPalCache();
   if(typeof _clearExtBPalCache==='function')_clearExtBPalCache();
-  G.rooms.forEach((room,ri)=>spawnRoomEns(ri));
-  spawnCorridorEns(si);
+  if(G._isTileRLE){spawnTileRLEEns(si)}
+  else{G.rooms.forEach((room,ri)=>spawnRoomEns(ri));spawnCorridorEns(si)}
   // ── 시작방 안전지대: 플레이어 주변 200px 이내 몹 제거 ──
   const _safeR=500;const _safeR2=_safeR*_safeR;
   for(let _ei=ens.length-1;_ei>=0;_ei--){const _e=ens[_ei];if((_e.x-P.x)*(_e.x-P.x)+(_e.y-P.y)*(_e.y-P.y)<_safeR2)ens.splice(_ei,1)}
@@ -14797,7 +14810,8 @@ function update(){
     }}
 
   checkRooms();
-  // ═══ 소환굴 업데이트 (근접 트리거: 2000px 이내 접근 시 발동→스폰→소멸) ═══
+  // ═══ 소환굴 업데이트 (근접 트리거: 600px 이내 접근 시 발동→스폰→소멸) ═══
+  if(_gameFrame<120){}else // 시작 2초간 트리거 차단
   for(let hi=G.spawnHoles.length-1;hi>=0;hi--){
     const h=G.spawnHoles[hi];
     // 신성한 감옥 fireZone 범위 내 → 즉시 제거
@@ -24845,7 +24859,7 @@ function draw(){
   }
 
   // ═══ 소환굴 렌더링 (vfx_void_black 스프라이트) ═══
-  if(_gameFrame>30){const _shVfx=_VFX_SHEETS['void_black'];
+  if(_gameFrame>120){const _shVfx=_VFX_SHEETS['void_black'];
   X.save();X.setTransform(1,0,0,1,C.width/2-G.cam.x,C.height/2-G.cam.y);
   for(let hi=0;hi<G.spawnHoles.length;hi++){
     const h=G.spawnHoles[hi];
@@ -29767,15 +29781,15 @@ function drawP(){
         X.rotate(ang);
         const _mhF=p.mhFused;
         const _mhP=p.mhPlague; // 독혈해방 여부
-        // 메인 칼날: 좁고 긴 다이아몬드 (24x3)
+        // 메인 칼날: 좁고 긴 다이아몬드 (24x3) — 독혈해방 합체 칼날도 흰색 유지
         X.globalAlpha=fa*.95;
-        X.fillStyle=_mhP?'#cc2244':_mhF?'#ddeeff':'#ccccdd';
+        X.fillStyle=_mhF?'#ddeeff':'#ccccdd';
         X.beginPath();X.moveTo(24,0);X.lineTo(2,-2.5);X.lineTo(-10,0);X.lineTo(2,2.5);X.closePath();X.fill();
         // 칼날 엣지 하이라이트
-        X.globalAlpha=fa*.5;X.strokeStyle=_mhP?'#ff4466':'#ffffff';X.lineWidth=.8;
+        X.globalAlpha=fa*.5;X.strokeStyle='#ffffff';X.lineWidth=.8;
         X.beginPath();X.moveTo(24,0);X.lineTo(2,-2.5);X.lineTo(-10,0);X.stroke();
         // 중심 빛줄기
-        X.globalAlpha=fa*.3;X.strokeStyle=_mhP?'#ff2244':_mhF?'#aaccff':'#ddddee';X.lineWidth=1.2;
+        X.globalAlpha=fa*.3;X.strokeStyle=_mhF?'#aaccff':'#ddddee';X.lineWidth=1.2;
         X.beginPath();X.moveTo(-8,0);X.lineTo(22,0);X.stroke();
         // 트레일: 좁은 잔상
         if(p._trail&&p._trLen>0){
@@ -29785,7 +29799,7 @@ function drawP(){
             const _tf=1-ti/p._trLen,_ts=_tf*.5;
             const _dx=_tt.x-p.x,_dy=_tt.y-p.y;
             const _lx=_dx*_cs-_dy*_sn,_ly=_dx*_sn+_dy*_cs;
-            X.globalAlpha=fa*_tf*.25;X.fillStyle=_mhP?'#882233':_mhF?'#aabbcc':'#bbbbcc';
+            X.globalAlpha=fa*_tf*.25;X.fillStyle=_mhF?'#aabbcc':'#bbbbcc';
             X.beginPath();X.moveTo(_lx+10*_ts,_ly);X.lineTo(_lx-6*_ts,_ly-1.5*_ts);X.lineTo(_lx-6*_ts,_ly+1.5*_ts);X.closePath();X.fill();
           }
         }
@@ -30412,7 +30426,7 @@ function drawMM(){if(!G.on||!G.map)return;
       const tv=G.map[ty][tx];if(tv===1)continue;mx.fillStyle=tv===2?'#887766':tv===4?'#443355':'#665544';
       mx.fillRect(tx*sc,ty*sc,Math.max(sc,1),Math.max(sc,1));
     }
-    for(const r of G.rooms){mx.strokeStyle=r.type==='boss'?'#ff0044':r.type==='forge'?'#ff8844':'#554433';mx.lineWidth=1;mx.strokeRect(r.x*sc,r.y*sc,r.w*sc,r.h*sc)}
+    if(!G._isTileRLE)for(const r of G.rooms){mx.strokeStyle=r.type==='boss'?'#ff0044':r.type==='forge'?'#ff8844':'#554433';mx.lineWidth=1;mx.strokeRect(r.x*sc,r.y*sc,r.w*sc,r.h*sc)}
     // 정적 마커 캐시에 포함 (대장간/보스/출구/MAP_OBJS)
     for(const r of G.rooms){
       if(r.type==='forge'){mx.fillStyle='#ff8844';mx.font='6px sans-serif';mx.textAlign='center';mx.fillText('⚒',r.cx*sc,r.cy*sc+2)}

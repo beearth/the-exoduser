@@ -1,24 +1,24 @@
 {
-  "ts": 1773958763143,
+  "ts": 1773962996187,
   "player": {
-    "lv": 717,
-    "exp": 7036,
-    "maxExp": 27511,
-    "sp": 181,
-    "ap": 6,
-    "baseAtk": 15,
+    "lv": 735,
+    "exp": 2329,
+    "maxExp": 28863,
+    "sp": 25,
+    "ap": 10,
+    "baseAtk": 39,
     "baseDef": 22,
-    "mpR": 6.8870000000000005,
-    "stR": 2.23,
-    "hp": 2995,
-    "mhp": 2995,
-    "mp": 1123,
-    "mmp": 1123,
-    "st": 758.9603250000002,
-    "mst": 789,
-    "speed": 7.790560000000001,
-    "shield": 1971,
-    "mshield": 1971
+    "mpR": 6.909000000000001,
+    "stR": 2.641,
+    "hp": 2660.948067749972,
+    "mhp": 3111,
+    "mp": 855.9045561249917,
+    "mmp": 1129,
+    "st": 229.1845681874885,
+    "mst": 995,
+    "speed": 9.13376,
+    "shield": 0,
+    "mshield": 1976
   },
   "inv": {
     "bag": [
@@ -15312,7 +15312,7 @@
   },
   "stats": {
     "str": 100,
-    "dex": 100,
+    "dex": 300,
     "int": 100,
     "vit": 100,
     "lck": 0
@@ -15339,7 +15339,7 @@
     },
     {
       "type": "mp",
-      "count": 4
+      "count": 3627
     },
     {
       "type": null,
@@ -15352,8 +15352,8 @@
   ],
   "game": {
     "stage": 13,
-    "kills": 194314,
-    "mats": 22515950
+    "kills": 205082,
+    "mats": 27545727
   },
   "bagMax": 300,
   "hellCleared": [
@@ -15466,20 +15466,20 @@
   },
   "fuseProfSec": {},
   "cardProf": {
-    "bladeFuse": 13919.883333296842,
-    "plagueFuse": 13919.883333296842,
-    "whirlDet": 4006.8500000163704,
-    "slamStorm": 4006.8500000163704,
-    "stormBeam": 5128.0500000027205,
-    "shieldFuse": 198,
-    "iceMortar": 95,
-    "boneStorm": 238,
-    "elecRepent": 356,
-    "dimBreach": 400,
-    "dimSlam": 614,
-    "dimThunder": 631,
-    "holyFuse": 23,
-    "holyIce": 29,
+    "bladeFuse": 15049.949999957731,
+    "plagueFuse": 15049.949999957731,
+    "whirlDet": 4522.9500000123635,
+    "slamStorm": 4522.9500000123635,
+    "stormBeam": 5644.149999996855,
+    "shieldFuse": 227,
+    "iceMortar": 104,
+    "boneStorm": 270,
+    "elecRepent": 404,
+    "dimBreach": 421,
+    "dimSlam": 646,
+    "dimThunder": 663,
+    "holyFuse": 25,
+    "holyIce": 31,
     "sixFuse": 1056.8999999999087,
     "elemFuse": 1121.1999999998775
   },
