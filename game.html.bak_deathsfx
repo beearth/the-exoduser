@@ -2994,13 +2994,6 @@ const _sampleFiles={
   death_ghoul1:'sfx/death/death_ghoul1.mp3',      // 구울 소 — etype 100
   death_ghoul2:'sfx/death/death_ghoul2.mp3',      // 구울 중 — etype 101
   death_ghoul3:'sfx/death/death_ghoul3.mp3',      // 구울 대 — etype 102
-  die_human3:'sfx/death/die_human3.mp3',          // 인간형 변형3
-  death_heavy2:'sfx/death/death_heavy2.mp3',      // 짐승 변형2
-  death_heavy3:'sfx/death/death_heavy3.mp3',      // 짐승 변형3
-  death_armor2:'sfx/death/death_armor2.mp3',      // 갑옷 변형2
-  death_armor3:'sfx/death/death_armor3.mp3',      // 갑옷 변형3
-  death_flesh2:'sfx/death/death_flesh2.mp3',      // 살덩이 변형2
-  death_insect2:'sfx/death/death_insect2.mp3',    // 벌레 변형2
   // q_parry/ — 보호막
   shield_activate:'sfx/q_parry/q_start.mp3',
   shield_end:'sfx/q_parry/q_end.mp3',
@@ -9032,39 +9025,46 @@ function _fireballExplode(p){
 // ═══ [S11] 사망 이펙트 (deathFX) ═══
 // 방사형 스파크 링 + 중심 플래시 + 파편
 // ── etype별 사망 사운드 매핑 (개별 몬스터 유형 기반) ──
-const _HUMANOID_ET=new Set([0,1,2,5,6,8,12,18,20,21,24,31,34,37,44,48,54,60,67,70,71,78,93,94]); // 전사/궁수/사제/연금술사 (24종)
-const _INSECT_ET=new Set([3,13,15,16,17,45,46,53,64,76,80]); // 거미/벌레/떼/날개 (11종)
-const _GHOST_ET=new Set([10,40,47,86,87]); // 그림자/원령/쌍둥이/천사/도플 (5종)
-const _FLESH_ET=new Set([11,19,25,42,50,56,57,62,72,77,82,83,91,96]); // 살덩이/슬라임/자궁/거인/기형 (14종)
-const _BONE_ET=new Set([4,23,52,85]); // 탱크해골/빙결정령/뼈덩이/절망기사 (4종)
-const _BEAST_ET=new Set([14,22,27,30,33,35,36,38,39,43,58,59,61,65,68,73,75]); // 늑대/박쥐/뱀/짐승/키메라 (17종)
-const _MAGIC_ET=new Set([7,9,26,69,79,84,89,92,95,97,98,99]); // 리치/마법사/눈보라/사도/차원 (12종)
-const _ARMOR_ET=new Set([28,29,32,41,46,49,51,55,63,66,74,81,88,90]); // 골렘/기사/갑옷/심판자 (14종)
+const _HUMANOID_ET=new Set([0,1,2,6,8,20,21,24,31,34,36,37,41,44,50,54,55,60,65,67,70,71,74,90,93,94]);
+const _INSECT_ET=new Set([3,11,13,15,16,17,18,19,45,46]); // 거미/벌레/날개류
+const _GHOST_ET=new Set([7,9,26,40,47,48,66,76,78,84,86,88,95,96]); // 유령/원령/마법사/사도
+const _FLESH_ET=new Set([42,50,51,52,53,56,57,58]); // 살덩이/괴물길 기형체
+const _BONE_ET=new Set([4,10,12,14,23,82,83,85]); // 해골/뼈 계열
+const _BEAST_ET=new Set([22,27,30,33,35,38,39,43,63,64,73]); // 늑대/박쥐/사냥개/짐승 → death_heavy 폴백
+const _MAGIC_ET=new Set([25,59,69,79,89,97,98,99]); // 마법/차원/특수 개체
+const _ARMOR_ET=new Set([28,29,32,49,61,62,68,80,81,87,91,92]); // 갑옷/골렘/기사/중장
 function _deathSfxKey(et){
   if(et==null)return 'monster_die1';
   if(et===100)return 'death_ghoul1'; // 구울 소
   if(et===101)return 'death_ghoul2'; // 구울 중
   if(et===102)return 'death_ghoul3'; // 구울 대
-  if(_ARMOR_ET.has(et))return ['death_armor','death_armor2','death_armor3'][Math.random()*3|0];
-  if(_HUMANOID_ET.has(et))return ['die_human1','die_human2','die_human3'][Math.random()*3|0];
-  if(_INSECT_ET.has(et))return Math.random()<.5?'death_insect':'death_insect2';
+  if(_ARMOR_ET.has(et))return 'death_armor';
+  if(_HUMANOID_ET.has(et))return Math.random()<.5?'die_human1':'die_human2';
+  if(_INSECT_ET.has(et))return 'death_insect';
   if(_GHOST_ET.has(et))return 'death_ghost';
-  if(_FLESH_ET.has(et))return Math.random()<.5?'death_flesh':'death_flesh2';
+  if(_FLESH_ET.has(et))return 'death_flesh';
   if(_BONE_ET.has(et))return 'death_bone';
-  if(_BEAST_ET.has(et))return ['death_heavy','death_heavy2','death_heavy3'][Math.random()*3|0];
+  if(_BEAST_ET.has(et))return 'death_heavy';
   if(_MAGIC_ET.has(et))return 'death_magic';
+  if(et>=50)return 'death_demon';
+  if(et>=40)return 'death_heavy';
+  if(et>=20)return 'death_ice';
+  if(et>=10)return 'death_slime';
   return 'monster_die1';
 }
 function deathFX(x,y,r,col,isBoss,noSound,et){
   if(!noSound){
     if(isBoss){playSampleAt('death_boss',.5,_r(.7,.15),x,y)}
-    else if(et>=100&&et<=102){const gk=et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3';playSampleAt(gk,_r(.5,.1),_r(1,.15),x,y)}
+    else if(et>=100&&et<=102){const gk=et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3';playSampleAt(gk,_r(.5,.1),_r(1,.1),x,y)}
+    else if(_INSECT_ET.has(et)){playSampleAt('death_insect',_r(.5,.1),_r(1,.1),x,y)}
+    else if(_GHOST_ET.has(et)){playSampleAt('death_ghost',_r(.5,.1),_r(1,.1),x,y)}
+    else if(_ARMOR_ET.has(et)){playSampleAt('death_armor',_r(.15,.05),_r(1,.1),x,y)}
     else{
       const k=_deathSfxKey(et);
-      const v=_ARMOR_ET.has(et)?.2:(r>=40?.5:.45);
-      playSampleAt(k,_r(v,.1),_r(1,.25),x,y);
-      if(r>=40&&Math.random()<.2)playSampleAt('monster_die1',.5,_r(.8,.2),x,y);
-      if(Math.random()<.12)playSampleAt('death_grunt',.3,_r(1,.2),x,y); // 가끔 사망 신음
+      const v=r>=40?.5:.45;
+      playSampleAt(k,_r(v,.1),_r(1,.1),x,y);
+      if(r>=40&&Math.random()<.2)playSampleAt('monster_die1',.5,_r(.8,.15),x,y);
+      if(Math.random()<.12)playSampleAt('death_grunt',.3,_r(1,.15),x,y); // 가끔 사망 신음
     }
   }
   // 동시 사망 과다 시 파티클 절감
@@ -11441,11 +11441,9 @@ function genFromTemplate(tmpl,si){
   if(_hasTileRLE){
     // ── 에디터 타일 직접 로드 ──
     for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
-    const rle=tmpl.tileRLE;let pos=0;let _dbgFloor=0;
-    for(let i=0;i<rle.length;i+=2){const v=rle[i],cnt=rle[i+1];for(let j=0;j<cnt;j++){const y=~~(pos/mw),x=pos%mw;if(y<mh&&x<mw){map[y][x]=v;if(v===0)_dbgFloor++}pos++}}
+    const rle=tmpl.tileRLE;let pos=0;
+    for(let i=0;i<rle.length;i+=2){const v=rle[i],cnt=rle[i+1];for(let j=0;j<cnt;j++){const y=~~(pos/mw),x=pos%mw;if(y<mh&&x<mw)map[y][x]=v;pos++}}
     for(const rd of tmpl.rooms){const cx=rd.cx,cy=rd.cy,rx=rd.rx||8,ry=rd.ry||rx;rooms.push({x:cx-rx,y:cy-ry,w:rx*2,h:ry*2,cx,cy,cleared:false,type:rd.type||'combat'});roomMap[rd.id]=rooms.length-1}
-    console.log('[MAP] tileRLE 로드: '+mw+'x'+mh+', 바닥='+_dbgFloor+'/'+pos+', rooms='+rooms.length+', start='+rooms[0].cx+','+rooms[0].cy+', spawnHoles='+(tmpl.spawnHoles?tmpl.spawnHoles.length:0));
-    console.log('[MAP] 시작점 타일: map['+rooms[0].cy+']['+rooms[0].cx+']='+map[rooms[0].cy][rooms[0].cx]);
   } else {
     // ── 기존 카빙 방식 ──
     for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
@@ -11585,8 +11583,6 @@ function genFromTemplate(tmpl,si){
   G.bossGate=_gateTiles;G.bossGateOpen=false;G.bossSealed=false;
   G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
   G.spawnHoles=spawnHoles;
-  console.log('[MAP] 완료: mw='+mw+' mh='+mh+' rooms='+rooms.length+' spawnHoles='+spawnHoles.length+' bossRm='+(bossRm?'있음':'없음')+' gates='+_gateTiles.length);
-  if(spawnHoles.length>0)console.log('[MAP] 첫소환굴: x='+spawnHoles[0].x+' y='+spawnHoles[0].y+' size='+spawnHoles[0].size);
 }
 
 // ═══ 보스 아레나 — 완전 별도 공간 생성 ═══
@@ -11888,7 +11884,7 @@ _buildAtlasE(); // 신규 적 아틀라스 (가변프레임 × 7팔레트)
 _buildAtlasB(); // 신규 보스 아틀라스 (27프레임 × 7팔레트)
 
 // ═══ 소환굴 등급 ═══
-const SPAWN_HOLE={name:'소환굴',col:'#aa4444',cnt:{S:50,M:100,L:200}};
+const SPAWN_HOLE={name:'소환굴',col:'#aa4444',cnt:10};
 
 // ═══ 엘리트/모디파이어 시스템 ═══
 const ELITE_TIERS=[
@@ -12322,7 +12318,7 @@ function initStage(si){
   G.rooms.forEach((room,ri)=>spawnRoomEns(ri));
   spawnCorridorEns(si);
   // ── 시작방 안전지대: 플레이어 주변 200px 이내 몹 제거 ──
-  const _safeR=200;const _safeR2=_safeR*_safeR;
+  const _safeR=500;const _safeR2=_safeR*_safeR;
   for(let _ei=ens.length-1;_ei>=0;_ei--){const _e=ens[_ei];if((_e.x-P.x)*(_e.x-P.x)+(_e.y-P.y)*(_e.y-P.y)<_safeR2)ens.splice(_ei,1)}
   // 맵 전체 최소 밀도 보장 (80마리 미만이면 보충)
   {const _minFill=80;
@@ -14778,9 +14774,9 @@ function update(){
     // 신성한 감옥 fireZone 범위 내 → 즉시 제거
     if(G._fireZones){let _hpBlocked=false;for(let _fi=0;_fi<G._fireZones.length;_fi++){const _fz=G._fireZones[_fi];if(_fz.type==='holyPrison'&&dst(h.x,h.y,_fz.x,_fz.y)<_fz.r){addTxt(h.x,h.y-20,'✟ 신성 차단!','#ffdd88',40);G.spawnHoles.splice(hi,1);_hpBlocked=true;break}}if(_hpBlocked)continue}
     const _hd2=dst2(P.x,P.y,h.x,h.y);
-    // 600px 이내 접근 시 트리거 시작
+    // 2000px 이내 접근 시 트리거 시작
     if(!h._triggered){
-      if(_hd2<360000)h._triggered=true; // 600^2
+      if(_hd2<4000000)h._triggered=true; // 2000^2
       continue;
     }
     // 트리거 후 연출 타이머 (1.5초 동안 소환굴 빛남)
@@ -14788,8 +14784,7 @@ function update(){
     if(h._spawnDelay>0){h._spawnDelay-=sp;continue}
     // 몹 스폰
     const _hSi=G.stage;
-    const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';
-    const _hCnt=SPAWN_HOLE.cnt[_hType]||50;
+    const _hCnt=SPAWN_HOLE.cnt;
     for(let _hj=0;_hj<_hCnt;_hj++){
       const _ha=Math.PI*2*Math.random(),_hr=80+Math.random()*200+h.size*120;
       const ne=mkEn(h.x+Math.cos(_ha)*_hr,h.y+Math.sin(_ha)*_hr,_hSi,rollEtype(_hSi),false,undefined,h.room);
@@ -24816,7 +24811,6 @@ function draw(){
       X.fillText(_stg2.kr,_cw/2,_ch*.64);
       X.textAlign='left';X.textBaseline='alphabetic';
     }
-
   // ═══ 균열 렌더링 (시각효과 제거) ═══
   // ═══ 소환굴 렌더링 (vfx_void_black 스프라이트) ═══
   {const _shVfx=_VFX_SHEETS['void_black'];
@@ -24847,7 +24841,8 @@ function draw(){
     X.globalAlpha=1;
   }}
 
-  X.globalAlpha=1;X.restore();
+    X.globalAlpha=1;X.restore();
+  }
 
   // ═══ 보스 아레나 동적 FX (보스 생존 시만) ═══
   if(G._bossArena&&G.bossAlive&&G.rooms[0]){
@@ -30402,9 +30397,9 @@ function drawMM(){if(!G.on||!G.map)return;
     for(let _shi=0;_shi<G.spawnHoles.length;_shi++){const sh=G.spawnHoles[_shi];
       const sx=(sh.x/T)*sc,sy=(sh.y/T)*sc;
       if(sx<0||sx>mapPxW||sy<0||sy>mapPxH)continue;
-      const _shR=3+sh.size*3;
-      mx.fillStyle='#cc44ff';mx.globalAlpha=1;mx.beginPath();mx.arc(sx,sy,_shR,0,Math.PI*2);mx.fill();
-      mx.strokeStyle='#ff88ff';mx.lineWidth=1;mx.stroke();
+      const _shR=1.5+sh.size*1.5;
+      mx.fillStyle=SPAWN_HOLE.col;mx.globalAlpha=.85;mx.beginPath();mx.arc(sx,sy,_shR,0,Math.PI*2);mx.fill();
+      mx.strokeStyle='#000';mx.lineWidth=.5;mx.stroke();mx.globalAlpha=1;
     }
     _mmCacheStage=G.stage;_mmDirty=0;
     _mmOx=~~((mmW-mapPxW)/2);_mmOy=~~((mmH-mapPxH)/2);_mmSc=sc;

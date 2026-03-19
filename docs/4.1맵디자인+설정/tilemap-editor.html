@@ -143,9 +143,6 @@ const OBJ_DEFS=[
   {id:'trap',name:'함정',icon:'⚡',color:'#ffcc00',cat:'오브젝트'},
   {id:'altar',name:'제단',icon:'⛩️',color:'#e040fb',cat:'오브젝트'},
   {id:'forge',name:'대장간',icon:'🔨',color:'#ff6600',cat:'오브젝트'},
-  {id:'spawn_g0',name:'스폰-일반',icon:'👾',color:'#88ff88',cat:'스폰'},
-  {id:'spawn_g1',name:'스폰-강화',icon:'👹',color:'#ffaa00',cat:'스폰'},
-  {id:'spawn_g2',name:'스폰-엘리트',icon:'🔱',color:'#ff4400',cat:'스폰'},
   {id:'hole_s',name:'소환굴(소)',icon:'🕳️',color:'#cc4444',cat:'소환굴'},
   {id:'hole_m',name:'소환굴(중)',icon:'🕳️',color:'#cc6600',cat:'소환굴'},
   {id:'hole_l',name:'소환굴(대)',icon:'🕳️',color:'#cc0000',cat:'소환굴'},
@@ -2623,10 +2620,16 @@ function draw(){
       if(sp.type==='exit'){X.fillStyle='rgba(0,255,100,0.4)';X.font='8px monospace';X.fillText('EXIT',sp.x*T,sp.y*T+T*2)}
     }}
   if(showObj){for(const o of m.objs){const od=OBJ_DEFS.find(d=>d.id===o.id);if(!od)continue;
-    const px=o.x*T,py=o.y*T,sz=T*2.5;
+    const px=o.x*T,py=o.y*T;
+    // 소환굴: 실제 게임 크기 반영 (게임T=40 → 에디터T=8, 비율=0.2)
+    let sz=T*2.5;
+    if(o.id==='hole_s')sz=T*5.25;   // 420px/40*T/2 = 10.5타일 반지름의 절반
+    else if(o.id==='hole_m')sz=T*6.25; // 500px/40*T/2
+    else if(o.id==='hole_l')sz=T*7.75; // 620px/40*T/2
     X.fillStyle=od.color+'55';X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.fill();
-    X.strokeStyle=od.color;X.lineWidth=1;X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.stroke();
-    X.font=`${sz*1.2}px serif`;X.textAlign='center';X.textBaseline='middle';X.fillStyle='#fff';X.fillText(od.icon,px,py+1)}}
+    X.strokeStyle=od.color;X.lineWidth=o.id&&o.id.startsWith('hole_')?2:1;X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.stroke();
+    const fsz=o.id&&o.id.startsWith('hole_')?sz*0.4:sz*1.2;
+    X.font=`${fsz}px serif`;X.textAlign='center';X.textBaseline='middle';X.fillStyle='#fff';X.fillText(od.icon,px,py+1)}}
   if(hoverTX>=0&&hoverTX<m.mw&&hoverTY>=0&&hoverTY<m.mh){
     const hc=HELLS[STAGES[currentStage].hell].color+'44';
     if(selectedObj){X.strokeStyle='#ff880066';X.lineWidth=2;X.beginPath();X.arc(hoverTX*T,hoverTY*T,T*3,0,Math.PI*2);X.stroke()}
@@ -3630,9 +3633,24 @@ function exportAsFixedMap(){
       const m=mapStore[i];
       const fm=JSON.parse(JSON.stringify(FIXED_MAPS[i])); // deep copy
       if(m&&m.objs){
+        // 소환굴 추출
         const holes=m.objs.filter(o=>o.id==='hole_s'||o.id==='hole_m'||o.id==='hole_l');
         if(holes.length>0){
           fm.spawnHoles=holes.map(h=>({x:h.x,y:h.y,type:h.id==='hole_s'?'S':h.id==='hole_m'?'M':'L'}));
+        }
+        // 시작점 오브젝트 → rooms의 start 방 좌표 동기화
+        const startObj=m.objs.find(o=>o.id==='player_start');
+        if(startObj){
+          const sr=fm.rooms.find(r=>r.type==='start');
+          if(sr){sr.cx=startObj.x;sr.cy=startObj.y}
+          else{fm.rooms.unshift({id:'s',type:'start',cx:startObj.x,cy:startObj.y,shape:'ellipse',rx:8,ry:6})}
+        }
+        // 보스 오브젝트 → rooms의 boss 방 생성/동기화
+        const bossObj=m.objs.find(o=>o.id==='boss_pos');
+        if(bossObj){
+          const br=fm.rooms.find(r=>r.type==='boss');
+          if(br){br.cx=bossObj.x;br.cy=bossObj.y}
+          else{fm.rooms.push({id:'b',type:'boss',cx:bossObj.x,cy:bossObj.y,shape:'circle',rx:15,pillars:[{dx:-7,dy:-5,w:3,h:3},{dx:5,dy:-5,w:3,h:3},{dx:-7,dy:5,w:3,h:3},{dx:5,dy:5,w:3,h:3}]})}
         }
       }
       // 타일 그리드 RLE 포함 (에디터 grid → 게임 map 변환: 1=바닥→0, 나머지→1)
