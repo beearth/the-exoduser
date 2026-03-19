@@ -1,24 +1,24 @@
 {
-  "ts": 1773909407350,
+  "ts": 1773916202120,
   "player": {
     "lv": 626,
     "exp": 15661,
     "maxExp": 21173,
-    "sp": 205,
+    "sp": 203,
     "ap": 24,
     "baseAtk": 15,
     "baseDef": 14,
-    "mpR": 6.377,
-    "stR": 1.995,
-    "hp": 2654,
-    "mhp": 2654,
-    "mp": 1036,
-    "mmp": 1036,
-    "st": 652,
-    "mst": 652,
+    "mpR": 6.385,
+    "stR": 1.999,
+    "hp": 2660,
+    "mhp": 2660,
+    "mp": 1038,
+    "mmp": 1038,
+    "st": 654,
+    "mst": 654,
     "speed": 7.45476,
-    "shield": 1803,
-    "mshield": 1803
+    "shield": 1805,
+    "mshield": 1805
   },
   "inv": {
     "bag": [
@@ -6656,12 +6656,12 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 551
+      "type": null,
+      "count": 0
     },
     {
-      "type": "mp",
-      "count": 550
+      "type": null,
+      "count": 0
     },
     {
       "type": null,
@@ -6783,11 +6783,11 @@
   },
   "fuseProfSec": {},
   "cardProf": {
-    "bladeFuse": 1092.3499999997593,
-    "plagueFuse": 1092.3499999997593,
-    "whirlDet": 387.7999999999762,
-    "slamStorm": 387.7999999999762,
-    "stormBeam": 387.7999999999762,
+    "bladeFuse": 1126.9833333330657,
+    "plagueFuse": 1126.9833333330657,
+    "whirlDet": 391.2499999999758,
+    "slamStorm": 391.2499999999758,
+    "stormBeam": 391.2499999999758,
     "shieldFuse": 3,
     "iceMortar": 12,
     "boneStorm": 18,
@@ -6809,7 +6809,7 @@
   "skillSlots": [
     "maliceStorm",
     "maliceHunt",
-    "iceStorm",
+    null,
     null,
     "maliceMortar",
     "holyDome"
