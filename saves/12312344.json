@@ -1,24 +1,24 @@
 {
-  "ts": 1773879787388,
+  "ts": 1773889805172,
   "player": {
-    "lv": 589,
-    "exp": 8731,
-    "maxExp": 18833,
-    "sp": 127,
-    "ap": 16,
+    "lv": 594,
+    "exp": 8768,
+    "maxExp": 19141,
+    "sp": 261,
+    "ap": 18,
     "baseAtk": 15,
     "baseDef": 14,
-    "mpR": 6.311,
-    "stR": 1.962,
-    "hp": 2608,
-    "mhp": 2608,
-    "mp": 1019,
-    "mmp": 1019,
-    "st": 635,
-    "mst": 635,
+    "mpR": 6.317,
+    "stR": 1.9649999999999999,
+    "hp": 2523.086147437505,
+    "mhp": 2612,
+    "mp": 563.4909679999887,
+    "mmp": 1021,
+    "st": 51.00459656247601,
+    "mst": 637,
     "speed": 7.45476,
-    "shield": 1787,
-    "mshield": 1787
+    "shield": 687,
+    "mshield": 1788
   },
   "inv": {
     "bag": [
@@ -9027,6 +9027,106 @@
         "_gx": 4,
         "_gy": 65,
         "_pickT": 1773879337482
+      },
+      {
+        "id": 1773889375000.7698,
+        "slot": "belt",
+        "el": 4,
+        "rarity": 4,
+        "tier": 2,
+        "name": "뇌전 벨트",
+        "emoji": "🪢",
+        "def": 11,
+        "bonusSt": 21,
+        "potCd": 0.236,
+        "bonusHp": 25,
+        "bInt": 37,
+        "bStr": 37,
+        "bDex": 28,
+        "affixes": [
+          {
+            "id": "poisonRes",
+            "tier": 0,
+            "value": 0.1465
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 0,
+            "value": 0.1006
+          },
+          {
+            "id": "iceRes",
+            "tier": 0,
+            "value": 0.1444
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 0,
+            "value": 34
+          }
+        ],
+        "_implicitStat": "_iBeltPot",
+        "_implicitVal": 4.27,
+        "_implicitKo": "물약 쿨다운 -X%",
+        "legendarySpecial": {
+          "ko": "물약 사용 시 5초간 피해 +15%",
+          "stat": "_lBeltBuff",
+          "val": 0.15
+        },
+        "reqLv": 200,
+        "itemLv": 300,
+        "_gx": 6,
+        "_gy": 65,
+        "_pickT": 1773889375020
+      },
+      {
+        "id": 1773889460326.5366,
+        "slot": "necklace",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "흑요석 목걸이",
+        "emoji": "📿",
+        "def": 6,
+        "eDef": 11,
+        "bStr": 36,
+        "bInt": 38,
+        "bDex": 37,
+        "affixes": [
+          {
+            "id": "fireRes",
+            "tier": 0,
+            "value": 0.1215
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 1,
+            "value": 48
+          },
+          {
+            "id": "expBonus",
+            "tier": 0,
+            "value": 0.1248
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 1,
+            "value": 0.1991
+          }
+        ],
+        "_implicitStat": "_iMaxHPPct",
+        "_implicitVal": 11.76,
+        "_implicitKo": "최대 HP +X%",
+        "legendarySpecial": {
+          "ko": "HP 50% 이하 시 전 스킬 쿨다운 -30%",
+          "stat": "_lNeckLow",
+          "val": 0.3
+        },
+        "reqLv": 200,
+        "itemLv": 300,
+        "_gx": 4,
+        "_gy": 64,
+        "_pickT": 1773889460353
       }
     ],
     "equipped": {
@@ -9709,12 +9809,12 @@
       "count": 1
     },
     {
-      "type": "mp",
-      "count": 383
+      "type": "st",
+      "count": 354
     },
     {
-      "type": "st",
-      "count": 408
+      "type": null,
+      "count": 0
     },
     {
       "type": null,
@@ -9723,8 +9823,8 @@
   ],
   "game": {
     "stage": 11,
-    "kills": 138890,
-    "mats": 6626234
+    "kills": 141124,
+    "mats": 6922577
   },
   "bagMax": 300,
   "hellCleared": [
@@ -9748,20 +9848,20 @@
   "skills": {
     "spikeTrap": 2,
     "holyDome": 10,
-    "whirlwind": 10,
+    "whirlwind": 1,
     "gasCloud": 1,
     "maliceSwipe": 10,
-    "detonate": 10,
+    "detonate": 1,
     "blastShot": 0,
-    "fanShot": 10,
-    "omniBeam": 10,
+    "fanShot": 1,
+    "omniBeam": 1,
     "plagueBurst": 10,
     "maliceStorm": 1,
     "ghostWalk": 10,
     "chargeBoost": 10,
     "holyBlast": 0,
-    "elemMissile": 10,
-    "giantSlam": 10,
+    "elemMissile": 1,
+    "giantSlam": 1,
     "bladeDash": 10,
     "magicBlink": 10,
     "bladeShot": 0,
@@ -9790,13 +9890,13 @@
     "dimThunder": true,
     "iceMortar": true,
     "shieldFuse": true,
-    "whirlDet": true,
-    "sixFuse": true,
-    "slamStorm": true,
-    "elemFuse": true,
-    "stormBeam": true,
     "boneStorm": true,
-    "elecRepent": true
+    "elecRepent": true,
+    "whirlDet": true,
+    "slamStorm": true,
+    "sixFuse": true,
+    "elemFuse": true,
+    "stormBeam": true
   },
   "skProf": {
     "holyDome": 15,
@@ -9841,9 +9941,9 @@
   "activeQSk": "parry",
   "activeCtSk": "ghostWalk",
   "skillSlots": [
-    null,
-    "maliceHunt",
     "maliceStorm",
+    "maliceHunt",
+    null,
     "iceStorm",
     "maliceMortar",
     "holyDome"
