@@ -5015,36 +5015,6 @@ let P=null,ens=[],projs=[],pProjs=[],worldItems=[];// worldItems = items on grou
 const _PROJ_POOL=600;
 const _projFree=[];
 let _projNext=0;
-// ═══ 초승달 검기 풀 ═══
-const _CRES_MAX=16;
-const _crescents=[];
-for(let _ci=0;_ci<_CRES_MAX;_ci++){
-  _crescents.push({active:false,x:0,y:0,vx:0,vy:0,
-    ang:0,life:0,ml:0,dmg:0,el:0,r:36,step:1,
-    trail:[{x:0,y:0},{x:0,y:0},{x:0,y:0},{x:0,y:0},{x:0,y:0}],_th:0});
-}
-let _cresStep=0;
-let _cresCd=0;
-let _cresComboT=0;
-function spawnCrescent(x,y,ang,dmg,el,step){
-  for(let _ci=0;_ci<_CRES_MAX;_ci++){
-    const c=_crescents[_ci];
-    if(c.active)continue;
-    c.active=true;
-    c.x=x;c.y=y;
-    c.ang=ang;
-    const spd=step===3?7:9;
-    c.vx=Math.cos(ang)*spd;
-    c.vy=Math.sin(ang)*spd;
-    c.life=step===3?45:30;c.ml=c.life;
-    c.dmg=dmg;c.el=el||0;
-    c.r=step===3?52:36;
-    c.step=step;
-    for(let t=0;t<5;t++){c.trail[t].x=x;c.trail[t].y=y;}
-    c._th=0;
-    return;
-  }
-}
 function _mkProj(){return{x:0,y:0,vx:0,vy:0,dmg:0,el:0,friendly:false,life:0,ml:0,col:'',sz:1,r:4,dist:0,
   redBean:false,blackBean:false,bwBean:false,gbBean:false,homing:false,blueBean:false,
   mine:false,bomb:false,trap:false,web:false,dimRift:false,poisonZone:false,

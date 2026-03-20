@@ -1,24 +1,24 @@
 {
-  "ts": 1774009800623,
+  "ts": 1774013403349,
   "player": {
-    "lv": 780,
-    "exp": 17264,
-    "maxExp": 32385,
-    "sp": 111,
-    "ap": 10,
+    "lv": 816,
+    "exp": 25688,
+    "maxExp": 35347,
+    "sp": 183,
+    "ap": 16,
     "baseAtk": 15,
     "baseDef": 22,
-    "mpR": 2.4275,
-    "stR": 2.2525,
-    "hp": 2938.5076395625433,
-    "mhp": 3207,
-    "mp": 1151,
-    "mmp": 1151,
-    "st": 685.6270876500117,
-    "mst": 1024,
+    "mpR": 2.443,
+    "stR": 2.2680000000000002,
+    "hp": 3252,
+    "mhp": 3252,
+    "mp": 463.08333096873616,
+    "mmp": 1167,
+    "st": 959.5930100000097,
+    "mst": 1040,
     "speed": 9.247931999999999,
-    "shield": 1923,
-    "mshield": 1996
+    "shield": 2011,
+    "mshield": 2011
   },
   "inv": {
     "bag": [
@@ -15338,8 +15338,8 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 2492
+      "type": "mp",
+      "count": 2273
     },
     {
       "type": null,
@@ -15352,8 +15352,8 @@
   ],
   "game": {
     "stage": 13,
-    "kills": 236196,
-    "mats": 34744866
+    "kills": 263401,
+    "mats": 40307535
   },
   "bagMax": 300,
   "hellCleared": [
@@ -15441,7 +15441,7 @@
     "omniBeam": 15,
     "maliceStorm": 100,
     "plagueBurst": 15,
-    "ghostWalk": 23,
+    "ghostWalk": 24,
     "holyBlast": 15,
     "giantSlam": 15,
     "bladeDash": 100,
@@ -15451,7 +15451,7 @@
     "maliceHunt": 100,
     "guardian": 100,
     "boneWall": 15,
-    "chainSlam": 75,
+    "chainSlam": 100,
     "shieldThrow": 100,
     "holyPrison": 15,
     "grenadeShot": 15,
@@ -15466,20 +15466,20 @@
   },
   "fuseProfSec": {},
   "cardProf": {
-    "bladeFuse": 23497.799999912666,
-    "plagueFuse": 23497.799999912666,
-    "whirlDet": 6743.749999993798,
-    "slamStorm": 6743.749999993798,
-    "stormBeam": 11164.94999997829,
-    "shieldFuse": 20775,
-    "iceMortar": 839,
-    "boneStorm": 2158,
-    "elecRepent": 3206,
-    "dimBreach": 1618,
-    "dimSlam": 2641,
-    "dimThunder": 2721,
-    "holyFuse": 449,
-    "holyIce": 455,
+    "bladeFuse": 30011.983333211072,
+    "plagueFuse": 30011.983333211072,
+    "whirlDet": 8152.099999988191,
+    "slamStorm": 8152.099999988191,
+    "stormBeam": 12573.299999972682,
+    "shieldFuse": 63375,
+    "iceMortar": 1079,
+    "boneStorm": 2518,
+    "elecRepent": 3746,
+    "dimBreach": 2518,
+    "dimSlam": 4081,
+    "dimThunder": 4281,
+    "holyFuse": 929,
+    "holyIce": 935,
     "sixFuse": 1056.8999999999087,
     "elemFuse": 4421.199999999877
   },
