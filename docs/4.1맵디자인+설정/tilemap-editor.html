@@ -143,7 +143,30 @@ const OBJ_DEFS=[
   {id:'boss_gate',name:'보스문',icon:'🚧',color:'#aa00ff',cat:'보스방'},
   {id:'boss_exit',name:'보스출구',icon:'🚪',color:'#00ff66',cat:'보스방'},
   {id:'pillar',name:'기둥',icon:'🏛️',color:'#888888',cat:'보스방'},
+  // ── CH1 썩은숲 ──
+  {id:'dead_tree',     name:'고목',       icon:'🌲', color:'#5d4037', cat:'CH1-썩은숲',img:'../../assets/objects/tree_dead_01.png',sz:64,col:1},
+  {id:'dead_tree_02',  name:'고목2',      icon:'🌲', color:'#5d4037', cat:'CH1-썩은숲',img:'../../assets/objects/tree_dead_02.png',sz:64,col:1},
+  {id:'dead_tree_03',  name:'고목3',      icon:'🌲', color:'#5d4037', cat:'CH1-썩은숲',img:'../../assets/objects/tree_dead_03.png',sz:64,col:1},
+  {id:'skull_pile',    name:'해골더미',   icon:'💀', color:'#9e9e9e', cat:'CH1-썩은숲',img:'../../assets/objects/deco_bones_04.png',sz:32},
+  {id:'bone_rocks',    name:'뼈바위',     icon:'🪨', color:'#666677', cat:'CH1-썩은숲',img:'../../assets/objects/deco_bones_03.png',sz:32},
+  {id:'mushroom_glow', name:'발광버섯',   icon:'🍄', color:'#ff7043', cat:'CH1-썩은숲',img:'../../assets/objects/mushroom_glow_01.png',sz:32,light:1},
+  {id:'mushroom_glow_02',name:'발광버섯2',icon:'🍄', color:'#ff7043', cat:'CH1-썩은숲',img:'../../assets/objects/mushroom_glow_02.png',sz:32,light:1},
+  {id:'mushroom_glow_03',name:'발광버섯3',icon:'🍄', color:'#ff7043', cat:'CH1-썩은숲',img:'../../assets/objects/mushroom_glow_03.png',sz:32,light:1},
+  {id:'poison_pool',   name:'독웅덩이',   icon:'☣️', color:'#76ff03', cat:'CH1-썩은숲'},
+  // ── CH3 얼음굴 ──
+  {id:'ice_pillar',    name:'얼음기둥',   icon:'🧊', color:'#4fc3f7', cat:'CH3-얼음굴',img:'../../assets/objects/ch3_ice_pillar_sheet.png',sz:64,col:1,sheet:{c:3,r:3}},
+  {id:'ice_deco',      name:'얼음데코',   icon:'❄️', color:'#b3e5fc', cat:'CH3-얼음굴',img:'../../assets/objects/ch3_ice_deco_sheet.png',sz:32,sheet:{c:3,r:3}},
+  {id:'ice_floor',     name:'얼음바닥',   icon:'🧊', color:'#1a3a5c', cat:'CH3-얼음굴',img:'../../assets/tiles/ch3_floor_sheet.png',sz:40,sheet:{c:3,r:3}},
+  {id:'frozen_bones',  name:'냉동뼈',     icon:'🦴', color:'#90caf9', cat:'CH3-얼음굴'},
+  // ── CH4 화염 ──
+  {id:'lava_crack',    name:'용암균열',   icon:'🌋', color:'#ff3d00', cat:'CH4-화염',img:'../../assets/objects/ch4_lava_crack_sheet.png',sz:40,sheet:{c:3,r:3}},
+  {id:'fire_pillar',   name:'불기둥',     icon:'🔥', color:'#ff6d00', cat:'CH4-화염',img:'../../assets/objects/ch4_fire_pillar_sheet.png',sz:64,col:1,sheet:{c:3,r:3}},
+  // ── CH7 지옥성 ──
+  {id:'rune_mark',     name:'차원균열',   icon:'🔮', color:'#aa00ff', cat:'CH7-지옥성',img:'../../assets/objects/ch7_rune_mark_sheet.png',sz:40,sheet:{c:3,r:3}},
 ];
+// ── 오브젝트 이미지 프리로드 ──
+const _objImgs={};
+OBJ_DEFS.forEach(d=>{if(d.img){const im=new Image();im.src=d.img;_objImgs[d.id]=im}});
 // ══ 카빙 함수 ══
 function _tCarveCircle(map,mw,mh,cx,cy,r){
   const r2=r*r;
@@ -2460,7 +2483,9 @@ function buildObjPalette(){
     if(d.cat!==lc){lc=d.cat;const h=document.createElement('div');h.style.cssText='color:#555;font-size:9px;margin-top:3px';h.textContent=lc;pal.appendChild(h)}
     const b=document.createElement('div');b.className='obj-btn';b.dataset.id=d.id;b.title=d.name;b.style.background=d.color+'22';
     b.onclick=()=>{selectedObj=d.id;document.querySelectorAll('.obj-btn').forEach(x=>x.classList.toggle('active',x.dataset.id===d.id));for(let i=0;i<=3;i++)document.getElementById('th'+i).classList.remove('active')};
-    b.innerHTML=`<span style="font-size:18px">${d.icon}</span><div class="label">${d.name}</div>`;pal.appendChild(b);
+    if(d.img){b.innerHTML=`<img src="${d.img}" style="width:36px;height:36px;image-rendering:pixelated"><div class="label">${d.name}</div>`}
+    else{b.innerHTML=`<span style="font-size:18px">${d.icon}</span><div class="label">${d.name}</div>`}
+    pal.appendChild(b);
   }
 }
 buildObjPalette();
@@ -2589,10 +2614,24 @@ function draw(){
       if(sp.type==='exit'){X.fillStyle='rgba(0,255,100,0.4)';X.font='8px monospace';X.fillText('EXIT',sp.x*T,sp.y*T+T*2)}
     }}
   if(showObj){for(const o of m.objs){const od=OBJ_DEFS.find(d=>d.id===o.id);if(!od)continue;
-    const px=o.x*T,py=o.y*T,sz=T*2.5;
-    X.fillStyle=od.color+'55';X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.fill();
-    X.strokeStyle=od.color;X.lineWidth=1;X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.stroke();
-    X.font=`${sz*1.2}px serif`;X.textAlign='center';X.textBaseline='middle';X.fillStyle='#fff';X.fillText(od.icon,px,py+1)}}
+    const px=o.x*T,py=o.y*T;
+    const im=_objImgs[od.id];
+    if(im&&im.complete&&im.naturalWidth>0){
+      // 이미지 오브젝트: 실제 PNG 렌더
+      const drawSz=(od.sz||32)/32*T*4;
+      if(od.sheet){const sh=od.sheet,cw=~~(im.naturalWidth/sh.c),ch=~~(im.naturalHeight/sh.r);
+        const si=((~~(o.x*7919+o.y*104729+31))&0x7fffffff)%(sh.c*sh.r);
+        X.drawImage(im,(si%sh.c)*cw,~~(si/sh.c)*ch,cw,ch,px-drawSz/2,py-drawSz/2,drawSz,drawSz);
+      }else X.drawImage(im,px-drawSz/2,py-drawSz/2,drawSz,drawSz);
+      // 발광버섯: 포인트라이트 미리보기
+      if(od.id.startsWith('mushroom_glow')){X.fillStyle='rgba(255,180,80,0.12)';X.beginPath();X.arc(px,py,T*10,0,Math.PI*2);X.fill()}
+    }else{
+      // 기존 이모지 렌더
+      const sz=T*2.5;
+      X.fillStyle=od.color+'55';X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.fill();
+      X.strokeStyle=od.color;X.lineWidth=1;X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.stroke();
+      X.font=`${sz*1.2}px serif`;X.textAlign='center';X.textBaseline='middle';X.fillStyle='#fff';X.fillText(od.icon,px,py+1);
+    }}}
   if(hoverTX>=0&&hoverTX<m.mw&&hoverTY>=0&&hoverTY<m.mh){
     const hc=HELLS[STAGES[currentStage].hell].color+'44';
     if(selectedObj){X.strokeStyle='#ff880066';X.lineWidth=2;X.beginPath();X.arc(hoverTX*T,hoverTY*T,T*3,0,Math.PI*2);X.stroke()}
@@ -3767,11 +3806,4 @@ window.addEventListener('pagehide',()=>{ try{ _saveLiveMapState(); }catch(e){} }
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden'){ try{ _saveLiveMapState(); }catch(e){} } });
 setInterval(()=>{ try{ _saveLiveMapState(); }catch(e){} }, 5000);
 (async()=>{
-  try{ document.getElementById('stats').textContent=`에디터 빌드 ${BUILD_STAMP}`; }catch(e){}
-  const ok = await loadEditorSettings(false);
-  if(!ok){ buildChapterTabs(); buildStageListOrig(); loadStage(0); draw(); }
-})();
-
-</script>
-</body></html>
-
+  try{ document.getElementById('sta
