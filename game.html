@@ -5202,9 +5202,9 @@ function spawnCrescent(x,y,ang,dmg,el,step){
     const spd=step===3?6:8;
     c.vx=Math.cos(ang)*spd;
     c.vy=Math.sin(ang)*spd;
-    c.life=step===3?20:15;c.ml=c.life;
+    c.life=step===3?40:28;c.ml=c.life;
     c.dmg=dmg;c.el=el||0;
-    c.r=step===3?52:36;
+    c.r=step===3?80:55;
     c.step=step;
     for(let t=0;t<5;t++){c.trail[t].x=x;c.trail[t].y=y;}
     c._th=0;
@@ -5536,7 +5536,7 @@ function renderHitVFX(ctx){
   }
   ctx.globalAlpha=1;ctx.restore();
 }
-function renderCrescents(X,camX,camY){
+function renderCrescents(X){
   const _cImg=_CRES_IMG;
   const _cReady=_cImg.complete&&_cImg.naturalWidth>0;
   for(let _ci=0;_ci<_CRES_MAX;_ci++){
@@ -5544,7 +5544,6 @@ function renderCrescents(X,camX,camY){
     if(!c.active)continue;
     const prog=1-c.life/c.ml;
     const alpha=Math.max(.15,1-prog*1.1);
-    const sx=c.x-camX,sy=c.y-camY;
     const _is3=c.step===3;
     // 트레일 글로우
     for(let t=0;t<5;t++){
@@ -5552,37 +5551,25 @@ function renderCrescents(X,camX,camY){
       X.globalAlpha=((t+1)/5)*0.4*alpha;
       X.fillStyle=_is3?'#ffaa44':'#66bbff';
       X.beginPath();
-      X.arc(tr.x-camX,tr.y-camY,c.r*0.2,0,Math.PI*2);
+      X.arc(tr.x,tr.y,_is3?12:8,0,Math.PI*2);
       X.fill();
     }
     X.save();
-    X.translate(sx,sy);
+    X.translate(c.x,c.y);
     const angOff=c.step===1?0.5:c.step===2?-0.5:0;
     X.rotate(c.ang+angOff);
-    // 스프라이트 렌더 (3x3 그리드 9프레임 애니메이션)
     if(_cReady){
       const cols=3,rows=3,totalF=9;
       const fw=_cImg.naturalWidth/cols,fh=_cImg.naturalHeight/rows;
-      const fi=Math.min(totalF-1,~~(prog*totalF)); // 수명 비례 프레임
+      const fi=Math.min(totalF-1,~~(prog*totalF));
       const fcol=fi%cols,frow=~~(fi/cols);
-      const sz=_is3?c.r*3.2:c.r*2.6;
+      const sz=_is3?220:160;
       X.globalCompositeOperation='lighter';
       X.globalAlpha=alpha;
       X.drawImage(_cImg,fcol*fw,frow*fh,fw,fh,-sz/2,-sz/2,sz,sz);
-      X.globalAlpha=alpha*.4;
+      X.globalAlpha=alpha*.5;
       X.drawImage(_cImg,fcol*fw,frow*fh,fw,fh,-sz/2,-sz/2,sz,sz);
       X.globalCompositeOperation='source-over';
-    }else{
-      // 폴백: 캔버스 호
-      X.globalAlpha=alpha*.95;
-      X.strokeStyle=_is3?'#ffdd88':'#aaddff';
-      X.lineWidth=_is3?7:5;
-      X.shadowColor=_is3?'#ffaa44':'#66bbff';
-      X.shadowBlur=_is3?30:18;
-      X.beginPath();
-      X.arc(0,0,c.r,-0.9,0.9);
-      X.stroke();
-      X.shadowBlur=0;
     }
     X.restore();
     X.globalAlpha=1;
@@ -13632,7 +13619,7 @@ function update(){
     else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15))} // Q: 보호막 (데미지 감소)
     else if(isHeld('weapon')&&P.skills.whirlwind&&P.st>=2){P.s='whirlwind';P.wwAng=0;P.parryT=0;P.parryBank=0;P._wwDetTimer=0;SFX._swIdx=0;SFX.slashSeq();if(_isFused('stormBeam')){P._eStormIdx=0;P._eStormT=0;P._eStormActive=true;playSample(['electric_storm','electric_storm2','electric_storm3','electric_storm4'][~~(Math.random()*4)],.6,_r(1,.1))}if(Math.random()<.45){playSample(['voice_flee','voice_storm_attack'][~~(Math.random()*2)],1,1)}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}_addSkProf('whirlwind')}
     else if(isAct('weapon')&&useStPct('weapon')){P._atkBon=~~(_lastCost*1.5);P.s='wSwing';P.st2=10;P.swProg=0;P.atkArc=P.facing;if(G._pStats)G._pStats._atkC++;if(Math.random()<.5){const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}}
-    else if(P.activeRMBSk==='swordCrescent'&&isJust('shield')&&P.s!=='hurt'&&P.s!=='dead'&&_cresCd<=0){
+    else if(P.activeRMBSk==='swordCrescent'&&P.skills.swordCrescent>=1&&isAct('shield')&&P.s!=='hurt'&&P.s!=='dead'&&_cresCd<=0){
       _cresStep=(_cresStep%3)+1;
       _cresComboT=50;
       _cresCd=_cresStep===3?30:18;
@@ -13640,7 +13627,7 @@ function update(){
       const _angOff=_cresStep===1?0.3:_cresStep===2?-0.3:0;
       const _cDmg=~~(meleeRef()*(_cresStep===3?2.5:1.5)*statStr());
       spawnCrescent(P.x,P.y,_cAng+_angOff,_cDmg,0,_cresStep);
-      P.s='wSwing';P.st2=_cresStep===3?14:9;P.swProg=0;P.atkArc=P.facing;
+      P.s='bowRecover';P.st2=_cresStep===3?14:9;P.atkArc=P.facing;
       if(_cresStep===3){addParts(P.x,P.y,'#aaddff',15);playSample('sword_slash',1,_r(.85,.05));shake(6)}
       else{addParts(P.x,P.y,'#88ccff',6);playSample('sword_slash',.8,_r(1,.1))}
     }
@@ -27493,7 +27480,7 @@ function draw(){
     X.globalAlpha=1;X.restore();
   }
   renderHitVFX(X);
-  renderCrescents(X,G.cam.x,G.cam.y);
+  renderCrescents(X);
   renderMmExpVFX(X);_renderIceOrbVfx(X);
   {const _t0=performance.now();X.font='bold 22px sans-serif';X.textAlign='center';for(let _ti=0;_ti<G.txts.length;_ti++){const t=G.txts[_ti];if(t.life<=0)continue;if(t.x<_vl||t.x>_vr||t.y<_vt||t.y>_vb)continue;const _ta=t.life/t.ml;X.globalAlpha=_ta*.9;X.fillStyle='#000000';X.fillText(t.t,t.x+1,t.y+1);X.fillText(t.t,t.x-1,t.y+1);X.globalAlpha=_ta;X.fillStyle=t.c;X.fillText(t.t,t.x,t.y)}X.globalAlpha=1;if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
   X.restore();
