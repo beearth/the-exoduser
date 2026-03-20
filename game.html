@@ -10115,7 +10115,7 @@ function buildMapCache(){
   }
   _mapStage=G.stage;
   // GL 텍스처 크기 제한 — 맵 캔버스를 청크로 분할
-  const _mmt=(_useGPU||_useGL)?_glMaxTex:99999;
+  const _mmt=_useGPU?4096:(_useGL?_glMaxTex:99999);
   if(_mapCvs.width<=_mmt&&_mapCvs.height<=_mmt){
     _mapChunks=null;_mapCvs._glVer=(_mapCvs._glVer||0)+1;
   }else{
@@ -12028,6 +12028,8 @@ function mkEn(x,y,si,etype,ib,el,room){
   if(mods.includes('M02'))_projCd=~~(_projCd*.75); // M02 공격속도+25%
   if(elite>0)_projCd=~~(_projCd*(elite>=3?.3:elite>=2?.4:.5)); // 정예: 2~3배 빈도
   // ═══ 모든 몬스터 eShield = HP (50:50 이원 방어) ═══
+  // GPU 텍스처 프리핀 (첫 drawImage 스파이크 방지)
+  if((_useGPU||_useGL)&&_ESPRITES[etype]&&_ESPRITES[etype].img&&_ESPRITES[etype].img.complete){try{_getTex(_ESPRITES[etype].img)}catch(e){}}
   return{x,y,r,hp:_hp,mhp:_hp,atk:_atk,baseAtk:_atk,
     speed:spd,baseSpd:spd,el,col:ib?ELC[el]:_rare?_rd.col:(ETYPE_COL[etype]||ELC[el]),alive:true,stunned:0,kb:{x:0,y:0},
     poise:~~(_hp*.5),maxPoise:~~(_hp*.5),poiseR:0,
@@ -30436,8 +30438,8 @@ function drawP(){
 let _mmCache=null,_mmCacheStage=-1,_mmSkip=0,_mmDirty=1;
 let _mmOx=0,_mmOy=0,_mmSc=1;
 function drawMM(){if(!G.on||!G.map)return;
-  // 10프레임에 1번만 갱신 (스테이지 변경/dirty 시 즉시)
-  if(!_mmDirty&&_mmCacheStage===G.stage&&++_mmSkip<10)return;
+  // 20프레임에 1번만 갱신 (스테이지 변경/dirty 시 즉시)
+  if(!_mmDirty&&_mmCacheStage===G.stage&&++_mmSkip<20)return;
   _mmSkip=0;
   const mmW=130,mmPad=4;
   const scX=(mmW-mmPad*2)/G.mw,scY=(mmW-mmPad*2)/G.mh;
