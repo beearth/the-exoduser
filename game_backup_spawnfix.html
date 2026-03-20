@@ -2325,7 +2325,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:true,fog:true,grain:true,autoPotThr:0.99,cursor:0,quality:'high'};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:30,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:true,fog:true,grain:true,autoPotThr:0.99,cursor:0,quality:'high'};
 // ═══ 스킬별 히트스톱 기본 프레임 (OPT.hitStop/100 곱해서 사용) ═══
 const _HS={
   blink:2,charge:2,chargeHit:3,chargeWall:3,finisher:5,galeSlam:5,
@@ -2690,53 +2690,53 @@ function _petOnCharge(){_petChargeUsed=true}
 const BOSS_MOVES=[
   {id:'burst',    idx:0, tele:45,rec:40,canFeint:false,canDelay:0,  range:[0,999], phase:[0,1,2,3,4],combo:['fan','shock','charge'],tags:['aoe','ranged'],    cd:140},
   {id:'fan',      idx:1, tele:25,rec:35,canFeint:false,canDelay:.3, range:[60,300],phase:[0,1,2,3,4],combo:['charge','mine','multiDash'],tags:['ranged','frontal'],cd:100},
-  {id:'charge',   idx:2, tele:40,rec:60,canFeint:true, canDelay:.5, range:[40,400],phase:[0,1,2,3,4],combo:['spin','grab','shock','multiDash'],tags:['gap-close','melee'],cd:100},
+  {id:'charge',   idx:2, tele:40,rec:30,canFeint:true, canDelay:.5, range:[40,400],phase:[0,1,2,3,4],combo:['spin','grab','shock','multiDash'],tags:['gap-close','melee'],cd:100},
   {id:'jump',     idx:3, tele:0, rec:0, canFeint:false,canDelay:0,  range:[80,500],phase:[0,1,2,3,4],combo:['shock','burst','spin'],tags:['gap-close','aoe'],cd:150},
   {id:'laser',    idx:4, tele:40,rec:50,canFeint:false,canDelay:.4, range:[60,400],phase:[1,2,3,4],  combo:['fan','vortex','charge'],tags:['ranged','sustained'],cd:180},
   {id:'shock',    idx:5, tele:35,rec:40,canFeint:false,canDelay:0,  range:[0,180], phase:[0,1,2,3,4],combo:['summon','mine','charge'],tags:['aoe','melee'],   cd:120},
   {id:'summon',   idx:6, tele:45,rec:60,canFeint:false,canDelay:0,  range:[0,999], phase:[1,2,3,4],  combo:['charge','burst'],    tags:['utility'],           cd:300},
   {id:'meteor',   idx:7, tele:40,rec:50,canFeint:false,canDelay:0,  range:[80,500],phase:[1,2,3,4],  combo:['vortex','charge','multiDash'],tags:['aoe','ranged'],cd:220},
-  {id:'grab',     idx:8, tele:60,rec:50,canFeint:true, canDelay:.5, range:[0,150], phase:[0,1,2,3,4],combo:['charge','spin'],     tags:['melee','punish'],    cd:180},
+  {id:'grab',     idx:8, tele:30,rec:50,canFeint:true, canDelay:.5, range:[0,150], phase:[0,1,2,3,4],combo:['charge','spin'],     tags:['melee','punish'],    cd:180},
   {id:'spin',     idx:9, tele:28,rec:40,canFeint:false,canDelay:.3, range:[0,100], phase:[0,1,2,3,4],combo:['burst','fan','multiDash'],tags:['melee','aoe'],  cd:120},
   {id:'mine',     idx:10,tele:25,rec:40,canFeint:false,canDelay:0,  range:[0,999], phase:[1,2,3,4],  combo:['charge','multiDash','vortex'],tags:['utility','zone'],cd:180},
   {id:'vortex',   idx:11,tele:25,rec:50,canFeint:false,canDelay:0,  range:[0,250], phase:[1,2,3,4],  combo:['burst','meteor','charge'],tags:['aoe','cc'],     cd:220},
   {id:'multiDash',idx:12,tele:20,rec:35,canFeint:true, canDelay:.3, range:[30,350],phase:[0,1,2,3,4],combo:['spin','grab','charge'],tags:['gap-close','multi-hit'],cd:120},
   {id:'slashCombo',idx:13,tele:20,rec:25,canFeint:true, canDelay:.3, range:[0,100], phase:[0,1,2,3,4],combo:['slam','sweep','charge'],tags:['melee','multi-hit'],cd:90},
   {id:'slam',      idx:14,tele:35,rec:40,canFeint:false,canDelay:.4, range:[0,140], phase:[0,1,2,3,4],combo:['slashCombo','sweep','shock'],tags:['melee','aoe'],  cd:140},
-  {id:'sweep',     idx:15,tele:25,rec:60,canFeint:false,canDelay:.2, range:[0,120], phase:[0,1,2,3,4],combo:['slashCombo','charge','slam'],tags:['melee','frontal'],cd:100},
-  {id:'teleStrike',idx:16,tele:60,rec:35,canFeint:true, canDelay:.4, range:[60,400],phase:[1,2,3,4],  combo:['slashCombo','sweep','grab'],tags:['gap-close','melee'],cd:160},
+  {id:'sweep',     idx:15,tele:25,rec:30,canFeint:false,canDelay:.2, range:[0,120], phase:[0,1,2,3,4],combo:['slashCombo','charge','slam'],tags:['melee','frontal'],cd:100},
+  {id:'teleStrike',idx:16,tele:30,rec:35,canFeint:true, canDelay:.4, range:[60,400],phase:[1,2,3,4],  combo:['slashCombo','sweep','grab'],tags:['gap-close','melee'],cd:160},
   {id:'beanStorm', idx:17,tele:20,rec:25,canFeint:false,canDelay:0,  range:[0,999], phase:[0,1,2,3,4],combo:['burst','fan','charge'],tags:['ranged','aoe','redbean'],cd:80},
-  {id:'beanRain',  idx:18,tele:60,rec:60,canFeint:false,canDelay:0,  range:[60,400],phase:[1,2,3,4],  combo:['beanStorm','charge','vortex'],tags:['ranged','sustained','redbean'],cd:120},
-  {id:'fanWave',   idx:19,tele:60,rec:40,canFeint:false,canDelay:0,  range:[60,500],phase:[0,1,2,3,4],combo:['charge','fan','slam'],tags:['ranged','frontal','aoe'],cd:160},
+  {id:'beanRain',  idx:18,tele:30,rec:30,canFeint:false,canDelay:0,  range:[60,400],phase:[1,2,3,4],  combo:['beanStorm','charge','vortex'],tags:['ranged','sustained','redbean'],cd:120},
+  {id:'fanWave',   idx:19,tele:30,rec:40,canFeint:false,canDelay:0,  range:[60,500],phase:[0,1,2,3,4],combo:['charge','fan','slam'],tags:['ranged','frontal','aoe'],cd:160},
   {id:'radialLaser',idx:20,tele:35,rec:50,canFeint:false,canDelay:0, range:[0,999],phase:[1,2,3,4],combo:['charge','fan','burst'],tags:['aoe','ranged','sustained'],cd:240},
-  {id:'chaseAoe',idx:21,tele:20,rec:60,canFeint:false,canDelay:0, range:[0,999],phase:[0,1,2,3,4],combo:['charge','multiDash','slam'],tags:['aoe','zone','utility'],cd:180},
-  {id:'elemBall',idx:22,tele:60,rec:35,canFeint:false,canDelay:.3, range:[60,500],phase:[0,1,2,3,4],combo:['charge','fan','burst'],tags:['ranged','frontal'],cd:100},
-  {id:'swordWave',idx:23,tele:25,rec:60,canFeint:true,canDelay:.3, range:[40,350],phase:[0,1,2,3,4],combo:['charge','slashCombo','sweep','teleStrike'],tags:['ranged','frontal','redbean'],cd:120},
-  {id:'judgeCut',idx:24,tele:60,rec:40,canFeint:false,canDelay:0, range:[60,400],phase:[1,2,3,4],combo:['charge','swordWave','teleStrike'],tags:['ranged','zone','delayed'],cd:160},
+  {id:'chaseAoe',idx:21,tele:20,rec:30,canFeint:false,canDelay:0, range:[0,999],phase:[0,1,2,3,4],combo:['charge','multiDash','slam'],tags:['aoe','zone','utility'],cd:180},
+  {id:'elemBall',idx:22,tele:30,rec:35,canFeint:false,canDelay:.3, range:[60,500],phase:[0,1,2,3,4],combo:['charge','fan','burst'],tags:['ranged','frontal'],cd:100},
+  {id:'swordWave',idx:23,tele:25,rec:30,canFeint:true,canDelay:.3, range:[40,350],phase:[0,1,2,3,4],combo:['charge','slashCombo','sweep','teleStrike'],tags:['ranged','frontal','redbean'],cd:120},
+  {id:'judgeCut',idx:24,tele:30,rec:40,canFeint:false,canDelay:0, range:[60,400],phase:[1,2,3,4],combo:['charge','swordWave','teleStrike'],tags:['ranged','zone','delayed'],cd:160},
   {id:'spiralBullet',idx:25,tele:35,rec:50,canFeint:false,canDelay:0, range:[0,999],phase:[1,2,3,4],combo:['charge','fan','burst'],tags:['aoe','ranged','sustained'],cd:200},
-  {id:'delaySlash',idx:26,tele:20,rec:60,canFeint:false,canDelay:0, range:[30,120],phase:[0,1,2,3,4],combo:['swordWave','charge','sweep'],tags:['melee','frontal'],cd:100},
+  {id:'delaySlash',idx:26,tele:20,rec:30,canFeint:false,canDelay:0, range:[30,120],phase:[0,1,2,3,4],combo:['swordWave','charge','sweep'],tags:['melee','frontal'],cd:100},
   {id:'perilThrust',idx:27,tele:25,rec:35,canFeint:false,canDelay:0, range:[40,300],phase:[0,1,2,3,4],combo:['delaySlash','slashCombo','charge'],tags:['melee','gap-close'],cd:120},
   {id:'pillars',idx:28,tele:35,rec:45,canFeint:false,canDelay:0, range:[0,999],phase:[1,2,3,4],combo:['charge','fan','elemBall'],tags:['aoe','zone','utility'],cd:200},
-  {id:'phantomSwords',idx:29,tele:60,rec:40,canFeint:false,canDelay:0, range:[60,500],phase:[1,2,3,4],combo:['charge','swordWave','judgeCut'],tags:['ranged','multi-hit'],cd:180},
-  {id:'burstCounter',idx:60,tele:20,rec:60,canFeint:false,canDelay:0, range:[0,150],phase:[1,2,3,4],combo:['slashCombo','sweep','charge'],tags:['aoe','melee','punish'],cd:160},
+  {id:'phantomSwords',idx:29,tele:30,rec:40,canFeint:false,canDelay:0, range:[60,500],phase:[1,2,3,4],combo:['charge','swordWave','judgeCut'],tags:['ranged','multi-hit'],cd:180},
+  {id:'burstCounter',idx:30,tele:20,rec:30,canFeint:false,canDelay:0, range:[0,150],phase:[1,2,3,4],combo:['slashCombo','sweep','charge'],tags:['aoe','melee','punish'],cd:160},
   {id:'crescendoCombo',idx:31,tele:20,rec:40,canFeint:false,canDelay:0, range:[30,100],phase:[2,3,4],combo:['slam','sweep','teleStrike'],tags:['melee','multi-hit'],cd:200},
-  {id:'darkZone',idx:32,tele:60,rec:45,canFeint:false,canDelay:0, range:[0,999],phase:[3,4],combo:['charge','elemBall','judgeCut'],tags:['zone','cc','utility'],cd:300},
-  {id:'mirrorClone',idx:33,tele:60,rec:40,canFeint:false,canDelay:0, range:[0,999],phase:[2,3,4],combo:['slashCombo','charge','sweep'],tags:['utility','multi-hit'],cd:240},
+  {id:'darkZone',idx:32,tele:30,rec:45,canFeint:false,canDelay:0, range:[0,999],phase:[3,4],combo:['charge','elemBall','judgeCut'],tags:['zone','cc','utility'],cd:300},
+  {id:'mirrorClone',idx:33,tele:30,rec:40,canFeint:false,canDelay:0, range:[0,999],phase:[2,3,4],combo:['slashCombo','charge','sweep'],tags:['utility','multi-hit'],cd:240},
   {id:'groundFissure',idx:34,tele:25,rec:35,canFeint:false,canDelay:0, range:[60,400],phase:[0,1,2,3,4],combo:['charge','slam','pillars'],tags:['aoe','zone','ranged'],cd:140},
-  {id:'tideWave',idx:35,tele:60,rec:40,canFeint:false,canDelay:0, range:[0,999],phase:[0,1,2,3,4],combo:['charge','fan','burst'],tags:['aoe','ranged'],cd:160},
-  {id:'seekerMines',idx:36,tele:25,rec:60,canFeint:false,canDelay:0, range:[0,999],phase:[1,2,3,4],combo:['charge','multiDash','elemBall'],tags:['ranged','zone','utility'],cd:180},
-  {id:'rewindStrike',idx:37,tele:60,rec:40,canFeint:false,canDelay:0, range:[60,400],phase:[1,2,3,4],combo:['judgeCut','charge','swordWave'],tags:['gap-close','zone','delayed'],cd:180},
+  {id:'tideWave',idx:35,tele:30,rec:40,canFeint:false,canDelay:0, range:[0,999],phase:[0,1,2,3,4],combo:['charge','fan','burst'],tags:['aoe','ranged'],cd:160},
+  {id:'seekerMines',idx:36,tele:25,rec:30,canFeint:false,canDelay:0, range:[0,999],phase:[1,2,3,4],combo:['charge','multiDash','elemBall'],tags:['ranged','zone','utility'],cd:180},
+  {id:'rewindStrike',idx:37,tele:30,rec:40,canFeint:false,canDelay:0, range:[60,400],phase:[1,2,3,4],combo:['judgeCut','charge','swordWave'],tags:['gap-close','zone','delayed'],cd:180},
   {id:'gravityWell',idx:38,tele:25,rec:35,canFeint:false,canDelay:0, range:[0,999],phase:[2,3,4],combo:['spiralBullet','elemBall','charge'],tags:['cc','zone','utility'],cd:200},
-  {id:'wallPush',idx:39,tele:60,rec:40,canFeint:false,canDelay:0, range:[0,999],phase:[2,3,4],combo:['charge','elemBall','spiralBullet'],tags:['zone','utility','cc'],cd:240},
-  {id:'poisonTrail',idx:40,tele:20,rec:60,canFeint:false,canDelay:0, range:[0,999],phase:[1,2,3,4],combo:['charge','multiDash','fan'],tags:['zone','utility','sustained'],cd:160},
-  {id:'cageTrap',idx:41,tele:60,rec:35,canFeint:false,canDelay:0, range:[60,300],phase:[1,2,3,4],combo:['charge','slashCombo','elemBall'],tags:['zone','utility'],cd:180},
+  {id:'wallPush',idx:39,tele:30,rec:40,canFeint:false,canDelay:0, range:[0,999],phase:[2,3,4],combo:['charge','elemBall','spiralBullet'],tags:['zone','utility','cc'],cd:240},
+  {id:'poisonTrail',idx:40,tele:20,rec:30,canFeint:false,canDelay:0, range:[0,999],phase:[1,2,3,4],combo:['charge','multiDash','fan'],tags:['zone','utility','sustained'],cd:160},
+  {id:'cageTrap',idx:41,tele:30,rec:35,canFeint:false,canDelay:0, range:[60,300],phase:[1,2,3,4],combo:['charge','slashCombo','elemBall'],tags:['zone','utility'],cd:180},
   {id:'chainLightning',idx:42,tele:25,rec:35,canFeint:false,canDelay:0, range:[60,400],phase:[1,2,3,4],combo:['fan','burst','charge'],tags:['ranged','multi-hit'],cd:140},
   {id:'orbWeave',idx:43,tele:35,rec:50,canFeint:false,canDelay:0, range:[0,999],phase:[2,3,4],combo:['charge','spiralBullet','fan'],tags:['zone','sustained','utility'],cd:240},
-  {id:'shieldBash2',idx:44,tele:20,rec:60,canFeint:false,canDelay:.2, range:[40,200],phase:[0,1,2,3,4],combo:['slashCombo','sweep','charge'],tags:['melee','gap-close'],cd:120},
-  {id:'mirrorGuard',idx:45,tele:20,rec:60,canFeint:false,canDelay:0, range:[0,120],phase:[1,2,3,4],combo:['crescendoCombo','slashCombo','perilThrust'],tags:['melee','punish','utility'],cd:180},
-  {id:'soulAnchor',idx:46,tele:60,rec:40,canFeint:false,canDelay:0, range:[0,999],phase:[3,4],combo:['judgeCut','spiralBullet','charge'],tags:['cc','zone','debuff'],cd:300},
+  {id:'shieldBash2',idx:44,tele:20,rec:30,canFeint:false,canDelay:.2, range:[40,200],phase:[0,1,2,3,4],combo:['slashCombo','sweep','charge'],tags:['melee','gap-close'],cd:120},
+  {id:'mirrorGuard',idx:45,tele:20,rec:30,canFeint:false,canDelay:0, range:[0,120],phase:[1,2,3,4],combo:['crescendoCombo','slashCombo','perilThrust'],tags:['melee','punish','utility'],cd:180},
+  {id:'soulAnchor',idx:46,tele:30,rec:40,canFeint:false,canDelay:0, range:[0,999],phase:[3,4],combo:['judgeCut','spiralBullet','charge'],tags:['cc','zone','debuff'],cd:300},
   {id:'doppelganger',idx:47,tele:35,rec:45,canFeint:false,canDelay:0, range:[0,999],phase:[3,4],combo:['slashCombo','charge','sweep'],tags:['utility','summon'],cd:300},
-  {id:'itemSteal',idx:48,tele:60,rec:40,canFeint:false,canDelay:0, range:[0,999],phase:[2,3,4],combo:['charge','elemBall','fan'],tags:['utility','punish'],cd:360},
+  {id:'itemSteal',idx:48,tele:30,rec:40,canFeint:false,canDelay:0, range:[0,999],phase:[2,3,4],combo:['charge','elemBall','fan'],tags:['utility','punish'],cd:360},
 ];
 const BOSS_COMBOS=[
   {seq:['charge','spin','burst'],        phase:[0,1,2,3,4]},
@@ -4768,18 +4768,16 @@ function _invFindSpace(w,h,skip){
   return null;
 }
 function _invAutoPlace(){
-  // 정렬: 즐겨찾기 → 쓰레기 → 1순위:장착템 대비 이득(베니핏) 큰 순
+  // 정렬: 즐겨찾기 → 쓰레기 → 1순위:장착템보다 CP 높은 것 위로 → 2순위:CP 높은 순
   const _eqPow={};
   for(const s of SLOT_NAMES){const eq=INV.equipped[s];_eqPow[s]=eq?itemPower(eq):0}
   INV.bag.sort((a,b)=>{
     if(!!a.fav!==!!b.fav)return a.fav?-1:1;
     if(!!a.junk!==!!b.junk)return a.junk?1:-1;
-    const aBen=itemPower(a)-_eqPow[a.slot];
-    const bBen=itemPower(b)-_eqPow[b.slot];
-    const aUp=aBen>0?1:0,bUp=bBen>0?1:0;
+    const aUp=itemPower(a)>_eqPow[a.slot]?1:0;
+    const bUp=itemPower(b)>_eqPow[b.slot]?1:0;
     if(aUp!==bUp)return bUp-aUp; // 업그레이드템 위로
-    if(aUp&&bUp)return bBen-aBen; // 둘 다 업그레이드면 이득 큰 순
-    return itemPower(b)-itemPower(a); // 다운그레이드끼리는 CP순
+    return itemPower(b)-itemPower(a); // CP 높은 순
   });
   // 그리드 초기화
   for(let i=0;i<INV.bag.length;i++){INV.bag[i]._gx=null;INV.bag[i]._gy=null}
@@ -4920,11 +4918,9 @@ function sortInvBag(){
   INV.bag.sort((a,b)=>{
     if(!!a.fav!==!!b.fav)return a.fav?-1:1;
     if(!!a.junk!==!!b.junk)return a.junk?1:-1;
-    const aBen=itemPower(a)-_eqPow2[a.slot];
-    const bBen=itemPower(b)-_eqPow2[b.slot];
-    const aUp=aBen>0?1:0,bUp=bBen>0?1:0;
+    const aUp=itemPower(a)>_eqPow2[a.slot]?1:0;
+    const bUp=itemPower(b)>_eqPow2[b.slot]?1:0;
     if(aUp!==bUp)return bUp-aUp;
-    if(aUp&&bUp)return bBen-aBen;
     return itemPower(b)-itemPower(a);
   });
   _invSalSel.clear();INV.selected=null;
@@ -8009,7 +8005,7 @@ const ATLAS_ENEMY_LAYOUT=[
   {etype:28,name:'glacierGolem',cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   {etype:29,name:'iceDevil',    cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   // ═══ 2장 야생악마길 (etype 30-39) ═══
-  {etype:60,name:'huntDog',         cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
+  {etype:30,name:'huntDog',         cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:31,name:'thornApostle',    cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:32,name:'boulderApostle',  cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   {etype:33,name:'miniDemon',       cell:32,states:{idle:4,walk:4,attack:2,hit:2},totalFrames:12},
@@ -8213,7 +8209,7 @@ const _MOB_CELL=48,_MOB_COLS=10;
 const _walkAtlas={img:null,ready:false};
 const _WALK_COLS=4;
 const _WA={idle:{s:0,n:4,spd:.003},walk:{s:4,n:4,spd:.005},attack:{s:8,n:6,spd:.008},hit:{s:14,n:6,spd:.007}}; // 상태별 오프셋+속도
-const _WA_ROW={0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,12:10,13:11,18:12,41:13,44:14,49:15,56:16,50:17,51:18,52:19,53:20,54:21,57:22,58:23,59:24,55:25,14:26,15:27,16:28,17:29,19:60,40:31,42:32,43:33,45:34,46:35,47:36,48:37,10:38,11:39,22:40,23:41,20:42,21:43,60:44,61:45,62:46,63:47,64:48,65:49,66:50,67:51,68:52,69:53,70:54,71:55,72:56,73:57,74:58,75:59,76:60,77:61,78:62,79:63,80:64,81:65,82:66,83:67,84:68,24:69,25:70,26:71,27:72,28:73,29:74,30:75,31:76,32:77,33:78,34:79,35:80,36:81,37:82,38:83,39:84,90:85,91:86,92:87,93:88,94:89,95:90,96:91,97:92,98:93,99:94,85:95,86:96,87:97,88:98,89:99,90:100,91:101,92:102,95:103,96:104}; // etype→아틀라스 행
+const _WA_ROW={0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,12:10,13:11,18:12,41:13,44:14,49:15,56:16,50:17,51:18,52:19,53:20,54:21,57:22,58:23,59:24,55:25,14:26,15:27,16:28,17:29,19:30,40:31,42:32,43:33,45:34,46:35,47:36,48:37,10:38,11:39,22:40,23:41,20:42,21:43,60:44,61:45,62:46,63:47,64:48,65:49,66:50,67:51,68:52,69:53,70:54,71:55,72:56,73:57,74:58,75:59,76:60,77:61,78:62,79:63,80:64,81:65,82:66,83:67,84:68,24:69,25:70,26:71,27:72,28:73,29:74,30:75,31:76,32:77,33:78,34:79,35:80,36:81,37:82,38:83,39:84,90:85,91:86,92:87,93:88,94:89,95:90,96:91,97:92,98:93,99:94,85:95,86:96,87:97,88:98,89:99,90:100,91:101,92:102,95:103,96:104}; // etype→아틀라스 행
 function _hasWalkAnim(et){return _WA_ROW[et]!==undefined&&et!==7&&et!==9}
 function _waRow(et){return _WA_ROW[et]||0}
 (function _loadWalkAtlas(){
@@ -10257,10 +10253,10 @@ function applyStats(){
   // ═══ 바이블 기준: ATK = 15+(stage-1)*2 ═══
   P.baseAtk=G.on?15+((G.stage||1)-1)*2:15;
   P.speed=(2.6+s.dex*.005)*(1+(P._altSpd||0)+_eqAffix('movSpeed')+_eqImplicit('_iMovSpd')*.01);
-  P.stR=.05+s.dex*.002+s.vit*.001+P.lv*.0005; // ST리젠: 초당0.375 + DEX + VIT + 레벨 (/8 적용)
-  P.hpR=.05+s.vit*.002+s.str*.002+P.lv*.0005; // HP리젠: 초당0.375 + VIT+STR + 레벨 (/8 적용)
+  P.stR=.133+s.dex*.002+s.vit*.001+P.lv*.001; // ST리젠: 초당1 + DEX + VIT + 레벨 (/8 적용)
+  P.hpR=.133+s.vit*.003+s.str*.002+P.lv*.001; // HP리젠: 초당1 + VIT+STR + 레벨 (/8 적용)
   P.mmp=~~(100+P.lv*.5+s.int*1);P.mp=Math.min(P.mp,P.mmp);
-  P.mpR=.05+s.int*.003+P.lv*.0005; // MP리젠: 초당0.375 + INT + 레벨 (/8 적용)
+  P.mpR=.133+s.int*.008+P.lv*.002; // MP리젠: 초당1 + INT + 레벨 (/8 적용)
   // ═══ 에너지 쉴드: INT 100 이상 해금 ═══
   if(s.int>=100){P.mshield=~~(150+P.lv*.5+(s.int-100)*2.5+s.vit*0.5);P.shield=Math.min(P.shield,P.mshield)}
   else{P.mshield=0;P.shield=0}
@@ -11287,7 +11283,7 @@ function genGauntlet(fi){
 }
 
 // ═══ MAP — STAGES 정의 + 절차적 맵 생성 ═══
-const STAGES=[{"id":0,"hell":0,"floor":1,"mw":66,"mh":140,"type":"vert"},{"id":1,"hell":0,"floor":2,"mw":75,"mh":69,"type":"horiz"},{"id":2,"hell":0,"floor":3,"mw":72,"mh":160,"type":"vert"},{"id":3,"hell":0,"floor":4,"mw":93,"mh":230,"type":"grid"},{"id":4,"hell":1,"floor":1,"mw":96,"mh":240,"type":"vert"},{"id":5,"hell":1,"floor":2,"mw":125,"mh":99,"type":"horiz"},{"id":6,"hell":1,"floor":3,"mw":102,"mh":260,"type":"vert"},{"id":7,"hell":1,"floor":4,"mw":140,"mh":108,"type":"horiz"},{"id":8,"hell":1,"floor":5,"mw":114,"mh":300,"type":"vert"},{"id":9,"hell":1,"floor":6,"mw":123,"mh":330,"type":"grid"},{"id":10,"hell":2,"floor":1,"mw":126,"mh":340,"type":"vert"},{"id":11,"hell":2,"floor":2,"mw":175,"mh":129,"type":"horiz"},{"id":12,"hell":2,"floor":3,"mw":132,"mh":360,"type":"vert"},{"id":13,"hell":2,"floor":4,"mw":153,"mh":430,"type":"grid"},{"id":14,"hell":3,"floor":1,"mw":156,"mh":440,"type":"vert"},{"id":15,"hell":3,"floor":2,"mw":225,"mh":159,"type":"horiz"},{"id":16,"hell":3,"floor":3,"mw":162,"mh":460,"type":"vert"},{"id":17,"hell":3,"floor":4,"mw":165,"mh":470,"type":"vert"},{"id":18,"hell":3,"floor":5,"mw":240,"mh":168,"type":"horiz"},{"id":19,"hell":3,"floor":6,"mw":174,"mh":500,"type":"vert"},{"id":20,"hell":3,"floor":7,"mw":183,"mh":530,"type":"grid"},{"id":21,"hell":4,"floor":1,"mw":186,"mh":540,"type":"vert"},{"id":22,"hell":4,"floor":2,"mw":275,"mh":189,"type":"horiz"},{"id":23,"hell":4,"floor":3,"mw":192,"mh":560,"type":"vert"},{"id":24,"hell":4,"floor":4,"mw":290,"mh":198,"type":"horiz"},{"id":25,"hell":4,"floor":5,"mw":213,"mh":630,"type":"grid"},{"id":26,"hell":5,"floor":1,"mw":216,"mh":640,"type":"vert"},{"id":27,"hell":5,"floor":2,"mw":325,"mh":219,"type":"horiz"},{"id":28,"hell":5,"floor":3,"mw":222,"mh":660,"type":"vert"},{"id":29,"hell":5,"floor":4,"mw":340,"mh":228,"type":"horiz"},{"id":60,"hell":5,"floor":5,"mw":234,"mh":700,"type":"vert"},{"id":31,"hell":5,"floor":6,"mw":243,"mh":730,"type":"grid"},{"id":32,"hell":6,"floor":1,"mw":246,"mh":740,"type":"vert"},{"id":33,"hell":6,"floor":2,"mw":375,"mh":249,"type":"horiz"},{"id":34,"hell":6,"floor":3,"mw":273,"mh":830,"type":"grid"}];
+const STAGES=[{"id":0,"hell":0,"floor":1,"mw":66,"mh":140,"type":"vert"},{"id":1,"hell":0,"floor":2,"mw":75,"mh":69,"type":"horiz"},{"id":2,"hell":0,"floor":3,"mw":72,"mh":160,"type":"vert"},{"id":3,"hell":0,"floor":4,"mw":93,"mh":230,"type":"grid"},{"id":4,"hell":1,"floor":1,"mw":96,"mh":240,"type":"vert"},{"id":5,"hell":1,"floor":2,"mw":125,"mh":99,"type":"horiz"},{"id":6,"hell":1,"floor":3,"mw":102,"mh":260,"type":"vert"},{"id":7,"hell":1,"floor":4,"mw":140,"mh":108,"type":"horiz"},{"id":8,"hell":1,"floor":5,"mw":114,"mh":300,"type":"vert"},{"id":9,"hell":1,"floor":6,"mw":123,"mh":330,"type":"grid"},{"id":10,"hell":2,"floor":1,"mw":126,"mh":340,"type":"vert"},{"id":11,"hell":2,"floor":2,"mw":175,"mh":129,"type":"horiz"},{"id":12,"hell":2,"floor":3,"mw":132,"mh":360,"type":"vert"},{"id":13,"hell":2,"floor":4,"mw":153,"mh":430,"type":"grid"},{"id":14,"hell":3,"floor":1,"mw":156,"mh":440,"type":"vert"},{"id":15,"hell":3,"floor":2,"mw":225,"mh":159,"type":"horiz"},{"id":16,"hell":3,"floor":3,"mw":162,"mh":460,"type":"vert"},{"id":17,"hell":3,"floor":4,"mw":165,"mh":470,"type":"vert"},{"id":18,"hell":3,"floor":5,"mw":240,"mh":168,"type":"horiz"},{"id":19,"hell":3,"floor":6,"mw":174,"mh":500,"type":"vert"},{"id":20,"hell":3,"floor":7,"mw":183,"mh":530,"type":"grid"},{"id":21,"hell":4,"floor":1,"mw":186,"mh":540,"type":"vert"},{"id":22,"hell":4,"floor":2,"mw":275,"mh":189,"type":"horiz"},{"id":23,"hell":4,"floor":3,"mw":192,"mh":560,"type":"vert"},{"id":24,"hell":4,"floor":4,"mw":290,"mh":198,"type":"horiz"},{"id":25,"hell":4,"floor":5,"mw":213,"mh":630,"type":"grid"},{"id":26,"hell":5,"floor":1,"mw":216,"mh":640,"type":"vert"},{"id":27,"hell":5,"floor":2,"mw":325,"mh":219,"type":"horiz"},{"id":28,"hell":5,"floor":3,"mw":222,"mh":660,"type":"vert"},{"id":29,"hell":5,"floor":4,"mw":340,"mh":228,"type":"horiz"},{"id":30,"hell":5,"floor":5,"mw":234,"mh":700,"type":"vert"},{"id":31,"hell":5,"floor":6,"mw":243,"mh":730,"type":"grid"},{"id":32,"hell":6,"floor":1,"mw":246,"mh":740,"type":"vert"},{"id":33,"hell":6,"floor":2,"mw":375,"mh":249,"type":"horiz"},{"id":34,"hell":6,"floor":3,"mw":273,"mh":830,"type":"grid"}];
 
 // ── 시드 기반 랜덤 ──
 function mkRng(seed){
@@ -11957,7 +11953,7 @@ const RARE_ETYPE={
   93:{name:'상인 악마',  hp:16,atk:0, spd:.60,r:14,poise:5, col:'#886644'},
   94:{name:'사슬의 죄수', hp:128,atk:10,spd:.15,r:16,poise:50,col:'#555566'},
   95:{name:'시간의 사도', hp:64,atk:18,spd:.15,r:12,poise:18,col:'#aabb99'},
-  96:{name:'탐욕의 사도', hp:80,atk:12,spd:.24,r:16,poise:60,col:'#ddcc00'},
+  96:{name:'탐욕의 사도', hp:80,atk:12,spd:.24,r:16,poise:30,col:'#ddcc00'},
   97:{name:'저주받은 쌍둥이',hp:64,atk:18,spd:.39,r:14,poise:22,col:'#443355'},
   98:{name:'차원 균열체', hp:48,atk:18,spd:.30,r:12,poise:18,col:'#220033'},
   99:{name:'죽음 그 자체',hp:1600,atk:60,spd:.24,r:18,poise:999,col:'#000000'}
@@ -12261,7 +12257,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     _boneChargeCd:etype===55?(120+Math.random()*50):9999,_boneChargeT:etype===55?(50+Math.random()*30):9999,_boneDeath:etype===55,
     _bloodCd:etype===56?(100+Math.random()*40):9999,_bloodT:etype===56?(40+Math.random()*20):9999,
     _curled:etype===57,_curlTimer:etype===57?(300+Math.random()*120):0,
-    _mirrorBuf:etype===58?[]:null,_mirrorDelay:60,
+    _mirrorBuf:etype===58?[]:null,_mirrorDelay:30,
     _overlordPhase:etype===59?0:-1,_overlordCd:etype===59?120:9999,
     // ═══ 6장 용암길 전용 ═══
     _lavaBurn:etype>=70&&etype<=79?.4:0,
@@ -12959,7 +12955,7 @@ function update(){
         addTxt(P.x,P.y-30,'⚡ 기동파괴! x'+_csDistMul.toFixed(1),_csDistMul>=3?'#ffaa00':'#ffcc44',45);
         shake(60);G.chromaT=15;
         if(!G._gSlamWave)G._gSlamWave=[];
-        G._gSlamWave.push({x:P.x,y:P.y,r:60,maxR:_csR*2.5,t:0,maxT:35,col:'#ffcc00'});
+        G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_csR*2.5,t:0,maxT:35,col:'#ffcc00'});
         for(let j=0;j<24;j++){const _a=Math.PI*2*j/24;const _d=40+Math.random()*(_csR-40);
           poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*7,Math.sin(_a)*7,'#ffcc00',4+Math.random()*4,14)}
         addParts(P.x,P.y,'#ffee00',12);addParts(P.x,P.y,'#ffffff',8);
@@ -13091,7 +13087,7 @@ function update(){
   const _regenDiv=P.s==='idle'?8:16;
   if(_hpr>0&&P.hp>0&&P.hp<P.mhp){P.hp=Math.min(P.mhp,P.hp+_hpr/_regenDiv*sp)}
   if(P.s==='idle'){P.st=Math.min(P.mst,P.st+_str/8*sp);P.mp=Math.min(P.mmp,P.mp+_mpr/8*sp)}
-  else{P.st=Math.min(P.mst,P.st+_str/16*sp);const _mpMul=P.s==='beam'?.5:1;P.mp=Math.min(P.mmp,P.mp+_mpr/16*_mpMul*sp)}
+  else{P.st=Math.min(P.mst,P.st+_str/16*sp);const _mpMul=P.s==='beam'?.3:1;P.mp=Math.min(P.mmp,P.mp+_mpr/16*_mpMul*sp)}
   // ═══ 5장 해저길 스테이지 규칙 ═══
   if(SI_TO_HELL[G.stage]===4){
     // 스태미나 자동 감소 (초당 2% = 프레임당 2%/60)
@@ -14259,9 +14255,7 @@ function update(){
       }
       // 화톳불 배리어: 이동 후에도 재확인
       if(_bfActive&&!e.ib){const _bfd2b=dst2(_bf.x,_bf.y,e.x,e.y);if(_bfd2b<_bfR2){const _bfdb=Math.sqrt(_bfd2b)||1;const _bfa2=Math.atan2(e.y-_bf.y,e.x-_bf.x);e.x=_bf.x+Math.cos(_bfa2)*_bf.r;e.y=_bf.y+Math.sin(_bfa2)*_bf.r}}
-      const _edd=(e.x-_eox)*(e.x-_eox)+(e.y-_eoy)*(e.y-_eoy);e._isMoving=_edd>1;if(_edd>0)e._walkDist=(e._walkDist||0)+Math.sqrt(_edd)
-      // 벽 끼임 처리: 벽 안에 있으면 즉사
-      if(isW(e.x,e.y,true)){e.hp=0;e.alive=false;e.s='dead';if(e.ib){G.bossAlive=false}rollDrop(e);addExp(e.exp||1)}}
+      const _edd=(e.x-_eox)*(e.x-_eox)+(e.y-_eoy)*(e.y-_eoy);e._isMoving=_edd>1;if(_edd>0)e._walkDist=(e._walkDist||0)+Math.sqrt(_edd)}
     else if(e._reviveTimer>0){
       e._reviveTimer-=sp;
       // 부활 전조 파티클
@@ -14942,38 +14936,28 @@ function update(){
     // 신성한 감옥 fireZone 범위 내 → 즉시 제거
     if(G._fireZones){let _hpBlocked=false;for(let _fi=0;_fi<G._fireZones.length;_fi++){const _fz=G._fireZones[_fi];if(_fz.type==='holyPrison'&&dst(h.x,h.y,_fz.x,_fz.y)<_fz.r){addTxt(h.x,h.y-20,'✟ 신성 차단!','#ffdd88',40);G.spawnHoles.splice(hi,1);_hpBlocked=true;break}}if(_hpBlocked)continue}
     const _hd2=dst2(P.x,P.y,h.x,h.y);
-    // 1000px 이내 접근 시 트리거 시작
+    // 600px 이내 접근 시 트리거 시작
     if(!h._triggered){
-      if(_hd2<1000000)h._triggered=true; // 1000^2
+      if(_hd2<360000)h._triggered=true; // 600^2
       continue;
     }
     // 트리거 후 연출 타이머 (3초 동안 소환굴 빛남)
     if(h._spawnDelay==null)h._spawnDelay=90;
     if(h._spawnDelay>0){h._spawnDelay-=sp;continue}
-    // 몹 스폰 — 프레임 분산 (한 프레임 최대 5마리)
+    // 몹 스폰
     const _hSi=G.stage;
-    if(h._spawnTotal==null){const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';h._spawnTotal=SPAWN_HOLE.cnt[_hType]||50;h._spawned=0;h._spawnCD=0}
-    if(h._spawnCD>0){h._spawnCD-=sp;continue}
-    const _BATCH=5;
-    const _hRemain=Math.min(_BATCH,h._spawnTotal-h._spawned);
-    for(let _hj=0;_hj<_hRemain;_hj++){
-      let _hsx,_hsy,_hTry=0;
-      do{const _ha=Math.PI*2*Math.random(),_hr=80+Math.random()*200+h.size*120;
-        _hsx=h.x+Math.cos(_ha)*_hr;_hsy=h.y+Math.sin(_ha)*_hr;_hTry++;
-      }while(_hTry<12&&isW(_hsx,_hsy,true));
-      if(isW(_hsx,_hsy,true)){_hsx=h.x;_hsy=h.y}
-      const ne=mkEn(_hsx,_hsy,_hSi,rollEtype(_hSi),false,undefined,h.room);
+    const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';
+    const _hCnt=SPAWN_HOLE.cnt[_hType]||50;
+    for(let _hj=0;_hj<_hCnt;_hj++){
+      const _ha=Math.PI*2*Math.random(),_hr=80+Math.random()*200+h.size*120;
+      const ne=mkEn(h.x+Math.cos(_ha)*_hr,h.y+Math.sin(_ha)*_hr,_hSi,rollEtype(_hSi),false,undefined,h.room);
       ens.push(ne);
-      h._spawned++;
     }
-    h._spawnCD=2; // 2프레임 간격
-    // 전부 소환 완료 → 이펙트 + 제거
-    if(h._spawned>=h._spawnTotal){
-      addParts(h.x,h.y,SPAWN_HOLE.col,15);
-      addTxt(h.x,h.y-20,'⚔ '+SPAWN_HOLE.name+'!',SPAWN_HOLE.col,50);
-      shake(5+~~(h.size*9));
-      G.spawnHoles.splice(hi,1);
-    }
+    // 스폰 이펙트 + 소환굴 제거
+    addParts(h.x,h.y,SPAWN_HOLE.col,15);
+    addTxt(h.x,h.y-20,'⚔ '+SPAWN_HOLE.name+'!',SPAWN_HOLE.col,50);
+    shake(5+~~(h.size*9));
+    G.spawnHoles.splice(hi,1);
   }
   // ═══ 킬 체인 타이머 + 균열 업데이트 ═══
   if(G._chainT>0){G._chainT-=sp;if(G._chainT<=0){G._chainCnt=0;G._chainT=0}}
@@ -15422,7 +15406,7 @@ function update(){
             const _bsRiseDmg=~~(meleeRef()*statStr()*pAtkMul()*8*(1+(_bsLv-1)*0.15)*_fuseMul('boneWall'));
             if(!G._boneWalls)G._boneWalls=[];
             G._boneWalls.push({x:_mswx,y:_mswy,ringR:_bsRingR,wallThk:14,
-              t:0,riseT:60,maxT:_syncDur,dmg:_bsRiseDmg,hitSet:new Set(),phase:'rise'});
+              t:0,riseT:30,maxT:_syncDur,dmg:_bsRiseDmg,hitSet:new Set(),phase:'rise'});
             G._fireZones.push({x:_mswx,y:_mswy,r:_bsRingR,t:0,maxT:_syncDur,
               dmg:~~(_msDmg*_fuseMul('maliceStorm')),el:EL.D,lv:_msLv,type:'boneStorm'});
             G.mats=Math.max(0,G.mats-12);
@@ -16491,7 +16475,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
     case'chaseAoe':{
       // 추적 장판 10발 시작 — 보스는 즉시 다음 행동 가능
       if(!G._chaseAoes)G._chaseAoes=[];
-      G._chaseAoes.push({src:e,cnt:0,maxCnt:10,t:0,interval:60,r:55,delay:90,dmg:~~(e.atk*2),el:e.el});
+      G._chaseAoes.push({src:e,cnt:0,maxCnt:10,t:0,interval:30,r:55,delay:90,dmg:~~(e.atk*2),el:e.el});
       addTxt(e.x,e.y-30,'🔴 추적 장판!','#ff2200',55);SFX.magic(0);
       // 보스는 바로 돌진이나 다른 공격으로 전환
       e.s='bossChargeWind';e.st2=~~(40*BOSS_PHASES[phase].teleM)+(extraDelay||0)||40;
@@ -20333,7 +20317,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         e.reviveIframes=180; // 부활 무적 3초
         e.atk=~~(e.atk*(_isH7?2:1.5));
         e.speed=Math.min(e.speed*1.25,_isH7?2.0:1.6);
-        e.bossPatCd=Math.max(_isH7?20:60,e.bossPatCd-30);
+        e.bossPatCd=Math.max(_isH7?20:30,e.bossPatCd-30);
         // ── 부활 순간이동: 플레이어 뒤로 텔레포트 ──
         addParts(e.x,e.y,'#aa00ff',15);
         const _tpAng=P.facing+Math.PI+((Math.random()-.5)*.8);
@@ -20825,7 +20809,7 @@ function _detonateBlast(label,elSrc){
     SFX.shout();
     SFX.slam();
     if(!G._gSlamWave)G._gSlamWave=[];
-    G._gSlamWave.push({x:P.x,y:P.y,r:60,maxR:boomR,t:0,maxT:45});
+    G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:boomR,t:0,maxT:45});
   }else{
     SFX.slash();SFX.detonate();
   }
@@ -20876,7 +20860,7 @@ function _slamStormBlast(){
   G.hitStop=0;G.slowMo=0;
   // 진동파 이펙트
   if(!G._gSlamWave)G._gSlamWave=[];
-  G._gSlamWave.push({x:P.x,y:P.y,r:60,maxR:_ssR,t:0,maxT:45});
+  G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_ssR,t:0,maxT:45});
   for(let j=0;j<12;j++){const _a=Math.PI*2*j/12;const _d=60+Math.random()*(_ssR-60);
     poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*6,Math.sin(_a)*6,'#ff4400',3+Math.random()*3,10+Math.random()*5)}
   addTxt(P.x,P.y-50,_isFused('stormBeam')?'⚡ 뇌전나선!':'🌋 지진폭풍!',_isFused('stormBeam')?'#ff6600':'#ff4400',70);
@@ -21255,7 +21239,7 @@ const SKILL_LIST=[
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발 (MP 30%, 쿨 1분)',spCost:10,matCost:100,cd:3600,up:true,upSp:5,upMat:0},
   {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,emoji:'⛧',desc:'검은 오망성 소환. 범위 내 모든 몬스터를 중심으로 끌어당기며 암흑 데미지 (악의 50, 쿨 1분)',spCost:10,matCost:100,cd:3600,up:true,upSp:5,upMat:0},
   {id:'lavaSummon',name:'용암소환',cat:'ult',act:true,ult:true,emoji:'🌋',desc:'빨간 오망성 시전 → 화면이 빨갛게 물들며 10초간 화상. 틱당 적 최대HP 5% (MP 30%, 쿨 1분)',spCost:10,matCost:100,cd:3600,up:true,upSp:5,upMat:0},
-  {id:'bladeShot',name:'붉은꽃',cat:'bow',act:true,emoji:'🩸',desc:'[고정: T 자동] 핏빛 칼날 발사: 전진하며 핏빛 조각 방사 (ST 50, 쿨 0.5초). Lv당 크기+11% 뎀+10%',spCost:10,matCost:100,cd:60,up:true,upSp:5,upMat:0},
+  {id:'bladeShot',name:'붉은꽃',cat:'bow',act:true,emoji:'🩸',desc:'[고정: T 자동] 핏빛 칼날 발사: 전진하며 핏빛 조각 방사 (ST 50, 쿨 0.5초). Lv당 크기+11% 뎀+10%',spCost:10,matCost:100,cd:30,up:true,upSp:5,upMat:0},
   {id:'iceOrb',name:'얼음보주',cat:'def',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'grenadeShot',name:'유탄산탄',cat:'bow',act:true,emoji:'💣',desc:'[고정: T 자동] 직선 화염대포 발사+경로 화상+잔류화염. 악의 5. 쿨 1초. Lv당 사거리+22% 폭+22%',spCost:10,matCost:100,cd:60,up:true,upSp:5,upMat:0},
   {id:'needleShot',name:'바늘출',cat:'bow',act:true,emoji:'🪡',desc:'[고정: T 자동] 최대속도 바늘 5~10연발. 좁은 간격 초고속 관통. ST 8. 쿨 1.5초. Lv당 뎀+12% 관통+1 발수+',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
@@ -21270,7 +21254,7 @@ const SKILL_LIST=[
   {id:'peaceShield',name:'평화의보호',cat:'def',fixed:true,hidden:true,emoji:'🕊️',desc:'[히든: 뇌전나선 합체] Q 홀드 시 보호막이 점점 커지며 HP 초당 10% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'✝',desc:'[히든: 뇌전나선 합체] E로 조준, 클릭 설치. 신성 십자가를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. Lv당 거리+50',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'둔격호',cat:'def',fixed:true,emoji:'🛡️',desc:'[고정: 칼등치기 합체] 우클릭 칼등치기 시 자동 발사. 회전하며 전진, 적 관통+넉백+투사체 반사. 쿨 5초. Lv당 뎀+12% 사거리+30',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
-  {id:'blastShot',name:'폭산탄',cat:'bow',fixed:true,emoji:'💥',desc:'[고정: T 자동] 폭탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 화염 폭발(범위130). 악의 8. Lv당 범위+10% 뎀+10%. 쿨 0.5초',spCost:10,matCost:80,cd:60,up:true,upSp:5,upMat:0},
+  {id:'blastShot',name:'폭산탄',cat:'bow',fixed:true,emoji:'💥',desc:'[고정: T 자동] 폭탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 화염 폭발(범위130). 악의 8. Lv당 범위+10% 뎀+10%. 쿨 0.5초',spCost:10,matCost:80,cd:30,up:true,upSp:5,upMat:0},
   {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (반경600, 10초). 밟은 적 슬로우+출혈. 악의 10, 쿨 10초. Lv당 범위+32 뎀+15%',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},
   {id:'blueShot',name:'파란탄',cat:'magic',fixed:true,emoji:'💎',desc:'[고정: E, Lv500 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 200 소모. 적 추적. 쿨 5초. Lv당 뎀+10% 사거리+30',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:500}
 ];
@@ -21467,24 +21451,9 @@ function _skProfLv(skId){return~~(_skProfVal(skId)/10)} // 10 숙련도 = 1랩
 function _skProfMul(skId){return 1+_skProfLv(skId)*0.02} // 숙련렙당 +2% (최대 +20%)
 function _skProfCap(skId){return 100}
 function _skProfMaxed(skId){return _skProfVal(skId)>=_skProfCap(skId)}
-// 순간형 스킬 지속시간(초) — 1회 사용 시 이만큼 숙련도 적립
-const _SK_PROF_DUR={
-  chargeBoost:60,magicBlink:60,bladeDash:60,
-  chainAssault:60,chainSlam:60,
-  giantSlam:60,
-  maliceSwipe:60,shieldThrow:60,
-  detonate:60,
-  grenadeShot:60,bladeShot:60,blastShot:60,needleShot:60,
-  elemMissile:60,blueShot:60,
-  hellRay:60,
-  maliceStorm:60,maliceHunt:60,maliceMortar:60,
-  boneWall:60,holyDome:60,holyPrison:60,iceStorm:60,
-  plagueBurst:60,peaceShield:60,
-  spikeTrap:60
-};
-function _addSkProf(skId,v){if(!P||!skId)return;if(!P._skProf)P._skProf={};const _old=P._skProf[skId]||0;const _cap=_skProfCap(skId);const _dur=v||(_SK_PROF_DUR[skId]||1);P._skProf[skId]=Math.min(_cap,_old+_dur);
-  // 순간형 스킬: 지속시간만큼 카드숙련 적립
-  const _gs=_SK_TO_GROUPS[skId];if(_gs){if(!P._cardProf)P._cardProf={};for(let _i=0;_i<_gs.length;_i++)P._cardProf[_gs[_i]]=(P._cardProf[_gs[_i]]||0)+_dur;}}
+function _addSkProf(skId,v){if(!P||!skId)return;if(!P._skProf)P._skProf={};const _old=P._skProf[skId]||0;const _cap=_skProfCap(skId);P._skProf[skId]=Math.min(_cap,_old+(v||1));
+  // 순간형 스킬: 1회 사용 = +1초 카드숙련
+  const _gs=_SK_TO_GROUPS[skId];if(_gs){if(!P._cardProf)P._cardProf={};for(let _i=0;_i<_gs.length;_i++)P._cardProf[_gs[_i]]=(P._cardProf[_gs[_i]]||0)+1;}}
 function _addSkProfTick(skId){if(!P||!skId)return;_addCardProfTick(skId); // 카드숙련: 매 프레임 실시간 축적
 const _st={'whirlwind':'whirlwind','detonate':'whirlwind','omniBeam':'beam','fanShot':'beam','elemMissile':'beam','iceOrb':'iceOrb','ghostWalk':'ghostWalk','guardian':'idle'};if(!P._skProfUsed)P._skProfUsed={};if(P._skProfUsed[skId]===P.s)return;P._skProfUsed[skId]=P.s;_addSkProf(skId,1)}
 // ═══ 카드숙련도: 그룹별 구성 스킬 통합 사용시간(초) 기록 ═══
@@ -21526,7 +21495,7 @@ function _canFuse(key){
   const _req=_fuseReqProf(key);
   const _absolved=new Set(); // 하위 합체로 이미 검증된 스킬
   for(const[fk,fv]of Object.entries(_FUSE_PAIRS)){if(fk!==key&&_isFused(fk)){for(const s of fv)_absolved.add(s)}}
-  for(let i=0;i<_fp.length;i++){if(_absolved.has(_fp[i]))continue;if(_skProfVal(_fp[i])<_req)return false}
+  for(let i=0;i<_fp.length;i++){if(_absolved.has(_fp[i]))continue;if(((P._skProf&&P._skProf[_fp[i]])||0)<_req)return false}
   return true;
 }
 function _getAbsorbed(key){const m={dimBreach:['magicBlink'],dimSlam:['magicBlink','chainAssault'],dimThunder:['magicBlink','chainAssault','chainSlam'],whirlDet:['detonate'],slamStorm:['detonate','giantSlam'],stormBeam:['detonate','giantSlam','fanShot','omniBeam','elemMissile'],bladeFuse:['guardian'],iceMortar:['iceOrb'],sixFuse:['omniBeam'],elemFuse:['fanShot','omniBeam','elemMissile'],boneStorm:['boneWall'],elecRepent:['hellRay','boneWall'],shieldFuse:['shieldThrow'],plagueFuse:['guardian','plagueBurst'],holyFuse:['holyPrison'],holyIce:['holyPrison','iceStorm']};return m[key]||[]}
@@ -21851,7 +21820,7 @@ function fireBoneWall(tx,ty){
   const riseDmg=~~(meleeRef()*statStr()*pAtkMul()*8*(1+(slv-1)*0.15));
   if(!G._boneWalls)G._boneWalls=[];
   G._boneWalls.push({x:tx,y:ty,ringR:ringR,wallThk:14,
-    t:0,riseT:60,maxT:duration,dmg:riseDmg,hitSet:new Set(),phase:'rise'});
+    t:0,riseT:30,maxT:duration,dmg:riseDmg,hitSet:new Set(),phase:'rise'});
   SFX.magic(EL.D);playSample('skull_summon',.6,_r(.9,.15));
   addTxt(P.x,P.y-30,'\u{1F9B4} 해골무덤!','#ddccaa',40);
   shake(6);
@@ -22064,7 +22033,7 @@ function activateGiantSlam(){
     poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*8,Math.sin(_a)*8,'#ff6622',4+Math.random()*4,12+Math.random()*6)}
   // 진동파 이펙트 링
   if(!G._gSlamWave)G._gSlamWave=[];
-  G._gSlamWave.push({x:P.x,y:P.y,r:60,maxR:_gs1R*2,t:0,maxT:45});
+  G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_gs1R*2,t:0,maxT:45});
   // 지진폭풍: 대왕치기 시 자동 기폭팔 발동
   if(_isFused('slamStorm')&&P.skills.detonate>=1){
     P.parryBank=Math.max(P.parryBank||0,200);P.parryT=Math.max(P.parryT||0,180);
