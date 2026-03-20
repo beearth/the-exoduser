@@ -88,15 +88,6 @@ canvas{display:block}
     </div>
   </div>
   <div class="section">
-    <h4>📐 맵 크기</h4>
-    <div style="display:flex;gap:4px;align-items:center;margin-bottom:4px">
-      <span style="font-size:10px;color:#888">W</span><input type="number" id="mapW" style="width:50px;background:#222;color:#ffea00;border:1px solid #444;font:11px monospace;padding:2px 4px" min="20" max="2000">
-      <span style="font-size:10px;color:#888">H</span><input type="number" id="mapH" style="width:50px;background:#222;color:#ffea00;border:1px solid #444;font:11px monospace;padding:2px 4px" min="20" max="2000">
-      <div class="tool-btn" onclick="resizeMap()" style="padding:4px 8px;flex:none">적용</div>
-    </div>
-    <div style="color:#555;font-size:9px">현재 맵 크기 변경. 오브젝트 유지됨</div>
-  </div>
-  <div class="section">
     <h4>🖌️ 브러시</h4>
     <div class="slider-row">크기 <input type="range" min="1" max="25" value="5" id="brushR" oninput="brushRadius=+this.value;document.getElementById('brVal').textContent=this.value;saveEditorSettings(false)"> <span id="brVal">5</span></div>
     <div class="tool-row">
@@ -128,10 +119,13 @@ canvas{display:block}
 const C=document.getElementById('c'),X=C.getContext('2d');
 const editor=document.getElementById('editor'),T=8;
 let show3d=true,showObj=true,showRooms=true,showGrid=false;
-const STAGES=[{"id": 0, "hell": 0, "floor": 1, "mw": 200, "mh": 200, "type": "vert", "area": "숲 입구", "isLast": false}, {"id": 1, "hell": 0, "floor": 2, "mw": 500, "mh": 500, "type": "horiz", "area": "뒤틀린 숲길", "isLast": false}, {"id": 2, "hell": 0, "floor": 3, "mw": 500, "mh": 500, "type": "vert", "area": "눈달린 버섯 군락", "isLast": false}, {"id": 3, "hell": 0, "floor": 4, "mw": 500, "mh": 500, "type": "grid", "area": "기생수의 둥지", "isLast": true}, {"id": 4, "hell": 1, "floor": 1, "mw": 500, "mh": 500, "type": "vert", "area": "벌레 터널 입구", "isLast": false}, {"id": 5, "hell": 1, "floor": 2, "mw": 500, "mh": 500, "type": "horiz", "area": "점액 동굴", "isLast": false}, {"id": 6, "hell": 1, "floor": 3, "mw": 500, "mh": 500, "type": "vert", "area": "기생충 서식지", "isLast": false}, {"id": 7, "hell": 1, "floor": 4, "mw": 500, "mh": 500, "type": "vert", "area": "구더기 번식장", "isLast": false}, {"id": 8, "hell": 1, "floor": 5, "mw": 500, "mh": 500, "type": "horiz", "area": "살점 동굴", "isLast": false}, {"id": 9, "hell": 1, "floor": 6, "mw": 500, "mh": 500, "type": "grid", "area": "여왕의 방", "isLast": true}, {"id": 10, "hell": 2, "floor": 1, "mw": 500, "mh": 500, "type": "vert", "area": "얼음 동굴 입구", "isLast": false}, {"id": 11, "hell": 2, "floor": 2, "mw": 500, "mh": 500, "type": "horiz", "area": "미끄러운 얼음길", "isLast": false}, {"id": 12, "hell": 2, "floor": 3, "mw": 500, "mh": 500, "type": "vert", "area": "얼어붙은 감옥", "isLast": false}, {"id": 13, "hell": 2, "floor": 4, "mw": 500, "mh": 500, "type": "grid", "area": "봉인의 방", "isLast": true}, {"id": 14, "hell": 3, "floor": 1, "mw": 500, "mh": 500, "type": "vert", "area": "용암 입구", "isLast": false}, {"id": 15, "hell": 3, "floor": 2, "mw": 500, "mh": 500, "type": "horiz", "area": "불기둥 지대", "isLast": false}, {"id": 16, "hell": 3, "floor": 3, "mw": 500, "mh": 500, "type": "vert", "area": "화산 심장", "isLast": false}, {"id": 17, "hell": 3, "floor": 4, "mw": 500, "mh": 500, "type": "vert", "area": "화염 악마 소굴", "isLast": false}, {"id": 18, "hell": 3, "floor": 5, "mw": 500, "mh": 500, "type": "horiz", "area": "지옥 사냥개 터", "isLast": false}, {"id": 19, "hell": 3, "floor": 6, "mw": 500, "mh": 500, "type": "vert", "area": "불벌레 동굴", "isLast": false}, {"id": 20, "hell": 3, "floor": 7, "mw": 500, "mh": 500, "type": "grid", "area": "감옥지기의 관문", "isLast": true}, {"id": 21, "hell": 4, "floor": 1, "mw": 500, "mh": 500, "type": "vert", "area": "전쟁 폐허", "isLast": false}, {"id": 22, "hell": 4, "floor": 2, "mw": 500, "mh": 500, "type": "horiz", "area": "뼈 산", "isLast": false}, {"id": 23, "hell": 4, "floor": 3, "mw": 500, "mh": 500, "type": "vert", "area": "악마 병영", "isLast": false}, {"id": 24, "hell": 4, "floor": 4, "mw": 500, "mh": 500, "type": "vert", "area": "기사단 진지", "isLast": false}, {"id": 25, "hell": 4, "floor": 5, "mw": 500, "mh": 500, "type": "grid", "area": "지휘관의 요새", "isLast": true}, {"id": 26, "hell": 5, "floor": 1, "mw": 500, "mh": 500, "type": "vert", "area": "살점 입구", "isLast": false}, {"id": 27, "hell": 5, "floor": 2, "mw": 500, "mh": 500, "type": "horiz", "area": "인간 뼈 통로", "isLast": false}, {"id": 28, "hell": 5, "floor": 3, "mw": 500, "mh": 500, "type": "vert", "area": "뒤틀린 동굴", "isLast": false}, {"id": 29, "hell": 5, "floor": 4, "mw": 500, "mh": 500, "type": "vert", "area": "촉수 악마 소굴", "isLast": false}, {"id": 30, "hell": 5, "floor": 5, "mw": 500, "mh": 500, "type": "horiz", "area": "괴물 인간 서식지", "isLast": false}, {"id": 31, "hell": 5, "floor": 6, "mw": 500, "mh": 500, "type": "grid", "area": "대사도의 제단", "isLast": true}, {"id": 32, "hell": 6, "floor": 1, "mw": 500, "mh": 500, "type": "vert", "area": "검은 성문", "isLast": false}, {"id": 33, "hell": 6, "floor": 2, "mw": 500, "mh": 500, "type": "horiz", "area": "지옥 탑", "isLast": false}, {"id": 34, "hell": 6, "floor": 3, "mw": 500, "mh": 500, "type": "grid", "area": "지옥 군주의 왕좌", "isLast": true}];
-const CHAPTER_STAGES=[{"hell": 0, "name": "썩은 숲", "stages": 4, "startSi": 0}, {"hell": 1, "name": "벌레굴", "stages": 6, "startSi": 4}, {"hell": 2, "name": "얼음굴", "stages": 4, "startSi": 10}, {"hell": 3, "name": "화염지대", "stages": 7, "startSi": 14}, {"hell": 4, "name": "지옥 군단", "stages": 5, "startSi": 21}, {"hell": 5, "name": "사도의 마굴", "stages": 6, "startSi": 26}, {"hell": 6, "name": "지옥성", "stages": 3, "startSi": 32}];
-const TOTAL_STAGES=35;
-const HELLS=[{"name": "1장 썩은 숲", "color": "#4a8c34"}, {"name": "2장 벌레굴", "color": "#8bc34a"}, {"name": "3장 얼음굴", "color": "#4fc3f7"}, {"name": "4장 화염지대", "color": "#ff6600"}, {"name": "5장 지옥 군단", "color": "#cc0000"}, {"name": "6장 사도의 마굴", "color": "#e040fb"}, {"name": "7장 지옥성", "color": "#ff2020"}];
+const STAGES=[{"id": 0, "hell": 0, "floor": 1, "mw": 66, "mh": 140, "type": "vert"}, {"id": 1, "hell": 0, "floor": 2, "mw": 75, "mh": 69, "type": "horiz"}, {"id": 2, "hell": 0, "floor": 3, "mw": 72, "mh": 160, "type": "vert"}, {"id": 3, "hell": 0, "floor": 4, "mw": 75, "mh": 170, "type": "vert"}, {"id": 4, "hell": 0, "floor": 5, "mw": 90, "mh": 78, "type": "horiz"}, {"id": 5, "hell": 0, "floor": 6, "mw": 81, "mh": 190, "type": "vert"}, {"id": 6, "hell": 0, "floor": 7, "mw": 84, "mh": 200, "type": "vert"}, {"id": 7, "hell": 0, "floor": 8, "mw": 105, "mh": 87, "type": "horiz"}, {"id": 8, "hell": 0, "floor": 9, "mw": 90, "mh": 220, "type": "vert"}, {"id": 9, "hell": 0, "floor": 10, "mw": 93, "mh": 230, "type": "grid"}, {"id": 10, "hell": 1, "floor": 1, "mw": 96, "mh": 240, "type": "vert"}, {"id": 11, "hell": 1, "floor": 2, "mw": 125, "mh": 99, "type": "horiz"}, {"id": 12, "hell": 1, "floor": 3, "mw": 102, "mh": 260, "type": "vert"}, {"id": 13, "hell": 1, "floor": 4, "mw": 105, "mh": 270, "type": "vert"}, {"id": 14, "hell": 1, "floor": 5, "mw": 140, "mh": 108, "type": "horiz"}, {"id": 15, "hell": 1, "floor": 6, "mw": 111, "mh": 290, "type": "vert"}, {"id": 16, "hell": 1, "floor": 7, "mw": 114, "mh": 300, "type": "vert"}, {"id": 17, "hell": 1, "floor": 8, "mw": 155, "mh": 117, "type": "horiz"}, {"id": 18, "hell": 1, "floor": 9, "mw": 120, "mh": 320, "type": "vert"}, {"id": 19, "hell": 1, "floor": 10, "mw": 123, "mh": 330, "type": "grid"}, {"id": 20, "hell": 2, "floor": 1, "mw": 126, "mh": 340, "type": "vert"}, {"id": 21, "hell": 2, "floor": 2, "mw": 175, "mh": 129, "type": "horiz"}, {"id": 22, "hell": 2, "floor": 3, "mw": 132, "mh": 360, "type": "vert"}, {"id": 23, "hell": 2, "floor": 4, "mw": 135, "mh": 370, "type": "vert"}, {"id": 24, "hell": 2, "floor": 5, "mw": 190, "mh": 138, "type": "horiz"}, {"id": 25, "hell": 2, "floor": 6, "mw": 141, "mh": 390, "type": "vert"}, {"id": 26, "hell": 2, "floor": 7, "mw": 144, "mh": 400, "type": "vert"}, {"id": 27, "hell": 2, "floor": 8, "mw": 205, "mh": 147, "type": "horiz"}, {"id": 28, "hell": 2, "floor": 9, "mw": 150, "mh": 420, "type": "vert"}, {"id": 29, "hell": 2, "floor": 10, "mw": 153, "mh": 430, "type": "grid"}, {"id": 30, "hell": 3, "floor": 1, "mw": 156, "mh": 440, "type": "vert"}, {"id": 31, "hell": 3, "floor": 2, "mw": 225, "mh": 159, "type": "horiz"}, {"id": 32, "hell": 3, "floor": 3, "mw": 162, "mh": 460, "type": "vert"}, {"id": 33, "hell": 3, "floor": 4, "mw": 165, "mh": 470, "type": "vert"}, {"id": 34, "hell": 3, "floor": 5, "mw": 240, "mh": 168, "type": "horiz"}, {"id": 35, "hell": 3, "floor": 6, "mw": 171, "mh": 490, "type": "vert"}, {"id": 36, "hell": 3, "floor": 7, "mw": 174, "mh": 500, "type": "vert"}, {"id": 37, "hell": 3, "floor": 8, "mw": 255, "mh": 177, "type": "horiz"}, {"id": 38, "hell": 3, "floor": 9, "mw": 180, "mh": 520, "type": "vert"}, {"id": 39, "hell": 3, "floor": 10, "mw": 183, "mh": 530, "type": "grid"}, {"id": 40, "hell": 4, "floor": 1, "mw": 186, "mh": 540, "type": "vert"}, {"id": 41, "hell": 4, "floor": 2, "mw": 275, "mh": 189, "type": "horiz"}, {"id": 42, "hell": 4, "floor": 3, "mw": 192, "mh": 560, "type": "vert"}, {"id": 43, "hell": 4, "floor": 4, "mw": 195, "mh": 570, "type": "vert"}, {"id": 44, "hell": 4, "floor": 5, "mw": 290, "mh": 198, "type": "horiz"}, {"id": 45, "hell": 4, "floor": 6, "mw": 201, "mh": 590, "type": "vert"}, {"id": 46, "hell": 4, "floor": 7, "mw": 204, "mh": 600, "type": "vert"}, {"id": 47, "hell": 4, "floor": 8, "mw": 305, "mh": 207, "type": "horiz"}, {"id": 48, "hell": 4, "floor": 9, "mw": 210, "mh": 620, "type": "vert"}, {"id": 49, "hell": 4, "floor": 10, "mw": 213, "mh": 630, "type": "grid"}, {"id": 50, "hell": 5, "floor": 1, "mw": 216, "mh": 640, "type": "vert"}, {"id": 51, "hell": 5, "floor": 2, "mw": 325, "mh": 219, "type": "horiz"}, {"id": 52, "hell": 5, "floor": 3, "mw": 222, "mh": 660, "type": "vert"}, {"id": 53, "hell": 5, "floor": 4, "mw": 225, "mh": 670, "type": "vert"}, {"id": 54, "hell": 5, "floor": 5, "mw": 340, "mh": 228, "type": "horiz"}, {"id": 55, "hell": 5, "floor": 6, "mw": 231, "mh": 690, "type": "vert"}, {"id": 56, "hell": 5, "floor": 7, "mw": 234, "mh": 700, "type": "vert"}, {"id": 57, "hell": 5, "floor": 8, "mw": 355, "mh": 237, "type": "horiz"}, {"id": 58, "hell": 5, "floor": 9, "mw": 240, "mh": 720, "type": "vert"}, {"id": 59, "hell": 5, "floor": 10, "mw": 243, "mh": 730, "type": "grid"}, {"id": 60, "hell": 6, "floor": 1, "mw": 246, "mh": 740, "type": "vert"}, {"id": 61, "hell": 6, "floor": 2, "mw": 375, "mh": 249, "type": "horiz"}, {"id": 62, "hell": 6, "floor": 3, "mw": 252, "mh": 760, "type": "vert"}, {"id": 63, "hell": 6, "floor": 4, "mw": 255, "mh": 770, "type": "vert"}, {"id": 64, "hell": 6, "floor": 5, "mw": 390, "mh": 258, "type": "horiz"}, {"id": 65, "hell": 6, "floor": 6, "mw": 261, "mh": 790, "type": "vert"}, {"id": 66, "hell": 6, "floor": 7, "mw": 264, "mh": 800, "type": "vert"}, {"id": 67, "hell": 6, "floor": 8, "mw": 405, "mh": 267, "type": "horiz"}, {"id": 68, "hell": 6, "floor": 9, "mw": 270, "mh": 820, "type": "vert"}, {"id": 69, "hell": 6, "floor": 10, "mw": 273, "mh": 830, "type": "grid"}];
+const HELLS=[
+  {name:'1장 괴물굴',color:'#ffea00'},{name:'2장 시체지옥',color:'#8bc34a'},
+  {name:'3장 화염지옥',color:'#ff6600'},{name:'4장 심연지옥',color:'#e040fb'},
+  {name:'5장 얼음지옥',color:'#4fc3f7'},{name:'6장 썩은숲',color:'#aaaaaa'},
+  {name:'7장 마왕성',color:'#ff2020'},
+];
 const H_COL=['#1a0800','#141a12','#28301e','#3a3a24'];
 const H_NAME=['용암','바닥','벽','높은벽'];
 const OBJ_DEFS=[
@@ -146,9 +140,6 @@ const OBJ_DEFS=[
   {id:'spawn_g0',name:'스폰-일반',icon:'👾',color:'#88ff88',cat:'스폰'},
   {id:'spawn_g1',name:'스폰-강화',icon:'👹',color:'#ffaa00',cat:'스폰'},
   {id:'spawn_g2',name:'스폰-엘리트',icon:'🔱',color:'#ff4400',cat:'스폰'},
-  {id:'hole_s',name:'소환굴(소)',icon:'🕳️',color:'#cc4444',cat:'소환굴'},
-  {id:'hole_m',name:'소환굴(중)',icon:'🕳️',color:'#cc6600',cat:'소환굴'},
-  {id:'hole_l',name:'소환굴(대)',icon:'🕳️',color:'#cc0000',cat:'소환굴'},
   {id:'boss_gate',name:'보스문',icon:'🚧',color:'#aa00ff',cat:'보스방'},
   {id:'boss_exit',name:'보스출구',icon:'🚪',color:'#00ff66',cat:'보스방'},
   {id:'pillar',name:'기둥',icon:'🏛️',color:'#888888',cat:'보스방'},
@@ -2477,51 +2468,26 @@ function buildChapterTabs(){
   const ct=document.getElementById('chapter-tabs');ct.innerHTML='';
   HELLS.forEach((h,i)=>{const b=document.createElement('div');b.className='ch-tab'+(i===currentHell?' active':'');
     if(i===currentHell){b.style.background=h.color;b.style.color='#000';b.style.borderColor=h.color}
-    b.textContent=HELLS[i].name;b.onclick=()=>{currentHell=i;buildChapterTabs();buildStageListOrig()};ct.appendChild(b)})
+    b.textContent=(i+1)+'장';b.onclick=()=>{currentHell=i;buildChapterTabs();buildStageListOrig()};ct.appendChild(b)})
 }
 function buildStageListOrig(){
   const sl=document.getElementById('stage-list');sl.innerHTML='';
-  const _ch=CHAPTER_STAGES[currentHell];for(let i=_ch.startSi;i<_ch.startSi+_ch.stages;i++){const s=STAGES[i];
+  for(let i=currentHell*10;i<currentHell*10+10;i++){const s=STAGES[i];
     const item=document.createElement('div');item.className='stage-item'+(i===currentStage?' active':'');
     const bossType=ARENA_TYPES[i%5];
     item.innerHTML=mapMode==='boss'?
-      `<div><div class="name">⚔️ ${s.area||s.floor+'구역'} 보스방</div><div class="size">50×42</div></div>`:
-      `<div><div class="name">${s.isLast?'🚪 ':''}${s.area||s.floor+'구역'}</div><div class="size">${s.mw}×${s.mh} ${s.type==='grid'?'격자':s.type==='horiz'?'가로':''}</div></div>`;
+      `<div><div class="name">${s.floor}층 보스방</div><div class="size">50×42 [${bossType}]</div></div><div class="badge" style="background:#ff4400">💀</div>`:
+      `<div><div class="name">${s.floor}층 <span style="font-size:9px;color:#888">${s.type==='horiz'?'↔가로':s.type==='grid'?'🔲격자':'🗺️맵'}</span></div><div class="size">${s.mw}×${s.mh}</div></div><div class="badge" style="background:${s.type==='grid'?'#ff4400':s.type==='horiz'?'#0088ff':HELLS[s.hell].color}">${s.type==='grid'?'👑':s.type==='horiz'?'↔':'🗺️'}</div>`;
     item.onclick=()=>loadStage(i);sl.appendChild(item)}
 }
 function loadStage(sid){
   currentStage=sid;const s=STAGES[sid],m=getMap(sid);if(!m)return;
   camX=m.mw*T/2;camY=m.mh*T/2;zoom=Math.min(editor.clientWidth/(m.mw*T+100),editor.clientHeight/(m.mh*T+100),1);
   undoStack=[];buildStageListOrig();
-  document.getElementById('stage-label').textContent=mapMode==='boss'?`${HELLS[s.hell].name} — ${s.area||''} 보스방 (${m.mw}×${m.mh})`:`${HELLS[s.hell].name} — ${s.area||s.floor+'구역'} (${m.mw}×${m.mh})`;
+  document.getElementById('stage-label').textContent=mapMode==='boss'?`${HELLS[s.hell].name} — ${s.floor}층 보스방 [${ARENA_TYPES[sid%5]}] (${m.mw}×${m.mh})`:`${HELLS[s.hell].name} — ${s.floor}층 (${m.mw}×${m.mh})`;
   document.getElementById('stage-label').style.color=HELLS[s.hell].color;
   document.getElementById('room-info').textContent='방: '+m.rooms.map(r=>`${r.id}(${r.type})`).join(' → ');
-  document.getElementById('mapW').value=m.mw;
-  document.getElementById('mapH').value=m.mh;
   saveEditorSettings(false);
-}
-function resizeMap(){
-  const m=getCurrentMap();if(!m)return;
-  const nw=Math.max(20,Math.min(2000,+document.getElementById('mapW').value||m.mw));
-  const nh=Math.max(20,Math.min(2000,+document.getElementById('mapH').value||m.mh));
-  if(nw===m.mw&&nh===m.mh)return;
-  saveUndo();
-  const newGrid=[];
-  for(let y=0;y<nh;y++){
-    newGrid[y]=new Uint8Array(nw);
-    for(let x=0;x<nw;x++){
-      if(y<m.mh&&x<m.mw)newGrid[y][x]=m.grid[y][x];
-      else newGrid[y][x]=2; // 새 영역은 벽
-    }
-  }
-  // 범위 밖 오브젝트 제거
-  m.objs=m.objs.filter(o=>o.x>=0&&o.x<nw&&o.y>=0&&o.y<nh);
-  m.grid=newGrid;m.mw=nw;m.mh=nh;m.dirty=true;
-  // FIXED_MAPS도 동기화
-  const si=currentStage;
-  if(FIXED_MAPS[si]){FIXED_MAPS[si].mw=nw;FIXED_MAPS[si].mh=nh}
-  document.getElementById('stage-label').textContent=`${HELLS[STAGES[si].hell].name} — ${STAGES[si].area||STAGES[si].floor+'구역'} (${nw}×${nh})`;
-  _scheduleMapAutosave();
 }
 function resize(){C.width=editor.clientWidth;C.height=editor.clientHeight}
 resize();window.onresize=resize;
@@ -2558,7 +2524,7 @@ function exportCurrent(){
   const rle=[];let i=0;while(i<flat.length){let v=flat[i],c=1;while(i+c<flat.length&&flat[i+c]===v&&c<255)c++;rle.push(v,c);i+=c}
   const data={version:8,stage:currentStage,hell:s.hell,floor:s.floor,mw:m.mw,mh:m.mh,tileSize:T,heightRle:rle,objects:m.objs,rooms:m.rooms};
   const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`맵_${HELLS[s.hell].name}_${s.area||s.floor}.json`;a.click();
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`맵_S${currentStage}_${HELLS[s.hell].name}_${s.floor}층.json`;a.click();
 }
 function exportAll(){
   const all={version:8,stages:{}};
@@ -2623,16 +2589,10 @@ function draw(){
       if(sp.type==='exit'){X.fillStyle='rgba(0,255,100,0.4)';X.font='8px monospace';X.fillText('EXIT',sp.x*T,sp.y*T+T*2)}
     }}
   if(showObj){for(const o of m.objs){const od=OBJ_DEFS.find(d=>d.id===o.id);if(!od)continue;
-    const px=o.x*T,py=o.y*T;
-    // 소환굴: 실제 게임 크기 반영 (게임T=40 → 에디터T=8, 비율=0.2)
-    let sz=T*2.5;
-    if(o.id==='hole_s')sz=T*5.25;   // 420px/40*T/2 = 10.5타일 반지름의 절반
-    else if(o.id==='hole_m')sz=T*6.25; // 500px/40*T/2
-    else if(o.id==='hole_l')sz=T*7.75; // 620px/40*T/2
+    const px=o.x*T,py=o.y*T,sz=T*2.5;
     X.fillStyle=od.color+'55';X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.fill();
-    X.strokeStyle=od.color;X.lineWidth=o.id&&o.id.startsWith('hole_')?2:1;X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.stroke();
-    const fsz=o.id&&o.id.startsWith('hole_')?sz*0.4:sz*1.2;
-    X.font=`${fsz}px serif`;X.textAlign='center';X.textBaseline='middle';X.fillStyle='#fff';X.fillText(od.icon,px,py+1)}}
+    X.strokeStyle=od.color;X.lineWidth=1;X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.stroke();
+    X.font=`${sz*1.2}px serif`;X.textAlign='center';X.textBaseline='middle';X.fillStyle='#fff';X.fillText(od.icon,px,py+1)}}
   if(hoverTX>=0&&hoverTX<m.mw&&hoverTY>=0&&hoverTY<m.mh){
     const hc=HELLS[STAGES[currentStage].hell].color+'44';
     if(selectedObj){X.strokeStyle='#ff880066';X.lineWidth=2;X.beginPath();X.arc(hoverTX*T,hoverTY*T,T*3,0,Math.PI*2);X.stroke()}
@@ -2646,7 +2606,7 @@ function draw(){
   X.strokeStyle=HELLS[STAGES[currentStage].hell].color+'22';X.lineWidth=2;X.strokeRect(0,0,m.mw*T,m.mh*T);
   X.restore();
   const ch=(hoverTY>=0&&hoverTY<m.mh&&hoverTX>=0&&hoverTX<m.mw)?m.grid[hoverTY]?.[hoverTX]:'?';
-  document.getElementById('hud-text').innerHTML=`<b>${HELLS[STAGES[currentStage].hell].name}</b> ${STAGES[currentStage].area||STAGES[currentStage].floor+'구역'} | [${hoverTX},${hoverTY}] h=${ch}(${H_NAME[ch]||'?'}) | ${selectedObj?OBJ_DEFS.find(d=>d.id===selectedObj)?.name||'':'높이 '+currentHeight}`;
+  document.getElementById('hud-text').innerHTML=`<b>${HELLS[STAGES[currentStage].hell].name}</b> ${STAGES[currentStage].floor}층 | [${hoverTX},${hoverTY}] h=${ch}(${H_NAME[ch]||'?'}) | ${selectedObj?OBJ_DEFS.find(d=>d.id===selectedObj)?.name||'':'높이 '+currentHeight}`;
   requestAnimationFrame(draw);
 }
 
@@ -3484,7 +3444,7 @@ function drawHudLabel() {
       `<b>${HELLS[currentGridHell].name} 격자맵</b> | [${hoverTX},${hoverTY}] h=${ch}(${H_NAME[ch]||'?'}) | ${selectedObj?OBJ_DEFS.find(d=>d.id===selectedObj)?.name||'':'높이 '+currentHeight}`;
   } else {
     document.getElementById('hud-text').innerHTML =
-      `<b>${HELLS[STAGES[currentStage].hell].name}</b> ${STAGES[currentStage].area||STAGES[currentStage].floor+'구역'} | [${hoverTX},${hoverTY}] h=${ch}(${H_NAME[ch]||'?'}) | ${selectedObj?OBJ_DEFS.find(d=>d.id===selectedObj)?.name||'':'높이 '+currentHeight}`;
+      `<b>${HELLS[STAGES[currentStage].hell].name}</b> ${STAGES[currentStage].floor}층 | [${hoverTX},${hoverTY}] h=${ch}(${H_NAME[ch]||'?'}) | ${selectedObj?OBJ_DEFS.find(d=>d.id===selectedObj)?.name||'':'높이 '+currentHeight}`;
   }
 }
 
@@ -3508,9 +3468,8 @@ function regenCurrent() {
 }
 function regenAll() {
   if (!confirm('맵+격자맵 전체 랜덤 재생성?')) return;
-  for(let i=0;i<TOTAL_STAGES;i++){const _s=STAGES[i];if(_s.type==="grid")FIXED_MAPS[i]=null;else if(_s.type==="horiz")FIXED_MAPS[i]=genHoriz(i);else FIXED_MAPS[i]=genSnake(i);delete mapStore[i];}
+  for(let i=0;i<70;i++){FIXED_MAPS[i]=genSnake(i);delete mapStore[i];}
   for(let h=0;h<7;h++){GRID_MAPS[h]=generateGridMap(h,Math.floor(Math.random()*999999));delete gridMapStore[h];}
-
   if (mapMode==='grid') loadGridStage(currentGridHell);
   else loadStage(currentStage);
   document.getElementById('stats').textContent='✅ 전체 재생성 완료';
@@ -3624,50 +3583,44 @@ function genSnake(si,forceSeed){
 // ── 내보내기 ──
 function exportAsFixedMap(){
   let out=`// ══ EXODUSER FIXED_MAPS + GRID_MAPS 내보내기 ══\n\n`;
+  // 격자맵의 스테이지 인덱스 매핑 (hell→stage index)
+  const _gridStageIdx={};
+  for(let i=0;i<STAGES.length;i++){if(STAGES[i].type==='grid')_gridStageIdx[STAGES[i].hell]=i;}
   if(mapMode==='grid'){
-    out+='// ── 격자맵 (game.html에 추가) ──\nconst GRID_MAPS={};\n\n';
-    for(let h=0;h<7;h++){if(!GRID_MAPS[h])continue;out+=`// ${HELLS[h].name}\nGRID_MAPS[${h}]=${JSON.stringify(GRID_MAPS[h],null,2)};\n\n`;}
+    out+='// ── 격자맵 FIXED_MAPS ──\n';
+    for(let h=0;h<7;h++){
+      if(!GRID_MAPS[h])continue;
+      const si=_gridStageIdx[h];
+      if(si!=null){
+        const s=STAGES[si];
+        out+=`// ${s.hell+1}장 ${s.floor}층 (격자)\nFIXED_MAPS[${si}]=${JSON.stringify(GRID_MAPS[h],null,2)};\n\n`;
+      }
+    }
   } else {
     out+='// ── 세로맵 FIXED_MAPS ──\n';
-    for(let i=0;i<TOTAL_STAGES;i++){
-      if(!FIXED_MAPS[i])continue;
-      const s=STAGES[i];
-      // 에디터 오브젝트에서 소환굴 추출 → FIXED_MAPS에 삽입
-      const m=mapStore[i]||getMap(i);
-      const fm=JSON.parse(JSON.stringify(FIXED_MAPS[i])); // deep copy
-      if(m&&m.objs){
-        // 소환굴 추출
-        const holes=m.objs.filter(o=>o.id==='hole_s'||o.id==='hole_m'||o.id==='hole_l');
-        if(holes.length>0){
-          fm.spawnHoles=holes.map(h=>({x:h.x,y:h.y,type:h.id==='hole_s'?'S':h.id==='hole_m'?'M':'L'}));
-        }
-        // 시작점 오브젝트 → rooms의 start 방 좌표 동기화
-        const startObj=m.objs.find(o=>o.id==='player_start');
-        if(startObj){
-          const sr=fm.rooms.find(r=>r.type==='start');
-          if(sr){sr.cx=startObj.x;sr.cy=startObj.y}
-          else{fm.rooms.unshift({id:'s',type:'start',cx:startObj.x,cy:startObj.y,shape:'ellipse',rx:8,ry:6})}
-        }
-        // 보스 오브젝트 → rooms의 boss 방 생성/동기화
-        const bossObj=m.objs.find(o=>o.id==='boss_pos');
-        if(bossObj){
-          const br=fm.rooms.find(r=>r.type==='boss');
-          if(br){br.cx=bossObj.x;br.cy=bossObj.y}
-          else{fm.rooms.push({id:'b',type:'boss',cx:bossObj.x,cy:bossObj.y,shape:'circle',rx:15,pillars:[{dx:-7,dy:-5,w:3,h:3},{dx:5,dy:-5,w:3,h:3},{dx:-7,dy:5,w:3,h:3},{dx:5,dy:5,w:3,h:3}]})}
-        }
+    for(let i=0;i<70;i++){if(!FIXED_MAPS[i])continue;const s=STAGES[i];out+=`// ${s.hell+1}장 ${s.floor}층\nFIXED_MAPS[${i}]=${JSON.stringify(FIXED_MAPS[i],null,2)};\n\n`;}
+    // 격자맵도 FIXED_MAPS로 포함 (gridMapStore > GRID_MAPS > 자동생성 순)
+    out+='\n// ── 격자맵 FIXED_MAPS ──\n';
+    for(let h=0;h<7;h++){
+      let _gm=gridMapStore[h]||null;
+      let _gmData;
+      if(_gm&&_gm.grid){
+        // gridMapStore → FIXED_MAPS 형식 변환 (tileRLE 생성)
+        const rle=[];const flat=[];
+        for(let y=0;y<_gm.mh;y++)for(let x=0;x<_gm.mw;x++)flat.push(~~(_gm.grid[y]?.[x]||0));
+        for(let i=0;i<flat.length;){const v=flat[i];let c=1;while(i+c<flat.length&&flat[i+c]===v&&c<65535)c++;rle.push(v,c);i+=c;}
+        _gmData={mw:_gm.mw,mh:_gm.mh,rooms:_gm.rooms||[],corridors:[],features:[],corridorSpawns:[],
+          spawnHoles:(_gm.objs||[]).filter(o=>o.id&&o.id.startsWith&&o.id.startsWith('spawn')).map(o=>({x:o.x,y:o.y,type:'S'})),
+          tileRLE:rle};
+      }else{
+        if(!GRID_MAPS[h])GRID_MAPS[h]=generateGridMap(h);
+        _gmData=GRID_MAPS[h];
       }
-      // 타일 그리드 RLE 포함 (에디터 grid → 게임 map 변환: 1=바닥→0, 나머지→1)
-      if(m&&m.grid){
-        fm.mw=m.mw;fm.mh=m.mh;
-        const rle=[];let prev=-1,cnt=0;
-        for(let y=0;y<m.mh;y++)for(let x=0;x<m.mw;x++){
-          const v=m.grid[y][x]===1?0:1; // 에디터1(바닥)→게임0(바닥), 나머지→게임1(벽)
-          if(v===prev){cnt++}else{if(cnt>0)rle.push(prev,cnt);prev=v;cnt=1}
-        }
-        if(cnt>0)rle.push(prev,cnt);
-        fm.tileRLE=rle;
+      const si=_gridStageIdx[h];
+      if(si!=null){
+        const s=STAGES[si];
+        out+=`// ${s.hell+1}장 ${s.floor}층 (격자)\nFIXED_MAPS[${si}]=${JSON.stringify(_gmData,null,2)};\n\n`;
       }
-      out+=`// ${s.hell+1}장 ${s.area||s.floor+'구역'}\nFIXED_MAPS[${i}]=${JSON.stringify(fm,null,2)};\n\n`;
     }
   }
   const blob=new Blob([out],{type:'text/plain'});
@@ -3789,7 +3742,7 @@ function genHoriz(si, forceSeed){
 }
 
 
-for(let i=0;i<TOTAL_STAGES;i++){
+for(let i=0;i<70;i++){
   const s=STAGES[i];
   if(s.type==='grid'){
     // floor10: 격자맵 — GRID_MAPS[hell]로 처리 (getMap에서 분기)
@@ -3801,10 +3754,6 @@ for(let i=0;i<TOTAL_STAGES;i++){
   }
 }
 for(let h=0;h<7;h++) GRID_MAPS[h]=generateGridMap(h);
-// ═══ 1장 썩은 숲 — 숲 입구 ═══
-FIXED_MAPS[0]={"mw": 200, "mh": 200, "rooms": [{"id": "s", "type": "start", "cx": 100, "cy": 180, "shape": "ellipse", "rx": 14, "ry": 10}, {"id": "a1", "type": "combat", "cx": 38, "cy": 175, "shape": "ellipse", "rx": 14, "ry": 10, "spawns": [{"dx": 4, "dy": 0, "grade": 0}, {"dx": 0, "dy": 1, "grade": 0}, {"dx": -1, "dy": 0, "grade": 0}, {"dx": 0, "dy": -3, "grade": 0}]}, {"id": "a2", "type": "combat", "cx": 165, "cy": 178, "shape": "ellipse", "rx": 12, "ry": 10, "spawns": [{"dx": 3, "dy": 0, "grade": 0}, {"dx": 0, "dy": 1, "grade": 0}, {"dx": -1, "dy": 0, "grade": 0}, {"dx": 0, "dy": -1, "grade": 0}]}, {"id": "b1", "type": "combat", "cx": 30, "cy": 148, "shape": "circle", "rx": 12, "spawns": [{"dx": 4, "dy": 0, "grade": 0}, {"dx": 0, "dy": 1, "grade": 0}, {"dx": -3, "dy": 0, "grade": 0}, {"dx": 0, "dy": -3, "grade": 0}]}, {"id": "b2", "type": "combat", "cx": 75, "cy": 145, "shape": "ellipse", "rx": 16, "ry": 12, "spawns": [{"dx": 4, "dy": 0, "grade": 0}, {"dx": 0, "dy": 1, "grade": 0}, {"dx": -3, "dy": 2, "grade": 0}, {"dx": -2, "dy": -1, "grade": 0}, {"dx": 0, "dy": -1, "grade": 0}]}, {"id": "b3", "type": "combat", "cx": 130, "cy": 148, "shape": "ellipse", "rx": 14, "ry": 10, "spawns": [{"dx": 2, "dy": 0, "grade": 0}, {"dx": 0, "dy": 1, "grade": 0}, {"dx": -1, "dy": 1, "grade": 0}, {"dx": -1, "dy": -1, "grade": 0}, {"dx": 1, "dy": -3, "grade": 0}]}, {"id": "b4", "type": "combat", "cx": 178, "cy": 142, "shape": "circle", "rx": 12, "spawns": [{"dx": 4, "dy": 0, "grade": 0}, {"dx": 0, "dy": 1, "grade": 0}, {"dx": -3, "dy": 0, "grade": 0}, {"dx": 0, "dy": -1, "grade": 0}]}, {"id": "c1", "type": "combat", "cx": 25, "cy": 118, "shape": "ellipse", "rx": 12, "ry": 10, "spawns": [{"dx": 4, "dy": 0, "grade": 0}, {"dx": 0, "dy": 3, "grade": 0}, {"dx": -3, "dy": 0, "grade": 0}, {"dx": 0, "dy": -3, "grade": 0}]}, {"id": "c2", "type": "combat", "cx": 72, "cy": 115, "shape": "circle", "rx": 14, "spawns": [{"dx": 3, "dy": 0, "grade": 0}, {"dx": 0, "dy": 1, "grade": 0}, {"dx": -2, "dy": 1, "grade": 0}, {"dx": -3, "dy": -2, "grade": 0}, {"dx": 0, "dy": -2, "grade": 0}]}, {"id": "f", "type": "forge", "cx": 118, "cy": 112, "shape": "rect", "rx": 12, "ry": 8}, {"id": "c3", "type": "combat", "cx": 170, "cy": 115, "shape": "ellipse", "rx": 14, "ry": 10, "spawns": [{"dx": 2, "dy": 0, "grade": 1}, {"dx": 0, "dy": 1, "grade": 1}, {"dx": -3, "dy": 2, "grade": 1}, {"dx": -2, "dy": -1, "grade": 1}, {"dx": 0, "dy": -2, "grade": 1}]}, {"id": "d1", "type": "combat", "cx": 40, "cy": 88, "shape": "ellipse", "rx": 14, "ry": 12, "spawns": [{"dx": 3, "dy": 0, "grade": 1}, {"dx": 0, "dy": 1, "grade": 1}, {"dx": -1, "dy": 1, "grade": 1}, {"dx": -2, "dy": -1, "grade": 1}, {"dx": 0, "dy": -1, "grade": 1}]}, {"id": "d2", "type": "combat", "cx": 100, "cy": 85, "shape": "cross", "rx": 16, "ry": 16, "spawns": [{"dx": 2, "dy": 0, "grade": 1}, {"dx": 1, "dy": 2, "grade": 1}, {"dx": 0, "dy": 1, "grade": 1}, {"dx": -2, "dy": 0, "grade": 1}, {"dx": -1, "dy": -2, "grade": 1}, {"dx": 1, "dy": -3, "grade": 1}], "armW": 8, "armH": 8}, {"id": "d3", "type": "combat", "cx": 160, "cy": 88, "shape": "ellipse", "rx": 14, "ry": 12, "spawns": [{"dx": 3, "dy": 0, "grade": 1}, {"dx": 0, "dy": 1, "grade": 1}, {"dx": -3, "dy": 2, "grade": 1}, {"dx": -2, "dy": -1, "grade": 1}, {"dx": 1, "dy": -3, "grade": 1}]}, {"id": "e1", "type": "combat", "cx": 28, "cy": 58, "shape": "circle", "rx": 12, "spawns": [{"dx": 2, "dy": 0, "grade": 1}, {"dx": 0, "dy": 2, "grade": 1}, {"dx": -1, "dy": 0, "grade": 1}, {"dx": 0, "dy": -3, "grade": 1}]}, {"id": "e2", "type": "combat", "cx": 80, "cy": 55, "shape": "ellipse", "rx": 16, "ry": 12, "spawns": [{"dx": 3, "dy": 0, "grade": 1}, {"dx": 1, "dy": 3, "grade": 1}, {"dx": -3, "dy": 2, "grade": 1}, {"dx": -2, "dy": -1, "grade": 1}, {"dx": 1, "dy": -3, "grade": 1}]}, {"id": "e3", "type": "combat", "cx": 140, "cy": 55, "shape": "ellipse", "rx": 14, "ry": 12, "spawns": [{"dx": 2, "dy": 0, "grade": 1}, {"dx": 1, "dy": 3, "grade": 1}, {"dx": -1, "dy": 1, "grade": 1}, {"dx": -1, "dy": -1, "grade": 1}, {"dx": 1, "dy": -3, "grade": 1}]}, {"id": "e4", "type": "combat", "cx": 185, "cy": 58, "shape": "circle", "rx": 10, "spawns": [{"dx": 2, "dy": 0, "grade": 1}, {"dx": 0, "dy": 2, "grade": 1}, {"dx": -1, "dy": 0, "grade": 1}, {"dx": 0, "dy": -1, "grade": 1}]}, {"id": "n1", "type": "combat", "cx": 50, "cy": 28, "shape": "ellipse", "rx": 14, "ry": 10, "spawns": [{"dx": 2, "dy": 0, "grade": 1}, {"dx": 0, "dy": 2, "grade": 1}, {"dx": -2, "dy": 0, "grade": 1}, {"dx": 0, "dy": -2, "grade": 1}]}, {"id": "n2", "type": "combat", "cx": 110, "cy": 25, "shape": "ellipse", "rx": 16, "ry": 12, "spawns": [{"dx": 4, "dy": 0, "grade": 1}, {"dx": 0, "dy": 2, "grade": 1}, {"dx": -1, "dy": 1, "grade": 1}, {"dx": -2, "dy": -1, "grade": 1}, {"dx": 0, "dy": -2, "grade": 1}]}, {"id": "n3", "type": "combat", "cx": 170, "cy": 28, "shape": "ellipse", "rx": 12, "ry": 10, "spawns": [{"dx": 2, "dy": 0, "grade": 1}, {"dx": 0, "dy": 3, "grade": 1}, {"dx": -2, "dy": 0, "grade": 1}, {"dx": 0, "dy": -3, "grade": 1}]}, {"id": "exit", "type": "combat", "cx": 110, "cy": 10, "shape": "ellipse", "rx": 12, "ry": 6, "spawns": [{"dx": 4, "dy": 0, "grade": 1}, {"dx": -1, "dy": 3, "grade": 1}, {"dx": -1, "dy": -1, "grade": 1}]}, {"id": "h1", "type": "combat", "cx": 8, "cy": 155, "shape": "circle", "rx": 5, "spawns": [{"dx": 0, "dy": 0, "grade": 1}]}, {"id": "h2", "type": "combat", "cx": 192, "cy": 130, "shape": "circle", "rx": 5, "spawns": [{"dx": 0, "dy": 0, "grade": 1}]}, {"id": "h3", "type": "combat", "cx": 8, "cy": 42, "shape": "circle", "rx": 5, "spawns": [{"dx": 0, "dy": 0, "grade": 2}]}, {"id": "h4", "type": "combat", "cx": 192, "cy": 42, "shape": "circle", "rx": 5, "spawns": [{"dx": 0, "dy": 0, "grade": 2}]}], "corridors": [{"from": "s", "to": "a1", "width": 7, "style": "cave", "waypoints": [{"x": 68, "y": 178}]}, {"from": "s", "to": "a2", "width": 7, "style": "cave", "waypoints": [{"x": 132, "y": 179}]}, {"from": "a1", "to": "b1", "width": 7, "style": "cave", "waypoints": [{"x": 34, "y": 162}]}, {"from": "a1", "to": "b2", "width": 7, "style": "cave", "waypoints": [{"x": 55, "y": 160}]}, {"from": "s", "to": "b2", "width": 8, "style": "cave", "waypoints": [{"x": 88, "y": 162}]}, {"from": "s", "to": "b3", "width": 8, "style": "cave", "waypoints": [{"x": 115, "y": 164}]}, {"from": "a2", "to": "b3", "width": 7, "style": "cave", "waypoints": [{"x": 148, "y": 163}]}, {"from": "a2", "to": "b4", "width": 7, "style": "cave", "waypoints": [{"x": 172, "y": 160}]}, {"from": "a1", "to": "h1", "width": 4, "style": "cave"}, {"from": "b1", "to": "b2", "width": 6, "style": "cave", "waypoints": [{"x": 52, "y": 147}]}, {"from": "b2", "to": "b3", "width": 7, "style": "cave", "waypoints": [{"x": 102, "y": 146}]}, {"from": "b3", "to": "b4", "width": 6, "style": "cave", "waypoints": [{"x": 154, "y": 145}]}, {"from": "b1", "to": "c1", "width": 6, "style": "cave", "waypoints": [{"x": 27, "y": 133}]}, {"from": "b2", "to": "c2", "width": 7, "style": "cave", "waypoints": [{"x": 73, "y": 130}]}, {"from": "b3", "to": "f", "width": 7, "style": "cave", "waypoints": [{"x": 124, "y": 130}]}, {"from": "b4", "to": "c3", "width": 6, "style": "cave", "waypoints": [{"x": 174, "y": 128}]}, {"from": "b4", "to": "h2", "width": 4, "style": "cave"}, {"from": "c1", "to": "c2", "width": 6, "style": "cave", "waypoints": [{"x": 48, "y": 117}]}, {"from": "c2", "to": "f", "width": 7, "style": "cave", "waypoints": [{"x": 95, "y": 113}]}, {"from": "f", "to": "c3", "width": 7, "style": "cave", "waypoints": [{"x": 144, "y": 114}]}, {"from": "c1", "to": "d1", "width": 6, "style": "cave", "waypoints": [{"x": 32, "y": 103}]}, {"from": "c2", "to": "d1", "width": 6, "style": "cave", "waypoints": [{"x": 55, "y": 102}]}, {"from": "c2", "to": "d2", "width": 7, "style": "cave", "waypoints": [{"x": 86, "y": 100}]}, {"from": "f", "to": "d2", "width": 7, "style": "cave", "waypoints": [{"x": 109, "y": 98}]}, {"from": "c3", "to": "d2", "width": 6, "style": "cave", "waypoints": [{"x": 135, "y": 100}]}, {"from": "c3", "to": "d3", "width": 6, "style": "cave", "waypoints": [{"x": 165, "y": 102}]}, {"from": "d1", "to": "d2", "width": 7, "style": "cave", "waypoints": [{"x": 70, "y": 87}]}, {"from": "d2", "to": "d3", "width": 7, "style": "cave", "waypoints": [{"x": 130, "y": 87}]}, {"from": "d1", "to": "e1", "width": 6, "style": "cave", "waypoints": [{"x": 34, "y": 73}]}, {"from": "d1", "to": "e2", "width": 6, "style": "cave", "waypoints": [{"x": 58, "y": 72}]}, {"from": "d2", "to": "e2", "width": 7, "style": "cave", "waypoints": [{"x": 90, "y": 70}]}, {"from": "d2", "to": "e3", "width": 7, "style": "cave", "waypoints": [{"x": 120, "y": 70}]}, {"from": "d3", "to": "e3", "width": 6, "style": "cave", "waypoints": [{"x": 150, "y": 72}]}, {"from": "d3", "to": "e4", "width": 6, "style": "cave", "waypoints": [{"x": 172, "y": 73}]}, {"from": "e1", "to": "e2", "width": 6, "style": "cave", "waypoints": [{"x": 54, "y": 57}]}, {"from": "e2", "to": "e3", "width": 7, "style": "cave", "waypoints": [{"x": 110, "y": 55}]}, {"from": "e3", "to": "e4", "width": 6, "style": "cave", "waypoints": [{"x": 162, "y": 57}]}, {"from": "e1", "to": "h3", "width": 4, "style": "cave"}, {"from": "e4", "to": "h4", "width": 4, "style": "cave"}, {"from": "e1", "to": "n1", "width": 6, "style": "cave", "waypoints": [{"x": 38, "y": 43}]}, {"from": "e2", "to": "n1", "width": 6, "style": "cave", "waypoints": [{"x": 65, "y": 42}]}, {"from": "e2", "to": "n2", "width": 7, "style": "cave", "waypoints": [{"x": 95, "y": 40}]}, {"from": "e3", "to": "n2", "width": 7, "style": "cave", "waypoints": [{"x": 125, "y": 40}]}, {"from": "e3", "to": "n3", "width": 6, "style": "cave", "waypoints": [{"x": 155, "y": 42}]}, {"from": "e4", "to": "n3", "width": 6, "style": "cave", "waypoints": [{"x": 178, "y": 43}]}, {"from": "n1", "to": "n2", "width": 7, "style": "cave", "waypoints": [{"x": 80, "y": 26}]}, {"from": "n2", "to": "n3", "width": 7, "style": "cave", "waypoints": [{"x": 140, "y": 27}]}, {"from": "n1", "to": "exit", "width": 6, "style": "cave", "waypoints": [{"x": 80, "y": 18}]}, {"from": "n2", "to": "exit", "width": 8, "style": "cave"}, {"from": "n3", "to": "exit", "width": 6, "style": "cave", "waypoints": [{"x": 140, "y": 18}]}, {"from": "c3", "to": "a2", "width": 5, "style": "cave", "waypoints": [{"x": 190, "y": 125}, {"x": 188, "y": 160}]}, {"from": "e1", "to": "b1", "width": 5, "style": "cave", "waypoints": [{"x": 10, "y": 58}, {"x": 8, "y": 100}, {"x": 12, "y": 148}]}, {"from": "exit", "to": "s", "width": 4, "style": "cave", "waypoints": [{"x": 196, "y": 10}, {"x": 198, "y": 95}, {"x": 196, "y": 180}, {"x": 145, "y": 182}]}], "features": [{"type": "alcove", "x": 6, "y": 15, "r": 4}, {"type": "alcove", "x": 194, "y": 15, "r": 4}, {"type": "alcove", "x": 6, "y": 40, "r": 4}, {"type": "alcove", "x": 194, "y": 40, "r": 6}, {"type": "alcove", "x": 6, "y": 65, "r": 6}, {"type": "alcove", "x": 194, "y": 65, "r": 5}, {"type": "alcove", "x": 6, "y": 90, "r": 4}, {"type": "alcove", "x": 194, "y": 90, "r": 5}, {"type": "alcove", "x": 6, "y": 115, "r": 3}, {"type": "alcove", "x": 194, "y": 115, "r": 4}, {"type": "alcove", "x": 6, "y": 140, "r": 3}, {"type": "alcove", "x": 194, "y": 140, "r": 5}, {"type": "alcove", "x": 6, "y": 165, "r": 6}, {"type": "alcove", "x": 194, "y": 165, "r": 5}, {"type": "alcove", "x": 30, "y": 194, "r": 3}, {"type": "alcove", "x": 30, "y": 6, "r": 3}, {"type": "alcove", "x": 60, "y": 194, "r": 5}, {"type": "alcove", "x": 60, "y": 6, "r": 5}, {"type": "alcove", "x": 90, "y": 194, "r": 4}, {"type": "alcove", "x": 90, "y": 6, "r": 3}, {"type": "alcove", "x": 120, "y": 194, "r": 5}, {"type": "alcove", "x": 120, "y": 6, "r": 4}, {"type": "alcove", "x": 150, "y": 194, "r": 4}, {"type": "alcove", "x": 150, "y": 6, "r": 5}], "corridorSpawns": [{"x": 132, "y": 179, "grade": 0}, {"x": 115, "y": 164, "grade": 1}, {"x": 148, "y": 163, "grade": 0}, {"x": 52, "y": 147, "grade": 0}, {"x": 102, "y": 146, "grade": 0}, {"x": 27, "y": 133, "grade": 0}, {"x": 124, "y": 130, "grade": 0}, {"x": 174, "y": 128, "grade": 1}, {"x": 55, "y": 102, "grade": 1}, {"x": 86, "y": 100, "grade": 1}, {"x": 165, "y": 102, "grade": 0}, {"x": 70, "y": 87, "grade": 0}, {"x": 130, "y": 87, "grade": 1}, {"x": 58, "y": 72, "grade": 1}, {"x": 150, "y": 72, "grade": 1}, {"x": 172, "y": 73, "grade": 1}, {"x": 110, "y": 55, "grade": 0}, {"x": 125, "y": 40, "grade": 0}, {"x": 178, "y": 43, "grade": 0}, {"x": 80, "y": 18, "grade": 0}, {"x": 140, "y": 18, "grade": 1}, {"x": 10, "y": 58, "grade": 0}]};
-// ═══ 커스텀 맵 끝 ═══
-
 try{
   const savedSlot=localStorage.getItem(EDITOR_SETTINGS_SLOT_KEY);
   _setSelectedSlot(savedSlot||1);

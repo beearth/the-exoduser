@@ -3599,14 +3599,27 @@ function exportAsFixedMap(){
   } else {
     out+='// ── 세로맵 FIXED_MAPS ──\n';
     for(let i=0;i<70;i++){if(!FIXED_MAPS[i])continue;const s=STAGES[i];out+=`// ${s.hell+1}장 ${s.floor}층\nFIXED_MAPS[${i}]=${JSON.stringify(FIXED_MAPS[i],null,2)};\n\n`;}
-    // 격자맵도 FIXED_MAPS로 포함
+    // 격자맵도 FIXED_MAPS로 포함 (gridMapStore > GRID_MAPS > 자동생성 순)
     out+='\n// ── 격자맵 FIXED_MAPS ──\n';
     for(let h=0;h<7;h++){
-      if(!GRID_MAPS[h])continue;
+      let _gm=gridMapStore[h]||null;
+      let _gmData;
+      if(_gm&&_gm.grid){
+        // gridMapStore → FIXED_MAPS 형식 변환 (tileRLE 생성)
+        const rle=[];const flat=[];
+        for(let y=0;y<_gm.mh;y++)for(let x=0;x<_gm.mw;x++)flat.push(~~(_gm.grid[y]?.[x]||0));
+        for(let i=0;i<flat.length;){const v=flat[i];let c=1;while(i+c<flat.length&&flat[i+c]===v&&c<65535)c++;rle.push(v,c);i+=c;}
+        _gmData={mw:_gm.mw,mh:_gm.mh,rooms:_gm.rooms||[],corridors:[],features:[],corridorSpawns:[],
+          spawnHoles:(_gm.objs||[]).filter(o=>o.id&&o.id.startsWith&&o.id.startsWith('spawn')).map(o=>({x:o.x,y:o.y,type:'S'})),
+          tileRLE:rle};
+      }else{
+        if(!GRID_MAPS[h])GRID_MAPS[h]=generateGridMap(h);
+        _gmData=GRID_MAPS[h];
+      }
       const si=_gridStageIdx[h];
       if(si!=null){
         const s=STAGES[si];
-        out+=`// ${s.hell+1}장 ${s.floor}층 (격자)\nFIXED_MAPS[${si}]=${JSON.stringify(GRID_MAPS[h],null,2)};\n\n`;
+        out+=`// ${s.hell+1}장 ${s.floor}층 (격자)\nFIXED_MAPS[${si}]=${JSON.stringify(_gmData,null,2)};\n\n`;
       }
     }
   }
