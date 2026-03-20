@@ -2117,167 +2117,6 @@ oC=c;}`;
 }
 
 // ═══════════════════════════════════════
-//  GPU BURST BULLET SYSTEM (Dual-path)
-// ═══════════════════════════════════════
-let _bstProg=null,_bstVAO=null,_bstQuadVBO=null,_bstInstVBO=null;
-let _bstTfProg=null,_bstTfObj=null,_bstTfBufA=null,_bstTfBufB=null;
-let _bstTfVaoA=null,_bstTfVaoB=null,_bstTfRVaoA=null,_bstTfRVaoB=null;
-let _bstTfPing=true;
-let _bstGpuPipe=null,_bstGpuBG=null,_bstGpuBuf=null,_bstGpuParamBuf=null;
-let _bstGpuRPipe=null,_bstGpuRBG=null,_bstGpuQuadVB=null;
-const BURST_MAX=10000,BURST_STRIDE=6;
-const _bstCpu=new Float32Array(BURST_MAX*BURST_STRIDE);
-let _bstCount=0,_bstActive=false,_bstColor=new Float32Array([1,.5,.1,1]);
-let _bstMode=0;
-function _initBurstGPU(){if(!GPU)return false;try{
-  const wgsl=`struct Bullet{pos:vec2f,vel:vec2f,life:f32,size:f32};
-struct Params{dt:f32,decay:f32,count:u32,_pad:u32};
-@group(0)@binding(0)var<storage,read_write> bullets:array<Bullet>;
-@group(0)@binding(1)var<uniform> params:Params;
-@compute @workgroup_size(256)
-fn main(@builtin(global_invocation_id) gid:vec3u){let i=gid.x;if(i>=params.count){return;}
-  var b=bullets[i];if(b.life<=0.0){return;}
-  b.pos+=b.vel*params.dt;b.vel*=pow(0.993,params.dt*60.0);
-  b.life-=params.dt*params.decay;if(b.life<0.0){b.life=0.0;}bullets[i]=b;}`;
-  const mod=GPU.createShaderModule({code:wgsl});
-  _bstGpuPipe=GPU.createComputePipeline({layout:'auto',compute:{module:mod,entryPoint:'main'}});
-  _bstGpuBuf=GPU.createBuffer({size:BURST_MAX*BURST_STRIDE*4,usage:GPUBufferUsage.STORAGE|GPUBufferUsage.COPY_DST|GPUBufferUsage.COPY_SRC});
-  _bstGpuParamBuf=GPU.createBuffer({size:16,usage:GPUBufferUsage.UNIFORM|GPUBufferUsage.COPY_DST});
-  _bstGpuBG=GPU.createBindGroup({layout:_bstGpuPipe.getBindGroupLayout(0),entries:[
-    {binding:0,resource:{buffer:_bstGpuBuf}},{binding:1,resource:{buffer:_bstGpuParamBuf}}]});
-  const rWgsl=`struct RV{@location(0)qp:vec2f,@location(1)ip:vec2f,@location(2)il:f32,@location(3)is:f32};
-struct RO{@builtin(position)p:vec4f,@location(0)life:f32};
-@group(0)@binding(0)var<uniform> rp:vec4f;@group(0)@binding(1)var<uniform> col:vec4f;
-@vertex fn vs(v:RV)->RO{var o:RO;let world=v.ip-rp.xy;let screen=world+rp.zw*0.5;
-  let ndc=screen/rp.zw*2.0-1.0;let vert=v.qp*(v.is/rp.zw);
-  o.p=vec4f(ndc.x+vert.x,-(ndc.y+vert.y),0,1);o.life=v.il;return o;}
-@fragment fn fs(i:RO)->@location(0)vec4f{let a=i.life*col.a;return vec4f(col.rgb*a,a);}`;
-  const rMod=GPU.createShaderModule({code:rWgsl});
-  const fmt=navigator.gpu.getPreferredCanvasFormat();
-  const rpBGL=GPU.createBindGroupLayout({entries:[
-    {binding:0,visibility:GPUShaderStage.VERTEX,buffer:{type:'uniform'}},
-    {binding:1,visibility:GPUShaderStage.VERTEX|GPUShaderStage.FRAGMENT,buffer:{type:'uniform'}}]});
-  _bstGpuRPipe=GPU.createRenderPipeline({layout:GPU.createPipelineLayout({bindGroupLayouts:[rpBGL]}),
-    vertex:{module:rMod,entryPoint:'vs',buffers:[
-      {arrayStride:8,stepMode:'vertex',attributes:[{shaderLocation:0,offset:0,format:'float32x2'}]},
-      {arrayStride:BURST_STRIDE*4,stepMode:'instance',attributes:[
-        {shaderLocation:1,offset:0,format:'float32x2'},{shaderLocation:2,offset:16,format:'float32'},
-        {shaderLocation:3,offset:20,format:'float32'}]}]},
-    fragment:{module:rMod,entryPoint:'fs',targets:[{format:fmt,blend:{
-      color:{srcFactor:'one',dstFactor:'one-minus-src-alpha'},alpha:{srcFactor:'one',dstFactor:'one-minus-src-alpha'}}}]},
-    primitive:{topology:'triangle-strip'}});
-  const qd=new Float32Array([-1,-1,1,-1,-1,1,1,1]);
-  _bstGpuQuadVB=GPU.createBuffer({size:qd.byteLength,usage:GPUBufferUsage.VERTEX|GPUBufferUsage.COPY_DST});
-  GPU.queue.writeBuffer(_bstGpuQuadVB,0,qd);
-  const rpBuf=GPU.createBuffer({size:16,usage:GPUBufferUsage.UNIFORM|GPUBufferUsage.COPY_DST});
-  const colBuf=GPU.createBuffer({size:16,usage:GPUBufferUsage.UNIFORM|GPUBufferUsage.COPY_DST});
-  _bstGpuRBG={rpBuf,colBuf,bg:GPU.createBindGroup({layout:rpBGL,entries:[
-    {binding:0,resource:{buffer:rpBuf}},{binding:1,resource:{buffer:colBuf}}]})};
-  if(!IS_ELECTRON)console.log('[BURST] WebGPU Compute ready');return true;
-  }catch(e){console.warn('[BURST] WebGPU init fail:',e);return false}}
-function _initBurstTF(){if(!GL)return false;try{
-  function _mkSh2(src,t){const s=GL.createShader(t);GL.shaderSource(s,src);GL.compileShader(s);
-    if(!GL.getShaderParameter(s,GL.COMPILE_STATUS))console.error('[BURST]',GL.getShaderInfoLog(s));return s}
-  const tfVS=`#version 300 es\nprecision highp float;
-layout(location=0)in vec2 aPos;layout(location=1)in vec2 aVel;layout(location=2)in float aLife;layout(location=3)in float aSize;
-out vec2 vPos;out vec2 vVel;out float vLife;out float vSize;uniform float uDt;uniform float uDecay;
-void main(){vPos=aPos+aVel*uDt;vVel=aVel*pow(0.993,uDt*60.0);vLife=max(aLife-uDt*uDecay,0.0);vSize=aSize;}`;
-  const tfFS=`#version 300 es\nprecision lowp float;out vec4 o;void main(){o=vec4(0);}`;
-  _bstTfProg=GL.createProgram();
-  GL.attachShader(_bstTfProg,_mkSh2(tfVS,GL.VERTEX_SHADER));GL.attachShader(_bstTfProg,_mkSh2(tfFS,GL.FRAGMENT_SHADER));
-  GL.transformFeedbackVaryings(_bstTfProg,['vPos','vVel','vLife','vSize'],GL.INTERLEAVED_ATTRIBS);
-  GL.linkProgram(_bstTfProg);
-  if(!GL.getProgramParameter(_bstTfProg,GL.LINK_STATUS)){console.error('[BURST TF]',GL.getProgramInfoLog(_bstTfProg));return false}
-  const rVS=`#version 300 es\nprecision highp float;
-layout(location=0)in vec2 aQP;layout(location=1)in vec2 aIP;layout(location=2)in float aIL;layout(location=3)in float aIS;
-uniform vec2 uCam;uniform vec2 uRes;out float vLife;
-void main(){vec2 w=aIP-uCam;vec2 s=w+uRes*0.5;vec2 ndc=s/uRes*2.0-1.0;ndc.y=-ndc.y;
-  vec2 v=aQP*(aIS/uRes);gl_Position=vec4(ndc+v,0,1);vLife=aIL;}`;
-  const rFS=`#version 300 es\nprecision mediump float;in float vLife;out vec4 oC;uniform vec4 uCol;
-void main(){float a=vLife*uCol.a;oC=vec4(uCol.rgb*a,a);}`;
-  _bstProg=GL.createProgram();GL.attachShader(_bstProg,_mkSh2(rVS,GL.VERTEX_SHADER));GL.attachShader(_bstProg,_mkSh2(rFS,GL.FRAGMENT_SHADER));
-  GL.linkProgram(_bstProg);
-  if(!GL.getProgramParameter(_bstProg,GL.LINK_STATUS)){console.error('[BURST R]',GL.getProgramInfoLog(_bstProg));return false}
-  const quad=new Float32Array([-1,-1,1,-1,-1,1,1,1]);_bstQuadVBO=GL.createBuffer();
-  GL.bindBuffer(GL.ARRAY_BUFFER,_bstQuadVBO);GL.bufferData(GL.ARRAY_BUFFER,quad,GL.STATIC_DRAW);
-  const bSz=BURST_MAX*BURST_STRIDE*4;_bstTfBufA=GL.createBuffer();_bstTfBufB=GL.createBuffer();
-  GL.bindBuffer(GL.ARRAY_BUFFER,_bstTfBufA);GL.bufferData(GL.ARRAY_BUFFER,bSz,GL.DYNAMIC_COPY);
-  GL.bindBuffer(GL.ARRAY_BUFFER,_bstTfBufB);GL.bufferData(GL.ARRAY_BUFFER,bSz,GL.DYNAMIC_COPY);
-  function mkTfV(buf){const v=GL.createVertexArray();GL.bindVertexArray(v);GL.bindBuffer(GL.ARRAY_BUFFER,buf);const st=BURST_STRIDE*4;
-    GL.enableVertexAttribArray(0);GL.vertexAttribPointer(0,2,GL.FLOAT,false,st,0);
-    GL.enableVertexAttribArray(1);GL.vertexAttribPointer(1,2,GL.FLOAT,false,st,8);
-    GL.enableVertexAttribArray(2);GL.vertexAttribPointer(2,1,GL.FLOAT,false,st,16);
-    GL.enableVertexAttribArray(3);GL.vertexAttribPointer(3,1,GL.FLOAT,false,st,20);
-    GL.bindVertexArray(null);return v}
-  _bstTfVaoA=mkTfV(_bstTfBufA);_bstTfVaoB=mkTfV(_bstTfBufB);
-  function mkRV(ib){const v=GL.createVertexArray();GL.bindVertexArray(v);
-    GL.bindBuffer(GL.ARRAY_BUFFER,_bstQuadVBO);GL.enableVertexAttribArray(0);GL.vertexAttribPointer(0,2,GL.FLOAT,false,0,0);GL.vertexAttribDivisor(0,0);
-    GL.bindBuffer(GL.ARRAY_BUFFER,ib);const st=BURST_STRIDE*4;
-    GL.enableVertexAttribArray(1);GL.vertexAttribPointer(1,2,GL.FLOAT,false,st,0);GL.vertexAttribDivisor(1,1);
-    GL.enableVertexAttribArray(2);GL.vertexAttribPointer(2,1,GL.FLOAT,false,st,16);GL.vertexAttribDivisor(2,1);
-    GL.enableVertexAttribArray(3);GL.vertexAttribPointer(3,1,GL.FLOAT,false,st,20);GL.vertexAttribDivisor(3,1);
-    GL.bindVertexArray(null);return v}
-  _bstTfRVaoA=mkRV(_bstTfBufA);_bstTfRVaoB=mkRV(_bstTfBufB);
-  _bstTfObj=GL.createTransformFeedback();GL.bindBuffer(GL.ARRAY_BUFFER,null);
-  if(!IS_ELECTRON)console.log('[BURST] WebGL2 TF ready');return true;
-  }catch(e){console.warn('[BURST] TF init fail:',e);return false}}
-function _initBurstSystem(){if(_useGPU&&_initBurstGPU()){_bstMode=1;return}if(_useGL&&_initBurstTF()){_bstMode=2;return}_bstMode=_useGL?3:4}
-function fireBurst(cx,cy,count,spd,size,color){
-  count=Math.min(count||100,BURST_MAX);spd=spd||6;size=size||5;
-  if(color){_bstColor[0]=color[0];_bstColor[1]=color[1];_bstColor[2]=color[2];_bstColor[3]=color[3]!=null?color[3]:1}
-  else{_bstColor[0]=1;_bstColor[1]=.5;_bstColor[2]=.1;_bstColor[3]=1}
-  _bstCount=count;_bstActive=true;
-  for(let i=0;i<count;i++){const a=(Math.PI*2/count)*i,b=i*BURST_STRIDE;
-    _bstCpu[b]=cx;_bstCpu[b+1]=cy;_bstCpu[b+2]=Math.cos(a)*spd;_bstCpu[b+3]=Math.sin(a)*spd;_bstCpu[b+4]=1.0;_bstCpu[b+5]=size;}
-  if(_bstMode===1&&_bstGpuBuf)GPU.queue.writeBuffer(_bstGpuBuf,0,_bstCpu,0,count*BURST_STRIDE);
-  else if(_bstMode===2&&GL&&_bstTfBufA){const sub=_bstCpu.subarray(0,count*BURST_STRIDE);
-    GL.bindBuffer(GL.ARRAY_BUFFER,_bstTfBufA);GL.bufferSubData(GL.ARRAY_BUFFER,0,sub);
-    GL.bindBuffer(GL.ARRAY_BUFFER,_bstTfBufB);GL.bufferSubData(GL.ARRAY_BUFFER,0,sub);
-    GL.bindBuffer(GL.ARRAY_BUFFER,null);_bstTfPing=true;}}
-function _updateBurst(sp){if(!_bstActive||_bstCount<=0)return;
-  if(_bstMode===1){if(!GPU||!_bstGpuPipe)return;
-    const p=new Float32Array([sp,0.007,0,0]);new Uint32Array(p.buffer)[2]=_bstCount;
-    GPU.queue.writeBuffer(_bstGpuParamBuf,0,p);
-    const enc=GPU.createCommandEncoder(),pass=enc.beginComputePass();
-    pass.setPipeline(_bstGpuPipe);pass.setBindGroup(0,_bstGpuBG);
-    pass.dispatchWorkgroups(Math.ceil(_bstCount/256));pass.end();GPU.queue.submit([enc.finish()]);}
-  else if(_bstMode===2){if(!GL||!_bstTfProg)return;
-    const wBuf=_bstTfPing?_bstTfBufB:_bstTfBufA,rVao=_bstTfPing?_bstTfVaoA:_bstTfVaoB;
-    GL.useProgram(_bstTfProg);GL.uniform1f(GL.getUniformLocation(_bstTfProg,'uDt'),sp);
-    GL.uniform1f(GL.getUniformLocation(_bstTfProg,'uDecay'),0.007);
-    GL.enable(GL.RASTERIZER_DISCARD);GL.bindTransformFeedback(GL.TRANSFORM_FEEDBACK,_bstTfObj);
-    GL.bindBufferBase(GL.TRANSFORM_FEEDBACK_BUFFER,0,wBuf);GL.bindVertexArray(rVao);
-    GL.beginTransformFeedback(GL.POINTS);GL.drawArrays(GL.POINTS,0,_bstCount);GL.endTransformFeedback();
-    GL.bindTransformFeedback(GL.TRANSFORM_FEEDBACK,null);GL.disable(GL.RASTERIZER_DISCARD);_bstTfPing=!_bstTfPing;}
-  else{let alive=0;for(let i=0;i<_bstCount;i++){const b=i*BURST_STRIDE;if(_bstCpu[b+4]<=0)continue;
-    _bstCpu[b]+=_bstCpu[b+2]*sp;_bstCpu[b+1]+=_bstCpu[b+3]*sp;
-    const d=Math.pow(0.993,sp*60);_bstCpu[b+2]*=d;_bstCpu[b+3]*=d;_bstCpu[b+4]-=sp*0.007;alive++;}
-    if(alive===0)_bstActive=false;}}
-function _drawBurst(){if(!_bstActive||_bstCount<=0)return;
-  if(_bstMode===1){if(!GPU||!_bstGpuRPipe||!_gpuCtx)return;const rb=_bstGpuRBG;
-    GPU.queue.writeBuffer(rb.rpBuf,0,new Float32Array([G.cam.x,G.cam.y,C.width,C.height]));
-    GPU.queue.writeBuffer(rb.colBuf,0,_bstColor);
-    const tex=_gpuCtx.getCurrentTexture(),enc=GPU.createCommandEncoder();
-    const pass=enc.beginRenderPass({colorAttachments:[{view:tex.createView(),loadOp:'load',storeOp:'store'}]});
-    pass.setPipeline(_bstGpuRPipe);pass.setBindGroup(0,rb.bg);
-    pass.setVertexBuffer(0,_bstGpuQuadVB);pass.setVertexBuffer(1,_bstGpuBuf);
-    pass.draw(4,_bstCount);pass.end();GPU.queue.submit([enc.finish()]);}
-  else if(_bstMode===2){if(!GL||!_bstProg)return;if(typeof _flush==='function')_flush();
-    const rVao=_bstTfPing?_bstTfRVaoA:_bstTfRVaoB;
-    GL.useProgram(_bstProg);GL.bindVertexArray(rVao);
-    GL.uniform2f(GL.getUniformLocation(_bstProg,'uCam'),G.cam.x,G.cam.y);
-    GL.uniform2f(GL.getUniformLocation(_bstProg,'uRes'),C.width,C.height);
-    GL.uniform4fv(GL.getUniformLocation(_bstProg,'uCol'),_bstColor);
-    GL.enable(GL.BLEND);GL.blendFunc(GL.ONE,GL.ONE_MINUS_SRC_ALPHA);
-    GL.drawArraysInstanced(GL.TRIANGLE_STRIP,0,4,_bstCount);
-    GL.blendFunc(GL.SRC_ALPHA,GL.ONE_MINUS_SRC_ALPHA);GL.bindVertexArray(null);}
-  else if(_bstMode>=3){if(!X)return;const ox=C.width/2-G.cam.x,oy=C.height/2-G.cam.y;
-    const r=~~(_bstColor[0]*255),g=~~(_bstColor[1]*255),bl=~~(_bstColor[2]*255);
-    for(let i=0;i<_bstCount;i++){const bi=i*BURST_STRIDE,life=_bstCpu[bi+4];if(life<=0)continue;
-      const sz=_bstCpu[bi+5];X.globalAlpha=life*(_bstColor[3]||1);X.fillStyle='rgb('+r+','+g+','+bl+')';
-      X.fillRect(~~(_bstCpu[bi]+ox-sz/2),~~(_bstCpu[bi+1]+oy-sz/2),sz,sz);}X.globalAlpha=1;}}
-
-// ═══════════════════════════════════════
 //  X Proxy Build (WebGPU/WebGL 공용)
 // ═══════════════════════════════════════
 function _buildProxyX(){
@@ -2428,9 +2267,6 @@ async function _bootRenderer(){
   if(!X){X=C.getContext('2d')}
   // 한 줄 요약
   console.log('[GPU] '+(_useGPU?'WebGPU':_useGL?'WebGL2':'Canvas2D')+' | '+_hwGPU+(IS_ELECTRON?' | Electron':''));
-  // ── Burst Bullet System Init ──
-  _initBurstSystem();
-  console.log('[BURST] mode='+_bstMode+' (1=Compute,2=TF,3=Instanced,4=2D)');
   // ── Canvas2D shadowBlur 인터셉트 (고FPS 시 비활성화) ──
   if(!_useGPU&&!_useGL&&X&&typeof CanvasRenderingContext2D!=='undefined'){
     const _sbDesc=Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype,'shadowBlur');
@@ -5199,10 +5035,10 @@ function spawnCrescent(x,y,ang,dmg,el,step){
     c.active=true;
     c.x=x;c.y=y;
     c.ang=ang;
-    const spd=step===3?6:8;
+    const spd=step===3?7:9;
     c.vx=Math.cos(ang)*spd;
     c.vy=Math.sin(ang)*spd;
-    c.life=step===3?20:15;c.ml=c.life;
+    c.life=step===3?45:30;c.ml=c.life;
     c.dmg=dmg;c.el=el||0;
     c.r=step===3?52:36;
     c.step=step;
@@ -5559,18 +5395,17 @@ function renderCrescents(X,camX,camY){
     X.translate(sx,sy);
     const angOff=c.step===1?0.5:c.step===2?-0.5:0;
     X.rotate(c.ang+angOff);
-    // 스프라이트 렌더 (3x3 그리드 9프레임 애니메이션)
+    // 스프라이트 렌더 (3프레임 가로 스트립: 0=1타파랑, 1=2타파랑, 2=3타금색)
     if(_cReady){
-      const cols=3,rows=3,totalF=9;
-      const fw=_cImg.naturalWidth/cols,fh=_cImg.naturalHeight/rows;
-      const fi=Math.min(totalF-1,~~(prog*totalF)); // 수명 비례 프레임
-      const fcol=fi%cols,frow=~~(fi/cols);
-      const sz=_is3?c.r*3.2:c.r*2.6;
+      const fw=_cImg.naturalWidth/3,fh=_cImg.naturalHeight;
+      const fi=_is3?2:(c.step===2?1:0);
+      const sz=_is3?c.r*2.8:c.r*2.2;
       X.globalCompositeOperation='lighter';
       X.globalAlpha=alpha;
-      X.drawImage(_cImg,fcol*fw,frow*fh,fw,fh,-sz/2,-sz/2,sz,sz);
+      X.drawImage(_cImg,fi*fw,0,fw,fh,-sz/2,-sz/2,sz,sz);
+      // 2중 블렌딩 (더 밝게)
       X.globalAlpha=alpha*.4;
-      X.drawImage(_cImg,fcol*fw,frow*fh,fw,fh,-sz/2,-sz/2,sz,sz);
+      X.drawImage(_cImg,fi*fw,0,fw,fh,-sz/2,-sz/2,sz,sz);
       X.globalCompositeOperation='source-over';
     }else{
       // 폴백: 캔버스 호
@@ -13171,7 +13006,6 @@ function update(){
   _ffTimer+=_dtSp;if(_ffTimer>=.25){_ffTimer=0;_ffBuild()}
   if(G._dbgSlam>0){G._dbgSlam--;document.title='[SLAM] s='+P.s+' HS='+G.hitStop+' SM='+G.slowMo+' nhsT='+(G._noHitStopT||0).toFixed(1)+' f='+G._dbgSlam;}
   if(G.pets)updatePet(); // 펫 이동은 항상, 수거는 petAuto 토글
-  _updateBurst(_dtSp); // GPU Burst Bullet System
   mergeMatItems(); // 악의 아이템 자동 합체
   _updateSlimes(); // 슬라임 아이템 포식 + 합체
   // ── 작살 게이지 자동 회복 ──
@@ -15146,7 +14980,7 @@ function update(){
         const ang=Math.atan2(e.y-p.y,e.x-p.x);
         const mult=elMul(p.el,e.el);const dmg=~~(p.dmg*mult);
         if(p.explosive && !p.hitTriggered){ p.vx=0; p.vy=0; p.hitTriggered=true; } // 폭발탄은 멈춤
-        hurtE(e,dmg,ang,false,p,p.el); if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3,_r(1.2,.2),e.x,e.y)}else if(p.blueBean){if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.7,_r(1,.15));P._bbHitCd=4}}else if(p.arcMissile){}else if(p.magic)playSampleAt('bullet_hit',.5,_r(1,.15),e.x,e.y);else if(p.normalBow)playSampleAt('bow_hit',.4,_r(1,.15),e.x,e.y);else playSampleAt('bullet_hit',.5,_r(1,.15),e.x,e.y); // 투사체→bullet_hit
+        hurtE(e,dmg,ang,false,p,p.el); if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3,_r(1.2,.2),e.x,e.y)}else if(p.blueBean){playSampleAt('bean_hit',.4,_r(1,.2),e.x,e.y)}else if(p.arcMissile){}else if(p.magic)playSampleAt('bullet_hit',.5,_r(1,.15),e.x,e.y);else if(p.normalBow)playSampleAt('bow_hit',.4,_r(1,.15),e.x,e.y);else playSampleAt('bullet_hit',.5,_r(1,.15),e.x,e.y); // 투사체→bullet_hit
         if(p.magic&&!p.maliceHunt&&!p.iceBlade){
         const _pkb=p.kb!=null?p.kb:3;e.kb.x+=Math.cos(ang)*_pkb*mult;e.kb.y+=Math.sin(ang)*_pkb*mult;}
         // 산탄 넉백 + 폭발
@@ -15177,7 +15011,6 @@ function update(){
               const _bba=Math.atan2(_bbe.y-p.y,_bbe.x-p.x);const _bbm=elMul(p.el,_bbe.el);
               hurtE(_bbe,~~(p._aoeDmg*_bbm),_bba);_bbe.kb.x+=Math.cos(_bba)*2;_bbe.kb.y+=Math.sin(_bba)*2;
             }}
-          if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.7,_r(1,.15));P._bbHitCd=4}
           for(let _bbk=0;_bbk<6;_bbk++){const _bba2=Math.PI*2*_bbk/6;poolPart(p.x,p.y,Math.cos(_bba2)*3,Math.sin(_bba2)*3,'#00ccff',2+Math.random()*2,8+Math.random()*4)}
           hit=true;break;
         }
@@ -15512,7 +15345,6 @@ function update(){
   // ═══ 푸른비 — 쿨다운 ═══
   if(P._blueCd>0)P._blueCd-=sp+_hdCdBonus;
   // ═══ 푸른비 순차 발사 ═══
-  if(P._bbHitCd>0)P._bbHitCd-=sp;
   if(P._blueBarrage&&P._blueBarrage.cnt<P._blueBarrage.max){
     P._blueBarrage.timer-=sp;
     if(P._blueBarrage.timer<=0){
@@ -31312,7 +31144,6 @@ function loop(timestamp){
     G.cam.x=_realCx;G.cam.y=_realCy;P.x=_realPx;P.y=_realPy;
   }else{draw()}
   const _p2=performance.now();
-  _drawBurst(); // GPU Burst Bullet System
   _fpsDraw();if(_useGPU||_useGL)_glFlush();
   // 사망 리플레이 캡처 (10fps)
   _drCaptT+=frameTime;if(_drCaptT>=1000/_DR_FPS){_drCaptT-=1000/_DR_FPS;_drCapture()}
