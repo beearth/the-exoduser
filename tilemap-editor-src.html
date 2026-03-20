@@ -3583,12 +3583,32 @@ function genSnake(si,forceSeed){
 // ── 내보내기 ──
 function exportAsFixedMap(){
   let out=`// ══ EXODUSER FIXED_MAPS + GRID_MAPS 내보내기 ══\n\n`;
+  // 격자맵의 스테이지 인덱스 매핑 (hell→stage index)
+  const _gridStageIdx={};
+  for(let i=0;i<STAGES.length;i++){if(STAGES[i].type==='grid')_gridStageIdx[STAGES[i].hell]=i;}
   if(mapMode==='grid'){
-    out+='// ── 격자맵 (game.html에 추가) ──\nconst GRID_MAPS={};\n\n';
-    for(let h=0;h<7;h++){if(!GRID_MAPS[h])continue;out+=`// ${HELLS[h].name}\nGRID_MAPS[${h}]=${JSON.stringify(GRID_MAPS[h],null,2)};\n\n`;}
+    out+='// ── 격자맵 FIXED_MAPS ──\n';
+    for(let h=0;h<7;h++){
+      if(!GRID_MAPS[h])continue;
+      const si=_gridStageIdx[h];
+      if(si!=null){
+        const s=STAGES[si];
+        out+=`// ${s.hell+1}장 ${s.floor}층 (격자)\nFIXED_MAPS[${si}]=${JSON.stringify(GRID_MAPS[h],null,2)};\n\n`;
+      }
+    }
   } else {
     out+='// ── 세로맵 FIXED_MAPS ──\n';
     for(let i=0;i<70;i++){if(!FIXED_MAPS[i])continue;const s=STAGES[i];out+=`// ${s.hell+1}장 ${s.floor}층\nFIXED_MAPS[${i}]=${JSON.stringify(FIXED_MAPS[i],null,2)};\n\n`;}
+    // 격자맵도 FIXED_MAPS로 포함
+    out+='\n// ── 격자맵 FIXED_MAPS ──\n';
+    for(let h=0;h<7;h++){
+      if(!GRID_MAPS[h])continue;
+      const si=_gridStageIdx[h];
+      if(si!=null){
+        const s=STAGES[si];
+        out+=`// ${s.hell+1}장 ${s.floor}층 (격자)\nFIXED_MAPS[${si}]=${JSON.stringify(GRID_MAPS[h],null,2)};\n\n`;
+      }
+    }
   }
   const blob=new Blob([out],{type:'text/plain'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);

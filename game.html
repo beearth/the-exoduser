@@ -1779,7 +1779,7 @@ var _drawOdd=0;        // 프레임 카운터 (홀수/짝수 판정)
 // ═══════════════════════════════════════
 
 // ── 공통 상수/버퍼/함수 포인터 ──
-const _MQ=32768,_FPV=11;
+const _MQ=65536,_FPV=11;
 const _buf=new Float32Array(_MQ*4*_FPV);
 let _qCnt=0,_bufOff=0;
 let _flush=function(){},_setTex=function(){},_getTex=function(){return null};
@@ -5091,6 +5091,9 @@ function _resetPProj(p){
   p.sfxHit=p.sfxSpawn=p._extraData=null;
   p.chainMax=0;p.chainR=0;p._chainCount=0;
   p._aoeR=p._aoeDmg=0;
+  // 패시브 '관통': 모든 투사체에 기본 관통 부여
+  const _ppLv=PASSIVES&&PASSIVES.pPierce||0;
+  if(_ppLv>0){p.pierce=Math.min(0.95,_ppLv*0.05);p.pierceMax=_ppLv;}
 }
 function _recyclePProj(p){if(_pprojFree.length<_PPROJ_POOL)_pprojFree.push(p)}
 function _getPProj(){
@@ -9258,6 +9261,10 @@ function _projEmit(x,y,el,vx,vy){
 // 4) 맵 오프스크린 캔버스 — 오토타일+그림자+노이즈 렌더러
 let _mapCvs=null,_mapCtx=null,_mapStage=-1;
 let _mapChunks=null; // [{cvs,x,y,w,h}] 맵 텍스처 청크 (GL 최대 크기 초과 시)
+// 대형 맵 스트리밍 모드 (150타일 이상)
+let _streamMap=false;
+const _STREAM_CHUNK=32;
+let _streamChunks={}; // key:"cx_cy" → {cvs,w,h}
 let _mcCols=0,_mcRows=0,_mcW=0,_mcH=0; // 청크 그리드 메타 (O(1) 룩업용)
 let _visChunks=null,_visCamX=-9999,_visCamY=-9999; // 뷰포트 교차 청크 캐시
 // ═══ [DECOR-SWAY] 동적 환경 오브젝트 ═══
@@ -9528,7 +9535,14 @@ function _drawSkull(c,x,y,sz,R){
 // ═══ [S12] MAP RENDER — Tile Cache ═══
 function buildMapCache(){
   if(!G.map)return;
-  _visChunks=null;_visCamX=-9999;_visCamY=-9999; // 청크 캐시 리셋
+  _visChunks=null;_visCamX=-9999;_visCamY=-9999;
+  _streamChunks={};
+  // 대형 맵 스트리밍 모드 (150타일 이상)
+  if(G.mw>150||G.mh>150){
+    _streamMap=true;_mapCvs=null;_mapChunks=null;_mapStage=G.stage;
+    return;
+  }
+  _streamMap=false;
   const hell=SI_TO_HELL[G.stage];
   const th=_MTHEME[hell];const wc=_hexRgb(th.w);const fc=_hexRgb(th.f);
   const mw=G.mw,mh=G.mh,map=G.map;
@@ -10141,6 +10155,39 @@ function buildMapCache(){
     }}
   }
 }
+// ── 스트리밍 청크 빌더 (대형 맵: 32×32타일 단위 지연 렌더) ──
+function _buildStreamChunk(cx,cy){
+  const mw=G.mw,mh=G.mh,map=G.map;if(!map)return null;
+  const tx0=cx*_STREAM_CHUNK,ty0=cy*_STREAM_CHUNK;
+  const tw=Math.min(_STREAM_CHUNK,mw-tx0),th=Math.min(_STREAM_CHUNK,mh-ty0);
+  if(tw<=0||th<=0)return null;
+  const hell=SI_TO_HELL[G.stage];const _th=_MTHEME[hell];
+  const wc=_hexRgb(_th.w),fc=_hexRgb(_th.f);
+  const cc=document.createElement('canvas');cc.width=tw*T;cc.height=th*T;
+  const c=cc.getContext('2d');
+  // 벽/바닥 타일 렌더 (buildMapCache 간소화 버전)
+  for(let ty=ty0;ty<ty0+th;ty++)for(let tx=tx0;tx<tx0+tw;tx++){
+    const v=map[ty]?map[ty][tx]:1;
+    const lx=(tx-tx0)*T,ly=(ty-ty0)*T;
+    if(v===1||v===3){
+      // 벽
+      c.fillStyle='rgb('+~~(wc[0]*.7)+','+~~(wc[1]*.7)+','+~~(wc[2]*.7)+')';
+      c.fillRect(lx,ly,T,T);
+      // 상단 하이라이트
+      c.fillStyle='rgb('+~~(wc[0]*.9)+','+~~(wc[1]*.9)+','+~~(wc[2]*.9)+')';
+      c.fillRect(lx,ly,T,~~(T*.3));
+    }else{
+      // 바닥
+      const n=Math.random()*.15;
+      c.fillStyle='rgb('+~~(fc[0]*(1-n))+','+~~(fc[1]*(1-n))+','+~~(fc[2]*(1-n))+')';
+      c.fillRect(lx,ly,T,T);
+      // 벽 인접 그림자
+      if(ty>0&&map[ty-1]&&map[ty-1][tx]===1){c.fillStyle='rgba(0,0,0,.25)';c.fillRect(lx,ly,T,~~(T*.4))}
+    }
+  }
+  cc._glVer=1;
+  return{cvs:cc,w:tw*T,h:th*T};
+}
 
 // ═══ [S13] ARROW SYSTEM — 제거됨 (악의로 대체) ═══
 
@@ -10180,7 +10227,7 @@ const PASSIVE_DEF=[
   {key:'pRegen', name:'💚 회복력',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv',max:10, icon:'💚',col:'#33cc66'},
   {key:'pCrit',  name:'💥 급소',    desc:'크리률 +2%, 크리뎀 +8%/lv',max:10,icon:'💥',col:'#ff2266'},
   {key:'pDrop',  name:'🎁 약탈',    desc:'아이템 드롭률 +8%/lv',    max:10, icon:'🎁',col:'#ffcc44'},
-  {key:'pPierce',name:'🏹 관통사격',desc:'화살 관통률 +5%/lv, 관통횟수 +1/lv, 관통뎀감소 완화',max:10, icon:'🏹',col:'#44ffcc'},
+  {key:'pPierce',name:'🔱 관통',desc:'투사체 관통률 +5%/lv, 관통횟수 +1/lv, 관통뎀감소 완화',max:10, icon:'🔱',col:'#44ffcc'},
   {key:'pMRegen',name:'💠 마력회복',desc:'MP리젠 +3%/lv, 쉴드리젠 +3%/lv, 쉴드쿨 -3%/lv',max:10, icon:'💠',col:'#6688ff'},
 ];
 let PASSIVES={};PASSIVE_DEF.forEach(p=>PASSIVES[p.key]=0);
@@ -13997,6 +14044,9 @@ function update(){
     // 빔 데미지 = 기본마법뎀 × 스킬레벨 배율 (틱당, MP 소비는 지속시간만 결정)
     const _omniSlv=P.skills.omniBeam||1;
     const _beamDmgBase=meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*.03*(1+(_omniSlv-1)*.12)*2*_fuseMul('omniBeam'); // ×2 보정 (2프레임 주기)
+    // 빔 관통 확률: 투사체관통(bowPierce + 패시브) 적용. 실패 시 해당 가닥 끊김
+    const _bPrcBase=(bw().bowPierce||0);const _bPrcPas=(PASSIVES.pPierce||0)*0.05;
+    const _beamPierce=Math.min(0.95,_bPrcBase+_bPrcPas+0.3); // 기본 30% + 장비 + 패시브, 캡 95%
     // 빔 중첩: 적에게 빔 지속 적중 시 중첩+1 (최대30), 데미지 배율 = 1 + 중첩*0.1 (최대 4배)
     if(_isOmni){
       // 뇌전/추적뇌전: 6원소 레이저
@@ -14067,13 +14117,16 @@ function update(){
           if(isW(nx,ny))break;
           _pool[_ptIdx].x=nx;_pool[_ptIdx].y=ny;_ptIdx++;
           // 히트 판정 (48px마다, 2프레임 주기, 캡 10)
+          let _beamCut=false;
           if(_beamDoHit&&t%48===0&&_beamHitCap<10){const _neB=shQuery(nx,ny,28);for(let _bi=0;_bi<_neB.length;_bi++){
             if(_beamHitCap>=10)break;const e=_neB[_bi];if(!e.alive||_bHit.has(e))continue;
             if(dst(nx,ny,e.x,e.y)<e.r+14){_bHit.add(e);_beamHitCap++;
               e._beamStk=Math.min(30,(e._beamStk||0)+1);e._beamStkT=30;
               const _bsMul=1+(e._beamStk||0)*.1;
               hurtE(e,_beamDmgBase*_dmgMul*_bsMul*elMul(bel,e.el)/6,P.facing,true,{beam:true},bel);
-              e.burnT=180;G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);}}}
+              e.burnT=180;G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);
+              if(Math.random()>_beamPierce){_beamCut=true;break}}}}
+          if(_beamCut)break; // 관통 실패 → 가닥 끊김
         }
         _beamPtsCnt[bi]=_ptIdx;
       }
@@ -14083,6 +14136,7 @@ function update(){
       const _bRng2=~~(500+((P.skills.omniBeam||1)-1)*55.6);
       if(_beamDoHit){for(let t=0;t<_bRng2;t+=40){const px=P.x+bd*t,py=P.y+be*t;if(isW(px,py))break;
         if(_beamHitCap>=10)break;
+        let _bCut2=false;
         const _neB=shQuery(px,py,32);for(let _bi=0;_bi<_neB.length;_bi++){if(_beamHitCap>=10)break;const e=_neB[_bi];if(!e.alive||_bHit.has(e))continue;if(dst(px,py,e.x,e.y)<e.r+14){
           _bHit.add(e);_beamHitCap++;
           e._beamStk=Math.min(30,(e._beamStk||0)+1);e._beamStkT=30;
@@ -14092,7 +14146,10 @@ function update(){
           hurtE(e,totalDmg,P.facing,true,{beam:true},elms[0].el);
           e.burnT=180;G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));
           if(Math.random()>.92)addParts(e.x,e.y,ELC[elms[~~(Math.random()*elms.length)].el],1);
-        }}}}}
+          if(Math.random()>_beamPierce){_bCut2=true;break}
+        }}
+        if(_bCut2)break; // 관통 실패 → 빔 끊김
+      }}}
     }break;
   case 'stagger':{
     // 탈출기: Shift(작살), Q(얼음보주/뇌전걸음), Ctrl(유령걸음) → 경직 즉시 탈출
@@ -14800,12 +14857,12 @@ function update(){
             }
             hit=true;break;
           }
-        // ── 화살 관통: 확률 굴림 → 통과 (non-magic, non-explosive) ──
-        if(!p.magic&&!p.explosive&&p.pierce>0){
+        // ── 투사체 관통: 확률 굴림 → 통과 (패시브 '관통' 전체 투사체 적용) ──
+        if(!p.explosive&&p.pierce>0){
           const _pMax=p.pierceMax||1;
           if(Math.random()<p.pierce&&(p._pierceCount||0)<_pMax){
             p._pierceCount=(p._pierceCount||0)+1;
-            p.dmg=~~(p.dmg*Math.min(1,0.85+(PASSIVES.pPierce||0)*0.03)); // 관통뎀감소 완화: lv당 3%p (max5=100%유지)
+            p.dmg=~~(p.dmg*Math.min(1,0.85+(PASSIVES.pPierce||0)*0.03)); // 관통뎀감소 완화: lv당 3%p
             if(!p._hitSet)p._hitSet=new Set();
             p._hitSet.add(e);
             addTxt(e.x,e.y-26,'관통!','#44ffcc',25);
@@ -14858,7 +14915,7 @@ function update(){
       continue;
     }
     // 트리거 후 연출 타이머 (3초 동안 소환굴 빛남)
-    if(h._spawnDelay==null)h._spawnDelay=180;
+    if(h._spawnDelay==null)h._spawnDelay=90;
     if(h._spawnDelay>0){h._spawnDelay-=sp;continue}
     // 몹 스폰
     const _hSi=G.stage;
@@ -15779,7 +15836,7 @@ function update(){
         const slvIO=P.skills.iceOrb||1;const slvMM=P.skills.maliceMortar||1;
         const nBlades=8+slvIO*4+slvMM*2; // 합체 보너스
         const baseDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*1.5*(1+(slvIO-1)*0.15)*(1+(slvMM-1)*0.1)*_fuseMul('maliceMortar'));
-        const bladeDmg=~~(baseDmg*0.3); // 파편 데미지 반감
+        const bladeDmg=~~(baseDmg*0.1); // 다수 발사 보정
         const _ioSpawnR=P.r+32;
         for(let i=0;i<nBlades;i++){
           const ang=(Math.PI*2/nBlades)*i+(Math.random()-.5)*.15;
@@ -22052,7 +22109,7 @@ function activateIceShatter(){
   const slv=P.skills.iceOrb||1;
   const nBlades=4+slv*4; // 1렙=8, 2렙=12, 5렙=24, 10렙=44
   const baseDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*1.5*(1+(slv-1)*0.15))+(P._ioBon||0);P._ioBon=0;
-  const bladeDmg=~~(baseDmg*0.3); // 파편 데미지 반감
+  const bladeDmg=~~(baseDmg*0.1); // 다수 발사 보정
   const cx=P.x,cy=P.y;
   // 전방위 얼음파편 방사 (큰 파편)
   const _ioLvScale=1+(slv-1)*.1; // 렙당 +10%, 10렙=1.9x
@@ -24726,7 +24783,17 @@ function draw(){
     X.globalAlpha=1;
   }}}
   // 맵 캐시 drawImage
-  if(_mapCvs){
+  if(_streamMap){
+    // 대형 맵 스트리밍: 뷰포트 청크만 지연 렌더
+    const _stx0=Math.max(0,~~((s1)/_STREAM_CHUNK)),_stx1=Math.min(~~((G.mw-1)/_STREAM_CHUNK),~~((e1)/_STREAM_CHUNK));
+    const _sty0=Math.max(0,~~((s2)/_STREAM_CHUNK)),_sty1=Math.min(~~((G.mh-1)/_STREAM_CHUNK),~~((e2)/_STREAM_CHUNK));
+    for(let _scy=_sty0;_scy<=_sty1;_scy++)for(let _scx=_stx0;_scx<=_stx1;_scx++){
+      const _sk=_scx+'_'+_scy;
+      if(!_streamChunks[_sk])_streamChunks[_sk]=_buildStreamChunk(_scx,_scy);
+      const _sc=_streamChunks[_sk];if(!_sc)continue;
+      X.drawImage(_sc.cvs,_scx*_STREAM_CHUNK*T,_scy*_STREAM_CHUNK*T);
+    }
+  }else if(_mapCvs){
     const sx0=s1*T,sy0=s2*T,sw=(e1-s1)*T,sh=(e2-s2)*T;
     X.drawImage(_mapCvs,sx0,sy0,sw,sh,sx0,sy0,sw,sh);
   }else if(_mapChunks){
