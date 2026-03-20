@@ -1,24 +1,24 @@
 {
-  "ts": 1773962460127,
+  "ts": 1773966285797,
   "player": {
-    "lv": 322,
-    "exp": 4106,
-    "maxExp": 6004,
+    "lv": 335,
+    "exp": 3946,
+    "maxExp": 6463,
     "sp": 4,
-    "ap": 26,
+    "ap": 28,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 4.845,
-    "stR": 1.5030000000000001,
-    "hp": 1616,
-    "mhp": 1616,
-    "mp": 769,
-    "mmp": 769,
-    "st": 383,
-    "mst": 383,
+    "mpR": 4.875,
+    "stR": 1.518,
+    "hp": 1637,
+    "mhp": 1637,
+    "mp": 776,
+    "mmp": 776,
+    "st": 390,
+    "mst": 390,
     "speed": 6.5437899999999996,
-    "shield": 1332,
-    "mshield": 1332
+    "shield": 1340,
+    "mshield": 1340
   },
   "inv": {
     "bag": [
@@ -4899,6 +4899,221 @@
         "_gx": 6,
         "_gy": 38,
         "_pickT": 1773962424377
+      },
+      {
+        "id": 1773965714638.5308,
+        "slot": "weapon",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "녹슨 도끼",
+        "emoji": "🪓",
+        "wtype": "axe",
+        "atk": 71,
+        "spd": 1.43,
+        "wStCost": 9,
+        "wArcW": 0.85,
+        "wRange": 45,
+        "wStagger": 30,
+        "bonusRange": 2,
+        "bStr": 28,
+        "bInt": 24,
+        "bDex": 27,
+        "affixes": [
+          {
+            "id": "parryExplosion",
+            "tier": 1,
+            "value": 1.0495
+          },
+          {
+            "id": "armorPen",
+            "tier": 0,
+            "value": 0.1149
+          },
+          {
+            "id": "staggerExplosion",
+            "tier": 1,
+            "value": 0.6734
+          },
+          {
+            "id": "chainTarget",
+            "tier": 2,
+            "value": 3
+          }
+        ],
+        "_implicitStat": "_iAtkPct",
+        "_implicitVal": 13.04,
+        "_implicitKo": "공격력 +X%",
+        "legendarySpecial": {
+          "ko": "출혈 대상 크리 시 잔여 DoT×300% 즉시 폭발",
+          "stat": "_lAxeBleed",
+          "val": 3
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 8,
+        "_gy": 38,
+        "_pickT": 1773965714651
+      },
+      {
+        "id": 1773965860495.9163,
+        "slot": "ring2",
+        "el": 5,
+        "rarity": 4,
+        "tier": 0,
+        "name": "축복 반지",
+        "emoji": "💍",
+        "eDef": 2,
+        "critRate": 3.89,
+        "critDmg": 0.144,
+        "bStr": 29,
+        "bInt": 25,
+        "bDex": 26,
+        "affixes": [
+          {
+            "id": "poisonRes",
+            "tier": 0,
+            "value": 0.176
+          },
+          {
+            "id": "fireRes",
+            "tier": 1,
+            "value": 0.207
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 13.38,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "처치 시 데빌포스 5% 회복",
+          "stat": "_lRingKill",
+          "val": 0.05
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 40,
+        "_pickT": 1773965860508
+      },
+      {
+        "id": 1773966042141.1885,
+        "slot": "necklace",
+        "el": 3,
+        "rarity": 4,
+        "tier": 0,
+        "name": "그림자 부적",
+        "emoji": "📿",
+        "def": 2,
+        "eDef": 2,
+        "bStr": 29,
+        "bInt": 27,
+        "bDex": 32,
+        "affixes": [
+          {
+            "id": "fireRes",
+            "tier": 1,
+            "value": 0.2476
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 0,
+            "value": 0.1005
+          },
+          {
+            "id": "iceRes",
+            "tier": 0,
+            "value": 0.1634
+          },
+          {
+            "id": "cooldownRed",
+            "tier": 2,
+            "value": -0.2094
+          }
+        ],
+        "_implicitStat": "_iMaxHPPct",
+        "_implicitVal": 11.16,
+        "_implicitKo": "최대 HP +X%",
+        "legendarySpecial": {
+          "ko": "HP 50% 이하 시 전 스킬 쿨다운 -30%",
+          "stat": "_lNeckLow",
+          "val": 0.3
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 40,
+        "_pickT": 1773966042150
+      },
+      {
+        "id": 1773966142935.5537,
+        "slot": "helmet",
+        "el": 1,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전지전능의 투구",
+        "emoji": "⛑️",
+        "eDef": 4,
+        "beamDmg": 3.3,
+        "elements": [
+          {
+            "el": 1,
+            "dmg": 26
+          },
+          {
+            "el": 2,
+            "dmg": 12
+          },
+          {
+            "el": 3,
+            "dmg": 10
+          },
+          {
+            "el": 5,
+            "dmg": 11
+          }
+        ],
+        "splashR": 10,
+        "splashMul": 0.49,
+        "magicPen": 2,
+        "bonusRange": 3,
+        "bStr": 32,
+        "bInt": 31,
+        "bDex": 29,
+        "affixes": [
+          {
+            "id": "barrier",
+            "tier": 1,
+            "value": 29
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 0,
+            "value": 26
+          },
+          {
+            "id": "statusClean",
+            "tier": 2,
+            "value": 2
+          },
+          {
+            "id": "cooldownRed",
+            "tier": 2,
+            "value": -0.2107
+          }
+        ],
+        "_implicitStat": "_iMaxHP",
+        "_implicitVal": 11.93,
+        "_implicitKo": "최대 HP +X",
+        "legendarySpecial": {
+          "ko": "스킬 사용 시 20% 확률로 쿨다운 미소모",
+          "stat": "_lHelmFree",
+          "val": 0.2
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 4,
+        "_gy": 40,
+        "_pickT": 1773966142954
       }
     ],
     "equipped": {
@@ -5570,8 +5785,8 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 288
+      "type": null,
+      "count": 0
     },
     {
       "type": null,
@@ -5584,8 +5799,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 50608,
-    "mats": 1190511
+    "kills": 56849,
+    "mats": 1265320
   },
   "bagMax": 300,
   "hellCleared": [],
@@ -5605,7 +5820,7 @@
   },
   "skills": {
     "spikeTrap": 1,
-    "holyDome": 6,
+    "holyDome": 2,
     "whirlwind": 10,
     "detonate": 10,
     "plagueBurst": 10,
@@ -5615,7 +5830,7 @@
     "maliceSwipe": 10,
     "omniBeam": 10,
     "giantSlam": 10,
-    "peaceShield": 1,
+    "peaceShield": 9,
     "hellRay": 10,
     "maliceHunt": 10,
     "boneWall": 1,
@@ -5626,9 +5841,9 @@
     "iceOrb": 10,
     "guardian": 10,
     "shieldThrow": 1,
-    "iceStorm": 3,
-    "holyPrison": 6,
-    "needleShot": 6,
+    "iceStorm": 2,
+    "holyPrison": 2,
+    "needleShot": 10,
     "ghostWalk": 1,
     "magicBlink": 10
   },
@@ -5645,7 +5860,8 @@
     "slamStorm": true,
     "dimBreach": true,
     "dimSlam": true,
-    "dimThunder": true
+    "dimThunder": true,
+    "holyIce": true
   },
   "skProf": {
     "maliceSwipe": 15,
@@ -5669,32 +5885,32 @@
     "maliceMortar": 15,
     "guardian": 15,
     "shieldThrow": 15,
-    "iceStorm": 13,
+    "iceStorm": 15,
     "holyPrison": 15,
     "needleShot": 15,
-    "ghostWalk": 6,
+    "ghostWalk": 11,
     "magicBlink": 15
   },
   "fuseProfSec": {
     "slamStorm": 186.3000000000404
   },
   "cardProf": {
-    "whirlDet": 3524.1000000123877,
-    "slamStorm": 3524.1000000123877,
-    "stormBeam": 5735.416666664591,
-    "bladeFuse": 13726.316666602985,
-    "plagueFuse": 13726.316666602985,
-    "shieldFuse": 126,
-    "holyFuse": 35,
-    "boneStorm": 98,
-    "elecRepent": 142,
-    "iceMortar": 52,
-    "dimBreach": 505,
-    "dimSlam": 766,
-    "dimThunder": 815,
-    "holyIce": 42,
-    "sixFuse": 1963.2499999994145,
-    "elemFuse": 2211.316666667375
+    "whirlDet": 4190.650000016735,
+    "slamStorm": 4190.650000016735,
+    "stormBeam": 6562.233333322791,
+    "bladeFuse": 15617.299999920224,
+    "plagueFuse": 15617.299999920224,
+    "shieldFuse": 142,
+    "holyFuse": 41,
+    "boneStorm": 142,
+    "elecRepent": 208,
+    "iceMortar": 60,
+    "dimBreach": 559,
+    "dimSlam": 844,
+    "dimThunder": 893,
+    "holyIce": 50,
+    "sixFuse": 2095.4499999997083,
+    "elemFuse": 2371.5833333354203
   },
   "activeChargeSk": "magicBlink",
   "activeBowSk": "needleShot",
@@ -5708,7 +5924,7 @@
     "maliceStorm",
     "maliceHunt",
     null,
-    "iceStorm",
+    null,
     "maliceMortar",
     "holyDome"
   ],

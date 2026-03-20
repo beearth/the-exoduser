@@ -1,24 +1,24 @@
 {
-  "ts": 1773962996187,
+  "ts": 1773965655169,
   "player": {
-    "lv": 735,
-    "exp": 2329,
-    "maxExp": 28863,
-    "sp": 25,
-    "ap": 10,
-    "baseAtk": 39,
+    "lv": 755,
+    "exp": 13533,
+    "maxExp": 30403,
+    "sp": 63,
+    "ap": 4,
+    "baseAtk": 15,
     "baseDef": 22,
-    "mpR": 6.909000000000001,
-    "stR": 2.641,
-    "hp": 2660.948067749972,
-    "mhp": 3111,
-    "mp": 855.9045561249917,
-    "mmp": 1129,
-    "st": 229.1845681874885,
-    "mst": 995,
+    "mpR": 6.941000000000001,
+    "stR": 2.657,
+    "hp": 3033,
+    "mhp": 3033,
+    "mp": 1137,
+    "mmp": 1137,
+    "st": 841.4898058249936,
+    "mst": 1003,
     "speed": 9.13376,
-    "shield": 0,
-    "mshield": 1976
+    "shield": 1984,
+    "mshield": 1984
   },
   "inv": {
     "bag": [
@@ -15321,7 +15321,7 @@
     "pAtk": 10,
     "pDef": 10,
     "pCharge": 0,
-    "pParry": 2,
+    "pParry": 3,
     "pMagic": 10,
     "pBow": 3,
     "pShield": 0,
@@ -15330,7 +15330,7 @@
     "pCrit": 9,
     "pDrop": 0,
     "pPierce": 3,
-    "pMRegen": 6
+    "pMRegen": 9
   },
   "qslots": [
     {
@@ -15339,7 +15339,7 @@
     },
     {
       "type": "mp",
-      "count": 3627
+      "count": 2321
     },
     {
       "type": null,
@@ -15352,8 +15352,8 @@
   ],
   "game": {
     "stage": 13,
-    "kills": 205082,
-    "mats": 27545727
+    "kills": 217762,
+    "mats": 30776731
   },
   "bagMax": 300,
   "hellCleared": [
@@ -15466,20 +15466,20 @@
   },
   "fuseProfSec": {},
   "cardProf": {
-    "bladeFuse": 15049.949999957731,
-    "plagueFuse": 15049.949999957731,
-    "whirlDet": 4522.9500000123635,
-    "slamStorm": 4522.9500000123635,
-    "stormBeam": 5644.149999996855,
-    "shieldFuse": 227,
-    "iceMortar": 104,
-    "boneStorm": 270,
-    "elecRepent": 404,
-    "dimBreach": 421,
-    "dimSlam": 646,
-    "dimThunder": 663,
-    "holyFuse": 25,
-    "holyIce": 31,
+    "bladeFuse": 16815.016666613803,
+    "plagueFuse": 16815.016666613803,
+    "whirlDet": 5143.650000005572,
+    "slamStorm": 5143.650000005572,
+    "stormBeam": 6264.849999990063,
+    "shieldFuse": 255,
+    "iceMortar": 119,
+    "boneStorm": 298,
+    "elecRepent": 446,
+    "dimBreach": 478,
+    "dimSlam": 721,
+    "dimThunder": 741,
+    "holyFuse": 29,
+    "holyIce": 35,
     "sixFuse": 1056.8999999999087,
     "elemFuse": 1121.1999999998775
   },
