@@ -1,23 +1,23 @@
 {
-  "ts": 1774006204848,
+  "ts": 1774009800623,
   "player": {
-    "lv": 779,
-    "exp": 10788,
-    "maxExp": 32304,
-    "sp": 107,
-    "ap": 8,
+    "lv": 780,
+    "exp": 17264,
+    "maxExp": 32385,
+    "sp": 111,
+    "ap": 10,
     "baseAtk": 15,
     "baseDef": 22,
     "mpR": 2.4275,
     "stR": 2.2525,
-    "hp": 1159.5240193125323,
+    "hp": 2938.5076395625433,
     "mhp": 3207,
-    "mp": 473.2631409374997,
+    "mp": 1151,
     "mmp": 1151,
-    "st": 468.4052822000106,
+    "st": 685.6270876500117,
     "mst": 1024,
     "speed": 9.247931999999999,
-    "shield": 1295.8137534999798,
+    "shield": 1923,
     "mshield": 1996
   },
   "inv": {
@@ -15339,7 +15339,7 @@
     },
     {
       "type": "st",
-      "count": 2212
+      "count": 2492
     },
     {
       "type": null,
@@ -15352,8 +15352,8 @@
   ],
   "game": {
     "stage": 13,
-    "kills": 235338,
-    "mats": 34593208
+    "kills": 236196,
+    "mats": 34744866
   },
   "bagMax": 300,
   "hellCleared": [
@@ -15466,20 +15466,20 @@
   },
   "fuseProfSec": {},
   "cardProf": {
-    "bladeFuse": 23326.366666579775,
-    "plagueFuse": 23326.366666579775,
-    "whirlDet": 6698.649999994222,
-    "slamStorm": 6698.649999994222,
-    "stormBeam": 11119.849999978713,
-    "shieldFuse": 20355,
-    "iceMortar": 779,
-    "boneStorm": 1918,
-    "elecRepent": 2846,
-    "dimBreach": 1558,
-    "dimSlam": 2521,
-    "dimThunder": 2601,
-    "holyFuse": 389,
-    "holyIce": 395,
+    "bladeFuse": 23497.799999912666,
+    "plagueFuse": 23497.799999912666,
+    "whirlDet": 6743.749999993798,
+    "slamStorm": 6743.749999993798,
+    "stormBeam": 11164.94999997829,
+    "shieldFuse": 20775,
+    "iceMortar": 839,
+    "boneStorm": 2158,
+    "elecRepent": 3206,
+    "dimBreach": 1618,
+    "dimSlam": 2641,
+    "dimThunder": 2721,
+    "holyFuse": 449,
+    "holyIce": 455,
     "sixFuse": 1056.8999999999087,
     "elemFuse": 4421.199999999877
   },

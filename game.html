@@ -5135,13 +5135,16 @@ const _OBJ_SPR_MAP={
   'skull_pile':'assets/objects/deco_bones_04.png','bone_rocks':'assets/objects/deco_bones_03.png',
   'mushroom_glow':'assets/objects/mushroom_glow_01.png','mushroom_glow_02':'assets/objects/mushroom_glow_02.png','mushroom_glow_03':'assets/objects/mushroom_glow_03.png',
   'ice_pillar':'assets/objects/ch3_ice_pillar_sheet.png','ice_deco':'assets/objects/ch3_ice_deco_sheet.png',
+  'lava_crack':'assets/objects/ch4_lava_crack_sheet.png','fire_pillar':'assets/objects/ch4_fire_pillar_sheet.png',
+  'rune_mark':'assets/objects/ch7_rune_mark_sheet.png',
 };
 for(const[k,v]of Object.entries(_OBJ_SPR_MAP)){const im=new Image();im.src=v;_OBJ_SPR[k]=im}
 const _OBJ_META={
   'dead_tree':{sz:64,col:1},'dead_tree_02':{sz:64,col:1},'dead_tree_03':{sz:64,col:1},
   'ice_pillar':{sz:64,col:1,sheet:{c:3,r:3}},'skull_pile':{sz:32},'bone_rocks':{sz:32},
   'mushroom_glow':{sz:32,light:1},'mushroom_glow_02':{sz:32,light:1},'mushroom_glow_03':{sz:32,light:1},
-  'ice_deco':{sz:32,sheet:{c:3,r:3}},'frozen_bones':{sz:32},'poison_pool':{sz:32},'lava_crack':{sz:32},'fire_pillar':{sz:32},'rune_mark':{sz:32},
+  'ice_deco':{sz:32,sheet:{c:3,r:3}},'frozen_bones':{sz:32},'poison_pool':{sz:32},
+  'lava_crack':{sz:40,sheet:{c:3,r:3}},'fire_pillar':{sz:64,col:1,sheet:{c:3,r:3}},'rune_mark':{sz:40,sheet:{c:3,r:3}},
 };
 
 // ═══ RAM 최적화 시스템 ═══

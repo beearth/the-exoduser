@@ -3806,4 +3806,11 @@ window.addEventListener('pagehide',()=>{ try{ _saveLiveMapState(); }catch(e){} }
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden'){ try{ _saveLiveMapState(); }catch(e){} } });
 setInterval(()=>{ try{ _saveLiveMapState(); }catch(e){} }, 5000);
 (async()=>{
-  try{ document.getElementById('sta
+  try{ document.getElementById('stats').textContent=`에디터 빌드 ${BUILD_STAMP}`; }catch(e){}
+  const ok = await loadEditorSettings(false);
+  if(!ok){ buildChapterTabs(); buildStageListOrig(); loadStage(0); draw(); }
+})();
+
+</script>
+</body></html>
+
