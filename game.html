@@ -1327,7 +1327,7 @@ function dbRestore(d){
   if(P.skills.maliceMortar>=1&&P.skills.iceOrb>=1&&_isFused('iceMortar'))_fKick.push('iceOrb');
   if(P.skills.maliceHunt>=1&&P.skills.guardian>=1&&_isFused('bladeFuse'))_fKick.push('guardian');
   if(P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse'))_fKick.push('omniBeam');
-  if(P.skills.elemMissile>=1&&_isFused('elemFuse')){_fKick.push('elemMissile');_fKick.push('fanShot')}
+  if(P.skills.elemMissile>=1&&_isFused('elemFuse')){_fKick.push('elemMissile');_fKick.push('fanShot');_fKick.push('omniBeam')}
   if(P.skills.whirlwind>=1&&P.skills.detonate>=1&&_isFused('whirlDet'))_fKick.push('detonate');
   if(P.skills.giantSlam>=1&&_isFused('slamStorm'))_fKick.push('giantSlam');
   if(_isFused('stormBeam')){_fKick.push('detonate','giantSlam','fanShot','omniBeam','elemMissile')}
@@ -13273,8 +13273,9 @@ function update(){
     else if(isHeld('beam')&&P.mp>=mpCost('magic')){
       const _amsk=P.activeMagicSk||'beam';
       const _isSix=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
+      const _isElemF=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&P.skills.elemMissile>=1&&_isFused('elemFuse');
       if(_amsk==='blueShot'&&P.skills.blueShot>=1){if((P._blueCd||0)>0){showPH('쿨 '+~~((P._blueCd||0)/60)+'초','#00aaff')}else if(P.mp<200){showPH('MP 부족! (200)','#4488ff')}else{P.mp-=200;P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing}}
-      else if(_amsk==='elemMissile'&&P.skills.elemMissile>=1){P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
+      else if(_isElemF||(_amsk==='elemMissile'&&P.skills.elemMissile>=1)){P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
       else if((_isSix||_amsk==='omniBeam')&&_amsk!=='elemMissile'){if(_isSix&&(P._beamCd||0)>0){showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}}
       else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
     }
@@ -13352,7 +13353,7 @@ function update(){
       if(!P._sbPts){P._sbPts=[];for(let i=0;i<6;i++)P._sbPts.push(new Float32Array(128))}
       if(!P._sbPtsCnt)P._sbPtsCnt=new Int32Array(6);
       // MP 소비 (추적뇌전의 50% — 메인은 회전참이므로 가볍게)
-      const _sbMpCost=(150+(_sbOmniLv-1)*10)/60*pMagicCost()*0.5*sp;
+      const _sbMpCost=P.mmp*0.001*pMagicCost()*sp; // 뇌전나선: 회전참의 66% (회전참이 메인이므로 가볍게)
       if(P.mp>_sbMpCost){
         P.mp-=_sbMpCost;
         // 히트 처리 (4프레임마다)
@@ -13587,7 +13588,9 @@ function update(){
       else if(isHeld('beam')&&P.mp>=mpCost('magic')){
         const _amsk2=P.activeMagicSk||'beam';
         const _isSix2=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
+        const _isElemF2=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&P.skills.elemMissile>=1&&_isFused('elemFuse');
         if(_amsk2==='blueShot'&&P.skills.blueShot>=1){if((P._blueCd||0)>0){showPH('쿨 '+~~((P._blueCd||0)/60)+'초','#00aaff')}else if(P.mp<200){showPH('MP 부족! (200)','#4488ff')}else{P.mp-=200;P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing}}
+        else if(_isElemF2||(_amsk2==='elemMissile'&&P.skills.elemMissile>=1)){P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
         else if((_isSix2||_amsk2==='omniBeam')&&_amsk2!=='elemMissile'){if(_isSix2&&(P._beamCd||0)>0){showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}}
         else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
       }
@@ -13596,7 +13599,9 @@ function update(){
       }
     }
     else if(P.s==='magicCast'){if(P.st2<=0){
-      const _mcSk=P.activeMagicSk||'beam';
+      const _mcSkRaw=P.activeMagicSk||'beam';
+      const _mcElemF=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&P.skills.elemMissile>=1&&_isFused('elemFuse');
+      const _mcSk=_mcElemF?'elemMissile':_mcSkRaw;
       if(_mcSk==='elemMissile'&&P.skills.elemMissile>=1){
         // ── 원소추적탄: 6원소 유도 미사일 ──
         const _emLv=P.skills.elemMissile||1;
@@ -13644,7 +13649,9 @@ function update(){
       if(isHeld('beam')&&P.mp>=mpCost('magic')){
         const _amsk3=P.activeMagicSk||'beam';
         const _isSix3=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
+        const _isElemF3=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&P.skills.elemMissile>=1&&_isFused('elemFuse');
         if(_amsk3==='blueShot'&&P.skills.blueShot>=1){if((P._blueCd||0)>0){showPH('쿨 '+~~((P._blueCd||0)/60)+'초','#00aaff')}else if(P.mp<200){showPH('MP 부족! (200)','#4488ff')}else{P.mp-=200;P.s='magicCast';P.st2=~~(10/pMagicSpd());P.atkArc=P.facing}}
+        else if(_isElemF3||(_amsk3==='elemMissile'&&P.skills.elemMissile>=1)){P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
         else if((_isSix3||_amsk3==='omniBeam')&&_amsk3!=='elemMissile'){if(_isSix3&&(P._beamCd||0)>0){showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00')}else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}}
         else{P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2}
       }
@@ -14022,7 +14029,8 @@ function update(){
     const _isOmni=!!(P.skills.omniBeam&&P.skills.fanShot&&_isFused('sixFuse'));
     const _isElemBeam=_isOmni&&!!(P.skills.elemMissile&&_isFused('elemFuse'));
     const _bLv=(P.skills.omniBeam||1);const _bMul=_isElemBeam?(0.5+(_bLv-1)*0.078)*.9:(0.5+(_bLv-1)*0.078);
-    const _bcost=(_isOmni?(150+(_bLv-1)*10)/60*pMagicCost():beamCost())*_bMul;
+    // 빔 MP소비: 회전참과 동일 구조 (mmp × 틱% × 레벨배율). 단일=0.0015, 뇌전=0.002, 추적뇌전=0.0018(×0.9)
+    const _bcost=P.mmp*(_isOmni?0.002:0.0015)*_bMul*pMagicCost();
     const _mpBefore=P.mp;
     P.mp=Math.max(0,P.mp-_bcost*sp);
     const _mpDrained=_mpBefore-P.mp; // 실제 소비된 MP (데미지 기반)
@@ -21459,7 +21467,7 @@ function _canFuse(key){
   for(let i=0;i<_fp.length;i++){if(_absolved.has(_fp[i]))continue;if(((P._skProf&&P._skProf[_fp[i]])||0)<_req)return false}
   return true;
 }
-function _getAbsorbed(key){const m={dimBreach:['magicBlink'],dimSlam:['magicBlink','chainAssault'],dimThunder:['magicBlink','chainAssault','chainSlam'],whirlDet:['detonate'],slamStorm:['detonate','giantSlam'],stormBeam:['detonate','giantSlam','fanShot','omniBeam','elemMissile'],bladeFuse:['guardian'],iceMortar:['iceOrb'],sixFuse:['omniBeam'],elemFuse:['fanShot','elemMissile'],boneStorm:['boneWall'],elecRepent:['hellRay','boneWall'],shieldFuse:['shieldThrow'],plagueFuse:['guardian','plagueBurst'],holyFuse:['holyPrison'],holyIce:['holyPrison','iceStorm']};return m[key]||[]}
+function _getAbsorbed(key){const m={dimBreach:['magicBlink'],dimSlam:['magicBlink','chainAssault'],dimThunder:['magicBlink','chainAssault','chainSlam'],whirlDet:['detonate'],slamStorm:['detonate','giantSlam'],stormBeam:['detonate','giantSlam','fanShot','omniBeam','elemMissile'],bladeFuse:['guardian'],iceMortar:['iceOrb'],sixFuse:['omniBeam'],elemFuse:['fanShot','omniBeam','elemMissile'],boneStorm:['boneWall'],elecRepent:['hellRay','boneWall'],shieldFuse:['shieldThrow'],plagueFuse:['guardian','plagueBurst'],holyFuse:['holyPrison'],holyIce:['holyPrison','iceStorm']};return m[key]||[]}
 const _FUSE_NAMES={dimBreach:'사슬이동:강화',dimSlam:'사슬이동:강화기습',dimThunder:'사슬기동:기습파괴',whirlDet:'회전기폭',slamStorm:'지진폭풍',stormBeam:'뇌전나선',bladeFuse:'악의 해방',iceMortar:'얼음소용돌이',sixFuse:'뇌전',elemFuse:'추적뇌전',boneStorm:'해골번개',elecRepent:'참회 귀환',shieldFuse:'둔격참',plagueFuse:'독혈해방',holyFuse:'신성한 결계',holyIce:'신성한 빙결'};
 let _fuseSelId=null; // 클릭 합체: 현재 선택된 스킬 ID
 const _skCompact=false; // 스킬패널 접기 비활성화
@@ -21652,7 +21660,7 @@ function _openSkillSlotPop(slotIdx){
   if(P.skills.maliceMortar>=1&&P.skills.iceOrb>=1&&_isFused('iceMortar'))_fusedOut.push('iceOrb');
   if(P.skills.maliceHunt>=1&&P.skills.guardian>=1&&_isFused('bladeFuse'))_fusedOut.push('guardian');
   if(P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse'))_fusedOut.push('omniBeam');
-  if(P.skills.elemMissile>=1&&_isFused('elemFuse')){_fusedOut.push('elemMissile');_fusedOut.push('fanShot')}
+  if(P.skills.elemMissile>=1&&_isFused('elemFuse')){_fusedOut.push('elemMissile');_fusedOut.push('fanShot');_fusedOut.push('omniBeam')}
   if(P.skills.whirlwind>=1&&P.skills.detonate>=1&&_isFused('whirlDet'))_fusedOut.push('detonate');
   if(P.skills.giantSlam>=1&&_isFused('slamStorm'))_fusedOut.push('giantSlam');
   if(P.skills.maliceStorm>=1&&P.skills.boneWall>=1&&_isFused('boneStorm'))_fusedOut.push('boneWall');
@@ -22290,10 +22298,13 @@ function openSkSlotPop(tab){
     d.innerHTML='<span class="sk-opt-emoji">'+ct.fuseName.split(' ')[0]+'</span><span class="sk-opt-name">'+ct.fuseName.split(' ').slice(1).join(' ')+'</span><span class="sk-opt-desc">합체 완료 (해제: 스킬패널)</span>';
     d.onclick=()=>{pop.style.display='none'};
     pop.appendChild(d);
-    // 합체 완료여도 습득한 스킬 전부 표시 (전환 가능)
+    // 합체 완료: 흡수된 스킬은 선택 불가
     const _fuseDef=SKILL_SLOT_DEFS[_skPopTab];
     if(_fuseDef){const _fuseCur=_skPopTab==='magic'?P.activeMagicSk:_skPopTab==='bow'?P.activeBowSk:null;
+      const _popAbsorbed=new Set();
+      for(const[fk,fv]of Object.entries(_FUSE_PAIRS||{})){if(_isFused(fk)){const ab=_getAbsorbed(fk);for(const a of ab)_popAbsorbed.add(a)}}
       _fuseDef.skills.forEach(id=>{
+        if(_popAbsorbed.has(id))return; // 흡수된 스킬 숨김
         if((P.skills[id]||0)>=1||id==='beam'||id==='normal'){
           const _fi=_fuseDef.info[id];if(!_fi)return;
           const _fd=document.createElement('div');_fd.className='sk-opt'+(_fuseCur===id?' active':'');
@@ -22316,7 +22327,7 @@ function openSkSlotPop(tab){
       if(P.skills.maliceMortar>=1&&P.skills.iceOrb>=1&&_isFused('iceMortar'))_popFusedOut.push('iceOrb');
       if(P.skills.maliceHunt>=1&&P.skills.guardian>=1&&_isFused('bladeFuse'))_popFusedOut.push('guardian');
       if(P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse')){_popFusedOut.push('omniBeam');_popFusedOut.push('fanShot');if(P.activeBowSk==='fanShot')P.activeBowSk='normal'}
-      if(P.skills.elemMissile>=1&&_isFused('elemFuse')){_popFusedOut.push('elemMissile');_popFusedOut.push('fanShot')}
+      if(P.skills.elemMissile>=1&&_isFused('elemFuse')){_popFusedOut.push('elemMissile');_popFusedOut.push('fanShot');_popFusedOut.push('omniBeam')}
       if(P.skills.whirlwind>=1&&P.skills.detonate>=1&&_isFused('whirlDet'))_popFusedOut.push('detonate');
       if(P.skills.giantSlam>=1&&_isFused('slamStorm'))_popFusedOut.push('giantSlam');
       if(P.skills.maliceStorm>=1&&P.skills.boneWall>=1&&_isFused('boneStorm'))_popFusedOut.push('boneWall');
@@ -22870,7 +22881,7 @@ function _renderSkillRow(sk,grid){
           if(P.skills.maliceMortar>=1&&P.skills.iceOrb>=1&&_isFused('iceMortar'))_fuseKick.push('iceOrb');
           if(P.skills.maliceHunt>=1&&P.skills.guardian>=1&&_isFused('bladeFuse'))_fuseKick.push('guardian');
           if(P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse'))_fuseKick.push('omniBeam');
-          if(P.skills.elemMissile>=1&&_isFused('elemFuse')){_fuseKick.push('elemMissile');_fuseKick.push('fanShot')}
+          if(P.skills.elemMissile>=1&&_isFused('elemFuse')){_fuseKick.push('elemMissile');_fuseKick.push('fanShot');_fuseKick.push('omniBeam')}
           if(P.skills.whirlwind>=1&&P.skills.detonate>=1&&_isFused('whirlDet'))_fuseKick.push('detonate');
           if(P.skills.giantSlam>=1&&_isFused('slamStorm'))_fuseKick.push('giantSlam');
           if(P.skills.maliceStorm>=1&&P.skills.boneWall>=1&&_isFused('boneStorm'))_fuseKick.push('boneWall');
