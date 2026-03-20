@@ -9137,7 +9137,7 @@ function _addStain(x,y,sz){
   s.mt=300;s.t=s.mt;s.active=true;
 }
 // ── 시체 잔해 시스템 (모든 사망) — 물리 기반 래그돌 ──
-const _CORPSE_MAX=24;const _corpses=[];
+const _CORPSE_MAX=8;const _corpses=[];
 for(let i=0;i<_CORPSE_MAX;i++){const _cc=document.createElement('canvas');_cc.width=48;_cc.height=48;_corpses.push({x:0,y:0,vx:0,vy:0,r:0,rv:0,sz:0,t:0,mt:0,c:_cc,ctx:_cc.getContext('2d'),active:false,bounced:0})}
 function _addCorpse(e,killAng,power){
   if(!OPT.deathFx)return;
@@ -11411,7 +11411,7 @@ function buildGridMapCache(tmpl){
 const FIXED_MAPS=[];
 for(let i=0;i<TOTAL_STAGES;i++){const s=STAGES[i];if(s.type==='grid')FIXED_MAPS[i]=generateGridMap(s.hell);else if(s.type==='horiz')FIXED_MAPS[i]=genHoriz(i);else FIXED_MAPS[i]=genSnake(i)}
 // ── 1장1막 에디터 맵 ──
-FIXED_MAPS[0]={"mw":200,"mh":200,"rooms":[{"id":"s","type":"start","cx":111,"cy":190,"shape":"ellipse","rx":14,"ry":10},{"id":"a1","type":"combat","cx":38,"cy":175,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"a2","type":"combat","cx":165,"cy":178,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":3,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":0,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"b1","type":"combat","cx":30,"cy":148,"shape":"circle","rx":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"b2","type":"combat","cx":75,"cy":145,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":2,"grade":0},{"dx":-2,"dy":-1,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"b3","type":"combat","cx":130,"cy":148,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-1,"dy":1,"grade":0},{"dx":-1,"dy":-1,"grade":0},{"dx":1,"dy":-3,"grade":0}]},{"id":"b4","type":"combat","cx":178,"cy":142,"shape":"circle","rx":12,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-1,"grade":0}]},{"id":"c1","type":"combat","cx":25,"cy":118,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":4,"dy":0,"grade":0},{"dx":0,"dy":3,"grade":0},{"dx":-3,"dy":0,"grade":0},{"dx":0,"dy":-3,"grade":0}]},{"id":"c2","type":"combat","cx":72,"cy":115,"shape":"circle","rx":14,"spawns":[{"dx":3,"dy":0,"grade":0},{"dx":0,"dy":1,"grade":0},{"dx":-2,"dy":1,"grade":0},{"dx":-3,"dy":-2,"grade":0},{"dx":0,"dy":-2,"grade":0}]},{"id":"f","type":"forge","cx":118,"cy":112,"shape":"rect","rx":12,"ry":8},{"id":"c3","type":"combat","cx":170,"cy":115,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"d1","type":"combat","cx":40,"cy":88,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-1,"grade":1}]},{"id":"d2","type":"combat","cx":100,"cy":85,"shape":"cross","rx":16,"ry":16,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":1,"dy":2,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":-1,"dy":-2,"grade":1},{"dx":1,"dy":-3,"grade":1}],"armW":8,"armH":8},{"id":"d3","type":"combat","cx":160,"cy":88,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":0,"dy":1,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e1","type":"combat","cx":28,"cy":58,"shape":"circle","rx":12,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":0,"grade":1},{"dx":0,"dy":-3,"grade":1}]},{"id":"e2","type":"combat","cx":80,"cy":55,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":3,"dy":0,"grade":1},{"dx":1,"dy":3,"grade":1},{"dx":-3,"dy":2,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e3","type":"combat","cx":140,"cy":55,"shape":"ellipse","rx":14,"ry":12,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":1,"dy":3,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-1,"dy":-1,"grade":1},{"dx":1,"dy":-3,"grade":1}]},{"id":"e4","type":"combat","cx":185,"cy":58,"shape":"circle","rx":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":0,"grade":1},{"dx":0,"dy":-1,"grade":1}]},{"id":"n1","type":"combat","cx":50,"cy":28,"shape":"ellipse","rx":14,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"n2","type":"combat","cx":110,"cy":25,"shape":"ellipse","rx":16,"ry":12,"spawns":[{"dx":4,"dy":0,"grade":1},{"dx":0,"dy":2,"grade":1},{"dx":-1,"dy":1,"grade":1},{"dx":-2,"dy":-1,"grade":1},{"dx":0,"dy":-2,"grade":1}]},{"id":"n3","type":"combat","cx":170,"cy":28,"shape":"ellipse","rx":12,"ry":10,"spawns":[{"dx":2,"dy":0,"grade":1},{"dx":0,"dy":3,"grade":1},{"dx":-2,"dy":0,"grade":1},{"dx":0,"dy":-3,"grade":1}]},{"id":"exit","type":"combat","cx":110,"cy":10,"shape":"ellipse","rx":12,"ry":6,"spawns":[{"dx":4,"dy":0,"grade":1},{"dx":-1,"dy":3,"grade":1},{"dx":-1,"dy":-1,"grade":1}]},{"id":"h1","type":"combat","cx":8,"cy":155,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":1}]},{"id":"h2","type":"combat","cx":192,"cy":130,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":1}]},{"id":"h3","type":"combat","cx":8,"cy":42,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":2}]},{"id":"h4","type":"combat","cx":192,"cy":42,"shape":"circle","rx":5,"spawns":[{"dx":0,"dy":0,"grade":2}]}],"corridors":[{"from":"s","to":"a1","width":7,"style":"cave","waypoints":[{"x":68,"y":178}]},{"from":"s","to":"a2","width":7,"style":"cave","waypoints":[{"x":132,"y":179}]},{"from":"a1","to":"b1","width":7,"style":"cave","waypoints":[{"x":34,"y":162}]},{"from":"a1","to":"b2","width":7,"style":"cave","waypoints":[{"x":55,"y":160}]},{"from":"s","to":"b2","width":8,"style":"cave","waypoints":[{"x":88,"y":162}]},{"from":"s","to":"b3","width":8,"style":"cave","waypoints":[{"x":115,"y":164}]},{"from":"a2","to":"b3","width":7,"style":"cave","waypoints":[{"x":148,"y":163}]},{"from":"a2","to":"b4","width":7,"style":"cave","waypoints":[{"x":172,"y":160}]},{"from":"a1","to":"h1","width":4,"style":"cave"},{"from":"b1","to":"b2","width":6,"style":"cave","waypoints":[{"x":52,"y":147}]},{"from":"b2","to":"b3","width":7,"style":"cave","waypoints":[{"x":102,"y":146}]},{"from":"b3","to":"b4","width":6,"style":"cave","waypoints":[{"x":154,"y":145}]},{"from":"b1","to":"c1","width":6,"style":"cave","waypoints":[{"x":27,"y":133}]},{"from":"b2","to":"c2","width":7,"style":"cave","waypoints":[{"x":73,"y":130}]},{"from":"b3","to":"f","width":7,"style":"cave","waypoints":[{"x":124,"y":130}]},{"from":"b4","to":"c3","width":6,"style":"cave","waypoints":[{"x":174,"y":128}]},{"from":"b4","to":"h2","width":4,"style":"cave"},{"from":"c1","to":"c2","width":6,"style":"cave","waypoints":[{"x":48,"y":117}]},{"from":"c2","to":"f","width":7,"style":"cave","waypoints":[{"x":95,"y":113}]},{"from":"f","to":"c3","width":7,"style":"cave","waypoints":[{"x":144,"y":114}]},{"from":"c1","to":"d1","width":6,"style":"cave","waypoints":[{"x":32,"y":103}]},{"from":"c2","to":"d1","width":6,"style":"cave","waypoints":[{"x":55,"y":102}]},{"from":"c2","to":"d2","width":7,"style":"cave","waypoints":[{"x":86,"y":100}]},{"from":"f","to":"d2","width":7,"style":"cave","waypoints":[{"x":109,"y":98}]},{"from":"c3","to":"d2","width":6,"style":"cave","waypoints":[{"x":135,"y":100}]},{"from":"c3","to":"d3","width":6,"style":"cave","waypoints":[{"x":165,"y":102}]},{"from":"d1","to":"d2","width":7,"style":"cave","waypoints":[{"x":70,"y":87}]},{"from":"d2","to":"d3","width":7,"style":"cave","waypoints":[{"x":130,"y":87}]},{"from":"d1","to":"e1","width":6,"style":"cave","waypoints":[{"x":34,"y":73}]},{"from":"d1","to":"e2","width":6,"style":"cave","waypoints":[{"x":58,"y":72}]},{"from":"d2","to":"e2","width":7,"style":"cave","waypoints":[{"x":90,"y":70}]},{"from":"d2","to":"e3","width":7,"style":"cave","waypoints":[{"x":120,"y":70}]},{"from":"d3","to":"e3","width":6,"style":"cave","waypoints":[{"x":150,"y":72}]},{"from":"d3","to":"e4","width":6,"style":"cave","waypoints":[{"x":172,"y":73}]},{"from":"e1","to":"e2","width":6,"style":"cave","waypoints":[{"x":54,"y":57}]},{"from":"e2","to":"e3","width":7,"style":"cave","waypoints":[{"x":110,"y":55}]},{"from":"e3","to":"e4","width":6,"style":"cave","waypoints":[{"x":162,"y":57}]},{"from":"e1","to":"h3","width":4,"style":"cave"},{"from":"e4","to":"h4","width":4,"style":"cave"},{"from":"e1","to":"n1","width":6,"style":"cave","waypoints":[{"x":38,"y":43}]},{"from":"e2","to":"n1","width":6,"style":"cave","waypoints":[{"x":65,"y":42}]},{"from":"e2","to":"n2","width":7,"style":"cave","waypoints":[{"x":95,"y":40}]},{"from":"e3","to":"n2","width":7,"style":"cave","waypoints":[{"x":125,"y":40}]},{"from":"e3","to":"n3","width":6,"style":"cave","waypoints":[{"x":155,"y":42}]},{"from":"e4","to":"n3","width":6,"style":"cave","waypoints":[{"x":178,"y":43}]},{"from":"n1","to":"n2","width":7,"style":"cave","waypoints":[{"x":80,"y":26}]},{"from":"n2","to":"n3","width":7,"style":"cave","waypoints":[{"x":140,"y":27}]},{"from":"n1","to":"exit","width":6,"style":"cave","waypoints":[{"x":80,"y":18}]},{"from":"n2","to":"exit","width":8,"style":"cave"},{"from":"n3","to":"exit","width":6,"style":"cave","waypoints":[{"x":140,"y":18}]},{"from":"c3","to":"a2","width":5,"style":"cave","waypoints":[{"x":190,"y":125},{"x":188,"y":160}]},{"from":"e1","to":"b1","width":5,"style":"cave","waypoints":[{"x":10,"y":58},{"x":8,"y":100},{"x":12,"y":148}]},{"from":"exit","to":"s","width":4,"style":"cave","waypoints":[{"x":196,"y":10},{"x":198,"y":95},{"x":196,"y":180},{"x":145,"y":182}]}],"features":[{"type":"alcove","x":6,"y":15,"r":4},{"type":"alcove","x":194,"y":15,"r":4},{"type":"alcove","x":6,"y":40,"r":4},{"type":"alcove","x":194,"y":40,"r":6},{"type":"alcove","x":6,"y":65,"r":6},{"type":"alcove","x":194,"y":65,"r":5},{"type":"alcove","x":6,"y":90,"r":4},{"type":"alcove","x":194,"y":90,"r":5},{"type":"alcove","x":6,"y":115,"r":3},{"type":"alcove","x":194,"y":115,"r":4},{"type":"alcove","x":6,"y":140,"r":3},{"type":"alcove","x":194,"y":140,"r":5},{"type":"alcove","x":6,"y":165,"r":6},{"type":"alcove","x":194,"y":165,"r":5},{"type":"alcove","x":30,"y":194,"r":3},{"type":"alcove","x":30,"y":6,"r":3},{"type":"alcove","x":60,"y":194,"r":5},{"type":"alcove","x":60,"y":6,"r":5},{"type":"alcove","x":90,"y":194,"r":4},{"type":"alcove","x":90,"y":6,"r":3},{"type":"alcove","x":120,"y":194,"r":5},{"type":"alcove","x":120,"y":6,"r":4},{"type":"alcove","x":150,"y":194,"r":4},{"type":"alcove","x":150,"y":6,"r":5}],"corridorSpawns":[{"x":132,"y":179,"grade":0},{"x":115,"y":164,"grade":1},{"x":148,"y":163,"grade":0},{"x":52,"y":147,"grade":0},{"x":102,"y":146,"grade":0},{"x":27,"y":133,"grade":0},{"x":124,"y":130,"grade":0},{"x":174,"y":128,"grade":1},{"x":55,"y":102,"grade":1},{"x":86,"y":100,"grade":1},{"x":165,"y":102,"grade":0},{"x":70,"y":87,"grade":0},{"x":130,"y":87,"grade":1},{"x":58,"y":72,"grade":1},{"x":150,"y":72,"grade":1},{"x":172,"y":73,"grade":1},{"x":110,"y":55,"grade":0},{"x":125,"y":40,"grade":0},{"x":178,"y":43,"grade":0},{"x":80,"y":18,"grade":0},{"x":140,"y":18,"grade":1},{"x":10,"y":58,"grade":0}],"spawnHoles":[{"x":33,"y":105,"type":"S"},{"x":40,"y":160,"type":"S"},{"x":94,"y":129,"type":"S"},{"x":181,"y":66,"type":"S"},{"x":111,"y":12,"type":"S"}],"tileRLE":[1,304,0,13,1,184,0,20,1,178,0,23,1,176,0,25,1,174,0,27,1,173,0,27,1,172,0,29,1,171,0,30,1,170,0,30,1,169,0,31,1,169,0,30,1,171,0,29,1,171,0,30,1,171,0,30,1,170,0,32,1,169,0,32,1,169,0,32,1,170,0,31,1,172,0,28,1,186,0,15,1,186,0,16,1,185,0,16,1,186,0,16,1,185,0,16,1,185,0,16,1,185,0,16,1,184,0,20,1,181,0,20,1,181,0,19,1,183,0,18,1,184,0,18,1,185,0,16,1,185,0,16,1,186,0,14,1,187,0,14,1,188,0,13,1,188,0,15,1,187,0,14,1,187,0,15,1,186,0,15,1,186,0,15,1,188,0,13,1,188,0,13,1,189,0,12,1,189,0,12,1,189,0,11,1,190,0,11,1,189,0,12,1,189,0,12,1,188,0,13,1,188,0,13,1,187,0,14,1,187,0,15,1,186,0,15,1,186,0,15,1,187,0,14,1,187,0,14,1,3,0,3,1,2,0,2,1,177,0,25,1,176,0,25,1,176,0,25,1,175,0,26,1,173,0,29,1,170,0,31,1,169,0,31,1,164,0,2,1,2,0,32,1,161,0,39,1,156,0,44,1,154,0,46,1,137,0,6,1,5,0,52,1,136,0,63,1,134,0,63,1,136,0,63,1,128,0,43,1,7,0,21,1,123,0,48,1,10,0,19,1,114,0,6,1,2,0,45,1,18,0,2,1,10,0,2,1,114,0,52,1,145,0,45,1,153,0,44,1,154,0,44,1,155,0,42,1,148,0,51,1,143,0,45,1,154,0,42,1,115,0,3,1,39,0,40,1,115,0,11,1,17,0,10,1,3,0,39,1,118,0,14,1,14,0,51,1,120,0,17,1,11,0,51,1,120,0,20,1,7,0,41,1,7,0,2,1,122,0,63,1,137,0,62,1,137,0,59,1,140,0,51,1,149,0,45,1,155,0,43,1,157,0,42,1,157,0,42,1,158,0,34,1,3,0,3,1,160,0,33,1,168,0,32,1,168,0,33,1,167,0,36,1,164,0,37,1,164,0,39,1,162,0,39,1,161,0,42,1,158,0,43,1,158,0,19,1,3,0,22,1,158,0,15,1,9,0,21,1,157,0,11,1,12,0,22,1,183,0,18,1,183,0,18,1,184,0,19,1,183,0,18,1,185,0,17,1,184,0,17,1,184,0,18,1,185,0,18,1,183,0,18,1,183,0,21,1,181,0,20,1,183,0,18,1,183,0,19,1,183,0,18,1,4,0,2,1,179,0,22,1,179,0,21,1,179,0,21,1,179,0,21,1,178,0,22,1,174,0,26,1,173,0,27,1,172,0,28,1,171,0,28,1,171,0,28,1,171,0,27,1,173,0,28,1,171,0,28,1,172,0,28,1,149,0,4,1,13,0,3,1,2,0,17,1,3,0,8,1,149,0,35,1,13,0,1,1,151,0,34,1,165,0,35,1,164,0,36,1,163,0,36,1,163,0,36,1,163,0,36,1,164,0,36,1,144,0,11,1,9,0,35,1,144,0,14,1,6,0,13,1,165,0,34,1,165,0,34,1,165,0,35,1,165,0,35,1,164,0,35,1,164,0,35,1,165,0,34,1,166,0,33,1,167,0,32,1,163,0,2,1,2,0,28,1,167,0,32,1,167,0,33,1,167,0,33,1,168,0,32,1,168,0,33,1,168,0,2,1,2,0,36,1,165,0,40,1,161,0,40,1,161,0,39,1,162,0,38,1,163,0,37,1,165,0,36,1,165,0,35,1,166,0,33,1,168,0,32,1,173,0,5,1,11,0,12,1,14,0,2,1,173,0,43,1,157,0,44,1,157,0,43,1,157,0,43,1,157,0,42,1,158,0,42,1,158,0,42,1,158,0,42,1,159,0,41,1,161,0,6,1,4,0,14,1,3,0,13,1,188,0,13,1,9,0,3,1,5,0,2,1,169,0,33,1,167,0,34,1,166,0,35,1,165,0,36,1,164,0,36,1,165,0,34,1,166,0,34,1,166,0,33,1,168,0,31,1,171,0,2,1,7,0,5,1,899]};
+FIXED_MAPS[0]={ "mw": 200, "mh": 200, "rooms": [ { "id": "s", "type": "start", "cx": 111, "cy": 190, "shape": "ellipse", "rx": 14, "ry": 10 }, { "id": "a1", "type": "combat", "cx": 38, "cy": 175, "shape": "ellipse", "rx": 14, "ry": 10, "spawns": [ { "dx": 4, "dy": 0, "grade": 0 }, { "dx": 0, "dy": 1, "grade": 0 }, { "dx": -1, "dy": 0, "grade": 0 }, { "dx": 0, "dy": -3, "grade": 0 } ] }, { "id": "a2", "type": "combat", "cx": 165, "cy": 178, "shape": "ellipse", "rx": 12, "ry": 10, "spawns": [ { "dx": 3, "dy": 0, "grade": 0 }, { "dx": 0, "dy": 1, "grade": 0 }, { "dx": -1, "dy": 0, "grade": 0 }, { "dx": 0, "dy": -1, "grade": 0 } ] }, { "id": "b1", "type": "combat", "cx": 30, "cy": 148, "shape": "circle", "rx": 12, "spawns": [ { "dx": 4, "dy": 0, "grade": 0 }, { "dx": 0, "dy": 1, "grade": 0 }, { "dx": -3, "dy": 0, "grade": 0 }, { "dx": 0, "dy": -3, "grade": 0 } ] }, { "id": "b2", "type": "combat", "cx": 75, "cy": 145, "shape": "ellipse", "rx": 16, "ry": 12, "spawns": [ { "dx": 4, "dy": 0, "grade": 0 }, { "dx": 0, "dy": 1, "grade": 0 }, { "dx": -3, "dy": 2, "grade": 0 }, { "dx": -2, "dy": -1, "grade": 0 }, { "dx": 0, "dy": -1, "grade": 0 } ] }, { "id": "b3", "type": "combat", "cx": 130, "cy": 148, "shape": "ellipse", "rx": 14, "ry": 10, "spawns": [ { "dx": 2, "dy": 0, "grade": 0 }, { "dx": 0, "dy": 1, "grade": 0 }, { "dx": -1, "dy": 1, "grade": 0 }, { "dx": -1, "dy": -1, "grade": 0 }, { "dx": 1, "dy": -3, "grade": 0 } ] }, { "id": "b4", "type": "combat", "cx": 178, "cy": 142, "shape": "circle", "rx": 12, "spawns": [ { "dx": 4, "dy": 0, "grade": 0 }, { "dx": 0, "dy": 1, "grade": 0 }, { "dx": -3, "dy": 0, "grade": 0 }, { "dx": 0, "dy": -1, "grade": 0 } ] }, { "id": "c1", "type": "combat", "cx": 25, "cy": 118, "shape": "ellipse", "rx": 12, "ry": 10, "spawns": [ { "dx": 4, "dy": 0, "grade": 0 }, { "dx": 0, "dy": 3, "grade": 0 }, { "dx": -3, "dy": 0, "grade": 0 }, { "dx": 0, "dy": -3, "grade": 0 } ] }, { "id": "c2", "type": "combat", "cx": 72, "cy": 115, "shape": "circle", "rx": 14, "spawns": [ { "dx": 3, "dy": 0, "grade": 0 }, { "dx": 0, "dy": 1, "grade": 0 }, { "dx": -2, "dy": 1, "grade": 0 }, { "dx": -3, "dy": -2, "grade": 0 }, { "dx": 0, "dy": -2, "grade": 0 } ] }, { "id": "f", "type": "forge", "cx": 118, "cy": 112, "shape": "rect", "rx": 12, "ry": 8 }, { "id": "c3", "type": "combat", "cx": 170, "cy": 115, "shape": "ellipse", "rx": 14, "ry": 10, "spawns": [ { "dx": 2, "dy": 0, "grade": 1 }, { "dx": 0, "dy": 1, "grade": 1 }, { "dx": -3, "dy": 2, "grade": 1 }, { "dx": -2, "dy": -1, "grade": 1 }, { "dx": 0, "dy": -2, "grade": 1 } ] }, { "id": "d1", "type": "combat", "cx": 40, "cy": 88, "shape": "ellipse", "rx": 14, "ry": 12, "spawns": [ { "dx": 3, "dy": 0, "grade": 1 }, { "dx": 0, "dy": 1, "grade": 1 }, { "dx": -1, "dy": 1, "grade": 1 }, { "dx": -2, "dy": -1, "grade": 1 }, { "dx": 0, "dy": -1, "grade": 1 } ] }, { "id": "d2", "type": "combat", "cx": 100, "cy": 85, "shape": "cross", "rx": 16, "ry": 16, "spawns": [ { "dx": 2, "dy": 0, "grade": 1 }, { "dx": 1, "dy": 2, "grade": 1 }, { "dx": 0, "dy": 1, "grade": 1 }, { "dx": -2, "dy": 0, "grade": 1 }, { "dx": -1, "dy": -2, "grade": 1 }, { "dx": 1, "dy": -3, "grade": 1 } ], "armW": 8, "armH": 8 }, { "id": "d3", "type": "combat", "cx": 160, "cy": 88, "shape": "ellipse", "rx": 14, "ry": 12, "spawns": [ { "dx": 3, "dy": 0, "grade": 1 }, { "dx": 0, "dy": 1, "grade": 1 }, { "dx": -3, "dy": 2, "grade": 1 }, { "dx": -2, "dy": -1, "grade": 1 }, { "dx": 1, "dy": -3, "grade": 1 } ] }, { "id": "e1", "type": "combat", "cx": 28, "cy": 58, "shape": "circle", "rx": 12, "spawns": [ { "dx": 2, "dy": 0, "grade": 1 }, { "dx": 0, "dy": 2, "grade": 1 }, { "dx": -1, "dy": 0, "grade": 1 }, { "dx": 0, "dy": -3, "grade": 1 } ] }, { "id": "e2", "type": "combat", "cx": 80, "cy": 55, "shape": "ellipse", "rx": 16, "ry": 12, "spawns": [ { "dx": 3, "dy": 0, "grade": 1 }, { "dx": 1, "dy": 3, "grade": 1 }, { "dx": -3, "dy": 2, "grade": 1 }, { "dx": -2, "dy": -1, "grade": 1 }, { "dx": 1, "dy": -3, "grade": 1 } ] }, { "id": "e3", "type": "combat", "cx": 140, "cy": 55, "shape": "ellipse", "rx": 14, "ry": 12, "spawns": [ { "dx": 2, "dy": 0, "grade": 1 }, { "dx": 1, "dy": 3, "grade": 1 }, { "dx": -1, "dy": 1, "grade": 1 }, { "dx": -1, "dy": -1, "grade": 1 }, { "dx": 1, "dy": -3, "grade": 1 } ] }, { "id": "e4", "type": "combat", "cx": 185, "cy": 58, "shape": "circle", "rx": 10, "spawns": [ { "dx": 2, "dy": 0, "grade": 1 }, { "dx": 0, "dy": 2, "grade": 1 }, { "dx": -1, "dy": 0, "grade": 1 }, { "dx": 0, "dy": -1, "grade": 1 } ] }, { "id": "n1", "type": "combat", "cx": 50, "cy": 28, "shape": "ellipse", "rx": 14, "ry": 10, "spawns": [ { "dx": 2, "dy": 0, "grade": 1 }, { "dx": 0, "dy": 2, "grade": 1 }, { "dx": -2, "dy": 0, "grade": 1 }, { "dx": 0, "dy": -2, "grade": 1 } ] }, { "id": "n2", "type": "combat", "cx": 110, "cy": 25, "shape": "ellipse", "rx": 16, "ry": 12, "spawns": [ { "dx": 4, "dy": 0, "grade": 1 }, { "dx": 0, "dy": 2, "grade": 1 }, { "dx": -1, "dy": 1, "grade": 1 }, { "dx": -2, "dy": -1, "grade": 1 }, { "dx": 0, "dy": -2, "grade": 1 } ] }, { "id": "n3", "type": "combat", "cx": 170, "cy": 28, "shape": "ellipse", "rx": 12, "ry": 10, "spawns": [ { "dx": 2, "dy": 0, "grade": 1 }, { "dx": 0, "dy": 3, "grade": 1 }, { "dx": -2, "dy": 0, "grade": 1 }, { "dx": 0, "dy": -3, "grade": 1 } ] }, { "id": "exit", "type": "combat", "cx": 110, "cy": 10, "shape": "ellipse", "rx": 12, "ry": 6, "spawns": [ { "dx": 4, "dy": 0, "grade": 1 }, { "dx": -1, "dy": 3, "grade": 1 }, { "dx": -1, "dy": -1, "grade": 1 } ] }, { "id": "h1", "type": "combat", "cx": 8, "cy": 155, "shape": "circle", "rx": 5, "spawns": [ { "dx": 0, "dy": 0, "grade": 1 } ] }, { "id": "h2", "type": "combat", "cx": 192, "cy": 130, "shape": "circle", "rx": 5, "spawns": [ { "dx": 0, "dy": 0, "grade": 1 } ] }, { "id": "h3", "type": "combat", "cx": 8, "cy": 42, "shape": "circle", "rx": 5, "spawns": [ { "dx": 0, "dy": 0, "grade": 2 } ] }, { "id": "h4", "type": "combat", "cx": 192, "cy": 42, "shape": "circle", "rx": 5, "spawns": [ { "dx": 0, "dy": 0, "grade": 2 } ] } ], "corridors": [ { "from": "s", "to": "a1", "width": 7, "style": "cave", "waypoints": [ { "x": 68, "y": 178 } ] }, { "from": "s", "to": "a2", "width": 7, "style": "cave", "waypoints": [ { "x": 132, "y": 179 } ] }, { "from": "a1", "to": "b1", "width": 7, "style": "cave", "waypoints": [ { "x": 34, "y": 162 } ] }, { "from": "a1", "to": "b2", "width": 7, "style": "cave", "waypoints": [ { "x": 55, "y": 160 } ] }, { "from": "s", "to": "b2", "width": 8, "style": "cave", "waypoints": [ { "x": 88, "y": 162 } ] }, { "from": "s", "to": "b3", "width": 8, "style": "cave", "waypoints": [ { "x": 115, "y": 164 } ] }, { "from": "a2", "to": "b3", "width": 7, "style": "cave", "waypoints": [ { "x": 148, "y": 163 } ] }, { "from": "a2", "to": "b4", "width": 7, "style": "cave", "waypoints": [ { "x": 172, "y": 160 } ] }, { "from": "a1", "to": "h1", "width": 4, "style": "cave" }, { "from": "b1", "to": "b2", "width": 6, "style": "cave", "waypoints": [ { "x": 52, "y": 147 } ] }, { "from": "b2", "to": "b3", "width": 7, "style": "cave", "waypoints": [ { "x": 102, "y": 146 } ] }, { "from": "b3", "to": "b4", "width": 6, "style": "cave", "waypoints": [ { "x": 154, "y": 145 } ] }, { "from": "b1", "to": "c1", "width": 6, "style": "cave", "waypoints": [ { "x": 27, "y": 133 } ] }, { "from": "b2", "to": "c2", "width": 7, "style": "cave", "waypoints": [ { "x": 73, "y": 130 } ] }, { "from": "b3", "to": "f", "width": 7, "style": "cave", "waypoints": [ { "x": 124, "y": 130 } ] }, { "from": "b4", "to": "c3", "width": 6, "style": "cave", "waypoints": [ { "x": 174, "y": 128 } ] }, { "from": "b4", "to": "h2", "width": 4, "style": "cave" }, { "from": "c1", "to": "c2", "width": 6, "style": "cave", "waypoints": [ { "x": 48, "y": 117 } ] }, { "from": "c2", "to": "f", "width": 7, "style": "cave", "waypoints": [ { "x": 95, "y": 113 } ] }, { "from": "f", "to": "c3", "width": 7, "style": "cave", "waypoints": [ { "x": 144, "y": 114 } ] }, { "from": "c1", "to": "d1", "width": 6, "style": "cave", "waypoints": [ { "x": 32, "y": 103 } ] }, { "from": "c2", "to": "d1", "width": 6, "style": "cave", "waypoints": [ { "x": 55, "y": 102 } ] }, { "from": "c2", "to": "d2", "width": 7, "style": "cave", "waypoints": [ { "x": 86, "y": 100 } ] }, { "from": "f", "to": "d2", "width": 7, "style": "cave", "waypoints": [ { "x": 109, "y": 98 } ] }, { "from": "c3", "to": "d2", "width": 6, "style": "cave", "waypoints": [ { "x": 135, "y": 100 } ] }, { "from": "c3", "to": "d3", "width": 6, "style": "cave", "waypoints": [ { "x": 165, "y": 102 } ] }, { "from": "d1", "to": "d2", "width": 7, "style": "cave", "waypoints": [ { "x": 70, "y": 87 } ] }, { "from": "d2", "to": "d3", "width": 7, "style": "cave", "waypoints": [ { "x": 130, "y": 87 } ] }, { "from": "d1", "to": "e1", "width": 6, "style": "cave", "waypoints": [ { "x": 34, "y": 73 } ] }, { "from": "d1", "to": "e2", "width": 6, "style": "cave", "waypoints": [ { "x": 58, "y": 72 } ] }, { "from": "d2", "to": "e2", "width": 7, "style": "cave", "waypoints": [ { "x": 90, "y": 70 } ] }, { "from": "d2", "to": "e3", "width": 7, "style": "cave", "waypoints": [ { "x": 120, "y": 70 } ] }, { "from": "d3", "to": "e3", "width": 6, "style": "cave", "waypoints": [ { "x": 150, "y": 72 } ] }, { "from": "d3", "to": "e4", "width": 6, "style": "cave", "waypoints": [ { "x": 172, "y": 73 } ] }, { "from": "e1", "to": "e2", "width": 6, "style": "cave", "waypoints": [ { "x": 54, "y": 57 } ] }, { "from": "e2", "to": "e3", "width": 7, "style": "cave", "waypoints": [ { "x": 110, "y": 55 } ] }, { "from": "e3", "to": "e4", "width": 6, "style": "cave", "waypoints": [ { "x": 162, "y": 57 } ] }, { "from": "e1", "to": "h3", "width": 4, "style": "cave" }, { "from": "e4", "to": "h4", "width": 4, "style": "cave" }, { "from": "e1", "to": "n1", "width": 6, "style": "cave", "waypoints": [ { "x": 38, "y": 43 } ] }, { "from": "e2", "to": "n1", "width": 6, "style": "cave", "waypoints": [ { "x": 65, "y": 42 } ] }, { "from": "e2", "to": "n2", "width": 7, "style": "cave", "waypoints": [ { "x": 95, "y": 40 } ] }, { "from": "e3", "to": "n2", "width": 7, "style": "cave", "waypoints": [ { "x": 125, "y": 40 } ] }, { "from": "e3", "to": "n3", "width": 6, "style": "cave", "waypoints": [ { "x": 155, "y": 42 } ] }, { "from": "e4", "to": "n3", "width": 6, "style": "cave", "waypoints": [ { "x": 178, "y": 43 } ] }, { "from": "n1", "to": "n2", "width": 7, "style": "cave", "waypoints": [ { "x": 80, "y": 26 } ] }, { "from": "n2", "to": "n3", "width": 7, "style": "cave", "waypoints": [ { "x": 140, "y": 27 } ] }, { "from": "n1", "to": "exit", "width": 6, "style": "cave", "waypoints": [ { "x": 80, "y": 18 } ] }, { "from": "n2", "to": "exit", "width": 8, "style": "cave" }, { "from": "n3", "to": "exit", "width": 6, "style": "cave", "waypoints": [ { "x": 140, "y": 18 } ] }, { "from": "c3", "to": "a2", "width": 5, "style": "cave", "waypoints": [ { "x": 190, "y": 125 }, { "x": 188, "y": 160 } ] }, { "from": "e1", "to": "b1", "width": 5, "style": "cave", "waypoints": [ { "x": 10, "y": 58 }, { "x": 8, "y": 100 }, { "x": 12, "y": 148 } ] }, { "from": "exit", "to": "s", "width": 4, "style": "cave", "waypoints": [ { "x": 196, "y": 10 }, { "x": 198, "y": 95 }, { "x": 196, "y": 180 }, { "x": 145, "y": 182 } ] } ], "features": [ { "type": "alcove", "x": 6, "y": 15, "r": 4 }, { "type": "alcove", "x": 194, "y": 15, "r": 4 }, { "type": "alcove", "x": 6, "y": 40, "r": 4 }, { "type": "alcove", "x": 194, "y": 40, "r": 6 }, { "type": "alcove", "x": 6, "y": 65, "r": 6 }, { "type": "alcove", "x": 194, "y": 65, "r": 5 }, { "type": "alcove", "x": 6, "y": 90, "r": 4 }, { "type": "alcove", "x": 194, "y": 90, "r": 5 }, { "type": "alcove", "x": 6, "y": 115, "r": 3 }, { "type": "alcove", "x": 194, "y": 115, "r": 4 }, { "type": "alcove", "x": 6, "y": 140, "r": 3 }, { "type": "alcove", "x": 194, "y": 140, "r": 5 }, { "type": "alcove", "x": 6, "y": 165, "r": 6 }, { "type": "alcove", "x": 194, "y": 165, "r": 5 }, { "type": "alcove", "x": 30, "y": 194, "r": 3 }, { "type": "alcove", "x": 30, "y": 6, "r": 3 }, { "type": "alcove", "x": 60, "y": 194, "r": 5 }, { "type": "alcove", "x": 60, "y": 6, "r": 5 }, { "type": "alcove", "x": 90, "y": 194, "r": 4 }, { "type": "alcove", "x": 90, "y": 6, "r": 3 }, { "type": "alcove", "x": 120, "y": 194, "r": 5 }, { "type": "alcove", "x": 120, "y": 6, "r": 4 }, { "type": "alcove", "x": 150, "y": 194, "r": 4 }, { "type": "alcove", "x": 150, "y": 6, "r": 5 } ], "corridorSpawns": [ { "x": 132, "y": 179, "grade": 0 }, { "x": 115, "y": 164, "grade": 1 }, { "x": 148, "y": 163, "grade": 0 }, { "x": 52, "y": 147, "grade": 0 }, { "x": 102, "y": 146, "grade": 0 }, { "x": 27, "y": 133, "grade": 0 }, { "x": 124, "y": 130, "grade": 0 }, { "x": 174, "y": 128, "grade": 1 }, { "x": 55, "y": 102, "grade": 1 }, { "x": 86, "y": 100, "grade": 1 }, { "x": 165, "y": 102, "grade": 0 }, { "x": 70, "y": 87, "grade": 0 }, { "x": 130, "y": 87, "grade": 1 }, { "x": 58, "y": 72, "grade": 1 }, { "x": 150, "y": 72, "grade": 1 }, { "x": 172, "y": 73, "grade": 1 }, { "x": 110, "y": 55, "grade": 0 }, { "x": 125, "y": 40, "grade": 0 }, { "x": 178, "y": 43, "grade": 0 }, { "x": 80, "y": 18, "grade": 0 }, { "x": 140, "y": 18, "grade": 1 }, { "x": 10, "y": 58, "grade": 0 } ], "spawnHoles": [ { "x": 178, "y": 68, "type": "L" }, { "x": 164, "y": 51, "type": "S" }, { "x": 136, "y": 29, "type": "S" }, { "x": 75, "y": 115, "type": "S" }, { "x": 112, "y": 81, "type": "S" }, { "x": 58, "y": 181, "type": "S" }, { "x": 32, "y": 162, "type": "L" } ], "tileRLE": [ 1, 304, 0, 13, 1, 184, 0, 20, 1, 178, 0, 23, 1, 176, 0, 25, 1, 174, 0, 27, 1, 173, 0, 27, 1, 172, 0, 29, 1, 171, 0, 30, 1, 170, 0, 30, 1, 169, 0, 31, 1, 169, 0, 30, 1, 171, 0, 29, 1, 171, 0, 30, 1, 171, 0, 30, 1, 170, 0, 32, 1, 169, 0, 32, 1, 169, 0, 32, 1, 170, 0, 31, 1, 172, 0, 28, 1, 186, 0, 15, 1, 186, 0, 16, 1, 185, 0, 16, 1, 186, 0, 16, 1, 185, 0, 16, 1, 185, 0, 16, 1, 185, 0, 16, 1, 184, 0, 20, 1, 181, 0, 20, 1, 181, 0, 19, 1, 183, 0, 18, 1, 184, 0, 18, 1, 185, 0, 16, 1, 185, 0, 16, 1, 186, 0, 14, 1, 187, 0, 14, 1, 188, 0, 13, 1, 188, 0, 15, 1, 187, 0, 14, 1, 187, 0, 15, 1, 186, 0, 15, 1, 186, 0, 15, 1, 188, 0, 13, 1, 188, 0, 13, 1, 189, 0, 12, 1, 189, 0, 12, 1, 189, 0, 11, 1, 190, 0, 11, 1, 189, 0, 12, 1, 189, 0, 12, 1, 188, 0, 13, 1, 188, 0, 13, 1, 187, 0, 14, 1, 187, 0, 15, 1, 186, 0, 15, 1, 186, 0, 15, 1, 187, 0, 14, 1, 187, 0, 14, 1, 3, 0, 3, 1, 2, 0, 2, 1, 177, 0, 25, 1, 176, 0, 25, 1, 176, 0, 25, 1, 175, 0, 26, 1, 173, 0, 29, 1, 170, 0, 31, 1, 169, 0, 31, 1, 164, 0, 2, 1, 2, 0, 32, 1, 161, 0, 39, 1, 156, 0, 44, 1, 154, 0, 46, 1, 137, 0, 6, 1, 5, 0, 52, 1, 136, 0, 63, 1, 134, 0, 63, 1, 136, 0, 63, 1, 128, 0, 43, 1, 7, 0, 21, 1, 123, 0, 48, 1, 10, 0, 19, 1, 114, 0, 6, 1, 2, 0, 45, 1, 18, 0, 2, 1, 10, 0, 2, 1, 114, 0, 52, 1, 145, 0, 45, 1, 153, 0, 44, 1, 154, 0, 44, 1, 155, 0, 42, 1, 148, 0, 51, 1, 143, 0, 45, 1, 154, 0, 42, 1, 115, 0, 3, 1, 39, 0, 40, 1, 115, 0, 11, 1, 17, 0, 10, 1, 3, 0, 39, 1, 118, 0, 14, 1, 14, 0, 51, 1, 120, 0, 17, 1, 11, 0, 51, 1, 120, 0, 20, 1, 7, 0, 41, 1, 7, 0, 2, 1, 122, 0, 63, 1, 137, 0, 62, 1, 137, 0, 59, 1, 140, 0, 51, 1, 149, 0, 45, 1, 155, 0, 43, 1, 157, 0, 42, 1, 157, 0, 42, 1, 158, 0, 34, 1, 3, 0, 3, 1, 160, 0, 33, 1, 168, 0, 32, 1, 168, 0, 33, 1, 167, 0, 36, 1, 164, 0, 37, 1, 164, 0, 39, 1, 162, 0, 39, 1, 161, 0, 42, 1, 158, 0, 43, 1, 158, 0, 19, 1, 3, 0, 22, 1, 158, 0, 15, 1, 9, 0, 21, 1, 157, 0, 11, 1, 12, 0, 22, 1, 183, 0, 18, 1, 183, 0, 18, 1, 184, 0, 19, 1, 183, 0, 18, 1, 185, 0, 17, 1, 184, 0, 17, 1, 184, 0, 18, 1, 185, 0, 18, 1, 183, 0, 18, 1, 183, 0, 21, 1, 181, 0, 20, 1, 183, 0, 18, 1, 183, 0, 19, 1, 183, 0, 18, 1, 4, 0, 2, 1, 179, 0, 22, 1, 179, 0, 21, 1, 179, 0, 21, 1, 179, 0, 21, 1, 178, 0, 22, 1, 174, 0, 26, 1, 173, 0, 27, 1, 172, 0, 28, 1, 171, 0, 28, 1, 171, 0, 28, 1, 171, 0, 27, 1, 173, 0, 28, 1, 171, 0, 28, 1, 172, 0, 28, 1, 149, 0, 4, 1, 13, 0, 3, 1, 2, 0, 17, 1, 3, 0, 8, 1, 149, 0, 35, 1, 13, 0, 1, 1, 151, 0, 34, 1, 165, 0, 35, 1, 164, 0, 36, 1, 163, 0, 36, 1, 163, 0, 36, 1, 163, 0, 36, 1, 164, 0, 36, 1, 144, 0, 11, 1, 9, 0, 35, 1, 144, 0, 14, 1, 6, 0, 13, 1, 165, 0, 34, 1, 165, 0, 34, 1, 165, 0, 35, 1, 165, 0, 35, 1, 164, 0, 35, 1, 164, 0, 35, 1, 165, 0, 34, 1, 166, 0, 33, 1, 167, 0, 32, 1, 163, 0, 2, 1, 2, 0, 28, 1, 167, 0, 32, 1, 167, 0, 33, 1, 167, 0, 33, 1, 168, 0, 32, 1, 168, 0, 33, 1, 168, 0, 2, 1, 2, 0, 36, 1, 165, 0, 40, 1, 161, 0, 40, 1, 161, 0, 39, 1, 162, 0, 38, 1, 163, 0, 37, 1, 165, 0, 36, 1, 165, 0, 35, 1, 166, 0, 33, 1, 168, 0, 32, 1, 173, 0, 5, 1, 11, 0, 12, 1, 14, 0, 2, 1, 173, 0, 43, 1, 157, 0, 44, 1, 157, 0, 43, 1, 157, 0, 43, 1, 157, 0, 42, 1, 158, 0, 42, 1, 158, 0, 42, 1, 158, 0, 42, 1, 159, 0, 41, 1, 161, 0, 6, 1, 4, 0, 14, 1, 3, 0, 13, 1, 188, 0, 13, 1, 9, 0, 3, 1, 5, 0, 2, 1, 169, 0, 33, 1, 167, 0, 34, 1, 166, 0, 35, 1, 165, 0, 36, 1, 164, 0, 36, 1, 165, 0, 34, 1, 166, 0, 34, 1, 166, 0, 33, 1, 168, 0, 31, 1, 171, 0, 2, 1, 7, 0, 5, 1, 899 ]};
 
 
 
@@ -11462,8 +11462,26 @@ function genFromTemplate(tmpl,si){
     for(let y=1;y<mh-1;y++)for(let x=1;x<mw-1;x++)if(map[y][x]===0)G._floorTiles.push({tx:x,ty:y});
   }
 
-  // ── 5. 보스방 처리 ──
-  const bossRd=tmpl.rooms.find(r=>r.type==='boss');
+  // ── 5. 보스방 처리 (없으면 자동 생성) ──
+  let bossRd=tmpl.rooms.find(r=>r.type==='boss');
+  if(!bossRd){
+    // 에디터 맵에 보스방 없음 → 맵 최상단에 자동 생성
+    const _abR=12,_abRy=10;
+    const _abCx=~~(mw/2),_abCy=_abR+3;
+    const _abId='b';
+    bossRd={id:_abId,type:'boss',cx:_abCx,cy:_abCy,shape:'ellipse',rx:_abR,ry:_abRy,
+      pillars:[{dx:-~~(_abR*.6),dy:-~~(_abRy*.5),w:3,h:3},{dx:~~(_abR*.6),dy:-~~(_abRy*.5),w:3,h:3},{dx:-~~(_abR*.6),dy:~~(_abRy*.5),w:3,h:3},{dx:~~(_abR*.6),dy:~~(_abRy*.5),w:3,h:3}]};
+    // 카빙
+    _tCarveEllipse(map,mw,mh,_abCx,_abCy,_abR,_abRy);
+    if(bossRd.pillars)for(const p of bossRd.pillars){const pw=p.w||2,ph=p.h||2;for(let dy=0;dy<ph;dy++)for(let dx=0;dx<pw;dx++){const tx=_abCx+p.dx+dx,ty=_abCy+p.dy+dy;if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=1}}
+    rooms.push({x:_abCx-_abR,y:_abCy-_abRy,w:_abR*2,h:_abRy*2,cx:_abCx,cy:_abCy,cleared:false,type:'boss'});
+    roomMap[_abId]=rooms.length-1;
+    // 가장 가까운 방에서 복도 연결
+    let _nearRm=null,_nearD=Infinity;
+    for(const rd2 of tmpl.rooms){if(rd2.type==='boss')continue;const _d2=Math.abs(rd2.cy-_abCy)+Math.abs(rd2.cx-_abCx);if(_d2<_nearD){_nearD=_d2;_nearRm=rd2}}
+    if(_nearRm)_tCarveCorridor(map,mw,mh,_nearRm.cx,_nearRm.cy,_abCx,_abCy,6,'cave');
+    console.log('[MAP] auto-generated boss room at',_abCx,_abCy);
+  }
   const bossRm=bossRd?rooms[roomMap[bossRd.id]]:null;
   let _gateTiles=[],_gateY=0,bossCx=~~(mw/2),bossCy=10;
   if(bossRm){
@@ -12442,6 +12460,8 @@ function initStage(si){
   G.cam.x=P.x;G.cam.y=P.y;
   G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0}};
   buildMapCache(); // 맵 오프스크린 캔버스 캐싱
+  // 대형 스프라이트 GPU 프리업로드 (etype 80~84 보스급)
+  if(_useGPU||_useGL){for(const _bet of[80,81,82,83,84]){const _bs=_ESPRITES[_bet];if(_bs&&_bs.img&&_bs.img.complete){try{_getTex(_bs.img)}catch(e){}}}}
   initTorchLights();initSwayObjects();initWallEyes();_initEyes();initGlowObjects();initMapObjects();if(typeof _buildDecorList==='function')_buildDecorList(); // 동적 데코+맵오브젝트+환경데코 초기화
   BGM.play(BGM.stageKey(si)); // 스테이지 BGM
 }
@@ -15640,7 +15660,7 @@ function update(){
         if(mb.vortex){
           const bx=mb.tx,by=mb.ty,_vSlv=mb.slv||1,_vR=mb.r;
           if(!G._fireZones)G._fireZones=[];
-          const baseDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*2*(1+(_vSlv-1)*0.2)*_fuseMul('maliceMortar'));
+          const baseDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*1*(1+(_vSlv-1)*0.2)*_fuseMul('maliceMortar'));
           if(mb.iceFuse){
             // 합체: 소용돌이 + 얼음보주 동시 전개
             G._fireZones.push({x:bx,y:by,r:_vR,t:0,maxT:300,dmg:baseDmg,el:EL.I,lv:_vSlv,type:'iceVortex'});
@@ -15756,8 +15776,8 @@ function update(){
         // 파쇄: 얼음칼날 방사
         const slvIO=P.skills.iceOrb||1;const slvMM=P.skills.maliceMortar||1;
         const nBlades=8+slvIO*4+slvMM*2; // 합체 보너스
-        const baseDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*4*(1+(slvIO-1)*0.15)*(1+(slvMM-1)*0.1)*_fuseMul('maliceMortar'));
-        const bladeDmg=~~(baseDmg*0.5); // 파편 데미지 반감
+        const baseDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*1.5*(1+(slvIO-1)*0.15)*(1+(slvMM-1)*0.1)*_fuseMul('maliceMortar'));
+        const bladeDmg=~~(baseDmg*0.3); // 파편 데미지 반감
         const _ioSpawnR=P.r+32;
         for(let i=0;i<nBlades;i++){
           const ang=(Math.PI*2/nBlades)*i+(Math.random()-.5)*.15;
@@ -15766,7 +15786,7 @@ function update(){
         }
         // 파쇄 범위 데미지
         const shatterR=120+slvIO*5+slvMM*3;
-        const shatterDmg=~~(baseDmg*0.6);
+        const shatterDmg=~~(baseDmg*0.3);
         for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive)continue;
           if(dst(e.x,e.y,bx,by)<shatterR+e.r){const a=Math.atan2(e.y-by,e.x-bx);hurtE(e,shatterDmg,a,false,{},EL.I)}}
         // 파쇄 이펙트
@@ -15991,8 +16011,8 @@ function update(){
       // ═══ 폭풍소환 소용돌이: 적 흡인 + DOT ═══
       if(fz.type==='vortex'||fz.type==='iceVortex'){
         const _vtLv=fz.lv||1;
-        let _vtPullBase=2+_vtLv*0.3;
-        if(_vtLv>=10)_vtPullBase*=1.5;
+        let _vtPullBase=0.6+_vtLv*0.08;
+        if(_vtLv>=10)_vtPullBase*=1.2;
         // 매 프레임 흡인 (중심에 가까울수록 강하게)
         const _vtNe=shQuery(fz.x,fz.y,fz.r+30);
         for(let _vi=0;_vi<_vtNe.length;_vi++){
@@ -16009,7 +16029,7 @@ function update(){
             const e=_vtNe[_vi];if(!e.alive)continue;
             if(dst(fz.x,fz.y,e.x,e.y)>fz.r)continue;
             if(fz.type==='iceVortex'){
-              hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.I);
+              hurtE(e,~~(fz.dmg*.15),Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.I);
               e._webSlow=Math.max(e._webSlow||0,25);
               if((e._frozen||0)<=0&&(e._frozenImmune||0)<=0){
                 if(!e._freezeMax)e._freezeMax=e.ib?500:100;
@@ -16019,7 +16039,7 @@ function update(){
                   addTxt(e.x,e.y-25,'❄프리즌!','#44ddff',50);addParts(e.x,e.y,'#88eeff',12);playSampleAt('impact_hit',.6,_r(1.5,.15),e.x,e.y)}
               }
             }else{
-              hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.D);
+              hurtE(e,~~(fz.dmg*.15),Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.D);
               e._webSlow=Math.max(e._webSlow||0,20);
             }
           }
@@ -19932,10 +19952,9 @@ function checkRooms(){
       if(ptx===ex.x&&pty===ex.y){
         // ── 던전에서 출구 밟음 → 보스 아레나 로딩 ──
         if(G.bossAlive&&!G._bossArena){
-          // 문지기 생존 시 진입 차단
+          // 문지기 생존 시 경고만 (진입 차단 없음)
           if(G._gateGuard&&G._gateGuard.alive){
-            addTxt(P.x,P.y-40,'⚠ 문지기를 처치하라!','#ff4444',50);
-            shake(6);P.kb.y=3;break;
+            addTxt(P.x,P.y-40,'⚠ 문지기가 살아있다!','#ff8844',30);
           }
           G._bossLoadPhase=1;G._bossLoadT=0;G._bossLoadFade=0;
           SFX.groggy();
@@ -22030,8 +22049,8 @@ function activateIceShatter(){
   P._ioActive=false; // 중복 호출 방지 — 즉시 비활성화
   const slv=P.skills.iceOrb||1;
   const nBlades=4+slv*4; // 1렙=8, 2렙=12, 5렙=24, 10렙=44
-  const baseDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*3*(1+(slv-1)*0.15))+(P._ioBon||0);P._ioBon=0;
-  const bladeDmg=~~(baseDmg*0.5); // 파편 데미지 반감
+  const baseDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*1.5*(1+(slv-1)*0.15))+(P._ioBon||0);P._ioBon=0;
+  const bladeDmg=~~(baseDmg*0.3); // 파편 데미지 반감
   const cx=P.x,cy=P.y;
   // 전방위 얼음파편 방사 (큰 파편)
   const _ioLvScale=1+(slv-1)*.1; // 렙당 +10%, 10렙=1.9x
@@ -22043,7 +22062,7 @@ function activateIceShatter(){
   }
   // 파쇄 범위 데미지 (근접)
   const shatterR=(100+slv*5)*_ioLvScale;
-  const shatterDmg=~~(baseDmg*0.5);
+  const shatterDmg=~~(baseDmg*0.3);
   for(let i=0;i<ens.length;i++){
     const e=ens[i];if(!e.alive)continue;
     if(dst(e.x,e.y,cx,cy)<shatterR+e.r){
@@ -26783,12 +26802,13 @@ function draw(){
   {let _cpDrw=0;
   for(let ci=0;ci<_CORPSE_MAX;ci++){const c=_corpses[ci];if(!c.active)continue;
     if(c.x<_vl-40||c.x>_vr+40||c.y<_vt-40||c.y>_vb+40)continue;
-    if(++_cpDrw>16)break;
+    if(++_cpDrw>8)break;
     const fadeT=c.mt*.4;const alpha=c.t<fadeT?c.t/fadeT:1;
-    // 피 웅덩이 (시체 아래) — 시간 지나면서 퍼짐
+    // 피 웅덩이 + 시체 본체 (save/restore 1회)
+    X.save();
     if(alpha>.1){const prog=1-c.t/c.mt;const pw=c.sz*(.3+prog*.5);
-    X.save();X.globalAlpha=alpha*.3;X.fillStyle='#330000';X.beginPath();X.ellipse(c.x,c.y+2,pw,pw*.5,c.r*.3,0,Math.PI*2);X.fill();X.restore()}
-    X.save();X.globalAlpha=alpha;X.translate(c.x,c.y);X.rotate(c.r);X.scale(1,.5);
+    X.globalAlpha=alpha*.3;X.fillStyle='#330000';X.beginPath();X.ellipse(c.x,c.y+2,pw,pw*.5,c.r*.3,0,Math.PI*2);X.fill()}
+    X.globalAlpha=alpha;X.translate(c.x,c.y);X.rotate(c.r);X.scale(1,.5);
     X.drawImage(c.c,-c.sz/2,-c.sz/2,c.sz,c.sz);X.restore();
   }}
   // 불타는 시체 렌더 — 본체 + 불경계 분리 (compositeOp 전환 1회)
@@ -26874,12 +26894,10 @@ function draw(){
         {const _rr=(8+p*32)*sz;X.globalAlpha=inv*0.85;X.strokeStyle=ec;X.lineWidth=Math.max(0.5,(3-p*2.5)*sz);X.beginPath();X.arc(im.x,im.y,_rr,0,Math.PI*2);X.stroke()}
         if(p<0.25){const fp=1-p/0.25;const _cr=9*sz*fp;X.globalAlpha=fp*0.95;X.fillStyle='#ffffff';X.beginPath();X.arc(im.x,im.y,_cr,0,Math.PI*2);X.fill()}
       }else{
-        // Canvas2D: arc 5레이어 — 밝기 강화
-        if(p<0.6){const gp=1-p/0.6;X.globalAlpha=gp*0.35;X.fillStyle=ec;X.beginPath();X.arc(im.x,im.y,30*sz*(1-p*.3),0,Math.PI*2);X.fill()}
+        // Canvas2D: arc 3레이어 (경량화)
         X.globalAlpha=inv*0.85;X.strokeStyle=ec;X.lineWidth=Math.max(0.5,(3-p*2.5)*sz);X.beginPath();X.arc(im.x,im.y,(8+p*32)*sz,0,Math.PI*2);X.stroke();
         if(p<0.25){const fp=1-p/0.25;X.globalAlpha=fp*0.95;X.fillStyle='#ffffff';X.beginPath();X.arc(im.x,im.y,9*sz*fp,0,Math.PI*2);X.fill()}
         if(im.type!=='blunt'&&OPT.slash&&p<0.7){const sp2=1-p/0.7;const ang=im.ang||0;X.globalAlpha=sp2*0.85;X.strokeStyle='#ffffff';X.lineWidth=(3-p*2)*sz;X.beginPath();X.arc(im.x,im.y,(14+p*12)*sz,ang-0.75,ang+0.75);X.stroke()}
-        if((im.type==='magic'||im.type==='explosion')&&p<0.5){X.globalAlpha=inv*0.75;X.strokeStyle=ec;X.lineWidth=1.8*sz;X.beginPath();const _ia=im.ang||0;const _ir0=6*sz,_ir1=(14+p*20)*sz;for(let si2=0;si2<6;si2++){const sa=Math.PI*2*si2/6+_ia;X.moveTo(im.x+Math.cos(sa)*_ir0,im.y+Math.sin(sa)*_ir0);X.lineTo(im.x+Math.cos(sa)*_ir1,im.y+Math.sin(sa)*_ir1)}X.stroke()}
       }
     }
     X.globalAlpha=1;X.restore();
@@ -27801,7 +27819,7 @@ function drawP(){
       const _stR=st.r;const _stA=st.ang;
       // ── 회전 잔상 트레일 (부채형) ──
       if(OPT.trail){
-        for(let _ti=1;_ti<=4;_ti++){
+        for(let _ti=1;_ti<=2;_ti++){
           const _ta=_stA-_ti*0.8;
           const _tx=st.x-st.vx*_ti*1.2,_ty=st.y-st.vy*_ti*1.2;
           X.save();X.translate(_tx,_ty);X.rotate(_ta);
@@ -27819,9 +27837,7 @@ function drawP(){
       
       // 금속 본체 — 부채꼴
       X.globalAlpha=.95;
-      const _shG=X.createRadialGradient(-_stR*.1,0,_stR*.1,0,0,_stR);
-      _shG.addColorStop(0,'#eef4ff');_shG.addColorStop(.3,'#aabbdd');_shG.addColorStop(.7,'#667799');_shG.addColorStop(1,'#445566');
-      X.fillStyle=_shG;
+      X.fillStyle='#8899aa';
       X.beginPath();X.moveTo(0,0);X.arc(0,0,_stR,-Math.PI*.55,Math.PI*.55);X.closePath();X.fill();
       // 테두리
       X.strokeStyle='#ccddee';X.lineWidth=2;
@@ -28015,14 +28031,10 @@ function drawP(){
           X.quadraticCurveTo(ax2+Math.cos(perp)*aw*.3,ay2+Math.sin(perp)*aw*.3,ax2,ay2);
           X.quadraticCurveTo(ax2-Math.cos(perp)*aw*.3,ay2-Math.sin(perp)*aw*.3,ax1-Math.cos(perp)*aw*.5,ay1-Math.sin(perp)*aw*.5);
           X.closePath();
-          const _aG=X.createLinearGradient(ax1,ay1,ax2,ay2);
-          _aG.addColorStop(0,_c1);_aG.addColorStop(.4,_c2);_aG.addColorStop(.8,_c3);_aG.addColorStop(1,_c4);
-          X.fillStyle=_aG;X.fill();}}
+          X.fillStyle=_c2;X.fill();}}
       // 중심 화구
       if(_ep<.7){const _cR=_er*.35*(1-_ep/.7);
-        const _cG=X.createRadialGradient(bx,by,0,bx,by,_cR);
-        _cG.addColorStop(0,'rgba(255,255,240,'+(1-_ep)+')');_cG.addColorStop(.4,_c1);_cG.addColorStop(1,_c4);
-        X.globalAlpha=1;X.fillStyle=_cG;X.beginPath();X.arc(bx,by,_cR,0,Math.PI*2);X.fill();}
+        X.globalAlpha=1-_ep;X.fillStyle=_c1;X.beginPath();X.arc(bx,by,_cR,0,Math.PI*2);X.fill();}
       // 불씨 파편
       if(_ep<.8){X.globalAlpha=.9*(1-_ep);const _sc=~~(10+_bv.r/20);
         for(let _si=0;_si<_sc;_si++){const _sa=Math.PI*2*_si/_sc+_ep*3+Math.sin(_si*13)*.5;
@@ -28978,9 +28990,7 @@ function drawP(){
       X.globalCompositeOperation='source-over';
     } else {
       X.globalAlpha=.75;
-      const _ioG1=X.createRadialGradient(P.x,P.y,0,P.x,P.y,_ioR);
-      _ioG1.addColorStop(0,'rgba(220,245,255,.9)');_ioG1.addColorStop(1,'rgba(20,60,100,.3)');
-      X.fillStyle=_ioG1;X.beginPath();X.arc(P.x,P.y,_ioR,0,Math.PI*2);X.fill();
+      X.fillStyle='#66aacc';X.beginPath();X.arc(P.x,P.y,_ioR,0,Math.PI*2);X.fill();
     }
     if(Math.random()>.6){const pa=Math.random()*Math.PI*2;
       poolPart(P.x+Math.cos(pa)*_ioR,P.y+Math.sin(pa)*_ioR,Math.cos(pa)*1.5+(Math.random()-.5),-1-Math.random()*2,Math.random()>.5?'#aaeeff':'#ddf4ff',1.5+Math.random()*2.5,12+Math.random()*8);}
