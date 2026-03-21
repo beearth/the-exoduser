@@ -133,7 +133,6 @@ const AFFIX_POOL = [
   // ── SUFFIX: 조건부 트리거 ──
   {id:'crisisDmg', type:1, ko:'위기의',  stat:'_aCrisis',    tiers:[0.25,0.40,0.65],unit:'pct', slots:['arm','nck'],      group:'cris', weight:45},
   {id:'counter',   type:1, ko:'피격반격의',stat:'_aCounter', tiers:[0.15,0.25,0.40],unit:'prob',slots:['arm','shd'],      group:'cnt',  weight:40},
-  {id:'killChain', type:1, ko:'킬연쇄의',stat:'_aKillChain', tiers:[0.20,0.35,0.55],unit:'pct', slots:['wpn','rng'],      group:'kch',  weight:40},
   {id:'parryExpl', type:1, ko:'패링폭발의',stat:'_aParryExpl',tiers:[0.40,0.70,1.10],unit:'pct',slots:['wpn','shd'],      group:'pexp', weight:35},
   {id:'staggerExpl',type:1,ko:'스태거폭발의',stat:'_aStgExpl',tiers:[0.30,0.50,0.80],unit:'pct',slots:['wpn'],           group:'sexp', weight:35},
   {id:'elemConv',  type:1, ko:'원소전환의',stat:'_aElemConv',tiers:[0.20,0.35,0.55],unit:'prob',slots:['wpn','nck'],      group:'elcv', weight:40},
