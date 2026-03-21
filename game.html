@@ -201,14 +201,14 @@ canvas{display:block;position:fixed;inset:0}
 .bn{color:#cc4433;font-size:1.6rem;font-weight:900;letter-spacing:.25em;margin-bottom:6px;text-shadow:0 0 20px rgba(200,50,0,.6),0 2px 4px rgba(0,0,0,.8)}
 .bhw{position:relative;width:min(500px,70vw);height:14px;background:rgba(0,0,0,.7);border:1px solid #660000;border-radius:2px;margin:0 auto;box-shadow:0 0 10px rgba(200,0,0,.3);transform-origin:center;overflow:hidden}
 .bhf{height:100%;background:linear-gradient(90deg,#770000,#ee2200);transition:none;border-radius:1px}
-#bossPostureBox{position:fixed;top:calc(var(--ui-inset-top,0px) + env(safe-area-inset-top, 0px) + 18px);right:24px;z-index:22;pointer-events:none;opacity:0;transition:opacity .6s;text-align:right;transform:scale(var(--ui-scale));transform-origin:top right}
+#bossPostureBox{display:none}
 #bossPostureBox.on{opacity:1}
-#bossPostureLbl{color:#ccaa44;font-size:.75rem;margin-top:2px;text-shadow:0 1px 3px rgba(0,0,0,.8)}
-.bpw{width:140px;height:7px;background:rgba(0,0,0,.5);border:1px solid #443300;border-radius:2px;transform-origin:center}
-.bpf{height:100%;background:linear-gradient(90deg,#886600,#ffcc00);transition:width .15s;width:0%;border-radius:1px}
-.bpow{width:min(360px,50vw);height:6px;background:rgba(0,0,0,.6);border:1px solid #443300;border-radius:2px;margin:4px auto 0;position:relative}
-.bpof{height:100%;background:linear-gradient(90deg,#664400,#ffaa00);transition:width .15s;width:0%;border-radius:1px}
-.bpol{position:absolute;right:-52px;top:-2px;color:#ccaa44;font-size:.6rem;text-shadow:0 1px 3px rgba(0,0,0,.8)}
+#bossPostureLbl{color:#dddddd;font-size:.75rem;margin-top:2px;text-shadow:0 1px 3px rgba(0,0,0,.8)}
+.bpw{width:140px;height:7px;background:rgba(0,0,0,.5);border:1px solid #666666;border-radius:2px;transform-origin:center}
+.bpf{height:100%;background:linear-gradient(90deg,#aaaaaa,#ffffff);transition:width .15s;width:0%;border-radius:1px}
+.bpow{width:min(360px,50vw);height:6px;background:rgba(0,0,0,.6);border:1px solid #666666;border-radius:2px;margin:4px auto 0;position:relative;overflow:hidden}
+.bpof{height:100%;background:linear-gradient(90deg,#aaaaaa,#ffffff);transition:width .15s;width:0%;border-radius:1px}
+.bpol{position:absolute;right:-52px;top:-2px;color:#dddddd;font-size:.6rem;text-shadow:0 1px 3px rgba(0,0,0,.8)}
 .bst{display:flex;justify-content:center;gap:6px;margin-top:5px;min-height:22px}
 .bst-i{font-size:.85rem;padding:1px 6px;border-radius:3px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.15);white-space:nowrap;animation:bstIn .3s ease-out}
 @keyframes bstIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
@@ -128276,33 +128276,48 @@ function update(){
         else{
           P.hp-=_exHpCost;P.mp-=_exMpCost;P.st-=_exStCost;
           P._execCd=1200; // 20초 쿨다운
-          // 사슬기동 자동 돌진 (지형 무시) → 보스 앞까지 순간이동
-          addParts(P.x,P.y,'#ff4400',15); // 출발 이펙트
+          const _exOx=P.x,_exOy=P.y;
           const _exAng=Math.atan2(_exBoss.y-P.y,_exBoss.x-P.x);
-          P.x=_exBoss.x-Math.cos(_exAng)*(_exBoss.r+P.r+10);
-          P.y=_exBoss.y-Math.sin(_exAng)*(_exBoss.r+P.r+10);
-          P.facing=_exAng;
-          addParts(P.x,P.y,'#ff0000',20); // 도착 이펙트
-          // 사슬기동 궤적 잔상
+          // ── 섬광 돌진: 보스 관통 → 뒤쪽 벽까지 직선 이동 ──
+          let _exEndX=_exBoss.x+Math.cos(_exAng)*30;
+          let _exEndY=_exBoss.y+Math.sin(_exAng)*30;
+          for(let _es=1;_es<=60;_es++){
+            const _tx=_exBoss.x+Math.cos(_exAng)*(_es*15);
+            const _ty=_exBoss.y+Math.sin(_exAng)*(_es*15);
+            if(canMv(_tx,_ty,P.r)){_exEndX=_tx;_exEndY=_ty}else break;
+          }
+          // 출발 잔상
+          addParts(_exOx,_exOy,'#ff4400',15);
+          // 궤적 잔상 (출발→보스→벽)
+          const _exDist=dst(_exOx,_exOy,_exEndX,_exEndY);
+          for(let _et=0;_et<~~(_exDist/18);_et++){
+            const _tp=_et/(~~(_exDist/18));
+            poolPart(_exOx+(_exEndX-_exOx)*_tp+(Math.random()-.5)*5,
+              _exOy+(_exEndY-_exOy)*_tp+(Math.random()-.5)*5,
+              (Math.random()-.5)*2,(Math.random()-.5)*2,
+              _et%3===0?'#ff0000':_et%3===1?'#ffcc00':'#ffffff',3+Math.random()*3,10+Math.random()*6);
+          }
+          // 벽 앞까지 순간이동
+          P.x=_exEndX;P.y=_exEndY;P.facing=_exAng+Math.PI; // 보스 쪽을 바라봄
+          addParts(P.x,P.y,'#ff0000',20);
           {const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.8,_r(1,.1))}
-          // 스파이크 처형 데미지
+          // 작살 꽂기 → 즉시 데미지 (그로기 시간 유지)
           const _exDmg=~~(_exBoss.mhp*.3);
           _exBoss.hp=Math.max(1,_exBoss.hp-_exDmg);
-          P.s='wSwing';P.st2=8;P.swProg=0;P.atkArc=_exAng;
-          P.iframes=Math.max(P.iframes,40);
-          // 연출: 히트스톱 + 슬로모 + 화면 흔들림
-          G.hitStop=~~(18*OPT.hitStop/100);G.slowMo=50;G.shake=30*OPT.shake/100;
-          G._flashT=5;G._flashCol='#ff0000';
-          SFX.groggy();playSample('sword_parry',1,_r(.8,.1));SFX.slash();
+          P.s='idle';P.st2=0;
+          P.iframes=Math.max(P.iframes,30); // 짧은 무적 (바로 행동 가능)
+          // 연출: 짧은 히트스톱 + 플래시 (빠르게 끝남)
+          G.hitStop=~~(10*OPT.hitStop/100);G.slowMo=20;G.shake=20*OPT.shake/100;
+          G._flashT=4;G._flashCol='#ff0000';
+          SFX.slash();playSample('sword_parry',1,_r(.8,.1));
           playSample(['voice_storm_attack','voice_attack'][~~(Math.random()*2)],1,1);
           addTxt(_exBoss.x,_exBoss.y-60,'⚔ 처형! '+_exDmg,'#ff0000',120);
-          addTxt(P.x,P.y-30,'HP-'+_exHpCost+' MP-'+_exMpCost+' ST-'+_exStCost,'#ff8844',50);
-          // 대형 스파이크 임팩트
+          addTxt(P.x,P.y-30,'-HP'+_exHpCost+' -MP'+_exMpCost+' -ST'+_exStCost,'#ff8844',40);
+          // 보스 위치에 임팩트
           for(let k=0;k<30;k++){const a=Math.PI*2*k/30;const sv=6+Math.random()*10;
             poolPart(_exBoss.x,_exBoss.y,Math.cos(a)*sv,Math.sin(a)*sv,k%4===0?'#ff0000':k%4===1?'#ffcc00':k%4===2?'#ff4400':'#ffffff',5+Math.random()*5,18+Math.random()*12)}
           bigImpact(_exBoss.x,_exBoss.y,_exBoss.el||0,0);
-          // 보스에게 추가 스턴 방지 (처형 후 바로 복귀)
-          _exBoss.stunned=Math.max(_exBoss.stunned,30);
+          // 그로기 시간 유지 (남은 시간 그대로 → 처형 후 추가 공격 가능)
         }
       }
     }
@@ -130127,22 +130142,34 @@ function update(){
   // [BOSS-CINE] 트리거
   if(bE&&_bossCine.lastBossId!==bE){_bossCine.lastBossId=bE;_bossCine.active=true;_bossCine.t=0;_bossCine.maxT=180;_bossCine.name=STG[G.stage]?STG[G.stage].bn:'???';
     _bossCine._introFill=0; // HP바 채우기 진행도
-    const _bb=$('bossBar');_bb.classList.add('on','intro');setTimeout(()=>_bb.classList.remove('intro'),2000);$('bossPostureBox').classList.add('on')}
+    const _bb=$('bossBar');_bb.classList.add('on','intro');setTimeout(()=>_bb.classList.remove('intro'),2000)}
   if(bE){
-    $('bossBar').classList.add('on');$('bossPostureBox').classList.add('on');
+    $('bossBar').classList.add('on');
     const _phLbl=BOSS_PHASES[bE._bossPhase]?(' ['+BOSS_PHASES[bE._bossPhase].label+']'):'';
     $('bossName').textContent=STG[G.stage].bn+_phLbl;
     // 인트로 중 HP바 서서히 채우기
     if(_bossCine.active&&_bossCine._introFill!=null){_bossCine._introFill=Math.min(1,_bossCine._introFill+_dtSp/90);$('bossHpF').style.width=(_bossCine._introFill*100)+'%'}
     else $('bossHpF').style.width=(bE.hp/bE.mhp*100)+'%';
     const _bsF=$('bossShieldF');if(_bsF){const _bsPct=bE.eShieldMax>0?(bE.eShield/bE.eShieldMax*100):0;_bsF.style.width=_bsPct+'%'}
-    $('bossPostureF').style.width=((bE._posture||0)/(bE._maxPosture||100)*100)+'%';
-    // 포이즈 게이지 (HP바 아래)
-    const _poiPct=bE.maxPoise>0?((bE.maxPoise-bE.poise)/bE.maxPoise*100):0;
+    // 통합 게이지 (HP바 아래): 체간(흰) → 그로기(주황) → 체간(흰) 순환
     const _poiF=$('bossPoiseF'),_poiL=$('bossPoiseLbl');
-    if(bE.stunned>0){_poiF.style.width='100%';_poiF.style.background='linear-gradient(90deg,#ff6600,#ffdd00)';_poiL.textContent='그로기! '+(bE.stunned/60).toFixed(1)+'s';_poiL.style.color='#ffdd00'}
-    else if(bE._pImmune>0){_poiF.style.width='0%';_poiF.style.background='linear-gradient(90deg,#664400,#ffaa00)';_poiL.textContent='면역 '+(bE._pImmune/60).toFixed(0)+'s';_poiL.style.color='#8888ff'}
-    else{_poiF.style.width=_poiPct+'%';_poiF.style.background='linear-gradient(90deg,#664400,#ffaa00)';_poiL.textContent='포이즈';_poiL.style.color='#ccaa44'}
+    if(bE.stunned>0){
+      // 그로기 상태: 주황 바 (남은 시간)
+      _poiF.style.width='100%';_poiF.style.background='linear-gradient(90deg,#ff6600,#ffaa00)';
+      _poiL.textContent='그로기! '+(bE.stunned/60).toFixed(1)+'s';_poiL.style.color='#ffaa00';
+      $('bossPoiseF').parentElement.style.borderColor='#ff6600';
+    } else if(bE._pImmune>0){
+      // 면역 상태: 비어있음
+      _poiF.style.width='0%';_poiF.style.background='linear-gradient(90deg,#555,#888)';
+      _poiL.textContent='면역 '+(bE._pImmune/60).toFixed(0)+'s';_poiL.style.color='#8888ff';
+      $('bossPoiseF').parentElement.style.borderColor='#444488';
+    } else {
+      // 평상시: 흰색 체간 바
+      const _postPct=(bE._maxPosture||100)>0?((bE._posture||0)/(bE._maxPosture||100)*100):0;
+      _poiF.style.width=_postPct+'%';_poiF.style.background='linear-gradient(90deg,#aaaaaa,#ffffff)';
+      _poiL.textContent='체간';_poiL.style.color='#dddddd';
+      $('bossPoiseF').parentElement.style.borderColor='#666666';
+    }
     // 상태이상 아이콘 (6프레임마다 갱신)
     if(!G._bsSkip||G._bsSkip<=0){G._bsSkip=6;
       let _bsHtml='';
@@ -130156,7 +130183,7 @@ function update(){
     const bKey=STG[G.stage].isHellBoss?'finalboss':'boss';
     if(BGM._curKey!==bKey&&BGM._curKey!=='death')BGM.play(bKey);
   }else{
-    $('bossBar').classList.remove('on');$('bossPostureBox').classList.remove('on');$('bossStatus').innerHTML='';
+    $('bossBar').classList.remove('on');$('bossStatus').innerHTML='';
     if(BGM._curKey==='boss'||BGM._curKey==='finalboss')BGM.play(BGM.stageKey(G.stage));
   }
   if(G._hudSkip>0)G._hudSkip-=sp;else{G._hudSkip=3;updateHUD(false)}
@@ -139991,8 +140018,10 @@ function renderStatSummary(){
   const _sParryDmg=pParryDmg();const _sRmbSpd=pParryRmbSpd();const _sRainDR=pParryRainbowDR();const _sChargeRange=pChargeRange();const _sChargeStR=pChargeGauge();
   const _sAtkCost=pAtkCost();const _sBowCost=pBowCost();const _sMagicCost=pMagicCost();
   let _sGearScore=0;for(const _gs of SLOT_NAMES){const _gi=INV.equipped[_gs];if(_gi){_sGearScore+=(_gi.grade||0)*25+((_gi.enh||0)*5)+((_gi.affixes?_gi.affixes.length:0)*10)}}
-  const _af=id=>_eqAffix(id);const _afc=(id,col)=>_af(id)?col:'#555544';
-  const _afp=id=>_af(id)?~~(_af(id)*100)+'%':'0';
+  const _af=id=>_eqAffix(id);
+  const _UNIMPL=new Set(['lightChain','darkCurse','armorPen','staggerBns','chainTarget','killSlayer','elemFocus','parryBonus','comboBoost','dashBoost','skillBoost','cooldownRed','barrier','ccRes','crisisBoost','counterHit','parryExplosion','staggerExplosion','elemConvert','statusClean','lastStand','reviveOnce','goldBonus','potionPower','reflect','thorns','expBonus']);
+  const _afc=(id,col)=>_UNIMPL.has(id)?'#33332288':_af(id)?col:'#555544';
+  const _afp=id=>{const v=_af(id)?~~(_af(id)*100)+'%':'0';return _UNIMPL.has(id)?v+'<span style="color:#33332288;font-size:.9rem"> (미구현)</span>':v};
 
   sm.innerHTML=
     `<div style="${_sHd}">📊 종합 지표</div>`+

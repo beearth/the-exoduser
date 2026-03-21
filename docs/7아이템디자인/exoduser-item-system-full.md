@@ -152,6 +152,14 @@ const AFFIX_POOL = [
 Object.freeze(AFFIX_POOL);
 ```
 
+### 어픽스 구현 상태 (2026-03-21)
+
+**✅ 구현 완료:**
+poisonDot, fireDot, iceDot, atkSpeed, maxHPFlat, maxHPPct, movSpd, fireRes, iceRes, lightRes, darkRes, poisonRes, allRes, physDR, dropRate, extraST(extraDodge), antiRevive, critChance, critDmg, lifeSteal, killHeal, stRegen, dpRegen
+
+**🔲 미구현 (구현 예정):**
+lightChain(연쇄전격), darkCurse(암흑저주), armorPen(방어관통), staggerBns(포이즈파괴), chainTarget(체인타겟), killSlayer(처치후피해), elemFocus(원소집중), parryBonus(패리보너스), comboBoost(콤보피해), dashBoost(작살피해), skillBoost(스킬피해), cooldownRed(쿨다운감소), barrier(배리어), ccRes(CC저항), crisisBoost(위기피해), counterHit(피격반격), parryExplosion(패링폭발), staggerExplosion(체간파괴), elemConvert(원소전환), statusClean(정화), lastStand(불굴), reviveOnce(부활), goldBonus(골드), potionPower(포션강화), reflect(반사), thorns(가시), expBonus(경험치)
+
 ---
 
 ## STEP 2. IMPLICIT_TABLE + LEGENDARY_SPECIAL 추가
