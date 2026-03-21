@@ -33,8 +33,9 @@ body{background:#0a0a0a;color:#ccc;font:12px monospace;display:flex;height:100vh
 .obj-btn .label{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.85);color:#aaa;font-size:7px;text-align:center;padding:1px}
 .undo-btn{background:#553300!important;border-color:#884400!important;color:#ffaa00!important}
 #editor{flex:1;position:relative;overflow:hidden}
-canvas{display:block}
-#hud{position:absolute;top:6px;left:6px;color:#888;font-size:11px;pointer-events:none}
+#gameFrame{position:absolute;top:0;left:0;width:100%;height:100%;border:none;z-index:0;display:none}
+canvas{display:block;position:absolute;top:0;left:0;z-index:1}
+#hud{position:absolute;top:6px;left:6px;color:#888;font-size:11px;pointer-events:none;z-index:5}
 #hud b{color:#ffea00}
 #stage-label{position:absolute;bottom:6px;left:6px;color:#ffea00;font-size:13px;font-weight:bold;pointer-events:none}
 #show-toggles{position:absolute;top:6px;right:220px;display:flex;gap:3px}
@@ -65,6 +66,7 @@ canvas{display:block}
   </div>
 </div>
 <div id="editor">
+  <iframe id="gameFrame"></iframe>
   <canvas id="c"></canvas>
   <div id="hud"><span id="hud-text"></span></div>
   <div id="room-info"></div>
@@ -2669,9 +2671,14 @@ let fc=0;
 function draw(){
   fc++;const m=getCurrentMap();if(!m){requestAnimationFrame(draw);return}
   if(m.dirty||rStage!==currentStage){buildCache();m.dirty=false}
-  X.fillStyle='#030303';X.fillRect(0,0,C.width,C.height);
+  if(_iframeReady){
+    // iframe 게임 그래픽이 활성 → canvas를 투명 오버레이로만 사용
+    X.clearRect(0,0,C.width,C.height);
+  }else{
+    X.fillStyle='#030303';X.fillRect(0,0,C.width,C.height);
+  }
   X.save();X.translate(C.width/2,C.height/2);X.scale(zoom,zoom);X.translate(-camX,-camY);
-  if(rCache)X.drawImage(rCache,0,0);
+  if(!_iframeReady&&rCache)X.drawImage(rCache,0,0);
   if(showRooms){X.font='10px monospace';X.textAlign='center';X.textBaseline='middle';
     for(const r of m.rooms){const l=r.type==='start'?'START':r.type==='boss'?'BOSS':r.type==='forge'?'FORGE':r.id||'';
       if(l){X.fillStyle=r.type==='boss'?'rgba(255,50,50,0.25)':'rgba(255,255,255,0.15)';X.fillText(l,r.cx*T,r.cy*T);
@@ -3705,7 +3712,16 @@ function exportAsFixedMap(){
     }
   } else {
     out+='// ── 세로맵 FIXED_MAPS ──\n';
-    for(let i=0;i<35;i++){if(!FIXED_MAPS[i])continue;const s=STAGES[i];out+=`// ${s.hell+1}장 ${s.floor}층\nFIXED_MAPS[${i}]=${JSON.stringify(FIXED_MAPS[i],null,2)};\n\n`;}
+    for(let i=0;i<STAGES.length;i++){if(!FIXED_MAPS[i]||STAGES[i].type==='grid')continue;const s=STAGES[i];
+      const fm=JSON.parse(JSON.stringify(FIXED_MAPS[i]));
+      // mapStore에 실제 타일 데이터가 있으면 tileRLE 생성
+      const ms=mapStore[i];
+      if(ms&&ms.grid){
+        const flat=[];for(let y=0;y<ms.mh;y++)for(let x=0;x<ms.mw;x++)flat.push(ms.grid[y]?.[x]||0);
+        const rle=[];for(let j=0;j<flat.length;){const v=flat[j];let c=1;while(j+c<flat.length&&flat[j+c]===v&&c<65535)c++;rle.push(v,c);j+=c;}
+        fm.tileRLE=rle;
+      }
+      out+=`// ${s.hell+1}장 ${s.floor}층\nFIXED_MAPS[${i}]=${JSON.stringify(fm,null,2)};\n\n`;}
     // 격자맵도 FIXED_MAPS로 포함 (gridMapStore > GRID_MAPS > 자동생성 순)
     out+='\n// ── 격자맵 FIXED_MAPS ──\n';
     for(let h=0;h<7;h++){
@@ -3883,7 +3899,79 @@ setInterval(()=>{ try{ _saveLiveMapState(); }catch(e){} }, 5000);
     else{ buildStageListOrig(); loadStage(currentStage||0); }
   }catch(e){ console.error('[EDITOR] buildStageList fail:',e); }
   try{ draw(); }catch(e){ console.error('[EDITOR] draw fail:',e); }
+  // iframe 게임 그래픽 초기화
+  try{ _initGameFrame(); }catch(e){ console.error('[EDITOR] iframe init fail:',e); }
 })();
+
+// ══════════════════════════════════════════
+// iframe 게임 그래픽 연동
+// ══════════════════════════════════════════
+const _gFrame=document.getElementById('gameFrame');
+let _iframeReady=false;
+const _GT=32; // game.html 타일 크기
+
+function _sendToGame(msg){
+  try{if(_gFrame&&_gFrame.contentWindow)_gFrame.contentWindow.postMessage(msg,'*')}catch(e){}
+}
+
+window.addEventListener('message',function(ev){
+  const d=ev.data;if(!d||!d.type)return;
+  if(d.type==='editorReady'){
+    _iframeReady=true;
+    _gFrame.style.display='block';
+    // 현재 스테이지로 iframe 전환
+    _sendToGame({type:'switchStage',stage:currentStage});
+    console.log('[EDITOR] iframe 게임 그래픽 연결됨');
+    try{document.getElementById('stats').textContent='게임 그래픽 연결됨'}catch(e){}
+  }
+  else if(d.type==='stageLoaded'){
+    // iframe 맵 로드 완료 → 카메라 동기화
+    _syncCamToGame();
+  }
+});
+
+function _syncCamToGame(){
+  if(!_iframeReady)return;
+  _sendToGame({type:'camSet',x:camX,y:camY});
+  _sendToGame({type:'camZoom',factor:zoom});
+}
+
+// 기존 draw/loadStage 래핑 — iframe에도 동기화
+const _origDraw2=draw;
+draw=function(){
+  _origDraw2();
+  if(_iframeReady)_syncCamToGame();
+};
+
+const _origLoadStage2=loadStage;
+loadStage=function(sid){
+  _origLoadStage2(sid);
+  if(_iframeReady)_sendToGame({type:'switchStage',stage:sid});
+};
+
+// 타일 편집 시 iframe에도 반영
+const _origApplyBrush2=applyBrush;
+applyBrush=function(cx,cy){
+  _origApplyBrush2(cx,cy);
+  if(!_iframeReady)return;
+  const m=getCurrentMap();if(!m)return;
+  if(selectedObj){
+    if(selectedObj!=='_delete')_sendToGame({type:'addObj',id:selectedObj,x:cx*_GT+_GT/2,y:cy*_GT+_GT/2});
+    else _sendToGame({type:'removeObjAt',x:cx*_GT+_GT/2,y:cy*_GT+_GT/2});
+    return;
+  }
+  const r=brushRadius,tiles=[];
+  for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){
+    if(brushShape==='circle'&&dx*dx+dy*dy>r*r)continue;
+    const tx=cx+dx,ty=cy+dy;
+    if(tx>=0&&ty>=0&&tx<m.mw&&ty<m.mh)tiles.push({tx,ty,val:currentHeight});
+  }
+  if(tiles.length>0)_sendToGame({type:'setTiles',tiles});
+};
+
+function _initGameFrame(){
+  _gFrame.src='/game.html?editor=1&editorStage='+(currentStage||0)+'&test=1';
+}
 
 </script>
 </body></html>

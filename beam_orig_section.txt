@@ -1,0 +1,166 @@
+  case 'beam':{
+    _addSkProfTick('omniBeam');if(P.skills.fanShot>=1)_addSkProfTick('fanShot');if(P.skills.elemMissile>=1&&_isFused('elemFuse'))_addSkProfTick('elemMissile');
+    if(_isFused('sixFuse'))_addFuseProfTick('elemFuse'); // 추적뇌전 합체 시간 축적
+    if(!isAct('beam')||P.mp<=0){const _wasOmni=!!(P.skills.omniBeam&&P.skills.fanShot&&_isFused('sixFuse'));if(_wasOmni&&P.mp<=0){P._beamCd=300;addTxt(P.x,P.y-30,'⚡ 과부하! 5초','#ffaa00',40)}P.s='idle';P.mp=Math.max(0,P.mp);P._omniPts=null;SFX.beamStop();break}
+    // 전격이동: 빔 중에도 더블탭 대시 허용
+    if(P._bdTrigger!=null){
+      if(P.skills.bladeDash>=1&&(P._bdStk==null||(P._bdStk||0)>0)&&P.mp>=(10+((P.skills.bladeDash||1)-1)*5)&&!(P._seaParalyzed>0)){
+        activateBladeDash(P._bdTrigger);
+      }else if((P._bdStk||0)<=0&&P._bdStk!=null){showPH('충전 중...','#ff8844')}
+      else if(P.mp<(10+((P.skills.bladeDash||1)-1)*5)){showPH('MP 부족!','#4444ff')}
+      P._bdTrigger=null;
+    }
+    const _isOmni=!!(P.skills.omniBeam&&P.skills.fanShot&&_isFused('sixFuse'));
+    const _isElemBeam=_isOmni&&!!(P.skills.elemMissile&&_isFused('elemFuse'));
+    const _bLv=(P.skills.omniBeam||1);const _bMul=_isElemBeam?(0.5+(_bLv-1)*0.078)*.9:(0.5+(_bLv-1)*0.078);
+    // 빔 MP소비: 기본 틱% + 레벨당 0.00015. 멸살=0.001, 뇌전=0.0013, 추적뇌전=0.0012
+    const _bBase=_isElemBeam?0.0012:_isOmni?0.0013:0.001;
+    const _bcost=P.mmp*(_bBase+(_bLv-1)*0.00015)*pMagicCost();
+    const _mpBefore=P.mp;
+    P.mp=Math.max(0,P.mp-_bcost*sp);
+    const _mpDrained=_mpBefore-P.mp; // 실제 소비된 MP (데미지 기반)
+    if(P.mp<=0){if(_isOmni){P._beamCd=300;addTxt(P.x,P.y-30,'⚡ 과부하! 5초','#ffaa00',40)}P.s='idle';P._omniPts=null;SFX.beamStop();break}
+    // 빔 중 감속 이동 (40%)
+    {let _bdx=0,_bdy=0;
+    if(isAct('up'))_bdy=-1;if(isAct('down'))_bdy=1;if(isAct('left'))_bdx=-1;if(isAct('right'))_bdx=1;
+    const _blen=Math.sqrt(_bdx*_bdx+_bdy*_bdy);if(_blen>0){_bdx/=_blen;_bdy/=_blen}
+    const _bms=(P.speed+(bt().spd||0))*.4*sp;
+    const _bnx=P.x+_bdx*_bms,_bny=P.y+_bdy*_bms;
+    if(canMv(_bnx,P.y,P.r))P.x=_bnx;if(canMv(P.x,_bny,P.r))P.y=_bny;}
+    const bd=Math.cos(P.facing),be=Math.sin(P.facing);
+    const _allEl=[EL.P,EL.F,EL.I,EL.D,EL.L,EL.H];
+    if(!P._bHitSet)P._bHitSet=new Set();P._bHitSet.clear();const _bHit=P._bHitSet; // 프레임당 적 1번만 히트
+    // ── 빔 히트 프레임 분산: 2프레임마다 히트 판정 ──
+    if(!P._beamHitFrame)P._beamHitFrame=0;P._beamHitFrame++;
+    const _beamDoHit=P._beamHitFrame%2===0;
+    let _beamHitCap=0; // 프레임당 히트 적 수 캡 (10)
+    // 빔 데미지 = 기본마법뎀 × 스킬레벨 배율 (틱당, MP 소비는 지속시간만 결정)
+    const _omniSlv=P.skills.omniBeam||1;
+    const _beamDmgBase=meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*.06*(1+(_omniSlv-1)*.12)*2*_fuseMul('omniBeam'); // ×2 보정 (2프레임 주기) — 데미지 2배
+    // 레이저류: 끝점에서만 데미지 (관통 없음)
+    // 빔 중첩: 적에게 빔 지속 적중 시 중첩+1 (최대30), 데미지 배율 = 1 + 중첩*0.1 (최대 4배)
+    if(_isOmni){
+      // 뇌전/추적뇌전: 6원소 레이저
+      const _omniLv=P.skills.omniBeam||1;
+      const _emLv2=P.skills.elemMissile||1;
+      const _dmgMul=_isElemBeam?(2.2+(_emLv2-1)*.12):(2.0+(_omniLv-1)*.1);
+      const _bRng=~~(500+((_isElemBeam?_emLv2:_omniLv)-1)*55.6);
+      if(!P._omniPts)P._omniPts=_beamPtsPool; // 풀 참조
+      const _twistSpd=_now*0.004;
+      // 추적뇌전: 타겟 캐싱 (6프레임마다 갱신, 타겟 죽으면 즉시)
+      if(!P._beamTgts)P._beamTgts=[null,null,null,null,null,null];
+      if(!P._beamTgtT)P._beamTgtT=0;
+      const _tgtList=P._beamTgts;
+      // .some() 제거 — 수동 루프로 dead 체크
+      let _anyDead=false;if(_isElemBeam){for(let _ci=0;_ci<6;_ci++){if(_tgtList[_ci]&&!_tgtList[_ci].alive){_anyDead=true;break}}}
+      const _needRefresh=_isElemBeam&&(P._beamTgtT%6===0||!_tgtList[0]||_anyDead);
+      P._beamTgtT++;
+      if(_needRefresh){
+        const _sAll=shQuery(P.x,P.y,_bRng+100);
+        _beamSorted.length=0;for(let ti=0;ti<_sAll.length;ti++){if(_sAll[ti].alive)_beamSorted.push(_sAll[ti])}
+        _beamSorted.sort((a,b)=>dst2(P.x,P.y,a.x,a.y)-dst2(P.x,P.y,b.x,b.y));
+        const _used=new Set();
+        for(let bi=0;bi<6;bi++){
+          _tgtList[bi]=null;
+          for(let si=0;si<_beamSorted.length;si++){if(!_used.has(_beamSorted[si])){_tgtList[bi]=_beamSorted[si];_used.add(_beamSorted[si]);break}}
+        }
+      }
+      // 사전 계산: facing sin/cos (6빔 공유)
+      const _bfCos=Math.cos(P.facing),_bfSin=Math.sin(P.facing);
+      const _perpCos=Math.cos(P.facing+Math.PI/2),_perpSin=Math.sin(P.facing+Math.PI/2);
+      for(let bi=0;bi<6;bi++){
+        const bel=_allEl[bi];
+        let _ptIdx=0;
+        const _pool=_beamPtsPool[bi];
+        const _step=12;
+        const _twistAng=_twistSpd+bi*Math.PI*2/6;
+        const _twistR=_isElemBeam?(8+_omniLv):(12+_omniLv*2);
+        const _tgt=_isElemBeam?_tgtList[bi]:null;
+        if(_isElemBeam&&_tgt&&_tgt.alive){
+          // 추적뇌전: 플레이어→타겟 직선, 끝점=타겟 위치
+          const _tDist=dst(P.x,P.y,_tgt.x,_tgt.y);
+          const _tAng=Math.atan2(_tgt.y-P.y,_tgt.x-P.x);
+          const _tCos=Math.cos(_tAng),_tSin=Math.sin(_tAng);
+          const _pCos=Math.cos(_tAng+Math.PI/2),_pSin=Math.sin(_tAng+Math.PI/2);
+          for(let t=_step;t<_tDist+_step&&_ptIdx<_BP_MAX;t+=_step){
+            const prog=t/_tDist;
+            const _spiralAng=_twistAng+t*0.03;
+            const _r=_twistR*Math.min(1,prog*2);
+            const _cSp=Math.cos(_spiralAng);
+            const _bx2=P.x+_tCos*Math.min(t,_tDist);
+            const _by2=P.y+_tSin*Math.min(t,_tDist);
+            _pool[_ptIdx].x=_bx2+_pCos*_cSp*_r;_pool[_ptIdx].y=_by2+_pSin*_cSp*_r;_ptIdx++;
+          }
+          // 끝점을 정확히 타겟 위치로
+          if(_ptIdx>0){_pool[_ptIdx-1].x=_tgt.x;_pool[_ptIdx-1].y=_tgt.y;}
+        }else if(_isElemBeam){
+          // 타겟 없음: facing 방향 직선
+          const _tCos=Math.cos(P.facing),_tSin=Math.sin(P.facing);
+          const _pCos=Math.cos(P.facing+Math.PI/2),_pSin=Math.sin(P.facing+Math.PI/2);
+          for(let t=_step;t<_bRng&&_ptIdx<_BP_MAX;t+=_step){
+            const prog=t/_bRng;const _spiralAng=_twistAng+t*0.03;
+            const _r=_twistR*Math.min(1,prog*2);const _cSp=Math.cos(_spiralAng);
+            const nx=P.x+_tCos*t+_pCos*_cSp*_r,ny=P.y+_tSin*t+_pSin*_cSp*_r;
+            if(isW(nx,ny))break;
+            _pool[_ptIdx].x=nx;_pool[_ptIdx].y=ny;_ptIdx++;
+          }
+        }else{
+        let _bx=P.x,_by=P.y;
+        let _curAng=P.facing;
+        for(let t=0;t<_bRng&&_ptIdx<_BP_MAX;t+=_step){
+          const prog=t/_bRng;
+          let nx,ny;
+          {
+            // 뇌전: 6발 전기 부채꼴 (각 빔이 다른 각도로 직선 발사)
+            const _fanAng=P.facing+(bi-2.5)*0.15; // 6발 부채꼴 (±0.375rad ≈ ±21°)
+            const _fCos=Math.cos(_fanAng),_fSin=Math.sin(_fanAng);
+            // 지그재그 (전기 느낌)
+            const _jitter=(Math.sin(t*0.3+bi*50+_twistAng)*3)*prog;
+            const _fPerp=Math.cos(_fanAng+Math.PI/2),_fPerpS=Math.sin(_fanAng+Math.PI/2);
+            nx=P.x+_fCos*t+_fPerp*_jitter;
+            ny=P.y+_fSin*t+_fPerpS*_jitter;
+          }
+          if(isW(nx,ny))break;
+          _pool[_ptIdx].x=nx;_pool[_ptIdx].y=ny;_ptIdx++;
+        }
+        } // end else (뇌전)
+        _beamPtsCnt[bi]=_ptIdx;
+        // 히트 판정: 끝점에서만 (2프레임 주기, 캡 10)
+        if(_beamDoHit&&_ptIdx>0&&_beamHitCap<10){
+          if(_isElemBeam&&_tgt&&_tgt.alive&&!_bHit.has(_tgt)){
+            // 추적뇌전: 타겟 직접 히트
+            _bHit.add(_tgt);_beamHitCap++;
+            _tgt._beamStk=Math.min(30,(_tgt._beamStk||0)+1);_tgt._beamStkT=30;
+            const _bsMul=1+(_tgt._beamStk||0)*.1;
+            hurtE(_tgt,_beamDmgBase*_dmgMul*_bsMul*elMul(bel,_tgt.el),P.facing,true,{beam:true},bel);
+            _tgt.burnT=180;G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(_tgt.x,_tgt.y,ELC[bel],2);
+          }else if(!_isElemBeam){
+            // 뇌전: 끝점 범위 판정
+            const _ep=_pool[_ptIdx-1];const _neB=shQuery(_ep.x,_ep.y,36);for(let _bi=0;_bi<_neB.length;_bi++){
+              if(_beamHitCap>=10)break;const e=_neB[_bi];if(!e.alive||_bHit.has(e))continue;
+              if(dst(_ep.x,_ep.y,e.x,e.y)<e.r+18){_bHit.add(e);_beamHitCap++;
+                e._beamStk=Math.min(30,(e._beamStk||0)+1);e._beamStkT=30;
+                const _bsMul=1+(e._beamStk||0)*.1;
+                hurtE(e,_beamDmgBase*_dmgMul*_bsMul*elMul(bel,e.el),P.facing,true,{beam:true},bel);
+                e.burnT=180;G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2)}}}
+          }}
+      }
+    }else{
+      // 일반 빔: 소비 MP 비례 데미지
+      const elms=hm().elements||[{el:EL.P,dmg:5}];
+      const _bRng2=~~(500+((P.skills.omniBeam||1)-1)*55.6);
+      let _lastPx,_lastPy;
+      for(let t=0;t<_bRng2;t+=40){const px=P.x+bd*t,py=P.y+be*t;if(isW(px,py))break;_lastPx=px;_lastPy=py;}
+      // 히트 판정: 끝점에서만
+      if(_beamDoHit&&_lastPx!==undefined&&_beamHitCap<10){
+        const _neB=shQuery(_lastPx,_lastPy,36);for(let _bi=0;_bi<_neB.length;_bi++){if(_beamHitCap>=10)break;const e=_neB[_bi];if(!e.alive||_bHit.has(e))continue;if(dst(_lastPx,_lastPy,e.x,e.y)<e.r+18){
+          _bHit.add(e);_beamHitCap++;
+          e._beamStk=Math.min(30,(e._beamStk||0)+1);e._beamStkT=30;
+          const _bsMul=1+(e._beamStk||0)*.1;
+          let totalDmg=0;
+          const _eC=elms.length||1;for(let _ei2=0;_ei2<elms.length;_ei2++){totalDmg+=_beamDmgBase*_bsMul*elMul(elms[_ei2].el,e.el)/_eC}
+          hurtE(e,totalDmg,P.facing,true,{beam:true},elms[0].el);
+          e.burnT=180;G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));
+          if(Math.random()>.92)addParts(e.x,e.y,ELC[elms[~~(Math.random()*elms.length)].el],1);
+        }}}
+      }

@@ -2671,9 +2671,14 @@ let fc=0;
 function draw(){
   fc++;const m=getCurrentMap();if(!m){requestAnimationFrame(draw);return}
   if(m.dirty||rStage!==currentStage){buildCache();m.dirty=false}
-  X.fillStyle='#030303';X.fillRect(0,0,C.width,C.height);
+  if(_iframeReady){
+    // iframe 게임 그래픽이 활성 → canvas를 투명 오버레이로만 사용
+    X.clearRect(0,0,C.width,C.height);
+  }else{
+    X.fillStyle='#030303';X.fillRect(0,0,C.width,C.height);
+  }
   X.save();X.translate(C.width/2,C.height/2);X.scale(zoom,zoom);X.translate(-camX,-camY);
-  if(rCache)X.drawImage(rCache,0,0);
+  if(!_iframeReady&&rCache)X.drawImage(rCache,0,0);
   if(showRooms){X.font='10px monospace';X.textAlign='center';X.textBaseline='middle';
     for(const r of m.rooms){const l=r.type==='start'?'START':r.type==='boss'?'BOSS':r.type==='forge'?'FORGE':r.id||'';
       if(l){X.fillStyle=r.type==='boss'?'rgba(255,50,50,0.25)':'rgba(255,255,255,0.15)';X.fillText(l,r.cx*T,r.cy*T);
@@ -3707,7 +3712,16 @@ function exportAsFixedMap(){
     }
   } else {
     out+='// ── 세로맵 FIXED_MAPS ──\n';
-    for(let i=0;i<35;i++){if(!FIXED_MAPS[i])continue;const s=STAGES[i];out+=`// ${s.hell+1}장 ${s.floor}층\nFIXED_MAPS[${i}]=${JSON.stringify(FIXED_MAPS[i],null,2)};\n\n`;}
+    for(let i=0;i<STAGES.length;i++){if(!FIXED_MAPS[i]||STAGES[i].type==='grid')continue;const s=STAGES[i];
+      const fm=JSON.parse(JSON.stringify(FIXED_MAPS[i]));
+      // mapStore에 실제 타일 데이터가 있으면 tileRLE 생성
+      const ms=mapStore[i];
+      if(ms&&ms.grid){
+        const flat=[];for(let y=0;y<ms.mh;y++)for(let x=0;x<ms.mw;x++)flat.push(ms.grid[y]?.[x]||0);
+        const rle=[];for(let j=0;j<flat.length;){const v=flat[j];let c=1;while(j+c<flat.length&&flat[j+c]===v&&c<65535)c++;rle.push(v,c);j+=c;}
+        fm.tileRLE=rle;
+      }
+      out+=`// ${s.hell+1}장 ${s.floor}층\nFIXED_MAPS[${i}]=${JSON.stringify(fm,null,2)};\n\n`;}
     // 격자맵도 FIXED_MAPS로 포함 (gridMapStore > GRID_MAPS > 자동생성 순)
     out+='\n// ── 격자맵 FIXED_MAPS ──\n';
     for(let h=0;h<7;h++){
