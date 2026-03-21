@@ -11071,7 +11071,7 @@ function _execMagicE(){
   else if((_isSix||_isElemF||_amsk==='omniBeam')&&(_amsk!=='elemMissile'||_isElemF)){
     if((_isSix||_isElemF)&&(P._beamCd||0)>0)showPH('과부하 '+~~((P._beamCd||0)/60)+'초','#ffaa00');
     else{_addSkProf('omniBeam');P.s='beam';P.atkArc=P.facing;
-      if(!P._beamHold){P._beamHold=true;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));
+      if(!P._beamHold){P._beamHold=true;P._beamMaxDist=null;P._beamMaxDistSingle=undefined;SFX.beamStart();playSample('beam_fire',.7,_r(1,.08));
         if(Math.random()<.3)playSample('voice_magic',1,1);
         else{const _ve=['voice_en1','voice_en2','voice_en3'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}}
   }
@@ -13369,8 +13369,8 @@ function update(){
     poolUpdate(_dtSp);
     _dtSp=0.04;
   }
-  // whirlwind 중 slowMo 캡 — 8 이상 안 걸림
-  if(P.s==='whirlwind'&&G.slowMo>8)G.slowMo=8;
+  // slowMo 완전 비활성
+  G.slowMo=0;
   const sp=(G.slowMo>0?.35:1)*_dtSp;
   if(G.slowMo>0)G.slowMo-=_dtSp;
 
@@ -14395,14 +14395,14 @@ function update(){
     // 빔 데미지 = 기본마법뎀 × 스킬레벨 배율 (틱당, MP 소비는 지속시간만 결정)
     const _omniSlv=P.skills.omniBeam||1;
     const _beamDmgBase=meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*.03*(1+(_omniSlv-1)*.12)*2*_fuseMul('omniBeam'); // ×2 보정 (2프레임 주기)
-    // 빔 관통 확률: 투사체관통(bowPierce + 패시브) 적용. 실패 시 해당 가닥 끊김
-    const _bPrcBase=(bw().bowPierce||0);const _bPrcPas=(PASSIVES.pPierce||0)*0.05;
-    const _beamPierce=Math.min(0.95,_bPrcBase+_bPrcPas); // 장비 + 패시브만, 캡 95%. 패시브 없으면 0% (무조건 끊김)
+    // 빔 관통: 없음 — 첫 적에서 무조건 끊김
+    const _beamPierce=0;
     // 가닥별 최대 도달 거리 (관통 실패 시 해당 거리에서 끊김, 히트 프레임 간 유지)
     if(!P._beamMaxDist)P._beamMaxDist=new Float32Array(6);
     if(P._beamMaxDistSingle===undefined)P._beamMaxDistSingle=99999;
-    // 매 히트 프레임마다 거리 리셋 (적이 죽거나 이동했을 수 있으므로 다시 판정)
-    if(_beamDoHit){for(let _ri=0;_ri<6;_ri++)P._beamMaxDist[_ri]=99999;P._beamMaxDistSingle=99999;}
+    // 히트 프레임: 끊긴 거리에 적이 아직 있는지 재확인, 없으면 해제
+    if(_beamDoHit){for(let _ri=0;_ri<6;_ri++){if(P._beamMaxDist[_ri]<99999){const _cd=P._beamMaxDist[_ri],_fanA=P.facing+(_ri-2.5)*0.15,_cx=P.x+Math.cos(_fanA)*_cd,_cy=P.y+Math.sin(_fanA)*_cd;const _ce=shQuery(_cx,_cy,32);let _still=false;for(let _ci=0;_ci<_ce.length;_ci++){if(_ce[_ci].alive&&dst(_cx,_cy,_ce[_ci].x,_ce[_ci].y)<_ce[_ci].r+20){_still=true;break}}if(!_still)P._beamMaxDist[_ri]=99999}}
+      if(P._beamMaxDistSingle<99999){const _cx2=P.x+Math.cos(P.facing)*P._beamMaxDistSingle,_cy2=P.y+Math.sin(P.facing)*P._beamMaxDistSingle;const _ce2=shQuery(_cx2,_cy2,32);let _still2=false;for(let _ci2=0;_ci2<_ce2.length;_ci2++){if(_ce2[_ci2].alive&&dst(_cx2,_cy2,_ce2[_ci2].x,_ce2[_ci2].y)<_ce2[_ci2].r+20){_still2=true;break}}if(!_still2)P._beamMaxDistSingle=99999}}
     // 빔 중첩: 적에게 빔 지속 적중 시 중첩+1 (최대30), 데미지 배율 = 1 + 중첩*0.1 (최대 4배)
     if(_isOmni){
       // 뇌전/추적뇌전: 6원소 레이저
@@ -27265,9 +27265,10 @@ function draw(){
         const _spread2=.18;
         _ltPoolI=0;_ltBranchI=0;
         for(let _li=0;_li<6;_li++){
-          const _ang=P.facing+(_li-2.5)*_spread2;
-          const _cx=Math.cos(_ang),_cy=Math.sin(_ang);
-          const _ex=P.x+_cx*bl2,_ey=P.y+_cy*bl2;
+          const _cnt2=_beamPtsCnt[_li];
+          let _ex,_ey;
+          if(_cnt2>=2){const _lp2=_beamPtsPool[_li][_cnt2-1];_ex=_lp2.x;_ey=_lp2.y}
+          else{const _ang=P.facing+(_li-2.5)*_spread2;_ex=P.x+Math.cos(_ang)*bl2;_ey=P.y+Math.sin(_ang)*bl2}
           const _bp=_lightningPath(P.x,P.y,_ex,_ey,250,4,_bSeed2*7+_li*97+31);
           const _bn=_bp._n||2;
           X.globalAlpha=.25;X.strokeStyle=_ecS;X.lineWidth=10;
@@ -27300,7 +27301,8 @@ function draw(){
       for(let _li=0;_li<3;_li++){
         const _ang=P.facing+(_li-1)*_spread;
         const _cx=Math.cos(_ang),_cy=Math.sin(_ang);
-        const _ex=P.x+_cx*bl,_ey=P.y+_cy*bl;
+        const _bDist=Math.min(bl,P._beamMaxDistSingle!==undefined?P._beamMaxDistSingle:bl);
+        const _ex=P.x+_cx*_bDist,_ey=P.y+_cy*_bDist;
         const _bp=_lightningPath(P.x,P.y,_ex,_ey,250,4,_bSeed*7+_li*97+31);
         const _bn=_bp._n||2;
         // 외곽 글로우
