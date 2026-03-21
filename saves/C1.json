@@ -1,21 +1,21 @@
 {
-  "ts": 1774063798028,
+  "ts": 1774066364605,
   "player": {
-    "lv": 156,
-    "exp": 104,
-    "maxExp": 1621,
-    "sp": 99,
-    "ap": 30,
+    "lv": 177,
+    "exp": 1006,
+    "maxExp": 2023,
+    "sp": 119,
+    "ap": 34,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.128,
-    "stR": 0.128,
-    "hp": 306,
-    "mhp": 306,
-    "mp": 178,
-    "mmp": 178,
-    "st": 145.49399999999872,
-    "mst": 189,
+    "mpR": 0.1385,
+    "stR": 0.1385,
+    "hp": 328,
+    "mhp": 328,
+    "mp": 188,
+    "mmp": 188,
+    "st": 176.96950000000015,
+    "mst": 199,
     "speed": 2.7196000000000002,
     "shield": 0,
     "mshield": 0
@@ -2023,6 +2023,183 @@
         "_gx": 8,
         "_gy": 12,
         "_pickT": 1774063476832
+      },
+      {
+        "id": 1774064180935.6257,
+        "slot": "ring1",
+        "el": 0,
+        "rarity": 4,
+        "tier": 2,
+        "name": "흑요석 반지",
+        "emoji": "💍",
+        "eDef": 6,
+        "critRate": 4.02,
+        "critDmg": 0.164,
+        "bInt": 34,
+        "bStr": 42,
+        "bDex": 39,
+        "affixes": [
+          {
+            "id": "antiRevive",
+            "tier": 0,
+            "value": 0.0603
+          },
+          {
+            "id": "lightRes",
+            "tier": 0,
+            "value": 0.1641
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 9.08,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "원소 반응 발동 시 추가 폭발 (ATK×80%)",
+          "stat": "_lRingElem",
+          "val": 0.8
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 14,
+        "_pickT": 1774064180955
+      },
+      {
+        "id": 1774064497692.9473,
+        "slot": "cape",
+        "el": 2,
+        "rarity": 4,
+        "tier": 0,
+        "name": "냉기 망토",
+        "emoji": "🧣",
+        "def": 4,
+        "eDef": 2,
+        "spd": 0,
+        "bDex": 31,
+        "bInt": 23,
+        "bStr": 29,
+        "affixes": [
+          {
+            "id": "dropRate",
+            "tier": 1,
+            "value": 0.2479
+          },
+          {
+            "id": "movSpeed",
+            "tier": 0,
+            "value": 0.0721
+          },
+          {
+            "id": "parryBonus",
+            "tier": 1,
+            "value": 0.4224
+          }
+        ],
+        "_implicitStat": "_iDashCd",
+        "_implicitVal": 9.76,
+        "_implicitKo": "회피 쿨다운 -X%",
+        "legendarySpecial": {
+          "ko": "패리 타이밍 판정 +50% 확대",
+          "stat": "_lCapeParry",
+          "val": 0.5
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 14,
+        "_pickT": 1774064497708
+      },
+      {
+        "id": 1774064500080.5054,
+        "slot": "boots",
+        "el": 3,
+        "rarity": 4,
+        "tier": 0,
+        "name": "그림자 전투화",
+        "emoji": "👢",
+        "def": 4,
+        "spd": 0,
+        "bonusSt": 10,
+        "chargeDist": 30,
+        "chargeCharge": 2,
+        "bDex": 24,
+        "bStr": 32,
+        "bInt": 25,
+        "affixes": [
+          {
+            "id": "extraST",
+            "tier": 0,
+            "value": 67
+          },
+          {
+            "id": "movSpeed",
+            "tier": 0,
+            "value": 0.0632
+          },
+          {
+            "id": "goldBonus",
+            "tier": 0,
+            "value": 0.1806
+          },
+          {
+            "id": "dashBoost",
+            "tier": 1,
+            "value": 0.4997
+          }
+        ],
+        "_implicitStat": "_iMovSpd",
+        "_implicitVal": 3.51,
+        "_implicitKo": "이동속도 +X%",
+        "legendarySpecial": {
+          "ko": "회피 직후 첫 공격 데미지 +80%",
+          "stat": "_lBootsEvade",
+          "val": 0.8
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 4,
+        "_gy": 14,
+        "_pickT": 1774064500099
+      },
+      {
+        "id": 1774064513928.9358,
+        "slot": "pants",
+        "el": 3,
+        "rarity": 4,
+        "tier": 0,
+        "name": "그림자 바지",
+        "emoji": "👖",
+        "def": 4,
+        "bonusSt": 6,
+        "bonusHp": 26,
+        "bInt": 32,
+        "bStr": 30,
+        "bDex": 28,
+        "affixes": [
+          {
+            "id": "statusClean",
+            "tier": 2,
+            "value": 2
+          },
+          {
+            "id": "ccRes",
+            "tier": 1,
+            "value": 0.3033
+          }
+        ],
+        "_implicitStat": "_iStsRes",
+        "_implicitVal": 6.26,
+        "_implicitKo": "상태이상 저항 +X%",
+        "legendarySpecial": {
+          "ko": "이동 중 지속 HP 재생 (초당 HP의 1%)",
+          "stat": "_lPantsRegen",
+          "val": 0.01
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 6,
+        "_gy": 14,
+        "_pickT": 1774064513946
       }
     ],
     "equipped": {
@@ -2321,8 +2498,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 6911,
-    "mats": 169361
+    "kills": 9807,
+    "mats": 220410
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -2350,46 +2527,50 @@
     "chargeBoost": 1,
     "maliceStorm": 10,
     "fanShot": 1,
-    "elemMissile": 1,
+    "elemMissile": 0,
     "magicBlink": 1,
-    "boneWall": 10
+    "boneWall": 10,
+    "ghostWalk": 2,
+    "chainAssault": 1,
+    "chainSlam": 2
   },
   "fused": {
     "dimBreach": true,
     "boneStorm": true,
-    "sixFuse": true,
-    "elemFuse": true
+    "sixFuse": true
   },
   "skProf": {
     "kiSlash": 9999,
-    "maliceSwipe": 3820,
-    "holyDome": 220,
-    "omniBeam": 442,
-    "detonate": 4375,
+    "maliceSwipe": 4720,
+    "holyDome": 235,
+    "omniBeam": 528,
+    "detonate": 5260,
     "chargeBoost": 100,
-    "spikeTrap": 120,
+    "spikeTrap": 180,
     "plagueBurst": 385,
-    "maliceStorm": 1795,
-    "fanShot": 69,
+    "maliceStorm": 2275,
+    "fanShot": 173,
     "elemMissile": 59,
-    "magicBlink": 570
+    "magicBlink": 1830,
+    "chainAssault": 120,
+    "chainSlam": 45
   },
   "fuseProfSec": {},
   "cardProf": {
-    "shieldFuse": 6360,
-    "holyFuse": 255,
-    "holyIce": 255,
-    "sixFuse": 1929.0166666657283,
-    "elemFuse": 2300.8333333343935,
-    "stormBeam": 8630.833333334313,
-    "whirlDet": 6330,
-    "slamStorm": 6330,
-    "dimBreach": 720,
-    "dimSlam": 720,
-    "dimThunder": 720,
+    "shieldFuse": 7260,
+    "holyFuse": 270,
+    "holyIce": 270,
+    "sixFuse": 2250.0500000000343,
+    "elemFuse": 2623.1833333360787,
+    "stormBeam": 9838.183333332387,
+    "whirlDet": 7215,
+    "slamStorm": 7215,
+    "dimBreach": 1980,
+    "dimSlam": 2100,
+    "dimThunder": 2145,
     "plagueFuse": 405,
-    "boneStorm": 1845,
-    "elecRepent": 1845
+    "boneStorm": 2325,
+    "elecRepent": 2325
   },
   "activeChargeSk": "magicBlink",
   "activeBowSk": "normal",

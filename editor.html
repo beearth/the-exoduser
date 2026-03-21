@@ -3720,6 +3720,18 @@ function exportAsFixedMap(){
         const flat=[];for(let y=0;y<ms.mh;y++)for(let x=0;x<ms.mw;x++)flat.push(ms.grid[y]?.[x]||0);
         const rle=[];for(let j=0;j<flat.length;){const v=flat[j];let c=1;while(j+c<flat.length&&flat[j+c]===v&&c<65535)c++;rle.push(v,c);j+=c;}
         fm.tileRLE=rle;
+        // 에디터 오브젝트 → spawnHoles + objs 변환
+        if(ms.objs&&ms.objs.length>0){
+          const sh=[];const objs=[];
+          for(const o of ms.objs){
+            if(o.id==='hole_s')sh.push({x:o.x,y:o.y,type:'S'});
+            else if(o.id==='hole_m')sh.push({x:o.x,y:o.y,type:'M'});
+            else if(o.id==='hole_l')sh.push({x:o.x,y:o.y,type:'L'});
+            else objs.push({x:o.x,y:o.y,id:o.id});
+          }
+          if(sh.length>0)fm.spawnHoles=sh;
+          if(objs.length>0)fm.objs=objs;
+        }
       }
       out+=`// ${s.hell+1}장 ${s.floor}층\nFIXED_MAPS[${i}]=${JSON.stringify(fm,null,2)};\n\n`;}
     // 격자맵도 FIXED_MAPS로 포함 (gridMapStore > GRID_MAPS > 자동생성 순)

@@ -517,8 +517,8 @@ canvas{display:block;position:fixed;inset:0}
 </head>
 <body>
 <canvas id="c"></canvas>
-<canvas id="burstCvs" style="position:fixed;inset:0;pointer-events:none;z-index:0"></canvas>
-<canvas id="ct" style="position:fixed;inset:0;pointer-events:none;z-index:1"></canvas>
+<canvas id="burstCvs" style="position:fixed;inset:0;pointer-events:none;z-index:1"></canvas>
+<canvas id="ct" style="position:fixed;inset:0;pointer-events:none;z-index:2"></canvas>
 <div id="mmLvl" style="position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px));right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;text-align:right;width:160px;transform-origin:top right;transform:scale(var(--ui-scale))">
   <div style="display:flex;flex-direction:column;gap:4px;background:rgba(0,0,0,0.4);padding:8px;border-right:2px solid #ffaa00;">
     <div style="display:flex;justify-content:flex-end;align-items:center;gap:8px">
@@ -2177,9 +2177,9 @@ function _initBurstSystem(){
   _bstMode=1;if(!IS_ELECTRON)console.log('[BURST] 별도 WebGL2 context 초기화 성공');
   }catch(e){console.warn('[BURST] init fail:',e);_bstMode=0}}
 function fireBurst(cx,cy,count,spd,size,color){
-  if(!_bGL||_bstMode===0)return;count=Math.min(count||100,BURST_MAX);spd=spd||6;size=size||5;
+  if(!_bGL||_bstMode===0)return;count=Math.min(count||100,BURST_MAX);spd=spd||6;size=size||8;
   if(color){_bstColor[0]=color[0];_bstColor[1]=color[1];_bstColor[2]=color[2];_bstColor[3]=color[3]!=null?color[3]:1}
-  else{_bstColor[0]=1;_bstColor[1]=.5;_bstColor[2]=.1;_bstColor[3]=1}
+  else{_bstColor[0]=1;_bstColor[1]=.8;_bstColor[2]=.2;_bstColor[3]=1}
   _bstCount=count;_bstActive=true;
   for(let i=0;i<count;i++){const a=(Math.PI*2/count)*i,b=i*BURST_STRIDE;
     _bstCpu[b]=cx;_bstCpu[b+1]=cy;_bstCpu[b+2]=Math.cos(a)*spd;_bstCpu[b+3]=Math.sin(a)*spd;_bstCpu[b+4]=1.0;_bstCpu[b+5]=size;}
@@ -2190,7 +2190,7 @@ function fireBurst(cx,cy,count,spd,size,color){
 function _updateBurst(sp){
   if(!_bstActive||_bstCount<=0||!_bGL||_bstMode===0)return;const gl=_bGL;
   const wBuf=_bstTfPing?_bstTfBufB:_bstTfBufA,rVao=_bstTfPing?_bstTfVaoA:_bstTfVaoB;
-  gl.useProgram(_bstTfProg);gl.uniform1f(_bstTfU.dt,sp);gl.uniform1f(_bstTfU.decay,0.007);
+  gl.useProgram(_bstTfProg);gl.uniform1f(_bstTfU.dt,sp);gl.uniform1f(_bstTfU.decay,0.0035);
   gl.enable(gl.RASTERIZER_DISCARD);gl.bindTransformFeedback(gl.TRANSFORM_FEEDBACK,_bstTfObj);
   gl.bindBufferBase(gl.TRANSFORM_FEEDBACK_BUFFER,0,wBuf);gl.bindVertexArray(rVao);
   gl.beginTransformFeedback(gl.POINTS);gl.drawArrays(gl.POINTS,0,_bstCount);gl.endTransformFeedback();
@@ -10985,6 +10985,7 @@ function _isMagicBeam(){
   return false;
 }
 function _execMagicE(){
+  if(_isFused('stormBeam'))return; // 뇌전나선: E빔 좌클에 통합, 독립발사 불가
   const _amsk=P.activeMagicSk||'beam';
   const _isSix=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
   const _isElemF=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&P.skills.elemMissile>=1&&_isFused('elemFuse');
@@ -123014,7 +123015,7 @@ function genFromTemplate(tmpl,si){
   const mw=tmpl.mw,mh=tmpl.mh;
   const map=[];for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
   const rooms=[];
-  const _hasTileRLE=tmpl.tileRLE&&tmpl.tileRLE.length>0;
+  let _hasTileRLE=tmpl.tileRLE&&tmpl.tileRLE.length>0;
   const roomMap={};
 
   G._isTileRLE=_hasTileRLE;G._floorTiles=null;
@@ -123050,11 +123051,17 @@ function genFromTemplate(tmpl,si){
   }
   // ── tileRLE: 기존 로직 실행 후 타일만 덮어쓰기 ──
   if(_hasTileRLE){
+    // tileRLE 타일 수 검증 — 맵 크기와 불일치하면 무시
+    let _rleTotal=0;for(let _ri=0;_ri<tmpl.tileRLE.length;_ri+=2)_rleTotal+=tmpl.tileRLE[_ri+1];
+    if(_rleTotal<mw*mh*.9){console.warn('[MAP] tileRLE 크기 불일치! expected='+mw*mh+' got='+_rleTotal+' → 절차적 생성 사용');G._isTileRLE=false;_hasTileRLE=false}
+    else{
     const rle=tmpl.tileRLE;let pos=0;
-    for(let i=0;i<rle.length;i+=2){const v=rle[i],cnt=rle[i+1];for(let j=0;j<cnt;j++){const y=~~(pos/mw),x=pos%mw;if(y<mh&&x<mw)map[y][x]=v;pos++}}
+    // 에디터: 0=용암,1=바닥,2=벽,3=높은벽 → 게임: 0=바닥,1=벽
+    // 1→0(바닥), 0/2/3→1(벽)
+    for(let i=0;i<rle.length;i+=2){let v=rle[i];const cnt=rle[i+1];v=(v===1)?0:1;for(let j=0;j<cnt;j++){const y=~~(pos/mw),x=pos%mw;if(y<mh&&x<mw)map[y][x]=v;pos++}}
     G._floorTiles=[];
     for(let y=1;y<mh-1;y++)for(let x=1;x<mw-1;x++)if(map[y][x]===0)G._floorTiles.push({tx:x,ty:y});
-  }
+  }}
 
   // ── 5. 보스방 처리 (없으면 자동 생성) ──
   let bossRd=tmpl.rooms.find(r=>r.type==='boss');
@@ -123165,24 +123172,25 @@ function genFromTemplate(tmpl,si){
   // ── 9. 소환굴 배치 ──
   const spawnHoles=[];
   if(_hasTileRLE){
-    // ── tileRLE: 수동 배치 + 바닥 랜덤 배치 ──
-    console.log('[HOLE] tileRLE mode, tmpl.spawnHoles='+(tmpl.spawnHoles?tmpl.spawnHoles.length:'없음'));
+    // ── tileRLE: 에디터 수동 배치만 사용 ──
+    // 1) tmpl.spawnHoles (내보내기에서 변환된 것)
     if(tmpl.spawnHoles&&tmpl.spawnHoles.length>0){
       for(const sh of tmpl.spawnHoles){const hSize=sh.type==='S'?.3:sh.type==='M'?.5:.8;
         spawnHoles.push({x:(sh.x+.5)*T,y:(sh.y+.5)*T,size:hSize,timer:600+Math.random()*60,alive:0,room:1})}
     }
-    // 수동 배치 부족하면 바닥 타일에 랜덤 배치 (최소 15개)
-    const _startCx=(rooms[0].cx+.5)*T,_startCy=(rooms[0].cy+.5)*T;
-    let _tries=0;
-    while(spawnHoles.length<15&&_tries<500){_tries++;
-      const tx=2+~~(Math.random()*(mw-4)),ty=2+~~(Math.random()*(mh-4));
-      if(map[ty][tx]!==0)continue;
-      const px=(tx+.5)*T,py=(ty+.5)*T;
-      if((px-_startCx)*(px-_startCx)+(py-_startCy)*(py-_startCy)<250000)continue; // 시작점 500px 밖
-      let tooClose=false;for(let si2=0;si2<spawnHoles.length;si2++){if((spawnHoles[si2].x-px)*(spawnHoles[si2].x-px)+(spawnHoles[si2].y-py)*(spawnHoles[si2].y-py)<160000){tooClose=true;break}}
-      if(tooClose)continue;
-      spawnHoles.push({x:px,y:py,size:.3+Math.random()*.5,timer:600+Math.random()*60,alive:0,room:1});
-    }
+    // 2) tmpl.objs에서 hole_ 오브젝트도 소환굴로 변환
+    if(tmpl.objs){for(const o of tmpl.objs){
+      if(o.id==='hole_s'||o.id==='hole_m'||o.id==='hole_l'){
+        const hSize=o.id==='hole_l'?.8:o.id==='hole_m'?.5:.3;
+        spawnHoles.push({x:(o.x+.5)*T,y:(o.y+.5)*T,size:hSize,timer:600+Math.random()*60,alive:0,room:1})}
+    }}
+    // 3) rooms.spawns에서도 소환굴 생성 (에디터 방 데이터)
+    for(const rd of tmpl.rooms){if(rd.spawns){for(const sp of rd.spawns){
+      spawnHoles.push({x:(rd.cx+sp.dx+.5)*T,y:(rd.cy+sp.dy+.5)*T,size:.3+sp.grade*.25,timer:600+Math.random()*60,alive:0,room:1})}}}
+    // corridorSpawns도 소환굴로
+    if(tmpl.corridorSpawns){for(const cs of tmpl.corridorSpawns){
+      spawnHoles.push({x:(cs.x+.5)*T,y:(cs.y+.5)*T,size:.3,timer:600+Math.random()*60,alive:0,room:-1})}}
+    console.log('[HOLE] tileRLE: spawnHoles='+spawnHoles.length+' (tmpl.spawnHoles='+(tmpl.spawnHoles?tmpl.spawnHoles.length:0)+' objs='+(tmpl.objs?tmpl.objs.filter(o=>o.id&&o.id.startsWith('hole_')).length:0)+' roomSpawns='+(tmpl.rooms.filter(r=>r.spawns).length)+')');
   } else {
     // ── 기존 방 기반 배치 ──
     if(tmpl.spawnHoles&&tmpl.spawnHoles.length>0){
@@ -123607,10 +123615,11 @@ function eModHitP(e){
 
 function mkEn(x,y,si,etype,ib,el,room){
   const dm=DIFF_MUL[OPT.diff];
-  const monLv=STG[si]?STG[si].monLv:(si+1)*100;
-  // HP: 제곱 스케일, ATK: 선형 스케일 (HP의 절반 속도)
+  const monLv=Math.max(STG[si]?STG[si].monLv:(si+1)*100, P.lv||1); // 플레이어 레벨 이상
+  // HP: 스테이지 제곱 × 플레이어레벨 배율, ATK: 동일
   const lvScale=(1+si)*(1+si);
   const atkScale=Math.max(3,1+si);
+  const _plvMul=Math.max(1,monLv/(STG[si]?STG[si].monLv:(si+1)*100)); // 플레이어레벨/맵레벨
   // 엘리트 판정 (보스/레어몹 제외)
   const elite=(ib||isRareEtype(etype))?0:rollElite(si);
   const mods=elite>0?rollMods(elite,si):[];
@@ -123621,9 +123630,9 @@ function mkEn(x,y,si,etype,ib,el,room){
   if(mods.includes('M02'))spd*=1.5; // M02 초속
   const r=(ib?22:_rare?_rd.r+Math.random()*2:ETYPE_R[etype]+Math.random()*2)*2;
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
-  // 레벨 보정: 몬스터가 항상 플레이어+100 기준
-  const _bossLvMul=Math.max(1,((P.lv||1)+100)/Math.max(1,monLv));
-  let _hp=~~(hp*lvScale*dm*et.hpMul*_bossLvMul);
+  // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
+  const _bossLvMul=_plvMul;
+  let _hp=~~((hp*lvScale*dm*et.hpMul*_bossLvMul)+monLv*1000); // 레벨당 +1000HP
   const _atk=~~(atk*atkScale*dm*et.atkMul*_bossLvMul);
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   const _noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
@@ -123870,11 +123879,14 @@ function spawnRoomEns(ri){
   const cnt=ib?1:Math.max(10,~~((area+si*3+8)*DIFF_MOB[OPT.diff]));
   let formSpawnCount=0;
   for(let i=0;i<cnt;i++){
-    // 벽 속 스폰 방지 — tileRLE: 바닥 타일에서 직접 선택, 기존: 방 영역 내 시도
+    // 벽 속 스폰 방지 — 방 영역 내 바닥 타일에서 선택
     let ex,ey,_valid=false;
     if(G._isTileRLE&&G._floorTiles&&G._floorTiles.length>0){
+      // tileRLE: 방 범위 내 바닥 타일에서만 선택
+      const _rx=room.x,_ry=room.y,_rw=room.w,_rh=room.h;
       for(let _try=0;_try<50;_try++){
         const _ft=G._floorTiles[~~(Math.random()*G._floorTiles.length)];
+        if(_ft.tx<_rx||_ft.tx>_rx+_rw||_ft.ty<_ry||_ft.ty>_ry+_rh)continue;
         ex=(_ft.tx+.5)*T;ey=(_ft.ty+.5)*T;
         if(canMv(ex,ey,10)){_valid=true;break}
       }
@@ -124001,13 +124013,16 @@ function initStage(si){
   G.stageCleared=false;G._deathSpawned=false;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;
   if(typeof _clearExtEPalCache==='function')_clearExtEPalCache();
   if(typeof _clearExtBPalCache==='function')_clearExtBPalCache();
-  G.rooms.forEach((room,ri)=>spawnRoomEns(ri));
-  spawnCorridorEns(si);
-  // ── 시작방 안전지대: 플레이어 주변 200px 이내 몹 제거 ──
+  // tileRLE 맵: 소환굴만으로 스폰, 자동 스폰 없음
+  if(!G._isTileRLE){
+    G.rooms.forEach((room,ri)=>spawnRoomEns(ri));
+    spawnCorridorEns(si);
+  }
+  // ── 시작방 안전지대: 플레이어 주변 500px 이내 몹 제거 ──
   const _safeR=500;const _safeR2=_safeR*_safeR;
   for(let _ei=ens.length-1;_ei>=0;_ei--){const _e=ens[_ei];if((_e.x-P.x)*(_e.x-P.x)+(_e.y-P.y)*(_e.y-P.y)<_safeR2)ens.splice(_ei,1)}
-  // 맵 전체 최소 밀도 보장 (80마리 미만이면 보충)
-  {const _minFill=80;
+  // 맵 전체 최소 밀도 보장 (tileRLE 아닌 경우만)
+  if(!G._isTileRLE){const _minFill=80;
   let _aliveCnt=0;for(let _ai=0;_ai<ens.length;_ai++)if(ens[_ai].alive)_aliveCnt++;
   if(_aliveCnt<_minFill){
     const _si=G.stage,_need=_minFill-_aliveCnt;
@@ -124849,7 +124864,7 @@ function update(){
       else if(P.mp>=100){P._hrAiming=true}
       else showPH('MP 부족!','#4488ff');
     }
-    else if(isHeld('beam')&&P.mp>=mpCost('magic')){_execMagicE()}
+    else if(!_isFused('stormBeam')&&isHeld('beam')&&P.mp>=mpCost('magic')){_execMagicE()}
     // Forge — 게임루프 상단에서 처리 (paused 상태에서도 동작)
 
     break;
@@ -125156,7 +125171,7 @@ function update(){
       else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}
       else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
       else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=12;_addSkProf('kiSlash');_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
-      else if(isHeld('beam')&&P.mp>=mpCost('magic')){_execMagicE()}
+      else if(!_isFused('stormBeam')&&isHeld('beam')&&P.mp>=mpCost('magic')){_execMagicE()}
       else if(P.st2<=0){
         P.s='idle';
       }
@@ -125209,7 +125224,7 @@ function update(){
       else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
       else if(P.st2<=0){
       // 홀드 연사: E 누르고 있으면 즉시 재시전/빔/만화방창 전환
-      if(isHeld('beam')&&P.mp>=mpCost('magic')){_execMagicE()}
+      if(!_isFused('stormBeam')&&isHeld('beam')&&P.mp>=mpCost('magic')){_execMagicE()}
       else P.s='idle';
     }}
     break;
@@ -125788,6 +125803,8 @@ function update(){
     }}
   // ── 둔화(_webSlow) → 이동속도 50% 감소 ──
   for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];if(e.alive&&e._webSlow>0)e._aSpdM*=.5}
+  // ── 다리부상(_legInjury) → 이동속도 50% 감소 (10초) ──
+  for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];if(e.alive&&e._legInjury>0){e._legInjury-=sp;e._aSpdM*=.5}}
   // ── 화톳불 배리어 타이머 ──
   if(G._bonfire&&G._bonfire.t>0)G._bonfire.t-=sp;
   // 적 업데이트 (거리별 티어링 + 8ms 타임버짓)
@@ -127810,10 +127827,10 @@ function update(){
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.L);
             e.shockT=Math.max(e.shockT||0,60);
           }else if(fz.type==='spikeTrap'){
-            // 가시덫: 물리 DOT + 슬로우50% + 출혈
+            // 가시덫: 물리 DOT + 다리부상(10초 이속50%↓) + 출혈
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.P);
             e.bleedT=Math.max(e.bleedT||0,120);e.bleed=1;
-            e._webSlow=Math.max(e._webSlow||0,30);
+            e._legInjury=Math.max(e._legInjury||0,600); // 10초 다리부상
           }else if(fz.type==='assaultFlame'){
             // 기동습격 불바닥: 화염 DOT + 화상
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.F);
@@ -134237,6 +134254,7 @@ function _renderSkillRow(sk,grid){
     const _lvMet=sk.reqLv?P.lv>=sk.reqLv:true;
     const canLearn=!learned&&_reqMet&&_lvMet&&P.sp>=sk.spCost&&G.mats>=sk.matCost&&!_hasUltLearned;
     const _skMaxLv=10;
+    const _skLvLock=Math.min(10,~~(P.lv/100)+1); // Lv100=2렙, Lv200=3렙, ... Lv900=10렙
     // 합체 강화 통합: 구성 스킬 upSp/upMat 합산
     const _isFuseUp=_isStormBeam||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isHolyFuse||_isHolyIce;
     let _fuseUpSp=0,_fuseUpMat=0,_fuseCanUp=false;
@@ -134248,7 +134266,7 @@ function _renderSkillRow(sk,grid){
       _fuseCanUp=_fLv2<_skMaxLv&&P.sp>=_fuseUpSp;
     }
     const _singleUpSp=_skillUpSpCost(slv,false);
-    const canUp=(learned&&sk.up&&slv<_skMaxLv&&P.sp>=_singleUpSp&&G.mats>=(sk.upMat||100)&&!_isFuseUp)||_fuseCanUp;
+    const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=(sk.upMat||100)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);
     const d=document.createElement('div');
     // 합체 보석 그룹 — 습득된 스킬은 항상 그룹색 글로우
     const _fGrp=_fuseGemGroup(sk.id);
@@ -134309,8 +134327,9 @@ function _renderSkillRow(sk,grid){
         upLabel=sk.id==='chargeBoost'?'3충전 거리×'+(2+(slv-1)*.05).toFixed(2)+' 뎀×'+(1.5+(slv-1)*.25).toFixed(1)+' 속도+'+(slv-1)*2+' 폭+'+((slv-1)*2.5+12):sk.id==='detonate'?'비율 '+(15+(slv-1)*5)+'% 범위 '+(150+(slv-1)*10):sk.id==='magicBlink'?'폭발뎀 ×'+(1+(slv-1)*.15).toFixed(2)+' 범위 '+(130+(slv-1)*10)+' (INT)':sk.id==='giantSlam'?'뎀+'+(slv-1)*10+'% 범위'+(500+(slv-1)*15)+' 쿨'+(8-(slv-1)*0.3).toFixed(1)+'초':sk.id==='fanShot'?'뎀 +'+bonusPct+'% 연사+1':'뎀 +'+bonusPct+'%';
       }
       const _isMax=slv>=_skMaxLv;
-      lockTxt='<span style="color:#'+(_isStormBeam?'ff6600':_isDimThunder?'4422ff':_isDimSlam?'6633ff':_isDimFuse?'aa66ff':_isIceFuse?'66ccff':_isElemFuse?'ff66ff':_isSlamStorm?'ff4400':_isSixFuse?'ffaa00':_isBladeFuse?'dddddd':_isSynth?'ff8844':_isBoneStorm?'55cc77':_isShieldFuse?'8899aa':_isPlagueFuse?'aa2244':_isHolyIce?'ff88cc':_isHolyFuse?'ff88aa':_isMax?'ffdd00':'44cc44')+'">습득 Lv.'+slv+(_isMax?' MAX':'')+' ('+upLabel+')</span>';
-      if(canUp&&!_isMax) lockTxt += ' <span style="color:#ffcc44;">[강화 가능: '+(_isFuseUp?'⭐'+_fuseUpSp:'⭐'+_singleUpSp+' 👿'+sk.upMat)+']</span>';
+      const _isLocked=slv>=_skLvLock&&!_isMax;
+      lockTxt='<span style="color:#'+(_isStormBeam?'ff6600':_isDimThunder?'4422ff':_isDimSlam?'6633ff':_isDimFuse?'aa66ff':_isIceFuse?'66ccff':_isElemFuse?'ff66ff':_isSlamStorm?'ff4400':_isSixFuse?'ffaa00':_isBladeFuse?'dddddd':_isSynth?'ff8844':_isBoneStorm?'55cc77':_isShieldFuse?'8899aa':_isPlagueFuse?'aa2244':_isHolyIce?'ff88cc':_isHolyFuse?'ff88aa':_isMax?'ffdd00':'44cc44')+'">습득 Lv.'+slv+(_isMax?' MAX':_isLocked?' 🔒Lv'+(_skLvLock*100)+'해금':'')+' ('+upLabel+')</span>';
+      if(canUp&&!_isMax&&!_isLocked) lockTxt += ' <span style="color:#ffcc44;">[강화 가능: '+(_isFuseUp?'⭐'+_fuseUpSp:'⭐'+_singleUpSp+' 👿'+sk.upMat)+']</span>';
       else if(_isFuseUp&&!_isMax&&!canUp){
         const _fk3=_isStormBeam?'stormBeam':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';
         if(P.sp<_fuseUpSp) lockTxt+=' <span style="color:#ff4444;font-size:.75rem">[SP 부족: '+P.sp+'/'+_fuseUpSp+']</span>';
@@ -134585,7 +134604,7 @@ function _renderSkillRow(sk,grid){
           }
         } else {
           // 강화
-          if(slv>=_skMaxLv)return;
+          if(slv>=_skMaxLv||slv>=_skLvLock){if(slv>=_skLvLock&&slv<_skMaxLv)showPH('Lv'+(_skLvLock*100)+' 도달 시 해금!','#ff8844');return;}
           P.skills[sk.id]++;P.sp-=_skillUpSpCost(slv,false);G.mats-=sk.upMat;
           SFX.levelup();const nlv=P.skills[sk.id];
           addTxt(P.x,P.y-30,sk.name+' Lv.'+nlv+(nlv>=_skMaxLv?' MAX!!':'!!'),'#ffaa00',60);
@@ -138540,17 +138559,15 @@ function draw(){
         X.fillText('✦ 만화광선 ✦',P.x,P.y-P.r-24);
       }
     }else{
-      // ═══ 기본 빔 (전기 3가닥 부채꼴) ═══
+      // ═══ 멸살광선: 1발 직선 레이저 ═══
       const bd=Math.cos(P.facing),be=Math.sin(P.facing);
       const bl=~~(500+((P.skills.omniBeam||1)-1)*55.6);
       const elms=hm().elements||[{el:EL.P,dmg:5}];
       const ec0=ELC[elms[0].el];const eg0=ELG2[elms[0].el];
       const _bSeed=~~(t/50);
-      const _spread=.18; // 부채꼴 각도 (만화방창 스타일)
       _ltPoolI=0;_ltBranchI=0;
-      for(let _li=0;_li<3;_li++){
-        const _ang=P.facing+(_li-1)*_spread;
-        const _cx=Math.cos(_ang),_cy=Math.sin(_ang);
+      for(let _li=0;_li<1;_li++){
+        const _cx=Math.cos(P.facing),_cy=Math.sin(P.facing);
         const _bDist=P._beamVisualDist||bl;
         const _ex=P.x+_cx*_bDist,_ey=P.y+_cy*_bDist;
         const _bp=_lightningPath(P.x,P.y,_ex,_ey,250,4,_bSeed*7+_li*97+31);
@@ -142353,7 +142370,7 @@ function updateHUD(slow){
   {const _sg=$('skSlot0');if(_sg){const _gp=Math.min(1,_harpGauge/_HARP_GAUGE_MAX);const _gc=_gp>=1?'#44ffaa':_gp>=.5?'#88ccff':'#ff8844';let _gb=_sg.querySelector('.hg-bar');if(!_gb){_gb=document.createElement('div');_gb.className='hg-bar';_gb.style.cssText='position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:0 0 4px 4px;pointer-events:none;z-index:5;transition:width .1s';_sg.style.position='relative';_sg.appendChild(_gb)}_gb.style.width=(_gp*100)+'%';_gb.style.background=_gc}}
   if(!slow)return;
   // ── 느린 경로: 라벨 + 장비 innerHTML (매 30프레임 = ~2회/초) ──
-  const _s=STG[G.stage];$('stageLbl').textContent=`${_s.hell+1}지옥 ${_s.kr} (Lv.${_s.monLv})`;
+  const _s=STG[G.stage];const _eLv=Math.max(_s.monLv,P.lv||1);$('stageLbl').textContent=`${_s.hell+1}지옥 ${_s.kr} (몹Lv.${_eLv})`;
   if(++_hudT>=15){_hudT=0;const room=G.rooms[G.curRoom];if(room){let c=0;for(let i=0;i<ens.length;i++){if(ens[i].alive&&ens[i].room===G.curRoom)c++}_hudAlive=c}else _hudAlive=0}
   const room=G.rooms[G.curRoom];
   const rtype=room?room.type:'';const rtName=rtype==='boss'?'보스광장':rtype==='forge'?'대장간':rtype==='start'?'시작점':'광장';
@@ -142748,9 +142765,11 @@ function _openIntroCurtain(){
   // 게임 켜기 (커튼 뒤에서 렌더링 시작)
   G.on=true;P.iframes=600;
   if(!G.cam)G.cam={x:P.x,y:P.y};
-  // 정상 몬스터 리스폰
-  G.rooms.forEach((room,ri)=>spawnRoomEns(ri));
-  spawnCorridorEns(G.stage);
+  // 정상 몬스터 리스폰 (tileRLE: 소환굴만)
+  if(!G._isTileRLE){
+    G.rooms.forEach((room,ri)=>spawnRoomEns(ri));
+    spawnCorridorEns(G.stage);
+  }
   // 시작방 안전지대 (500px 이내 제거)
   const _sR2=500*500;
   for(let i=ens.length-1;i>=0;i--){const e=ens[i];if((e.x-P.x)*(e.x-P.x)+(e.y-P.y)*(e.y-P.y)<_sR2)ens.splice(i,1)}
@@ -142810,9 +142829,11 @@ $('retryBtn').onclick=async()=>{
     const _gx=(b._bossCx+.5)*T,_gy=(b._gateY+2+.5)*T;
     const sp=safePt(_gx,_gy,P.r);
     P.x=sp?sp.x:_gx;P.y=sp?sp.y:_gy;
-    // 방 몬스터 리스폰 (보스방 제외)
-    G.rooms.forEach((room,ri)=>{if(room.type!=='boss')spawnRoomEns(ri)});
-    spawnCorridorEns(G.stage);
+    // 방 몬스터 리스폰 (보스방 제외, tileRLE: 소환굴만)
+    if(!G._isTileRLE){
+      G.rooms.forEach((room,ri)=>{if(room.type!=='boss')spawnRoomEns(ri)});
+      spawnCorridorEns(G.stage);
+    }
     G.cam.x=P.x;G.cam.y=P.y;
     G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0}};
     buildMapCache();initTorchLights();initSwayObjects();initWallEyes();_initEyes();initGlowObjects();initMapObjects();

@@ -3717,7 +3717,8 @@ function exportAsFixedMap(){
       // mapStore에 실제 타일 데이터가 있으면 tileRLE 생성
       const ms=mapStore[i];
       if(ms&&ms.grid){
-        const flat=[];for(let y=0;y<ms.mh;y++)for(let x=0;x<ms.mw;x++)flat.push(ms.grid[y]?.[x]||0);
+        // 에디터: 0=용암,1=바닥,2=벽,3=높은벽 → 게임: 0=바닥,1=벽 (0↔1 반전)
+        const flat=[];for(let y=0;y<ms.mh;y++)for(let x=0;x<ms.mw;x++){let v=ms.grid[y]?.[x]||0;if(v===0)v=1;else if(v===1)v=0;flat.push(v)}
         const rle=[];for(let j=0;j<flat.length;){const v=flat[j];let c=1;while(j+c<flat.length&&flat[j+c]===v&&c<65535)c++;rle.push(v,c);j+=c;}
         fm.tileRLE=rle;
       }
