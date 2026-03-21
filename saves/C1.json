@@ -1,23 +1,23 @@
 {
-  "ts": 1774089000746,
+  "ts": 1774089336871,
   "player": {
-    "lv": 180,
-    "exp": 1379,
-    "maxExp": 2085,
-    "sp": 49,
+    "lv": 187,
+    "exp": 2114,
+    "maxExp": 2230,
+    "sp": 62,
     "ap": 2,
     "baseAtk": 15,
     "baseDef": 4,
     "mpR": 1.1660000000000001,
     "stR": 0.908,
-    "hp": 1278.9643440624468,
+    "hp": 1280,
     "mhp": 1280,
-    "mp": 460.5697636874839,
+    "mp": 532,
     "mmp": 532,
-    "st": 120.14378781248134,
+    "st": 284,
     "mst": 284,
     "speed": 5.4726625,
-    "shield": 219.41699999999906,
+    "shield": 850,
     "mshield": 850
   },
   "inv": {
@@ -92,6 +92,91 @@
         "_gx": 0,
         "_gy": 0,
         "_pickT": 1774088980194
+      },
+      {
+        "id": 1774089232326.975,
+        "slot": "cape",
+        "el": 3,
+        "rarity": 4,
+        "tier": 0,
+        "name": "그림자 망토",
+        "emoji": "🧣",
+        "def": 4,
+        "eDef": 2,
+        "spd": 0,
+        "bDex": 25,
+        "bInt": 31,
+        "bStr": 27,
+        "affixes": [
+          {
+            "id": "dropRate",
+            "tier": 0,
+            "value": 0.1422
+          },
+          {
+            "id": "movSpeed",
+            "tier": 0,
+            "value": 0.0544
+          },
+          {
+            "id": "parryBonus",
+            "tier": 1,
+            "value": 0.4051
+          }
+        ],
+        "_implicitStat": "_iDashCd",
+        "_implicitVal": 5.76,
+        "_implicitKo": "회피 쿨다운 -X%",
+        "legendarySpecial": {
+          "ko": "패리 타이밍 판정 +50% 확대",
+          "stat": "_lCapeParry",
+          "val": 0.5
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 0,
+        "_pickT": 1774089232346
+      },
+      {
+        "id": 1774089235024.6807,
+        "slot": "ring2",
+        "el": 4,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전기 반지",
+        "emoji": "💍",
+        "eDef": 2,
+        "critRate": 3.59,
+        "critDmg": 0.135,
+        "bStr": 26,
+        "bInt": 32,
+        "bDex": 32,
+        "affixes": [
+          {
+            "id": "reflect",
+            "tier": 1,
+            "value": 0.1299
+          },
+          {
+            "id": "darkRes",
+            "tier": 0,
+            "value": 0.1968
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 14.01,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "처치 시 데빌포스 5% 회복",
+          "stat": "_lRingKill",
+          "val": 0.05
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 4,
+        "_gy": 0,
+        "_pickT": 1774089235044
       }
     ],
     "equipped": {
@@ -742,7 +827,7 @@
     },
     {
       "type": "mp",
-      "count": 30
+      "count": 236
     },
     {
       "type": null,
@@ -755,8 +840,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 9470,
-    "mats": 340642
+    "kills": 10040,
+    "mats": 363233
   },
   "bagMax": 300,
   "hellCleared": [],
@@ -795,7 +880,7 @@
     "iceStorm": 2,
     "magicBlink": 0,
     "blackStar": 2,
-    "maliceSwipe": 0,
+    "maliceSwipe": 1,
     "detonate": 1,
     "whirlwind": 1,
     "shieldThrow": 0,
@@ -816,51 +901,52 @@
   },
   "skProf": {
     "kiSlash": 9999,
-    "chargeBoost": 3255,
-    "maliceSwipe": 3540,
+    "chargeBoost": 3465,
+    "maliceSwipe": 3900,
     "spikeTrap": 720,
-    "holyDome": 690,
-    "omniBeam": 1653,
-    "maliceStorm": 4035,
+    "holyDome": 705,
+    "omniBeam": 1723,
+    "maliceStorm": 4185,
     "plagueBurst": 315,
-    "maliceMortar": 2025,
-    "fanShot": 240,
-    "guardian": 1214,
-    "maliceHunt": 675,
-    "elemMissile": 178,
-    "chainAssault": 1530,
-    "ghostWalk": 11,
+    "maliceMortar": 2055,
+    "fanShot": 252,
+    "guardian": 1268,
+    "maliceHunt": 720,
+    "elemMissile": 190,
+    "chainAssault": 1665,
+    "ghostWalk": 12,
     "magicBlink": 1110,
-    "detonate": 1137,
+    "detonate": 1287,
     "shieldThrow": 165,
     "chainSlam": 255,
-    "whirlwind": 143,
-    "needleShot": 1980
+    "whirlwind": 165,
+    "needleShot": 3240,
+    "bladeDash": 15
   },
   "fuseProfSec": {},
   "cardProf": {
-    "dimBreach": 4365,
-    "dimSlam": 5895,
-    "dimThunder": 6150,
-    "shieldFuse": 3705,
-    "holyFuse": 690,
-    "holyIce": 690,
-    "sixFuse": 5916.766666665111,
-    "elemFuse": 7010.399999986621,
-    "stormBeam": 8819.433333312256,
-    "boneStorm": 4035,
-    "elecRepent": 4035,
-    "plagueFuse": 8336.066666635441,
-    "iceMortar": 2025,
-    "bladeFuse": 8021.06666663885,
-    "whirlDet": 1809.0333333328522,
-    "slamStorm": 1809.0333333328522
+    "dimBreach": 4575,
+    "dimSlam": 6240,
+    "dimThunder": 6495,
+    "shieldFuse": 4065,
+    "holyFuse": 705,
+    "holyIce": 705,
+    "sixFuse": 6176.616666662523,
+    "elemFuse": 7341.533333316504,
+    "stormBeam": 9366.333333308168,
+    "boneStorm": 4185,
+    "elecRepent": 4185,
+    "plagueFuse": 8709.166666631452,
+    "iceMortar": 2055,
+    "bladeFuse": 8394.166666634861,
+    "whirlDet": 2024.799999999479,
+    "slamStorm": 2024.799999999479
   },
   "activeChargeSk": "charge",
   "activeBowSk": "needleShot",
   "activeTechSk": "spikeTrap",
   "activeMagicSk": "beam",
-  "activeLMBSk": "whirlwind",
+  "activeLMBSk": "kiSlash",
   "activeRMBSk": "maliceSwipe",
   "activeQSk": "detonate",
   "activeCtSk": "ghostWalk",
