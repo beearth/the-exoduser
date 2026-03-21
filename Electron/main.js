@@ -210,7 +210,7 @@ const server = http.createServer(async (req, res) => {
     let filePath;
     if (pathname === '/') filePath = path.join(ROOT, 'index.html');
     else if (pathname === '/game' || pathname === '/game.html') filePath = path.join(ROOT, 'game.html');
-    else filePath = path.join(ROOT, pathname.replace(/\.\./g, ''));
+    else filePath = path.join(ROOT, decodeURIComponent(pathname).replace(/\.\./g, ''));
 
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
       const stat = fs.statSync(filePath);
