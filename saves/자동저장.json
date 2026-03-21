@@ -1,8 +1,8 @@
 {
-  "ts": 1774067291509,
+  "ts": 1774070996000,
   "player": {
     "lv": 1,
-    "exp": 0,
+    "exp": 4,
     "maxExp": 15,
     "sp": 0,
     "ap": 0,
@@ -14,7 +14,7 @@
     "mhp": 129,
     "mp": 100,
     "mmp": 100,
-    "st": 111,
+    "st": 58.2198437500033,
     "mst": 111,
     "speed": 2.72142,
     "shield": 0,
@@ -611,8 +611,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 0,
-    "mats": 100
+    "kills": 5,
+    "mats": 73
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -634,9 +634,22 @@
     "holyDome": 1
   },
   "fused": {},
-  "skProf": {},
+  "skProf": {
+    "kiSlash": 3435,
+    "maliceSwipe": 1095,
+    "chargeBoost": 630,
+    "spikeTrap": 120,
+    "holyDome": 15
+  },
   "fuseProfSec": {},
-  "cardProf": {},
+  "cardProf": {
+    "shieldFuse": 1095,
+    "dimBreach": 630,
+    "dimSlam": 630,
+    "dimThunder": 630,
+    "holyFuse": 15,
+    "holyIce": 15
+  },
   "activeChargeSk": "charge",
   "activeBowSk": "normal",
   "activeTechSk": "spikeTrap",
