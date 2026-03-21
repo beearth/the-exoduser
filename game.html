@@ -10539,7 +10539,7 @@ function statCrit(){return (STATS.dex+_eqStat('Dex'))*.015+STATS.lck*.05+PASSIVE
 function statCritDmg(){return 1.3+STATS.lck*.002+PASSIVES.pCrit*.04+(rg1().critDmg||0)+(rg2().critDmg||0)} // 크리 배율 1.3x 기본, 성장 절반
 function statDropBonus(){return 1+STATS.lck*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')} // 드롭 +8%/lv +어픽스
 // 패시브 배율 함수 (max5, 효과 2배)
-function pAtkMul(){return (1+PASSIVES.pAtk*.03+(P._altAtk||0))*(P._demonAtkBuff||1)}  // 무기뎀 +3%/lv + 악마화 버프
+function pAtkMul(){return 1+PASSIVES.pAtk*.03+(P._altAtk||0)}  // 무기뎀 +3%/lv (10lv=+30%)
 function pAtkCost(){return Math.max(.60,1-PASSIVES.pAtk*.04)} // ST비용 유지
 function pDefAdd(){return PASSIVES.pDef*5+(P._altDef||0)*30}   // 방어력 +5/lv +제단 (10lv=+50)
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
@@ -127891,7 +127891,7 @@ function update(){
       if(P._chainSlamReady){
         P._chainSlamReady=false;
         const _csLv=P.skills.chainSlam||1;
-        const _csR=250+(_csLv-1)*20;
+        const _csR=250+(_csLv-1)*25; // 1렙250, 렙당+25 (10렙=475, ~+10%/lv)
         const _csTravD=dst(P._csSlamOX||P.x,P._csSlamOY||P.y,P.x,P.y);
         const _csDistMul=1+Math.min(_csTravD/150,3);
         const _csDmg=~~(meleeRef()*3*(1+(_csLv-1)*0.15)*statStr()*_csDistMul*_fuseMul('chainSlam'));
@@ -127924,9 +127924,7 @@ function update(){
       if(P._chainAssaultReady){
         P._chainAssaultReady=false;
         const _stLv=P.skills.chainAssault||1;
-        const _stRBase=300+(_stLv-1)*20;
-        const _stScale=.8+(_stLv-1)*.02; // 1렙80%→10렙98%
-        const _stR=_stRBase*_stScale;
+        const _stR=240+(_stLv-1)*24; // 1렙240, 렙당+24 (10렙=456)
         const _stTravD=dst(P._csStunOX||P.x,P._csStunOY||P.y,P.x,P.y);
         const _stDistMul=1+Math.min(_stTravD/200,2); // 거리 보너스 최대x3
         const _stDmg=~~(meleeRef()*4*(1+(_stLv-1)*0.12)*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 화염 마법 데미지
@@ -128265,7 +128263,7 @@ function update(){
     }
     else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=6;_addSkProf('kiSlash');_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
     // ── X키: 처형 (그로기 보스 전용, HP/MP/ST 10% 소모 → 사슬기동 자동 돌진 → 보스 HP 30% 순수뎀, 쿨 20초) ──
-    else if(_chkJust('KeyX')&&(P._execCd||0)<=0){
+    else if(_chkJust('KeyX')&&P.skills.execution>=1&&(P._execCd||0)<=0){
       const _exBoss=G._bossRef&&G._bossRef.alive&&G._bossRef.stunned>0?G._bossRef:null;
       if(!_exBoss){showPH('그로기 보스 없음!','#888')}
       else{
@@ -129351,7 +129349,6 @@ function update(){
   if(_cresCd>0)_cresCd-=_dtSp;
   if(_cresComboT>0){_cresComboT-=_dtSp;if(_cresComboT<=0)_cresStep=0;}
   if(P._execCd>0)P._execCd-=_dtSp; // 처형 쿨다운
-  if(P._demonBuffT>0){P._demonBuffT-=_dtSp;if(P._demonBuffT<=0){P._demonAtkBuff=1;addTxt(P.x,P.y-30,'\uc545\ub9c8\ud654 \uc885\ub8cc','#884444',40)}} // 악마화 버프 만료
   // 부활 버스트 VFX 업데이트
   for(let _rbi=_reviveBursts.length-1;_rbi>=0;_rbi--){
     const rb=_reviveBursts[_rbi];rb.t+=sp;
@@ -136397,11 +136394,10 @@ function die(){
   const _demonPow=Math.min(100,~~(P.lv/100)*10);
   if(_demonPow>0&&!P._demonRevived&&Math.random()*100<_demonPow){
     P._demonRevived=true;
-    // 즉시 악마화 부활: 풀HP + 공격력 +20% (30초) + 10초 무적
-    P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;P.iframes=600;
-    P._demonAtkBuff=1.2;P._demonBuffT=1800;
-    P.s='idle';P.st2=0;
-    G._flashT=10;G._flashCol='#ff0000';G.shake=20*OPT.shake/100;G.slowMo=30;
+    // 즉시 악마화 부활: 풀HP만
+    P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;
+    P.s='idle';P.st2=0;P.iframes=60; // 1초 무적 (피격 방지용 최소치)
+    G._flashT=8;G._flashCol='#ff0000';G.shake=15*OPT.shake/100;G.slowMo=20;
     SFX.groggy();playSample('boss_howl',.8,_r(.9,.1));
     addTxt(P.x,P.y-50,'\uc545\ub9c8\ud654 \ubd80\ud65c!','#ff2200',120);
     addTxt(P.x,P.y-25,'\ubd80\ud65c\ub825 '+_demonPow+'%','#ff8844',50);
@@ -136516,6 +136512,7 @@ const SKILL_LIST=[
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발 (MP 30%, 쿨 1분)',spCost:10,matCost:100,cd:3600,up:true,upSp:5,upMat:0},
   {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,emoji:'⛧',desc:'검은 오망성 소환. 범위 내 모든 몬스터를 중심으로 끌어당기며 암흑 데미지 (악의 50, 쿨 1분)',spCost:10,matCost:100,cd:3600,up:true,upSp:5,upMat:0},
   {id:'lavaSummon',name:'용암소환',cat:'ult',act:true,ult:true,emoji:'🌋',desc:'빨간 오망성 시전 → 화면이 빨갛게 물들며 10초간 화상. 틱당 적 최대HP 5% (MP 30%, 쿨 1분)',spCost:10,matCost:100,cd:3600,up:true,upSp:5,upMat:0},
+  {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스를 섬광 관통 처형. HP/MP/ST 10% 소모 → 보스 최대HP 30% 순수 데미지. 쿨 20초',spCost:10,matCost:100,cd:1200,up:false,upSp:0,upMat:0},
   {id:'bladeShot',name:'붉은꽃',cat:'bow',act:true,emoji:'🩸',desc:'[고정: T 자동] 핏빛 칼날 발사: 전진하며 핏빛 조각 방사 (ST 50, 쿨 0.5초). Lv당 크기+11% 뎀+10%',spCost:10,matCost:100,cd:60,up:true,upSp:5,upMat:0},
   {id:'iceOrb',name:'얼음보주',cat:'def',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'grenadeShot',name:'유탄산탄',cat:'bow',act:true,emoji:'💣',desc:'[고정: T 자동] 직선 화염대포 발사+경로 화상+잔류화염. 악의 5. 쿨 1초. Lv당 사거리+22% 폭+22%',spCost:10,matCost:100,cd:60,up:true,upSp:5,upMat:0},
@@ -137649,7 +137646,6 @@ function openSkSlotPop(tab){
     {key:'rmb',label:'우클',color:'#4488aa',fused:false,fuseName:''},
     {key:'charge',label:'SH',color:'#447788',fused:isDimBreach(),fuseName:_isFused('dimThunder')?'⚡ 강화습격':_isFused('dimSlam')?'🌀 사슬:강화':'🌀 사슬:강화'},
     {key:'magic',label:'E',color:'#8866cc',fused:_isFused('stormBeam')?true:_isFused('elemFuse')?true:P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse'),fuseName:_isFused('stormBeam')?'⚡ →좌클 통합':_isFused('elemFuse')?'🎯 추적뇌전':'☆ 만화광선'},
-    {key:'tech',label:'SP',color:'#ff8800',isSlot:true,slotIdx:4},
     {key:'bow',label:'T자동',color:'#cc8844'},
     {key:'q',label:'Q',color:'#55aa77',fused:false,fuseName:''},
     {key:'ct',label:'CT',color:'#77bbdd',fused:false,fuseName:''}
@@ -137908,9 +137904,9 @@ function _renderSkillRow(sk,grid){
     const slv=P.skills[sk.id]||0; // 0=미습득, 1+=습득(강화 횟수)
     const learned=slv>=1;
     const _reqMet=sk.requires?(P.skills[sk.requires]||0)>=1:true;
-    const _hasUltLearned=sk.ult&&SKILL_LIST.some(s=>s.ult&&s.id!==sk.id&&(P.skills[s.id]||0)>=1);
+    const _hasUltLearned=false; // 필살기 전부 습득 가능
     const _lvMet=sk.reqLv?P.lv>=sk.reqLv:true;
-    const canLearn=!learned&&_reqMet&&_lvMet&&P.sp>=sk.spCost&&G.mats>=sk.matCost&&!_hasUltLearned;
+    const canLearn=!learned&&_reqMet&&_lvMet&&P.sp>=sk.spCost&&G.mats>=sk.matCost;
     const _skMaxLv=10;
     const _skLvLock=Math.min(10,~~(P.lv/100)+1); // Lv100=2렙, Lv200=3렙, ... Lv900=10렙
     // 합체 강화 통합: 구성 스킬 upSp/upMat 합산
@@ -137940,8 +137936,7 @@ function _renderSkillRow(sk,grid){
     const _fixedKey=_fixedKeyMap[sk.id];
     const _skTypeLbl=_fixedKey?' <span style="color:#7799bb;font-size:.7rem">[고정:'+_fixedKey+']</span>':sk.act?' <span style="color:#cc8844;font-size:.7rem">[선택]</span>':'';
     if(!learned){
-      lockTxt=_hasUltLearned?'<span style="color:#ff4444">🔒 다른 필살기 습득됨 (1개만 가능)</span>'
-        :!_reqMet?'<span style="color:#ff4444">🔒 선행스킬 ['+((SKILL_LIST.find(s=>s.id===sk.requires)||{}).name||sk.requires)+'] 필요</span>'
+      lockTxt=!_reqMet?'<span style="color:#ff4444">🔒 선행스킬 ['+((SKILL_LIST.find(s=>s.id===sk.requires)||{}).name||sk.requires)+'] 필요</span>'
         :!_lvMet?'<span style="color:#ff4444">🔒 Lv.'+sk.reqLv+' 필요 (현재 Lv.'+P.lv+')</span>'
         :'<span style="color:#ffaa44">습득 가능</span>'+_skTypeLbl;
     }else if(sk.up){
@@ -139560,7 +139555,7 @@ function renderForge(){
     grid.style.gridTemplateColumns='1fr';
     const uhdr=document.createElement('div');uhdr.style.cssText='color:#ffaa44;font-size:.95rem;font-weight:700;margin-bottom:8px;letter-spacing:.1em;text-align:center';
     uhdr.textContent='⚒️ 장비 강화 (실패 시 재료만 소멸)';grid.appendChild(uhdr);
-    const slots=[['weapon','⚔️ 무기'],['shield','🛡️ 견갑'],['armor','🦺 갑옷'],['helmet','⛑️ 투구'],['boots','👢 부츠'],['bow','🏹 활'],['gloves','🧤 장갑'],['pants','👖 바지'],['necklace','📿 목걸이'],['ring1','💍 반지1'],['ring2','💍 반지2']];
+    const slots=[['weapon','⚔️ 무기'],['shield','🛡️ 견갑'],['armor','🦺 갑옷'],['helmet','⛑️ 투구'],['boots','👢 부츠'],['bow','🏹 활'],['gloves','🧤 장갑'],['pants','👖 바지'],['belt','🥋 벨트'],['necklace','📿 목걸이'],['ring1','💍 반지1'],['ring2','💍 반지2'],['cape','🧣 망토']];
     let hasItem=false;
     slots.forEach(([slot,icon])=>{
       const it=INV.equipped[slot];if(!it)return;hasItem=true;
