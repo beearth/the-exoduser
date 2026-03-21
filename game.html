@@ -1234,6 +1234,8 @@ function dbRestore(d){
   // 마이그레이션: 기검참 기본 보유
   if(!P.skills.kiSlash)P.skills.kiSlash=1;
   if(!P.activeLMBSk||P.activeLMBSk==='whirlwind'&&!P.skills.whirlwind)P.activeLMBSk='kiSlash';
+  // 회전기폭 계열 합체 상태면 LMB 자동 회전참 전환
+  if(P._fused&&(P._fused.whirlDet||P._fused.slamStorm||P._fused.stormBeam)&&P.skills.whirlwind>=1)P.activeLMBSk='whirlwind';
   // 구세이브 마이그레이션: dimHalf 제거 (galeSlash 삭제됨)
   if(P._fused.dimHalf)delete P._fused.dimHalf;
   if(P.skills.galeSlash){delete P.skills.galeSlash;}
@@ -5128,7 +5130,7 @@ function spawnCrescent(x,y,ang,dmg,el,step,distMul){
     c.vy=Math.sin(ang)*spd;
     const _baseDist=step===1?250:step===2?300:350;
     const _stepLife=~~((_baseDist+(distMul||0))/14); // distMul=레벨당 거리보너스(px)
-    c.life=~~(_stepLife*_dm);c.ml=c.life;
+    c.life=_stepLife;c.ml=c.life;
     c._hitSet=new Set();
     c.dmg=dmg;c.el=el||0;
     c.r=step===3?80:55;
@@ -128170,7 +128172,7 @@ function update(){
     else if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()} // Q: 얼음보주
     else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()} // Q: 평화의보호 (stormBeam)
     else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15))} // Q: 보호막 (데미지 감소)
-    else if(isHeld('weapon')&&P.skills.whirlwind&&(P.activeLMBSk==='whirlwind'||_isFused('whirlDet'))&&P.st>=2){P.s='whirlwind';P.wwAng=0;P.parryT=0;P.parryBank=0;P._wwDetTimer=0;SFX._swIdx=0;SFX.slashSeq();if(_isFused('stormBeam')){P._eStormIdx=0;P._eStormT=0;P._eStormActive=true;playSample(['electric_storm','electric_storm2','electric_storm3','electric_storm4'][~~(Math.random()*4)],.6,_r(1,.1))}if(Math.random()<.45){playSample(['voice_flee','voice_storm_attack'][~~(Math.random()*2)],1,1)}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}_addSkProf('whirlwind');if(_isFused('whirlDet')&&P.skills.kiSlash>=1){_cresStep=(_cresStep%3)+1;_cresComboT=120;const _ksLv2=P.skills.kiSlash||1,_ksDm2=1+(_ksLv2-1)*0.1,_ksDi2=(_ksLv2-1)*15;spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*(_cresStep===3?2:1.2)*statStr()*_ksDm2),0,_cresStep,_ksDi2);_addSkProf('kiSlash');SFX.slash()}}
+    else if(isHeld('weapon')&&P.skills.whirlwind&&P.activeLMBSk==='whirlwind'&&P.st>=2){P.s='whirlwind';P.wwAng=0;P.parryT=0;P.parryBank=0;P._wwDetTimer=0;SFX._swIdx=0;SFX.slashSeq();if(_isFused('stormBeam')){P._eStormIdx=0;P._eStormT=0;P._eStormActive=true;playSample(['electric_storm','electric_storm2','electric_storm3','electric_storm4'][~~(Math.random()*4)],.6,_r(1,.1))}if(Math.random()<.45){playSample(['voice_flee','voice_storm_attack'][~~(Math.random()*2)],1,1)}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}_addSkProf('whirlwind')}
     else if(isAct('weapon')&&useStPct('weapon')){P._atkBon=~~(_lastCost*1.5);P.s='wSwing';P.st2=5;P.swProg=0;P.atkArc=P.facing;if(G._pStats)G._pStats._atkC++;_addSkProf('kiSlash');SFX.slash();if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
       // 기본공격 검기 발사 — 기검참 레벨 보너스: 뎀+10%/Lv, 거리+10%/Lv
       _cresStep=(_cresStep%3)+1;_cresComboT=120;_cresCd=_cresStep===3?20:12;
@@ -136636,8 +136638,12 @@ function updateLMBSlot(){
   const _ssFused=_isFused('slamStorm')&&P.skills.giantSlam>=1&&P.skills.whirlwind>=1&&P.skills.detonate>=1;
   const _wdFused=P.skills.whirlwind>=1&&P.skills.detonate>=1&&_isFused('whirlDet');
   const _hasWw=P.skills.whirlwind>=1;
-  // 합체 우선: 회전기폭/지진폭풍 합체 시 항상 합체 표시
-  if(_ssFused){
+  const _lmbSk=P.activeLMBSk||'kiSlash';
+  // 기검참 선택 시: 합체 여부와 무관하게 기검참 표시
+  if(_lmbSk==='kiSlash'){
+    el.innerHTML='<span class="qs-key" style="font-size:.5rem">LMB</span><span style="font-size:14px">⚔️</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#ffcc44;font-weight:700">기검참</div>';
+    el.title='좌클: 3단 콤보 검기 (ST 고정 10)';el.style.borderColor='#cc8844';
+  } else if(_ssFused){
     el.innerHTML='<span class="qs-key" style="font-size:.5rem">LMB</span><span style="font-size:14px">🌋</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#ff4400;font-weight:700">지진폭풍</div>';
     el.title='회전기폭+대왕치기 합체: 회전→종료 시 기폭+진동파!';el.style.borderColor='#ff4400';
   } else if(_wdFused){
@@ -136647,8 +136653,8 @@ function updateLMBSlot(){
     el.innerHTML='<span class="qs-key" style="font-size:.5rem">LMB</span><span style="font-size:14px">🌀</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#cc8855;font-weight:700">회전참</div>';
     el.title='좌클 홀드: 회전 공격';el.style.borderColor='#443322';
   } else {
-    el.innerHTML='<span class="qs-key" style="font-size:.5rem">LMB</span><span style="font-size:14px">⚔️</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#ffcc44;font-weight:700">기검참</div>';
-    el.title='좌클: 3단 콤보 검기 (ST 고정 10)';el.style.borderColor='#cc8844';
+    el.innerHTML='<span class="qs-key" style="font-size:.5rem">LMB</span><span style="font-size:14px">⚔️</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#cc8855;font-weight:700">공격</div>';
+    el.title='좌클: 기본 무기 공격';el.style.borderColor='#443322';
   }
 }
 // ═══ Q 슬롯 (보호막/기폭팔/평화보호 표시) ═══
@@ -137774,6 +137780,8 @@ function _renderSkillRow(sk,grid){
               _fuseSkills.forEach(sid=>{const _fsk=SKILL_LIST.find(s=>s.id===sid);if(!_fsk)return;if(!P.skills[sid])P.skills[sid]=1;const _flv=P.skills[sid];if(_flv>1){_refSp+=_skillSpentSp(_fsk,_flv)-(_fsk.spCost||0);_refMat+=(_flv-1)*(_fsk.upMat||0);P.skills[sid]=1;}});
               if(_refSp>0)P.sp+=_refSp;if(_refMat>0)G.mats+=_refMat;
               P._fused[_grp.key]=true;_fuseSelId=null;SFX.levelup();G.shake=8;
+              // 회전기폭 계열 합체 시 LMB 자동 회전참 전환
+              if(_grp.key==='whirlDet'||_grp.key==='slamStorm'||_grp.key==='stormBeam')P.activeLMBSk='whirlwind';
               // stormBeam 합체 시 히든 스킬 자동 습득
               if(_grp.key==='stormBeam'){
                 if(!P.skills.peaceShield)P.skills.peaceShield=1;
@@ -144667,7 +144675,7 @@ function drawP(){
 
   // ══ SHIELD BASH — wide sweeping arc ══
   if(P.s==='sBash'||P.s==='sRecover'){
-    const se=sh().el,sc=ELC[se];
+    const se=sh().el,sc='#4488ff',_scGlow='#88bbff';
     const _hasSD=P.skills&&P.skills.maliceSwipe>=1;
     const totalF=P.s==='sBash'?24:16;
     const prog=P.s==='sBash'?(1-P.st2/24):(.85+.15*(1-P.st2/16));
@@ -144678,103 +144686,91 @@ function drawP(){
     const endA=P.facing+arcHalf;
     const curA=startA+(endA-startA)*Math.min(prog*1.3,1);
 
+    // ── 짧은 검기 스타일 렌더링 (바깥 30%만) ──
+    const _innerR=sweepRange*.7;
+    X.save();
     if(_hasSD){
-      // ── 5원소 무지개 이펙트 ──
-      // Outer shockwave ring (5색)
-      if(prog>.4){
-        const sw=prog-.4;
-        const arcSpan=curA-startA;
-        for(let ei=0;ei<5;ei++){
-          const segS=startA+arcSpan*(ei/5);
-          const segE=startA+arcSpan*((ei+1)/5);
-          X.globalAlpha=(.4-sw*.5)*fadeA;X.strokeStyle=ELC[ei];X.lineWidth=3;
-          X.beginPath();X.arc(P.x,P.y,sweepRange+sw*25,segS,segE);X.stroke();
-        }
-      }
-      // Main arc trail (5색 분할 wedge)
+      // 1) 반투명 스윙 밴드 (5색 분할, 안쪽 잘라냄)
       const arcSpan=curA-startA;
       for(let ei=0;ei<5;ei++){
         const segS=startA+arcSpan*(ei/5);
         const segE=startA+arcSpan*((ei+1)/5);
-        X.globalAlpha=.25*fadeA;X.fillStyle=ELC[ei];
-        X.beginPath();X.moveTo(P.x,P.y);X.arc(P.x,P.y,sweepRange,segS,segE);X.closePath();X.fill();
+        X.globalAlpha=.12*fadeA;X.fillStyle=ELC[ei];
+        X.beginPath();X.arc(P.x,P.y,sweepRange,segS,segE);X.arc(P.x,P.y,_innerR,segE,segS,true);X.closePath();X.fill();
       }
-      // Bright inner arc (5색)
-      for(let ei=0;ei<5;ei++){
-        const segS=startA+arcSpan*(ei/5);
-        const segE=startA+arcSpan*((ei+1)/5);
-        X.globalAlpha=.45*fadeA;X.fillStyle=ELG2[ei];
-        X.beginPath();X.moveTo(P.x,P.y);X.arc(P.x,P.y,sweepRange*.6,segS,segE);X.closePath();X.fill();
-      }
-      // Arc edge stroke (5색 leading edge)
-      for(let ei=0;ei<5;ei++){
-        const segS=startA+arcSpan*(ei/5);
-        const segE=startA+arcSpan*((ei+1)/5);
-        X.strokeStyle=ELG2[ei];X.lineWidth=4;X.globalAlpha=.8*fadeA;
-        X.beginPath();X.arc(P.x,P.y,sweepRange,segS,segE);X.stroke();
+      // 2) 검 끝 궤적선 (5색 세그먼트)
+      const _segs=12;
+      for(let si=0;si<_segs;si++){
+        const t0=si/_segs,t1=(si+1)/_segs;
+        const a0=startA+(curA-startA)*t0;
+        const a1=startA+(curA-startA)*t1;
+        const segFade=t0;
+        const ei=~~(si*5/_segs);
+        X.globalAlpha=(.1+segFade*.6)*fadeA;
+        X.strokeStyle=ELC[ei];X.lineWidth=2+segFade*4;
+        X.beginPath();X.arc(P.x,P.y,sweepRange,a0,a1);X.stroke();
       }
     }else{
-      // Outer shockwave ring
-      if(prog>.4){
-        const sw=prog-.4;
-        X.globalAlpha=(.4-sw*.5)*fadeA;X.strokeStyle=sc;X.lineWidth=3;
-        X.beginPath();X.arc(P.x,P.y,sweepRange+sw*25,startA,curA);X.stroke();
+      // 1) 반투명 스윙 밴드 (면, 안쪽 잘라냄)
+      X.globalAlpha=.12*fadeA;X.fillStyle=sc;
+      X.beginPath();X.arc(P.x,P.y,sweepRange,startA,curA);X.arc(P.x,P.y,_innerR,curA,startA,true);X.closePath();X.fill();
+      // 2) 검 끝 궤적선 (세그먼트별 페이드)
+      const _segs=12;
+      for(let si=0;si<_segs;si++){
+        const t0=si/_segs,t1=(si+1)/_segs;
+        const a0=startA+(curA-startA)*t0;
+        const a1=startA+(curA-startA)*t1;
+        const segFade=t0;
+        X.globalAlpha=(.1+segFade*.6)*fadeA;
+        X.strokeStyle=sc;X.lineWidth=2+segFade*4;
+        X.beginPath();X.arc(P.x,P.y,sweepRange,a0,a1);X.stroke();
       }
-      // Main arc trail (filled wedge)
-      X.globalAlpha=.25*fadeA;X.fillStyle=sc;
-      X.beginPath();X.moveTo(P.x,P.y);X.arc(P.x,P.y,sweepRange,startA,curA);X.closePath();X.fill();
-      // Bright inner arc
-      X.globalAlpha=.45*fadeA;X.fillStyle=ELG2[se];
-      X.beginPath();X.moveTo(P.x,P.y);X.arc(P.x,P.y,sweepRange*.6,startA,curA);X.closePath();X.fill();
-      // Arc edge stroke (bright leading edge)
-      X.strokeStyle=ELG2[se];X.lineWidth=4;X.globalAlpha=.8*fadeA;
-      X.beginPath();X.arc(P.x,P.y,sweepRange,startA,curA);X.stroke();
     }
-
-    // Shield icon at leading edge
-    const tipX=P.x+Math.cos(curA)*sweepRange*.8;
-    const tipY=P.y+Math.sin(curA)*sweepRange*.8;
+    // 3) 검 끝 글로우 + 코어
+    const tipX=P.x+Math.cos(curA)*sweepRange;
+    const tipY=P.y+Math.sin(curA)*sweepRange;
+    const _tgR=12+prog*6;
     if(_hasSD){
-      // 5원소 선단부: 5색 고리
       for(let ei=0;ei<5;ei++){
-        X.globalAlpha=.7*fadeA;X.fillStyle=ELC[ei];
-        X.beginPath();X.arc(tipX+Math.cos(curA+ei*1.26)*6,tipY+Math.sin(curA+ei*1.26)*6,4,0,Math.PI*2);X.fill();
+        X.globalAlpha=.12*fadeA;X.fillStyle=ELC[ei];
+        X.beginPath();X.arc(tipX+Math.cos(curA+ei*1.26)*4,tipY+Math.sin(curA+ei*1.26)*4,_tgR*.6,0,Math.PI*2);X.fill();
       }
-      X.globalAlpha=.9*fadeA;X.fillStyle='#fff';
-      X.beginPath();X.arc(tipX,tipY,5,0,Math.PI*2);X.fill();
-      // 5색 파티클 방출
-      if(Math.random()>.5){const ei=~~(Math.random()*5);
-        poolPart(tipX,tipY,Math.cos(curA)*3+(Math.random()-.5)*2,Math.sin(curA)*3+(Math.random()-.5)*2,ELP[ei],3+Math.random()*3,10+Math.random()*6)}
     }else{
-      X.globalAlpha=.9*fadeA;X.fillStyle=sc;
-      X.beginPath();X.arc(tipX,tipY,10,0,Math.PI*2);X.fill();
-      X.fillStyle=ELG2[se];X.beginPath();X.arc(tipX,tipY,5,0,Math.PI*2);X.fill();
+      X.globalAlpha=.15*fadeA;X.fillStyle=sc;X.beginPath();X.arc(tipX,tipY,_tgR,0,Math.PI*2);X.fill();
+      X.globalAlpha=.5*fadeA;X.fillStyle=_scGlow;X.beginPath();X.arc(tipX,tipY,_tgR*.5,0,Math.PI*2);X.fill();
     }
-
-    // Impact sparks at hit frame
-    if(P.s==='sBash'&&P.st2<=18&&P.st2>=14){
+    X.globalAlpha=.9*fadeA;X.fillStyle='#fff';
+    X.beginPath();X.arc(tipX,tipY,3+prog*2,0,Math.PI*2);X.fill();
+    // 4) 임팩트 순간 번쩍
+    if(prog>.7){
+      const _impA=(prog-.7)/.3;
       if(_hasSD){
-        // 5원소 스파크
-        for(let i=0;i<5;i++){
-          const sa2=startA+Math.random()*(curA-startA);
-          const sr=sweepRange*.5+Math.random()*sweepRange*.5;
-          poolPart(P.x+Math.cos(sa2)*sr,P.y+Math.sin(sa2)*sr,Math.cos(sa2)*5+Math.random()*2-1,Math.sin(sa2)*5+Math.random()*2-1,ELP[i],4+Math.random()*4,12+Math.random()*8);
-        }
+        const ei=~~(Math.random()*5);
+        X.globalAlpha=.35*(1-_impA)*fadeA;X.fillStyle=ELC[ei];
+        X.beginPath();X.arc(tipX,tipY,18+_impA*20,0,Math.PI*2);X.fill();
       }else{
-        for(let i=0;i<3;i++){
-          const sa2=startA+Math.random()*(curA-startA);
-          const sr=sweepRange*.5+Math.random()*sweepRange*.5;
-          poolPart(P.x+Math.cos(sa2)*sr,P.y+Math.sin(sa2)*sr,Math.cos(sa2)*4+Math.random()*2-1,Math.sin(sa2)*4+Math.random()*2-1,ELP[se],3+Math.random()*4,10+Math.random()*8);
-        }
+        X.globalAlpha=.4*(1-_impA)*fadeA;X.fillStyle=sc;
+        X.beginPath();X.arc(tipX,tipY,18+_impA*20,0,Math.PI*2);X.fill();
       }
     }
-    // Trailing particles
-    if(prog>.2&&prog<.9&&Math.random()>.4){
-      const ra=startA+Math.random()*(curA-startA);
-      const rr=sweepRange*.3+Math.random()*sweepRange*.7;
-      const _tpCol=_hasSD?ELP[~~(Math.random()*5)]:ELP[se];
-      poolPart(P.x+Math.cos(ra)*rr,P.y+Math.sin(ra)*rr,Math.cos(ra)*1.5+(Math.random()-.5),Math.sin(ra)*1.5+(Math.random()-.5),_tpCol,2+Math.random()*3,8+Math.random()*6);
+    // 5) 검 끝 잔상 파티클
+    if(Math.random()>.3){
+      const _pa=curA+(Math.random()-.5)*.5;
+      const _pd=sweepRange*(.8+Math.random()*.3);
+      const _tpCol=_hasSD?ELP[~~(Math.random()*5)]:'#4488ff';
+      poolPart(P.x+Math.cos(_pa)*_pd,P.y+Math.sin(_pa)*_pd,(Math.random()-.5)*3,(Math.random()-.5)*3,_tpCol,2+Math.random()*3,6+Math.random()*5);
     }
+    // 6) 임팩트 스파크 (히트 프레임)
+    if(P.s==='sBash'&&P.st2<=18&&P.st2>=14){
+      const _spkN=_hasSD?5:3;
+      for(let i=0;i<_spkN;i++){
+        const sa2=startA+Math.random()*(curA-startA);
+        const sr=sweepRange*.6+Math.random()*sweepRange*.4;
+        const _spCol=_hasSD?ELP[i%5]:'#4488ff';
+        poolPart(P.x+Math.cos(sa2)*sr,P.y+Math.sin(sa2)*sr,Math.cos(sa2)*4+Math.random()*2-1,Math.sin(sa2)*4+Math.random()*2-1,_spCol,3+Math.random()*3,8+Math.random()*6);
+      }
+    }
+    X.restore();
     X.globalAlpha=1;
   }
 
