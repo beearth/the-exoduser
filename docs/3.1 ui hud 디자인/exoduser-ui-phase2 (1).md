@@ -213,7 +213,7 @@ style 맨 아래에 추가:
 ```html
 <div class="eq-row" style="display:none">
   <div class="eq-s" id="eq0" title="검 (좌클릭)"><div class="ed">검</div></div>
-  <div class="eq-s" id="eq1" title="방패 (우클릭)"><div class="ed">방패</div></div>
+  <div class="eq-s" id="eq1" title="견갑 (우클릭)"><div class="ed">견갑</div></div>
   <div class="eq-s" id="eq2" title="부츠"><div class="ed">부츠</div></div>
   <div class="eq-s" id="eq3" title="갑옷 (SHIFT)"><div class="ed">갑옷</div></div>
   <div class="eq-s" id="eq4" title="투구 (E)"><div class="ed">투구</div></div>

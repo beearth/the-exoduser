@@ -76,3 +76,7 @@ cd G:\hell && node server.cjs
 | `index.html` | 로비/시네마틱/캐릭터 선택 |
 | `Electron/main.js` | Electron 메인 프로세스 |
 | `Electron/preload.js` | Electron preload (IPC 브릿지) |
+
+## 작업 규칙
+
+- **코드 변경 시 docs/ 동기화 필수** — docs/ 각 폴더는 해당 시스템의 현재 코드 수치·공식·상수를 항목별로 정리한 레퍼런스. 이름·배율·공식·시스템 변경 시 `docs/`에서 관련 키워드 검색 → 매칭 문서의 값을 현재 코드와 일치시킬 것
