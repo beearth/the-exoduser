@@ -33,15 +33,16 @@ body{background:#0a0a0a;color:#ccc;font:12px monospace;display:flex;height:100vh
 .obj-btn .label{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.85);color:#aaa;font-size:7px;text-align:center;padding:1px}
 .undo-btn{background:#553300!important;border-color:#884400!important;color:#ffaa00!important}
 #editor{flex:1;position:relative;overflow:hidden}
-#gameFrame{position:absolute;top:0;left:0;width:100%;height:100%;border:none;z-index:0;display:none}
-canvas{display:block;position:absolute;top:0;left:0;z-index:1}
-#hud{position:absolute;top:6px;left:6px;color:#888;font-size:11px;pointer-events:none;z-index:5}
+canvas{display:block}
+#clickLayer{z-index:2}
+#overlay{z-index:3}
+#hud{position:absolute;top:6px;left:6px;color:#888;font-size:11px;pointer-events:none;z-index:10}
 #hud b{color:#ffea00}
-#stage-label{position:absolute;bottom:6px;left:6px;color:#ffea00;font-size:13px;font-weight:bold;pointer-events:none}
-#show-toggles{position:absolute;top:6px;right:220px;display:flex;gap:3px}
+#stage-label{position:absolute;bottom:6px;left:6px;color:#ffea00;font-size:13px;font-weight:bold;pointer-events:none;z-index:10}
+#show-toggles{position:absolute;top:6px;right:220px;display:flex;gap:3px;z-index:10}
 #show-toggles label{font-size:10px;color:#888;cursor:pointer;display:flex;align-items:center;gap:2px;background:#1a1a1a;padding:2px 6px;border-radius:3px;border:1px solid #333}
 #show-toggles input{width:12px;height:12px}
-#room-info{position:absolute;top:30px;left:6px;color:#666;font-size:10px;pointer-events:none}
+#room-info{position:absolute;top:30px;left:6px;color:#666;font-size:10px;pointer-events:none;z-index:10}
 </style>
 </head><body>
 <div id="nav">
@@ -66,8 +67,9 @@ canvas{display:block;position:absolute;top:0;left:0;z-index:1}
   </div>
 </div>
 <div id="editor">
-  <iframe id="gameFrame"></iframe>
-  <canvas id="c"></canvas>
+  <iframe id="gameFrame" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none"></iframe>
+  <canvas id="overlay" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none"></canvas>
+  <div id="clickLayer" style="position:absolute;top:0;left:0;width:100%;height:100%;cursor:crosshair"></div>
   <div id="hud"><span id="hud-text"></span></div>
   <div id="room-info"></div>
   <div id="show-toggles">
@@ -118,8 +120,10 @@ canvas{display:block;position:absolute;top:0;left:0;z-index:1}
 <input type="file" id="fileInput" style="display:none" accept=".json">
 <input type="file" id="settingsFileInput" style="display:none" accept=".json">
 <script>
-const C=document.getElementById('c'),X=C.getContext('2d');
-const editor=document.getElementById('editor'),T=8;
+const OC=document.getElementById('overlay'),OX=OC.getContext('2d');
+const gameFrame=document.getElementById('gameFrame');
+const clickLayer=document.getElementById('clickLayer');
+const editor=document.getElementById('editor'),T=8,GT=32;
 let show3d=true,showObj=true,showRooms=true,showGrid=false;
 const STAGES=[
   // 1장 썩은숲 (4층, id 0-3)
@@ -2503,6 +2507,61 @@ let currentHell=0,currentStage=0,currentHeight=1,mapMode='normal',brushRadius=5,
 let selectedObj=null,camX=0,camY=0,zoom=0.5;
 let dragging=false,lastMX=0,lastMY=0,painting=false,hoverTX=0,hoverTY=0;
 let undoStack=[],boxStart=null;
+let iframeMw=200,iframeMh=200,iframeReady=false;
+let _pendingExport=null;
+// game.html에서 수신한 실제 스테이지 정보
+let _gameChapters=[];
+let _gameHellNames=[];
+let _gameTotalStages=35;
+
+// ══ iframe 통신 ══
+function sendToGame(msg){
+  if(gameFrame.contentWindow) gameFrame.contentWindow.postMessage(msg,'*');
+}
+window.addEventListener('message',function(ev){
+  const d=ev.data;
+  if(!d||!d.type)return;
+  switch(d.type){
+    case 'editorReady':
+      iframeReady=true;
+      iframeMw=d.mw||200; iframeMh=d.mh||200;
+      // game.html에서 스테이지/장 정보 수신 → 동적 빌드
+      if(d.chapters&&d.chapters.length>0){
+        _gameChapters=d.chapters;
+        _gameHellNames=d.hellNames||[];
+        _gameTotalStages=d.totalStages||35;
+        buildChapterTabs();buildStageListOrig();
+      }
+      // iframe ready 후 현재 스테이지로 전환 (초기화 시 iframe 없어서 실패했던 것 재시도)
+      sendToGame({type:'switchStage',stage:currentStage});
+      break;
+    case 'stageLoaded':
+      iframeMw=d.mw||200; iframeMh=d.mh||200;
+      camX=iframeMw*GT/2; camY=iframeMh*GT/2;
+      zoom=Math.min(clickLayer.clientWidth/(iframeMw*GT+100),clickLayer.clientHeight/(iframeMh*GT+100),1);
+      sendToGame({type:'camSet',x:camX,y:camY});
+      sendToGame({type:'camZoom',factor:zoom});
+      if(d.map) rebuildLocalGrid(d.map,d.mw,d.mh);
+      buildStageListOrig();
+      break;
+    case 'mapData':
+      if(_pendingExport){_pendingExport(d);_pendingExport=null;}
+      break;
+  }
+});
+function rebuildLocalGrid(rle,mw,mh){
+  // Rebuild local grid from RLE data sent by iframe
+  const m=getCurrentMap();if(!m)return;
+  let idx=0;
+  for(let i=0;i<rle.length;i+=2){
+    const v=rle[i],c=rle[i+1];
+    for(let j=0;j<c&&idx<mw*mh;j++,idx++){
+      const y=(idx/mw)|0,x=idx%mw;
+      if(m.grid[y])m.grid[y][x]=v;
+    }
+  }
+  m.dirty=true;
+}
 
 function setMapModeOrig(mode){
   mapMode=mode;
@@ -2522,26 +2581,44 @@ function applyBrush(cx,cy){
   const m=getCurrentMap();if(!m)return;
   if(selectedObj){if(cx>=0&&cy>=0&&cx<m.mw&&cy<m.mh){
     m.objs=m.objs.filter(o=>!(Math.abs(o.x-cx)<3&&Math.abs(o.y-cy)<3));
-    if(selectedObj!=='_delete')m.objs.push({x:cx,y:cy,id:selectedObj});_scheduleMapAutosave()}return}
+    if(selectedObj!=='_delete'){
+      m.objs.push({x:cx,y:cy,id:selectedObj});
+      sendToGame({type:'addObj',id:selectedObj,x:cx*GT+GT/2,y:cy*GT+GT/2});
+    }else{
+      sendToGame({type:'removeObjAt',x:cx*GT+GT/2,y:cy*GT+GT/2});
+    }
+    _scheduleMapAutosave()}return}
   const r=brushRadius;
+  const tiles=[];
   for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){
     if(brushShape==='circle'&&dx*dx+dy*dy>r*r)continue;
-    const tx=cx+dx,ty=cy+dy;if(tx>=0&&ty>=0&&tx<m.mw&&ty<m.mh)m.grid[ty][tx]=currentHeight;
+    const tx=cx+dx,ty=cy+dy;
+    if(tx>=0&&ty>=0&&tx<m.mw&&ty<m.mh){
+      m.grid[ty][tx]=currentHeight;
+      tiles.push({tx,ty,val:currentHeight});
+    }
   }
+  if(tiles.length>0) sendToGame({type:'setTiles',tiles});
   m.dirty=true;
   _scheduleMapAutosave();
 }
 function applyBox(x1,y1,x2,y2){
   const m=getCurrentMap();if(!m)return;
   const sx=Math.max(0,Math.min(x1,x2)),sy=Math.max(0,Math.min(y1,y2)),ex=Math.min(m.mw-1,Math.max(x1,x2)),ey=Math.min(m.mh-1,Math.max(y1,y2));
-  for(let y=sy;y<=ey;y++)for(let x=sx;x<=ex;x++)m.grid[y][x]=currentHeight;m.dirty=true;
+  const tiles=[];
+  for(let y=sy;y<=ey;y++)for(let x=sx;x<=ex;x++){m.grid[y][x]=currentHeight;tiles.push({tx:x,ty:y,val:currentHeight});}
+  if(tiles.length>0) sendToGame({type:'setTiles',tiles});
+  m.dirty=true;
   _scheduleMapAutosave();
 }
 function smoothEdges(){
   saveUndo();const m=getCurrentMap();if(!m)return;
   const tmp=[];for(let y=0;y<m.mh;y++){tmp[y]=new Uint8Array(m.mw);for(let x=0;x<m.mw;x++)tmp[y][x]=m.grid[y][x]}
   for(let y=1;y<m.mh-1;y++)for(let x=1;x<m.mw-1;x++){let s=0;for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)s+=m.grid[y+dy][x+dx];tmp[y][x]=Math.round(s/9)}
-  for(let y=0;y<m.mh;y++)for(let x=0;x<m.mw;x++)m.grid[y][x]=tmp[y][x];m.dirty=true;
+  const tiles=[];
+  for(let y=0;y<m.mh;y++)for(let x=0;x<m.mw;x++){m.grid[y][x]=tmp[y][x];tiles.push({tx:x,ty:y,val:tmp[y][x]})}
+  m.dirty=true;
+  if(tiles.length>0) sendToGame({type:'setTiles',tiles});
   _scheduleMapAutosave();
 }
 function buildObjPalette(){
@@ -2558,49 +2635,103 @@ function buildObjPalette(){
 buildObjPalette();
 function buildChapterTabs(){
   const ct=document.getElementById('chapter-tabs');ct.innerHTML='';
-  HELLS.forEach((h,i)=>{const b=document.createElement('div');b.className='ch-tab'+(i===currentHell?' active':'');
-    if(i===currentHell){b.style.background=h.color;b.style.color='#000';b.style.borderColor=h.color}
-    b.textContent=(i+1)+'장';b.onclick=()=>{currentHell=i;buildChapterTabs();buildStageListOrig()};ct.appendChild(b)})
+  const src=_gameChapters.length>0?_gameChapters:CHAPTER_STAGES;
+  const names=_gameHellNames.length>0?_gameHellNames:HELLS.map(h=>h.name);
+  const cols=HELLS.map(h=>h.color);
+  src.forEach((ch,i)=>{const b=document.createElement('div');b.className='ch-tab'+(i===currentHell?' active':'');
+    if(i===currentHell){b.style.background=cols[i]||'#ffea00';b.style.color='#000';b.style.borderColor=cols[i]||'#ffea00'}
+    b.textContent=(i+1)+'장';b.title=names[i]||'';
+    b.onclick=()=>{currentHell=i;buildChapterTabs();buildStageListOrig()};ct.appendChild(b)})
 }
 function buildStageListOrig(){
   const sl=document.getElementById('stage-list');sl.innerHTML='';
-  const ch=CHAPTER_STAGES[currentHell];if(!ch)return;
-  for(let i=ch.startSi;i<ch.startSi+ch.stages;i++){const s=STAGES[i];
-    if(!s)continue;
+  const src=_gameChapters.length>0?_gameChapters:CHAPTER_STAGES;
+  const ch=src[currentHell];if(!ch)return;
+  const cols=HELLS.map(h=>h.color);
+  for(let i=ch.startSi;i<ch.startSi+ch.stages;i++){
+    const floor=i-ch.startSi+1;
+    const isLast=(i===ch.startSi+ch.stages-1);
     const item=document.createElement('div');item.className='stage-item'+(i===currentStage?' active':'');
-    const bossType=ARENA_TYPES[i%5];
-    item.innerHTML=mapMode==='boss'?
-      `<div><div class="name">${s.floor}층 보스방</div><div class="size">50×42 [${bossType}]</div></div><div class="badge" style="background:#ff4400">💀</div>`:
-      `<div><div class="name">${s.floor}층 <span style="font-size:9px;color:#888">${s.type==='horiz'?'↔가로':s.type==='grid'?'🔲격자':'🗺️맵'}</span></div><div class="size">${s.mw}×${s.mh}</div></div><div class="badge" style="background:${s.type==='grid'?'#ff4400':s.type==='horiz'?'#0088ff':HELLS[s.hell].color}">${s.type==='grid'?'👑':s.type==='horiz'?'↔':'🗺️'}</div>`;
-    item.onclick=()=>loadStage(i);sl.appendChild(item)}
+    item.innerHTML=`<div><div class="name">${floor}층${isLast?' <span style="font-size:9px;color:#ff4400">👑보스</span>':''}</div><div class="size">스테이지 ${i}</div></div><div class="badge" style="background:${cols[ch.hell]||'#888'}">${isLast?'👑':'🗺️'}</div>`;
+    item.onclick=(function(sid){return function(){loadStage(sid)}})(i);
+    sl.appendChild(item)}
 }
 function loadStage(sid){
-  if(sid<0||sid>=STAGES.length)sid=0;
-  currentStage=sid;const s=STAGES[sid],m=getMap(sid);if(!m)return;
-  camX=m.mw*T/2;camY=m.mh*T/2;zoom=Math.min(editor.clientWidth/(m.mw*T+100),editor.clientHeight/(m.mh*T+100),1);
-  undoStack=[];buildStageListOrig();
-  document.getElementById('stage-label').textContent=mapMode==='boss'?`${HELLS[s.hell].name} — ${s.floor}층 보스방 [${ARENA_TYPES[sid%5]}] (${m.mw}×${m.mh})`:`${HELLS[s.hell].name} — ${s.floor}층 (${m.mw}×${m.mh})`;
-  document.getElementById('stage-label').style.color=HELLS[s.hell].color;
-  document.getElementById('room-info').textContent='방: '+m.rooms.map(r=>`${r.id}(${r.type})`).join(' → ');
+  if(sid<0||sid>=_gameTotalStages)sid=0;
+  currentStage=sid;
+  undoStack=[];
+  sendToGame({type:'switchStage',stage:sid});
+  // 카메라/줌은 stageLoaded 메시지에서 처리
+  const src=_gameChapters.length>0?_gameChapters:CHAPTER_STAGES;
+  let chName='';for(let i=0;i<src.length;i++){const c=src[i];if(sid>=c.startSi&&sid<c.startSi+c.stages){chName=(_gameHellNames[c.hell]||HELLS[c.hell].name)+' '+(sid-c.startSi+1)+'층';break}}
+  document.getElementById('stage-label').textContent=chName+' (로딩...)';
+  buildStageListOrig();
   saveEditorSettings(false);
 }
-function resize(){C.width=editor.clientWidth;C.height=editor.clientHeight}
+function resize(){OC.width=clickLayer.clientWidth;OC.height=clickLayer.clientHeight}
 resize();window.onresize=resize;
-function mouseToTile(mx,my){const wx=(mx-C.width/2)/zoom+camX,wy=(my-C.height/2)/zoom+camY;return{tx:Math.floor(wx/T),ty:Math.floor(wy/T)}}
+function screenToWorld(sx,sy){
+  const rect=clickLayer.getBoundingClientRect();
+  const mx=sx-rect.left,my=sy-rect.top;
+  const wx=(mx-rect.width/2)/zoom+camX;
+  const wy=(my-rect.height/2)/zoom+camY;
+  return{wx,wy,tx:Math.floor(wx/GT),ty:Math.floor(wy/GT)};
+}
+function mouseToTile(mx,my){const wx=(mx-OC.width/2)/zoom+camX,wy=(my-OC.height/2)/zoom+camY;return{tx:Math.floor(wx/GT),ty:Math.floor(wy/GT)}}
 function saveUndo(){const m=getCurrentMap();if(!m)return;undoStack.push({grid:m.grid.map(r=>new Uint8Array(r)),objs:JSON.parse(JSON.stringify(m.objs))});if(undoStack.length>40)undoStack.shift()}
-function undo(){if(!undoStack.length)return;const m=getCurrentMap(),s=undoStack.pop();for(let y=0;y<m.mh;y++)m.grid[y]=s.grid[y];m.objs=s.objs;m.dirty=true;_scheduleMapAutosave()}
+function undo(){if(!undoStack.length)return;const m=getCurrentMap(),s=undoStack.pop();
+  const tiles=[];
+  for(let y=0;y<m.mh;y++){m.grid[y]=s.grid[y];for(let x=0;x<m.mw;x++)tiles.push({tx:x,ty:y,val:s.grid[y][x]})}
+  m.objs=s.objs;m.dirty=true;
+  if(tiles.length>0)sendToGame({type:'setTiles',tiles});
+  _scheduleMapAutosave()}
 
-C.onmousedown=e=>{
+clickLayer.onmousedown=function(e){
   if(e.button===1||e.button===2){dragging=true;lastMX=e.clientX;lastMY=e.clientY;e.preventDefault();return}
-  if(e.button===0){saveUndo();const{tx,ty}=mouseToTile(e.offsetX,e.offsetY);if(brushShape==='box'){boxStart={tx,ty};return}painting=true;applyBrush(tx,ty)}
+  if(e.button===0){
+    saveUndo();
+    const{tx,ty}=screenToWorld(e.clientX,e.clientY);
+    if(brushShape==='box'){boxStart={tx,ty};return}
+    painting=true;applyBrush(tx,ty);
+  }
 };
-C.onmousemove=e=>{const{tx,ty}=mouseToTile(e.offsetX,e.offsetY);hoverTX=tx;hoverTY=ty;
-  if(dragging){camX-=(e.clientX-lastMX)/zoom;camY-=(e.clientY-lastMY)/zoom;lastMX=e.clientX;lastMY=e.clientY}
-  if(painting)applyBrush(tx,ty)};
-C.onmouseup=e=>{if(e.button===1||e.button===2)dragging=false;
-  if(e.button===0){painting=false;if(boxStart&&brushShape==='box'){const{tx,ty}=mouseToTile(e.offsetX,e.offsetY);applyBox(boxStart.tx,boxStart.ty,tx,ty);boxStart=null} _saveLiveMapState(); }};
-C.oncontextmenu=e=>e.preventDefault();
-C.onwheel=e=>{const old=zoom;zoom*=e.deltaY<0?1.15:0.87;zoom=Math.max(.1,Math.min(6,zoom));camX+=(e.offsetX-C.width/2)*(1/old-1/zoom);camY+=(e.offsetY-C.height/2)*(1/old-1/zoom);e.preventDefault()};
+clickLayer.onmousemove=function(e){
+  const{tx,ty}=screenToWorld(e.clientX,e.clientY);
+  hoverTX=tx;hoverTY=ty;
+  if(dragging){
+    const dx=(e.clientX-lastMX)/zoom;
+    const dy=(e.clientY-lastMY)/zoom;
+    camX-=dx;camY-=dy;
+    lastMX=e.clientX;lastMY=e.clientY;
+    sendToGame({type:'camSet',x:camX,y:camY});
+  }
+  if(painting)applyBrush(tx,ty);
+};
+clickLayer.onmouseup=function(e){
+  if(e.button===1||e.button===2){dragging=false;return}
+  if(e.button===0){
+    painting=false;
+    if(boxStart&&brushShape==='box'){
+      const{tx,ty}=screenToWorld(e.clientX,e.clientY);
+      applyBox(boxStart.tx,boxStart.ty,tx,ty);boxStart=null;
+    }
+    _saveLiveMapState();
+  }
+};
+clickLayer.oncontextmenu=function(e){e.preventDefault()};
+clickLayer.onwheel=function(e){
+  const old=zoom;
+  zoom*=e.deltaY<0?1.15:0.87;
+  zoom=Math.max(.1,Math.min(6,zoom));
+  const rect=clickLayer.getBoundingClientRect();
+  const mx=e.clientX-rect.left-rect.width/2;
+  const my=e.clientY-rect.top-rect.height/2;
+  camX+=mx*(1/old-1/zoom);
+  camY+=my*(1/old-1/zoom);
+  sendToGame({type:'camSet',x:camX,y:camY});
+  sendToGame({type:'camZoom',factor:zoom});
+  e.preventDefault();
+};
 window.onkeydown=e=>{if(e.target.tagName==='INPUT')return;
   if(e.key>='0'&&e.key<='3')setHeight(+e.key);
   if(e.key==='c')setBrush('circle');if(e.key==='s')setBrush('rect');if(e.key==='b')setBrush('box');
@@ -2641,83 +2772,72 @@ document.getElementById('fileInput').onchange=function(e){const file=e.target.fi
     _scheduleMapAutosave();
     buildStageListOrig()}catch(err){alert('오류: '+err.message)}};reader.readAsText(file)};
 
-let rCache=null,rStage=-1;
-function buildCache(){
-  const m=getCurrentMap();if(!m)return;
-  const cv=document.createElement('canvas');cv.width=m.mw*T;cv.height=m.mh*T;const cx=cv.getContext('2d');
-  for(let y=0;y<m.mh;y++)for(let x=0;x<m.mw;x++){const h=m.grid[y][x];cx.fillStyle=H_COL[h]||'#000';cx.fillRect(x*T,y*T,T,T)}
-  // 보스방/게이트/출구 특수 표시
-  if(m.special)for(const sp of m.special){
-    const px=sp.x*T,py=sp.y*T;
-    if(sp.type==='boss_floor'){cx.fillStyle='rgba(255,0,50,0.08)';cx.fillRect(px,py,T,T)}
-    else if(sp.type==='arena_edge'){cx.fillStyle='rgba(255,200,50,0.12)';cx.fillRect(px,py,T,T)}
-    else if(sp.type==='gate'){cx.fillStyle='#2a0040';cx.fillRect(px,py,T,T);cx.fillStyle='rgba(180,0,255,0.3)';cx.fillRect(px,py,T,T)}
-    else if(sp.type==='exit'){cx.fillStyle='#003a00';cx.fillRect(px,py,T,T);cx.fillStyle='rgba(0,255,100,0.2)';cx.fillRect(px,py,T,T)}
-  }
-  if(show3d){for(let y=0;y<m.mh;y++)for(let x=0;x<m.mw;x++){const h=m.grid[y][x],px=x*T,py=y*T;
-    if(y<m.mh-1){const d=h-m.grid[y+1][x];if(d>0){const ch=Math.min(d*T*3,T*10);
-      for(let row=0;row<ch;row++){const dp=row/ch;cx.fillStyle=`rgb(${40+~~((1-dp)*50)},${30+~~((1-dp)*35)},${20+~~((1-dp)*20)})`;cx.fillRect(px,py+T+row,T,1)}
-      cx.fillStyle='rgba(200,180,140,0.15)';cx.fillRect(px,py+T,T,1)}}
-    if(y>0){const d=m.grid[y-1][x]-h;if(d>0){const sl=Math.min(d*T*2,T*6);
-      const sg=cx.createLinearGradient(px,py,px,py+sl);sg.addColorStop(0,`rgba(0,0,0,${0.2+d*0.08})`);sg.addColorStop(1,'rgba(0,0,0,0)');cx.fillStyle=sg;cx.fillRect(px,py,T,sl)}}
-  }}
-  if(showGrid){cx.strokeStyle='#ffffff05';cx.lineWidth=0.5;
-    for(let y=0;y<m.mh;y+=10){cx.beginPath();cx.moveTo(0,y*T);cx.lineTo(m.mw*T,y*T);cx.stroke()}
-    for(let x=0;x<m.mw;x+=10){cx.beginPath();cx.moveTo(x*T,0);cx.lineTo(x*T,m.mh*T);cx.stroke()}}
-  rCache=cv;rStage=currentStage;
-}
-
+// ══ Overlay draw loop (brush cursor, selection, HUD) ══
 let fc=0;
-function draw(){
-  fc++;const m=getCurrentMap();if(!m){requestAnimationFrame(draw);return}
-  if(m.dirty||rStage!==currentStage){buildCache();m.dirty=false}
-  X.fillStyle='#030303';X.fillRect(0,0,C.width,C.height);
-  X.save();X.translate(C.width/2,C.height/2);X.scale(zoom,zoom);X.translate(-camX,-camY);
-  if(rCache)X.drawImage(rCache,0,0);
-  if(showRooms){X.font='10px monospace';X.textAlign='center';X.textBaseline='middle';
-    for(const r of m.rooms){const l=r.type==='start'?'START':r.type==='boss'?'BOSS':r.type==='forge'?'FORGE':r.id||'';
-      if(l){X.fillStyle=r.type==='boss'?'rgba(255,50,50,0.25)':'rgba(255,255,255,0.15)';X.fillText(l,r.cx*T,r.cy*T);
-        if(r.type==='boss'){X.strokeStyle='rgba(255,50,50,0.12)';X.lineWidth=1;X.beginPath();X.arc(r.cx*T,r.cy*T,(r.rx||8)*T,0,Math.PI*2);X.stroke()}}}
-    // 게이트 라벨
-    if(m.special)for(const sp of m.special){
-      if(sp.type==='gate'){X.fillStyle='rgba(180,0,255,0.4)';X.font='8px monospace';X.fillText('GATE',sp.x*T,sp.y*T-T)}
-      if(sp.type==='exit'){X.fillStyle='rgba(0,255,100,0.4)';X.font='8px monospace';X.fillText('EXIT',sp.x*T,sp.y*T+T*2)}
-    }}
-  if(showObj){for(const o of m.objs){const od=OBJ_DEFS.find(d=>d.id===o.id);if(!od)continue;
-    const px=o.x*T,py=o.y*T;
-    const im=_objImgs[od.id];
-    if(im&&im.complete&&im.naturalWidth>0){
-      // 이미지 오브젝트: 실제 PNG 렌더
-      const drawSz=(od.sz||32)/32*T*4;
-      if(od.sheet){const sh=od.sheet,cw=~~(im.naturalWidth/sh.c),ch=~~(im.naturalHeight/sh.r);
-        const si=((~~(o.x*7919+o.y*104729+31))&0x7fffffff)%(sh.c*sh.r);
-        X.drawImage(im,(si%sh.c)*cw,~~(si/sh.c)*ch,cw,ch,px-drawSz/2,py-drawSz/2,drawSz,drawSz);
-      }else X.drawImage(im,px-drawSz/2,py-drawSz/2,drawSz,drawSz);
-      // 발광버섯: 포인트라이트 미리보기
-      if(od.id.startsWith('mushroom_glow')){X.fillStyle='rgba(255,180,80,0.12)';X.beginPath();X.arc(px,py,T*10,0,Math.PI*2);X.fill()}
-    }else{
-      // 기존 이모지 렌더
-      const sz=T*2.5;
-      X.fillStyle=od.color+'55';X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.fill();
-      X.strokeStyle=od.color;X.lineWidth=1;X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.stroke();
-      X.font=`${sz*1.2}px serif`;X.textAlign='center';X.textBaseline='middle';X.fillStyle='#fff';X.fillText(od.icon,px,py+1);
-    }}}
-  if(hoverTX>=0&&hoverTX<m.mw&&hoverTY>=0&&hoverTY<m.mh){
-    const hc=HELLS[STAGES[currentStage].hell].color+'44';
-    if(selectedObj){X.strokeStyle='#ff880066';X.lineWidth=2;X.beginPath();X.arc(hoverTX*T,hoverTY*T,T*3,0,Math.PI*2);X.stroke()}
-    else if(brushShape==='box'&&boxStart){const x1=Math.min(boxStart.tx,hoverTX),y1=Math.min(boxStart.ty,hoverTY),x2=Math.max(boxStart.tx,hoverTX),y2=Math.max(boxStart.ty,hoverTY);
-      X.fillStyle=(H_COL[currentHeight]||'#fff')+'44';X.fillRect(x1*T,y1*T,(x2-x1+1)*T,(y2-y1+1)*T);
-      X.strokeStyle=HELLS[STAGES[currentStage].hell].color;X.lineWidth=1.5;X.strokeRect(x1*T,y1*T,(x2-x1+1)*T,(y2-y1+1)*T)}
-    else if(brushShape==='box'){X.strokeStyle=hc;X.lineWidth=1;X.strokeRect(hoverTX*T,hoverTY*T,T,T)}
-    else{X.strokeStyle=hc;X.lineWidth=1;const r=brushRadius;
-      if(brushShape==='rect')X.strokeRect((hoverTX-r)*T,(hoverTY-r)*T,r*2*T,r*2*T);
-      else{X.beginPath();X.arc(hoverTX*T,hoverTY*T,r*T,0,Math.PI*2);X.stroke()}}}
-  X.strokeStyle=HELLS[STAGES[currentStage].hell].color+'22';X.lineWidth=2;X.strokeRect(0,0,m.mw*T,m.mh*T);
-  X.restore();
-  const ch=(hoverTY>=0&&hoverTY<m.mh&&hoverTX>=0&&hoverTX<m.mw)?m.grid[hoverTY]?.[hoverTX]:'?';
-  document.getElementById('hud-text').innerHTML=`<b>${HELLS[STAGES[currentStage].hell].name}</b> ${STAGES[currentStage].floor}층 | [${hoverTX},${hoverTY}] h=${ch}(${H_NAME[ch]||'?'}) | ${selectedObj?OBJ_DEFS.find(d=>d.id===selectedObj)?.name||'':'높이 '+currentHeight}`;
-  requestAnimationFrame(draw);
+function drawOverlay(){
+  fc++;
+  const w=clickLayer.clientWidth,h=clickLayer.clientHeight;
+  if(OC.width!==w||OC.height!==h){OC.width=w;OC.height=h}
+  OX.clearRect(0,0,w,h);
+
+  const m=getCurrentMap();
+  if(m){
+    OX.save();
+    OX.translate(w/2,h/2);
+    OX.scale(zoom,zoom);
+    OX.translate(-camX,-camY);
+
+    // Brush cursor
+    if(hoverTX>=0&&hoverTY>=0){
+      const hc=HELLS[STAGES[currentStage]?STAGES[currentStage].hell:0]?.color||'#ffea00';
+      if(selectedObj){
+        OX.strokeStyle='#ff4400';OX.lineWidth=2/zoom;
+        OX.strokeRect(hoverTX*GT,hoverTY*GT,GT,GT);
+        OX.fillStyle='rgba(255,68,0,0.3)';
+        OX.fillRect(hoverTX*GT,hoverTY*GT,GT,GT);
+      }else if(brushShape==='box'&&boxStart){
+        const x0=Math.min(boxStart.tx,hoverTX)*GT,y0=Math.min(boxStart.ty,hoverTY)*GT;
+        const x1=(Math.max(boxStart.tx,hoverTX)+1)*GT,y1=(Math.max(boxStart.ty,hoverTY)+1)*GT;
+        OX.strokeStyle='#00ff88';OX.lineWidth=2/zoom;
+        OX.strokeRect(x0,y0,x1-x0,y1-y0);
+        OX.fillStyle=(H_COL[currentHeight]||'#fff')+'44';
+        OX.fillRect(x0,y0,x1-x0,y1-y0);
+      }else if(brushShape==='box'){
+        OX.strokeStyle=hc+'44';OX.lineWidth=1/zoom;
+        OX.strokeRect(hoverTX*GT,hoverTY*GT,GT,GT);
+      }else{
+        OX.strokeStyle=hc+'88';OX.lineWidth=1/zoom;
+        const r=brushRadius;
+        if(brushShape==='circle'){
+          OX.beginPath();OX.arc((hoverTX+0.5)*GT,(hoverTY+0.5)*GT,r*GT,0,Math.PI*2);OX.stroke();
+        }else{
+          OX.strokeRect((hoverTX-r)*GT,(hoverTY-r)*GT,(r*2+1)*GT,(r*2+1)*GT);
+        }
+      }
+    }
+
+    // Map boundary
+    if(m.mw&&m.mh){
+      const hellIdx=STAGES[currentStage]?STAGES[currentStage].hell:0;
+      OX.strokeStyle=(HELLS[hellIdx]?.color||'#ffea00')+'22';
+      OX.lineWidth=2/zoom;
+      OX.strokeRect(0,0,m.mw*GT,m.mh*GT);
+    }
+
+    OX.restore();
+  }
+
+  // HUD text
+  const ch=m&&(hoverTY>=0&&hoverTY<m.mh&&hoverTX>=0&&hoverTX<m.mw)?m.grid[hoverTY]?.[hoverTX]:'?';
+  if(STAGES[currentStage]){
+    document.getElementById('hud-text').innerHTML=`<b>${HELLS[STAGES[currentStage].hell].name}</b> ${STAGES[currentStage].floor}층 | [${hoverTX},${hoverTY}] h=${ch}(${H_NAME[ch]||'?'}) zoom:${zoom.toFixed(2)} | ${selectedObj?OBJ_DEFS.find(d=>d.id===selectedObj)?.name||'':'높이 '+currentHeight}`;
+  }
+
+  requestAnimationFrame(drawOverlay);
 }
+// Alias for backward compat (referenced by _applyLoadedState, etc.)
+function draw(){drawOverlay()}
+requestAnimationFrame(drawOverlay);
 
 // ═══════════════════════════════════════════════════════
 // 🔲 격자맵 시스템 — 5열 × 5행 그리드 던전
@@ -3041,8 +3161,8 @@ function getGridMap(hell) {
 function loadGridStage(hell) {
   currentGridHell = hell;
   const m = getGridMap(hell); if (!m) return;
-  camX = m.mw*T/2; camY = m.mh*T/2;
-  zoom = Math.min(editor.clientWidth/(m.mw*T+80), editor.clientHeight/(m.mh*T+80), 1.2);
+  camX = m.mw*GT/2; camY = m.mh*GT/2;
+  zoom = Math.min(editor.clientWidth/(m.mw*GT+80), editor.clientHeight/(m.mh*GT+80), 1.2);
   undoStack = [];
   buildGridStageList();
   document.getElementById('stage-label').textContent =
@@ -3543,17 +3663,16 @@ async function loadEditorSettings(manual){
   }
 }
 
-// ── HUD 오버라이드 ──
-const _origDraw = draw;
+// ── HUD 오버라이드 (격자맵 모드용) ──
 function drawHudLabel() {
   const m = getCurrentMap(); if(!m) return;
   const ch = (hoverTY>=0&&hoverTY<m.mh&&hoverTX>=0&&hoverTX<m.mw) ? m.grid[hoverTY]?.[hoverTX] : '?';
   if (mapMode==='grid') {
     document.getElementById('hud-text').innerHTML =
-      `<b>${HELLS[currentGridHell].name} 격자맵</b> | [${hoverTX},${hoverTY}] h=${ch}(${H_NAME[ch]||'?'}) | ${selectedObj?OBJ_DEFS.find(d=>d.id===selectedObj)?.name||'':'높이 '+currentHeight}`;
+      `<b>${HELLS[currentGridHell].name} 격자맵</b> | [${hoverTX},${hoverTY}] h=${ch}(${H_NAME[ch]||'?'}) zoom:${zoom.toFixed(2)} | ${selectedObj?OBJ_DEFS.find(d=>d.id===selectedObj)?.name||'':'높이 '+currentHeight}`;
   } else {
     document.getElementById('hud-text').innerHTML =
-      `<b>${HELLS[STAGES[currentStage].hell].name}</b> ${STAGES[currentStage].floor}층 | [${hoverTX},${hoverTY}] h=${ch}(${H_NAME[ch]||'?'}) | ${selectedObj?OBJ_DEFS.find(d=>d.id===selectedObj)?.name||'':'높이 '+currentHeight}`;
+      `<b>${HELLS[STAGES[currentStage].hell].name}</b> ${STAGES[currentStage].floor}층 | [${hoverTX},${hoverTY}] h=${ch}(${H_NAME[ch]||'?'}) zoom:${zoom.toFixed(2)} | ${selectedObj?OBJ_DEFS.find(d=>d.id===selectedObj)?.name||'':'높이 '+currentHeight}`;
   }
 }
 
@@ -3690,6 +3809,14 @@ function genSnake(si,forceSeed){
 }
 
 // ── 내보내기 ──
+function requestMapDataFromIframe(){
+  return new Promise(resolve=>{
+    _pendingExport=resolve;
+    sendToGame({type:'getMapData'});
+    // Timeout fallback after 3s
+    setTimeout(()=>{if(_pendingExport){_pendingExport=null;resolve(null)}},3000);
+  });
+}
 function exportAsFixedMap(){
   let out=`// ══ EXODUSER FIXED_MAPS + GRID_MAPS 내보내기 ══\n\n`;
   // 격자맵의 스테이지 인덱스 매핑 (hell→stage index)
@@ -3851,7 +3978,7 @@ function genHoriz(si, forceSeed){
 }
 
 
-for(let i=0;i<STAGES.length;i++){
+for(let i=0;i<70;i++){
   const s=STAGES[i];
   if(s.type==='grid'){
     // floor10: 격자맵 — GRID_MAPS[hell]로 처리 (getMap에서 분기)
@@ -3875,89 +4002,22 @@ window.addEventListener('beforeunload',()=>{ try{ _saveLiveMapState(); }catch(e)
 window.addEventListener('pagehide',()=>{ try{ _saveLiveMapState(); }catch(e){} });
 document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden'){ try{ _saveLiveMapState(); }catch(e){} } });
 setInterval(()=>{ try{ _saveLiveMapState(); }catch(e){} }, 5000);
+// ── iframe 초기화 ──
+function initIframe(){
+  gameFrame.src='/game.html?editor=1&editorStage='+currentStage+'&test=1';
+}
 (async()=>{
   try{ document.getElementById('stats').textContent=`에디터 빌드 ${BUILD_STAMP}`; }catch(e){}
-  try{ await loadEditorSettings(false); }catch(e){ console.error('[EDITOR] settings load fail:',e); }
-  // 항상 리스트 빌드 (settings 로드 성공/실패 무관)
-  try{ buildChapterTabs(); }catch(e){ console.error('[EDITOR] buildChapterTabs fail:',e); }
-  try{
-    if(mapMode==='grid'){ buildGridStageList(); loadGridStage(currentGridHell); }
-    else{ buildStageListOrig(); loadStage(currentStage||0); }
-  }catch(e){ console.error('[EDITOR] buildStageList fail:',e); }
-  try{ draw(); }catch(e){ console.error('[EDITOR] draw fail:',e); }
-  // iframe 게임 그래픽 초기화
-  try{ _initGameFrame(); }catch(e){ console.error('[EDITOR] iframe init fail:',e); }
+  const ok = await loadEditorSettings(false);
+  if(!ok){
+    currentStage=0; currentHell=0;
+  }
+  // 항상 리스트 빌드 (iframe 없이도 로컬 데이터로 표시)
+  buildChapterTabs(); buildStageListOrig();
+  drawOverlay();
+  // iframe 초기화 — ready 후 자동으로 currentStage 전환됨
+  initIframe();
 })();
-
-// ══════════════════════════════════════════
-// iframe 게임 그래픽 연동
-// ══════════════════════════════════════════
-const _gFrame=document.getElementById('gameFrame');
-let _iframeReady=false;
-const _GT=32; // game.html 타일 크기
-
-function _sendToGame(msg){
-  try{if(_gFrame&&_gFrame.contentWindow)_gFrame.contentWindow.postMessage(msg,'*')}catch(e){}
-}
-
-window.addEventListener('message',function(ev){
-  const d=ev.data;if(!d||!d.type)return;
-  if(d.type==='editorReady'){
-    _iframeReady=true;
-    _gFrame.style.display='block';
-    // 현재 스테이지로 iframe 전환
-    _sendToGame({type:'switchStage',stage:currentStage});
-    console.log('[EDITOR] iframe 게임 그래픽 연결됨');
-    try{document.getElementById('stats').textContent='게임 그래픽 연결됨'}catch(e){}
-  }
-  else if(d.type==='stageLoaded'){
-    // iframe 맵 로드 완료 → 카메라 동기화
-    _syncCamToGame();
-  }
-});
-
-function _syncCamToGame(){
-  if(!_iframeReady)return;
-  _sendToGame({type:'camSet',x:camX,y:camY});
-  _sendToGame({type:'camZoom',factor:zoom});
-}
-
-// 기존 draw/loadStage 래핑 — iframe에도 동기화
-const _origDraw2=draw;
-draw=function(){
-  _origDraw2();
-  if(_iframeReady)_syncCamToGame();
-};
-
-const _origLoadStage2=loadStage;
-loadStage=function(sid){
-  _origLoadStage2(sid);
-  if(_iframeReady)_sendToGame({type:'switchStage',stage:sid});
-};
-
-// 타일 편집 시 iframe에도 반영
-const _origApplyBrush2=applyBrush;
-applyBrush=function(cx,cy){
-  _origApplyBrush2(cx,cy);
-  if(!_iframeReady)return;
-  const m=getCurrentMap();if(!m)return;
-  if(selectedObj){
-    if(selectedObj!=='_delete')_sendToGame({type:'addObj',id:selectedObj,x:cx*_GT+_GT/2,y:cy*_GT+_GT/2});
-    else _sendToGame({type:'removeObjAt',x:cx*_GT+_GT/2,y:cy*_GT+_GT/2});
-    return;
-  }
-  const r=brushRadius,tiles=[];
-  for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){
-    if(brushShape==='circle'&&dx*dx+dy*dy>r*r)continue;
-    const tx=cx+dx,ty=cy+dy;
-    if(tx>=0&&ty>=0&&tx<m.mw&&ty<m.mh)tiles.push({tx,ty,val:currentHeight});
-  }
-  if(tiles.length>0)_sendToGame({type:'setTiles',tiles});
-};
-
-function _initGameFrame(){
-  _gFrame.src='/game.html?editor=1&editorStage='+(currentStage||0)+'&test=1';
-}
 
 </script>
 </body></html>
