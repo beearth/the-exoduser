@@ -5136,8 +5136,8 @@ function spawnCrescent(x,y,ang,dmg,el,step,distMul){
     const spd=14;
     c.vx=Math.cos(ang)*spd;
     c.vy=Math.sin(ang)*spd;
-    const _dm=distMul||1;
-    const _stepLife=step===1?14:step===2?21:29;
+    const _baseDist=step===1?250:step===2?300:350;
+    const _stepLife=~~((_baseDist+(distMul||0))/14); // distMul=레벨당 거리보너스(px)
     c.life=~~(_stepLife*_dm);c.ml=c.life;
     c._hitSet=new Set();
     c.dmg=dmg;c.el=el||0;
@@ -11017,7 +11017,7 @@ function _execMagicE(){
 }
 
 function mkP(){
-  return{x:0,y:0,r:11,hp:350,mhp:350,st:200,mst:200,stR:.28,mp:160,mmp:160,mpR:0,
+  return{x:0,y:0,r:13,hp:350,mhp:350,st:200,mst:200,stR:.28,mp:160,mmp:160,mpR:0,
     lv:1,exp:0,maxExp:15,sp:0,ap:0, // Level system (SP=스탯포인트, AP=패시브포인트)
     baseAtk:8,baseDef:2,speed:2.6,facing:0,
     s:'idle',st2:0,atkArc:0,swProg:0,iframes:0,combo:0,comboT:0,blockFlash:0,blockPushT:0,
@@ -126959,7 +126959,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
   let _hp=~~((ib?1500:150)*Math.pow(1.013,monLv)*dm*et.hpMul); // 1.3% 복리
-  const _atk=~~((ib?5:2)*Math.pow(1.013,monLv)*dm*et.atkMul); // ATK도 동일 복리
+  const _atk=~~(((ib?40:20)+monLv*(ib?2:1))*dm*et.atkMul); // 기본20+레벨당1 (보스: 40+레벨당2)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   const _noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
   let _projCd=ib?70:_rare?9999
@@ -127844,7 +127844,7 @@ function update(){
         P._chainAssaultReady=false;
         const _stLv=P.skills.chainAssault||1;
         const _stRBase=300+(_stLv-1)*20;
-        const _stScale=.5+(_stLv-1)*.05; // 1렙50%→10렙95%
+        const _stScale=.8+(_stLv-1)*.02; // 1렙80%→10렙98%
         const _stR=_stRBase*_stScale;
         const _stTravD=dst(P._csStunOX||P.x,P._csStunOY||P.y,P.x,P.y);
         const _stDistMul=1+Math.min(_stTravD/200,3)*2; // 거리 보너스 2배
@@ -128175,11 +128175,12 @@ function update(){
     else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()} // Q: 평화의보호 (stormBeam)
     else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15))} // Q: 보호막 (데미지 감소)
     else if(isHeld('weapon')&&P.skills.whirlwind&&P.activeLMBSk==='whirlwind'&&P.st>=2){P.s='whirlwind';P.wwAng=0;P.parryT=0;P.parryBank=0;P._wwDetTimer=0;SFX._swIdx=0;SFX.slashSeq();if(_isFused('stormBeam')){P._eStormIdx=0;P._eStormT=0;P._eStormActive=true;playSample(['electric_storm','electric_storm2','electric_storm3','electric_storm4'][~~(Math.random()*4)],.6,_r(1,.1))}if(Math.random()<.45){playSample(['voice_flee','voice_storm_attack'][~~(Math.random()*2)],1,1)}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}_addSkProf('whirlwind')}
-    else if(isAct('weapon')&&useStPct('weapon')){P._atkBon=~~(_lastCost*1.5);P.s='wSwing';P.st2=5;P.swProg=0;P.atkArc=P.facing;if(G._pStats)G._pStats._atkC++;_addSkProf('kiSlash');if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
+    else if(isAct('weapon')&&useStPct('weapon')){P._atkBon=~~(_lastCost*1.5);P.s='wSwing';P.st2=5;P.swProg=0;P.atkArc=P.facing;if(G._pStats)G._pStats._atkC++;_addSkProf('kiSlash');SFX.slash();if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
       // 기본공격 검기 발사 — 기검참 레벨 보너스: 뎀+10%/Lv, 거리+10%/Lv
-      _cresStep=(_cresStep%3)+1;_cresComboT=50;_cresCd=_cresStep===3?20:12;
-      const _ksLv=P.skills.kiSlash||1,_ksDmgMul=1+(_ksLv-1)*0.1,_ksDistMul=1+(_ksLv-1)*0.1;
+      _cresStep=(_cresStep%3)+1;_cresComboT=120;_cresCd=_cresStep===3?20:12;
+      const _ksLv=P.skills.kiSlash||1,_ksDmgMul=1+(_ksLv-1)*0.1,_ksDistMul=(_ksLv-1)*15; // 레벨당 +15px 거리
       spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*(_cresStep===3?2:1.2)*statStr()*_ksDmgMul),0,_cresStep,_ksDistMul);
+      addTxt(P.x,P.y-40,_cresStep+'타','#ffcc00',20);
     }
     else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=6;_addSkProf('kiSlash');_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
     // Space키: SKILL_SLOTS[4]로 처리 (keydown에서 _dispatchSkillSlot)
@@ -128321,12 +128322,12 @@ function update(){
     // 상태별 로직
     if(P.s==='wWindup'){if(P.st2<=0){P.s='wSwing';P.st2=5;P.swProg=0}}
     else if(P.s==='wSwing'){P.swProg=(5-P.st2)/5;
-      if(P.st2<=6&&P.st2+sp>6){
+      if(P.st2<=3&&P.st2+sp>3){
         const _wRange=((wp().wRange||50)+(wp().bonusRange||0)*4)*3;
         const _wArc=(wp().wArcW||.95);
         hitArc(P.atkArc,_wRange,_wArc,~~((P.baseAtk+(wp().atk||12)*(1+enhMul(wp().enh||0))+15)*2),wp().el,'weapon');
       }
-      if(P.st2<=0){P.s='wRecover';P.st2=~~(33/((wp().spd||.3)*statDex()))}}
+      if(P.st2<=0){P.s='wRecover';P.st2=~~(16/((wp().spd||.3)*statDex()))}}
     else if(P.s==='wRecover'){if(P.st2<=0){if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}else P.s='idle'}}
     else if(P.s==='sBash'){
       if(P.st2<=8&&P.st2+sp>8){
@@ -128781,7 +128782,7 @@ function update(){
     if(canMv(nx,ny,P.r)){P.x=nx;P.y=ny}else{
       // Wall slam — if hit enemies, do AoE burst
       if(P.chargeHits&&P.chargeHits.size>0){G.shake=14*OPT.shake/100;G.hitStop=~~(_HS.chargeWall*OPT.hitStop/100)}
-      P.s='cRecover';P.st2=10;break}
+      P.s='cRecover';P.st2=10;P.iframes=Math.max(P.iframes,30);break} // 착지 0.5초 무적
     // 레벨당 거리 보너스 대폭 하향 (0.0025 -> 0.001), 캡 적용 (Max 0.985)
     const _cbDecay=Math.min(0.985, (P.skills.chargeBoost||0)>=1 ? 0.96+((P.skills.chargeBoost||0)-1)*0.001 : 0.94);
     P.chargeSpd*=_cbDecay**sp;
@@ -128831,7 +128832,7 @@ function update(){
         else if(hn>=4)addTxt(P.x,P.y-28,'💀 MULTI×'+hn+'!','#ff2200',50);
       }
     }
-    if(P.st2<=0||P.chargeSpd<1.5){P.s='cRecover';P.st2=10}break}
+    if(P.st2<=0||P.chargeSpd<1.5){P.s='cRecover';P.st2=10;P.iframes=Math.max(P.iframes,30)}break} // 착지 0.5초 무적
   case 'blinkLand':{
     // 블링크 착지 회복 — 느린 이동 가능
     let bldx=0,bldy=0;
@@ -129037,12 +129038,12 @@ function update(){
             _tgt.burnT=180;G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(_tgt.x,_tgt.y,ELC[bel],2);
           }
         }else{
-          // ═══ 만화광선: 3발 꽈배기, 첫 적에서 멈춤, 끝점 데미지 ═══
+          // ═══ 만화광선: 3발 꽈배기, 멸살광선과 동일 (첫 적 멈춤 + 끝점 광역) ═══
           const _fanAng=P.facing+(bi-1)*0.18;
           const _bf2=_beamFindTarget(P.x,P.y,_fanAng,_bRng,_step);
           const _fCos=Math.cos(_fanAng),_fSin=Math.sin(_fanAng);
           const _fPerp=Math.cos(_fanAng+Math.PI/2),_fPerpS=Math.sin(_fanAng+Math.PI/2);
-          const _mDist=_bf2.e?_bf2.d:_bRng;
+          const _mDist=_bf2.d;
           for(let t=0;t<_mDist&&_ptIdx<_BP_MAX;t+=_step){
             const prog=t/_mDist;
             const _jitter=(Math.sin(t*0.3+bi*50+_twistAng)*3)*prog;
@@ -129050,15 +129051,21 @@ function update(){
             if(isW(nx,ny))break;
             _pool[_ptIdx].x=nx;_pool[_ptIdx].y=ny;_ptIdx++;
           }
-          if(_bf2.e&&_bf2.e.alive&&_ptIdx>0){_pool[_ptIdx-1].x=_bf2.e.x;_pool[_ptIdx-1].y=_bf2.e.y;}
           _beamPtsCnt[bi]=_ptIdx;
-          // 끝점 데미지
-          if(_beamDoHit&&_bf2.e&&_bf2.e.alive&&!_bHit.has(_bf2.e)&&_beamHitCap<10){
-            const e=_bf2.e;_bHit.add(e);_beamHitCap++;
-            e._beamStk=Math.min(30,(e._beamStk||0)+1);e._beamStkT=30;
-            const _bsMul=1+(e._beamStk||0)*.1;
-            hurtE(e,_beamDmgBase*_dmgMul*_bsMul*elMul(bel,e.el)/3,P.facing,true,{beam:true},bel);
-            e.burnT=180;G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);
+          // 끝점 광역 데미지 (멸살광선과 동일)
+          const _mEndX=P.x+_fCos*_mDist,_mEndY=P.y+_fSin*_mDist;
+          const _mAoeR=150+(_omniSlv-1)*10;
+          if(_beamDoHit){
+            const _mAoeNe=shQuery(_mEndX,_mEndY,_mAoeR);
+            for(let _ai=0;_ai<_mAoeNe.length&&_beamHitCap<20;_ai++){
+              const e=_mAoeNe[_ai];if(!e.alive||_bHit.has(e))continue;
+              if(dst(_mEndX,_mEndY,e.x,e.y)>_mAoeR)continue;
+              _bHit.add(e);_beamHitCap++;
+              e._beamStk=Math.min(30,(e._beamStk||0)+1);e._beamStkT=30;
+              const _bsMul=1+(e._beamStk||0)*.1;
+              hurtE(e,_beamDmgBase*_dmgMul*_bsMul*elMul(bel,e.el)/3,P.facing,true,{beam:true},bel);
+              e.burnT=180;G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);
+            }
           }
         }
       }
@@ -129397,6 +129404,7 @@ function update(){
     }
     if(_bombDead){_recycleProj(p);continue}
 
+    const _prevX=p.x,_prevY=p.y;
     p.x = nx; p.y = ny;
     // 빠른 거리 체크: 플레이어에서 400px 초과면 충돌 로직 전체 스킵
     const _pdx2=p.x-P.x,_pdy2=p.y-P.y,_pDist2=_pdx2*_pdx2+_pdy2*_pdy2;
@@ -129410,7 +129418,12 @@ function update(){
     const _sdLvD=P.skills.maliceSwipe||0;
     const _isAtkState=P.s==='wSwing'||P.s==='wWindup'||P.s==='wRecover'||P.s==='whirlwind'||P.s==='charge'||P.s==='charging';
     const _rbDeflR=P.s==='sBash'?((_sdLvD>=1?90:62)+(sh().bonusRange||0)*4):_sbPWDet?((_sdLvD>=1?90:62)*2):_sbPW?90:isPWin()?90:_isAtkState?((wp().wRange||50)+(wp().bonusRange||0)*4)*2+60:_pCollR+20;
-    const _pDist=Math.sqrt(_pDist2);
+    // 스윕 충돌: 이전→현재 선분과 플레이어 원의 최근접 거리
+    let _pDist=Math.sqrt(_pDist2);
+    {const _sdx=p.x-_prevX,_sdy=p.y-_prevY,_sl2=_sdx*_sdx+_sdy*_sdy;
+    if(_sl2>1){const _t=Math.max(0,Math.min(1,((_sdx*(P.x-_prevX)+_sdy*(P.y-_prevY))/_sl2)));
+      const _cx=_prevX+_sdx*_t-P.x,_cy=_prevY+_sdy*_t-P.y;
+      const _cd=Math.sqrt(_cx*_cx+_cy*_cy);if(_cd<_pDist)_pDist=_cd}}
     // ══ 빨간콩탄: 칼등치기(sBash) 또는 보호막 패링윈도우에서 반사 ══
     if(p.redBean&&_pDist<_rbDeflR&&isPWin()){
       SFX.deflect();G.hitStop=~~(_HS.parryReflect*OPT.hitStop/100);G.shake=18*OPT.shake/100;
@@ -136520,7 +136533,7 @@ function _execDimBreach(){
   }
   P.x=_crX;P.y=_crY;
   // 착지 (폭발/장판 제거됨)
-  P.s='dimBreachLand';P.st2=15;P.iframes=18;P.atkArc=a;
+  P.s='dimBreachLand';P.st2=15;P.iframes=30;P.atkArc=a;
   // 트레일 파티클 (보라+번개)
   for(let j=0;j<20;j++){const t2=j/20;const tx=P.blinkOx+(P.x-P.blinkOx)*t2,ty=P.blinkOy+(P.y-P.blinkOy)*t2;
     poolPart(tx+(Math.random()-.5)*12,ty+(Math.random()-.5)*12,(Math.random()-.5)*3,(Math.random()-.5)*3,j%2?'#8844ff':'#eeff00',2+Math.random()*4,12+Math.random()*8)}
@@ -145348,15 +145361,13 @@ function drawP(){
         const _cFull='#ffffff';
         // 칼날 렌더
         X.translate(ox,oy);X.rotate(orbAng+Math.PI/2);
-        X.globalAlpha=.15;X.fillStyle=_cAura;X.beginPath();X.ellipse(0,0,10,4,0,0,Math.PI*2);X.fill();
+        // 오라 글로우 제거
         X.globalAlpha=.85;X.fillStyle=_cBody;
         X.beginPath();X.moveTo(10,0);X.lineTo(1,-3);X.lineTo(-8,-1.5);X.lineTo(-10,0);X.lineTo(-8,1.5);X.lineTo(1,3);X.closePath();X.fill();
         X.globalAlpha=1;X.fillStyle=_cCore;
         X.beginPath();X.moveTo(8,0);X.lineTo(2,-1.8);X.lineTo(-7,0);X.lineTo(2,1.8);X.closePath();X.fill();
-        X.globalAlpha=.6;X.fillStyle=_cHi;
-        X.beginPath();X.moveTo(6,0);X.lineTo(2,-.8);X.lineTo(-5,0);X.lineTo(2,.8);X.closePath();X.fill();
-        // 풀차지 빛남
-        if(_goCnt>=_goMaxR){X.globalAlpha=.3+Math.sin(_now*.12)*.15;X.fillStyle=_cFull;X.beginPath();X.arc(0,0,12,0,Math.PI*2);X.fill()}
+        // 하이라이트 제거
+        // 풀차지 빛남 (제거됨)
       }else{
         // 기존 구체 렌더
         X.globalAlpha=.4;X.fillStyle='#aa44ff';X.beginPath();X.arc(ox,oy,12,0,Math.PI*2);X.fill();
