@@ -3937,7 +3937,20 @@ window.addEventListener('message',function(ev){
     try{document.getElementById('stats').textContent='게임 그래픽 연결됨'}catch(e){}
   }
   else if(d.type==='stageLoaded'){
-    // iframe 맵 로드 완료 → 카메라 동기화
+    // iframe 맵 데이터 → mapStore에 반영 (내보내기 시 게임과 동일한 맵 사용)
+    if(d.map&&d.mw&&d.mh){
+      const ms=mapStore[currentStage];
+      if(ms){
+        // iframe RLE → editor grid 변환 (게임 0=바닥→에디터 1, 게임 1=벽→에디터 2)
+        const rle=d.map;let pos=0;
+        for(let i=0;i<rle.length;i+=2){const v=rle[i],cnt=rle[i+1];
+          for(let j=0;j<cnt;j++){const y=~~(pos/d.mw),x=pos%d.mw;
+            if(ms.grid[y])ms.grid[y][x]=(v===0)?1:2;
+            pos++}}
+        ms.dirty=true;
+        console.log('[EDITOR] iframe 맵 동기화: stage='+currentStage+' tiles='+pos);
+      }
+    }
     _syncCamToGame();
   }
 });
