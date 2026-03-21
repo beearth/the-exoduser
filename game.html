@@ -10539,7 +10539,7 @@ function statCrit(){return (STATS.dex+_eqStat('Dex'))*.015+STATS.lck*.05+PASSIVE
 function statCritDmg(){return 1.3+STATS.lck*.002+PASSIVES.pCrit*.04+(rg1().critDmg||0)+(rg2().critDmg||0)} // 크리 배율 1.3x 기본, 성장 절반
 function statDropBonus(){return 1+STATS.lck*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')} // 드롭 +8%/lv +어픽스
 // 패시브 배율 함수 (max5, 효과 2배)
-function pAtkMul(){return 1+PASSIVES.pAtk*.03+(P._altAtk||0)}  // 무기뎀 +3%/lv (10lv=+30%)
+function pAtkMul(){return (1+PASSIVES.pAtk*.03+(P._altAtk||0))*(P._demonAtkBuff||1)}  // 무기뎀 +3%/lv + 악마화 버프
 function pAtkCost(){return Math.max(.60,1-PASSIVES.pAtk*.04)} // ST비용 유지
 function pDefAdd(){return PASSIVES.pDef*5+(P._altDef||0)*30}   // 방어력 +5/lv +제단 (10lv=+50)
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
@@ -10754,7 +10754,7 @@ function updateQS(){
           const _bnsCdNow=P._bnsCd||0;
           _skOnCd=_bnsCdNow>0;
           _skCdTxt=_skOnCd?`<span style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.75rem;color:#ff8844;font-weight:700">${(_bnsCdNow/60).toFixed(1)}s</span>`:'';
-          _skCdOverlay=_skOnCd?`<div style="position:absolute;bottom:0;left:0;right:0;height:${~~(Math.min(_bnsCdNow/660,1)*100)}%;background:rgba(0,0,0,.5);pointer-events:none"></div>`:'';
+          _skCdOverlay=_skOnCd?`<div style="position:absolute;bottom:0;left:0;right:0;height:${~~(Math.min(_bnsCdNow/900,1)*100)}%;background:rgba(0,0,0,.5);pointer-events:none"></div>`:'';
         }else if(_ssid==='maliceStorm'||_ssid==='iceStorm'||_ssid==='boneWall'||_ssid==='hellRay'){
           const _stkMap={maliceStorm:P._msStk,iceStorm:P._isStk,boneWall:P._bwStk,hellRay:P._hrStk};
           const _rechMap={maliceStorm:P._msRech||0,iceStorm:P._isRech||0,boneWall:P._bwRech||0,hellRay:P._hrRech||0};
@@ -129351,6 +129351,7 @@ function update(){
   if(_cresCd>0)_cresCd-=_dtSp;
   if(_cresComboT>0){_cresComboT-=_dtSp;if(_cresComboT<=0)_cresStep=0;}
   if(P._execCd>0)P._execCd-=_dtSp; // 처형 쿨다운
+  if(P._demonBuffT>0){P._demonBuffT-=_dtSp;if(P._demonBuffT<=0){P._demonAtkBuff=1;addTxt(P.x,P.y-30,'\uc545\ub9c8\ud654 \uc885\ub8cc','#884444',40)}} // 악마화 버프 만료
   // 부활 버스트 VFX 업데이트
   for(let _rbi=_reviveBursts.length-1;_rbi>=0;_rbi--){
     const rb=_reviveBursts[_rbi];rb.t+=sp;
@@ -130165,7 +130166,7 @@ function update(){
       $('bossPoiseF').parentElement.style.borderColor='#444488';
     } else {
       // 평상시: 흰색 체간 바
-      const _postPct=(bE._maxPosture||100)>0?((bE._posture||0)/(bE._maxPosture||100)*100):0;
+      const _postPct=(bE._maxPosture||100)>0?(100-(bE._posture||0)/(bE._maxPosture||100)*100):100;
       _poiF.style.width=_postPct+'%';_poiF.style.background='linear-gradient(90deg,#aaaaaa,#ffffff)';
       _poiL.textContent='체간';_poiL.style.color='#dddddd';
       $('bossPoiseF').parentElement.style.borderColor='#666666';
@@ -130514,7 +130515,7 @@ function update(){
             const _bsRingR=~~(140+_bsLv*30);
             const _erF=_isFused('elecRepent');
             const _hrLv=_erF?(P.skills.hellRay||1):0;
-            const _syncDur=240; // 4초 고정 (악의폭풍과 동일)
+            const _syncDur=600; // 10초 고정 (악의폭풍과 동일)
             const _bsRiseDmg=~~(meleeRef()*statStr()*pAtkMul()*8*(1+(_bsLv-1)*0.15)*_fuseMul('boneWall'));
             if(!G._boneWalls)G._boneWalls=[];
             G._boneWalls.push({x:_mswx,y:_mswy,ringR:_bsRingR,wallThk:14,
@@ -130538,7 +130539,7 @@ function update(){
             _castSuccess=true;
           }
         }else{
-          G._fireZones.push({x:_mswx,y:_mswy,r:_msR,t:0,maxT:240,
+          G._fireZones.push({x:_mswx,y:_mswy,r:_msR,t:0,maxT:600,
             dmg:_msDmg,el:EL.L,lv:_msLv,type:'storm'});
           SFX.magic(EL.L);
           addTxt(_mswx,_mswy-20,'⚡악의폭풍!','#cc88ff',30);
@@ -130547,7 +130548,7 @@ function update(){
         }
         if(_castSuccess){
           if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))};
-          if(_msBF){P._bnsCd=660}else{P._msStk--;const _msMx2=(P.skills.maliceStorm>=10)?3:2;if(P._msStk<_msMx2&&!P._msRech)P._msRech=660}
+          if(_msBF){P._bnsCd=900}else{P._msStk--;const _msMx2=(P.skills.maliceStorm>=10)?3:2;if(P._msStk<_msMx2&&!P._msRech)P._msRech=660}
           _addSkProf('maliceStorm');
           P._msAiming=false;
         }
@@ -132251,7 +132252,7 @@ function updateE(e,sp){
   // 피격 경직 (짧은 히트스턴)
   if(e._hitStun>0){e._hitStun-=sp;return}
   if(e.stunned>0){
-    if(e.ib){e.stunned=Math.min(e.stunned,90);if(e._pImmune>0)e._pImmune-=sp}
+    if(e.ib){e.stunned=Math.min(e.stunned,180);if(e._pImmune>0)e._pImmune-=sp}
     else{e.stunned=Math.min(e.stunned,120)} // 일반몹 기절 캡 2초
     e.stunned-=sp;
     if(e.stunned<=0&&e.ib)e._pImmune=Math.max(e._pImmune||0,480);
@@ -136272,7 +136273,7 @@ function hurtP(dmg,opts){
     P.iframes=0;if(P.s!=='charge'&&P.s!=='sBlock'&&P.s!=='pStun'&&P.s!=='whirlwind'){
       // ═══ 포이즈 감소 → 기절 (D4식) ═══
       const _pd=Math.max(5,~~(a*0.3));P.poise=(P.poise||P.maxPoise)-_pd;P.poiseR=0;
-      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=120;SFX.groggy();addTxt(P.x,P.y-22,'💫 기절!','#ffaa00',60);G.hitStop=~~(_HS.pStun*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=180;SFX.groggy();addTxt(P.x,P.y-22,'💫 기절!','#ffaa00',60);G.hitStop=~~(_HS.pStun*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
       else{P.s='stagger';P.st2=6}
     }
     // 회전 중: 경직/기절 면역, 포이즈 감소 절반만
@@ -136392,6 +136393,22 @@ function _drPlay(onDone){
 function _drReset(){_drBuf=[];_drIdx=0;_drLen=0;_drCaptT=0}
 
 function die(){
+  // ── 악마화 부활: Lv100마다 부활력 10%, Lv1000=100% 확정. 게임당 1회 ──
+  const _demonPow=Math.min(100,~~(P.lv/100)*10);
+  if(_demonPow>0&&!P._demonRevived&&Math.random()*100<_demonPow){
+    P._demonRevived=true;
+    // 즉시 악마화 부활: 풀HP + 공격력 +20% (30초) + 10초 무적
+    P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;P.iframes=600;
+    P._demonAtkBuff=1.2;P._demonBuffT=1800;
+    P.s='idle';P.st2=0;
+    G._flashT=10;G._flashCol='#ff0000';G.shake=20*OPT.shake/100;G.slowMo=30;
+    SFX.groggy();playSample('boss_howl',.8,_r(.9,.1));
+    addTxt(P.x,P.y-50,'\uc545\ub9c8\ud654 \ubd80\ud65c!','#ff2200',120);
+    addTxt(P.x,P.y-25,'\ubd80\ud65c\ub825 '+_demonPow+'%','#ff8844',50);
+    for(let k=0;k<30;k++){const a=Math.PI*2*k/30;poolPart(P.x,P.y,Math.cos(a)*8,Math.sin(a)*8,k%2===0?'#ff0000':'#ff8800',5,20)}
+    return;
+  }
+  // ── 부활 불발 → 일반 사망 ──
   SFX.beamStop();_stopShieldLoop();SFX.die();G.on=false;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;
   BGM.fadeOut(500);setTimeout(()=>BGM.play('death'),600);
   ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.remove('on'));
