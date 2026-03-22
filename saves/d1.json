@@ -1,8 +1,8 @@
 {
-  "ts": 1774160995747,
+  "ts": 1774161152478,
   "player": {
     "lv": 185,
-    "exp": 569,
+    "exp": 1017,
     "maxExp": 2188,
     "sp": 37,
     "ap": 11,
@@ -12,14 +12,14 @@
     "baseDef": 10.200000000000001,
     "mpR": 0.8635,
     "stR": 0.6545000000000001,
-    "hp": 731.2709131250037,
+    "hp": 941.3908665625006,
     "mhp": 943,
-    "mp": 331.5102779999891,
+    "mp": 429,
     "mmp": 429,
-    "st": 70.77935874999619,
+    "st": 259,
     "mst": 259,
     "speed": 4.3808609999999994,
-    "shield": 238.90000000000487,
+    "shield": 613,
     "mshield": 613
   },
   "inv": {
@@ -1298,11 +1298,11 @@
     },
     {
       "type": "mp",
-      "count": 270
+      "count": 271
     },
     {
       "type": "st",
-      "count": 289
+      "count": 294
     },
     {
       "type": null,
@@ -1311,8 +1311,8 @@
   ],
   "game": {
     "stage": 1,
-    "kills": 9781,
-    "mats": 337672
+    "kills": 9790,
+    "mats": 340813
   },
   "bagMax": 204,
   "hellCleared": [],
@@ -1373,21 +1373,21 @@
   },
   "skProf": {
     "kiSlash": 9999,
-    "chargeBoost": 5355,
+    "chargeBoost": 5460,
     "maliceSwipe": 2835,
     "holyDome": 945,
     "spikeTrap": 1500,
     "maliceStorm": 3360,
-    "omniBeam": 1372,
-    "fanShot": 555,
+    "omniBeam": 1377,
+    "fanShot": 556,
     "maliceMortar": 1320,
     "chainAssault": 1185,
     "detonate": 4505,
     "boneWall": 30,
-    "elemMissile": 514,
-    "chainSlam": 600,
+    "elemMissile": 515,
+    "chainSlam": 615,
     "ghostWalk": 20,
-    "whirlwind": 177,
+    "whirlwind": 181,
     "shieldThrow": 150,
     "quakeStride": 85,
     "bladeDash": 60,
@@ -1395,20 +1395,20 @@
   },
   "fuseProfSec": {},
   "cardProf": {
-    "dimBreach": 5355,
-    "dimSlam": 6540,
-    "dimThunder": 7140,
+    "dimBreach": 5460,
+    "dimSlam": 6645,
+    "dimThunder": 7260,
     "shieldFuse": 2985,
     "holyFuse": 945,
     "holyIce": 945,
     "boneStorm": 3390,
     "elecRepent": 3360,
-    "sixFuse": 5507.216666668919,
-    "elemFuse": 6733.583333319619,
-    "stormBeam": 11974.13333329399,
+    "sixFuse": 5533.316666668627,
+    "elemFuse": 6767.383333319229,
+    "stormBeam": 12014.233333293567,
     "iceMortar": 1320,
-    "whirlDet": 5240.549999997984,
-    "slamStorm": 5240.549999997984
+    "whirlDet": 5246.84999999795,
+    "slamStorm": 5246.84999999795
   },
   "activeChargeSk": "charge",
   "activeBowSk": "bladeShot",

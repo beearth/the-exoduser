@@ -7,27 +7,67 @@ import os, json
 from PIL import Image
 
 BASE = os.path.dirname(os.path.abspath(__file__))
-CELL = 64  # PixelLab 64x64 캔버스
+CELL = 64  # PixelLab 64x64 캔버스 (기본)
+# 128px 보스는 빌드 시 64px로 리사이즈 (아틀라스 통일)
+BOSS_128 = {34}  # si34 지옥 군주만 128px 원본
 
-# 챕터 보스 → stage index 매핑
+# 전체 보스 35종 → stage index 매핑 (폴더명, 스테이지)
+# PixelLab character ID → 폴더명 매핑은 download_bosses.py에서 처리
 BOSSES = [
-    ('boss_ch1_forest', 0),   # 숲의 감시자
-    ('boss_ch2_bug',    4),   # 벌레 수호자
-    ('boss_ch3_ice',   10),   # 얼음 망령
-    ('boss_ch4_flame', 14),   # 화염 악마
-    ('boss_ch5_war',   21),   # 전쟁의 잔해
-    ('boss_ch6_flesh', 26),   # 살점의 수호자
-    ('boss_ch7_hell',  32),   # 검은 성의 수호자
+    # ── 1장 썩은 숲 (si 0~3) ──
+    ('boss_si0_forest_watcher',   0),   # 숲의 감시자
+    ('boss_si1_mushroom_giant',   1),   # 독버섯 거인
+    ('boss_si2_forest_hunter',    2),   # 숲의 사냥꾼
+    ('boss_si3_parasitic_tree',   3),   # 숲의 기생수 (장보스)
+    # ── 2장 벌레굴 (si 4~9) ──
+    ('boss_si4_worm_guard',       4),   # 벌레 수호자
+    ('boss_si5_slime_beast',      5),   # 점액 괴수
+    ('boss_si6_parasite_mother',  6),   # 기생충 모체
+    ('boss_si7_egg_sac',          7),   # 거대 알주머니
+    ('boss_si8_flesh_lord',       8),   # 살벽의 군주
+    ('boss_si9_queen_maggot',     9),   # 여왕 구더기 (장보스)
+    # ── 3장 얼음굴 (si 10~13) ──
+    ('boss_si10_ice_wraith',     10),   # 얼음 망령
+    ('boss_si11_frost_knight',   11),   # 서리의 기사
+    ('boss_si12_frozen_guard',   12),   # 얼어붙은 감시자
+    ('boss_si13_sealed_ice',     13),   # 얼음 속 봉인 괴물 (장보스)
+    # ── 4장 화염지대 (si 14~20) ──
+    ('boss_si14_flame_demon',    14),   # 화염 악마
+    ('boss_si15_fire_pillar',    15),   # 불기둥 수호자
+    ('boss_si16_lava_heart',     16),   # 용암의 심장
+    ('boss_si17_flame_warrior',  17),   # 화염 전사
+    ('boss_si18_twin_flame',     18),   # 화염 쌍두
+    ('boss_si19_fire_bug_lord',  19),   # 불벌레 군주
+    ('boss_si20_flame_jailer',   20),   # 화염 감옥지기 (장보스)
+    # ── 5장 지옥 군단 (si 21~25) ──
+    ('boss_si21_war_remnant',    21),   # 전쟁의 잔해
+    ('boss_si22_bone_king',      22),   # 뼈산의 왕
+    ('boss_si23_demon_commander',23),   # 악마 사령관
+    ('boss_si24_iron_knight',    24),   # 철벽 기사단장
+    ('boss_si25_legion_commander',25),  # 군단 지휘관 (장보스)
+    # ── 6장 사도의 마굴 (si 26~31) ──
+    ('boss_si26_flesh_guard',    26),   # 살점의 수호자
+    ('boss_si27_bone_watcher',   27),   # 인간뼈 감시자
+    ('boss_si28_twisted',        28),   # 뒤틀린 자
+    ('boss_si29_tentacle_mother',29),   # 촉수의 어미
+    ('boss_si30_imperfect_apostle',30), # 불완전 사도
+    ('boss_si31_grand_apostle',  31),   # 대사도 (장보스)
+    # ── 7장 지옥성 (si 32~34) ──
+    ('boss_si32_dark_guardian',   32),   # 검은 성의 수호자
+    ('boss_si33_killu',          33),   # Killu (스토리보스)
+    ('boss_si34_hell_lord',      34),   # 지옥 군주 (최종보스, 128px)
 ]
 
 # PixelLab 애니메이션 → 게임 상태 매핑
 # _getBossAnimState 반환값: idle, attack, rage_attack, windup, rage_windup, stagger, breath, death, rage
 ANIM_MAP = {
     'fight-stance-idle-8-frames': 'idle',
+    'breathing-idle': 'idle',  # 대체 idle (fight-stance 없을 때)
     'cross-punch': 'attack',
     'high-kick': 'windup',
     'taking-punch': 'stagger',
     'walking-4-frames': 'walk',
+    'falling-back-death': 'death',
 }
 
 # 방향 우선순위: south 먼저 (facing 방향은 코드에서 flip으로 처리)
@@ -101,7 +141,7 @@ def build():
         boss_key = f'boss_{si}'
         json_data[boss_key] = {}
 
-        for state_name in ['idle', 'walk', 'attack', 'windup', 'stagger']:
+        for state_name in ['idle', 'walk', 'attack', 'windup', 'stagger', 'death']:
             if state_name not in states:
                 continue
             frames = states[state_name]
@@ -123,7 +163,9 @@ def build():
             if state_name == 'idle':
                 json_data[boss_key]['rage'] = frame_rects
                 json_data[boss_key]['breath'] = frame_rects
-                json_data[boss_key]['death'] = frame_rects
+        # death가 없으면 idle로 fallback
+        if 'death' not in json_data[boss_key] and 'idle' in json_data[boss_key]:
+            json_data[boss_key]['death'] = json_data[boss_key]['idle']
 
     out_png = os.path.join(BASE, 'atlas_bosses.png')
     out_json = os.path.join(BASE, 'atlas_bosses.json')
