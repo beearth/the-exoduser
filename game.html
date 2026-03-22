@@ -5299,6 +5299,23 @@ const _OBJ_SPR_MAP={
   'centipede':'assets/objects/centipede.png','larva':'assets/objects/larva.png',
   'minibug':'assets/objects/minibug.png','chitin_debris':'assets/objects/chitin_debris.png',
 };
+// ── 챕터별 맵 장식 에셋 (assets/map/ch*/) ──
+const _CH_DECO={
+  0:[ // CH1 썩은숲
+    {id:'m_tree1',file:'tree_dead_01.png',sz:64},{id:'m_tree2',file:'tree_dead_02.png',sz:64},{id:'m_tree3',file:'tree_dead_03.png',sz:64},
+    {id:'m_rtree',file:'rotten_tree.png',sz:64},{id:'m_stump',file:'rotten_stump.png',sz:48},
+    {id:'m_mush1',file:'mushroom_glow_01.png',sz:32,light:1},{id:'m_mush2',file:'mushroom_glow_02.png',sz:32,light:1},{id:'m_mush3',file:'mushroom_glow_03.png',sz:32,light:1},
+    {id:'m_eye',file:'eyeball.png',sz:24},{id:'m_eye1',file:'eye1_bloodshot.png',sz:24},{id:'m_eye2',file:'eye2_terror.png',sz:24},
+    {id:'m_poison',file:'poison_pool.png',sz:32},{id:'m_puddle',file:'poison_puddle.png',sz:32},
+    {id:'m_fblue',file:'glow_flower_blue.png',sz:32,light:1},{id:'m_fyellow',file:'glow_flower_yellow.png',sz:32,light:1},
+    {id:'m_fbones',file:'frozen_bones.png',sz:32},
+    {id:'m_larva',file:'larva.png',sz:32},{id:'m_mini',file:'minibug.png',sz:24},
+  ],
+};
+// 프리로드
+for(const[ch,list]of Object.entries(_CH_DECO)){
+  for(const d of list){const p='assets/map/ch'+(+ch+1)+'/'+d.file;_OBJ_SPR_MAP[d.id]=p;const im=new Image();im.src=p;_OBJ_SPR[d.id]=im;_OBJ_META[d.id]={sz:d.sz||32,light:d.light||0}}
+}
 for(const[k,v]of Object.entries(_OBJ_SPR_MAP)){const im=new Image();im.src=v;_OBJ_SPR[k]=im}
 const _OBJ_META={
   'dead_tree':{sz:64,col:1},'dead_tree_02':{sz:64,col:1},'dead_tree_03':{sz:64,col:1},
@@ -9724,6 +9741,39 @@ function initMapObjects(){
         MAP_OBJS.push({type:'altar',x:ax,y:ay,hell,used:false});
       }
     }
+  }
+  // ── 챕터별 맵 장식 자동 배치 ──
+  const _chDeco=_CH_DECO[hell];
+  if(_chDeco&&_chDeco.length>0){
+    const _dcSeed=_tseed(G.stage*13+7,hell*97+3);
+    // 바닥 타일 수집
+    const _dcFloors=[];
+    for(let y=3;y<G.mh-3;y++)for(let x=3;x<G.mw-3;x++){if(map[y][x]===0)_dcFloors.push({x,y})}
+    // 맵 크기 비례 배치 수 (바닥 100타일당 1개, 최소 10 최대 60)
+    const _dcCnt=Math.max(10,Math.min(60,~~(_dcFloors.length/100)));
+    let _dcPlaced=0;
+    for(let di=0;di<_dcCnt&&_dcFloors.length>0;di++){
+      const _fi=~~(_dcSeed()*_dcFloors.length);
+      const _ft=_dcFloors[_fi];
+      // 벽에서 2타일 이상 떨어진 곳만
+      let _wallOk=true;
+      for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){
+        const tx=_ft.x+dx,ty=_ft.y+dy;
+        if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0){if(Math.abs(dx)<=1&&Math.abs(dy)<=1)_wallOk=false}
+      }
+      if(!_wallOk){_dcFloors.splice(_fi,1);di--;continue}
+      // 기존 오브젝트와 겹침 방지
+      const _px=_ft.x*T+T/2,_py=_ft.y*T+T/2;
+      let _tooClose=false;
+      for(const mo of MAP_OBJS){if(dst(_px,_py,mo.x,mo.y)<60){_tooClose=true;break}}
+      for(const sp of _sysPos){if(Math.abs(sp.x-_ft.x)<10&&Math.abs(sp.y-_ft.y)<10){_tooClose=true;break}}
+      if(_tooClose){_dcFloors.splice(_fi,1);di--;continue}
+      // 랜덤 에셋 선택
+      const _dObj=_chDeco[~~(_dcSeed()*_chDeco.length)];
+      MAP_OBJS.push({type:_dObj.id,x:_px,y:_py,hell});
+      _dcFloors.splice(_fi,1);_dcPlaced++;
+    }
+    console.log('[DECO] ch'+(hell+1)+' auto-placed:'+_dcPlaced);
   }
   // 에디터 배치 오브젝트 복원
   for(const eo of _editorObjs)MAP_OBJS.push(eo);
@@ -119112,7 +119162,7 @@ function update(){
       const _wwMin=100;const _wwMax=200+(_wwLv-1)*30+(_wwLv>=10?30:0); // 1렙200, 9렙470, 10렙500
       const _wwRangeBase=_wwMin+(_wwMax-_wwMin)*Math.min(1,_wwGrow);
       const _wwRange=_wwRangeBase;
-      const _wwDmg=~~(meleeRef()*0.525*(1+(_wwLv-1)*0.05)*2*(1+_wwGrow*(_wwFused?.6:.4))*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1));
+      const _wwDmg=~~(meleeRef()*statStr()*0.525*(1+(_wwLv-1)*0.05)*2*(1+_wwGrow*(_wwFused?.6:.4))*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1));
       hitArc(P.wwAng,_wwRange,Math.PI,_wwDmg,wp().el,'weapon');
       SFX.slashSeq();
     }
@@ -120330,7 +120380,7 @@ function update(){
     }
     // ══ 무지개콩탄: 패링 시 관통 대폭 감소, 방패/일반은 30% 관통 ══
     const _wwDetAbs=P.s==='whirlwind'&&_isFused('whirlDet');
-    const _bkHitR=P.s==='wSwing'||P.s==='sBash'||_sbPW?_rbDeflR:_pCollR+16;
+    const _bkHitR=P.s==='sBash'||_sbPW?_rbDeflR:_pCollR+16;
     // 회전참 중: iframes여도 범위 내 탄 소멸 (흡수율 적용 데미지)
     if(p.blackBean&&!_pHit&&_pDist<_bkHitR&&P.iframes>0&&!P._ioActive&&P.s==='whirlwind'){
       const _bkAbs3=Math.min(.95,0.70+0+(_isFused('whirlDet')?(P.skills.detonate||1)*0.005:0));
@@ -121037,7 +121087,7 @@ function update(){
       const chgPct=_gs.chgPct||0; // 차징 비율 0~1
       const _baseMul=1+chgPct*2; // 차징 뎀 배율: 1x~3x
       const _gsR=~~(60+(slv-1)*5+chgPct*80); // 폭발 범위: 60~140
-      const _gsDmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*2*_baseMul*(1+(slv-1)*0.1));
+      const _gsDmg=~~(meleeRef()*statDex()*pBowMul()*DPS_BAL.bow*2*_baseMul*(1+(slv-1)*0.1));
       // 착탄점 폭발
       const _gsNe=shQuery(bx,by,_gsR+20);
       for(let gi=0;gi<_gsNe.length;gi++){const e=_gsNe[gi];if(!e.alive)continue;
@@ -121086,7 +121136,7 @@ function update(){
       if(_bs.phase==='boom'){
         const slv=_bs.slv||1;const bx=_bs.x,by=_bs.y;
         const boomR=~~(130*(1+(slv-1)*0.1));
-        const boomDmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*4*(1+(slv-1)*0.1));
+        const boomDmg=~~(meleeRef()*statDex()*pBowMul()*DPS_BAL.bow*4*(1+(slv-1)*0.1));
         const ne=shQuery(bx,by,boomR+20);
         for(let i=0;i<ne.length;i++){const e=ne[i];if(!e.alive)continue;
           if(dst(bx,by,e.x,e.y)<boomR+e.r){
@@ -127777,7 +127827,7 @@ function _fireFanShot(){
   const _fanLv=P.skills.fanShot||1;
   const _fanCnt=6; // 항상 6발
   const range=400+(_fanLv-1)*68;const bspd=20; // 탄속 2배
-  const _baseDmg=meleeRef()*pBowMul()*DPS_BAL.bow;
+  const _baseDmg=meleeRef()*statDex()*pBowMul()*DPS_BAL.bow;
   const dmg=~~(_baseDmg*(1+(_fanLv-1)*.1)/_fanCnt*2)+~~(_fsStC*1.5);
   const fanAng=.15; // 촘촘한 부채꼴
   for(let fi=0;fi<_fanCnt;fi++){
@@ -127925,8 +127975,8 @@ function activateBladeShot(){
   const _bsStC=2+slv; // ST: 1렙3, 업당+1
   if(P.st<_bsStC)return;P.st-=_bsStC;
   const _bsBon=~~(_bsStC*1.5);
-  const orbDmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*4*(1+(slv-1)*0.1))+_bsBon;
-  const shardDmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*1.5*(1+(slv-1)*0.1))+~~(_bsBon*.3);
+  const orbDmg=~~(meleeRef()*statDex()*pBowMul()*DPS_BAL.bow*4*(1+(slv-1)*0.1))+_bsBon;
+  const shardDmg=~~(meleeRef()*statDex()*pBowMul()*DPS_BAL.bow*1.5*(1+(slv-1)*0.1))+~~(_bsBon*.3);
   const dx=Math.cos(P.facing),dy=Math.sin(P.facing);
   const _mxD=~~(400*(1+(slv-1)*0.11)); // 1렙 400, 10렙 ~796
   const px=P.x+dx*20, py=P.y+dy*20;
@@ -127962,7 +128012,7 @@ function activateNeedleShot(){
   _addSkProf('needleShot');
   P.st-=_nStC;P._ndCd=90;
   const a=P.facing;const spd=30; // 최대속도
-  const dmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*1.2*(1+(slv-1)*0.12));
+  const dmg=~~(meleeRef()*statDex()*pBowMul()*DPS_BAL.bow*1.2*(1+(slv-1)*0.12));
   const _nPierce=Math.min(0.95,0.3+slv*0.05);const _nPMax=2+slv;
   const range=600;
   const _nCnt=5+~~(slv/2); // 2렙당 +1발 (1렙5, 2렙6, 4렙7, 6렙8, 8렙9, 10렙10)
@@ -127986,7 +128036,7 @@ function activateGrenadeShot(){
   P._gsCharge=0;P._gsCharging=false;
   const maxLen=500+(slv-1)*44; // 1렙 500, 10렙 896
   const hitR=~~(40*(1+(slv-1)*0.22)); // 1렙 40, 10렙 ~120
-  const baseDmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*6*(1+(slv-1)*0.2));
+  const baseDmg=~~(meleeRef()*statDex()*pBowMul()*DPS_BAL.bow*6*(1+(slv-1)*0.2));
   // 경로상 모든 적에게 데미지
   const ne=shQuery(P.x,P.y,maxLen+hitR);
   for(let gi=0;gi<ne.length;gi++){const e=ne[gi];if(!e.alive)continue;
@@ -128116,7 +128166,7 @@ function activateGiantSlam(){
   // 즉시 히트 (hitStop/slowMo 억제)
   G._noHitStopT=60;
   const _gs1R=400+(slv-1)*15;
-  const _gs1Dmg=~~(meleeRef()*6*(1+(slv-1)*0.10));
+  const _gs1Dmg=~~(meleeRef()*statStr()*6*(1+(slv-1)*0.10));
   const _gs1El=wp().el||0;
   _gSlamHit(P.facing,_gs1R,Math.PI,_gs1Dmg,_gs1El,0,1.0);
   G.hitStop=0;G.slowMo=0;
@@ -128785,10 +128835,15 @@ function _renderSkillRow(sk,grid){
         const _grpDone=_isFused(_grp.key);
         const _grpPS=_fuseSelId&&_fuseSelId!==sk.id&&_fuseGemGroup(_fuseSelId)&&(_fuseGemGroup(_fuseSelId).key===_grp.key||(_FUSE_PAIRS[_grp.key]||[]).includes(_fuseSelId));
         const _fBtn=document.createElement('div');_fBtn.dataset.nodrag='1';_fBtn.dataset.fuseKey=_grp.key;
+        const _fBtnSks=_FUSE_PAIRS[_grp.key]||[];
+        const _fBtnStar=(_FUSE_GEM_GROUPS[_grp.key]&&_FUSE_GEM_GROUPS[_grp.key].star)||_fBtnSks.length;
+        const _fBtnSpc=_fBtnStar*3;
+        const _fBtnSpOk=P.sp>=_fBtnSpc;
         const _rdC=_grpReady||_grpDone?_grp.color:'#888888',_rdO=_grpReady||_grpDone?'1':'0.6';
         const _gNm=_FUSE_NAMES[_grp.key]||_grp.key;
         _fBtn.style.cssText='margin-top:6px;padding:5px 10px;border:1.5px solid '+_rdC+';border-radius:4px;color:'+_rdC+';font-size:.8rem;text-align:center;cursor:pointer;background:rgba(0,0,0,.4);transition:all .15s;opacity:'+_rdO+';'+(_isSel&&!_grpDone?'background:'+_grp.color+'33;box-shadow:0 0 12px '+_grp.color+'66;font-weight:700;border-color:'+_grp.color+';color:'+_grp.color+';opacity:1;':_grpPS?'background:'+_grp.color+'22;border-style:dashed;animation:_fglow 1s ease-in-out infinite;opacity:1;':'');
-        _fBtn.textContent=_isSel&&!_grpDone?'▶ '+_gNm+' — 파트너 클릭!':_grpPS?(_grpReady?'⬛ '+_gNm+' 합체!':'🔒 '+_gNm):_grpDone?'✅ '+_gNm+' 완료':_grpReady?'◆ '+_gNm+' 합체 가능':'◆ '+_gNm;
+        const _spLbl=_grpDone?'':' (SP'+_fBtnSpc+')';
+        _fBtn.textContent=_isSel&&!_grpDone?'▶ '+_gNm+' — 파트너 클릭!'+_spLbl:_grpPS?(_grpReady?(_fBtnSpOk?'⬛ '+_gNm+' 합체!'+_spLbl:'⚠ '+_gNm+' SP부족! ('+P.sp+'/'+_fBtnSpc+')'):'🔒 '+_gNm):_grpDone?'✅ '+_gNm+' 완료':_grpReady?(_fBtnSpOk?'◆ '+_gNm+' 합체 가능'+_spLbl:'◆ '+_gNm+' ⚠SP부족 ('+P.sp+'/'+_fBtnSpc+')'):'◆ '+_gNm+_spLbl;
         // 합체 조건 미달 시 호버 툴팁 생성
         let _fuseTip='';
         if(!_grpReady&&!_grpDone){
