@@ -1180,6 +1180,9 @@ function dbRestore(d){
     INV.bag.forEach(_fixBr);_fixBr(INV.equipped.bracelet);
     if(STORAGE&&STORAGE.items)STORAGE.items.forEach(_fixBr);
     if(INV.equipped.headband===undefined)INV.equipped.headband=null;
+    // 팔찌/머리띠 ??? 아이템 수리 마이그레이션
+    const _fixBrHb=(it)=>{if(it&&it.name==='???'){const _n={bracelet:{0:['낡은 팔찌','은 팔찌','흑요석 팔찌','미스릴 팔찌','천벌의 팔찌']},headband:{0:['낡은 머리띠','은사 머리띠','흑요석 머리띠','미스릴 머리띠','천벌의 머리띠']}};if(_n[it.slot]){it.name=(_n[it.slot][it.el||0]||_n[it.slot][0])[Math.min(it.tier||0,4)];it.emoji=SLOT_EMOJI[SLOT_NAMES.indexOf(it.slot)];if(!it.def&&it.slot==='bracelet'){it.def=1+(it.tier||0);it.eDef=1+(it.tier||0);it.bonusHp=5+(it.tier||0)*5}if(!it.eDef&&it.slot==='headband'){it.eDef=2+(it.tier||0)*2;it.mpRegen=1+(it.tier||0)}}}};
+    INV.bag.forEach(_fixBrHb);_fixBrHb(INV.equipped.bracelet);_fixBrHb(INV.equipped.headband);
     // 방패→견갑 이름 마이그레이션
     const _fixShieldName=(it)=>{if(it&&it.name&&it.slot==='shield')it.name=it.name.replace(/방패/g,'견갑').replace(/대견갑/g,'대견갑')};
     INV.bag.forEach(_fixShieldName);
@@ -4761,6 +4764,8 @@ function mkItem(slot,tier,el,rarity,wtype){
     ring1:{0:['녹슨 반지','은 반지','흑요석 반지','미스릴 반지','천벌의 반지'],1:['불꽃 반지','화염 반지','염화 반지','지옥 반지','멸화의 반지'],2:['냉기 반지','빙결 반지','빙하 반지','서리 반지','영겁빙 반지'],3:['그림자 반지','암흑 반지','심연 반지','나락 반지','무간의 반지'],4:['전기 반지','낙뢰 반지','뇌전 반지','뇌신 반지','만뢰의 반지'],5:['축복 반지','성광 반지','신성 반지','천사의 반지','신벌의 반지']},
     ring2:null,// ring1 이름 공유
     cape:{0:['낡은 망토','가죽 망토','강철사 망토','미스릴 망토','천벌의 망토'],1:['불꽃 망토','화염 망토','염화 망토','지옥 망토','멸화의 망토'],2:['냉기 망토','빙결 망토','빙하 망토','서리의 망토','영겁빙 망토'],3:['그림자 망토','암흑 망토','심연 망토','나락 망토','무간의 망토'],4:['전기 망토','낙뢰 망토','뇌전 망토','뇌신 망토','만뢰의 망토'],5:['축복 망토','성광 망토','신성 망토','천사의 망토','신벌의 망토']},
+    bracelet:{0:['낡은 팔찌','은 팔찌','흑요석 팔찌','미스릴 팔찌','천벌의 팔찌'],1:['불꽃 팔찌','화염 팔찌','염화 팔찌','지옥 팔찌','멸화의 팔찌'],2:['냉기 팔찌','빙결 팔찌','빙하 팔찌','서리의 팔찌','영겁빙 팔찌'],3:['그림자 팔찌','암흑 팔찌','심연 팔찌','나락 팔찌','무간의 팔찌'],4:['전기 팔찌','낙뢰 팔찌','뇌전 팔찌','뇌신 팔찌','만뢰의 팔찌'],5:['축복 팔찌','성광 팔찌','신성 팔찌','천사의 팔찌','신벌의 팔찌']},
+    headband:{0:['낡은 머리띠','은사 머리띠','흑요석 머리띠','미스릴 머리띠','천벌의 머리띠'],1:['불꽃 머리띠','화염 머리띠','염화 머리띠','지옥 머리띠','멸화의 머리띠'],2:['냉기 머리띠','빙결 머리띠','빙하 머리띠','서리의 머리띠','영겁빙 머리띠'],3:['그림자 머리띠','암흑 머리띠','심연 머리띠','나락 머리띠','무간의 머리띠'],4:['전기 머리띠','낙뢰 머리띠','뇌전 머리띠','뇌신 머리띠','만뢰의 머리띠'],5:['축복 머리띠','성광 머리띠','신성 머리띠','천사의 머리띠','신벌의 머리띠']},
   };
   const base={
     weapon:{atk:10+tier*5,spd:1},
@@ -4775,7 +4780,9 @@ function mkItem(slot,tier,el,rarity,wtype){
     necklace:{def:1+tier*1,eDef:1+tier*2},
     ring1:{eDef:1+tier*1},
     ring2:{eDef:1+tier*1},
-    cape:{def:2+tier*2,eDef:1+tier*1,spd:tier*.03}
+    cape:{def:2+tier*2,eDef:1+tier*1,spd:tier*.03},
+    bracelet:{def:1+tier*1,eDef:1+tier*1,bonusHp:5+tier*5},
+    headband:{eDef:2+tier*2,mpRegen:1+tier*1}
   };
   const b=base[slot];
   if(!b)return{id:~~(performance.now()*1000)+~~(Math.random()*9999),slot,el,rarity,tier,name:'???',emoji:'❓'};
@@ -5400,7 +5407,7 @@ const _CH_DECO={
     {id:'m_tree1',file:'tree_dead_01.png',sz:100},{id:'m_tree2',file:'tree_dead_02.png',sz:100},{id:'m_tree3',file:'tree_dead_03.png',sz:100},
     {id:'m_rtree',file:'rotten_tree.png',sz:100},{id:'m_stump',file:'rotten_stump.png',sz:72},
     {id:'m_mush1',file:'mushroom_glow_01.png',sz:48,light:1},{id:'m_mush2',file:'mushroom_glow_02.png',sz:48,light:1},{id:'m_mush3',file:'mushroom_glow_03.png',sz:48,light:1},
-    {id:'m_eye',file:'eyeball.png',sz:56},{id:'m_eye1',file:'eye1_bloodshot.png',sz:56},{id:'m_eye2',file:'eye2_terror.png',sz:56},
+    {id:'m_eye',file:'eyeball.png',sz:80},{id:'m_eye1',file:'eye1_bloodshot.png',sz:80},{id:'m_eye2',file:'eye2_terror.png',sz:80},
     {id:'m_poison',file:'poison_pool.png',sz:48},{id:'m_puddle',file:'poison_puddle.png',sz:48},
     {id:'m_fblue',file:'glow_flower_blue.png',sz:40,light:1},{id:'m_fyellow',file:'glow_flower_yellow.png',sz:40,light:1},
     {id:'m_fbones',file:'frozen_bones.png',sz:48},
@@ -9760,7 +9767,7 @@ function initGlowObjects(){
 }
 // ═══ [MAP-OBJ] 맵 오브젝트 시스템 ═══
 function initMapObjects(){
-  const _editorObjs=MAP_OBJS.filter(o=>o.type&&!['bonfire','lore','breakable','trap','altar','m_eye','m_eye1','m_eye2','eyeball','eye_mushroom','eye1_bloodshot','eye2_terror'].includes(o.type));
+  const _editorObjs=MAP_OBJS.filter(o=>o.type&&!['bonfire','lore','breakable','trap','altar'].includes(o.type));
   MAP_OBJS=[];const hell=SI_TO_HELL[G.stage],map=G.map,rooms=G.rooms;
   // 겹침 체크 헬퍼 (에디터 오브젝트 + 소환굴 포함)
   function _moOk(x,y){
@@ -9902,7 +9909,24 @@ function initMapObjects(){
     }
     console.log('[DECO] ch'+(hell+1)+' auto-placed:'+_dcPlaced);
   }
-  // ── 벽 눈깔: MAP_OBJS 이미지 에셋 제거됨 → _initEyes 스프라이트 시트로 통합 ──
+  // ── 벽 눈깔 에셋 배치 ──
+  if(hell===0||hell===1){
+    const _eyeIds=['m_eye','m_eye1','m_eye2'];
+    const _eyeSeed=_tseed(G.stage*31+13,hell*53+7);
+    let _eyePlaced=0;
+    for(let y=2;y<G.mh-2;y++)for(let x=2;x<G.mw-2;x++){
+      if(map[y][x]!==1)continue;
+      let adjFloor=false;
+      if((y>0&&map[y-1][x]===0)||(y<G.mh-1&&map[y+1][x]===0)||(x>0&&map[y][x-1]===0)||(x<G.mw-1&&map[y][x+1]===0))adjFloor=true;
+      if(!adjFloor)continue;
+      if(_eyeSeed()<.04){
+        const _eid=_eyeIds[~~(_eyeSeed()*_eyeIds.length)];
+        MAP_OBJS.push({type:_eid,x:x*T+T/2,y:y*T+T/2,hell});
+        _eyePlaced++;
+      }
+    }
+    console.log('[EYES] wall eyes:'+_eyePlaced);
+  }
   // 에디터 배치 오브젝트 복원
   for(const eo of _editorObjs)MAP_OBJS.push(eo);
   console.log('[MAP_OBJS]',MAP_OBJS.length,'(editor:'+_editorObjs.length+')',MAP_OBJS.map(m=>m.type));
@@ -116689,8 +116713,6 @@ function genFromTemplate(tmpl,si){
     if(!o.id||o.id==='player_start'||o.id==='boss_pos'||o.id==='exit'||o.id==='boss_gate'||o.id==='boss_exit')continue;
     // 기존 시스템 오브젝트(bonfire등)는 스킵 — 별도 생성됨
     if(o.id==='bonfire'||o.id==='lore'||o.id==='trap'||o.id==='altar'||o.id==='forge')continue;
-    // 눈깔 이미지 에셋 스킵 — 스프라이트 시트 시스템으로 대체됨
-    if(o.id==='m_eye'||o.id==='m_eye1'||o.id==='m_eye2'||o.id==='eyeball'||o.id==='eye_mushroom'||o.id==='eye1_bloodshot'||o.id==='eye2_terror')continue;
     MAP_OBJS.push({type:o.id,x:o.x*T,y:o.y*T,hell:SI_TO_HELL[si]});
   }}
 }
@@ -118120,8 +118142,10 @@ function update(){
     P.st2-=sp;
     // 카운트다운 파티클 (피 흘리기)
     if(Math.random()>.7){poolPart(P.x+(Math.random()-.5)*20,P.y+(Math.random()-.5)*10,(Math.random()-.5)*1,-0.5-Math.random(),'#880000',2+Math.random()*2,15+Math.random()*10)}
-    if(P.st2<=0){_fallenResolve();return}
+    if(P.st2<=0){_fallenResolve();}
+    return; // 쓰러짐 중 모든 행동 차단
   }
+  if(P.s==='dead')return; // 사망 확정 — 모든 행동 차단
   // ═══ 신성한 땅 — 안에 있는지 체크 ═══
   let _inHolyDome=false,_hdLv=1;
   if(G._fireZones){for(let _hdi=0;_hdi<G._fireZones.length;_hdi++){const _hd=G._fireZones[_hdi];if(_hd.type==='holyDome'&&dst(P.x,P.y,_hd.x,_hd.y)<_hd.r){_inHolyDome=true;_hdLv=_hd.lv||1;break}}}
@@ -130777,38 +130801,7 @@ function draw(){
       X.drawImage(dImg,d.x-dw/2,d.y-dh/2,dw,dh);
     }
   }
-  // [FLOOR-EYE] 바닥 눈깔 스프라이트 렌더
-  if(_eyeInited&&_floorEyeImg.complete&&_floorEyeImg.naturalWidth>0){
-    const _epx=P.x,_epy=P.y;
-    const FW=40,FH=40;
-    const ESCALE=T/24;
-    const DW=FW*ESCALE,DH=FH*ESCALE;
-    for(let _ei=0;_ei<_eyeObjs.length;_ei++){
-      const _e=_eyeObjs[_ei];
-      const _sx=_e.x-G.cam.x+C.width/2;
-      const _sy=_e.y-G.cam.y+C.height/2;
-      if(_sx<-DW||_sx>C.width+DW||_sy<-DH||_sy>C.height+DH)continue;
-      // 플레이어 방향 → 8방향 프레임
-      const _dx=_epx-_e.x,_dy=_epy-_e.y;
-      const _ang=Math.atan2(_dy,_dx);
-      _e.frame=~~(((_ang+Math.PI)/(Math.PI*2))*8+0.5)%8;
-      // 깜빡임
-      _e.blinkT++;
-      if(_e.blink===0&&_e.blinkT>_e.blinkNext){_e.blink=1;_e.blinkT=0}
-      else if(_e.blink===1&&_e.blinkT>10){_e.blink=0;_e.blinkT=0;_e.blinkNext=120+(_ei*41%200)}
-      if(_e.blink===1)continue;
-      X.globalAlpha=_e.alpha;
-      X.drawImage(_floorEyeImg,_e.frame*FW,0,FW,FH,_sx-DW/2,_sy-DH/2,DW,DH);
-      // 플레이어 근접 시 붉은 글로우
-      const _dist2=_dx*_dx+_dy*_dy;
-      if(_dist2<(T*5)*(T*5)){
-        X.globalAlpha=_e.alpha*(1-Math.sqrt(_dist2)/(T*5))*.35;
-        X.fillStyle='#cc1111';
-        X.beginPath();X.arc(_sx,_sy,DW*.3,0,Math.PI*2);X.fill();
-      }
-      X.globalAlpha=1;
-    }
-  }
+  // [FLOOR-EYE] 비활성화 — MAP_OBJS 에셋으로 대체됨
   // 출구 타일만 실시간 렌더 (펄스 애니메이션)
   for(let ei=0;ei<G.exits.length;ei++){
     const ex=G.exits[ei];const px=ex.x*T,py=ex.y*T;
@@ -131171,6 +131164,18 @@ function draw(){
             const _si=((~~(mo.x*7919+mo.y*104729+31))&0x7fffffff)%(_sh.c*_sh.r);
             X.drawImage(_spr,(_si%_sh.c)*_cw,~~(_si/_sh.c)*_ch,_cw,_ch,mo.x-sz/2,mo.y-sz/2,sz,sz);
           }else if(_meta&&_meta.rot){X.save();X.translate(mo.x,mo.y);X.rotate(_meta.rot*Math.PI/180);X.drawImage(_spr,-sz/2,-sz/2,sz,sz);X.restore()
+          }else if((mo.type==='m_eye'||mo.type==='m_eye1'||mo.type==='m_eye2')&&_floorEyeImg.naturalWidth>0){
+            // 눈깔: 스프라이트 시트로 플레이어 추적
+            // 시트: 0=center,1=S,2=SW,3=W,4=NW,5=N,6=NE,7=E,8=SE
+            const _edx=P.x-mo.x,_edy=P.y-mo.y;
+            const _edist=_edx*_edx+_edy*_edy;
+            let _efr=0; // 멀면 center
+            if(_edist>T*T){
+              const _eang=Math.atan2(_edy,_edx);
+              const _ei8=~~(((_eang+Math.PI)/(Math.PI*2))*8+0.5)%8;
+              _efr=[3,4,5,6,7,8,1,2][_ei8]; // W,NW,N,NE,E,SE,S,SW → 시트 프레임
+            }
+            X.drawImage(_floorEyeImg,_efr*40,0,40,40,mo.x-sz/2,mo.y-sz/2,sz,sz);
           }else X.drawImage(_spr,mo.x-sz/2,mo.y-sz/2,sz,sz);
           // 발광 오브젝트: 포인트라이트
           if(_meta&&_meta.light){X.globalAlpha=.15+Math.sin(_now/800+mo.x)*.05;X.fillStyle='rgba(255,180,80,0.3)';X.beginPath();X.arc(mo.x,mo.y,80,0,Math.PI*2);X.fill();X.globalAlpha=1}
@@ -135587,10 +135592,10 @@ function drawP(){
     // 스프라이트 그리기 (죽음 시 쓰러짐 연출)
     X.save();X.translate(_px,_py);
     if(_apDead){
-      const _dieT=P.s==='fallen'?(1-P.st2/180):1; // 0→1 over 3초
+      const _dieT=Math.min(1,P.s==='fallen'?(1-P.st2/180)*3:1); // 1초 만에 빠르게 쓰러짐
+      X.translate(0,_dieT*20*_pScale); // 바닥으로 내려감
       X.rotate(_dieT*Math.PI/2); // 옆으로 쓰러짐
-      X.globalAlpha=Math.max(.2,1-_dieT*.6); // 서서히 투명
-      X.translate(0,_dieT*10); // 아래로 내려감
+      X.globalAlpha=Math.max(.3,1-_dieT*.5);
     }
     X.scale(_pScale,_pScale);
     SpriteAnimator.draw(P._sa,X,0,0,!_apHasDir&&Math.abs(_fa)>Math.PI/2,_apHasDir?_apDir:null);

@@ -57,6 +57,11 @@ const _SL = {
   any:['weapon','bow','armor','helmet','gloves','pants','boots','cape','ring1','ring2','necklace','shield'],
 };
 
+// ─── 팔찌/머리띠 베이스 스탯 ───
+// bracelet: def=1+tier, eDef=1+tier, bonusHp=5+tier*5
+// headband: eDef=2+tier*2, mpRegen=1+tier
+// 팔찌 타입: demon(부활력/부활쿨), life(HP/리젠/회복력)
+
 // ─── 임플리싯 테이블 (슬롯 고정 1개) ───
 // stat: game.html 내 P. 또는 item. 에 적용될 필드명
 // val: [min, max] 롤 범위
