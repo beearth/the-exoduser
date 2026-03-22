@@ -235,6 +235,19 @@ const OBJ_DEFS=[
   {id:'meat_stake',   name:'내장걸이',   icon:'🥩', color:'#cc2222', cat:'장식',img:'assets/objects/meat_stake.png',sz:64},
   {id:'acid_pool',    name:'산성웅덩이', icon:'☣️', color:'#44ff00', cat:'장식',img:'assets/objects/acid_pool.png',sz:56},
   {id:'vine_pillar',  name:'덩굴기둥',   icon:'🏛️', color:'#556b2f', cat:'장식',img:'assets/objects/vine_pillar.png',sz:72},
+  // ── 충돌 구덩이 (진입불가) ──
+  {id:'pit_lava',    name:'용암구덩이', icon:'🌋', color:'#ff4400', cat:'충돌',img:'assets/objects/pit_lava.png',sz:200,collision:true},
+  {id:'pit_poison',  name:'독구덩이',   icon:'☣️', color:'#44ff00', cat:'충돌',img:'assets/objects/pit_poison.png',sz:200,collision:true},
+  {id:'pit_ice',     name:'얼음구덩이', icon:'🧊', color:'#44aaff', cat:'충돌',img:'assets/objects/pit_ice.png',sz:200,collision:true},
+  {id:'pit_corpse',  name:'시체구덩이', icon:'💀', color:'#882222', cat:'충돌',img:'assets/objects/pit_corpse.png',sz:200,collision:true},
+  {id:'pit_bugs',    name:'벌레구덩이', icon:'🐛', color:'#886622', cat:'충돌',img:'assets/objects/pit_bugs.png',sz:200,collision:true},
+  // ── 용암길 (충돌) ──
+  {id:'lava_straight',name:'용암길-1자',icon:'🌋',color:'#ff4400',cat:'충돌',img:'assets/objects/lava_straight.png',sz:300,collision:true},
+  {id:'lava_s',      name:'용암길-S자', icon:'🌋',color:'#ff6600',cat:'충돌',img:'assets/objects/lava_s.png',sz:300,collision:true},
+  {id:'lava_l',      name:'용암길-ㄴ자',icon:'🌋',color:'#ff8800',cat:'충돌',img:'assets/objects/lava_l.png',sz:200,collision:true,rot:true},
+  {id:'lava_l_90',   name:'용암길-ㄴ90',icon:'🌋',color:'#ff8800',cat:'충돌',img:'assets/objects/lava_l.png',sz:200,collision:true,rot:90},
+  {id:'lava_l_180',  name:'용암길-ㄴ180',icon:'🌋',color:'#ff8800',cat:'충돌',img:'assets/objects/lava_l.png',sz:200,collision:true,rot:180},
+  {id:'lava_l_270',  name:'용암길-ㄴ270',icon:'🌋',color:'#ff8800',cat:'충돌',img:'assets/objects/lava_l.png',sz:200,collision:true,rot:270},
 ];
 // ── 오브젝트 이미지 프리로드 ──
 const _objImgs={};
