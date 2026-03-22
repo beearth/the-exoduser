@@ -138452,7 +138452,7 @@ function renderSettings(){
     hint.textContent='아무 키 또는 마우스 버튼을 누르세요 (ESC = 취소)';
     list.appendChild(hint);
     const ov=document.createElement('div');ov.id='bindOverlay';
-    ov.style.cssText='position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;cursor:crosshair';
+    ov.style.cssText='position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;cursor:crosshair;pointer-events:none';
     ov.onmousedown=(e)=>{
       e.preventDefault();e.stopPropagation();
       if(_listenAlt){BINDS2[listeningBind]='mouse'+e.button}else{BINDS[listeningBind]='mouse'+e.button}
@@ -138460,6 +138460,8 @@ function renderSettings(){
     };
     ov.oncontextmenu=(e)=>{e.preventDefault()};
     document.body.appendChild(ov);
+    // 클릭으로 리스닝 진입 시 같은 mousedown이 오버레이에 전파되는 것 방지
+    setTimeout(()=>{ov.style.pointerEvents='auto'},120);
   }
 }
 $('setClose').onclick=()=>closePanel('settings');
