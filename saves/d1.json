@@ -1,21 +1,21 @@
 {
-  "ts": 1774146589077,
+  "ts": 1774149923733,
   "player": {
-    "lv": 50,
-    "exp": 235,
-    "maxExp": 265,
-    "sp": 10,
-    "ap": 10,
+    "lv": 70,
+    "exp": 290,
+    "maxExp": 435,
+    "sp": 2,
+    "ap": 14,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.24300000000000002,
-    "stR": 0.217,
-    "hp": 383,
-    "mhp": 383,
-    "mp": 181,
-    "mmp": 181,
-    "st": 141,
-    "mst": 141,
+    "mpR": 0.24800000000000003,
+    "stR": 0.222,
+    "hp": 396,
+    "mhp": 396,
+    "mp": 64.14600000000456,
+    "mmp": 186,
+    "st": 15.825249999998311,
+    "mst": 146,
     "speed": 3.2691165000000004,
     "shield": 0,
     "mshield": 0
@@ -600,11 +600,11 @@
     },
     {
       "type": "mp",
-      "count": 2
+      "count": 168
     },
     {
-      "type": null,
-      "count": 0
+      "type": "st",
+      "count": 89
     },
     {
       "type": null,
@@ -613,8 +613,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 1593,
-    "mats": 75506
+    "kills": 2433,
+    "mats": 105606
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -641,50 +641,63 @@
     "fanShot": 1,
     "maliceMortar": 1,
     "chainAssault": 1,
-    "chainSlam": 1
+    "chainSlam": 1,
+    "detonate": 1,
+    "maliceSwipe": 1,
+    "bladeShot": 1,
+    "boneWall": 1,
+    "holyBlast": 0,
+    "elemMissile": 1
   },
   "fused": {
-    "sixFuse": true
+    "sixFuse": true,
+    "boneStorm": true,
+    "elemFuse": true
   },
   "skProf": {
     "kiSlash": 9999,
-    "chargeBoost": 1110,
-    "maliceSwipe": 915,
-    "holyDome": 390,
-    "spikeTrap": 870,
-    "maliceStorm": 1530,
-    "omniBeam": 379,
-    "fanShot": 389,
-    "maliceMortar": 405,
-    "chainAssault": 165
+    "chargeBoost": 1755,
+    "maliceSwipe": 1470,
+    "holyDome": 525,
+    "spikeTrap": 1320,
+    "maliceStorm": 2070,
+    "omniBeam": 528,
+    "fanShot": 416,
+    "maliceMortar": 660,
+    "chainAssault": 360,
+    "detonate": 225,
+    "boneWall": 30,
+    "elemMissile": 375
   },
   "fuseProfSec": {},
   "cardProf": {
-    "dimBreach": 1110,
-    "dimSlam": 1275,
-    "dimThunder": 1275,
-    "shieldFuse": 915,
-    "holyFuse": 390,
-    "holyIce": 390,
-    "boneStorm": 1530,
-    "elecRepent": 1530,
-    "sixFuse": 1783.3166666658863,
-    "elemFuse": 1783.3166666658863,
-    "stormBeam": 1783.3166666658863,
-    "iceMortar": 405
+    "dimBreach": 1755,
+    "dimSlam": 2115,
+    "dimThunder": 2115,
+    "shieldFuse": 1470,
+    "holyFuse": 525,
+    "holyIce": 525,
+    "boneStorm": 2100,
+    "elecRepent": 2070,
+    "sixFuse": 2387.1166666687454,
+    "elemFuse": 2762.1166666687454,
+    "stormBeam": 2987.1166666687454,
+    "iceMortar": 660,
+    "whirlDet": 225,
+    "slamStorm": 225
   },
   "activeChargeSk": "charge",
-  "activeBowSk": "normal",
+  "activeBowSk": "bladeShot",
   "activeTechSk": "spikeTrap",
   "activeMagicSk": "beam",
   "activeLMBSk": "kiSlash",
   "activeRMBSk": "shieldBlock",
-  "activeQSk": "parry",
+  "activeQSk": "detonate",
   "activeCtSk": "ghostWalk",
   "skillSlots": [
     "maliceStorm",
     "spikeTrap",
-    null,
+    "bladeShot",
     null,
     "maliceMortar",
     "holyDome"

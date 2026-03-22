@@ -5312,7 +5312,10 @@ const _CH_DECO={
     {id:'m_larva',file:'larva.png',sz:32},{id:'m_mini',file:'minibug.png',sz:24},
   ],
 };
-// _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
+// 프리로드
+for(const[ch,list]of Object.entries(_CH_DECO)){
+  for(const d of list){const p='assets/map/ch'+(+ch+1)+'/'+d.file;_OBJ_SPR_MAP[d.id]=p;const im=new Image();im.src=p;_OBJ_SPR[d.id]=im;_OBJ_META[d.id]={sz:d.sz||32,light:d.light||0}}
+}
 for(const[k,v]of Object.entries(_OBJ_SPR_MAP)){const im=new Image();im.src=v;_OBJ_SPR[k]=im}
 const _OBJ_META={
   'dead_tree':{sz:64,col:1},'dead_tree_02':{sz:64,col:1},'dead_tree_03':{sz:64,col:1},
@@ -5327,10 +5330,6 @@ const _OBJ_META={
   'poison_puddle':{sz:32},'glow_flower_blue':{sz:32,light:1},'glow_flower_yellow':{sz:32,light:1},
   'centipede':{sz:40},'larva':{sz:32},'minibug':{sz:24},'chitin_debris':{sz:32},
 };
-// _CH_DECO 프리로드
-for(const[ch,list]of Object.entries(_CH_DECO)){
-  for(const d of list){const p='assets/map/ch'+(+ch+1)+'/'+d.file;_OBJ_SPR_MAP[d.id]=p;const im=new Image();im.src=p;_OBJ_SPR[d.id]=im;_OBJ_META[d.id]={sz:d.sz||32,light:d.light||0}}
-}
 
 // ═══ RAM 최적화 시스템 ═══
 
@@ -119163,7 +119162,7 @@ function update(){
       const _wwMin=100;const _wwMax=200+(_wwLv-1)*30+(_wwLv>=10?30:0); // 1렙200, 9렙470, 10렙500
       const _wwRangeBase=_wwMin+(_wwMax-_wwMin)*Math.min(1,_wwGrow);
       const _wwRange=_wwRangeBase;
-      const _wwDmg=~~(meleeRef()*statStr()*0.525*(1+(_wwLv-1)*0.05)*2*(1+_wwGrow*(_wwFused?.6:.4))*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1));
+      const _wwDmg=~~(meleeRef()*0.525*(1+(_wwLv-1)*0.05)*2*(1+_wwGrow*(_wwFused?.6:.4))*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1));
       hitArc(P.wwAng,_wwRange,Math.PI,_wwDmg,wp().el,'weapon');
       SFX.slashSeq();
     }
@@ -121088,7 +121087,7 @@ function update(){
       const chgPct=_gs.chgPct||0; // 차징 비율 0~1
       const _baseMul=1+chgPct*2; // 차징 뎀 배율: 1x~3x
       const _gsR=~~(60+(slv-1)*5+chgPct*80); // 폭발 범위: 60~140
-      const _gsDmg=~~(meleeRef()*statDex()*pBowMul()*DPS_BAL.bow*2*_baseMul*(1+(slv-1)*0.1));
+      const _gsDmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*2*_baseMul*(1+(slv-1)*0.1));
       // 착탄점 폭발
       const _gsNe=shQuery(bx,by,_gsR+20);
       for(let gi=0;gi<_gsNe.length;gi++){const e=_gsNe[gi];if(!e.alive)continue;
@@ -121137,7 +121136,7 @@ function update(){
       if(_bs.phase==='boom'){
         const slv=_bs.slv||1;const bx=_bs.x,by=_bs.y;
         const boomR=~~(130*(1+(slv-1)*0.1));
-        const boomDmg=~~(meleeRef()*statDex()*pBowMul()*DPS_BAL.bow*4*(1+(slv-1)*0.1));
+        const boomDmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*4*(1+(slv-1)*0.1));
         const ne=shQuery(bx,by,boomR+20);
         for(let i=0;i<ne.length;i++){const e=ne[i];if(!e.alive)continue;
           if(dst(bx,by,e.x,e.y)<boomR+e.r){
@@ -127828,7 +127827,7 @@ function _fireFanShot(){
   const _fanLv=P.skills.fanShot||1;
   const _fanCnt=6; // 항상 6발
   const range=400+(_fanLv-1)*68;const bspd=20; // 탄속 2배
-  const _baseDmg=meleeRef()*statDex()*pBowMul()*DPS_BAL.bow;
+  const _baseDmg=meleeRef()*pBowMul()*DPS_BAL.bow;
   const dmg=~~(_baseDmg*(1+(_fanLv-1)*.1)/_fanCnt*2)+~~(_fsStC*1.5);
   const fanAng=.15; // 촘촘한 부채꼴
   for(let fi=0;fi<_fanCnt;fi++){
@@ -127976,8 +127975,8 @@ function activateBladeShot(){
   const _bsStC=2+slv; // ST: 1렙3, 업당+1
   if(P.st<_bsStC)return;P.st-=_bsStC;
   const _bsBon=~~(_bsStC*1.5);
-  const orbDmg=~~(meleeRef()*statDex()*pBowMul()*DPS_BAL.bow*4*(1+(slv-1)*0.1))+_bsBon;
-  const shardDmg=~~(meleeRef()*statDex()*pBowMul()*DPS_BAL.bow*1.5*(1+(slv-1)*0.1))+~~(_bsBon*.3);
+  const orbDmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*4*(1+(slv-1)*0.1))+_bsBon;
+  const shardDmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*1.5*(1+(slv-1)*0.1))+~~(_bsBon*.3);
   const dx=Math.cos(P.facing),dy=Math.sin(P.facing);
   const _mxD=~~(400*(1+(slv-1)*0.11)); // 1렙 400, 10렙 ~796
   const px=P.x+dx*20, py=P.y+dy*20;
@@ -128013,7 +128012,7 @@ function activateNeedleShot(){
   _addSkProf('needleShot');
   P.st-=_nStC;P._ndCd=90;
   const a=P.facing;const spd=30; // 최대속도
-  const dmg=~~(meleeRef()*statDex()*pBowMul()*DPS_BAL.bow*1.2*(1+(slv-1)*0.12));
+  const dmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*1.2*(1+(slv-1)*0.12));
   const _nPierce=Math.min(0.95,0.3+slv*0.05);const _nPMax=2+slv;
   const range=600;
   const _nCnt=5+~~(slv/2); // 2렙당 +1발 (1렙5, 2렙6, 4렙7, 6렙8, 8렙9, 10렙10)
@@ -128037,7 +128036,7 @@ function activateGrenadeShot(){
   P._gsCharge=0;P._gsCharging=false;
   const maxLen=500+(slv-1)*44; // 1렙 500, 10렙 896
   const hitR=~~(40*(1+(slv-1)*0.22)); // 1렙 40, 10렙 ~120
-  const baseDmg=~~(meleeRef()*statDex()*pBowMul()*DPS_BAL.bow*6*(1+(slv-1)*0.2));
+  const baseDmg=~~(meleeRef()*pBowMul()*DPS_BAL.bow*6*(1+(slv-1)*0.2));
   // 경로상 모든 적에게 데미지
   const ne=shQuery(P.x,P.y,maxLen+hitR);
   for(let gi=0;gi<ne.length;gi++){const e=ne[gi];if(!e.alive)continue;
@@ -128167,7 +128166,7 @@ function activateGiantSlam(){
   // 즉시 히트 (hitStop/slowMo 억제)
   G._noHitStopT=60;
   const _gs1R=400+(slv-1)*15;
-  const _gs1Dmg=~~(meleeRef()*statStr()*6*(1+(slv-1)*0.10));
+  const _gs1Dmg=~~(meleeRef()*6*(1+(slv-1)*0.10));
   const _gs1El=wp().el||0;
   _gSlamHit(P.facing,_gs1R,Math.PI,_gs1Dmg,_gs1El,0,1.0);
   G.hitStop=0;G.slowMo=0;
@@ -128836,15 +128835,10 @@ function _renderSkillRow(sk,grid){
         const _grpDone=_isFused(_grp.key);
         const _grpPS=_fuseSelId&&_fuseSelId!==sk.id&&_fuseGemGroup(_fuseSelId)&&(_fuseGemGroup(_fuseSelId).key===_grp.key||(_FUSE_PAIRS[_grp.key]||[]).includes(_fuseSelId));
         const _fBtn=document.createElement('div');_fBtn.dataset.nodrag='1';_fBtn.dataset.fuseKey=_grp.key;
-        const _fBtnSks=_FUSE_PAIRS[_grp.key]||[];
-        const _fBtnStar=(_FUSE_GEM_GROUPS[_grp.key]&&_FUSE_GEM_GROUPS[_grp.key].star)||_fBtnSks.length;
-        const _fBtnSpc=_fBtnStar*3;
-        const _fBtnSpOk=P.sp>=_fBtnSpc;
         const _rdC=_grpReady||_grpDone?_grp.color:'#888888',_rdO=_grpReady||_grpDone?'1':'0.6';
         const _gNm=_FUSE_NAMES[_grp.key]||_grp.key;
         _fBtn.style.cssText='margin-top:6px;padding:5px 10px;border:1.5px solid '+_rdC+';border-radius:4px;color:'+_rdC+';font-size:.8rem;text-align:center;cursor:pointer;background:rgba(0,0,0,.4);transition:all .15s;opacity:'+_rdO+';'+(_isSel&&!_grpDone?'background:'+_grp.color+'33;box-shadow:0 0 12px '+_grp.color+'66;font-weight:700;border-color:'+_grp.color+';color:'+_grp.color+';opacity:1;':_grpPS?'background:'+_grp.color+'22;border-style:dashed;animation:_fglow 1s ease-in-out infinite;opacity:1;':'');
-        const _spLbl=_grpDone?'':' (SP'+_fBtnSpc+')';
-        _fBtn.textContent=_isSel&&!_grpDone?'▶ '+_gNm+' — 파트너 클릭!'+_spLbl:_grpPS?(_grpReady?(_fBtnSpOk?'⬛ '+_gNm+' 합체!'+_spLbl:'⚠ '+_gNm+' SP부족! ('+P.sp+'/'+_fBtnSpc+')'):'🔒 '+_gNm):_grpDone?'✅ '+_gNm+' 완료':_grpReady?(_fBtnSpOk?'◆ '+_gNm+' 합체 가능'+_spLbl:'◆ '+_gNm+' ⚠SP부족 ('+P.sp+'/'+_fBtnSpc+')'):'◆ '+_gNm+_spLbl;
+        _fBtn.textContent=_isSel&&!_grpDone?'▶ '+_gNm+' — 파트너 클릭!':_grpPS?(_grpReady?'⬛ '+_gNm+' 합체!':'🔒 '+_gNm):_grpDone?'✅ '+_gNm+' 완료':_grpReady?'◆ '+_gNm+' 합체 가능':'◆ '+_gNm;
         // 합체 조건 미달 시 호버 툴팁 생성
         let _fuseTip='';
         if(!_grpReady&&!_grpDone){
