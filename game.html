@@ -5407,7 +5407,7 @@ const _CH_DECO={
     {id:'m_tree1',file:'tree_dead_01.png',sz:100},{id:'m_tree2',file:'tree_dead_02.png',sz:100},{id:'m_tree3',file:'tree_dead_03.png',sz:100},
     {id:'m_rtree',file:'rotten_tree.png',sz:100},{id:'m_stump',file:'rotten_stump.png',sz:72},
     {id:'m_mush1',file:'mushroom_glow_01.png',sz:48,light:1},{id:'m_mush2',file:'mushroom_glow_02.png',sz:48,light:1},{id:'m_mush3',file:'mushroom_glow_03.png',sz:48,light:1},
-    {id:'m_eye',file:'eyeball.png',sz:80},{id:'m_eye1',file:'eye1_bloodshot.png',sz:80},{id:'m_eye2',file:'eye2_terror.png',sz:80},
+    {id:'m_eye',file:'eyeball.png',sz:40},{id:'m_eye1',file:'eye1_bloodshot.png',sz:40},{id:'m_eye2',file:'eye2_terror.png',sz:40},
     {id:'m_poison',file:'poison_pool.png',sz:48},{id:'m_puddle',file:'poison_puddle.png',sz:48},
     {id:'m_fblue',file:'glow_flower_blue.png',sz:40,light:1},{id:'m_fyellow',file:'glow_flower_yellow.png',sz:40,light:1},
     {id:'m_fbones',file:'frozen_bones.png',sz:48},
@@ -116573,54 +116573,67 @@ function genFromTemplate(tmpl,si){
   if(bossRm){
     bossCx=bossRm.cx;bossCy=bossRm.cy;
     const bRx=bossRd.rx||12,bRy=bossRd.ry||bRx;
-    // 4방향 중 보스방 중심에서 가장 가까운 벽으로 게이트
+    // 보스방 경계 4방향 스캔: 어느 쪽에 복도(바닥)가 연결되어 있는지 감지
+    let _entFloor={top:0,bot:0,left:0,right:0};
+    for(let x=bossCx-bRx;x<=bossCx+bRx;x++){
+      const yt=bossCy-bRy-1,yb=bossCy+bRy+1;
+      if(x>=0&&x<mw&&yt>=0&&map[yt][x]===0)_entFloor.top++;
+      if(x>=0&&x<mw&&yb<mh&&map[yb][x]===0)_entFloor.bot++;
+    }
+    for(let y=bossCy-bRy;y<=bossCy+bRy;y++){
+      const xl=bossCx-bRx-1,xr=bossCx+bRx+1;
+      if(y>=0&&y<mh&&xl>=0&&map[y][xl]===0)_entFloor.left++;
+      if(y>=0&&y<mh&&xr<mw&&map[y][xr]===0)_entFloor.right++;
+    }
+    // 복도가 가장 많이 연결된 방향 = 입구, 반대편 = 게이트
+    const _entArr=[{d:'top',v:_entFloor.top},{d:'bot',v:_entFloor.bot},{d:'left',v:_entFloor.left},{d:'right',v:_entFloor.right}];
+    _entArr.sort((a,b)=>b.v-a.v);
+    const _entryDir=_entArr[0].d;
+    // 게이트 = 입구 반대편
+    const _gDir=_entryDir==='bot'?'top':_entryDir==='top'?'bot':_entryDir==='right'?'left':'right';
     const dTop=bossCy-bRy,dBot=mh-1-(bossCy+bRy),dLeft=bossCx-bRx,dRight=mw-1-(bossCx+bRx);
-    const minD=Math.min(dTop,dBot,dLeft,dRight);
-    if(minD===dTop){
-      _gateY=0;
-      for(let gy=0;gy<dTop+1;gy++)for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&gy<mh)map[gy][gx]=0;
-      for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw){map[0][gx]=3;_gateTiles.push({x:gx,y:0})}
-    }else if(minD===dBot){
-      _gateY=mh-1;
+    console.log('[GATE] entry='+_entryDir+' gate='+_gDir+' floors=',_entFloor);
+    if(_gDir==='top'){
+      _gateY=Math.max(0,bossCy-bRy-1);
+      for(let gy=0;gy<=dTop;gy++)for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&gy<mh)map[gy][gx]=0;
+      const gy0=Math.max(0,_gateY);
+      for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw){map[gy0][gx]=3;_gateTiles.push({x:gx,y:gy0})}
+    }else if(_gDir==='bot'){
+      _gateY=Math.min(mh-1,bossCy+bRy+1);
       for(let gy=bossCy+bRy;gy<mh;gy++)for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&gy>=0)map[gy][gx]=0;
-      for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw){map[mh-1][gx]=3;_gateTiles.push({x:gx,y:mh-1})}
-    }else if(minD===dLeft){
+      const gy0=Math.min(mh-1,_gateY);
+      for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw){map[gy0][gx]=3;_gateTiles.push({x:gx,y:gy0})}
+    }else if(_gDir==='left'){
       _gateY=bossCy;
-      for(let gx=0;gx<dLeft+1;gx++)for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&gx<mw)map[gy][gx]=0;
-      for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh){map[gy][0]=3;_gateTiles.push({x:0,y:gy})}
+      const gx0=Math.max(0,bossCx-bRx-1);
+      for(let gx=0;gx<=gx0;gx++)for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&gx<mw)map[gy][gx]=0;
+      for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh){map[gy][gx0]=3;_gateTiles.push({x:gx0,y:gy})}
     }else{
       _gateY=bossCy;
-      for(let gx=bossCx+bRx;gx<mw;gx++)for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&gx>=0)map[gy][gx]=0;
-      for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh){map[gy][mw-1]=3;_gateTiles.push({x:mw-1,y:gy})}
+      const gx0=Math.min(mw-1,bossCx+bRx+1);
+      for(let gx=gx0;gx<mw;gx++)for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&gx>=0)map[gy][gx]=0;
+      for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh){map[gy][gx0]=3;_gateTiles.push({x:gx0,y:gy})}
     }
+    // 입구 방향: 보스방 경계에서 복도까지 바닥 확보 (5칸)
+    for(let d=0;d<=5;d++){for(let w=-2;w<=2;w++){
+      let tx2,ty2;
+      if(_entryDir==='bot'){tx2=bossCx+w;ty2=bossCy+bRy+d}
+      else if(_entryDir==='top'){tx2=bossCx+w;ty2=bossCy-bRy-d}
+      else if(_entryDir==='left'){tx2=bossCx-bRx-d;ty2=bossCy+w}
+      else{tx2=bossCx+bRx+d;ty2=bossCy+w}
+      if(tx2>=1&&tx2<mw-1&&ty2>=1&&ty2<mh-1&&map[ty2][tx2]===1)map[ty2][tx2]=0;
+    }}
   }
 
-  // ── 6. 출구 (게이트 바로 앞) ──
+  // ── 6. 출구 (게이트 바로 안쪽 = 보스방 방향 1칸) ──
   const exits=[];
   if(bossRm&&_gateTiles.length>0){
-    const bRx=bossRd.rx||12,bRy=bossRd.ry||bRx;
-    const dTop=bossCy-bRy,dBot=mh-1-(bossCy+bRy),dLeft=bossCx-bRx,dRight=mw-1-(bossCx+bRx);
-    const minD=Math.min(dTop,dBot,dLeft,dRight);
-    if(minD===dTop){
-      for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&mh>1){map[1][gx]=2;exits.push({x:gx,y:1})}
-    }else if(minD===dBot){
-      for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&mh>1){map[mh-2][gx]=2;exits.push({x:gx,y:mh-2})}
-    }else if(minD===dLeft){
-      for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&mw>1){map[gy][1]=2;exits.push({x:1,y:gy})}
-    }else{
-      for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&mw>1){map[gy][mw-2]=2;exits.push({x:mw-2,y:gy})}
-    }
-    // 출구 접근성: 게이트→복도 방향으로 6칸 바닥 확보
-    const exitBase=exits[0];
-    if(exitBase){
-      for(let d=0;d<=6;d++){
-        let cx2,cy2;
-        if(minD===dTop){cx2=exitBase.x;cy2=exitBase.y+d}
-        else if(minD===dBot){cx2=exitBase.x;cy2=exitBase.y-d}
-        else if(minD===dLeft){cx2=exitBase.x+d;cy2=exitBase.y}
-        else{cx2=exitBase.x-d;cy2=exitBase.y}
-        if(cx2>=1&&cx2<mw-1&&cy2>=1&&cy2<mh-1&&map[cy2][cx2]===1)map[cy2][cx2]=0;
-      }
+    for(let _gi=0;_gi<_gateTiles.length;_gi++){
+      const gt=_gateTiles[_gi];
+      const _dx2=bossCx-gt.x,_dy2=bossCy-gt.y;
+      let ex=gt.x,ey=gt.y;
+      if(Math.abs(_dx2)>Math.abs(_dy2)){ex+=_dx2>0?1:-1}else{ey+=_dy2>0?1:-1}
+      if(ex>=0&&ex<mw&&ey>=0&&ey<mh){map[ey][ex]=2;exits.push({x:ex,y:ey})}
     }
   }
 
@@ -117130,7 +117143,8 @@ function mkEn(x,y,si,etype,ib,el,room){
   // ═══ 모든 몬스터 eShield = HP (50:50 이원 방어) ═══
   // GPU 텍스처 프리핀 (첫 drawImage 스파이크 방지)
   if((_useGPU||_useGL)&&_ESPRITES[etype]&&_ESPRITES[etype].img&&_ESPRITES[etype].img.complete){try{_getTex(_ESPRITES[etype].img)}catch(e){}}
-  return{x,y,r,hp:_hp,mhp:_hp,atk:_atk,baseAtk:_atk,
+  const _eShield=_hp; // eShield = HP (50:50 이원 방어)
+  return{x,y,r,hp:_hp,mhp:_hp,eShield:_eShield,eShieldMax:_eShield,atk:_atk,baseAtk:_atk,
     speed:spd,baseSpd:spd,el,col:ib?ELC[el]:_rare?_rd.col:(ETYPE_COL[etype]||ELC[el]),alive:true,stunned:0,kb:{x:0,y:0},
     poise:~~(_hp*.5),maxPoise:~~(_hp*.5),poiseR:0,
     ib,etype,room,lv:monLv,s:'idle',st2:30+Math.random()*50,facing:Math.random()*Math.PI*2,
@@ -126831,7 +126845,7 @@ function _drReset(){_drBuf=[];_drIdx=0;_drLen=0;_drCaptT=0}
 function die(){
   // ── 쓰러짐 → 3초 카운트다운 → 부활 판정 ──
   if(P.s==='fallen')return; // 이미 쓰러진 상태면 중복 방지
-  P.hp=0;P.s='fallen';P.st2=180; // 3초(180f) 카운트다운
+  P.hp=0;P.s='fallen';P.st2=90; // 1.5초(90f) 카운트다운
   P.iframes=9999; // 쓰러진 동안 무적
   P._fallenAng=P.facing+Math.PI; // 쓰러지는 방향
   G.slowMo=Math.max(G.slowMo,30); // 슬로모 연출
@@ -135592,7 +135606,7 @@ function drawP(){
     // 스프라이트 그리기 (죽음 시 쓰러짐 연출)
     X.save();X.translate(_px,_py);
     if(_apDead){
-      const _dieT=Math.min(1,P.s==='fallen'?(1-P.st2/180)*3:1); // 1초 만에 빠르게 쓰러짐
+      const _dieT=Math.min(1,P.s==='fallen'?(1-P.st2/90)*2:1); // 빠르게 쓰러짐
       X.translate(0,_dieT*20*_pScale); // 바닥으로 내려감
       X.rotate(_dieT*Math.PI/2); // 옆으로 쓰러짐
       X.globalAlpha=Math.max(.3,1-_dieT*.5);
@@ -135758,7 +135772,7 @@ function drawP(){
   // ══ 쓰러짐 카운트다운 렌더 ══
   if(P.s==='fallen'){
     const _fSec=Math.ceil(Math.max(0,P.st2)/60);
-    const _fProg=P.st2/180; // 1→0
+    const _fProg=P.st2/90; // 1→0
     // 어두운 비네팅
     X.save();X.globalAlpha=.3*(1-_fProg);X.fillStyle='#000';
     X.fillRect(G.cam.x-C.width/2,G.cam.y-C.height/2,C.width,C.height);X.restore();
