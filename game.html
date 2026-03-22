@@ -3229,10 +3229,6 @@ let _atlasPReady=false,_atlasP_img=null,_atlasP_frames=null;
 // ── 캐릭터 선택 시스템 (PixelLab 8방향) ──
 let _genSpriteOK=false;
 const CHAR_LIST=[
-  {id:'hell_slayer',name:'지옥 학살자',desc:'거츠 스타일. 특대검+석궁+망토',folder:'img/exoduser_warrior',fw:48,fh:48},
-  {id:'greatsword_hero',name:'대검 영웅',desc:'풀갑옷 기사. 특대검+빨간 망토',folder:'img/exoduser_warrior',fw:48,fh:48},
-  {id:'colossal_knight',name:'거대검 기사',desc:'검은 갑옷. 초대형 특대검',folder:'img/exoduser_warrior',fw:48,fh:48},
-  {id:'greatsword_knight',name:'대검 기사',desc:'표준 기사. 대검+갑옷',folder:'img/exoduser_warrior',fw:48,fh:48},
   {id:'exoduser_warrior',name:'엑소듀서 전사',desc:'다크 판타지 전사. 거대검+검은 갑옷',folder:'img/exoduser_warrior',fw:48,fh:48,idleN:4,walkN:8,atkN:16,whirlN:16,throwN:16,chainN:16},
 ];
 let _charIdx=0;
@@ -139689,12 +139685,15 @@ function renderForge(){
     [{type:'hp',n:'❤️‍🔥 HP 물약',col:'#cc2200'}].forEach(item=>{
       const lv=POT_LV[item.type],maxed=lv>=10;
       const cost=(lv+1)*5; // 5,10,15,...50
+      const reqLv=(lv+1)*100; // 1렙=Lv100, 2렙=Lv200, ...10렙=Lv1000
+      const lvOk=P.lv>=reqLv;
       const cur=potHeal(item.type),nxt=maxed?cur:POT[item.type].base+(lv+1)*POT[item.type].per;
       const label=item.n+' Lv.'+lv+(maxed?' (MAX)':'');
       const sel=_forgeSel&&_forgeSel.name===label;
       const d=document.createElement('div');d.className='fg-i'+(sel?' fg-sel':'');
-      d.innerHTML=`<div class="fg-in" style="color:${item.col}">${label}</div><div class="fg-id">${maxed?'최대 강화':'회복량 '+cur+' → '+nxt}</div>${maxed?'':'<div class="fg-ic">👿 '+cost+'</div>'}`;
-      if(!maxed)d.onclick=()=>_fgSelect(label,item.n+' 강화 Lv.'+(lv+1),cost,()=>{POT_LV[item.type]++;G.mats-=cost;addTxt(P.x,P.y-20,item.n+' Lv.'+POT_LV[item.type]+'!','#ffcc00',50);renderForge()});
+      const _lvTxt=maxed?'':(!lvOk?' <span style="color:#ff4444">⚠ Lv.'+reqLv+' 필요</span>':'');
+      d.innerHTML=`<div class="fg-in" style="color:${item.col}">${label}</div><div class="fg-id">${maxed?'최대 강화':'회복량 '+cur+' → '+nxt}${_lvTxt}</div>${maxed?'':'<div class="fg-ic">👿 '+cost+'</div>'}`;
+      if(!maxed&&lvOk)d.onclick=()=>_fgSelect(label,item.n+' 강화 Lv.'+(lv+1),cost,()=>{POT_LV[item.type]++;G.mats-=cost;addTxt(P.x,P.y-20,item.n+' Lv.'+POT_LV[item.type]+'!','#ffcc00',50);renderForge()});
       grid.appendChild(d);
     });
 
