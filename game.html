@@ -123199,15 +123199,15 @@ function updateE(e,sp){
   }
   // 빔 중첩 감소 (빔에 안 맞으면 0.5초 후 초당 5씩 감소)
   if(e._beamStk>0){if(e._beamStkT>0)e._beamStkT-=sp;else{e._beamStk=Math.max(0,e._beamStk-~~(5*sp/60));}}
-  // ═══ 상태 이상 DoT 처리 — 공통: 3초(180f), 초당1틱(60f), 3틱, 틱당 HP1% = 총3% ═══
+  // ═══ 상태 이상 DoT 처리 — 출혈=STR, 독=DEX, 화상=INT 스케일링 ═══
   if(e.bleedT>0){ e.bleedT-=sp; if(Math.floor(e.bleedT/60)<Math.floor((e.bleedT+sp)/60)){
-    const bDmg=Math.max(1,~~(e.mhp*.01)); hurtE(e,bDmg,undefined,true,{dot:true}); addTxt(e.x,e.y-18,'🩸-'+bDmg,'#cc2222',20); addParts(e.x,e.y,'#880000',3);
+    const bDmg=Math.max(1,~~(e.mhp*.01*statStr())); hurtE(e,bDmg,undefined,true,{dot:true}); addTxt(e.x,e.y-18,'🩸-'+bDmg,'#cc2222',20); addParts(e.x,e.y,'#880000',3);
   } if(e.bleedT<=0)e.bleed=0; }
   if(e.poisonT>0){ e.poisonT-=sp; if(Math.floor(e.poisonT/60)<Math.floor((e.poisonT+sp)/60)){
-    const pDmg=Math.max(1,~~(e.mhp*.01)); hurtE(e,pDmg,undefined,true,{dot:true}); addTxt(e.x,e.y-18,'🟢-'+pDmg,'#44cc00',20); addParts(e.x,e.y,'#006600',2);
+    const pDmg=Math.max(1,~~(e.mhp*.01*statDex())); hurtE(e,pDmg,undefined,true,{dot:true}); addTxt(e.x,e.y-18,'🟢-'+pDmg,'#44cc00',20); addParts(e.x,e.y,'#006600',2);
   } if(e.poisonT<=0)e.poison=0; }
   if(e.burnT>0){ e.burnT-=sp; if(Math.floor(e.burnT/60)<Math.floor((e.burnT+sp)/60)){
-    const buDmg=Math.max(1,~~(e.mhp*.01)); hurtE(e,buDmg,undefined,true,{dot:true}); addTxt(e.x,e.y-18,'🔥-'+buDmg,'#ff6600',20); addParts(e.x,e.y,'#ff4400',2);
+    const buDmg=Math.max(1,~~(e.mhp*.01*statInt())); hurtE(e,buDmg,undefined,true,{dot:true}); addTxt(e.x,e.y-18,'🔥-'+buDmg,'#ff6600',20); addParts(e.x,e.y,'#ff4400',2);
   } if(e.burnT<=0)e.burnT=0; }
   // ── 참회의 증표 타이머 ──
   if(e._hrMarkT>0){e._hrMarkT-=sp;if(e._hrMarkT<=0){e._hrMark=0;e._hrMarkT=0}}
