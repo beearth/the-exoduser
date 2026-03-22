@@ -138785,12 +138785,22 @@ const _cursorCache=[];
 function _buildCursor(idx){
   if(_cursorCache[idx])return _cursorCache[idx];
   if(idx===0){_cursorCache[0]='default';return 'default'}
-  const s=48;const cv=document.createElement('canvas');cv.width=s;cv.height=s;
+  const s=56;const cv=document.createElement('canvas');cv.width=s;cv.height=s;
   const x=cv.getContext('2d');
-  _CURSORS[idx].draw(x,s);
-  // 핫스팟: 손 커서들은 검지 끝(13,0), 검은 중앙(24,24), 조준은 중앙
-  const hx=(idx===3)?s/2:(idx===6)?s/2:13;
-  const hy=(idx===3)?1:(idx===6)?s/2:0;
+  // 손 커서: 8px 아래로 오프셋 (손톱/불꽃 잘림 방지)
+  const isHand=idx!==3&&idx!==6;
+  if(isHand){x.save();x.translate(0,8);_CURSORS[idx].draw(x,s-8);x.restore()}
+  else{_CURSORS[idx].draw(x,s)}
+  // 핫스팟: 각 커서별 뾰족한 끝 좌표
+  const _hotspots={
+    1:[13,0],  // 악마손: 손톱 끝 (오프셋 반영)
+    2:[13,0],  // 천사손: 손톱 끝
+    3:[s/2,1], // 지옥검: 칼날 끝
+    4:[13,0],  // 해골손: 손톱 끝
+    5:[13,0],  // 화염손: 불꽃 끝
+    6:[s/2,s/2] // 십자조준: 정중앙
+  };
+  const [hx,hy]=_hotspots[idx]||[0,0];
   _cursorCache[idx]='url('+cv.toDataURL()+') '+hx+' '+hy+', auto';
   return _cursorCache[idx];
 }
