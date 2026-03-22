@@ -67,6 +67,7 @@ ANIM_MAP = {
     'high-kick': 'windup',
     'taking-punch': 'stagger',
     'walking-4-frames': 'walk',
+    'walking': 'walk',  # 폴백 (walking-4-frames 없을 때)
     'falling-back-death': 'death',
 }
 
@@ -110,6 +111,16 @@ def build():
                 print(f'  [{folder}] {game_state}: {len(frames)} frames')
             else:
                 print(f'  [{folder}] {game_state}: 프레임 없음!')
+
+        # 애니 없어도 rotations/south.png가 있으면 idle 1프레임으로 사용
+        if 'idle' not in states:
+            rot_path = os.path.join(boss_dir, 'rotations', 'south.png')
+            if not os.path.exists(rot_path):
+                rot_path = os.path.join(boss_dir, 'rotations', 'east.png')
+            if os.path.exists(rot_path):
+                img = Image.open(rot_path).convert('RGBA')
+                states['idle'] = [img]
+                print(f'  [{folder}] idle: rotations 폴백 (1 frame)')
 
         if states:
             all_boss_data[si] = states

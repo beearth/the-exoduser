@@ -242,12 +242,23 @@ const OBJ_DEFS=[
   {id:'pit_corpse',  name:'시체구덩이', icon:'💀', color:'#882222', cat:'충돌',img:'objects/pit_corpse.png',sz:200,collision:true},
   {id:'pit_bugs',    name:'벌레구덩이', icon:'🐛', color:'#886622', cat:'충돌',img:'objects/pit_bugs.png',sz:200,collision:true},
   // ── 용암길 (충돌) ──
-  {id:'lava_straight',name:'용암길-1자',icon:'🌋',color:'#ff4400',cat:'충돌',img:'objects/lava_straight.png',sz:300,collision:true},
-  {id:'lava_s',      name:'용암길-S자', icon:'🌋',color:'#ff6600',cat:'충돌',img:'objects/lava_s.png',sz:300,collision:true},
-  {id:'lava_l',      name:'용암길-ㄴ자',icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l.png',sz:200,collision:true,rot:true},
-  {id:'lava_l_90',   name:'용암길-ㄴ90',icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l.png',sz:200,collision:true,rot:90},
-  {id:'lava_l_180',  name:'용암길-ㄴ180',icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l.png',sz:200,collision:true,rot:180},
-  {id:'lava_l_270',  name:'용암길-ㄴ270',icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l.png',sz:200,collision:true,rot:270},
+  // 1자
+  {id:'lava_straight',    name:'용암길-1자',      icon:'🌋',color:'#ff4400',cat:'충돌',img:'objects/lava_straight.png',sz:300,collision:true},
+  {id:'lava_straight_v2', name:'용암길-1자v2',    icon:'🌋',color:'#ff4400',cat:'충돌',img:'objects/lava_straight_nobg2.png',sz:300,collision:true},
+  // S자
+  {id:'lava_s',           name:'용암길-S자',      icon:'🌋',color:'#ff6600',cat:'충돌',img:'objects/lava_s.webp',sz:300,collision:true},
+  {id:'lava_s_v4b',       name:'용암길-S자v4b',   icon:'🌋',color:'#ff6600',cat:'충돌',img:'objects/lava_s_v4b.webp',sz:300,collision:true},
+  {id:'lava_s_v5c',       name:'용암길-S자v5c',   icon:'🌋',color:'#ff6600',cat:'충돌',img:'objects/lava_s_v5c.webp',sz:300,collision:true},
+  // ㄴ자
+  {id:'lava_l',           name:'용암길-ㄴ구',     icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l.png',sz:200,collision:true,rot:true},
+  {id:'lava_l_v6a',       name:'용암길-ㄴv6a',    icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l_v6a.webp',sz:300,collision:true},
+  {id:'lava_l_v6b',       name:'용암길-ㄷv6b',    icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l_v6b.webp',sz:300,collision:true},
+  {id:'lava_l_v6c',       name:'용암길-ㄴv6c',    icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l_v6c.webp',sz:300,collision:true},
+  {id:'lava_l_v6d',       name:'용암길-ㄴv6d',    icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l_v6d.webp',sz:300,collision:true},
+  // ㄴ자 회전
+  {id:'lava_l_90',        name:'용암길-ㄴ90',     icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l.webp',sz:200,collision:true,rot:90},
+  {id:'lava_l_180',       name:'용암길-ㄴ180',    icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l.webp',sz:200,collision:true,rot:180},
+  {id:'lava_l_270',       name:'용암길-ㄴ270',    icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l.webp',sz:200,collision:true,rot:270},
 ];
 // ── 오브젝트 이미지 프리로드 ──
 const _objImgs={};
