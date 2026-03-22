@@ -138445,6 +138445,18 @@ function renderSettings(){
     }
     list.appendChild(row);
   });
+  // 키바인딩 초기화 버튼
+  const resetBtn=document.createElement('div');
+  resetBtn.style.cssText='text-align:center;margin-top:12px;padding:8px;background:rgba(100,0,0,.2);border:1px solid #663333;color:#ff6666;cursor:pointer;font-size:.95rem;font-weight:700;letter-spacing:.1em';
+  resetBtn.textContent='⟲ 키 설정 초기화';
+  resetBtn.onclick=(e)=>{
+    e.stopPropagation();
+    BINDS={up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',weapon:'mouse0',shield:'mouse2',bow:'Space',charge:'ShiftLeft',parry:'KeyQ',beam:'KeyE',forge:'KeyG',inventory:'Tab',settings:'Escape',interact:'KeyR',storage:'KeyV',stats:'KeyC',skill:'KeyK',skillCycle:'KeyL'};
+    BINDS2={up:null,down:null,left:null,right:null,weapon:null,shield:null,bow:null,charge:null,parry:null,beam:null,skill:null,forge:null,inventory:null,settings:null,interact:null,storage:null,stats:null,skillCycle:null};
+    listeningBind=null;_listenAlt=false;saveSettings();renderSettings();
+    notify('키 설정 초기화 완료');
+  };
+  list.appendChild(resetBtn);
   // 리스닝 모드: 전체화면 투명 오버레이로 모든 마우스 버튼 캡처
   if(listeningBind){
     const hint=document.createElement('div');
