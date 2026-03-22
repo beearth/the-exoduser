@@ -3622,16 +3622,16 @@ const _bgImgs={};
 })();
 // ── 환경 데코 시스템 ──
 const MAP_DECOR_DEFS={0:[
-  {src:'docs/4.1맵디자인+설정/objects/glow_flower_blue.png',chance:0,scale:0.9},
-  {src:'docs/4.1맵디자인+설정/objects/glow_flower_yellow.png',chance:0,scale:0.85},
-  {src:'docs/4.1맵디자인+설정/objects/corpse.png',chance:0.006,scale:1.1},
-  {src:'docs/4.1맵디자인+설정/objects/bones.png',chance:0.01,scale:1.0},
-  {src:'docs/4.1맵디자인+설정/objects/vine_roots.png',chance:0.012,scale:0.9},
-  {src:'docs/4.1맵디자인+설정/objects/poison_puddle.png',chance:0.008,scale:1.1},
+  {src:'assets/objects/glow_flower_blue.png',chance:0,scale:0.9},
+  {src:'assets/objects/glow_flower_yellow.png',chance:0,scale:0.85},
+  {src:'assets/objects/corpse.png',chance:0.006,scale:1.1},
+  {src:'assets/objects/bones.png',chance:0.01,scale:1.0},
+  {src:'assets/objects/vine_roots.png',chance:0.012,scale:0.9},
+  {src:'assets/objects/poison_puddle.png',chance:0.008,scale:1.1},
 ],1:[
-  {src:'docs/4.1맵디자인+설정/objects/centipede.png',chance:0.004,scale:1.1},
-  {src:'docs/4.1맵디자인+설정/objects/larva.png',chance:0.003,scale:0.9},
-  {src:'docs/4.1맵디자인+설정/objects/chitin_debris.png',chance:0.005,scale:0.85},
+  {src:'assets/objects/centipede.png',chance:0.004,scale:1.1},
+  {src:'assets/objects/larva.png',chance:0.003,scale:0.9},
+  {src:'assets/objects/chitin_debris.png',chance:0.005,scale:0.85},
 ],2:[],3:[],4:[],5:[],6:[]};
 const _decorImgs={};
 (function _preloadDecor(){
@@ -3645,11 +3645,14 @@ const _decorImgs={};
 })();
 // ── 1장 벽 장식: 썩은 나무 이미지 ──
 const _wallTreeImgs={};
-['docs/4.1맵디자인+설정/objects/rotten_tree.png','docs/4.1맵디자인+설정/objects/rotten_stump.png'].forEach(s=>{const i=new Image();i.src=s;i.onload=()=>{_wallTreeImgs[s]=i}});
+['assets/objects/rotten_tree.png','assets/objects/rotten_stump.png'].forEach(s=>{const i=new Image();i.src=s;i.onload=()=>{_wallTreeImgs[s]=i}});
 // ── 벽 눈깔 이미지 (2장 벌레굴 전용) ──
-const _WALL_EYE_SRCS=['docs/4.1맵디자인+설정/objects/eye1_bloodshot.png','docs/4.1맵디자인+설정/objects/eye2_terror.png','docs/4.1맵디자인+설정/objects/eye1_bloodshot.png','docs/4.1맵디자인+설정/objects/eye2_terror.png','docs/4.1맵디자인+설정/objects/eye1_bloodshot.png'];
+const _WALL_EYE_SRCS=['assets/objects/eye1_bloodshot.png','assets/objects/eye2_terror.png','assets/objects/eye1_bloodshot.png','assets/objects/eye2_terror.png','assets/objects/eye1_bloodshot.png'];
 const _wallEyeImgs={};
 (function(){_WALL_EYE_SRCS.forEach(s=>{const img=new Image();img.src=s;img.onload=()=>{_wallEyeImgs[s]=img};img.onerror=()=>{}})})();
+const _floorEyeImg = new Image();
+_floorEyeImg.src = 'assets/map/eye_bloodshot_8dir.png';
+_floorEyeImg.onerror=()=>console.warn('[EYE] 파일 없음: assets/map/eye_bloodshot_8dir.png');
 const _FLAME_SRCS=['img/fx/flame01.png?v=4','img/fx/flame02.png?v=4','img/fx/flame03.png?v=4','img/fx/flame04.png?v=4'];
 const _flameImgs=[];
 (function(){_FLAME_SRCS.forEach((s,i)=>{const img=new Image();img.src=s;img.onload=()=>{_flameImgs[i]=img};img.onerror=()=>{}})})();
@@ -4775,6 +4778,7 @@ function mkItem(slot,tier,el,rarity,wtype){
     cape:{def:2+tier*2,eDef:1+tier*1,spd:tier*.03}
   };
   const b=base[slot];
+  if(!b)return{id:~~(performance.now()*1000)+~~(Math.random()*9999),slot,el,rarity,tier,name:'???',emoji:'❓'};
   if(slot==='weapon'||slot==='shield') el=EL.P;
   const item={id:Date.now()+Math.random(),slot,el,rarity,tier,
     name:(slot==='weapon'||slot==='bow')?'':(slot==='ring2'?names['ring1'][el][Math.min(tier,4)]:names[slot]?names[slot][el][Math.min(tier,4)]:''),
@@ -5384,11 +5388,11 @@ const _OBJ_SPR_MAP={
   'pit_lava':'assets/objects/pit_lava.png','pit_poison':'assets/objects/pit_poison.png',
   'pit_ice':'assets/objects/pit_ice.png','pit_corpse':'assets/objects/pit_corpse.png',
   'pit_bugs':'assets/objects/pit_bugs.png',
-  'lava_straight':'assets/objects/lava_straight.png','lava_straight_v2':'assets/objects/lava_straight_nobg2.png',
-  'lava_s':'assets/objects/lava_s.webp','lava_s_v4b':'assets/objects/lava_s_v4b.webp','lava_s_v5c':'assets/objects/lava_s_v5c.webp',
-  'lava_l':'assets/objects/lava_l.png','lava_l_v6a':'assets/objects/lava_l_v6a.webp','lava_l_v6b':'assets/objects/lava_l_v6b.webp',
-  'lava_l_v6c':'assets/objects/lava_l_v6c.webp','lava_l_v6d':'assets/objects/lava_l_v6d.webp',
-  'lava_l_90':'assets/objects/lava_l.webp','lava_l_180':'assets/objects/lava_l.webp','lava_l_270':'assets/objects/lava_l.webp',
+  'lava_straight':'assets/objects/lava_l.png','lava_straight_v2':'assets/objects/lava_l.png',
+  'lava_s':'assets/objects/lava_l.png','lava_s_v4b':'assets/objects/lava_l.png','lava_s_v5c':'assets/objects/lava_l.png',
+  'lava_l':'assets/objects/lava_l.png','lava_l_v6a':'assets/objects/lava_l.png','lava_l_v6b':'assets/objects/lava_l.png',
+  'lava_l_v6c':'assets/objects/lava_l.png','lava_l_v6d':'assets/objects/lava_l.png',
+  'lava_l_90':'assets/objects/lava_l.png','lava_l_180':'assets/objects/lava_l.png','lava_l_270':'assets/objects/lava_l.png',
 };
 // ── 챕터별 맵 장식 에셋 (assets/map/ch*/) ──
 const _CH_DECO={
@@ -9716,72 +9720,31 @@ function initWallEyes(){
     if(adjFloor&&R()<.05){WALL_EYES.push({x:tx*T+T/2+(R()-.5)*T*.5,y:ty*T+T/2+(R()-.5)*T*.5,radius:6+R()*4,pupilR:2+R()*1.5,pupilOff:3,veinCount:2+~~(R()*3),blinkTimer:0,blinkInterval:3000+R()*5000});count++}
   }}
 }
-// ═══ [GIANT-EYE] 대왕감시안구 (벽면 거대 눈알, 전 챕터) ═══
+// ═══ [FLOOR-EYE] 바닥 눈깔 스프라이트 시스템 ═══
 let _eyeObjs=[];let _eyeInited=false;
-const _GIANT_EYE_MAX=12; // 맵당 최대 12개
 function _initEyes(){
   _eyeObjs.length=0;_eyeInited=false;
-  const map=G.map,hell=SI_TO_HELL[G.stage];
-  let count=0;
-  // 벽 타일 중 남쪽이 바닥인 곳 → 벽면에 거대 눈알 삽입
-  for(let ty=1;ty<G.mh-1&&count<_GIANT_EYE_MAX;ty++){for(let tx=1;tx<G.mw-1&&count<_GIANT_EYE_MAX;tx++){
-    if(map[ty][tx]<1)continue; // 벽만
-    if(ty+1>=G.mh||map[ty+1][tx]!==0)continue; // 남쪽이 바닥
-    const R=_tseed(tx+199,ty+177);
-    if(R()<.025){ // 2.5% 확률
-      // 기존 눈알과 최소 거리 체크
-      const nx=tx*T+T*.5,ny=(ty+1)*T-T*.15;
-      let tooClose=false;
-      for(let i=0;i<_eyeObjs.length;i++){const d=Math.abs(_eyeObjs[i].x-nx)+Math.abs(_eyeObjs[i].y-ny);if(d<T*8){tooClose=true;break}}
-      if(tooClose)continue;
-      _eyeObjs[_eyeObjs.length]={
-        x:nx, y:ny,
-        blink:0,blinkT:0,blinkNext:200+~~(R()*400),
-        size:18+~~(R()*14), // 대왕: 18~31px (스프라이트 렌더 크기 = size*3)
-        alpha:.85+R()*.15
-      };
-      count++;
-    }
-  }}
-  // 에디터 수동 배치 giant_eye 로드
-  for(const mo of MAP_OBJS){
-    if(mo.type==='giant_eye'){
-      _eyeObjs[_eyeObjs.length]={
-        x:mo.x,y:mo.y,
-        blink:0,blinkT:0,blinkNext:200+~~(Math.random()*400),
-        size:25+~~(Math.random()*10), // 에디터 배치는 크게
-        alpha:.9
-      };
-      count++;
-    }
-  }
-  // MAP_OBJS에서 giant_eye 제거 (이미 _eyeObjs로 이관)
-  MAP_OBJS=MAP_OBJS.filter(o=>o.type!=='giant_eye');
-  // 자동배치 0개면 시작방 주변 벽에 강제 배치
-  if(count===0){
-    const _sr=G.rooms.find(r=>r.type==='start');
-    if(_sr){for(let dy=-15;dy<=15&&count<4;dy++)for(let dx=-15;dx<=15&&count<4;dx++){
-      const tx=_sr.cx+dx,ty=_sr.cy+dy;
-      if(tx<1||tx>=G.mw-1||ty<1||ty>=G.mh-1)continue;
-      if(map[ty][tx]<1||ty+1>=G.mh||map[ty+1][tx]!==0)continue;
-      const R2=_tseed(tx+199,ty+177);
-      if(R2()<.15){
-        let ok=true;for(let i=0;i<_eyeObjs.length;i++){if(Math.abs(_eyeObjs[i].x-tx*T)<T*5){ok=false;break}}
-        if(ok){_eyeObjs.push({x:tx*T+T*.5,y:(ty+1)*T-T*.15,blink:0,blinkT:0,blinkNext:200+~~(R2()*400),size:22+~~(R2()*10),alpha:.9});count++}
+  const hell=SI_TO_HELL[G.stage];
+  const map=G.map;
+  for(let ty=1;ty<G.mh-1;ty++){
+    for(let tx=1;tx<G.mw-1;tx++){
+      if(map[ty][tx]!==0)continue;
+      const adjWall=(map[ty-1][tx]>=1)||(map[ty+1][tx]>=1)||(map[ty][tx-1]>=1)||(map[ty][tx+1]>=1);
+      if(!adjWall)continue;
+      const R=_tseed(tx+99,ty+77);
+      const density=hell===0?0.04:hell===1?0.025:0.015;
+      if(R()<density){
+        _eyeObjs[_eyeObjs.length]={
+          x:tx*T+T*.5, y:ty*T+T*.5,
+          blink:0, blinkT:0, blinkNext:100+~~(R()*200),
+          frame:~~(R()*8),
+          size:3+~~(R()*3), alpha:.6+~~(R()*3)*.1
+        };
       }
-    }}
-  }
-  // 디버그: 무조건 시작방 근처에 1개 강제 배치
-  if(_eyeObjs.length===0){
-    const _sr2=G.rooms.find(r=>r.type==='start');
-    if(_sr2){
-      _eyeObjs.push({x:_sr2.cx*T,y:_sr2.cy*T-T*2,blink:0,blinkT:0,blinkNext:300,size:30,alpha:1});
-      count++;
-      console.log('[GIANT-EYE] 강제배치 at',_sr2.cx*T,_sr2.cy*T-T*2);
     }
   }
   _eyeInited=_eyeObjs.length>0;
-  console.log('[GIANT-EYE] 대왕감시안구 '+count+'개, _eyeInited='+_eyeInited+', spriteReady='+_eyeSpriteReady);
+  console.log('[EYE] count='+_eyeObjs.length+' hell='+hell+' imgReady='+_floorEyeImg.complete);
 }
 // ═══ [GLOW-ORI] 발광 오브젝트 ═══
 let GLOW_OBJECTS=[];const GLOW_MAX=30;
@@ -10242,7 +10205,7 @@ function buildMapCache(){
       if(R()<.5){c.fillStyle=`rgba(80,${140+~~(R()*40)},50,${.15+R()*.1})`;
         c.beginPath();c.ellipse(px+R()*T,py+R()*T,3+R()*5,2+R()*4,R()*Math.PI,0,Math.PI*2);c.fill()}
       // 5) 썩은 나무 이미지 (랜덤 배치)
-      if(R()<.12){const _wtSrc=R()<.6?'docs/4.1맵디자인+설정/objects/rotten_tree.png':'docs/4.1맵디자인+설정/objects/rotten_stump.png';const _wtI=_wallTreeImgs[_wtSrc];
+      if(R()<.12){const _wtSrc=R()<.6?'assets/objects/rotten_tree.png':'assets/objects/rotten_stump.png';const _wtI=_wallTreeImgs[_wtSrc];
         if(_wtI){const _wtS=.6+R()*.4;const _wtW=_wtI.width*_wtS,_wtH=_wtI.height*_wtS;
           c.globalAlpha=.7+R()*.3;c.save();c.translate(px+T/2,py+T/2);if(R()<.5)c.scale(-1,1);
           c.drawImage(_wtI,-_wtW/2,-_wtH/2,_wtW,_wtH);c.restore();c.globalAlpha=1}}
@@ -130814,35 +130777,34 @@ function draw(){
       X.drawImage(dImg,d.x-dw/2,d.y-dh/2,dw,dh);
     }
   }
-  // [GIANT-EYE] 대왕감시안구 렌더 (스프라이트 시트)
-  if(_eyeInited&&_eyeSpriteReady){
+  // [FLOOR-EYE] 바닥 눈깔 스프라이트 렌더
+  if(_eyeInited&&_floorEyeImg.complete&&_floorEyeImg.naturalWidth>0){
     const _epx=P.x,_epy=P.y;
+    const FW=40,FH=40;
+    const ESCALE=T/24;
+    const DW=FW*ESCALE,DH=FH*ESCALE;
     for(let _ei=0;_ei<_eyeObjs.length;_ei++){
       const _e=_eyeObjs[_ei];
-      const _sx=_e.x-G.cam.x+C.width/2,_sy=_e.y-G.cam.y+C.height/2;
-      const _drawSz=_e.size*3;
-      if(_sx<-_drawSz||_sx>C.width+_drawSz||_sy<-_drawSz||_sy>C.height+_drawSz)continue;
+      const _sx=_e.x-G.cam.x+C.width/2;
+      const _sy=_e.y-G.cam.y+C.height/2;
+      if(_sx<-DW||_sx>C.width+DW||_sy<-DH||_sy>C.height+DH)continue;
+      // 플레이어 방향 → 8방향 프레임
       const _dx=_epx-_e.x,_dy=_epy-_e.y;
+      const _ang=Math.atan2(_dy,_dx);
+      _e.frame=~~(((_ang+Math.PI)/(Math.PI*2))*8+0.5)%8;
       // 깜빡임
       _e.blinkT++;
       if(_e.blink===0&&_e.blinkT>_e.blinkNext){_e.blink=1;_e.blinkT=0}
-      else if(_e.blink===1&&_e.blinkT>12){_e.blink=0;_e.blinkT=0;_e.blinkNext=200+(_ei*53%300)}
+      else if(_e.blink===1&&_e.blinkT>10){_e.blink=0;_e.blinkT=0;_e.blinkNext=120+(_ei*41%200)}
+      if(_e.blink===1)continue;
       X.globalAlpha=_e.alpha;
-      if(_e.blink===0){
-        const _fi=_eyeDirFrame(_dx,_dy);
-        // 붉은 글로우
-        const _glR=_drawSz*.8;
-        const _glG=X.createRadialGradient(_sx,_sy,_drawSz*.2,_sx,_sy,_glR);
-        _glG.addColorStop(0,'rgba(180,30,30,.15)');_glG.addColorStop(1,'rgba(100,10,10,0)');
-        X.fillStyle=_glG;X.beginPath();X.arc(_sx,_sy,_glR,0,Math.PI*2);X.fill();
-        // 스프라이트
-        X.drawImage(_eyeSpriteImg,_fi*_EYE_FW,0,_EYE_FW,_EYE_FH,_sx-_drawSz/2,_sy-_drawSz/2,_drawSz,_drawSz);
-      }else{
-        // 감은 눈 — 가로선 + 살점 느낌
-        const _r=_drawSz*.4;
-        X.strokeStyle='rgba(140,50,50,0.7)';X.lineWidth=2;
-        X.beginPath();X.moveTo(_sx-_r,_sy);X.quadraticCurveTo(_sx,_sy-_r*.2,_sx+_r,_sy);X.stroke();
-        X.beginPath();X.moveTo(_sx-_r,_sy);X.quadraticCurveTo(_sx,_sy+_r*.2,_sx+_r,_sy);X.stroke();
+      X.drawImage(_floorEyeImg,_e.frame*FW,0,FW,FH,_sx-DW/2,_sy-DH/2,DW,DH);
+      // 플레이어 근접 시 붉은 글로우
+      const _dist2=_dx*_dx+_dy*_dy;
+      if(_dist2<(T*5)*(T*5)){
+        X.globalAlpha=_e.alpha*(1-Math.sqrt(_dist2)/(T*5))*.35;
+        X.fillStyle='#cc1111';
+        X.beginPath();X.arc(_sx,_sy,DW*.3,0,Math.PI*2);X.fill();
       }
       X.globalAlpha=1;
     }
@@ -135622,8 +135584,15 @@ function drawP(){
       if(_dFr&&_dFr.length)P._sa.f=~~((P._walkDist||0)/32)%_dFr.length;
     }else{SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);}
     // Ori 영혼 글로우 제거
-    // 스프라이트 그리기
-    X.save();X.translate(_px,_py);X.scale(_pScale,_pScale);
+    // 스프라이트 그리기 (죽음 시 쓰러짐 연출)
+    X.save();X.translate(_px,_py);
+    if(_apDead){
+      const _dieT=P.s==='fallen'?(1-P.st2/180):1; // 0→1 over 3초
+      X.rotate(_dieT*Math.PI/2); // 옆으로 쓰러짐
+      X.globalAlpha=Math.max(.2,1-_dieT*.6); // 서서히 투명
+      X.translate(0,_dieT*10); // 아래로 내려감
+    }
+    X.scale(_pScale,_pScale);
     SpriteAnimator.draw(P._sa,X,0,0,!_apHasDir&&Math.abs(_fa)>Math.PI/2,_apHasDir?_apDir:null);
     X.restore();
     X.globalAlpha=fl?.3:1;

@@ -41,17 +41,17 @@ CHAR_MAP = {
     '332a4758-5a34-4f64-9c6b-1f76806041a3': 'boss_si22_bone_king',
     'c2fb4c54-7763-40d2-bfb0-6fbc614939e4': 'boss_si23_demon_commander',
     '658086fe-7dd2-467d-8e11-8e12c099d274': 'boss_si24_iron_knight',
-    '7dcff8d4-181e-457d-b173-674595e49268': 'boss_si25_legion_commander',
+    '67ebcdc0-6a73-49d6-ac74-90da2579cced': 'boss_si25_legion_commander',
     # ── 6장 사도의 마굴 ──
     # si26: 기존 boss_ch6_flesh 폴더에서 복사 (별도 처리)
-    'd7471870-af9a-4335-a519-50eca20d7852': 'boss_si27_bone_watcher',
-    '926c3186-e2c0-4fde-b914-1a9ae43392bb': 'boss_si28_twisted',
-    '513bf30f-d745-4c29-a2e2-e9dd74142912': 'boss_si29_tentacle_mother',
-    '0545ccda-c256-49f2-819f-64829388eb34': 'boss_si30_imperfect_apostle',
-    '328a56e3-7a96-4fce-a509-1e48ca1324af': 'boss_si31_grand_apostle',
+    '0951644b-b8de-41f4-8832-31ce627e3577': 'boss_si27_bone_watcher',
+    'c0cf9b14-e0c4-46a4-8df4-28af7ec6987e': 'boss_si28_twisted',
+    '96279bb0-8389-4137-b648-01cdb6b2e9ad': 'boss_si29_tentacle_mother',
+    'a1129084-6360-4711-85e6-712bfb93c1cb': 'boss_si30_imperfect_apostle',
+    '436dd7d4-6659-4dda-8502-7b0f885e4bfd': 'boss_si31_grand_apostle',
     # ── 7장 지옥성 ──
     '2aaadbfe-de01-47d8-acdc-22a6118a4130': 'boss_si32_dark_guardian',
-    'e20b45a7-cf86-4e17-aac8-24d829650602': 'boss_si33_killu',
+    '63eae882-1711-45b7-9f5f-9885225ac732': 'boss_si33_killu',
     'ae6c7740-cb0c-46d2-a9fd-9ce43349c62e': 'boss_si34_hell_lord',
 }
 
