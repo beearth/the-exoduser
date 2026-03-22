@@ -1,10 +1,10 @@
 {
-  "ts": 1774175404740,
+  "ts": 1774175704605,
   "player": {
-    "lv": 966,
-    "exp": 34522,
-    "maxExp": 49087,
-    "sp": 8,
+    "lv": 967,
+    "exp": 12382,
+    "maxExp": 49186,
+    "sp": 11,
     "ap": 0,
     "transLvDate": null,
     "transLvCount": 0,
@@ -12,14 +12,14 @@
     "baseDef": 62,
     "mpR": 3.1574999999999998,
     "stR": 2.5324999999999998,
-    "hp": 4139.440779999662,
+    "hp": 5085.656895624999,
     "mhp": 5099,
-    "mp": 262.3411234375372,
+    "mp": 1457,
     "mmp": 1457,
-    "st": 516.9103168749574,
+    "st": 1313.786010625,
     "mst": 1320,
     "speed": 9.20092,
-    "shield": 2680,
+    "shield": 2720,
     "mshield": 2720
   },
   "inv": {
@@ -6551,6 +6551,203 @@
         "_gx": 0,
         "_gy": 52,
         "_pickT": 1774175403452
+      },
+      {
+        "id": 1774175411753.7957,
+        "slot": "belt",
+        "el": 0,
+        "rarity": 4,
+        "tier": 3,
+        "name": "미스릴 벨트",
+        "emoji": "🪢",
+        "def": 16,
+        "bonusSt": 25,
+        "potCd": 0.215,
+        "bonusHp": 24,
+        "bDex": 47,
+        "bInt": 42,
+        "bStr": 38,
+        "affixes": [
+          {
+            "id": "fireRes",
+            "tier": 0,
+            "value": 0.1561
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 1,
+            "value": 47
+          },
+          {
+            "id": "thorns",
+            "tier": 2,
+            "value": 14
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 1,
+            "value": 0.1666
+          }
+        ],
+        "_implicitStat": "_iBeltPot",
+        "_implicitVal": 4.63,
+        "_implicitKo": "물약 쿨다운 -X%",
+        "legendarySpecial": {
+          "ko": "물약 사용 시 5초간 피해 +15%",
+          "stat": "_lBeltBuff",
+          "val": 0.15
+        },
+        "reqLv": 300,
+        "itemLv": 400,
+        "_gx": 2,
+        "_gy": 52,
+        "_pickT": 1774175411769
+      },
+      {
+        "id": 1774175413188.4072,
+        "slot": "boots",
+        "el": 4,
+        "rarity": 4,
+        "tier": 3,
+        "name": "뇌신 전투화",
+        "emoji": "👢",
+        "def": 19,
+        "spd": 0.53,
+        "bonusSt": 35,
+        "chargeDist": 50,
+        "chargeCharge": 2,
+        "bStr": 47,
+        "bDex": 42,
+        "bInt": 39,
+        "affixes": [
+          {
+            "id": "dropRate",
+            "tier": 0,
+            "value": 0.1794
+          },
+          {
+            "id": "movSpeed",
+            "tier": 1,
+            "value": 0.129
+          },
+          {
+            "id": "extraST",
+            "tier": 0,
+            "value": 59
+          },
+          {
+            "id": "dashBoost",
+            "tier": 1,
+            "value": 0.4318
+          }
+        ],
+        "_implicitStat": "_iMovSpd",
+        "_implicitVal": 4.06,
+        "_implicitKo": "이동속도 +X%",
+        "legendarySpecial": {
+          "ko": "회피 직후 첫 공격 데미지 +80%",
+          "stat": "_lBootsEvade",
+          "val": 0.8
+        },
+        "reqLv": 300,
+        "itemLv": 400,
+        "_gx": 4,
+        "_gy": 52,
+        "_pickT": 1774175413204
+      },
+      {
+        "id": 1774175413588.8367,
+        "slot": "shield",
+        "el": 0,
+        "rarity": 4,
+        "tier": 3,
+        "name": "미스릴 견갑",
+        "emoji": "🛡️",
+        "bonusRange": 3,
+        "blockRate": 90,
+        "shieldWt": 9,
+        "atk": 19,
+        "def": 29,
+        "stagger": 85,
+        "bDex": 34,
+        "bInt": 39,
+        "bStr": 45,
+        "affixes": [
+          {
+            "id": "physDR",
+            "tier": 0,
+            "value": 0.0871
+          },
+          {
+            "id": "reflect",
+            "tier": 1,
+            "value": 0.1293
+          }
+        ],
+        "_implicitStat": "_iBlockPct",
+        "_implicitVal": 3.46,
+        "_implicitKo": "방어율 +X%",
+        "legendarySpecial": {
+          "ko": "패리 성공 시 반격 데미지 ×2",
+          "stat": "_lShieldParry",
+          "val": 2
+        },
+        "reqLv": 300,
+        "itemLv": 400,
+        "_gx": 6,
+        "_gy": 52,
+        "_pickT": 1774175413604
+      },
+      {
+        "id": 1774175519702.4558,
+        "slot": "belt",
+        "el": 2,
+        "rarity": 4,
+        "tier": 3,
+        "name": "서리의 벨트",
+        "emoji": "🪢",
+        "def": 15,
+        "bonusSt": 26,
+        "potCd": 0.216,
+        "bonusHp": 22,
+        "bDex": 47,
+        "bInt": 38,
+        "bStr": 32,
+        "affixes": [
+          {
+            "id": "fireRes",
+            "tier": 1,
+            "value": 0.2158
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 1,
+            "value": 0.2114
+          },
+          {
+            "id": "darkRes",
+            "tier": 1,
+            "value": 0.2336
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 1,
+            "value": 53
+          }
+        ],
+        "_implicitStat": "_iBeltPot",
+        "_implicitVal": 7.81,
+        "_implicitKo": "물약 쿨다운 -X%",
+        "legendarySpecial": {
+          "ko": "물약 사용 시 5초간 피해 +15%",
+          "stat": "_lBeltBuff",
+          "val": 0.15
+        },
+        "reqLv": 300,
+        "itemLv": 400,
+        "_gx": 8,
+        "_gy": 52,
+        "_pickT": 1774175519719
       }
     ],
     "equipped": {
@@ -7240,11 +7437,11 @@
     },
     {
       "type": "st",
-      "count": 159
+      "count": 208
     },
     {
       "type": "mp",
-      "count": 198
+      "count": 241
     },
     {
       "type": null,
@@ -7253,8 +7450,8 @@
   ],
   "game": {
     "stage": 15,
-    "kills": 343060,
-    "mats": 57936694
+    "kills": 343184,
+    "mats": 58020139
   },
   "bagMax": 300,
   "hellCleared": [
@@ -7336,37 +7533,37 @@
     "iceMortar": true
   },
   "skProf": {
-    "holyDome": 1150,
-    "maliceSwipe": 2800,
-    "chargeBoost": 3765,
-    "whirlwind": 1505,
+    "holyDome": 1195,
+    "maliceSwipe": 2950,
+    "chargeBoost": 4035,
+    "whirlwind": 1545,
     "spikeTrap": 15,
-    "detonate": 549,
+    "detonate": 585,
     "blastShot": 15,
-    "fanShot": 47,
-    "omniBeam": 135,
-    "maliceStorm": 4195,
+    "fanShot": 50,
+    "omniBeam": 158,
+    "maliceStorm": 4255,
     "plagueBurst": 15,
-    "ghostWalk": 98,
+    "ghostWalk": 106,
     "holyBlast": 15,
     "giantSlam": 15,
     "bladeDash": 9999,
-    "elemMissile": 207,
+    "elemMissile": 210,
     "iceOrb": 15,
-    "maliceMortar": 820,
-    "maliceHunt": 1420,
-    "guardian": 2072,
+    "maliceMortar": 850,
+    "maliceHunt": 1480,
+    "guardian": 2131,
     "boneWall": 15,
-    "chainSlam": 1450,
-    "shieldThrow": 1825,
+    "chainSlam": 1570,
+    "shieldThrow": 1930,
     "holyPrison": 15,
     "grenadeShot": 15,
-    "chainAssault": 2185,
+    "chainAssault": 2215,
     "magicBlink": 1285,
     "needleShot": 9999,
     "iceStorm": 15,
     "blackStar": 30,
-    "peaceShield": 1570,
+    "peaceShield": 1780,
     "hellRay": 1270,
     "blueShot": 2410,
     "kiSlash": 9999,
@@ -7376,22 +7573,22 @@
   },
   "fuseProfSec": {},
   "cardProf": {
-    "bladeFuse": 54320.78333568706,
-    "plagueFuse": 54320.78333568706,
-    "whirlDet": 16007.849999914226,
-    "slamStorm": 16007.849999914226,
-    "stormBeam": 21417.6499998881,
-    "shieldFuse": 79560,
-    "iceMortar": 3539,
-    "boneStorm": 9433,
-    "elecRepent": 13211,
-    "dimBreach": 14233,
-    "dimSlam": 20461,
-    "dimThunder": 24171,
-    "holyFuse": 3059,
-    "holyIce": 3065,
-    "sixFuse": 1756.099999999411,
-    "elemFuse": 5409.79999998926
+    "bladeFuse": 54737.4333357477,
+    "plagueFuse": 54737.4333357477,
+    "whirlDet": 16183.549999912775,
+    "slamStorm": 16183.549999912775,
+    "stormBeam": 21685.749999885727,
+    "shieldFuse": 79815,
+    "iceMortar": 3569,
+    "boneStorm": 9493,
+    "elecRepent": 13271,
+    "dimBreach": 14503,
+    "dimSlam": 20761,
+    "dimThunder": 24591,
+    "holyFuse": 3104,
+    "holyIce": 3110,
+    "sixFuse": 1829.6499999993678,
+    "elemFuse": 5502.199999988337
   },
   "activeChargeSk": "charge",
   "activeBowSk": "needleShot",

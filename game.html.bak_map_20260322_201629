@@ -1323,8 +1323,10 @@ function dbRestore(d){
   if(P.activeBowSk==='maliceMortar')P.activeBowSk='normal'; // 악의포격→기술탭 마이그레이션
   if(P.activeBowSk!=='normal'&&!(P.skills[P.activeBowSk]>=1))P.activeBowSk='normal';
   if(P.activeBowSk==='fanShot'&&(_isFused('sixFuse')||_isFused('elemFuse')||_isFused('stormBeam')))P.activeBowSk='normal';
-  // 가시덫 기본 습득 마이그레이션
+  // 기본 스킬 습득 마이그레이션
   if(!P.skills.spikeTrap)P.skills.spikeTrap=1;
+  if(!P.skills.holyDome){P.skills.holyDome=1;if(!SKILL_SLOTS[5])SKILL_SLOTS[5]='holyDome'}
+  if(!P.skills.giantSlam){P.skills.giantSlam=1;if(!SKILL_SLOTS[0])SKILL_SLOTS[0]='giantSlam'}
   // 기술 스킬 슬롯 복원 (Space)
   if(d.activeTechSk)P.activeTechSk=d.activeTechSk;
   if(!P.activeTechSk)P.activeTechSk='spikeTrap';
@@ -9667,6 +9669,19 @@ function initSwayObjects(){
   const swayColors=['rgba(130,200,255,.15)','rgba(160,120,50,.12)','rgba(255,100,30,.1)','rgba(120,50,180,.1)','rgba(200,180,80,.08)','rgba(180,160,130,.08)','rgba(140,80,220,.08)'];
   for(const sw of SWAY_OBJECTS)sw.col=swayColors[sw.hell];
 }
+// ═══ [EYE-SPRITE] 눈알 스프라이트 시트 (9프레임: center,S,SW,W,NW,N,NE,E,SE) ═══
+const _eyeSpriteImg=new Image();_eyeSpriteImg.src='assets/map/eye_bloodshot_8dir.png';
+let _eyeSpriteReady=false;_eyeSpriteImg.onload=()=>{_eyeSpriteReady=true};
+const _EYE_FW=40,_EYE_FH=40; // 프레임 크기
+// 플레이어 방향 → 프레임 인덱스 (0=center,1=S,2=SW,3=W,4=NW,5=N,6=NE,7=E,8=SE)
+function _eyeDirFrame(dx,dy){
+  if(dx===0&&dy===0)return 0;
+  const a=Math.atan2(dy,dx); // -PI ~ PI
+  // 8방향: E=0,NE=-45,N=-90,NW=-135,W=180,SW=135,S=90,SE=45
+  const idx=((Math.round(a/(Math.PI/4))%8)+8)%8;
+  // atan2 인덱스(E=0,SE=1,S=2,...) → 스프라이트 인덱스 매핑
+  return [7,8,1,2,3,4,5,6][idx]; // E→7,SE→8,S→1,SW→2,W→3,NW→4,N→5,NE→6
+}
 // ═══ [DECOR-EYES] 벽 눈동자 시스템 ═══
 let WALL_EYES=[];const WALL_EYES_MAX=8;
 function initWallEyes(){
@@ -9678,16 +9693,16 @@ function initWallEyes(){
     if(adjFloor&&R()<.05){WALL_EYES.push({x:tx*T+T/2+(R()-.5)*T*.5,y:ty*T+T/2+(R()-.5)*T*.5,radius:6+R()*4,pupilR:2+R()*1.5,pupilOff:3,veinCount:2+~~(R()*3),blinkTimer:0,blinkInterval:3000+R()*5000});count++}
   }}
 }
-// ═══ [CH1-EYES] 바닥 눈깔 장식 (1장 전용) ═══
+// ═══ [CH1-EYES] 벽 눈깔 장식 (1장 전용) ═══
 let _eyeObjs=[];let _eyeInited=false;
 function _initEyes(){
   _eyeObjs.length=0;_eyeInited=false;
   if(SI_TO_HELL[G.stage]!==0)return;
   const map=G.map;
   for(let ty=1;ty<G.mh-1;ty++){for(let tx=1;tx<G.mw-1;tx++){
-    if(map[ty][tx]!==0)continue;
-    const adjWall=(map[ty-1][tx]>=1)||(map[ty+1][tx]>=1)||(map[ty][tx-1]>=1)||(map[ty][tx+1]>=1);
-    if(!adjWall)continue;
+    if(map[ty][tx]<1)continue; // 벽만 (바닥 제외)
+    const adjFloor=(map[ty-1][tx]===0)||(map[ty+1][tx]===0)||(map[ty][tx-1]===0)||(map[ty][tx+1]===0);
+    if(!adjFloor)continue; // 바닥에 인접한 벽만 (보여야 하니까)
     const R=_tseed(tx+99,ty+77);
     if(R()<.04){
       _eyeObjs[_eyeObjs.length]={
@@ -9716,11 +9731,12 @@ function initGlowObjects(){
 function initMapObjects(){
   const _editorObjs=MAP_OBJS.filter(o=>o.type&&!['bonfire','lore','breakable','trap','altar'].includes(o.type));
   MAP_OBJS=[];const hell=SI_TO_HELL[G.stage],map=G.map,rooms=G.rooms;
-  // 겹침 체크 헬퍼 (에디터 오브젝트도 포함)
+  // 겹침 체크 헬퍼 (에디터 오브젝트 + 소환굴 포함)
   function _moOk(x,y){
     for(const wi of worldItems){if(dst(x,y,wi.x,wi.y)<120)return false}
     for(const mo of MAP_OBJS){if(dst(x,y,mo.x,mo.y)<120)return false}
     for(const eo of _editorObjs){if(dst(x,y,eo.x,eo.y)<80)return false}
+    if(G.spawnHoles)for(const sh of G.spawnHoles){if(dst(x,y,sh.x,sh.y)<100)return false}
     return true;
   }
   function _floorAt(tx,ty){return tx>=0&&ty>=0&&tx<G.mw&&ty<G.mh&&(map[ty][tx]===0||map[ty][tx]===4)}
@@ -11260,7 +11276,7 @@ function _burstLoopExplode(tier){
 }
 
 function mkP(){
-  return{x:0,y:0,r:13,hp:350,mhp:350,st:200,mst:200,stR:.28,mp:160,mmp:160,mpR:0,
+  return{x:0,y:0,r:15,hp:350,mhp:350,st:200,mst:200,stR:.28,mp:160,mmp:160,mpR:0,
     lv:1,exp:0,maxExp:15,sp:0,ap:0, // Level system (SP=스탯포인트, AP=패시브포인트)
     baseAtk:8,baseDef:2,speed:2.6,facing:0,
     s:'idle',st2:0,atkArc:0,swProg:0,iframes:0,combo:0,comboT:0,blockFlash:0,blockPushT:0,
@@ -11274,7 +11290,7 @@ function mkP(){
     activeRMBSk:'shieldBlock',
     activeQSk:'parry',
     activeCtSk:'ghostWalk',
-    skills:{spikeTrap:1,kiSlash:1},_fused:{},maskOn:true};
+    skills:{kiSlash:1},_fused:{},maskOn:true};
 }
 
 // ═══ [S14] MAP — 공용 카빙 헬퍼 ═══
@@ -116804,56 +116820,89 @@ function genFromTemplate(tmpl,si){
     console.log('[MAP] auto-generated boss room at',_abCx,_abCy);
   }
   const bossRm=bossRd?rooms[roomMap[bossRd.id]]:null;
-  let _gateTiles=[],_gateY=0,bossCx=~~(mw/2),bossCy=10;
+  let _gateTiles=[],_gateY=0,bossCx=~~(mw/2),bossCy=10,_gateDir='top';
   if(bossRm){
     bossCx=bossRm.cx;bossCy=bossRm.cy;
     const bRx=bossRd.rx||12,bRy=bossRd.ry||bRx;
-    // 보스방 바닥 — 일반 바닥과 동일 (tile=0 유지)
-    // 4방향 중 보스방 중심에서 가장 가까운 벽으로 게이트
+    // 보스방 입구 방향 결정: 복도가 연결되는 쪽 감지
+    // 복도에서 보스방으로 들어오는 방향의 반대편(맵 경계 쪽)에 게이트+출구 배치
+    let _entryDir='bot'; // 기본: 아래에서 진입 → 위에 게이트
+    const _bossCor=tmpl.corridors&&tmpl.corridors.find(c=>c.to===bossRd.id||c.from===bossRd.id);
+    if(_bossCor){
+      // 복도의 보스방 직전 좌표 (마지막 waypoint 또는 연결 방의 중심)
+      const _otherRmId=_bossCor.to===bossRd.id?_bossCor.from:_bossCor.to;
+      const _otherRm=tmpl.rooms.find(r=>r.id===_otherRmId);
+      let _epx=_otherRm?_otherRm.cx:bossCx,_epy=_otherRm?_otherRm.cy:bossCy+bRy+5;
+      if(_bossCor.waypoints&&_bossCor.waypoints.length>0){
+        const _wp=_bossCor.to===bossRd.id?_bossCor.waypoints[_bossCor.waypoints.length-1]:_bossCor.waypoints[0];
+        _epx=_wp.x;_epy=_wp.y;
+      }
+      const _ddx=_epx-bossCx,_ddy=_epy-bossCy;
+      if(Math.abs(_ddx)>Math.abs(_ddy)) _entryDir=_ddx>0?'right':'left';
+      else _entryDir=_ddy>0?'bot':'top';
+    }
+    // 게이트는 입구 반대편(맵 경계 쪽)에 배치
     const dTop=bossCy-bRy,dBot=mh-1-(bossCy+bRy),dLeft=bossCx-bRx,dRight=mw-1-(bossCx+bRx);
-    const minD=Math.min(dTop,dBot,dLeft,dRight);
-    if(minD===dTop){
+    if(_entryDir==='bot') _gateDir='top';
+    else if(_entryDir==='top') _gateDir='bot';
+    else if(_entryDir==='right') _gateDir='left';
+    else _gateDir='right';
+    // 게이트 방향의 거리가 0 미만이면 반대편으로 (맵 밖 방지)
+    if(_gateDir==='top'&&dTop<0) _gateDir='bot';
+    if(_gateDir==='bot'&&dBot<0) _gateDir='top';
+    if(_gateDir==='left'&&dLeft<0) _gateDir='right';
+    if(_gateDir==='right'&&dRight<0) _gateDir='left';
+    if(_gateDir==='top'){
       _gateY=0;
-      for(let gy=0;gy<dTop+1;gy++)for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&gy<mh)map[gy][gx]=0;
+      for(let gy=0;gy<=dTop;gy++)for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&gy<mh)map[gy][gx]=0;
       for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw){map[0][gx]=3;_gateTiles.push({x:gx,y:0})}
-    }else if(minD===dBot){
+    }else if(_gateDir==='bot'){
       _gateY=mh-1;
       for(let gy=bossCy+bRy;gy<mh;gy++)for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&gy>=0)map[gy][gx]=0;
       for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw){map[mh-1][gx]=3;_gateTiles.push({x:gx,y:mh-1})}
-    }else if(minD===dLeft){
+    }else if(_gateDir==='left'){
       _gateY=bossCy;
-      for(let gx=0;gx<dLeft+1;gx++)for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&gx<mw)map[gy][gx]=0;
+      for(let gx=0;gx<=dLeft;gx++)for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&gx<mw)map[gy][gx]=0;
       for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh){map[gy][0]=3;_gateTiles.push({x:0,y:gy})}
     }else{
       _gateY=bossCy;
       for(let gx=bossCx+bRx;gx<mw;gx++)for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&gx>=0)map[gy][gx]=0;
       for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh){map[gy][mw-1]=3;_gateTiles.push({x:mw-1,y:gy})}
     }
+    // tileRLE 모드: 보스방→입구 방향으로 복도 강제 카빙 (입구 보장)
+    if(_hasTileRLE&&_bossCor){
+      const _otherRmId2=_bossCor.to===bossRd.id?_bossCor.from:_bossCor.to;
+      const _otherRm2=tmpl.rooms.find(r=>r.id===_otherRmId2);
+      const _corW=_bossCor.width||6;
+      const pts2=[{x:_otherRm2?_otherRm2.cx:bossCx,y:_otherRm2?_otherRm2.cy:bossCy+bRy+10}];
+      if(_bossCor.waypoints)for(const wp of _bossCor.waypoints)pts2.push(wp);
+      pts2.push({x:bossCx,y:bossCy});
+      if(_bossCor.from===bossRd.id) pts2.reverse();
+      for(let i=0;i<pts2.length-1;i++)_tCarveCorridor(map,mw,mh,pts2[i].x,pts2[i].y,pts2[i+1].x,pts2[i+1].y,_corW,'straight');
+      console.log('[MAP] tileRLE: forced boss corridor carve',_entryDir);
+    }
   }
 
   // ── 6. 출구 (게이트 바로 앞) ──
   const exits=[];
   if(bossRm&&_gateTiles.length>0){
-    const bRx=bossRd.rx||12,bRy=bossRd.ry||bRx;
-    const dTop=bossCy-bRy,dBot=mh-1-(bossCy+bRy),dLeft=bossCx-bRx,dRight=mw-1-(bossCx+bRx);
-    const minD=Math.min(dTop,dBot,dLeft,dRight);
-    if(minD===dTop){
+    if(_gateDir==='top'){
       for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&mh>1){map[1][gx]=2;exits.push({x:gx,y:1})}
-    }else if(minD===dBot){
+    }else if(_gateDir==='bot'){
       for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&mh>1){map[mh-2][gx]=2;exits.push({x:gx,y:mh-2})}
-    }else if(minD===dLeft){
+    }else if(_gateDir==='left'){
       for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&mw>1){map[gy][1]=2;exits.push({x:1,y:gy})}
     }else{
       for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&mw>1){map[gy][mw-2]=2;exits.push({x:mw-2,y:gy})}
     }
-    // 출구 접근성: 게이트→복도 방향으로 6칸 바닥 확보
+    // 출구 접근성: 게이트→보스방 방향으로 6칸 바닥 확보
     const exitBase=exits[0];
     if(exitBase){
       for(let d=0;d<=6;d++){
         let cx2,cy2;
-        if(minD===dTop){cx2=exitBase.x;cy2=exitBase.y+d}
-        else if(minD===dBot){cx2=exitBase.x;cy2=exitBase.y-d}
-        else if(minD===dLeft){cx2=exitBase.x+d;cy2=exitBase.y}
+        if(_gateDir==='top'){cx2=exitBase.x;cy2=exitBase.y+d}
+        else if(_gateDir==='bot'){cx2=exitBase.x;cy2=exitBase.y-d}
+        else if(_gateDir==='left'){cx2=exitBase.x+d;cy2=exitBase.y}
         else{cx2=exitBase.x-d;cy2=exitBase.y}
         if(cx2>=1&&cx2<mw-1&&cy2>=1&&cy2<mh-1&&map[cy2][cx2]===1)map[cy2][cx2]=0;
       }
@@ -117387,7 +117436,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     _posture:0,_maxPosture:ib?(100+G.stage*8):0,_postureReT:0,
     shockR:0,shockMax:0,laserAng:0,laserLen:0,deaths:0,reviveIframes:0,meteors:[],
     shieldAng:etype===6?Math.random()*Math.PI*2:0,
-    eShield:_hp,eShieldMax:_hp,eShieldRegenT:0,
+    eShield:ib?_hp:0,eShieldMax:ib?_hp:0,eShieldRegenT:0,
     _firstShot:!ib, // 보스 제외, 첫 교전 시 빨간콩 1발
     bleed:0,bleedT:0,poison:0,poisonT:0,burnT:0, // 출혈, 중독, 화상 초기화
     shieldBashCd:etype===6?(120+Math.random()*60):9999,
@@ -119813,8 +119862,8 @@ function update(){
   // 공간 해싱 리빌드 (2프레임 주기)
   if(!G._shT)G._shT=0;if(++G._shT>=2){G._shT=0;const _h0=performance.now();shRebuild();rebuildDeadPool();if(_DEBUG_PERF)_dbgHash=performance.now()-_h0;}
   // ═══ 몬스터 이동 사운드 매핑 → 전역으로 이동 (update() 위) ═══
-  // ═══ 팩 리더 오라 패스 (공간해싱 최적화) ═══
-  for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];if(e.alive){e._aAtkM=1;e._aSpdM=1;e._aDefM=1;e._auraL=null}}
+  // ═══ 엘리트/오라 강제 제거 (기존 스폰 포함) ═══
+  for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];if(e.alive){e._aAtkM=1;e._aSpdM=1;e._aDefM=1;e._auraL=null;if(!e.ib&&e.elite){e.elite=0;e.mods=[];e.aura=null;e.eShield=0;e.eShieldMax=0;e.reviveIframes=0}}}
   for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];if(!e.alive||!e.aura)continue;
     const _ad=_AURA_MAP[e.aura];if(!_ad)continue;
     const _ar=_ad.range;
@@ -131026,32 +131075,25 @@ function draw(){
       X.drawImage(dImg,d.x-dw/2,d.y-dh/2,dw,dh);
     }
   }
-  // [CH1-EYES] 바닥 눈깔 렌더
-  if(_eyeInited){
+  // [CH1-EYES] 벽 눈깔 렌더 (스프라이트 시트)
+  if(_eyeInited&&_eyeSpriteReady){
     const _epx=P.x,_epy=P.y;
     for(let _ei=0;_ei<_eyeObjs.length;_ei++){
       const _e=_eyeObjs[_ei];
       const _sx=_e.x-G.cam.x+C.width/2,_sy=_e.y-G.cam.y+C.height/2;
       if(_sx<-20||_sx>C.width+20||_sy<-20||_sy>C.height+20)continue;
-      // 동공: 플레이어 방향 추적
       const _dx=_epx-_e.x,_dy=_epy-_e.y;
-      const _dist=Math.sqrt(_dx*_dx+_dy*_dy)||1;
-      const _tr=Math.min(_dist,80)/80;
-      _e.pupilX=(_dx/_dist)*1.5*_tr;_e.pupilY=(_dy/_dist)*1.5*_tr;
-      // 깜빡임 (프레임 카운터)
+      // 깜빡임
       _e.blinkT++;
       if(_e.blink===0&&_e.blinkT>_e.blinkNext){_e.blink=1;_e.blinkT=0}
       else if(_e.blink===1&&_e.blinkT>8){_e.blink=0;_e.blinkT=0;_e.blinkNext=120+(_ei*37%180)}
-      const _r=_e.size;
       X.globalAlpha=_e.alpha;
       if(_e.blink===0){
-        X.fillStyle='rgba(200,180,140,1)';X.beginPath();X.ellipse(_sx,_sy,_r*1.4,_r*0.7,0,0,Math.PI*2);X.fill();
-        X.fillStyle='rgba(160,20,20,1)';X.beginPath();X.arc(_sx+_e.pupilX,_sy+_e.pupilY,_r*.55,0,Math.PI*2);X.fill();
-        X.fillStyle='rgba(10,0,0,1)';X.beginPath();X.arc(_sx+_e.pupilX*1.2,_sy+_e.pupilY*1.2,_r*.28,0,Math.PI*2);X.fill();
-        
-        X.fillStyle='rgba(180,20,20,0.3)';X.beginPath();X.ellipse(_sx,_sy,_r*1.5,_r*.8,0,0,Math.PI*2);X.fill();
-        
+        const _fi=_eyeDirFrame(_dx,_dy);
+        const _drawSz=_e.size*5;
+        X.drawImage(_eyeSpriteImg,_fi*_EYE_FW,0,_EYE_FW,_EYE_FH,_sx-_drawSz/2,_sy-_drawSz/2,_drawSz,_drawSz);
       }else{
+        const _r=_e.size;
         X.strokeStyle='rgba(120,80,60,0.8)';X.lineWidth=.8;
         X.beginPath();X.moveTo(_sx-_r*1.2,_sy);X.lineTo(_sx+_r*1.2,_sy);X.stroke();
       }
@@ -131118,22 +131160,17 @@ function draw(){
       const sway=Math.sin(_now/sw.speed+sw.phase)*sw.amplitude;
       X.strokeStyle=sw.col;X.lineWidth=1.5;X.beginPath();X.moveTo(sw.x,sw.y);
       for(let h=1;h<=4;h++){const ratio=h/4,bend=sway*ratio*ratio;X.lineTo(sw.x+bend,sw.y-sw.height*ratio)}X.stroke()}}
-  // [DECOR-EYES] 벽 눈동자 (심연 전용)
-  if(WALL_EYES.length>0){
+  // [DECOR-EYES] 벽 눈동자 (심연 전용, 스프라이트)
+  if(WALL_EYES.length>0&&_eyeSpriteReady){
     for(let _ei2=0;_ei2<WALL_EYES.length;_ei2++){const eye=WALL_EYES[_ei2];const sx=eye.x-G.cam.x+C.width/2,sy=eye.y-G.cam.y+C.height/2;
       if(sx<-20||sx>C.width+20||sy<-20||sy>C.height+20)continue;
       const blinkPhase=(_now%eye.blinkInterval)/eye.blinkInterval;
-      if(blinkPhase>.95)continue;const squint=blinkPhase>.90?(blinkPhase-.90)/.05:0;
-      const angle=Math.atan2(P.y-eye.y,P.x-eye.x);
-      X.fillStyle='rgba(30,15,50,.6)';X.beginPath();X.ellipse(eye.x,eye.y,eye.radius,eye.radius*(1-squint*.8),0,0,Math.PI*2);X.fill();
-      X.fillStyle='rgba(80,30,140,.5)';X.beginPath();X.arc(eye.x+Math.cos(angle)*eye.pupilOff*.5,eye.y+Math.sin(angle)*eye.pupilOff*.5,eye.pupilR*1.5,0,Math.PI*2);X.fill();
-      const px2=eye.x+Math.cos(angle)*eye.pupilOff,py2=eye.y+Math.sin(angle)*eye.pupilOff;
-      X.fillStyle='rgba(255,30,30,.7)';X.beginPath();X.arc(px2,py2,eye.pupilR,0,Math.PI*2);X.fill();
-      X.fillStyle='rgba(255,50,50,.15)';X.beginPath();X.arc(px2,py2,eye.pupilR*3,0,Math.PI*2);X.fill();
-      X.strokeStyle='rgba(150,40,60,.12)';X.lineWidth=.5;
-      for(let v=0;v<eye.veinCount;v++){const va=(v/eye.veinCount)*Math.PI*2+Math.sin(now/2000)*.2;
-        X.beginPath();X.moveTo(eye.x+Math.cos(va)*eye.radius*.3,eye.y+Math.sin(va)*eye.radius*.3);
-        X.lineTo(eye.x+Math.cos(va)*eye.radius*.95,eye.y+Math.sin(va)*eye.radius*.95);X.stroke()}}}
+      if(blinkPhase>.95)continue;
+      const _fi2=_eyeDirFrame(P.x-eye.x,P.y-eye.y);
+      const _dsz=eye.radius*3;
+      X.globalAlpha=.85;
+      X.drawImage(_eyeSpriteImg,_fi2*_EYE_FW,0,_EYE_FW,_EYE_FH,sx-_dsz/2,sy-_dsz/2,_dsz,_dsz);
+      X.globalAlpha=1}}
   // ── 보스 아레나 로딩 오버레이 (다크소울 스타일) ──
   if(G._bossLoadPhase>0){
     X.save();X.setTransform(1,0,0,1,0,0);
@@ -135839,7 +135876,9 @@ function drawP(){
     }else{SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);}
     // Ori 영혼 글로우 제거
     // 스프라이트 그리기
-    SpriteAnimator.draw(P._sa,X,_px,_py,!_apHasDir&&Math.abs(_fa)>Math.PI/2,_apHasDir?_apDir:null);
+    X.save();X.translate(_px,_py);X.scale(_pScale,_pScale);
+    SpriteAnimator.draw(P._sa,X,0,0,!_apHasDir&&Math.abs(_fa)>Math.PI/2,_apHasDir?_apDir:null);
+    X.restore();
     X.globalAlpha=fl?.3:1;
   }else if(_playerReady){
     // player_idle.png / player_action.png PNG 폴백 + Ori 글로우
@@ -136935,11 +136974,11 @@ function drawP(){
     const _bx=~~_bPet.x,_by=~~(_bPet.y+_bBob)-(_bIsCrow?18:14);
     const _bTxt=_petBubble.txt;
     X.save();
-    X.font='bold 11px "Malgun Gothic",sans-serif';
+    X.font='bold 22px "Malgun Gothic",sans-serif';
     // 줄 나누기 (최대 18자)
     const _bLines=[];
     for(let ci=0;ci<_bTxt.length;ci+=18)_bLines.push(_bTxt.substring(ci,ci+18));
-    const _lh=14,_bPad=4;
+    const _lh=28,_bPad=6;
     let _maxW=0;for(let li=0;li<_bLines.length;li++){const w=X.measureText(_bLines[li]).width;if(w>_maxW)_maxW=w}
     const _bW=_maxW+_bPad*2,_bH=_bLines.length*_lh+_bPad*2;
     const _bLeft=_bx-_bW/2,_bTop=_by-_bH;
@@ -137328,8 +137367,13 @@ async function startGameFromDB(){
   if(saved&&saved.player){
     dbRestore(saved);
   }else{
-    // 새 캐릭: 가시덫 SP슬롯 + 신성한 땅 F슬롯
-    SKILL_SLOTS[4]='spikeTrap';P.skills.holyDome=1;SKILL_SLOTS[5]='holyDome';
+    // 새 캐릭: 난이도별 시작 스킬 (0/1/3/5/10단, 하나씩 제거)
+    // 0: 4종 전부, 1: -대왕치기, 3: -신성한땅, 5: -가시덫, 10: -기검참(전부 제거)
+    const _df=OPT.diff||0;
+    if(_df<1){P.skills.giantSlam=1;SKILL_SLOTS[0]='giantSlam'}
+    if(_df<3){P.skills.holyDome=1;SKILL_SLOTS[5]='holyDome'}
+    if(_df<5){P.skills.spikeTrap=1;SKILL_SLOTS[4]='spikeTrap'}
+    if(_df>=10){delete P.skills.kiSlash} // 10단: 기검참도 제거
   }
 
   // 4) 스탯 적용 후 스테이지 시작 — 몬스터 아틀라스 대기
@@ -137747,8 +137791,12 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         INV.bag.push(mkItem('helmet',0,EL.D,1));INV.bag.push(mkItem('boots',0,EL.L,1));
         INV.bag.push(mkItem('cape',0,EL.F,1));INV.bag.push(mkItem('bow',0,EL.F,1,'crossbow'));
         recalcSt();
-        // 기본 스킬: 가시덫 SP슬롯 + 신성한 땅 F슬롯
-        SKILL_SLOTS[4]='spikeTrap';P.skills.holyDome=1;SKILL_SLOTS[5]='holyDome';
+        // 난이도별 시작 스킬 (0/1/3/5/10단)
+        {const _df2=OPT.diff||0;
+        if(_df2<1){P.skills.giantSlam=1;SKILL_SLOTS[0]='giantSlam'}
+        if(_df2<3){P.skills.holyDome=1;SKILL_SLOTS[5]='holyDome'}
+        if(_df2<5){P.skills.spikeTrap=1;SKILL_SLOTS[4]='spikeTrap'}
+        if(_df2>=10){delete P.skills.kiSlash}}
       }
     }catch(e){if(!IS_ELECTRON)console.error('[LOCAL] Load failed:',e)}
     // 로드 완료 후 게임 시작 — 몬스터 아틀라스 대기
@@ -137840,7 +137888,12 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         INV.bag.push(mkItem('helmet',0,EL.D,1));INV.bag.push(mkItem('boots',0,EL.L,1));
         INV.bag.push(mkItem('cape',0,EL.F,1));INV.bag.push(mkItem('bow',0,EL.F,1,'crossbow'));
         recalcSt();
-        SKILL_SLOTS[4]='spikeTrap';P.skills.holyDome=1;SKILL_SLOTS[5]='holyDome';
+        // 난이도별 시작 스킬 (0/1/3/5/10단)
+        {const _df3=OPT.diff||0;
+        if(_df3<1){P.skills.giantSlam=1;SKILL_SLOTS[0]='giantSlam'}
+        if(_df3<3){P.skills.holyDome=1;SKILL_SLOTS[5]='holyDome'}
+        if(_df3<5){P.skills.spikeTrap=1;SKILL_SLOTS[4]='spikeTrap'}
+        if(_df3>=10){delete P.skills.kiSlash}}
       }
     }catch(e){console.error('[WEB] Load failed:',e)}
     setBootLoading(75,'몬스터 스킨 로딩...');

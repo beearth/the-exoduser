@@ -1,0 +1,151 @@
+{
+  "ts": 1774179001082,
+  "player": {
+    "lv": 14,
+    "exp": 1,
+    "maxExp": 59,
+    "sp": 3,
+    "ap": 2,
+    "transLvDate": null,
+    "transLvCount": 0,
+    "baseAtk": 15,
+    "baseDef": 2,
+    "mpR": 0.0565,
+    "stR": 0.0565,
+    "hp": 113,
+    "mhp": 113,
+    "mp": 106,
+    "mmp": 106,
+    "st": 106,
+    "mst": 106,
+    "speed": 2.6,
+    "shield": 0,
+    "mshield": 0
+  },
+  "inv": {
+    "bag": [],
+    "equipped": {
+      "weapon": null,
+      "shield": null,
+      "boots": null,
+      "armor": null,
+      "helmet": null,
+      "bow": null,
+      "gloves": null,
+      "pants": null,
+      "necklace": null,
+      "ring1": null,
+      "ring2": null,
+      "cape": null,
+      "belt": null,
+      "bracelet": null,
+      "headband": null
+    }
+  },
+  "stats": {
+    "str": 0,
+    "dex": 0,
+    "int": 0,
+    "vit": 0,
+    "lck": 0
+  },
+  "passives": {
+    "pAtk": 0,
+    "pDef": 0,
+    "pCharge": 0,
+    "pParry": 0,
+    "pMagic": 0,
+    "pBow": 0,
+    "pShield": 0,
+    "pGuard": 0,
+    "pRegen": 0,
+    "pCrit": 0,
+    "pDrop": 0,
+    "pPierce": 0,
+    "pMRegen": 0,
+    "pXbow": 0,
+    "pMelee": 0,
+    "pCombo": 0
+  },
+  "qslots": [
+    {
+      "type": "hp",
+      "count": 1
+    },
+    {
+      "type": null,
+      "count": 0
+    },
+    {
+      "type": null,
+      "count": 0
+    },
+    {
+      "type": null,
+      "count": 0
+    }
+  ],
+  "game": {
+    "stage": 0,
+    "kills": 411,
+    "mats": 156
+  },
+  "bagMax": 42,
+  "hellCleared": [],
+  "storage": {},
+  "upgrades": {
+    "hp": 0,
+    "atk": 0,
+    "def": 0,
+    "mp": 0,
+    "st": 0,
+    "spd": 0
+  },
+  "potLv": {
+    "hp": 0
+  },
+  "skills": {
+    "kiSlash": 1,
+    "spikeTrap": 1,
+    "holyDome": 1,
+    "giantSlam": 1
+  },
+  "fused": {},
+  "skProf": {
+    "chargeBoost": 735,
+    "maliceSwipe": 1260,
+    "kiSlash": 5895,
+    "holyDome": 60,
+    "giantSlam": 60,
+    "spikeTrap": 30
+  },
+  "fuseProfSec": {},
+  "cardProf": {
+    "dimBreach": 735,
+    "dimSlam": 735,
+    "dimThunder": 735,
+    "shieldFuse": 1260,
+    "holyFuse": 60,
+    "holyIce": 60,
+    "slamStorm": 60,
+    "stormBeam": 60
+  },
+  "activeChargeSk": "charge",
+  "activeBowSk": "normal",
+  "activeTechSk": "spikeTrap",
+  "activeMagicSk": "beam",
+  "activeLMBSk": "kiSlash",
+  "activeRMBSk": "shieldBlock",
+  "activeQSk": "parry",
+  "activeCtSk": "ghostWalk",
+  "skillSlots": [
+    "giantSlam",
+    null,
+    null,
+    null,
+    "spikeTrap",
+    "holyDome"
+  ],
+  "ultSlot": null,
+  "charIdx": 0
+}
