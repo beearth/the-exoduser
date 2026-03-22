@@ -54,6 +54,7 @@ canvas{display:block;position:absolute;top:0;left:0;z-index:1}
   </div>
   <div id="stage-list"></div>
   <div id="nav-footer">
+    <button onclick="autoPlaceHoles()" style="background:#2a0000;color:#ff6666;border-color:#ff4444">🕳️ 소환굴 자동배치</button>
     <button onclick="regenCurrent()" style="background:#002a1a;color:#00ff88;border-color:#00ff88;font-weight:bold">🎲 랜덤재생성</button>
     <button onclick="regenAll()" style="background:#1a1a00;color:#ffea00;border-color:#ffea00">⚡ 전체재생성</button>
     <button onclick="exportAsFixedMap()" style="background:#1a0030;color:#cc88ff;border-color:#cc88ff">📤 전체맵 내보내기</button>
@@ -196,38 +197,36 @@ const OBJ_DEFS=[
   {id:'boss_gate',name:'보스문',icon:'🚧',color:'#aa00ff',cat:'보스방'},
   {id:'boss_exit',name:'보스출구',icon:'🚪',color:'#00ff66',cat:'보스방'},
   {id:'pillar',name:'기둥',icon:'🏛️',color:'#888888',cat:'보스방'},
-  // ── CH1 썩은숲 ──
-  {id:'dead_tree',     name:'고목',       icon:'🌲', color:'#5d4037', cat:'CH1-썩은숲',img:'../../assets/objects/tree_dead_01.png',sz:64,col:1},
-  {id:'dead_tree_02',  name:'고목2',      icon:'🌲', color:'#5d4037', cat:'CH1-썩은숲',img:'../../assets/objects/tree_dead_02.png',sz:64,col:1},
-  {id:'dead_tree_03',  name:'고목3',      icon:'🌲', color:'#5d4037', cat:'CH1-썩은숲',img:'../../assets/objects/tree_dead_03.png',sz:64,col:1},
-  {id:'skull_pile',    name:'해골더미',   icon:'💀', color:'#9e9e9e', cat:'CH1-썩은숲',img:'../../assets/objects/deco_bones_04.png',sz:32},
-  {id:'bone_rocks',    name:'뼈바위',     icon:'🪨', color:'#666677', cat:'CH1-썩은숲',img:'../../assets/objects/deco_bones_03.png',sz:32},
-  {id:'mushroom_glow', name:'발광버섯',   icon:'🍄', color:'#ff7043', cat:'CH1-썩은숲',img:'../../assets/objects/mushroom_glow_01.png',sz:32,light:1},
-  {id:'mushroom_glow_02',name:'발광버섯2',icon:'🍄', color:'#ff7043', cat:'CH1-썩은숲',img:'../../assets/objects/mushroom_glow_02.png',sz:32,light:1},
-  {id:'mushroom_glow_03',name:'발광버섯3',icon:'🍄', color:'#ff7043', cat:'CH1-썩은숲',img:'../../assets/objects/mushroom_glow_03.png',sz:32,light:1},
-  {id:'poison_pool',   name:'독웅덩이',   icon:'☣️', color:'#76ff03', cat:'CH1-썩은숲',img:'../../assets/objects/ch1_poison_pool_sheet.png',sz:32,sheet:{c:3,r:3}},
-  // ── CH2 벌레굴 ──
-  {id:'bug_egg',       name:'벌레알',     icon:'🥚', color:'#c0ca33', cat:'CH2-벌레굴',img:'../../assets/objects/ch2_bug_egg_sheet.png',sz:32,sheet:{c:3,r:2}},
-  {id:'slime_pool',    name:'점액웅덩이', icon:'🟢', color:'#8bc34a', cat:'CH2-벌레굴',img:'../../assets/objects/ch2_slime_pool_sheet.png',sz:32,sheet:{c:3,r:3}},
-  {id:'cocoon',        name:'고치',       icon:'🫘', color:'#6d4c41', cat:'CH2-벌레굴',img:'../../assets/objects/ch2_cocoon_sheet.png',sz:48,col:1,sheet:{c:3,r:3}},
-  {id:'bug_nest',      name:'벌레둥지',   icon:'🪺', color:'#4e342e', cat:'CH2-벌레굴',img:'../../assets/objects/ch2_bug_nest_sheet.png',sz:48,col:1,sheet:{c:3,r:3}},
-  // ── CH3 얼음굴 ──
-  {id:'ice_pillar',    name:'얼음기둥',   icon:'🧊', color:'#4fc3f7', cat:'CH3-얼음굴',img:'../../assets/objects/ch3_ice_pillar_sheet.png',sz:64,col:1,sheet:{c:3,r:3}},
-  {id:'ice_deco',      name:'얼음데코',   icon:'❄️', color:'#b3e5fc', cat:'CH3-얼음굴',img:'../../assets/objects/ch3_ice_deco_sheet.png',sz:32,sheet:{c:3,r:3}},
-  {id:'ice_floor',     name:'얼음바닥',   icon:'🧊', color:'#1a3a5c', cat:'CH3-얼음굴',img:'../../assets/tiles/ch3_floor_sheet.png',sz:40,sheet:{c:3,r:3}},
-  {id:'frozen_bones',  name:'냉동뼈',     icon:'🦴', color:'#90caf9', cat:'CH3-얼음굴',img:'../../assets/objects/ch3_frozen_bones_sheet.png',sz:32,sheet:{c:3,r:3}},
-  // ── CH4 화염 ──
-  {id:'lava_crack',    name:'용암균열',   icon:'🌋', color:'#ff3d00', cat:'CH4-화염',img:'../../assets/objects/ch4_lava_crack_sheet.png',sz:40,sheet:{c:3,r:3}},
-  {id:'fire_pillar',   name:'불기둥',     icon:'🔥', color:'#ff6d00', cat:'CH4-화염',img:'../../assets/objects/ch4_fire_pillar_sheet.png',sz:64,col:1,sheet:{c:3,r:3}},
-  // ── CH5 뇌전 ──
-  {id:'tesla_coil',    name:'번개기둥',   icon:'⚡', color:'#42a5f5', cat:'CH5-뇌전',img:'../../assets/objects/ch5_tesla_sheet.png',sz:64,col:1,sheet:{c:4,r:2}},
-  {id:'spark_crystal', name:'방전수정',   icon:'💎', color:'#29b6f6', cat:'CH5-뇌전',img:'../../assets/objects/ch5_spark_crystal_sheet.png',sz:32,sheet:{c:3,r:3}},
-  {id:'thunder_mark',  name:'뇌전각인',   icon:'⚡', color:'#1565c0', cat:'CH5-뇌전',img:'../../assets/objects/ch5_thunder_mark_sheet.png',sz:40,sheet:{c:3,r:3}},
-  // ── CH6 백골 ──
-  {id:'bone_pillar',   name:'뼈기둥',     icon:'🦴', color:'#d7ccc8', cat:'CH6-백골',img:'../../assets/objects/ch6_bone_pillar_sheet.png',sz:64,col:1,sheet:{c:3,r:3}},
-  {id:'gravestone',    name:'묘비',       icon:'🪦', color:'#78909c', cat:'CH6-백골',img:'../../assets/objects/ch6_gravestone_sheet.png',sz:48,col:1,sheet:{c:3,r:3}},
-  // ── CH7 지옥성 ──
-  {id:'rune_mark',     name:'차원균열',   icon:'🔮', color:'#aa00ff', cat:'CH7-지옥성',img:'../../assets/objects/ch7_rune_mark_sheet.png',sz:40,sheet:{c:3,r:3}},
+  // ── 장식 오브젝트 ──
+  {id:'dead_tree',     name:'고목',       icon:'🌲', color:'#5d4037', cat:'장식',img:'objects/tree_dead_01.png',sz:64,col:1},
+  {id:'dead_tree_02',  name:'고목2',      icon:'🌲', color:'#5d4037', cat:'장식',img:'objects/tree_dead_02.png',sz:64,col:1},
+  {id:'dead_tree_03',  name:'고목3',      icon:'🌲', color:'#5d4037', cat:'장식',img:'objects/tree_dead_03.png',sz:64,col:1},
+  {id:'rotten_tree',   name:'썩은나무',   icon:'🌲', color:'#4e342e', cat:'장식',img:'objects/rotten_tree.png',sz:64,col:1},
+  {id:'rotten_stump',  name:'썩은그루터기',icon:'🪵', color:'#5d4037', cat:'장식',img:'objects/rotten_stump.png',sz:48},
+  {id:'vine_roots',    name:'덩굴뿌리',   icon:'🌿', color:'#558b2f', cat:'장식',img:'objects/vine_roots.png',sz:40},
+  {id:'skull_pile',    name:'해골더미',   icon:'💀', color:'#9e9e9e', cat:'장식',img:'objects/deco_bones_04.png',sz:32},
+  {id:'bone_rocks',    name:'뼈바위',     icon:'🪨', color:'#666677', cat:'장식',img:'objects/deco_bones_03.png',sz:32},
+  {id:'bones',         name:'뼈무더기',   icon:'🦴', color:'#bcaaa4', cat:'장식',img:'objects/bones.png',sz:32},
+  {id:'corpse',        name:'시체',       icon:'💀', color:'#6d4c41', cat:'장식',img:'objects/corpse.png',sz:40},
+  {id:'mushroom_glow', name:'발광버섯',   icon:'🍄', color:'#ff7043', cat:'장식',img:'objects/mushroom_glow_01.png',sz:32,light:1},
+  {id:'mushroom_glow_02',name:'발광버섯2',icon:'🍄', color:'#ff7043', cat:'장식',img:'objects/mushroom_glow_02.png',sz:32,light:1},
+  {id:'mushroom_glow_03',name:'발광버섯3',icon:'🍄', color:'#ff7043', cat:'장식',img:'objects/mushroom_glow_03.png',sz:32,light:1},
+  {id:'eye_mushroom',  name:'눈버섯',     icon:'🍄', color:'#ff5722', cat:'장식',img:'objects/eye_mushroom.png',sz:32},
+  {id:'eyeball',       name:'안구',       icon:'👁', color:'#e53935', cat:'장식',img:'objects/eyeball.png',sz:24},
+  {id:'eye1_bloodshot',name:'충혈안구',   icon:'👁', color:'#b71c1c', cat:'장식',img:'objects/eye1_bloodshot.png',sz:24},
+  {id:'eye2_terror',   name:'공포안구',   icon:'👁', color:'#880e4f', cat:'장식',img:'objects/eye2_terror.png',sz:24},
+  {id:'poison_puddle', name:'독웅덩이',   icon:'☣️', color:'#64dd17', cat:'장식',img:'objects/poison_puddle.png',sz:32},
+  {id:'poison_pool',   name:'독웅덩이2',  icon:'☣️', color:'#76ff03', cat:'장식',img:'objects/poison_pool.png',sz:32},
+  {id:'glow_flower_blue',name:'발광꽃(청)',icon:'🌸', color:'#42a5f5', cat:'장식',img:'objects/glow_flower_blue.png',sz:32,light:1},
+  {id:'glow_flower_yellow',name:'발광꽃(황)',icon:'🌼',color:'#fdd835',cat:'장식',img:'objects/glow_flower_yellow.png',sz:32,light:1},
+  {id:'frozen_bones',  name:'냉동뼈',     icon:'🦴', color:'#90caf9', cat:'장식',img:'objects/frozen_bones.png',sz:32},
+  {id:'lava_crack',    name:'용암균열',   icon:'🌋', color:'#ff3d00', cat:'장식',img:'objects/lava_crack.png',sz:40},
+  {id:'fire_pillar',   name:'불기둥',     icon:'🔥', color:'#ff6d00', cat:'장식',img:'objects/fire_pillar.png',sz:64,col:1},
+  {id:'rune_mark',     name:'차원균열',   icon:'🔮', color:'#aa00ff', cat:'장식',img:'objects/rune_mark.png',sz:40},
+  {id:'centipede',     name:'지네',       icon:'🐛', color:'#795548', cat:'장식',img:'objects/centipede.png',sz:40},
+  {id:'larva',         name:'유충',       icon:'🪱', color:'#9e9d24', cat:'장식',img:'objects/larva.png',sz:32},
+  {id:'minibug',       name:'작은벌레',   icon:'🐜', color:'#6d4c41', cat:'장식',img:'objects/minibug.png',sz:24},
+  {id:'chitin_debris', name:'키틴파편',   icon:'🪨', color:'#4e342e', cat:'장식',img:'objects/chitin_debris.png',sz:32},
 ];
 // ── 오브젝트 이미지 프리로드 ──
 const _objImgs={};
@@ -2748,11 +2747,15 @@ function draw(){
       // 발광버섯: 포인트라이트 미리보기
       if(od.id.startsWith('mushroom_glow')){X.fillStyle='rgba(255,180,80,0.12)';X.beginPath();X.arc(px,py,T*10,0,Math.PI*2);X.fill()}
     }else{
-      // 기존 이모지 렌더
-      const sz=T*2.5;
+      // 기존 이모지 렌더 (소환굴은 크기별 차등)
+      let sz=T*2.5;
+      if(od.id==='hole_s')sz=T*1.5;
+      else if(od.id==='hole_m')sz=T*2.5;
+      else if(od.id==='hole_l')sz=T*4;
       X.fillStyle=od.color+'55';X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.fill();
-      X.strokeStyle=od.color;X.lineWidth=1;X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.stroke();
+      X.strokeStyle=od.color;X.lineWidth=od.id.startsWith('hole_')?2:1;X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.stroke();
       X.font=`${sz*1.2}px serif`;X.textAlign='center';X.textBaseline='middle';X.fillStyle='#fff';X.fillText(od.icon,px,py+1);
+      if(od.id.startsWith('hole_')){X.font=`${Math.max(8,sz*.6)}px monospace`;X.fillStyle=od.color;X.fillText(od.id==='hole_s'?'S':od.id==='hole_m'?'M':'L',px,py+sz+8)}
     }}}
   if(hoverTX>=0&&hoverTX<m.mw&&hoverTY>=0&&hoverTY<m.mh){
     const hc=HELLS[STAGES[currentStage].hell].color+'44';
@@ -3770,6 +3773,78 @@ function genSnake(si,forceSeed){
   corridors.push({from:pId,to:'b',width:bW+2+~~(rng()*2),style:_pickCorridorStyle(rng,floor,hell),waypoints:[{x:bMX,y:bMY}]});
 
   return{mw,mh,rooms,corridors,features,corridorSpawns};
+}
+
+// ── 소환굴 자동배치 ──
+function autoPlaceHoles(){
+  const m=getCurrentMap();if(!m||!m.grid)return;
+  saveUndo();
+  // 기존 소환굴 제거
+  m.objs=m.objs.filter(o=>o.id!=='hole_s'&&o.id!=='hole_m'&&o.id!=='hole_l');
+  const mw=m.mw,mh=m.mh,grid=m.grid;
+  // 바닥 타일(1) 영역을 flood fill로 그룹화
+  const vis=[];for(let y=0;y<mh;y++)vis[y]=new Uint8Array(mw);
+  const regions=[];
+  for(let y=2;y<mh-2;y++)for(let x=2;x<mw-2;x++){
+    if(vis[y][x]||grid[y][x]!==1)continue;
+    // BFS로 연결 영역 수집
+    const cells=[];const q=[{x,y}];vis[y][x]=1;
+    while(q.length){
+      const c=q.shift();cells.push(c);
+      const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
+      for(const d of dirs){
+        const nx=c.x+d[0],ny=c.y+d[1];
+        if(nx<1||ny<1||nx>=mw-1||ny>=mh-1||vis[ny][nx]||grid[ny][nx]!==1)continue;
+        vis[ny][nx]=1;q.push({x:nx,y:ny});
+      }
+    }
+    if(cells.length>=20)regions.push(cells); // 20타일 이상만
+  }
+  // 시작방/보스방/대장간 위치 (배치 금지)
+  const _sysPos=m.objs.filter(o=>o.id==='player_start'||o.id==='boss_pos'||o.id==='forge'||o.id==='exit');
+  let placed=0;
+  // 방 정보가 있으면 방 단위로 배치 (격자맵 등)
+  if(m.rooms&&m.rooms.length>3){
+    for(const rm of m.rooms){
+      if(rm.type==='start'||rm.type==='boss'||rm.type==='forge')continue;
+      const rx=rm.rx||8,ry=rm.ry||rx;
+      const area=rx*ry*4;
+      const holeType=area>=250?'hole_l':area>=120?'hole_m':'hole_s';
+      const holeCnt=area>=250?2:area>=120?2:1;
+      for(let hi=0;hi<holeCnt;hi++){
+        const ox=~~((Math.random()-.5)*rx*1.2),oy=~~((Math.random()-.5)*ry*1.2);
+        const px=(rm.cx||0)+ox,py=(rm.cy||0)+oy;
+        if(px<2||py<2||px>=mw-2||py>=mh-2)continue;
+        if(!grid[py]||grid[py][px]!==1)continue;
+        let skip=false;for(const sp of _sysPos){if(Math.abs(sp.x-px)<8&&Math.abs(sp.y-py)<8){skip=true;break}}
+        if(skip)continue;
+        m.objs.push({x:px,y:py,id:holeType});placed++;
+      }
+    }
+  }else{
+    // 영역 기반 (일반맵)
+    for(const cells of regions){
+      const area=cells.length;
+      const holeType=area>=800?'hole_l':area>=300?'hole_m':'hole_s';
+      let holeCnt=area>=800?2+~~(area/1500):area>=300?1+~~(area/600):1+~~(area/250);
+      holeCnt=Math.min(holeCnt,5);
+      for(let hi=0;hi<holeCnt;hi++){
+        let bestX=0,bestY=0,bestS=0;
+        for(let t=0;t<20;t++){
+          const rc=cells[~~(Math.random()*cells.length)];
+          let wd=99;for(let dy=-3;dy<=3;dy++)for(let dx=-3;dx<=3;dx++){const tx=rc.x+dx,ty=rc.y+dy;if(tx<0||ty<0||tx>=mw||ty>=mh||grid[ty][tx]!==1)wd=Math.min(wd,Math.abs(dx)+Math.abs(dy))}
+          let hd=99;for(const o of m.objs){if(o.id&&o.id.startsWith('hole_'))hd=Math.min(hd,Math.abs(o.x-rc.x)+Math.abs(o.y-rc.y))}
+          let sd=99;for(const sp of _sysPos)sd=Math.min(sd,Math.abs(sp.x-rc.x)+Math.abs(sp.y-rc.y));
+          if(sd<12)continue;
+          const s=wd*2+Math.min(hd,20);if(s>bestS){bestS=s;bestX=rc.x;bestY=rc.y}
+        }
+        if(bestS>0){m.objs.push({x:bestX,y:bestY,id:holeType});placed++}
+      }
+    }
+  }
+  m.dirty=true;_saveLiveMapState();
+  document.getElementById('stats').textContent='🕳️ 소환굴 '+placed+'개 자동배치 ('+regions.length+'개 영역)';
+  alert('소환굴 '+placed+'개 배치 완료 ('+regions.length+'개 영역)\n대:hole_l / 중:hole_m / 소:hole_s\nCtrl+Z로 되돌리기 가능');
 }
 
 // ── 내보내기 ──

@@ -5286,32 +5286,32 @@ const _OBJ_SPR_MAP={
   'dead_tree':'assets/objects/tree_dead_01.png','dead_tree_02':'assets/objects/tree_dead_02.png','dead_tree_03':'assets/objects/tree_dead_03.png',
   'skull_pile':'assets/objects/deco_bones_04.png','bone_rocks':'assets/objects/deco_bones_03.png',
   'mushroom_glow':'assets/objects/mushroom_glow_01.png','mushroom_glow_02':'assets/objects/mushroom_glow_02.png','mushroom_glow_03':'assets/objects/mushroom_glow_03.png',
-  'poison_pool':'assets/objects/ch1_poison_pool_sheet.png',
-  'bug_egg':'assets/objects/ch2_bug_egg_sheet.png','slime_pool':'assets/objects/ch2_slime_pool_sheet.png',
-  'cocoon':'assets/objects/ch2_cocoon_sheet.png','bug_nest':'assets/objects/ch2_bug_nest_sheet.png',
-  'ice_pillar':'assets/objects/ch3_ice_pillar_sheet.png','ice_deco':'assets/objects/ch3_ice_deco_sheet.png',
-  'frozen_bones':'assets/objects/ch3_frozen_bones_sheet.png',
-  'lava_crack':'assets/objects/ch4_lava_crack_sheet.png','fire_pillar':'assets/objects/ch4_fire_pillar_sheet.png',
-  'tesla_coil':'assets/objects/ch5_tesla_sheet.png','spark_crystal':'assets/objects/ch5_spark_crystal_sheet.png',
-  'thunder_mark':'assets/objects/ch5_thunder_mark_sheet.png',
-  'bone_pillar':'assets/objects/ch6_bone_pillar_sheet.png','gravestone':'assets/objects/ch6_gravestone_sheet.png',
-  'rune_mark':'assets/objects/ch7_rune_mark_sheet.png',
+  'poison_pool':'assets/objects/poison_pool.png',
+  'frozen_bones':'assets/objects/frozen_bones.png',
+  'lava_crack':'assets/objects/lava_crack.png','fire_pillar':'assets/objects/fire_pillar.png',
+  'rune_mark':'assets/objects/rune_mark.png',
+  'bones':'assets/objects/bones.png','rotten_tree':'assets/objects/rotten_tree.png',
+  'rotten_stump':'assets/objects/rotten_stump.png','vine_roots':'assets/objects/vine_roots.png',
+  'corpse':'assets/objects/corpse.png','eyeball':'assets/objects/eyeball.png',
+  'eye_mushroom':'assets/objects/eye_mushroom.png','eye1_bloodshot':'assets/objects/eye1_bloodshot.png',
+  'eye2_terror':'assets/objects/eye2_terror.png','poison_puddle':'assets/objects/poison_puddle.png',
+  'glow_flower_blue':'assets/objects/glow_flower_blue.png','glow_flower_yellow':'assets/objects/glow_flower_yellow.png',
+  'centipede':'assets/objects/centipede.png','larva':'assets/objects/larva.png',
+  'minibug':'assets/objects/minibug.png','chitin_debris':'assets/objects/chitin_debris.png',
 };
 for(const[k,v]of Object.entries(_OBJ_SPR_MAP)){const im=new Image();im.src=v;_OBJ_SPR[k]=im}
 const _OBJ_META={
   'dead_tree':{sz:64,col:1},'dead_tree_02':{sz:64,col:1},'dead_tree_03':{sz:64,col:1},
   'skull_pile':{sz:32},'bone_rocks':{sz:32},
   'mushroom_glow':{sz:32,light:1},'mushroom_glow_02':{sz:32,light:1},'mushroom_glow_03':{sz:32,light:1},
-  'poison_pool':{sz:32,sheet:{c:3,r:3}},
-  'bug_egg':{sz:32,sheet:{c:3,r:2}},'slime_pool':{sz:32,sheet:{c:3,r:3}},
-  'cocoon':{sz:48,col:1,sheet:{c:3,r:3}},'bug_nest':{sz:48,col:1,sheet:{c:3,r:3}},
-  'ice_pillar':{sz:64,col:1,sheet:{c:3,r:3}},'ice_deco':{sz:32,sheet:{c:3,r:3}},
-  'frozen_bones':{sz:32,sheet:{c:3,r:3}},
-  'lava_crack':{sz:40,sheet:{c:3,r:3}},'fire_pillar':{sz:64,col:1,sheet:{c:3,r:3}},
-  'tesla_coil':{sz:64,col:1,sheet:{c:4,r:2}},'spark_crystal':{sz:32,sheet:{c:3,r:3}},
-  'thunder_mark':{sz:40,sheet:{c:3,r:3}},
-  'bone_pillar':{sz:64,col:1,sheet:{c:3,r:3}},'gravestone':{sz:48,col:1,sheet:{c:3,r:3}},
-  'rune_mark':{sz:40,sheet:{c:3,r:3}},
+  'poison_pool':{sz:32},
+  'frozen_bones':{sz:32},
+  'lava_crack':{sz:40},'fire_pillar':{sz:64,col:1},
+  'rune_mark':{sz:40},
+  'bones':{sz:32},'rotten_tree':{sz:64,col:1},'rotten_stump':{sz:48},'vine_roots':{sz:40},
+  'corpse':{sz:40},'eyeball':{sz:24},'eye_mushroom':{sz:32},'eye1_bloodshot':{sz:24},'eye2_terror':{sz:24},
+  'poison_puddle':{sz:32},'glow_flower_blue':{sz:32,light:1},'glow_flower_yellow':{sz:32,light:1},
+  'centipede':{sz:40},'larva':{sz:32},'minibug':{sz:24},'chitin_debris':{sz:32},
 };
 
 // ═══ RAM 최적화 시스템 ═══
@@ -118643,7 +118643,7 @@ function update(){
           // 히트
           if(_sbDoHit&&_dist<_sbRng){
             const _ang=Math.atan2(_dy,_dx);
-            hurtE(_tgt,~~(_sbDmgBase*(1+(_tgt._beamStk||0)*.1)),_ang,false,{},_elIdx);
+            hurtE(_tgt,~~(_sbDmgBase*(1+(_tgt._beamStk||0)*0.01)),_ang,false,{},_elIdx);
             _tgt._beamStk=Math.min(100,(_tgt._beamStk||0)+1);
           }
         }
@@ -119324,7 +119324,7 @@ function update(){
     }
     // 빔 데미지 = 기본마법뎀 × 스킬레벨 배율 (틱당, MP 소비는 지속시간만 결정)
     const _omniSlv=P.skills.omniBeam||1;
-    const _beamDmgBase=meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*.06*(1+(_omniSlv-1)*.12)*2*_fuseMul('omniBeam'); // ×2 보정 (2프레임 주기) — 데미지 2배
+    const _beamDmgBase=meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*.06*(1+(_omniSlv-1)*.12)*4*_fuseMul('omniBeam'); // ×4 보정 (기본뎀 2배 + 2프레임 주기)
     // 레이저류: 끝점에서만 데미지 (관통 없음)
     // 빔 중첩: 적에게 빔 지속 적중 시 중첩+1 (최대30), 데미지 배율 = 1 + 중첩*0.1 (최대 4배)
     if(_isOmni){
@@ -119390,7 +119390,7 @@ function update(){
           if(_beamDoHit&&_tgt&&_tgt.alive&&!_bHit.has(_tgt)&&_beamHitCap<10){
             _bHit.add(_tgt);_beamHitCap++;
             _tgt._beamStk=Math.min(100,(_tgt._beamStk||0)+1);_tgt._beamStkT=30;
-            const _bsMul=1+(_tgt._beamStk||0)*.1;
+            const _bsMul=1+(_tgt._beamStk||0)*0.01;
             hurtE(_tgt,_beamDmgBase*_dmgMul*_bsMul*elMul(bel,_tgt.el),P.facing,true,{beam:true},bel);
             _tgt.burnT=180;G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(_tgt.x,_tgt.y,ELC[bel],2);
             // 추적뇌전: 타겟 주변 광역 (만화광선과 동일)
@@ -119401,7 +119401,7 @@ function update(){
               if(dst(_tgt.x,_tgt.y,e.x,e.y)>_etAoeR)continue;
               _bHit.add(e);_beamHitCap++;
               e._beamStk=Math.min(100,(e._beamStk||0)+1);e._beamStkT=30;
-              const _bsMul2=1+(e._beamStk||0)*.1;
+              const _bsMul2=1+(e._beamStk||0)*0.01;
               hurtE(e,_beamDmgBase*_dmgMul*_bsMul2*elMul(bel,e.el)/3,P.facing,true,{beam:true},bel);
               e.burnT=180;if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);
             }
@@ -119431,7 +119431,7 @@ function update(){
               if(dst(_mEndX,_mEndY,e.x,e.y)>_mAoeR)continue;
               _bHit.add(e);_beamHitCap++;
               e._beamStk=Math.min(100,(e._beamStk||0)+1);e._beamStkT=30;
-              const _bsMul=1+(e._beamStk||0)*.1;
+              const _bsMul=1+(e._beamStk||0)*0.01;
               hurtE(e,_beamDmgBase*_dmgMul*_bsMul*elMul(bel,e.el)/3,P.facing,true,{beam:true},bel);
               e.burnT=180;G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);
             }
@@ -119456,7 +119456,7 @@ function update(){
           if(dst(_bEndX,_bEndY,e.x,e.y)>_bAoeR)continue;
           _bHit.add(e);_beamHitCap++;
           e._beamStk=Math.min(100,(e._beamStk||0)+1);e._beamStkT=30;
-          const _bsMul=1+(e._beamStk||0)*.1;
+          const _bsMul=1+(e._beamStk||0)*0.01;
           let totalDmg=0;
           const _eC=elms.length||1;for(let _ei2=0;_ei2<elms.length;_ei2++){totalDmg+=_beamDmgBase*_bsMul*elMul(elms[_ei2].el,e.el)/_eC}
           hurtE(e,totalDmg,Math.atan2(e.y-_bEndY,e.x-_bEndX),true,{beam:true},elms[0].el);

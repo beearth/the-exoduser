@@ -1,21 +1,21 @@
 {
-  "ts": 1774142943791,
+  "ts": 1774146589077,
   "player": {
-    "lv": 36,
-    "exp": 108,
-    "maxExp": 169,
-    "sp": 2,
-    "ap": 6,
+    "lv": 50,
+    "exp": 235,
+    "maxExp": 265,
+    "sp": 10,
+    "ap": 10,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.23600000000000004,
-    "stR": 0.21000000000000002,
-    "hp": 365,
-    "mhp": 365,
-    "mp": 174,
-    "mmp": 174,
-    "st": 134,
-    "mst": 134,
+    "mpR": 0.24300000000000002,
+    "stR": 0.217,
+    "hp": 383,
+    "mhp": 383,
+    "mp": 181,
+    "mmp": 181,
+    "st": 141,
+    "mst": 141,
     "speed": 3.2691165000000004,
     "shield": 0,
     "mshield": 0
@@ -172,6 +172,46 @@
         "_gx": 4,
         "_gy": 0,
         "_pickT": 1774142888575
+      },
+      {
+        "id": 1774143772714.1133,
+        "slot": "ring1",
+        "el": 1,
+        "rarity": 4,
+        "tier": 0,
+        "name": "불꽃 반지",
+        "emoji": "💍",
+        "eDef": 2,
+        "critRate": 3.98,
+        "critDmg": 0.13,
+        "bInt": 28,
+        "bStr": 29,
+        "bDex": 28,
+        "affixes": [
+          {
+            "id": "iceRes",
+            "tier": 1,
+            "value": 0.2886
+          },
+          {
+            "id": "poisonRes",
+            "tier": 1,
+            "value": 0.1998
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 11.49,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "원소 반응 발동 시 추가 폭발 (ATK×80%)",
+          "stat": "_lRingElem",
+          "val": 0.8
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 6,
+        "_gy": 0,
+        "_pickT": 1774143772727
       }
     ],
     "equipped": {
@@ -559,8 +599,8 @@
       "count": 1
     },
     {
-      "type": null,
-      "count": 0
+      "type": "mp",
+      "count": 2
     },
     {
       "type": null,
@@ -573,8 +613,8 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 1057,
-    "mats": 52620
+    "kills": 1593,
+    "mats": 75506
   },
   "bagMax": 42,
   "hellCleared": [],
@@ -599,36 +639,39 @@
     "maliceStorm": 1,
     "omniBeam": 1,
     "fanShot": 1,
-    "maliceMortar": 1
+    "maliceMortar": 1,
+    "chainAssault": 1,
+    "chainSlam": 1
   },
   "fused": {
     "sixFuse": true
   },
   "skProf": {
     "kiSlash": 9999,
-    "chargeBoost": 210,
-    "maliceSwipe": 705,
-    "holyDome": 270,
-    "spikeTrap": 120,
-    "maliceStorm": 990,
-    "omniBeam": 262,
-    "fanShot": 365,
-    "maliceMortar": 195
+    "chargeBoost": 1110,
+    "maliceSwipe": 915,
+    "holyDome": 390,
+    "spikeTrap": 870,
+    "maliceStorm": 1530,
+    "omniBeam": 379,
+    "fanShot": 389,
+    "maliceMortar": 405,
+    "chainAssault": 165
   },
   "fuseProfSec": {},
   "cardProf": {
-    "dimBreach": 210,
-    "dimSlam": 210,
-    "dimThunder": 210,
-    "shieldFuse": 705,
-    "holyFuse": 270,
-    "holyIce": 270,
-    "boneStorm": 990,
-    "elecRepent": 990,
-    "sixFuse": 1247.916666666245,
-    "elemFuse": 1247.916666666245,
-    "stormBeam": 1247.916666666245,
-    "iceMortar": 195
+    "dimBreach": 1110,
+    "dimSlam": 1275,
+    "dimThunder": 1275,
+    "shieldFuse": 915,
+    "holyFuse": 390,
+    "holyIce": 390,
+    "boneStorm": 1530,
+    "elecRepent": 1530,
+    "sixFuse": 1783.3166666658863,
+    "elemFuse": 1783.3166666658863,
+    "stormBeam": 1783.3166666658863,
+    "iceMortar": 405
   },
   "activeChargeSk": "charge",
   "activeBowSk": "normal",
