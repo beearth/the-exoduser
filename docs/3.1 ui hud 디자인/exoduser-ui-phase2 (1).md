@@ -354,3 +354,40 @@ function showStageTransition(callback) {
 - `buildMapCache()` = 맵 캐시 빌드 (비주얼 14스텝 포함, 무거움)
 - `_tseed()`, `ELC[]`, `ETYPE_COL[]` = 절대 수정 금지
 - 외부 CDN: Supabase만 허용, 폰트는 Noto Sans KR만
+
+---
+
+## 스킬 슬롯 쿨다운 표기 시스템
+
+스킬이 SKILL_SLOTS에 등록되면 `_skCdMap`에서 해당 스킬의 쿨다운 변수를 참조하여 HUD에 자동 표시.
+
+### _skCdMap (game.html updateQS 내)
+| 스킬 id | 쿨다운 변수 | 비고 |
+|---|---|---|
+| maliceMortar | P._mmCd | 악의포격 |
+| holyBlast | P._hbCd | 신성폭발 |
+| bladeShot | P._bltCd | 칼날탄 |
+| lavaSummon | P._lvCd | 용암소환 |
+| iceOrb | P._ioCd | 얼음보주 |
+| ghostWalk | P._gwCd | 뇌전걸음 |
+| grenadeShot | P._gsCd | 유탄 |
+| bladeDash | P._bdCd | 전격이동 |
+| plagueBurst | P._pbCd | 역병폭발 |
+| shieldThrow | P._stCd | 견갑투척 |
+| blastShot | P._bsCd2 | 폭렬탄 |
+| giantSlam | P._gslCd | 거대슬램 |
+| holyDome | P._hdCd | 신성돔 |
+| spikeTrap | P._gcCd | 가시덫 |
+| needleShot | P._ndCd | 바늘탄 |
+| holyPrison | P._hpCd | 신성감옥 |
+| execution | P._execCd | 처형 |
+| peaceShield | P._psCd | 평화보호 |
+| blueShot | P._blueCd | 푸른탄 |
+| blackStar | P._bsCd | 블랙스타 |
+
+### 별도 처리 스킬 (스택/충전 방식)
+- maliceHunt: P._mhCd (단독 분기)
+- maliceStorm/iceStorm/boneWall/hellRay: 스택 시스템 (_msStk/_isStk/_bwStk/_hrStk + 충전타이머)
+- maliceStorm (boneStorm/elecRepent 합체): P._bnsCd (쿨다운 방식으로 전환)
+
+> 새 스킬 추가 시 _skCdMap에 쿨다운 변수 등록 필수. 등록하지 않으면 HUD에 쿨다운 미표시.
