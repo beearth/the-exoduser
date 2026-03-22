@@ -41,7 +41,7 @@ STEP 10. renderAffixTooltip() — 툴팁 어픽스 표시
 
 // 슬롯 코드 → SLOT_NAMES 배열 인덱스 매핑용 별칭
 // weapon=0 shield=1 boots=2 armor=3 helmet=4 bow=5
-// gloves=6 pants=7 belt=8 necklace=9 ring1=10 ring2=11 cape=12
+// gloves=6 pants=7 belt=8 necklace=9 ring1=10 ring2=11 cape=12 bracelet=13 headband=14
 const _SL = {
   wpn:['weapon','bow'],
   arm:['armor'],
