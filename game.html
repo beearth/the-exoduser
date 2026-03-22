@@ -1327,10 +1327,7 @@ function dbRestore(d){
   if(!P.skills.spikeTrap)P.skills.spikeTrap=1;
   if(!P.skills.holyDome){P.skills.holyDome=1}
   if(!P.skills.giantSlam){P.skills.giantSlam=1}
-  // holyDome→F(5), giantSlam→1번(0) 강제 배정 (다른 슬롯에 잘못 들어간 경우 정리)
-  for(let _fi=0;_fi<6;_fi++){if(SKILL_SLOTS[_fi]==='holyDome'&&_fi!==5)SKILL_SLOTS[_fi]=null;if(SKILL_SLOTS[_fi]==='giantSlam'&&_fi!==0)SKILL_SLOTS[_fi]=null}
-  if(!SKILL_SLOTS[5]&&P.skills.holyDome>=1)SKILL_SLOTS[5]='holyDome';
-  if(!SKILL_SLOTS[0]&&P.skills.giantSlam>=1)SKILL_SLOTS[0]='giantSlam';
+  // holyDome/giantSlam 슬롯 강제 고정은 슬롯 복원 후 실행 (아래)
   // 기술 스킬 슬롯 복원 (Space)
   if(d.activeTechSk)P.activeTechSk=d.activeTechSk;
   if(!P.activeTechSk)P.activeTechSk='spikeTrap';
@@ -1380,6 +1377,10 @@ function dbRestore(d){
   _actIds.forEach(id=>{
     if(!SKILL_SLOTS.includes(id)){const _ei=SKILL_SLOTS.findIndex((s)=>s===null);if(_ei>=0)SKILL_SLOTS[_ei]=id}
   });
+  // holyDome→F(5), giantSlam→1번(0) 강제 고정 (세이브 슬롯 복원/자동배정 후 최종 보정)
+  for(let _fi=0;_fi<6;_fi++){if(SKILL_SLOTS[_fi]==='holyDome')SKILL_SLOTS[_fi]=null;if(SKILL_SLOTS[_fi]==='giantSlam')SKILL_SLOTS[_fi]=null}
+  if(P.skills.holyDome>=1){if(SKILL_SLOTS[5]&&SKILL_SLOTS[5]!=='holyDome'){const _bumped=SKILL_SLOTS[5];SKILL_SLOTS[5]='holyDome';const _ei2=SKILL_SLOTS.findIndex(s=>s===null);if(_ei2>=0)SKILL_SLOTS[_ei2]=_bumped}else SKILL_SLOTS[5]='holyDome'}
+  if(P.skills.giantSlam>=1){if(SKILL_SLOTS[0]&&SKILL_SLOTS[0]!=='giantSlam'){const _bumped=SKILL_SLOTS[0];SKILL_SLOTS[0]='giantSlam';const _ei2=SKILL_SLOTS.findIndex(s=>s===null);if(_ei2>=0)SKILL_SLOTS[_ei2]=_bumped}else SKILL_SLOTS[0]='giantSlam'}
   // 캐릭터 외형 복원
   if(d.charIdx!=null&&d.charIdx!==_charIdx&&d.charIdx>=0&&d.charIdx<CHAR_LIST.length)_loadCharAtlas(d.charIdx);
   return true;
@@ -2680,6 +2681,7 @@ function _checkPetDialogue(){
     if(!_petTut.parryHint&&_petAtkCnt>=8&&_petParryCnt===0){_petTut.parryHint=true;_petSayCD('tut_parry','crow','우클릭이 패링이다. 적 공격이 닿기 직전에 눌러!',5,9999,'cat','못 하겠으면 때려. 안 죽으면 그만이야.',5);return}
     if(!_petTut.firstParry&&_petParryCnt>=1){_petTut.firstParry=true;_petSayCD('tut_1stparry','crow','됐어! 감 잡았구나.',4,9999,'cat','...운이 좋았을 뿐이야. 아마.',5);return}
     if(!_petTut.firstKill&&_petKillCnt>=1){_petTut.firstKill=true;_petSayCD('tut_1stkill','crow','하나 죽었군.',4,9999,'cat','...고기 냄새. 싫진 않네.',5);return}
+    if(!_petTut.bowIntro&&_petKillCnt>=3){_petTut.bowIntro=true;_petSayCD('tut_bow','crow','유령쇠뇌야. 인사해.',3,9999,'cat','...말은 못해.',4);return}
   }
 
   // ── 빨간/무지개 탄 (프레임마다 체크하지 않기 위해 쿨다운 사용) ──
@@ -2708,10 +2710,17 @@ function _checkPetDialogue(){
   if(!INV.equipped.shield)_petSayCD('no_shield','cat','Q 보호막도 패링이 가능해!',4,300,'crow','몬스터는 부활력을 가지고 있어. 악의력을 많이 쓰면 악마가 돼서 부활력이 생긴대. 조심해.',6);
   // 위험 경고 (HP 30% 이하)
   if(P.hp<P.mhp*.3&&P.hp>0)_petSayCD('danger_hp','crow','위험해! 쉬프트 사슬기동으로 피해!!',3,300);
+  // 쉬프트 안내 (돌진 미사용 + 전투 중)
+  if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야! 끌려가면서 무적이라고!',4,300);
   // SP 안내 (10 이상)
   if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트가 쌓였어! K 눌러서 스킬 배우자!',4,300);
-  // 자원 부족 (HP/MP/ST 30% 이하)
+  // 자원 부족 (50% 이하 → 패링 안내, 30% 이하 → 신성한 땅 안내)
+  if(P.hp<P.mhp*.5||P.mp<P.mmp*.5||P.st<P.mst*.5)_petSayCD('resource_parry','cat','패링을 써야 자원을 흡수한다고!',3,300);
   if(P.hp<P.mhp*.3||P.mp<P.mmp*.3||P.st<P.mst*.3)_petSayCD('resource_low','crow','F키 신성한 땅을 써봐. 자원이 차올라.',4,300);
+  // 근접 적 경고 (300px 내 적 수 기반)
+  {let _nearCnt=0;for(let _ni=0;_ni<ens.length;_ni++){if(ens[_ni].alive&&dst2(P.x,P.y,ens[_ni].x,ens[_ni].y)<90000)_nearCnt++}
+  if(_nearCnt>=10)_petSayCD('melee_trap','cat','적이 근접하면 스페이스키야! 가시덫을 활용해!',4,300);
+  if(_nearCnt>=20)_petSayCD('melee_slam','crow','1번을 써봐! 대왕치기!',3,300)}
 
   // 보스 속성
   if(G.bossAlive&&G._bossRef&&G._bossRef.el>0)_petSayCD('boss_elem','crow','속성을 읽어. 약점을 찌르면 두 배로 썩는다.',4,30,'cat','화염엔 빙결! 뇌전엔 암흑! 기억해!',4);
@@ -9703,28 +9712,51 @@ function initWallEyes(){
     if(adjFloor&&R()<.05){WALL_EYES.push({x:tx*T+T/2+(R()-.5)*T*.5,y:ty*T+T/2+(R()-.5)*T*.5,radius:6+R()*4,pupilR:2+R()*1.5,pupilOff:3,veinCount:2+~~(R()*3),blinkTimer:0,blinkInterval:3000+R()*5000});count++}
   }}
 }
-// ═══ [CH1-EYES] 벽면 눈깔 장식 (전 챕터) ═══
+// ═══ [GIANT-EYE] 대왕감시안구 (벽면 거대 눈알, 전 챕터) ═══
 let _eyeObjs=[];let _eyeInited=false;
+const _GIANT_EYE_MAX=6; // 맵당 최대 6개
 function _initEyes(){
   _eyeObjs.length=0;_eyeInited=false;
   const map=G.map,hell=SI_TO_HELL[G.stage];
-  // 벽 타일 중 남쪽이 바닥인 곳 (벽면이 보이는 곳)에 눈깔 삽입
-  for(let ty=1;ty<G.mh-1;ty++){for(let tx=1;tx<G.mw-1;tx++){
+  let count=0;
+  // 벽 타일 중 남쪽이 바닥인 곳 → 벽면에 거대 눈알 삽입
+  // 넓은 벽면(좌우 2칸 이상 연속 벽)만 후보
+  for(let ty=1;ty<G.mh-1&&count<_GIANT_EYE_MAX;ty++){for(let tx=2;tx<G.mw-2&&count<_GIANT_EYE_MAX;tx++){
     if(map[ty][tx]<1)continue; // 벽만
-    if(map[ty+1][tx]!==0)continue; // 남쪽(아래)이 바닥이어야 벽면이 보임
-    const R=_tseed(tx+99,ty+77);
-    if(R()<.025){ // 2.5% 확률 (크게 키울거라 수 줄임)
+    if(map[ty+1][tx]!==0)continue; // 남쪽이 바닥
+    if(map[ty][tx-1]<1||map[ty][tx+1]<1)continue; // 좌우도 벽 (넓은 벽면)
+    const R=_tseed(tx+199,ty+177);
+    if(R()<.012){ // 1.2% 확률
+      // 기존 눈알과 최소 거리 체크
+      const nx=tx*T+T*.5,ny=(ty+1)*T-T*.15;
+      let tooClose=false;
+      for(let i=0;i<_eyeObjs.length;i++){const d=Math.abs(_eyeObjs[i].x-nx)+Math.abs(_eyeObjs[i].y-ny);if(d<T*8){tooClose=true;break}}
+      if(tooClose)continue;
       _eyeObjs[_eyeObjs.length]={
-        x:tx*T+T*.3+R()*T*.4, // 벽면 내 랜덤 수평 위치
-        y:(ty+1)*T-2, // 벽면 하단 (남쪽 면 아래쪽, 바닥 바로 위)
-        blink:0,blinkT:0,blinkNext:180+~~(R()*300),
-        pupilX:0,pupilY:0,
-        size:8+~~(R()*7), // 크게: 8~14px
-        alpha:.7+R()*.3
+        x:nx, y:ny,
+        blink:0,blinkT:0,blinkNext:200+~~(R()*400),
+        size:18+~~(R()*14), // 대왕: 18~31px (스프라이트 렌더 크기 = size*3)
+        alpha:.85+R()*.15
       };
+      count++;
     }
   }}
+  // 에디터 수동 배치 giant_eye 로드
+  for(const mo of MAP_OBJS){
+    if(mo.type==='giant_eye'){
+      _eyeObjs[_eyeObjs.length]={
+        x:mo.x,y:mo.y,
+        blink:0,blinkT:0,blinkNext:200+~~(Math.random()*400),
+        size:25+~~(Math.random()*10), // 에디터 배치는 크게
+        alpha:.9
+      };
+      count++;
+    }
+  }
+  // MAP_OBJS에서 giant_eye 제거 (이미 _eyeObjs로 이관)
+  MAP_OBJS=MAP_OBJS.filter(o=>o.type!=='giant_eye');
   _eyeInited=_eyeObjs.length>0;
+  if(count>0)console.log('[GIANT-EYE] 대왕감시안구 '+count+'개 배치');
 }
 // ═══ [GLOW-ORI] 발광 오브젝트 ═══
 let GLOW_OBJECTS=[];const GLOW_MAX=30;
@@ -9740,7 +9772,7 @@ function initGlowObjects(){
 }
 // ═══ [MAP-OBJ] 맵 오브젝트 시스템 ═══
 function initMapObjects(){
-  const _editorObjs=MAP_OBJS.filter(o=>o.type&&!['bonfire','lore','breakable','trap','altar'].includes(o.type));
+  const _editorObjs=MAP_OBJS.filter(o=>o.type&&!['bonfire','lore','breakable','trap','altar','m_eye','m_eye1','m_eye2','eyeball','eye_mushroom','eye1_bloodshot','eye2_terror'].includes(o.type));
   MAP_OBJS=[];const hell=SI_TO_HELL[G.stage],map=G.map,rooms=G.rooms;
   // 겹침 체크 헬퍼 (에디터 오브젝트 + 소환굴 포함)
   function _moOk(x,y){
@@ -10704,7 +10736,7 @@ function pAtkCost(){return Math.max(.60,1-PASSIVES.pAtk*.04)} // ST비용 유지
 function pDefAdd(){return PASSIVES.pDef*5+(P._altDef||0)*30}   // 방어력 +5/lv +제단 (10lv=+50)
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
-function pParryDmg(){return 1+PASSIVES.pParry*.50}     // 카운터뎀 +50%/lv (10lv=+500%)
+function pParryDmg(){return 2+PASSIVES.pParry*.50}     // 기본 +100%, 카운터뎀 +50%/lv (10lv=+600%)
 function pParryRmbSpd(){return 1+PASSIVES.pParry*.10}  // 우클릭공속 +10%/lv (10lv=+100%)
 function pParryRainbowDR(){return Math.min(.80,PASSIVES.pParry*.10)} // 무지개탄 피해감소 +10%/lv (최대80%)
 function pMagicMul(){return 1+PASSIVES.pMagic*.04+_eqAffix('magicDmg')+_eqImplicit('_iMagDmg')*.01}     // 마법뎀 +4%/lv + 머리띠 어픽스
@@ -116516,17 +116548,12 @@ function genFromTemplate(tmpl,si){
       if(Math.abs(_ddx)>Math.abs(_ddy)) _entryDir=_ddx>0?'right':'left';
       else _entryDir=_ddy>0?'bot':'top';
     }
-    // 게이트는 입구 반대편(맵 경계 쪽)에 배치
+    // 게이트 방향: 가장 가까운 맵 경계 (거리>0인 것만 후보)
     const dTop=bossCy-bRy,dBot=mh-1-(bossCy+bRy),dLeft=bossCx-bRx,dRight=mw-1-(bossCx+bRx);
-    if(_entryDir==='bot') _gateDir='top';
-    else if(_entryDir==='top') _gateDir='bot';
-    else if(_entryDir==='right') _gateDir='left';
-    else _gateDir='right';
-    // 게이트 방향의 거리가 0 미만이면 반대편으로 (맵 밖 방지)
-    if(_gateDir==='top'&&dTop<0) _gateDir='bot';
-    if(_gateDir==='bot'&&dBot<0) _gateDir='top';
-    if(_gateDir==='left'&&dLeft<0) _gateDir='right';
-    if(_gateDir==='right'&&dRight<0) _gateDir='left';
+    const _dirs=[{d:'top',v:dTop},{d:'bot',v:dBot},{d:'left',v:dLeft},{d:'right',v:dRight}];
+    _dirs.sort((a,b)=>a.v-b.v);
+    const _best=_dirs.find(d=>d.v>0);
+    _gateDir=_best?_best.d:_dirs[_dirs.length-1].d;
     if(_gateDir==='top'){
       _gateY=0;
       for(let gy=0;gy<=dTop;gy++)for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&gy<mh)map[gy][gx]=0;
@@ -116544,17 +116571,20 @@ function genFromTemplate(tmpl,si){
       for(let gx=bossCx+bRx;gx<mw;gx++)for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&gx>=0)map[gy][gx]=0;
       for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh){map[gy][mw-1]=3;_gateTiles.push({x:mw-1,y:gy})}
     }
-    // tileRLE 모드: 보스방→입구 방향으로 복도 강제 카빙 (입구 보장)
-    if(_hasTileRLE&&_bossCor){
-      const _otherRmId2=_bossCor.to===bossRd.id?_bossCor.from:_bossCor.to;
-      const _otherRm2=tmpl.rooms.find(r=>r.id===_otherRmId2);
-      const _corW=_bossCor.width||6;
-      const pts2=[{x:_otherRm2?_otherRm2.cx:bossCx,y:_otherRm2?_otherRm2.cy:bossCy+bRy+10}];
-      if(_bossCor.waypoints)for(const wp of _bossCor.waypoints)pts2.push(wp);
-      pts2.push({x:bossCx,y:bossCy});
-      if(_bossCor.from===bossRd.id) pts2.reverse();
-      for(let i=0;i<pts2.length-1;i++)_tCarveCorridor(map,mw,mh,pts2[i].x,pts2[i].y,pts2[i+1].x,pts2[i+1].y,_corW,'straight');
-      console.log('[MAP] tileRLE: forced boss corridor carve',_entryDir);
+    // tileRLE 모드: 보스방 입구 보장 — 보스방 경계에서 입구 방향으로 3칸 바닥 확보
+    if(_hasTileRLE){
+      const bEdge=_entryDir==='bot'?bossCy+bRy:_entryDir==='top'?bossCy-bRy:bossCy;
+      const bEdgeX=_entryDir==='left'?bossCx-bRx:_entryDir==='right'?bossCx+bRx:bossCx;
+      for(let d=0;d<=4;d++){
+        for(let w=-2;w<=2;w++){
+          let tx2,ty2;
+          if(_entryDir==='bot'){tx2=bossCx+w;ty2=bEdge+d}
+          else if(_entryDir==='top'){tx2=bossCx+w;ty2=bEdge-d}
+          else if(_entryDir==='left'){tx2=bEdgeX-d;ty2=bossCy+w}
+          else{tx2=bEdgeX+d;ty2=bossCy+w}
+          if(tx2>=1&&tx2<mw-1&&ty2>=1&&ty2<mh-1&&map[ty2][tx2]===1)map[ty2][tx2]=0;
+        }
+      }
     }
   }
 
@@ -116673,6 +116703,8 @@ function genFromTemplate(tmpl,si){
     if(!o.id||o.id==='player_start'||o.id==='boss_pos'||o.id==='exit'||o.id==='boss_gate'||o.id==='boss_exit')continue;
     // 기존 시스템 오브젝트(bonfire등)는 스킵 — 별도 생성됨
     if(o.id==='bonfire'||o.id==='lore'||o.id==='trap'||o.id==='altar'||o.id==='forge')continue;
+    // 눈깔 이미지 에셋 스킵 — 스프라이트 시트 시스템으로 대체됨
+    if(o.id==='m_eye'||o.id==='m_eye1'||o.id==='m_eye2'||o.id==='eyeball'||o.id==='eye_mushroom'||o.id==='eye1_bloodshot'||o.id==='eye2_terror')continue;
     MAP_OBJS.push({type:o.id,x:o.x*T,y:o.y*T,hell:SI_TO_HELL[si]});
   }}
 }
@@ -117073,7 +117105,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
   let _hp=~~((ib?1500:150)*Math.pow(1.012,monLv)*dm*et.hpMul); // 1.2% 복리
-  const _atk=~~(((ib?40:20)+monLv*(ib?2:1))*dm*et.atkMul); // 기본20+레벨당1 (보스: 40+레벨당2)
+  const _atk=~~(((ib?40:20)+monLv*(ib?3:2))*dm*et.atkMul); // 기본20+레벨당2 (보스: 40+레벨당3)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   const _noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
   let _projCd=ib?70:_rare?9999
@@ -119315,7 +119347,8 @@ function update(){
     }
     // 빔 데미지 = 기본마법뎀 × 스킬레벨 배율 (틱당, MP 소비는 지속시간만 결정)
     const _omniSlv=P.skills.omniBeam||1;
-    const _beamDmgBase=meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*.37*(1+(_omniSlv-1)*.12)*4*_fuseMul('omniBeam'); // ×4 보정 (기본뎀 2배 + 2프레임 주기), 실효DPS 3.5 (지속형)
+    const _beamLvMul=0.1+P.lv*P.lv*0.0004; // 제곱 커브: 1렙=0.1, 10렙=0.14, 25렙=0.35, 50렙=1.1, 100렙=4.1
+    const _beamDmgBase=meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*.37*(1+(_omniSlv-1)*.18)*_beamLvMul*_fuseMul('omniBeam'); // 레벨 스케일링: 초반 약하고 고렙 강해짐
     // 레이저류: 끝점에서만 데미지 (관통 없음)
     // 빔 중첩: 적에게 빔 지속 적중 시 중첩+1 (최대30), 데미지 배율 = 1 + 중첩*0.1 (최대 4배)
     if(_isOmni){
@@ -130750,27 +130783,35 @@ function draw(){
       X.drawImage(dImg,d.x-dw/2,d.y-dh/2,dw,dh);
     }
   }
-  // [CH1-EYES] 벽 눈깔 렌더 (스프라이트 시트)
+  // [GIANT-EYE] 대왕감시안구 렌더 (스프라이트 시트)
   if(_eyeInited&&_eyeSpriteReady){
     const _epx=P.x,_epy=P.y;
     for(let _ei=0;_ei<_eyeObjs.length;_ei++){
       const _e=_eyeObjs[_ei];
       const _sx=_e.x-G.cam.x+C.width/2,_sy=_e.y-G.cam.y+C.height/2;
-      if(_sx<-20||_sx>C.width+20||_sy<-20||_sy>C.height+20)continue;
+      const _drawSz=_e.size*3;
+      if(_sx<-_drawSz||_sx>C.width+_drawSz||_sy<-_drawSz||_sy>C.height+_drawSz)continue;
       const _dx=_epx-_e.x,_dy=_epy-_e.y;
       // 깜빡임
       _e.blinkT++;
       if(_e.blink===0&&_e.blinkT>_e.blinkNext){_e.blink=1;_e.blinkT=0}
-      else if(_e.blink===1&&_e.blinkT>8){_e.blink=0;_e.blinkT=0;_e.blinkNext=120+(_ei*37%180)}
+      else if(_e.blink===1&&_e.blinkT>12){_e.blink=0;_e.blinkT=0;_e.blinkNext=200+(_ei*53%300)}
       X.globalAlpha=_e.alpha;
       if(_e.blink===0){
         const _fi=_eyeDirFrame(_dx,_dy);
-        const _drawSz=_e.size*5;
+        // 붉은 글로우
+        const _glR=_drawSz*.8;
+        const _glG=X.createRadialGradient(_sx,_sy,_drawSz*.2,_sx,_sy,_glR);
+        _glG.addColorStop(0,'rgba(180,30,30,.15)');_glG.addColorStop(1,'rgba(100,10,10,0)');
+        X.fillStyle=_glG;X.beginPath();X.arc(_sx,_sy,_glR,0,Math.PI*2);X.fill();
+        // 스프라이트
         X.drawImage(_eyeSpriteImg,_fi*_EYE_FW,0,_EYE_FW,_EYE_FH,_sx-_drawSz/2,_sy-_drawSz/2,_drawSz,_drawSz);
       }else{
-        const _r=_e.size;
-        X.strokeStyle='rgba(120,80,60,0.8)';X.lineWidth=.8;
-        X.beginPath();X.moveTo(_sx-_r*1.2,_sy);X.lineTo(_sx+_r*1.2,_sy);X.stroke();
+        // 감은 눈 — 가로선 + 살점 느낌
+        const _r=_drawSz*.4;
+        X.strokeStyle='rgba(140,50,50,0.7)';X.lineWidth=2;
+        X.beginPath();X.moveTo(_sx-_r,_sy);X.quadraticCurveTo(_sx,_sy-_r*.2,_sx+_r,_sy);X.stroke();
+        X.beginPath();X.moveTo(_sx-_r,_sy);X.quadraticCurveTo(_sx,_sy+_r*.2,_sx+_r,_sy);X.stroke();
       }
       X.globalAlpha=1;
     }
@@ -136649,11 +136690,11 @@ function drawP(){
     const _bx=~~_bPet.x,_by=~~(_bPet.y+_bBob)-(_bIsCrow?18:14);
     const _bTxt=_petBubble.txt;
     X.save();
-    X.font='bold 22px "Malgun Gothic",sans-serif';
-    // 줄 나누기 (최대 18자)
+    X.font='bold 15px "Malgun Gothic",sans-serif';
+    // 줄 나누기 (최대 22자)
     const _bLines=[];
-    for(let ci=0;ci<_bTxt.length;ci+=18)_bLines.push(_bTxt.substring(ci,ci+18));
-    const _lh=28,_bPad=6;
+    for(let ci=0;ci<_bTxt.length;ci+=22)_bLines.push(_bTxt.substring(ci,ci+22));
+    const _lh=20,_bPad=4;
     let _maxW=0;for(let li=0;li<_bLines.length;li++){const w=X.measureText(_bLines[li]).width;if(w>_maxW)_maxW=w}
     const _bW=_maxW+_bPad*2,_bH=_bLines.length*_lh+_bPad*2;
     const _bLeft=_bx-_bW/2,_bTop=_by-_bH;
@@ -137033,7 +137074,7 @@ async function startGameFromDB(){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
   BAG_MAX=42;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=0;G.kills=0;G.mats=100;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};
+  G.on=false;G.stage=0;G.kills=0;G.mats=1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};
   // forge gauge removed (CRAFT_COST system)
 
   // 3) DB에서 캐릭터 데이터 로드
@@ -137048,8 +137089,20 @@ async function startGameFromDB(){
     if(_df<1){P.skills.giantSlam=1;SKILL_SLOTS[0]='giantSlam'}
     if(_df<3){P.skills.holyDome=1;SKILL_SLOTS[5]='holyDome'}
     if(_df<5){P.skills.spikeTrap=1;SKILL_SLOTS[4]='spikeTrap'}
-    if(_df>=10){delete P.skills.kiSlash} // 10단: 기검참도 제거
+    // 10단: 기검참+얼음보주만 유지
   }
+
+  // 3.5) 기본 스킬 강제 장착 (어떤 경로든 무조건 실행)
+  if(!P.skills.kiSlash)P.skills.kiSlash=1;
+  if(!P.skills.spikeTrap)P.skills.spikeTrap=1;
+  if(!P.skills.holyDome)P.skills.holyDome=1;
+  if(!P.skills.giantSlam)P.skills.giantSlam=1;
+  if(!P.skills.iceOrb)P.skills.iceOrb=1;
+  // 슬롯 강제 고정: 1번=대왕치기, Space=가시덫, F=신성한땅
+  for(let _fi=0;_fi<6;_fi++){if(SKILL_SLOTS[_fi]==='holyDome'||SKILL_SLOTS[_fi]==='giantSlam')SKILL_SLOTS[_fi]=null}
+  SKILL_SLOTS[0]='giantSlam';
+  if(!SKILL_SLOTS[4])SKILL_SLOTS[4]='spikeTrap';
+  SKILL_SLOTS[5]='holyDome';
 
   // 4) 스탯 적용 후 스테이지 시작 — 몬스터 아틀라스 대기
   setBootLoading(75,'몬스터 스킨 로딩...');
@@ -137154,7 +137207,7 @@ function _showIntroDiff(){
 // ── 키 안내 3단계 ──
 const _INTRO_KEY_STEPS=[
   {title:'공격',body:'<span style="color:#ffcc44">좌클릭</span> — 무기 공격<br><span style="color:#ffcc44">우클릭 / Q</span> — 패링·보호막<br><span style="color:#ffcc44">SHIFT</span> — 돌진 (적을 관통, 무적)',hint:'클릭하여 계속'},
-  {title:'스킬',body:'<span style="color:#ffcc44">SPACE</span> — 석궁 발사<br><span style="color:#ffcc44">E</span> — 마법 (탭=투사체, 홀드=빔)<br><span style="color:#ffcc44">F</span> — 신성한 땅 (HP/MP/ST 리젠 장판)',hint:'클릭하여 계속'},
+  {title:'스킬',body:'<span style="color:#ffcc44">SPACE</span> — 가시덫 (슬로우+출혈)<br><span style="color:#ffcc44">E</span> — 마법 (탭=투사체, 홀드=빔)<br><span style="color:#ffcc44">F</span> — 신성한 땅 (HP/MP/ST 리젠 장판)<br><span style="color:#ffcc44">T</span> — 석궁 자동발사',hint:'클릭하여 계속'},
   {title:'생존',body:'<span style="color:#ffcc44">1~4</span> — 선택 스킬 슬롯<br><span style="color:#ffcc44">R</span> — 아이템 줍기 <span style="font-size:.85em;color:#887766">(펫이 자동 수거)</span><br><span style="color:#ffcc44">TAB</span> — 인벤토리<br><span style="font-size:.85em;color:#887766">물약은 설정한 HP% 이하 시 자동 사용</span>',hint:'클릭하여 시작'}
 ];
 function _showIntroKeys(step){
@@ -137445,7 +137498,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
   BAG_MAX=42;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=0;G.kills=0;G.mats=100;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};
+  G.on=false;G.stage=0;G.kills=0;G.mats=1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};
   (async()=>{
     try{
       const res=await fetch('/api/load/'+encodeURIComponent(_SLOT));
@@ -137471,7 +137524,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         if(_df2<1){P.skills.giantSlam=1;SKILL_SLOTS[0]='giantSlam'}
         if(_df2<3){P.skills.holyDome=1;SKILL_SLOTS[5]='holyDome'}
         if(_df2<5){P.skills.spikeTrap=1;SKILL_SLOTS[4]='spikeTrap'}
-        if(_df2>=10){delete P.skills.kiSlash}}
+        }
       }
     }catch(e){if(!IS_ELECTRON)console.error('[LOCAL] Load failed:',e)}
     // 로드 완료 후 게임 시작 — 몬스터 아틀라스 대기
@@ -137545,7 +137598,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
   BAG_MAX=42;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=0;G.kills=0;G.mats=100;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};
+  G.on=false;G.stage=0;G.kills=0;G.mats=1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};
   (async()=>{
     try{
       const _raw=localStorage.getItem(_LS_KEY);
@@ -137568,7 +137621,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         if(_df3<1){P.skills.giantSlam=1;SKILL_SLOTS[0]='giantSlam'}
         if(_df3<3){P.skills.holyDome=1;SKILL_SLOTS[5]='holyDome'}
         if(_df3<5){P.skills.spikeTrap=1;SKILL_SLOTS[4]='spikeTrap'}
-        if(_df3>=10){delete P.skills.kiSlash}}
+        }
       }
     }catch(e){console.error('[WEB] Load failed:',e)}
     setBootLoading(75,'몬스터 스킨 로딩...');
