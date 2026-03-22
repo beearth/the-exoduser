@@ -9767,7 +9767,7 @@ function initMapObjects(){
       const _px=_ft.x*T+T/2,_py=_ft.y*T+T/2;
       let _tooClose=false;
       for(const mo of MAP_OBJS){if(dst(_px,_py,mo.x,mo.y)<60){_tooClose=true;break}}
-      for(const sp of _sysPos){if(Math.abs(sp.x-_ft.x)<10&&Math.abs(sp.y-_ft.y)<10){_tooClose=true;break}}
+      for(const mo2 of MAP_OBJS){if((mo2.type==='bonfire'||mo2.type==='altar'||mo2.type==='trap')&&dst(_px,_py,mo2.x,mo2.y)<100){_tooClose=true;break}}
       if(_tooClose){_dcFloors.splice(_fi,1);di--;continue}
       // 랜덤 에셋 선택
       const _dObj=_chDeco[~~(_dcSeed()*_chDeco.length)];
@@ -119264,7 +119264,7 @@ function update(){
         const _sdRange=(_sdLv>=1?90:62)+(sh().bonusRange||0)*4;
         if(_sdLv>=1){
           // 강화된 hitArc: 5원소 중 최대 상성 배율 적용
-          const _baseDmg=~~(((sh().atk||3)+3)*0.8*_sdMul)+(P._atkBon||0);P._atkBon=0; // combo 제거, 고정 +3
+          const _baseDmg=~~(((sh().atk||3)+3)*0.8*_sdMul*statStr())+(P._atkBon||0);P._atkBon=0; // STR 스케일
           const _neA=shQuery(P.x,P.y,_sdRange+20);
           for(let _ai=0;_ai<_neA.length;_ai++){const e=_neA[_ai];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d>_sdRange+e.r)continue;
             const ang=Math.atan2(e.y-P.y,e.x-P.x);let diff=ang-P.facing;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
@@ -128137,7 +128137,7 @@ function _autoShieldThrow(){
   const slv=P.skills.shieldThrow||1;
   const a=P.facing;
   const _fuseDmgMul=_sfFused?(1+(_sfLv-1)*0.10):1;
-  const baseDmg=~~(((sh().atk||3)+P.baseAtk*0.3+10)*pShieldMul()*(1+(slv-1)*0.12)*2*_fuseDmgMul*_fuseMul('shieldThrow'));
+  const baseDmg=~~(((sh().atk||3)+P.baseAtk*0.3+10)*pShieldMul()*(1+(slv-1)*0.12)*2*statStr()*_fuseDmgMul*_fuseMul('shieldThrow'));
   const maxDist=(_sfFused?500:400)+(slv-1)*30;
   if(!INV.equipped.shield)return;
   if(!G._stProjs)G._stProjs=[];
