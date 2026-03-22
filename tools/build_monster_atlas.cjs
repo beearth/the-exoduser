@@ -10,7 +10,8 @@ const fs = require('fs');
 const path = require('path');
 
 const MONSTERS_DIR = path.join(__dirname, '..', 'img', 'monsters');
-const CELL = 48; // 각 프레임 크기
+const CELL = 48; // 기본 프레임 크기
+const CELL_OVERRIDE = { 89: 80 }; // etype별 셀 크기 오버라이드
 
 // 방향 매핑 (rotations)
 const DIRS = ['south', 'south-west', 'west', 'north-west', 'north', 'north-east', 'east', 'south-east'];
@@ -130,10 +131,11 @@ async function processMonster(folder) {
 
   // 3) 아틀라스 레이아웃 계산
   // 구조: rows = 방향별, cols = [rot, idle0..N, walk0..N, atk0..N, hit0..N, death0..N]
+  const cellSize = CELL_OVERRIDE[etype] || CELL;
   const layout = []; // { row, col, path, flip }
   const meta = {
     etype,
-    cell: CELL,
+    cell: cellSize,
     dirs: [],
     anims: {} // key → { start, count } (열 기준)
   };
@@ -203,8 +205,8 @@ async function processMonster(folder) {
   meta.rows = totalRows;
 
   // 4) 아틀라스 이미지 합성
-  const width = totalCols * CELL;
-  const height = totalRows * CELL;
+  const width = totalCols * cellSize;
+  const height = totalRows * cellSize;
 
   // 투명 배경 생성
   let composite = sharp({
@@ -217,15 +219,15 @@ async function processMonster(folder) {
 
   const compositeInputs = [];
   for (const item of layout) {
-    let img = sharp(item.path).resize(CELL, CELL, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } });
+    let img = sharp(item.path).resize(cellSize, cellSize, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } });
     if (item.flip) {
       img = img.flop(); // 수평 뒤집기
     }
     const buf = await img.toBuffer();
     compositeInputs.push({
       input: buf,
-      left: item.col * CELL,
-      top: item.row * CELL,
+      left: item.col * cellSize,
+      top: item.row * cellSize,
     });
   }
 
@@ -247,17 +249,17 @@ async function processMonster(folder) {
       dir: usedDirs[item.row],
       col: item.col,
       row: item.row,
-      x: item.col * CELL,
-      y: item.row * CELL,
-      w: CELL,
-      h: CELL,
+      x: item.col * cellSize,
+      y: item.row * cellSize,
+      w: cellSize,
+      h: cellSize,
       flip: item.flip || false,
     });
   }
 
   const jsonData = {
     etype,
-    cell: CELL,
+    cell: cellSize,
     width,
     height,
     dirs: usedDirs,

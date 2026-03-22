@@ -1,24 +1,24 @@
 {
-  "ts": 1774067525307,
+  "ts": 1774159762933,
   "player": {
     "lv": 447,
-    "exp": 4841,
+    "exp": 5964,
     "maxExp": 11122,
-    "sp": 12,
+    "sp": 0,
     "ap": 12,
-    "baseAtk": 21,
+    "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 1.9180000000000001,
-    "stR": 1.729,
-    "hp": 1984.0807056250383,
-    "mhp": 2017,
-    "mp": 521.51172000007,
-    "mmp": 870,
-    "st": 43.65112162500176,
-    "mst": 627,
+    "mpR": 1.9205,
+    "stR": 1.7315,
+    "hp": 1933.4813840624956,
+    "mhp": 1998,
+    "mp": 602.9390962500222,
+    "mmp": 872,
+    "st": 40.44561737500127,
+    "mst": 629,
     "speed": 7.352863,
-    "shield": 1492.708,
-    "mshield": 1493
+    "shield": 1234.6240000000316,
+    "mshield": 1496
   },
   "inv": {
     "bag": [
@@ -247,7 +247,7 @@
         "emoji": "🪓",
         "wtype": "axe",
         "atk": 66,
-        "spd": 1.43,
+        "spd": 0.99,
         "wStCost": 9,
         "wArcW": 0.85,
         "wRange": 45,
@@ -290,7 +290,8 @@
         "itemLv": 100,
         "_gx": 6,
         "_gy": 0,
-        "_pickT": 1773796807544
+        "_pickT": 1773796807544,
+        "_spdMig": 3
       },
       {
         "id": 1773796927224.594,
@@ -424,7 +425,7 @@
         "emoji": "🏏",
         "wtype": "club",
         "atk": 72,
-        "spd": 1.1,
+        "spd": 0.99,
         "wStCost": 6,
         "wArcW": 1.1,
         "wRange": 51,
@@ -467,7 +468,8 @@
         "itemLv": 100,
         "_gx": 0,
         "_gy": 2,
-        "_pickT": 1773797548610
+        "_pickT": 1773797548610,
+        "_spdMig": 3
       },
       {
         "id": 1773797556692.5469,
@@ -1050,7 +1052,7 @@
         "emoji": "🔱",
         "wtype": "spear",
         "atk": 102,
-        "spd": 1.8,
+        "spd": 0.99,
         "wStCost": 5,
         "wArcW": 0.4,
         "wRange": 70,
@@ -1093,7 +1095,8 @@
         "itemLv": 100,
         "_gx": 6,
         "_gy": 6,
-        "_pickT": 1773797974379
+        "_pickT": 1773797974379,
+        "_spdMig": 3
       },
       {
         "id": 1773797984945.3916,
@@ -1201,7 +1204,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 2,
-        "name": "강철 대방패",
+        "name": "강철 대견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -1296,7 +1299,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 3,
-        "name": "미스릴 방패",
+        "name": "미스릴 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -1475,7 +1478,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -1607,7 +1610,8 @@
         "itemLv": 100,
         "_gx": 8,
         "_gy": 10,
-        "_pickT": 1773798719750
+        "_pickT": 1773798719750,
+        "_spdMig": 3
       },
       {
         "id": 1773798720585.982,
@@ -1747,7 +1751,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -1794,7 +1798,7 @@
         "emoji": "🏏",
         "wtype": "club",
         "atk": 160,
-        "spd": 1.1,
+        "spd": 0.99,
         "wStCost": 6,
         "wArcW": 1.1,
         "wRange": 50,
@@ -1837,7 +1841,8 @@
         "itemLv": 100,
         "_gx": 6,
         "_gy": 12,
-        "_pickT": 1773799464689
+        "_pickT": 1773799464689,
+        "_spdMig": 3
       },
       {
         "id": 1773799529127.6902,
@@ -1896,7 +1901,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 2,
         "blockRate": 90,
@@ -1943,7 +1948,7 @@
         "emoji": "⚔️",
         "wtype": "sword",
         "atk": 44,
-        "spd": 2.2,
+        "spd": 0.99,
         "wStCost": 6,
         "wArcW": 0.95,
         "wRange": 47,
@@ -1986,7 +1991,8 @@
         "itemLv": 100,
         "_gx": 0,
         "_gy": 14,
-        "_pickT": 1773799575342
+        "_pickT": 1773799575342,
+        "_spdMig": 3
       },
       {
         "id": 1773799645957.9524,
@@ -1994,7 +2000,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -2092,7 +2098,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 2,
         "blockRate": 90,
@@ -2215,7 +2221,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -2378,7 +2384,7 @@
         "emoji": "🪓",
         "wtype": "axe",
         "atk": 144,
-        "spd": 1.43,
+        "spd": 0.99,
         "wStCost": 9,
         "wArcW": 0.85,
         "wRange": 44,
@@ -2421,7 +2427,8 @@
         "itemLv": 100,
         "_gx": 6,
         "_gy": 18,
-        "_pickT": 1773799954031
+        "_pickT": 1773799954031,
+        "_spdMig": 3
       },
       {
         "id": 1773799957847.205,
@@ -2580,7 +2587,7 @@
         "emoji": "🏏",
         "wtype": "club",
         "atk": 75,
-        "spd": 1.1,
+        "spd": 0.99,
         "wStCost": 6,
         "wArcW": 1.1,
         "wRange": 53,
@@ -2623,7 +2630,8 @@
         "itemLv": 100,
         "_gx": 2,
         "_gy": 20,
-        "_pickT": 1773799970295
+        "_pickT": 1773799970295,
+        "_spdMig": 3
       },
       {
         "id": 1773799995346.6326,
@@ -2903,7 +2911,7 @@
         "emoji": "🔱",
         "wtype": "spear",
         "atk": 97,
-        "spd": 1.8,
+        "spd": 0.99,
         "wStCost": 5,
         "wArcW": 0.4,
         "wRange": 67,
@@ -2946,7 +2954,8 @@
         "itemLv": 100,
         "_gx": 2,
         "_gy": 23,
-        "_pickT": 1773802021919
+        "_pickT": 1773802021919,
+        "_spdMig": 3
       },
       {
         "id": 1773802022568.1992,
@@ -3665,7 +3674,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 2,
         "blockRate": 90,
@@ -4040,7 +4049,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 2,
-        "name": "강철 대방패",
+        "name": "강철 대견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -5088,7 +5097,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -5255,7 +5264,7 @@
         "emoji": "🗡️",
         "wtype": "dagger",
         "atk": 24,
-        "spd": 3.3,
+        "spd": 0.99,
         "wStCost": 4,
         "wArcW": 0.7,
         "wRange": 38,
@@ -5298,7 +5307,8 @@
         "itemLv": 100,
         "_gx": 4,
         "_gy": 41,
-        "_pickT": 1773804793362
+        "_pickT": 1773804793362,
+        "_spdMig": 3
       },
       {
         "id": 1773804863501.486,
@@ -5581,7 +5591,7 @@
         "emoji": "🪓",
         "wtype": "axe",
         "atk": 71,
-        "spd": 1.43,
+        "spd": 0.99,
         "wStCost": 9,
         "wArcW": 0.85,
         "wRange": 43,
@@ -5624,7 +5634,8 @@
         "itemLv": 100,
         "_gx": 2,
         "_gy": 43,
-        "_pickT": 1773811119271
+        "_pickT": 1773811119271,
+        "_spdMig": 3
       },
       {
         "id": 1773811166344.2693,
@@ -6644,7 +6655,8 @@
         "itemLv": 100,
         "_gx": 8,
         "_gy": 51,
-        "_pickT": 1773812921471
+        "_pickT": 1773812921471,
+        "_spdMig": 3
       },
       {
         "id": 1773812921888.0645,
@@ -6652,7 +6664,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -7470,7 +7482,7 @@
         "emoji": "⚒️",
         "wtype": "mace",
         "atk": 186,
-        "spd": 1.32,
+        "spd": 0.99,
         "wStCost": 8,
         "wArcW": 1,
         "wRange": 48,
@@ -7513,7 +7525,8 @@
         "itemLv": 100,
         "_gx": 6,
         "_gy": 57,
-        "_pickT": 1773813893682
+        "_pickT": 1773813893682,
+        "_spdMig": 3
       },
       {
         "id": 1773813952139.806,
@@ -7729,7 +7742,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 2,
         "blockRate": 90,
@@ -8126,7 +8139,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 3,
-        "name": "미스릴 방패",
+        "name": "미스릴 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -8812,7 +8825,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 2,
         "blockRate": 90,
@@ -8859,7 +8872,7 @@
         "emoji": "🗡️",
         "wtype": "dagger",
         "atk": 60,
-        "spd": 3.3,
+        "spd": 0.99,
         "wStCost": 4,
         "wArcW": 0.7,
         "wRange": 38,
@@ -8902,7 +8915,8 @@
         "itemLv": 100,
         "_gx": 8,
         "_gy": 53,
-        "_pickT": 1773959347647
+        "_pickT": 1773959347647,
+        "_spdMig": 3
       },
       {
         "id": 1773959360930.386,
@@ -9114,7 +9128,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -9388,7 +9402,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 2,
         "blockRate": 90,
@@ -9655,7 +9669,7 @@
         "emoji": "⚔️",
         "wtype": "sword",
         "atk": 41,
-        "spd": 2.2,
+        "spd": 0.99,
         "wStCost": 6,
         "wArcW": 0.95,
         "wRange": 51,
@@ -9698,7 +9712,8 @@
         "itemLv": 100,
         "_gx": 0,
         "_gy": 73,
-        "_pickT": 1773959420762
+        "_pickT": 1773959420762,
+        "_spdMig": 3
       },
       {
         "id": 1773959421636.403,
@@ -10115,7 +10130,7 @@
         "emoji": "🗡️",
         "wtype": "dagger",
         "atk": 25,
-        "spd": 3.3,
+        "spd": 0.99,
         "wStCost": 4,
         "wArcW": 0.7,
         "wRange": 36,
@@ -10158,7 +10173,8 @@
         "itemLv": 100,
         "_gx": 0,
         "_gy": 77,
-        "_pickT": 1773959443880
+        "_pickT": 1773959443880,
+        "_spdMig": 3
       },
       {
         "id": 1773959454813.0186,
@@ -10311,7 +10327,7 @@
         "emoji": "⚒️",
         "wtype": "mace",
         "atk": 67,
-        "spd": 1.32,
+        "spd": 0.99,
         "wStCost": 8,
         "wArcW": 1,
         "wRange": 46,
@@ -10354,7 +10370,8 @@
         "itemLv": 100,
         "_gx": 8,
         "_gy": 77,
-        "_pickT": 1773959460287
+        "_pickT": 1773959460287,
+        "_spdMig": 3
       },
       {
         "id": 1773959460229.7659,
@@ -10498,7 +10515,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -11229,7 +11246,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 2,
         "blockRate": 90,
@@ -11361,7 +11378,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -11486,7 +11503,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 2,
         "blockRate": 90,
@@ -11529,7 +11546,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 0,
-        "name": "나무 방패",
+        "name": "나무 견갑",
         "emoji": "🛡️",
         "bonusRange": 2,
         "blockRate": 90,
@@ -11976,7 +11993,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 1,
-        "name": "철 방패",
+        "name": "철 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -12023,7 +12040,7 @@
         "emoji": "🔱",
         "wtype": "spear",
         "atk": 85,
-        "spd": 1.8,
+        "spd": 0.99,
         "wStCost": 5,
         "wArcW": 0.4,
         "wRange": 68,
@@ -12066,7 +12083,8 @@
         "itemLv": 200,
         "_gx": 8,
         "_gy": 91,
-        "_pickT": 1774067187458
+        "_pickT": 1774067187458,
+        "_spdMig": 3
       },
       {
         "id": 1774067187449.9968,
@@ -12400,7 +12418,7 @@
         "emoji": "⚒️",
         "wtype": "mace",
         "atk": 98,
-        "spd": 1.32,
+        "spd": 0.99,
         "wStCost": 8,
         "wArcW": 1,
         "wRange": 45,
@@ -12443,7 +12461,8 @@
         "itemLv": 200,
         "_gx": 4,
         "_gy": 95,
-        "_pickT": 1774067301275
+        "_pickT": 1774067301275,
+        "_spdMig": 3
       },
       {
         "id": 1774067315228.6719,
@@ -12571,7 +12590,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 1,
-        "name": "철 방패",
+        "name": "철 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -12840,7 +12859,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 1,
-        "name": "철 방패",
+        "name": "철 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -13063,7 +13082,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 1,
-        "name": "철 방패",
+        "name": "철 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -13305,6 +13324,106 @@
         "_gx": 0,
         "_gy": 103,
         "_pickT": 1774067500015
+      },
+      {
+        "id": 1774158779202.9326,
+        "slot": "armor",
+        "el": 3,
+        "rarity": 4,
+        "tier": 1,
+        "name": "암흑 갑주",
+        "emoji": "🦺",
+        "def": 14,
+        "bonusSt": 15,
+        "charge": 29,
+        "chargeDist": 57,
+        "chargeW": 37,
+        "bonusRange": 3,
+        "bonusChargeDist": 2,
+        "chargeAoE": 56,
+        "bInt": 26,
+        "bStr": 32,
+        "bDex": 31,
+        "affixes": [
+          {
+            "id": "physDR",
+            "tier": 1,
+            "value": 0.1347
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 1,
+            "value": 64
+          },
+          {
+            "id": "thorns",
+            "tier": 1,
+            "value": 11
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 1,
+            "value": 0.2129
+          }
+        ],
+        "_implicitStat": "_iPhysDR",
+        "_implicitVal": 4.68,
+        "_implicitKo": "물리 피해감소 +X%",
+        "legendarySpecial": {
+          "ko": "피격 시 3초 쿨로 HP 5% 즉시 회복",
+          "stat": "_lArmorRegen",
+          "val": 0.05
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "_gx": 2,
+        "_gy": 103,
+        "_pickT": 1774158779219
+      },
+      {
+        "id": 1774159160892.5288,
+        "slot": "cape",
+        "el": 3,
+        "rarity": 4,
+        "tier": 1,
+        "name": "암흑 망토",
+        "emoji": "🧣",
+        "def": 7,
+        "eDef": 4,
+        "spd": 0.07,
+        "bInt": 31,
+        "bDex": 28,
+        "bStr": 33,
+        "affixes": [
+          {
+            "id": "dropRate",
+            "tier": 1,
+            "value": 0.2101
+          },
+          {
+            "id": "parryBonus",
+            "tier": 0,
+            "value": 0.3171
+          },
+          {
+            "id": "movSpeed",
+            "tier": 1,
+            "value": 0.1031
+          }
+        ],
+        "_implicitStat": "_iDashCd",
+        "_implicitVal": 9.98,
+        "_implicitKo": "회피 쿨다운 -X%",
+        "legendarySpecial": {
+          "ko": "패리 타이밍 판정 +50% 확대",
+          "stat": "_lCapeParry",
+          "val": 0.5
+        },
+        "reqLv": 100,
+        "itemLv": 200,
+        "_gx": 4,
+        "_gy": 103,
+        "_pickT": 1774159160909
       }
     ],
     "equipped": {
@@ -13361,7 +13480,8 @@
         "itemLv": 100,
         "_gx": 3,
         "_gy": 6,
-        "_pickT": 1773744789753
+        "_pickT": 1773744789753,
+        "_spdMig": 3
       },
       "shield": {
         "id": 1773736268006.5842,
@@ -13369,7 +13489,7 @@
         "el": 0,
         "rarity": 4,
         "tier": 4,
-        "name": "파멸의 방패",
+        "name": "파멸의 견갑",
         "emoji": "🛡️",
         "bonusRange": 3,
         "blockRate": 90,
@@ -13945,7 +14065,9 @@
         "_gx": 0,
         "_gy": 0,
         "_pickT": 1773722379463
-      }
+      },
+      "bracelet": null,
+      "headband": null
     }
   },
   "stats": {
@@ -13968,7 +14090,9 @@
     "pCrit": 7,
     "pDrop": 0,
     "pPierce": 0,
-    "pMRegen": 6
+    "pMRegen": 6,
+    "pXbow": 0,
+    "pMelee": 0
   },
   "qslots": [
     {
@@ -13976,12 +14100,12 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 284
+      "type": "mp",
+      "count": 5
     },
     {
-      "type": "mp",
-      "count": 255
+      "type": null,
+      "count": 0
     },
     {
       "type": null,
@@ -13990,8 +14114,8 @@
   ],
   "game": {
     "stage": 4,
-    "kills": 113017,
-    "mats": 2119056
+    "kills": 113036,
+    "mats": 2119881
   },
   "bagMax": 300,
   "hellCleared": [
@@ -14046,7 +14170,8 @@
     "shieldThrow": 10,
     "blackStar": 1,
     "peaceShield": 3,
-    "hellRay": 5
+    "hellRay": 5,
+    "weakRev": 1
   },
   "fused": {
     "boneStorm": true,
@@ -14067,64 +14192,64 @@
     "elecRepent": true
   },
   "skProf": {
-    "maliceSwipe": 75,
-    "chargeBoost": 15,
+    "maliceSwipe": 105,
+    "chargeBoost": 660,
     "spikeTrap": 15,
-    "holyDome": 60,
-    "whirlwind": 232,
+    "holyDome": 90,
+    "whirlwind": 262,
     "iceStorm": 15,
-    "chainAssault": 750,
-    "elemMissile": 16,
-    "detonate": 41,
+    "chainAssault": 825,
+    "elemMissile": 2761,
+    "detonate": 44,
     "fanShot": 16,
-    "chainSlam": 30,
+    "chainSlam": 135,
     "maliceStorm": 735,
     "omniBeam": 465,
     "plagueBurst": 15,
     "boneWall": 15,
     "bladeDash": 15,
-    "ghostWalk": 20,
+    "ghostWalk": 21,
     "grenadeShot": 8,
-    "needleShot": 1890,
+    "needleShot": 2715,
     "holyBlast": 8,
     "iceOrb": 15,
     "holyPrison": 15,
-    "maliceMortar": 240,
+    "maliceMortar": 255,
     "lavaSummon": 15,
     "blastShot": 15,
-    "guardian": 141,
+    "guardian": 204,
     "maliceHunt": 60,
-    "shieldThrow": 30,
+    "shieldThrow": 45,
     "magicBlink": 855,
     "giantSlam": 15,
     "blackStar": 5,
-    "peaceShield": 75,
+    "peaceShield": 105,
     "hellRay": 357,
-    "kiSlash": 60
+    "kiSlash": 90
   },
   "fuseProfSec": {},
   "cardProf": {
-    "bladeFuse": 1989.2333333325296,
-    "plagueFuse": 1989.2333333325296,
-    "whirlDet": 1069.9999999996,
-    "slamStorm": 1069.9999999996,
-    "stormBeam": 1742.399999999408,
-    "dimBreach": 865,
-    "dimSlam": 1617,
-    "dimThunder": 1632,
-    "shieldFuse": 86,
+    "bladeFuse": 2373.466666669274,
+    "plagueFuse": 2373.466666669274,
+    "whirlDet": 1161.5999999995468,
+    "slamStorm": 1161.5999999995468,
+    "stormBeam": 4578.999999999363,
+    "dimBreach": 1510,
+    "dimSlam": 2337,
+    "dimThunder": 2457,
+    "shieldFuse": 131,
     "elecRepent": 1088,
     "sixFuse": 656.5499999999819,
-    "elemFuse": 672.3999999999754,
-    "iceMortar": 232,
-    "holyFuse": 49,
-    "holyIce": 49,
+    "elemFuse": 3417.3999999999755,
+    "iceMortar": 247,
+    "holyFuse": 79,
+    "holyIce": 79,
     "boneStorm": 734
   },
-  "activeChargeSk": "magicBlink",
+  "activeChargeSk": "charge",
   "activeBowSk": "needleShot",
   "activeTechSk": "maliceMortar",
-  "activeMagicSk": "hellRay",
+  "activeMagicSk": "beam",
   "activeLMBSk": "whirlwind",
   "activeRMBSk": "shieldBlock",
   "activeQSk": "parry",
@@ -14132,11 +14257,11 @@
   "skillSlots": [
     "maliceStorm",
     "needleShot",
+    "weakRev",
     "maliceHunt",
-    null,
     "maliceMortar",
     "holyDome"
   ],
   "ultSlot": "blackStar",
-  "charIdx": 4
+  "charIdx": 0
 }

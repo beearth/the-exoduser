@@ -1,24 +1,26 @@
 {
-  "ts": 1774157401389,
+  "ts": 1774160995747,
   "player": {
-    "lv": 173,
-    "exp": 1702,
-    "maxExp": 1943,
-    "sp": 23,
-    "ap": 9,
+    "lv": 185,
+    "exp": 569,
+    "maxExp": 2188,
+    "sp": 37,
+    "ap": 11,
+    "transLvDate": null,
+    "transLvCount": 0,
     "baseAtk": 15,
-    "baseDef": 9.2,
-    "mpR": 0.859,
-    "stR": 0.645,
-    "hp": 925,
-    "mhp": 925,
-    "mp": 425,
-    "mmp": 425,
-    "st": 250,
-    "mst": 250,
+    "baseDef": 10.200000000000001,
+    "mpR": 0.8635,
+    "stR": 0.6545000000000001,
+    "hp": 731.2709131250037,
+    "mhp": 943,
+    "mp": 331.5102779999891,
+    "mmp": 429,
+    "st": 70.77935874999619,
+    "mst": 259,
     "speed": 4.3808609999999994,
-    "shield": 606,
-    "mshield": 606
+    "shield": 238.90000000000487,
+    "mshield": 613
   },
   "inv": {
     "bag": [
@@ -613,6 +615,165 @@
         "_gx": 8,
         "_gy": 2,
         "_pickT": 1774156002636
+      },
+      {
+        "id": 1774160863195.5315,
+        "slot": "boots",
+        "el": 1,
+        "rarity": 4,
+        "tier": 0,
+        "name": "불꽃 전투화",
+        "emoji": "👢",
+        "def": 4,
+        "spd": 0,
+        "bonusSt": 11,
+        "chargeDist": 30,
+        "chargeCharge": 1,
+        "bStr": 26,
+        "bInt": 33,
+        "bDex": 28,
+        "affixes": [
+          {
+            "id": "extraST",
+            "tier": 0,
+            "value": 64
+          },
+          {
+            "id": "dashBoost",
+            "tier": 0,
+            "value": 0.3305
+          },
+          {
+            "id": "goldBonus",
+            "tier": 1,
+            "value": 0.3926
+          },
+          {
+            "id": "movSpeed",
+            "tier": 0,
+            "value": 0.0758
+          }
+        ],
+        "_implicitStat": "_iMovSpd",
+        "_implicitVal": 3.5,
+        "_implicitKo": "이동속도 +X%",
+        "legendarySpecial": {
+          "ko": "회피 직후 첫 공격 데미지 +80%",
+          "stat": "_lBootsEvade",
+          "val": 0.8
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 4,
+        "_pickT": 1774160863207
+      },
+      {
+        "id": 1774160879290.2493,
+        "slot": "boots",
+        "el": 5,
+        "rarity": 4,
+        "tier": 0,
+        "name": "축복 전투화",
+        "emoji": "👢",
+        "def": 4,
+        "spd": 0,
+        "bonusSt": 10,
+        "chargeDist": 30,
+        "chargeCharge": 1,
+        "bStr": 27,
+        "bDex": 27,
+        "bInt": 28,
+        "affixes": [
+          {
+            "id": "goldBonus",
+            "tier": 0,
+            "value": 0.2378
+          },
+          {
+            "id": "movSpeed",
+            "tier": 1,
+            "value": 0.1021
+          },
+          {
+            "id": "extraST",
+            "tier": 0,
+            "value": 65
+          },
+          {
+            "id": "dashBoost",
+            "tier": 0,
+            "value": 0.3137
+          }
+        ],
+        "_implicitStat": "_iMovSpd",
+        "_implicitVal": 6.06,
+        "_implicitKo": "이동속도 +X%",
+        "legendarySpecial": {
+          "ko": "회피 직후 첫 공격 데미지 +80%",
+          "stat": "_lBootsEvade",
+          "val": 0.8
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 4,
+        "_pickT": 1774160879306
+      },
+      {
+        "id": 1774160991422.2642,
+        "slot": "armor",
+        "el": 1,
+        "rarity": 4,
+        "tier": 0,
+        "name": "불꽃 갑옷",
+        "emoji": "🦺",
+        "def": 6,
+        "bonusSt": 8,
+        "charge": 19,
+        "chargeDist": 48,
+        "chargeW": 28,
+        "bonusRange": 2,
+        "bonusChargeDist": 3,
+        "chargeAoE": 37,
+        "bStr": 32,
+        "bInt": 32,
+        "bDex": 29,
+        "affixes": [
+          {
+            "id": "reflect",
+            "tier": 0,
+            "value": 0.067
+          },
+          {
+            "id": "maxHPFlat",
+            "tier": 0,
+            "value": 26
+          },
+          {
+            "id": "thorns",
+            "tier": 1,
+            "value": 10
+          },
+          {
+            "id": "maxHPPct",
+            "tier": 0,
+            "value": 0.1056
+          }
+        ],
+        "_implicitStat": "_iPhysDR",
+        "_implicitVal": 5.26,
+        "_implicitKo": "물리 피해감소 +X%",
+        "legendarySpecial": {
+          "ko": "피격 시 3초 쿨로 HP 5% 즉시 회복",
+          "stat": "_lArmorRegen",
+          "val": 0.05
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 4,
+        "_gy": 4,
+        "_pickT": 1774160991437
       }
     ],
     "equipped": {
@@ -1107,10 +1268,10 @@
     }
   },
   "stats": {
-    "str": 10,
+    "str": 0,
     "dex": 10,
     "int": 10,
-    "vit": 36,
+    "vit": 41,
     "lck": 0
   },
   "passives": {
@@ -1136,12 +1297,12 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 177
+      "type": "mp",
+      "count": 270
     },
     {
-      "type": null,
-      "count": 0
+      "type": "st",
+      "count": 289
     },
     {
       "type": null,
@@ -1150,8 +1311,8 @@
   ],
   "game": {
     "stage": 1,
-    "kills": 8810,
-    "mats": 315367
+    "kills": 9781,
+    "mats": 337672
   },
   "bagMax": 204,
   "hellCleared": [],
@@ -1172,14 +1333,14 @@
   "skills": {
     "spikeTrap": 1,
     "kiSlash": 1,
-    "holyDome": 2,
+    "holyDome": 1,
     "maliceStorm": 2,
     "omniBeam": 2,
     "fanShot": 2,
     "maliceMortar": 2,
     "chainAssault": 2,
     "chainSlam": 2,
-    "detonate": 2,
+    "detonate": 1,
     "maliceSwipe": 2,
     "bladeShot": 2,
     "boneWall": 2,
@@ -1188,63 +1349,66 @@
     "iceOrb": 2,
     "chargeBoost": 2,
     "magicBlink": 2,
-    "iceStorm": 2,
-    "holyPrison": 2,
+    "iceStorm": 1,
+    "holyPrison": 1,
     "ghostWalk": 2,
-    "whirlwind": 2,
-    "giantSlam": 2,
+    "whirlwind": 1,
+    "giantSlam": 1,
     "shieldThrow": 2,
-    "bladeDash": 2
+    "bladeDash": 2,
+    "quakeStride": 2
   },
   "fused": {
     "sixFuse": true,
     "boneStorm": true,
     "elemFuse": true,
     "iceMortar": true,
-    "holyFuse": true,
-    "holyIce": true,
     "dimBreach": true,
-    "whirlDet": true,
-    "slamStorm": true,
     "shieldFuse": true,
     "dimSlam": true,
-    "dimThunder": true
+    "dimThunder": true,
+    "holyFuse": true,
+    "whirlDet": true,
+    "slamStorm": true
   },
   "skProf": {
     "kiSlash": 9999,
-    "chargeBoost": 4545,
-    "maliceSwipe": 2820,
-    "holyDome": 915,
-    "spikeTrap": 1470,
+    "chargeBoost": 5355,
+    "maliceSwipe": 2835,
+    "holyDome": 945,
+    "spikeTrap": 1500,
     "maliceStorm": 3360,
-    "omniBeam": 1320,
-    "fanShot": 545,
-    "maliceMortar": 1200,
-    "chainAssault": 960,
-    "detonate": 4268,
+    "omniBeam": 1372,
+    "fanShot": 555,
+    "maliceMortar": 1320,
+    "chainAssault": 1185,
+    "detonate": 4505,
     "boneWall": 30,
-    "elemMissile": 504,
-    "chainSlam": 555,
-    "ghostWalk": 17,
-    "whirlwind": 128,
-    "shieldThrow": 135
+    "elemMissile": 514,
+    "chainSlam": 600,
+    "ghostWalk": 20,
+    "whirlwind": 177,
+    "shieldThrow": 150,
+    "quakeStride": 85,
+    "bladeDash": 60,
+    "holyBlast": 1
   },
   "fuseProfSec": {},
   "cardProf": {
-    "dimBreach": 4545,
-    "dimSlam": 5505,
-    "dimThunder": 6060,
-    "shieldFuse": 2955,
-    "holyFuse": 915,
-    "holyIce": 915,
+    "dimBreach": 5355,
+    "dimSlam": 6540,
+    "dimThunder": 7140,
+    "shieldFuse": 2985,
+    "holyFuse": 945,
+    "holyIce": 945,
     "boneStorm": 3390,
     "elecRepent": 3360,
-    "sixFuse": 5294.4166666711135,
-    "elemFuse": 6460.516666655878,
-    "stormBeam": 11220.866666633076,
-    "iceMortar": 1200,
-    "whirlDet": 4760.35000000081,
-    "slamStorm": 4760.35000000081
+    "sixFuse": 5507.216666668919,
+    "elemFuse": 6733.583333319619,
+    "stormBeam": 11974.13333329399,
+    "iceMortar": 1320,
+    "whirlDet": 5240.549999997984,
+    "slamStorm": 5240.549999997984
   },
   "activeChargeSk": "charge",
   "activeBowSk": "bladeShot",
@@ -1255,9 +1419,9 @@
   "activeQSk": "parry",
   "activeCtSk": "ghostWalk",
   "skillSlots": [
-    "maliceStorm",
+    "quakeStride",
     "spikeTrap",
-    null,
+    "iceStorm",
     null,
     "maliceMortar",
     "holyDome"
