@@ -1,24 +1,24 @@
 {
-  "ts": 1774139388092,
+  "ts": 1774140134514,
   "player": {
     "lv": 413,
     "exp": 6560,
     "maxExp": 9575,
-    "sp": 37,
+    "sp": 0,
     "ap": 2,
-    "baseAtk": 21,
+    "baseAtk": 15,
     "baseDef": 34,
-    "mpR": 1.8245,
-    "stR": 1.3824999999999998,
-    "hp": 2662,
-    "mhp": 2662,
-    "mp": 175.19761250000158,
-    "mmp": 826,
-    "st": 132.26899424996884,
-    "mst": 596,
+    "mpR": 1.8285,
+    "stR": 1.3864999999999998,
+    "hp": 2619.310018750002,
+    "mhp": 2647,
+    "mp": 830,
+    "mmp": 830,
+    "st": 587.7331687499986,
+    "mst": 600,
     "speed": 6.544560000000001,
-    "shield": 1492,
-    "mshield": 1492
+    "shield": 1496,
+    "mshield": 1496
   },
   "inv": {
     "bag": [
@@ -4858,7 +4858,8 @@
         "itemLv": 200,
         "_gx": 8,
         "_gy": 38,
-        "_pickT": 1774139214484
+        "_pickT": 1774139214484,
+        "_spdMig": 3
       },
       {
         "id": 1774139224920.4907,
@@ -5887,8 +5888,8 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 629
+      "type": null,
+      "count": 0
     },
     {
       "type": null,
@@ -5979,7 +5980,7 @@
     "plagueBurst": 315,
     "maliceMortar": 3435,
     "fanShot": 498,
-    "guardian": 2664,
+    "guardian": 2694,
     "maliceHunt": 1140,
     "elemMissile": 436,
     "chainAssault": 9999,
@@ -5988,7 +5989,7 @@
     "detonate": 4089,
     "shieldThrow": 450,
     "chainSlam": 3315,
-    "whirlwind": 1285,
+    "whirlwind": 1287,
     "needleShot": 9999,
     "bladeDash": 300,
     "blackStar": 12
@@ -6003,14 +6004,14 @@
     "holyIce": 1650,
     "sixFuse": 11326.216666606708,
     "elemFuse": 14015.666666575416,
-    "stormBeam": 23136.1166665209,
+    "stormBeam": 23143.816666520815,
     "boneStorm": 9405,
     "elecRepent": 9405,
-    "plagueFuse": 17566.466666528988,
+    "plagueFuse": 17749.56666652676,
     "iceMortar": 3435,
-    "bladeFuse": 17251.466666532397,
-    "whirlDet": 9120.449999967408,
-    "slamStorm": 9120.449999967408
+    "bladeFuse": 17434.56666653017,
+    "whirlDet": 9128.149999967325,
+    "slamStorm": 9128.149999967325
   },
   "activeChargeSk": "charge",
   "activeBowSk": "needleShot",

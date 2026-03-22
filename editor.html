@@ -56,9 +56,7 @@ canvas{display:block;position:absolute;top:0;left:0;z-index:1}
   <div id="nav-footer">
     <button onclick="regenCurrent()" style="background:#002a1a;color:#00ff88;border-color:#00ff88;font-weight:bold">🎲 랜덤재생성</button>
     <button onclick="regenAll()" style="background:#1a1a00;color:#ffea00;border-color:#ffea00">⚡ 전체재생성</button>
-    <button onclick="exportAsFixedMap()" style="background:#1a0030;color:#cc88ff;border-color:#cc88ff">📤 내보내기</button>
-    <button onclick="exportAll()">JSON전체</button>
-    <button onclick="importAll()">불러오기</button>
+    <button onclick="exportAsFixedMap()" style="background:#1a0030;color:#cc88ff;border-color:#cc88ff">📤 전체맵 내보내기</button>
     <button onclick="saveEditorSettings(true)" style="background:#1a2a00;color:#aaff66;border-color:#aaff66">덮어쓰기 저장</button>
     <button onclick="saveSettingsAsFile()" style="background:#2a001a;color:#ff99cc;border-color:#ff99cc">새 파일로 저장</button>
     <button onclick="loadSettingsFromFile()" style="background:#001f2a;color:#66ddff;border-color:#66ddff">세팅불러오기</button>
@@ -115,8 +113,8 @@ canvas{display:block;position:absolute;top:0;left:0;z-index:1}
     <div style="color:#555;font-size:9px;line-height:1.8">0~3=높이 []=브러시 C/S/B=모양<br>Ctrl+Z=되돌리기 Ctrl+S=저장 Ctrl+Shift+S=새파일저장</div>
   </div>
 </div>
-<input type="file" id="fileInput" style="display:none" accept=".json">
-<input type="file" id="settingsFileInput" style="display:none" accept=".json">
+<input type="file" id="fileInput" style="display:none" accept=".json,.txt">
+<input type="file" id="settingsFileInput" style="display:none" accept=".json,.txt">
 <script>
 const C=document.getElementById('c'),X=C.getContext('2d');
 const editor=document.getElementById('editor'),T=8;
@@ -324,7 +322,7 @@ function _tCaveSmooth(map,mw,mh,passes){
       let floorN=0;
       for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(dx===0&&dy===0)continue;if(tmp[y+dy][x+dx]===0)floorN++}
       if(floorN>=5)map[y][x]=0;
-      else if(floorN>=3&&Math.random()<(pass===0?.4:.25))map[y][x]=0;
+      else if(floorN>=3){const _h=((x*2654435761)^(y*2246822519)^(pass*3266489917))>>>0;if((_h/0xffffffff)<(pass===0?.4:.25))map[y][x]=0}
     }
   }
 }
@@ -2322,27 +2320,39 @@ function generateMap(si){
   const mw=tmpl.mw,mh=tmpl.mh,map=[];
   for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
   const rooms=[];
+  // tileRLE가 있으면 타일 데이터 직접 사용 (절차적 생성 스킵)
+  const _hasTileRLE=tmpl.tileRLE&&tmpl.tileRLE.length>0;
+  if(_hasTileRLE){
+    let _rt=0;for(let _ri=0;_ri<tmpl.tileRLE.length;_ri+=2)_rt+=tmpl.tileRLE[_ri+1];
+    if(_rt>=mw*mh*.95){
+      const rle=tmpl.tileRLE;let pos=0;
+      for(let i=0;i<rle.length;i+=2){let v=rle[i];const cnt=rle[i+1];v=(v===1)?0:1;for(let j=0;j<cnt;j++){const y=~~(pos/mw),x=pos%mw;if(y<mh&&x<mw)map[y][x]=v;pos++}}
+    }
+  }
   for(const rd of tmpl.rooms){
     const cx=rd.cx,cy=rd.cy,rx=rd.rx||8,ry=rd.ry||rx;
-    if(rd.shape==='ellipse')_tCarveEllipse(map,mw,mh,cx,cy,rx,ry);
-    else if(rd.shape==='circle')_tCarveCircle(map,mw,mh,cx,cy,rx);
-    else if(rd.shape==='rect')_tCarveRect(map,mw,mh,cx,cy,rx,ry);
-    else if(rd.shape==='cross'){_tCarveCross(map,mw,mh,cx,cy,rx,ry,rd.armW||~~(rx*.5),rd.armH||~~(ry*.5))}
-    if(rd.pillars)for(const p of rd.pillars){for(let dy=0;dy<(p.h||2);dy++)for(let dx=0;dx<(p.w||2);dx++){const tx=cx+p.dx+dx,ty=cy+p.dy+dy;if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=1}}
+    if(!_hasTileRLE){
+      if(rd.shape==='ellipse')_tCarveEllipse(map,mw,mh,cx,cy,rx,ry);
+      else if(rd.shape==='circle')_tCarveCircle(map,mw,mh,cx,cy,rx);
+      else if(rd.shape==='rect')_tCarveRect(map,mw,mh,cx,cy,rx,ry);
+      else if(rd.shape==='cross'){_tCarveCross(map,mw,mh,cx,cy,rx,ry,rd.armW||~~(rx*.5),rd.armH||~~(ry*.5))}
+      if(rd.pillars)for(const p of rd.pillars){for(let dy=0;dy<(p.h||2);dy++)for(let dx=0;dx<(p.w||2);dx++){const tx=cx+p.dx+dx,ty=cy+p.dy+dy;if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=1}}
+    }
     rooms.push({cx,cy,rx,ry,type:rd.type||'combat',id:rd.id});
   }
-  for(const cd of tmpl.corridors){
-    const f=tmpl.rooms.find(r=>r.id===cd.from),t=tmpl.rooms.find(r=>r.id===cd.to);if(!f||!t)continue;
-    const pts=[{x:f.cx,y:f.cy}];if(cd.waypoints)for(const wp of cd.waypoints)pts.push(wp);pts.push({x:t.cx,y:t.cy});
-    for(let i=0;i<pts.length-1;i++)_tCarveCorridor(map,mw,mh,pts[i].x,pts[i].y,pts[i+1].x,pts[i+1].y,cd.width||4,cd.style||'cave');
-  }
-  if(tmpl.features)for(const ft of tmpl.features){if(ft.type==='alcove')_tCarveCircle(map,mw,mh,ft.x,ft.y,ft.r||3)}
-  _tCaveSmooth(map,mw,mh,1);
-  // generation noise can leave pinched corridors; force corridor segment connectivity
-  for(const cd of tmpl.corridors){
-    const f=tmpl.rooms.find(r=>r.id===cd.from),t=tmpl.rooms.find(r=>r.id===cd.to);if(!f||!t)continue;
-    const pts=[{x:f.cx,y:f.cy}];if(cd.waypoints)for(const wp of cd.waypoints)pts.push(wp);pts.push({x:t.cx,y:t.cy});
-    for(let i=0;i<pts.length-1;i++)_tEnsurePath(map,mw,mh,pts[i],pts[i+1],(cd.width||6)+2);
+  if(!_hasTileRLE){
+    for(const cd of tmpl.corridors){
+      const f=tmpl.rooms.find(r=>r.id===cd.from),t=tmpl.rooms.find(r=>r.id===cd.to);if(!f||!t)continue;
+      const pts=[{x:f.cx,y:f.cy}];if(cd.waypoints)for(const wp of cd.waypoints)pts.push(wp);pts.push({x:t.cx,y:t.cy});
+      for(let i=0;i<pts.length-1;i++)_tCarveCorridor(map,mw,mh,pts[i].x,pts[i].y,pts[i+1].x,pts[i+1].y,cd.width||4,cd.style||'cave');
+    }
+    if(tmpl.features)for(const ft of tmpl.features){if(ft.type==='alcove')_tCarveCircle(map,mw,mh,ft.x,ft.y,ft.r||3)}
+    _tCaveSmooth(map,mw,mh,1);
+    for(const cd of tmpl.corridors){
+      const f=tmpl.rooms.find(r=>r.id===cd.from),t=tmpl.rooms.find(r=>r.id===cd.to);if(!f||!t)continue;
+      const pts=[{x:f.cx,y:f.cy}];if(cd.waypoints)for(const wp of cd.waypoints)pts.push(wp);pts.push({x:t.cx,y:t.cy});
+      for(let i=0;i<pts.length-1;i++)_tEnsurePath(map,mw,mh,pts[i],pts[i+1],(cd.width||6)+2);
+    }
   }
   // ── 보스방 처리 ──
   const bossRd=tmpl.rooms.find(r=>r.type==='boss');
@@ -2632,7 +2642,44 @@ function exportAll(){
 }
 function importAll(){document.getElementById('fileInput').click()}
 document.getElementById('fileInput').onchange=function(e){const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();reader.onload=ev=>{try{const data=JSON.parse(ev.target.result);
+  const reader=new FileReader();reader.onload=ev=>{try{
+    const txt=ev.target.result;
+    let data=null;
+    // JSON 형식 시도
+    try{data=JSON.parse(txt)}catch(e2){}
+    // FIXED_MAPS[n]={...}; JS 코드 형식 시도
+    // FIXED_MAPS JS코드 형식 (내보내기 txt)
+    if(!data&&txt.includes('FIXED_MAPS[')){
+      const _tmpFM={};
+      // eval 방식으로 안전하게 파싱
+      try{
+        const _evalFM=[];
+        const _safeTxt=txt.replace(/FIXED_MAPS\[(\d+)\]\s*=/g,function(m,idx){return '_evalFM['+idx+']='});
+        new Function('_evalFM',_safeTxt)(_evalFM);
+        for(let i=0;i<_evalFM.length;i++){if(_evalFM[i])_tmpFM[i]=_evalFM[i]}
+      }catch(e3){console.warn('FIXED_MAPS eval 실패:',e3)}
+      if(Object.keys(_tmpFM).length>0){
+        for(const k of Object.keys(mapStore))delete mapStore[k];
+        for(const k of Object.keys(gridMapStore))delete gridMapStore[k];
+        for(const[si2,fm] of Object.entries(_tmpFM)){FIXED_MAPS[+si2]=fm}
+        for(let si2=0;si2<STAGES.length;si2++){if(FIXED_MAPS[si2])getMap(si2)}
+        buildStageListOrig();loadStage(currentStage);
+        alert('FIXED_MAPS 불러오기 완료 ('+Object.keys(_tmpFM).length+'개 맵)');
+        return;
+      }
+    }
+    // 세팅 파일 형식 (새 파일로 저장한 것)
+    if(!data){alert('지원하지 않는 파일 형식');return}
+    if(data.type==='tilemap_editor_slot_backup'||data.version>=2){
+      let slot=data.slot||0,settings=data.settings||null,maps=data.maps||{};
+      if(data.version===2&&data.liveMap&&data.liveMap.key!==undefined)maps[String(data.liveMap.key)]=data.liveMap;
+      if(settings)_applyLoadedSettingsObject(settings);
+      for(const k of Object.keys(mapStore))delete mapStore[k];
+      for(const k of Object.keys(gridMapStore))delete gridMapStore[k];
+      for(const one of Object.values(maps)){_restoreCurrentMapState(one)}
+      _applyLoadedState();_saveLiveMapState();
+      alert('세팅 불러오기 완료');return;
+    }
     function loadOne(id,sd){if(id<0||id>=STAGES.length){console.warn('[IMPORT] 스테이지 '+id+' 범위 초과, 스킵');return}const m=getMap(id);if(!m)return;if(sd.heightRle){let idx=0;
       for(let i=0;i<sd.heightRle.length;i+=2){const v=sd.heightRle[i],c=sd.heightRle[i+1];for(let j=0;j<c&&idx<m.mw*m.mh;j++){m.grid[(idx/m.mw)|0][idx%m.mw]=v;idx++}}}
       if(sd.objects)m.objs=sd.objects;m.dirty=true}
@@ -3136,6 +3183,13 @@ function _editorSettingsSnapshot(){
     show3d,showObj,showRooms,showGrid
   };
 }
+function _captureMapByKey(key,m){
+  if(!m||!m.grid||!m.mw||!m.mh)return null;
+  const flat=[];for(let y=0;y<m.mh;y++)for(let x=0;x<m.mw;x++)flat.push(~~(m.grid[y]?.[x]||0));
+  const rle=[];for(let i=0;i<flat.length;){const v=flat[i];let c=1;while(i+c<flat.length&&flat[i+c]===v&&c<65535)c++;rle.push(v,c);i+=c;}
+  const isGrid=String(key).startsWith('grid_');
+  return{version:1,key:String(key),mode:isGrid?'grid':'normal',stage:isGrid?0:+key,gridHell:isGrid?+String(key).slice(5):0,mw:m.mw,mh:m.mh,rle,rooms:Array.isArray(m.rooms)?m.rooms:[],objs:Array.isArray(m.objs)?m.objs:[],special:Array.isArray(m.special)?m.special:[]};
+}
 function _captureCurrentMapState(){
   const m=getCurrentMap(); if(!m||!m.grid||!m.mw||!m.mh) return null;
   const st=STAGES[currentStage];
@@ -3290,8 +3344,29 @@ async function _saveBackupToSameFile(forcePick){
 }
 async function saveSettingsAsFile(){
   try{
-    // 저장 직전에 현재 편집 상태를 먼저 반영
+    // 저장 직전에 모든 편집 상태를 먼저 반영
     _saveLiveMapState();
+    // mapStore의 모든 맵도 localStorage에 강제 저장
+    for(const[k,m] of Object.entries(mapStore)){
+      if(!m||!m.grid)continue;
+      const st2=_captureMapByKey(k,m);
+      if(st2){localStorage.setItem(_liveMapEntryKey(_getSelectedSlot(),k),JSON.stringify(st2));
+        const idxKey=_liveMapIndexKey(_getSelectedSlot());const raw=localStorage.getItem(idxKey);
+        const arr=raw?JSON.parse(raw):[];const set=new Set(Array.isArray(arr)?arr:[]);set.add(String(k));
+        localStorage.setItem(idxKey,JSON.stringify(Array.from(set)));
+      }
+    }
+    for(const[h,m] of Object.entries(gridMapStore)){
+      if(!m||!m.grid)continue;
+      const k='grid_'+h;
+      const st2=_captureMapByKey(k,m);
+      if(st2){st2.mode='grid';st2.gridHell=+h;
+        localStorage.setItem(_liveMapEntryKey(_getSelectedSlot(),k),JSON.stringify(st2));
+        const idxKey=_liveMapIndexKey(_getSelectedSlot());const raw=localStorage.getItem(idxKey);
+        const arr=raw?JSON.parse(raw):[];const set=new Set(Array.isArray(arr)?arr:[]);set.add(String(k));
+        localStorage.setItem(idxKey,JSON.stringify(Array.from(set)));
+      }
+    }
     const slot=_getSelectedSlot();
     const payload=_buildSlotBackupPayload(slot);
     const defName=`tilemap_slot${slot}_${_timestampForName()}.json`;
@@ -3396,6 +3471,9 @@ document.getElementById('settingsFileInput').onchange=function(e){
       _setSelectedSlot(slot);
       _persistSlotBackup(slot,settings,maps);
       _applyLoadedSettingsObject(settings);
+      // 기존 캐시 전부 클리어 → 파일 데이터만 사용
+      for(const k of Object.keys(mapStore))delete mapStore[k];
+      for(const k of Object.keys(gridMapStore))delete gridMapStore[k];
       for(const one of Object.values(maps)){ _restoreCurrentMapState(one); }
       _applyLoadedState();
       _saveLiveMapState();
@@ -3696,6 +3774,9 @@ function genSnake(si,forceSeed){
 
 // ── 내보내기 ──
 function exportAsFixedMap(){
+  // 모든 맵을 먼저 로드 (tileRLE 포함 보장)
+  for(let i=0;i<STAGES.length;i++){if(FIXED_MAPS[i]&&!mapStore[i])getMap(i)}
+  for(let h=0;h<7;h++){if(!gridMapStore[h])getGridMap(h)}
   let out=`// ══ EXODUSER FIXED_MAPS + GRID_MAPS 내보내기 ══\n\n`;
   // 격자맵의 스테이지 인덱스 매핑 (hell→stage index)
   const _gridStageIdx={};
