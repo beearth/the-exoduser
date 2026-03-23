@@ -25,7 +25,7 @@ ANIM_SLOTS = [
     ('taking-punch', 14, 6),
 ]
 
-ETYPES = [87, 91, 93, 94, 96, 97, 98, 99]
+ETYPES = [85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
 DL_DIR = os.path.dirname(os.path.abspath(__file__))
 ATLAS_PATH = os.path.join(DL_DIR, '..', 'atlas_walk.png')
 

@@ -1380,12 +1380,6 @@ function dbRestore(d){
   _actIds.forEach(id=>{
     if(!SKILL_SLOTS.includes(id)){const _ei=SKILL_SLOTS.findIndex((s)=>s===null);if(_ei>=0)SKILL_SLOTS[_ei]=id}
   });
-  // holyDome→F(5), giantSlam→1번(0) 강제 고정 (세이브 슬롯 복원/자동배정 후 최종 보정)
-  // 슬롯 강제 고정: Space(4)=대왕치기, 1번(0)=가시덫, F(5)=신성한땅
-  for(let _fi=0;_fi<6;_fi++){if(SKILL_SLOTS[_fi]==='holyDome'||SKILL_SLOTS[_fi]==='giantSlam'||SKILL_SLOTS[_fi]==='spikeTrap')SKILL_SLOTS[_fi]=null}
-  if(P.skills.holyDome>=1)SKILL_SLOTS[5]='holyDome';
-  if(P.skills.giantSlam>=1)SKILL_SLOTS[4]='giantSlam';
-  if(P.skills.spikeTrap>=1&&!SKILL_SLOTS[0])SKILL_SLOTS[0]='spikeTrap';
   // 캐릭터 외형 복원
   if(d.charIdx!=null&&d.charIdx!==_charIdx&&d.charIdx>=0&&d.charIdx<CHAR_LIST.length)_loadCharAtlas(d.charIdx);
   return true;
@@ -5290,6 +5284,8 @@ function spawnProj(props){
   else{p=_mkProj()}
   for(const k in props)p[k]=props[k];
   if(!p.ml&&p.life)p.ml=p.life;
+  // 적 탄막 속도 30% 증가
+  if(!p.friendly){p.vx*=1.3;p.vy*=1.3}
   projs[projs.length]=p;
   return p;
 }
@@ -8604,7 +8600,7 @@ function _hasWalkAnim(et){return _WA_ROW[et]!==undefined&&et!==7&&et!==9}
 function _waRow(et){return _WA_ROW[et]||0}
 (function _loadWalkAtlas(){
   const img=new Image();
-  img.src='img/mobs/atlas_walk.png?v=15';
+  img.src='img/mobs/atlas_walk.png?v=16';
   _walkAtlas.img=img;
   img.onload=function(){
     if(img.decode){img.decode().then(function(){_walkAtlas.ready=true;console.log('[WALK_ATLAS] 디코딩 완료 '+img.width+'x'+img.height)}).catch(function(){_walkAtlas.ready=true})}
@@ -118502,12 +118498,14 @@ function update(){
     const _detLvWW=P.skills.detonate||1;
     const _chgBarsWW=_wwFused?Math.min(3,1+~~(((P.parryT||0))/60)):0;
     const _boomRWW=_wwFused?(150+(_detLvWW-1)*10)*Math.max(1,_chgBarsWW):0;
-    // 공속 반영 히트 간격 (기본15f, 무기spd×DEX 적용)
+    // 공속 반영 히트 간격 (기본15f, 무기spd×DEX 적용) — 타이머 기반
     const _wwTickSpd=(wp().spd||.3)*statDex();
     const _wwTick=Math.max(3,~~(15/_wwTickSpd)); // 최소3f 캡
-    if(Math.floor(P.wwAng/.35/_wwTick)>Math.floor((P.wwAng-.35*_dtSp)/.35/_wwTick)){
+    if(!P._wwHitTimer)P._wwHitTimer=0;
+    P._wwHitTimer+=_dtSp;
+    if(P._wwHitTimer>=_wwTick){P._wwHitTimer-=_wwTick;
       const _wwBaseR=((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+(_wwLv-1)*11;
-      const _wwMin=100;const _wwMax=200+(_wwLv-1)*30+(_wwLv>=10?30:0); // 1렙200, 9렙470, 10렙500
+      const _wwMin=100;const _wwMax=Math.min(500,300+(_wwLv-1)*22); // 1렙300, 5렙388, 10렙498→캡500
       const _wwRangeBase=_wwMin+(_wwMax-_wwMin)*Math.min(1,_wwGrow);
       const _wwRange=_wwRangeBase;
       const _wwDmg=~~(meleeRef()*statStr()*1.0*(1+(_wwLv-1)*0.05)*2*(1+_wwGrow*(_wwFused?.6:.4))*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1));
@@ -118596,7 +118594,7 @@ function update(){
         else{_detonateBlast('회전기폭!',EL.P)}
       }
       if(P._eStormActive){P._eStormActive=false;playSample('electric_storm_tail',.4,_r(1,.1))} // 종료 여운 0.5초
-      P.s='wRecover';P.st2=18;P.wwAng=0;P._wwDetTimer=0;P.parryT=0;P.parryBank=0;P._sbTgts=null;P._sbPtsCnt=null;P._sbHitF=0;P._sbTgtT=0}
+      P.s='wRecover';P.st2=18;P.wwAng=0;P._wwDetTimer=0;P._wwHitTimer=0;P.parryT=0;P.parryBank=0;P._sbTgts=null;P._sbPtsCnt=null;P._sbHitF=0;P._sbTgtT=0}
     break;
   }
   case 'quakeStride':{
@@ -119595,7 +119593,7 @@ function update(){
   if(!G._shT)G._shT=0;if(++G._shT>=2){G._shT=0;const _h0=performance.now();shRebuild();rebuildDeadPool();if(_DEBUG_PERF)_dbgHash=performance.now()-_h0;}
   // ═══ 몬스터 이동 사운드 매핑 → 전역으로 이동 (update() 위) ═══
   // ═══ 엘리트/오라 강제 제거 (기존 스폰 포함) ═══
-  for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];if(e.alive){e._aAtkM=1;e._aSpdM=1;e._aDefM=1;e._auraL=null;if(!e.ib){e.elite=0;e.mods=[];e.aura=null;e.reviveIframes=0}}}
+  for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];if(e.alive){e._aAtkM=1;e._aSpdM=1;e._aDefM=1;e._auraL=null;if(!e.ib){e.elite=0;e.mods=[];e.aura=null;e.reviveIframes=0;e._wraithPhasing=false;e._curled=false;e._dkGuarding=false}}}
   for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];if(!e.alive||!e.aura)continue;
     const _ad=_AURA_MAP[e.aura];if(!_ad)continue;
     const _ar=_ad.range;
@@ -121336,13 +121334,13 @@ function update(){
         // 파쇄: 얼음칼날 방사
         const slvIO=P.skills.iceOrb||1;const slvMM=P.skills.maliceMortar||1;
         const nBlades=8+slvIO*4+slvMM*2; // 합체 보너스
-        const baseDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*1.5*(1+(slvIO-1)*0.15)*(1+(slvMM-1)*0.1)*_fuseMul('maliceMortar'));
-        const bladeDmg=~~(baseDmg*0.1); // 다수 발사 보정
+        const baseDmg=~~(meleeRef()*statInt()*pMagicMul()*5*(1+(slvIO-1)*0.15)*(1+(slvMM-1)*0.1)*_fuseMul('maliceMortar'));
+        const bladeDmg=Math.max(1,~~(baseDmg*0.3)); // 다수 발사 보정, 최소1
         const _ioSpawnR=P.r+32;
         for(let i=0;i<nBlades;i++){
           const ang=(Math.PI*2/nBlades)*i+(Math.random()-.5)*.15;
           const spd=7+Math.random()*3;
-          {const _pp=_getPProj();_pp.x=bx+Math.cos(ang)*_ioSpawnR;_pp.y=by+Math.sin(ang)*_ioSpawnR;_pp.vx=Math.cos(ang)*spd;_pp.vy=Math.sin(ang)*spd;_pp.dmg=bladeDmg;_pp.el=EL.I;_pp.maxDist=3000;_pp.dist=0;_pp.r=12;_pp.magic=true;_pp.iceBlade=true;_pp._hitSet=new Set();_pp.pierce=0.95;_pp.stagger=14;_pp.kb=8;_pp._iceAng=ang;_pp._iceT=0;pProjs[pProjs.length]=_pp;}
+          {const _pp=_getPProj();_pp.x=bx+Math.cos(ang)*_ioSpawnR;_pp.y=by+Math.sin(ang)*_ioSpawnR;_pp.vx=Math.cos(ang)*spd;_pp.vy=Math.sin(ang)*spd;_pp.dmg=bladeDmg;_pp.el=EL.I;_pp.maxDist=3000;_pp.dist=0;_pp.r=12;_pp.magic=true;_pp.iceBlade=true;_pp._hitSet=new Set();_pp.pierce=0.95;_pp.stagger=0;_pp.kb=0;_pp._iceAng=ang;_pp._iceT=0;pProjs[pProjs.length]=_pp;}
         }
         // 파쇄 범위 데미지
         const shatterR=120+slvIO*5+slvMM*3;
@@ -121868,8 +121866,8 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
   // 패시브 배율 적용 + ST 소비 보너스
   if(type==='weapon'){baseDmg=~~(baseDmg*pAtkMul()*pMeleeMul())+(P._atkBon||0);P._atkBon=0}
   else if(type==='shield'){baseDmg=~~(baseDmg*pShieldMul())+(P._atkBon||0);P._atkBon=0}
-  const _neA=shQuery(P.x,P.y,range+20);let _wwHitSfx=false;
-  for(let _ai=0;_ai<_neA.length;_ai++){const e=_neA[_ai];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d>range+e.r)continue;
+  let _wwHitSfx=false;
+  for(let _ai=0;_ai<ens.length;_ai++){const e=ens[_ai];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d>range+e.r)continue;
     const ang=Math.atan2(e.y-P.y,e.x-P.x);let diff=ang-angle;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
     if(Math.abs(diff)<arcW){const mult=elMul(el,e.el);const dmg=~~(baseDmg*mult);
     if(!_isWW||!_wwHitSfx){const _hSfx=type==='shield'?'flat_hit':(Math.random()<.5?'melee_hit1':'melee_hit');playSampleAt(_hSfx,.45,_r(1,.15),e.x,e.y);if(_isWW)_wwHitSfx=true} // 방패→flat_hit, 무기→melee랜덤
@@ -122889,7 +122887,7 @@ function updateE(e,sp){
       let corpse=null;
       for(let _ci=0;_ci<_deadPool.length;_ci++){const oe=_deadPool[_ci];if(!oe.ib&&oe.etype!==9&&!oe._absorbed&&dst(oe.x,oe.y,e.x,e.y)<150){corpse=oe;break}}
       if(corpse){
-        corpse.alive=true;corpse.hp=~~(corpse.mhp*.5);corpse.eShield=~~(corpse.mhp*.5);corpse.eShieldMax=corpse.mhp;corpse.s='recover';corpse.st2=60;corpse.stunned=0;corpse.poise=corpse.maxPoise;corpse.reviveIframes=60;
+        corpse.alive=true;corpse.hp=~~(corpse.mhp*.5);corpse.eShield=0;corpse.eShieldMax=0;corpse.s='recover';corpse.st2=60;corpse.stunned=0;corpse.poise=corpse.maxPoise;corpse.reviveIframes=0;
         _reviveVFX(corpse.x,corpse.y,'#ffdd44','💀부활!',{partN:16,partSpd:5,shake:10,vfxSize:140,flash:3});
         addTxt(e.x,e.y-15,'🔮주술!','#8833cc',30);addParts(e.x,e.y,'#8833cc',6);
         e.reviveT=e.reviveCd;
@@ -127019,7 +127017,7 @@ const SKILL_LIST=[
   {id:'weakRev',name:'부활의 영역',cat:'tech',act:true,emoji:'💀',desc:'현재 위치에 부활 영역 설치 (10초). 영역 안에서 부활력 +10%. 쿨 25초. Lv당 범위+15 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (반경452, 10초). 슬로우 70%(+2%/Lv, 최대90%)+출혈. 무기뎀×20%(+5%/Lv). 악의 10, 쿨 10초. Lv당 범위+32',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},
   {id:'blueShot',name:'푸른비',cat:'magic',fixed:true,emoji:'💎',desc:'[고정: E, Lv500 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 200 소모. 적 추적. 쿨 5초. Lv당 뎀+10% 사거리+30',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:500},
-  {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,emoji:'💫',desc:'[고정: E] 홀드 시 3단계 차지 범위폭발 (1/2/3초). 범위 300/500/700px. 3단 만충 자동폭발. INT 스케일, 무속성. Lv당 뎀+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0}
+  {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,emoji:'💫',desc:'[고정: E, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (1/2/3초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성. Lv당 뎀+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:700}
 ];
 
 // ═══ 스킬 슬롯 시스템 ═══
@@ -128046,8 +128044,8 @@ function activateIceShatter(){
   P._ioActive=false; // 중복 호출 방지 — 즉시 비활성화
   const slv=P.skills.iceOrb||1;
   const nBlades=4+slv*4; // 1렙=8, 2렙=12, 5렙=24, 10렙=44
-  const baseDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*1.5*(1+(slv-1)*0.15))+(P._ioBon||0);P._ioBon=0;
-  const bladeDmg=~~(baseDmg*0.1); // 다수 발사 보정
+  const baseDmg=~~(meleeRef()*statInt()*pMagicMul()*5*(1+(slv-1)*0.15))+(P._ioBon||0);P._ioBon=0;
+  const bladeDmg=Math.max(1,~~(baseDmg*0.3)); // 다수 발사 보정, 최소1
   const cx=P.x,cy=P.y;
   // 전방위 얼음파편 방사 (큰 파편)
   const _ioLvScale=1+(slv-1)*.1; // 렙당 +10%, 10렙=1.9x
@@ -128055,7 +128053,7 @@ function activateIceShatter(){
   for(let i=0;i<nBlades;i++){
     const ang=(Math.PI*2/nBlades)*i+(Math.random()-.5)*.15; // 약간 불규칙
     const spd=7+Math.random()*3;
-    {const _pp=_getPProj();_pp.x=cx+Math.cos(ang)*_ioSpawnR;_pp.y=cy+Math.sin(ang)*_ioSpawnR;_pp.vx=Math.cos(ang)*spd;_pp.vy=Math.sin(ang)*spd;_pp.dmg=bladeDmg;_pp.el=EL.I;_pp.maxDist=3000;_pp.dist=0;_pp.r=12;_pp.magic=true;_pp.iceBlade=true;_pp._hitSet=new Set();_pp.pierce=0.95;_pp.stagger=14;_pp.kb=8;_pp._iceAng=ang;_pp._iceT=0;pProjs[pProjs.length]=_pp;}
+    {const _pp=_getPProj();_pp.x=cx+Math.cos(ang)*_ioSpawnR;_pp.y=cy+Math.sin(ang)*_ioSpawnR;_pp.vx=Math.cos(ang)*spd;_pp.vy=Math.sin(ang)*spd;_pp.dmg=bladeDmg;_pp.el=EL.I;_pp.maxDist=3000;_pp.dist=0;_pp.r=12;_pp.magic=true;_pp.iceBlade=true;_pp._hitSet=new Set();_pp.pierce=0.95;_pp.stagger=0;_pp.kb=0;_pp._iceAng=ang;_pp._iceT=0;pProjs[pProjs.length]=_pp;}
   }
   // 파쇄 범위 데미지 (근접)
   const shatterR=(100+slv*5)*_ioLvScale;
@@ -130693,7 +130691,8 @@ function renderStatSummary(){
     `<div style="${_sLn}">콤보뎀+: <span style="color:${_afc('comboBoost','#ff9944')}">${_afp('comboBoost')}</span> | 작살뎀+: <span style="color:${_afc('dashBoost','#ff6644')}">${_afp('dashBoost')}</span> | 스킬뎀+: <span style="color:${_afc('skillBoost','#bb44ff')}">${_afp('skillBoost')}</span></div>`+
     `<div style="${_sLn}">패리+: <span style="color:${_afc('parryBonus','#44ff88')}">${_afp('parryBonus')}</span> | 체인: <span style="color:${_afc('chainTarget','#ffcc44')}">+${_af('chainTarget').toFixed(0)}</span> | 정화: <span style="color:${_afc('statusClean','#44ff88')}">${_af('statusClean').toFixed(0)}회</span></div>`+
     `<div style="${_sLn}">불굴: <span style="color:${_afc('lastStand','#ffdd44')}">${_af('lastStand').toFixed(0)}</span> | 부활: <span style="color:${_afc('reviveOnce','#44ff88')}">${_af('reviveOnce')?~~(_af('reviveOnce')*100)+'%':'0'}</span></div>`+
-    `<div style="${_sLn}">✟ 신성력: <span style="color:${_afc('antiRevive','#ffdd88')}">${_afp('antiRevive')}</span></div>`+
+    `<div style="${_sLn}">✟ 신성력: <span style="color:${_afc('antiRevive','#ffdd88')}">${~~(_af('antiRevive')*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${['weapon','shield','necklace','ring1','ring2','bracelet','cape'].map(s=>{const it=INV.equipped[s];if(!it||!it.affixes)return'';const a=it.affixes.find(a=>a.id==='antiRevive');return a?(({'weapon':'무기','shield':'견갑','necklace':'목걸이','ring1':'반지1','ring2':'반지2','bracelet':'팔찌','cape':'망토'}[s]||s)+~~(a.value*100)+'%'):''}).filter(v=>v).join('+')||'없음'})</span></div>`+
+    `<div style="${_sLn}">☠ 악마력(부활력): <span style="color:#ff4444">${Math.min(100,~~(P.lv/100)*5+(P.skills.demonRevive||0)*2+~~((_af('revivePow')+_eqImplicit('_iRevPow')*.01)*100))}%</span> <span style="color:#887766;font-size:1.1rem">(자연${~~(P.lv/100)*5}+스킬${(P.skills.demonRevive||0)*2}+장비${~~((_af('revivePow')+_eqImplicit('_iRevPow')*.01)*100)})</span></div>`+
     // ── 전투 통계 ──
     `<div style="${_sHd}">📈 전투 통계</div>`+
     `<div style="${_sLn}">처치: <span style="color:#ff6644">${G.kills||0}</span> | 악의: <span style="color:#cc66ff">${G.mats||0}</span> | 스테이지: <span style="color:#ffaa44">${(G.stage||0)+1}</span> | Lv: <span style="color:#ffcc44">${P.lv||1}</span></div>`;
@@ -132513,18 +132512,30 @@ function draw(){
       const _elN=e.elite?ELITE_TIERS[e.elite].name:'일반';
       const _modTxt=e.mods&&e.mods.length?(' ['+e.mods.map(m=>{const md=_MOD_MAP[m];return md?md.name:m}).join('+')+']'):'';
       const _shTxt=e.eShield>0?' 쉴드:'+e.eShield:'';
-      const _revTxt=e.reviveIframes>0?' ★무적'+e.reviveIframes:'';
+      // 면역 상태 체크
+      const _imm=[];
+      if(e.reviveIframes>0)_imm.push('부활무적:'+e.reviveIframes);
+      if(e._wraithPhasing)_imm.push('위상변환');
+      if(e._curled)_imm.push('웅크림');
+      if(e._dkGuarding)_imm.push('방어자세');
+      if(e._mgActive)_imm.push('거울방어');
+      if(e._bcActive)_imm.push('반격대기');
+      if(e.aura)_imm.push('오라:'+e.aura);
+      const _immTxt=_imm.length?' ⚠'+_imm.join(','):'';
       X.font='bold 13px "Noto Sans KR"';X.textAlign='center';
-      // 배경 박스
-      const _hLine1=_elN+' '+_etN+_modTxt;
-      const _hLine2='Lv.'+e.lv+' HP:'+e.hp+'/'+e.mhp+_shTxt+_revTxt;
-      const _hw=Math.max(X.measureText(_hLine1).width,X.measureText(_hLine2).width)+12;
-      const _hx=e.x-_hw/2,_hy=e.y-e.r-60;
-      X.fillStyle='rgba(0,0,0,.75)';X.fillRect(_hx,_hy,_hw,32);
-      X.strokeStyle='#665544';X.lineWidth=1;X.strokeRect(_hx,_hy,_hw,32);
-      // 텍스트
-      X.fillStyle=e.elite?ELITE_TIERS[e.elite].col:'#cccccc';X.fillText(_hLine1,e.x,_hy+13);
-      X.fillStyle='#ffffff';X.font='11px monospace';X.fillText(_hLine2,e.x,_hy+26);
+      const _hLine1=_elN+' '+_etN+' (e'+e.etype+')'+_modTxt;
+      const _hLine2='Lv.'+e.lv+' HP:'+e.hp+'/'+e.mhp+_shTxt;
+      const _hLine3=_immTxt?_immTxt:'';
+      const _allLines=[_hLine1,_hLine2];if(_hLine3)_allLines.push(_hLine3);
+      let _hw=0;for(let _li=0;_li<_allLines.length;_li++){const w=X.measureText(_allLines[_li]).width;if(w>_hw)_hw=w}
+      _hw+=16;
+      const _hh=_allLines.length*15+8;
+      const _hx=e.x-_hw/2,_hy=e.y-e.r-35-_hh;
+      X.fillStyle='rgba(0,0,0,.8)';X.fillRect(_hx,_hy,_hw,_hh);
+      X.strokeStyle='#665544';X.lineWidth=1;X.strokeRect(_hx,_hy,_hw,_hh);
+      X.fillStyle=e.elite?ELITE_TIERS[e.elite].col:'#cccccc';X.fillText(_hLine1,e.x,_hy+14);
+      X.fillStyle='#ffffff';X.font='11px monospace';X.fillText(_hLine2,e.x,_hy+28);
+      if(_hLine3){X.fillStyle='#ff6644';X.fillText(_hLine3,e.x,_hy+42)}
       X.textAlign='left'}}
     // (포이즈 바 제거됨)
     // ═══ 엘리트/문지기 이름 + 모디파이어 레이블 ═══
@@ -135446,14 +135457,15 @@ function drawP(){
     const _wwGrowV=Math.min(1,_wa/60)+_wwBankV;
     const _wwLvV=P.skills.whirlwind||1;
     const _wwBaseR=((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+(_wwLvV-1)*11;
-    const _wwR=100+(200+(_wwLvV-1)*30+(_wwLvV>=10?30:0)-100)*Math.min(1,_wwGrowV);
+    const _wwMaxV=Math.min(500,300+(_wwLvV-1)*22); // 타격과 동일: 1렙300, 10렙500
+    const _wwR=100+(_wwMaxV-100)*Math.min(1,_wwGrowV);
     const _wc=ELC[wp().el]||'#ffcc44';
 
     // ── 스프라이트시트 회전참 (9프레임 순환) ──
     if(_whirlReady&&_whirlFW>0){
       const _wfi=~~(Math.abs(_wa*1.5)%9);
       const _wfc=_wfi%3,_wfr=~~(_wfi/3);
-      const _wfSz=_wwR*1.4;
+      const _wfSz=_wwR;
       X.save();X.translate(P.x,P.y);X.rotate(_wa);
       X.filter='saturate(0) brightness(500%)';
       X.globalAlpha=.25+_wwGrowV*.15;
@@ -137231,9 +137243,9 @@ async function startGameFromDB(){
   if(P.skills.iceOrb>=1)P.activeCtSk='iceOrb';
   // 슬롯 강제 고정: Space=대왕치기, 1번=가시덫, F=신성한땅, Ctrl=얼음보주
   for(let _fi=0;_fi<6;_fi++){if(SKILL_SLOTS[_fi]==='holyDome'||SKILL_SLOTS[_fi]==='giantSlam'||SKILL_SLOTS[_fi]==='spikeTrap')SKILL_SLOTS[_fi]=null}
-  SKILL_SLOTS[4]='giantSlam';
+  {const _fs=(idx,skId)=>{const prev=SKILL_SLOTS[idx];if(prev&&prev!==skId){const ei=[1,2,3].find(j=>!SKILL_SLOTS[j]);if(ei!=null)SKILL_SLOTS[ei]=prev}SKILL_SLOTS[idx]=skId};
+  _fs(4,'giantSlam');_fs(5,'holyDome')}
   if(!SKILL_SLOTS[0])SKILL_SLOTS[0]='spikeTrap';
-  SKILL_SLOTS[5]='holyDome';
 
   // 4) 스탯 적용 후 스테이지 시작 — 몬스터 아틀라스 대기
   setBootLoading(75,'몬스터 스킨 로딩...');
@@ -137666,9 +137678,9 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     if(!P.skills.iceOrb)P.skills.iceOrb=1;
     if(P.skills.iceOrb>=1)P.activeCtSk='iceOrb';
     for(let _fi=0;_fi<6;_fi++){if(SKILL_SLOTS[_fi]==='holyDome'||SKILL_SLOTS[_fi]==='giantSlam'||SKILL_SLOTS[_fi]==='spikeTrap')SKILL_SLOTS[_fi]=null}
-    SKILL_SLOTS[4]='giantSlam';
+    {const _fs=(idx,skId)=>{const prev=SKILL_SLOTS[idx];if(prev&&prev!==skId){const ei=[1,2,3].find(j=>!SKILL_SLOTS[j]);if(ei!=null)SKILL_SLOTS[ei]=prev}SKILL_SLOTS[idx]=skId};
+    _fs(4,'giantSlam');_fs(5,'holyDome')}
     if(!SKILL_SLOTS[0])SKILL_SLOTS[0]='spikeTrap';
-    SKILL_SLOTS[5]='holyDome';
     // 로드 완료 후 게임 시작 — 몬스터 아틀라스 대기
     setBootLoading(75,'몬스터 스킨 로딩...');
     if(!_mobAtlas.ready)await new Promise(r=>{const _ci=setInterval(()=>{if(_mobAtlas.ready){clearInterval(_ci);r()}},50);setTimeout(()=>{clearInterval(_ci);r()},5000)});
