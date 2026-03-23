@@ -3689,7 +3689,7 @@ const _ENV_LIGHT=[
 const _P_ANIM_MAP={idle:'idle',wWindup:'atk1',wSwing:'atk2',wRecover:'atk3',whirlwind:'whirlwind',
   sBash:'bash',sRecover:'bash',sBlock:'block',charge:'charge_start',charging:'charge_start',
   chargeBoost:'charge_hold',
-  stagger:'hurt',pStun:'stun',beam:'idle',beaming:'idle',burstLoop:'idle',ghostWalk:'ghost',rainLightning:'dodge',bladeDash:'dash',bowDraw:'crossbow',bowRecover:'crossbow',
+  stagger:'hurt',pStun:'stun',beam:'idle',beaming:'idle',burstLoop:'idle',ghostWalk:'ghost',rainLightning:'dodge',bladeDash:'dodge',bowDraw:'crossbow',bowRecover:'crossbow',
   gSlamWindup:'atk1',gSlam1:'atk2',gSlamRecoil:'atk3',gSlam2:'atk2',gSlamRecover:'atk3',peaceShield:'block'};
 // ── 8방향 변환 (atan2 → s/se/e/ne/n/nw/w/sw) ──
 const _DIR8=['e','se','s','sw','w','nw','n','ne'];
@@ -119321,7 +119321,7 @@ function update(){
       if(P._preBdState==='whirlwind'&&isHeld('weapon')&&P.st>=2){P.s='whirlwind';P._preBdState=null}
       else if(P._preBdState==='sBlock'&&isAct('parry')&&P.mp>0){P.s='sBlock';P._preBdState=null}
       else if(P._preBdState==='beam'&&isAct('beam')&&P.mp>0&&!_isFused('stormBeam')){P.s='beam';P._preBdState=null}
-      else{P.s='idle';P._bdLanded=true;P._bdKeys=false;P._preBdState=null}
+      else{P.s='idle';P._preBdState=null}
       P.iframes=Math.max(P.iframes,15)}
     break;}
 
@@ -119432,7 +119432,7 @@ function update(){
       if(P._preBdState==='whirlwind'&&isHeld('weapon')&&P.st>=2){P.s='whirlwind';P._preBdState=null}
       else if(P._preBdState==='sBlock'&&isAct('parry')&&P.mp>0){P.s='sBlock';P._preBdState=null}
       else if(P._preBdState==='beam'&&isAct('beam')&&P.mp>0&&!_isFused('stormBeam')){P.s='beam';P._preBdState=null}
-      else{P.s='idle';P._bdLanded=true;P._bdKeys=false;P._preBdState=null}
+      else{P.s='idle';P._preBdState=null}
     }
     break}
   case 'cRecover':{
@@ -127245,12 +127245,13 @@ const SKILL_SLOT_DEFS={
   charge:{name:'이동스킬',key:'charge',skills:['charge','magicBlink'],
     info:{charge:{name:'작살',emoji:'🔱',desc:'Shift: 작살 발사 → 끌려감'},
           magicBlink:{name:'사슬기동:화염',emoji:'🔥',desc:'Shift: 화염길+화상'}}},
-  magic:{name:'마법스킬',key:'magic',skills:['beam','omniBeam','elemMissile','hellRay','blueShot'],
+  magic:{name:'마법스킬',key:'magic',skills:['beam','omniBeam','elemMissile','hellRay','blueShot','burstLoop'],
     info:{beam:{name:'마법탄',emoji:'🔮',desc:'E: 마법 투사체'},
           omniBeam:{name:'멸살광선',emoji:'☄️',desc:'E: 1발 직선 레이저'},
           elemMissile:{name:'원소추적탄',emoji:'🎯',desc:'E: 6원소 유도 미사일'},
           hellRay:{name:'참회',emoji:'✝',desc:'E: 신성한 선 설치 (시계방향 회전)'},
-          blueShot:{name:'푸른비',emoji:'💎',desc:'E: 5초간 50발 파란콩 순차 발사 (MP200, 추적, 쿨5초)'}}},
+          blueShot:{name:'푸른비',emoji:'💎',desc:'E: 5초간 50발 파란콩 순차 발사 (MP200, 추적, 쿨5초)'},
+          burstLoop:{name:'버스트루프',emoji:'💫',desc:'E 홀드: 3단계 차지 범위폭발 (Lv700 히든)'}}},
   bow:{name:'석궁 자동(T)',key:'bow',skills:['normal','grenadeShot','bladeShot','blastShot','fanShot','needleShot'],
     info:{normal:{name:'일반사격',emoji:'🏹',desc:'T자동: 기본 화살'},
           grenadeShot:{name:'유탄산탄',emoji:'💣',desc:'T자동: 화염대포 (악의5, 쿨1초)'},
@@ -135838,50 +135839,18 @@ function drawP(){
     X.globalAlpha=fl?.3:1;
   // ══ 칼날이동: 전기 변신 (소형 전기구체) ══
   }else if(P.s==='bladeDash'&&!isDead){
-    const _bdT=_now;
-    const _bdR=_pR+4+Math.sin(_bdT*.08)*2;
-    // 외곽 전기 글로우 (createRadialGradient 제거 → 2-layer arc)
+    const _bdT=_now;const _bdR=_pR+4+Math.sin(_bdT*.08)*2;
     X.globalAlpha=.25;X.fillStyle='rgba(60,160,255,1)';X.beginPath();X.arc(_px,_py,_bdR*.8,0,Math.PI*2);X.fill();
     X.globalAlpha=.12;X.fillStyle='rgba(30,100,220,1)';X.beginPath();X.arc(_px,_py,_bdR*1.4,0,Math.PI*2);X.fill();
-    // 구체 본체 (2-layer arc)
     X.globalAlpha=.85;X.fillStyle='rgba(100,200,255,1)';X.beginPath();X.arc(_px,_py,_bdR,0,Math.PI*2);X.fill();
     X.globalAlpha=.9;X.fillStyle='rgba(220,245,255,1)';X.beginPath();X.arc(_px,_py,_bdR*.5,0,Math.PI*2);X.fill();
-    // 표면 전기 아크
     X.strokeStyle='#88eeff';X.lineWidth=2;X.globalAlpha=.7+.2*Math.sin(_bdT*.06);
-    for(let _ai=0;_ai<5;_ai++){
-      const _aa=Math.PI*2/5*_ai+_bdT*.015;
-      const _sx=_px+Math.cos(_aa)*_bdR*.3,_sy=_py+Math.sin(_aa)*_bdR*.3;
-      const _ma=_aa+.4+Math.sin(_bdT*.02+_ai)*0.5;
-      const _mr=_bdR*.65+Math.sin(_bdT*.025+_ai*2)*3;
-      const _ex=_px+Math.cos(_aa)*_bdR*.9,_ey=_py+Math.sin(_aa)*_bdR*.9;
-      X.beginPath();X.moveTo(_sx,_sy);
-      X.quadraticCurveTo(_px+Math.cos(_ma)*_mr,_py+Math.sin(_ma)*_mr,_ex,_ey);X.stroke();
-    }
-    // 번개 방전
+    for(let _ai=0;_ai<5;_ai++){const _aa=Math.PI*2/5*_ai+_bdT*.015;const _sx=_px+Math.cos(_aa)*_bdR*.3,_sy=_py+Math.sin(_aa)*_bdR*.3;const _ma=_aa+.4+Math.sin(_bdT*.02+_ai)*0.5;const _mr=_bdR*.65+Math.sin(_bdT*.025+_ai*2)*3;const _ex=_px+Math.cos(_aa)*_bdR*.9,_ey=_py+Math.sin(_aa)*_bdR*.9;X.beginPath();X.moveTo(_sx,_sy);X.quadraticCurveTo(_px+Math.cos(_ma)*_mr,_py+Math.sin(_ma)*_mr,_ex,_ey);X.stroke();}
     X.strokeStyle='#44ddff';X.lineWidth=1.5;X.globalAlpha=.6+.3*Math.sin(_bdT*.04);
-    for(let _bi=0;_bi<6;_bi++){
-      const _ba=Math.PI*2/6*_bi+_bdT*.01;
-      let _bx=_px+Math.cos(_ba)*_bdR*0.5,_by=_py+Math.sin(_ba)*_bdR*0.5;
-      X.beginPath();X.moveTo(_bx,_by);
-      for(let _bs=0;_bs<3;_bs++){
-        const _bext=_bdR*(0.3+_bs*0.35);
-        const _bjit=(Math.random()-.5)*10;
-        _bx=_px+Math.cos(_ba)*_bext+Math.cos(_ba+Math.PI/2)*_bjit;
-        _by=_py+Math.sin(_ba)*_bext+Math.sin(_ba+Math.PI/2)*_bjit;
-        X.lineTo(_bx,_by);
-      }
-      X.stroke();
-    }
-    // 밝은 코어
-    X.globalAlpha=.9;X.fillStyle='#ffffff';
-    X.beginPath();X.arc(_px,_py,_bdR*.35,0,Math.PI*2);X.fill();
-    X.globalAlpha=.5;X.fillStyle='#ccf0ff';
-    X.beginPath();X.arc(_px,_py,_bdR*.5,0,Math.PI*2);X.fill();
-    // 전기 잔상 파티클
-    if(Math.random()>.4){const _spa=Math.random()*Math.PI*2;
-      poolPart(_px+Math.cos(_spa)*_bdR,_py+Math.sin(_spa)*_bdR,
-        Math.cos(_spa)*3+(Math.random()-.5)*2,Math.sin(_spa)*3+(Math.random()-.5)*2,
-        Math.random()>.5?'#44ddff':'#ffee44',2+Math.random()*3,8+Math.random()*6)}
+    for(let _bi=0;_bi<6;_bi++){const _ba=Math.PI*2/6*_bi+_bdT*.01;let _bx=_px+Math.cos(_ba)*_bdR*0.5,_by=_py+Math.sin(_ba)*_bdR*0.5;X.beginPath();X.moveTo(_bx,_by);for(let _bs=0;_bs<3;_bs++){const _bext=_bdR*(0.3+_bs*0.35);const _bjit=(Math.random()-.5)*10;_bx=_px+Math.cos(_ba)*_bext+Math.cos(_ba+Math.PI/2)*_bjit;_by=_py+Math.sin(_ba)*_bext+Math.sin(_ba+Math.PI/2)*_bjit;X.lineTo(_bx,_by);}X.stroke();}
+    X.globalAlpha=.9;X.fillStyle='#ffffff';X.beginPath();X.arc(_px,_py,_bdR*.35,0,Math.PI*2);X.fill();
+    X.globalAlpha=.5;X.fillStyle='#ccf0ff';X.beginPath();X.arc(_px,_py,_bdR*.5,0,Math.PI*2);X.fill();
+    if(Math.random()>.4){const _spa=Math.random()*Math.PI*2;poolPart(_px+Math.cos(_spa)*_bdR,_py+Math.sin(_spa)*_bdR,Math.cos(_spa)*3+(Math.random()-.5)*2,Math.sin(_spa)*3+(Math.random()-.5)*2,Math.random()>.5?'#44ddff':'#ffee44',2+Math.random()*3,8+Math.random()*6)}
     X.globalAlpha=fl?.3:1;
   // ══ 레인라이트닝: 전기 구체 + 잔상 ══
   }else if(P.s==='rainLightning'&&!isDead){
@@ -135902,22 +135871,20 @@ function drawP(){
   }else if(_atlasPReady&&(P._sa||(P._sa=SpriteAnimator.create(_atlasP_img,_atlasP_frames,'idle')))){
     // ── Atlas P 스프라이트 렌더링 (8방향) + Ori 영혼 글로우 ──
     const _apDead=P.hp<=0;const _apMv=P.s==='idle'&&(isAct('up')||isAct('down')||isAct('left')||isAct('right'));
-    if(P._bdLanded&&P.s!=='idle')P._bdLanded=false;
     if(_harpLandT>0)_harpLandT-=_dtSp;
     let _apAnim=_P_ANIM_MAP[P.s]||'idle';
     if(_apDead)_apAnim='die';
     else if(P._chainSlamReady&&(_harpActive||_dashActive))_apAnim='chain';
     else if(P._chainAssaultReady&&(_harpActive||_dashActive))_apAnim='atk1';
-    else if(_harpActive&&!_dashActive)_apAnim='charge_start';
-    else if(_dashActive)_apAnim='charge_hold';
-    else if(_harpLandT>0)_apAnim='charge_land';
-    else if(P._bdLanded){_apAnim='dash';P._bdLandHold=true;if(!P._bdKeys){if(!_apMv)P._bdKeys=true;}else if(_apMv)P._bdLanded=false;}
+    else if(_harpActive&&!_dashActive)_apAnim='dash';
+    else if(_dashActive)_apAnim='dash';
+    else if(_harpLandT>0)_apAnim='dash';
     else if(_apMv)_apAnim='run';
     const _apDir=_facingDir8(P.facing);
     const _apHasDir=!!P._sa.fm[_apAnim+'_'+_apDir];
     if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam')||_apAnim.startsWith('charge')||_apAnim==='atk3')?'atk1':'idle';
     if(!P._sa.fm[_apAnim]&&!P._sa.fm[_apAnim+'_'+_apDir])_apAnim='idle';
-    const _isHarp=_apAnim==='charge_start'||_apAnim==='charge_hold'||_apAnim==='charge_land';
+    const _isHarp=(_harpActive||_dashActive||_harpLandT>0)&&_apAnim==='dash';
     const _isChainAtk=P._chainAssaultReady&&(_harpActive||_dashActive);
     const _apSpd=_apDead?12:(_isHarp?4:(_isChainAtk?3:(_apAnim==='idle'?48:(_apAnim==='run'?12:8))));
     SpriteAnimator.play(P._sa,_apAnim,_apSpd,_isHarp?false:!_apDead);
@@ -135927,27 +135894,8 @@ function drawP(){
       SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
       SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
     }else if(_isHarp){
-      // 작살 3단계 프레임 제어: 각 단계 마지막 프레임 홀드
-      const _hFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
-      if(_hFr&&_hFr.length){
-        if(_apAnim==='charge_start'){
-          // 던지기: 빠르게 재생(spd=3), done이면 마지막 프레임 홀드
-          P._sa.spd=3;SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
-          if(P._sa.done)P._sa.f=_hFr.length-1;
-        }else if(_apAnim==='charge_hold'){
-          // 끌려가기: 프레임을 남은 거리 비율로 매핑
-          const _pullProg=_dashLeft>0?1-(_dashLeft/_HARP_PULL_DUR[_harpTier]):1;
-          P._sa.f=Math.min(_hFr.length-1,~~(_pullProg*_hFr.length));
-        }else{
-          // 착지: 고정 속도 재생, done이면 마지막 프레임
-          P._sa.spd=4;SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
-          if(P._sa.done)P._sa.f=_hFr.length-1;
-        }
-      }
-    }else if(P._bdLandHold){
-      const _dshFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
-      if(_dshFr&&_dshFr.length)P._sa.f=_dshFr.length-1;
-      P._bdLandHold=false;
+      // 사슬기동: dash 16프레임 그냥 재생
+      SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
     }else if(_apMv){
       const _dFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
       if(_dFr&&_dFr.length)P._sa.f=~~((P._walkDist||0)/32)%_dFr.length;
