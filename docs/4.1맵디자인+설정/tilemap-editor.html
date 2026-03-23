@@ -416,38 +416,11 @@ function _pickCorridorStyle(rng,floor,hell){
 
 function _tValidateConnectivity(map,mw,mh,startCx,startCy){
   const vis=[];for(let y=0;y<mh;y++){vis[y]=[];for(let x=0;x<mw;x++)vis[y][x]=false}
-
-// ══ FIXED_MAPS ══
-
-  // ── 소환굴 배치 ──
-  const spawnHoles=[];
-  const bossRoomRef=rooms.find(r=>r.type==='boss');
-  const bossDistMax=bossRoomRef?bossRoomRef.cy:1;
-  for(let ri=0;ri<rooms.length;ri++){
-    const r=rooms[ri];
-    if(r.type==='start'||r.type==='forge'||r.type==='boss')continue;
-    // 보스까지 Y거리로 등급 결정 (가까울수록 높은 등급)
-    const distRatio=bossDistMax>0?Math.max(0,1-(r.cy/bossDistMax)):0;
-    const grade=Math.min(3,~~(distRatio*4));
-    const hx=(r.cx+.5)*T,hy=(r.cy+.5)*T;
-    spawnHoles.push({x:hx,y:hy,grade,timer:SPAWN_HOLE[grade].interval*(.5+Math.random()*.5),alive:0,room:ri});
-  }
-  // 복도 spine 중간에 grade 0 균열 2~4개
-  const corridorCnt=2+~~(Math.random()*3);
-  const spineStep=Math.max(1,~~(spine.length/corridorCnt));
-  for(let ci=0;ci<corridorCnt;ci++){
-    const si2=Math.min(spine.length-1,~~(spineStep*(ci+.5)));
-    const sp2=spine[si2];if(!sp2)continue;
-    const hx2=(sp2.cx+.5)*T,hy2=(sp2.y+.5)*T;
-    // 방 내부가 아닌지 확인
-    let inRoom=false;
-    for(const r of rooms){if(sp2.cx>=r.x&&sp2.cx<=r.x+r.w&&sp2.y>=r.y&&sp2.y<=r.y+r.h){inRoom=true;break}}
-    if(!inRoom)spawnHoles.push({x:hx2,y:hy2,grade:0,timer:SPAWN_HOLE[0].interval*(.5+Math.random()*.5),alive:0,room:-1});
-  }
-
-  G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
-  G.bossGate=_gateTiles;G.bossGateOpen=false;G.bossSealed=false;G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
-  G.spawnHoles=spawnHoles;
+  const sx=Math.max(0,Math.min(mw-1,~~startCx)),sy=Math.max(0,Math.min(mh-1,~~startCy));
+  if(map[sy][sx]!==0){const w=_tNearestWalkable(map,mw,mh,sx,sy);if(!w)return 0;vis[w.y][w.x]=true;const q=[w];let cnt=1;const dirs=[[1,0],[-1,0],[0,1],[0,-1]];while(q.length){const c=q.shift();for(const d of dirs){const nx=c.x+d[0],ny=c.y+d[1];if(nx<1||ny<1||nx>=mw-1||ny>=mh-1||vis[ny][nx]||map[ny][nx]!==0)continue;vis[ny][nx]=true;cnt++;q.push({x:nx,y:ny})}}return cnt;}
+  vis[sy][sx]=true;const q=[{x:sx,y:sy}];let cnt=1;const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
+  while(q.length){const c=q.shift();for(const d of dirs){const nx=c.x+d[0],ny=c.y+d[1];if(nx<1||ny<1||nx>=mw-1||ny>=mh-1||vis[ny][nx]||map[ny][nx]!==0)continue;vis[ny][nx]=true;cnt++;q.push({x:nx,y:ny})}}
+  return cnt;
 }
 
 // ═══ MAP — 고정맵 템플릿 데이터 ═══
@@ -4070,11 +4043,11 @@ for(let i=0;i<STAGES.length;i++){
   const s=STAGES[i];
   if(s.type==='grid'){
     // floor10: 격자맵 — GRID_MAPS[hell]로 처리 (getMap에서 분기)
-    FIXED_MAPS[i]=null;
-  } else if(s.type==='horiz'){
-    FIXED_MAPS[i]=genHoriz(i);
-  } else {
-    FIXED_MAPS[i]=genSnake(i);
+    if(!FIXED_MAPS[i]) FIXED_MAPS[i]=null;
+  } else if(!FIXED_MAPS[i]||!FIXED_MAPS[i].rooms){
+    // 수동 정의된 맵이 없을 때만 자동 생성
+    if(s.type==='horiz') FIXED_MAPS[i]=genHoriz(i);
+    else FIXED_MAPS[i]=genSnake(i);
   }
 }
 for(let h=0;h<7;h++) GRID_MAPS[h]=generateGridMap(h);

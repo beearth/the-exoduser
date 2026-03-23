@@ -11352,7 +11352,12 @@ function _execMagicE(){
   const _amsk=P.activeMagicSk||'beam';
   const _isSix=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
   const _isElemF=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&P.skills.elemMissile>=1&&_isFused('elemFuse');
-  // 버스트루프는 좌클릭 슬롯으로 이동됨 (_execBurstLoop)
+  // 버스트루프 (E 홀드: 3단계 차지 범위폭발)
+  if(_amsk==='burstLoop'&&P.skills.burstLoop>=1){
+    P.s='burstLoop';P.st2=0;P._blCharge=0;P._blTier=0;P._blMaxCharge=60;
+    playSample('shield_activate',.6,_r(1,.1));_addSkProf('burstLoop');
+    addTxt(P.x,P.y-30,'💫 집중...','#dd88ff',35);return;
+  }
   // 푸른비 (MP: 200 + 렙당 15)
   if(_amsk==='blueShot'&&P.skills.blueShot>=1){
     const _bsMpCost=200+((P.skills.blueShot||1)-1)*15;
@@ -118589,7 +118594,7 @@ function update(){
     else if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()} // Q: 얼음보주
     else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()} // Q: 평화의보호 (stormBeam)
     else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15))} // Q: 보호막 (데미지 감소)
-    else if(isHeld('weapon')&&P.skills.burstLoop>=1&&P.activeLMBSk==='burstLoop'&&P.st>=2){P.s='burstLoop';P.st2=0;P._blCharge=0;P._blTier=0;P._blMaxCharge=60;playSample('shield_activate',.6,_r(1,.1));_addSkProf('burstLoop');addTxt(P.x,P.y-30,'💫 집중...','#dd88ff',35)}
+    // burstLoop는 E키(마법슬롯)에서 발동 → _execMagicE()에서 처리
     else if(isHeld('weapon')&&P.skills.whirlwind&&P.activeLMBSk==='whirlwind'&&P.st>=2){P.s='whirlwind';P.wwAng=0;P.parryT=0;P.parryBank=0;P._wwDetTimer=0;SFX._swIdx=0;SFX.slashSeq();if(_isFused('stormBeam')){P._eStormIdx=0;P._eStormT=0;P._eStormActive=true;playSample(['electric_storm','electric_storm2','electric_storm3','electric_storm4'][~~(Math.random()*4)],.6,_r(1,.1))}if(Math.random()<.45){playSample(['voice_flee','voice_storm_attack'][~~(Math.random()*2)],1,1)}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}_addSkProf('whirlwind')}
     else if(isAct('weapon')&&useStPct('weapon')){P._atkBon=~~(_lastCost*1.5);P.s='wSwing';P.st2=5;P.swProg=0;P.atkArc=P.facing;if(G._pStats)G._pStats._atkC++;SFX.slash();if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
       // ── 기검참 스킬 선택 시에만 검기 발사 (Lv당 뎀+10%, 거리+15px) ──
@@ -118811,9 +118816,9 @@ function update(){
   // ═══ 버스트루프: E홀드 3단계 차지 범위폭발 ═══
   case 'burstLoop':{
     P.iframes=Math.max(P.iframes,3); // 차지 중 무적
-    // ST 10%/초 지속 소모
-    P.st-=P.mst*0.1/60*sp;
-    if(P.st<=0){P.st=0;addTxt(P.x,P.y-30,'ST 부족!','#ff4444',30);P.s='idle';P._blCharge=0;P._blTier=0;break}
+    // MP 10%/초 지속 소모
+    P.mp-=P.mmp*0.1/60*sp;
+    if(P.mp<=0){P.mp=0;addTxt(P.x,P.y-30,'MP 부족!','#4444ff',30);P.s='idle';P._blCharge=0;P._blTier=0;break}
     // 감속 이동 (30%)
     let _bldx=0,_bldy=0;
     if(isAct('up'))_bldy=-1;if(isAct('down'))_bldy=1;if(isAct('left'))_bldx=-1;if(isAct('right'))_bldx=1;
@@ -118852,8 +118857,8 @@ function update(){
       _burstLoopExplode(3);
       break;
     }
-    // 좌클릭 뗌 → 현재 단계로 폭발 (1단계 미만이면 불발)
-    if(!isHeld('weapon')){
+    // E키 뗌 → 현재 단계로 폭발 (1단계 미만이면 불발)
+    if(!isHeld('beam')){
       if(P._blTier>=1){_burstLoopExplode(P._blTier)}
       else{addTxt(P.x,P.y-30,'불발...','#888',30);P.s='idle'}
       break;
@@ -127237,7 +127242,7 @@ const SKILL_LIST=[
   {id:'weakRev',name:'부활의 영역',cat:'tech',act:true,emoji:'💀',desc:'현재 위치에 부활 영역 설치 (10초). 영역 안에서 부활력 +10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (반경452, 10초). 슬로우 70%(+2%/Lv, 최대90%)+출혈. 무기뎀×20%(+5%/Lv). 악의 10, 쿨 10초. Lv당 범위+32',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},
   {id:'blueShot',name:'푸른비',cat:'magic',fixed:true,emoji:'💎',desc:'[고정: E, Lv500 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 200 소모. 적 추적. 쿨 5초. Lv당 뎀+10% 사거리+30',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:500},
-  {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: 좌클, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.33/0.66/1초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700}
+  {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: E, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.33/0.66/1초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700}
 ];
 
 // ═══ 스킬 슬롯 시스템 ═══
@@ -127262,10 +127267,9 @@ const SKILL_SLOT_DEFS={
           }},
   tech:{name:'영역 스킬',key:'tech',skills:['spikeTrap'],
     info:{spikeTrap:{name:'가시덫',emoji:'🌿',desc:'Space: 가시덫 설치 (악의10, 쿨10초)'}}},
-  lmb:{name:'좌클 스킬',key:'lmb',skills:['kiSlash','whirlwind','burstLoop'],
+  lmb:{name:'좌클 스킬',key:'lmb',skills:['kiSlash','whirlwind'],
     info:{kiSlash:{name:'기검참',emoji:'⚔',desc:'좌클: 3단 콤보 검기 (ST 고정 10)'},
-          whirlwind:{name:'회전참',emoji:'🌀',desc:'좌클 홀드: 회전 베기'},
-          burstLoop:{name:'버스트루프',emoji:'💫',desc:'좌클 홀드: 3단계 차지 범위폭발 (Lv700 히든)'}}},
+          whirlwind:{name:'회전참',emoji:'🌀',desc:'좌클 홀드: 회전 베기'}}},
   rmb:{name:'우클 스킬',key:'rmb',skills:['maliceSwipe'],
     info:{maliceSwipe:{name:'칼등 처내기',emoji:'💀',desc:'우클: 칼등 처내기 (홀드 연사, Lv당 반사뎀+10%)'}}},
   q:{name:'보호막 스킬',key:'q',skills:['parry','detonate','peaceShield'],
@@ -127632,7 +127636,7 @@ function updateMagicSlot(){
   const _isElemF=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&P.skills.elemMissile>=1&&_isFused('elemFuse');
   const _isSix=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
   // 합체 중이라도 다른 스킬(푸른비/참회 등) 선택 시 해당 스킬 표시
-  const _overrideSkills=['blueShot','hellRay'];
+  const _overrideSkills=['blueShot','hellRay','burstLoop'];
   const _isOverride=_overrideSkills.includes(_amsk)&&P.skills[_amsk]>=1;
   if(_isOverride){
     el.style.borderColor='#443322';
@@ -128710,7 +128714,7 @@ function _renderSkillRow(sk,grid){
     const _bgRgb=_fGrp?(_bgMap[_fGrp.key]||'0,0,0'):'0,0,0';
     d.style.cssText='position:relative;padding:12px;margin-bottom:8px;'+_bdrCss+'background:rgba('+_bgRgb+',.3);'+_gemGlow+((canLearn||canUp)?'cursor:pointer;':'');
     let lockTxt='';
-    const _fixedKeyMap={grenadeShot:'T자동',bladeShot:'T자동',fanShot:'T자동',blastShot:'T자동',omniBeam:'E',elemMissile:'E',beam:'E',blueShot:'E',burstLoop:'좌클',whirlwind:'좌클',maliceSwipe:'우클',shieldThrow:'우클',chargeBoost:'SH',magicBlink:'SH',quakeStride:'SH',ghostWalk:'CT',iceOrb:'CT',chainAssault:'SH+좌클',chainSlam:'SH+우클',peaceShield:'Q',hellRay:'E'};
+    const _fixedKeyMap={grenadeShot:'T자동',bladeShot:'T자동',fanShot:'T자동',blastShot:'T자동',omniBeam:'E',elemMissile:'E',beam:'E',blueShot:'E',burstLoop:'E',whirlwind:'좌클',maliceSwipe:'우클',shieldThrow:'우클',chargeBoost:'SH',magicBlink:'SH',quakeStride:'SH',ghostWalk:'CT',iceOrb:'CT',chainAssault:'SH+좌클',chainSlam:'SH+우클',peaceShield:'Q',hellRay:'E'};
     const _fixedKey=_fixedKeyMap[sk.id];
     const _skTypeLbl=_fixedKey?' <span style="color:#7799bb;font-size:.7rem">[고정:'+_fixedKey+']</span>':sk.act?' <span style="color:#cc8844;font-size:.7rem">[선택]</span>':'';
     if(!learned){
@@ -130856,7 +130860,13 @@ function renderStatSummary(){
   const _afc=(id,col)=>_UNIMPL.has(id)?'#33332288':_af(id)?col:'#555544';
   const _afp=id=>{const v=_af(id)?~~(_af(id)*100)+'%':'0';return _UNIMPL.has(id)?v+'<span style="color:#33332288;font-size:.9rem"> (미구현)</span>':v};
 
+  const _tStr=STATS.str+_eqStat('Str'),_tDex=STATS.dex+_eqStat('Dex'),_tInt=STATS.int+_eqStat('Int'),_tVit=STATS.vit,_tLck=STATS.lck;
   sm.innerHTML=
+    `<div style="${_sHd}">💠 스탯 총량</div>`+
+    `<div style="${_sLn}">STR: <span style="color:#ff9944">${_tStr}</span> <span style="color:#887766;font-size:1.1rem">(기본${STATS.str}+장비${_eqStat('Str')})</span> → 물리배율 <span style="color:#ff9944">×${statStr().toFixed(3)}</span></div>`+
+    `<div style="${_sLn}">DEX: <span style="color:#ffcc44">${_tDex}</span> <span style="color:#887766;font-size:1.1rem">(기본${STATS.dex}+장비${_eqStat('Dex')})</span> → 공속 <span style="color:#ffcc44">×${statDex().toFixed(3)}</span></div>`+
+    `<div style="${_sLn}">INT: <span style="color:#66aaff">${_tInt}</span> <span style="color:#887766;font-size:1.1rem">(기본${STATS.int}+장비${_eqStat('Int')})</span> → 마법배율 <span style="color:#66aaff">×${statInt().toFixed(3)}</span></div>`+
+    `<div style="${_sLn}">VIT: <span style="color:#ff6666">${_tVit}</span> | LCK: <span style="color:#88ff88">${_tLck}</span> <span style="color:#887766;font-size:1.1rem">(크리${statCrit().toFixed(1)}%, 크리뎀×${statCritDmg().toFixed(2)}, 드롭×${statDropBonus().toFixed(2)})</span></div>`+
     `<div style="${_sHd}">📊 종합 지표</div>`+
     `<div style="${_sLn}">근접 DPS: <span style="color:#ff9944">${_sMeleeDPS}</span> <span style="color:#887766;font-size:1.1rem">(공격력×공속×크리)</span></div>`+
     (_sBowDPS?`<div style="${_sLn}">활 DPS: <span style="color:#66dd66">${_sBowDPS}</span></div>`:'')+
