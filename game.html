@@ -9955,6 +9955,21 @@ const _BOSS_ATHEME=[
   {f4:'#0e0420',f5:'#0a0318',rc:'rgba(180,100,255,',ac4:'rgba(140,70,220,',n:'rgba(22,8,35,',cr:'rgba(90,40,140,'},     // 6 지옥성
 ];
 function _hexRgb(h){return{r:parseInt(h.slice(1,3),16),g:parseInt(h.slice(3,5),16),b:parseInt(h.slice(5,7),16)}}
+// ══ 인섹트 타일셋 텍스처 (200×200 스탬프) ══
+const _TILE_SZ=200; // 스탬프 크기 (5×5 타일)
+const _TILE_SPAN=5; // _TILE_SZ/T
+const _TILE_BASE='insect_tileset_min_pack/';
+const _TILE_FLOOR_SRC=['01_floor_slime_256x256.png','02_floor_eggspeck_256x256.png','03_floor_fungus_256x256.png','04_floor_chitin_cracked_256x256.png'];
+const _TILE_EDGE_SRC=['05_edge_chitin_top_256x256.png','06_edge_vein_top_256x256.png','07_edge_web_top_256x256.png','08_edge_ridge_top_256x256.png'];
+const _TILE_DECAL_SRC=['09_decal_eggcluster_256x256.png','10_decal_cocoon_256x256.png','11_decal_slimepuddle_256x256.png','12_decal_bones_shell_256x256.png'];
+const _TILE_GLOW_SRC=['13_glow_spores_256x256.png','14_glow_runic_streak_256x256.png'];
+const _TILE_OVL_SRC=['15_overlay_floor_noise_256x256.png','16_overlay_wall_grime_256x256.png'];
+const _TILE_FLOOR=[],_TILE_EDGE=[],_TILE_DECAL=[],_TILE_GLOW=[],_TILE_OVL=[];
+let _tileTexReady=false,_tileTexCnt=0,_tileTexTotal=0;
+function _loadTileTex(arr,srcs){for(const s of srcs){_tileTexTotal++;const img=new Image();img.onload=()=>{_tileTexCnt++;if(_tileTexCnt>=_tileTexTotal){_tileTexReady=true;console.log('[TILE-TEX] all '+_tileTexTotal+' loaded')}};img.onerror=()=>{_tileTexCnt++;console.warn('[TILE-TEX] fail:'+s)};img.src=_TILE_BASE+s;arr.push(img)}}
+_loadTileTex(_TILE_FLOOR,_TILE_FLOOR_SRC);_loadTileTex(_TILE_EDGE,_TILE_EDGE_SRC);
+_loadTileTex(_TILE_DECAL,_TILE_DECAL_SRC);_loadTileTex(_TILE_GLOW,_TILE_GLOW_SRC);_loadTileTex(_TILE_OVL,_TILE_OVL_SRC);
+function _tileHash(x,y,s){let h=(x*374761393+y*668265263+s)^0x5bd1e995;h=Math.imul(h^(h>>>15),0x1b873593);return(h^(h>>>13))>>>0}
 function _shCol(h,dr,dg,db){const c=_hexRgb(h);const cl=v=>Math.max(0,Math.min(255,v));return`rgb(${cl(c.r+dr)},${cl(c.g+dg)},${cl(c.b+db)})`}
 // ═══ [SHARED-DECOR] 공통 벽/바닥 장식 함수 ═══
 // 눈깔 (챕터별 홍채색)
@@ -10022,7 +10037,92 @@ function buildMapCache(){
   const c=_mapCvs.getContext('2d');_mapCtx=c;
   const _isW=(tx,ty)=>tx<0||tx>=mw||ty<0||ty>=mh||map[ty][tx]===1||map[ty][tx]===3;
   const _isF=(tx,ty)=>tx>=0&&tx<mw&&ty>=0&&ty<mh&&map[ty][tx]===0;
-  // ── Pass 1: 바닥 + 노이즈 텍스처 ──
+  // ── Pass 0.5: 타일셋 텍스처 스탬프 (200×200 블록 단위) ──
+  if(_tileTexReady){
+    // 바닥 텍스처 스탬프
+    for(let by=0;by<mh;by+=_TILE_SPAN)for(let bx=0;bx<mw;bx+=_TILE_SPAN){
+      let hasFloor=false;
+      for(let dy=0;dy<_TILE_SPAN&&by+dy<mh&&!hasFloor;dy++)
+        for(let dx=0;dx<_TILE_SPAN&&bx+dx<mw&&!hasFloor;dx++)
+          if(map[by+dy][bx+dx]===0)hasFloor=true;
+      if(!hasFloor)continue;
+      const fi=_tileHash(bx,by,7)%_TILE_FLOOR.length;
+      const fimg=_TILE_FLOOR[fi];if(!fimg||!fimg.complete)continue;
+      c.save();c.beginPath();
+      for(let dy=0;dy<_TILE_SPAN&&by+dy<mh;dy++)
+        for(let dx=0;dx<_TILE_SPAN&&bx+dx<mw;dx++)
+          if(map[by+dy][bx+dx]===0)c.rect((bx+dx)*T,(by+dy)*T,T,T);
+      c.clip();
+      c.drawImage(fimg,bx*T,by*T,_TILE_SZ,_TILE_SZ);
+      c.restore();
+    }
+    // 벽 텍스처 스탬프 (wall_grime)
+    const _wgImg=_TILE_OVL[1];
+    if(_wgImg&&_wgImg.complete){
+      for(let by=0;by<mh;by+=_TILE_SPAN)for(let bx=0;bx<mw;bx+=_TILE_SPAN){
+        let hasWall=false;
+        for(let dy=0;dy<_TILE_SPAN&&by+dy<mh&&!hasWall;dy++)
+          for(let dx=0;dx<_TILE_SPAN&&bx+dx<mw&&!hasWall;dx++)
+            if(map[by+dy][bx+dx]===1)hasWall=true;
+        if(!hasWall)continue;
+        c.save();c.beginPath();
+        for(let dy=0;dy<_TILE_SPAN&&by+dy<mh;dy++)
+          for(let dx=0;dx<_TILE_SPAN&&bx+dx<mw;dx++)
+            if(map[by+dy][bx+dx]===1)c.rect((bx+dx)*T,(by+dy)*T,T,T);
+        c.clip();c.globalAlpha=0.8;
+        c.drawImage(_wgImg,bx*T,by*T,_TILE_SZ,_TILE_SZ);
+        c.globalAlpha=1;c.restore();
+      }
+    }
+    // 엣지 텍스처: 바닥↔벽 경계 (위쪽이 벽인 바닥 타일에 엣지 상단부 스탬프)
+    for(let ty2=0;ty2<mh;ty2++)for(let tx2=0;tx2<mw;tx2++){
+      if(map[ty2][tx2]!==0)continue;
+      if(ty2>0&&map[ty2-1][tx2]===1){
+        const ei=_tileHash(tx2,ty2,13)%_TILE_EDGE.length;
+        const eimg=_TILE_EDGE[ei];if(!eimg||!eimg.complete)continue;
+        c.save();c.globalAlpha=0.85;
+        // 엣지 하단부를 바닥 타일 상단에 그리기
+        c.drawImage(eimg,0,128,256,128, tx2*T,ty2*T,T,T*.5);
+        c.globalAlpha=1;c.restore();
+      }
+      if(ty2<mh-1&&map[ty2+1][tx2]===1){
+        const ei=_tileHash(tx2,ty2,17)%_TILE_EDGE.length;
+        const eimg=_TILE_EDGE[ei];if(!eimg||!eimg.complete)continue;
+        c.save();c.globalAlpha=0.85;
+        c.drawImage(eimg,0,0,256,128, tx2*T,ty2*T+T*.5,T,T*.5);
+        c.globalAlpha=1;c.restore();
+      }
+    }
+    // 데칼 스탬프: 넓은 바닥에 랜덤 배치
+    for(let ty2=2;ty2<mh-2;ty2+=3)for(let tx2=2;tx2<mw-2;tx2+=3){
+      if(map[ty2][tx2]!==0)continue;
+      const rnd=_tileHash(tx2,ty2,31);
+      if((rnd%100)>10)continue;
+      let allF=true;
+      for(let dy=-1;dy<=1&&allF;dy++)for(let dx=-1;dx<=1&&allF;dx++)
+        if(!map[ty2+dy]||map[ty2+dy][tx2+dx]!==0)allF=false;
+      if(!allF)continue;
+      const di=rnd%_TILE_DECAL.length;
+      const dimg=_TILE_DECAL[di];if(!dimg||!dimg.complete)continue;
+      const dsz=T*3;
+      c.save();c.globalAlpha=0.45+(_tileHash(tx2,ty2,41)%25)/100;
+      c.drawImage(dimg,(tx2-1)*T,(ty2-1)*T,dsz,dsz);
+      c.globalAlpha=1;c.restore();
+    }
+    // 글로우 스탬프
+    for(let ty2=3;ty2<mh-3;ty2+=6)for(let tx2=3;tx2<mw-3;tx2+=6){
+      if(map[ty2][tx2]!==0)continue;
+      const rnd=_tileHash(tx2,ty2,53);
+      if((rnd%100)>5)continue;
+      const gi=rnd%_TILE_GLOW.length;
+      const gimg=_TILE_GLOW[gi];if(!gimg||!gimg.complete)continue;
+      c.save();c.globalAlpha=0.3+(_tileHash(tx2,ty2,59)%20)/100;
+      c.drawImage(gimg,(tx2-2)*T,(ty2-2)*T,T*4,T*4);
+      c.globalAlpha=1;c.restore();
+    }
+  }
+  // ── Pass 1: 바닥 + 노이즈 텍스처 (텍스처 로드 시 스킵) ──
+  if(!_tileTexReady)
   for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){
     if(map[ty][tx]!==0)continue;
     const px=tx*T,py=ty*T,R=_tseed(tx,ty);
@@ -10635,22 +10735,70 @@ function _buildStreamChunk(cx,cy){
   const wc=_hexRgb(_th.w),fc=_hexRgb(_th.f);
   const cc=document.createElement('canvas');cc.width=tw*T;cc.height=th*T;
   const c=cc.getContext('2d');
-  // 벽/바닥 타일 렌더 — 확실한 색 분리
-  for(let ty=ty0;ty<ty0+th;ty++)for(let tx=tx0;tx<tx0+tw;tx++){
-    const v=map[ty]?map[ty][tx]:1;
-    const lx=(tx-tx0)*T,ly=(ty-ty0)*T;
-    if(v===1||(v===3&&!G.bossGateOpen)){
-      // 벽 — 완전 어둡게
-      c.fillStyle='#0a0a0a';c.fillRect(lx,ly,T,T);
-      c.fillStyle='#1a1a1a';c.fillRect(lx,ly,T,~~(T*.3));
-      if(ty+1<mh&&map[ty+1]&&map[ty+1][tx]===0){c.fillStyle='#333';c.fillRect(lx,ly+T-2,T,2)}
-    }else{
-      // 바닥 — 테마 색상 밝게
-      const n=Math.random()*.1;
-      c.fillStyle='rgb('+Math.min(255,~~(fc[0]*(1-n)+40))+','+Math.min(255,~~(fc[1]*(1-n)+30))+','+Math.min(255,~~(fc[2]*(1-n)+20))+')';
-      c.fillRect(lx,ly,T,T);
-      if(ty>0&&map[ty-1]&&map[ty-1][tx]===1){c.fillStyle='rgba(0,0,0,.4)';c.fillRect(lx,ly,T,~~(T*.5))}
-      if(tx>0&&map[ty][tx-1]===1){c.fillStyle='rgba(0,0,0,.2)';c.fillRect(lx,ly,~~(T*.3),T)}
+  // 벽/바닥 타일 렌더
+  if(_tileTexReady){
+    // 텍스처 스탬프 모드 — 바닥
+    for(let by=0;by<tw;by+=_TILE_SPAN)for(let bx2=0;bx2<tw;bx2+=_TILE_SPAN){
+      const aty=ty0+(by),atx=tx0+(bx2);
+      let hasFloor=false;
+      for(let dy=0;dy<_TILE_SPAN&&by+dy<th&&!hasFloor;dy++)
+        for(let dx=0;dx<_TILE_SPAN&&bx2+dx<tw&&!hasFloor;dx++){
+          const v=map[ty0+by+dy]?map[ty0+by+dy][tx0+bx2+dx]:1;if(v===0)hasFloor=true;}
+      if(!hasFloor)continue;
+      const fi=_tileHash(atx,aty,7)%_TILE_FLOOR.length;
+      const fimg=_TILE_FLOOR[fi];if(!fimg||!fimg.complete)continue;
+      c.save();c.beginPath();
+      for(let dy=0;dy<_TILE_SPAN&&by+dy<th;dy++)
+        for(let dx=0;dx<_TILE_SPAN&&bx2+dx<tw;dx++){
+          const v=map[ty0+by+dy]?map[ty0+by+dy][tx0+bx2+dx]:1;
+          if(v===0)c.rect((bx2+dx)*T,(by+dy)*T,T,T);}
+      c.clip();c.drawImage(fimg,bx2*T,by*T,_TILE_SZ,_TILE_SZ);c.restore();
+    }
+    // 벽 — wall_grime
+    const _wg=_TILE_OVL[1];
+    if(_wg&&_wg.complete){
+      for(let by=0;by<th;by+=_TILE_SPAN)for(let bx2=0;bx2<tw;bx2+=_TILE_SPAN){
+        let hasW=false;
+        for(let dy=0;dy<_TILE_SPAN&&by+dy<th&&!hasW;dy++)
+          for(let dx=0;dx<_TILE_SPAN&&bx2+dx<tw&&!hasW;dx++){
+            const v=map[ty0+by+dy]?map[ty0+by+dy][tx0+bx2+dx]:1;if(v===1)hasW=true;}
+        if(!hasW)continue;
+        c.save();c.beginPath();
+        for(let dy=0;dy<_TILE_SPAN&&by+dy<th;dy++)
+          for(let dx=0;dx<_TILE_SPAN&&bx2+dx<tw;dx++){
+            const v=map[ty0+by+dy]?map[ty0+by+dy][tx0+bx2+dx]:1;
+            if(v===1)c.rect((bx2+dx)*T,(by+dy)*T,T,T);}
+        c.clip();c.globalAlpha=0.8;c.drawImage(_wg,bx2*T,by*T,_TILE_SZ,_TILE_SZ);
+        c.globalAlpha=1;c.restore();
+      }
+    }
+    // 엣지
+    for(let ty=ty0;ty<ty0+th;ty++)for(let tx=tx0;tx<tx0+tw;tx++){
+      const v=map[ty]?map[ty][tx]:1;if(v!==0)continue;
+      const lx=(tx-tx0)*T,ly=(ty-ty0)*T;
+      if(ty>0&&map[ty-1]&&map[ty-1][tx]===1){
+        const ei=_tileHash(tx,ty,13)%_TILE_EDGE.length;const eimg=_TILE_EDGE[ei];
+        if(eimg&&eimg.complete){c.save();c.globalAlpha=0.85;c.drawImage(eimg,0,128,256,128,lx,ly,T,T*.5);c.globalAlpha=1;c.restore()}}
+      if(ty+1<mh&&map[ty+1]&&map[ty+1][tx]===1){
+        const ei=_tileHash(tx,ty,17)%_TILE_EDGE.length;const eimg=_TILE_EDGE[ei];
+        if(eimg&&eimg.complete){c.save();c.globalAlpha=0.85;c.drawImage(eimg,0,0,256,128,lx,ly+T*.5,T,T*.5);c.globalAlpha=1;c.restore()}}
+    }
+  }else{
+    // 폴백: 단색 렌더
+    for(let ty=ty0;ty<ty0+th;ty++)for(let tx=tx0;tx<tx0+tw;tx++){
+      const v=map[ty]?map[ty][tx]:1;
+      const lx=(tx-tx0)*T,ly=(ty-ty0)*T;
+      if(v===1||(v===3&&!G.bossGateOpen)){
+        c.fillStyle='#0a0a0a';c.fillRect(lx,ly,T,T);
+        c.fillStyle='#1a1a1a';c.fillRect(lx,ly,T,~~(T*.3));
+        if(ty+1<mh&&map[ty+1]&&map[ty+1][tx]===0){c.fillStyle='#333';c.fillRect(lx,ly+T-2,T,2)}
+      }else{
+        const n=Math.random()*.1;
+        c.fillStyle='rgb('+Math.min(255,~~(fc[0]*(1-n)+40))+','+Math.min(255,~~(fc[1]*(1-n)+30))+','+Math.min(255,~~(fc[2]*(1-n)+20))+')';
+        c.fillRect(lx,ly,T,T);
+        if(ty>0&&map[ty-1]&&map[ty-1][tx]===1){c.fillStyle='rgba(0,0,0,.4)';c.fillRect(lx,ly,T,~~(T*.5))}
+        if(tx>0&&map[ty][tx-1]===1){c.fillStyle='rgba(0,0,0,.2)';c.fillRect(lx,ly,~~(T*.3),T)}
+      }
     }
   }
   cc._glVer=1;
@@ -118600,7 +118748,7 @@ function update(){
     P._wwHitTimer+=_dtSp;
     if(P._wwHitTimer>=_wwTick){P._wwHitTimer-=_wwTick;
       const _wwBaseR=((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+(_wwLv-1)*11;
-      const _wwMin=100;const _wwMax=200+(_wwLv-1)*20; // 1렙200, 5렙280, 10렙380
+      const _wwMin=100;const _wwMax=200+(_wwLv-1)*15; // 1렙200, 5렙260, 10렙335
       const _wwRangeBase=_wwMin+(_wwMax-_wwMin)*Math.min(1,_wwGrow);
       const _wwRange=_wwRangeBase;
       const _wwDmg=~~(meleeRef()*statStr()*1.0*(1+(_wwLv-1)*0.05)*2*(1+_wwGrow*(_wwFused?.6:.4))*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1)*_wwDrainBonus);
@@ -119207,10 +119355,9 @@ function update(){
       if(P._preBdState==='whirlwind'&&isHeld('weapon')&&P.st>=2){P.s='whirlwind';P._preBdState=null}
       else if(P._preBdState==='sBlock'&&isAct('parry')&&P.mp>0){P.s='sBlock';P._preBdState=null}
       else if(P._preBdState==='beam'&&isAct('beam')&&P.mp>0&&!_isFused('stormBeam')){P.s='beam';P._preBdState=null}
-      else{P.s='bdRecover';P.st2=18;P._preBdState=null}
+      else{P.s='idle';P._bdLanded=true;P._preBdState=null}
       P.iframes=Math.max(P.iframes,15)}
     break;}
-  case 'bdRecover':{if(isAct('up')||isAct('down')||isAct('left')||isAct('right')||isAct('weapon')||isAct('parry')||isAct('bow')||isAct('beam')||KH['ShiftLeft']||MB[0]||MB[2])P.s='idle';break;}
 
   // ═══ 대왕치기: 즉시 발동 (상태머신 미사용, 세이브 호환용 즉시 복구) ═══
   case 'gSlamWindup':case 'gSlam1':case 'gSlamRecoil':case 'gSlam2':case 'gSlamRecover':{
@@ -119319,7 +119466,7 @@ function update(){
       if(P._preBdState==='whirlwind'&&isHeld('weapon')&&P.st>=2){P.s='whirlwind';P._preBdState=null}
       else if(P._preBdState==='sBlock'&&isAct('parry')&&P.mp>0){P.s='sBlock';P._preBdState=null}
       else if(P._preBdState==='beam'&&isAct('beam')&&P.mp>0&&!_isFused('stormBeam')){P.s='beam';P._preBdState=null}
-      else{P.s='bdRecover';P.st2=18;P._preBdState=null}
+      else{P.s='idle';P._bdLanded=true;P._preBdState=null}
     }
     break}
   case 'cRecover':{
@@ -120037,7 +120184,7 @@ function update(){
       const _wwFused2=P.skills.detonate&&_isFused('whirlDet');
       const _wwGrow2=Math.min(1,(P.wwAng||0)/60);
       const _wwBaseR2=((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+(_wwLv2-1)*11;
-      const _wwDeflR=(100+(200+(_wwLv2-1)*20-100)*Math.min(1,_wwGrow2))*.7;
+      const _wwDeflR=(100+(200+(_wwLv2-1)*15-100)*Math.min(1,_wwGrow2))*.7;
       if(_pDist<_wwDeflR){
         addParts(p.x,p.y,ELC[p.el]||'#888',2);
         _pHit=true;_recycleProj(p);continue; // 탄 소멸
@@ -126605,7 +126752,7 @@ function _detonateBlast(label,elSrc){
   // 회전기폭: 최소 범위 = 현재 회전참 범위
   const _wwBaseRDet=_wdFused?((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+((P.skills.whirlwind||1)-1)*11:0;
   const _wwGrowDet=_wdFused?Math.min(1,(P.wwAng||0)/60)+Math.min(1,(P.parryBank||0)/500):0;
-  const _wwLvDet=P.skills.whirlwind||1;const _wwRDet=_wdFused?100+(200+(_wwLvDet-1)*20-100)*Math.min(1,_wwGrowDet):0;
+  const _wwLvDet=P.skills.whirlwind||1;const _wwRDet=_wdFused?100+(200+(_wwLvDet-1)*15-100)*Math.min(1,_wwGrowDet):0;
   const boomR=Math.max(_wwRDet,(150+(_detLv-1)*10)*_chgBars);
   if(_isFused('slamStorm')){
     SFX.shout();
@@ -135564,7 +135711,7 @@ function drawP(){
     const _wwGrowV=Math.min(1,_wa/60)+_wwBankV;
     const _wwLvV=P.skills.whirlwind||1;
     const _wwBaseR=((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+(_wwLvV-1)*11;
-    const _wwMaxV=200+(_wwLvV-1)*20; // 타격과 동일: 1렙200, 10렙380
+    const _wwMaxV=200+(_wwLvV-1)*15; // 타격과 동일: 1렙200, 10렙335
     const _wwR=100+(_wwMaxV-100)*Math.min(1,_wwGrowV);
     const _wc=ELC[wp().el]||'#ffcc44';
 
@@ -135788,6 +135935,7 @@ function drawP(){
   }else if(_atlasPReady&&(P._sa||(P._sa=SpriteAnimator.create(_atlasP_img,_atlasP_frames,'idle')))){
     // ── Atlas P 스프라이트 렌더링 (8방향) + Ori 영혼 글로우 ──
     const _apDead=P.hp<=0;const _apMv=P.s==='idle'&&(isAct('up')||isAct('down')||isAct('left')||isAct('right'));
+    if(P._bdLanded&&P.s!=='idle')P._bdLanded=false;
     if(_harpLandT>0)_harpLandT-=_dtSp;
     let _apAnim=(P.s==='bladeDash'&&P._bdAnim)?P._bdAnim:(_P_ANIM_MAP[P.s]||'idle');
     if(_apDead)_apAnim='die';
@@ -135796,7 +135944,8 @@ function drawP(){
     else if(_harpActive&&!_dashActive)_apAnim='charge_start';
     else if(_dashActive)_apAnim='charge_hold';
     else if(_harpLandT>0)_apAnim='charge_land';
-    else if(_apMv&&P.s!=='bdRecover')_apAnim='run';
+    else if(P._bdLanded&&!_apMv){_apAnim='atk3';}
+    else if(_apMv){if(P._bdLanded)P._bdLanded=false;_apAnim='run';}
     const _apDir=_facingDir8(P.facing);
     const _apHasDir=!!P._sa.fm[_apAnim+'_'+_apDir];
     if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam')||_apAnim.startsWith('charge'))?'atk1':'idle';

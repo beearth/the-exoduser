@@ -73,6 +73,7 @@ canvas{display:block}
     <label><input type="checkbox" checked onchange="showObj=this.checked;saveEditorSettings(false)"> 오브젝트</label>
     <label><input type="checkbox" checked onchange="showRooms=this.checked;saveEditorSettings(false)"> 방이름</label>
     <label><input type="checkbox" onchange="showGrid=this.checked;markDirty();saveEditorSettings(false)"> 격자</label>
+    <label><input type="checkbox" id="tex-toggle" onchange="showTex=this.checked;markDirty();saveEditorSettings(false)"> 텍스처</label>
   </div>
   <div id="stage-label"></div>
 </div>
@@ -118,7 +119,56 @@ canvas{display:block}
 <script>
 const C=document.getElementById('c'),X=C.getContext('2d');
 const editor=document.getElementById('editor'),T=8;
-let show3d=true,showObj=true,showRooms=true,showGrid=false;
+let show3d=true,showObj=true,showRooms=true,showGrid=false,showTex=false;
+
+// ══ 인섹트 타일셋 텍스처 시스템 ══
+const TEX_BASE='insect_tileset_min_pack/';
+const TEX_FILES={
+  floor:[
+    '01_floor_slime_128x128.png',
+    '02_floor_eggspeck_128x128.png',
+    '03_floor_fungus_128x128.png',
+    '04_floor_chitin_cracked_128x128.png'
+  ],
+  edge:[
+    '05_edge_chitin_top_128x128.png',
+    '06_edge_vein_top_128x128.png',
+    '07_edge_web_top_128x128.png',
+    '08_edge_ridge_top_128x128.png'
+  ],
+  decal:[
+    '09_decal_eggcluster_128x128.png',
+    '10_decal_cocoon_128x128.png',
+    '11_decal_slimepuddle_128x128.png',
+    '12_decal_bones_shell_128x128.png'
+  ],
+  glow:[
+    '13_glow_spores_128x128.png',
+    '14_glow_runic_streak_128x128.png'
+  ],
+  overlay:[
+    '15_overlay_floor_noise_128x128.png',
+    '16_overlay_wall_grime_128x128.png'
+  ]
+};
+const TEX_IMGS={};
+let texLoaded=0,texTotal=0;
+(function loadTextures(){
+  for(const cat in TEX_FILES){
+    TEX_IMGS[cat]=[];
+    for(const f of TEX_FILES[cat]){
+      texTotal++;
+      const img=new Image();
+      img.onload=()=>{texLoaded++;if(texLoaded>=texTotal)console.log('[TEX] all '+texTotal+' textures loaded')};
+      img.onerror=()=>{texLoaded++;console.warn('[TEX] failed: '+f)};
+      img.src=TEX_BASE+f;
+      TEX_IMGS[cat].push(img);
+    }
+  }
+})();
+// 위치 기반 해시 (일관된 랜덤)
+function _tHash(x,y,seed){let h=(x*374761393+y*668265263+seed)^0x5bd1e995;h=Math.imul(h^(h>>>15),0x1b873593);return(h^(h>>>13))>>>0}
+
 const STAGES=[{"id": 0, "hell": 0, "floor": 1, "mw": 66, "mh": 140, "type": "vert"}, {"id": 1, "hell": 0, "floor": 2, "mw": 75, "mh": 69, "type": "horiz"}, {"id": 2, "hell": 0, "floor": 3, "mw": 72, "mh": 160, "type": "vert"}, {"id": 3, "hell": 0, "floor": 4, "mw": 75, "mh": 170, "type": "vert"}, {"id": 4, "hell": 0, "floor": 5, "mw": 90, "mh": 78, "type": "horiz"}, {"id": 5, "hell": 0, "floor": 6, "mw": 81, "mh": 190, "type": "vert"}, {"id": 6, "hell": 0, "floor": 7, "mw": 84, "mh": 200, "type": "vert"}, {"id": 7, "hell": 0, "floor": 8, "mw": 105, "mh": 87, "type": "horiz"}, {"id": 8, "hell": 0, "floor": 9, "mw": 90, "mh": 220, "type": "vert"}, {"id": 9, "hell": 0, "floor": 10, "mw": 93, "mh": 230, "type": "grid"}, {"id": 10, "hell": 1, "floor": 1, "mw": 96, "mh": 240, "type": "vert"}, {"id": 11, "hell": 1, "floor": 2, "mw": 125, "mh": 99, "type": "horiz"}, {"id": 12, "hell": 1, "floor": 3, "mw": 102, "mh": 260, "type": "vert"}, {"id": 13, "hell": 1, "floor": 4, "mw": 105, "mh": 270, "type": "vert"}, {"id": 14, "hell": 1, "floor": 5, "mw": 140, "mh": 108, "type": "horiz"}, {"id": 15, "hell": 1, "floor": 6, "mw": 111, "mh": 290, "type": "vert"}, {"id": 16, "hell": 1, "floor": 7, "mw": 114, "mh": 300, "type": "vert"}, {"id": 17, "hell": 1, "floor": 8, "mw": 155, "mh": 117, "type": "horiz"}, {"id": 18, "hell": 1, "floor": 9, "mw": 120, "mh": 320, "type": "vert"}, {"id": 19, "hell": 1, "floor": 10, "mw": 123, "mh": 330, "type": "grid"}, {"id": 20, "hell": 2, "floor": 1, "mw": 126, "mh": 340, "type": "vert"}, {"id": 21, "hell": 2, "floor": 2, "mw": 175, "mh": 129, "type": "horiz"}, {"id": 22, "hell": 2, "floor": 3, "mw": 132, "mh": 360, "type": "vert"}, {"id": 23, "hell": 2, "floor": 4, "mw": 135, "mh": 370, "type": "vert"}, {"id": 24, "hell": 2, "floor": 5, "mw": 190, "mh": 138, "type": "horiz"}, {"id": 25, "hell": 2, "floor": 6, "mw": 141, "mh": 390, "type": "vert"}, {"id": 26, "hell": 2, "floor": 7, "mw": 144, "mh": 400, "type": "vert"}, {"id": 27, "hell": 2, "floor": 8, "mw": 205, "mh": 147, "type": "horiz"}, {"id": 28, "hell": 2, "floor": 9, "mw": 150, "mh": 420, "type": "vert"}, {"id": 29, "hell": 2, "floor": 10, "mw": 153, "mh": 430, "type": "grid"}, {"id": 30, "hell": 3, "floor": 1, "mw": 156, "mh": 440, "type": "vert"}, {"id": 31, "hell": 3, "floor": 2, "mw": 225, "mh": 159, "type": "horiz"}, {"id": 32, "hell": 3, "floor": 3, "mw": 162, "mh": 460, "type": "vert"}, {"id": 33, "hell": 3, "floor": 4, "mw": 165, "mh": 470, "type": "vert"}, {"id": 34, "hell": 3, "floor": 5, "mw": 240, "mh": 168, "type": "horiz"}, {"id": 35, "hell": 3, "floor": 6, "mw": 171, "mh": 490, "type": "vert"}, {"id": 36, "hell": 3, "floor": 7, "mw": 174, "mh": 500, "type": "vert"}, {"id": 37, "hell": 3, "floor": 8, "mw": 255, "mh": 177, "type": "horiz"}, {"id": 38, "hell": 3, "floor": 9, "mw": 180, "mh": 520, "type": "vert"}, {"id": 39, "hell": 3, "floor": 10, "mw": 183, "mh": 530, "type": "grid"}, {"id": 40, "hell": 4, "floor": 1, "mw": 186, "mh": 540, "type": "vert"}, {"id": 41, "hell": 4, "floor": 2, "mw": 275, "mh": 189, "type": "horiz"}, {"id": 42, "hell": 4, "floor": 3, "mw": 192, "mh": 560, "type": "vert"}, {"id": 43, "hell": 4, "floor": 4, "mw": 195, "mh": 570, "type": "vert"}, {"id": 44, "hell": 4, "floor": 5, "mw": 290, "mh": 198, "type": "horiz"}, {"id": 45, "hell": 4, "floor": 6, "mw": 201, "mh": 590, "type": "vert"}, {"id": 46, "hell": 4, "floor": 7, "mw": 204, "mh": 600, "type": "vert"}, {"id": 47, "hell": 4, "floor": 8, "mw": 305, "mh": 207, "type": "horiz"}, {"id": 48, "hell": 4, "floor": 9, "mw": 210, "mh": 620, "type": "vert"}, {"id": 49, "hell": 4, "floor": 10, "mw": 213, "mh": 630, "type": "grid"}, {"id": 50, "hell": 5, "floor": 1, "mw": 216, "mh": 640, "type": "vert"}, {"id": 51, "hell": 5, "floor": 2, "mw": 325, "mh": 219, "type": "horiz"}, {"id": 52, "hell": 5, "floor": 3, "mw": 222, "mh": 660, "type": "vert"}, {"id": 53, "hell": 5, "floor": 4, "mw": 225, "mh": 670, "type": "vert"}, {"id": 54, "hell": 5, "floor": 5, "mw": 340, "mh": 228, "type": "horiz"}, {"id": 55, "hell": 5, "floor": 6, "mw": 231, "mh": 690, "type": "vert"}, {"id": 56, "hell": 5, "floor": 7, "mw": 234, "mh": 700, "type": "vert"}, {"id": 57, "hell": 5, "floor": 8, "mw": 355, "mh": 237, "type": "horiz"}, {"id": 58, "hell": 5, "floor": 9, "mw": 240, "mh": 720, "type": "vert"}, {"id": 59, "hell": 5, "floor": 10, "mw": 243, "mh": 730, "type": "grid"}, {"id": 60, "hell": 6, "floor": 1, "mw": 246, "mh": 740, "type": "vert"}, {"id": 61, "hell": 6, "floor": 2, "mw": 375, "mh": 249, "type": "horiz"}, {"id": 62, "hell": 6, "floor": 3, "mw": 252, "mh": 760, "type": "vert"}, {"id": 63, "hell": 6, "floor": 4, "mw": 255, "mh": 770, "type": "vert"}, {"id": 64, "hell": 6, "floor": 5, "mw": 390, "mh": 258, "type": "horiz"}, {"id": 65, "hell": 6, "floor": 6, "mw": 261, "mh": 790, "type": "vert"}, {"id": 66, "hell": 6, "floor": 7, "mw": 264, "mh": 800, "type": "vert"}, {"id": 67, "hell": 6, "floor": 8, "mw": 405, "mh": 267, "type": "horiz"}, {"id": 68, "hell": 6, "floor": 9, "mw": 270, "mh": 820, "type": "vert"}, {"id": 69, "hell": 6, "floor": 10, "mw": 273, "mh": 830, "type": "grid"}];
 const HELLS=[
   {name:'1장 괴물굴',color:'#ffea00'},{name:'2장 시체지옥',color:'#8bc34a'},
@@ -2550,7 +2600,111 @@ let rCache=null,rStage=-1;
 function buildCache(){
   const m=getCurrentMap();if(!m)return;
   const cv=document.createElement('canvas');cv.width=m.mw*T;cv.height=m.mh*T;const cx=cv.getContext('2d');
-  for(let y=0;y<m.mh;y++)for(let x=0;x<m.mw;x++){const h=m.grid[y][x];cx.fillStyle=H_COL[h]||'#000';cx.fillRect(x*T,y*T,T,T)}
+  // ── 텍스처 모드 렌더링 ──
+  if(showTex&&texLoaded>=texTotal){
+    const TS=128; // 텍스처 1장이 커버하는 맵 타일 수 (128px / T=8 = 16타일)
+    const tileSpan=~~(TS/T); // 16
+    // 1) 기본 배경: 벽/용암 = 어둡게
+    cx.fillStyle='#0a0806';cx.fillRect(0,0,cv.width,cv.height);
+    // 2) 바닥 텍스처 (h=1): 16x16 타일 블록 단위로 텍스처 배치
+    for(let by=0;by<m.mh;by+=tileSpan)for(let bx=0;bx<m.mw;bx+=tileSpan){
+      // 이 블록에 바닥 타일이 있는지 체크
+      let hasFloor=false;
+      for(let dy=0;dy<tileSpan&&by+dy<m.mh&&!hasFloor;dy++)
+        for(let dx=0;dx<tileSpan&&bx+dx<m.mw&&!hasFloor;dx++)
+          if(m.grid[by+dy][bx+dx]===1)hasFloor=true;
+      if(!hasFloor)continue;
+      const fi=_tHash(bx,by,7)%TEX_IMGS.floor.length;
+      const fimg=TEX_IMGS.floor[fi];if(!fimg.complete)continue;
+      // 블록 내 바닥 타일만 클립해서 텍스처 그리기
+      cx.save();
+      cx.beginPath();
+      for(let dy=0;dy<tileSpan&&by+dy<m.mh;dy++)
+        for(let dx=0;dx<tileSpan&&bx+dx<m.mw;dx++)
+          if(m.grid[by+dy][bx+dx]===1)cx.rect((bx+dx)*T,(by+dy)*T,T,T);
+      cx.clip();
+      cx.drawImage(fimg,bx*T,by*T,tileSpan*T,tileSpan*T);
+      cx.restore();
+    }
+    // 3) 벽 텍스처 (h=2,3): wall_grime 오버레이
+    {const wimg=TEX_IMGS.overlay[1];if(wimg&&wimg.complete){
+      for(let by=0;by<m.mh;by+=tileSpan)for(let bx=0;bx<m.mw;bx+=tileSpan){
+        let hasWall=false;
+        for(let dy=0;dy<tileSpan&&by+dy<m.mh&&!hasWall;dy++)
+          for(let dx=0;dx<tileSpan&&bx+dx<m.mw&&!hasWall;dx++){const h=m.grid[by+dy][bx+dx];if(h>=2)hasWall=true}
+        if(!hasWall)continue;
+        cx.save();cx.beginPath();
+        for(let dy=0;dy<tileSpan&&by+dy<m.mh;dy++)
+          for(let dx=0;dx<tileSpan&&bx+dx<m.mw;dx++)
+            if(m.grid[by+dy][bx+dx]>=2)cx.rect((bx+dx)*T,(by+dy)*T,T,T);
+        cx.clip();
+        cx.globalAlpha=0.7;
+        cx.drawImage(wimg,bx*T,by*T,tileSpan*T,tileSpan*T);
+        cx.globalAlpha=1;cx.restore();
+      }
+    }}
+    // 4) 엣지 텍스처: 바닥↔벽 경계에 상단 엣지 오버레이
+    for(let y=0;y<m.mh;y++)for(let x=0;x<m.mw;x++){
+      if(m.grid[y][x]!==1)continue;
+      // 위쪽이 벽이면 이 바닥 타일에 엣지 하단부 표시
+      if(y>0&&m.grid[y-1][x]>=2){
+        const ei=_tHash(x,y,13)%TEX_IMGS.edge.length;
+        const eimg=TEX_IMGS.edge[ei];if(!eimg.complete)continue;
+        // 엣지 이미지의 하단 절반을 이 타일에 그리기
+        cx.save();cx.globalAlpha=0.85;
+        cx.drawImage(eimg,0,TS/2,TS,TS/2,x*T,y*T,T,T/2);
+        cx.globalAlpha=1;cx.restore();
+      }
+      // 아래쪽이 벽이면 이 바닥 타일 하단에 엣지 상단부
+      if(y<m.mh-1&&m.grid[y+1][x]>=2){
+        const ei=_tHash(x,y,17)%TEX_IMGS.edge.length;
+        const eimg=TEX_IMGS.edge[ei];if(!eimg.complete)continue;
+        cx.save();cx.globalAlpha=0.85;
+        cx.drawImage(eimg,0,0,TS,TS/2,x*T,y*T+T/2,T,T/2);
+        cx.globalAlpha=1;cx.restore();
+      }
+    }
+    // 5) 데칼: 넓은 바닥 구간에 랜덤 배치
+    for(let y=2;y<m.mh-2;y+=4)for(let x=2;x<m.mw-2;x+=4){
+      if(m.grid[y][x]!==1)continue;
+      const rnd=_tHash(x,y,31);
+      if((rnd%100)>12)continue; // 12% 확률
+      // 주변 3x3이 전부 바닥인지
+      let allF=true;
+      for(let dy=-1;dy<=1&&allF;dy++)for(let dx=-1;dx<=1&&allF;dx++)
+        if(m.grid[y+dy]&&m.grid[y+dy][x+dx]!==1)allF=false;
+      if(!allF)continue;
+      const di=rnd%TEX_IMGS.decal.length;
+      const dimg=TEX_IMGS.decal[di];if(!dimg.complete)continue;
+      const dsz=T*3; // 3x3 타일 크기
+      cx.save();cx.globalAlpha=0.5+(_tHash(x,y,41)%30)/100;
+      cx.drawImage(dimg,(x-1)*T,(y-1)*T,dsz,dsz);
+      cx.globalAlpha=1;cx.restore();
+    }
+    // 6) 글로우: 드물게 빛나는 포자/문양
+    for(let y=3;y<m.mh-3;y+=7)for(let x=3;x<m.mw-3;x+=7){
+      if(m.grid[y][x]!==1)continue;
+      const rnd=_tHash(x,y,53);
+      if((rnd%100)>6)continue; // 6% 확률
+      const gi=rnd%TEX_IMGS.glow.length;
+      const gimg=TEX_IMGS.glow[gi];if(!gimg.complete)continue;
+      const gsz=T*4;
+      cx.save();cx.globalAlpha=0.35+(_tHash(x,y,59)%20)/100;
+      cx.drawImage(gimg,(x-2)*T,(y-2)*T,gsz,gsz);
+      cx.globalAlpha=1;cx.restore();
+    }
+    // 7) 바닥 노이즈 오버레이
+    {const nimg=TEX_IMGS.overlay[0];if(nimg&&nimg.complete){
+      cx.save();cx.globalAlpha=0.15;
+      for(let by=0;by<m.mh;by+=tileSpan)for(let bx=0;bx<m.mw;bx+=tileSpan){
+        cx.drawImage(nimg,bx*T,by*T,tileSpan*T,tileSpan*T);
+      }
+      cx.globalAlpha=1;cx.restore();
+    }}
+  }else{
+    // 원래 단색 렌더링
+    for(let y=0;y<m.mh;y++)for(let x=0;x<m.mw;x++){const h=m.grid[y][x];cx.fillStyle=H_COL[h]||'#000';cx.fillRect(x*T,y*T,T,T)}
+  }
   // 보스방/게이트/출구 특수 표시
   if(m.special)for(const sp of m.special){
     const px=sp.x*T,py=sp.y*T;
@@ -2559,7 +2713,7 @@ function buildCache(){
     else if(sp.type==='gate'){cx.fillStyle='#2a0040';cx.fillRect(px,py,T,T);cx.fillStyle='rgba(180,0,255,0.3)';cx.fillRect(px,py,T,T)}
     else if(sp.type==='exit'){cx.fillStyle='#003a00';cx.fillRect(px,py,T,T);cx.fillStyle='rgba(0,255,100,0.2)';cx.fillRect(px,py,T,T)}
   }
-  if(show3d){for(let y=0;y<m.mh;y++)for(let x=0;x<m.mw;x++){const h=m.grid[y][x],px=x*T,py=y*T;
+  if(show3d&&!showTex){for(let y=0;y<m.mh;y++)for(let x=0;x<m.mw;x++){const h=m.grid[y][x],px=x*T,py=y*T;
     if(y<m.mh-1){const d=h-m.grid[y+1][x];if(d>0){const ch=Math.min(d*T*3,T*10);
       for(let row=0;row<ch;row++){const dp=row/ch;cx.fillStyle=`rgb(${40+~~((1-dp)*50)},${30+~~((1-dp)*35)},${20+~~((1-dp)*20)})`;cx.fillRect(px,py+T+row,T,1)}
       cx.fillStyle='rgba(200,180,140,0.15)';cx.fillRect(px,py+T,T,1)}}
