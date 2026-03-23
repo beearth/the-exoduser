@@ -3343,6 +3343,12 @@ function _build8(imgs,FW,FH,cb,animInfo){
       }
       fm['crossbow_'+dk]=usedTh;
       fm['chain_'+dk]=usedCh;
+      // dash 3단계 분할: 시작(0~3), 도약루프(4~11), 착지(12~end)
+      if(dshFr.length>=12){
+        fm['dash_start_'+dk]=dshFr.slice(0,4);
+        fm['dash_fly_'+dk]=dshFr.slice(4,12);
+        fm['dash_land_'+dk]=dshFr.slice(12);
+      }
       if(dshFr.length)fm['dash_'+dk]=dshFr;
     });
     const fb=[];for(let f=0;f<iN;f++)fb.push({x:f*FW,y:0,w:FW,h:FH});
@@ -3744,7 +3750,7 @@ _craterRaw.onload=()=>{
 let _seReady=false,_seCvs=null;
 // ── Archer enemy sprite (4-frame spritesheet, checkered bg → transparent) ──
 const _archerFrames=[];let _archerReady=false;const _archerRaw=new Image();
-_archerRaw.src='img/etype0_skeleton.png';
+// _archerRaw.src removed — etype0 개별 스프라이트 없음, 아틀라스 전용
 _archerRaw.onload=()=>{
   if(!_safeDraw(_archerRaw))return;
   const fw=~~(_archerRaw.naturalWidth/4),fh=_archerRaw.naturalHeight;
@@ -4173,6 +4179,7 @@ const _HARP_SPD=42; // 작살 비행 속도 (14→42)
 const _HARP_DMG=[0,0.7,1.5,2.5]; // 작살 데미지 배율 (meleeRef 기준)
 let _dashHold=false,_dashHoldF=0,_dashActive=false,_dashLeft=0;
 let _dashVX=0,_dashVY=0,_dashIframe=0,_dashTier=0;
+let _dashPhase=0; // 0=none, 1=start, 2=fly, 3=land
 let _dashLandX=0,_dashLandY=0;
 let _harpActive=false,_harpX=0,_harpY=0,_harpVX=0,_harpVY=0;
 let _harpDist=0,_harpMaxDist=0,_harpHit=false,_harpTier=0,_harpHitE=null;
@@ -4313,7 +4320,7 @@ addEventListener('keydown',e=>{
   if(e.code==='KeyT'&&G.on&&!G.paused&&!e.repeat){_xbowEquipped=!_xbowEquipped;_xbowTimer=0;_xbowTarget=null;showPH(_xbowEquipped?'석궁 자동발사 ON':'석궁 자동발사 OFF',_xbowEquipped?'#ffe066':'#888888')}
   // ── Shift 작살: 홀드 시작 ──
   if(e.code==='ShiftLeft'&&G.on&&!G.paused&&!e.repeat&&P.s!=='fallen'&&P.s!=='dead'){
-    if(_harpActive||_dashActive){_harpActive=false;_dashActive=false;_dashHold=false;_dashLeft=0;_dashTier=0;_dashVX=0;_dashVY=0;P._chainSlamReady=false;P._chainAssaultReady=false;addTxt(P.x,P.y-20,'캔슬','#ff6666',20);playSample('ui_cancel',.4,1)}
+    if(_harpActive||_dashActive){_harpActive=false;_dashActive=false;_dashHold=false;_dashLeft=0;_dashTier=0;_dashVX=0;_dashVY=0;_dashPhase=0;P._chainSlamReady=false;P._chainAssaultReady=false;addTxt(P.x,P.y-20,'캔슬','#ff6666',20);playSample('ui_cancel',.4,1)}
     else if(!_dashHold&&_harpGauge>=_HARP_GAUGE_COST[1]){_dashHold=true;_dashHoldF=0;_dashTier=0}
   }
   // ═══ 칼날이동 — 방향키 더블탭 감지 ═══
@@ -4430,7 +4437,7 @@ addEventListener('keyup',e=>{
       const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;
       const _hDir=Math.atan2(mouse.y-sy,mouse.x-sx);
       const _tier=_dashTier;
-      _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=_tier;
+      _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=_tier;_dashPhase=1;
       _harpSk=_isDB?'dimBreach':_hSk;_harpHits=[];
       P._chainSlamReady=false;P._chainAssaultReady=false;P._chainSkDelay=3; // 3프레임 입력 딜레이
       _harpX=P.x;_harpY=P.y;
@@ -9053,16 +9060,7 @@ function _patchAtlasEtypeNew(et){
   console.log('[ESPRITE] etype '+et+' 신규 아틀라스 핫패치 완료 ('+patchCount+'셀, 7팔레트)');
 }
 
-// etype 0: 해골 보병
-_loadESprite(0, 'img/etype0_skeleton.png', 14);
-_loadESprite(1, 'img/etype1_archer.png', 14);
-_loadESprite(2, 'img/etype2_charger.png', 16);
-_loadESprite(3, 'img/etype3_swarm.png', 10);
-_loadESprite(4, 'img/etype4_tank.png', 16);
-_loadESprite(5, 'img/etype5_suicide.png', 14);
-_loadESprite(6, 'img/etype6_shield.png', 20);
-_loadESprite(7, 'img/etype7_lich.png', 16);
-_loadESprite(8, 'img/etype8_alchemist.png', 14);
+// etype 0-8: 개별 스프라이트 없음 — atlas_walk.png 아틀라스 전용 렌더링
 _loadESprite(80, 'img/etype80_bug.png', 14);
 _loadESprite(81, 'img/lording/rd1.png', 14);
 _loadESprite(82, 'img/lording/rd2.png', 14);
@@ -118120,7 +118118,7 @@ function update(){
           const _awHSk=P.activeChargeSk||'charge';
           const _awDB=isDimBreach();
           const _awTier=_dashTier;
-          _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=_awTier;
+          _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=_awTier;_dashPhase=1;
           _harpSk=_awDB?'dimBreach':_awHSk;_harpHits=[];
           P._chainSlamReady=false;P._chainAssaultReady=false;P._chainSkDelay=3;
           _harpX=P.x;_harpY=P.y;
@@ -118151,7 +118149,7 @@ function update(){
     }
     // 꽂힘 → 플레이어 끌어당기기 시작
     if(_harpHit&&!_dashActive){
-      _dashActive=true;_dashIframe=_HARP_IFRAME[_harpTier];
+      _dashActive=true;_dashIframe=_HARP_IFRAME[_harpTier];_dashPhase=2;
       const _hd=dst(P.x,P.y,_harpX,_harpY);
       const _dur=_HARP_PULL_DUR[_harpTier];
       _dashLeft=_dur;
@@ -118205,7 +118203,7 @@ function update(){
     // ── 기동습격/기동파괴: 이동 중 좌클릭/우클릭 → 플래그 세팅 (아래 착지 블록에서 AOE 발동) ──
     // NOTE: _harpActive 중 준비는 dashActive 밖 공통 블록에서 처리
     if(--_dashLeft<=0){
-      _dashActive=false;_harpActive=false;_dashHold=false;_dashHoldF=0;
+      _dashActive=false;_harpActive=false;_dashHold=false;_dashHoldF=0;_dashPhase=3;
       const _slamLand=P._chainSlamReady||P._chainAssaultReady; // 기동파괴/기동습격 준비 시 착지 효과 강제
       _harpLandT=20; // 착지 애니메이션 항상 재생
       // ── 착지 효과 ──
@@ -119003,7 +119001,7 @@ function update(){
         const _cdx=isAct('right')-isAct('left'),_cdy=isAct('down')-isAct('up');
         const _cln=Math.sqrt(_cdx*_cdx+_cdy*_cdy);
         const _hDir=_cln>0?Math.atan2(_cdy,_cdx):P.facing;
-        _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=Math.min(3,2+~~((P.skills.chargeBoost||0)/3));_harpSk=P.activeChargeSk||'charge';_harpHits=[];
+        _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=Math.min(3,2+~~((P.skills.chargeBoost||0)/3));_harpSk=P.activeChargeSk||'charge';_harpHits=[];_dashPhase=1;
         _harpX=P.x;_harpY=P.y;_harpVX=Math.cos(_hDir)*_HARP_SPD;_harpVY=Math.sin(_hDir)*_HARP_SPD;
         _harpDist=0;_harpMaxDist=_harpDistTier(_harpTier);
         SFX.slash();{const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.6,_r(1,.1))};if(Math.random()<.4){const _vm=['voice_move','voice_move2','voice_move3'];playSample(_vm[~~(Math.random()*3)],1,_r(1,.08))}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))};addTxt(P.x,P.y-25,'🔱 작살!','#ffaa00',35);_addSkProf(P.activeChargeSk==='magicBlink'?'magicBlink':'chargeBoost');
@@ -119020,7 +119018,7 @@ function update(){
         const _crdx=isAct('right')-isAct('left'),_crdy=isAct('down')-isAct('up');
         const _crlen=Math.sqrt(_crdx*_crdx+_crdy*_crdy);
         const _hDir=_crlen>0?Math.atan2(_crdy,_crdx):P.facing;
-        _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=Math.min(3,2+~~((P.skills.chargeBoost||0)/3));_harpSk=P.activeChargeSk||'charge';_harpHits=[];
+        _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=Math.min(3,2+~~((P.skills.chargeBoost||0)/3));_harpSk=P.activeChargeSk||'charge';_harpHits=[];_dashPhase=1;
         _harpX=P.x;_harpY=P.y;_harpVX=Math.cos(_hDir)*_HARP_SPD;_harpVY=Math.sin(_hDir)*_HARP_SPD;
         _harpDist=0;_harpMaxDist=_harpDistTier(_harpTier);
         SFX.slash();{const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.6,_r(1,.1))};if(Math.random()<.4){const _vm=['voice_move','voice_move2','voice_move3'];playSample(_vm[~~(Math.random()*3)],1,_r(1,.08))}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))};addTxt(P.x,P.y-25,'🔱 작살!','#ffaa00',35);_addSkProf(P.activeChargeSk==='magicBlink'?'magicBlink':'chargeBoost');
@@ -119045,7 +119043,7 @@ function update(){
         const _cr2dx=isAct('right')-isAct('left'),_cr2dy=isAct('down')-isAct('up');
         const _cr2len=Math.sqrt(_cr2dx*_cr2dx+_cr2dy*_cr2dy);
         const _hDir=_cr2len>0?Math.atan2(_cr2dy,_cr2dx):P.facing;
-        _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=Math.min(3,2+~~((P.skills.chargeBoost||0)/3));_harpSk=P.activeChargeSk||'charge';_harpHits=[];
+        _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=Math.min(3,2+~~((P.skills.chargeBoost||0)/3));_harpSk=P.activeChargeSk||'charge';_harpHits=[];_dashPhase=1;
         _harpX=P.x;_harpY=P.y;_harpVX=Math.cos(_hDir)*_HARP_SPD;_harpVY=Math.sin(_hDir)*_HARP_SPD;
         _harpDist=0;_harpMaxDist=_harpDistTier(_harpTier);
         SFX.slash();{const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.6,_r(1,.1))};if(Math.random()<.4){const _vm=['voice_move','voice_move2','voice_move3'];playSample(_vm[~~(Math.random()*3)],1,_r(1,.08))}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))};addTxt(P.x,P.y-25,'🔱 작살!','#ffaa00',35);_addSkProf(P.activeChargeSk==='magicBlink'?'magicBlink':'chargeBoost');
@@ -120762,31 +120760,35 @@ function update(){
     if(P._blueBarrage.timer<=0){
       P._blueBarrage.timer+=P._blueBarrage.interval;
       const _bb=P._blueBarrage;
-      const _bbSpread=[-1.05,-.7,-.35,0,.35,.7,1.05]; // 7방향 20도 간격 (±60°)
-      for(let _bsi=0;_bsi<7;_bsi++){
-        const _bbA=P.facing+_bbSpread[_bsi]+(Math.random()-.5)*.08;
-        const _bbSpd=6+Math.random()*3;
-        const _pp=_getPProj();_pp.x=P.x+Math.cos(_bbA)*16;_pp.y=P.y+Math.sin(_bbA)*16;_pp.vx=Math.cos(_bbA)*_bbSpd;_pp.vy=Math.sin(_bbA)*_bbSpd;_pp.dmg=~~(_bb.dmg/7);_pp.el=EL.P;_pp.maxDist=_bb.range;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.pierce=Math.min(0.95,(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05);_pp.pierceMax=3+(PASSIVES.pPierce||0);_pp._aoeR=100;_pp._aoeDmg=~~(_bb.dmg*.07);pProjs[pProjs.length]=_pp;
+      const _bbDirs=Math.min(10,5+(_bb.lv-1)); // 1렙=5방향(500발), 6렙+=10방향(1000발)
+      const _bbHalf=(_bbDirs-1)/2;
+      for(let _bsi=0;_bsi<_bbDirs;_bsi++){
+        const _bbA=P.facing+(_bbDirs>1?(_bsi-_bbHalf)/_bbHalf*1.2:0)+(Math.random()-.5)*.08;
+        const _bbSpd=(6+Math.random()*3)*1.3;
+        const _pp=_getPProj();_pp.x=P.x+Math.cos(_bbA)*16;_pp.y=P.y+Math.sin(_bbA)*16;_pp.vx=Math.cos(_bbA)*_bbSpd;_pp.vy=Math.sin(_bbA)*_bbSpd;_pp.dmg=~~(_bb.dmg/_bbDirs);_pp.el=EL.P;_pp.maxDist=_bb.range;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.pierce=Math.min(0.95,(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05);_pp.pierceMax=3+(PASSIVES.pPierce||0);_pp._aoeR=100;_pp._aoeDmg=~~(_bb.dmg*.07);pProjs[pProjs.length]=_pp;
       }
       _bb.cnt++;
       if(_bb.cnt%20===0){playSample('fireball',.4,_r(1.5,.2));poolPart(P.x,P.y,0,0,'#00e5ff',5,6)}
     }
     if(P._blueBarrage.cnt>=P._blueBarrage.max)P._blueBarrage=null;
   }
-  // ═══ 푸른비 E홀드 추가 발사 (초당 10발, MP 틱소모) ═══
-  if(isHeld('beam')&&(P.activeMagicSk||'beam')==='blueShot'&&P.skills.blueShot>=1&&P._blueBarrage){
+  // ═══ 푸른비 E홀드 추가 발사 (초당 50발, MP 틱소모) ═══
+  if(isHeld('beam')&&(P.activeMagicSk||'beam')==='blueShot'&&P.skills.blueShot>=1){
     P._blueHoldT=(P._blueHoldT||0)-sp;
     if(P._blueHoldT<=0){
-      P._blueHoldT+=6; // 6프레임 간격 = 초당 10발
-      const _bhMpTick=5; // 틱당 5 MP (초당 50 MP)
+      P._blueHoldT+=6; // 6프레임마다 _bhCnt발
+      const _bhLv=P.skills.blueShot||1;
+      const _bhCnt=Math.min(10,5+(_bhLv-1)); // 1렙=5발(초당50), 6렙=10발(초당100)
+      const _bhMpTick=_bhCnt; // 틱당 = 발수 MP (1발=1MP)
       if(P.mp>=_bhMpTick){
         P.mp-=_bhMpTick;
-        const _bhLv=P.skills.blueShot||1;
-        const _bhDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*3*(1+(_bhLv-1)*.1));
-        const _bhA=P.facing+(Math.random()-.5)*.15;
-        const _bhSpd=7+Math.random()*2;
-        const _pp=_getPProj();_pp.x=P.x+Math.cos(_bhA)*16;_pp.y=P.y+Math.sin(_bhA)*16;_pp.vx=Math.cos(_bhA)*_bhSpd;_pp.vy=Math.sin(_bhA)*_bhSpd;_pp.dmg=_bhDmg;_pp.el=EL.P;_pp.maxDist=750+(_bhLv-1)*45;_pp.dist=0;_pp.r=12;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.pierce=Math.min(0.95,(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05);_pp.pierceMax=3+(PASSIVES.pPierce||0);_pp._aoeR=100;_pp._aoeDmg=~~(_bhDmg*.07);pProjs[pProjs.length]=_pp;
-        if(P._blueHoldT<-12)P._blueHoldT=0; // 프레임 밀림 방지
+        const _bhDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*3*(1+(_bhLv-1)*.1)/_bhCnt);
+        for(let _bhi=0;_bhi<_bhCnt;_bhi++){
+          const _bhA=P.facing+(Math.random()-.5)*.3;
+          const _bhSpd=(7+Math.random()*2)*1.3;
+          const _pp=_getPProj();_pp.x=P.x+Math.cos(_bhA)*16;_pp.y=P.y+Math.sin(_bhA)*16;_pp.vx=Math.cos(_bhA)*_bhSpd;_pp.vy=Math.sin(_bhA)*_bhSpd;_pp.dmg=_bhDmg;_pp.el=EL.P;_pp.maxDist=750+(_bhLv-1)*45;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.pierce=Math.min(0.95,(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05);_pp.pierceMax=3+(PASSIVES.pPierce||0);_pp._aoeR=100;_pp._aoeDmg=~~(_bhDmg*.07);pProjs[pProjs.length]=_pp;
+        }
+        if(P._blueHoldT<-12)P._blueHoldT=0;
       } else {addTxt(P.x,P.y-25,'MP 부족!','#4488ff',25)}
     }
   } else {P._blueHoldT=0}
@@ -135898,31 +135900,33 @@ function drawP(){
   }else if(_atlasPReady&&(P._sa||(P._sa=SpriteAnimator.create(_atlasP_img,_atlasP_frames,'idle')))){
     // ── Atlas P 스프라이트 렌더링 (8방향) + Ori 영혼 글로우 ──
     const _apDead=P.hp<=0;const _apMv=P.s==='idle'&&(isAct('up')||isAct('down')||isAct('left')||isAct('right'));
-    if(_harpLandT>0)_harpLandT-=_dtSp;
+    if(_harpLandT>0){_harpLandT-=_dtSp;if(_harpLandT<=0)_dashPhase=0;}
     let _apAnim=_P_ANIM_MAP[P.s]||'idle';
     if(_apDead)_apAnim='die';
     else if(P._chainSlamReady&&(_harpActive||_dashActive))_apAnim='chain';
     else if(P._chainAssaultReady&&(_harpActive||_dashActive))_apAnim='atk1';
-    else if(_harpActive&&!_dashActive)_apAnim='dash';
-    else if(_dashActive)_apAnim='dash';
-    else if(_harpLandT>0)_apAnim='dash';
+    else if(_harpActive&&!_dashActive)_apAnim=_dashPhase===1?'dash_start':'dash_fly';
+    else if(_dashActive)_apAnim='dash_fly';
+    else if(_harpLandT>0)_apAnim='dash_land';
     else if(_apMv)_apAnim='run';
     const _apDir=_facingDir8(P.facing);
     const _apHasDir=!!P._sa.fm[_apAnim+'_'+_apDir];
-    if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam')||_apAnim.startsWith('charge')||_apAnim==='atk3')?'atk1':'idle';
+    if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam')||_apAnim.startsWith('charge')||_apAnim==='atk3'||_apAnim.startsWith('dash'))?'dash':'idle';
     if(!P._sa.fm[_apAnim]&&!P._sa.fm[_apAnim+'_'+_apDir])_apAnim='idle';
-    const _isHarp=(_harpActive||_dashActive||_harpLandT>0)&&_apAnim==='dash';
+    const _isHarp=(_harpActive||_dashActive||_harpLandT>0)&&_apAnim.startsWith('dash');
     const _isChainAtk=P._chainAssaultReady&&(_harpActive||_dashActive);
     const _apSpd=_apDead?12:(_isHarp?4:(_isChainAtk?3:(_apAnim==='idle'?48:(_apAnim==='run'?12:8))));
-    SpriteAnimator.play(P._sa,_apAnim,_apSpd,_isHarp?false:!_apDead);
+    SpriteAnimator.play(P._sa,_apAnim,_apSpd,_isHarp?(_apAnim==='dash_fly'):!_apDead);
     if(_isChainAtk){
       // 기동습격: atk 프레임 2배속 빠른 칼질 루프
       P._sa.spd=2;P._sa.loop=true;
       SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
       SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
     }else if(_isHarp){
-      // 사슬기동: dash 16프레임 그냥 재생
+      // 사슬기동: 3단계 (start→fly loop→land)
       SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);
+      // start 끝나면 fly로 전환
+      if(_dashPhase===1&&P._sa.done)_dashPhase=2;
     }else if(_apMv){
       const _dFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
       if(_dFr&&_dFr.length)P._sa.f=~~((P._walkDist||0)/32)%_dFr.length;

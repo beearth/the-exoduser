@@ -20,3 +20,9 @@ auto-push.sh
 auto-push.log
 EXODUSER_itch.zip
 saves/
+.venv/
+__pycache__/
+build/
+.cache/
+.next/
+*.egg-info/
