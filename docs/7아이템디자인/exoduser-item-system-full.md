@@ -114,7 +114,7 @@ const AFFIX_POOL = [
   {id:'elemFocus', type:0, ko:'원소집중의',stat:'_aElemFcs', tiers:[0.12,0.20,0.32],unit:'pct', slots:['wpn','nck'], group:'elemfcs', weight:70},
 
   // ── PREFIX: 능력치 ──
-  {id:'maxHPFlat', type:0, ko:'강인의',  stat:'_aMaxHP',     tiers:[25,45,75],  unit:'val', slots:['arm','hlm','nck'],group:'hp',     weight:90},
+  {id:'maxHPFlat', type:0, ko:'강인의',  stat:'_aMaxHP',     tiers:[100,250,500],  unit:'val', slots:['arm','hlm','nck'],group:'hp',     weight:90},
   {id:'maxHPPct',  type:0, ko:'활력의',  stat:'_aMaxHPPct',  tiers:[0.08,0.14,0.22],unit:'pct', slots:['arm','nck'], group:'hpp',   weight:80},
   {id:'movSpd',    type:0, ko:'신속의',  stat:'_aMovSpd',    tiers:[0.05,0.09,0.14],unit:'pct', slots:['bts','clk'], group:'mspd',  weight:85},
   {id:'killHeal',  type:0, ko:'회복의',  stat:'_aKillHeal',  tiers:[8,15,25],   unit:'val', slots:['arm','rng'],    group:'kheal',  weight:75},
@@ -170,7 +170,7 @@ Object.freeze(AFFIX_POOL);
 | critChance | 광폭의 | PREFIX | 6%/10%/16% | pct | wpn,rng | statCrit() |
 | critDmg | 처형의 | PREFIX | 25%/40%/65% | pct | wpn | statCritDmg() |
 | atkSpeed | 쾌속의 | PREFIX | 6%/10%/16% | pct | wpn,glv | statDex() |
-| maxHPFlat | 강인의 | PREFIX | 25/45/75 | val | arm,hlm,nck | statMaxHP() |
+| maxHPFlat | 강인의 | PREFIX | 100/250/500 | val | arm,hlm,nck | statMaxHP() |
 | maxHPPct | 활력의 | PREFIX | 8%/14%/22% | pct | arm,nck | statMaxHP() |
 | movSpd | 신속의 | PREFIX | 5%/9%/14% | pct | bts,clk | statPlayerSpeed() |
 | killHeal | 회복의 | PREFIX | 8/15/25 | val | arm,rng | 적 처치 시 HP 회복 |
@@ -187,39 +187,37 @@ Object.freeze(AFFIX_POOL);
 | dpRegen | 마력의 | SUFFIX | 2%/4%/7% | pct | hlm,nck | MP 재생 배율 |
 | antiRevive | 진혼의 | SUFFIX | — | pct | — | 보스 부활 억제 |
 
-#### 🔲 미구현 — 구현 예정 (27종)
+#### ✅ 구현 완료 (27종, 2026-03-23)
 
-| id | 한글 | 타입 | 티어 (1/2/3) | 단위 | 슬롯 | 예정 효과 |
+| id (코드) | 한글 | 타입 | 티어 (1/2/3) | 단위 | 슬롯 | 구현 효과 |
 |---|---|---|---|---|---|---|
-| lightChain | 번개의 | PREFIX | 13/22/35 | val | wpn | 연쇄전격 데미지 |
-| darkCurse | 암흑의 | PREFIX | 20%/35%/55% | prob | wpn | 힐 차단 저주 |
-| armorPen | 관통의 | PREFIX | 8%/14%/22% | pct | wpn | 방어 관통 |
-| staggerBns | 파쇄의 | PREFIX | 8/14/22 | val | wpn | 포이즈 파괴 보너스 |
-| chainHit | 연쇄의 | PREFIX | 1/2/3 | val | wpn | 체인 타겟 수 증가 |
-| killSlayer | 학살의 | PREFIX | 15%/25%/40% | pct | wpn | 처치 후 피해 증가 |
-| critExpl | 폭발의 | PREFIX | 30%/60%/100% | pct | wpn | 크리 시 폭발 |
-| parryBns | 패리의 | PREFIX | 20%/35%/55% | pct | wpn,clk | 패리 보너스 |
-| comboBoost | 콤보의 | PREFIX | 20%/35%/55% | pct | wpn | 콤보 피해 증가 |
-| dashBoost | 돌진의 | PREFIX | 25%/40%/65% | pct | wpn,bts | 작살 피해 증가 |
-| skillBoost | 궁극의 | PREFIX | 15%/25%/40% | pct | wpn | 스킬 피해 증가 |
-| cdReduce | 집중력의 | PREFIX | 8%/14%/22% | pct | hlm,nck | 쿨다운 감소 |
-| elemFocus | 원소집중의 | PREFIX | 12%/20%/32% | pct | wpn,nck | 원소 피해 배율 |
-| reflect | 반사의 | SUFFIX | 5%/9%/15% | pct | arm,shd,rng | 피격 데미지 반사 |
-| thorns | 가시의 | SUFFIX | 4/8/14 | val | arm,glv | 피격 시 가시 데미지 |
-| barrier | 흡수의 | SUFFIX | 15/28/45 | val | arm,hlm | 에너지쉴드 증가 |
-| ccRes | 인내의 | SUFFIX | 12%/20%/32% | pct | hlm,pnt | CC 저항 |
-| iframeBns | 회피의 | SUFFIX | 2/4/6 | frame | clk,bts | 무적 프레임 추가 |
-| crisisDmg | 위기의 | SUFFIX | 25%/40%/65% | pct | arm,nck | 저HP 피해 증가 |
-| counter | 피격반격의 | SUFFIX | 15%/25%/40% | prob | arm,shd | 피격 반격 확률 |
-| parryExpl | 패링폭발의 | SUFFIX | 0.4/0.7/1.1 | ATK× | wpn,shd | 패링 시 폭발 |
-| staggerExpl | 스태거폭발의 | SUFFIX | 30%/50%/80% | pct | wpn | 체간파괴 보너스 |
-| elemConv | 원소전환의 | SUFFIX | 20%/35%/55% | prob | wpn,nck | 원소 전환 확률 |
-| cleanSts | 정화의 | SUFFIX | 1/1/2 | val | hlm,pnt | 상태이상 해제 횟수 |
-| lastStand | 불굴의 | SUFFIX | 0/0/1 | val | arm | 1회 생존 (영웅+) |
-| revive | 부활의 | SUFFIX | 0/0/30% | pct | arm | 부활 HP회복 (전설) |
-| expBonus | 경험의 | SUFFIX | 10%/18%/28% | pct | hlm,nck | 경험치 보너스 |
-| goldBonus | 골드의 | SUFFIX | 15%/25%/40% | pct | bts,rng | 골드 보너스 |
-| potionPow | 포션강화의 | SUFFIX | 20%/35%/55% | pct | pnt | 포션 효과 강화 |
+| lightChain | 번개의 | PREFIX | 13/22/35 | val | wpn | 피격 시 주변 적 2명에게 연쇄뎀 (반경120) |
+| darkCurse | 암흑의 | PREFIX | 20%/35%/55% | prob | wpn | 확률로 저주(3초), 저주 상태 뎀+25% |
+| armorPen | 관통의 | PREFIX | 8%/14%/22% | pct | wpn | eShield 추가파괴 (dmg×배율) |
+| staggerBns | 파쇄의 | PREFIX | 8/14/22 | val | wpn | 포이즈 추가 감소 (고정값) |
+| chainTarget | 연쇄의 | PREFIX | 1/2/3 | val | wpn | 주변 적 N명에게 30% 뎀 (반경100) |
+| killSlayer | 학살의 | PREFIX | 15%/25%/40% | pct | wpn | 처치 후 3초간 뎀×(1+배율) |
+| elemFocus | 원소집중의 | PREFIX | 12%/20%/32% | pct | wpn,nck | 속성 공격 시 뎀×(1+배율) |
+| parryBonus | 패리의 | PREFIX | 20%/35%/55% | pct | wpn,clk | 패링 ST 회복량 ×(1+배율) |
+| comboBoost | 콤보의 | PREFIX | 20%/35%/55% | pct | wpn | 같은 적 연속 공격 시 +5%/중첩 |
+| dashBoost | 돌진의 | PREFIX | 25%/40%/65% | pct | wpn,bts | 작살/돌진 데미지 ×(1+배율) |
+| skillBoost | 궁극의 | PREFIX | 15%/25%/40% | pct | wpn | 선택스킬 데미지 ×(1+배율) (_fuseMul 내장) |
+| cooldownRed | 집중력의 | PREFIX | -8%/-14%/-22% | pct | hlm,nck | 스킬 쿨다운 ×(1+값) (음수=감소) |
+| reflect | 반사의 | SUFFIX | 5%/9%/15% | pct | arm,shd,rng | 피격 데미지×배율 반사 (반경80, 1명) |
+| thorns | 가시의 | SUFFIX | 4/8/14 | val | arm,glv | 피격 시 고정 가시뎀 (반경80, 1명) |
+| barrier | 흡수의 | SUFFIX | 15/28/45 | val | arm,hlm | DEF 감산 후 고정 데미지 감소 |
+| ccRes | 인내의 | SUFFIX | 12%/20%/32% | pct | hlm,pnt | 포이즈 기절 시간 ×(1-min(0.5,값)), 최대50% |
+| crisisBoost | 위기의 | SUFFIX | 25%/40%/65% | pct | arm,nck | HP 30% 이하 시 뎀×(1+배율) |
+| counterHit | 피격반격의 | SUFFIX | 15%/25%/40% | prob | arm,shd | 피격 시 확률로 반격(meleeRef×STR) |
+| parryExplosion | 패링폭발의 | SUFFIX | 0.4/0.7/1.1 | ATK× | wpn,shd | 패링 시 AoE (meleeRef×STR×배율, 반경100) |
+| staggerExplosion | 스태거폭발의 | SUFFIX | 30%/50%/80% | pct | wpn | 그로기 시 AoE (dmg×배율, 반경100) |
+| elemConvert | 원소전환의 | SUFFIX | 20%/35%/55% | prob | wpn,nck | 물리 → 무기 속성 전환 확률 |
+| statusClean | 정화의 | SUFFIX | 1/1/2 | val | hlm,pnt | 10초마다 상태이상 해제 (값=횟수/틱) |
+| lastStand | 불굴의 | SUFFIX | 0/0/1 | val | arm | 1회 사망 방지(HP=1, 무적2초), 스테이지 리셋 |
+| reviveOnce | 부활의 | SUFFIX | 0/0/30% | pct | arm | 1회 즉시 부활(HP=값×mhp), 스테이지 리셋 |
+| expBonus | 경험의 | SUFFIX | 10%/18%/28% | pct | hlm,nck | 경험치 ×(1+배율) |
+| goldBonus | 골드의 | SUFFIX | 15%/25%/40% | pct | bts,rng | 악의 획득 ×(1+배율) |
+| potionPower | 포션강화의 | SUFFIX | 20%/35%/55% | pct | pnt | HP 물약 회복량 ×(1+배율) |
 
 ---
 
