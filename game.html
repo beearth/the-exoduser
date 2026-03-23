@@ -9881,8 +9881,8 @@ function initMapObjects(){
     // 바닥 타일 수집
     const _dcFloors=[];
     for(let y=3;y<G.mh-3;y++)for(let x=3;x<G.mw-3;x++){if(map[y][x]===0)_dcFloors.push({x,y})}
-    // 맵 크기 비례 배치 수 (바닥 10타일당 1개, 최소 50 최대 400)
-    const _dcCnt=Math.max(50,Math.min(400,~~(_dcFloors.length/10)));
+    // 맵 크기 비례 배치 수 (바닥 20타일당 1개, 최소 25 최대 200)
+    const _dcCnt=Math.max(25,Math.min(200,~~(_dcFloors.length/20)));
     let _dcPlaced=0;
     for(let di=0;di<_dcCnt&&_dcFloors.length>0;di++){
       const _fi=~~(_dcSeed()*_dcFloors.length);
@@ -9917,7 +9917,7 @@ function initMapObjects(){
       let adjFloor=false;
       if((y>0&&map[y-1][x]===0)||(y<G.mh-1&&map[y+1][x]===0)||(x>0&&map[y][x-1]===0)||(x<G.mw-1&&map[y][x+1]===0))adjFloor=true;
       if(!adjFloor)continue;
-      if(_eyeSeed()<.04){
+      if(_eyeSeed()<.02){
         const _eid=_eyeIds[~~(_eyeSeed()*_eyeIds.length)];
         MAP_OBJS.push({type:_eid,x:x*T+T/2,y:y*T+T/2,hell});
         _eyePlaced++;
@@ -116592,25 +116592,43 @@ function genFromTemplate(tmpl,si){
     const _gDir=_entryDir;
     const dTop=bossCy-bRy,dBot=mh-1-(bossCy+bRy),dLeft=bossCx-bRx,dRight=mw-1-(bossCx+bRx);
     console.log('[GATE] entry='+_entryDir+' gate='+_gDir+' floors=',_entFloor);
+    // 게이트→복도 연결: 바닥을 만날 때까지 카빙 (최대 40칸, 맵 끝까지 뚫지 않음)
+    const _GATE_MAX=40;
     if(_gDir==='top'){
       _gateY=Math.max(0,bossCy-bRy-1);
-      for(let gy=0;gy<=dTop;gy++)for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&gy<mh)map[gy][gx]=0;
+      for(let gy=_gateY;gy>=Math.max(0,_gateY-_GATE_MAX);gy--){
+        let hitFloor=false;
+        for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&gy<mh){if(map[gy][gx]===0)hitFloor=true;map[gy][gx]=0}
+        if(hitFloor)break;
+      }
       const gy0=Math.max(0,_gateY);
       for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw){map[gy0][gx]=3;_gateTiles.push({x:gx,y:gy0})}
     }else if(_gDir==='bot'){
       _gateY=Math.min(mh-1,bossCy+bRy+1);
-      for(let gy=bossCy+bRy;gy<mh;gy++)for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&gy>=0)map[gy][gx]=0;
+      for(let gy=_gateY;gy<=Math.min(mh-1,_gateY+_GATE_MAX);gy++){
+        let hitFloor=false;
+        for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw&&gy>=0){if(map[gy][gx]===0)hitFloor=true;map[gy][gx]=0}
+        if(hitFloor)break;
+      }
       const gy0=Math.min(mh-1,_gateY);
       for(let gx=bossCx-1;gx<=bossCx+1;gx++)if(gx>=0&&gx<mw){map[gy0][gx]=3;_gateTiles.push({x:gx,y:gy0})}
     }else if(_gDir==='left'){
       _gateY=bossCy;
       const gx0=Math.max(0,bossCx-bRx-1);
-      for(let gx=0;gx<=gx0;gx++)for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&gx<mw)map[gy][gx]=0;
+      for(let gx=gx0;gx>=Math.max(0,gx0-_GATE_MAX);gx--){
+        let hitFloor=false;
+        for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&gx<mw){if(map[gy][gx]===0)hitFloor=true;map[gy][gx]=0}
+        if(hitFloor)break;
+      }
       for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh){map[gy][gx0]=3;_gateTiles.push({x:gx0,y:gy})}
     }else{
       _gateY=bossCy;
       const gx0=Math.min(mw-1,bossCx+bRx+1);
-      for(let gx=gx0;gx<mw;gx++)for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&gx>=0)map[gy][gx]=0;
+      for(let gx=gx0;gx<=Math.min(mw-1,gx0+_GATE_MAX);gx++){
+        let hitFloor=false;
+        for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh&&gx>=0){if(map[gy][gx]===0)hitFloor=true;map[gy][gx]=0}
+        if(hitFloor)break;
+      }
       for(let gy=bossCy-1;gy<=bossCy+1;gy++)if(gy>=0&&gy<mh){map[gy][gx0]=3;_gateTiles.push({x:gx0,y:gy})}
     }
     // 입구 방향: 보스방 경계에서 복도까지 바닥 확보 (5칸)
@@ -118388,7 +118406,7 @@ function update(){
     const _wx0=P.x,_wy0=P.y;
     if(canMv(nx,P.y,P.r))P.x=nx;if(canMv(P.x,ny,P.r))P.y=ny;
     const _wdd=Math.sqrt((P.x-_wx0)*(P.x-_wx0)+(P.y-_wy0)*(P.y-_wy0));
-    if(_wdd>0){P._walkDist=(P._walkDist||0)+_wdd;if(P._walkDist>72){P._walkDist=0;playSample(Math.random()<.5?'footstep':'footstep2',.25,_r(.9,.15))}}else P._walkDist=P._walkDist||0;
+    if(_wdd>0){const _prevD=P._walkDist||0;P._walkDist=_prevD+_wdd;const _prevF=~~(_prevD/32)%8,_curF=~~(P._walkDist/32)%8;if(_prevF!==_curF&&(_curF===0||_curF===4)){playSample(_curF===0?'footstep':'footstep2',.3,_r(.9,.15))}}else P._walkDist=P._walkDist||0
     // ═══ 칼날이동 — 더블탭 트리거 소비 ═══
     if(P._bdTrigger!=null){
       if(P.skills.bladeDash>=1&&(P._bdStk==null||(P._bdStk||0)>0)&&P.mp>=(10+((P.skills.bladeDash||1)-1)*5)&&!(P._seaParalyzed>0)){
@@ -118529,7 +118547,7 @@ function update(){
     P._wwHitTimer+=_dtSp;
     if(P._wwHitTimer>=_wwTick){P._wwHitTimer-=_wwTick;
       const _wwBaseR=((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+(_wwLv-1)*11;
-      const _wwMin=100;const _wwMax=200+(_wwLv-1)*22; // 1렙200, 5렙288, 10렙398
+      const _wwMin=100;const _wwMax=200+(_wwLv-1)*20; // 1렙200, 5렙280, 10렙380
       const _wwRangeBase=_wwMin+(_wwMax-_wwMin)*Math.min(1,_wwGrow);
       const _wwRange=_wwRangeBase;
       const _wwDmg=~~(meleeRef()*statStr()*1.0*(1+(_wwLv-1)*0.05)*2*(1+_wwGrow*(_wwFused?.6:.4))*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1)*_wwDrainBonus);
@@ -118897,7 +118915,7 @@ function update(){
         const _bsDmgBase=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*15*(1+(_bsLv-1)*.1));
         P._blueBarrage={cnt:0,max:100,interval:3,timer:0,dmg:~~(_bsDmgBase/5),range:750+(_bsLv-1)*45,lv:_bsLv};
         P._blueCd=300; // 5초 쿨
-        playSample('fireball',.8,_r(1.3,.1));SFX.magic(6);_addSkProf('blueShot');
+        playSample('fireball',.4,_r(1.3,.1));SFX.magic(6);_addSkProf('blueShot');
         addTxt(P.x,P.y-25,'💎 푸른비!','#00e5ff',50);
         for(let _bp=0;_bp<12;_bp++){const _ba2=Math.PI*2*_bp/12;poolPart(P.x,P.y,Math.cos(_ba2)*5,Math.sin(_ba2)*5,'#00e5ff',4,10)}
         P.s='magicRecover';P.st2=15;
@@ -119965,7 +119983,7 @@ function update(){
       const _wwFused2=P.skills.detonate&&_isFused('whirlDet');
       const _wwGrow2=Math.min(1,(P.wwAng||0)/60);
       const _wwBaseR2=((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+(_wwLv2-1)*11;
-      const _wwDeflR=(100+(200+(_wwLv2-1)*30+(_wwLv2>=10?30:0)-100)*Math.min(1,_wwGrow2))*.7;
+      const _wwDeflR=(100+(200+(_wwLv2-1)*20-100)*Math.min(1,_wwGrow2))*.7;
       if(_pDist<_wwDeflR){
         addParts(p.x,p.y,ELC[p.el]||'#888',2);
         _pHit=true;_recycleProj(p);continue; // 탄 소멸
@@ -120186,7 +120204,7 @@ function update(){
         // 푸른비 중첩 보너스: 1중첩당 +10% 뎀증, 10초 지속
         if(p.blueBean){const _bbStk=Math.min(50,e._bbStk||0);dmg=~~(dmg*(1+_bbStk*0.1));e._bbStk=Math.min(50,_bbStk+1);e._bbStkT=600}
         if(p.explosive && !p.hitTriggered){ p.vx=0; p.vy=0; p.hitTriggered=true; } // 폭발탄은 멈춤
-        hurtE(e,dmg,ang,false,p,p.el); if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3,_r(1.2,.2),e.x,e.y)}else if(p.blueBean){if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.7,_r(1,.15));P._bbHitCd=4}}else if(p.arcMissile){}else if(p.magic)playSampleAt('bullet_hit',.5,_r(1,.15),e.x,e.y);else if(p.normalBow)playSampleAt('bow_hit',.4,_r(1,.15),e.x,e.y);else playSampleAt('bullet_hit',.5,_r(1,.15),e.x,e.y); // 투사체→bullet_hit
+        hurtE(e,dmg,ang,false,p,p.el); if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3,_r(1.2,.2),e.x,e.y)}else if(p.blueBean){if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.35,_r(1,.15));P._bbHitCd=4}}else if(p.arcMissile){}else if(p.magic)playSampleAt('bullet_hit',.5,_r(1,.15),e.x,e.y);else if(p.normalBow)playSampleAt('bow_hit',.4,_r(1,.15),e.x,e.y);else playSampleAt('bullet_hit',.5,_r(1,.15),e.x,e.y); // 투사체→bullet_hit
         if(p.magic&&!p.maliceHunt&&!p.iceBlade){
         const _pkb=p.kb!=null?p.kb:3;e.kb.x+=Math.cos(ang)*_pkb*mult;e.kb.y+=Math.sin(ang)*_pkb*mult;}
         // 산탄 넉백 + 폭발
@@ -120217,7 +120235,7 @@ function update(){
               const _bba=Math.atan2(_bbe.y-p.y,_bbe.x-p.x);const _bbm=elMul(p.el,_bbe.el);
               const _bbeStk=Math.min(50,_bbe._bbStk||0);const _bbeStkMul=1+_bbeStk*0.1;hurtE(_bbe,~~(p._aoeDmg*_bbm*_bbeStkMul),_bba);_bbe._bbStk=Math.min(50,_bbeStk+1);_bbe._bbStkT=600;_bbe.kb.x+=Math.cos(_bba)*2;_bbe.kb.y+=Math.sin(_bba)*2;
             }}
-          if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.7,_r(1,.15));P._bbHitCd=4}
+          if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.35,_r(1,.15));P._bbHitCd=4}
           for(let _bbk=0;_bbk<6;_bbk++){const _bba2=Math.PI*2*_bbk/6;poolPart(p.x,p.y,Math.cos(_bba2)*3,Math.sin(_bba2)*3,'#00ccff',2+Math.random()*2,8+Math.random()*4)}
           hit=true;break;
         }
@@ -120793,7 +120811,7 @@ function update(){
     else if(MBjust[0]){
       MBjust[0]=false;
       const _hrLv=P.skills.hellRay||1;
-      const _hrR=500+(_hrLv-1)*50; // 1렙500 +50/렙, 10렙1000
+      const _hrR=300+(_hrLv-1)*20; // 1렙300 +20/렙, 10렙480
       const _hrElec=_isFused('elecRepent'); // 참회 귀환 합체
       const _hrDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*10*(1+(_hrLv-1)*0.15)*(_hrElec?1.2:1));
       P.mp-=100;P._hrStk--;const _hrMx3=_hrElec?(_hrLv>=10?3:_hrLv>=5?2:1):1;if(P._hrStk<_hrMx3&&!P._hrRech)P._hrRech=600;
@@ -120832,7 +120850,7 @@ function update(){
     const _mswx=mouse.x-C.width/2+G.cam.x;
     const _mswy=mouse.y-C.height/2+G.cam.y;
     const _msLv=P.skills.maliceStorm||1;
-    const _msR=100+_msLv*20;
+    const _msR=200+_msLv*20; // 1렙220, 5렙300, 10렙400 (조준원)
     if(MBjust[2]||K['Escape']){P._msAiming=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]){
       MBjust[0]=false;
@@ -120854,7 +120872,7 @@ function update(){
             P.mp=Math.max(0,P.mp-_bsMpCost);
             // 합체: 해골번개 — boneWall 링 + 암흑 DOT
             const _bsLv=P.skills.boneWall||1;
-            const _bsRingR=~~(140+_bsLv*30);
+            const _bsRingR=~~(300+(_bsLv-1)*20);
             const _erF=_isFused('elecRepent');
             const _hrLv=_erF?(P.skills.hellRay||1):0;
             const _syncDur=600; // 10초 고정 (악의폭풍과 동일)
@@ -120868,7 +120886,7 @@ function update(){
             // elecRepent: 참회(hellRay)도 같은 포인트에 동시 설치
             if(_erF&&P.skills.hellRay>=1){
               const _hrDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*10*(1+(_hrLv-1)*0.15)*1.2);
-              G._fireZones.push({x:_mswx,y:_mswy,r:500+(_hrLv-1)*50,t:0,maxT:_syncDur,
+              G._fireZones.push({x:_mswx,y:_mswy,r:300+(_hrLv-1)*20,t:0,maxT:_syncDur,
                 dmg:_hrDmg,el:EL.L,lv:_hrLv,type:'hellRay',ang:0,elec:true});
               SFX.magic(EL.L);playSample('repentance',.7,_r(1,.08));
               addTxt(_mswx,_mswy-20,'✝🦴 참회 귀환!','#ffee44',50);
@@ -126533,7 +126551,7 @@ function _detonateBlast(label,elSrc){
   // 회전기폭: 최소 범위 = 현재 회전참 범위
   const _wwBaseRDet=_wdFused?((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+((P.skills.whirlwind||1)-1)*11:0;
   const _wwGrowDet=_wdFused?Math.min(1,(P.wwAng||0)/60)+Math.min(1,(P.parryBank||0)/500):0;
-  const _wwLvDet=P.skills.whirlwind||1;const _wwRDet=_wdFused?100+(200+(_wwLvDet-1)*22-100)*Math.min(1,_wwGrowDet):0;
+  const _wwLvDet=P.skills.whirlwind||1;const _wwRDet=_wdFused?100+(200+(_wwLvDet-1)*20-100)*Math.min(1,_wwGrowDet):0;
   const boomR=Math.max(_wwRDet,(150+(_detLv-1)*10)*_chgBars);
   if(_isFused('slamStorm')){
     SFX.shout();
@@ -127678,7 +127696,7 @@ function fireBoneWall(tx,ty){
   const slv=P.skills.boneWall||1;
   P._bwStk--;const _bwMx2=(P.skills.boneWall>=10)?3:2;if(P._bwStk<_bwMx2&&!P._bwRech)P._bwRech=900;
   _addSkProf('boneWall');
-  const ringR=~~(200+slv*20);
+  const ringR=~~(300+(slv-1)*20);
   const duration=Math.min(1800,180+(slv-1)*12);
   const riseDmg=~~(meleeRef()*statStr()*pAtkMul()*8*(1+(slv-1)*0.15));
   if(!G._boneWalls)G._boneWalls=[];
@@ -127818,7 +127836,7 @@ function activateSpikeTrap(){
   _addSkProf('spikeTrap');
   G.mats-=10;P._gcCd=~~(600*(1+_eqAffix('cooldownRed')));
   const lv=P.skills.spikeTrap||1;
-  const r=(105+lv*8)*4;
+  const r=300+(lv-1)*20;
   const dmg=~~(meleeRef()*0.20*(1+(lv-1)*0.05)); // 무기뎀×20%, Lv당+5% (10렙=무기뎀×45%)
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:r,t:0,maxT:600,dmg:dmg,el:EL.P,lv:lv,type:'spikeTrap'});
@@ -133563,7 +133581,7 @@ function drawP(){
     const _msLv=P.skills.maliceStorm||1;
     const _msBF=_isFused('boneStorm')||_isFused('elecRepent');
     const _bwLv=P.skills.boneWall||1;
-    const _msAimR=_msBF?(140+_bwLv*30):(100+_msLv*20);
+    const _msAimR=_msBF?(300+(_bwLv-1)*20):(200+_msLv*20);
     const _msTx=mouse.x-C.width/2+G.cam.x;
     const _msTy=mouse.y-C.height/2+G.cam.y;
     const _mst=_now*.005;
@@ -135493,7 +135511,7 @@ function drawP(){
     const _wwGrowV=Math.min(1,_wa/60)+_wwBankV;
     const _wwLvV=P.skills.whirlwind||1;
     const _wwBaseR=((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+(_wwLvV-1)*11;
-    const _wwMaxV=200+(_wwLvV-1)*22; // 타격과 동일: 1렙200, 10렙398
+    const _wwMaxV=200+(_wwLvV-1)*20; // 타격과 동일: 1렙200, 10렙380
     const _wwR=100+(_wwMaxV-100)*Math.min(1,_wwGrowV);
     const _wc=ELC[wp().el]||'#ffcc44';
 
