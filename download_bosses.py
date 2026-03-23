@@ -63,7 +63,7 @@ def download_and_extract(char_id, folder_name):
 
     # 이미 폴더가 있고 animations/ 하위에 파일이 있으면 스킵
     anim_dir = os.path.join(dest, 'animations')
-    if os.path.isdir(anim_dir) and os.listdir(anim_dir):
+    if os.path.isdir(anim_dir) and os.listdir(anim_dir) if os.path.isdir(anim_dir) else []:
         print(f'  [{folder_name}] 이미 존재, 스킵')
         return True
 
