@@ -4349,11 +4349,11 @@ addEventListener('keydown',e=>{
     e.preventDefault();
   }}
   // Space키: 얼음보주 진입 중 → 즉시 산산조각
-  if(e.code==='Space'&&G.on&&!G.paused&&P._ioActive){
+  if(e.code==='Space'&&G.on&&!G.paused&&P._ioActive&&P.s!=='fallen'&&P.s!=='dead'){
     activateIceShatter();K['Space']=false;return;
   }
   // Space키: 얼음소용돌이 보주 활성화 중 → 플레이어 진입
-  if(e.code==='Space'&&G.on&&!G.paused&&G._mmBomb&&G._mmBomb.phase==='iceOrb'&&!P._ioActive){
+  if(e.code==='Space'&&G.on&&!G.paused&&P.s!=='fallen'&&P.s!=='dead'&&G._mmBomb&&G._mmBomb.phase==='iceOrb'&&!P._ioActive){
     const _ifb=G._mmBomb;
     P.x=_ifb.x;P.y=_ifb.y;
     P._ioActive=true;P._ioT=0;P._ioFormT=0;P._ioX=_ifb.x;P._ioY=_ifb.y;
@@ -4472,7 +4472,7 @@ function isHeld(action){return _chkHeld(BINDS[action])||_chkHeld(BINDS2[action])
 // Q키 얼음보주 모드: 선택스킬로 이동됨 (Q는 항상 패링)
 function _qIsIceOrb(){return false}
 function _qIsPeaceShield(){return P.skills.peaceShield>=1&&(P.activeQSk==='peaceShield'||_isFused('stormBeam'))}
-function _enterPeaceShield(){P.s='peaceShield';P._psShieldR=60;P._psHoldT=0;P._sbParryT=20;P.parryT=0;P.parryBank=0;playSample('shield_activate',.6,_r(.8,.1));_startShieldLoop();_addSkProf('peaceShield')}
+function _enterPeaceShield(){P.s='peaceShield';P._psShieldR=100;P._psHoldT=0;P._sbParryT=20;P.parryT=0;P.parryBank=0;playSample('shield_activate',.6,_r(.8,.1));_startShieldLoop();_addSkProf('peaceShield')}
 function _qDispatchIceOrb(){
   if(!_qIsIceOrb())return false;
   if(P._ioActive){activateIceShatter();return true}
@@ -11267,7 +11267,7 @@ function _burstLoopExplode(tier){
   const _blR=[0,600,1000,1400][tier];
   // STR 스케일, 회전참급 DPS: 회전참 1초=약 틱×2.4회×(base×2)=base×4.8. 버스트루프 1초차지=동급
   const _blDmgMul=[0,15,36,75][tier]; // 단계별 배율 (×3)
-  const _blBase=meleeRef()*statStr()*pAtkMul();
+  const _blBase=meleeRef()*statInt()*pMagicMul();
   const _blDmg=Math.max(10,~~(_blBase*_blDmgMul*(1+(_blLv-1)*0.15)));
   console.log('[BL] tier='+tier+' base='+~~_blBase+' mul='+_blDmgMul+' dmg='+_blDmg+' melee='+~~meleeRef()+' str='+statStr().toFixed(3)+' atk='+pAtkMul().toFixed(3));
   const _blCols=['','#8866ff','#ffaa44','#ff2244'];
@@ -11280,7 +11280,11 @@ function _burstLoopExplode(tier){
     // 거리 감쇠 없음 (범위 내 균일 데미지)
     const mult=elMul(EL.E,e.el); // 무속성(에테르)
     const dmg=~~(_blDmg*mult);
-    hurtE(e,dmg,ang,false,{kbMult:tier*.5,poiseMult:tier,noPoise:false},EL.E);
+    hurtE(e,dmg,ang,false,{kbMult:tier*.5,poiseMult:tier*2,noPoise:false},EL.E);
+    // 그로기: 포이즈 데미지 = 뎀의 300% (단계별)
+    const _blPoiseDmg=~~(dmg*3*tier);
+    e.poise-=_blPoiseDmg;e.poiseR=0;
+    if(e.poise<=0){e.poise=0;e.stunned=Math.max(e.stunned,180*tier);SFX.groggy();addTxt(e.x,e.y-22,'💥 그로기!','#ff8800',60)}
     playSampleAt('fireball',.6,_r(.7,.1),e.x,e.y);
   }
   // VFX: 폭발 링
@@ -11734,6 +11738,12 @@ function genGauntlet(fi){
     }
   }
 
+  // ★ 출구 안전장치: 출구 없으면 보스방 근처에 강제 생성
+  if(exits.length===0&&bossRoom){
+    const ex=bossRoom.cx,ey=bossRoom.cy+~~(bossRoom.h/2)+1;
+    if(ey>0&&ey<mh&&ex>0&&ex<mw-1){map[ey][ex]=0;exits.push({x:ex,y:ey});console.log('[GAUNTLET-FAILSAFE] forced exit at',ex,ey)}
+  }
+
   // ★ 연결 검증: 시작방에서 갈 수 없는 바닥 타일 → 벽으로 채움
   const _sr=rooms.find(r=>r.type==='start');
   if(_sr)_tValidateConnectivity(map,mw,mh,_sr.cx,_sr.cy);
@@ -11804,7 +11814,7 @@ function genGauntlet(fi){
   }
 
   G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
-  G.bossGate=_gateTiles;G.bossGateOpen=false;G.bossSealed=false;G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
+  G.bossGate=_gateTiles;G.bossGateOpen=true;G.bossSealed=false;G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
   G.spawnHoles=spawnHoles;
 }
 
@@ -116707,10 +116717,25 @@ function genFromTemplate(tmpl,si){
     }
   }
 
-  // ── 10. G 세팅 ──
-  console.log('[MAP] si='+si+' tileRLE='+(tmpl.tileRLE?'Y':'N')+' manualHoles='+(tmpl.spawnHoles?tmpl.spawnHoles.length:0)+' autoHoles='+spawnHoles.length+' rooms='+rooms.length+' bossRm='+(bossRm?'Y':'N'));
+  // ── 10. 출구 안전장치: 출구 없으면 보스방 근처에 강제 생성 ──
+  if(exits.length===0&&bossRm){
+    const bRx=bossRd.rx||12,bRy=bossRd.ry||bRx;
+    // 보스방 4방향 스캔, 바닥 있는 곳에 출구 생성
+    const _dirs=[{dx:0,dy:bRy+1},{dx:0,dy:-(bRy+1)},{dx:bRx+1,dy:0},{dx:-(bRx+1),dy:0}];
+    for(const dd of _dirs){
+      const ex=bossCx+dd.dx,ey=bossCy+dd.dy;
+      if(ex>=1&&ex<mw-1&&ey>=1&&ey<mh-1){
+        map[ey][ex]=0; // 바닥 확보
+        exits.push({x:ex,y:ey});
+        console.log('[MAP-FAILSAFE] forced exit at',ex,ey);
+        break;
+      }
+    }
+  }
+  // ── G 세팅 ──
+  console.log('[MAP] si='+si+' tileRLE='+(tmpl.tileRLE?'Y':'N')+' manualHoles='+(tmpl.spawnHoles?tmpl.spawnHoles.length:0)+' autoHoles='+spawnHoles.length+' rooms='+rooms.length+' bossRm='+(bossRm?'Y':'N')+' exits='+exits.length+' gateTiles='+_gateTiles.length);
   G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
-  G.bossGate=_gateTiles;G.bossGateOpen=false;G.bossSealed=false;
+  G.bossGate=_gateTiles;G.bossGateOpen=true;G.bossSealed=false;
   G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
   G.spawnHoles=spawnHoles;
   // ── 에디터 배치 장식 오브젝트 → MAP_OBJS ──
@@ -118502,7 +118527,7 @@ function update(){
     P._wwHitTimer+=_dtSp;
     if(P._wwHitTimer>=_wwTick){P._wwHitTimer-=_wwTick;
       const _wwBaseR=((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+(_wwLv-1)*11;
-      const _wwMin=100;const _wwMax=Math.min(500,300+(_wwLv-1)*22); // 1렙300, 5렙388, 10렙498→캡500
+      const _wwMin=100;const _wwMax=200+(_wwLv-1)*22; // 1렙200, 5렙288, 10렙398
       const _wwRangeBase=_wwMin+(_wwMax-_wwMin)*Math.min(1,_wwGrow);
       const _wwRange=_wwRangeBase;
       const _wwDmg=~~(meleeRef()*statStr()*1.0*(1+(_wwLv-1)*0.05)*2*(1+_wwGrow*(_wwFused?.6:.4))*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1)*_wwDrainBonus);
@@ -118597,7 +118622,10 @@ function update(){
   }
   case 'quakeStride':{
     _addSkProfTick('quakeStride');
-    P.iframes=Math.max(P.iframes,3); // 스킬 도중 무적
+    P.iframes=Math.max(P.iframes,10); // 스킬 도중 무적 (빈틈 없이)
+    // ST 10%/초 지속소모
+    P.st-=P.mst*0.1/60*sp;
+    if(P.st<=0){P.st=0;P.s='wRecover';P.st2=12;P._qsPhase=null;P._qsHitT=0;_qsKeyCode=null;P.iframes=Math.max(P.iframes,90);addTxt(P.x,P.y-30,'ST 부족!','#ff4444',30);break}
     const _qsLv=P._qsLv||P.skills.quakeStride||1;
     const _qsSpd=(P.speed+(bt().spd||0))*sp*0.6; // 이동속도 60%
     if(P._qsPhase==='dash'){
@@ -118626,7 +118654,7 @@ function update(){
         const _qsBurstSpd=(P.speed+(bt().spd||0))*1.8;
         P._qsVel=_qsBurstSpd;
         const _qsR2=200+(_qsLv-1)*33; // 초탄과 동일 스케일링
-        const _qsDmg2=~~(meleeRef()*statStr()*2.2*(1+(_qsLv-1)*0.2)*_fuseMul('quakeStride'));
+        const _qsDmg2=~~(meleeRef()*statStr()*4.0*(1+(_qsLv-1)*0.2)*_fuseMul('quakeStride'));
         const _qsEl2=wp().el||0;
         _qsWaveHit(P.x,P.y,P._qsDir,_qsR2,Math.PI/2.5,_qsDmg2,_qsEl2);
         G.shake=3*OPT.shake/100;
@@ -118640,12 +118668,15 @@ function update(){
     }
     // 키 릴리즈 or ST 부족 → 종료
     if(!_isQsKeyHeld()||P.st<=0){
-      P.s='wRecover';P.st2=12;P._qsPhase=null;P._qsHitT=0;_qsKeyCode=null}
+      P.s='wRecover';P.st2=12;P._qsPhase=null;P._qsHitT=0;_qsKeyCode=null;P.iframes=Math.max(P.iframes,90)} // 종료 후 1.5초 무적
     break;
   }
   // ═══ 버스트루프: E홀드 3단계 차지 범위폭발 ═══
   case 'burstLoop':{
     P.iframes=Math.max(P.iframes,3); // 차지 중 무적
+    // ST 10%/초 지속 소모
+    P.st-=P.mst*0.1/60*sp;
+    if(P.st<=0){P.st=0;addTxt(P.x,P.y-30,'ST 부족!','#ff4444',30);P.s='idle';P._blCharge=0;P._blTier=0;break}
     // 감속 이동 (30%)
     let _bldx=0,_bldy=0;
     if(isAct('up'))_bldy=-1;if(isAct('down'))_bldy=1;if(isAct('left'))_bldx=-1;if(isAct('right'))_bldx=1;
@@ -118980,7 +119011,7 @@ function update(){
     if(P._sbParryT>0)P._sbParryT-=sp; // 패링 윈도우 카운트다운
     if(!isAct('parry')||P.mp<=_psMpCost){
       // 평화의보호 해제 시 충격파 (보호막 크기에 비례) — 기폭팔 스타일
-      const _psEndR=P._psShieldR||60;
+      const _psEndR=P._psShieldR||100;
       G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:_psEndR*1.2,spd:8,det:false,peace:true};
       const _psBoomR=_psEndR*1.2;
       const _psBoomDmg=~~(meleeRef()*statInt()*(_psLv*.15+.85)*(_psEndR/200+.5));
@@ -119003,9 +119034,9 @@ function update(){
       P.s='idle';P._psShieldR=0;P._sbParryT=12;P._sbCd=60;
       break}
     P.mp-=_psMpCost;
-    // 보호막 크기: 악의보호자보다 약간 큼 (고정 50px)
-    const _psMaxR=50;
-    P._psShieldR=_psMaxR;
+    // 보호막 크기: 100→200, 10초간 초당10씩 성장
+    const _psGrowSec=Math.min(10,P._psHoldT/60); // 0~10초
+    P._psShieldR=100+_psGrowSec*10; // 100→200
     // 투사체 반사 (보호막 범위 내) — sBlock과 동일
     const _psR=P._psShieldR;
     for(let _pi=projs.length-1;_pi>=0;_pi--){
@@ -119030,8 +119061,8 @@ function update(){
         }
       }
     }
-    // HP 회복: Lv별 maxHP 비례 (Lv1=2%, Lv5=10%/초 → 10초면 만피)
-    const _psHealPct=(.02+(_psLv-1)*.02);
+    // HP 회복: 5%/초 시작, 초당 +0.5% 증가
+    const _psHealPct=(.05+_psGrowSec*.005);
     const _psHeal=~~(P.mhp*_psHealPct/60*sp);
     if(P.hp<P.mhp){P.hp=Math.min(P.mhp,P.hp+_psHeal);if(G._gcT%60<~~sp+1)addTxt(P.x,P.y-40,'+'+~~(P.mhp*_psHealPct*sp),'#88ffaa',20)}
     // 이동 (느리게)
@@ -126086,6 +126117,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       for(let k=0;k<30;k++){const a=Math.PI*2*k/30;const v=4+Math.random()*6;
         poolPart(e.x+Math.cos(a)*e.r,e.y+Math.sin(a)*e.r,Math.cos(a)*v,Math.sin(a)*v,'#ffaa00',2+Math.random()*3,20+Math.random()*15)}
       G._gateGuard=null;
+      G.bossGateOpen=true;_shDirty=true;buildMapCache(); // 게이트 해방 → 보스방 진입 가능
+      addTxt(P.x,P.y-60,'🚪 보스방 개방!','#44ff88',80);
     }
     // ═══ 지옥의 잔해 드롭 ═══
     if(!e.ib&&!isRareEtype(e.etype)){
@@ -126507,7 +126540,7 @@ function _detonateBlast(label,elSrc){
   // 회전기폭: 최소 범위 = 현재 회전참 범위
   const _wwBaseRDet=_wdFused?((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+((P.skills.whirlwind||1)-1)*11:0;
   const _wwGrowDet=_wdFused?Math.min(1,(P.wwAng||0)/60)+Math.min(1,(P.parryBank||0)/500):0;
-  const _wwLvDet=P.skills.whirlwind||1;const _wwRDet=_wdFused?100+(200+(_wwLvDet-1)*30+(_wwLvDet>=10?30:0)-100)*Math.min(1,_wwGrowDet):0;
+  const _wwLvDet=P.skills.whirlwind||1;const _wwRDet=_wdFused?100+(200+(_wwLvDet-1)*22-100)*Math.min(1,_wwGrowDet):0;
   const boomR=Math.max(_wwRDet,(150+(_detLv-1)*10)*_chgBars);
   if(_isFused('slamStorm')){
     SFX.shout();
@@ -127013,7 +127046,7 @@ const SKILL_LIST=[
   {id:'weakRev',name:'부활의 영역',cat:'tech',act:true,emoji:'💀',desc:'현재 위치에 부활 영역 설치 (10초). 영역 안에서 부활력 +10%. 쿨 25초. Lv당 범위+15 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (반경452, 10초). 슬로우 70%(+2%/Lv, 최대90%)+출혈. 무기뎀×20%(+5%/Lv). 악의 10, 쿨 10초. Lv당 범위+32',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},
   {id:'blueShot',name:'푸른비',cat:'magic',fixed:true,emoji:'💎',desc:'[고정: E, Lv500 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 200 소모. 적 추적. 쿨 5초. Lv당 뎀+10% 사거리+30',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:500},
-  {id:'burstLoop',name:'버스트루프',cat:'phys',fixed:true,hidden:true,emoji:'💫',desc:'[히든: 좌클, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.33/0.66/1초). 범위 600/1000/1400px. 3단 만충 자동폭발. STR 스케일, 무속성. 회전참급 DPS',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700}
+  {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: 좌클, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.33/0.66/1초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700}
 ];
 
 // ═══ 스킬 슬롯 시스템 ═══
@@ -127945,11 +127978,12 @@ function _qsWaveHit(ox,oy,dir,range,arcW,dmg,el){
     let diff=ang-dir;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
     if(Math.abs(diff)<arcW){
       const mult=elMul(el,e.el);const fd=~~(dmg*mult);
-      hurtE(e,fd,ang,false,{kbMult:0.5,poiseMult:1.0,noPoise:false},el);
+      hurtE(e,fd,ang,false,{kbMult:0.5,poiseMult:1.5,noPoise:false},el);
       if(!e.alive)continue;
-      // 포이즈 데미지 (200%)
-      const poiseDmg=~~(fd*2.0);e.poise-=poiseDmg;e.poiseR=0;
-      if(!e.ib){e.stunned=Math.max(e.stunned||0,~~(30*mult))}
+      // 포이즈 데미지 (300%)
+      const poiseDmg=~~(fd*3.0);e.poise-=poiseDmg;e.poiseR=0;
+      if(e.poise<=0){e.poise=0;e.stunned=Math.max(e.stunned||0,180);SFX.groggy();addTxt(e.x,e.y-22,'💥 그로기!','#ff8800',50)}
+      else if(!e.ib){e.stunned=Math.max(e.stunned||0,~~(30*mult))}
       const hitCol=ELP[el];
       const pCount=~~(Math.max(4,Math.min(fd/2,10))*OPT.parts/100);
       for(let j=0;j<pCount;j++){
@@ -135453,7 +135487,7 @@ function drawP(){
     const _wwGrowV=Math.min(1,_wa/60)+_wwBankV;
     const _wwLvV=P.skills.whirlwind||1;
     const _wwBaseR=((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+(_wwLvV-1)*11;
-    const _wwMaxV=Math.min(500,300+(_wwLvV-1)*22); // 타격과 동일: 1렙300, 10렙500
+    const _wwMaxV=200+(_wwLvV-1)*22; // 타격과 동일: 1렙200, 10렙398
     const _wwR=100+(_wwMaxV-100)*Math.min(1,_wwGrowV);
     const _wc=ELC[wp().el]||'#ffcc44';
 
@@ -137429,7 +137463,7 @@ $('retryBtn').onclick=async()=>{
     G._chainLights=[];G._orbWeaves=[];G._soulAnchors=[];G._chaseAoes=[];G._gsFlames=[];G._lavaPools=[];G._fireRains=[];G._shockGrids=[];G._donutSlams=[];G._safeCorners=[];G._crossWipes=[];G._tidalWipes=[];
     G._gSlamWave=[];G._lavaField=null;G._gwPillar=null;_shDirty=true;
     G.map=b.map;G.mw=b.mw;G.mh=b.mh;G.rooms=b.rooms;G.exits=b.exits;
-    G.bossGate=b.bossGate;G.bossGateOpen=false;G.bossSealed=false;
+    G.bossGate=b.bossGate;G.bossGateOpen=true;G.bossSealed=false;
     G._bossCx=b._bossCx;G._bossCy=b._bossCy;G._gateY=b._gateY;G._bossEntY=b._bossEntY;
     G.spawnHoles=b.spawnHoles;G.rifts=b.rifts;
     G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;
