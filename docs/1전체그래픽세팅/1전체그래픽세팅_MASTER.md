@@ -1282,7 +1282,12 @@ draw() {
   
   // ── 맵 ──
   _mapCvs (Pass 1~5 포함)           ← STEP 2, 3
-  
+
+  // ── 오리 스타일 분위기 오버레이 (스크린 좌표) ──
+  하단 안개띠 (LinearGradient, hell별 색상)
+  비네팅 (RadialGradient, rgba(0,0,0,.55))
+  플레이어 포인트 라이트 (RadialGradient, lighter blend, r=220)
+
   // ── 맵 위 월드 오브젝트 ──
   [GLOW-ORI] 발광 오브젝트           ← STEP 5
   [AMB-PART] layer=0 앰비언트       ← STEP 8
