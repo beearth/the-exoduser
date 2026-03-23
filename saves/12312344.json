@@ -1,25 +1,25 @@
 {
-  "ts": 1774196945974,
+  "ts": 1774229140559,
   "player": {
     "lv": 968,
-    "exp": 30452,
+    "exp": 19964,
     "maxExp": 49286,
-    "sp": 12,
+    "sp": 11,
     "ap": 0,
     "transLvDate": null,
     "transLvCount": 0,
-    "baseAtk": 43,
+    "baseAtk": 15,
     "baseDef": 62,
     "mpR": 3.159,
     "stR": 2.64,
-    "hp": 4380.755887500127,
-    "mhp": 5154,
-    "mp": 1388.2321800000211,
+    "hp": 4976.89654999996,
+    "mhp": 5013,
+    "mp": 1575,
     "mmp": 1575,
-    "st": 1016.6432245000051,
+    "st": 1126.5265720000177,
     "mst": 1322,
     "speed": 9.556868,
-    "shield": 1092.8752000000013,
+    "shield": 2232,
     "mshield": 2721
   },
   "inv": {
@@ -4779,7 +4779,8 @@
         "itemLv": 400,
         "_gx": 6,
         "_gy": 44,
-        "_pickT": 1774196731361
+        "_pickT": 1774196731361,
+        "_spdMig": 3
       },
       {
         "id": 1774174095335.702,
@@ -4934,7 +4935,8 @@
         "itemLv": 400,
         "_gx": 2,
         "_gy": 46,
-        "_pickT": 1774196732229
+        "_pickT": 1774196732229,
+        "_spdMig": 3
       },
       {
         "id": 1774172184347.9392,
@@ -5670,7 +5672,8 @@
         "itemLv": 400,
         "_gx": 4,
         "_gy": 52,
-        "_pickT": 1774196729358
+        "_pickT": 1774196729358,
+        "_spdMig": 3
       },
       {
         "id": 1774196732647.5674,
@@ -6000,7 +6003,8 @@
         "itemLv": 400,
         "_gx": 4,
         "_gy": 56,
-        "_pickT": 1774196730309
+        "_pickT": 1774196730309,
+        "_spdMig": 3
       },
       {
         "id": 1774171857648.9177,
@@ -6846,7 +6850,8 @@
         "itemLv": 400,
         "_gx": 8,
         "_gy": 62,
-        "_pickT": 1774196729459
+        "_pickT": 1774196729459,
+        "_spdMig": 3
       },
       {
         "id": 1774196728362.4114,
@@ -7296,7 +7301,8 @@
         "itemLv": 400,
         "_gx": 4,
         "_gy": 68,
-        "_pickT": 1774196732930
+        "_pickT": 1774196732930,
+        "_spdMig": 3
       },
       {
         "id": 1774196728545.8762,
@@ -7350,7 +7356,8 @@
         "itemLv": 400,
         "_gx": 8,
         "_gy": 68,
-        "_pickT": 1774196732762
+        "_pickT": 1774196732762,
+        "_spdMig": 3
       },
       {
         "id": 1774196732631.416,
@@ -7377,7 +7384,8 @@
         "itemLv": 400,
         "_gx": 0,
         "_gy": 70,
-        "_pickT": 1774196732647
+        "_pickT": 1774196732647,
+        "_spdMig": 3
       },
       {
         "id": 1774196732798.6365,
@@ -7404,7 +7412,8 @@
         "itemLv": 400,
         "_gx": 2,
         "_gy": 70,
-        "_pickT": 1774196732812
+        "_pickT": 1774196732812,
+        "_spdMig": 3
       },
       {
         "id": 1774196732311.5574,
@@ -7472,7 +7481,8 @@
         "itemLv": 400,
         "_gx": 6,
         "_gy": 70,
-        "_pickT": 1774196729376
+        "_pickT": 1774196729376,
+        "_spdMig": 3
       },
       {
         "id": 1774196729541.4478,
@@ -7499,7 +7509,8 @@
         "itemLv": 400,
         "_gx": 8,
         "_gy": 70,
-        "_pickT": 1774196729559
+        "_pickT": 1774196729559,
+        "_spdMig": 3
       },
       {
         "id": 1774196732612.4048,
@@ -7526,7 +7537,8 @@
         "itemLv": 400,
         "_gx": 0,
         "_gy": 72,
-        "_pickT": 1774196732630
+        "_pickT": 1774196732630,
+        "_spdMig": 3
       },
       {
         "id": 1774196728645.2544,
@@ -7553,7 +7565,8 @@
         "itemLv": 400,
         "_gx": 2,
         "_gy": 72,
-        "_pickT": 1774196728663
+        "_pickT": 1774196728663,
+        "_spdMig": 3
       },
       {
         "id": 1774196728879.3792,
@@ -7580,7 +7593,8 @@
         "itemLv": 400,
         "_gx": 4,
         "_gy": 72,
-        "_pickT": 1774196728895
+        "_pickT": 1774196728895,
+        "_spdMig": 3
       },
       {
         "id": 1774172846327.6624,
@@ -7859,7 +7873,8 @@
         "itemLv": 400,
         "_gx": 8,
         "_gy": 74,
-        "_pickT": 1774196728479
+        "_pickT": 1774196728479,
+        "_spdMig": 3
       },
       {
         "id": 1774196730410.1484,
@@ -11445,6 +11460,69 @@
         "_gx": 2,
         "_gy": 0,
         "_pickT": 1774196731228
+      },
+      {
+        "id": 1774228806116.366,
+        "slot": "ring2",
+        "el": 0,
+        "rarity": 0,
+        "tier": 3,
+        "name": "미스릴 반지",
+        "emoji": "💍",
+        "eDef": 4,
+        "critRate": 1.32,
+        "affixes": [],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 11.19,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": null,
+        "reqLv": 300,
+        "itemLv": 400,
+        "_gx": 0,
+        "_gy": 0,
+        "_pickT": 1774228806128
+      },
+      {
+        "id": 1774228806116.4749,
+        "slot": "boots",
+        "el": 3,
+        "rarity": 3,
+        "tier": 3,
+        "name": "나락 전투화",
+        "emoji": "👢",
+        "def": 14,
+        "spd": 0.43,
+        "bonusSt": 32,
+        "chargeDist": 41,
+        "chargeCharge": 1,
+        "bStr": 40,
+        "bInt": 29,
+        "affixes": [
+          {
+            "id": "dashBoost",
+            "tier": 0,
+            "value": 0.3015
+          },
+          {
+            "id": "dropRate",
+            "tier": 0,
+            "value": 0.1353
+          },
+          {
+            "id": "movSpeed",
+            "tier": 0,
+            "value": 0.0652
+          }
+        ],
+        "_implicitStat": "_iMovSpd",
+        "_implicitVal": 6.74,
+        "_implicitKo": "이동속도 +X%",
+        "legendarySpecial": null,
+        "reqLv": 300,
+        "itemLv": 400,
+        "_gx": 4,
+        "_gy": 0,
+        "_pickT": 1774228806130
       }
     ],
     "equipped": {
@@ -12193,12 +12271,12 @@
       "count": 1
     },
     {
-      "type": "st",
-      "count": 234
+      "type": null,
+      "count": 0
     },
     {
-      "type": "mp",
-      "count": 202
+      "type": null,
+      "count": 0
     },
     {
       "type": null,
@@ -12207,8 +12285,8 @@
   ],
   "game": {
     "stage": 15,
-    "kills": 343847,
-    "mats": 58032252
+    "kills": 343932,
+    "mats": 58038932
   },
   "bagMax": 300,
   "hellCleared": [
@@ -12292,13 +12370,13 @@
   "skProf": {
     "holyDome": 1225,
     "maliceSwipe": 2965,
-    "chargeBoost": 4050,
-    "whirlwind": 1567,
+    "chargeBoost": 4170,
+    "whirlwind": 1586,
     "spikeTrap": 15,
-    "detonate": 593,
+    "detonate": 594,
     "blastShot": 15,
     "fanShot": 51,
-    "omniBeam": 172,
+    "omniBeam": 175,
     "maliceStorm": 4315,
     "plagueBurst": 15,
     "ghostWalk": 106,
@@ -12308,8 +12386,8 @@
     "elemMissile": 211,
     "iceOrb": 15,
     "maliceMortar": 850,
-    "maliceHunt": 1555,
-    "guardian": 2163,
+    "maliceHunt": 1570,
+    "guardian": 2230,
     "boneWall": 15,
     "chainSlam": 1570,
     "shieldThrow": 1945,
@@ -12324,28 +12402,28 @@
     "hellRay": 1270,
     "blueShot": 2410,
     "kiSlash": 9999,
-    "quakeStride": 60,
-    "weakRev": 420,
+    "quakeStride": 62,
+    "weakRev": 450,
     "burstLoop": 441
   },
   "fuseProfSec": {},
   "cardProf": {
-    "bladeFuse": 55008.06666911437,
-    "plagueFuse": 55008.06666911437,
-    "whirlDet": 16333.549999911029,
-    "slamStorm": 16333.549999911029,
-    "stormBeam": 21877.416666550274,
+    "bladeFuse": 55436.61666918497,
+    "plagueFuse": 55436.61666918497,
+    "whirlDet": 16383.549999910592,
+    "slamStorm": 16383.549999910592,
+    "stormBeam": 21947.949999882916,
     "shieldFuse": 79845,
     "iceMortar": 3569,
     "boneStorm": 9553,
     "elecRepent": 13331,
-    "dimBreach": 14518,
-    "dimSlam": 20776,
-    "dimThunder": 24606,
+    "dimBreach": 14638,
+    "dimSlam": 20896,
+    "dimThunder": 24726,
     "holyFuse": 3134,
     "holyIce": 3140,
-    "sixFuse": 1863.8999999993503,
-    "elemFuse": 5543.8666666546305
+    "sixFuse": 1880.0499999993383,
+    "elemFuse": 5564.399999987709
   },
   "activeChargeSk": "charge",
   "activeBowSk": "needleShot",
@@ -12360,7 +12438,7 @@
     "weakRev",
     "quakeStride",
     "maliceHunt",
-    null,
+    "giantSlam",
     "holyDome"
   ],
   "ultSlot": "blackStar",

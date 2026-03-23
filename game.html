@@ -117884,14 +117884,16 @@ function update(){
   // 플로우필드 갱신 (30프레임마다)
   _ffTimer+=_dtSp;if(_ffTimer>=.25){_ffTimer=0;_ffBuild()}
   if(G._dbgSlam>0){G._dbgSlam--;document.title='[SLAM] s='+P.s+' HS='+G.hitStop+' SM='+G.slowMo+' nhsT='+(G._noHitStopT||0).toFixed(1)+' f='+G._dbgSlam;}
+  // ═══ 쓰러짐/사망 플래그 — 아래 모든 플레이어 행동에서 체크 ═══
+  const _pDead=P.s==='fallen'||P.s==='dead';
   if(G.pets)updatePet(); // 펫 이동은 항상, 수거는 petAuto 토글
   _updateBurst(_dtSp); // GPU Burst (별도 context)
   mergeMatItems(); // 악의 아이템 자동 합체
   _updateSlimes(); // 슬라임 아이템 포식 + 합체
   // ── 작살 게이지 자동 회복 ──
-  {const _hgRegen=_HARP_GAUGE_MAX*.05/60*(1+((P.skills.chargeBoost||0))*.05)*pChargeGauge();if(_harpGauge<_HARP_GAUGE_MAX&&!_dashHold&&!_harpActive&&!_dashActive)_harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+_hgRegen*_dtSp)}
+  if(!_pDead){const _hgRegen=_HARP_GAUGE_MAX*.05/60*(1+((P.skills.chargeBoost||0))*.05)*pChargeGauge();if(_harpGauge<_HARP_GAUGE_MAX&&!_dashHold&&!_harpActive&&!_dashActive)_harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+_hgRegen*_dtSp)}
   // ── 작살 홀드 차징 (기존 X키 방식 그대로) ──
-  if(_dashHold&&_dashHoldF<120){_dashHoldF++;
+  if(!_pDead&&_dashHold&&_dashHoldF<120){_dashHoldF++;
     if(_dashHoldF>=_HARP_TIER_F[3])_dashTier=3;
     else if(_dashHoldF>=_HARP_TIER_F[2])_dashTier=2;
     else _dashTier=1;
@@ -118151,15 +118153,6 @@ function update(){
     ps._atkC=~~(ps._atkC*.8);ps._kiteC=~~(ps._kiteC*.8);
   }
 
-  // ═══ 쓰러짐 카운트다운 ═══
-  if(P.s==='fallen'){
-    P.st2-=sp;
-    // 카운트다운 파티클 (피 흘리기)
-    if(Math.random()>.7){poolPart(P.x+(Math.random()-.5)*20,P.y+(Math.random()-.5)*10,(Math.random()-.5)*1,-0.5-Math.random(),'#880000',2+Math.random()*2,15+Math.random()*10)}
-    if(P.st2<=0){_fallenResolve();}
-    return; // 쓰러짐 중 모든 행동 차단
-  }
-  if(P.s==='dead')return; // 사망 확정 — 모든 행동 차단
   // ═══ 신성한 땅 — 안에 있는지 체크 ═══
   let _inHolyDome=false,_hdLv=1;
   if(G._fireZones){for(let _hdi=0;_hdi<G._fireZones.length;_hdi++){const _hd=G._fireZones[_hdi];if(_hd.type==='holyDome'&&dst(P.x,P.y,_hd.x,_hd.y)<_hd.r){_inHolyDome=true;_hdLv=_hd.lv||1;break}}}
@@ -118345,6 +118338,12 @@ function update(){
 
   if(P.s!=='sBlock'&&(P._sbCd||0)>0)P._sbCd-=sp; // 보호막 쿨다운 (해제 후 1.5초)
   switch(P.s){
+  case 'fallen':{
+    P.st2-=sp;
+    if(Math.random()>.7){poolPart(P.x+(Math.random()-.5)*20,P.y+(Math.random()-.5)*10,(Math.random()-.5)*1,-0.5-Math.random(),'#880000',2+Math.random()*2,15+Math.random()*10)}
+    if(P.st2<=0)_fallenResolve();
+    break;}
+  case 'dead':{break;}
   case 'iceOrb':{
     // 얼음보주: 이동 불가, 빔 회복만 허용
     break;}
@@ -119371,7 +119370,7 @@ function update(){
     }
     // 빔 데미지 = 기본마법뎀 × 스킬레벨 배율 (틱당, MP 소비는 지속시간만 결정)
     const _omniSlv=P.skills.omniBeam||1;
-    const _beamLvMul=0.1+P.lv*P.lv*0.0004; // 제곱 커브: 1렙=0.1, 10렙=0.14, 25렙=0.35, 50렙=1.1, 100렙=4.1
+    const _beamLvMul=0.2+P.lv*0.016; // 선형 커브: 1렙=0.216, 25렙=0.6, 50렙=1.0, 100렙=1.8
     const _beamDmgBase=meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*.37*(1+(_omniSlv-1)*.18)*_beamLvMul*_fuseMul('omniBeam'); // 레벨 스케일링: 초반 약하고 고렙 강해짐
     // 레이저류: 끝점에서만 데미지 (관통 없음)
     // 빔 중첩: 적에게 빔 지속 적중 시 중첩+1 (최대30), 데미지 배율 = 1 + 중첩*0.1 (최대 4배)
@@ -119379,7 +119378,7 @@ function update(){
       // 만화광선(3발)/추적뇌전(6발): 원소 레이저
       const _omniLv=P.skills.omniBeam||1;
       const _emLv2=P.skills.elemMissile||1;
-      const _dmgMul=_isElemBeam?(2.2+(_emLv2-1)*.12):(2.0+(_omniLv-1)*.1);
+      const _dmgMul=_isElemBeam?(1.0+(_emLv2-1)*.08):(2.0+(_omniLv-1)*.1); // 추적뇌전: 6발이라 개별 배율 낮춤
       const _bRng=~~(500+((_isElemBeam?_emLv2:_omniLv)-1)*55.6);
       if(!P._omniPts)P._omniPts=_beamPtsPool; // 풀 참조
       const _twistSpd=_now*0.004;
@@ -119595,7 +119594,7 @@ function update(){
   if(!G._shT)G._shT=0;if(++G._shT>=2){G._shT=0;const _h0=performance.now();shRebuild();rebuildDeadPool();if(_DEBUG_PERF)_dbgHash=performance.now()-_h0;}
   // ═══ 몬스터 이동 사운드 매핑 → 전역으로 이동 (update() 위) ═══
   // ═══ 엘리트/오라 강제 제거 (기존 스폰 포함) ═══
-  for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];if(e.alive){e._aAtkM=1;e._aSpdM=1;e._aDefM=1;e._auraL=null;if(!e.ib&&e.elite){e.elite=0;e.mods=[];e.aura=null;e.eShield=0;e.eShieldMax=0;e.reviveIframes=0}}}
+  for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];if(e.alive){e._aAtkM=1;e._aSpdM=1;e._aDefM=1;e._auraL=null;if(!e.ib&&e.elite){e.elite=0;e.mods=[];e.aura=null;e.reviveIframes=0}}}
   for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];if(!e.alive||!e.aura)continue;
     const _ad=_AURA_MAP[e.aura];if(!_ad)continue;
     const _ar=_ad.range;
@@ -126845,7 +126844,7 @@ function _drReset(){_drBuf=[];_drIdx=0;_drLen=0;_drCaptT=0}
 function die(){
   // ── 쓰러짐 → 3초 카운트다운 → 부활 판정 ──
   if(P.s==='fallen')return; // 이미 쓰러진 상태면 중복 방지
-  P.hp=0;P.s='fallen';P.st2=90; // 1.5초(90f) 카운트다운
+  P.hp=0;P.s='fallen';P.st2=300; // 5초(300f) 카운트다운
   P.iframes=9999; // 쓰러진 동안 무적
   P._fallenAng=P.facing+Math.PI; // 쓰러지는 방향
   G.slowMo=Math.max(G.slowMo,30); // 슬로모 연출
@@ -126856,9 +126855,8 @@ function die(){
   let _revZoneBonus=0;
   if(G._fireZones){for(let _rzi=0;_rzi<G._fireZones.length;_rzi++){const _rzf=G._fireZones[_rzi];if(_rzf.type==='weakRev'&&dst(P.x,P.y,_rzf.x,_rzf.y)<_rzf.r){_revZoneBonus=0.10+((_rzf.lv||1)-1)*0.01;break}}}
   const _revPowBonus=_eqAffix('revivePow')+_eqImplicit('_iRevPow')*.01+_revZoneBonus;
-  const _demonPow=Math.min(100,~~(P.lv/100)*5+_revPowBonus*100); // 100렙당 5% (Lv1000=50%)
-  const _revCdMul=Math.max(.4,1+_eqAffix('reviveCd'));
-  const _revCdFrames=~~(10800*_revCdMul);
+  const _demonPow=100; // 부활 확정 (쿨다운으로 제한)
+  const _revCdFrames=36000; // 10분(600초) 쿨다운
   P._fallenRevChance=_demonPow;
   P._fallenRevCdFrames=_revCdFrames;
   P._fallenCanRevive=_demonPow>0&&(P._demonRevCd||0)<=0;
@@ -126873,7 +126871,7 @@ function _fallenResolve(){
     P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;
     P.s='idle';P.st2=0;P.iframes=120; // 2초 무적
     G._flashT=12;G._flashCol='#ff0000';G.shake=20*OPT.shake/100;G.slowMo=30;
-    SFX.groggy();playSample('boss_howl',.8,_r(.9,.1));
+    SFX.levelup();playSample('voice_magic',1,_r(1,.1));
     addTxt(P.x,P.y-50,'악마화 부활!','#ff2200',120);
     addTxt(P.x,P.y-25,'부활력 '+P._fallenRevChance+'%','#ff8844',50);
     for(let k=0;k<30;k++){const a=Math.PI*2*k/30;poolPart(P.x,P.y,Math.cos(a)*8,Math.sin(a)*8,k%2===0?'#ff0000':'#ff8800',5,20)}
@@ -135606,7 +135604,7 @@ function drawP(){
     // 스프라이트 그리기 (죽음 시 쓰러짐 연출)
     X.save();X.translate(_px,_py);
     if(_apDead){
-      const _dieT=Math.min(1,P.s==='fallen'?(1-P.st2/90)*2:1); // 빠르게 쓰러짐
+      const _dieT=Math.min(1,P.s==='fallen'?(1-P.st2/300)*3:1); // 1초 만에 쓰러짐
       X.translate(0,_dieT*20*_pScale); // 바닥으로 내려감
       X.rotate(_dieT*Math.PI/2); // 옆으로 쓰러짐
       X.globalAlpha=Math.max(.3,1-_dieT*.5);
@@ -135772,7 +135770,7 @@ function drawP(){
   // ══ 쓰러짐 카운트다운 렌더 ══
   if(P.s==='fallen'){
     const _fSec=Math.ceil(Math.max(0,P.st2)/60);
-    const _fProg=P.st2/90; // 1→0
+    const _fProg=P.st2/300; // 1→0
     // 어두운 비네팅
     X.save();X.globalAlpha=.3*(1-_fProg);X.fillStyle='#000';
     X.fillRect(G.cam.x-C.width/2,G.cam.y-C.height/2,C.width,C.height);X.restore();
