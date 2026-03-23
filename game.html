@@ -11266,7 +11266,7 @@ function _burstLoopExplode(tier){
   const _blLv=P.skills.burstLoop||1;
   const _blR=[0,600,1000,1400][tier];
   // STR 스케일, 회전참급 DPS: 회전참 1초=약 틱×2.4회×(base×2)=base×4.8. 버스트루프 1초차지=동급
-  const _blDmgMul=[0,5,12,25][tier]; // 단계별 배율 (1단=0.33초분, 2단=0.66초분, 3단=1초분)
+  const _blDmgMul=[0,15,36,75][tier]; // 단계별 배율 (×3)
   const _blBase=meleeRef()*statStr()*pAtkMul();
   const _blDmg=Math.max(10,~~(_blBase*_blDmgMul*(1+(_blLv-1)*0.15)));
   console.log('[BL] tier='+tier+' base='+~~_blBase+' mul='+_blDmgMul+' dmg='+_blDmg+' melee='+~~meleeRef()+' str='+statStr().toFixed(3)+' atk='+pAtkMul().toFixed(3));
@@ -11300,7 +11300,7 @@ function _burstLoopExplode(tier){
   playSample('fireball',1,_r(.6-.1*tier,.1));
   if(tier>=2)playSample('fire_death',.7,_r(1,.1));
   if(tier>=3){playSample('fire_death2',.8,_r(.8,.1));G.slowMo=30}
-  P.s='magicRecover';P.st2=~~(20/pMagicSpd());
+  P.s='idle';P.iframes=Math.max(P.iframes,60); // 폭발 후 1초 무적
   P._blCharge=0;P._blTier=0;
 }
 
@@ -117897,7 +117897,7 @@ function update(){
       const _awMax=_harpDistTier(_dashTier);
       let _awWall=false;
       for(let _awd=16;_awd<=_awMax;_awd+=16){
-        if(!canMv(P.x+_awCos*_awd,P.y+_awSin*_awd,2)){_awWall=true;break}
+        if(!canMvBlink(P.x+_awCos*_awd,P.y+_awSin*_awd,2)){_awWall=true;break}
       }
       if(_awWall){
         const _awGCost=_HARP_GAUGE_COST[_dashTier];
@@ -117933,7 +117933,7 @@ function update(){
     // 최대 사거리 도달 → 바닥에 꽂힘
     if(!_harpHit&&_harpDist>=_harpMaxDist){
       // 벽이면 약간 뒤로 보정
-      if(!canMv(_harpX,_harpY,2)){_harpX-=_harpVX*2;_harpY-=_harpVY*2}
+      if(!canMvBlink(_harpX,_harpY,2)){_harpX-=_harpVX*2;_harpY-=_harpVY*2}
       _harpHit=true;
       playSample('chain_stick',.8,_r(1,.1));
     }
@@ -118645,6 +118645,7 @@ function update(){
   }
   // ═══ 버스트루프: E홀드 3단계 차지 범위폭발 ═══
   case 'burstLoop':{
+    P.iframes=Math.max(P.iframes,3); // 차지 중 무적
     // 감속 이동 (30%)
     let _bldx=0,_bldy=0;
     if(isAct('up'))_bldy=-1;if(isAct('down'))_bldy=1;if(isAct('left'))_bldx=-1;if(isAct('right'))_bldx=1;
@@ -119634,7 +119635,7 @@ function update(){
       if(_bfActive&&!e.ib){const _bfd2b=dst2(_bf.x,_bf.y,e.x,e.y);if(_bfd2b<_bfR2){const _bfdb=Math.sqrt(_bfd2b)||1;const _bfa2=Math.atan2(e.y-_bf.y,e.x-_bf.x);e.x=_bf.x+Math.cos(_bfa2)*_bf.r;e.y=_bf.y+Math.sin(_bfa2)*_bf.r}}
       const _edd=(e.x-_eox)*(e.x-_eox)+(e.y-_eoy)*(e.y-_eoy);e._isMoving=_edd>1;if(_edd>0)e._walkDist=(e._walkDist||0)+Math.sqrt(_edd)
       // 벽 끼임 처리: 벽 안에 있으면 즉사
-      if(isW(e.x,e.y,true)){e.hp=0;e.alive=false;e.s='dead';if(e.ib){G.bossAlive=false}rollDrop(e);addExp(e.exp||1)}}
+      if(isW(e.x,e.y,true)){e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);if(e.ib){e._bossRevJudged=true;e._reviveTimer=180;e._reviveX=e.x;e._reviveY=e.y;e._bossRevChance=0;e._bossRevRoll=1;console.log('[BOSS-WALL] boss stuck in wall → revive timer (will fail)');}}}
     else if(e._reviveTimer>0){
       e._reviveTimer-=sp;
       // 부활 전조 파티클
@@ -130686,7 +130687,7 @@ function renderStatSummary(){
     `<div style="${_sLn}">콤보뎀+: <span style="color:${_afc('comboBoost','#ff9944')}">${_afp('comboBoost')}</span> | 작살뎀+: <span style="color:${_afc('dashBoost','#ff6644')}">${_afp('dashBoost')}</span> | 스킬뎀+: <span style="color:${_afc('skillBoost','#bb44ff')}">${_afp('skillBoost')}</span></div>`+
     `<div style="${_sLn}">패리+: <span style="color:${_afc('parryBonus','#44ff88')}">${_afp('parryBonus')}</span> | 체인: <span style="color:${_afc('chainTarget','#ffcc44')}">+${_af('chainTarget').toFixed(0)}</span> | 정화: <span style="color:${_afc('statusClean','#44ff88')}">${_af('statusClean').toFixed(0)}회</span></div>`+
     `<div style="${_sLn}">불굴: <span style="color:${_afc('lastStand','#ffdd44')}">${_af('lastStand').toFixed(0)}</span> | 부활: <span style="color:${_afc('reviveOnce','#44ff88')}">${_af('reviveOnce')?~~(_af('reviveOnce')*100)+'%':'0'}</span></div>`+
-    `<div style="${_sLn}">✟ 신성력: <span style="color:${_afc('antiRevive','#ffdd88')}">${~~(_af('antiRevive')*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${['weapon','shield','necklace','ring1','ring2','bracelet','cape'].map(s=>{const it=INV.equipped[s];if(!it||!it.affixes)return'';const a=it.affixes.find(a=>a.id==='antiRevive');return a?(({'weapon':'무기','shield':'견갑','necklace':'목걸이','ring1':'반지1','ring2':'반지2','bracelet':'팔찌','cape':'망토'}[s]||s)+~~(a.value*100)+'%'):''}).filter(v=>v).join('+')||'없음'})</span></div>`+
+    `<div style="${_sLn}">✟ 신성력: <span style="color:${_afc('antiRevive','#ffdd88')}">${~~(_af('antiRevive')*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${(()=>{const _slN={weapon:'무기',shield:'견갑',armor:'갑옷',helmet:'투구',boots:'부츠',gloves:'장갑',pants:'바지',necklace:'목걸이',ring1:'반지1',ring2:'반지2',bracelet:'팔찌',cape:'망토',bow:'활'};const _parts=[];let _sum=0;for(const s of SLOT_NAMES){const it=INV.equipped[s];if(!it||!it.affixes)continue;for(let ai=0;ai<it.affixes.length;ai++){const a=it.affixes[ai];if(a.id==='antiRevive'){const v=~~(a.value*100);_sum+=v;_parts.push((_slN[s]||s)+v+'%')}}}return _parts.length?_parts.join('+')+'='+_sum+'%':'없음'})()})</span></div>`+
     `<div style="${_sLn}">☠ 악마력(부활력): <span style="color:#ff4444">${Math.min(100,~~(P.lv/100)*5+(P.skills.demonRevive||0)*2+~~((_af('revivePow')+_eqImplicit('_iRevPow')*.01)*100))}%</span> <span style="color:#887766;font-size:1.1rem">(자연${~~(P.lv/100)*5}+스킬${(P.skills.demonRevive||0)*2}+장비${~~((_af('revivePow')+_eqImplicit('_iRevPow')*.01)*100)})</span></div>`+
     // ── 전투 통계 ──
     `<div style="${_sHd}">📈 전투 통계</div>`+
@@ -137640,9 +137641,9 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   BAG_MAX=42;invFilter={slot:null,rarity:null,el:null};
   G.on=false;G.stage=0;G.kills=0;G.mats=1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};
   (async()=>{
+    let _loaded=false;
     try{
       const res=await fetch('/api/load/'+encodeURIComponent(_SLOT));
-      let _loaded=false;
       if(res.ok){
         const j=await res.json();
         if(j.ok&&j.data&&j.data.player){
