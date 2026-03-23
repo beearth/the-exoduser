@@ -120773,6 +120773,23 @@ function update(){
     }
     if(P._blueBarrage.cnt>=P._blueBarrage.max)P._blueBarrage=null;
   }
+  // ═══ 푸른비 E홀드 추가 발사 (초당 10발, MP 틱소모) ═══
+  if(isHeld('beam')&&(P.activeMagicSk||'beam')==='blueShot'&&P.skills.blueShot>=1&&P._blueBarrage){
+    P._blueHoldT=(P._blueHoldT||0)-sp;
+    if(P._blueHoldT<=0){
+      P._blueHoldT+=6; // 6프레임 간격 = 초당 10발
+      const _bhMpTick=5; // 틱당 5 MP (초당 50 MP)
+      if(P.mp>=_bhMpTick){
+        P.mp-=_bhMpTick;
+        const _bhLv=P.skills.blueShot||1;
+        const _bhDmg=~~(meleeRef()*statInt()*pMagicMul()*DPS_BAL.magic*3*(1+(_bhLv-1)*.1));
+        const _bhA=P.facing+(Math.random()-.5)*.15;
+        const _bhSpd=7+Math.random()*2;
+        const _pp=_getPProj();_pp.x=P.x+Math.cos(_bhA)*16;_pp.y=P.y+Math.sin(_bhA)*16;_pp.vx=Math.cos(_bhA)*_bhSpd;_pp.vy=Math.sin(_bhA)*_bhSpd;_pp.dmg=_bhDmg;_pp.el=EL.P;_pp.maxDist=750+(_bhLv-1)*45;_pp.dist=0;_pp.r=12;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.pierce=Math.min(0.95,(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05);_pp.pierceMax=3+(PASSIVES.pPierce||0);_pp._aoeR=100;_pp._aoeDmg=~~(_bhDmg*.07);pProjs[pProjs.length]=_pp;
+        if(P._blueHoldT<-12)P._blueHoldT=0; // 프레임 밀림 방지
+      } else {addTxt(P.x,P.y-25,'MP 부족!','#4488ff',25)}
+    }
+  } else {P._blueHoldT=0}
   // ═══ 바늘출 순차 발사 (개틀링) ═══
   if(P._needleBurst&&P._needleBurst.cnt<P._needleBurst.max){
     P._needleBurst.timer-=sp;
