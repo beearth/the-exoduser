@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>타일 텍스처 에디터</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#ccc;font:12px monospace;display:flex;height:100vh;overflow:hidden;user-select:none}
+#mapnav{width:170px;background:#0d0d0d;border-right:1px solid #222;display:flex;flex-direction:column;flex-shrink:0}
+#mapnav h2{padding:6px;background:#1a1a1a;color:#ffea00;font-size:12px;text-align:center;border-bottom:1px solid #333}
+#ch-tabs{display:flex;flex-wrap:wrap;padding:2px;gap:2px}
+.ch-tab{flex:1;min-width:36px;padding:3px 1px;text-align:center;cursor:pointer;border:1px solid #333;background:#1a1a1a;color:#888;font-size:9px;border-radius:3px}
+.ch-tab:hover{background:#222}.ch-tab.active{color:#000;font-weight:bold}
+#stage-list{flex:1;overflow-y:auto;padding:3px}
+.st-item{padding:5px 6px;cursor:pointer;border:1px solid transparent;border-radius:3px;margin:1px 0;display:flex;justify-content:space-between;align-items:center;font-size:10px}
+.st-item:hover{background:#1a1a1a;border-color:#333}
+.st-item.active{background:#222;border-color:#ffea00}
+.st-item .sz{font-size:8px;color:#666}
+.st-item .dot{width:6px;height:6px;border-radius:50%;margin-right:4px;flex-shrink:0}
+#map-footer{padding:5px;border-top:1px solid #333;font-size:9px}
+#map-footer button{width:100%;padding:3px;margin:1px 0;background:#222;color:#ccc;border:1px solid #444;cursor:pointer;font:9px monospace;border-radius:2px}
+#map-footer button:hover{background:#333}
+#palette{width:220px;background:#111;border-right:1px solid #333;display:flex;flex-direction:column;flex-shrink:0;overflow-y:auto}
+#palette h2{padding:8px;background:#1a1a1a;color:#ffea00;font-size:13px;text-align:center;border-bottom:1px solid #333}
+.cat-label{padding:4px 8px;color:#888;font-size:10px;background:#0d0d0d;border-bottom:1px solid #222}
+.tile-item{display:inline-block;width:96px;height:96px;margin:4px;border:2px solid #333;cursor:pointer;position:relative;border-radius:4px;overflow:hidden;vertical-align:top}
+.tile-item:hover{border-color:#888}
+.tile-item.active{border-color:#ffea00;box-shadow:0 0 8px #ffea0066}
+.tile-item img{width:100%;height:100%;object-fit:cover}
+.tile-item .label{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.85);color:#aaa;font-size:8px;text-align:center;padding:2px}
+#workspace{flex:1;position:relative;overflow:hidden}
+#workspace canvas{display:block;cursor:crosshair}
+#toolbar{position:absolute;top:6px;left:6px;display:flex;gap:4px;z-index:10}
+#toolbar button{padding:5px 10px;background:#222;color:#ccc;border:1px solid #444;cursor:pointer;font:11px monospace;border-radius:3px}
+#toolbar button:hover{background:#333;border-color:#888}
+#toolbar button.active{border-color:#ffea00;color:#ffea00}
+#hud{position:absolute;bottom:6px;left:6px;color:#888;font-size:11px;z-index:10}
+#hud b{color:#ffea00}
+#sidebar{width:200px;background:#111;border-left:1px solid #333;display:flex;flex-direction:column;flex-shrink:0;padding:8px}
+.sec{margin-bottom:12px}
+.sec h4{color:#888;font-size:11px;margin-bottom:6px}
+.sec label{display:block;color:#aaa;font-size:10px;margin:3px 0}
+.sec input[type=range]{width:100%}
+.sec input[type=number]{width:60px;background:#222;color:#ccc;border:1px solid #444;padding:2px 4px;font:11px monospace}
+.sec select{width:100%;background:#222;color:#ccc;border:1px solid #444;padding:3px;font:11px monospace}
+.sec button{width:100%;padding:5px;margin:2px 0;background:#222;color:#ccc;border:1px solid #444;cursor:pointer;font:10px monospace;border-radius:3px}
+.sec button:hover{background:#333}
+.layer-row{display:flex;align-items:center;gap:4px;padding:2px 0;font-size:10px}
+.layer-row .vis{cursor:pointer;width:16px;text-align:center}
+</style>
+</head><body>
+<div id="mapnav">
+  <h2>맵 리스트</h2>
+  <div id="ch-tabs"></div>
+  <div id="stage-list"></div>
+  <div id="map-footer">
+    <button onclick="saveCurrentMap()" style="background:#1a2a00;color:#aaff66;border-color:#aaff66">💾 현재맵 저장</button>
+    <button onclick="saveAllMaps()" style="background:#002a1a;color:#66ffaa;border-color:#66ffaa">💾 전체저장</button>
+    <button onclick="loadAllMaps()" style="background:#001f2a;color:#66ddff;border-color:#66ddff">📂 불러오기</button>
+    <button onclick="exportCurrentPNG()" style="background:#1a0030;color:#cc88ff;border-color:#cc88ff">📤 PNG내보내기</button>
+    <div id="map-stats" style="margin-top:3px;color:#555">-</div>
+  </div>
+</div>
+<div id="palette">
+  <h2>타일 팔레트</h2>
+  <div id="tile-list"></div>
+</div>
+<div id="workspace">
+  <canvas id="c"></canvas>
+  <div id="toolbar">
+    <button onclick="setTool('stamp')" id="t-stamp" class="active">스탬프</button>
+    <button onclick="setTool('erase')" id="t-erase">지우개</button>
+    <button onclick="setTool('pan')" id="t-pan">이동</button>
+    <button onclick="undo()">↩되돌리기</button>
+    <button onclick="clearAll()">전체삭제</button>
+    <button onclick="toggleMapGuide()" id="t-guide">🗺️맵가이드</button>
+  </div>
+  <div id="hud"></div>
+</div>
+<div id="sidebar">
+  <div class="sec">
+    <h4>캔버스 설정</h4>
+    <label>가로 (타일) <input type="number" id="cw" value="40" min="5" max="200"></label>
+    <label>세로 (타일) <input type="number" id="ch" value="40" min="5" max="200"></label>
+    <button onclick="resizeCanvas()">캔버스 리사이즈</button>
+  </div>
+  <div class="sec">
+    <h4>스탬프 크기</h4>
+    <label>크기: <span id="sz-val">5</span>타일</label>
+    <input type="range" id="stamp-sz" min="8" max="80" value="40" step="8" oninput="stampSz=+this.value;document.getElementById('sz-val').textContent=(this.value/8)">
+    <label style="color:#555;font-size:9px">1타일=8px, 5타일=40px, 10타일=80px</label>
+  </div>
+  <div class="sec">
+    <h4>회전 / 반전</h4>
+    <div style="display:flex;gap:3px;flex-wrap:wrap">
+      <button onclick="setRot(0)" id="r0" class="active" style="flex:1;min-width:40px">0°</button>
+      <button onclick="setRot(90)" id="r90" style="flex:1;min-width:40px">90°</button>
+      <button onclick="setRot(180)" id="r180" style="flex:1;min-width:40px">180°</button>
+      <button onclick="setRot(270)" id="r270" style="flex:1;min-width:40px">270°</button>
+    </div>
+    <div style="display:flex;gap:3px;margin-top:4px">
+      <button onclick="toggleFlipH()" id="fh" style="flex:1">↔ 좌우반전</button>
+      <button onclick="toggleFlipV()" id="fv" style="flex:1">↕ 상하반전</button>
+    </div>
+    <label style="color:#555;font-size:9px;margin-top:4px">R=회전(90°씩), F=좌우반전, V=상하반전</label>
+  </div>
+  <div class="sec">
+    <h4>블렌딩</h4>
+    <label>불투명도: <span id="op-val">100</span>%</label>
+    <input type="range" id="opacity" min="10" max="100" value="100" step="5" oninput="stampAlpha=this.value/100;document.getElementById('op-val').textContent=this.value">
+  </div>
+  <div class="sec">
+    <h4>레이어</h4>
+    <div id="layer-list"></div>
+    <button onclick="addLayer()">+ 레이어 추가</button>
+    <button onclick="mergeDown()">레이어 병합</button>
+  </div>
+  <div class="sec">
+    <h4>내보내기</h4>
+    <button onclick="exportPNG()" style="background:#1a2a00;color:#aaff66;border-color:#aaff66">PNG 내보내기</button>
+    <button onclick="exportJSON()" style="background:#1a0030;color:#cc88ff;border-color:#cc88ff">JSON 저장</button>
+    <button onclick="importJSON()" style="background:#001f2a;color:#66ddff;border-color:#66ddff">JSON 불러오기</button>
+  </div>
+  <div class="sec">
+    <h4>단축키</h4>
+    <div style="color:#555;font-size:9px;line-height:1.8">
+      S=스탬프 E=지우개 Space=이동<br>
+      Ctrl+Z=되돌리기 []=크기<br>
+      1~9=팔레트 선택<br>
+      마우스휠=줌
+    </div>
+  </div>
+</div>
+<input type="file" id="fileIn" style="display:none" accept=".json">
+<input type="file" id="mapFileIn" style="display:none" accept=".json">
+<script>
+const C=document.getElementById('c'),X=C.getContext('2d');
+const T_GAME=40; // 게임 타일 크기 (내보내기용)
+const T=8; // 에디터 내부 타일 크기 (렉 방지)
+let stampSz=40, stampAlpha=1; // T=8 기준: 40px=5타일
+let tool='stamp', selTile=0;
+let stampRot=0, flipH=false, flipV=false;
+let camX=0,camY=0,zoom=1;
+let canvasW=40,canvasH=40; // 타일 단위
+let dragging=false,dragBtn=-1,lastMX=0,lastMY=0;
+let hoverX=0,hoverY=0;
+
+// ══ STAGES — map_tiles.json에서 동적 로드 ══
+let STAGES=[];
+const HELLS=[
+  {name:'1장 괴물굴',color:'#ffea00'},{name:'2장 시체지옥',color:'#8bc34a'},
+  {name:'3장 화염지옥',color:'#ff6600'},{name:'4장 심연지옥',color:'#e040fb'},
+  {name:'5장 얼음지옥',color:'#4fc3f7'},{name:'6장 썩은숲',color:'#aaaaaa'},
+  {name:'7장 마왕성',color:'#ff2020'},
+];
+let currentHell=0, currentStage=0;
+const mapStore={};
+
+function buildChapterTabs(){
+  const el=document.getElementById('ch-tabs');let html='';
+  for(let i=0;i<HELLS.length;i++){
+    const act=i===currentHell?'active':'';
+    const bg=i===currentHell?`background:${HELLS[i].color}`:'';
+    html+=`<div class="ch-tab ${act}" style="${bg}" onclick="switchHell(${i})">${i+1}장</div>`;
+  }
+  el.innerHTML=html;
+}
+function switchHell(h){currentHell=h;buildChapterTabs();buildStageList()}
+function buildStageList(){
+  const el=document.getElementById('stage-list');
+  const stages=STAGES.filter(s=>s.hell===currentHell);let html='';
+  for(const s of stages){
+    const act=s.id===currentStage?'active':'';
+    const hasSave=mapStore[s.id]?'#aaff66':'#333';
+    html+=`<div class="st-item ${act}" onclick="switchStage(${s.id})">
+      <span><span class="dot" style="display:inline-block;background:${hasSave}"></span>${s.floor}층</span>
+      <span class="sz">${s.mw}×${s.mh}</span>
+    </div>`;
+  }
+  el.innerHTML=html;
+  document.getElementById('map-stats').textContent='저장: '+Object.keys(mapStore).length+'/'+STAGES.length;
+}
+function switchStage(sid){
+  quickSaveCurrentMap(); // 캔버스 복사만 (toDataURL 없음 = 즉시)
+  currentStage=sid;
+  const s=STAGES.find(st=>st.id===sid);if(!s)return;
+  canvasW=s.mw;canvasH=s.mh;
+  document.getElementById('cw').value=canvasW;document.getElementById('ch').value=canvasH;
+  if(mapStore[sid])loadMapFromStore(sid);
+  else{layers=[];initLayers();for(const l of layers){l.cvs.width=canvasW*T;l.cvs.height=canvasH*T}}
+  camX=canvasW*T/2;camY=canvasH*T/2;
+  zoom=Math.min(1,Math.min(C.width/(canvasW*T+100),C.height/(canvasH*T+100)));
+  undoStack.length=0;_mapGuideSid=-1;buildMapGuideCache();buildStageList();render();
+}
+// 맵 저장: 캔버스 객체 직접 보관 (toDataURL 안 함 = 즉시)
+function quickSaveCurrentMap(){
+  if(!layers||!layers.length)return;
+  const saved=[];
+  for(const l of layers){
+    const cp=document.createElement('canvas');cp.width=l.cvs.width;cp.height=l.cvs.height;
+    cp.getContext('2d').drawImage(l.cvs,0,0);
+    saved.push({name:l.name,visible:l.visible,cvs:cp});
+  }
+  mapStore[currentStage]={layers:saved,cam:{x:camX,y:camY,z:zoom}};
+}
+function saveCurrentMap(){
+  quickSaveCurrentMap();buildStageList();
+}
+function loadMapFromStore(sid){
+  const data=mapStore[sid];if(!data)return;
+  layers=[];
+  for(const ld of data.layers){
+    const l=makeLayer(ld.name);l.visible=ld.visible;
+    l.cvs.width=ld.cvs.width;l.cvs.height=ld.cvs.height;
+    l.ctx.drawImage(ld.cvs,0,0);
+    layers.push(l);
+  }
+  if(data.cam){camX=data.cam.x;camY=data.cam.y;zoom=data.cam.z||1}
+  activeLayer=layers.length-1;buildLayerList();
+}
+function saveAllMaps(){
+  quickSaveCurrentMap();
+  // 파일 저장 시에만 toDataURL 실행
+  const out={};
+  for(const[k,v] of Object.entries(mapStore)){
+    out[k]={cam:v.cam,layers:v.layers.map(l=>({name:l.name,visible:l.visible,data:l.cvs.toDataURL('image/png')}))};
+  }
+  const blob=new Blob([JSON.stringify(out)],{type:'application/json'});
+  const a=document.createElement('a');a.download='tile_maps_all.json';a.href=URL.createObjectURL(blob);a.click();
+}
+function loadAllMaps(){document.getElementById('mapFileIn').click()}
+document.getElementById('mapFileIn').addEventListener('change',e=>{
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      let cnt=0;
+      for(const[k,v]of Object.entries(data)){
+        const saved=[];let pending=v.layers.length,done=0;
+        for(const ld of v.layers){
+          const cp=document.createElement('canvas');
+          const img=new Image();
+          const entry={name:ld.name,visible:ld.visible,cvs:cp};
+          img.onload=()=>{cp.width=img.width;cp.height=img.height;cp.getContext('2d').drawImage(img,0,0);done++;
+            if(done>=pending){mapStore[k]={layers:saved,cam:v.cam};cnt++;if(cnt>=Object.keys(data).length){buildStageList();alert('불러오기 완료')}}};
+          img.src=ld.data;saved.push(entry);
+        }
+      }
+    }catch(err){alert('오류: '+err.message)}
+  };reader.readAsText(file);e.target.value='';
+});
+function exportCurrentPNG(){
+  // 게임 해상도(T_GAME)로 스케일업 내보내기
+  const out=document.createElement('canvas');out.width=canvasW*T_GAME;out.height=canvasH*T_GAME;
+  const oc=out.getContext('2d');
+  oc.imageSmoothingEnabled=true;oc.imageSmoothingQuality='high';
+  for(const l of layers){if(l.visible)oc.drawImage(l.cvs,0,0,l.cvs.width,l.cvs.height,0,0,out.width,out.height)}
+  const s=STAGES.find(st=>st.id===currentStage);
+  const a=document.createElement('a');a.download='map_h'+s.hell+'_f'+s.floor+'_'+canvasW+'x'+canvasH+'.png';
+  a.href=out.toDataURL('image/png');a.click();
+}
+function restoreFromLocalStorage(){/* 비활성 — 파일 저장/불러오기 사용 */}
+
+// ══ 타일 텍스처 로드 ══
+const TILES=[
+  {src:'01_floor_slime_256x256.png',name:'슬라임 바닥',cat:'바닥'},
+  {src:'02_floor_eggspeck_256x256.png',name:'알점 바닥',cat:'바닥'},
+  {src:'03_floor_fungus_256x256.png',name:'균류 바닥',cat:'바닥'},
+  {src:'04_floor_chitin_cracked_256x256.png',name:'갑각 바닥',cat:'바닥'},
+  {src:'05_edge_chitin_top_256x256.png',name:'키틴 엣지',cat:'엣지'},
+  {src:'06_edge_vein_top_256x256.png',name:'혈관 엣지',cat:'엣지'},
+  {src:'07_edge_web_top_256x256.png',name:'거미줄 엣지',cat:'엣지'},
+  {src:'08_edge_ridge_top_256x256.png',name:'능선 엣지',cat:'엣지'},
+  {src:'09_decal_eggcluster_256x256.png',name:'알둥지',cat:'데칼'},
+  {src:'10_decal_cocoon_256x256.png',name:'고치',cat:'데칼'},
+  {src:'11_decal_slimepuddle_256x256.png',name:'점액 웅덩이',cat:'데칼'},
+  {src:'12_decal_bones_shell_256x256.png',name:'뼈/껍질',cat:'데칼'},
+  {src:'13_glow_spores_256x256.png',name:'발광 포자',cat:'글로우'},
+  {src:'14_glow_runic_streak_256x256.png',name:'룬 문양',cat:'글로우'},
+  {src:'15_overlay_floor_noise_256x256.png',name:'바닥 노이즈',cat:'오버레이'},
+  {src:'16_overlay_wall_grime_256x256.png',name:'벽 때',cat:'오버레이'},
+];
+const tileImgs=[];
+let loadCnt=0;
+for(let i=0;i<TILES.length;i++){
+  const img=new Image();
+  img.onload=()=>{loadCnt++;if(loadCnt>=TILES.length)console.log('[TEX] all loaded')};
+  img.src='insect_tileset_min_pack/'+TILES[i].src;
+  tileImgs.push(img);
+}
+
+// ══ 팔레트 빌드 ══
+function buildPalette(){
+  const el=document.getElementById('tile-list');
+  let html='',lastCat='';
+  for(let i=0;i<TILES.length;i++){
+    if(TILES[i].cat!==lastCat){lastCat=TILES[i].cat;html+=`<div class="cat-label">${lastCat}</div>`}
+    html+=`<div class="tile-item${i===selTile?' active':''}" onclick="selectTile(${i})" id="ti-${i}">
+      <img src="insect_tileset_min_pack/${TILES[i].src}">
+      <div class="label">${TILES[i].name}</div>
+    </div>`;
+  }
+  el.innerHTML=html;
+}
+function selectTile(i){
+  document.querySelectorAll('.tile-item').forEach(e=>e.classList.remove('active'));
+  selTile=i;
+  const el=document.getElementById('ti-'+i);if(el)el.classList.add('active');
+}
+buildPalette();
+
+// ══ 레이어 시스템 ══
+let layers=[],activeLayer=0;
+function makeLayer(name){
+  const cv=document.createElement('canvas');
+  cv.width=canvasW*T;cv.height=canvasH*T;
+  return{name:name||'레이어'+(layers.length+1),cvs:cv,ctx:cv.getContext('2d'),visible:true};
+}
+function initLayers(){
+  layers=[makeLayer('배경')];activeLayer=0;
+  buildLayerList();
+}
+function addLayer(){
+  layers.push(makeLayer());activeLayer=layers.length-1;
+  buildLayerList();render();
+}
+function mergeDown(){
+  if(activeLayer<=0||layers.length<2)return;
+  const top=layers[activeLayer],bot=layers[activeLayer-1];
+  bot.ctx.drawImage(top.cvs,0,0);
+  layers.splice(activeLayer,1);activeLayer--;
+  buildLayerList();render();
+}
+function buildLayerList(){
+  const el=document.getElementById('layer-list');
+  let html='';
+  for(let i=layers.length-1;i>=0;i--){
+    const l=layers[i];
+    const act=i===activeLayer?'color:#ffea00;font-weight:bold':'';
+    html+=`<div class="layer-row" style="${act}">
+      <span class="vis" onclick="toggleVis(${i})">${l.visible?'👁':'·'}</span>
+      <span onclick="activeLayer=${i};buildLayerList();render()" style="cursor:pointer;flex:1">${l.name}</span>
+      ${layers.length>1?`<span onclick="delLayer(${i})" style="cursor:pointer;color:#ff4444">✕</span>`:''}
+    </div>`;
+  }
+  el.innerHTML=html;
+}
+function toggleVis(i){layers[i].visible=!layers[i].visible;buildLayerList();render()}
+function delLayer(i){if(layers.length<=1)return;layers.splice(i,1);if(activeLayer>=layers.length)activeLayer=layers.length-1;buildLayerList();render()}
+
+// ══ 언두 시스템 ══
+const undoStack=[];const MAX_UNDO=30;
+function saveUndo(){
+  const l=layers[activeLayer];
+  const snap=document.createElement('canvas');snap.width=l.cvs.width;snap.height=l.cvs.height;
+  snap.getContext('2d').drawImage(l.cvs,0,0);
+  undoStack.push({layer:activeLayer,cvs:snap});
+  if(undoStack.length>MAX_UNDO)undoStack.shift();
+}
+function undo(){
+  if(!undoStack.length)return;
+  const u=undoStack.pop();
+  const l=layers[u.layer];if(!l)return;
+  l.ctx.clearRect(0,0,l.cvs.width,l.cvs.height);
+  l.ctx.drawImage(u.cvs,0,0);
+  render();
+}
+
+// ══ 스탬프 찍기 (이음새 제거: 1px 오버랩) ══
+function _drawTileTransformed(ctx,img,x,y,sz){
+  ctx.save();
+  ctx.translate(x+sz/2, y+sz/2);
+  ctx.rotate(stampRot*Math.PI/180);
+  ctx.scale(flipH?-1:1, flipV?-1:1);
+  ctx.drawImage(img, -sz/2-0.5, -sz/2-0.5, sz+1, sz+1);
+  ctx.restore();
+}
+function stamp(wx,wy){
+  const img=tileImgs[selTile];if(!img||!img.complete)return;
+  const l=layers[activeLayer];if(!l)return;
+  const sx=Math.floor(wx/stampSz)*stampSz;
+  const sy=Math.floor(wy/stampSz)*stampSz;
+  l.ctx.save();
+  l.ctx.globalAlpha=stampAlpha;
+  _drawTileTransformed(l.ctx,img,sx,sy,stampSz);
+  l.ctx.globalAlpha=1;
+  l.ctx.restore();
+  render();
+}
+function setRot(deg){stampRot=deg;document.querySelectorAll('[id^=r]').forEach(b=>{if(b.id.match(/^r\d+$/))b.classList.remove('active')});const el=document.getElementById('r'+deg);if(el)el.classList.add('active')}
+function toggleFlipH(){flipH=!flipH;document.getElementById('fh').classList.toggle('active')}
+function toggleFlipV(){flipV=!flipV;document.getElementById('fv').classList.toggle('active')}
+
+function eraseAt(wx,wy){
+  const l=layers[activeLayer];if(!l)return;
+  const sx=Math.floor(wx/stampSz)*stampSz;
+  const sy=Math.floor(wy/stampSz)*stampSz;
+  l.ctx.clearRect(sx-1,sy-1,stampSz+2,stampSz+2);
+  render();
+}
+
+// ══ 맵 가이드 오버레이 ══
+let showMapGuide=true;
+let _mapTileData=null; // {stageId: {mw,mh,grid:[][]}}
+let _mapGuideCache=null; // 현재 스테이지 가이드 캔버스
+let _mapGuideSid=-1;
+// map_tiles.json 로드
+fetch('map_tiles.json').then(r=>r.json()).then(data=>{
+  // STAGES 로드
+  if(data.stages){STAGES=data.stages;console.log('[STAGES] loaded',STAGES.length,'stages from map_tiles.json')}
+  // tileRLE 파싱
+  _mapTileData={};
+  const maps=data.maps||data;
+  for(const[sid,v] of Object.entries(maps)){
+    if(!v.tileRLE)continue;
+    const mw=v.mw,mh=v.mh;
+    const grid=[];for(let y=0;y<mh;y++){grid[y]=[];for(let x=0;x<mw;x++)grid[y][x]=1}
+    const rle=v.tileRLE;let pos=0;
+    for(let i=0;i<rle.length;i+=2){
+      let val=rle[i];const cnt=rle[i+1];
+      val=(val===1)?0:1;
+      for(let j=0;j<cnt;j++){const y=~~(pos/mw),x=pos%mw;if(y<mh&&x<mw)grid[y][x]=val;pos++}
+    }
+    _mapTileData[sid]={mw,mh,grid};
+  }
+  console.log('[MAP-GUIDE] loaded',Object.keys(_mapTileData).length,'maps');
+  // UI 초기화
+  buildChapterTabs();buildStageList();
+  const _initStage=STAGES.find(s=>s.hell===currentHell);
+  if(_initStage){currentStage=_initStage.id;switchStage(_initStage.id)}
+  buildMapGuideCache();render();
+}).catch(e=>console.warn('[MAP-GUIDE] map_tiles.json not found:',e));
+
+function buildMapGuideCache(){
+  const data=_mapTileData&&_mapTileData[currentStage];
+  if(!data){_mapGuideCache=null;_mapGuideSid=currentStage;return}
+  if(_mapGuideSid===currentStage&&_mapGuideCache)return;
+  const cv=document.createElement('canvas');
+  cv.width=data.mw*T;cv.height=data.mh*T;
+  const gc=cv.getContext('2d');
+  for(let y=0;y<data.mh;y++)for(let x=0;x<data.mw;x++){
+    const v=data.grid[y][x];
+    if(v===1){
+      // 벽
+      gc.fillStyle='#1a1a1a';gc.fillRect(x*T,y*T,T,T);
+    }else{
+      // 바닥
+      gc.fillStyle='#2a3020';gc.fillRect(x*T,y*T,T,T);
+    }
+  }
+  // 벽/바닥 경계선 강조
+  gc.strokeStyle='rgba(255,200,50,0.3)';gc.lineWidth=0.5;
+  for(let y=0;y<data.mh;y++)for(let x=0;x<data.mw;x++){
+    if(data.grid[y][x]!==0)continue;
+    // 위가 벽
+    if(y>0&&data.grid[y-1][x]===1){gc.beginPath();gc.moveTo(x*T,y*T);gc.lineTo((x+1)*T,y*T);gc.stroke()}
+    // 아래가 벽
+    if(y<data.mh-1&&data.grid[y+1][x]===1){gc.beginPath();gc.moveTo(x*T,(y+1)*T);gc.lineTo((x+1)*T,(y+1)*T);gc.stroke()}
+    // 왼쪽이 벽
+    if(x>0&&data.grid[y][x-1]===1){gc.beginPath();gc.moveTo(x*T,y*T);gc.lineTo(x*T,(y+1)*T);gc.stroke()}
+    // 오른쪽이 벽
+    if(x<data.mw-1&&data.grid[y][x+1]===1){gc.beginPath();gc.moveTo((x+1)*T,y*T);gc.lineTo((x+1)*T,(y+1)*T);gc.stroke()}
+  }
+  _mapGuideCache=cv;_mapGuideSid=currentStage;
+}
+function toggleMapGuide(){
+  showMapGuide=!showMapGuide;
+  document.getElementById('t-guide').classList.toggle('active',showMapGuide);
+  render();
+}
+
+// ══ 렌더링 (변경 시에만) ══
+let _renderPending=false;
+function render(){
+  if(_renderPending)return;
+  _renderPending=true;
+  requestAnimationFrame(_doRender);
+}
+function _doRender(){
+  _renderPending=false;
+  const W=C.width,H=C.height;
+  X.fillStyle='#050505';X.fillRect(0,0,W,H);
+  X.save();
+  X.translate(W/2,H/2);X.scale(zoom,zoom);X.translate(-camX,-camY);
+  const cw=canvasW*T,ch=canvasH*T;
+  // 캔버스 배경
+  X.fillStyle='#0a0a0a';X.fillRect(0,0,cw,ch);
+  // 맵 가이드 오버레이 (레이어 아래에 깔기)
+  if(showMapGuide&&_mapGuideCache){
+    X.globalAlpha=0.6;X.drawImage(_mapGuideCache,0,0);X.globalAlpha=1;
+  }
+  // 레이어 합성
+  for(let i=0;i<layers.length;i++){
+    if(!layers[i].visible)continue;
+    X.drawImage(layers[i].cvs,0,0);
+  }
+  // 뷰포트 안에 보이는 그리드만 그리기
+  const vx1=camX-W/2/zoom, vy1=camY-H/2/zoom;
+  const vx2=camX+W/2/zoom, vy2=camY+H/2/zoom;
+  const gx1=Math.max(0,Math.floor(vx1/stampSz)*stampSz);
+  const gy1=Math.max(0,Math.floor(vy1/stampSz)*stampSz);
+  X.strokeStyle='rgba(255,255,255,0.06)';X.lineWidth=0.5;
+  for(let y=gy1;y<=Math.min(ch,vy2+stampSz);y+=stampSz){X.beginPath();X.moveTo(Math.max(0,vx1),y);X.lineTo(Math.min(cw,vx2),y);X.stroke()}
+  for(let x=gx1;x<=Math.min(cw,vx2+stampSz);x+=stampSz){X.beginPath();X.moveTo(x,Math.max(0,vy1));X.lineTo(x,Math.min(ch,vy2));X.stroke()}
+  // 외곽선
+  X.strokeStyle='#ffea0033';X.lineWidth=2;X.strokeRect(0,0,cw,ch);
+  // 커서 미리보기
+  if(tool==='stamp'&&tileImgs[selTile]&&tileImgs[selTile].complete){
+    const sx=Math.floor(hoverX/stampSz)*stampSz, sy=Math.floor(hoverY/stampSz)*stampSz;
+    X.globalAlpha=0.4;_drawTileTransformed(X,tileImgs[selTile],sx,sy,stampSz);
+    X.globalAlpha=1;X.strokeStyle='#ffea0088';X.lineWidth=1;X.strokeRect(sx,sy,stampSz,stampSz);
+  }else if(tool==='erase'){
+    const sx=Math.floor(hoverX/stampSz)*stampSz, sy=Math.floor(hoverY/stampSz)*stampSz;
+    X.strokeStyle='#ff440088';X.lineWidth=1;X.setLineDash([4,4]);X.strokeRect(sx,sy,stampSz,stampSz);X.setLineDash([]);
+  }
+  X.restore();
+  const s=STAGES.find(st=>st.id===currentStage);
+  document.getElementById('hud').innerHTML=
+    `<b>${s?HELLS[s.hell].name+' '+s.floor+'층':''}</b> | <b>${TILES[selTile].name}</b> | 줌:${zoom.toFixed(1)} | 스탬프:${stampSz}px | ${canvasW}×${canvasH}`;
+}
+
+// ══ 마우스 이벤트 ══
+function screenToWorld(mx,my){
+  return{x:(mx-C.width/2)/zoom+camX, y:(my-C.height/2)/zoom+camY};
+}
+C.addEventListener('mousedown',e=>{
+  e.preventDefault();
+  const w=screenToWorld(e.offsetX,e.offsetY);
+  dragging=true;dragBtn=e.button;lastMX=e.offsetX;lastMY=e.offsetY;
+  if(tool==='pan'||e.button===1){return}
+  if(e.button===0){
+    if(tool==='stamp'){saveUndo();stamp(w.x,w.y)}
+    else if(tool==='erase'){saveUndo();eraseAt(w.x,w.y)}
+  }
+});
+let _lastMoveRender=0;
+C.addEventListener('mousemove',e=>{
+  const w=screenToWorld(e.offsetX,e.offsetY);
+  hoverX=w.x;hoverY=w.y;
+  if(dragging){
+    if(tool==='pan'||dragBtn===1){
+      const dx=(e.offsetX-lastMX)/zoom,dy=(e.offsetY-lastMY)/zoom;
+      camX-=dx;camY-=dy;
+      lastMX=e.offsetX;lastMY=e.offsetY;
+      render();return;
+    }else if(dragBtn===0){
+      if(tool==='stamp')stamp(w.x,w.y);
+      else if(tool==='erase')eraseAt(w.x,w.y);
+      lastMX=e.offsetX;lastMY=e.offsetY;
+      return; // stamp/erase 내부에서 render() 호출
+    }
+  }
+  // 호버 미리보기: 30fps 제한
+  const now=performance.now();
+  if(now-_lastMoveRender>33){_lastMoveRender=now;render()}
+});
+C.addEventListener('mouseup',()=>{dragging=false;dragBtn=-1});
+C.addEventListener('mouseleave',()=>{dragging=false;dragBtn=-1});
+C.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const d=e.deltaY>0?0.9:1.1;
+  zoom=Math.max(0.1,Math.min(5,zoom*d));
+},{passive:false});
+C.addEventListener('contextmenu',e=>e.preventDefault());
+
+// ══ 키보드 ══
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT')return;
+  if(e.ctrlKey&&(e.key==='z'||e.key==='Z'||e.code==='KeyZ')){e.preventDefault();undo();return}
+  const code=e.code;
+  switch(code){
+    case 'KeyS':setTool('stamp');break;
+    case 'KeyE':setTool('erase');break;
+    case 'Space':e.preventDefault();setTool('pan');break;
+    case 'BracketLeft':stampSz=Math.max(8,stampSz-8);document.getElementById('stamp-sz').value=stampSz;document.getElementById('sz-val').textContent=(stampSz/8);break;
+    case 'BracketRight':stampSz=Math.min(80,stampSz+8);document.getElementById('stamp-sz').value=stampSz;document.getElementById('sz-val').textContent=(stampSz/8);break;
+    case 'KeyR':setRot((stampRot+90)%360);break;
+    case 'KeyF':toggleFlipH();break;
+    case 'KeyV':if(!e.ctrlKey)toggleFlipV();break;
+    case 'ArrowRight':e.preventDefault();setRot((stampRot+90)%360);break;
+    case 'ArrowLeft':e.preventDefault();setRot((stampRot+270)%360);break;
+    case 'ArrowUp':e.preventDefault();toggleFlipV();break;
+    case 'ArrowDown':e.preventDefault();toggleFlipH();break;
+  }
+  if(code>='Digit1'&&code<='Digit9'){const i=+code[5]-1;if(i<TILES.length)selectTile(i)}
+});
+document.addEventListener('keyup',e=>{
+  if(e.code==='Space')setTool('stamp');
+});
+
+// ══ 도구 ══
+function setTool(t){
+  tool=t;
+  document.querySelectorAll('#toolbar button').forEach(b=>b.classList.remove('active'));
+  const el=document.getElementById('t-'+t);if(el)el.classList.add('active');
+}
+function clearAll(){
+  if(!confirm('전체 삭제?'))return;
+  for(const l of layers){l.ctx.clearRect(0,0,l.cvs.width,l.cvs.height)}
+  render();
+}
+
+// ══ 캔버스 리사이즈 ══
+function resizeCanvas(){
+  canvasW=Math.max(5,+document.getElementById('cw').value||40);
+  canvasH=Math.max(5,+document.getElementById('ch').value||40);
+  for(const l of layers){
+    const old=document.createElement('canvas');old.width=l.cvs.width;old.height=l.cvs.height;
+    old.getContext('2d').drawImage(l.cvs,0,0);
+    l.cvs.width=canvasW*T;l.cvs.height=canvasH*T;
+    l.ctx.drawImage(old,0,0);
+  }
+  render();
+}
+
+// ══ 내보내기 ══
+function exportPNG(){
+  const out=document.createElement('canvas');out.width=canvasW*T;out.height=canvasH*T;
+  const oc=out.getContext('2d');
+  for(const l of layers){if(l.visible)oc.drawImage(l.cvs,0,0)}
+  const a=document.createElement('a');
+  a.download='tilemap_'+canvasW+'x'+canvasH+'.png';
+  a.href=out.toDataURL('image/png');
+  a.click();
+}
+function exportJSON(){
+  const data={w:canvasW,h:canvasH,stampSz,layers:[]};
+  for(const l of layers){
+    data.layers.push({name:l.name,visible:l.visible,data:l.cvs.toDataURL('image/png')});
+  }
+  const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
+  const a=document.createElement('a');a.download='tilemap_'+canvasW+'x'+canvasH+'.json';
+  a.href=URL.createObjectURL(blob);a.click();
+}
+function importJSON(){
+  document.getElementById('fileIn').click();
+}
+document.getElementById('fileIn').addEventListener('change',e=>{
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    try{
+      const data=JSON.parse(ev.target.result);
+      canvasW=data.w;canvasH=data.h;
+      document.getElementById('cw').value=canvasW;
+      document.getElementById('ch').value=canvasH;
+      if(data.stampSz){stampSz=data.stampSz;document.getElementById('stamp-sz').value=stampSz;document.getElementById('sz-val').textContent=stampSz}
+      layers=[];
+      let loaded=0;
+      for(const ld of data.layers){
+        const l=makeLayer(ld.name);l.visible=ld.visible;
+        const img=new Image();
+        img.onload=()=>{l.ctx.drawImage(img,0,0);loaded++;if(loaded>=data.layers.length){buildLayerList();render()}};
+        img.src=ld.data;
+        layers.push(l);
+      }
+      activeLayer=layers.length-1;
+    }catch(err){alert('오류: '+err.message)}
+  };
+  reader.readAsText(file);
+  e.target.value='';
+});
+
+// ══ 초기화 ══
+function resize(){C.width=document.getElementById('workspace').clientWidth;C.height=document.getElementById('workspace').clientHeight;render()}
+window.addEventListener('resize',resize);
+resize();
+// STAGES는 map_tiles.json fetch 완료 후 초기화됨 (위 fetch 참조)
+initLayers();camX=canvasW*T/2;camY=canvasH*T/2;
+</script>
+</body></html>

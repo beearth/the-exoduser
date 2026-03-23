@@ -9970,6 +9970,14 @@ function _loadTileTex(arr,srcs){for(const s of srcs){_tileTexTotal++;const img=n
 _loadTileTex(_TILE_FLOOR,_TILE_FLOOR_SRC);_loadTileTex(_TILE_EDGE,_TILE_EDGE_SRC);
 _loadTileTex(_TILE_DECAL,_TILE_DECAL_SRC);_loadTileTex(_TILE_GLOW,_TILE_GLOW_SRC);_loadTileTex(_TILE_OVL,_TILE_OVL_SRC);
 function _tileHash(x,y,s){let h=(x*374761393+y*668265263+s)^0x5bd1e995;h=Math.imul(h^(h>>>15),0x1b873593);return(h^(h>>>13))>>>0}
+// ══ 에디터 맵 텍스처 (스테이지별 PNG) ══
+const _mapTexImgs={};
+const _MAP_TEX_FILES={0:'img/maps/stage_0_tex.png'};
+for(const[sid,src] of Object.entries(_MAP_TEX_FILES)){
+  const img=new Image();img.onload=()=>console.log('[MAP-TEX] stage '+sid+' loaded');
+  img.onerror=()=>console.warn('[MAP-TEX] stage '+sid+' failed');
+  img.src=src;_mapTexImgs[sid]=img;
+}
 function _shCol(h,dr,dg,db){const c=_hexRgb(h);const cl=v=>Math.max(0,Math.min(255,v));return`rgb(${cl(c.r+dr)},${cl(c.g+dg)},${cl(c.b+db)})`}
 // ═══ [SHARED-DECOR] 공통 벽/바닥 장식 함수 ═══
 // 눈깔 (챕터별 홍채색)
@@ -10037,89 +10045,19 @@ function buildMapCache(){
   const c=_mapCvs.getContext('2d');_mapCtx=c;
   const _isW=(tx,ty)=>tx<0||tx>=mw||ty<0||ty>=mh||map[ty][tx]===1||map[ty][tx]===3;
   const _isF=(tx,ty)=>tx>=0&&tx<mw&&ty>=0&&ty<mh&&map[ty][tx]===0;
-  // ── Pass 0.5: 타일셋 텍스처 스탬프 (200×200 블록 단위) ──
-  if(_tileTexReady){
-    // 바닥 텍스처 스탬프
-    for(let by=0;by<mh;by+=_TILE_SPAN)for(let bx=0;bx<mw;bx+=_TILE_SPAN){
-      let hasFloor=false;
-      for(let dy=0;dy<_TILE_SPAN&&by+dy<mh&&!hasFloor;dy++)
-        for(let dx=0;dx<_TILE_SPAN&&bx+dx<mw&&!hasFloor;dx++)
-          if(map[by+dy][bx+dx]===0)hasFloor=true;
-      if(!hasFloor)continue;
-      const fi=_tileHash(bx,by,7)%_TILE_FLOOR.length;
-      const fimg=_TILE_FLOOR[fi];if(!fimg||!fimg.complete)continue;
-      c.save();c.beginPath();
-      for(let dy=0;dy<_TILE_SPAN&&by+dy<mh;dy++)
-        for(let dx=0;dx<_TILE_SPAN&&bx+dx<mw;dx++)
-          if(map[by+dy][bx+dx]===0)c.rect((bx+dx)*T,(by+dy)*T,T,T);
-      c.clip();
-      c.drawImage(fimg,bx*T,by*T,_TILE_SZ,_TILE_SZ);
-      c.restore();
-    }
-    // 벽 텍스처 스탬프 (wall_grime)
-    const _wgImg=_TILE_OVL[1];
-    if(_wgImg&&_wgImg.complete){
-      for(let by=0;by<mh;by+=_TILE_SPAN)for(let bx=0;bx<mw;bx+=_TILE_SPAN){
-        let hasWall=false;
-        for(let dy=0;dy<_TILE_SPAN&&by+dy<mh&&!hasWall;dy++)
-          for(let dx=0;dx<_TILE_SPAN&&bx+dx<mw&&!hasWall;dx++)
-            if(map[by+dy][bx+dx]===1)hasWall=true;
-        if(!hasWall)continue;
-        c.save();c.beginPath();
-        for(let dy=0;dy<_TILE_SPAN&&by+dy<mh;dy++)
-          for(let dx=0;dx<_TILE_SPAN&&bx+dx<mw;dx++)
-            if(map[by+dy][bx+dx]===1)c.rect((bx+dx)*T,(by+dy)*T,T,T);
-        c.clip();c.globalAlpha=0.8;
-        c.drawImage(_wgImg,bx*T,by*T,_TILE_SZ,_TILE_SZ);
-        c.globalAlpha=1;c.restore();
-      }
-    }
-    // 엣지 텍스처: 바닥↔벽 경계 (위쪽이 벽인 바닥 타일에 엣지 상단부 스탬프)
+  // ── Pass 0.5: 에디터 맵 텍스처 오버레이 ──
+  // 스테이지별 텍스처 이미지가 있으면 바닥 위에 깔기
+  if(_mapTexImgs[G.stage]&&_mapTexImgs[G.stage].complete){
+    const mtx=_mapTexImgs[G.stage];
+    // 에디터 텍스처(T=8 기준)를 게임 해상도(T=40)로 스케일업, 바닥 타일에만 클립
+    c.save();c.beginPath();
     for(let ty2=0;ty2<mh;ty2++)for(let tx2=0;tx2<mw;tx2++){
-      if(map[ty2][tx2]!==0)continue;
-      if(ty2>0&&map[ty2-1][tx2]===1){
-        const ei=_tileHash(tx2,ty2,13)%_TILE_EDGE.length;
-        const eimg=_TILE_EDGE[ei];if(!eimg||!eimg.complete)continue;
-        c.save();c.globalAlpha=0.85;
-        // 엣지 하단부를 바닥 타일 상단에 그리기
-        c.drawImage(eimg,0,128,256,128, tx2*T,ty2*T,T,T*.5);
-        c.globalAlpha=1;c.restore();
-      }
-      if(ty2<mh-1&&map[ty2+1][tx2]===1){
-        const ei=_tileHash(tx2,ty2,17)%_TILE_EDGE.length;
-        const eimg=_TILE_EDGE[ei];if(!eimg||!eimg.complete)continue;
-        c.save();c.globalAlpha=0.85;
-        c.drawImage(eimg,0,0,256,128, tx2*T,ty2*T+T*.5,T,T*.5);
-        c.globalAlpha=1;c.restore();
-      }
+      if(map[ty2][tx2]===0)c.rect(tx2*T,ty2*T,T,T);
     }
-    // 데칼 스탬프: 넓은 바닥에 랜덤 배치
-    for(let ty2=2;ty2<mh-2;ty2+=3)for(let tx2=2;tx2<mw-2;tx2+=3){
-      if(map[ty2][tx2]!==0)continue;
-      const rnd=_tileHash(tx2,ty2,31);
-      if((rnd%100)>10)continue;
-      let allF=true;
-      for(let dy=-1;dy<=1&&allF;dy++)for(let dx=-1;dx<=1&&allF;dx++)
-        if(!map[ty2+dy]||map[ty2+dy][tx2+dx]!==0)allF=false;
-      if(!allF)continue;
-      const di=rnd%_TILE_DECAL.length;
-      const dimg=_TILE_DECAL[di];if(!dimg||!dimg.complete)continue;
-      const dsz=T*3;
-      c.save();c.globalAlpha=0.45+(_tileHash(tx2,ty2,41)%25)/100;
-      c.drawImage(dimg,(tx2-1)*T,(ty2-1)*T,dsz,dsz);
-      c.globalAlpha=1;c.restore();
-    }
-    // 글로우 스탬프
-    for(let ty2=3;ty2<mh-3;ty2+=6)for(let tx2=3;tx2<mw-3;tx2+=6){
-      if(map[ty2][tx2]!==0)continue;
-      const rnd=_tileHash(tx2,ty2,53);
-      if((rnd%100)>5)continue;
-      const gi=rnd%_TILE_GLOW.length;
-      const gimg=_TILE_GLOW[gi];if(!gimg||!gimg.complete)continue;
-      c.save();c.globalAlpha=0.3+(_tileHash(tx2,ty2,59)%20)/100;
-      c.drawImage(gimg,(tx2-2)*T,(ty2-2)*T,T*4,T*4);
-      c.globalAlpha=1;c.restore();
-    }
+    c.clip();
+    c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+    c.drawImage(mtx,0,0,mw*T,mh*T);
+    c.restore();
   }
   // ── Pass 1: 바닥 + 노이즈 텍스처 (텍스처 로드 시 스킵) ──
   if(!_tileTexReady)
@@ -121051,7 +120989,7 @@ function update(){
     const _mswx=mouse.x-C.width/2+G.cam.x;
     const _mswy=mouse.y-C.height/2+G.cam.y;
     const _msLv=P.skills.maliceStorm||1;
-    const _msR=200+_msLv*20; // 1렙220, 5렙300, 10렙400 (조준원)
+    const _msR=250+(_msLv-1)*22; // 1렙250, 10렙448 (조준원)
     if(MBjust[2]||K['Escape']){P._msAiming=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]){
       MBjust[0]=false;
@@ -121131,7 +121069,7 @@ function update(){
     const _iswx=mouse.x-C.width/2+G.cam.x;
     const _iswy=mouse.y-C.height/2+G.cam.y;
     const _isLv=P.skills.iceStorm||1;
-    const _isR=~~((130+_isLv*10)*(1+_isLv*.1));
+    const _isR=250+(_isLv-1)*22;
     if(MBjust[2]||K['Escape']){P._isAiming=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]){
       MBjust[0]=false;
@@ -127252,10 +127190,10 @@ const SKILL_LIST=[
   {id:'grenadeShot',name:'유탄산탄',cat:'bow',act:true,emoji:'💣',desc:'[고정: T 자동] 직선 화염대포 발사+경로 화상+잔류화염. 악의 5. 쿨 1초. Lv당 사거리+22% 폭+22%',spCost:10,matCost:100,cd:60,up:true,upSp:5,upMat:0},
   {id:'needleShot',name:'바늘출',cat:'bow',act:true,emoji:'🪡',desc:'[고정: T 자동] 최대속도 바늘 5~10연발. 좁은 간격 초고속 관통. ST 8. 쿨 1.5초. Lv당 뎀+12% 관통+1 발수+',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
   {id:'plagueBurst',name:'폭독칼날',cat:'magic',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 1렙 10관통(Lv당+10, 만렙100). 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염(INT 스케일링). 악의 15. 사거리 4000. 쿨 12초',spCost:10,matCost:80,cd:720,up:true,upSp:5,upMat:0},
-  {id:'maliceStorm',name:'악의폭풍',cat:'magic',act:true,emoji:'🌀',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 화면 내 클릭 위치에 뇌전나선 (3초, 10틱, 틱당 100+Lv*20). Lv당 범위+10. 같은 지역 중복 불가',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
-  {id:'holyDome',name:'신성한 땅',cat:'tech',act:true,emoji:'🛡',desc:'현재 위치에 신성한 땅 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+8 지속+0.5초',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
-  {id:'holyPrison',name:'신성한 감옥',cat:'tech',act:true,emoji:'✟',desc:'범위 내 몬스터 부활력 -30%(+Lv당2%). Lv1 범위400, Lv10 범위700. Lv당 범위+33. 쿨 30초. 지속 10초',spCost:10,matCost:80,cd:1800,up:true,upSp:5,upMat:0},
-  {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,emoji:'❄',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 3초 지속. MP 40. Lv당 범위+10 축적+10%',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
+  {id:'maliceStorm',name:'악의폭풍',cat:'magic',act:true,emoji:'🌀',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 화면 내 클릭 위치에 뇌전나선 (3초, 10틱, 틱당 100+Lv*20). Lv당 범위+22. 같은 지역 중복 불가',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
+  {id:'holyDome',name:'신성한 땅',cat:'tech',act:true,emoji:'🛡',desc:'현재 위치에 신성한 땅 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+22 지속+0.5초',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
+  {id:'holyPrison',name:'신성한 감옥',cat:'tech',act:true,emoji:'✟',desc:'범위 내 몬스터 부활력 -30%(+Lv당2%). Lv1 범위250, Lv10 범위448. Lv당 범위+22. 쿨 30초. 지속 10초',spCost:10,matCost:80,cd:1800,up:true,upSp:5,upMat:0},
+  {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,emoji:'❄',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 3초 지속. MP 40. Lv당 범위+22 축적+10%',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
   {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹 100% 기절, 보스 체간 40%. 회전기폭과 합체→지진폭풍!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:480},
   {id:'quakeStride',name:'진동보행',cat:'move',act:true,emoji:'💥',desc:'전방 즉시 점프+착지 360° 충격파. 2충전(Lv10→3)/5초. 포이즈300%+그로기. 착지 1.5초 무적. ST 5%. Lv당 뎀+20% 범위+33',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'chainAssault',name:'기동불꽃',cat:'move',desc:'사슬기동 중 좌클릭 → 즉시 착지하며 화염폭발. 범위300 INT 스케일 화염 마법데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). MP 소모. Lv당 범위+20 뎀+12%',spCost:10,matCost:0,up:true,upSp:5,upMat:0},
@@ -127264,10 +127202,10 @@ const SKILL_LIST=[
   {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'✝',desc:'[히든: 뇌전나선 합체] E로 조준, 클릭 설치. 신성 십자가를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. Lv당 거리+50',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'둔격호',cat:'def',fixed:true,emoji:'🛡️',desc:'[고정: 칼등치기 합체] 우클릭 칼등치기 시 자동 발사. 회전하며 전진, 적 관통+넉백+투사체 반사. 쿨 5초. Lv당 뎀+12% 사거리+30',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
   {id:'blastShot',name:'폭산탄',cat:'bow',fixed:true,emoji:'💥',desc:'[고정: T 자동] 폭탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 화염 폭발(범위130). 악의 8. Lv당 범위+10% 뎀+10%. 쿨 0.5초',spCost:10,matCost:80,cd:60,up:true,upSp:5,upMat:0},
-  {id:'weakPhys',name:'파쇄의 영역',cat:'tech',act:true,emoji:'⚔',desc:'현재 위치에 파쇄 영역 설치 (10초). 범위 내 적 물리방어력 -10%. 쿨 25초. Lv당 범위+15 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
-  {id:'weakMag',name:'침식의 영역',cat:'tech',act:true,emoji:'🔮',desc:'현재 위치에 침식 영역 설치 (10초). 범위 내 적 마법저항력 -10%. 쿨 25초. Lv당 범위+15 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
-  {id:'weakPj',name:'관통의 영역',cat:'tech',act:true,emoji:'🏹',desc:'현재 위치에 관통 영역 설치 (10초). 범위 내 적 투사체저항력 -10%. 쿨 25초. Lv당 범위+15 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
-  {id:'weakRev',name:'부활의 영역',cat:'tech',act:true,emoji:'💀',desc:'현재 위치에 부활 영역 설치 (10초). 영역 안에서 부활력 +10%. 쿨 25초. Lv당 범위+15 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
+  {id:'weakPhys',name:'파쇄의 영역',cat:'tech',act:true,emoji:'⚔',desc:'현재 위치에 파쇄 영역 설치 (10초). 범위 내 적 물리방어력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
+  {id:'weakMag',name:'침식의 영역',cat:'tech',act:true,emoji:'🔮',desc:'현재 위치에 침식 영역 설치 (10초). 범위 내 적 마법저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
+  {id:'weakPj',name:'관통의 영역',cat:'tech',act:true,emoji:'🏹',desc:'현재 위치에 관통 영역 설치 (10초). 범위 내 적 투사체저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
+  {id:'weakRev',name:'부활의 영역',cat:'tech',act:true,emoji:'💀',desc:'현재 위치에 부활 영역 설치 (10초). 영역 안에서 부활력 +10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (반경452, 10초). 슬로우 70%(+2%/Lv, 최대90%)+출혈. 무기뎀×20%(+5%/Lv). 악의 10, 쿨 10초. Lv당 범위+32',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},
   {id:'blueShot',name:'푸른비',cat:'magic',fixed:true,emoji:'💎',desc:'[고정: E, Lv500 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 200 소모. 적 추적. 쿨 5초. Lv당 뎀+10% 사거리+30',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:500},
   {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: 좌클, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.33/0.66/1초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700}
@@ -128235,7 +128173,7 @@ function activateGhostWalk(){
 // ═══ 영역 스킬 (파쇄/침식/관통/부활) — 발동 ═══
 function activateWeakZone(type){
   const slv=P.skills[type]||1;
-  const r=400+slv*15;
+  const r=250+(slv-1)*22;
   const dur=600+~~(slv*18); // 10초 + Lv당 0.3초
   const cdMap={weakPhys:'_wpCd',weakMag:'_wmCd',weakPj:'_wjCd',weakRev:'_wrCd'};
   P[cdMap[type]]=1500; // 25초 쿨
@@ -128253,7 +128191,7 @@ function activateWeakZone(type){
 function activateHolyDome(){
   const slv=P.skills.holyDome||1;
   const _isHF=P.skills.holyPrison>=1&&_isFused('holyFuse');
-  const _hdR=500+slv*20; // Lv1=520, Lv10=700
+  const _hdR=250+(slv-1)*22; // Lv1=250, Lv10=448
   const _hdDur=720+slv*30; // 12초 + Lv당 0.5초
   P._hdCd=1800; // 30초 쿨
   if(!G._fireZones)G._fireZones=[];
@@ -128272,7 +128210,7 @@ function activateHolyDome(){
 // ═══ 신성한 감옥 — 발동 ═══
 function activateHolyPrison(){
   const slv=P.skills.holyPrison||1;
-  const _hpR=400+(slv-1)*33;
+  const _hpR=250+(slv-1)*22;
   const _hpDur=600+slv*30; // 10초 + Lv당 0.5초
   P._hpCd=1800; // 30초 쿨
   if(!G._fireZones)G._fireZones=[];
@@ -133781,7 +133719,7 @@ function drawP(){
     const _msLv=P.skills.maliceStorm||1;
     const _msBF=_isFused('boneStorm')||_isFused('elecRepent');
     const _bwLv=P.skills.boneWall||1;
-    const _msAimR=_msBF?(300+(_bwLv-1)*20):(200+_msLv*20);
+    const _msAimR=_msBF?(250+(_bwLv-1)*22):(250+(_msLv-1)*22);
     const _msTx=mouse.x-C.width/2+G.cam.x;
     const _msTy=mouse.y-C.height/2+G.cam.y;
     const _mst=_now*.005;
@@ -133837,7 +133775,7 @@ function drawP(){
   }
   // ══ 아이스스톰 조준 인디케이터 ══
   if(P._isAiming){
-    const _isLv=P.skills.iceStorm||1,_isAimR=~~((130+_isLv*10)*(1+_isLv*.1));
+    const _isLv=P.skills.iceStorm||1,_isAimR=250+(_isLv-1)*22;
     const _isTx=mouse.x-C.width/2+G.cam.x,_isTy=mouse.y-C.height/2+G.cam.y;
     X.save();
     X.globalAlpha=.1+.03*Math.sin(_now*.04);X.fillStyle='#2288cc';
