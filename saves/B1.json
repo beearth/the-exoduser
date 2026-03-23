@@ -1,26 +1,26 @@
 {
-  "ts": 1774240198285,
+  "ts": 1774240977717,
   "player": {
-    "lv": 176,
-    "exp": 662,
-    "maxExp": 2003,
-    "sp": 72,
+    "lv": 179,
+    "exp": 63,
+    "maxExp": 2064,
+    "sp": 70,
     "ap": 4,
     "transLvDate": null,
     "transLvCount": 0,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.7015000000000001,
-    "stR": 0.5695,
-    "hp": 1001.787474561499,
-    "mhp": 1005,
-    "mp": 375,
-    "mmp": 375,
-    "st": 205.94178281249847,
-    "mst": 214,
+    "mpR": 0.7035000000000001,
+    "stR": 0.5715,
+    "hp": 1011,
+    "mhp": 1011,
+    "mp": 377,
+    "mmp": 377,
+    "st": 210.7376100000006,
+    "mst": 216,
     "speed": 4.4068000000000005,
-    "shield": 445.21699999999987,
-    "mshield": 457
+    "shield": 459,
+    "mshield": 459
   },
   "inv": {
     "bag": [
@@ -2001,6 +2001,135 @@
         "_gx": 8,
         "_gy": 26,
         "_pickT": 1774239884179
+      },
+      {
+        "id": 1774240674844.3904,
+        "slot": "headband",
+        "el": 4,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전기 머리띠",
+        "emoji": "🎀",
+        "eDef": 4,
+        "bDex": 22,
+        "bInt": 25,
+        "bStr": 33,
+        "affixes": [
+          {
+            "id": "maxMPPct",
+            "tier": 1,
+            "value": 0.1497
+          },
+          {
+            "id": "mpCostRed",
+            "tier": 2,
+            "value": -0.1154
+          }
+        ],
+        "_implicitStat": "_iMagDmg",
+        "_implicitVal": 6.19,
+        "_implicitKo": "마법 데미지 +X%",
+        "legendarySpecial": null,
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 0,
+        "_gy": 28,
+        "_pickT": 1774240674865
+      },
+      {
+        "id": 1774240808332.666,
+        "slot": "ring2",
+        "el": 0,
+        "rarity": 4,
+        "tier": 0,
+        "name": "녹슨 반지",
+        "emoji": "💍",
+        "eDef": 2,
+        "critRate": 3.44,
+        "critDmg": 0.143,
+        "bStr": 28,
+        "bInt": 33,
+        "bDex": 24,
+        "affixes": [
+          {
+            "id": "reflect",
+            "tier": 0,
+            "value": 0.0648
+          },
+          {
+            "id": "goldBonus",
+            "tier": 1,
+            "value": 0.3257
+          }
+        ],
+        "_implicitStat": "_iElemRes",
+        "_implicitVal": 12.81,
+        "_implicitKo": "원소 저항 +X%",
+        "legendarySpecial": {
+          "ko": "처치 시 데빌포스 5% 회복",
+          "stat": "_lRingKill",
+          "val": 0.05
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 2,
+        "_gy": 28,
+        "_pickT": 1774240808351
+      },
+      {
+        "id": 1774240926225.674,
+        "slot": "bow",
+        "el": 4,
+        "rarity": 4,
+        "tier": 0,
+        "name": "전기 마력석궁",
+        "emoji": "✨",
+        "btype": "arcane",
+        "atk": 8,
+        "bowSpd": 1.76,
+        "bowStCost": 6,
+        "bowRange": 427,
+        "bowProjSpd": 22,
+        "bonusRange": 3,
+        "bowPierce": 0.2,
+        "bDex": 27,
+        "bInt": 32,
+        "bStr": 25,
+        "affixes": [
+          {
+            "id": "parryExplosion",
+            "tier": 1,
+            "value": 0.9231
+          },
+          {
+            "id": "comboBoost",
+            "tier": 1,
+            "value": 0.4244
+          },
+          {
+            "id": "staggerExplosion",
+            "tier": 1,
+            "value": 0.7159
+          },
+          {
+            "id": "poisonDot",
+            "tier": 1,
+            "value": 17.3998
+          }
+        ],
+        "_implicitStat": "_iPierce",
+        "_implicitVal": 14.36,
+        "_implicitKo": "관통 확률 +X%",
+        "legendarySpecial": {
+          "ko": "치명타 시 추가 투사체 1발 발사",
+          "stat": "_lBowCrit",
+          "val": 1
+        },
+        "reqLv": 0,
+        "itemLv": 100,
+        "_gx": 4,
+        "_gy": 28,
+        "_pickT": 1774240926241
       }
     ],
     "equipped": {
@@ -2618,11 +2747,11 @@
     },
     {
       "type": "mp",
-      "count": 155
+      "count": 73
     },
     {
       "type": "st",
-      "count": 151
+      "count": 87
     },
     {
       "type": null,
@@ -2631,8 +2760,8 @@
   ],
   "game": {
     "stage": 1,
-    "kills": 10605,
-    "mats": 44235
+    "kills": 10848,
+    "mats": 44278
   },
   "bagMax": 300,
   "hellCleared": [],
@@ -2694,48 +2823,48 @@
   "skProf": {
     "kiSlash": 9999,
     "maliceSwipe": 1785,
-    "chargeBoost": 4920,
+    "chargeBoost": 4950,
     "iceOrb": 45,
     "holyDome": 600,
     "spikeTrap": 150,
     "giantSlam": 1860,
-    "omniBeam": 869,
-    "maliceStorm": 3090,
+    "omniBeam": 900,
+    "maliceStorm": 3120,
     "needleShot": 9999,
     "elemMissile": 180,
-    "fanShot": 114,
-    "chainAssault": 1425,
+    "fanShot": 119,
+    "chainAssault": 1455,
     "plagueBurst": 15,
     "chainSlam": 150,
     "maliceHunt": 60,
     "ghostWalk": 2,
     "bladeDash": 255,
     "weakRev": 30,
-    "maliceMortar": 135,
+    "maliceMortar": 150,
     "burstLoop": 72,
-    "whirlwind": 92,
-    "guardian": 95,
-    "detonate": 504,
-    "quakeStride": 506
+    "whirlwind": 111,
+    "guardian": 152,
+    "detonate": 611,
+    "quakeStride": 820
   },
   "fuseProfSec": {},
   "cardProf": {
     "shieldFuse": 1785,
-    "dimBreach": 4920,
-    "dimSlam": 6345,
-    "dimThunder": 6495,
-    "iceMortar": 180,
+    "dimBreach": 4950,
+    "dimSlam": 6405,
+    "dimThunder": 6555,
+    "iceMortar": 195,
     "holyFuse": 600,
     "holyIce": 600,
-    "slamStorm": 2831.3000000033076,
-    "stormBeam": 5996.750000001147,
-    "sixFuse": 2985.4500000072244,
-    "elemFuse": 3165.4500000089306,
-    "boneStorm": 3090,
-    "elecRepent": 3090,
-    "plagueFuse": 648.033333333139,
-    "bladeFuse": 633.033333333151,
-    "whirlDet": 971.299999999783
+    "slamStorm": 2986.300000003677,
+    "stormBeam": 6276.799999999429,
+    "sixFuse": 3110.5000000083583,
+    "elemFuse": 3290.5000000100645,
+    "boneStorm": 3120,
+    "elecRepent": 3120,
+    "plagueFuse": 993.4333333328767,
+    "bladeFuse": 978.4333333328887,
+    "whirlDet": 1126.2999999997567
   },
   "activeChargeSk": "charge",
   "activeBowSk": "needleShot",
