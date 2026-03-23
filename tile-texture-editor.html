@@ -419,6 +419,50 @@ fetch('map_tiles.json').then(r=>r.json()).then(data=>{
       val=(val===1)?0:1;
       for(let j=0;j<cnt;j++){const y=~~(pos/mw),x=pos%mw;if(y<mh&&x<mw)grid[y][x]=val;pos++}
     }
+    // 보스방 카빙
+    const br=v.bossRoom;
+    if(br){
+      const bcx=br.cx,bcy=br.cy,brx=br.rx,bry=br.ry;
+      if(br.shape==='ellipse'||br.shape==='circle'){
+        for(let dy=-bry;dy<=bry;dy++)for(let dx=-brx;dx<=brx;dx++){
+          if((dx*dx)/(brx*brx)+(dy*dy)/(bry*bry)<=1){
+            const tx=bcx+dx,ty=bcy+dy;
+            if(tx>=0&&tx<mw&&ty>=0&&ty<mh)grid[ty][tx]=0;
+          }
+        }
+      }else{
+        for(let dy=-bry;dy<=bry;dy++)for(let dx=-brx;dx<=brx;dx++){
+          const tx=bcx+dx,ty=bcy+dy;
+          if(tx>=0&&tx<mw&&ty>=0&&ty<mh)grid[ty][tx]=0;
+        }
+      }
+      // 기둥
+      if(br.pillars)for(const p of br.pillars){
+        const pw=p.w||2,ph=p.h||2;
+        for(let dy=0;dy<ph;dy++)for(let dx=0;dx<pw;dx++){
+          const tx=bcx+p.dx+dx,ty=bcy+p.dy+dy;
+          if(tx>=0&&tx<mw&&ty>=0&&ty<mh)grid[ty][tx]=1;
+        }
+      }
+    }
+    // 보스 복도 카빙
+    const bc=v.bossCorridor;
+    if(bc){
+      const pts=[bc.from,...(bc.waypoints||[]),bc.to];
+      const w=Math.max(3,~~((bc.width||6)/2));
+      for(let i=0;i<pts.length-1;i++){
+        const ax=pts[i].x,ay=pts[i].y,bx2=pts[i+1].x,by2=pts[i+1].y;
+        const steps=Math.max(Math.abs(bx2-ax),Math.abs(by2-ay))+1;
+        for(let s=0;s<=steps;s++){
+          const t=steps?s/steps:0;
+          const cx=~~(ax+(bx2-ax)*t),cy=~~(ay+(by2-ay)*t);
+          for(let dy=-w;dy<=w;dy++)for(let dx=-w;dx<=w;dx++){
+            const tx=cx+dx,ty=cy+dy;
+            if(tx>=0&&tx<mw&&ty>=0&&ty<mh)grid[ty][tx]=0;
+          }
+        }
+      }
+    }
     _mapTileData[sid]={mw,mh,grid};
   }
   console.log('[MAP-GUIDE] loaded',Object.keys(_mapTileData).length,'maps');

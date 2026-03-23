@@ -1,23 +1,23 @@
 {
-  "ts": 1774272096240,
+  "ts": 1774273797979,
   "player": {
-    "lv": 1,
-    "exp": 9,
-    "maxExp": 15,
-    "sp": 0,
+    "lv": 3,
+    "exp": 0,
+    "maxExp": 22,
+    "sp": 3,
     "ap": 0,
     "transLvDate": null,
     "transLvCount": 0,
     "baseAtk": 15,
     "baseDef": 2,
-    "mpR": 0.0505,
-    "stR": 0.0505,
-    "hp": 150,
-    "mhp": 150,
-    "mp": 100,
-    "mmp": 100,
-    "st": 111,
-    "mst": 111,
+    "mpR": 0.051000000000000004,
+    "stR": 0.051000000000000004,
+    "hp": 152,
+    "mhp": 152,
+    "mp": 101,
+    "mmp": 101,
+    "st": 73.82637500000558,
+    "mst": 112,
     "speed": 2.7864200000000006,
     "shield": 0,
     "mshield": 0
@@ -651,7 +651,7 @@
   ],
   "game": {
     "stage": 0,
-    "kills": 8,
+    "kills": 31,
     "mats": 998
   },
   "bagMax": 42,
@@ -677,18 +677,18 @@
   },
   "fused": {},
   "skProf": {
-    "kiSlash": 720,
-    "chargeBoost": 165,
+    "kiSlash": 1785,
+    "chargeBoost": 420,
     "iceOrb": 1,
-    "maliceSwipe": 30
+    "maliceSwipe": 60
   },
   "fuseProfSec": {},
   "cardProf": {
-    "dimBreach": 165,
-    "dimSlam": 165,
-    "dimThunder": 165,
+    "dimBreach": 420,
+    "dimSlam": 420,
+    "dimThunder": 420,
     "iceMortar": 1,
-    "shieldFuse": 30
+    "shieldFuse": 60
   },
   "activeChargeSk": "charge",
   "activeBowSk": "normal",

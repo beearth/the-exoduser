@@ -46,9 +46,16 @@ BOSS_TINTS = {
 }
 
 def find_si_dir(si):
-    """si 번호로 개별 보스 폴더 찾기 (boss_si{N}_*)"""
-    pattern = os.path.join(BOSS_DIR, f'boss_si{si}_*')
-    matches = glob.glob(pattern)
+    """si 번호로 보스 폴더 찾기 — boss_{NN}_ 우선, boss_si{N}_ 폴백"""
+    # 1순위: boss_01~35 (번호 = si+1)
+    num = f"{si+1:02d}"
+    pattern1 = os.path.join(BOSS_DIR, f'boss_{num}_*')
+    matches = glob.glob(pattern1)
+    if matches and os.path.isdir(matches[0]):
+        return matches[0]
+    # 2순위: boss_si{N}_*
+    pattern2 = os.path.join(BOSS_DIR, f'boss_si{si}_*')
+    matches = glob.glob(pattern2)
     if matches and os.path.isdir(matches[0]):
         return matches[0]
     return None

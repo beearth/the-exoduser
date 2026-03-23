@@ -3269,7 +3269,7 @@ let _atlasPReady=false,_atlasP_img=null,_atlasP_frames=null;
 // ── 캐릭터 선택 시스템 (PixelLab 8방향) ──
 let _genSpriteOK=false;
 const CHAR_LIST=[
-  {id:'exoduser_warrior',name:'엑소듀서 전사',desc:'다크 판타지 전사. 거대검+검은 갑옷',folder:'img/exoduser_warrior',fw:48,fh:48,idleN:4,walkN:8,atkN:16,whirlN:16,throwN:16,chainN:16},
+  {id:'exoduser_warrior',name:'엑소듀서 전사',desc:'다크 판타지 전사. 거대검+검은 갑옷',folder:'img/exoduser_warrior',fw:48,fh:48,idleN:4,walkN:8,atkN:16,whirlN:16,throwN:16,chainN:16,dashN:16},
 ];
 let _charIdx=0;
 try{const _sv=localStorage.getItem('_charIdx');if(_sv!=null)_charIdx=+_sv;}catch(e){}
@@ -3282,14 +3282,14 @@ CHAR_LIST.forEach((ch,ci)=>{
 let _atlasMask=null,_atlasMaskFm=null; // 투구 착용 아틀라스
 let _atlasBare=null,_atlasBareFm=null; // 민얼굴 아틀라스
 const _CHAR_ANIMS=['idle','run','atk1','atk2','atk3','hurt','die','bash','block','charge_start','charge_hold',
-  'ghost','dodge','crossbow','whirlwind','stun','gSlam1','gSlam2','gSlamRecover','chain'];
+  'ghost','dodge','crossbow','whirlwind','stun','gSlam1','gSlam2','gSlamRecover','chain','dash'];
 const _CHAR_DIRS=['south','south-east','east','north-east','north','north-west','west','south-west'];
 const _CHAR_DKS=['s','se','e','ne','n','nw','w','sw'];
 function _loadCharAtlas(idx){
   if(idx<0||idx>=CHAR_LIST.length)idx=0;
   _charIdx=idx;try{localStorage.setItem('_charIdx',''+idx);}catch(e){}
   const ch=CHAR_LIST[idx];
-  const _animInfo=ch.idleN?{idleN:ch.idleN,walkN:ch.walkN||0,atkN:ch.atkN||0,whirlN:ch.whirlN||0,throwN:ch.throwN||0,chainN:ch.chainN||0}:null;
+  const _animInfo=ch.idleN?{idleN:ch.idleN,walkN:ch.walkN||0,atkN:ch.atkN||0,whirlN:ch.whirlN||0,throwN:ch.throwN||0,chainN:ch.chainN||0,dashN:ch.dashN||0}:null;
   // mask 버전 (folder) 로드
   _load8Dir(ch.folder,ch.fw,ch.fh,function(c,fm){
     _atlasMask=c;_atlasMaskFm=fm;
@@ -3309,11 +3309,11 @@ function _load8Dir(folder,FW,FH,cb,animInfo){
 function _build8(imgs,FW,FH,cb,animInfo){
   // animInfo가 있으면 멀티프레임 스프라이트시트 (idle N + walk M 프레임)
   if(animInfo&&animInfo.idleN>1){
-    const iN=animInfo.idleN,wN=animInfo.walkN||0,aN=animInfo.atkN||0,whN=animInfo.whirlN||0,thN=animInfo.throwN||0,chN=animInfo.chainN||0;
-    const totalF=iN+wN+aN+whN+thN+chN;
+    const iN=animInfo.idleN,wN=animInfo.walkN||0,aN=animInfo.atkN||0,whN=animInfo.whirlN||0,thN=animInfo.throwN||0,chN=animInfo.chainN||0,dshN=animInfo.dashN||0;
+    const totalF=iN+wN+aN+whN+thN+chN+dshN;
     const c=document.createElement('canvas');c.width=FW*totalF;c.height=FH*8;
     const ctx=c.getContext('2d');const fm={};
-    const oW=iN,oA=iN+wN,oWh=iN+wN+aN,oTh=iN+wN+aN+whN,oCh=iN+wN+aN+whN+thN;
+    const oW=iN,oA=iN+wN,oWh=iN+wN+aN,oTh=iN+wN+aN+whN,oCh=iN+wN+aN+whN+thN,oDsh=iN+wN+aN+whN+thN+chN;
     _CHAR_DKS.forEach(function(dk,di){
       if(imgs[di])ctx.drawImage(imgs[di],0,di*FH);
       const idleFr=[];for(let f=0;f<iN;f++)idleFr.push({x:f*FW,y:di*FH,w:FW,h:FH});
@@ -3322,6 +3322,7 @@ function _build8(imgs,FW,FH,cb,animInfo){
       const whFr=[];if(whN>0)for(let f=0;f<whN;f++)whFr.push({x:(oWh+f)*FW,y:di*FH,w:FW,h:FH});
       const thFr=[];if(thN>0)for(let f=0;f<thN;f++)thFr.push({x:(oTh+f)*FW,y:di*FH,w:FW,h:FH});
       const chFr=[];if(chN>0)for(let f=0;f<chN;f++)chFr.push({x:(oCh+f)*FW,y:di*FH,w:FW,h:FH});
+      const dshFr=[];if(dshN>0)for(let f=0;f<dshN;f++)dshFr.push({x:(oDsh+f)*FW,y:di*FH,w:FW,h:FH});
       const usedWalk=walkFr.length?walkFr:idleFr;
       const usedAtk=atkFr.length?atkFr:idleFr;
       const usedWh=whFr.length?whFr:usedAtk;
@@ -3342,6 +3343,7 @@ function _build8(imgs,FW,FH,cb,animInfo){
       }
       fm['crossbow_'+dk]=usedTh;
       fm['chain_'+dk]=usedCh;
+      if(dshFr.length)fm['dash_'+dk]=dshFr;
     });
     const fb=[];for(let f=0;f<iN;f++)fb.push({x:f*FW,y:0,w:FW,h:FH});
     _CHAR_ANIMS.forEach(function(a){if(!fm[a])fm[a]=fb;});
@@ -3687,7 +3689,7 @@ const _ENV_LIGHT=[
 const _P_ANIM_MAP={idle:'idle',wWindup:'atk1',wSwing:'atk2',wRecover:'atk3',whirlwind:'whirlwind',
   sBash:'bash',sRecover:'bash',sBlock:'block',charge:'charge_start',charging:'charge_start',
   chargeBoost:'charge_hold',
-  stagger:'hurt',pStun:'stun',beam:'idle',beaming:'idle',burstLoop:'idle',ghostWalk:'ghost',rainLightning:'dodge',bladeDash:'dodge',bdRecover:'atk3',bowDraw:'crossbow',bowRecover:'crossbow',
+  stagger:'hurt',pStun:'stun',beam:'idle',beaming:'idle',burstLoop:'idle',ghostWalk:'ghost',rainLightning:'dodge',bladeDash:'dash',bowDraw:'crossbow',bowRecover:'crossbow',
   gSlamWindup:'atk1',gSlam1:'atk2',gSlamRecoil:'atk3',gSlam2:'atk2',gSlamRecover:'atk3',peaceShield:'block'};
 // ── 8방향 변환 (atan2 → s/se/e/ne/n/nw/w/sw) ──
 const _DIR8=['e','se','s','sw','w','nw','n','ne'];
@@ -8599,7 +8601,7 @@ const _MOB_CELL=48,_MOB_COLS=10;
 const _walkAtlas={img:null,ready:false};
 const _WALK_COLS=4;
 const _WA={idle:{s:0,n:4,spd:.003},walk:{s:4,n:4,spd:.005},attack:{s:8,n:6,spd:.008},hit:{s:14,n:6,spd:.007}}; // 상태별 오프셋+속도
-const _WA_ROW={0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,12:10,13:11,18:12,41:13,44:14,49:15,56:16,50:17,51:18,52:19,53:20,54:21,57:22,58:23,59:24,55:25,14:26,15:27,16:28,17:29,19:60,40:31,42:32,43:33,45:34,46:35,47:36,48:37,10:38,11:39,22:40,23:41,20:42,21:43,60:44,61:45,62:46,63:47,64:48,65:49,66:50,67:51,68:52,69:53,70:54,71:55,72:56,73:57,74:58,75:59,76:60,77:61,78:62,79:63,80:64,81:65,82:66,83:67,84:68,24:69,25:70,26:71,27:72,28:73,29:74,30:75,31:76,32:77,33:78,34:79,35:80,36:81,37:82,38:83,39:84,90:85,91:86,92:87,93:88,94:89,95:90,96:91,97:92,98:93,99:94,85:95,86:96,87:97,88:98,89:99,90:100,91:101,92:102,95:103,96:104}; // etype→아틀라스 행
+const _WA_ROW={0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,12:10,13:11,18:12,41:13,44:14,49:15,56:16,50:17,51:18,52:19,53:20,54:21,57:22,58:23,59:24,55:25,14:26,15:27,16:28,17:29,19:30,40:31,42:32,43:33,45:34,46:35,47:36,48:37,10:38,11:39,22:40,23:41,20:42,21:43,60:44,61:45,62:46,63:47,64:48,65:49,66:50,67:51,68:52,69:53,70:54,71:55,72:56,73:57,74:58,75:59,76:60,77:61,78:62,79:63,80:64,81:65,82:66,83:67,84:68,24:69,25:70,26:71,27:72,28:73,29:74,30:75,31:76,32:77,33:78,34:79,35:80,36:81,37:82,38:83,39:84,90:85,91:86,92:87,93:88,94:89,95:90,96:91,97:92,98:93,99:94,85:95,86:96,87:97,88:98,89:99,90:100,91:101,92:102,95:103,96:104}; // etype→아틀라스 행
 function _hasWalkAnim(et){return _WA_ROW[et]!==undefined&&et!==7&&et!==9}
 function _waRow(et){return _WA_ROW[et]||0}
 (function _loadWalkAtlas(){
@@ -9977,6 +9979,32 @@ for(const[sid,src] of Object.entries(_MAP_TEX_FILES)){
   const img=new Image();img.onload=()=>console.log('[MAP-TEX] stage '+sid+' loaded');
   img.onerror=()=>console.warn('[MAP-TEX] stage '+sid+' failed');
   img.src=src;_mapTexImgs[sid]=img;
+}
+// ══ 프리팹 맵 시스템 ══
+const _PREFAB={registry:null,imgs:{},ready:false};
+fetch('prefabs/registry.json').then(r=>r.json()).then(reg=>{
+  _PREFAB.registry=reg;console.log('[PREFAB] registry:',reg.prefabs.length);
+  let ld=0,tot=reg.prefabs.length;if(!tot){_PREFAB.ready=true;return}
+  for(const p of reg.prefabs){const img=new Image();
+    img.onload=()=>{ld++;if(ld>=tot){_PREFAB.ready=true;console.log('[PREFAB] all loaded')}};
+    img.onerror=()=>{ld++};img.src=p.texFloor;_PREFAB.imgs[p.id]=img;}
+}).catch(()=>{});
+function _stampPrefabCollision(pf,ox,oy,map,mw,mh){
+  for(let ty=0;ty<pf.th;ty++)for(let tx=0;tx<pf.tw;tx++){
+    const my=oy+ty,mx=ox+tx;if(my>=0&&my<mh&&mx>=0&&mx<mw)map[my][mx]=pf.collision[ty*pf.tw+tx];}
+}
+function genFromPrefabs(si){
+  if(!_PREFAB.registry||!_PREFAB.registry.prefabs.length)return false;
+  const avail=_PREFAB.registry.prefabs.filter(p=>p.hell===SI_TO_HELL[si]);
+  if(!avail.length)return false;return false;
+}
+function buildMapCache_prefab(c,mw,mh){
+  if(!G._prefabPlacements||!G._prefabPlacements.length)return false;
+  const hell=SI_TO_HELL[G.stage];const th=_MTHEME[hell];
+  c.fillStyle=_shCol(th.w,-15,-15,-10);c.fillRect(0,0,mw*T,mh*T);
+  for(const pl of G._prefabPlacements){const img=_PREFAB.imgs[pl.id];
+    if(img&&img.complete)c.drawImage(img,pl.px,pl.py,pl.pw,pl.ph);}
+  return true;
 }
 function _shCol(h,dr,dg,db){const c=_hexRgb(h);const cl=v=>Math.max(0,Math.min(255,v));return`rgb(${cl(c.r+dr)},${cl(c.g+dg)},${cl(c.b+db)})`}
 // ═══ [SHARED-DECOR] 공통 벽/바닥 장식 함수 ═══
@@ -119293,7 +119321,7 @@ function update(){
       if(P._preBdState==='whirlwind'&&isHeld('weapon')&&P.st>=2){P.s='whirlwind';P._preBdState=null}
       else if(P._preBdState==='sBlock'&&isAct('parry')&&P.mp>0){P.s='sBlock';P._preBdState=null}
       else if(P._preBdState==='beam'&&isAct('beam')&&P.mp>0&&!_isFused('stormBeam')){P.s='beam';P._preBdState=null}
-      else{P.s='idle';P._bdLanded=true;P._preBdState=null}
+      else{P.s='idle';P._bdLanded=true;P._bdKeys=false;P._preBdState=null}
       P.iframes=Math.max(P.iframes,15)}
     break;}
 
@@ -119404,7 +119432,7 @@ function update(){
       if(P._preBdState==='whirlwind'&&isHeld('weapon')&&P.st>=2){P.s='whirlwind';P._preBdState=null}
       else if(P._preBdState==='sBlock'&&isAct('parry')&&P.mp>0){P.s='sBlock';P._preBdState=null}
       else if(P._preBdState==='beam'&&isAct('beam')&&P.mp>0&&!_isFused('stormBeam')){P.s='beam';P._preBdState=null}
-      else{P.s='idle';P._bdLanded=true;P._preBdState=null}
+      else{P.s='idle';P._bdLanded=true;P._bdKeys=false;P._preBdState=null}
     }
     break}
   case 'cRecover':{
@@ -120640,11 +120668,12 @@ function update(){
       _poiL.textContent='면역 '+(bE._pImmune/60).toFixed(0)+'s';_poiL.style.color='#8888ff';
       $('bossPoiseF').parentElement.style.borderColor='#444488';
     } else {
-      // 평상시: 흰색 체간 바
-      const _postPct=(bE._maxPosture||100)>0?(100-(bE._posture||0)/(bE._maxPosture||100)*100):100;
-      _poiF.style.width=_postPct+'%';_poiF.style.background='linear-gradient(90deg,#aaaaaa,#ffffff)';
-      _poiL.textContent='체간';_poiL.style.color='#dddddd';
-      $('bossPoiseF').parentElement.style.borderColor='#666666';
+      // 평상시: 포이즈(그로기) 게이지 — 남은 poise 비율
+      const _poisePct=bE.maxPoise>0?Math.max(0,Math.min(100,bE.poise/bE.maxPoise*100)):100;
+      _poiF.style.width=_poisePct+'%';
+      _poiF.style.background=_poisePct<30?'linear-gradient(90deg,#ff4400,#ff8800)':_poisePct<60?'linear-gradient(90deg,#ddaa00,#ffcc44)':'linear-gradient(90deg,#aaaaaa,#ffffff)';
+      _poiL.textContent='그로기 '+~~(_poisePct)+'%';_poiL.style.color=_poisePct<30?'#ff6644':_poisePct<60?'#ffcc44':'#dddddd';
+      $('bossPoiseF').parentElement.style.borderColor=_poisePct<30?'#ff4400':'#666666';
     }
     // 상태이상 아이콘 (6프레임마다 갱신)
     if(!G._bsSkip||G._bsSkip<=0){G._bsSkip=6;
@@ -127191,8 +127220,8 @@ const SKILL_LIST=[
   {id:'needleShot',name:'바늘출',cat:'bow',act:true,emoji:'🪡',desc:'[고정: T 자동] 최대속도 바늘 5~10연발. 좁은 간격 초고속 관통. ST 8. 쿨 1.5초. Lv당 뎀+12% 관통+1 발수+',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
   {id:'plagueBurst',name:'폭독칼날',cat:'magic',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 1렙 10관통(Lv당+10, 만렙100). 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염(INT 스케일링). 악의 15. 사거리 4000. 쿨 12초',spCost:10,matCost:80,cd:720,up:true,upSp:5,upMat:0},
   {id:'maliceStorm',name:'악의폭풍',cat:'magic',act:true,emoji:'🌀',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 화면 내 클릭 위치에 뇌전나선 (3초, 10틱, 틱당 100+Lv*20). Lv당 범위+22. 같은 지역 중복 불가',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
-  {id:'holyDome',name:'신성한 땅',cat:'tech',act:true,emoji:'🛡',desc:'현재 위치에 신성한 땅 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+22 지속+0.5초',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
-  {id:'holyPrison',name:'신성한 감옥',cat:'tech',act:true,emoji:'✟',desc:'범위 내 몬스터 부활력 -30%(+Lv당2%). Lv1 범위250, Lv10 범위448. Lv당 범위+22. 쿨 30초. 지속 10초',spCost:10,matCost:80,cd:1800,up:true,upSp:5,upMat:0},
+  {id:'holyDome',name:'신성한 땅',cat:'tech',act:true,emoji:'🛡',desc:'현재 위치에 신성한 땅 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
+  {id:'holyPrison',name:'신성한 감옥',cat:'tech',act:true,emoji:'✟',desc:'범위 내 몬스터 부활력 -30%(+Lv당2%). Lv1 범위400, Lv10 범위697. Lv당 범위+33. 쿨 30초. 지속 10초',spCost:10,matCost:80,cd:1800,up:true,upSp:5,upMat:0},
   {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,emoji:'❄',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 3초 지속. MP 40. Lv당 범위+22 축적+10%',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
   {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹 100% 기절, 보스 체간 40%. 회전기폭과 합체→지진폭풍!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:480},
   {id:'quakeStride',name:'진동보행',cat:'move',act:true,emoji:'💥',desc:'전방 즉시 점프+착지 360° 충격파. 2충전(Lv10→3)/5초. 포이즈300%+그로기. 착지 1.5초 무적. ST 5%. Lv당 뎀+20% 범위+33',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -127960,7 +127989,7 @@ function activateBladeDash(dir){
   // 홀딩스킬 보존: 회전참/보호막 등 대시 후 복귀
   const _holdStates={'whirlwind':1,'sBlock':1,'beam':1};
   P._preBdState=_holdStates[P.s]?P.s:null;
-  P.s='bladeDash';P.st2=12;P.facing=_bdAng;P._bdAnim=Math.random()<.5?'dodge':'run';
+  P.s='bladeDash';P.st2=12;P.facing=_bdAng;
   P.iframes=Math.max(P.iframes,15);
   SFX.charge();{const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.6,_r(1,.1))}
   addTxt(P.x,P.y-25,'⚡ 전격이동!','#44ddff',35);
@@ -128191,7 +128220,7 @@ function activateWeakZone(type){
 function activateHolyDome(){
   const slv=P.skills.holyDome||1;
   const _isHF=P.skills.holyPrison>=1&&_isFused('holyFuse');
-  const _hdR=250+(slv-1)*22; // Lv1=250, Lv10=448
+  const _hdR=500+slv*20; // Lv1=520, Lv10=700
   const _hdDur=720+slv*30; // 12초 + Lv당 0.5초
   P._hdCd=1800; // 30초 쿨
   if(!G._fireZones)G._fireZones=[];
@@ -128210,7 +128239,7 @@ function activateHolyDome(){
 // ═══ 신성한 감옥 — 발동 ═══
 function activateHolyPrison(){
   const slv=P.skills.holyPrison||1;
-  const _hpR=250+(slv-1)*22;
+  const _hpR=400+(slv-1)*33;
   const _hpDur=600+slv*30; // 10초 + Lv당 0.5초
   P._hpCd=1800; // 30초 쿨
   if(!G._fireZones)G._fireZones=[];
@@ -135875,18 +135904,18 @@ function drawP(){
     const _apDead=P.hp<=0;const _apMv=P.s==='idle'&&(isAct('up')||isAct('down')||isAct('left')||isAct('right'));
     if(P._bdLanded&&P.s!=='idle')P._bdLanded=false;
     if(_harpLandT>0)_harpLandT-=_dtSp;
-    let _apAnim=(P.s==='bladeDash'&&P._bdAnim)?P._bdAnim:(_P_ANIM_MAP[P.s]||'idle');
+    let _apAnim=_P_ANIM_MAP[P.s]||'idle';
     if(_apDead)_apAnim='die';
     else if(P._chainSlamReady&&(_harpActive||_dashActive))_apAnim='chain';
     else if(P._chainAssaultReady&&(_harpActive||_dashActive))_apAnim='atk1';
     else if(_harpActive&&!_dashActive)_apAnim='charge_start';
     else if(_dashActive)_apAnim='charge_hold';
     else if(_harpLandT>0)_apAnim='charge_land';
-    else if(P._bdLanded&&!_apMv){_apAnim='atk3';}
-    else if(_apMv){if(P._bdLanded)P._bdLanded=false;_apAnim='run';}
+    else if(P._bdLanded){_apAnim='dash';P._bdLandHold=true;if(!P._bdKeys){if(!_apMv)P._bdKeys=true;}else if(_apMv)P._bdLanded=false;}
+    else if(_apMv)_apAnim='run';
     const _apDir=_facingDir8(P.facing);
     const _apHasDir=!!P._sa.fm[_apAnim+'_'+_apDir];
-    if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam')||_apAnim.startsWith('charge'))?'atk1':'idle';
+    if(!_apHasDir&&!P._sa.fm[_apAnim])_apAnim=(_apAnim==='whirlwind'||_apAnim==='stun'||_apAnim==='cast'||_apAnim==='ghost'||_apAnim.startsWith('gSlam')||_apAnim.startsWith('charge')||_apAnim==='atk3')?'atk1':'idle';
     if(!P._sa.fm[_apAnim]&&!P._sa.fm[_apAnim+'_'+_apDir])_apAnim='idle';
     const _isHarp=_apAnim==='charge_start'||_apAnim==='charge_hold'||_apAnim==='charge_land';
     const _isChainAtk=P._chainAssaultReady&&(_harpActive||_dashActive);
@@ -135915,6 +135944,10 @@ function drawP(){
           if(P._sa.done)P._sa.f=_hFr.length-1;
         }
       }
+    }else if(P._bdLandHold){
+      const _dshFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
+      if(_dshFr&&_dshFr.length)P._sa.f=_dshFr.length-1;
+      P._bdLandHold=false;
     }else if(_apMv){
       const _dFr=SpriteAnimator._fr(P._sa,_apHasDir?_apDir:null);
       if(_dFr&&_dFr.length)P._sa.f=~~((P._walkDist||0)/32)%_dFr.length;
