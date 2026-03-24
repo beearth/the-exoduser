@@ -10963,9 +10963,9 @@ function enhCost(enh,rarity){
   return{rate:enhRate(enh)/100,cost:Math.ceil(enhCostRaw(enh)*rMul)};
 }
 function enhMul(n){
-  // 복리 누적 보너스: +1강 = +1%, 매강화 이전추가분×1.01
+  // 복리 누적 보너스: +1강 = +0.95%, 매강화 이전추가분×1.0095
   let total=0,step=1.0;
-  for(let i=1;i<=n;i++){total+=step;step*=1.01;}
+  for(let i=1;i<=n;i++){total+=step;step*=1.0095;}
   return total/100; // 배율 반환 (1.0 = 100%)
 }
 function xferCost(n){
@@ -120929,7 +120929,7 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
     if(Math.abs(diff)<arcW){const mult=elMul(el,e.el);const dmg=~~(baseDmg*mult);
     if(!_isWW||!_wwHitSfx){const _hSfx=type==='shield'?'flat_hit':(Math.random()<.5?'melee_hit1':'melee_hit');playSampleAt(_hSfx,.45,_r(1,.15),e.x,e.y);if(_isWW)_wwHitSfx=true} // 방패→flat_hit, 무기→melee랜덤
     hurtE(e,dmg,ang,false,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0.5:1.5,noPoise:false,poiseHit:_isWW||type==='shield',poiseSkill:type==='shield'},el);
-      if(_isWW&&P.skills.detonate&&_isFused('whirlDet')) P.parryBank=(P.parryBank||0)+dmg; // 합성: 때린 데미지도 축적
+      // parryBank는 적 공격 흡수로만 축적 (hitArc 공격 축적 삭제)
       if(!_isWW){
       // 칼등치기만 포이즈 데미지 (데미지의 200%)
       if(type==='shield'){
