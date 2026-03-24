@@ -1,0 +1,320 @@
+0 | Skeleton Melee
+1 | Skeleton Archer
+2 | Charger Demon
+3 | Swarm Imp
+4 | Tank
+5 | Suicide Bomber
+6 | Shield Bearer
+7 | Lich
+8 | Alchemist
+9 | Sorcerer
+10 | Shadow Apostle
+11 | Womb Apostle
+12 | Berserker
+13 | Hell Spider
+14 | Wing Apostle
+15 | Splitter Worm
+16 | Trapper
+17 | Mother Apostle
+18 | Vampire Apostle
+19 | Pale Giant
+20 | Frost Warrior
+21 | Ice Archer
+22 | Frost Wolf
+23 | Ice Elemental
+24 | frostZombie
+25 | iceSlime
+26 | blizzardMage
+27 | icicleBat
+28 | glacierGolem
+29 | iceDevil
+30 | huntDog
+31 | thornApostle
+32 | boulderApostle
+33 | miniDemon
+34 | etype34
+35 | etype35
+36 | serpentApostle
+37 | predatorApostle
+38 | broodApostle
+39 | Wild Arch-Apostle
+40 | Lesser Wraith
+41 | Fallen Knight
+42 | Flesh Heap
+43 | Hell Hound
+44 | Torturer
+45 | Winged Demon
+46 | Pillar Demon
+47 | Shadow Twin
+48 | Hell Priest
+49 | Archdemon
+50 | Deformed Walker
+51 | Fusion Beast
+52 | Mouth Monster
+53 | Eye Monster
+54 | Hanging Crawler
+55 | Bone Beast
+56 | Skinless One
+57 | Fetus Giant
+58 | Mirror Monster
+59 | Monster Lord
+60 | deepWalker
+61 | Drowned Sailor
+62 | Coral Golem
+63 | Jellyfish Wraith
+64 | Abyssal Angler
+65 | Siren
+66 | Barnacle Knight
+67 | Tide Cultist
+68 | abyssalFish
+69 | Leviathan
+70 | flameWalker
+71 | Lava Golem
+72 | Fire Wraith
+73 | Obsidian Knight
+74 | obsidianKnight
+75 | Salamander
+76 | Magma Worm
+77 | Forge Demon
+78 | flamePriest
+79 | dragonApostle
+80 | bugSkin
+81 | iceSkin
+82 | lavaSkin
+83 | etype83
+84 | mob_84
+85 | 절망기사
+86 | 거꾸로천사
+87 | 도플갱어
+88 | 심판자
+89 | 고통의왕
+90 | 방랑기사
+91 | 보물악마
+92 | 거울사도
+93 | 상인악마
+94 | 사슬죄수
+95 | 시간사도
+96 | 탐욕사도
+97 | 쌍둥이
+98 | 차원균열체
+99 | 죽음
+100 | (구울)
+101 | (구울)
+102 | (구울)
+103 | Dark Cat Companion
+104 | Eye Creature
+105 | g76
+106 | Small Ghoul
+107 | Swarm
+108 | t64
+109 | War Crow
+110 | Alchemist
+111 | Angler Devil
+112 | Beast Apostle
+113 | Berserker Apostle
+114 | Berserker Demon
+115 | Blizzard Mage
+116 | Bone Beast
+117 | Boss01 Ice Knight
+118 | Boss02 Poison Queen
+119 | Boss02_SpiderQueen
+120 | Boss03 Flame Lord
+121 | Boss03_FlameLord
+122 | Boss04 Abyss Eye
+123 | Boss04_AbyssEye
+124 | Boss05_ThunderGod
+125 | Boss06_SkeletonKing
+126 | Boss07_VoidBreaker
+127 | Boss08_DarkKnight
+128 | Boss09_FallenAngel
+129 | Boss10_ChaosLord
+130 | Boulder Apostle
+131 | Charger
+132 | colossal ice knight, crystalline wings, frozen crown, glowing blue eyes, frost armor with cracks, dark fantasy, berserk manga style, melancholic, 64x64
+133 | Corrosion Apostle
+134 | dark fantasy skeleton warrior, rusty sword, cracked skull,  single glowing cyan eye, tattered armor scraps, berserk manga style, melancholic
+135 | dark fantasy warrior, full armor set, horned helmet with single glowing cyan eye slit, tattered black cape flowing behind, crossbow strapped on back, small shield on back, leather and metal plate armor, battle-worn, berserk black swordsman aesthetic, compact muscular build, melancholic stance
+136 | Dark Sorcerer
+137 | Deformed Walker
+138 | Deformed Walker
+139 | Demon Dog
+140 | e62
+141 | f66
+142 | f71
+143 | f72
+144 | Fallen Knight
+145 | Fission Apostle
+146 | Frost Wolf
+147 | Frost Wolf
+148 | Frostbite Zombie
+149 | Frozen Warrior
+150 | Fusion Creature
+151 | g73
+152 | g75
+153 | Ghost Wraith
+154 | Ghoul
+155 | Giant Apostle
+156 | Glacier Golem
+157 | Greatsword Knight
+158 | h84
+159 | Hell Priest
+160 | HellRoadWarrior
+161 | Hound Apostle
+162 | Ice Archer
+163 | Ice Devil
+164 | Ice Elemental
+165 | Ice Knight
+166 | Ice Slime
+167 | Icicle Bat
+168 | Lich
+169 | Minor Wraith
+170 | Small Yoma
+171 | Corrosion Apostle
+172 | Beast Apostle
+173 | Serpent Apostle
+174 | Predator Apostle
+175 | Spawning Apostle
+176 | Deep One
+177 | Kraken Spawn
+178 | Magma Imp
+179 | Ash Zombie
+180 | Cinder Mage
+181 | Volcano Lord
+182 | Pain Crawler
+183 | mob_80
+184 | Torment Shade
+185 | mob_81
+186 | Iron Maiden
+187 | mob_82
+188 | mob_83
+189 | mob_85
+190 | mob_86
+191 | mob_87
+192 | mob_88
+193 | mob_89
+194 | mob_90
+195 | mob_91
+196 | mob_92
+197 | mob_93
+198 | mob_94
+199 | mob_95
+200 | mob_96
+201 | mob_97
+202 | mob_98
+203 | mob_99
+204 | player_warrior
+205 | Shadow Apostle
+206 | Shadow Twin
+207 | Shadow Wraith
+208 | Skeleton Archer
+209 | Skeleton Warrior
+210 | Skinless One
+211 | Small Yoma
+212 | Spider Apostle
+213 | Spider Apostle
+214 | Spike Apostle
+215 | Suicide Bomber
+216 | t63
+217 | t65
+218 | t67
+219 | Torturer Demon
+220 | Trap Apostle
+221 | Vampiric Apostle
+222 | Wing Apostle
+223 | Winged Demon
+224 | Womb Apostle
+225 | Womb Horror
+226 | Arch Demon
+227 | e61
+228 | Heavy Tank
+229 | Mother Apostle
+230 | 검은 성의 수호자
+231 | 기생충 모체 (si6)
+232 | 독버섯 거인
+233 | 벌레 수호자
+234 | 불벌레 군주 (si19)
+235 | 숲의 사냥꾼
+236 | 얼음 망령
+237 | 용암의 심장 (si16)
+238 | 전쟁의 잔해 (si21)
+239 | 전쟁의 잔해
+240 | 점액 괴수 (si5)
+241 | 화염 감옥지기 (si20)
+242 | 화염 쌍두 (si18)
+243 | 화염 악마
+244 | 화염 전사 (si17)
+245 | Bone Mountain King
+246 | Bone Watcher
+247 | Bug Queen
+248 | e77r
+249 | Fire Bug Lord
+250 | Fire Bug Lord
+251 | Fire Elemental
+252 | Fire Pillar Guardian
+253 | Flame Demon Lord
+254 | Flame Jailer
+255 | Flame Twin-Head v2
+256 | Flame Warrior
+257 | Flesh Abomination
+258 | Flesh Blob
+259 | Flesh Wall Lord
+260 | Flesh Wall Lord
+261 | Forest Guardian
+262 | Forest Hunter
+263 | Forest Hunter
+264 | Frost Knight v2
+265 | Frost Knight
+266 | Frozen Watcher
+267 | Fusion Mass
+268 | Giant Demon
+269 | Giant Egg Sac
+270 | Giant Egg Sac
+271 | Heart of Lava
+272 | Heart of Lava
+273 | Heart of Lava
+274 | Hell Lord
+275 | Ice Wraith Lord
+276 | Iron Wall Captain
+277 | Large Ghoul
+278 | Lava Heart v2
+279 | Maggot Queen
+280 | Mirror Knight
+281 | Mouth Monster
+282 | Parasite Mother v2
+283 | Parasite Mother
+284 | Parasitic Tree
+285 | Parasitic Tree
+286 | Pillar Demon
+287 | Poison Mushroom Giant
+288 | Poison Mushroom Giant
+289 | Queen Maggot
+290 | Sealed Ice Beast
+291 | Sealed Ice Monster
+292 | si0 숲의 감시자
+293 | si1 독버섯 거인
+294 | si12 얼어붙은 감시자
+295 | si15 불기둥 수호자
+296 | si15 불기둥 수호자
+297 | si16 용암의 심장
+298 | si17 화염 전사
+299 | si2 숲의 사냥꾼
+300 | si20 화염 감옥지기
+301 | si22 뼈산의 왕
+302 | si23 악마 사령관
+303 | si24 철벽 기사단장
+304 | si25 군단 지휘관
+305 | si27 인간뼈 감시자
+306 | si28 뒤틀린 자
+307 | si29 촉수의 어미
+308 | si3 숲의 기생수
+309 | si30 불완전 사도
+310 | si31 대사도
+311 | si33 Killu
+312 | Slime Beast v2
+313 | Slime Beast
+314 | t69
+315 | Twin-Head Flame
+316 | War Remnant
+317 | War Wreckage v2
+318 | e39
+319 | Flesh Demon Lord
