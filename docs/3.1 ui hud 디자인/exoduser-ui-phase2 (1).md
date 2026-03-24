@@ -391,3 +391,9 @@ function showStageTransition(callback) {
 - maliceStorm (boneStorm/elecRepent 합체): P._bnsCd (쿨다운 방식으로 전환)
 
 > 새 스킬 추가 시 _skCdMap에 쿨다운 변수 등록 필수. 등록하지 않으면 HUD에 쿨다운 미표시.
+
+### Space 슬롯 (skSlot1) 쿨다운 표시
+Space 슬롯(SKILL_SLOTS[4])에도 모든 스킬 쿨다운 오버레이+숫자 표시 추가됨.
+- `_spCdMap`: 1~4번 슬롯과 동일한 쿨다운 변수 참조
+- 스택형 스킬(maliceStorm/iceStorm/boneWall/hellRay)도 스택 숫자 표시
+- 쿨다운 중: 어두운 오버레이 + 초 단위 카운트다운 + 이모지 반투명
