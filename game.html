@@ -135030,8 +135030,16 @@ function drawP(){
       const _sqX=1+0.15*_lp; // 착지 순간 X 1.15배 → 점점 복귀
       X.translate(0,(_pScale*48*(1-_sqY))*0.5); // 스쿼시만큼 바닥에 붙이기
       X.scale(_pScale*_sqX,_pScale*_sqY);
+    }else if(_apAnim==='idle'&&!_apDead){
+      // ── 전투 자세 브리딩: 미세 상하 + Y스케일 숨쉬기 ──
+      const _br=Math.sin(t/38)*.012; // 숨쉬기 Y스케일 ±1.2%
+      const _bOy=Math.sin(t/45)*0.6; // 상하 바운스 ±0.6px
+      const _bTilt=Math.sin(t/60)*.008; // 미세 좌우 기울기
+      X.translate(0,_bOy*_pScale);
+      X.rotate(_bTilt);
+      X.scale(_pScale*(1-_br*.5),_pScale*(1+_br));
     }else{
-    X.scale(_pScale,_pScale);
+      X.scale(_pScale,_pScale);
     }
     SpriteAnimator.draw(P._sa,X,0,0,!_apHasDir&&Math.abs(_fa)>Math.PI/2,_apHasDir?_apDir:null);
     X.restore();
