@@ -10158,9 +10158,14 @@ function buildMapCache(){
     }
     c.clip();
     c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
-    const _texPat=c.createPattern(mtx,'repeat');
-    c.fillStyle=_texPat;
-    c.fillRect(0,0,mw*T,mh*T);
+    // 텍스처 타일링: 1장이 덮는 게임 픽셀 크기 (1024=원본, 2048=2배확대)
+    const _TEX_TILE=1024; // 1024px 텍스처 → 1:1 선명, ~25타일 커버
+    const pat=c.createPattern(mtx,'repeat');
+    c.save();
+    c.scale(_TEX_TILE/mtx.width, _TEX_TILE/mtx.height);
+    c.fillStyle=pat;
+    c.fillRect(0,0,mw*T*(mtx.width/_TEX_TILE),mh*T*(mtx.height/_TEX_TILE));
+    c.restore();
     c.restore();
   }
   // ── Pass 1: 바닥 + 노이즈 텍스처 (텍스처 로드 시 스킵) ──

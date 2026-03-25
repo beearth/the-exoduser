@@ -123,13 +123,14 @@ body{background:#0a0a0a;color:#ccc;font:12px monospace;display:flex;height:100vh
     <button onclick="document.getElementById('bgImgIn').click()" style="background:#2a1a00;color:#ffaa44;border-color:#ffaa44">🖼️ 이미지 불러오기</button>
     <label style="margin-top:4px">배치 모드:</label>
     <select id="bg-mode">
-      <option value="tile">타일링 (반복)</option>
       <option value="stretch">늘려서 채우기</option>
-      <option value="fit">맞춤 (비율유지)</option>
+      <option value="fit">맞춤 (비율유지+커버)</option>
+      <option value="tile">타일링 (반복)</option>
     </select>
     <label style="margin-top:4px">스케일: <span id="bg-scale-val">100</span>%</label>
     <input type="range" id="bg-scale" min="10" max="400" value="100" step="10" oninput="document.getElementById('bg-scale-val').textContent=this.value">
-    <label style="color:#555;font-size:9px;margin-top:2px">타일링 모드에서 스케일 조절로 디테일 크기 변경</label>
+    <button onclick="if(_bgLoadedImg)applyBgImage(_bgLoadedImg)" style="margin-top:4px">🔄 재적용</button>
+    <label style="color:#555;font-size:9px;margin-top:2px">이미지 불러온 뒤 모드/스케일 변경하면 자동 재적용</label>
   </div>
   <div class="sec">
     <h4>단축키</h4>
@@ -718,43 +719,58 @@ document.getElementById('fileIn').addEventListener('change',e=>{
 });
 
 // ══ 배경 이미지 불러오기 ══
+let _bgLoadedImg=null; // 불러온 원본 이미지 보관 (재적용용)
+function applyBgImage(img){
+  if(!img)return;
+  const mode=document.getElementById('bg-mode').value;
+  const scale=(+document.getElementById('bg-scale').value||100)/100;
+  const l=layers[activeLayer];if(!l)return;
+  saveUndo();
+  // 레이어 캔버스를 맵 크기에 강제 맞춤
+  const MW=canvasW*T, MH=canvasH*T;
+  if(l.cvs.width!==MW||l.cvs.height!==MH){
+    l.cvs.width=MW;l.cvs.height=MH;
+  }
+  l.ctx.clearRect(0,0,MW,MH);
+  console.log('[BG-IMG] map='+MW+'x'+MH+' img='+img.width+'x'+img.height+' mode='+mode+' scale='+scale);
+  if(mode==='stretch'){
+    l.ctx.drawImage(img,0,0,MW,MH);
+  }else if(mode==='fit'){
+    const coverRatio=Math.max(MW/img.width,MH/img.height)*scale;
+    const dw=img.width*coverRatio, dh=img.height*coverRatio;
+    l.ctx.drawImage(img,(MW-dw)/2,(MH-dh)/2,dw,dh);
+  }else{
+    const tw=MW*scale, th=tw*(img.height/img.width);
+    for(let y=0;y<MH;y+=th){
+      for(let x=0;x<MW;x+=tw){
+        l.ctx.drawImage(img,x,y,tw,th);
+      }
+    }
+  }
+  render();
+}
 document.getElementById('bgImgIn').addEventListener('change',e=>{
   const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();
-  reader.onload=ev=>{
-    const img=new Image();
-    img.onload=()=>{
-      const mode=document.getElementById('bg-mode').value;
-      const scale=(+document.getElementById('bg-scale').value||100)/100;
-      const l=layers[activeLayer];if(!l)return;
-      saveUndo();
-      const cw=canvasW*T, ch=canvasH*T;
-      if(mode==='stretch'){
-        // 전체 캔버스에 늘려서 채우기
-        l.ctx.drawImage(img,0,0,cw,ch);
-      }else if(mode==='fit'){
-        // 비율 유지하며 캔버스에 맞춤
-        const ratio=Math.min(cw/img.width,ch/img.height)*scale;
-        const dw=img.width*ratio, dh=img.height*ratio;
-        const ox=(cw-dw)/2, oy=(ch-dh)/2;
-        l.ctx.drawImage(img,ox,oy,dw,dh);
-      }else{
-        // 타일링 (반복) — 스케일 적용
-        const tw=img.width*scale, th=img.height*scale;
-        for(let y=0;y<ch;y+=th){
-          for(let x=0;x<cw;x+=tw){
-            l.ctx.drawImage(img,x,y,tw,th);
-          }
-        }
-      }
-      render();
-      console.log('[BG-IMG] applied:',file.name,img.width+'x'+img.height,'mode='+mode,'scale='+scale);
+  // 큰 이미지는 createImageBitmap으로 로드 (메모리 효율적)
+  createImageBitmap(file).then(bmp=>{
+    _bgLoadedImg=bmp;
+    applyBgImage(bmp);
+    console.log('[BG-IMG] loaded via createImageBitmap:',bmp.width+'x'+bmp.height);
+  }).catch(()=>{
+    // 폴백: FileReader + Image
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      const img=new Image();
+      img.onload=()=>{_bgLoadedImg=img;applyBgImage(img)};
+      img.src=ev.target.result;
     };
-    img.src=ev.target.result;
-  };
-  reader.readAsDataURL(file);
+    reader.readAsDataURL(file);
+  });
   e.target.value='';
 });
+// 스케일/모드 변경 시 재적용
+document.getElementById('bg-scale').addEventListener('input',()=>{if(_bgLoadedImg)applyBgImage(_bgLoadedImg)});
+document.getElementById('bg-mode').addEventListener('change',()=>{if(_bgLoadedImg)applyBgImage(_bgLoadedImg)});
 
 // ══ 초기화 ══
 function resize(){C.width=document.getElementById('workspace').clientWidth;C.height=document.getElementById('workspace').clientHeight;render()}
