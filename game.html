@@ -10158,14 +10158,8 @@ function buildMapCache(){
     }
     c.clip();
     c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
-    // 텍스처 타일링: 1장이 덮는 게임 픽셀 크기 (1024=원본, 2048=2배확대)
-    const _TEX_TILE=1024; // 1024px 텍스처 → 1:1 선명, ~25타일 커버
-    const pat=c.createPattern(mtx,'repeat');
-    c.save();
-    c.scale(_TEX_TILE/mtx.width, _TEX_TILE/mtx.height);
-    c.fillStyle=pat;
-    c.fillRect(0,0,mw*T*(mtx.width/_TEX_TILE),mh*T*(mtx.height/_TEX_TILE));
-    c.restore();
+    // 텍스처 1장을 맵 전체에 스트레치
+    c.drawImage(mtx,0,0,mw*T,mh*T);
     c.restore();
   }
   // ── Pass 1: 바닥 + 노이즈 텍스처 (텍스처 로드 시 스킵) ──
@@ -10915,7 +10909,7 @@ function applyStats(){
   // ═══ 바이블 기준: ATK = 15+(stage-1)*2 ═══
   P.baseAtk=G.on?15+((G.stage||1)-1)*2:15;
   P.speed=(2.6+s.dex*.005)*(1+(P._altSpd||0)+_eqAffix('movSpeed')+_eqImplicit('_iMovSpd')*.01);
-  P.stR=.05+s.dex*.002+s.vit*.001+P.lv*.0005; // ST리젠: 초당0.375 + DEX + VIT + 레벨 (/8 적용)
+  P.stR=.05+s.dex*.008+s.vit*.002+P.lv*.002; // ST리젠: DEX 주력 + VIT 보조 + 레벨 (/8 적용)
   P.hpR=.05+s.vit*.002+s.str*.002+P.lv*.0005+_eqAffix('lifeRegen')/60; // HP리젠: 초당0.375 + VIT+STR + 레벨 + 생명팔찌
   P.mmp=~~((100+P.lv*.5+s.int*1)*(1+_eqAffix('maxMPPct')));P.mp=Math.min(P.mp,P.mmp);
   P.mpR=.05+s.int*.003+P.lv*.0005; // MP리젠: 초당0.375 + INT + 레벨 (/8 적용)
@@ -117522,7 +117516,7 @@ function update(){
       const _wwMin=100;const _wwMax=200+(_wwLv-1)*15; // 1렙200, 5렙260, 10렙335
       const _wwRangeBase=_wwMin+(_wwMax-_wwMin)*Math.min(1,_wwGrow);
       const _wwRange=_wwRangeBase;
-      const _wwDmg=~~(meleeRef()*statStr()*1.0*(1+(_wwLv-1)*0.05)*2*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1)*_wwDrainBonus); // 몬스터 스택 보너스는 hitArc에서 적용
+      const _wwDmg=~~(meleeRef()*1.0*(1+(_wwLv-1)*0.05)*2*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1)*_wwDrainBonus); // statStr()는 hurtE에서 적용
       hitArc(P.wwAng,_wwRange,Math.PI*2,_wwDmg,wp().el,'weapon');
       SFX.slashSeq();
     }
@@ -129862,10 +129856,10 @@ function renderStatSummary(){
     `<div style="${_sLn}">🟣암흑: <span style="color:${_sDarkR?'#9933cc':'#555544'}">${~~(_sDarkR*100)}%</span> | 🟢독: <span style="color:${_sPoisR?'#88ff00':'#555544'}">${~~(_sPoisR*100)}%</span> | CC저항: <span style="color:${_afc('ccRes','#ffaa44')}">${_afp('ccRes')}</span></div>`+
     // ── 생존 ──
     `<div style="${_sHd}">❤️ 생존</div>`+
-    `<div style="${_sLn}">HP: <span style="color:#ff4444">${~~P.hp}/${~~P.mhp}</span> <span style="color:#887766;font-size:1.1rem">(+${~~(P.hpR*6*pRegenMul())}/초)</span></div>`+
+    `<div style="${_sLn}">HP: <span style="color:#ff4444">${~~P.hp}/${~~P.mhp}</span> <span style="color:#887766;font-size:1.1rem">(+${(P.hpR*6*pRegenMul()).toFixed(1)}/초)</span></div>`+
     (P.mshield>0?`<div style="${_sLn}">에너지쉴드: <span style="color:#4488ff">${~~P.shield}/${P.mshield}</span></div>`:'')+
-    `<div style="${_sLn}">스태미나: <span style="color:#44dd44">${~~P.st}/${P.mst}</span> <span style="color:#887766;font-size:1.1rem">(+${~~(P.stR/8*60*pRegenMul())}/초)</span></div>`+
-    `<div style="${_sLn}">MP: <span style="color:#4488ff">${~~P.mp}/${P.mmp}</span> <span style="color:#887766;font-size:1.1rem">(+${~~(P.mpR/8*60)}/초)</span></div>`+
+    `<div style="${_sLn}">스태미나: <span style="color:#44dd44">${~~P.st}/${P.mst}</span> <span style="color:#887766;font-size:1.1rem">(+${(P.stR/8*60*pRegenMul()).toFixed(1)}/초)</span></div>`+
+    `<div style="${_sLn}">MP: <span style="color:#4488ff">${~~P.mp}/${P.mmp}</span> <span style="color:#887766;font-size:1.1rem">(+${(P.mpR/8*60).toFixed(1)}/초)</span></div>`+
     `<div style="${_sLn}">이동속도: <span style="color:#ffcc44">${P.speed.toFixed(2)}</span> | 포이즈: <span style="color:#ffdd44">${~~(P.poise||0)}/${~~P.maxPoise}</span></div>`+
     `<div style="${_sLn}">한방캡: <span style="color:#ff6666">${~~(P.mhp*.5)}</span> <span style="color:#887766;font-size:1.1rem">(최대HP의50%)</span></div>`+
     // ── 비용/효율 ──
