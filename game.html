@@ -1085,7 +1085,7 @@ async function dbSave(){
       stats:{...STATS},
       passives:{...PASSIVES},
       qslots:QSLOTS,
-      game:{stage:G.stage,kills:G.kills,mats:G.mats},
+      game:{stage:G.stage,kills:G.kills,mats:G.mats,irisSz:G._irisSz||20},
       bagMax:BAG_MAX,
       hellCleared:G.hellCleared||[],
       storage:STORAGE||{},
@@ -1228,6 +1228,7 @@ function dbRestore(d){
     G.stage=d.game.stage||0;
     G.kills=d.game.kills||0;
     G.mats=d.game.mats||0;
+    G._irisSz=d.game.irisSz||20;
   }
   // Bag
   BAG_MAX=d.bagMax||42;
@@ -1734,6 +1735,14 @@ function _collectLights(){
     if(!e.ib){var _edx=e.x-G.cam.x,_edy=e.y-G.cam.y;if(_edx<-C.width/2-300||_edx>C.width/2+300||_edy<-C.height/2-300||_edy>C.height/2+300)continue}
     if(e.ib){_pushLight(e.x,e.y,150,.3,200,100,50);continue}
     if(e.burnT>0)_pushLight(e.x,e.y,40,.2,255,68,0);
+  }
+  // 9.5) 유령불꽃 펫 광원
+  if(G.pets&&G.pets.iris){
+    var _irP=G.pets.iris,_irNSz=(_irP.sz||20)/100;
+    var _irLR=60+_irNSz*200; // 광원 반경 60~260
+    var _irLA=.2+_irNSz*.6;  // 광원 밝기 0.2~0.8
+    var _irFlk2=1+Math.sin(_irP.t*.09)*.15;
+    _pushLight(_irP.x,_irP.y,_irLR*_irFlk2,_irLA,187,119,255);
   }
   // 10) 반딧불이 앰비언트 파티클 — 동적 광원
   if(OPT.ambPart&&_ambCnt>0){
@@ -2599,7 +2608,8 @@ _gpuScoreCache=detectTier();
 const PETS={
   crow:{name:'Crow',col:'#111',pickR:1000,spd:22,orbR:38,orbY:-22,desc:'Air pickup helper'},
   cat:{name:'Cat',col:'#111',pickR:1000,spd:24,orbR:28,orbY:32,desc:'Ground pickup + auto-disassemble'},
-  xbow:{name:'GhostXbow',col:'#6688cc',spd:18,orbR:44,orbY:-28,atkR:500,atkCd:120,desc:'Auto-shooting ghost crossbow'}
+  xbow:{name:'GhostXbow',col:'#6688cc',spd:18,orbR:44,orbY:-28,atkR:500,atkCd:120,desc:'Auto-shooting ghost crossbow'},
+  iris:{name:'유령불꽃',col:'#bb77ff',spd:14,orbR:32,orbY:-34,desc:'Ghost iris flame — ambient light, consumes malice'}
 };
 // ── 펫 스프라이트 프리로드 ──
 const _PET_DIRS=['south','south-west','west','north-west','north','north-east','east','south-east'];
@@ -115809,7 +115819,7 @@ function _enterBossArena(){
   G.cam.x=P.x;G.cam.y=P.y;
   ens.push(mkEn((arena.bossX+.5)*T,(arena.bossY+.5)*T,si,0,true,STG[si].be,0));
   G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;if(!G._killedBosses)G._killedBosses=[];
-  G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0}};
+  G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0},iris:{x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:G._irisSz||20,_feedT:0}};
   buildMapCache();
   // ── 봉인 연출 ──
   G._bfxT=0;G._bfxBolt=null;
@@ -116563,7 +116573,7 @@ function initStage(si){
   }
   // forge 삭제됨 — 대장간은 G키로 어디서든 접근
   G.cam.x=P.x;G.cam.y=P.y;
-  G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0}};
+  G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0},iris:{x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:G._irisSz||20,_feedT:0}};
   buildMapCache(); // 맵 오프스크린 캔버스 캐싱
   // 대형 스프라이트 GPU 프리업로드 (etype 80~84 보스급)
   if(_useGPU||_useGL){for(const _bet of[80,81,82,83,84]){const _bs=_ESPRITES[_bet];if(_bs&&_bs.img&&_bs.img.complete){try{_getTex(_bs.img)}catch(e){}}}}
@@ -124446,8 +124456,9 @@ function _updateOnePet(key){
   }
 }
 function updatePet(){
-  if(!G.pets){G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:50},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0}}}
+  if(!G.pets){G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:50},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0},iris:{x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:G._irisSz||20,_feedT:0}}}
   if(!G.pets.xbow)G.pets.xbow={x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0};
+  if(!G.pets.iris)G.pets.iris={x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:G._irisSz||20,_feedT:0};
   // ── 수거는 petAuto ON일 때만 ──
   if(OPT.petAuto){
     // HP/물약: 즉시 흡수 (펫 무관)
@@ -124485,7 +124496,7 @@ function updatePet(){
     }
   }
   // ── 펫 이동은 항상 ──
-  _updateOnePet('crow');_updateOnePet('cat');_updateGhostXbow();
+  _updateOnePet('crow');_updateOnePet('cat');_updateGhostXbow();_updateGhostIris();
   _checkPetDialogue();
 }
 // ═══ 유령쇠뇌 펫: 둥둥 떠다니며 자동 사격 ═══
@@ -124504,6 +124515,41 @@ function _updateGhostXbow(){
   else{pet.x=pet.tx;pet.y=pet.ty}
   // 언스턱
   if(dst(pet.x,pet.y,P.x,P.y)>520){pet.x=P.x-30;pet.y=P.y-28;pet.tx=pet.x;pet.ty=pet.y}
+}
+// ═══ 유령불꽃 펫: 보라빛 조명, 1분당 sz×1 악의 소모, 크기 1~100 조절 ═══
+function _updateGhostIris(){
+  const def=PETS.iris;if(!def)return;
+  if(!G.pets.iris)return;
+  const pet=G.pets.iris;
+  pet.t+=_dtSp;
+  // 크기 동기화 (UI 슬라이더에서 변경 시)
+  if(G._irisSz!=null)pet.sz=G._irisSz;
+  if(!pet.sz)pet.sz=20;
+  // 궤도 이동 (까마귀 반대편 위쪽, 느린 타원)
+  const ox=Math.cos(pet.t*.015+Math.PI*.5)*def.orbR;
+  const oy=def.orbY+Math.sin(pet.t*.02+.8)*6;
+  pet.tx=P.x+ox;pet.ty=P.y+oy;
+  // 이동
+  const dx=pet.tx-pet.x,dy=pet.ty-pet.y,d=Math.sqrt(dx*dx+dy*dy);
+  if(d>3){const s=Math.min(def.spd*_dtSp,d*.1);pet.x+=dx/d*s;pet.y+=dy/d*s}
+  else{pet.x=pet.tx;pet.y=pet.ty}
+  // 언스턱
+  if(dst(pet.x,pet.y,P.x,P.y)>520){pet.x=P.x+20;pet.y=P.y-34}
+  // 악의 소모: 1분(3600프레임)마다 sz×1 악의 소모
+  pet._feedT=(pet._feedT||0)+_dtSp;
+  const feedInterval=3600; // 60fps × 60초
+  if(pet._feedT>=feedInterval){
+    pet._feedT-=feedInterval;
+    const cost=pet.sz;
+    if(G.mats>=cost){
+      G.mats-=cost;
+    }else{
+      // 악의 부족 → 크기 절반으로 축소 (최소 1)
+      pet.sz=Math.max(1,~~(pet.sz/2));
+      G._irisSz=pet.sz;
+      addTxt(pet.x,pet.y-10,'악의 부족! 불꽃 축소','#ff6666',50);
+    }
+  }
 }
 // ═══ 부활 VFX — 모든 부활 연출 통합 관리 ═══
 // _reviveVFX(x,y,col,label, opts?)
@@ -132527,6 +132573,10 @@ function draw(){
     // ── 시작방 횃불 조명 (화면 내만) ──
     if(G.rooms&&G.rooms[0]){const _sr2=G.rooms[0];const _sdx=(_sr2.cx+.5)*T-G.cam.x,_sdy=(_sr2.cy+.5)*T-G.cam.y;
       if(Math.abs(_sdx)<_thw&&Math.abs(_sdy)<_thh){_tc.globalAlpha=.5;_tc.drawImage(_getTorchSmall(120),C.width/2+_sdx-120,C.height/2+_sdy-120);_tc.globalAlpha=1}}
+    // ── 유령불꽃 조명 (토치 오버레이) ──
+    if(G.pets&&G.pets.iris){const _irp=G.pets.iris;const _irdx=_irp.x-G.cam.x,_irdy=_irp.y-G.cam.y;
+      if(Math.abs(_irdx)<_thw&&Math.abs(_irdy)<_thh){const _irNSz2=(_irp.sz||20)/100;const _irTR=~~(40+_irNSz2*160);
+        _tc.globalAlpha=.4+_irNSz2*.4;_tc.drawImage(_getTorchSmall(_irTR),C.width/2+_irdx-_irTR,C.height/2+_irdy-_irTR);_tc.globalAlpha=1}}
     // ── 보스문 앞 횃불 조명 (화면 내만) ──
     if(G._gateY!=null&&G._bossCx!=null){const _gdx=(G._bossCx+.5)*T-G.cam.x,_gdy=(G._gateY+3.5)*T-G.cam.y;
       if(Math.abs(_gdx)<_thw&&Math.abs(_gdy)<_thh){const _gsx=C.width/2+_gdx,_gsy=C.height/2+_gdy;_tc.globalAlpha=.6;_tc.drawImage(_getTorchSmall(100),_gsx-100,_gsy-100);_tc.globalAlpha=1}}
@@ -136087,6 +136137,42 @@ function drawP(){
     X.ellipse(_xpx,_xpy+14,5,1.5,0,0,Math.PI*2);X.fill();
     X.globalAlpha=1;
   }
+  // ── 유령불꽃 렌더 ──
+  if(G.pets&&G.pets.iris){
+    const _ir=G.pets.iris;
+    const _irSz=(_ir.sz||20)/100; // 0.01~1.0 정규화
+    const _irBob=Math.sin(_ir.t*.07)*3;
+    const _irpx=_ir.x,_irpy=_ir.y+_irBob;
+    const _irR=4+_irSz*12; // 반경 4~16
+    const _irFlk=.6+Math.sin(_ir.t*.09)*.2+Math.sin(_ir.t*.13)*.1; // 플리커
+    // 외곽 글로우 (큰 원)
+    X.globalAlpha=(.08+_irSz*.12)*_irFlk;
+    X.fillStyle='#9944ff';X.beginPath();X.arc(_irpx,_irpy,_irR*3,0,Math.PI*2);X.fill();
+    // 중간 글로우
+    X.globalAlpha=(.15+_irSz*.2)*_irFlk;
+    X.fillStyle='#bb77ff';X.beginPath();X.arc(_irpx,_irpy,_irR*1.8,0,Math.PI*2);X.fill();
+    // 코어 (밝은 중심)
+    X.globalAlpha=(.5+_irSz*.4)*_irFlk;
+    X.fillStyle='#ddaaff';X.beginPath();X.arc(_irpx,_irpy,_irR,0,Math.PI*2);X.fill();
+    // 핵심 불꽃 (흰색)
+    X.globalAlpha=(.6+_irSz*.3)*_irFlk;
+    X.fillStyle='#fff0ff';X.beginPath();X.arc(_irpx,_irpy,_irR*.4,0,Math.PI*2);X.fill();
+    // 불꽃 파티클 (위로 올라가는 작은 점들)
+    const _irPartN=2+~~(_irSz*4);
+    for(let _ip=0;_ip<_irPartN;_ip++){
+      const _ipa=_ir.t*.03+_ip*2.1;
+      const _ipLife=((_ir.t+_ip*37)%60)/60;
+      const _ipx=_irpx+Math.sin(_ipa)*_irR*.8;
+      const _ipy=_irpy-_ipLife*(_irR*2)-Math.sin(_ir.t*.05+_ip)*2;
+      X.globalAlpha=(1-_ipLife)*.4*_irFlk;
+      X.fillStyle=_ip%2?'#cc88ff':'#ffccff';
+      X.beginPath();X.arc(_ipx,_ipy,.5+_irSz*1.5*(1-_ipLife),0,Math.PI*2);X.fill();
+    }
+    // 그림자
+    X.globalAlpha=.06+_irSz*.04;X.fillStyle='#000';X.beginPath();
+    X.ellipse(_irpx,_irpy+16+_irSz*4,2+_irSz*3,1,0,0,Math.PI*2);X.fill();
+    X.globalAlpha=1;
+  }
   // ── 펫 말풍선 렌더 ──
   if(_petBubble.t>0&&_petBubble.who&&G.pets[_petBubble.who]){
     const _bPet=G.pets[_petBubble.who];
@@ -136870,7 +136956,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         inv:{bag:INV.bag,equipped:INV.equipped},
         stats:{...STATS},passives:{...PASSIVES},
         qslots:QSLOTS,
-        game:{stage:G.stage,kills:G.kills,mats:G.mats},
+        game:{stage:G.stage,kills:G.kills,mats:G.mats,irisSz:G._irisSz||20},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:STORAGE||{},
         upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
         fused:P._fused||{},skProf:P._skProf||{},fuseProfSec:P._fuseProfSec||{},cardProf:P._cardProf||{},catProf:P._catProf||{},
@@ -136988,7 +137074,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         inv:{bag:INV.bag,equipped:INV.equipped},
         stats:{...STATS},passives:{...PASSIVES},
         qslots:QSLOTS,
-        game:{stage:G.stage,kills:G.kills,mats:G.mats},
+        game:{stage:G.stage,kills:G.kills,mats:G.mats,irisSz:G._irisSz||20},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:STORAGE||{},
         upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
         fused:P._fused||{},skProf:P._skProf||{},fuseProfSec:P._fuseProfSec||{},cardProf:P._cardProf||{},catProf:P._catProf||{},
