@@ -672,7 +672,7 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">FPS 제한</span><input type="range" id="optFps" min="0" max="4" step="1" value="1"><span class="set-range-val" id="optFpsVal">60</span></div>
           <div class="set-range-row"><span class="set-name">해상도 스케일</span><input type="range" id="optResScale" min="50" max="100" step="10" value="100"><span class="set-range-val" id="optResScaleVal">100%</span></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optPetAuto" checked style="width:16px;height:16px;accent-color:#66cc88"><span class="set-name">펫 자동수거</span></label></div>
-          <div class="set-range-row"><span class="set-name" style="color:#ffa028">유령불꽃 크기</span><input type="range" id="optIrisSz" min="1" max="100" value="20" style="accent-color:#ffa028"><span class="set-range-val" id="optIrisSzVal" style="color:#ffa028">20 (악의 20/분)</span></div>
+          <div class="set-range-row"><span class="set-name" style="color:#ffa028">유령불꽃 크기</span><input type="range" id="optIrisSz" min="1" max="100" value="20" style="accent-color:#ffa028"><span class="set-range-val" id="optIrisSzVal" style="color:#ffa028">20</span></div>
           <div class="set-range-row" style="margin-top:8px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optBossDbg" style="width:16px;height:16px;accent-color:#ff8844"><span class="set-name" style="color:#ff8844">보스 AI 디버그</span></label></div>
         </div>
 
@@ -1687,9 +1687,10 @@ function _pushLight(wx,wy,r,intensity,cr,cg,cb){
 function _collectLights(){
   _lightCnt=0;
   if(!P||!G.on)return;
-  // 1) 플레이어 (반경 확대, 밝기 강화)
+  // 1) 플레이어 — 유령불꽃 ON이면 본체 최소화 (불꽃이 주 광원)
   var _plAmber=SI_TO_HELL[G.stage||0]===0;
-  _pushLight(P.x,P.y,800,1,_plAmber?255:255,_plAmber?210:230,_plAmber?120:190);
+  var _irAct=G.pets&&G.pets.iris&&!G._irisOff;
+  _pushLight(P.x,P.y,_irAct?120:800,_irAct?.15:1,_plAmber?255:255,_plAmber?210:230,_plAmber?120:190);
   // 2) 플레이어 투사체
   for(var i=0;i<pProjs.length&&_lightCnt<120;i++){
     var p=pProjs[i];if(!p||p.life<=0)continue;
@@ -2483,7 +2484,7 @@ const _HS={
   kill:4,pStun:5
 };
 // ═══ [TORCH] 횃불 조명 시스템 ═══
-const _TORCH={baseRadius:550,flickerSpeed:.003,flickerAmp:10,darkAlpha:.18,combatBoost:100,lowHpShrink:.6,bossBoost:150};
+const _TORCH={baseRadius:300,flickerSpeed:.003,flickerAmp:8,darkAlpha:.65,combatBoost:60,lowHpShrink:.5,bossBoost:80};
 let _torchR=_TORCH.baseRadius,_torchCache=null,_torchW=0,_torchH=0,_torchCamX=0,_torchCamY=0;
 // ═══ [AMB-PART] 앰비언트 파티클 ═══
 const _AMB_MAX=40;const _ambData=new Float32Array(_AMB_MAX*10);const _ambCols=new Array(_AMB_MAX).fill('#fff');const _ambTypes=new Uint8Array(_AMB_MAX);let _ambCnt=0,_ambSpawnT=0;
@@ -10054,7 +10055,7 @@ _loadTileTex(_TILE_DECAL,_TILE_DECAL_SRC);_loadTileTex(_TILE_GLOW,_TILE_GLOW_SRC
 function _tileHash(x,y,s){let h=(x*374761393+y*668265263+s)^0x5bd1e995;h=Math.imul(h^(h>>>15),0x1b873593);return(h^(h>>>13))>>>0}
 // ══ 에디터 맵 텍스처 (스테이지별 PNG) ══
 const _mapTexImgs={};
-const _MAP_TEX_FILES={0:'img/maps/stage_0_tex.png',1:'img/maps/stage_1_tex.png'};
+const _MAP_TEX_FILES={0:'img/maps/stage_0_tex.jpg',1:'img/maps/stage_1_tex.png'};
 for(const[sid,src] of Object.entries(_MAP_TEX_FILES)){
   const img=new Image();img.onload=()=>console.log('[MAP-TEX] stage '+sid+' loaded');
   img.onerror=()=>console.warn('[MAP-TEX] stage '+sid+' failed');
@@ -117166,8 +117167,10 @@ function update(){
   const _hpr=(P.hpR||0)*pRegenMul()*_hdMul*(1+_eqAffix('lifeHealPow'));
   const _regenDiv=P.s==='idle'?8:16;
   if(_hpr>0&&P.hp>0&&P.hp<P.mhp){P.hp=Math.min(P.mhp,P.hp+_hpr/_regenDiv*sp)}
+  {const _stBefore=P.st,_mpBefore=P.mp,_hpBefore=P.hp;
   if(P.s==='idle'){P.st=Math.min(P.mst,P.st+_str/8*sp);P.mp=Math.min(P.mmp,P.mp+_mpr/8*sp)}
   else{P.st=Math.min(P.mst,P.st+_str/16*sp);const _mpMul=P.s==='beam'?.5:1;P.mp=Math.min(P.mmp,P.mp+_mpr/16*_mpMul*sp)}
+  if(_gameFrame%300===0&&(P.st<P.mst||P.mp<P.mmp||P.hp<P.mhp))console.log('[REGEN] s='+P.s+' _str='+_str.toFixed(4)+' _mpr='+_mpr.toFixed(4)+' _hpr='+(_hpr||0).toFixed(4)+' sp='+sp+' ST:'+_stBefore.toFixed(2)+'→'+P.st.toFixed(2)+' MP:'+_mpBefore.toFixed(2)+'→'+P.mp.toFixed(2)+' HP:'+_hpBefore.toFixed(2)+'→'+P.hp.toFixed(2)+' ch='+SI_TO_HELL[G.stage]);}
   // 악마화 부활 쿨다운 감소
   if(P._demonRevCd>0)P._demonRevCd-=sp;
   // ═══ 어픽스: killSlayer 카운트다운 ═══
@@ -119463,8 +119466,6 @@ function update(){
   if(G.shake>0){G.shake*=.86**(_hsActive?_hsDtOrig:sp);if(G.shake<.3)G.shake=0}
   // [TORCH] 반경 업데이트
   if(OPT.torch){let _tTarget=_TORCH.baseRadius;
-    // 유령불꽃 ON → 토치 반경에 불꽃 크기 추가
-    if(G.pets&&G.pets.iris&&!G._irisOff){const _iSz=(G.pets.iris.sz||20)/100;_tTarget+=_iSz*300;}
     if(P.s==='attack'||P.s==='charge')_tTarget+=_TORCH.combatBoost;
     if(P.hp/P.mhp<=.3)_tTarget*=_TORCH.lowHpShrink+.6*(P.hp/P.mhp/.3);
     if(G._bossRef&&G._bossRef.alive)_tTarget+=_TORCH.bossBoost;
@@ -123748,11 +123749,15 @@ function updateE(e,sp){
     const _lnx=e.x+_lmx,_lny=e.y+_lmy;
     if(canMv(_lnx,_lny,e.r)){e.x=_lnx;e.y=_lny}
     else{if(canMv(e.x+_lmx,e.y,e.r))e.x+=_lmx;else if(canMv(e.x,e.y+_lmy,e.r))e.y+=_lmy}}
-    // 히트 판정: 레이저 라인과 플레이어 거리
+    // 벽 충돌: 레이저 길이를 벽에서 자름
     const lx=Math.cos(e.laserAng),ly=Math.sin(e.laserAng);
+    let _laserActLen=e.laserLen;
+    for(let t=10;t<e.laserLen;t+=10){if(isW(e.x+lx*t,e.y+ly*t)){_laserActLen=t;break}}
+    e._laserActLen=_laserActLen;
+    // 히트 판정: 레이저 라인과 플레이어 거리
     const dx=P.x-e.x,dy=P.y-e.y;
     const proj=dx*lx+dy*ly; // 레이저 축 투영
-    if(proj>0&&proj<e.laserLen){
+    if(proj>0&&proj<_laserActLen){
       const perp=Math.abs(dx*ly-dy*lx); // 수직 거리
       if(perp<P.r+10&&P.iframes<=0){
         if(isPWin()){P.parryBank=(P.parryBank||0)+~~(e.atk*1.6);doParry(e.atk);_bossPostureHit(e,20);addTxt(P.x,P.y-25,'⚡패링!','#ffdd00',50)}
@@ -123764,7 +123769,7 @@ function updateE(e,sp){
       }
     }
     // 파티클
-    if(Math.random()>.5){const ld=Math.random()*e.laserLen;
+    if(Math.random()>.5){const ld=Math.random()*_laserActLen;
       poolPart(e.x+lx*ld+(Math.random()-.5)*8,e.y+ly*ld+(Math.random()-.5)*8,(Math.random()-.5)*2,(Math.random()-.5)*2,e.col,2+Math.random()*2,6)}
     if(e.st2<=0){e.s='recover';e.st2=60;SFX.beamStop()}break}
   // ── 충격파: 확장 링 ──
@@ -124538,31 +124543,11 @@ function _updateGhostIris(){
   // 크기 동기화 (UI 슬라이더에서 변경 시)
   if(G._irisSz!=null)pet.sz=G._irisSz;
   if(!pet.sz)pet.sz=20;
-  // 궤도 이동 (까마귀 반대편 위쪽, 느린 타원)
+  // 궤도 위치 즉시 스냅 (조명이므로 지연 없이 플레이어에 붙음)
   const ox=Math.cos(pet.t*.015+Math.PI*.5)*def.orbR;
   const oy=def.orbY+Math.sin(pet.t*.02+.8)*6;
-  pet.tx=P.x+ox;pet.ty=P.y+oy;
-  // 이동
-  const dx=pet.tx-pet.x,dy=pet.ty-pet.y,d=Math.sqrt(dx*dx+dy*dy);
-  if(d>3){const s=Math.min(def.spd*_dtSp,d*.1);pet.x+=dx/d*s;pet.y+=dy/d*s}
-  else{pet.x=pet.tx;pet.y=pet.ty}
-  // 언스턱
-  if(dst(pet.x,pet.y,P.x,P.y)>520){pet.x=P.x+20;pet.y=P.y-34}
-  // 악의 소모: 1분(3600프레임)마다 sz×1 악의 소모
-  pet._feedT=(pet._feedT||0)+_dtSp;
-  const feedInterval=3600; // 60fps × 60초
-  if(pet._feedT>=feedInterval){
-    pet._feedT-=feedInterval;
-    const cost=pet.sz;
-    if(G.mats>=cost){
-      G.mats-=cost;
-    }else{
-      // 악의 부족 → 크기 절반으로 축소 (최소 1)
-      pet.sz=Math.max(1,~~(pet.sz/2));
-      G._irisSz=pet.sz;
-      addTxt(pet.x,pet.y-10,'악의 부족! 불꽃 축소','#ff6666',50);
-    }
-  }
+  pet.x=P.x+ox;pet.y=P.y+oy;
+  // 악의 소모 없음 (무료)
 }
 // ═══ 부활 VFX — 모든 부활 연출 통합 관리 ═══
 // _reviveVFX(x,y,col,label, opts?)
@@ -128278,7 +128263,7 @@ const _FPS_STEPS=[30,60,120,144,244];
 $('optFps').oninput=function(){OPT.fpsCap=_FPS_STEPS[+this.value];$('optFpsVal').textContent=OPT.fpsCap;saveSettings()};
 $('optResScale').oninput=function(){OPT.resScale=+this.value;$('optResScaleVal').textContent=this.value+'%';rz();saveSettings()};
 $('optPetAuto').onchange=function(){OPT.petAuto=this.checked;saveSettings()};
-$('optIrisSz').oninput=function(){const v=+this.value;G._irisSz=v;if(G.pets&&G.pets.iris)G.pets.iris.sz=v;$('optIrisSzVal').textContent=v+' (악의 '+v+'/분)';};
+$('optIrisSz').oninput=function(){const v=+this.value;G._irisSz=v;if(G.pets&&G.pets.iris)G.pets.iris.sz=v;$('optIrisSzVal').textContent=v;};
 $('optBossDbg').onchange=function(){OPT.bossDebug=this.checked;saveSettings()};
 // ── 그래픽 품질 옵션 ──
 $('optBloom').onchange=function(){OPT.bloom=this.checked;saveSettings()};
@@ -128718,7 +128703,7 @@ function syncSettingsUI(){
     $('optResScaleVal').textContent=(OPT.resScale||100)+'%';
   }
   if($('optPetAuto'))$('optPetAuto').checked=(OPT.petAuto!==false);
-  if($('optIrisSz')){const _isz=G._irisSz||20;$('optIrisSz').value=_isz;$('optIrisSzVal').textContent=_isz+' (악의 '+_isz+'/분)'}
+  if($('optIrisSz')){const _isz=G._irisSz||20;$('optIrisSz').value=_isz;$('optIrisSzVal').textContent=_isz}
   if($('optBossDbg')){$('optBossDbg').checked=!!OPT.bossDebug}
   if($('optBloom'))$('optBloom').checked=!!OPT.bloom;
   if($('optTrail'))$('optTrail').checked=!!OPT.trail;
@@ -131006,7 +130991,8 @@ function draw(){
     if(e.s==='bossLaserWind'){
       // 조준선: 빨간 점선 깜빡임
       const p=1-e.st2/50;const lx=Math.cos(e.laserAng),ly=Math.sin(e.laserAng);
-      const maxL=280+G.stage*15;
+      let maxL=280+G.stage*15;
+      for(let t=10;t<maxL;t+=10){if(isW(e.x+lx*t,e.y+ly*t)){maxL=t;break}}
       X.globalAlpha=.2+p*.4+Math.sin(_now/60)*.15;X.strokeStyle='#ff2266';X.lineWidth=1+p*2;
       X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+lx*maxL,e.y+ly*maxL);X.stroke();
       // 차지 이펙트
@@ -131014,18 +131000,19 @@ function draw(){
       X.globalAlpha=sa;
     }
     if(e.s==='bossLaser'){
-      // 실제 빔: 두꺼운 광선 + 코어
+      // 실제 빔: 두꺼운 광선 + 코어 (벽에서 잘림)
       const lx=Math.cos(e.laserAng),ly=Math.sin(e.laserAng);
+      const _lLen=e._laserActLen||e.laserLen;
       const pulse=.7+Math.sin(_now/40)*.3;
       // 외곽 글로우
       X.globalAlpha=.15*pulse;X.strokeStyle=e.col;X.lineWidth=28;
-      X.beginPath();X.moveTo(e.x+lx*e.r,e.y+ly*e.r);X.lineTo(e.x+lx*e.laserLen,e.y+ly*e.laserLen);X.stroke();
+      X.beginPath();X.moveTo(e.x+lx*e.r,e.y+ly*e.r);X.lineTo(e.x+lx*_lLen,e.y+ly*_lLen);X.stroke();
       // 메인 빔
       X.globalAlpha=.6*pulse;X.strokeStyle=e.col;X.lineWidth=10;
-      X.beginPath();X.moveTo(e.x+lx*e.r,e.y+ly*e.r);X.lineTo(e.x+lx*e.laserLen,e.y+ly*e.laserLen);X.stroke();
+      X.beginPath();X.moveTo(e.x+lx*e.r,e.y+ly*e.r);X.lineTo(e.x+lx*_lLen,e.y+ly*_lLen);X.stroke();
       // 코어
       X.globalAlpha=.9*pulse;X.strokeStyle='#ffffff';X.lineWidth=3;
-      X.beginPath();X.moveTo(e.x+lx*e.r,e.y+ly*e.r);X.lineTo(e.x+lx*e.laserLen,e.y+ly*e.laserLen);X.stroke();
+      X.beginPath();X.moveTo(e.x+lx*e.r,e.y+ly*e.r);X.lineTo(e.x+lx*_lLen,e.y+ly*_lLen);X.stroke();
       X.globalAlpha=sa;
     }
     // ── 순간이동 경고 원 (도착 위치) ──
@@ -132560,14 +132547,15 @@ function draw(){
   if(G._chromaT>0){if(G._litFrame&1){const _csh=G._chromaT*1.5;X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=.04;X.drawImage(C,-_csh,0);X.drawImage(C,_csh,0);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}G._chromaT-=_dtSp}
   // ═══ 동적 조명 패스 (3프레임마다 계산) ═══
   if(!G._litFrame)G._litFrame=0;G._litFrame++;
-  {const _l0=performance.now();if(_gameFrame%3===0){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}else if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
+  {const _l0=performance.now();const _litEvery=G.pets&&G.pets.iris&&!G._irisOff;if(_litEvery||_gameFrame%3===0){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}else if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
   // ═══ 블룸 패스 (3프레임마다 계산 — 라이팅과 1프레임 오프셋) ═══
   {const _bl0=performance.now();if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.35:.25;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
   // [TORCH] 횃불 조명 어둠 오버레이 (_gameFrame%3===0 만 재계산)
   const _tc0=performance.now();
   if(OPT.torch&&OPT.postfx&&OPT.quality!=='low'){X.save();X.setTransform(1,0,0,1,0,0);
   const _torchStale=!_torchCache||_torchW!==C.width||_torchH!==C.height;
-  const _torchRedraw=_torchStale||(_gameFrame%6===2);
+  const _irIsOn=G.pets&&G.pets.iris&&!G._irisOff;
+  const _torchRedraw=_torchStale||(_irIsOn?true:(_gameFrame%6===2));
   if(!_torchRedraw){X.drawImage(_torchCache,_torchCamX-G.cam.x,_torchCamY-G.cam.y);X.restore()}else{
     const _psx=C.width/2+(P.x-G.cam.x),_psy=C.height/2+(P.y-G.cam.y),_tR=Math.max(80,_torchR),_ahell2=SI_TO_HELL[G.stage];
     if(!_torchCache||_torchW!==C.width||_torchH!==C.height){_torchCache=document.createElement('canvas');_torchCache.width=C.width;_torchCache.height=C.height;_torchW=C.width;_torchH=C.height;_torchCache._ctx=_torchCache.getContext('2d')}
@@ -132575,8 +132563,21 @@ function draw(){
     const _darkCols=['#061018','#061008','#120608','#0a0614','#0e0c06','#0c0a08','#04020c'];
     _tc.fillStyle=_darkCols[_ahell2];_tc.globalAlpha=_TORCH.darkAlpha;_tc.fillRect(0,0,C.width,C.height);
     _tc.globalCompositeOperation='destination-out';
-    _mkTorchStamp(_tR);
-    _tc.globalAlpha=1;_tc.drawImage(_torchStamp,_psx-_tR,_psy-_tR);
+    const _irOn=G.pets&&G.pets.iris&&!G._irisOff;
+    if(_irOn){
+      // 유령불꽃 ON → 플레이어 중앙 스탬프 없음, 불꽃 위치에 메인 스탬프
+      const _irp2=G.pets.iris;
+      const _irNSz3=Math.max(.01,(_irp2.sz||20)/100);
+      const _irMainR=~~(150+_irNSz3*350);
+      const _irdx2=_irp2.x-G.cam.x,_irdy2=_irp2.y-G.cam.y;
+      _mkTorchStamp(_irMainR);
+      _tc.globalAlpha=1;_tc.drawImage(_torchStamp,C.width/2+_irdx2-_irMainR,C.height/2+_irdy2-_irMainR);
+      // 플레이어 발밑 최소 빛 (안 보이면 답답하니까)
+      _tc.globalAlpha=.5;_tc.drawImage(_getTorchSmall(40),_psx-40,_psy-40);_tc.globalAlpha=1;
+    }else{
+      _mkTorchStamp(_tR);
+      _tc.globalAlpha=1;_tc.drawImage(_torchStamp,_psx-_tR,_psy-_tR);
+    }
     const _thw=C.width/2+100,_thh=C.height/2+100;
     if(G._bossRef&&G._bossRef.alive){const _bdx=G._bossRef.x-G.cam.x,_bdy=G._bossRef.y-G.cam.y;
       if(_bdx>-_thw&&_bdx<_thw&&_bdy>-_thh&&_bdy<_thh){_tc.globalAlpha=.7;_tc.drawImage(_getTorchSmall(80),C.width/2+_bdx-80,C.height/2+_bdy-80);_tc.globalAlpha=1}}
@@ -132588,10 +132589,10 @@ function draw(){
     // ── 시작방 횃불 조명 (화면 내만) ──
     if(G.rooms&&G.rooms[0]){const _sr2=G.rooms[0];const _sdx=(_sr2.cx+.5)*T-G.cam.x,_sdy=(_sr2.cy+.5)*T-G.cam.y;
       if(Math.abs(_sdx)<_thw&&Math.abs(_sdy)<_thh){_tc.globalAlpha=.5;_tc.drawImage(_getTorchSmall(120),C.width/2+_sdx-120,C.height/2+_sdy-120);_tc.globalAlpha=1}}
-    // ── 유령불꽃 조명 (토치 오버레이) ──
+    // ── 유령불꽃 조명 (토치 오버레이) — 불꽃 위치 독립 스탬프 ──
     if(G.pets&&G.pets.iris&&!G._irisOff){const _irp=G.pets.iris;const _irdx=_irp.x-G.cam.x,_irdy=_irp.y-G.cam.y;
-      if(Math.abs(_irdx)<_thw&&Math.abs(_irdy)<_thh){const _irNSz2=Math.max(.01,(_irp.sz||20)/100);const _irTR=~~(80+_irNSz2*250);
-        _tc.globalAlpha=.6+_irNSz2*.35;_tc.drawImage(_getTorchSmall(_irTR),C.width/2+_irdx-_irTR,C.height/2+_irdy-_irTR);_tc.globalAlpha=1}}
+      if(Math.abs(_irdx)<_thw&&Math.abs(_irdy)<_thh){const _irNSz2=Math.max(.01,(_irp.sz||20)/100);const _irTR=~~(150+_irNSz2*300);
+        _tc.globalAlpha=.9;_tc.drawImage(_getTorchSmall(_irTR),C.width/2+_irdx-_irTR,C.height/2+_irdy-_irTR);_tc.globalAlpha=1}}
     // ── 보스문 앞 횃불 조명 (화면 내만) ──
     if(G._gateY!=null&&G._bossCx!=null){const _gdx=(G._bossCx+.5)*T-G.cam.x,_gdy=(G._gateY+3.5)*T-G.cam.y;
       if(Math.abs(_gdx)<_thw&&Math.abs(_gdy)<_thh){const _gsx=C.width/2+_gdx,_gsy=C.height/2+_gdy;_tc.globalAlpha=.6;_tc.drawImage(_getTorchSmall(100),_gsx-100,_gsy-100);_tc.globalAlpha=1}}

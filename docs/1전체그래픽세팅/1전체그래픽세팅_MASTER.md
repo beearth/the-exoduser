@@ -739,8 +739,10 @@ else { OPT.torch=false; OPT.ambPart=false; OPT.fog=false; OPT.grain=false; }
 ```javascript
 // ═══ [TORCH] ═══
 const _TORCH = {
-  baseRadius: 550, flickerSpeed: 0.003, flickerAmp: 10,
-  darkAlpha: 0.18, combatBoost: 100, lowHpShrink: 0.6, bossBoost: 150,
+  baseRadius: 300, flickerSpeed: 0.003, flickerAmp: 8,
+  darkAlpha: 0.65, combatBoost: 60, lowHpShrink: 0.5, bossBoost: 80,
+  // 유령불꽃 ON 시: 플레이어 메인 스탬프 제거, 불꽃 위치에 _mkTorchStamp (150~500px)
+  // 동적광원+토치 캐시 매 프레임 갱신 (6프레임→1프레임)
 };
 let _torchR = _TORCH.baseRadius;
 let _torchCache = null, _torchW = 0, _torchH = 0;
