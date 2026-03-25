@@ -1552,7 +1552,7 @@ function rz(){
   if(GL)GL.viewport(0,0,C.width,C.height);
   if(_bGL)_bGL.viewport(0,0,rw,rh);
 }
-rz();addEventListener('resize',rz);
+addEventListener('resize',rz);
 
 // ═══ [S02] 블룸 패스 오프스크린 버퍼 ═══
 let _bloomCvs=null,_bloomCtx=null,_blurCvs=null,_blurCtx=null,_bloomW=0,_bloomH=0;
@@ -2462,6 +2462,7 @@ function keyName(code){
 
 // Options
 let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:true,fog:true,grain:true,autoPotThr:0.99,cursor:0,quality:'high',resScale:100};
+rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 // ═══ 스킬별 히트스톱 기본 프레임 (OPT.hitStop/100 곱해서 사용) ═══
 const _HS={
   blink:2,charge:2,chargeHit:3,chargeWall:3,finisher:5,galeSlam:5,
