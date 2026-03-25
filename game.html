@@ -670,6 +670,7 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">최소 줍기 등급</span><input type="range" id="optMinRar" min="0" max="4" value="0"><span class="set-range-val" id="optMinRarVal">일반 이상</span></div>
           <div class="set-range-row"><span class="set-name">최소 줍기 티어</span><input type="range" id="optMinLv" min="0" max="7" value="0"><span class="set-range-val" id="optMinLvVal">사용 안 함</span></div>
           <div class="set-range-row"><span class="set-name">FPS 제한</span><input type="range" id="optFps" min="0" max="4" step="1" value="1"><span class="set-range-val" id="optFpsVal">60</span></div>
+          <div class="set-range-row"><span class="set-name">해상도 스케일</span><input type="range" id="optResScale" min="50" max="100" step="10" value="100"><span class="set-range-val" id="optResScaleVal">100%</span></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optPetAuto" checked style="width:16px;height:16px;accent-color:#66cc88"><span class="set-name">펫 자동수거</span></label></div>
           <div class="set-range-row" style="margin-top:8px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optBossDbg" style="width:16px;height:16px;accent-color:#ff8844"><span class="set-name" style="color:#ff8844">보스 AI 디버그</span></label></div>
         </div>
@@ -1525,7 +1526,8 @@ let _renderRes=null; // {w,h} 커스텀 렌더 해상도 (null=네이티브)
 let _dpr=1; // devicePixelRatio 캐시
 function rz(){
   _dpr=window.devicePixelRatio||1;
-  let rw=~~(innerWidth*_dpr), rh=~~(innerHeight*_dpr);
+  const _rsf=(OPT.resScale||100)/100; // 해상도 스케일 (1.0=네이티브, 0.5=절반)
+  let rw=~~(innerWidth*_dpr*_rsf), rh=~~(innerHeight*_dpr*_rsf);
   // Intro(splash on) only: keep cinematic ultra-wide cap.
   const _sp=document.getElementById('splash');
   const _introLocked=!!(_sp&&_sp.classList&&_sp.classList.contains('on'));
@@ -2450,7 +2452,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:true,fog:true,grain:true,autoPotThr:0.99,cursor:0,quality:'high'};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:true,fog:true,grain:true,autoPotThr:0.99,cursor:0,quality:'high',resScale:100};
 // ═══ 스킬별 히트스톱 기본 프레임 (OPT.hitStop/100 곱해서 사용) ═══
 const _HS={
   blink:2,charge:2,chargeHit:3,chargeWall:3,finisher:5,galeSlam:5,
@@ -128215,6 +128217,7 @@ $('optMinLv').oninput=function(){
 
 const _FPS_STEPS=[30,60,120,144,244];
 $('optFps').oninput=function(){OPT.fpsCap=_FPS_STEPS[+this.value];$('optFpsVal').textContent=OPT.fpsCap;saveSettings()};
+$('optResScale').oninput=function(){OPT.resScale=+this.value;$('optResScaleVal').textContent=this.value+'%';rz();saveSettings()};
 $('optPetAuto').onchange=function(){OPT.petAuto=this.checked;saveSettings()};
 $('optBossDbg').onchange=function(){OPT.bossDebug=this.checked;saveSettings()};
 // ── 그래픽 품질 옵션 ──
@@ -128649,6 +128652,10 @@ function syncSettingsUI(){
     const _fi=_FPS_STEPS.indexOf(OPT.fpsCap);
     $('optFps').value=_fi>=0?_fi:1;
     $('optFpsVal').textContent=OPT.fpsCap||60;
+  }
+  if($('optResScale')){
+    $('optResScale').value=OPT.resScale||100;
+    $('optResScaleVal').textContent=(OPT.resScale||100)+'%';
   }
   if($('optPetAuto'))$('optPetAuto').checked=(OPT.petAuto!==false);
   if($('optBossDbg')){$('optBossDbg').checked=!!OPT.bossDebug}
