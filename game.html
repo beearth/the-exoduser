@@ -1687,10 +1687,8 @@ function _pushLight(wx,wy,r,intensity,cr,cg,cb){
 function _collectLights(){
   _lightCnt=0;
   if(!P||!G.on)return;
-  // 1) 플레이어 — 유령불꽃 ON이면 본체 최소화 (불꽃이 주 광원)
+  // 1) 플레이어 — 중앙 글로우 없음
   var _plAmber=SI_TO_HELL[G.stage||0]===0;
-  var _irAct=G.pets&&G.pets.iris&&!G._irisOff;
-  _pushLight(P.x,P.y,_irAct?120:800,_irAct?.15:1,_plAmber?255:255,_plAmber?210:230,_plAmber?120:190);
   // 2) 플레이어 투사체
   for(var i=0;i<pProjs.length&&_lightCnt<120;i++){
     var p=pProjs[i];if(!p||p.life<=0)continue;
@@ -1741,12 +1739,14 @@ function _collectLights(){
   // 9.5) 유령불꽃 펫 광원
   if(G.pets&&G.pets.iris&&!G._irisOff){
     var _irP=G.pets.iris,_irNSz=Math.max(.01,(_irP.sz||20)/100);
-    var _irLR=120+_irNSz*380; // 광원 반경 120~500
-    var _irLA=.4+_irNSz*.6;   // 광원 밝기 0.4~1.0
-    var _irFlk2=1+Math.sin(_irP.t*.09)*.12;
-    _pushLight(_irP.x,_irP.y,_irLR*_irFlk2,_irLA,255,160,40);
-    // 보조 광원 (따뜻한 황백)
-    _pushLight(_irP.x,_irP.y,_irLR*.5*_irFlk2,_irLA*.5,255,220,140);
+    var _irLR=200+_irNSz*600; // 광원 반경 200~800
+    var _irLA=.6+_irNSz*.4;   // 광원 밝기 0.6~1.0
+    var _irFlk2=1+Math.sin(_irP.t*.09)*.1;
+    _pushLight(_irP.x,_irP.y,_irLR*_irFlk2,_irLA,255,170,50);
+    // 보조 광원 (밝은 코어)
+    _pushLight(_irP.x,_irP.y,_irLR*.4*_irFlk2,_irLA*.7,255,230,150);
+    // 넓은 주변광
+    _pushLight(_irP.x,_irP.y,_irLR*1.3*_irFlk2,_irLA*.3,200,120,30);
   }
   // 10) 반딧불이 앰비언트 파티클 — 동적 광원
   if(OPT.ambPart&&_ambCnt>0){
@@ -2484,7 +2484,7 @@ const _HS={
   kill:4,pStun:5
 };
 // ═══ [TORCH] 횃불 조명 시스템 ═══
-const _TORCH={baseRadius:300,flickerSpeed:.003,flickerAmp:8,darkAlpha:.65,combatBoost:60,lowHpShrink:.5,bossBoost:80};
+const _TORCH={baseRadius:120,flickerSpeed:.003,flickerAmp:6,darkAlpha:.4,combatBoost:30,lowHpShrink:.6,bossBoost:40};
 let _torchR=_TORCH.baseRadius,_torchCache=null,_torchW=0,_torchH=0,_torchCamX=0,_torchCamY=0;
 // ═══ [AMB-PART] 앰비언트 파티클 ═══
 const _AMB_MAX=40;const _ambData=new Float32Array(_AMB_MAX*10);const _ambCols=new Array(_AMB_MAX).fill('#fff');const _ambTypes=new Uint8Array(_AMB_MAX);let _ambCnt=0,_ambSpawnT=0;
@@ -2615,7 +2615,7 @@ const PETS={
   crow:{name:'Crow',col:'#111',pickR:1000,spd:22,orbR:38,orbY:-22,desc:'Air pickup helper'},
   cat:{name:'Cat',col:'#111',pickR:1000,spd:24,orbR:28,orbY:32,desc:'Ground pickup + auto-disassemble'},
   xbow:{name:'GhostXbow',col:'#6688cc',spd:18,orbR:44,orbY:-28,atkR:500,atkCd:120,desc:'Auto-shooting ghost crossbow'},
-  iris:{name:'유령불꽃',col:'#ffa028',spd:14,orbR:32,orbY:-34,desc:'Ghost iris flame — ambient light, consumes malice'}
+  iris:{name:'유령불꽃',col:'#ffa028',spd:14,orbR:120,orbY:-60,desc:'Ghost iris flame — ambient light'}
 };
 // ── 펫 스프라이트 프리로드 ──
 const _PET_DIRS=['south','south-west','west','north-west','north','north-east','east','south-east'];
@@ -117111,10 +117111,10 @@ function update(){
   if(isJust('skill')){togglePanel('skillPanel')}
   if(isJust('forge')){if(G.forgeOpen){closePanel('forge');G.forgeOpen=false}else openPanel('forge')}
   if(isJust('skillCycle')&&G.on)openSkSlotPop();
-  if(isJust('irisToggle')&&G.on&&G.pets&&G.pets.iris){
+  if(isJust('irisToggle')&&G.on){
     G._irisOff=!G._irisOff;
     if(G._irisOff){addTxt(P.x,P.y-30,'유령불꽃 OFF','#886688',40)}
-    else{addTxt(P.x,P.y-30,'유령불꽃 ON','#bb77ff',40)}
+    else{addTxt(P.x,P.y-30,'유령불꽃 ON','#ffa028',40)}
   }
   if(G.paused)return;
   if(G._noHitStopT>0){G.hitStop=0;G.slowMo=0;G._noHitStopT-=_dtSp;}
@@ -132547,15 +132547,14 @@ function draw(){
   if(G._chromaT>0){if(G._litFrame&1){const _csh=G._chromaT*1.5;X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=.04;X.drawImage(C,-_csh,0);X.drawImage(C,_csh,0);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}G._chromaT-=_dtSp}
   // ═══ 동적 조명 패스 (3프레임마다 계산) ═══
   if(!G._litFrame)G._litFrame=0;G._litFrame++;
-  {const _l0=performance.now();const _litEvery=G.pets&&G.pets.iris&&!G._irisOff;if(_litEvery||_gameFrame%3===0){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}else if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
+  {const _l0=performance.now();if(_gameFrame%3===0){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}else if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
   // ═══ 블룸 패스 (3프레임마다 계산 — 라이팅과 1프레임 오프셋) ═══
   {const _bl0=performance.now();if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.35:.25;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
   // [TORCH] 횃불 조명 어둠 오버레이 (_gameFrame%3===0 만 재계산)
   const _tc0=performance.now();
   if(OPT.torch&&OPT.postfx&&OPT.quality!=='low'){X.save();X.setTransform(1,0,0,1,0,0);
   const _torchStale=!_torchCache||_torchW!==C.width||_torchH!==C.height;
-  const _irIsOn=G.pets&&G.pets.iris&&!G._irisOff;
-  const _torchRedraw=_torchStale||(_irIsOn?true:(_gameFrame%6===2));
+  const _torchRedraw=_torchStale||(G.pets&&G.pets.iris&&!G._irisOff)||(_gameFrame%6===2);
   if(!_torchRedraw){X.drawImage(_torchCache,_torchCamX-G.cam.x,_torchCamY-G.cam.y);X.restore()}else{
     const _psx=C.width/2+(P.x-G.cam.x),_psy=C.height/2+(P.y-G.cam.y),_tR=Math.max(80,_torchR),_ahell2=SI_TO_HELL[G.stage];
     if(!_torchCache||_torchW!==C.width||_torchH!==C.height){_torchCache=document.createElement('canvas');_torchCache.width=C.width;_torchCache.height=C.height;_torchW=C.width;_torchH=C.height;_torchCache._ctx=_torchCache.getContext('2d')}
@@ -132563,21 +132562,8 @@ function draw(){
     const _darkCols=['#061018','#061008','#120608','#0a0614','#0e0c06','#0c0a08','#04020c'];
     _tc.fillStyle=_darkCols[_ahell2];_tc.globalAlpha=_TORCH.darkAlpha;_tc.fillRect(0,0,C.width,C.height);
     _tc.globalCompositeOperation='destination-out';
-    const _irOn=G.pets&&G.pets.iris&&!G._irisOff;
-    if(_irOn){
-      // 유령불꽃 ON → 플레이어 중앙 스탬프 없음, 불꽃 위치에 메인 스탬프
-      const _irp2=G.pets.iris;
-      const _irNSz3=Math.max(.01,(_irp2.sz||20)/100);
-      const _irMainR=~~(150+_irNSz3*350);
-      const _irdx2=_irp2.x-G.cam.x,_irdy2=_irp2.y-G.cam.y;
-      _mkTorchStamp(_irMainR);
-      _tc.globalAlpha=1;_tc.drawImage(_torchStamp,C.width/2+_irdx2-_irMainR,C.height/2+_irdy2-_irMainR);
-      // 플레이어 발밑 최소 빛 (안 보이면 답답하니까)
-      _tc.globalAlpha=.5;_tc.drawImage(_getTorchSmall(40),_psx-40,_psy-40);_tc.globalAlpha=1;
-    }else{
-      _mkTorchStamp(_tR);
-      _tc.globalAlpha=1;_tc.drawImage(_torchStamp,_psx-_tR,_psy-_tR);
-    }
+    _mkTorchStamp(_tR);
+    _tc.globalAlpha=1;_tc.drawImage(_torchStamp,_psx-_tR,_psy-_tR);
     const _thw=C.width/2+100,_thh=C.height/2+100;
     if(G._bossRef&&G._bossRef.alive){const _bdx=G._bossRef.x-G.cam.x,_bdy=G._bossRef.y-G.cam.y;
       if(_bdx>-_thw&&_bdx<_thw&&_bdy>-_thh&&_bdy<_thh){_tc.globalAlpha=.7;_tc.drawImage(_getTorchSmall(80),C.width/2+_bdx-80,C.height/2+_bdy-80);_tc.globalAlpha=1}}
@@ -132589,10 +132575,7 @@ function draw(){
     // ── 시작방 횃불 조명 (화면 내만) ──
     if(G.rooms&&G.rooms[0]){const _sr2=G.rooms[0];const _sdx=(_sr2.cx+.5)*T-G.cam.x,_sdy=(_sr2.cy+.5)*T-G.cam.y;
       if(Math.abs(_sdx)<_thw&&Math.abs(_sdy)<_thh){_tc.globalAlpha=.5;_tc.drawImage(_getTorchSmall(120),C.width/2+_sdx-120,C.height/2+_sdy-120);_tc.globalAlpha=1}}
-    // ── 유령불꽃 조명 (토치 오버레이) — 불꽃 위치 독립 스탬프 ──
-    if(G.pets&&G.pets.iris&&!G._irisOff){const _irp=G.pets.iris;const _irdx=_irp.x-G.cam.x,_irdy=_irp.y-G.cam.y;
-      if(Math.abs(_irdx)<_thw&&Math.abs(_irdy)<_thh){const _irNSz2=Math.max(.01,(_irp.sz||20)/100);const _irTR=~~(150+_irNSz2*300);
-        _tc.globalAlpha=.9;_tc.drawImage(_getTorchSmall(_irTR),C.width/2+_irdx-_irTR,C.height/2+_irdy-_irTR);_tc.globalAlpha=1}}
+    // (유령불꽃 토치 스탬프는 위 _irOn 블록에서 처리)
     // ── 보스문 앞 횃불 조명 (화면 내만) ──
     if(G._gateY!=null&&G._bossCx!=null){const _gdx=(G._bossCx+.5)*T-G.cam.x,_gdy=(G._gateY+3.5)*T-G.cam.y;
       if(Math.abs(_gdx)<_thw&&Math.abs(_gdy)<_thh){const _gsx=C.width/2+_gdx,_gsy=C.height/2+_gdy;_tc.globalAlpha=.6;_tc.drawImage(_getTorchSmall(100),_gsx-100,_gsy-100);_tc.globalAlpha=1}}
@@ -136153,40 +136136,34 @@ function drawP(){
     X.ellipse(_xpx,_xpy+14,5,1.5,0,0,Math.PI*2);X.fill();
     X.globalAlpha=1;
   }
-  // ── 유령불꽃 렌더 (크기 고정, 빛 범위만 sz 연동) ──
+  // ── 유령불꽃 렌더 (source-over, 불투명) ──
   if(G.pets&&G.pets.iris&&!G._irisOff){
     const _ir=G.pets.iris;
-    const _irBob=Math.sin(_ir.t*.07)*3;
+    const _irBob=Math.sin(_ir.t*.07)*4;
     const _irpx=_ir.x,_irpy=_ir.y+_irBob;
-    const _irR=8; // 고정 반경
-    const _irFlk=.75+Math.sin(_ir.t*.09)*.15+Math.sin(_ir.t*.17)*.1;
-    // additive 블렌딩 (횃불색)
-    X.save();X.globalCompositeOperation='lighter';
-    // 외곽 글로우
-    X.globalAlpha=.15*_irFlk;
-    X.fillStyle='#662200';X.beginPath();X.arc(_irpx,_irpy,_irR*3.5,0,Math.PI*2);X.fill();
-    X.globalAlpha=.25*_irFlk;
-    X.fillStyle='#cc5500';X.beginPath();X.arc(_irpx,_irpy,_irR*2,0,Math.PI*2);X.fill();
-    // 코어
-    X.globalAlpha=.6*_irFlk;
-    X.fillStyle='#ffbb44';X.beginPath();X.arc(_irpx,_irpy,_irR,0,Math.PI*2);X.fill();
-    // 핵
-    X.globalAlpha=.9*_irFlk;
-    X.fillStyle='#fff8e0';X.beginPath();X.arc(_irpx,_irpy,_irR*.4,0,Math.PI*2);X.fill();
-    // 불꽃 혀 (고정 4개)
-    for(let _ip=0;_ip<4;_ip++){
-      const _ipa=_ir.t*.04+_ip*1.6;
-      const _ipLife=((_ir.t+_ip*31)%45)/45;
-      const _ipx=_irpx+Math.sin(_ipa)*4;
-      const _ipy=_irpy-_ipLife*20-Math.sin(_ir.t*.06+_ip)*2;
-      X.globalAlpha=(1-_ipLife)*.5*_irFlk;
-      X.fillStyle=_ip%2?'#ffaa33':'#ff7711';
-      X.beginPath();X.arc(_ipx,_ipy,1.5*(1-_ipLife),0,Math.PI*2);X.fill();
+    const _irFlk=.85+Math.sin(_ir.t*.09)*.1+Math.sin(_ir.t*.17)*.05;
+    // 외곽 글로우 (반투명 오렌지)
+    X.globalAlpha=.25*_irFlk;X.fillStyle='#ff6600';
+    X.beginPath();X.arc(_irpx,_irpy,28,0,Math.PI*2);X.fill();
+    X.globalAlpha=.4*_irFlk;X.fillStyle='#ff8822';
+    X.beginPath();X.arc(_irpx,_irpy,18,0,Math.PI*2);X.fill();
+    // 코어 (밝은 노랑)
+    X.globalAlpha=.9*_irFlk;X.fillStyle='#ffcc33';
+    X.beginPath();X.arc(_irpx,_irpy,10,0,Math.PI*2);X.fill();
+    // 핵 (흰색)
+    X.globalAlpha=1;X.fillStyle='#ffffee';
+    X.beginPath();X.arc(_irpx,_irpy,5,0,Math.PI*2);X.fill();
+    // 불꽃 혀 (위로 올라가는 파티클 6개)
+    for(let _ip=0;_ip<6;_ip++){
+      const _ipa=_ir.t*.05+_ip*1.05;
+      const _ipLife=((_ir.t+_ip*19)%35)/35;
+      const _ipx=_irpx+Math.sin(_ipa)*8;
+      const _ipy=_irpy-_ipLife*35-Math.sin(_ir.t*.07+_ip)*3;
+      const _ipA=(1-_ipLife);
+      X.globalAlpha=_ipA*.8;
+      X.fillStyle=_ipA>.5?'#ffee55':'#ff8811';
+      X.beginPath();X.arc(_ipx,_ipy,2.5*_ipA+1,0,Math.PI*2);X.fill();
     }
-    X.restore();
-    // 그림자
-    X.globalAlpha=.1;X.fillStyle='#000';X.beginPath();
-    X.ellipse(_irpx,_irpy+18,4,1,0,0,Math.PI*2);X.fill();
     X.globalAlpha=1;
   }
   // ── 펫 말풍선 렌더 ──
