@@ -119,6 +119,19 @@ body{background:#0a0a0a;color:#ccc;font:12px monospace;display:flex;height:100vh
     <button onclick="importJSON()" style="background:#001f2a;color:#66ddff;border-color:#66ddff">JSON 불러오기</button>
   </div>
   <div class="sec">
+    <h4>배경 이미지</h4>
+    <button onclick="document.getElementById('bgImgIn').click()" style="background:#2a1a00;color:#ffaa44;border-color:#ffaa44">🖼️ 이미지 불러오기</button>
+    <label style="margin-top:4px">배치 모드:</label>
+    <select id="bg-mode">
+      <option value="tile">타일링 (반복)</option>
+      <option value="stretch">늘려서 채우기</option>
+      <option value="fit">맞춤 (비율유지)</option>
+    </select>
+    <label style="margin-top:4px">스케일: <span id="bg-scale-val">100</span>%</label>
+    <input type="range" id="bg-scale" min="10" max="400" value="100" step="10" oninput="document.getElementById('bg-scale-val').textContent=this.value">
+    <label style="color:#555;font-size:9px;margin-top:2px">타일링 모드에서 스케일 조절로 디테일 크기 변경</label>
+  </div>
+  <div class="sec">
     <h4>단축키</h4>
     <div style="color:#555;font-size:9px;line-height:1.8">
       S=스탬프 E=지우개 Space=이동<br>
@@ -130,6 +143,7 @@ body{background:#0a0a0a;color:#ccc;font:12px monospace;display:flex;height:100vh
 </div>
 <input type="file" id="fileIn" style="display:none" accept=".json">
 <input type="file" id="mapFileIn" style="display:none" accept=".json">
+<input type="file" id="bgImgIn" style="display:none" accept="image/*">
 <script>
 const C=document.getElementById('c'),X=C.getContext('2d');
 const T_GAME=40; // 게임 타일 크기 (내보내기용)
@@ -700,6 +714,45 @@ document.getElementById('fileIn').addEventListener('change',e=>{
     }catch(err){alert('오류: '+err.message)}
   };
   reader.readAsText(file);
+  e.target.value='';
+});
+
+// ══ 배경 이미지 불러오기 ══
+document.getElementById('bgImgIn').addEventListener('change',e=>{
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const img=new Image();
+    img.onload=()=>{
+      const mode=document.getElementById('bg-mode').value;
+      const scale=(+document.getElementById('bg-scale').value||100)/100;
+      const l=layers[activeLayer];if(!l)return;
+      saveUndo();
+      const cw=canvasW*T, ch=canvasH*T;
+      if(mode==='stretch'){
+        // 전체 캔버스에 늘려서 채우기
+        l.ctx.drawImage(img,0,0,cw,ch);
+      }else if(mode==='fit'){
+        // 비율 유지하며 캔버스에 맞춤
+        const ratio=Math.min(cw/img.width,ch/img.height)*scale;
+        const dw=img.width*ratio, dh=img.height*ratio;
+        const ox=(cw-dw)/2, oy=(ch-dh)/2;
+        l.ctx.drawImage(img,ox,oy,dw,dh);
+      }else{
+        // 타일링 (반복) — 스케일 적용
+        const tw=img.width*scale, th=img.height*scale;
+        for(let y=0;y<ch;y+=th){
+          for(let x=0;x<cw;x+=tw){
+            l.ctx.drawImage(img,x,y,tw,th);
+          }
+        }
+      }
+      render();
+      console.log('[BG-IMG] applied:',file.name,img.width+'x'+img.height,'mode='+mode,'scale='+scale);
+    };
+    img.src=ev.target.result;
+  };
+  reader.readAsDataURL(file);
   e.target.value='';
 });
 

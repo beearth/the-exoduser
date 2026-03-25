@@ -1135,8 +1135,8 @@ function dbRestore(d){
   // SP/AP 총량 재계산 (매 로드 시 정확한 값 보장)
   {
     const _lv=pd.lv||1;
-    // 총 획득량: lv당 SP 2개, 10렙마다 AP 2개
-    const _totalSp=_lv*2;
+    // 총 획득량: lv당 SP 3개 + 5의배수 레벨마다 +2, 10렙마다 AP 2개
+    let _totalSp=0;for(let _i=2;_i<=_lv;_i++){_totalSp+=3;if(_i%5===0)_totalSp+=2;}
     const _totalAp=Math.floor(_lv/10)*2;
     // 스탯에 투자된 SP
     let _spentStat=0;
@@ -1687,14 +1687,9 @@ function _pushLight(wx,wy,r,intensity,cr,cg,cb){
 function _collectLights(){
   _lightCnt=0;
   if(!P||!G.on)return;
-  // 1) 플레이어 — 요정불꽃 ON이면 플레이어 위치에서 빛 (불꽃이 비추는 연출)
+  // 1) 플레이어 (반경 확대, 밝기 강화)
   var _plAmber=SI_TO_HELL[G.stage||0]===0;
-  var _irOn=G.pets&&G.pets.iris&&!G._irisOff;
-  if(_irOn){
-    _pushLight(P.x,P.y,400,.8,255,180,60);
-  }else{
-    _pushLight(P.x,P.y,800,1,_plAmber?255:255,_plAmber?210:230,_plAmber?120:190);
-  }
+  _pushLight(P.x,P.y,800,1,_plAmber?255:255,_plAmber?210:230,_plAmber?120:190);
   // 2) 플레이어 투사체
   for(var i=0;i<pProjs.length&&_lightCnt<120;i++){
     var p=pProjs[i];if(!p||p.life<=0)continue;
@@ -1742,7 +1737,10 @@ function _collectLights(){
     if(e.ib){_pushLight(e.x,e.y,150,.3,200,100,50);continue}
     if(e.burnT>0)_pushLight(e.x,e.y,40,.2,255,68,0);
   }
-  // 9.5) 요정불꽃 — 광원은 플레이어 위치에서 처리 (1번 항목)
+  // 9.5) 요정불꽃 → 플레이어 주변 조명
+  if(G.pets&&G.pets.iris&&!G._irisOff){
+    _pushLight(P.x,P.y,500,.9,255,180,60);
+  }
   // 10) 반딧불이 앰비언트 파티클 — 동적 광원
   if(OPT.ambPart&&_ambCnt>0){
     var _aTheme=_AMB_FLY;
@@ -1782,11 +1780,7 @@ function _renderLighting(){
   // 지옥별 어둠 채우기
   var hell=SI_TO_HELL[G.stage||0];
   lx.clearRect(0,0,_lightW,_lightH);
-  if(G.pets&&G.pets.iris&&!G._irisOff){
-    lx.fillStyle='rgba(0,0,0,0.85)';
-  }else{
-    lx.fillStyle=_HELL_AMB_STR[hell];
-  }
+  lx.fillStyle=_HELL_AMB_STR[hell];
   lx.fillRect(0,0,_lightW,_lightH);
   // destination-out으로 빛 구멍 뚫기
   lx.globalCompositeOperation='destination-out';
@@ -2483,7 +2477,7 @@ const _HS={
   kill:4,pStun:5
 };
 // ═══ [TORCH] 횃불 조명 시스템 ═══
-const _TORCH={baseRadius:200,flickerSpeed:.003,flickerAmp:6,darkAlpha:.85,combatBoost:30,lowHpShrink:.6,bossBoost:40};
+const _TORCH={baseRadius:550,flickerSpeed:.003,flickerAmp:10,darkAlpha:0,combatBoost:100,lowHpShrink:.6,bossBoost:150};
 let _torchR=_TORCH.baseRadius,_torchCache=null,_torchW=0,_torchH=0,_torchCamX=0,_torchCamY=0;
 // ═══ [AMB-PART] 앰비언트 파티클 ═══
 const _AMB_MAX=40;const _ambData=new Float32Array(_AMB_MAX*10);const _ambCols=new Array(_AMB_MAX).fill('#fff');const _ambTypes=new Uint8Array(_AMB_MAX);let _ambCnt=0,_ambSpawnT=0;
@@ -10164,7 +10158,9 @@ function buildMapCache(){
     }
     c.clip();
     c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
-    c.drawImage(mtx,0,0,mw*T,mh*T);
+    const _texPat=c.createPattern(mtx,'repeat');
+    c.fillStyle=_texPat;
+    c.fillRect(0,0,mw*T,mh*T);
     c.restore();
   }
   // ── Pass 1: 바닥 + 노이즈 텍스처 (텍스처 로드 시 스킵) ──
@@ -132551,7 +132547,7 @@ function draw(){
   {const _bl0=performance.now();if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.35:.25;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
   // [TORCH] 횃불 조명 어둠 오버레이 (_gameFrame%3===0 만 재계산)
   const _tc0=performance.now();
-  if(OPT.torch&&OPT.postfx&&OPT.quality!=='low'&&!(G.pets&&G.pets.iris&&!G._irisOff)){X.save();X.setTransform(1,0,0,1,0,0);
+  if(OPT.torch&&OPT.postfx&&OPT.quality!=='low'){X.save();X.setTransform(1,0,0,1,0,0);
   const _torchStale=!_torchCache||_torchW!==C.width||_torchH!==C.height;
   const _torchRedraw=_torchStale||(G.pets&&G.pets.iris&&!G._irisOff)||(_gameFrame%6===2);
   if(!_torchRedraw){X.drawImage(_torchCache,_torchCamX-G.cam.x,_torchCamY-G.cam.y);X.restore()}else{
@@ -132561,12 +132557,8 @@ function draw(){
     const _darkCols=['#061018','#061008','#120608','#0a0614','#0e0c06','#0c0a08','#04020c'];
     _tc.fillStyle=_darkCols[_ahell2];_tc.globalAlpha=_TORCH.darkAlpha;_tc.fillRect(0,0,C.width,C.height);
     _tc.globalCompositeOperation='destination-out';
-    if(!(G.pets&&G.pets.iris&&!G._irisOff)){
-      // 요정불꽃 OFF → 기존 플레이어 스탬프
-      _mkTorchStamp(_tR);
-      _tc.globalAlpha=1;_tc.drawImage(_torchStamp,_psx-_tR,_psy-_tR);
-    }
-    // 요정불꽃 ON → 스탬프 없음 (어둠만, _pushLight가 유일한 빛)
+    _mkTorchStamp(_tR);
+    _tc.globalAlpha=1;_tc.drawImage(_torchStamp,_psx-_tR,_psy-_tR);
     const _thw=C.width/2+100,_thh=C.height/2+100;
     if(G._bossRef&&G._bossRef.alive){const _bdx=G._bossRef.x-G.cam.x,_bdy=G._bossRef.y-G.cam.y;
       if(_bdx>-_thw&&_bdx<_thw&&_bdy>-_thh&&_bdy<_thh){_tc.globalAlpha=.7;_tc.drawImage(_getTorchSmall(80),C.width/2+_bdx-80,C.height/2+_bdy-80);_tc.globalAlpha=1}}
