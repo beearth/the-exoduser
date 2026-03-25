@@ -739,8 +739,8 @@ else { OPT.torch=false; OPT.ambPart=false; OPT.fog=false; OPT.grain=false; }
 ```javascript
 // ═══ [TORCH] ═══
 const _TORCH = {
-  baseRadius: 220, flickerSpeed: 0.003, flickerAmp: 15,
-  darkAlpha: 0.55, combatBoost: 60, lowHpShrink: 0.4, bossBoost: 100,
+  baseRadius: 550, flickerSpeed: 0.003, flickerAmp: 10,
+  darkAlpha: 0.18, combatBoost: 100, lowHpShrink: 0.6, bossBoost: 150,
 };
 let _torchR = _TORCH.baseRadius;
 let _torchCache = null, _torchW = 0, _torchH = 0;

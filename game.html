@@ -672,6 +672,7 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">FPS 제한</span><input type="range" id="optFps" min="0" max="4" step="1" value="1"><span class="set-range-val" id="optFpsVal">60</span></div>
           <div class="set-range-row"><span class="set-name">해상도 스케일</span><input type="range" id="optResScale" min="50" max="100" step="10" value="100"><span class="set-range-val" id="optResScaleVal">100%</span></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optPetAuto" checked style="width:16px;height:16px;accent-color:#66cc88"><span class="set-name">펫 자동수거</span></label></div>
+          <div class="set-range-row"><span class="set-name" style="color:#ffa028">유령불꽃 크기</span><input type="range" id="optIrisSz" min="1" max="100" value="20" style="accent-color:#ffa028"><span class="set-range-val" id="optIrisSzVal" style="color:#ffa028">20 (악의 20/분)</span></div>
           <div class="set-range-row" style="margin-top:8px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optBossDbg" style="width:16px;height:16px;accent-color:#ff8844"><span class="set-name" style="color:#ff8844">보스 AI 디버그</span></label></div>
         </div>
 
@@ -1737,12 +1738,14 @@ function _collectLights(){
     if(e.burnT>0)_pushLight(e.x,e.y,40,.2,255,68,0);
   }
   // 9.5) 유령불꽃 펫 광원
-  if(G.pets&&G.pets.iris){
-    var _irP=G.pets.iris,_irNSz=(_irP.sz||20)/100;
-    var _irLR=60+_irNSz*200; // 광원 반경 60~260
-    var _irLA=.2+_irNSz*.6;  // 광원 밝기 0.2~0.8
-    var _irFlk2=1+Math.sin(_irP.t*.09)*.15;
-    _pushLight(_irP.x,_irP.y,_irLR*_irFlk2,_irLA,187,119,255);
+  if(G.pets&&G.pets.iris&&!G._irisOff){
+    var _irP=G.pets.iris,_irNSz=Math.max(.01,(_irP.sz||20)/100);
+    var _irLR=120+_irNSz*380; // 광원 반경 120~500
+    var _irLA=.4+_irNSz*.6;   // 광원 밝기 0.4~1.0
+    var _irFlk2=1+Math.sin(_irP.t*.09)*.12;
+    _pushLight(_irP.x,_irP.y,_irLR*_irFlk2,_irLA,255,160,40);
+    // 보조 광원 (따뜻한 황백)
+    _pushLight(_irP.x,_irP.y,_irLR*.5*_irFlk2,_irLA*.5,255,220,140);
   }
   // 10) 반딧불이 앰비언트 파티클 — 동적 광원
   if(OPT.ambPart&&_ambCnt>0){
@@ -2423,7 +2426,7 @@ let BINDS={
   beam:'KeyE', forge:'KeyG',
   inventory:'Tab', settings:'Escape',
   interact:'KeyR', storage:'KeyV', stats:'KeyC', skill:'KeyK',
-  skillCycle:'KeyL',
+  skillCycle:'KeyL', irisToggle:'KeyY',
 };
 let BINDS2={
   up:null, down:null, left:null, right:null,
@@ -2432,7 +2435,7 @@ let BINDS2={
   parry:null, beam:null, skill:null,
   forge:null, inventory:null, settings:null,
   interact:null, storage:null, stats:null, skill:null,
-  skillCycle:null
+  skillCycle:null, irisToggle:null
 };
 const BIND_NAMES={
   up:'위로 이동', down:'아래로 이동', left:'왼쪽 이동', right:'오른쪽 이동',
@@ -2443,6 +2446,7 @@ const BIND_NAMES={
   inventory:'인벤토리', settings:'설정',
   interact:'아이템 줍기', storage:'창고', stats:'능력치 (스탯/패시브)',
   skillCycle:'스킬 슬롯 배정',
+  irisToggle:'유령불꽃 켜기/끄기',
 };
 function keyName(code){
   if(!code)return '없음';
@@ -2610,7 +2614,7 @@ const PETS={
   crow:{name:'Crow',col:'#111',pickR:1000,spd:22,orbR:38,orbY:-22,desc:'Air pickup helper'},
   cat:{name:'Cat',col:'#111',pickR:1000,spd:24,orbR:28,orbY:32,desc:'Ground pickup + auto-disassemble'},
   xbow:{name:'GhostXbow',col:'#6688cc',spd:18,orbR:44,orbY:-28,atkR:500,atkCd:120,desc:'Auto-shooting ghost crossbow'},
-  iris:{name:'유령불꽃',col:'#bb77ff',spd:14,orbR:32,orbY:-34,desc:'Ghost iris flame — ambient light, consumes malice'}
+  iris:{name:'유령불꽃',col:'#ffa028',spd:14,orbR:32,orbY:-34,desc:'Ghost iris flame — ambient light, consumes malice'}
 };
 // ── 펫 스프라이트 프리로드 ──
 const _PET_DIRS=['south','south-west','west','north-west','north','north-east','east','south-east'];
@@ -4636,7 +4640,7 @@ const AFFIX_NAMES_KO={
   poisonDot:'맹독의',fireDot:'불꽃의',iceDot:'냉기의',lightChain:'번개의',darkCurse:'암흑의',
   armorPen:'관통의',critChance:'광폭의',staggerBns:'파쇄의',chainTarget:'연쇄의',
   killSlayer:'학살의',critExplosion:'폭발의',elemFocus:'집중의',atkSpeed:'쾌속의',parryBonus:'패리의',
-  comboBoost:'콤보의',dashBoost:'작살의',skillBoost:'궁극의',cooldownRed:'집중력의',
+  comboBoost:'추적자의',dashBoost:'작살의',skillBoost:'궁극의',cooldownRed:'집중력의',
   maxHPFlat:'강인의',maxHPPct:'활력의',movSpeed:'신속의',
   fireRes:'화염수호',iceRes:'빙결수호',lightRes:'뇌전수호',darkRes:'암흑수호',poisonRes:'독수호',allRes:'전원소수호',
   physDR:'강철의',reflect:'반사의',thorns:'가시의',barrier:'흡수의',ccRes:'인내의',
@@ -4653,7 +4657,7 @@ const _AFFIX_DESC={
   poisonDot:'독 DoT',fireDot:'화상 DoT',iceDot:'빙결 DoT+감속',lightChain:'연쇄전격',darkCurse:'저주(힐차단)',
   armorPen:'방어무시',critChance:'치명타율',staggerBns:'스태거+',chainTarget:'체인타겟+',
   killSlayer:'처치 후 뎀+',critExplosion:'크리폭발(ATK×)',elemFocus:'원소뎀+',atkSpeed:'공격속도+',parryBonus:'패리보너스+',
-  comboBoost:'콤보뎀+',dashBoost:'작살뎀+',skillBoost:'스킬뎀+',cooldownRed:'쿨다운-',
+  comboBoost:'추적콤보+10',dashBoost:'작살뎀+',skillBoost:'스킬뎀+',cooldownRed:'쿨다운-',
   maxHPFlat:'HP+',maxHPPct:'HP%+',movSpeed:'이동속도+',
   fireRes:'화염저항',iceRes:'빙결저항',lightRes:'뇌전저항',darkRes:'암흑저항',poisonRes:'독저항',allRes:'전원소저항',
   physDR:'물리DR',reflect:'반사%',thorns:'가시뎀',barrier:'배리어',ccRes:'CC저항',
@@ -5274,7 +5278,7 @@ for(const ch of CHAPTER_STAGES){
 
 let G={on:false,paused:false,stage:0,kills:0,mats:0,cam:{x:0,y:0},shake:0,parts:[],txts:[],
   forgeOpen:false,forgeTab:'upgrade',forgeSort:null,rooms:[],curRoom:0,map:null,mw:0,mh:0,hitStop:0,slowMo:0,stageCleared:false,exits:[],bossAlive:true,
-  _chainCnt:0,_chainT:0,rifts:[],spawnHoles:[],atkTickets:0,maxAtkTickets:3};
+  _chainCnt:0,_chainT:0,rifts:[],spawnHoles:[],atkTickets:0,maxAtkTickets:3,_irisSz:20};
 let P=null,ens=[],projs=[],pProjs=[],worldItems=[];// worldItems = items on ground, pProjs = player arrows
 // ── 적 투사체 오브젝트 풀 ──
 const _PROJ_POOL=600;
@@ -10050,7 +10054,7 @@ _loadTileTex(_TILE_DECAL,_TILE_DECAL_SRC);_loadTileTex(_TILE_GLOW,_TILE_GLOW_SRC
 function _tileHash(x,y,s){let h=(x*374761393+y*668265263+s)^0x5bd1e995;h=Math.imul(h^(h>>>15),0x1b873593);return(h^(h>>>13))>>>0}
 // ══ 에디터 맵 텍스처 (스테이지별 PNG) ══
 const _mapTexImgs={};
-const _MAP_TEX_FILES={0:'img/maps/stage_0_tex.png'};
+const _MAP_TEX_FILES={0:'img/maps/stage_0_tex.png',1:'img/maps/stage_1_tex.png'};
 for(const[sid,src] of Object.entries(_MAP_TEX_FILES)){
   const img=new Image();img.onload=()=>console.log('[MAP-TEX] stage '+sid+' loaded');
   img.onerror=()=>console.warn('[MAP-TEX] stage '+sid+' failed');
@@ -10889,7 +10893,7 @@ const PASSIVE_DEF=[
   {key:'pMRegen',name:'💠 마력회복',desc:'MP리젠 +3%/lv, 쉴드리젠 +3%/lv, 쉴드쿨 -3%/lv',max:10, icon:'💠',col:'#6688ff'},
   {key:'pXbow',  name:'🏹 쇠뇌력',  desc:'자동쇠뇌 뎀 +5%/lv, 공속 +5%/lv',max:10, icon:'🏹',col:'#ccaa44'},
   {key:'pMelee', name:'⚔ 광전사',  desc:'근접스킬 뎀 +10%/lv, HP +3%/lv, ST소모 -5%/lv',max:10, icon:'⚔',col:'#ff8844'},
-  {key:'pCombo', name:'🎯 추적자',desc:'콤보 최대 중첩 +5/lv (1렙5, 10렙50), 같은 적 연속 공격 시 +5%/중첩',max:10, icon:'🎯',col:'#ff66aa'},
+  {key:'pCombo', name:'🎯 추적자',desc:'콤보 최대 중첩 +5/lv (1렙5, 10렙50), 같은 적 연속 공격 시 +1%/중첩',max:10, icon:'🎯',col:'#ff66aa'},
 ];
 let PASSIVES={};PASSIVE_DEF.forEach(p=>PASSIVES[p.key]=0);
 // 스탯/패시브 적용 함수
@@ -117106,6 +117110,11 @@ function update(){
   if(isJust('skill')){togglePanel('skillPanel')}
   if(isJust('forge')){if(G.forgeOpen){closePanel('forge');G.forgeOpen=false}else openPanel('forge')}
   if(isJust('skillCycle')&&G.on)openSkSlotPop();
+  if(isJust('irisToggle')&&G.on&&G.pets&&G.pets.iris){
+    G._irisOff=!G._irisOff;
+    if(G._irisOff){addTxt(P.x,P.y-30,'유령불꽃 OFF','#886688',40)}
+    else{addTxt(P.x,P.y-30,'유령불꽃 ON','#bb77ff',40)}
+  }
   if(G.paused)return;
   if(G._noHitStopT>0){G.hitStop=0;G.slowMo=0;G._noHitStopT-=_dtSp;}
   G.hitStop=0; // 히트스톱 완전 비활성 (디아블로/POE 스타일)
@@ -118305,7 +118314,7 @@ function update(){
       for(let t=stepSz;t<=maxDist;t+=stepSz){
         const px=ox+cs*t,py=oy+sn*t;
         if(isW(px,py)){bestD=t-stepSz;break}
-        const ne=shQuery(px,py,32);
+        const ne=shQuery(px,py,stepSz+16);
         let blocked=false;
         for(let i=0;i<ne.length;i++){const e=ne[i];if(!e.alive||_bpHit.has(e))continue;
           _bpHit.add(e);
@@ -118489,11 +118498,11 @@ function update(){
       }
     }else{
       // 멸살광선: 마우스 방향 직선 + 끝점 광역 폭발
-      P.atkArc=Math.atan2(mouse.y-C.height/2,mouse.x-C.width/2); // 마우스 추적
+      P.atkArc=P.facing; // 렌더와 동일한 각도 사용 (카메라 오프셋 보정)
       const elms=hm().elements||[{el:EL.P,dmg:5}];
       const _bRng2=~~(500+((P.skills.omniBeam||1)-1)*55.6);
       P._beamPathHits=[];
-      const _bf=_beamFindTarget(P.x,P.y,P.atkArc,_bRng2,40);
+      const _bf=_beamFindTarget(P.x,P.y,P.atkArc,_bRng2,20);
       P._beamVisualDist=_bf.d;
       // 끝점 좌표
       const _bEndX=P.x+Math.cos(P.atkArc)*_bf.d,_bEndY=P.y+Math.sin(P.atkArc)*_bf.d;
@@ -119454,6 +119463,8 @@ function update(){
   if(G.shake>0){G.shake*=.86**(_hsActive?_hsDtOrig:sp);if(G.shake<.3)G.shake=0}
   // [TORCH] 반경 업데이트
   if(OPT.torch){let _tTarget=_TORCH.baseRadius;
+    // 유령불꽃 ON → 토치 반경에 불꽃 크기 추가
+    if(G.pets&&G.pets.iris&&!G._irisOff){const _iSz=(G.pets.iris.sz||20)/100;_tTarget+=_iSz*300;}
     if(P.s==='attack'||P.s==='charge')_tTarget+=_TORCH.combatBoost;
     if(P.hp/P.mhp<=.3)_tTarget*=_TORCH.lowHpShrink+.6*(P.hp/P.mhp/.3);
     if(G._bossRef&&G._bossRef.alive)_tTarget+=_TORCH.bossBoost;
@@ -120943,8 +120954,8 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
   for(let _ai=0;_ai<ens.length;_ai++){const e=ens[_ai];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d>range+e.r)continue;
     const ang=Math.atan2(e.y-P.y,e.x-P.x);let diff=ang-angle;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
     if(Math.abs(diff)<arcW){const mult=elMul(el,e.el);let dmg=~~(baseDmg*mult);
-    // ═══ 회전참 피격 축적: 맞은 몬스터가 약해짐 (스택당 +3%, 최대 20스택=+60%) ═══
-    if(_isWW){e._wwStk=Math.min(20,(e._wwStk||0)+1);e._wwStkT=60;dmg=~~(dmg*(1+(e._wwStk||0)*0.03))}
+    // 회전참 피격 스택 카운트만 유지 (데미지 보너스 제거됨)
+    if(_isWW){e._wwStk=Math.min(20,(e._wwStk||0)+1);e._wwStkT=60;}
     if(!_isWW||!_wwHitSfx){const _hSfx=type==='shield'?'flat_hit':(Math.random()<.5?'melee_hit1':'melee_hit');playSampleAt(_hSfx,.45,_r(1,.15),e.x,e.y);if(_isWW)_wwHitSfx=true} // 방패→flat_hit, 무기→메리랜덤
     hurtE(e,dmg,ang,false,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0.5:1.5,noPoise:false,poiseHit:_isWW||type==='shield',poiseSkill:type==='shield'},el);
       // parryBank는 적 공격 흡수로만 축적 (hitArc 공격 축적 삭제)
@@ -124521,6 +124532,7 @@ function _updateGhostXbow(){
 function _updateGhostIris(){
   const def=PETS.iris;if(!def)return;
   if(!G.pets.iris)return;
+  if(G._irisOff)return;
   const pet=G.pets.iris;
   pet.t+=_dtSp;
   // 크기 동기화 (UI 슬라이더에서 변경 시)
@@ -124961,14 +124973,14 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(e._weakPhys>0&&!_isMagicDmg&&!_isArrow)dmg=~~(dmg*(1+e._weakPhys)); // 물리 피격 증가
   if(e._weakMag>0&&_isMagicDmg)dmg=~~(dmg*(1+e._weakMag)); // 마법 피격 증가
   if(e._weakPj>0&&_isArrow)dmg=~~(dmg*(1+e._weakPj)); // 투사체 피격 증가
-  // 콤보뎀: 어픽스(comboBoost) + 패시브(pCombo) — 같은 적 연속 공격 시 +5%/중첩
+  // 콤보뎀: 어픽스(comboBoost) + 패시브(pCombo) — 같은 적 연속 공격 시 +1%/중첩
   const _cbAf=_eqAffix('comboBoost');
   const _cbPas=PASSIVES.pCombo||0;
   if(!isDot&&(_cbAf>0||_cbPas>0)){
-    const _cbMax=_cbPas>0?_cbPas*5:10; // 패시브: 1렙=5, 10렙=50. 어픽스만 있으면 10중첩
+    const _cbMax=(_cbPas>0?_cbPas*5:0)+(_cbAf>0?10:0); // 패시브: Lv×5 + 어픽스: +10 (둘 다 있으면 최대60)
     if(P._comboTgt===e){P._comboStk=Math.min(_cbMax,(P._comboStk||0)+1)}
     else{P._comboTgt=e;P._comboStk=0}
-    if(P._comboStk>0){dmg=~~(dmg*(1+P._comboStk*0.05));if(P._comboStk%5===0&&_txtPerFrame<_TXT_BUDGET)addTxt(e.x,e.y-40,'🎯콤보 '+P._comboStk+'x','#ff66aa',25)}
+    if(P._comboStk>0){dmg=~~(dmg*(1+P._comboStk*0.01));if(P._comboStk%5===0&&_txtPerFrame<_TXT_BUDGET)addTxt(e.x,e.y-40,'🎯콤보 '+P._comboStk+'x','#ff66aa',25)}
   }
   // 크리티컬 판정
   if(Math.random()*100<statCrit()){dmg=~~(dmg*statCritDmg());if(P.s!=='whirlwind'&&_txtPerFrame<_TXT_BUDGET&&!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade)))addTxt(e.x,e.y-30,'💥크리!','#ff2266',35)}
@@ -128266,6 +128278,7 @@ const _FPS_STEPS=[30,60,120,144,244];
 $('optFps').oninput=function(){OPT.fpsCap=_FPS_STEPS[+this.value];$('optFpsVal').textContent=OPT.fpsCap;saveSettings()};
 $('optResScale').oninput=function(){OPT.resScale=+this.value;$('optResScaleVal').textContent=this.value+'%';rz();saveSettings()};
 $('optPetAuto').onchange=function(){OPT.petAuto=this.checked;saveSettings()};
+$('optIrisSz').oninput=function(){const v=+this.value;G._irisSz=v;if(G.pets&&G.pets.iris)G.pets.iris.sz=v;$('optIrisSzVal').textContent=v+' (악의 '+v+'/분)';};
 $('optBossDbg').onchange=function(){OPT.bossDebug=this.checked;saveSettings()};
 // ── 그래픽 품질 옵션 ──
 $('optBloom').onchange=function(){OPT.bloom=this.checked;saveSettings()};
@@ -128705,6 +128718,7 @@ function syncSettingsUI(){
     $('optResScaleVal').textContent=(OPT.resScale||100)+'%';
   }
   if($('optPetAuto'))$('optPetAuto').checked=(OPT.petAuto!==false);
+  if($('optIrisSz')){const _isz=G._irisSz||20;$('optIrisSz').value=_isz;$('optIrisSzVal').textContent=_isz+' (악의 '+_isz+'/분)'}
   if($('optBossDbg')){$('optBossDbg').checked=!!OPT.bossDebug}
   if($('optBloom'))$('optBloom').checked=!!OPT.bloom;
   if($('optTrail'))$('optTrail').checked=!!OPT.trail;
@@ -132575,9 +132589,9 @@ function draw(){
     if(G.rooms&&G.rooms[0]){const _sr2=G.rooms[0];const _sdx=(_sr2.cx+.5)*T-G.cam.x,_sdy=(_sr2.cy+.5)*T-G.cam.y;
       if(Math.abs(_sdx)<_thw&&Math.abs(_sdy)<_thh){_tc.globalAlpha=.5;_tc.drawImage(_getTorchSmall(120),C.width/2+_sdx-120,C.height/2+_sdy-120);_tc.globalAlpha=1}}
     // ── 유령불꽃 조명 (토치 오버레이) ──
-    if(G.pets&&G.pets.iris){const _irp=G.pets.iris;const _irdx=_irp.x-G.cam.x,_irdy=_irp.y-G.cam.y;
-      if(Math.abs(_irdx)<_thw&&Math.abs(_irdy)<_thh){const _irNSz2=(_irp.sz||20)/100;const _irTR=~~(40+_irNSz2*160);
-        _tc.globalAlpha=.4+_irNSz2*.4;_tc.drawImage(_getTorchSmall(_irTR),C.width/2+_irdx-_irTR,C.height/2+_irdy-_irTR);_tc.globalAlpha=1}}
+    if(G.pets&&G.pets.iris&&!G._irisOff){const _irp=G.pets.iris;const _irdx=_irp.x-G.cam.x,_irdy=_irp.y-G.cam.y;
+      if(Math.abs(_irdx)<_thw&&Math.abs(_irdy)<_thh){const _irNSz2=Math.max(.01,(_irp.sz||20)/100);const _irTR=~~(80+_irNSz2*250);
+        _tc.globalAlpha=.6+_irNSz2*.35;_tc.drawImage(_getTorchSmall(_irTR),C.width/2+_irdx-_irTR,C.height/2+_irdy-_irTR);_tc.globalAlpha=1}}
     // ── 보스문 앞 횃불 조명 (화면 내만) ──
     if(G._gateY!=null&&G._bossCx!=null){const _gdx=(G._bossCx+.5)*T-G.cam.x,_gdy=(G._gateY+3.5)*T-G.cam.y;
       if(Math.abs(_gdx)<_thw&&Math.abs(_gdy)<_thh){const _gsx=C.width/2+_gdx,_gsy=C.height/2+_gdy;_tc.globalAlpha=.6;_tc.drawImage(_getTorchSmall(100),_gsx-100,_gsy-100);_tc.globalAlpha=1}}
@@ -136138,40 +136152,40 @@ function drawP(){
     X.ellipse(_xpx,_xpy+14,5,1.5,0,0,Math.PI*2);X.fill();
     X.globalAlpha=1;
   }
-  // ── 유령불꽃 렌더 ──
-  if(G.pets&&G.pets.iris){
+  // ── 유령불꽃 렌더 (크기 고정, 빛 범위만 sz 연동) ──
+  if(G.pets&&G.pets.iris&&!G._irisOff){
     const _ir=G.pets.iris;
-    const _irSz=(_ir.sz||20)/100; // 0.01~1.0 정규화
     const _irBob=Math.sin(_ir.t*.07)*3;
     const _irpx=_ir.x,_irpy=_ir.y+_irBob;
-    const _irR=4+_irSz*12; // 반경 4~16
-    const _irFlk=.6+Math.sin(_ir.t*.09)*.2+Math.sin(_ir.t*.13)*.1; // 플리커
-    // 외곽 글로우 (큰 원)
-    X.globalAlpha=(.08+_irSz*.12)*_irFlk;
-    X.fillStyle='#9944ff';X.beginPath();X.arc(_irpx,_irpy,_irR*3,0,Math.PI*2);X.fill();
-    // 중간 글로우
-    X.globalAlpha=(.15+_irSz*.2)*_irFlk;
-    X.fillStyle='#bb77ff';X.beginPath();X.arc(_irpx,_irpy,_irR*1.8,0,Math.PI*2);X.fill();
-    // 코어 (밝은 중심)
-    X.globalAlpha=(.5+_irSz*.4)*_irFlk;
-    X.fillStyle='#ddaaff';X.beginPath();X.arc(_irpx,_irpy,_irR,0,Math.PI*2);X.fill();
-    // 핵심 불꽃 (흰색)
-    X.globalAlpha=(.6+_irSz*.3)*_irFlk;
-    X.fillStyle='#fff0ff';X.beginPath();X.arc(_irpx,_irpy,_irR*.4,0,Math.PI*2);X.fill();
-    // 불꽃 파티클 (위로 올라가는 작은 점들)
-    const _irPartN=2+~~(_irSz*4);
-    for(let _ip=0;_ip<_irPartN;_ip++){
-      const _ipa=_ir.t*.03+_ip*2.1;
-      const _ipLife=((_ir.t+_ip*37)%60)/60;
-      const _ipx=_irpx+Math.sin(_ipa)*_irR*.8;
-      const _ipy=_irpy-_ipLife*(_irR*2)-Math.sin(_ir.t*.05+_ip)*2;
-      X.globalAlpha=(1-_ipLife)*.4*_irFlk;
-      X.fillStyle=_ip%2?'#cc88ff':'#ffccff';
-      X.beginPath();X.arc(_ipx,_ipy,.5+_irSz*1.5*(1-_ipLife),0,Math.PI*2);X.fill();
+    const _irR=8; // 고정 반경
+    const _irFlk=.75+Math.sin(_ir.t*.09)*.15+Math.sin(_ir.t*.17)*.1;
+    // additive 블렌딩 (횃불색)
+    X.save();X.globalCompositeOperation='lighter';
+    // 외곽 글로우
+    X.globalAlpha=.15*_irFlk;
+    X.fillStyle='#662200';X.beginPath();X.arc(_irpx,_irpy,_irR*3.5,0,Math.PI*2);X.fill();
+    X.globalAlpha=.25*_irFlk;
+    X.fillStyle='#cc5500';X.beginPath();X.arc(_irpx,_irpy,_irR*2,0,Math.PI*2);X.fill();
+    // 코어
+    X.globalAlpha=.6*_irFlk;
+    X.fillStyle='#ffbb44';X.beginPath();X.arc(_irpx,_irpy,_irR,0,Math.PI*2);X.fill();
+    // 핵
+    X.globalAlpha=.9*_irFlk;
+    X.fillStyle='#fff8e0';X.beginPath();X.arc(_irpx,_irpy,_irR*.4,0,Math.PI*2);X.fill();
+    // 불꽃 혀 (고정 4개)
+    for(let _ip=0;_ip<4;_ip++){
+      const _ipa=_ir.t*.04+_ip*1.6;
+      const _ipLife=((_ir.t+_ip*31)%45)/45;
+      const _ipx=_irpx+Math.sin(_ipa)*4;
+      const _ipy=_irpy-_ipLife*20-Math.sin(_ir.t*.06+_ip)*2;
+      X.globalAlpha=(1-_ipLife)*.5*_irFlk;
+      X.fillStyle=_ip%2?'#ffaa33':'#ff7711';
+      X.beginPath();X.arc(_ipx,_ipy,1.5*(1-_ipLife),0,Math.PI*2);X.fill();
     }
+    X.restore();
     // 그림자
-    X.globalAlpha=.06+_irSz*.04;X.fillStyle='#000';X.beginPath();
-    X.ellipse(_irpx,_irpy+16+_irSz*4,2+_irSz*3,1,0,0,Math.PI*2);X.fill();
+    X.globalAlpha=.1;X.fillStyle='#000';X.beginPath();
+    X.ellipse(_irpx,_irpy+18,4,1,0,0,Math.PI*2);X.fill();
     X.globalAlpha=1;
   }
   // ── 펫 말풍선 렌더 ──
