@@ -657,8 +657,15 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
     $('mainWrap').classList.add('show');
     if(session){await showLobby()}else{$('loginSection').style.display='block'}
     hideLoading();
+  }else if(session){
+    // OAuth 리다이렉트 복귀 (로그인 완료 상태) → 인트로 스킵
+    _cinDone=true;startBGM();
+    $('cinScene').style.display='none';clearInterval(_emberIv);
+    $('mainWrap').classList.add('show');
+    await showLobby();
+    hideLoading();
   }else{
-    // 첫 접속 / 새로고침 → 항상 인트로 재생
+    // 첫 접속 / 새로고침 (비로그인) → 인트로 재생
     hideLoading();
     playCinematic();
   }
