@@ -1565,6 +1565,7 @@ function _initBloom(){
 let _bloomFrame=0;
 function _renderBloom(){
   if(!OPT.bloom||OPT.quality==='low'||OPT.quality==='mid')return;
+  if(G.pets&&G.pets.iris&&!G._irisOff)return;
   _bloomFrame++;
   if(!_bloomCvs||_bloomW!==~~(C.width/6))_initBloom();
   if(_bloomFrame&1){
@@ -1782,6 +1783,8 @@ function _collectLights(){
 }
 function _renderLighting(){
   if(!OPT.lighting||OPT.quality==='low')return;
+  // 유령불꽃 ON → 동적 조명 전체 스킵
+  if(G.pets&&G.pets.iris&&!G._irisOff)return;
   if(!_lightCvs||_lightW!==~~(C.width/2))_initLight();
   var lx=_lightCtx;
   // 지옥별 어둠 채우기
@@ -132552,7 +132555,7 @@ function draw(){
   {const _bl0=performance.now();if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.35:.25;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
   // [TORCH] 횃불 조명 어둠 오버레이 (_gameFrame%3===0 만 재계산)
   const _tc0=performance.now();
-  if(OPT.torch&&OPT.postfx&&OPT.quality!=='low'){X.save();X.setTransform(1,0,0,1,0,0);
+  if(OPT.torch&&OPT.postfx&&OPT.quality!=='low'&&!(G.pets&&G.pets.iris&&!G._irisOff)){X.save();X.setTransform(1,0,0,1,0,0);
   const _torchStale=!_torchCache||_torchW!==C.width||_torchH!==C.height;
   const _torchRedraw=_torchStale||(G.pets&&G.pets.iris&&!G._irisOff)||(_gameFrame%6===2);
   if(!_torchRedraw){X.drawImage(_torchCache,_torchCamX-G.cam.x,_torchCamY-G.cam.y);X.restore()}else{
