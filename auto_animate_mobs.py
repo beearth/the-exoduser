@@ -68,19 +68,21 @@ def main():
 
         for anim in anims:
             retries = 0
-            while retries < 20:
+            while retries < 40:
                 ok, resp = animate(char_id, anim)
                 if ok:
                     print(f'  ✅ {anim}', flush=True)
                     total_queued += 1
-                    time.sleep(1)
+                    time.sleep(2)  # 성공 후 2초 대기
                     break
-                elif 'Insufficient job slots' in resp or 'slots' in resp.lower():
+                elif ('Insufficient job slots' in resp or 'slots' in resp.lower()
+                      or 'Failed to start' in resp):
                     if retries == 0:
                         print(f'  ⏳ {anim} — 슬롯 대기...', end='', flush=True)
-                    time.sleep(15)
+                    time.sleep(20)
                     retries += 1
-                    print('.', end='', flush=True)
+                    if retries % 3 == 0:
+                        print('.', end='', flush=True)
                 elif 'already exists' in resp.lower() or 'duplicate' in resp.lower():
                     print(f'  ⏭️ {anim} — 이미 존재, 스킵')
                     total_skipped += 1
@@ -94,7 +96,7 @@ def main():
                     total_failed += 1
                     break
             else:
-                print(f' 타임아웃')
+                print(f' 타임아웃 (13분+)')
                 total_failed += 1
 
     print(f'\n=== 완료 ===')
