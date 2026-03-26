@@ -5530,6 +5530,12 @@ const _CH_DECO={
     {id:'m_tmush',file:'toxic_mushroom.png',sz:48,light:1},{id:'m_meat',file:'meat_stake.png',sz:64},
     {id:'m_acid',file:'acid_pool.png',sz:56},{id:'m_vpillar',file:'vine_pillar.png',sz:72},
     {id:'m_cursed_tree',file:'cursed_eye_tree.png',sz:256,large:1},
+    {id:'m_ctree1',file:'cursed_tree_01.png',sz:400,large:1},
+    {id:'m_ctree2',file:'cursed_tree_02.png',sz:400,large:1},
+    {id:'m_ctree3',file:'cursed_tree_03.png',sz:400,large:1},
+    {id:'m_ctree4',file:'cursed_tree_04.png',sz:400,large:1},
+    {id:'m_ctree5',file:'cursed_tree_05.png',sz:400,large:1},
+    {id:'m_ctree6',file:'cursed_tree_06.png',sz:400,large:1},
   ],
 };
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
@@ -5556,10 +5562,11 @@ const _OBJ_META={
   'lava_l':{sz:200,collision:true},'lava_l_v6a':{sz:300,collision:true},'lava_l_v6b':{sz:300,collision:true},
   'lava_l_v6c':{sz:300,collision:true},'lava_l_v6d':{sz:300,collision:true},
   'lava_l_90':{sz:200,collision:true,rot:90},'lava_l_180':{sz:200,collision:true,rot:180},'lava_l_270':{sz:200,collision:true,rot:270},
+  'm_ctree1':{sz:400,col:1,large:1},'m_ctree2':{sz:400,col:1,large:1},'m_ctree3':{sz:400,col:1,large:1},'m_ctree4':{sz:400,col:1,large:1},'m_ctree5':{sz:400,col:1,large:1},'m_ctree6':{sz:400,col:1,large:1},
 };
 // _CH_DECO 프리로드
 for(const[ch,list]of Object.entries(_CH_DECO)){
-  for(const d of list){const p='assets/map/ch'+(+ch+1)+'/'+d.file;_OBJ_SPR_MAP[d.id]=p;const im=new Image();im.src=p;_OBJ_SPR[d.id]=im;_OBJ_META[d.id]={sz:d.sz||32,light:d.light||0,large:d.large||0}}
+  for(const d of list){const p='assets/map/ch'+(+ch+1)+'/'+d.file;_OBJ_SPR_MAP[d.id]=p;const im=new Image();im.src=p;_OBJ_SPR[d.id]=im;const _prev=_OBJ_META[d.id]||{};_OBJ_META[d.id]=Object.assign(_prev,{sz:d.sz||32,light:d.light||0,large:d.large||0})}
 }
 
 // ═══ RAM 최적화 시스템 ═══
@@ -10056,8 +10063,8 @@ function initMapObjects(){
     const _normalDeco=_chDeco.filter(d=>!d.large);
     let _lgPlaced=0;
     if(_largeDeco.length>0){
-      const _lgMax=Math.min(2,Math.max(1,~~(_dcFloors.length/400))); // 400타일당 1개, 최대2
-      const _lgMinDist=200; // 대형끼리 최소 200px 간격
+      const _lgMax=Math.min(20,Math.max(2,~~(_dcFloors.length/200))); // 200타일당 1개, 최대20
+      const _lgMinDist=500; // 대형끼리 최소 500px 간격 (sz400 기준 겹침 방지)
       const _lgWallR=5; // 벽에서 5타일 이상
       for(let li=0;li<_lgMax*20&&_lgPlaced<_lgMax&&_dcFloors.length>0;li++){
         const _fi=~~(_dcSeed()*_dcFloors.length);
@@ -10094,7 +10101,7 @@ function initMapObjects(){
       // 기존 오브젝트와 겹침 방지
       const _px=_ft.x*T+T/2,_py=_ft.y*T+T/2;
       let _tooClose=false;
-      for(const mo of MAP_OBJS){if(dst(_px,_py,mo.x,mo.y)<60){_tooClose=true;break}}
+      for(const mo of MAP_OBJS){const moMeta=_OBJ_META[mo.type];const moSz=moMeta?moMeta.sz||32:32;const minD=Math.max(60,(moSz+32)/2);if(dst(_px,_py,mo.x,mo.y)<minD){_tooClose=true;break}}
       for(const mo2 of MAP_OBJS){if((mo2.type==='bonfire'||mo2.type==='altar'||mo2.type==='trap')&&dst(_px,_py,mo2.x,mo2.y)<100){_tooClose=true;break}}
       if(_tooClose){_dcFloors.splice(_fi,1);di--;continue}
       // 일반 에셋만 선택 (대형 제외)
@@ -10168,7 +10175,7 @@ function _tileHash(x,y,s){let h=(x*374761393+y*668265263+s)^0x5bd1e995;h=Math.im
 const _mapTexImgs={};
 const _MAP_TEX_FILES={1:'img/maps/stage_1_tex.png'};
 // 바닥 타일 텍스처 (400px 체커보드 타일링)
-const _GROUND_TILES={};let _gtScaled=null;
+const _GROUND_TILES={};let _gtScaled=null,_gtPadded=null;
 const _GT_FILES={
   'gt_01':'assets/map/ch1/ground_tile_01.png',
   'gt_02':'assets/map/ch1/ground_tile_02.png',
@@ -10283,16 +10290,39 @@ function buildMapCache(){
   const c=_mapCvs.getContext('2d');_mapCtx=c;
   const _isW=(tx,ty)=>tx<0||tx>=mw||ty<0||ty>=mh||map[ty][tx]===1||map[ty][tx]===3;
   const _isF=(tx,ty)=>tx>=0&&tx<mw&&ty>=0&&ty<mh&&map[ty][tx]===0;
-  // ── Pass 0.4: 바닥타일 타일링 ──
+  // ── Pass 0.4: 바닥타일 타일링 (패딩+정수좌표로 seam 제거) ──
   if(_GT_STAGE_MAP[G.stage]){
     const gtDef=_GT_STAGE_MAP[G.stage];
     const tiles=gtDef.tiles;
     const allReady=tiles.every(tid=>_GROUND_TILES[tid]&&_GROUND_TILES[tid].complete&&_GROUND_TILES[tid].naturalWidth>0);
     if(allReady){
-      // native: 원본 크기 그대로, 숫자: 해당 px로 리사이즈
       const firstImg=_GROUND_TILES[tiles[0]];
       const spPx=gtDef.spacingPx==='native'?firstImg.naturalWidth:gtDef.spacingPx;
-      const useNative=gtDef.spacingPx==='native';
+      // 패딩 캐시: 가장자리 2px 복제 → 타일 경계 샘플링 오류 방지
+      if(!_gtPadded)_gtPadded={};
+      const PAD=2;
+      for(const tid of tiles){
+        const pk=tid+'_'+spPx;
+        if(!_gtPadded[pk]){
+          const src=_GROUND_TILES[tid];
+          const sw=src.naturalWidth,sh=src.naturalHeight;
+          const dw=spPx==='native'||gtDef.spacingPx==='native'?sw:spPx;
+          const dh=spPx==='native'||gtDef.spacingPx==='native'?sh:spPx;
+          const pc=document.createElement('canvas');pc.width=dw+PAD*2;pc.height=dh+PAD*2;
+          const px=pc.getContext('2d');px.imageSmoothingEnabled=false;
+          // 중앙에 원본
+          px.drawImage(src,PAD,PAD,dw,dh);
+          // 상단 패딩: 원본 상단 1px 줄을 위로 복제
+          px.drawImage(src,0,0,sw,1, PAD,0,dw,PAD);
+          // 하단 패딩: 원본 하단 1px 줄을 아래로 복제
+          px.drawImage(src,0,sh-1,sw,1, PAD,PAD+dh,dw,PAD);
+          // 좌측 패딩
+          px.drawImage(src,0,0,1,sh, 0,PAD,PAD,dh);
+          // 우측 패딩
+          px.drawImage(src,sw-1,0,1,sh, PAD+dw,PAD,PAD,dh);
+          _gtPadded[pk]=pc;
+        }
+      }
       c.save();c.beginPath();
       for(let ty2=0;ty2<mh;ty2++)for(let tx2=0;tx2<mw;tx2++){
         if(map[ty2][tx2]===0)c.rect(tx2*T,ty2*T,T,T);
@@ -10304,9 +10334,9 @@ function buildMapCache(){
         let col=0;
         for(let px2=0;px2<mw*T;px2+=spPx){
           const tid=tiles[(row+col)%tiles.length];
-          const gi=_GROUND_TILES[tid];
-          if(useNative) c.drawImage(gi,px2,py2);
-          else c.drawImage(gi,px2,py2,spPx,spPx);
+          const pc=_gtPadded[tid+'_'+spPx];
+          // 패딩 포함 캔버스를 PAD만큼 앞당겨 그려서 경계 겹침
+          c.drawImage(pc,~~(px2-PAD),~~(py2-PAD));
           col++;
         }
         row++;
