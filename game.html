@@ -673,7 +673,7 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">해상도 스케일</span><input type="range" id="optResScale" min="50" max="100" step="10" value="100"><span class="set-range-val" id="optResScaleVal">100%</span></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optPetAuto" checked style="width:16px;height:16px;accent-color:#66cc88"><span class="set-name">펫 자동수거</span></label></div>
           <div class="set-range-row"><span class="set-name" style="color:#ffa028">요정불꽃 크기</span><input type="range" id="optIrisSz" min="1" max="100" value="20" style="accent-color:#ffa028"><span class="set-range-val" id="optIrisSzVal" style="color:#ffa028">20</span></div>
-          <div class="set-range-row"><span class="set-name" style="color:#ffcc44">주인공 글로우</span><input type="range" id="optPlayerGlow" min="200" max="2000" value="900" style="accent-color:#ffcc44"><span class="set-range-val" id="optPlayerGlowVal" style="color:#ffcc44">900</span></div>
+          <div class="set-range-row"><span class="set-name" style="color:#ddddaa">화면 명암</span><input type="range" id="optBrightness" min="70" max="130" value="100" style="accent-color:#ddddaa"><span class="set-range-val" id="optBrightnessVal" style="color:#ddddaa">100%</span></div>
           <div class="set-range-row"><span class="set-name" style="color:#ffa028">요정 글로우</span><input type="range" id="optIrisGlow" min="100" max="1500" value="700" style="accent-color:#ffa028"><span class="set-range-val" id="optIrisGlowVal" style="color:#ffa028">700</span></div>
           <div class="set-range-row" style="margin-top:8px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optBossDbg" style="width:16px;height:16px;accent-color:#ff8844"><span class="set-name" style="color:#ff8844">보스 AI 디버그</span></label></div>
         </div>
@@ -1774,61 +1774,8 @@ function _pushLight(wx,wy,r,intensity,cr,cg,cb){
 function _collectLights(){
   _lightCnt=0;
   if(!P||!G.on)return;
-  // 1) 플레이어 등불 (반경 + 플리커)
-  var _plAmber=SI_TO_HELL[G.stage||0]===0;
-  var _torchFlk=1+Math.sin(_gameFrame*.12)*.04+Math.sin(_gameFrame*.19)*.03; // 등불 흔들림
-  var _torchR=~~((OPT.playerGlow||900)*_torchFlk);
-  var _torchA=.95+Math.sin(_gameFrame*.08)*.04; // 밝기 흔들림
-  _pushLight(P.x,P.y,_torchR,_torchA,_plAmber?255:255,_plAmber?210:230,_plAmber?120:190);
-  // 1.5) 등불 코어 (가까운 곳 더 밝게)
-  _pushLight(P.x,P.y,~~((OPT.playerGlow||900)*.33*_torchFlk),_torchA*.5,_plAmber?255:255,_plAmber?190:210,_plAmber?90:160);
-  // 2) 플레이어 투사체
-  for(var i=0;i<pProjs.length&&_lightCnt<120;i++){
-    var p=pProjs[i];if(!p||p.life<=0)continue;
-    var el=p.el||0;var ec=_elLightCol[el]||_elLightCol[0];
-    var pr=el===1?80:el===2?60:el===4?70:el===3?60:40;
-    var pa=el===1?.5:el===2?.3:el===4?.6:el===3?.4:.2;
-    _pushLight(p.x,p.y,pr,pa,ec[0],ec[1],ec[2]);
-  }
-  // 3) 적 투사체 (최대 50개)
-  for(var i=0,_plCnt=0;i<projs.length&&_lightCnt<120&&_plCnt<50;i++){
-    var p=projs[i];if(!p||p.life<=0)continue;
-    var el=p.el||0;var ec=_elLightCol[el]||_elLightCol[0];
-    _pushLight(p.x,p.y,50,.25,ec[0],ec[1],ec[2]);_plCnt++;
-  }
-  // 4) 신성폭발/용암소환 시전
-  if(P._hbCasting)_pushLight(P._hbX||P.x,P._hbY||P.y,200,.8,255,215,0);
-  if(P._lvCasting)_pushLight(P._lvX||P.x,P._lvY||P.y,250,.6,255,51,0);
-  // 5) 바닥 아이템 (레어리티별)
-  for(var i=0;i<worldItems.length&&_lightCnt<120;i++){
-    var it=worldItems[i];if(!it||it.picked)continue;
-    if(it.type==='item'&&it.item){
-      var rc=_rarLightCol[it.item.rarity||0];
-      _pushLight(it.x,it.y,50,.3,rc[0],rc[1],rc[2]);
-    } else if(it.type==='chest'){
-      _pushLight(it.x,it.y,80,.5,255,170,0);
-    } else if(it.type==='forge'){
-      _pushLight(it.x,it.y,100,.4,255,102,51);
-    }
-  }
-  // 6) 소환굴
-  for(var i=0;i<G.spawnHoles.length&&_lightCnt<120;i++){
-    var h=G.spawnHoles[i];
-    _pushLight(h.x,h.y,40+h.size*40,.2,_shLightCol[0],_shLightCol[1],_shLightCol[2]);
-  }
-  // 7) 균열(리프트)
-  for(var i=0;i<G.rifts.length&&_lightCnt<120;i++){
-    var rf=G.rifts[i];
-    var rr=40+Math.sin(rf.t*.05)*40;
-    _pushLight(rf.x,rf.y,rr,.4,170,68,255);
-  }
-  // 8) 보스 + 불타는 적 (화면 밖 스킵)
-  for(var i=0,_eLitCnt=0;i<ens.length&&_lightCnt<120&&_eLitCnt<60;i++){
-    var e=ens[i];if(!e||!e.alive)continue;_eLitCnt++;
-    if(!e.ib){var _edx=e.x-G.cam.x,_edy=e.y-G.cam.y;if(_edx<-C.width/2-300||_edx>C.width/2+300||_edy<-C.height/2-300||_edy>C.height/2+300)continue}
-    if(e.ib){_pushLight(e.x,e.y,150,.3,200,100,50);continue}
-    if(e.burnT>0)_pushLight(e.x,e.y,40,.2,255,68,0);
-  }
+  // 1) 플레이어 등불 — 비활성화 (요정 글로우만 사용)
+  // 2~8) 기타 광원 비활성화 — 플레이어+요정 글로우만 사용
   // 9.5) 요정불꽃 → 요정 위치에서 은은한 등불 광원
   if(G.pets&&G.pets.iris&&!G._irisOff){
     var _irPet=G.pets.iris;
@@ -1837,37 +1784,7 @@ function _collectLights(){
     _pushLight(_irPet.x,_irPet.y,_igR,_irFlk,255,180,60);
     _pushLight(_irPet.x,_irPet.y,~~(_igR*.35),_irFlk*.4,255,210,120);
   }
-  // 10) 반딧불이 앰비언트 파티클 — 동적 광원
-  if(OPT.ambPart&&_ambCnt>0){
-    var _aTheme=_AMB_FLY;
-    if(_aTheme.lightR>0){for(var i=0;i<_ambCnt&&_lightCnt<120;i++){
-      var ai=i*10,aLife=_ambData[ai+6],aML=_ambData[ai+7],aA=_ambData[ai+5];
-      var aFade=Math.min(1,(aML-aLife)/40)*Math.min(1,aLife/60);
-      if(aFade<.1)continue;
-      _pushLight(_ambData[ai],_ambData[ai+1],_aTheme.lightR,_aTheme.lightA*aFade*aA,_aTheme.lightCol[0],_aTheme.lightCol[1],_aTheme.lightCol[2]);
-    }}
-  }
-  // 11) 폭발 밝기 부스트 — G.shake 비례 광원
-  if(G.shake>3){
-    _pushLight(P.x,P.y,200+G.shake*15,.3+G.shake*.03,255,200,150);
-  }
-  // 12) 폭발 임시 광원 (addParts 큰 폭발에서 생성)
-  for(var i=0;i<_blCnt&&_lightCnt<120;i++){
-    var bl=_blastLights[i];if(bl.life<=0)continue;
-    var bFade=bl.life/bl.ml;
-    _pushLight(bl.x,bl.y,bl.r*bFade,bFade*.8,bl.cr,bl.cg,bl.cb);
-  }
-  // 13) 횃불 앰비언트 광원
-  if(_torchCnt>0){
-    var _tHell=SI_TO_HELL[G.stage||0];
-    var _tCol=_TORCH_COL[_tHell]||_TORCH_COL[0];
-    var _tNow=_gameFrame*.06; // 플리커 타이머
-    for(var i=0;i<_torchCnt&&_lightCnt<120;i++){
-      var o=i*4;
-      var flick=1+Math.sin(_tNow+_torchLights[o+3])*.15;
-      _pushLight(_torchLights[o],_torchLights[o+1],_torchLights[o+2]*flick,.35,_tCol[0],_tCol[1],_tCol[2]);
-    }
-  }
+  // 10~13) 기타 광원 비활성화 — 플레이어+요정 글로우만 사용
 }
 function _renderLighting(){
   if(!OPT.lighting||OPT.quality==='low')return;
@@ -5587,6 +5504,7 @@ const _OBJ_SPR_MAP={
   'tombstone':'assets/objects/tombstone.png','weapon_pile':'assets/objects/weapon_pile.png',
   'toxic_mushroom':'assets/objects/toxic_mushroom.png','meat_stake':'assets/objects/meat_stake.png',
   'acid_pool':'assets/objects/acid_pool.png','vine_pillar':'assets/objects/vine_pillar.png',
+  'cursed_eye_tree':'assets/objects/cursed_eye_tree.png',
   'pit_lava':'assets/objects/pit_lava.png','pit_poison':'assets/objects/pit_poison.png',
   'pit_ice':'assets/objects/pit_ice.png','pit_corpse':'assets/objects/pit_corpse.png',
   'pit_bugs':'assets/objects/pit_bugs.png',
@@ -5629,6 +5547,7 @@ const _OBJ_META={
   'centipede':{sz:40},'larva':{sz:32},'minibug':{sz:24},'chitin_debris':{sz:32},
   'flesh_pile':{sz:64},'spider_web':{sz:56},'tombstone':{sz:56},'weapon_pile':{sz:64},
   'toxic_mushroom':{sz:48,light:1},'meat_stake':{sz:64},'acid_pool':{sz:56},'vine_pillar':{sz:72},
+  'cursed_eye_tree':{sz:256,col:1},
   'pit_lava':{sz:200,collision:true},'pit_poison':{sz:200,collision:true},
   'pit_ice':{sz:200,collision:true},'pit_corpse':{sz:200,collision:true},'pit_bugs':{sz:200,collision:true},
   'lava_straight':{sz:300,collision:true},'lava_straight_v2':{sz:300,collision:true},
@@ -12476,7 +12395,7 @@ FIXED_MAPS[0]={
     {"x":51,"y":68,"grade":0},
     {"x":51,"y":50,"grade":0}
   ],
-  "tileRLE": [2,103,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,2,1,100,2,103],
+  "tileRLE": [1,10404],
   "spawnHoles": [
     {"x":38,"y":85,"type":"M"},
     {"x":70,"y":80,"type":"S"},
@@ -115899,7 +115818,7 @@ function genFromTemplate(tmpl,si){
     if(o.id==='bonfire'||o.id==='lore'||o.id==='trap'||o.id==='altar'||o.id==='forge')continue;
     // floor_eye: 에디터 배치 눈알 → G._editorEyes에 저장, _initEyes에서 처리
     if(o.id==='floor_eye'){if(!G._editorEyes)G._editorEyes=[];G._editorEyes.push({x:o.x*T+T*.5,y:o.y*T+T*.5});continue}
-    MAP_OBJS.push({type:o.id,x:o.x*T,y:o.y*T,hell:SI_TO_HELL[si]});
+    const _mo={type:o.id,x:o.x*T,y:o.y*T,hell:SI_TO_HELL[si]};if(o.scale&&o.scale!==1)_mo.scale=o.scale;MAP_OBJS.push(_mo);
   }}
 }
 
@@ -118790,7 +118709,7 @@ function update(){
       if(e._reviveTimer<=0){
         e._reviveTimer=0;
         if(e.ib){
-          // ── 보스: 3초 카운트다운 후 부활 판정 (100%+장×10%-사망×10%-신성력) ──
+          // ── 보스: 3초 카운트다운 후 부활 판정 (125%+스테이지×5%-부활×25%-신성력) ──
           if((e._bossRevRoll||1)<(e._bossRevChance||0)){
             // 부활 성공
             e.alive=true;e.x=e._reviveX;e.y=e._reviveY;
@@ -119801,14 +119720,23 @@ function update(){
         p.life=-999; // 메인 루프에서 정리됨
         if(_vs.absorbed>=_vs.maxAbsorb){
           _vs.aggroOn=false;
-          // 자동 회수: 축적 자원 반환 + 1000 XP
-          P.hp=Math.min(P.mhp,P.hp+_vs.resHP);P.mp=Math.min(P.mmp,P.mp+_vs.resMP);P.st=Math.min(P.mst,P.st+_vs.resST);
-          addTxt(_vs.x,_vs.y-35,'자동회수! HP+'+_vs.resHP+' MP+'+_vs.resMP+' ST+'+_vs.resST,'#66ffaa',60);
-          giveXP(1000);addTxt(_vs.x,_vs.y-55,'+1000 XP','#ffcc44',50);
-          addParts(_vs.x,_vs.y,'#bb88ee',15);playSample('ghost_laugh',.8,_r(1.3,.1));
-          G._voidScarecrow=null;P._vsCd=~~(600*(1+_eqAffix('cooldownRed')));
+          addTxt(_vs.x,_vs.y-35,'흡수 완료!','#ffcc00',50);
         }
       }
+    }
+  }
+  // ═══ 유령 허수아비 — 거리 1000px 자동회수 ═══
+  if(G._voidScarecrow){
+    const _vsD=dst(P.x,P.y,G._voidScarecrow.x,G._voidScarecrow.y);
+    if(_vsD>=1000){
+      const _vs=G._voidScarecrow;
+      if(_vs.resHP>0||_vs.resMP>0||_vs.resST>0){
+        P.hp=Math.min(P.mhp,P.hp+_vs.resHP);P.mp=Math.min(P.mmp,P.mp+_vs.resMP);P.st=Math.min(P.mst,P.st+_vs.resST);
+        addTxt(P.x,P.y-30,'자동회수 HP+'+_vs.resHP+' MP+'+_vs.resMP+' ST+'+_vs.resST,'#66ffaa',60);
+      }
+      giveXP(1000);addTxt(P.x,P.y-50,'+1000 XP','#ffcc44',50);
+      addParts(P.x,P.y,'#bb88ee',10);
+      G._voidScarecrow=null;P._vsCd=~~(600*(1+_eqAffix('cooldownRed')));
     }
   }
   // ═══ 푸른비 — 쿨다운 ═══
@@ -125396,13 +125324,13 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         addTxt(e.x,e.y-30,'✟ 신성력 억제!','#ffdd88',50);
       }
     }
-    // 보스: 항상 3초 카운트다운 → 부활률 공식 = 100% + 장×10% - 사망횟수×10% - 신성력
+    // 보스: 항상 3초 카운트다운 → 부활률 공식 = 125% + 스테이지×5% - 부활횟수×25% - 신성력
     if(e.ib&&!e._bossRevJudged){
       e._bossRevJudged=true;e._reviveTimer=180;e._reviveX=e.x;e._reviveY=e.y;
-      const _rv2Base=1.0+G.stage*0.10; // 장당+10%
+      const _rv2Base=1.25+G.stage*0.05; // 기본125% + 스테이지당+5%
       let _rv2Sup=_eqAffix('antiRevive');
       if(G._fireZones){for(let _fi=0;_fi<G._fireZones.length;_fi++){const _fz=G._fireZones[_fi];if(_fz.type==='holyPrison'&&dst(e.x,e.y,_fz.x,_fz.y)<_fz.r){_rv2Sup+=.30+((_fz.lv||1)-1)*.02;break}}} // 30%+Lv당2%
-      e._bossRevChance=Math.max(0,_rv2Base-(e.deaths||0)*0.10-_rv2Sup);
+      e._bossRevChance=Math.max(0,_rv2Base-(e.deaths||0)*0.25-_rv2Sup);
       e._bossRevRoll=Math.random();
       e._bossRevived=true; // 타이머 활성 (실제 부활 여부는 resolve에서)
     }
@@ -128469,7 +128397,7 @@ $('optFps').oninput=function(){OPT.fpsCap=_FPS_STEPS[+this.value];$('optFpsVal')
 $('optResScale').oninput=function(){OPT.resScale=+this.value;$('optResScaleVal').textContent=this.value+'%';rz();saveSettings()};
 $('optPetAuto').onchange=function(){OPT.petAuto=this.checked;saveSettings()};
 $('optIrisSz').oninput=function(){const v=+this.value;G._irisSz=v;if(G.pets&&G.pets.iris)G.pets.iris.sz=v;$('optIrisSzVal').textContent=v;};
-$('optPlayerGlow').oninput=function(){OPT.playerGlow=+this.value;$('optPlayerGlowVal').textContent=this.value;saveSettings()};
+$('optBrightness').oninput=function(){OPT.brightness=+this.value;$('optBrightnessVal').textContent=this.value+'%';C.style.filter='brightness('+(OPT.brightness/100)+')';saveSettings()};
 $('optIrisGlow').oninput=function(){OPT.irisGlow=+this.value;$('optIrisGlowVal').textContent=this.value;saveSettings()};
 $('optBossDbg').onchange=function(){OPT.bossDebug=this.checked;saveSettings()};
 // ── 그래픽 품질 옵션 ──
@@ -128911,7 +128839,7 @@ function syncSettingsUI(){
   }
   if($('optPetAuto'))$('optPetAuto').checked=(OPT.petAuto!==false);
   if($('optIrisSz')){const _isz=G._irisSz||20;$('optIrisSz').value=_isz;$('optIrisSzVal').textContent=_isz}
-  if($('optPlayerGlow')){const _pg=OPT.playerGlow||900;$('optPlayerGlow').value=_pg;$('optPlayerGlowVal').textContent=_pg}
+  if($('optBrightness')){const _br=OPT.brightness||100;$('optBrightness').value=_br;$('optBrightnessVal').textContent=_br+'%';C.style.filter='brightness('+(_br/100)+')';}
   if($('optIrisGlow')){const _ig=OPT.irisGlow||700;$('optIrisGlow').value=_ig;$('optIrisGlowVal').textContent=_ig}
   if($('optBossDbg')){$('optBossDbg').checked=!!OPT.bossDebug}
   if($('optBloom'))$('optBloom').checked=!!OPT.bloom;
@@ -130715,7 +130643,7 @@ function draw(){
         const _spr=_OBJ_SPR[mo.type];
         const _meta=_OBJ_META[mo.type];
         if(_spr&&_spr.complete&&_spr.naturalWidth>0){
-          const sz=_meta?_meta.sz||32:32;
+          const sz=(_meta?_meta.sz||32:32)*(mo.scale||1);
           if(_meta&&_meta.sheet){const _sh=_meta.sheet,_cw=~~(_spr.naturalWidth/_sh.c),_ch=~~(_spr.naturalHeight/_sh.r);
             const _si=((~~(mo.x*7919+mo.y*104729+31))&0x7fffffff)%(_sh.c*_sh.r);
             X.drawImage(_spr,(_si%_sh.c)*_cw,~~(_si/_sh.c)*_ch,_cw,_ch,mo.x-sz/2,mo.y-sz/2,sz,sz);
@@ -132884,7 +132812,8 @@ function draw(){
   // [GRAIN+SCANLINE] CSS filter로 대체 (putImageData 제거 → 0ms)
   {const _wantFx=OPT.postfx&&OPT.quality!=='low';
   const _wantGrain=_wantFx&&OPT.grain;
-  const _css=_wantGrain?'contrast(1.05) brightness(0.97)':_wantFx?'contrast(1.02)':'';
+  const _brVal=(OPT.brightness||100)/100;
+  const _css=(_wantGrain?'contrast(1.05) brightness('+(.97*_brVal)+')':_wantFx?'contrast(1.02) brightness('+_brVal+')':'brightness('+_brVal+')');
   if(C.style.filter!==_css)C.style.filter=_css}
   _pC4=performance.now(); // grain+scanline end
   // [BOSS-CINE] 보스 등장 시네마틱
@@ -136681,7 +136610,7 @@ if(_EDITOR_MODE)window.addEventListener('message',function(ev){
       G.cam={x:G.mw*T/2,y:G.mh*T/2};G._edZoom=G._edZoom||1;
       parent.postMessage({type:'stageLoaded',mw:G.mw,mh:G.mh,rooms:JSON.parse(JSON.stringify(G.rooms)),map:_serializeMap(),stage:G.stage},'*');
       break;
-    case'addObj':MAP_OBJS.push({type:d.id,x:d.x,y:d.y,hell:SI_TO_HELL[G.stage]});break;
+    case'addObj':{const _o={type:d.id,x:d.x,y:d.y,hell:SI_TO_HELL[G.stage]};if(d.scale&&d.scale!==1)_o.scale=d.scale;MAP_OBJS.push(_o);break;}
     case'removeObj':if(d.idx>=0&&d.idx<MAP_OBJS.length)MAP_OBJS.splice(d.idx,1);break;
     case'removeObjAt':{const _rr=32;for(let _ri=MAP_OBJS.length-1;_ri>=0;_ri--){const _o=MAP_OBJS[_ri];if(Math.abs(_o.x-d.x)<_rr&&Math.abs(_o.y-d.y)<_rr){MAP_OBJS.splice(_ri,1);break}}}break;
     case'clearObjs':MAP_OBJS.length=0;break;

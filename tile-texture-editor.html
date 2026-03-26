@@ -69,6 +69,7 @@ body{background:#0a0a0a;color:#ccc;font:12px monospace;display:flex;height:100vh
     <button onclick="setTool('erase')" id="t-erase">지우개</button>
     <button onclick="setTool('collision')" id="t-collision" style="color:#ff4444">🧱충돌</button>
     <button onclick="setTool('col-erase')" id="t-col-erase" style="color:#ff8844">🧱충돌지우기</button>
+    <button onclick="setTool('asset')" id="t-asset" style="color:#ffaa44">🖼️에셋</button>
     <button onclick="setTool('pan')" id="t-pan">이동</button>
     <button onclick="undo()">↩되돌리기</button>
     <button onclick="clearAll()">전체삭제</button>
@@ -123,6 +124,20 @@ body{background:#0a0a0a;color:#ccc;font:12px monospace;display:flex;height:100vh
     <button onclick="clearCollision()" style="color:#ff4444;border-color:#ff4444">충돌맵 전체삭제</button>
   </div>
   <div class="sec">
+    <h4>🖼️ 임시 에셋</h4>
+    <button onclick="document.getElementById('customAssetIn').click()" style="background:#2a1a00;color:#ffaa44;border-color:#ffaa44">+ 이미지 불러오기</button>
+    <label style="margin-top:4px">에셋 크기: <span id="ca-sz-val">40</span>px</label>
+    <input type="range" id="ca-sz" min="8" max="200" value="40" step="4" oninput="_caSz=+this.value;document.getElementById('ca-sz-val').textContent=this.value">
+    <label style="margin-top:2px">회전: <span id="ca-rot-val">0</span>°</label>
+    <input type="range" id="ca-rot" min="0" max="359" value="0" step="1" oninput="_caRot=+this.value;document.getElementById('ca-rot-val').textContent=this.value">
+    <label><input type="checkbox" id="ca-flip" style="width:12px;height:12px" onchange="_caFlip=this.checked"> 좌우반전</label>
+    <label style="margin-top:2px">불투명도: <span id="ca-alpha-val">100</span>%</label>
+    <input type="range" id="ca-alpha" min="10" max="100" value="100" step="5" oninput="_caAlpha=this.value/100;document.getElementById('ca-alpha-val').textContent=this.value">
+    <div id="ca-list" style="margin-top:4px;max-height:160px;overflow-y:auto"></div>
+    <button onclick="_caAssets=[];_caSelIdx=-1;_buildCAList()" style="color:#ff4444;border-color:#ff4444;margin-top:2px">전체삭제</button>
+    <label style="color:#555;font-size:9px;margin-top:2px">I=에셋모드 전환. 클릭으로 캔버스에 배치</label>
+  </div>
+  <div class="sec">
     <h4>내보내기</h4>
     <button onclick="exportPNG()" style="background:#1a2a00;color:#aaff66;border-color:#aaff66">PNG 내보내기</button>
     <button onclick="exportJSON()" style="background:#1a0030;color:#cc88ff;border-color:#cc88ff">JSON 저장</button>
@@ -173,6 +188,7 @@ body{background:#0a0a0a;color:#ccc;font:12px monospace;display:flex;height:100vh
 <input type="file" id="fileIn" style="display:none" accept=".json">
 <input type="file" id="mapFileIn" style="display:none" accept=".json">
 <input type="file" id="bgImgIn" style="display:none" accept="image/*">
+<input type="file" id="customAssetIn" style="display:none" accept="image/*" multiple>
 <script>
 const C=document.getElementById('c'),X=C.getContext('2d');
 const T_GAME=40; // 게임 타일 크기 (내보내기용)
@@ -678,6 +694,16 @@ function _doRender(){
     X.strokeStyle=isCol?'#ff0000':'#00ff00';X.lineWidth=0.5;
     X.beginPath();X.moveTo(hoverX-20,hoverY);X.lineTo(hoverX+20,hoverY);X.moveTo(hoverX,hoverY-20);X.lineTo(hoverX,hoverY+20);X.stroke();
   }
+  // 에셋 커서 미리보기
+  if(tool==='asset'&&_caSelIdx>=0&&_caAssets[_caSelIdx]&&_caAssets[_caSelIdx].img.complete){
+    const _caImg=_caAssets[_caSelIdx].img;
+    X.save();X.translate(hoverX,hoverY);X.rotate(_caRot*Math.PI/180);
+    if(_caFlip)X.scale(-1,1);
+    X.globalAlpha=0.5*_caAlpha;
+    X.drawImage(_caImg,-_caSz/2,-_caSz/2,_caSz,_caSz);
+    X.restore();X.globalAlpha=1;
+    X.strokeStyle='#ffaa0088';X.lineWidth=1;X.strokeRect(hoverX-_caSz/2,hoverY-_caSz/2,_caSz,_caSz);
+  }
   // 충돌맵 오버레이
   if(showCollision&&colMap){
     X.fillStyle='rgba(255,40,40,0.3)';
@@ -707,6 +733,7 @@ C.addEventListener('mousedown',e=>{
     else if(tool==='erase'){saveUndo();eraseAt(w.x,w.y)}
     else if(tool==='collision'){saveColUndo();colDraw(w.x,w.y,1)}
     else if(tool==='col-erase'){saveColUndo();colDraw(w.x,w.y,0)}
+    else if(tool==='asset'){_stampAsset(w.x,w.y)}
   }
 });
 let _lastMoveRender=0;
@@ -724,6 +751,7 @@ C.addEventListener('mousemove',e=>{
       else if(tool==='erase')eraseAt(w.x,w.y);
       else if(tool==='collision')colDraw(w.x,w.y,1);
       else if(tool==='col-erase')colDraw(w.x,w.y,0);
+      else if(tool==='asset'){_stampAsset(w.x,w.y);return}
       lastMX=e.offsetX;lastMY=e.offsetY;
       return;
     }
@@ -751,6 +779,7 @@ document.addEventListener('keydown',e=>{
     case 'KeyE':setTool('erase');break;
     case 'KeyC':setTool('collision');break;
     case 'KeyX':setTool('col-erase');break;
+    case 'KeyI':setTool('asset');break;
     case 'Space':e.preventDefault();setTool('pan');break;
     case 'BracketLeft':stampSz=Math.max(8,stampSz-8);document.getElementById('stamp-sz').value=stampSz;document.getElementById('sz-val').textContent=(stampSz/8);break;
     case 'BracketRight':stampSz=Math.min(80,stampSz+8);document.getElementById('stamp-sz').value=stampSz;document.getElementById('sz-val').textContent=(stampSz/8);break;
@@ -908,6 +937,66 @@ resize();
 initLayers();camX=canvasW*T/2;camY=canvasH*T/2;
 
 // ══════════════════════════════════════════════
+// ══════════════════════════════════════════════
+// ══ 임시 에셋 시스템 ══
+// ══════════════════════════════════════════════
+let _caAssets=[]; // [{name, img, thumb}]
+let _caSelIdx=-1;
+let _caSz=40, _caRot=0, _caFlip=false, _caAlpha=1;
+
+document.getElementById('customAssetIn').addEventListener('change',e=>{
+  const files=e.target.files;if(!files.length)return;
+  for(const f of files){
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      const img=new Image();
+      img.onload=()=>{
+        _caAssets.push({name:f.name.replace(/\.[^.]+$/,''),img:img});
+        _caSelIdx=_caAssets.length-1;
+        _buildCAList();
+        setTool('asset');
+      };
+      img.src=ev.target.result;
+    };
+    reader.readAsDataURL(f);
+  }
+  e.target.value='';
+});
+
+function _buildCAList(){
+  const el=document.getElementById('ca-list');
+  if(!_caAssets.length){el.innerHTML='<div style="color:#555;font-size:9px">에셋 없음</div>';return}
+  let h='';
+  for(let i=0;i<_caAssets.length;i++){
+    const a=_caAssets[i];
+    const sel=i===_caSelIdx;
+    h+=`<div style="display:flex;align-items:center;gap:4px;padding:2px;cursor:pointer;border:1px solid ${sel?'#ffea00':'#333'};border-radius:3px;margin:1px 0;background:${sel?'#2a2a00':'transparent'}" onclick="_caSelIdx=${i};_buildCAList();setTool('asset')">
+      <img src="${a.img.src}" style="width:28px;height:28px;object-fit:contain;border-radius:2px;background:#000">
+      <span style="flex:1;font-size:9px;color:${sel?'#ffea00':'#aaa'};overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${a.name}</span>
+      <span onclick="event.stopPropagation();_caAssets.splice(${i},1);if(_caSelIdx>=${_caAssets.length})_caSelIdx=_caAssets.length-1;_buildCAList()" style="color:#ff4444;font-size:11px;cursor:pointer;padding:0 2px">✕</span>
+    </div>`;
+  }
+  el.innerHTML=h;
+}
+
+function _stampAsset(wx,wy){
+  if(_caSelIdx<0||!_caAssets[_caSelIdx])return;
+  const a=_caAssets[_caSelIdx];
+  if(!a.img.complete)return;
+  saveUndo();
+  const l=layers[activeLayer];
+  const sz=_caSz;
+  l.ctx.save();
+  l.ctx.translate(wx,wy);
+  l.ctx.rotate(_caRot*Math.PI/180);
+  if(_caFlip)l.ctx.scale(-1,1);
+  l.ctx.globalAlpha=_caAlpha;
+  l.ctx.drawImage(a.img,-sz/2,-sz/2,sz,sz);
+  l.ctx.restore();
+  l.ctx.globalAlpha=1;
+  render();
+}
+
 // ══ 절차적 맵 생성 (Procedural Map Generator) ══
 // ══════════════════════════════════════════════
 
