@@ -126,13 +126,32 @@ body{background:#0a0a0a;color:#ccc;font:12px monospace;display:flex;height:100vh
   <div class="sec">
     <h4>🖼️ 임시 에셋</h4>
     <button onclick="document.getElementById('customAssetIn').click()" style="background:#2a1a00;color:#ffaa44;border-color:#ffaa44">+ 이미지 불러오기</button>
-    <label style="margin-top:4px">에셋 크기: <span id="ca-sz-val">40</span>px</label>
-    <input type="range" id="ca-sz" min="8" max="200" value="40" step="4" oninput="_caSz=+this.value;document.getElementById('ca-sz-val').textContent=this.value">
+    <label style="margin-top:4px">에셋 크기: <span id="ca-sz-val">5</span>타일 (<span id="ca-px-val">40</span>px)</label>
+    <input type="range" id="ca-sz" min="1" max="50" value="5" step="1" oninput="_caSz=+this.value*8;document.getElementById('ca-sz-val').textContent=this.value;document.getElementById('ca-px-val').textContent=this.value*8">
+    <div style="display:flex;gap:2px;margin-top:2px;flex-wrap:wrap">
+      <button onclick="_setCaTile(5)" style="flex:1;min-width:30px;padding:2px;font-size:9px">5t</button>
+      <button onclick="_setCaTile(10)" style="flex:1;min-width:30px;padding:2px;font-size:9px">10t</button>
+      <button onclick="_setCaTile(20)" style="flex:1;min-width:30px;padding:2px;font-size:9px">20t</button>
+      <button onclick="_setCaTile(30)" style="flex:1;min-width:30px;padding:2px;font-size:9px">30t</button>
+      <button onclick="_setCaTile(50)" style="flex:1;min-width:30px;padding:2px;font-size:9px">50t</button>
+    </div>
     <label style="margin-top:2px">회전: <span id="ca-rot-val">0</span>°</label>
     <input type="range" id="ca-rot" min="0" max="359" value="0" step="1" oninput="_caRot=+this.value;document.getElementById('ca-rot-val').textContent=this.value">
     <label><input type="checkbox" id="ca-flip" style="width:12px;height:12px" onchange="_caFlip=this.checked"> 좌우반전</label>
     <label style="margin-top:2px">불투명도: <span id="ca-alpha-val">100</span>%</label>
     <input type="range" id="ca-alpha" min="10" max="100" value="100" step="5" oninput="_caAlpha=this.value/100;document.getElementById('ca-alpha-val').textContent=this.value">
+    <div style="margin-top:6px;padding:4px;border:1px solid #444;border-radius:3px;background:#1a1a1a">
+      <label style="font-size:10px;color:#ffaa44;font-weight:bold">🔲 타일링 (캔버스 전체 채우기)</label>
+      <label style="margin-top:2px">타일 크기: <span id="ca-tile-sz-val">400</span>px</label>
+      <input type="range" id="ca-tile-sz" min="50" max="800" value="400" step="50" oninput="document.getElementById('ca-tile-sz-val').textContent=this.value">
+      <div style="display:flex;gap:2px;margin-top:2px;flex-wrap:wrap">
+        <button onclick="document.getElementById('ca-tile-sz').value=200;document.getElementById('ca-tile-sz-val').textContent='200'" style="flex:1;min-width:30px;padding:2px;font-size:9px">200px</button>
+        <button onclick="document.getElementById('ca-tile-sz').value=400;document.getElementById('ca-tile-sz-val').textContent='400'" style="flex:1;min-width:30px;padding:2px;font-size:9px">400px</button>
+        <button onclick="document.getElementById('ca-tile-sz').value=600;document.getElementById('ca-tile-sz-val').textContent='600'" style="flex:1;min-width:30px;padding:2px;font-size:9px">600px</button>
+      </div>
+      <button onclick="_tileAssetFill()" style="background:#2a1a00;color:#ffcc44;border-color:#ffcc44;font-weight:bold;margin-top:4px">🔲 타일링 실행</button>
+      <label style="color:#555;font-size:8px;margin-top:2px">선택된 에셋을 지정 크기로 캔버스 전체에 반복 배치</label>
+    </div>
     <div id="ca-list" style="margin-top:4px;max-height:160px;overflow-y:auto"></div>
     <button onclick="_caAssets=[];_caSelIdx=-1;_buildCAList()" style="color:#ff4444;border-color:#ff4444;margin-top:2px">전체삭제</button>
     <label style="color:#555;font-size:9px;margin-top:2px">I=에셋모드 전환. 클릭으로 캔버스에 배치</label>
@@ -751,7 +770,7 @@ C.addEventListener('mousemove',e=>{
       else if(tool==='erase')eraseAt(w.x,w.y);
       else if(tool==='collision')colDraw(w.x,w.y,1);
       else if(tool==='col-erase')colDraw(w.x,w.y,0);
-      else if(tool==='asset'){_stampAsset(w.x,w.y);return}
+      // asset은 드래그 연속배치 안 함 (클릭만)
       lastMX=e.offsetX;lastMY=e.offsetY;
       return;
     }
@@ -943,6 +962,12 @@ initLayers();camX=canvasW*T/2;camY=canvasH*T/2;
 let _caAssets=[]; // [{name, img, thumb}]
 let _caSelIdx=-1;
 let _caSz=40, _caRot=0, _caFlip=false, _caAlpha=1;
+function _setCaTile(tiles){
+  _caSz=tiles*T;
+  document.getElementById('ca-sz').value=tiles;
+  document.getElementById('ca-sz-val').textContent=tiles;
+  document.getElementById('ca-px-val').textContent=_caSz;
+}
 
 document.getElementById('customAssetIn').addEventListener('change',e=>{
   const files=e.target.files;if(!files.length)return;
@@ -993,6 +1018,24 @@ function _stampAsset(wx,wy){
   l.ctx.globalAlpha=_caAlpha;
   l.ctx.drawImage(a.img,-sz/2,-sz/2,sz,sz);
   l.ctx.restore();
+  l.ctx.globalAlpha=1;
+  render();
+}
+
+function _tileAssetFill(){
+  if(_caSelIdx<0||!_caAssets[_caSelIdx]){alert('에셋을 먼저 선택하세요');return}
+  const a=_caAssets[_caSelIdx];
+  if(!a.img.complete)return;
+  const sz=+document.getElementById('ca-tile-sz').value;
+  const totalW=canvasW*T, totalH=canvasH*T;
+  saveUndo();
+  const l=layers[activeLayer];
+  l.ctx.globalAlpha=_caAlpha;
+  for(let y=0;y<totalH;y+=sz){
+    for(let x=0;x<totalW;x+=sz){
+      l.ctx.drawImage(a.img,x,y,sz,sz);
+    }
+  }
   l.ctx.globalAlpha=1;
   render();
 }

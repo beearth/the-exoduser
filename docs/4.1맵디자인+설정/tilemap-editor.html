@@ -112,6 +112,26 @@ canvas{display:block;position:absolute;top:0;left:0;z-index:1}
       <label style="color:#888;font-size:9px">크기 배율: <span id="scaleVal">1.0</span>x</label>
       <input type="range" id="objScale" min="0.3" max="3.0" step="0.1" value="1.0" style="width:100%" oninput="document.getElementById('scaleVal').textContent=this.value">
     </div>
+    <div style="margin-top:4px;padding:4px;background:#1a1a1a;border-radius:4px">
+      <label style="color:#888;font-size:9px">타일링 간격(px): </label>
+      <input type="number" id="tileSpacing" value="400" min="50" max="2000" step="50" style="width:60px;background:#222;color:#fff;border:1px solid #444;font-size:10px">
+      <div style="margin-top:3px">
+        <label style="color:#888;font-size:9px">범위: </label>
+        <select id="tileTarget" style="background:#222;color:#fff;border:1px solid #444;font-size:10px">
+          <option value="current">현재 스테이지</option>
+          <option value="ch0">1장 썩은숲 (전체)</option>
+          <option value="ch1">2장 벌레굴 (전체)</option>
+          <option value="ch2">3장 얼음굴 (전체)</option>
+          <option value="ch3">4장 화염지대 (전체)</option>
+          <option value="ch4">5장 지옥군단 (전체)</option>
+          <option value="ch5">6장 사도마굴 (전체)</option>
+          <option value="ch6">7장 지옥성 (전체)</option>
+          <option value="all">전장 (1~7장)</option>
+        </select>
+      </div>
+      <div class="tool-btn" onclick="doTiling()" style="margin-top:3px;color:#44ff88;border-color:#44ff88;font-size:10px">🔲 타일링</div>
+      <div class="tool-btn" onclick="clearTiledObjs()" style="margin-top:2px;color:#ff6644;border-color:#ff6644;font-size:10px">🗑️ 타일링 제거</div>
+    </div>
   </div>
   <div class="section">
     <h4>⌨️ 단축키</h4>
@@ -2620,6 +2640,52 @@ function buildObjPalette(){
   }
 }
 buildObjPalette();
+// ── 타일링: 선택된 에셋을 맵 전체에 그리드 반복 배치 ──
+function doTiling(){
+  if(!selectedObj||selectedObj==='_delete'){alert('에셋을 먼저 선택하세요');return}
+  const m=getCurrentMap();if(!m){alert('맵이 로드되지 않음');return}
+  const spacingPx=parseInt(document.getElementById('tileSpacing').value)||400;
+  const spacingTiles=spacingPx/T; // px→타일 단위
+  console.log('[TILING] start: obj='+selectedObj+' spacing='+spacingPx+'px ('+spacingTiles+'tiles) map='+m.mw+'x'+m.mh);
+  const sc=parseFloat(document.getElementById('objScale').value)||1;
+  const mapW=m.mw, mapH=m.mh; // 타일 단위
+  saveUndo();
+  // 기존 같은 id 타일링 제거
+  m.objs=m.objs.filter(o=>o.id!==selectedObj||!o._tiled);
+  let cnt=0;
+  // 반타일 오프셋으로 중앙 정렬
+  const halfOff=spacingTiles/2;
+  for(let gy=halfOff;gy<mapH;gy+=spacingTiles){
+    for(let gx=halfOff;gx<mapW;gx+=spacingTiles){
+      const tx=Math.round(gx), ty=Math.round(gy);
+      if(tx<0||ty<0||tx>=mapW||ty>=mapH)continue;
+      const o={x:tx,y:ty,id:selectedObj,_tiled:1};
+      if(sc!==1)o.scale=sc;
+      m.objs.push(o);
+      cnt++;
+    }
+  }
+  m.dirty=true;_scheduleMapAutosave();
+  // iframe 동기화
+  if(_iframeReady){
+    _sendToGame({type:'clearObjs'});
+    for(const o of m.objs)_sendToGame({type:'addObj',id:o.id,x:o.x*_GT+_GT/2,y:o.y*_GT+_GT/2,scale:o.scale||1});
+  }
+  console.log(`[TILING] ${selectedObj} × ${cnt}개 (${spacingPx}px 간격, ${Math.ceil(mapW/spacingTiles)}×${Math.ceil(mapH/spacingTiles)} 그리드)`);
+  alert(`${selectedObj} 타일링 완료: ${cnt}개 배치 (${spacingPx}px 간격)`);
+}
+function clearTiledObjs(){
+  const m=getCurrentMap();if(!m)return;
+  saveUndo();
+  const before=m.objs.length;
+  m.objs=m.objs.filter(o=>!o._tiled);
+  m.dirty=true;_scheduleMapAutosave();
+  if(_iframeReady){
+    _sendToGame({type:'clearObjs'});
+    for(const o of m.objs)_sendToGame({type:'addObj',id:o.id,x:o.x*_GT+_GT/2,y:o.y*_GT+_GT/2,scale:o.scale||1});
+  }
+  alert(`타일링 오브젝트 ${before-m.objs.length}개 제거`);
+}
 function buildChapterTabs(){
   const ct=document.getElementById('chapter-tabs');ct.innerHTML='';
   HELLS.forEach((h,i)=>{const b=document.createElement('div');b.className='ch-tab'+(i===currentHell?' active':'');

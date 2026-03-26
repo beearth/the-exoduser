@@ -5780,6 +5780,8 @@ function renderCrescents(X){
 // ── VFX 스프라이트시트 시스템 ──
 const _VFX_SHEETS={};
 let _vfxAnims=[];
+// ── 처형 일섬 VFX 시스템 ──
+let _execVfx=null; // {phase,t,ox,oy,ex,ey,bx,by,ang,dist,afterimages[],slashT,darkT,burstT}
 function registerVFX(id,src,fw,fh,frames,cols){
   const img=new Image();img.src=src;
   img.onload=()=>{_VFX_SHEETS[id]={img,fw,fh,frames,cols:cols||Math.floor(img.width/fw)}};
@@ -10275,10 +10277,10 @@ function buildMapCache(){
     }
     c.clip();
     c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
-    // 텍스처를 원본 크기 그대로 타일링(반복) — 늘리지 않음
+    // 텍스처를 원본 크기 그대로 타일링(반복) — 늘리거나 줄이지 않음
     const _tw=mtx.naturalWidth,_th=mtx.naturalHeight;
     for(let _ty=0;_ty<mh*T;_ty+=_th)for(let _tx=0;_tx<mw*T;_tx+=_tw){
-      c.drawImage(mtx,_tx,_ty,_tw,_th);
+      c.drawImage(mtx,_tx,_ty);
     }
     c.restore();
   }
@@ -10304,35 +10306,35 @@ function buildMapCache(){
     // 테마별 바닥 디테일
     switch(hell){
       case 0: // 썩은 숲 → 낙엽 + 이끼 + 뿌리 + 웅덩이 + 발광이끼
-        // 낙엽 (강화: 크기↑ 불투명도 2x)
-        if(R()<.3){const lx=px+R()*T,ly=py+R()*T;
-          c.fillStyle=`rgba(${60+~~(R()*40)},${40+~~(R()*30)},${10+~~(R()*15)},${.32+R()*.16})`;
+        // 낙엽 (확률2x 불투명도2x)
+        if(R()<.6){const lx=px+R()*T,ly=py+R()*T;
+          c.fillStyle=`rgba(${60+~~(R()*40)},${40+~~(R()*30)},${10+~~(R()*15)},${.64+R()*.32})`;
           c.beginPath();c.ellipse(lx,ly,3+R()*4,2+R()*2,R()*Math.PI,0,Math.PI*2);c.fill()}
-        // 이끼 (강화: 불투명도 2x)
-        if(R()<.18){c.fillStyle=`rgba(40,${80+~~(R()*40)},20,${.30+R()*.2})`;
+        // 이끼 (확률2x 불투명도2x)
+        if(R()<.36){c.fillStyle=`rgba(40,${80+~~(R()*40)},20,${.60+R()*.4})`;
           c.beginPath();c.ellipse(px+R()*T,py+R()*T,4+R()*7,2+R()*4,R()*Math.PI,0,Math.PI*2);c.fill()}
-        // 뿌리 (강화: 굵기↑ 불투명도 2x 세그먼트↑)
-        if(R()<.1){c.strokeStyle=`rgba(60,40,20,${.36+R()*.2})`;c.lineWidth=1.5+R()*1;
+        // 뿌리 (확률2x 불투명도2x)
+        if(R()<.2){c.strokeStyle=`rgba(60,40,20,${.72+R()*.4})`;c.lineWidth=1.5+R()*1;
           c.beginPath();let rx=px+R()*T,ry=py+R()*T;c.moveTo(rx,ry);
           for(let s=0;s<3+~~(R()*3);s++){rx+=R()*14-7;ry+=R()*10-5;c.lineTo(rx,ry)}c.stroke()}
-        // 해골
-        if(R()<.04){_drawSkull(c,px+4+R()*(T-10),py+4+R()*(T-10),2.5+R()*2,R)}
-        // 썩은 물웅덩이 (불투명도 2x)
+        // 해골 (확률2x)
+        if(R()<.08){_drawSkull(c,px+4+R()*(T-10),py+4+R()*(T-10),2.5+R()*2,R)}
+        // 썩은 물웅덩이 (확률2x 불투명도2x)
         {const R2=_tseed(tx,ty+77);
-        if(R2()<.06){const wx=px+R2()*T,wy=py+R2()*T,wr=4+R2()*6,wry=wr*.5;
+        if(R2()<.12){const wx=px+R2()*T,wy=py+R2()*T,wr=4+R2()*6,wry=wr*.5;
           const wg=c.createRadialGradient(wx,wy,0,wx,wy,wr);
-          wg.addColorStop(0,'rgba(20,60,30,.70)');wg.addColorStop(.6,'rgba(15,45,20,.4)');wg.addColorStop(1,'rgba(10,30,15,0)');
+          wg.addColorStop(0,'rgba(20,60,30,1)');wg.addColorStop(.6,'rgba(15,45,20,.8)');wg.addColorStop(1,'rgba(10,30,15,0)');
           c.fillStyle=wg;c.beginPath();c.ellipse(wx,wy,wr,wry,0,0,Math.PI*2);c.fill();
-          c.strokeStyle='rgba(40,120,50,.24)';c.lineWidth=.8;c.stroke()}}
-        // 이끼 발광 패치 (불투명도 2x)
+          c.strokeStyle='rgba(40,120,50,.48)';c.lineWidth=.8;c.stroke()}}
+        // 이끼 발광 패치 (확률2x 불투명도2x)
         {const R3=_tseed(tx+13,ty+31);
-        if(R3()<.08){const mx=px+R3()*T,my=py+R3()*T,mr=5+R3()*8;
+        if(R3()<.16){const mx=px+R3()*T,my=py+R3()*T,mr=5+R3()*8;
           const mg=c.createRadialGradient(mx,my,0,mx,my,mr);
-          mg.addColorStop(0,'rgba(50,140,30,.44)');mg.addColorStop(.5,'rgba(35,100,20,.24)');mg.addColorStop(1,'rgba(20,60,10,0)');
+          mg.addColorStop(0,'rgba(50,140,30,.88)');mg.addColorStop(.5,'rgba(35,100,20,.48)');mg.addColorStop(1,'rgba(20,60,10,0)');
           c.fillStyle=mg;c.beginPath();c.arc(mx,my,mr,0,Math.PI*2);c.fill()}}
-        // 타일 경계 음영 (불투명도 2x)
+        // 타일 경계 음영 (불투명도2x)
         {const R4=_tseed(tx+7,ty+53);
-        if(R4()<.4){c.strokeStyle='rgba(0,0,0,.16)';c.lineWidth=1;
+        if(R4()<.4){c.strokeStyle='rgba(0,0,0,.32)';c.lineWidth=1;
           c.beginPath();c.moveTo(px,py+T);c.lineTo(px+T,py+T);c.stroke()}}
         break;
       case 1: // 벌레굴 — 점액, 벌레알, 썩은살, 웅덩이 (1장 수준 강도)
@@ -12389,55 +12391,55 @@ const FIXED_MAPS=[];
 // ══ EXODUSER FIXED_MAPS + GRID_MAPS 내보내기 ══
 
 // ── 세로맵 FIXED_MAPS ──
-// 1장 1층 — 썩은숲 (텍스처: 1024x1024 → 102x102 타일, 균일 4x 스케일)
+// 1장 1층 — 썩은숲 (400px 타일 × 20x20 = 8000x8000px, 200x200 타일)
 FIXED_MAPS[0]={
-  "mw": 102,
-  "mh": 102,
+  "mw": 200,
+  "mh": 200,
   "rooms": [
-    {"id":"s","type":"start","cx":51,"cy":93,"shape":"ellipse","rx":12,"ry":5},
-    {"id":"r1","type":"combat","cx":51,"cy":76,"shape":"ellipse","rx":14,"ry":7,
-      "spawns":[{"dx":-5,"dy":0,"grade":0},{"dx":5,"dy":0,"grade":0}]},
-    {"id":"f","type":"forge","cx":51,"cy":58,"shape":"rect","rx":6,"ry":4},
-    {"id":"r2","type":"combat","cx":45,"cy":42,"shape":"ellipse","rx":13,"ry":6,
-      "spawns":[{"dx":-3,"dy":0,"grade":1},{"dx":3,"dy":0,"grade":1}]},
-    {"id":"r3","type":"combat","cx":57,"cy":26,"shape":"ellipse","rx":12,"ry":6,
-      "spawns":[{"dx":0,"dy":-2,"grade":2},{"dx":0,"dy":2,"grade":2},{"dx":-4,"dy":0,"grade":2}]},
-    {"id":"b","type":"boss","cx":51,"cy":10,"shape":"ellipse","rx":16,"ry":8,
+    {"id":"s","type":"start","cx":100,"cy":185,"shape":"ellipse","rx":14,"ry":6},
+    {"id":"r1","type":"combat","cx":100,"cy":155,"shape":"ellipse","rx":18,"ry":10,
+      "spawns":[{"dx":-6,"dy":0,"grade":0},{"dx":6,"dy":0,"grade":0}]},
+    {"id":"f","type":"forge","cx":100,"cy":120,"shape":"rect","rx":8,"ry":5},
+    {"id":"r2","type":"combat","cx":80,"cy":85,"shape":"ellipse","rx":16,"ry":9,
+      "spawns":[{"dx":-4,"dy":0,"grade":1},{"dx":4,"dy":0,"grade":1}]},
+    {"id":"r3","type":"combat","cx":120,"cy":50,"shape":"ellipse","rx":16,"ry":9,
+      "spawns":[{"dx":0,"dy":-3,"grade":2},{"dx":0,"dy":3,"grade":2},{"dx":-5,"dy":0,"grade":2}]},
+    {"id":"b","type":"boss","cx":100,"cy":18,"shape":"ellipse","rx":20,"ry":12,
       "pillars":[
-        {"dx":-8,"dy":-4,"w":3,"h":3},{"dx":8,"dy":-4,"w":3,"h":3},
-        {"dx":-8,"dy":4,"w":3,"h":3},{"dx":8,"dy":4,"w":3,"h":3}
+        {"dx":-10,"dy":-5,"w":3,"h":3},{"dx":10,"dy":-5,"w":3,"h":3},
+        {"dx":-10,"dy":5,"w":3,"h":3},{"dx":10,"dy":5,"w":3,"h":3}
       ]}
   ],
   "corridors": [
-    {"from":"s","to":"r1","width":8,"style":"cave"},
-    {"from":"r1","to":"f","width":7,"style":"cave"},
-    {"from":"f","to":"r2","width":8,"style":"cave"},
-    {"from":"r2","to":"r3","width":8,"style":"cave"},
-    {"from":"r3","to":"b","width":8,"style":"cave"}
+    {"from":"s","to":"r1","width":10,"style":"cave"},
+    {"from":"r1","to":"f","width":9,"style":"cave"},
+    {"from":"f","to":"r2","width":10,"style":"cave"},
+    {"from":"r2","to":"r3","width":10,"style":"cave"},
+    {"from":"r3","to":"b","width":10,"style":"cave"}
   ],
   "features": [
-    {"type":"alcove","x":19,"y":70,"r":4},
-    {"type":"alcove","x":83,"y":55,"r":3},
-    {"type":"alcove","x":25,"y":36,"r":3}
+    {"type":"alcove","x":35,"y":140,"r":5},
+    {"type":"alcove","x":165,"y":110,"r":4},
+    {"type":"alcove","x":50,"y":65,"r":4}
   ],
   "corridorSpawns": [
-    {"x":51,"y":68,"grade":0},
-    {"x":51,"y":50,"grade":0}
+    {"x":100,"y":138,"grade":0},
+    {"x":100,"y":103,"grade":0}
   ],
-  "tileRLE": [1,10404],
+  "tileRLE": [1,40000],
   "spawnHoles": [
-    {"x":38,"y":85,"type":"M"},
-    {"x":70,"y":80,"type":"S"},
-    {"x":32,"y":68,"type":"M"},
-    {"x":70,"y":63,"type":"S"},
-    {"x":45,"y":50,"type":"M"},
-    {"x":63,"y":38,"type":"M"},
-    {"x":38,"y":30,"type":"S"},
-    {"x":70,"y":22,"type":"M"},
-    {"x":51,"y":14,"type":"L"}
+    {"x":70,"y":170,"type":"M"},
+    {"x":140,"y":160,"type":"S"},
+    {"x":55,"y":140,"type":"M"},
+    {"x":140,"y":130,"type":"S"},
+    {"x":80,"y":105,"type":"M"},
+    {"x":130,"y":80,"type":"M"},
+    {"x":60,"y":60,"type":"S"},
+    {"x":140,"y":45,"type":"M"},
+    {"x":100,"y":25,"type":"L"}
   ],
   "objs": [
-    {"x":51,"y":96,"id":"player_start"}
+    {"x":100,"y":190,"id":"player_start"}
   ]
 };
 
@@ -117557,38 +117559,36 @@ function update(){
             const _ty=_exBoss.y+Math.sin(_exAng)*(_es*15);
             if(canMv(_tx,_ty,P.r)){_exEndX=_tx;_exEndY=_ty}else break;
           }
-          // 출발 잔상
-          addParts(_exOx,_exOy,'#ff4400',15);
-          // 궤적 잔상 (출발→보스→벽)
           const _exDist=dst(_exOx,_exOy,_exEndX,_exEndY);
-          for(let _et=0;_et<~~(_exDist/18);_et++){
-            const _tp=_et/(~~(_exDist/18));
-            poolPart(_exOx+(_exEndX-_exOx)*_tp+(Math.random()-.5)*5,
-              _exOy+(_exEndY-_exOy)*_tp+(Math.random()-.5)*5,
-              (Math.random()-.5)*2,(Math.random()-.5)*2,
-              _et%3===0?'#ff0000':_et%3===1?'#ffcc00':'#ffffff',3+Math.random()*3,10+Math.random()*6);
+          // ── 잔상 생성 (출발→보스→벽, 10개) ──
+          const _afImgs=[];
+          for(let _ai=0;_ai<10;_ai++){
+            const _tp=_ai/9;
+            _afImgs.push({x:_exOx+(_exEndX-_exOx)*_tp,y:_exOy+(_exEndY-_exOy)*_tp,a:1-_tp*.5});
           }
-          // 벽 앞까지 순간이동
-          P.x=_exEndX;P.y=_exEndY;P.facing=_exAng+Math.PI; // 보스 쪽을 바라봄
-          addParts(P.x,P.y,'#ff0000',20);
-          {const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.8,_r(1,.1))}
-          // 작살 꽂기 → 즉시 데미지 (그로기 시간 유지)
-          const _exDmg=~~(_exBoss.mhp*.3);
-          _exBoss.hp=Math.max(1,_exBoss.hp-_exDmg);
+          // 순간이동 + 상태 세팅
+          P.x=_exEndX;P.y=_exEndY;P.facing=_exAng+Math.PI;
           P.s='idle';P.st2=0;
-          P.iframes=Math.max(P.iframes,30); // 짧은 무적 (바로 행동 가능)
-          // 연출: 짧은 히트스톱 + 플래시 (빠르게 끝남)
-          G.hitStop=~~(10*OPT.hitStop/100);G.slowMo=20;G.shake=20*OPT.shake/100;
-          G._flashT=4;G._flashCol='#ff0000';
-          SFX.slash();playSample('sword_parry',1,_r(.8,.1));
+          P.iframes=Math.max(P.iframes,90); // 연출 중 무적
+          // ── 처형 일섬 VFX 시작 (4단계: 암전→돌진→참격선→폭발) ──
+          const _exDmg=~~(_exBoss.mhp*.3);
+          _execVfx={
+            phase:0, t:0,                          // 0:암전, 1:돌진잔상, 2:참격선+정지, 3:폭발
+            ox:_exOx, oy:_exOy,                     // 출발 좌표
+            ex:_exEndX, ey:_exEndY,                 // 도착 좌표
+            bx:_exBoss.x, by:_exBoss.y,             // 보스 좌표
+            ang:_exAng, dist:_exDist,
+            afterimages:_afImgs,
+            boss:_exBoss, dmg:_exDmg,
+            dmgApplied:false,
+            slashAng:_exAng+Math.PI*0.15*(Math.random()>.5?1:-1), // 참격 각도 (살짝 틀어짐)
+            hpCost:_exHpCost, mpCost:_exMpCost, stCost:_exStCost
+          };
+          // 즉시 암전 + 히트스톱
+          G.hitStop=35;G.slowMo=0;
+          {const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.8,_r(1,.1))}
           playSample(['voice_storm_attack','voice_attack'][~~(Math.random()*2)],1,1);
-          addTxt(_exBoss.x,_exBoss.y-60,'⚔ 처형! '+_exDmg,'#ff0000',120);
           addTxt(P.x,P.y-30,'-HP'+_exHpCost+' -MP'+_exMpCost+' -ST'+_exStCost,'#ff8844',40);
-          // 보스 위치에 임팩트
-          for(let k=0;k<30;k++){const a=Math.PI*2*k/30;const sv=6+Math.random()*10;
-            poolPart(_exBoss.x,_exBoss.y,Math.cos(a)*sv,Math.sin(a)*sv,k%4===0?'#ff0000':k%4===1?'#ffcc00':k%4===2?'#ff4400':'#ffffff',5+Math.random()*5,18+Math.random()*12)}
-          bigImpact(_exBoss.x,_exBoss.y,_exBoss.el||0,0);
-          // 그로기 시간 유지 (남은 시간 그대로 → 처형 후 추가 공격 가능)
         }
       }
     }
@@ -118777,6 +118777,42 @@ function update(){
   if(_cresCd>0)_cresCd-=_dtSp;
   if(_cresComboT>0){_cresComboT-=_dtSp;if(_cresComboT<=0)_cresStep=0;}
   if(P._execCd>0)P._execCd-=_dtSp; // 처형 쿨다운
+  // ── 처형 일섬 VFX 틱 ──
+  if(_execVfx){
+    const _ev=_execVfx;
+    _ev.t+=_dtSp;
+    if(_ev.phase===0){
+      // Phase 0: 암전 (12프레임) — 화면 어두워짐
+      if(_ev.t>=12){_ev.phase=1;_ev.t=0;}
+    }else if(_ev.phase===1){
+      // Phase 1: 돌진 잔상 (8프레임) — 잔상 순차 표시
+      if(_ev.t>=8){_ev.phase=2;_ev.t=0;SFX.slash();playSample('sword_parry',1,_r(.8,.1));}
+    }else if(_ev.phase===2){
+      // Phase 2: 참격선 + 시간정지 (20프레임) — 흰 슬래시 라인
+      if(!_ev.dmgApplied){
+        _ev.dmgApplied=true;
+        if(_ev.boss&&_ev.boss.alive){
+          _ev.boss.hp=Math.max(1,_ev.boss.hp-_ev.dmg);
+          addTxt(_ev.bx,_ev.by-60,'⚔ 처형! '+_ev.dmg,'#ff0000',120);
+        }
+        G.hitStop=20;
+      }
+      if(_ev.t>=20){_ev.phase=3;_ev.t=0;}
+    }else if(_ev.phase===3){
+      // Phase 3: 지연 폭발 (25프레임) — 보스 위치 폭발 + 화면 복귀
+      if(_ev.t<=2){
+        // 첫 프레임: 폭발 파티클 + 임팩트
+        if(_ev.t<=1){
+          for(let k=0;k<40;k++){const a=Math.PI*2*k/40;const sv=8+Math.random()*14;
+            poolPart(_ev.bx,_ev.by,Math.cos(a)*sv,Math.sin(a)*sv,k%5===0?'#ff0000':k%5===1?'#ffcc00':k%5===2?'#ff4400':k%5===3?'#ffffff':'#ff8800',5+Math.random()*6,20+Math.random()*15);}
+          bigImpact(_ev.bx,_ev.by,_ev.boss?_ev.boss.el:0,0);
+          shake(30);G._flashT=8;G._flashCol='#ffffff';G._chromaT=8;
+          G.slowMo=25;
+        }
+      }
+      if(_ev.t>=25){_execVfx=null;} // 연출 종료
+    }
+  }
   // 부활 버스트 VFX 업데이트
   for(let _rbi=_reviveBursts.length-1;_rbi>=0;_rbi--){
     const rb=_reviveBursts[_rbi];rb.t+=sp;
@@ -118982,7 +119018,8 @@ function update(){
     const _pCollR=P.r+(p.sz||1)*3; // 탄막 충돌 1.5배
     const _sbPW=P.s==='sBlock'&&P._sbParryT>0;
     const _sbPWDet=_sbPW&&P.skills.detonate>=1;
-    const _normalR=P.s==='sBash'?_pCollR*2+8:_sbPWDet?_pCollR*2+8:_sbPW?_pCollR+8:_pCollR+4;
+    const _anyPW=_sbPW||(P._sbParryT>0&&P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent');
+    const _normalR=P.s==='sBash'?_pCollR*3+12:_sbPWDet?_pCollR*3+12:_anyPW?_pCollR*3+8:_pCollR+4;
     // redBean 전용: 방패스킬 공격범위와 동일한 넓은 판정
     const _sdLvD=P.skills.maliceSwipe||0;
     const _isAtkState=P.s==='wSwing'||P.s==='wWindup'||P.s==='wRecover'||P.s==='whirlwind'||P.s==='charge'||P.s==='charging';
@@ -119094,7 +119131,7 @@ function update(){
     }
     // ══ 일반탄: 원래 좁은 범위로 판정 (회전기폭: 빨콩도 넓은 흡수 범위) ══
     const _wwAbsR=_wwDetAbs?90:_normalR;
-    if(!p.blackBean&&!p.noParry&&!p.bwBean&&!p.gbBean&&!p.poisonZone&&!_pHit&&_pDist<_wwAbsR&&P.iframes<=0&&!P._ioActive){
+    if(!p.blackBean&&!p.noParry&&!p.poisonZone&&!_pHit&&_pDist<_wwAbsR&&P.iframes<=0&&!P._ioActive){
       if(isPWin()){
         const ra=Math.atan2(p.vy,p.vx);
         for(let k=0;k<12;k++){const sa=ra+Math.PI+(Math.random()-.5)*2.2;const sv=3+Math.random()*5;
@@ -132708,6 +132745,81 @@ function draw(){
     }
   }else{G._cracks=null;G._lastBeat=0}
   const _pB0=performance.now(); // postA=HUD+lowHP+crack
+  // ═══ 처형 일섬 VFX 렌더 ═══
+  if(_execVfx){
+    const _ev=_execVfx;
+    X.save();
+    if(_ev.phase===0){
+      // Phase 0: 암전 — 화면 점점 어두워짐
+      const _darkProg=Math.min(1,_ev.t/10);
+      X.setTransform(1,0,0,1,0,0);
+      X.globalAlpha=_darkProg*0.85;
+      X.fillStyle='#000000';
+      X.fillRect(0,0,C.width,C.height);
+    }else if(_ev.phase===1){
+      // Phase 1: 암전 유지 + 돌진 잔상 순차 표시
+      X.setTransform(1,0,0,1,0,0);
+      X.globalAlpha=0.85;X.fillStyle='#000000';X.fillRect(0,0,C.width,C.height);
+      // 잔상: 순차적으로 나타남
+      const _afShow=Math.min(_ev.afterimages.length,~~(_ev.t/_ev.afterimages.length*10)+1);
+      for(let _ai=0;_ai<_afShow;_ai++){
+        const af=_ev.afterimages[_ai];
+        const _sx=af.x-G.cam.x+C.width/2, _sy=af.y-G.cam.y+C.height/2;
+        X.globalAlpha=af.a*(0.3+_ai/_ev.afterimages.length*0.5);
+        // 플레이어 실루엣 (간단한 도형)
+        X.fillStyle='#ff4400';
+        X.beginPath();X.arc(_sx,_sy,P.r*1.2,0,Math.PI*2);X.fill();
+        // 칼 궤적
+        X.strokeStyle='#ffffff';X.lineWidth=2;X.globalAlpha*=0.6;
+        X.beginPath();X.moveTo(_sx+Math.cos(_ev.ang-0.3)*P.r*2,_sy+Math.sin(_ev.ang-0.3)*P.r*2);
+        X.lineTo(_sx+Math.cos(_ev.ang+0.3)*P.r*2,_sy+Math.sin(_ev.ang+0.3)*P.r*2);X.stroke();
+      }
+    }else if(_ev.phase===2){
+      // Phase 2: 참격선 — 화면 가로지르는 흰 슬래시
+      X.setTransform(1,0,0,1,0,0);
+      // 어둡게 유지
+      const _fadeProg=Math.min(1,_ev.t/15);
+      X.globalAlpha=0.85*(1-_fadeProg*0.3);X.fillStyle='#000000';X.fillRect(0,0,C.width,C.height);
+      // 슬래시 라인 (보스 위치 중심, 화면 전체 관통)
+      const _bsx=_ev.bx-G.cam.x+C.width/2,_bsy=_ev.by-G.cam.y+C.height/2;
+      const _slProg=Math.min(1,_ev.t/6); // 6프레임에 걸쳐 확장
+      const _slLen=Math.max(C.width,C.height)*_slProg;
+      const _slAng=_ev.slashAng;
+      const _slFade=_ev.t>12?Math.max(0,1-(_ev.t-12)/8):1;
+      // 글로우 (넓은 빔)
+      X.globalAlpha=_slFade*0.4;X.strokeStyle='#ff4400';X.lineWidth=20*_slProg;X.lineCap='round';
+      X.beginPath();X.moveTo(_bsx-Math.cos(_slAng)*_slLen,_bsy-Math.sin(_slAng)*_slLen);
+      X.lineTo(_bsx+Math.cos(_slAng)*_slLen,_bsy+Math.sin(_slAng)*_slLen);X.stroke();
+      // 코어 (밝은 흰 선)
+      X.globalAlpha=_slFade*0.9;X.strokeStyle='#ffffff';X.lineWidth=4*_slProg;
+      X.beginPath();X.moveTo(_bsx-Math.cos(_slAng)*_slLen,_bsy-Math.sin(_slAng)*_slLen);
+      X.lineTo(_bsx+Math.cos(_slAng)*_slLen,_bsy+Math.sin(_slAng)*_slLen);X.stroke();
+      // 교차 참격 (X자)
+      const _slAng2=_slAng+Math.PI*0.5;
+      const _slProg2=Math.min(1,Math.max(0,(_ev.t-3)/6));
+      if(_slProg2>0){
+        const _slLen2=Math.max(C.width,C.height)*0.6*_slProg2;
+        X.globalAlpha=_slFade*0.3;X.strokeStyle='#ffcc00';X.lineWidth=12*_slProg2;
+        X.beginPath();X.moveTo(_bsx-Math.cos(_slAng2)*_slLen2,_bsy-Math.sin(_slAng2)*_slLen2);
+        X.lineTo(_bsx+Math.cos(_slAng2)*_slLen2,_bsy+Math.sin(_slAng2)*_slLen2);X.stroke();
+        X.globalAlpha=_slFade*0.7;X.strokeStyle='#ffffff';X.lineWidth=2*_slProg2;
+        X.beginPath();X.moveTo(_bsx-Math.cos(_slAng2)*_slLen2,_bsy-Math.sin(_slAng2)*_slLen2);
+        X.lineTo(_bsx+Math.cos(_slAng2)*_slLen2,_bsy+Math.sin(_slAng2)*_slLen2);X.stroke();
+      }
+      // 보스 위치 슬래시 마크 (십자)
+      X.globalAlpha=_slFade*0.8;X.strokeStyle='#ff0000';X.lineWidth=3;
+      for(let _si=0;_si<4;_si++){const _sa=_slAng+_si*Math.PI/4;
+        X.beginPath();X.moveTo(_bsx,_bsy);X.lineTo(_bsx+Math.cos(_sa)*60*_slProg,_bsy+Math.sin(_sa)*60*_slProg);X.stroke();}
+    }else if(_ev.phase===3){
+      // Phase 3: 폭발 — 암전 빠르게 해제 + 방사 파티클은 poolPart에서 처리됨
+      const _burstFade=Math.max(0,1-_ev.t/15);
+      if(_burstFade>0){
+        X.setTransform(1,0,0,1,0,0);
+        X.globalAlpha=_burstFade*0.5;X.fillStyle='#000000';X.fillRect(0,0,C.width,C.height);
+      }
+    }
+    X.restore();
+  }
   // ═══ 화면 플래시 (피격/보스 패턴) ═══
   if(G._flashT>0){X.save();X.setTransform(1,0,0,1,0,0);X.globalAlpha=Math.min(.55,G._flashT*.18);X.fillStyle=G._flashCol||'#ffffff';X.fillRect(0,0,C.width,C.height);X.restore();G._flashT-=_dtSp}
   // ═══ 색수차 (강타 피격) — 2프레임에 1번만 ═══
