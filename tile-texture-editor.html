@@ -143,12 +143,30 @@ body{background:#0a0a0a;color:#ccc;font:12px monospace;display:flex;height:100vh
     <label style="color:#555;font-size:9px;margin-top:2px">이미지 불러온 뒤 모드/스케일 변경하면 자동 재적용</label>
   </div>
   <div class="sec">
+    <h4>🎲 절차적 생성</h4>
+    <label>노이즈 스케일: <span id="ns-val">8</span></label>
+    <input type="range" id="noise-scale" min="2" max="30" value="8" step="1" oninput="document.getElementById('ns-val').textContent=this.value">
+    <label>지형 경계: <span id="nt-val">0.45</span></label>
+    <input type="range" id="noise-thresh" min="0.1" max="0.9" value="0.45" step="0.05" oninput="document.getElementById('nt-val').textContent=this.value">
+    <label>오브젝트 밀도: <span id="od-val">12</span>%</label>
+    <input type="range" id="obj-density" min="0" max="40" value="12" step="1" oninput="document.getElementById('od-val').textContent=this.value">
+    <label style="margin-top:4px">기본 지형:</label>
+    <select id="pg-base"></select>
+    <label>보조 지형:</label>
+    <select id="pg-alt"></select>
+    <label>오브젝트:</label>
+    <div id="pg-obj-list" style="max-height:80px;overflow-y:auto;font-size:9px;margin:2px 0"></div>
+    <button onclick="procGen()" style="background:#2a1a00;color:#ffcc44;border-color:#ffcc44;font-weight:bold;margin-top:4px">🎲 맵 생성</button>
+    <button onclick="procGenObjs()" style="background:#1a002a;color:#cc88ff;border-color:#cc88ff">🦴 오브젝트만 재생성</button>
+    <label style="color:#555;font-size:9px;margin-top:2px">노이즈로 지형 분리 + 랜덤 회전/밝기 + 오브젝트 오버레이</label>
+  </div>
+  <div class="sec">
     <h4>단축키</h4>
     <div style="color:#555;font-size:9px;line-height:1.8">
       S=스탬프 E=지우개 Space=이동<br>
+      C=충돌 X=충돌지우기<br>
       Ctrl+Z=되돌리기 []=크기<br>
-      1~9=팔레트 선택<br>
-      마우스휠=줌
+      1~9=팔레트 선택 마우스휠=줌
     </div>
   </div>
 </div>
@@ -888,5 +906,136 @@ window.addEventListener('resize',resize);
 resize();
 // STAGES는 map_tiles.json fetch 완료 후 초기화됨 (위 fetch 참조)
 initLayers();camX=canvasW*T/2;camY=canvasH*T/2;
+
+// ══════════════════════════════════════════════
+// ══ 절차적 맵 생성 (Procedural Map Generator) ══
+// ══════════════════════════════════════════════
+
+// ── Value Noise ──
+const _PN=256;const _perm=new Uint8Array(_PN*2);
+function _seedNoise(){for(let i=0;i<_PN;i++)_perm[i]=i;for(let i=_PN-1;i>0;i--){const j=Math.random()*i|0;const t=_perm[i];_perm[i]=_perm[j];_perm[j]=t}for(let i=0;i<_PN;i++)_perm[i+_PN]=_perm[i]}
+function _hash(x,y){return _perm[(_perm[x&255]+y)&255]/255}
+function _lerp(a,b,t){return a+(b-a)*t}
+function _smooth(t){return t*t*(3-2*t)}
+function getNoise(x,y){
+  const xi=Math.floor(x),yi=Math.floor(y);
+  const xf=_smooth(x-xi),yf=_smooth(y-yi);
+  const a=_hash(xi,yi),b=_hash(xi+1,yi),c=_hash(xi,yi+1),d=_hash(xi+1,yi+1);
+  return _lerp(_lerp(a,b,xf),_lerp(c,d,xf),yf);
+}
+function _fbm(x,y,oct){let v=0,a=1,f=1,t=0;for(let i=0;i<oct;i++){v+=getNoise(x*f,y*f)*a;t+=a;a*=.5;f*=2}return v/t}
+
+// ── UI 빌드: 팔레트 셀렉트 ──
+function _buildProcGenUI(){
+  const base=document.getElementById('pg-base');
+  const alt=document.getElementById('pg-alt');
+  const cats=[...new Set(TILES.map(t=>t.cat))];
+  let html='';
+  // 개별 타일 + 카테고리 그룹
+  for(let i=0;i<TILES.length;i++)html+=`<option value="${i}">${TILES[i].name}</option>`;
+  base.innerHTML=html;alt.innerHTML=html;
+  if(TILES.length>1)alt.value='1'; // 기본: 두번째 타일
+  // 오브젝트 체크리스트
+  const objEl=document.getElementById('pg-obj-list');
+  let oh='';
+  for(let i=0;i<TILES.length;i++){
+    const t=TILES[i];
+    if(t.cat&&(t.cat.includes('데칼')||t.cat.includes('글로우')||t.cat.includes('고어')||t.cat.includes('버섯')||t.cat.includes('벌레')||t.cat.includes('기타')||t.cat.includes('웅덩이'))){
+      oh+=`<label style="display:block"><input type="checkbox" checked value="${i}" class="pg-obj-cb" style="width:12px;height:12px"> ${t.name}</label>`;
+    }
+  }
+  if(!oh)for(let i=0;i<TILES.length;i++){
+    oh+=`<label style="display:block"><input type="checkbox" value="${i}" class="pg-obj-cb" style="width:12px;height:12px"> ${TILES[i].name}</label>`;
+  }
+  objEl.innerHTML=oh;
+}
+setTimeout(_buildProcGenUI,500); // 타일 로드 후
+
+// ── 절차적 생성: 베이스 지형 ──
+function procGen(){
+  _seedNoise();
+  const scale=+document.getElementById('noise-scale').value||8;
+  const thresh=+document.getElementById('noise-thresh').value||0.45;
+  const baseIdx=+document.getElementById('pg-base').value||0;
+  const altIdx=+document.getElementById('pg-alt').value||1;
+  const baseImg=tileImgs[baseIdx], altImg=tileImgs[altIdx];
+  if(!baseImg||!baseImg.complete||!altImg||!altImg.complete){alert('타일 이미지 로드 중');return}
+
+  // 배경 레이어에 그리기
+  if(!layers.length)initLayers();
+  const l=layers[0];
+  l.ctx.clearRect(0,0,l.cvs.width,l.cvs.height);
+
+  const tw=canvasW*T, th=canvasH*T;
+  const step=stampSz||40;
+
+  for(let y=0;y<th;y+=step){
+    for(let x=0;x<tw;x+=step){
+      const nx=x/tw*scale, ny=y/th*scale;
+      const n=_fbm(nx,ny,4);
+      const img=n<thresh?baseImg:altImg;
+
+      // 랜덤 변형
+      const rot=[0,90,180,270][Math.random()*4|0];
+      const flip=Math.random()<0.5;
+      const bright=0.9+Math.random()*0.2; // 0.9~1.1
+
+      l.ctx.save();
+      l.ctx.translate(x+step/2,y+step/2);
+      l.ctx.rotate(rot*Math.PI/180);
+      if(flip)l.ctx.scale(-1,1);
+      l.ctx.globalAlpha=bright;
+      l.ctx.drawImage(img,-step/2-0.5,-step/2-0.5,step+1,step+1);
+      l.ctx.restore();
+    }
+  }
+  l.ctx.globalAlpha=1;
+
+  // 오브젝트 레이어 자동 생성
+  procGenObjs();
+  render();
+}
+
+// ── 절차적 생성: 오브젝트 오버레이 ──
+function procGenObjs(){
+  // 오브젝트 레이어 확보 (2번째 레이어)
+  while(layers.length<2)addLayer();
+  const ol=layers[1];
+  ol.name='오브젝트';
+  ol.ctx.clearRect(0,0,ol.cvs.width,ol.cvs.height);
+
+  const density=(+document.getElementById('obj-density').value||12)/100;
+  const cbs=document.querySelectorAll('.pg-obj-cb:checked');
+  const objIdxs=[];cbs.forEach(cb=>objIdxs.push(+cb.value));
+  if(!objIdxs.length){buildLayerList();render();return}
+
+  const tw=canvasW*T, th=canvasH*T;
+  const step=stampSz||40;
+
+  for(let y=0;y<th;y+=step){
+    for(let x=0;x<tw;x+=step){
+      if(Math.random()>density)continue;
+      const idx=objIdxs[Math.random()*objIdxs.length|0];
+      const img=tileImgs[idx];
+      if(!img||!img.complete)continue;
+
+      // 타일 경계 약간 넘기 (유기적 배치)
+      const ox=x+(Math.random()-.5)*step*0.4;
+      const oy=y+(Math.random()-.5)*step*0.4;
+      const rot=Math.random()*360;
+      const sz=step*(0.6+Math.random()*0.6); // 60~120% 크기
+      const bright=0.8+Math.random()*0.3;
+
+      ol.ctx.save();
+      ol.ctx.translate(ox+step/2,oy+step/2);
+      ol.ctx.rotate(rot*Math.PI/180);
+      ol.ctx.globalAlpha=bright;
+      ol.ctx.drawImage(img,-sz/2,-sz/2,sz,sz);
+      ol.ctx.restore();
+    }
+  }
+  ol.ctx.globalAlpha=1;
+  buildLayerList();render();
+}
 </script>
 </body></html>

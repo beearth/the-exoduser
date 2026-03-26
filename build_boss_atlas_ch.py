@@ -59,16 +59,28 @@ BOSSES = [
 ]
 
 # PixelLab 애니메이션 → 게임 상태 매핑
-# _getBossAnimState 반환값: idle, attack, rage_attack, windup, rage_windup, stagger, breath, death, rage
-ANIM_MAP = {
+# _getBossAnimState 반환값: idle, attack, rage_attack, windup, rage_windup, stagger, breath, death, rage, walk
+# 10상태를 최대한 차별화:
+#   idle      = fight-stance-idle (기본 대기)
+#   breath    = breathing-idle (숨고르기/회복 — idle과 다른 모션!)
+#   attack    = cross-punch (일반 공격)
+#   windup    = cross-punch 공유 (공격 준비)
+#   rage_attack = high-kick (분노 공격 — 일반 공격과 다른 모션!)
+#   rage_windup = high-kick 공유 (분노 준비)
+#   stagger   = taking-punch (피격)
+#   death     = falling-back-death (사망)
+#   rage      = breathing-idle 또는 idle (분노 idle)
+#   walk      = walking-4-frames (이동)
+ANIM_MAP_PRIMARY = {
     'fight-stance-idle-8-frames': 'idle',
-    'breathing-idle': 'idle',  # 대체 idle (fight-stance 없을 때)
+    'breathing-idle': 'breath',
     'cross-punch': 'attack',
-    'high-kick': 'windup',
+    'high-kick': 'rage_attack',
     'taking-punch': 'stagger',
     'walking-4-frames': 'walk',
-    'walking': 'walk',  # 폴백 (walking-4-frames 없을 때)
+    'walking': 'walk',
     'falling-back-death': 'death',
+    'fireball': 'fireball',
 }
 
 # 방향 우선순위: south 먼저 (facing 방향은 코드에서 flip으로 처리)
@@ -98,29 +110,41 @@ def build():
             print(f'  [{folder}] 디렉토리 없음, 스킵')
             continue
 
-        states = {}
-        for anim_folder, game_state in ANIM_MAP.items():
+        raw = {}
+        for anim_folder, game_state in ANIM_MAP_PRIMARY.items():
             frames = []
-            # south 방향 우선, 없으면 다른 방향
             for d in DIR_PRIO:
                 frames = load_anim_frames(boss_dir, anim_folder, d)
                 if frames:
                     break
             if frames:
-                states[game_state] = frames
+                raw[game_state] = frames
                 print(f'  [{folder}] {game_state}: {len(frames)} frames')
-            else:
-                print(f'  [{folder}] {game_state}: 프레임 없음!')
 
-        # 애니 없어도 rotations/south.png가 있으면 idle 1프레임으로 사용
-        if 'idle' not in states:
+        # rotations 폴백 → idle 1프레임
+        if 'idle' not in raw:
             rot_path = os.path.join(boss_dir, 'rotations', 'south.png')
             if not os.path.exists(rot_path):
                 rot_path = os.path.join(boss_dir, 'rotations', 'east.png')
             if os.path.exists(rot_path):
                 img = Image.open(rot_path).convert('RGBA')
-                states['idle'] = [img]
+                raw['idle'] = [img]
                 print(f'  [{folder}] idle: rotations 폴백 (1 frame)')
+
+        # ── 10상태 파생 ──
+        states = {}
+        states['idle'] = raw.get('idle') or raw.get('breath')
+        states['breath'] = raw.get('breath') or raw.get('idle')  # breath 없으면 idle 폴백
+        states['attack'] = raw.get('attack')
+        states['windup'] = raw.get('fireball') or raw.get('attack')  # fireball > attack 공유
+        states['rage_attack'] = raw.get('rage_attack') or raw.get('attack')  # high-kick > cross-punch 폴백
+        states['rage_windup'] = raw.get('rage_attack') or raw.get('windup') or raw.get('attack')
+        states['stagger'] = raw.get('stagger')
+        states['death'] = raw.get('death')
+        states['walk'] = raw.get('walk')
+        states['rage'] = raw.get('breath') or raw.get('idle')  # 분노 idle = breath 우선
+        # None 제거
+        states = {k: v for k, v in states.items() if v}
 
         if states:
             all_boss_data[si] = states
@@ -152,28 +176,28 @@ def build():
         boss_key = f'boss_{si}'
         json_data[boss_key] = {}
 
-        for state_name in ['idle', 'walk', 'attack', 'windup', 'stagger', 'death']:
+        # 각 상태별 프레임을 아틀라스에 배치 (중복 프레임은 한 번만 그리고 좌표 공유)
+        placed = {}  # id(frames_list) → frame_rects (같은 리스트 객체면 좌표 공유)
+        STATE_ORDER = ['idle', 'breath', 'walk', 'attack', 'rage_attack', 'windup', 'rage_windup', 'stagger', 'death', 'rage']
+        for state_name in STATE_ORDER:
             if state_name not in states:
                 continue
             frames = states[state_name]
+            fid = id(frames)
+            if fid in placed:
+                # 같은 프레임 리스트를 참조하면 좌표만 공유 (아틀라스 공간 절약)
+                json_data[boss_key][state_name] = placed[fid]
+                continue
             frame_rects = []
             for img in frames:
                 x = col * CELL
-                # 리사이즈 (필요시)
                 if img.size != (CELL, CELL):
                     img = img.resize((CELL, CELL), Image.NEAREST)
                 atlas.paste(img, (x, y), img)
                 frame_rects.append({'x': x, 'y': y, 'w': CELL, 'h': CELL})
                 col += 1
             json_data[boss_key][state_name] = frame_rects
-            # rage variants → 같은 프레임 공유
-            if state_name == 'attack':
-                json_data[boss_key]['rage_attack'] = frame_rects
-            if state_name == 'windup':
-                json_data[boss_key]['rage_windup'] = frame_rects
-            if state_name == 'idle':
-                json_data[boss_key]['rage'] = frame_rects
-                json_data[boss_key]['breath'] = frame_rects
+            placed[fid] = frame_rects
         # death가 없으면 idle로 fallback
         if 'death' not in json_data[boss_key] and 'idle' in json_data[boss_key]:
             json_data[boss_key]['death'] = json_data[boss_key]['idle']

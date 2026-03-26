@@ -57,7 +57,10 @@ const _SL = {
   any:['weapon','bow','armor','helmet','gloves','pants','boots','cape','ring1','ring2','necklace','shield'],
 };
 
-// ─── 팔찌/머리띠 베이스 스탯 ───
+// ─── 장비 베이스 스탯 (주요) ───
+// weapon:   atk=20+tier*10 (wtype별 atkMul 적용)
+// bow:      atk=3+tier*2 (btype별 atkMul 적용)
+// helmet:   atk=20+tier*10, beamDmg=1.5+tier*1.2, eDef=2+tier*2 → magicRef() 기반
 // bracelet: def=1+tier, eDef=1+tier, bonusHp=5+tier*5
 // headband: eDef=2+tier*2, mpRegen=1+tier
 // 팔찌 타입: demon(부활력/부활쿨), life(HP/리젠/회복력)
