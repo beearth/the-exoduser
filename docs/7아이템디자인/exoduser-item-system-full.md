@@ -153,6 +153,10 @@ const AFFIX_POOL = [
   {id:'extraDodge',type:1, ko:'스태미나의',stat:'_aExDodge', tiers:[1,1,2],     unit:'val', slots:['bts','pnt'],           group:'dodg', weight:55},
   {id:'stRegen',   type:1, ko:'회복의',  stat:'stRegen',     tiers:[0.03,0.06,0.10],unit:'pct', slots:['arm','rng','nck'],group:'sreg', weight:80},
   {id:'dpRegen',   type:1, ko:'마력의',  stat:'mpRegen',     tiers:[0.02,0.04,0.07],unit:'pct', slots:['hlm','nck'],      group:'dreg', weight:75},
+  // ── 플랫 ATK 어픽스 3종 (극악 득템, skewRoll:3 = Math.random()^3 편향) ──
+  {id:'sharpAtk',  type:0, ko:'예리한',  stat:'flatAtk',     tiers:[50,170,330],    unit:'val', slots:['wpn','hlm'],      group:'satk', weight:25, skewRoll:3},
+  {id:'brutalAtk', type:0, ko:'맹렬한',  stat:'flatAtk',     tiers:[50,170,330],    unit:'val', slots:['wpn','hlm'],      group:'batk', weight:20, skewRoll:3},
+  {id:'ruinAtk',   type:1, ko:'파멸의',  stat:'flatAtk',     tiers:[50,170,330],    unit:'val', slots:['wpn','hlm'],      group:'ratk', weight:15, skewRoll:3},
 ];
 Object.freeze(AFFIX_POOL);
 ```
@@ -218,6 +222,9 @@ Object.freeze(AFFIX_POOL);
 | expBonus | 경험의 | SUFFIX | 10%/18%/28% | pct | hlm,nck | 경험치 ×(1+배율) |
 | goldBonus | 골드의 | SUFFIX | 15%/25%/40% | pct | bts,rng | 악의 획득 ×(1+배율) |
 | potionPower | 포션강화의 | SUFFIX | 20%/35%/55% | pct | pnt | HP 물약 회복량 ×(1+배율) |
+| sharpAtk | 예리한 | PREFIX | 50/170/330 | val | wpn,hlm | 플랫 ATK+ (skewRoll:3, 고뎀 극악) |
+| brutalAtk | 맹렬한 | PREFIX | 50/170/330 | val | wpn,hlm | 플랫 ATK+ (skewRoll:3, 고뎀 극악) |
+| ruinAtk | 파멸의 | SUFFIX | 50/170/330 | val | wpn,hlm | 플랫 ATK+ (skewRoll:3, 고뎀 극악) |
 
 ---
 
