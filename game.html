@@ -1014,38 +1014,122 @@ canvas{display:block;position:fixed;inset:0}
 <div class="notif" id="notif"></div>
 
 <script>
-// ┌──────────────────────────────────────────────────────────────┐
-// │  TABLE OF CONTENTS — Ctrl+F "[S##]" 로 점프                 │
-// ├──────────────────────────────────────────────────────────────┤
-// │ [S01] INIT ········· Electron, Supabase, Save/Load, BGM     │
-// │ [S02] RENDER ······· Bloom, Lighting, WebGPU/GL/Canvas      │
-// │ [S03] CONFIG ······· Keys, VFX, HW Tier, Pets               │
-// │ [S04] BOSS_DEF ····· Boss AI Patterns, Combos, Phases       │
-// │ [S05] AUDIO ········ SFX Engine, Procedural Sound           │
-// │ [S06] INPUT ········ Key State, Skill Dispatch              │
-// │ [S07] ITEMS ········ Elements, Affixes, Equipment           │
-// │ [S08] WORLD ········ Game State, Stages, Pools              │
-// │ [S09] SPRITES ······ Enemy/Boss/Player Body Drawing         │
-// │ [S10] ATLAS ········ Sprite Sheets, Palettes, Projectiles   │
-// │ [S11] FX ··········· Death, Impact, Decor, Map Objects      │
-// │ [S12] MAP_RENDER ··· Tile Cache, Map Drawing                │
-// │ [S13] STATS ········ Stats, Passives, Equipment Calc        │
-// │ [S14] MAP_GEN ······ Maze, Gauntlet, Arena, Fixed Maps      │
-// │ [S15] ENEMIES ······ Types, Rare, Elite, Spawning           │
-// │ [S16] UPDATE ······· Main Game Logic                        │
-// │ [S17] DEATH ········ Drop System, Replay                    │
-// │ [S18] UI ··········· Skill Panel, Fusion, Slots             │
-// │ [S19] PANELS ······· Storage, Settings, Forge, Inv Render   │
-// │ [S20] DRAW ········· Full Render Pipeline                   │
-// │ [S21] SYSTEM ······· FPS Counter, Game Loop, Boot           │
-// └──────────────────────────────────────────────────────────────┘
+// ┌─────────────────────────────────────────────────────────────────────┐
+// │  TABLE OF CONTENTS — Ctrl+F "[S##]" 로 점프                        │
+// ├─────────────────────────────────────────────────────────────────────┤
+// │                                                                     │
+// │ [S01] INIT ············ Electron, Supabase, Save/Load, BGM          │
+// │   [S01a] ELECTRON ····· Electron 감지                               │
+// │   [S01b] SUPABASE ····· 인증 & DB 연동                              │
+// │   [S01c] SAVE/LOAD ···· 세이브/로드, 자동저장                       │
+// │   [S01d] BGM ·········· BGM 시스템                                  │
+// │                                                                     │
+// │ [S02] RENDER ·········· Bloom, Lighting, WebGPU/GL/Canvas           │
+// │   [S02a] BLOOM ········ 블룸 패스 오프스크린                        │
+// │   [S02b] LIGHTING ····· 동적 조명 (Dead Cells 스타일)               │
+// │   [S02c] RENDERER ····· WebGPU → WebGL2 → Canvas2D 초기화          │
+// │                                                                     │
+// │ [S03] CONFIG ·········· Keys, VFX, HW Tier, Pets                    │
+// │   [S03a] KEYBIND ······ 키 바인딩 시스템                            │
+// │   [S03b] VFX_FLAGS ···· 히트스톱, 횃불, 안개, 폭발 VFX 풀          │
+// │   [S03c] HW_TIER ······ 하드웨어 티어 감지                          │
+// │   [S03d] PET ·········· 펫 시스템 (까마귀+고양이)                   │
+// │   [S03e] PET_DIALOGUE · 펫 대사 (티키타카)                          │
+// │                                                                     │
+// │ [S04] BOSS_DEF ········ Boss AI Patterns, Combos, Phases            │
+// │                                                                     │
+// │ [S05] AUDIO ··········· SFX Engine v3, Procedural Sound             │
+// │                                                                     │
+// │ [S06] INPUT ··········· Key State, Skill Dispatch                   │
+// │   [S06a] KEY_STATE ···· 키 상태 관리                                │
+// │   [S06b] SKILL_DISP ··· 스킬 슬롯 통합 디스패치                    │
+// │   [S06c] BLADE_DASH ··· 칼날이동 더블탭 감지                        │
+// │                                                                     │
+// │ [S07] ITEMS ··········· Elements, Affixes, Equipment                │
+// │   [S07a] ELEMENTS ····· 원소, 탄막 스프라이트                       │
+// │   [S07b] AFFIXES ······ 어픽스 55종 (접두/접미)                     │
+// │   [S07c] WEAPONS ······ 무기 7종 + 활 5종                          │
+// │   [S07d] INVENTORY ···· 2D 그리드 인벤토리 + 창고                  │
+// │                                                                     │
+// │ [S08] WORLD ··········· Game State, Stages, Pools                   │
+// │   [S08a] STAGES ······· 7장 35스테이지 구조                         │
+// │   [S08b] SKILL_POOLS ·· 스킬 VFX 풀 (검기/뇌전/얼음 등)           │
+// │   [S08c] HELPERS ······ 충격/임팩트/유틸리티 함수                   │
+// │                                                                     │
+// │ [S09] SPRITES ········· Enemy/Boss/Player Body Drawing              │
+// │   [S09a] PROC_BODY ···· 프로시저럴 몬스터 바디 (0~89)              │
+// │   [S09b] RARE_BODY ···· 레어몹 바디 (90~99)                        │
+// │   [S09c] BOSS_BODY ···· 보스 무기/바닥 흔적                        │
+// │                                                                     │
+// │ [S10] ATLAS ··········· Sprite Sheets, Palettes, Projectiles        │
+// │   [S10a] ATLAS_LAYOUT · 프로시저럴 아틀라스 레이아웃                │
+// │   [S10b] PALETTE ······ 7지옥 팔레트 시스템                         │
+// │   [S10c] PROJ_SPRITE ·· 투사체 스프라이트 + 프로시저럴 렌더        │
+// │   [S10d] ATLAS_BUILD ·· 적/보스 아틀라스 빌드                      │
+// │                                                                     │
+// │ [S11] FX ·············· Death, Impact, Decor, Map Objects           │
+// │   [S11a] DEATH_FX ····· 사망 이펙트                                 │
+// │   [S11b] DECOR ········ 횃불, 눈동자, 발광, 환경 오브젝트          │
+// │   [S11c] MAP_OBJ ······ 맵 오브젝트 시스템                         │
+// │                                                                     │
+// │ [S12] MAP_RENDER ······ Tile Cache, Map Drawing                     │
+// │                                                                     │
+// │ [S13] STATS ··········· Potions, Stats, Passives, Equipment         │
+// │   [S13a] POTIONS ······ 자원 추출, 퀵슬롯, 물약                    │
+// │   [S13b] STAT_DEF ····· 5대 스탯 + 패시브                          │
+// │   [S13c] EQUIP_CALC ··· 장비 계산, 무한 강화                       │
+// │   [S13d] ACTION_SLOT ·· 액션키 슬롯 업데이트                       │
+// │   [S13e] CROSSBOW ····· 석궁 시스템                                 │
+// │   [S13f] MAGIC_ROUTE ·· E키 마법 라우팅                            │
+// │                                                                     │
+// │ [S14] MAP_GEN ········· Maze, Gauntlet, Arena, Fixed Maps           │
+// │                                                                     │
+// │ [S15] ENEMIES ········· Types, Rare, Elite, Spawning                │
+// │   [S15a] ETYPE_DEF ···· 적 타입 100종 정의                         │
+// │   [S15b] SPAWN_POOL ··· 장별 스폰 풀 + 소환굴                     │
+// │   [S15c] ELITE ········ 엘리트/모디파이어 시스템                    │
+// │   [S15d] FLOW_FIELD ··· 플로우필드 패스파인딩                       │
+// │   [S15e] ITEM_DROP ···· 아이템 드롭                                 │
+// │                                                                     │
+// │ [S16] UPDATE ·········· Main Game Logic                             │
+// │   [S16a] FRAME_INIT ··· 프레임 초기화, 충돌, 플로우필드            │
+// │   [S16b] PLAYER_ACT ··· 플레이어 행동 (이동/공격/스킬)            │
+// │   [S16c] SKILL_CD ····· 스킬 쿨다운 + 자동발사                    │
+// │   [S16d] SKILL_VFX ···· 스킬 이펙트 업데이트                       │
+// │   [S16e] BOSS_AI ······ 보스 AI 함수 (스코어/패턴/콤보)            │
+// │   [S16f] ENEMY_UPD ···· 적 업데이트 (updateE — AI/이동/공격)      │
+// │   [S16g] PET_UPD ······ 펫 업데이트 + 유령쇠뇌/요정불꽃           │
+// │   [S16h] REVIVE ······· 부활 VFX + 구울/슬라임 시스템             │
+// │   [S16i] HURT_E ······· 적 피격 (hurtE — 방어/속성/사망)          │
+// │   [S16j] HURT_P ······· 플레이어 피격 (hurtP — 방어/포이즈)       │
+// │                                                                     │
+// │ [S17] DEATH ··········· Drop System, Replay                         │
+// │                                                                     │
+// │ [S18] UI ·············· Skill Panel, Fusion, Slots                  │
+// │   [S18a] SKILL_PANEL ·· 스킬 패널 + 슬롯 시스템                   │
+// │   [S18b] FUSE ········· 합체 보석 + 합체 쌍 정의                   │
+// │   [S18c] MASTERY ······ 카테고리별 숙련도                           │
+// │   [S18d] HUD_SLOTS ···· HUD 슬롯 (Space/E/Q/RClick/Ctrl)          │
+// │   [S18e] SKILL_FIRE ··· 스킬 발동 함수                             │
+// │   [S18f] CARD_DRAG ···· 카드 드래그 & 드롭                         │
+// │                                                                     │
+// │ [S19] PANELS ·········· Storage, Settings, Forge, Inv Render        │
+// │                                                                     │
+// │ [S19.5] ATMOSPHERE ···· Ori-style Ambient Effects                   │
+// │                                                                     │
+// │ [S20] DRAW ············ Full Render Pipeline                        │
+// │                                                                     │
+// │ [S21] SYSTEM ·········· FPS Counter, Game Loop, Boot                │
+// │                                                                     │
+// └─────────────────────────────────────────────────────────────────────┘
 
-// ═══ [S01] ELECTRON DETECTION ═══
+// ═══════════════════════════════════════
+//  [S01] INIT — Electron, Supabase, Save/Load, BGM
+// ═══════════════════════════════════════
+// ─── [S01a] ELECTRON — Electron 감지 ───
 const IS_ELECTRON=!!(window.process&&window.process.type)||navigator.userAgent.includes('Electron');
 
-// ═══════════════════════════════════════
-//  [S01] SUPABASE — 인증 & DB 연동
-// ═══════════════════════════════════════
+// ─── [S01b] SUPABASE — 인증 & DB 연동 ───
 const SUPABASE_URL='https://tevlznuhjqcnzgewlswx.supabase.co';
 const SUPABASE_KEY='sb_publishable_chAwadci1zVQNEKPC__s_w_7K3Oz_WP';
 const sb=typeof supabase!=='undefined'?supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
@@ -1068,7 +1152,7 @@ let _lastSaveTime=0;
 const _EDITOR_MODE=new URLSearchParams(window.location.search).get('editor')==='1';
 const _editorStageReq=+(new URLSearchParams(window.location.search).get('editorStage')||0);
 
-// ═══ Save game state to DB ═══
+// ─── [S01c] SAVE/LOAD — 세이브/로드, 자동저장 ───
 async function dbSave(){
   if(!_charId||!_dbReady||_saving)return;
   if(!P)return;
@@ -1443,9 +1527,7 @@ function dbSaveForce(){
   _lastSaveTime=Date.now();dbSave();
 }
 
-// ═══════════════════════════════════════
-//  [S01] BGM SYSTEM
-// ═══════════════════════════════════════
+// ─── [S01d] BGM — BGM 시스템 ───
 const BGM={
   _cur:null, _curKey:'', _vol:0.3, _fade:null,
   tracks:{
@@ -1555,7 +1637,10 @@ function rz(){
 }
 addEventListener('resize',rz);
 
-// ═══ [S02] 블룸 패스 오프스크린 버퍼 ═══
+// ═══════════════════════════════════════
+//  [S02] RENDER — Bloom, Lighting, WebGPU/GL/Canvas
+// ═══════════════════════════════════════
+// ─── [S02a] BLOOM — 블룸 패스 오프스크린 버퍼 ───
 let _bloomCvs=null,_bloomCtx=null,_blurCvs=null,_blurCtx=null,_bloomW=0,_bloomH=0;
 function _initBloom(){
   _bloomW=~~(C.width/6);_bloomH=~~(C.height/6);
@@ -1589,7 +1674,7 @@ function _renderBloom(){
   X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();
 }
 
-// ═══ 동적 조명 시스템 (Dead Cells 스타일) ═══
+// ─── [S02b] LIGHTING — 동적 조명 (Dead Cells 스타일) ───
 var _lightCvs=null,_lightCtx=null,_lightW=0,_lightH=0;
 var _lights=[],_lightCnt=0,_litCamX=0,_litCamY=0;
 var _lightStamps={}; // {radius: canvas} 프리베이크 스탬프
@@ -1687,14 +1772,14 @@ function _pushLight(wx,wy,r,intensity,cr,cg,cb){
 function _collectLights(){
   _lightCnt=0;
   if(!P||!G.on)return;
-  // 1) 플레이어 등불 (반경 축소 + 플리커)
+  // 1) 플레이어 등불 (반경 + 플리커)
   var _plAmber=SI_TO_HELL[G.stage||0]===0;
   var _torchFlk=1+Math.sin(_gameFrame*.12)*.04+Math.sin(_gameFrame*.19)*.03; // 등불 흔들림
-  var _torchR=~~(350*_torchFlk); // 반경 350 (800→350 축소)
-  var _torchA=.85+Math.sin(_gameFrame*.08)*.08; // 밝기 흔들림
+  var _torchR=~~(500*_torchFlk); // 반경 500
+  var _torchA=.9+Math.sin(_gameFrame*.08)*.06; // 밝기 흔들림
   _pushLight(P.x,P.y,_torchR,_torchA,_plAmber?255:255,_plAmber?210:230,_plAmber?120:190);
   // 1.5) 등불 코어 (가까운 곳 더 밝게)
-  _pushLight(P.x,P.y,~~(120*_torchFlk),_torchA*.5,_plAmber?255:255,_plAmber?190:210,_plAmber?90:160);
+  _pushLight(P.x,P.y,~~(180*_torchFlk),_torchA*.5,_plAmber?255:255,_plAmber?190:210,_plAmber?90:160);
   // 2) 플레이어 투사체
   for(var i=0;i<pProjs.length&&_lightCnt<120;i++){
     var p=pProjs[i];if(!p||p.life<=0)continue;
@@ -1742,9 +1827,12 @@ function _collectLights(){
     if(e.ib){_pushLight(e.x,e.y,150,.3,200,100,50);continue}
     if(e.burnT>0)_pushLight(e.x,e.y,40,.2,255,68,0);
   }
-  // 9.5) 요정불꽃 → 플레이어 주변 조명
+  // 9.5) 요정불꽃 → 요정 위치에서 은은한 등불 광원
   if(G.pets&&G.pets.iris&&!G._irisOff){
-    _pushLight(P.x,P.y,500,.9,255,180,60);
+    var _irPet=G.pets.iris;
+    var _irFlk=.45+Math.sin(_gameFrame*.1)*.08+Math.sin(_gameFrame*.17)*.05;
+    _pushLight(_irPet.x,_irPet.y,450,_irFlk,255,180,60);
+    _pushLight(_irPet.x,_irPet.y,160,_irFlk*.4,255,210,120);
   }
   // 10) 반딧불이 앰비언트 파티클 — 동적 광원
   if(OPT.ambPart&&_ambCnt>0){
@@ -1811,6 +1899,23 @@ function _renderLighting(){
     }
   }
   lx.globalCompositeOperation='source-over';lx.globalAlpha=1;
+  // ═══ FOW: 미탐험 지역 짙은 어둠 (라이트맵 위에 source-over로 검정 블록) ═══
+  if(G._fow&&G.map){
+    var _fowMw=G.mw,_fowScale=_lightW/(C.width),_fowHScale=_lightH/(C.height);
+    var _fowCx=G.cam.x,_fowCy=G.cam.y,_fowHw=C.width/2,_fowHh=C.height/2;
+    var _fowTs0=Math.max(0,~~((_fowCx-_fowHw)/T)-1),_fowTe0=Math.min(G.mw-1,Math.ceil((_fowCx+_fowHw)/T)+1);
+    var _fowTs1=Math.max(0,~~((_fowCy-_fowHh)/T)-1),_fowTe1=Math.min(G.mh-1,Math.ceil((_fowCy+_fowHh)/T)+1);
+    lx.fillStyle='rgba(0,0,0,.92)';
+    for(var _fy=_fowTs1;_fy<=_fowTe1;_fy++){
+      for(var _fx=_fowTs0;_fx<=_fowTe0;_fx++){
+        if(G._fow[_fy*_fowMw+_fx])continue; // 탐험됨 → 스킵
+        var _fsx=(_fx*T-_fowCx+_fowHw)*_fowScale;
+        var _fsy=(_fy*T-_fowCy+_fowHh)*_fowHScale;
+        var _fsw=T*_fowScale+1,_fsh=T*_fowHScale+1;
+        lx.fillRect(_fsx,_fsy,_fsw,_fsh);
+      }
+    }
+  }
   // 메인 캔버스에 합성
   X.save();X.setTransform(1,0,0,1,0,0);
   X.drawImage(_lightCvs,0,0,C.width,C.height);
@@ -1828,9 +1933,7 @@ var _skipShadow=false; // Canvas2D shadowBlur 비활성화 (고FPS 시)
 var _hiFPS=false;      // 고FPS 모드 (>70fps) — 이펙트 간략화
 var _drawOdd=0;        // 프레임 카운터 (홀수/짝수 판정)
 
-// ═══════════════════════════════════════
-//  [S02] RENDERER INIT (WebGPU → WebGL2 → Canvas2D)
-// ═══════════════════════════════════════
+// ─── [S02c] RENDERER — WebGPU → WebGL2 → Canvas2D 초기화 ───
 
 // ── 공통 상수/버퍼/함수 포인터 ──
 const _MQ=65536,_FPV=11;
@@ -2415,8 +2518,9 @@ async function _bootRenderer(){
 }
 
 // ═══════════════════════════════════════
-//  [S03] KEY BINDING SYSTEM
+//  [S03] CONFIG — Keys, VFX, HW Tier, Pets
 // ═══════════════════════════════════════
+// ─── [S03a] KEYBIND — 키 바인딩 시스템 ───
 let BINDS={
   up:'KeyW', down:'KeyS', left:'KeyA', right:'KeyD',
   weapon:'mouse0', shield:'mouse2',
@@ -2535,7 +2639,7 @@ function _getTorchSmall(r){if(_torchSmall[r])return _torchSmall[r];const s=r*2,c
 let _scanCvs=null,_scanW=0,_scanH=0;
 // ═══ [BOSS-CINE] 보스 시네마틱 ═══
 let _bossCine={active:false,t:0,maxT:180,name:'',phase:0,lastBossId:null};
-// ═══ [S03] HARDWARE TIER DETECTION ═══
+// ─── [S03c] HW_TIER — 하드웨어 티어 감지 ───
 let _hwTier='?',_hwGPU='unknown',_benchDone=false,_benchFrames=[],_benchStart=0;
 function detectTier(){
   // 1) GPU renderer string
@@ -2608,7 +2712,7 @@ function _applyTierPreset(tier){
   if($('diagGpu'))$('diagGpu').textContent=_hwGPU;
 }
 _gpuScoreCache=detectTier();
-// ═══ [S03] PET SYSTEM (까마귀=하늘, 고양이=땅 — 항상 두 마리) ═══
+// ─── [S03d] PET — 펫 시스템 (까마귀+고양이) ───
 const PETS={
   crow:{name:'Crow',col:'#111',pickR:1000,spd:22,orbR:38,orbY:-22,desc:'Air pickup helper'},
   cat:{name:'Cat',col:'#111',pickR:1000,spd:24,orbR:28,orbY:32,desc:'Ground pickup + auto-disassemble'},
@@ -2643,7 +2747,7 @@ const DIFF_NAME=['일반','1단(+10)','2단(+20)','3단(+30)','4단(+40)','5단(
 const DIFF_MUL=[1,1,1,1,1,1,1,1,1,1,1]; // 레거시 호환용 (전부 1)
 const DIFF_MOB=[1,1,1,1,1,1,1,1,1,1,1]; // 레거시 호환용 (전부 1)
 
-// ═══ [S03-B] PET DIALOGUE SYSTEM (까마귀+고양이 티키타카 대사) ═══
+// ─── [S03e] PET_DIALOGUE — 펫 대사 (티키타카) ───
 // 말풍선 상태: {who:'crow'|'cat', txt:'', t:0, mt:300, pair:null|{who,txt,mt}}
 const _petBubble={who:null,txt:'',t:0,mt:0,pair:null,pairFired:false};
 const _petDlgCD={}; // 대사 쿨다운 {id: remainFrames}
@@ -2846,7 +2950,9 @@ function _petOnParry(){_petParryCnt++}
 function _petOnKill(){_petKillCnt++}
 function _petOnCharge(){_petChargeUsed=true}
 
-// ═══ [S04] BOSS AI — HFSM + COMBO + UTILITY ═══
+// ═══════════════════════════════════════
+//  [S04] BOSS_DEF — Boss AI Patterns, Combos, Phases
+// ═══════════════════════════════════════
 const BOSS_MOVES=[
   {id:'burst',    idx:0, tele:45,rec:40,canFeint:false,canDelay:0,  range:[0,999], phase:[0,1,2,3,4],combo:['fan','shock','charge'],tags:['aoe','ranged'],    cd:140},
   {id:'fan',      idx:1, tele:25,rec:35,canFeint:false,canDelay:.3, range:[60,300],phase:[0,1,2,3,4],combo:['charge','mine','multiDash'],tags:['ranged','frontal'],cd:100},
@@ -3030,7 +3136,7 @@ _BOSS_MOVESET[31]=new Set([..._ch6Base,'itemSteal'])}
 // ── 7장 지옥성 (si 32~34): 전체 49종 해금 — null(필터 없음) ──
 
 // ═══════════════════════════════════════
-//  [S05] SFX ENGINE v3 (Web Audio API) — Pro
+//  [S05] AUDIO — SFX Engine v3, Procedural Sound
 // ═══════════════════════════════════════
 let _actx=null;
 function actx(){
@@ -4183,7 +4289,7 @@ const SFX={
 
 
 // ═══════════════════════════════════════
-//  [S06] INPUT
+//  [S06] INPUT — Key State, Skill Dispatch
 // ═══════════════════════════════════════
 const K={};
 const KH={}; // key held — keyup에서만 해제, isJust가 소비하지 않음
@@ -4545,7 +4651,7 @@ function _qDispatchIceOrb(){
 }
 
 // ═══════════════════════════════════════
-//  [S07] ELEMENTS & ITEMS
+//  [S07] ITEMS — Elements, Affixes, Equipment
 // ═══════════════════════════════════════
 const EL={P:0,F:1,I:2,D:3,L:4,H:5,E:6};
 const _BEAN_RAINBOW=['#ff2244','#ff8800','#ffee00','#00ff66','#00ccff','#8855ff','#ff44cc'];
@@ -5000,9 +5106,7 @@ function defaultItems(){
   return[mkItem('weapon',0,EL.P,0,'sword'),mkItem('shield',0,EL.P,0),mkItem('boots',0,EL.P,0),mkItem('armor',0,EL.P,0),mkItem('helmet',0,EL.P,0),mkItem('bow',0,EL.P,0,'crossbow'),mkItem('gloves',0,EL.P,0),mkItem('pants',0,EL.P,0),mkItem('necklace',0,EL.P,0),mkItem('ring1',0,EL.P,0),mkItem('ring2',0,EL.P,0),mkItem('cape',0,EL.P,0),mkItem('bracelet',0,EL.P,0),mkItem('headband',0,EL.P,0)];
 }
 
-// ═══════════════════════════════════════
-//  [S07] INVENTORY
-// ═══════════════════════════════════════
+// ─── [S07d] INVENTORY — 2D 그리드 인벤토리 + 창고 ───
 let INV={
   bag:[],
   equipped:{weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,belt:null,necklace:null,ring1:null,ring2:null,cape:null,bracelet:null,headband:null},
@@ -5215,7 +5319,7 @@ function rg2(){return INV.equipped.ring2||{}}
 function cp(){return INV.equipped.cape||{}}
 
 // ═══════════════════════════════════════
-//  [S08] GAME STATE
+//  [S08] WORLD — Game State, Stages, Pools
 // ═══════════════════════════════════════
 const T=40;
 // ═══ 7장 35스테이지 가변 구조 ═══
@@ -5924,7 +6028,7 @@ const ETYPE_COLS=['#ee5544','#88cc44','#ff8822','#66dd66','#8888aa','#ff5500','#
   '#554433','#665544','#774433','#887766','#443333','#ddccaa','#cc5544','#998877','#aaaaaa','#332211',
   '#223344','#334455','#5566aa','#445533','#2a3a4a','#556644','#885566','#446655','#112233','#0a1122',
   '#aa3300','#cc4400','#ee5500','#dd6600','#332211','#ee4400','#555544','#881100','#993300','#660000'];
-// ═══ [S08b] HELPER UTILITIES ═══
+// ─── [S08c] HELPERS — 충격/임팩트/유틸리티 함수 ───
 function shake(n){G.shake=Math.max(G.shake,n*OPT.shake/100)}
 // ── 히트 플래시 (순간 백플래시) ──
 let _hitFlash={a:0,col:'#ffffff'};
@@ -5947,7 +6051,9 @@ function teleportE(e,nx,ny,col,n){if(!canMv(nx,ny,e.r))return false;addParts(e.x
 function _beanRoll(el,col,sz,spd,dmgMult){const r=Math.random();if(r<.167)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:dmgMult*1.5,blackBean:true,noParry:true};if(r<.333)return{el:el,col:'#cc1100',sz:1.5,spd:spd,dmgM:dmgMult*1.2,redBean:true,homing:true};if(r<.5)return{el:EL.P,col:'#111111',sz:1.6,spd:spd*1.1,dmgM:dmgMult*1.3,bwBean:true};if(r<.667)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:dmgMult*1.3,gbBean:true};if(r<.833)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:dmgMult};return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:dmgMult*1.1}}
 function radialProjs(e,count,spd,dmgMult,el,life,col,sz){count*=2;life=~~(life*1.5);for(let i=0;i<count;i++){const a=Math.PI*2*i/count;const b=_beanRoll(el,col,sz,spd,dmgMult);spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*b.spd,vy:Math.sin(a)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,noParry:b.noParry})}}
 function eProjAt(e,ang,spd,dmgMult,el,life,col,sz){life=~~(life*1.5);const b=_beanRoll(el,col,sz,spd,dmgMult);spawnProj({x:e.x,y:e.y,vx:Math.cos(ang)*b.spd,vy:Math.sin(ang)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing,noParry:b.noParry})}
-// ═══ [S09] ENEMY/BOSS/PLAYER BODY DRAWING ═══
+// ═══════════════════════════════════════
+//  [S09] SPRITES — Enemy/Boss/Player Body Drawing
+// ═══════════════════════════════════════
 function drawEnBody(X,e,_now,sa){
   // ── 아틀라스 스킨 우선 (동그라미 방지) ──
   if(_mobAtlas.ready&&e.etype>=0&&e.etype<=99){
@@ -8444,7 +8550,9 @@ function drawBossBody(X,e,_now,sa){
   X.restore();
 }
 
-// ═══ [S10] 프로시저럴 아틀라스 (적 스프라이트 캐시) ═══
+// ═══════════════════════════════════════
+//  [S10] ATLAS — Sprite Sheets, Palettes, Projectiles
+// ═══════════════════════════════════════
 // 모든 etype×element×frame 조합을 1장 캔버스에 프리렌더 → draw call 대폭 절감
 const _ACELL=48,_BCELL=80,_AFRAMES=4,_AELS=6;
 let _atlas=null,_atlasReady=false;
@@ -8736,9 +8844,26 @@ function _getBossWalkState(e){
   const s=e.s;
   if(s==='eDeath'||e.hp<=0)return 'death';
   if(s==='eHit'||s==='eKB'||s==='eStagger')return 'hit';
-  if(s==='eWindup'||s==='eBreath'||s==='bossPeril'||s==='bossBurstWind'||s==='bossLaserWind'||s==='bossMeteorWind'||s==='bossChargeWind'||s==='bossTeleWarn')return 'windup';
-  if(s==='eAttack'||s==='eSlam'||s==='bossSlash'||s==='bossSweep'||s==='bossSlam'||s==='bossDelaySlashSwing')return 'attack';
-  if(s==='eApproach'||s==='eCircle'||s==='eRetreat'||s==='eFlee'||s==='bossMultiDash')return 'walk';
+  if(s==='eWindup'||s==='eBreath'||s==='bossRec'
+    ||s==='eSlamWind'||s==='eSummon'
+    ||s==='bossBurstWind'||s==='bossFanWind'||s==='bossChargeWind'
+    ||s==='bossLaserWind'||s==='bossShockWind'||s==='bossSummonWind'
+    ||s==='bossMeteorWind'||s==='bossGrabWind'||s==='bossSpinWind'
+    ||s==='bossMineWind'||s==='bossVortexWind'||s==='bossMultiDashWind'
+    ||s==='bossSlashWind'||s==='bossSlamWind'||s==='bossSweepWind'
+    ||s==='bossBeanStormWind'||s==='bossBeanRainWind'||s==='bossFanWaveAim'
+    ||s==='bossRadialAim'||s==='bossDelaySlashHold'||s==='bossPerilWind'
+    ||s==='bossSBashWind'||s==='bossMirrorGuard'||s==='bossItemStealWind'
+    ||s==='bossTeleWarn')return 'windup';
+  if(s==='eAttack'||s==='eSlam'||s==='eCharge'||s==='eSwoop'||s==='eShieldBash'||s==='eSelfDestruct'
+    ||s==='bossCharge'||s==='bossJump'||s==='bossShock'||s==='bossLaser'
+    ||s==='bossMeteor'||s==='bossGrab'||s==='bossSpin'||s==='bossVortex'
+    ||s==='bossMultiDash'||s==='bossTeleDrop'||s==='bossSlash'||s==='bossSlam'
+    ||s==='bossSweep'||s==='bossBeanStorm'||s==='bossBeanRain'
+    ||s==='bossDelaySlashSwing'||s==='bossPerilThrust'||s==='bossPoisonDash'
+    ||s==='bossSBash'||s==='bossCrescendo'||s==='bossBurstCounter'
+    ||s==='bossItemSteal')return 'attack';
+  if(s==='eApproach'||s==='eCircle'||s==='eRetreat'||s==='eFlee')return 'walk';
   return 'idle';
 }
 // facing → 방향 행 (0=S, 1=E, 2=N, 3=W)
@@ -8802,11 +8927,32 @@ function _getEFrame(e,now){
 function _getBossAnimState(e){
   const s=e.s;
   if(s==='eDeath'||e.hp<=0)return 'death';
-  if(s==='eStagger'||s==='eHit')return 'stagger';
-  if(s==='eBreath')return 'breath';
+  if(s==='eStagger'||s==='eHit'||s==='eKB')return 'stagger';
+  if(s==='eBreath'||s==='bossRec')return 'breath';
   const rage=e.hp<=e.mhp*.5;
-  if(s==='eAttack'||s==='eSlam')return rage?'rage_attack':'attack';
-  if(s==='eWindup')return rage?'rage_windup':'windup';
+  // ── 공격 실행 상태 ──
+  if(s==='eAttack'||s==='eSlam'||s==='eCharge'||s==='eSwoop'||s==='eShieldBash'||s==='eSelfDestruct'
+    ||s==='bossCharge'||s==='bossJump'||s==='bossShock'||s==='bossLaser'
+    ||s==='bossMeteor'||s==='bossGrab'||s==='bossSpin'||s==='bossVortex'
+    ||s==='bossMultiDash'||s==='bossTeleDrop'||s==='bossSlash'||s==='bossSlam'
+    ||s==='bossSweep'||s==='bossBeanStorm'||s==='bossBeanRain'
+    ||s==='bossDelaySlashSwing'||s==='bossPerilThrust'||s==='bossPoisonDash'
+    ||s==='bossSBash'||s==='bossCrescendo'||s==='bossBurstCounter'
+    ||s==='bossItemSteal')return rage?'rage_attack':'attack';
+  // ── 준비/와인드업 상태 ──
+  if(s==='eWindup'||s==='eSlamWind'||s==='eSummon'
+    ||s==='bossBurstWind'||s==='bossFanWind'||s==='bossChargeWind'
+    ||s==='bossLaserWind'||s==='bossShockWind'||s==='bossSummonWind'
+    ||s==='bossMeteorWind'||s==='bossGrabWind'||s==='bossSpinWind'
+    ||s==='bossMineWind'||s==='bossVortexWind'||s==='bossMultiDashWind'
+    ||s==='bossSlashWind'||s==='bossSlamWind'||s==='bossSweepWind'
+    ||s==='bossBeanStormWind'||s==='bossBeanRainWind'||s==='bossFanWaveAim'
+    ||s==='bossRadialAim'||s==='bossDelaySlashHold'||s==='bossPerilWind'
+    ||s==='bossSBashWind'||s==='bossMirrorGuard'||s==='bossItemStealWind'
+    ||s==='bossTeleWarn')return rage?'rage_windup':'windup';
+  // ── 이동 상태 ──
+  if(s==='eApproach'||s==='eCircle'||s==='eRetreat'||s==='eFlee')return 'walk';
+  if(s==='idle'&&e._isMoving)return 'walk';
   if(rage)return 'rage';
   return 'idle';
 }
@@ -9498,7 +9644,9 @@ function _fireballExplode(p){
   playSample('fireball',.9,_r(.7,.1));shake(6);
   p.explR=0; // 중복 폭발 방지
 }
-// ═══ [S11] 사망 이펙트 (deathFX) ═══
+// ═══════════════════════════════════════
+//  [S11] FX — Death, Impact, Decor, Map Objects
+// ═══════════════════════════════════════
 // 방사형 스파크 링 + 중심 플래시 + 파편
 // ── etype별 사망 사운드 매핑 (개별 몬스터 유형 기반) ──
 const _HUMANOID_ET=new Set([0,1,2,6,8,20,21,24,31,34,36,37,41,44,50,54,55,60,65,67,70,71,74,90,93,94]);
@@ -9816,6 +9964,20 @@ function _initEyes(){
   _eyeObjs.length=0;_eyeInited=false;
   const hell=SI_TO_HELL[G.stage];
   const map=G.map;
+  // 에디터 배치 눈알 우선 사용
+  if(G._editorEyes&&G._editorEyes.length>0){
+    for(const e of G._editorEyes){
+      const R=_tseed(~~(e.x/T)+99,~~(e.y/T)+77);
+      _eyeObjs[_eyeObjs.length]={
+        x:e.x, y:e.y,
+        blink:0, blinkT:0, blinkNext:100+~~(R()*200),
+        frame:~~(R()*8),
+        size:3+~~(R()*3), alpha:.6+~~(R()*3)*.1
+      };
+    }
+  }
+  // 자동 배치 (에디터 눈알이 없으면 기존 랜덤 배치)
+  if(_eyeObjs.length===0){
   for(let ty=1;ty<G.mh-1;ty++){
     for(let tx=1;tx<G.mw-1;tx++){
       if(map[ty][tx]!==0)continue;
@@ -9832,6 +9994,7 @@ function _initEyes(){
         };
       }
     }
+  }
   }
   _eyeInited=_eyeObjs.length>0;
   console.log('[EYE] count='+_eyeObjs.length+' hell='+hell+' imgReady='+_floorEyeImg.complete);
@@ -10132,7 +10295,9 @@ function _drawSkull(c,x,y,sz,R){
   // 코
   c.beginPath();c.moveTo(x,y+s*.1);c.lineTo(x-s*.1,y+s*.25);c.lineTo(x+s*.1,y+s*.25);c.fill();
 }
-// ═══ [S12] MAP RENDER — Tile Cache ═══
+// ═══════════════════════════════════════
+//  [S12] MAP_RENDER — Tile Cache, Map Drawing
+// ═══════════════════════════════════════
 function buildMapCache(){
   if(!G.map)return;
   _visChunks=null;_visCamX=-9999;_visCamY=-9999;
@@ -10854,7 +11019,9 @@ function _buildStreamChunk(cx,cy){
   return{cvs:cc,w:tw*T,h:th*T};
 }
 
-// ═══ [S13] ARROW SYSTEM — 제거됨 (악의로 대체) ═══
+// ═══════════════════════════════════════
+//  [S13] STATS — Potions, Stats, Passives, Equipment
+// ═══════════════════════════════════════
 
 // ═══ 자원 추출 (EVIL EXTRACTION) 시스템 ═══
 const POT={
@@ -10917,10 +11084,10 @@ function applyStats(){
   // ═══ 바이블 기준: ATK = 15+(stage-1)*2 ═══
   P.baseAtk=G.on?15+((G.stage||1)-1)*2:15;
   P.speed=(2.6+s.dex*.005)*(1+(P._altSpd||0)+_eqAffix('movSpeed')+_eqImplicit('_iMovSpd')*.01);
-  P.stR=.05+s.dex*.008+s.vit*.002+P.lv*.001; // ST리젠: DEX 주력 + VIT 보조 + 레벨 (/8 적용)
+  P.stR=.05+s.dex*.005+s.vit*.002+P.lv*.001; // ST리젠: DEX 주력 + VIT 보조 + 레벨 (/8 적용)
   P.hpR=.05+s.vit*.002+s.str*.002+P.lv*.001+_eqAffix('lifeRegen')/60; // HP리젠: 초당 + VIT+STR + 레벨 + 생명팔찌
   P.mmp=~~((100+P.lv*.5+s.int*1)*(1+_eqAffix('maxMPPct')));P.mp=Math.min(P.mp,P.mmp);
-  P.mpR=.05+s.int*.003+P.lv*.001; // MP리젠: 초당 + INT + 레벨 (/8 적용)
+  P.mpR=.05+s.int*.005+P.lv*.001; // MP리젠: 초당 + INT + 레벨 (/8 적용)
   // ═══ 에너지 쉴드: INT 100 이상 해금 ═══
   if(s.int>=100){P.mshield=~~(150+P.lv*.5+(s.int-100)*2.5+s.vit*0.5);P.shield=Math.min(P.shield,P.mshield)}
   else{P.mshield=0;P.shield=0}
@@ -11561,7 +11728,9 @@ function mkP(){
     skills:{kiSlash:1},_fused:{},maskOn:true};
 }
 
-// ═══ [S14] MAP — 공용 카빙 헬퍼 ═══
+// ═══════════════════════════════════════
+//  [S14] MAP_GEN — Maze, Gauntlet, Arena, Fixed Maps
+// ═══════════════════════════════════════
 function _tCarveCircle(map,mw,mh,cx,cy,r){
   const r2=r*r;
   for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){
@@ -12050,6 +12219,8 @@ function genGauntlet(fi){
 
   G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
   G.bossGate=_gateTiles;G.bossGateOpen=true;G.bossSealed=false;G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
+  // 전장의 안개 (Fog of War) 초기화
+  G._fow=new Uint8Array(mw*mh);G._fowDirty=true;
   G.spawnHoles=spawnHoles;
 }
 
@@ -115720,11 +115891,14 @@ function genFromTemplate(tmpl,si){
   G.bossGate=_gateTiles;G.bossGateOpen=true;G.bossSealed=false;
   G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
   G.spawnHoles=spawnHoles;
+  G._fow=new Uint8Array(mw*mh);G._fowDirty=true;
   // ── 에디터 배치 장식 오브젝트 → MAP_OBJS ──
   if(tmpl.objs){for(const o of tmpl.objs){
     if(!o.id||o.id==='player_start'||o.id==='boss_pos'||o.id==='exit'||o.id==='boss_gate'||o.id==='boss_exit')continue;
     // 기존 시스템 오브젝트(bonfire등)는 스킵 — 별도 생성됨
     if(o.id==='bonfire'||o.id==='lore'||o.id==='trap'||o.id==='altar'||o.id==='forge')continue;
+    // floor_eye: 에디터 배치 눈알 → G._editorEyes에 저장, _initEyes에서 처리
+    if(o.id==='floor_eye'){if(!G._editorEyes)G._editorEyes=[];G._editorEyes.push({x:o.x*T+T*.5,y:o.y*T+T*.5});continue}
     MAP_OBJS.push({type:o.id,x:o.x*T,y:o.y*T,hell:SI_TO_HELL[si]});
   }}
 }
@@ -115811,7 +115985,7 @@ function _enterBossArena(){
   const si=G.stage;const arena=genBossArena(si);
   ens=[];for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;{for(let _ri=0;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=0;};worldItems=[];G.parts=[];G.txts=[];
   G.hitStop=0;G.slowMo=0;G.curRoom=0;if(typeof _eSpCache!=='undefined')_eSpCache.clear();_impacts=[];_vfxAnims.length=0;_fireExps.length=0;
-  G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;G._voidScarecrow=null;
+  G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;G._voidScarecrow=null;G._editorEyes=[];
   G._spiralBullets=[];G._phantomSwords=[];G._doppelgangers=[];G._judgeCuts=[];G._pillars=[];
   G._darkZones=[];G._mirrorClones=[];G._fissures=[];G._tideWaves=[];G._seekerMines=[];
   G._rewindMarks=[];G._gravityWells=[];G._wallPushes=[];G._poisonPools=[];G._cageTraps=[];
@@ -115819,6 +115993,7 @@ function _enterBossArena(){
   G._gSlamWave=[];G._lavaField=null;G._gwPillar=null;_shDirty=true;
   G.spawnHoles=[];G.rifts=[];
   G.map=arena.map;G.mw=arena.mw;G.mh=arena.mh;
+  G._fow=new Uint8Array(arena.mw*arena.mh);G._fowDirty=true;
   G.rooms=arena.rooms;G.exits=[];
   G._bossArena=true;G._bossArenaExit={x:arena.exitX,y:arena.exitY};
   G.bossGate=null;G.bossGateOpen=true;G.bossSealed=true;_shDirty=true;
@@ -115845,7 +116020,9 @@ function _enterBossArena(){
   addTxt(P.x,P.y-50,'\u26A0 \uBD09\uC778\uB428!',_sCol,70);
 }
 
-// ═══ [S15] 적 타입 정의 ═══
+// ═══════════════════════════════════════
+//  [S15] ENEMIES — Types, Rare, Elite, Spawning
+// ═══════════════════════════════════════
 // 0:하급사도 1:가시사도 2:돌진사도 3:요마 4:갑각사도 5:태아형악마
 // 6:철갑사도 7:현자형사도 8:부풀은사도 9:의식사도
 // 10:그림자사도 11:자궁사도 12:광폭사도 13:거미사도 14:날개사도
@@ -116033,9 +116210,9 @@ const SPAWN_HOLE={name:'소환굴',col:'#aa4444',cnt:{S:50,M:100,L:200}};
 // ═══ 엘리트/모디파이어 시스템 ═══
 const ELITE_TIERS=[
   {name:'일반',col:'#ffffff',mods:0,hpMul:1,atkMul:1,dropBonus:0},
-  {name:'매직',col:'#4488ff',mods:1,hpMul:2.5,atkMul:1.3,dropBonus:.5},
-  {name:'레어',col:'#ffaa00',mods:2,hpMul:5,atkMul:1.6,dropBonus:1.5},
-  {name:'챔피언',col:'#ff4444',mods:3,hpMul:8,atkMul:2,dropBonus:3}];
+  {name:'매직',col:'#4488ff',mods:1,hpMul:2,atkMul:1.3,dropBonus:.5},
+  {name:'레어',col:'#ffaa00',mods:2,hpMul:3,atkMul:1.6,dropBonus:1.5},
+  {name:'챔피언',col:'#ff4444',mods:3,hpMul:5,atkMul:2,dropBonus:3}];
 // 엘리트 출현확률 [매직,레어,챔피언] per hell index
 const ELITE_PROB=[
   [.03,0,0],[.08,.02,0],[.12,.05,.01],[.15,.08,.02],
@@ -116124,7 +116301,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  let _hp=~~((ib?1500:150)*Math.pow(1.012,monLv)*dm*et.hpMul); // 1.2% 복리
+  let _hp=~~((ib?1500:150)*Math.pow(1.0128,monLv)*dm*et.hpMul); // 1.28% 복리
   const _atk=~~(((ib?40:20)+monLv*(ib?3:2))*dm*et.atkMul); // 기본20+레벨당2 (보스: 40+레벨당3)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   const _noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
@@ -116865,9 +117042,11 @@ const _ARCH_SFX={0:'m_melee',1:'m_archer',2:'m_charger',4:'m_tank',6:'m_shield',
   50:'m_melee',51:'m_tank',52:'m_tank',54:'m_melee',55:'m_shield',56:'m_tank',57:'m_splitter',58:'m_charger',59:'m_tank',
   60:'m_melee',61:'m_charger',63:'m_tank',65:'m_melee',66:'m_tank',67:'m_caster',68:'m_tank',69:'m_tank',
   70:'m_melee',71:'m_archer',74:'m_shield',75:'m_charger',77:'m_tank',79:'m_tank'};
-// ═══ [S16] UPDATE ═══
+// ═══════════════════════════════════════
+//  [S16] UPDATE — Main Game Logic
+// ═══════════════════════════════════════
 let _gameFrame=0;
-// ═══ [EDITOR] 에디터 모드 업데이트 — 카메라 클램프만 ═══
+// ─── [S16a] FRAME_INIT — 에디터/프레임 초기화 ───
 function _editorUpdate(){
   const _mwPx=G.mw*T,_mhPx=G.mh*T;
   if(_mwPx<=C.width)G.cam.x=_mwPx/2;else G.cam.x=Math.max(C.width/2/(G._edZoom||1),Math.min(_mwPx-C.width/2/(G._edZoom||1),G.cam.x));
@@ -116883,9 +117062,10 @@ function update(){
   // 플로우필드 갱신 (30프레임마다)
   _ffTimer+=_dtSp;if(_ffTimer>=.25){_ffTimer=0;_ffBuild()}
   if(G._dbgSlam>0){G._dbgSlam--;document.title='[SLAM] s='+P.s+' HS='+G.hitStop+' SM='+G.slowMo+' nhsT='+(G._noHitStopT||0).toFixed(1)+' f='+G._dbgSlam;}
-  // ═══ 쓰러짐/사망 플래그 — 아래 모든 플레이어 행동에서 체크 ═══
+  // ─── [S16b] PLAYER_ACT — 플레이어 행동 (이동/공격/스킬) ───
   const _pDead=P.s==='fallen'||P.s==='dead';
   if(G.pets)updatePet(); // 펫 이동은 항상, 수거는 petAuto 토글
+  if(_gameFrame%3===0)_updateFow(); // 3프레임마다 FOW 갱신
   _updateBurst(_dtSp); // GPU Burst (별도 context)
   mergeMatItems(); // 악의 아이템 자동 합체
   _updateSlimes(); // 슬라임 아이템 포식 + 합체
@@ -119593,6 +119773,7 @@ function update(){
     }
     if(_autoUsed)autoPotCd=18; // 0.3s
   }
+  // ─── [S16c] SKILL_CD — 스킬 쿨다운 + 자동발사 ───
   // ═══ 칼날살 — 오브 회전 + 파편 방출 ═══
   for(let _boi=0;_boi<pProjs.length;_boi++){
     const _bo=pProjs[_boi];if(!_bo.bladeOrb)continue;
@@ -120997,7 +121178,7 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
       } // end !_isWW
     }}
 }
-// ═══ BOSS AI FUNCTIONS ═══
+// ─── [S16e] BOSS_AI — 보스 AI 함수 (스코어/패턴/콤보) ───
 function _bossScore(mv,d,ps,phase,e){
   if(!mv.phase.includes(phase))return-1;
   const _ms=_BOSS_MOVESET[G.stage];if(_ms&&!_ms.has(mv.id))return-1;
@@ -121718,6 +121899,7 @@ function atkTicketRequest(e){
 function atkTicketRelease(e){
   if(e._hasAtkTicket){G.atkTickets=Math.max(0,G.atkTickets-1);e._hasAtkTicket=false}
 }
+// ─── [S16f] ENEMY_UPD — 적 업데이트 (AI/이동/공격) ───
 function updateE(e,sp){
   // ═══ 텔레그래프 VFX 타이머 감소 ═══
   if(e._telegraphT>0){e._telegraphT-=sp;e._telegraphR=e.r+20}
@@ -124391,6 +124573,7 @@ function updateE(e,sp){
   // ── 보스 아레나: 매 프레임 위치 클램핑 (벽 뚫기 방지) ──
   if(G._bossArena&&e.ib&&e.alive)_pushOutWall(e);
 }
+// ─── [S16g] PET_UPD — 펫 업데이트 + 유령쇠뇌/요정불꽃 ───
 // ═══ PET UPDATE LOGIC (까마귀+고양이 두 마리 항상 활성) ═══
 function _petClaim(item){
   // 다른 팻이 이미 타겟 중인지 체크
@@ -124545,13 +124728,61 @@ function _updateGhostIris(){
   // 크기 동기화 (UI 슬라이더에서 변경 시)
   if(G._irisSz!=null)pet.sz=G._irisSz;
   if(!pet.sz)pet.sz=20;
-  // 360° 원형 궤도 (플레이어 주위를 도는 등불)
-  const _iAng=pet.t*.02;
-  const ox=Math.cos(_iAng)*def.orbR;
-  const oy=Math.sin(_iAng)*def.orbR;
-  pet.x=P.x+ox;pet.y=P.y+oy;
+  // 가장 가까운 적 탐색 (타겟 죽으면 즉시 재탐색, 아니면 10프레임마다)
+  if(!pet._tgtT)pet._tgtT=0;
+  pet._tgtT++;
+  const _iNeedSearch=!pet._tgt||!pet._tgt.alive||pet._tgtT%10===0;
+  if(_iNeedSearch){
+    let _iMinD=1000,_iTgt=null; // 탐색 반경 1000
+    for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive)continue;
+      const d=dst(P.x,P.y,e.x,e.y);if(d<_iMinD){_iMinD=d;_iTgt=e}}
+    pet._tgt=_iTgt;
+  }
+  if(pet._tgt&&pet._tgt.alive){
+    // 적에게 부드럽게 이동 (적 머리 위에서 궤도)
+    const _iAng=pet.t*.03;
+    const tx=pet._tgt.x+Math.cos(_iAng)*20;
+    const ty=pet._tgt.y-pet._tgt.r-15+Math.sin(_iAng)*8;
+    pet.x+=(tx-pet.x)*.12;pet.y+=(ty-pet.y)*.12;
+  }else{
+    // 적 없으면 플레이어 주위 360° 궤도
+    const _iAng=pet.t*.02;
+    const ox=Math.cos(_iAng)*def.orbR;
+    const oy=Math.sin(_iAng)*def.orbR;
+    const tx=P.x+ox,ty=P.y+oy;
+    pet.x+=(tx-pet.x)*.15;pet.y+=(ty-pet.y)*.15;
+  }
   // 악의 소모 없음 (무료)
 }
+// ═══ 전장의 안개 (Fog of War) — 플레이어+요정이 밝힌 타일 기록 ═══
+function _fowReveal(wx,wy,radius){
+  if(!G._fow||!G.map)return;
+  const mw=G.mw,mh=G.mh;
+  const tr=Math.ceil(radius/T); // 타일 반경
+  const cx=~~(wx/T),cy=~~(wy/T);
+  const x0=Math.max(0,cx-tr),x1=Math.min(mw-1,cx+tr);
+  const y0=Math.max(0,cy-tr),y1=Math.min(mh-1,cy+tr);
+  const r2=tr*tr;
+  for(let ty=y0;ty<=y1;ty++){
+    const dy=ty-cy;
+    for(let tx=x0;tx<=x1;tx++){
+      const dx=tx-cx;
+      if(dx*dx+dy*dy<=r2&&!G._fow[ty*mw+tx]){
+        G._fow[ty*mw+tx]=1;G._fowDirty=true;
+      }
+    }
+  }
+}
+function _updateFow(){
+  if(!G._fow||!G.map||!P)return;
+  // 플레이어: 시야 반경 (픽셀→타일)
+  _fowReveal(P.x,P.y,500);
+  // 요정불꽃: 적에게 가서 밝힘
+  if(G.pets&&G.pets.iris&&!G._irisOff){
+    _fowReveal(G.pets.iris.x,G.pets.iris.y,350);
+  }
+}
+// ─── [S16h] REVIVE — 부활 VFX + 구울/슬라임 시스템 ───
 // ═══ 부활 VFX — 모든 부활 연출 통합 관리 ═══
 // _reviveVFX(x,y,col,label, opts?)
 //   col: 파티클+텍스트 색, label: 표시 텍스트
@@ -124862,6 +125093,7 @@ function checkRooms(){
   }
 }
 
+// ─── [S16i] HURT_E — 적 피격 (방어/속성/사망) ───
 function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(!e.alive)return;
   _petOnAtk();
@@ -125747,6 +125979,7 @@ function _logDmg(raw,final,src){
   _dmgLog.push({raw:~~raw,final:~~final,src:label,t:~~(G.gt||0),hp:~~P.hp});
   if(_dmgLog.length>_DMG_LOG_MAX)_dmgLog.shift();
 }
+// ─── [S16j] HURT_P — 플레이어 피격 (방어/포이즈) ───
 function hurtP(dmg,opts){
   if(P.s==='fallen'||P.s==='dead')return; // 쓰러짐/사망 중 무적
   // 보스 로딩/스테이지 전환 중 무적
@@ -125899,7 +126132,9 @@ let scrFlash=null,scrFlashA=0;
 function showPH(t,c){const el=$('ph');el.textContent=t;el.style.color=c;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),500)}
 function notify(msg){const el=$('notif');el.textContent=msg;el.classList.add('on');el.style.bottom='260px';setTimeout(()=>{el.style.bottom='270px';el.classList.remove('on')},1500)}
 
-// ═══ [S17] DEATH DROP SYSTEM ═══
+// ═══════════════════════════════════════
+//  [S17] DEATH — Drop System, Replay
+// ═══════════════════════════════════════
 let deathDrop=null; // {x,y,stage,item} — 이전 사망 시 떨어뜨린 아이템
 function itemScore(it){if(!it)return 0;return(it.rarity||0)*100+(it.tier||0)*20+(it.atk||0)+(it.def||0)+(it.stagger||0)*.5+(it.charge||0)*.5+(it.wStagger||0)*.5+(it.wRange||0)*.3+(it.bowRange||0)*.3+(it.bowPierce||0)*50+(it.mpRegen||0)*500+(it.stRegen||0)*200+(it.bonusRange||0)*15+(it.bonusChargeDist||0)*12+(it.chargeCharge||0)*30}
 // ═══ 사망 리플레이 시스템 ═══
@@ -126117,7 +126352,9 @@ function toggleFullscreen(){
   else{document.exitFullscreen().catch(()=>{})}
 }
 
-// ═══ [S18] PANELS ═══
+// ═══════════════════════════════════════
+//  [S18] UI — Skill Panel, Fusion, Slots
+// ═══════════════════════════════════════
 function togglePanel(id){const el=$(id);const isOn=el.classList.contains('on');closeAllPanels();if(!isOn){el.classList.add('on');G.paused=true;if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
 function openPanel(id){closeAllPanels();$(id).classList.add('on');G.paused=true;if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='storagePanel')renderStorage()}
 function closePanel(id){$(id).classList.remove('on');G.paused=false}
@@ -128033,7 +128270,9 @@ function _renderSkillRow(sk,grid){
     grid.appendChild(d);
 }
 
-// ═══ [S19] STORAGE PANEL ═══
+// ═══════════════════════════════════════
+//  [S19] PANELS — Storage, Settings, Forge, Inv Render
+// ═══════════════════════════════════════
 let _storageViewFloor=0;
 function _getStore(){
   // 하위호환: 기존 층별 데이터 통합
@@ -129979,7 +130218,9 @@ function _oriDrawAtmosphere(ctx,camX,camY,cw,ch,t){
   }
 }
 
-// ═══ [S20] DRAW ═══
+// ═══════════════════════════════════════
+//  [S20] DRAW — Full Render Pipeline
+// ═══════════════════════════════════════
 function draw(){
   if(!X)return;
   const _drawStart=performance.now();
@@ -132578,7 +132819,17 @@ function draw(){
     // ── 시작방 횃불 조명 (화면 내만) ──
     if(G.rooms&&G.rooms[0]){const _sr2=G.rooms[0];const _sdx=(_sr2.cx+.5)*T-G.cam.x,_sdy=(_sr2.cy+.5)*T-G.cam.y;
       if(Math.abs(_sdx)<_thw&&Math.abs(_sdy)<_thh){_tc.globalAlpha=.5;_tc.drawImage(_getTorchSmall(120),C.width/2+_sdx-120,C.height/2+_sdy-120);_tc.globalAlpha=1}}
-    // (요정불꽃 토치 스탬프는 위 _irOn 블록에서 처리)
+    // 요정불꽃 토치 조명 (주인공과 동일한 destination-out 방식)
+    if(G.pets&&G.pets.iris&&!G._irisOff){
+      const _irPt=G.pets.iris;
+      const _irDx=_irPt.x-G.cam.x,_irDy=_irPt.y-G.cam.y;
+      if(Math.abs(_irDx)<_thw&&Math.abs(_irDy)<_thh){
+        const _irSx=C.width/2+_irDx,_irSy=C.height/2+_irDy;
+        const _irFlk=.55+Math.sin(_gameFrame*.1)*.08+Math.sin(_gameFrame*.17)*.05;
+        const _irR=300; // 요정불꽃 조명 반경
+        _tc.globalAlpha=_irFlk;_tc.drawImage(_getTorchSmall(_irR),_irSx-_irR,_irSy-_irR);_tc.globalAlpha=1;
+      }
+    }
     // ── 보스문 앞 횃불 조명 (화면 내만) ──
     if(G._gateY!=null&&G._bossCx!=null){const _gdx=(G._bossCx+.5)*T-G.cam.x,_gdy=(G._gateY+3.5)*T-G.cam.y;
       if(Math.abs(_gdx)<_thw&&Math.abs(_gdy)<_thh){const _gsx=C.width/2+_gdx,_gsy=C.height/2+_gdy;_tc.globalAlpha=.6;_tc.drawImage(_getTorchSmall(100),_gsx-100,_gsy-100);_tc.globalAlpha=1}}
@@ -132586,37 +132837,39 @@ function draw(){
     _torchCamX=G.cam.x;_torchCamY=G.cam.y;
     X.drawImage(_torchCache,0,0);X.restore()}}
   if(_DEBUG_PERF)_dbgDTorch=performance.now()-_tc0;
-  // ── 요정불꽃 글로우 (포스트프로세싱 위에 렌더) ──
+  // ── 요정불꽃 스프라이트 (조명은 토치 캐시에서 처리, 여기선 코어+날개+파티클만) ──
   if(G.pets&&G.pets.iris&&!G._irisOff){
     const _irF=G.pets.iris;
-    const _irFBob=Math.sin(_irF.t*.07)*4;
-    const _irFx=_irF.x,_irFy=_irF.y+_irFBob;
+    const _irFBob=Math.sin(_irF.t*.07)*5;
+    const _irFx=C.width/2+(_irF.x-G.cam.x),_irFy=C.height/2+(_irF.y-G.cam.y)+_irFBob;
     const _irFFlk=.85+Math.sin(_irF.t*.09)*.1+Math.sin(_irF.t*.17)*.05;
-    // 넓은 글로우 (lighter로 어둠 위에 빛 추가)
-    X.save();X.globalCompositeOperation='lighter';
-    X.globalAlpha=.15*_irFFlk;X.fillStyle='#ff6600';
-    X.beginPath();X.arc(_irFx,_irFy,80,0,Math.PI*2);X.fill();
-    X.globalAlpha=.25*_irFFlk;X.fillStyle='#ff8822';
-    X.beginPath();X.arc(_irFx,_irFy,45,0,Math.PI*2);X.fill();
-    X.globalAlpha=.5*_irFFlk;X.fillStyle='#ffbb44';
-    X.beginPath();X.arc(_irFx,_irFy,22,0,Math.PI*2);X.fill();
-    X.restore();
-    // 불꽃 코어 (source-over, 항상 보임)
+    X.save();X.setTransform(1,0,0,1,0,0);
+    // 불꽃 코어
     X.globalAlpha=.9*_irFFlk;X.fillStyle='#ffcc33';
-    X.beginPath();X.arc(_irFx,_irFy,10,0,Math.PI*2);X.fill();
+    X.beginPath();X.arc(_irFx,_irFy,14,0,Math.PI*2);X.fill();
     X.globalAlpha=1;X.fillStyle='#ffffee';
-    X.beginPath();X.arc(_irFx,_irFy,5,0,Math.PI*2);X.fill();
-    // 불꽃 혀
-    for(let _ip=0;_ip<6;_ip++){
-      const _ipa=_irF.t*.05+_ip*1.05;
-      const _ipLife=((_irF.t+_ip*19)%35)/35;
-      const _ipx=_irFx+Math.sin(_ipa)*8;
-      const _ipy=_irFy-_ipLife*35-Math.sin(_irF.t*.07+_ip)*3;
-      X.globalAlpha=(1-_ipLife)*.8;
+    X.beginPath();X.arc(_irFx,_irFy,7,0,Math.PI*2);X.fill();
+    // 날개
+    const _wAng=_irF.t*.12;
+    const _wFlap=Math.sin(_wAng)*.4+.6;
+    X.globalAlpha=.4*_irFFlk;X.fillStyle='#ffdd88';
+    X.save();X.translate(_irFx,_irFy);
+    X.save();X.rotate(-.3-_wFlap*.3);X.scale(1,_wFlap*.6+.4);
+    X.beginPath();X.ellipse(-6,-3,12,20,-.2,0,Math.PI*2);X.fill();X.restore();
+    X.save();X.rotate(.3+_wFlap*.3);X.scale(1,_wFlap*.6+.4);
+    X.beginPath();X.ellipse(6,-3,12,20,.2,0,Math.PI*2);X.fill();X.restore();
+    X.restore();
+    // 불꽃 꼬리 파티클
+    for(let _ip=0;_ip<8;_ip++){
+      const _ipa=_irF.t*.05+_ip*0.79;
+      const _ipLife=((_irF.t+_ip*19)%40)/40;
+      const _ipx=_irFx+Math.sin(_ipa)*10;
+      const _ipy=_irFy-_ipLife*40-Math.sin(_irF.t*.07+_ip)*4;
+      X.globalAlpha=(1-_ipLife)*.7;
       X.fillStyle=_ipLife<.5?'#ffee55':'#ff8811';
-      X.beginPath();X.arc(_ipx,_ipy,2.5*(1-_ipLife)+1,0,Math.PI*2);X.fill();
+      X.beginPath();X.arc(_ipx,_ipy,3*(1-_ipLife)+1.5,0,Math.PI*2);X.fill();
     }
-    X.globalAlpha=1;
+    X.globalAlpha=1;X.restore();
   }
   const _pC0=performance.now(); // postB=flash+chroma+lit+bloom+torch
   let _pC1=0,_pC2=0,_pC3=0,_pC4=0,_pC5=0;
@@ -136259,6 +136512,14 @@ function drawMM(){if(!G.on||!G.map)return;
   const ox=_mmOx,oy=_mmOy;
   MX.clearRect(0,0,mmW,mmH);MX.fillStyle='rgba(0,0,0,.45)';MX.fillRect(0,0,mmW,mmH);
   MX.drawImage(_mmCache,ox,oy);
+  // FOW 미니맵 마스크 — 미탐험 지역 검게
+  if(G._fow){
+    MX.fillStyle='rgba(0,0,0,.85)';
+    for(let ty=0;ty<G.mh;ty++)for(let tx=0;tx<G.mw;tx++){
+      if(G._fow[ty*G.mw+tx])continue;
+      MX.fillRect(ox+tx*sc,oy+ty*sc,Math.max(sc,1),Math.max(sc,1));
+    }
+  }
   // 플레이어 (동적)
   const px=ox+(P.x/T)*sc,py=oy+(P.y/T)*sc;
   MX.fillStyle='#ffcc00';MX.beginPath();MX.arc(px,py,2.5,0,Math.PI*2);MX.fill();
@@ -136270,8 +136531,9 @@ function drawMM(){if(!G.on||!G.map)return;
     MX.fillStyle=SPAWN_HOLE.col;MX.globalAlpha=.85;MX.beginPath();MX.arc(sx,sy,_shR,0,Math.PI*2);MX.fill();
     MX.strokeStyle='#000';MX.lineWidth=.5;MX.stroke();MX.globalAlpha=1;
   }
-  // 적 표시 (60개 캡)
+  // 적 표시 (60개 캡, 탐험된 지역만)
   for(let _mei=0,_meCnt=0;_mei<ens.length&&_meCnt<60;_mei++){const e=ens[_mei];if(!e.alive)continue;_meCnt++;
+    if(G._fow){const _etx=~~(e.x/T),_ety=~~(e.y/T);if(_etx>=0&&_etx<G.mw&&_ety>=0&&_ety<G.mh&&!G._fow[_ety*G.mw+_etx])continue}
     const ex=ox+(e.x/T)*sc,ey=oy+(e.y/T)*sc;if(ex<0||ex>mmW||ey<0||ey>mmH)continue;
     MX.fillStyle=ELC[e.el];MX.fillRect(ex-1,ey-1,2,2)}}
 
@@ -136347,7 +136609,9 @@ function updateHUD(slow){
   $('eq5').style.borderColor=_bw?aelC:'#333';$('eq5').style.boxShadow=_bw?`inset 0 0 10px ${aelC}33`:'none';
 }
 
-// ═══ [S21] FPS 카운터 + GC 스파이크 모니터 ═══
+// ═══════════════════════════════════════
+//  [S21] SYSTEM — FPS Counter, Game Loop, Boot
+// ═══════════════════════════════════════
 let _fpsFrames=0,_fpsLast=performance.now(),_fpsCur=60,_fpsMin=999,_fpsMinT=0;
 // GC 스파이크 감지: 프레임타임 급증 = GC 의심
 let _gcSpikes=0,_gcSpikeT=0,_gcResetT=0;
@@ -136783,6 +137047,7 @@ $('retryBtn').onclick=async()=>{
     G._chainLights=[];G._orbWeaves=[];G._soulAnchors=[];G._chaseAoes=[];G._gsFlames=[];G._lavaPools=[];G._fireRains=[];G._shockGrids=[];G._donutSlams=[];G._safeCorners=[];G._crossWipes=[];G._tidalWipes=[];
     G._gSlamWave=[];G._lavaField=null;G._gwPillar=null;_shDirty=true;
     G.map=b.map;G.mw=b.mw;G.mh=b.mh;G.rooms=b.rooms;G.exits=b.exits;
+    G._fow=new Uint8Array(b.mw*b.mh);G._fowDirty=true;
     G.bossGate=b.bossGate;G.bossGateOpen=true;G.bossSealed=false;
     G._bossCx=b._bossCx;G._bossCy=b._bossCy;G._gateY=b._gateY;G._bossEntY=b._bossEntY;
     G.spawnHoles=b.spawnHoles;G.rifts=b.rifts;
