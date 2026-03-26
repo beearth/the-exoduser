@@ -5543,6 +5543,7 @@ const _CH_DECO={
     {id:'m_ctree11',file:'cursed_tree_11.png',sz:400,large:1},
     {id:'m_ctree12',file:'cursed_tree_12.png',sz:400,large:1},
     {id:'m_teye',file:'tree_eye_sheet.png',sz:120},
+    {id:'m_atree1',file:'anim_tree_01.png',sz:400,large:1},
   ],
 };
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
@@ -5569,7 +5570,7 @@ const _OBJ_META={
   'lava_l':{sz:200,collision:true},'lava_l_v6a':{sz:300,collision:true},'lava_l_v6b':{sz:300,collision:true},
   'lava_l_v6c':{sz:300,collision:true},'lava_l_v6d':{sz:300,collision:true},
   'lava_l_90':{sz:200,collision:true,rot:90},'lava_l_180':{sz:200,collision:true,rot:180},'lava_l_270':{sz:200,collision:true,rot:270},
-  'm_ctree1':{sz:400,col:1,large:1},'m_ctree2':{sz:400,col:1,large:1},'m_ctree3':{sz:400,col:1,large:1},'m_ctree4':{sz:400,col:1,large:1},'m_ctree5':{sz:400,col:1,large:1},'m_ctree6':{sz:400,col:1,large:1},'m_ctree7':{sz:400,col:1,large:1},'m_ctree8':{sz:400,col:1,large:1},'m_ctree9':{sz:400,col:1,large:1},'m_ctree10':{sz:400,col:1,large:1},'m_ctree11':{sz:400,col:1,large:1},'m_ctree12':{sz:400,col:1,large:1},'m_teye':{sz:120,trackEye:1},
+  'm_ctree1':{sz:250,col:1,large:1},'m_ctree2':{sz:250,col:1,large:1},'m_ctree3':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree4':{sz:250,col:1,large:1},'m_ctree5':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree6':{sz:250,col:1,large:1},'m_ctree7':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree8':{sz:250,col:1,large:1},'m_ctree9':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree10':{sz:250,col:1,large:1},'m_ctree11':{sz:250,col:1,large:1},'m_ctree12':{sz:250,col:1,large:1},'m_teye':{sz:120,trackEye:1},'m_atree1':{sz:250,col:1,large:1,anim:{frames:2,interval:30000}},
 };
 // _CH_DECO 프리로드
 for(const[ch,list]of Object.entries(_CH_DECO)){
@@ -10305,45 +10306,20 @@ function buildMapCache(){
     if(allReady){
       const firstImg=_GROUND_TILES[tiles[0]];
       const spPx=gtDef.spacingPx==='native'?firstImg.naturalWidth:gtDef.spacingPx;
-      // 패딩 캐시: 가장자리 2px 복제 → 타일 경계 샘플링 오류 방지
-      if(!_gtPadded)_gtPadded={};
-      const PAD=2;
-      for(const tid of tiles){
-        const pk=tid+'_'+spPx;
-        if(!_gtPadded[pk]){
-          const src=_GROUND_TILES[tid];
-          const sw=src.naturalWidth,sh=src.naturalHeight;
-          const dw=spPx==='native'||gtDef.spacingPx==='native'?sw:spPx;
-          const dh=spPx==='native'||gtDef.spacingPx==='native'?sh:spPx;
-          const pc=document.createElement('canvas');pc.width=dw+PAD*2;pc.height=dh+PAD*2;
-          const px=pc.getContext('2d');px.imageSmoothingEnabled=false;
-          // 중앙에 원본
-          px.drawImage(src,PAD,PAD,dw,dh);
-          // 상단 패딩: 원본 상단 1px 줄을 위로 복제
-          px.drawImage(src,0,0,sw,1, PAD,0,dw,PAD);
-          // 하단 패딩: 원본 하단 1px 줄을 아래로 복제
-          px.drawImage(src,0,sh-1,sw,1, PAD,PAD+dh,dw,PAD);
-          // 좌측 패딩
-          px.drawImage(src,0,0,1,sh, 0,PAD,PAD,dh);
-          // 우측 패딩
-          px.drawImage(src,sw-1,0,1,sh, PAD+dw,PAD,PAD,dh);
-          _gtPadded[pk]=pc;
-        }
-      }
       c.save();c.beginPath();
       for(let ty2=0;ty2<mh;ty2++)for(let tx2=0;tx2<mw;tx2++){
         if(map[ty2][tx2]===0)c.rect(tx2*T,ty2*T,T,T);
       }
       c.clip();
-      c.imageSmoothingEnabled=false;
+      c.imageSmoothingEnabled=true;
       let row=0;
       for(let py2=0;py2<mh*T;py2+=spPx){
         let col=0;
         for(let px2=0;px2<mw*T;px2+=spPx){
           const tid=tiles[(row+col)%tiles.length];
-          const pc=_gtPadded[tid+'_'+spPx];
-          // 패딩 포함 캔버스를 PAD만큼 앞당겨 그려서 경계 겹침
-          c.drawImage(pc,~~(px2-PAD),~~(py2-PAD));
+          const src=_GROUND_TILES[tid];
+          // 1px 오버랩으로 seam 방지 (패딩 없이 직접 그리기)
+          c.drawImage(src,~~px2-0.5,~~py2-0.5,spPx+1,spPx+1);
           col++;
         }
         row++;
@@ -120077,9 +120053,9 @@ function update(){
     const _bwMax=(P.skills.boneWall>=10)?3:2;
     if(P._bwStk==null)P._bwStk=_bwMax;
     if(P._bwStk<_bwMax){
-      if(P._bwRech==null)P._bwRech=900;
+      if(P._bwRech==null)P._bwRech=1500;
       P._bwRech-=sp;
-      if(P._bwRech<=0){P._bwStk=Math.min(_bwMax,P._bwStk+1);P._bwRech=P._bwStk<_bwMax?660:0}
+      if(P._bwRech<=0){P._bwStk=Math.min(_bwMax,P._bwStk+1);P._bwRech=P._bwStk<_bwMax?1500:0}
     }
   }
   // ═══ 방패던지기 — 쿨다운 + 투사체 업데이트 ═══
@@ -120088,42 +120064,87 @@ function update(){
     let _stW=0;for(let _si=0;_si<G._stProjs.length;_si++){
       const st=G._stProjs[_si];
       st.x+=st.vx*sp;st.y+=st.vy*sp;st.dist+=Math.sqrt(st.vx*st.vx+st.vy*st.vy)*sp;
-      st.ang+=0.5*sp; // 빠르게 회전
-      // 벽 충돌 → 소멸
-      if(isW(st.x,st.y)){continue}
+      if(st.wave)st._wvT+=sp; else st.ang+=0.5*sp;
+      // 벽 충돌 → 소멸 (파워웨이브는 벽 무시)
+      if(!st.wave&&isW(st.x,st.y)){continue}
       // 사거리 초과 → 소멸
       if(st.dist>=st.maxDist){continue}
       // 적 히트 — 관통 (hitSet으로 중복 방지)
-      const _stNe=shQuery(st.x,st.y,st.r+30);
-      for(let _ei=0;_ei<_stNe.length;_ei++){
-        const e=_stNe[_ei];if(!e.alive||st._hitSet.has(e))continue;
-        if(dst(st.x,st.y,e.x,e.y)<st.r+e.r){
-          st._hitSet.add(e);
-          const ang=Math.atan2(e.y-st.y,e.x-st.x);
-          hurtE(e,st.dmg,ang,false,null,EL.P);
-          // 넉백
-          const kbAmt=18+st.slv*2;
-          e.kb.x+=Math.cos(ang)*kbAmt;e.kb.y+=Math.sin(ang)*kbAmt;
-          addParts(e.x,e.y,'#88aacc',6);
-          SFX.block();
-          shake(4);
+      if(st.wave){
+        // ═══ 파워웨이브: 직사각형 판정 (진행방향 r, 좌우 w/2) ═══
+        const _wvPerp=st.ang+Math.PI/2;
+        const _wvHW=(st.w||90)/2;
+        for(let _ei=0;_ei<ens.length;_ei++){
+          const e=ens[_ei];if(!e.alive||st._hitSet.has(e))continue;
+          const dx=e.x-st.x,dy=e.y-st.y;
+          const along=dx*Math.cos(st.ang)+dy*Math.sin(st.ang);
+          const perp=dx*Math.cos(_wvPerp)+dy*Math.sin(_wvPerp);
+          if(along>-st.r&&along<st.r+20&&Math.abs(perp)<_wvHW+e.r){
+            st._hitSet.add(e);
+            const ang=Math.atan2(e.y-st.y,e.x-st.x);
+            hurtE(e,st.dmg,ang,false,null,EL.P);
+            // 강한 넉백 (파워웨이브 방향으로)
+            const kbAmt=30+st.slv*3;
+            e.kb.x+=Math.cos(st.ang)*kbAmt;e.kb.y+=Math.sin(st.ang)*kbAmt;
+            // 그로기 (보스 체간 30%)
+            if(e.boss){e.poise=Math.max(0,(e.poise||0)-30)}
+            else if(!e._groggy){e._groggy=true;e.groggyT=90;e.s='hit'}
+            addParts(e.x,e.y,'#ffaa44',10);
+            SFX.block();shake(6);
+          }
         }
-      }
-      // 적 투사체 반사
-      for(let _pi=projs.length-1;_pi>=0;_pi--){
-        const p=projs[_pi];if(p.friendly)continue;
-        if(dst(st.x,st.y,p.x,p.y)<st.r+8){
-          p.vx*=-1.5;p.vy*=-1.5;p.friendly=true;
-          p.dmg=~~(p.dmg*1.2);p.life=80;p.ml=80;
-          addTxt(p.x,p.y-10,'🛡️반사!','#66ccff',35);
-          addParts(p.x,p.y,'#66ccff',5);
-          playSample('impact_hit',.7,_r(1.2,.1));
+        // 파워웨이브: 적 투사체도 파괴
+        for(let _pi=projs.length-1;_pi>=0;_pi--){
+          const p=projs[_pi];if(p.friendly)continue;
+          const dx=p.x-st.x,dy=p.y-st.y;
+          const along=dx*Math.cos(st.ang)+dy*Math.sin(st.ang);
+          const perp=dx*Math.cos(_wvPerp)+dy*Math.sin(_wvPerp);
+          if(along>-st.r&&along<st.r+20&&Math.abs(perp)<_wvHW){
+            p.vx*=-1.5;p.vy*=-1.5;p.friendly=true;
+            p.dmg=~~(p.dmg*1.2);p.life=80;p.ml=80;
+            addTxt(p.x,p.y-10,'⚡반사!','#ffcc44',35);
+            addParts(p.x,p.y,'#ffaa44',5);
+          }
         }
-      }
-      // 파티클 방출
-      if((G._gcT+_si)%4===0){
-        const pa=st.ang+Math.random()*Math.PI*2;
-        poolPart(st.x,st.y,Math.cos(pa)*2,Math.sin(pa)*2,'#88aacc',2+Math.random()*2,8+Math.random()*4);
+        // 파워웨이브 파티클: 좌우로 먼지 + 땅 갈라짐
+        if((G._gcT+_si)%2===0){
+          const _side=(Math.random()>.5?1:-1);
+          const px=st.x+Math.cos(_wvPerp)*_side*(_wvHW*Math.random());
+          const py=st.y+Math.sin(_wvPerp)*_side*(_wvHW*Math.random());
+          poolPart(px,py,(Math.random()-.5)*2,-Math.random()*3,'#aa8855',2+Math.random()*3,10+Math.random()*6);
+          poolPart(px,py,(Math.random()-.5)*1.5,-Math.random()*2,'#ffaa44',1.5+Math.random()*2,6+Math.random()*4);
+        }
+      }else{
+        // ═══ 일반 방패던지기: 원형 판정 ═══
+        const _stNe=shQuery(st.x,st.y,st.r+30);
+        for(let _ei=0;_ei<_stNe.length;_ei++){
+          const e=_stNe[_ei];if(!e.alive||st._hitSet.has(e))continue;
+          if(dst(st.x,st.y,e.x,e.y)<st.r+e.r){
+            st._hitSet.add(e);
+            const ang=Math.atan2(e.y-st.y,e.x-st.x);
+            hurtE(e,st.dmg,ang,false,null,EL.P);
+            const kbAmt=18+st.slv*2;
+            e.kb.x+=Math.cos(ang)*kbAmt;e.kb.y+=Math.sin(ang)*kbAmt;
+            addParts(e.x,e.y,'#88aacc',6);
+            SFX.block();shake(4);
+          }
+        }
+        // 적 투사체 반사
+        for(let _pi=projs.length-1;_pi>=0;_pi--){
+          const p=projs[_pi];if(p.friendly)continue;
+          if(dst(st.x,st.y,p.x,p.y)<st.r+8){
+            p.vx*=-1.5;p.vy*=-1.5;p.friendly=true;
+            p.dmg=~~(p.dmg*1.2);p.life=80;p.ml=80;
+            addTxt(p.x,p.y-10,'🛡️반사!','#66ccff',35);
+            addParts(p.x,p.y,'#66ccff',5);
+            playSample('impact_hit',.7,_r(1.2,.1));
+          }
+        }
+        // 파티클 방출
+        if((G._gcT+_si)%4===0){
+          const pa=st.ang+Math.random()*Math.PI*2;
+          poolPart(st.x,st.y,Math.cos(pa)*2,Math.sin(pa)*2,'#88aacc',2+Math.random()*2,8+Math.random()*4);
+        }
       }
       G._stProjs[_stW++]=st;
     }G._stProjs.length=_stW;
@@ -120178,9 +120199,9 @@ function update(){
     const _msMax=(P.skills.maliceStorm>=10)?3:2;
     if(P._msStk==null)P._msStk=_msMax;
     if(P._msStk<_msMax){
-      if(P._msRech==null)P._msRech=900;
+      if(P._msRech==null)P._msRech=1500;
       P._msRech-=sp;
-      if(P._msRech<=0){P._msStk=Math.min(_msMax,P._msStk+1);P._msRech=P._msStk<_msMax?660:0}
+      if(P._msRech<=0){P._msStk=Math.min(_msMax,P._msStk+1);P._msRech=P._msStk<_msMax?1500:0}
     }
   }
   // ═══ 악의폭풍 — 조준 모드 (좌클릭=설치, 우클릭/ESC=취소) ═══
@@ -120246,7 +120267,7 @@ function update(){
         }
         if(_castSuccess){
           if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))};
-          if(_msBF){P._bnsCd=900}else{P._msStk--;const _msMx2=(P.skills.maliceStorm>=10)?3:2;if(P._msStk<_msMx2&&!P._msRech)P._msRech=900}
+          if(_msBF){P._bnsCd=1500}else{P._msStk--;const _msMx2=(P.skills.maliceStorm>=10)?3:2;if(P._msStk<_msMx2&&!P._msRech)P._msRech=1500}
           _addSkProf('maliceStorm');
           P._msAiming=false;
         }
@@ -120258,9 +120279,9 @@ function update(){
     const _isMax=(P.skills.iceStorm>=10)?3:2;
     if(P._isStk==null)P._isStk=_isMax;
     if(P._isStk<_isMax){
-      if(P._isRech==null)P._isRech=900;
+      if(P._isRech==null)P._isRech=1500;
       P._isRech-=sp;
-      if(P._isRech<=0){P._isStk=Math.min(_isMax,P._isStk+1);P._isRech=P._isStk<_isMax?660:0}
+      if(P._isRech<=0){P._isStk=Math.min(_isMax,P._isStk+1);P._isRech=P._isStk<_isMax?1500:0}
     }
   }
   // ═══ 아이스스톰 — 조준 모드 ═══
@@ -120288,7 +120309,7 @@ function update(){
         addTxt(_iswx,_iswy-20,'❄아이스스톰!','#88ddff',30);
         shake(4);
         playSample('voice_magic',1,1);
-        P._isStk--;const _isMx2=(P.skills.iceStorm>=10)?3:2;if(P._isStk<_isMx2&&!P._isRech)P._isRech=900;P._isAiming=false;
+        P._isStk--;const _isMx2=(P.skills.iceStorm>=10)?3:2;if(P._isStk<_isMx2&&!P._isRech)P._isRech=1500;P._isAiming=false;
       }
     }
   }
@@ -121966,7 +121987,7 @@ function doParry(_inDmg){_petOnParry();if(G._pStats)G._pStats._pH++;if(P.s==='sB
   else{G.hitStop=~~(_HS.parry*OPT.hitStop/100);G.slowMo=25;G.shake=14*OPT.shake/100}
   // ═══ 어픽스: parryBonus (패링보너스) — ST 회복 증가 ═══
   const _pbMul=1+_eqAffix('parryBonus');
-  P.iframes=25;P.st=Math.min(P.mst,P.st+~~(25*_pbMul));P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));G.mats+=10;addTxt(P.x,P.y-60,'👿악의+10','#cc44ff',40);
+  P.iframes=25;P.st=Math.min(P.mst,P.st+~~(25*_pbMul));P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));G.mats+=100;addTxt(P.x,P.y-60,'👿악의+100','#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,'💥패링폭발!','#ff6644',35)}}
 // ═══ 어택 티켓 시스템 (Ghost of Tsushima / DOOM 방식) ═══
@@ -126925,9 +126946,9 @@ function updateRMBSlot(){
   const _msLv=P.skills.maliceSwipe||0;
   const _sfFused=P.skills.maliceSwipe>=1&&P.skills.shieldThrow>=1&&_isFused('shieldFuse');
   const _nm=_sfFused?'둔격참':'처내기';
-  const _col=_sfFused?'#8899aa':'#aa4488';
-  el.innerHTML='<span class="qs-key" style="font-size:.5rem">RMB</span><span style="font-size:14px">'+(_sfFused?'🛡️':'💀')+'</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:'+_col+';font-weight:700">'+_nm+'</div>';
-  el.title=(_sfFused?'둔격참 (처내기+둔격호 합체)':'칼등 처내기')+' (홀드 연사, Lv'+_msLv+' 반사뎀+'+(10*_msLv)+'%)';el.style.borderColor=_sfFused?'#667788':'#443322';
+  const _col=_sfFused?'#ffaa44':'#aa4488';
+  el.innerHTML='<span class="qs-key" style="font-size:.5rem">RMB</span><span style="font-size:14px">'+(_sfFused?'⚡':'💀')+'</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:'+_col+';font-weight:700">'+_nm+'</div>';
+  el.title=(_sfFused?'둔격참 (파워웨이브 — 지면 충격파, 관통+그로기)':'칼등 처내기')+' (홀드 연사, Lv'+_msLv+' 반사뎀+'+(10*_msLv)+'%)';el.style.borderColor=_sfFused?'#aa7733':'#443322';
 }
 // ═══ CT 스킬 슬롯 (유령걸음/얼음보주) ═══
 function updateCtSlot(){
@@ -127079,7 +127100,7 @@ function fireBoneWall(tx,ty){
   P._bwAiming=false;
   G.mats-=12;
   const slv=P.skills.boneWall||1;
-  P._bwStk--;const _bwMx2=(P.skills.boneWall>=10)?3:2;if(P._bwStk<_bwMx2&&!P._bwRech)P._bwRech=900;
+  P._bwStk--;const _bwMx2=(P.skills.boneWall>=10)?3:2;if(P._bwStk<_bwMx2&&!P._bwRech)P._bwRech=1500;
   _addSkProf('boneWall');
   const ringR=~~(200+(slv-1)*22);
   const duration=Math.min(1800,180+(slv-1)*12);
@@ -127280,22 +127301,41 @@ function _autoShieldThrow(){
   _addSkProf('shieldThrow');
   const _sfFused=P.skills.maliceSwipe>=1&&P.skills.shieldThrow>=1&&_isFused('shieldFuse');
   const _sfLv=_sfFused?Math.min(P.skills.maliceSwipe||1,P.skills.shieldThrow||1):0;
-  P.st-=_sfFused?30:50;P._stCd=_sfFused?Math.max(120,300-_sfLv*15):300; // 합체: ST 30, 쿨 감소
+  P.st-=_sfFused?30:50;P._stCd=_sfFused?Math.max(120,300-_sfLv*15):300;
   const slv=P.skills.shieldThrow||1;
   const a=P.facing;
-  const _fuseDmgMul=_sfFused?(1+(_sfLv-1)*0.10):1;
-  const baseDmg=~~(((sh().atk||3)+P.baseAtk*0.3+10)*pShieldMul()*(1+(slv-1)*0.12)*10*statStr()*_fuseDmgMul*_fuseMul('shieldThrow'));
-  const maxDist=(_sfFused?500:400)+(slv-1)*30;
   if(!INV.equipped.shield)return;
   if(!G._stProjs)G._stProjs=[];
-  G._stProjs.push({
-    x:P.x+Math.cos(a)*20,y:P.y+Math.sin(a)*20,
-    vx:Math.cos(a)*10,vy:Math.sin(a)*10,
-    ang:a,dist:0,maxDist:maxDist,r:70,
-    dmg:baseDmg,slv:slv,_hitSet:new Set()
-  });
-  addTxt(P.x,P.y-30,'🛡️ 둔격호!','#66aadd',40);
-  shake(5);
+  if(_sfFused){
+    // ═══ 둔격참: 파워웨이브 (지면 충격파) ═══
+    const _wvDmgMul=1.5+(_sfLv-1)*0.12; // 합체 레벨당 12% 증가, 기본 1.5배
+    const baseDmg=~~(((sh().atk||3)+P.baseAtk*0.3+10)*pShieldMul()*(1+(slv-1)*0.12)*10*statStr()*_wvDmgMul*_fuseMul('shieldThrow'));
+    const maxDist=200+(_sfLv-1)*15+slv*10; // 짧은 근거리 충격파
+    G._stProjs.push({
+      x:P.x+Math.cos(a)*25,y:P.y+Math.sin(a)*25,
+      vx:Math.cos(a)*12,vy:Math.sin(a)*12,
+      ang:a,dist:0,maxDist:maxDist,r:50,w:90+_sfLv*5, // w=파동 폭
+      dmg:baseDmg,slv:slv,_hitSet:new Set(),
+      wave:true,_wvT:0 // 파워웨이브 플래그
+    });
+    addTxt(P.x,P.y-30,'⚡둔격참!','#ffaa44',45);
+    shake(8);
+    playSample('impact_hit',1,0.7);
+    // 발동 시 발밑 먼지
+    for(let _k=0;_k<12;_k++){const _da=a+(_k/12-.5)*1.2;poolPart(P.x,P.y,Math.cos(_da)*4+Math.random()*2,Math.sin(_da)*4+Math.random()*2,'#aa8855',2+Math.random()*3,12+Math.random()*8)}
+  }else{
+    // ═══ 일반 방패던지기 ═══
+    const baseDmg=~~(((sh().atk||3)+P.baseAtk*0.3+10)*pShieldMul()*(1+(slv-1)*0.12)*10*statStr()*_fuseMul('shieldThrow'));
+    const maxDist=400+(slv-1)*30;
+    G._stProjs.push({
+      x:P.x+Math.cos(a)*20,y:P.y+Math.sin(a)*20,
+      vx:Math.cos(a)*10,vy:Math.sin(a)*10,
+      ang:a,dist:0,maxDist:maxDist,r:70,
+      dmg:baseDmg,slv:slv,_hitSet:new Set()
+    });
+    addTxt(P.x,P.y-30,'🛡️ 둔격호!','#66aadd',40);
+    shake(5);
+  }
 }
 
 
@@ -130819,7 +130859,8 @@ function draw(){
             }
             const _teCols=3,_teRows=3;
             const _teCw=~~(_spr.naturalWidth/_teCols),_teCh=~~(_spr.naturalHeight/_teRows);
-            X.drawImage(_spr,(_efr%_teCols)*_teCw,~~(_efr/_teCols)*_teCh,_teCw,_teCh,mo.x-sz/2,mo.y-sz/2,sz,sz);
+            const _teW=sz,_teH=sz*(_teCh/_teCw); // 원본 비율 유지
+            X.drawImage(_spr,(_efr%_teCols)*_teCw,~~(_efr/_teCols)*_teCh,_teCw,_teCh,mo.x-_teW/2,mo.y-_teH/2,_teW,_teH);
           }else if((mo.type==='m_eye'||mo.type==='m_eye1'||mo.type==='m_eye2')&&_floorEyeImg.naturalWidth>0){
             // 눈깔: 스프라이트 시트로 플레이어 추적
             // 시트: 0=center,1=S,2=SW,3=W,4=NW,5=N,6=NE,7=E,8=SE
@@ -130832,29 +130873,15 @@ function draw(){
               _efr=[3,4,5,6,7,8,1,2][_ei8]; // W,NW,N,NE,E,SE,S,SW → 시트 프레임
             }
             X.drawImage(_floorEyeImg,_efr*40,0,40,40,mo.x-sz/2,mo.y-sz/2,sz,sz);
+          }else if(_meta&&_meta.anim){
+            // 애니메이션 오브젝트: 가로 시트, interval ms 간격으로 프레임 전환
+            // 각 오브젝트마다 위치 기반 오프셋으로 동시에 안 바뀌게
+            const _an=_meta.anim,_aOfs=((~~(mo.x*7+mo.y*13))&0x7fffffff)%(_an.interval*_an.frames);
+            const _aFr=~~(((_now+_aOfs)%(_an.interval*_an.frames))/_an.interval);
+            const _aFw=~~(_spr.naturalWidth/_an.frames);
+            X.drawImage(_spr,_aFr*_aFw,0,_aFw,_spr.naturalHeight,mo.x-sz/2,mo.y-sz/2,sz,sz);
           }else X.drawImage(_spr,mo.x-sz/2,mo.y-sz/2,sz,sz);
-          // 나무에 눈알 오버레이 (m_ctree 시리즈)
-          if(_meta&&_meta.col&&_meta.large&&mo.type.startsWith('m_ctree')){
-            const _teSpr=_OBJ_SPR['m_teye'];
-            if(_teSpr&&_teSpr.complete&&_teSpr.naturalWidth>0){
-              const _edx2=P.x-mo.x,_edy2=P.y-mo.y;
-              const _ed2=_edx2*_edx2+_edy2*_edy2;
-              let _efr2=0;
-              if(_ed2>T*T*4){
-                const _ea2=Math.atan2(_edy2,_edx2);
-                const _ei2=~~(((_ea2+Math.PI)/(Math.PI*2))*8+0.5)%8;
-                _efr2=[3,4,5,6,7,8,1,2][_ei2];
-              }
-              const _tC=3,_tR=3;
-              const _fw=~~(_teSpr.naturalWidth/_tC),_fh=~~(_teSpr.naturalHeight/_tR);
-              // 나무 상단 1/3 지점에 눈알 배치, 크기=나무의 30%
-              const _eSz=sz*.3;
-              const _eHash=((~~(mo.x*31+mo.y*97))&0x7fffffff);
-              const _eOx=((_eHash%20)-10)*0.5; // 약간의 x랜덤 오프셋
-              const _eOy=-sz*.15+((_eHash%14)-7)*0.3; // 나무 상단 쪽
-              X.drawImage(_teSpr,(_efr2%_tC)*_fw,~~(_efr2/_tC)*_fh,_fw,_fh,mo.x-_eSz/2+_eOx,mo.y-_eSz/2+_eOy,_eSz,_eSz);
-            }
-          }
+          // 눈알 오버레이 비활성화
           // 발광 오브젝트: 포인트라이트
           if(_meta&&_meta.light){X.globalAlpha=.15+Math.sin(_now/800+mo.x)*.05;X.fillStyle='rgba(255,180,80,0.3)';X.beginPath();X.arc(mo.x,mo.y,80,0,Math.PI*2);X.fill();X.globalAlpha=1}
         }else if(mo.type!=='bonfire'&&mo.type!=='lore'&&mo.type!=='breakable'&&mo.type!=='trap'&&mo.type!=='altar'){
@@ -132989,9 +133016,12 @@ function draw(){
       const _irDx=_irPt.x-G.cam.x,_irDy=_irPt.y-G.cam.y;
       if(Math.abs(_irDx)<_thw&&Math.abs(_irDy)<_thh){
         const _irSx=C.width/2+_irDx,_irSy=C.height/2+_irDy;
-        const _irFlk=.55+Math.sin(_gameFrame*.1)*.08+Math.sin(_gameFrame*.17)*.05;
-        const _irR=300; // 요정불꽃 조명 반경
-        _tc.globalAlpha=_irFlk;_tc.drawImage(_getTorchSmall(_irR),_irSx-_irR,_irSy-_irR);_tc.globalAlpha=1;
+        const _irFlk=.65+Math.sin(_gameFrame*.1)*.1+Math.sin(_gameFrame*.17)*.06;
+        const _irR=450; // 요정불꽃 조명 반경 (확대+번짐)
+        _tc.globalAlpha=_irFlk*.45;_tc.drawImage(_getTorchSmall(_irR),_irSx-_irR,_irSy-_irR);
+        const _irR2=220;
+        _tc.globalAlpha=_irFlk*.7;_tc.drawImage(_getTorchSmall(_irR2),_irSx-_irR2,_irSy-_irR2);
+        _tc.globalAlpha=1;
       }
     }
     // ── 보스문 앞 횃불 조명 (화면 내만) ──
@@ -133008,6 +133038,11 @@ function draw(){
     const _irFx=C.width/2+(_irF.x-G.cam.x),_irFy=C.height/2+(_irF.y-G.cam.y)+_irFBob;
     const _irFFlk=.85+Math.sin(_irF.t*.09)*.1+Math.sin(_irF.t*.17)*.05;
     X.save();X.setTransform(1,0,0,1,0,0);
+    // 번짐 글로우 헤일로
+    X.globalAlpha=.18*_irFFlk;X.fillStyle='#ffa028';
+    X.beginPath();X.arc(_irFx,_irFy,55,0,Math.PI*2);X.fill();
+    X.globalAlpha=.12*_irFFlk;X.fillStyle='#ffcc44';
+    X.beginPath();X.arc(_irFx,_irFy,36,0,Math.PI*2);X.fill();
     // 불꽃 코어
     X.globalAlpha=.9*_irFFlk;X.fillStyle='#ffcc33';
     X.beginPath();X.arc(_irFx,_irFy,14,0,Math.PI*2);X.fill();
@@ -133901,49 +133936,90 @@ function drawP(){
     }
     X.globalAlpha=1;
   }
-  // ══ 방패던지기 — 렌더 ══
+  // ══ 방패던지기 / 파워웨이브 — 렌더 ══
   if(G._stProjs&&G._stProjs.length>0){X.save();
     for(const st of G._stProjs){
       const _stR=st.r;const _stA=st.ang;
-      // ── 회전 잔상 트레일 (부채형) ──
-      if(OPT.trail){
-        for(let _ti=1;_ti<=2;_ti++){
-          const _ta=_stA-_ti*0.8;
-          const _tx=st.x-st.vx*_ti*1.2,_ty=st.y-st.vy*_ti*1.2;
-          X.save();X.translate(_tx,_ty);X.rotate(_ta);
-          X.globalAlpha=.12/_ti;
-          X.fillStyle='#88ccff';
-          X.beginPath();X.moveTo(0,0);X.arc(0,0,_stR*(1-_ti*.1),-Math.PI*.55,Math.PI*.55);X.closePath();X.fill();
-          X.restore();
+      if(st.wave){
+        // ═══ 파워웨이브 렌더 — 지면 충격파 ═══
+        const _wvHW=(st.w||90)/2;
+        const _wvProg=Math.min(1,st.dist/st.maxDist);
+        const _wvAlpha=1-_wvProg*0.4; // 멀어질수록 약간 투명
+        X.save();X.translate(st.x,st.y);X.rotate(_stA);
+        // 1) 지면 갈라짐 트레일 (뒤쪽)
+        if(OPT.trail){
+          for(let _ti=1;_ti<=3;_ti++){
+            const _tx=-st.vx/_ti*2,_ty=-st.vy/_ti*2;
+            X.globalAlpha=.08/_ti*_wvAlpha;
+            X.fillStyle='#aa7733';
+            X.fillRect(_tx-15,-_wvHW*(1-_ti*.15),30,_wvHW*2*(1-_ti*.15));
+          }
         }
-      }
-      // ── 방패 본체 (부채/카이트형) ──
-      X.save();X.translate(st.x,st.y);X.rotate(_stA);
-      // 글로우
-      X.globalAlpha=.25;
-      X.fillStyle='#66aadd';X.beginPath();X.moveTo(0,0);X.arc(0,0,_stR+5,-Math.PI*.6,Math.PI*.6);X.closePath();X.fill();
-      
-      // 금속 본체 — 부채꼴
-      X.globalAlpha=.95;
-      X.fillStyle='#8899aa';
-      X.beginPath();X.moveTo(0,0);X.arc(0,0,_stR,-Math.PI*.55,Math.PI*.55);X.closePath();X.fill();
-      // 테두리
-      X.strokeStyle='#ccddee';X.lineWidth=2;
-      X.beginPath();X.moveTo(0,0);X.arc(0,0,_stR,-Math.PI*.55,Math.PI*.55);X.closePath();X.stroke();
-      // 리벳/장식 — 부채 엣지 따라
-      X.fillStyle='#ddeeff';
-      for(let _ri=0;_ri<5;_ri++){
-        const _ra=-Math.PI*.45+_ri*(Math.PI*.9/4);
-        X.beginPath();X.arc(Math.cos(_ra)*_stR*.75,Math.sin(_ra)*_stR*.75,2.5,0,Math.PI*2);X.fill();
-      }
-      // 중앙 엠블럼
-      X.fillStyle='#aaddff';X.beginPath();X.arc(_stR*.35,0,_stR*.15,0,Math.PI*2);X.fill();
-      X.strokeStyle='#88aacc';X.lineWidth=1.5;X.stroke();
-      X.restore();
-      // ── 스파크 파티클 ──
-      if(OPT.parts>=40&&Math.random()>.5){
-        const _sa=_stA+Math.PI*.55*(Math.random()>.5?1:-1);
-        poolPart(st.x+Math.cos(_sa)*_stR,st.y+Math.sin(_sa)*_stR,(Math.random()-.5)*3,(Math.random()-.5)*3,'#aaddff',1.5+Math.random()*2,8+Math.random()*6);
+        // 2) 메인 충격파 본체 — 반원 + 직사각형 꼬리
+        // 꼬리 (갈색 지면)
+        X.globalAlpha=.35*_wvAlpha;
+        X.fillStyle='#886633';
+        X.fillRect(-_stR*1.5,-_wvHW*.7,_stR*1.5,_wvHW*1.4);
+        // 선두 파동 (금빛 반원)
+        X.globalAlpha=.7*_wvAlpha;
+        const _wvGrad=X.createRadialGradient(0,0,_stR*.2,0,0,_stR*1.2);
+        _wvGrad.addColorStop(0,'#ffdd66');_wvGrad.addColorStop(.5,'#ffaa22');_wvGrad.addColorStop(1,'rgba(180,100,20,0)');
+        X.fillStyle=_wvGrad;
+        X.beginPath();X.arc(0,0,_stR*1.2,-Math.PI*.5,Math.PI*.5);X.closePath();X.fill();
+        // 선두 에지 라인 (밝은 금색)
+        X.globalAlpha=.9*_wvAlpha;
+        X.strokeStyle='#ffcc44';X.lineWidth=3;
+        X.beginPath();X.arc(0,0,_stR,-Math.PI*.45,Math.PI*.45);X.stroke();
+        // 3) 지면 파편 — 위로 솟는 돌 조각
+        X.globalAlpha=.6*_wvAlpha;
+        X.fillStyle='#997755';
+        const _wvSin=Math.sin(st._wvT*0.3);
+        for(let _ri=0;_ri<4;_ri++){
+          const _ry=(-_wvHW*.6)+_ri*(_wvHW*.4);
+          const _rh=6+Math.abs(Math.sin(st._wvT*0.5+_ri))*10;
+          X.fillRect(-5+_wvSin*3,_ry,8,-_rh);
+        }
+        // 4) 에너지 파동 링 (펄스)
+        X.globalAlpha=.2*_wvAlpha*(0.5+0.5*Math.sin(st._wvT*0.8));
+        X.strokeStyle='#ffee88';X.lineWidth=2;
+        X.beginPath();X.ellipse(0,0,_stR*1.5,_wvHW,0,0,Math.PI*2);X.stroke();
+        X.restore();
+      }else{
+        // ═══ 일반 방패던지기 렌더 ═══
+        // ── 회전 잔상 트레일 (부채형) ──
+        if(OPT.trail){
+          for(let _ti=1;_ti<=2;_ti++){
+            const _ta=_stA-_ti*0.8;
+            const _tx=st.x-st.vx*_ti*1.2,_ty=st.y-st.vy*_ti*1.2;
+            X.save();X.translate(_tx,_ty);X.rotate(_ta);
+            X.globalAlpha=.12/_ti;
+            X.fillStyle='#88ccff';
+            X.beginPath();X.moveTo(0,0);X.arc(0,0,_stR*(1-_ti*.1),-Math.PI*.55,Math.PI*.55);X.closePath();X.fill();
+            X.restore();
+          }
+        }
+        // ── 방패 본체 (부채/카이트형) ──
+        X.save();X.translate(st.x,st.y);X.rotate(_stA);
+        X.globalAlpha=.25;
+        X.fillStyle='#66aadd';X.beginPath();X.moveTo(0,0);X.arc(0,0,_stR+5,-Math.PI*.6,Math.PI*.6);X.closePath();X.fill();
+        X.globalAlpha=.95;
+        X.fillStyle='#8899aa';
+        X.beginPath();X.moveTo(0,0);X.arc(0,0,_stR,-Math.PI*.55,Math.PI*.55);X.closePath();X.fill();
+        X.strokeStyle='#ccddee';X.lineWidth=2;
+        X.beginPath();X.moveTo(0,0);X.arc(0,0,_stR,-Math.PI*.55,Math.PI*.55);X.closePath();X.stroke();
+        X.fillStyle='#ddeeff';
+        for(let _ri=0;_ri<5;_ri++){
+          const _ra=-Math.PI*.45+_ri*(Math.PI*.9/4);
+          X.beginPath();X.arc(Math.cos(_ra)*_stR*.75,Math.sin(_ra)*_stR*.75,2.5,0,Math.PI*2);X.fill();
+        }
+        X.fillStyle='#aaddff';X.beginPath();X.arc(_stR*.35,0,_stR*.15,0,Math.PI*2);X.fill();
+        X.strokeStyle='#88aacc';X.lineWidth=1.5;X.stroke();
+        X.restore();
+        // ── 스파크 파티클 ──
+        if(OPT.parts>=40&&Math.random()>.5){
+          const _sa=_stA+Math.PI*.55*(Math.random()>.5?1:-1);
+          poolPart(st.x+Math.cos(_sa)*_stR,st.y+Math.sin(_sa)*_stR,(Math.random()-.5)*3,(Math.random()-.5)*3,'#aaddff',1.5+Math.random()*2,8+Math.random()*6);
+        }
       }
     }
     X.globalAlpha=1;X.restore();
