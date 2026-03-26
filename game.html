@@ -4405,10 +4405,10 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       else showPH('쿨다운 중...','#ff8844');break;
     case 'ghostXbowTurret':
       if(_gxTurret){
-        // 이미 설치됨 → 즉시 철거
-        _gxTurret=null;_xbowEquipped=false;
-        showPH('유령감시 철거','#888');playSample('bow_release',.4,_r(1.2,.1));
-        addTxt(P.x,P.y-20,'감시 철거','#aaaaaa',30);_skOk=true;
+        // 이미 설치됨 → 철거 → 이동식으로 복귀
+        _gxTurret=null;_xbowEquipped=true;
+        showPH('유령감시 철거 → 이동식','#66aadd');playSample('bow_release',.4,_r(1.2,.1));
+        addTxt(P.x,P.y-20,'이동식 복귀','#66ccff',30);_skOk=true;
       } else if(P.st>=GXBOW_ST){_xbowEquipped=true;activateGhostXbowTurret();_skOk=true}
       else showPH('ST 부족! (100)','#ff4444');break;
     case 'shieldThrow': showPH('우클릭(칼등치기)에 합체됨','#66aadd');break;
@@ -5289,22 +5289,16 @@ function itemPower(it){
 function sortInvBag(){
   const _eqPow2={};
   for(const s of SLOT_NAMES){const eq=INV.equipped[s];_eqPow2[s]=eq?itemPower(eq):0}
-  // 슬롯 순서 맵 (종류별 그룹핑)
-  const _slotOrd={};for(let i=0;i<SLOT_NAMES.length;i++)_slotOrd[SLOT_NAMES[i]]=i;
   INV.bag.sort((a,b)=>{
     // 1) 즐겨찾기 최상단
     if(!!a.fav!==!!b.fav)return a.fav?-1:1;
     // 2) 쓰레기 최하단
     if(!!a.junk!==!!b.junk)return a.junk?1:-1;
-    // 3) 슬롯(종류)별 그룹핑
-    const sa=_slotOrd[a.slot]??99, sb=_slotOrd[b.slot]??99;
-    if(sa!==sb)return sa-sb;
-    // 4) 같은 슬롯 안에서: 베니핏 큰 순 → 아이템파워 큰 순
+    // 3) 베니핏 큰 순 (장착 대비 이득)
     const aBen=itemPower(a)-_eqPow2[a.slot];
     const bBen=itemPower(b)-_eqPow2[b.slot];
-    const aUp=aBen>0?1:0,bUp=bBen>0?1:0;
-    if(aUp!==bUp)return bUp-aUp;
-    if(aUp&&bUp)return bBen-aBen;
+    if(aBen!==bBen)return bBen-aBen;
+    // 4) 동률이면 아이템파워 큰 순
     return itemPower(b)-itemPower(a);
   });
   _invSalSel.clear();INV.selected=null;
@@ -5564,7 +5558,7 @@ let _xbowEquipped=true; // T키 토글 (기본 ON)
 // ── 유령감시 터렛 ──
 // GXBOW_CD 제거됨 — 유령감시 쿨다운 없음
 const GXBOW_ST=100;      // ST 소비 (반감)
-const GXBOW_DMG_MUL=1.5; // 터렛 고정 시 데미지 +50%
+const GXBOW_DMG_MUL=1.2; // 터렛 고정 시 데미지 기본 +20%
 const GXBOW_SPD_MUL=1.5; // 터렛 고정 시 공속 +50%
 let _gxTurret=null;      // {x,y,timer,ang} 설치된 터렛
 let _gxFiring=0;         // 터렛 발사 중 데미지 배율 (0이면 비활성)
@@ -119240,7 +119234,7 @@ function update(){
     // 쿨다운 제거됨
     const _gxLv=P.skills.ghostXbowTurret||1;
     const _gxSpdMul=GXBOW_SPD_MUL*(1+(_gxLv-1)*0.05); // Lv당 공속+5%
-    const _gxDmgMul=GXBOW_DMG_MUL*(1+(_gxLv-1)*0.05); // Lv당 뎀+5%
+    const _gxDmgMul=GXBOW_DMG_MUL*(1+(_gxLv-1)*0.02); // Lv당 뎀+2%
     _gxTurret.timer+=_dtSp;
     let _gxTarget=null,_gxNear=XBOW_RANGE;
     {const _gxNe=shQuery(_gxTurret.x,_gxTurret.y,XBOW_RANGE);for(let i=0;i<_gxNe.length;i++){
@@ -119807,7 +119801,12 @@ function update(){
         p.life=-999; // 메인 루프에서 정리됨
         if(_vs.absorbed>=_vs.maxAbsorb){
           _vs.aggroOn=false;
-          addTxt(_vs.x,_vs.y-35,'흡수 완료!','#ffcc00',50);
+          // 자동 회수: 축적 자원 반환 + 1000 XP
+          P.hp=Math.min(P.mhp,P.hp+_vs.resHP);P.mp=Math.min(P.mmp,P.mp+_vs.resMP);P.st=Math.min(P.mst,P.st+_vs.resST);
+          addTxt(_vs.x,_vs.y-35,'자동회수! HP+'+_vs.resHP+' MP+'+_vs.resMP+' ST+'+_vs.resST,'#66ffaa',60);
+          giveXP(1000);addTxt(_vs.x,_vs.y-55,'+1000 XP','#ffcc44',50);
+          addParts(_vs.x,_vs.y,'#bb88ee',15);playSample('ghost_laugh',.8,_r(1.3,.1));
+          G._voidScarecrow=null;P._vsCd=~~(600*(1+_eqAffix('cooldownRed')));
         }
       }
     }
