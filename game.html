@@ -10168,10 +10168,11 @@ function _tileHash(x,y,s){let h=(x*374761393+y*668265263+s)^0x5bd1e995;h=Math.im
 const _mapTexImgs={};
 const _MAP_TEX_FILES={1:'img/maps/stage_1_tex.png'};
 // 바닥 타일 텍스처 (400px 체커보드 타일링)
-const _GROUND_TILES={};
+const _GROUND_TILES={};let _gtScaled=null;
 const _GT_FILES={
   'gt_01':'assets/map/ch1/ground_tile_01.png',
-  'gt_02':'assets/map/ch1/ground_tile_02.png'
+  'gt_02':'assets/map/ch1/ground_tile_02.png',
+  'gt_03':'assets/map/ch1/ground_tile_03.png'
 };
 for(const[id,src] of Object.entries(_GT_FILES)){
   const img=new Image();img.onload=()=>console.log('[GT] '+id+' loaded');
@@ -10180,7 +10181,7 @@ for(const[id,src] of Object.entries(_GT_FILES)){
 }
 // 스테이지별 바닥타일 배치 정의: {stageId: [{id,spacingPx}]}
 const _GT_STAGE_MAP={
-  0:{tiles:['gt_01','gt_02'],spacingPx:400}
+  0:{tiles:['gt_03'],spacingPx:'native'}
 };
 for(const[sid,src] of Object.entries(_MAP_TEX_FILES)){
   const img=new Image();img.onload=()=>console.log('[MAP-TEX] stage '+sid+' loaded');
@@ -10282,25 +10283,30 @@ function buildMapCache(){
   const c=_mapCvs.getContext('2d');_mapCtx=c;
   const _isW=(tx,ty)=>tx<0||tx>=mw||ty<0||ty>=mh||map[ty][tx]===1||map[ty][tx]===3;
   const _isF=(tx,ty)=>tx>=0&&tx<mw&&ty>=0&&ty<mh&&map[ty][tx]===0;
-  // ── Pass 0.4: 바닥타일 체커보드 타일링 ──
+  // ── Pass 0.4: 바닥타일 타일링 ──
   if(_GT_STAGE_MAP[G.stage]){
     const gtDef=_GT_STAGE_MAP[G.stage];
-    const spPx=gtDef.spacingPx, tiles=gtDef.tiles;
+    const tiles=gtDef.tiles;
     const allReady=tiles.every(tid=>_GROUND_TILES[tid]&&_GROUND_TILES[tid].complete&&_GROUND_TILES[tid].naturalWidth>0);
     if(allReady){
+      // native: 원본 크기 그대로, 숫자: 해당 px로 리사이즈
+      const firstImg=_GROUND_TILES[tiles[0]];
+      const spPx=gtDef.spacingPx==='native'?firstImg.naturalWidth:gtDef.spacingPx;
+      const useNative=gtDef.spacingPx==='native';
       c.save();c.beginPath();
       for(let ty2=0;ty2<mh;ty2++)for(let tx2=0;tx2<mw;tx2++){
         if(map[ty2][tx2]===0)c.rect(tx2*T,ty2*T,T,T);
       }
       c.clip();
-      c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+      c.imageSmoothingEnabled=false;
       let row=0;
       for(let py2=0;py2<mh*T;py2+=spPx){
         let col=0;
         for(let px2=0;px2<mw*T;px2+=spPx){
           const tid=tiles[(row+col)%tiles.length];
           const gi=_GROUND_TILES[tid];
-          c.drawImage(gi,px2,py2,spPx,spPx);
+          if(useNative) c.drawImage(gi,px2,py2);
+          else c.drawImage(gi,px2,py2,spPx,spPx);
           col++;
         }
         row++;
@@ -10318,7 +10324,7 @@ function buildMapCache(){
       if(map[ty2][tx2]===0)c.rect(tx2*T,ty2*T,T,T);
     }
     c.clip();
-    c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+    c.imageSmoothingEnabled=false;
     // 텍스처를 원본 크기 그대로 타일링(반복) — 늘리거나 줄이지 않음
     const _tw=mtx.naturalWidth,_th=mtx.naturalHeight;
     for(let _ty=0;_ty<mh*T;_ty+=_th)for(let _tx=0;_tx<mw*T;_tx+=_tw){
