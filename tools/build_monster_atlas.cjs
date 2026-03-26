@@ -68,7 +68,7 @@ async function getFrames(animDir, dirName) {
 }
 
 async function processMonster(folder) {
-  const etypeMatch = folder.match(/etype(\d+)/);
+  const etypeMatch = folder.match(/etype(\d+)/) || folder.match(/_et(\d+)_/);
   if (!etypeMatch) return null;
   const etype = parseInt(etypeMatch[1]);
   const base = path.join(MONSTERS_DIR, folder);
@@ -279,9 +279,9 @@ async function main() {
   const onlyList = onlyArg ? onlyArg.split('=')[1].split(',').map(Number) : null;
   const force = args.includes('--force');
 
-  // _full 폴더만 대상
+  // mon_ 또는 _full 폴더 대상
   const folders = fs.readdirSync(MONSTERS_DIR)
-    .filter(f => f.endsWith('_full') && fs.statSync(path.join(MONSTERS_DIR, f)).isDirectory())
+    .filter(f => (f.startsWith('mon_') || f.endsWith('_full')) && fs.statSync(path.join(MONSTERS_DIR, f)).isDirectory())
     .sort((a, b) => {
       const na = parseInt(a.match(/\d+/)[0]);
       const nb = parseInt(b.match(/\d+/)[0]);
@@ -295,7 +295,8 @@ async function main() {
   let ok = 0, skip = 0, fail = 0;
 
   for (const folder of folders) {
-    const etype = parseInt(folder.match(/\d+/)[0]);
+    const etM = folder.match(/_et(\d+)_/) || folder.match(/etype(\d+)/);
+    const etype = etM ? parseInt(etM[1]) : parseInt(folder.match(/\d+/)[0]);
     if (onlyList && !onlyList.includes(etype)) continue;
 
     // 이미 있으면 스킵 (--force로 재생성)

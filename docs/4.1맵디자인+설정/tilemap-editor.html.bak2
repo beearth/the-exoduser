@@ -33,8 +33,9 @@ body{background:#0a0a0a;color:#ccc;font:12px monospace;display:flex;height:100vh
 .obj-btn .label{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.85);color:#aaa;font-size:7px;text-align:center;padding:1px}
 .undo-btn{background:#553300!important;border-color:#884400!important;color:#ffaa00!important}
 #editor{flex:1;position:relative;overflow:hidden}
-canvas{display:block}
-#hud{position:absolute;top:6px;left:6px;color:#888;font-size:11px;pointer-events:none}
+#gameFrame{position:absolute;top:0;left:0;width:100%;height:100%;border:none;z-index:0;display:none}
+canvas{display:block;position:absolute;top:0;left:0;z-index:1}
+#hud{position:absolute;top:6px;left:6px;color:#888;font-size:11px;pointer-events:none;z-index:5}
 #hud b{color:#ffea00}
 #stage-label{position:absolute;bottom:6px;left:6px;color:#ffea00;font-size:13px;font-weight:bold;pointer-events:none}
 #show-toggles{position:absolute;top:6px;right:220px;display:flex;gap:3px}
@@ -53,11 +54,10 @@ canvas{display:block}
   </div>
   <div id="stage-list"></div>
   <div id="nav-footer">
+    <button onclick="autoPlaceHoles()" style="background:#2a0000;color:#ff6666;border-color:#ff4444">🕳️ 소환굴 자동배치</button>
     <button onclick="regenCurrent()" style="background:#002a1a;color:#00ff88;border-color:#00ff88;font-weight:bold">🎲 랜덤재생성</button>
     <button onclick="regenAll()" style="background:#1a1a00;color:#ffea00;border-color:#ffea00">⚡ 전체재생성</button>
-    <button onclick="exportAsFixedMap()" style="background:#1a0030;color:#cc88ff;border-color:#cc88ff">📤 내보내기</button>
-    <button onclick="exportAll()">JSON전체</button>
-    <button onclick="importAll()">불러오기</button>
+    <button onclick="exportAsFixedMap()" style="background:#1a0030;color:#cc88ff;border-color:#cc88ff">📤 전체맵 내보내기</button>
     <button onclick="saveEditorSettings(true)" style="background:#1a2a00;color:#aaff66;border-color:#aaff66">덮어쓰기 저장</button>
     <button onclick="saveSettingsAsFile()" style="background:#2a001a;color:#ff99cc;border-color:#ff99cc">새 파일로 저장</button>
     <button onclick="loadSettingsFromFile()" style="background:#001f2a;color:#66ddff;border-color:#66ddff">세팅불러오기</button>
@@ -65,6 +65,7 @@ canvas{display:block}
   </div>
 </div>
 <div id="editor">
+  <iframe id="gameFrame"></iframe>
   <canvas id="c"></canvas>
   <div id="hud"><span id="hud-text"></span></div>
   <div id="room-info"></div>
@@ -107,24 +108,97 @@ canvas{display:block}
       <div class="tool-btn" onclick="selectedObj='_delete';document.querySelectorAll('.obj-btn').forEach(b=>b.classList.remove('active'));for(let i=0;i<=3;i++)document.getElementById('th'+i).classList.remove('active')" style="color:#ff4400;border-color:#ff4400">🗑️ 오브젝트 삭제</div>
     </div>
     <div id="obj-palette"></div>
+    <div style="margin-top:6px;padding:4px;background:#1a1a1a;border-radius:4px">
+      <label style="color:#888;font-size:9px">크기 배율: <span id="scaleVal">1.0</span>x</label>
+      <input type="range" id="objScale" min="0.3" max="3.0" step="0.1" value="1.0" style="width:100%" oninput="document.getElementById('scaleVal').textContent=this.value">
+    </div>
+    <div style="margin-top:4px;padding:4px;background:#1a1a1a;border-radius:4px">
+      <label style="color:#888;font-size:9px">타일링 간격(px): </label>
+      <input type="number" id="tileSpacing" value="400" min="50" max="2000" step="50" style="width:60px;background:#222;color:#fff;border:1px solid #444;font-size:10px">
+      <div style="margin-top:3px">
+        <label style="color:#888;font-size:9px">범위: </label>
+        <select id="tileTarget" style="background:#222;color:#fff;border:1px solid #444;font-size:10px">
+          <option value="current">현재 스테이지</option>
+          <option value="ch0">1장 썩은숲 (전체)</option>
+          <option value="ch1">2장 벌레굴 (전체)</option>
+          <option value="ch2">3장 얼음굴 (전체)</option>
+          <option value="ch3">4장 화염지대 (전체)</option>
+          <option value="ch4">5장 지옥군단 (전체)</option>
+          <option value="ch5">6장 사도마굴 (전체)</option>
+          <option value="ch6">7장 지옥성 (전체)</option>
+          <option value="all">전장 (1~7장)</option>
+        </select>
+      </div>
+      <div class="tool-btn" onclick="doTiling()" style="margin-top:3px;color:#44ff88;border-color:#44ff88;font-size:10px">🔲 타일링</div>
+      <div class="tool-btn" onclick="clearTiledObjs()" style="margin-top:2px;color:#ff6644;border-color:#ff6644;font-size:10px">🗑️ 타일링 제거</div>
+    </div>
   </div>
   <div class="section">
     <h4>⌨️ 단축키</h4>
     <div style="color:#555;font-size:9px;line-height:1.8">0~3=높이 []=브러시 C/S/B=모양<br>Ctrl+Z=되돌리기 Ctrl+S=저장 Ctrl+Shift+S=새파일저장</div>
   </div>
 </div>
-<input type="file" id="fileInput" style="display:none" accept=".json">
-<input type="file" id="settingsFileInput" style="display:none" accept=".json">
+<input type="file" id="fileInput" style="display:none" accept=".json,.txt">
+<input type="file" id="settingsFileInput" style="display:none" accept=".json,.txt">
 <script>
 const C=document.getElementById('c'),X=C.getContext('2d');
 const editor=document.getElementById('editor'),T=8;
 let show3d=true,showObj=true,showRooms=true,showGrid=false;
-const STAGES=[{"id": 0, "hell": 0, "floor": 1, "mw": 66, "mh": 140, "type": "vert"}, {"id": 1, "hell": 0, "floor": 2, "mw": 75, "mh": 69, "type": "horiz"}, {"id": 2, "hell": 0, "floor": 3, "mw": 72, "mh": 160, "type": "vert"}, {"id": 3, "hell": 0, "floor": 4, "mw": 75, "mh": 170, "type": "vert"}, {"id": 4, "hell": 0, "floor": 5, "mw": 90, "mh": 78, "type": "horiz"}, {"id": 5, "hell": 0, "floor": 6, "mw": 81, "mh": 190, "type": "vert"}, {"id": 6, "hell": 0, "floor": 7, "mw": 84, "mh": 200, "type": "vert"}, {"id": 7, "hell": 0, "floor": 8, "mw": 105, "mh": 87, "type": "horiz"}, {"id": 8, "hell": 0, "floor": 9, "mw": 90, "mh": 220, "type": "vert"}, {"id": 9, "hell": 0, "floor": 10, "mw": 93, "mh": 230, "type": "grid"}, {"id": 10, "hell": 1, "floor": 1, "mw": 96, "mh": 240, "type": "vert"}, {"id": 11, "hell": 1, "floor": 2, "mw": 125, "mh": 99, "type": "horiz"}, {"id": 12, "hell": 1, "floor": 3, "mw": 102, "mh": 260, "type": "vert"}, {"id": 13, "hell": 1, "floor": 4, "mw": 105, "mh": 270, "type": "vert"}, {"id": 14, "hell": 1, "floor": 5, "mw": 140, "mh": 108, "type": "horiz"}, {"id": 15, "hell": 1, "floor": 6, "mw": 111, "mh": 290, "type": "vert"}, {"id": 16, "hell": 1, "floor": 7, "mw": 114, "mh": 300, "type": "vert"}, {"id": 17, "hell": 1, "floor": 8, "mw": 155, "mh": 117, "type": "horiz"}, {"id": 18, "hell": 1, "floor": 9, "mw": 120, "mh": 320, "type": "vert"}, {"id": 19, "hell": 1, "floor": 10, "mw": 123, "mh": 330, "type": "grid"}, {"id": 20, "hell": 2, "floor": 1, "mw": 126, "mh": 340, "type": "vert"}, {"id": 21, "hell": 2, "floor": 2, "mw": 175, "mh": 129, "type": "horiz"}, {"id": 22, "hell": 2, "floor": 3, "mw": 132, "mh": 360, "type": "vert"}, {"id": 23, "hell": 2, "floor": 4, "mw": 135, "mh": 370, "type": "vert"}, {"id": 24, "hell": 2, "floor": 5, "mw": 190, "mh": 138, "type": "horiz"}, {"id": 25, "hell": 2, "floor": 6, "mw": 141, "mh": 390, "type": "vert"}, {"id": 26, "hell": 2, "floor": 7, "mw": 144, "mh": 400, "type": "vert"}, {"id": 27, "hell": 2, "floor": 8, "mw": 205, "mh": 147, "type": "horiz"}, {"id": 28, "hell": 2, "floor": 9, "mw": 150, "mh": 420, "type": "vert"}, {"id": 29, "hell": 2, "floor": 10, "mw": 153, "mh": 430, "type": "grid"}, {"id": 30, "hell": 3, "floor": 1, "mw": 156, "mh": 440, "type": "vert"}, {"id": 31, "hell": 3, "floor": 2, "mw": 225, "mh": 159, "type": "horiz"}, {"id": 32, "hell": 3, "floor": 3, "mw": 162, "mh": 460, "type": "vert"}, {"id": 33, "hell": 3, "floor": 4, "mw": 165, "mh": 470, "type": "vert"}, {"id": 34, "hell": 3, "floor": 5, "mw": 240, "mh": 168, "type": "horiz"}, {"id": 35, "hell": 3, "floor": 6, "mw": 171, "mh": 490, "type": "vert"}, {"id": 36, "hell": 3, "floor": 7, "mw": 174, "mh": 500, "type": "vert"}, {"id": 37, "hell": 3, "floor": 8, "mw": 255, "mh": 177, "type": "horiz"}, {"id": 38, "hell": 3, "floor": 9, "mw": 180, "mh": 520, "type": "vert"}, {"id": 39, "hell": 3, "floor": 10, "mw": 183, "mh": 530, "type": "grid"}, {"id": 40, "hell": 4, "floor": 1, "mw": 186, "mh": 540, "type": "vert"}, {"id": 41, "hell": 4, "floor": 2, "mw": 275, "mh": 189, "type": "horiz"}, {"id": 42, "hell": 4, "floor": 3, "mw": 192, "mh": 560, "type": "vert"}, {"id": 43, "hell": 4, "floor": 4, "mw": 195, "mh": 570, "type": "vert"}, {"id": 44, "hell": 4, "floor": 5, "mw": 290, "mh": 198, "type": "horiz"}, {"id": 45, "hell": 4, "floor": 6, "mw": 201, "mh": 590, "type": "vert"}, {"id": 46, "hell": 4, "floor": 7, "mw": 204, "mh": 600, "type": "vert"}, {"id": 47, "hell": 4, "floor": 8, "mw": 305, "mh": 207, "type": "horiz"}, {"id": 48, "hell": 4, "floor": 9, "mw": 210, "mh": 620, "type": "vert"}, {"id": 49, "hell": 4, "floor": 10, "mw": 213, "mh": 630, "type": "grid"}, {"id": 50, "hell": 5, "floor": 1, "mw": 216, "mh": 640, "type": "vert"}, {"id": 51, "hell": 5, "floor": 2, "mw": 325, "mh": 219, "type": "horiz"}, {"id": 52, "hell": 5, "floor": 3, "mw": 222, "mh": 660, "type": "vert"}, {"id": 53, "hell": 5, "floor": 4, "mw": 225, "mh": 670, "type": "vert"}, {"id": 54, "hell": 5, "floor": 5, "mw": 340, "mh": 228, "type": "horiz"}, {"id": 55, "hell": 5, "floor": 6, "mw": 231, "mh": 690, "type": "vert"}, {"id": 56, "hell": 5, "floor": 7, "mw": 234, "mh": 700, "type": "vert"}, {"id": 57, "hell": 5, "floor": 8, "mw": 355, "mh": 237, "type": "horiz"}, {"id": 58, "hell": 5, "floor": 9, "mw": 240, "mh": 720, "type": "vert"}, {"id": 59, "hell": 5, "floor": 10, "mw": 243, "mh": 730, "type": "grid"}, {"id": 60, "hell": 6, "floor": 1, "mw": 246, "mh": 740, "type": "vert"}, {"id": 61, "hell": 6, "floor": 2, "mw": 375, "mh": 249, "type": "horiz"}, {"id": 62, "hell": 6, "floor": 3, "mw": 252, "mh": 760, "type": "vert"}, {"id": 63, "hell": 6, "floor": 4, "mw": 255, "mh": 770, "type": "vert"}, {"id": 64, "hell": 6, "floor": 5, "mw": 390, "mh": 258, "type": "horiz"}, {"id": 65, "hell": 6, "floor": 6, "mw": 261, "mh": 790, "type": "vert"}, {"id": 66, "hell": 6, "floor": 7, "mw": 264, "mh": 800, "type": "vert"}, {"id": 67, "hell": 6, "floor": 8, "mw": 405, "mh": 267, "type": "horiz"}, {"id": 68, "hell": 6, "floor": 9, "mw": 270, "mh": 820, "type": "vert"}, {"id": 69, "hell": 6, "floor": 10, "mw": 273, "mh": 830, "type": "grid"}];
+const STAGES=[
+  // 1장 썩은숲 (4층, id 0-3)
+  {"id":0,"hell":0,"floor":1,"mw":151,"mh":80,"type":"horiz"},
+  {"id":1,"hell":0,"floor":2,"mw":210,"mh":105,"type":"horiz"},
+  {"id":2,"hell":0,"floor":3,"mw":210,"mh":210,"type":"vert"},
+  {"id":3,"hell":0,"floor":4,"mw":220,"mh":220,"type":"grid"},
+  // 2장 벌레굴 (6층, id 4-9)
+  {"id":4,"hell":1,"floor":1,"mw":210,"mh":210,"type":"vert"},
+  {"id":5,"hell":1,"floor":2,"mw":220,"mh":110,"type":"horiz"},
+  {"id":6,"hell":1,"floor":3,"mw":220,"mh":220,"type":"vert"},
+  {"id":7,"hell":1,"floor":4,"mw":230,"mh":115,"type":"horiz"},
+  {"id":8,"hell":1,"floor":5,"mw":230,"mh":230,"type":"vert"},
+  {"id":9,"hell":1,"floor":6,"mw":240,"mh":240,"type":"grid"},
+  // 3장 얼음굴 (4층, id 10-13)
+  {"id":10,"hell":2,"floor":1,"mw":230,"mh":230,"type":"vert"},
+  {"id":11,"hell":2,"floor":2,"mw":240,"mh":120,"type":"horiz"},
+  {"id":12,"hell":2,"floor":3,"mw":240,"mh":240,"type":"vert"},
+  {"id":13,"hell":2,"floor":4,"mw":250,"mh":250,"type":"grid"},
+  // 4장 화염지대 (7층, id 14-20)
+  {"id":14,"hell":3,"floor":1,"mw":240,"mh":240,"type":"vert"},
+  {"id":15,"hell":3,"floor":2,"mw":250,"mh":125,"type":"horiz"},
+  {"id":16,"hell":3,"floor":3,"mw":250,"mh":250,"type":"vert"},
+  {"id":17,"hell":3,"floor":4,"mw":255,"mh":255,"type":"vert"},
+  {"id":18,"hell":3,"floor":5,"mw":260,"mh":130,"type":"horiz"},
+  {"id":19,"hell":3,"floor":6,"mw":260,"mh":260,"type":"vert"},
+  {"id":20,"hell":3,"floor":7,"mw":270,"mh":270,"type":"grid"},
+  // 5장 지옥군단 (5층, id 21-25)
+  {"id":21,"hell":4,"floor":1,"mw":260,"mh":260,"type":"vert"},
+  {"id":22,"hell":4,"floor":2,"mw":270,"mh":135,"type":"horiz"},
+  {"id":23,"hell":4,"floor":3,"mw":270,"mh":270,"type":"vert"},
+  {"id":24,"hell":4,"floor":4,"mw":280,"mh":280,"type":"vert"},
+  {"id":25,"hell":4,"floor":5,"mw":280,"mh":280,"type":"grid"},
+  // 6장 사도마굴 (6층, id 26-31)
+  {"id":26,"hell":5,"floor":1,"mw":270,"mh":270,"type":"vert"},
+  {"id":27,"hell":5,"floor":2,"mw":280,"mh":140,"type":"horiz"},
+  {"id":28,"hell":5,"floor":3,"mw":280,"mh":280,"type":"vert"},
+  {"id":29,"hell":5,"floor":4,"mw":285,"mh":285,"type":"vert"},
+  {"id":30,"hell":5,"floor":5,"mw":290,"mh":145,"type":"horiz"},
+  {"id":31,"hell":5,"floor":6,"mw":290,"mh":290,"type":"grid"},
+  // 7장 지옥성 (3층, id 32-34)
+  {"id":32,"hell":6,"floor":1,"mw":290,"mh":290,"type":"vert"},
+  {"id":33,"hell":6,"floor":2,"mw":300,"mh":150,"type":"horiz"},
+  {"id":34,"hell":6,"floor":3,"mw":300,"mh":300,"type":"grid"}
+];
 const HELLS=[
-  {name:'1장 괴물굴',color:'#ffea00'},{name:'2장 시체지옥',color:'#8bc34a'},
-  {name:'3장 화염지옥',color:'#ff6600'},{name:'4장 심연지옥',color:'#e040fb'},
-  {name:'5장 얼음지옥',color:'#4fc3f7'},{name:'6장 썩은숲',color:'#aaaaaa'},
-  {name:'7장 마왕성',color:'#ff2020'},
+  {name:'1장 썩은숲',color:'#66ee55'},{name:'2장 벌레굴',color:'#aacc44'},
+  {name:'3장 얼음굴',color:'#4fc3f7'},{name:'4장 화염지대',color:'#ff6600'},
+  {name:'5장 지옥군단',color:'#e040fb'},{name:'6장 사도마굴',color:'#aaaaaa'},
+  {name:'7장 지옥성',color:'#ff2020'},
+];
+const CHAPTER_STAGES=[
+  {hell:0,stages:4,startSi:0},{hell:1,stages:6,startSi:4},
+  {hell:2,stages:4,startSi:10},{hell:3,stages:7,startSi:14},
+  {hell:4,stages:5,startSi:21},{hell:5,stages:6,startSi:26},
+  {hell:6,stages:3,startSi:32}
 ];
 const H_COL=['#1a0800','#141a12','#28301e','#3a3a24'];
 const H_NAME=['용암','바닥','벽','높은벽'];
@@ -140,41 +214,107 @@ const OBJ_DEFS=[
   {id:'spawn_g0',name:'스폰-일반',icon:'👾',color:'#88ff88',cat:'스폰'},
   {id:'spawn_g1',name:'스폰-강화',icon:'👹',color:'#ffaa00',cat:'스폰'},
   {id:'spawn_g2',name:'스폰-엘리트',icon:'🔱',color:'#ff4400',cat:'스폰'},
+  {id:'breakable',name:'파괴물',icon:'🪣',color:'#aa8855',cat:'오브젝트'},
+  {id:'floor_eye',name:'움직이는눈알',icon:'👁',color:'#ff4444',cat:'오브젝트'},
+  {id:'hole_s',name:'소환굴-소',icon:'🕳️',color:'#884444',cat:'소환굴'},
+  {id:'hole_m',name:'소환굴-중',icon:'🕳️',color:'#aa4444',cat:'소환굴'},
+  {id:'hole_l',name:'소환굴-대',icon:'🕳️',color:'#cc4444',cat:'소환굴'},
   {id:'boss_gate',name:'보스문',icon:'🚧',color:'#aa00ff',cat:'보스방'},
   {id:'boss_exit',name:'보스출구',icon:'🚪',color:'#00ff66',cat:'보스방'},
   {id:'pillar',name:'기둥',icon:'🏛️',color:'#888888',cat:'보스방'},
-  // ── CH1 썩은숲 ──
-  {id:'dead_tree',     name:'고목',       icon:'🌲', color:'#5d4037', cat:'CH1-썩은숲',img:'../../assets/objects/tree_dead_01.png',sz:64,col:1},
-  {id:'dead_tree_02',  name:'고목2',      icon:'🌲', color:'#5d4037', cat:'CH1-썩은숲',img:'../../assets/objects/tree_dead_02.png',sz:64,col:1},
-  {id:'dead_tree_03',  name:'고목3',      icon:'🌲', color:'#5d4037', cat:'CH1-썩은숲',img:'../../assets/objects/tree_dead_03.png',sz:64,col:1},
-  {id:'skull_pile',    name:'해골더미',   icon:'💀', color:'#9e9e9e', cat:'CH1-썩은숲',img:'../../assets/objects/deco_bones_04.png',sz:32},
-  {id:'bone_rocks',    name:'뼈바위',     icon:'🪨', color:'#666677', cat:'CH1-썩은숲',img:'../../assets/objects/deco_bones_03.png',sz:32},
-  {id:'mushroom_glow', name:'발광버섯',   icon:'🍄', color:'#ff7043', cat:'CH1-썩은숲',img:'../../assets/objects/mushroom_glow_01.png',sz:32,light:1},
-  {id:'mushroom_glow_02',name:'발광버섯2',icon:'🍄', color:'#ff7043', cat:'CH1-썩은숲',img:'../../assets/objects/mushroom_glow_02.png',sz:32,light:1},
-  {id:'mushroom_glow_03',name:'발광버섯3',icon:'🍄', color:'#ff7043', cat:'CH1-썩은숲',img:'../../assets/objects/mushroom_glow_03.png',sz:32,light:1},
-  {id:'poison_pool',   name:'독웅덩이',   icon:'☣️', color:'#76ff03', cat:'CH1-썩은숲',img:'../../assets/objects/ch1_poison_pool_sheet.png',sz:32,sheet:{c:3,r:3}},
-  // ── CH2 벌레굴 ──
-  {id:'bug_egg',       name:'벌레알',     icon:'🥚', color:'#c0ca33', cat:'CH2-벌레굴',img:'../../assets/objects/ch2_bug_egg_sheet.png',sz:32,sheet:{c:3,r:2}},
-  {id:'slime_pool',    name:'점액웅덩이', icon:'🟢', color:'#8bc34a', cat:'CH2-벌레굴',img:'../../assets/objects/ch2_slime_pool_sheet.png',sz:32,sheet:{c:3,r:3}},
-  {id:'cocoon',        name:'고치',       icon:'🫘', color:'#6d4c41', cat:'CH2-벌레굴',img:'../../assets/objects/ch2_cocoon_sheet.png',sz:48,col:1,sheet:{c:3,r:3}},
-  {id:'bug_nest',      name:'벌레둥지',   icon:'🪺', color:'#4e342e', cat:'CH2-벌레굴',img:'../../assets/objects/ch2_bug_nest_sheet.png',sz:48,col:1,sheet:{c:3,r:3}},
-  // ── CH3 얼음굴 ──
-  {id:'ice_pillar',    name:'얼음기둥',   icon:'🧊', color:'#4fc3f7', cat:'CH3-얼음굴',img:'../../assets/objects/ch3_ice_pillar_sheet.png',sz:64,col:1,sheet:{c:3,r:3}},
-  {id:'ice_deco',      name:'얼음데코',   icon:'❄️', color:'#b3e5fc', cat:'CH3-얼음굴',img:'../../assets/objects/ch3_ice_deco_sheet.png',sz:32,sheet:{c:3,r:3}},
-  {id:'ice_floor',     name:'얼음바닥',   icon:'🧊', color:'#1a3a5c', cat:'CH3-얼음굴',img:'../../assets/tiles/ch3_floor_sheet.png',sz:40,sheet:{c:3,r:3}},
-  {id:'frozen_bones',  name:'냉동뼈',     icon:'🦴', color:'#90caf9', cat:'CH3-얼음굴',img:'../../assets/objects/ch3_frozen_bones_sheet.png',sz:32,sheet:{c:3,r:3}},
-  // ── CH4 화염 ──
-  {id:'lava_crack',    name:'용암균열',   icon:'🌋', color:'#ff3d00', cat:'CH4-화염',img:'../../assets/objects/ch4_lava_crack_sheet.png',sz:40,sheet:{c:3,r:3}},
-  {id:'fire_pillar',   name:'불기둥',     icon:'🔥', color:'#ff6d00', cat:'CH4-화염',img:'../../assets/objects/ch4_fire_pillar_sheet.png',sz:64,col:1,sheet:{c:3,r:3}},
-  // ── CH5 뇌전 ──
-  {id:'tesla_coil',    name:'번개기둥',   icon:'⚡', color:'#42a5f5', cat:'CH5-뇌전',img:'../../assets/objects/ch5_tesla_sheet.png',sz:64,col:1,sheet:{c:4,r:2}},
-  {id:'spark_crystal', name:'방전수정',   icon:'💎', color:'#29b6f6', cat:'CH5-뇌전',img:'../../assets/objects/ch5_spark_crystal_sheet.png',sz:32,sheet:{c:3,r:3}},
-  {id:'thunder_mark',  name:'뇌전각인',   icon:'⚡', color:'#1565c0', cat:'CH5-뇌전',img:'../../assets/objects/ch5_thunder_mark_sheet.png',sz:40,sheet:{c:3,r:3}},
-  // ── CH6 백골 ──
-  {id:'bone_pillar',   name:'뼈기둥',     icon:'🦴', color:'#d7ccc8', cat:'CH6-백골',img:'../../assets/objects/ch6_bone_pillar_sheet.png',sz:64,col:1,sheet:{c:3,r:3}},
-  {id:'gravestone',    name:'묘비',       icon:'🪦', color:'#78909c', cat:'CH6-백골',img:'../../assets/objects/ch6_gravestone_sheet.png',sz:48,col:1,sheet:{c:3,r:3}},
-  // ── CH7 지옥성 ──
-  {id:'rune_mark',     name:'차원균열',   icon:'🔮', color:'#aa00ff', cat:'CH7-지옥성',img:'../../assets/objects/ch7_rune_mark_sheet.png',sz:40,sheet:{c:3,r:3}},
+  // ── 장식-대형 (sz > 72) ──
+  {id:'cursed_eye_tree',name:'저주나무',  icon:'👁', color:'#8b0000', cat:'장식-대형',img:'objects/cursed_eye_tree.png',sz:256,col:1},
+  {id:'giant_eye',     name:'대왕감시안구',icon:'👁️‍🗨️',color:'#ff1744',cat:'장식-대형',img:'../../assets/map/eye_frame_0_center.png',sz:80,col:1},
+  // ── 장식-중형 (sz 48~72) ──
+  {id:'dead_tree',     name:'고목',       icon:'🌲', color:'#5d4037', cat:'장식-중형',img:'objects/tree_dead_01.png',sz:64,col:1},
+  {id:'dead_tree_02',  name:'고목2',      icon:'🌲', color:'#5d4037', cat:'장식-중형',img:'objects/tree_dead_02.png',sz:64,col:1},
+  {id:'dead_tree_03',  name:'고목3',      icon:'🌲', color:'#5d4037', cat:'장식-중형',img:'objects/tree_dead_03.png',sz:64,col:1},
+  {id:'rotten_tree',   name:'썩은나무',   icon:'🌲', color:'#4e342e', cat:'장식-중형',img:'objects/rotten_tree.png',sz:64,col:1},
+  {id:'rotten_stump',  name:'썩은그루터기',icon:'🪵', color:'#5d4037', cat:'장식-중형',img:'objects/rotten_stump.png',sz:48},
+  {id:'fire_pillar',   name:'불기둥',     icon:'🔥', color:'#ff6d00', cat:'장식-중형',img:'objects/fire_pillar.png',sz:64,col:1},
+  {id:'flesh_pile',   name:'살덩이',     icon:'🩸', color:'#8b0000', cat:'장식-중형',img:'objects/flesh_pile.png',sz:64},
+  {id:'spider_web',   name:'거미줄',     icon:'🕸️', color:'#cc4444', cat:'장식-중형',img:'objects/spider_web.png',sz:56},
+  {id:'tombstone',    name:'묘비',       icon:'🪦', color:'#778899', cat:'장식-중형',img:'objects/tombstone.png',sz:56},
+  {id:'weapon_pile',  name:'무기더미',   icon:'⚔️', color:'#8b4513', cat:'장식-중형',img:'objects/weapon_pile.png',sz:64},
+  {id:'toxic_mushroom',name:'독버섯',    icon:'🍄', color:'#00cc44', cat:'장식-중형',img:'objects/toxic_mushroom.png',sz:48,light:1},
+  {id:'meat_stake',   name:'내장걸이',   icon:'🥩', color:'#cc2222', cat:'장식-중형',img:'objects/meat_stake.png',sz:64},
+  {id:'acid_pool',    name:'산성웅덩이', icon:'☣️', color:'#44ff00', cat:'장식-중형',img:'objects/acid_pool.png',sz:56},
+  {id:'vine_pillar',  name:'덩굴기둥',   icon:'🏛️', color:'#556b2f', cat:'장식-중형',img:'objects/vine_pillar.png',sz:72},
+  // ── 장식-소형 (sz <= 40) ──
+  {id:'vine_roots',    name:'덩굴뿌리',   icon:'🌿', color:'#558b2f', cat:'장식-소형',img:'objects/vine_roots.png',sz:40},
+  {id:'skull_pile',    name:'해골더미',   icon:'💀', color:'#9e9e9e', cat:'장식-소형',img:'objects/deco_bones_04.png',sz:32},
+  {id:'bone_rocks',    name:'뼈바위',     icon:'🪨', color:'#666677', cat:'장식-소형',img:'objects/deco_bones_03.png',sz:32},
+  {id:'bones',         name:'뼈무더기',   icon:'🦴', color:'#bcaaa4', cat:'장식-소형',img:'objects/bones.png',sz:32},
+  {id:'corpse',        name:'시체',       icon:'💀', color:'#6d4c41', cat:'장식-소형',img:'objects/corpse.png',sz:40},
+  {id:'mushroom_glow', name:'발광버섯',   icon:'🍄', color:'#ff7043', cat:'장식-소형',img:'objects/mushroom_glow_01.png',sz:32,light:1},
+  {id:'mushroom_glow_02',name:'발광버섯2',icon:'🍄', color:'#ff7043', cat:'장식-소형',img:'objects/mushroom_glow_02.png',sz:32,light:1},
+  {id:'mushroom_glow_03',name:'발광버섯3',icon:'🍄', color:'#ff7043', cat:'장식-소형',img:'objects/mushroom_glow_03.png',sz:32,light:1},
+  {id:'eye_mushroom',  name:'눈버섯',     icon:'🍄', color:'#ff5722', cat:'장식-소형',img:'objects/eye_mushroom.png',sz:32},
+  {id:'eyeball',       name:'안구',       icon:'👁', color:'#e53935', cat:'장식-소형',img:'objects/eyeball.png',sz:24},
+  {id:'eye1_bloodshot',name:'충혈안구',   icon:'👁', color:'#b71c1c', cat:'장식-소형',img:'objects/eye1_bloodshot.png',sz:24},
+  {id:'eye2_terror',   name:'공포안구',   icon:'👁', color:'#880e4f', cat:'장식-소형',img:'objects/eye2_terror.png',sz:24},
+  {id:'poison_puddle', name:'독웅덩이',   icon:'☣️', color:'#64dd17', cat:'장식-소형',img:'objects/poison_puddle.png',sz:32},
+  {id:'poison_pool',   name:'독웅덩이2',  icon:'☣️', color:'#76ff03', cat:'장식-소형',img:'objects/poison_pool.png',sz:32},
+  {id:'glow_flower_blue',name:'발광꽃(청)',icon:'🌸', color:'#42a5f5', cat:'장식-소형',img:'objects/glow_flower_blue.png',sz:32,light:1},
+  {id:'glow_flower_yellow',name:'발광꽃(황)',icon:'🌼',color:'#fdd835',cat:'장식-소형',img:'objects/glow_flower_yellow.png',sz:32,light:1},
+  {id:'frozen_bones',  name:'냉동뼈',     icon:'🦴', color:'#90caf9', cat:'장식-소형',img:'objects/frozen_bones.png',sz:32},
+  {id:'lava_crack',    name:'용암균열',   icon:'🌋', color:'#ff3d00', cat:'장식-소형',img:'objects/lava_crack.png',sz:40},
+  {id:'rune_mark',     name:'차원균열',   icon:'🔮', color:'#aa00ff', cat:'장식-소형',img:'objects/rune_mark.png',sz:40},
+  {id:'centipede',     name:'지네',       icon:'🐛', color:'#795548', cat:'장식-소형',img:'objects/centipede.png',sz:40},
+  {id:'larva',         name:'유충',       icon:'🪱', color:'#9e9d24', cat:'장식-소형',img:'objects/larva.png',sz:32},
+  {id:'minibug',       name:'작은벌레',   icon:'🐜', color:'#6d4c41', cat:'장식-소형',img:'objects/minibug.png',sz:24},
+  {id:'chitin_debris', name:'키틴파편',   icon:'🪨', color:'#4e342e', cat:'장식-소형',img:'objects/chitin_debris.png',sz:32},
+  // ── 충돌 구덩이 (진입불가) ──
+  {id:'pit_lava',    name:'용암구덩이', icon:'🌋', color:'#ff4400', cat:'충돌',img:'objects/pit_lava.png',sz:200,collision:true},
+  {id:'pit_poison',  name:'독구덩이',   icon:'☣️', color:'#44ff00', cat:'충돌',img:'objects/pit_poison.png',sz:200,collision:true},
+  {id:'pit_ice',     name:'얼음구덩이', icon:'🧊', color:'#44aaff', cat:'충돌',img:'objects/pit_ice.png',sz:200,collision:true},
+  {id:'pit_corpse',  name:'시체구덩이', icon:'💀', color:'#882222', cat:'충돌',img:'objects/pit_corpse.png',sz:200,collision:true},
+  {id:'pit_bugs',    name:'벌레구덩이', icon:'🐛', color:'#886622', cat:'충돌',img:'objects/pit_bugs.png',sz:200,collision:true},
+  // ── 용암길 (충돌) ──
+  // 1자
+  {id:'lava_straight',    name:'용암길-1자',      icon:'🌋',color:'#ff4400',cat:'충돌',img:'objects/lava_straight.png',sz:300,collision:true},
+  {id:'lava_straight_v2', name:'용암길-1자v2',    icon:'🌋',color:'#ff4400',cat:'충돌',img:'objects/lava_straight_nobg2.png',sz:300,collision:true},
+  // S자
+  {id:'lava_s',           name:'용암길-S자',      icon:'🌋',color:'#ff6600',cat:'충돌',img:'objects/lava_s.webp',sz:300,collision:true},
+  {id:'lava_s_v4b',       name:'용암길-S자v4b',   icon:'🌋',color:'#ff6600',cat:'충돌',img:'objects/lava_s_v4b.webp',sz:300,collision:true},
+  {id:'lava_s_v5c',       name:'용암길-S자v5c',   icon:'🌋',color:'#ff6600',cat:'충돌',img:'objects/lava_s_v5c.webp',sz:300,collision:true},
+  // ㄴ자
+  {id:'lava_l',           name:'용암길-ㄴ구',     icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l.png',sz:200,collision:true,rot:true},
+  {id:'lava_l_v6a',       name:'용암길-ㄴv6a',    icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l_v6a.webp',sz:300,collision:true},
+  {id:'lava_l_v6b',       name:'용암길-ㄷv6b',    icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l_v6b.webp',sz:300,collision:true},
+  {id:'lava_l_v6c',       name:'용암길-ㄴv6c',    icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l_v6c.webp',sz:300,collision:true},
+  {id:'lava_l_v6d',       name:'용암길-ㄴv6d',    icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l_v6d.webp',sz:300,collision:true},
+  // ㄴ자 회전
+  {id:'lava_l_90',        name:'용암길-ㄴ90',     icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l.webp',sz:200,collision:true,rot:90},
+  {id:'lava_l_180',       name:'용암길-ㄴ180',    icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l.webp',sz:200,collision:true,rot:180},
+  {id:'lava_l_270',       name:'용암길-ㄴ270',    icon:'🌋',color:'#ff8800',cat:'충돌',img:'objects/lava_l.webp',sz:200,collision:true,rot:270},
+  // ── CH1 썩은숲 에셋 ──
+  {id:'m_tree1',   name:'죽은나무1',   icon:'🌲',color:'#5d4037',cat:'CH1 숲',img:'../../assets/map/ch1/tree_dead_01.png',sz:100,col:1},
+  {id:'m_tree2',   name:'죽은나무2',   icon:'🌲',color:'#5d4037',cat:'CH1 숲',img:'../../assets/map/ch1/tree_dead_02.png',sz:100,col:1},
+  {id:'m_tree3',   name:'죽은나무3',   icon:'🌲',color:'#5d4037',cat:'CH1 숲',img:'../../assets/map/ch1/tree_dead_03.png',sz:100,col:1},
+  {id:'m_rtree',   name:'썩은나무',     icon:'🌲',color:'#4e342e',cat:'CH1 숲',img:'../../assets/map/ch1/rotten_tree.png',sz:100,col:1},
+  {id:'m_stump',   name:'썩은그루터기', icon:'🪵',color:'#5d4037',cat:'CH1 숲',img:'../../assets/map/ch1/rotten_stump.png',sz:72},
+  {id:'m_mush1',   name:'발광버섯1',   icon:'🍄',color:'#ff7043',cat:'CH1 숲',img:'../../assets/map/ch1/mushroom_glow_01.png',sz:48,light:1},
+  {id:'m_mush2',   name:'발광버섯2',   icon:'🍄',color:'#ff7043',cat:'CH1 숲',img:'../../assets/map/ch1/mushroom_glow_02.png',sz:48,light:1},
+  {id:'m_mush3',   name:'발광버섯3',   icon:'🍄',color:'#ff7043',cat:'CH1 숲',img:'../../assets/map/ch1/mushroom_glow_03.png',sz:48,light:1},
+  {id:'m_eye',     name:'안구',         icon:'👁',color:'#e53935',cat:'CH1 숲',img:'../../assets/map/ch1/eyeball.png',sz:40},
+  {id:'m_eye1',    name:'충혈안구',     icon:'👁',color:'#b71c1c',cat:'CH1 숲',img:'../../assets/map/ch1/eye1_bloodshot.png',sz:40},
+  {id:'m_eye2',    name:'공포안구',     icon:'👁',color:'#880e4f',cat:'CH1 숲',img:'../../assets/map/ch1/eye2_terror.png',sz:40},
+  {id:'m_poison',  name:'독웅덩이',     icon:'☣️',color:'#64dd17',cat:'CH1 숲',img:'../../assets/map/ch1/poison_pool.png',sz:48},
+  {id:'m_puddle',  name:'독물웅덩이',   icon:'☣️',color:'#76ff03',cat:'CH1 숲',img:'../../assets/map/ch1/poison_puddle.png',sz:48},
+  {id:'m_fblue',   name:'발광꽃(청)',   icon:'🌸',color:'#42a5f5',cat:'CH1 숲',img:'../../assets/map/ch1/glow_flower_blue.png',sz:40,light:1},
+  {id:'m_fyellow', name:'발광꽃(황)',   icon:'🌼',color:'#fdd835',cat:'CH1 숲',img:'../../assets/map/ch1/glow_flower_yellow.png',sz:40,light:1},
+  {id:'m_fbones',  name:'냉동뼈',       icon:'🦴',color:'#90caf9',cat:'CH1 숲',img:'../../assets/map/ch1/frozen_bones.png',sz:48},
+  {id:'m_larva',   name:'유충',         icon:'🪱',color:'#9e9d24',cat:'CH1 숲',img:'../../assets/map/ch1/larva.png',sz:56},
+  {id:'m_mini',    name:'작은벌레',     icon:'🐜',color:'#6d4c41',cat:'CH1 숲',img:'../../assets/map/ch1/minibug.png',sz:40},
+  {id:'m_flesh',   name:'살덩이',       icon:'🩸',color:'#8b0000',cat:'CH1 숲',img:'../../assets/map/ch1/flesh_pile.png',sz:64},
+  {id:'m_web',     name:'거미줄',       icon:'🕸️',color:'#cc4444',cat:'CH1 숲',img:'../../assets/map/ch1/spider_web.png',sz:56},
+  {id:'m_tomb',    name:'묘비',         icon:'🪦',color:'#778899',cat:'CH1 숲',img:'../../assets/map/ch1/tombstone.png',sz:56},
+  {id:'m_wpile',   name:'무기더미',     icon:'⚔️',color:'#8b4513',cat:'CH1 숲',img:'../../assets/map/ch1/weapon_pile.png',sz:64},
+  {id:'m_tmush',   name:'독버섯',       icon:'🍄',color:'#00cc44',cat:'CH1 숲',img:'../../assets/map/ch1/toxic_mushroom.png',sz:48,light:1},
+  {id:'m_meat',    name:'내장걸이',     icon:'🥩',color:'#cc2222',cat:'CH1 숲',img:'../../assets/map/ch1/meat_stake.png',sz:64},
+  {id:'m_acid',    name:'산성웅덩이',   icon:'☣️',color:'#44ff00',cat:'CH1 숲',img:'../../assets/map/ch1/acid_pool.png',sz:56},
+  {id:'m_vpillar', name:'덩굴기둥',     icon:'🏛️',color:'#556b2f',cat:'CH1 숲',img:'../../assets/map/ch1/vine_pillar.png',sz:72},
 ];
 // ── 오브젝트 이미지 프리로드 ──
 const _objImgs={};
@@ -269,7 +409,7 @@ function _tCaveSmooth(map,mw,mh,passes){
       let floorN=0;
       for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(dx===0&&dy===0)continue;if(tmp[y+dy][x+dx]===0)floorN++}
       if(floorN>=5)map[y][x]=0;
-      else if(floorN>=3&&Math.random()<(pass===0?.4:.25))map[y][x]=0;
+      else if(floorN>=3){const _h=((x*2654435761)^(y*2246822519)^(pass*3266489917))>>>0;if((_h/0xffffffff)<(pass===0?.4:.25))map[y][x]=0}
     }
   }
 }
@@ -331,38 +471,11 @@ function _pickCorridorStyle(rng,floor,hell){
 
 function _tValidateConnectivity(map,mw,mh,startCx,startCy){
   const vis=[];for(let y=0;y<mh;y++){vis[y]=[];for(let x=0;x<mw;x++)vis[y][x]=false}
-
-// ══ FIXED_MAPS ══
-
-  // ── 소환굴 배치 ──
-  const spawnHoles=[];
-  const bossRoomRef=rooms.find(r=>r.type==='boss');
-  const bossDistMax=bossRoomRef?bossRoomRef.cy:1;
-  for(let ri=0;ri<rooms.length;ri++){
-    const r=rooms[ri];
-    if(r.type==='start'||r.type==='forge'||r.type==='boss')continue;
-    // 보스까지 Y거리로 등급 결정 (가까울수록 높은 등급)
-    const distRatio=bossDistMax>0?Math.max(0,1-(r.cy/bossDistMax)):0;
-    const grade=Math.min(3,~~(distRatio*4));
-    const hx=(r.cx+.5)*T,hy=(r.cy+.5)*T;
-    spawnHoles.push({x:hx,y:hy,grade,timer:SPAWN_HOLE[grade].interval*(.5+Math.random()*.5),alive:0,room:ri});
-  }
-  // 복도 spine 중간에 grade 0 균열 2~4개
-  const corridorCnt=2+~~(Math.random()*3);
-  const spineStep=Math.max(1,~~(spine.length/corridorCnt));
-  for(let ci=0;ci<corridorCnt;ci++){
-    const si2=Math.min(spine.length-1,~~(spineStep*(ci+.5)));
-    const sp2=spine[si2];if(!sp2)continue;
-    const hx2=(sp2.cx+.5)*T,hy2=(sp2.y+.5)*T;
-    // 방 내부가 아닌지 확인
-    let inRoom=false;
-    for(const r of rooms){if(sp2.cx>=r.x&&sp2.cx<=r.x+r.w&&sp2.y>=r.y&&sp2.y<=r.y+r.h){inRoom=true;break}}
-    if(!inRoom)spawnHoles.push({x:hx2,y:hy2,grade:0,timer:SPAWN_HOLE[0].interval*(.5+Math.random()*.5),alive:0,room:-1});
-  }
-
-  G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
-  G.bossGate=_gateTiles;G.bossGateOpen=false;G.bossSealed=false;G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
-  G.spawnHoles=spawnHoles;
+  const sx=Math.max(0,Math.min(mw-1,~~startCx)),sy=Math.max(0,Math.min(mh-1,~~startCy));
+  if(map[sy][sx]!==0){const w=_tNearestWalkable(map,mw,mh,sx,sy);if(!w)return 0;vis[w.y][w.x]=true;const q=[w];let cnt=1;const dirs=[[1,0],[-1,0],[0,1],[0,-1]];while(q.length){const c=q.shift();for(const d of dirs){const nx=c.x+d[0],ny=c.y+d[1];if(nx<1||ny<1||nx>=mw-1||ny>=mh-1||vis[ny][nx]||map[ny][nx]!==0)continue;vis[ny][nx]=true;cnt++;q.push({x:nx,y:ny})}}return cnt;}
+  vis[sy][sx]=true;const q=[{x:sx,y:sy}];let cnt=1;const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
+  while(q.length){const c=q.shift();for(const d of dirs){const nx=c.x+d[0],ny=c.y+d[1];if(nx<1||ny<1||nx>=mw-1||ny>=mh-1||vis[ny][nx]||map[ny][nx]!==0)continue;vis[ny][nx]=true;cnt++;q.push({x:nx,y:ny})}}
+  return cnt;
 }
 
 // ═══ MAP — 고정맵 템플릿 데이터 ═══
@@ -2267,27 +2380,39 @@ function generateMap(si){
   const mw=tmpl.mw,mh=tmpl.mh,map=[];
   for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
   const rooms=[];
+  // tileRLE가 있으면 타일 데이터 직접 사용 (절차적 생성 스킵)
+  const _hasTileRLE=tmpl.tileRLE&&tmpl.tileRLE.length>0;
+  if(_hasTileRLE){
+    let _rt=0;for(let _ri=0;_ri<tmpl.tileRLE.length;_ri+=2)_rt+=tmpl.tileRLE[_ri+1];
+    if(_rt>=mw*mh*.95){
+      const rle=tmpl.tileRLE;let pos=0;
+      for(let i=0;i<rle.length;i+=2){let v=rle[i];const cnt=rle[i+1];v=(v===1)?0:1;for(let j=0;j<cnt;j++){const y=~~(pos/mw),x=pos%mw;if(y<mh&&x<mw)map[y][x]=v;pos++}}
+    }
+  }
   for(const rd of tmpl.rooms){
     const cx=rd.cx,cy=rd.cy,rx=rd.rx||8,ry=rd.ry||rx;
-    if(rd.shape==='ellipse')_tCarveEllipse(map,mw,mh,cx,cy,rx,ry);
-    else if(rd.shape==='circle')_tCarveCircle(map,mw,mh,cx,cy,rx);
-    else if(rd.shape==='rect')_tCarveRect(map,mw,mh,cx,cy,rx,ry);
-    else if(rd.shape==='cross'){_tCarveCross(map,mw,mh,cx,cy,rx,ry,rd.armW||~~(rx*.5),rd.armH||~~(ry*.5))}
-    if(rd.pillars)for(const p of rd.pillars){for(let dy=0;dy<(p.h||2);dy++)for(let dx=0;dx<(p.w||2);dx++){const tx=cx+p.dx+dx,ty=cy+p.dy+dy;if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=1}}
+    if(!_hasTileRLE){
+      if(rd.shape==='ellipse')_tCarveEllipse(map,mw,mh,cx,cy,rx,ry);
+      else if(rd.shape==='circle')_tCarveCircle(map,mw,mh,cx,cy,rx);
+      else if(rd.shape==='rect')_tCarveRect(map,mw,mh,cx,cy,rx,ry);
+      else if(rd.shape==='cross'){_tCarveCross(map,mw,mh,cx,cy,rx,ry,rd.armW||~~(rx*.5),rd.armH||~~(ry*.5))}
+      if(rd.pillars)for(const p of rd.pillars){for(let dy=0;dy<(p.h||2);dy++)for(let dx=0;dx<(p.w||2);dx++){const tx=cx+p.dx+dx,ty=cy+p.dy+dy;if(tx>0&&tx<mw-1&&ty>0&&ty<mh-1)map[ty][tx]=1}}
+    }
     rooms.push({cx,cy,rx,ry,type:rd.type||'combat',id:rd.id});
   }
-  for(const cd of tmpl.corridors){
-    const f=tmpl.rooms.find(r=>r.id===cd.from),t=tmpl.rooms.find(r=>r.id===cd.to);if(!f||!t)continue;
-    const pts=[{x:f.cx,y:f.cy}];if(cd.waypoints)for(const wp of cd.waypoints)pts.push(wp);pts.push({x:t.cx,y:t.cy});
-    for(let i=0;i<pts.length-1;i++)_tCarveCorridor(map,mw,mh,pts[i].x,pts[i].y,pts[i+1].x,pts[i+1].y,cd.width||4,cd.style||'cave');
-  }
-  if(tmpl.features)for(const ft of tmpl.features){if(ft.type==='alcove')_tCarveCircle(map,mw,mh,ft.x,ft.y,ft.r||3)}
-  _tCaveSmooth(map,mw,mh,1);
-  // generation noise can leave pinched corridors; force corridor segment connectivity
-  for(const cd of tmpl.corridors){
-    const f=tmpl.rooms.find(r=>r.id===cd.from),t=tmpl.rooms.find(r=>r.id===cd.to);if(!f||!t)continue;
-    const pts=[{x:f.cx,y:f.cy}];if(cd.waypoints)for(const wp of cd.waypoints)pts.push(wp);pts.push({x:t.cx,y:t.cy});
-    for(let i=0;i<pts.length-1;i++)_tEnsurePath(map,mw,mh,pts[i],pts[i+1],(cd.width||6)+2);
+  if(!_hasTileRLE){
+    for(const cd of tmpl.corridors){
+      const f=tmpl.rooms.find(r=>r.id===cd.from),t=tmpl.rooms.find(r=>r.id===cd.to);if(!f||!t)continue;
+      const pts=[{x:f.cx,y:f.cy}];if(cd.waypoints)for(const wp of cd.waypoints)pts.push(wp);pts.push({x:t.cx,y:t.cy});
+      for(let i=0;i<pts.length-1;i++)_tCarveCorridor(map,mw,mh,pts[i].x,pts[i].y,pts[i+1].x,pts[i+1].y,cd.width||4,cd.style||'cave');
+    }
+    if(tmpl.features)for(const ft of tmpl.features){if(ft.type==='alcove')_tCarveCircle(map,mw,mh,ft.x,ft.y,ft.r||3)}
+    _tCaveSmooth(map,mw,mh,1);
+    for(const cd of tmpl.corridors){
+      const f=tmpl.rooms.find(r=>r.id===cd.from),t=tmpl.rooms.find(r=>r.id===cd.to);if(!f||!t)continue;
+      const pts=[{x:f.cx,y:f.cy}];if(cd.waypoints)for(const wp of cd.waypoints)pts.push(wp);pts.push({x:t.cx,y:t.cy});
+      for(let i=0;i<pts.length-1;i++)_tEnsurePath(map,mw,mh,pts[i],pts[i+1],(cd.width||6)+2);
+    }
   }
   // ── 보스방 처리 ──
   const bossRd=tmpl.rooms.find(r=>r.type==='boss');
@@ -2463,11 +2588,25 @@ function setHeight(h){currentHeight=h;selectedObj=null;for(let i=0;i<=3;i++)docu
 function setBrush(s){brushShape=s;boxStart=null;document.getElementById('bs-c').classList.toggle('active',s==='circle');document.getElementById('bs-r').classList.toggle('active',s==='rect');document.getElementById('bs-b').classList.toggle('active',s==='box');saveEditorSettings(false)}
 function markDirty(){const m=getCurrentMap();if(m)m.dirty=true}
 
+// ── 에셋 크기 기반 스냅: 대형 에셋은 에셋 크기 그리드에 자석 정렬 ──
+function _getObjSnapSize(objId){
+  const od=OBJ_DEFS.find(d=>d.id===objId);if(!od||!od.sz||od.sz<=48)return 1; // 소형: 1타일 스냅
+  const sc=parseFloat(document.getElementById('objScale').value)||1;
+  return Math.max(1,Math.round(od.sz*sc/(T*4))); // 에셋 렌더크기 기준 타일 스냅 단위
+}
+function _snapToObjGrid(cx,cy,snapTiles){
+  if(snapTiles<=1)return{x:cx,y:cy};
+  const half=snapTiles/2;
+  return{x:Math.round((cx-half)/snapTiles)*snapTiles+Math.round(half), y:Math.round((cy-half)/snapTiles)*snapTiles+Math.round(half)};
+}
 function applyBrush(cx,cy){
   const m=getCurrentMap();if(!m)return;
   if(selectedObj){if(cx>=0&&cy>=0&&cx<m.mw&&cy<m.mh){
-    m.objs=m.objs.filter(o=>!(Math.abs(o.x-cx)<3&&Math.abs(o.y-cy)<3));
-    if(selectedObj!=='_delete')m.objs.push({x:cx,y:cy,id:selectedObj});_scheduleMapAutosave()}return}
+    // 스냅 적용
+    const _snap=selectedObj!=='_delete'?_getObjSnapSize(selectedObj):1;
+    const _s=_snapToObjGrid(cx,cy,_snap);cx=_s.x;cy=_s.y;
+    m.objs=m.objs.filter(o=>!(Math.abs(o.x-cx)<Math.max(3,_snap)&&Math.abs(o.y-cy)<Math.max(3,_snap)));
+    if(selectedObj!=='_delete'){const _sc=parseFloat(document.getElementById('objScale').value)||1;const _o={x:cx,y:cy,id:selectedObj};if(_sc!==1)_o.scale=_sc;m.objs.push(_o)}_scheduleMapAutosave()}return}
   const r=brushRadius;
   for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){
     if(brushShape==='circle'&&dx*dx+dy*dy>r*r)continue;
@@ -2501,6 +2640,52 @@ function buildObjPalette(){
   }
 }
 buildObjPalette();
+// ── 타일링: 선택된 에셋을 맵 전체에 그리드 반복 배치 ──
+function doTiling(){
+  if(!selectedObj||selectedObj==='_delete'){alert('에셋을 먼저 선택하세요');return}
+  const m=getCurrentMap();if(!m){alert('맵이 로드되지 않음');return}
+  const spacingPx=parseInt(document.getElementById('tileSpacing').value)||400;
+  const spacingTiles=spacingPx/T; // px→타일 단위
+  console.log('[TILING] start: obj='+selectedObj+' spacing='+spacingPx+'px ('+spacingTiles+'tiles) map='+m.mw+'x'+m.mh);
+  const sc=parseFloat(document.getElementById('objScale').value)||1;
+  const mapW=m.mw, mapH=m.mh; // 타일 단위
+  saveUndo();
+  // 기존 같은 id 타일링 제거
+  m.objs=m.objs.filter(o=>o.id!==selectedObj||!o._tiled);
+  let cnt=0;
+  // 반타일 오프셋으로 중앙 정렬
+  const halfOff=spacingTiles/2;
+  for(let gy=halfOff;gy<mapH;gy+=spacingTiles){
+    for(let gx=halfOff;gx<mapW;gx+=spacingTiles){
+      const tx=Math.round(gx), ty=Math.round(gy);
+      if(tx<0||ty<0||tx>=mapW||ty>=mapH)continue;
+      const o={x:tx,y:ty,id:selectedObj,_tiled:1};
+      if(sc!==1)o.scale=sc;
+      m.objs.push(o);
+      cnt++;
+    }
+  }
+  m.dirty=true;_scheduleMapAutosave();
+  // iframe 동기화
+  if(_iframeReady){
+    _sendToGame({type:'clearObjs'});
+    for(const o of m.objs)_sendToGame({type:'addObj',id:o.id,x:o.x*_GT+_GT/2,y:o.y*_GT+_GT/2,scale:o.scale||1});
+  }
+  console.log(`[TILING] ${selectedObj} × ${cnt}개 (${spacingPx}px 간격, ${Math.ceil(mapW/spacingTiles)}×${Math.ceil(mapH/spacingTiles)} 그리드)`);
+  alert(`${selectedObj} 타일링 완료: ${cnt}개 배치 (${spacingPx}px 간격)`);
+}
+function clearTiledObjs(){
+  const m=getCurrentMap();if(!m)return;
+  saveUndo();
+  const before=m.objs.length;
+  m.objs=m.objs.filter(o=>!o._tiled);
+  m.dirty=true;_scheduleMapAutosave();
+  if(_iframeReady){
+    _sendToGame({type:'clearObjs'});
+    for(const o of m.objs)_sendToGame({type:'addObj',id:o.id,x:o.x*_GT+_GT/2,y:o.y*_GT+_GT/2,scale:o.scale||1});
+  }
+  alert(`타일링 오브젝트 ${before-m.objs.length}개 제거`);
+}
 function buildChapterTabs(){
   const ct=document.getElementById('chapter-tabs');ct.innerHTML='';
   HELLS.forEach((h,i)=>{const b=document.createElement('div');b.className='ch-tab'+(i===currentHell?' active':'');
@@ -2509,7 +2694,9 @@ function buildChapterTabs(){
 }
 function buildStageListOrig(){
   const sl=document.getElementById('stage-list');sl.innerHTML='';
-  for(let i=currentHell*10;i<currentHell*10+10;i++){const s=STAGES[i];
+  const ch=CHAPTER_STAGES[currentHell];if(!ch)return;
+  for(let i=ch.startSi;i<ch.startSi+ch.stages;i++){const s=STAGES[i];
+    if(!s)continue;
     const item=document.createElement('div');item.className='stage-item'+(i===currentStage?' active':'');
     const bossType=ARENA_TYPES[i%5];
     item.innerHTML=mapMode==='boss'?
@@ -2518,6 +2705,7 @@ function buildStageListOrig(){
     item.onclick=()=>loadStage(i);sl.appendChild(item)}
 }
 function loadStage(sid){
+  if(sid<0||sid>=STAGES.length)sid=0;
   currentStage=sid;const s=STAGES[sid],m=getMap(sid);if(!m)return;
   camX=m.mw*T/2;camY=m.mh*T/2;zoom=Math.min(editor.clientWidth/(m.mw*T+100),editor.clientHeight/(m.mh*T+100),1);
   undoStack=[];buildStageListOrig();
@@ -2574,8 +2762,45 @@ function exportAll(){
 }
 function importAll(){document.getElementById('fileInput').click()}
 document.getElementById('fileInput').onchange=function(e){const file=e.target.files[0];if(!file)return;
-  const reader=new FileReader();reader.onload=ev=>{try{const data=JSON.parse(ev.target.result);
-    function loadOne(id,sd){const m=getMap(id);if(!m)return;if(sd.heightRle){let idx=0;
+  const reader=new FileReader();reader.onload=ev=>{try{
+    const txt=ev.target.result;
+    let data=null;
+    // JSON 형식 시도
+    try{data=JSON.parse(txt)}catch(e2){}
+    // FIXED_MAPS[n]={...}; JS 코드 형식 시도
+    // FIXED_MAPS JS코드 형식 (내보내기 txt)
+    if(!data&&txt.includes('FIXED_MAPS[')){
+      const _tmpFM={};
+      // eval 방식으로 안전하게 파싱
+      try{
+        const _evalFM=[];
+        const _safeTxt=txt.replace(/FIXED_MAPS\[(\d+)\]\s*=/g,function(m,idx){return '_evalFM['+idx+']='});
+        new Function('_evalFM',_safeTxt)(_evalFM);
+        for(let i=0;i<_evalFM.length;i++){if(_evalFM[i])_tmpFM[i]=_evalFM[i]}
+      }catch(e3){console.warn('FIXED_MAPS eval 실패:',e3)}
+      if(Object.keys(_tmpFM).length>0){
+        for(const k of Object.keys(mapStore))delete mapStore[k];
+        for(const k of Object.keys(gridMapStore))delete gridMapStore[k];
+        for(const[si2,fm] of Object.entries(_tmpFM)){FIXED_MAPS[+si2]=fm}
+        for(let si2=0;si2<STAGES.length;si2++){if(FIXED_MAPS[si2])getMap(si2)}
+        buildStageListOrig();loadStage(currentStage);
+        alert('FIXED_MAPS 불러오기 완료 ('+Object.keys(_tmpFM).length+'개 맵)');
+        return;
+      }
+    }
+    // 세팅 파일 형식 (새 파일로 저장한 것)
+    if(!data){alert('지원하지 않는 파일 형식');return}
+    if(data.type==='tilemap_editor_slot_backup'||data.version>=2){
+      let slot=data.slot||0,settings=data.settings||null,maps=data.maps||{};
+      if(data.version===2&&data.liveMap&&data.liveMap.key!==undefined)maps[String(data.liveMap.key)]=data.liveMap;
+      if(settings)_applyLoadedSettingsObject(settings);
+      for(const k of Object.keys(mapStore))delete mapStore[k];
+      for(const k of Object.keys(gridMapStore))delete gridMapStore[k];
+      for(const one of Object.values(maps)){_restoreCurrentMapState(one)}
+      _applyLoadedState();_saveLiveMapState();
+      alert('세팅 불러오기 완료');return;
+    }
+    function loadOne(id,sd){if(id<0||id>=STAGES.length){console.warn('[IMPORT] 스테이지 '+id+' 범위 초과, 스킵');return}const m=getMap(id);if(!m)return;if(sd.heightRle){let idx=0;
       for(let i=0;i<sd.heightRle.length;i+=2){const v=sd.heightRle[i],c=sd.heightRle[i+1];for(let j=0;j<c&&idx<m.mw*m.mh;j++){m.grid[(idx/m.mw)|0][idx%m.mw]=v;idx++}}}
       if(sd.objects)m.objs=sd.objects;m.dirty=true}
     if(data.stages){for(const[sid,sd] of Object.entries(data.stages))loadOne(+sid,sd);alert('불러오기 완료')}
@@ -2613,9 +2838,14 @@ let fc=0;
 function draw(){
   fc++;const m=getCurrentMap();if(!m){requestAnimationFrame(draw);return}
   if(m.dirty||rStage!==currentStage){buildCache();m.dirty=false}
-  X.fillStyle='#030303';X.fillRect(0,0,C.width,C.height);
+  if(_iframeReady){
+    // iframe 게임 그래픽이 활성 → canvas를 투명 오버레이로만 사용
+    X.clearRect(0,0,C.width,C.height);
+  }else{
+    X.fillStyle='#030303';X.fillRect(0,0,C.width,C.height);
+  }
   X.save();X.translate(C.width/2,C.height/2);X.scale(zoom,zoom);X.translate(-camX,-camY);
-  if(rCache)X.drawImage(rCache,0,0);
+  if(!_iframeReady&&rCache)X.drawImage(rCache,0,0);
   if(showRooms){X.font='10px monospace';X.textAlign='center';X.textBaseline='middle';
     for(const r of m.rooms){const l=r.type==='start'?'START':r.type==='boss'?'BOSS':r.type==='forge'?'FORGE':r.id||'';
       if(l){X.fillStyle=r.type==='boss'?'rgba(255,50,50,0.25)':'rgba(255,255,255,0.15)';X.fillText(l,r.cx*T,r.cy*T);
@@ -2630,7 +2860,7 @@ function draw(){
     const im=_objImgs[od.id];
     if(im&&im.complete&&im.naturalWidth>0){
       // 이미지 오브젝트: 실제 PNG 렌더
-      const drawSz=(od.sz||32)/32*T*4;
+      const drawSz=(od.sz||32)/32*T*4*(o.scale||1);
       if(od.sheet){const sh=od.sheet,cw=~~(im.naturalWidth/sh.c),ch=~~(im.naturalHeight/sh.r);
         const si=((~~(o.x*7919+o.y*104729+31))&0x7fffffff)%(sh.c*sh.r);
         X.drawImage(im,(si%sh.c)*cw,~~(si/sh.c)*ch,cw,ch,px-drawSz/2,py-drawSz/2,drawSz,drawSz);
@@ -2638,15 +2868,41 @@ function draw(){
       // 발광버섯: 포인트라이트 미리보기
       if(od.id.startsWith('mushroom_glow')){X.fillStyle='rgba(255,180,80,0.12)';X.beginPath();X.arc(px,py,T*10,0,Math.PI*2);X.fill()}
     }else{
-      // 기존 이모지 렌더
-      const sz=T*2.5;
+      // 기존 이모지 렌더 (소환굴은 크기별 차등)
+      let sz=T*2.5;
+      if(od.id==='hole_s')sz=T*1.5;
+      else if(od.id==='hole_m')sz=T*2.5;
+      else if(od.id==='hole_l')sz=T*4;
       X.fillStyle=od.color+'55';X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.fill();
-      X.strokeStyle=od.color;X.lineWidth=1;X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.stroke();
+      X.strokeStyle=od.color;X.lineWidth=od.id.startsWith('hole_')?2:1;X.beginPath();X.arc(px,py,sz,0,Math.PI*2);X.stroke();
       X.font=`${sz*1.2}px serif`;X.textAlign='center';X.textBaseline='middle';X.fillStyle='#fff';X.fillText(od.icon,px,py+1);
+      if(od.id.startsWith('hole_')){X.font=`${Math.max(8,sz*.6)}px monospace`;X.fillStyle=od.color;X.fillText(od.id==='hole_s'?'S':od.id==='hole_m'?'M':'L',px,py+sz+8)}
     }}}
   if(hoverTX>=0&&hoverTX<m.mw&&hoverTY>=0&&hoverTY<m.mh){
     const hc=HELLS[STAGES[currentStage].hell].color+'44';
-    if(selectedObj){X.strokeStyle='#ff880066';X.lineWidth=2;X.beginPath();X.arc(hoverTX*T,hoverTY*T,T*3,0,Math.PI*2);X.stroke()}
+    if(selectedObj){
+      const _od=OBJ_DEFS.find(d=>d.id===selectedObj);
+      const _sc=parseFloat(document.getElementById('objScale')?.value)||1;
+      const _drawSz=_od&&_od.sz?(_od.sz*_sc/32*T*4):T*3*2;
+      // 스냅 위치 계산
+      const _snap=selectedObj!=='_delete'?_getObjSnapSize(selectedObj):1;
+      const _ss=_snapToObjGrid(hoverTX,hoverTY,_snap);
+      const _sx=_ss.x*T,_sy=_ss.y*T;
+      // 에셋 범위 사각형 가이드
+      X.strokeStyle='#ff880088';X.lineWidth=2;X.setLineDash([4,4]);
+      X.strokeRect(_sx-_drawSz/2,_sy-_drawSz/2,_drawSz,_drawSz);
+      X.setLineDash([]);
+      // 중심점
+      X.fillStyle='#ff8800cc';X.beginPath();X.arc(_sx,_sy,3,0,Math.PI*2);X.fill();
+      // 스냅 그리드 라인 (주변만)
+      if(_snap>1){X.strokeStyle='#ff880022';X.lineWidth=0.5;
+        const _gr=_snap*T;const _x0=Math.floor((_sx-_drawSz)/_gr)*_gr;const _y0=Math.floor((_sy-_drawSz)/_gr)*_gr;
+        for(let gx=_x0;gx<=_sx+_drawSz;gx+=_gr){X.beginPath();X.moveTo(gx,_sy-_drawSz);X.lineTo(gx,_sy+_drawSz);X.stroke()}
+        for(let gy=_y0;gy<=_sy+_drawSz;gy+=_gr){X.beginPath();X.moveTo(_sx-_drawSz,gy);X.lineTo(_sx+_drawSz,gy);X.stroke()}}
+      // 에셋 미리보기 (반투명)
+      if(_od&&_objImgs[_od.id]&&_objImgs[_od.id].complete&&_objImgs[_od.id].naturalWidth>0){
+        X.globalAlpha=0.4;X.drawImage(_objImgs[_od.id],_sx-_drawSz/2,_sy-_drawSz/2,_drawSz,_drawSz);X.globalAlpha=1}
+    }
     else if(brushShape==='box'&&boxStart){const x1=Math.min(boxStart.tx,hoverTX),y1=Math.min(boxStart.ty,hoverTY),x2=Math.max(boxStart.tx,hoverTX),y2=Math.max(boxStart.ty,hoverTY);
       X.fillStyle=(H_COL[currentHeight]||'#fff')+'44';X.fillRect(x1*T,y1*T,(x2-x1+1)*T,(y2-y1+1)*T);
       X.strokeStyle=HELLS[STAGES[currentStage].hell].color;X.lineWidth=1.5;X.strokeRect(x1*T,y1*T,(x2-x1+1)*T,(y2-y1+1)*T)}
@@ -3073,6 +3329,13 @@ function _editorSettingsSnapshot(){
     show3d,showObj,showRooms,showGrid
   };
 }
+function _captureMapByKey(key,m){
+  if(!m||!m.grid||!m.mw||!m.mh)return null;
+  const flat=[];for(let y=0;y<m.mh;y++)for(let x=0;x<m.mw;x++)flat.push(~~(m.grid[y]?.[x]||0));
+  const rle=[];for(let i=0;i<flat.length;){const v=flat[i];let c=1;while(i+c<flat.length&&flat[i+c]===v&&c<65535)c++;rle.push(v,c);i+=c;}
+  const isGrid=String(key).startsWith('grid_');
+  return{version:1,key:String(key),mode:isGrid?'grid':'normal',stage:isGrid?0:+key,gridHell:isGrid?+String(key).slice(5):0,mw:m.mw,mh:m.mh,rle,rooms:Array.isArray(m.rooms)?m.rooms:[],objs:Array.isArray(m.objs)?m.objs:[],special:Array.isArray(m.special)?m.special:[]};
+}
 function _captureCurrentMapState(){
   const m=getCurrentMap(); if(!m||!m.grid||!m.mw||!m.mh) return null;
   const st=STAGES[currentStage];
@@ -3227,8 +3490,29 @@ async function _saveBackupToSameFile(forcePick){
 }
 async function saveSettingsAsFile(){
   try{
-    // 저장 직전에 현재 편집 상태를 먼저 반영
+    // 저장 직전에 모든 편집 상태를 먼저 반영
     _saveLiveMapState();
+    // mapStore의 모든 맵도 localStorage에 강제 저장
+    for(const[k,m] of Object.entries(mapStore)){
+      if(!m||!m.grid)continue;
+      const st2=_captureMapByKey(k,m);
+      if(st2){localStorage.setItem(_liveMapEntryKey(_getSelectedSlot(),k),JSON.stringify(st2));
+        const idxKey=_liveMapIndexKey(_getSelectedSlot());const raw=localStorage.getItem(idxKey);
+        const arr=raw?JSON.parse(raw):[];const set=new Set(Array.isArray(arr)?arr:[]);set.add(String(k));
+        localStorage.setItem(idxKey,JSON.stringify(Array.from(set)));
+      }
+    }
+    for(const[h,m] of Object.entries(gridMapStore)){
+      if(!m||!m.grid)continue;
+      const k='grid_'+h;
+      const st2=_captureMapByKey(k,m);
+      if(st2){st2.mode='grid';st2.gridHell=+h;
+        localStorage.setItem(_liveMapEntryKey(_getSelectedSlot(),k),JSON.stringify(st2));
+        const idxKey=_liveMapIndexKey(_getSelectedSlot());const raw=localStorage.getItem(idxKey);
+        const arr=raw?JSON.parse(raw):[];const set=new Set(Array.isArray(arr)?arr:[]);set.add(String(k));
+        localStorage.setItem(idxKey,JSON.stringify(Array.from(set)));
+      }
+    }
     const slot=_getSelectedSlot();
     const payload=_buildSlotBackupPayload(slot);
     const defName=`tilemap_slot${slot}_${_timestampForName()}.json`;
@@ -3295,7 +3579,7 @@ function _applyLoadedSettingsObject(s){
   if(!s) return;
   mapMode=(s.mapMode==='normal'||s.mapMode==='grid'||s.mapMode==='boss')?s.mapMode:'normal';
   currentHell=Number.isFinite(s.currentHell)?Math.max(0,Math.min(6,~~s.currentHell)):0;
-  currentStage=Number.isFinite(s.currentStage)?Math.max(0,Math.min(69,~~s.currentStage)):0;
+  currentStage=Number.isFinite(s.currentStage)?Math.max(0,Math.min(34,~~s.currentStage)):0;
   currentGridHell=Number.isFinite(s.currentGridHell)?Math.max(0,Math.min(6,~~s.currentGridHell)):0;
   currentHeight=Number.isFinite(s.currentHeight)?Math.max(0,Math.min(3,~~s.currentHeight)):1;
   brushRadius=Number.isFinite(s.brushRadius)?Math.max(1,Math.min(25,~~s.brushRadius)):5;
@@ -3333,6 +3617,9 @@ document.getElementById('settingsFileInput').onchange=function(e){
       _setSelectedSlot(slot);
       _persistSlotBackup(slot,settings,maps);
       _applyLoadedSettingsObject(settings);
+      // 기존 캐시 전부 클리어 → 파일 데이터만 사용
+      for(const k of Object.keys(mapStore))delete mapStore[k];
+      for(const k of Object.keys(gridMapStore))delete gridMapStore[k];
       for(const one of Object.values(maps)){ _restoreCurrentMapState(one); }
       _applyLoadedState();
       _saveLiveMapState();
@@ -3459,7 +3746,7 @@ async function loadEditorSettings(manual){
       s={
         mapMode:(liveMap.mode==='normal'||liveMap.mode==='grid'||liveMap.mode==='boss')?liveMap.mode:'normal',
         currentHell:0,
-        currentStage:Number.isFinite(liveMap.stage)?Math.max(0,Math.min(69,~~liveMap.stage)):0,
+        currentStage:Number.isFinite(liveMap.stage)?Math.max(0,Math.min(34,~~liveMap.stage)):0,
         currentGridHell:Number.isFinite(liveMap.gridHell)?Math.max(0,Math.min(6,~~liveMap.gridHell)):0,
         currentHeight:1,brushRadius:5,brushShape:'circle',
         show3d:true,showObj:true,showRooms:true,showGrid:true
@@ -3468,7 +3755,7 @@ async function loadEditorSettings(manual){
     if(!s){ if(manual)document.getElementById('stats').textContent=`저장된 세팅 없음 (슬롯 ${slot})`; return false; }
     mapMode=(s.mapMode==='normal'||s.mapMode==='grid'||s.mapMode==='boss')?s.mapMode:'normal';
     currentHell=Number.isFinite(s.currentHell)?Math.max(0,Math.min(6,~~s.currentHell)):0;
-    currentStage=Number.isFinite(s.currentStage)?Math.max(0,Math.min(69,~~s.currentStage)):0;
+    currentStage=Number.isFinite(s.currentStage)?Math.max(0,Math.min(34,~~s.currentStage)):0;
     currentGridHell=Number.isFinite(s.currentGridHell)?Math.max(0,Math.min(6,~~s.currentGridHell)):0;
     currentHeight=Number.isFinite(s.currentHeight)?Math.max(0,Math.min(3,~~s.currentHeight)):1;
     brushRadius=Number.isFinite(s.brushRadius)?Math.max(1,Math.min(25,~~s.brushRadius)):5;
@@ -3631,8 +3918,83 @@ function genSnake(si,forceSeed){
   return{mw,mh,rooms,corridors,features,corridorSpawns};
 }
 
+// ── 소환굴 자동배치 ──
+function autoPlaceHoles(){
+  const m=getCurrentMap();if(!m||!m.grid)return;
+  saveUndo();
+  // 기존 소환굴 제거
+  m.objs=m.objs.filter(o=>o.id!=='hole_s'&&o.id!=='hole_m'&&o.id!=='hole_l');
+  const mw=m.mw,mh=m.mh,grid=m.grid;
+  // 바닥 타일(1) 영역을 flood fill로 그룹화
+  const vis=[];for(let y=0;y<mh;y++)vis[y]=new Uint8Array(mw);
+  const regions=[];
+  for(let y=2;y<mh-2;y++)for(let x=2;x<mw-2;x++){
+    if(vis[y][x]||grid[y][x]!==1)continue;
+    // BFS로 연결 영역 수집
+    const cells=[];const q=[{x,y}];vis[y][x]=1;
+    while(q.length){
+      const c=q.shift();cells.push(c);
+      const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
+      for(const d of dirs){
+        const nx=c.x+d[0],ny=c.y+d[1];
+        if(nx<1||ny<1||nx>=mw-1||ny>=mh-1||vis[ny][nx]||grid[ny][nx]!==1)continue;
+        vis[ny][nx]=1;q.push({x:nx,y:ny});
+      }
+    }
+    if(cells.length>=20)regions.push(cells); // 20타일 이상만
+  }
+  // 시작방/보스방/대장간 위치 (배치 금지)
+  const _sysPos=m.objs.filter(o=>o.id==='player_start'||o.id==='boss_pos'||o.id==='forge'||o.id==='exit');
+  let placed=0;
+  // 방 정보가 있으면 방 단위로 배치 (격자맵 등)
+  if(m.rooms&&m.rooms.length>3){
+    for(const rm of m.rooms){
+      if(rm.type==='start'||rm.type==='boss'||rm.type==='forge')continue;
+      const rx=rm.rx||8,ry=rm.ry||rx;
+      const area=rx*ry*4;
+      const holeType=area>=250?'hole_l':area>=120?'hole_m':'hole_s';
+      const holeCnt=area>=250?2:area>=120?2:1;
+      for(let hi=0;hi<holeCnt;hi++){
+        const ox=~~((Math.random()-.5)*rx*1.2),oy=~~((Math.random()-.5)*ry*1.2);
+        const px=(rm.cx||0)+ox,py=(rm.cy||0)+oy;
+        if(px<2||py<2||px>=mw-2||py>=mh-2)continue;
+        if(!grid[py]||grid[py][px]!==1)continue;
+        let skip=false;for(const sp of _sysPos){if(Math.abs(sp.x-px)<8&&Math.abs(sp.y-py)<8){skip=true;break}}
+        if(skip)continue;
+        m.objs.push({x:px,y:py,id:holeType});placed++;
+      }
+    }
+  }else{
+    // 영역 기반 (일반맵)
+    for(const cells of regions){
+      const area=cells.length;
+      const holeType=area>=800?'hole_l':area>=300?'hole_m':'hole_s';
+      let holeCnt=area>=800?2+~~(area/1500):area>=300?1+~~(area/600):1+~~(area/250);
+      holeCnt=Math.min(holeCnt,5);
+      for(let hi=0;hi<holeCnt;hi++){
+        let bestX=0,bestY=0,bestS=0;
+        for(let t=0;t<20;t++){
+          const rc=cells[~~(Math.random()*cells.length)];
+          let wd=99;for(let dy=-3;dy<=3;dy++)for(let dx=-3;dx<=3;dx++){const tx=rc.x+dx,ty=rc.y+dy;if(tx<0||ty<0||tx>=mw||ty>=mh||grid[ty][tx]!==1)wd=Math.min(wd,Math.abs(dx)+Math.abs(dy))}
+          let hd=99;for(const o of m.objs){if(o.id&&o.id.startsWith('hole_'))hd=Math.min(hd,Math.abs(o.x-rc.x)+Math.abs(o.y-rc.y))}
+          let sd=99;for(const sp of _sysPos)sd=Math.min(sd,Math.abs(sp.x-rc.x)+Math.abs(sp.y-rc.y));
+          if(sd<12)continue;
+          const s=wd*2+Math.min(hd,20);if(s>bestS){bestS=s;bestX=rc.x;bestY=rc.y}
+        }
+        if(bestS>0){m.objs.push({x:bestX,y:bestY,id:holeType});placed++}
+      }
+    }
+  }
+  m.dirty=true;_saveLiveMapState();
+  document.getElementById('stats').textContent='🕳️ 소환굴 '+placed+'개 자동배치 ('+regions.length+'개 영역)';
+  alert('소환굴 '+placed+'개 배치 완료 ('+regions.length+'개 영역)\n대:hole_l / 중:hole_m / 소:hole_s\nCtrl+Z로 되돌리기 가능');
+}
+
 // ── 내보내기 ──
 function exportAsFixedMap(){
+  // 모든 맵을 먼저 로드 (tileRLE 포함 보장)
+  for(let i=0;i<STAGES.length;i++){if(FIXED_MAPS[i]&&!mapStore[i])getMap(i)}
+  for(let h=0;h<7;h++){if(!gridMapStore[h])getGridMap(h)}
   let out=`// ══ EXODUSER FIXED_MAPS + GRID_MAPS 내보내기 ══\n\n`;
   // 격자맵의 스테이지 인덱스 매핑 (hell→stage index)
   const _gridStageIdx={};
@@ -3649,7 +4011,28 @@ function exportAsFixedMap(){
     }
   } else {
     out+='// ── 세로맵 FIXED_MAPS ──\n';
-    for(let i=0;i<70;i++){if(!FIXED_MAPS[i])continue;const s=STAGES[i];out+=`// ${s.hell+1}장 ${s.floor}층\nFIXED_MAPS[${i}]=${JSON.stringify(FIXED_MAPS[i],null,2)};\n\n`;}
+    for(let i=0;i<STAGES.length;i++){if(!FIXED_MAPS[i]||STAGES[i].type==='grid')continue;const s=STAGES[i];
+      const fm=JSON.parse(JSON.stringify(FIXED_MAPS[i]));
+      // mapStore에 실제 타일 데이터가 있으면 tileRLE 생성
+      const ms=mapStore[i];
+      if(ms&&ms.grid){
+        const flat=[];for(let y=0;y<ms.mh;y++)for(let x=0;x<ms.mw;x++)flat.push(ms.grid[y]?.[x]||0);
+        const rle=[];for(let j=0;j<flat.length;){const v=flat[j];let c=1;while(j+c<flat.length&&flat[j+c]===v&&c<65535)c++;rle.push(v,c);j+=c;}
+        fm.tileRLE=rle;
+        // 에디터 오브젝트 → spawnHoles + objs 변환
+        if(ms.objs&&ms.objs.length>0){
+          const sh=[];const objs=[];
+          for(const o of ms.objs){
+            if(o.id==='hole_s')sh.push({x:o.x,y:o.y,type:'S'});
+            else if(o.id==='hole_m')sh.push({x:o.x,y:o.y,type:'M'});
+            else if(o.id==='hole_l')sh.push({x:o.x,y:o.y,type:'L'});
+            else objs.push({x:o.x,y:o.y,id:o.id});
+          }
+          if(sh.length>0)fm.spawnHoles=sh;
+          if(objs.length>0)fm.objs=objs;
+        }
+      }
+      out+=`// ${s.hell+1}장 ${s.floor}층\nFIXED_MAPS[${i}]=${JSON.stringify(fm,null,2)};\n\n`;}
     // 격자맵도 FIXED_MAPS로 포함 (gridMapStore > GRID_MAPS > 자동생성 순)
     out+='\n// ── 격자맵 FIXED_MAPS ──\n';
     for(let h=0;h<7;h++){
@@ -3661,7 +4044,7 @@ function exportAsFixedMap(){
         for(let y=0;y<_gm.mh;y++)for(let x=0;x<_gm.mw;x++)flat.push(~~(_gm.grid[y]?.[x]||0));
         for(let i=0;i<flat.length;){const v=flat[i];let c=1;while(i+c<flat.length&&flat[i+c]===v&&c<65535)c++;rle.push(v,c);i+=c;}
         _gmData={mw:_gm.mw,mh:_gm.mh,rooms:_gm.rooms||[],corridors:[],features:[],corridorSpawns:[],
-          spawnHoles:(_gm.objs||[]).filter(o=>o.id&&o.id.startsWith&&o.id.startsWith('spawn')).map(o=>({x:o.x,y:o.y,type:'S'})),
+          spawnHoles:(_gm.objs||[]).filter(o=>o.id&&(o.id.startsWith('spawn')||o.id.startsWith('hole_'))).map(o=>({x:o.x,y:o.y,type:o.id==='hole_l'?'L':o.id==='hole_m'?'M':'S'})),
           tileRLE:rle};
       }else{
         if(!GRID_MAPS[h])GRID_MAPS[h]=generateGridMap(h);
@@ -3793,15 +4176,15 @@ function genHoriz(si, forceSeed){
 }
 
 
-for(let i=0;i<70;i++){
+for(let i=0;i<STAGES.length;i++){
   const s=STAGES[i];
   if(s.type==='grid'){
     // floor10: 격자맵 — GRID_MAPS[hell]로 처리 (getMap에서 분기)
-    FIXED_MAPS[i]=null;
-  } else if(s.type==='horiz'){
-    FIXED_MAPS[i]=genHoriz(i);
-  } else {
-    FIXED_MAPS[i]=genSnake(i);
+    if(!FIXED_MAPS[i]) FIXED_MAPS[i]=null;
+  } else if(!FIXED_MAPS[i]||!FIXED_MAPS[i].rooms){
+    // 수동 정의된 맵이 없을 때만 자동 생성
+    if(s.type==='horiz') FIXED_MAPS[i]=genHoriz(i);
+    else FIXED_MAPS[i]=genSnake(i);
   }
 }
 for(let h=0;h<7;h++) GRID_MAPS[h]=generateGridMap(h);
@@ -3819,9 +4202,105 @@ document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==
 setInterval(()=>{ try{ _saveLiveMapState(); }catch(e){} }, 5000);
 (async()=>{
   try{ document.getElementById('stats').textContent=`에디터 빌드 ${BUILD_STAMP}`; }catch(e){}
-  const ok = await loadEditorSettings(false);
-  if(!ok){ buildChapterTabs(); buildStageListOrig(); loadStage(0); draw(); }
+  try{ await loadEditorSettings(false); }catch(e){ console.error('[EDITOR] settings load fail:',e); }
+  // 항상 리스트 빌드 (settings 로드 성공/실패 무관)
+  try{ buildChapterTabs(); }catch(e){ console.error('[EDITOR] buildChapterTabs fail:',e); }
+  try{
+    if(mapMode==='grid'){ buildGridStageList(); loadGridStage(currentGridHell); }
+    else{ buildStageListOrig(); loadStage(currentStage||0); }
+  }catch(e){ console.error('[EDITOR] buildStageList fail:',e); }
+  try{ draw(); }catch(e){ console.error('[EDITOR] draw fail:',e); }
+  // iframe 게임 그래픽 초기화
+  try{ _initGameFrame(); }catch(e){ console.error('[EDITOR] iframe init fail:',e); }
 })();
+
+// ══════════════════════════════════════════
+// iframe 게임 그래픽 연동
+// ══════════════════════════════════════════
+const _gFrame=document.getElementById('gameFrame');
+let _iframeReady=false;
+const _GT=32; // game.html 타일 크기
+
+function _sendToGame(msg){
+  try{if(_gFrame&&_gFrame.contentWindow)_gFrame.contentWindow.postMessage(msg,'*')}catch(e){}
+}
+
+window.addEventListener('message',function(ev){
+  const d=ev.data;if(!d||!d.type)return;
+  if(d.type==='editorReady'){
+    _iframeReady=true;
+    _gFrame.style.display='block';
+    // 현재 스테이지로 iframe 전환
+    _sendToGame({type:'switchStage',stage:currentStage});
+    console.log('[EDITOR] iframe 게임 그래픽 연결됨');
+    try{document.getElementById('stats').textContent='게임 그래픽 연결됨'}catch(e){}
+  }
+  else if(d.type==='stageLoaded'){
+    // iframe 맵 데이터 → mapStore에 반영 (내보내기 시 게임과 동일한 맵 사용)
+    if(d.map&&d.mw&&d.mh){
+      const ms=mapStore[currentStage];
+      if(ms){
+        // iframe RLE → editor grid 변환 (게임 0=바닥→에디터 1, 게임 1=벽→에디터 2)
+        const rle=d.map;let pos=0;
+        for(let i=0;i<rle.length;i+=2){const v=rle[i],cnt=rle[i+1];
+          for(let j=0;j<cnt;j++){const y=~~(pos/d.mw),x=pos%d.mw;
+            if(ms.grid[y])ms.grid[y][x]=(v===0)?1:2;
+            pos++}}
+        ms.dirty=true;
+        console.log('[EDITOR] iframe 맵 동기화: stage='+currentStage+' tiles='+pos);
+      }
+    }
+    _syncCamToGame();
+  }
+});
+
+function _syncCamToGame(){
+  if(!_iframeReady)return;
+  _sendToGame({type:'camSet',x:camX,y:camY});
+  _sendToGame({type:'camZoom',factor:zoom});
+}
+
+// 기존 draw/loadStage 래핑 — iframe에도 동기화
+const _origDraw2=draw;
+draw=function(){
+  _origDraw2();
+  if(_iframeReady)_syncCamToGame();
+};
+
+const _origLoadStage2=loadStage;
+loadStage=function(sid){
+  _origLoadStage2(sid);
+  if(_iframeReady)_sendToGame({type:'switchStage',stage:sid});
+};
+
+// 타일 편집 시 iframe에도 반영
+const _origApplyBrush2=applyBrush;
+applyBrush=function(cx,cy){
+  _origApplyBrush2(cx,cy);
+  if(!_iframeReady)return;
+  const m=getCurrentMap();if(!m)return;
+  if(selectedObj){
+    if(selectedObj!=='_delete'){
+      const _sc=parseFloat(document.getElementById('objScale').value)||1;
+      // 스냅 좌표는 이미 applyBrush에서 처리됨 — 동일 스냅 적용
+      const _snap=_getObjSnapSize(selectedObj);
+      const _s=_snapToObjGrid(cx,cy,_snap);
+      _sendToGame({type:'addObj',id:selectedObj,x:_s.x*_GT+_GT/2,y:_s.y*_GT+_GT/2,scale:_sc});
+    } else _sendToGame({type:'removeObjAt',x:cx*_GT+_GT/2,y:cy*_GT+_GT/2});
+    return;
+  }
+  const r=brushRadius,tiles=[];
+  for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){
+    if(brushShape==='circle'&&dx*dx+dy*dy>r*r)continue;
+    const tx=cx+dx,ty=cy+dy;
+    if(tx>=0&&ty>=0&&tx<m.mw&&ty<m.mh)tiles.push({tx,ty,val:currentHeight});
+  }
+  if(tiles.length>0)_sendToGame({type:'setTiles',tiles});
+};
+
+function _initGameFrame(){
+  _gFrame.src='/game.html?editor=1&editorStage='+(currentStage||0)+'&test=1';
+}
 
 </script>
 </body></html>

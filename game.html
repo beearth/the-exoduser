@@ -8669,6 +8669,7 @@ function _getMappedEtype(et){
   if(et>=70 && et<=79) return 82; // Lava (용암)
   if(et>=30 && et<=39) return 80; // Bug (벌레)
   if(et>=40 && et<=69) return 83; // Abyss (심연)
+  if(et>=85 && et<=89) return 84; // 7장 고통의길 → Light 스킨
   return 0;                      // Skeleton (기본 폴백)
 }
 // ── 구울 스프라이트 (4방향 로테이션) ──
@@ -10165,7 +10166,22 @@ _loadTileTex(_TILE_DECAL,_TILE_DECAL_SRC);_loadTileTex(_TILE_GLOW,_TILE_GLOW_SRC
 function _tileHash(x,y,s){let h=(x*374761393+y*668265263+s)^0x5bd1e995;h=Math.imul(h^(h>>>15),0x1b873593);return(h^(h>>>13))>>>0}
 // ══ 에디터 맵 텍스처 (스테이지별 PNG) ══
 const _mapTexImgs={};
-const _MAP_TEX_FILES={0:'img/maps/stage_0_tex.png',1:'img/maps/stage_1_tex.png'};
+const _MAP_TEX_FILES={1:'img/maps/stage_1_tex.png'};
+// 바닥 타일 텍스처 (400px 체커보드 타일링)
+const _GROUND_TILES={};
+const _GT_FILES={
+  'gt_01':'assets/map/ch1/ground_tile_01.png',
+  'gt_02':'assets/map/ch1/ground_tile_02.png'
+};
+for(const[id,src] of Object.entries(_GT_FILES)){
+  const img=new Image();img.onload=()=>console.log('[GT] '+id+' loaded');
+  img.onerror=()=>console.warn('[GT] '+id+' failed');
+  img.src=src;_GROUND_TILES[id]=img;
+}
+// 스테이지별 바닥타일 배치 정의: {stageId: [{id,spacingPx}]}
+const _GT_STAGE_MAP={
+  0:{tiles:['gt_01','gt_02'],spacingPx:400}
+};
 for(const[sid,src] of Object.entries(_MAP_TEX_FILES)){
   const img=new Image();img.onload=()=>console.log('[MAP-TEX] stage '+sid+' loaded');
   img.onerror=()=>console.warn('[MAP-TEX] stage '+sid+' failed');
@@ -10266,6 +10282,32 @@ function buildMapCache(){
   const c=_mapCvs.getContext('2d');_mapCtx=c;
   const _isW=(tx,ty)=>tx<0||tx>=mw||ty<0||ty>=mh||map[ty][tx]===1||map[ty][tx]===3;
   const _isF=(tx,ty)=>tx>=0&&tx<mw&&ty>=0&&ty<mh&&map[ty][tx]===0;
+  // ── Pass 0.4: 바닥타일 체커보드 타일링 ──
+  if(_GT_STAGE_MAP[G.stage]){
+    const gtDef=_GT_STAGE_MAP[G.stage];
+    const spPx=gtDef.spacingPx, tiles=gtDef.tiles;
+    const allReady=tiles.every(tid=>_GROUND_TILES[tid]&&_GROUND_TILES[tid].complete&&_GROUND_TILES[tid].naturalWidth>0);
+    if(allReady){
+      c.save();c.beginPath();
+      for(let ty2=0;ty2<mh;ty2++)for(let tx2=0;tx2<mw;tx2++){
+        if(map[ty2][tx2]===0)c.rect(tx2*T,ty2*T,T,T);
+      }
+      c.clip();
+      c.imageSmoothingEnabled=true;c.imageSmoothingQuality='high';
+      let row=0;
+      for(let py2=0;py2<mh*T;py2+=spPx){
+        let col=0;
+        for(let px2=0;px2<mw*T;px2+=spPx){
+          const tid=tiles[(row+col)%tiles.length];
+          const gi=_GROUND_TILES[tid];
+          c.drawImage(gi,px2,py2,spPx,spPx);
+          col++;
+        }
+        row++;
+      }
+      c.restore();
+    }
+  }
   // ── Pass 0.5: 에디터 맵 텍스처 오버레이 ──
   // 스테이지별 텍스처 이미지가 있으면 바닥 위에 깔기
   if(_mapTexImgs[G.stage]&&_mapTexImgs[G.stage].complete){
@@ -12176,7 +12218,7 @@ function genGauntlet(fi){
   }
 
 // ═══ MAP — STAGES 정의 + 절차적 맵 생성 ═══
-const STAGES=[{"id":0,"hell":0,"floor":1,"mw":66,"mh":140,"type":"vert"},{"id":1,"hell":0,"floor":2,"mw":75,"mh":69,"type":"horiz"},{"id":2,"hell":0,"floor":3,"mw":72,"mh":160,"type":"vert"},{"id":3,"hell":0,"floor":4,"mw":93,"mh":230,"type":"grid"},{"id":4,"hell":1,"floor":1,"mw":96,"mh":240,"type":"vert"},{"id":5,"hell":1,"floor":2,"mw":125,"mh":99,"type":"horiz"},{"id":6,"hell":1,"floor":3,"mw":102,"mh":260,"type":"vert"},{"id":7,"hell":1,"floor":4,"mw":140,"mh":108,"type":"horiz"},{"id":8,"hell":1,"floor":5,"mw":114,"mh":300,"type":"vert"},{"id":9,"hell":1,"floor":6,"mw":123,"mh":330,"type":"grid"},{"id":10,"hell":2,"floor":1,"mw":126,"mh":340,"type":"vert"},{"id":11,"hell":2,"floor":2,"mw":175,"mh":129,"type":"horiz"},{"id":12,"hell":2,"floor":3,"mw":132,"mh":360,"type":"vert"},{"id":13,"hell":2,"floor":4,"mw":153,"mh":430,"type":"grid"},{"id":14,"hell":3,"floor":1,"mw":156,"mh":440,"type":"vert"},{"id":15,"hell":3,"floor":2,"mw":225,"mh":159,"type":"horiz"},{"id":16,"hell":3,"floor":3,"mw":162,"mh":460,"type":"vert"},{"id":17,"hell":3,"floor":4,"mw":165,"mh":470,"type":"vert"},{"id":18,"hell":3,"floor":5,"mw":240,"mh":168,"type":"horiz"},{"id":19,"hell":3,"floor":6,"mw":174,"mh":500,"type":"vert"},{"id":20,"hell":3,"floor":7,"mw":183,"mh":530,"type":"grid"},{"id":21,"hell":4,"floor":1,"mw":186,"mh":540,"type":"vert"},{"id":22,"hell":4,"floor":2,"mw":275,"mh":189,"type":"horiz"},{"id":23,"hell":4,"floor":3,"mw":192,"mh":560,"type":"vert"},{"id":24,"hell":4,"floor":4,"mw":290,"mh":198,"type":"horiz"},{"id":25,"hell":4,"floor":5,"mw":213,"mh":630,"type":"grid"},{"id":26,"hell":5,"floor":1,"mw":216,"mh":640,"type":"vert"},{"id":27,"hell":5,"floor":2,"mw":325,"mh":219,"type":"horiz"},{"id":28,"hell":5,"floor":3,"mw":222,"mh":660,"type":"vert"},{"id":29,"hell":5,"floor":4,"mw":340,"mh":228,"type":"horiz"},{"id":60,"hell":5,"floor":5,"mw":234,"mh":700,"type":"vert"},{"id":31,"hell":5,"floor":6,"mw":243,"mh":730,"type":"grid"},{"id":32,"hell":6,"floor":1,"mw":246,"mh":740,"type":"vert"},{"id":33,"hell":6,"floor":2,"mw":375,"mh":249,"type":"horiz"},{"id":34,"hell":6,"floor":3,"mw":273,"mh":830,"type":"grid"}];
+const STAGES=[{"id":0,"hell":0,"floor":1,"mw":200,"mh":200,"type":"vert"},{"id":1,"hell":0,"floor":2,"mw":75,"mh":69,"type":"horiz"},{"id":2,"hell":0,"floor":3,"mw":72,"mh":160,"type":"vert"},{"id":3,"hell":0,"floor":4,"mw":93,"mh":230,"type":"grid"},{"id":4,"hell":1,"floor":1,"mw":96,"mh":240,"type":"vert"},{"id":5,"hell":1,"floor":2,"mw":125,"mh":99,"type":"horiz"},{"id":6,"hell":1,"floor":3,"mw":102,"mh":260,"type":"vert"},{"id":7,"hell":1,"floor":4,"mw":140,"mh":108,"type":"horiz"},{"id":8,"hell":1,"floor":5,"mw":114,"mh":300,"type":"vert"},{"id":9,"hell":1,"floor":6,"mw":123,"mh":330,"type":"grid"},{"id":10,"hell":2,"floor":1,"mw":126,"mh":340,"type":"vert"},{"id":11,"hell":2,"floor":2,"mw":175,"mh":129,"type":"horiz"},{"id":12,"hell":2,"floor":3,"mw":132,"mh":360,"type":"vert"},{"id":13,"hell":2,"floor":4,"mw":153,"mh":430,"type":"grid"},{"id":14,"hell":3,"floor":1,"mw":156,"mh":440,"type":"vert"},{"id":15,"hell":3,"floor":2,"mw":225,"mh":159,"type":"horiz"},{"id":16,"hell":3,"floor":3,"mw":162,"mh":460,"type":"vert"},{"id":17,"hell":3,"floor":4,"mw":165,"mh":470,"type":"vert"},{"id":18,"hell":3,"floor":5,"mw":240,"mh":168,"type":"horiz"},{"id":19,"hell":3,"floor":6,"mw":174,"mh":500,"type":"vert"},{"id":20,"hell":3,"floor":7,"mw":183,"mh":530,"type":"grid"},{"id":21,"hell":4,"floor":1,"mw":186,"mh":540,"type":"vert"},{"id":22,"hell":4,"floor":2,"mw":275,"mh":189,"type":"horiz"},{"id":23,"hell":4,"floor":3,"mw":192,"mh":560,"type":"vert"},{"id":24,"hell":4,"floor":4,"mw":290,"mh":198,"type":"horiz"},{"id":25,"hell":4,"floor":5,"mw":213,"mh":630,"type":"grid"},{"id":26,"hell":5,"floor":1,"mw":216,"mh":640,"type":"vert"},{"id":27,"hell":5,"floor":2,"mw":325,"mh":219,"type":"horiz"},{"id":28,"hell":5,"floor":3,"mw":222,"mh":660,"type":"vert"},{"id":29,"hell":5,"floor":4,"mw":340,"mh":228,"type":"horiz"},{"id":60,"hell":5,"floor":5,"mw":234,"mh":700,"type":"vert"},{"id":31,"hell":5,"floor":6,"mw":243,"mh":730,"type":"grid"},{"id":32,"hell":6,"floor":1,"mw":246,"mh":740,"type":"vert"},{"id":33,"hell":6,"floor":2,"mw":375,"mh":249,"type":"horiz"},{"id":34,"hell":6,"floor":3,"mw":273,"mh":830,"type":"grid"}];
 
 // ── 시드 기반 랜덤 ──
 function mkRng(seed){
@@ -117536,7 +117578,7 @@ function update(){
         addTxt(P.x,P.y-40,_cresStep+'타','#ffcc00',20);
       }
     }
-    else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=6;_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
+    else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=12;_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
     // ── X키: 처형 (그로기 보스 전용, HP/MP/ST 10% 소모 → 사슬기동 자동 돌진 → 보스 HP 30% 순수뎀, 쿨 20초) ──
     else if(_chkJust('KeyX')&&P.skills.execution>=1&&(P._execCd||0)<=0){
       const _exBoss=G._bossRef&&G._bossRef.alive&&G._bossRef.stunned>0?G._bossRef:null;
@@ -117957,7 +117999,7 @@ function update(){
       else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}
       else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
       else if(P.st2<=0){
-        if(isHeld('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=6;_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
+        if(isHeld('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=12;_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
         else P.s='idle';
       }
     }
@@ -117981,7 +118023,7 @@ function update(){
       else if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}
       else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}
       else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
-      else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=6;_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
+      else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=12;_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
       else if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
       else if(P.st2<=0){
         P.s='idle';
@@ -119079,31 +119121,33 @@ function update(){
       _addBoom(p.x,p.y,_bkR,_bkParry?30:24,'rainbow');
       _pHit=true;
     }
-    // ══ 화이트볼: 방패(sBlock/sBash)로만 처리 ══
+    // ══ 화이트볼: isPWin()으로 패링 (빨콩과 동일 로직) ══
     if(p.bwBean&&!_pHit&&_pDist<_normalR&&P.iframes<=0&&!P._ioActive){
-      if((P.s==='sBash'||P.s==='sBlock')&&_pDist<_rbDeflR){
-        p.vx*=-1.5;p.vy*=-1.5;p.friendly=true;p.dmg=~~(p.dmg*1.5);p.life=120;p.ml=120;p.bwBean=false;
+      if(isPWin()&&_pDist<_rbDeflR){
+        let _bwTgt=null,_bwMin=600;
+        {const _bwNe=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_bwNe.length;_ri++){const e=_bwNe[_ri];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d<_bwMin){_bwMin=d;_bwTgt=e}}}
+        if(_bwTgt){const _bwA=Math.atan2(_bwTgt.y-P.y,_bwTgt.x-P.x);p.vx=Math.cos(_bwA)*3.5;p.vy=Math.sin(_bwA)*3.5}
+        else{p.vx*=-2;p.vy*=-2}
+        p.friendly=true;p.dmg=~~(p.dmg*1.5);p.life=180;p.ml=180;p.bwBean=false;p.homing=true;
         SFX.deflect();addTxt(P.x,P.y-28,'🛡️화이트볼 반사!','#ffffff',50);
         addParts(p.x,p.y,'#ffffff',10);addParts(p.x,p.y,'#000000',10);
-        shake(8);P.iframes=Math.max(P.iframes,15);projs[pw++]=p;_pHit=true;continue;
+        shake(8);doParry(p.dmg);projs[pw++]=p;_pHit=true;continue;
       }else{
         hurtP(~~(p.dmg*1.3),{dtype:'magic'});addTxt(P.x,P.y-20,'⬜화이트볼!','#ffffff',30);
         addParts(p.x,p.y,'#ffffff',6);addParts(p.x,p.y,'#111111',6);_pHit=true;
       }
     }
-    // ══ 다크볼: Q(마법 패링)로만 처리 ══
+    // ══ 다크볼: isPWin()으로 패링 (빨콩과 동일 로직) ══
     if(p.gbBean&&!_pHit&&_pDist<_normalR&&P.iframes<=0&&!P._ioActive){
-      const _gbMagic=P.s==='magicCast'||P.s==='beam';
-      if(isPWin()&&_gbMagic){
-        let _gbTgt=null,_gbMin=500;
-        {const _gbNe=shQuery(P.x,P.y,500);for(let _gi=0;_gi<_gbNe.length;_gi++){const e=_gbNe[_gi];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d<_gbMin){_gbMin=d;_gbTgt=e}}}
-        if(_gbTgt){const _ga=Math.atan2(_gbTgt.y-P.y,_gbTgt.x-P.x);p.vx=Math.cos(_ga)*4;p.vy=Math.sin(_ga)*4}
+      if(isPWin()){
+        let _gbTgt=null,_gbMin=600;
+        {const _gbNe=shQuery(P.x,P.y,600);for(let _gi=0;_gi<_gbNe.length;_gi++){const e=_gbNe[_gi];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d<_gbMin){_gbMin=d;_gbTgt=e}}}
+        if(_gbTgt){const _ga=Math.atan2(_gbTgt.y-P.y,_gbTgt.x-P.x);p.vx=Math.cos(_ga)*3.5;p.vy=Math.sin(_ga)*3.5}
         else{p.vx*=-2;p.vy*=-2}
         p.friendly=true;p.dmg=~~(p.dmg*2);p.life=200;p.ml=200;p.gbBean=false;p.homing=true;
-        addTxt(P.x,P.y-28,'✨다크볼 반사!','#cc44ff',50);
+        SFX.deflect();addTxt(P.x,P.y-28,'✨다크볼 반사!','#cc44ff',50);
         addParts(p.x,p.y,'#22cc66',12);addParts(p.x,p.y,'#4488ff',12);
-        shake(10);P.iframes=Math.max(P.iframes,20);P.parryBank=(P.parryBank||0)+(p.dmg||10);
-        projs[pw++]=p;_pHit=true;continue;
+        shake(10);doParry(p.dmg);projs[pw++]=p;_pHit=true;continue;
       }else{
         hurtP(~~(p.dmg*1.3),{dtype:'magic'});addTxt(P.x,P.y-20,'💜다크볼!','#cc44ff',30);
         addParts(p.x,p.y,'#22cc66',6);addParts(p.x,p.y,'#4488ff',6);_pHit=true;
@@ -119138,8 +119182,14 @@ function update(){
           poolPart(P.x+Math.cos(ra)*(-P.r-4),P.y+Math.sin(ra)*(-P.r-4),Math.cos(sa)*sv,Math.sin(sa)*sv,k%3===0?'#ffffff':k%3===1?'#ffee66':'#ffdd00',2+Math.random()*3,10+Math.random()*8)}
         poolPart(P.x,P.y,0,0,'#ffdd00',28,6);
         poolPart(P.x,P.y,0,0,'#ffffff',18,4);
+        // 유도 반사 (빨콩과 동일)
+        let _npTgt=null,_npMin=600;
+        {const _npNe=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_npNe.length;_ri++){const e=_npNe[_ri];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d<_npMin){_npMin=d;_npTgt=e}}}
+        if(_npTgt){const _npA=Math.atan2(_npTgt.y-P.y,_npTgt.x-P.x);p.vx=Math.cos(_npA)*3.5;p.vy=Math.sin(_npA)*3.5}
+        else{p.vx*=-2;p.vy*=-2}
+        p.friendly=true;p.dmg=~~(p.dmg*1.5);p.life=180;p.ml=180;p.homing=true;
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
-        addTxt(P.x,P.y-28,'⚡패링!','#ffdd00',35);_pHit=true;doParry(p.dmg)}
+        addTxt(P.x,P.y-28,'⚡패링!','#ffdd00',35);doParry(p.dmg);projs[pw++]=p;_pHit=true;continue}
       else if(P.s==='whirlwind'&&_isFused('whirlDet')&&!p.friendly&&!p.bomb&&!p.iceZone&&!p.blizzard&&!p.web){
         // 회전기폭 합체: 회전 중 일반탄 흡수 → parryBank 축적
         const _wdAbs=Math.min(.95,0.70+(P.skills.detonate||1)*0.005);
