@@ -1,0 +1,10 @@
+{
+  "character": {
+    "id": "26a9e3d6-3ca9-4f13-918e-d82e7789ed56",
+    "name": "Tank",
+    "size": {
+      "width": 48,
+      "height": 48
+    }
+  }
+}

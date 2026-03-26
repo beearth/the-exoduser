@@ -1,0 +1,10 @@
+{
+  "character": {
+    "id": "563b4901-a4f5-46b8-a772-52fc77af85e9",
+    "name": "Large Ghoul",
+    "size": {
+      "width": 64,
+      "height": 64
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "character": {
+    "id": "f6274b19-dcd9-4190-a703-f6f413bcd7bc",
+    "name": "Poison Mushroom Giant",
+    "size": {
+      "width": 64,
+      "height": 64
+    }
+  }
+}
