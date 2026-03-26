@@ -5536,6 +5536,13 @@ const _CH_DECO={
     {id:'m_ctree4',file:'cursed_tree_04.png',sz:400,large:1},
     {id:'m_ctree5',file:'cursed_tree_05.png',sz:400,large:1},
     {id:'m_ctree6',file:'cursed_tree_06.png',sz:400,large:1},
+    {id:'m_ctree7',file:'cursed_tree_07.png',sz:400,large:1},
+    {id:'m_ctree8',file:'cursed_tree_08.png',sz:400,large:1},
+    {id:'m_ctree9',file:'cursed_tree_09.png',sz:400,large:1},
+    {id:'m_ctree10',file:'cursed_tree_10.png',sz:400,large:1},
+    {id:'m_ctree11',file:'cursed_tree_11.png',sz:400,large:1},
+    {id:'m_ctree12',file:'cursed_tree_12.png',sz:400,large:1},
+    {id:'m_teye',file:'tree_eye_sheet.png',sz:120},
   ],
 };
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
@@ -5562,7 +5569,7 @@ const _OBJ_META={
   'lava_l':{sz:200,collision:true},'lava_l_v6a':{sz:300,collision:true},'lava_l_v6b':{sz:300,collision:true},
   'lava_l_v6c':{sz:300,collision:true},'lava_l_v6d':{sz:300,collision:true},
   'lava_l_90':{sz:200,collision:true,rot:90},'lava_l_180':{sz:200,collision:true,rot:180},'lava_l_270':{sz:200,collision:true,rot:270},
-  'm_ctree1':{sz:400,col:1,large:1},'m_ctree2':{sz:400,col:1,large:1},'m_ctree3':{sz:400,col:1,large:1},'m_ctree4':{sz:400,col:1,large:1},'m_ctree5':{sz:400,col:1,large:1},'m_ctree6':{sz:400,col:1,large:1},
+  'm_ctree1':{sz:400,col:1,large:1},'m_ctree2':{sz:400,col:1,large:1},'m_ctree3':{sz:400,col:1,large:1},'m_ctree4':{sz:400,col:1,large:1},'m_ctree5':{sz:400,col:1,large:1},'m_ctree6':{sz:400,col:1,large:1},'m_ctree7':{sz:400,col:1,large:1},'m_ctree8':{sz:400,col:1,large:1},'m_ctree9':{sz:400,col:1,large:1},'m_ctree10':{sz:400,col:1,large:1},'m_ctree11':{sz:400,col:1,large:1},'m_ctree12':{sz:400,col:1,large:1},'m_teye':{sz:120,trackEye:1},
 };
 // _CH_DECO 프리로드
 for(const[ch,list]of Object.entries(_CH_DECO)){
@@ -10063,10 +10070,10 @@ function initMapObjects(){
     const _normalDeco=_chDeco.filter(d=>!d.large);
     let _lgPlaced=0;
     if(_largeDeco.length>0){
-      const _lgMax=Math.min(20,Math.max(2,~~(_dcFloors.length/200))); // 200타일당 1개, 최대20
-      const _lgMinDist=500; // 대형끼리 최소 500px 간격 (sz400 기준 겹침 방지)
+      const _lgMax=Math.min(60,Math.max(5,~~(_dcFloors.length/80))); // 80타일당 1개, 최대60
+      const _lgMinDist=450; // 대형끼리 최소 450px 간격
       const _lgWallR=5; // 벽에서 5타일 이상
-      for(let li=0;li<_lgMax*20&&_lgPlaced<_lgMax&&_dcFloors.length>0;li++){
+      for(let li=0;li<_lgMax*40&&_lgPlaced<_lgMax&&_dcFloors.length>0;li++){
         const _fi=~~(_dcSeed()*_dcFloors.length);
         const _ft=_dcFloors[_fi];
         // 벽에서 충분히 떨어진 곳 (대형은 넓은 여유)
@@ -11271,7 +11278,7 @@ function _doAiEnhance(){
 function salvageVal(it){
   const e=it.enh||0;
   const enhVal=e<100?e*3:300+(e-100)*1;
-  return[2,5,12,25,50][it.rarity||0]+Math.min(enhVal,1000)+(it.tier||0)*2;
+  return[1000,2000,4000,8000,16000][it.rarity||0]+Math.min(enhVal,1000)+(it.tier||0)*2;
 }
 
 
@@ -116793,7 +116800,7 @@ function initStage(si){
   BGM.play(BGM.stageKey(si)); // 스테이지 BGM
 }
 
-function isW(px,py,skipBone){const tx=~~(px/T),ty=~~(py/T);if(tx<0||ty<0||tx>=G.mw||ty>=G.mh)return true;const v=G.map[ty][tx];if(v===1||v===3)return true;if(!skipBone&&G._boneWalls){for(let bi=0;bi<G._boneWalls.length;bi++){const bw=G._boneWalls[bi];if(bw.phase==='rise'&&bw.t<bw.riseT*0.5)continue;const dx=px-bw.x,dy=py-bw.y;const d2=dx*dx+dy*dy;const rIn=bw.ringR-bw.wallThk,rOut=bw.ringR+bw.wallThk;if(d2>=rIn*rIn&&d2<=rOut*rOut)return true}}for(let _pi=0;_pi<MAP_OBJS.length;_pi++){const _po=MAP_OBJS[_pi];const _pm=_OBJ_META[_po.type];if(_pm&&_pm.collision){const _pr=_pm.sz*.4;const _pdx=px-_po.x,_pdy=py-_po.y;if(_pdx*_pdx+_pdy*_pdy<_pr*_pr)return true}}return false}
+function isW(px,py,skipBone){const tx=~~(px/T),ty=~~(py/T);if(tx<0||ty<0||tx>=G.mw||ty>=G.mh)return true;const v=G.map[ty][tx];if(v===1||v===3)return true;if(!skipBone&&G._boneWalls){for(let bi=0;bi<G._boneWalls.length;bi++){const bw=G._boneWalls[bi];if(bw.phase==='rise'&&bw.t<bw.riseT*0.5)continue;const dx=px-bw.x,dy=py-bw.y;const d2=dx*dx+dy*dy;const rIn=bw.ringR-bw.wallThk,rOut=bw.ringR+bw.wallThk;if(d2>=rIn*rIn&&d2<=rOut*rOut)return true}}for(let _pi=0;_pi<MAP_OBJS.length;_pi++){const _po=MAP_OBJS[_pi];const _pm=_OBJ_META[_po.type];if(_pm&&(_pm.collision||_pm.col)){const _pr=_pm.sz*.4;const _pdx=px-_po.x,_pdy=py-_po.y;if(_pdx*_pdx+_pdy*_pdy<_pr*_pr)return true}}return false}
 function canMv(x,y,r){return!isW(x-r,y-r)&&!isW(x+r,y-r)&&!isW(x-r,y+r)&&!isW(x+r,y+r)}
 function canMvBlink(x,y,r){return!isW(x-r,y-r,1)&&!isW(x+r,y-r,1)&&!isW(x-r,y+r,1)&&!isW(x+r,y+r,1)}
 // 안전한 위치 찾기: (x,y)가 벽이면 주변 나선탐색으로 빈 곳 반환
@@ -130799,6 +130806,20 @@ function draw(){
             const _si=((~~(mo.x*7919+mo.y*104729+31))&0x7fffffff)%(_sh.c*_sh.r);
             X.drawImage(_spr,(_si%_sh.c)*_cw,~~(_si/_sh.c)*_ch,_cw,_ch,mo.x-sz/2,mo.y-sz/2,sz,sz);
           }else if(_meta&&_meta.rot){X.save();X.translate(mo.x,mo.y);X.rotate(_meta.rot*Math.PI/180);X.drawImage(_spr,-sz/2,-sz/2,sz,sz);X.restore()
+          }else if(_meta&&_meta.trackEye){
+            // 나무눈알: 3x3 스프라이트 시트로 플레이어 추적
+            // 0=center,1=S,2=SW,3=W,4=NW,5=N,6=NE,7=E,8=SE
+            const _edx=P.x-mo.x,_edy=P.y-mo.y;
+            const _edist=_edx*_edx+_edy*_edy;
+            let _efr=0;
+            if(_edist>T*T){
+              const _eang=Math.atan2(_edy,_edx);
+              const _ei8=~~(((_eang+Math.PI)/(Math.PI*2))*8+0.5)%8;
+              _efr=[3,4,5,6,7,8,1,2][_ei8];
+            }
+            const _teCols=3,_teRows=3;
+            const _teCw=~~(_spr.naturalWidth/_teCols),_teCh=~~(_spr.naturalHeight/_teRows);
+            X.drawImage(_spr,(_efr%_teCols)*_teCw,~~(_efr/_teCols)*_teCh,_teCw,_teCh,mo.x-sz/2,mo.y-sz/2,sz,sz);
           }else if((mo.type==='m_eye'||mo.type==='m_eye1'||mo.type==='m_eye2')&&_floorEyeImg.naturalWidth>0){
             // 눈깔: 스프라이트 시트로 플레이어 추적
             // 시트: 0=center,1=S,2=SW,3=W,4=NW,5=N,6=NE,7=E,8=SE
@@ -130812,6 +130833,28 @@ function draw(){
             }
             X.drawImage(_floorEyeImg,_efr*40,0,40,40,mo.x-sz/2,mo.y-sz/2,sz,sz);
           }else X.drawImage(_spr,mo.x-sz/2,mo.y-sz/2,sz,sz);
+          // 나무에 눈알 오버레이 (m_ctree 시리즈)
+          if(_meta&&_meta.col&&_meta.large&&mo.type.startsWith('m_ctree')){
+            const _teSpr=_OBJ_SPR['m_teye'];
+            if(_teSpr&&_teSpr.complete&&_teSpr.naturalWidth>0){
+              const _edx2=P.x-mo.x,_edy2=P.y-mo.y;
+              const _ed2=_edx2*_edx2+_edy2*_edy2;
+              let _efr2=0;
+              if(_ed2>T*T*4){
+                const _ea2=Math.atan2(_edy2,_edx2);
+                const _ei2=~~(((_ea2+Math.PI)/(Math.PI*2))*8+0.5)%8;
+                _efr2=[3,4,5,6,7,8,1,2][_ei2];
+              }
+              const _tC=3,_tR=3;
+              const _fw=~~(_teSpr.naturalWidth/_tC),_fh=~~(_teSpr.naturalHeight/_tR);
+              // 나무 상단 1/3 지점에 눈알 배치, 크기=나무의 30%
+              const _eSz=sz*.3;
+              const _eHash=((~~(mo.x*31+mo.y*97))&0x7fffffff);
+              const _eOx=((_eHash%20)-10)*0.5; // 약간의 x랜덤 오프셋
+              const _eOy=-sz*.15+((_eHash%14)-7)*0.3; // 나무 상단 쪽
+              X.drawImage(_teSpr,(_efr2%_tC)*_fw,~~(_efr2/_tC)*_fh,_fw,_fh,mo.x-_eSz/2+_eOx,mo.y-_eSz/2+_eOy,_eSz,_eSz);
+            }
+          }
           // 발광 오브젝트: 포인트라이트
           if(_meta&&_meta.light){X.globalAlpha=.15+Math.sin(_now/800+mo.x)*.05;X.fillStyle='rgba(255,180,80,0.3)';X.beginPath();X.arc(mo.x,mo.y,80,0,Math.PI*2);X.fill();X.globalAlpha=1}
         }else if(mo.type!=='bonfire'&&mo.type!=='lore'&&mo.type!=='breakable'&&mo.type!=='trap'&&mo.type!=='altar'){
