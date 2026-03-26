@@ -120952,7 +120952,7 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
     // 회전참 피격 스택 카운트만 유지 (데미지 보너스 제거됨)
     if(_isWW){e._wwStk=Math.min(20,(e._wwStk||0)+1);e._wwStkT=60;}
     if(!_isWW||!_wwHitSfx){const _hSfx=type==='shield'?'flat_hit':(Math.random()<.5?'melee_hit1':'melee_hit');playSampleAt(_hSfx,.45,_r(1,.15),e.x,e.y);if(_isWW)_wwHitSfx=true} // 방패→flat_hit, 무기→메리랜덤
-    hurtE(e,dmg,ang,false,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0.5:1.5,noPoise:false,poiseHit:_isWW||type==='shield',poiseSkill:type==='shield'},el);
+    hurtE(e,dmg,ang,false,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0:1.5,noPoise:_isWW,poiseHit:type==='shield',poiseSkill:type==='shield'},el);
       // parryBank는 적 공격 흡수로만 축적 (hitArc 공격 축적 삭제)
       if(!_isWW){
       // 칼등치기만 포이즈 데미지 (데미지의 200%)
@@ -125673,9 +125673,9 @@ function _detonateBlast(label,elSrc){
     const _boomDmg=~~(boom*(.5+falloff*.5));
     hurtE(e,_boomDmg,ang,false,{kbMult:0,noPoise:true,detonate:true,explode:true},_detEl);
     e.kb.x+=Math.cos(ang)*12*falloff;e.kb.y+=Math.sin(ang)*12*falloff;
-    // 회전기폭/지진폭풍: 캡 전 원본 데미지로 포이즈 300% 직접 처리
+    // 회전기폭/지진폭풍: 캡 전 원본 데미지로 포이즈 200% 직접 처리
     const _elMul=elMul(_detEl,e.el);
-    const _psDmg=~~(_boomDmg*3.0*_elMul);
+    const _psDmg=~~(_boomDmg*2.0*_elMul);
     e.poise-=_psDmg;e.poiseR=0;
     if(e.ib){
       if(e.poise<=0&&!(e._pImmune>0)){
