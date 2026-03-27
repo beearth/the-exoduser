@@ -130374,11 +130374,11 @@ function draw(){
     if(!_bSrc)continue;
     const _px=G.cam.x*_bl.parallax,_py=G.cam.y*_bl.parallax;
     const _bw=_bSrc.width,_bh=_bSrc.height;
-    const _ox=-((_px%_bw)+_bw)%_bw,_oy=-((_py%_bh)+_bh)%_bh;
+    const _ox=-((((_px%_bw)+_bw)%_bw)|0),_oy=-((((_py%_bh)+_bh)%_bh)|0);
     X.globalAlpha=_bl.opacity;
     for(let _by=_oy-_bh;_by<G.mh*T+_bh;_by+=_bh)
       for(let _bx=_ox-_bw;_bx<G.mw*T+_bw;_bx+=_bw)
-        X.drawImage(_bSrc,_bx,_by);
+        X.drawImage(_bSrc,_bx|0,_by|0);
     X.globalAlpha=1;
   }}}
   // ── 반딧불이 파티클 (가벼운 버전 — arc/gradient 없이 fillRect만) ──
@@ -134091,14 +134091,16 @@ function drawP(){
       const _wP=w.t/w.maxT;
       const fade=Math.max(0,1-_wP);
       const _t2=_now;
-      // 1) 크레이터
+      const _isGSlam=!w.col; // col 없으면 대왕치기, 있으면 대지치기/기타
+      // 1) 크레이터 (대왕치기 전용)
+      if(_isGSlam){
       const _crR=w.maxR*.4;
       if(_craterReady){
         X.globalAlpha=Math.min(1,fade*1.5);
         let _cFrm=~~(_wP*4);
         if(_cFrm>3)_cFrm=3;
         const _img=_craterFrames[_cFrm];
-        const _dw=_crR*2; // 이미지 크기
+        const _dw=_crR*2;
         X.drawImage(_img,w.x-_dw/2,w.y-_dw/2,_dw,_dw);
         X.globalAlpha=1;
       }else{
@@ -134109,11 +134111,14 @@ function drawP(){
         X.globalAlpha=1;X.fillStyle=_crGrd;
         X.beginPath();X.arc(w.x,w.y,_crR,0,Math.PI*2);X.fill();
       }
-      // 2) 중앙 폭발 플래시 (간소화)
+      }
+      // 2) 중앙 폭발 플래시 (대왕치기 전용)
+      if(_isGSlam){
       const _flashP=Math.max(0,1-_wP*4);
       if(_flashP>0){const _fR=w.maxR*.4*_flashP;
-        X.globalAlpha=.75*_flashP*fade;X.fillStyle=w.col||'#ff6622';
+        X.globalAlpha=.75*_flashP*fade;X.fillStyle='#ff6622';
         X.beginPath();X.arc(w.x,w.y,_fR,0,Math.PI*2);X.fill();}
+      }
       // 3) 충격파 링 (단일)
       const _ringW=10*(1-_wP*0.5)+4;
       X.globalAlpha=Math.min(1,1.05*fade);X.strokeStyle=w.col||'#ff6622';X.lineWidth=_ringW;
