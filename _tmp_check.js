@@ -4515,6 +4515,8 @@ const _OBJ_SPR_MAP={
   'pit_ice':'assets/objects/pit_ice.png','pit_corpse':'assets/objects/pit_corpse.png',
   'pit_bugs':'assets/objects/pit_bugs.png',
   'pit_blood1':'assets/objects/pit_blood1.png','pit_blood2':'assets/objects/pit_blood2.png','pit_blood3':'assets/objects/pit_blood3.png',
+  'pit_blood4':'assets/objects/pit_blood4.png','pit_blood5':'assets/objects/pit_blood5.png','pit_blood6':'assets/objects/pit_blood6.png',
+  'pit_blood7':'assets/objects/pit_blood7.png','pit_blood8':'assets/objects/pit_blood8.png','pit_blood9':'assets/objects/pit_blood9.png',
   'lava_straight':'assets/objects/lava_l.png','lava_straight_v2':'assets/objects/lava_l.png',
   'lava_s':'assets/objects/lava_l.png','lava_s_v4b':'assets/objects/lava_l.png','lava_s_v5c':'assets/objects/lava_l.png',
   'lava_l':'assets/objects/lava_l.png','lava_l_v6a':'assets/objects/lava_l.png','lava_l_v6b':'assets/objects/lava_l.png',
@@ -4584,6 +4586,8 @@ const _OBJ_META={
   'pit_lava':{sz:200,collision:true},'pit_poison':{sz:200,collision:true},
   'pit_ice':{sz:200,collision:true},'pit_corpse':{sz:200,collision:true},'pit_bugs':{sz:200,collision:true},
   'pit_blood1':{sz:400,collision:true},'pit_blood2':{sz:400,collision:true},'pit_blood3':{sz:400,collision:true},
+  'pit_blood4':{sz:400,collision:true},'pit_blood5':{sz:400,collision:true},'pit_blood6':{sz:400,collision:true},
+  'pit_blood7':{sz:400,collision:true},'pit_blood8':{sz:400,collision:true},'pit_blood9':{sz:400,collision:true},
   'lava_straight':{sz:300,collision:true},'lava_straight_v2':{sz:300,collision:true},
   'lava_s':{sz:300,collision:true},'lava_s_v4b':{sz:300,collision:true},'lava_s_v5c':{sz:300,collision:true},
   'lava_l':{sz:200,collision:true},'lava_l_v6a':{sz:300,collision:true},'lava_l_v6b':{sz:300,collision:true},
@@ -4843,6 +4847,7 @@ registerVFX('void_black','assets/vfx/vfx_void_black.png',768,768,9,3);
 registerVFX('lava_erupt','assets/vfx/vfx_lava_erupt.png',768,768,9,3);
 registerVFX('ice_orb','assets/vfx/vfx_ice_orb.png',768,768,9,3);
 registerVFX('earthquake','assets/vfx/vfx_earthquake.png',512,512,9,3);
+registerVFX('blue_vortex','assets/vfx/vfx_blue_vortex.png',201,201,8,4);
 
 // ═══ 빙결 틴트용 오프스크린 캔버스 (몬스터 실루엣 파란 틴트) ═══
 const _iceTintC=document.createElement('canvas');
@@ -9079,24 +9084,36 @@ function initMapObjects(){
       }
     }
   }
-  // ── 피구덩이 (pit_blood 1~3) — CH1 전용, 나무 근처 배치 ──
+  // ── 피웅덩이 (pit_blood 1~9) — CH1 전용, 나무 근처 + 빈 바닥 대량 배치 ──
   if(hell===0){
-    const _pbIds=['pit_blood1','pit_blood2','pit_blood3'];
+    const _pbIds=['pit_blood1','pit_blood2','pit_blood3','pit_blood4','pit_blood5','pit_blood6','pit_blood7','pit_blood8','pit_blood9'];
     const _pbSeed=_tseed(G.stage*41+17,hell*67+11);
-    // 나무 오브젝트 찾기
-    const _treeObjs=MAP_OBJS.filter(o=>o.type&&(o.type.indexOf('tree')>=0||o.type.indexOf('stump')>=0));
     let _pbPlaced=0;
+    // 1) 나무 근처 배치
+    const _treeObjs=MAP_OBJS.filter(o=>o.type&&(o.type.indexOf('tree')>=0||o.type.indexOf('stump')>=0));
     for(const tree of _treeObjs){
-      if(_pbPlaced>=_pbIds.length)break;
-      // 나무에서 120~200px 옆에 배치
+      if(_pbPlaced>=20)break;
       const ang=_pbSeed()*Math.PI*2;
-      const dist=120+_pbSeed()*80;
+      const dist=100+_pbSeed()*120;
       const px=tree.x+Math.cos(ang)*dist,py=tree.y+Math.sin(ang)*dist;
       const tx=~~(px/T),ty=~~(py/T);
       if(!_floorAt(tx,ty))continue;
       if(!_moOk(px,py))continue;
-      MAP_OBJS.push({type:_pbIds[_pbPlaced],x:px,y:py,hell});
+      MAP_OBJS.push({type:_pbIds[_pbPlaced%9],x:px,y:py,hell});
       _pbPlaced++;
+    }
+    // 2) combat방 바닥에 추가 배치 (맵 전역에 퍼뜨리기)
+    for(const r of combatRooms){
+      if(_pbPlaced>=30)break;
+      for(let _try=0;_try<10&&_pbPlaced<30;_try++){
+        const tx=r.x+2+~~(_pbSeed()*(r.w-4));
+        const ty=r.y+2+~~(_pbSeed()*(r.h-4));
+        if(!_floorAt(tx,ty))continue;
+        const px=tx*T+T/2,py=ty*T+T/2;
+        if(!_moOk(px,py))continue;
+        MAP_OBJS.push({type:_pbIds[_pbPlaced%9],x:px,y:py,hell});
+        _pbPlaced++;
+      }
     }
     console.log('[PIT_BLOOD] placed:'+_pbPlaced);
   }
@@ -127819,6 +127836,7 @@ $('optPetAuto').onchange=function(){OPT.petAuto=this.checked;saveSettings()};
 $('optIrisSz').oninput=function(){const v=+this.value;G._irisSz=v;if(G.pets&&G.pets.iris)G.pets.iris.sz=v;$('optIrisSzVal').textContent=v;};
 $('optBrightness').oninput=function(){OPT.brightness=+this.value;$('optBrightnessVal').textContent=this.value+'%';C.style.filter='brightness('+(OPT.brightness/100)+')';saveSettings()};
 $('optIrisGlow').oninput=function(){OPT.irisGlow=+this.value;$('optIrisGlowVal').textContent=this.value;saveSettings()};
+$('optBladeAuto').onchange=function(){G._bladeAuto=this.checked;saveSettings()};
 $('optBossDbg').onchange=function(){OPT.bossDebug=this.checked;saveSettings()};
 // ── 그래픽 품질 옵션 ──
 $('optBloom').onchange=function(){OPT.bloom=this.checked;saveSettings()};
@@ -128261,6 +128279,7 @@ function syncSettingsUI(){
   if($('optIrisSz')){const _isz=G._irisSz||20;$('optIrisSz').value=_isz;$('optIrisSzVal').textContent=_isz}
   if($('optBrightness')){const _br=OPT.brightness||100;$('optBrightness').value=_br;$('optBrightnessVal').textContent=_br+'%';C.style.filter='brightness('+(_br/100)+')';}
   if($('optIrisGlow')){const _ig=OPT.irisGlow||700;$('optIrisGlow').value=_ig;$('optIrisGlowVal').textContent=_ig}
+  if($('optBladeAuto')){$('optBladeAuto').checked=!!G._bladeAuto}
   if($('optBossDbg')){$('optBossDbg').checked=!!OPT.bossDebug}
   if($('optBloom'))$('optBloom').checked=!!OPT.bloom;
   if($('optTrail'))$('optTrail').checked=!!OPT.trail;
