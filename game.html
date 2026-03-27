@@ -1630,6 +1630,10 @@ function rz(){
   else{C.style.width=cssW;C.style.height=cssH;CT.style.width=cssW;CT.style.height=cssH;if(_bCvs){_bCvs.style.width=cssW;_bCvs.style.height=cssH}}
   if(GL)GL.viewport(0,0,C.width,C.height);
   if(_bGL)_bGL.viewport(0,0,rw,rh);
+  // ── 픽셀퍼펙트: smoothing OFF + CSS pixelated ──
+  if(X){X.imageSmoothingEnabled=false}
+  C.style.imageRendering='pixelated';CT.style.imageRendering='pixelated';
+  if(_bCvs)_bCvs.style.imageRendering='pixelated';
   _bakeVignette(rw,rh);_fogCvs=null;
 }
 addEventListener('resize',rz);
@@ -6157,6 +6161,7 @@ function drawEnBody(X,e,_now,sa){
   if(_mobAtlas.ready&&e.etype>=0&&e.etype<=99){
     const _bsz=Math.max(e.r*3.5,30);
     X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
+    if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);
     // etype 0-9: 풀 애니메이션 (7=리치,9=소서러 제외 — 떠다니는 타입)
     if(_hasWalkAnim(e.etype)&&_walkAtlas.ready){
       const _as=_getEAnimState(e);
@@ -8894,22 +8899,18 @@ const _MOB_CELL=48,_MOB_COLS=10;
 // ── 풀 애니메이션 아틀라스 (etype 0-9, idle4+walk4+atk6+hit6=20cols, 48px) ──
 const _walkAtlas={img:null,ready:false};
 const _WALK_COLS=4;
-const _WA={idle:{s:0,n:4,spd:.003},walk:{s:4,n:4,spd:.005},attack:{s:8,n:6,spd:.008},hit:{s:14,n:6,spd:.007}}; // 상태별 오프셋+속도
+const _WA={idle:{s:0,n:4,spd:.0015},walk:{s:4,n:4,spd:.0025},attack:{s:8,n:6,spd:.004},hit:{s:14,n:6,spd:.003}}; // 상태별 오프셋+속도
 const _WA_ROW={0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,12:10,13:11,18:12,41:13,44:14,49:15,56:16,50:17,51:18,52:19,53:20,54:21,57:22,58:23,59:24,55:25,14:26,15:27,16:28,17:29,19:30,40:31,42:32,43:33,45:34,46:35,47:36,48:37,10:38,11:39,22:40,23:41,20:42,21:43,60:44,61:45,62:46,63:47,64:48,65:49,66:50,67:51,68:52,69:53,70:54,71:55,72:56,73:57,74:58,75:59,76:60,77:61,78:62,79:63,80:64,81:65,82:66,83:67,84:68,24:69,25:70,26:71,27:72,28:73,29:74,30:75,31:76,32:77,33:78,34:79,35:80,36:81,37:82,38:83,39:84,90:85,91:86,92:87,93:88,94:89,95:90,96:91,97:92,98:93,99:94,85:95,86:96,87:97,88:98,89:99,90:100,91:101,92:102,95:103,96:104}; // etype→아틀라스 행
 function _hasWalkAnim(et){return _WA_ROW[et]!==undefined&&et!==7&&et!==9}
 function _waRow(et){return _WA_ROW[et]||0}
 const _WA_DIR_ROWS=95;
-function _waDirOff(facing){
-  const a=((facing%(Math.PI*2))+(Math.PI*2))%(Math.PI*2);
-  if(a>Math.PI*1.25&&a<Math.PI*1.75)return 2*_WA_DIR_ROWS; // north
-  if(a>=Math.PI*0.75&&a<=Math.PI*1.25)return 3*_WA_DIR_ROWS; // west
-  if((a>=Math.PI*1.75)||(a<=Math.PI*0.25))return 0; // south
-  return 1*_WA_DIR_ROWS; // east
-}
-function _waRowDir(et,facing){return (_WA_ROW[et]||0)+_waDirOff(facing)}
+// facing(atan2): 0=east, PI/2=south, -PI/2=north, ±PI=west
+// north면 +95행, 나머지는 south행 사용 (east/west는 좌우반전)
+function _waIsNorth(facing){return facing<-Math.PI/4&&facing>-Math.PI*3/4}
+function _waRowDir(et,facing){return (_WA_ROW[et]||0)+(_waIsNorth(facing)?_WA_DIR_ROWS:0)}
 (function _loadWalkAtlas(){
   const img=new Image();
-  img.src='img/mobs/atlas_walk.png?v=18';
+  img.src='img/mobs/atlas_walk.png?v=21';
   _walkAtlas.img=img;
   img.onload=function(){
     if(img.decode){img.decode().then(function(){_walkAtlas.ready=true;console.log('[WALK_ATLAS] 디코딩 완료 '+img.width+'x'+img.height)}).catch(function(){_walkAtlas.ready=true})}
@@ -9799,17 +9800,12 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
     if(isBoss){playSampleAt('death_boss',.5,_r(.7,.15),x,y)}
     else if(et>=100&&et<=102){const gk=et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3';playSampleAt(gk,_r(.5,.1),_r(1,.1),x,y)}
     else if(Math.random()<.2){
-      // 일반몹 사망 사운드 — 20% 확률
-      if(_INSECT_ET.has(et)){playSampleAt(_pickDeathVar('death_insect'),_r(.5,.1),_r(1,.1),x,y)}
-      else if(_GHOST_ET.has(et)){playSampleAt('death_ghost',_r(.5,.1),_r(1,.1),x,y)}
-      else if(_ARMOR_ET.has(et)){playSampleAt(_pickDeathVar('death_armor'),_r(.15,.05),_r(1,.1),x,y)}
-      else{
-        const k=_deathSfxKey(et);
-        const v=r>=40?.5:.45;
-        playSampleAt(k,_r(v,.1),_r(1,.1),x,y);
-        if(r>=40&&Math.random()<.2)playSampleAt('monster_die1',.5,_r(.8,.15),x,y);
-      }
-      if(Math.random()<.12)playSampleAt('death_grunt',.3,_r(1,.15),x,y);
+      // 일반몹 사망 사운드 — 20% 확률, 전 카테고리 통합
+      const k=_deathSfxKey(et);
+      const v=_ARMOR_ET.has(et)?.2:r>=40?.5:.4;
+      playSampleAt(k,_r(v,.08),_r(1,.12),x,y);
+      if(r>=40&&Math.random()<.2)playSampleAt('monster_die1',.4,_r(.8,.15),x,y);
+      if(Math.random()<.12)playSampleAt('death_grunt',.25,_r(1,.15),x,y);
     }
   }
   // 동시 사망 과다 시 파티클 절감
@@ -10517,7 +10513,7 @@ function buildMapCache(){
   if(!_mapCvs)_mapCvs=document.createElement('canvas');
   _mapCvs.width=mw*T;_mapCvs.height=mh*T;
   if(_mapCvs._glVer!=null)_mapCvs._glVer=(_mapCvs._glVer||0)+1;
-  const c=_mapCvs.getContext('2d');_mapCtx=c;
+  const c=_mapCvs.getContext('2d');_mapCtx=c;c.imageSmoothingEnabled=false;
   const _isW=(tx,ty)=>tx<0||tx>=mw||ty<0||ty>=mh||map[ty][tx]===1||map[ty][tx]===3;
   const _isF=(tx,ty)=>tx>=0&&tx<mw&&ty>=0&&ty<mh&&map[ty][tx]===0;
   // ── Pass 0.4: 바닥타일 미러 타일링 (seam 제거) ──
@@ -10533,7 +10529,7 @@ function buildMapCache(){
         if(map[ty2][tx2]===0)c.rect(tx2*T,ty2*T,T,T);
       }
       c.clip();
-      c.imageSmoothingEnabled=true;
+      c.imageSmoothingEnabled=false;
       // 단순 반복 타일링 (미러 타일링 제거 — 밝기 반전 seam 아티팩트 해소)
       for(let py2=0;py2<mh*T;py2+=spPx){
         for(let px2=0;px2<mw*T;px2+=spPx){
@@ -130761,7 +130757,7 @@ function draw(){
   const _ez=(_EDITOR_MODE&&G._edZoom)?G._edZoom:1;
   X.save();
   if(_ez!==1){X.translate(C.width/2,C.height/2);X.scale(_ez,_ez);X.translate(-C.width/2,-C.height/2)}
-  X.translate(C.width/2-G.cam.x+sx,C.height/2-G.cam.y+sy);
+  X.translate(~~(C.width/2-G.cam.x+sx),~~(C.height/2-G.cam.y+sy));
   const s1=Math.max(0,~~((G.cam.x-C.width/2)/T)-1),e1=Math.min(G.mw,Math.ceil((G.cam.x+C.width/2)/T)+1);
   const s2=Math.max(0,~~((G.cam.y-C.height/2)/T)-1),e2=Math.min(G.mh,Math.ceil((G.cam.y+C.height/2)/T)+1);
   // ── 패럴랙스 배경 레이어 ──
@@ -130850,7 +130846,7 @@ function draw(){
       _streamLastCamTx=_curTx;_streamLastCamTy=_curTy;_streamVpDirty=false;
       if(!_streamVpCvs||_streamVpCvs.width!==~~_vpW||_streamVpCvs.height!==~~_vpH){
         _streamVpCvs=document.createElement('canvas');_streamVpCvs.width=~~_vpW;_streamVpCvs.height=~~_vpH;
-        _streamVpCtx=_streamVpCvs.getContext('2d');
+        _streamVpCtx=_streamVpCvs.getContext('2d');_streamVpCtx.imageSmoothingEnabled=false;
       }
       _streamVpCtx.clearRect(0,0,_streamVpCvs.width,_streamVpCvs.height);
       const _offX=_camL-T*2,_offY=_camT-T*2;
@@ -132150,6 +132146,7 @@ function draw(){
         const _minSz=30;
         const _baseSz=Math.max(e.r*3.5,_minSz);
         X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
+        if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);
         if(_hasWalkAnim(e.etype)&&_walkAtlas.ready){
           const _as2=_getEAnimState(e);
           const _wa2=_WA[_as2]||_WA.idle;
@@ -136254,16 +136251,13 @@ function drawP(){
     if(prog>.7){const iA=(prog-.7)/.3;X.globalAlpha=.4*(1-iA)*fadeA;X.fillStyle=sc;X.beginPath();X.arc(tpX,tpY,20+iA*25,0,Math.PI*2);X.fill()}}
     if(Math.random()>.25){const pa=curA+(Math.random()-.5)*.5;const pd=sweepRange*(.8+Math.random()*.3);poolPart(P.x+Math.cos(pa)*pd,P.y+Math.sin(pa)*pd,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ffffff',2+Math.random()*3,6+Math.random()*5)}
     if(P.s==='sBash'&&P.st2<=18&&P.st2>=14){for(let i=0;i<3;i++){const sa=startA+Math.random()*(curA-startA);const sr=sweepRange*.6+Math.random()*sweepRange*.4;poolPart(P.x+Math.cos(sa)*sr,P.y+Math.sin(sa)*sr,Math.cos(sa)*4+Math.random()*2-1,Math.sin(sa)*4+Math.random()*2-1,'#ffffff',3+Math.random()*3,8+Math.random()*6)}}
-    // ── 칼등날개: 블랙 기본 + shieldThrow 보유 시 파란 날개 ──
-    const _hasST=P.skills.shieldThrow>=1;
-    const _bladeImg=_hasST?_SBASH_BLADE_IMG:_SBASH_BLADE_BLK;
-    const _bladeOk=_hasST?_sbashBladeReady:_sbashBlkReady;
-    if(_bladeOk){
+    // ── 칼등날개: 블랙 날개 ──
+    if(_sbashBlkReady){
       const _sbW=sweepRange*1.8,_sbH=sweepRange*1.2;
       X.globalAlpha=(.6+prog*.3)*fadeA;
       X.translate(P.x,P.y);
       X.rotate(curA);
-      X.drawImage(_bladeImg,sweepRange*.15,-_sbH*.5,_sbW,_sbH);
+      X.drawImage(_SBASH_BLADE_BLK,sweepRange*.15,-_sbH*.5,_sbW,_sbH);
     }
     X.restore();
     X.globalAlpha=1;
