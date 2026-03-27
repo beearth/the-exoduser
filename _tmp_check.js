@@ -4554,6 +4554,7 @@ const _CH_DECO={
 };
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
 for(const[k,v]of Object.entries(_OBJ_SPR_MAP)){const im=new Image();im.src=v;_OBJ_SPR[k]=im}
+const _bossRoomBg=new Image();_bossRoomBg.src='assets/map/ch1/boss_room_bg.png';
 function _waitObjSprites(timeout){
   return new Promise(r=>{
     const t0=Date.now();
@@ -9506,6 +9507,20 @@ function buildMapCache(){
     }
   }
   // ── Pass 1.5: 보스 투기장 바닥 (tile=4) — 액트별 테마 ──
+  // CH1 보스룸 배경 이미지 오버레이
+  if(hell===0&&_bossRoomBg&&_bossRoomBg.complete&&_bossRoomBg.naturalWidth){
+    let _brX0=Infinity,_brY0=Infinity,_brX1=0,_brY1=0;
+    for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){
+      if(map[ty][tx]===4||map[ty][tx]===5){
+        if(tx<_brX0)_brX0=tx;if(ty<_brY0)_brY0=ty;
+        if(tx>_brX1)_brX1=tx;if(ty>_brY1)_brY1=ty;
+      }
+    }
+    if(_brX0<Infinity){
+      const bx=_brX0*T,by=_brY0*T,bw=(_brX1-_brX0+1)*T,bh=(_brY1-_brY0+1)*T;
+      c.drawImage(_bossRoomBg,bx,by,bw,bh);
+    }
+  }
   const bt=_BOSS_ATHEME[hell];const _b4c=_hexRgb(bt.f4);
   for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){
     if(map[ty][tx]!==4)continue;
