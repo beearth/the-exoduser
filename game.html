@@ -1293,7 +1293,7 @@ function dbRestore(d){
     G._irisSz=d.game.irisSz||20;
   }
   // Bag
-  BAG_MAX=d.bagMax||42;
+  BAG_MAX=d.bagMax||300;
   // Hell cleared
   G.hellCleared=d.hellCleared||[];
   // Storage
@@ -5034,7 +5034,7 @@ let INV={
   equipped:{weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,belt:null,necklace:null,ring1:null,ring2:null,cape:null,bracelet:null,headband:null},
   selected:null,
 };
-let BAG_MAX=42;
+let BAG_MAX=300;
 function _invRows(){return Math.max(10,Math.ceil(BAG_MAX*4/INV_COLS))}
 // ═══ 2D 그리드 인벤토리 ═══
 function _itemSz(it){
@@ -11174,7 +11174,7 @@ function _buildStreamChunk(cx,cy){
   const hell=SI_TO_HELL[G.stage];const _th=_MTHEME[hell];
   const wc=_hexRgb(_th.w),fc=_hexRgb(_th.f);
   const cc=document.createElement('canvas');cc.width=tw*T;cc.height=th*T;
-  const c=cc.getContext('2d');
+  const c=cc.getContext('2d');c.imageSmoothingEnabled=false;
   // 벽/바닥 타일 렌더
   if(_tileTexReady){
     // 텍스처 스탬프 모드 — 바닥
@@ -11192,7 +11192,7 @@ function _buildStreamChunk(cx,cy){
         for(let dx=0;dx<_TILE_SPAN&&bx2+dx<tw;dx++){
           const v=map[ty0+by+dy]?map[ty0+by+dy][tx0+bx2+dx]:1;
           if(v===0)c.rect((bx2+dx)*T,(by+dy)*T,T,T);}
-      c.clip();c.drawImage(fimg,bx2*T,by*T,_TILE_SZ,_TILE_SZ);c.restore();
+      c.clip();c.imageSmoothingEnabled=false;c.drawImage(fimg,bx2*T,by*T,fimg.naturalWidth||_TILE_SZ,fimg.naturalHeight||_TILE_SZ);c.restore();
     }
     // 벽 — wall_grime
     const _wg=_TILE_OVL[1];
@@ -11208,7 +11208,7 @@ function _buildStreamChunk(cx,cy){
           for(let dx=0;dx<_TILE_SPAN&&bx2+dx<tw;dx++){
             const v=map[ty0+by+dy]?map[ty0+by+dy][tx0+bx2+dx]:1;
             if(v===1)c.rect((bx2+dx)*T,(by+dy)*T,T,T);}
-        c.clip();c.globalAlpha=0.8;c.drawImage(_wg,bx2*T,by*T,_TILE_SZ,_TILE_SZ);
+        c.clip();c.globalAlpha=0.8;c.imageSmoothingEnabled=false;c.drawImage(_wg,bx2*T,by*T,_wg.naturalWidth||_TILE_SZ,_wg.naturalHeight||_TILE_SZ);
         c.globalAlpha=1;c.restore();
       }
     }
@@ -135995,7 +135995,9 @@ function drawP(){
     }else{
       X.scale(_pScale,_pScale);
     }
-    SpriteAnimator.draw(P._sa,X,0,0,!_apHasDir&&Math.abs(_fa)>Math.PI/2,_apHasDir?_apDir:null);
+    const _pFlip=!_apHasDir&&Math.abs(_fa)>Math.PI/2,_pDk=_apHasDir?_apDir:null;
+    SpriteAnimator.draw(P._sa,X,0,0,_pFlip,_pDk);
+    SpriteAnimator.draw(P._sa,X,0,0,_pFlip,_pDk); // 2회 중첩 — 반투명 픽셀 진하게
     X.restore();
     X.globalAlpha=fl?.3:1;
   }else if(_playerReady){
@@ -136021,8 +136023,8 @@ function drawP(){
     X.save();X.translate(_px+_ox,_py+_oy);
     if(Math.abs(_fa)>Math.PI/2)X.scale(-1,1);
     X.rotate(_rot);X.scale(_sx,_sy);
-    if(_useActFrame&&_aS){const aw=_aS.width/4,ah=_aS.height/3;X.drawImage(_aS,_aC*aw,_aR*ah,aw,ah,-bw/2,-bh/2-2,bw,bh);}
-    else if(_pS){const iw=_pS.width/2,ih=_pS.height;const fu=Math.sin(P.facing)<-0.3;X.drawImage(_pS,fu?iw:0,0,iw,ih,-bw/2,-bh/2-2,bw,bh);}
+    if(_useActFrame&&_aS){const aw=_aS.width/4,ah=_aS.height/3;X.drawImage(_aS,_aC*aw,_aR*ah,aw,ah,-bw/2,-bh/2-2,bw,bh);X.drawImage(_aS,_aC*aw,_aR*ah,aw,ah,-bw/2,-bh/2-2,bw,bh);}
+    else if(_pS){const iw=_pS.width/2,ih=_pS.height;const fu=Math.sin(P.facing)<-0.3;X.drawImage(_pS,fu?iw:0,0,iw,ih,-bw/2,-bh/2-2,bw,bh);X.drawImage(_pS,fu?iw:0,0,iw,ih,-bw/2,-bh/2-2,bw,bh);}
     X.restore();
     X.globalAlpha=fl?.3:1;
   }else{
@@ -136346,6 +136348,7 @@ function drawP(){
         const _moC=_moFi%_MO_COLS,_moR=~~(_moFi/_MO_COLS);
         const _moSz=p.r*5;
         X.save();X.translate(p.x,p.y);
+        X.rotate(_now*.08+p.x*.5);
         X.globalCompositeOperation='lighter';X.globalAlpha=fa;
         X.drawImage(_MO_IMG,_moC*_MO_CW,_moR*_MO_CH,_MO_CW,_MO_CH,-_moSz/2,-_moSz/2,_moSz,_moSz);
         X.drawImage(_MO_IMG,_moC*_MO_CW,_moR*_MO_CH,_MO_CW,_MO_CH,-_moSz/2,-_moSz/2,_moSz,_moSz);
@@ -137426,7 +137429,7 @@ async function startGameFromDB(){
   POT_LV={hp:0};
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
-  BAG_MAX=42;invFilter={slot:null,rarity:null,el:null};
+  BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
   G.on=false;G.stage=0;G.kills=0;G.mats=1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};
   // forge gauge removed (CRAFT_COST system)
 
@@ -137855,7 +137858,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   POT_LV={hp:0};
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
-  BAG_MAX=42;invFilter={slot:null,rarity:null,el:null};
+  BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
   G.on=false;G.stage=0;G.kills=0;G.mats=1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};
   (async()=>{
     let _loaded=false;
@@ -137971,7 +137974,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   POT_LV={hp:0};
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
-  BAG_MAX=42;invFilter={slot:null,rarity:null,el:null};
+  BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
   G.on=false;G.stage=0;G.kills=0;G.mats=1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};
   (async()=>{
     try{
