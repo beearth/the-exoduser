@@ -10,7 +10,12 @@ if ($status) {
         $logMsg = "[$d] PUSH FAIL: $pushResult"
         Add-Content -Path "G:\hell\auto-push.log" -Value $logMsg
     } else {
-        Add-Content -Path "G:\hell\auto-push.log" -Value "[$d] OK: commit + push"
+        $deployResult = npx vercel --prod --archive=tgz 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            Add-Content -Path "G:\hell\auto-push.log" -Value "[$d] OK: push, DEPLOY FAIL: $deployResult"
+        } else {
+            Add-Content -Path "G:\hell\auto-push.log" -Value "[$d] OK: commit + push + deploy"
+        }
     }
 } else {
     Add-Content -Path "G:\hell\auto-push.log" -Value "[$d] no changes, skip"

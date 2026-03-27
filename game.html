@@ -4233,8 +4233,8 @@ function _harpDistTier(tier){
 }
 function _harpDistMax(){return _harpDistTier(3)}
 const _HARP_IFRAME=[0,8,14,24];
-const _HARP_PULL_DUR=[0,10,16,24]; // 끌려가는 프레임
-const _HARP_SPD=42; // 작살 비행 속도 (14→42)
+const _HARP_PULL_DUR=[0,7,11,16]; // 끌려가는 프레임 (50% 빠르게)
+const _HARP_SPD=63; // 작살 비행 속도 (42→63, +50%)
 const _HARP_DMG=[0,0.7,1.5,2.5]; // 작살 데미지 배율 (meleeRef 기준)
 let _dashHold=false,_dashHoldF=0,_dashActive=false,_dashLeft=0;
 let _dashVX=0,_dashVY=0,_dashIframe=0,_dashTier=0;
@@ -116355,7 +116355,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     shieldAng:etype===6?Math.random()*Math.PI*2:0,
     eShield:_hp,eShieldMax:_hp,eShieldRegenT:0,
     _firstShot:!ib, // 보스 제외, 첫 교전 시 빨간콩 1발
-    bleed:0,bleedT:0,poison:0,poisonT:0,burnT:0, // 출혈, 중독, 화상 초기화
+    bleed:0,bleedT:0,bleedStk:0,poison:0,poisonT:0,burnT:0, // 출혈, 중독, 화상 초기화
     shieldBashCd:etype===6?(120+Math.random()*60):9999,
     shieldBashT:etype===6?(60+Math.random()*40):9999,
     summonCd:etype===7?(200+Math.random()*100):9999,
@@ -117221,23 +117221,24 @@ function update(){
         if(!P._chainSlashHits)P._chainSlashHits=[];
         P._chainSlashHits.push(e);
         const _eA=Math.atan2(e.y-P.y,e.x-P.x);
-        hurtE(e,_csDmg,_eA,false,{kbMult:1.5,poiseHit:true,poiseMult:1.2},wp().el||0);
+        hurtE(e,_csDmg,_eA,false,{kbMult:0,poiseHit:true,poiseMult:1.2},wp().el||0);
+        e.bleedT=Math.max(e.bleedT||0,120);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);e.bleed=1; // 출혈 2초, 스택+1
         addTxt(e.x,e.y-18,'⚔ 칼날!','#ff4466',25);
         for(let j=0;j<4;j++){const a=_eA+Math.PI+(Math.random()-.5)*1.2;poolPart(e.x,e.y,Math.cos(a)*5,Math.sin(a)*5,'#ff4466',2+Math.random()*2,8+Math.random()*5)}
       }
-      // 좌우 칼날 펼침 VFX — 이동방향 양옆으로 칼날 파티클 + 잔상
-      {const _blR=_csR*.85; // 칼날 길이
-      const _perpL=_csAng+Math.PI*.5, _perpR=_csAng-Math.PI*.5; // 좌우 수직
-      // 좌우 칼날 끝단 파티클 (매 프레임)
+      // 좌우 칼날 펼침 VFX — 양옆 150범위 날개형 칼날
+      {const _blR=150; // 칼날 길이 고정 150
+      const _perpL=_csAng+Math.PI*.5, _perpR=_csAng-Math.PI*.5;
+      // 좌우 칼날 끝단 파티클
       for(let _bs=0;_bs<2;_bs++){
         const _ba=_bs===0?_perpL:_perpR;
         const _bx=P.x+Math.cos(_ba)*_blR,_by=P.y+Math.sin(_ba)*_blR;
-        poolPart(_bx,_by,Math.cos(_ba)*2+(Math.random()-.5)*2,Math.sin(_ba)*2+(Math.random()-.5)*2,'#ffffff',2+Math.random()*2,5+Math.random()*3);
-        if(P._chainSlashTick%2===0)poolPart(_bx+(Math.random()-.5)*10,_by+(Math.random()-.5)*10,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ff4466',1.5+Math.random()*2,4+Math.random()*3);
+        poolPart(_bx,_by,Math.cos(_ba)*3+(Math.random()-.5)*2,Math.sin(_ba)*3+(Math.random()-.5)*2,'#ffffff',3+Math.random()*3,6+Math.random()*4);
+        poolPart(_bx+(Math.random()-.5)*15,_by+(Math.random()-.5)*15,(Math.random()-.5)*4,(Math.random()-.5)*4,'#ff4466',2+Math.random()*3,5+Math.random()*4);
       }
-      // 칼날 날 잔상 (G._chainBlades 큐에 추가 → 렌더에서 그리기)
+      // 칼날 잔상 (렌더에서 그리기)
       if(!G._chainBlades)G._chainBlades=[];
-      G._chainBlades.push({x:P.x,y:P.y,ang:_csAng,r:_blR,t:0,maxT:12});
+      G._chainBlades.push({x:P.x,y:P.y,ang:_csAng,r:_blR,t:0,maxT:16});
       }
     }
     // ── INT(사슬기동:화염): 이동 경로에 화염길 DOT 생성 (magicBlink 전용) ──
@@ -117386,16 +117387,19 @@ function update(){
         MB[0]=false;MBjust[0]=false;
       }
       _dashTier=0;_harpTier=0;_harpHits=[];
+      // ── Shift 홀드 연속 발사: 착지 후 쉬프트 여전히 눌려있으면 자동 재발사 ──
+      if(KH['ShiftLeft']&&_harpGauge>=_HARP_GAUGE_COST[1]&&P.s!=='fallen'&&P.s!=='dead'){
+        _dashHold=true;_dashHoldF=0;_dashTier=0;
+      }
     }
   }
-  // ── 기동칼날: 사슬기동 이동 중 좌클릭 → 이동 중 광역 베기 (착지 아님) ──
-  if((P._chainSkDelay||0)<=0&&_dashActive&&(P.skills.chainSlash||0)>=1&&isJust('weapon')&&!P._chainSlashActive&&!isAct('charge')){
+  // ── 기동칼날: 사슬기동 중(비행+이동) 좌클릭 → 이동 중 광역 칼날 ──
+  if((P._chainSkDelay||0)<=0&&(_harpActive||_dashActive)&&(P.skills.chainSlash||0)>=1&&isJust('weapon')&&!P._chainSlashActive&&!isAct('charge')){
     const _cssCost=15+(P.skills.chainSlash||1)*2;
     if(P.st<_cssCost){addTxt(P.x,P.y-25,'ST 부족!','#ff4444',30)}
     else{P.st-=_cssCost;P._chainSlashActive=true;P._chainSlashHits=[];P._chainSlashTick=0;
     _addSkProf('chainSlash');
-    addTxt(P.x,P.y-25,'⚔ 기동칼날!','#ff4466',35);SFX.slash();
-    if(Math.random()<.4){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}}
+    addTxt(P.x,P.y-25,'⚔ 기동칼날!','#ff4466',35);SFX.slash()}
   }
   // ── 기동불꽃: 사슬기동 중 E키 → 화염폭발 착지 ──
   if((P._chainSkDelay||0)<=0&&(_harpActive||_dashActive)&&(P.skills.chainAssault||0)>=1&&isJust('beam')&&!P._chainAssaultReady&&!P._chainSlamReady&&!P._chainBlastReady){
@@ -119626,7 +119630,7 @@ function update(){
         // ── 칼날살 오브: 무한 관통 + 출혈 ──
         if(p.bladeOrb){
           if(!p._hitSet)p._hitSet=new Set();p._hitSet.add(e);
-          e.bleed=1;e.bleedT=Math.max(e.bleedT||0,180+(p._orbSlv-1)*20);
+          e.bleed=1;e.bleedT=Math.max(e.bleedT||0,180+(p._orbSlv-1)*20);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);
           hit=false;continue;
         }
         // ── 얼음보주 칼날: 75% 확률 관통 + 빙결(짧은 스턴) ──
@@ -119873,7 +119877,7 @@ function update(){
       let _bsHtml='';
       if(bE.stunned>0)_bsHtml+='<span class="bst-i" style="color:#ff8800;border-color:#ff880055">💥 그로기 '+(bE.stunned/60).toFixed(1)+'s</span>';
       if(bE._pImmune>0)_bsHtml+='<span class="bst-i" style="color:#8888ff;border-color:#8888ff55">🛡 면역 '+(bE._pImmune/60).toFixed(1)+'s</span>';
-      if(bE.bleedT>0)_bsHtml+='<span class="bst-i" style="color:#ff4444;border-color:#ff444455">🩸 출혈 '+(bE.bleedT/60).toFixed(1)+'s</span>';
+      if(bE.bleedT>0)_bsHtml+='<span class="bst-i" style="color:#ff4444;border-color:#ff444455">🩸 출혈'+(bE.bleedStk||1)+' '+(bE.bleedT/60).toFixed(1)+'s</span>';
       if(bE.poisonT>0)_bsHtml+='<span class="bst-i" style="color:#44dd44;border-color:#44dd4455">☠ 독 '+(bE.poisonT/60).toFixed(1)+'s</span>';
       if(bE.burnT>0)_bsHtml+='<span class="bst-i" style="color:#ff8833;border-color:#ff883355">🔥 화상 '+(bE.burnT/60).toFixed(1)+'s</span>';
       $('bossStatus').innerHTML=_bsHtml;
@@ -121195,7 +121199,7 @@ function update(){
           if(fz.type==='dim'){
             const _dimDot=~~(e.mhp*(fz.hpPct||0.05));
             e.hp-=Math.max(1,_dimDot);
-            e.bleedT=Math.max(e.bleedT||0,90);e.poisonT=Math.max(e.poisonT||0,90);
+            e.bleedT=Math.max(e.bleedT||0,90);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);e.poisonT=Math.max(e.poisonT||0,90);
             e.bleed=1;e.poison=1;
             e.flashT=6;
             if(e.hp<=0){e.hp=0;atkTicketRelease(e);e.alive=false;e.deathAng=Math.atan2(e.y-fz.y,e.x-fz.x);deathFX(e.x,e.y,e.r,e.col,!!e.ib,false,e.etype);_addCorpse(e,e.deathAng,2)}
@@ -121218,7 +121222,7 @@ function update(){
           }else if(fz.type==='spikeTrap'){
             // 가시덫: 물리 DOT + 슬로우(70%+lv×2%, 최대90%) + 출혈
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.P);
-            e.bleedT=Math.max(e.bleedT||0,120);e.bleed=1;
+            e.bleedT=Math.max(e.bleedT||0,120);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);e.bleed=1;
             e._spikeSlow=Math.max(e._spikeSlow||0,90); // 1.5초 갱신
             e._spikeSlowLv=fz.lv||1;
           }else if(fz.type==='assaultFlame'){
@@ -122178,9 +122182,13 @@ function updateE(e,sp){
   // 회전참 피격 스택 감소: 1초간 안 맞으면 초당 3스택씩 감소
   if(e._wwStk>0){if(e._wwStkT>0)e._wwStkT-=sp;else{e._wwStk=Math.max(0,e._wwStk-~~(3*sp/60));}}
   // ═══ 상태 이상 DoT 처리 — 출혈=STR, 독=DEX, 화상=INT 스케일링 ═══
-  if(e.bleedT>0){ e.bleedT-=sp; if(Math.floor(e.bleedT/60)<Math.floor((e.bleedT+sp)/60)){
-    const bDmg=Math.max(1,~~(e.mhp*.007*statStr())); hurtE(e,bDmg,undefined,true,{dot:true}); addTxt(e.x,e.y-18,'🩸-'+bDmg,'#cc2222',20); addParts(e.x,e.y,'#880000',3);
-  } if(e.bleedT<=0)e.bleed=0; }
+  if(e.bleedT>0){ e.bleedT-=sp;
+    if(!e.bleedStk)e.bleedStk=1; // 스택 없으면 1로 초기화
+    if(Math.floor(e.bleedT/60)<Math.floor((e.bleedT+sp)/60)){
+    const _bStk=Math.min(10,e.bleedStk||1);
+    const bDmg=Math.max(1,~~(((wp().atk||3)+P.baseAtk+statStr())*_bStk)); // 스택×(무기뎀+힘)
+    hurtE(e,bDmg,undefined,true,{dot:true}); addTxt(e.x,e.y-18,'🩸'+_bStk+' -'+bDmg,'#cc2222',20); addParts(e.x,e.y,'#880000',1+~~(_bStk/3));
+  } if(e.bleedT<=0){e.bleed=0;e.bleedStk=0} }
   if(e.poisonT>0){ e.poisonT-=sp; if(Math.floor(e.poisonT/60)<Math.floor((e.poisonT+sp)/60)){
     const pDmg=Math.max(1,~~(e.mhp*.007*statDex())); hurtE(e,pDmg,undefined,true,{dot:true}); addTxt(e.x,e.y-18,'🟢-'+pDmg,'#44cc00',20); addParts(e.x,e.y,'#006600',2);
   } if(e.poisonT<=0)e.poison=0; }
@@ -125014,7 +125022,7 @@ function _spawnGhoul(x,y,origE){
     _posture:0,_maxPosture:0,_postureReT:0,
     shockR:0,shockMax:0,laserAng:0,laserLen:0,deaths:0,reviveIframes:0,meteors:[],
     shieldAng:0,eShield:baseHp,eShieldMax:baseHp,eShieldRegenT:0,
-    bleed:0,bleedT:0,poison:0,poisonT:0,burnT:0,
+    bleed:0,bleedT:0,bleedStk:0,poison:0,poisonT:0,burnT:0,
     shieldBashCd:9999,shieldBashT:9999,summonCd:9999,summonT:9999,teleportCd:9999,
     exp:origE.exp||5,matDrop:~~((origE.matDrop||1)*.5),
     _isGhoul:true,_ghoulT:0,_revived:true, // 구울은 재부활 불가
@@ -125091,7 +125099,7 @@ function _spawnMatSlime(x,y,matVal){
     _posture:0,_maxPosture:0,_postureReT:0,
     shockR:0,shockMax:0,laserAng:0,laserLen:0,deaths:0,reviveIframes:0,meteors:[],
     shieldAng:0,eShield:baseHp,eShieldMax:baseHp,eShieldRegenT:0,
-    bleed:0,bleedT:0,poison:0,poisonT:0,burnT:0,
+    bleed:0,bleedT:0,bleedStk:0,poison:0,poisonT:0,burnT:0,
     shieldBashCd:9999,shieldBashT:9999,summonCd:9999,summonT:9999,teleportCd:9999,
     exp:~~(5*sizeMul),matDrop:matVal, // 잡으면 악의 전부 회수
     _isSlime:true,_slimeSz:sizeMul,_slimeT:0,_eatenItems:[]
@@ -125318,7 +125326,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   // 57:태아거인 — 웅크린 상태 무적
   if(e.etype===57&&e._curled){addTxt(e.x,e.y-18,'무적!','#88aacc',18);return;}
   if(!isDot){
-    if(opts&&opts.bleed){e.bleed=1;e.bleedT=180} // 중첩 없음, 3초 갱신
+    if(opts&&opts.bleed){e.bleed=1;e.bleedT=Math.max(e.bleedT||0,180);e.bleedStk=Math.min(10,(e.bleedStk||0)+1)} // 스택 중첩, 3초 갱신
     if(opts&&opts.poison){e.poison=1;e.poisonT=180} // 중첩 없음, 3초 갱신
   }
   // ═══ 물리 방패 방어 — Type 6만 (정면 70% 감소) ═══
@@ -125390,13 +125398,13 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   // 한방 데미지 캡: 보스 5%, 일반몹 50% (DOT는 캡 면제)
   if(!isDot)dmg=Math.min(dmg,~~(e.mhp*(e.ib?.05:.5)));
 
-  // ═══ 이원 데미지: 쉴드 먼저 → 쉴드 0 후 HP (물리: 쉴드5%/HP100%, 마법: 쉴드100%/HP5%) ═══
+  // ═══ 이원 데미지: 쉴드 먼저 → 쉴드 0 후 HP (물리: 쉴드20%/HP100%, 마법: 쉴드100%/HP5%) ═══
 
   if(dmg > 0) {
     e._alerted=true; // 피격 시 즉시 플레이어 인식 (거리 무시 추적)
     if(e.eShield>0){
-      const _shDmg=_isMagicDmg?dmg:(~~(dmg*.05)||1);
-      if(_shDmg>=e.eShield){const _rawUsed=Math.min(dmg,_isMagicDmg?e.eShield:e.eShield*20);e.eShield=0;const _rawLeft=dmg-_rawUsed;if(_rawLeft>0)e.hp-=_isMagicDmg?(~~(_rawLeft*.05)||1):_rawLeft}
+      const _shDmg=_isMagicDmg?dmg:(~~(dmg*.20)||1);
+      if(_shDmg>=e.eShield){const _rawUsed=Math.min(dmg,_isMagicDmg?e.eShield:e.eShield*5);e.eShield=0;const _rawLeft=dmg-_rawUsed;if(_rawLeft>0)e.hp-=_isMagicDmg?(~~(_rawLeft*.05)||1):_rawLeft}
       else{e.eShield-=_shDmg}
     }else{e.hp-=_isMagicDmg?(~~(dmg*.05)||1):dmg}
     e.eShieldRegenT=300;
@@ -125480,7 +125488,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   const isBoss = e.ib === true;
   const finalKbM = isBoss ? 0.05 : kbM; // 보스는 넉백 거의 면역
 
-  const _isRanged=(opts&&opts.beam)||(opts&&opts.maxDist!==undefined&&!opts.magic); // 빔/화살은 넉백 없음
+  const _isRanged=(opts&&opts.beam)||(opts&&opts.maxDist!==undefined&&!opts.magic)||(opts&&(opts.bladeShard||opts.bladeOrb||opts.normalBow)); // 빔/화살/석궁/붉은꽃은 넉백 없음
   const _isMH=opts&&(opts.maliceHunt||opts.mhBlade); // 악의사냥 넉백 없음
   const _isBB=opts&&opts.blueBean; // 푸른비 넉백 없음
   if(ang!==undefined&&!_isRanged&&!isDot&&!_isMH&&!_isBB){e.kb.x+=Math.cos(ang)*Math.min(dmg*.25*finalKbM, 15*finalKbM);e.kb.y+=Math.sin(ang)*Math.min(dmg*.25*finalKbM, 15*finalKbM)}
@@ -126936,7 +126944,7 @@ function _execDimBreach(){
     if(dst(px,py,e.x,e.y)>_hitW+e.r)continue;
     const baseDmg=~~(((ar().charge||10)+P.baseAtk)*_dbDotMul*2)+_dbBon;
     hurtE(e,baseDmg,Math.atan2(e.y-P.y,e.x-P.x),false,{bleed:true},EL.L);
-    e.bleedT=Math.max(e.bleedT||0,300+_blLv*30);
+    e.bleedT=Math.max(e.bleedT||0,300+_blLv*30);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);
     e.bleed=1;e.shockT=Math.max(e.shockT||0,120+_blLv*15);
     P._dimBreachHitCount++;
     for(let j=0;j<6;j++){const ja=Math.PI*2*j/6;poolPart(e.x,e.y,Math.cos(ja)*4,Math.sin(ja)*4,j%2?'#eeff00':'#ffffff',2+Math.random()*3,12)}
@@ -128127,7 +128135,7 @@ function _renderSkillRow(sk,grid){
     const _bgRgb=_fGrp?(_bgMap[_fGrp.key]||'0,0,0'):'0,0,0';
     d.style.cssText='position:relative;padding:12px;margin-bottom:8px;'+_bdrCss+'background:rgba('+_bgRgb+',.3);'+_gemGlow+((canLearn||canUp)?'cursor:pointer;':'');
     let lockTxt='';
-    const _fixedKeyMap={grenadeShot:'T자동',bladeShot:'T자동',fanShot:'T자동',blastShot:'T자동',omniBeam:'E',elemMissile:'E',beam:'E',blueShot:'E',burstLoop:'E',whirlwind:'좌클',maliceSwipe:'우클',shieldThrow:'우클',chargeBoost:'SH',magicBlink:'SH',quakeStride:'SH',ghostWalk:'CT',iceOrb:'CT',chainAssault:'SH+E',chainSlash:'이동+좌클',chainSlam:'SH+우클',giantSlam:'SH+좌클',peaceShield:'Q',hellRay:'E',ghostXbowTurret:'T자동'};
+    const _fixedKeyMap={grenadeShot:'T자동',bladeShot:'T자동',fanShot:'T자동',blastShot:'T자동',omniBeam:'E',elemMissile:'E',beam:'E',blueShot:'E',burstLoop:'E',whirlwind:'좌클',maliceSwipe:'우클',shieldThrow:'우클',chargeBoost:'SH',magicBlink:'SH',quakeStride:'SH',ghostWalk:'CT',iceOrb:'CT',chainAssault:'SH+E',chainSlash:'기동+좌클',chainSlam:'SH+우클',giantSlam:'SH+좌클',peaceShield:'Q',hellRay:'E',ghostXbowTurret:'T자동'};
     const _fixedKey=_fixedKeyMap[sk.id];
     const _skTypeLbl=_fixedKey?' <span style="color:#7799bb;font-size:.7rem">[고정:'+_fixedKey+']</span>':sk.act?' <span style="color:#cc8844;font-size:.7rem">[선택]</span>':'';
     if(!learned){
@@ -134204,28 +134212,43 @@ function drawP(){
     }
     X.globalAlpha=1;
   }
-  // ══ 기동칼날 — 좌우 칼날 잔상 렌더 ══
+  // ══ 기동칼날 — 좌우 150범위 날개 칼날 렌더 ══
   if(G._chainBlades&&G._chainBlades.length>0){
     for(let _bi=0;_bi<G._chainBlades.length;_bi++){
       const b=G._chainBlades[_bi];
       const _bP=b.t/b.maxT;
       const fade=Math.max(0,1-_bP);
-      const perpL=b.ang+Math.PI*.5,perpR=b.ang-Math.PI*.5;
-      const spread=.6+_bP*.4; // 시간에 따라 살짝 벌어짐
+      const pL=b.ang+Math.PI*.5,pR=b.ang-Math.PI*.5;
+      const bkA=b.ang+Math.PI; // 뒤쪽
+      const len=b.r; // 150 고정
+      const thk=18*(1-_bP*0.5); // 두께
       X.save();
-      // 좌측 칼날
-      X.globalAlpha=.6*fade;X.strokeStyle='#ffffff';X.lineWidth=3*(1-_bP)+1;
-      X.beginPath();X.moveTo(b.x,b.y);X.lineTo(b.x+Math.cos(perpL)*b.r*spread,b.y+Math.sin(perpL)*b.r*spread);X.stroke();
-      // 우측 칼날
-      X.beginPath();X.moveTo(b.x,b.y);X.lineTo(b.x+Math.cos(perpR)*b.r*spread,b.y+Math.sin(perpR)*b.r*spread);X.stroke();
-      // 칼날 끝 글로우
       for(let _bs=0;_bs<2;_bs++){
-        const _ba=_bs===0?perpL:perpR;
-        const _tx=b.x+Math.cos(_ba)*b.r*spread,_ty=b.y+Math.sin(_ba)*b.r*spread;
-        X.globalAlpha=.4*fade;X.fillStyle='#ff4466';
-        X.beginPath();X.arc(_tx,_ty,4+3*(1-_bP),0,Math.PI*2);X.fill();
-        X.globalAlpha=.8*fade;X.fillStyle='#fff';
-        X.beginPath();X.arc(_tx,_ty,2*(1-_bP),0,Math.PI*2);X.fill();
+        const side=_bs===0?pL:pR;
+        const tipX=b.x+Math.cos(side)*len,tipY=b.y+Math.sin(side)*len;
+        // 뒤쪽으로 기울어진 넓은 삼각형 날개
+        const bk=30*(1-_bP*0.3);
+        const w1X=b.x+Math.cos(bkA)*bk+Math.cos(side)*thk;
+        const w1Y=b.y+Math.sin(bkA)*bk+Math.sin(side)*thk;
+        const w2X=b.x+Math.cos(bkA)*bk-Math.cos(side)*thk*.2;
+        const w2Y=b.y+Math.sin(bkA)*bk-Math.sin(side)*thk*.2;
+        // 1) 칼날 면 (큰 삼각형, 선명한 빨강)
+        X.globalAlpha=.5*fade;
+        X.fillStyle='#ff2244';
+        X.beginPath();X.moveTo(tipX,tipY);X.lineTo(w1X,w1Y);X.lineTo(w2X,w2Y);X.closePath();X.fill();
+        // 2) 칼날 중심선 (밝고 굵은 흰 선)
+        X.globalAlpha=.85*fade;
+        X.strokeStyle='#ffffff';X.lineWidth=3.5*(1-_bP*0.4);
+        X.beginPath();X.moveTo(b.x,b.y);X.lineTo(tipX,tipY);X.stroke();
+        // 3) 칼날 외곽 글로우 (빨간 굵은 선)
+        X.globalAlpha=.3*fade;
+        X.strokeStyle='#ff4466';X.lineWidth=8*(1-_bP*0.5);
+        X.beginPath();X.moveTo(b.x,b.y);X.lineTo(tipX,tipY);X.stroke();
+        // 4) 끝단 글로우 (크게)
+        X.globalAlpha=.6*fade;X.fillStyle='#ff4466';
+        X.beginPath();X.arc(tipX,tipY,10*(1-_bP*0.3),0,Math.PI*2);X.fill();
+        X.globalAlpha=.95*fade;X.fillStyle='#fff';
+        X.beginPath();X.arc(tipX,tipY,4*(1-_bP*0.2),0,Math.PI*2);X.fill();
       }
       X.restore();
     }
