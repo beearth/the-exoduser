@@ -1,0 +1,1747 @@
+{
+  "0": {
+    "name_kr": "골격전사",
+    "name_en": "melee",
+    "all_assets_dir": "img/all_assets/monsters/mon_001_et0_골격전사",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/0",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "1": {
+    "name_kr": "골격궁수",
+    "name_en": "archer",
+    "all_assets_dir": "img/all_assets/monsters/mon_002_et1_골격궁수",
+    "all_assets_animations": [
+      "breathing-idle",
+      "fireball",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/1",
+    "mobs_alt_dirs": [
+      "img/mobs/208"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "fireball",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "2": {
+    "name_kr": "돌격마",
+    "name_en": "charger",
+    "all_assets_dir": "img/all_assets/monsters/mon_003_et2_돌격마",
+    "all_assets_animations": [
+      "breathing-idle",
+      "flying-kick",
+      "running-4-frames",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/2",
+    "mobs_alt_dirs": [
+      "img/mobs/131"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "flying-kick",
+      "running-4-frames",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "3": {
+    "name_kr": "떼악마",
+    "name_en": "swarm",
+    "all_assets_dir": "img/all_assets/monsters/mon_004_et3_떼악마",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/3",
+    "mobs_alt_dirs": [
+      "img/mobs/107"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "4": {
+    "name_kr": "중전차",
+    "name_en": "tank",
+    "all_assets_dir": "img/all_assets/monsters/mon_005_et4_중전차",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/47",
+    "mobs_alt_dirs": [
+      "img/mobs/228"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "5": {
+    "name_kr": "자폭마",
+    "name_en": "suicide",
+    "all_assets_dir": "img/all_assets/monsters/mon_006_et5_자폭마",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "running-4-frames",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/43",
+    "mobs_alt_dirs": [
+      "img/mobs/215"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "running-4-frames",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "6": {
+    "name_kr": "방패기사",
+    "name_en": "shield",
+    "all_assets_dir": "img/all_assets/monsters/mon_007_et6_방패기사",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "7": {
+    "name_kr": "리치",
+    "name_en": "lich",
+    "all_assets_dir": "img/all_assets/monsters/mon_008_et7_리치",
+    "all_assets_animations": [
+      "breathing-idle",
+      "fireball",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/46",
+    "mobs_alt_dirs": [
+      "img/mobs/168"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "fireball",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "8": {
+    "name_kr": "연금술사",
+    "name_en": "alchemist",
+    "all_assets_dir": "img/all_assets/monsters/mon_009_et8_연금술사",
+    "all_assets_animations": [
+      "breathing-idle",
+      "taking-punch",
+      "throw-object",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/48",
+    "mobs_alt_dirs": [
+      "img/mobs/110"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "taking-punch",
+      "throw-object",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "9": {
+    "name_kr": "마법사",
+    "name_en": "sorcerer",
+    "all_assets_dir": "img/all_assets/monsters/mon_010_et9_마법사",
+    "all_assets_animations": [
+      "breathing-idle",
+      "fireball",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/44",
+    "mobs_alt_dirs": [
+      "img/mobs/136"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "fireball",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "10": {
+    "name_kr": "그림자",
+    "name_en": "shadow",
+    "all_assets_dir": "img/all_assets/monsters/mon_011_et10_그림자",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/37",
+    "mobs_alt_dirs": [
+      "img/mobs/205",
+      "img/mobs/207"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "11": {
+    "name_kr": "자궁마",
+    "name_en": "womb",
+    "all_assets_dir": "img/all_assets/monsters/mon_012_et11_자궁마",
+    "all_assets_animations": [
+      "cross-punch",
+      "taking-punch"
+    ],
+    "mobs_dir": "img/mobs/225",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "cross-punch",
+      "taking-punch"
+    ],
+    "has_full_anim": false
+  },
+  "12": {
+    "name_kr": "광전사",
+    "name_en": "berserker",
+    "all_assets_dir": "img/all_assets/monsters/mon_013_et12_광전사",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/114",
+    "mobs_alt_dirs": [
+      "img/mobs/113"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "13": {
+    "name_kr": "거미",
+    "name_en": "spider",
+    "all_assets_dir": "img/all_assets/monsters/mon_014_et13_거미",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/79",
+    "mobs_alt_dirs": [
+      "img/mobs/119",
+      "img/mobs/213",
+      "img/mobs/212"
+    ],
+    "best_source": "mobs",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "high-kick",
+      "taking-punch"
+    ],
+    "has_full_anim": false
+  },
+  "14": {
+    "name_kr": "날개마",
+    "name_en": "wing",
+    "all_assets_dir": "img/all_assets/monsters/mon_015_et14_날개마",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/223",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "15": {
+    "name_kr": "분열충",
+    "name_en": "splitter",
+    "all_assets_dir": "img/all_assets/monsters/mon_016_et15_분열충",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/15",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "16": {
+    "name_kr": "덫꾼",
+    "name_en": "trapper",
+    "all_assets_dir": "img/all_assets/monsters/mon_017_et16_덫꾼",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/16",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "17": {
+    "name_kr": "모체",
+    "name_en": "mother",
+    "all_assets_dir": "img/all_assets/monsters/mon_018_et17_모체",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/22",
+    "mobs_alt_dirs": [
+      "img/mobs/283",
+      "img/mobs/282",
+      "img/mobs/229"
+    ],
+    "best_source": "mobs",
+    "animations": [
+      "breathing-idle",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "18": {
+    "name_kr": "흡혈귀",
+    "name_en": "vampire",
+    "all_assets_dir": "img/all_assets/monsters/mon_019_et18_흡혈귀",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/18",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "19": {
+    "name_kr": "거인",
+    "name_en": "giant",
+    "all_assets_dir": "img/all_assets/monsters/mon_020_et19_거인",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/34",
+    "mobs_alt_dirs": [
+      "img/mobs/270",
+      "img/mobs/9",
+      "img/mobs/66",
+      "img/mobs/269",
+      "img/mobs/287",
+      "img/mobs/288",
+      "img/mobs/19",
+      "img/mobs/268",
+      "img/mobs/155"
+    ],
+    "best_source": "mobs",
+    "animations": [
+      "cross-punch",
+      "fight-stance-idle-8-frames",
+      "high-kick",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "20": {
+    "name_kr": "서리전사",
+    "name_en": "frostWarrior",
+    "all_assets_dir": "img/all_assets/monsters/mon_021_et20_서리전사",
+    "all_assets_animations": [
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/20",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "21": {
+    "name_kr": "얼음궁수",
+    "name_en": "iceArcher",
+    "all_assets_dir": "img/all_assets/monsters/mon_022_et21_얼음궁수",
+    "all_assets_animations": [
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/51",
+    "mobs_alt_dirs": [
+      "img/mobs/162"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "22": {
+    "name_kr": "서리늑대",
+    "name_en": "frostWolf",
+    "all_assets_dir": "img/all_assets/monsters/mon_023_et22_서리늑대",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/147",
+    "mobs_alt_dirs": [
+      "img/mobs/146"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "23": {
+    "name_kr": "얼음정령",
+    "name_en": "iceElemental",
+    "all_assets_dir": "img/all_assets/monsters/mon_024_et23_얼음정령",
+    "all_assets_animations": [
+      "cross-punch",
+      "taking-punch"
+    ],
+    "mobs_dir": "img/mobs/164",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "cross-punch",
+      "taking-punch"
+    ],
+    "has_full_anim": false
+  },
+  "24": {
+    "name_kr": "서리좀비",
+    "name_en": "frostZombie",
+    "all_assets_dir": "img/all_assets/monsters/mon_025_et24_서리좀비",
+    "all_assets_animations": [
+      "breathing-idle"
+    ],
+    "mobs_dir": "img/mobs/24",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle"
+    ],
+    "has_full_anim": false
+  },
+  "25": {
+    "name_kr": "얼음슬라임",
+    "name_en": "iceSlime",
+    "all_assets_dir": "img/all_assets/monsters/mon_026_et25_얼음슬라임",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/166",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "26": {
+    "name_kr": "눈보라마법사",
+    "name_en": "blizzardMage",
+    "all_assets_dir": "img/all_assets/monsters/mon_027_et26_눈보라마법사",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/115",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "27": {
+    "name_kr": "고드름박쥐",
+    "name_en": "icicleBat",
+    "all_assets_dir": "img/all_assets/monsters/mon_028_et27_고드름박쥐",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/167",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "28": {
+    "name_kr": "빙하골렘",
+    "name_en": "glacierGolem",
+    "all_assets_dir": "img/all_assets/monsters/mon_029_et28_빙하골렘",
+    "all_assets_animations": [
+      "breathing-idle"
+    ],
+    "mobs_dir": "img/mobs/28",
+    "mobs_alt_dirs": [
+      "img/mobs/156"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle"
+    ],
+    "has_full_anim": false
+  },
+  "29": {
+    "name_kr": "얼음악마",
+    "name_en": "iceDevil",
+    "all_assets_dir": "img/all_assets/monsters/mon_030_et29_얼음악마",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/163",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "30": {
+    "name_kr": "사냥개",
+    "name_en": "huntDog",
+    "all_assets_dir": "img/all_assets/monsters/mon_031_et30_사냥개",
+    "all_assets_animations": [
+      "bark",
+      "idle",
+      "walk-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "bark",
+      "idle",
+      "walk-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "31": {
+    "name_kr": "가시사도",
+    "name_en": "thornApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_032_et31_가시사도",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "32": {
+    "name_kr": "바위사도",
+    "name_en": "rockApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_033_et32_바위사도",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "33": {
+    "name_kr": "소형악마",
+    "name_en": "smallDemon",
+    "all_assets_dir": "img/all_assets/monsters/mon_034_et33_소형악마",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/170",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "34": {
+    "name_kr": "부식사도",
+    "name_en": "corrosionApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_035_et34_부식사도",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/133",
+    "mobs_alt_dirs": [
+      "img/mobs/171"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "35": {
+    "name_kr": "야수사도",
+    "name_en": "beastApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_036_et35_야수사도",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/112",
+    "mobs_alt_dirs": [
+      "img/mobs/172"
+    ],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "36": {
+    "name_kr": "뱀사도",
+    "name_en": "snakeApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_037_et36_뱀사도",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/173",
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "37": {
+    "name_kr": "포식사도",
+    "name_en": "predatorApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_038_et37_포식사도",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/174",
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "38": {
+    "name_kr": "번식사도",
+    "name_en": "breedApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_039_et38_번식사도",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/175",
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "39": {
+    "name_kr": "야생대사도",
+    "name_en": "wildArchApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_040_et39_야생대사도",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "40": {
+    "name_kr": "하급원령",
+    "name_en": "lesserWraith",
+    "all_assets_dir": "img/all_assets/monsters/mon_041_et40_하급원령",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/26",
+    "mobs_alt_dirs": [
+      "img/mobs/275",
+      "img/mobs/153",
+      "img/mobs/169"
+    ],
+    "best_source": "mobs",
+    "animations": [
+      "cross-punch",
+      "fight-stance-idle-8-frames",
+      "high-kick",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "41": {
+    "name_kr": "타락기사",
+    "name_en": "fallenKnight",
+    "all_assets_dir": "img/all_assets/monsters/mon_042_et41_타락기사",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/144",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "42": {
+    "name_kr": "살덩이",
+    "name_en": "fleshMass",
+    "all_assets_dir": "img/all_assets/monsters/mon_043_et42_살덩이",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "43": {
+    "name_kr": "악마견",
+    "name_en": "hellhound",
+    "all_assets_dir": "img/all_assets/monsters/mon_044_et43_악마견",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/139",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "44": {
+    "name_kr": "고문관",
+    "name_en": "torturer",
+    "all_assets_dir": "img/all_assets/monsters/mon_045_et44_고문관",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/219",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "45": {
+    "name_kr": "날개악마",
+    "name_en": "wingDemon",
+    "all_assets_dir": "img/all_assets/monsters/mon_046_et45_날개악마",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "46": {
+    "name_kr": "기둥악마",
+    "name_en": "pillarDemon",
+    "all_assets_dir": "img/all_assets/monsters/mon_047_et46_기둥악마",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/286",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "47": {
+    "name_kr": "그림자쌍둥이",
+    "name_en": "shadowTwin",
+    "all_assets_dir": "img/all_assets/monsters/mon_048_et47_그림자쌍둥이",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/206",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "48": {
+    "name_kr": "지옥사제",
+    "name_en": "hellPriest",
+    "all_assets_dir": "img/all_assets/monsters/mon_049_et48_지옥사제",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/159",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "49": {
+    "name_kr": "대악마",
+    "name_en": "archDemon",
+    "all_assets_dir": "img/all_assets/monsters/mon_050_et49_대악마",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/226",
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "50": {
+    "name_kr": "먼지좀비",
+    "name_en": "dustZombie",
+    "all_assets_dir": "img/all_assets/monsters/mon_051_et50_먼지좀비",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "51": {
+    "name_kr": "모래골렘",
+    "name_en": "sandGolem",
+    "all_assets_dir": "img/all_assets/monsters/mon_052_et51_모래골렘",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "52": {
+    "name_kr": "뼈덩이",
+    "name_en": "boneMass",
+    "all_assets_dir": "img/all_assets/monsters/mon_053_et52_뼈덩이",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "53": {
+    "name_kr": "먼지떼",
+    "name_en": "dustSwarm",
+    "all_assets_dir": "img/all_assets/monsters/mon_054_et53_먼지떼",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "54": {
+    "name_kr": "약탈자",
+    "name_en": "raider",
+    "all_assets_dir": "img/all_assets/monsters/mon_055_et54_약탈자",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "55": {
+    "name_kr": "폐허수호",
+    "name_en": "ruinGuard",
+    "all_assets_dir": "img/all_assets/monsters/mon_056_et55_폐허수호",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "56": {
+    "name_kr": "거상",
+    "name_en": "colossus",
+    "all_assets_dir": "img/all_assets/monsters/mon_057_et56_거상",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "57": {
+    "name_kr": "모방사도",
+    "name_en": "mimicApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_058_et57_모방사도",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "58": {
+    "name_kr": "키메라",
+    "name_en": "chimera",
+    "all_assets_dir": "img/all_assets/monsters/mon_059_et58_키메라",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "59": {
+    "name_kr": "야수군주",
+    "name_en": "beastLord",
+    "all_assets_dir": "img/all_assets/monsters/mon_060_et59_야수군주",
+    "all_assets_animations": [
+      "walking-4-frames"
+    ],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": "all_assets",
+    "animations": [
+      "walking-4-frames"
+    ],
+    "has_full_anim": false
+  },
+  "60": {
+    "name_kr": "심해보행자",
+    "name_en": "deepWalker",
+    "all_assets_dir": "img/all_assets/monsters/mon_061_et60_심해보행자",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/176",
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "61": {
+    "name_kr": "아귀악마",
+    "name_en": "anglerDemon",
+    "all_assets_dir": "img/all_assets/monsters/mon_062_et61_아귀악마",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "62": {
+    "name_kr": "해파리사도",
+    "name_en": "jellyApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_063_et62_해파리사도",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "63": {
+    "name_kr": "게공포",
+    "name_en": "crabHorror",
+    "all_assets_dir": "img/all_assets/monsters/mon_064_et63_게공포",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "64": {
+    "name_kr": "익사떼",
+    "name_en": "drownedSwarm",
+    "all_assets_dir": "img/all_assets/monsters/mon_065_et64_익사떼",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "65": {
+    "name_kr": "뱀장어사도",
+    "name_en": "eelApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_066_et65_뱀장어사도",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "66": {
+    "name_kr": "산호공포",
+    "name_en": "coralHorror",
+    "all_assets_dir": "img/all_assets/monsters/mon_067_et66_산호공포",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "67": {
+    "name_kr": "세이렌사도",
+    "name_en": "sirenApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_068_et67_세이렌사도",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "68": {
+    "name_kr": "심연어",
+    "name_en": "abyssalFish",
+    "all_assets_dir": "img/all_assets/monsters/mon_069_et68_심연어",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/177",
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "69": {
+    "name_kr": "심연대사도",
+    "name_en": "abyssArchApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_070_et69_심연대사도",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "70": {
+    "name_kr": "화염보행",
+    "name_en": "flameWalker",
+    "all_assets_dir": "img/all_assets/monsters/mon_071_et70_화염보행",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/178",
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "71": {
+    "name_kr": "화산악마",
+    "name_en": "volcanoDemon",
+    "all_assets_dir": "img/all_assets/monsters/mon_072_et71_화산악마",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "72": {
+    "name_kr": "용암슬라임",
+    "name_en": "lavaSlime",
+    "all_assets_dir": "img/all_assets/monsters/mon_073_et72_용암슬라임",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "73": {
+    "name_kr": "화염박쥐",
+    "name_en": "flameBat",
+    "all_assets_dir": "img/all_assets/monsters/mon_074_et73_화염박쥐",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "74": {
+    "name_kr": "흑요석기사",
+    "name_en": "obsidianKnight",
+    "all_assets_dir": "img/all_assets/monsters/mon_075_et74_흑요석기사",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/179",
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "75": {
+    "name_kr": "화염뱀",
+    "name_en": "flameSnake",
+    "all_assets_dir": "img/all_assets/monsters/mon_076_et75_화염뱀",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "76": {
+    "name_kr": "재떼",
+    "name_en": "ashSwarm",
+    "all_assets_dir": "img/all_assets/monsters/mon_077_et76_재떼",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "77": {
+    "name_kr": "용암거인",
+    "name_en": "lavaGiant",
+    "all_assets_dir": "img/all_assets/monsters/mon_078_et77_용암거인",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "78": {
+    "name_kr": "화염사제",
+    "name_en": "flamePriest",
+    "all_assets_dir": "img/all_assets/monsters/mon_079_et78_화염사제",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/180",
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "79": {
+    "name_kr": "용사도",
+    "name_en": "dragonApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_080_et79_용사도",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/181",
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "80": {
+    "name_kr": "벌레가죽",
+    "name_en": "bugSkin",
+    "all_assets_dir": "img/all_assets/monsters/mon_081_et80_벌레가죽",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/182",
+    "mobs_alt_dirs": [
+      "img/mobs/183"
+    ],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "81": {
+    "name_kr": "얼음가죽",
+    "name_en": "iceSkin",
+    "all_assets_dir": "img/all_assets/monsters/mon_082_et81_얼음가죽",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/184",
+    "mobs_alt_dirs": [
+      "img/mobs/185"
+    ],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "82": {
+    "name_kr": "용암가죽",
+    "name_en": "lavaSkin",
+    "all_assets_dir": "img/all_assets/monsters/mon_083_et82_용암가죽",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/186",
+    "mobs_alt_dirs": [
+      "img/mobs/187"
+    ],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "83": {
+    "name_kr": "심연가죽",
+    "name_en": "abyssSkin",
+    "all_assets_dir": "img/all_assets/monsters/mon_084_et83_심연가죽",
+    "all_assets_animations": [],
+    "mobs_dir": "img/mobs/188",
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "84": {
+    "name_kr": "빛가죽",
+    "name_en": "lightSkin",
+    "all_assets_dir": "img/all_assets/monsters/mon_085_et84_빛가죽",
+    "all_assets_animations": [],
+    "mobs_dir": null,
+    "mobs_alt_dirs": [],
+    "best_source": null,
+    "animations": [],
+    "has_full_anim": false
+  },
+  "85": {
+    "name_kr": "절망기사",
+    "name_en": "despairKnight",
+    "all_assets_dir": "img/all_assets/monsters/mon_086_et85_절망기사",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "fight-stance-idle-8-frames",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/85",
+    "mobs_alt_dirs": [
+      "img/mobs/189"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "fight-stance-idle-8-frames",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "86": {
+    "name_kr": "거꾸로천사",
+    "name_en": "invertedAngel",
+    "all_assets_dir": "img/all_assets/monsters/mon_087_et86_거꾸로천사",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/86",
+    "mobs_alt_dirs": [
+      "img/mobs/190"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "87": {
+    "name_kr": "도플갱어",
+    "name_en": "doppelganger",
+    "all_assets_dir": "img/all_assets/monsters/mon_088_et87_도플갱어",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/87",
+    "mobs_alt_dirs": [
+      "img/mobs/191"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "88": {
+    "name_kr": "심판자",
+    "name_en": "judge",
+    "all_assets_dir": "img/all_assets/monsters/mon_089_et88_심판자",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/88",
+    "mobs_alt_dirs": [
+      "img/mobs/192"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "89": {
+    "name_kr": "고통의왕",
+    "name_en": "painKing",
+    "all_assets_dir": "img/all_assets/monsters/mon_090_et89_고통의왕",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/89",
+    "mobs_alt_dirs": [
+      "img/mobs/193"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "90": {
+    "name_kr": "방랑기사",
+    "name_en": "wanderKnight",
+    "all_assets_dir": "img/all_assets/monsters/mon_091_et90_방랑기사",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "running-4-frames",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/90",
+    "mobs_alt_dirs": [
+      "img/mobs/194"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "running-4-frames",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "91": {
+    "name_kr": "보물악마",
+    "name_en": "treasureDemon",
+    "all_assets_dir": "img/all_assets/monsters/mon_092_et91_보물악마",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/91",
+    "mobs_alt_dirs": [
+      "img/mobs/195"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "92": {
+    "name_kr": "거울사도",
+    "name_en": "mirrorApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_093_et92_거울사도",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "running-4-frames",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/92",
+    "mobs_alt_dirs": [
+      "img/mobs/196"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "running-4-frames",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "93": {
+    "name_kr": "상인악마",
+    "name_en": "merchantDemon",
+    "all_assets_dir": "img/all_assets/monsters/mon_094_et93_상인악마",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/93",
+    "mobs_alt_dirs": [
+      "img/mobs/197"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "94": {
+    "name_kr": "사슬죄수",
+    "name_en": "chainPrisoner",
+    "all_assets_dir": "img/all_assets/monsters/mon_095_et94_사슬죄수",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/94",
+    "mobs_alt_dirs": [
+      "img/mobs/198"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "95": {
+    "name_kr": "시간사도",
+    "name_en": "timeApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_096_et95_시간사도",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "running-4-frames",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/95",
+    "mobs_alt_dirs": [
+      "img/mobs/199"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "running-4-frames",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "96": {
+    "name_kr": "탐욕사도",
+    "name_en": "greedApostle",
+    "all_assets_dir": "img/all_assets/monsters/mon_097_et96_탐욕사도",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/96",
+    "mobs_alt_dirs": [
+      "img/mobs/200"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "97": {
+    "name_kr": "쌍둥이",
+    "name_en": "twins",
+    "all_assets_dir": "img/all_assets/monsters/mon_098_et97_쌍둥이",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/97",
+    "mobs_alt_dirs": [
+      "img/mobs/201"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "98": {
+    "name_kr": "차원균열체",
+    "name_en": "dimensionRift",
+    "all_assets_dir": "img/all_assets/monsters/mon_099_et98_차원균열체",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/98",
+    "mobs_alt_dirs": [
+      "img/mobs/202"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  },
+  "99": {
+    "name_kr": "죽음",
+    "name_en": "death",
+    "all_assets_dir": "img/all_assets/monsters/mon_100_et99_죽음",
+    "all_assets_animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "mobs_dir": "img/mobs/99",
+    "mobs_alt_dirs": [
+      "img/mobs/203"
+    ],
+    "best_source": "all_assets",
+    "animations": [
+      "breathing-idle",
+      "cross-punch",
+      "falling-back-death",
+      "taking-punch",
+      "walking-4-frames"
+    ],
+    "has_full_anim": true
+  }
+}

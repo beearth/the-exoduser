@@ -1606,7 +1606,8 @@ function _bakeFog(w,h,hell){
 }
 function rz(){
   _dpr=window.devicePixelRatio||1;
-  const _rsf=(OPT.resScale||100)/100; // 해상도 스케일 (1.0=네이티브, 0.5=절반)
+  const _rsf=(OPT.resScale||100)/100;
+  // 캔버스 = 물리 픽셀 (DPR 적용), CSS = CSS픽셀 → 물리 1:1 매핑
   let rw=~~(innerWidth*_dpr*_rsf), rh=~~(innerHeight*_dpr*_rsf);
   // Intro(splash on) only: keep cinematic ultra-wide cap.
   const _sp=document.getElementById('splash');
@@ -1620,14 +1621,14 @@ function rz(){
   const _bCvs=document.getElementById('burstCvs');
   if(_bCvs){_bCvs.width=rw;_bCvs.height=rh}
 
-  // CSS 크기는 CSS픽셀(innerWidth/Height) 유지, 캔버스 내부는 네이티브 해상도
+  // ── 픽셀퍼펙트: CSS = CSS픽셀, left/top 0, transform 없음 ──
   const cssW=innerWidth+'px',cssH=innerHeight+'px';
-  C.style.position='fixed'; C.style.left='50%'; C.style.top='50%'; C.style.transform='translate(-50%, -50%)';
-  CT.style.position='fixed'; CT.style.left='50%'; CT.style.top='50%'; CT.style.transform='translate(-50%, -50%)';
-  if(_bCvs){_bCvs.style.position='fixed';_bCvs.style.left='50%';_bCvs.style.top='50%';_bCvs.style.transform='translate(-50%, -50%)'}
+  C.style.position='fixed';C.style.left='0px';C.style.top='0px';C.style.transform='none';
+  CT.style.position='fixed';CT.style.left='0px';CT.style.top='0px';CT.style.transform='none';
+  if(_bCvs){_bCvs.style.position='fixed';_bCvs.style.left='0px';_bCvs.style.top='0px';_bCvs.style.transform='none'}
 
-  if(_renderRes){C.style.width='100vw';C.style.height='100vh';CT.style.width='100vw';CT.style.height='100vh';if(_bCvs){_bCvs.style.width='100vw';_bCvs.style.height='100vh'}}
-  else{C.style.width=cssW;C.style.height=cssH;CT.style.width=cssW;CT.style.height=cssH;if(_bCvs){_bCvs.style.width=cssW;_bCvs.style.height=cssH}}
+  C.style.width=cssW;C.style.height=cssH;CT.style.width=cssW;CT.style.height=cssH;
+  if(_bCvs){_bCvs.style.width=cssW;_bCvs.style.height=cssH}
   if(GL)GL.viewport(0,0,C.width,C.height);
   if(_bGL)_bGL.viewport(0,0,rw,rh);
   // ── 픽셀퍼펙트: smoothing OFF + CSS pixelated ──
@@ -6158,7 +6159,7 @@ function eProjAt(e,ang,spd,dmgMult,el,life,col,sz){life=~~(life*1.5);const b=_be
 // ═══════════════════════════════════════
 function drawEnBody(X,e,_now,sa){
   // ── 아틀라스 스킨 우선 (동그라미 방지) ──
-  if(_mobAtlas.ready&&e.etype>=0&&e.etype<=99){
+  if(_mobAtlas.ready&&e.etype>=0&&e.etype<=99&&!_MOB_ATLAS_SKIP.has(e.etype)){
     const _bsz=Math.max(e.r*3.5,30);
     X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
     if(_hasWalkAnim(e.etype)&&_walkAtlas.ready){
@@ -8901,7 +8902,10 @@ const _walkAtlas={img:null,ready:false};
 const _WALK_COLS=4;
 const _WA={idle:{s:0,n:4,spd:.0015},walk:{s:4,n:4,spd:.0025},attack:{s:8,n:6,spd:.004},hit:{s:14,n:6,spd:.003}}; // 상태별 오프셋+속도
 const _WA_ROW={0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,12:10,13:11,18:12,41:13,44:14,49:15,56:16,50:17,51:18,52:19,53:20,54:21,57:22,58:23,59:24,55:25,14:26,15:27,16:28,17:29,19:30,40:31,42:32,43:33,45:34,46:35,47:36,48:37,10:38,11:39,22:40,23:41,20:42,21:43,60:44,61:45,62:46,63:47,64:48,65:49,66:50,67:51,68:52,69:53,70:54,71:55,72:56,73:57,74:58,75:59,76:60,77:61,78:62,79:63,80:64,81:65,82:66,83:67,84:68,24:69,25:70,26:71,27:72,28:73,29:74,30:75,31:76,32:77,33:78,34:79,35:80,36:81,37:82,38:83,39:84,90:85,91:86,92:87,93:88,94:89,95:90,96:91,97:92,98:93,99:94,85:95,86:96,87:97,88:98,89:99,90:100,91:101,92:102,95:103,96:104}; // etype→아틀라스 행
-function _hasWalkAnim(et){return _WA_ROW[et]!==undefined&&et!==7&&et!==9}
+// 풀 애니(idle+walk+atk+hit) 보유 etype만 walk 아틀라스 사용
+const _WA_FULL=new Set([0,1,2,3,4,5,6,7,8,9,10,19,25,26,27,29,31,32,33,34,40,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99]);
+const _MOB_ATLAS_SKIP=new Set([17]); // 못생긴 PixelLab 스프라이트 — 프로시저럴만 사용
+function _hasWalkAnim(et){return _WA_FULL.has(et)&&_walkAtlas.ready}
 function _waRow(et){return _WA_ROW[et]||0}
 const _WA_DIR_ROWS=95;
 // atlas: 0~94=south, 95~189=north, 190~284=east. west=east+flip
@@ -8921,7 +8925,7 @@ function _waRowDir(et,facing){
 function _waFlip(facing){return _waFacingDir(facing)===3} // west면 좌우반전
 (function _loadWalkAtlas(){
   const img=new Image();
-  img.src='img/mobs/atlas_walk.png?v=22';
+  img.src='img/mobs/atlas_walk.png?v=23';
   _walkAtlas.img=img;
   img.onload=function(){
     if(img.decode){img.decode().then(function(){_walkAtlas.ready=true;console.log('[WALK_ATLAS] 디코딩 완료 '+img.width+'x'+img.height)}).catch(function(){_walkAtlas.ready=true})}
@@ -9810,8 +9814,8 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
   if(!noSound){
     if(isBoss){playSampleAt('death_boss',.5,_r(.7,.15),x,y)}
     else if(et>=100&&et<=102){const gk=et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3';playSampleAt(gk,_r(.5,.1),_r(1,.1),x,y)}
-    else if(Math.random()<.2){
-      // 일반몹 사망 사운드 — 20% 확률, 전 카테고리 통합
+    else if(Math.random()<.5){
+      // 일반몹 사망 사운드 — 50% 확률, 전 카테고리 통합
       const k=_deathSfxKey(et);
       const v=_ARMOR_ET.has(et)?.2:r>=40?.5:.4;
       playSampleAt(k,_r(v,.08),_r(1,.12),x,y);
@@ -130756,6 +130760,7 @@ function _oriDrawAtmosphere(ctx,camX,camY,cw,ch,t){
 // ═══════════════════════════════════════
 function draw(){
   if(!X)return;
+  X.imageSmoothingEnabled=false;
   const _drawStart=performance.now();
   const _dd0=performance.now();
   if(_DEBUG_PERF)_dbgCompCnt=0;
@@ -130769,7 +130774,7 @@ function draw(){
   const _ez=(_EDITOR_MODE&&G._edZoom)?G._edZoom:1;
   X.save();
   if(_ez!==1){X.translate(C.width/2,C.height/2);X.scale(_ez,_ez);X.translate(-C.width/2,-C.height/2)}
-  X.translate(~~(C.width/2-G.cam.x+sx),~~(C.height/2-G.cam.y+sy));
+  X.translate(Math.round(C.width/2-G.cam.x+sx),Math.round(C.height/2-G.cam.y+sy));
   const s1=Math.max(0,~~((G.cam.x-C.width/2)/T)-1),e1=Math.min(G.mw,Math.ceil((G.cam.x+C.width/2)/T)+1);
   const s2=Math.max(0,~~((G.cam.y-C.height/2)/T)-1),e2=Math.min(G.mh,Math.ceil((G.cam.y+C.height/2)/T)+1);
   // ── 패럴랙스 배경 레이어 ──
@@ -130871,8 +130876,8 @@ function draw(){
       createImageBitmap(_streamVpCvs).then(function(bmp){_streamVpBmp=bmp;if(_useGPU||_useGL){try{_getTex(bmp)}catch(e){}}});
     }
     // 매 프레임 1회 drawImage
-    if(_streamVpBmp){X.drawImage(_streamVpBmp,_camL-T*2,_camT-T*2)}
-    else if(_streamVpCvs){X.drawImage(_streamVpCvs,_camL-T*2,_camT-T*2)}
+    if(_streamVpBmp){X.drawImage(_streamVpBmp,(_camL-T*2)|0,(_camT-T*2)|0)}
+    else if(_streamVpCvs){X.drawImage(_streamVpCvs,(_camL-T*2)|0,(_camT-T*2)|0)}
   }else if(_mapCvs){
     const sx0=s1*T,sy0=s2*T,sw=(e1-s1)*T,sh=(e2-s2)*T;
     X.drawImage(_mapCvs,sx0,sy0,sw,sh,sx0,sy0,sw,sh);
@@ -132154,7 +132159,7 @@ function draw(){
       // ── 일반 적 렌더링 ──
       let _eDrew=false;
       // ── 몬스터 스킨 아틀라스 렌더링 (etype 0-99, 최우선) ──
-      if(!_eDrew&&_mobAtlas.ready&&e.etype>=0&&e.etype<=99){
+      if(!_eDrew&&_mobAtlas.ready&&e.etype>=0&&e.etype<=99&&!_MOB_ATLAS_SKIP.has(e.etype)){
         const _minSz=30;
         const _baseSz=Math.max(e.r*3.5,_minSz);
         X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
@@ -135964,6 +135969,7 @@ function drawP(){
     }else{SpriteAnimator.update(P._sa,_dtSp,_apHasDir?_apDir:null);}
     // Ori 영혼 글로우 제거
     // 스프라이트 그리기 (죽음 시 쓰러짐 연출)
+    X.globalAlpha=1; // 무적 깜빡임과 무관하게 스프라이트는 풀 알파
     X.save();X.translate(_px,_py);
     if(_apDead){
       const _dieT=Math.min(1,P.s==='fallen'?(1-P.st2/300)*3:1); // 1초 만에 쓰러짐
@@ -136264,8 +136270,8 @@ function drawP(){
     if(prog>.7){const iA=(prog-.7)/.3;X.globalAlpha=.4*(1-iA)*fadeA;X.fillStyle=sc;X.beginPath();X.arc(tpX,tpY,20+iA*25,0,Math.PI*2);X.fill()}}
     if(Math.random()>.25){const pa=curA+(Math.random()-.5)*.5;const pd=sweepRange*(.8+Math.random()*.3);poolPart(P.x+Math.cos(pa)*pd,P.y+Math.sin(pa)*pd,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ffffff',2+Math.random()*3,6+Math.random()*5)}
     if(P.s==='sBash'&&P.st2<=18&&P.st2>=14){for(let i=0;i<3;i++){const sa=startA+Math.random()*(curA-startA);const sr=sweepRange*.6+Math.random()*sweepRange*.4;poolPart(P.x+Math.cos(sa)*sr,P.y+Math.sin(sa)*sr,Math.cos(sa)*4+Math.random()*2-1,Math.sin(sa)*4+Math.random()*2-1,'#ffffff',3+Math.random()*3,8+Math.random()*6)}}
-    // ── 칼등날개: 블랙 날개 ──
-    if(_sbashBlkReady){
+    // ── 칼등날개: 블랙 날개 (shieldThrow 습득 시만) ──
+    if(_sbashBlkReady&&P.skills.shieldThrow>=1){
       const _sbW=sweepRange*1.8,_sbH=sweepRange*1.2;
       X.globalAlpha=(.6+prog*.3)*fadeA;
       X.translate(P.x,P.y);
