@@ -10314,21 +10314,11 @@ function buildMapCache(){
       }
       c.clip();
       c.imageSmoothingEnabled=true;
-      let row=0;
+      // 단순 반복 타일링 (미러 타일링 제거 — 밝기 반전 seam 아티팩트 해소)
       for(let py2=0;py2<mh*T;py2+=spPx){
-        let col=0;
         for(let px2=0;px2<mw*T;px2+=spPx){
-          // 미러 타일링: 홀수 행/열 반전 → 경계 픽셀 완벽 일치, seam 없음
-          const fh=col%2===1,fv=row%2===1;
-          const _dx=Math.floor(fh?px2+spPx:px2), _dy=Math.floor(fv?py2+spPx:py2);
-          c.save();
-          c.translate(_dx, _dy);
-          c.scale(fh?-1:1, fv?-1:1);
-          c.drawImage(src,0,0,Math.ceil(spPx)+1,Math.ceil(spPx)+1);
-          c.restore();
-          col++;
+          c.drawImage(src,px2,py2,Math.ceil(spPx),Math.ceil(spPx));
         }
-        row++;
       }
       c.restore();
     }
@@ -125284,7 +125274,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   // ═══ 이원 데미지 판정 플래그 ═══
   const _isArrow=opts&&opts.maxDist!==undefined&&!opts.magic;
   const _isGunpowder=_isArrow||(opts&&opts.explode); // 석궁탄+화약폭발=물리판정
-  const _isMagicDmg=!_isGunpowder&&atkEl>0; // 마법/원소 판정
+  const _isMagicDmg=!_isGunpowder&&(atkEl>0||(opts&&opts.beam)); // 마법/원소 판정 (빔은 속성 무관 마법)
 
   // ═══ 디버프 영역: 물리/마법/투사체 방어 하락 ═══
   if(e._weakPhys>0&&!_isMagicDmg&&!_isArrow)dmg=~~(dmg*(1+e._weakPhys)); // 물리 피격 증가
