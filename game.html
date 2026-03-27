@@ -5676,6 +5676,7 @@ function shQuery(x,y,r){
 let _deadPool=[];
 function rebuildDeadPool(){_deadPool.length=0;for(let i=0;i<ens.length;i++){if(!ens[i].alive&&!ens[i]._absorbed)_deadPool.push(ens[i])}}
 let _impacts=[],_impNext=0;
+const _impSpr=new Image();_impSpr.src='assets/vfx/impact_basic_sheet.png';
 let _speedLines={active:0,ang:0,x:0,y:0};
 // ═══ 뇌전나선 번개 경로 생성 (재귀 지그재그 + 분기) ═══
 const _LT_POOL=[];for(let i=0;i<12;i++)_LT_POOL[i]=new Float32Array(128); // 점 풀 (최대 64점)
@@ -5914,6 +5915,7 @@ function playVFXAng(id,x,y,scale,speed,ang){
 }
 // registerVFX('slash','impact/slash_vfx_export/slash_spritesheet_8x1_4096x512.png',512,512,8,8); // 파일 미존재 — 비활성
 registerVFX('eq_impact','img/vfx_earthquake/explosion_spritesheet.png',512,512,9,3); // 진동보행 착지 폭발 임팩트 (3x3, 9프레임)
+registerVFX('land_fire','assets/vfx/vfx_landing_fire.png',200,200,4,2); // 사슬기동 착지 화염 임팩트 (2x2, 4프레임)
 // ── 신성폭발 전용 9프레임 애니메이션 ──
 const _holyExpFrames=[];let _holyExpReady=false;
 {let _heLoaded=0;for(let i=0;i<9;i++){const img=new Image();img.src='sprites/holy_explosion/sprite-384px-9-frames/frame_00'+i+'.png';img.onload=()=>{_heLoaded++;if(_heLoaded===9)_holyExpReady=true};_holyExpFrames.push(img)}}
@@ -5932,6 +5934,7 @@ registerVFX('lava_erupt','assets/vfx/vfx_lava_erupt.png',768,768,9,3);
 registerVFX('ice_orb','assets/vfx/vfx_ice_orb.png',768,768,9,3);
 registerVFX('earthquake','assets/vfx/vfx_earthquake.png',512,512,9,3);
 registerVFX('blue_vortex','assets/vfx/vfx_blue_vortex.png',193,193,8,4);
+registerVFX('ice_slash','assets/vfx/slash_impact_sheet.png',128,128,19,19);
 
 // ═══ 빙결 틴트용 오프스크린 캔버스 (몬스터 실루엣 파란 틴트) ═══
 const _iceTintC=document.createElement('canvas');
@@ -6013,6 +6016,7 @@ function updateCrescents(sp){
         if(c.step===3){G.hitStop=Math.max(G.hitStop,6);shake(8);}
         else G.hitStop=Math.max(G.hitStop,3);
         addParts(c.x,c.y,'#aaddff',c.step===3?12:6);
+        playVFXAng('ice_slash',e.x,e.y,c.step===3?2.5:1.8,1,c.ang);
         // 무한관통 — 같은 적만 중복히트 방지
       }
     }
@@ -117412,6 +117416,7 @@ function update(){
       // ── 착지 효과 ──
       if(_harpTier>=3)playSample('chain_land2',.7,_r(1,.1));else playSample('chain_land',1,_r(1,.1));
       if(!isDimBreach()||_slamLand){shake(_harpTier>=3?30:_harpTier>=2?20:10);addParts(P.x,P.y,'#ffaa44',8);addTxt(P.x,P.y-20,'💥 착지!','#ffaa00',30)}
+      playVFXAng('land_fire',P.x,P.y+P.r*0.5,0.4,2,0); // 착지 화염 VFX — 발 아래 작게
       // ── 블링크 스킬 세팅: 착지점에 뇌전길 ──
       if(_harpSk==='charge'&&P.activeChargeSk==='magicBlink'){
         // magicBlink는 블링크로 처리
@@ -133099,16 +133104,17 @@ function draw(){
       const inv=1-p;
       const ec=ELC[im.el]||'#ff6622';
       const sz=im.sz||1;
-      if(_impGpu){
-        // GPU: 3레이어 arc — 원형 임팩트
-        if(p<0.6){const gp=1-p/0.6;X.globalAlpha=gp*0.35;X.fillStyle=ec;X.beginPath();X.arc(im.x,im.y,30*sz*(1-p*.3),0,Math.PI*2);X.fill()}
-        {const _rr=(8+p*32)*sz;X.globalAlpha=inv*0.85;X.strokeStyle=ec;X.lineWidth=Math.max(0.5,(3-p*2.5)*sz);X.beginPath();X.arc(im.x,im.y,_rr,0,Math.PI*2);X.stroke()}
-        if(p<0.25){const fp=1-p/0.25;const _cr=9*sz*fp;X.globalAlpha=fp*0.95;X.fillStyle='#ffffff';X.beginPath();X.arc(im.x,im.y,_cr,0,Math.PI*2);X.fill()}
+      if(_impSpr.complete&&_impSpr.naturalWidth){
+        // 스프라이트 시트 임팩트 (9프레임, 128px/프레임)
+        const fr=Math.min(8,~~(p*9));
+        const fsz=~~(_impSpr.naturalHeight); // 128
+        const drawSz=fsz*sz*(0.8+p*0.6); // 작게 시작→커지며 사라짐
+        X.globalAlpha=inv*0.95;
+        X.drawImage(_impSpr,fr*fsz,0,fsz,fsz,im.x-drawSz/2,im.y-drawSz/2,drawSz,drawSz);
       }else{
-        // Canvas2D: arc 3레이어 (경량화)
+        // 폴백: 기존 arc 렌더
         X.globalAlpha=inv*0.85;X.strokeStyle=ec;X.lineWidth=Math.max(0.5,(3-p*2.5)*sz);X.beginPath();X.arc(im.x,im.y,(8+p*32)*sz,0,Math.PI*2);X.stroke();
         if(p<0.25){const fp=1-p/0.25;X.globalAlpha=fp*0.95;X.fillStyle='#ffffff';X.beginPath();X.arc(im.x,im.y,9*sz*fp,0,Math.PI*2);X.fill()}
-        if(im.type!=='blunt'&&OPT.slash&&p<0.7){const sp2=1-p/0.7;const ang=im.ang||0;X.globalAlpha=sp2*0.85;X.strokeStyle='#ffffff';X.lineWidth=(3-p*2)*sz;X.beginPath();X.arc(im.x,im.y,(14+p*12)*sz,ang-0.75,ang+0.75);X.stroke()}
       }
     }
     X.globalAlpha=1;X.restore();
