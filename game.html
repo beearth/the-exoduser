@@ -3807,7 +3807,7 @@ _archerRaw.onload=()=>{
   }
   _archerReady=true;
 };
-let _sfxFrameT=0;const _sfxFrameCnt={};let _sfxFrameTotal=0;const _SFX_FRAME_CAP=6; // 프레임당 전체 사운드 캡
+let _sfxFrameT=0;const _sfxFrameCnt={};let _sfxFrameTotal=0;const _SFX_FRAME_CAP=12; // 프레임당 전체 사운드 캡
 function _sfxFrameReset(){_sfxFrameT++;_sfxFrameTotal=0;for(const k in _sfxFrameCnt)_sfxFrameCnt[k]=0;if(SFX._sbSndCd>0)SFX._sbSndCd--;if(_actx&&_actx.state==='suspended')_actx.resume()}
 function playSample(key,vol,rate){
   // 유령감시 터렛 → 글로벌 볼륨 배율 적용
@@ -6161,14 +6161,14 @@ function drawEnBody(X,e,_now,sa){
   if(_mobAtlas.ready&&e.etype>=0&&e.etype<=99){
     const _bsz=Math.max(e.r*3.5,30);
     X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
-    if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);
-    // etype 0-9: 풀 애니메이션 (7=리치,9=소서러 제외 — 떠다니는 타입)
     if(_hasWalkAnim(e.etype)&&_walkAtlas.ready){
+      if(_waFlip(e.facing))X.scale(-1,1);
       const _as=_getEAnimState(e);
       const _wa=_WA[_as]||_WA.idle;
       const _wf=_wa.s+~~(_now*_wa.spd)%_wa.n;
       X.drawImage(_walkAtlas.img,_wf*_MOB_CELL,_waRowDir(e.etype,e.facing)*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_bsz/2,-_bsz/2,_bsz,_bsz);
     }else{
+      if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);
       const _mc=e.etype%_MOB_COLS,_mr=~~(e.etype/_MOB_COLS);
       X.drawImage(_mobAtlas.img,_mc*_MOB_CELL,_mr*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_bsz/2,-_bsz/2,_bsz,_bsz);
     }
@@ -8904,13 +8904,24 @@ const _WA_ROW={0:0,1:1,2:2,3:3,4:4,5:5,6:6,7:7,8:8,9:9,12:10,13:11,18:12,41:13,4
 function _hasWalkAnim(et){return _WA_ROW[et]!==undefined&&et!==7&&et!==9}
 function _waRow(et){return _WA_ROW[et]||0}
 const _WA_DIR_ROWS=95;
+// atlas: 0~94=south, 95~189=north, 190~284=east. west=east+flip
 // facing(atan2): 0=east, PI/2=south, -PI/2=north, ±PI=west
-// north면 +95행, 나머지는 south행 사용 (east/west는 좌우반전)
-function _waIsNorth(facing){return facing<-Math.PI/4&&facing>-Math.PI*3/4}
-function _waRowDir(et,facing){return (_WA_ROW[et]||0)+(_waIsNorth(facing)?_WA_DIR_ROWS:0)}
+function _waFacingDir(f){
+  const af=Math.abs(f);
+  if(af<Math.PI/4)return 2;       // east (facing~0)
+  if(af>Math.PI*3/4)return 3;     // west (facing~±PI) → east행+flip
+  if(f>0)return 0;                // south (facing~PI/2)
+  return 1;                        // north (facing~-PI/2)
+}
+function _waRowDir(et,facing){
+  const d=_waFacingDir(facing);
+  const dirOff=(d>=2)?2:d; // east=2, west→east=2, south=0, north=1
+  return (_WA_ROW[et]||0)+dirOff*_WA_DIR_ROWS;
+}
+function _waFlip(facing){return _waFacingDir(facing)===3} // west면 좌우반전
 (function _loadWalkAtlas(){
   const img=new Image();
-  img.src='img/mobs/atlas_walk.png?v=21';
+  img.src='img/mobs/atlas_walk.png?v=22';
   _walkAtlas.img=img;
   img.onload=function(){
     if(img.decode){img.decode().then(function(){_walkAtlas.ready=true;console.log('[WALK_ATLAS] 디코딩 완료 '+img.width+'x'+img.height)}).catch(function(){_walkAtlas.ready=true})}
@@ -120030,7 +120041,8 @@ function update(){
   G._camLkX+=((_lkX-G._camLkX)*_lkSmooth);G._camLkY+=((_lkY-G._camLkY)*_lkSmooth);
   let targetX=P.x+G._camLkX,targetY=P.y+G._camLkY;
   if(G._bossRef&&G._bossRef.alive){targetX=(P.x+G._bossRef.x)*.5+G._camLkX*.3;targetY=(P.y+G._bossRef.y)*.5+G._camLkY*.3}
-  G.cam.x+=(targetX-G.cam.x)*camSpd;G.cam.y+=(targetY-G.cam.y)*camSpd;}
+  G.cam.x+=(targetX-G.cam.x)*camSpd;G.cam.y+=(targetY-G.cam.y)*camSpd;
+  G.cam.x=~~G.cam.x;G.cam.y=~~G.cam.y;}
   // 카메라 클램핑
   const _mwPx=G.mw*T,_mhPx=G.mh*T;
   if(_mwPx<=C.width){G.cam.x=_mwPx/2}else{G.cam.x=Math.max(C.width/2,Math.min(_mwPx-C.width/2,G.cam.x))}
@@ -120850,16 +120862,17 @@ function update(){
   if(P._bsCasting){
     P._bsT+=sp;
     // 시전 중 흡인 효과 (2화면 범위) — 강흡입 (블랙홀급)
-    const _bsR=800+(P._bsT/300)*700;
-    const _bsPullProg=Math.min(1,P._bsT/300);
     const _bsLvP=P.skills.blackStar||1;
+    const _bsDur=420+(_bsLvP-1)*18; // 7초 + Lv당 0.3초
+    const _bsR=800+(P._bsT/_bsDur)*700;
+    const _bsPullProg=Math.min(1,P._bsT/_bsDur);
     for(let bi=0;bi<ens.length;bi++){const e=ens[bi];if(!e.alive)continue;
       const d=dst(e.x,e.y,P._bsX,P._bsY);if(d>_bsR||d<5)continue;
       const ang=Math.atan2(P._bsY-e.y,P._bsX-e.x);
       const pull=(2+2*_bsPullProg)*(1+(_bsLvP-1)*0.03)*(1-d/_bsR*0.3)*sp;
       e.x+=Math.cos(ang)*pull;e.y+=Math.sin(ang)*pull;
     }
-    if(P._bsT>=300){fireBlackStar()}
+    if(P._bsT>=_bsDur){fireBlackStar()}
   }
   // ═══ 신성폭발 — 5초 시전 → 자동 폭발 ═══
   if(P._hbCasting){
@@ -122412,7 +122425,7 @@ function updateE(e,sp){
   if(e.stunned>0){e.poiseR=0}else if(e.poise<=0){e.poise=e.maxPoise;e.poiseR=0}else if(e.poise<e.maxPoise){e.poiseR+=sp;if(e.poiseR>=(e.ib?300:200)){e.poise=Math.min(e.maxPoise,e.poise+~~(e.maxPoise*.15));e.poiseR=0}}
   let d=dst(P.x,P.y,e.x,e.y);
   // ── 몬스터 이동 사운드 (거리 400 이내, 쿨다운 60~120f) ──
-  if(e.s==='idle'&&d<400&&!e.stunned&&!e._frozen){
+  if(d<400&&!e.stunned&&!e._frozen){
     if(!e._mSfxCd)e._mSfxCd=0;
     if(e._mSfxCd<=0){
       const _msk=_ETYPE_SFX[e.etype]||_ARCH_SFX[e.etype]||null;
@@ -126826,7 +126839,7 @@ const SKILL_LIST=[
   {id:'maliceMortar',name:'폭풍소환',cat:'magic',act:true,emoji:'🌪️',desc:'어둠 소용돌이 소환 (마우스 조준 설치, MP 소모, 쿨 11초, INT 스케일링, 1렙 200범위 +30/렙, 5초 지속, 적 흡인)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발. 범위 1500+Lv×100px, 거리감쇠 50%. Lv당 뎀+10%. (MP 30%, 쿨 90초)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
-  {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,emoji:'⛧',desc:'검은 오망성 소환. 범위 1500+Lv×100px 내 흡인+암흑 데미지+기절 6초. 거리감쇠 50%. Lv당 뎀+10% 흡인력+3%. (악의 50, 쿨 90초)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
+  {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.3초) 흡인 후 폭발. 범위 1500+Lv×100px. 거리감쇠 50%. Lv당 뎀+10% 흡인력+3%. (악의 50, 쿨 90초)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
   {id:'lavaSummon',name:'용암소환',cat:'ult',act:true,ult:true,emoji:'🌋',desc:'빨간 오망성 시전 → 범위 1500+Lv×100px 화염폭발+10초간 화상. 틱당 적 최대HP 5%. 거리감쇠 30%. Lv당 뎀+10%. (MP 30%, 쿨 90초)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
   {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스를 섬광 관통 처형. 근접 타겟 지정. HP/MP/ST 10% 소모 → 보스 최대HP 30% 순수 데미지. 쿨 20초',spCost:10,matCost:100,cd:1200,up:false,upSp:0,upMat:0},
   {id:'demonRevive',name:'악마화 부활',cat:'ult',ult:true,emoji:'☠',desc:'[패시브] 사망 시 부활력 기반 확률 부활. 1Lv: HP 50% 부활. Lv당 HP+5%, 쿨-30초, 부활확률+2%. 쿨 10분',spCost:15,matCost:150,up:true,upSp:10,upMat:0},
@@ -128064,7 +128077,6 @@ function fireBlackStar(){
     const ang=Math.atan2(e.y-cy,e.x-cx);
     const falloff=Math.max(0.5,1-d/blastR);
     hurtE(e,~~(dmg*falloff),ang,false,{},EL.D);
-    e.stunned=Math.max(e.stunned,~~(360*falloff));
   }
   G._bsPillar={x:cx,y:cy,t:0,maxT:120};
   for(let k=0;k<80;k++){
@@ -132146,13 +132158,14 @@ function draw(){
         const _minSz=30;
         const _baseSz=Math.max(e.r*3.5,_minSz);
         X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
-        if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);
         if(_hasWalkAnim(e.etype)&&_walkAtlas.ready){
+          if(_waFlip(e.facing))X.scale(-1,1);
           const _as2=_getEAnimState(e);
           const _wa2=_WA[_as2]||_WA.idle;
           const _wf2=_wa2.s+~~(_now*_wa2.spd)%_wa2.n;
           X.drawImage(_walkAtlas.img,_wf2*_MOB_CELL,_waRowDir(e.etype,e.facing)*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
         }else{
+          if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);
           const _mCol=e.etype%_MOB_COLS,_mRow=~~(e.etype/_MOB_COLS);
           X.drawImage(_mobAtlas.img,_mCol*_MOB_CELL,_mRow*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
         }
