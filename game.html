@@ -1625,8 +1625,9 @@ function rz(){
   // ── 픽셀퍼펙트: CSS = CSS픽셀, left/top 0, transform 없음 ──
   const cssW=innerWidth+'px',cssH=innerHeight+'px';
   C.style.position='fixed';C.style.left='0px';C.style.top='0px';C.style.transform='none';
+  C.style.imageRendering='pixelated';CT.style.imageRendering='pixelated';
   CT.style.position='fixed';CT.style.left='0px';CT.style.top='0px';CT.style.transform='none';
-  if(_bCvs){_bCvs.style.position='fixed';_bCvs.style.left='0px';_bCvs.style.top='0px';_bCvs.style.transform='none'}
+  if(_bCvs){_bCvs.style.position='fixed';_bCvs.style.left='0px';_bCvs.style.top='0px';_bCvs.style.transform='none';_bCvs.style.imageRendering='pixelated'}
 
   C.style.width=cssW;C.style.height=cssH;CT.style.width=cssW;CT.style.height=cssH;
   if(_bCvs){_bCvs.style.width=cssW;_bCvs.style.height=cssH}
@@ -10428,7 +10429,7 @@ function _hexRgb(h){return{r:parseInt(h.slice(1,3),16),g:parseInt(h.slice(3,5),1
 const _TILE_SZ=200; // 스탬프 크기 (5×5 타일)
 const _TILE_SPAN=5; // _TILE_SZ/T
 const _TILE_BASE='insect_tileset_min_pack/';
-const _TILE_FLOOR_SRC=['01_floor_slime_256x256.png','02_floor_eggspeck_256x256.png','03_floor_fungus_256x256.png','04_floor_chitin_cracked_256x256.png'];
+const _TILE_FLOOR_SRC=['05_floor_dark_flesh_256x256.png'];
 const _TILE_EDGE_SRC=['05_edge_chitin_top_256x256.png','06_edge_vein_top_256x256.png','07_edge_web_top_256x256.png','08_edge_ridge_top_256x256.png'];
 const _TILE_DECAL_SRC=['09_decal_eggcluster_256x256.png','10_decal_cocoon_256x256.png','11_decal_slimepuddle_256x256.png','12_decal_bones_shell_256x256.png'];
 const _TILE_GLOW_SRC=['13_glow_spores_256x256.png','14_glow_runic_streak_256x256.png'];
@@ -117433,8 +117434,8 @@ function update(){
       if(dst(P.x,P.y,e.x,e.y)>e.r+20)continue;
       _harpHits.push(e);
       const _hAng=Math.atan2(e.y-P.y,e.x-P.x);
-      if(_harpSk==='magicBlink'){
-        // INT: 뇌전 데미지 + 감전
+      if(_harpSk==='magicBlink'||_harpSk==='dimBreach'){
+        // INT: 뇌전 데미지 + 감전 (dimBreach 합체 포함)
         const _blLv=P.skills.magicBlink||1;
         const _ltnDmg=~~(((ar().charge||10)+P.baseAtk)*(1+_blLv*0.15)*statInt());
         hurtE(e,_ltnDmg,_hAng,false,{poiseHit:true,poiseMult:1.5},EL.L);
@@ -117490,8 +117491,8 @@ function update(){
       G._chainBlades.push({x:P.x,y:P.y,ang:_csAng,r:_blR,t:0,maxT:16});
       }
     }
-    // ── INT(사슬기동:화염): 이동 경로에 화염길 DOT 생성 (magicBlink 전용) ──
-    if(_harpSk==='magicBlink'&&~~(_dashLeft)%3===0){
+    // ── INT(사슬기동:화염): 이동 경로에 화염길 DOT 생성 (magicBlink/dimBreach 합체 포함) ──
+    if((_harpSk==='magicBlink'||_harpSk==='dimBreach')&&~~(_dashLeft)%3===0){
       if(!G._fireZones)G._fireZones=[];
       const _ltnLv=P.skills.magicBlink||1;
       const _ltnDmg=~~(((ar().charge||10)+P.baseAtk)*0.4*statInt());
