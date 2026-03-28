@@ -3705,16 +3705,16 @@ const _bgImgs={};
 })();
 // ── 환경 데코 시스템 ──
 const MAP_DECOR_DEFS={0:[
-  {src:'assets/objects/glow_flower_blue.png',chance:0,scale:0.9},
-  {src:'assets/objects/glow_flower_yellow.png',chance:0,scale:0.85},
-  {src:'assets/objects/corpse.png',chance:0.006,scale:1.1},
-  {src:'assets/objects/bones.png',chance:0.01,scale:1.0},
-  {src:'assets/objects/vine_roots.png',chance:0.012,scale:0.9},
-  {src:'assets/objects/poison_puddle.png',chance:0.008,scale:1.1},
+  {src:'assets/map/ch1/glow_flower_blue.png',chance:0,scale:0.9},
+  {src:'assets/map/ch1/glow_flower_yellow.png',chance:0,scale:0.85},
+  {src:'assets/map/ch1/corpse.png',chance:0.006,scale:1.1},
+  {src:'assets/map/ch1/bones.png',chance:0.01,scale:1.0},
+  {src:'assets/map/ch1/vine_roots.png',chance:0.012,scale:0.9},
+  {src:'assets/map/ch1/poison_puddle.png',chance:0.008,scale:1.1},
 ],1:[
-  {src:'assets/objects/centipede.png',chance:0.004,scale:1.1},
-  {src:'assets/objects/larva.png',chance:0.003,scale:0.9},
-  {src:'assets/objects/chitin_debris.png',chance:0.005,scale:0.85},
+  {src:'assets/map/ch1/centipede.png',chance:0.004,scale:1.1},
+  {src:'assets/map/ch1/larva.png',chance:0.003,scale:0.9},
+  {src:'assets/map/ch1/chitin_debris.png',chance:0.005,scale:0.85},
 ],2:[],3:[],4:[],5:[],6:[]};
 const _decorImgs={};
 (function _preloadDecor(){
@@ -3728,9 +3728,9 @@ const _decorImgs={};
 })();
 // ── 1장 벽 장식: 썩은 나무 이미지 ──
 const _wallTreeImgs={};
-['assets/objects/rotten_tree.png','assets/objects/rotten_stump.png'].forEach(s=>{const i=new Image();i.src=s;i.onload=()=>{_wallTreeImgs[s]=i}});
+['assets/map/ch1/rotten_tree.png','assets/map/ch1/rotten_stump.png'].forEach(s=>{const i=new Image();i.src=s;i.onload=()=>{_wallTreeImgs[s]=i}});
 // ── 벽 눈깔 이미지 (2장 벌레굴 전용) ──
-const _WALL_EYE_SRCS=['assets/objects/eye1_bloodshot.png','assets/objects/eye2_terror.png','assets/objects/eye1_bloodshot.png','assets/objects/eye2_terror.png','assets/objects/eye1_bloodshot.png'];
+const _WALL_EYE_SRCS=['assets/map/ch1/eye1_bloodshot.png','assets/map/ch1/eye2_terror.png','assets/map/ch1/eye1_bloodshot.png','assets/map/ch1/eye2_terror.png','assets/map/ch1/eye1_bloodshot.png'];
 const _wallEyeImgs={};
 (function(){_WALL_EYE_SRCS.forEach(s=>{const img=new Image();img.src=s;img.onload=()=>{_wallEyeImgs[s]=img};img.onerror=()=>{}})})();
 const _floorEyeImg = new Image();
@@ -5561,35 +5561,35 @@ let MAP_OBJS=[]; // 맵 구조 오브젝트 (안식처/비석/파괴물/함정/�
 // ── 맵 장식 오브젝트 스프라이트 ──
 const _OBJ_SPR={};
 const _OBJ_SPR_MAP={
-  'dead_tree':'assets/objects/tree_dead_01.png','dead_tree_02':'assets/objects/tree_dead_02.png','dead_tree_03':'assets/objects/tree_dead_03.png',
-  'skull_pile':'assets/objects/deco_bones_04.png','bone_rocks':'assets/objects/deco_bones_03.png',
-  'mushroom_glow':'assets/objects/mushroom_glow_01.png','mushroom_glow_02':'assets/objects/mushroom_glow_02.png','mushroom_glow_03':'assets/objects/mushroom_glow_03.png',
-  'poison_pool':'assets/objects/poison_pool.png',
-  'frozen_bones':'assets/objects/frozen_bones.png',
-  'lava_crack':'assets/objects/lava_crack.png','fire_pillar':'assets/objects/fire_pillar.png',
-  'rune_mark':'assets/objects/rune_mark.png',
-  'bones':'assets/objects/bones.png','rotten_tree':'assets/objects/rotten_tree.png',
-  'rotten_stump':'assets/objects/rotten_stump.png','vine_roots':'assets/objects/vine_roots.png',
-  'corpse':'assets/objects/corpse.png','eyeball':'assets/objects/eyeball.png',
-  'eye_mushroom':'assets/objects/eye_mushroom.png','eye1_bloodshot':'assets/objects/eye1_bloodshot.png',
-  'eye2_terror':'assets/objects/eye2_terror.png','poison_puddle':'assets/objects/poison_puddle.png',
-  'glow_flower_blue':'assets/objects/glow_flower_blue.png','glow_flower_yellow':'assets/objects/glow_flower_yellow.png',
-  'centipede':'assets/objects/centipede.png','larva':'assets/objects/larva.png',
-  'minibug':'assets/objects/minibug.png','chitin_debris':'assets/objects/chitin_debris.png',
-  'flesh_pile':'assets/objects/flesh_pile.png','spider_web':'assets/objects/spider_web.png',
-  'tombstone':'assets/objects/tombstone.png','weapon_pile':'assets/objects/weapon_pile.png',
-  'toxic_mushroom':'assets/objects/toxic_mushroom.png','meat_stake':'assets/objects/meat_stake.png',
-  'acid_pool':'assets/objects/acid_pool.png','vine_pillar':'assets/objects/vine_pillar.png',
-  'cursed_eye_tree':'assets/objects/cursed_eye_tree.png',
-  'pit_lava':'assets/objects/pit_lava.png','pit_poison':'assets/objects/pit_poison.png',
-  'pit_ice':'assets/objects/pit_ice.png','pit_corpse':'assets/objects/pit_corpse.png',
-  'pit_bugs':'assets/objects/pit_bugs.png',
-  'pit_blood_a':'assets/objects/pit_blood_anim.png','pit_blood_b':'assets/objects/pit_blood_b.png',
-  'lava_straight':'assets/objects/lava_l.png','lava_straight_v2':'assets/objects/lava_l.png',
-  'lava_s':'assets/objects/lava_l.png','lava_s_v4b':'assets/objects/lava_l.png','lava_s_v5c':'assets/objects/lava_l.png',
-  'lava_l':'assets/objects/lava_l.png','lava_l_v6a':'assets/objects/lava_l.png','lava_l_v6b':'assets/objects/lava_l.png',
-  'lava_l_v6c':'assets/objects/lava_l.png','lava_l_v6d':'assets/objects/lava_l.png',
-  'lava_l_90':'assets/objects/lava_l.png','lava_l_180':'assets/objects/lava_l.png','lava_l_270':'assets/objects/lava_l.png',
+  'dead_tree':'assets/map/ch1/tree_dead_01.png','dead_tree_02':'assets/map/ch1/tree_dead_02.png','dead_tree_03':'assets/map/ch1/tree_dead_03.png',
+  'skull_pile':'assets/map/ch1/deco_bones_04.png','bone_rocks':'assets/map/ch1/deco_bones_03.png',
+  'mushroom_glow':'assets/map/ch1/mushroom_glow_01.png','mushroom_glow_02':'assets/map/ch1/mushroom_glow_02.png','mushroom_glow_03':'assets/map/ch1/mushroom_glow_03.png',
+  'poison_pool':'assets/map/ch1/poison_pool.png',
+  'frozen_bones':'assets/map/ch1/frozen_bones.png',
+  'lava_crack':'assets/map/ch1/lava_crack.png','fire_pillar':'assets/map/ch1/fire_pillar.png',
+  'rune_mark':'assets/map/ch1/rune_mark.png',
+  'bones':'assets/map/ch1/bones.png','rotten_tree':'assets/map/ch1/rotten_tree.png',
+  'rotten_stump':'assets/map/ch1/rotten_stump.png','vine_roots':'assets/map/ch1/vine_roots.png',
+  'corpse':'assets/map/ch1/corpse.png','eyeball':'assets/map/ch1/eyeball.png',
+  'eye_mushroom':'assets/map/ch1/eye_mushroom.png','eye1_bloodshot':'assets/map/ch1/eye1_bloodshot.png',
+  'eye2_terror':'assets/map/ch1/eye2_terror.png','poison_puddle':'assets/map/ch1/poison_puddle.png',
+  'glow_flower_blue':'assets/map/ch1/glow_flower_blue.png','glow_flower_yellow':'assets/map/ch1/glow_flower_yellow.png',
+  'centipede':'assets/map/ch1/centipede.png','larva':'assets/map/ch1/larva.png',
+  'minibug':'assets/map/ch1/minibug.png','chitin_debris':'assets/map/ch1/chitin_debris.png',
+  'flesh_pile':'assets/map/ch1/flesh_pile.png','spider_web':'assets/map/ch1/spider_web.png',
+  'tombstone':'assets/map/ch1/tombstone.png','weapon_pile':'assets/map/ch1/weapon_pile.png',
+  'toxic_mushroom':'assets/map/ch1/toxic_mushroom.png','meat_stake':'assets/map/ch1/meat_stake.png',
+  'acid_pool':'assets/map/ch1/acid_pool.png','vine_pillar':'assets/map/ch1/vine_pillar.png',
+  'cursed_eye_tree':'assets/map/ch1/cursed_eye_tree.png',
+  'pit_lava':'assets/map/ch1/pit_lava.png','pit_poison':'assets/map/ch1/pit_poison.png',
+  'pit_ice':'assets/map/ch1/pit_ice.png','pit_corpse':'assets/map/ch1/pit_corpse.png',
+  'pit_bugs':'assets/map/ch1/pit_bugs.png',
+  'pit_blood_a':'assets/map/ch1/pit_blood_anim.png','pit_blood_b':'assets/map/ch1/pit_blood_b.png',
+  'lava_straight':'assets/map/ch1/lava_l.png','lava_straight_v2':'assets/map/ch1/lava_l.png',
+  'lava_s':'assets/map/ch1/lava_l.png','lava_s_v4b':'assets/map/ch1/lava_l.png','lava_s_v5c':'assets/map/ch1/lava_l.png',
+  'lava_l':'assets/map/ch1/lava_l.png','lava_l_v6a':'assets/map/ch1/lava_l.png','lava_l_v6b':'assets/map/ch1/lava_l.png',
+  'lava_l_v6c':'assets/map/ch1/lava_l.png','lava_l_v6d':'assets/map/ch1/lava_l.png',
+  'lava_l_90':'assets/map/ch1/lava_l.png','lava_l_180':'assets/map/ch1/lava_l.png','lava_l_270':'assets/map/ch1/lava_l.png',
 };
 // ── 챕터별 맵 장식 에셋 (assets/map/ch*/) ──
 const _CH_DECO={
@@ -5859,6 +5859,10 @@ const _FA_FRAMES=9,_FA_FW=512,_FA_FH=512;
 const _FB_IMG=new Image();_FB_IMG.src='assets/vfx/fire_beam/fire_beam_spritesheet.png';
 let _fbSReady=false;_FB_IMG.onload=()=>{_fbSReady=true};
 const _FB_FRAMES=20,_FB_FW=803,_FB_FH=453;
+// ═══ 업화선 폭발 스프라이트시트 (30프레임, 300x300) ═══
+const _FX_IMG=new Image();_FX_IMG.src='assets/vfx/fire_explode/fire_explode_spritesheet.png';
+let _fxReady=false;_FX_IMG.onload=()=>{_fxReady=true};
+const _FX_FRAMES=30,_FX_FW=300,_FX_FH=300;
 // ═══ 혜성탄 스프라이트시트 (10프레임, 좌우반전+검정→투명) ═══
 const _CM_SRC=new Image();let _CM_IMG=null,_cmImgReady=false;
 const _CM_FRAMES=10;let _cmFW=0,_cmFH=0;
@@ -9864,6 +9868,9 @@ function _buildAtlasB(){
 }
 
 // ═══ 파이어볼 폭발 ═══
+// ═══ 업화선 폭발 애니 풀 ═══
+const _fxAnims=[];
+function _spawnFxAnim(x,y,sz){_fxAnims.push({x,y,sz,f:0,t:0,ml:30})}
 function _fireballExplode(p){
   const r=p.explR||80,dmg=p.explDmg||~~(p.dmg*.6),el=p.el;
   const _ne=shQuery(p.x,p.y,r+20);
@@ -9871,14 +9878,19 @@ function _fireballExplode(p){
     if(dst(p.x,p.y,e.x,e.y)<r+e.r){
       const a=Math.atan2(e.y-p.y,e.x-p.x),m=elMul(el,e.el);
       hurtE(e,~~(dmg*m),a,false,{},el);
-      e.kb.x+=Math.cos(a)*0;e.kb.y+=Math.sin(a)*0;
+      // 업화선 폭발: 화상 부여
+      if(p.fireBeamProj){e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+dmg*0.4}
     }}
-  // 폭발 이펙트: 어둠 버스트 스프라이트 + 파티클
-  spawnDarkBurst(p.x,p.y,r/80);
+  // 업화선 전용 폭발 애니
+  if(p.fireBeamProj){_spawnFxAnim(p.x,p.y,r*2.5);playSample('fireball',.9,_r(.7,.1));shake(8)}
+  else{
+    // 기존: 어둠 버스트 스프라이트 + 파티클
+    spawnDarkBurst(p.x,p.y,r/80);
+    playSample('fireball',.9,_r(.7,.1));shake(5);
+  }
   const ec=ELC[el]||'#bb44ff';
   for(let k=0;k<12;k++){const a=Math.PI*2*k/12;poolPart(p.x,p.y,Math.cos(a)*(4+Math.random()*3),Math.sin(a)*(4+Math.random()*3),ec,3+Math.random()*3,12+Math.random()*6)}
-  playSample('fireball',.9,_r(.7,.1));shake(5);
-  p.explR=0; // 중복 폭발 방지
+  p.explR=0;
 }
 // ═══ 혜성탄 폭발: 얼음 AoE + 빙결 + 파편 ═══
 function _cometExplode(p){
@@ -9952,6 +9964,36 @@ function _hitSfxForEtype(et){
   if(_ARMOR_ET.has(et))return{key:'flat_hit',pitch:1.0};
   return{key:Math.random()<.5?'monster_hit':'monster_hit1',pitch:1.0}; // HUMANOID + 폴백
 }
+// ── 폭발 스프라이트 애니 (8프레임 스트립) ──
+const _expImg=new Image();let _expReady=false;
+const _EXP_FRAMES=8;let _EXP_FW=0,_EXP_FH=0;
+_expImg.src='assets/vfx/explosion_strip.png';
+_expImg.onload=function(){_EXP_FW=~~(_expImg.width/_EXP_FRAMES);_EXP_FH=_expImg.height;_expReady=true;console.log('[EXPLOSION] 로드 완료: '+_expImg.width+'x'+_expImg.height+' ('+_EXP_FRAMES+'F, '+_EXP_FW+'x'+_EXP_FH+')')};
+const _expAnims=[];
+function _spawnExplosion(x,y,sz){
+  _expAnims.push({x,y,sz:sz||40,frame:0,timer:0,life:_EXP_FRAMES*4});
+}
+function _updateExplosions(){
+  for(let i=_expAnims.length-1;i>=0;i--){
+    const e=_expAnims[i];
+    e.timer++;
+    e.frame=~~(e.timer/4);
+    if(e.frame>=_EXP_FRAMES){_expAnims.splice(i,1)}
+  }
+}
+function _drawExplosions(X){
+  if(!_expReady||!_expAnims.length)return;
+  for(let i=0;i<_expAnims.length;i++){
+    const e=_expAnims[i];
+    if(e.frame>=_EXP_FRAMES)continue;
+    const sz=e.sz;
+    X.save();
+    X.globalAlpha=1-(e.frame/_EXP_FRAMES)*0.3;
+    X.drawImage(_expImg,e.frame*_EXP_FW,0,_EXP_FW,_EXP_FH,e.x-sz/2,e.y-sz/2,sz,sz);
+    X.restore();
+  }
+}
+
 function deathFX(x,y,r,col,isBoss,noSound,et){
   if(!noSound){
     if(isBoss){playSampleAt('death_boss',.5,_r(.7,.15),x,y)}
@@ -10930,7 +10972,7 @@ function buildMapCache(){
       if(R()<.3){c.fillStyle=`rgba(50,${90+~~(R()*25)},30,${.08+R()*.06})`;
         c.beginPath();c.ellipse(px+R()*T,py+R()*T,3+R()*5,2+R()*4,R()*Math.PI,0,Math.PI*2);c.fill()}
       // 5) 썩은 나무 이미지 (랜덤 배치)
-      if(R()<.12){const _wtSrc=R()<.6?'assets/objects/rotten_tree.png':'assets/objects/rotten_stump.png';const _wtI=_wallTreeImgs[_wtSrc];
+      if(R()<.12){const _wtSrc=R()<.6?'assets/map/ch1/rotten_tree.png':'assets/map/ch1/rotten_stump.png';const _wtI=_wallTreeImgs[_wtSrc];
         if(_wtI){const _wtS=.6+R()*.4;const _wtW=_wtI.width*_wtS,_wtH=_wtI.height*_wtS;
           c.globalAlpha=.7+R()*.3;c.save();c.translate(px+T/2,py+T/2);if(R()<.5)c.scale(-1,1);
           c.drawImage(_wtI,-_wtW/2,-_wtH/2,_wtW,_wtH);c.restore();c.globalAlpha=1}}
@@ -118658,7 +118700,7 @@ function update(){
         {const _pp=_getPProj();_pp.x=P.x+_fbDx*20;_pp.y=P.y+_fbDy*20;
         _pp.vx=_fbDx*7;_pp.vy=_fbDy*7;_pp.dmg=_fbDmg;_pp.el=EL.F;
         _pp.maxDist=_fbRange;_pp.dist=0;_pp.r=16;_pp.stagger=0;_pp.kb=0;
-        _pp.magic=true;_pp.fireBeamProj=true;_pp.pierce=1.0;_pp.pierceMax=999;_pp.homing=true; // 사거리 끝까지 무한 관통 + 유도
+        _pp.magic=true;_pp.fireBeamProj=true;_pp.fireball=true;_pp.explR=~~(100+_fbLv*8);_pp.explDmg=~~(_fbDmg*.6);_pp.homing=true; // 착탄 폭발 + 유도
         pProjs[pProjs.length]=_pp;}
         P._fbCd=~~(60/pMagicSpd()); // 1초 기본, DEX(민첩)로 공속 스케일
         playSample('beam_fire',.8,_r(.8,.1));_addSkProf('fireBeam');
@@ -127148,7 +127190,6 @@ const SKILL_LIST=[
   {id:'needleShot',name:'바늘출',cat:'bow',act:true,emoji:'🪡',desc:'[고정: T 자동] 최대속도 바늘 5~10연발. 좁은 간격 초고속 관통. ST 8. 쿨 1.5초. Lv당 뎀+12% 관통+1 발수+',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
   {id:'fireBeam',name:'업화선',cat:'magic',emoji:'🔥',desc:'E탭: 화염 유도빔 발사. MP10. 쿨1초(DEX 스케일). 100% 관통+유도+화상. Lv당 사거리+50 뎀+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'fireAura',name:'지옥진',cat:'magic',emoji:'🌋',desc:'E: 10초간 대지 진동. 범위 내 용암 기둥이 순차적으로 솟아올라 화상+틱 데미지. MP 100. 쿨 12초. Lv당 범위+10% 뎀+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'fireErupt',name:'화염분출',cat:'magic',act:true,emoji:'🔥',desc:'E: 8방향 화염 분출. 경로상 적 화상+DOT. 분출 길이 250+Lv×20. MP 60. 쿨 8초. Lv당 뎀+12% 길이+20',spCost:10,matCost:80,cd:480,up:true,upSp:5,upMat:0},
   {id:'plagueBurst',name:'폭독칼날',cat:'magic',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 1렙 30관통(만렙100). 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염(INT 스케일링). 악의 15. 사거리 4000. 쿨 20초',spCost:10,matCost:80,cd:1200,up:true,upSp:5,upMat:0},
   {id:'maliceStorm',name:'악의폭풍',cat:'magic',act:true,emoji:'🌀',desc:'마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 뇌전나선 (3초, 10틱, 틱당 100+Lv*20). Lv당 범위+22. 같은 지역 중복 불가',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
   {id:'holyDome',name:'신성한 땅',cat:'tech',act:true,emoji:'🛡',desc:'현재 위치에 신성한 땅 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
@@ -127179,7 +127220,7 @@ const SKILL_SLOT_DEFS={
   charge:{name:'이동스킬',key:'charge',skills:['charge','magicBlink'],
     info:{charge:{name:'작살',emoji:'🔱',desc:'Shift: 작살 발사 → 끌려감'},
           magicBlink:{name:'사슬기동:화염',emoji:'🔥',desc:'Shift: 화염길+화상'}}},
-  magic:{name:'마법스킬',key:'magic',skills:['fireball','omniBeam','elemMissile','hellRay','blueShot','burstLoop','fireAura','fireBeam','cometShot','fireErupt'],
+  magic:{name:'마법스킬',key:'magic',skills:['fireball','omniBeam','elemMissile','hellRay','blueShot','burstLoop','fireAura','fireBeam','cometShot'],
     info:{fireball:{name:'악의구',emoji:'🔮',desc:'E: 어둠 오브 (Lv당 크기+10% 뎀+15%)'},
           omniBeam:{name:'멸살광선',emoji:'☄️',desc:'E: 1발 직선 레이저'},
           elemMissile:{name:'원소추적탄',emoji:'🎯',desc:'E: 6원소 유도 미사일'},
@@ -133490,6 +133531,9 @@ function draw(){
     X.restore();
     _vfxAnims.length=_vw;
   }
+  // ── 폭발 스프라이트 애니 렌더 ──
+  _updateExplosions();
+  if(_expAnims.length>0){X.save();X.globalCompositeOperation='lighter';_drawExplosions(X);X.restore()}
   // ── 화염폭발 프레임 애니메이션 렌더 ──
   if(_fireExps.length>0){
     let _fw2=0;
@@ -133505,6 +133549,25 @@ function draw(){
     }
     X.restore();
     _fireExps.length=_fw2;
+  }
+  // ── 업화선 폭발 스프라이트 애니 렌더 ──
+  if(_fxAnims.length>0&&_fxReady){
+    let _fxW=0;
+    for(let fi=0;fi<_fxAnims.length;fi++){
+      const f=_fxAnims[fi];
+      f.t+=_dtSp;if(f.t>=2){f.t=0;f.f++}
+      if(f.f>=_FX_FRAMES)continue;
+      const prog=f.f/_FX_FRAMES;
+      const alpha=prog<.2?prog/.2:prog>.6?1-(prog-.6)/.4:1;
+      X.save();X.globalCompositeOperation='lighter';
+      X.globalAlpha=alpha;
+      X.drawImage(_FX_IMG,f.f*_FX_FW,0,_FX_FW,_FX_FH,f.x-f.sz/2,f.y-f.sz/2,f.sz,f.sz);
+      X.globalAlpha=alpha*.3;
+      X.drawImage(_FX_IMG,f.f*_FX_FW,0,_FX_FW,_FX_FH,f.x-f.sz/2,f.y-f.sz/2,f.sz,f.sz);
+      X.restore();
+      _fxAnims[_fxW++]=f;
+    }
+    _fxAnims.length=_fxW;
   }
   // ── 속도선 (강타 시 화면 효과) ──
   if(_speedLines.active>0&&OPT.postfx){
@@ -135022,11 +135085,12 @@ function drawP(){
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
     }else
     // fire: 스프라이트 (5번 프레임 스킵)
-    if(_bv.col==='fire'&&_boomSpr.ready){
+    if(_bv.col==='fire'&&(_expReady||_boomSpr.ready)){
       const _drawSz=_bv.r*2.2*Math.pow(Math.min(1,_ep*3),.5);
       const _fi=Math.min(7,~~(_ep*8));
       X.globalAlpha=Math.max(0,1-_ep*.8);
-      X.drawImage(_boomSpr.img,_fi*_boomSpr.w,0,_boomSpr.w,_boomSpr.h,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);
+      if(_expReady){X.drawImage(_expImg,_fi*_EXP_FW,0,_EXP_FW,_EXP_FH,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz)}
+      else{X.drawImage(_boomSpr.img,_fi*_boomSpr.w,0,_boomSpr.w,_boomSpr.h,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz)}
       if(_ep<.5){const _swR=_bv.r*Math.pow(_ep/.5,.35)*1.1;
         X.globalAlpha=.6*(1-_ep/.5);X.strokeStyle='#ffaa33';X.lineWidth=3+6*(1-_ep/.5);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
@@ -136825,7 +136889,7 @@ function drawP(){
       if(_fbSReady){
         const _fbFi=~~(_now*.15+p.x*.05)%_FB_FRAMES;
         const _fbAng=Math.atan2(p.vy,p.vx);
-        const _fbW=120,_fbH=50; // 투사체 크기 (짧고 뚱뚱)
+        const _fbW=80,_fbH=35; // 투사체 크기 (30% 축소)
         X.save();X.translate(p.x,p.y);X.rotate(_fbAng);
         X.globalAlpha=fa;
         X.drawImage(_FB_IMG,_fbFi*_FB_FW,0,_FB_FW,_FB_FH,-_fbW*.6,-_fbH/2,_fbW,_fbH);
