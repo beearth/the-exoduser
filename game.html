@@ -118428,7 +118428,8 @@ function update(){
                 if(_bbTgt){const _bbA=Math.atan2(_bbTgt.y-P.y,_bbTgt.x-P.x);p.vx=Math.cos(_bbA)*3.5;p.vy=Math.sin(_bbA)*3.5}
                 else{p.vx*=-2;p.vy*=-2}
                 p.friendly=true;p.life=240;p.ml=240;p._aoeR=160;
-                p.dmg=~~(p.dmg*2.5*(1+(_sdLv-1)*0.15));p._aoeDmg=p.dmg*4;
+                const _wingMul=(P._stWingT||0)>0?1.5:1;
+                p.dmg=~~(p.dmg*2.5*(1+(_sdLv-1)*0.15)*_wingMul);p._aoeDmg=p.dmg*4;
                 p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;
                                 SFX.deflect();G.hitStop=~~(_HS.parryReflect*OPT.hitStop/100);G.shake=18*OPT.shake/100;
                 addTxt(p.x,p.y-10,'🛡️💎 유도반사!','#00e5ff',60);
@@ -118439,7 +118440,7 @@ function update(){
               // 칼등 처내기: 일반 투사체 반사
               p.vx*=-2;p.vy*=-2;p.friendly=true;
               p.el=[EL.P,EL.F,EL.I,EL.D,EL.L,EL.H][~~(Math.random()*6)];
-              p.dmg=~~(p.dmg*1.5*(1+(_sdLv-1)*0.1)*_msReflect);
+              p.dmg=~~(p.dmg*1.5*(1+(_sdLv-1)*0.1)*_msReflect*((P._stWingT||0)>0?1.5:1));
               p.life=80;p.ml=80;
               addTxt(p.x,p.y-10,'⚡처내기!','#ffee00',35);
               for(let ei=0;ei<5;ei++)addParts(p.x,p.y,ELC[ei],3);
@@ -118504,6 +118505,7 @@ function update(){
       else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}
       else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=60;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?160:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
       else if(P.st2<=0){
+        P._stWingT=0; // sRecover 종료 시 날개 비주얼 즉시 해제
         if(isHeld('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=20;_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3){var _ve2=['voice_grunt','male_grunt'];playSample(_ve2[~~(Math.random()*2)],1,_r(1,.15))}if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
         else P.s='idle';
       }
@@ -127901,7 +127903,7 @@ function _autoShieldThrow(){
       dmg:baseDmg,slv:slv,_hitSet:new Set(),
       wave:true,_wvT:0 // 파워웨이브 플래그
     });
-    P._stWingT=24; // 날개 비주얼 24프레임 (sBash 지속과 동일)
+    P._stWingT=40; // 날개 비주얼 24프레임 (sBash 지속과 동일)
     addTxt(P.x,P.y-30,'⚡날개치기!','#ffaa44',45);
     shake(8);
     playSample('impact_hit',1,0.7);
@@ -127926,7 +127928,7 @@ function _autoShieldThrow(){
     // 전방 먼지+파편 파티클
     for(let _k=0;_k<16;_k++){const _da=a+(_k/16-.5)*1.8;const _dd=40+Math.random()*_gsRange;
       poolPart(P.x+Math.cos(_da)*_dd,P.y+Math.sin(_da)*_dd,Math.cos(_da)*6+Math.random()*3,Math.sin(_da)*6+Math.random()*3,'#8899aa',3+Math.random()*4,14+Math.random()*8)}
-    P._stWingT=24; // 날개 비주얼 24프레임
+    P._stWingT=40; // 날개 비주얼 24프레임
     addTxt(P.x,P.y-30,'🗡 칼등날개!','#66ccff',45);
     shake(10);
     SFX.slam();
@@ -136566,7 +136568,7 @@ function drawP(){
   // ══ SHIELD BASH — wide sweeping arc ══
   if(P.s==='sBash'||P.s==='sRecover'){
     const _isWing=(P._stWingT||0)>0;
-    const sc=_isWing?'#111111':'#ffffff',_scGlow=_isWing?'#333333':'#dddddd';
+    const sc='#111111',_scGlow='#333333';
     const _hasSD=P.skills&&P.skills.maliceSwipe>=1;
     const totalF=P.s==='sBash'?24:16;
     const prog=P.s==='sBash'?(1-P.st2/24):(.85+.15*(1-P.st2/16));
@@ -136584,9 +136586,9 @@ function drawP(){
     {const tpX=P.x+Math.cos(curA)*sweepRange,tpY=P.y+Math.sin(curA)*sweepRange,tR=14+prog*8;
     X.globalAlpha=.15*fadeA;X.fillStyle=sc;X.beginPath();X.arc(tpX,tpY,tR,0,Math.PI*2);X.fill();
     X.globalAlpha=.5*fadeA;X.fillStyle=_scGlow;X.beginPath();X.arc(tpX,tpY,tR*.5,0,Math.PI*2);X.fill();
-    X.globalAlpha=.95*fadeA;X.fillStyle='#fff';X.beginPath();X.arc(tpX,tpY,3+prog*2,0,Math.PI*2);X.fill();
+    X.globalAlpha=.95*fadeA;X.fillStyle='#444';X.beginPath();X.arc(tpX,tpY,3+prog*2,0,Math.PI*2);X.fill();
     if(prog>.7){const iA=(prog-.7)/.3;X.globalAlpha=.4*(1-iA)*fadeA;X.fillStyle=sc;X.beginPath();X.arc(tpX,tpY,20+iA*25,0,Math.PI*2);X.fill()}}
-    const _partCol=_isWing?'#222222':'#ffffff';
+    const _partCol='#222222';
     if(Math.random()>.25){const pa=curA+(Math.random()-.5)*.5;const pd=sweepRange*(.8+Math.random()*.3);poolPart(P.x+Math.cos(pa)*pd,P.y+Math.sin(pa)*pd,(Math.random()-.5)*3,(Math.random()-.5)*3,_partCol,2+Math.random()*3,6+Math.random()*5)}
     if(P.s==='sBash'&&P.st2<=18&&P.st2>=14){for(let i=0;i<3;i++){const sa=startA+Math.random()*(curA-startA);const sr=sweepRange*.6+Math.random()*sweepRange*.4;poolPart(P.x+Math.cos(sa)*sr,P.y+Math.sin(sa)*sr,Math.cos(sa)*4+Math.random()*2-1,Math.sin(sa)*4+Math.random()*2-1,_partCol,3+Math.random()*3,8+Math.random()*6)}}
     // ── 칼등날개: 블랙 날개 (날개치기 발동 시에만) ──
