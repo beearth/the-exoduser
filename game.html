@@ -2511,6 +2511,8 @@ const _plagueBoomSprs=[];let _plagueBoomReady=0;
 // 폭독혈 전용 폭발 스프라이트시트 (boom_plague.png, 128x128 x 6프레임)
 const _plagueBoomSpr={img:null,ready:false,w:128,h:128,frames:6};
 (function(){const i=new Image();i.src='img/boom_plague.png';_plagueBoomSpr.img=i;i.onload=function(){_plagueBoomSpr.ready=true}})();
+// 사슬 수리검 작살 스프라이트
+const _chainShurikenImg=new Image();_chainShurikenImg.src='assets/vfx/chain_shuriken_2.webp';
 // 지진폭풍 전용 폭발 스프라이트시트 (explosion_spritesheet.webp, 3x3 9프레임)
 const _lavaBoomSpr={img:null,ready:false,w:0,h:0,frames:9,cols:3};
 (function(){const i=new Image();i.src='img/vfx_earthquake/explosion_spritesheet.webp';_lavaBoomSpr.img=i;i.onload=function(){_lavaBoomSpr.ready=true;_lavaBoomSpr.w=~~(i.width/3);_lavaBoomSpr.h=~~(i.height/3)}})();
@@ -9021,30 +9023,12 @@ _loadChAtlas(0); // 시작 시 ch1 미리 로드
 const _bossWalkAtlas={img:null,ready:false};
 const _BWA_CELL=64,_BWA_COLS=20;
 const _BWA={idle:{s:0,n:4},walk:{s:4,n:4},attack:{s:8,n:6},hit:{s:14,n:6},death:{s:20,n:6},windup:{s:26,n:6}};
-(function _loadBossWalkAtlas(){
-  const img=new Image();
-  img.src='img/mobs/atlas_boss_walk.png?v=4';
-  _bossWalkAtlas.img=img;
-  img.onload=function(){
-    if(img.decode){img.decode().then(function(){_bossWalkAtlas.ready=true;console.log('[BOSS_WALK] 디코딩 완료 '+img.width+'x'+img.height)}).catch(function(){_bossWalkAtlas.ready=true})}
-    else{_bossWalkAtlas.ready=true}
-  };
-  if(img.complete&&img.naturalWidth>0){_bossWalkAtlas.ready=true}
-  img.onerror=function(){console.warn('[BOSS_WALK] 로드 실패')};
-})();
+// 레거시 보스 걷기 아틀라스 비활성화 (새 ch 아틀라스 사용)
+// (function _loadBossWalkAtlas(){})();
 // ── 보스 방향별 아틀라스 (스테이지별 개별 파일, 4행=S/E/N/W × 20칸) ──
 const _bossDirAtlas={};
-(function _loadBossDirAtlases(){
-  const stages=[0]; // 방향 아틀라스가 있는 스테이지 목록
-  stages.forEach(function(si){
-    const a={img:null,ready:false};
-    const img=new Image();img.src='img/mobs/atlas_boss_si'+si+'_dir.png?v=3';
-    a.img=img;
-    img.onload=function(){if(img.decode){img.decode().then(function(){a.ready=true;console.log('[BOSS_DIR] si'+si+' 디코딩 완료 '+img.width+'x'+img.height)}).catch(function(){a.ready=true})}else{a.ready=true}};
-    img.onerror=function(){};
-    _bossDirAtlas[si]=a;
-  });
-})();
+// 레거시 보스 방향 아틀라스 비활성화 (새 ch 아틀라스 사용)
+// (function _loadBossDirAtlases(){})();
 function _getBossWalkState(e){
   const s=e.s;
   if(s==='eDeath'||e.hp<=0)return 'death';
@@ -9490,11 +9474,7 @@ _loadESprite(81, 'img/lording/rd1.png', 14);
 _loadESprite(82, 'img/lording/rd2.png', 14);
 _loadESprite(83, 'img/etype83_abyss.png', 14);
 _loadESprite(84, 'img/etype84_lightning.png', 14);
-_loadESprite(85, 'img/mobs/85/rotations/south.png', 1);
-_loadESprite(86, 'img/mobs/86/rotations/south.png', 1);
-_loadESprite(87, 'img/mobs/87/rotations/south.png', 1);
-_loadESprite(88, 'img/mobs/88/rotations/south.png', 1);
-_loadESprite(89, 'img/mobs/89/rotations/south.png', 1);
+// 레거시 etype 85~89 개별 스프라이트 비활성화 (새 ch 아틀라스 사용)
 
 // ═══머지 몬스터(1~79)는 _buildAtlasE에서 매핑된 베이스 스킨을 사용함 (동그라미 방지 & VRAM 절약) ═══
 
@@ -132333,6 +132313,20 @@ function draw(){
           }
         }
       }
+      // ── 새 ch 아틀라스 보스 렌더링 ──
+      if(!_bDrew&&e._mobSkin&&e._mobCh){
+        const _bca=_chAtlas[e._mobCh];
+        if(_bca){
+          const _dk=_mobDirKey(e.facing);const _da=_bca[_dk];
+          if(_da&&_da.ready&&e._mobCol!==undefined){
+            const _bsz=Math.max(e.r*3.5,40);
+            X.save();X.translate(e.x,e.y+_tdY);X.globalAlpha=sa;
+            if(_mobFlip(e.facing))X.scale(-1,1);
+            X.drawImage(_da.img,e._mobCol*_MOB_CELL,e._mobRow*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_bsz/2,-_bsz/2,_bsz,_bsz);
+            X.restore();_bDrew=true;
+          }
+        }
+      }
       // ── 보스 걷기 아틀라스 (atlas_boss_walk.png, 폴백) ──
       if(!_bDrew&&_bossWalkAtlas.ready){_bDrew=_drawBossWalk(X,e,_now,sa,_tdY)}
       if(!_bDrew&&_atlasBReady&&_atlasB){
@@ -137189,49 +137183,68 @@ function drawP(){
   }
   // ── 작살 비행 렌더 ──
   if(_harpActive){
-    const _hcol=_harpHit?'#ffaa00':'#ccddff';
     const _ha=Math.atan2(_harpVY,_harpVX);
     const _hDist=dst(P.x,P.y,_harpX,_harpY);
-    // 체인 링크 (교차 고리 — 실제 사슬 모양)
-    const _linkLen=7,_linkW=3;
-    const _nLinks=~~(_hDist/_linkLen);
-    const _cx=(_harpX-P.x)/_hDist,_cy=(_harpY-P.y)/_hDist;
-    const nx=-_cy,ny=_cx;
-    X.lineCap='round';
-    for(let li=0;li<_nLinks;li++){
-      const t=li/_nLinks;
-      const lx=P.x+_cx*_linkLen*(li+.5),ly=P.y+_cy*_linkLen*(li+.5);
-      const sway=Math.sin(li*1.2+_now*.08)*1.5*(1-t*.3);
-      const sx=lx+nx*sway,sy=ly+ny*sway;
-      if(li%2===0){
-        X.lineWidth=1.8;X.strokeStyle='#aaaabb';X.globalAlpha=.7+t*.25;
-        X.beginPath();X.ellipse(sx,sy,_linkLen*.42,_linkW*.55,_ha,0,Math.PI*2);X.stroke();
-        X.lineWidth=.6;X.strokeStyle='#dddde8';X.globalAlpha=.3;
-        X.beginPath();X.ellipse(sx,sy,_linkLen*.25,_linkW*.3,_ha,-1.2,.2);X.stroke();
-      }else{
-        X.lineWidth=1.8;X.strokeStyle='#888899';X.globalAlpha=.7+t*.25;
-        X.beginPath();X.ellipse(sx,sy,_linkW*.55,_linkLen*.42,_ha,0,Math.PI*2);X.stroke();
-        X.lineWidth=.6;X.strokeStyle='#dddde8';X.globalAlpha=.3;
-        X.beginPath();X.ellipse(sx,sy,_linkW*.3,_linkLen*.25,_ha,-.8,.4);X.stroke();
+    if(_chainShurikenImg&&_chainShurikenImg.complete&&_chainShurikenImg.naturalWidth>0){
+      // 스프라이트 작살: chain_shuriken_2.webp
+      const _csAspect=_chainShurikenImg.naturalWidth/_chainShurikenImg.naturalHeight;
+      // 체인 길이를 거리에 맞춰 스케일
+      const _csH=28; // 높이 고정
+      const _csW=_csH*_csAspect;
+      // 수리검 끝 비율 (이미지에서 수리검이 오른쪽 ~35%)
+      const _tipRatio=0.35;
+      const _chainW=_csW*(1-_tipRatio); // 체인 부분 길이
+      // 체인 부분을 플레이어→작살 사이에 반복 타일링
+      const _cx=(_harpX-P.x)/_hDist,_cy=(_harpY-P.y)/_hDist;
+      X.save();
+      X.globalAlpha=.9;
+      // 체인 링크 타일링 (체인 부분만 반복)
+      const _srcChainW=~~(_chainShurikenImg.naturalWidth*(1-_tipRatio));
+      const _srcH=_chainShurikenImg.naturalHeight;
+      const _tileW=_chainW; // 한 타일의 월드 폭
+      const _nTiles=Math.max(1,~~(_hDist/_tileW));
+      for(let ti=0;ti<_nTiles;ti++){
+        const t=ti/_nTiles;
+        const tx=P.x+(_harpX-P.x)*t,ty=P.y+(_harpY-P.y)*t;
+        X.save();X.translate(tx,ty);X.rotate(_ha);
+        X.drawImage(_chainShurikenImg,0,0,_srcChainW,_srcH,0,-_csH/2,_tileW,_csH);
+        X.restore();
       }
+      // 수리검 머리 (회전 애니메이션)
+      const _tipW=_csW*_tipRatio;
+      const _srcTipX=_srcChainW;
+      const _srcTipW=_chainShurikenImg.naturalWidth-_srcChainW;
+      X.save();X.translate(_harpX,_harpY);X.rotate(_ha);
+      // 수리검 회전
+      X.translate(_tipW*0.1,0);
+      X.rotate(_now*0.015); // 수리검 스핀
+      X.globalAlpha=1;
+      X.drawImage(_chainShurikenImg,_srcTipX,0,_srcTipW,_srcH,-_tipW/2,-_csH/2,_tipW,_csH);
+      X.restore();
+      X.restore();
+    }else{
+      // 폴백: 캔버스 작살
+      const _cx=(_harpX-P.x)/_hDist,_cy=(_harpY-P.y)/_hDist;
+      const nx=-_cy,ny=_cx;
+      const _linkLen=7,_linkW=3;
+      const _nLinks=~~(_hDist/_linkLen);
+      X.lineCap='round';
+      for(let li=0;li<_nLinks;li++){
+        const t=li/_nLinks;
+        const lx=P.x+_cx*_linkLen*(li+.5),ly=P.y+_cy*_linkLen*(li+.5);
+        const sway=Math.sin(li*1.2+_now*.08)*1.5*(1-t*.3);
+        const sx=lx+nx*sway,sy=ly+ny*sway;
+        X.lineWidth=1.8;X.strokeStyle=li%2===0?'#aaaabb':'#888899';X.globalAlpha=.7+t*.25;
+        X.beginPath();X.ellipse(sx,sy,li%2===0?_linkLen*.42:_linkW*.55,li%2===0?_linkW*.55:_linkLen*.42,_ha,0,Math.PI*2);X.stroke();
+      }
+      X.save();X.translate(_harpX,_harpY);X.rotate(_ha);
+      X.globalAlpha=1;X.fillStyle=_harpHit?'#ffaa00':'#ccddff';
+      X.beginPath();X.moveTo(12,0);X.lineTo(-2,-2.5);X.lineTo(0,0);X.lineTo(-2,2.5);X.closePath();X.fill();
+      X.beginPath();X.moveTo(8,-1);X.lineTo(6,-5);X.lineTo(3,-3);X.closePath();X.fill();
+      X.beginPath();X.moveTo(8,1);X.lineTo(6,5);X.lineTo(3,3);X.closePath();X.fill();
+      X.fillStyle='#666677';X.fillRect(-6,-1.5,6,3);
+      X.restore();
     }
-    // 작살 머리 (삼지창)
-    X.save();X.translate(_harpX,_harpY);X.rotate(_ha);
-    X.globalAlpha=1;
-    // 중심 날
-    X.fillStyle=_hcol;
-    X.beginPath();X.moveTo(12,0);X.lineTo(-2,-2.5);X.lineTo(0,0);X.lineTo(-2,2.5);X.closePath();X.fill();
-    // 상단 가지
-    X.beginPath();X.moveTo(8,-1);X.lineTo(6,-5);X.lineTo(3,-3);X.closePath();X.fill();
-    // 하단 가지
-    X.beginPath();X.moveTo(8,1);X.lineTo(6,5);X.lineTo(3,3);X.closePath();X.fill();
-    // 자루 연결부
-    X.fillStyle='#666677';
-    X.fillRect(-6,-1.5,6,3);
-    // 금속 광택
-    X.strokeStyle='#ffffff';X.lineWidth=.8;X.globalAlpha=.4;
-    X.beginPath();X.moveTo(10,-1);X.lineTo(4,-1);X.stroke();
-    X.restore();
     // 꽂힘 이펙트
     if(_harpHit){
       X.globalAlpha=.5+Math.sin(_now*.1)*.3;
@@ -138213,9 +138226,9 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     if(!P.skills.holyDome)P.skills.holyDome=1;
     if(!P.skills.giantSlam)P.skills.giantSlam=1;
     if(!P.skills.iceOrb)P.skills.iceOrb=1;
-    if(P.skills.iceOrb>=1)P.activeCtSk='iceOrb';
     // 슬롯 강제 배정은 새 게임(세이브 없음)일 때만
     if(!_loaded){
+      if(P.skills.iceOrb>=1)P.activeCtSk='iceOrb';
       for(let _fi=0;_fi<6;_fi++){if(SKILL_SLOTS[_fi]==='holyDome'||SKILL_SLOTS[_fi]==='giantSlam'||SKILL_SLOTS[_fi]==='spikeTrap')SKILL_SLOTS[_fi]=null}
       {const _fs=(idx,skId)=>{const prev=SKILL_SLOTS[idx];if(prev&&prev!==skId){const ei=[1,2,3].find(j=>!SKILL_SLOTS[j]);if(ei!=null)SKILL_SLOTS[ei]=prev}SKILL_SLOTS[idx]=skId};
       _fs(4,'giantSlam');_fs(5,'holyDome')}
