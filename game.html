@@ -118808,7 +118808,7 @@ function update(){
           const _fa2=Math.atan2(e.y-P.y,e.x-P.x);
           const _ff=Math.max(0,1-_fd/_fbR);
           hurtE(e,~~(_fbDmg*(.5+_ff*.5)),_fa2,false,{kbMult:2},EL.F);
-          {const _bDmg=~~(_fbDmg*(.5+_ff*.5));e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=Math.max(e._burnPool||0,_bDmg*0.60)}
+          {const _bDmg=~~(_fbDmg*(.5+_ff*.5));e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+_bDmg*0.60)}
         }
         SFX.magic(EL.F);shake(10);
         addTxt(P.x,P.y-30,'🔥 불장판!','#ff4400',50);
@@ -119017,7 +119017,7 @@ function update(){
               _bHit.add(_tgt);_beamHitCap++;
               
               hurtE(_tgt,_beamDmgBase*_dmgMul*elMul(bel,_tgt.el),_beamAng,true,{beam:true},bel);
-              {const _bHit=_beamDmgBase*_dmgMul;_tgt.burnT=180;_tgt.burnStk=Math.min(10,(_tgt.burnStk||0)+1);_tgt._burnPool=Math.max(_tgt._burnPool||0,_bHit*0.60)}G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(_tgt.x,_tgt.y,ELC[bel],2);
+              {const _bHit=_beamDmgBase*_dmgMul;_tgt.burnT=180;_tgt.burnStk=Math.min(10,(_tgt.burnStk||0)+1);_tgt._burnPool=(_tgt._burnPool||0)+_bHit*0.60}G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(_tgt.x,_tgt.y,ELC[bel],2);
               if(Math.random()<.25)playVFXAng('magic_burst',_tgt.x,_tgt.y,0.3,1,_beamAng);
               // 타겟 주변 광역
               const _etAoeR=150+(_omniSlv-1)*10;
@@ -119027,7 +119027,7 @@ function update(){
                 if(dst(_tgt.x,_tgt.y,e.x,e.y)>_etAoeR)continue;
                 _bHit.add(e);_beamHitCap++;
                 hurtE(e,_beamDmgBase*_dmgMul*elMul(bel,e.el)/3,_beamAng,true,{beam:true},bel);
-                {const _bH2=_beamDmgBase*_dmgMul/3;e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=Math.max(e._burnPool||0,_bH2*0.60)}if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);
+                {const _bH2=_beamDmgBase*_dmgMul/3;e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+_bH2*0.60)}if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);
               }
             }
           }
@@ -119057,7 +119057,7 @@ function update(){
               _bHit.add(e);_beamHitCap++;
               const _bsMul=1;
               hurtE(e,_beamDmgBase*_dmgMul*_bsMul*elMul(bel,e.el)/3,P.facing,true,{beam:true},bel);
-              {const _bH3=_beamDmgBase*_dmgMul/3;e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=Math.max(e._burnPool||0,_bH3*0.60)}addTxt(e.x,e.y-20,'관통!','#44ffcc',20);
+              {const _bH3=_beamDmgBase*_dmgMul/3;e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+_bH3*0.60)}addTxt(e.x,e.y-20,'관통!','#44ffcc',20);
             }
             const _mAoeNe=shQuery(_mEndX,_mEndY,_mAoeR);
             for(let _ai=0;_ai<_mAoeNe.length&&_beamHitCap<20;_ai++){
@@ -119066,7 +119066,7 @@ function update(){
               _bHit.add(e);_beamHitCap++;
               const _bsMul=1;
               hurtE(e,_beamDmgBase*_dmgMul*_bsMul*elMul(bel,e.el)/3,P.facing,true,{beam:true},bel);
-              {const _bH4=_beamDmgBase*_dmgMul/3;e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=Math.max(e._burnPool||0,_bH4*0.60)}G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);
+              {const _bH4=_beamDmgBase*_dmgMul/3;e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+_bH4*0.60)}G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);
             }
           }
         }
@@ -119092,7 +119092,7 @@ function update(){
           let totalDmg=0;const _eC=elms.length||1;
           for(let _ei2=0;_ei2<elms.length;_ei2++){totalDmg+=_beamDmgBase*_bsMul*elMul(elms[_ei2].el,e.el)/_eC}
           hurtE(e,totalDmg,Math.atan2(e.y-P.y,e.x-P.x),true,{beam:true},elms[0].el);
-          {e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=Math.max(e._burnPool||0,totalDmg*0.60)}addTxt(e.x,e.y-20,'관통!','#44ffcc',20);
+          {e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+totalDmg*0.60)}addTxt(e.x,e.y-20,'관통!','#44ffcc',20);
         }
         const _bAoeNe=shQuery(_bEndX,_bEndY,_bAoeR).slice();
         for(let _ai=0;_ai<_bAoeNe.length&&_beamHitCap<20;_ai++){
@@ -119103,7 +119103,7 @@ function update(){
           let totalDmg=0;
           const _eC=elms.length||1;for(let _ei2=0;_ei2<elms.length;_ei2++){totalDmg+=_beamDmgBase*_bsMul*elMul(elms[_ei2].el,e.el)/_eC}
           hurtE(e,totalDmg,Math.atan2(e.y-_bEndY,e.x-_bEndX),true,{beam:true},elms[0].el);
-          {e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=Math.max(e._burnPool||0,totalDmg*0.60)}
+          {e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+totalDmg*0.60)}
           if(Math.random()>.9)addParts(e.x,e.y,ELC[elms[~~(Math.random()*elms.length)].el],2);
         }
         G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));
@@ -120372,7 +120372,7 @@ function update(){
         if(dst(bx,by,e.x,e.y)<_gsR+e.r){
           const a=Math.atan2(e.y-by,e.x-bx);
           hurtE(e,_gsDmg,a,true,{explode:true},EL.F);
-          e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=Math.max(e._burnPool||0,_gsDmg*0.60);
+          e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+_gsDmg*0.60);
           e.kb.x+=Math.cos(a)*(3+chgPct*6);e.kb.y+=Math.sin(a)*(3+chgPct*6);
         }
       }
@@ -120420,7 +120420,7 @@ function update(){
           if(dst(bx,by,e.x,e.y)<boomR+e.r){
             const a=Math.atan2(e.y-by,e.x-bx);
             hurtE(e,boomDmg,a,true,{explode:true},EL.F);
-            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=Math.max(e._burnPool||0,boomDmg*0.60);
+            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+boomDmg*0.60);
             e.kb.x+=Math.cos(a)*8;e.kb.y+=Math.sin(a)*8;
           }
         }
@@ -121529,10 +121529,10 @@ function update(){
           }else if(fz.type==='assaultFlame'){
             // 기동칼날개 불바닥: 화염 DOT + 화상
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.F);
-            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=Math.max(e._burnPool||0,fz.dmg*0.60);
+            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+fz.dmg*0.60);
           }else{
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),false,{},EL.F);
-            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=Math.max(e._burnPool||0,fz.dmg*0.60);
+            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+fz.dmg*0.60);
           }
         }
       }
@@ -121616,7 +121616,7 @@ function update(){
         if(dst(gf.x,gf.y,e.x,e.y)<gf.hitR+e.r){
           gf._hs.add(e.id);const ea=Math.atan2(e.y-gf.y,e.x-gf.x);
           hurtE(e,gf.dmg,ea,true,{explode:true},EL.F);
-          e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=Math.max(e._burnPool||0,gf.dmg*0.60);
+          e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+gf.dmg*0.60);
           e.kb.x+=Math.cos(ea)*8;e.kb.y+=Math.sin(ea)*8;
         }
       }
@@ -125771,7 +125771,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       }
       if(_afDot>0){
         if(e.burnT<=0&&_txtPerFrame<_TXT_BUDGET)addTxt(e.x,e.y-15,'화상!','#ff6600',20);
-        e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=Math.max(e._burnPool||0,dmg*0.60);
+        e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+dmg*0.60);
       }
       if(_aiDot>0&&!e.ib){
         if(!e._iceDotT&&_txtPerFrame<_TXT_BUDGET)addTxt(e.x,e.y-15,'빙결!','#88ccff',20);
@@ -127641,7 +127641,7 @@ function activateGrenadeShot(){
     const perp=Math.abs(Math.sin(da)*ed);
     if(perp>hitR+e.r)continue;
     hurtE(e,baseDmg,ea,true,{explode:true},EL.F);
-    e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=Math.max(e._burnPool||0,baseDmg*0.60);
+    e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+baseDmg*0.60);
     e.kb.x+=Math.cos(ea)*10;e.kb.y+=Math.sin(ea)*10;
   }
   // 거대 파이어볼 한 발
