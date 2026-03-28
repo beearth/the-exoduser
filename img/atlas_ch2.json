@@ -1,0 +1,1067 @@
+{
+  "cell": 48,
+  "cols": 14,
+  "rows": 14,
+  "total": 190,
+  "directions": [
+    "south",
+    "east",
+    "north",
+    "west"
+  ],
+  "walk_mobs": 101,
+  "walk_cols": 16,
+  "mobs": {
+    "001_etype35": {
+      "idx": 0,
+      "col": 0,
+      "row": 0,
+      "walk_row": 0
+    },
+    "002_Skeleton_Warrior": {
+      "idx": 1,
+      "col": 1,
+      "row": 0,
+      "walk_row": 1
+    },
+    "003_etype85_절망기사": {
+      "idx": 2,
+      "col": 2,
+      "row": 0,
+      "walk_row": 2
+    },
+    "007_Boss08_DarkKnight": {
+      "idx": 3,
+      "col": 3,
+      "row": 0,
+      "walk_row": 3
+    },
+    "009_etype86_거꾸로천사": {
+      "idx": 4,
+      "col": 4,
+      "row": 0,
+      "walk_row": 4
+    },
+    "010_Shield_Knight": {
+      "idx": 5,
+      "col": 5,
+      "row": 0,
+      "walk_row": 5
+    },
+    "011_Heavy_Tank": {
+      "idx": 6,
+      "col": 6,
+      "row": 0,
+      "walk_row": 6
+    },
+    "013_g73": {
+      "idx": 7,
+      "col": 7,
+      "row": 0,
+      "walk_row": 7
+    },
+    "014_f72": {
+      "idx": 8,
+      "col": 8,
+      "row": 0,
+      "walk_row": 8
+    },
+    "016_etype70_flameWalker": {
+      "idx": 9,
+      "col": 9,
+      "row": 0,
+      "walk_row": 9
+    },
+    "019_Boss02_Poison_Queen": {
+      "idx": 10,
+      "col": 10,
+      "row": 0,
+      "walk_row": 10
+    },
+    "020_Charger_Demon": {
+      "idx": 11,
+      "col": 11,
+      "row": 0,
+      "walk_row": 11
+    },
+    "022_Boss07_VoidBreaker": {
+      "idx": 12,
+      "col": 12,
+      "row": 0,
+      "walk_row": 12
+    },
+    "025_Boss04_AbyssEye": {
+      "idx": 13,
+      "col": 13,
+      "row": 0,
+      "walk_row": 13
+    },
+    "026_etype94_사슬죄수": {
+      "idx": 14,
+      "col": 0,
+      "row": 1,
+      "walk_row": 14
+    },
+    "027_etype93_상인악마": {
+      "idx": 15,
+      "col": 1,
+      "row": 1,
+      "walk_row": 15
+    },
+    "028_etype87_도플갱어": {
+      "idx": 16,
+      "col": 2,
+      "row": 1,
+      "walk_row": 16
+    },
+    "029_etype91_보물악마": {
+      "idx": 17,
+      "col": 3,
+      "row": 1,
+      "walk_row": 17
+    },
+    "030_etype96_탐욕사도": {
+      "idx": 18,
+      "col": 4,
+      "row": 1,
+      "walk_row": 18
+    },
+    "031_Skeleton_Archer": {
+      "idx": 19,
+      "col": 5,
+      "row": 1,
+      "walk_row": 19
+    },
+    "032_etype34": {
+      "idx": 20,
+      "col": 6,
+      "row": 1,
+      "walk_row": 20
+    },
+    "033_etype33_miniDemon": {
+      "idx": 21,
+      "col": 7,
+      "row": 1,
+      "walk_row": 21
+    },
+    "034_etype31_thornApostle": {
+      "idx": 22,
+      "col": 8,
+      "row": 1,
+      "walk_row": 22
+    },
+    "040_Shadow_Apostle": {
+      "idx": 23,
+      "col": 9,
+      "row": 1,
+      "walk_row": 23
+    },
+    "041_Boss02_SpiderQueen": {
+      "idx": 24,
+      "col": 10,
+      "row": 1,
+      "walk_row": 24
+    },
+    "042_Boss05_ThunderGod": {
+      "idx": 25,
+      "col": 11,
+      "row": 1,
+      "walk_row": 25
+    },
+    "043_Lich": {
+      "idx": 26,
+      "col": 12,
+      "row": 1,
+      "walk_row": 26
+    },
+    "044_Suicide_Bomber": {
+      "idx": 27,
+      "col": 13,
+      "row": 1,
+      "walk_row": 27
+    },
+    "046_etype30_huntDog": {
+      "idx": 28,
+      "col": 0,
+      "row": 2
+    },
+    "047_구울중형v3": {
+      "idx": 29,
+      "col": 1,
+      "row": 2,
+      "walk_row": 28
+    },
+    "049_g76": {
+      "idx": 30,
+      "col": 2,
+      "row": 2,
+      "walk_row": 29
+    },
+    "051_etype82_lavaSkin": {
+      "idx": 31,
+      "col": 3,
+      "row": 2,
+      "walk_row": 30
+    },
+    "052_etype80_bugSkin": {
+      "idx": 32,
+      "col": 4,
+      "row": 2,
+      "walk_row": 31
+    },
+    "055_Dark_Sorcerer": {
+      "idx": 33,
+      "col": 5,
+      "row": 2,
+      "walk_row": 32
+    },
+    "05_점액괴수_si5_128px": {
+      "idx": 34,
+      "col": 6,
+      "row": 2,
+      "walk_row": 33
+    },
+    "060_Pale_Giant": {
+      "idx": 35,
+      "col": 7,
+      "row": 2,
+      "walk_row": 34
+    },
+    "063_Womb_Apostle": {
+      "idx": 36,
+      "col": 8,
+      "row": 2
+    },
+    "064_h84": {
+      "idx": 37,
+      "col": 9,
+      "row": 2,
+      "walk_row": 35
+    },
+    "066_Shadow_Twin": {
+      "idx": 38,
+      "col": 10,
+      "row": 2,
+      "walk_row": 36
+    },
+    "067_Demon_Dog": {
+      "idx": 39,
+      "col": 11,
+      "row": 2,
+      "walk_row": 37
+    },
+    "068_Splitter_Worm": {
+      "idx": 40,
+      "col": 12,
+      "row": 2,
+      "walk_row": 38
+    },
+    "069_Vampire_Apostle": {
+      "idx": 41,
+      "col": 13,
+      "row": 2,
+      "walk_row": 39
+    },
+    "06_기생충모체_si6_128px": {
+      "idx": 42,
+      "col": 0,
+      "row": 3,
+      "walk_row": 40
+    },
+    "070_Shadow_Wraith": {
+      "idx": 43,
+      "col": 1,
+      "row": 3,
+      "walk_row": 41
+    },
+    "071_Deformed_Walker": {
+      "idx": 44,
+      "col": 2,
+      "row": 3,
+      "walk_row": 42
+    },
+    "072_g75": {
+      "idx": 45,
+      "col": 3,
+      "row": 3,
+      "walk_row": 43
+    },
+    "073_f66": {
+      "idx": 46,
+      "col": 4,
+      "row": 3,
+      "walk_row": 44
+    },
+    "074_t67": {
+      "idx": 47,
+      "col": 5,
+      "row": 3,
+      "walk_row": 45
+    },
+    "075_t63": {
+      "idx": 48,
+      "col": 6,
+      "row": 3,
+      "walk_row": 46
+    },
+    "078_etype60_deepWalker": {
+      "idx": 49,
+      "col": 7,
+      "row": 3,
+      "walk_row": 47
+    },
+    "07_Flesh_Demon_Lord_80px": {
+      "idx": 50,
+      "col": 8,
+      "row": 3,
+      "walk_row": 48
+    },
+    "080_Minor_Wraith": {
+      "idx": 51,
+      "col": 9,
+      "row": 3,
+      "walk_row": 49
+    },
+    "081_Mother_Apostle": {
+      "idx": 52,
+      "col": 10,
+      "row": 3,
+      "walk_row": 50
+    },
+    "082_Eye_Creature": {
+      "idx": 53,
+      "col": 11,
+      "row": 3,
+      "walk_row": 51
+    },
+    "083_Womb_Horror": {
+      "idx": 54,
+      "col": 12,
+      "row": 3,
+      "walk_row": 52
+    },
+    "084_Bone_Beast": {
+      "idx": 55,
+      "col": 13,
+      "row": 3,
+      "walk_row": 53
+    },
+    "086_Winged_Demon": {
+      "idx": 56,
+      "col": 0,
+      "row": 4,
+      "walk_row": 54
+    },
+    "087_Wing_Apostle": {
+      "idx": 57,
+      "col": 1,
+      "row": 4,
+      "walk_row": 55
+    },
+    "088_Ghost_Wraith": {
+      "idx": 58,
+      "col": 2,
+      "row": 4,
+      "walk_row": 56
+    },
+    "089_dark_skeleton_warrior": {
+      "idx": 59,
+      "col": 3,
+      "row": 4
+    },
+    "090_Skinless_One": {
+      "idx": 60,
+      "col": 4,
+      "row": 4,
+      "walk_row": 57
+    },
+    "091_Arch_Demon": {
+      "idx": 61,
+      "col": 5,
+      "row": 4,
+      "walk_row": 58
+    },
+    "092_Torturer_Demon": {
+      "idx": 62,
+      "col": 6,
+      "row": 4,
+      "walk_row": 59
+    },
+    "094_Spider_Apostle": {
+      "idx": 63,
+      "col": 7,
+      "row": 4,
+      "walk_row": 60
+    },
+    "095_Berserker_Demon": {
+      "idx": 64,
+      "col": 8,
+      "row": 4,
+      "walk_row": 61
+    },
+    "096_소형구울v2": {
+      "idx": 65,
+      "col": 9,
+      "row": 4
+    },
+    "097_구울중형": {
+      "idx": 66,
+      "col": 10,
+      "row": 4
+    },
+    "098_소형구울": {
+      "idx": 67,
+      "col": 11,
+      "row": 4
+    },
+    "099_Ghoul": {
+      "idx": 68,
+      "col": 12,
+      "row": 4
+    },
+    "100_Small_Ghoul": {
+      "idx": 69,
+      "col": 13,
+      "row": 4
+    },
+    "101_Angler_Devil": {
+      "idx": 70,
+      "col": 0,
+      "row": 5
+    },
+    "103_Fusion_Creature": {
+      "idx": 71,
+      "col": 1,
+      "row": 5
+    },
+    "104_Deformed_Walker_v2": {
+      "idx": 72,
+      "col": 2,
+      "row": 5
+    },
+    "105_Hell_Spider": {
+      "idx": 73,
+      "col": 3,
+      "row": 5
+    },
+    "106_Berserker": {
+      "idx": 74,
+      "col": 4,
+      "row": 5
+    },
+    "108_mob_81": {
+      "idx": 75,
+      "col": 5,
+      "row": 5
+    },
+    "109_mob_80": {
+      "idx": 76,
+      "col": 6,
+      "row": 5
+    },
+    "110_mob_99": {
+      "idx": 77,
+      "col": 7,
+      "row": 5
+    },
+    "111_mob_98": {
+      "idx": 78,
+      "col": 8,
+      "row": 5
+    },
+    "112_mob_96": {
+      "idx": 79,
+      "col": 9,
+      "row": 5
+    },
+    "113_mob_95": {
+      "idx": 80,
+      "col": 10,
+      "row": 5
+    },
+    "114_mob_94": {
+      "idx": 81,
+      "col": 11,
+      "row": 5
+    },
+    "115_mob_93": {
+      "idx": 82,
+      "col": 12,
+      "row": 5
+    },
+    "117_mob_91": {
+      "idx": 83,
+      "col": 13,
+      "row": 5
+    },
+    "119_mob_89": {
+      "idx": 84,
+      "col": 0,
+      "row": 6
+    },
+    "120_mob_88": {
+      "idx": 85,
+      "col": 1,
+      "row": 6
+    },
+    "121_mob_87": {
+      "idx": 86,
+      "col": 2,
+      "row": 6
+    },
+    "123_mob_85": {
+      "idx": 87,
+      "col": 3,
+      "row": 6
+    },
+    "124_mob_84": {
+      "idx": 88,
+      "col": 4,
+      "row": 6
+    },
+    "125_mob_83": {
+      "idx": 89,
+      "col": 5,
+      "row": 6
+    },
+    "128_mob_80_Pain_Crawler": {
+      "idx": 90,
+      "col": 6,
+      "row": 6
+    },
+    "132_mob_76_Magma_Worm": {
+      "idx": 91,
+      "col": 7,
+      "row": 6
+    },
+    "134_mob_74_Ash_Zombie": {
+      "idx": 92,
+      "col": 8,
+      "row": 6
+    },
+    "138_mob_70_Magma_Imp": {
+      "idx": 93,
+      "col": 9,
+      "row": 6
+    },
+    "139_mob_69_Leviathan": {
+      "idx": 94,
+      "col": 10,
+      "row": 6
+    },
+    "145_mob_62_Coral_Golem": {
+      "idx": 95,
+      "col": 11,
+      "row": 6
+    },
+    "146_mob_61_Drowned_Sailor": {
+      "idx": 96,
+      "col": 12,
+      "row": 6
+    },
+    "147_mob_60_Deep_One": {
+      "idx": 97,
+      "col": 13,
+      "row": 6
+    },
+    "148_mob_59_Monster_Lord": {
+      "idx": 98,
+      "col": 0,
+      "row": 7
+    },
+    "149_mob_58_Mirror_Monster": {
+      "idx": 99,
+      "col": 1,
+      "row": 7
+    },
+    "150_mob_57_Fetus_Giant": {
+      "idx": 100,
+      "col": 2,
+      "row": 7
+    },
+    "151_mob_56_Skinless_One": {
+      "idx": 101,
+      "col": 3,
+      "row": 7
+    },
+    "153_mob_54_Hanging_Crawler": {
+      "idx": 102,
+      "col": 4,
+      "row": 7
+    },
+    "154_mob_53_Eye_Monster": {
+      "idx": 103,
+      "col": 5,
+      "row": 7
+    },
+    "155_mob_52_Mouth_Monster": {
+      "idx": 104,
+      "col": 6,
+      "row": 7
+    },
+    "156_mob_51_Fusion_Beast": {
+      "idx": 105,
+      "col": 7,
+      "row": 7
+    },
+    "157_mob_50_Deformed_Walker": {
+      "idx": 106,
+      "col": 8,
+      "row": 7
+    },
+    "159_mob_48_Hell_Priest": {
+      "idx": 107,
+      "col": 9,
+      "row": 7
+    },
+    "160_mob_47_Shadow_Twin": {
+      "idx": 108,
+      "col": 10,
+      "row": 7
+    },
+    "161_mob_46_Pillar_Demon": {
+      "idx": 109,
+      "col": 11,
+      "row": 7
+    },
+    "162_mob_45_Winged_Demon": {
+      "idx": 110,
+      "col": 12,
+      "row": 7
+    },
+    "163_mob_44_Torturer": {
+      "idx": 111,
+      "col": 13,
+      "row": 7
+    },
+    "164_mob_43_Hell_Hound": {
+      "idx": 112,
+      "col": 0,
+      "row": 8
+    },
+    "165_mob_42_Flesh_Heap": {
+      "idx": 113,
+      "col": 1,
+      "row": 8
+    },
+    "167_mob_40_Lesser_Wraith": {
+      "idx": 114,
+      "col": 2,
+      "row": 8
+    },
+    "169_mob_38_Spawning_Apostle": {
+      "idx": 115,
+      "col": 3,
+      "row": 8
+    },
+    "170_mob_37_Predator_Apostle": {
+      "idx": 116,
+      "col": 4,
+      "row": 8
+    },
+    "171_mob_36_Serpent_Apostle": {
+      "idx": 117,
+      "col": 5,
+      "row": 8
+    },
+    "173_mob_34_Corrosion_Apostle": {
+      "idx": 118,
+      "col": 6,
+      "row": 8
+    },
+    "174_mob_33_Small_Yoma": {
+      "idx": 119,
+      "col": 7,
+      "row": 8
+    },
+    "175_Beast_Apostle": {
+      "idx": 120,
+      "col": 8,
+      "row": 8
+    },
+    "176_Corrosion_Apostle": {
+      "idx": 121,
+      "col": 9,
+      "row": 8
+    },
+    "177_Small_Yoma": {
+      "idx": 122,
+      "col": 10,
+      "row": 8
+    },
+    "178_Boulder_Apostle": {
+      "idx": 123,
+      "col": 11,
+      "row": 8
+    },
+    "179_Spike_Apostle": {
+      "idx": 124,
+      "col": 12,
+      "row": 8
+    },
+    "180_Hound_Apostle": {
+      "idx": 125,
+      "col": 13,
+      "row": 8
+    },
+    "191_Vampiric_Apostle": {
+      "idx": 126,
+      "col": 0,
+      "row": 9
+    },
+    "192_Giant_Apostle": {
+      "idx": 127,
+      "col": 1,
+      "row": 9
+    },
+    "193_Trap_Apostle": {
+      "idx": 128,
+      "col": 2,
+      "row": 9
+    },
+    "194_Fission_Apostle": {
+      "idx": 129,
+      "col": 3,
+      "row": 9
+    },
+    "195_Wing_Apostle_v2": {
+      "idx": 130,
+      "col": 4,
+      "row": 9
+    },
+    "196_Spider_Apostle_v2": {
+      "idx": 131,
+      "col": 5,
+      "row": 9
+    },
+    "197_Berserker_Apostle": {
+      "idx": 132,
+      "col": 6,
+      "row": 9
+    },
+    "198_Womb_Apostle_v2": {
+      "idx": 133,
+      "col": 7,
+      "row": 9
+    },
+    "201_Sorcerer": {
+      "idx": 134,
+      "col": 8,
+      "row": 9
+    },
+    "203_Lich_v2": {
+      "idx": 135,
+      "col": 9,
+      "row": 9
+    },
+    "207_Swarm": {
+      "idx": 136,
+      "col": 10,
+      "row": 9
+    },
+    "208_Charger": {
+      "idx": 137,
+      "col": 11,
+      "row": 9
+    },
+    "210_Boss04_Abyss_Eye": {
+      "idx": 138,
+      "col": 12,
+      "row": 9
+    },
+    "215_War_Wreckage_v2": {
+      "idx": 139,
+      "col": 13,
+      "row": 9,
+      "walk_row": 62
+    },
+    "216_Fire_Bug_Lord": {
+      "idx": 140,
+      "col": 0,
+      "row": 10,
+      "walk_row": 63
+    },
+    "219_화염악마": {
+      "idx": 141,
+      "col": 1,
+      "row": 10,
+      "walk_row": 64
+    },
+    "220_etype88_심판자": {
+      "idx": 142,
+      "col": 2,
+      "row": 10,
+      "walk_row": 65
+    },
+    "221_Flesh_Abomination": {
+      "idx": 143,
+      "col": 3,
+      "row": 10,
+      "walk_row": 66
+    },
+    "224_si28_뒤틀린자": {
+      "idx": 144,
+      "col": 4,
+      "row": 10,
+      "walk_row": 67
+    },
+    "225_Flesh_Wall_Lord": {
+      "idx": 145,
+      "col": 5,
+      "row": 10,
+      "walk_row": 68
+    },
+    "226_Flame_Warrior": {
+      "idx": 146,
+      "col": 6,
+      "row": 10,
+      "walk_row": 69
+    },
+    "228_Flame_Demon_Lord": {
+      "idx": 147,
+      "col": 7,
+      "row": 10,
+      "walk_row": 70
+    },
+    "229_si29_촉수의어미": {
+      "idx": 148,
+      "col": 8,
+      "row": 10,
+      "walk_row": 71
+    },
+    "22_Parasite_Mother": {
+      "idx": 149,
+      "col": 9,
+      "row": 10,
+      "walk_row": 72
+    },
+    "231_벌레수호자": {
+      "idx": 150,
+      "col": 10,
+      "row": 10,
+      "walk_row": 73
+    },
+    "232_si33_Killu": {
+      "idx": 151,
+      "col": 11,
+      "row": 10,
+      "walk_row": 74
+    },
+    "233_si20_화염감옥지기": {
+      "idx": 152,
+      "col": 12,
+      "row": 10,
+      "walk_row": 75
+    },
+    "234_etype99_죽음": {
+      "idx": 153,
+      "col": 13,
+      "row": 10,
+      "walk_row": 76
+    },
+    "235_si1_독버섯거인": {
+      "idx": 154,
+      "col": 0,
+      "row": 11,
+      "walk_row": 77
+    },
+    "237_Giant_Egg_Sac": {
+      "idx": 155,
+      "col": 1,
+      "row": 11,
+      "walk_row": 78
+    },
+    "240_Parasitic_Tree_v2": {
+      "idx": 156,
+      "col": 2,
+      "row": 11,
+      "walk_row": 79
+    },
+    "244_si3_숲의기생수": {
+      "idx": 157,
+      "col": 3,
+      "row": 11,
+      "walk_row": 80
+    },
+    "249_Parasitic_Tree": {
+      "idx": 158,
+      "col": 4,
+      "row": 11,
+      "walk_row": 81
+    },
+    "253_Giant_Egg_Sac_v2": {
+      "idx": 159,
+      "col": 5,
+      "row": 11,
+      "walk_row": 82
+    },
+    "254_Poison_Mushroom_Giant_v2": {
+      "idx": 160,
+      "col": 6,
+      "row": 11,
+      "walk_row": 83
+    },
+    "256_Slime_Beast_v2": {
+      "idx": 161,
+      "col": 7,
+      "row": 11,
+      "walk_row": 84
+    },
+    "257_Forest_Hunter": {
+      "idx": 162,
+      "col": 8,
+      "row": 11,
+      "walk_row": 85
+    },
+    "259_e77r": {
+      "idx": 163,
+      "col": 9,
+      "row": 11,
+      "walk_row": 86
+    },
+    "260_대형구울v2": {
+      "idx": 164,
+      "col": 10,
+      "row": 11,
+      "walk_row": 87
+    },
+    "262_War_Remnant": {
+      "idx": 165,
+      "col": 11,
+      "row": 11,
+      "walk_row": 88
+    },
+    "263_etype38_broodApostle": {
+      "idx": 166,
+      "col": 12,
+      "row": 11,
+      "walk_row": 89
+    },
+    "264_Poison_Mushroom_Giant": {
+      "idx": 167,
+      "col": 13,
+      "row": 11,
+      "walk_row": 90
+    },
+    "266_t69": {
+      "idx": 168,
+      "col": 0,
+      "row": 12,
+      "walk_row": 91
+    },
+    "268_Maggot_Queen": {
+      "idx": 169,
+      "col": 1,
+      "row": 12
+    },
+    "270_Flesh_Wall_Lord_v2": {
+      "idx": 170,
+      "col": 2,
+      "row": 12
+    },
+    "271_Parasite_Mother_v2": {
+      "idx": 171,
+      "col": 3,
+      "row": 12
+    },
+    "272_Mouth_Monster": {
+      "idx": 172,
+      "col": 4,
+      "row": 12,
+      "walk_row": 92
+    },
+    "273_Bone_Watcher": {
+      "idx": 173,
+      "col": 5,
+      "row": 12
+    },
+    "275_Flesh_Blob": {
+      "idx": 174,
+      "col": 6,
+      "row": 12,
+      "walk_row": 93
+    },
+    "276_Giant_Demon": {
+      "idx": 175,
+      "col": 7,
+      "row": 12,
+      "walk_row": 94
+    },
+    "277_Fusion_Mass": {
+      "idx": 176,
+      "col": 8,
+      "row": 12,
+      "walk_row": 95
+    },
+    "281_Pillar_Demon": {
+      "idx": 177,
+      "col": 9,
+      "row": 12,
+      "walk_row": 96
+    },
+    "284_숲의사냥꾼": {
+      "idx": 178,
+      "col": 10,
+      "row": 12
+    },
+    "285_독버섯거인": {
+      "idx": 179,
+      "col": 11,
+      "row": 12
+    },
+    "286_대형구울": {
+      "idx": 180,
+      "col": 12,
+      "row": 12
+    },
+    "287_Large_Ghoul": {
+      "idx": 181,
+      "col": 13,
+      "row": 12
+    },
+    "288_전쟁의잔해_si21": {
+      "idx": 182,
+      "col": 0,
+      "row": 13
+    },
+    "290_불벌레군주_si19": {
+      "idx": 183,
+      "col": 1,
+      "row": 13
+    },
+    "294_기생충모체_si6": {
+      "idx": 184,
+      "col": 2,
+      "row": 13
+    },
+    "295_점액괴수_si5": {
+      "idx": 185,
+      "col": 3,
+      "row": 13
+    },
+    "296_si27_인간뼈감시자": {
+      "idx": 186,
+      "col": 4,
+      "row": 13,
+      "walk_row": 97
+    },
+    "298_si16_용암의심장": {
+      "idx": 187,
+      "col": 5,
+      "row": 13,
+      "walk_row": 98
+    },
+    "31_Queen_Maggot": {
+      "idx": 188,
+      "col": 6,
+      "row": 13,
+      "walk_row": 99
+    },
+    "33_Bug_Queen": {
+      "idx": 189,
+      "col": 7,
+      "row": 13,
+      "walk_row": 100
+    }
+  }
+}
