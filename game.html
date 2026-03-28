@@ -3809,20 +3809,6 @@ _wwSwirlSrc.onload=()=>{
   }
   x.putImageData(d,0,0);_wwSwirlCvs=c;_wwSwirlReady=true;
 };
-// ── 화염분출 스프라이트시트 (10프레임 가로 스트립, 검정→투명) ──
-const _eruptSrc=new Image();let _eruptCvs=null,_eruptReady=false;
-const _ERUPT_FRAMES=10;let _eruptFW=0,_eruptFH=0;
-_eruptSrc.src='assets/vfx/fire_eruption_sheet.png';
-_eruptSrc.onload=()=>{
-  _eruptFW=~~(_eruptSrc.naturalWidth/_ERUPT_FRAMES);_eruptFH=_eruptSrc.naturalHeight;
-  const c=document.createElement('canvas');c.width=_eruptSrc.naturalWidth;c.height=_eruptFH;
-  const x=c.getContext('2d');x.drawImage(_eruptSrc,0,0);
-  const d=x.getImageData(0,0,c.width,c.height),p=d.data;
-  for(let i=0;i<p.length;i+=4){const b=(p[i]+p[i+1]+p[i+2])/3;if(b<35){p[i+3]=0}else{p[i+3]=Math.min(255,~~((b-35)/220*255*2.0))}}
-  x.putImageData(d,0,0);_eruptCvs=c;_eruptReady=true;
-};
-// 화염분출 이펙트 풀
-let _eruptions=[];
 // ── 회전참 타격 임팩트용 (vfx_white_slash.png → 검정 반전, 5×4 20프레임) ──
 const _wwImpSheet=new Image();let _wwImpBlack=null;
 let _wwImpReady=false,_wwImpFW=0,_wwImpFH=0;
@@ -5671,8 +5657,8 @@ const _OBJ_META={
   'cursed_eye_tree':{sz:256,col:1},
   'pit_lava':{sz:200,collision:true},'pit_poison':{sz:200,collision:true},
   'pit_ice':{sz:200,collision:true},'pit_corpse':{sz:200,collision:true},'pit_bugs':{sz:200,collision:true},
-  'pit_blood_a':{sz:100,collision:true,anim:{frames:9,interval:300}},
-  'pit_blood_b':{sz:100,collision:true,anim:{frames:9,interval:300}},
+  'pit_blood_a':{sz:100,collision:true,anim:{frames:9,cols:3,rows:3,interval:300}},
+  'pit_blood_b':{sz:100,collision:true,anim:{frames:9,cols:3,rows:3,interval:300}},
   'lava_straight':{sz:300,collision:true},'lava_straight_v2':{sz:300,collision:true},
   'lava_s':{sz:300,collision:true},'lava_s_v4b':{sz:300,collision:true},'lava_s_v5c':{sz:300,collision:true},
   'lava_l':{sz:200,collision:true},'lava_l_v6a':{sz:300,collision:true},'lava_l_v6b':{sz:300,collision:true},
@@ -5873,9 +5859,25 @@ const _FA_FRAMES=9,_FA_FW=512,_FA_FH=512;
 const _FB_IMG=new Image();_FB_IMG.src='assets/vfx/fire_beam/fire_beam_spritesheet.png';
 let _fbSReady=false;_FB_IMG.onload=()=>{_fbSReady=true};
 const _FB_FRAMES=20,_FB_FW=803,_FB_FH=453;
-// ═══ 혜성탄 GIF (ice_comet.gif) ═══
-const _CM_IMG=new Image();_CM_IMG.src='assets/vfx/ice_comet.png';
-let _cmImgReady=false;_CM_IMG.onload=()=>{_cmImgReady=true};
+// ═══ 혜성탄 스프라이트시트 (10프레임, 좌우반전+검정→투명) ═══
+const _CM_SRC=new Image();let _CM_IMG=null,_cmImgReady=false;
+const _CM_FRAMES=10;let _cmFW=0,_cmFH=0;
+_CM_SRC.src='assets/vfx/ice_comet_sheet.png';
+_CM_SRC.onload=()=>{
+  _cmFW=~~(_CM_SRC.naturalWidth/_CM_FRAMES);_cmFH=_CM_SRC.naturalHeight;
+  const c=document.createElement('canvas');c.width=_CM_SRC.naturalWidth;c.height=_cmFH;
+  const x=c.getContext('2d');x.drawImage(_CM_SRC,0,0);
+  const d=x.getImageData(0,0,c.width,c.height),p=d.data;
+  for(let i=0;i<p.length;i+=4){
+    const b=Math.max(p[i],p[i+1],p[i+2]);
+    if(b<60){p[i+3]=0}
+    else{
+      const a=Math.min(255,~~(Math.pow((b-60)/195,0.7)*255*2));
+      p[i+3]=a;
+    }
+  }
+  x.putImageData(d,0,0);_CM_IMG=c;_cmImgReady=true;
+};
 // ═══ 마법 오브 투사체 (vfx_magic_orb.png 6열×5행=30프레임) ═══
 const _MO_IMG=new Image();_MO_IMG.src='assets/vfx/vfx_magic_orb.png';
 let _moReady=false;_MO_IMG.onload=()=>{_moReady=true};
@@ -11796,7 +11798,7 @@ function _updateActionKeys(){
   if(elBow){const _spSk=SKILL_SLOTS[4];
     const _techAim=P._mmAiming;
     // 모든 Space 슬롯 스킬 쿨다운 맵
-    const _spCdMap={maliceMortar:P._mmCd||0,giantSlam:P._gslCd||0,spikeTrap:P._gcCd||0,chainSlam:P._csCd||0,chainAssault:P._caCd||0,holyBlast:P._hbCd||0,blastShot:P._bsCd2||0,needleShot:P._ndCd||0,holyDome:P._hdCd||0,peaceShield:P._psCd||0,ghostXbowTurret:0,voidScarecrow:P._vsCd||0,execution:P._execCd||0,fireAura:P._faCd||0,fireErupt:P._feCd||0,fireBeam:P._fbCd||0,shieldThrow:P._stCd||0};
+    const _spCdMap={maliceMortar:P._mmCd||0,giantSlam:P._gslCd||0,spikeTrap:P._gcCd||0,chainSlam:P._csCd||0,chainAssault:P._caCd||0,holyBlast:P._hbCd||0,blastShot:P._bsCd2||0,needleShot:P._ndCd||0,holyDome:P._hdCd||0,peaceShield:P._psCd||0,ghostXbowTurret:0,voidScarecrow:P._vsCd||0,execution:P._execCd||0,fireAura:P._faCd||0,fireBeam:P._fbCd||0,shieldThrow:P._stCd||0};
     const _spCdNow=_spCdMap[_spSk]||0;
     const _spOnCd=_spCdNow>0;
     // 스택형 스킬 처리
@@ -12052,7 +12054,7 @@ const _MAGIC_E_HANDLERS={
   fireBeam(){
     if(P.skills.fireBeam<1)return false;
     if((P._fbCd||0)>0){showPH('쿨 '+~~((P._fbCd||0)/60)+'초','#ff4400');return true}
-    if(P.mp<80){showPH('MP 부족! (80)','#ff4400');return true}
+    if(P.mp<10){showPH('MP 부족! (10)','#ff4400');return true}
     P.s='magicCast';P.st2=~~(8/pMagicSpd());P.atkArc=Math.atan2(mouse.y-C.height/2,mouse.x-C.width/2);
     return true;
   },
@@ -118649,48 +118651,21 @@ function update(){
       } else if(_mcSk==='fireBeam'&&P.skills.fireBeam>=1){
         // ── 업화선: 화염빔 투사체 1발 발사 (드래곤볼식) ──
         const _fbLv=P.skills.fireBeam||1;
-        P.mp-=80;
+        P.mp-=10;
         const _fbDmg=~~(magicRef()*statInt()*pMagicMul()*DPS_BAL.magic*3.5*(1+(_fbLv-1)*0.12));
-        const _fbRange=350+(_fbLv-1)*25;
+        const _fbRange=700+(_fbLv-1)*50; // 1렙700, 만렙~1200
         const _fbDx=Math.cos(P.atkArc),_fbDy=Math.sin(P.atkArc);
         {const _pp=_getPProj();_pp.x=P.x+_fbDx*20;_pp.y=P.y+_fbDy*20;
         _pp.vx=_fbDx*7;_pp.vy=_fbDy*7;_pp.dmg=_fbDmg;_pp.el=EL.F;
         _pp.maxDist=_fbRange;_pp.dist=0;_pp.r=16;_pp.stagger=0;_pp.kb=0;
-        _pp.magic=true;_pp.fireBeamProj=true;_pp.pierce=0.85; // 85% 관통
+        _pp.magic=true;_pp.fireBeamProj=true;_pp.pierce=1.0;_pp.pierceMax=999;_pp.homing=true; // 사거리 끝까지 무한 관통 + 유도
         pProjs[pProjs.length]=_pp;}
-        P._fbCd=60; // 1초 쿨
+        P._fbCd=~~(60/pMagicSpd()); // 1초 기본, DEX(민첩)로 공속 스케일
         playSample('beam_fire',.8,_r(.8,.1));_addSkProf('fireBeam');
         addTxt(P.x,P.y-25,'🔥 업화선!','#ff4400',50);
         shake(6);
         for(let _fp=0;_fp<12;_fp++){const _a=P.atkArc+(Math.random()-.5)*.6;poolPart(P.x,P.y,Math.cos(_a)*6,Math.sin(_a)*6,'#ff6600',3+Math.random()*3,8+Math.random()*6)}
         P.s='magicRecover';P.st2=12;
-      } else if(_mcSk==='fireErupt'&&P.skills.fireErupt>=1&&(P._feCd||0)<=0){
-        // ── 화염분출: 8방향 화염 분출 ──
-        const _feLv=P.skills.fireErupt||1;
-        const _feLen=250+_feLv*20; // 분출 길이
-        const _feDmg=~~(magicRef()*2.5*(1+(_feLv-1)*0.12)*statInt()*pMagicMul());
-        const _feMpCost=60;
-        if(P.mp<_feMpCost){addTxt(P.x,P.y-25,'MP 부족!','#4444ff',30)}
-        else{
-          P.mp-=_feMpCost;P._feCd=480; // 8초 쿨
-          // 8방향 분출 이펙트 생성
-          for(let _di=0;_di<8;_di++){
-            const _feA=Math.PI*2*_di/8;
-            _eruptions.push({x:P.x,y:P.y,ang:_feA,len:_feLen,dmg:_feDmg,el:EL.F,t:0,maxT:45,lv:_feLv,_hitSet:new Set()});
-          }
-          // 8방향 fireZone DOT 잔류 (3초)
-          if(!G._fireZones)G._fireZones=[];
-          for(let _di=0;_di<8;_di++){
-            const _feA=Math.PI*2*_di/8;
-            const _fx=P.x+Math.cos(_feA)*_feLen*.5,_fy=P.y+Math.sin(_feA)*_feLen*.5;
-            G._fireZones.push({type:'fireTrail',x:_fx,y:_fy,r:50+_feLv*3,dmg:~~(_feDmg*0.15),el:EL.F,t:0,maxT:180,lv:_feLv});
-          }
-          playSample('fireball',.8,_r(.7,.1));SFX.magic(4);_addSkProf('fireErupt');
-          addTxt(P.x,P.y-30,'🔥 화염분출!','#ff4400',50);shake(20);G.chromaT=8;
-          for(let _fp=0;_fp<24;_fp++){const _fa2=Math.PI*2*_fp/24;const _fd=20+Math.random()*30;
-            poolPart(P.x+Math.cos(_fa2)*_fd,P.y+Math.sin(_fa2)*_fd,Math.cos(_fa2)*6,Math.sin(_fa2)*6,'#ff4400',3+Math.random()*3,10)}
-        }
-        P.s='magicRecover';P.st2=18;
       } else if(_mcSk==='cometShot'&&P.skills.cometShot>=1){
         // ── 혜성탄: 거대 얼음 혜성 발사체 ──
         const _cmLv=P.skills.cometShot||1;
@@ -120516,33 +120491,8 @@ function update(){
   // ═══ 푸른비 — 쿨다운 ═══
   if(P._blueCd>0)P._blueCd-=sp+_hdCdBonus;
   if(P._faCd>0)P._faCd-=sp+_hdCdBonus;
-  if(P._feCd>0)P._feCd-=sp+_hdCdBonus;
   if(P._fbCd>0)P._fbCd-=sp+_hdCdBonus;
   if(P._cometCd>0)P._cometCd-=sp+_hdCdBonus;
-  // ═══ 화염분출 업데이트 — 히트 판정 + 수명 ═══
-  if(_eruptions.length>0){
-    let _ew=0;for(let _ei=0;_ei<_eruptions.length;_ei++){
-      const er=_eruptions[_ei];er.t+=sp;
-      if(er.t>=er.maxT){continue}
-      const prog=er.t/er.maxT;
-      const curLen=er.len*Math.min(1,prog*3);
-      if(~~(er.t)%10<~~(sp)+1){
-        const _feNe=shQuery(er.x+Math.cos(er.ang)*curLen*.5,er.y+Math.sin(er.ang)*curLen*.5,curLen*.6);
-        for(let _fi=0;_fi<_feNe.length;_fi++){
-          const e=_feNe[_fi];if(!e.alive||er._hitSet.has(e._id||_fi))continue;
-          const dx=e.x-er.x,dy=e.y-er.y;
-          const proj=dx*Math.cos(er.ang)+dy*Math.sin(er.ang);
-          if(proj<0||proj>curLen)continue;
-          const perp=Math.abs(-dx*Math.sin(er.ang)+dy*Math.cos(er.ang));
-          if(perp>40+e.r)continue;
-          er._hitSet.add(e._id||_fi);
-          hurtE(e,er.dmg,er.ang,false,{kbMult:.4,poiseHit:true,poiseMult:1.2},EL.F);
-          e.burnT=Math.max(e.burnT||0,300);e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+er.dmg*0.3;
-        }
-      }
-      _eruptions[_ew++]=er;
-    }_eruptions.length=_ew;
-  }
   // ═══ 푸른비 순차 발사 ═══
   if(P._bbHitCd>0)P._bbHitCd-=sp;
   if(P._blueBarrage&&P._blueBarrage.cnt<P._blueBarrage.max){
@@ -127196,7 +127146,7 @@ const SKILL_LIST=[
   {id:'iceOrb',name:'얼음보주',cat:'def',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'grenadeShot',name:'유탄산탄',cat:'bow',act:true,emoji:'💣',desc:'[고정: T 자동] 직선 화염대포 발사+경로 화상+잔류화염. 악의 5. 쿨 1초. Lv당 사거리+22% 폭+22%',spCost:10,matCost:100,cd:60,up:true,upSp:5,upMat:0},
   {id:'needleShot',name:'바늘출',cat:'bow',act:true,emoji:'🪡',desc:'[고정: T 자동] 최대속도 바늘 5~10연발. 좁은 간격 초고속 관통. ST 8. 쿨 1.5초. Lv당 뎀+12% 관통+1 발수+',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
-  {id:'fireBeam',name:'업화선',cat:'magic',emoji:'🔥',desc:'E탭: 화염빔 투사체 발사. MP80. 쿨1초. 85% 관통+화상. Lv당 사거리+25 뎀+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'fireBeam',name:'업화선',cat:'magic',emoji:'🔥',desc:'E탭: 화염 유도빔 발사. MP10. 쿨1초(DEX 스케일). 100% 관통+유도+화상. Lv당 사거리+50 뎀+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'fireAura',name:'지옥진',cat:'magic',emoji:'🌋',desc:'E: 10초간 대지 진동. 범위 내 용암 기둥이 순차적으로 솟아올라 화상+틱 데미지. MP 100. 쿨 12초. Lv당 범위+10% 뎀+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'fireErupt',name:'화염분출',cat:'magic',act:true,emoji:'🔥',desc:'E: 8방향 화염 분출. 경로상 적 화상+DOT. 분출 길이 250+Lv×20. MP 60. 쿨 8초. Lv당 뎀+12% 길이+20',spCost:10,matCost:80,cd:480,up:true,upSp:5,upMat:0},
   {id:'plagueBurst',name:'폭독칼날',cat:'magic',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 1렙 30관통(만렙100). 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염(INT 스케일링). 악의 15. 사거리 4000. 쿨 20초',spCost:10,matCost:80,cd:1200,up:true,upSp:5,upMat:0},
@@ -127237,7 +127187,7 @@ const SKILL_SLOT_DEFS={
           blueShot:{name:'푸른비',emoji:'💎',desc:'E: 5초간 50발 파란콩 순차 발사 (MP100+1.5/Lv, 추적, 쿨5초)'},
           burstLoop:{name:'버스트루프',emoji:'💫',desc:'E 홀드: 3단계 차지 범위폭발 (Lv700 히든)'},
           fireAura:{name:'지옥진',emoji:'🌋',desc:'E: 10초 대지진동 (용암기둥+화상+틱뎀, MP100, 쿨12초)'},
-          fireBeam:{name:'업화선',emoji:'🔥',desc:'E탭: 화염빔 발사 (85%관통+화상, MP80, 쿨1초)'},
+          fireBeam:{name:'업화선',emoji:'🔥',desc:'E탭: 유도 화염빔 (100%관통+유도+화상, MP10, DEX공속)'},
           cometShot:{name:'혜성탄',emoji:'☄',desc:'E: 얼음 혜성 발사 (3관통+빙결+폭발, MP15%, 쿨1초)'}}},
   bow:{name:'석궁 자동(T)',key:'bow',skills:['normal','grenadeShot','bladeShot','blastShot','fanShot','needleShot','ghostXbowTurret'],
     info:{normal:{name:'일반사격',emoji:'🏹',desc:'T자동: 기본 화살'},
@@ -131667,8 +131617,13 @@ function draw(){
             // 각 오브젝트마다 위치 기반 오프셋으로 동시에 안 바뀌게
             const _an=_meta.anim,_aOfs=((~~(mo.x*7+mo.y*13))&0x7fffffff)%(_an.interval*_an.frames);
             const _aFr=~~(((_now+_aOfs)%(_an.interval*_an.frames))/_an.interval);
-            const _aFw=~~(_spr.naturalWidth/_an.frames);
-            X.drawImage(_spr,_aFr*_aFw,0,_aFw,_spr.naturalHeight,mo.x-sz/2,mo.y-sz/2,sz,sz);
+            if(_an.cols){
+              const _aC=_an.cols,_aFw=~~(_spr.naturalWidth/_aC),_aFh=~~(_spr.naturalHeight/_an.rows);
+              X.drawImage(_spr,(_aFr%_aC)*_aFw,~~(_aFr/_aC)*_aFh,_aFw,_aFh,mo.x-sz/2,mo.y-sz/2,sz,sz);
+            }else{
+              const _aFw=~~(_spr.naturalWidth/_an.frames);
+              X.drawImage(_spr,_aFr*_aFw,0,_aFw,_spr.naturalHeight,mo.x-sz/2,mo.y-sz/2,sz,sz);
+            }
           }else X.drawImage(_spr,mo.x-sz/2,mo.y-sz/2,sz,sz);
           // 눈알 오버레이 비활성화
           // 발광 오브젝트: 포인트라이트
@@ -134249,32 +134204,6 @@ function drawP(){
     X.restore();
   }
   _dpS1=performance.now(); // S1=조준인디+해골무덤 끝
-  // ══ 화염분출 렌더 (캔버스 파티클) ══
-  if(_eruptions.length>0){
-    for(let _ei=0;_ei<_eruptions.length;_ei++){
-      const er=_eruptions[_ei];
-      const prog=er.t/er.maxT;
-      const curLen=er.len*Math.min(1,prog*3);
-      const fadeProg=prog>.6?1-(prog-.6)/.4:1;
-      const cx=Math.cos(er.ang),cy=Math.sin(er.ang);
-      const segs=12;
-      for(let si=0;si<segs;si++){
-        const t=si/segs;
-        const px=er.x+cx*curLen*t,py=er.y+cy*curLen*t;
-        const w=(1-t*.7)*(18+er.lv*2);
-        const flk=Math.sin(er.t*.3+si*2+_now*.01)*w*.15;
-        X.globalAlpha=fadeProg*(.25+.1*(1-t));X.fillStyle='#ff2200';
-        X.beginPath();X.arc(px+flk*.3,py+flk*.3,w*1.3,0,Math.PI*2);X.fill();
-        X.globalAlpha=fadeProg*(.7+.2*(1-t));X.fillStyle=t<.3?'#ffee44':t<.6?'#ff8800':'#ff4400';
-        X.beginPath();X.arc(px+flk,py+flk,w,0,Math.PI*2);X.fill();
-        if(t<.5){X.globalAlpha=fadeProg*(.5*(1-t*2));X.fillStyle='#fff';
-          X.beginPath();X.arc(px,py,w*.4,0,Math.PI*2);X.fill()}
-      }
-      if(prog<.8){for(let sp=0;sp<3;sp++){const sa=er.ang+(Math.random()-.5)*.8;const sd=curLen+Math.random()*20;
-        X.globalAlpha=fadeProg*.6;X.fillStyle=Math.random()>.5?'#ffaa00':'#ff6600';
-        X.beginPath();X.arc(er.x+Math.cos(sa)*sd,er.y+Math.sin(sa)*sd,2+Math.random()*3,0,Math.PI*2);X.fill()}}
-    }X.globalAlpha=1;
-  }
   // ══ 불장판 렌더 ══
   if(G._fireZones&&G._fireZones.length>0){
     for(let _fzi=0;_fzi<G._fireZones.length;_fzi++){
@@ -136955,17 +136884,14 @@ function drawP(){
       }
       X.globalAlpha=1;
     }else if(p.cometShot){
-      // ── 혜성탄: ice_comet.gif 스프라이트 ──
-      if(_cmImgReady){
+      // ── 혜성탄: 10프레임 애니메이션 (좌우반전+검정→투명 완료) ──
+      if(_cmImgReady&&_CM_IMG&&_cmFW>0){
         const _csS=p._cometScale||1;
-        const _cmW=_CM_IMG.naturalWidth*_csS*.45,_cmH=_CM_IMG.naturalHeight*_csS*.45;
+        const _fi=~~((_now*.12+p.x)%_CM_FRAMES); // 프레임 순환
+        const _drawW=_cmFW*_csS*.45,_drawH=_cmFH*_csS*.45;
         X.save();X.translate(p.x,p.y);X.rotate(ang);
-        X.globalCompositeOperation='lighter';
-        X.globalAlpha=fa*.9;
-        X.drawImage(_CM_IMG,-_cmW*.35,-_cmH*.5,_cmW,_cmH);
-        X.globalAlpha=fa*.3;
-        X.drawImage(_CM_IMG,-_cmW*.35,-_cmH*.5,_cmW,_cmH);
-        X.globalCompositeOperation='source-over';
+        X.globalAlpha=fa;
+        X.drawImage(_CM_IMG,_fi*_cmFW,0,_cmFW,_cmFH,-_drawW*.35,-_drawH*.5,_drawW,_drawH);
         X.restore();
       }
       X.globalAlpha=1;
