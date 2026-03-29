@@ -5867,12 +5867,10 @@ const _FB_FRAMES=20,_FB_FW=803,_FB_FH=453;
 const _FX_IMG=new Image();_FX_IMG.src='assets/vfx/fire_explode/fire_explode_spritesheet.png';
 let _fxReady=false;_FX_IMG.onload=()=>{_fxReady=true};
 const _FX_FRAMES=12,_FX_FW=300,_FX_FH=300;
-// ═══ 마력연사 스프라이트시트 (발사구 12f 300x120 + 착탄 12f 300x120) ═══
-const _ES_MZ=new Image();_ES_MZ.src='assets/vfx/energy_shot/muzzle_sheet.png';
-let _esMzReady=false;_ES_MZ.onload=()=>{_esMzReady=true};
-const _ES_IMP=new Image();_ES_IMP.src='assets/vfx/energy_shot/impact_sheet.png';
-let _esImpReady=false;_ES_IMP.onload=()=>{_esImpReady=true};
-const _ES_FRAMES=30,_ES_FW=300,_ES_FH=120;
+// ═══ 마력연사 스프라이트시트 (30f, 800x75, 원본 그대로 + lighter 합성) ═══
+const _ES_IMG=new Image();_ES_IMG.src='assets/vfx/energy_shot/raw_sheet.png';
+let _esReady=false;_ES_IMG.onload=()=>{_esReady=true};
+const _ES_FRAMES=30,_ES_FW=800,_ES_FH=75;
 // ═══ 마법 오브 투사체 (vfx_magic_orb.png 6열×5행=30프레임) ═══
 const _MO_IMG=new Image();_MO_IMG.src='assets/vfx/vfx_magic_orb.png';
 let _moReady=false;_MO_IMG.onload=()=>{_moReady=true};
@@ -10773,52 +10771,14 @@ function buildMapCache(){
     c.restore();
   }
   // ── Pass 1: 바닥 + 노이즈 텍스처 (텍스처 로드 시 스킵) ──
-  if(!_tileTexReady)
+  if(!(_tileTexReady&&SI_TO_HELL[G.stage]===1))
   for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){
     if(map[ty][tx]!==0)continue;
     const px=tx*T,py=ty*T,R=_tseed(tx,ty);
     c.fillStyle=th.f;c.fillRect(px,py,T,T);
-    // 다층 노이즈
-    for(let i=0;i<12;i++){
-      const nx=px+R()*T,ny=py+R()*T,sz=3+R()*8;
-      const br=(R()-.5)*24,a=.08+R()*.12;
-      c.fillStyle=`rgba(${fc.r+br},${fc.g+br},${fc.b+br},${a})`;
-      c.beginPath();c.ellipse(nx,ny,sz,sz*.6+R()*sz*.4,R()*Math.PI,0,Math.PI*2);c.fill();
-    }
-    // 돌 균열
-    if(R()<.35){
-      c.strokeStyle=`rgba(${fc.r+20},${fc.g+20},${fc.b+20},.16)`;c.lineWidth=.5;
-      c.beginPath();let lx=px+R()*T,ly=py+R()*T;c.moveTo(lx,ly);
-      for(let s=0;s<2+~~(R()*3);s++){lx+=R()*16-8;ly+=R()*16-8;c.lineTo(lx,ly)}c.stroke();
-    }
     // 테마별 바닥 디테일
     switch(hell){
-      case 0: // 썩은 숲 → 낙엽 + 이끼 + 뿌리 + 웅덩이 + 발광이끼
-        // 낙엽 (확률2x 불투명도2x)
-        if(R()<.6){const lx=px+R()*T,ly=py+R()*T;
-          c.fillStyle=`rgba(${60+~~(R()*40)},${40+~~(R()*30)},${10+~~(R()*15)},${.64+R()*.32})`;
-          c.beginPath();c.ellipse(lx,ly,3+R()*4,2+R()*2,R()*Math.PI,0,Math.PI*2);c.fill()}
-        // 이끼 (확률2x 불투명도2x)
-        if(R()<.36){c.fillStyle=`rgba(40,${80+~~(R()*40)},20,${.60+R()*.4})`;
-          c.beginPath();c.ellipse(px+R()*T,py+R()*T,4+R()*7,2+R()*4,R()*Math.PI,0,Math.PI*2);c.fill()}
-        // 뿌리 (확률2x 불투명도2x)
-        if(R()<.2){c.strokeStyle=`rgba(60,40,20,${.72+R()*.4})`;c.lineWidth=1.5+R()*1;
-          c.beginPath();let rx=px+R()*T,ry=py+R()*T;c.moveTo(rx,ry);
-          for(let s=0;s<3+~~(R()*3);s++){rx+=R()*14-7;ry+=R()*10-5;c.lineTo(rx,ry)}c.stroke()}
-        // 해골 (확률2x)
-        if(R()<.08){_drawSkull(c,px+4+R()*(T-10),py+4+R()*(T-10),2.5+R()*2,R)}
-        // 썩은 물웅덩이 (확률2x 불투명도2x)
-        {const R2=_tseed(tx,ty+77);
-        if(R2()<.12){const wx=px+R2()*T,wy=py+R2()*T,wr=4+R2()*6,wry=wr*.5;
-          const wg=c.createRadialGradient(wx,wy,0,wx,wy,wr);
-          wg.addColorStop(0,'rgba(20,60,30,1)');wg.addColorStop(.6,'rgba(15,45,20,.8)');wg.addColorStop(1,'rgba(10,30,15,0)');
-          c.fillStyle=wg;c.beginPath();c.ellipse(wx,wy,wr,wry,0,0,Math.PI*2);c.fill();
-          c.strokeStyle='rgba(40,120,50,.48)';c.lineWidth=.8;c.stroke()}}
-        // 이끼 발광 패치 — 제거됨 (패턴 아티팩트 유발)
-        // 타일 경계 음영 (불투명도2x)
-        {const R4=_tseed(tx+7,ty+53);
-        if(R4()<.4){c.strokeStyle='rgba(0,0,0,.32)';c.lineWidth=1;
-          c.beginPath();c.moveTo(px,py+T);c.lineTo(px+T,py+T);c.stroke()}}
+      case 0: // 썩은 숲 → 바닥 패턴 제거 (단색+노이즈만)
         break;
       case 1: // 벌레굴 — 점액, 벌레알, 썩은살, 웅덩이 (1장 수준 강도)
         // 1) 썩은 유기체 베이스 — 녹갈색 얼룩 (큰 패치, 높은 불투명도)
@@ -11376,8 +11336,8 @@ function _buildStreamChunk(cx,cy){
   const cc=document.createElement('canvas');cc.width=tw*T;cc.height=th*T;
   const c=cc.getContext('2d');c.imageSmoothingEnabled=false;
   // 벽/바닥 타일 렌더
-  if(_tileTexReady){
-    // 텍스처 스탬프 모드 — 바닥
+  if(_tileTexReady&&SI_TO_HELL[G.stage]===1){
+    // 텍스처 스탬프 모드 — 바닥 (벌레굴 전용)
     for(let by=0;by<tw;by+=_TILE_SPAN)for(let bx2=0;bx2<tw;bx2+=_TILE_SPAN){
       const aty=ty0+(by),atx=tx0+(bx2);
       let hasFloor=false;
@@ -131648,7 +131608,7 @@ function draw(){
         // ── 스프라이트 장식 오브젝트 ──
         const _spr=_OBJ_SPR[mo.type];
         const _meta=_OBJ_META[mo.type];
-        if(_spr&&_spr.complete&&_spr.naturalWidth>0){
+        if(_spr&&_spr.complete&&_spr.naturalWidth>1){
           const sz=(_meta?_meta.sz||32:32)*(mo.scale||1);
           if(_meta&&_meta.sheet){const _sh=_meta.sheet,_cw=~~(_spr.naturalWidth/_sh.c),_ch=~~(_spr.naturalHeight/_sh.r);
             const _si=((~~(mo.x*7919+mo.y*104729+31))&0x7fffffff)%(_sh.c*_sh.r);
@@ -133578,38 +133538,21 @@ function draw(){
     X.restore();
     _fireExps.length=_fw2;
   }
-  // ── 마력연사: 발사구 + 빔라인 + 착탄 3파트 렌더 (_esAnim) ──
-  if(P._esAnim&&(_esMzReady||_esImpReady)){
+  // ── 마력연사: 풀프레임 원본 렌더 (lighter로 검정배경 자동 투명) ──
+  if(P._esAnim&&_esReady){
     const ea=P._esAnim;
     ea.tmr++;if(ea.tmr>=3){ea.tmr=0;ea.fr++}
     if(ea.fr<_ES_FRAMES){
       const prog=ea.fr/_ES_FRAMES;
-      const alpha=prog<.1?prog/.1:prog>.6?1-(prog-.6)/.4:1;
-      const cx=Math.cos(ea.ang),cy=Math.sin(ea.ang);
-      const endX=ea.x+cx*ea.range,endY=ea.y+cy*ea.range;
-      const _sz=200; // 스프라이트 크기
-      // 1) 발사구 (캐릭터 위치, 크게)
-      if(_esMzReady){
-        X.save();X.translate(ea.x,ea.y);X.rotate(ea.ang);
-        X.globalCompositeOperation='lighter';X.globalAlpha=alpha;
-        X.drawImage(_ES_MZ,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_sz/2,_sz,_sz);
-        X.globalAlpha=alpha*.5;
-        X.drawImage(_ES_MZ,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_sz/2,_sz,_sz);
-        X.restore();
-      }
-      // 2) 착탄 (끝점, 크게)
-      if(_esImpReady){
-        X.save();X.translate(endX,endY);X.rotate(ea.ang+Math.PI);
-        X.globalCompositeOperation='lighter';X.globalAlpha=alpha;
-        X.drawImage(_ES_IMP,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_sz/2,_sz,_sz);
-        X.globalAlpha=alpha*.4;
-        X.drawImage(_ES_IMP,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_sz/2,_sz,_sz);
-        X.restore();
-      }
-      // 경로 파티클
-      if(Math.random()>.4){const pd=Math.random()*ea.range;
-        poolPart(ea.x+cx*pd+(Math.random()-.5)*8,ea.y+cy*pd+(Math.random()-.5)*8,
-          (Math.random()-.5)*2,(Math.random()-.5)*2,'#aa66ff',2+Math.random()*2,5+Math.random()*4)}
+      const alpha=prog<.05?prog/.05:prog>.7?1-(prog-.7)/.3:1;
+      const _drawH=150; // 높이 (비율 유지하며 키움)
+      X.save();X.translate(ea.x,ea.y);X.rotate(ea.ang);
+      X.globalCompositeOperation='lighter';
+      X.globalAlpha=alpha;
+      X.drawImage(_ES_IMG,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_drawH/2,ea.range,_drawH);
+      X.globalAlpha=alpha*.4;
+      X.drawImage(_ES_IMG,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_drawH/2,ea.range,_drawH);
+      X.restore();
     }else{P._esAnim=null}
   }
   // ── 업화선 폭발 스프라이트 애니 렌더 ──
@@ -136300,55 +136243,37 @@ function drawP(){
     const _wwR=100+(_wwMaxV-100)*Math.min(1,_wwGrowV);
     const _wc=ELC[wp().el]||'#ffcc44';
 
-    // ── 소용돌이 이미지 (배경 레이어) ──
-    if(_wwSwirlReady&&_wwSwirlCvs){
-      const _swSz=_wwR*2.2;
-      X.save();X.translate(P.x,P.y);X.rotate(_wa*.5);
-      X.globalAlpha=.55+_wwGrowV*.2;
-      X.drawImage(_wwSwirlCvs,-_swSz/2,-_swSz/2,_swSz,_swSz);
-      X.restore();
-    }
-    // ── 검은 칼날 나선 회전 ──
+    // ── 회오리 나선 (균등 곡선 2줄) ──
     {
       const _bladeLen=_wwR*1.05;
-      const _bladeW=3+_wwGrowV*2;
-      const _trailN=60;
-      const _spiralTurns=1.2+_wwGrowV*.6; // 나선 회전수
-      // 나선 잔상 (안쪽→바깥으로 감기는 호)
-      for(let i=_trailN;i>=0;i--){
-        const t=i/_trailN; // 1=가장 오래된 잔상, 0=현재
-        const _tA=_wa-t*Math.PI*2*_spiralTurns; // 나선 각도
-        const _tR=_bladeLen*(0.3+0.7*(1-t)); // 안쪽에서 바깥으로
-        const _tW=Math.max(1,_bladeW*(1-t*.5));
-        X.save();X.translate(P.x,P.y);X.rotate(_tA);
-        X.globalAlpha=i===0?(.85+_wwGrowV*.1):(.5+_wwGrowV*.15)*(1-t)*.7;
-        // 검기 외곽 글로우
-        if(i===0){
-          X.strokeStyle='#000';X.lineWidth=_tW+4;X.lineCap='round';
-          X.beginPath();X.moveTo(12,0);X.lineTo(_tR,0);X.stroke();
+      const _turns=2+_wwGrowV*.8; // 나선 회전수
+      const _segs=80; // 곡선 세밀도
+      for(let _li=0;_li<2;_li++){ // 2줄 나선 (180도 간격)
+        const _off=_li*Math.PI;
+        // 외곽 글로우
+        X.save();X.translate(P.x,P.y);
+        X.globalAlpha=.3+_wwGrowV*.1;X.strokeStyle='#000';X.lineWidth=6;X.lineCap='round';X.lineJoin='round';
+        X.beginPath();
+        for(let i=0;i<=_segs;i++){
+          const t=i/_segs;
+          const a=_wa+_off-t*Math.PI*2*_turns;
+          const r=_bladeLen*(1-t*.7);
+          const px=Math.cos(a)*r,py=Math.sin(a)*r;
+          if(i===0)X.moveTo(px,py);else X.lineTo(px,py);
         }
-        // 검기 본체
-        X.strokeStyle=i===0?'#0a0a0a':'#111';X.lineWidth=_tW;X.lineCap='round';
-        X.beginPath();X.moveTo(12,0);X.lineTo(_tR,0);X.stroke();
-        // 메인 칼날 하이라이트
-        if(i===0){
-          X.globalAlpha=.35;X.strokeStyle='#444';X.lineWidth=1;
-          X.beginPath();X.moveTo(_tR*.3,0);X.lineTo(_tR-2,0);X.stroke();
+        X.stroke();
+        // 메인 선
+        X.globalAlpha=.7+_wwGrowV*.2;X.strokeStyle='#0a0a0a';X.lineWidth=3;
+        X.beginPath();
+        for(let i=0;i<=_segs;i++){
+          const t=i/_segs;
+          const a=_wa+_off-t*Math.PI*2*_turns;
+          const r=_bladeLen*(1-t*.7);
+          const px=Math.cos(a)*r,py=Math.sin(a)*r;
+          if(i===0)X.moveTo(px,py);else X.lineTo(px,py);
         }
-        X.restore();
+        X.stroke();X.restore();
       }
-      // 나선 연결선 (잔상 끝점을 잇는 곡선)
-      X.save();X.translate(P.x,P.y);
-      X.globalAlpha=.15+_wwGrowV*.08;X.strokeStyle='#000';X.lineWidth=1.5;
-      X.beginPath();
-      for(let i=0;i<=_trailN;i++){
-        const t=i/_trailN;
-        const _tA=_wa-t*Math.PI*2*_spiralTurns;
-        const _tR=_bladeLen*(0.3+0.7*(1-t));
-        const px=Math.cos(_tA)*_tR,py=Math.sin(_tA)*_tR;
-        if(i===0)X.moveTo(px,py);else X.lineTo(px,py);
-      }
-      X.stroke();X.restore();
     }
     // 합성 회전기폭: DMG 수치 + 충전바만 표시 (시야 확보)
     if(P.skills.detonate){
