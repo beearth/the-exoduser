@@ -5660,6 +5660,26 @@ const _CH_DECO={
     {id:'m_ctree11',file:'cursed_tree_11.png',sz:400,large:1},
     {id:'m_ctree12',file:'cursed_tree_12.png',sz:400,large:1},
     {id:'m_atree1',file:'anim_tree_01.png',sz:400,large:1},
+    {id:'m_flesh_a0',file:'flesh_a_0.png',sz:350,scatter:1},
+    {id:'m_flesh_a90',file:'flesh_a_90.png',sz:350,scatter:1},
+    {id:'m_flesh_a180',file:'flesh_a_180.png',sz:350,scatter:1},
+    {id:'m_flesh_a270',file:'flesh_a_270.png',sz:350,scatter:1},
+    {id:'m_flesh_b0',file:'flesh_b_0.png',sz:350,scatter:1},
+    {id:'m_flesh_b90',file:'flesh_b_90.png',sz:350,scatter:1},
+    {id:'m_flesh_b180',file:'flesh_b_180.png',sz:350,scatter:1},
+    {id:'m_flesh_b270',file:'flesh_b_270.png',sz:350,scatter:1},
+    {id:'m_flesh_c0',file:'flesh_c_0.png',sz:350,scatter:1},
+    {id:'m_flesh_c90',file:'flesh_c_90.png',sz:350,scatter:1},
+    {id:'m_flesh_c180',file:'flesh_c_180.png',sz:350,scatter:1},
+    {id:'m_flesh_c270',file:'flesh_c_270.png',sz:350,scatter:1},
+    {id:'m_flesh_d0',file:'flesh_d_0.png',sz:350,scatter:1},
+    {id:'m_flesh_d90',file:'flesh_d_90.png',sz:350,scatter:1},
+    {id:'m_flesh_d180',file:'flesh_d_180.png',sz:350,scatter:1},
+    {id:'m_flesh_d270',file:'flesh_d_270.png',sz:350,scatter:1},
+    {id:'m_flesh_e0',file:'flesh_e_0.png',sz:350,scatter:1},
+    {id:'m_flesh_e90',file:'flesh_e_90.png',sz:350,scatter:1},
+    {id:'m_flesh_e180',file:'flesh_e_180.png',sz:350,scatter:1},
+    {id:'m_flesh_e270',file:'flesh_e_270.png',sz:350,scatter:1},
   ],
 };
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
@@ -10585,6 +10605,31 @@ function initMapObjects(){
       };
       _placeFromPool(_lgSide,_lgSideMax);
       _placeFromPool(_lgCenter,_lgCenterMax);
+    }
+    // ── scatter 에셋: 방 전체 랜덤 배치 (벽 무관) ──
+    const _scatterDeco=_chDeco.filter(d=>d.scatter);
+    if(_scatterDeco.length>0){
+      const _scMax=Math.min(60,Math.max(5,~~(_dcFloors.length/50)));
+      const _scMinDist=250;
+      let _scPlaced=0;
+      for(let si=0;si<_scMax*40&&_scPlaced<_scMax&&_dcFloors.length>0;si++){
+        const fi=~~(_dcSeed()*_dcFloors.length);
+        const f=_dcFloors[fi];
+        const px=f.x*T+T/2,py=f.y*T+T/2;
+        // 벽에서 3타일 이상 떨어진 곳 (방 내부)
+        let wallOk=true;
+        for(let dy=-3;dy<=3&&wallOk;dy++)for(let dx=-3;dx<=3&&wallOk;dx++){
+          const tx=f.x+dx,ty=f.y+dy;
+          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0)wallOk=false;
+        }
+        if(!wallOk)continue;
+        let ok=true;
+        for(const mo of MAP_OBJS){if(dst(px,py,mo.x,mo.y)<_scMinDist){ok=false;break}}
+        if(!ok)continue;
+        MAP_OBJS.push({type:_scatterDeco[~~(_dcSeed()*_scatterDeco.length)].id,x:px,y:py,hell});
+        _scPlaced++;
+      }
+      console.log('[SCATTER] placed:'+_scPlaced);
     }
     // ── 2차: 일반(소/중형) 에셋 배치 ──
     const _dcCnt=Math.max(25,Math.min(200,~~(_dcFloors.length/20)));
@@ -127187,7 +127232,7 @@ const SKILL_LIST=[
   {id:'maliceMortar',name:'폭풍소환',cat:'magic',act:true,emoji:'🌪️',desc:'어둠 소용돌이 소환 (마우스 조준 설치, MP 소모, 쿨 11초, INT 스케일링, 1렙 200범위 +30/렙, 5초 지속, 적 흡인)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발. 범위 1500+Lv×100px, 거리감쇠 50%. Lv당 뎀+10%. (MP 30%, 쿨 90초)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
-  {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.5초) 흡인 후 폭발. 범위 1500+Lv×100px. 거리감쇠 50%. Lv당 뎀+10% 흡인력+3%. (MP 30%, 쿨 90초)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
+  {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. Lv당 흡인력+3%. (MP 30%, 쿨 90초)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
   {id:'lavaSummon',name:'용암소환',cat:'ult',act:true,ult:true,emoji:'🌋',desc:'빨간 오망성 시전 → 범위 1500+Lv×100px 화염폭발+10초간 화상. 틱당 적 최대HP 5%. 거리감쇠 30%. Lv당 뎀+10%. (MP 30%, 쿨 90초)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
   {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스를 섬광 관통 처형. 근접 타겟 지정. HP/MP/ST 10% 소모 → 보스 최대HP 30% 순수 데미지. 쿨 20초',spCost:10,matCost:100,cd:1200,up:false,upSp:0,upMat:0},
   {id:'demonRevive',name:'악마화 부활',cat:'ult',ult:true,emoji:'☠',desc:'[패시브] 사망 시 부활력 기반 확률 부활. 1Lv: HP 50% 부활. Lv당 HP+5%, 쿨-30초, 부활확률+2%. 쿨 10분',spCost:15,matCost:150,up:true,upSp:10,upMat:0},
@@ -128356,16 +128401,7 @@ function fireBlackStar(){
   P._bsCasting=false;
   const slv=P.skills.blackStar||1;
   P._bsCd=~~(5400*(1+_eqAffix('cooldownRed')));
-  const dmg=~~(magicRef()*statInt()*pMagicMul()*DPS_BAL.magic*24*(1+(slv-1)*0.10));
   const cx=P._bsX,cy=P._bsY;
-  const blastR=1500+slv*100;
-  for(let i=0;i<ens.length;i++){
-    const e=ens[i];if(!e.alive)continue;
-    const d=dst(e.x,e.y,cx,cy);if(d>blastR)continue;
-    const ang=Math.atan2(e.y-cy,e.x-cx);
-    const falloff=Math.max(0.5,1-d/blastR);
-    hurtE(e,~~(dmg*falloff),ang,false,{},EL.D);
-  }
   G._bsPillar={x:cx,y:cy,t:0,maxT:120};
   for(let k=0;k<80;k++){
     const a=Math.PI*2*k/80;const spd=5+Math.random()*10;
