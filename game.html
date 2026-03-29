@@ -3769,7 +3769,7 @@ const _decorImgs={};
 })();
 // ── 1장 벽 장식: 썩은 나무 이미지 ──
 const _wallTreeImgs={};
-['assets/map/ch1/rotten_tree.png','assets/map/ch1/rotten_stump.png'].forEach(s=>{const i=new Image();i.src=s;i.onload=()=>{_wallTreeImgs[s]=i}});
+['assets/map/ch1/floor_objects/rotten_tree.png','assets/map/ch1/floor_objects/rotten_stump.png'].forEach(s=>{const i=new Image();i.src=s;i.onload=()=>{_wallTreeImgs[s]=i}});
 // ── 벽 눈깔 이미지 (2장 벌레굴 전용) ──
 const _WALL_EYE_SRCS=['assets/map/ch1/eye1_bloodshot.png','assets/map/ch1/eye2_terror.png','assets/map/ch1/eye1_bloodshot.png','assets/map/ch1/eye2_terror.png','assets/map/ch1/eye1_bloodshot.png'];
 const _wallEyeImgs={};
@@ -3782,7 +3782,7 @@ const _flameImgs=[];
 (function(){_FLAME_SRCS.forEach((s,i)=>{const img=new Image();img.src=s;img.onload=()=>{_flameImgs[i]=img};img.onerror=()=>{}})})();
 let _decorList=[];
 function _buildDecorList(){
-  _decorList=[];
+  _decorList=[];return; // 비활성화 — initMapObjects의 _CH_DECO 시스템 사용
   const hell=SI_TO_HELL[G.stage||0];
   const defs=MAP_DECOR_DEFS[hell];if(!defs)return;
   const map=G.map;if(!map)return;
@@ -5665,7 +5665,7 @@ const _CH_DECO={
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
 for(const[k,v]of Object.entries(_OBJ_SPR_MAP)){const im=new Image();im.src=v;_OBJ_SPR[k]=im}
 const _bossRoomBg=new Image();_bossRoomBg.src='assets/map/ch1/boss_room_bg.png';
-const _bossGateImg=new Image();_bossGateImg.src='assets/map/ch1/cursed_eye_tree.png';
+const _bossGateImg=new Image();_bossGateImg.src='assets/map/ch1/floor_objects/cursed_eye_tree.png';
 function _waitObjSprites(timeout){
   return new Promise(r=>{
     const t0=Date.now();
@@ -5708,7 +5708,7 @@ const _OBJ_META={
 };
 // _CH_DECO 프리로드
 for(const[ch,list]of Object.entries(_CH_DECO)){
-  for(const d of list){const p='assets/map/ch'+(+ch+1)+'/'+d.file;_OBJ_SPR_MAP[d.id]=p;const im=new Image();im.onerror=function(){console.warn('[DECO] '+d.id+' 404→fallback');this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='};im.src=p;_OBJ_SPR[d.id]=im;const _prev=_OBJ_META[d.id]||{};_OBJ_META[d.id]=Object.assign(_prev,{sz:d.sz||32,light:d.light||0,large:d.large||0})}
+  for(const d of list){const p='assets/map/ch'+(+ch+1)+'/floor_objects/'+d.file;_OBJ_SPR_MAP[d.id]=p;const im=new Image();im.onerror=function(){console.warn('[DECO] '+d.id+' 404→fallback');this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='};im.src=p;_OBJ_SPR[d.id]=im;const _prev=_OBJ_META[d.id]||{};_OBJ_META[d.id]=Object.assign(_prev,{sz:d.sz||32,light:d.light||0,large:d.large||0})}
 }
 
 // ═══ RAM 최적화 시스템 ═══
@@ -11018,7 +11018,7 @@ function buildMapCache(){
       if(R()<.3){c.fillStyle=`rgba(50,${90+~~(R()*25)},30,${.08+R()*.06})`;
         c.beginPath();c.ellipse(px+R()*T,py+R()*T,3+R()*5,2+R()*4,R()*Math.PI,0,Math.PI*2);c.fill()}
       // 5) 썩은 나무 이미지 (랜덤 배치)
-      if(R()<.12){const _wtSrc=R()<.6?'assets/map/ch1/rotten_tree.png':'assets/map/ch1/rotten_stump.png';const _wtI=_wallTreeImgs[_wtSrc];
+      if(R()<.12){const _wtSrc=R()<.6?'assets/map/ch1/floor_objects/rotten_tree.png':'assets/map/ch1/floor_objects/rotten_stump.png';const _wtI=_wallTreeImgs[_wtSrc];
         if(_wtI){const _wtS=.6+R()*.4;const _wtW=_wtI.width*_wtS,_wtH=_wtI.height*_wtS;
           c.globalAlpha=.7+R()*.3;c.save();c.translate(px+T/2,py+T/2);if(R()<.5)c.scale(-1,1);
           c.drawImage(_wtI,-_wtW/2,-_wtH/2,_wtW,_wtH);c.restore();c.globalAlpha=1}}
