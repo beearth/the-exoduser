@@ -5180,10 +5180,8 @@ function _invAutoPlace(){
     if(!!a.junk!==!!b.junk)return a.junk?1:-1;
     const aBen=itemPower(a)-_eqPow[a.slot];
     const bBen=itemPower(b)-_eqPow[b.slot];
-    const aUp=aBen>0?1:0,bUp=bBen>0?1:0;
-    if(aUp!==bUp)return bUp-aUp; // 업그레이드템 위로
-    if(aUp&&bUp)return bBen-aBen; // 둘 다 업그레이드면 이득 큰 순
-    return itemPower(b)-itemPower(a); // 다운그레이드끼리는 CP순
+    if(aBen!==bBen)return bBen-aBen; // 베니핏 큰 순
+    return itemPower(b)-itemPower(a); // 동률이면 아이템파워 큰 순
   });
   // 그리드 초기화
   for(let i=0;i<INV.bag.length;i++){INV.bag[i]._gx=null;INV.bag[i]._gy=null}
@@ -5316,6 +5314,8 @@ function itemPower(it){
   p+=(it.magicPen||0)*30+(it.bonusRange||0)*8;
   if(it.elements)for(const em of it.elements)p+=em.dmg*.8;
   p+=(it.enh||0)*15+(it.rarity||0)*20+(it.itemLv||0)*2;
+  // 어픽스 가치 합산
+  if(it.affixes)for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];p+=Math.abs(a.value||0)*10+(a.tier||0)*5}
   return~~p;
 }
 function sortInvBag(){
@@ -5665,7 +5665,9 @@ const _CH_DECO={
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
 for(const[k,v]of Object.entries(_OBJ_SPR_MAP)){const im=new Image();im.src=v;_OBJ_SPR[k]=im}
 const _bossRoomBg=new Image();_bossRoomBg.src='assets/map/ch1/boss_room_bg.png';
-const _bossGateImg=new Image();_bossGateImg.src='assets/map/ch1/floor_objects/cursed_eye_tree.png';
+const _bossGateImg=new Image();_bossGateImg.src='assets/map/ch1/floor_objects/cursed_tree_01.png';
+_bossGateImg.onload=()=>console.log('[GATE] bossGateImg loaded:',_bossGateImg.src,'w:',_bossGateImg.naturalWidth);
+_bossGateImg.onerror=()=>console.warn('[GATE] bossGateImg FAIL:',_bossGateImg.src);
 function _waitObjSprites(timeout){
   return new Promise(r=>{
     const t0=Date.now();
@@ -10778,8 +10780,10 @@ function buildMapCache(){
       c.save();c.beginPath();
       for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){if(map[ty][tx]===0)c.rect(tx*T,ty*T,T,T)}
       c.clip();
-      const _pat=c.createPattern(_soilImg,'repeat');
-      if(_pat){c.fillStyle=_pat;c.fillRect(0,0,mw*T,mh*T)}
+      const _tileSz=256;
+      for(let py=0;py<mh*T;py+=_tileSz)for(let px=0;px<mw*T;px+=_tileSz){
+        c.drawImage(_soilImg,px,py,_tileSz,_tileSz);
+      }
       c.restore();
     }
     for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){
@@ -121147,7 +121151,7 @@ function update(){
     P._bsT+=sp;
     // 시전 중 흡인 효과 (2화면 범위) — 강흡입 (블랙홀급)
     const _bsLvP=P.skills.blackStar||1;
-    const _bsDur=420+(_bsLvP-1)*18; // 7초 + Lv당 0.3초
+    const _bsDur=420+(_bsLvP-1)*30; // 7초 + Lv당 0.5초
     const _bsR=800+(P._bsT/_bsDur)*700;
     const _bsPullProg=Math.min(1,P._bsT/_bsDur);
     for(let bi=0;bi<ens.length;bi++){const e=ens[bi];if(!e.alive)continue;
@@ -127184,7 +127188,7 @@ const SKILL_LIST=[
   {id:'maliceMortar',name:'폭풍소환',cat:'magic',act:true,emoji:'🌪️',desc:'어둠 소용돌이 소환 (마우스 조준 설치, MP 소모, 쿨 11초, INT 스케일링, 1렙 200범위 +30/렙, 5초 지속, 적 흡인)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발. 범위 1500+Lv×100px, 거리감쇠 50%. Lv당 뎀+10%. (MP 30%, 쿨 90초)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
-  {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.3초) 흡인 후 폭발. 범위 1500+Lv×100px. 거리감쇠 50%. Lv당 뎀+10% 흡인력+3%. (악의 50, 쿨 90초)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
+  {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.5초) 흡인 후 폭발. 범위 1500+Lv×100px. 거리감쇠 50%. Lv당 뎀+10% 흡인력+3%. (악의 50, 쿨 90초)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
   {id:'lavaSummon',name:'용암소환',cat:'ult',act:true,ult:true,emoji:'🌋',desc:'빨간 오망성 시전 → 범위 1500+Lv×100px 화염폭발+10초간 화상. 틱당 적 최대HP 5%. 거리감쇠 30%. Lv당 뎀+10%. (MP 30%, 쿨 90초)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
   {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스를 섬광 관통 처형. 근접 타겟 지정. HP/MP/ST 10% 소모 → 보스 최대HP 30% 순수 데미지. 쿨 20초',spCost:10,matCost:100,cd:1200,up:false,upSp:0,upMat:0},
   {id:'demonRevive',name:'악마화 부활',cat:'ult',ult:true,emoji:'☠',desc:'[패시브] 사망 시 부활력 기반 확률 부활. 1Lv: HP 50% 부활. Lv당 HP+5%, 쿨-30초, 부활확률+2%. 쿨 10분',spCost:15,matCost:150,up:true,upSp:10,upMat:0},
@@ -133804,7 +133808,7 @@ function draw(){
     _tc.fillStyle=_darkCols[_ahell2];_tc.globalAlpha=_TORCH.darkAlpha;_tc.fillRect(0,0,C.width,C.height);
     _tc.globalCompositeOperation='destination-out';
     _mkTorchStamp(_tR);
-    _tc.globalAlpha=1;_tc.drawImage(_torchStamp,_psx-_tR,_psy-_tR);
+    _tc.globalAlpha=1;_tc.drawImage(_torchStamp,_psx-_tR,_psy-_tR*0.3);
     const _thw=C.width/2+100,_thh=C.height/2+100;
     if(G._bossRef&&G._bossRef.alive){const _bdx=G._bossRef.x-G.cam.x,_bdy=G._bossRef.y-G.cam.y;
       if(_bdx>-_thw&&_bdx<_thw&&_bdy>-_thh&&_bdy<_thh){_tc.globalAlpha=.7;_tc.drawImage(_getTorchSmall(80),C.width/2+_bdx-80,C.height/2+_bdy-80);_tc.globalAlpha=1}}
