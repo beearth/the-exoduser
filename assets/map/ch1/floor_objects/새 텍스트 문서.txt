@@ -1,0 +1,12 @@
+﻿pure black background (#000000)
+
+·	tumor_0_0
+·	tumor_0_1
+·	tumor_0_2
+·	tumor_1_0
+·	tumor_1_1
+·	tumor_1_2
+·	tumor_2_0
+·	tumor_2_1
+·	tumor_2_2
+
