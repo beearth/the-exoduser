@@ -3704,7 +3704,59 @@ const _bgImgs={};
   ];
 })();
 // ── 환경 데코 시스템 ──
-const MAP_DECOR_DEFS={0:[],1:[],2:[],3:[],4:[],5:[],6:[]}; // 비활성화 — 챕터별 수동 추가 예정
+const _FO_CH1='assets/map/ch1/floor_objects/';
+const MAP_DECOR_DEFS={0:[
+  // 소품 (sz:24~36)
+  {src:_FO_CH1+'bones.png',chance:0.012,scale:1.0,sz:28},
+  {src:_FO_CH1+'corpse.png',chance:0.006,scale:1.0,sz:36},
+  {src:_FO_CH1+'vine_roots.png',chance:0.010,scale:1.0,sz:32},
+  {src:_FO_CH1+'rotten_stump.png',chance:0.008,scale:1.0,sz:30},
+  {src:_FO_CH1+'spider_web.png',chance:0.008,scale:1.0,sz:32},
+  {src:_FO_CH1+'tombstone.png',chance:0.005,scale:1.0,sz:28},
+  {src:_FO_CH1+'weapon_pile.png',chance:0.004,scale:1.0,sz:32},
+  {src:_FO_CH1+'flesh_pile.png',chance:0.005,scale:1.0,sz:32},
+  {src:_FO_CH1+'meat_stake.png',chance:0.004,scale:1.0,sz:28},
+  {src:_FO_CH1+'deco_bones_03.png',chance:0.006,scale:1.0,sz:30},
+  {src:_FO_CH1+'deco_bones_04.png',chance:0.006,scale:1.0,sz:30},
+  {src:_FO_CH1+'frozen_bones.png',chance:0.004,scale:1.0,sz:28},
+  {src:_FO_CH1+'minibug.png',chance:0.006,scale:1.0,sz:20},
+  {src:_FO_CH1+'eyeball.png',chance:0.004,scale:1.0,sz:20},
+  {src:_FO_CH1+'eye_mushroom.png',chance:0.004,scale:1.0,sz:24},
+  // 발광 소품 (sz:24~28)
+  {src:_FO_CH1+'toxic_mushroom.png',chance:0.006,scale:1.0,sz:26,light:1},
+  {src:_FO_CH1+'glow_flower_blue.png',chance:0.004,scale:1.0,sz:24,light:1},
+  {src:_FO_CH1+'glow_flower_yellow.png',chance:0.004,scale:1.0,sz:24,light:1},
+  {src:_FO_CH1+'mushroom_glow_01.png',chance:0.004,scale:1.0,sz:26,light:1},
+  {src:_FO_CH1+'mushroom_glow_02.png',chance:0.004,scale:1.0,sz:26,light:1},
+  {src:_FO_CH1+'mushroom_glow_03.png',chance:0.004,scale:1.0,sz:26,light:1},
+  // 웅덩이 (sz:40~48)
+  {src:_FO_CH1+'poison_puddle.png',chance:0.008,scale:1.0,sz:40},
+  {src:_FO_CH1+'poison_pool.png',chance:0.006,scale:1.0,sz:44},
+  {src:_FO_CH1+'acid_pool.png',chance:0.005,scale:1.0,sz:44},
+  {src:_FO_CH1+'pit_blood_anim.png',chance:0.003,scale:1.0,sz:48},
+  {src:_FO_CH1+'pit_blood_b.png',chance:0.003,scale:1.0,sz:48},
+  {src:_FO_CH1+'pit_corpse.png',chance:0.003,scale:1.0,sz:48},
+  {src:_FO_CH1+'pit_poison.png',chance:0.003,scale:1.0,sz:48},
+  {src:_FO_CH1+'pit_lava.png',chance:0.003,scale:1.0,sz:48},
+  // 나무 (sz:80~120)
+  {src:_FO_CH1+'tree_dead_01.png',chance:0.006,scale:1.0,sz:80},
+  {src:_FO_CH1+'tree_dead_02.png',chance:0.006,scale:1.0,sz:80},
+  {src:_FO_CH1+'tree_dead_03.png',chance:0.006,scale:1.0,sz:80},
+  {src:_FO_CH1+'anim_tree_01.png',chance:0.004,scale:1.0,sz:90},
+  {src:_FO_CH1+'cursed_eye_tree.png',chance:0.002,scale:1.0,sz:120},
+  {src:_FO_CH1+'cursed_tree_01.png',chance:0.003,scale:1.0,sz:100},
+  {src:_FO_CH1+'cursed_tree_02.png',chance:0.003,scale:1.0,sz:100},
+  {src:_FO_CH1+'cursed_tree_03.png',chance:0.003,scale:1.0,sz:100},
+  {src:_FO_CH1+'cursed_tree_04.png',chance:0.003,scale:1.0,sz:100},
+  {src:_FO_CH1+'cursed_tree_05.png',chance:0.003,scale:1.0,sz:100},
+  {src:_FO_CH1+'cursed_tree_06.png',chance:0.003,scale:1.0,sz:100},
+  {src:_FO_CH1+'cursed_tree_07.png',chance:0.003,scale:1.0,sz:100},
+  {src:_FO_CH1+'cursed_tree_08.png',chance:0.003,scale:1.0,sz:100},
+  {src:_FO_CH1+'cursed_tree_09.png',chance:0.003,scale:1.0,sz:100},
+  {src:_FO_CH1+'cursed_tree_10.png',chance:0.003,scale:1.0,sz:100},
+  {src:_FO_CH1+'cursed_tree_11.png',chance:0.003,scale:1.0,sz:100},
+  {src:_FO_CH1+'cursed_tree_12.png',chance:0.003,scale:1.0,sz:100},
+],1:[],2:[],3:[],4:[],5:[],6:[]};
 const _decorImgs={};
 (function _preloadDecor(){
   for(const h in MAP_DECOR_DEFS){
@@ -3730,7 +3782,7 @@ const _flameImgs=[];
 (function(){_FLAME_SRCS.forEach((s,i)=>{const img=new Image();img.src=s;img.onload=()=>{_flameImgs[i]=img};img.onerror=()=>{}})})();
 let _decorList=[];
 function _buildDecorList(){
-  _decorList=[];return; // 비활성화 — 챕터별 수동 추가 예정
+  _decorList=[];
   const hell=SI_TO_HELL[G.stage||0];
   const defs=MAP_DECOR_DEFS[hell];if(!defs)return;
   const map=G.map;if(!map)return;
@@ -3738,7 +3790,7 @@ function _buildDecorList(){
     if(map[y][x]!==0)continue;
     for(const d of defs){
       if(Math.random()<d.chance){
-        _decorList.push({src:d.src,x:(x+.5)*T,y:(y+.5)*T,scale:d.scale*(.8+Math.random()*.4)});
+        _decorList.push({src:d.src,x:(x+.5)*T,y:(y+.5)*T,scale:d.scale*(.8+Math.random()*.4),sz:d.sz||40});
         break;
       }
     }
@@ -5550,36 +5602,34 @@ let _gxVolMul=1; // 터렛 사운드 글로벌 볼륨 배율 (1=풀, 0=무음)
 let MAP_OBJS=[]; // 맵 구조 오브젝트 (안식처/비석/파괴물/함정/제단)
 // ── 맵 장식 오브젝트 스프라이트 ──
 const _OBJ_SPR={};
+const _FO='assets/map/ch1/floor_objects/';
 const _OBJ_SPR_MAP={
-  'dead_tree':'assets/map/ch1/tree_dead_01.png','dead_tree_02':'assets/map/ch1/tree_dead_02.png','dead_tree_03':'assets/map/ch1/tree_dead_03.png',
-  'skull_pile':'assets/map/ch1/deco_bones_04.png','bone_rocks':'assets/map/ch1/deco_bones_03.png',
-  'mushroom_glow':'assets/map/ch1/mushroom_glow_01.png','mushroom_glow_02':'assets/map/ch1/mushroom_glow_02.png','mushroom_glow_03':'assets/map/ch1/mushroom_glow_03.png',
-  'poison_pool':'assets/map/ch1/poison_pool.png',
-  'frozen_bones':'assets/map/ch1/frozen_bones.png',
-  'lava_crack':'assets/map/ch1/lava_crack.png','fire_pillar':'assets/map/ch1/fire_pillar.png',
-  'rune_mark':'assets/map/ch1/rune_mark.png',
-  'bones':'assets/map/ch1/bones.png','rotten_tree':'assets/map/ch1/rotten_tree.png',
-  'rotten_stump':'assets/map/ch1/rotten_stump.png','vine_roots':'assets/map/ch1/vine_roots.png',
-  'corpse':'assets/map/ch1/corpse.png','eyeball':'assets/map/ch1/eyeball.png',
-  'eye_mushroom':'assets/map/ch1/eye_mushroom.png','eye1_bloodshot':'assets/map/ch1/eye1_bloodshot.png',
-  'eye2_terror':'assets/map/ch1/eye2_terror.png','poison_puddle':'assets/map/ch1/poison_puddle.png',
-  'glow_flower_blue':'assets/map/ch1/glow_flower_blue.png','glow_flower_yellow':'assets/map/ch1/glow_flower_yellow.png',
-  'centipede':'assets/map/ch1/centipede.png','larva':'assets/map/ch1/larva.png',
-  'minibug':'assets/map/ch1/minibug.png','chitin_debris':'assets/map/ch1/chitin_debris.png',
-  'flesh_pile':'assets/map/ch1/flesh_pile.png','spider_web':'assets/map/ch1/spider_web.png',
-  'tombstone':'assets/map/ch1/tombstone.png','weapon_pile':'assets/map/ch1/weapon_pile.png',
-  'toxic_mushroom':'assets/map/ch1/toxic_mushroom.png','meat_stake':'assets/map/ch1/meat_stake.png',
-  'acid_pool':'assets/map/ch1/acid_pool.png','vine_pillar':'assets/map/ch1/vine_pillar.png',
-  'cursed_eye_tree':'assets/map/ch1/cursed_eye_tree.png',
-  'pit_lava':'assets/map/ch1/pit_lava.png','pit_poison':'assets/map/ch1/pit_poison.png',
-  'pit_ice':'assets/map/ch1/pit_ice.png','pit_corpse':'assets/map/ch1/pit_corpse.png',
-  'pit_bugs':'assets/map/ch1/pit_bugs.png',
-  'pit_blood_a':'assets/map/ch1/pit_blood_anim.png','pit_blood_b':'assets/map/ch1/pit_blood_b.png',
-  'lava_straight':'assets/map/ch1/lava_l.png','lava_straight_v2':'assets/map/ch1/lava_l.png',
-  'lava_s':'assets/map/ch1/lava_l.png','lava_s_v4b':'assets/map/ch1/lava_l.png','lava_s_v5c':'assets/map/ch1/lava_l.png',
-  'lava_l':'assets/map/ch1/lava_l.png','lava_l_v6a':'assets/map/ch1/lava_l.png','lava_l_v6b':'assets/map/ch1/lava_l.png',
-  'lava_l_v6c':'assets/map/ch1/lava_l.png','lava_l_v6d':'assets/map/ch1/lava_l.png',
-  'lava_l_90':'assets/map/ch1/lava_l.png','lava_l_180':'assets/map/ch1/lava_l.png','lava_l_270':'assets/map/ch1/lava_l.png',
+  'dead_tree':_FO+'tree_dead_01.png','dead_tree_02':_FO+'tree_dead_02.png','dead_tree_03':_FO+'tree_dead_03.png',
+  'skull_pile':_FO+'deco_bones_04.png','bone_rocks':_FO+'deco_bones_03.png',
+  'mushroom_glow':_FO+'mushroom_glow_01.png','mushroom_glow_02':_FO+'mushroom_glow_02.png','mushroom_glow_03':_FO+'mushroom_glow_03.png',
+  'poison_pool':_FO+'poison_pool.png',
+  'frozen_bones':_FO+'frozen_bones.png',
+  'bones':_FO+'bones.png','rotten_stump':_FO+'rotten_stump.png','vine_roots':_FO+'vine_roots.png',
+  'corpse':_FO+'corpse.png','eyeball':_FO+'eyeball.png',
+  'eye_mushroom':_FO+'eye_mushroom.png',
+  'poison_puddle':_FO+'poison_puddle.png',
+  'glow_flower_blue':_FO+'glow_flower_blue.png','glow_flower_yellow':_FO+'glow_flower_yellow.png',
+  'minibug':_FO+'minibug.png',
+  'flesh_pile':_FO+'flesh_pile.png','spider_web':_FO+'spider_web.png',
+  'tombstone':_FO+'tombstone.png','weapon_pile':_FO+'weapon_pile.png',
+  'toxic_mushroom':_FO+'toxic_mushroom.png','meat_stake':_FO+'meat_stake.png',
+  'acid_pool':_FO+'acid_pool.png',
+  'cursed_eye_tree':_FO+'cursed_eye_tree.png',
+  'cursed_tree_01':_FO+'cursed_tree_01.png','cursed_tree_02':_FO+'cursed_tree_02.png',
+  'cursed_tree_03':_FO+'cursed_tree_03.png','cursed_tree_04':_FO+'cursed_tree_04.png',
+  'cursed_tree_05':_FO+'cursed_tree_05.png','cursed_tree_06':_FO+'cursed_tree_06.png',
+  'cursed_tree_07':_FO+'cursed_tree_07.png','cursed_tree_08':_FO+'cursed_tree_08.png',
+  'cursed_tree_09':_FO+'cursed_tree_09.png','cursed_tree_10':_FO+'cursed_tree_10.png',
+  'cursed_tree_11':_FO+'cursed_tree_11.png','cursed_tree_12':_FO+'cursed_tree_12.png',
+  'anim_tree_01':_FO+'anim_tree_01.png',
+  'pit_lava':_FO+'pit_lava.png','pit_poison':_FO+'pit_poison.png',
+  'pit_corpse':_FO+'pit_corpse.png',
+  'pit_blood_a':_FO+'pit_blood_anim.png','pit_blood_b':_FO+'pit_blood_b.png',
 };
 // ── 챕터별 맵 장식 에셋 (assets/map/ch*/) ──
 const _CH_DECO={
@@ -131144,8 +131194,10 @@ function draw(){
     const _dcL=G.cam.x-C.width/2-60,_dcR=G.cam.x+C.width/2+60,_dcT=G.cam.y-C.height/2-60,_dcB=G.cam.y+C.height/2+60;
     for(let _di=0;_di<_decorList.length;_di++){
       const d=_decorList[_di];if(d.x<_dcL||d.x>_dcR||d.y<_dcT||d.y>_dcB)continue;
-      const dImg=_decorImgs[d.src];if(!dImg)continue;
-      const dw=dImg.width*d.scale,dh=dImg.height*d.scale;
+      const dImg=_decorImgs[d.src];if(!dImg||!dImg.complete||dImg.naturalWidth<=1)continue;
+      const _maxSz=d.sz||40;
+      const _ratio=Math.min(_maxSz/dImg.naturalWidth,_maxSz/dImg.naturalHeight)*d.scale;
+      const dw=dImg.naturalWidth*_ratio,dh=dImg.naturalHeight*_ratio;
       X.drawImage(dImg,d.x-dw/2,d.y-dh/2,dw,dh);
     }
   }
