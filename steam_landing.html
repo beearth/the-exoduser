@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EXODUSER — 지옥의 길 | Steam Wishlist</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant:ital,wght@0,300;0,500;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0d1205;--bg2:#0a0e04;--shadow:#1a0800;
+  --accent:#4a7a1e;--accent2:#3d6618;
+  --hi:#c8ff96;--hi2:#a3e065;
+  --blood:#3a0a00;--ember:#ff4400;--ember2:#ff6a00;
+  --bone:#b8a88a;--ash:#6b6b5e;
+  --font-display:'Cinzel Decorative',serif;
+  --font-body:'IBM Plex Mono',monospace;
+  --font-sub:'Cormorant',serif;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  background:var(--bg);color:var(--bone);
+  font-family:var(--font-body);font-weight:300;
+  line-height:1.6;overflow-x:hidden;
+  cursor:crosshair;
+}
+::selection{background:var(--accent);color:var(--hi)}
+
+/* ══════ GRAIN OVERLAY ══════ */
+body::after{
+  content:'';position:fixed;inset:0;z-index:9999;
+  pointer-events:none;opacity:.07;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size:128px 128px;
+}
+
+/* ══════ SCROLLBAR ══════ */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--accent2);border-radius:3px}
+
+/* ══════ HERO ══════ */
+.hero{
+  position:relative;min-height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.hero-canvas{
+  position:absolute;inset:0;z-index:0;
+  width:100%;height:100%;
+}
+.hero-vignette{
+  position:absolute;inset:0;z-index:1;
+  background:radial-gradient(ellipse 60% 55% at 50% 45%,transparent 0%,rgba(13,18,5,.4) 50%,rgba(13,18,5,.95) 100%);
+  pointer-events:none;
+}
+.hero-top-fade{
+  position:absolute;top:0;left:0;right:0;height:180px;z-index:2;
+  background:linear-gradient(to bottom,var(--bg),transparent);
+  pointer-events:none;
+}
+.hero-bottom-fade{
+  position:absolute;bottom:0;left:0;right:0;height:260px;z-index:2;
+  background:linear-gradient(to top,var(--bg),transparent);
+  pointer-events:none;
+}
+.hero-content{
+  position:relative;z-index:3;text-align:center;
+  padding:2rem;
+}
+
+/* ══════ TITLE ══════ */
+.title-kr{
+  font-family:var(--font-sub);font-weight:300;font-style:italic;
+  font-size:clamp(1rem,2.5vw,1.6rem);
+  color:var(--ash);letter-spacing:.6em;
+  text-transform:uppercase;margin-bottom:.5rem;
+  opacity:0;animation:fadeSlideUp .8s .3s forwards;
+}
+.title-main{
+  font-family:var(--font-display);font-weight:900;
+  font-size:clamp(3rem,10vw,8rem);
+  color:var(--hi);line-height:.9;
+  letter-spacing:.08em;
+  text-shadow:
+    0 0 60px rgba(200,255,150,.15),
+    0 0 120px rgba(74,122,30,.1),
+    0 4px 0 var(--accent2),
+    0 8px 0 rgba(26,8,0,.6);
+  opacity:0;animation:titleReveal 1.2s .1s forwards;
+  position:relative;
+}
+.title-main::after{
+  content:'';display:block;
+  width:80%;height:1px;margin:1.2rem auto 0;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+}
+.title-sub{
+  font-family:var(--font-sub);font-weight:500;
+  font-size:clamp(.85rem,1.8vw,1.2rem);
+  color:var(--accent);letter-spacing:.3em;
+  margin-top:1rem;
+  opacity:0;animation:fadeSlideUp .8s .6s forwards;
+}
+
+/* ══════ TAGLINE ══════ */
+.tagline{
+  font-family:var(--font-body);font-weight:400;
+  font-size:clamp(.75rem,1.3vw,.95rem);
+  color:var(--ash);letter-spacing:.15em;
+  margin-top:2.5rem;
+  opacity:0;animation:fadeSlideUp .8s .9s forwards;
+}
+.tagline span{color:var(--hi2);font-weight:500}
+
+/* ══════ CTA ══════ */
+.cta-wrap{
+  margin-top:3rem;
+  opacity:0;animation:fadeSlideUp .8s 1.2s forwards;
+}
+.cta-btn{
+  position:relative;display:inline-flex;align-items:center;gap:.8rem;
+  padding:1rem 2.8rem;
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(.8rem,1.4vw,1.05rem);
+  color:var(--hi);letter-spacing:.12em;
+  text-decoration:none;text-transform:uppercase;
+  background:linear-gradient(135deg,#2a0600 0%,#4a0a00 40%,#3a0800 100%);
+  border:1px solid rgba(255,68,0,.3);
+  cursor:pointer;transition:all .3s;
+  overflow:hidden;
+}
+.cta-btn::before{
+  content:'';position:absolute;inset:-2px;
+  background:linear-gradient(135deg,var(--ember),transparent 40%,transparent 60%,var(--ember));
+  opacity:0;z-index:-1;transition:opacity .3s;
+  filter:blur(8px);
+}
+.cta-btn:hover::before{opacity:.4}
+.cta-btn:hover{
+  border-color:rgba(255,68,0,.6);
+  box-shadow:0 0 40px rgba(255,68,0,.15),inset 0 0 30px rgba(255,68,0,.05);
+  transform:translateY(-2px);
+}
+.cta-pulse{
+  position:absolute;inset:0;
+  border:1px solid var(--ember);
+  animation:ctaPulse 2.5s infinite;
+  pointer-events:none;
+}
+.cta-icon{
+  width:20px;height:20px;
+  fill:var(--hi2);transition:fill .3s;
+}
+.cta-btn:hover .cta-icon{fill:var(--hi)}
+
+/* ══════ DIVIDER ══════ */
+.section-div{
+  width:100%;max-width:800px;margin:0 auto;
+  height:1px;position:relative;
+  background:linear-gradient(90deg,transparent,var(--accent2),transparent);
+  opacity:.4;
+}
+.section-div::before{
+  content:'◆';position:absolute;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  font-size:.6rem;color:var(--accent);
+  background:var(--bg);padding:0 1rem;
+}
+
+/* ══════ FEATURES ══════ */
+.features{
+  padding:6rem 2rem;max-width:1100px;margin:0 auto;
+}
+.features-title{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(1.2rem,2.5vw,1.8rem);
+  color:var(--hi2);text-align:center;
+  letter-spacing:.15em;margin-bottom:4rem;
+}
+.features-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:2rem;
+}
+.feat-card{
+  position:relative;padding:2rem 1.8rem;
+  background:linear-gradient(160deg,rgba(13,18,5,.8),rgba(26,8,0,.3));
+  border:1px solid rgba(74,122,30,.15);
+  transition:all .4s;overflow:hidden;
+}
+.feat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:0;transition:opacity .4s;
+}
+.feat-card:hover::before{opacity:1}
+.feat-card:hover{
+  border-color:rgba(74,122,30,.35);
+  transform:translateY(-4px);
+  box-shadow:0 20px 40px rgba(0,0,0,.4);
+}
+.feat-num{
+  font-family:var(--font-display);font-weight:900;
+  font-size:2.5rem;color:var(--accent2);
+  opacity:.25;line-height:1;margin-bottom:.5rem;
+}
+.feat-title{
+  font-family:var(--font-sub);font-weight:700;
+  font-size:1.3rem;color:var(--hi);
+  margin-bottom:.6rem;
+}
+.feat-desc{
+  font-size:.78rem;color:var(--ash);
+  line-height:1.7;letter-spacing:.02em;
+}
+
+/* ══════ CHAPTER STRIP ══════ */
+.chapters{
+  padding:5rem 2rem;overflow:hidden;
+}
+.chapters-label{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(1rem,2vw,1.4rem);
+  color:var(--hi2);text-align:center;
+  letter-spacing:.2em;margin-bottom:3rem;
+}
+.chapter-strip{
+  display:flex;justify-content:center;gap:clamp(.5rem,1.5vw,1.2rem);
+  flex-wrap:wrap;max-width:900px;margin:0 auto;
+}
+.ch-tile{
+  position:relative;
+  width:clamp(80px,12vw,110px);
+  height:clamp(110px,16vw,150px);
+  background:linear-gradient(180deg,rgba(26,8,0,.6),rgba(13,18,5,.9));
+  border:1px solid rgba(74,122,30,.2);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:.4rem;cursor:default;
+  transition:all .4s;overflow:hidden;
+}
+.ch-tile::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 60%,rgba(74,122,30,.08));
+  pointer-events:none;
+}
+.ch-tile:hover{
+  border-color:rgba(200,255,150,.3);
+  transform:scale(1.08);
+  box-shadow:0 0 30px rgba(74,122,30,.15);
+}
+.ch-icon{
+  font-size:clamp(1.5rem,3vw,2.2rem);
+  filter:grayscale(.3);
+  transition:filter .3s;
+}
+.ch-tile:hover .ch-icon{filter:grayscale(0)}
+.ch-num{
+  font-family:var(--font-display);font-weight:700;
+  font-size:.65rem;color:var(--accent);
+  letter-spacing:.15em;
+}
+.ch-name{
+  font-family:var(--font-sub);font-weight:500;font-style:italic;
+  font-size:clamp(.6rem,1vw,.75rem);
+  color:var(--ash);text-align:center;
+  padding:0 .3rem;
+}
+
+/* ══════ QUOTE ══════ */
+.quote-section{
+  padding:4rem 2rem;text-align:center;
+}
+.quote-text{
+  font-family:var(--font-sub);font-weight:300;font-style:italic;
+  font-size:clamp(1.2rem,2.5vw,2rem);
+  color:var(--accent);max-width:700px;margin:0 auto;
+  line-height:1.5;
+}
+.quote-text em{color:var(--hi);font-style:normal}
+
+/* ══════ FOOTER ══════ */
+footer{
+  padding:4rem 2rem 3rem;text-align:center;
+  border-top:1px solid rgba(74,122,30,.1);
+}
+.footer-price{
+  font-family:var(--font-display);font-weight:700;
+  font-size:clamp(1rem,2vw,1.4rem);
+  color:var(--hi2);letter-spacing:.1em;
+  margin-bottom:.5rem;
+}
+.footer-note{
+  font-size:.72rem;color:var(--ash);
+  letter-spacing:.08em;opacity:.6;
+  margin-bottom:2rem;
+}
+.footer-links{
+  display:flex;justify-content:center;gap:2rem;
+  margin-bottom:2rem;
+}
+.footer-links a{
+  font-family:var(--font-body);font-size:.7rem;
+  color:var(--accent);text-decoration:none;
+  letter-spacing:.1em;transition:color .3s;
+}
+.footer-links a:hover{color:var(--hi)}
+.footer-copy{
+  font-size:.6rem;color:var(--ash);opacity:.3;
+  letter-spacing:.05em;
+}
+
+/* ══════ ANIMATIONS ══════ */
+@keyframes titleReveal{
+  0%{opacity:0;transform:translateY(30px) scale(.95);filter:blur(8px)}
+  100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+@keyframes fadeSlideUp{
+  0%{opacity:0;transform:translateY(20px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+@keyframes ctaPulse{
+  0%{opacity:.6;transform:scale(1)}
+  50%{opacity:0;transform:scale(1.08,1.3)}
+  100%{opacity:0;transform:scale(1.08,1.3)}
+}
+
+/* ══════ SCROLL REVEAL ══════ */
+.sr{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.22,1,.36,1)}
+.sr.visible{opacity:1;transform:translateY(0)}
+
+/* ══════ RESPONSIVE ══════ */
+@media(max-width:600px){
+  .chapter-strip{gap:.4rem}
+  .feat-card{padding:1.5rem 1.2rem}
+  .features-grid{gap:1.2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero">
+  <canvas class="hero-canvas" id="ashCanvas"></canvas>
+  <div class="hero-vignette"></div>
+  <div class="hero-top-fade"></div>
+  <div class="hero-bottom-fade"></div>
+  <div class="hero-content">
+    <p class="title-kr">지 옥 의 &nbsp; 길</p>
+    <h1 class="title-main">EXODUSER</h1>
+    <p class="title-sub">D E S C E N D &nbsp; I N T O &nbsp; P E R D I T I O N</p>
+    <p class="tagline"><span>7</span> Circles. <span>35</span> Stages. <span>One Way Down.</span></p>
+    <div class="cta-wrap">
+      <a class="cta-btn" href="#" role="button">
+        <svg class="cta-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+        Wishlist on Steam
+        <span class="cta-pulse"></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="section-div"></div>
+
+<!-- ══════ FEATURES ══════ -->
+<section class="features">
+  <h2 class="features-title sr">W H A T &nbsp; A W A I T S</h2>
+  <div class="features-grid">
+    <div class="feat-card sr">
+      <div class="feat-num">I</div>
+      <h3 class="feat-title">Hack & Slash Mob Rush</h3>
+      <p class="feat-desc">Hordes pour from spawn holes. Cleave through hundreds with brutal melee combos, fused skills, and weapons forged in hellfire.</p>
+    </div>
+    <div class="feat-card sr">
+      <div class="feat-num">II</div>
+      <h3 class="feat-title">Berserk-Dark Fantasy</h3>
+      <p class="feat-desc">A world of cursed trees with watching eyes, blood pits, and flesh-covered corridors. Every tile breathes dread and ruin.</p>
+    </div>
+    <div class="feat-card sr">
+      <div class="feat-num">III</div>
+      <h3 class="feat-title">Painterly Hell Visuals</h3>
+      <p class="feat-desc">Hand-crafted pixel art meets atmospheric lighting. 100+ unique monsters, animated environments, and Ori-quality visual depth.</p>
+    </div>
+    <div class="feat-card sr">
+      <div class="feat-num">IV</div>
+      <h3 class="feat-title">7 Chapters of Descent</h3>
+      <p class="feat-desc">From rotting forests to frozen wastes, volcanic depths to the dimensional rift. Each chapter transforms the rules of hell.</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-div"></div>
+
+<!-- ══════ CHAPTERS ══════ -->
+<section class="chapters">
+  <h2 class="chapters-label sr">T H E &nbsp; S E V E N &nbsp; C I R C L E S</h2>
+  <div class="chapter-strip">
+    <div class="ch-tile sr">
+      <span class="ch-icon">🌿</span>
+      <span class="ch-num">CH.I</span>
+      <span class="ch-name">Cursed Forest</span>
+    </div>
+    <div class="ch-tile sr">
+      <span class="ch-icon">🕷️</span>
+      <span class="ch-num">CH.II</span>
+      <span class="ch-name">Insect Hive</span>
+    </div>
+    <div class="ch-tile sr">
+      <span class="ch-icon">❄️</span>
+      <span class="ch-num">CH.III</span>
+      <span class="ch-name">Frozen Abyss</span>
+    </div>
+    <div class="ch-tile sr">
+      <span class="ch-icon">🌋</span>
+      <span class="ch-num">CH.IV</span>
+      <span class="ch-name">Molten Core</span>
+    </div>
+    <div class="ch-tile sr">
+      <span class="ch-icon">⚡</span>
+      <span class="ch-num">CH.V</span>
+      <span class="ch-name">Thunder Spire</span>
+    </div>
+    <div class="ch-tile sr">
+      <span class="ch-icon">💀</span>
+      <span class="ch-num">CH.VI</span>
+      <span class="ch-name">Bone Cathedral</span>
+    </div>
+    <div class="ch-tile sr">
+      <span class="ch-icon">🔮</span>
+      <span class="ch-num">CH.VII</span>
+      <span class="ch-name">Dimensional Rift</span>
+    </div>
+  </div>
+</section>
+
+<div class="section-div"></div>
+
+<!-- ══════ QUOTE ══════ -->
+<section class="quote-section sr">
+  <p class="quote-text">"There is no redemption at the bottom.<br>Only the <em>truth</em> you carried all along."</p>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+  <p class="footer-price">Coming to Steam Early Access — $11</p>
+  <p class="footer-note">WINDOWS &nbsp;·&nbsp; SINGLE PLAYER &nbsp;·&nbsp; CONTROLLER SUPPORT</p>
+  <div class="footer-links">
+    <a href="#">STEAM</a>
+    <a href="#">DISCORD</a>
+    <a href="#">DEVLOG</a>
+  </div>
+  <p class="footer-copy">© 2026 EXODUSER. All rights reserved.</p>
+</footer>
+
+<script>
+/* ══════ ASH / EMBER PARTICLE SYSTEM ══════ */
+(function(){
+  const cv=document.getElementById('ashCanvas');
+  const cx=cv.getContext('2d');
+  let W,H;
+  const particles=[];
+  const PCOUNT=140;
+
+  function resize(){
+    W=cv.width=cv.offsetWidth;
+    H=cv.height=cv.offsetHeight;
+  }
+  window.addEventListener('resize',resize);
+  resize();
+
+  class Particle{
+    constructor(){this.reset(true)}
+    reset(init){
+      this.x=Math.random()*W;
+      this.y=init?Math.random()*H:H+10;
+      this.sz=Math.random()*2.5+.5;
+      this.vy=-(Math.random()*.4+.15);
+      this.vx=(Math.random()-.5)*.3;
+      this.drift=Math.random()*Math.PI*2;
+      this.driftSpd=Math.random()*.005+.002;
+      this.life=1;
+      this.decay=Math.random()*.0008+.0003;
+      // color: mix of ash grey and ember orange
+      const t=Math.random();
+      if(t<.7){
+        // ash
+        const g=Math.floor(Math.random()*40+60);
+        this.r=g;this.g=g-5;this.b=g-15;
+      }else if(t<.9){
+        // ember
+        this.r=255;this.g=Math.floor(Math.random()*60+40);this.b=0;
+      }else{
+        // green wisp
+        this.r=Math.floor(Math.random()*40+100);
+        this.g=Math.floor(Math.random()*60+180);
+        this.b=Math.floor(Math.random()*30+40);
+      }
+    }
+    update(){
+      this.drift+=this.driftSpd;
+      this.x+=this.vx+Math.sin(this.drift)*.15;
+      this.y+=this.vy;
+      this.life-=this.decay;
+      if(this.life<=0||this.y<-10||this.x<-10||this.x>W+10)this.reset(false);
+    }
+    draw(){
+      const a=this.life*.5;
+      cx.beginPath();
+      cx.arc(this.x,this.y,this.sz,0,Math.PI*2);
+      cx.fillStyle=`rgba(${this.r},${this.g},${this.b},${a})`;
+      cx.fill();
+      // glow for embers
+      if(this.r>200){
+        cx.beginPath();
+        cx.arc(this.x,this.y,this.sz*3,0,Math.PI*2);
+        cx.fillStyle=`rgba(${this.r},${this.g},0,${a*.12})`;
+        cx.fill();
+      }
+    }
+  }
+
+  for(let i=0;i<PCOUNT;i++)particles.push(new Particle());
+
+  function frame(){
+    cx.clearRect(0,0,W,H);
+    // subtle dark gradient base
+    const g=cx.createRadialGradient(W*.5,H*.45,0,W*.5,H*.5,W*.6);
+    g.addColorStop(0,'rgba(26,15,5,.12)');
+    g.addColorStop(1,'transparent');
+    cx.fillStyle=g;
+    cx.fillRect(0,0,W,H);
+
+    for(const p of particles){p.update();p.draw()}
+    requestAnimationFrame(frame);
+  }
+  frame();
+})();
+
+/* ══════ SCROLL REVEAL ══════ */
+(function(){
+  const els=document.querySelectorAll('.sr');
+  const obs=new IntersectionObserver((entries)=>{
+    entries.forEach((e,i)=>{
+      if(e.isIntersecting){
+        // stagger siblings
+        const parent=e.target.parentElement;
+        const siblings=[...parent.querySelectorAll('.sr')];
+        const idx=siblings.indexOf(e.target);
+        const delay=idx>=0?idx*120:0;
+        setTimeout(()=>e.target.classList.add('visible'),delay);
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:.15});
+  els.forEach(el=>obs.observe(el));
+})();
+
+/* ══════ PARALLAX TILT ON HERO ══════ */
+(function(){
+  const hero=document.querySelector('.hero-content');
+  document.addEventListener('mousemove',(e)=>{
+    const x=(e.clientX/innerWidth-.5)*8;
+    const y=(e.clientY/innerHeight-.5)*5;
+    hero.style.transform=`translate(${x}px,${y}px)`;
+  });
+})();
+</script>
+</body>
+</html>
