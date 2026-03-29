@@ -510,7 +510,7 @@ atlas_enemies.png 교체 -> 즉시 반영
 7지옥 x 3레이어(far/mid/near)
 #0 얼음 navy->cyan  #1 독충 green->yellow
 #2 화염 red->orange #3 심연 purple->black
-#4 뇌전 blue->yellow #5 백골 ivory->yellow
+#4 암전 blue->yellow #5 백골 ivory->yellow
 #6 혼돈 all colors shifting
 ```
 

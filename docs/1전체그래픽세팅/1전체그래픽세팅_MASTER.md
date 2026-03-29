@@ -126,7 +126,7 @@ const _MTHEME = [
   { w:'#2a1418', f:'#180a0c', ac:'#ff8844' },
   // 3 괴물굴 → "심연의 꿈" (Hollow Knight Deepnest + Ori Silent Woods)
   { w:'#1a1428', f:'#0c0a18', ac:'#bb77ff' },
-  // 4 뇌전봉 → "폭풍의 제단" (Ori Forlorn Ruins)
+  // 4 암전봉 → "폭풍의 제단" (Ori Forlorn Ruins)
   { w:'#28241a', f:'#18140c', ac:'#ffcc44' },
   // 5 백골묘 → "고요한 안식처" (Hollow Knight Resting Grounds)
   { w:'#24221c', f:'#14120e', ac:'#ddcc99' },
@@ -153,7 +153,7 @@ const HELL_PALETTES = [
   { id:3, name:'탐욕',
     dark:[25,15,45], mid:[60,35,100], light:[100,65,160],
     bright:[150,100,210], eye:[180,120,255] },
-  // 4 분노 (뇌전) — 골드/앰버
+  // 4 분노 (암전) — 골드/앰버
   { id:4, name:'분노',
     dark:[45,35,10], mid:[100,80,20], light:[170,140,40],
     bright:[220,190,60], eye:[255,230,50] },
@@ -259,7 +259,7 @@ switch(hell) {
     }
     break;
 
-  case 4: // 뇌전 → 정전기 라인
+  case 4: // 암전 → 정전기 라인
     if(R()<.08) {
       c.strokeStyle = `rgba(255,220,50,${.08+R()*.06})`;
       c.lineWidth = .5;
@@ -453,7 +453,7 @@ for(let ty=0;ty<mh;ty++) for(let tx=0;tx<mw;tx++){
       }
       break;
 
-    case 4: // 뇌전 — 부서진 기둥
+    case 4: // 암전 — 부서진 기둥
       if(nearWall && R()<.06) {
         c.fillStyle=`rgba(140,120,80,${.05+R()*.03})`;
         const bw=3+R()*5, bh=6+R()*10;
@@ -886,7 +886,7 @@ const _vCols = [
   'rgba(20,60,15,',   // 곤충: 짙은 숲
   'rgba(100,20,10,',  // 악마: 짙은 적색
   'rgba(50,15,80,',   // 괴물: 짙은 보라
-  'rgba(80,60,10,',   // 뇌전: 짙은 앰버
+  'rgba(80,60,10,',   // 암전: 짙은 앰버
   'rgba(50,40,25,',   // 백골: 짙은 갈색
   'rgba(30,10,60,',   // 허공: 짙은 보라
 ];

@@ -125,7 +125,7 @@ const AFFIX_POOL = [
   // ── SUFFIX: 원소 저항 ──
   {id:'fireRes',   type:1, ko:'화염수호',stat:'_aFireRes',   tiers:[0.12,0.20,0.32],unit:'pct', slots:['arm','rng','nck'],group:'rfir', weight:100},
   {id:'iceRes',    type:1, ko:'빙결수호',stat:'_aIceRes',    tiers:[0.12,0.20,0.32],unit:'pct', slots:['arm','rng','nck'],group:'rice', weight:100},
-  {id:'lightRes',  type:1, ko:'뇌전수호',stat:'_aLightRes',  tiers:[0.12,0.20,0.32],unit:'pct', slots:['arm','rng','nck'],group:'rlit', weight:100},
+  {id:'lightRes',  type:1, ko:'암전수호',stat:'_aLightRes',  tiers:[0.12,0.20,0.32],unit:'pct', slots:['arm','rng','nck'],group:'rlit', weight:100},
   {id:'darkRes',   type:1, ko:'암흑수호',stat:'_aDarkRes',   tiers:[0.12,0.20,0.32],unit:'pct', slots:['arm','rng','nck'],group:'rdark',weight:90},
   {id:'poisonRes', type:1, ko:'독수호',  stat:'_aPoisonRes', tiers:[0.10,0.18,0.28],unit:'pct', slots:['arm','rng','nck'],group:'rpoi', weight:90},
   {id:'allRes',    type:1, ko:'전원소수호',stat:'_aAllRes',  tiers:[0.05,0.09,0.15],unit:'pct', slots:['nck'],            group:'rall', weight:50},
@@ -183,7 +183,7 @@ Object.freeze(AFFIX_POOL);
 | killHeal | 회복의 | PREFIX | 8/15/25 | val | arm,rng | 적 처치 시 HP 회복 |
 | fireRes | 화염수호 | SUFFIX | 12%/20%/32% | pct | arm,rng,nck | 피격 시 화염 저항 |
 | iceRes | 빙결수호 | SUFFIX | 12%/20%/32% | pct | arm,rng,nck | 피격 시 빙결 저항 |
-| lightRes | 뇌전수호 | SUFFIX | 12%/20%/32% | pct | arm,rng,nck | 피격 시 뇌전 저항 |
+| lightRes | 암전수호 | SUFFIX | 12%/20%/32% | pct | arm,rng,nck | 피격 시 암전 저항 |
 | darkRes | 암흑수호 | SUFFIX | 12%/20%/32% | pct | arm,rng,nck | 피격 시 암흑 저항 |
 | poisonRes | 독수호 | SUFFIX | 10%/18%/28% | pct | arm,rng,nck | 피격 시 독 저항 |
 | allRes | 전원소수호 | SUFFIX | 5%/9%/15% | pct | nck | 모든 원소 저항 추가 |

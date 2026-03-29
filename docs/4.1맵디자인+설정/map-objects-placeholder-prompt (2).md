@@ -124,7 +124,7 @@ update() 안에서 매 프레임 (interact 밖에서):
         addTxt(it.x, it.y-15, '빙판!', '#44ddee', 30)
       - hell === 2 (화염): P.hp -= ~~(P.mhp * it.dmgPct)
         addTxt(it.x, it.y-15, '용암!', '#ff6633', 30)
-      - hell === 4 (뇌전): P.hp -= ~~(P.mhp * 0.08), P.stunned = 30 (있으면)
+      - hell === 4 (암전): P.hp -= ~~(P.mhp * 0.08), P.stunned = 30 (있으면)
         addTxt(it.x, it.y-15, '전기!', '#ffcc44', 30)
       - 그 외: P.hp -= ~~(P.mhp * 0.05)
         addTxt(it.x, it.y-15, '가시!', '#ff4444', 30)
