@@ -5867,10 +5867,12 @@ const _FB_FRAMES=20,_FB_FW=803,_FB_FH=453;
 const _FX_IMG=new Image();_FX_IMG.src='assets/vfx/fire_explode/fire_explode_spritesheet.png';
 let _fxReady=false;_FX_IMG.onload=()=>{_fxReady=true};
 const _FX_FRAMES=12,_FX_FW=300,_FX_FH=300;
-// ═══ 마력연사 스프라이트시트 (20f, 512x60, 발사→탄도→착탄 풀프레임) ═══
-const _ES_IMG=new Image();_ES_IMG.src='assets/vfx/energy_shot/full_shot_sheet.png';
-let _esReady=false;_ES_IMG.onload=()=>{_esReady=true};
-const _ES_FRAMES=12,_ES_FW=1280,_ES_FH=120;
+// ═══ 마력연사 스프라이트시트 (발사구 12f 300x120 + 착탄 12f 300x120) ═══
+const _ES_MZ=new Image();_ES_MZ.src='assets/vfx/energy_shot/muzzle_sheet.png';
+let _esMzReady=false;_ES_MZ.onload=()=>{_esMzReady=true};
+const _ES_IMP=new Image();_ES_IMP.src='assets/vfx/energy_shot/impact_sheet.png';
+let _esImpReady=false;_ES_IMP.onload=()=>{_esImpReady=true};
+const _ES_FRAMES=30,_ES_FW=300,_ES_FH=120;
 // ═══ 마법 오브 투사체 (vfx_magic_orb.png 6열×5행=30프레임) ═══
 const _MO_IMG=new Image();_MO_IMG.src='assets/vfx/vfx_magic_orb.png';
 let _moReady=false;_MO_IMG.onload=()=>{_moReady=true};
@@ -6275,7 +6277,8 @@ function eProjAt(e,ang,spd,dmgMult,el,life,col,sz){life=~~(life*1.5);const b=_be
 // ═══════════════════════════════════════
 function drawEnBody(X,e,_now,sa){
   // ── pending 스킨 재시도 ──
-  if(e._mobSkinPending&&e._mobCh){
+  if(e._bossSkinPending!==undefined){_assignBossSkin(e,e._bossSkinPending)}
+  else if(e._mobSkinPending&&e._mobCh){
     const _pa=_chAtlas[e._mobCh];
     if(_pa&&_pa.mobList&&_pa.mobList.length)_applyMobSkin(e,_pa);
   }
@@ -9062,13 +9065,33 @@ function _loadChAtlas(ch){
   _chAtlas[chN]=a;
   _curChAtlas=a;
 }
-// 적 스폰 시 ch풀에서 랜덤 몹ID 배정
+// ── 보스 스프라이트 매핑: si → {ch, folder} ──
+const _BOSS_SKIN={
+  0:{ch:1,f:'23_si0_숲의감시자'},1:{ch:1,f:'34_Forest_Guardian'},2:{ch:1,f:'27_Slime_Beast'},3:{ch:1,f:'10_촉수의어미_si29_128px'},
+  4:{ch:2,f:'31_Queen_Maggot'},5:{ch:2,f:'33_Bug_Queen'},6:{ch:2,f:'22_Parasite_Mother'},7:{ch:2,f:'15_뒤틀린자_si28_128px'},8:{ch:2,f:'06_기생충모체_si6_128px'},9:{ch:2,f:'05_점액괴수_si5_128px'},
+  10:{ch:3,f:'33_Frost_Colossus_96px_3_1'},11:{ch:3,f:'35_얼음망령'},12:{ch:3,f:'34_Frozen_Demon_Lord_96px_3_3'},13:{ch:3,f:'35_Sealed_Ice_Titan_96px3_4'},
+  14:{ch:4,f:'26_si15_불기둥수호자'},15:{ch:4,f:'19_화염전사_si17_128px'},16:{ch:4,f:'17_화염쌍두_si18_128px'},17:{ch:4,f:'18_불벌레군주_si19_128px'},18:{ch:4,f:'21_화염감옥지기_si20_128px'},19:{ch:4,f:'03_용암의심장_si16_128px'},20:{ch:4,f:'02_etype89_고통의왕_80px'},
+  21:{ch:5,f:'30_si24_철벽기사단장'},22:{ch:5,f:'25_si25_군단지휘관'},23:{ch:5,f:'16_전쟁의잔해_si21_128px'},24:{ch:5,f:'13_악마사령관_si23_128px'},25:{ch:5,f:'20_군단지휘관_si25_128px'},
+  26:{ch:6,f:'11_불완전사도_si30_128px'},27:{ch:6,f:'14_뼈산의왕_si22_128px'},28:{ch:6,f:'02_etype89_고통의왕_80px'},29:{ch:6,f:'07_Flesh_Demon_Lord_80px'},30:{ch:6,f:'09_Killu_si33_128px'},31:{ch:6,f:'04_etype79_dragonApostle_80px'},
+  32:{ch:7,f:'32_검은성의수호자'},33:{ch:7,f:'12_대사도_si31_128px'},34:{ch:7,f:'01_Hell_Lord_128px'}
+};
+function _assignBossSkin(e,si){
+  const bs=_BOSS_SKIN[si];if(!bs)return;
+  e._mobCh=bs.ch;
+  _loadChAtlas(bs.ch-1); // 해당 ch 아틀라스 로드
+  const a=_chAtlas[bs.ch];
+  if(!a||!a.meta){e._bossSkinPending=si;return}
+  const m=a.meta.mobs[bs.f];
+  if(m){e._mobSkin=bs.f;e._mobCol=m.col;e._mobRow=m.row;e._mobWalkRow=m.walk_row!==undefined?m.walk_row:-1;e._mobIdx=m.idx}
+}
+
+// 적 스폰 시 ch풀에서 랜덤 몹ID 배정 (보스는 고정 스킨)
 function _assignMobSkin(e){
+  if(e.ib){_assignBossSkin(e,G.stage);return}
   const chN=(SI_TO_HELL[G.stage]||0)+1;
   e._mobCh=chN;
   const a=_chAtlas[chN];
   if(!a||!a.mobList||!a.mobList.length){
-    // 메타 아직 안 왔으면 나중에 할당 (drawEnBody에서 재시도)
     e._mobSkinPending=true;
     return;
   }
@@ -128389,7 +128412,7 @@ function fireHolyBlast(){
   if(!P._hbCasting)return;
   P._hbCasting=false;
   const slv=P.skills.holyBlast||1;
-  P._hbCd=~~(Math.max(2700,5400-(slv-1)*180)*(1+_eqAffix('cooldownRed')));
+  P._hbCd=~~(5400*(1+_eqAffix('cooldownRed')));
   const dmg=~~(magicRef()*statInt()*pMagicMul()*DPS_BAL.magic*15*(1+(slv-1)*0.10));
   const cx=P._hbX,cy=P._hbY;
   // 범위: 1500+Lv*100 (1렙=1600, 10렙=2500)
@@ -128421,7 +128444,7 @@ function fireBlackStar(){
   if(!P._bsCasting)return;
   P._bsCasting=false;
   const slv=P.skills.blackStar||1;
-  P._bsCd=~~(Math.max(2700,5400-(slv-1)*180)*(1+_eqAffix('cooldownRed')));
+  P._bsCd=~~(5400*(1+_eqAffix('cooldownRed')));
   const dmg=~~(magicRef()*statInt()*pMagicMul()*DPS_BAL.magic*24*(1+(slv-1)*0.10));
   const cx=P._bsX,cy=P._bsY;
   const blastR=1500+slv*100;
@@ -128447,7 +128470,7 @@ function fireLavaSummon(){
   if(!P._lvCasting)return;
   P._lvCasting=false;
   const slv=P.skills.lavaSummon||1;
-  P._lvCd=~~(Math.max(2700,5400-(slv-1)*180)*(1+_eqAffix('cooldownRed')));
+  P._lvCd=~~(5400*(1+_eqAffix('cooldownRed')));
   const cx=P._lvX,cy=P._lvY;
   const dmg=~~(magicRef()*statInt()*pMagicMul()*DPS_BAL.magic*4*(1+(slv-1)*0.10));
   // 범위: 1500+Lv*100 (1렙=1600, 10렙=2500)
@@ -133555,21 +133578,38 @@ function draw(){
     X.restore();
     _fireExps.length=_fw2;
   }
-  // ── 마력연사: 단발 애니 렌더 (_esAnim) ──
-  if(P._esAnim&&_esReady){
+  // ── 마력연사: 발사구 + 빔라인 + 착탄 3파트 렌더 (_esAnim) ──
+  if(P._esAnim&&(_esMzReady||_esImpReady)){
     const ea=P._esAnim;
     ea.tmr++;if(ea.tmr>=3){ea.tmr=0;ea.fr++}
     if(ea.fr<_ES_FRAMES){
       const prog=ea.fr/_ES_FRAMES;
-      const alpha=prog<.1?prog/.1:prog>.7?1-(prog-.7)/.3:1;
-      const _drawH=120;
-      X.save();X.translate(ea.x,ea.y);X.rotate(ea.ang);
-      X.globalCompositeOperation='lighter';
-      X.globalAlpha=alpha*.95;
-      X.drawImage(_ES_IMG,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_drawH/2,ea.range,_drawH);
-      X.globalAlpha=alpha*.3;
-      X.drawImage(_ES_IMG,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_drawH/2,ea.range,_drawH);
-      X.restore();
+      const alpha=prog<.1?prog/.1:prog>.6?1-(prog-.6)/.4:1;
+      const cx=Math.cos(ea.ang),cy=Math.sin(ea.ang);
+      const endX=ea.x+cx*ea.range,endY=ea.y+cy*ea.range;
+      const _sz=200; // 스프라이트 크기
+      // 1) 발사구 (캐릭터 위치, 크게)
+      if(_esMzReady){
+        X.save();X.translate(ea.x,ea.y);X.rotate(ea.ang);
+        X.globalCompositeOperation='lighter';X.globalAlpha=alpha;
+        X.drawImage(_ES_MZ,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_sz/2,_sz,_sz);
+        X.globalAlpha=alpha*.5;
+        X.drawImage(_ES_MZ,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_sz/2,_sz,_sz);
+        X.restore();
+      }
+      // 2) 착탄 (끝점, 크게)
+      if(_esImpReady){
+        X.save();X.translate(endX,endY);X.rotate(ea.ang+Math.PI);
+        X.globalCompositeOperation='lighter';X.globalAlpha=alpha;
+        X.drawImage(_ES_IMP,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_sz/2,_sz,_sz);
+        X.globalAlpha=alpha*.4;
+        X.drawImage(_ES_IMP,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_sz/2,_sz,_sz);
+        X.restore();
+      }
+      // 경로 파티클
+      if(Math.random()>.4){const pd=Math.random()*ea.range;
+        poolPart(ea.x+cx*pd+(Math.random()-.5)*8,ea.y+cy*pd+(Math.random()-.5)*8,
+          (Math.random()-.5)*2,(Math.random()-.5)*2,'#aa66ff',2+Math.random()*2,5+Math.random()*4)}
     }else{P._esAnim=null}
   }
   // ── 업화선 폭발 스프라이트 애니 렌더 ──
@@ -134561,7 +134601,7 @@ function drawP(){
         const _quakeStr=Math.sin(fz.t*0.4)*3+Math.sin(fz.t*0.7)*2;
         if(_gcReady&&_gcFW>0){
           const _gcFi=~~(fz.t*.08)%_GC_FRAMES;
-          const _gcSz=120; // 플레이어 근처 고정 크기
+          const _gcSz=fz.r*2.5; // 1렙 r=200 → 500px
           X.globalAlpha=(.6+.15*Math.sin(fz.t*.1))*_faFade;
           X.save();X.translate(fz.x+_quakeStr,fz.y+_quakeStr*.5);
           X.rotate(fz.t*.015);
