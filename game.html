@@ -119557,7 +119557,7 @@ function update(){
   }
   // 히트 임팩트 업데이트
   {let iw=0;for(let i=0;i<_impacts.length;i++){const im=_impacts[i];im.t+=sp;if(im.t<im.ml)_impacts[iw++]=im;}_impacts.length=iw;}
-  updateHitVFX(sp/60);updateElecVFX(sp/60);updateOldBurstVFX(sp/60);updateDarkBurstVFX(sp/60);
+  updateHitVFX(sp/60);updateElecVFX(sp/60);updateOldBurstVFX(sp/60);updateDarkBurstVFX(sp/60);updateLightningBurstVFX(sp/60);
   updateMmExpVFX(sp/60);_updateIceOrbVfx(sp/60);
   // Projectiles (적응형 상한: update 부하에 따라 150~300)
   const _projCap=_prof.u>16?150:_prof.u>10?200:_prof.u>6?250:300;
