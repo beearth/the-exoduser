@@ -3799,6 +3799,10 @@ _wwSwirlSrc.onload=()=>{
   }
   x.putImageData(d,0,0);_wwSwirlCvs=c;_wwSwirlReady=true;
 };
+// ── 회전참 대검 스프라이트 ──
+const _wwBladeImg=new Image();let _wwBladeReady=false;
+_wwBladeImg.src='assets/vfx/whirl_blade_1.webp';
+_wwBladeImg.onload=()=>{_wwBladeReady=true};
 // ── 회전참 타격 임팩트용 (vfx_white_slash.png → 검정 반전, 5×4 20프레임) ──
 const _wwImpSheet=new Image();let _wwImpBlack=null;
 let _wwImpReady=false,_wwImpFW=0,_wwImpFH=0;
@@ -10224,7 +10228,7 @@ var _TORCH_MAX=120;
 // 지옥별 횃불 색 [r,g,b]
 var _TORCH_COL=[[255,160,40],[200,140,30],[255,80,20],[160,60,200],[255,180,40],[200,150,100],[180,50,255]];
 function initTorchLights(){
-  _torchCnt=0;
+  _torchCnt=0;return; // 비활성화
   var map=G.map,mh=G.mh,mw=G.mw;
   // 사전할당 (최대치)
   if(_torchLights.length<_TORCH_MAX*4)_torchLights=new Float32Array(_TORCH_MAX*4);
@@ -10285,7 +10289,7 @@ function initWallEyes(){
 // ═══ [FLOOR-EYE] 바닥 눈깔 스프라이트 시스템 ═══
 let _eyeObjs=[];let _eyeInited=false;
 function _initEyes(){
-  _eyeObjs.length=0;_eyeInited=false;
+  _eyeObjs.length=0;_eyeInited=false;return; // 비활성화
   const hell=SI_TO_HELL[G.stage];
   const map=G.map;
   // 에디터 배치 눈알 우선 사용
@@ -10610,7 +10614,8 @@ const _MAP_TEX_FILES={};
 // 바닥 타일 텍스처 (400px 체커보드 타일링)
 const _GROUND_TILES={};let _gtScaled=null,_gtPadded=null;
 const _GT_FILES={
-  'gt_03':'assets/map/ch1/ground_tile_03.png'
+  'gt_03':'assets/map/ch1/ground_tile_03.png',
+  'gt_soil':'assets/map/ch1/ground_dark_soil.png'
 };
 const _FB64='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
 for(const[id,src] of Object.entries(_GT_FILES)){
@@ -10716,9 +10721,20 @@ function buildMapCache(){
     _mapCvs.width=mw*T;_mapCvs.height=mh*T;
     const c=_mapCvs.getContext('2d');_mapCtx=c;
     c.clearRect(0,0,mw*T,mh*T);
+    // 바닥 텍스처 타일링 (gt_soil)
+    const _soilImg=_GROUND_TILES['gt_soil'];
+    const _hasSoil=_soilImg&&_soilImg.complete&&_soilImg.naturalWidth>1;
+    if(_hasSoil){
+      c.save();c.beginPath();
+      for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){if(map[ty][tx]===0)c.rect(tx*T,ty*T,T,T)}
+      c.clip();
+      const _pat=c.createPattern(_soilImg,'repeat');
+      if(_pat){c.fillStyle=_pat;c.fillRect(0,0,mw*T,mh*T)}
+      c.restore();
+    }
     for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){
       const v=map[ty][tx];
-      if(v===0){c.fillStyle=th.f;c.fillRect(tx*T,ty*T,T,T);}
+      if(v===0&&!_hasSoil){c.fillStyle=th.f;c.fillRect(tx*T,ty*T,T,T);}
       else if(v===1||v===3){c.fillStyle=th.w;c.fillRect(tx*T,ty*T,T,T);}
     }
     _mapStage=G.stage;
@@ -136123,21 +136139,40 @@ function drawP(){
     const _wwR=100+(_wwMaxV-100)*Math.min(1,_wwGrowV);
     const _wc=ELC[wp().el]||'#ffcc44';
 
-    // ── 360도 검기 회전 ──
+    // ── 대검 스프라이트 회전 + 모션블러 ──
     {
       const _blR=_wwR*1.05;
       X.save();X.translate(P.x,P.y);
-      // 모션블러: 부채꼴 12단계 페이드 (앞→뒤 투명)
+      // 모션블러 부채꼴 (뒤로 페이드)
       const _steps=12;
       const _span=Math.PI*(1.8+_wwGrowV*.15);
       const _step=_span/_steps;
       for(let i=0;i<_steps;i++){
         const t=i/_steps;
-        X.globalAlpha=(.2+_wwGrowV*.08)*Math.pow(1-t,2);
+        X.globalAlpha=(.18+_wwGrowV*.06)*Math.pow(1-t,2);
         X.fillStyle='#000';
         X.beginPath();X.moveTo(0,0);
         X.arc(0,0,_blR,_wa-i*_step,_wa-(i+1)*_step,true);
         X.closePath();X.fill();
+      }
+      // 대검 스프라이트 (현재 각도에 회전)
+      if(_wwBladeReady&&_wwBladeImg.complete){
+        const _bAspect=_wwBladeImg.naturalWidth/_wwBladeImg.naturalHeight;
+        const _bH=28+_wwGrowV*8; // 검 높이
+        const _bW=_bH*_bAspect; // 비율 유지
+        // 잔상 3개
+        for(let _gi=3;_gi>=1;_gi--){
+          const _gA=_wa-_gi*0.25;
+          X.save();X.rotate(_gA);
+          X.globalAlpha=(.3-_gi*.08);
+          X.drawImage(_wwBladeImg,-_bW*.15,-_bH/2,_bW,_bH);
+          X.restore();
+        }
+        // 메인 대검
+        X.save();X.rotate(_wa);
+        X.globalAlpha=.9;
+        X.drawImage(_wwBladeImg,-_bW*.15,-_bH/2,_bW,_bH);
+        X.restore();
       }
       X.restore();
     }
