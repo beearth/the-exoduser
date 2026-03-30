@@ -4815,7 +4815,8 @@ const AFFIX_POOL=[
   {id:'dashBoost',type:0,tiers:[.25,.40,.65],unit:'pct',slots:['wpn','boots'],group:'dash',weight:55},
   {id:'skillBoost',type:0,tiers:[.15,.25,.40],unit:'pct',slots:['wpn'],group:'skill',weight:65},
   {id:'cooldownRed',type:0,tiers:[-.08,-.14,-.22],unit:'pct',slots:['helm','neck'],group:'cd',weight:70},
-  {id:'maxHPFlat',type:0,tiers:[100,250,500],unit:'val',slots:['armor','helm','neck'],group:'hp',weight:90},
+  {id:'maxHPFlat',type:0,tiers:[100,200,300],unit:'val',slots:['armor','helm','neck','shield','boots','gloves','pants','belt','ring','cloak','bracelet','headband'],group:'hp',weight:90},
+  {id:'shieldFlat',type:0,tiers:[100,200,300],unit:'val',slots:['armor','helm','neck','shield','boots','gloves','pants','belt','ring','cloak','bracelet','headband'],group:'shd',weight:80},
   {id:'maxHPPct',type:0,tiers:[.08,.14,.22],unit:'pct',slots:['armor','neck'],group:'hpp',weight:80},
   {id:'movSpeed',type:0,tiers:[.05,.09,.14],unit:'pct',slots:['boots','cloak'],group:'mspd',weight:85},
   // SUFFIX: 원소 저항
@@ -4869,7 +4870,7 @@ const AFFIX_NAMES_KO={
   armorPen:'관통의',critChance:'광폭의',staggerBns:'파쇄의',chainTarget:'연쇄의',
   killSlayer:'학살의',critExplosion:'폭발의',elemFocus:'집중의',atkSpeed:'쾌속의',parryBonus:'패리의',
   comboBoost:'추적자의',dashBoost:'작살의',skillBoost:'궁극의',cooldownRed:'집중력의',
-  maxHPFlat:'강인의',maxHPPct:'활력의',movSpeed:'신속의',
+  maxHPFlat:'강인의',shieldFlat:'수호의',maxHPPct:'활력의',movSpeed:'신속의',
   fireRes:'화염수호',iceRes:'빙결수호',lightRes:'암전수호',darkRes:'암흑수호',poisonRes:'독수호',allRes:'전원소수호',
   physDR:'강철의',reflect:'반사의',thorns:'가시의',barrier:'흡수의',ccRes:'인내의',
   crisisBoost:'위기의',counterHit:'피격반격의',
@@ -4887,7 +4888,7 @@ const _AFFIX_DESC={
   armorPen:'방어무시',critChance:'치명타율',staggerBns:'스태거+',chainTarget:'체인타겟+',
   killSlayer:'처치 후 뎀+',critExplosion:'크리폭발(ATK×)',elemFocus:'원소뎀+',atkSpeed:'공격속도+',parryBonus:'패리보너스+',
   comboBoost:'추적콤보+10',dashBoost:'작살뎀+',skillBoost:'스킬뎀+',cooldownRed:'쿨다운-',
-  maxHPFlat:'HP+',maxHPPct:'HP%+',movSpeed:'이동속도+',
+  maxHPFlat:'HP+',shieldFlat:'쉴드+',maxHPPct:'HP%+',movSpeed:'이동속도+',
   fireRes:'화염저항',iceRes:'빙결저항',lightRes:'암전저항',darkRes:'암흑저항',poisonRes:'독저항',allRes:'전원소저항',
   physDR:'물리DR',reflect:'반사%',thorns:'가시뎀',barrier:'배리어',ccRes:'CC저항',
   crisisBoost:'위기뎀+',counterHit:'피격반격',
@@ -5067,20 +5068,20 @@ function mkItem(slot,tier,el,rarity,wtype){
   const _atkRoll=Math.max(1,~~(_atkMax*(_atkFloor+(1-_atkFloor)*Math.pow(Math.random(),2)))); // skew: 고뎀 극악, 최소1
   const base={
     weapon:{atk:_atkRoll,spd:1},
-    shield:{atk:3+tier*2,def:4+tier*3,stagger:15+tier*8,blockRate:50+tier*8,shieldWt:10-tier},
-    boots:{def:2+tier*2,spd:tier*.08,bonusSt:5+tier*4,chargeDist:14+tier*3},
-    armor:{def:3+tier*4,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:4+tier*3},
-    helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,eDef:2+tier*2},
+    shield:{atk:3+tier*2,def:4+tier*3,stagger:15+tier*8,blockRate:50+tier*8,shieldWt:10-tier,bonusHp:200,bonusShield:200},
+    boots:{def:2+tier*2,spd:tier*.08,bonusSt:5+tier*4,chargeDist:14+tier*3,bonusHp:200,bonusShield:200},
+    armor:{def:3+tier*4,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:4+tier*3,bonusHp:200,bonusShield:200},
+    helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,eDef:2+tier*2,bonusHp:200,bonusShield:200},
     bow:{atk:_atkRoll,spd:1},
-    gloves:{atk:2+tier*2,def:1+tier*1,spd:tier*.04},
-    pants:{def:2+tier*3,bonusSt:3+tier*3},
-    belt:{def:1+tier*2,bonusSt:4+tier*3},
-    necklace:{def:1+tier*1,eDef:1+tier*2},
-    ring1:{eDef:1+tier*1},
-    ring2:{eDef:1+tier*1},
-    cape:{def:2+tier*2,eDef:1+tier*1,spd:tier*.03},
-    bracelet:{def:1+tier*1,eDef:1+tier*1,bonusHp:5+tier*5},
-    headband:{eDef:2+tier*2,mpRegen:1+tier*1}
+    gloves:{atk:2+tier*2,def:1+tier*1,spd:tier*.04,bonusHp:200,bonusShield:200},
+    pants:{def:2+tier*3,bonusSt:3+tier*3,bonusHp:200,bonusShield:200},
+    belt:{def:1+tier*2,bonusSt:4+tier*3,bonusHp:200,bonusShield:200},
+    necklace:{def:1+tier*1,eDef:1+tier*2,bonusHp:200,bonusShield:200},
+    ring1:{eDef:1+tier*1,bonusHp:200,bonusShield:200},
+    ring2:{eDef:1+tier*1,bonusHp:200,bonusShield:200},
+    cape:{def:2+tier*2,eDef:1+tier*1,spd:tier*.03,bonusHp:200,bonusShield:200},
+    bracelet:{def:1+tier*1,eDef:1+tier*1,bonusHp:200,bonusShield:200},
+    headband:{eDef:2+tier*2,mpRegen:1+tier*1,bonusHp:200,bonusShield:200}
   };
   const b=base[slot];
   if(!b)return{id:~~(performance.now()*1000)+~~(Math.random()*9999),slot,el,rarity,tier,name:'???',emoji:'❓'};
@@ -5144,6 +5145,8 @@ function mkItem(slot,tier,el,rarity,wtype){
   }
   if(b.stagger)item.stagger=~~(b.stagger*rm);
   if(b.range)item.range=~~(b.range*rm*(0.9+Math.random()*.2));
+  if(b.bonusHp)item.bonusHp=b.bonusHp;
+  if(b.bonusShield)item.bonusShield=b.bonusShield;
   // 부츠: 돌진 충전 (언커먼+ 랜덤)
   if(slot==='boots'&&rarity>=1){
     const ccChance=[0,.2,.4,.7,1][rarity];
@@ -5176,14 +5179,14 @@ function mkItem(slot,tier,el,rarity,wtype){
     item.potCd=+([.05,.10,.15,.20,.30][rarity]*(0.9+Math.random()*.2)).toFixed(3);
     if(rarity>=1) item.atkSpd=+((0.02+rarity*0.015+tier*0.005)*(0.9+Math.random()*.2)).toFixed(3);
   }
-  // 바지: HP 보너스
+  // 바지: HP 보너스 (base 200 + 추가)
   if(slot==='pants'){
-    item.bonusHp=~~((5+tier*4+rarity*6)*(0.9+Math.random()*.2));
+    item.bonusHp=(item.bonusHp||0)+~~((5+tier*4+rarity*6)*(0.9+Math.random()*.2));
   }
-  // 벨트: 물약 쿨감 + HP 보너스
+  // 벨트: 물약 쿨감 + HP 보너스 (base 200 + 추가)
   if(slot==='belt'){
     item.potCd=+([.03,.06,.10,.15,.22][rarity]*(0.9+Math.random()*.2)).toFixed(3);
-    item.bonusHp=~~((3+tier*2+rarity*4)*(0.9+Math.random()*.2));
+    item.bonusHp=(item.bonusHp||0)+~~((3+tier*2+rarity*4)*(0.9+Math.random()*.2));
   }
   // 반지: 크리율 + 크리뎀
   if(slot==='ring1'||slot==='ring2'){
@@ -11815,10 +11818,11 @@ function applyStats(){
   // ═══ 바이블 기준: HP = 100+(stage-1)*6 + VIT*2 + STR*1 + 장비HP ═══
   const _stgHp=G.on?100+((G.stage||1)-1)*6:100;
   const _afHpF=_eqAffix('maxHPFlat'),_afHpP=_eqAffix('maxHPPct')+_eqAffix('lifeMaxHP'),_imHp=_eqImplicit('_iMaxHP'),_imHpP=_eqImplicit('_iMaxHPPct')+_eqImplicit('_iLifeHPPct');
-  // 방어구 강화 → HP 보너스: 각 방어구 슬롯의 (enh 레벨 × 0.5) HP 추가
-  let _enhHp=0;const _defSlots=['shield','armor','boots','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
-  for(let _di=0;_di<_defSlots.length;_di++){const _dit=INV.equipped[_defSlots[_di]];if(_dit&&_dit.enh>0)_enhHp+=_dit.enh}
-  P.mhp=~~((_stgHp+P.lv*1+s.vit*2+s.str*1+(pt().bonusHp||0)+(blt().bonusHp||0)+(rg1().bonusHp||0)+(rg2().bonusHp||0)+_afHpF+_imHp+_enhHp)*(1+_afHpP+_imHpP*.01+(PASSIVES.pMelee||0)*.03));P.hp=Math.min(P.hp,P.mhp);
+  // 전 슬롯 bonusHp + bonusShield 합산 + 강화 HP
+  let _totalBonusHp=0,_totalBonusShield=0,_enhHp=0;
+  const _allDefSlots=['shield','armor','boots','helmet','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
+  for(let _di=0;_di<_allDefSlots.length;_di++){const _dit=INV.equipped[_allDefSlots[_di]];if(_dit){_totalBonusHp+=(_dit.bonusHp||0);_totalBonusShield+=(_dit.bonusShield||0);if(_dit.enh>0)_enhHp+=_dit.enh}}
+  P.mhp=~~((_stgHp+P.lv*1+s.vit*2+s.str*1+_totalBonusHp+_afHpF+_imHp+_enhHp)*(1+_afHpP+_imHpP*.01+(PASSIVES.pMelee||0)*.03));P.hp=Math.min(P.hp,P.mhp);
   P.baseDef=2+s.vit*.2;
   P.maxPoise=80+s.vit*0.5+s.str*0.2;
   if(P.poise===undefined)P.poise=P.maxPoise;
@@ -11830,8 +11834,8 @@ function applyStats(){
   P.hpR=.05+s.vit*.002+s.str*.002+P.lv*.001+_eqAffix('lifeRegen')/60; // HP리젠: 초당 + VIT+STR + 레벨 + 생명팔찌
   P.mmp=~~((100+P.lv*.5+s.int*1)*(1+_eqAffix('maxMPPct')));P.mp=Math.min(P.mp,P.mmp);
   P.mpR=.05+s.int*.005+P.lv*.001; // MP리젠: 초당 + INT + 레벨 (/8 적용)
-  // ═══ 에너지 쉴드: INT 100 이상 해금 ═══
-  if(s.int>=100){P.mshield=~~(150+P.lv*.5+(s.int-100)*2.5+s.vit*0.5);P.shield=Math.min(P.shield,P.mshield)}
+  // ═══ 에너지 쉴드: INT 100 이상 해금 + 장비 bonusShield + 어픽스 ═══
+  if(s.int>=100){P.mshield=~~(150+P.lv*.5+(s.int-100)*2.5+s.vit*0.5+_totalBonusShield+_eqAffix('shieldFlat'));P.shield=Math.min(P.shield,P.mshield)}
   else{P.mshield=0;P.shield=0}
   recalcSt();
 }
@@ -12371,9 +12375,9 @@ function _autoFireBowSkill(tx,ty){
   P.s=_sS;P.st2=_sSt2;
 }
 function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];if(a.id==='sharpAtk'||a.id==='brutalAtk'||a.id==='ruinAtk')s+=a.value}return s}
-function meleeRef(){return((wp().atk||0)+enhMul(wp().enh||0))+_slotFlatAtk(wp())+15+P.baseAtk)*(P._weaponSeal>0?.3:1)}
-function bowRef(){return((bw().atk||0)+enhMul(bw().enh||0))+_slotFlatAtk(bw())+15+P.baseAtk)*(P._weaponSeal>0?.3:1)}
-function magicRef(){return((hm().atk||0)+enhMul(hm().enh||0))+_slotFlatAtk(hm())+15+P.baseAtk)*(P._weaponSeal>0?.3:1)}
+function meleeRef(){return(((wp().atk||0)+enhMul(wp().enh||0))+_slotFlatAtk(wp())+15+P.baseAtk)*(P._weaponSeal>0?.3:1)}
+function bowRef(){return(((bw().atk||0)+enhMul(bw().enh||0))+_slotFlatAtk(bw())+15+P.baseAtk)*(P._weaponSeal>0?.3:1)}
+function magicRef(){return(((hm().atk||0)+enhMul(hm().enh||0))+_slotFlatAtk(hm())+15+P.baseAtk)*(P._weaponSeal>0?.3:1)}
 const DPS_BAL={bow:0.77,magic:0.475,beam:0.0080};
 function beamCost(){return(75+((P.skills.omniBeam||1)-1)*8)/60*pMagicCost()} // 틱당: 초당75+lv*8 소비 (패시브 할인 적용)
 // ═══ E키 마법 라우팅 — 합체/스킬 상태 → beam/magicCast 자동 분기 ═══
@@ -13965,7 +13969,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  let _hp=~~((ib?3000:150)*Math.pow(1.016,monLv)*dm*et.hpMul); // 1.6% 복리, 보스=일반×20
+  let _hp=~~((ib?3000:150)*Math.pow(1.001,monLv)*dm*et.hpMul); // 0.1% 복리, 보스=일반×20
   const _atk=~~(((ib?50:30)+monLv*(ib?4:3))*dm*et.atkMul); // 기본30+레벨당3 (보스: 50+레벨당4)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   const _noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
@@ -27262,6 +27266,7 @@ function _invCardFields(it){
   if(it.atkSpd)stats+=`<div style="color:#ffaa44">공격속도: <span>+${~~(it.atkSpd*100)}%</span></div>`;
   if(it.potCd)stats+=`<div style="color:#66ddaa">물약속도: <span>-${~~(it.potCd*100)}% 쿨다운</span></div>`;
   if(it.bonusHp)stats+=`<div style="color:#44ff88">추가HP: <span>+${it.bonusHp}</span></div>`;
+  if(it.bonusShield)stats+=`<div style="color:#3399ff">추가쉴드: <span>+${it.bonusShield}</span></div>`;
   if(it.expBonus)stats+=`<div style="color:#ffdd44">경험치: <span>+${~~(it.expBonus*100)}%</span></div>`;
   if(it.bStr)stats+=`<div style="color:#ff4444">💪 STR: <span>+${it.bStr}</span></div>`;
   if(it.bDex)stats+=`<div style="color:#44ff44">🏹 DEX: <span>+${it.bDex}</span></div>`;
