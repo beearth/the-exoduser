@@ -621,6 +621,9 @@ canvas{display:block;position:fixed;inset:0}
   <div id="cpHud" style="color: #ffaa44; text-shadow: 0 0 5px rgba(255,170,68,0.3);">⚡ 0 CP</div>
   <span style="color: #665544; margin: 0 10px;">|</span>
   <div id="comboHud" style="color:#ff6600;text-shadow:0 0 8px rgba(255,100,0,.5);display:none">🔥 0 COMBO</div>
+  <div id="comboTimerHud" style="color:#ff8844;font-size:0.8rem;display:none">⏱ 20.0s</div>
+  <span style="color: #665544; margin: 0 10px;">|</span>
+  <div id="stageTimerHud" style="color:#88aacc;font-size:0.8rem">⏱ 00:00</div>
 </div>
 <div id="keyGuide" style="display:none;position:fixed;top:38px;right:10px;background:rgba(0,0,0,.85);border:1px solid #554422;border-radius:6px;padding:12px 16px;z-index:50;font-size:.8rem;color:#ccaa77;line-height:1.7;pointer-events:auto;max-width:300px">
   <div style="color:#ffcc66;font-weight:700;font-size:.9rem;margin-bottom:4px">⌨ 조작법</div>
@@ -1669,23 +1672,23 @@ function _renderBloom(){
   if(!_bloomCvs||_bloomW!==~~(C.width/6))_initBloom();
   if(_bloomFrame&1){
     if(_bloomCvs){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';
-    X.globalAlpha=G.bossAlive?.35:.25;X.drawImage(_bloomCvs,0,0,C.width,C.height);
+    X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);
     X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}return;
   }
   const bx=_bloomCtx,ux=_blurCtx;
   bx.clearRect(0,0,_bloomW,_bloomH);
   bx.drawImage(C,0,0,_bloomW,_bloomH);
   bx.globalCompositeOperation='multiply';
-  bx.fillStyle='rgb(80,80,80)';bx.fillRect(0,0,_bloomW,_bloomH);
+  bx.fillStyle='rgb(60,60,60)';bx.fillRect(0,0,_bloomW,_bloomH);
   bx.globalCompositeOperation='source-over';
-  bx.globalAlpha=.25;bx.drawImage(_bloomCvs,-3,-3);
-  bx.globalAlpha=.25;bx.drawImage(_bloomCvs,3,3);
-  bx.globalAlpha=.25;bx.drawImage(_bloomCvs,-3,3);
-  bx.globalAlpha=.25;bx.drawImage(_bloomCvs,3,-3);
+  bx.globalAlpha=.15;bx.drawImage(_bloomCvs,-2,-2);
+  bx.globalAlpha=.15;bx.drawImage(_bloomCvs,2,2);
+  bx.globalAlpha=.15;bx.drawImage(_bloomCvs,-2,2);
+  bx.globalAlpha=.15;bx.drawImage(_bloomCvs,2,-2);
   bx.globalAlpha=1;
   X.save();X.setTransform(1,0,0,1,0,0);
   X.globalCompositeOperation='lighter';
-  X.globalAlpha=G.bossAlive?.35:.25;X.drawImage(_bloomCvs,0,0,C.width,C.height);
+  X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);
   X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();
 }
 
@@ -5121,11 +5124,11 @@ function mkItem(slot,tier,el,rarity,wtype){
     const _ls=LEGENDARY_SPECIAL[_lsKey]||LEGENDARY_SPECIAL[slot];
     if(_ls)item.legendarySpecial={ko:_ls.ko,stat:_ls.stat,val:_ls.val};
   }
-  // 아이템 레벨 = 층 기반, 요구 레벨 = 구간 시작 (0, 100, 200 ...)
-  // 1소지옥(Lv.100) 템 → reqLv=0 (1렙부터 착용), 2소지옥(Lv.200) 템 → reqLv=100, ...
-  const floorLv=G.on?(STG[G.stage]?STG[G.stage].monLv:100):0;
-  item.reqLv=Math.max(0,floorLv-100);
-  item.itemLv=floorLv;
+  // 아이템 레벨 = 캐릭터 레벨 기반, 10레벨 단위 (0~900), reqLv = itemLv-10
+  const _pLv=P&&P.lv?P.lv:1;
+  const itemLv=Math.min(900,Math.floor(_pLv/10)*10); // 10단위 내림, 캡 900
+  item.itemLv=itemLv;
+  item.reqLv=Math.max(0,itemLv-10);
   return item;
 }
 
@@ -5656,6 +5659,18 @@ const _CH_DECO={
     {id:'m_ctree11',file:'cursed_tree_11.png',sz:400,large:1,dir:'collision'},
     {id:'m_ctree12',file:'cursed_tree_12.png',sz:400,large:1,dir:'collision'},
     {id:'m_atree1',file:'anim_tree_01.png',sz:400,large:1,dir:'collision'},
+    {id:'m_cage_gate',file:'cage_gate.png',sz:300,large:1,dir:'collision'},
+    {id:'m_sword_pile',file:'sword_pile.png',sz:200,large:1,dir:'collision'},
+    {id:'m_hang_cage',file:'hang_cage.png',sz:280,large:1,dir:'collision'},
+    {id:'m_skull_altar',file:'skull_altar.png',sz:300,large:1,dir:'collision'},
+    {id:'m_obelisk',file:'obelisk.png',sz:300,large:1,dir:'collision'},
+    {id:'m_flesh_ball',file:'flesh_ball.png',sz:180,large:1,dir:'collision'},
+    {id:'m_penta_circle',file:'penta_circle.png',sz:350,large:1,dir:'collision'},
+    {id:'m_flesh_maw',file:'flesh_maw.png',sz:200,large:1,dir:'collision'},
+    {id:'m_skull_totem',file:'skull_totem.png',sz:280,large:1,dir:'collision'},
+    {id:'m_bone_arch',file:'bone_arch.png',sz:300,large:1,dir:'collision'},
+    {id:'m_eye_tree',file:'eye_tree.png',sz:350,large:1,dir:'collision'},
+    {id:'m_throne',file:'throne.png',sz:250,large:1,dir:'collision'},
     {id:'m_flesh_g0',file:'flesh_g_0.png',sz:352,scatter:1},
     {id:'m_flesh_g90',file:'flesh_g_90.png',sz:352,scatter:1},
     {id:'m_flesh_g180',file:'flesh_g_180.png',sz:352,scatter:1},
@@ -5726,19 +5741,53 @@ _pRaw.onload=()=>{
   x.putImageData(id,0,0);_pillarCvs=c;_pillarAR=h/w;
   console.log('[PILLAR] processed',w,'x',h,'ar',_pillarAR);
 }}
-const _bossGateVid=document.createElement('video');_bossGateVid.src='assets/map/ch1/floor_objects/boss_gate_anim.mp4';_bossGateVid.loop=true;_bossGateVid.muted=true;_bossGateVid.playsInline=true;_bossGateVid.preload='auto';_bossGateVid.play().catch(()=>{});
-const _gateVidCvs=document.createElement('canvas');_gateVidCvs.width=180;_gateVidCvs.height=180;const _gateVidCtx=_gateVidCvs.getContext('2d',{willReadFrequently:true});
-let _gateVidReady=false;
-_bossGateVid.addEventListener('canplay',()=>{_gateVidReady=true;console.log('[GATE-VID] canplay readyState='+_bossGateVid.readyState+' w='+_bossGateVid.videoWidth+'×'+_bossGateVid.videoHeight)});
-_bossGateVid.addEventListener('error',()=>console.error('[GATE-VID] ERROR loading video:',_bossGateVid.error));
-function _updateGateVidFrame(){if(_gateVidReady&&_bossGateVid.readyState>=2&&!_bossGateVid.paused){try{
-  _gateVidCtx.drawImage(_bossGateVid,0,0,180,180);
-  const _vid=_gateVidCtx.getImageData(0,0,180,180),_vd=_vid.data;
-  for(let i=0;i<_vd.length;i+=4){_vd[i+3]=Math.min(255,Math.max(_vd[i],_vd[i+1],_vd[i+2])*2)}
-  _gateVidCtx.putImageData(_vid,0,0);
-}catch(e){}}}
+// ══════════════════════════════════════════════════════════
+// ── 보스 게이트 시스템 (7장 공통) ──
+// 구조: 챕터별 게이트 에셋(나무/문) + 입구 포탈 애니메이션
+//   1) _bossGateImgs[hell] — 챕터별 게이트 정적 이미지 (맵 캐시에 렌더)
+//   2) _portalImgs[hell]  — 챕터별 포탈 이미지 (투명 webp, 입구에 회전 애니)
+//   3) _drawPortal()      — 포탈 렌더 함수 (회전+맥동, 던전/아레나 공용)
+// 추가 방법: 에셋 경로만 배열에 추가하면 자동 적용
+// ══════════════════════════════════════════════════════════
+// ── 1) 챕터별 게이트 이미지 (보스방 입구 나무/문) ──
+const _GATE_IMG_PATHS=[
+  'assets/map/ch1/collision/boss_gate.png', // CH1: 저주받은 눈나무
+  'assets/map/ch1/collision/boss_gate.png', // CH2: (추후 교체)
+  'assets/map/ch1/collision/boss_gate.png', // CH3: (추후 교체)
+  'assets/map/ch1/collision/boss_gate.png', // CH4: (추후 교체)
+  'assets/map/ch1/collision/boss_gate.png', // CH5: (추후 교체)
+  'assets/map/ch1/collision/boss_gate.png', // CH6: (추후 교체)
+  'assets/map/ch1/collision/boss_gate.png', // CH7: (추후 교체)
+];
 const _bossGateImgs=[];
-for(let _bgi=0;_bgi<7;_bgi++){const _im=new Image();_im.src='assets/map/ch1/collision/boss_gate.png';_im.onload=()=>console.log('[GATE] bossGateImg['+_bgi+'] loaded:',_im.src,'w:',_im.naturalWidth);_im.onerror=()=>{};_bossGateImgs.push(_im)}
+for(let _bgi=0;_bgi<_GATE_IMG_PATHS.length;_bgi++){const _im=new Image();_im.src=_GATE_IMG_PATHS[_bgi];_im.onerror=()=>{};_bossGateImgs.push(_im)}
+// ── 2) 챕터별 포탈 이미지 (투명 배경 webp) ──
+const _PORTAL_IMG_PATHS=[
+  'assets/map/ch1/floor_objects/boss_portal_1.webp', // CH1: 보라색 소용돌이
+  'assets/map/ch1/floor_objects/boss_portal_1.webp', // CH2: (추후 교체)
+  'assets/map/ch1/floor_objects/boss_portal_1.webp', // CH3: (추후 교체)
+  'assets/map/ch1/floor_objects/boss_portal_1.webp', // CH4: (추후 교체)
+  'assets/map/ch1/floor_objects/boss_portal_1.webp', // CH5: (추후 교체)
+  'assets/map/ch1/floor_objects/boss_portal_1.webp', // CH6: (추후 교체)
+  'assets/map/ch1/floor_objects/boss_portal_1.webp', // CH7: (추후 교체)
+];
+const _portalImgs=[];
+for(let _pi=0;_pi<_PORTAL_IMG_PATHS.length;_pi++){const _im=new Image();_im.src=_PORTAL_IMG_PATHS[_pi];_im.onerror=()=>{};_portalImgs.push(_im)}
+// ── 3) 포탈 렌더 함수 (회전+맥동, 모든 챕터 공용) ──
+function _drawPortal(ctx,cx,cy,sz,t,hell){
+  const img=_portalImgs[hell||0];
+  if(!img||!img.complete||!img.naturalWidth)return;
+  const pulse=sz+Math.sin(t/400)*sz*.12;
+  ctx.save();ctx.translate(cx,cy);
+  // 메인 소용돌이 (느린 회전)
+  ctx.rotate(t/2000);ctx.globalAlpha=.9;
+  ctx.drawImage(img,-pulse/2,-pulse/2,pulse,pulse);
+  // 내부 코어 (역회전, 작게, 밝은 중심)
+  ctx.rotate(-t/800);ctx.globalAlpha=.45;
+  const core=pulse*.55;
+  ctx.drawImage(img,-core/2,-core/2,core,core);
+  ctx.restore();ctx.globalAlpha=1;
+}
 function _waitObjSprites(timeout){
   return new Promise(r=>{
     const t0=Date.now();
@@ -5777,6 +5826,10 @@ const _OBJ_META={
   'lava_l_90':{sz:200,collision:true,rot:90},'lava_l_180':{sz:200,collision:true,rot:180},'lava_l_270':{sz:200,collision:true,rot:270},
   'boss_gate_col':{sz:500,col:1},
   'm_ctree1':{sz:250,col:1,large:1},'m_ctree2':{sz:250,col:1,large:1},'m_ctree3':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree4':{sz:250,col:1,large:1},'m_ctree5':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree6':{sz:250,col:1,large:1},'m_ctree7':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree8':{sz:250,col:1,large:1},'m_ctree9':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree10':{sz:250,col:1,large:1},'m_ctree11':{sz:250,col:1,large:1},'m_ctree12':{sz:250,col:1,large:1},'m_atree1':{sz:250,col:1,large:1,touchAnim:{frames:2,radius:120}},
+  'm_cage_gate':{sz:300,col:1,large:1},'m_sword_pile':{sz:200,col:1,large:1},'m_hang_cage':{sz:280,col:1,large:1},
+  'm_skull_altar':{sz:300,col:1,large:1},'m_obelisk':{sz:300,col:1,large:1},'m_flesh_ball':{sz:180,col:1,large:1},
+  'm_penta_circle':{sz:350,col:1,large:1},'m_flesh_maw':{sz:200,col:1,large:1},'m_skull_totem':{sz:280,col:1,large:1},
+  'm_bone_arch':{sz:300,col:1,large:1},'m_eye_tree':{sz:350,col:1,large:1},'m_throne':{sz:250,col:1,large:1},
 };
 // _CH_DECO 프리로드
 for(const[ch,list]of Object.entries(_CH_DECO)){
@@ -10652,6 +10705,38 @@ function initMapObjects(){
       };
       _placeFromPool(_lgSide,_lgSideMax);
       _placeFromPool(_lgCenter,_lgCenterMax);
+    }
+    // ── 유니크 충돌 오브젝트: 12종 각 1개씩, 중앙 배치, 500px 간격 ──
+    if(hell===0){
+      const _uniObjs=['m_cage_gate','m_sword_pile','m_hang_cage','m_skull_altar','m_obelisk','m_flesh_ball','m_penta_circle','m_flesh_maw','m_skull_totem','m_bone_arch','m_eye_tree','m_throne'];
+      const _uniSeed=_tseed(G.stage*71+13,hell*53+7);
+      const _uniMinDist=500;
+      // 벽에서 4타일 이상 떨어진 중앙 바닥만 수집
+      const _uniCenter=[];
+      for(let fi=0;fi<_dcFloors.length;fi++){
+        const f=_dcFloors[fi];let wallOk=true;
+        for(let dy=-4;dy<=4&&wallOk;dy++)for(let dx=-4;dx<=4&&wallOk;dx++){
+          const tx=f.x+dx,ty=f.y+dy;
+          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0)wallOk=false;
+        }
+        if(wallOk)_uniCenter.push(f);
+      }
+      let _uniPlaced=0;
+      for(let ui=0;ui<_uniObjs.length;ui++){
+        let _uDone=false;
+        for(let _ut=0;_ut<300&&!_uDone&&_uniCenter.length>0;_ut++){
+          const fi=~~(_uniSeed()*_uniCenter.length);
+          const f=_uniCenter[fi];
+          const px=f.x*T+T/2,py=f.y*T+T/2;
+          let ok=true;
+          for(const mo of MAP_OBJS){if(dst(px,py,mo.x,mo.y)<_uniMinDist){ok=false;break}}
+          if(!ok)continue;
+          if(bossRoom&&px/T>=bossRoom.x-3&&px/T<=bossRoom.x+bossRoom.w+3&&py/T>=bossRoom.y-3&&py/T<=bossRoom.y+bossRoom.h+3)continue;
+          MAP_OBJS.push({type:_uniObjs[ui],x:px,y:py,hell});
+          _uniCenter.splice(fi,1);_uDone=true;_uniPlaced++;
+        }
+      }
+      console.log('[UNIQUE_OBJ] placed:'+_uniPlaced+'/12');
     }
     // ── scatter 에셋: 방 전체 랜덤 배치 (벽 무관) ──
     const _scatterDeco=_chDeco.filter(d=>d.scatter);
@@ -117608,8 +117693,10 @@ function rollDrop(e){
     const magic=.25;
     rarity=roll<leg?4:roll<leg+hero?3:roll<leg+hero+rare?2:roll<leg+hero+rare+magic?1:0;
   }
-  if(rarity<OPT.minPickRar)return; // 최소 등급 미만 → 드롭 안함
+  if(rarity<OPT.minPickRar){console.log('[DROP] filtered by minPickRar',rarity,'<',OPT.minPickRar);return}
   const item=mkItem(slot,tier,el,rarity);
+  if(!item){console.log('[DROP] mkItem returned null/undef',slot,tier,el,rarity);return}
+  console.log('[DROP]',RARITY_N[rarity],item.name,'tier='+tier,'slot='+slot);
   worldItems.push({x:e.x+(Math.random()-.5)*20,y:e.y+(Math.random()-.5)*20,type:'item',item,picked:false});
 }
 
@@ -125569,7 +125656,8 @@ function _updateOnePet(key){
           ok=pickupItem(it.item);
           if(ok)it.picked=true;
           else if(it.item){
-            // 가방 풀 → 자동 분해 (까마귀/고양이 모두)
+            // 가방 풀: 전설(4)은 바닥에 남김, 나머지 자동 분해
+            if(it.item.rarity>=4){pet.s='follow';pet._tRef=null;pet._fetchT=0;break}
             const _mv=Math.max(1,salvageVal(it.item));
             it.picked=true;G.mats+=_mv;ok=true;
           }
@@ -125618,6 +125706,7 @@ function updatePet(){
       }else{
         const ok=pickupItem(it.item);
         if(ok){it.picked=true;_crowCnt++}
+        else if(it.item.rarity>=4){continue} // 전설: 바닥에 남김
         else{const _mv=Math.max(1,salvageVal(it.item));it.picked=true;G.mats+=_mv;_crowCnt++}
       }
     }
@@ -126367,7 +126456,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     const _isBurnDeath=atkEl===EL.F||(opts&&opts.beam);
     atkTicketRelease(e);e.alive=false;G.kills++;_petOnKill();deathFX(e.x,e.y,e.r,e.col,!!e.ib,_isBurnDeath,e.etype);if(!(G._noHitStopT>0)){G.hitStop=~~(_HS.kill*OPT.hitStop/100)}
     // ═══ 콤보 시스템 ═══
-    G.combo++;G.comboTimer=1800; // 30초 리셋
+    G.combo++;G.comboTimer=1200; // 20초 리셋
     if(G.combo>G.comboMax)G.comboMax=G.combo;
     if(G.combo>=5&&G.combo%5===0)addTxt(P.x,P.y-40,'🔥 '+G.combo+' COMBO!','#ffaa00',50);
     // 시체 잔해 — 모든 사망 (화염은 burnCorpse가 대신)
@@ -131312,17 +131401,18 @@ function draw(){
     }
   }
   const _tMap=performance.now();
-  // ── 보스 입구 비디오 애니메이션 ──
-  if(G._bossArena&&G._bossArenaEntry&&_gateVidReady){
-    _updateGateVidFrame();
-    const _vW=600,_vH=600;
-    const _vx=(G._bossArenaEntry.x+.5)*T-_vW/2,_vy=(G._bossArenaEntry.y+2)*T-_vH+100;
-    X.save();X.globalCompositeOperation='lighter';
-    X.drawImage(_gateVidCvs,_vx,_vy,_vW,_vH);
-    X.restore();
+  // ── 보스 아레나 입구 포탈 ──
+  if(G._bossArena&&G._bossArenaEntry){
+    _drawPortal(X,(G._bossArenaEntry.x+.5)*T,(G._bossArenaEntry.y+2.5)*T,400,_now,SI_TO_HELL[G.stage]);
   }
   // 던전 보스 게이트 비디오는 출구 타일 렌더 뒤에 그림 (덮어쓰기 방지)
-  // ── Ori 스타일 포인트라이트 (플레이어 위치) — 제거됨 ──
+  // ── Ori 스타일 포인트라이트 (플레이어 위치) ──
+  if(_ptLight&&OPT.lighting){
+    const _plsx=P.x,_plsy=P.y;
+    X.save();X.globalCompositeOperation='lighter';
+    X.drawImage(_ptLight,_plsx-320,_plsy-320);
+    X.restore();
+  }
   // ── 환경 데코 렌더링 ──
   if(_decorList.length>0){
     const _dcL=G.cam.x-C.width/2-60,_dcR=G.cam.x+C.width/2+60,_dcT=G.cam.y-C.height/2-60,_dcB=G.cam.y+C.height/2+60;
@@ -131340,15 +131430,9 @@ function draw(){
   for(let ei=0;ei<G.exits.length;ei++){
     const ex=G.exits[ei];const px=ex.x*T,py=ex.y*T;
     if(ex.x<s1||ex.x>=e1||ex.y<s2||ex.y>=e2)continue;
-    const _gateVidOk=_bossGateVid.readyState>=2;
-    if(!(_gateVidOk&&G.bossAlive&&!G._bossArena)){X.fillStyle=stg.f;X.fillRect(px,py,T,T)}
+    const _pI=_portalImgs[SI_TO_HELL[G.stage]||0];const _portalOk=_pI&&_pI.complete&&_pI.naturalWidth>0;
+    if(!(_portalOk&&G.bossAlive&&!G._bossArena)){X.fillStyle=stg.f;X.fillRect(px,py,T,T)}
     if(G.bossAlive&&!G._bossArena){
-      // 던전 출구 = 보스방 문 (비디오 로드 시 네모 숨김)
-      if(!_gateVidOk){
-        const _bp=.3+Math.sin(_now/250)*.2;
-        X.fillStyle=`rgba(80,20,140,${_bp})`;X.fillRect(px+1,py+1,T-2,T-2);
-        X.strokeStyle=`rgba(180,60,255,${_bp+.1})`;X.lineWidth=1.5;X.strokeRect(px+1,py+1,T-2,T-2);
-      }
       // 보스방 진입 텍스트 (가운데 타일만)
       if(ei===~~(G.exits.length/2)){
         const _dg=dst(P.x,P.y,(ex.x+.5)*T,(ex.y+.5)*T);
@@ -131365,18 +131449,12 @@ function draw(){
       X.strokeStyle='#44ff88';X.lineWidth=1;X.strokeRect(px+1,py+1,T-2,T-2);
     }else{X.fillStyle='rgba(80,80,80,.5)';X.fillRect(px+2,py+2,T-4,T-4)}
   }
-  // ── 던전 보스 게이트 입구 비디오 애니메이션 (출구 타일 위에 렌더) ──
+  // ── 던전 보스 게이트 입구 포탈 (투명 webp 회전 애니메이션) ──
   if(!G._bossArena&&G.exits.length>0&&G.bossGate&&G.bossGate.length>0&&G.bossAlive){
     const _exMinX=Math.min(...G.exits.map(e=>e.x)),_exMaxX=Math.max(...G.exits.map(e=>e.x));
     const _exMinY=Math.min(...G.exits.map(e=>e.y)),_exMaxY=Math.max(...G.exits.map(e=>e.y));
     const _exCx=((_exMinX+_exMaxX)/2+.5)*T,_exCy=((_exMinY+_exMaxY)/2+.5)*T;
-    // 비디오 원본 비율 유지하면서 크게 렌더 (720×720 → 300×300)
-    const _dgVW=300,_dgVH=300;
-    X.globalAlpha=1;
-    _updateGateVidFrame();
-    X.save();X.globalCompositeOperation='lighter';
-    X.drawImage(_gateVidCvs,_exCx-_dgVW/2,_exCy-_dgVH/2,_dgVW,_dgVH);
-    X.restore();
+    _drawPortal(X,_exCx,_exCy,250,_now,SI_TO_HELL[G.stage]);
   }
   // tile=3 대문 장식은 맵 캐시에서 처리됨 (출구 타일이 진입 역할)
   // [GLOW-ORI] 발광 오브젝트 렌더링 — 비활성화
@@ -133960,7 +134038,7 @@ function draw(){
   if(!G._litFrame)G._litFrame=0;G._litFrame++;
   {const _l0=performance.now();if(_gameFrame%3===0){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}else if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
   // ═══ 블룸 패스 (3프레임마다 계산 — 라이팅과 1프레임 오프셋) ═══
-  {const _bl0=performance.now();if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.35:.25;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
+  {const _bl0=performance.now();if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
   // [TORCH] 횃불 조명 어둠 오버레이 (_gameFrame%3===0 만 재계산)
   const _tc0=performance.now();
   if(OPT.torch&&OPT.postfx&&OPT.quality!=='low'){X.save();X.setTransform(1,0,0,1,0,0);

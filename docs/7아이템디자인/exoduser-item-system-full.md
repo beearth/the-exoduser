@@ -376,10 +376,11 @@ Object.freeze(LEGENDARY_SPECIAL);
     if(_ls) item.legendarySpecial = {ko: _ls.ko, stat: _ls.stat, val: _ls.val};
   }
 
-  // 아이템 레벨
-  const floorLv = G.on ? (STG[G.stage] ? STG[G.stage].monLv : 100) : 0;
-  item.reqLv    = Math.max(0, floorLv - 100);
-  item.itemLv   = floorLv;
+  // 아이템 레벨 = 캐릭터 레벨 기반, 10레벨 단위 (0~900)
+  const _pLv = P && P.lv ? P.lv : 1;
+  const itemLv = Math.min(900, Math.floor(_pLv / 10) * 10);
+  item.itemLv = itemLv;
+  item.reqLv  = Math.max(0, itemLv - 10);
   item.maxDurability = DUR_MAX[rarity] || 100;
   item.durability    = item.maxDurability;
   return item;
