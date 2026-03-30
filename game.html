@@ -3222,6 +3222,8 @@ const _sampleFiles={
   // monster/ — 몬스터 피격/반응
   monster_hit:'sfx/monster/monster_hit2.mp3',   // 일반몹 피격 (기본) — hurtE 50%
   monster_hit1:'sfx/monster/monster_hit1.mp3', // 일반몹 피격 (변형) — hurtE 50%
+  monster_hit_flesh1:'sfx/monster/monster_hit_flesh1.mp3', // 살덩이 피격1
+  monster_hit_flesh2:'sfx/monster/monster_hit_flesh2.mp3', // 살덩이 피격2
   monster_hurt:'sfx/monster/monster_hurt.mp3', // 보스 고통 — hurtE 보스 15%
   boss_hit:'sfx/monster/boss_hit.mp3',         // 보스 피격
   boss_howl:'sfx/monster/boss_howl.mp3',       // 보스 포효 — 아레나 진입
@@ -3243,6 +3245,12 @@ const _sampleFiles={
   death_flesh:'sfx/death/death_flesh.mp3',        // 살덩이 사망
   death_flesh2:'sfx/death/death_flesh2.mp3',      // 살덩이 사망 변형
   death_bone:'sfx/death/death_bone.mp3',          // 해골 사망
+  death_bone2:'sfx/death/death_bone2.mp3',        // 뼈+살 박살1
+  death_bone3:'sfx/death/death_bone3.mp3',        // 뼈+살 박살2
+  death_bone_shatter1:'sfx/death/death_bone_shatter1.mp3', // 뼈 산산조각1
+  death_bone_shatter2:'sfx/death/death_bone_shatter2.mp3', // 뼈 산산조각2
+  death_bone_shatter3:'sfx/death/death_bone_shatter3.mp3', // 뼈 산산조각3
+  death_bone_shatter4:'sfx/death/death_bone_shatter4.mp3', // 뼈 산산조각4
   death_magic:'sfx/death/death_magic.mp3',        // 마법체 사망
   death_armor:'sfx/death/death_armor.mp3',        // 갑옷 사망
   death_crush1:'sfx/death/death_crush1.mp3',      // 묵직한 괴물 으스러짐1
@@ -3252,9 +3260,21 @@ const _sampleFiles={
   death_splat2:'sfx/death/death_splat2.mp3',      // 살덩이 찢어짐2
   death_splat3:'sfx/death/death_splat3.mp3',      // 살덩이 물컹 터짐3
   death_ghoul1:'sfx/death/death_ghoul1.mp3',      // 구울 소 — etype 100
+  death_ghoul1_v2:'sfx/death/death_ghoul1_v2.mp3', // 구울 소 변형2
+  death_ghoul1_v3:'sfx/death/death_ghoul1_v3.mp3', // 구울 소 변형3
+  death_ghoul1_v4:'sfx/death/death_ghoul1_v4.mp3', // 구울 소 변형4
+  death_ghoul1_v5:'sfx/death/death_ghoul1_v5.mp3', // 구울 소 변형5
   death_ghoul2:'sfx/death/death_ghoul2.mp3',      // 구울 중 — etype 101
   death_ghoul3:'sfx/death/death_ghoul3.mp3',      // 구울 대 — etype 102
   death_skull:'sfx/death/skull.mp3',               // 해골 부서짐 — BONE_ET 변형
+  death_crack1:'sfx/death/death_crack1.mp3',      // 생물몹 터짐1
+  death_crack2:'sfx/death/death_crack2.mp3',      // 생물몹 터짐2
+  death_crack3:'sfx/death/death_crack3.mp3',      // 생물몹 터짐3
+  death_crack4:'sfx/death/death_crack4.mp3',      // 생물몹 터짐4
+  death_beast1:'sfx/death/death_beast1.mp3',      // 동물형 사망1
+  death_beast2:'sfx/death/death_beast2.mp3',      // 동물형 사망2
+  death_beast3:'sfx/death/death_beast3.mp3',      // 동물형 사망3
+  death_beast4:'sfx/death/death_beast4.mp3',      // 동물형 사망4
   // q_parry/ — 보호막
   shield_activate:'sfx/q_parry/q_start.mp3',
   shield_end:'sfx/q_parry/q_end.mp3',
@@ -10270,11 +10290,11 @@ const _ARMOR_ET=new Set([28,29,32,49,61,62,68,77,80,81,87,91,92]); // 갑옷/골
 // 사망 사운드 변형 맵 — 카테고리 키 → [변형키 배열]
 const _DEATH_VARIANTS={
   death_armor:['death_armor','death_crush1','death_crush2'],
-  death_flesh:['death_flesh','death_flesh2','death_splat1','death_splat2','death_splat3'],
-  death_heavy:['death_heavy','death_heavy3','death_crush1','death_crush2','death_crush3','death_flesh','death_flesh2','death_splat1','death_splat2','death_splat3'],
+  death_flesh:['death_flesh','death_flesh2','death_splat1','death_splat2','death_splat3','death_crack1','death_crack2','death_crack3','death_crack4'],
+  death_heavy:['death_heavy','death_heavy3','death_crush1','death_crush2','death_crush3','death_flesh','death_flesh2','death_splat1','death_splat2','death_splat3','death_crack1','death_crack2','death_crack3','death_crack4'],
   death_insect:['death_insect','death_insect2','death_crush3'],
-  death_bone:['death_bone','death_skull','death_crush1'],
-  death_beast:['death_heavy','death_crush2','death_crush3','death_splat1']
+  death_bone:['death_bone','death_skull','death_crush1','death_crush2','death_crush3','death_bone2','death_bone3','death_bone_shatter1','death_bone_shatter2','death_bone_shatter3','death_bone_shatter4'],
+  death_beast:['death_heavy','death_crush2','death_crush3','death_splat1','death_crack1','death_crack2','death_crack3','death_crack4','death_beast1','death_beast2','death_beast3','death_beast4']
 };
 function _pickDeathVar(base){const a=_DEATH_VARIANTS[base];return a?a[Math.random()*a.length|0]:base}
 function _deathSfxKey(et){
@@ -10300,7 +10320,7 @@ function _deathSfxKey(et){
 function _hitSfxForEtype(et){
   if(_INSECT_ET.has(et))return{key:'monster_hit1',pitch:1.3};
   if(_GHOST_ET.has(et))return{key:'monster_hit',pitch:0.7};
-  if(_FLESH_ET.has(et))return{key:'monster_hit',pitch:0.85};
+  if(_FLESH_ET.has(et))return{key:Math.random()<.5?'monster_hit_flesh1':'monster_hit_flesh2',pitch:_r(1,.1)};
   if(_BONE_ET.has(et))return{key:'monster_hit1',pitch:1.15};
   if(_BEAST_ET.has(et))return{key:'monster_hit',pitch:0.9};
   if(_MAGIC_ET.has(et))return{key:'monster_hit1',pitch:1.2};
@@ -19989,11 +20009,11 @@ function updateE(e,sp){
   if(e.stunned>0){e.poiseR=0}else if(e.poise<=0){e.poise=e.maxPoise;e.poiseR=0}else if(e.poise<e.maxPoise){e.poiseR+=sp;if(e.poiseR>=(e.ib?300:200)){e.poise=Math.min(e.maxPoise,e.poise+~~(e.maxPoise*.15));e.poiseR=0}}
   let d=dst(P.x,P.y,e.x,e.y);
   // ── 몬스터 이동 사운드 (거리 400 이내, 쿨다운 60~120f) ──
-  if(d<400&&!e.stunned&&!e._frozen){
+  if(d<1000&&!e.stunned&&!e._frozen){
     if(!e._mSfxCd)e._mSfxCd=0;
     if(e._mSfxCd<=0){
       const _msk=_ETYPE_SFX[e.etype]||_ARCH_SFX[e.etype]||null;
-      if(_msk){const _vol=Math.max(.05,.25*(1-d/400));const _msk2=(_msk==='monster_crawl'&&Math.random()<.5)?'monster_crawl1':_msk;playSample(_msk2,_vol,_r(1,.15));e._mSfxCd=60+~~(Math.random()*60)}
+      if(_msk){const _vol=Math.max(.03,.4*(1-d/1000));const _msk2=(_msk==='monster_crawl'&&Math.random()<.5)?'monster_crawl1':_msk;playSample(_msk2,_vol,_r(1,.15));e._mSfxCd=50+~~(Math.random()*50)}
     }else e._mSfxCd-=sp;
   }
   // 부활 어그로: 플레이어 도달까지 2배속 플로우필드 추적 (해제 안 됨)
