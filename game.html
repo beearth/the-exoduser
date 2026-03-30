@@ -671,6 +671,22 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">파티클 양</span><input type="range" id="optParts" min="20" max="100" value="80"><span class="set-range-val" id="optPartsVal">80%</span></div>
           <div class="set-range-row"><span class="set-name">효과음 볼륨</span><input type="range" id="optSfx" min="0" max="100" value="60"><span class="set-range-val" id="optSfxVal">60%</span></div>
           <div class="set-range-row"><span class="set-name">음악 볼륨</span><input type="range" id="optBgm" min="0" max="100" value="30"><span class="set-range-val" id="optBgmVal">30%</span></div>
+          <div class="set-range-row"><span class="set-name">BGM 선택</span>
+            <select id="optBgmTrack" style="flex:1;background:#1a1008;border:1px solid #443322;color:#ddc;font-family:'Noto Sans KR';font-size:.9rem;padding:4px 8px;border-radius:4px">
+              <option value="auto">자동 (스테이지별)</option>
+              <option value="lobby">로비</option>
+              <option value="hell1">1지옥 - 얼음</option>
+              <option value="hell2">2지옥 - 벌레</option>
+              <option value="hell3">3지옥 - 화염</option>
+              <option value="hell4">4지옥 - 심연</option>
+              <option value="hell5">5지옥 - 번개</option>
+              <option value="hell6">6지옥 - 뼈</option>
+              <option value="hell7">7지옥 - 혼돈</option>
+              <option value="boss">보스</option>
+              <option value="finalboss">최종보스</option>
+              <option value="forge">대장간</option>
+            </select>
+          </div>
           <div class="set-range-row"><span class="set-name">난이도</span><input type="range" id="optDiff" min="0" max="10" value="0"><span class="set-range-val" id="optDiffVal">일반</span></div>
           <div class="set-range-row"><span class="set-name">자동 물약</span><input type="range" id="optAutoPot" min="30" max="95" step="5" value="99"><span class="set-range-val" id="optAutoPotVal">HP 99% 이하</span></div>
           <div class="set-range-row"><span class="set-name">최소 줍기 등급</span><input type="range" id="optMinRar" min="0" max="4" value="0"><span class="set-range-val" id="optMinRarVal">일반 이상</span></div>
@@ -1365,7 +1381,7 @@ function dbRestore(d){
   }
   // 합체 동시강화: 양쪽 레벨 다르면 낮은쪽으로 맞춤 (SP는 재계산에서 자동 보정)
   {
-    const _fMap={whirlDet:['whirlwind','detonate'],bladeFuse:['maliceHunt','guardian'],iceMortar:['maliceMortar','iceOrb'],sixFuse:['fanShot','omniBeam'],dimBreach:['chargeBoost','magicBlink'],dimRush:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam'],dimBlast:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam','giantSlam'],plagueFuse:['maliceHunt','guardian','plagueBurst'],boneStorm:['maliceStorm','boneWall'],shieldFuse:['maliceSwipe','shieldThrow']};
+    const _fMap={whirlDet:['whirlwind','detonate'],bladeFuse:['maliceHunt','guardian'],iceMortar:['maliceMortar','iceOrb'],sixFuse:['fanShot','omniBeam'],dimBreach:['chargeBoost','magicBlink'],dimRush:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam'],dimBlast:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam','giantSlam'],plagueFuse:['maliceHunt','guardian','plagueBurst'],boneStorm:['maliceStorm','boneWall'],elecRepent:['maliceStorm','boneWall','hellRay'],shieldFuse:['maliceSwipe','shieldThrow']};
     // elemFuse: 3단합체 레벨 싱크
     if(P._fused&&P._fused.elemFuse){
       const _efIds=['fanShot','omniBeam','elemMissile'];
@@ -1558,7 +1574,9 @@ const BGM={
     // 대기 중인 추가 사운드도 재생
     while(BGM._pendingExtra.length){const a=BGM._pendingExtra.shift();a.play().catch(()=>{})}
   },
-  play(key){
+  play(key,force){
+    // 수동 BGM 선택 중이면 death/victory/forge 외 자동전환 차단
+    if(!force&&OPT.bgmTrack!=='auto'&&key!=='death'&&key!=='victory'&&key!=='forge'&&key!==OPT.bgmTrack)return;
     if(this._curKey===key)return;
     this.stop();
     this._curKey=key;
@@ -2482,7 +2500,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto'};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 // ═══ 스킬별 히트스톱 기본 프레임 (OPT.hitStop/100 곱해서 사용) ═══
 const _HS={
@@ -3061,6 +3079,33 @@ function actx(){
   return _actx;
 }
 function sfxVol(){return OPT.sfxVol/100}
+// ── 궁극기 음소거 (대사만 재생) ──
+let _ultMuted=false;
+function ultMute(){
+  if(_ultMuted)return;_ultMuted=true;
+  // BGM 페이드아웃
+  if(_bgmGainA)_bgmGainA.gain.linearRampToValueAtTime(0,(_bgmCtx||actx()).currentTime+0.3);
+  if(_bgmGainB)_bgmGainB.gain.linearRampToValueAtTime(0,(_bgmCtx||actx()).currentTime+0.3);
+  if(BGM._cur){BGM._savedVol=BGM._cur.volume;BGM._cur.volume=0}
+  // SFX 마스터 음소거
+  if(_mbus)_mbus.gain.linearRampToValueAtTime(0,actx().currentTime+0.3);
+}
+function ultUnmute(){
+  if(!_ultMuted)return;_ultMuted=false;
+  const v=OPT.bgmVol/100;
+  if(_bgmGainA)_bgmGainA.gain.linearRampToValueAtTime(v,(_bgmCtx||actx()).currentTime+0.5);
+  if(_bgmGainB)_bgmGainB.gain.linearRampToValueAtTime(v,(_bgmCtx||actx()).currentTime+0.5);
+  if(BGM._cur)BGM._cur.volume=BGM._savedVol||v;
+  if(_mbus)_mbus.gain.linearRampToValueAtTime(sfxVol(),actx().currentTime+0.5);
+}
+// 궁극기 대사 전용 — 마스터 버스 우회, destination 직결
+function playVoiceDirect(key,vol,rate){
+  const buf=_audioBuffers[key];if(!buf)return;
+  const c=actx();const src=c.createBufferSource();src.buffer=buf;
+  if(rate&&rate!==1)src.playbackRate.value=rate;
+  const g=c.createGain();g.gain.value=Math.min(1,vol||1);
+  src.connect(g);g.connect(c.destination);src.start();
+}
 
 // ── Sample-based audio (Web Audio API AudioBuffer pooling — GC-free) ──
 const _sampleFiles={
@@ -3204,6 +3249,7 @@ const _sampleFiles={
   death_ghoul1:'sfx/death/death_ghoul1.mp3',      // 구울 소 — etype 100
   death_ghoul2:'sfx/death/death_ghoul2.mp3',      // 구울 중 — etype 101
   death_ghoul3:'sfx/death/death_ghoul3.mp3',      // 구울 대 — etype 102
+  death_skull:'sfx/death/skull.mp3',               // 해골 부서짐 — BONE_ET 변형
   // q_parry/ — 보호막
   shield_activate:'sfx/q_parry/q_start.mp3',
   shield_end:'sfx/q_parry/q_end.mp3',
@@ -4378,13 +4424,13 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       if(P.mp<40){showPH('MP 부족! (40)','#4488ff');break}
       P._isAiming=true;_skOk=true;break;
     case 'holyBlast':
-      if(P.mp>=P.mmp*0.3&&(P._hbCd||0)<=0&&!P._hbCasting){P._hbCasting=true;P._hbT=0;P._hbX=P.x;P._hbY=P.y;P.mp-=P.mmp*0.3;addTxt(P.x,P.y-30,'✟ 시전...','#ffd700',30);playSample('voice_ult',1,1);_skOk=true}
+      if(P.mp>=P.mmp*0.3&&(P._hbCd||0)<=0&&!P._hbCasting){P._hbCasting=true;P._hbT=0;P._hbX=P.x;P._hbY=P.y;P.mp-=P.mmp*0.3;addTxt(P.x,P.y-30,'✟ 시전...','#ffd700',30);ultMute();playVoiceDirect('voice_ult',1,1);_skOk=true}
       else if(P.mp<P.mmp*0.3)showPH('MP 부족!','#4488ff');break;
     case 'lavaSummon':
-      if(P.mp>=P.mmp*0.3&&(P._lvCd||0)<=0&&!P._lvCasting){P._lvCasting=true;P._lvT=0;P._lvX=P.x;P._lvY=P.y;P.mp-=P.mmp*0.3;addTxt(P.x,P.y-30,'🌋 시전...','#ff4400',30);playSample('voice_ult',1,1);_skOk=true}
+      if(P.mp>=P.mmp*0.3&&(P._lvCd||0)<=0&&!P._lvCasting){P._lvCasting=true;P._lvT=0;P._lvX=P.x;P._lvY=P.y;P.mp-=P.mmp*0.3;addTxt(P.x,P.y-30,'🌋 시전...','#ff4400',30);ultMute();playVoiceDirect('voice_ult',1,1);_skOk=true}
       else if(P._lvCasting)showPH('시전 중...','#ff4400');else if(P.mp<P.mmp*0.3)showPH('MP 부족!','#4488ff');break;
     case 'blackStar':
-      if(P.mp>=P.mmp*0.3&&(P._bsCd||0)<=0&&!P._bsCasting){P._bsCasting=true;P._bsT=0;P._bsX=P.x;P._bsY=P.y;P.mp-=P.mmp*0.3;addTxt(P.x,P.y-30,'\u26e7 시전...','#aa00ff',30);playSample('voice_ult',1,1);_skOk=true}
+      if(P.mp>=P.mmp*0.3&&(P._bsCd||0)<=0&&!P._bsCasting){P._bsCasting=true;P._bsT=0;P._bsX=P.x;P._bsY=P.y;P.mp-=P.mmp*0.3;addTxt(P.x,P.y-30,'\u26e7 시전...','#aa00ff',30);ultMute();playVoiceDirect('voice_ult',1,1);_skOk=true}
       else if(P._bsCasting)showPH('시전 중...','#aa00ff');else if(P.mp<P.mmp*0.3)showPH('MP 부족!','#4488ff');break;
     case 'bladeShot':
       if(P.st>=stCost('bladeShot')){activateBladeShot();_skOk=true}else showPH('ST 부족!','#ff4444');break;
@@ -10100,7 +10146,7 @@ function _fireballExplode(p){
 // ═══════════════════════════════════════
 // 방사형 스파크 링 + 중심 플래시 + 파편
 // ── etype별 사망 사운드 매핑 (개별 몬스터 유형 기반) ──
-const _HUMANOID_ET=new Set([0,1,2,6,8,20,21,24,31,34,36,37,41,44,50,54,55,60,65,67,70,71,74,90,93,94]);
+const _HUMANOID_ET=new Set([0,1,2,6,8,20,21,24,31,34,36,37,41,44,54,55,60,65,67,70,71,74,90,93,94]); // 50 제거 → FLESH로 이동
 const _INSECT_ET=new Set([3,11,13,15,16,17,18,19,45,46,72]); // 거미/벌레/날개류
 const _GHOST_ET=new Set([7,9,26,40,47,48,66,76,78,84,86,88,95,96]); // 유령/원령/마법사/사도
 const _FLESH_ET=new Set([5,42,50,51,52,53,56,57,58]); // 살덩이/괴물길 기형체 (5=태아형악마)
@@ -10114,7 +10160,8 @@ const _DEATH_VARIANTS={
   death_flesh:['death_flesh','death_flesh2'],
   death_heavy:['death_heavy','death_heavy2','death_heavy3'],
   death_insect:['death_insect','death_insect2'],
-  die_human:['die_human1','die_human2','die_human3']
+  die_human:['die_human1','die_human2','die_human3'],
+  death_bone:['death_bone','death_skull']
 };
 function _pickDeathVar(base){const a=_DEATH_VARIANTS[base];return a?a[Math.random()*a.length|0]:base}
 function _deathSfxKey(et){
@@ -10127,7 +10174,7 @@ function _deathSfxKey(et){
   if(_INSECT_ET.has(et))return _pickDeathVar('death_insect');
   if(_GHOST_ET.has(et))return 'death_ghost';
   if(_FLESH_ET.has(et))return _pickDeathVar('death_flesh');
-  if(_BONE_ET.has(et))return 'death_bone';
+  if(_BONE_ET.has(et))return _pickDeathVar('death_bone');
   if(_BEAST_ET.has(et))return _pickDeathVar('death_heavy');
   if(_MAGIC_ET.has(et))return 'death_magic';
   if(et>=50)return 'death_demon';
@@ -10181,8 +10228,8 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
   if(!noSound){
     if(isBoss){playSampleAt('death_boss',.5,_r(.7,.15),x,y)}
     else if(et>=100&&et<=102){const gk=et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3';playSampleAt(gk,_r(.5,.1),_r(1,.1),x,y)}
-    else if(Math.random()<.5){
-      // 일반몹 사망 사운드 — 50% 확률, 전 카테고리 통합
+    else if(Math.random()<.8){
+      // 일반몹 사망 사운드 — 80% 확률, 전 카테고리 통합
       const k=_deathSfxKey(et);
       const v=_ARMOR_ET.has(et)?.2:r>=40?.5:.4;
       playSampleAt(k,_r(v,.08),_r(1,.12),x,y);
@@ -10520,6 +10567,8 @@ function initGlowObjects(){
   }}
 }
 // ═══ [MAP-OBJ] 맵 오브젝트 시스템 ═══
+const _SAME_TYPE_DIST=1200; // 동일 에셋 최소 거리 (한 화면 내 중복 방지)
+function _nearbyTypeCount(list,type,x,y,radius){let c=0;for(const o of list)if(o.type===type&&dst(x,y,o.x,o.y)<radius)c++;return c}
 function initMapObjects(){
   const _editorObjs=MAP_OBJS.filter(o=>o.type&&!['bonfire','lore','breakable','trap','altar'].includes(o.type));
   MAP_OBJS=[];const hell=SI_TO_HELL[G.stage],map=G.map,rooms=G.rooms;
@@ -10695,7 +10744,7 @@ function initMapObjects(){
             pick=_largeDeco[~~(_dcSeed()*_largeDeco.length)].id;
             let dup=false;
             if(pick===_lastType){dup=true}
-            else{for(const mo of MAP_OBJS){if(mo.type===pick&&dst(px,py,mo.x,mo.y)<800){dup=true;break}}}
+            else if(_nearbyTypeCount(MAP_OBJS,pick,px,py,_SAME_TYPE_DIST)>0){dup=true}
             if(!dup)break;
           }
           _lastType=pick;
@@ -10765,7 +10814,7 @@ function initMapObjects(){
         for(let _try=0;_try<5;_try++){
           _scPick=_scatterDeco[~~(_dcSeed()*_scatterDeco.length)].id;
           let dup=false;
-          for(const sp of _scPlacedList){if(sp.type===_scPick&&dst(px,py,sp.x,sp.y)<800){dup=true;break}}
+          if(_nearbyTypeCount(_scPlacedList,_scPick,px,py,_SAME_TYPE_DIST)>0)dup=true;
           if(!dup)break;
         }
         MAP_OBJS.push({type:_scPick,x:px,y:py,hell,_scatter:1});
@@ -10799,8 +10848,7 @@ function initMapObjects(){
       for(let _try=0;_try<8;_try++){
         _dObj=_pool[~~(_dcSeed()*_pool.length)];
         let _sameCnt=0;
-        for(const mo of MAP_OBJS){if(mo.type===_dObj.id&&dst(_px,_py,mo.x,mo.y)<800)_sameCnt++}
-        if(_sameCnt<2)break;
+        if(_nearbyTypeCount(MAP_OBJS,_dObj.id,_px,_py,_SAME_TYPE_DIST)<1)break;
       }
       MAP_OBJS.push({type:_dObj.id,x:_px,y:_py,hell});
       _dcFloors.splice(_fi,1);_dcPlaced++;
@@ -127312,6 +127360,7 @@ function _drPlay(onDone){
 function _drReset(){_drBuf=[];_drIdx=0;_drLen=0;_drCaptT=0}
 
 function die(){
+  ultUnmute(); // 궁극기 시전 중 사망 시 음소거 해제
   P._esAutoFire=false; // 마력연사 해제
   if(P.s==='fallen'||P.s==='dead')return; // 이미 쓰러진 상태면 중복 방지
   // ═══ 어픽스: reviveOnce (1회부활) — HP 30%로 즉시 부활 ═══
@@ -128601,7 +128650,7 @@ function activateIceShatter(){
 // ═══ 신성폭발 발사 ═══
 function fireHolyBlast(){
   if(!P._hbCasting)return;
-  P._hbCasting=false;
+  P._hbCasting=false;ultUnmute();
   const slv=P.skills.holyBlast||1;
   P._hbCd=~~(5400*(1+_eqAffix('cooldownRed')));
   const dmg=~~(magicRef()*statInt()*pMagicMul()*DPS_BAL.magic*15*(1+(slv-1)*0.10));
@@ -128635,7 +128684,7 @@ function fireHolyBlast(){
 // ═══ 블랙 발동 ═══
 function fireBlackStar(){
   if(!P._bsCasting)return;
-  P._bsCasting=false;
+  P._bsCasting=false;ultUnmute();
   const slv=P.skills.blackStar||1;
   P._bsCd=~~(5400*(1+_eqAffix('cooldownRed')));
   const cx=P._bsX,cy=P._bsY;
@@ -128652,7 +128701,7 @@ function fireBlackStar(){
 // ═══ 용암소환 발동 ═══
 function fireLavaSummon(){
   if(!P._lvCasting)return;
-  P._lvCasting=false;
+  P._lvCasting=false;ultUnmute();
   const slv=P.skills.lavaSummon||1;
   P._lvCd=~~(5400*(1+_eqAffix('cooldownRed')));
   const cx=P._lvX,cy=P._lvY;
@@ -129579,6 +129628,7 @@ $('optShake').oninput=function(){OPT.shake=+this.value;$('optShakeVal').textCont
 $('optParts').oninput=function(){OPT.parts=+this.value;$('optPartsVal').textContent=this.value+'%';saveSettings()};
 $('optSfx').oninput=function(){OPT.sfxVol=+this.value;$('optSfxVal').textContent=this.value+'%';if(_mbus)_mbus.gain.value=sfxVol();saveSettings()};
 $('optBgm').oninput=function(){OPT.bgmVol=+this.value;$('optBgmVal').textContent=this.value+'%';BGM.setVol(this.value/100);saveSettings()};
+$('optBgmTrack').onchange=function(){OPT.bgmTrack=this.value;if(this.value==='auto'){BGM.play(BGM.stageKey(G.stage))}else{BGM.play(this.value)}saveSettings()};
 $('optDiff').oninput=function(){OPT.diff=+this.value;const d=OPT.diff;$('optDiffVal').textContent=DIFF_NAME[d];saveSettings()};$('optDiff').max=10;
 $('optAutoPot').oninput=function(){const v=+this.value/100;OPT.autoPotThr=v;$('optAutoPotVal').textContent='HP '+this.value+'% 이하';saveSettings()};
 const RAR_LABEL=['일반 이상','고급 이상','희귀 이상','영웅 이상','전설만'];
@@ -130022,6 +130072,7 @@ function syncSettingsUI(){
   if($('optParts')){ $('optParts').value=OPT.parts; $('optPartsVal').textContent=OPT.parts+'%'; }
   if($('optSfx')){ $('optSfx').value=OPT.sfxVol; $('optSfxVal').textContent=OPT.sfxVol+'%'; }
   if($('optBgm')){ $('optBgm').value=OPT.bgmVol||30; $('optBgmVal').textContent=(OPT.bgmVol||30)+'%'; }
+  if($('optBgmTrack'))$('optBgmTrack').value=OPT.bgmTrack||'auto';
   if($('optDiff')){ 
     $('optDiff').value=OPT.diff;$('optDiff').max=10;
     $('optDiffVal').textContent=DIFF_NAME[OPT.diff]||'일반'; 
