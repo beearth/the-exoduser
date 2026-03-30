@@ -5710,15 +5710,31 @@ const _CH_DECO={
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
 for(const[k,v]of Object.entries(_OBJ_SPR_MAP)){const im=new Image();im.src=v;_OBJ_SPR[k]=im}
 const _bossRoomBg=new Image();_bossRoomBg.src='assets/map/ch1/boss_room_bg.png';
-const _bossPillarImg=new Image();_bossPillarImg.src='assets/map/ch1/collision/boss_pillar_01.webp';
-const _dungeonPillarImg=_bossPillarImg;
+let _pillarCvs=null,_pillarAR=1;
+{const _pRaw=new Image();_pRaw.src='assets/map/ch1/collision/boss_pillar_01.webp';
+_pRaw.onload=()=>{
+  const w=_pRaw.naturalWidth,h=_pRaw.naturalHeight;
+  const c=document.createElement('canvas');c.width=w;c.height=h;
+  const x=c.getContext('2d');x.drawImage(_pRaw,0,0);
+  const id=x.getImageData(0,0,w,h),d=id.data;
+  for(let i=0;i<d.length;i+=4){
+    const mx=Math.max(d[i],d[i+1],d[i+2]),mn=Math.min(d[i],d[i+1],d[i+2]);
+    const sat=mx>0?(mx-mn)/mx:0;
+    if(sat<0.15&&mx<130)d[i+3]=0;
+    else if(sat<0.25&&mx<110)d[i+3]=~~(d[i+3]*0.2);
+  }
+  x.putImageData(id,0,0);_pillarCvs=c;_pillarAR=h/w;
+  console.log('[PILLAR] processed',w,'x',h,'ar',_pillarAR);
+}}
 const _bossGateVid=document.createElement('video');_bossGateVid.src='assets/map/ch1/floor_objects/boss_gate_anim.mp4';_bossGateVid.loop=true;_bossGateVid.muted=true;_bossGateVid.playsInline=true;_bossGateVid.preload='auto';_bossGateVid.play().catch(()=>{});
+_bossGateVid.addEventListener('canplay',()=>console.log('[GATE-VID] canplay readyState='+_bossGateVid.readyState+' w='+_bossGateVid.videoWidth+'×'+_bossGateVid.videoHeight));
+_bossGateVid.addEventListener('error',()=>console.error('[GATE-VID] ERROR loading video:',_bossGateVid.error));
 const _bossGateImgs=[];
 for(let _bgi=0;_bgi<7;_bgi++){const _im=new Image();_im.src='assets/map/ch1/collision/boss_gate.png';_im.onload=()=>console.log('[GATE] bossGateImg['+_bgi+'] loaded:',_im.src,'w:',_im.naturalWidth);_im.onerror=()=>{};_bossGateImgs.push(_im)}
 function _waitObjSprites(timeout){
   return new Promise(r=>{
     const t0=Date.now();
-    const _extraImgs=[_bossRoomBg,..._bossGateImgs,_impSpr,_dungeonPillarImg];
+    const _extraImgs=[_bossRoomBg,..._bossGateImgs,_impSpr];
     const check=()=>{
       let done=true;
       for(const k in _OBJ_SPR){const im=_OBJ_SPR[k];if(!im.complete&&!im.naturalWidth){done=false;break}}
@@ -10874,24 +10890,15 @@ function buildMapCache(){
       if((v===0||v===4||v===5)&&!_hasSoil){c.fillStyle=th.f;c.fillRect(tx*T,ty*T,T,T);}
       else if(v===1||v===3){c.fillStyle='#000000';c.fillRect(tx*T,ty*T,T,T);}
     }
-    // 보스 아레나 기둥 이미지 렌더 (v===1 중 바닥 인접 타일)
-    if(G._bossArena&&_bossPillarImg&&_bossPillarImg.complete&&_bossPillarImg.naturalWidth){
+    // 내부 기둥 이미지 렌더 (v===1 중 바닥 인접 타일, 보스/던전 공용)
+    if(_pillarCvs){
       for(let ty=1;ty<mh-1;ty++)for(let tx=1;tx<mw-1;tx++){
         if(map[ty][tx]!==1)continue;
         const allWall=map[ty-1][tx]===1&&map[ty+1][tx]===1&&map[ty][tx-1]===1&&map[ty][tx+1]===1;
         if(allWall)continue;
-        const _pSz=T*2.5,px=tx*T+T/2-_pSz/2,py=ty*T+T/2-_pSz/2;
-        c.drawImage(_bossPillarImg,px,py,_pSz,_pSz);
-      }
-    }
-    // 던전(비보스) 내부 기둥 → vine_pillar 렌더
-    if(!G._bossArena&&_dungeonPillarImg&&_dungeonPillarImg.complete&&_dungeonPillarImg.naturalWidth){
-      for(let ty=1;ty<mh-1;ty++)for(let tx=1;tx<mw-1;tx++){
-        if(map[ty][tx]!==1)continue;
-        const allWall=map[ty-1][tx]===1&&map[ty+1][tx]===1&&map[ty][tx-1]===1&&map[ty][tx+1]===1;
-        if(allWall)continue;
-        const _pSz=T*2.5,px=tx*T+T/2-_pSz/2,py=ty*T+T/2-_pSz/2;
-        c.drawImage(_dungeonPillarImg,px,py,_pSz,_pSz);
+        const _pW=T*3,_pH=_pW*_pillarAR;
+        const px=tx*T+T/2-_pW/2,py=ty*T+T/2-_pH/2;
+        c.drawImage(_pillarCvs,px,py,_pW,_pH);
       }
     }
     // 보스 아레나/던전 게이트 이미지 렌더
@@ -11545,7 +11552,7 @@ const STAT_DEF=[
   {key:'str',name:'💪 힘 (STR)',    desc:'물리 공격력 +0.5%, MAX HP +1, HP리젠 +0.002',col:'#ff4444',icon:'💪'},
   {key:'dex',name:'🏹 민첩 (DEX)',   desc:'공격속도 +0.3%, 이동속도 +0.005, 크리 +0.03%, ST리젠 +0.002, MAX ST +1',col:'#44ff44',icon:'🏹'},
   {key:'int',name:'🔮 지능 (INT)',   desc:'마법 데미지 +0.5%, MAX MP +1, MP리젠 +0.003',col:'#4488ff',icon:'🔮'},
-  {key:'vit',name:'🛡️ 체력 (VIT)',   desc:'MAX HP +1, 방어력 +0.2, MAX ST +1, HP리젠 +0.003',col:'#ffaa00',icon:'🛡️'},
+  {key:'vit',name:'🛡️ 체력 (VIT)',   desc:'MAX HP +2, 방어력 +0.2, MAX ST +1, HP리젠 +0.003',col:'#ffaa00',icon:'🛡️'},
   {key:'lck',name:'🍀 행운 (LCK)',   desc:'크리 +0.1%, 크리뎀 +0.5%, 드롭률 +0.15%',col:'#cc44ff',icon:'🍀'},
 ];
 let STATS={str:0,dex:0,int:0,vit:0,lck:0};
@@ -11579,10 +11586,10 @@ function applyStats(){
   for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it){_eqStr+=(it.bStr||0);_eqDex+=(it.bDex||0);_eqInt+=(it.bInt||0)}}
   const s={str:STATS.str+_eqStr,dex:STATS.dex+_eqDex,int:STATS.int+_eqInt,vit:STATS.vit,lck:STATS.lck};
   P._effStats=s; // 유효 스탯 캐시 (UI 표시용)
-  // ═══ 바이블 기준: HP = 100+(stage-1)*6 + VIT*3 + STR*1 + 장비HP ═══
+  // ═══ 바이블 기준: HP = 100+(stage-1)*6 + VIT*2 + STR*1 + 장비HP ═══
   const _stgHp=G.on?100+((G.stage||1)-1)*6:100;
   const _afHpF=_eqAffix('maxHPFlat'),_afHpP=_eqAffix('maxHPPct')+_eqAffix('lifeMaxHP'),_imHp=_eqImplicit('_iMaxHP'),_imHpP=_eqImplicit('_iMaxHPPct')+_eqImplicit('_iLifeHPPct');
-  P.mhp=~~((_stgHp+P.lv*1+s.vit*3+s.str*1+(pt().bonusHp||0)+(blt().bonusHp||0)+(rg1().bonusHp||0)+(rg2().bonusHp||0)+_afHpF+_imHp)*(1+_afHpP+_imHpP*.01+(PASSIVES.pMelee||0)*.03));P.hp=Math.min(P.hp,P.mhp);
+  P.mhp=~~((_stgHp+P.lv*1+s.vit*2+s.str*1+(pt().bonusHp||0)+(blt().bonusHp||0)+(rg1().bonusHp||0)+(rg2().bonusHp||0)+_afHpF+_imHp)*(1+_afHpP+_imHpP*.01+(PASSIVES.pMelee||0)*.03));P.hp=Math.min(P.hp,P.mhp);
   P.baseDef=2+s.vit*.2;
   P.maxPoise=80+s.vit*0.5+s.str*0.2;
   if(P.poise===undefined)P.poise=P.maxPoise;
@@ -129427,7 +129434,7 @@ const _FPS_STEPS=[30,60,120,144,244];
 $('optFps').oninput=function(){OPT.fpsCap=_FPS_STEPS[+this.value];$('optFpsVal').textContent=OPT.fpsCap;saveSettings()};
 $('optResScale').oninput=function(){OPT.resScale=+this.value;$('optResScaleVal').textContent=this.value+'%';rz();saveSettings()};
 $('optPetAuto').onchange=function(){OPT.petAuto=this.checked;saveSettings()};
-$('optIrisSz').oninput=function(){const v=+this.value;G._irisSz=v;if(G.pets&&G.pets.iris)G.pets.iris.sz=v;$('optIrisSzVal').textContent=v;};
+$('optIrisSz').oninput=function(){const v=+this.value;G._irisSz=v;if(G.pets&&G.pets.iris)G.pets.iris.sz=v;$('optIrisSzVal').textContent=v;saveSettings()};
 $('optBrightness').oninput=function(){OPT.brightness=+this.value;$('optBrightnessVal').textContent=this.value+'%';C.style.filter='brightness('+(OPT.brightness/100)+')';saveSettings()};
 $('optIrisGlow').oninput=function(){OPT.irisGlow=+this.value;$('optIrisGlowVal').textContent=this.value;saveSettings()};
 $('optBladeAuto').onchange=function(){OPT.bladeAuto=this.checked;saveSettings()};
@@ -131354,12 +131361,18 @@ function draw(){
     }else{X.fillStyle='rgba(80,80,80,.5)';X.fillRect(px+2,py+2,T-4,T-4)}
   }
   // ── 던전 보스 게이트 입구 비디오 애니메이션 (출구 타일 위에 렌더) ──
-  if(!G._bossArena&&G.exits.length>0&&G.bossGate&&G.bossGate.length>0&&_bossGateVid.readyState>=2&&G.bossAlive){
+  if(!G._bossArena&&G.exits.length>0&&G.bossGate&&G.bossGate.length>0&&G.bossAlive){
     const _exMinX=Math.min(...G.exits.map(e=>e.x)),_exMaxX=Math.max(...G.exits.map(e=>e.x));
     const _exMinY=Math.min(...G.exits.map(e=>e.y)),_exMaxY=Math.max(...G.exits.map(e=>e.y));
     const _exCx=((_exMinX+_exMaxX)/2+.5)*T,_exCy=((_exMinY+_exMaxY)/2+.5)*T;
-    const _dgVW=(_exMaxX-_exMinX+1)*T+40,_dgVH=(_exMaxY-_exMinY+1)*T+40;
-    X.drawImage(_bossGateVid,_exCx-_dgVW/2,_exCy-_dgVH/2,_dgVW,_dgVH);
+    // 비디오 원본 비율 유지하면서 크게 렌더 (720×720 → 300×300)
+    const _dgVW=300,_dgVH=300;
+    X.globalAlpha=1;
+    if(_bossGateVid.readyState>=2){
+      X.drawImage(_bossGateVid,_exCx-_dgVW/2,_exCy-_dgVH/2,_dgVW,_dgVH);
+    }else{
+      if(_bossGateVid.paused)_bossGateVid.play().catch(()=>{});
+    }
   }
   // tile=3 대문 장식은 맵 캐시에서 처리됨 (출구 타일이 진입 역할)
   // [GLOW-ORI] 발광 오브젝트 렌더링 — 비활성화
@@ -133969,9 +133982,9 @@ function draw(){
       if(Math.abs(_irDx)<_thw&&Math.abs(_irDy)<_thh){
         const _irSx=C.width/2+_irDx,_irSy=C.height/2+_irDy;
         const _irFlk=.65+Math.sin(_gameFrame*.1)*.1+Math.sin(_gameFrame*.17)*.06;
-        const _irR=450; // 유령불꽃 조명 반경 (확대+번짐)
+        const _irR=OPT.irisGlow||700; // 유령불꽃 조명 반경 (옵션 연동)
         _tc.globalAlpha=_irFlk*.45;_tc.drawImage(_getTorchSmall(_irR),_irSx-_irR,_irSy-_irR);
-        const _irR2=220;
+        const _irR2=~~(_irR*.32);
         _tc.globalAlpha=_irFlk*.7;_tc.drawImage(_getTorchSmall(_irR2),_irSx-_irR2,_irSy-_irR2);
         _tc.globalAlpha=1;
       }
@@ -134005,16 +134018,17 @@ function draw(){
     const _irFFlk=.85+Math.sin(_irF.t*.09)*.1+Math.sin(_irF.t*.17)*.05;
     X.save();X.setTransform(1,0,0,1,0,0);
     // 번짐 글로우 헤일로
+    const _irHSz=20+(_irF.sz||20)*0.8;
     X.globalAlpha=.18*_irFFlk;X.fillStyle='#2288ff';
-    X.beginPath();X.arc(_irFx,_irFy,55,0,Math.PI*2);X.fill();
+    X.beginPath();X.arc(_irFx,_irFy,_irHSz*.9,0,Math.PI*2);X.fill();
     X.globalAlpha=.12*_irFFlk;X.fillStyle='#44bbff';
-    X.beginPath();X.arc(_irFx,_irFy,36,0,Math.PI*2);X.fill();
+    X.beginPath();X.arc(_irFx,_irFy,_irHSz*.6,0,Math.PI*2);X.fill();
     // 불꽃 스프라이트 애니메이션 (flame01~04)
     if(_flameImgs.length>=4){
       const _irFIdx=Math.floor(_irF.t*.08)%4;
       const _fImg=_flameImgs[_irFIdx];
       if(_fImg){
-        const _irSz=60;
+        const _irSz=20+(_irF.sz||20)*0.8; // 옵션 크기 반영 (min20~max100)
         X.globalAlpha=_irFFlk;
         X.drawImage(_fImg,_irFx-_irSz/2,_irFy-_irSz*.7,_irSz,_irSz);
       }
@@ -138312,8 +138326,13 @@ $('retryBtn').onclick=async()=>{
     G.spawnHoles=b.spawnHoles;G.rifts=b.rifts;
     G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;
     G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;G.stageCleared=false;G._deathSpawned=false;
-    // 게이트 입구 (게이트 바로 아래) 리스폰
-    const _gx=(b._bossCx+.5)*T,_gy=(b._gateY+2+.5)*T;
+    // boss_gate_col 충돌 재생성 (MAP_OBJS 초기화 후 복원)
+    if(b.bossGate&&b.bossGate.length>0){
+      const _gcx2=(Math.min(...b.bossGate.map(g=>g.x))+Math.max(...b.bossGate.map(g=>g.x)))/2;
+      MAP_OBJS.push({type:'boss_gate_col',x:(_gcx2+.5)*T,y:(b._gateY+2)*T});
+    }
+    // 게이트 입구 (나무 입 부분 근처) 리스폰
+    const _gx=(b._bossCx+.5)*T,_gy=(b._gateY+8+.5)*T;
     const sp=safePt(_gx,_gy,P.r);
     P.x=sp?sp.x:_gx;P.y=sp?sp.y:_gy;
     // 방 몬스터 리스폰 (보스방 제외, tileRLE: 소환굴만)
