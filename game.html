@@ -117900,6 +117900,7 @@ function update(){
     // NOTE: _harpActive 중 준비는 dashActive 밖 공통 블록에서 처리
     if(--_dashLeft<=0){
       _dashActive=false;_harpActive=false;_dashHold=false;_dashHoldF=0;_dashPhase=3;
+      P.iframes=Math.max(P.iframes,48); // 착지 0.8초 무적
       P._chainSlashActive=false;P._chainSlashHits=null;P._chainSlashTick=0; // 기동칼날개 리셋
       const _slamLand=P._chainSlamReady||P._chainAssaultReady||P._chainBlastReady; // 기동파괴/기동불꽃/기동전폭 준비 시 착지 효과 강제
       _harpLandT=30; // 착지 애니메이션 항상 재생 (30프레임≈0.5초)
@@ -119162,7 +119163,7 @@ function update(){
     if(canMv(nx,ny,P.r)){P.x=nx;P.y=ny}else{
       // Wall slam — if hit enemies, do AoE burst
       if(P.chargeHits&&P.chargeHits.size>0){G.shake=14*OPT.shake/100;G.hitStop=~~(_HS.chargeWall*OPT.hitStop/100)}
-      P.s='cRecover';P.st2=10;P.iframes=Math.max(P.iframes,60);break} // 착지 1초 무적
+      P.s='cRecover';P.st2=10;P.iframes=Math.max(P.iframes,48);break} // 착지 0.8초 무적
     // 레벨당 거리 보너스 대폭 하향 (0.0025 -> 0.001), 캡 적용 (Max 0.985)
     const _cbDecay=Math.min(0.985, (P.skills.chargeBoost||0)>=1 ? 0.96+((P.skills.chargeBoost||0)-1)*0.001 : 0.94);
     P.chargeSpd*=_cbDecay**sp;
@@ -119212,7 +119213,7 @@ function update(){
         else if(hn>=4)addTxt(P.x,P.y-28,'💀 MULTI×'+hn+'!','#ff2200',50);
       }
     }
-    if(P.st2<=0||P.chargeSpd<1.5){P.s='cRecover';P.st2=10;P.iframes=Math.max(P.iframes,60)}break} // 착지 1초 무적
+    if(P.st2<=0||P.chargeSpd<1.5){P.s='cRecover';P.st2=10;P.iframes=Math.max(P.iframes,48)}break} // 착지 0.8초 무적
   case 'blinkLand':{
     // 블링크 착지 회복 — 느린 이동 가능
     let bldx=0,bldy=0;
