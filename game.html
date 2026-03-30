@@ -3962,31 +3962,51 @@ _archerRaw.onload=()=>{
   _archerReady=true;
 };
 let _sfxFrameT=0;const _sfxFrameCnt={};
-function _sfxFrameReset(){_sfxFrameT++;for(const k in _sfxFrameCnt)_sfxFrameCnt[k]=0;if(SFX._sbSndCd>0)SFX._sbSndCd--;if(_actx&&_actx.state==='suspended')_actx.resume()}
-function playSample(key,vol,rate){
-  if(_gxVolMul<1){vol*=_gxVolMul;if(vol<0.01)return;}
-  // 키당 프레임 최대 4개 — 같은 소리 300개는 4개와 구분 불가
-  // 단 vol이 높을수록(가까울수록) 우선 재생
-  if(!_sfxFrameCnt[key])_sfxFrameCnt[key]=0;
-  if(_sfxFrameCnt[key]>=4)return;
-  _sfxFrameCnt[key]++;
-  // pitch 미세 랜덤 (매번 다르게 들림 → 300마리처럼 느껴짐)
-  if(!rate)rate=1;
-  rate=rate*(0.92+Math.random()*0.16);
+const _sfxQueue=[];        // {key,vol,rate} 대기열
+const _SFX_PER_FRAME=8;    // 프레임당 최대 처리 수 (귀로 구분 가능한 한계)
+function _playSampleNow(key,vol,rate,startTime){
   const buf=_audioBuffers[key];
   if(!buf){if(_sampleFiles[key]&&!_audioLoadPending[key]){_audioLoadPending[key]=true;const _c2=actx();fetch(_sampleFiles[key]).then(r=>r.arrayBuffer()).then(ab=>_c2.decodeAudioData(ab)).then(b=>{_audioBuffers[key]=b;delete _audioLoadPending[key]}).catch(()=>{delete _audioLoadPending[key]})}return;}
   const c=actx();
   const src=c.createBufferSource();src.buffer=buf;
-  if(rate&&rate!==1)src.playbackRate.value=rate;
+  src.playbackRate.value=rate||1;
   if(!_sfxGain[key]){_sfxGain[key]=c.createGain();_sfxGain[key].connect(mbus());}
   _sfxGain[key].gain.value=Math.min(1,(vol||1)*sfxVol());
   src.connect(_sfxGain[key]);
-  if(!_sfxRing[key])_sfxRing[key]={arr:new Array(32).fill(null),idx:0};
-  const ring=_sfxRing[key];
-  ring.arr[ring.idx]=src;ring.idx=(ring.idx+1)&31;
   src.onended=function(){try{src.disconnect()}catch(e){}};
-  src.start();
+  src.start(startTime||0);
   return src;
+}
+function _sfxFrameReset(){
+  _sfxFrameT++;
+  // 큐에서 프레임당 최대 8개만 실제 재생 (나머지는 다음 프레임)
+  // 단 키 중복 제거 — 같은 소리 여러개면 1개만
+  const _seen={};let _cnt=0;
+  const c=actx();const _t=c.currentTime;
+  for(let i=0;i<_sfxQueue.length&&_cnt<_SFX_PER_FRAME;i++){
+    const q=_sfxQueue[i];
+    if(!_seen[q.key])_seen[q.key]=0;
+    // 타격음(hit/swing/slash)은 3개까지, 나머지는 2개까지 허용
+    const _lim=/hit|swing|slash|chain/.test(q.key)?3:2;
+    if(_seen[q.key]>=_lim)continue;
+    // 같은 키 여러개면 미세 딜레이로 다다다닥 표현
+    const _delay=_seen[q.key]*0.04; // 0ms, 40ms, 80ms
+    _playSampleNow(q.key,q.vol,q.rate,_t+_delay);
+    _seen[q.key]++;_cnt++;
+  }
+  _sfxQueue.length=0; // 처리 안된 것도 버림 (이미 늦음)
+  for(const k in _sfxFrameCnt)_sfxFrameCnt[k]=0;
+  if(SFX._sbSndCd>0)SFX._sbSndCd--;
+  if(_actx&&_actx.state==='suspended')_actx.resume();
+}
+function playSample(key,vol,rate){
+  if(_gxVolMul<1){vol*=_gxVolMul;if(vol<0.01)return;}
+  if(!rate)rate=1;
+  rate=rate*(0.92+Math.random()*0.16);
+  // 큐에 추가 (vol 높을수록 앞으로 — 가까운 소리 우선)
+  _sfxQueue.push({key,vol,rate});
+  if(vol>0.7)_sfxQueue.sort((a,b)=>b.vol-a.vol);
+  return;
 }
 // 거리 기반 사운드: 가까우면 vol 그대로, 멀면 작게 (화면 밖이면 거의 안 들림)
 function playSampleAt(key,vol,rate,x,y){
