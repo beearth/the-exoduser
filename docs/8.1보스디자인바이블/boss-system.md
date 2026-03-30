@@ -69,7 +69,10 @@ rewindStrike, mirrorClone, shieldBash2, mirrorGuard, chainLightning, cageTrap, d
 float posture;       // 현재 체간 (0 ~ maxPosture)
 float maxPosture;    // 100 + stage * 8
 float postureReT;    // 자연회복 쿨다운 (180프레임=3초, 피격 시 리셋)
-// 체간 파괴: 5초 스턴 + 그로기 SFX + 슬로우모션 + 화면 흔들림
+// 체간 파괴: 3초 스턴(180f, 보스 캡 적용) + 그로기 SFX + 슬로우모션 + 화면 흔들림
+// 그로기 1회 발동 → 즉시 5초(300f) 면역 (_pImmune)
+// 면역 중: 체간 축적 불가, 포이즈 그로기 불가
+// 그로기 게이지: _maxStunned 대비 stunned 비율로 실시간 감소
 // HUD: 금색 그라데이션 체간바
 ```
 

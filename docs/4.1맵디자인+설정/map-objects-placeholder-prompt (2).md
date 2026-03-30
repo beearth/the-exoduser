@@ -67,13 +67,14 @@ MAP_OBJS = [] 초기화 후 아래 오브젝트들을 _tseed 기반으로 배치
   - loot: 'mat'(80%), 'potion'(15%), 'none'(5%)
 
 --- 2d. 함정 (trap) ---
-배치: combat방과 통로에 스테이지당 3~6개.
-- _tseed(tx+900, ty+900) 기반
-- 통로(양 옆이 벽인 좁은 길) 우선
-- 보스방, start방, forge방에는 절대 안 넣음
+배치: 맵 전역 바닥 타일에 ~100개, 최소 150px 간격.
+- _tseed(stage*59+7, hell*43+3) 기반
+- 바닥 타일 전체에서 랜덤 배치 (뛰엄뛰엄)
+- 보스방, start방, forge방에는 _moOk로 자동 제외
+- 비주얼: pit_blood_anim.png 스프라이트 시트 (3x3, 9프레임, 300ms 애니)
 구조: {type:'trap', x, y, hell, active:true, cooldown:0, dmgPct:0.10}
-  - hell 0: 빙판(감속). hell 2: 용암(10%mhp). hell 4: 전기(8%mhp+스턴)
-  - 나머지 hell: 가시(5%mhp) 기본
+  - 모든 지옥: 10%mhp 데미지 + "피웅덩이!" 텍스트
+  - 밟으면 active=false → 즉시 소멸 (1회용, 쿨다운 재활성 없음)
 
 --- 2e. 버프 제단 (altar) ---
 배치: 스테이지당 0~1개 (5스테이지부터 등장).
@@ -263,23 +264,25 @@ for(const mo of MAP_OBJS) {
     }
     
     case 'trap': {
-      // 빨간 원 + 경고 표시 (쿨다운 중이면 어두움)
+      // pit_blood_anim.png 스프라이트 시트 (3x3, 9프레임, 300ms) 사용
+      // 쿨다운 중이면 어둡게, 활성 시 맥동
       const onCd = mo.cooldown > 0;
-      const dangerPulse = onCd ? .15 : (.2 + Math.sin(_now/150)*.15);
-      // 위험 영역 표시
-      X.globalAlpha = dangerPulse;
-      X.fillStyle = onCd ? '#332222' :
-        (mo.hell===0 ? '#2244aa' : mo.hell===2 ? '#cc3300' : 
-         mo.hell===4 ? '#ccaa00' : '#aa2222');
-      X.beginPath(); X.arc(mo.x, mo.y, 20, 0, Math.PI*2); X.fill();
-      // 중심 경고 심볼
-      if(!onCd) {
-        X.globalAlpha = .6 + Math.sin(_now/100)*.3;
-        X.fillStyle = '#ff4444';
-        X.font = '16px sans-serif';
-        X.fillText('⚠', mo.x, mo.y+5);
+      const dp = onCd ? .15 : (.5 + Math.sin(_now/150)*.15);
+      const _tSpr = _OBJ_SPR['pit_blood_a']; // pit_blood_anim.png
+      if(_tSpr && _tSpr.complete && _tSpr.naturalWidth > 1) {
+        const _tSz = 60;
+        const _tOfs = ((~~(mo.x*7+mo.y*13))&0x7fffffff) % (300*9);
+        const _tFr = ~~(((_now+_tOfs) % (300*9)) / 300);
+        const _tFw = ~~(_tSpr.naturalWidth/3), _tFh = ~~(_tSpr.naturalHeight/3);
+        X.globalAlpha = dp;
+        X.drawImage(_tSpr, (_tFr%3)*_tFw, ~~(_tFr/3)*_tFh, _tFw, _tFh,
+                    mo.x-_tSz/2, mo.y-_tSz/2, _tSz, _tSz);
+      } else {
+        // 폴백: 색상 원
+        X.globalAlpha = dp;
+        X.fillStyle = onCd ? '#332222' : '#aa2222';
+        X.beginPath(); X.arc(mo.x, mo.y, 28, 0, Math.PI*2); X.fill();
       }
-      X.globalAlpha = 1;
       break;
     }
     
