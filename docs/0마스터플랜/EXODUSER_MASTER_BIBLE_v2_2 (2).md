@@ -909,7 +909,7 @@ public class BossAI : MonoBehaviour
 
 ```
 빨간색 (#ff2200): 패링 가능 → 와인드업 시 링+글로우+PARRY 텍스트
-보라색 (#cc00ff): 패링 불가 (잡기/독/속박 등) → DANGER 텍스트
+무지개색 (HSL 회전): 패링 불가 (잡기/독/속박 등) → 무지개 링+글로우+DANGER 텍스트
 ```
 
 ## 9.5 체간(Posture) 시스템
@@ -1746,7 +1746,7 @@ public class ObjectPool<T> : MonoBehaviour where T : MonoBehaviour {
 - BOSS_MOVES[49] 데이터 구조 (섹션 9.3)
 - 유틸리티 AI 선택 (거리적합+반복패널티+카운터보너스)
 - BossPhase 5단계 전환 (섹션 9.2)
-- 패링 컬러 코딩 (빨강/#ff2200 vs 보라/#cc00ff)
+- 패링 컬러 코딩 (빨강/#ff2200 vs 무지개/HSL회전)
 - 보스 등장 시네마틱 (레터박스 + 네임카드)
 - 체간(Posture) 시스템 (섹션 9.5)
 - BGM 레이어 페이즈 연동

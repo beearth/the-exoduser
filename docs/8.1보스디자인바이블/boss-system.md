@@ -63,22 +63,24 @@ judgeCut, delaySlash, perilThrust, phantomSwords, crescendoCombo, tideWave,
 rewindStrike, mirrorClone, shieldBash2, mirrorGuard, chainLightning, cageTrap, doppelganger
 ```
 
-### 체간(Posture) 시스템
+### 포이즈(Poise) — 그로기 시스템 (통합)
 
-```csharp
-float posture;       // 현재 체간 (0 ~ maxPosture)
-float maxPosture;    // 100 + stage * 8
-float postureReT;    // 자연회복 쿨다운 (180프레임=3초, 피격 시 리셋)
-// 체간 파괴: 3초 스턴(180f, 보스 캡 적용) + 그로기 SFX + 슬로우모션 + 화면 흔들림
-// 그로기 1회 발동 → 즉시 5초(300f) 면역 (_pImmune)
-// 면역 중: 체간 축적 불가, 포이즈 그로기 불가
-// 그로기 게이지: _maxStunned 대비 stunned 비율로 실시간 감소
-// HUD: 금색 그라데이션 체간바
+보스/일반몹 동일한 `e.poise` 시스템으로 통합 (구 posture 시스템 제거됨).
+
+```
+e.poise     // 현재 포이즈 (0이면 그로기)
+e.maxPoise  // HP * 0.5 (보스 기본)
+e.poiseR    // 포이즈 자연회복 쿨다운
+e._pImmune  // 보스 그로기 면역 타이머 (300f = 5초)
+// 설계 의도: 연속 그로기 방지 — 그로기 직후 다시 포이즈가 깎여 무한 CC가 되는 것을 차단
+// 면역 중: 포이즈 그로기 불가
+// 보스 그로기: 1.5초(90f), 일반몹: 3초(180f)
+// 포이즈 자연회복: 보스 5초(300f), 일반 3.3초(200f) 후 maxPoise의 15%씩
 ```
 
-### 패링 시 체간 데미지 (패턴별)
+### 패링 시 포이즈 데미지 (패턴별)
 
-| 패턴 | 체간 데미지 | 비고 |
+| 패턴 | 포이즈 데미지 | 비고 |
 |------|-----------|------|
 | 기본 근접 | 20 | 기본값 |
 | perilThrust | 60 | 위험찌르기 보상 |
