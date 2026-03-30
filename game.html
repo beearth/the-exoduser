@@ -1190,7 +1190,7 @@ async function dbSave(){
     const saveData={
       player:{
         lv:P.lv, exp:P.exp, maxExp:P.maxExp, sp:P.sp, ap:P.ap||0,
-        transLvDate:P._transLvDate||null, transLvCount:P._transLvCount||0,
+        transLvDate:P._transLvDate||null, transLvCount:P._transLvCount||0, apBossCleared:P._apBossCleared||[], goddessGift:P._goddessGift||[],
         baseAtk:P.baseAtk, baseDef:P.baseDef, mpR:P.mpR, stR:P.stR,
         hp:P.hp, mhp:P.mhp, mp:P.mp, mmp:P.mmp, st:P.st, mst:P.mst, speed:P.speed,
         shield:P.shield, mshield:P.mshield, maskOn:P.maskOn
@@ -1244,7 +1244,7 @@ function dbRestore(d){
   // Player
   const pd=d.player;
   P.lv=pd.lv||1; P.exp=pd.exp||0; P.maxExp=pd.maxExp||15;
-  P._transLvDate=pd.transLvDate||null; P._transLvCount=pd.transLvCount||0;
+  P._transLvDate=pd.transLvDate||null; P._transLvCount=pd.transLvCount||0; P._apBossCleared=pd.apBossCleared||[]; P._goddessGift=pd.goddessGift||[];
   // SP/AP: 저장된 값 그대로 복원 (재계산 폐지 — 보스+10SP 등 보너스 누락, 합체 비용 오산 등 버그 다수)
   P.sp=pd.sp||0;
   P.ap=pd.ap||0;
@@ -3227,6 +3227,8 @@ const _sampleFiles={
   monster_hurt:'sfx/monster/monster_hurt.mp3', // 보스 고통 — hurtE 보스 15%
   boss_hit:'sfx/monster/boss_hit.mp3',         // 보스 피격
   boss_howl:'sfx/monster/boss_howl.mp3',       // 보스 포효 — 아레나 진입
+  blue_loop:'sfx/skillsound/blue_loop.mp3',   // 푸른비 루프음
+  blue_hit:'sfx/skillsound/blue_hit.mp3',     // 타격음 (가끔만)
   boss_howl1:'sfx/monster/boss_howl1.mp3',
   // death/ — 몬스터 사망 (etype별 매핑: _deathSfxKey)
   monster_die1:'sfx/death/monster_die1.mp3',   // 범용 사망
@@ -3265,7 +3267,16 @@ const _sampleFiles={
   death_ghoul1_v4:'sfx/death/death_ghoul1_v4.mp3', // 구울 소 변형4
   death_ghoul1_v5:'sfx/death/death_ghoul1_v5.mp3', // 구울 소 변형5
   death_ghoul2:'sfx/death/death_ghoul2.mp3',      // 구울 중 — etype 101
+  death_ghoul2_v2:'sfx/death/death_ghoul2_v2.mp3', // 구울 중 변형2
+  death_ghoul2_v3:'sfx/death/death_ghoul2_v3.mp3', // 구울 중 변형3
+  death_ghoul2_v4:'sfx/death/death_ghoul2_v4.mp3', // 구울 중 변형4
+  death_ghoul2_v5:'sfx/death/death_ghoul2_v5.mp3', // 구울 중 변형5
   death_ghoul3:'sfx/death/death_ghoul3.mp3',      // 구울 대 — etype 102
+  death_ghoul3_v2:'sfx/death/death_ghoul3_v2.mp3', // 구울 대 변형2
+  death_ghoul3_v3:'sfx/death/death_ghoul3_v3.mp3', // 구울 대 변형3
+  death_ghoul3_v4:'sfx/death/death_ghoul3_v4.mp3', // 구울 대 변형4
+  death_ghoul3_v5:'sfx/death/death_ghoul3_v5.mp3', // 구울 대 변형5
+  death_ghoul3_v6:'sfx/death/death_ghoul3_v6.mp3', // 구울 대 변형6
   death_skull:'sfx/death/skull.mp3',               // 해골 부서짐 — BONE_ET 변형
   death_crack1:'sfx/death/death_crack1.mp3',      // 생물몹 터짐1
   death_crack2:'sfx/death/death_crack2.mp3',      // 생물몹 터짐2
@@ -4202,6 +4213,19 @@ function playSub(freq,dur,vol,fEnd){
 
 let _beamOsc=null,_beamGain=null,_beamOsc2=null,_beamMod=null,_beamLoopSrc=null,_beamLoopGain=null,_beamLoopIdx=0,_beamLoopNext=null;
 let _shieldLoopSrc=null,_shieldLoopGain=null;
+function _startLoop(key,vol){
+  try{const c=actx(),buf=_audioBuffers[key];if(!buf)return null;
+  const src=c.createBufferSource();src.buffer=buf;src.loop=true;
+  const g=c.createGain();g.gain.value=(vol||0.3)*sfxVol();
+  src.connect(g);g.connect(mbus());src.start();
+  return{src,gain:g}}catch(e){return null}
+}
+function _stopLoop(ref,fadeMs){
+  if(!ref)return;
+  try{const t=actx().currentTime,f=(fadeMs||150)/1000;
+  ref.gain.gain.linearRampToValueAtTime(0,t+f);
+  setTimeout(()=>{try{ref.src.stop()}catch(e){}},fadeMs||150)}catch(e){}
+}
 function _startShieldLoop(){try{_stopShieldLoop();const c=actx(),buf=_audioBuffers['shield_loop'];if(!buf)return;const src=c.createBufferSource();src.buffer=buf;src.loop=true;const g=c.createGain();g.gain.value=.25*sfxVol();src.connect(g);g.connect(mbus());src.start();_shieldLoopSrc=src;_shieldLoopGain=g}catch(e){}}
 function _stopShieldLoop(){if(_shieldLoopSrc){try{if(_shieldLoopGain)_shieldLoopGain.gain.exponentialRampToValueAtTime(.0001,actx().currentTime+.1);setTimeout(()=>{try{_shieldLoopSrc.stop()}catch(e){}},150)}catch(e){}_shieldLoopSrc=null;_shieldLoopGain=null}}
 const SFX={
@@ -10293,15 +10317,18 @@ const _DEATH_VARIANTS={
   death_flesh:['death_flesh','death_flesh2','death_splat1','death_splat2','death_splat3','death_crack1','death_crack2','death_crack3','death_crack4'],
   death_heavy:['death_heavy','death_heavy3','death_crush1','death_crush2','death_crush3','death_flesh','death_flesh2','death_splat1','death_splat2','death_splat3','death_crack1','death_crack2','death_crack3','death_crack4'],
   death_insect:['death_insect','death_insect2','death_crush3'],
-  death_bone:['death_bone','death_skull','death_crush1','death_crush2','death_crush3','death_bone2','death_bone3','death_bone_shatter1','death_bone_shatter2','death_bone_shatter3','death_bone_shatter4'],
-  death_beast:['death_heavy','death_crush2','death_crush3','death_splat1','death_crack1','death_crack2','death_crack3','death_crack4','death_beast1','death_beast2','death_beast3','death_beast4']
+  death_bone:['death_bone','death_skull','death_crush1','death_crush2','death_crush3','death_bone2','death_bone3','death_bone_shatter1','death_bone_shatter2','death_bone_shatter3','death_bone_shatter4','death_ghoul3_v2','death_ghoul3_v3','death_ghoul3_v4'],
+  death_beast:['death_heavy','death_crush2','death_crush3','death_splat1','death_crack1','death_crack2','death_crack3','death_crack4','death_beast1','death_beast2','death_beast3','death_beast4'],
+  death_ghoul1:['death_ghoul1','death_ghoul1_v2','death_ghoul1_v3','death_ghoul1_v4','death_ghoul1_v5'],
+  death_ghoul2:['death_ghoul2','death_ghoul2_v2','death_ghoul2_v3','death_ghoul2_v4','death_ghoul2_v5'],
+  death_ghoul3:['death_ghoul3','death_ghoul3_v2','death_ghoul3_v3','death_ghoul3_v4','death_ghoul3_v5','death_ghoul3_v6']
 };
 function _pickDeathVar(base){const a=_DEATH_VARIANTS[base];return a?a[Math.random()*a.length|0]:base}
 function _deathSfxKey(et){
   if(et==null)return 'monster_die1';
-  if(et===100)return 'death_ghoul1'; // 구울 소
-  if(et===101)return 'death_ghoul2'; // 구울 중
-  if(et===102)return 'death_ghoul3'; // 구울 대
+  if(et===100)return _pickDeathVar('death_ghoul1'); // 구울 소
+  if(et===101)return _pickDeathVar('death_ghoul2'); // 구울 중
+  if(et===102)return _pickDeathVar('death_ghoul3'); // 구울 대
   if(_ARMOR_ET.has(et))return _pickDeathVar('death_armor');
   if(_HUMANOID_ET.has(et))return _pickDeathVar('death_heavy'); // 인간형→묵직한 사망음
   if(_INSECT_ET.has(et))return _pickDeathVar('death_insect');
@@ -10360,7 +10387,7 @@ function _drawExplosions(X){
 function deathFX(x,y,r,col,isBoss,noSound,et){
   if(!noSound){
     if(isBoss){playSampleAt('death_boss',.5,_r(.7,.15),x,y)}
-    else if(et>=100&&et<=102){const gk=et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3';playSampleAt(gk,_r(.5,.1),_r(1,.1),x,y)}
+    else if(et>=100&&et<=102){const gk=_pickDeathVar(et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3');playSampleAt(gk,_r(.5,.1),_r(1,.1),x,y)}
     else{
       // 일반몹 사망 사운드 — 항상 재생, 전 카테고리 통합
       const k=_deathSfxKey(et);
@@ -14404,6 +14431,18 @@ function initStage(si){
   G.stageCleared=false;G._deathSpawned=false;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G.stageTime=0;G.combo=0;G.comboTimer=0;G._totalSpawned=0;G._stageKills=0;G._sStats={deaths:0,dmgDealt:0,dmgTaken:0,parries:0,potions:0,items:0,dodges:0,crits:0,maxHit:0,dashDist:0,dashCount:0,walked:0,_prevX:0,_prevY:0};
   if(typeof _clearExtEPalCache==='function')_clearExtEPalCache();
   if(typeof _clearExtBPalCache==='function')_clearExtBPalCache();
+  // ═══ 네메시스 여신의 가호: 1_1(si>=5)부터 스테이지 첫 진입 시 SP+5, AP+3 ═══
+  if(si>=5){
+    if(!P._goddessGift)P._goddessGift=[];
+    if(!P._goddessGift.includes(si)){
+      P._goddessGift.push(si);
+      P.sp=(P.sp||0)+5; P.ap=(P.ap||0)+3;
+      setTimeout(()=>{
+        _petSayCD('goddess_gift','crow','네메시스 여신의 가호다. 받아라.',5,9999);
+        addTxt(P.x,P.y-40,'✦ 여신의 가호 — SP+5 AP+3','#ddaaff',80);
+      },2000);
+    }
+  }
   // tileRLE 맵: 소환굴만으로 스폰, 자동 스폰 없음
   if(!G._isTileRLE){
     G.rooms.forEach((room,ri)=>spawnRoomEns(ri));
@@ -15953,7 +15992,7 @@ function update(){
         const _bsDmgBase=~~(magicRef()*statInt()*pMagicMul()*DPS_BAL.magic*15*(1+(_bsLv-1)*.1));
         P._blueBarrage={cnt:0,max:100,interval:3,timer:0,dmg:~~(_bsDmgBase/5),range:750+(_bsLv-1)*45,lv:_bsLv};
         P._blueCd=300;
-        playSample('fireball',.4,_r(1.3,.1));SFX.magic(6);_addSkProf('blueShot');
+        SFX.magic(6);_addSkProf('blueShot');
         addTxt(P.x,P.y-25,'💎 푸른비!','#00e5ff',50);
         for(let _bp=0;_bp<12;_bp++){const _ba2=Math.PI*2*_bp/12;poolPart(P.x,P.y,Math.cos(_ba2)*5,Math.sin(_ba2)*5,'#00e5ff',4,10)}
         P.s='magicRecover';P.st2=15;
@@ -17356,10 +17395,10 @@ function update(){
         if(p.explosive && !p.hitTriggered){ p.vx=0; p.vy=0; p.hitTriggered=true; } // 폭발탄은 멈춤
         {const _isTurretProj=!!p._fromTurret;
         const _ftV=_isTurretProj&&_gxTurret?Math.max(0,1-dst(P.x,P.y,_gxTurret.x,_gxTurret.y)/2000):1;
-        hurtE(e,dmg,ang,_isTurretProj,p,p.el);
+        hurtE(e,dmg,ang,_isTurretProj||p.blueBean,p,p.el);
         if(!_isTurretProj||_ftV>0.01){
           if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
-          else if(p.blueBean){if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.35*_ftV,_r(1,.15));P._bbHitCd=4}}
+          else if(p.blueBean){}
           else if(p.arcMissile){}
           else if(p.magic)playSampleAt('bullet_hit',.5*_ftV,_r(1,.15),e.x,e.y);
           else if(p.normalBow)playSampleAt('bow_hit',.4*_ftV,_r(1,.15),e.x,e.y);
@@ -17393,9 +17432,8 @@ function update(){
           for(let _bbi=0;_bbi<_bbNe.length;_bbi++){const _bbe=_bbNe[_bbi];if(!_bbe.alive||_bbe===e)continue;
             if(dst(p.x,p.y,_bbe.x,_bbe.y)<p._aoeR+_bbe.r){
               const _bba=Math.atan2(_bbe.y-p.y,_bbe.x-p.x);const _bbm=elMul(p.el,_bbe.el);
-              const _bbeStk=Math.min(50,_bbe._bbStk||0);const _bbeStkMul=1+_bbeStk*0.1;hurtE(_bbe,~~(p._aoeDmg*_bbm*_bbeStkMul),_bba,false,{magic:true,blueBean:true},p.el);_bbe._bbStk=Math.min(50,_bbeStk+1);_bbe._bbStkT=600;
+              const _bbeStk=Math.min(50,_bbe._bbStk||0);const _bbeStkMul=1+_bbeStk*0.1;hurtE(_bbe,~~(p._aoeDmg*_bbm*_bbeStkMul),_bba,true,{magic:true,blueBean:true},p.el);_bbe._bbStk=Math.min(50,_bbeStk+1);_bbe._bbStkT=600;
             }}
-          if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.35,_r(1,.15));P._bbHitCd=4}
           for(let _bbk=0;_bbk<6;_bbk++){const _bba2=Math.PI*2*_bbk/6;poolPart(p.x,p.y,Math.cos(_bba2)*3,Math.sin(_bba2)*3,'#00ccff',2+Math.random()*2,8+Math.random()*4)}
           // 관통 체크: AoE 터뜨리고도 관통 시 탄 유지
           if(p.pierce>0&&Math.random()<p.pierce&&(p._pierceCount||0)<(p.pierceMax||1)){
@@ -17826,9 +17864,18 @@ function update(){
         const _pp=_getPProj();_pp.x=P.x+Math.cos(_bbA)*16;_pp.y=P.y+Math.sin(_bbA)*16;_pp.vx=Math.cos(_bbA)*_bbSpd;_pp.vy=Math.sin(_bbA)*_bbSpd;_pp.dmg=~~(_bb.dmg/_bbDirs);_pp.el=EL.P;_pp.maxDist=_bb.range;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.pierce=Math.min(0.95,(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05);_pp.pierceMax=3+(PASSIVES.pPierce||0);_pp._aoeR=100;_pp._aoeDmg=~~(_bb.dmg*.07);pProjs[pProjs.length]=_pp;
       }
       _bb.cnt++;
-      if(_bb.cnt%20===0){playSample('fireball',.4,_r(1.5,.2));poolPart(P.x,P.y,0,0,'#00e5ff',5,6)}
+      // 루프 시작 (첫 발사 시)
+      if(_bb.cnt===0&&!P._blueLpSrc){
+        P._blueLpSrc=_startLoop('blue_loop',.35);
+      }
+      // 타격 피드백 — 20발마다 1번만
+      if(_bb.cnt%20===0)poolPart(P.x,P.y,0,0,'#00e5ff',5,6);
     }
-    if(P._blueBarrage.cnt>=P._blueBarrage.max)P._blueBarrage=null;
+    if(P._blueBarrage.cnt>=P._blueBarrage.max){
+      _stopLoop(P._blueLpSrc);P._blueLpSrc=null;
+      // 종료: 루프만 정지, 임팩트 없음
+      P._blueBarrage=null;
+    }
   }
   // ═══ 푸른비 E홀드 추가 발사 (초당 50발, MP 틱소모) ═══
   if(isHeld('beam')&&(P.activeMagicSk||'fireball')==='blueShot'&&P.skills.blueShot>=1){
@@ -23072,11 +23119,15 @@ function checkRooms(){
       // 처치 보스 기록 (동반부활용)
       if(!G._killedBosses)G._killedBosses=[];
       const _dBoss=G._bossRef||findBoss();if(_dBoss&&!G._killedBosses.includes(_dBoss.etype))G._killedBosses.push(_dBoss.etype);
-      // 보스 처치 AP 보너스: 일반보스 +5, 장보스 +10
+      // 보스 처치 AP 보너스: 일반보스 +5, 장보스 +10 (첫 클리어만)
+      if(!P._apBossCleared)P._apBossCleared=[];
       const _bossAP=STG[G.stage]&&STG[G.stage].isHellBoss?10:5;
-      P.ap=(P.ap||0)+_bossAP;
       addTxt(P.x,P.y-40,'출구가 열렸다!','#44ff88',80);
-      addTxt(P.x,P.y-60,'AP +'+_bossAP+'!','#ddaaff',60);
+      if(!P._apBossCleared.includes(G.stage)){
+        P._apBossCleared.push(G.stage);
+        P.ap=(P.ap||0)+_bossAP;
+        addTxt(P.x,P.y-60,'AP +'+_bossAP+'!','#ddaaff',60);
+      }
       SFX.victory();G.shake=10*OPT.shake/100;
       const cx=(bossRoom.cx+.5)*T,cy=(bossRoom.cy+.5)*T;
       worldItems.push({x:cx,y:cy,type:'chest',picked:false,opened:false});
@@ -35652,7 +35703,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
       const saveData={
         ts:Date.now(),
         player:{lv:P.lv,exp:P.exp,maxExp:P.maxExp,sp:P.sp,ap:P.ap||0,
-          transLvDate:P._transLvDate||null,transLvCount:P._transLvCount||0,
+          transLvDate:P._transLvDate||null,transLvCount:P._transLvCount||0,apBossCleared:P._apBossCleared||[],goddessGift:P._goddessGift||[],
           baseAtk:P.baseAtk,baseDef:P.baseDef,mpR:P.mpR,stR:P.stR,
           hp:P.hp,mhp:P.mhp,mp:P.mp,mmp:P.mmp,st:P.st,mst:P.mst,speed:P.speed,
           shield:P.shield,mshield:P.mshield,maskOn:P.maskOn},
@@ -35772,7 +35823,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
       const saveData={
         ts:Date.now(),
         player:{lv:P.lv,exp:P.exp,maxExp:P.maxExp,sp:P.sp,ap:P.ap||0,
-          transLvDate:P._transLvDate||null,transLvCount:P._transLvCount||0,
+          transLvDate:P._transLvDate||null,transLvCount:P._transLvCount||0,apBossCleared:P._apBossCleared||[],goddessGift:P._goddessGift||[],
           baseAtk:P.baseAtk,baseDef:P.baseDef,mpR:P.mpR,stR:P.stR,
           hp:P.hp,mhp:P.mhp,mp:P.mp,mmp:P.mmp,st:P.st,mst:P.mst,speed:P.speed,
           shield:P.shield,mshield:P.mshield,maskOn:P.maskOn},
