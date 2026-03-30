@@ -3986,12 +3986,13 @@ function _sfxFrameReset(){
   for(let i=0;i<_sfxQueue.length&&_cnt<_SFX_PER_FRAME;i++){
     const q=_sfxQueue[i];
     if(!_seen[q.key])_seen[q.key]=0;
-    // 타격음(hit/swing/slash)은 3개까지, 나머지는 2개까지 허용
-    const _lim=/hit|swing|slash|chain/.test(q.key)?3:2;
-    if(_seen[q.key]>=_lim)continue;
-    // 같은 키 여러개면 미세 딜레이로 다다다닥 표현
-    const _delay=_seen[q.key]*0.04; // 0ms, 40ms, 80ms
-    _playSampleNow(q.key,q.vol,q.rate,_t+_delay);
+    const _n=_seen[q.key];
+    // 앞 2개: 완전 원본 — 절대 안 자름
+    // 그 이후: 제한 없이 전부 재생, 점점 뒤 공간으로
+    const _volMul=_n<2?1:Math.max(0.08,Math.pow(0.5,_n-1));
+    const _pitchMul=_n<2?1:Math.max(0.7,1-(_n-1)*0.05);
+    const _delay=_n*0.022;
+    _playSampleNow(q.key,q.vol*_volMul,q.rate*_pitchMul,_t+_delay);
     _seen[q.key]++;_cnt++;
   }
   _sfxQueue.length=0; // 처리 안된 것도 버림 (이미 늦음)
@@ -4038,24 +4039,58 @@ function _playSwordBack(){
 
 // ── Master audio bus: Compressor + Convolver Reverb ──
 let _mbus=null,_dry=null,_wet=null,_conv=null,_comp=null;
+let _busHit=null,_busSk=null,_busBoss=null,_busHitIn=null,_busSkIn=null,_busBossIn=null;
 function mbus(){
   if(_mbus){_mbus.gain.value=sfxVol();return _mbus}
   const c=actx();
+  // ── EQ ──
+  const _eqHigh=c.createBiquadFilter(); // 고주파 컷 (날카로움 제거)
+  _eqHigh.type='highshelf';
+  _eqHigh.frequency.value=6000;
+  _eqHigh.gain.value=-9;
+
+  const _eqMid=c.createBiquadFilter(); // 중고역 약간 컷 (귀 피로 원인)
+  _eqMid.type='peaking';
+  _eqMid.frequency.value=3000;
+  _eqMid.Q.value=0.8;
+  _eqMid.gain.value=-5;
+
+  const _eqLow=c.createBiquadFilter(); // 저역 부스트 (두께감)
+  _eqLow.type='lowshelf';
+  _eqLow.frequency.value=250;
+  _eqLow.gain.value=+4;
+
+  // ── 카테고리별 서브버스 ──
+  // 타격음: 100개 겹쳐도 -12dB 리미터로 제한
+  _busHit=c.createDynamicsCompressor();
+  _busHit.threshold.value=-12;_busHit.ratio.value=8;
+  _busHit.attack.value=.001;_busHit.release.value=.08;
+  const _busHitGain=c.createGain();_busHitGain.gain.value=0.55;
+  _busHitGain.connect(_busHit);
+
+  // 스킬: 넓은 공간감, 덜 눌림
+  _busSk=c.createDynamicsCompressor();
+  _busSk.threshold.value=-8;_busSk.ratio.value=4;
+  _busSk.attack.value=.003;_busSk.release.value=.15;
+  const _busSkGain=c.createGain();_busSkGain.gain.value=0.8;
+  _busSkGain.connect(_busSk);
+
+  // 보스/보이스: 절대 안 눌림
+  _busBoss=c.createGain();_busBoss.gain.value=1.0;
+
+  // ── 마스터 컴프레서 ──
   _comp=c.createDynamicsCompressor();
   _comp.threshold.value=-6;_comp.knee.value=30;_comp.ratio.value=2;
-  _comp.attack.value=.01;_comp.release.value=.4;
-  // Procedural reverb impulse (0.9s stereo, exponential decay)
-  _conv=c.createConvolver();
-  const rl=~~(c.sampleRate*.9),rb=c.createBuffer(2,rl,c.sampleRate);
-  for(let ch=0;ch<2;ch++){const d=rb.getChannelData(ch);
-    for(let i=0;i<rl;i++)d[i]=(Math.random()*2-1)*Math.pow(1-i/rl,2.8)*.55}
-  _conv.buffer=rb;
-  _wet=c.createGain();_wet.gain.value=.2;
-  _dry=c.createGain();_dry.gain.value=.8;
+  _comp.attack.value=.015;_comp.release.value=.35;
+
+  // ── 체인: 서브버스 → mbus → EQ 3단 → comp → destination ──
   _mbus=c.createGain();_mbus.gain.value=sfxVol();
-  _mbus.connect(_dry);_mbus.connect(_conv);
-  _conv.connect(_wet);_dry.connect(_comp);_wet.connect(_comp);
+  _busHit.connect(_mbus);_busSk.connect(_mbus);_busBoss.connect(_mbus);
+  _mbus.connect(_eqHigh);
+  _eqHigh.connect(_eqMid);_eqMid.connect(_eqLow);_eqLow.connect(_comp);
   _comp.connect(c.destination);
+  // 서브버스 입력 레퍼런스 저장
+  _busHitIn=_busHitGain;_busSkIn=_busSkGain;_busBossIn=_busBoss;
   return _mbus;
 }
 
@@ -17279,6 +17314,14 @@ function update(){
             }}
           if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.35,_r(1,.15));P._bbHitCd=4}
           for(let _bbk=0;_bbk<6;_bbk++){const _bba2=Math.PI*2*_bbk/6;poolPart(p.x,p.y,Math.cos(_bba2)*3,Math.sin(_bba2)*3,'#00ccff',2+Math.random()*2,8+Math.random()*4)}
+          // 관통 체크: AoE 터뜨리고도 관통 시 탄 유지
+          if(p.pierce>0&&Math.random()<p.pierce&&(p._pierceCount||0)<(p.pierceMax||1)){
+            p._pierceCount=(p._pierceCount||0)+1;
+            p.dmg=~~(p.dmg*Math.min(1,0.85+(PASSIVES.pPierce||0)*0.03));
+            if(!p._hitSet)p._hitSet=new Set();p._hitSet.add(e);
+            addTxt(e.x,e.y-26,'관통!','#44ffcc',25);
+            hit=false;continue;
+          }
           hit=true;break;
         }
         // ── Magic Splash Damage ──
@@ -19856,9 +19899,11 @@ function updateE(e,sp){
           if(rd<_riftR+e.r){const _crDmg=~~(_kbSpd2*4);hurtE(e,_crDmg);
             addTxt(e.x,e.y-18,'균열 충돌! '+_crDmg,'#9933ff',30);addParts(e.x,e.y,'#aa44ff',8);
             SFX.block();shake(6);e.kb.x=0;e.kb.y=0;break}}}}}
-    else{// 벽 충돌 데미지: 넉백 세기에 비례
+    else{// 벽 충돌 데미지: 넉백속도 비례 + 적 최대HP% (만렙에도 유효)
       const kbSpd=Math.sqrt(e.kb.x*e.kb.x+e.kb.y*e.kb.y);
-      if(kbSpd>2){const wallDmg=~~(kbSpd*4);hurtE(e,wallDmg);
+      if(kbSpd>2){const _wPct=Math.min(0.08,kbSpd*0.004); // 넉백속도당 0.4%, 최대 8%
+        const wallDmg=Math.max(~~(kbSpd*4),~~(e.mhp*_wPct)); // 고정뎀 vs %뎀 중 큰 쪽
+        hurtE(e,wallDmg);
         addTxt(e.x,e.y-18,'벽 충돌! '+wallDmg,'#cc8844',30);addParts(e.x,e.y,'#aa7744',8);
         SFX.block();shake(8);e.kb.x=0;e.kb.y=0}
       else{e.kb.x=0;e.kb.y=0}}
@@ -23418,7 +23463,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // M21 불사: 삭제됨 (부활 과다 문제)
     // ═══ 일반몹 부활 (1회 제한) — 부활력 vs 억제력 ═══
     if(!e.ib&&!e._revived&&!e._isGhoul){
-      let _revPow=e.elite>0?(e.elite>=2?.6:.5):.5; // 부활력
+      let _revPow=(e.elite>0?(e.elite>=2?.6:.5):.5)+~~((e.lv||1)/100)*0.10; // 부활력: 기본50% + 100Lv당+10%
       let _suppress=_eqAffix('antiRevive'); // 목걸이 억제 (10~30%)
       // 구속의 영역 범위 내: 30%+Lv당2% 억제
       if(G._fireZones){for(let _fi=0;_fi<G._fireZones.length;_fi++){const _fz=G._fireZones[_fi];if(_fz.type==='holyPrison'&&dst(e.x,e.y,_fz.x,_fz.y)<_fz.r){_suppress+=.30+((_fz.lv||1)-1)*.02;break}}}
@@ -30054,7 +30099,7 @@ function draw(){
     // 3) 그로기바 (주황 3px, 스턴 중일 때만)
     if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
     // 4) 포이즈바 (노랑 3px, 유한 포이즈만)
-    if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*(e.poise/e.maxPoise),3);by-=4}
+    if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*Math.max(0,Math.min(1,e.poise/e.maxPoise)),3);by-=4}
     // 5) 프리즌바 (하늘 3px, 게이지 축적 중이거나 프리즌 중)
     if(e._frozen>0){const _frMax=e.ib?90:180;X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44ddff';X.fillRect(bx,by,bw*(e._frozen/_frMax),3);by-=4}
     else if(e._freezeGauge>0&&e._freezeMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#88ccee';X.fillRect(bx,by,bw*(e._freezeGauge/e._freezeMax),3);by-=4}
