@@ -5727,8 +5727,16 @@ _pRaw.onload=()=>{
   console.log('[PILLAR] processed',w,'x',h,'ar',_pillarAR);
 }}
 const _bossGateVid=document.createElement('video');_bossGateVid.src='assets/map/ch1/floor_objects/boss_gate_anim.mp4';_bossGateVid.loop=true;_bossGateVid.muted=true;_bossGateVid.playsInline=true;_bossGateVid.preload='auto';_bossGateVid.play().catch(()=>{});
-_bossGateVid.addEventListener('canplay',()=>console.log('[GATE-VID] canplay readyState='+_bossGateVid.readyState+' w='+_bossGateVid.videoWidth+'×'+_bossGateVid.videoHeight));
+const _gateVidCvs=document.createElement('canvas');_gateVidCvs.width=180;_gateVidCvs.height=180;const _gateVidCtx=_gateVidCvs.getContext('2d',{willReadFrequently:true});
+let _gateVidReady=false;
+_bossGateVid.addEventListener('canplay',()=>{_gateVidReady=true;console.log('[GATE-VID] canplay readyState='+_bossGateVid.readyState+' w='+_bossGateVid.videoWidth+'×'+_bossGateVid.videoHeight)});
 _bossGateVid.addEventListener('error',()=>console.error('[GATE-VID] ERROR loading video:',_bossGateVid.error));
+function _updateGateVidFrame(){if(_gateVidReady&&_bossGateVid.readyState>=2&&!_bossGateVid.paused){try{
+  _gateVidCtx.drawImage(_bossGateVid,0,0,180,180);
+  const _vid=_gateVidCtx.getImageData(0,0,180,180),_vd=_vid.data;
+  for(let i=0;i<_vd.length;i+=4){_vd[i+3]=Math.min(255,Math.max(_vd[i],_vd[i+1],_vd[i+2])*2)}
+  _gateVidCtx.putImageData(_vid,0,0);
+}catch(e){}}}
 const _bossGateImgs=[];
 for(let _bgi=0;_bgi<7;_bgi++){const _im=new Image();_im.src='assets/map/ch1/collision/boss_gate.png';_im.onload=()=>console.log('[GATE] bossGateImg['+_bgi+'] loaded:',_im.src,'w:',_im.naturalWidth);_im.onerror=()=>{};_bossGateImgs.push(_im)}
 function _waitObjSprites(timeout){
@@ -5768,7 +5776,7 @@ const _OBJ_META={
   'lava_l_v6c':{sz:300,collision:true},'lava_l_v6d':{sz:300,collision:true},
   'lava_l_90':{sz:200,collision:true,rot:90},'lava_l_180':{sz:200,collision:true,rot:180},'lava_l_270':{sz:200,collision:true,rot:270},
   'boss_gate_col':{sz:500,col:1},
-  'm_ctree1':{sz:250,col:1,large:1},'m_ctree2':{sz:250,col:1,large:1},'m_ctree3':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree4':{sz:250,col:1,large:1},'m_ctree5':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree6':{sz:250,col:1,large:1},'m_ctree7':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree8':{sz:250,col:1,large:1},'m_ctree9':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree10':{sz:250,col:1,large:1},'m_ctree11':{sz:250,col:1,large:1},'m_ctree12':{sz:250,col:1,large:1},'m_atree1':{sz:250,col:1,large:1,anim:{frames:2,interval:30000}},
+  'm_ctree1':{sz:250,col:1,large:1},'m_ctree2':{sz:250,col:1,large:1},'m_ctree3':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree4':{sz:250,col:1,large:1},'m_ctree5':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree6':{sz:250,col:1,large:1},'m_ctree7':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree8':{sz:250,col:1,large:1},'m_ctree9':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree10':{sz:250,col:1,large:1},'m_ctree11':{sz:250,col:1,large:1},'m_ctree12':{sz:250,col:1,large:1},'m_atree1':{sz:250,col:1,large:1,touchAnim:{frames:2,radius:120}},
 };
 // _CH_DECO 프리로드
 for(const[ch,list]of Object.entries(_CH_DECO)){
@@ -131305,19 +131313,16 @@ function draw(){
   }
   const _tMap=performance.now();
   // ── 보스 입구 비디오 애니메이션 ──
-  if(G._bossArena&&G._bossArenaEntry&&_bossGateVid.readyState>=2){
+  if(G._bossArena&&G._bossArenaEntry&&_gateVidReady){
+    _updateGateVidFrame();
     const _vW=600,_vH=600;
     const _vx=(G._bossArenaEntry.x+.5)*T-_vW/2,_vy=(G._bossArenaEntry.y+2)*T-_vH+100;
-    X.drawImage(_bossGateVid,_vx,_vy,_vW,_vH);
-  }
-  // 던전 보스 게이트 비디오는 출구 타일 렌더 뒤에 그림 (덮어쓰기 방지)
-  // ── Ori 스타일 포인트라이트 (플레이어 위치) ──
-  if(_ptLight&&OPT.lighting){
-    const _plsx=P.x,_plsy=P.y;
     X.save();X.globalCompositeOperation='lighter';
-    X.drawImage(_ptLight,_plsx-320,_plsy-320);
+    X.drawImage(_gateVidCvs,_vx,_vy,_vW,_vH);
     X.restore();
   }
+  // 던전 보스 게이트 비디오는 출구 타일 렌더 뒤에 그림 (덮어쓰기 방지)
+  // ── Ori 스타일 포인트라이트 (플레이어 위치) — 제거됨 ──
   // ── 환경 데코 렌더링 ──
   if(_decorList.length>0){
     const _dcL=G.cam.x-C.width/2-60,_dcR=G.cam.x+C.width/2+60,_dcT=G.cam.y-C.height/2-60,_dcB=G.cam.y+C.height/2+60;
@@ -131368,11 +131373,10 @@ function draw(){
     // 비디오 원본 비율 유지하면서 크게 렌더 (720×720 → 300×300)
     const _dgVW=300,_dgVH=300;
     X.globalAlpha=1;
-    if(_bossGateVid.readyState>=2){
-      X.drawImage(_bossGateVid,_exCx-_dgVW/2,_exCy-_dgVH/2,_dgVW,_dgVH);
-    }else{
-      if(_bossGateVid.paused)_bossGateVid.play().catch(()=>{});
-    }
+    _updateGateVidFrame();
+    X.save();X.globalCompositeOperation='lighter';
+    X.drawImage(_gateVidCvs,_exCx-_dgVW/2,_exCy-_dgVH/2,_dgVW,_dgVH);
+    X.restore();
   }
   // tile=3 대문 장식은 맵 캐시에서 처리됨 (출구 타일이 진입 역할)
   // [GLOW-ORI] 발광 오브젝트 렌더링 — 비활성화
@@ -131722,6 +131726,13 @@ function draw(){
             const _si=((~~(mo.x*7919+mo.y*104729+31))&0x7fffffff)%(_sh.c*_sh.r);
             X.drawImage(_spr,(_si%_sh.c)*_cw,~~(_si/_sh.c)*_ch,_cw,_ch,mo.x-sz/2,mo.y-sz/2,sz,sz);
           }else if(_meta&&_meta.rot){X.save();X.translate(mo.x,mo.y);X.rotate(_meta.rot*Math.PI/180);X.drawImage(_spr,-sz/2,-sz/2,sz,sz);X.restore()
+          }else if(_meta&&_meta.touchAnim){
+            // 접촉 애니메이션: 플레이어 근접 시 프레임1, 아니면 프레임0
+            const _ta=_meta.touchAnim,_taR=_ta.radius||120;
+            const _taNear=dst(P.x,P.y,mo.x,mo.y)<_taR;
+            const _taFr=_taNear?1:0;
+            const _taFw=~~(_spr.naturalWidth/_ta.frames);
+            X.drawImage(_spr,_taFr*_taFw,0,_taFw,_spr.naturalHeight,mo.x-sz/2,mo.y-sz/2,sz,sz);
           }else if(_meta&&_meta.trackEye){
             // 나무눈알: 3x3 스프라이트 시트로 플레이어 추적
             // 0=center,1=S,2=SW,3=W,4=NW,5=N,6=NE,7=E,8=SE
