@@ -3153,7 +3153,7 @@ const _sampleFiles={
   flat_hit:'sfx/hit/flat_hit.mp3',       // 방패/칼등치기 타격 — sBash 전용
   impact_hit:'sfx/hit/impact_hit.mp3',   // 범용 임팩트 — 패링/블록/탈출 등
   bullet_hit:'sfx/hit/bullet_hit.mp3',   // 투사체 명중 — 마법탄/화살→적
-  bean_hit:'sfx/hit/bean_hit.mp3',       // 파란콩 명중
+  bean_hit:'sfx/hit/bullet_hit.mp3',     // 푸른비 명중
   heavy_hit:'sfx/skillsound/slam/heavy_hit.mp3', // 강타/슬램
   bow_hit:'sfx/skillsound/bow/bow_hit.mp3',      // 화살 명중
   fire_hit:'sfx/hit/fire_hit.mp3',       // 화염 피격
@@ -4006,11 +4006,8 @@ _archerRaw.onload=()=>{
 };
 let _sfxFrameT=0;const _sfxFrameCnt={};
 let _activeNodeCnt=0;
-const _MAX_ACTIVE_NODES=64; // 이 이상이면 큐 드롭
-const _sfxKeyCd={};
-let _sfxRefillT=0;
-const _SFX_MAX=5;
-const _SFX_REFILL=12;
+const _MAX_ACTIVE_NODES=64;
+const _SFX_MAX=5; // 프레임당 카테고리별 최대
 const _sfxQueue=[];        // {key,vol,rate} 대기열
 const _SFX_PER_FRAME=8;    // 프레임당 최대 처리 수 (귀로 구분 가능한 한계)
 function _playSampleNow(key,vol,rate,startTime,pan){
@@ -4040,23 +4037,23 @@ function _playSampleNow(key,vol,rate,startTime,pan){
 function _sfxFrameReset(){
   _sfxFrameT++;
   if(_deathSfxCd>0)_deathSfxCd--;
-  _sfxRefillT++;
-  if(_sfxRefillT>=_SFX_REFILL){_sfxRefillT=0;for(const k in _sfxKeyCd){if(_sfxKeyCd[k]>0)_sfxKeyCd[k]--;else delete _sfxKeyCd[k]}}
+  if(_hitSfxCd>0)_hitSfxCd--;
   // 큐에서 프레임당 최대 8개만 실제 재생 (나머지는 다음 프레임)
   // 단 키 중복 제거 — 같은 소리 여러개면 1개만
-  const _seen={};let _cnt=0;
+  const _seen={};const _catSeen={};let _cnt=0;
   const c=actx();const _t=c.currentTime;
   for(let i=0;i<_sfxQueue.length&&_cnt<_SFX_PER_FRAME&&_activeNodeCnt<_MAX_ACTIVE_NODES;i++){
     const q=_sfxQueue[i];
+    const _cat=_sfxCat(q.key);
+    if((_catSeen[_cat]||0)>=_SFX_MAX)continue; // 카테고리 프레임 제한
+    _catSeen[_cat]=(_catSeen[_cat]||0)+1;
     if(!_seen[q.key])_seen[q.key]=0;
     const _n=_seen[q.key];
     const _volMul=_n<2?1:Math.max(0.08,Math.pow(0.5,_n-1));
     const _pitchMul=_n<2?1:Math.max(0.7,1-(_n-1)*0.05);
-    const _delay=_n*0.022;
-    _playSampleNow(q.key,q.vol*_volMul,q.rate*_pitchMul,_t+_delay,q.pan||0);
+    _playSampleNow(q.key,q.vol*_volMul,q.rate*_pitchMul,_t,q.pan||0);
     _seen[q.key]++;_cnt++;
   }
-  // 큐 전부 버림 — 카운터는 리필 타이머가 알아서 처리
   _sfxQueue.length=0;
   for(const k in _sfxFrameCnt)_sfxFrameCnt[k]=0;
   if(SFX._sbSndCd>0)SFX._sbSndCd--;
@@ -4076,14 +4073,10 @@ function _sfxCat(key){
   return key; // 매핑 없으면 키 자체가 카테고리
 }
 function playSample(key,vol,rate){
-  const _cat=_sfxCat(key);
-  if((_sfxKeyCd[_cat]||0)>=_SFX_MAX)return; // 5중첩 초과 → 스킵
-  _sfxKeyCd[_cat]=(_sfxKeyCd[_cat]||0)+1;
   if(_gxVolMul<1){vol*=_gxVolMul;if(vol<0.01)return;}
   if(!rate)rate=1;
   rate=rate*(0.92+Math.random()*0.16);
   _sfxQueue.push({key,vol,rate});
-  if(vol>0.7)_sfxQueue.sort((a,b)=>b.vol-a.vol);
   return;
 }
 // 거리 기반 사운드: 가까우면 vol 그대로, 멀면 작게 (화면 밖이면 거의 안 들림)
@@ -4096,9 +4089,6 @@ function playSampleAt(key,vol,rate,x,y){
   // 화면 폭 기준 좌우 패닝 (-1~1), 최대 0.7로 제한
   const pan=Math.max(-0.7,Math.min(0.7,dx/600));
   // 큐에 pan 포함해서 push
-  const _cat2=_sfxCat(key);
-  if((_sfxKeyCd[_cat2]||0)>=_SFX_MAX)return;
-  _sfxKeyCd[_cat2]=(_sfxKeyCd[_cat2]||0)+1;
   if(_gxVolMul<1){const _v=vol*falloff*falloff*_gxVolMul;if(_v<0.01)return;}
   _sfxQueue.push({key,vol:vol*falloff*falloff,rate:rate*(0.92+Math.random()*0.16),pan});
   if(vol>0.7)_sfxQueue.sort((a,b)=>b.vol-a.vol);
@@ -10572,6 +10562,7 @@ function _drawExplosions(X){
 }
 
 let _deathSfxCd=0; // 사망 사운드 쿨다운 (60프레임=1초)
+let _hitSfxCd=0; // 히트사운드 쿨다운
 function deathFX(x,y,r,col,isBoss,noSound,et){
   if(!noSound&&_deathSfxCd<=0){
     _deathSfxCd=60; // 1초 쿨다운
@@ -14248,7 +14239,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  let _hp=Math.floor((ib?1500:150)*Math.pow(1.016,monLv)*dm*et.hpMul); // 1.6% 복리, 보스=일반×10
+  let _hp=Math.floor((ib?50000:5000)*Math.pow(1.01,monLv)*dm*et.hpMul+si*2000000); // 기본5000, 1%복리, 스테이지당+200만(덧셈), 보스=일반×10
   const _atk=Math.floor(((ib?50:30)+monLv*(ib?6:4))*dm*et.atkMul); // 기본30+레벨당4 (보스: 50+레벨당6)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   const _noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
@@ -15819,7 +15810,6 @@ function update(){
     break;
   }
   case 'whirlwind':{
-    if(_now%120<2){const _al=ens.filter(e=>e.alive);const _rv=ens.filter(e=>!e.alive&&e._reviveTimer>0);console.log('[WW-DBG] alive:'+_al.length+' reviving:'+_rv.length+(_al.length>0?' pos:'+~~_al[0].x+','+~~_al[0].y+' etype:'+_al[0].etype:''));}
     _addSkProfTick('whirlwind');if(P.skills.detonate>=1&&_isFused('whirlDet'))_addSkProfTick('detonate');
     if(_isFused('whirlDet'))_addFuseProfTick('slamStorm'); // 지진폭풍 합체 시간 축적
     // 전격이동: 회전 중에도 더블탭 대시 허용
@@ -15840,14 +15830,13 @@ function update(){
     const _wwLv=P.skills.whirlwind||1;
     const _wwDrainTick=P.mst*0.07/60*sp; P.st-=_wwDrainTick; // 초당 7% ST 고정소모
     const _wwDrainBonus=1+P.mst*0.07*0.001; // 소비량 보너스: 초당소비×0.001 (ST1000→+7%, ST2000→+14%)
-    const _wwSpd=0.35*Math.max(0.5,(wp().spd||.3)*statDex()); // 무기공속×DEX로 회전속도 스케일
-    P.wwAng=(P.wwAng||0)+_wwSpd*_dtSp; // 회전 각도 (슬로우 무시)
-    // 합성: 패링 쉴드 HP 드레인 + parryT 추적
+    P.wwAng=(P.wwAng||0)+0.35*_dtSp; // 회전 각도 (슬로우 무시)
+    // 합성: 패링 쉴드 HP 드레인 + parryT 추적 (HP 드레인 제거)
     if(P.skills.detonate&&_isFused('whirlDet')){P.parryT=(P.parryT||0)+sp;}
     // 기 축적: 회전할수록 범위+데미지 증가
     const _wwFused=P.skills.detonate&&_isFused('whirlDet');
     const _wwBankGrow=_wwFused?Math.min(1,(P.parryBank||0)/500):0; // 흡수 데미지 축적으로 추가 성장
-    const _wwGrow=Math.min(1,P.wwAng/63)+_wwBankGrow; // 범위 성장: 1초 (0.35/f × 60f = 21)
+    const _wwGrow=Math.min(1,P.wwAng/63)+_wwBankGrow; // 범위 성장: 3초
     // 합체: 10초 축적 타이머 (600프레임), 자동폭발 없음
     if(_wwFused){P._wwDetTimer=(P._wwDetTimer||0)+sp}
     const _wwDetProg=_wwFused?Math.min(1,(P._wwDetTimer||0)/600):0; // 0→1 over 10초
@@ -15855,18 +15844,21 @@ function update(){
     const _detLvWW=P.skills.detonate||1;
     const _chgBarsWW=_wwFused?Math.min(3,1+~~(((P.parryT||0))/60)):0;
     const _boomRWW=_wwFused?(150+(_detLvWW-1)*10)*Math.max(1,_chgBarsWW):0;
-    // 공속 반영 히트 간격 (기본15f, 무기spd×DEX 적용) — 타이머 기반 (원본 복원)
+    // 공속 반영 히트 간격 (기본15f, 무기spd×DEX 적용) — 타이머 기반
     const _wwTickSpd=(wp().spd||.3)*statDex();
     const _wwTick=Math.max(3,~~(15/_wwTickSpd)); // 최소3f 캡
     if(!P._wwHitTimer)P._wwHitTimer=0;
     P._wwHitTimer+=_dtSp;
     if(P._wwHitTimer>=_wwTick){P._wwHitTimer-=_wwTick;
+      const _wwBaseR=((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+(_wwLv-1)*11;
       const _wwMin=100;const _wwMax=200+(_wwLv-1)*15; // 1렙200, 5렙260, 10렙335
       const _wwRangeBase=_wwMin+(_wwMax-_wwMin)*Math.min(1,_wwGrow);
       const _wwRange=_wwRangeBase;
       const _wwDmg=~~(meleeRef()*1.0*(1+(_wwLv-1)*0.05)*2*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1)*_wwDrainBonus);
-      const _wwHitCnt=hitArc(P.wwAng,_wwRange,Math.PI*2,_wwDmg,wp().el,'weapon');
-      if(_wwHitCnt>0)SFX.slashSeq();
+      const _wwHits=hitArc(P.wwAng,_wwRange,Math.PI*2,_wwDmg,wp().el,'weapon');
+      SFX.slashSeq();
+      // 회전참 임팩트 VFX — 히트한 적이 있을 때만
+      if(_wwHits>0)_addImpact(P.x+Math.cos(P.wwAng)*_wwRange*.4,P.y+Math.sin(P.wwAng)*_wwRange*.4,0,P.wwAng,'wwSlash',false,false);
     }
     // ═══ 암전나선: 회전 중 6원소 빔 자동 발사 ═══
     if(_isFused('stormBeam')&&P.skills.fanShot>=1&&P.skills.omniBeam>=1&&P.skills.elemMissile>=1&&(P._beamCd||0)<=0){
@@ -17623,7 +17615,7 @@ function update(){
         hurtE(e,dmg,ang,_isTurretProj||p.blueBean,p,p.el);
         if(!_isTurretProj||_ftV>0.01){
           if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
-          else if(p.blueBean){}
+          else if(p.blueBean){if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.35*_ftV,_r(1,.15));P._bbHitCd=4}}
           else if(p.arcMissile){}
           else if(p.magic)playSampleAt('bullet_hit',.5*_ftV,_r(1,.15),e.x,e.y);
           else if(p.normalBow)playSampleAt('bow_hit',.4*_ftV,_r(1,.15),e.x,e.y);
@@ -19470,7 +19462,7 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
     {const mult=elMul(el,e.el);let dmg=~~(baseDmg*mult);
     // 회전참 피격 스택 카운트만 유지 (데미지 보너스 제거됨)
     if(_isWW){e._wwStk=Math.min(20,(e._wwStk||0)+1);e._wwStkT=60;}
-    if(!_isWW||!_wwHitSfx){const _hSfx=type==='shield'?'flat_hit':(Math.random()<.5?'melee_hit1':'melee_hit');playSampleAt(_hSfx,.45,_r(1,.15),e.x,e.y);if(_isWW)_wwHitSfx=true} // 방패→flat_hit, 무기→메리랜덤
+    if(!_isWW||!_wwHitSfx){if(_hitSfxCd<=0){const _hSfx=type==='shield'?'flat_hit':(Math.random()<.5?'melee_hit1':'melee_hit');playSampleAt(_hSfx,.45,_r(1,.15),e.x,e.y);_hitSfxCd=20;}if(_isWW)_wwHitSfx=true} // 방패→flat_hit, 무기→메리랜덤
     hurtE(e,dmg,ang,_isWW,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0:1.5,noPoise:_isWW,poiseHit:type==='shield',poiseSkill:type==='shield'},el);_hitCount++;
     if(_isWW&&_hitCount<=16){_impacts.push({x:e.x,y:e.y,el:el,ang:ang,t:0,ml:16,sz:1.0,type:'wwSlash'});} // 회전참: 적마다 wwSlash 임팩트 (프레임제한 우회, 최대16)
       // parryBank는 적 공격 흡수로만 축적 (hitArc 공격 축적 삭제)
@@ -23850,7 +23842,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       G._blDeathSndQ.push({key:_dKey,vol:0.6,rate:_r(1,.1)});
       deathFX(e.x,e.y,e.r,e.col,!!e.ib,true,e.etype); // VFX만, 사운드 없음
     }else{
-      deathFX(e.x,e.y,e.r,e.col,!!e.ib,_isBurnDeath,e.etype);
+      deathFX(e.x,e.y,e.r,e.col,!!e.ib,_isBurnDeath||noSound,e.etype);
     }
     if(!(G._noHitStopT>0)){G.hitStop=~~(_HS.kill*OPT.hitStop/100)}
     // ═══ 콤보 시스템: 일반몹 +1초(최대20초), 보스 +30초(최대30초) ═══
