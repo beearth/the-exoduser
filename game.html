@@ -14239,7 +14239,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  let _hp=Math.floor((ib?50000:5000)*Math.pow(1.01,monLv)*dm*et.hpMul+si*2000000); // 기본5000, 1%복리, 스테이지당+200만(덧셈), 보스=일반×10
+  const _lvHp=Math.floor((ib?50000:5000)*Math.pow(1.01,monLv)*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 기본5000, 1%복리, 스테이지당 레벨HP의+2%, 보스=일반×10
   const _atk=Math.floor(((ib?50:30)+monLv*(ib?6:4))*dm*et.atkMul); // 기본30+레벨당4 (보스: 50+레벨당6)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   const _noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
@@ -15856,9 +15856,8 @@ function update(){
       const _wwRange=_wwRangeBase;
       const _wwDmg=~~(meleeRef()*1.0*(1+(_wwLv-1)*0.05)*2*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1)*_wwDrainBonus);
       const _wwHits=hitArc(P.wwAng,_wwRange,Math.PI*2,_wwDmg,wp().el,'weapon');
-      SFX.slashSeq();
-      // 회전참 임팩트 VFX — 히트한 적이 있을 때만
-      if(_wwHits>0)_addImpact(P.x+Math.cos(P.wwAng)*_wwRange*.4,P.y+Math.sin(P.wwAng)*_wwRange*.4,0,P.wwAng,'wwSlash',false,false);
+      if(_wwHits>0)SFX.slashSeq();
+      // 회전참 임팩트: hitArc 내부에서 적마다 생성
     }
     // ═══ 암전나선: 회전 중 6원소 빔 자동 발사 ═══
     if(_isFused('stormBeam')&&P.skills.fanShot>=1&&P.skills.omniBeam>=1&&P.skills.elemMissile>=1&&(P._beamCd||0)<=0){
@@ -17706,6 +17705,7 @@ function update(){
         if(p.iceBlade){
           if(!p._hitSet)p._hitSet=new Set();p._hitSet.add(e);
           if(!e.ib)e.stunned=Math.max(e.stunned||0,30); // 0.5초 빙결 (보스 제외)
+          e._iceShardRes=Math.min(1,(e._iceShardRes||0)+0.10); // 파편당 냉기저항 -10% (최대 100%)
           if(Math.random()<(p.pierce||0.95)){hit=false;continue}
         }
           // ── 체인 라이트닝: 히트 시 근처 적에게 튕김 ──
@@ -18071,7 +18071,7 @@ function update(){
       for(let _bsi=0;_bsi<_bbDirs;_bsi++){
         const _bbA=P.facing+(_bbDirs>1?(_bsi-_bbHalf)/_bbHalf*1.2:0)+(Math.random()-.5)*.08;
         const _bbSpd=(6+Math.random()*3)*1.3;
-        const _pp=_getPProj();_pp.x=P.x+Math.cos(_bbA)*16;_pp.y=P.y+Math.sin(_bbA)*16;_pp.vx=Math.cos(_bbA)*_bbSpd;_pp.vy=Math.sin(_bbA)*_bbSpd;_pp.dmg=~~(_bb.dmg/_bbDirs);_pp.el=EL.P;_pp.maxDist=_bb.range;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.pierce=Math.min(0.95,(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05);_pp.pierceMax=3+(PASSIVES.pPierce||0);_pp._aoeR=100;_pp._aoeDmg=~~(_bb.dmg*.07);pProjs[pProjs.length]=_pp;
+        const _pp=_getPProj();_pp.x=P.x+Math.cos(_bbA)*16;_pp.y=P.y+Math.sin(_bbA)*16;_pp.vx=Math.cos(_bbA)*_bbSpd;_pp.vy=Math.sin(_bbA)*_bbSpd;_pp.dmg=~~(_bb.dmg/_bbDirs);_pp.el=EL.I;_pp.maxDist=_bb.range;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.pierce=Math.min(0.95,(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05);_pp.pierceMax=3+(PASSIVES.pPierce||0);_pp._aoeR=100;_pp._aoeDmg=~~(_bb.dmg*.07);pProjs[pProjs.length]=_pp;
       }
       _bb.cnt++;
       // 루프 시작 (첫 발사 시)
@@ -18100,7 +18100,7 @@ function update(){
         for(let _bhi=0;_bhi<_bhCnt;_bhi++){
           const _bhA=P.facing+(Math.random()-.5)*.3;
           const _bhSpd=(7+Math.random()*2)*1.3;
-          const _pp=_getPProj();_pp.x=P.x+Math.cos(_bhA)*16;_pp.y=P.y+Math.sin(_bhA)*16;_pp.vx=Math.cos(_bhA)*_bhSpd;_pp.vy=Math.sin(_bhA)*_bhSpd;_pp.dmg=_bhDmg;_pp.el=EL.P;_pp.maxDist=750+(_bhLv-1)*45;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.pierce=Math.min(0.95,(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05);_pp.pierceMax=3+(PASSIVES.pPierce||0);_pp._aoeR=100;_pp._aoeDmg=~~(_bhDmg*.07);pProjs[pProjs.length]=_pp;
+          const _pp=_getPProj();_pp.x=P.x+Math.cos(_bhA)*16;_pp.y=P.y+Math.sin(_bhA)*16;_pp.vx=Math.cos(_bhA)*_bhSpd;_pp.vy=Math.sin(_bhA)*_bhSpd;_pp.dmg=_bhDmg;_pp.el=EL.I;_pp.maxDist=750+(_bhLv-1)*45;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.pierce=Math.min(0.95,(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05);_pp.pierceMax=3+(PASSIVES.pPierce||0);_pp._aoeR=100;_pp._aoeDmg=~~(_bhDmg*.07);pProjs[pProjs.length]=_pp;
         }
         if(P._blueHoldT<-12)P._blueHoldT=0;
       } else {addTxt(P.x,P.y-25,'MP 부족!','#4488ff',25)}
@@ -19454,7 +19454,6 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
   // 패시브 배율 적용 + ST 소비 보너스
   if(type==='weapon'){baseDmg=~~(baseDmg*pAtkMul()*pMeleeMul())+(P._atkBon||0);P._atkBon=0}
   else if(type==='shield'){baseDmg=~~(baseDmg*pShieldMul())+(P._atkBon||0);P._atkBon=0}
-  let _wwHitSfx=false;
   const _fullCircle=arcW>=Math.PI*1.99; // 360도면 arc 체크 스킵
   for(let _ai=0;_ai<ens.length;_ai++){const e=ens[_ai];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d>range+e.r)continue;
     const ang=Math.atan2(e.y-P.y,e.x-P.x);
@@ -19462,9 +19461,9 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
     {const mult=elMul(el,e.el);let dmg=~~(baseDmg*mult);
     // 회전참 피격 스택 카운트만 유지 (데미지 보너스 제거됨)
     if(_isWW){e._wwStk=Math.min(20,(e._wwStk||0)+1);e._wwStkT=60;}
-    if(!_isWW||!_wwHitSfx){if(_hitSfxCd<=0){const _hSfx=type==='shield'?'flat_hit':(Math.random()<.5?'melee_hit1':'melee_hit');playSampleAt(_hSfx,.45,_r(1,.15),e.x,e.y);_hitSfxCd=20;}if(_isWW)_wwHitSfx=true} // 방패→flat_hit, 무기→메리랜덤
+    if(!_isWW){if(_hitSfxCd<=0){const _hSfx=type==='shield'?'flat_hit':(Math.random()<.5?'melee_hit1':'melee_hit');playSampleAt(_hSfx,.45,_r(1,.15),e.x,e.y);_hitSfxCd=8;}} // 회전참: 히트사운드 제거
     hurtE(e,dmg,ang,_isWW,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0:1.5,noPoise:_isWW,poiseHit:type==='shield',poiseSkill:type==='shield'},el);_hitCount++;
-    if(_isWW&&_hitCount<=16){_impacts.push({x:e.x,y:e.y,el:el,ang:ang,t:0,ml:16,sz:1.0,type:'wwSlash'});} // 회전참: 적마다 wwSlash 임팩트 (프레임제한 우회, 최대16)
+    if(_isWW&&_hitCount<=16){_impacts.push({x:e.x,y:e.y,el:el,ang:ang,t:0,ml:16,sz:0.8,type:'slash'});} // 회전참: 맞은 적 위치에 물리 임팩트 (최대16)
       // parryBank는 적 공격 흡수로만 축적 (hitArc 공격 축적 삭제)
       if(!_isWW){
       // 칼등치기만 포이즈 데미지 (데미지의 200%)
@@ -20266,6 +20265,7 @@ function updateE(e,sp){
   if(e._webSlow>0)e._webSlow-=sp; // 둔화 타이머
   if(e._frozenImmune>0)e._frozenImmune-=sp; // 프리즌 면역 타이머
   if(e._iceResDown>0)e._iceResDown-=sp; // 아이스스톰 빙결저항 디버프 타이머
+  if(e._iceShardRes>0){e._iceShardRes-=0.002*sp;if(e._iceShardRes<0)e._iceShardRes=0} // 얼음파편 저항깎기 서서히 회복 (~5초에 10%)
   if(e._weakT>0){e._weakT-=sp;if(e._weakT<=0){e._weakPhys=0;e._weakMag=0;e._weakPj=0}} // 영역 디버프 해제
   if(e._freezeGauge>0){e._freezeGauge=Math.max(0,e._freezeGauge-sp*.3)} // 안 맞으면 게이지 자연 감소
   if(e._pImmune>0)e._pImmune-=sp; // 보스 그로기 면역 타이머
@@ -23671,7 +23671,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       if(!e._freezeMax)e._freezeMax=e.ib?500:100;
       if(!e._freezeGauge)e._freezeGauge=0;
       const _iceResMul=(e._iceResDown>0)?1.5:1; // 아이스스톰 디버프: 축적량 1.5배
-      const _fzAdd=(e.ib?dmg*.3:dmg)*_iceResMul; // 보스는 축적량 30%
+      const _iceShardMul=1+(e._iceShardRes||0); // 얼음파편 저항깎기: 파편당 +10%
+      const _fzAdd=(e.ib?dmg*.3:dmg)*_iceResMul*_iceShardMul; // 보스는 축적량 30%
       e._freezeGauge=Math.min(e._freezeMax,e._freezeGauge+_fzAdd);
       if(e._freezeGauge>=e._freezeMax){
         e._frozen=e.ib?90:180; // 보스 1.5초, 일반 3초
@@ -25976,6 +25977,18 @@ function fireBlackStar(){
   for(let k=0;k<80;k++){
     const a=Math.PI*2*k/80;const spd=5+Math.random()*10;
     poolPart(cx+Math.cos(a)*30,cy+Math.sin(a)*30,Math.cos(a)*spd,Math.sin(a)*spd,k%3===0?'#220033':k%3===1?'#aa00ff':'#660099',4+Math.random()*6,25+Math.random()*20);
+  }
+  // 폭발 데미지 + 스턴 + 넉백
+  const bsDmg=~~(magicRef()*statInt()*pMagicMul()*5*(1+(slv-1)*0.12));
+  const bsR=1500+slv*100;
+  for(let i=0;i<ens.length;i++){
+    const e=ens[i];if(!e.alive)continue;
+    const d=dst(e.x,e.y,cx,cy);if(d>bsR)continue;
+    const ang=Math.atan2(e.y-cy,e.x-cx);
+    const falloff=Math.max(0.3,1-d/bsR);
+    hurtE(e,~~(bsDmg*falloff),ang,false,{kbMult:1.5,noPoise:true,explode:true,magic:true},EL.D);
+    e.stunned=Math.max(e.stunned,~~(90*falloff));
+    e.kb.x+=Math.cos(ang)*12*falloff;e.kb.y+=Math.sin(ang)*12*falloff;
   }
   SFX.detonate();shake(45);
   if(G.slowMo<=0)G.slowMo=30;G.hitStop=~~(_HS.blackStar*OPT.hitStop/100);
@@ -31289,7 +31302,7 @@ function draw(){
   }
   const _tDP3=performance.now();
   // ── 히트 임팩트 렌더 (경량화: GPU=fillRect, 레이어 축소) ──
-  if(_impacts.length>8)_impacts.length=8;
+  if(_impacts.length>24)_impacts.length=24;
   if(_impacts.length>0){
     X.save();X.globalCompositeOperation='lighter';
     const _impGpu=_useGPU||_useGL;
