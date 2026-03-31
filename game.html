@@ -19481,10 +19481,11 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
   if(type==='weapon'){baseDmg=~~(baseDmg*pAtkMul()*pMeleeMul())+(P._atkBon||0);P._atkBon=0}
   else if(type==='shield'){baseDmg=~~(baseDmg*pShieldMul())+(P._atkBon||0);P._atkBon=0}
   let _wwHitSfx=false;
-  let _dbgAlive=0,_dbgRange=0,_dbgArc=0;
-  for(let _ai=0;_ai<ens.length;_ai++){const e=ens[_ai];if(!e.alive)continue;_dbgAlive++;const d=dst(P.x,P.y,e.x,e.y);if(d>range+e.r){continue;}_dbgRange++;
-    const ang=Math.atan2(e.y-P.y,e.x-P.x);let diff=ang-angle;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
-    if(Math.abs(diff)<arcW){_dbgArc++;const mult=elMul(el,e.el);let dmg=~~(baseDmg*mult);
+  const _fullCircle=arcW>=Math.PI*1.99; // 360도면 arc 체크 스킵
+  for(let _ai=0;_ai<ens.length;_ai++){const e=ens[_ai];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d>range+e.r)continue;
+    const ang=Math.atan2(e.y-P.y,e.x-P.x);
+    if(!_fullCircle){let diff=((ang-angle)%(Math.PI*2)+Math.PI*3)%(Math.PI*2)-Math.PI;if(Math.abs(diff)>=arcW)continue;}
+    {const mult=elMul(el,e.el);let dmg=~~(baseDmg*mult);
     // 회전참 피격 스택 카운트만 유지 (데미지 보너스 제거됨)
     if(_isWW){e._wwStk=Math.min(20,(e._wwStk||0)+1);e._wwStkT=60;}
     if(!_isWW||!_wwHitSfx){const _hSfx=type==='shield'?'flat_hit':(Math.random()<.5?'melee_hit1':'melee_hit');playSampleAt(_hSfx,.45,_r(1,.15),e.x,e.y);if(_isWW)_wwHitSfx=true} // 방패→flat_hit, 무기→메리랜덤
@@ -19526,7 +19527,6 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
       }
       } // end !_isWW
     }}
-  if(_isWW&&G._gcT%120<2)console.log('[hitArc] alive='+_dbgAlive+' inRange='+_dbgRange+' inArc='+_dbgArc+' hit='+_hitCount+' range='+~~range+' arcW='+arcW.toFixed(2));
   return _hitCount;
 }
 // ─── [S16e] BOSS_AI — 보스 AI 함수 (스코어/패턴/콤보) ───
