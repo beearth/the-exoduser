@@ -1380,9 +1380,14 @@ function dbRestore(d){
   if(P._fused.elecRepent){if(!P._fused.boneStorm)P._fused.boneStorm=true;if(!P.skills.boneWall)P.skills.boneWall=1;if(!P.skills.hellRay)P.skills.hellRay=1}
   // holyIce 있으면 holyFuse 하위 보장
   if(P._fused.holyIce){if(!P._fused.holyFuse)P._fused.holyFuse=true;if(!P.skills.iceStorm)P.skills.iceStorm=1}
-  if(P._fused.holyFlame){if(!P._fused.holyIce)P._fused.holyIce=true;if(!P.skills.fireAura)P.skills.fireAura=1}
-  if(P._fused.holyRevive){if(!P._fused.holyFlame)P._fused.holyFlame=true;if(!P.skills.weakRev)P.skills.weakRev=1}
-  if(P._fused.holyApex){if(!P._fused.holyRevive)P._fused.holyRevive=true;if(!P.skills.holyBlast)P.skills.holyBlast=1}
+  // 신성빙결→약화영역 체인 보장
+  if(P._fused.holyWeak1){if(!P._fused.holyIce)P._fused.holyIce=true;if(!P.skills.weakPhys)P.skills.weakPhys=1}
+  if(P._fused.holyWeak2){if(!P._fused.holyWeak1)P._fused.holyWeak1=true;if(!P.skills.weakMag)P.skills.weakMag=1}
+  if(P._fused.holyWeak3){if(!P._fused.holyWeak2)P._fused.holyWeak2=true;if(!P.skills.weakPj)P.skills.weakPj=1}
+  if(P._fused.holyWeak4){if(!P._fused.holyWeak3)P._fused.holyWeak3=true;if(!P.skills.weakRev)P.skills.weakRev=1}
+  // 구버전 마이그레이션 (제거된 키 정리)
+  delete P._fused.holyFlame;delete P._fused.holyRevive;delete P._fused.holyApex;
+  delete P._fused.weakFuse2;delete P._fused.weakFuse3;delete P._fused.weakFuse4;
   // dimBlast/dimRush/dimThunder/dimSlam 체인 보장
   if(P._fused.dimBlast&&!P._fused.dimRush)P._fused.dimRush=true;
   if(P._fused.dimRush&&!P._fused.dimThunder)P._fused.dimThunder=true;
@@ -10571,15 +10576,16 @@ let _hitSfxCd=0; // 히트사운드 쿨다운
 function deathFX(x,y,r,col,isBoss,noSound,et){
   if(!noSound&&_deathSfxCd<=0){
     _deathSfxCd=60; // 1초 쿨다운
-    if(isBoss){const _bd=_bossSfx(G.stage);playSampleAt(_bd?_bd.die:'death_boss',.5,_r(_bd?_bd.dieP:.7,.15),x,y)}
-    else if(et>=100&&et<=102){const gk=_pickDeathVar(et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3');playSampleAt(gk,_r(.5,.1),_r(1,.1),x,y)}
+    // 사망음은 큐 우회 — 직접 재생 (대량 전투에서 큐 포화로 씹히는 것 방지)
+    const _dVol=sfxVol();
+    if(isBoss){const _bd=_bossSfx(G.stage);_playSampleNow(_bd?_bd.die:'death_boss',.5*_dVol,_r(_bd?_bd.dieP:.7,.15))}
+    else if(et>=100&&et<=102){const gk=_pickDeathVar(et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3');_playSampleNow(gk,_r(.5,.1)*_dVol,_r(1,.1))}
     else{
-      // 일반몹 사망 사운드 — 1초 쿨다운
       const k=_deathSfxKey(et);
       const v=_ARMOR_ET.has(et)?.35:r>=40?.7:.55;
-      playSampleAt(k,_r(v,.08),_r(1,.12),x,y);
-      if(r>=40&&Math.random()<.25)playSampleAt('monster_die1',.5,_r(.8,.15),x,y);
-      if(Math.random()<.15)playSampleAt('death_grunt',.3,_r(1,.15),x,y);
+      _playSampleNow(k,_r(v,.08)*_dVol,_r(1,.12));
+      if(r>=40&&Math.random()<.25)_playSampleNow('monster_die1',.5*_dVol,_r(.8,.15));
+      if(Math.random()<.15)_playSampleNow('death_grunt',.3*_dVol,_r(1,.15));
     }
   }
   // 동시 사망 과다 시 파티클 절감
@@ -12773,7 +12779,8 @@ function _burstLoopExplode(tier){
   for(let i=0;i<ens.length;i++){
     const e=ens[i];if(!e.alive)continue;
     const d=dst(P.x,P.y,e.x,e.y);if(d>_blR+e.r)continue;
-    const ang=Math.atan2(e.y-P.y,e.x-P.x);
+    const _blPull=P._blPullMode||false; // H키 토글: 밀기/당기기
+    const ang=_blPull?Math.atan2(P.y-e.y,P.x-e.x):Math.atan2(e.y-P.y,e.x-P.x);
     const mult=elMul(EL.E,e.el);
     const dmg=~~(_blDmg*mult);
     hurtE(e,dmg,ang,true,{kbMult:tier*.5,noPoise:true,_blastKill:true},EL.E);
@@ -15762,6 +15769,8 @@ function update(){
       }
     }
     else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=20;_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3){var _ve2=['voice_grunt','male_grunt'];playSample(_ve2[~~(Math.random()*2)],1,_r(1,.15))}if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
+    // ── H키: 버스트루프 밀기/당기기 토글 ──
+    if(_chkJust('KeyH')&&P.skills.burstLoop>=1){P._blPullMode=!P._blPullMode;addTxt(P.x,P.y-30,P._blPullMode?'🌀 당기기 모드':'💥 밀어내기 모드',P._blPullMode?'#44ccff':'#ff6644',40);playSample('shield_activate',.4,_r(1,.1))}
     // ── X키: 처형 (그로기 보스 전용, HP/MP/ST 10% 소모 → 사슬기동 자동 돌진 → 보스 HP 30% 순수뎀, 쿨 20초) ──
     else if(_chkJust('KeyX')&&P.skills.execution>=1&&(P._execCd||0)<=0){
       const _exBoss=G._bossRef&&G._bossRef.alive&&G._bossRef.stunned>0?G._bossRef:null;
@@ -15951,7 +15960,29 @@ function update(){
         }
       }else{P._sbPtsCnt=new Int32Array(6);if(!P._beamCd){P._beamCd=300;addTxt(P.x,P.y-30,'⚡ 과부하! 5초','#ffaa00',40)}} // MP 부족 시 암전 5초 쿨
     }
-    // 합성 회전기폭: Q로 수동 기폭 (3초 이상 모아야 발동)
+    // ═══ 암전폭류: 회전 중 버스트루프 자동 차징+폭발 ═══
+    if(_isFused('stormBurst')&&P.skills.burstLoop>=1){
+      P._blAutoCharge=(P._blAutoCharge||0)+sp;
+      const _blAutoMax=90; // 1.5초 만충
+      const _blAutoTier=P._blAutoCharge>=_blAutoMax?3:P._blAutoCharge>=_blAutoMax*0.67?2:P._blAutoCharge>=_blAutoMax*0.33?1:0;
+      if(P._blAutoCharge>=_blAutoMax){
+        _burstLoopExplode(3);
+        P._blAutoCharge=0;
+        addTxt(P.x,P.y-45,'💫 자동 버스트!','#dd00ff',50);
+      }
+      // 차지 파티클
+      if(_blAutoTier>=1&&_now%4<1){
+        const _bpa2=Math.random()*Math.PI*2;
+        poolPart(P.x+Math.cos(_bpa2)*50,P.y+Math.sin(_bpa2)*50,Math.cos(_bpa2)*-2,Math.sin(_bpa2)*-2,'#dd88ff',2+Math.random()*2,6);
+      }
+    }
+    // 합성 회전기폭: 2초마다 자동 폭발
+    if(_wwFused&&(P.parryT||0)>=120&&(P.parryBank||0)>0){
+      if(_isFused('slamStorm')&&P.skills.giantSlam>=1){_slamStormBlast()}
+      else{_detonateBlast('자동기폭!',EL.P)}
+      P.parryT=0; // 리셋 후 다시 차징
+    }
+    // 합성 회전기폭: Q로 수동 기폭 (2초 이상 모아야 발동)
     if(_wwFused&&!_qIsIceOrb()&&isJust('parry')){
       if((P.parryT||0)>=120){
         if(_isFused('slamStorm')&&P.skills.giantSlam>=1){_slamStormBlast()}
@@ -16225,14 +16256,25 @@ function update(){
         }
         SFX.magic(2);_addSkProf('elemMissile');P.s='magicRecover';P.st2=12;
       } else if(_mcSk==='blueShot'&&P.skills.blueShot>=1){
-        const _bsLv=P.skills.blueShot||1;
-        const _bsDmgBase=~~(magicRef()*statInt()*pMagicMul()*8*(1+(_bsLv-1)*.1)); // 푸른비 15→8
-        P._blueBarrage={cnt:0,max:100,interval:3,timer:0,dmg:~~(_bsDmgBase/5),range:750+(_bsLv-1)*45,lv:_bsLv};
-        P._blueCd=300;
-        SFX.magic(6);_addSkProf('blueShot');
-        addTxt(P.x,P.y-25,'💎 푸른비!','#00e5ff',50);
-        for(let _bp=0;_bp<12;_bp++){const _ba2=Math.PI*2*_bp/12;poolPart(P.x,P.y,Math.cos(_ba2)*5,Math.sin(_ba2)*5,'#00e5ff',4,10)}
-        P.s='magicRecover';P.st2=15;
+        // 푸른비 토글 ON/OFF (5초 쿨다운)
+        if(P._blueOn){
+          // OFF
+          P._blueOn=false;P._blueBarrage=null;
+          _stopLoop(P._blueLpSrc);P._blueLpSrc=null;
+          P._blueCd=300; // 5초 쿨다운
+          addTxt(P.x,P.y-25,'💎 푸른비 OFF','#5588aa',40);
+          playSample('shield_end',.4,_r(1,.1));
+        }else{
+          // ON
+          P._blueOn=true;
+          const _bsLv=P.skills.blueShot||1;
+          P._blueAutoLv=_bsLv;
+          P._blueCd=300; // 5초 쿨다운
+          SFX.magic(6);_addSkProf('blueShot');
+          addTxt(P.x,P.y-25,'💎 푸른비 ON!','#00e5ff',50);
+          for(let _bp=0;_bp<12;_bp++){const _ba2=Math.PI*2*_bp/12;poolPart(P.x,P.y,Math.cos(_ba2)*5,Math.sin(_ba2)*5,'#00e5ff',4,10)}
+        }
+        P.s='magicRecover';P.st2=10;
       } else if(_mcSk==='fireAura'&&P.skills.fireAura>=1){
         const _faLv=P.skills.fireAura||1;
         const _faR=200+~~(200*(_faLv-1)*0.10); // 1렙200, 만렙~400
@@ -18081,14 +18123,28 @@ function update(){
       else{P._esAutoFire=false;addTxt(P.x,P.y-25,'MP 부족 — 연사 해제','#888',30)}
     }
   }
-  // ═══ 푸른비 순차 발사 ═══
+  // ═══ 푸른비 토글 — 기존 barrage 순차발사 (ON이면 끝날 때 자동 반복) ═══
   if(P._bbHitCd>0)P._bbHitCd-=sp;
+  // barrage가 없고 ON 상태면 새 barrage 생성
+  if(P._blueOn&&G.on&&!P._blueBarrage){
+    const _bsLv=P._blueAutoLv||P.skills.blueShot||1;
+    const _bsCost=~~(100+(_bsLv-1)*11.1); // 1렙100, 10렙200
+    if(P.mp>=_bsCost){
+      P.mp-=_bsCost;
+      const _bsDmgBase=~~(magicRef()*statInt()*pMagicMul()*8*(1+(_bsLv-1)*.1));
+      P._blueBarrage={cnt:0,max:100,interval:3,timer:0,dmg:~~(_bsDmgBase/5),range:750+(_bsLv-1)*45,lv:_bsLv};
+    } else {
+      P._blueOn=false;P._blueCd=300;
+      addTxt(P.x,P.y-25,'MP 부족 — 푸른비 OFF','#5588aa',30);
+    }
+  }
+  // barrage 순차 발사 (기존 로직 그대로)
   if(P._blueBarrage&&P._blueBarrage.cnt<P._blueBarrage.max){
     P._blueBarrage.timer-=sp;
     if(P._blueBarrage.timer<=0){
       P._blueBarrage.timer+=P._blueBarrage.interval;
       const _bb=P._blueBarrage;
-      const _bbDirs=Math.min(10,5+(_bb.lv-1)); // 1렙=5방향(500발), 6렙+=10방향(1000발)
+      const _bbDirs=Math.min(10,5+(_bb.lv-1));
       const _bbHalf=(_bbDirs-1)/2;
       for(let _bsi=0;_bsi<_bbDirs;_bsi++){
         const _bbA=P.facing+(_bbDirs>1?(_bsi-_bbHalf)/_bbHalf*1.2:0)+(Math.random()-.5)*.08;
@@ -18096,38 +18152,13 @@ function update(){
         const _pp=_getPProj();_pp.x=P.x+Math.cos(_bbA)*16;_pp.y=P.y+Math.sin(_bbA)*16;_pp.vx=Math.cos(_bbA)*_bbSpd;_pp.vy=Math.sin(_bbA)*_bbSpd;_pp.dmg=~~(_bb.dmg/_bbDirs);_pp.el=EL.I;_pp.maxDist=_bb.range;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.pierce=Math.min(0.95,(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05);_pp.pierceMax=3+(PASSIVES.pPierce||0);_pp._aoeR=100;_pp._aoeDmg=~~(_bb.dmg*.07);pProjs[pProjs.length]=_pp;
       }
       _bb.cnt++;
-      // 루프 시작 (첫 발사 시)
-      if(_bb.cnt===0&&!P._blueLpSrc){
-      }
-      // 타격 피드백 — 20발마다 1번만
       if(_bb.cnt%20===0)poolPart(P.x,P.y,0,0,'#00e5ff',5,6);
     }
     if(P._blueBarrage.cnt>=P._blueBarrage.max){
       _stopLoop(P._blueLpSrc);P._blueLpSrc=null;
-      // 종료: 루프만 정지, 임팩트 없음
-      P._blueBarrage=null;
+      P._blueBarrage=null; // ON이면 다음 프레임에서 자동 재생성
     }
   }
-  // ═══ 푸른비 E홀드 추가 발사 (초당 50발, MP 틱소모) ═══
-  if(isHeld('beam')&&(P.activeMagicSk||'fireball')==='blueShot'&&P.skills.blueShot>=1){
-    P._blueHoldT=(P._blueHoldT||0)-sp;
-    if(P._blueHoldT<=0){
-      P._blueHoldT+=6; // 6프레임마다 _bhCnt발
-      const _bhLv=P.skills.blueShot||1;
-      const _bhCnt=Math.min(10,5+(_bhLv-1)); // 1렙=5발(초당50), 6렙=10발(초당100)
-      const _bhMpTick=_bhCnt; // 틱당 = 발수 MP (1발=1MP)
-      if(P.mp>=_bhMpTick){
-        P.mp-=_bhMpTick;
-        const _bhDmg=~~(magicRef()*statInt()*pMagicMul()*3*(1+(_bhLv-1)*.1)/_bhCnt); // 푸른비 E홀드 MP소모 대비 적정
-        for(let _bhi=0;_bhi<_bhCnt;_bhi++){
-          const _bhA=P.facing+(Math.random()-.5)*.3;
-          const _bhSpd=(7+Math.random()*2)*1.3;
-          const _pp=_getPProj();_pp.x=P.x+Math.cos(_bhA)*16;_pp.y=P.y+Math.sin(_bhA)*16;_pp.vx=Math.cos(_bhA)*_bhSpd;_pp.vy=Math.sin(_bhA)*_bhSpd;_pp.dmg=_bhDmg;_pp.el=EL.I;_pp.maxDist=750+(_bhLv-1)*45;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.pierce=Math.min(0.95,(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05);_pp.pierceMax=3+(PASSIVES.pPierce||0);_pp._aoeR=100;_pp._aoeDmg=~~(_bhDmg*.07);pProjs[pProjs.length]=_pp;
-        }
-        if(P._blueHoldT<-12)P._blueHoldT=0;
-      } else {addTxt(P.x,P.y-25,'MP 부족!','#4488ff',25)}
-    }
-  } else {P._blueHoldT=0}
   // ═══ 바늘출 순차 발사 (개틀링) ═══
   if(P._needleBurst&&P._needleBurst.cnt<P._needleBurst.max){
     P._needleBurst.timer-=sp;
@@ -20272,8 +20303,10 @@ function updateE(e,sp){
   // 피격 경직 (짧은 히트스턴)
   if(e._hitStun>0){e._hitStun-=sp;return}
   if(e.stunned>0){
-    if(e.ib){e.stunned=Math.min(e.stunned,180);if(!e._maxStunned)e._maxStunned=e.stunned}
-    else{e.stunned=Math.min(e.stunned,120);if(!e._maxStunned)e._maxStunned=e.stunned} // 일반몹 기절 캡 2초
+    const _stunResist=e.elite>0||e.ib; // 엘리트/보스 저항
+    const _stunCap=_stunResist?120:180; // 저항 시 2초, 일반 3초
+    if(e.stunned>_stunCap){e.stunned=_stunCap}
+    if(!e._maxStunned)e._maxStunned=e.stunned;
     e.stunned-=sp;
     if(e.stunned<=0){e._maxStunned=0;if(e.ib)e._pImmune=Math.max(e._pImmune||0,300)} // 보스: 그로기 해제 후 5초 면역
     return;
@@ -23865,7 +23898,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       G._blDeathSndQ.push({key:_dKey,vol:0.6,rate:_r(1,.1)});
       deathFX(e.x,e.y,e.r,e.col,!!e.ib,true,e.etype); // VFX만, 사운드 없음
     }else{
-      deathFX(e.x,e.y,e.r,e.col,!!e.ib,_isBurnDeath||noSound,e.etype);
+      deathFX(e.x,e.y,e.r,e.col,!!e.ib,_isBurnDeath,e.etype);
     }
     if(!(G._noHitStopT>0)){G.hitStop=~~(_HS.kill*OPT.hitStop/100)}
     // ═══ 콤보 시스템: 일반몹 +1초(최대20초), 보스 +30초(최대30초) ═══
@@ -24911,18 +24944,19 @@ const _FUSE_GEM_GROUPS={
   whirlDet:  {color:'#ff7722',color2:'#ffee00',tier:'clear',minLv:5, skills:['whirlwind','detonate']}, // 주황+노랑
   slamStorm: {color:'#ff7722',color2:'#ffee00',tier:'clear',minLv:10,skills:['whirlwind','detonate','giantSlam']}, // 주황+노랑 (whirlDet과 동일)
   stormBeam: {color:'#ff4400',color2:'#ffdd00',tier:'clear',minLv:15,star:4,skills:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile']}, // 빨강+금 (slamStorm+elemFuse 크로스) 4성
-  stormBurst:{color:'#dd00ff',color2:'#ffdd00',tier:'clear',minLv:30,star:4,hidden:true,skills:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop']}, // 보라+금 (stormBeam+버스트루프) 히든 4성
+  stormBurst:{color:'#dd00ff',color2:'#ffdd00',tier:'clear',minLv:30,star:5,hidden:true,skills:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop']}, // 보라+금 (stormBeam 4성+버스트루프 4성 → 히든 5성)
   bladeFuse: {color:'#ffffff',color2:'#ccbbaa',tier:'clear',minLv:5, skills:['maliceHunt','guardian']}, // 흰+베이지
   iceMortar: {color:'#2299ff',color2:'#00ffaa',tier:'clear',minLv:10, skills:['maliceMortar','iceOrb']}, // 하늘+민트
   boneStorm: {color:'#44ee44',color2:'#886622',tier:'clear',minLv:5, skills:['maliceStorm','boneWall']}, // 연두+갈색
   elecRepent:{color:'#44ee44',color2:'#ffd700',tier:'clear',minLv:10,skills:['maliceStorm','hellRay']}, // 연두+금 (참회 귀환)
   shieldFuse:{color:'#8888cc',color2:'#cc8844',tier:'clear',minLv:5, skills:['maliceSwipe','shieldThrow']}, // 청보라+동색
   plagueFuse:{color:'#ffffff',color2:'#ccbbaa',tier:'clear',minLv:10,skills:['maliceHunt','guardian','plagueBurst']}, // 흰+베이지 (bladeFuse 상위)
-  holyFuse:  {color:'#ff88aa',color2:'#ffccdd',tier:'clear',minLv:5, skills:['holyDome','holyPrison']}, // 핑크+연핑크 2성
-  holyIce:   {color:'#ff88aa',color2:'#88ddff',tier:'clear',minLv:10,skills:['holyDome','holyPrison','iceStorm']}, // 핑크+하늘 3성
-  holyFlame: {color:'#ff88aa',color2:'#ff6622',tier:'clear',minLv:15,star:4,skills:['holyDome','holyPrison','iceStorm','fireAura']}, // 핑크+주황 4성
-  holyRevive:{color:'#ff88aa',color2:'#aa44ff',tier:'clear',minLv:20,star:5,skills:['holyDome','holyPrison','iceStorm','fireAura','weakRev']}, // 핑크+보라 5성
-  holyApex:  {color:'#ff88aa',color2:'#ffdd00',tier:'clear',minLv:25,star:6,skills:['holyDome','holyPrison','iceStorm','fireAura','weakRev','holyBlast']}, // 핑크+금 6성
+  holyFuse:  {color:'#ff88aa',color2:'#ffccdd',tier:'clear',minLv:5, skills:['holyDome','holyPrison']}, // 2성
+  holyIce:   {color:'#ff88aa',color2:'#88ddff',tier:'clear',minLv:10,skills:['holyDome','holyPrison','iceStorm']}, // 3성
+  holyWeak1: {color:'#ff88aa',color2:'#aa66cc',tier:'clear',minLv:15,star:4,skills:['holyDome','holyPrison','iceStorm','weakPhys']}, // +파쇄 4성
+  holyWeak2: {color:'#ff88aa',color2:'#8866ff',tier:'clear',minLv:20,star:5,skills:['holyDome','holyPrison','iceStorm','weakPhys','weakMag']}, // +침식 5성
+  holyWeak3: {color:'#ff88aa',color2:'#6688ff',tier:'clear',minLv:25,star:6,skills:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj']}, // +관통 6성
+  holyWeak4: {color:'#ff88aa',color2:'#ffdd00',tier:'clear',minLv:30,star:7,skills:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj','weakRev']}, // +부활 7성
 };
 // 하위호환: 기존 _FUSE_GEMS 색상맵 자동 생성
 const _FUSE_GEMS={},_FUSE_GEMS2={};
@@ -25039,8 +25073,12 @@ const _FUSE_PAIRS={
   plagueFuse:['maliceHunt','guardian','plagueBurst'],
   holyFuse:['holyDome','holyPrison'],
   holyIce:['holyDome','holyPrison','iceStorm'],
+  holyWeak1:['holyDome','holyPrison','iceStorm','weakPhys'],
+  holyWeak2:['holyDome','holyPrison','iceStorm','weakPhys','weakMag'],
+  holyWeak3:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj'],
+  holyWeak4:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj','weakRev'],
 };
-function _getFuseKey(skId){for(const[k,v]of Object.entries(_FUSE_PAIRS)){if(v.includes(skId)){if(_isFused(k))continue;if(k==='sixFuse'&&_isFused('elemFuse'))continue;if(k==='elemFuse'&&(_isFused('stormBeam')||_isFused('stormBurst')))continue;if(k==='whirlDet'&&_isFused('slamStorm'))continue;if(k==='slamStorm'&&(_isFused('stormBeam')||_isFused('stormBurst')))continue;if(k==='stormBeam'&&_isFused('stormBurst'))continue;if(k==='stormBurst'&&P.lv<800)continue;if(k==='dimBreach'&&(_isFused('dimSlam')||_isFused('dimThunder')||_isFused('dimRush')))continue;if(k==='dimSlam'&&(_isFused('dimThunder')||_isFused('dimRush')))continue;if(k==='dimThunder'&&_isFused('dimRush'))continue;if(k==='dimRush'&&_isFused('dimBlast'))continue;if(k==='elecRepent'&&!_isFused('boneStorm'))continue;if(k==='boneStorm'&&_isFused('elecRepent'))continue;if(k==='holyFuse'&&_isFused('holyIce'))continue;return k}}return null}
+function _getFuseKey(skId){for(const[k,v]of Object.entries(_FUSE_PAIRS)){if(v.includes(skId)){if(_isFused(k))continue;if(k==='sixFuse'&&_isFused('elemFuse'))continue;if(k==='elemFuse'&&(_isFused('stormBeam')||_isFused('stormBurst')))continue;if(k==='whirlDet'&&_isFused('slamStorm'))continue;if(k==='slamStorm'&&(_isFused('stormBeam')||_isFused('stormBurst')))continue;if(k==='stormBeam'&&_isFused('stormBurst'))continue;if(k==='stormBurst'&&P.lv<800)continue;if(k==='dimBreach'&&(_isFused('dimSlam')||_isFused('dimThunder')||_isFused('dimRush')))continue;if(k==='dimSlam'&&(_isFused('dimThunder')||_isFused('dimRush')))continue;if(k==='dimThunder'&&_isFused('dimRush'))continue;if(k==='dimRush'&&_isFused('dimBlast'))continue;if(k==='elecRepent'&&!_isFused('boneStorm'))continue;if(k==='boneStorm'&&_isFused('elecRepent'))continue;if(k==='holyFuse'&&(_isFused('holyIce')||_isFused('holyWeak1')||_isFused('holyWeak2')||_isFused('holyWeak3')||_isFused('holyWeak4')))continue;if(k==='holyIce'&&(_isFused('holyWeak1')||_isFused('holyWeak2')||_isFused('holyWeak3')||_isFused('holyWeak4')))continue;if(k==='holyWeak1'&&(_isFused('holyWeak2')||_isFused('holyWeak3')||_isFused('holyWeak4')))continue;if(k==='holyWeak2'&&(_isFused('holyWeak3')||_isFused('holyWeak4')))continue;if(k==='holyWeak3'&&_isFused('holyWeak4'))continue;return k}}return null}
 function _isFused(key){return!!(P._fused&&P._fused[key])}
 // 스킬 고유 성급 (합체 전 표시) — 처음 등장하는 체인 단계 - 1 (기본=1★, 추가스킬=2★~)
 function _skInnateStar(skId){
@@ -25122,8 +25160,11 @@ function _canFuse(key){
   if(key==='slamStorm'&&!_isFused('whirlDet'))return false;
   if(key==='whirlDet'&&_isFused('whirlDet'))return false;
   if(key==='stormBeam'&&(!_isFused('slamStorm')||!_isFused('elemFuse')))return false;
-  if(key==='stormBeam'&&_isFused('stormBeam'))return false;
+  if(key==='stormBeam'&&(_isFused('stormBeam')||_isFused('stormBurst')))return false;
   if(key==='stormBeam'){return _catProfVal('phys')>=10800&&_catProfVal('def')>=10800&&_catProfVal('magic')>=10800} // 크로스합체: 관련 카테고리 각 3시간 (bow 제외: 자동석궁)
+  if(key==='stormBurst'&&!_isFused('stormBeam'))return false; // 선행: 암전나선
+  if(key==='stormBurst'&&_isFused('stormBurst'))return false;
+  if(key==='stormBurst')return P.lv>=800&&P.skills.burstLoop>=1; // Lv800+버스트루프 습득
   if(key==='elecRepent'&&_isFused('elecRepent'))return false;
   if(key==='elecRepent'&&!_isFused('boneStorm'))return false; // 해골번개 합체 선행 필요
   if(key==='elecRepent'&&!P.skills.hellRay)return false;
@@ -25142,7 +25183,7 @@ function _canFuse(key){
   for(let i=0;i<_fp.length;i++){if(_absolved.has(_fp[i]))continue;if(_SK_CAT[_fp[i]]==='bow')continue;if(_skProfVal(_fp[i])<_req)return false}
   return true;
 }
-function _getAbsorbed(key){const m={dimBreach:['magicBlink'],dimSlam:['magicBlink','chainAssault'],dimThunder:['magicBlink','chainAssault','chainSlam'],dimRush:['magicBlink','chainAssault','chainSlash','chainSlam'],dimBlast:['magicBlink','chainAssault','chainSlash','chainSlam','giantSlam'],whirlDet:['detonate'],slamStorm:['detonate','giantSlam'],stormBeam:['detonate','giantSlam','fanShot','omniBeam','elemMissile'],bladeFuse:['guardian'],iceMortar:['iceOrb'],sixFuse:['omniBeam'],elemFuse:['fanShot','omniBeam','elemMissile'],boneStorm:['boneWall'],elecRepent:['hellRay','boneWall'],shieldFuse:['shieldThrow'],plagueFuse:['guardian','plagueBurst'],holyFuse:['holyPrison'],holyIce:['holyPrison','iceStorm']};return m[key]||[]}
+function _getAbsorbed(key){const m={dimBreach:['magicBlink'],dimSlam:['magicBlink','chainAssault'],dimThunder:['magicBlink','chainAssault','chainSlam'],dimRush:['magicBlink','chainAssault','chainSlash','chainSlam'],dimBlast:['magicBlink','chainAssault','chainSlash','chainSlam','giantSlam'],whirlDet:['detonate'],slamStorm:['detonate','giantSlam'],stormBeam:['detonate','giantSlam','fanShot','omniBeam','elemMissile'],stormBurst:['detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop'],bladeFuse:['guardian'],iceMortar:['iceOrb'],sixFuse:['omniBeam'],elemFuse:['fanShot','omniBeam','elemMissile'],boneStorm:['boneWall'],elecRepent:['hellRay','boneWall'],shieldFuse:['shieldThrow'],plagueFuse:['guardian','plagueBurst'],holyFuse:['holyPrison'],holyIce:['holyPrison','iceStorm']};return m[key]||[]}
 // ═══ 흡수 스킬 판정: 합체에 먹힌 스킬은 독립 발동 불가 ═══
 function _getAllAbsorbed(){
   const out=[];
@@ -25162,13 +25203,13 @@ function _isAbsorbed(skId){
   }
   return false;
 }
-const _FUSE_NAMES={dimBreach:'사슬이동:강화',dimSlam:'사슬이동:강화기습',dimThunder:'사슬기동:기습충돌',dimRush:'기동:칼날개',dimBlast:'기동:강화전폭',whirlDet:'회전기폭',slamStorm:'지진폭풍',stormBeam:'암전나선',bladeFuse:'악의 해방',iceMortar:'얼음소용돌이',sixFuse:'만화광선',elemFuse:'추적암전',boneStorm:'해골번개',elecRepent:'참회 귀환',shieldFuse:'날개치기',plagueFuse:'독혈해방',holyFuse:'신성한 결계',holyIce:'신성한 빙결'};
+const _FUSE_NAMES={dimBreach:'사슬이동:강화',dimSlam:'사슬이동:강화기습',dimThunder:'사슬기동:기습충돌',dimRush:'기동:칼날개',dimBlast:'기동:강화전폭',whirlDet:'회전기폭',slamStorm:'지진폭풍',stormBeam:'암전나선',stormBurst:'암전폭류',bladeFuse:'악의 해방',iceMortar:'얼음소용돌이',sixFuse:'만화광선',elemFuse:'추적암전',boneStorm:'해골번개',elecRepent:'참회 귀환',shieldFuse:'날개치기',plagueFuse:'독혈해방',holyFuse:'신성한 결계',holyIce:'신성한 빙결',holyWeak1:'신성한 파쇄',holyWeak2:'신성한 침식',holyWeak3:'신성한 관통',holyWeak4:'신성한 지배'};
 // ═══ 리셋 후 활성 스킬 변수 동기화 ═══
 function _syncActiveSkAfterReset(resetIds){
   const s=new Set(resetIds);
   // 합체 호스트 스킬 (흡수 대상이지만 activeXSk로 사용 가능)
   const _fHosts=new Set();
-  {const _fhM={elemFuse:'omniBeam',sixFuse:'omniBeam',stormBeam:'whirlwind',whirlDet:'whirlwind',slamStorm:'whirlwind',dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',bladeFuse:'maliceHunt',plagueFuse:'maliceHunt',iceMortar:'maliceMortar',boneStorm:'maliceStorm',elecRepent:'maliceStorm',shieldFuse:'maliceSwipe',holyFuse:'holyDome',holyIce:'holyDome'};
+  {const _fhM={elemFuse:'omniBeam',sixFuse:'omniBeam',stormBeam:'whirlwind',stormBurst:'whirlwind',whirlDet:'whirlwind',slamStorm:'whirlwind',dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',bladeFuse:'maliceHunt',plagueFuse:'maliceHunt',iceMortar:'maliceMortar',boneStorm:'maliceStorm',elecRepent:'maliceStorm',shieldFuse:'maliceSwipe',holyFuse:'holyDome',holyIce:'holyDome'};
   for(const[fk,h]of Object.entries(_fhM)){if(P._fused&&P._fused[fk])_fHosts.add(h)}}
   // 검증: 리셋 대상이 아니거나 합체 호스트이면 유효
   const _skOk=(sk,slotKey)=>{if(!sk)return false;if(s.has(sk)&&!_fHosts.has(sk))return false;if(P.skills[sk]>=1)return true;
@@ -26065,10 +26106,10 @@ function openSkSlotPop(tab){
   pop.innerHTML='';
   // ── 탭 헤더: 6개 고정스킬 ──
   const tabs=[
-    {key:'lmb',label:'좌클',color:'#cc4444',fused:_isFused('stormBeam')?true:_isFused('slamStorm')?true:_isFused('whirlDet'),fuseName:_isFused('stormBeam')?'⚡ 암전나선':_isFused('slamStorm')?'🌋 지진폭풍':'🔥 회전기폭'},
+    {key:'lmb',label:'좌클',color:'#cc4444',fused:_isFused('stormBurst')?true:_isFused('stormBeam')?true:_isFused('slamStorm')?true:_isFused('whirlDet'),fuseName:_isFused('stormBurst')?'💫 암전폭류':_isFused('stormBeam')?'⚡ 암전나선':_isFused('slamStorm')?'🌋 지진폭풍':'🔥 회전기폭'},
     {key:'rmb',label:'우클',color:'#4488aa',fused:false,fuseName:''},
     {key:'charge',label:'SH',color:'#447788',fused:isDimBreach(),fuseName:_isFused('dimBlast')?'⚔ 강화전폭':_isFused('dimRush')?'⚔ 칼날개':_isFused('dimThunder')?'⚡ 강화습격':_isFused('dimSlam')?'🌀 사슬:강화':'🌀 사슬:강화'},
-    {key:'magic',label:'E',color:'#8866cc',fused:_isFused('stormBeam')?true:_isFused('elemFuse')?true:P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse'),fuseName:_isFused('stormBeam')?'⚡ →좌클 통합':_isFused('elemFuse')?'🎯 추적암전':'☆ 만화광선'},
+    {key:'magic',label:'E',color:'#8866cc',fused:_isFused('stormBurst')?true:_isFused('stormBeam')?true:_isFused('elemFuse')?true:P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse'),fuseName:_isFused('stormBurst')?'💫 →좌클 통합':_isFused('stormBeam')?'⚡ →좌클 통합':_isFused('elemFuse')?'🎯 추적암전':'☆ 만화광선'},
     {key:'bow',label:'T자동',color:'#cc8844'},
     {key:'q',label:'Q',color:'#55aa77',fused:false,fuseName:''},
     {key:'ct',label:'CT',color:'#77bbdd',fused:false,fuseName:''}
