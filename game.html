@@ -4022,7 +4022,7 @@ _archerRaw.onload=()=>{
 };
 let _sfxFrameT=0;const _sfxFrameCnt={};
 let _activeNodeCnt=0;
-const _MAX_ACTIVE_NODES=128; // 이 이상이면 큐 드롭
+const _MAX_ACTIVE_NODES=64; // 이 이상이면 큐 드롭
 const _sfxQueue=[];        // {key,vol,rate} 대기열
 const _SFX_PER_FRAME=8;    // 프레임당 최대 처리 수 (귀로 구분 가능한 한계)
 function _playSampleNow(key,vol,rate,startTime,pan){
@@ -4057,18 +4057,14 @@ function _sfxFrameReset(){
   // 단 키 중복 제거 — 같은 소리 여러개면 1개만
   const _seen={};let _cnt=0;
   const c=actx();const _t=c.currentTime;
-  // AudioContext 시간 기준 — 4ms 간격으로 균등 분산
-  // 오디오 스레드가 한번에 처리할 양을 물리적으로 제한
-  let _audioOffset=0;
   for(let i=0;i<_sfxQueue.length&&_cnt<_SFX_PER_FRAME&&_activeNodeCnt<_MAX_ACTIVE_NODES;i++){
     const q=_sfxQueue[i];
     if(!_seen[q.key])_seen[q.key]=0;
     const _n=_seen[q.key];
     const _volMul=_n<2?1:Math.max(0.08,Math.pow(0.5,_n-1));
     const _pitchMul=_n<2?1:Math.max(0.7,1-(_n-1)*0.05);
-    // 각 노드를 4ms씩 오디오 시간축으로 분산
-    _playSampleNow(q.key,q.vol*_volMul,q.rate*_pitchMul,_t+_audioOffset,q.pan||0);
-    _audioOffset+=0.004;
+    const _delay=_n*0.022;
+    _playSampleNow(q.key,q.vol*_volMul,q.rate*_pitchMul,_t+_delay,q.pan||0);
     _seen[q.key]++;_cnt++;
   }
   _sfxQueue.length=0; // 처리 안된 것도 버림 (이미 늦음)
@@ -20432,7 +20428,7 @@ function updateE(e,sp){
         ne.hp=~~(e.mhp*.2);ne.mhp=~~(e.mhp*.2);ne.eShield=ne.mhp;ne.eShieldMax=ne.mhp;ne.baseAtk=~~(e.baseAtk*.5);ne.atk=ne.baseAtk;
         ne.elite=e.elite;ne.col=e.col;ne.r=e.r;ne._isDecoy=true;
         ens.push(ne);addParts(ne.x,ne.y,'#bb66ff',10)}
-      addTxt(e.x,e.y-15,'환영술!','#bb66ff',35);SFX.groggy();
+      addTxt(e.x,e.y-15,'환영술!','#bb66ff',35);if(dst(e.x,e.y,P.x,P.y)<800)SFX.groggy();
     }
     if(e.modT.stealthT>0){e.modT.stealthT-=sp;if(e.modT.stealthT<=0)e.modT.stealthT=0}
     // ═══ #10 엘리트 접사 전파: 30초마다 주변 일반몹에 모디파이어 1개 전파 ═══
