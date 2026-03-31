@@ -4047,6 +4047,9 @@ function _sfxFrameReset(){
     if(_hitFrameCnt>100)playSample('SFX_groggy'||'impact_hit',.6,_r(.6,.1));
   }
   _hitFrameCnt=0;_hitFrameBig=false;
+  if(_deathSfxCd>0)_deathSfxCd--;
+  if(!_sfxRefillT)_sfxRefillT=0;_sfxRefillT++;
+  if(_sfxRefillT>=_SFX_REFILL){_sfxRefillT=0;for(const k in _sfxKeyCd){if(_sfxKeyCd[k]>0)_sfxKeyCd[k]--;else delete _sfxKeyCd[k]}}
   // 큐에서 프레임당 최대 8개만 실제 재생 (나머지는 다음 프레임)
   // 단 키 중복 제거 — 같은 소리 여러개면 1개만
   const _seen={};let _cnt=0;
@@ -4070,11 +4073,30 @@ function _sfxFrameReset(){
   if(SFX._sbSndCd>0)SFX._sbSndCd--;
   if(_actx&&_actx.state==='suspended')_actx.resume();
 }
+const _sfxKeyCd={}; // 카테고리별 중첩 카운트
+let _sfxRefillT=0; // 리필 타이머
+const _SFX_MAX=5; // 같은 카테고리 최대 동시 중첩
+const _SFX_REFILL=12; // 12프레임(0.2초)마다 슬롯 1개 회복 → 1초에 5개 리필
+function _sfxCat(key){
+  // 사운드 키 → 카테고리 그룹 (같은 그룹끼리 쿨다운 공유)
+  if(key.startsWith('monster_hit')||key==='flat_hit')return'g_monHit';
+  if(key.startsWith('death_')||key.startsWith('monster_die'))return'g_death';
+  if(key==='boss_hit'||key==='monster_hurt')return'g_bossHit';
+  if(key.startsWith('sword_swing'))return'g_swing';
+  if(key.startsWith('chain_dash'))return'g_chainDash';
+  if(key.startsWith('voice_')||key==='male_grunt')return'g_voice';
+  if(key.startsWith('fire_magic'))return'g_fireMagic';
+  if(key.startsWith('electric_storm'))return'g_eStorm';
+  if(key.startsWith('death_ghoul'))return'g_ghoul';
+  return key; // 매핑 없으면 키 자체가 카테고리
+}
 function playSample(key,vol,rate){
+  const _cat=_sfxCat(key);
+  if((_sfxKeyCd[_cat]||0)>=_SFX_MAX)return; // 5중첩 초과 → 스킵
+  _sfxKeyCd[_cat]=(_sfxKeyCd[_cat]||0)+1;
   if(_gxVolMul<1){vol*=_gxVolMul;if(vol<0.01)return;}
   if(!rate)rate=1;
   rate=rate*(0.92+Math.random()*0.16);
-  // 큐에 추가 (vol 높을수록 앞으로 — 가까운 소리 우선)
   _sfxQueue.push({key,vol,rate});
   if(vol>0.7)_sfxQueue.sort((a,b)=>b.vol-a.vol);
   return;
@@ -4089,6 +4111,9 @@ function playSampleAt(key,vol,rate,x,y){
   // 화면 폭 기준 좌우 패닝 (-1~1), 최대 0.7로 제한
   const pan=Math.max(-0.7,Math.min(0.7,dx/600));
   // 큐에 pan 포함해서 push
+  const _cat2=_sfxCat(key);
+  if((_sfxKeyCd[_cat2]||0)>=_SFX_MAX)return;
+  _sfxKeyCd[_cat2]=(_sfxKeyCd[_cat2]||0)+1;
   if(_gxVolMul<1){const _v=vol*falloff*falloff*_gxVolMul;if(_v<0.01)return;}
   _sfxQueue.push({key,vol:vol*falloff*falloff,rate:rate*(0.92+Math.random()*0.16),pan});
   if(vol>0.7)_sfxQueue.sort((a,b)=>b.vol-a.vol);
@@ -10444,12 +10469,14 @@ function _drawExplosions(X){
   }
 }
 
+let _deathSfxCd=0; // 사망 사운드 쿨다운 (60프레임=1초)
 function deathFX(x,y,r,col,isBoss,noSound,et){
-  if(!noSound){
+  if(!noSound&&_deathSfxCd<=0){
+    _deathSfxCd=60; // 1초 쿨다운
     if(isBoss){playSampleAt('death_boss',.5,_r(.7,.15),x,y)}
     else if(et>=100&&et<=102){const gk=_pickDeathVar(et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3');playSampleAt(gk,_r(.5,.1),_r(1,.1),x,y)}
     else{
-      // 일반몹 사망 사운드 — 항상 재생, 전 카테고리 통합
+      // 일반몹 사망 사운드 — 1초 쿨다운
       const k=_deathSfxKey(et);
       const v=_ARMOR_ET.has(et)?.35:r>=40?.7:.55;
       playSampleAt(k,_r(v,.08),_r(1,.12),x,y);
@@ -14104,8 +14131,8 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  let _hp=~~((ib?3000:150)*Math.pow(1.009,monLv)*dm*et.hpMul); // 0.9% 복리, 보스=일반×20
-  const _atk=~~(((ib?50:30)+monLv*(ib?6:4))*dm*et.atkMul); // 기본30+레벨당4 (보스: 50+레벨당6)
+  let _hp=Math.floor((ib?3000:150)*Math.pow(1.016,monLv)*dm*et.hpMul); // 1.6% 복리, 보스=일반×20
+  const _atk=Math.floor(((ib?50:30)+monLv*(ib?6:4))*dm*et.atkMul); // 기본30+레벨당4 (보스: 50+레벨당6)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   const _noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
   let _projCd=ib?70:_rare?9999
@@ -15006,7 +15033,7 @@ function update(){
         // INT: 화염 데미지 + 화상 (사슬기동:화염 테마 통일)
         const _blLv=P.skills.magicBlink||1;
         const _ltnDmg=~~(((ar().charge||10)+P.baseAtk)*(1+_blLv*0.15)*statInt());
-        hurtE(e,_ltnDmg,_hAng,true,{poiseHit:true,poiseMult:1.5},EL.F);
+        hurtE(e,_ltnDmg,_hAng,false,{poiseHit:true,poiseMult:1.5},EL.F);
         e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);
         addTxt(e.x,e.y-18,'🔥 화염관통!','#ff6600',30);
         for(let j=0;j<6;j++){const a=Math.PI*2*j/6;poolPart(e.x,e.y,Math.cos(a)*4,Math.sin(a)*4,j%2?'#ff6600':'#ffaa00',2+Math.random()*3,12)}
@@ -15015,7 +15042,7 @@ function update(){
         const _cbLv=P.skills.chargeBoost||0;
         const _cbMul=_cbLv>=1?1.5+(_cbLv-1)*0.25:1.0;
         const _cDmg=~~(((ar().charge||10)+P.baseAtk)*_cbMul*statStr()*(1+_eqAffix('dashBoost')));
-        hurtE(e,_cDmg,_hAng,true,{kbMult:2,poiseHit:true,poiseMult:2.0},ar().el);
+        hurtE(e,_cDmg,_hAng,false,{kbMult:2,poiseHit:true,poiseMult:2.0},ar().el);
         e.kb.x+=Math.cos(_hAng)*25;e.kb.y+=Math.sin(_hAng)*25;
         addTxt(e.x,e.y-18,'🔱 관통!','#ffaa00',30);
         for(let j=0;j<8;j++){const a=Math.PI*2*j/8;poolPart(e.x,e.y,Math.cos(a)*5,Math.sin(a)*5,ELP[ar().el],3+Math.random()*3,14)}
@@ -15038,7 +15065,7 @@ function update(){
         if(!P._chainSlashHits)P._chainSlashHits=[];
         P._chainSlashHits.push(e);
         const _eA=Math.atan2(e.y-P.y,e.x-P.x);
-        hurtE(e,_csDmg,_eA,true,{kbMult:0,poiseHit:true,poiseMult:1.2,bladeShard:true},wp().el||0);
+        hurtE(e,_csDmg,_eA,true,{kbMult:0,poiseHit:true,poiseMult:1.2},wp().el||0);
         e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);e._bleedPool=(e._bleedPool||0)+_csDmg*0.50;e.bleed=1;
         addTxt(e.x,e.y-18,'⚔ 칼날!','#ff4466',25);
         playVFXAng('ice_slash',e.x,e.y,1.0,3,_eA);
@@ -17454,7 +17481,7 @@ function update(){
         if(p.explosive && !p.hitTriggered){ p.vx=0; p.vy=0; p.hitTriggered=true; } // 폭발탄은 멈춤
         {const _isTurretProj=!!p._fromTurret;
         const _ftV=_isTurretProj&&_gxTurret?Math.max(0,1-dst(P.x,P.y,_gxTurret.x,_gxTurret.y)/2000):1;
-        hurtE(e,dmg,ang,_isTurretProj||p.blueBean||p.bladeShard||p.maliceHunt||p.iceBlade,p,p.el);
+        hurtE(e,dmg,ang,_isTurretProj||p.blueBean,p,p.el);
         if(!_isTurretProj||_ftV>0.01){
           if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
           else if(p.blueBean){}
@@ -23374,7 +23401,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(e._aDefM&&e._aDefM<1)dmg=~~(dmg*e._aDefM);
   // M22 동료불사: 근처 M22 아군이 있으면 33% 감소
   if(e.mods&&!e.ib){const _m22n=shQuery(e.x,e.y,120);for(let _m22i=0;_m22i<_m22n.length;_m22i++){const _oe=_m22n[_m22i];if(_oe!==e&&_oe.mods&&_oe.mods.includes('M22')){dmg=~~(dmg*.67);addTxt(e.x,e.y-8,'불사 보호','#ff66aa',15);break}}}
-  if(!noSound&&!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade))){
+  if(!noSound){
     _hitFrameCnt++;
     if(_hitFrameCnt>20){
       // 대량타격 — 타격음 스킵, 나중에 임팩트 1방으로 처리
