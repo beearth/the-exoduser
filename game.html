@@ -1203,6 +1203,7 @@ async function dbSave(){
       bagMax:BAG_MAX,
       hellCleared:G.hellCleared||[],
       storage:STORAGE||{},
+      crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
       upgrades:{...UPGRADES},
       potLv:{...POT_LV},
       skills:{...P.skills},
@@ -1325,6 +1326,11 @@ function dbRestore(d){
   G.hellCleared=d.hellCleared||[];
   // Storage
   if(d.storage)STORAGE=d.storage;
+  // 결정 주머니 복원 + 마이그레이션
+  CRYSTAL_BAG=d.crystalBag||[];CRYSTAL_DUST=d.crystalDust||0;
+  const _fixCr=it=>{if(!it)return;if(it.socketCount===undefined){const _r=Math.random();it.socketCount=_r<.5?1:_r<.8?2:_r<.95?3:4;it.crystals=new Array(it.socketCount).fill(null)}};
+  if(INV.bag)INV.bag.forEach(_fixCr);for(const s of SLOT_NAMES)_fixCr(INV.equipped[s]);
+  if(STORAGE)for(const k in STORAGE){const st=STORAGE[k];if(Array.isArray(st))st.forEach(_fixCr)}
   // Upgrades
   if(d.upgrades)UPGRADES=d.upgrades;
   if(d.potLv)for(const k in d.potLv){if(POT[k]!==undefined)POT_LV[k]=d.potLv[k];}
@@ -5092,6 +5098,46 @@ function rollAffixes(grade,slot,brType){
 }
 
 const SLOT_NAMES=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
+// ═══ 결정 슬롯 시스템 — 데이터 정의 ═══
+const CRYSTAL_DEFS={
+  cr_hp:{ko:'HP결정',stat:'hp',base:100,cat:'stat',emoji:'❤'},
+  cr_st:{ko:'ST결정',stat:'st',base:30,cat:'stat',emoji:'⚡'},
+  cr_mp:{ko:'MP결정',stat:'mp',base:30,cat:'stat',emoji:'💧'},
+  cr_atk:{ko:'ATK결정',stat:'atk',base:20,cat:'stat',emoji:'⚔'},
+  cr_def:{ko:'DEF결정',stat:'def',base:10,cat:'stat',emoji:'🛡'},
+  cr_spd:{ko:'속도결정',stat:'spd',base:3,cat:'stat',emoji:'💨',pct:true},
+  cr_crit:{ko:'크리결정',stat:'crit',base:1,cat:'stat',emoji:'🎯',pct:true},
+  cr_cdmg:{ko:'치명결정',stat:'cdmg',base:5,cat:'stat',emoji:'💥',pct:true},
+  cr_fire:{ko:'화염결정',stat:'fire',base:15,cat:'elem',emoji:'🔥'},
+  cr_ice:{ko:'냉기결정',stat:'ice',base:12,cat:'elem',emoji:'❄'},
+  cr_dark:{ko:'암흑결정',stat:'dark',base:15,cat:'elem',emoji:'🌑'},
+  cr_light:{ko:'번개결정',stat:'light',base:18,cat:'elem',emoji:'⚡'},
+  cr_holy:{ko:'신성결정',stat:'holy',base:10,cat:'elem',emoji:'✨'},
+  cr_hpReg:{ko:'생명결정',stat:'hpR',base:2,cat:'util',emoji:'💚'},
+  cr_stReg:{ko:'기력결정',stat:'stR',base:1,cat:'util',emoji:'🟢'},
+  cr_mpReg:{ko:'마력결정',stat:'mpR',base:1,cat:'util',emoji:'🔵'},
+  cr_drop:{ko:'행운결정',stat:'drop',base:3,cat:'util',emoji:'🍀',pct:true},
+};
+const CRYSTAL_IDS=Object.keys(CRYSTAL_DEFS);
+const CRYSTAL_STAR=[
+  {name:'조각',mul:1.0,color:'#888888'},
+  {name:'파편',mul:2.0,color:'#44cc44'},
+  {name:'결정',mul:3.5,color:'#4488ff'},
+  {name:'순수결정',mul:6.0,color:'#cc44ff'},
+  {name:'완전결정',mul:10.0,color:'#ffaa00'},
+];
+const CRYSTAL_STAR_COST_MUL=[1,1.5,2.5,4,7];
+const CRYSTAL_BAG_MAX=100;
+let CRYSTAL_BAG=[];
+let CRYSTAL_DUST=0;
+function crystalVal(cr){
+  if(!cr)return 0;const d=CRYSTAL_DEFS[cr.id];if(!d)return 0;
+  return d.base*CRYSTAL_STAR[cr.star].mul*(1+(cr.enh||0)*0.1);
+}
+function crystalEnhCost(cr){
+  if(!cr)return Infinity;
+  return Math.ceil(500*(1+(cr.enh||0)*0.5)*CRYSTAL_STAR_COST_MUL[cr.star]);
+}
 // 디아블로식 아이템 크기 [W,H] (그리드 칸 단위)
 const ITEM_SIZE={weapon:[2,2],shield:[2,2],boots:[2,2],armor:[2,2],helmet:[2,2],bow:[2,2],gloves:[2,2],pants:[2,2],belt:[2,2],necklace:[2,2],ring1:[2,2],ring2:[2,2],cape:[2,2],bracelet:[2,2],headband:[2,2]};
 // 무기 wtype별 크기 (디아블로/PoE식)
@@ -5344,6 +5390,10 @@ function mkItem(slot,tier,el,rarity,wtype){
   const itemLv=Math.min(900,Math.floor(_pLv/10)*10); // 10단위 내림, 캡 900
   item.itemLv=itemLv;
   item.reqLv=Math.max(0,itemLv-10);
+  // ═══ 결정 슬롯 생성 (1~4소켓 랜덤) ═══
+  const _scR=Math.random();
+  item.socketCount=_scR<.50?1:_scR<.80?2:_scR<.95?3:4;
+  item.crystals=new Array(item.socketCount).fill(null);
   return item;
 }
 
@@ -5532,7 +5582,7 @@ function recalcSt(){
   const base=100+~~(P.lv*.5)+STATS.dex*1;
   let bonus=0;
   for(const slot of SLOT_NAMES){const it=INV.equipped[slot];if(it&&it.bonusSt)bonus+=it.bonusSt}
-  P.mst=base+bonus;P.st=Math.min(P.st,P.mst);
+  P.mst=base+bonus+~~(P._crystalStats?P._crystalStats.st:0);P.st=Math.min(P.st,P.mst);
 }
 
 function itemPower(it){
@@ -5585,6 +5635,8 @@ function itemPower(it){
   }
   // ── 13) 전설 특수 ──
   if(it.legendarySpecial)p+=120;
+  // ── 14) 결정 파워 ──
+  if(it.crystals)for(let _ci=0;_ci<it.crystals.length;_ci++){const _c=it.crystals[_ci];if(_c)p+=crystalVal(_c)*2}
   return~~p;
 }
 function sortInvBag(){
@@ -10409,6 +10461,14 @@ const _DEATH_VARIANTS={
   death_ghoul3:['death_ghoul3','death_ghoul3_v2','death_ghoul3_v3','death_ghoul3_v4','death_ghoul3_v5','death_ghoul3_v6']
 };
 function _pickDeathVar(base){const a=_DEATH_VARIANTS[base];return a?a[Math.random()*a.length|0]:base}
+// ── 보스 사운드 프로필 (si별) ──
+const _BOSS_SFX={
+  0:{howl:'boss_howl', howlP:.7,  die:'death_boss',dieP:.7,  hit:'boss_hit',hitP:.7,  hurt:'monster_hurt',hurtP:.7},  // 숲의 감시자 — 묵직/낮음
+  1:{howl:'boss_howl', howlP:1.3, die:'death_boss',dieP:1.2, hit:'boss_hit',hitP:1.3, hurt:'monster_hurt',hurtP:1.2}, // 독버섯 거인 — 끈적/높음
+  2:{howl:'boss_howl1',howlP:1.1, die:'death_boss',dieP:1.0, hit:'boss_hit',hitP:1.1, hurt:'monster_hurt',hurtP:1.1}, // 숲의 사냥꾼 — 날카로움
+  3:{howl:'boss_howl', howlP:.55, die:'death_boss',dieP:.55, hit:'boss_hit',hitP:.6,  hurt:'monster_hurt',hurtP:.55}  // 숲의 기생수 — 거대/공포
+};
+function _bossSfx(si){return _BOSS_SFX[si]||null}
 function _deathSfxKey(et){
   if(et==null)return 'monster_die1';
   if(et===100)return _pickDeathVar('death_ghoul1'); // 구울 소
@@ -10473,7 +10533,7 @@ let _deathSfxCd=0; // 사망 사운드 쿨다운 (60프레임=1초)
 function deathFX(x,y,r,col,isBoss,noSound,et){
   if(!noSound&&_deathSfxCd<=0){
     _deathSfxCd=60; // 1초 쿨다운
-    if(isBoss){playSampleAt('death_boss',.5,_r(.7,.15),x,y)}
+    if(isBoss){const _bd=_bossSfx(G.stage);playSampleAt(_bd?_bd.die:'death_boss',.5,_r(_bd?_bd.dieP:.7,.15),x,y)}
     else if(et>=100&&et<=102){const gk=_pickDeathVar(et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3');playSampleAt(gk,_r(.5,.1),_r(1,.1),x,y)}
     else{
       // 일반몹 사망 사운드 — 1초 쿨다운
@@ -11996,6 +12056,20 @@ function applyStats(){
   P.hpR=.05+s.str*.002+P.lv*.001+_eqAffix('lifeRegen')/60; // HP리젠: 초당 + STR + 레벨 + 생명팔찌
   P.mmp=~~((100+P.lv*.5+s.int*1)*(1+_eqAffix('maxMPPct')));P.mp=Math.min(P.mp,P.mmp);
   P.mpR=.05+s.int*.005+P.lv*.001; // MP리젠: 초당 + INT + 레벨 (/8 적용)
+  // ═══ 결정 스탯 합산 ═══
+  const _cr={hp:0,st:0,mp:0,atk:0,def:0,spd:0,crit:0,cdmg:0,fire:0,ice:0,dark:0,light:0,holy:0,hpR:0,stR:0,mpR:0,drop:0};
+  for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(!it||!it.crystals)continue;
+    for(let ci=0;ci<it.crystals.length;ci++){const c=it.crystals[ci];if(!c)continue;
+      const v=crystalVal(c);const d=CRYSTAL_DEFS[c.id];if(d)_cr[d.stat]+=v}}
+  P._crystalStats=_cr;
+  P.mhp+=~~_cr.hp;P.hp=Math.min(P.hp,P.mhp);
+  P.baseAtk+=~~_cr.atk;
+  P.baseDef+=~~_cr.def;
+  P.speed*=(1+_cr.spd*0.01);
+  P.hpR+=_cr.hpR/60;
+  P.mpR+=_cr.mpR/60;
+  P.stR+=_cr.stR/60;
+  P.mmp+=~~_cr.mp;P.mp=Math.min(P.mp,P.mmp);
   // ═══ 에너지 쉴드: INT 100 이상 해금 + 장비 bonusShield + 어픽스 ═══
   if(s.int>=100){P.mshield=~~(150+P.lv*.5+(s.int-100)*2.5+_totalBonusShield+_eqAffix('shieldFlat'));P.shield=Math.min(P.shield,P.mshield)}
   else{P.mshield=0;P.shield=0}
@@ -12013,9 +12087,9 @@ function _eqImplicit(stat){let v=0;for(const sl of SLOT_NAMES){const it=INV.equi
 function statStr(){return 1+(STATS.str+_eqStat('Str'))*.001} // STR 물리: 포인트당 +0.1% (1000pt=+100%)
 function statDex(){return 1+(STATS.dex+_eqStat('Dex'))*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01} // DEX 공속: 포인트당 +0.05%
 function statInt(){return 1+(STATS.int+_eqStat('Int'))*.001} // INT 마법: 포인트당 +0.1% (1000pt=+100%)
-function statCrit(){return (STATS.dex+_eqStat('Dex'))*.015+STATS.lck*.05+PASSIVES.pCrit*1+(rg1().critRate||0)+(rg2().critRate||0)} // 크리 확률 절반
-function statCritDmg(){return 1.3+STATS.lck*.2+PASSIVES.pCrit*.04+(rg1().critDmg||0)+(rg2().critDmg||0)} // 크리 배율 1.3x 기본, LCK당 +0.2
-function statDropBonus(){return 1+STATS.lck*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')} // 드롭 +8%/lv +어픽스
+function statCrit(){return (STATS.dex+_eqStat('Dex'))*.015+STATS.lck*.05+PASSIVES.pCrit*1+(rg1().critRate||0)+(rg2().critRate||0)+(P._crystalStats?P._crystalStats.crit:0)}
+function statCritDmg(){return 1.3+STATS.lck*.2+PASSIVES.pCrit*.04+(rg1().critDmg||0)+(rg2().critDmg||0)+(P._crystalStats?P._crystalStats.cdmg*0.01:0)}
+function statDropBonus(){return 1+STATS.lck*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
 // 패시브 배율 함수 (max5, 효과 2배)
 function pAtkMul(){return 1+PASSIVES.pAtk*.03+(P._altAtk||0)}  // 무기뎀 +3%/lv (10lv=+30%)
 function pAtkCost(){return Math.max(.60,1-PASSIVES.pAtk*.04)} // ST비용 유지
@@ -13846,7 +13920,7 @@ function _enterBossArena(){
   for(let k=0;k<16;k++){const a=Math.random()*Math.PI*2;const v=2+Math.random()*3;
     poolPart(P.x+Math.cos(a)*10,P.y+Math.sin(a)*10,Math.cos(a)*v,Math.sin(a)*v,_sCol,1.5+Math.random()*2,15+Math.random()*10)}
   G.shake=8*OPT.shake/100;
-  SFX.groggy();playSample(Math.random()<.5?'boss_howl':'boss_howl1',.6,_r(.8,.15)); // 보스 포효
+  SFX.groggy();const _bsf=_bossSfx(si);if(_bsf)playSample(_bsf.howl,.6,_r(_bsf.howlP,.15));else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.6,_r(.8,.15)); // 보스 포효
   addTxt(P.x,P.y-50,'\u26A0 \uBD09\uC778\uB428!',_sCol,70);
 }
 
@@ -14131,7 +14205,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  let _hp=Math.floor((ib?3000:150)*Math.pow(1.016,monLv)*dm*et.hpMul); // 1.6% 복리, 보스=일반×20
+  let _hp=Math.floor((ib?1500:150)*Math.pow(1.016,monLv)*dm*et.hpMul); // 1.6% 복리, 보스=일반×10
   const _atk=Math.floor(((ib?50:30)+monLv*(ib?6:4))*dm*et.atkMul); // 기본30+레벨당4 (보스: 50+레벨당6)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   const _noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
@@ -14717,7 +14791,8 @@ function _applyColResult(){
   const cnt=Math.min(ens.length,_COL_MAX);
   for(let i=0;i<cnt;i++){
     if(!ens[i].alive)continue;
-    ens[i].x+=sep[i*2];ens[i].y+=sep[i*2+1];
+    const _nx=ens[i].x+sep[i*2],_ny=ens[i].y+sep[i*2+1];
+    if(!isW(_nx,_ny,true)){ens[i].x=_nx;ens[i].y=_ny;} // 벽이면 분리 안 함 (벽 즉사 방지)
   }
   _colResult=null;
 }
@@ -14876,6 +14951,27 @@ function rollDrop(e){
   if(!item)continue;
   worldItems.push({x:e.x+(Math.random()-.5)*30,y:e.y+(Math.random()-.5)*30,type:'item',item,picked:false});
   } // end dropCount loop
+  // ═══ 결정 드롭 ═══
+  if(CRYSTAL_BAG.length<CRYSTAL_BAG_MAX){
+    const _crCh=e.ib?0.80:0.15*dropBonus;
+    if(Math.random()<_crCh){
+      const _crId=CRYSTAL_IDS[~~(Math.random()*CRYSTAL_IDS.length)];
+      let _crStar;
+      if(e.ib&&STG[G.stage]&&G.stage===CHAPTER_STAGES[SI_TO_HELL[G.stage]].startSi+CHAPTER_STAGES[SI_TO_HELL[G.stage]].stages-1){
+        _crStar=Math.random()<.3?4:Math.random()<.6?3:2; // 장보스 3~5성
+      }else if(e.ib){
+        _crStar=Math.random()<.4?3:Math.random()<.7?2:1; // 보스 2~4성
+      }else if(e.elite>0){
+        _crStar=Math.random()<.5?1:0; // 엘리트 1~2성
+      }else{
+        _crStar=Math.random()<.8?0:1; // 일반 1~2성
+      }
+      const _newCr={id:_crId,star:_crStar,enh:0};
+      CRYSTAL_BAG.push(_newCr);
+      const _crDef=CRYSTAL_DEFS[_crId];
+      addTxt(e.x,e.y-40,CRYSTAL_STAR[_crStar].name+' '+_crDef.ko+' 획득!',CRYSTAL_STAR[_crStar].color,50);
+    }
+  }
 }
 
 // ═══ 몬스터 이동 사운드 매핑 (updateE에서 참조) ═══
@@ -16837,7 +16933,7 @@ function update(){
             addTxt(e.x,e.y-50,'☠ 지옥에서 귀환!','#ff4400',100);
             addTxt(e.x,e.y-30,'부활 성공!','#ff8844',60);
             _reviveVFX(e.x,e.y,'#ffdd44','',{partN:16,partSpd:5,shake:10,vfxSize:140,flash:3});
-            playSample('boss_howl',.5,_r(.9,.1));
+            {const _br=_bossSfx(G.stage);playSample(_br?_br.howl:'boss_howl',.5,_r(_br?_br.howlP:.9,.1));}
           }else{
             // 부활 실패 → 완전 사망 (G.bossAlive는 true 유지 — 30프레임 체크에서 게이트 열기)
             e._bossRevived=false;e._reviveTimer=0;
@@ -16845,7 +16941,7 @@ function update(){
             addTxt(e._reviveX,e._reviveY-30,'부활 실패...','#888888',60);
             // G.bossAlive는 삭제 — 30프레임 체크(125611)에서 _bossLive=false 감지 후 처리
             shake(8);G._flashT=4;G._flashCol='#ffffff';
-            playSample('death_boss',1,1);
+            {const _bf=_bossSfx(G.stage);playSample(_bf?_bf.die:'death_boss',1,_bf?_bf.dieP:1);}
           }
         }else if(e._reviveAsGhoul){
           // ── 일반몹: 구울로 변환 (50%) ──
@@ -18548,10 +18644,15 @@ function update(){
     const _bsR=_bsMaxR*0.5+(P._bsT/_bsDur)*_bsMaxR*0.5; // 절반→풀 확장
     const _bsPullProg=Math.min(1,P._bsT/_bsDur);
     for(let bi=0;bi<ens.length;bi++){const e=ens[bi];if(!e.alive)continue;
-      const d=dst(e.x,e.y,P._bsX,P._bsY);if(d>_bsR||d<5)continue;
+      const d=dst(e.x,e.y,P._bsX,P._bsY);if(d>_bsR)continue;
+      const _bsMinR=60+e.r; // 중심 최소 거리: 60+몹크기 (과도한 중첩 방지)
+      if(d<_bsMinR)continue;
       const ang=Math.atan2(P._bsY-e.y,P._bsX-e.x);
       const pull=(5+(_bsLvP-1)*0.5)*(1-d/_bsR*0.3)*sp; // 기본5+Lv당0.5
-      e.x+=Math.cos(ang)*pull;e.y+=Math.sin(ang)*pull;
+      const _newD=d-pull; // 끌린 후 거리
+      const _clampPull=_newD<_bsMinR?Math.max(0,d-_bsMinR):pull; // 최소거리 이하로 안 끌림
+      const _bsNx=e.x+Math.cos(ang)*_clampPull,_bsNy=e.y+Math.sin(ang)*_clampPull;
+      if(!isW(_bsNx,_bsNy,true)){e.x=_bsNx;e.y=_bsNy;} // 벽이면 안 끌림 (벽 즉사 방지)
     }
     if(P._bsT>=_bsDur){fireBlackStar()}
   }
@@ -23407,7 +23508,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       // 대량타격 — 타격음 스킵, 나중에 임팩트 1방으로 처리
       _hitFrameBig=true;
     }else{
-      if(e.ib){playSampleAt('boss_hit',.3,_r(1,.2),e.x,e.y);if(Math.random()<.15)playSampleAt('monster_hurt',.25,_r(.9,.15),e.x,e.y)}
+      if(e.ib){const _bh=_bossSfx(G.stage);if(_bh){playSampleAt(_bh.hit,.3,_r(_bh.hitP,.2),e.x,e.y);if(Math.random()<.15)playSampleAt(_bh.hurt,.25,_r(_bh.hurtP,.15),e.x,e.y)}else{playSampleAt('boss_hit',.3,_r(1,.2),e.x,e.y);if(Math.random()<.15)playSampleAt('monster_hurt',.25,_r(.9,.15),e.x,e.y)}}
       else{const _hs=_hitSfxForEtype(e.etype);playSampleAt(_hs.key,.3,_r(_hs.pitch,.15),e.x,e.y)}
     }
   } // 보스: boss_hit+고통, 일반: 카테고리별 피격음
@@ -23447,7 +23548,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     const _cbMax=(_cbPas>0?_cbPas*5:0)+(_cbAf>0?10:0); // 패시브: Lv×5 + 어픽스: +10 (둘 다 있으면 최대60)
     if(P._comboTgt===e){P._comboStk=Math.min(_cbMax,(P._comboStk||0)+1)}
     else{P._comboTgt=e;P._comboStk=0}
-    if(P._comboStk>0){dmg=~~(dmg*(1+P._comboStk*0.01));if(P._comboStk%5===0&&_txtPerFrame<_TXT_BUDGET)addTxt(e.x,e.y-40,'🎯콤보 '+P._comboStk+'x','#ff66aa',25)}
+    if(P._comboStk>0){dmg=~~(dmg*(1+P._comboStk*0.01))}
   }
   // 크리티컬 판정
   if(Math.random()*100<statCrit()){dmg=~~(dmg*statCritDmg());if(G._sStats)G._sStats.crits++;if(P.s!=='whirlwind'&&_txtPerFrame<_TXT_BUDGET&&!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade)))addTxt(e.x,e.y-30,'💥크리!','#ff2266',35)}
@@ -27483,6 +27584,18 @@ function _invCardFields(it){
     stats+='<div style="margin-top:6px;padding:4px 6px;background:rgba(255,170,0,.12);border:1px solid #ffaa00;border-radius:3px">';
     stats+='<div style="color:#ffaa00;font-size:.75rem;font-weight:700;margin-bottom:2px">\u25C8 \uC804\uC124 \uD2B9\uC218</div>';
     stats+='<div style="color:#ffdd88;font-size:.8rem">'+it.legendarySpecial.ko+'</div></div>';
+  }
+  // ═══ 결정 슬롯 표시 ═══
+  if(it.socketCount>0){
+    stats+='<div style="margin-top:6px;border-top:1px solid #553388;padding-top:4px">';
+    stats+='<div style="color:#bb88ff;font-size:.8rem;font-weight:700">💎 결정 슬롯 ('+it.socketCount+')</div>';
+    for(let ci=0;ci<it.socketCount;ci++){
+      const cr=it.crystals?it.crystals[ci]:null;
+      if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],cv=~~crystalVal(cr);
+        stats+='<div style="color:'+cs.color+';font-size:.8rem">'+cd.emoji+' '+cs.name+' '+cd.ko+(cr.enh>0?' +'+cr.enh:'')+ ' ('+(cd.pct?'+'+cv+'%':'+'+cv)+')</div>';
+      }else stats+='<div style="color:#555;font-size:.8rem">◇ 빈 슬롯</div>';
+    }
+    stats+='</div>';
   }
   return stats;
 }
@@ -35765,6 +35878,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         qslots:QSLOTS,
         game:{stage:G.stage,kills:G.kills,mats:G.mats,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:STORAGE||{},
+        crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
         upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
         fused:P._fused||{},skProf:P._skProf||{},fuseProfSec:P._fuseProfSec||{},cardProf:P._cardProf||{},catProf:P._catProf||{},
         activeChargeSk:P.activeChargeSk||'charge',
@@ -35885,6 +35999,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         qslots:QSLOTS,
         game:{stage:G.stage,kills:G.kills,mats:G.mats,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:STORAGE||{},
+        crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
         upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
         fused:P._fused||{},skProf:P._skProf||{},fuseProfSec:P._fuseProfSec||{},cardProf:P._cardProf||{},catProf:P._catProf||{},
         activeChargeSk:P.activeChargeSk||'charge',
