@@ -5151,6 +5151,7 @@ function crystalEnhCost(cr){
   return Math.ceil(500*(1+(cr.enh||0)*0.5)*CRYSTAL_STAR_COST_MUL[cr.star]);
 }
 const CRYSTAL_DUST_COST=[50,200,500,1500,5000];
+let _selectedCrystal=-1; // 결정 주머니에서 선택된 인덱스 (-1=미선택)
 let _crBagOpen=false,_crBagFilter='all',_crBagSel=-1;
 let _crPickCb=null;
 let _crForgeTab='enhance',_crForgeSel=-1,_crSynthType=null,_crSynthStar=-1,_crCraftType=null,_crCraftStar=0;
@@ -12697,7 +12698,7 @@ function _fireEnergyShot(){
   P.atkArc=Math.atan2(mouse.y-C.height/2,mouse.x-C.width/2);P.facing=P.atkArc;
   const _esLv=P.skills.energyShot||1;
   const _esRange=500+(_esLv-1)*30;
-  const _esDmg=~~(magicRef()*statInt()*pMagicMul()*8*(1+(_esLv-1)*0.10));
+  const _esDmg=~~(magicRef()*statInt()*pMagicMul()*3*(1+(_esLv-1)*0.10)); // 마력연사 8→3
   const cx=Math.cos(P.atkArc),cy=Math.sin(P.atkArc);
   const _esNe=shQuery(P.x+cx*_esRange*.5,P.y+cy*_esRange*.5,_esRange*.6);
   for(let _ei=0;_ei<_esNe.length;_ei++){
@@ -15860,7 +15861,8 @@ function update(){
     const _wwLv=P.skills.whirlwind||1;
     const _wwDrainTick=P.mst*0.07/60*sp; P.st-=_wwDrainTick; // 초당 7% ST 고정소모
     const _wwDrainBonus=1+P.mst*0.07*0.001; // 소비량 보너스: 초당소비×0.001 (ST1000→+7%, ST2000→+14%)
-    P.wwAng=(P.wwAng||0)+0.35*_dtSp; // 회전 각도 (슬로우 무시)
+    const _wwSpd=0.35*Math.max(0.5,(wp().spd||.3)*statDex()); // 무기공속×DEX로 회전속도 스케일
+    P.wwAng=(P.wwAng||0)+_wwSpd*_dtSp; // 회전 각도 (슬로우 무시)
     // 합성: 패링 쉴드 HP 드레인 + parryT 추적
     if(P.skills.detonate&&_isFused('whirlDet')){P.parryT=(P.parryT||0)+sp;P.hp-=P.mhp*.0005*sp;if(P.hp<=0){P.hp=1}}
     // 기 축적: 회전할수록 범위+데미지 증가
@@ -15874,15 +15876,15 @@ function update(){
     const _detLvWW=P.skills.detonate||1;
     const _chgBarsWW=_wwFused?Math.min(3,1+~~(((P.parryT||0))/60)):0;
     const _boomRWW=_wwFused?(150+(_detLvWW-1)*10)*Math.max(1,_chgBarsWW):0;
-    // 각도 기반 히트: 검이 한 바퀴(2π) 돌 때마다 360도 타격
+    // 각도 기반 히트: 검이 반바퀴(π) 돌 때마다 360도 타격 (DPS 유지: 틱뎀 0.5배)
     if(!P._wwLastHitAng)P._wwLastHitAng=P.wwAng;
     const _wwAngDiff=P.wwAng-P._wwLastHitAng;
-    if(_wwAngDiff>=Math.PI*2){P._wwLastHitAng+=Math.PI*2;
-      const _wwMin=100;const _wwMax=200+(_wwLv-1)*15; // 1렙200, 5렙260, 10렙335
+    if(_wwAngDiff>=Math.PI){P._wwLastHitAng+=Math.PI;
+      const _wwMin=100;const _wwMax=200+(_wwLv-1)*15;
       const _wwRangeBase=_wwMin+(_wwMax-_wwMin)*Math.min(1,_wwGrow);
       const _wwRange=_wwRangeBase;
-      const _wwDmg=~~(meleeRef()*1.0*(1+(_wwLv-1)*0.05)*2*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1)*_wwDrainBonus); // statStr()는 hurtE에서 적용
-      const _wwHits=hitArc(P.wwAng,_wwRange,Math.PI*2,_wwDmg,wp().el,'weapon');
+      const _wwDmg=~~(meleeRef()*1.4*(1+(_wwLv-1)*0.05)*2*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBeam')?1.2:1)*_wwDrainBonus);
+      hitArc(P.wwAng,_wwRange,Math.PI*2,_wwDmg,wp().el,'weapon');
       SFX.slashSeq();
     }
     // ═══ 암전나선: 회전 중 6원소 빔 자동 발사 ═══
@@ -16216,7 +16218,7 @@ function update(){
       if(_mcSk==='elemMissile'&&P.skills.elemMissile>=1){
         const _emLv=P.skills.elemMissile||1;
         const _emCnt=Math.min(6,~~(3+(_emLv-1)*0.33));
-        const mdmg=~~(magicRef()*statInt()*pMagicMul()*(1.2+(_emLv-1)*0.1))+(P._mpBon||0);P._mpBon=0;
+        const mdmg=~~(magicRef()*statInt()*pMagicMul()*(0.6+(_emLv-1)*0.1))+(P._mpBon||0);P._mpBon=0; // 속성미사일 1.2→0.6
         const _mcEl=[EL.F,EL.I,EL.D,EL.L,EL.H,EL.E];
         const _mcRange=450+(_emLv-1)*22+(hm().bonusRange||0)*20;
         const _bkA=P.atkArc+Math.PI;const _half=(_emCnt-1)/2;
@@ -16230,7 +16232,7 @@ function update(){
         SFX.magic(2);_addSkProf('elemMissile');P.s='magicRecover';P.st2=12;
       } else if(_mcSk==='blueShot'&&P.skills.blueShot>=1){
         const _bsLv=P.skills.blueShot||1;
-        const _bsDmgBase=~~(magicRef()*statInt()*pMagicMul()*15*(1+(_bsLv-1)*.1));
+        const _bsDmgBase=~~(magicRef()*statInt()*pMagicMul()*8*(1+(_bsLv-1)*.1)); // 푸른비 15→8
         P._blueBarrage={cnt:0,max:100,interval:3,timer:0,dmg:~~(_bsDmgBase/5),range:750+(_bsLv-1)*45,lv:_bsLv};
         P._blueCd=300;
         SFX.magic(6);_addSkProf('blueShot');
@@ -16240,7 +16242,7 @@ function update(){
       } else if(_mcSk==='fireAura'&&P.skills.fireAura>=1){
         const _faLv=P.skills.fireAura||1;
         const _faR=200+~~(200*(_faLv-1)*0.10); // 1렙200, 만렙~400
-        const _faDmg=~~(magicRef()*statInt()*pMagicMul()*14*(1+(_faLv-1)*0.12));
+        const _faDmg=~~(magicRef()*statInt()*pMagicMul()*6*(1+(_faLv-1)*0.12)); // 지옥진 14→6
         if(!G._fireZones)G._fireZones=[];
         G._fireZones.push({type:'fireAura',x:P.x,y:P.y,r:_faR,dmg:_faDmg,el:EL.F,t:0,maxT:600,lv:_faLv,_tickCd:0,follow:true,_faFr:0});
         P._faCd=720;
@@ -16252,7 +16254,7 @@ function update(){
         // ── 업화선: 화염빔 투사체 1발 발사 (드래곤볼식) ──
         const _fbLv=P.skills.fireBeam||1;
         P.mp-=10;
-        const _fbDmg=~~(magicRef()*statInt()*pMagicMul()*3.5*(1+(_fbLv-1)*0.12));
+        const _fbDmg=~~(magicRef()*statInt()*pMagicMul()*5*(1+(_fbLv-1)*0.12)); // 업화선 3.5→5
         const _fbRange=700+(_fbLv-1)*50; // 1렙700, 만렙~1200
         const _fbDx=Math.cos(P.atkArc),_fbDy=Math.sin(P.atkArc);
         {const _pp=_getPProj();_pp.x=P.x+_fbDx*20;_pp.y=P.y+_fbDy*20;
@@ -16270,7 +16272,7 @@ function update(){
         // ── 악의구 (기본 폴백) ──
         const _fbLv=P.skills.fireball||1;
         const _fbScale=1+(_fbLv-1)*0.10;const _fbDmgScale=1+(_fbLv-1)*0.15;
-        const mdmg=~~(magicRef()*statInt()*pMagicMul()*1.8*_fbDmgScale)+(P._mpBon||0);P._mpBon=0;
+        const mdmg=~~(magicRef()*statInt()*pMagicMul()*0.8*_fbDmgScale)+(P._mpBon||0);P._mpBon=0; // 악의구 1.8→0.8
         const _fbDx=Math.cos(P.atkArc),_fbDy=Math.sin(P.atkArc);
         const _fbR=~~(12*_fbScale),_fbExplR=~~(80*_fbScale);
         {const _pp=_getPProj();_pp.x=P.x+_fbDx*14;_pp.y=P.y+_fbDy*14;_pp.vx=_fbDx*5.5;_pp.vy=_fbDy*5.5;_pp.dmg=mdmg;_pp.el=EL.D;_pp.maxDist=400+(_fbLv-1)*20+(hm().bonusRange||0)*20;_pp.dist=0;_pp.r=_fbR;_pp.stagger=0;_pp.kb=0.05;_pp.magic=true;_pp.fireball=true;_pp.explR=_fbExplR;_pp.explDmg=~~(mdmg*.6);pProjs[pProjs.length]=_pp;}
@@ -16715,7 +16717,7 @@ function update(){
     // 빔 데미지 = 기본마법뎀 × 스킬레벨 배율 (틱당, MP 소비는 지속시간만 결정)
     const _omniSlv=P.skills.omniBeam||1;
     const _beamLvMul=Math.min(2.0,0.2+P.lv*0.016); // 선형+캡2.0: 1렙=0.22, 50렙=1.0, 113렙+=2.0(캡)
-    const _beamDmgBase=magicRef()*statInt()*pMagicMul()*.37*(1+(_omniSlv-1)*.18)*_beamLvMul*_fuseMul('omniBeam')*_beamDrainBonus; // 레벨 스케일링 + 소비량 보너스
+    const _beamDmgBase=magicRef()*statInt()*pMagicMul()*.15*(1+(_omniSlv-1)*.18)*_beamLvMul*_fuseMul('omniBeam')*_beamDrainBonus; // 만화방창빔 0.37→0.15 // 레벨 스케일링 + 소비량 보너스
     // 레이저류: 끝점에서만 데미지 (관통 없음)
     // 빔 중첩: 적에게 빔 지속 적중 시 중첩+1 (최대30), 데미지 배율 = 1 + 중첩*0.1 (최대 4배)
     if(_isOmni){
@@ -18120,7 +18122,7 @@ function update(){
       const _bhMpTick=_bhCnt; // 틱당 = 발수 MP (1발=1MP)
       if(P.mp>=_bhMpTick){
         P.mp-=_bhMpTick;
-        const _bhDmg=~~(magicRef()*statInt()*pMagicMul()*3*(1+(_bhLv-1)*.1)/_bhCnt);
+        const _bhDmg=~~(magicRef()*statInt()*pMagicMul()*1.5*(1+(_bhLv-1)*.1)/_bhCnt); // 푸른비 E홀드 3→1.5
         for(let _bhi=0;_bhi<_bhCnt;_bhi++){
           const _bhA=P.facing+(Math.random()-.5)*.3;
           const _bhSpd=(7+Math.random()*2)*1.3;
@@ -18381,7 +18383,7 @@ function update(){
       const _hrLv=P.skills.hellRay||1;
       const _hrR=200+(_hrLv-1)*22; // 1렙250 +22/렙, 10렙448
       const _hrElec=_isFused('elecRepent'); // 참회 귀환 합체
-      const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*10*(1+(_hrLv-1)*0.15)*(_hrElec?1.2:1));
+      const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*5*(1+(_hrLv-1)*0.15)*(_hrElec?1.2:1)); // 참회광선 10→5
       P.mp-=100;P._hrStk--;const _hrMx3=_hrElec?(_hrLv>=10?3:_hrLv>=5?2:1):1;if(P._hrStk<_hrMx3&&!P._hrRech)P._hrRech=600;
       const _hrDur=600; // 10초 고정
       if(!G._fireZones)G._fireZones=[];
@@ -18447,7 +18449,7 @@ function update(){
             G.mats=Math.max(0,G.mats-12);
             // elecRepent: 참회(hellRay)도 같은 포인트에 동시 설치
             if(_erF&&P.skills.hellRay>=1){
-              const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*10*(1+(_hrLv-1)*0.15)*1.2);
+              const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*5*(1+(_hrLv-1)*0.15)*1.2); // 참회광선 합체 10→5
               G._fireZones.push({x:_mswx,y:_mswy,r:200+(_hrLv-1)*22,t:0,maxT:_syncDur,
                 dmg:_hrDmg,el:EL.L,lv:_hrLv,type:'hellRay',ang:0,elec:true});
               SFX.magic(EL.L);playSample('repentance',.7,_r(1,.08));
@@ -19479,14 +19481,15 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
   if(type==='weapon'){baseDmg=~~(baseDmg*pAtkMul()*pMeleeMul())+(P._atkBon||0);P._atkBon=0}
   else if(type==='shield'){baseDmg=~~(baseDmg*pShieldMul())+(P._atkBon||0);P._atkBon=0}
   let _wwHitSfx=false;
-  for(let _ai=0;_ai<ens.length;_ai++){const e=ens[_ai];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d>range+e.r)continue;
+  let _dbgAlive=0,_dbgRange=0,_dbgArc=0;
+  for(let _ai=0;_ai<ens.length;_ai++){const e=ens[_ai];if(!e.alive)continue;_dbgAlive++;const d=dst(P.x,P.y,e.x,e.y);if(d>range+e.r){continue;}_dbgRange++;
     const ang=Math.atan2(e.y-P.y,e.x-P.x);let diff=ang-angle;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
-    if(Math.abs(diff)<arcW){const mult=elMul(el,e.el);let dmg=~~(baseDmg*mult);
+    if(Math.abs(diff)<arcW){_dbgArc++;const mult=elMul(el,e.el);let dmg=~~(baseDmg*mult);
     // 회전참 피격 스택 카운트만 유지 (데미지 보너스 제거됨)
     if(_isWW){e._wwStk=Math.min(20,(e._wwStk||0)+1);e._wwStkT=60;}
     if(!_isWW||!_wwHitSfx){const _hSfx=type==='shield'?'flat_hit':(Math.random()<.5?'melee_hit1':'melee_hit');playSampleAt(_hSfx,.45,_r(1,.15),e.x,e.y);if(_isWW)_wwHitSfx=true} // 방패→flat_hit, 무기→메리랜덤
     hurtE(e,dmg,ang,false,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0:1.5,noPoise:_isWW,poiseHit:type==='shield',poiseSkill:type==='shield'},el);_hitCount++;
-    if(_isWW&&_hitCount<=12){for(let _wp=0;_wp<3;_wp++){const _wa2=ang+Math.PI+(Math.random()-.5)*1.5;poolPart(e.x,e.y,Math.cos(_wa2)*(3+Math.random()*4),Math.sin(_wa2)*(3+Math.random()*4),ELC[el]||'#ffcc44',2+Math.random()*2,6+Math.random()*4)}} // 회전참: 히트 파티클만
+    if(_isWW){const _ec=ELC[el]||'#ffcc44';for(let _wp=0;_wp<6;_wp++){const _wa2=ang+Math.PI+(Math.random()-.5)*2;poolPart(e.x+(Math.random()-.5)*12,e.y+(Math.random()-.5)*12,Math.cos(_wa2)*(4+Math.random()*6),Math.sin(_wa2)*(4+Math.random()*6),_wp%2===0?'#ffffff':_ec,4+Math.random()*4,8+Math.random()*6)}} // 회전참: 적마다 큰 히트 파티클 6개
       // parryBank는 적 공격 흡수로만 축적 (hitArc 공격 축적 삭제)
       if(!_isWW){
       // 칼등치기만 포이즈 데미지 (데미지의 200%)
@@ -19523,6 +19526,7 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
       }
       } // end !_isWW
     }}
+  if(_isWW&&G._gcT%120<2)console.log('[hitArc] alive='+_dbgAlive+' inRange='+_dbgRange+' inArc='+_dbgArc+' hit='+_hitCount+' range='+~~range+' arcW='+arcW.toFixed(2));
   return _hitCount;
 }
 // ─── [S16e] BOSS_AI — 보스 AI 함수 (스코어/패턴/콤보) ───
@@ -23643,9 +23647,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(isDot){
       // DOT: 텍스트 압축에 포함됨, 추가 표시 없음
     }else if(P.s==='whirlwind'&&!(opts&&opts.detonate)){
-      if(ang!==undefined&&!_isMagicDmg&&_impPerFrame<1){
-        _addImpact(e.x,e.y,0,ang,'slash',e.ib,false);
-      }
+      // 회전참: 임팩트는 hitArc에서 파티클로 처리 (hurtE에서 추가 안 함)
     }else{const _quiet=!!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade||opts.beam));
     _txtPerFrame++;
     const _overBudget=_txtPerFrame>_TXT_BUDGET;
@@ -27544,7 +27546,7 @@ function _invRenderDetail(idx,source){
         ch+='<span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+(cd.pct?'+'+cv+'%':'+'+cv)+'</span>';
         ch+='<span style="color:#aa6644;font-size:.7rem">탈착</span></div>';
       }else{
-        ch+='<div onclick="openCrystalPicker(function(cr,bi){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',cr,bi);renderInv();_invRenderDetail(\''+idx+'\',\'eq\')})" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px dashed #554433;background:rgba(0,0,0,.15);border-radius:3px;color:#665544;font-size:.8rem" onmouseover="this.style.borderColor=\'#bb88ff\'" onmouseout="this.style.borderColor=\'#554433\'">◇ 빈 슬롯 — 클릭하여 결정 장착</div>';
+        ch+='<div onclick="if(_selectedCrystal>=0&&CRYSTAL_BAG[_selectedCrystal]){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',CRYSTAL_BAG[_selectedCrystal],_selectedCrystal);_selectedCrystal=-1;renderInv();_invRenderDetail(\''+idx+'\',\'eq\')}else{openCrystalPicker(function(cr,bi){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',cr,bi);renderInv();_invRenderDetail(\''+idx+'\',\'eq\')})}" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px dashed '+(_selectedCrystal>=0?'#bb88ff':'#554433')+';background:'+(_selectedCrystal>=0?'rgba(187,136,255,.1)':'rgba(0,0,0,.15)')+';border-radius:3px;color:'+(_selectedCrystal>=0?'#bb88ff':'#665544')+';font-size:.8rem" onmouseover="this.style.borderColor=\'#bb88ff\'" onmouseout="this.style.borderColor=\''+(_selectedCrystal>=0?'#bb88ff':'#554433')+'\'">◇ 빈 슬롯'+(_selectedCrystal>=0?' — 클릭하여 선택결정 장착':' — 결정 선택 후 클릭')+'</div>';
       }
     }
     cDiv.innerHTML=ch;rp.appendChild(cDiv);
@@ -27575,6 +27577,10 @@ function _invClearHover(){
   // 선택된 아이템이 있으면 선택 아이템 상세 유지
   if(INV.selected!==null&&typeof INV.selected==='number'){
     _invRenderDetail(INV.selected,'bag');return;
+  }
+  // 장착 아이템 선택 유지 ('eq:weapon' 등)
+  if(INV.selected!==null&&typeof INV.selected==='string'&&INV.selected.startsWith('eq:')){
+    const _eqS=INV.selected.slice(3);if(INV.equipped[_eqS])_invRenderDetail(_eqS,'eq');return;
   }
   const rp=$('invRight');if(rp)rp.innerHTML='<div style="color:#554433;font-size:.85rem;text-align:center;padding:30px 10px">아이템에 마우스를 올리거나 좌클릭으로 선택하세요</div>';
   const _actB=$('invActionBtns');if(_actB)_actB.innerHTML='';
@@ -27868,6 +27874,32 @@ function renderInv(){
     expDiv.appendChild(eb);
   }else{const mx=document.createElement('span');mx.style.cssText='font-size:.95rem;color:#555';mx.textContent='최대';expDiv.appendChild(mx)}
   $('invMax').textContent=BAG_MAX;
+
+  // ── 결정 주머니 (1칸 그리드, 가방 위) ──
+  {let _crDiv=$('invCrystalRow');
+  if(!_crDiv){_crDiv=document.createElement('div');_crDiv.id='invCrystalRow';
+    _crDiv.style.cssText='margin-bottom:4px;padding:4px;background:rgba(80,50,120,.12);border:1px solid #553388;border-radius:3px;min-height:28px';
+    const _gridP=$('invGrid')?.parentElement;if(_gridP)_gridP.insertBefore(_crDiv,_gridP.querySelector('#invGrid'))}
+  _crDiv.innerHTML='<div style="color:#bb88ff;font-size:.75rem;font-weight:700;margin-bottom:2px">💎 결정 ('+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+')</div>';
+  if(CRYSTAL_BAG.length===0)_crDiv.innerHTML+='<span style="color:#555;font-size:.75rem">결정 없음</span>';
+  else{
+    // 정렬: 성급 높은 순 → 강화 높은 순 → 종류별
+    CRYSTAL_BAG.sort((a,b)=>(b.star-a.star)||(b.enh-a.enh)||CRYSTAL_IDS.indexOf(a.id)-CRYSTAL_IDS.indexOf(b.id));
+    _selectedCrystal=-1; // 정렬 후 선택 리셋
+    const _crWrap=document.createElement('div');_crWrap.style.cssText='display:flex;flex-wrap:wrap;gap:2px';
+    for(let _bi=0;_bi<CRYSTAL_BAG.length;_bi++){const cr=CRYSTAL_BAG[_bi];const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star];
+      const _b=document.createElement('div');
+      const _isSel=_selectedCrystal===_bi;
+      _b.style.cssText='width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1px solid '+(_isSel?'#ffaa33':cs.color+'66')+';background:'+(_isSel?'rgba(255,170,50,.25)':'rgba(0,0,0,.3)')+';border-radius:2px;cursor:pointer;font-size:.85rem;position:relative';
+      _b.title=cs.name+' '+cd.ko+(cr.enh>0?' +'+cr.enh:'')+' (+'+(~~crystalVal(cr))+(cd.pct?'%':'')+')';
+      _b.innerHTML=cd.emoji+'<span style="position:absolute;top:-2px;left:0;font-size:.45rem;color:'+cs.color+'">'+(cr.star+1)+'★</span>'+(cr.enh>0?'<span style="position:absolute;bottom:-1px;right:0;font-size:.5rem;color:#ffcc00">+'+cr.enh+'</span>':'');
+      _b.onclick=()=>{_selectedCrystal=_isSel?-1:_bi;renderInv()};
+      _b.oncontextmenu=(ev)=>{ev.preventDefault();
+        // 우클릭: 분해
+        const dust=~~(CRYSTAL_DUST_COST[cr.star]*.5);
+        if(confirm(cs.name+' '+cd.ko+' 분해?\n결정가루 +'+dust)){CRYSTAL_BAG.splice(_bi,1);CRYSTAL_DUST+=dust;_selectedCrystal=-1;renderInv()}};
+      _crWrap.appendChild(_b)}
+    _crDiv.appendChild(_crWrap)}}
 
   // ── Bag grid (2D 디아블로식) ──
   const grid=$('invGrid');grid.innerHTML='';
