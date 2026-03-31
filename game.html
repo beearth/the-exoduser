@@ -16991,7 +16991,7 @@ function update(){
   const _eo=_gameFrame&1; // 짝홀 프레임 분산
   for(let _ei=0;_ei<ens.length;_ei++){const e=ens[_ei];
     // 타임버짓: 8ms 초과하면 비보스 스킵
-    if(_ei%32===0&&_ei>0&&!e.ib&&performance.now()-_eUpdateStart>8)break;
+    if(_ei%32===0&&_ei>0&&!e.ib&&performance.now()-_eUpdateStart>12)break;
     if(e.alive){
       // 화톳불 배리어: 시작방 영역 진입 시 밀어내기
       if(_bfActive&&!e.ib){const _bfd2=dst2(_bf.x,_bf.y,e.x,e.y);if(_bfd2<_bfR2){const _bfd=Math.sqrt(_bfd2)||1;const _pushStr=(_bf.r-_bfd)*.15*sp;const _bfa=Math.atan2(e.y-_bf.y,e.x-_bf.x);e.x+=Math.cos(_bfa)*_pushStr;e.y+=Math.sin(_bfa)*_pushStr}}
@@ -17003,7 +17003,7 @@ function update(){
       if(!_eAlways&&((_ei&1)!==_eo)){e._isMoving=false;continue}
       if(_ed2<1000000){
         const _doAI=e.ib||_ed2<40000||((_ed2<160000)?(G._eTierFrame&1)===0:(_ed2<360000)?(G._eTierFrame&3)===0:(G._eTierFrame&7)===0);
-        if(_doAI)updateE(e,_doAI===true?sp:e.ib?sp:_ed2<160000?sp*2:_ed2<360000?sp*4:sp*8);
+        if(_doAI)updateE(e,_doAI===true?sp:e.ib?sp:_ed2<160000?sp*1.5:_ed2<360000?sp*2:sp*4);
       } else if(e._alerted&&(G._eTierFrame&3)===0){
         // 600px 밖에서 맞은 몬스터: 4프레임마다 플로우필드로 추적
         _ffMoveE(e,sp*4,0.8);
