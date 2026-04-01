@@ -370,7 +370,6 @@ function showStageTransition(callback) {
 | lavaSummon | P._lvCd | 용암소환 |
 | iceOrb | P._ioCd | 얼음보주 |
 | ghostWalk | P._gwCd | 암전걸음 |
-| grenadeShot | P._gsCd | 유탄 |
 | bladeDash | P._bdCd | 전격이동 |
 | plagueBurst | P._pbCd | 역병폭발 |
 | shieldThrow | P._stCd | 칼등날개 |
