@@ -15590,7 +15590,8 @@ function update(){
       if(mo.cooldown>0){mo.cooldown-=sp;continue}
       if(dst(P.x,P.y,mo.x,mo.y)<30&&P.iframes<=0&&!P._ioActive&&!P._gwActive){
         P.hp-=~~(P.mhp*mo.dmgPct);addTxt(mo.x,mo.y-15,'피웅덩이!','#cc2222',30);
-        playSampleAt('death_flesh2',.5,_r(1,.15),mo.x,mo.y);
+        G._mapTrapSfxFlip=G._mapTrapSfxFlip?0:1;
+        playSampleAt(G._mapTrapSfxFlip?'death_flesh':'death_flesh2',.5,_r(1,.15),mo.x,mo.y);
         P.iframes=30;mo.active=false;addParts(mo.x,mo.y,'#ff4444',6);G.shake=3*OPT.shake/100;
         if(P.hp<=0)P.hp=1;
       }
@@ -36264,4 +36265,3 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
 </script>
 </body>
 </html>
-
