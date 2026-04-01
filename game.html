@@ -6705,7 +6705,7 @@ function updateCrescents(sp){
     for(let _ni=0;_ni<_ne.length;_ni++){
       const e=_ne[_ni];
       if(!e.alive)continue;
-      if(dst(c.x,c.y,e.x,e.y)<c.r+e.r&&!c._hitSet.has(e)){
+      if(dst(c.x,c.y,e.x,e.y)<c.r+e.r&&!c._hitSet.has(e)&&hasLOS(c.x,c.y,e.x,e.y)){
         c._hitSet.add(e);
         hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),true,{poiseHit:true,kbMult:0.5,noImpact:true},c.el);
         if(c.step===3){G.hitStop=Math.max(G.hitStop,6);shake(8);}
@@ -14741,6 +14741,16 @@ function initStage(si){
   BGM.play(BGM.stageKey(si)); // 스테이지 BGM
 }
 
+function hasLOS(x1,y1,x2,y2){
+  const dx=x2-x1,dy=y2-y1;
+  const dist=Math.sqrt(dx*dx+dy*dy);
+  const steps=Math.max(1,~~(dist/16));
+  for(let i=1;i<steps;i++){
+    const t=i/steps;
+    if(isW(x1+dx*t,y1+dy*t))return false;
+  }
+  return true;
+}
 function isW(px,py,skipBone){const tx=~~(px/T),ty=~~(py/T);if(tx<0||ty<0||tx>=G.mw||ty>=G.mh)return true;const v=G.map[ty][tx];if(v===1)return true;if(!skipBone&&G._boneWalls){for(let bi=0;bi<G._boneWalls.length;bi++){const bw=G._boneWalls[bi];if(bw.phase==='rise'&&bw.t<bw.riseT*0.5)continue;const dx=px-bw.x,dy=py-bw.y;const d2=dx*dx+dy*dy;const rIn=bw.ringR-bw.wallThk,rOut=bw.ringR+bw.wallThk;if(d2>=rIn*rIn&&d2<=rOut*rOut)return true}}for(let _pi=0;_pi<MAP_OBJS.length;_pi++){const _po=MAP_OBJS[_pi];const _pm=_OBJ_META[_po.type];if(_pm&&(_pm.collision||_pm.col)){const _pr=_pm.sz*.4;const _pdx=px-_po.x,_pdy=py-_po.y;if(_pdx*_pdx+_pdy*_pdy<_pr*_pr)return true}}return false}
 function canMv(x,y,r){return!isW(x-r,y-r)&&!isW(x+r,y-r)&&!isW(x-r,y+r)&&!isW(x+r,y+r)}
 function canMvBlink(x,y,r){return!isW(x-r,y-r,1)&&!isW(x+r,y-r,1)&&!isW(x-r,y+r,1)&&!isW(x+r,y+r,1)}
@@ -15880,7 +15890,7 @@ function update(){
       const _wwRange=_wwRangeBase;
       const _wwDmg=~~(meleeRef()*1.0*(1+(_wwLv-1)*0.05)*2*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1)*_wwDrainBonus);
       const _wwHits=hitArc(P.wwAng,_wwRange,Math.PI*2,_wwDmg,wp().el,'weapon');
-      if(_wwHits>0)SFX.slashSeq();
+      if(_wwHits>0){SFX.slashSeq();console.log('[WW] hit:'+_wwHits+' ens:'+ens.filter(e=>e.alive).length+' nearest:'+~~Math.min(...ens.filter(e=>e.alive).map(e=>dst(P.x,P.y,e.x,e.y))))}
       // 회전참 임팩트: hitArc 내부에서 적마다 생성
     }
     // ═══ 암전나선: 회전 중 6원소 빔 자동 발사 ═══
@@ -19468,13 +19478,13 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
   if(type==='weapon'){baseDmg=~~(baseDmg*pAtkMul()*pMeleeMul())+(P._atkBon||0);P._atkBon=0}
   else if(type==='shield'){baseDmg=~~(baseDmg*pShieldMul())+(P._atkBon||0);P._atkBon=0}
   const _fullCircle=arcW>=Math.PI*1.99; // 360도면 arc 체크 스킵
-  for(let _ai=0;_ai<ens.length;_ai++){const e=ens[_ai];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d>range+e.r)continue;
+  for(let _ai=0;_ai<ens.length;_ai++){const e=ens[_ai];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d>range+e.r)continue;if(_isWW&&!hasLOS(P.x,P.y,e.x,e.y))continue;
     const ang=Math.atan2(e.y-P.y,e.x-P.x);
     if(!_fullCircle){let diff=((ang-angle)%(Math.PI*2)+Math.PI*3)%(Math.PI*2)-Math.PI;if(Math.abs(diff)>=arcW)continue;}
     {const mult=elMul(el,e.el);let dmg=~~(baseDmg*mult);
     // 회전참 피격 스택 카운트만 유지 (데미지 보너스 제거됨)
     if(_isWW){e._wwStk=Math.min(20,(e._wwStk||0)+1);e._wwStkT=60;}
-    hurtE(e,dmg,ang,_isWW,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0:1.5,noPoise:_isWW,poiseHit:type==='shield',poiseSkill:type==='shield'},el);_hitCount++;
+    hurtE(e,dmg,ang,true,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0:1.5,noPoise:_isWW,poiseHit:type==='shield',poiseSkill:type==='shield'},el);_hitCount++;
     if(_isWW&&_hitCount<=16){_impacts.push({x:e.x,y:e.y,el:el,ang:ang,t:0,ml:16,sz:0.8,type:'slash'});} // 회전참: 맞은 적 위치에 물리 임팩트 (최대16)
       // parryBank는 적 공격 흡수로만 축적 (hitArc 공격 축적 삭제)
       if(!_isWW){
@@ -24818,7 +24828,7 @@ const SKILL_LIST=[
   {id:'demonRevive',name:'악마화 부활',cat:'ult',ult:true,emoji:'☠',desc:'[패시브] 사망 시 부활력 기반 확률 부활. 1Lv: HP 50% 부활. Lv당 HP+5%, 쿨-30초, 부활확률+2%. 쿨 10분',spCost:15,matCost:150,up:true,upSp:10,upMat:0},
   {id:'bladeShot',name:'붉은꽃',cat:'bow',act:true,emoji:'🩸',desc:'[고정: T 자동] 핏빛 칼날 발사: 전진하며 핏빛 조각 방사 (ST 50, 쿨 0.5초). Lv당 크기+11% 뎀+10%',spCost:10,matCost:100,cd:60,up:true,upSp:5,upMat:0},
   {id:'iceOrb',name:'얼음보주',cat:'def',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
-  {id:'needleShot',name:'바늘출',cat:'bow',act:true,emoji:'🪡',desc:'[고정: T 자동] 최대속도 바늘 5~10연발. 좁은 간격 초고속 관통. ST 8. 쿨 1.5초. Lv당 뎀+12% 관통+1 발수+',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
+  {id:'needleShot',name:'만화방창 II',cat:'bow',act:true,emoji:'✨',desc:'[고정: T 자동] 최대속도 바늘 5~10연발. 좁은 간격 초고속 관통. ST 8. 쿨 1.5초. Lv당 뎀+12% 관통+1 발수+',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
   {id:'energyShot',name:'마력연사',cat:'magic',emoji:'⚡',desc:'E홀드: 에너지탄 연사 (4발/초). MP 5/발. 유도+착탄 폭발. Lv당 뎀+10% 사거리+30',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
   {id:'fireBeam',name:'업화선',cat:'magic',emoji:'🔥',desc:'E탭: 화염 유도빔 발사. MP10. 쿨1초(DEX 스케일). 100% 관통+유도+화상. Lv당 사거리+50 뎀+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'fireAura',name:'지옥진',cat:'magic',emoji:'🌋',desc:'E: 10초간 대지 진동. 범위 내 용암 기둥이 순차적으로 솟아올라 화상+틱 데미지. MP 100. 쿨 12초. Lv당 범위+10% 뎀+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -24867,7 +24877,7 @@ const SKILL_SLOT_DEFS={
           bladeShot:{name:'붉은꽃',emoji:'🌹',desc:'T자동: 붉은 꽃잎 칼날 (ST50)'},
           blastShot:{name:'폭산탄',emoji:'💥',desc:'T자동: 폭탄 (악의8, 쿨0.5초)'},
           fanShot:{name:'만화방창',emoji:'✨',desc:'T자동: 물리 바늘 6발 부채꼴'},
-          needleShot:{name:'바늘출',emoji:'🪡',desc:'T자동: 초고속 바늘 5연발 (ST8, 쿨1.5초)'},
+          needleShot:{name:'만화방창 II',emoji:'✨',desc:'T자동: 초고속 바늘 5연발 (ST8, 쿨1.5초)'},
           ghostXbowTurret:{name:'공성쇠뇌',emoji:'🏹',desc:'선택스킬: 터렛 설치/철거 (Lv500, ST100, 쿨없음)'},
           }},
   tech:{name:'영역 스킬',key:'tech',skills:['spikeTrap'],

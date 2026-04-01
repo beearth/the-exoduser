@@ -377,12 +377,18 @@ function showStageTransition(callback) {
 | giantSlam | P._gslCd | 거대슬램 |
 | holyDome | P._hdCd | 신성돔 |
 | spikeTrap | P._gcCd | 가시덫 |
-| needleShot | P._ndCd | 바늘탄 |
+| needleShot | P._ndCd | 만화방창 II |
 | holyPrison | P._hpCd | 신성감옥 |
 | execution | P._execCd | 처형 |
 | peaceShield | P._psCd | 평화보호 |
 | blueShot | P._blueCd | 푸른탄 |
 | blackStar | P._bsCd | 블랙스타 |
+| weakPhys | P._wpCd | 파쇄의 영역 |
+| weakMag | P._wmCd | 침식의 영역 |
+| weakPj | P._wjCd | 관통의 영역 |
+| weakRev | P._wrCd | 역전의 영역 |
+| voidScarecrow | P._vsCd | 허수아비 |
+| ghostXbowTurret | 0 | 유령석궁 (쿨 없음) |
 
 ### 별도 처리 스킬 (스택/충전 방식)
 - maliceHunt: P._mhCd (단독 분기)
