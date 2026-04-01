@@ -5264,20 +5264,20 @@ function mkItem(slot,tier,el,rarity,wtype){
   const _atkRoll=Math.max(1,~~(_atkMax*(_atkFloor+(1-_atkFloor)*Math.pow(Math.random(),2)))); // skew: 고뎀 극악, 최소1
   const base={
     weapon:{atk:_atkRoll,spd:1},
-    shield:{atk:3+tier*2,def:4+tier*3,stagger:15+tier*8,blockRate:50+tier*8,shieldWt:10-tier,bonusHp:100+tier*100,bonusShield:100+tier*100},
-    boots:{def:2+tier*2,spd:tier*.08,bonusSt:5+tier*4,chargeDist:14+tier*3,bonusHp:100+tier*100,bonusShield:100+tier*100},
-    armor:{def:3+tier*4,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:4+tier*3,bonusHp:100+tier*100,bonusShield:100+tier*100},
-    helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,eDef:2+tier*2,bonusHp:100+tier*100,bonusShield:100+tier*100},
+    shield:{atk:3+tier*2,def:4+tier*3,stagger:15+tier*8,blockRate:50+tier*8,shieldWt:10-tier,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
+    boots:{def:2+tier*2,spd:tier*.08,bonusSt:5+tier*4,chargeDist:14+tier*3,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
+    armor:{def:3+tier*4,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:4+tier*3,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
+    helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,eDef:2+tier*2,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
     bow:{atk:_atkRoll,spd:1},
-    gloves:{atk:2+tier*2,def:1+tier*1,spd:tier*.04,bonusHp:100+tier*100,bonusShield:100+tier*100},
-    pants:{def:2+tier*3,bonusSt:3+tier*3,bonusHp:100+tier*100,bonusShield:100+tier*100},
-    belt:{def:1+tier*2,bonusSt:4+tier*3,bonusHp:100+tier*100,bonusShield:100+tier*100},
-    necklace:{def:1+tier*1,eDef:1+tier*2,bonusHp:100+tier*100,bonusShield:100+tier*100},
-    ring1:{eDef:1+tier*1,bonusHp:100+tier*100,bonusShield:100+tier*100},
-    ring2:{eDef:1+tier*1,bonusHp:100+tier*100,bonusShield:100+tier*100},
-    cape:{def:2+tier*2,eDef:1+tier*1,spd:tier*.03,bonusHp:100+tier*100,bonusShield:100+tier*100},
-    bracelet:{def:1+tier*1,eDef:1+tier*1,bonusHp:100+tier*100,bonusShield:100+tier*100},
-    headband:{eDef:2+tier*2,mpRegen:1+tier*1,bonusHp:100+tier*100,bonusShield:100+tier*100}
+    gloves:{atk:2+tier*2,def:1+tier*1,spd:tier*.04,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
+    pants:{def:2+tier*3,bonusSt:3+tier*3,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
+    belt:{def:1+tier*2,bonusSt:4+tier*3,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
+    necklace:{def:1+tier*1,eDef:1+tier*2,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
+    ring1:{eDef:1+tier*1,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
+    ring2:{eDef:1+tier*1,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
+    cape:{def:2+tier*2,eDef:1+tier*1,spd:tier*.03,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
+    bracelet:{def:1+tier*1,eDef:1+tier*1,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
+    headband:{eDef:2+tier*2,mpRegen:1+tier*1,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40}
   };
   const b=base[slot];
   if(!b)return{id:~~(performance.now()*1000)+~~(Math.random()*9999),slot,el,rarity,tier,name:'???',emoji:'❓'};
@@ -23554,10 +23554,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(e._aDefM&&e._aDefM<1)dmg=~~(dmg*e._aDefM);
   // M22 동료불사: 근처 M22 아군이 있으면 33% 감소
   if(e.mods&&!e.ib){const _m22n=shQuery(e.x,e.y,120);for(let _m22i=0;_m22i<_m22n.length;_m22i++){const _oe=_m22n[_m22i];if(_oe!==e&&_oe.mods&&_oe.mods.includes('M22')){dmg=~~(dmg*.67);addTxt(e.x,e.y-8,'불사 보호','#ff66aa',15);break}}}
-  if(!noSound){
-    if(e.ib){const _bh=_bossSfx(G.stage);if(_bh){playSampleAt(_bh.hit,.3,_r(_bh.hitP,.2),e.x,e.y);if(Math.random()<.15)playSampleAt(_bh.hurt,.25,_r(_bh.hurtP,.15),e.x,e.y)}else{playSampleAt('boss_hit',.3,_r(1,.2),e.x,e.y);if(Math.random()<.15)playSampleAt('monster_hurt',.25,_r(.9,.15),e.x,e.y)}}
-    else{const _hs=_hitSfxForEtype(e.etype);playSampleAt(_hs.key,.3,_r(_hs.pitch,.15),e.x,e.y)}
-  } // 보스: boss_hit+고통, 일반: 카테고리별 피격음
+  // 범용 피격음 비활성화 — 스킬별 개별 설정 전까지 무음
+  // if(!noSound){...}
   // ═══ 어픽스: darkCurse 효과 — 저주 상태 적 뎀 25% 증가 ═══
   if(e._cursed>0)dmg=~~(dmg*1.25);
   // STR 물리 배율 적용
@@ -25140,7 +25138,7 @@ function _canFuse(key){
   for(let i=0;i<_fp.length;i++){if(_absolved.has(_fp[i]))continue;if(_SK_CAT[_fp[i]]==='bow')continue;if(_skProfVal(_fp[i])<_req)return false}
   return true;
 }
-function _getAbsorbed(key){const m={dimBreach:['magicBlink'],dimSlam:['magicBlink','chainAssault'],dimThunder:['magicBlink','chainAssault','chainSlam'],dimRush:['magicBlink','chainAssault','chainSlash','chainSlam'],dimBlast:['magicBlink','chainAssault','chainSlash','chainSlam','giantSlam'],whirlDet:['detonate'],slamStorm:['detonate','giantSlam'],stormBeam:['detonate','giantSlam','fanShot','omniBeam','elemMissile'],stormBurst:['detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop'],bladeFuse:['guardian'],iceMortar:['iceOrb'],sixFuse:['omniBeam'],elemFuse:['fanShot','omniBeam','elemMissile'],boneStorm:['boneWall'],elecRepent:['hellRay','boneWall'],shieldFuse:['shieldThrow'],plagueFuse:['guardian','plagueBurst'],holyFuse:['holyPrison'],holyIce:['holyPrison','iceStorm']};return m[key]||[]}
+function _getAbsorbed(key){const m={dimBreach:['magicBlink'],dimSlam:['magicBlink','chainAssault'],dimThunder:['magicBlink','chainAssault','chainSlam'],dimRush:['magicBlink','chainAssault','chainSlash','chainSlam'],dimBlast:['magicBlink','chainAssault','chainSlash','chainSlam','giantSlam'],whirlDet:['detonate'],slamStorm:['detonate','giantSlam'],stormBeam:['detonate','giantSlam','fanShot','omniBeam','elemMissile'],stormBurst:['detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop'],bladeFuse:['guardian'],iceMortar:['iceOrb'],sixFuse:['omniBeam'],elemFuse:['fanShot','omniBeam','elemMissile'],boneStorm:['boneWall'],elecRepent:['hellRay','boneWall'],shieldFuse:['shieldThrow'],plagueFuse:['guardian','plagueBurst'],holyFuse:['holyPrison'],holyIce:['holyPrison','iceStorm'],holyWeak1:['holyPrison','iceStorm','weakPhys'],holyWeak2:['holyPrison','iceStorm','weakPhys','weakMag'],holyWeak3:['holyPrison','iceStorm','weakPhys','weakMag','weakPj'],holyWeak4:['holyPrison','iceStorm','weakPhys','weakMag','weakPj','weakRev']};return m[key]||[]}
 // ═══ 흡수 스킬 판정: 합체에 먹힌 스킬은 독립 발동 불가 ═══
 function _getAllAbsorbed(){
   const out=[];
@@ -25166,7 +25164,7 @@ function _syncActiveSkAfterReset(resetIds){
   const s=new Set(resetIds);
   // 합체 호스트 스킬 (흡수 대상이지만 activeXSk로 사용 가능)
   const _fHosts=new Set();
-  {const _fhM={elemFuse:'omniBeam',sixFuse:'omniBeam',stormBeam:'whirlwind',stormBurst:'whirlwind',whirlDet:'whirlwind',slamStorm:'whirlwind',dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',bladeFuse:'maliceHunt',plagueFuse:'maliceHunt',iceMortar:'maliceMortar',boneStorm:'maliceStorm',elecRepent:'maliceStorm',shieldFuse:'maliceSwipe',holyFuse:'holyDome',holyIce:'holyDome'};
+  {const _fhM={elemFuse:'omniBeam',sixFuse:'omniBeam',stormBeam:'whirlwind',stormBurst:'whirlwind',whirlDet:'whirlwind',slamStorm:'whirlwind',dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',bladeFuse:'maliceHunt',plagueFuse:'maliceHunt',iceMortar:'maliceMortar',boneStorm:'maliceStorm',elecRepent:'maliceStorm',shieldFuse:'maliceSwipe',holyFuse:'holyDome',holyIce:'holyDome',holyWeak1:'holyDome',holyWeak2:'holyDome',holyWeak3:'holyDome',holyWeak4:'holyDome'};
   for(const[fk,h]of Object.entries(_fhM)){if(P._fused&&P._fused[fk])_fHosts.add(h)}}
   // 검증: 리셋 대상이 아니거나 합체 호스트이면 유효
   const _skOk=(sk,slotKey)=>{if(!sk)return false;if(s.has(sk)&&!_fHosts.has(sk))return false;if(P.skills[sk]>=1)return true;
@@ -26281,10 +26279,18 @@ function _renderSkillRow(sk,grid){
     const _isShieldFuse=sk.id==='maliceSwipe'&&_shieldFuseF;
     const _plagueFuseF=P.skills.maliceHunt>=1&&P.skills.plagueBurst>=1&&_isFused('plagueFuse');
     const _isPlagueFuse=sk.id==='maliceHunt'&&_plagueFuseF;
-    const _holyIceF=P.skills.holyDome>=1&&P.skills.holyPrison>=1&&P.skills.iceStorm>=1&&_isFused('holyIce');
-    const _holyFuseF=(P.skills.holyDome>=1&&P.skills.holyPrison>=1&&_isFused('holyFuse'))||_holyIceF;
+    const _holyW4F=_isFused('holyWeak4')&&P.skills.holyDome>=1&&P.skills.weakRev>=1;
+    const _holyW3F=!_holyW4F&&_isFused('holyWeak3')&&P.skills.holyDome>=1&&P.skills.weakPj>=1;
+    const _holyW2F=!_holyW4F&&!_holyW3F&&_isFused('holyWeak2')&&P.skills.holyDome>=1&&P.skills.weakMag>=1;
+    const _holyW1F=!_holyW4F&&!_holyW3F&&!_holyW2F&&_isFused('holyWeak1')&&P.skills.holyDome>=1&&P.skills.weakPhys>=1;
+    const _holyIceF=!_holyW4F&&!_holyW3F&&!_holyW2F&&!_holyW1F&&P.skills.holyDome>=1&&P.skills.holyPrison>=1&&P.skills.iceStorm>=1&&_isFused('holyIce');
+    const _holyFuseF=!_holyW4F&&!_holyW3F&&!_holyW2F&&!_holyW1F&&!_holyIceF&&(P.skills.holyDome>=1&&P.skills.holyPrison>=1&&_isFused('holyFuse'));
+    const _isHolyW4=sk.id==='holyDome'&&_holyW4F;
+    const _isHolyW3=sk.id==='holyDome'&&_holyW3F;
+    const _isHolyW2=sk.id==='holyDome'&&_holyW2F;
+    const _isHolyW1=sk.id==='holyDome'&&_holyW1F;
     const _isHolyIce=sk.id==='holyDome'&&_holyIceF;
-    const _isHolyFuse=sk.id==='holyDome'&&_holyFuseF&&!_holyIceF;
+    const _isHolyFuse=sk.id==='holyDome'&&_holyFuseF;
     const slv=P.skills[sk.id]||0; // 0=미습득, 1+=습득(강화 횟수)
     const learned=slv>=1;
     const _reqMet=sk.requires?(P.skills[sk.requires]||0)>=1:true;
@@ -26294,10 +26300,10 @@ function _renderSkillRow(sk,grid){
     const _skMaxLv=10;
     const _skLvLock=Math.min(10,~~(P.lv/100)+1); // Lv100=2렙, Lv200=3렙, ... Lv900=10렙
     // 합체 강화 통합: 구성 스킬 upSp/upMat 합산
-    const _isFuseUp=_isStormBeam||_isDimBlast||_isDimRush||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isHolyFuse||_isHolyIce;
+    const _isFuseUp=_isStormBeam||_isDimBlast||_isDimRush||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isHolyFuse||_isHolyIce||_isHolyW1||_isHolyW2||_isHolyW3||_isHolyW4;
     let _fuseUpSp=0,_fuseUpMat=0,_fuseCanUp=false;
     if(_isFuseUp){
-      const _fk2=_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';
+      const _fk2=_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';
       const _fIds2=_fk2==='stormBeam'?['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile']:_fk2==='elemFuse'?['fanShot','omniBeam','elemMissile']:_fk2==='slamStorm'?['whirlwind','detonate','giantSlam']:(_FUSE_PAIRS[_fk2]||[]);
       const _fLv2=Math.min(..._fIds2.map(id=>P.skills[id]||1));
       const _gemGrp=_FUSE_GEM_GROUPS[_fk2];const _gemCnt=(_gemGrp&&_gemGrp.star)||_fIds2.length;_fuseUpSp=_fuseUpSpCost(_fLv2,_gemCnt);
@@ -26362,6 +26368,14 @@ function _renderSkillRow(sk,grid){
         upLabel='합체 Lv.'+slv+' | 처내기뎀+'+(slv-1)*10+'% 칼등날개뎀+'+(slv-1)*10+'% 쿨감'+(slv-1)*5+'%';
       }else if(_isPlagueFuse){
         upLabel='합체 Lv.'+slv+' | 칼날뎀+'+(slv-1)*10+'% 독혈관통+'+(slv-1)*5+' 발사 시 독혈 자동발사';
+      }else if(_isHolyW4){
+        upLabel='합체 Lv.'+slv+' | 신성한 지배: 땅+감옥+빙결+파쇄+침식+관통+역전';
+      }else if(_isHolyW3){
+        upLabel='합체 Lv.'+slv+' | 신성한 관통: 땅+감옥+빙결+파쇄+침식+관통';
+      }else if(_isHolyW2){
+        upLabel='합체 Lv.'+slv+' | 신성한 침식: 땅+감옥+빙결+파쇄+침식';
+      }else if(_isHolyW1){
+        upLabel='합체 Lv.'+slv+' | 신성한 파쇄: 땅+감옥+빙결+파쇄';
       }else if(_isHolyIce){
         upLabel='합체 Lv.'+slv+' | 땅+'+(slv-1)*8+' 감옥+'+(slv-1)*33+' 빙결+'+(slv-1)*10+' 지속+'+(slv-1)*0.5+'초';
       }else if(_isHolyFuse){
@@ -26371,10 +26385,10 @@ function _renderSkillRow(sk,grid){
       }
       const _isMax=slv>=_skMaxLv;
       const _isLocked=slv>=_skLvLock&&!_isMax;
-      lockTxt='<span style="color:#'+(_isStormBeam?'ff6600':_isDimBlast?'00ccaa':_isDimRush?'00bbcc':_isDimThunder?'4422ff':_isDimSlam?'6633ff':_isDimFuse?'aa66ff':_isIceFuse?'66ccff':_isElemFuse?'ff66ff':_isSlamStorm?'ff4400':_isSixFuse?'ffaa00':_isBladeFuse?'dddddd':_isSynth?'ff8844':_isBoneStorm?'55cc77':_isShieldFuse?'8899aa':_isPlagueFuse?'aa2244':_isHolyIce?'ff88cc':_isHolyFuse?'ff88aa':_isMax?'ffdd00':'44cc44')+'">습득 Lv.'+slv+(_isMax?' MAX':_isLocked?' 🔒Lv'+(_skLvLock*100)+'해금':'')+' ('+upLabel+')</span>';
+      lockTxt='<span style="color:#'+(_isStormBeam?'ff6600':_isDimBlast?'00ccaa':_isDimRush?'00bbcc':_isDimThunder?'4422ff':_isDimSlam?'6633ff':_isDimFuse?'aa66ff':_isIceFuse?'66ccff':_isElemFuse?'ff66ff':_isSlamStorm?'ff4400':_isSixFuse?'ffaa00':_isBladeFuse?'dddddd':_isSynth?'ff8844':_isBoneStorm?'55cc77':_isShieldFuse?'8899aa':_isPlagueFuse?'aa2244':_isHolyW4?'ff44ff':_isHolyW3?'ff55dd':_isHolyW2?'ff66bb':_isHolyW1?'ff7799':_isHolyIce?'ff88cc':_isHolyFuse?'ff88aa':_isMax?'ffdd00':'44cc44')+'">습득 Lv.'+slv+(_isMax?' MAX':_isLocked?' 🔒Lv'+(_skLvLock*100)+'해금':'')+' ('+upLabel+')</span>';
       if(canUp&&!_isMax&&!_isLocked) lockTxt += ' <span style="color:#ffcc44;">[강화 가능: '+(_isFuseUp?'⭐'+_fuseUpSp:'⭐'+_singleUpSp+' 👿'+sk.upMat)+']</span>';
       else if(_isFuseUp&&!_isMax&&!canUp){
-        const _fk3=_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';
+        const _fk3=_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';
         if(P.sp<_fuseUpSp) lockTxt+=' <span style="color:#ff4444;font-size:.75rem">[SP 부족: '+P.sp+'/'+_fuseUpSp+']</span>';
       }
     }else{
@@ -28695,6 +28709,7 @@ function renderStatSummary(){
     // ── 생존 ──
     `<div style="${_sHd}">❤️ 생존</div>`+
     `<div style="${_sLn}">HP: <span style="color:#ff4444">${~~P.hp}/${~~P.mhp}</span> <span style="color:#887766;font-size:1.1rem">(+${(P.hpR*6*pRegenMul()).toFixed(1)}/초)</span></div>`+
+    (()=>{const _stgH=G.on?100+((G.stage||1)-1)*6:100;const _lvH=P.lv;const _strH=(P._effStats?P._effStats.str:0);let _eqH=0,_enhH=0;const _ds2=['shield','armor','boots','helmet','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];for(const sl of _ds2){const it=INV.equipped[sl];if(it){_eqH+=(it.bonusHp||0);if(it.enh>0)_enhH+=it.enh}};const _afF=_eqAffix('maxHPFlat'),_afP=_eqAffix('maxHPPct')+_eqAffix('lifeMaxHP'),_imH=_eqImplicit('_iMaxHP'),_imP=_eqImplicit('_iMaxHPPct')+_eqImplicit('_iLifeHPPct');const _pMel=(PASSIVES.pMelee||0)*.03;const _mul=1+_afP+_imP*.01+_pMel;const _base=_stgH+_lvH+_strH+_eqH+_afF+_imH+_enhH;return`<div style="font-size:1rem;color:#665544;margin-left:8px">기본${_stgH} + Lv${_lvH} + STR${_strH} + 장비HP${_eqH}${_afF?(' + 어픽스'+_afF):''}${_imH?(' + 임플'+_imH):''}${_enhH?(' + 강화'+_enhH):''} = ${~~_base} × ${_mul.toFixed(2)} = ${~~(_base*_mul)}</div>`})()+
     (P.mshield>0?`<div style="${_sLn}">에너지쉴드: <span style="color:#4488ff">${~~P.shield}/${P.mshield}</span></div>`:'')+
     `<div style="${_sLn}">스태미나: <span style="color:#44dd44">${~~P.st}/${P.mst}</span> <span style="color:#887766;font-size:1.1rem">(+${(P.stR/8*60*pRegenMul()).toFixed(1)}/초)</span></div>`+
     `<div style="${_sLn}">MP: <span style="color:#4488ff">${~~P.mp}/${P.mmp}</span> <span style="color:#887766;font-size:1.1rem">(+${(P.mpR/8*60).toFixed(1)}/초)</span></div>`+
