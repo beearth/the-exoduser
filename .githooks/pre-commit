@@ -1,0 +1,2 @@
+#!/bin/sh
+powershell -ExecutionPolicy Bypass -File tools/docs-sync-check.ps1 -Staged

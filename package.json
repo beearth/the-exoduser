@@ -3,6 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "docs:check": "powershell -ExecutionPolicy Bypass -File tools/docs-sync-check.ps1",
+    "docs:check:staged": "powershell -ExecutionPolicy Bypass -File tools/docs-sync-check.ps1 -Staged",
+    "hooks:install": "git config core.hooksPath .githooks",
+    "auto:sync": "powershell -ExecutionPolicy Bypass -File auto_commit.ps1",
+    "auto:task:install": "powershell -ExecutionPolicy Bypass -File tools/install-auto-sync-task.ps1"
+  },
   "devDependencies": {
     "sharp": "^0.34.5"
   },

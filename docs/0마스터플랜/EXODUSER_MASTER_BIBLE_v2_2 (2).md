@@ -987,7 +987,7 @@ Layer 8: UI/이펙트 (Canvas — Screen Space Overlay)
 | **Bonfire** (안식처) | 보스방 전 에리어 1개, 각 장 시작 1개 | [R] HP/MP/스태미너 풀회복 + 세이브 |
 | **Lore** (비석) | StageSeeder 결정론적, 에리어당 최대 3개 | [R] 비문 팝업 |
 | **Breakable** (파괴물) | 벽 인접 바닥 랜덤 | [R]×3타 → 악의/물약 드롭 |
-| **Trap** (함정) | 맵 전역 ~100개, 150px 간격 (pit_blood_anim 비주얼) | 자동 (지옥별 타입 연동) |
+| **Trap** (함정) | 맵 전역 ~100개, 150px 간격 (pit_blood_anim 비주얼) | 자동 발동, 플레이어 반경 30, HP 10%, `death_flesh/death_flesh2` 2교대 |
 | **Altar** (버프 제단) | 3장 이후, 60% 확률 | [R] 랜덤 버프 3종 택1 |
 
 ## 10.6 엔드게임 맵 — 심연의 나락
@@ -1330,7 +1330,7 @@ holy_cast / holy_explosion / poison_cast / poison_tick
 ```
 dungeon_drip / bonfire_crackle / ice_wind / flesh_squelch
 thunder_distant / bone_rattle / void_hum
-chest_open / stone_door / trap_activate
+chest_open / stone_door / trap_activate(예약) / map_trap_hit=death_flesh↔death_flesh2
 ```
 
 ### UI SFX (8종)
