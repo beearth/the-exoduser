@@ -6704,7 +6704,7 @@ function updateCrescents(sp){
     const _ne=shQuery(c.x,c.y,c.r+8);
     for(let _ni=0;_ni<_ne.length;_ni++){
       const e=_ne[_ni];
-      if(!e.alive)continue;
+      if(!e.alive||!isFinite(e.x)||!isFinite(e.y))continue;
       if(dst(c.x,c.y,e.x,e.y)<c.r+e.r&&!c._hitSet.has(e)&&hasLOS(c.x,c.y,e.x,e.y)){
         c._hitSet.add(e);
         hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),true,{poiseHit:true,kbMult:0.5,noImpact:true},c.el);
@@ -10571,7 +10571,7 @@ let _deathSfxCd=0; // 사망 사운드 쿨다운 (60프레임=1초)
 let _hitSfxCd=0; // 히트사운드 쿨다운
 function deathFX(x,y,r,col,isBoss,noSound,et){
   if(!noSound&&_deathSfxCd<=0){
-    _deathSfxCd=60; // 1초 쿨다운
+    _deathSfxCd=30; // 0.5초 쿨다운
     // 사망음은 큐 우회 — 직접 재생 (대량 전투에서 큐 포화로 씹히는 것 방지)
     const _dVol=sfxVol();
     if(isBoss){const _bd=_bossSfx(G.stage);_playSampleNow(_bd?_bd.die:'death_boss',.5*_dVol,_r(_bd?_bd.dieP:.7,.15))}
@@ -12163,7 +12163,7 @@ function pShieldCdMul(){return 1-Math.min(.3,PASSIVES.pMRegen*.03)} // 쉴드쿨
 // ═══ 이전 호환 ═══
 let UPGRADES={hp:0,atk:0,def:0,mp:0,st:0,spd:0};
 let POT_LV={hp:0}; // 물약 강화 레벨 (0~10)
-function potHeal(type){return 50+POT_LV[type]*50} // 50HP + 강화당 50HP
+function potHeal(type){return 200+POT_LV[type]*50+~~(P.lv/100)*30} // 기본200 + 강화당50 + 100렙당30
 
 // ═══ 무한 강화 시스템 v2.0 ═══
 // 확률: 99 × 0.99^n % (매강화 이전확률의 1% 감소, 절대 0 안됨)
@@ -14244,6 +14244,7 @@ function eModHitP(e){
 }
 
 function mkEn(x,y,si,etype,ib,el,room){
+  if(!isFinite(x)||!isFinite(y))return null; // NaN 좌표 스폰 차단
   const dm=1;
   const monLv=(P.lv||1)+(DIFF_LV_OFF[OPT.diff]||0); // 플레이어 레벨 + 난이도 오프셋
   // HP: 스테이지 제곱 × 플레이어레벨 배율, ATK: 동일
@@ -15589,6 +15590,7 @@ function update(){
       if(mo.cooldown>0){mo.cooldown-=sp;continue}
       if(dst(P.x,P.y,mo.x,mo.y)<30&&P.iframes<=0&&!P._ioActive&&!P._gwActive){
         P.hp-=~~(P.mhp*mo.dmgPct);addTxt(mo.x,mo.y-15,'피웅덩이!','#cc2222',30);
+        playSampleAt('death_flesh2',.5,_r(1,.15),mo.x,mo.y);
         P.iframes=30;mo.active=false;addParts(mo.x,mo.y,'#ff4444',6);G.shake=3*OPT.shake/100;
         if(P.hp<=0)P.hp=1;
       }
@@ -15890,7 +15892,8 @@ function update(){
       const _wwRange=_wwRangeBase;
       const _wwDmg=~~(meleeRef()*1.0*(1+(_wwLv-1)*0.05)*2*(1+_wwDetProg*0.5)*_fuseMul('whirlwind')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1)*_wwDrainBonus);
       const _wwHits=hitArc(P.wwAng,_wwRange,Math.PI*2,_wwDmg,wp().el,'weapon');
-      if(_wwHits>0){SFX.slashSeq();console.log('[WW] hit:'+_wwHits+' ens:'+ens.filter(e=>e.alive).length+' nearest:'+~~Math.min(...ens.filter(e=>e.alive).map(e=>dst(P.x,P.y,e.x,e.y))))}
+      SFX.slashSeq(); // 회전 스윙 사운드 (히트 무관)
+      if(_wwHits>0){const _nh=ens.filter(e=>e.alive&&dst(P.x,P.y,e.x,e.y)<_wwRange+e.r);const _near=_nh.sort((a,b)=>dst(P.x,P.y,a.x,a.y)-dst(P.x,P.y,b.x,b.y))[0];if(_near)console.log('[WW-NEAR] etype:'+_near.etype+' ex:'+_near.x.toFixed(1)+' ey:'+_near.y.toFixed(1)+' px:'+P.x.toFixed(1)+' py:'+P.y.toFixed(1)+' dist:'+dst(P.x,P.y,_near.x,_near.y).toFixed(1)+' NaN:'+(isNaN(_near.x)||isNaN(_near.y)))}
       // 회전참 임팩트: hitArc 내부에서 적마다 생성
     }
     // ═══ 암전나선: 회전 중 6원소 빔 자동 발사 ═══
@@ -16145,7 +16148,7 @@ function update(){
               // 칼등 처내기: 일반 투사체 반사
               p.vx*=-2;p.vy*=-2;p.friendly=true;
               p.el=[EL.P,EL.F,EL.I,EL.D,EL.L,EL.H][~~(Math.random()*6)];
-              p.dmg=~~(p.dmg*1.5*(1+(_sdLv-1)*0.1)*_msReflect*((P._stWingT||0)>0?1.5:1));
+              {const _rBase=Math.max(p.dmg,~~(meleeRef()*statStr()*pAtkMul()));p.dmg=~~(_rBase*1.5*(1+(_sdLv-1)*0.1)*_msReflect*pParryDmg()*((P._stWingT||0)>0?1.5:1));}
               p.life=80;p.ml=80;
               addTxt(p.x,p.y-10,'⚡처내기!','#ffee00',35);
               for(let ei=0;ei<5;ei++)addParts(p.x,p.y,ELC[ei],3);
@@ -16408,7 +16411,7 @@ function update(){
       if(_psDist<_psR+12||(_psPrev>_psR&&_psDist<_psR+40)){
         if(P._sbParryT>0){
           // 패링 윈도우: 반사
-          p.vx*=-1.5;p.vy*=-1.5;p.friendly=true;p.dmg=~~(p.dmg*1.2);p.life=80;p.ml=80;
+          {const _rB=Math.max(p.dmg,~~(meleeRef()*statStr()*pAtkMul()));p.vx*=-1.5;p.vy*=-1.5;p.friendly=true;p.dmg=~~(_rB*1.2*pParryDmg());p.life=80;p.ml=80;}
           addTxt(p.x,p.y-10,'🕊️반사!','#88ffaa',35);addParts(p.x,p.y,'#88ffaa',5);
           playSample('q_parry',.7,_r(1.2,.1));shake(6);
           P.parryBank=(P.parryBank||0)+p.dmg;
@@ -17382,7 +17385,7 @@ function update(){
         {const _bwNe=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_bwNe.length;_ri++){const e=_bwNe[_ri];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d<_bwMin){_bwMin=d;_bwTgt=e}}}
         if(_bwTgt){const _bwA=Math.atan2(_bwTgt.y-P.y,_bwTgt.x-P.x);p.vx=Math.cos(_bwA)*3.5;p.vy=Math.sin(_bwA)*3.5}
         else{p.vx*=-2;p.vy*=-2}
-        p.friendly=true;p.dmg=~~(p.dmg*1.5);p.life=180;p.ml=180;p.bwBean=false;p.homing=true;
+        {const _rB=Math.max(p.dmg,~~(meleeRef()*statStr()*pAtkMul()));p.friendly=true;p.dmg=~~(_rB*1.5*pParryDmg());p.life=180;p.ml=180;p.bwBean=false;p.homing=true;}
         SFX.deflect();addTxt(P.x,P.y-28,'🛡️화이트볼 반사!','#ffffff',50);
         addParts(p.x,p.y,'#ffffff',10);addParts(p.x,p.y,'#000000',10);
         shake(8);doParry(p.dmg,p.x,p.y);projs[pw++]=p;_pHit=true;continue;
@@ -17398,7 +17401,7 @@ function update(){
         {const _gbNe=shQuery(P.x,P.y,600);for(let _gi=0;_gi<_gbNe.length;_gi++){const e=_gbNe[_gi];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d<_gbMin){_gbMin=d;_gbTgt=e}}}
         if(_gbTgt){const _ga=Math.atan2(_gbTgt.y-P.y,_gbTgt.x-P.x);p.vx=Math.cos(_ga)*3.5;p.vy=Math.sin(_ga)*3.5}
         else{p.vx*=-2;p.vy*=-2}
-        p.friendly=true;p.dmg=~~(p.dmg*2);p.life=200;p.ml=200;p.gbBean=false;p.homing=true;
+        {const _rB=Math.max(p.dmg,~~(meleeRef()*statStr()*pAtkMul()));p.friendly=true;p.dmg=~~(_rB*2*pParryDmg());p.life=200;p.ml=200;p.gbBean=false;p.homing=true;}
         SFX.deflect();addTxt(P.x,P.y-28,'✨다크볼 반사!','#cc44ff',50);
         addParts(p.x,p.y,'#22cc66',12);addParts(p.x,p.y,'#4488ff',12);
         shake(10);doParry(p.dmg,p.x,p.y);projs[pw++]=p;_pHit=true;continue;
@@ -17441,7 +17444,7 @@ function update(){
         {const _npNe=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_npNe.length;_ri++){const e=_npNe[_ri];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d<_npMin){_npMin=d;_npTgt=e}}}
         if(_npTgt){const _npA=Math.atan2(_npTgt.y-P.y,_npTgt.x-P.x);p.vx=Math.cos(_npA)*3.5;p.vy=Math.sin(_npA)*3.5}
         else{p.vx*=-2;p.vy*=-2}
-        p.friendly=true;p.dmg=~~(p.dmg*1.5);p.life=180;p.ml=180;p.homing=true;
+        {const _rB=Math.max(p.dmg,~~(meleeRef()*statStr()*pAtkMul()));p.friendly=true;p.dmg=~~(_rB*1.5*pParryDmg());p.life=180;p.ml=180;p.homing=true;}
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
         addTxt(P.x,P.y-28,'⚡패링!','#ffdd00',35);doParry(p.dmg,p.x,p.y);projs[pw++]=p;_pHit=true;continue}
       else if(P.s==='whirlwind'&&_isFused('whirlDet')&&!p.friendly&&!p.bomb&&!p.iceZone&&!p.blizzard&&!p.web){
@@ -19361,6 +19364,7 @@ function update(){
             e.shockT=Math.max(e.shockT||0,60);
           }else if(fz.type==='spikeTrap'){
             // 가시덫: 물리 DOT + 슬로우(70%+lv×2%, 최대90%) + 출혈
+            if(Math.random()<.3)playSampleAt('melee_hit1',.25,_r(1.2,.15),e.x,e.y);
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.P);
             e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);e._bleedPool=(e._bleedPool||0)+fz.dmg*0.50;e.bleed=1;
             e._spikeSlow=Math.max(e._spikeSlow||0,90); // 1.5초 갱신
@@ -19478,7 +19482,7 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
   if(type==='weapon'){baseDmg=~~(baseDmg*pAtkMul()*pMeleeMul())+(P._atkBon||0);P._atkBon=0}
   else if(type==='shield'){baseDmg=~~(baseDmg*pShieldMul())+(P._atkBon||0);P._atkBon=0}
   const _fullCircle=arcW>=Math.PI*1.99; // 360도면 arc 체크 스킵
-  for(let _ai=0;_ai<ens.length;_ai++){const e=ens[_ai];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d>range+e.r)continue;if(_isWW&&!hasLOS(P.x,P.y,e.x,e.y))continue;
+  for(let _ai=0;_ai<ens.length;_ai++){const e=ens[_ai];if(!e.alive)continue;if(!isFinite(e.x)||!isFinite(e.y))continue;const d=dst(P.x,P.y,e.x,e.y);if(!(d<=range+e.r))continue;if(_isWW&&!hasLOS(P.x,P.y,e.x,e.y))continue;
     const ang=Math.atan2(e.y-P.y,e.x-P.x);
     if(!_fullCircle){let diff=((ang-angle)%(Math.PI*2)+Math.PI*3)%(Math.PI*2)-Math.PI;if(Math.abs(diff)>=arcW)continue;}
     {const mult=elMul(el,e.el);let dmg=~~(baseDmg*mult);
