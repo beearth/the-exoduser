@@ -5264,20 +5264,20 @@ function mkItem(slot,tier,el,rarity,wtype){
   const _atkRoll=Math.max(1,~~(_atkMax*(_atkFloor+(1-_atkFloor)*Math.pow(Math.random(),2)))); // skew: 고뎀 극악, 최소1
   const base={
     weapon:{atk:_atkRoll,spd:1},
-    shield:{atk:3+tier*2,def:4+tier*3,stagger:15+tier*8,blockRate:50+tier*8,shieldWt:10-tier,bonusHp:200,bonusShield:200},
-    boots:{def:2+tier*2,spd:tier*.08,bonusSt:5+tier*4,chargeDist:14+tier*3,bonusHp:200,bonusShield:200},
-    armor:{def:3+tier*4,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:4+tier*3,bonusHp:200,bonusShield:200},
-    helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,eDef:2+tier*2,bonusHp:200,bonusShield:200},
+    shield:{atk:3+tier*2,def:4+tier*3,stagger:15+tier*8,blockRate:50+tier*8,shieldWt:10-tier,bonusHp:100+tier*100,bonusShield:100+tier*100},
+    boots:{def:2+tier*2,spd:tier*.08,bonusSt:5+tier*4,chargeDist:14+tier*3,bonusHp:100+tier*100,bonusShield:100+tier*100},
+    armor:{def:3+tier*4,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:4+tier*3,bonusHp:100+tier*100,bonusShield:100+tier*100},
+    helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,eDef:2+tier*2,bonusHp:100+tier*100,bonusShield:100+tier*100},
     bow:{atk:_atkRoll,spd:1},
-    gloves:{atk:2+tier*2,def:1+tier*1,spd:tier*.04,bonusHp:200,bonusShield:200},
-    pants:{def:2+tier*3,bonusSt:3+tier*3,bonusHp:200,bonusShield:200},
-    belt:{def:1+tier*2,bonusSt:4+tier*3,bonusHp:200,bonusShield:200},
-    necklace:{def:1+tier*1,eDef:1+tier*2,bonusHp:200,bonusShield:200},
-    ring1:{eDef:1+tier*1,bonusHp:200,bonusShield:200},
-    ring2:{eDef:1+tier*1,bonusHp:200,bonusShield:200},
-    cape:{def:2+tier*2,eDef:1+tier*1,spd:tier*.03,bonusHp:200,bonusShield:200},
-    bracelet:{def:1+tier*1,eDef:1+tier*1,bonusHp:200,bonusShield:200},
-    headband:{eDef:2+tier*2,mpRegen:1+tier*1,bonusHp:200,bonusShield:200}
+    gloves:{atk:2+tier*2,def:1+tier*1,spd:tier*.04,bonusHp:100+tier*100,bonusShield:100+tier*100},
+    pants:{def:2+tier*3,bonusSt:3+tier*3,bonusHp:100+tier*100,bonusShield:100+tier*100},
+    belt:{def:1+tier*2,bonusSt:4+tier*3,bonusHp:100+tier*100,bonusShield:100+tier*100},
+    necklace:{def:1+tier*1,eDef:1+tier*2,bonusHp:100+tier*100,bonusShield:100+tier*100},
+    ring1:{eDef:1+tier*1,bonusHp:100+tier*100,bonusShield:100+tier*100},
+    ring2:{eDef:1+tier*1,bonusHp:100+tier*100,bonusShield:100+tier*100},
+    cape:{def:2+tier*2,eDef:1+tier*1,spd:tier*.03,bonusHp:100+tier*100,bonusShield:100+tier*100},
+    bracelet:{def:1+tier*1,eDef:1+tier*1,bonusHp:100+tier*100,bonusShield:100+tier*100},
+    headband:{eDef:2+tier*2,mpRegen:1+tier*1,bonusHp:100+tier*100,bonusShield:100+tier*100}
   };
   const b=base[slot];
   if(!b)return{id:~~(performance.now()*1000)+~~(Math.random()*9999),slot,el,rarity,tier,name:'???',emoji:'❓'};
@@ -6707,7 +6707,7 @@ function updateCrescents(sp){
       if(!e.alive)continue;
       if(dst(c.x,c.y,e.x,e.y)<c.r+e.r&&!c._hitSet.has(e)){
         c._hitSet.add(e);
-        hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),false,{poiseHit:true,kbMult:0.5,noImpact:true},c.el);
+        hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),true,{poiseHit:true,kbMult:0.5,noImpact:true},c.el);
         if(c.step===3){G.hitStop=Math.max(G.hitStop,6);shake(8);}
         else G.hitStop=Math.max(G.hitStop,3);
         addParts(c.x,c.y,'#aaddff',c.step===3?12:6);
@@ -14262,7 +14262,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  const _lvHp=Math.floor((ib?50000:5000)*Math.pow(1.01,monLv)*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 기본5000, 1%복리, 스테이지당 레벨HP의+2%, 보스=일반×10
+  const _lvHp=Math.floor((ib?2000:200)*Math.pow(1.013,monLv)*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 기본200, 1.3%복리, 스테이지당 레벨HP의+2%, 보스=일반×10
   const _atk=Math.floor(((ib?50:30)+monLv*(ib?6:4))*dm*et.atkMul); // 기본30+레벨당4 (보스: 50+레벨당6)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   const _noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
