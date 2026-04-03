@@ -6391,7 +6391,7 @@ const _GATE_IMG_PATHS=[
   'assets/map/ch1/collision/boss_gate.png', // CH7: (추후 교체)
 ];
 const _bossGateImgs=[];
-for(let _bgi=0;_bgi<_GATE_IMG_PATHS.length;_bgi++){const _im=new Image();_im.onload=()=>{if(G.map&&G.bossGate&&G.bossGate.length&&SI_TO_HELL[G.stage]===_bgi&&!G._bossArena)buildMapCache()};_im.src=_GATE_IMG_PATHS[_bgi];_im.onerror=()=>{};_bossGateImgs.push(_im)}
+for(let _bgi=0;_bgi<_GATE_IMG_PATHS.length;_bgi++){const _im=new Image();_im.onload=()=>{if(G.map&&G.bossGate&&G.bossGate.length&&SI_TO_HELL[G.stage]===_bgi&&!G._bossArena)_queueMapCacheRefresh()};_im.src=_GATE_IMG_PATHS[_bgi];_im.onerror=()=>{};_bossGateImgs.push(_im)}
 // ── 2) 챕터별 포탈 이미지 (투명 배경 webp) ──
 const _PORTAL_IMG_PATHS=[
   'assets/map/ch1/floor_objects/boss_portal_1.webp', // CH1: 보라색 소용돌이
@@ -11030,6 +11030,38 @@ function _projEmit(x,y,el,vx,vy){
 
 // 4) 맵 오프스크린 캔버스 — 오토타일+그림자+노이즈 렌더러
 let _mapCvs=null,_mapCtx=null,_mapStage=-1;
+let _mapCacheRefreshQueued=0,_mapCacheRefreshToken=0;
+function _queueMapCacheRefresh(){
+  if(_mapCacheRefreshQueued||!G.map)return;
+  _mapCacheRefreshQueued=1;
+  const _tok=++_mapCacheRefreshToken;
+  setTimeout(()=>{
+    if(_tok!==_mapCacheRefreshToken)return;
+    _mapCacheRefreshQueued=0;
+    if(!G.map)return;
+    buildMapCache();
+  },0);
+}
+let _bootMapBuildDefer=0,_bootMapBuildQueued=0,_bootMapBuildPromise=null,_bootMapBuildResolve=null;
+function _queueBootMapBuild(){
+  if(_bootMapBuildQueued)return _bootMapBuildPromise||Promise.resolve();
+  _bootMapBuildQueued=1;
+  _bootMapBuildPromise=new Promise(r=>{_bootMapBuildResolve=r});
+  const _raf=(typeof requestAnimationFrame==='function')?requestAnimationFrame:(fn=>setTimeout(fn,16));
+  _raf(()=>{
+    _raf(()=>{
+      try{if(G.map)buildMapCache()}
+      finally{
+        _bootMapBuildQueued=0;
+        const _res=_bootMapBuildResolve;
+        _bootMapBuildResolve=null;
+        _bootMapBuildPromise=null;
+        if(_res)_res();
+      }
+    });
+  });
+  return _bootMapBuildPromise;
+}
 // ── Ori 스타일 포인트라이트 (1회 생성 캐시) ──
 let _ptLight=null;
 (function(){const _plC=document.createElement('canvas');_plC.width=640;_plC.height=640;const _plX=_plC.getContext('2d');const g=_plX.createRadialGradient(320,320,0,320,320,320);g.addColorStop(0,'rgba(255,190,90,0.28)');g.addColorStop(0.4,'rgba(220,120,40,0.13)');g.addColorStop(1,'rgba(0,0,0,0)');_plX.fillStyle=g;_plX.fillRect(0,0,640,640);_ptLight=_plC})();
@@ -11739,7 +11771,7 @@ const _GT_FILES={
 };
 const _FB64='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
 for(const[id,src] of Object.entries(_GT_FILES)){
-  const img=new Image();img.onload=()=>{console.log('[GT] '+id+' loaded');if((id==='gt_soil'||id==='gt_void_wall')&&G.map)buildMapCache()};
+  const img=new Image();img.onload=()=>{console.log('[GT] '+id+' loaded');if((id==='gt_soil'||id==='gt_void_wall')&&G.map)_queueMapCacheRefresh()};
   img.onerror=function(){console.warn('[GT] '+id+' 404→fallback');this.onerror=null;this.src=_FB64};
   img.src=src;_GROUND_TILES[id]=img;
 }
@@ -11928,6 +11960,7 @@ function _finalizeBMC(){
 }
 function buildMapCache(){
   if(!G.map)return;
+  _mapCacheRefreshQueued=0;_mapCacheRefreshToken++;
   _autoChunkConfig(G.mw,G.mh);
   _visChunks=null;_visChunkLen=0;_visCamX=-9999;_visCamY=-9999;
   _lastCamChunkX=-1;_lastCamChunkY=-1;_activeChunkLen=0;
@@ -12001,7 +12034,8 @@ function buildMapCache(){
     return isColl||d.dir==='collision';
   });
   let _collPlaced=0;
-  if(_collisionDeco.length>0){
+  // 1-1은 로딩 부담 줄이려고 충돌 배치 생략
+  if(_collisionDeco.length>0&&!(hell===0&&G.stage===1)){
     const _collFloors=_dcFloors.length>0?_dcFloors.slice():[];
     const _collTarget=Math.max(3,Math.min(20,~~(_collFloors.length/400)));
     const _collMinDist=280;
@@ -15602,7 +15636,7 @@ function initStage(si){
   G.cam.x=P.x;G.cam.y=P.y;
   G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0},iris:{x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:G._irisSz||20,_feedT:0}};
   // ── 즉시 초기화 (게임 시작 전 필수) ──
-  buildMapCache(); // 타일맵 렌더 + 카메라 주변 청크
+  if(_bootMapBuildDefer){_queueBootMapBuild()}else{buildMapCache();} // 타일맵 렌더 + 카메라 주변 청크
   if(_useGPU||_useGL){for(const _bet of[80,81,82,83,84]){const _bs=_ESPRITES[_bet];if(_bs&&_bs.img&&_bs.img.complete){try{_getTex(_bs.img)}catch(e){}}}}
   initTorchLights(); // 횃불 (조명 필수)
   // ── 백그라운드 초기화 (게임 중 서서히) ──
@@ -36725,7 +36759,7 @@ let _fOverBudget=false;
 let _perfFrames=0,_perfLast=performance.now();
 const PHYS_STEP=1000/60;
 let _acc=0,_prevTs=0,_gameTime=0;
-function _startLoop(){if(_looping){return}_looping=true;if(!IS_ELECTRON)console.log('[LOOP] start');requestAnimationFrame(loop)}
+function _startLoop(){if(_looping){return}_looping=true;if(!IS_ELECTRON)console.log('[LOOP] start');hideBootLoading();requestAnimationFrame(loop)}
 // ═══ [EDITOR] postMessage 리스너 + 맵 직렬화 ═══
 function _serializeMap(){
   const flat=[];for(let y=0;y<G.mh;y++)for(let x=0;x<G.mw;x++)flat.push(G.map[y][x]);
@@ -36768,6 +36802,7 @@ let _loopRunning=false;
 let _fpsCapInterval=1000/(OPT.fpsCap||60);
 let _lastLoopTs=0;
 function loop(timestamp){
+  if(!_bootLoadKilled) hideBootLoading();
   if(!timestamp)timestamp=performance.now();
   // ── FPS 캡: 목표 프레임타임 미달이면 스킵 ──
   _fpsCapInterval=1000/(OPT.fpsCap||60);
@@ -36905,7 +36940,9 @@ async function startGameFromDB(){
   if(_stageTestReq>=0)G.stage=_stageTestReq;
   ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
   updateQS();updateSkSlot();
+  _bootMapBuildDefer=1;
   initStage(G.stage);
+  _bootMapBuildDefer=0;
   setBootLoading(85,'맵 에셋 로딩...');
   await _waitObjSprites(8000);
   // 바닥/벽 텍스처 로드 대기 (gt_soil, gt_void_wall, skull_wall)
@@ -36920,27 +36957,18 @@ async function startGameFromDB(){
     };_chk();
     setTimeout(r,5000); // 5초 타임아웃
   });
-  buildMapCache();
-  // ── 로딩 화면에서 모든 초기화 완료 (프레임 분산 대신 로딩 분산) ──
-  setBootLoading(88,'맵 환경 배치 중...');
-  // 백그라운드 큐 강제 완료
-  while(!_bgInitDone){_tickBgInit(9999)}
-  setBootLoading(92,'스트리밍 청크 빌드 중...');
-  // 스트리밍 맵: 전체 청크 사전 빌드
-  if(_streamMap){
-    const _maxCx=~~((G.mw-1)/_STREAM_CHUNK),_maxCy=~~((G.mh-1)/_STREAM_CHUNK);
-    let _builtCnt=0;const _totalChunks=(_maxCx+1)*(_maxCy+1);
-    for(let _sy=0;_sy<=_maxCy;_sy++){
-      for(let _sx=0;_sx<=_maxCx;_sx++){
-        const _sk=_sx+'_'+_sy;
-        if(!_streamChunks[_sk]){const _built=_buildStreamChunk(_sx,_sy);
-          if(_built){_streamChunks[_sk]={bmp:null,cvs:_built.cvs};_streamChunkCnt++;_streamVpDirty=true}}
-        _builtCnt++;
-      }
-      // 행 단위로 로딩바 갱신
-      if(_sy%2===0){setBootLoading(92+~~(_builtCnt/_totalChunks*6),'청크 '+_builtCnt+'/'+_totalChunks);await new Promise(r=>setTimeout(r,0))}
-    }
-    console.log('[MAP STREAM] full pre-built '+_streamChunkCnt+' chunks');
+  // 에셋 로드 중 예약된 맵 캐시 리프레시를 먼저 비우고, 무거운 환경/청크 준비는 게임 루프에서 분산 처리
+  await new Promise(r=>setTimeout(r,0));
+  setBootLoading(88,'맵 환경 준비 중...');
+  _tickBgInit(4);
+  if(_streamMap&&_streamBuildQCount>0){
+    setBootLoading(92,'주변 청크 준비 중...');
+    _tickStreamChunkBuild(6,4);
+    await new Promise(r=>setTimeout(r,0));
+  }
+  if(_bootMapBuildPromise){
+    setBootLoading(97,'맵 캐시 생성 중...');
+    await _bootMapBuildPromise;
   }
   setBootLoading(99,'미니맵 빌드 중...');
   await new Promise(r=>setTimeout(r,0)); // UI 갱신
@@ -36948,7 +36976,8 @@ async function startGameFromDB(){
   startAutoSave();
   // 캐릭터 선택 → 문 열림 후 바로 게임 시작 (스플래시 스킵)
   BGM.play(BGM.stageKey(G.stage));
-  setBootLoading(100,'완료');
+setBootLoading(100,'완료');
+hideBootLoading();
   // 로딩 화면이 완전히 사라진 뒤에 게임 시작
   await new Promise(r=>{
     const el=$('stageTransition');
@@ -37167,7 +37196,7 @@ for(let i=1;i<=15;i++){
   _STAGE_TRANSITION_RD.push(`img/lording/rd${i}.${ext}`);
 }
 let _lastTransitionRd=-1;
-let _bootLoadShownAt=0;
+let _bootLoadShownAt=0,_bootLoadKilled=false;
 function _pickTransitionRd(){
   if(_STAGE_TRANSITION_RD.length<=1) return 0;
   let n=~~(Math.random()*_STAGE_TRANSITION_RD.length);
@@ -37220,13 +37249,14 @@ function setBootLoading(pct,msg){
   const bar=$('stLoadBar'),name=$('stNextName');
   if(name&&msg) name.textContent=msg;
   if(bar) bar.style.width=Math.max(0,Math.min(100,pct))+'%';
+  if(pct>=100) hideBootLoading();
 }
 function hideBootLoading(){
   const el=$('stageTransition');
   if(!el) return;
-  const elapsed=Date.now()-_bootLoadShownAt;
-  const wait=Math.max(0,5000-elapsed);
-  setTimeout(()=>{el.style.opacity='0';el.style.pointerEvents='none';},wait+320);
+  el.style.opacity='0';
+  el.style.pointerEvents='none';
+  _bootLoadKilled=true;
 }
 
 // ═══ 스테이지 클리어 시 DB 저장 ═══
@@ -37390,10 +37420,16 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     if(_stageTestReq>=0)G.stage=_stageTestReq;
     ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
     updateQS();updateSkSlot();
+    _bootMapBuildDefer=1;
     initStage(G.stage);
+    _bootMapBuildDefer=0;
     setBootLoading(90,'맵 에셋 로딩...');
     await _waitObjSprites(8000);
-    buildMapCache();
+    await new Promise(r=>setTimeout(r,0));
+    if(_bootMapBuildPromise){
+      setBootLoading(97,'맵 캐시 생성 중...');
+      await _bootMapBuildPromise;
+    }
     BGM.play(BGM.stageKey(G.stage));
   setBootLoading(100,'완료');
   hideBootLoading();
@@ -37491,7 +37527,13 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     if(_stageTestReq>=0)G.stage=_stageTestReq;
     ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
     updateQS();updateSkSlot();
+    _bootMapBuildDefer=1;
     initStage(G.stage);
+    _bootMapBuildDefer=0;
+    if(_bootMapBuildPromise){
+      setBootLoading(97,'맵 캐시 생성 중...');
+      await _bootMapBuildPromise;
+    }
     BGM.play(BGM.stageKey(G.stage));
     setBootLoading(100,'완료');
     hideBootLoading();
