@@ -16206,7 +16206,7 @@ function update(){
         if(!G._fireZones)G._fireZones=[];
         const _afR=_stR*.6;
         const _afDmg=~~(_stDmg*0.08);
-        G._fireZones.push({type:'assaultFlame',x:P.x,y:P.y,r:_afR,dmg:_afDmg,el:EL.F,t:0,maxT:120,_tickCd:0});
+        G._fireZones.push({type:'assaultFlame',x:P.x,y:P.y,r:_afR,dmg:_afDmg,el:EL.F,t:0,maxT:300,_tickCd:0});
         _addSkProf('chainAssault');
         G.hitStop=0;G.slowMo=0;
         MB[0]=false;MBjust[0]=false;
