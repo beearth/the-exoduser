@@ -167,3 +167,9 @@
 - docs/4.1맵디?�인+?�정/맵오브젝???�셋목록.md
 - game.html
 
+
+## 2026-04-04 01:19 (auto)
+- game.html
+- game_backup_0404_before_rollback.html
+- game_rollback_1930.html
+

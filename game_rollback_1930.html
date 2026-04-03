@@ -6345,12 +6345,12 @@ const _CH_DECO={
     {id:'m_fleshwall_b90',file:'flesh_wall_b.png',sz:300,scatter:1,rot:90},
     {id:'m_fleshwall_b180',file:'flesh_wall_b.png',sz:300,scatter:1,rot:180},
     {id:'m_fleshwall_b270',file:'flesh_wall_b.png',sz:300,scatter:1,rot:270},
-    {id:'m_usergore1',file:'provided_gore_01.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:34},
-    {id:'m_usergore2',file:'provided_gore_02.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:34},
-    {id:'m_usergore3',file:'provided_gore_03.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:34},
-    {id:'m_usergore4',file:'provided_gore_04.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:34},
-    {id:'m_usergore5',file:'provided_gore_05.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:34},
-    {id:'m_usergore6',file:'provided_gore_06.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:34},
+    {id:'m_usergore1',file:'provided_gore_01.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore2',file:'provided_gore_02.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore3',file:'provided_gore_03.png',sz:220,userProvided:1,wallMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore4',file:'provided_gore_04.png',sz:220,userProvided:1,wallMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore5',file:'provided_gore_05.png',sz:220,userProvided:1,wallMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore6',file:'provided_gore_06.png',sz:220,userProvided:1,wallMount:1,stageMin:0,stageMax:3},
   ],
 };
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
@@ -11521,7 +11521,7 @@ function initMapObjects(){
       console.log('[UNIQUE_OBJ] placed:'+_uniPlaced+'/12');
     }
   let _providedFloorPlaced=0;
-  const _providedFloorTarget=Math.min(16,_providedFloorDeco.length?16:0);
+  const _providedFloorTarget=Math.min(8,_providedFloorDeco.length?8:0);
     if(_providedFloorTarget>0){
       const _providedMinDist=260;
       const _providedSameTypeDist=420;
