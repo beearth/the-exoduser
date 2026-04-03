@@ -6345,12 +6345,12 @@ const _CH_DECO={
     {id:'m_fleshwall_b90',file:'flesh_wall_b.png',sz:300,scatter:1,rot:90},
     {id:'m_fleshwall_b180',file:'flesh_wall_b.png',sz:300,scatter:1,rot:180},
     {id:'m_fleshwall_b270',file:'flesh_wall_b.png',sz:300,scatter:1,rot:270},
-    {id:'m_usergore1',file:'provided_gore_01.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:3},
-    {id:'m_usergore2',file:'provided_gore_02.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:3},
-    {id:'m_usergore3',file:'provided_gore_03.png',sz:220,userProvided:1,wallMount:1,stageMin:0,stageMax:3},
-    {id:'m_usergore4',file:'provided_gore_04.png',sz:220,userProvided:1,wallMount:1,stageMin:0,stageMax:3},
-    {id:'m_usergore5',file:'provided_gore_05.png',sz:220,userProvided:1,wallMount:1,stageMin:0,stageMax:3},
-    {id:'m_usergore6',file:'provided_gore_06.png',sz:220,userProvided:1,wallMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore1',file:'provided_gore_01.png',sz:220,userProvided:1,floorMount:1,wallMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore2',file:'provided_gore_02.png',sz:220,userProvided:1,floorMount:1,wallMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore3',file:'provided_gore_03.png',sz:220,userProvided:1,floorMount:1,wallMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore4',file:'provided_gore_04.png',sz:220,userProvided:1,floorMount:1,wallMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore5',file:'provided_gore_05.png',sz:220,userProvided:1,floorMount:1,wallMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore6',file:'provided_gore_06.png',sz:220,userProvided:1,floorMount:1,wallMount:1,stageMin:0,stageMax:3},
   ],
 };
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
@@ -6462,8 +6462,8 @@ const _OBJ_META={
   'm_skull_altar':{sz:300,col:1,large:1},'m_obelisk':{sz:300,col:1,large:1},'m_flesh_ball':{sz:270,col:1,large:1},
   'm_penta_circle':{sz:350,col:1,large:1},'m_flesh_maw':{sz:200,col:1,large:1},'m_skull_totem':{sz:240,col:1,large:1,keepAR:1},
   'm_bone_arch':{sz:300,col:1,large:1},'m_eye_tree':{sz:350,col:1,large:1},'m_throne':{sz:250,col:1,large:1},
-  'm_usergore1':{sz:220,keepAR:1},'m_usergore2':{sz:220,keepAR:1},'m_usergore3':{sz:220,keepAR:1,anchorBottom:1},
-  'm_usergore4':{sz:220,keepAR:1,anchorBottom:1},'m_usergore5':{sz:220,keepAR:1,anchorBottom:1},'m_usergore6':{sz:220,keepAR:1,anchorBottom:1},
+  'm_usergore1':{sz:220,keepAR:1},'m_usergore2':{sz:220,keepAR:1},'m_usergore3':{sz:220,keepAR:1},
+  'm_usergore4':{sz:220,keepAR:1},'m_usergore5':{sz:220,keepAR:1},'m_usergore6':{sz:220,keepAR:1},
 };
 // _CH_DECO 프리로드
 for(const[ch,list]of Object.entries(_CH_DECO)){
@@ -11575,7 +11575,7 @@ function initMapObjects(){
           pick=_nextProvided(_providedFloorCycle,_providedFloorDeco[0]);
           if(_nearbyTypeCount(_providedPlacedList,pick.id,px,py,_providedSameTypeDist)<1)break;
         }
-        MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
+        MAP_OBJS.push({type:pick.id,x:px,y:py,hell,_anchorBottom:1});
         _providedPlacedList.push({type:pick.id,x:px,y:py});
         _dcFloors.splice(fi,1);
         _providedFloorPlaced++;
@@ -11616,7 +11616,7 @@ function initMapObjects(){
           pick=_nextProvided(_providedWallCycle,_providedWallDeco[0]);
           if(_nearbyTypeCount(_providedWallPlacedList,pick.id,px,py,_providedWallSameTypeDist)<1)break;
         }
-        MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
+        MAP_OBJS.push({type:pick.id,x:px,y:py,hell,_anchorBottom:1});
         _providedWallPlacedList.push({type:pick.id,x:px,y:py});
         _wallCells.splice(ci,1);
         _providedWallPlaced++;
@@ -11967,10 +11967,12 @@ function _tickBuildMapCache(){
   // Phase 2: 게이트+마무리 (1회)
   if(_bmcPhase===2){
     const bgI=_bossGateImgs[SI_TO_HELL[G.stage]];
+    console.log('[GATE-TREE] Phase2 bgI=',!!bgI,'complete=',bgI&&bgI.complete,'natW=',bgI&&bgI.naturalWidth,'arena=',G._bossArena,'gate=',G.bossGate&&G.bossGate.length,'gateY=',G._gateY);
     if(bgI&&bgI.complete&&bgI.naturalWidth&&!G._bossArena&&G.bossGate&&G.bossGate.length>0&&G._gateY!=null){
       const gMinX=Math.min(...G.bossGate.map(g=>g.x)),gMaxX=Math.max(...G.bossGate.map(g=>g.x));
       const gCxP=((gMinX+gMaxX)/2+.5)*T,gPy=G._gateY*T;
       const bgW=600,bgH=~~(600*bgI.naturalHeight/bgI.naturalWidth);
+      console.log('[GATE-TREE] DRAWING at',gCxP-bgW/2,gPy-bgH+350,'size',bgW,bgH);
       c.drawImage(bgI,gCxP-bgW/2,gPy-bgH+350,bgW,bgH);
     }
     _bmcDone=true;_bmcCtx=null;_bmcMap=null;
@@ -13934,6 +13936,7 @@ function genGauntlet(fi){
 
   G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
   G.bossGate=_gateTiles;G.bossGateOpen=true;G.bossSealed=false;G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
+  if(_gateTiles.length>0){const _gcx=(Math.min(..._gateTiles.map(g=>g.x))+Math.max(..._gateTiles.map(g=>g.x)))/2;MAP_OBJS.push({type:'boss_gate_col',x:(_gcx+.5)*T,y:(_gateY+2)*T})}
   // 전장의 안개 (Fog of War) 초기화
   G.spawnHoles=spawnHoles;
   }
@@ -14737,6 +14740,7 @@ function genFromTemplate(tmpl,si){
   G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
   G.bossGate=_gateTiles;G.bossGateOpen=true;G.bossSealed=false;
   G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
+  if(_gateTiles.length>0){const _gcx=(Math.min(..._gateTiles.map(g=>g.x))+Math.max(..._gateTiles.map(g=>g.x)))/2;MAP_OBJS.push({type:'boss_gate_col',x:(_gcx+.5)*T,y:(_gateY+2)*T})}
   G.spawnHoles=spawnHoles;
     // ── 에디터 배치 장식 오브젝트 → MAP_OBJS ──
   if(tmpl.objs){for(const o of tmpl.objs){
@@ -30107,11 +30111,17 @@ function draw(){
       X.strokeStyle='#44ff88';X.lineWidth=1;X.strokeRect(px+1,py+1,T-2,T-2);
     }else{X.fillStyle='rgba(80,80,80,.5)';X.fillRect(px+2,py+2,T-4,T-4)}
   }
-  // ── 던전 보스 게이트 입구 포탈 (투명 webp 회전 애니메이션) ──
+  // ── 던전 보스 게이트 입구 (나무 + 포탈) ──
   if(!G._bossArena&&G.exits.length>0&&G.bossGate&&G.bossGate.length>0&&G.bossAlive){
     const _exMinX=Math.min(...G.exits.map(e=>e.x)),_exMaxX=Math.max(...G.exits.map(e=>e.x));
     const _exMinY=Math.min(...G.exits.map(e=>e.y)),_exMaxY=Math.max(...G.exits.map(e=>e.y));
     const _exCx=((_exMinX+_exMaxX)/2+.5)*T,_exCy=((_exMinY+_exMaxY)/2+.5)*T;
+    // 게이트 나무 이미지 (포탈 위에)
+    const _gtI=_bossGateImgs[SI_TO_HELL[G.stage]];
+    if(_gtI&&_gtI.complete&&_gtI.naturalWidth){
+      const _gtW=600,_gtH=~~(600*_gtI.naturalHeight/_gtI.naturalWidth);
+      X.drawImage(_gtI,_exCx-_gtW/2,_exCy-_gtH+150,_gtW,_gtH);
+    }
     _drawPortal(X,_exCx,_exCy,250,_now,SI_TO_HELL[G.stage]);
   }
   // ── 존 포탈 렌더 (게이트 나무 + 보라 소용돌이) ──
@@ -30498,7 +30508,7 @@ function draw(){
             }
           }else if(_meta&&_meta.keepAR){
             const _ar=_spr.naturalWidth/_spr.naturalHeight,_dw=sz*(_ar<1?_ar:1),_dh=sz*(_ar>1?1/_ar:1);
-            if(_meta.anchorBottom)X.drawImage(_spr,mo.x-_dw/2,mo.y-_dh,_dw,_dh);
+            if(mo._anchorBottom||_meta.anchorBottom)X.drawImage(_spr,mo.x-_dw/2,mo.y-_dh,_dw,_dh);
             else X.drawImage(_spr,mo.x-_dw/2,mo.y-_dh/2,_dw,_dh);
           }else X.drawImage(_spr,mo.x-sz/2,mo.y-sz/2,sz,sz);
           // 눈알 오버레이 비활성화
@@ -37157,6 +37167,11 @@ $('retryBtn').onclick=async()=>{
     G.spawnHoles=b.spawnHoles;G.rifts=b.rifts;
     G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;
     G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;G.stageCleared=false;G._deathSpawned=false;
+    // boss_gate_col 충돌 재생성
+    if(b.bossGate&&b.bossGate.length>0){
+      const _gcx2=(Math.min(...b.bossGate.map(g=>g.x))+Math.max(...b.bossGate.map(g=>g.x)))/2;
+      MAP_OBJS.push({type:'boss_gate_col',x:(_gcx2+.5)*T,y:(b._gateY+2)*T});
+    }
     // 게이트 입구 (나무 입 부분 근처) 리스폰
     const _gx=(b._bossCx+.5)*T,_gy=(b._gateY+8+.5)*T;
     const sp=safePt(_gx,_gy,P.r);

@@ -19,7 +19,7 @@ test('CH1 uses only the six user-provided deco cuts with aspect-ratio rendering'
   }
   assert.match(
     gameHtml,
-    /'m_usergore1':\{sz:\d+,keepAR:1\}[\s\S]*'m_usergore2':\{sz:\d+,keepAR:1\}[\s\S]*'m_usergore3':\{sz:\d+,keepAR:1(?:,anchorBottom:1)?\}[\s\S]*'m_usergore4':\{sz:\d+,keepAR:1(?:,anchorBottom:1)?\}[\s\S]*'m_usergore5':\{sz:\d+,keepAR:1(?:,anchorBottom:1)?\}[\s\S]*'m_usergore6':\{sz:\d+,keepAR:1(?:,anchorBottom:1)?\}/
+    /'m_usergore1':\{sz:\d+,keepAR:1\}[\s\S]*'m_usergore2':\{sz:\d+,keepAR:1\}[\s\S]*'m_usergore3':\{sz:\d+,keepAR:1\}[\s\S]*'m_usergore4':\{sz:\d+,keepAR:1\}[\s\S]*'m_usergore5':\{sz:\d+,keepAR:1\}[\s\S]*'m_usergore6':\{sz:\d+,keepAR:1\}/
   );
 });
 
@@ -37,7 +37,7 @@ test('CH1 user-provided gore deco is restricted to stages 1-4 and wall placement
 test('CH1 wall-mounted user deco is inset into the wall and rendered bottom-anchored', () => {
   assert.match(
     gameHtml,
-    /'m_usergore3':\{sz:\d+,keepAR:1,anchorBottom:1\}[\s\S]*'m_usergore4':\{sz:\d+,keepAR:1,anchorBottom:1\}[\s\S]*'m_usergore5':\{sz:\d+,keepAR:1,anchorBottom:1\}[\s\S]*'m_usergore6':\{sz:\d+,keepAR:1,anchorBottom:1\}[\s\S]*_wallCells\.push\(\{x,y,ox,oy\}\);[\s\S]*const cell=_wallCells\[ci\];[\s\S]*const px=cell\.x\*T\+T\/2\+cell\.ox,py=cell\.y\*T\+T\/2\+cell\.oy;[\s\S]*if\(_meta\.anchorBottom\)X\.drawImage\(_spr,mo\.x-_dw\/2,mo\.y-_dh,_dw,_dh\);/
+    /'m_usergore1'.*floorMount:1,wallMount:1[\s\S]*'m_usergore6'.*floorMount:1,wallMount:1[\s\S]*_wallCells\.push\(\{x,y,ox,oy\}\);[\s\S]*const cell=_wallCells\[ci\];[\s\S]*const px=cell\.x\*T\+T\/2\+cell\.ox,py=cell\.y\*T\+T\/2\+cell\.oy;[\s\S]*MAP_OBJS\.push\(\{type:pick\.id,x:px,y:py,hell,_anchorBottom:1\}\);[\s\S]*if\(mo\._anchorBottom\|\|_meta\.anchorBottom\)X\.drawImage\(_spr,mo\.x-_dw\/2,mo\.y-_dh,_dw,_dh\);/
   );
 });
 
