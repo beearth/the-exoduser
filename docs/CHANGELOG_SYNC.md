@@ -119,3 +119,14 @@
 ## 2026-04-03 19:30 (auto)
 - game.html
 
+
+## 2026-04-03 20:30 (auto)
+- assets/map/ch1/collision/boss_gate.png
+- assets/map/ch1/collision/boss_gate.png.bak
+- game.html
+- game_backup_gate_ok.html
+- game_backup_gate_top.html
+- maps_data.js
+- package-lock.json
+- package.json
+

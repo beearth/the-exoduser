@@ -6456,7 +6456,6 @@ const _OBJ_META={
   'lava_l_v6c':{sz:300,collision:true},'lava_l_v6d':{sz:300,collision:true},
   'lava_l_90':{sz:200,collision:true,rot:90},'lava_l_180':{sz:200,collision:true,rot:180},'lava_l_270':{sz:200,collision:true,rot:270},
   'boss_gate_col':{sz:500,col:1},
-  'zone_portal_col':{sz:150,col:1},
   'm_ctree1':{sz:250,col:1,large:1},'m_ctree2':{sz:250,col:1,large:1},'m_ctree3':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree4':{sz:250,col:1,large:1},'m_ctree5':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree6':{sz:250,col:1,large:1},'m_ctree7':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree8':{sz:250,col:1,large:1},'m_ctree9':{sz:250,col:1,large:1,eyeOvl:1},'m_ctree10':{sz:250,col:1,large:1},'m_ctree11':{sz:250,col:1,large:1},'m_ctree12':{sz:250,col:1,large:1},'m_atree1':{sz:250,col:1,large:1,touchAnim:{frames:2,radius:120}},
   'm_cage_gate':{sz:300,col:1,large:1},'m_sword_pile':{sz:200,col:1,large:1},'m_hang_cage':{sz:280,col:1,large:1},
   'm_skull_altar':{sz:300,col:1,large:1},'m_obelisk':{sz:300,col:1,large:1},'m_flesh_ball':{sz:270,col:1,large:1},
@@ -11281,8 +11280,6 @@ const _SAME_TYPE_DIST=1200; // 동일 에셋 최소 거리 (한 화면 내 중�
 function _nearbyTypeCount(list,type,x,y,radius){let c=0;for(const o of list)if(o.type===type&&dst(x,y,o.x,o.y)<radius)c++;return c}
 function initMapObjects(){
   const _editorObjs=MAP_OBJS.filter(o=>o.type&&!['bonfire','lore','breakable','trap','altar'].includes(o.type));
-  // 존 포탈/보스게이트 충돌 오브젝트 보존
-  const _sysObjs=MAP_OBJS.filter(o=>o.type==='zone_portal_col'||o.type==='boss_gate_col');
   MAP_OBJS=[];const hell=SI_TO_HELL[G.stage],map=G.map,rooms=G.rooms;
   // 공간 해시 그리드 (O(1) 근접 체크, O(n²) 제거)
   const _GRID_SZ=200;const _moGrid={};
@@ -11472,16 +11469,6 @@ function initMapObjects(){
             else if(_nearbyTypeCount(MAP_OBJS,pick,px,py,_SAME_TYPE_DIST)>0){dup=true}
             if(!dup)break;
           }
-          // 자기 크기 2배 공간 체크 — 좁은 복도 차단
-          const _pickMeta=_OBJ_META[pick];
-          const _pickSz=_pickMeta?_pickMeta.sz||32:32;
-          const _needR=Math.ceil(_pickSz/T); // sz*2 지름 → sz 반경을 타일로 변환
-          let _spaceOk=true;
-          for(let dy=-_needR;dy<=_needR&&_spaceOk;dy++)for(let dx=-_needR;dx<=_needR&&_spaceOk;dx++){
-            const tx=f.x+dx,ty=f.y+dy;
-            if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0)_spaceOk=false;
-          }
-          if(!_spaceOk){pool.splice(fi,1);continue}
           _lastType=pick;
           MAP_OBJS.push({type:pick,x:px,y:py,hell});
           pool.splice(fi,1);placed++;_lgPlaced++;
@@ -11516,16 +11503,6 @@ function initMapObjects(){
           if(_gridNear(px,py,_uniMinDist)){ok=false}
           if(!ok)continue;
           if(bossRoom&&px/T>=bossRoom.x-3&&px/T<=bossRoom.x+bossRoom.w+3&&py/T>=bossRoom.y-3&&py/T<=bossRoom.y+bossRoom.h+3)continue;
-          // 자기 크기 2배 공간 체크
-          const _uMeta=_OBJ_META[_uniObjs[ui]];
-          const _uSz=_uMeta?_uMeta.sz||32:32;
-          const _uNeedR=Math.ceil(_uSz/T);
-          let _uSpaceOk=true;
-          for(let dy=-_uNeedR;dy<=_uNeedR&&_uSpaceOk;dy++)for(let dx=-_uNeedR;dx<=_uNeedR&&_uSpaceOk;dx++){
-            const tx=f.x+dx,ty=f.y+dy;
-            if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0)_uSpaceOk=false;
-          }
-          if(!_uSpaceOk)continue;
           MAP_OBJS.push({type:_uniObjs[ui],x:px,y:py,hell});
           _uniCenter.splice(fi,1);_uDone=true;_uniPlaced++;
         }
@@ -11739,9 +11716,8 @@ function initMapObjects(){
     }
     console.log('[EYES] wall eyes:'+_eyePlaced);
   }
-  // 에디터 배치 오브젝트 + 시스템 충돌 오브젝트 복원
+  // 에디터 배치 오브젝트 복원
   for(const eo of _editorObjs)MAP_OBJS.push(eo);
-  for(const so of _sysObjs)MAP_OBJS.push(so);
   // 그리드 래핑 해제
   MAP_OBJS.push=Array.prototype.push;
   console.log('[MAP_OBJS]',MAP_OBJS.length,'(editor:'+_editorObjs.length+')',MAP_OBJS.map(m=>m.type));
@@ -11957,7 +11933,7 @@ function _tickBuildMapCache(){
       const gMinX=Math.min(...G.bossGate.map(g=>g.x)),gMaxX=Math.max(...G.bossGate.map(g=>g.x));
       const gCxP=((gMinX+gMaxX)/2+.5)*T,gPy=G._gateY*T;
       const bgW=600,bgH=~~(600*bgI.naturalHeight/bgI.naturalWidth);
-      c.drawImage(bgI,gCxP-bgW/2,gPy-bgH+350,bgW,bgH);
+      c.drawImage(bgI,gCxP-bgW/2,gPy-bgH-50,bgW,bgH);
     }
     _bmcDone=true;_bmcCtx=null;_bmcMap=null;
     _mapStage=G.stage;
@@ -12604,7 +12580,7 @@ function _buildStreamChunk(cx,cy){
   if(_bgI&&_bgI.complete&&_bgI.naturalWidth&&!G._bossArena&&G.bossGate&&G.bossGate.length>0&&G._gateY!=null){
     let _gMinX=1e9,_gMaxX=-1e9;
     for(let i=0;i<G.bossGate.length;i++){const _gx=G.bossGate[i].x;if(_gx<_gMinX)_gMinX=_gx;if(_gx>_gMaxX)_gMaxX=_gx}
-    const _bgW=600,_bgH=~~(600*_bgI.naturalHeight/_bgI.naturalWidth),_dx=((_gMinX+_gMaxX)/2+.5)*T-_bgW/2-_wx0,_dy=G._gateY*T-_bgH+350-_wy0;
+    const _bgW=600,_bgH=~~(600*_bgI.naturalHeight/_bgI.naturalWidth),_dx=((_gMinX+_gMaxX)/2+.5)*T-_bgW/2-_wx0,_dy=G._gateY*T-_bgH-50-_wy0;
     c.drawImage(_bgI,_dx,_dy,_bgW,_bgH);
   }}
   cc._glVer=1;
@@ -14715,8 +14691,6 @@ function genFromTemplate(tmpl,si){
         const tx=p.x+dx,ty=p.y;
         if(tx>=0&&tx<mw&&ty>=0&&ty<mh)map[ty][tx]=6;
       }
-      // 포탈 나무 충돌 오브젝트 (나무 몸통 크기만, sz:150)
-      MAP_OBJS.push({type:'zone_portal_col',x:(p.x+.5)*T,y:(p.y-1)*T});
     }
   }else{G._portals=null}
   console.log('[MAP] si='+si+' tileRLE='+(tmpl.tileRLE?'Y':'N')+' manualHoles='+(tmpl.spawnHoles?tmpl.spawnHoles.length:0)+' autoHoles='+spawnHoles.length+' rooms='+rooms.length+' bossRm='+(bossRm?'Y':'N')+' exits='+exits.length+' gateTiles='+_gateTiles.length+' portals='+(tmpl.portals?tmpl.portals.length:0));
