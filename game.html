@@ -14261,9 +14261,10 @@ function _buildFixedMap14Testbed2(){
 // 존0용: 원본 격자맵 200×200 스케일 (보스방 제거 + 상단 포탈)
 let _zone0Cache=null;
 function _buildZone0FromGrid(){
-  if(typeof _ORIG_GRID_3==='undefined'||!_ORIG_GRID_3)return null;
+  console.time('[ZONE0-BUILD]');
+  if(typeof _ORIG_GRID_3==='undefined'||!_ORIG_GRID_3){console.timeEnd('[ZONE0-BUILD]');return null}
   // tileRLE 제외 복사 (프로시저럴 생성, 수만 항목 복사 방지)
-  const {tileRLE:_,  ...baseNoRLE}=_ORIG_GRID_3;
+  const {tileRLE:_discard,  ...baseNoRLE}=_ORIG_GRID_3;
   const base=JSON.parse(JSON.stringify(baseNoRLE));
   const _bmw=base.mw||1,_bmh=base.mh||1,_mw=200,_mh=200;
   const _sx=(_mw-1)/Math.max(1,_bmw-1),_sy=(_mh-1)/Math.max(1,_bmh-1);
@@ -15676,10 +15677,10 @@ function initStage(si){
   // ── 백그라운드 초기화 (게임 중 서서히) ──
   _bgInitQueue=[
     initSwayObjects,initWallEyes,_initEyes,initGlowObjects,
-    initMapObjects,typeof _buildDecorList==='function'?_buildDecorList:null
+    typeof _buildDecorList==='function'?_buildDecorList:null
   ].filter(Boolean);
   _bgInitDone=false;_bgInitIdx=0;
-  if(si===0)_tickBgInit(9999);
+  if(si===0)_tickBgInit(12);
   BGM.play(BGM.stageKey(si)); // 스테이지 BGM
 }
 
@@ -36815,7 +36816,7 @@ let _fOverBudget=false;
 let _perfFrames=0,_perfLast=performance.now();
 const PHYS_STEP=1000/60;
 let _acc=0,_prevTs=0,_gameTime=0;
-function _startLoop(){if(_looping){return}_looping=true;if(!IS_ELECTRON)console.log('[LOOP] start');hideBootLoading();requestAnimationFrame(loop)}
+function _startLoop(){if(_looping){return}_looping=true;if(!IS_ELECTRON)console.log('[LOOP] start');requestAnimationFrame(loop)}
 // ═══ [EDITOR] postMessage 리스너 + 맵 직렬화 ═══
 function _serializeMap(){
   const flat=[];for(let y=0;y<G.mh;y++)for(let x=0;x<G.mw;x++)flat.push(G.map[y][x]);
@@ -36858,7 +36859,6 @@ let _loopRunning=false;
 let _fpsCapInterval=1000/(OPT.fpsCap||60);
 let _lastLoopTs=0;
 function loop(timestamp){
-  if(!_bootLoadKilled) hideBootLoading();
   if(!timestamp)timestamp=performance.now();
   // ── FPS 캡: 목표 프레임타임 미달이면 스킵 ──
   _fpsCapInterval=1000/(OPT.fpsCap||60);
@@ -36961,6 +36961,7 @@ async function startGameFromDB(){
   // 3) DB에서 캐릭터 데이터 로드
   setBootLoading(55,'저장 데이터 불러오는 중...');
   const saved=await dbLoad();
+  const _freshStart=!(saved&&saved.player);
   if(saved&&saved.player){
     dbRestore(saved);
   }else{
@@ -37024,7 +37025,7 @@ async function startGameFromDB(){
   }
   if(_bootMapBuildPromise){
     setBootLoading(97,'맵 캐시 생성 중...');
-    await _bootMapBuildPromise;
+    await Promise.race([_bootMapBuildPromise,new Promise(r=>setTimeout(r,3000))]);
   }
   setBootLoading(99,'미니맵 빌드 중...');
   await new Promise(r=>setTimeout(r,0)); // UI 갱신
@@ -37037,12 +37038,10 @@ hideBootLoading();
   // 로딩 화면이 완전히 사라진 뒤에 게임 시작
   await new Promise(r=>{
     const el=$('stageTransition');
-    const elapsed=Date.now()-_bootLoadShownAt;
-    const wait=Math.max(0,5000-elapsed)+400;
     setTimeout(()=>{
       if(el){el.style.opacity='0';el.style.pointerEvents='none';}
       console.log('[INTRO CHECK] stage='+G.stage);
-      if(G.stage===0){
+      if(G.stage===0&&_freshStart){
         // 신규 캐릭 첫 시작 → 인트로 연출
         console.log('[INTRO] starting intro...');
         _startIntro();r();
@@ -37051,10 +37050,8 @@ hideBootLoading();
         if(G._bonfire)G._bonfire.t=300;
         r();
       }
-    },wait);
+    },120);
   });
-  // 첫 시작 (스테이지 0, 기존 세이브) 시 튜토리얼 표시
-  if(G.stage===0&&!G._intro)showTutorial();
 }
 
 // ═══ 1랩 시작 인트로 연출 (HTML 오버레이 기반) ═══
@@ -37292,6 +37289,7 @@ function showBootLoading(msg){
   const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg');
   if(!el||!bar||!name) return;
   _bootLoadShownAt=Date.now();
+  _bootLoadKilled=false;
   name.textContent=msg||'불러오는 중...';
   if(img){
     const idx=_pickTransitionRd();
@@ -37305,7 +37303,6 @@ function setBootLoading(pct,msg){
   const bar=$('stLoadBar'),name=$('stNextName');
   if(name&&msg) name.textContent=msg;
   if(bar) bar.style.width=Math.max(0,Math.min(100,pct))+'%';
-  if(pct>=100) hideBootLoading();
 }
 function hideBootLoading(){
   const el=$('stageTransition');
@@ -37472,7 +37469,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     setBootLoading(75,'몬스터 스킨 로딩...');
     if(!_mobAtlas.ready)await new Promise(r=>{const _ci=setInterval(()=>{if(_mobAtlas.ready){clearInterval(_ci);r()}},50);setTimeout(()=>{clearInterval(_ci);r()},5000)});
     setBootLoading(80,'맵과 몬스터 생성 중...');
-  applyStats();
+    applyStats();
     if(_stageTestReq>=0)G.stage=_stageTestReq;
     ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
     updateQS();updateSkSlot();
@@ -37484,7 +37481,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     await new Promise(r=>setTimeout(r,0));
     if(_bootMapBuildPromise){
       setBootLoading(97,'맵 캐시 생성 중...');
-      await _bootMapBuildPromise;
+      await Promise.race([_bootMapBuildPromise,new Promise(r=>setTimeout(r,3000))]);
     }
     BGM.play(BGM.stageKey(G.stage));
   setBootLoading(100,'완료');
@@ -37493,7 +37490,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     startAutoSave();
     setTimeout(()=>dbSave(),3000);
     // 인트로 연출
-    if(G.stage===0){
+    if(G.stage===0&&!_loaded){
       _startIntro();
     }else{
       G.on=true;P.iframes=300;
@@ -37588,7 +37585,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     _bootMapBuildDefer=0;
     if(_bootMapBuildPromise){
       setBootLoading(97,'맵 캐시 생성 중...');
-      await _bootMapBuildPromise;
+      await Promise.race([_bootMapBuildPromise,new Promise(r=>setTimeout(r,3000))]);
     }
     BGM.play(BGM.stageKey(G.stage));
     setBootLoading(100,'완료');
@@ -37596,7 +37593,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     _dbReady=true;
     startAutoSave();
     setTimeout(()=>dbSave(),3000);
-    if(G.stage===0){_startIntro()}else{G.on=true;P.iframes=300;if(G._bonfire)G._bonfire.t=300}
+    if(G.stage===0&&!_loaded){_startIntro()}else{G.on=true;P.iframes=300;if(G._bonfire)G._bonfire.t=300}
   })();
 }else{
   startGameFromDB();

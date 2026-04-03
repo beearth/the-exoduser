@@ -71,3 +71,18 @@ test('user-provided gore cuts remove the checker background instead of keeping a
     );
   }
 });
+
+test('stage 0 intro runs only for fresh starts, not loaded saves', () => {
+  assert.match(
+    gameHtml,
+    /const saved=await dbLoad\(\);\s*const _freshStart=!\(saved&&saved\.player\);[\s\S]*if\(G\.stage===0&&_freshStart\)\{[\s\S]*_startIntro\(\);/
+  );
+  assert.match(
+    gameHtml,
+    /let _loaded=false;[\s\S]*if\(G\.stage===0&&!_loaded\)\{\s*_startIntro\(\);[\s\S]*let _loaded=false;[\s\S]*if\(G\.stage===0&&!_loaded\)\{_startIntro\(\)\}else\{G\.on=true;/
+  );
+  assert.doesNotMatch(
+    gameHtml,
+    /if\(G\.stage===0&&!G\._intro\)showTutorial\(\);/
+  );
+});
