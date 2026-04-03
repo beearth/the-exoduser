@@ -41,6 +41,13 @@ test('CH1 wall-mounted user deco is inset into the wall and rendered bottom-anch
   );
 });
 
+test('CH1 user-provided deco selection cycles through the pool instead of pure random repeats', () => {
+  assert.match(
+    gameHtml,
+    /function _mkProvidedCycle\(pool\)\{[\s\S]*function _nextProvided\(cyc,fallback\)\{[\s\S]*const _providedFloorCycle=_mkProvidedCycle\(_providedFloorDeco\);[\s\S]*const _providedWallCycle=_mkProvidedCycle\(_providedWallDeco\);[\s\S]*pick=_nextProvided\(_providedFloorCycle,_providedFloorDeco\[0\]\);[\s\S]*pick=_nextProvided\(_providedWallCycle,_providedWallDeco\[0\]\);/
+  );
+});
+
 test('user-provided gore cuts remove the checker background instead of keeping an opaque rectangle', async () => {
   for (const file of [
     'provided_gore_01.png',

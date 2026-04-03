@@ -11424,6 +11424,19 @@ function initMapObjects(){
   for(let y=3;y<G.mh-3;y++)for(let x=3;x<G.mw-3;x++){if(map[y][x]===0)_dcFloors.push({x,y})}
     const _providedFloorDeco=_chDeco.filter(d=>d.userProvided&&d.floorMount);
     const _providedWallDeco=_chDeco.filter(d=>d.userProvided&&d.wallMount);
+    function _mkProvidedCycle(pool){
+      const arr=pool.slice();
+      for(let i=arr.length-1;i>0;i--){const j=~~(_dcSeed()*(i+1));const t=arr[i];arr[i]=arr[j];arr[j]=t}
+      return {arr,idx:0};
+    }
+    function _nextProvided(cyc,fallback){
+      if(!cyc.arr.length)return fallback;
+      const pick=cyc.arr[cyc.idx%cyc.arr.length];
+      cyc.idx++;
+      return pick;
+    }
+    const _providedFloorCycle=_mkProvidedCycle(_providedFloorDeco);
+    const _providedWallCycle=_mkProvidedCycle(_providedWallDeco);
     const _baseDeco=_chDeco.filter(d=>!d.userProvided);
     // ── 1차: 대형 에셋 우선 배치 (맵당 1~2개, 넓은 간격) ──
     const _largeDeco=_baseDeco.filter(d=>d.large);
@@ -11557,9 +11570,9 @@ function initMapObjects(){
           if(dst(px,py,mo.x,mo.y)<Math.max(140,(moSz+220)/2)){ok=false;break}
         }
         if(!ok)continue;
-        let pick=_providedFloorDeco[0];
+        let pick=_nextProvided(_providedFloorCycle,_providedFloorDeco[0]);
         for(let _try=0;_try<8;_try++){
-          pick=_providedFloorDeco[~~(_dcSeed()*_providedFloorDeco.length)];
+          pick=_nextProvided(_providedFloorCycle,_providedFloorDeco[0]);
           if(_nearbyTypeCount(_providedPlacedList,pick.id,px,py,_providedSameTypeDist)<1)break;
         }
         MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
@@ -11598,9 +11611,9 @@ function initMapObjects(){
           if(dst(px,py,mo.x,mo.y)<Math.max(150,(moSz+220)/2)){ok=false;break}
         }
         if(!ok)continue;
-        let pick=_providedWallDeco[0];
+        let pick=_nextProvided(_providedWallCycle,_providedWallDeco[0]);
         for(let _try=0;_try<8;_try++){
-          pick=_providedWallDeco[~~(_dcSeed()*_providedWallDeco.length)];
+          pick=_nextProvided(_providedWallCycle,_providedWallDeco[0]);
           if(_nearbyTypeCount(_providedWallPlacedList,pick.id,px,py,_providedWallSameTypeDist)<1)break;
         }
         MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
@@ -11612,7 +11625,7 @@ function initMapObjects(){
       if(_providedWallPlaced===0&&_wallCells.length>0){
         const cell=_wallCells[0];
         const px=cell.x*T+T/2+cell.ox,py=cell.y*T+T/2+cell.oy;
-        const pick=_providedWallDeco[0];
+        const pick=_nextProvided(_providedWallCycle,_providedWallDeco[0]);
         MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
         _providedWallPlaced=1;
       }
@@ -11622,6 +11635,7 @@ function initMapObjects(){
         const _fbMinDist=220;
         const _fbSameTypeDist=360;
         const _fbPool=_providedFloorDeco.length>0?_providedFloorDeco:_providedWallDeco;
+        const _fbCycle=_providedFloorDeco.length>0?_providedFloorCycle:_providedWallCycle;
         const _fbPlaced=[];
         // 바닥 후보를 다시 모은다 (기존 _dcFloors는 다른 배치용이므로 그대로 둔다)
         const _fbFloors=_dcFloors.length>0?_dcFloors.slice():[];
@@ -11640,9 +11654,9 @@ function initMapObjects(){
             if(dst(px,py,mo.x,mo.y)<Math.max(150,(moSz+220)/2)){ok=false;break}
           }
           if(!ok)continue;
-          let pick=_fbPool[0];
+          let pick=_nextProvided(_fbCycle,_fbPool[0]);
           for(let _try=0;_try<8;_try++){
-            pick=_fbPool[~~(_dcSeed()*_fbPool.length)];
+            pick=_nextProvided(_fbCycle,_fbPool[0]);
             if(_nearbyTypeCount(_fbPlaced,pick.id,px,py,_fbSameTypeDist)<1)break;
           }
           MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
