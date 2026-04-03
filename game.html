@@ -6345,12 +6345,12 @@ const _CH_DECO={
     {id:'m_fleshwall_b90',file:'flesh_wall_b.png',sz:300,scatter:1,rot:90},
     {id:'m_fleshwall_b180',file:'flesh_wall_b.png',sz:300,scatter:1,rot:180},
     {id:'m_fleshwall_b270',file:'flesh_wall_b.png',sz:300,scatter:1,rot:270},
-    {id:'m_usergore1',file:'provided_gore_01.png',sz:220,userProvided:1,floorMount:1,stageMin:1,stageMax:4},
-    {id:'m_usergore2',file:'provided_gore_02.png',sz:220,userProvided:1,floorMount:1,stageMin:1,stageMax:4},
-    {id:'m_usergore3',file:'provided_gore_03.png',sz:220,userProvided:1,wallMount:1,stageMin:1,stageMax:4},
-    {id:'m_usergore4',file:'provided_gore_04.png',sz:220,userProvided:1,wallMount:1,stageMin:1,stageMax:4},
-    {id:'m_usergore5',file:'provided_gore_05.png',sz:220,userProvided:1,wallMount:1,stageMin:1,stageMax:4},
-    {id:'m_usergore6',file:'provided_gore_06.png',sz:220,userProvided:1,wallMount:1,stageMin:1,stageMax:4},
+    {id:'m_usergore1',file:'provided_gore_01.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore2',file:'provided_gore_02.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore3',file:'provided_gore_03.png',sz:220,userProvided:1,wallMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore4',file:'provided_gore_04.png',sz:220,userProvided:1,wallMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore5',file:'provided_gore_05.png',sz:220,userProvided:1,wallMount:1,stageMin:0,stageMax:3},
+    {id:'m_usergore6',file:'provided_gore_06.png',sz:220,userProvided:1,wallMount:1,stageMin:0,stageMax:3},
   ],
 };
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
@@ -11385,8 +11385,8 @@ function initMapObjects(){
   if(_chDeco&&_chDeco.length>0){
     const _dcSeed=_tseed(G.stage*13+7,hell*97+3);
     // 바닥 타일 수집
-    const _dcFloors=[];
-    for(let y=3;y<G.mh-3;y++)for(let x=3;x<G.mw-3;x++){if(map[y][x]===0)_dcFloors.push({x,y})}
+  const _dcFloors=[];
+  for(let y=3;y<G.mh-3;y++)for(let x=3;x<G.mw-3;x++){if(map[y][x]===0)_dcFloors.push({x,y})}
     const _providedFloorDeco=_chDeco.filter(d=>d.userProvided&&d.floorMount);
     const _providedWallDeco=_chDeco.filter(d=>d.userProvided&&d.wallMount);
     const _baseDeco=_chDeco.filter(d=>!d.userProvided);
@@ -11477,8 +11477,8 @@ function initMapObjects(){
       }
       console.log('[UNIQUE_OBJ] placed:'+_uniPlaced+'/12');
     }
-    let _providedFloorPlaced=0;
-    const _providedFloorTarget=Math.min(8,_providedFloorDeco.length?8:0);
+  let _providedFloorPlaced=0;
+  const _providedFloorTarget=Math.min(8,_providedFloorDeco.length?8:0);
     if(_providedFloorTarget>0){
       const _providedMinDist=260;
       const _providedSameTypeDist=420;
@@ -11513,8 +11513,8 @@ function initMapObjects(){
         _providedFloorPlaced++;
       }
     }
-    let _providedWallPlaced=0;
-    if(_providedWallDeco.length>0){
+  let _providedWallPlaced=0;
+  if(_providedWallDeco.length>0){
       const _wallCells=[];
       for(let y=2;y<G.mh-2;y++)for(let x=2;x<G.mw-2;x++){
         if(map[y][x]!==1)continue;
@@ -11561,8 +11561,8 @@ function initMapObjects(){
         MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
         _providedWallPlaced=1;
       }
-      // 1-1 같이 벽 셀이 없으면 바닥에 강제로 깐다 (기본 20개)
-      if(_providedWallPlaced===0&&_wallCells.length===0&&G.stage===1){
+      // CH1 1-1처럼 벽 셀이 없으면 바닥에 강제로 깐다 (기본 20개)
+      if(_providedWallPlaced===0&&_wallCells.length===0&&hell===0){
         const _fbTarget=Math.max(20,Math.min(60,~~(_dcFloors.length/150)));
         const _fbMinDist=220;
         const _fbSameTypeDist=360;
@@ -11635,7 +11635,7 @@ function initMapObjects(){
       console.log('[SCATTER] placed:'+_scPlaced);
     }
     // ── 2차: 일반(소/중형) 에셋 배치 ──
-    const _dcBase=Math.max(12,Math.min(100,~~(_dcFloors.length/40)));
+  const _dcBase=Math.max(12,Math.min(100,~~(_dcFloors.length/40)));
     const _dcCnt=G._isTileRLE?~~(_dcBase/3):G._zones?~~(_dcBase/2):_dcBase; // tileRLE: 1/3, 존: 절반
     let _dcPlaced=0;
     for(let di=0;di<_dcCnt&&_dcFloors.length>0;di++){
@@ -11992,6 +11992,42 @@ function buildMapCache(){
         c.drawImage(src,Math.floor(_gtx),Math.floor(_gty),spPx,spPx);
       }
       c.restore();
+    }
+  }
+  // ── 충돌 오브젝트: floor 전용, 20타일 간격 목표 (클램프)
+  const _collisionDeco=_chDeco.filter(d=>{
+    const m=_OBJ_META[d.id];
+    const isColl=m&&(m.collision||m.col);
+    return isColl||d.dir==='collision';
+  });
+  let _collPlaced=0;
+  if(_collisionDeco.length>0){
+    const _collFloors=_dcFloors.length>0?_dcFloors.slice():[];
+    const _collTarget=Math.max(3,Math.min(20,~~(_collFloors.length/400)));
+    const _collMinDist=280;
+    const _collSameTypeDist=480;
+    const _collPlacedList=[];
+    for(let ci=0;ci<_collTarget*40&&_collPlaced<_collTarget&&_collFloors.length>0;ci++){
+      const fi=~~(_dcSeed()*_collFloors.length);
+      const cell=_collFloors[fi];
+      const px=cell.x*T+T/2,py=cell.y*T+T/2;
+      let ok=true;
+      for(const sp of _collPlacedList){if(dst(px,py,sp.x,sp.y)<_collMinDist){ok=false;break}}
+      if(!ok){_collFloors.splice(fi,1);continue;}
+      for(const mo of MAP_OBJS){
+        const moMeta=_OBJ_META[mo.type];const moSz=moMeta?moMeta.sz||32:32;
+        if(dst(px,py,mo.x,mo.y)<Math.max(180,(moSz+260)/2)){ok=false;break}
+      }
+      if(!ok){_collFloors.splice(fi,1);continue;}
+      let pick=_collisionDeco[~~(_dcSeed()*_collisionDeco.length)];
+      for(let _try=0;_try<4;_try++){
+        pick=_collisionDeco[~~(_dcSeed()*_collisionDeco.length)];
+        if(_nearbyTypeCount(_collPlacedList,pick.id,px,py,_collSameTypeDist)<1)break;
+      }
+      MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
+      _collPlacedList.push({type:pick.id,x:px,y:py});
+      _collFloors.splice(fi,1);
+      _collPlaced++;
     }
   }
   const _soilImg2=_GROUND_TILES['gt_soil'];
