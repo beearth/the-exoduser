@@ -73758,6 +73758,7 @@ FIXED_MAPS[33]={
 
 // ── 격자맵 FIXED_MAPS ──
 // 1장 4층 (격자)
+var _ORIG_GRID_3; // 원본 격자맵 저장용
 FIXED_MAPS[3]={
   "mw": 126,
   "mh": 106,
@@ -103190,5 +103191,66 @@ FIXED_MAPS[34]={
     1,
     2,
     1267
+  ]
+};
+
+// 원본 격자맵 캐시 (존0에서 스케일용)
+_ORIG_GRID_3=JSON.parse(JSON.stringify(FIXED_MAPS[3]));
+
+// ═══ 1-4 (stage 3) 존 분할: 2개 200×200 존 ═══
+FIXED_MAPS[3]={
+  zones:[
+    // ── 존 0: 시작 + 전투 + 대장간 (200×200) ──
+    {
+      id:0, mw:200, mh:200,
+      rooms:[
+        {id:"s",type:"start",cx:100,cy:185,shape:"ellipse",rx:10,ry:6},
+        {id:"r1",type:"combat",cx:60,cy:145,shape:"ellipse",rx:14,ry:9,
+          spawns:[{dx:-4,dy:0,grade:0},{dx:4,dy:0,grade:0},{dx:0,dy:-3,grade:0}]},
+        {id:"f",type:"forge",cx:140,cy:120,shape:"rect",rx:6,ry:5},
+        {id:"r2",type:"combat",cx:100,cy:80,shape:"ellipse",rx:16,ry:10,
+          spawns:[{dx:-5,dy:0,grade:1},{dx:5,dy:0,grade:1},{dx:0,dy:-4,grade:1},{dx:0,dy:4,grade:2}]},
+        {id:"r3",type:"combat",cx:50,cy:35,shape:"ellipse",rx:12,ry:8,
+          spawns:[{dx:-3,dy:0,grade:2},{dx:3,dy:0,grade:2},{dx:0,dy:-2,grade:2}]},
+        {id:"r4",type:"combat",cx:150,cy:35,shape:"ellipse",rx:12,ry:8,
+          spawns:[{dx:-3,dy:0,grade:2},{dx:3,dy:0,grade:2},{dx:0,dy:2,grade:3}]}
+      ],
+      corridors:[
+        {from:"s",to:"r1",width:8,style:"cave"},
+        {from:"r1",to:"f",width:7,style:"cave",waypoints:[{x:100,y:130}]},
+        {from:"f",to:"r2",width:8,style:"cave"},
+        {from:"r2",to:"r3",width:7,style:"cave",waypoints:[{x:70,y:55}]},
+        {from:"r2",to:"r4",width:7,style:"cave",waypoints:[{x:130,y:55}]}
+      ],
+      features:[{type:"alcove",x:30,y:110,r:4},{type:"alcove",x:170,y:80,r:3}],
+      corridorSpawns:[{x:100,y:130,grade:0},{x:70,y:55,grade:1},{x:130,y:55,grade:1}],
+      portals:[
+        {id:"p0to1",toZone:1,x:100,y:1,spawnX:100,spawnY:195,width:5}
+      ]
+    },
+    // ── 존 1: 전투 + 보스 (200×200) ──
+    {
+      id:1, mw:200, mh:200,
+      rooms:[
+        {id:"r5",type:"combat",cx:60,cy:160,shape:"ellipse",rx:14,ry:9,
+          spawns:[{dx:-4,dy:0,grade:2},{dx:4,dy:0,grade:2},{dx:0,dy:-3,grade:3}]},
+        {id:"r6",type:"combat",cx:140,cy:160,shape:"ellipse",rx:14,ry:9,
+          spawns:[{dx:-4,dy:0,grade:2},{dx:4,dy:0,grade:3},{dx:0,dy:3,grade:3}]},
+        {id:"r7",type:"combat",cx:100,cy:100,shape:"cross",rx:12,ry:8,armW:5,armH:4,
+          spawns:[{dx:-3,dy:-2,grade:3},{dx:3,dy:-2,grade:3},{dx:0,dy:3,grade:3},{dx:-5,dy:0,grade:3}]},
+        {id:"b",type:"boss",cx:100,cy:25,shape:"ellipse",rx:18,ry:12,
+          pillars:[{dx:-9,dy:-5,w:3,h:3},{dx:9,dy:-5,w:3,h:3},{dx:-9,dy:5,w:3,h:3},{dx:9,dy:5,w:3,h:3}]}
+      ],
+      corridors:[
+        {from:"r5",to:"r7",width:8,style:"cave",waypoints:[{x:80,y:130}]},
+        {from:"r6",to:"r7",width:8,style:"cave",waypoints:[{x:120,y:130}]},
+        {from:"r7",to:"b",width:9,style:"cave",waypoints:[{x:100,y:60}]}
+      ],
+      features:[{type:"alcove",x:30,y:130,r:4},{type:"alcove",x:170,y:130,r:4}],
+      corridorSpawns:[{x:80,y:130,grade:2},{x:120,y:130,grade:2},{x:100,y:60,grade:3}],
+      portals:[
+        {id:"p1to0",toZone:0,x:100,y:199,spawnX:100,spawnY:5,width:5}
+      ]
+    }
   ]
 };

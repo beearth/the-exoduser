@@ -6030,7 +6030,8 @@ for(const ch of CHAPTER_STAGES){
 let G={on:false,paused:false,stage:0,kills:0,mats:0,cam:{x:0,y:0},shake:0,parts:[],txts:[],
   forgeOpen:false,forgeTab:'upgrade',forgeSort:null,rooms:[],curRoom:0,map:null,mw:0,mh:0,hitStop:0,slowMo:0,stageCleared:false,exits:[],bossAlive:true,
   _chainCnt:0,_chainT:0,rifts:[],spawnHoles:[],atkTickets:0,maxAtkTickets:3,_irisSz:20,
-  combo:0,comboTimer:0,comboMax:0,stageTime:0}; // 콤보 시스템: 20초 내 연속 킬 + 스테이지 타임어택
+  combo:0,comboTimer:0,comboMax:0,stageTime:0,
+  _zones:null,_curZone:0,_zoneState:{},_portals:null}; // 존 분할 시스템
 let P=null,ens=[],projs=[],pProjs=[],worldItems=[];// worldItems = items on ground, pProjs = player arrows
 // ── 적 투사체 오브젝트 풀 ──
 const _PROJ_POOL=600;
@@ -6460,8 +6461,8 @@ const _OBJ_META={
   'm_skull_altar':{sz:300,col:1,large:1},'m_obelisk':{sz:300,col:1,large:1},'m_flesh_ball':{sz:270,col:1,large:1},
   'm_penta_circle':{sz:350,col:1,large:1},'m_flesh_maw':{sz:200,col:1,large:1},'m_skull_totem':{sz:240,col:1,large:1,keepAR:1},
   'm_bone_arch':{sz:300,col:1,large:1},'m_eye_tree':{sz:350,col:1,large:1},'m_throne':{sz:250,col:1,large:1},
-  'm_usergore1':{sz:220,keepAR:1},'m_usergore2':{sz:220,keepAR:1},'m_usergore3':{sz:220,keepAR:1},
-  'm_usergore4':{sz:220,keepAR:1},'m_usergore5':{sz:220,keepAR:1},'m_usergore6':{sz:220,keepAR:1},
+  'm_usergore1':{sz:220,keepAR:1},'m_usergore2':{sz:220,keepAR:1},'m_usergore3':{sz:220,keepAR:1,anchorBottom:1},
+  'm_usergore4':{sz:220,keepAR:1,anchorBottom:1},'m_usergore5':{sz:220,keepAR:1,anchorBottom:1},'m_usergore6':{sz:220,keepAR:1,anchorBottom:1},
 };
 // _CH_DECO 프리로드
 for(const[ch,list]of Object.entries(_CH_DECO)){
@@ -11049,8 +11050,7 @@ function _autoChunkConfig(mw,mh){
   else{_STREAM_CHUNK=32;_STREAM_MAX_CHUNKS=64}
 }
 function _shouldStreamMapCache(mw,mh,texLimit){
-  // 200타일 이상이면 청크 스트리밍 (대형 맵 메모리+렌더 최적화)
-  return mw>=200||mh>=200;
+  return (mw*mh)>=1000*1000;
 }
 // ═══ 맵 초기화 분산 처리 (fps 스파이크 방지) ═══
 // ═══ 백그라운드 분산 초기화 (게임 즉시 시작, 뒤에서 서서히 처리) ═══
@@ -11059,7 +11059,8 @@ function _tickBgInit(budgetMs){
   if(_bgInitDone)return;
   const _t0=performance.now();
   while(_bgInitIdx<_bgInitQueue.length){
-    _bgInitQueue[_bgInitIdx]();_bgInitIdx++;
+    try{_bgInitQueue[_bgInitIdx]()}catch(e){console.error('[BG-INIT] error in task '+_bgInitIdx+':',e)}
+    _bgInitIdx++;
     if(performance.now()-_t0>=budgetMs)return;
   }
   _bgInitDone=true;_bgInitQueue.length=0;
@@ -11248,14 +11249,21 @@ function _nearbyTypeCount(list,type,x,y,radius){let c=0;for(const o of list)if(o
 function initMapObjects(){
   const _editorObjs=MAP_OBJS.filter(o=>o.type&&!['bonfire','lore','breakable','trap','altar'].includes(o.type));
   MAP_OBJS=[];const hell=SI_TO_HELL[G.stage],map=G.map,rooms=G.rooms;
-  // 겹침 체크 헬퍼 (에디터 오브젝트 + 소환굴 포함)
-  function _moOk(x,y){
-    for(const wi of worldItems){if(dst(x,y,wi.x,wi.y)<120)return false}
-    for(const mo of MAP_OBJS){if(dst(x,y,mo.x,mo.y)<120)return false}
-    for(const eo of _editorObjs){if(dst(x,y,eo.x,eo.y)<80)return false}
-    if(G.spawnHoles)for(const sh of G.spawnHoles){if(dst(x,y,sh.x,sh.y)<100)return false}
-    return true;
+  // 공간 해시 그리드 (O(1) 근접 체크, O(n²) 제거)
+  const _GRID_SZ=200;const _moGrid={};
+  function _gridKey(x,y){return(~~(x/_GRID_SZ))+'_'+(~~(y/_GRID_SZ))}
+  function _gridAdd(x,y){const k=_gridKey(x,y);if(!_moGrid[k])_moGrid[k]=[];_moGrid[k].push({x,y})}
+  function _gridNear(x,y,r){
+    const r2=r*r,gx=~~(x/_GRID_SZ),gy=~~(y/_GRID_SZ);
+    for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+      const c=_moGrid[(gx+dx)+'_'+(gy+dy)];if(!c)continue;
+      for(let i=0;i<c.length;i++){const _dx=c[i].x-x,_dy=c[i].y-y;if(_dx*_dx+_dy*_dy<r2)return true}
+    }return false;
   }
+  function _moOk(x,y){return !_gridNear(x,y,120)}
+  // MAP_OBJS.push 래핑: 추가 시 자동으로 그리드에 등록
+  const _origPush=MAP_OBJS.push.bind(MAP_OBJS);
+  MAP_OBJS.push=function(o){_gridAdd(o.x,o.y);return _origPush(o)}
   function _floorAt(tx,ty){return tx>=0&&ty>=0&&tx<G.mw&&ty<G.mh&&(map[ty][tx]===0||map[ty][tx]===4)}
   function _nearFloor(tx,ty){if(_floorAt(tx,ty))return{x:tx,y:ty};for(let r=1;r<10;r++)for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){if(_floorAt(tx+dx,ty+dy))return{x:tx+dx,y:ty+dy}}return null}
   function _roomOf(x,y){for(const r of rooms){if(x>=r.x&&x<=r.x+r.w&&y>=r.y&&y<=r.y+r.h)return r}return null}
@@ -11415,7 +11423,7 @@ function initMapObjects(){
           const f=pool[fi];
           const px=f.x*T+T/2,py=f.y*T+T/2;
           let ok=true;
-          for(const mo of MAP_OBJS){if(dst(px,py,mo.x,mo.y)<_lgMinDist){ok=false;break}}
+          if(_gridNear(px,py,_lgMinDist)){ok=false}
           if(!ok){pool.splice(fi,1);continue}
           if(bossRoom&&px/T>=bossRoom.x-3&&px/T<=bossRoom.x+bossRoom.w+3&&py/T>=bossRoom.y-3&&py/T<=bossRoom.y+bossRoom.h+3){pool.splice(fi,1);continue}
           // 같은 타입 근거리 중복 방지 (800px 내 동일 타입 금지)
@@ -11458,7 +11466,7 @@ function initMapObjects(){
           const f=_uniCenter[fi];
           const px=f.x*T+T/2,py=f.y*T+T/2;
           let ok=true;
-          for(const mo of MAP_OBJS){if(dst(px,py,mo.x,mo.y)<_uniMinDist){ok=false;break}}
+          if(_gridNear(px,py,_uniMinDist)){ok=false}
           if(!ok)continue;
           if(bossRoom&&px/T>=bossRoom.x-3&&px/T<=bossRoom.x+bossRoom.w+3&&py/T>=bossRoom.y-3&&py/T<=bossRoom.y+bossRoom.h+3)continue;
           MAP_OBJS.push({type:_uniObjs[ui],x:px,y:py,hell});
@@ -11504,22 +11512,26 @@ function initMapObjects(){
       }
     }
     let _providedWallPlaced=0;
-    const _providedWallTarget=_providedWallDeco.length?Math.max(1,~~(_wallCells.length/50)):0;
-    if(_providedWallTarget>0){
+    if(_providedWallDeco.length>0){
       const _wallCells=[];
       for(let y=2;y<G.mh-2;y++)for(let x=2;x<G.mw-2;x++){
         if(map[y][x]!==1)continue;
-        let adjFloor=false;
-        if((y>0&&map[y-1][x]===0)||(y<G.mh-1&&map[y+1][x]===0)||(x>0&&map[y][x-1]===0)||(x<G.mw-1&&map[y][x+1]===0))adjFloor=true;
-        if(adjFloor)_wallCells.push({x,y});
+        let adjFloor=false,ox=0,oy=0;
+        const _wallInset=T*0.18;
+        if(y<G.mh-1&&map[y+1][x]===0){adjFloor=true;oy=-_wallInset}
+        else if(y>0&&map[y-1][x]===0){adjFloor=true;oy=_wallInset}
+        else if(x<G.mw-1&&map[y][x+1]===0){adjFloor=true;ox=-_wallInset}
+        else if(x>0&&map[y][x-1]===0){adjFloor=true;ox=_wallInset}
+        if(adjFloor)_wallCells.push({x,y,ox,oy});
       }
+      const _providedWallTarget=Math.max(1,~~(_wallCells.length/50));
       const _providedWallMinDist=280;
       const _providedWallSameTypeDist=520;
       const _providedWallPlacedList=[];
       for(let wi=0;wi<_providedWallTarget*100&&_providedWallPlaced<_providedWallTarget&&_wallCells.length>0;wi++){
         const ci=~~(_dcSeed()*_wallCells.length);
         const cell=_wallCells[ci];
-        const px=cell.x*T+T/2,py=cell.y*T+T/2;
+        const px=cell.x*T+T/2+cell.ox,py=cell.y*T+T/2+cell.oy;
         let ok=true;
         for(const sp of _providedWallPlacedList){if(dst(px,py,sp.x,sp.y)<_providedWallMinDist){ok=false;break}}
         if(!ok)continue;
@@ -11538,6 +11550,43 @@ function initMapObjects(){
         _providedWallPlacedList.push({type:pick.id,x:px,y:py});
         _wallCells.splice(ci,1);
         _providedWallPlaced++;
+      }
+      // fallback: 너무 좁아 한 개도 못 깔았으면 한 장은 강제로 박는다
+      if(_providedWallPlaced===0&&_wallCells.length>0){
+        const cell=_wallCells[0];
+        const px=cell.x*T+T/2+cell.ox,py=cell.y*T+T/2+cell.oy;
+        const pick=_providedWallDeco[0];
+        MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
+        _providedWallPlaced=1;
+      }
+      // 1-1 같이 벽 셀이 없으면 바닥에 10칸당 1개, 최대 20개까지 깐다
+      if(_providedWallPlaced===0&&_wallCells.length===0&&G.stage===1){
+        const _fbTarget=Math.min(20,Math.max(1,~~(_dcFloors.length/10)));
+        const _fbMinDist=260;
+        const _fbSameTypeDist=420;
+        const _fbPlaced=[];
+        for(let pi=0;pi<_fbTarget*80&&_providedWallPlaced<_fbTarget&&_dcFloors.length>0;pi++){
+          const ci=~~(_dcSeed()*_dcFloors.length);
+          const cell=_dcFloors[ci];
+          const px=cell.x*T+T/2,py=cell.y*T+T/2;
+          let ok=true;
+          for(const sp of _fbPlaced){if(dst(px,py,sp.x,sp.y)<_fbMinDist){ok=false;break}}
+          if(!ok)continue;
+          for(const mo of MAP_OBJS){
+            const moMeta=_OBJ_META[mo.type];const moSz=moMeta?moMeta.sz||32:32;
+            if(dst(px,py,mo.x,mo.y)<Math.max(150,(moSz+220)/2)){ok=false;break}
+          }
+          if(!ok)continue;
+          let pick=_providedWallDeco[0];
+          for(let _try=0;_try<8;_try++){
+            pick=_providedWallDeco[~~(_dcSeed()*_providedWallDeco.length)];
+            if(_nearbyTypeCount(_fbPlaced,pick.id,px,py,_fbSameTypeDist)<1)break;
+          }
+          MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
+          _fbPlaced.push({type:pick.id,x:px,y:py});
+          _dcFloors.splice(ci,1);
+          _providedWallPlaced++;
+        }
       }
     }
     // ── scatter 에셋: 방 전체 랜덤 배치 (벽 무관) ──
@@ -11592,8 +11641,7 @@ function initMapObjects(){
       // 기존 오브젝트와 겹침 방지
       const _px=_ft.x*T+T/2,_py=_ft.y*T+T/2;
       let _tooClose=false;
-      for(const mo of MAP_OBJS){const moMeta=_OBJ_META[mo.type];const moSz=moMeta?moMeta.sz||32:32;const minD=moSz>=150?500:Math.max(60,(moSz+32)/2);if(dst(_px,_py,mo.x,mo.y)<minD){_tooClose=true;break}}
-      for(const mo2 of MAP_OBJS){if((mo2.type==='bonfire'||mo2.type==='altar'||mo2.type==='trap')&&dst(_px,_py,mo2.x,mo2.y)<100){_tooClose=true;break}}
+      if(_gridNear(_px,_py,120)){_tooClose=true}
       if(_tooClose){_dcFloors.splice(_fi,1);di--;continue}
       // 일반 에셋만 선택 (대형 제외, 화면 내 동일 타입 2개 제한)
       const _pool=_normalDeco.length>0?_normalDeco:_baseDeco;
@@ -11628,6 +11676,8 @@ function initMapObjects(){
   }
   // 에디터 배치 오브젝트 복원
   for(const eo of _editorObjs)MAP_OBJS.push(eo);
+  // 그리드 래핑 해제
+  MAP_OBJS.push=Array.prototype.push;
   console.log('[MAP_OBJS]',MAP_OBJS.length,'(editor:'+_editorObjs.length+')',MAP_OBJS.map(m=>m.type));
 }
 function _tseed(tx,ty){let s=tx*7919+ty*104729+31;return()=>{s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff}}
@@ -11809,6 +11859,7 @@ function _tickBuildMapCache(){
         if((v===0||v===4||v===5)&&!_bmcHasSoil){c.fillStyle=th.f;c.fillRect(tx*T,ty*T,T,T)}
         else if(v===1&&!_bmcHasVoid&&!_bmcHasSkull){c.fillStyle='#000000';c.fillRect(tx*T,ty*T,T,T)}
         else if(v===3){c.fillStyle='#000000';c.fillRect(tx*T,ty*T,T,T)}
+        else if(v===6){c.fillStyle='#8833cc';c.fillRect(tx*T,ty*T,T,T)}
       }
       // 기둥/경계 (이 행의 벽 타일)
       if(ty>=1&&ty<mh-1){
@@ -11884,9 +11935,11 @@ function buildMapCache(){
     if(_streamChunkCnt===0){
       // 카메라 주변 청크 즉시 사전 빌드 (시작 시 검정화면 방지)
       const _pcx=~~((G.cam.x||P.x)/T/_STREAM_CHUNK),_pcy=~~((G.cam.y||P.y)/T/_STREAM_CHUNK);
-      const _pad=4; // 주변 4청크(~160타일) 미리 빌드
+      const _pad=2; // 주변 2청크만 즉시 (5×5=25개, 나머지는 게임 중 스트리밍)
+      const _pbt0=performance.now();
       for(let _sy=Math.max(0,_pcy-_pad);_sy<=Math.min(~~((G.mh-1)/_STREAM_CHUNK),_pcy+_pad);_sy++)
         for(let _sx=Math.max(0,_pcx-_pad);_sx<=Math.min(~~((G.mw-1)/_STREAM_CHUNK),_pcx+_pad);_sx++){
+          if(performance.now()-_pbt0>200)break; // 200ms 타임아웃
           const _sk=_sx+'_'+_sy;
           if(!_streamChunks[_sk]){const _built=_buildStreamChunk(_sx,_sy);
             if(_built){_streamChunks[_sk]={bmp:null,cvs:_built.cvs};_streamChunkCnt++;_streamVpDirty=true}}
@@ -12460,6 +12513,7 @@ function _buildStreamChunk(cx,cy){
     if((v===0||v===4||v===5)&&!_hasSoil){c.fillStyle=_th.f;c.fillRect(lx,ly,T,T)}
     else if(v===1&&!_hasVoidWall&&!(hell===0&&_skullWallPat)){c.fillStyle='#000000';c.fillRect(lx,ly,T,T)}
     else if(v===3){c.fillStyle='#000000';c.fillRect(lx,ly,T,T)}
+    else if(v===6){c.fillStyle='#8833cc';c.fillRect(lx,ly,T,T)}
   }
   if(hell===0&&_wallEdgeImg&&_wallEdgeImg.complete&&_wallEdgeImg.naturalWidth>0){
     const _weAR=_wallEdgeImg.naturalHeight/_wallEdgeImg.naturalWidth,_weW=T*3,_weH=~~(_weW*_weAR);
@@ -14041,7 +14095,7 @@ function _buildScaledFixedMap300(si){
   const base=_FIXED_MAP_SAVED[si];
   if(!base)return null;
   const tmpl=JSON.parse(JSON.stringify(base));
-  const _bmw=base.mw||1,_bmh=base.mh||1,_mw=300,_mh=300;
+  const _bmw=base.mw||1,_bmh=base.mh||1,_mw=500,_mh=500;
   const _sx=(_mw-1)/Math.max(1,_bmw-1),_sy=(_mh-1)/Math.max(1,_bmh-1),_sr=Math.max(1,Math.min(_sx,_sy));
   const _tx=function(v){return Math.max(0,Math.min(_mw-1,Math.round((v||0)*_sx)))};
   const _ty=function(v){return Math.max(0,Math.min(_mh-1,Math.round((v||0)*_sy)))};
@@ -14137,16 +14191,120 @@ function _buildScaledFixedMap300(si){
   }
   tmpl._testbed='stage_'+si+'_300';
   _FIXED_MAP_300[si]=tmpl;
-  console.log('[MAP TEST] fixed stage '+si+' scaled tileRLE ready 300x300');
+  console.log('[MAP TEST] fixed stage '+si+' scaled tileRLE ready '+_mw+'x'+_mh);
   return _FIXED_MAP_300[si]
 }
 function _buildFixedMap14Testbed2(){
   return _buildScaledFixedMap300(3)
 }
+// 존0용: 원본 격자맵 200×200 스케일 (보스방 제거 + 상단 포탈)
+let _zone0Cache=null;
+function _buildZone0FromGrid(){
+  if(_zone0Cache)return JSON.parse(JSON.stringify(_zone0Cache));
+  if(typeof _ORIG_GRID_3==='undefined'||!_ORIG_GRID_3)return null;
+  const base=JSON.parse(JSON.stringify(_ORIG_GRID_3));
+  const _bmw=base.mw||1,_bmh=base.mh||1,_mw=200,_mh=200;
+  const _sx=(_mw-1)/Math.max(1,_bmw-1),_sy=(_mh-1)/Math.max(1,_bmh-1);
+  const _tx=v=>Math.max(2,Math.min(_mw-3,Math.round(v*_sx)));
+  const _ty=v=>Math.max(2,Math.min(_mh-3,Math.round(v*_sy)));
+  const tmpl=base;tmpl.mw=_mw;tmpl.mh=_mh;
+  // 보스방 제거
+  tmpl.rooms=tmpl.rooms.filter(r=>r.type!=='boss');
+  // 보스 연결 복도 제거
+  tmpl.corridors=(tmpl.corridors||[]).filter(c=>c.from!=='b'&&c.to!=='b');
+  // 좌표 스케일
+  for(const r of tmpl.rooms){r.cx=_tx(r.cx);r.cy=_ty(r.cy);r.rx=Math.max(r.rx||5,~~((r.rx||5)*Math.min(_sx,_sy)));r.ry=Math.max(r.ry||5,~~((r.ry||5)*Math.min(_sx,_sy)));
+    if(r.spawns)for(const sp of r.spawns){sp.dx=~~(sp.dx*Math.min(_sx,_sy));sp.dy=~~(sp.dy*Math.min(_sx,_sy))}
+    if(r.pillars)for(const p of r.pillars){p.dx=~~(p.dx*Math.min(_sx,_sy));p.dy=~~(p.dy*Math.min(_sx,_sy))}}
+  for(const cd of tmpl.corridors){if(cd.waypoints)for(const wp of cd.waypoints){wp.x=_tx(wp.x);wp.y=_ty(wp.y)}}
+  if(tmpl.features)for(const ft of tmpl.features){ft.x=_tx(ft.x);ft.y=_ty(ft.y)}
+  if(tmpl.corridorSpawns)for(const cs of tmpl.corridorSpawns){cs.x=_tx(cs.x);cs.y=_ty(cs.y)}
+  // tileRLE 스케일
+  if(base.tileRLE&&base.tileRLE.length>0){
+    const _srcLen=_bmw*_bmh,_dstLen=_mw*_mh,_src=new Uint8Array(_srcLen),_dst=new Uint8Array(_dstLen);
+    let _pos=0;for(let i=0;i<base.tileRLE.length&&_pos<_srcLen;i+=2){const _tv=base.tileRLE[i],_cnt=base.tileRLE[i+1]||0;for(let j=0;j<_cnt&&_pos<_srcLen;j++)_src[_pos++]=_tv}
+    for(let y=0;y<_mh;y++){const _syi=Math.min(_bmh-1,~~(y*_bmh/_mh));for(let x=0;x<_mw;x++){_dst[y*_mw+x]=_src[_syi*_bmw+Math.min(_bmw-1,~~(x*_bmw/_mw))]}}
+    tmpl.tileRLE=[];let _runV=_dst[0],_runC=1;
+    for(let i=1;i<_dstLen;i++){if(_dst[i]===_runV)_runC++;else{tmpl.tileRLE.push(_runV,_runC);_runV=_dst[i];_runC=1}}
+    tmpl.tileRLE.push(_runV,_runC);
+  }
+  // 포탈 추가 (맵 상단 중앙)
+  tmpl.portals=[{id:"p0to1",toZone:1,x:100,y:2,spawnX:100,spawnY:195,width:5}];
+  _zone0Cache=tmpl;
+  console.log('[ZONE0] built from grid 200x200, rooms='+tmpl.rooms.length);
+  return JSON.parse(JSON.stringify(tmpl));
+}
 function _getFixedMapForStage(si){
   if(!(si<TOTAL_STAGES&&FIXED_MAPS[si]))return null;
-  if(si===1||si===2||si===3)return _buildScaledFixedMap300(si);
-  return FIXED_MAPS[si]
+  const fm=FIXED_MAPS[si];
+  // 존 분할 맵: zones 배열이 있으면 zone[0]은 원본 격자맵 스케일
+  if(fm.zones){
+    G._zones=fm.zones;G._curZone=0;G._zoneState={};
+    // 존0: 원본 격자맵 200×200 스케일
+    const z0=_buildZone0FromGrid();
+    if(z0){G._zones[0]=z0;fm.zones[0]=z0}
+    console.log('[ZONE] stage '+si+' has '+fm.zones.length+' zones, loading zone 0');
+    return JSON.parse(JSON.stringify(fm.zones[0]));
+  }
+  G._zones=null;
+  if(si===1||si===2)return _buildScaledFixedMap300(si);
+  return fm;
+}
+
+// ═══ 존 분할 시스템 ═══
+function _saveZoneState(zid){
+  G._zoneState[zid]={
+    ens:ens.filter(e=>e.alive).map(e=>({x:e.x,y:e.y,hp:e.hp,mhp:e.mhp,etype:e.etype,el:e.el,r:e.r,atk:e.atk,baseAtk:e.baseAtk,ib:e.ib,lv:e.lv})),
+    items:worldItems.filter(it=>!it.picked),
+    spawnHoles:G.spawnHoles.slice(),
+    clearedRooms:G.rooms.map(r=>!!r.cleared),
+    kills:G.kills
+  };
+}
+function _loadZone(zid,sx,sy){
+  if(!G._zones||!G._zones[zid])return;
+  _saveZoneState(G._curZone);
+  G._curZone=zid;
+  // 트랜지션 페이드
+  const _zt=$('stageTransition');if(_zt){_zt.style.opacity='1';_zt.style.pointerEvents='all'}
+  // 클리어
+  ens=[];projs.length=0;pProjs.length=0;worldItems=[];MAP_OBJS=[];G.parts=[];G.txts=[];
+  G.hitStop=0;G.slowMo=0;_impacts=[];_vfxAnims.length=0;_fireExps.length=0;
+  // 존 템플릿으로 맵 생성
+  const tmpl=JSON.parse(JSON.stringify(G._zones[zid]));
+  // 포탈 타일 카빙
+  if(tmpl.portals){G._portals=tmpl.portals}else{G._portals=null}
+  genFromTemplate(tmpl,G.stage);
+  // 포탈 타일(6) 배치
+  if(G._portals){for(const p of G._portals){
+    const hw=~~((p.width||3)/2);
+    for(let dx=-hw;dx<=hw;dx++){const tx=p.x+dx,ty=p.y;
+      if(tx>=0&&tx<G.mw&&ty>=0&&ty<G.mh)G.map[ty][tx]=6}
+  }}
+  // 저장된 상태 복원
+  const saved=G._zoneState[zid];
+  if(saved){
+    ens=[];
+    for(const se of saved.ens){const ne=mkEn(se.x,se.y,G.stage,se.etype,se.ib,se.el,-1);ne.hp=se.hp;ne.mhp=se.mhp;ne.lv=se.lv;ens.push(ne)}
+    saved.clearedRooms.forEach((c,i)=>{if(G.rooms[i])G.rooms[i].cleared=c});
+    worldItems=saved.items;G.spawnHoles=saved.spawnHoles;G.kills=saved.kills;
+  }
+  // 플레이어 위치
+  P.x=(sx+.5)*T;P.y=(sy+.5)*T;P.s='idle';P.iframes=90;P.kb={x:0,y:0};
+  G.cam.x=P.x;G.cam.y=P.y;
+  // 펫 리셋
+  if(G.pets){for(const k in G.pets){G.pets[k].x=P.x;G.pets[k].y=P.y;G.pets[k].tx=P.x;G.pets[k].ty=P.y}}
+  // 보스 상태 리셋 (존별 독립)
+  const _zHasBoss=G.rooms.some(r=>r.type==='boss');
+  G.bossAlive=_zHasBoss;G._bossRef=null;G._bossArena=false;G._bossLoadPhase=0;
+  G.bossGateOpen=true;G.bossSealed=false;G.stageCleared=false;
+  _shDirty=true;
+  if(!_skullWallPat)_buildSkullWallPat();
+  // 리빌드
+  buildMapCache();initTorchLights();initMapObjects();
+  // 트랜지션 해제
+  setTimeout(()=>{if(_zt){_zt.style.opacity='0';_zt.style.pointerEvents='none'}},300);
+  console.log('[ZONE] loaded zone '+zid+' at ('+sx+','+sy+') ens='+ens.length);
 }
 
 // ═══ MAP — 고정맵 생성기 ═══
@@ -14240,8 +14398,8 @@ function genFromTemplate(tmpl,si){
     }
   }
   let bossRd=tmpl.rooms.find(r=>r.type==='boss');
-  if(!bossRd){
-    // 에디터 맵에 보스방 없음 → 맵 최상단에 자동 생성
+  if(!bossRd&&!G._zones){
+    // 에디터 맵에 보스방 없음 → 맵 최상단에 자동 생성 (존 분할 맵에서는 스킵)
     const _abR=12,_abRy=10;
     const _abCx=~~(mw/2),_abCy=_abR+3;
     const _abId='b';
@@ -14451,7 +14609,23 @@ function genFromTemplate(tmpl,si){
     }
   }
   // ── G 세팅 ──
-  console.log('[MAP] si='+si+' tileRLE='+(tmpl.tileRLE?'Y':'N')+' manualHoles='+(tmpl.spawnHoles?tmpl.spawnHoles.length:0)+' autoHoles='+spawnHoles.length+' rooms='+rooms.length+' bossRm='+(bossRm?'Y':'N')+' exits='+exits.length+' gateTiles='+_gateTiles.length);
+  // 존 포탈 타일(6) 카빙 — 바닥으로 통과 가능, 밟으면 존 전환
+  if(tmpl.portals){
+    G._portals=tmpl.portals;
+    for(const p of tmpl.portals){
+      const hw=~~((p.width||3)/2);
+      // 포탈 위치 + 주변 3타일 바닥 확보
+      for(let dy=-2;dy<=2;dy++)for(let dx=-hw-1;dx<=hw+1;dx++){
+        const tx=p.x+dx,ty=p.y+dy;
+        if(tx>=1&&tx<mw-1&&ty>=1&&ty<mh-1&&map[ty][tx]===1)map[ty][tx]=0;
+      }
+      for(let dx=-hw;dx<=hw;dx++){
+        const tx=p.x+dx,ty=p.y;
+        if(tx>=0&&tx<mw&&ty>=0&&ty<mh)map[ty][tx]=6;
+      }
+    }
+  }else{G._portals=null}
+  console.log('[MAP] si='+si+' tileRLE='+(tmpl.tileRLE?'Y':'N')+' manualHoles='+(tmpl.spawnHoles?tmpl.spawnHoles.length:0)+' autoHoles='+spawnHoles.length+' rooms='+rooms.length+' bossRm='+(bossRm?'Y':'N')+' exits='+exits.length+' gateTiles='+_gateTiles.length+' portals='+(tmpl.portals?tmpl.portals.length:0));
   G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
   G.bossGate=_gateTiles;G.bossGateOpen=true;G.bossSealed=false;
   G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
@@ -24073,6 +24247,18 @@ function checkRooms(){
     }
   }
   // 출구 진입 체크 — 던전 출구=보스방 문, 아레나 출구=다음 스테이지
+  // ── 존 포탈 감지 ──
+  if(G._zones&&G._portals){
+    const _zptx=~~(P.x/T),_zpty=~~(P.y/T);
+    if(G.map[_zpty]&&G.map[_zpty][_zptx]===6){
+      for(const p of G._portals){
+        const hw=~~((p.width||3)/2);
+        if(Math.abs(_zptx-p.x)<=hw+1&&Math.abs(_zpty-p.y)<=1){
+          _loadZone(p.toZone,p.spawnX,p.spawnY);break;
+        }
+      }
+    }
+  }
   if(!G.stageCleared&&G.exits.length>0&&G._bossLoadPhase<=0){
     const ptx=~~(P.x/T),pty=~~(P.y/T);
     for(const ex of G.exits){
@@ -25433,7 +25619,7 @@ function _fallenResolve(){
     $('death').classList.add('on');
   });
 }
-function nextStage(){SFX.beamStop();$('stageClear').style.opacity='0';$('stageClear').style.pointerEvents='none';G.stageCleared=false;G.on=false;ens=[];G.rooms=[];G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;const _curHell=SI_TO_HELL[G.stage];const _ch=CHAPTER_STAGES[_curHell];if(G.stage===_ch.startSi+_ch.stages-1&&_curHell<6){G.stage=CHAPTER_STAGES[_curHell+1].startSi}else{G.stage++}if(G.stage>=TOTAL_STAGES){doWin();return}initStage(G.stage);G.on=true;BGM.play(BGM.stageKey(G.stage))}
+function nextStage(){SFX.beamStop();$('stageClear').style.opacity='0';$('stageClear').style.pointerEvents='none';G.stageCleared=false;G.on=false;ens=[];G.rooms=[];G.exits=[];G.bossAlive=true;G._zones=null;G._curZone=0;G._zoneState={};G._portals=null;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;const _curHell=SI_TO_HELL[G.stage];const _ch=CHAPTER_STAGES[_curHell];if(G.stage===_ch.startSi+_ch.stages-1&&_curHell<6){G.stage=CHAPTER_STAGES[_curHell+1].startSi}else{G.stage++}if(G.stage>=TOTAL_STAGES){doWin();return}initStage(G.stage);G.on=true;BGM.play(BGM.stageKey(G.stage))}
 function doWin(){
   SFX.beamStop();G.on=false;
   BGM.fadeOut(800);setTimeout(()=>BGM.play('victory'),1000);
@@ -30190,7 +30376,8 @@ function draw(){
             }
           }else if(_meta&&_meta.keepAR){
             const _ar=_spr.naturalWidth/_spr.naturalHeight,_dw=sz*(_ar<1?_ar:1),_dh=sz*(_ar>1?1/_ar:1);
-            X.drawImage(_spr,mo.x-_dw/2,mo.y-_dh/2,_dw,_dh);
+            if(_meta.anchorBottom)X.drawImage(_spr,mo.x-_dw/2,mo.y-_dh,_dw,_dh);
+            else X.drawImage(_spr,mo.x-_dw/2,mo.y-_dh/2,_dw,_dh);
           }else X.drawImage(_spr,mo.x-sz/2,mo.y-sz/2,sz,sz);
           // 눈알 오버레이 비활성화
           // 발광 오브젝트: 포인트라이트
@@ -36634,9 +36821,44 @@ async function startGameFromDB(){
   ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
   updateQS();updateSkSlot();
   initStage(G.stage);
-  setBootLoading(90,'맵 에셋 로딩...');
+  setBootLoading(85,'맵 에셋 로딩...');
   await _waitObjSprites(8000);
+  // 바닥/벽 텍스처 로드 대기 (gt_soil, gt_void_wall, skull_wall)
+  await new Promise(r=>{
+    const _chk=()=>{
+      const _s=_GROUND_TILES['gt_soil'],_v=_GROUND_TILES['gt_void_wall'];
+      const _sOk=_s&&_s.complete&&_s.naturalWidth>0;
+      const _vOk=_v&&_v.complete&&_v.naturalWidth>0;
+      const _skOk=_skullWallImg&&_skullWallImg.complete&&_skullWallImg.naturalWidth>0;
+      if((_sOk||!_s)&&(_vOk||!_v)&&(_skOk||!_skullWallImg)){_buildSkullWallPat();r();return}
+      setTimeout(_chk,50);
+    };_chk();
+    setTimeout(r,5000); // 5초 타임아웃
+  });
   buildMapCache();
+  // ── 로딩 화면에서 모든 초기화 완료 (프레임 분산 대신 로딩 분산) ──
+  setBootLoading(88,'맵 환경 배치 중...');
+  // 백그라운드 큐 강제 완료
+  while(!_bgInitDone){_tickBgInit(9999)}
+  setBootLoading(92,'스트리밍 청크 빌드 중...');
+  // 스트리밍 맵: 전체 청크 사전 빌드
+  if(_streamMap){
+    const _maxCx=~~((G.mw-1)/_STREAM_CHUNK),_maxCy=~~((G.mh-1)/_STREAM_CHUNK);
+    let _builtCnt=0;const _totalChunks=(_maxCx+1)*(_maxCy+1);
+    for(let _sy=0;_sy<=_maxCy;_sy++){
+      for(let _sx=0;_sx<=_maxCx;_sx++){
+        const _sk=_sx+'_'+_sy;
+        if(!_streamChunks[_sk]){const _built=_buildStreamChunk(_sx,_sy);
+          if(_built){_streamChunks[_sk]={bmp:null,cvs:_built.cvs};_streamChunkCnt++;_streamVpDirty=true}}
+        _builtCnt++;
+      }
+      // 행 단위로 로딩바 갱신
+      if(_sy%2===0){setBootLoading(92+~~(_builtCnt/_totalChunks*6),'청크 '+_builtCnt+'/'+_totalChunks);await new Promise(r=>setTimeout(r,0))}
+    }
+    console.log('[MAP STREAM] full pre-built '+_streamChunkCnt+' chunks');
+  }
+  setBootLoading(99,'미니맵 빌드 중...');
+  await new Promise(r=>setTimeout(r,0)); // UI 갱신
   _dbReady=true;
   startAutoSave();
   // 캐릭터 선택 → 문 열림 후 바로 게임 시작 (스플래시 스킵)
@@ -36839,7 +37061,8 @@ $('retryBtn').onclick=async()=>{
     _bgInitDone=false;_bgInitIdx=0;
     BGM.play(BGM.stageKey(G.stage));
   }else{
-    // 일반 사망: 같은 스테이지 재시작
+    // 일반 사망: 같은 스테이지 재시작 (존 상태 리셋)
+    G._zoneState={};
     initStage(G.stage);
   }
   P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle';P.iframes=300;P.kb={x:0,y:0};

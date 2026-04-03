@@ -77,3 +77,18 @@
 - test/mapStreamChunkLoading.test.js
 - tools/slice-user-ch1-gore.mjs
 
+
+## 2026-04-03 16:19 (auto)
+- game.html
+- maps_data.js
+- test/ch1ProvidedDecoPlacement.test.js
+- test/mapStreamChunkLoading.test.js
+
+
+## 2026-04-03 16:30 (auto)
+- docs/CHANGELOG_SYNC.md
+- game.html
+- maps_data.js
+- test/ch1ProvidedDecoPlacement.test.js
+- test/mapStreamChunkLoading.test.js
+
