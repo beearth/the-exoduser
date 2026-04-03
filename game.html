@@ -14463,17 +14463,6 @@ function genFromTemplate(tmpl,si){
     }
   }
   let bossRd=tmpl.rooms.find(r=>r.type==='boss');
-  // ═══ 규칙: 보스방은 상단(11~1시, mh*0.05~0.2)에 위치 ═══
-  if(bossRd){
-    const _bRm2=rooms[rooms.length-1]; // genFromTemplate에서 마지막 push된 보스방
-    if(_bRm2&&_bRm2.type==='boss'&&_bRm2.cy>~~(mh*0.3)){
-      // 보스방이 상단이 아니면 상단으로 보정
-      const _newBY=Math.max(bossRd.ry||12,~~(mh*0.1));
-      _bRm2.cy=_newBY;_bRm2.y=_newBY-(_bRm2.h>>1);
-      bossRd.cy=_newBY;
-      console.log('[MAP] boss room forced to top: cy='+_newBY);
-    }
-  }
   if(!bossRd&&!G._zones){
     // 에디터 맵에 보스방 없음 → 맵 최상단에 자동 생성 (존 분할 맵에서는 스킵)
     const _abR=12,_abRy=10;
@@ -14690,20 +14679,20 @@ function genFromTemplate(tmpl,si){
     G._portals=tmpl.portals;
     for(const p of tmpl.portals){
       const hw=~~((p.width||3)/2);
-      // 포탈 위치 + 주변 12타일 광장 카빙
-      for(let dy=-12;dy<=12;dy++)for(let dx=-8;dx<=8;dx++){
+      // 포탈 위치 + 주변 6타일 넓게 바닥 확보
+      for(let dy=-6;dy<=6;dy++)for(let dx=-hw-3;dx<=hw+3;dx++){
         const tx=p.x+dx,ty=p.y+dy;
         if(tx>=1&&tx<mw-1&&ty>=1&&ty<mh-1&&map[ty][tx]===1)map[ty][tx]=0;
       }
-      // 포탈에서 가장 가까운 방까지 폭 6 강제 복도 뚫기
+      // 포탈에서 가장 가까운 방까지 강제 복도 뚫기
       let _nearRm=null,_nearD=Infinity;
-      for(const r of rooms){if(r.type==='boss')continue;const d=Math.abs(r.cx-p.x)+Math.abs(r.cy-p.y);if(d<_nearD){_nearD=d;_nearRm=r}}
+      for(const r of rooms){const d=Math.abs(r.cx-p.x)+Math.abs(r.cy-p.y);if(d<_nearD){_nearD=d;_nearRm=r}}
       if(_nearRm){
         const _dx=_nearRm.cx-p.x,_dy=_nearRm.cy-p.y;
-        const _steps=Math.max(Math.abs(_dx),Math.abs(_dy))||1;
+        const _steps=Math.max(Math.abs(_dx),Math.abs(_dy));
         for(let s=0;s<=_steps;s++){
           const fx=p.x+~~(_dx*s/_steps),fy=p.y+~~(_dy*s/_steps);
-          for(let w=-6;w<=6;w++){
+          for(let w=-3;w<=3;w++){
             const tx=fx+w,ty=fy;if(tx>=1&&tx<mw-1&&ty>=1&&ty<mh-1&&map[ty][tx]===1)map[ty][tx]=0;
             const tx2=fx,ty2=fy+w;if(tx2>=1&&tx2<mw-1&&ty2>=1&&ty2<mh-1&&map[ty2][tx2]===1)map[ty2][tx2]=0;
           }
@@ -15513,12 +15502,7 @@ function initStage(si){
   const _fixedMap=_getFixedMapForStage(si);
   if(_fixedMap){genFromTemplate(_fixedMap,si);G.mapType=_fixedMap._testbed?'fixed_testbed':'fixed'}
   else{genGauntlet(si);G.mapType='gauntlet'}
-  // ═══ 시작 위치: start 방 → 없으면 하단(5~7시) 방 ═══
-  let st=G.rooms.find(r=>r.type==='start');
-  if(!st){let _bestY=-1;for(const r of G.rooms){if(r.type!=='boss'&&r.cy>_bestY){_bestY=r.cy;st=r}}if(!st)st=G.rooms[0]}
-  let _spX=st.cx,_spY=st.cy;
-  // 시작이 상단(mh*0.5 이상)이면 하단으로 강제 보정
-  if(_spY<~~(G.mh*0.5)){const _tgtY=~~(G.mh*0.85);let _bestR=null,_bestD=Infinity;for(const r of G.rooms){if(r.type==='boss')continue;const d=Math.abs(r.cy-_tgtY);if(d<_bestD){_bestD=d;_bestR=r}}if(_bestR){_spX=_bestR.cx;_spY=_bestR.cy}}
+  const st=G.rooms[0];let _spX=st.cx,_spY=st.cy;
   if(G.map[_spY]&&G.map[_spY][_spX]!==0){for(let _sr=1;_sr<30;_sr++)for(let _sdy=-_sr;_sdy<=_sr;_sdy++)for(let _sdx=-_sr;_sdx<=_sr;_sdx++){const _sx=_spX+_sdx,_sy=_spY+_sdy;if(_sx>0&&_sy>0&&_sx<G.mw-1&&_sy<G.mh-1&&G.map[_sy]&&G.map[_sy][_sx]===0){_spX=_sx;_spY=_sy;_sr=99;break}}}
   P.x=(_spX+.5)*T;P.y=(_spY+.5)*T;
   P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle';P.iframes=360;P.kb={x:0,y:0};P._webSlow=0;P._trapSlowT=0;P._freezeSlow=0;P.burnT=0;P.poison=0;P._ioActive=false;P._ioT=0;P._altAtk=0;P._altDef=0;P._altSpd=0;P._lastStandUsed=false;P._reviveOnceUsed=false;
