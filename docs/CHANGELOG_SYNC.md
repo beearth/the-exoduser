@@ -64,3 +64,16 @@
 - test/ch1ProvidedDecoPlacement.test.js
 - tools/slice-user-ch1-gore.mjs
 
+
+## 2026-04-03 15:30 (auto)
+- assets/map/ch1/floor_objects/provided_gore_01.png
+- assets/map/ch1/floor_objects/provided_gore_02.png
+- assets/map/ch1/floor_objects/provided_gore_03.png
+- assets/map/ch1/floor_objects/provided_gore_04.png
+- assets/map/ch1/floor_objects/provided_gore_05.png
+- assets/map/ch1/floor_objects/provided_gore_06.png
+- game.html
+- test/ch1ProvidedDecoPlacement.test.js
+- test/mapStreamChunkLoading.test.js
+- tools/slice-user-ch1-gore.mjs
+

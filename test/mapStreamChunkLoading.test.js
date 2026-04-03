@@ -61,3 +61,21 @@ test('buildMapCache no longer short-circuits into the incomplete distributed BMC
     /\[BMC\] distributed build start/,
   );
 });
+
+test('boss gate images trigger a map cache rebuild once the current stage gate asset finishes loading', () => {
+  assert.match(
+    gameHtml,
+    /_im\.onload=\(\)=>\{if\(G\.map&&G\.bossGate&&G\.bossGate\.length&&SI_TO_HELL\[G\.stage\]===_bgi&&!G\._bossArena\)buildMapCache\(\)\}/,
+  );
+});
+
+test('boot flow rebuilds the map cache after waiting for map object sprites', () => {
+  assert.match(
+    gameHtml,
+    /await _waitObjSprites\(8000\);\s*buildMapCache\(\);\s*_dbReady=true;/,
+  );
+  assert.match(
+    gameHtml,
+    /await _waitObjSprites\(8000\);\s*buildMapCache\(\);\s*BGM\.play\(BGM\.stageKey\(G\.stage\)\);/,
+  );
+});

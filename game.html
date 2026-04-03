@@ -6344,12 +6344,12 @@ const _CH_DECO={
     {id:'m_fleshwall_b90',file:'flesh_wall_b.png',sz:300,scatter:1,rot:90},
     {id:'m_fleshwall_b180',file:'flesh_wall_b.png',sz:300,scatter:1,rot:180},
     {id:'m_fleshwall_b270',file:'flesh_wall_b.png',sz:300,scatter:1,rot:270},
-    {id:'m_usergore1',file:'provided_gore_01.png',sz:220,userProvided:1,stageMin:1,stageMax:4},
-    {id:'m_usergore2',file:'provided_gore_02.png',sz:220,userProvided:1,stageMin:1,stageMax:4},
-    {id:'m_usergore3',file:'provided_gore_03.png',sz:220,userProvided:1,stageMin:1,stageMax:4},
-    {id:'m_usergore4',file:'provided_gore_04.png',sz:220,userProvided:1,stageMin:1,stageMax:4},
-    {id:'m_usergore5',file:'provided_gore_05.png',sz:220,userProvided:1,stageMin:1,stageMax:4},
-    {id:'m_usergore6',file:'provided_gore_06.png',sz:220,userProvided:1,stageMin:1,stageMax:4},
+    {id:'m_usergore1',file:'provided_gore_01.png',sz:220,userProvided:1,floorMount:1,stageMin:1,stageMax:4},
+    {id:'m_usergore2',file:'provided_gore_02.png',sz:220,userProvided:1,floorMount:1,stageMin:1,stageMax:4},
+    {id:'m_usergore3',file:'provided_gore_03.png',sz:220,userProvided:1,wallMount:1,stageMin:1,stageMax:4},
+    {id:'m_usergore4',file:'provided_gore_04.png',sz:220,userProvided:1,wallMount:1,stageMin:1,stageMax:4},
+    {id:'m_usergore5',file:'provided_gore_05.png',sz:220,userProvided:1,wallMount:1,stageMin:1,stageMax:4},
+    {id:'m_usergore6',file:'provided_gore_06.png',sz:220,userProvided:1,wallMount:1,stageMin:1,stageMax:4},
   ],
 };
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
@@ -6390,7 +6390,7 @@ const _GATE_IMG_PATHS=[
   'assets/map/ch1/collision/boss_gate.png', // CH7: (추후 교체)
 ];
 const _bossGateImgs=[];
-for(let _bgi=0;_bgi<_GATE_IMG_PATHS.length;_bgi++){const _im=new Image();_im.src=_GATE_IMG_PATHS[_bgi];_im.onerror=()=>{};_bossGateImgs.push(_im)}
+for(let _bgi=0;_bgi<_GATE_IMG_PATHS.length;_bgi++){const _im=new Image();_im.onload=()=>{if(G.map&&G.bossGate&&G.bossGate.length&&SI_TO_HELL[G.stage]===_bgi&&!G._bossArena)buildMapCache()};_im.src=_GATE_IMG_PATHS[_bgi];_im.onerror=()=>{};_bossGateImgs.push(_im)}
 // ── 2) 챕터별 포탈 이미지 (투명 배경 webp) ──
 const _PORTAL_IMG_PATHS=[
   'assets/map/ch1/floor_objects/boss_portal_1.webp', // CH1: 보라색 소용돌이
@@ -11049,8 +11049,8 @@ function _autoChunkConfig(mw,mh){
   else{_STREAM_CHUNK=32;_STREAM_MAX_CHUNKS=64}
 }
 function _shouldStreamMapCache(mw,mh,texLimit){
-  // 픽셀 기준: mw*T > texLimit이면 스트리밍 (300×40=12000 < 16384 → 정적 캐시)
-  return mw*T>texLimit||mh*T>texLimit;
+  // 200타일 이상이면 청크 스트리밍 (대형 맵 메모리+렌더 최적화)
+  return mw>=200||mh>=200;
 }
 // ═══ 맵 초기화 분산 처리 (fps 스파이크 방지) ═══
 // ═══ 백그라운드 분산 초기화 (게임 즉시 시작, 뒤에서 서서히 처리) ═══
@@ -11378,7 +11378,8 @@ function initMapObjects(){
     // 바닥 타일 수집
     const _dcFloors=[];
     for(let y=3;y<G.mh-3;y++)for(let x=3;x<G.mw-3;x++){if(map[y][x]===0)_dcFloors.push({x,y})}
-    const _providedDeco=_chDeco.filter(d=>d.userProvided);
+    const _providedFloorDeco=_chDeco.filter(d=>d.userProvided&&d.floorMount);
+    const _providedWallDeco=_chDeco.filter(d=>d.userProvided&&d.wallMount);
     const _baseDeco=_chDeco.filter(d=>!d.userProvided);
     // ── 1차: 대형 에셋 우선 배치 (맵당 1~2개, 넓은 간격) ──
     const _largeDeco=_baseDeco.filter(d=>d.large);
@@ -11466,13 +11467,13 @@ function initMapObjects(){
       }
       console.log('[UNIQUE_OBJ] placed:'+_uniPlaced+'/12');
     }
-    let _providedPlaced=0;
-    const _providedTarget=Math.min(20,_providedDeco.length?20:0);
-    if(_providedTarget>0){
+    let _providedFloorPlaced=0;
+    const _providedFloorTarget=Math.min(8,_providedFloorDeco.length?8:0);
+    if(_providedFloorTarget>0){
       const _providedMinDist=260;
       const _providedSameTypeDist=420;
       const _providedPlacedList=[];
-      for(let pi=0;pi<_providedTarget*80&&_providedPlaced<_providedTarget&&_dcFloors.length>0;pi++){
+      for(let pi=0;pi<_providedFloorTarget*80&&_providedFloorPlaced<_providedFloorTarget&&_dcFloors.length>0;pi++){
         const fi=~~(_dcSeed()*_dcFloors.length);
         const f=_dcFloors[fi];
         const px=f.x*T+T/2,py=f.y*T+T/2;
@@ -11491,15 +11492,52 @@ function initMapObjects(){
           if(dst(px,py,mo.x,mo.y)<Math.max(140,(moSz+220)/2)){ok=false;break}
         }
         if(!ok)continue;
-        let pick=_providedDeco[0];
+        let pick=_providedFloorDeco[0];
         for(let _try=0;_try<8;_try++){
-          pick=_providedDeco[~~(_dcSeed()*_providedDeco.length)];
+          pick=_providedFloorDeco[~~(_dcSeed()*_providedFloorDeco.length)];
           if(_nearbyTypeCount(_providedPlacedList,pick.id,px,py,_providedSameTypeDist)<1)break;
         }
         MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
         _providedPlacedList.push({type:pick.id,x:px,y:py});
         _dcFloors.splice(fi,1);
-        _providedPlaced++;
+        _providedFloorPlaced++;
+      }
+    }
+    let _providedWallPlaced=0;
+    const _providedWallTarget=_providedWallDeco.length?Math.max(1,~~(_wallCells.length/50)):0;
+    if(_providedWallTarget>0){
+      const _wallCells=[];
+      for(let y=2;y<G.mh-2;y++)for(let x=2;x<G.mw-2;x++){
+        if(map[y][x]!==1)continue;
+        let adjFloor=false;
+        if((y>0&&map[y-1][x]===0)||(y<G.mh-1&&map[y+1][x]===0)||(x>0&&map[y][x-1]===0)||(x<G.mw-1&&map[y][x+1]===0))adjFloor=true;
+        if(adjFloor)_wallCells.push({x,y});
+      }
+      const _providedWallMinDist=280;
+      const _providedWallSameTypeDist=520;
+      const _providedWallPlacedList=[];
+      for(let wi=0;wi<_providedWallTarget*100&&_providedWallPlaced<_providedWallTarget&&_wallCells.length>0;wi++){
+        const ci=~~(_dcSeed()*_wallCells.length);
+        const cell=_wallCells[ci];
+        const px=cell.x*T+T/2,py=cell.y*T+T/2;
+        let ok=true;
+        for(const sp of _providedWallPlacedList){if(dst(px,py,sp.x,sp.y)<_providedWallMinDist){ok=false;break}}
+        if(!ok)continue;
+        for(const mo of MAP_OBJS){
+          const moMeta=_OBJ_META[mo.type];
+          const moSz=moMeta?moMeta.sz||32:32;
+          if(dst(px,py,mo.x,mo.y)<Math.max(150,(moSz+220)/2)){ok=false;break}
+        }
+        if(!ok)continue;
+        let pick=_providedWallDeco[0];
+        for(let _try=0;_try<8;_try++){
+          pick=_providedWallDeco[~~(_dcSeed()*_providedWallDeco.length)];
+          if(_nearbyTypeCount(_providedWallPlacedList,pick.id,px,py,_providedWallSameTypeDist)<1)break;
+        }
+        MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
+        _providedWallPlacedList.push({type:pick.id,x:px,y:py});
+        _wallCells.splice(ci,1);
+        _providedWallPlaced++;
       }
     }
     // ── scatter 에셋: 방 전체 랜덤 배치 (벽 무관) ──
@@ -11568,7 +11606,7 @@ function initMapObjects(){
       MAP_OBJS.push({type:_dObj.id,x:_px,y:_py,hell});
       _dcFloors.splice(_fi,1);_dcPlaced++;
     }
-    console.log('[DECO] ch'+(hell+1)+' auto-placed:'+_dcPlaced+' large:'+_lgPlaced+' provided:'+_providedPlaced);
+    console.log('[DECO] ch'+(hell+1)+' auto-placed:'+_dcPlaced+' large:'+_lgPlaced+' providedFloor:'+_providedFloorPlaced+' providedWall:'+_providedWallPlaced);
   }
   // ── 벽 눈깔 에셋 배치 ──
   if(hell===0||hell===1){
@@ -11834,12 +11872,31 @@ function buildMapCache(){
   _lastCamChunkX=-1;_lastCamChunkY=-1;_activeChunkLen=0;
   _staticObjCvs=null;_staticObjDirty=true;_staticObjCamX=-9999;_staticObjCamY=-9999;
   _spawnHoleActiveLen=0;_spawnHoleCamChunkX=-1;_spawnHoleCamChunkY=-1;
-  _streamChunks={};_streamChunkCnt=0;_streamEvictFrame=0;_streamVpCvs=null;_streamVpCtx=null;_streamVpBmp=null;_streamVpDirty=true;_streamLastCamTx=-1;_streamLastCamTy=-1;_streamVpWorldX=1e9;_streamVpWorldY=1e9;_streamVpW=0;_streamVpH=0;
+  // 같은 스테이지 재빌드 시 스트리밍 청크 보존 (gt_soil onload 등)
+  if(_mapStage!==G.stage||!_streamMap){_streamChunks={};_streamChunkCnt=0;_streamVpCvs=null;_streamVpCtx=null;_streamVpBmp=null}
+  _streamEvictFrame=0;_streamVpDirty=true;_streamLastCamTx=-1;_streamLastCamTy=-1;_streamVpWorldX=1e9;_streamVpWorldY=1e9;_streamVpW=0;_streamVpH=0;
   _streamBuildQHead=0;_streamBuildQTail=0;_streamBuildQCount=0;
   const hell=SI_TO_HELL[G.stage];
   const _texLimit=_useGPU?4096:(_useGL?_glMaxTex:99999);
   if(_shouldStreamMapCache(G.mw,G.mh,_texLimit)){
     _streamMap=true;_mapStage=G.stage;_mapCvs=null;_mapCtx=null;_mapChunks=null;_mcCols=0;_mcRows=0;_mcW=0;_mcH=0;
+    // 기존 청크가 있으면 보존 (gt_soil onload 재호출 시 리셋 방지)
+    if(_streamChunkCnt===0){
+      // 카메라 주변 청크 즉시 사전 빌드 (시작 시 검정화면 방지)
+      const _pcx=~~((G.cam.x||P.x)/T/_STREAM_CHUNK),_pcy=~~((G.cam.y||P.y)/T/_STREAM_CHUNK);
+      const _pad=4; // 주변 4청크(~160타일) 미리 빌드
+      for(let _sy=Math.max(0,_pcy-_pad);_sy<=Math.min(~~((G.mh-1)/_STREAM_CHUNK),_pcy+_pad);_sy++)
+        for(let _sx=Math.max(0,_pcx-_pad);_sx<=Math.min(~~((G.mw-1)/_STREAM_CHUNK),_pcx+_pad);_sx++){
+          const _sk=_sx+'_'+_sy;
+          if(!_streamChunks[_sk]){const _built=_buildStreamChunk(_sx,_sy);
+            if(_built){_streamChunks[_sk]={bmp:null,cvs:_built.cvs};_streamChunkCnt++;_streamVpDirty=true}}
+        }
+      console.log('[MAP STREAM] pre-built '+_streamChunkCnt+' chunks around ('+_pcx+','+_pcy+')');
+    }else{
+      // 기존 청크 유지, dirty만 갱신
+      _streamVpDirty=true;
+      console.log('[MAP STREAM] re-enter, keeping '+_streamChunkCnt+' chunks');
+    }
     console.log('[MAP STREAM] enabled '+G.mw+'x'+G.mh+' texLimit='+_texLimit+' chunk='+_STREAM_CHUNK);
     return;
   }
@@ -36579,6 +36636,7 @@ async function startGameFromDB(){
   initStage(G.stage);
   setBootLoading(90,'맵 에셋 로딩...');
   await _waitObjSprites(8000);
+  buildMapCache();
   _dbReady=true;
   startAutoSave();
   // 캐릭터 선택 → 문 열림 후 바로 게임 시작 (스플래시 스킵)
@@ -37027,6 +37085,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     initStage(G.stage);
     setBootLoading(90,'맵 에셋 로딩...');
     await _waitObjSprites(8000);
+    buildMapCache();
     BGM.play(BGM.stageKey(G.stage));
   setBootLoading(100,'완료');
   hideBootLoading();
