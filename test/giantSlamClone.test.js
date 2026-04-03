@@ -11,7 +11,7 @@ test('defines giantSlam2 as a duplicate giant slam skill', () => {
 test('dispatches giantSlam2 through activateGiantSlam', () => {
   assert.match(
     gameHtml,
-    /case 'giantSlam2':\s*if\(P\.st>=stCost\('giantSlam'\)&&G\.mats>=20&&\(P\._gslCd\|\|0\)<=0\)\{activateGiantSlam\(\);_skOk=true\}/
+    /case 'giantSlam2':\s*if\(P\.st>=stCost\('giantSlam'\)&&G\.mats>=20&&\(P\._gslCd\|\|0\)<=0\)\{activateGiantSlam\('giantSlam2'\);_skOk=true\}/
   );
 });
 

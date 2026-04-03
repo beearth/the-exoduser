@@ -30,3 +30,4 @@ build/
 # 대형 맵 텍스처 (GitHub 100MB 제한)
 img/maps/stage_*_tex.png
 assets/maps/stage_*/stage_*_bottom_*.png
+.aider*

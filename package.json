@@ -4,6 +4,7 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "serve:test": "node tools/local-static-server.mjs",
     "docs:check": "powershell -ExecutionPolicy Bypass -File tools/docs-sync-check.ps1",
     "docs:check:staged": "powershell -ExecutionPolicy Bypass -File tools/docs-sync-check.ps1 -Staged",
     "hooks:install": "git config core.hooksPath .githooks",

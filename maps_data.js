@@ -86,6 +86,11 @@ FIXED_MAPS[1]={
           "dx": 1,
           "dy": 0,
           "grade": 0
+        },
+        {
+          "dx": -1,
+          "dy": 1,
+          "grade": 0
         }
       ]
     },
@@ -107,6 +112,11 @@ FIXED_MAPS[1]={
           "dx": 0,
           "dy": 0,
           "grade": 0
+        },
+        {
+          "dx": -2,
+          "dy": 1,
+          "grade": 1
         }
       ]
     },
@@ -142,6 +152,11 @@ FIXED_MAPS[1]={
           "dx": 2,
           "dy": 2,
           "grade": 3
+        },
+        {
+          "dx": -1,
+          "dy": 2,
+          "grade": 2
         }
       ],
       "armW": 4,
@@ -170,39 +185,49 @@ FIXED_MAPS[1]={
           "dx": 1,
           "dy": -1,
           "grade": 3
+        },
+        {
+          "dx": -2,
+          "dy": 2,
+          "grade": 2
+        },
+        {
+          "dx": 3,
+          "dy": 0,
+          "grade": 3
         }
       ]
     },
     {
       "id": "b",
       "type": "boss",
-      "cx": 202,
-      "cy": 61,
+      "cx": 175,
+      "cy": 14,
       "shape": "ellipse",
-      "rx": 8,
-      "ry": 13,
+      "rx": 13,
+      "ry": 8,
       "pillars": [
         {
-          "dx": -4,
-          "dy": -6,
+          "dx": -7,
+          "dy": -4,
           "w": 3,
           "h": 3
         },
         {
-          "dx": 4,
-          "dy": -6,
+          "dx": 7,
+          "dy": -4,
           "w": 3,
           "h": 3
         },
         {
-          "dx": -4,
-          "dy": 6,
+          "dx": -7,
+          "dy": 4,
           "w": 3,
           "h": 3
         },
         {
-          "dx": 4,
-          "dy": 6,
+          "dx": 7,
+          "dy": 4,
           "w": 3,
           "h": 3
         }
@@ -285,8 +310,8 @@ FIXED_MAPS[1]={
       "style": "zigzag",
       "waypoints": [
         {
-          "x": 170,
-          "y": 78
+          "x": 155,
+          "y": 50
         }
       ]
     }
@@ -318,14 +343,34 @@ FIXED_MAPS[1]={
       "grade": 0
     },
     {
+      "x": 43,
+      "y": 60,
+      "grade": 0
+    },
+    {
+      "x": 52,
+      "y": 43,
+      "grade": 0
+    },
+    {
       "x": 74,
       "y": 35,
-      "grade": 0
+      "grade": 1
+    },
+    {
+      "x": 100,
+      "y": 35,
+      "grade": 1
     },
     {
       "x": 121,
       "y": 38,
-      "grade": 1
+      "grade": 2
+    },
+    {
+      "x": 130,
+      "y": 65,
+      "grade": 2
     }
   ],
   "tileRLE": [
@@ -1253,7 +1298,7 @@ FIXED_MAPS[2]={
       "id": "b",
       "type": "boss",
       "cx": 91,
-      "cy": 11,
+      "cy": 18,
       "shape": "ellipse",
       "rx": 15,
       "ry": 11,
@@ -73762,11 +73807,11 @@ FIXED_MAPS[3]={
     {
       "id": "b",
       "type": "boss",
-      "cx": 63,
-      "cy": 15,
+      "cx": 108,
+      "cy": 88,
       "shape": "circle",
-      "rx": 8,
-      "ry": 7,
+      "rx": 10,
+      "ry": 8,
       "spawns": [
         {
           "dx": -1,

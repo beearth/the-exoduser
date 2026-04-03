@@ -2,6 +2,20 @@
 
 게임 코드 변경과 `docs/` 반영을 같이 남기는 누적 로그다.
 
+## 2026-04-03
+
+### CH1 floor green noise regression documented
+- 코드:
+  - `game.html`
+  - `test/ch1FloorSoilRestore.test.js`
+- 문서:
+  - `docs/4.1맵디자인+설정/CH1_녹색노이즈_버그리포트.md`
+  - `docs/4.1맵디자인+설정/맵베이스세팅.md`
+- 변경:
+  - CH1 바닥 녹색 노이즈의 실제 원인이 `buildMapCache()`의 `Pass 4` ambient radial glow였다는 점을 문서화
+  - 최종 수정과 회귀 테스트 위치를 기록
+  - 바닥 procedural overlay 재발 방지 규칙 추가
+
 ## 2026-04-01
 
 ### 맵 함정 사운드 동기화

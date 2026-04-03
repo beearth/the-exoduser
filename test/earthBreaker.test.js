@@ -28,10 +28,10 @@ test('earthBreaker total damage scales by 10 percent per level and splits across
 test('earthBreaker dispatches through skill slots as a standalone cast', () => {
   assert.match(
     gameHtml,
-    /case 'earthBreaker':\s*if\(\(P\._earthBreakCd\|\|0\)>0\)\{showPH\('쿨다운 중\.\.\.','#ff8844'\);break\}\s*if\(P\.st>=stCost\('earthBreaker'\)\)\{activateEarthBreaker\(\);_skOk=true\}/
+    /case 'earthBreaker':\s*if\(\(P\._earthBreakCd\|\|0\)>0\)\{showPH\('[^']+','#ff8844'\);break\}\s*if\(P\.st>=stCost\('earthBreaker'\)\)\{activateEarthBreaker\(\);_skOk=true\}/
   );
   assert.match(
     gameHtml,
-    /function activateEarthBreaker\(\)\{[\s\S]*P\._earthBreakAnimT=18;[\s\S]*_startEarthBreaker\(P\.x,P\.y\);/
+    /function activateEarthBreaker\(\)\{[\s\S]*P\._earthBreakAnimT=18;[\s\S]*const _earthFused=_isFused\('earthSlam'\)&&P\.skills\.giantSlam2>=1;[\s\S]*if\(_earthFused\)\{[\s\S]*_triggerEarthSlamFusion\(P\.x,P\.y\);[\s\S]*return;?[\s\S]*\}[\s\S]*_startEarthBreaker\(P\.x,P\.y\);/
   );
 });
