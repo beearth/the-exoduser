@@ -162,3 +162,8 @@
 - game.html
 - test/ch1ProvidedDecoPlacement.test.js
 
+
+## 2026-04-04 00:00 (auto)
+- docs/4.1맵디?�인+?�정/맵오브젝???�셋목록.md
+- game.html
+

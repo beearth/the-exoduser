@@ -4031,6 +4031,21 @@ const MAP_DECOR_DEFS={0:[
   {src:_CO_CH1+'cursed_tree_10.png',chance:0.003,scale:1.0,sz:100},
   {src:_CO_CH1+'cursed_tree_11.png',chance:0.003,scale:1.0,sz:100},
   {src:_CO_CH1+'cursed_tree_12.png',chance:0.003,scale:1.0,sz:100},
+  // 눈알 변형
+  {src:_FO_CH1+'eye1_bloodshot.png',chance:0.004,scale:1.0,sz:20},
+  {src:_FO_CH1+'eye2_terror.png',chance:0.004,scale:1.0,sz:20},
+  // 유충
+  {src:_FO_CH1+'larva.png',chance:0.005,scale:1.0,sz:24},
+  // 중형 오브젝트
+  {src:_CO_CH1+'skull_altar.png',chance:0.002,scale:1.0,sz:80},
+  {src:_CO_CH1+'obelisk.png',chance:0.002,scale:1.0,sz:80},
+  {src:_CO_CH1+'skull_totem.png',chance:0.002,scale:1.0,sz:70},
+  {src:_CO_CH1+'flesh_ball.png',chance:0.002,scale:1.0,sz:80},
+  {src:_CO_CH1+'flesh_maw.png',chance:0.002,scale:1.0,sz:70},
+  {src:_CO_CH1+'penta_circle.png',chance:0.002,scale:1.0,sz:90},
+  {src:_CO_CH1+'throne.png',chance:0.001,scale:1.0,sz:80},
+  {src:_CO_CH1+'eye_tree.png',chance:0.002,scale:1.0,sz:100},
+  {src:_CO_CH1+'bone_arch.png',chance:0.001,scale:1.0,sz:90},
 ],1:[],2:[],3:[],4:[],5:[],6:[]};
 const _decorImgs={};
 (function _preloadDecor(){
@@ -6345,16 +6360,11 @@ const _CH_DECO={
     {id:'m_fleshwall_b90',file:'flesh_wall_b.png',sz:300,scatter:1,rot:90},
     {id:'m_fleshwall_b180',file:'flesh_wall_b.png',sz:300,scatter:1,rot:180},
     {id:'m_fleshwall_b270',file:'flesh_wall_b.png',sz:300,scatter:1,rot:270},
-    {id:'m_usergore1',file:'provided_gore_01.png',sz:220,userProvided:1,floorMount:1,wallMount:1,stageMin:0,stageMax:3},
-    {id:'m_usergore2',file:'provided_gore_02.png',sz:220,userProvided:1,floorMount:1,wallMount:1,stageMin:0,stageMax:3},
-    {id:'m_usergore3',file:'provided_gore_03.png',sz:220,userProvided:1,floorMount:1,wallMount:1,stageMin:0,stageMax:3},
-    {id:'m_usergore4',file:'provided_gore_04.png',sz:220,userProvided:1,floorMount:1,wallMount:1,stageMin:0,stageMax:3},
-    {id:'m_usergore5',file:'provided_gore_05.png',sz:220,userProvided:1,floorMount:1,wallMount:1,stageMin:0,stageMax:3},
-    {id:'m_usergore6',file:'provided_gore_06.png',sz:220,userProvided:1,floorMount:1,wallMount:1,stageMin:0,stageMax:3},
   ],
 };
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
-for(const[k,v]of Object.entries(_OBJ_SPR_MAP)){const im=new Image();im.src=v;_OBJ_SPR[k]=im}
+const _FB64_1='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
+for(const[k,v]of Object.entries(_OBJ_SPR_MAP)){const im=new Image();im.onerror=function(){this.onerror=null;this.src=_FB64_1};im.src=v;_OBJ_SPR[k]=im}
 const _bossRoomBg=new Image();_bossRoomBg.src='assets/map/ch1/boss_room_bg.png';
 let _pillarCvs=null,_pillarAR=1;
 {const _pRaw=new Image();_pRaw.src='assets/map/ch1/collision/boss_pillar_01.webp';
@@ -6462,8 +6472,6 @@ const _OBJ_META={
   'm_skull_altar':{sz:300,col:1,large:1},'m_obelisk':{sz:300,col:1,large:1},'m_flesh_ball':{sz:270,col:1,large:1},
   'm_penta_circle':{sz:350,col:1,large:1},'m_flesh_maw':{sz:200,col:1,large:1},'m_skull_totem':{sz:240,col:1,large:1,keepAR:1},
   'm_bone_arch':{sz:300,col:1,large:1},'m_eye_tree':{sz:350,col:1,large:1},'m_throne':{sz:250,col:1,large:1},
-  'm_usergore1':{sz:220,keepAR:1},'m_usergore2':{sz:220,keepAR:1},'m_usergore3':{sz:220,keepAR:1},
-  'm_usergore4':{sz:220,keepAR:1},'m_usergore5':{sz:220,keepAR:1},'m_usergore6':{sz:220,keepAR:1},
 };
 // _CH_DECO 프리로드
 for(const[ch,list]of Object.entries(_CH_DECO)){
@@ -11422,8 +11430,6 @@ function initMapObjects(){
     // 바닥 타일 수집
   const _dcFloors=[];
   for(let y=3;y<G.mh-3;y++)for(let x=3;x<G.mw-3;x++){if(map[y][x]===0)_dcFloors.push({x,y})}
-    const _providedFloorDeco=_chDeco.filter(d=>d.userProvided&&d.floorMount);
-    const _providedWallDeco=_chDeco.filter(d=>d.userProvided&&d.wallMount);
     function _mkProvidedCycle(pool){
       const arr=pool.slice();
       for(let i=arr.length-1;i>0;i--){const j=~~(_dcSeed()*(i+1));const t=arr[i];arr[i]=arr[j];arr[j]=t}
@@ -11435,11 +11441,9 @@ function initMapObjects(){
       cyc.idx++;
       return pick;
     }
-    const _baseDeco=_chDeco.filter(d=>!d.userProvided);
+    const _baseDeco=_chDeco;
     const _largeDeco=_baseDeco.filter(d=>d.large);
     const _normalDeco=_baseDeco.filter(d=>!d.large&&!d.scatter);
-    const _providedFloorCycle=_mkProvidedCycle(_providedFloorDeco);
-    const _providedWallCycle=_mkProvidedCycle(_providedWallDeco);
     const _largeCycle=_mkProvidedCycle(_largeDeco);
     const _scatterCycle=_mkProvidedCycle(_baseDeco.filter(d=>d.scatter));
     const _normalCycle=_mkProvidedCycle(_normalDeco.length>0?_normalDeco:_baseDeco);
@@ -11548,127 +11552,6 @@ function initMapObjects(){
       }
       console.log('[UNIQUE_OBJ] placed:'+_uniPlaced+'/12');
     }
-  let _providedFloorPlaced=0;
-const _providedFloorTarget=Math.min(4,_providedFloorDeco.length?4:0);
-    if(_providedFloorTarget>0){
-      const _providedMinDist=260;
-      const _providedSameTypeDist=420;
-      const _providedPlacedList=[];
-      for(let pi=0;pi<_providedFloorTarget*80&&_providedFloorPlaced<_providedFloorTarget&&_dcFloors.length>0;pi++){
-        const fi=~~(_dcSeed()*_dcFloors.length);
-        const f=_dcFloors[fi];
-        const px=f.x*T+T/2,py=f.y*T+T/2;
-        let wallOk=true;
-        for(let dy=-2;dy<=2&&wallOk;dy++)for(let dx=-2;dx<=2&&wallOk;dx++){
-          const tx=f.x+dx,ty=f.y+dy;
-          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0)wallOk=false;
-        }
-        if(!wallOk)continue;
-        let ok=true;
-        for(const sp of _providedPlacedList){if(dst(px,py,sp.x,sp.y)<_providedMinDist){ok=false;break}}
-        if(!ok)continue;
-        for(const mo of MAP_OBJS){
-          const moMeta=_OBJ_META[mo.type];
-          const moSz=moMeta?moMeta.sz||32:32;
-          if(dst(px,py,mo.x,mo.y)<Math.max(140,(moSz+220)/2)){ok=false;break}
-        }
-        if(!ok)continue;
-        let pick=_nextProvided(_providedFloorCycle,_providedFloorDeco[0]);
-        for(let _try=0;_try<8;_try++){
-          pick=_nextProvided(_providedFloorCycle,_providedFloorDeco[0]);
-          if(_nearbyTypeCount(_providedPlacedList,pick.id,px,py,_providedSameTypeDist)<1)break;
-        }
-        MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
-        _providedPlacedList.push({type:pick.id,x:px,y:py});
-        _dcFloors.splice(fi,1);
-        _providedFloorPlaced++;
-      }
-    }
-  let _providedWallPlaced=0;
-  if(_providedWallDeco.length>0){
-      const _wallCells=[];
-      for(let y=2;y<G.mh-2;y++)for(let x=2;x<G.mw-2;x++){
-        if(map[y][x]!==1)continue;
-        let adjFloor=false,ox=0,oy=0;
-        const _wallInset=T*0.18;
-        if(y<G.mh-1&&map[y+1][x]===0){adjFloor=true;oy=-_wallInset}
-        else if(y>0&&map[y-1][x]===0){adjFloor=true;oy=_wallInset}
-        else if(x<G.mw-1&&map[y][x+1]===0){adjFloor=true;ox=-_wallInset}
-        else if(x>0&&map[y][x-1]===0){adjFloor=true;ox=_wallInset}
-        if(adjFloor)_wallCells.push({x,y,ox,oy});
-      }
-const _providedWallTarget=Math.max(2,~~(_wallCells.length/40));
-      const _providedWallMinDist=220;
-      const _providedWallSameTypeDist=360;
-      const _providedWallPlacedList=[];
-      for(let wi=0;wi<_providedWallTarget*100&&_providedWallPlaced<_providedWallTarget&&_wallCells.length>0;wi++){
-        const ci=~~(_dcSeed()*_wallCells.length);
-        const cell=_wallCells[ci];
-        const px=cell.x*T+T/2+cell.ox,py=cell.y*T+T/2+cell.oy;
-        let ok=true;
-        for(const sp of _providedWallPlacedList){if(dst(px,py,sp.x,sp.y)<_providedWallMinDist){ok=false;break}}
-        if(!ok)continue;
-        for(const mo of MAP_OBJS){
-          const moMeta=_OBJ_META[mo.type];
-          const moSz=moMeta?moMeta.sz||32:32;
-          if(dst(px,py,mo.x,mo.y)<Math.max(150,(moSz+220)/2)){ok=false;break}
-        }
-        if(!ok)continue;
-        let pick=_nextProvided(_providedWallCycle,_providedWallDeco[0]);
-        for(let _try=0;_try<8;_try++){
-          pick=_nextProvided(_providedWallCycle,_providedWallDeco[0]);
-          if(_nearbyTypeCount(_providedWallPlacedList,pick.id,px,py,_providedWallSameTypeDist)<1)break;
-        }
-        MAP_OBJS.push({type:pick.id,x:px,y:py,hell,_anchorBottom:1});
-        _providedWallPlacedList.push({type:pick.id,x:px,y:py});
-        _wallCells.splice(ci,1);
-        _providedWallPlaced++;
-      }
-      // fallback: 너무 좁아 한 개도 못 깔았으면 한 장은 강제로 박는다
-      if(_providedWallPlaced===0&&_wallCells.length>0){
-        const cell=_wallCells[0];
-        const px=cell.x*T+T/2+cell.ox,py=cell.y*T+T/2+cell.oy;
-        const pick=_nextProvided(_providedWallCycle,_providedWallDeco[0]);
-        MAP_OBJS.push({type:pick.id,x:px,y:py,hell,_anchorBottom:1});
-        _providedWallPlaced=1;
-      }
-      // CH1 1-1처럼 벽 셀이 없으면 바닥에 강제로 깐다 (기본 20개)
-      if(_providedWallPlaced===0&&_wallCells.length===0&&hell===0){
-        const _fbTarget=Math.max(20,Math.min(60,~~(_dcFloors.length/150)));
-        const _fbMinDist=220;
-        const _fbSameTypeDist=360;
-        const _fbPool=_providedFloorDeco.length>0?_providedFloorDeco:_providedWallDeco;
-        const _fbCycle=_providedFloorDeco.length>0?_providedFloorCycle:_providedWallCycle;
-        const _fbPlaced=[];
-        // 바닥 후보를 다시 모은다 (기존 _dcFloors는 다른 배치용이므로 그대로 둔다)
-        const _fbFloors=_dcFloors.length>0?_dcFloors.slice():[];
-        if(_fbFloors.length===0){
-          for(let y=2;y<G.mh-2;y++)for(let x=2;x<G.mw-2;x++){if(map[y][x]===0)_fbFloors.push({x,y})}
-        }
-        for(let pi=0;pi<_fbTarget*80&&_providedWallPlaced<_fbTarget&&_fbFloors.length>0;pi++){
-          const ci=~~(_dcSeed()*_fbFloors.length);
-          const cell=_fbFloors[ci];
-          const px=cell.x*T+T/2,py=cell.y*T+T/2;
-          let ok=true;
-          for(const sp of _fbPlaced){if(dst(px,py,sp.x,sp.y)<_fbMinDist){ok=false;break}}
-          if(!ok)continue;
-          for(const mo of MAP_OBJS){
-            const moMeta=_OBJ_META[mo.type];const moSz=moMeta?moMeta.sz||32:32;
-            if(dst(px,py,mo.x,mo.y)<Math.max(150,(moSz+220)/2)){ok=false;break}
-          }
-          if(!ok)continue;
-          let pick=_nextProvided(_fbCycle,_fbPool[0]);
-          for(let _try=0;_try<8;_try++){
-            pick=_nextProvided(_fbCycle,_fbPool[0]);
-            if(_nearbyTypeCount(_fbPlaced,pick.id,px,py,_fbSameTypeDist)<1)break;
-          }
-          MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
-          _fbPlaced.push({type:pick.id,x:px,y:py});
-          _fbFloors.splice(ci,1);
-          _providedWallPlaced++;
-        }
-      }
-    }
     // ── scatter 에셋: 방 전체 랜덤 배치 (벽 무관) ──
     const _scatterDeco=_baseDeco.filter(d=>d.scatter);
     if(_scatterDeco.length>0){
@@ -11736,7 +11619,7 @@ const _providedWallTarget=Math.max(2,~~(_wallCells.length/40));
       MAP_OBJS.push({type:_dObj.id,x:_px,y:_py,hell});
       _dcFloors.splice(_fi,1);_dcPlaced++;
     }
-    console.log('[DECO] ch'+(hell+1)+' auto-placed:'+_dcPlaced+' large:'+_lgPlaced+' providedFloor:'+_providedFloorPlaced+' providedWall:'+_providedWallPlaced);
+    console.log('[DECO] ch'+(hell+1)+' auto-placed:'+_dcPlaced+' large:'+_lgPlaced);
   }
   // ── 벽 눈깔 에셋 배치 ──
   if(hell===0||hell===1){
@@ -11807,7 +11690,7 @@ const _MAP_TEX_FILES={};
 const _GROUND_TILES={};let _gtScaled=null,_gtPadded=null;
 const _GT_FILES={
   'gt_03':'assets/map/ch1/ground_tile_03.png',
-  'gt_soil':'assets/map/ch1/ground_dark_soil.png?v=20260403-floorfix',
+  'gt_soil':'assets/map/ch1/ground_dark_soil.png',
   'gt_void_wall':'assets/map/ch1/wall_black_void_tile.png'
 };
 const _FB64='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
@@ -15677,7 +15560,7 @@ function initStage(si){
   // ── 백그라운드 초기화 (게임 중 서서히) ──
   _bgInitQueue=[
     initSwayObjects,initWallEyes,_initEyes,initGlowObjects,
-    typeof _buildDecorList==='function'?_buildDecorList:null
+    initMapObjects,typeof _buildDecorList==='function'?_buildDecorList:null
   ].filter(Boolean);
   _bgInitDone=false;_bgInitIdx=0;
   if(si===0)_tickBgInit(12);
@@ -36997,11 +36880,9 @@ async function startGameFromDB(){
   if(_stageTestReq>=0)G.stage=_stageTestReq;
   ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
   updateQS();updateSkSlot();
-  _bootMapBuildDefer=1;
-  initStage(G.stage);
   _bootMapBuildDefer=0;
+  initStage(G.stage);
   setBootLoading(85,'맵 에셋 로딩...');
-  await _waitObjSprites(8000);
   // 바닥/벽 텍스처 로드 대기 (gt_soil, gt_void_wall, skull_wall)
   await new Promise(r=>{
     const _chk=()=>{
@@ -37022,10 +36903,6 @@ async function startGameFromDB(){
     setBootLoading(92,'주변 청크 준비 중...');
     _tickStreamChunkBuild(6,4);
     await new Promise(r=>setTimeout(r,0));
-  }
-  if(_bootMapBuildPromise){
-    setBootLoading(97,'맵 캐시 생성 중...');
-    await Promise.race([_bootMapBuildPromise,new Promise(r=>setTimeout(r,3000))]);
   }
   setBootLoading(99,'미니맵 빌드 중...');
   await new Promise(r=>setTimeout(r,0)); // UI 갱신
@@ -37365,7 +37242,7 @@ if(_EDITOR_MODE){
     console.log('[EDITOR] ready stage='+G.stage+' map='+G.mw+'x'+G.mh);
   })();
 }else{
-const _isLocal=IS_ELECTRON||location.hostname==='localhost'||location.hostname==='127.0.0.1'||location.protocol==='file:';
+const _isLocal=(!IS_ELECTRON)&&(location.hostname==='localhost'||location.hostname==='127.0.0.1'||location.protocol==='file:');
 if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   // local test: save to server saves/ folder
   const _qpSlot=new URLSearchParams(window.location.search).get('slot');
@@ -37473,16 +37350,10 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     if(_stageTestReq>=0)G.stage=_stageTestReq;
     ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
     updateQS();updateSkSlot();
-    _bootMapBuildDefer=1;
-    initStage(G.stage);
     _bootMapBuildDefer=0;
+    initStage(G.stage);
     setBootLoading(90,'맵 에셋 로딩...');
-    await _waitObjSprites(8000);
     await new Promise(r=>setTimeout(r,0));
-    if(_bootMapBuildPromise){
-      setBootLoading(97,'맵 캐시 생성 중...');
-      await Promise.race([_bootMapBuildPromise,new Promise(r=>setTimeout(r,3000))]);
-    }
     BGM.play(BGM.stageKey(G.stage));
   setBootLoading(100,'완료');
   hideBootLoading();
@@ -37580,13 +37451,8 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     if(_stageTestReq>=0)G.stage=_stageTestReq;
     ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
     updateQS();updateSkSlot();
-    _bootMapBuildDefer=1;
-    initStage(G.stage);
     _bootMapBuildDefer=0;
-    if(_bootMapBuildPromise){
-      setBootLoading(97,'맵 캐시 생성 중...');
-      await Promise.race([_bootMapBuildPromise,new Promise(r=>setTimeout(r,3000))]);
-    }
+    initStage(G.stage);
     BGM.play(BGM.stageKey(G.stage));
     setBootLoading(100,'완료');
     hideBootLoading();
