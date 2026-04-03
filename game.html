@@ -15427,7 +15427,8 @@ function spawnTileRLEEns(si){
   const ft=G._floorTiles;if(!ft||!ft.length){console.log('[SPAWN] no floorTiles!');return}
   const cnt=Math.min(80,Math.max(20,~~(ft.length*0.005*DIFF_MOB[OPT.diff]))+si);
   console.log('[SPAWN] tileRLE: floor='+ft.length+' target='+cnt+' si='+si);
-  const startX=(G.rooms[0].cx+.5)*T,startY=(G.rooms[0].cy+.5)*T;
+  const _startRm=G.rooms.find(r=>r.type==='start')||G.rooms[0];
+  const startX=(_startRm.cx+.5)*T,startY=(_startRm.cy+.5)*T;
   const safeR2=400*400; // 시작점 400px 안전구역
   let placed=0,tries=0;
   while(placed<cnt&&tries<cnt*5){tries++;
@@ -15495,7 +15496,7 @@ function initStage(si){
   const _fixedMap=_getFixedMapForStage(si);
   if(_fixedMap){genFromTemplate(_fixedMap,si);G.mapType=_fixedMap._testbed?'fixed_testbed':'fixed'}
   else{genGauntlet(si);G.mapType='gauntlet'}
-  const st=G.rooms[0];let _spX=st.cx,_spY=st.cy;
+  const st=G.rooms.find(r=>r.type==='start')||G.rooms[0];let _spX=st.cx,_spY=st.cy;
   if(G.map[_spY]&&G.map[_spY][_spX]!==0){for(let _sr=1;_sr<30;_sr++)for(let _sdy=-_sr;_sdy<=_sr;_sdy++)for(let _sdx=-_sr;_sdx<=_sr;_sdx++){const _sx=_spX+_sdx,_sy=_spY+_sdy;if(_sx>0&&_sy>0&&_sx<G.mw-1&&_sy<G.mh-1&&G.map[_sy]&&G.map[_sy][_sx]===0){_spX=_sx;_spY=_sy;_sr=99;break}}}
   P.x=(_spX+.5)*T;P.y=(_spY+.5)*T;
   P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle';P.iframes=360;P.kb={x:0,y:0};P._webSlow=0;P._trapSlowT=0;P._freezeSlow=0;P.burnT=0;P.poison=0;P._ioActive=false;P._ioT=0;P._altAtk=0;P._altDef=0;P._altSpd=0;P._lastStandUsed=false;P._reviveOnceUsed=false;
@@ -15886,7 +15887,7 @@ function rollDrop(e){
       const _crId=CRYSTAL_IDS[~~(Math.random()*CRYSTAL_IDS.length)];
       let _crStar;
       if(e.ib&&STG[G.stage]&&G.stage===CHAPTER_STAGES[SI_TO_HELL[G.stage]].startSi+CHAPTER_STAGES[SI_TO_HELL[G.stage]].stages-1){
-        _crStar=Math.random()<.3?4:Math.random()<.6?3:2; // 장보스 3~5성
+        const _r=Math.random();_crStar=_r<.05?4:_r<.30?3:_r<.75?2:1; // 장보스 2~5성 (5성5%,4성25%,3성45%,2성25%)
       }else if(e.ib){
         _crStar=Math.random()<.4?3:Math.random()<.7?2:1; // 보스 2~4성
       }else if(e.elite>0){
@@ -30077,7 +30078,7 @@ function draw(){
   }
   // ── 던전 보스 게이트 입구 (나무 + 포탈) — 실시간 렌더 ──
   if(!G._bossArena&&G.exits.length>0&&G.bossGate&&G.bossGate.length>0&&G.bossAlive){
-    const _exMinY=Math.min(...G.exits.map(e=>e.y));
+    const _exMinY=G._gateY!=null?G._gateY:Math.min(...G.exits.map(e=>e.y));
     const _treeCx=(G._bossCx+.5)*T;
     const _treeCy=(_exMinY+.5)*T;
     const _gtI=_bossGateImgs[SI_TO_HELL[G.stage]];
