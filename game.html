@@ -11937,15 +11937,8 @@ function _tickBuildMapCache(){
     if(_bmcRow>=mh){_bmcPhase=2}
     return;
   }
-  // Phase 2: 게이트+마무리 (1회)
+  // Phase 2: 마무리 (1회) — 게이트 나무는 실시간 렌더로 이전
   if(_bmcPhase===2){
-    const bgI=_bossGateImgs[SI_TO_HELL[G.stage]];
-    if(bgI&&bgI.complete&&bgI.naturalWidth&&!G._bossArena&&G.bossGate&&G.bossGate.length>0&&G._gateY!=null){
-      const gMinX=Math.min(...G.bossGate.map(g=>g.x)),gMaxX=Math.max(...G.bossGate.map(g=>g.x));
-      const gCxP=((gMinX+gMaxX)/2+.5)*T,gPy=G._gateY*T;
-      const bgW=600,bgH=~~(600*bgI.naturalHeight/bgI.naturalWidth);
-      c.drawImage(bgI,gCxP-bgW/2,gPy-bgH-130,bgW,bgH);
-    }
     _bmcDone=true;_bmcCtx=null;_bmcMap=null;
     _mapStage=G.stage;
     // GL 텍스처 청크 분할
@@ -13907,8 +13900,8 @@ function genGauntlet(fi){
 
   G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
   G.bossGate=_gateTiles;G.bossGateOpen=true;G.bossSealed=false;G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
-  // 보스게이트 충돌 오브젝트
-  if(_gateTiles.length>0){const _gcx=(Math.min(..._gateTiles.map(g=>g.x))+Math.max(..._gateTiles.map(g=>g.x)))/2;MAP_OBJS.push({type:'boss_gate_col',x:(_gcx+.5)*T,y:(_gateY-8)*T})}
+  // 보스게이트 충돌 오브젝트 — exit 위치(나무)와 동일
+  if(exits.length>0){const _exY=Math.min(...exits.map(e=>e.y));MAP_OBJS.push({type:'boss_gate_col',x:(bossCx+.5)*T,y:(_exY)*T})}
   // 전장의 안개 (Fog of War) 초기화
   G.spawnHoles=spawnHoles;
   }
@@ -14708,7 +14701,7 @@ function genFromTemplate(tmpl,si){
   G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
   G.bossGate=_gateTiles;G.bossGateOpen=true;G.bossSealed=false;
   G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
-  if(_gateTiles.length>0){const _gcx=(Math.min(..._gateTiles.map(g=>g.x))+Math.max(..._gateTiles.map(g=>g.x)))/2;MAP_OBJS.push({type:'boss_gate_col',x:(_gcx+.5)*T,y:(_gateY-8)*T})}
+  if(G.exits&&G.exits.length>0){const _exY2=Math.min(...G.exits.map(e=>e.y));MAP_OBJS.push({type:'boss_gate_col',x:(bossCx+.5)*T,y:(_exY2)*T})}
   G.spawnHoles=spawnHoles;
     // ── 에디터 배치 장식 오브젝트 → MAP_OBJS ──
   if(tmpl.objs){for(const o of tmpl.objs){
@@ -18814,6 +18807,7 @@ function update(){
       const _riftPool=SI_TO_HELL[rf.si]>=2?[0,2,4,6,10,12,14,19]:[0,2,4,6]; // 3장+: 그림자/광폭/날개/대형 추가
       const rEtype=_riftPool[~~(Math.random()*_riftPool.length)];
       const ne=mkEn(rf.x,rf.y,rf.si,rEtype,false);
+      if(!ne)continue;
       ne.elite=Math.min(3,2+~~(rf.si/15)); // tier 2~3 엘리트
       ne.mhp=~~(ne.mhp*(2+rf.si*0.05));ne.hp=ne.mhp;ne.eShield=ne.mhp;ne.eShieldMax=ne.mhp;
       ne.baseAtk=~~(ne.baseAtk*1.5);ne.atk=ne.baseAtk;
@@ -30081,12 +30075,17 @@ function draw(){
       X.strokeStyle='#44ff88';X.lineWidth=1;X.strokeRect(px+1,py+1,T-2,T-2);
     }else{X.fillStyle='rgba(80,80,80,.5)';X.fillRect(px+2,py+2,T-4,T-4)}
   }
-  // ── 던전 보스 게이트 입구 포탈 (투명 webp 회전 애니메이션) ──
+  // ── 던전 보스 게이트 입구 (나무 + 포탈) — 실시간 렌더 ──
   if(!G._bossArena&&G.exits.length>0&&G.bossGate&&G.bossGate.length>0&&G.bossAlive){
-    const _exMinX=Math.min(...G.exits.map(e=>e.x)),_exMaxX=Math.max(...G.exits.map(e=>e.x));
-    const _exMinY=Math.min(...G.exits.map(e=>e.y)),_exMaxY=Math.max(...G.exits.map(e=>e.y));
-    const _exCx=((_exMinX+_exMaxX)/2+.5)*T,_exCy=((_exMinY+_exMaxY)/2+.5)*T;
-    _drawPortal(X,_exCx,_exCy,250,_now,SI_TO_HELL[G.stage]);
+    const _exMinY=Math.min(...G.exits.map(e=>e.y));
+    const _treeCx=(G._bossCx+.5)*T;
+    const _treeCy=(_exMinY+.5)*T;
+    const _gtI=_bossGateImgs[SI_TO_HELL[G.stage]];
+    if(_gtI&&(_gtI.naturalWidth||_gtI.width)){
+      const _gtW=600,_gtH=~~(600*(_gtI.naturalHeight||_gtI.height)/(_gtI.naturalWidth||_gtI.width));
+      X.drawImage(_gtI,_treeCx-_gtW/2,_treeCy-_gtH/2,_gtW,_gtH);
+    }
+    _drawPortal(X,_treeCx,_treeCy+100,250,_now,SI_TO_HELL[G.stage]);
   }
   // tile=3 대문 장식은 맵 캐시에서 처리됨 (출구 타일이 진입 역할)
   // [GLOW-ORI] 발광 오브젝트 렌더링 — 비활성화
@@ -37114,10 +37113,10 @@ $('retryBtn').onclick=async()=>{
     G.spawnHoles=b.spawnHoles;G.rifts=b.rifts;
     G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;
     G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;G.stageCleared=false;G._deathSpawned=false;
-    // boss_gate_col 충돌 재생성 (MAP_OBJS 초기화 후 복원)
-    if(b.bossGate&&b.bossGate.length>0){
-      const _gcx2=(Math.min(...b.bossGate.map(g=>g.x))+Math.max(...b.bossGate.map(g=>g.x)))/2;
-      MAP_OBJS.push({type:'boss_gate_col',x:(_gcx2+.5)*T,y:(b._gateY-8)*T});
+    // boss_gate_col 충돌 재생성 — exit 위치 기준
+    if(b.exits&&b.exits.length>0){
+      const _exY3=Math.min(...b.exits.map(e=>e.y));
+      MAP_OBJS.push({type:'boss_gate_col',x:(b._bossCx+.5)*T,y:(_exY3)*T});
     }
     // 게이트 입구 (나무 입 부분 근처) 리스폰
     const _gx=(b._bossCx+.5)*T,_gy=(b._gateY+8+.5)*T;
