@@ -103232,24 +103232,25 @@ FIXED_MAPS[3]={
     {
       id:1, mw:200, mh:200,
       rooms:[
-        {id:"r5",type:"combat",cx:60,cy:160,shape:"ellipse",rx:14,ry:9,
+        {id:"b",type:"boss",cx:100,cy:20,shape:"ellipse",rx:18,ry:12,
+          pillars:[{dx:-9,dy:-5,w:3,h:3},{dx:9,dy:-5,w:3,h:3},{dx:-9,dy:5,w:3,h:3},{dx:9,dy:5,w:3,h:3}]},
+        {id:"r5",type:"combat",cx:60,cy:100,shape:"ellipse",rx:14,ry:9,
           spawns:[{dx:-4,dy:0,grade:2},{dx:4,dy:0,grade:2},{dx:0,dy:-3,grade:3}]},
-        {id:"r6",type:"combat",cx:140,cy:160,shape:"ellipse",rx:14,ry:9,
+        {id:"r6",type:"combat",cx:140,cy:100,shape:"ellipse",rx:14,ry:9,
           spawns:[{dx:-4,dy:0,grade:2},{dx:4,dy:0,grade:3},{dx:0,dy:3,grade:3}]},
-        {id:"r7",type:"combat",cx:100,cy:100,shape:"cross",rx:12,ry:8,armW:5,armH:4,
-          spawns:[{dx:-3,dy:-2,grade:3},{dx:3,dy:-2,grade:3},{dx:0,dy:3,grade:3},{dx:-5,dy:0,grade:3}]},
-        {id:"b",type:"boss",cx:100,cy:25,shape:"ellipse",rx:18,ry:12,
-          pillars:[{dx:-9,dy:-5,w:3,h:3},{dx:9,dy:-5,w:3,h:3},{dx:-9,dy:5,w:3,h:3},{dx:9,dy:5,w:3,h:3}]}
+        {id:"r7",type:"combat",cx:100,cy:155,shape:"cross",rx:12,ry:8,armW:5,armH:4,
+          spawns:[{dx:-3,dy:2,grade:3},{dx:3,dy:2,grade:3},{dx:0,dy:-3,grade:3},{dx:-5,dy:0,grade:3}]}
       ],
       corridors:[
+        {from:"b",to:"r5",width:9,style:"cave",waypoints:[{x:80,y:60}]},
+        {from:"b",to:"r6",width:9,style:"cave",waypoints:[{x:120,y:60}]},
         {from:"r5",to:"r7",width:8,style:"cave",waypoints:[{x:80,y:130}]},
-        {from:"r6",to:"r7",width:8,style:"cave",waypoints:[{x:120,y:130}]},
-        {from:"r7",to:"b",width:9,style:"cave",waypoints:[{x:100,y:60}]}
+        {from:"r6",to:"r7",width:8,style:"cave",waypoints:[{x:120,y:130}]}
       ],
       features:[{type:"alcove",x:30,y:130,r:4},{type:"alcove",x:170,y:130,r:4}],
-      corridorSpawns:[{x:80,y:130,grade:2},{x:120,y:130,grade:2},{x:100,y:60,grade:3}],
+      corridorSpawns:[{x:80,y:60,grade:2},{x:120,y:60,grade:3},{x:80,y:130,grade:3},{x:120,y:130,grade:3}],
       portals:[
-        {id:"p1to0",toZone:0,x:100,y:199,spawnX:100,spawnY:5,width:5}
+        {id:"p1to0",toZone:0,x:100,y:195,spawnX:100,spawnY:10,width:7}
       ]
     }
   ]

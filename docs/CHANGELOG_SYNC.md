@@ -92,3 +92,9 @@
 - test/ch1ProvidedDecoPlacement.test.js
 - test/mapStreamChunkLoading.test.js
 
+
+## 2026-04-03 17:30 (auto)
+- docs/4.1맵디?�인+?�정/EXODUSER_MAP_BIBLE_v3 (1).md
+- game.html
+- maps_data.js
+

@@ -11337,7 +11337,8 @@ function initMapObjects(){
   const _trList=[];
   const _trMinDist=150;
   const _trOk=(x,y)=>{for(const t of _trList){if(dst(x,y,t.x,t.y)<_trMinDist)return false}return _moOk(x,y)};
-  for(let _try=0;_try<800&&_trList.length<100;_try++){
+  const _trMax=G._isTileRLE?30:G._zones?50:100; // tileRLE: 30, 존: 50
+  for(let _try=0;_try<800&&_trList.length<_trMax;_try++){
     const f=_trFloors[~~(_trSeed()*_trFloors.length)];
     if(!f)continue;
     const px=f.x*T+T/2,py=f.y*T+T/2;
@@ -11394,7 +11395,8 @@ function initMapObjects(){
     const _normalDeco=_baseDeco.filter(d=>!d.large&&!d.scatter);
     let _lgPlaced=0;
     if(_largeDeco.length>0){
-      const _lgMax=Math.min(60,Math.max(5,~~(_dcFloors.length/80)));
+      const _lgBase=Math.min(60,Math.max(5,~~(_dcFloors.length/80)));
+      const _lgMax=G._isTileRLE?0:G._zones?~~(_lgBase/2):_lgBase; // tileRLE: 대형 에셋 없음, 존 맵: 절반
       const _lgMinDist=500;
       // 벽 인접 바닥(사이드) vs 중앙 분리 — 사이드 80% 먼저
       const _lgSide=[],_lgCenter=[];
@@ -11559,15 +11561,21 @@ function initMapObjects(){
         MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
         _providedWallPlaced=1;
       }
-      // 1-1 같이 벽 셀이 없으면 바닥에 10칸당 1개, 최대 20개까지 깐다
+      // 1-1 같이 벽 셀이 없으면 바닥에 강제로 깐다 (기본 20개)
       if(_providedWallPlaced===0&&_wallCells.length===0&&G.stage===1){
-        const _fbTarget=Math.min(20,Math.max(1,~~(_dcFloors.length/10)));
-        const _fbMinDist=260;
-        const _fbSameTypeDist=420;
+        const _fbTarget=Math.max(20,Math.min(60,~~(_dcFloors.length/150)));
+        const _fbMinDist=220;
+        const _fbSameTypeDist=360;
+        const _fbPool=_providedFloorDeco.length>0?_providedFloorDeco:_providedWallDeco;
         const _fbPlaced=[];
-        for(let pi=0;pi<_fbTarget*80&&_providedWallPlaced<_fbTarget&&_dcFloors.length>0;pi++){
-          const ci=~~(_dcSeed()*_dcFloors.length);
-          const cell=_dcFloors[ci];
+        // 바닥 후보를 다시 모은다 (기존 _dcFloors는 다른 배치용이므로 그대로 둔다)
+        const _fbFloors=_dcFloors.length>0?_dcFloors.slice():[];
+        if(_fbFloors.length===0){
+          for(let y=2;y<G.mh-2;y++)for(let x=2;x<G.mw-2;x++){if(map[y][x]===0)_fbFloors.push({x,y})}
+        }
+        for(let pi=0;pi<_fbTarget*80&&_providedWallPlaced<_fbTarget&&_fbFloors.length>0;pi++){
+          const ci=~~(_dcSeed()*_fbFloors.length);
+          const cell=_fbFloors[ci];
           const px=cell.x*T+T/2,py=cell.y*T+T/2;
           let ok=true;
           for(const sp of _fbPlaced){if(dst(px,py,sp.x,sp.y)<_fbMinDist){ok=false;break}}
@@ -11577,14 +11585,14 @@ function initMapObjects(){
             if(dst(px,py,mo.x,mo.y)<Math.max(150,(moSz+220)/2)){ok=false;break}
           }
           if(!ok)continue;
-          let pick=_providedWallDeco[0];
+          let pick=_fbPool[0];
           for(let _try=0;_try<8;_try++){
-            pick=_providedWallDeco[~~(_dcSeed()*_providedWallDeco.length)];
+            pick=_fbPool[~~(_dcSeed()*_fbPool.length)];
             if(_nearbyTypeCount(_fbPlaced,pick.id,px,py,_fbSameTypeDist)<1)break;
           }
           MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
           _fbPlaced.push({type:pick.id,x:px,y:py});
-          _dcFloors.splice(ci,1);
+          _fbFloors.splice(ci,1);
           _providedWallPlaced++;
         }
       }
@@ -11592,7 +11600,8 @@ function initMapObjects(){
     // ── scatter 에셋: 방 전체 랜덤 배치 (벽 무관) ──
     const _scatterDeco=_baseDeco.filter(d=>d.scatter);
     if(_scatterDeco.length>0){
-      const _scMax=Math.min(30,Math.max(3,~~(_dcFloors.length/100)));
+      const _scBase=Math.min(30,Math.max(3,~~(_dcFloors.length/100)));
+      const _scMax=G._isTileRLE?0:G._zones?~~(_scBase/2):_scBase; // tileRLE: scatter 없음
       const _scMinDist=500; // scatter끼리 500px 이상 간격
       const _scPlacedList=[]; // scatter 전용 좌표 목록
       let _scPlaced=0;
@@ -11626,7 +11635,8 @@ function initMapObjects(){
       console.log('[SCATTER] placed:'+_scPlaced);
     }
     // ── 2차: 일반(소/중형) 에셋 배치 ──
-    const _dcCnt=Math.max(12,Math.min(100,~~(_dcFloors.length/40)));
+    const _dcBase=Math.max(12,Math.min(100,~~(_dcFloors.length/40)));
+    const _dcCnt=G._isTileRLE?~~(_dcBase/3):G._zones?~~(_dcBase/2):_dcBase; // tileRLE: 1/3, 존: 절반
     let _dcPlaced=0;
     for(let di=0;di<_dcCnt&&_dcFloors.length>0;di++){
       const _fi=~~(_dcSeed()*_dcFloors.length);
@@ -14212,6 +14222,10 @@ function _buildZone0FromGrid(){
   tmpl.rooms=tmpl.rooms.filter(r=>r.type!=='boss');
   // 보스 연결 복도 제거
   tmpl.corridors=(tmpl.corridors||[]).filter(c=>c.from!=='b'&&c.to!=='b');
+  // 시작방이 없으면 첫 번째 방을 시작방으로 지정 + 하단(6시)으로 이동
+  let _stRm=tmpl.rooms.find(r=>r.type==='start');
+  if(!_stRm){_stRm=tmpl.rooms[0];_stRm.type='start'}
+  _stRm.cx=~~(_mw/2);_stRm.cy=_mh-15; // 하단 중앙(6시)
   // 좌표 스케일
   for(const r of tmpl.rooms){r.cx=_tx(r.cx);r.cy=_ty(r.cy);r.rx=Math.max(r.rx||5,~~((r.rx||5)*Math.min(_sx,_sy)));r.ry=Math.max(r.ry||5,~~((r.ry||5)*Math.min(_sx,_sy)));
     if(r.spawns)for(const sp of r.spawns){sp.dx=~~(sp.dx*Math.min(_sx,_sy));sp.dy=~~(sp.dy*Math.min(_sx,_sy))}
@@ -14228,8 +14242,19 @@ function _buildZone0FromGrid(){
     for(let i=1;i<_dstLen;i++){if(_dst[i]===_runV)_runC++;else{tmpl.tileRLE.push(_runV,_runC);_runV=_dst[i];_runC=1}}
     tmpl.tileRLE.push(_runV,_runC);
   }
-  // 포탈 추가 (맵 상단 중앙)
-  tmpl.portals=[{id:"p0to1",toZone:1,x:100,y:2,spawnX:100,spawnY:195,width:5}];
+  // 포탈 추가 — 가장 상단 방 위쪽에 배치 (접근 가능하도록)
+  // ═══ 규칙: 아래→위 진행, 시작(6시 하단) → 포탈(12시 상단) ═══
+  // 가장 상단 방을 찾아서 그 위에 포탈 배치
+  let _topRoom=tmpl.rooms[0];
+  for(const r of tmpl.rooms){if(r.type!=='start'&&r.cy<_topRoom.cy)_topRoom=r}
+  const _portalX=_topRoom.cx;
+  const _portalY=Math.max(6,_topRoom.cy-(_topRoom.ry||8)-6);
+  // 포탈 주변 바닥 확보용 추가 복도 + 포탈 방
+  tmpl.corridors.push({from:_topRoom.id,to:"_portal",width:8,style:"cave"});
+  tmpl.rooms.push({id:"_portal",type:"combat",cx:_portalX,cy:_portalY,shape:"ellipse",rx:5,ry:4,spawns:[]});
+  // 존1에서 플레이어는 하단(6시)에 나타남
+  tmpl.portals=[{id:"p0to1",toZone:1,x:_portalX,y:_portalY,spawnX:100,spawnY:190,width:7}];
+  console.log('[ZONE0] portal at ('+_portalX+','+_portalY+') top of map, start at bottom');
   _zone0Cache=tmpl;
   console.log('[ZONE0] built from grid 200x200, rooms='+tmpl.rooms.length);
   return JSON.parse(JSON.stringify(tmpl));
@@ -14290,7 +14315,15 @@ function _loadZone(zid,sx,sy){
     worldItems=saved.items;G.spawnHoles=saved.spawnHoles;G.kills=saved.kills;
   }
   // 플레이어 위치
-  P.x=(sx+.5)*T;P.y=(sy+.5)*T;P.s='idle';P.iframes=90;P.kb={x:0,y:0};
+  // 스폰 위치 보정: 벽이면 포탈 근처 방으로 이동
+  let _spX=sx,_spY=sy;
+  if(!G.map[_spY]||G.map[_spY][_spX]===1||G.map[_spY][_spX]===undefined){
+    // 포탈에서 가장 가까운 방 중심으로 폴백
+    let _nrD=Infinity;
+    for(const r of G.rooms){const d=Math.abs(r.cx-sx)+Math.abs(r.cy-sy);if(d<_nrD){_nrD=d;_spX=r.cx;_spY=r.cy}}
+    console.log('[ZONE] spawn corrected ('+sx+','+sy+') → ('+_spX+','+_spY+')');
+  }
+  P.x=(_spX+.5)*T;P.y=(_spY+.5)*T;P.s='idle';P.iframes=90;P.kb={x:0,y:0};
   G.cam.x=P.x;G.cam.y=P.y;
   // 펫 리셋
   if(G.pets){for(const k in G.pets){G.pets[k].x=P.x;G.pets[k].y=P.y;G.pets[k].tx=P.x;G.pets[k].ty=P.y}}
@@ -14300,8 +14333,10 @@ function _loadZone(zid,sx,sy){
   G.bossGateOpen=true;G.bossSealed=false;G.stageCleared=false;
   _shDirty=true;
   if(!_skullWallPat)_buildSkullWallPat();
-  // 리빌드
-  buildMapCache();initTorchLights();initMapObjects();
+  // 리빌드 (존 전환: 분산 빌드 강제 완료)
+  buildMapCache();
+  while(!_bmcDone){_tickBuildMapCache()}
+  initTorchLights();initMapObjects();
   // 트랜지션 해제
   setTimeout(()=>{if(_zt){_zt.style.opacity='0';_zt.style.pointerEvents='none'}},300);
   console.log('[ZONE] loaded zone '+zid+' at ('+sx+','+sy+') ens='+ens.length);
@@ -14614,10 +14649,24 @@ function genFromTemplate(tmpl,si){
     G._portals=tmpl.portals;
     for(const p of tmpl.portals){
       const hw=~~((p.width||3)/2);
-      // 포탈 위치 + 주변 3타일 바닥 확보
-      for(let dy=-2;dy<=2;dy++)for(let dx=-hw-1;dx<=hw+1;dx++){
+      // 포탈 위치 + 주변 6타일 넓게 바닥 확보
+      for(let dy=-6;dy<=6;dy++)for(let dx=-hw-3;dx<=hw+3;dx++){
         const tx=p.x+dx,ty=p.y+dy;
         if(tx>=1&&tx<mw-1&&ty>=1&&ty<mh-1&&map[ty][tx]===1)map[ty][tx]=0;
+      }
+      // 포탈에서 가장 가까운 방까지 강제 복도 뚫기
+      let _nearRm=null,_nearD=Infinity;
+      for(const r of rooms){const d=Math.abs(r.cx-p.x)+Math.abs(r.cy-p.y);if(d<_nearD){_nearD=d;_nearRm=r}}
+      if(_nearRm){
+        const _dx=_nearRm.cx-p.x,_dy=_nearRm.cy-p.y;
+        const _steps=Math.max(Math.abs(_dx),Math.abs(_dy));
+        for(let s=0;s<=_steps;s++){
+          const fx=p.x+~~(_dx*s/_steps),fy=p.y+~~(_dy*s/_steps);
+          for(let w=-3;w<=3;w++){
+            const tx=fx+w,ty=fy;if(tx>=1&&tx<mw-1&&ty>=1&&ty<mh-1&&map[ty][tx]===1)map[ty][tx]=0;
+            const tx2=fx,ty2=fy+w;if(tx2>=1&&tx2<mw-1&&ty2>=1&&ty2<mh-1&&map[ty2][tx2]===1)map[ty2][tx2]=0;
+          }
+        }
       }
       for(let dx=-hw;dx<=hw;dx++){
         const tx=p.x+dx,ty=p.y;
@@ -14646,7 +14695,7 @@ function genFromTemplate(tmpl,si){
 function genBossArena(si){
   const _BOSS_ARENA_TYPE=[0,1,2,3,4,0,1];
   const at=_BOSS_ARENA_TYPE[SI_TO_HELL[si]||0];
-  const mw=50,mh=42;
+  const mw=64,mh=54;
   const map=[];
   for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
   const cx=~~(mw/2),cy=~~(mh/2);
