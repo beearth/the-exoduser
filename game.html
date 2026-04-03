@@ -1230,7 +1230,7 @@ async function dbSave(){
     if(error){if(!IS_ELECTRON)console.error('[DB] Save error:',error.message)}
     else _lastSaveTime=Date.now();
   }catch(e){if(!IS_ELECTRON)console.error('[DB] Save exception:',e)}
-  _saving=false;if(_pendingForce){_pendingForce=false;dbSave()}
+  _saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}
 }
 
 // ═══ Load game state from DB ═══
@@ -1556,8 +1556,11 @@ function dbSaveNow(){
 let _pendingForce=false;
 function dbSaveForce(){
   if(!_dbReady)return;
-  if(_saveDebounce)clearTimeout(_saveDebounce);
-  _lastSaveTime=Date.now();
+  // 최소 5초 간격 강제 (전투 중 저장 스팸 방지)
+  const _now2=Date.now();
+  if(_now2-_lastSaveTime<5000){if(!_saveDebounce)_saveDebounce=setTimeout(()=>{_saveDebounce=null;dbSaveForce()},5000-(_now2-_lastSaveTime));return}
+  if(_saveDebounce)clearTimeout(_saveDebounce);_saveDebounce=null;
+  _lastSaveTime=_now2;
   if(_saving){_pendingForce=true;return}
   dbSave();
 }
@@ -4039,9 +4042,7 @@ const _decorImgs={};
     });
   }
 })();
-// ── 1장 벽 장식: 썩은 나무 이미지 ──
 const _wallTreeImgs={};
-['assets/map/ch1/collision/rotten_tree.png'].forEach(s=>{const i=new Image();i.src=s;i.onload=()=>{_wallTreeImgs[s]=i}});
 // ── 1-2 해골 벽 타일 (단일) ──
 const _skullWallImg=new Image();_skullWallImg.src='assets/map/ch2/skull_wall_tile.png';
 const _wallEdgeImg=new Image();_wallEdgeImg.src='assets/map/ch2/wall_edge_tile.png';
@@ -6343,6 +6344,12 @@ const _CH_DECO={
     {id:'m_fleshwall_b90',file:'flesh_wall_b.png',sz:300,scatter:1,rot:90},
     {id:'m_fleshwall_b180',file:'flesh_wall_b.png',sz:300,scatter:1,rot:180},
     {id:'m_fleshwall_b270',file:'flesh_wall_b.png',sz:300,scatter:1,rot:270},
+    {id:'m_usergore1',file:'provided_gore_01.png',sz:220,userProvided:1,stageMin:1,stageMax:4},
+    {id:'m_usergore2',file:'provided_gore_02.png',sz:220,userProvided:1,stageMin:1,stageMax:4},
+    {id:'m_usergore3',file:'provided_gore_03.png',sz:220,userProvided:1,stageMin:1,stageMax:4},
+    {id:'m_usergore4',file:'provided_gore_04.png',sz:220,userProvided:1,stageMin:1,stageMax:4},
+    {id:'m_usergore5',file:'provided_gore_05.png',sz:220,userProvided:1,stageMin:1,stageMax:4},
+    {id:'m_usergore6',file:'provided_gore_06.png',sz:220,userProvided:1,stageMin:1,stageMax:4},
   ],
 };
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
@@ -6432,7 +6439,7 @@ const _OBJ_META={
   'frozen_bones':{sz:32},
   'lava_crack':{sz:40},'fire_pillar':{sz:64,col:1},
   'rune_mark':{sz:40},
-  'bones':{sz:32},'rotten_tree':{sz:64,col:1},'vine_roots':{sz:40},
+  'bones':{sz:32},'vine_roots':{sz:40},
   'corpse':{sz:40},'eyeball':{sz:24},'eye1_bloodshot':{sz:24},'eye2_terror':{sz:24},
   'poison_puddle':{sz:32},'glow_flower_blue':{sz:32,light:1},'glow_flower_yellow':{sz:32,light:1},
   'centipede':{sz:40},'larva':{sz:32},'minibug':{sz:24},'chitin_debris':{sz:32},
@@ -6453,6 +6460,8 @@ const _OBJ_META={
   'm_skull_altar':{sz:300,col:1,large:1},'m_obelisk':{sz:300,col:1,large:1},'m_flesh_ball':{sz:270,col:1,large:1},
   'm_penta_circle':{sz:350,col:1,large:1},'m_flesh_maw':{sz:200,col:1,large:1},'m_skull_totem':{sz:240,col:1,large:1,keepAR:1},
   'm_bone_arch':{sz:300,col:1,large:1},'m_eye_tree':{sz:350,col:1,large:1},'m_throne':{sz:250,col:1,large:1},
+  'm_usergore1':{sz:220,keepAR:1},'m_usergore2':{sz:220,keepAR:1},'m_usergore3':{sz:220,keepAR:1},
+  'm_usergore4':{sz:220,keepAR:1},'m_usergore5':{sz:220,keepAR:1},'m_usergore6':{sz:220,keepAR:1},
 };
 // _CH_DECO 프리로드
 for(const[ch,list]of Object.entries(_CH_DECO)){
@@ -7052,7 +7061,7 @@ function doHitFlash(col,strength){_hitFlash.a=Math.min(.5,(_hitFlash.a||0)+stren
 // ═══ [BIG-IMPACT] 강타 임팩트 (보스 히트/피니셔 전용) ═══
 function bigImpact(x,y,el,ang){
   const ec=ELC[el]||'#ff6622';
-  if(_impacts.length>=24){const im=_impacts[_impNext];im.x=x;im.y=y;im.el=el;im.ang=ang||0;im.t=0;im.ml=24;im.sz=1.8;im.type='explosion';_impNext=(_impNext+1)%24}
+  if(_impacts.length>=12){const im=_impacts[_impNext];im.x=x;im.y=y;im.el=el;im.ang=ang||0;im.t=0;im.ml=24;im.sz=1.8;im.type='explosion';_impNext=(_impNext+1)%12}
   else _impacts.push({x,y,el,ang:ang||0,t:0,ml:24,sz:1.8,type:'explosion'});
   // 스파크 선 6발 (tp=2)
   for(let i=0;i<6;i++){const a=(ang||0)+(-0.8+i*0.32);const spd=2.5+Math.random()*2.5;poolPart(x,y,Math.cos(a)*spd,Math.sin(a)*spd,i%2?ec:'#ffffff',3+Math.random()*2,14+Math.random()*8,2,a,0.02)}
@@ -10969,11 +10978,11 @@ function _addGibs(e,boomX,boomY,boomR){
 let _impPerFrame=0,_txtPerFrame=0;
 const _TXT_BUDGET=12; // 프레임당 최대 데미지 텍스트 수
 function _addImpact(x,y,el,ang,type,isBoss,noFlash){
-  // 프레임당 임팩트 4개 초과 시 경량 모드 (파티클/임팩트 생략)
   _impPerFrame++;
-  const _lite=_impPerFrame>4;
+  // 프레임당 임팩트 2개까지만 생성, 보스 히트는 항상 생성
+  const _lite=_impPerFrame>2&&!isBoss;
   if(!_lite){
-    if(_impacts.length>=24){const im=_impacts[_impNext];im.x=x;im.y=y;im.el=el;im.ang=ang;im.t=0;im.ml=16;im.sz=isBoss?2.5:1.0;im.type=type||'slash';_impNext=(_impNext+1)%24}
+    if(_impacts.length>=12){const im=_impacts[_impNext];im.x=x;im.y=y;im.el=el;im.ang=ang;im.t=0;im.ml=16;im.sz=isBoss?2.5:1.0;im.type=type||'slash';_impNext=(_impNext+1)%12}
     else _impacts.push({x:x,y:y,el:el,ang:ang,t:0,ml:16,sz:isBoss?2.5:1.0,type:type||'slash'});
     if(type==='wwSlash'){} // 회전참: 별도 버스트 없음 (검정 슬래시 스프라이트만)
     else if(el===4)spawnElecBurst(x,y,isBoss?0.18:0.1);
@@ -11040,7 +11049,8 @@ function _autoChunkConfig(mw,mh){
   else{_STREAM_CHUNK=32;_STREAM_MAX_CHUNKS=64}
 }
 function _shouldStreamMapCache(mw,mh,texLimit){
-  return (mw*mh)>=1000*1000;
+  // 픽셀 기준: mw*T > texLimit이면 스트리밍 (300×40=12000 < 16384 → 정적 캐시)
+  return mw*T>texLimit||mh*T>texLimit;
 }
 // ═══ 맵 초기화 분산 처리 (fps 스파이크 방지) ═══
 // ═══ 백그라운드 분산 초기화 (게임 즉시 시작, 뒤에서 서서히 처리) ═══
@@ -11361,15 +11371,18 @@ function initMapObjects(){
   }
 
   // ── 챕터별 맵 장식 자동 배치 ──
-  const _chDeco=_CH_DECO[hell];
+  const _chDecoRaw=_CH_DECO[hell];
+  const _chDeco=_chDecoRaw?.filter(d=>(!d.stageMin||G.stage>=d.stageMin)&&(!d.stageMax||G.stage<=d.stageMax))||[];
   if(_chDeco&&_chDeco.length>0){
     const _dcSeed=_tseed(G.stage*13+7,hell*97+3);
     // 바닥 타일 수집
     const _dcFloors=[];
     for(let y=3;y<G.mh-3;y++)for(let x=3;x<G.mw-3;x++){if(map[y][x]===0)_dcFloors.push({x,y})}
+    const _providedDeco=_chDeco.filter(d=>d.userProvided);
+    const _baseDeco=_chDeco.filter(d=>!d.userProvided);
     // ── 1차: 대형 에셋 우선 배치 (맵당 1~2개, 넓은 간격) ──
-    const _largeDeco=_chDeco.filter(d=>d.large);
-    const _normalDeco=_chDeco.filter(d=>!d.large);
+    const _largeDeco=_baseDeco.filter(d=>d.large);
+    const _normalDeco=_baseDeco.filter(d=>!d.large&&!d.scatter);
     let _lgPlaced=0;
     if(_largeDeco.length>0){
       const _lgMax=Math.min(60,Math.max(5,~~(_dcFloors.length/80)));
@@ -11453,8 +11466,44 @@ function initMapObjects(){
       }
       console.log('[UNIQUE_OBJ] placed:'+_uniPlaced+'/12');
     }
+    let _providedPlaced=0;
+    const _providedTarget=Math.min(20,_providedDeco.length?20:0);
+    if(_providedTarget>0){
+      const _providedMinDist=260;
+      const _providedSameTypeDist=420;
+      const _providedPlacedList=[];
+      for(let pi=0;pi<_providedTarget*80&&_providedPlaced<_providedTarget&&_dcFloors.length>0;pi++){
+        const fi=~~(_dcSeed()*_dcFloors.length);
+        const f=_dcFloors[fi];
+        const px=f.x*T+T/2,py=f.y*T+T/2;
+        let wallOk=true;
+        for(let dy=-2;dy<=2&&wallOk;dy++)for(let dx=-2;dx<=2&&wallOk;dx++){
+          const tx=f.x+dx,ty=f.y+dy;
+          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0)wallOk=false;
+        }
+        if(!wallOk)continue;
+        let ok=true;
+        for(const sp of _providedPlacedList){if(dst(px,py,sp.x,sp.y)<_providedMinDist){ok=false;break}}
+        if(!ok)continue;
+        for(const mo of MAP_OBJS){
+          const moMeta=_OBJ_META[mo.type];
+          const moSz=moMeta?moMeta.sz||32:32;
+          if(dst(px,py,mo.x,mo.y)<Math.max(140,(moSz+220)/2)){ok=false;break}
+        }
+        if(!ok)continue;
+        let pick=_providedDeco[0];
+        for(let _try=0;_try<8;_try++){
+          pick=_providedDeco[~~(_dcSeed()*_providedDeco.length)];
+          if(_nearbyTypeCount(_providedPlacedList,pick.id,px,py,_providedSameTypeDist)<1)break;
+        }
+        MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
+        _providedPlacedList.push({type:pick.id,x:px,y:py});
+        _dcFloors.splice(fi,1);
+        _providedPlaced++;
+      }
+    }
     // ── scatter 에셋: 방 전체 랜덤 배치 (벽 무관) ──
-    const _scatterDeco=_chDeco.filter(d=>d.scatter);
+    const _scatterDeco=_baseDeco.filter(d=>d.scatter);
     if(_scatterDeco.length>0){
       const _scMax=Math.min(30,Math.max(3,~~(_dcFloors.length/100)));
       const _scMinDist=500; // scatter끼리 500px 이상 간격
@@ -11509,7 +11558,7 @@ function initMapObjects(){
       for(const mo2 of MAP_OBJS){if((mo2.type==='bonfire'||mo2.type==='altar'||mo2.type==='trap')&&dst(_px,_py,mo2.x,mo2.y)<100){_tooClose=true;break}}
       if(_tooClose){_dcFloors.splice(_fi,1);di--;continue}
       // 일반 에셋만 선택 (대형 제외, 화면 내 동일 타입 2개 제한)
-      const _pool=_normalDeco.length>0?_normalDeco:_chDeco;
+      const _pool=_normalDeco.length>0?_normalDeco:_baseDeco;
       let _dObj;
       for(let _try=0;_try<8;_try++){
         _dObj=_pool[~~(_dcSeed()*_pool.length)];
@@ -11519,7 +11568,7 @@ function initMapObjects(){
       MAP_OBJS.push({type:_dObj.id,x:_px,y:_py,hell});
       _dcFloors.splice(_fi,1);_dcPlaced++;
     }
-    console.log('[DECO] ch'+(hell+1)+' auto-placed:'+_dcPlaced+' large:'+_lgPlaced);
+    console.log('[DECO] ch'+(hell+1)+' auto-placed:'+_dcPlaced+' large:'+_lgPlaced+' provided:'+_providedPlaced);
   }
   // ── 벽 눈깔 에셋 배치 ──
   if(hell===0||hell===1){
@@ -11997,11 +12046,6 @@ function buildMapCache(){
       // 4) 밝은 이끼 하이라이트
       if(R()<.3){c.fillStyle=`rgba(50,${90+~~(R()*25)},30,${.08+R()*.06})`;
         c.beginPath();c.ellipse(px+R()*T,py+R()*T,3+R()*5,2+R()*4,R()*Math.PI,0,Math.PI*2);c.fill()}
-      // 5) 썩은 나무 이미지 (랜덤 배치)
-      if(R()<.12){const _wtSrc='assets/map/ch1/collision/rotten_tree.png';const _wtI=_wallTreeImgs[_wtSrc];
-        if(_wtI){const _wtS=.6+R()*.4;const _wtW=_wtI.width*_wtS,_wtH=_wtI.height*_wtS;
-          c.globalAlpha=.7+R()*.3;c.save();c.translate(px+T/2,py+T/2);if(R()<.5)c.scale(-1,1);
-          c.drawImage(_wtI,-_wtW/2,-_wtH/2,_wtW,_wtH);c.restore();c.globalAlpha=1}}
     }else if(hell===1){
       // 벌레굴: 벽 상단 — 해골 패턴은 바탕에서 이미 깔림, 밝기 변화만
       c.fillStyle=`rgba(0,0,0,${.03+R()*.06})`;c.fillRect(px,py,T,T);
@@ -20067,7 +20111,7 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
     // 회전참 피격 스택 카운트만 유지 (데미지 보너스 제거됨)
     if(_isWW){e._wwStk=Math.min(20,(e._wwStk||0)+1);e._wwStkT=60;}
     hurtE(e,dmg,ang,true,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0:1.5,noPoise:_isWW,poiseHit:type==='shield',poiseSkill:type==='shield'},el);_hitCount++;
-    if(_isWW&&_hitCount<=16){_impacts.push({x:e.x,y:e.y,el:el,ang:ang,t:0,ml:16,sz:0.8,type:'slash'});} // 회전참: 맞은 적 위치에 물리 임팩트 (최대16)
+    if(_isWW&&_hitCount<=10){_impacts.push({x:e.x,y:e.y,el:el,ang:ang,t:0,ml:16,sz:0.8,type:'slash'});} // 회전참: 맞은 적 위치에 물리 임팩트 (최대10)
       // parryBank는 적 공격 흡수로만 축적 (hitArc 공격 축적 삭제)
       if(!_isWW){
       // 칼등치기만 포이즈 데미지 (데미지의 200%)
@@ -29615,10 +29659,9 @@ function draw(){
     if(++_streamEvictFrame>=60&&_streamChunkCnt>_STREAM_MAX_CHUNKS){
       _streamEvictFrame=0;
       const _margin=3;
-      const _keys=Object.keys(_streamChunks);
-      for(let _ki=_keys.length-1;_ki>=0;_ki--){
-        const _ek=_keys[_ki];const _ec=_streamChunks[_ek];if(!_ec)continue;
-        const _ep=_ek.split('_'),_ecx=+_ep[0],_ecy=+_ep[1];
+      for(const _ek in _streamChunks){
+        const _ec=_streamChunks[_ek];if(!_ec)continue;
+        const _ui=_ek.indexOf('_'),_ecx=+_ek.substring(0,_ui),_ecy=+_ek.substring(_ui+1);
         if(_ecx<_stx0-_margin||_ecx>_stx1+_margin||_ecy<_sty0-_margin||_ecy>_sty1+_margin){
           if(_ec.bmp)try{_ec.bmp.close()}catch(e){}
           delete _streamChunks[_ek];_streamChunkCnt--;_streamVpDirty=true;
@@ -29626,12 +29669,15 @@ function draw(){
       }
     }
     // 카메라 2타일 이상 이동 시만 합성 캔버스 갱신
-    if(_streamVpDirty||_streamVpWorldX!==_drawX||_streamVpWorldY!==_drawY||_streamVpW!==~~_vpW||_streamVpH!==~~_vpH){
+    // 뷰포트 합성: 카메라 3타일 이상 이동 시만 갱신
+    const _vpMoved=Math.abs(_streamVpWorldX-_drawX)>T*3||Math.abs(_streamVpWorldY-_drawY)>T*3;
+    if(_streamVpDirty||_vpMoved||!_streamVpCvs){
       _streamVpWorldX=_drawX;_streamVpWorldY=_drawY;_streamVpW=~~_vpW;_streamVpH=~~_vpH;_streamVpDirty=false;
-      if(!_streamVpCvs||_streamVpCvs.width!==~~_vpW||_streamVpCvs.height!==~~_vpH){
-        _streamVpCvs=document.createElement('canvas');_streamVpCvs.width=~~_vpW;_streamVpCvs.height=~~_vpH;
-        _streamVpCtx=_streamVpCvs.getContext('2d');_streamVpCtx.imageSmoothingEnabled=false;
+      // 뷰포트 캔버스 1회 할당, 크기 변경 시에만 리사이즈
+      if(!_streamVpCvs){
+        _streamVpCvs=document.createElement('canvas');_streamVpCtx=_streamVpCvs.getContext('2d');_streamVpCtx.imageSmoothingEnabled=false;
       }
+      if(_streamVpCvs.width!==~~_vpW||_streamVpCvs.height!==~~_vpH){_streamVpCvs.width=~~_vpW;_streamVpCvs.height=~~_vpH}
       _streamVpCtx.clearRect(0,0,_streamVpCvs.width,_streamVpCvs.height);
       const _offX=_drawX,_offY=_drawY;
       for(let _scy=_sty0;_scy<=_sty1;_scy++)for(let _scx=_stx0;_scx<=_stx1;_scx++){
@@ -32078,11 +32124,11 @@ function draw(){
   X.restore();
   const _tDP3=performance.now();
   // ── 히트 임팩트 렌더 (경량화: GPU=fillRect, 레이어 축소) ──
-  if(_impacts.length>24)_impacts.length=24;
+  if(_impacts.length>12)_impacts.length=12;
   if(_impacts.length>0){
     X.save();X.globalCompositeOperation='lighter';
     const _impGpu=_useGPU||_useGL;
-    const _IMP_DRAW_MAX=8;let _impDrawN=0;
+    const _IMP_DRAW_MAX=4;let _impDrawN=0;
     for(let ii=0;ii<_impacts.length;ii++){
       if(_impDrawN>=_IMP_DRAW_MAX)break;
       const im=_impacts[ii];
@@ -35280,8 +35326,10 @@ function drawP(){
   _dpS6=performance.now(); // S6=스킬이펙트+스프라이트+무기 끝
   // ══ Player projectiles — 트레일 + 글로우 + 본체 ══
   // 트레일 (OPT.trail)
-  if(OPT.trail){for(let _ppi=0;_ppi<pProjs.length;_ppi++){const p=pProjs[_ppi];
+  const _PP_DRAW_MAX=60;
+  if(OPT.trail){let _trDrw=0;for(let _ppi=0;_ppi<pProjs.length;_ppi++){const p=pProjs[_ppi];
     if(p.x<_vl-20||p.x>_vr+20||p.y<_vt-20||p.y>_vb+20)continue;
+    if(++_trDrw>_PP_DRAW_MAX)break;
     if(!p._trail||p._trail.length<2)continue;
     const ac=ELC[p.el]||'#fff';const _trSt=_getSparkStamp(ac);
     const _tLen=Math.min(p._trail.length,3);
@@ -35295,8 +35343,10 @@ function drawP(){
   }}
   // Additive 글로우 제거됨 (alpha .001~.003 = 보이지 않음, compositeOp 전환 비용만 낭비)
 
+  let _ppDrawN=0;
   for(let _ppi3=0;_ppi3<pProjs.length;_ppi3++){const p=pProjs[_ppi3];
     if(p.x<_vl-20||p.x>_vr+20||p.y<_vt-20||p.y>_vb+20)continue; // 화면 밖 스킵
+    if(++_ppDrawN>_PP_DRAW_MAX)break; // 프레임당 투사체 렌더 캡
     if(p._sprFr==null)p._sprFr=Math.random()*8;p._sprFr+=.15;
     const ang=Math.atan2(p.vy,p.vx);const ac=p.plagueBlade?'#cc0033':(ELC[p.el]||'#fff');const ag=p.plagueBlade?'#880022':(ELG2[p.el]||'#fff');
     const fa=Math.min(1,1-p.dist/p.maxDist*.3);
@@ -36908,7 +36958,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
       if(j.ok){_lastSaveTime=Date.now();if(!IS_ELECTRON)console.log('[LOCAL] saved -> saves/'+_SLOT+'.json')}
       else{if(!IS_ELECTRON)console.error('[LOCAL] Save failed:',j.error)}
     }catch(e){if(!IS_ELECTRON)console.error('[LOCAL] Save failed:',e)}
-    finally{_saving=false;if(_pendingForce){_pendingForce=false;dbSave()}}
+    finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
   };
 
   // 초기화 (게임 시작 전 세이브 먼저 로드)
@@ -37028,7 +37078,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
       localStorage.setItem(_LS_KEY,JSON.stringify(saveData));
       _lastSaveTime=Date.now();
     }catch(e){console.warn('[WEB] Save failed:',e)}
-    finally{_saving=false;if(_pendingForce){_pendingForce=false;dbSave()}}
+    finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
   };
   showBootLoading('맵과 몬스터 불러오는 중...');
   setBootLoading(25,'기본 데이터 준비 중...');

@@ -10,7 +10,6 @@
   - `test/ch1FloorSoilRestore.test.js`
 - 문서:
   - `docs/4.1맵디자인+설정/CH1_녹색노이즈_버그리포트.md`
-  - `docs/4.1맵디자인+설정/맵베이스세팅.md`
 - 변경:
   - CH1 바닥 녹색 노이즈의 실제 원인이 `buildMapCache()`의 `Pass 4` ambient radial glow였다는 점을 문서화
   - 최종 수정과 회귀 테스트 위치를 기록
@@ -49,3 +48,19 @@
   - 커밋 전 `docs-sync-check.ps1 -Staged` 실행으로 문서 누락 차단
   - 푸시는 고정 `main` 대신 현재 브랜치의 `origin HEAD` 기준 사용
   - Windows 작업 스케줄러에 3시간 반복 등록 가능한 설치 스크립트 추가
+
+## 2026-04-03 11:30 (auto)
+- assets/map/ch1/collision/pit_poison.png
+- assets/map/ch1/collision/rotten_tree.png
+- assets/map/ch1/floor_objects/provided_gore_01.png
+- assets/map/ch1/floor_objects/provided_gore_02.png
+- assets/map/ch1/floor_objects/provided_gore_03.png
+- assets/map/ch1/floor_objects/provided_gore_04.png
+- assets/map/ch1/floor_objects/provided_gore_05.png
+- assets/map/ch1/floor_objects/provided_gore_06.png
+- auto_commit.ps1
+- docs/CHANGELOG_SYNC.md
+- game.html
+- test/ch1ProvidedDecoPlacement.test.js
+- tools/slice-user-ch1-gore.mjs
+

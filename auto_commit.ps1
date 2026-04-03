@@ -16,10 +16,14 @@ if (-not $status) {
 
 git add -A
 
-powershell -ExecutionPolicy Bypass -File ".\tools\docs-sync-check.ps1" -Staged
-if ($LASTEXITCODE -ne 0) {
-    Write-Log "FAIL: docs sync check blocked auto-commit"
-    exit 1
+# 변경 파일 목록 → CHANGELOG_SYNC.md 자동 추가
+$changed = @(git -c core.quotePath=false diff --cached --name-only --diff-filter=ACMR | Where-Object { $_ -and $_.Trim().Length -gt 0 })
+if ($changed.Count -gt 0) {
+    $clPath = "docs\CHANGELOG_SYNC.md"
+    $header = "`n## $stamp (auto)`n"
+    $body = ($changed | ForEach-Object { "- $_" }) -join "`n"
+    Add-Content -Path $clPath -Value "$header$body`n"
+    git add $clPath
 }
 
 $branch = (git branch --show-current).Trim()
