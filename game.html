@@ -11424,7 +11424,6 @@ function initMapObjects(){
   for(let y=3;y<G.mh-3;y++)for(let x=3;x<G.mw-3;x++){if(map[y][x]===0)_dcFloors.push({x,y})}
     const _providedFloorDeco=_chDeco.filter(d=>d.userProvided&&d.floorMount);
     const _providedWallDeco=_chDeco.filter(d=>d.userProvided&&d.wallMount);
-    const _providedDeco=_chDeco.filter(d=>d.userProvided);
     function _mkProvidedCycle(pool){
       const arr=pool.slice();
       for(let i=arr.length-1;i>0;i--){const j=~~(_dcSeed()*(i+1));const t=arr[i];arr[i]=arr[j];arr[j]=t}
@@ -11439,7 +11438,8 @@ function initMapObjects(){
     const _baseDeco=_chDeco.filter(d=>!d.userProvided);
     const _largeDeco=_baseDeco.filter(d=>d.large);
     const _normalDeco=_baseDeco.filter(d=>!d.large&&!d.scatter);
-    const _providedCycle=_mkProvidedCycle(_providedDeco);
+    const _providedFloorCycle=_mkProvidedCycle(_providedFloorDeco);
+    const _providedWallCycle=_mkProvidedCycle(_providedWallDeco);
     const _largeCycle=_mkProvidedCycle(_largeDeco);
     const _scatterCycle=_mkProvidedCycle(_baseDeco.filter(d=>d.scatter));
     const _normalCycle=_mkProvidedCycle(_normalDeco.length>0?_normalDeco:_baseDeco);
@@ -11549,7 +11549,7 @@ function initMapObjects(){
       console.log('[UNIQUE_OBJ] placed:'+_uniPlaced+'/12');
     }
   let _providedFloorPlaced=0;
-const _providedFloorTarget=Math.min(6,_providedFloorDeco.length?6:0);
+const _providedFloorTarget=Math.min(4,_providedFloorDeco.length?4:0);
     if(_providedFloorTarget>0){
       const _providedMinDist=260;
       const _providedSameTypeDist=420;
@@ -11573,9 +11573,9 @@ const _providedFloorTarget=Math.min(6,_providedFloorDeco.length?6:0);
           if(dst(px,py,mo.x,mo.y)<Math.max(140,(moSz+220)/2)){ok=false;break}
         }
         if(!ok)continue;
-        let pick=_nextProvided(_providedCycle,_providedFloorDeco[0]);
+        let pick=_nextProvided(_providedFloorCycle,_providedFloorDeco[0]);
         for(let _try=0;_try<8;_try++){
-          pick=_nextProvided(_providedCycle,_providedFloorDeco[0]);
+          pick=_nextProvided(_providedFloorCycle,_providedFloorDeco[0]);
           if(_nearbyTypeCount(_providedPlacedList,pick.id,px,py,_providedSameTypeDist)<1)break;
         }
         MAP_OBJS.push({type:pick.id,x:px,y:py,hell});
@@ -11597,7 +11597,7 @@ const _providedFloorTarget=Math.min(6,_providedFloorDeco.length?6:0);
         else if(x>0&&map[y][x-1]===0){adjFloor=true;ox=_wallInset}
         if(adjFloor)_wallCells.push({x,y,ox,oy});
       }
-const _providedWallTarget=Math.max(4,~~(_wallCells.length/30));
+const _providedWallTarget=Math.max(2,~~(_wallCells.length/40));
       const _providedWallMinDist=220;
       const _providedWallSameTypeDist=360;
       const _providedWallPlacedList=[];
@@ -11614,9 +11614,9 @@ const _providedWallTarget=Math.max(4,~~(_wallCells.length/30));
           if(dst(px,py,mo.x,mo.y)<Math.max(150,(moSz+220)/2)){ok=false;break}
         }
         if(!ok)continue;
-        let pick=_nextProvided(_providedCycle,_providedWallDeco[0]);
+        let pick=_nextProvided(_providedWallCycle,_providedWallDeco[0]);
         for(let _try=0;_try<8;_try++){
-          pick=_nextProvided(_providedCycle,_providedWallDeco[0]);
+          pick=_nextProvided(_providedWallCycle,_providedWallDeco[0]);
           if(_nearbyTypeCount(_providedWallPlacedList,pick.id,px,py,_providedWallSameTypeDist)<1)break;
         }
         MAP_OBJS.push({type:pick.id,x:px,y:py,hell,_anchorBottom:1});
@@ -11628,7 +11628,7 @@ const _providedWallTarget=Math.max(4,~~(_wallCells.length/30));
       if(_providedWallPlaced===0&&_wallCells.length>0){
         const cell=_wallCells[0];
         const px=cell.x*T+T/2+cell.ox,py=cell.y*T+T/2+cell.oy;
-        const pick=_nextProvided(_providedCycle,_providedWallDeco[0]);
+        const pick=_nextProvided(_providedWallCycle,_providedWallDeco[0]);
         MAP_OBJS.push({type:pick.id,x:px,y:py,hell,_anchorBottom:1});
         _providedWallPlaced=1;
       }
@@ -11638,7 +11638,7 @@ const _providedWallTarget=Math.max(4,~~(_wallCells.length/30));
         const _fbMinDist=220;
         const _fbSameTypeDist=360;
         const _fbPool=_providedFloorDeco.length>0?_providedFloorDeco:_providedWallDeco;
-        const _fbCycle=_providedCycle;
+        const _fbCycle=_providedFloorDeco.length>0?_providedFloorCycle:_providedWallCycle;
         const _fbPlaced=[];
         // 바닥 후보를 다시 모은다 (기존 _dcFloors는 다른 배치용이므로 그대로 둔다)
         const _fbFloors=_dcFloors.length>0?_dcFloors.slice():[];
@@ -15670,7 +15670,7 @@ function initStage(si){
   G.cam.x=P.x;G.cam.y=P.y;
   G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0},iris:{x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:G._irisSz||20,_feedT:0}};
   // ── 즉시 초기화 (게임 시작 전 필수) ──
-  if(_bootMapBuildDefer){_queueBootMapBuild()}else{buildMapCache();while(!_bmcDone){_tickBuildMapCache()}} // 타일맵 렌더 + 분산 빌드 강제 완료
+  if(_bootMapBuildDefer){_queueBootMapBuild()}else{buildMapCache()} // 타일맵 렌더
   if(_useGPU||_useGL){for(const _bet of[80,81,82,83,84]){const _bs=_ESPRITES[_bet];if(_bs&&_bs.img&&_bs.img.complete){try{_getTex(_bs.img)}catch(e){}}}}
   initTorchLights(); // 횃불 (조명 필수)
   // ── 백그라운드 초기화 (게임 중 서서히) ──

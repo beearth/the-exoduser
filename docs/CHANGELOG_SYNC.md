@@ -151,3 +151,8 @@
 - game_backup_gate_fixed.html
 - test/ch1ProvidedDecoPlacement.test.js
 
+
+## 2026-04-03 22:30 (auto)
+- game.html
+- test/ch1ProvidedDecoPlacement.test.js
+
