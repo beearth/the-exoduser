@@ -30,7 +30,7 @@ test('CH1 user-provided gore deco is restricted to stages 1-4 and wall placement
   );
   assert.match(
     gameHtml,
-    /const _providedFloorDeco=_chDeco\.filter\(d=>d\.userProvided&&d\.floorMount\);[\s\S]*const _providedWallDeco=_chDeco\.filter\(d=>d\.userProvided&&d\.wallMount\);[\s\S]*const _providedFloorTarget=Math\.min\(8,_providedFloorDeco\.length\?8:0\);[\s\S]*if\(_providedWallDeco\.length>0\)\{[\s\S]*const _providedWallTarget=Math\.max\(3,~~\(_wallCells\.length\/25\)\);/
+    /const _providedFloorDeco=_chDeco\.filter\(d=>d\.userProvided&&d\.floorMount\);[\s\S]*const _providedWallDeco=_chDeco\.filter\(d=>d\.userProvided&&d\.wallMount\);[\s\S]*const _providedFloorTarget=Math\.min\(6,_providedFloorDeco\.length\?6:0\);[\s\S]*if\(_providedWallDeco\.length>0\)\{[\s\S]*const _providedWallTarget=Math\.max\(4,~~\(_wallCells\.length\/30\)\);/
   );
 });
 
@@ -44,7 +44,7 @@ test('CH1 wall-mounted user deco is inset into the wall and rendered bottom-anch
 test('CH1 user-provided deco selection cycles through the pool instead of pure random repeats', () => {
   assert.match(
     gameHtml,
-    /function _mkProvidedCycle\(pool\)\{[\s\S]*function _nextProvided\(cyc,fallback\)\{[\s\S]*const _providedFloorCycle=_mkProvidedCycle\(_providedFloorDeco\);[\s\S]*const _providedWallCycle=_mkProvidedCycle\(_providedWallDeco\);[\s\S]*pick=_nextProvided\(_providedFloorCycle,_providedFloorDeco\[0\]\);[\s\S]*pick=_nextProvided\(_providedWallCycle,_providedWallDeco\[0\]\);/
+    /function _mkProvidedCycle\(pool\)\{[\s\S]*function _nextProvided\(cyc,fallback\)\{[\s\S]*const _providedCycle=_mkProvidedCycle\(_providedDeco\);[\s\S]*const _largeCycle=_mkProvidedCycle\(_largeDeco\);[\s\S]*const _scatterCycle=_mkProvidedCycle\(_baseDeco\.filter\(d=>d\.scatter\)\);[\s\S]*const _normalCycle=_mkProvidedCycle\(_normalDeco\.length>0\?_normalDeco:_baseDeco\);[\s\S]*pick=_nextProvided\(_providedCycle,_providedFloorDeco\[0\]\);[\s\S]*pick=_nextProvided\(_providedCycle,_providedWallDeco\[0\]\);[\s\S]*_scPick=_nextProvided\(_scatterCycle,_scatterDeco\[0\]\)\.id;[\s\S]*_dObj=_nextProvided\(_normalCycle,_pool\[0\]\);/
   );
 });
 
