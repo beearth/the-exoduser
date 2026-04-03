@@ -92,6 +92,24 @@ test('buildMapCache no longer short-circuits into the incomplete distributed BMC
   );
 });
 
+test('buildMapCache does not reference initMapObjects-only decor locals', () => {
+  assert.doesNotMatch(
+    gameHtml,
+    /function buildMapCache\(\)\{[\s\S]*const _collisionDeco=_chDeco\.filter\(d=>\{/,
+  );
+  assert.doesNotMatch(
+    gameHtml,
+    /function buildMapCache\(\)\{[\s\S]*const _collFloors=_dcFloors\.length>0\?_dcFloors\.slice\(\):\[\];/,
+  );
+});
+
+test('stage 3 zone0 portal is lifted 50 tiles higher from the top combat room', () => {
+  assert.match(
+    gameHtml,
+    /const _portalY=Math\.max\(6,_topRoom\.cy-\(_topRoom\.ry\|\|8\)-56\);/,
+  );
+});
+
 test('map cache refreshes from late-loading assets are debounced through a single queued refresh path', () => {
   assert.match(
     gameHtml,

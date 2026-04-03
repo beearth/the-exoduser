@@ -30,7 +30,7 @@ test('CH1 user-provided gore deco is restricted to stages 1-4 and wall placement
   );
   assert.match(
     gameHtml,
-    /const _providedFloorDeco=_chDeco\.filter\(d=>d\.userProvided&&d\.floorMount\);[\s\S]*const _providedWallDeco=_chDeco\.filter\(d=>d\.userProvided&&d\.wallMount\);[\s\S]*const _providedFloorTarget=Math\.min\(8,_providedFloorDeco\.length\?8:0\);[\s\S]*if\(_providedWallDeco\.length>0\)\{[\s\S]*const _providedWallTarget=Math\.max\(1,~~\(_wallCells\.length\/50\)\);/
+    /const _providedFloorDeco=_chDeco\.filter\(d=>d\.userProvided&&d\.floorMount\);[\s\S]*const _providedWallDeco=_chDeco\.filter\(d=>d\.userProvided&&d\.wallMount\);[\s\S]*const _providedFloorTarget=Math\.min\(8,_providedFloorDeco\.length\?8:0\);[\s\S]*if\(_providedWallDeco\.length>0\)\{[\s\S]*const _providedWallTarget=Math\.max\(3,~~\(_wallCells\.length\/25\)\);/
   );
 });
 

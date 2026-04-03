@@ -37,7 +37,6 @@ FIXED_MAPS[0]={
     {"x":100,"y":138,"grade":0},
     {"x":100,"y":103,"grade":0}
   ],
-  "tileRLE": [1,40000],
   "spawnHoles": [
     {"x":70,"y":170,"type":"M"},
     {"x":140,"y":160,"type":"S"},
