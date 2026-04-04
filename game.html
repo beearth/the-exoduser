@@ -2717,7 +2717,18 @@ const _plagueBoomSpr={img:null,ready:false,w:128,h:128,frames:6};
 const _chainShurikenImg=new Image();_chainShurikenImg.src='assets/vfx/chain_shuriken_2.webp';
 // ═══ [TP-IMPACT] 텔포 도착 임펙트 (2x2 4프레임) + 이동 번개 ═══
 const _tpImpSpr={img:null,ready:false,w:0,h:0,frames:4,cols:2};
-(function(){const i=new Image();i.src='img/tp_impact.jpg';_tpImpSpr.img=i;i.onload=function(){_tpImpSpr.ready=true;_tpImpSpr.w=~~(i.width/2);_tpImpSpr.h=~~(i.height/2)}})();
+(function(){const raw=new Image();raw.src='img/tp_impact.jpg';raw.onload=function(){
+  // 검은 배경 → 알파 변환
+  const c=document.createElement('canvas');c.width=raw.width;c.height=raw.height;
+  const cx=c.getContext('2d');cx.drawImage(raw,0,0);
+  const d=cx.getImageData(0,0,c.width,c.height),px=d.data;
+  for(let i=0;i<px.length;i+=4){
+    const lum=px[i]*.299+px[i+1]*.587+px[i+2]*.114;
+    px[i+3]=Math.min(255,~~(lum*2.5)); // 밝기→알파, 어두울수록 투명
+  }
+  cx.putImageData(d,0,0);
+  _tpImpSpr.img=c;_tpImpSpr.ready=true;_tpImpSpr.w=~~(c.width/2);_tpImpSpr.h=~~(c.height/2);
+}})();
 const _TP_IMP_MAX=12;const _tpImps=[];for(let i=0;i<_TP_IMP_MAX;i++)_tpImps.push({x:0,y:0,t:0,mt:0,sz:0,active:false,col:'#ff8800'});
 function _addTpImpact(x,y,sz,dur,col){
   let b=null;for(let i=0;i<_TP_IMP_MAX;i++){if(!_tpImps[i].active){b=_tpImps[i];break}}
@@ -13898,10 +13909,12 @@ function genGauntlet(fi){
     const ey=_gateY+_mouthOff;
     if(ey>0&&ey<mh&&_iCx-1>0&&_iCx+1<mw){
       // 게이트~출구 사이 바닥 확보
-      for(let dy=0;dy<=_mouthOff+1;dy++){const ty2=_gateY+dy;
-        if(ty2>=0&&ty2<mh){for(let dx=-1;dx<=1;dx++){const tx2=_iCx+dx;if(tx2>=0&&tx2<mw&&map[ty2][tx2]===1)map[ty2][tx2]=0}}}
-      map[ey][_iCx-1]=2;map[ey][_iCx]=2;map[ey][_iCx+1]=2;
-      exits.push({x:_iCx-1,y:ey},{x:_iCx,y:ey},{x:_iCx+1,y:ey});
+      for(let dy=0;dy<=_mouthOff+2;dy++){const ty2=_gateY+dy;
+        if(ty2>=0&&ty2<mh){for(let dx=-2;dx<=2;dx++){const tx2=_iCx+dx;if(tx2>=0&&tx2<mw&&map[ty2][tx2]===1)map[ty2][tx2]=0}}}
+      // exit 타일 3줄×5칸 (넓은 진입 영역)
+      for(let dy=-1;dy<=1;dy++){const ty2=ey+dy;
+        if(ty2>=0&&ty2<mh){for(let dx=-2;dx<=2;dx++){const tx2=_iCx+dx;
+          if(tx2>=0&&tx2<mw){map[ty2][tx2]=2;exits.push({x:tx2,y:ty2})}}}}
     }
   }
 
@@ -13982,8 +13995,8 @@ function genGauntlet(fi){
 
   G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
   G.bossGate=_gateTiles;G.bossGateOpen=true;G.bossSealed=false;G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
-  // 보스게이트 충돌 오브젝트 — 실시간 렌더 나무 중심과 동기화
-  if(_gateY!=null){MAP_OBJS.push({type:'boss_gate_col',x:(bossCx+.5)*T,y:(_gateY+.5)*T})}
+  // 보스게이트 충돌 오브젝트 — 나무 상단 중심, 하단 입구는 열림
+  if(_gateY!=null){MAP_OBJS.push({type:'boss_gate_col',x:(bossCx+.5)*T,y:(_gateY-1)*T})}
   // 전장의 안개 (Fog of War) 초기화
   G.spawnHoles=spawnHoles;
   }
@@ -14635,16 +14648,14 @@ function genFromTemplate(tmpl,si){
   const exits=[];
   if(bossRm&&_gateTiles.length>0){
     const _mouthOff=2; // 나무 입(동굴) = 나무 중심 바로 아래
-    for(let _gi=0;_gi<_gateTiles.length;_gi++){
-      const gt=_gateTiles[_gi];
-      const ey=_gateY+_mouthOff,ex=gt.x;
-      // 게이트~출구 사이 바닥 확보 (벽이면 뚫기)
-      for(let dy=0;dy<=_mouthOff+1;dy++){
-        const ty2=_gateY+dy;
-        if(ty2>=0&&ty2<mh&&ex>=0&&ex<mw&&map[ty2][ex]===1)map[ty2][ex]=0;
-      }
-      if(ex>=0&&ex<mw&&ey>=0&&ey<mh){map[ey][ex]=2;exits.push({x:ex,y:ey})}
-    }
+    const ey=_gateY+_mouthOff;
+    // 게이트~출구 사이 바닥 확보
+    for(let dy=0;dy<=_mouthOff+2;dy++){const ty2=_gateY+dy;
+      if(ty2>=0&&ty2<mh){for(let dx=-2;dx<=2;dx++){const tx2=bossCx+dx;if(tx2>=0&&tx2<mw&&map[ty2][tx2]===1)map[ty2][tx2]=0}}}
+    // exit 타일 3줄×5칸 (넓은 진입 영역)
+    for(let dy=-1;dy<=1;dy++){const ty2=ey+dy;
+      if(ty2>=0&&ty2<mh){for(let dx=-2;dx<=2;dx++){const tx2=bossCx+dx;
+        if(tx2>=0&&tx2<mw){map[ty2][tx2]=2;exits.push({x:tx2,y:ty2})}}}}
   }
 
   // ── 7. 연결 검증 — 막힌 방까지 복도 강제 뚫기 (tileRLE 없을 때만) ──
@@ -14783,7 +14794,7 @@ function genFromTemplate(tmpl,si){
   G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
   G.bossGate=_gateTiles;G.bossGateOpen=true;G.bossSealed=false;
   G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
-  if(_gateY!=null){MAP_OBJS.push({type:'boss_gate_col',x:(bossCx+.5)*T,y:(_gateY+.5)*T})}
+  if(_gateY!=null){MAP_OBJS.push({type:'boss_gate_col',x:(bossCx+.5)*T,y:(_gateY-1)*T})}
   G.spawnHoles=spawnHoles;
     // ── 에디터 배치 장식 오브젝트 → MAP_OBJS ──
   if(tmpl.objs){for(const o of tmpl.objs){
@@ -26918,7 +26929,7 @@ function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
     }else{
       // 일반몹: 강한 포이즈 피해
       if(e.poise<=0){
-        const stunDur=45+((P._gslLv||P.skills.giantSlam||1)-1)*6;
+        const stunDur=Math.min(120,45+((P._gslLv||P.skills.giantSlam||1)-1)*6); // 최대 2초 캡
         e.stunned=Math.max(e.stunned||0,~~(stunDur*mult));
         e.poise=0;
         addTxt(e.x,e.y-18,'💥 체간 붕괴!','#ffcc00',45);
@@ -30861,7 +30872,15 @@ function draw(){
     const sa=_isStealth?(.08+Math.sin(_now/300)*.05):(isReviving?(.2+Math.sin(_now/40)*.5):(isStunned?.6:1));X.globalAlpha=sa;
     const _ensGLQueued=e._ensGLMode||0;
     // Stun glow ring
-    if(isStunned){X.globalAlpha=.4+Math.sin(_now/60)*.3;X.strokeStyle='#ffaa00';X.lineWidth=3;X.beginPath();X.arc(e.x,e.y,e.r+8,0,Math.PI*2);X.stroke();X.globalAlpha=sa}
+    if(isStunned){X.globalAlpha=.4+Math.sin(_now/60)*.3;X.strokeStyle='#ffaa00';X.lineWidth=3;X.beginPath();X.arc(e.x,e.y,e.r+8,0,Math.PI*2);X.stroke();
+      X.globalAlpha=.7;X.fillStyle='#ffdd44';const _stT=_now/300;
+      const _stN2=e.ib?3:2,_stOr2=e.r+(e.ib?6:4);
+      for(let si=0;si<_stN2;si++){const _sa2=_stT+si*(Math.PI*2/_stN2);
+        const _sx2=e.x+Math.cos(_sa2)*_stOr2,_sy2=e.y-e.r-(e.ib?4:6)+Math.sin(_sa2)*4;
+        X.beginPath();for(let _sp=0;_sp<10;_sp++){const _a2=_sa2+_sp*Math.PI/5-Math.PI/2;
+          const _sr2=_sp%2===0?3.5:1.5;X.lineTo(_sx2+Math.cos(_a2)*_sr2,_sy2+Math.sin(_a2)*_sr2)}
+        X.closePath();X.fill()}
+      X.globalAlpha=sa}
     if(e.s==='windup'){X.globalAlpha=.2+Math.sin(_now/50)*.3;X.fillStyle='#ff0000';X.beginPath();X.arc(e.x,e.y,e.r+12,0,Math.PI*2);X.fill();
       if(e.ib){X.globalAlpha=.3+Math.abs(Math.sin(_now/70))*.4;X.fillStyle='#ffffff';X.beginPath();X.arc(e.x,e.y,e.r+6,0,Math.PI*2);X.fill();
         // 보스 윈드업: 에너지 수렴 파티클 (입 방향으로 모임)
@@ -32963,6 +32982,7 @@ const ELP=['#dddddd','#ff6622','#44aaff','#bb55ee','#ffee44','#ffdd55']; // part
 
 function drawP(){
   const _dpStart=performance.now();
+  const sp=(G.slowMo>0?.35:1)*_dtSp;
   const _vl=G.cam.x-C.width/2-60,_vr=G.cam.x+C.width/2+60,_vt=G.cam.y-C.height/2-60,_vb=G.cam.y+C.height/2+60;
   const fl=P.iframes>0&&~~(P.iframes/3)%2;if(fl)X.globalAlpha=.3;
   const t=_now;
@@ -37371,12 +37391,12 @@ $('retryBtn').onclick=async()=>{
     G.spawnHoles=b.spawnHoles;G.rifts=b.rifts;
     G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;
     G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;G.stageCleared=false;G._deathSpawned=false;
-    // boss_gate_col 충돌 재생성 — 나무 이미지 중심 기준
+    // boss_gate_col 충돌 재생성 — 나무 상단, 하단 입구 열림
     if(b._gateY!=null){
-      MAP_OBJS.push({type:'boss_gate_col',x:(b._bossCx+.5)*T,y:(b._gateY+.5)*T});
+      MAP_OBJS.push({type:'boss_gate_col',x:(b._bossCx+.5)*T,y:(b._gateY-1)*T});
     }
     // 게이트 입구 (나무 입 부분 근처) 리스폰
-    const _gx=(b._bossCx+.5)*T,_gy=(b._gateY+3+.5)*T;
+    const _gx=(b._bossCx+.5)*T,_gy=(b._gateY+6+.5)*T;
     const sp=safePt(_gx,_gy,P.r);
     P.x=sp?sp.x:_gx;P.y=sp?sp.y:_gy;
     // 방 몬스터 리스폰 (보스방 제외, tileRLE: 소환굴만)
