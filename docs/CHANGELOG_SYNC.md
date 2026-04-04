@@ -280,3 +280,18 @@
 ## 2026-04-04 21:30 (auto)
 - game.html
 
+
+## 2026-04-04 22:19 (auto)
+- docs/1?„ì²´ê·¸ë˜?½ì„¸??ë§??”ë©´?¨ê³¼_?„ìˆ˜ì¡°ì‚¬.md
+- docs/3.3 ?¤ë°”?¸ë”©+?¤ì •/3.3 ?¤ë°”?¸ë”©+?¤ì •.md
+- docs/8.0ëª¬ìŠ¤?°ë””?ì¸/ëª¬ìŠ¤??ì´ê?ë¦?md
+- docs/8.1ë³´ìŠ¤?”ì?¸ë°”?´ë¸”/boss-system.md
+- game.html
+- generated/animation-smoke/result.json
+- generated/animation-smoke/stage3-attack.png
+- generated/animation-smoke/stage3-enemy.png
+- generated/animation-smoke/stage3-idle.png
+- generated/animation-smoke/stage3-move.png
+- test/localStaticServerSaveApi.test.js
+- tools/animation_smoke_check.py
+

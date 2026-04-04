@@ -1,0 +1,574 @@
+{
+  "url": "http://127.0.0.1:8080/game.html?stage=3&test=1",
+  "console": [
+    {
+      "type": "log",
+      "text": "[ATLAS] 빌드 완료: 1920×560 (264셀)"
+    },
+    {
+      "type": "log",
+      "text": "[ATLAS-E] 최적화 빌드 완료: 5종 핵심 스킨 기반 매핑 적용 (전체 90종 커버)"
+    },
+    {
+      "type": "log",
+      "text": "[ATLAS-B] 보스 아틀라스 빌드 완료: 4096×192 (189셀, 7팔레트×27프레임)"
+    },
+    {
+      "type": "log",
+      "text": "[GPU] WebGPU skipped (browser default). Add ?webgpu=1 to test WebGPU."
+    },
+    {
+      "type": "log",
+      "text": "[ENS-GL] instancing 초기화 성공"
+    },
+    {
+      "type": "log",
+      "text": "[GPU] WebGL2 ready — maxTex:8192"
+    },
+    {
+      "type": "log",
+      "text": "[GPU] WebGL2 | ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+    },
+    {
+      "type": "log",
+      "text": "[BURST] 별도 WebGL2 context 초기화 성공"
+    },
+    {
+      "type": "log",
+      "text": "[LOOP] start"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "log",
+      "text": "[LOCAL] 세이브 없음, 새 게임 시작"
+    },
+    {
+      "type": "warning",
+      "text": "[.WebGL-0x14d40c88d400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+    },
+    {
+      "type": "warning",
+      "text": "[.WebGL-0x14d40c8f8000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] bolt_0 로드 완료: 128×24 (4F, 셀 32×24)"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] bolt_1 로드 완료: 128×24 (4F, 셀 32×24)"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] bolt_2 로드 완료: 128×24 (4F, 셀 32×24)"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] bolt_3 로드 완료: 128×24 (4F, 셀 32×24)"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] bolt_4 로드 완료: 128×24 (4F, 셀 32×24)"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] bolt_5 로드 완료: 128×24 (4F, 셀 32×24)"
+    },
+    {
+      "type": "log",
+      "text": "[PILLAR] processed 1024 x 1024 ar 1"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 82 로드 완료: 1536×1024 (14프레임, 셀 109.71428571428571×1024)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 82 레거시 아틀라스 핫패치 완료 (24셀)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 82 신규 아틀라스 핫패치 완료 (98셀, 7팔레트)"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "log",
+      "text": "[BOSS] dirAtlas si0 loaded"
+    },
+    {
+      "type": "log",
+      "text": "[PROJ_ATLAS] 로드 완료: 512×640"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] shard_5 로드 완료: 224×28 (8F, 셀 28×28)"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] blackbean_0 로드 완료: 96×16 (4F, 셀 24×16)"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] shard_3 로드 완료: 224×28 (8F, 셀 28×28)"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] shard_0 로드 완료: 224×28 (8F, 셀 28×28)"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] shard_1 로드 완료: 224×28 (8F, 셀 28×28)"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] bluebean_0 로드 완료: 112×18 (4F, 셀 28×18)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 81 로드 완료: 1536×806 (14프레임, 셀 109.71428571428571×806)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 81 레거시 아틀라스 핫패치 완료 (24셀)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 81 신규 아틀라스 핫패치 완료 (98셀, 7팔레트)"
+    },
+    {
+      "type": "log",
+      "text": "[GT] gt_void_wall loaded"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 83 로드 완료: 1536×1024 (14프레임, 셀 109.71428571428571×1024)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 83 레거시 아틀라스 핫패치 완료 (24셀)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 83 신규 아틀라스 핫패치 완료 (98셀, 7팔레트)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 84 로드 완료: 1024×1536 (14프레임, 셀 73.14285714285714×1536)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 84 레거시 아틀라스 핫패치 완료 (24셀)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 84 신규 아틀라스 핫패치 완료 (98셀, 7팔레트)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 80 로드 완료: 1536×1024 (14프레임, 셀 109.71428571428571×1024)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 80 레거시 아틀라스 핫패치 완료 (24셀)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 80 신규 아틀라스 핫패치 완료 (98셀, 7팔레트)"
+    },
+    {
+      "type": "log",
+      "text": "[TILE-TEX] all 13 loaded"
+    },
+    {
+      "type": "log",
+      "text": "[GT] gt_03 loaded"
+    },
+    {
+      "type": "log",
+      "text": "[GT] gt_soil loaded"
+    },
+    {
+      "type": "log",
+      "text": "[CH1] 메타 로드 완료: 165종, cols=13"
+    },
+    {
+      "type": "log",
+      "text": "[PREFAB] registry: 0"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "log",
+      "text": "[CH1_SOUTH] 로드 완료 624x624"
+    },
+    {
+      "type": "log",
+      "text": "[CH1_EAST] 로드 완료 624x624"
+    },
+    {
+      "type": "log",
+      "text": "[CH1_NORTH] 로드 완료 624x624"
+    },
+    {
+      "type": "log",
+      "text": "[CH1_WEST] 로드 완료 624x624"
+    },
+    {
+      "type": "log",
+      "text": "[CH1_WALK] 로드 완료 768x3792"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "log",
+      "text": "[ZONE0] portal at (142,6) top of map, start at bottom"
+    },
+    {
+      "type": "log",
+      "text": "[ZONE0] built from grid 200x200, rooms=25"
+    },
+    {
+      "type": "log",
+      "text": "[ZONE] stage 3 has 2 zones, loading zone 0"
+    },
+    {
+      "type": "log",
+      "text": "[HOLE] tileRLE: spawnHoles=82 (tmpl.spawnHoles=44 objs=0 roomSpawns=20)"
+    },
+    {
+      "type": "log",
+      "text": "[HOLE] final=82 (min=20)"
+    },
+    {
+      "type": "log",
+      "text": "[MAP] si=3 tileRLE=Y manualHoles=44 autoHoles=82 rooms=25 bossRm=N exits=0 gateTiles=0 portals=1"
+    },
+    {
+      "type": "log",
+      "text": "[drawP] 46.30ms | S0:0.0 S1:0.0 S2:0.0 S3:0.0 S4:0.0 S5:0.0 S6:40.6 S7:5.7"
+    },
+    {
+      "type": "warning",
+      "text": "[POST SPIKE] 38.2ms | A(hud+lowHP):0.0 B(flash+lit+bloom+torch):29.0 C:9.2 [bonfire:8.1 fog:0.1 envVig:0.1 grainScan:0.0 bossCine:0.0 minimap:0.9]"
+    },
+    {
+      "type": "log",
+      "text": "[DRAW TOTAL] 284.30ms | ens:0.1 ens_gl:0.0 proj:0.0 PART:60.9 [drawP:60.5 pool:0.1 corpse:0.0 vfx:0.0 impact:0.3] post:38.2"
+    },
+    {
+      "type": "log",
+      "text": "[PIT_BLOOD] placed:16"
+    },
+    {
+      "type": "log",
+      "text": "[UNIQUE_OBJ] placed:10/12"
+    },
+    {
+      "type": "log",
+      "text": "[SCATTER] placed:30"
+    },
+    {
+      "type": "log",
+      "text": "[DECO] ch1 auto-placed:100 large:60 providedFloor:16 providedWall:0"
+    },
+    {
+      "type": "log",
+      "text": "[EYES] wall eyes:52"
+    },
+    {
+      "type": "log",
+      "text": "[MAP_OBJS] 398 (editor:1) [lore, lore, lore, breakable, breakable, breakable, breakable, breakable, breakable, breakable, breakable, breakable, breakable, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap, trap]"
+    },
+    {
+      "type": "warning",
+      "text": "[.WebGL-0x14d40c88d400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+    },
+    {
+      "type": "warning",
+      "text": "[.WebGL-0x14d40c8f8000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+    },
+    {
+      "type": "log",
+      "text": "[DRAW TOTAL] 35.90ms | ens:0.0 ens_gl:0.0 proj:0.0 PART:0.3 [drawP:0.2 pool:0.0 corpse:0.0 vfx:0.1 impact:0.0] post:4.1"
+    },
+    {
+      "type": "log",
+      "text": "[DRAW TOTAL] 17.40ms | ens:0.0 ens_gl:0.0 proj:0.0 PART:0.1 [drawP:0.1 pool:0.0 corpse:0.0 vfx:0.0 impact:0.0] post:3.4"
+    },
+    {
+      "type": "log",
+      "text": "[PERF] fps:10"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
+    },
+    {
+      "type": "error",
+      "text": "[LOCAL] Save failed: SyntaxError: Unexpected token 'N', \"Not Found\n\" is not valid JSON"
+    },
+    {
+      "type": "log",
+      "text": "[REGEN] s=idle _str=0.0510 _mpr=0.0510 _hpr=0.0510 sp=1 ST:106.52→106.52 MP:100.00→100.00 HP:735.00→735.00 ch=0"
+    },
+    {
+      "type": "log",
+      "text": "[PERF] fps:16"
+    }
+  ],
+  "pageErrors": [],
+  "requestFailures": [],
+  "responses404": [
+    {
+      "url": "http://127.0.0.1:8080/api/load/%EC%9E%90%EB%8F%99%EC%A0%80%EC%9E%A5",
+      "status": 404
+    },
+    {
+      "url": "http://127.0.0.1:8080/api/save",
+      "status": 404
+    }
+  ],
+  "snapshots": [
+    {
+      "label": "after-load",
+      "title": "지옥의 길 — Hell Road",
+      "stage": 3,
+      "on": true,
+      "paused": false,
+      "intro": false,
+      "ensCount": 0,
+      "player": {
+        "x": 4020,
+        "y": 7420,
+        "hp": 735,
+        "s": "idle",
+        "dir": null,
+        "anim": "idle",
+        "frame": 3,
+        "done": false
+      },
+      "atlas": {
+        "player": true,
+        "enemy": false,
+        "boss": false,
+        "legacyEnemy": true,
+        "legacyBoss": true
+      },
+      "enemy0": null
+    },
+    {
+      "label": "during-move",
+      "title": "지옥의 길 — Hell Road",
+      "stage": 3,
+      "on": true,
+      "paused": false,
+      "intro": false,
+      "ensCount": 0,
+      "player": {
+        "x": 4061,
+        "y": 7420,
+        "hp": 735,
+        "s": "idle",
+        "dir": null,
+        "anim": "run",
+        "frame": 1,
+        "done": false
+      },
+      "atlas": {
+        "player": true,
+        "enemy": false,
+        "boss": false,
+        "legacyEnemy": true,
+        "legacyBoss": true
+      },
+      "enemy0": null
+    },
+    {
+      "label": "after-move",
+      "title": "지옥의 길 — Hell Road",
+      "stage": 3,
+      "on": true,
+      "paused": false,
+      "intro": false,
+      "ensCount": 0,
+      "player": {
+        "x": 4151,
+        "y": 7420,
+        "hp": 735,
+        "s": "idle",
+        "dir": null,
+        "anim": "idle",
+        "frame": 0,
+        "done": false
+      },
+      "atlas": {
+        "player": true,
+        "enemy": false,
+        "boss": false,
+        "legacyEnemy": true,
+        "legacyBoss": true
+      },
+      "enemy0": null
+    },
+    {
+      "label": "during-attack",
+      "title": "지옥의 길 — Hell Road",
+      "stage": 3,
+      "on": true,
+      "paused": false,
+      "intro": false,
+      "ensCount": 0,
+      "player": {
+        "x": 4151,
+        "y": 7420,
+        "hp": 735,
+        "s": "wRecover",
+        "dir": null,
+        "anim": "atk3",
+        "frame": 0,
+        "done": false
+      },
+      "atlas": {
+        "player": true,
+        "enemy": false,
+        "boss": false,
+        "legacyEnemy": true,
+        "legacyBoss": true
+      },
+      "enemy0": null
+    },
+    {
+      "label": "after-attack",
+      "title": "지옥의 길 — Hell Road",
+      "stage": 3,
+      "on": true,
+      "paused": false,
+      "intro": false,
+      "ensCount": 0,
+      "player": {
+        "x": 4151,
+        "y": 7420,
+        "hp": 735,
+        "s": "idle",
+        "dir": null,
+        "anim": "idle",
+        "frame": 0,
+        "done": false
+      },
+      "atlas": {
+        "player": true,
+        "enemy": false,
+        "boss": false,
+        "legacyEnemy": true,
+        "legacyBoss": true
+      },
+      "enemy0": null
+    },
+    {
+      "label": "after-enemy-spawn",
+      "title": "지옥의 길 — Hell Road",
+      "stage": 3,
+      "on": true,
+      "paused": false,
+      "intro": false,
+      "ensCount": 1,
+      "player": {
+        "x": 4151,
+        "y": 7420,
+        "hp": 735,
+        "s": "idle",
+        "dir": null,
+        "anim": "idle",
+        "frame": 0,
+        "done": false
+      },
+      "atlas": {
+        "player": true,
+        "enemy": false,
+        "boss": false,
+        "legacyEnemy": true,
+        "legacyBoss": true
+      },
+      "enemy0": {
+        "et": null,
+        "x": 4340,
+        "y": 7420,
+        "hp": 262,
+        "s": "idle",
+        "fr": null,
+        "walk": 65.32536984798935
+      }
+    }
+  ],
+  "spawnedEnemy": {
+    "ok": true,
+    "et": null,
+    "count": 1
+  }
+}
