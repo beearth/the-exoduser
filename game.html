@@ -32483,7 +32483,7 @@ function draw(){
       _ltPoolI=0;_ltBranchI=0;
       for(let _li=0;_li<1;_li++){
         const _cx=Math.cos(P.facing),_cy=Math.sin(P.facing);
-        const _bDist=P._beamVisualDist||bl;
+        const _bDist=Math.min(P._beamVisualDist||bl,bl);
         const _ex=P.x+_cx*_bDist,_ey=P.y+_cy*_bDist;
         const _bp=_lightningPath(P.x,P.y,_ex,_ey,250,4,_bSeed*7+_li*97+31);
         const _bn=_bp._n||2;
