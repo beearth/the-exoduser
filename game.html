@@ -30124,7 +30124,7 @@ function draw(){
       for(let _scy=_sty0;_scy<=_sty1;_scy++)for(let _scx=_stx0;_scx<=_stx1;_scx++){
         const _sc=_streamChunks[_scx+'_'+_scy];if(!_sc)continue;
         const _src=_sc.bmp||_sc.cvs;if(!_src)continue;
-        _streamVpCtx.drawImage(_src,_scx*_STREAM_CHUNK*T-_offX,_scy*_STREAM_CHUNK*T-_offY);
+        _streamVpCtx.drawImage(_src,Math.floor(_scx*_STREAM_CHUNK*T-_offX),Math.floor(_scy*_STREAM_CHUNK*T-_offY));
       }
     }
     // 매 프레임 1회 drawImage
