@@ -1739,13 +1739,7 @@ function _initBloom(){
 let _bloomFrame=0;
 function _renderBloom(){
   if(!OPT.bloom||OPT.quality==='low'||OPT.quality==='mid')return;
-  _bloomFrame++;
   if(!_bloomCvs||_bloomW!==~~(C.width/6))_initBloom();
-  if(_bloomFrame&1){
-    if(_bloomCvs){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';
-    X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);
-    X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}return;
-  }
   const bx=_bloomCtx,ux=_blurCtx;
   bx.clearRect(0,0,_bloomW,_bloomH);
   bx.drawImage(C,0,0,_bloomW,_bloomH);
@@ -2604,7 +2598,7 @@ async function _bootRenderer(){
   const _cl=IS_ELECTRON?function(){}:console.log.bind(console);
   const _ce=IS_ELECTRON?function(){}:console.error.bind(console);
   // Browser dev mode defaults to WebGL first for stability; opt-in with ?webgpu=1
-  const _useWebGPU=IS_ELECTRON||new URLSearchParams(location.search).get('webgpu')==='1';
+  const _useWebGPU=(!IS_ELECTRON)&&new URLSearchParams(location.search).get('webgpu')==='1';
   if(_useWebGPU){
     try{ok=await _initWebGPU()}catch(e){_ce('[GPU] WebGPU 초기화 에러:',e);ok=false}
   }else{
@@ -33038,8 +33032,8 @@ function draw(){
       X.fillText('☲',_bfsx+Math.cos(_ra)*_bfDrawR*.85-5,_bfsy+Math.sin(_ra)*_bfDrawR*.85+4)}
     X.restore()}
   _pC1=performance.now(); // bonfire end
-  // [FOG] 안개 렌더
-  if(OPT.fog&&_fogCnt>0&&OPT.quality!=='low'&&!(G._litFrame&1)){X.save();X.setTransform(1,0,0,1,0,0);const _fHell2=SI_TO_HELL[G.stage];
+  // [FOG] 안개 렌더 (매 프레임 — 교대 렌더 제거, 깜빡임 방지)
+  if(OPT.fog&&_fogCnt>0&&OPT.quality!=='low'){X.save();X.setTransform(1,0,0,1,0,0);const _fHell2=SI_TO_HELL[G.stage];
     for(let i=0;i<_fogCnt;i++){const f=_fogPool[i];const sx=C.width/2+(f.x-G.cam.x),sy=C.height/2+(f.y-G.cam.y);
       if(sx<-f.r*2||sx>C.width+f.r*2||sy<-f.r*2||sy>C.height+f.r*2)continue;
       const fadeIn=Math.min(1,(f.ml-f.life)/40),fadeOut=Math.min(1,f.life/60);
@@ -33047,12 +33041,12 @@ function draw(){
       if(_useGPU||_useGL){X.fillRect(sx-f.r,sy-f.r,f.r*2,f.r*2)}else{X.beginPath();X.arc(sx,sy,f.r,0,Math.PI*2);X.fill()}}
     X.globalAlpha=1;X.restore()}
   _pC2=performance.now(); // fog end
-  // ── 동적 환경광 오버레이 (2프레임에 1번) ──
-  if(G._litFrame&1){const _elHell=SI_TO_HELL[G.stage||0];
+  // ── 동적 환경광 오버레이 (매 프레임 — 교대 렌더 제거, 깜빡임 방지) ──
+  {const _elHell=SI_TO_HELL[G.stage||0];
   const _elCol=_ENV_LIGHT[_elHell];
   if(_elCol){X.save();X.setTransform(1,0,0,1,0,0);X.fillStyle=_elCol;X.fillRect(0,0,C.width,C.height);X.restore();}}
-  // ═══ 지옥별 동적 비네팅 (2프레임에 1번, envLight와 교대) ═══
-  if(!(G._litFrame&1)){
+  // ═══ 지옥별 동적 비네팅 (매 프레임 — 교대 렌더 제거, 깜빡임 방지) ═══
+  {
   if(!G._dvgCache||G._dvgStage!==G.stage||G._dvgW!==C.width){const hell=SI_TO_HELL[G.stage];const _vCols=['rgba(20,60,120,','rgba(20,60,15,','rgba(100,20,10,','rgba(50,15,80,','rgba(80,60,10,','rgba(50,40,25,','rgba(30,10,60,'];const vc=_vCols[hell];G._dvgCache=X.createRadialGradient(C.width/2,C.height/2,C.width*.35,C.width/2,C.height/2,C.width*.7);G._dvgCache.addColorStop(0,'rgba(0,0,0,0)');G._dvgCache.addColorStop(.7,vc+'.05)');G._dvgCache.addColorStop(1,vc+'.15)');G._dvgStage=G.stage;G._dvgW=C.width}
   let _vAlpha=.2;
   if(G._bossArena){
