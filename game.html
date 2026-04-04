@@ -4995,7 +4995,7 @@ addEventListener('keydown',e=>{
     e.preventDefault();e.stopPropagation();return;
   }
   // F11 전체화면 토글
-  if(e.code==='F11'){e.preventDefault();toggleFullscreen();return}
+  if(e.code==='F11'){toggleFullscreen();return}
   K[e.code]=true;KH[e.code]=true;
   if(['Space','Tab','Escape','KeyE','KeyQ','KeyZ','KeyX','KeyC','KeyB','KeyN','KeyH','KeyJ','KeyK','KeyL','KeyR','KeyF','KeyG','KeyV','ControlLeft','ControlRight','ShiftLeft','ShiftRight','CapsLock'].includes(e.code))e.preventDefault();
   // ── T키 석궁 자동발사 토글 ──
@@ -7982,7 +7982,7 @@ function drawEnBody(X,e,_now,sa){
     X.beginPath();X.moveTo(-r*.5,-r*.5);X.bezierCurveTo(0,0,r*.3,r*.3,r*.5,r*.8);X.stroke();
     break;}
 
-  // ═══════════════ 1장 얼음길 20~29 ═══════════════
+  // ═══════════════ 1장 썩은 숲 20~29 ═══════════════
   case 20:{// 빙결 전사 — 얼음 갑옷+성에
     const br=1+Math.sin(t*1.5)*.03,bc=_shCol(col,-30,-25,-20);
     X.fillStyle=bc;X.beginPath();X.moveTo(0,-r*.7*br);X.bezierCurveTo(r*.7,-r*.5,r*.8,r*.4,r*.5,r*.8);
@@ -8135,7 +8135,7 @@ function drawEnBody(X,e,_now,sa){
     X.beginPath();X.moveTo(r*.3,r*.8);X.lineTo(r*.4+Math.sin(legT+Math.PI)*2,r*1.3);X.stroke();
     break;}
 
-  // ═══════════════ 4장 괴물길 50~59 ═══════════════
+  // ═══════════════ 4장 고통의 화염지대 50~59 ═══════════════
   case 50:{// 기형보행자 — 비대칭 팔다리, 꺾인 관절, 90도 머리
     const br=1+Math.sin(t*1.8)*.06,bc=_shCol(col,-30,-25,-20);
     X.fillStyle=bc;X.beginPath();X.moveTo(-r*.3,-r*.9*br);
@@ -8336,7 +8336,7 @@ function drawEnBody(X,e,_now,sa){
     X.beginPath();X.moveTo(r*.2,r*.8);X.lineTo(r*.15+Math.sin(legT+Math.PI+.5)*1.5,r*1.2);X.stroke();
     break;}
 
-  // ═══════════════ 5장 해저길 60~69 ═══════════════
+  // ═══════════════ 5장 지옥의 군단 60~69 ═══════════════
   case 60:{X.fillStyle=_shCol(col,10,20,20);X.beginPath();X.ellipse(0,0,r*1.1,r*.9,t*.2,0,Math.PI*2);X.fill();X.fillStyle=_shCol(col,20,30,30);X.beginPath();X.ellipse(r*.2,-r*.1,r*.4,r*.5,.3,0,Math.PI*2);X.fill();X.strokeStyle='#2a5a3a';X.lineWidth=2;for(let i=0;i<4;i++){const a=Math.PI*2*i/4+t*.5,sw=Math.sin(t*2+i)*r*.4;X.beginPath();X.moveTo(Math.cos(a)*r*.5,Math.sin(a)*r*.5);X.quadraticCurveTo(Math.cos(a)*r+sw,Math.sin(a)*r+Math.cos(t+i)*r*.3,Math.cos(a)*r*1.3+sw*.5,Math.sin(a)*r*1.3);X.stroke()}X.fillStyle='#1a2a3a';X.beginPath();X.arc(-r*.2,-r*.3,r*.15,0,Math.PI*2);X.fill();X.beginPath();X.arc(r*.15,-r*.25,r*.12,0,Math.PI*2);X.fill();X.fillStyle='#0a1a2a';X.beginPath();X.ellipse(0,r*.2,r*.3,r*.15,0,0,Math.PI);X.fill();break;}
   case 61:{X.fillStyle=_shCol(col,5,10,15);X.beginPath();X.ellipse(0,0,r*1.2,r*.8,0,0,Math.PI*2);X.fill();X.fillStyle='#1a0a1a';X.beginPath();X.ellipse(0,r*.1,r*.9,r*.5,0,0,Math.PI);X.fill();X.fillStyle='#ccbbaa';for(let i=0;i<7;i++){const ix=-r*.7+i*r*.23;X.beginPath();X.moveTo(ix,-r*.05);X.lineTo(ix+r*.05,r*.2);X.lineTo(ix+r*.1,-r*.05);X.fill()}X.strokeStyle='#556666';X.lineWidth=1.5;X.beginPath();X.moveTo(0,-r*.6);X.quadraticCurveTo(r*.3,-r*1.2,r*.1,-r*1.5);X.stroke();X.fillStyle='#44ffaa';X.globalAlpha=.6+Math.sin(t*3)*.3;X.beginPath();X.arc(r*.1,-r*1.5,r*.15,0,Math.PI*2);X.fill();X.globalAlpha=sa;X.fillStyle='#aaddbb';X.beginPath();X.arc(-r*.4,-r*.3,r*.08,0,Math.PI*2);X.fill();break;}
   case 62:{const pulse62=1+Math.sin(t*2)*.15;X.globalAlpha=sa*.5;X.fillStyle=_shCol(col,30,40,80);X.beginPath();X.arc(0,-r*.2,r*pulse62,Math.PI,0);X.fill();X.globalAlpha=sa*.3;X.fillStyle='#8899cc';X.beginPath();X.arc(0,-r*.2,r*.7*pulse62,Math.PI,0);X.fill();X.globalAlpha=sa;X.strokeStyle='rgba(100,130,200,.5)';X.lineWidth=1.5;for(let i=0;i<6;i++){const tx=-r*.6+i*r*.24,sw=Math.sin(t*2+i)*r*.3;X.beginPath();X.moveTo(tx,r*.1);X.quadraticCurveTo(tx+sw,r*.6,tx+sw*.5,r*1.2);X.stroke();if(i%2===0){X.fillStyle='#ddeeff';X.beginPath();X.arc(tx+sw*.5,r*1.2,r*.07,0,Math.PI*2);X.fill()}}X.globalAlpha=.3+Math.sin(t*3)*.2;X.fillStyle='#aabbff';X.beginPath();X.arc(0,-r*.1,r*.3,0,Math.PI*2);X.fill();X.globalAlpha=sa;break;}
@@ -8348,7 +8348,7 @@ function drawEnBody(X,e,_now,sa){
   case 68:{X.fillStyle=_shCol(col,5,10,15);X.beginPath();X.ellipse(0,0,r*1.3,r*.8,.05,0,Math.PI*2);X.fill();X.fillStyle=_shCol(col,10,15,20);X.beginPath();X.moveTo(-r*.6,r*.2);X.quadraticCurveTo(0,r*1.2,r*.5,r*.2);X.fill();X.fillStyle='#99aabb';for(let i=0;i<6;i++){const ix=-r*.5+i*r*.2;X.beginPath();X.moveTo(ix,r*.15);X.lineTo(ix+r*.04,r*.35);X.lineTo(ix+r*.08,r*.15);X.fill()}X.fillStyle='#445544';X.beginPath();X.arc(-r*.3,-r*.5,r*.15,0,Math.PI*2);X.fill();X.beginPath();X.arc(r*.2,-r*.55,r*.12,0,Math.PI*2);X.fill();X.fillStyle='#556677';for(let i=0;i<4;i++){X.beginPath();X.arc(-r*.7+i*r*.15,-r*.2,r*.04,0,Math.PI*2);X.fill()}X.fillStyle=col;X.beginPath();X.moveTo(-r*1.1,0);X.lineTo(-r*1.6,-r*.5);X.lineTo(-r*1.6,r*.5);X.closePath();X.fill();break;}
   case 69:{X.strokeStyle=_shCol(col,10,15,25);X.lineWidth=3;for(let i=0;i<8;i++){const ta=Math.PI/2+Math.PI*i/8-Math.PI/2,tl=r*1.5+Math.sin(t*2+i)*r*.3;X.beginPath();X.moveTo(0,r*.2);X.bezierCurveTo(Math.cos(ta)*r*.5,r*.5+Math.sin(t+i)*r*.2,Math.cos(ta)*tl*.7,Math.sin(ta)*tl*.7+r*.3,Math.cos(ta)*tl,Math.sin(ta)*tl);X.stroke()}X.fillStyle=_shCol(col,15,20,30);X.beginPath();X.ellipse(0,-r*.3,r*.7,r*.9,0,0,Math.PI*2);X.fill();X.fillStyle='#667788';X.beginPath();X.arc(-r*.15,-r*.5,r*.25,Math.PI/2,Math.PI*1.5);X.fill();X.fillStyle='#aaccdd';X.beginPath();X.arc(-r*.25,-r*.55,r*.06,0,Math.PI*2);X.fill();X.fillStyle='#334444';X.beginPath();X.arc(r*.15,-r*.5,r*.25,-Math.PI/2,Math.PI/2);X.fill();X.fillStyle='#0a1a2a';X.beginPath();X.arc(r*.2,-r*.55,r*.08,0,Math.PI*2);X.fill();X.strokeStyle='#889999';X.lineWidth=2.5;X.beginPath();X.moveTo(r*.5,-r*.3);X.lineTo(r*1.5,-r*1.0);X.stroke();X.lineWidth=2;X.beginPath();X.moveTo(r*1.3,-r*1.2);X.lineTo(r*1.5,-r*1.0);X.lineTo(r*1.7,-r*1.2);X.stroke();X.beginPath();X.moveTo(r*1.5,-r*1.0);X.lineTo(r*1.5,-r*1.3);X.stroke();X.globalAlpha=.3+Math.sin(t*2)*.1;X.strokeStyle='#445566';X.lineWidth=2;X.beginPath();X.arc(0,-r*.6,r*.5,t*.5,t*.5+Math.PI*1.2);X.stroke();X.globalAlpha=sa;break;}
 
-  // ═══════════════ 2장 야생악마길 30~39 ═══════════════
+  // ═══════════════ 2장 벌레굴 30~39 ═══════════════
   case 30:{// 사냥개 사도 — 4족 개 형태, 갈색
     const br=1+Math.sin(t*3)*.02;
     X.fillStyle=col;X.beginPath();X.ellipse(0,0,r*1.1*br,r*.6*br,0,0,Math.PI*2);X.fill();
@@ -8513,7 +8513,7 @@ function drawEnBody(X,e,_now,sa){
       X.beginPath();X.arc(0,0,r*1.2,0,Math.PI*2);X.stroke();X.globalAlpha=sa}
     break;}
 
-  // ═══════════════ 3장 악마길 40~49 ═══════════════
+  // ═══════════════ 3장 얼음굴 40~49 ═══════════════
   case 40:{// 하급 원령 — 반투명 유령, 깜빡거림, 해골 실루엣
     const flicker=.3+Math.sin(t*6)*.15+Math.sin(t*11)*.1;
     X.globalAlpha=sa*flicker;
@@ -8907,7 +8907,7 @@ function drawEnBody(X,e,_now,sa){
     X.globalAlpha=.15;X.fillStyle='#000';X.beginPath();X.ellipse(0,r*1.3,r*.8,r*.15,0,0,Math.PI*2);X.fill();X.globalAlpha=sa;
     break;}
 
-  // ═══════════════ 6장 용암길 70~79 ═══════════════
+  // ═══════════════ 6장 사도의 마굴 70~79 ═══════════════
   case 70:{// 화염 보행자 — 피부 갈라짐+균열 용암빛+한쪽 팔 숯+눈 연기
     const br=1+Math.sin(t*2)*.04,bc=_shCol(col,-30,-20,-10);
     // 몸통 — 비대칭 울퉁불퉁
@@ -9259,7 +9259,7 @@ function drawEnBody(X,e,_now,sa){
     X.fillRect(-r*.3,r*.5,r*.25,r*.3+lk);X.fillRect(r*.1,r*.5,r*.25,r*.3-lk);
     break;}
 
-  // ═══════════════ 7장 고통의길 80~89 ═══════════════
+  // ═══════════════ 7장 지옥성 80~89 ═══════════════
   case 80:{// 고통의 인형 — 관절 못박힘+실 매달림+입 꿰매짐+피눈물
     const br=1+Math.sin(t*6)*.08; // 불규칙 떨림
     const bc=_shCol(col,-20,-15,-10);
@@ -9731,7 +9731,7 @@ const ATLAS_ENEMY_LAYOUT=[
   {etype:17,name:'mother',   cell:56,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   {etype:18,name:'vampire',  cell:56,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   {etype:19,name:'giant',    cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
-  // ═══ 1장 얼음길 (etype 20-29) ═══
+  // ═══ 1장 썩은 숲 (etype 20-29) ═══
   {etype:20,name:'frostWarrior',cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:21,name:'iceArcher',   cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:22,name:'frostWolf',   cell:48,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
@@ -9742,7 +9742,7 @@ const ATLAS_ENEMY_LAYOUT=[
   {etype:27,name:'icicleBat',   cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:28,name:'glacierGolem',cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   {etype:29,name:'iceDevil',    cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
-  // ═══ 2장 야생악마길 (etype 30-39) ═══
+  // ═══ 2장 벌레굴 (etype 30-39) ═══
   {etype:60,name:'huntDog',         cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:31,name:'thornApostle',    cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:32,name:'boulderApostle',  cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
@@ -9753,7 +9753,7 @@ const ATLAS_ENEMY_LAYOUT=[
   {etype:37,name:'predatorApostle', cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:38,name:'broodApostle',    cell:64,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:39,name:'wildElderApostle',cell:80,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
-  // ═══ 3장 악마길 (etype 40-49) ═══
+  // ═══ 3장 얼음굴 (etype 40-49) ═══
   {etype:40,name:'minorWraith', cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:41,name:'fallenKnight',cell:56,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   {etype:42,name:'fleshMass',   cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
@@ -9764,7 +9764,7 @@ const ATLAS_ENEMY_LAYOUT=[
   {etype:47,name:'shadowTwin',  cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:48,name:'hellPriest',  cell:48,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   {etype:49,name:'archdevil',   cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
-  // ═══ 4장 괴물길 (etype 50-59) ═══
+  // ═══ 4장 고통의 화염지대 (etype 50-59) ═══
   {etype:50,name:'dustZombie',    cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:51,name:'sandGolem',     cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   {etype:52,name:'boneMass',      cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
@@ -9775,7 +9775,7 @@ const ATLAS_ENEMY_LAYOUT=[
   {etype:57,name:'mimicApostle',  cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:58,name:'chimera',       cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   {etype:59,name:'beastLord',     cell:80,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
-  // ═══ 5장 해저길 (etype 60-69) ═══
+  // ═══ 5장 지옥의 군단 (etype 60-69) ═══
   {etype:60,name:'deepWalker',    cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:61,name:'anglerDevil',   cell:56,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   {etype:62,name:'jellyApostle',  cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
@@ -9786,7 +9786,7 @@ const ATLAS_ENEMY_LAYOUT=[
   {etype:67,name:'sirenApostle',  cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:68,name:'abyssalFish',   cell:64,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   {etype:69,name:'abyssArchApostle',cell:80,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
-  // ═══ 6장 용암길 (etype 70-79) ═══
+  // ═══ 6장 사도의 마굴 (etype 70-79) ═══
   {etype:70,name:'flameWalker',   cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:71,name:'volcDemon',     cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:72,name:'lavaSlime',     cell:48,states:{idle:4,walk:4,attack:2,hit:2},totalFrames:12},
@@ -9802,7 +9802,7 @@ const ATLAS_ENEMY_LAYOUT=[
   {etype:82,name:'lavaSkin', cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:83,name:'abyssSkin',cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:84,name:'lightSkin',cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
-  // 7장 고통의길 (85~89)
+  // 7장 지옥성 (85~89)
   {etype:85,name:'despairKnight',cell:48,states:{idle:4,walk:4,attack:6,hit:2},totalFrames:16},
   {etype:86,name:'invertAngel',  cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
   {etype:87,name:'doppelganger', cell:48,states:{idle:4,walk:4,attack:4,hit:2},totalFrames:14},
@@ -9898,7 +9898,7 @@ function _getMappedEtype(et){
   if(et>=70 && et<=79) return 82; // Lava (용암)
   if(et>=30 && et<=39) return 80; // Bug (벌레)
   if(et>=40 && et<=69) return 83; // Abyss (심연)
-  if(et>=85 && et<=89) return 84; // 7장 고통의길 → Light 스킨
+  if(et>=85 && et<=89) return 84; // 7장 지옥성 → Light 스킨
   return 0;                      // Skeleton (기본 폴백)
 }
 // ── 구울 스프라이트 (4방향 로테이션) ──
@@ -14937,11 +14937,11 @@ const ETYPE_HP=  [32,24,22,10,60,16, 45,18,20,14, 28,35,70,8,30,42,38,65,55,80,
   13,64,96,32,48,19,128,48,32,192,
   // 4장(50~59) placeholder
   32,96,80,26,22,38,48,128,128,224,
-  // 5장 해저길(60~69)
+  // 5장 지옥의 군단(60~69)
   48,58,19,80,10,26,96,32,160,256,
-  // 6장 용암길(70~79): 화염보행자/화산탄악마/용암슬라임/화염박쥐/흑요석기사/불뱀/재의망자/용암거인/화염사제/화룡사도
+  // 6장 사도의 마굴(70~79): 화염보행자/화산탄악마/용암슬라임/화염박쥐/흑요석기사/불뱀/재의망자/용암거인/화염사제/화룡사도
   38,32,64,10,96,26,13,160,32,320,
-  // 7장 고통의길(80~89): 고통인형/고문장치/피의성직자/살가죽수집가/비명기둥/절망기사/거꾸로천사/도플갱어/심판자/고통의왕
+  // 7장 지옥성(80~89): 고통인형/고문장치/피의성직자/살가죽수집가/비명기둥/절망기사/거꾸로천사/도플갱어/심판자/고통의왕
   26,128,38,32,160,64,48,80,192,480];
 const ETYPE_ATK= [12, 8,14, 5,20,22, 15,10,18, 6, 14,18,22,4,12,20,16,25, 8,28,
   12,16,18,22,10,4,15,24,18,24,
@@ -14949,9 +14949,9 @@ const ETYPE_ATK= [12, 8,14, 5,20,22, 15,10,18, 6, 14,18,22,4,12,20,16,25, 8,28,
   6,18,22,14,18,22,18,14,12,30,
   12,16,24,18,2,16,12,18,24,30,
   12,24,10,18,2,14,12,18,24,36,
-  // 6장 용암길(70~79)
+  // 6장 사도의 마굴(70~79)
   12,18,6,12,24,16,4,24,12,36,
-  // 7장 고통의길(80~89)
+  // 7장 지옥성(80~89)
   18,18,12,22,12,24,24,18,30,42];
 const ETYPE_SPD= [.3,.18,.6,.75,.14,.5, .35,.15,.4,.2, .65,.35,.15,.8,.4,.45,.5,.18,.12,.2,
   .27,.3,.6,.21,.12,.3,.24,.54,.09,.36,
@@ -14959,9 +14959,9 @@ const ETYPE_SPD= [.3,.18,.6,.75,.14,.5, .35,.15,.4,.2, .65,.35,.15,.8,.4,.45,.5,
   .21,.24,.09,.54,.6,.3,0,.36,.24,.24,
   .36,.12,.09,.18,.54,.39,0,.45,.15,.18,
   .18,.09,.24,.21,.15,.54,0,.45,.24,.21,
-  // 6장 용암길(70~79)
+  // 6장 사도의 마굴(70~79)
   .24,.18,.12,.66,.15,.54,.15,.09,.21,.18,
-  // 7장 고통의길(80~89)
+  // 7장 지옥성(80~89)
   .3,0,.24,.45,0,.45,.36,.3,.21,.15];
 const ETYPE_R=   [10,10,12,10,16,10, 13,10,10,10, 10,11,18,10,10,12,10,20,16,22,
   10,10,10,10,10,10,10,10,25,20,
@@ -14969,9 +14969,9 @@ const ETYPE_R=   [10,10,12,10,16,10, 13,10,10,10, 10,11,18,10,10,12,10,20,16,22,
   10,12,18,10,10,10,20,12,10,25,
   10,20,18,12,10,10,20,10,25,30,
   10,15,10,15,10,10,20,10,25,30,
-  // 6장 용암길(70~79)
+  // 6장 사도의 마굴(70~79)
   10,12,15,10,12,10,10,25,10,35,
-  // 7장 고통의길(80~89)
+  // 7장 지옥성(80~89)
   10,20,10,10,30,10,12,10,25,40];
 const ETYPE_POISE=[12,8,10,4,35,5, 28, 6, 8, 5, 8,14,38,3,10,18,12,30,25,40,
   15,8,10,6,30,6,8,4,50,45,
@@ -14979,9 +14979,9 @@ const ETYPE_POISE=[12,8,10,4,35,5, 28, 6, 8, 5, 8,14,38,3,10,18,12,30,25,40,
   5,28,45,12,15,5,55,18,10,60,
   12,40,35,10,3,12,45,12,40,65,
   18,25,8,35,3,10,45,12,50,70,
-  // 6장 용암길(70~79)
+  // 6장 사도의 마굴(70~79)
   14,10,20,3,35,8,4,50,8,60,
-  // 7장 고통의길(80~89)
+  // 7장 지옥성(80~89)
   10,50,12,8,60,18,14,15,55,80];
 // ═══ ETYPE_DEF: 방어력 — 쉴드탱크용 (물리→쉴드 감소, 에너지→HP 감소) ═══
 // ═══ ETYPE_SHIELD: 쉴드 비율 (HP 대비 %, 100=HP와 동일량) — 0이면 쉴드 없음 ═══
@@ -15002,9 +15002,9 @@ const ETYPE_COL=['#dd4455','#55cc44','#ff8833','#66ee66','#8888aa','#ff6622','#4
   '#551133','#442233','#663344','#882211','#443322','#553344','#332222','#221122','#664422','#330011',
   '#554433','#665544','#774433','#887766','#443333','#ddccaa','#cc5544','#998877','#aaaaaa','#332211',
   '#223344','#334455','#5566aa','#445533','#2a3a4a','#556644','#885566','#446655','#112233','#0a1122',
-  // 6장 용암길(70~79)
+  // 6장 사도의 마굴(70~79)
   '#aa3300','#cc4400','#ee5500','#dd6600','#332211','#ee4400','#555544','#881100','#993300','#660000',
-  // 7장 고통의길(80~89)
+  // 7장 지옥성(80~89)
   '#443333','#554433','#661122','#775544','#332222','#222222','#aaaaaa','#cc9988','#111111','#0a0000'];
 //               근접:빨강  궁수:녹   돌격:주황 떼:연녹  탱크:강철  자폭:주황적 방패:파랑 리치:보라  화약:갈주  주술:연보
 // ═══ 몬스터 고유 오라 색상 (장별 테마 기반) ═══
@@ -15022,15 +15022,15 @@ const _ENT_AURA_RGB=[
   '136,200,255','100,170,238','170,220,255','200,238,255','85,136,170','120,220,255','153,153,255','170,187,238','100,153,187','68,85,170',
   // 30-39: 2장 벌레굴 (갈색/토)
   '136,68,34','170,85,50','120,100,85','220,100,68','85,100,50','153,50,17','68,120,50','85,50,34','120,68,50','68,17,0',
-  // 40-49: 3장 악마길 (진홍/암적)
+  // 40-49: 3장 얼음굴 (진홍/암적)
   '85,17,50','68,34,50','100,50,68','136,34,17','68,50,34','85,50,68','50,34,34','34,17,34','100,68,34','50,0,17',
-  // 50-59: 4장 괴물길 (탁한 갈/회)
+  // 50-59: 4장 고통의 화염지대 (탁한 갈/회)
   '85,68,50','100,85,68','120,68,50','136,120,100','68,50,50','220,200,170','200,85,68','153,136,120','170,170,170','50,34,17',
   // 60-69: 5장 지옥군단 (암청/군단)
   '34,50,68','50,68,85','85,100,170','68,85,50','42,58,74','85,100,68','136,85,100','68,100,85','17,34,50','10,17,34',
-  // 70-79: 6장 용암길 (적/화염)
+  // 70-79: 6장 사도의 마굴 (적/화염)
   '170,50,0','200,68,0','238,85,0','220,100,0','50,34,17','238,68,0','85,85,68','136,17,0','153,50,0','100,0,0',
-  // 80-89: 7장 고통의길 (암흑)
+  // 80-89: 7장 지옥성 (암흑)
   '68,50,50','85,68,50','100,17,34','120,85,68','50,34,34','34,34,34','170,170,170','200,153,136','17,17,17','10,0,0',
   // 90-99: 레어몹 (금/은 특수)
   '153,153,153','220,170,0','200,200,220','136,100,68','85,85,100','170,187,153','220,200,0','68,50,85','34,0,50','255,255,255'
@@ -15178,9 +15178,9 @@ function eModHitP(e){
   if(e.mods.includes('M18')&&Math.random()<.15&&P.s!=='charge'&&P.s!=='sBlock'){
     if(P.s==='whirlwind'&&P.skills.detonate&&_isFused('whirlDet')&&(P.parryT||0)>=120){if(_isFused('slamStorm'))_slamStormBlast();else _detonateBlast('강제기폭!',EL.P)}
     P.s='stagger';P.st2=30;addTxt(P.x,P.y-20,'⚡감전!','#ffee44',25);addParts(P.x,P.y,'#ffee44',6)}
-  // 1장 얼음길 몹: 근접 공격 시 35% 빙결
+  // 1장 썩은 숲 몹: 근접 공격 시 35% 빙결
   if(e._iceOnHit&&Math.random()<.35){P._freezeSlow=Math.max(P._freezeSlow,90);addTxt(P.x,P.y-20,'❄빙결!','#88ccff',25);addParts(P.x,P.y,'#88ccff',6)}
-  // 6장 용암길 몹: 근접 공격 시 40% 화상
+  // 6장 사도의 마굴 몹: 근접 공격 시 40% 화상
   if(e._lavaBurn&&Math.random()<e._lavaBurn){P.burnT=Math.max(P.burnT||0,180);addTxt(P.x,P.y-20,'🔥화상!','#ff4400',25);addParts(P.x,P.y,'#ff4400',6)}
 }
 
@@ -15278,7 +15278,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     _iceOnHit:etype>=20&&etype<=29,
     // 19:대형 — 지면 강타
     slamCd:etype===19?(200+Math.random()*80):9999,slamT:etype===19?(80+Math.random()*40):9999,
-    // ═══ 1장 얼음길 전용 ═══
+    // ═══ 1장 썩은 숲 전용 ═══
     _iceFreeze:etype>=20&&etype<=29?.35:0, // 빙결 확률
     _iceChargeCd:etype===22?(80+Math.random()*40):9999, // 서리늑대 돌진
     _iceChargeT:etype===22?(40+Math.random()*20):9999,
@@ -15290,7 +15290,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     _iceSlamT:(etype===28||etype===29)?(80+Math.random()*40):9999,
     _iceBlizzCd:etype===26?(180+Math.random()*60):9999, // 눈보라마법사 범위눈보라
     _iceBlizzT:etype===26?(60+Math.random()*30):9999,
-    // ═══ 2장 야생악마길 전용 ═══
+    // ═══ 2장 벌레굴 전용 ═══
     _wildChargeCd:etype===30?(60+Math.random()*30):9999, // 사냥개 돌진
     _wildChargeT:etype===30?(30+Math.random()*20):9999,
     _boulderSlamCd:etype===32?(200+Math.random()*60):9999, // 거암 충격파
@@ -15318,7 +15318,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     _elderSlamT:etype===39?(120+Math.random()*60):9999,
     _bossOrbitAng:Math.random()*Math.PI*2,
     _bossStrafeCd:0,
-    // ═══ 3장 악마길 전용 (40~49) ═══
+    // ═══ 3장 얼음굴 전용 (40~49) ═══
     _wraithPhaseT:etype===40?(120+Math.random()*60):9999, // 40:원령 위상변환 (무적)
     _wraithPhaseCd:etype===40?(240+Math.random()*80):9999,
     _wraithPhasing:false,
@@ -15355,7 +15355,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     _adChargeCd:etype===49?(200+Math.random()*60):9999, // 49:돌진
     _adSlamCd:etype===49?(250+Math.random()*80):9999, // 49:충격파
     _adSlamT:etype===49?(80+Math.random()*40):9999,
-    // ═══ 4장 괴물길 전용 (50~59) ═══
+    // ═══ 4장 고통의 화염지대 전용 (50~59) ═══
     _erraticT:etype===50?(30+Math.random()*30):9999,_erraticAng:Math.random()*Math.PI*2,
     _amalgCleave:etype===51,_amalgSplit:false,
     _tongueCd:etype===52?(160+Math.random()*60):9999,_tongueT:etype===52?(60+Math.random()*30):9999,
@@ -15366,7 +15366,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     _curled:etype===57,_curlTimer:etype===57?(300+Math.random()*120):0,
     _mirrorBuf:etype===58?[]:null,_mirrorDelay:60,
     _overlordPhase:etype===59?0:-1,_overlordCd:etype===59?120:9999,
-    // ═══ 6장 용암길 전용 ═══
+    // ═══ 6장 사도의 마굴 전용 ═══
     _lavaBurn:etype>=70&&etype<=79?.4:0,
     _lavaPoolDeath:etype===70||etype===72,
     _volcBombCd:etype===71?(120+Math.random()*50):9999,_volcBombT:etype===71?(50+Math.random()*30):9999,
@@ -15381,7 +15381,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     _dragonBreathCd:etype===79?(180+Math.random()*60):9999,_dragonBreathT:0,
     _dragonFlyCd:etype===79?(300+Math.random()*100):9999,_dragonFlyT:0,_dragonFlying:false,
     _dragonMeteorCd:etype===79?(250+Math.random()*80):9999,
-    // ═══ 5장 해저길 전용 ═══
+    // ═══ 5장 지옥의 군단 전용 ═══
     _seaGrabT:0,_seaGrabCd:(etype===60||etype===64)?(120+Math.random()*40):9999, // 60:심해보행자, 64:익사자 잡기
     _seaSpitCd:etype===60?(180+Math.random()*60):9999, // 60:물뿜기
     _anglerLure:etype===61,_anglerCharging:false,_anglerLureCd:etype===61?(200+Math.random()*80):9999, // 61:아귀 미끼+돌진
@@ -15392,7 +15392,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     _sirenSongCd:etype===67?(150+Math.random()*50):9999,_sirenDashCd:etype===67?(100+Math.random()*40):9999,_sirenFlee:false, // 67:인어 노래+돌진+도주
     _levChargeCd:etype===68?(180+Math.random()*60):9999,_levTailCd:etype===68?(250+Math.random()*80):9999,_levParaCd:etype===68?(300+Math.random()*80):9999, // 68:거대어
     _abyssPhase:etype===69?0:-1,_abyssTentCd:etype===69?(120+Math.random()*40):9999,_abyssTridCd:etype===69?(200+Math.random()*60):9999,_abyssWhirlCd:etype===69?(300+Math.random()*80):9999,_abyssSumCd:etype===69?(400+Math.random()*100):9999,_abyssTideCd:etype===69?(500+Math.random()*100):9999, // 69:대사도
-    // ═══ 7장 고통의길 전용 ═══
+    // ═══ 7장 지옥성 전용 ═══
     _ppRushCd:etype===80?(60+Math.random()*40):9999,_ppSelfDestT:0, // 80:고통인형 — 갑작 돌진+자해폭발
     _tePullCd:etype===81?(150+Math.random()*50):9999,_teGrindT:0, // 81:고문장치 — 사슬끌기+톱니
     _bpDrainCd:etype===82?(120+Math.random()*40):9999,_bpHealPool:0, // 82:피의성직자 — 흡수빔+힐
@@ -16499,7 +16499,7 @@ function update(){
   if(G._sStats){const _ss=G._sStats;if(_ss._prevX||_ss._prevY){const _dx=P.x-_ss._prevX,_dy=P.y-_ss._prevY,_dd=Math.sqrt(_dx*_dx+_dy*_dy);if(_dd>0.5&&_dd<500){if(_harpActive||_dashActive)_ss.dashDist+=_dd;else _ss.walked+=_dd}}_ss._prevX=P.x;_ss._prevY=P.y}
   // ═══ 어픽스: statusClean (정화) — 10초마다 상태이상 해제 ═══
   if(_eqAffix('statusClean')>0){P._statusCleanT=(P._statusCleanT||0)+sp;if(P._statusCleanT>=600){P._statusCleanT=0;let _scCnt=~~(_eqAffix('statusClean'));if(_scCnt>0&&P.burnT>0){P.burnT=0;_scCnt--}if(_scCnt>0&&P.poison>0){P.poison=0;_scCnt--}if(_scCnt>0&&P._webSlow>0){P._webSlow=0;_scCnt--}if(_scCnt>0&&P._freezeSlow>0){P._freezeSlow=0;_scCnt--}}}
-  // ═══ 5장 해저길 스테이지 규칙 ═══
+  // ═══ 5장 지옥의 군단 스테이지 규칙 ═══
   if(SI_TO_HELL[G.stage]===4){
     // 스태미나 자동 감소 (초당 2% = 프레임당 2%/60)
     P.st=Math.max(0,P.st-P.mst*.02/60*sp);
@@ -16662,7 +16662,7 @@ function update(){
         addParts(hi.x,hi.y,'#33ff33',6);SFX.pickup();
       }
     }
-    // 산소방울 줍기 (5장 해저길)
+    // 산소방울 줍기 (5장 지옥의 군단)
     if(!chestOpened){
       for(let i=0;i<worldItems.length;i++){
         const it=worldItems[i];if(it.picked||it.type!=='o2bubble')continue;
@@ -16703,7 +16703,7 @@ function update(){
     if(P.burnT>0){P.burnT-=sp;if(Math.floor(P.burnT/60)<Math.floor((P.burnT+sp)/60)){const bd=~~(P.mhp*.04);hurtP(bd,{dot:true,src:'화상'});addTxt(P.x,P.y-15,'🔥'+bd,'#ff4400',18);addParts(P.x,P.y,'#ff4400',3)}}
     // 독 데미지 (초당 HP 0.8%, 감소)
     if(P.poison>0){P.poison-=sp*.02;if(Math.floor(P.poison*10)%6<1){const pd=~~(P.mhp*.008);hurtP(pd,{dot:true,src:'중독'});addTxt(P.x,P.y-15,'☠'+pd,'#33aa22',15);addParts(P.x,P.y,'#33aa22',2)}}
-    // ═══ 5장 해저길: 잡기/마비 상태 ═══
+    // ═══ 5장 지옥의 군단: 잡기/마비 상태 ═══
     if(P._seaGrabbed>0){P._seaGrabbed-=sp;P.kb.x*=.1;P.kb.y*=.1;if(~~(P._seaGrabbed)%30<2)addTxt(P.x,P.y-20,'잡힘!','#334466',10)}
     if(P._seaParalyzed>0){P._seaParalyzed-=sp;P.kb.x*=.05;P.kb.y*=.05}
     if(P._greedCurse>0){P._greedCurse-=sp;if(~~(P._greedCurse)%300<2)addTxt(P.x,P.y-45,'저주 '+~~(P._greedCurse/60)+'s','#886644',15)}
@@ -17384,7 +17384,7 @@ function update(){
     // 투사체 반사 (보호막 범위 내) — sBlock과 동일
     const _psR=P._psShieldR;
     for(let _pi=projs.length-1;_pi>=0;_pi--){
-      const p=projs[_pi];if(p.friendly||p.noParry)continue; // noParry 탄 패링 절대 불가
+      const p=projs[_pi];if(p.friendly||p.noParry||p.redBean)continue; // noParry/빨콩 패링 절대 불가 (빨콩은 우클릭만)
       // 관통 방지: 현재 위치 OR 이전 위치가 보호막 안이면 흡수
       const _psDist=dst(P.x,P.y,p.x,p.y);
       const _psPrev=dst(P.x,P.y,p.x-p.vx*sp,p.y-p.vy*sp);
@@ -18437,7 +18437,7 @@ function update(){
     }
     // ══ 일반탄: 원래 좁은 범위로 판정 (회전기폭: 빨콩도 넓은 흡수 범위) ══
     const _wwAbsR=_wwDetAbs?90:_normalR;
-    if(!p.blackBean&&!p.noParry&&!p.poisonZone&&!_pHit&&_pDist<_wwAbsR&&P.iframes<=0&&!P._ioActive){
+    if(!p.blackBean&&!p.redBean&&!p.noParry&&!p.poisonZone&&!_pHit&&_pDist<_wwAbsR&&P.iframes<=0&&!P._ioActive){
       if(isPWin()){
         const ra=Math.atan2(p.vy,p.vx);
         for(let k=0;k<12;k++){const sa=ra+Math.PI+(Math.random()-.5)*2.2;const sv=3+Math.random()*5;
@@ -21701,7 +21701,7 @@ function updateE(e,sp){
       e.s='eSlamWind';e.st2=40;e.slamT=e.slamCd;addTxt(e.x,e.y-20,'💀','#4a1a1a',30);
     }
   }
-  // ═══════════════ 1장 얼음길 AI (20~29) ═══════════════
+  // ═══════════════ 1장 썩은 숲 AI (20~29) ═══════════════
   // ═══ 20:빙결전사 — 근접+빙결 ═══
   if(e.etype===20&&e.s==='idle'&&d<30+e.r){
     // 근접 공격 시 빙결 확률은 hurtP 후에 적용
@@ -21786,7 +21786,7 @@ function updateE(e,sp){
       addTxt(e.x,e.y-15,'돌진\!','#4455aa',30);SFX.charge();
     }
   }
-  // ═══════════════ 2장 야생악마길 AI (30~39) ═══════════════
+  // ═══════════════ 2장 벌레굴 AI (30~39) ═══════════════
   // ── 30:사냥개 사도 — 돌진+물기 ──
   if(e.etype===30&&e.s==='idle'){
     e._wildChargeT-=sp;
@@ -21932,7 +21932,7 @@ function updateE(e,sp){
     }
   }
 
-  // ═══════════════ 3장 악마길 AI (40~49) ═══════════════
+  // ═══════════════ 3장 얼음굴 AI (40~49) ═══════════════
   // ── 40:하급 원령 — 위상변환(무적)+기습, 평시에는 일반 이동 ──
   if(e.etype===40&&e.s==='idle'){
     e._wraithPhaseT-=sp;
@@ -22158,7 +22158,7 @@ function updateE(e,sp){
     }
   }
 
-  // ═══════════════ 4장 괴물길 AI (50~59) ═══════════════
+  // ═══════════════ 4장 고통의 화염지대 AI (50~59) ═══════════════
   // ═══ 50:기형보행자 — 불규칙 이동 + 랜덤 타이밍 공격 ═══
   if(e.etype===50&&e.s==='idle'){
     e._erraticT-=sp;
@@ -22301,7 +22301,7 @@ function updateE(e,sp){
     }
   }
 
-  // ═══════════════ 6장 용암길 AI (70~79) ═══════════════
+  // ═══════════════ 6장 사도의 마굴 AI (70~79) ═══════════════
   // ── 70:화염 보행자 — 접촉 화상 ──
   if(e.etype===70&&e.s==='idle'&&d<25+e.r&&Math.random()<.3*sp){
     P.burnT=Math.max(P.burnT||0,180);addTxt(P.x,P.y-10,'화상!','#ff4400',25);
@@ -22464,7 +22464,7 @@ function updateE(e,sp){
     }
   }
 
-  // ═══════════════ 5장 해저길 AI (60~69) ═══════════════
+  // ═══════════════ 5장 지옥의 군단 AI (60~69) ═══════════════
   // ── 60:심해 보행자 — 잡기(2초 고정)+물 뿜기(감속) ──
   if(e.etype===60&&e.s==='idle'){
     if(e._seaGrabCd>0)e._seaGrabCd-=sp;if(e._seaSpitCd>0)e._seaSpitCd-=sp;
@@ -22688,7 +22688,7 @@ function updateE(e,sp){
     }
   }
 
-  // ═══════════════ 7장 고통의길 AI (80~89) ═══════════════
+  // ═══════════════ 7장 지옥성 AI (80~89) ═══════════════
   // ── 80:고통의 인형 — 불규칙 이동+돌진+자폭 ──
   if(e.etype===80&&e.s==='idle'){
     if(e._ppRushCd>0)e._ppRushCd-=sp;
@@ -25061,7 +25061,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       }
       addTxt(e.x,e.y-15,'분열!','#7b5b3b',30);
     }
-    // ═══ 1장 얼음길 사망 효과 ═══
+    // ═══ 1장 썩은 숲 사망 효과 ═══
     // 25:빙판슬라임 사망 시 주변 빙판 지대
     if(e.etype===25){
       for(let _si=0;_si<3;_si++){const a=Math.PI*2*_si/3;
@@ -25084,7 +25084,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       shake(10);if(!(G._noHitStopT>0))G.hitStop=Math.max(G.hitStop,~~(12*OPT.hitStop/100));
       addTxt(e.x,e.y-25,'빙마 처치!','#88ccff',60);addParts(e.x,e.y,'#4455aa',20);/*SFX.hit()*/;
     }
-    // ═══ 4장 괴물길 사망 효과 ═══
+    // ═══ 4장 고통의 화염지대 사망 효과 ═══
     // 51:융합체 사망 시 소형 2마리 분리 (etype 50으로)
     if(e.etype===51&&!e._amalgSplit){
       for(let _ai=0;_ai<2;_ai++){
@@ -25117,7 +25117,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       shake(12);G._flashT=6;G._flashCol='#ff4400';
       addParts(e.x,e.y,'#884422',20);addParts(e.x,e.y,'#ff4422',15);/*SFX.hit()*/;
     }
-    // ═══ 6장 용암길 사망 효과 ═══
+    // ═══ 6장 사도의 마굴 사망 효과 ═══
     // 70:화염 보행자, 72:용암 슬라임 — 사망 시 용암 웅덩이
     if(e._lavaPoolDeath){
       for(let _li=0;_li<3;_li++){const a=Math.PI*2*_li/3;
@@ -25139,7 +25139,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       shake(15);G._flashT=8;G._flashCol='#ff4400';G._chromaT=6;
       addParts(e.x,e.y,'#ff2200',25);addParts(e.x,e.y,'#ff8800',20);/*SFX.hit()*/;
     }
-    // ═══ 7장 고통의길 사망 효과 ═══
+    // ═══ 7장 지옥성 사망 효과 ═══
     // 80:고통의 인형 — 사망 폭발 (자폭 아닌 경우에도)
     if(e.etype===80){
       if(dst(e.x,e.y,P.x,P.y)<50+P.r&&P.iframes<=0)hurtP(~~(e.atk*.5));
@@ -25172,11 +25172,11 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       shake(20);G._flashT=10;G._flashCol='#880000';G._chromaT=8;
       addParts(e.x,e.y,'#660000',30);addParts(e.x,e.y,'#330000',25);addParts(e.x,e.y,'#880000',20);/*SFX.hit()*/;
     }
-    // 5장 해저길: 산소방울 드롭 (30% 확률)
+    // 5장 지옥의 군단: 산소방울 드롭 (30% 확률)
     if(e.etype>=60&&e.etype<=69&&Math.random()<.3){
       worldItems.push({x:e.x+(Math.random()-.5)*20,y:e.y+(Math.random()-.5)*20,type:'o2bubble',picked:false});
     }
-    // ═══ 5장 해저길 사망 효과 ═══
+    // ═══ 5장 지옥의 군단 사망 효과 ═══
     // 60:심해 보행자 — 사망 시 감속 수역
     if(e.etype===60){
       for(let _sw=0;_sw<3;_sw++){const sa=Math.PI*2*_sw/3;
@@ -31261,44 +31261,93 @@ function draw(){
       X.globalAlpha=.4;X.fillStyle='#ff4488';
       for(let ci=1;ci<=4;ci++){X.globalAlpha=.12/ci;X.beginPath();X.arc(e.x-(e.echDx||0)*10*ci,e.y-(e.echDy||0)*10*ci,e.r,0,Math.PI*2);X.fill()}
       X.globalAlpha=sa}
-    // ── 곤봉 참격 궤적 이펙트 ──
+    // ── 참격 와인드업 차징 글로우 ──
+    if(e.ib&&e.s==='bossSlashWind'){
+      const _swWP=1-e.st2/20;
+      X.save();X.globalCompositeOperation='lighter';
+      // 손 쪽 에너지 축적
+      const _chA=e.facing+.45;const _chD=e.r*.8;
+      const _cx2=e.x+Math.cos(_chA)*_chD,_cy2=e.y+Math.sin(_chA)*_chD;
+      X.globalAlpha=_swWP*.5;X.fillStyle='#ff6600';
+      X.beginPath();X.arc(_cx2,_cy2,6+_swWP*8+Math.sin(_now*.02)*3,0,Math.PI*2);X.fill();
+      X.globalAlpha=_swWP*.8;X.fillStyle='#ffdd88';
+      X.beginPath();X.arc(_cx2,_cy2,3+_swWP*4,0,Math.PI*2);X.fill();
+      X.restore();X.globalAlpha=sa}
+    // ── 참격 슬래시 아크 이펙트 ──
     if(e.ib&&e.s==='bossSlash'){
-      const _slPr=1-e.st2/10;const _wA2=e.facing+0.45+(-0.8+_slPr*2.0);
-      const _wL2=e.r*1.8+6;
-      X.globalAlpha=.6*_slPr;X.strokeStyle='#ffaa44';X.lineWidth=4;X.lineCap='round';
-      X.beginPath();
-      for(let ai=0;ai<5;ai++){
-        const _aOff=(-0.8+(_slPr-ai*.06)*2.0);
-        const _aA=e.facing+0.45+_aOff;
-        const _ax=e.x+Math.cos(e.facing+0.45)*e.r*.6+Math.cos(_aA)*_wL2;
-        const _ay=e.y+Math.sin(e.facing+0.45)*e.r*.6+Math.sin(_aA)*_wL2;
-        if(ai===0)X.moveTo(_ax,_ay);else X.lineTo(_ax,_ay);
-      }
-      X.stroke();X.globalAlpha=sa}
-    // ── 강타 충격파 이펙트 ──
+      const _slPr=1-e.st2/10;
+      const _arcR=e.r*2.2+10; // 참격 반경
+      const _arcStart=e.facing-1.0+_slPr*2.0; // 호 시작각
+      const _arcW=.8-_slPr*.3; // 호 너비 (좁아지며)
+      X.save();X.globalCompositeOperation='lighter';
+      // 외곽 글로우
+      X.globalAlpha=.35*(1-_slPr);X.strokeStyle='#ff6600';X.lineWidth=12;X.lineCap='round';
+      X.beginPath();X.arc(e.x,e.y,_arcR,_arcStart,_arcStart+_arcW);X.stroke();
+      // 코어 (밝은 주황→백)
+      X.globalAlpha=.7*(1-_slPr*.5);X.strokeStyle='#ffcc44';X.lineWidth=5;
+      X.beginPath();X.arc(e.x,e.y,_arcR,_arcStart,_arcStart+_arcW);X.stroke();
+      X.globalAlpha=.9*(1-_slPr*.3);X.strokeStyle='#ffffff';X.lineWidth=2;
+      X.beginPath();X.arc(e.x,e.y,_arcR,_arcStart,_arcStart+_arcW);X.stroke();
+      // 선단 스파크
+      const _tipA=_arcStart+_arcW;
+      const _tx=e.x+Math.cos(_tipA)*_arcR,_ty=e.y+Math.sin(_tipA)*_arcR;
+      X.globalAlpha=.8*(1-_slPr);X.fillStyle='#ffffff';
+      X.beginPath();X.arc(_tx,_ty,4+Math.random()*2,0,Math.PI*2);X.fill();
+      X.restore();X.globalAlpha=sa}
+    // ── 강타 차징 + 충격파 이펙트 ──
     if(e.ib&&e.s==='bossSlamWind'){
       const _slWP=1-e.st2/35;
-      X.globalAlpha=_slWP*.5;X.fillStyle='#ff4400';
-      X.beginPath();X.arc(e.x,e.y,20+_slWP*30,0,Math.PI*2);X.fill();
-      X.globalAlpha=sa}
+      X.save();X.globalCompositeOperation='lighter';
+      // 차징 수렴 파티클 원
+      X.globalAlpha=_slWP*.4;X.strokeStyle='#ff4400';X.lineWidth=2;
+      const _chR=40*(1-_slWP)+8; // 수렴
+      X.beginPath();X.arc(e.x,e.y,_chR,0,Math.PI*2);X.stroke();
+      // 내부 글로우
+      X.globalAlpha=_slWP*.5;X.fillStyle='#ff2200';
+      X.beginPath();X.arc(e.x,e.y+e.r*.3,8+_slWP*15,0,Math.PI*2);X.fill();
+      X.restore();X.globalAlpha=sa}
     if(e.ib&&e.s==='bossSlam'){
       const _slAP=1-e.st2/8;
-      X.globalAlpha=.4+_slAP*.4;X.strokeStyle='#ff6600';X.lineWidth=3+_slAP*4;
-      X.beginPath();X.arc(e.x,e.y,_slAP*(70+G.stage*4),0,Math.PI*2);X.stroke();
-      X.globalAlpha=sa}
+      const _slamVR=_slAP*(70+G.stage*4);
+      X.save();X.globalCompositeOperation='lighter';
+      // 충격파 링
+      X.globalAlpha=.6*(1-_slAP);X.strokeStyle='#ff6600';X.lineWidth=5*(1-_slAP)+1;
+      X.beginPath();X.arc(e.x,e.y,_slamVR,0,Math.PI*2);X.stroke();
+      // 중심 플래시
+      const _flP=Math.max(0,1-_slAP*3);
+      if(_flP>0){X.globalAlpha=_flP*.7;X.fillStyle='#ffffff';X.beginPath();X.arc(e.x,e.y,15,0,Math.PI*2);X.fill()}
+      // 바닥 균열선
+      X.globalAlpha=.4*(1-_slAP);X.strokeStyle='#ff8844';X.lineWidth=2;
+      for(let ci=0;ci<8;ci++){const ca=Math.PI*2*ci/8+.2;
+        X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(ca)*_slamVR*.8,e.y+Math.sin(ca)*_slamVR*.8);X.stroke()}
+      X.restore();X.globalAlpha=sa}
     // ── 횡두르기 호 이펙트 ──
     if(e.ib&&(e.s==='bossSweep'||e.s==='bossSweepWind')){
       const _isSw=e.s==='bossSweep';
       const _swP3=_isSw?(1-e.st2/14):(1-e.st2/25)*.3;
       const _swDir=e._sweepDir||1;
-      const _arcStart=e.facing+_swDir*(-1.2);
-      const _arcEnd=e.facing+_swDir*(-1.2+_swP3*2.8);
-      const _arcR=e.r*2+10;
-      X.globalAlpha=.3+_swP3*.3;X.strokeStyle='#ffcc44';X.lineWidth=_isSw?6:3;X.lineCap='round';
-      X.beginPath();X.arc(e.x,e.y,_arcR,Math.min(_arcStart,_arcEnd),Math.max(_arcStart,_arcEnd));X.stroke();
-      if(_isSw){X.globalAlpha=.15;X.fillStyle='#ffaa00';X.beginPath();
-        X.moveTo(e.x,e.y);X.arc(e.x,e.y,_arcR,Math.min(_arcStart,_arcEnd),Math.max(_arcStart,_arcEnd));X.closePath();X.fill()}
-      X.globalAlpha=sa}
+      const _arcStart2=e.facing+_swDir*(-1.2);
+      const _arcEnd2=e.facing+_swDir*(-1.2+_swP3*2.8);
+      const _arcR2=e.r*2.2+12;
+      const _arcMin=Math.min(_arcStart2,_arcEnd2),_arcMax=Math.max(_arcStart2,_arcEnd2);
+      X.save();X.globalCompositeOperation='lighter';
+      // 넓은 외곽 글로우
+      X.globalAlpha=(_isSw?.4:.15)*(1-_swP3*.3);X.strokeStyle='#ff8800';X.lineWidth=_isSw?14:5;X.lineCap='round';
+      X.beginPath();X.arc(e.x,e.y,_arcR2,_arcMin,_arcMax);X.stroke();
+      // 코어 호
+      X.globalAlpha=(_isSw?.7:.25);X.strokeStyle='#ffdd44';X.lineWidth=_isSw?5:2;
+      X.beginPath();X.arc(e.x,e.y,_arcR2,_arcMin,_arcMax);X.stroke();
+      X.globalAlpha=(_isSw?.8:.2);X.strokeStyle='#ffffff';X.lineWidth=_isSw?2:1;
+      X.beginPath();X.arc(e.x,e.y,_arcR2,_arcMin,_arcMax);X.stroke();
+      // 부채꼴 필 (공격 중)
+      if(_isSw){X.globalAlpha=.1;X.fillStyle='#ffaa00';X.beginPath();
+        X.moveTo(e.x,e.y);X.arc(e.x,e.y,_arcR2,_arcMin,_arcMax);X.closePath();X.fill()}
+      // 선단 스파크
+      if(_isSw&&_swP3>.1){
+        const _stA=_arcEnd2;
+        const _sx=e.x+Math.cos(_stA)*_arcR2,_sy=e.y+Math.sin(_stA)*_arcR2;
+        X.globalAlpha=.8;X.fillStyle='#ffffff';X.beginPath();X.arc(_sx,_sy,4+Math.random()*3,0,Math.PI*2);X.fill()}
+      X.restore();X.globalAlpha=sa}
     // ── 지연참 홀드 이펙트 ──
     if(e.ib&&e.s==='bossDelaySlashHold'){
       const _dsP=1-e.st2/(e._dsMaxT||60);
@@ -31782,7 +31831,7 @@ function draw(){
     // 19:대형사도 — 두꺼운 테두리
     if(_eDecor&&e.etype===19){X.globalAlpha=.15;X.fillStyle='#4a1a1a';X.beginPath();X.arc(e.x,e.y,e.r+10,0,Math.PI*2);X.fill();
       X.globalAlpha=sa*.5;X.strokeStyle='#776655';X.lineWidth=3;X.beginPath();X.arc(e.x,e.y,e.r+5,0,Math.PI*2);X.stroke();X.globalAlpha=sa}
-    // ═══ 1장 얼음길 오버레이 (20~29) ═══
+    // ═══ 1장 썩은 숲 오버레이 (20~29) ═══
     if(_eDecor&&e.etype>=20&&e.etype<=29){
       // 공통 얼음 오라
       X.globalAlpha=.15+Math.sin(_now/250)*.08;X.fillStyle='#88ccff';X.beginPath();X.arc(e.x,e.y,e.r+5,0,Math.PI*2);X.fill();
@@ -31804,14 +31853,14 @@ function draw(){
       X.strokeStyle='#88ccff';X.lineWidth=2;X.beginPath();X.arc(e.x,e.y,e.r+10,-_now/250,-_now/250+Math.PI*1.2);X.stroke();
       X.globalAlpha=sa;
     }
-    // ═══ 5장 해저길 렌더 효과 ═══
+    // ═══ 5장 지옥의 군단 렌더 효과 ═══
     if(_eDecor&&e.etype===62){X.globalAlpha=.4+Math.sin(_now/200)*.2;X.fillStyle='#aabbff';X.beginPath();X.arc(e.x,e.y,e.r+5+Math.sin(_now/300)*3,0,Math.PI*2);X.fill();X.globalAlpha=sa}
     if(_eDecor&&e.etype===63&&e._crabGuard){X.globalAlpha=.3;X.fillStyle='#667744';X.beginPath();X.arc(e.x,e.y,e.r+8,0,Math.PI*2);X.fill();X.globalAlpha=sa}
     if(_eDecor&&e.etype===65&&e._eelBurrowed){X.globalAlpha=.15;X.fillStyle='#556644';X.beginPath();X.arc(e.x,e.y,e.r,0,Math.PI*2);X.fill();X.globalAlpha=sa}
     if(_eDecor&&e.etype===66){X.globalAlpha=.15;X.strokeStyle='#885566';X.lineWidth=1;X.beginPath();X.arc(e.x,e.y,e.r+35,0,Math.PI*2);X.stroke();X.globalAlpha=sa}
     if(_eDecor&&e.etype===68){X.globalAlpha=.2+Math.sin(_now/200)*.1;X.strokeStyle='#223344';X.lineWidth=2.5;X.beginPath();X.arc(e.x,e.y,e.r+12,_now/250,_now/250+Math.PI*1.5);X.stroke();X.globalAlpha=sa}
     if(_eDecor&&e.etype===69){X.globalAlpha=.25+Math.sin(_now/150)*.12;X.strokeStyle='#0a1122';X.lineWidth=3;X.beginPath();X.arc(e.x,e.y,e.r+18,_now/200,_now/200+Math.PI*1.6);X.stroke();X.strokeStyle='#223355';X.lineWidth=2;X.beginPath();X.arc(e.x,e.y,e.r+12,-_now/250,-_now/250+Math.PI*1.2);X.stroke();X.globalAlpha=sa}
-    // ═══ 4장 괴물길 오버레이 (50~59) ═══
+    // ═══ 4장 고통의 화염지대 오버레이 (50~59) ═══
     // 51:융합체 — 살색 맥동 오라
     if(_eDecor&&e.etype===51){X.globalAlpha=.2+Math.sin(_now/250)*.1;X.fillStyle='#aa7766';X.beginPath();X.arc(e.x,e.y,e.r+6,0,Math.PI*2);X.fill();X.globalAlpha=sa}
     // 52:입 괴물 — 입 벌리기 (공격 시)
