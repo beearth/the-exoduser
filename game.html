@@ -11586,26 +11586,25 @@ function initMapObjects(){
       }
     }
   }
-  // ── 피웅덩이 (pit_blood_a/b) — CH1 전용, 뛰엄뛰엄 배치 (최소 350px 간격) ──
-  if(hell===0){
-    const _pbSeed=_tseed(G.stage*41+17,hell*67+11);
-    const _pbPick=()=>_pbSeed()<0.3?'pit_blood_a':'pit_blood_b';
-    const _pbList=[];
-    const _pbMinDist=500; // 8000맵 기준 넉넉한 간격
-    const _pbOk=(x,y)=>{for(const p of _pbList){if(dst(x,y,p.x,p.y)<_pbMinDist)return false}return _moOk(x,y)};
-    // 바닥 타일에서 랜덤 배치 (맵 전역에 고르게)
-    const _pbFloors=[];
-    for(let y=4;y<G.mh-4;y++)for(let x=4;x<G.mw-4;x++){if(map[y][x]===0)_pbFloors.push({x,y})}
-    for(let _try=0;_try<200&&_pbList.length<16;_try++){
-      const f=_pbFloors[~~(_pbSeed()*_pbFloors.length)];
-      if(!f)continue;
-      const px=f.x*T+T/2,py=f.y*T+T/2;
-      if(!_pbOk(px,py))continue;
-      const o={type:_pbPick(),x:px,y:py,hell};
-      MAP_OBJS.push(o);_pbList.push(o);
-    }
-    console.log('[PIT_BLOOD] placed:'+_pbList.length);
-  }
+  // ── 피웅덩이 (pit_blood_a/b) — 비활성화 ──
+  // if(hell===0){
+  //   const _pbSeed=_tseed(G.stage*41+17,hell*67+11);
+  //   const _pbPick=()=>_pbSeed()<0.3?'pit_blood_a':'pit_blood_b';
+  //   const _pbList=[];
+  //   const _pbMinDist=500;
+  //   const _pbOk=(x,y)=>{for(const p of _pbList){if(dst(x,y,p.x,p.y)<_pbMinDist)return false}return _moOk(x,y)};
+  //   const _pbFloors=[];
+  //   for(let y=4;y<G.mh-4;y++)for(let x=4;x<G.mw-4;x++){if(map[y][x]===0)_pbFloors.push({x,y})}
+  //   for(let _try=0;_try<200&&_pbList.length<16;_try++){
+  //     const f=_pbFloors[~~(_pbSeed()*_pbFloors.length)];
+  //     if(!f)continue;
+  //     const px=f.x*T+T/2,py=f.y*T+T/2;
+  //     if(!_pbOk(px,py))continue;
+  //     const o={type:_pbPick(),x:px,y:py,hell};
+  //     MAP_OBJS.push(o);_pbList.push(o);
+  //   }
+  //   console.log('[PIT_BLOOD] placed:'+_pbList.length);
+  // }
 
   // ── 챕터별 맵 장식 자동 배치 ──
   const _chDecoRaw=_CH_DECO[hell];
@@ -18093,8 +18092,8 @@ function update(){
       const _eox=e.x,_eoy=e.y;
       if(e.reviveIframes>0)e.reviveIframes=Math.max(0,e.reviveIframes-sp);
       const _ed2=dst2(P.x,P.y,e.x,e.y);
-      // 뷰포트 컬링: 카메라 화면+200px 밖이면 AI 스킵 (보스/피격/근접 제외, hp/상태는 위에서 처리)
-      const _eInView=e.ib||e.hurt>0||(_ed2<900)||(e.x>G.cam.x-C.width/2-200&&e.x<G.cam.x+C.width/2+200&&e.y>G.cam.y-C.height/2-200&&e.y<G.cam.y+C.height/2+200);
+      // 뷰포트 컬링: 카메라 화면+300px 밖이면 AI 스킵 (보스/피격/근접 제외, hp/상태는 위에서 처리)
+      const _eInView=e.ib||e.hurt>0||(_ed2<900)||(e.x>G.cam.x-C.width/2-300&&e.x<G.cam.x+C.width/2+300&&e.y>G.cam.y-C.height/2-300&&e.y<G.cam.y+C.height/2+300);
       if(!_eInView){e._isMoving=false;if(e._alerted&&(G._eTierFrame&7)===0)_ffMoveE(e,sp*4,0.5);continue}
       // 짝홀 분산: 보스/피격중/근접30px 이내 → 항상, 나머지 → 짝홀
       const _eAlways=e.ib||e.hurt>0||(_ed2<900);
@@ -32688,16 +32687,17 @@ function draw(){
   const _tDP2=performance.now();
   // 피 자국 + 시체 + 불타는 시체 렌더 (통합 캡 30)
   let _corpDrw=0;
-  for(let si=0;si<_STAIN_MAX;si++){const s=_stains[si];if(!s.active)continue;
-    if(s.x<_vl-40||s.x>_vr+40||s.y<_vt-40||s.y>_vb+40)continue;
-    if(++_corpDrw>25)break;
-    const fadeT=s.mt*.3;const alpha=s.t<fadeT?s.t/fadeT:1;
-    if(alpha<0.05)continue;
-    X.save();X.globalAlpha=alpha*.35;X.translate(s.x,s.y);X.rotate(s.ang);
-    X.fillStyle='#220000';X.beginPath();X.ellipse(0,0,s.sz,s.sz*.6,0,0,Math.PI*2);X.fill();
-    X.fillStyle='#440000';X.beginPath();X.ellipse(0,0,s.sz*.6,s.sz*.35,0,0,Math.PI*2);X.fill();
-    X.restore();
-  }
+  // 피 자국 렌더 비활성화 (피구덩이 제거)
+  // for(let si=0;si<_STAIN_MAX;si++){const s=_stains[si];if(!s.active)continue;
+  //   if(s.x<_vl-40||s.x>_vr+40||s.y<_vt-40||s.y>_vb+40)continue;
+  //   if(++_corpDrw>25)break;
+  //   const fadeT=s.mt*.3;const alpha=s.t<fadeT?s.t/fadeT:1;
+  //   if(alpha<0.05)continue;
+  //   X.save();X.globalAlpha=alpha*.35;X.translate(s.x,s.y);X.rotate(s.ang);
+  //   X.fillStyle='#220000';X.beginPath();X.ellipse(0,0,s.sz,s.sz*.6,0,0,Math.PI*2);X.fill();
+  //   X.fillStyle='#440000';X.beginPath();X.ellipse(0,0,s.sz*.6,s.sz*.35,0,0,Math.PI*2);X.fill();
+  //   X.restore();
+  // }
   for(let ci=0;ci<_CORPSE_MAX;ci++){const c=_corpses[ci];if(!c.active)continue;
     if(c.x<_vl-40||c.x>_vr+40||c.y<_vt-40||c.y>_vb+40)continue;
     if(++_corpDrw>25)break;
