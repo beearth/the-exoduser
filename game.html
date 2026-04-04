@@ -1893,10 +1893,7 @@ function _renderLighting(){
   }
   // CH1 amber glow tint — 제거됨 (중앙글로우 원인)
   lx.globalCompositeOperation='source-over';lx.globalAlpha=1;
-  // 메인 캔버스에 합성
-  X.save();X.setTransform(1,0,0,1,0,0);
-  X.drawImage(_lightCvs,0,0,C.width,C.height);
-  X.restore();
+  // 메인 합성은 draw()에서 통일 — 여기서 직접 그리지 않음 (깜빡임 방지)
 }
 
 // ═══ 동적 품질/텍스트 캐시 전역 (WebGL 블록 이전에 선언) ═══
@@ -7076,18 +7073,17 @@ function poolUpdate(sp){
 // 파티클 렌더: 타입별 분기 — save/restore 제거, 컬러캐싱 최적화
 const _partGrid=new Uint8Array(64*64); // 32px 그리드, 64x64 셀 — overdraw 제한
 function poolRender(X,vl,vr,vt,vb){
-  // 고FPS: 파티클 절반만 렌더 (홀수/짝수 프레임 교대)
-  const _pSkip=_hiFPS?_drawOdd:2; // 2=스킵안함
+  // 교대 렌더 제거 — 깜빡임 원인. 그리드 overdraw 제한으로 충분
+  const _pCellMax=_hiFPS?2:3; // 고FPS: 셀당 2개, 일반: 3개
   var _lf='',_ls='';
   _partGrid.fill(0); // 그리드 초기화
   const _pgOx=vl,_pgOy=vt; // 그리드 원점 = 뷰포트 좌상
   for(var i=0;i<_partCnt;i++){
-    if((i&1)===_pSkip)continue; // 고FPS: 홀수/짝수 교대 렌더
     const p=_partPool[i];
     if(p.x<vl||p.x>vr||p.y<vt||p.y>vb)continue;
     // 같은 셀에 파티클 3개 이상이면 스킵 (overdraw 제한)
     const _pgx=~~((p.x-_pgOx)/32),_pgy=~~((p.y-_pgOy)/32);
-    if(_pgx>=0&&_pgx<64&&_pgy>=0&&_pgy<64){const _pgi=_pgy*64+_pgx;if(_partGrid[_pgi]>=3)continue;_partGrid[_pgi]++}
+    if(_pgx>=0&&_pgx<64&&_pgy>=0&&_pgy<64){const _pgi=_pgy*64+_pgx;if(_partGrid[_pgi]>=_pCellMax)continue;_partGrid[_pgi]++}
     const fa=p.ml>0?(p.life/p.ml*1.5<1?p.life/p.ml*1.5:1):.6;
     X.globalAlpha=Math.min(1,fa*1.4);
     if(_useGPU||_useGL){switch(p.tp){
@@ -32927,18 +32923,18 @@ function draw(){
   }
   // ═══ 화면 플래시 (피격/보스 패턴) ═══
   if(G._flashT>0){X.save();X.setTransform(1,0,0,1,0,0);X.globalAlpha=Math.min(.55,G._flashT*.18);X.fillStyle=G._flashCol||'#ffffff';X.fillRect(0,0,C.width,C.height);X.restore();G._flashT-=_dtSp}
-  // ═══ 색수차 (강타 피격) — 2프레임에 1번만 ═══
-  if(G._chromaT>0){if(G._litFrame&1){const _csh=G._chromaT*1.5;X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=.04;X.drawImage(C,-_csh,0);X.drawImage(C,_csh,0);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}G._chromaT-=_dtSp}
+  // ═══ 색수차 (강타 피격) — 매 프레임 렌더 (깜빡임 방지) ═══
+  if(G._chromaT>0){const _csh=G._chromaT*1.5;X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=.04;X.drawImage(C,-_csh,0);X.drawImage(C,_csh,0);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();G._chromaT-=_dtSp}
   // ═══ 동적 조명 패스 (3프레임마다 계산) ═══
   if(!G._litFrame)G._litFrame=0;G._litFrame++;
-  {const _l0=performance.now();if(_gameFrame%3===0){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}else if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
+  {const _l0=performance.now();if(_gameFrame%3===0){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
   // ═══ 블룸 패스 (3프레임마다 계산 — 라이팅과 1프레임 오프셋) ═══
   {const _bl0=performance.now();if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
   // [TORCH] 횃불 조명 어둠 오버레이 (_gameFrame%3===0 만 재계산)
   const _tc0=performance.now();
   if(OPT.torch&&OPT.postfx&&OPT.quality!=='low'){X.save();X.setTransform(1,0,0,1,0,0);
   const _torchStale=!_torchCache||_torchW!==C.width||_torchH!==C.height;
-  const _torchRedraw=_torchStale||(G.pets&&G.pets.iris&&!G._irisOff)||(_gameFrame%6===2);
+  const _torchRedraw=_torchStale||(G.pets&&G.pets.iris&&!G._irisOff)||(_gameFrame%3===2);
   if(!_torchRedraw){X.drawImage(_torchCache,_torchCamX-G.cam.x,_torchCamY-G.cam.y);X.restore()}else{
     const _psx=C.width/2+(P.x-G.cam.x),_psy=C.height/2+(P.y-G.cam.y),_tR=Math.max(80,_torchR),_ahell2=SI_TO_HELL[G.stage];
     if(!_torchCache||_torchW!==C.width||_torchH!==C.height){_torchCache=document.createElement('canvas');_torchCache.width=C.width;_torchCache.height=C.height;_torchW=C.width;_torchH=C.height;_torchCache._ctx=_torchCache.getContext('2d')}
