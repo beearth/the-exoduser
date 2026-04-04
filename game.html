@@ -13400,7 +13400,7 @@ function _autoFireBowSkill(tx,ty){
   P.facing=a;P.atkArc=a;
   let fired=false;
   if(_abs==='bladeShot'&&P.skills.bladeShot&&(P._bltCd||0)<=0){activateBladeShot();fired=true}
-  else if(_abs==='blastShot'&&P.skills.blastShot&&G.mats>=8&&(P._bsCd2||0)<=0){activateBlastShot();fired=true}
+  else if(_abs==='blastShot'&&P.skills.blastShot&&G.mats>=5&&(P._bsCd2||0)<=0){activateBlastShot();fired=true} // 밸런스: 악의 8→5
   else if(_abs==='fanShot'&&P.skills.fanShot&&!_isFused('sixFuse')&&!_isFused('elemFuse')&&!_isFused('stormBeam')){_fireFanShot();fired=true}
   else if(_abs==='needleShot'&&P.skills.needleShot&&(P._ndCd||0)<=0){activateNeedleShot();fired=true}
   else if(_abs==='ghostXbowTurret'&&P.skills.ghostXbowTurret){
@@ -16328,7 +16328,7 @@ function update(){
         const _csLv=P.skills.chainSlam||1;
         const _csR=450+(_csLv-1)*~~(225/9); // 1렙450, 10렙675
         const _csTravD=dst(P._csSlamOX||P.x,P._csSlamOY||P.y,P.x,P.y);
-        const _csDistMul=1+Math.min(_csTravD/150,3);
+        const _csDistMul=1+Math.min(_csTravD/150,2.5); // 밸런스: 거리캡 3→2.5 (최대×3.5)
         const _csDmg=~~(meleeRef()*3.3*(1+(_csLv-1)*0.15)*statStr()*_csDistMul*_fuseMul('chainSlam'));
         const _csEl=wp().el||0;
         G._noHitStopT=40;
@@ -16930,8 +16930,8 @@ function update(){
     let wnx=P.x+wdx*wms,wny=P.y+wdy*wms;
     if(canMv(wnx,P.y,P.r))P.x=wnx;if(canMv(P.x,wny,P.r))P.y=wny;
     const _wwLv=P.skills.whirlwind||1;
-    const _wwDrainTick=P.mst*0.07/60*sp; P.st-=_wwDrainTick; // 초당 7% ST 고정소모
-    const _wwDrainBonus=1+P.mst*0.07*0.001; // 소비량 보너스: 초당소비×0.001 (ST1000→+7%, ST2000→+14%)
+    const _wwDrainTick=30/60*sp; P.st-=_wwDrainTick; // 고정 30 ST/초 (일반)
+    const _wwDrainBonus=1.03; // 소비량 보너스 고정 +3%
     P.wwAng=(P.wwAng||0)+0.35*_dtSp; // 회전 각도 (슬로우 무시)
     // 합성: 패링 쉴드 HP 드레인 + parryT 추적 (HP 드레인 제거)
     if(P.skills.detonate&&_isFused('whirlDet')){P.parryT=(P.parryT||0)+sp;}
@@ -16986,8 +16986,8 @@ function update(){
       if(!P._sbPts){P._sbPts=[];for(let i=0;i<6;i++)P._sbPts.push(new Float32Array(128))}
       if(!P._sbPtsCnt)P._sbPtsCnt=new Int32Array(6);
       // MP 소비: 초당 7% 고정소모 + 소비량 보너스
-      const _sbMpCost=P.mmp*0.07/60*sp; // 초당 7% MP 고정소모
-      const _sbDrainBonus=1+P.mmp*0.07*0.001; // 소비량 보너스
+      const _sbMpCost=30/60*sp; // 고정 30 MP/초 (일반)
+      const _sbDrainBonus=1.03; // 소비량 보너스 고정 +3%
       if(P.mp>_sbMpCost){
         P.mp-=_sbMpCost;
         // 히트 처리 (4프레임마다)
@@ -17158,7 +17158,7 @@ function update(){
         // ═══ 칼등날개: 전방 반원 충격파 히트 ═══
         const _sdLv=P.skills.maliceSwipe||0;
         const _gsRange2=140+(_sdLv>=1?(_sdLv-1)*12:0)+(sh().bonusRange||0)*4;
-        const _gsDmg2=~~(((sh().atk||3)+P.baseAtk*0.3+10)*(_sdLv>=1?0.8*(0.5*(1+(_sdLv-1)*0.08)):0.15)*statStr()*pShieldMul())+(P._atkBon||0);P._atkBon=0;
+        const _gsDmg2=~~(((sh().atk||3)+P.baseAtk*0.3+10)*(_sdLv>=1?1.2*(0.5*(1+(_sdLv-1)*0.08)):0.15)*statStr()*pShieldMul())+(P._atkBon||0);P._atkBon=0; // 밸런스: 0.8→1.2
         // ═══ 칼등날개 충격파 히트 (_gSlamHit 방식) ═══
         G._noHitStopT=40;
         _gSlamHit(P.facing,_gsRange2,Math.PI*0.8,_gsDmg2,wp().el||0,0,0.8);
@@ -17389,7 +17389,7 @@ function update(){
         // ── 악의구 (기본 폴백) ──
         const _fbLv=P.skills.fireball||1;
         const _fbScale=1+(_fbLv-1)*0.10;const _fbDmgScale=1+(_fbLv-1)*0.15;
-        const mdmg=~~(magicRef()*statInt()*pMagicMul()*0.8*_fbDmgScale)+(P._mpBon||0);P._mpBon=0; // 악의구 1.8→0.8
+        const mdmg=~~(magicRef()*statInt()*pMagicMul()*1.3*_fbDmgScale)+(P._mpBon||0);P._mpBon=0; // 밸런스: 0.8→1.3
         const _fbDx=Math.cos(P.atkArc),_fbDy=Math.sin(P.atkArc);
         const _fbR=~~(12*_fbScale),_fbExplR=~~(80*_fbScale);
         {const _pp=_getPProj();_pp.x=P.x+_fbDx*14;_pp.y=P.y+_fbDy*14;_pp.vx=_fbDx*5.5;_pp.vy=_fbDy*5.5;_pp.dmg=mdmg;_pp.el=EL.D;_pp.maxDist=400+(_fbLv-1)*20+(hm().bonusRange||0)*20;_pp.dist=0;_pp.r=_fbR;_pp.stagger=0;_pp.kb=0.005;_pp.kbMult=0.1;_pp.magic=true;_pp.fireball=true;_pp.explR=_fbExplR;_pp.explDmg=~~(mdmg*.6);pProjs[pProjs.length]=_pp;}
@@ -17796,11 +17796,11 @@ function update(){
     const _isElemBeam=_isOmni&&!!(P.skills.elemMissile&&_isFused('elemFuse'));
     const _bLv=(P.skills.omniBeam||1);const _bMul=_isElemBeam?(0.5+(_bLv-1)*0.078)*.9:(0.5+(_bLv-1)*0.078);
     // 빔 MP소비: 초당 7% 고정소모 + 소비량 보너스
-    const _bcost=P.mmp*0.07/60; // 초당 7% MP 고정소모
+    const _bcost=70/60; // 고정 70 MP/초 (고급)
     const _mpBefore=P.mp;
     P.mp=Math.max(0,P.mp-_bcost*sp);
     const _mpDrained=_mpBefore-P.mp; // 실제 소비된 MP
-    const _beamDrainBonus=1+P.mmp*0.07*0.001; // 소비량 보너스 (MP2000→+14%)
+    const _beamDrainBonus=1.07; // 소비량 보너스 고정 +7%
     if(P.mp<=0){if(_isOmni){P._beamCd=300;addTxt(P.x,P.y-30,'⚡ 과부하! 5초','#ffaa00',40)}P.s='idle';P._omniPts=null;SFX.beamStop();break}
     // 빔 중 감속 이동 (40%)
     {let _bdx=0,_bdy=0;
@@ -17847,7 +17847,7 @@ function update(){
     // 빔 데미지 = 기본마법뎀 × 스킬레벨 배율 (틱당, MP 소비는 지속시간만 결정)
     const _omniSlv=P.skills.omniBeam||1;
     const _beamLvMul=Math.min(2.0,0.2+P.lv*0.016); // 선형+캡2.0: 1렙=0.22, 50렙=1.0, 113렙+=2.0(캡)
-    const _beamDmgBase=magicRef()*statInt()*pMagicMul()*.15*(1+(_omniSlv-1)*.18)*_beamLvMul*_fuseMul('omniBeam')*_beamDrainBonus; // 만화방창빔 0.37→0.15 // 레벨 스케일링 + 소비량 보너스
+    const _beamDmgBase=magicRef()*statInt()*pMagicMul()*.22*(1+(_omniSlv-1)*.18)*_beamLvMul*_fuseMul('omniBeam')*_beamDrainBonus; // 밸런스: 0.15→0.22 (단독 강화)
     // 레이저류: 끝점에서만 데미지 (관통 없음)
     // 빔 중첩: 적에게 빔 지속 적중 시 중첩+1 (최대30), 데미지 배율 = 1 + 중첩*0.1 (최대 4배)
     if(_isOmni){
@@ -19374,7 +19374,7 @@ function update(){
       if(_bs.phase==='boom'){
         const slv=_bs.slv||1;const bx=_bs.x,by=_bs.y;
         const boomR=~~(130*(1+(slv-1)*0.1));
-        const boomDmg=~~(bowRef()*statDex()*pBowMul()*13*(1+(slv-1)*0.1));
+        const boomDmg=~~(bowRef()*statDex()*pBowMul()*6*(1+(slv-1)*0.1)); // 밸런스: 13→6
         const ne=shQuery(bx,by,boomR+20);
         for(let i=0;i<ne.length;i++){const e=ne[i];if(!e.alive)continue;
           if(dst(bx,by,e.x,e.y)<boomR+e.r){
@@ -19980,7 +19980,7 @@ function update(){
             // 9렙 이하: 폭발 → 잔재로 얼음보주
             const bx=mb.tx,by=mb.ty,br=mb.r;
             const _ifSlv2=P.skills.maliceMortar||1;
-            const mmDmg=~~(magicRef()*statInt()*pMagicMul()*15*(1+(_ifSlv2-1)*0.2)*_fuseMul('maliceMortar'));
+            const mmDmg=~~(magicRef()*statInt()*pMagicMul()*10*(1+(_ifSlv2-1)*0.15)*_fuseMul('maliceMortar'));
             const _neM=shQuery(bx,by,br+30);
             for(let mi=0;mi<_neM.length;mi++){const e=_neM[mi];if(!e.alive)continue;
               if(dst(bx,by,e.x,e.y)<br+e.r){const a=Math.atan2(e.y-by,e.x-bx);
@@ -20004,7 +20004,7 @@ function update(){
         }else{
           // 9렙 이하: 즉시 폭발
           const bx=mb.tx,by=mb.ty,br=mb.r;
-          const mmDmg=~~(magicRef()*statInt()*pMagicMul()*15*(1+(slv-1)*0.2)*_fuseMul('maliceMortar'));
+          const mmDmg=~~(magicRef()*statInt()*pMagicMul()*10*(1+(slv-1)*0.15)*_fuseMul('maliceMortar')); // 밸런스: 15/+20%→10/+15%
           const _neM=shQuery(bx,by,br+30);
           for(let mi=0;mi<_neM.length;mi++){const e=_neM[mi];if(!e.alive)continue;
             if(dst(bx,by,e.x,e.y)<br+e.r){const a=Math.atan2(e.y-by,e.x-bx);
@@ -26083,7 +26083,7 @@ const SKILL_LIST=[
   {id:'peaceShield',name:'평화의보호',cat:'def',fixed:true,hidden:true,emoji:'🕊️',desc:'[히든: 암전나선 합체] Q 홀드 시 보호막이 점점 커지며 HP 초당 10% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'✝',desc:'[히든: 암전나선 합체] E로 조준, 클릭 설치. 신성 십자가를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. Lv당 거리+50',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'칼등날개',cat:'def',fixed:true,emoji:'🔨',desc:'[고정: 칼등치기 합체] 보유 시 칼등치기가 전진하며 스윙+날개 검기 표시. 추가로 전방 돌진+내려찍기 충격파 자동 발동. 쿨 5초. Lv당 뎀+12% 범위+20 전진속도+0.5',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
-  {id:'blastShot',name:'폭산탄',cat:'bow',fixed:true,emoji:'💥',desc:'[고정: T 자동] 폭탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 화염 폭발(범위130). 악의 8. Lv당 범위+10% 뎀+10%. 쿨 0.5초',spCost:10,matCost:80,cd:60,up:true,upSp:5,upMat:0},
+  {id:'blastShot',name:'폭산탄',cat:'bow',fixed:true,emoji:'💥',desc:'[고정: T 자동] 폭탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 화염 폭발(범위130). 악의 5. Lv당 범위+10% 뎀+10%. 쿨 0.5초',spCost:10,matCost:80,cd:60,up:true,upSp:5,upMat:0},
   {id:'weakPhys',name:'파쇄의 영역',cat:'tech',act:true,emoji:'⚔',desc:'현재 위치에 파쇄 영역 설치 (10초). 범위 내 적 물리방어력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'weakMag',name:'침식의 영역',cat:'tech',act:true,emoji:'🔮',desc:'현재 위치에 침식 영역 설치 (10초). 범위 내 적 마법저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'weakPj',name:'관통의 영역',cat:'tech',act:true,emoji:'🏹',desc:'현재 위치에 관통 영역 설치 (10초). 범위 내 적 투사체저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
@@ -26113,7 +26113,7 @@ const SKILL_SLOT_DEFS={
   bow:{name:'석궁 자동(T)',key:'bow',skills:['normal','bladeShot','blastShot','fanShot','needleShot','ghostXbowTurret'],
     info:{normal:{name:'일반사격',emoji:'🏹',desc:'T자동: 기본 화살'},
           bladeShot:{name:'붉은꽃',emoji:'🌹',desc:'T자동: 붉은 꽃잎 칼날 (ST50)'},
-          blastShot:{name:'폭산탄',emoji:'💥',desc:'T자동: 폭탄 (악의8, 쿨0.5초)'},
+          blastShot:{name:'폭산탄',emoji:'💥',desc:'T자동: 폭탄 (악의5, 쿨0.5초)'},
           fanShot:{name:'만화방창',emoji:'✨',desc:'T자동: 물리 바늘 6발 부채꼴'},
           needleShot:{name:'만화방창 II',emoji:'✨',desc:'T자동: 초고속 바늘 5연발 (ST8, 쿨1.5초)'},
           ghostXbowTurret:{name:'공성쇠뇌',emoji:'🏹',desc:'선택스킬: 터렛 설치/철거 (Lv500, ST100, 쿨없음)'},
@@ -26763,10 +26763,10 @@ function fireBoneWall(tx,ty){
 // ═══ 칼날살 발사 ═══
 function activateBladeShot(){
   const slv=P.skills.bladeShot||1;
-  const _bsStC=2+slv; // ST: 1렙3, 업당+1
+  const _bsStC=1+~~(slv/2); // 밸런스: ST 하향 (1렙1, 10렙6)
   if(P.st<_bsStC)return;P.st-=_bsStC;
   const _bsBon=~~(_bsStC*1.5);
-  const orbDmg=~~(bowRef()*statDex()*pBowMul()*13*(1+(slv-1)*0.1))+_bsBon;
+  const orbDmg=~~(bowRef()*statDex()*pBowMul()*6*(1+(slv-1)*0.1))+_bsBon; // 밸런스: 13→6
   const shardDmg=~~(bowRef()*statDex()*pBowMul()*1.5*(1+(slv-1)*0.1))+~~(_bsBon*.3);
   const dx=Math.cos(P.facing),dy=Math.sin(P.facing);
   const _mxD=~~(400*(1+(slv-1)*0.11)); // 1렙 400, 10렙 ~796
@@ -26780,10 +26780,10 @@ function activateBladeShot(){
 
 // ═══ 폭산탄 발동 ═══
 function activateBlastShot(){
-  const _bsStC=2+(P.skills.blastShot||1); // ST: 1렙3, 업당+1
+  const _bsStC=1+~~((P.skills.blastShot||1)/2); // 밸런스: ST 하향
   if(G.mats<8||P.st<_bsStC||(P._bsCd2||0)>0)return;
   _addSkProf('blastShot');
-  G.mats-=8;P.st-=_bsStC;P._bsCd2=30;
+  G.mats-=5;P.st-=_bsStC;P._bsCd2=30; // 밸런스: 악의 8→5
   const slv=P.skills.blastShot||1;
   const a=P.facing;const spread=.2;
   const _bsCnt=slv>=10?5:Math.min(3,1+~~((slv-1)/4.5)); // 1렙1발, 5렙2발, 10렙5발
