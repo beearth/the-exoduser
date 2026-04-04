@@ -18363,25 +18363,41 @@ function update(){
     if(p.blackBean&&!_pHit&&_pDist<_bkHitR&&!P._ioActive){
       if(P.iframes>0&&P.s!=='whirlwind'){_pHit=true;_recycleProj(p);continue} // 무적 중이면 무시
       const _bkParry=_sbPW; // 무지개탄: Q(sBlock) 패링만 가능, 우클릭(sBash) 불가
-      // 플레이어 피해: 패링 시 30%, 일반 시 풀
-      const _bkD=_bkParry?Math.max(1,~~(P.mhp*.05)):Math.max(~~(P.mhp*.15*(1-pParryRainbowDR())),~~(p.dmg*.7*(1-pParryRainbowDR())));
-      P.hp-=_bkD;if(P.hp<=0)die();
-      P.iframes=Math.max(P.iframes,_bkParry?25:15);
-      if(_bkParry){P._sbParryT=0;addTxt(p.x,p.y-15,'💥무지개 폭발! '+_bkD,'#ff44ff',40)}
-      else{addTxt(p.x,p.y-15,'💥무지개 폭발! '+_bkD,'#ff44ff',40)}
-      SFX.detonate();shake(_bkParry?18:14);
-      scrFlash=_bkParry?'rgba(255,220,0,.4)':'rgba(255,60,0,.35)';scrFlashA=_bkParry?.4:.35;G.slowMo=Math.max(G.slowMo,_bkParry?12:8);
-      // AoE 폭발: 패링 시 범위+데미지 증가
-      const _bkR=_bkParry?160:120,_bkDmg=_bkParry?Math.max(200,~~(p.dmg*3)):Math.max(120,~~(p.dmg*2));
-      const _bkNe=shQuery(p.x,p.y,_bkR);
-      for(let _bki=0;_bki<_bkNe.length;_bki++){
-        const be=_bkNe[_bki];if(!be.alive)continue;
-        const bd=dst(p.x,p.y,be.x,be.y);if(bd>_bkR)continue;
-        hurtE(be,_bkDmg,Math.atan2(be.y-p.y,be.x-p.x),false,{noPoise:true},p.el);
+      if(_bkParry){
+        // Q 패링 성공: 반사 + 유도
+        let _bkTgt=null,_bkMin=600;
+        {const _bkNe2=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_bkNe2.length;_ri++){const e=_bkNe2[_ri];if(!e.alive)continue;const dd=dst(P.x,P.y,e.x,e.y);if(dd<_bkMin){_bkMin=dd;_bkTgt=e}}}
+        if(_bkTgt){const _bkA=Math.atan2(_bkTgt.y-P.y,_bkTgt.x-P.x);p.vx=Math.cos(_bkA)*4;p.vy=Math.sin(_bkA)*4}
+        else{p.vx*=-2;p.vy*=-2}
+        {const _rBase=Math.max(p.dmg,~~(meleeRef()*statStr()*pAtkMul()));p.dmg=~~(_rBase*3*pParryDmg()*pParryProjDmgMul());}
+        p.friendly=true;p.life=300;p.ml=300;p._aoeR=180;p._aoeDmg=p.dmg*4;
+        p.blackBean=false;p.homing=true;p.col='#ff00ff';
+        P._sbParryT=0;P.iframes=Math.max(P.iframes,25);
+        SFX.deflect();G.hitStop=~~(_HS.parryReflect*OPT.hitStop/100);shake(20);
+        scrFlash='rgba(255,220,0,.4)';scrFlashA=.4;G.slowMo=Math.max(G.slowMo,12);
+        addTxt(P.x,P.y-28,'🛡️🌈 무지개 반사!','#ff44ff',60);
+        for(let k=0;k<20;k++){const sa=Math.random()*Math.PI*2;const sv=5+Math.random()*8;
+          poolPart(P.x,P.y,Math.cos(sa)*sv,Math.sin(sa)*sv,k%4===0?'#ff00ff':k%4===1?'#ff44ff':k%4===2?'#ffaaff':'#ffffff',3+Math.random()*4,12+Math.random()*8)}
+        P.parryBank=(P.parryBank||0)+(p.dmg||10);
+        doParry(p.dmg,p.x,p.y);projs[pw++]=p;_pHit=true;continue;
+      }else{
+        // 패링 실패: 폭발 + 풀 피해
+        const _bkD=Math.max(~~(P.mhp*.15*(1-pParryRainbowDR())),~~(p.dmg*.7*(1-pParryRainbowDR())));
+        P.hp-=_bkD;if(P.hp<=0)die();
+        P.iframes=Math.max(P.iframes,15);
+        addTxt(p.x,p.y-15,'💥무지개 폭발! '+_bkD,'#ff44ff',40);
+        SFX.detonate();shake(14);
+        scrFlash='rgba(255,60,0,.35)';scrFlashA=.35;G.slowMo=Math.max(G.slowMo,8);
+        const _bkR=120,_bkDmg=Math.max(120,~~(p.dmg*2));
+        const _bkNe=shQuery(p.x,p.y,_bkR);
+        for(let _bki=0;_bki<_bkNe.length;_bki++){
+          const be=_bkNe[_bki];if(!be.alive)continue;
+          if(dst(p.x,p.y,be.x,be.y)>_bkR)continue;
+          hurtE(be,_bkDmg,Math.atan2(be.y-p.y,be.x-p.x),false,{noPoise:true},p.el);
+        }
+        _addBoom(p.x,p.y,_bkR,24,'rainbow');
+        _pHit=true;
       }
-      // 폭발 이펙트
-      _addBoom(p.x,p.y,_bkR,_bkParry?30:24,'rainbow');
-      _pHit=true;
     }
     // ══ 화이트볼: isPWin()으로 패링 (빨콩과 동일 로직) ══
     if(p.bwBean&&!_pHit&&_pDist<_normalR&&P.iframes<=0&&!P._ioActive){
@@ -18437,8 +18453,8 @@ function update(){
     }
     // ══ 일반탄: 원래 좁은 범위로 판정 (회전기폭: 빨콩도 넓은 흡수 범위) ══
     const _wwAbsR=_wwDetAbs?90:_normalR;
-    if(!p.blackBean&&!p.redBean&&!p.noParry&&!p.poisonZone&&!_pHit&&_pDist<_wwAbsR&&P.iframes<=0&&!P._ioActive){
-      if(isPWin()){
+    if(!p.blackBean&&!p.noParry&&!p.poisonZone&&!_pHit&&_pDist<_wwAbsR&&P.iframes<=0&&!P._ioActive){
+      if(isPWin()&&!p.redBean){
         const ra=Math.atan2(p.vy,p.vx);
         for(let k=0;k<12;k++){const sa=ra+Math.PI+(Math.random()-.5)*2.2;const sv=3+Math.random()*5;
           poolPart(P.x+Math.cos(ra)*(-P.r-4),P.y+Math.sin(ra)*(-P.r-4),Math.cos(sa)*sv,Math.sin(sa)*sv,k%3===0?'#ffffff':k%3===1?'#ffee66':'#ffdd00',2+Math.random()*3,10+Math.random()*8)}
