@@ -21167,7 +21167,7 @@ function _bossPhaseCheck(e,sp){
   {
     const _bCnt=8+_bp*4;
     for(let bi=0;bi<_bCnt;bi++){const ba=Math.PI*2*bi/_bCnt;
-      const _iR1=Math.random();const _isBK1=_iR1<.3;const _isRB1=_iR1>=.3&&_iR1<.7;
+      const _iR1=Math.random();const _isBK1=_iR1<.5;const _isRB1=_iR1>=.5;
       spawnProj({x:e.x,y:e.y,vx:Math.cos(ba)*(_isBK1?4.4:3+Math.random()),vy:Math.sin(ba)*(_isBK1?4.4:3+Math.random()),dmg:~~(e.atk*(_isBK1?1.5:_isRB1?1.5:.6)),el:_isBK1?EL.P:e.el,friendly:false,life:_isBK1?400:350,ml:_isBK1?400:350,col:_isBK1?'#00aa00':_isRB1?'#cc1100':e.col,sz:_isBK1?2.0:_isRB1?1.8:1.2,redBean:_isRB1||undefined,blackBean:_isBK1||undefined,homing:_isRB1||undefined})}
   }
   // 8) 시각/사운드 연출
@@ -21230,7 +21230,7 @@ function _bossIdleMove(e,d,sp){
     for(let i=0;i<cnt;i++){
       const a=toP+(Math.random()-.5)*.5;
       const spd2=2.5+Math.random()*1.5;
-      const _iR0=Math.random();const _iBK=_iR0<.333;const _isRB=_iR0>=.333&&_iR0<.667;spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*(_iBK?4.4:spd2),vy:Math.sin(a)*(_iBK?4.4:spd2),dmg:~~(e.atk*(_iBK?1.5:_isRB?1.5:1)),el:_iBK?EL.P:e.el,friendly:false,life:_iBK?400:280,ml:_iBK?400:280,col:_iBK?'#00aa00':_isRB?'#cc1100':e.col,sz:_iBK?2.0:_isRB?1.5:1.2,redBean:_isRB||undefined,blackBean:_iBK||undefined,homing:_isRB||undefined});
+      const _iR0=Math.random();const _iBK=_iR0<.5;const _isRB=_iR0>=.5;spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*(_iBK?4.4:spd2),vy:Math.sin(a)*(_iBK?4.4:spd2),dmg:~~(e.atk*(_iBK?1.5:_isRB?1.5:1)),el:_iBK?EL.P:e.el,friendly:false,life:_iBK?400:280,ml:_iBK?400:280,col:_iBK?'#00aa00':_isRB?'#cc1100':e.col,sz:_iBK?2.0:_isRB?1.5:1.2,redBean:_isRB||undefined,blackBean:_iBK||undefined,homing:_isRB||undefined});
     }
     addParts(e.x,e.y,'#cc1100',2);
   }
@@ -23217,7 +23217,7 @@ function updateE(e,sp){
       const _beanChance=e.isBoss?.7:e.elite>=3?.65:e.elite>=2?.55:e.elite>=1?.45:.30;
       const _iR6=Math.random();
       if(_iR6<_beanChance){
-        const _bR=Math.random();const _isBK6=_bR<.333;const _isRB6=_bR>=.333&&_bR<.667;
+        const _bR=Math.random();const _isBK6=_bR<.5;const _isRB6=_bR>=.5;
         if(_isBK6){
           spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*4.4,vy:Math.sin(e.facing)*4.4,dmg:~~(e.atk*1.5),el:EL.P,friendly:false,life:400,ml:400,col:'#00aa00',sz:2.0,blackBean:true});
           addParts(e.x,e.y,'#00aa00',3);
@@ -23268,7 +23268,7 @@ function updateE(e,sp){
     if(e.st2<=0){
       const cnt=~~((6+Math.min(G.stage,6))*(1+(e._bossPhase-1)*.12)); // 최대 ~14발
       for(let i=0;i<cnt;i++){const a=Math.PI*2*i/cnt;
-        const _iR2=Math.random();const _isBKB=_iR2<.333;const _isRB=_iR2>=.333&&_iR2<.667;
+        const _iR2=Math.random();const _isBKB=_iR2<.5;const _isRB=_iR2>=.5;
         spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*(_isBKB?4.4:_isRB?4.0:3.2),vy:Math.sin(a)*(_isBKB?4.4:_isRB?4.0:3.2),dmg:~~(e.atk*(_isBKB?1.5:_isRB?2.5:1.2)),el:_isBKB?EL.P:e.el,friendly:false,life:400,ml:400,col:_isBKB?'#00aa00':_isRB?'#cc1100':e.col,sz:_isBKB?2.0:_isRB?1.8:1.2,redBean:_isRB||undefined,blackBean:_isBKB||undefined,homing:_isRB||undefined})}
       SFX.charge();deathFX(e.x,e.y,e.r,e.col,false,false,e.etype);G.shake=8*OPT.shake/100;G._flashT=4;G._flashCol='#ffffff';
       e.s='recover';e.st2=50}break;
@@ -23352,7 +23352,7 @@ function updateE(e,sp){
     if(e.st2<=0){
       const fanW=Math.PI*(.7+e._bossPhase*.06);const cnt=~~((4+Math.min(G.stage,5))*(1+(e._bossPhase-1)*.12)); // 최대 ~10발
       for(let i=0;i<cnt;i++){const a=e.facing-fanW/2+fanW*i/(cnt-1);
-        const _iR3=Math.random();const _isBKF=_iR3<.333;const _isRF=_iR3>=.333&&_iR3<.667;
+        const _iR3=Math.random();const _isBKF=_iR3<.5;const _isRF=_iR3>=.5;
         spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*(_isBKF?4.4:_isRF?4.4:3.8),vy:Math.sin(a)*(_isBKF?4.4:_isRF?4.4:3.8),dmg:~~(e.atk*(_isBKF?1.5:_isRF?2.8:1.3)),el:_isBKF?EL.P:e.el,friendly:false,life:400,ml:400,col:_isBKF?'#00aa00':_isRF?'#cc1100':e.col,sz:_isBKF?2.0:_isRF?1.8:1.2,redBean:_isRF||undefined,blackBean:_isBKF||undefined,homing:_isRF||undefined})}
       SFX.magic(e.el===1?1:e.el===2?2:e.el===4?4:0);addParts(e.x,e.y,e.col,12);
       e.s='recover';e.st2=45}break;
@@ -23855,7 +23855,7 @@ function updateE(e,sp){
       for(let i=0;i<cnt;i++){
         const a=baseAng-spread/2+spread*i/(cnt-1)+(Math.random()-.5)*.15;
         const spd=2.5+Math.random()*1.5;
-        const _iR4=Math.random();const _isBK=_iR4<.333;const _isRB4=_iR4>=.333&&_iR4<.667;
+        const _iR4=Math.random();const _isBK=_iR4<.5;const _isRB4=_iR4>=.5;
         spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*(_isBK?4.4:spd),vy:Math.sin(a)*(_isBK?4.4:spd),dmg:~~(e.atk*(_isBK?1.5:_isRB4?2:1)),el:_isBK?EL.P:e.el,friendly:false,life:_isBK?400:350,ml:_isBK?400:350,col:_isBK?'#00aa00':_isRB4?'#cc1100':e.col,sz:_isBK?2.0:_isRB4?1.8:1.2,redBean:_isRB4||undefined,blackBean:_isBK||undefined,homing:_isRB4||undefined});
       }
       addParts(e.x,e.y,'#cc1100',8);SFX.magic(0);G.shake=4*OPT.shake/100;
@@ -23877,7 +23877,7 @@ function updateE(e,sp){
       for(let i=0;i<cnt;i++){
         const a=e.facing+(Math.random()-.5)*1.2;
         const spd=2.2+Math.random()*2;
-        const _iR5=Math.random();const _isBK=_iR5<.333;const _isRB5=_iR5>=.333&&_iR5<.667;
+        const _iR5=Math.random();const _isBK=_iR5<.5;const _isRB5=_iR5>=.5;
         spawnProj({x:e.x+(Math.random()-.5)*15,y:e.y+(Math.random()-.5)*15,vx:Math.cos(a)*(_isBK?4.0:spd),vy:Math.sin(a)*(_isBK?4.0:spd),dmg:~~(e.atk*(_isBK?1.5:_isRB5?1.8:1)),el:_isBK?EL.P:e.el,friendly:false,life:_isBK?400:300,ml:_isBK?400:300,col:_isBK?'#00aa00':_isRB5?'#cc1100':e.col,sz:_isBK?2.0:_isRB5?1.5:1.2,redBean:_isRB5||undefined,blackBean:_isBK||undefined,homing:_isRB5||undefined});
       }
       if(Math.random()<.3)addParts(e.x,e.y,'#ff2200',3);
@@ -25107,7 +25107,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     }
     // 29:빙마 사망 시 8방향 얼음기둥+빙결파 (30% 무지개탄)
     if(e.etype===29){
-      for(let _ip=0;_ip<8;_ip++){const ia=Math.PI*2*_ip/8;const _iR7=Math.random();const _iBK29=_iR7<.333;const _isRB29=_iR7>=.333&&_iR7<.667;
+      for(let _ip=0;_ip<8;_ip++){const ia=Math.PI*2*_ip/8;const _iR7=Math.random();const _iBK29=_iR7<.5;const _isRB29=_iR7>=.5;
         spawnProj({x:e.x,y:e.y,vx:Math.cos(ia)*(_iBK29?4.4:2.5),vy:Math.sin(ia)*(_iBK29?4.4:2.5),dmg:~~(e.atk*(_iBK29?1.5:_isRB29?1.2:.8)),el:_iBK29?EL.P:EL.I,friendly:false,life:_iBK29?400:200,ml:_iBK29?400:200,col:_iBK29?'#00aa00':_isRB29?'#cc1100':'#4455aa',sz:_iBK29?2.0:_isRB29?1.5:1.2,redBean:_isRB29||undefined,blackBean:_iBK29||undefined,homing:_isRB29||undefined})}
       const fR2=100;
       if(dst(P.x,P.y,e.x,e.y)<fR2&&P.iframes<=0){P._freezeSlow=Math.max(P._freezeSlow,150);addTxt(P.x,P.y-25,'❄최종빙결!','#4455aa',50)}
@@ -25127,7 +25127,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     }
     // 55:뼈짐승 사망 시 8방향 뼈파편 (30% 무지개탄)
     if(e.etype===55&&e._boneDeath){
-      for(let _bi=0;_bi<8;_bi++){const ba=Math.PI*2*_bi/8;const _iR8=Math.random();const _iBK55=_iR8<.333;const _isRB55=_iR8>=.333&&_iR8<.667;
+      for(let _bi=0;_bi<8;_bi++){const ba=Math.PI*2*_bi/8;const _iR8=Math.random();const _iBK55=_iR8<.5;const _isRB55=_iR8>=.5;
         spawnProj({x:e.x,y:e.y,vx:Math.cos(ba)*(_iBK55?4.4:3),vy:Math.sin(ba)*(_iBK55?4.4:3),dmg:~~(e.atk*(_iBK55?1.5:_isRB55?1.2:.8)),el:EL.P,friendly:false,life:_iBK55?400:150,ml:_iBK55?400:150,col:_iBK55?'#00aa00':_isRB55?'#cc1100':'#ccbbaa',sz:_iBK55?2.0:_isRB55?1.5:1.2,redBean:_isRB55||undefined,blackBean:_iBK55||undefined,homing:_isRB55||undefined})}
       addTxt(e.x,e.y-15,'뼈 파편!','#ccbbaa',30);addParts(e.x,e.y,'#ccbbaa',12);
       shake(4);
@@ -25141,7 +25141,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     }
     // 59:괴물길 지배자 사망 시 대폭발 (30% 무지개탄)
     if(e.etype===59){
-      for(let _oi=0;_oi<8;_oi++){const oa=Math.PI*2*_oi/8;const _iR9=Math.random();const _iBK59=_iR9<.333;const _isRB59=_iR9>=.333&&_iR9<.667;
+      for(let _oi=0;_oi<8;_oi++){const oa=Math.PI*2*_oi/8;const _iR9=Math.random();const _iBK59=_iR9<.5;const _isRB59=_iR9>=.5;
         spawnProj({x:e.x,y:e.y,vx:Math.cos(oa)*(_iBK59?4.4:2.5),vy:Math.sin(oa)*(_iBK59?4.4:2.5),dmg:~~(e.atk*(_iBK59?1.5:_isRB59?1:.6)),el:_iBK59?EL.P:e.el,friendly:false,life:_iBK59?400:180,ml:_iBK59?400:180,col:_iBK59?'#00aa00':_isRB59?'#cc1100':'#884422',sz:_iBK59?2.0:_isRB59?1.5:1.2,redBean:_isRB59||undefined,blackBean:_iBK59||undefined,homing:_isRB59||undefined})}
       addTxt(e.x,e.y-35,'지배자 처치!','#ff4422',70);if(!(G._noHitStopT>0))G.hitStop=Math.max(G.hitStop,~~(12*OPT.hitStop/100));
       shake(12);G._flashT=6;G._flashCol='#ff4400';
