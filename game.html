@@ -32709,7 +32709,9 @@ function draw(){
   // gib 조각 렌더 (source-over, 최대 10개)
   if(!_fOverBudget){let _gibDrw=0;for(let gi=0;gi<_GIB_MAX;gi++){const g=_gibs[gi];if(!g.active||!g.c)continue;if(g.x<_vl-20||g.x>_vr+20||g.y<_vt-20||g.y>_vb+20)continue;if(++_gibDrw>10)break;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>15?1:g.life/15;const gs=10;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.r);X.drawImage(g.c,-gs*sc,-gs*sc,gs*2*sc,gs*2*sc);X.restore();}}
   // ── lighter 통합 블록 (compositeOp 전환 1회) ──
+  const _vfxT0=performance.now();
   X.save();X.globalCompositeOperation='lighter';
+  const _vfxT1=performance.now();
   {// ── VFX 스프라이트시트 (GL instancing 배치 or Canvas2D 폴백) ──
   if(_vfxAnims.length>0){
     let _vw=0,_vDrw=0;
@@ -32802,7 +32804,9 @@ function draw(){
   }
   }// end lighter 통합 블록
   X.restore();
+  const _vfxT2=performance.now();
   const _tDP3=performance.now();
+  if(_vfxT2-_vfxT0>16)console.log('[VFX-DETAIL] total:'+(_vfxT2-_vfxT0).toFixed(1)+'ms | compositeOp:'+(_vfxT1-_vfxT0).toFixed(1)+' draw:'+(_vfxT2-_vfxT1).toFixed(1)+' glMode:'+_vfxGLMode+' glCount:'+_vfxGLCount);
   // ── 히트 임팩트 렌더 (경량화: GPU=fillRect, 레이어 축소) ──
   if(_impacts.length>12)_impacts.length=12;
   if(_impacts.length>0){

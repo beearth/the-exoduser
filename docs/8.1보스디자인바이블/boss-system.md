@@ -53,7 +53,7 @@ _bossStartPattern(e, mv, d, phase, extraDelay): 패턴 디스패치
 
 ### 색상 코딩
 - **빨간색 (`#ff2200`)**: 우클릭(sBash)만 패링 → `_PARRYABLE_ATK` Set, 링+글로우+PARRY 텍스트
-- **무지개색 (HSL 회전)**: Q(sBlock)만 패링 → 블루콩 유도반사(뎀×3, AoE 180). 우클릭=데미지. 모든 패링=블루콩 변환. 비율 65:35 (무지개 우세)
+- **무지개색 (HSL 회전)**: Q(sBlock)만 패링 → 블루콩 유도반사(뎀×3, AoE 180). 우클릭=데미지. 모든 패링=블루콩 변환. 비율 75:25 (무지개 압도)
 - 와인드업 상태(Wind/Aim/TeleDrop/TeleWarn/MirrorGuard)에서 표시
 
 ### `_PARRYABLE_ATK` Set (22개)

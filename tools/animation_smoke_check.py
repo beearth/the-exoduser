@@ -1,4 +1,6 @@
 import json
+import os
+import sys
 from pathlib import Path
 
 from playwright.sync_api import sync_playwright
@@ -69,8 +71,13 @@ def snapshot(page, label):
 
 
 def main():
+    base_url = (
+        sys.argv[1]
+        if len(sys.argv) > 1
+        else os.environ.get("SMOKE_URL", "http://127.0.0.1:8080/game.html?stage=3&test=1")
+    )
     result = {
-        "url": "http://127.0.0.1:8080/game.html?stage=3&test=1",
+        "url": base_url,
         "console": [],
         "pageErrors": [],
         "requestFailures": [],

@@ -1,11 +1,13 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { spawn } from 'node:child_process';
 import net from 'node:net';
 import { access, readFile, rm } from 'node:fs/promises';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { createStaticServer } from '../tools/local-static-server.mjs';
 
 const ROOT = new URL('..', import.meta.url);
+const ROOT_DIR = fileURLToPath(ROOT);
 
 function findFreePort() {
   return new Promise((resolve, reject) => {
@@ -20,49 +22,21 @@ function findFreePort() {
   });
 }
 
-function startStaticServer(port) {
-  return new Promise((resolve, reject) => {
-    const proc = spawn(process.execPath, ['tools/local-static-server.mjs', String(port)], {
-      cwd: path.normalize(new URL('.', ROOT).pathname),
-      stdio: ['ignore', 'pipe', 'pipe']
-    });
-
-    const timer = setTimeout(() => {
-      proc.kill();
-      reject(new Error('server start timeout'));
-    }, 10000);
-
-    const onData = chunk => {
-      const text = String(chunk);
-      if (text.includes(`[serve:test] url: http://127.0.0.1:${port}/`)) {
-        clearTimeout(timer);
-        proc.stdout.off('data', onData);
-        resolve(proc);
-      }
-    };
-
-    proc.on('error', err => {
-      clearTimeout(timer);
-      reject(err);
-    });
-
-    proc.on('exit', code => {
-      clearTimeout(timer);
-      reject(new Error(`server exited early: ${code}`));
-    });
-
-    proc.stdout.on('data', onData);
-  });
-}
-
 test('serve:test supports JSON save/load endpoints for local gameplay', async t => {
   const port = await findFreePort();
   const slot = `codex-local-api-${Date.now()}`;
   const savePath = new URL(`./saves/${slot}.json`, ROOT);
-  const server = await startStaticServer(port);
+  const server = createStaticServer({
+    rootDir: ROOT_DIR,
+    host: '127.0.0.1'
+  });
+  await new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(port, '127.0.0.1', resolve);
+  });
 
   t.after(async () => {
-    server.kill();
+    await new Promise(resolve => server.close(resolve));
     await rm(savePath, { force: true }).catch(() => {});
   });
 

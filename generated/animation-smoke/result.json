@@ -1,5 +1,5 @@
 {
-  "url": "http://127.0.0.1:8080/game.html?stage=3&test=1",
+  "url": "http://127.0.0.1:8091/game.html?stage=3&test=1",
   "console": [
     {
       "type": "log",
@@ -20,6 +20,10 @@
     {
       "type": "log",
       "text": "[ENS-GL] instancing 초기화 성공"
+    },
+    {
+      "type": "log",
+      "text": "[VFX-GL] instancing 초기화 성공"
     },
     {
       "type": "log",
@@ -46,20 +50,12 @@
       "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
     },
     {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
-    },
-    {
-      "type": "log",
-      "text": "[LOCAL] 세이브 없음, 새 게임 시작"
+      "type": "warning",
+      "text": "[.WebGL-0x1c6c0c0a6300]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
     },
     {
       "type": "warning",
-      "text": "[.WebGL-0x14d40c88d400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
-    },
-    {
-      "type": "warning",
-      "text": "[.WebGL-0x14d40c8f8000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+      "text": "[.WebGL-0x1c6c088de200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
     },
     {
       "type": "warning",
@@ -106,18 +102,6 @@
       "text": "[PILLAR] processed 1024 x 1024 ar 1"
     },
     {
-      "type": "log",
-      "text": "[ESPRITE] etype 82 로드 완료: 1536×1024 (14프레임, 셀 109.71428571428571×1024)"
-    },
-    {
-      "type": "log",
-      "text": "[ESPRITE] etype 82 레거시 아틀라스 핫패치 완료 (24셀)"
-    },
-    {
-      "type": "log",
-      "text": "[ESPRITE] etype 82 신규 아틀라스 핫패치 완료 (98셀, 7팔레트)"
-    },
-    {
       "type": "warning",
       "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
     },
@@ -143,14 +127,6 @@
     },
     {
       "type": "log",
-      "text": "[PSPRITE] shard_5 로드 완료: 224×28 (8F, 셀 28×28)"
-    },
-    {
-      "type": "log",
-      "text": "[PSPRITE] blackbean_0 로드 완료: 96×16 (4F, 셀 24×16)"
-    },
-    {
-      "type": "log",
       "text": "[PSPRITE] shard_3 로드 완료: 224×28 (8F, 셀 28×28)"
     },
     {
@@ -160,6 +136,14 @@
     {
       "type": "log",
       "text": "[PSPRITE] shard_1 로드 완료: 224×28 (8F, 셀 28×28)"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] shard_5 로드 완료: 224×28 (8F, 셀 28×28)"
+    },
+    {
+      "type": "log",
+      "text": "[PSPRITE] blackbean_0 로드 완료: 96×16 (4F, 셀 24×16)"
     },
     {
       "type": "log",
@@ -179,7 +163,35 @@
     },
     {
       "type": "log",
+      "text": "[ESPRITE] etype 80 로드 완료: 1536×1024 (14프레임, 셀 109.71428571428571×1024)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 80 레거시 아틀라스 핫패치 완료 (24셀)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 80 신규 아틀라스 핫패치 완료 (98셀, 7팔레트)"
+    },
+    {
+      "type": "log",
       "text": "[GT] gt_void_wall loaded"
+    },
+    {
+      "type": "log",
+      "text": "[TILE-TEX] all 13 loaded"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 82 로드 완료: 1536×1024 (14프레임, 셀 109.71428571428571×1024)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 82 레거시 아틀라스 핫패치 완료 (24셀)"
+    },
+    {
+      "type": "log",
+      "text": "[ESPRITE] etype 82 신규 아틀라스 핫패치 완료 (98셀, 7팔레트)"
     },
     {
       "type": "log",
@@ -195,6 +207,10 @@
     },
     {
       "type": "log",
+      "text": "[GT] gt_03 loaded"
+    },
+    {
+      "type": "log",
       "text": "[ESPRITE] etype 84 로드 완료: 1024×1536 (14프레임, 셀 73.14285714285714×1536)"
     },
     {
@@ -207,26 +223,6 @@
     },
     {
       "type": "log",
-      "text": "[ESPRITE] etype 80 로드 완료: 1536×1024 (14프레임, 셀 109.71428571428571×1024)"
-    },
-    {
-      "type": "log",
-      "text": "[ESPRITE] etype 80 레거시 아틀라스 핫패치 완료 (24셀)"
-    },
-    {
-      "type": "log",
-      "text": "[ESPRITE] etype 80 신규 아틀라스 핫패치 완료 (98셀, 7팔레트)"
-    },
-    {
-      "type": "log",
-      "text": "[TILE-TEX] all 13 loaded"
-    },
-    {
-      "type": "log",
-      "text": "[GT] gt_03 loaded"
-    },
-    {
-      "type": "log",
       "text": "[GT] gt_soil loaded"
     },
     {
@@ -236,6 +232,10 @@
     {
       "type": "log",
       "text": "[PREFAB] registry: 0"
+    },
+    {
+      "type": "log",
+      "text": "[LOCAL] 세이브 없음, 새 게임 시작"
     },
     {
       "type": "warning",
@@ -310,16 +310,32 @@
       "text": "[MAP] si=3 tileRLE=Y manualHoles=44 autoHoles=82 rooms=25 bossRm=N exits=0 gateTiles=0 portals=1"
     },
     {
-      "type": "log",
-      "text": "[drawP] 46.30ms | S0:0.0 S1:0.0 S2:0.0 S3:0.0 S4:0.0 S5:0.0 S6:40.6 S7:5.7"
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
     },
     {
       "type": "warning",
-      "text": "[POST SPIKE] 38.2ms | A(hud+lowHP):0.0 B(flash+lit+bloom+torch):29.0 C:9.2 [bonfire:8.1 fog:0.1 envVig:0.1 grainScan:0.0 bossCine:0.0 minimap:0.9]"
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
+    },
+    {
+      "type": "warning",
+      "text": "The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio"
     },
     {
       "type": "log",
-      "text": "[DRAW TOTAL] 284.30ms | ens:0.1 ens_gl:0.0 proj:0.0 PART:60.9 [drawP:60.5 pool:0.1 corpse:0.0 vfx:0.0 impact:0.3] post:38.2"
+      "text": "[drawP] 46.20ms | S0:0.0 S1:0.0 S2:0.0 S3:0.1 S4:0.0 S5:0.0 S6:38.6 S7:7.5"
+    },
+    {
+      "type": "warning",
+      "text": "[POST SPIKE] 30.2ms | A(hud+lowHP):0.0 B(flash+lit+bloom+torch):20.4 C:9.8 [bonfire:8.8 fog:0.0 envVig:0.1 grainScan:0.0 bossCine:0.0 minimap:0.9]"
+    },
+    {
+      "type": "log",
+      "text": "[DRAW TOTAL] 273.80ms | ens:0.3 ens_gl:0.0 proj:0.0 PART:63.0 [drawP:62.5 pool:0.2 corpse:0.0 vfx:0.0 impact:0.3] post:30.2"
     },
     {
       "type": "log",
@@ -347,53 +363,48 @@
     },
     {
       "type": "warning",
-      "text": "[.WebGL-0x14d40c88d400]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
+      "text": "[.WebGL-0x1c6c0c0a6300]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels"
     },
     {
       "type": "warning",
-      "text": "[.WebGL-0x14d40c8f8000]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
+      "text": "[.WebGL-0x1c6c088de200]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)"
     },
     {
       "type": "log",
-      "text": "[DRAW TOTAL] 35.90ms | ens:0.0 ens_gl:0.0 proj:0.0 PART:0.3 [drawP:0.2 pool:0.0 corpse:0.0 vfx:0.1 impact:0.0] post:4.1"
+      "text": "[DRAW TOTAL] 43.10ms | ens:0.1 ens_gl:0.0 proj:0.0 PART:0.2 [drawP:0.2 pool:0.0 corpse:0.0 vfx:0.0 impact:0.0] post:4.7"
     },
     {
       "type": "log",
-      "text": "[DRAW TOTAL] 17.40ms | ens:0.0 ens_gl:0.0 proj:0.0 PART:0.1 [drawP:0.1 pool:0.0 corpse:0.0 vfx:0.0 impact:0.0] post:3.4"
+      "text": "[DRAW TOTAL] 21.10ms | ens:0.0 ens_gl:0.0 proj:0.0 PART:0.1 [drawP:0.1 pool:0.0 corpse:0.0 vfx:0.0 impact:0.0] post:4.7"
     },
     {
       "type": "log",
-      "text": "[PERF] fps:10"
-    },
-    {
-      "type": "error",
-      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)"
-    },
-    {
-      "type": "error",
-      "text": "[LOCAL] Save failed: SyntaxError: Unexpected token 'N', \"Not Found\n\" is not valid JSON"
+      "text": "[PERF] fps:9"
     },
     {
       "type": "log",
-      "text": "[REGEN] s=idle _str=0.0510 _mpr=0.0510 _hpr=0.0510 sp=1 ST:106.52→106.52 MP:100.00→100.00 HP:735.00→735.00 ch=0"
+      "text": "[LOCAL] saved -> saves/자동저장.json"
     },
     {
       "type": "log",
-      "text": "[PERF] fps:16"
+      "text": "[DRAW TOTAL] 17.00ms | ens:0.0 ens_gl:0.0 proj:0.0 PART:0.2 [drawP:0.1 pool:0.0 corpse:0.0 vfx:0.0 impact:0.1] post:14.4"
+    },
+    {
+      "type": "log",
+      "text": "[REGEN] s=idle _str=0.0510 _mpr=0.0510 _hpr=0.0510 sp=1 ST:106.50→106.50 MP:100.00→100.00 HP:687.00→687.00 ch=0"
+    },
+    {
+      "type": "log",
+      "text": "[DRAW TOTAL] 23.80ms | ens:0.1 ens_gl:0.0 proj:0.0 PART:0.2 [drawP:0.2 pool:0.0 corpse:0.0 vfx:0.0 impact:0.0] post:5.8"
+    },
+    {
+      "type": "log",
+      "text": "[PERF] fps:15"
     }
   ],
   "pageErrors": [],
   "requestFailures": [],
-  "responses404": [
-    {
-      "url": "http://127.0.0.1:8080/api/load/%EC%9E%90%EB%8F%99%EC%A0%80%EC%9E%A5",
-      "status": 404
-    },
-    {
-      "url": "http://127.0.0.1:8080/api/save",
-      "status": 404
-    }
-  ],
+  "responses404": [],
   "snapshots": [
     {
       "label": "after-load",
@@ -406,11 +417,11 @@
       "player": {
         "x": 4020,
         "y": 7420,
-        "hp": 735,
+        "hp": 687,
         "s": "idle",
         "dir": null,
         "anim": "idle",
-        "frame": 3,
+        "frame": 0,
         "done": false
       },
       "atlas": {
@@ -431,9 +442,9 @@
       "intro": false,
       "ensCount": 0,
       "player": {
-        "x": 4061,
+        "x": 4053,
         "y": 7420,
-        "hp": 735,
+        "hp": 687,
         "s": "idle",
         "dir": null,
         "anim": "run",
@@ -458,9 +469,9 @@
       "intro": false,
       "ensCount": 0,
       "player": {
-        "x": 4151,
+        "x": 4145,
         "y": 7420,
-        "hp": 735,
+        "hp": 687,
         "s": "idle",
         "dir": null,
         "anim": "idle",
@@ -485,9 +496,9 @@
       "intro": false,
       "ensCount": 0,
       "player": {
-        "x": 4151,
+        "x": 4145,
         "y": 7420,
-        "hp": 735,
+        "hp": 687,
         "s": "wRecover",
         "dir": null,
         "anim": "atk3",
@@ -512,9 +523,9 @@
       "intro": false,
       "ensCount": 0,
       "player": {
-        "x": 4151,
+        "x": 4145,
         "y": 7420,
-        "hp": 735,
+        "hp": 687,
         "s": "idle",
         "dir": null,
         "anim": "idle",
@@ -539,9 +550,9 @@
       "intro": false,
       "ensCount": 1,
       "player": {
-        "x": 4151,
+        "x": 4145,
         "y": 7420,
-        "hp": 735,
+        "hp": 687,
         "s": "idle",
         "dir": null,
         "anim": "idle",
@@ -557,12 +568,12 @@
       },
       "enemy0": {
         "et": null,
-        "x": 4340,
+        "x": 4357,
         "y": 7420,
         "hp": 262,
         "s": "idle",
         "fr": null,
-        "walk": 65.32536984798935
+        "walk": 41.33606935857824
       }
     }
   ],

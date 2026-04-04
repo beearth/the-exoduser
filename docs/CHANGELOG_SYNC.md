@@ -301,3 +301,18 @@
 - docs/14ë°¸ëŸ°???˜ì¹˜?Œì´ë¸??¤í‚¬ë³?DPS_?ì›?Œë¹„??md
 - game.html
 
+
+## 2026-04-04 23:30 (auto)
+- docs/14ë°¸ëŸ°???˜ì¹˜?Œì´ë¸??¤í‚¬_ë°¸ëŸ°??ë¦¬í¬??md
+- docs/8.0ëª¬ìŠ¤?°ë””?ì¸/ëª¬ìŠ¤??ì´ê?ë¦?md
+- docs/8.1ë³´ìŠ¤?”ì?¸ë°”?´ë¸”/boss-system.md
+- game.html
+- generated/animation-smoke/result.json
+- generated/animation-smoke/stage3-attack.png
+- generated/animation-smoke/stage3-enemy.png
+- generated/animation-smoke/stage3-idle.png
+- generated/animation-smoke/stage3-move.png
+- test/localStaticServerSaveApi.test.js
+- tools/animation_smoke_check.py
+- tools/local-static-server.mjs
+
