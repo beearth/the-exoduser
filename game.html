@@ -31776,8 +31776,8 @@ function draw(){
       X.fillStyle='#ff2244';X.fillText('\u{1FA78}'+_plStk,e.x,_plY);
       X.globalAlpha=sa;
     }
-    // ═══ 고FPS 장식 이펙트 프레임 스킵 (비-보스, 매 2프레임 교대 + 히트스톱 중 스킵) ═══
-    const _eDecor=!(_hiFPS&&_drawOdd&&!e.ib)&&!(G.hitStop>0&&!e.ib);
+    // ═══ 장식 이펙트: 히트스톱 중만 스킵 (교대 렌더 제거 — 깜빡임 원인) ═══
+    const _eDecor=!(G.hitStop>0&&!e.ib);
     // 자폭 글로우 (절차적 바디 위에 추가)
     if(_eDecor&&e.etype===5&&e.s!=='eSelfDestruct'){X.globalAlpha=.3+Math.sin(_now/200)*.2;X.fillStyle='#ff4400';X.beginPath();X.arc(e.x,e.y,e.r+6,0,Math.PI*2);X.fill();X.globalAlpha=sa}
     // 균열 악마: 보라색 소용돌이 오라
@@ -37141,7 +37141,8 @@ function loop(timestamp){
   // 적응형 catch-up: update가 가벼우면(8ms 이하) 5틱까지, 무거우면 3틱
   const _accCap=_prof.u<=8?PHYS_STEP*5:PHYS_STEP*3;
   if(_acc>_accCap)_acc=_accCap;
-  _hiFPS=_fpsCur>70;
+  // _hiFPS 히스테리시스: 80 이상에서 켜지고, 55 이하에서 꺼짐 — 녹화 시 토글 방지
+  if(_fpsCur>80)_hiFPS=true;else if(_fpsCur<55)_hiFPS=false;
   _skipShadow=_hiFPS&&!_useGPU&&!_useGL;
   _drawOdd=(_drawOdd+1)&1;
   _fpsUpdate();_benchTick();
