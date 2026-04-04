@@ -12619,7 +12619,7 @@ function _buildStreamChunk(cx,cy){
   const tx1=tx0+tw,ty1=ty0+th;
   const hell=SI_TO_HELL[G.stage],_th=_MTHEME[hell];
   const _tileSz=256,_wx0=tx0*T,_wy0=ty0*T,_ww=tw*T,_wh=th*T;
-  const cc=document.createElement('canvas');cc.width=tw*T;cc.height=th*T;
+  const cc=document.createElement('canvas');cc.width=tw*T+1;cc.height=th*T+1;
   const c=cc.getContext('2d');c.imageSmoothingEnabled=false;
   if(!_skullWallPat){_buildSkullWallPat()}
   const _voidWallImg=hell===0?_GROUND_TILES['gt_void_wall']:null;
