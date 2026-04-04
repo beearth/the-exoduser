@@ -52,8 +52,8 @@ _bossStartPattern(e, mv, d, phase, extraDelay): 패턴 디스패치
 ## 패링/체간 시스템
 
 ### 색상 코딩
-- **빨간색 (`#ff2200`)**: 패링 가능 → `_PARRYABLE_ATK` Set, 링+글로우+PARRY 텍스트
-- **무지개색 (HSL 회전)**: 패링 불가 (잡기, 독, 속박 등), 12분할 무지개 링+글로우+DANGER 텍스트
+- **빨간색 (`#ff2200`)**: 우클릭(sBash)만 패링 → `_PARRYABLE_ATK` Set, 링+글로우+PARRY 텍스트
+- **무지개색 (HSL 회전)**: Q(sBlock)만 패링 → 12분할 무지개 링+글로우+Q! 텍스트, 잘못된 입력=데미지
 - 와인드업 상태(Wind/Aim/TeleDrop/TeleWarn/MirrorGuard)에서 표시
 
 ### `_PARRYABLE_ATK` Set (22개)
