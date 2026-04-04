@@ -4140,8 +4140,8 @@ const MAP_DECOR_DEFS={0:[
   {src:_FO_CH1+'poison_puddle.png',chance:0.008,scale:1.0,sz:40},
   {src:_FO_CH1+'poison_pool.png',chance:0.006,scale:1.0,sz:44},
   {src:_FO_CH1+'acid_pool.png',chance:0.005,scale:1.0,sz:44},
-  {src:_CO_CH1+'pit_blood_anim.png',chance:0.003,scale:1.0,sz:48},
-  {src:_CO_CH1+'pit_blood_b.png',chance:0.003,scale:1.0,sz:48},
+  // {src:_CO_CH1+'pit_blood_anim.png',chance:0.003,scale:1.0,sz:48}, // 피웅덩이 제거
+  // {src:_CO_CH1+'pit_blood_b.png',chance:0.003,scale:1.0,sz:48}, // 피웅덩이 제거
   {src:_CO_CH1+'pit_corpse.png',chance:0.003,scale:1.0,sz:48},
   {src:_CO_CH1+'pit_poison.png',chance:0.003,scale:1.0,sz:48},
   {src:_CO_CH1+'pit_lava.png',chance:0.003,scale:1.0,sz:48},
@@ -6391,7 +6391,7 @@ const _OBJ_SPR_MAP={
   'anim_tree_01':_CO+'anim_tree_01.png',
   'pit_lava':_CO+'pit_lava.png','pit_poison':_CO+'pit_poison.png',
   'pit_corpse':_CO+'pit_corpse.png',
-  'pit_blood_a':_CO+'pit_blood_anim.png','pit_blood_b':_CO+'pit_blood_b.png',
+  // 'pit_blood_a':_CO+'pit_blood_anim.png','pit_blood_b':_CO+'pit_blood_b.png', // 피웅덩이 제거
 };
 // ── 챕터별 맵 장식 에셋 (assets/map/ch*/) ──
 const _CH_DECO={
@@ -6596,8 +6596,8 @@ const _OBJ_META={
   'meat_stake':{sz:64},'acid_pool':{sz:56},
   'pit_lava':{sz:200,collision:true},'pit_poison':{sz:200,collision:true},
   'pit_ice':{sz:200,collision:true},'pit_corpse':{sz:200,collision:true},'pit_bugs':{sz:200,collision:true},
-  'pit_blood_a':{sz:150,collision:false,dot:true,dotPct:0.02,dotInterval:30,anim:{frames:9,cols:3,rows:3,interval:300}},
-  'pit_blood_b':{sz:100,collision:false,anim:{frames:9,cols:3,rows:3,interval:300}},
+  // 'pit_blood_a':{sz:150,collision:false,dot:true,dotPct:0.02,dotInterval:30,anim:{frames:9,cols:3,rows:3,interval:300}}, // 피웅덩이 제거
+  // 'pit_blood_b':{sz:100,collision:false,anim:{frames:9,cols:3,rows:3,interval:300}}, // 피웅덩이 제거
   'lava_straight':{sz:300,collision:true},'lava_straight_v2':{sz:300,collision:true},
   'lava_s':{sz:300,collision:true},'lava_s_v4b':{sz:300,collision:true},'lava_s_v5c':{sz:300,collision:true},
   'lava_l':{sz:200,collision:true},'lava_l_v6a':{sz:300,collision:true},'lava_l_v6b':{sz:300,collision:true},
@@ -11558,22 +11558,22 @@ function initMapObjects(){
     }
   }
 
-  // ── 함정 (trap) — 맵 전역에 ~100개, 최소 150px 간격 ──
-  {const _trSeed=_tseed(G.stage*59+7,hell*43+3);
-  const _trFloors=[];
-  for(let y=4;y<G.mh-4;y++)for(let x=4;x<G.mw-4;x++){if(map[y][x]===0)_trFloors.push({x,y})}
-  const _trList=[];
-  const _trMinDist=150;
-  const _trOk=(x,y)=>{for(const t of _trList){if(dst(x,y,t.x,t.y)<_trMinDist)return false}return _moOk(x,y)};
-  const _trMax=100;
-  for(let _try=0;_try<800&&_trList.length<_trMax;_try++){
-    const f=_trFloors[~~(_trSeed()*_trFloors.length)];
-    if(!f)continue;
-    const px=f.x*T+T/2,py=f.y*T+T/2;
-    if(!_trOk(px,py))continue;
-    const o={type:'trap',x:px,y:py,hell,active:true,cooldown:0,dmgPct:.10};
-    MAP_OBJS.push(o);_trList.push(o);
-  }}
+  // ── 함정 (trap) — 비활성화 ──
+  // {const _trSeed=_tseed(G.stage*59+7,hell*43+3);
+  // const _trFloors=[];
+  // for(let y=4;y<G.mh-4;y++)for(let x=4;x<G.mw-4;x++){if(map[y][x]===0)_trFloors.push({x,y})}
+  // const _trList=[];
+  // const _trMinDist=150;
+  // const _trOk=(x,y)=>{for(const t of _trList){if(dst(x,y,t.x,t.y)<_trMinDist)return false}return _moOk(x,y)};
+  // const _trMax=100;
+  // for(let _try=0;_try<800&&_trList.length<_trMax;_try++){
+  //   const f=_trFloors[~~(_trSeed()*_trFloors.length)];
+  //   if(!f)continue;
+  //   const px=f.x*T+T/2,py=f.y*T+T/2;
+  //   if(!_trOk(px,py))continue;
+  //   const o={type:'trap',x:px,y:py,hell,active:true,cooldown:0,dmgPct:.10};
+  //   MAP_OBJS.push(o);_trList.push(o);
+  // }
 
   // ── 버프 제단 (altar) ──
   if(G.stage>=5){
