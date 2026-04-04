@@ -823,3 +823,33 @@ async function updateComputeBullets(sp) {
 - 비주얼 전용 파티클 (히트 불필요)
 
 복잡한 투사체(패링 가능, 속성별 처리)는 기존 projs[] 유지.
+
+---
+
+## VFX GL Instancing (Additive)
+
+적 인스턴싱(`_ensGL`)과 동일 패턴으로 VFX 스프라이트시트 렌더링을 WebGL2 인스턴싱으로 오프로드.
+
+### 구조
+| 항목 | 값 |
+|------|-----|
+| 최대 인스턴스 | 256 (`_VFX_GL_MAX`) |
+| stride | 9 floats (x,y,u,v,uw,vh,angAlpha,dw,dh) |
+| 블렌딩 | additive (`SRC_ALPHA, ONE`) — lighter 동등 |
+| 텍스처 | 텍스처별 그룹 flush (텍스처 변경 시 자동 flush) |
+| 폴백 | GL 실패 시 Canvas2D drawImage |
+
+### 적용 대상
+| VFX | GL 인스턴싱 | 비고 |
+|-----|------------|------|
+| `_vfxAnims` (스프라이트시트 VFX 전체) | O | whirl_slash, eq_impact, magic_burst 등 |
+| `wwSlash` 히트 임팩트 | O | 칼바람 슬래시 임팩트 |
+| `_impSpr` 히트 임팩트 | O | 일반 스프라이트시트 임팩트 |
+| `_fireExps` 화염폭발 | X | 프레임별 개별 이미지, 인스턴싱 이점 없음 |
+| `_esAnim` 마력연사 | X | 단일 인스턴스, 오버헤드만 증가 |
+
+### 함수
+- `_initVfxInstancing()`: 셰이더/VAO/버퍼 초기화
+- `_queueVfxGL(img,sx,sy,sw,sh,x,y,dw,dh,ang,alpha)`: 배치에 추가
+- `_flushVfxGL()`: GPU 제출 (drawArraysInstanced)
+- `_resetVfxInstanced()`: context lost 시 리셋

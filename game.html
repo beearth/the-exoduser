@@ -1998,6 +1998,96 @@ function _drawEnemyInstanced(){
   if(_glMainProg)GL.useProgram(_glMainProg);
   return _ensGLCount
 }
+// ═══ VFX GL Instancing (additive blending) ═══
+const _VFX_GL_MAX=256,_VFX_GL_STRIDE=9;
+const _vfxGLCpu=new Float32Array(_VFX_GL_MAX*_VFX_GL_STRIDE);
+let _vfxGLProg=null,_vfxGLVao=null,_vfxGLQuadVBO=null,_vfxGLInstVBO=null,_vfxGLURes=null,_vfxGLUTex=null,_vfxGLCount=0,_vfxGLMode=false,_vfxGLCurTex=null;
+function _resetVfxInstanced(){_vfxGLProg=null;_vfxGLVao=null;_vfxGLQuadVBO=null;_vfxGLInstVBO=null;_vfxGLURes=null;_vfxGLUTex=null;_vfxGLCount=0;_vfxGLMode=false;_vfxGLCurTex=null}
+function _initVfxInstancing(){
+  if(!GL)return;
+  try{
+    function _es(src,t){const s=GL.createShader(t);GL.shaderSource(s,src);GL.compileShader(s);if(!GL.getShaderParameter(s,GL.COMPILE_STATUS))throw new Error(GL.getShaderInfoLog(s)||'vfx shader');return s}
+    const _vs=`#version 300 es
+precision highp float;
+layout(location=0)in vec2 a_pos;
+layout(location=1)in vec2 a_offset;
+layout(location=2)in vec4 a_uvRect;
+layout(location=3)in float a_alpha;
+layout(location=4)in vec2 a_size;
+uniform vec2 uRes;
+out vec2 vUV;out float vAlpha;
+void main(){
+  float aQ=mod(a_alpha,256.0);
+  float ang=floor(a_alpha/256.0)/1024.0-3.14159265;
+  float cs=cos(ang),sn=sin(ang);
+  vec2 lp=a_pos*a_size;
+  vec2 rp=vec2(lp.x*cs-lp.y*sn,lp.x*sn+lp.y*cs);
+  vec2 sp=a_offset+rp;
+  vec2 ndc=sp/uRes*2.0-1.0;ndc.y=-ndc.y;
+  vec2 q=a_pos+vec2(0.5);
+  vUV=a_uvRect.xy+q*a_uvRect.zw;
+  vAlpha=aQ/255.0;
+  gl_Position=vec4(ndc,0.0,1.0);
+}`;
+    const _fs=`#version 300 es
+precision mediump float;
+uniform sampler2D uAtlas;
+in vec2 vUV;in float vAlpha;out vec4 oC;
+void main(){vec4 c=texture(uAtlas,vUV);if(c.a<=0.001)discard;oC=vec4(c.rgb*vAlpha,c.a*vAlpha);}
+`;
+    _vfxGLProg=GL.createProgram();GL.attachShader(_vfxGLProg,_es(_vs,GL.VERTEX_SHADER));GL.attachShader(_vfxGLProg,_es(_fs,GL.FRAGMENT_SHADER));GL.linkProgram(_vfxGLProg);
+    if(!GL.getProgramParameter(_vfxGLProg,GL.LINK_STATUS))throw new Error(GL.getProgramInfoLog(_vfxGLProg)||'vfx link');
+    const _quad=new Float32Array([-.5,-.5,.5,-.5,-.5,.5,.5,.5]),_st=_VFX_GL_STRIDE*4;
+    _vfxGLVao=GL.createVertexArray();_vfxGLQuadVBO=GL.createBuffer();_vfxGLInstVBO=GL.createBuffer();
+    GL.bindVertexArray(_vfxGLVao);
+    GL.bindBuffer(GL.ARRAY_BUFFER,_vfxGLQuadVBO);
+    GL.bufferData(GL.ARRAY_BUFFER,_quad,GL.STATIC_DRAW);
+    GL.vertexAttribPointer(0,2,GL.FLOAT,false,8,0);GL.enableVertexAttribArray(0);
+    GL.bindBuffer(GL.ARRAY_BUFFER,_vfxGLInstVBO);
+    GL.bufferData(GL.ARRAY_BUFFER,_vfxGLCpu.byteLength,GL.DYNAMIC_DRAW);
+    GL.vertexAttribPointer(1,2,GL.FLOAT,false,_st,0);GL.enableVertexAttribArray(1);GL.vertexAttribDivisor(1,1);
+    GL.vertexAttribPointer(2,4,GL.FLOAT,false,_st,8);GL.enableVertexAttribArray(2);GL.vertexAttribDivisor(2,1);
+    GL.vertexAttribPointer(3,1,GL.FLOAT,false,_st,24);GL.enableVertexAttribArray(3);GL.vertexAttribDivisor(3,1);
+    GL.vertexAttribPointer(4,2,GL.FLOAT,false,_st,28);GL.enableVertexAttribArray(4);GL.vertexAttribDivisor(4,1);
+    GL.bindVertexArray(null);GL.bindBuffer(GL.ARRAY_BUFFER,null);
+    _vfxGLURes=GL.getUniformLocation(_vfxGLProg,'uRes');_vfxGLUTex=GL.getUniformLocation(_vfxGLProg,'uAtlas');
+    _vfxGLMode=true;
+    console.log('[VFX-GL] instancing 초기화 성공');
+  }catch(e){console.warn('[VFX-GL] instancing 초기화 실패:',e.message||e);_resetVfxInstanced()}
+}
+function _queueVfxGL(img,sx,sy,sw,sh,x,y,dw,dh,ang,alpha){
+  if(!_vfxGLMode||_vfxGLCount>=_VFX_GL_MAX)return false;
+  const tex=_getTex(img);if(!tex)return false;
+  // 텍스처 변경 시 기존 배치 flush
+  if(_vfxGLCurTex&&tex!==_vfxGLCurTex)_flushVfxGL();
+  _vfxGLCurTex=tex;
+  const iw=img.width||img.naturalWidth||1,ih=img.height||img.naturalHeight||1;
+  const _o=_vfxGLCount*_VFX_GL_STRIDE;
+  const _angQ=Math.max(0,Math.min(8191,((ang+Math.PI)*1024)|0));
+  const _alphaQ=Math.max(0,Math.min(255,Math.round(Math.max(0,Math.min(1,alpha))*255)));
+  _vfxGLCpu[_o]=x;_vfxGLCpu[_o+1]=y;
+  _vfxGLCpu[_o+2]=sx/iw;_vfxGLCpu[_o+3]=sy/ih;_vfxGLCpu[_o+4]=sw/iw;_vfxGLCpu[_o+5]=sh/ih;
+  _vfxGLCpu[_o+6]=_angQ*256+_alphaQ;
+  _vfxGLCpu[_o+7]=dw;_vfxGLCpu[_o+8]=dh;
+  _vfxGLCount++;
+  return true;
+}
+function _flushVfxGL(){
+  if(!_useGL||!GL||!_vfxGLProg||_vfxGLCount<1||!_vfxGLCurTex)return 0;
+  _flush(); // 메인 GL 파이프라인 flush
+  GL.enable(GL.BLEND);GL.blendFunc(GL.SRC_ALPHA,GL.ONE); // additive
+  GL.useProgram(_vfxGLProg);
+  GL.bindVertexArray(_vfxGLVao);GL.bindBuffer(GL.ARRAY_BUFFER,_vfxGLInstVBO);
+  GL.bufferSubData(GL.ARRAY_BUFFER,0,_vfxGLCpu,0,_vfxGLCount*_VFX_GL_STRIDE);
+  GL.activeTexture(GL.TEXTURE0);GL.bindTexture(GL.TEXTURE_2D,_vfxGLCurTex);
+  GL.uniform1i(_vfxGLUTex,0);GL.uniform2f(_vfxGLURes,C.width,C.height);
+  GL.drawArraysInstanced(GL.TRIANGLE_STRIP,0,4,_vfxGLCount);
+  GL.bindVertexArray(null);GL.bindBuffer(GL.ARRAY_BUFFER,null);
+  GL.blendFunc(GL.SRC_ALPHA,GL.ONE_MINUS_SRC_ALPHA); // 복원
+  if(_glMainProg)GL.useProgram(_glMainProg);
+  const n=_vfxGLCount;_vfxGLCount=0;_vfxGLCurTex=null;
+  return n;
+}
 function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
   _dbgEnsGL=0;_ensGLCount=0;
   for(let _egi=0;_egi<ens.length;_egi++)ens[_egi]._ensGLMode=0;
@@ -2360,6 +2450,7 @@ oC=c;}`;
   _glFlush=function(){_flush()};
   _clearFrame=function(){_flush();GL.clearColor(0,0,0,1);GL.clear(GL.COLOR_BUFFER_BIT);_qCnt=0;_bufOff=0;_curTex=wt};
   _initEnemyInstancing();
+  _initVfxInstancing();
 
   if(!IS_ELECTRON)console.log('[GPU] WebGL2 ready — maxTex:'+_glMaxTex);
   // ── WebGL context lost/restored 핸들러 ──
@@ -2367,7 +2458,7 @@ oC=c;}`;
     ev.preventDefault();
     console.warn('[GPU] WebGL context lost — Canvas2D 폴백');
     _useGL=false;_useGPU=false;GL=null;GPU=null;
-    _glMainProg=null;_resetEnemyInstanced();
+    _glMainProg=null;_resetEnemyInstanced();_resetVfxInstanced();
     _flush=function(){};_setTex=function(){};_getTex=function(){return null};
     _setBlend=function(){};_glFlush=function(){};
     _clearFrame=function(){};
@@ -32619,10 +32710,10 @@ function draw(){
   if(!_fOverBudget){let _gibDrw=0;for(let gi=0;gi<_GIB_MAX;gi++){const g=_gibs[gi];if(!g.active||!g.c)continue;if(g.x<_vl-20||g.x>_vr+20||g.y<_vt-20||g.y>_vb+20)continue;if(++_gibDrw>10)break;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>15?1:g.life/15;const gs=10;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.r);X.drawImage(g.c,-gs*sc,-gs*sc,gs*2*sc,gs*2*sc);X.restore();}}
   // ── lighter 통합 블록 (compositeOp 전환 1회) ──
   X.save();X.globalCompositeOperation='lighter';
-  {// ── VFX 스프라이트시트 ──
+  {// ── VFX 스프라이트시트 (GL instancing 배치 or Canvas2D 폴백) ──
   if(_vfxAnims.length>0){
     let _vw=0,_vDrw=0;
-    const _vfxBudgetCap=5; // 스킬 VFX 포함 — budget 무시
+    const _vfxBudgetCap=5;
     for(let vi=0;vi<_vfxAnims.length;vi++){
       const v=_vfxAnims[vi];const sh=_VFX_SHEETS[v.id];
       if(!sh||!sh.img){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
@@ -32634,12 +32725,20 @@ function draw(){
       if(v.x<_vl-dw||v.x>_vr+dw||v.y<_vt-dh||v.y>_vb+dh){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
       if(++_vDrw>_vfxBudgetCap&&!v.isSkill){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
       const col=v.frame%sh.cols,row=~~(v.frame/sh.cols);
-      X.globalAlpha=_vAlpha;
-      X.save();X.translate(v.x,v.y);if(v.ang)X.rotate(v.ang);
-      X.drawImage(sh.img,col*sh.fw,row*sh.fh,sh.fw,sh.fh,-dw/2,-dh/2,dw,dh);
-      X.restore();
+      const _sx=col*sh.fw,_sy=row*sh.fh;
+      // GL instancing 시도
+      if(_vfxGLMode&&_queueVfxGL(sh.img,_sx,_sy,sh.fw,sh.fh,C.width*.5+(v.x-G.cam.x),C.height*.5+(v.y-G.cam.y),dw,dh,v.ang||0,_vAlpha)){
+        // queued to GL batch
+      }else{
+        // Canvas2D 폴백
+        X.globalAlpha=_vAlpha;
+        X.save();X.translate(v.x,v.y);if(v.ang)X.rotate(v.ang);
+        X.drawImage(sh.img,_sx,_sy,sh.fw,sh.fh,-dw/2,-dh/2,dw,dh);
+        X.restore();
+      }
       if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;
     }
+    _flushVfxGL(); // GL 배치 최종 flush
     _vfxAnims.length=_vw;
   }
   // ── 화염폭발 ──
@@ -32724,24 +32823,34 @@ function draw(){
         const fr=Math.min(_wwImpFrames-1,~~(p*_wwImpFrames));
         const fc=fr%_wwImpCols,frow=~~(fr/_wwImpCols);
         const drawSz=40*sz*(0.5+p*0.6);
-        const _ia=im.ang+Math.random()*.2-.1,_ic=Math.cos(_ia),_is=Math.sin(_ia);
-        X.globalAlpha=inv*0.85;
-        X.setTransform(_ic,_is,-_is,_ic,im.x,im.y);
-        X.drawImage(_wwImpCanvas,fc*_wwImpFW,frow*_wwImpFH,_wwImpFW,_wwImpFH,-drawSz/2,-drawSz/2,drawSz,drawSz);
-        X.setTransform(1,0,0,1,0,0);
+        const _ia=im.ang+Math.random()*.2-.1;
+        if(_vfxGLMode&&_queueVfxGL(_wwImpCanvas,fc*_wwImpFW,frow*_wwImpFH,_wwImpFW,_wwImpFH,C.width*.5+(im.x-G.cam.x),C.height*.5+(im.y-G.cam.y),drawSz,drawSz,_ia,inv*0.85)){
+          // queued to GL batch
+        }else{
+          const _ic=Math.cos(_ia),_is=Math.sin(_ia);
+          X.globalAlpha=inv*0.85;
+          X.setTransform(_ic,_is,-_is,_ic,im.x,im.y);
+          X.drawImage(_wwImpCanvas,fc*_wwImpFW,frow*_wwImpFH,_wwImpFW,_wwImpFH,-drawSz/2,-drawSz/2,drawSz,drawSz);
+          X.setTransform(1,0,0,1,0,0);
+        }
       }else if(_impSpr.complete&&_impSpr.naturalWidth){
         // 스프라이트 시트 임팩트 (9프레임, 128px/프레임)
         const fr=Math.min(8,~~(p*9));
         const fsz=~~(_impSpr.naturalHeight); // 128
-        const drawSz=fsz*sz*(0.8+p*0.6); // 작게 시작→커지며 사라짐
-        X.globalAlpha=inv*0.95;
-        X.drawImage(_impSpr,fr*fsz,0,fsz,fsz,im.x-drawSz/2,im.y-drawSz/2,drawSz,drawSz);
+        const drawSz=fsz*sz*(0.8+p*0.6);
+        if(_vfxGLMode&&_queueVfxGL(_impSpr,fr*fsz,0,fsz,fsz,C.width*.5+(im.x-G.cam.x),C.height*.5+(im.y-G.cam.y),drawSz,drawSz,0,inv*0.95)){
+          // queued to GL batch
+        }else{
+          X.globalAlpha=inv*0.95;
+          X.drawImage(_impSpr,fr*fsz,0,fsz,fsz,im.x-drawSz/2,im.y-drawSz/2,drawSz,drawSz);
+        }
       }else{
         // 폴백: 기존 arc 렌더
         {const _impR=(8+p*32)*sz;const _impSt=_getSparkStamp(ec);X.globalAlpha=inv*0.85;X.drawImage(_impSt,im.x-_impR,im.y-_impR,_impR*2,_impR*2);}
         if(p<0.25){const fp=1-p/0.25;const _fpR=9*sz*fp;const _fpSt=_getSparkStamp('#ffffff');X.globalAlpha=fp*0.95;X.drawImage(_fpSt,im.x-_fpR,im.y-_fpR,_fpR*2,_fpR*2)}
       }
     }
+    _flushVfxGL(); // 임팩트 GL 배치 flush
     X.globalAlpha=1;X.restore();
   }
   renderHitVFX(X);renderElecVFX(X);renderOldBurstVFX(X);renderDarkBurstVFX(X);renderLightningBurstVFX(X);
