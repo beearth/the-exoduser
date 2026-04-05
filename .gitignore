@@ -31,3 +31,5 @@ build/
 img/maps/stage_*_tex.png
 assets/maps/stage_*/stage_*_bottom_*.png
 .aider*
+demo_build/
+deploy-demo.sh

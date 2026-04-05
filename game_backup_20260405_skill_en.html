@@ -518,17 +518,6 @@ canvas{display:block;position:fixed;inset:0}
 </head>
 <body>
 <canvas id="c"></canvas>
-<!-- ═══ DEMO END OVERLAY ═══ -->
-<div id="demoEndOverlay" style="position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.95);flex-direction:column;gap:20px">
-  <div style="font-family:'Noto Sans KR',sans-serif;font-size:2.4rem;font-weight:900;color:#ff6600;text-shadow:0 0 40px rgba(255,100,0,.6);letter-spacing:.1em;text-align:center;line-height:1.5">
-    Thanks for playing the<br>HELL: EXODUSER Demo!
-  </div>
-  <div style="font-family:'Noto Sans KR',sans-serif;font-size:1.2rem;color:#ccaa88;text-align:center">Full game coming soon on Steam.</div>
-  <div style="display:flex;gap:16px;margin-top:20px">
-    <a id="demoSteamBtn" href="#" target="_blank" style="padding:14px 32px;background:linear-gradient(135deg,#1b2838,#2a475e);border:2px solid #66c0f4;color:#66c0f4;font-family:'Noto Sans KR';font-size:1rem;font-weight:700;text-decoration:none;cursor:pointer;letter-spacing:.1em;transition:all .3s">Wishlist on Steam</a>
-    <button onclick="location.reload()" style="padding:14px 32px;background:rgba(255,100,50,.1);border:2px solid #ff6600;color:#ff8844;font-family:'Noto Sans KR';font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:.1em;transition:all .3s">Play Again</button>
-  </div>
-</div>
 <canvas id="burstCvs" style="position:fixed;inset:0;pointer-events:none;z-index:1"></canvas>
 <canvas id="ct" style="position:fixed;inset:0;pointer-events:none;z-index:2"></canvas>
 <div id="mmLvl" style="position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px));right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;text-align:right;width:160px;transform-origin:top right;transform:scale(var(--ui-scale))">
@@ -946,13 +935,13 @@ canvas{display:block;position:fixed;inset:0}
 <div id="spStart" style="margin-top:18px;font-size:clamp(.6rem,1.2vw,.9rem);color:#886644;letter-spacing:.2em;animation:spBlink 1.2s ease-in-out infinite">— 클릭하여 시작 —</div>
 </div></div>
 <div id="deathReplay"><canvas id="drCvs"></canvas><div id="drLabel">☠ 사망 리플레이</div><div id="drTime"></div><div id="drBar"><div id="drBarFill"></div></div></div>
-<div id="death"><div class="dt">빛이 꺼졌다</div><div class="ds">어둠이 삼켰다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry" id="toLobbyBtn" style="margin-top:8px;background:rgba(0,0,0,.3);border-color:#554433;color:#886644;font-size:.9rem">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div></div>
+<div id="death"><div class="dt" id="deathTitle">빛이 꺼졌다</div><div class="ds" id="deathSub">어둠이 삼켰다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry" id="toLobbyBtn" style="margin-top:8px;background:rgba(0,0,0,.3);border-color:#554433;color:#886644;font-size:.9rem">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div></div>
 
 <!-- LEVEL UP SCREEN (10렙마다) -->
 <div id="lvUpScreen" style="position:fixed;inset:0;z-index:35;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.92);opacity:0;pointer-events:none;transition:opacity .4s">
   <div style="text-align:center;max-width:380px">
     <div id="lvUpTitle" style="font-family:'Noto Sans KR',sans-serif;font-weight:900;font-size:2.2rem;color:#ffcc00;text-shadow:0 0 40px rgba(255,200,0,.5),0 0 80px rgba(255,150,0,.3);letter-spacing:.15em;margin-bottom:6px"></div>
-    <div style="font-size:1rem;color:#aa8855;letter-spacing:.3em;margin-bottom:24px">지옥의 시련을 견뎌냈다</div>
+    <div id="lvUpSub" style="font-size:1rem;color:#aa8855;letter-spacing:.3em;margin-bottom:24px">지옥의 시련을 견뎌냈다</div>
     <div id="lvUpStats" style="text-align:left;margin:0 auto;max-width:280px"></div>
     <div id="lvUpRewards" style="margin-top:16px;font-size:1rem;color:#ffaa44"></div>
     <button id="lvUpClose" style="margin-top:24px;padding:10px 36px;background:rgba(255,100,50,.08);border:1px solid #884422;color:#ff8844;font-family:'Noto Sans KR';font-size:.9rem;font-weight:700;cursor:pointer;letter-spacing:.15em;transition:all .3s">계속 전투</button>
@@ -1015,8 +1004,8 @@ canvas{display:block;position:fixed;inset:0}
 <!-- 난이도 선택 -->
 <div id="introDiff" style="position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.92);opacity:0;pointer-events:none;transition:opacity .4s">
   <div style="text-align:center;max-width:420px">
-    <div style="font-size:1.5rem;color:#cc4444;font-weight:700;letter-spacing:.15em;margin-bottom:8px;text-shadow:0 0 20px rgba(200,0,0,.4)">난이도를 선택하라</div>
-    <div style="font-size:.8rem;color:#665544;margin-bottom:24px;letter-spacing:.1em">나중에 설정(ESC)에서 변경 가능</div>
+    <div id="introDiffTitle" style="font-size:1.5rem;color:#cc4444;font-weight:700;letter-spacing:.15em;margin-bottom:8px;text-shadow:0 0 20px rgba(200,0,0,.4)">난이도를 선택하라</div>
+    <div id="introDiffHint" style="font-size:.8rem;color:#665544;margin-bottom:24px;letter-spacing:.1em">나중에 설정(ESC)에서 변경 가능</div>
     <div id="introDiffBtns" style="display:flex;flex-direction:column;gap:10px;align-items:center"></div>
   </div>
 </div>
@@ -2765,13 +2754,26 @@ const BIND_NAMES={
   irisToggle:'유령불꽃 켜기/끄기',
   bladeToggle:'기동칼날개 자동 켜기/끄기',
 };
+const BIND_NAMES_EN={
+  up:'Move Up', down:'Move Down', left:'Move Left', right:'Move Right',
+  weapon:'Weapon Attack', shield:'Blade Parry (tap=parry, hold=rapid)',
+  bow:'Area Skill', charge:'Harpoon Dash',
+  parry:'Devilforce Absorb', beam:'Magic (tap=projectile, hold=beam)',
+  skill:'Combat Skills', forge:'Forge',
+  inventory:'Inventory', settings:'Settings',
+  interact:'Pick Up Item', storage:'Storage', stats:'Stats (Stats/Passives)',
+  skillCycle:'Skill Slot Assign',
+  irisToggle:'Ghost Flame On/Off',
+  bladeToggle:'Bladewing Auto On/Off',
+};
+function _bindName(key){return OPT.lang==='en'?(BIND_NAMES_EN[key]||key):(BIND_NAMES[key]||key);}
 function keyName(code){
-  if(!code)return '없음';
-  if(code==='mouse0')return '좌클릭';
-  if(code==='mouse1')return '휠클릭';
-  if(code==='mouse2')return '우클릭';
-  if(code==='mouse3')return '마우스4';
-  if(code==='mouse4')return '마우스5';
+  if(!code)return OPT.lang==='en'?'None':'없음';
+  if(code==='mouse0')return OPT.lang==='en'?'LMB':'좌클릭';
+  if(code==='mouse1')return OPT.lang==='en'?'MMB':'휠클릭';
+  if(code==='mouse2')return OPT.lang==='en'?'RMB':'우클릭';
+  if(code==='mouse3')return OPT.lang==='en'?'Mouse4':'마우스4';
+  if(code==='mouse4')return OPT.lang==='en'?'Mouse5':'마우스5';
   const m={Space:'SPACE',ShiftLeft:'L-SHIFT',ShiftRight:'R-SHIFT',Tab:'TAB',Escape:'ESC',CapsLock:'CAPS',
     ControlLeft:'L-CTRL',ControlRight:'R-CTRL',AltLeft:'L-ALT',AltRight:'R-ALT',
     KeyW:'W',KeyA:'A',KeyS:'S',KeyD:'D',KeyE:'E',KeyQ:'Q',KeyR:'R',KeyF:'F',KeyG:'G',
@@ -2892,6 +2894,12 @@ const _EN={
 '기동칼날개 AUTO ON':'Bladewing AUTO ON','기동칼날개 AUTO OFF':'Bladewing AUTO OFF',
 '자동 버스트!':'Auto Burst!','연사 해제':'Rapid Fire Off',
 '당기기 모드':'Pull Mode','밀어내기 모드':'Push Mode',
+// --- Skill Slot Tooltips ---
+'날개치기':'Wing Strike','처내기':'Parry',
+'Shift: 작살 발사 → 끌려감':'Shift: Harpoon throw → pull',
+'Shift: 화염길+화상':'Shift: Flame trail+burn',
+'CT: 전류변신+암전걸음 (쿨4초)':'CT: Lightning form+Ghost Walk (CD 4s)',
+'CT: 방어구체+빙결 (재입력: 파쇄)':'CT: Ice sphere+freeze (re-press: shatter)',
 // --- HUD ---
 '근접':'Melee','견갑':'Guard','작살':'Harpoon','마법':'Magic','보막':'Shield','유령':'Ghost',
 '스킬':'Skills','대장':'Forge','인벤':'Inv',
@@ -3031,6 +3039,11 @@ const _EN={
 '없음 — 제작하세요!':'None — Craft one!','제작 확률':'Craft chance',
 '분해할 아이템이 없습니다.':'No items to dismantle.','🔨 제작':'🔨 Craft',
 '체간':'Posture','아이템에 마우스를 올리거나 좌클릭으로 선택하세요':'Hover over an item or left-click to select',
+// --- Phase 10: death/levelup/intro screen ---
+'중독':'Poison','지뢰':'Mine','함정':'Trap','산호가시':'Coral Spike',
+'투사체':'Projectile','도트':'DoT','레어몹':'Rare Mob',
+'처치':'kills','경험치':'EXP','최대콤보':'Max Combo',
+'구역':'Zone','가시!':'Spike!',
 };
 // --- 장비명 조합 번역 (접두사 + 기본형) ---
 const _EN_PFX={'녹슨':'Rusty','강철':'Steel','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Judgment','천벌의':'Divine Wrath','파멸의':'Destruction',
@@ -5366,6 +5379,8 @@ addEventListener('keydown',e=>{
   }
   // F11 전체화면 토글
   if(e.code==='F11'){toggleFullscreen();return}
+  // ESC → 옵션 토글 (G.on 무관하게 항상 동작)
+  if(e.code==='Escape'&&!e.repeat){togglePanel('settings');return}
   K[e.code]=true;KH[e.code]=true;
   if(['Space','Tab','Escape','KeyE','KeyQ','KeyZ','KeyX','KeyC','KeyB','KeyN','KeyH','KeyJ','KeyK','KeyL','KeyR','KeyF','KeyG','KeyV','ControlLeft','ControlRight','ShiftLeft','ShiftRight','CapsLock'].includes(e.code))e.preventDefault();
   // ── T키 석궁 자동발사 토글 ──
@@ -6553,9 +6568,8 @@ function spawnProj(props){
   else{p=_mkProj()}
   for(const k in props)p[k]=props[k];
   if(!p.ml&&p.life)p.ml=p.life;
-  // 적 탄막 속도 30% 증가 + 데미지 2배
+  // 적 탄막 속도 30% 증가 (데미지 글로벌 배율 제거)
   if(!p.friendly){
-    p.dmg=~~(p.dmg*2);
     p.vx*=1.3;p.vy*=1.3;
     // 유령 허수아비: 가까운 대상으로 발사 방향 변경 (무지개콩 제외, 보스탄 포함)
     if(G._voidScarecrow&&G._voidScarecrow.aggroOn&&!p.blackBean){
@@ -7552,7 +7566,7 @@ function teleportE(e,nx,ny,col,n){if(!canMv(nx,ny,e.r))return false;
   return true}
 function _beanRoll(el,col,sz,spd,dmgMult,e){
   // 근거리(150px 이내) → 특수탄 금지, 일반탄만
-  if(e&&dst(e.x,e.y,P.x,P.y)<300)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd,dmgM:dmgMult};
+  if(e&&dst(e.x,e.y,P.x,P.y)<500)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd,dmgM:dmgMult};
   // 무지개:빨콩 75:25 교대 + 10% 들러리 삽입
   if(e){if(!e._beanCnt)e._beanCnt=0;e._beanCnt++;
     // 10% 확률로 들러리탄 (교대 카운트 안 올림)
@@ -15673,7 +15687,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
   const _lvHp=Math.floor((ib?2000:200)*Math.pow(1.013,monLv)*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 기본200, 1.3%복리, 스테이지당 레벨HP의+2%, 보스=일반×10
-  const _atk=Math.floor(((ib?50:30)+monLv*(ib?6:4))*dm*et.atkMul); // 기본30+레벨당4 (보스: 50+레벨당6)
+  const _atk=Math.floor(((ib?20:13)+monLv*(ib?1.5:1))*dm*et.atkMul); // 일반: 13+lv×1 (무지개max 1렙21,50렙95,500렙770,1000렙1520), 보스: 20+lv×1.5
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   if(!window._noProjEtypes)window._noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
   let _projCd=ib?50 // 보스: 별도
@@ -17160,9 +17174,9 @@ function update(){
     if(P._freezeSlow>0)P._freezeSlow-=sp;
     if(P._trapSlowT>0)P._trapSlowT-=sp;
     // 화상 데미지 (초당 HP 4%, 3초)
-    if(P.burnT>0){P.burnT-=sp;if(Math.floor(P.burnT/60)<Math.floor((P.burnT+sp)/60)){const bd=~~(P.mhp*.04);hurtP(bd,{dot:true,src:'화상'});addTxt(P.x,P.y-15,'🔥'+bd,'#ff4400',18);addParts(P.x,P.y,'#ff4400',3)}}
+    if(P.burnT>0){P.burnT-=sp;if(Math.floor(P.burnT/60)<Math.floor((P.burnT+sp)/60)){const bd=~~(P.mhp*.04);hurtP(bd,{dot:true,src:_T('화상')});addTxt(P.x,P.y-15,'🔥'+bd,'#ff4400',18);addParts(P.x,P.y,'#ff4400',3)}}
     // 독 데미지 (초당 HP 0.8%, 감소)
-    if(P.poison>0){P.poison-=sp*.02;if(Math.floor(P.poison*10)%6<1){const pd=~~(P.mhp*.008);hurtP(pd,{dot:true,src:'중독'});addTxt(P.x,P.y-15,'☠'+pd,'#33aa22',15);addParts(P.x,P.y,'#33aa22',2)}}
+    if(P.poison>0){P.poison-=sp*.02;if(Math.floor(P.poison*10)%6<1){const pd=~~(P.mhp*.008);hurtP(pd,{dot:true,src:_T('중독')});addTxt(P.x,P.y-15,'☠'+pd,'#33aa22',15);addParts(P.x,P.y,'#33aa22',2)}}
     // ═══ 5장 지옥의 군단: 잡기/마비 상태 ═══
     if(P._seaGrabbed>0){P._seaGrabbed-=sp;P.kb.x*=.1;P.kb.y*=.1;if(~~(P._seaGrabbed)%30<2)addTxt(P.x,P.y-20,_T('잡힘!'),'#334466',10)}
     if(P._seaParalyzed>0){P._seaParalyzed-=sp;P.kb.x*=.05;P.kb.y*=.05}
@@ -18630,7 +18644,7 @@ function update(){
     if(p.mine){
       p.vx=0;p.vy=0;
       if(dst(P.x,P.y,p.x,p.y)<30&&P.iframes<=0&&P.s!=='charge'){
-        hurtP(~~(p.dmg*elMul(p.el,ar().el)),{dtype:'magic',src:'지뢰'});
+        hurtP(~~(p.dmg*elMul(p.el,ar().el)),{dtype:'magic',src:_T('지뢰')});
         const ka=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(ka)*10;P.kb.y+=Math.sin(ka)*10;
         addTxt(P.x,P.y-20,_T('💥 지뢰!'),'#ffcc00',40);addParts(p.x,p.y,'#ffaa00',12);
         G.shake=6*OPT.shake/100;_dead=true;
@@ -18641,7 +18655,7 @@ function update(){
     if(p.trap){
       p.vx=0;p.vy=0;
       if(dst(P.x,P.y,p.x,p.y)<28&&P.iframes<=0&&P.s!=='charge'){
-        hurtP(~~(p.dmg*elMul(p.el,ar().el)),{dtype:'magic',src:'함정'});
+        hurtP(~~(p.dmg*elMul(p.el,ar().el)),{dtype:'magic',src:_T('함정')});
         const ka=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(ka)*8;P.kb.y+=Math.sin(ka)*8;
         P._trapSlowT=120; // 2초 감속
         addTxt(P.x,P.y-20,_T('⚠ 함정!'),'#997744',40);addParts(p.x,p.y,'#997744',10);
@@ -18653,7 +18667,7 @@ function update(){
     // 5장: 감속 수역 투사체
       if(p._seaSlow&&dst(P.x,P.y,p.x,p.y)<25&&P.iframes<=0){P._trapSlowT=Math.max(P._trapSlowT||0,3)}
       // 5장: 산호 가시 지대
-      if(p._coralSpike&&dst(P.x,P.y,p.x,p.y)<20&&P.iframes<=0&&Math.random()<.1*sp){hurtP(p.dmg,{src:'산호가시'});addTxt(P.x,P.y-10,_T('가시!'),'#885566',15)}
+      if(p._coralSpike&&dst(P.x,P.y,p.x,p.y)<20&&P.iframes<=0&&Math.random()<.1*sp){hurtP(p.dmg,{src:_T('산호가시')});addTxt(P.x,P.y-10,_T('가시!'),'#885566',15)}
       if(p.dimRift){
       p.vx=0;p.vy=0;
       if(dst(P.x,P.y,p.x,p.y)<25&&P.iframes<=0&&P.s!=='charge'){
@@ -18898,21 +18912,9 @@ function update(){
         addParts(p.x,p.y,'#22cc66',6);addParts(p.x,p.y,'#4488ff',6);_pHit=true;
       }
     }
-    // ══ 회전참 투사체 파괴: 회전범위 내 일반탄 자동 소멸 ══
-    if(P.s==='whirlwind'&&!p.blackBean&&!p.redBean&&!p.bwBean&&!p.gbBean&&!p.poisonZone&&!p.mine&&!p.bomb&&!p.elemBall&&!p.dimRift){
-      const _wwLv2=P.skills.whirlwind||1;
-      const _wwFused2=P.skills.detonate&&_isFused('whirlDet');
-      const _wwGrow2=Math.min(1,(P.wwAng||0)/63);
-      const _wwBaseR2=((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+(_wwLv2-1)*11;
-      const _wwDeflR=(100+(200+(_wwLv2-1)*15-100)*Math.min(1,_wwGrow2))*.7;
-      if(_pDist<_wwDeflR){
-        addParts(p.x,p.y,ELC[p.el]||'#888',2);
-        _pHit=true;_recycleProj(p);continue; // 탄 소멸
-      }
-    }
-    // ══ 회전참 중 iframes 탄 소멸: 흡수율 적용 데미지 ══
+    // ══ 회전참 중 iframes 탄 흡수: 보호막과 동일 흡수율 (pGuardAbsorb) ══
     if(!p.blackBean&&!p.bwBean&&!p.gbBean&&!p.poisonZone&&!p.mine&&!p.elemBall&&!p.dimRift&&!_pHit&&_pDist<_normalR&&P.iframes>0&&!P._ioActive&&P.s==='whirlwind'){
-      const _wwAbs=Math.min(.95,0.70+0+(_isFused('whirlDet')?(P.skills.detonate||1)*0.005:0));
+      const _wwAbs=pGuardAbsorb();
       const _wwD=Math.max(1,~~(p.dmg*(1-_wwAbs)));
       P.hp-=_wwD;if(P.hp<=0)die();
       P.parryBank=(P.parryBank||0)+(_isFused('whirlDet')?(p.dmg||10):~~(p.dmg*_wwAbs));
@@ -25898,7 +25900,6 @@ function addExp(v,trans){
   while(P.exp>=P.maxExp){
     if(P.lv>=1000&&!_canTransLv()){P.exp=P.maxExp-1;break}
     P.lv++;lvd++;P.exp-=P.maxExp;
-    if(P.lv>=300){_showDemoEnd();break}
     P.maxExp=_calcMaxExp(P.lv);
     P.sp+=3;if(P.lv%5===0)P.sp+=2;
     if(P.lv%10===0){P.ap=(P.ap||0)+2;apGain+=2;}
@@ -26024,13 +26025,13 @@ const _dmgLog=[];const _DMG_LOG_MAX=10;
 function _logDmg(raw,final,src){
   // 가까운 적 자동 감지
   let _nrName='';
-  if(src==='투사체'||src==='도트'){
+  if(src==='투사체'||src==='도트'||src==='Projectile'||src==='DoT'){
     let _nrD=200,_nrE=null;
     for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive)continue;const d=Math.abs(e.x-P.x)+Math.abs(e.y-P.y);if(d<_nrD){_nrD=d;_nrE=e}}
     if(_nrE){
       if(_nrE.isBoss)_nrName=STG[G.stage]?_T(STG[G.stage].bn):(OPT.lang==='en'?'Boss':'보스');
-      else if(_nrE.etype>=90)_nrName='레어몹';
-      else _nrName='몬스터('+_nrE.etype+')';
+      else if(_nrE.etype>=90)_nrName=OPT.lang==='en'?'Rare Mob':'레어몹';
+      else _nrName=(OPT.lang==='en'?'Monster(':'몬스터(')+_nrE.etype+')';
     }
   }
   const label=_nrName?(src+' ['+_nrName+']'):src;
@@ -26092,7 +26093,7 @@ function hurtP(dmg,opts){
   } else if(!(opts&&opts.dot))playSample('player_hit'+(1+~~(Math.random()*4)),.6,_r(1,.15));
   // 회전기폭 합체: 회전 중 보호막 자동 적용 (데미지 감소 + 흡수)
   if(P.s==='whirlwind'&&P.skills.detonate&&_isFused('whirlDet')){
-    const _wwBlk=Math.min(.60,(.40+PASSIVES.pGuard*.015)+(sh().blockRate||0)*.002+pShieldBlock());
+    const _wwBlk=pGuardAbsorb(); // 보호막과 동일 흡수율
     const _rawDmg2=dmg;
     dmg=Math.max(1,~~(dmg*(1-_wwBlk)));
     P.parryBank=(P.parryBank||0)+_rawDmg2;
@@ -26151,7 +26152,7 @@ function hurtP(dmg,opts){
   // 최소 데미지: 최대HP의 0.5% (순수뎀, 방어/쉴드 무시)
   const _minDmg=Math.max(1,~~(P.mhp*0.005));
   if(a<_minDmg)a=_minDmg;
-  const _dlSrc=(opts&&opts.src)||(_isDot?'도트':'투사체');
+  const _dlSrc=(opts&&opts.src)||(_isDot?(OPT.lang==='en'?'DoT':'도트'):(OPT.lang==='en'?'Projectile':'투사체'));
   _logDmg(dmg,a,_dlSrc);
   if(G._sStats)G._sStats.dmgTaken+=a;
   P.hp-=a;
@@ -26344,7 +26345,9 @@ function _fallenResolve(){
   BGM.fadeOut(500);setTimeout(()=>BGM.play('death'),600);
   ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.remove('on'));
   const expLoss=~~(P.exp*0.3);
-  const infoTxt=`💀 ${G.kills} 처치 | ${HELL_NAMES[STG[G.stage].hell]} ${STG[G.stage].kr} | 경험치 -${expLoss} | 🔥 최대콤보 ${G.comboMax}`;
+  const _eL=OPT.lang==='en';
+  const _hn=_T(HELL_NAMES[STG[G.stage].hell]);
+  const infoTxt=_eL?`💀 ${G.kills} kills | ${_hn} | EXP -${expLoss} | 🔥 Max Combo ${G.comboMax}`:`💀 ${G.kills} 처치 | ${_hn} ${STG[G.stage].kr} | 경험치 -${expLoss} | 🔥 최대콤보 ${G.comboMax}`;
   // 피해 로그 렌더 (오른쪽 사이드)
   let _dlHtml='';
   if(_dmgLog.length){
@@ -26355,7 +26358,7 @@ function _fallenResolve(){
       const _sz=_isLast?'1.3rem':'1rem';
       _dlHtml+=`<div style="color:${_col};font-size:${_sz};font-weight:${_isLast?'900':'400'}">-${d.final} <span style="color:#887766;font-size:.8rem">${d.src}</span></div>`;
     }
-    _dlHtml+=`<div style="color:#886644;font-size:.85rem;margin-top:4px;border-top:1px solid #442211;padding-top:4px">맞아서 사망</div>`;
+    _dlHtml+=`<div style="color:#886644;font-size:.85rem;margin-top:4px;border-top:1px solid #442211;padding-top:4px">${_T('맞아서 사망')}</div>`;
   }
   // 리플레이 재생 후 사망 화면 표시
   _drPlay(()=>{
@@ -26417,7 +26420,7 @@ function toggleFullscreen(){
 function togglePanel(id){const el=$(id);const isOn=el.classList.contains('on');closeAllPanels();if(!isOn){el.classList.add('on');G.paused=true;if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
 function openPanel(id){closeAllPanels();$(id).classList.add('on');G.paused=true;if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='storagePanel')renderStorage()}
 function closePanel(id){$(id).classList.remove('on');G.paused=false}
-function closeAllPanels(){['settings','invPanel','forge','storagePanel','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none'}
+function closeAllPanels(){['settings','invPanel','forge','storagePanel','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none'}
 
 // ═══ 스킬 패널 ═══
 const SKILL_CATS=[
@@ -26878,7 +26881,7 @@ function updateSkSlot(){
     const _dsN=_isFused('dimThunder')?'강화습격':_isFused('dimSlam')?'사슬:강화':'사슬:천둥';
     const _dsC=_isFused('dimThunder')?'#4422ff':_isFused('dimSlam')?'#6633ff':'#8844ff';
     el.innerHTML='<span class="qs-key" style="font-size:.5rem">SH</span><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:.65rem;color:'+_dsC+';font-weight:700;white-space:nowrap" id="_hgTxt"></div><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.5rem;color:'+_dsC+';font-weight:700">'+_dsN+'</div>';
-    el.title=_isFused('dimThunder')?'4단합체: 기동파괴+암전 강화!':_isFused('dimSlam')?'3단합체: 관통돌진 → 착지충돌!':'2이동스킬 합체: 관통돌진 → 착지 대폭발';
+    el.title=_isFused('dimThunder')?(OPT.lang==='en'?'4-chain fuse: mobility destroy+lightning enhance!':'4단합체: 기동파괴+암전 강화!'):_isFused('dimSlam')?(OPT.lang==='en'?'3-chain fuse: piercing dash → landing impact!':'3단합체: 관통돌진 → 착지충돌!'):(OPT.lang==='en'?'2-move fuse: piercing dash → landing explosion':'2이동스킬 합체: 관통돌진 → 착지 대폭발');
     el.style.borderColor=_dsC;
   } else {
     el.style.borderColor='#443322';
@@ -26886,7 +26889,7 @@ function updateSkSlot(){
     const info=SKILL_SLOT_DEFS.charge.info[sk];
     if(info){
       el.innerHTML='<span class="qs-key" style="font-size:.5rem">SH</span><div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:.65rem;color:#cc8855;font-weight:700;white-space:nowrap" id="_hgTxt"></div><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.5rem;color:#cc8855;font-weight:700">'+info.name+'</div>';
-      el.title=info.desc+' (클릭 전환)';
+      el.title=_T(info.desc)+(OPT.lang==='en'?' (click to switch)':' (클릭 전환)');
     }
   }
   updateBowSlot();updateMagicSlot();updateLMBSlot();updateQSlot();updateRMBSlot();updateCtSlot(); // 모든 고정슬롯 갱신
@@ -26984,10 +26987,10 @@ function updateRMBSlot(){
   const el=$('skSlotRMB');if(!el||!P)return;
   const _msLv=P.skills.maliceSwipe||0;
   const _sfFused=P.skills.maliceSwipe>=1&&P.skills.shieldThrow>=1&&_isFused('shieldFuse');
-  const _nm=_sfFused?'날개치기':'처내기';
+  const _nm=_sfFused?_T('날개치기'):_T('처내기');
   const _col=_sfFused?'#ffaa44':'#aa4488';
   el.innerHTML='<span class="qs-key" style="font-size:.5rem">RMB</span><span style="font-size:14px">'+(_sfFused?'⚡':'💀')+'</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:'+_col+';font-weight:700">'+_nm+'</div>';
-  el.title=(_sfFused?'날개치기 (패링 강화 — 패링범위↑, 이동거리+10%/Lv, 파워웨이브)':'칼등 처내기')+' (홀드 연사, Lv'+_msLv+' 반사뎀+'+(10*_msLv)+'%)';el.style.borderColor=_sfFused?'#aa7733':'#443322';
+  el.title=(_sfFused?(OPT.lang==='en'?'Wing Strike (parry enhance — parry range↑, move dist+10%/Lv, power wave)':'날개치기 (패링 강화 — 패링범위↑, 이동거리+10%/Lv, 파워웨이브)'):(OPT.lang==='en'?'Blade Parry':'칼등 처내기'))+(OPT.lang==='en'?' (hold rapid, Lv'+_msLv+' reflect dmg+'+(10*_msLv)+'%)':' (홀드 연사, Lv'+_msLv+' 반사뎀+'+(10*_msLv)+'%)');el.style.borderColor=_sfFused?'#aa7733':'#443322';
 }
 // ═══ CT 스킬 슬롯 (유령걸음/얼음보주) ═══
 function updateCtSlot(){
@@ -26995,8 +26998,8 @@ function updateCtSlot(){
   const sk=P.activeCtSk||'ghostWalk';
   const info=SKILL_SLOT_DEFS.ct.info[sk];
   if(info){
-    el.innerHTML='<span class="qs-key" style="font-size:.5rem;color:#77bbdd">CT</span><span style="font-size:14px">'+info.emoji+'</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#77bbdd;font-weight:700">'+info.name+'</div>';
-    el.title=info.desc+' (클릭 전환)';
+    el.innerHTML='<span class="qs-key" style="font-size:.5rem;color:#77bbdd">CT</span><span style="font-size:14px">'+info.emoji+'</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#77bbdd;font-weight:700">'+_T(info.name)+'</div>';
+    el.title=_T(info.desc)+(OPT.lang==='en'?' (click to switch)':' (클릭 전환)');
   }
 }
 // ═══ 만화방창 독립 발사 (Space키, ST소모) ═══
@@ -28503,6 +28506,8 @@ function withdrawStorage(idx){
 
 // ═══ SETTINGS RENDER ═══
 function renderSettings(){
+  // 리셋 확인창 강제 숨기기
+  const _rcS=$('resetConfirm');if(_rcS)_rcS.style.display='none';
   // ── 커서 선택 그리드 ──
   const _cg=$('cursorGrid');if(_cg){_cg.innerHTML='';
     _CURSORS.forEach((cur,ci)=>{
@@ -28566,12 +28571,12 @@ function renderSettings(){
       csg.appendChild(card);
     });
   }
-  const list=$('keyBindList');list.innerHTML='';
+  const list=$('keyBindList');if(!list)return;list.innerHTML='';
   // 리스닝 오버레이 제거
   const oldOv=document.getElementById('bindOverlay');if(oldOv)oldOv.remove();
   Object.keys(BINDS).forEach(action=>{
     const row=document.createElement('div');row.className='set-row';
-    row.innerHTML=`<span class="set-name">${BIND_NAMES[action]||action}</span>`;
+    row.innerHTML=`<span class="set-name">${_bindName(action)}</span>`;
     // 주 키
     const btn=document.createElement('div');
     const isL=listeningBind===action&&!_listenAlt;
@@ -28688,6 +28693,54 @@ function _applyLang(){
     _hDivs.forEach(d=>{const b=d.querySelector('b');if(b){const k=b.textContent;const m=_hMap.find(h=>h[0]===k);if(m){const t=d.innerHTML;const afterB=t.indexOf('</b>');if(afterB>=0)d.innerHTML=t.slice(0,afterB+4)+' — '+(_e?m[2]:m[1])}}});
     const _lastD=_ho.querySelector('div[style*="color:#666"]');if(_lastD)_lastD.textContent=_e?'Click to close':'클릭하면 닫힘';
   }
+  // Slot title attributes
+  const _titles={skSlotLMB:['좌클스킬 (클릭 전환)','LMB Skill (click to switch)'],skSlotRMB:['우클스킬 (클릭 전환)','RMB Skill (click to switch)'],skSlot0:['이동스킬 (클릭 전환)','Move Skill (click to switch)'],qsE:['마법스킬 (클릭 전환)','Magic Skill (click to switch)'],skSlot1:['영역스킬 (클릭 전환)','Area Skill (click to switch)'],qsQ:['피보호막 (클릭 전환)','Blood Shield (click to switch)'],skSlotCT:['CT스킬 (클릭 전환)','CT Skill (click to switch)'],spCnt:['[C] 능력치','[C] Stats']};
+  // Inventory / Forge / Stats / Skill panel labels
+  const _invP=$('invPanel');if(_invP){
+    const _pt=_invP.querySelector('.ptitle');if(_pt)_pt.textContent=_e?'📦 Inventory':'📦 인벤토리';
+    const _cpLbl=_invP.querySelector('#combatPower>span:first-child');if(_cpLbl)_cpLbl.textContent=_e?'CP':'전투력';
+    const _crBtn=_invP.querySelector('#combatPower')?.nextElementSibling;if(_crBtn&&(_crBtn.textContent.includes('결정')||_crBtn.dataset.ko==='결정')){_crBtn.dataset.ko='결정';_crBtn.textContent=_e?'💎 Crystal':'💎 결정'}
+    const _eqLbl=_invP.querySelector('.inv-equip>div');if(_eqLbl&&(_eqLbl.textContent.includes('장착')||_eqLbl.dataset.ko==='장착 중')){_eqLbl.dataset.ko='장착 중';_eqLbl.textContent=_e?'Equipped':'장착 중'}
+    const _stTgl=_invP.querySelector('.inv-storage-toggle>span');if(_stTgl&&(_stTgl.textContent.includes('지옥창고')||_stTgl.dataset.ko==='지옥창고')){_stTgl.dataset.ko='지옥창고';_stTgl.textContent=_e?'🏚 Hell Storage':'🏚 지옥창고'}
+    const _bagLbl=_invP.querySelector('#invCenter>div>div');if(_bagLbl){const _bc=_bagLbl.querySelector('#invCount'),_bm=_bagLbl.querySelector('#invMax');if(_bc&&_bm){const _cv=_bc.textContent,_mv=_bm.textContent;_bagLbl.innerHTML=_e?'Bag (<span id="invCount">'+_cv+'</span>/<span id="invMax">'+_mv+'</span>)':'가방 (<span id="invCount">'+_cv+'</span>/<span id="invMax">'+_mv+'</span>)'}}
+    const _sortB=$('invSortBtn');if(_sortB)_sortB.textContent=_e?'↕ Sort':'↕ 정렬';
+    const _jSelB=$('invJunkSelBtn');if(_jSelB)_jSelB.textContent=_e?'🗑️ Select All Junk':'🗑️ 쓰레기 전체선택';
+    const _jBtn=$('invJunkBtn');if(_jBtn)_jBtn.textContent=_e?'🗑️ Salvage All Junk':'🗑️ 쓰레기 전부 분해';
+  }
+  const _fgP=$('forge');if(_fgP){
+    const _pt2=_fgP.querySelector('.ptitle');if(_pt2)_pt2.textContent=_e?'⚒ Forge of Vengeance ⚒':'⚒ 복수의 대장간 ⚒';
+    const _cb=$('fgCraftBtn');if(_cb)_cb.textContent=_e?'⚒ Craft':'⚒ 제작';
+    const _fc=$('fgClose');if(_fc)_fc.textContent=_e?'Close [G]':'닫기 [G]';
+  }
+  const _stpP=$('storagePanel');if(_stpP){
+    const _pt3=_stpP.querySelector('.ptitle');if(_pt3)_pt3.textContent=_e?'📦 Storage':'📦 창고';
+    const _sc=$('storageClose');if(_sc)_sc.textContent=_e?'Close [V]':'닫기 [V]';
+  }
+  const _spP=$('statPanel');if(_spP){
+    const _pt4=_spP.querySelector('.ptitle');if(_pt4)_pt4.textContent=_e?'📊 Stats':'📊 능력치';
+    const _spLbl=_spP.querySelector('#statLeft div[style*="ffcc44"]');if(_spLbl)_spLbl.textContent=_e?'🔶 Stat Points':'🔶 스탯 포인트';
+    const _smBtn=$('smToggleBtn');if(_smBtn){const _ar=_smBtn.textContent.includes('▲')?'▲':'▼';_smBtn.textContent=_e?'📋 Stat Summary '+_ar:'📋 능력치 요약 '+_ar}
+    const _psLbl=_spP.querySelector('#statRight div[style*="cc77ff"]');if(_psLbl)_psLbl.textContent=_e?'🔮 Passive Skills':'🔮 패시브 스킬';
+    const _srb=$('statResetBtn');if(_srb)_srb.textContent=_e?'⟲ Reset All':'⟲ 올 리셋';
+    const _scc=$('statClose');if(_scc)_scc.textContent=_e?'Close [C]':'닫기 [C]';
+  }
+  const _skP=$('skillPanel');if(_skP){
+    const _pt5=_skP.querySelector('.ptitle');if(_pt5)_pt5.textContent=_e?'💀 Combat Skills':'💀 전투 스킬';
+    const _skc=_skP.querySelector('.pclose');if(_skc)_skc.textContent=_e?'Close [ESC]':'닫기 [ESC]';
+  }
+  for(const[id,[ko,en]]of Object.entries(_titles)){const el=$(id);if(el)el.title=_e?en:ko}
+  // Death screen
+  const _dt=$('deathTitle');if(_dt)_dt.textContent=_e?'The light faded':'빛이 꺼졌다';
+  const _ds=$('deathSub');if(_ds)_ds.textContent=_e?'Darkness consumed you':'어둠이 삼켰다';
+  const _rb=$('retryBtn');if(_rb)_rb.textContent=_e?'Rise Again':'다시 일어서라';
+  const _tlb=$('toLobbyBtn');if(_tlb)_tlb.textContent=_e?'Return to Lobby':'로비로 돌아가기';
+  const _drl=$('drLabel');if(_drl)_drl.textContent=_e?'☠ Death Replay':'☠ 사망 리플레이';
+  // Level-up screen
+  const _lus=$('lvUpSub');if(_lus)_lus.textContent=_e?'You endured the trials of hell':'지옥의 시련을 견뎌냈다';
+  const _luc=$('lvUpClose');if(_luc)_luc.textContent=_e?'Continue Battle':'계속 전투';
+  // Intro difficulty select
+  const _idt=$('introDiffTitle');if(_idt)_idt.textContent=_e?'Choose Your Difficulty':'난이도를 선택하라';
+  const _idh=$('introDiffHint');if(_idh)_idh.textContent=_e?'Can be changed later in Settings (ESC)':'나중에 설정(ESC)에서 변경 가능';
   // Refresh dynamic slots
   try{updateMagicSlot();updateLMBSlot();updateQSlot();_updateUltSlot();_renderPresetBtns()}catch(_e2){}
 }
@@ -29242,9 +29295,9 @@ try{
 try{_applyCursor()}catch(e){}
 
 
-$('resetBtn').onclick=()=>{$('resetConfirm').style.display='block'};
-$('resetNo').onclick=()=>{$('resetConfirm').style.display='none'};
-$('resetYes').onclick=async()=>{
+if($('resetBtn'))$('resetBtn').onclick=()=>{$('resetConfirm').style.display='block'};
+if($('resetNo'))$('resetNo').onclick=()=>{$('resetConfirm').style.display='none'};
+if($('resetYes'))$('resetYes').onclick=async()=>{
   $('resetConfirm').style.display='none';
   const _isLocalReset=location.hostname==='localhost'||location.hostname==='127.0.0.1';
   if(_isLocalReset){
@@ -30544,6 +30597,7 @@ function renderStatSummary(){
     `<div style="${_sLn}">물리방어: <span style="color:#ffaa44">${_sTotalPDef.toFixed(1)}</span> → <span style="color:#44ff88">${(_sPhysDR*100).toFixed(1)}%감소</span> <span style="color:#887766;font-size:1.1rem">(캡${~~(DR_CAP*100)}%)</span></div>`+
     `<div style="${_sLn}">속성방어: <span style="color:#bb88ff">${_sTotalEDef}</span> → <span style="color:#44ff88">${(_sElemDR*100).toFixed(1)}%감소</span></div>`+
     `<div style="${_sLn}">반사: <span style="color:${_afc('reflect','#aaaaff')}">${_afp('reflect')}</span> | 가시: <span style="color:${_afc('thorns','#ff8844')}">${_af('thorns').toFixed(0)}</span> | 배리어: <span style="color:${_afc('barrier','#4488ff')}">${_af('barrier').toFixed(0)}</span></div>`+
+    `<div style="${_sLn}">보호막 흡수: <span style="color:#55bbff">${~~(pGuardAbsorb()*100)}%</span> <span style="color:#887766;font-size:1.1rem">(기본70% +pGuard ${PASSIVES.pGuard||0}lv)</span></div>`+
     // ── 속성 저항 ──
     `<div style="${_sHd}">🌀 속성 저항</div>`+
     `<div style="${_sLn}">🔴화염: <span style="color:${_sFireR?'#ff5522':'#555544'}">${~~(_sFireR*100)}%</span> | 🔵빙결: <span style="color:${_sIceR?'#88ccff':'#555544'}">${~~(_sIceR*100)}%</span> | 🟡암전: <span style="color:${_sLitR?'#ffee44':'#555544'}">${~~(_sLitR*100)}%</span></div>`+
@@ -37999,14 +38053,15 @@ function _showIntroDiff(){
 }
 // ── 키 안내 3단계 ──
 const _INTRO_KEY_STEPS=[
-  {title:'공격',body:'<span style="color:#ffcc44">좌클릭</span> — 무기 공격<br><span style="color:#ffcc44">우클릭 / Q</span> — 패링·보호막<br><span style="color:#ffcc44">SHIFT</span> — 돌진 (적을 관통, 무적)',hint:'클릭하여 계속'},
-  {title:'스킬',body:'<span style="color:#ffcc44">SPACE</span> — 대왕치기 (광역 기절)<br><span style="color:#ffcc44">1</span> — 가시덫 (슬로우+출혈)<br><span style="color:#ffcc44">E</span> — 마법 (탭=투사체, 홀드=빔)<br><span style="color:#ffcc44">F</span> — 신성한 영역 (리젠 장판)<br><span style="color:#ffcc44">CTRL</span> — 얼음보주 (무적+빙결)<br><span style="color:#ffcc44">T</span> — 석궁 자동발사',hint:'클릭하여 계속'},
-  {title:'생존',body:'<span style="color:#ffcc44">1~4</span> — 선택 스킬 슬롯<br><span style="color:#ffcc44">R</span> — 아이템 줍기 <span style="font-size:.85em;color:#887766">(펫이 자동 수거)</span><br><span style="color:#ffcc44">TAB</span> — 인벤토리<br><span style="font-size:.85em;color:#887766">물약은 설정한 HP% 이하 시 자동 사용</span>',hint:'클릭하여 시작'}
+  {title:['공격','Attack'],body:['<span style="color:#ffcc44">좌클릭</span> — 무기 공격<br><span style="color:#ffcc44">우클릭 / Q</span> — 패링·보호막<br><span style="color:#ffcc44">SHIFT</span> — 돌진 (적을 관통, 무적)','<span style="color:#ffcc44">LMB</span> — Weapon Attack<br><span style="color:#ffcc44">RMB / Q</span> — Parry / Shield<br><span style="color:#ffcc44">SHIFT</span> — Dash (pierce enemies, invincible)'],hint:['클릭하여 계속','Click to continue']},
+  {title:['스킬','Skills'],body:['<span style="color:#ffcc44">SPACE</span> — 대왕치기 (광역 기절)<br><span style="color:#ffcc44">1</span> — 가시덫 (슬로우+출혈)<br><span style="color:#ffcc44">E</span> — 마법 (탭=투사체, 홀드=빔)<br><span style="color:#ffcc44">F</span> — 신성한 영역 (리젠 장판)<br><span style="color:#ffcc44">CTRL</span> — 얼음보주 (무적+빙결)<br><span style="color:#ffcc44">T</span> — 석궁 자동발사','<span style="color:#ffcc44">SPACE</span> — Giant Slam (AoE stun)<br><span style="color:#ffcc44">1</span> — Spike Trap (slow+bleed)<br><span style="color:#ffcc44">E</span> — Magic (tap=projectile, hold=beam)<br><span style="color:#ffcc44">F</span> — Holy Domain (regen zone)<br><span style="color:#ffcc44">CTRL</span> — Ice Orb (invincible+freeze)<br><span style="color:#ffcc44">T</span> — Auto Crossbow'],hint:['클릭하여 계속','Click to continue']},
+  {title:['생존','Survival'],body:['<span style="color:#ffcc44">1~4</span> — 선택 스킬 슬롯<br><span style="color:#ffcc44">R</span> — 아이템 줍기 <span style="font-size:.85em;color:#887766">(펫이 자동 수거)</span><br><span style="color:#ffcc44">TAB</span> — 인벤토리<br><span style="font-size:.85em;color:#887766">물약은 설정한 HP% 이하 시 자동 사용</span>','<span style="color:#ffcc44">1~4</span> — Skill Slots<br><span style="color:#ffcc44">R</span> — Pick Up Item <span style="font-size:.85em;color:#887766">(pet auto-collects)</span><br><span style="color:#ffcc44">TAB</span> — Inventory<br><span style="font-size:.85em;color:#887766">Potions auto-use when HP falls below set %</span>'],hint:['클릭하여 시작','Click to start']}
 ];
 function _showIntroKeys(step){
   const el=$('introKeys'),t=$('ikTitle'),b=$('ikBody'),h=$('ikHint');
   const s=_INTRO_KEY_STEPS[step];
-  t.textContent=s.title;b.innerHTML=s.body;h.textContent=s.hint;
+  const _li=OPT.lang==='en'?1:0;
+  t.textContent=s.title[_li];b.innerHTML=s.body[_li];h.textContent=s.hint[_li];
   el.style.opacity='1';el.style.pointerEvents='all';
   function next(){
     el.removeEventListener('click',next);
@@ -38190,14 +38245,8 @@ function hideBootLoading(){
   _bootLoadKilled=true;
 }
 
-// ═══ DEMO LIMIT ═══
-function _showDemoEnd(){
-  G.on=false;G.paused=true;
-  const ov=$('demoEndOverlay');if(ov){ov.style.display='flex'}
-}
 // ═══ 스테이지 클리어 시 DB 저장 ═══
 $('nextBtn').onclick=async()=>{
-  if(G.stage+1>=1){_showDemoEnd();return}
   $('nextBtn').disabled=true;$('nextBtn').style.opacity='.3';
   if(_dbReady)await dbSave();
   showStageTransition(()=>nextStage());
@@ -38212,8 +38261,8 @@ async function goToLobby(){
   }catch(e){console.error('[goToLobby] save error:',e)}
   window.location.href='/?lobby=1';
 }
-$('toLobbyBtn').onclick=goToLobby;
-$('toLobbyBtn2').onclick=goToLobby;
+if($('toLobbyBtn'))$('toLobbyBtn').onclick=goToLobby;
+if($('toLobbyBtn2'))$('toLobbyBtn2').onclick=goToLobby;
 
 // ═══ 페이지 이탈 시 저장 ═══
 window.addEventListener('beforeunload',()=>{
