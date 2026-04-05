@@ -2940,6 +2940,56 @@ const _EN={
 '복수의 대장간':'Forge of Vengeance','강화':'Enhance','분해':'Dismantle','제작':'Craft',
 // --- Death Screen ---
 '사망':'Death','부활':'Revive','로비로':'To Lobby',
+// --- Inventory/Storage ---
+'가방에 공간이 없습니다!':'No space in bag!','가방이 가득 찼습니다!':'Bag is full!',
+'창고가 가득 찼습니다!':'Storage is full!','퀵슬롯이 가득 찼습니다!':'Quick slot is full!',
+'결정 주머니가 가득 찼습니다!':'Crystal pouch is full!','결정 주머니 가득!':'Crystal pouch full!',
+'악의가 부족합니다!':'Not enough Malice!','가방이 비어있습니다':'Bag is empty',
+'창고가 비어있습니다':'Storage is empty','비어있음':'Empty','어픽스 없음':'No affix',
+'장착!':'Equipped!','해제':'Unequipped','보관':'Deposit','꺼내기':'Withdraw',
+'현재 장착':'Currently equipped','없음 — 제작하세요!':'None — Craft one!',
+'리셋할 포인트가 없습니다':'No points to reset',
+'키 설정 초기화 완료':'Key settings reset',
+// --- Forge/Craft ---
+'제작 확률':'Craft chance','제작 비용':'Craft cost','보유 악의':'Malice owned',
+// --- Canvas UI ---
+'보스방':'Boss Room','안식처':'Sanctuary','회복':'Recover','점화':'Ignite',
+'비석':'Stele','읽기':'Read','파괴':'Destroy','제단':'Altar','기원':'Pray',
+'잔해':'Debris','열기':'Open','문지기':'Gatekeeper',
+'부활 판정 중...':'Resurrection judging...','기폭 준비!':'Detonate ready!',
+'탈출':'Escape','연타':'Mash',
+'추적암전':'Tracking Lightning','만화광선':'Luminescence Beam','최종 마법':'Final Magic',
+'감시중':'Watching','대기':'Standby','작동중':'Active','설치 가능':'Can install',
+'균열 임박!':'Breach imminent!','흡수 중...':'Absorbing...',
+'흡수 완료 — 재입력으로 회수':'Done — re-input to collect',
+'화상':'Burn','당기기':'Pull','밀어내기':'Push',
+'단계':'tier','단':'tier',
+// --- Skill Panel ---
+'습득!':'Learned!','리셋!':'Reset!','세팅!':'Set!','회수':'Recall',
+'합체 해제':'Unfuse','리셋':'Reset','환불':'Refund',
+'파트너 클릭!':'Click partner!','SP부족!':'SP needed!',
+'같은 보석 스킬 습득 시 합체 가능':'Can fuse when learning same gem skill',
+'펼쳐서 초기화':'Expand to reset','슬롯:':'Slot:',
+// --- Stats ---
+'남은 SP':'SP Left','처치':'Kills','경험치':'EXP','최대콤보':'Max Combo',
+'맞아서 사망':'Died from hit','레벨':'Level','최대HP':'Max HP',
+// --- Enemy Names ---
+'방랑 기사':'Wandering Knight','보물 악마':'Treasure Demon','거울의 사도':'Mirror Apostle',
+'상인 악마':'Merchant Demon','사슬의 죄수':'Chained Prisoner','시간의 사도':'Time Apostle',
+'탐욕의 사도':'Greed Apostle','저주받은 쌍둥이':'Cursed Twins','차원 균열체':'Dimensional Rift',
+'죽음 그 자체':'Death Itself',
+// --- Crystals ---
+'HP결정':'HP Crystal','ST결정':'ST Crystal','MP결정':'MP Crystal',
+'ATK결정':'ATK Crystal','DEF결정':'DEF Crystal','속도결정':'Speed Crystal',
+'크리결정':'Crit Crystal','치명결정':'CritDmg Crystal','화염결정':'Fire Crystal',
+// --- Stage Names ---
+'벌레굴':'Worm Nest','얼음굴':'Ice Cavern','고통의 화염지대':'Infernal Wastes',
+'지옥의 군단':'Hell Legion','사도의 마굴':"Apostle's Den",'지옥성':'Hell Citadel',
+// --- Misc ---
+'엑소듀서 전사':'Exoduser Warrior','포이즈':'Poise',
+'신성폭발':'Holy Blast','암전걸음':'Ghost Walk',
+'지옥창고':'Hell Storage','선택분해':'Selective Dismantle','쓰레기':'Junk',
+'복구 불가!':'Cannot recover!','중요잠금':'Important-locked',
 };
 // --- 장비명 조합 번역 (접두사 + 기본형) ---
 const _EN_PFX={'녹슨':'Rusty','강철':'Steel','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Judgment','천벌의':'Divine Wrath','파멸의':'Destruction',
@@ -4078,9 +4128,9 @@ function renderCharSelect(){
   X.fillStyle='rgba(0,0,0,.75)';X.fillRect(0,0,W,H);
   // 제목
   X.fillStyle='#ffffff';X.font='bold 22px monospace';X.textAlign='center';
-  X.fillText('캐릭터 선택',W/2,60);
+  X.fillText(_T('캐릭터 선택'),W/2,60);
   X.font='14px monospace';X.fillStyle='#888888';
-  X.fillText('클릭으로 선택 · ESC로 닫기',W/2,82);
+  X.fillText(_T('클릭으로 선택 · ESC로 닫기'),W/2,82);
   // 캐릭터 카드들
   const cardW=140,cardH=200,gap=20;
   const totalW=CHAR_LIST.length*(cardW+gap)-gap;
@@ -4117,7 +4167,7 @@ function renderCharSelect(){
     // 선택됨 표시
     if(sel){
       X.fillStyle='#ffcc00';X.font='bold 12px monospace';
-      X.fillText('✓ 선택됨',cx+cardW/2,cy+cardH-12);
+      X.fillText('✓ '+_T('선택됨'),cx+cardW/2,cy+cardH-12);
     }
   }
   X.textAlign='left';
@@ -18678,7 +18728,7 @@ function update(){
     // redBean 전용: 방패스킬 공격범위와 동일한 넓은 판정
     const _sdLvD=P.skills.maliceSwipe||0;
     const _isAtkState=P.s==='wSwing'||P.s==='wWindup'||P.s==='wRecover'||P.s==='whirlwind'||P.s==='charge'||P.s==='charging';
-    const _rbDeflR=P.s==='sBash'?((_sdLvD>=1?90:62)+(sh().bonusRange||0)*4):_sbPWDet?((_sdLvD>=1?90:62)+(sh().bonusRange||0)*4):_sbPW?(62+(sh().bonusRange||0)*4):isPWin()?90:_isAtkState?((wp().wRange||50)+(wp().bonusRange||0)*4)*2+60:_pCollR+20;
+    const _rbDeflR=P.s==='sBash'?((_sdLvD>=1?90:62)+(sh().bonusRange||0)*4):_sbPWDet?100:_sbPW?100:isPWin()?90:_isAtkState?((wp().wRange||50)+(wp().bonusRange||0)*4)*2+60:_pCollR+20;
     // 스윕 충돌: 이전→현재 선분과 플레이어 원의 최근접 거리 (현재+이전 위치 모두 체크)
     let _pDist=Math.sqrt(_pDist2);
     // 플레이어 이전 위치와의 거리도 비교 (이동 중 빗나감 방지)
@@ -21844,7 +21894,8 @@ function updateE(e,sp){
     if(e.mods.includes('M12')){const hpR=Math.max(.01,e.hp/e.mhp);e.atk=~~(e.baseAtk*(1+(1-hpR)))}
     // M13 텔레포트: 10초마다 플레이어 뒤로 순간이동 (전조 깜박임)
     if(e.mods.includes('M13')&&e.s==='idle'&&d<600){
-      if(e._tpWarnT>0){e._tpWarnT-=sp;if(e._tpWarnT<=0){if(teleportE(e,e._tpWarnX,e._tpWarnY,'#aa00ff',8)){addTxt(e.x,e.y-15,'!','#aa00ff',20)}e.modT.tp=0;e._tpWarnT=0}}
+      if(e._tpWarnT>0){e._tpWarnT-=sp;if(e._tpWarnT<=0){if(teleportE(e,e._tpWarnX,e._tpWarnY,'#aa00ff',8)){addTxt(e.x,e.y-15,'!','#aa00ff',20);
+        const _tpA2=Math.atan2(P.y-e.y,P.x-e.x);for(let _ti2=0;_ti2<3;_ti2++){eProjAt(e,_tpA2+((_ti2-1)*0.3),3.5,1.0,e.el,200,'#aa00ff',2)}}e.modT.tp=0;e._tpWarnT=0}}
       else{e.modT.tp+=sp;if(e.modT.tp>=600){const ba=P.facing+Math.PI,tX=P.x+Math.cos(ba)*50,tY=P.y+Math.sin(ba)*50;
         if(canMv(tX,tY,e.r)){e._tpWarnT=30;e._tpWarnX=tX;e._tpWarnY=tY;e._tpWarnCol='#aa00ff'}else e.modT.tp=540}}}
     // M15 소용돌이: 8초마다 플레이어 끌어당김
@@ -21975,7 +22026,10 @@ function updateE(e,sp){
     // 전조 진행 중 → 완료되면 텔포 실행
     if(e._tpWarnT>0){
       e._tpWarnT-=sp;
-      if(e._tpWarnT<=0){teleportE(e,e._tpWarnX,e._tpWarnY,'#8833cc',12);e.teleportT=e.teleportCd;e._tpWarnT=0}
+      if(e._tpWarnT<=0){teleportE(e,e._tpWarnX,e._tpWarnY,'#8833cc',12);e.teleportT=e.teleportCd;e._tpWarnT=0;
+        // 순간이동 직후 탄막 발사 (비비기 대신)
+        const _tpAng=Math.atan2(P.y-e.y,P.x-e.x);
+        for(let _ti=0;_ti<3;_ti++){const _ta=_tpAng+((_ti-1)*0.4);eProjAt(e,_ta,3.5,1.2,e.el,200,'#8833cc',2)}}
     }
     else if(d<100&&e.teleportT<=0){
       const tpA=Math.random()*Math.PI*2,tpD=150+Math.random()*50;
@@ -23418,7 +23472,8 @@ function updateE(e,sp){
             e.x=e._tpWarnX;e.y=e._tpWarnY;
             for(let i=0;i<10;i++){const a=Math.PI*2*i/10,d2=_r95*2;poolPart(e.x+Math.cos(a)*d2,e.y+Math.sin(a)*d2,-Math.cos(a)*3,-Math.sin(a)*3,'#aabb99',2+Math.random()*2,10)}
             poolPart(e.x,e.y,0,0,'#ffffff',_r95*1.2,6,3,0,0);_addBlastLight(e.x,e.y,_r95*4,12,170,187,153);
-            e._tpFlashT=8;_addTpImpact(e.x,e.y,_r95*3,18,'#aabb99');_addTpBolt(_ox95,_oy95,e.x,e.y,12,'#aabb99');addTxt(e.x,e.y-15,'⏳','#aabb99',25);SFX.magic(3)}
+            e._tpFlashT=8;_addTpImpact(e.x,e.y,_r95*3,18,'#aabb99');_addTpBolt(_ox95,_oy95,e.x,e.y,12,'#aabb99');addTxt(e.x,e.y-15,'⏳','#aabb99',25);SFX.magic(3);
+            const _tpA95=Math.atan2(P.y-e.y,P.x-e.x);for(let _ti95=0;_ti95<3;_ti95++){eProjAt(e,_tpA95+((_ti95-1)*0.35),3.5,1.0,e.el,200,'#aabb99',2)}}
           e._tsTpCd=180;e._tsSlowT=180;e._tpWarnT=0;
         }
       }
@@ -30636,7 +30691,7 @@ function draw(){
           X.globalAlpha=Math.min(.9,(1-_dg/(T*5))*.7+Math.sin(_now/300)*.15);
           X.font='bold 11px "Noto Sans KR"';X.textAlign='center';X.textBaseline='bottom';
           X.fillStyle='#ddaa55';
-          X.fillText('▼ 보스방 ▼',px+T/2,py-4);X.globalAlpha=1;
+          X.fillText('▼ '+_T('보스방')+' ▼',px+T/2,py-4);X.globalAlpha=1;
         }
       }
     }else if(!G.bossAlive){
@@ -30916,8 +30971,8 @@ function draw(){
         // 코어
         if(mo.lit){X.globalAlpha=.9;X.fillStyle='#ffdd66';X.beginPath();X.arc(mo.x,mo.y-6,5,0,Math.PI*2);X.fill()}
         // 라벨 (항상 표시)
-        X.globalAlpha=1;X.font='bold 13px "Noto Sans KR"';X.fillStyle=mo.lit?'#ffcc44':'#aa8844';X.fillText('🔥 안식처',mo.x,mo.y+32);
-        if(dst(P.x,P.y,mo.x,mo.y)<80){X.font='12px "Noto Sans KR"';X.fillStyle='#44ff44';X.fillText('['+keyName(BINDS.interact)+'] '+(mo.lit?'회복':'점화'),mo.x,mo.y+46)}
+        X.globalAlpha=1;X.font='bold 13px "Noto Sans KR"';X.fillStyle=mo.lit?'#ffcc44':'#aa8844';X.fillText('🔥 '+_T('안식처'),mo.x,mo.y+32);
+        if(dst(P.x,P.y,mo.x,mo.y)<80){X.font='12px "Noto Sans KR"';X.fillStyle='#44ff44';X.fillText('['+keyName(BINDS.interact)+'] '+(mo.lit?_T('회복'):_T('점화')),mo.x,mo.y+46)}
         break;}
       case 'lore':{
         X.globalAlpha=mo.read?.4:(.7+Math.sin(_now/400)*.2);X.fillStyle=mo.read?'#334466':'#4466aa';
@@ -30926,8 +30981,8 @@ function draw(){
         X.strokeStyle='#88aadd';X.lineWidth=1;
         for(let i=0;i<4;i++){X.beginPath();X.moveTo(mo.x-8,mo.y+b-14+i*6);X.lineTo(mo.x+8,mo.y+b-14+i*6);X.stroke()}
         // 라벨
-        X.globalAlpha=1;X.font='bold 13px "Noto Sans KR"';X.fillStyle=mo.read?'#556688':'#8888ff';X.fillText('📜 비석',mo.x,mo.y+20);
-        if(!mo.read&&dst(P.x,P.y,mo.x,mo.y)<80){X.font='12px "Noto Sans KR"';X.fillStyle='#aaaaff';X.fillText('['+keyName(BINDS.interact)+'] 읽기',mo.x,mo.y+34)}
+        X.globalAlpha=1;X.font='bold 13px "Noto Sans KR"';X.fillStyle=mo.read?'#556688':'#8888ff';X.fillText('📜 '+_T('비석'),mo.x,mo.y+20);
+        if(!mo.read&&dst(P.x,P.y,mo.x,mo.y)<80){X.font='12px "Noto Sans KR"';X.fillStyle='#aaaaff';X.fillText('['+keyName(BINDS.interact)+'] '+_T('읽기'),mo.x,mo.y+34)}
         break;}
       case 'breakable':{
         const hpR=mo.hp/mo.maxHp;X.globalAlpha=.6+hpR*.3;X.fillStyle='#886633';
@@ -30937,7 +30992,7 @@ function draw(){
         // 균열
         if(hpR<1){X.strokeStyle='#443300';X.lineWidth=1.5;X.beginPath();X.moveTo(mo.x-6,mo.y+b-10);X.lineTo(mo.x+4,mo.y+b+8);X.stroke()}
         if(hpR<.5){X.beginPath();X.moveTo(mo.x+5,mo.y+b-8);X.lineTo(mo.x-5,mo.y+b+6);X.stroke()}
-        if(dst(P.x,P.y,mo.x,mo.y)<60){X.globalAlpha=1;X.font='bold 12px "Noto Sans KR"';X.fillStyle='#aa8844';X.fillText('['+keyName(BINDS.interact)+'] 파괴',mo.x,mo.y+24)}
+        if(dst(P.x,P.y,mo.x,mo.y)<60){X.globalAlpha=1;X.font='bold 12px "Noto Sans KR"';X.fillStyle='#aa8844';X.fillText('['+keyName(BINDS.interact)+'] '+_T('파괴'),mo.x,mo.y+24)}
         break;}
       case 'trap':{
         const onCd=mo.cooldown>0;const dp=onCd?.15:(.5+Math.sin(_now/150)*.15);
@@ -30964,8 +31019,8 @@ function draw(){
         // 중심
         X.globalAlpha=pulse*1.3;X.fillStyle='#cc88ff';X.beginPath();X.arc(mo.x,mo.y,5,0,Math.PI*2);X.fill();
         // 라벨
-        X.globalAlpha=1;X.font='bold 13px "Noto Sans KR"';X.fillStyle=mo.used?'#665577':'#cc88ff';X.fillText('⚗ 제단',mo.x,mo.y+34);
-        if(!mo.used&&dst(P.x,P.y,mo.x,mo.y)<80){X.font='12px "Noto Sans KR"';X.fillStyle='#ddaaff';X.fillText('['+keyName(BINDS.interact)+'] 기원',mo.x,mo.y+48)}
+        X.globalAlpha=1;X.font='bold 13px "Noto Sans KR"';X.fillStyle=mo.used?'#665577':'#cc88ff';X.fillText('⚗ '+_T('제단'),mo.x,mo.y+34);
+        if(!mo.used&&dst(P.x,P.y,mo.x,mo.y)<80){X.font='12px "Noto Sans KR"';X.fillStyle='#ddaaff';X.fillText('['+keyName(BINDS.interact)+'] '+_T('기원'),mo.x,mo.y+48)}
         break;}
       default:{
         // ── 스프라이트 장식 오브젝트 ──
@@ -31117,7 +31172,7 @@ function draw(){
       X.globalAlpha=_gd*.4;X.fillStyle='#fff';X.fillRect(it.x-_dSz+1,it.y-_dSz*.6+1,_dSz*.6,2);
       // 라벨
       X.globalAlpha=1;X.font='9px "Noto Sans KR"';X.textAlign='center';X.textBaseline='top';
-      X.fillStyle=_dC;X.fillText(['잔해','잔해','잔해'][_dt],it.x,it.y+_dSz+2);
+      X.fillStyle=_dC;X.fillText(_T('잔해'),it.x,it.y+_dSz+2);
     }
     else if(it.type==='potion'){
       const pt=POT[it.potType];if(pt){
@@ -31169,7 +31224,7 @@ function draw(){
         X.globalAlpha=glow;X.fillStyle='#FFD700';X.beginPath();X.arc(it.x,it.y+b-1,3,0,Math.PI*2);X.fill();
         X.fillStyle='#333';X.beginPath();X.arc(it.x,it.y+b-1,1.5,0,Math.PI*2);X.fill();
         X.globalAlpha=1;
-        X.font='13px "Noto Sans KR"';X.fillStyle='#ffcc44';X.fillText('['+keyName(BINDS.interact)+'] 열기',it.x,it.y+b+28);
+        X.font='13px "Noto Sans KR"';X.fillStyle='#ffcc44';X.fillText('['+keyName(BINDS.interact)+'] '+_T('열기'),it.x,it.y+b+28);
       }
     }
   }
@@ -31241,7 +31296,7 @@ function draw(){
             X.fillText(_rvSec,_rvx,_rvy-40);
             X.globalAlpha=.7;X.fillStyle='#ffccaa';X.font='bold 13px monospace';
             const _rvPctTxt=~~((e._bossRevChance||0)*100)+'%';
-            X.fillText('💀 부활 판정 중... ('+_rvPctTxt+')',_rvx,_rvy-60);
+            X.fillText('💀 '+_T('부활 판정 중...')+' ('+_rvPctTxt+')',_rvx,_rvy-60);
             // 게이지 바
             const _bBarW=80,_bBarH=5,_bBarX=_rvx-_bBarW/2,_bBarY=_rvy-22;
             X.globalAlpha=.4;X.fillStyle='#220000';X.fillRect(_bBarX,_bBarY,_bBarW,_bBarH);
@@ -32472,7 +32527,7 @@ function draw(){
     // ═══ 엘리트/문지기 이름 + 모디파이어 레이블 ═══
     if(e._isGateGuard){
       X.font='bold 13px monospace';X.textAlign='center';
-      X.fillStyle='#ffaa00';X.fillText('⚔ 문지기',e.x,e.y-e.r-28);
+      X.fillStyle='#ffaa00';X.fillText('⚔ '+_T('문지기'),e.x,e.y-e.r-28);
       X.font='10px monospace';X.fillStyle='#ffcc66';
       const _ggHpPct=~~(e.hp/e.mhp*100);X.fillText(_ggHpPct+'%',e.x,e.y-e.r-16);
       X.textAlign='left';
@@ -32844,7 +32899,7 @@ function draw(){
     // 단계 표시 텍스트
     if(_blTier>=1){
       X.globalAlpha=.8;X.fillStyle=_curCol;X.font='bold 12px "Noto Sans KR"';X.textAlign='center';
-      X.fillText(_blTier===3?'MAX':_blTier+'단계',P.x,P.y-P.r-18);
+      X.fillText(_blTier===3?'MAX':_blTier+_T('단계'),P.x,P.y-P.r-18);
     }
     X.globalAlpha=1;
   }
@@ -32889,7 +32944,7 @@ function draw(){
         }
         X.globalAlpha=.4;X.fillStyle=_ecS;X.beginPath();X.arc(P.x,P.y,10+Math.sin(t/30)*3,0,Math.PI*2);X.fill();
         X.globalAlpha=.7;X.fillStyle=_ecS;X.font='bold 14px "Noto Sans KR"';X.textAlign='center';
-        X.fillText('⚡ 추적암전 ⚡',P.x,P.y-P.r-24);
+        X.fillText('⚡ '+_T('추적암전')+' ⚡',P.x,P.y-P.r-24);
       }else{
         // ═══ 만화광선: 3발 꽈배기 (전기색) ═══
         const _omLv2=P.skills.omniBeam||1;
@@ -32920,7 +32975,7 @@ function draw(){
         }
         X.globalAlpha=.4;X.fillStyle=_ecS;X.beginPath();X.arc(P.x,P.y,10+Math.sin(t/40)*3,0,Math.PI*2);X.fill();
         X.globalAlpha=.7;X.fillStyle=_ecS;X.font='bold 14px "Noto Sans KR"';X.textAlign='center';
-        X.fillText('✦ 만화광선 ✦',P.x,P.y-P.r-24);
+        X.fillText('✦ '+_T('만화광선')+' ✦',P.x,P.y-P.r-24);
       }
     }else{
       // ═══ 멸살광선: 1발 직선 레이저 ═══
@@ -32960,7 +33015,7 @@ function draw(){
       // 소스 글로우
       X.globalAlpha=.4;X.fillStyle=ec0;X.beginPath();X.arc(P.x,P.y,10+Math.sin(t/40)*3,0,Math.PI*2);X.fill();
       X.globalAlpha=.6+Math.sin(t/200)*.3;X.fillStyle='#0a0a0a';X.font='bold 14px "Noto Sans KR"';X.textAlign='center';
-      X.fillText('✦ 최종 마법 ✦',P.x,P.y-P.r-24);
+      X.fillText('✦ '+_T('최종 마법')+' ✦',P.x,P.y-P.r-24);
     }
     } // energyShotOn else 닫기
     X.globalAlpha=1;
@@ -33199,10 +33254,10 @@ function draw(){
     X.strokeStyle=_gxTurret?'#44aa66':'#664433';X.lineWidth=1;X.strokeRect(_gxtHx,_gxtHy,80,36);
     X.globalAlpha=1;X.font='bold 11px sans-serif';X.textAlign='center';X.textBaseline='top';
     X.fillStyle=_gxTurret?'#66ffaa':'#aaaaaa';
-    X.fillText(_gxTurret?'🏹 감시중':'🏹 대기',_gxtHx+40,_gxtHy+3);
+    X.fillText(_gxTurret?'🏹 '+_T('감시중'):'🏹 '+_T('대기'),_gxtHx+40,_gxtHy+3);
     X.font='bold 10px sans-serif';
     X.fillStyle=_gxTurret?'#44ff88':'#888888';
-    X.fillText(_gxTurret?'작동중':P.st>=GXBOW_ST?'설치 가능':'ST 부족',_gxtHx+40,_gxtHy+19);
+    X.fillText(_gxTurret?_T('작동중'):P.st>=GXBOW_ST?_T('설치 가능'):_T('ST 부족'),_gxtHx+40,_gxtHy+19);
     X.restore();
   }
   // ═══ 킬 체인 HUD ═══
@@ -33214,7 +33269,7 @@ function draw(){
     const isMax=G._chainCnt>=4;
     X.fillStyle=isMax?'#ff4444':'#ffaa44';
     X.globalAlpha=isMax?.9:.7;
-    X.fillText(`🔥 ${G._chainCnt} CHAIN ${isMax?'— 균열 임박!':''}`,cx,cy);
+    X.fillText('🔥 '+G._chainCnt+' CHAIN '+(isMax?'— '+_T('균열 임박!'):''),cx,cy);
     // 타이머 바
     const bw=100,bh=4,bx=cx-bw/2,by=cy+14;
     X.globalAlpha=.3;X.fillStyle='#333';X.fillRect(bx,by,bw,bh);
@@ -33742,7 +33797,7 @@ function drawP(){
         X.beginPath();X.moveTo(bx,by);X.lineTo(bx+Math.cos(ba)*bl+(Math.random()-.5)*5,by+Math.sin(ba)*bl+(Math.random()-.5)*5);X.stroke();
       }
       X.globalAlpha=.8;X.fillStyle='#cc88ff';X.font='bold 11px monospace';X.textAlign='center';
-      X.fillText('\u26A1 악의폭풍',_msTx,_msTy-_msAimR-8);
+      X.fillText('\u26A1 '+_T('악의폭풍'),_msTx,_msTy-_msAimR-8);
     }
     X.restore();
   }
@@ -33764,7 +33819,7 @@ function drawP(){
       X.save();X.translate(sx,sy);X.rotate(Math.random()*Math.PI);
       X.beginPath();X.moveTo(0,-3);X.lineTo(2,0);X.lineTo(0,3);X.lineTo(-2,0);X.closePath();X.fill();X.restore();}
     X.globalAlpha=.8;X.fillStyle='#88ddff';X.font='bold 11px monospace';X.textAlign='center';
-    X.fillText('❄ 아이스스톰',_isTx,_isTy-_isAimR-8);
+    X.fillText('❄ '+_T('아이스스톰'),_isTx,_isTy-_isAimR-8);
     X.restore();
   }
   // ══ 벽소환 조준 인디케이터 (포격식 원형) ══
@@ -34386,7 +34441,7 @@ function drawP(){
     {
       X.globalAlpha=.6;X.font='10px "Noto Sans KR"';X.textAlign='center';
       X.fillStyle=_vs.aggroOn?'#9977bb':'#aa8844';
-      X.fillText(_vs.aggroOn?'흡수 중...':'흡수 완료 — 재입력으로 회수',_vs.x,_vs.y+_vsF+32);
+      X.fillText(_vs.aggroOn?_T('흡수 중...'):_T('흡수 완료 — 재입력으로 회수'),_vs.x,_vs.y+_vsF+32);
     }
     X.globalAlpha=1;
   }
@@ -34981,7 +35036,7 @@ function drawP(){
     // 남은시간 표시
     const rem=((10-10*prog)|0);
     X.globalAlpha=alpha*0.7;X.fillStyle='#ff4400';X.font='bold 14px monospace';X.textAlign='center';
-    X.fillText('🌋 화상 '+rem+'s',C.width/2,30);
+    X.fillText('🌋 '+_T('화상')+' '+rem+'s',C.width/2,30);
     X.restore();
   }
   // ══ 신성폭발 — 시전 중 오망성 ══
@@ -35135,7 +35190,7 @@ function drawP(){
     X.fillStyle='#ffd700';
     X.font='bold 20px "Noto Sans KR"';
     X.textAlign='center';
-    X.fillText('✟ 신성폭발 ✟',hp.x,hp.y-pillarH*fadeIn-15);
+    X.fillText('✟ '+_T('신성폭발')+' ✟',hp.x,hp.y-pillarH*fadeIn-15);
     X.restore();
     X.globalAlpha=1;
   }
@@ -35703,7 +35758,7 @@ function drawP(){
     }
     // 라벨
     X.globalAlpha=alpha*.9;X.fillStyle='#44ddff';X.font='bold 18px "Noto Sans KR"';X.textAlign='center';
-    X.fillText('⚡ 암전걸음 ⚡',gp.x,gp.y-pilH*fadeIn-12);
+    X.fillText('⚡ '+_T('암전걸음')+' ⚡',gp.x,gp.y-pilH*fadeIn-12);
     X.restore();X.globalAlpha=1;
   }
   // ══ 레인라이트닝 — 번개 왕복 이펙트 ══
@@ -36960,7 +37015,7 @@ function drawP(){
     // 기폭팔 차지 텍스트
     if(_sbPhase===3&&~~(t/300)%2===0){
       X.globalAlpha=.8;X.fillStyle='#ff2200';X.font='bold 16px monospace';X.textAlign='center';
-      X.fillText('기폭 준비!',P.x,P.y-ringR-16);X.textAlign='left';
+      X.fillText(_T('기폭 준비!'),P.x,P.y-ringR-16);X.textAlign='left';
     }
     // 축적 데미지 표시
     if(_sbBank>0){
@@ -37026,7 +37081,7 @@ function drawP(){
     X.globalAlpha=1;
     // 탈출 안내
     X.globalAlpha=.5+Math.sin(t/100)*.3;X.fillStyle='#ffffff';X.font='bold 11px "Noto Sans KR"';X.textAlign='center';
-    X.fillText('Shift 탈출 | 방향키 연타',P.x,P.y+P.r+18);X.globalAlpha=1;
+    X.fillText('Shift '+_T('탈출')+' | '+_T('방향키 연타'),P.x,P.y+P.r+18);X.globalAlpha=1;
   }
 
   // combo UI 제거 (항상 3타 효과)
@@ -37051,7 +37106,7 @@ function drawP(){
     X.beginPath();X.arc(_px2,_py2,6,0,Math.PI*2);X.stroke();
     // 단계 텍스트
     X.font='bold 10px sans-serif';X.fillStyle=_dcols[_dashTier];X.textAlign='center';
-    X.fillText(_dashTier+'단',P.x,P.y-28);
+    X.fillText(_dashTier+_T('단'),P.x,P.y-28);
     X.globalAlpha=1;
   }
   // ── 작살 비행 렌더 ──
