@@ -1203,7 +1203,7 @@ async function dbSave(){
       stats:{...STATS},
       passives:{...PASSIVES},grit:_grit,gritCostModeV2:1,
       qslots:QSLOTS,
-      game:{stage:G.stage,kills:G.kills,mats:G.mats,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0},
+      game:{stage:G.stage,kills:G.kills,mats:G.mats,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0},
       bagMax:BAG_MAX,
       hellCleared:G.hellCleared||[],
       storage:STORAGE||{},
@@ -1324,7 +1324,7 @@ function dbRestore(d){
     G.kills=d.game.kills||0;
     G.mats=d.game.mats||0;
     G._irisSz=d.game.irisSz||20;
-    G._taRecords=d.game.taRecords||{};G.comboMax=d.game.comboMax||0;
+    G._taRecords=d.game.taRecords||{};G.comboMax=d.game.comboMax||0;G.playTime=d.game.playTime||0;
   }
   // Bag
   BAG_MAX=d.bagMax||300;
@@ -16668,7 +16668,7 @@ function update(){
   // 콤보 타이머 감소 (20초)
   if(G.comboTimer>0){G.comboTimer-=sp;if(G.comboTimer<=0&&G.combo>0){if(G.combo>=10)addTxt(P.x,P.y-50,'콤보 종료: '+G.combo,'#ff6644',60);G.combo=0}}
   // 스테이지 경과시간 + 이동거리 추적
-  G.stageTime=(G.stageTime||0)+sp;
+  G.stageTime=(G.stageTime||0)+sp;G.playTime=(G.playTime||0)+sp;
   if(G._sStats){const _ss=G._sStats;if(_ss._prevX||_ss._prevY){const _dx=P.x-_ss._prevX,_dy=P.y-_ss._prevY,_dd=Math.sqrt(_dx*_dx+_dy*_dy);if(_dd>0.5&&_dd<500){if(_harpActive||_dashActive)_ss.dashDist+=_dd;else _ss.walked+=_dd}}_ss._prevX=P.x;_ss._prevY=P.y}
   // ═══ 어픽스: statusClean (정화) — 10초마다 상태이상 해제 ═══
   if(_eqAffix('statusClean')>0){P._statusCleanT=(P._statusCleanT||0)+sp;if(P._statusCleanT>=600){P._statusCleanT=0;let _scCnt=~~(_eqAffix('statusClean'));if(_scCnt>0&&P.burnT>0){P.burnT=0;_scCnt--}if(_scCnt>0&&P.poison>0){P.poison=0;_scCnt--}if(_scCnt>0&&P._webSlow>0){P._webSlow=0;_scCnt--}if(_scCnt>0&&P._freezeSlow>0){P._freezeSlow=0;_scCnt--}}}
@@ -18500,7 +18500,8 @@ function update(){
       const _cx2=_oldPx+_sdx*_t2-_pPrevX,_cy2=_oldPy+_sdy*_t2-_pPrevY;
       const _cd2=Math.sqrt(_cx2*_cx2+_cy2*_cy2);if(_cd2<_pDist)_pDist=_cd2}}
     // ══ 빨간콩탄: 우클릭(sBash)만 패링 가능, Q(sBlock) 시 데미지 ══
-    if(p.redBean&&_pDist<_rbDeflR&&_sbPW&&!P._ioActive&&P.iframes<=0){
+    const _wrongR=_pCollR+12; // 반대 패링 패널티: 좁은 피격 범위만
+    if(p.redBean&&_pDist<_wrongR&&_sbPW&&!P._ioActive&&P.iframes<=0){
       // Q 패링 시도 → 잘못된 입력, 데미지
       const _rbWrongD=p.dmg;P.hp-=_rbWrongD;if(P.hp<=0)die();
       P.iframes=15;addTxt(p.x,p.y-15,'❌ 우클릭으로! -'+_rbWrongD,'#ff4444',50);
@@ -18524,7 +18525,7 @@ function update(){
     const _wwDetAbs=P.s==='whirlwind'&&_isFused('whirlDet');
     const _bkHitR=P.s==='sBash'||_sbPW?_rbDeflR:_pCollR+16;
     // 우클릭(sBash)으로 무지개탄 패링 시도 → 잘못된 입력, 데미지
-    if(p.blackBean&&!_pHit&&_pDist<_bkHitR&&P.s==='sBash'&&!P._ioActive&&P.iframes<=0){
+    if(p.blackBean&&!_pHit&&_pDist<_wrongR&&P.s==='sBash'&&!P._ioActive&&P.iframes<=0){
       const _bkWrongD=p.dmg;P.hp-=_bkWrongD;if(P.hp<=0)die();
       P.iframes=15;addTxt(p.x,p.y-15,'❌ Q키로! -'+_bkWrongD,'#ff44ff',50);
       SFX.detonate();shake(10);_pHit=true;
@@ -37204,7 +37205,7 @@ function updateHUD(slow){
   // 콤보 타이머 카운트다운
   const _ctH=$('comboTimerHud');if(_ctH){if(G.combo>=1&&G.comboTimer>0){const _ctSec=(G.comboTimer/60).toFixed(1);_ctH.style.display='';_ctH.textContent='⏱'+_ctSec+'s';_ctH.style.color=G.comboTimer<300?'#ff4444':G.comboTimer<600?'#ff8844':'#ffcc44'}else{_ctH.style.display='none'}}
   // 스테이지 타임어택
-  const _stH=$('stageTimerHud');if(_stH){const _stSec=~~((G.stageTime||0)/60);const _stM=~~(_stSec/60),_stS=_stSec%60;const _taT=G._totalSpawned||0,_taK=G._stageKills||0;const _taPct=_taT>0?~~(_taK/_taT*100):0;const _taBest=G._taRecords&&G._taRecords[G.stage];const _taBestStr=_taBest?(' 🏆'+~~(_taBest/60)+':'+((_taBest%60<10?'0':'')+_taBest%60)):'';_stH.textContent='⏱ '+((_stM<10?'0':'')+_stM)+':'+((_stS<10?'0':'')+_stS)+' | 💀'+_taPct+'%'+(_taPct>=90?' ✓':'')+_taBestStr;_stH.style.color=_taPct>=90?'#44ddff':'#88aacc'}
+  const _stH=$('stageTimerHud');if(_stH){const _stSec=~~((G.stageTime||0)/60);const _stM=~~(_stSec/60),_stS=_stSec%60;const _taT=G._totalSpawned||0,_taK=G._stageKills||0;const _taPct=_taT>0?~~(_taK/_taT*100):0;const _taBest=G._taRecords&&G._taRecords[G.stage];const _taBestStr=_taBest?(' 🏆'+~~(_taBest/60)+':'+((_taBest%60<10?'0':'')+_taBest%60)):'';const _ptSec=~~((G.playTime||0)/60);const _ptH=~~(_ptSec/3600),_ptM=~~((_ptSec%3600)/60),_ptS=_ptSec%60;const _ptStr=' | ⏰'+_ptH+':'+((_ptM<10?'0':'')+_ptM)+':'+((_ptS<10?'0':'')+_ptS);_stH.textContent='⏱ '+((_stM<10?'0':'')+_stM)+':'+((_stS<10?'0':'')+_stS)+' | 💀'+_taPct+'%'+(_taPct>=90?' ✓':'')+_taBestStr+_ptStr;_stH.style.color=_taPct>=90?'#44ddff':'#88aacc'}
   $('expBar').style.opacity='1';
   const _eqW=INV.equipped.weapon,_eqS=INV.equipped.shield,_eqB=INV.equipped.boots;
   if(!$('eq0'))return; // eq elements guard
@@ -37900,7 +37901,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         inv:{bag:INV.bag,equipped:INV.equipped},
         stats:{...STATS},passives:{...PASSIVES},grit:_grit,gritCostModeV2:1,
         qslots:QSLOTS,
-        game:{stage:G.stage,kills:G.kills,mats:G.mats,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0},
+        game:{stage:G.stage,kills:G.kills,mats:G.mats,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:STORAGE||{},
         crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
         upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
@@ -38029,7 +38030,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         inv:{bag:INV.bag,equipped:INV.equipped},
         stats:{...STATS},passives:{...PASSIVES},grit:_grit,gritCostModeV2:1,
         qslots:QSLOTS,
-        game:{stage:G.stage,kills:G.kills,mats:G.mats,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0},
+        game:{stage:G.stage,kills:G.kills,mats:G.mats,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:STORAGE||{},
         crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
         upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
