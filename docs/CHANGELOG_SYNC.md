@@ -387,3 +387,13 @@
 - docs/4.1맵디?�인+?�정/EXODUSER_MAP_BIBLE_v3 (1).md
 - game.html
 
+
+## 2026-04-05 15:30 (auto)
+- docs/2_6 ?�환�?리프?�시?�템/2_6 ?�환�?리프?�시?�템.md
+- docs/2게임?�자?�레벨디?�인/2게임?�자?�레벨디?�인.md
+- docs/4.1맵디?�인+?�정/맵오브젝???�셋목록.md
+- game.html
+- src/pixellab8dir.js
+- test/pixellab8dir.test.js
+- test/pixellab8dirFiles.test.js
+
