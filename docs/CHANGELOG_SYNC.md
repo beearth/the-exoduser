@@ -12193,3 +12193,8 @@
 - game_backup_20260405_skill_en.html
 - game_demo.html
 
+
+## 2026-04-05 22:30 (auto)
+- docs/2_8 ?µìŠ¬ë¡?ë¬¼ì•½?œìŠ¤??2_8 ?µìŠ¬ë¡?ë¬¼ì•½?œìŠ¤??md
+- game.html
+

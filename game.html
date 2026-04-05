@@ -5399,7 +5399,12 @@ addEventListener('keydown',e=>{
   // F11 전체화면 토글
   if(e.code==='F11'){toggleFullscreen();return}
   // ESC → 옵션 토글 (G.on 무관하게 항상 동작)
-  if(e.code==='Escape'&&!e.repeat){try{togglePanel('settings')}catch(_e){console.error('[ESC]',_e)};return}
+  if(e.code==='Escape'&&!e.repeat){
+    const _el=$('settings');
+    console.log('[ESC] settings el=',_el,'on=',_el&&_el.classList.contains('on'),'paused=',G.paused);
+    try{togglePanel('settings')}catch(_e){console.error('[ESC] err:',_e)}
+    console.log('[ESC] after: on=',_el&&_el.classList.contains('on'));
+    return}
   K[e.code]=true;KH[e.code]=true;
   if(['Space','Tab','Escape','KeyE','KeyQ','KeyZ','KeyX','KeyC','KeyB','KeyN','KeyH','KeyJ','KeyK','KeyL','KeyR','KeyF','KeyG','KeyV','ControlLeft','ControlRight','ShiftLeft','ShiftRight','CapsLock'].includes(e.code))e.preventDefault();
   // ── T키 석궁 자동발사 토글 ──
@@ -13291,7 +13296,7 @@ function pShieldCdMul(){return 1-Math.min(.3,PASSIVES.pMRegen*.03)} // 쉴드쿨
 // ═══ 이전 호환 ═══
 let UPGRADES={hp:0,atk:0,def:0,mp:0,st:0,spd:0};
 let POT_LV={hp:0}; // 물약 강화 레벨 (0~10)
-function potHeal(type){return Math.min(P.lv,100)+~~(P.lv/100)*100+POT_LV[type]*50} // 100렙까지 레벨당1 + 100렙당100 + 강화당50
+function potHeal(type){const _plv=P.lv||1;const _base=_plv<=100?~~(_plv*0.5):50+~~(_plv/100)*100;return _base+POT_LV[type]*50} // 100렙까지 레벨당0.5(최대50) + 100렙당100 + 강화당50
 
 // ═══ 무한 강화 시스템 v2.0 ═══
 // 확률: 99 × 0.99^n % (매강화 이전확률의 1% 감소, 절대 0 안됨)
@@ -13627,7 +13632,7 @@ function _updateActionKeys(){
     elCT.style.borderColor=ac?'#44ddff':onCd?'#555':'#443322';
     elCT.style.boxShadow=ac?'inset 0 0 10px rgba(68,221,255,.4)':'none';
     const _ctEmoji=info?info.emoji:'👻';
-    const _ctName=info?info.name:'CT';
+    const _ctName=info?_skN(info):'CT';
     let _ctCd='';if(onCd)_ctCd=`<div style="position:absolute;bottom:0;left:0;right:0;height:${~~(Math.min(cd/240,1)*100)}%;background:rgba(0,0,0,.5);pointer-events:none"></div><span style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.75rem;color:#ff8844;font-weight:700">${(cd/60).toFixed(1)}s</span>`;
     elCT.innerHTML=`<span class="qs-key" style="font-size:.5rem;color:${ac?'#44ddff':onCd?'#666':'#77bbdd'}">CT</span><span style="font-size:16px;${onCd?'opacity:.4':''}">${_ctEmoji}</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:${onCd?'#666':'#77bbdd'};font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 2px">${_ctName}</div>${_ctCd}`;
   }
@@ -26943,8 +26948,8 @@ function updateMagicSlot(){
     const info=(SKILL_SLOT_DEFS.magic||{}).info||{};
     const i=info[_amsk];
     if(i){
-      el.innerHTML='<span class="qs-key" style="font-size:.6rem">E</span><span style="font-size:14px">'+i.emoji+'</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#00ccff;font-weight:700">'+_T(i.name)+'</div>';
-      el.title=_T(i.desc)+(OPT.lang==='en'?' (click to switch)':' (클릭 전환)');
+      el.innerHTML='<span class="qs-key" style="font-size:.6rem">E</span><span style="font-size:14px">'+i.emoji+'</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#00ccff;font-weight:700">'+_skN(i)+'</div>';
+      el.title=_skD(i)+(OPT.lang==='en'?' (click to switch)':' (클릭 전환)');
     }
   } else if(_isElemF){
     el.innerHTML='<span class="qs-key" style="font-size:.6rem">E</span><span style="font-size:14px">🎯</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#ff66ff;font-weight:700">'+_T('추적암전')+'</div>';
@@ -26957,8 +26962,8 @@ function updateMagicSlot(){
     const info=(SKILL_SLOT_DEFS.magic||{}).info||{};
     const i=info[_amsk];
     if(i){
-      el.innerHTML='<span class="qs-key" style="font-size:.6rem">E</span><span style="font-size:14px">'+i.emoji+'</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#8866cc;font-weight:700">'+_T(i.name)+'</div>';
-      el.title=_T(i.desc)+(OPT.lang==='en'?' (click to switch)':' (클릭 전환)');
+      el.innerHTML='<span class="qs-key" style="font-size:.6rem">E</span><span style="font-size:14px">'+i.emoji+'</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#8866cc;font-weight:700">'+_skN(i)+'</div>';
+      el.title=_skD(i)+(OPT.lang==='en'?' (click to switch)':' (클릭 전환)');
     }
   }
 }
@@ -27022,8 +27027,8 @@ function updateCtSlot(){
   const sk=P.activeCtSk||'ghostWalk';
   const info=SKILL_SLOT_DEFS.ct.info[sk];
   if(info){
-    el.innerHTML='<span class="qs-key" style="font-size:.5rem;color:#77bbdd">CT</span><span style="font-size:14px">'+info.emoji+'</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#77bbdd;font-weight:700">'+_T(info.name)+'</div>';
-    el.title=_T(info.desc)+(OPT.lang==='en'?' (click to switch)':' (클릭 전환)');
+    el.innerHTML='<span class="qs-key" style="font-size:.5rem;color:#77bbdd">CT</span><span style="font-size:14px">'+info.emoji+'</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#77bbdd;font-weight:700">'+_skN(info)+'</div>';
+    el.title=_skD(info)+(OPT.lang==='en'?' (click to switch)':' (클릭 전환)');
   }
 }
 // ═══ 만화방창 독립 발사 (Space키, ST소모) ═══
