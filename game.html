@@ -25759,7 +25759,7 @@ function hurtP(dmg,opts){
   // 해제 패링: sBlock 뗀 직후 패링 윈도우 (빨콩은 Q패링 불가)
   if(P.s!=='sBlock'&&P._sbParryT>0&&!(opts&&opts.redBean)){
     P._sbParryT=0;dmg=0;{playSample('q_parry',.8,_r(1,.08))};showPH('PARRY!','#ffdd00');playVFXAng('magic_burst',P.x,P.y,0.4,1,0,true);playVFXAng('parry_flash',P.x,P.y,0.75,3,P.facing,true);P.iframes=Math.max(P.iframes,18);P.st=Math.min(P.mst,P.st+25);P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));
-    if(P.skills.detonate){P.parryBank=(P.parryBank||0)+100;_detonateBlast('해제기폭!',wp().el||0)}
+    if(P.skills.detonate){P.parryBank=(P.parryBank||0)+100;if((P.parryT||0)>=120)_detonateBlast('해제기폭!',wp().el||0)}
     return;
   }
   // 평화의보호: 데미지 70% 감소 (sBlock과 동일)
