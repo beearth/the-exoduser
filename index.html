@@ -331,39 +331,39 @@ function stopIntroVoice(){
 // img: 이미지 인덱스 (0~8), -1=어둠, undefined=이전 유지
 // v: 음성 재생 시점 (초), 이 시점에 해당 라인이 시작됨
 const CIN_LINES=[
-  {v:0,   text:'',dur:3000,img:0},
-  {v:2.5, text:'전쟁에서 살아 돌아온 한 남자.',dur:3000,img:0},
-  {v:5.0, text:'',dur:3000},
-  {v:5.5, text:'하지만 집은 모두 불타 사라졌다.',dur:3000,img:1},
-  {v:10.5,text:'',dur:3000},
-  {v:13.0,text:'이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.',dur:3000,img:2},
-  {v:17.5,text:'',dur:3000},
-  {v:19.7,text:'아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,',dur:3000},
-  {v:23.9,text:'끝내 못 이겨 스스로 목숨을 끊었다.',dur:3000},
-  {v:27.0,text:'',dur:3000},
-  {v:28.6,text:'아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.',dur:3000},
-  {v:33.0,text:'늙은 부모는 감옥에 갇혀 굶어 죽었다.',dur:3000},
-  {v:37.0,text:'',dur:3000,img:-1},
-  {v:38.8,text:'킬루 가문의 모두가 알고 있었다.',dur:3000,img:11},
-  {v:43.3,text:'31명이 보고도 못 본 척했다.',dur:3000},
-  {v:46.0,text:'',dur:3000,img:-1},
-  {v:47.9,text:'그날 밤, 킬루 가문을 모두 죽였다.',dur:3000,cls:'red',img:3},
-  {v:51.0,text:'',dur:3000},
-  {v:53.6,text:'칼로 킬루의 팔다리를 자르고',dur:3000,cls:'red',img:4},
-  {v:56.6,text:'불로 지혈까지 해주며',dur:3000,cls:'red'},
-  {v:59.2,text:'오래오래 살려두었다.',dur:3000,cls:'red'},
-  {v:65.2,text:'"기억하라."',dur:3000,cls:'red',img:12},
-  {v:68.2,text:'"그리고 지옥에서도 후회하라."',dur:3000,cls:'red'},
-  {v:73.6,text:'그리고 지옥에 떨어진다.',dur:3000,img:5},
-  {v:76.0,text:'',dur:3000,img:-1,phase:2},
-  {v:78.9,text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',dur:3000,cls:'dim',img:13},
-  {v:82.5,text:'',dur:3000},
-  {v:84.8,text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',dur:3000,cls:'dim',img:8},
-  {v:88.9,text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',dur:3000,cls:'dim',img:9},
-  {v:94.0,text:'',dur:3000,img:-1},
-  {v:94.8,text:'"너는 왜 지옥에 왔느냐?"',dur:3000,cls:'gold',img:7},
-  {v:97.0,text:'',dur:3000},
-  {v:99.0,text:'"지옥을 탈출하라, 죄인이여."',dur:3000,cls:'gold',img:7,end:true},
+  {v:0,   text:'',en:'',dur:3000,img:0},
+  {v:2.5, text:'전쟁에서 살아 돌아온 한 남자.',en:'A man who returned alive from war.',dur:3000,img:0},
+  {v:5.0, text:'',en:'',dur:3000},
+  {v:5.5, text:'하지만 집은 모두 불타 사라졌다.',en:'But his home had burned to nothing.',dur:3000,img:1},
+  {v:10.5,text:'',en:'',dur:3000},
+  {v:13.0,text:'이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.',en:'Killu, once a neighbor and friend, had crushed his family.',dur:3000,img:2},
+  {v:17.5,text:'',en:'',dur:3000},
+  {v:19.7,text:'아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,',en:'His wife was taken as a servant and suffered unspeakable horrors,',dur:3000},
+  {v:23.9,text:'끝내 못 이겨 스스로 목숨을 끊었다.',en:'until she could bear no more and took her own life.',dur:3000},
+  {v:27.0,text:'',en:'',dur:3000},
+  {v:28.6,text:'아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.',en:'His children were sold into slavery — their fate unknown.',dur:3000},
+  {v:33.0,text:'늙은 부모는 감옥에 갇혀 굶어 죽었다.',en:'His elderly parents were imprisoned and starved to death.',dur:3000},
+  {v:37.0,text:'',en:'',dur:3000,img:-1},
+  {v:38.8,text:'킬루 가문의 모두가 알고 있었다.',en:'Everyone in the Killu household knew.',dur:3000,img:11},
+  {v:43.3,text:'31명이 보고도 못 본 척했다.',en:'Thirty-one of them saw everything and looked away.',dur:3000},
+  {v:46.0,text:'',en:'',dur:3000,img:-1},
+  {v:47.9,text:'그날 밤, 킬루 가문을 모두 죽였다.',en:'That night, he killed every last one of them.',dur:3000,cls:'red',img:3},
+  {v:51.0,text:'',en:'',dur:3000},
+  {v:53.6,text:'칼로 킬루의 팔다리를 자르고',en:'He cut off Killu\'s limbs with a blade,',dur:3000,cls:'red',img:4},
+  {v:56.6,text:'불로 지혈까지 해주며',en:'cauterized the wounds with fire,',dur:3000,cls:'red'},
+  {v:59.2,text:'오래오래 살려두었다.',en:'and kept him alive for a long, long time.',dur:3000,cls:'red'},
+  {v:65.2,text:'"기억하라."',en:'"Remember."',dur:3000,cls:'red',img:12},
+  {v:68.2,text:'"그리고 지옥에서도 후회하라."',en:'"And regret it even in hell."',dur:3000,cls:'red'},
+  {v:73.6,text:'그리고 지옥에 떨어진다.',en:'And so he fell into hell.',dur:3000,img:5},
+  {v:76.0,text:'',en:'',dur:3000,img:-1,phase:2},
+  {v:78.9,text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',en:'"...This is but one tale among countless avengers."',dur:3000,cls:'dim',img:13},
+  {v:82.5,text:'',en:'',dur:3000},
+  {v:84.8,text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',en:'"Every day, new souls fall into hell\'s labyrinth."',dur:3000,cls:'dim',img:8},
+  {v:88.9,text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',en:'"Those consumed by rage, driven mad by injustice, those who lost love..."',dur:3000,cls:'dim',img:9},
+  {v:94.0,text:'',en:'',dur:3000,img:-1},
+  {v:94.8,text:'"너는 왜 지옥에 왔느냐?"',en:'"Why have you come to hell?"',dur:3000,cls:'gold',img:7},
+  {v:97.0,text:'',en:'',dur:3000},
+  {v:99.0,text:'"지옥을 탈출하라, 죄인이여."',en:'"Escape from hell, sinner."',dur:3000,cls:'gold',img:7,end:true},
   {v:103,exit:true}
 ];
 
@@ -446,14 +446,15 @@ function playCinematic(){
     const line=CIN_LINES[idx];
 
     // 텍스트가 있는 첫 대사가 나오면 스킵 해금
-    if(line&&line.text&&_cinSkipLock){_cinSkipLock=false;}
+    if(line&&(line.text||line.en)&&_cinSkipLock){_cinSkipLock=false;}
     if(line.img!==undefined){if(line.img===-1)hideAll();else showImg(line.img);}
     
     textBox.innerHTML='';
-    if(line.text){
+    const _cinTxt=_lobbyLang()==='en'?(line.en||line.text):line.text;
+    if(_cinTxt){
       const el=document.createElement('div');
       el.className='cin-line'+(line.cls?' '+line.cls:'');
-      const chars=line.text.split('');
+      const chars=_cinTxt.split('');
       chars.forEach(c=>{
         const sp=document.createElement('span');
         sp.className='cin-char';
