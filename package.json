@@ -7,6 +7,7 @@
     "serve:test": "node tools/local-static-server.mjs",
     "pixellab:request": "node tools/pixellab_request.mjs",
     "pixellab:ch1:8dir": "node tools/complete_ch1_8dir.mjs",
+    "pixellab:ch1:atlas-sync": "node tools/sync_ch1_monster_atlas_sources.mjs",
     "elevenlabs:tts": "node tools/elevenlabs_tts.mjs",
     "docs:check": "powershell -ExecutionPolicy Bypass -File tools/docs-sync-check.ps1",
     "docs:check:staged": "powershell -ExecutionPolicy Bypass -File tools/docs-sync-check.ps1 -Staged",

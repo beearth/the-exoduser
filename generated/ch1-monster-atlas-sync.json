@@ -1,0 +1,248 @@
+{
+  "sourceRootDir": "G:\\hell\\img\\pixellab_all\\ch1",
+  "targetRootDir": "G:\\hell\\img\\monsters",
+  "totalCandidates": 19,
+  "syncedCount": 19,
+  "skippedCount": 0,
+  "results": [
+    {
+      "etype": 30,
+      "sourceFolderName": "046_etype30_huntDog",
+      "targetFolderName": "etype30_full",
+      "directions": 8,
+      "animationKeys": [
+        "walk-4-frames",
+        "bark",
+        "idle"
+      ]
+    },
+    {
+      "etype": 31,
+      "sourceFolderName": "034_etype31_thornApostle",
+      "targetFolderName": "etype31_full",
+      "directions": 8,
+      "animationKeys": [
+        "cross-punch",
+        "walking-4-frames",
+        "taking-punch",
+        "breathing-idle"
+      ]
+    },
+    {
+      "etype": 32,
+      "sourceFolderName": "238_etype32_boulderApostle",
+      "targetFolderName": "etype32_full",
+      "directions": 8,
+      "animationKeys": [
+        "breathing-idle",
+        "taking-punch",
+        "cross-punch",
+        "walking-4-frames"
+      ]
+    },
+    {
+      "etype": 33,
+      "sourceFolderName": "033_etype33_miniDemon",
+      "targetFolderName": "etype33_full",
+      "directions": 8,
+      "animationKeys": [
+        "taking-punch",
+        "walking-4-frames",
+        "breathing-idle",
+        "cross-punch"
+      ]
+    },
+    {
+      "etype": 34,
+      "sourceFolderName": "032_etype34",
+      "targetFolderName": "etype34_full",
+      "directions": 8,
+      "animationKeys": [
+        "taking-punch",
+        "walking-4-frames",
+        "cross-punch",
+        "breathing-idle"
+      ]
+    },
+    {
+      "etype": 35,
+      "sourceFolderName": "001_etype35",
+      "targetFolderName": "etype35_full",
+      "directions": 8,
+      "animationKeys": [
+        "walking-4-frames",
+        "breathing-idle",
+        "cross-punch",
+        "taking-punch"
+      ]
+    },
+    {
+      "etype": 36,
+      "sourceFolderName": "017_etype36_serpentApostle",
+      "targetFolderName": "etype36_full",
+      "directions": 8,
+      "animationKeys": [
+        "breathing-idle",
+        "walking-4-frames",
+        "cross-punch",
+        "taking-punch"
+      ]
+    },
+    {
+      "etype": 37,
+      "sourceFolderName": "053_etype37_predatorApostle",
+      "targetFolderName": "etype37_full",
+      "directions": 8,
+      "animationKeys": [
+        "breathing-idle",
+        "walking-4-frames",
+        "cross-punch",
+        "taking-punch"
+      ]
+    },
+    {
+      "etype": 38,
+      "sourceFolderName": "263_etype38_broodApostle",
+      "targetFolderName": "etype38_full",
+      "directions": 8,
+      "animationKeys": [
+        "walking-4-frames",
+        "breathing-idle",
+        "taking-punch",
+        "cross-punch"
+      ]
+    },
+    {
+      "etype": 80,
+      "sourceFolderName": "052_etype80_bugSkin",
+      "targetFolderName": "etype80_full",
+      "directions": 8,
+      "animationKeys": [
+        "breathing-idle",
+        "taking-punch",
+        "cross-punch",
+        "walking-4-frames"
+      ]
+    },
+    {
+      "etype": 85,
+      "sourceFolderName": "003_etype85_절망기사",
+      "targetFolderName": "etype85_full",
+      "directions": 8,
+      "animationKeys": [
+        "fight-stance-idle-8-frames",
+        "walking-4-frames",
+        "breathing-idle",
+        "cross-punch",
+        "falling-back-death",
+        "taking-punch"
+      ]
+    },
+    {
+      "etype": 86,
+      "sourceFolderName": "009_etype86_거꾸로천사",
+      "targetFolderName": "etype86_full",
+      "directions": 8,
+      "animationKeys": [
+        "walking-4-frames",
+        "cross-punch",
+        "falling-back-death",
+        "taking-punch",
+        "breathing-idle"
+      ]
+    },
+    {
+      "etype": 88,
+      "sourceFolderName": "220_etype88_심판자",
+      "targetFolderName": "etype88_full",
+      "directions": 8,
+      "animationKeys": [
+        "walking-4-frames",
+        "breathing-idle",
+        "taking-punch",
+        "cross-punch",
+        "falling-back-death"
+      ]
+    },
+    {
+      "etype": 91,
+      "sourceFolderName": "029_etype91_보물악마",
+      "targetFolderName": "etype91_full",
+      "directions": 8,
+      "animationKeys": [
+        "cross-punch",
+        "falling-back-death",
+        "breathing-idle",
+        "taking-punch",
+        "walking-4-frames"
+      ]
+    },
+    {
+      "etype": 92,
+      "sourceFolderName": "008_etype92_거울사도",
+      "targetFolderName": "etype92_full",
+      "directions": 8,
+      "animationKeys": [
+        "running-4-frames",
+        "walking-4-frames",
+        "cross-punch",
+        "breathing-idle",
+        "taking-punch",
+        "falling-back-death"
+      ]
+    },
+    {
+      "etype": 93,
+      "sourceFolderName": "027_etype93_상인악마",
+      "targetFolderName": "etype93_full",
+      "directions": 8,
+      "animationKeys": [
+        "walking-4-frames",
+        "breathing-idle",
+        "taking-punch",
+        "falling-back-death",
+        "cross-punch"
+      ]
+    },
+    {
+      "etype": 94,
+      "sourceFolderName": "026_etype94_사슬죄수",
+      "targetFolderName": "etype94_full",
+      "directions": 8,
+      "animationKeys": [
+        "walking-4-frames",
+        "falling-back-death",
+        "cross-punch",
+        "breathing-idle",
+        "taking-punch"
+      ]
+    },
+    {
+      "etype": 95,
+      "sourceFolderName": "005_etype95_시간사도",
+      "targetFolderName": "etype95_full",
+      "directions": 8,
+      "animationKeys": [
+        "running-4-frames",
+        "cross-punch",
+        "falling-back-death",
+        "breathing-idle",
+        "taking-punch",
+        "walking-4-frames"
+      ]
+    },
+    {
+      "etype": 99,
+      "sourceFolderName": "234_etype99_죽음",
+      "targetFolderName": "etype99_full",
+      "directions": 8,
+      "animationKeys": [
+        "breathing-idle",
+        "walking-4-frames",
+        "taking-punch",
+        "falling-back-death",
+        "cross-punch"
+      ]
+    }
+  ]
+}

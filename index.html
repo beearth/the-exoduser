@@ -184,6 +184,9 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   <div class="cin-overlay" style="position:absolute;inset:0;z-index:15;cursor:pointer"></div>
 
   <button class="skip-btn" id="skipBtn">SKIP ></button>
+  <select id="cinLang" style="position:absolute;top:3vh;right:4vw;z-index:300;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
+    <option value="ko">한국어</option><option value="en">English</option>
+  </select>
 </div>
 
 <!-- ═══ 챕터 입장 문 열림 (동영상) ═══ -->
@@ -198,6 +201,11 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 <div class="main-wrap" id="mainWrap">
   <div class="container">
     <div class="title"><h1>지옥의 길</h1><p>HELL ROAD</p></div>
+    <div style="text-align:center;margin:-10px 0 10px">
+      <select id="langSelect" style="background:#1a1008;border:1px solid #443322;color:#ccaa88;font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
+        <option value="ko">한국어</option><option value="en">English</option>
+      </select>
+    </div>
     <div class="card">
       <div class="loading" id="loading"><div class="spinner"></div><p>연결 중...</p></div>
       <div class="login-section" id="loginSection" style="display:none">
@@ -232,6 +240,61 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 const SUPABASE_URL='https://tevlznuhjqcnzgewlswx.supabase.co';
 const SUPABASE_KEY='sb_publishable_chAwadci1zVQNEKPC__s_w_7K3Oz_WP';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+// ═══ [LANG] 로비 다국어 ═══
+const _LOBBY_EN={
+  '지옥의 길':'Hell Road','연결 중...':'Connecting...','캐릭터를 선택하세요':'Select your character',
+  'Google로 입장':'Enter with Google','캐릭터 선택':'Character Select','로그아웃':'Logout',
+  '캐릭터가 없습니다. 새로 생성하세요.':'No characters. Create a new one.',
+  '새 캐릭터 생성':'Create New Character','캐릭터 이름 (2~8자)':'Character Name (2-8 chars)',
+  '생성':'Create','외형 선택':'Appearance','캐릭터의 외형을 선택하세요':'Choose your appearance','취소':'Cancel',
+  '시작점':'Start','층':'F','장':'CH','삭제':'Delete',
+};
+function _lobbyLang(){return (localStorage.getItem('hellLang')||'ko')}
+function _TL(s){return _lobbyLang()==='en'&&_LOBBY_EN[s]||s}
+function _applyLobbyLang(){
+  const lang=_lobbyLang();
+  document.getElementById('langSelect').value=lang;
+  // 정적 텍스트 교체
+  const m={
+    'h1':['지옥의 길','Hell Road'],
+    '.loading p':['연결 중...','Connecting...'],
+    '#loginSection h2':['캐릭터를 선택하세요','Select your character'],
+    '#googleBtn':null, // 특수 처리
+    '.lobby-header h2':['캐릭터 선택','Character Select'],
+    '#logoutBtn':['로그아웃','Logout'],
+    '.no-chars':['캐릭터가 없습니다. 새로 생성하세요.','No characters. Create a new one.'],
+    '.create-section h3':['새 캐릭터 생성','Create New Character'],
+    '#createBtn':['생성','Create'],
+    '#charVisualPop h2':['외형 선택','Appearance'],
+    '#charVisualPop p':['캐릭터의 외형을 선택하세요','Choose your appearance'],
+    '#visualCancelBtn':['취소','Cancel'],
+  };
+  for(const[sel,pair]of Object.entries(m)){
+    if(!pair)continue;
+    const el=document.querySelector(sel);
+    if(el)el.textContent=lang==='en'?pair[1]:pair[0];
+  }
+  // Google 버튼 (SVG 보존)
+  const gb=document.getElementById('googleBtn');
+  if(gb){const svg=gb.querySelector('svg');const txt=lang==='en'?'Enter with Google':'Google로 입장';gb.innerHTML='';if(svg)gb.appendChild(svg);gb.appendChild(document.createTextNode(txt))}
+  // placeholder
+  const ci=document.getElementById('charName');
+  if(ci)ci.placeholder=lang==='en'?'Character Name (2-8 chars)':'캐릭터 이름 (2~8자)';
+}
+document.getElementById('langSelect').onchange=function(){
+  localStorage.setItem('hellLang',this.value);
+  document.getElementById('cinLang').value=this.value;
+  _applyLobbyLang();
+};
+document.getElementById('cinLang').onchange=function(){
+  localStorage.setItem('hellLang',this.value);
+  document.getElementById('langSelect').value=this.value;
+  _applyLobbyLang();
+};
+// 페이지 로드 시 적용
+_applyLobbyLang();
+document.getElementById('cinLang').value=_lobbyLang();
 
 const lobbyBGM=new Audio('bgm/공통/lobby.mp3');
 lobbyBGM.preload='auto';lobbyBGM.loop=true;lobbyBGM.volume=0.65;
