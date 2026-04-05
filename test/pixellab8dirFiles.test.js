@@ -59,3 +59,39 @@ test('completePixellab8DirFolder generates diagonal rotation files and updates m
     await rm(rootDir, { recursive: true, force: true });
   }
 });
+
+test('completePixellab8DirFolder backfills missing north diagonals from existing side diagonals', async () => {
+  const rootDir = await mkdtemp(path.join(tmpdir(), 'pixellab-8dir-'));
+  const folderDir = path.join(rootDir, 'mob_partial');
+
+  try {
+    await mkdir(path.join(folderDir, 'rotations'), { recursive: true });
+    await writeFile(path.join(folderDir, 'rotations', 'south.png'), makePngBuffer([10, 10, 10, 255]));
+    await writeFile(path.join(folderDir, 'rotations', 'south-east.png'), makePngBuffer([20, 40, 60, 255]));
+    await writeFile(path.join(folderDir, 'rotations', 'south-west.png'), makePngBuffer([70, 80, 90, 255]));
+
+    await writeFile(path.join(folderDir, 'metadata.json'), JSON.stringify({
+      character: {
+        directions: 8,
+      },
+      frames: {
+        rotations: {
+          south: 'rotations/south.png',
+          'south-east': 'rotations/south-east.png',
+          'south-west': 'rotations/south-west.png',
+        },
+        animations: {},
+      },
+    }, null, 2));
+
+    await completePixellab8DirFolder({ folderDir });
+
+    const northEast = PNG.sync.read(await readFile(path.join(folderDir, 'rotations', 'north-east.png')));
+    const northWest = PNG.sync.read(await readFile(path.join(folderDir, 'rotations', 'north-west.png')));
+
+    assert.deepEqual(Array.from(northEast.data), [20, 40, 60, 255]);
+    assert.deepEqual(Array.from(northWest.data), [70, 80, 90, 255]);
+  } finally {
+    await rm(rootDir, { recursive: true, force: true });
+  }
+});

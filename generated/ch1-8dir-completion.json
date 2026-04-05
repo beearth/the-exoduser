@@ -1,0 +1,1330 @@
+{
+  "rootDir": "img\\pixellab_all\\ch1",
+  "totalFolders": 165,
+  "generatedRotations": 0,
+  "generatedAnimationFrames": 0,
+  "updatedMetadata": 0,
+  "touchedFolders": 0,
+  "results": [
+    {
+      "folder": "001_etype35",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "002_Skeleton_Warrior",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "003_etype85_절망기사",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "005_etype95_시간사도",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "006_Skeleton_Melee",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "008_etype92_거울사도",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "009_etype86_거꾸로천사",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "010_Shield_Knight",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "011_Heavy_Tank",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "012_Swarm_Imp",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "013_g73",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "014_f72",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "017_etype36_serpentApostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "019_Boss02_Poison_Queen",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "022_Boss07_VoidBreaker",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "026_etype94_사슬죄수",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "027_etype93_상인악마",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "029_etype91_보물악마",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "031_Skeleton_Archer",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "032_etype34",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "033_etype33_miniDemon",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "034_etype31_thornApostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "040_Shadow_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "041_Boss02_SpiderQueen",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "046_etype30_huntDog",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "047_구울중형v3",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "049_g76",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "052_etype80_bugSkin",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "053_etype37_predatorApostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "062_Alchemist",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "063_Womb_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "064_h84",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "067_Demon_Dog",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "068_Splitter_Worm",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "069_Vampire_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "070_Shadow_Wraith",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "072_g75",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "073_f66",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "074_t67",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "075_t63",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "080_Minor_Wraith",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "081_Mother_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "083_Womb_Horror",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "084_Bone_Beast",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "087_Wing_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "088_Ghost_Wraith",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "089_dark_skeleton_warrior",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "092_Torturer_Demon",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "094_Spider_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "096_소형구울v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "097_구울중형",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "098_소형구울",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "099_Ghoul",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "100_Small_Ghoul",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "103_Fusion_Creature",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "104_Deformed_Walker_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "105_Hell_Spider",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "108_mob_81",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "109_mob_80",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "10_촉수의어미_si29_128px",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "110_mob_99",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "111_mob_98",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "112_mob_96",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "113_mob_95",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "114_mob_94",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "115_mob_93",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "116_mob_92",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "117_mob_91",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "119_mob_89",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "120_mob_88",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "121_mob_87",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "123_mob_85",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "124_mob_84",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "125_mob_83",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "127_mob_81_Torment_Shade",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "128_mob_80_Pain_Crawler",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "142_mob_66_Barnacle_Knight",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "147_mob_60_Deep_One",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "149_mob_58_Mirror_Monster",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "150_mob_57_Fetus_Giant",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "152_mob_55_Bone_Beast",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "159_mob_48_Hell_Priest",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "160_mob_47_Shadow_Twin",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "161_mob_46_Pillar_Demon",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "162_mob_45_Winged_Demon",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "163_mob_44_Torturer",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "164_mob_43_Hell_Hound",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "165_mob_42_Flesh_Heap",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "167_mob_40_Lesser_Wraith",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "168_mob_39_Wild_Arch_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "169_mob_38_Spawning_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "170_mob_37_Predator_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "171_mob_36_Serpent_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "172_mob_35_Beast_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "173_mob_34_Corrosion_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "174_mob_33_Small_Yoma",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "175_Beast_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "176_Corrosion_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "177_Small_Yoma",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "178_Boulder_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "179_Spike_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "180_Hound_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "191_Vampiric_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "192_Giant_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "193_Trap_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "194_Fission_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "195_Wing_Apostle_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "196_Spider_Apostle_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "197_Berserker_Apostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "198_Womb_Apostle_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "199_Shadow_Apostle_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "200_Skeleton_Archer_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "201_Sorcerer",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "202_Alchemist_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "203_Lich_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "204_Shield_Bearer",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "205_Suicide_Bomber_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "206_Tank",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "207_Swarm",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "208_Charger",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "213_si30_불완전사도",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "215_War_Wreckage_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "220_etype88_심판자",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "221_Flesh_Abomination",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "225_Flesh_Wall_Lord",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "227_si2_숲의사냥꾼",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "231_벌레수호자",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "234_etype99_죽음",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "235_si1_독버섯거인",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "237_Giant_Egg_Sac",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "238_etype32_boulderApostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "23_si0_숲의감시자",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "240_Parasitic_Tree_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "241_si22_뼈산의왕",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "244_si3_숲의기생수",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "248_Forest_Hunter_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "249_Parasitic_Tree",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "250_Iron_Wall_Captain",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "253_Giant_Egg_Sac_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "254_Poison_Mushroom_Giant_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "256_Slime_Beast_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "257_Forest_Hunter",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "260_대형구울v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "262_War_Remnant",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "263_etype38_broodApostle",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "264_Poison_Mushroom_Giant",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "266_t69",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "269_Bone_Mountain_King",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "270_Flesh_Wall_Lord_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "271_Parasite_Mother_v2",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "272_Mouth_Monster",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "273_Bone_Watcher",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "276_Giant_Demon",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "27_Slime_Beast",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "281_Pillar_Demon",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "284_숲의사냥꾼",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "285_독버섯거인",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "286_대형구울",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "287_Large_Ghoul",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "288_전쟁의잔해_si21",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "294_기생충모체_si6",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "295_점액괴수_si5",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "296_si27_인간뼈감시자",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "297_si31_대사도",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    },
+    {
+      "folder": "34_Forest_Guardian",
+      "generatedRotations": 0,
+      "generatedAnimationFrames": 0,
+      "updatedMetadata": false,
+      "skipped": false,
+      "reason": null
+    }
+  ]
+}
