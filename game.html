@@ -14105,7 +14105,7 @@ function genGauntlet(fi){
   }
 
 // ═══ MAP — STAGES 정의 + 절차적 맵 생성 ═══
-const STAGES=[{"id":0,"hell":0,"floor":1,"mw":200,"mh":200,"type":"vert"},{"id":1,"hell":0,"floor":2,"mw":75,"mh":69,"type":"horiz"},{"id":2,"hell":0,"floor":3,"mw":72,"mh":160,"type":"vert"},{"id":3,"hell":0,"floor":4,"mw":93,"mh":230,"type":"grid"},{"id":4,"hell":1,"floor":1,"mw":96,"mh":240,"type":"vert"},{"id":5,"hell":1,"floor":2,"mw":125,"mh":99,"type":"horiz"},{"id":6,"hell":1,"floor":3,"mw":102,"mh":260,"type":"vert"},{"id":7,"hell":1,"floor":4,"mw":140,"mh":108,"type":"horiz"},{"id":8,"hell":1,"floor":5,"mw":114,"mh":300,"type":"vert"},{"id":9,"hell":1,"floor":6,"mw":123,"mh":330,"type":"grid"},{"id":10,"hell":2,"floor":1,"mw":126,"mh":340,"type":"vert"},{"id":11,"hell":2,"floor":2,"mw":175,"mh":129,"type":"horiz"},{"id":12,"hell":2,"floor":3,"mw":132,"mh":360,"type":"vert"},{"id":13,"hell":2,"floor":4,"mw":153,"mh":430,"type":"grid"},{"id":14,"hell":3,"floor":1,"mw":156,"mh":440,"type":"vert"},{"id":15,"hell":3,"floor":2,"mw":225,"mh":159,"type":"horiz"},{"id":16,"hell":3,"floor":3,"mw":162,"mh":460,"type":"vert"},{"id":17,"hell":3,"floor":4,"mw":165,"mh":470,"type":"vert"},{"id":18,"hell":3,"floor":5,"mw":240,"mh":168,"type":"horiz"},{"id":19,"hell":3,"floor":6,"mw":174,"mh":500,"type":"vert"},{"id":20,"hell":3,"floor":7,"mw":183,"mh":530,"type":"grid"},{"id":21,"hell":4,"floor":1,"mw":186,"mh":540,"type":"vert"},{"id":22,"hell":4,"floor":2,"mw":275,"mh":189,"type":"horiz"},{"id":23,"hell":4,"floor":3,"mw":192,"mh":560,"type":"vert"},{"id":24,"hell":4,"floor":4,"mw":290,"mh":198,"type":"horiz"},{"id":25,"hell":4,"floor":5,"mw":213,"mh":630,"type":"grid"},{"id":26,"hell":5,"floor":1,"mw":216,"mh":640,"type":"vert"},{"id":27,"hell":5,"floor":2,"mw":325,"mh":219,"type":"horiz"},{"id":28,"hell":5,"floor":3,"mw":222,"mh":660,"type":"vert"},{"id":29,"hell":5,"floor":4,"mw":340,"mh":228,"type":"horiz"},{"id":60,"hell":5,"floor":5,"mw":234,"mh":700,"type":"vert"},{"id":31,"hell":5,"floor":6,"mw":243,"mh":730,"type":"grid"},{"id":32,"hell":6,"floor":1,"mw":246,"mh":740,"type":"vert"},{"id":33,"hell":6,"floor":2,"mw":375,"mh":249,"type":"horiz"},{"id":34,"hell":6,"floor":3,"mw":273,"mh":830,"type":"grid"}];
+const STAGES=[{"id":0,"hell":0,"floor":1,"mw":200,"mh":200,"type":"vert"},{"id":1,"hell":0,"floor":2,"mw":200,"mh":200,"type":"vert"},{"id":2,"hell":0,"floor":3,"mw":72,"mh":160,"type":"vert"},{"id":3,"hell":0,"floor":4,"mw":93,"mh":230,"type":"grid"},{"id":4,"hell":1,"floor":1,"mw":96,"mh":240,"type":"vert"},{"id":5,"hell":1,"floor":2,"mw":125,"mh":99,"type":"horiz"},{"id":6,"hell":1,"floor":3,"mw":102,"mh":260,"type":"vert"},{"id":7,"hell":1,"floor":4,"mw":140,"mh":108,"type":"horiz"},{"id":8,"hell":1,"floor":5,"mw":114,"mh":300,"type":"vert"},{"id":9,"hell":1,"floor":6,"mw":123,"mh":330,"type":"grid"},{"id":10,"hell":2,"floor":1,"mw":126,"mh":340,"type":"vert"},{"id":11,"hell":2,"floor":2,"mw":175,"mh":129,"type":"horiz"},{"id":12,"hell":2,"floor":3,"mw":132,"mh":360,"type":"vert"},{"id":13,"hell":2,"floor":4,"mw":153,"mh":430,"type":"grid"},{"id":14,"hell":3,"floor":1,"mw":156,"mh":440,"type":"vert"},{"id":15,"hell":3,"floor":2,"mw":225,"mh":159,"type":"horiz"},{"id":16,"hell":3,"floor":3,"mw":162,"mh":460,"type":"vert"},{"id":17,"hell":3,"floor":4,"mw":165,"mh":470,"type":"vert"},{"id":18,"hell":3,"floor":5,"mw":240,"mh":168,"type":"horiz"},{"id":19,"hell":3,"floor":6,"mw":174,"mh":500,"type":"vert"},{"id":20,"hell":3,"floor":7,"mw":183,"mh":530,"type":"grid"},{"id":21,"hell":4,"floor":1,"mw":186,"mh":540,"type":"vert"},{"id":22,"hell":4,"floor":2,"mw":275,"mh":189,"type":"horiz"},{"id":23,"hell":4,"floor":3,"mw":192,"mh":560,"type":"vert"},{"id":24,"hell":4,"floor":4,"mw":290,"mh":198,"type":"horiz"},{"id":25,"hell":4,"floor":5,"mw":213,"mh":630,"type":"grid"},{"id":26,"hell":5,"floor":1,"mw":216,"mh":640,"type":"vert"},{"id":27,"hell":5,"floor":2,"mw":325,"mh":219,"type":"horiz"},{"id":28,"hell":5,"floor":3,"mw":222,"mh":660,"type":"vert"},{"id":29,"hell":5,"floor":4,"mw":340,"mh":228,"type":"horiz"},{"id":60,"hell":5,"floor":5,"mw":234,"mh":700,"type":"vert"},{"id":31,"hell":5,"floor":6,"mw":243,"mh":730,"type":"grid"},{"id":32,"hell":6,"floor":1,"mw":246,"mh":740,"type":"vert"},{"id":33,"hell":6,"floor":2,"mw":375,"mh":249,"type":"horiz"},{"id":34,"hell":6,"floor":3,"mw":273,"mh":830,"type":"grid"}];
 
 // ── 시드 기반 랜덤 ──
 function mkRng(seed){
@@ -16279,16 +16279,21 @@ function update(){
       }
       G.hitStop=~~(3*OPT.hitStop/100);G.shake=4*OPT.shake/100;
     }
-    // ── 기동칼날개: 제자리 즉발 광역 베기 (발동 즉시 1회 히트) ──
+    // ── 기동칼날개: 이동 중 광역 베기 (다단히트, 4프레임마다 리셋) ──
     if(P._chainSlashActive){
+      P._chainSlashTick=(P._chainSlashTick||0)+1;
+      if(P._chainSlashTick%4===0)P._chainSlashHits=[]; // 4프레임마다 히트 리셋 → 다단히트
       const _csLv=P.skills.chainSlash||1;
-      const _csR=160+_csLv*5;
+      const _csR=100; // 고정 반경 100px (양날개 200px)
       const _csNe=shQuery(P.x,P.y,_csR);
       const _csDmg=~~(meleeRef()*statStr()*(2.0+(_csLv-1)*0.12));
-      const _csAng=P.facing||0;
+      const _csAng=Math.atan2(_dashVY,_dashVX);
       for(let _ci=0;_ci<_csNe.length;_ci++){
         const e=_csNe[_ci];if(!e.alive)continue;
+        if(P._chainSlashHits&&P._chainSlashHits.indexOf(e)>=0)continue;
         if(dst(P.x,P.y,e.x,e.y)>_csR)continue;
+        if(!P._chainSlashHits)P._chainSlashHits=[];
+        P._chainSlashHits.push(e);
         const _eA=Math.atan2(e.y-P.y,e.x-P.x);
         hurtE(e,_csDmg,_eA,true,{kbMult:0,poiseHit:true,poiseMult:1.2},wp().el||0);
         e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);e._bleedPool=(e._bleedPool||0)+_csDmg*0.50;e.bleed=1;
@@ -16296,9 +16301,9 @@ function update(){
         playVFXAng('ice_slash',e.x,e.y,1.0,3,_eA,true);
         for(let j=0;j<4;j++){const a=_eA+Math.PI+(Math.random()-.5)*1.2;poolPart(e.x,e.y,Math.cos(a)*5,Math.sin(a)*5,'#ff4466',2+Math.random()*2,8+Math.random()*5)}
       }
-      // 좌우 칼날 펼침 VFX
+      // 좌우 칼날 펼침 VFX — 양옆 150범위 날개형 칼날
       {const _blR=_csR;
-      const _perpL=_csAng+Math.PI*.5,_perpR=_csAng-Math.PI*.5;
+      const _perpL=_csAng+Math.PI*.5, _perpR=_csAng-Math.PI*.5;
       for(let _bs=0;_bs<2;_bs++){
         const _ba=_bs===0?_perpL:_perpR;
         const _bx=P.x+Math.cos(_ba)*_blR,_by=P.y+Math.sin(_ba)*_blR;
@@ -16308,8 +16313,6 @@ function update(){
       if(!G._chainBlades)G._chainBlades=[];
       G._chainBlades.push({x:P.x,y:P.y,ang:_csAng,r:_blR,t:0,maxT:16});
       }
-      // 즉발 후 비활성화 (1회성)
-      P._chainSlashActive=false;P._chainSlashHits=null;P._chainSlashTick=0;
     }
     // ── INT(사슬기동:화염): 이동 경로에 화염길 DOT 생성 (magicBlink/dimBreach 합체 포함) ──
     if((_harpSk==='magicBlink'||_harpSk==='dimBreach')&&~~(_dashLeft)%3===0){
@@ -17164,12 +17167,7 @@ function update(){
       if(P.st2<=0){P.s='wRecover';P.st2=~~(16/((wp().spd||.3)*statDex()))}}
     else if(P.s==='wRecover'){if(P.st2<=0){if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=30;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}else P.s='idle'}}
     else if(P.s==='sBash'){
-      // ── 칼등날개: shieldThrow 보유 시 전진하며 스윙 ──
-      if(P.skills.shieldThrow>=1&&P.st2>8){
-        const _bfSpd=(4+(P.skills.shieldThrow-1)*.5)*(1+(P.skills.shieldThrow-1)*0.1); // Lv당 전진속도+0.5, 이동거리+10%
-        const _bfx=P.x+Math.cos(P.facing)*_bfSpd*sp,_bfy=P.y+Math.sin(P.facing)*_bfSpd*sp;
-        if(canMv(_bfx,_bfy,P.r)){P.x=_bfx;P.y=_bfy}
-      }
+      // ── 칼등날개: 제자리 처내기 (전진 제거) ──
       if(P.st2<=12&&P.st2+sp>12){
         // ═══ 칼등날개: 전방 반원 충격파 히트 ═══
         const _sdLv=P.skills.maliceSwipe||0;
@@ -19007,7 +19005,7 @@ function update(){
     if(h._spawnTotal==null){const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';h._spawnTotal=SPAWN_HOLE.cnt[_hType]||50;h._spawned=0;h._spawnCD=0}
     if(h._spawnCD>0){h._spawnCD-=sp;continue}
     const _BATCH=5;
-    if(G._aliveEns>=_maxEns){h._spawnCD=30;continue} // 생존 적 소프트캡 초과 시 스폰 대기
+    if(G._aliveEns>=500){h._spawnCD=30;continue} // 생존 적 500 이상이면 스폰 대기 (하드캡 600 전 여유)
     const _hRemain=Math.min(_BATCH,h._spawnTotal-h._spawned);
     for(let _hj=0;_hj<_hRemain;_hj++){
       let _hsx,_hsy,_hTry=0;
@@ -26108,7 +26106,7 @@ const SKILL_LIST=[
   {id:'chainSlash',name:'기동칼날개',cat:'move',fixed:true,hidden:true,emoji:'⚔',desc:'[히든: 5성 dimRush 합체, Lv200] 사슬기동 중 좌클릭 → 이동 중 전방 광역 베기+출혈. STR 스케일 물리데미지. 다단히트. Lv당 뎀+12% 범위+15',spCost:0,matCost:0,reqLv:200,up:true,upSp:5,upMat:0},
   {id:'peaceShield',name:'평화의보호',cat:'def',fixed:true,hidden:true,emoji:'🕊️',desc:'[히든: 암전나선 합체] Q 홀드 시 보호막이 점점 커지며 HP 초당 10% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'✝',desc:'[히든: 암전나선 합체] E로 조준, 클릭 설치. 신성 십자가를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. Lv당 거리+50',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
-  {id:'shieldThrow',name:'칼등날개',cat:'def',fixed:true,emoji:'🔨',desc:'[고정: 칼등치기 합체] 보유 시 칼등치기가 전진하며 스윙+날개 검기 표시. 추가로 전방 돌진+내려찍기 충격파 자동 발동. 쿨 5초. Lv당 뎀+12% 범위+20 전진속도+0.5',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
+  {id:'shieldThrow',name:'칼등날개',cat:'def',fixed:true,emoji:'🔨',desc:'[고정: 칼등치기 합체] 보유 시 칼등치기에 전방 충격파 자동 발동. 제자리 처내기. 쿨 5초. Lv당 뎀+12% 범위+20',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
   {id:'blastShot',name:'폭산탄',cat:'bow',fixed:true,emoji:'💥',desc:'[고정: T 자동] 폭탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 화염 폭발(범위130). 악의 5. Lv당 범위+10% 뎀+10%. 쿨 0.5초',spCost:10,matCost:80,cd:60,up:true,upSp:5,upMat:0},
   {id:'weakPhys',name:'파쇄의 영역',cat:'tech',act:true,emoji:'⚔',desc:'현재 위치에 파쇄 영역 설치 (10초). 범위 내 적 물리방어력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'weakMag',name:'침식의 영역',cat:'tech',act:true,emoji:'🔮',desc:'현재 위치에 침식 영역 설치 (10초). 범위 내 적 마법저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
@@ -26965,14 +26963,9 @@ function _autoShieldThrow(){
     // 발동 시 발밑 먼지
     for(let _k=0;_k<12;_k++){const _da=a+(_k/12-.5)*1.2;poolPart(P.x,P.y,Math.cos(_da)*4+Math.random()*2,Math.sin(_da)*4+Math.random()*2,'#aa8855',2+Math.random()*3,12+Math.random()*8)}
   }else{
-    // ═══ 칼등날개: 전방 돌진 + 내려찍기 충격파 ═══
+    // ═══ 칼등날개: 제자리 처내기 + 충격파 ═══
     const baseDmg=~~(((sh().atk||3)+P.baseAtk*0.3+10)*pShieldMul()*(1+(slv-1)*0.12)*10*statStr()*3.0*_fuseMul('shieldThrow'));
     const _gsRange=180+(slv-1)*20; // 충격파 반경
-    const _gsDash=120+(slv-1)*10;  // 전진 거리
-    // 전방 돌진 (즉시 위치 이동)
-    const _nx=P.x+Math.cos(a)*_gsDash,_ny=P.y+Math.sin(a)*_gsDash;
-    if(!isW(_nx,_ny)){P.x=_nx;P.y=_ny}
-    else if(!isW(P.x+Math.cos(a)*(_gsDash*.5),P.y+Math.sin(a)*(_gsDash*.5))){P.x+=Math.cos(a)*_gsDash*.5;P.y+=Math.sin(a)*_gsDash*.5}
     // 전방 반원 히트 (대왕치기 방식)
     G._noHitStopT=40;
     _gSlamHit(a,_gsRange,Math.PI*0.8,baseDmg,wp().el||0,0,0.8);
