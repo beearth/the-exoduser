@@ -249,6 +249,20 @@ const _LOBBY_EN={
   '새 캐릭터 생성':'Create New Character','캐릭터 이름 (2~8자)':'Character Name (2-8 chars)',
   '생성':'Create','외형 선택':'Appearance','캐릭터의 외형을 선택하세요':'Choose your appearance','취소':'Cancel',
   '시작점':'Start','층':'F','장':'CH','삭제':'Delete',
+  '이름은 2~8자여야 합니다.':'Name must be 2-8 characters.',
+  '특수문자는 사용할 수 없습니다.':'Special characters cannot be used.',
+  '생성 중...':'Creating...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'A character with that name already exists.',
+  '생성 실패: ':'Creation failed: ',
+  '로그인 실패: ':'Login failed: ',
+  '캐릭터 불러오는 중...':'Loading characters...',
+  '불러오는 중...':'Loading...',
+  '오류: ':'Error: ',
+  '삭제 실패: ':'Deletion failed: ',
+  '알 수 없는 오류':'Unknown error',
+  '서버 연결 실패: ':'Server connection failed: ',
+  '데이터를 불러오는 중...':'Loading data...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Really delete this character?',
 };
 function _lobbyLang(){return (localStorage.getItem('hellLang')||'ko')}
 function _TL(s){return _lobbyLang()==='en'&&_LOBBY_EN[s]||s}
@@ -671,27 +685,27 @@ const _fromGame=_qp.get('lobby')==='1';
 const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
 (async()=>{
   // 시작 시 로딩 표시
-  showLoading('데이터를 불러오는 중...');
+  showLoading(_TL('데이터를 불러오는 중...'));
 
   // ── 로컬 테스트 모드: 로그인 없이 로컬 폴더 세이브 ──
   if(_testMode){
     // 생성 버튼 → 로컬 저장
     $('createBtn').onclick=async()=>{
       const name=$('charName').value.trim();
-      if(name.length<2||name.length>8){setStatus('이름은 2~8자여야 합니다.',true);return}
-      if(/[<>"'&\/\\]/.test(name)){setStatus('특수문자는 사용할 수 없습니다.',true);return}
-      $('createBtn').disabled=true;setStatus('생성 중...');
+      if(name.length<2||name.length>8){setStatus(_TL('이름은 2~8자여야 합니다.'),true);return}
+      if(/[<>"'&\/\\]/.test(name)){setStatus(_TL('특수문자는 사용할 수 없습니다.'),true);return}
+      $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
       try{
         // 이미 같은 이름 존재하는지 체크
         const chk=await fetch('/api/load/'+encodeURIComponent(name));
-        if(chk.ok){const j=await chk.json();if(j.ok){$('createBtn').disabled=false;setStatus('이미 같은 이름의 캐릭터가 있습니다.',true);return}}
+        if(chk.ok){const j=await chk.json();if(j.ok){$('createBtn').disabled=false;setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);return}}
         // 새 캐릭터 파일 생성
         const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{name:name,ts:Date.now()}})});
         const j=await res.json();
         $('createBtn').disabled=false;
-        if(!j.ok){setStatus('생성 실패: '+(j.error||'unknown'),true);return}
+        if(!j.ok){setStatus(_TL('생성 실패: ')+(j.error||'unknown'),true);return}
         $('charName').value='';setStatus('');await loadLocalCharacters();
-      }catch(e){$('createBtn').disabled=false;setStatus('생성 실패: '+e.message,true)}
+      }catch(e){$('createBtn').disabled=false;setStatus(_TL('생성 실패: ')+e.message,true)}
     };
     // 로그아웃 버튼 숨기기
     $('logoutBtn').style.display='none';
@@ -742,21 +756,21 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
 
 $('googleBtn').onclick=async()=>{
   const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+'/'}});
-  if(error){$('status').textContent='로그인 실패: '+error.message;$('status').className='status error'}
+  if(error){$('status').textContent=_TL('로그인 실패: ')+error.message;$('status').className='status error'}
 };
 $('logoutBtn').onclick=async()=>{await sb.auth.signOut();currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='block'};
 
 async function showLobby(){
-  showLoading('캐릭터 불러오는 중...');
+  showLoading(_TL('캐릭터 불러오는 중...'));
   $('loginSection').style.display='none';$('lobby').style.display='block';
   $('userEmail').textContent=currentUser.email||'';await loadCharacters();
   hideLoading();
 }
 async function loadCharacters(){
-  const cl=$('charList');cl.innerHTML='<div class="no-chars">불러오는 중...</div>';
+  const cl=$('charList');cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
   const{data,error}=await sb.from('characters').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:true});
-  if(error){cl.innerHTML='<div class="no-chars" style="color:#cc4433">오류: '+error.message+'</div>';return}
-  if(!data||data.length===0){cl.innerHTML='<div class="no-chars">캐릭터가 없습니다. 새로 생성하세요.</div>';return}
+  if(error){cl.innerHTML='<div class="no-chars" style="color:#cc4433">'+_TL('오류: ')+error.message+'</div>';return}
+  if(!data||data.length===0){cl.innerHTML='<div class="no-chars">'+_TL('캐릭터가 없습니다. 새로 생성하세요.')+'</div>';return}
   cl.innerHTML='';
   data.forEach(ch=>{
     const d=ch.data||{};const lv=d.player?d.player.lv||1:1;const stage=d.game?d.game.stage||0:0;
@@ -765,15 +779,15 @@ async function loadCharacters(){
     const st=stage===0?'시작점':(hell+1)+'장 '+hn[hell]+' '+floor+'층';
     const _vi=CHAR_VISUALS[d.charIdx||0]||CHAR_VISUALS[0];
     const div=document.createElement('div');div.className='char-item';
-    div.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><canvas class="_chPort" width="${_vi.fw}" height="${_vi.fh}" style="width:40px;height:40px;image-rendering:pixelated;border:1px solid #443322;border-radius:4px;background:#111"></canvas><div><div class="char-name">${escHtml(ch.name)}</div><div class="char-info">Lv.${lv} | ${st}</div></div></div><div style="display:flex;gap:6px;align-items:center"><button class="char-del">삭제</button></div>`;
+    div.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><canvas class="_chPort" width="${_vi.fw}" height="${_vi.fh}" style="width:40px;height:40px;image-rendering:pixelated;border:1px solid #443322;border-radius:4px;background:#111"></canvas><div><div class="char-name">${escHtml(ch.name)}</div><div class="char-info">Lv.${lv} | ${st}</div></div></div><div style="display:flex;gap:6px;align-items:center"><button class="char-del">${_TL('삭제')}</button></div>`;
     const _cv=div.querySelector('._chPort');
     const _im=new Image();_im.src=_vi.folder+'/south.png';
     _im.onload=()=>{_cv.getContext('2d').drawImage(_im,0,0,_vi.fw,_vi.fh,0,0,_vi.fw,_vi.fh)};
     div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;showCharGate(ch.id)});
     div.querySelector('.char-del').addEventListener('click',async e=>{
-      e.stopPropagation();if(!confirm(ch.name+' 캐릭터를 정말 삭제하시겠습니까?'))return;
+      e.stopPropagation();if(!confirm(ch.name+_TL(' 캐릭터를 정말 삭제하시겠습니까?')))return;
       const{error:de}=await sb.from('characters').delete().eq('id',ch.id);
-      if(de){setStatus('삭제 실패: '+de.message,true);return}await loadCharacters();
+      if(de){setStatus(_TL('삭제 실패: ')+de.message,true);return}await loadCharacters();
     });
     cl.appendChild(div);
   });
@@ -818,27 +832,27 @@ function openVisualSelect(name){
 $('visualCancelBtn').onclick=()=>{$('charVisualPop').style.display='none';$('createBtn').disabled=false};
 
 async function doCreateChar(name,visualIdx){
-  $('createBtn').disabled=true;setStatus('생성 중...');
+  $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
   if(_testMode){
     try{
       const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{ts:Date.now(),charIdx:visualIdx}})});
       const j=await res.json();
       $('createBtn').disabled=false;
-      if(!j.ok){setStatus('생성 실패: '+(j.error||'알 수 없는 오류'),true);return}
+      if(!j.ok){setStatus(_TL('생성 실패: ')+(j.error||_TL('알 수 없는 오류')),true);return}
       $('charName').value='';setStatus('');await loadLocalCharacters();
-    }catch(e){$('createBtn').disabled=false;setStatus('생성 실패: '+e.message,true)}
+    }catch(e){$('createBtn').disabled=false;setStatus(_TL('생성 실패: ')+e.message,true)}
     return;
   }
   const{error}=await sb.from('characters').insert({user_id:currentUser.id,name:name,data:{charIdx:visualIdx}});
   $('createBtn').disabled=false;
-  if(error){if(error.code==='23505')setStatus('이미 같은 이름의 캐릭터가 있습니다.',true);else setStatus('생성 실패: '+error.message,true);return}
+  if(error){if(error.code==='23505')setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);else setStatus(_TL('생성 실패: ')+error.message,true);return}
   $('charName').value='';setStatus('');await loadCharacters();
 }
 
 $('createBtn').onclick=()=>{
   const name=$('charName').value.trim();
-  if(name.length<2||name.length>8){setStatus('이름은 2~8자여야 합니다.',true);return}
-  if(/[<>"'&]/.test(name)){setStatus('특수문자는 사용할 수 없습니다.',true);return}
+  if(name.length<2||name.length>8){setStatus(_TL('이름은 2~8자여야 합니다.'),true);return}
+  if(/[<>"'&]/.test(name)){setStatus(_TL('특수문자는 사용할 수 없습니다.'),true);return}
   setStatus('');openVisualSelect(name);
 };
 $('charName').addEventListener('keydown',e=>{if(e.key==='Enter')$('createBtn').click()});
@@ -847,11 +861,11 @@ function escHtml(s){const d=document.createElement('div');d.textContent=s;return
 
 // ═══ 로컬 캐릭터 목록 (서버 saves/ 폴더) ═══
 async function loadLocalCharacters(){
-  const cl=$('charList');cl.innerHTML='<div class="no-chars">불러오는 중...</div>';
+  const cl=$('charList');cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
   try{
     const res=await fetch('/api/slots');
     const j=await res.json();
-    if(!j.ok||!j.slots||j.slots.length===0){cl.innerHTML='<div class="no-chars">캐릭터가 없습니다. 새로 생성하세요.</div>';return}
+    if(!j.ok||!j.slots||j.slots.length===0){cl.innerHTML='<div class="no-chars">'+_TL('캐릭터가 없습니다. 새로 생성하세요.')+'</div>';return}
     cl.innerHTML='';
     const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
     j.slots.forEach(s=>{
@@ -860,21 +874,21 @@ async function loadLocalCharacters(){
       const st=stage===0?'시작점':(hell+1)+'장 '+hn[hell]+' '+floor+'층';
       const _vi=CHAR_VISUALS[s.charIdx||0]||CHAR_VISUALS[0];
       const div=document.createElement('div');div.className='char-item';
-      div.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><canvas class="_chPort" width="${_vi.fw}" height="${_vi.fh}" style="width:40px;height:40px;image-rendering:pixelated;border:1px solid #443322;border-radius:4px;background:#111"></canvas><div><div class="char-name">${escHtml(s.name)}</div><div class="char-info">Lv.${s.lv||1} | ${st}</div></div></div><div style="display:flex;gap:6px;align-items:center"><button class="char-del">삭제</button></div>`;
+      div.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><canvas class="_chPort" width="${_vi.fw}" height="${_vi.fh}" style="width:40px;height:40px;image-rendering:pixelated;border:1px solid #443322;border-radius:4px;background:#111"></canvas><div><div class="char-name">${escHtml(s.name)}</div><div class="char-info">Lv.${s.lv||1} | ${st}</div></div></div><div style="display:flex;gap:6px;align-items:center"><button class="char-del">${_TL('삭제')}</button></div>`;
       const _cv=div.querySelector('._chPort');
       const _im=new Image();_im.src=_vi.folder+'/south.png';
       _im.onload=()=>{_cv.getContext('2d').drawImage(_im,0,0,_vi.fw,_vi.fh,0,0,_vi.fw,_vi.fh)};
       div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;showCharGate(s.name)});
       div.querySelector('.char-del').addEventListener('click',async e=>{
-        e.stopPropagation();if(!confirm(s.name+' 캐릭터를 정말 삭제하시겠습니까?'))return;
+        e.stopPropagation();if(!confirm(s.name+_TL(' 캐릭터를 정말 삭제하시겠습니까?')))return;
         try{
           await fetch('/api/save/'+encodeURIComponent(s.name),{method:'DELETE'});
           await loadLocalCharacters();
-        }catch(de){setStatus('삭제 실패: '+de.message,true)}
+        }catch(de){setStatus(_TL('삭제 실패: ')+de.message,true)}
       });
       cl.appendChild(div);
     });
-  }catch(e){cl.innerHTML='<div class="no-chars" style="color:#cc4433">서버 연결 실패: '+e.message+'</div>'}
+  }catch(e){cl.innerHTML='<div class="no-chars" style="color:#cc4433">'+_TL('서버 연결 실패: ')+e.message+'</div>'}
 }
 
 // ═══ 캐릭터 선택 → 문 열림 → 입장 ═══

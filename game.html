@@ -5414,6 +5414,7 @@ addEventListener('keydown',e=>{
   }
   // F11 전체화면 토글
   if(e.code==='F11'){toggleFullscreen();return}
+  if(e.code==='F10'){togglePanel('settings');e.preventDefault();return}
   K[e.code]=true;KH[e.code]=true;
   if(['Space','Tab','Escape','KeyE','KeyQ','KeyZ','KeyX','KeyC','KeyB','KeyN','KeyH','KeyJ','KeyK','KeyL','KeyR','KeyF','KeyG','KeyV','ControlLeft','ControlRight','ShiftLeft','ShiftRight','CapsLock'].includes(e.code))e.preventDefault();
   // ── T키 석궁 자동발사 토글 ──
@@ -16544,7 +16545,7 @@ function update(){
   if(G._dbgSlam>0){G._dbgSlam--;document.title='[SLAM] s='+P.s+' HS='+G.hitStop+' SM='+G.slowMo+' nhsT='+(G._noHitStopT||0).toFixed(1)+' f='+G._dbgSlam;}
   // ─── [S16b] PLAYER_ACT — 플레이어 행동 (이동/공격/스킬) ───
   const _pPrevX=P.x,_pPrevY=P.y; // 투사체 충돌용: 이동 전 위치 저장
-  const _pDead=P.s==='fallen'||P.s==='dead';
+  const _pDead=P.s==='fallen'||P.s==='dead'||P.s==='pStun';
   if(G.pets)updatePet(); // 펫 이동은 항상, 수거는 petAuto 토글
   _updateBurst(_dtSp); // GPU Burst (별도 context)
   mergeMatItems(); // 악의 아이템 자동 합체
@@ -18459,23 +18460,16 @@ function update(){
     if(isJust('skill7')){P.s='idle';P.st2=0;break}
     if(P.st2<=0)P.s='idle';break;}
   case 'pStun':{
-    // ═══ 기절: Shift/Q/Ctrl로 즉시 탈출, 방향키 연타로 단축 ═══
-    if(isJust('charge')){P.s='idle';P.iframes=30;addTxt(P.x,P.y-20,_T('탈출!'),'#ffffff',30);void 0;break}
-    if(isJust('parry')){P.s='idle';P.iframes=20;addTxt(P.x,P.y-20,_T('탈출!'),'#88ddff',30);void 0;break}
-    if(isJust('skill7')){P.s='idle';P.iframes=20;addTxt(P.x,P.y-20,_T('탈출!'),'#88aacc',30);void 0;break}
-    // 방향키 연타 → 기절 시간 단축 (D4식)
-    if(isJust('up')||isJust('down')||isJust('left')||isJust('right'))P.st2-=15;
+    // ═══ 기절: 방향키 연타로만 단축 (즉시 탈출 없음) ═══
+    // 방향키 연타 → 기절 시간 단축 (틱당 5, 300에서 60번 연타 필요)
+    if(isJust('up')||isJust('down')||isJust('left')||isJust('right'))P.st2-=5;
     if(P.st2<=0){P.s='idle';P.iframes=60;addTxt(P.x,P.y-15,_T('기절 해제'),'#aaaaaa',20)}
     break;}
   }
 
   // ═══ 플레이어 포이즈 회복 (3초 안 맞으면 회복) ═══
-  if(P.poiseR!==undefined){P.poiseR+=sp;if(P.poiseR>=120&&P.poise<P.maxPoise&&!P._groggyT){P.poise=Math.min(P.maxPoise,P.poise+P.maxPoise*0.02*sp)}}
-  // ═══ 그로기 카운트다운 (주황 바 → 0되면 기절) ═══
-  if(P._groggyT>0){
-    P._groggyT-=sp;
-    if(P._groggyT<=0){P._groggyT=0;P.poise=P.maxPoise;P.s='pStun';P.st2=~~(300*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~(_HS.pStun*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
-  }
+  if(P.poiseR!==undefined){P.poiseR+=sp;if(P.poiseR>=120&&P.poise<P.maxPoise){P.poise=Math.min(P.maxPoise,P.poise+P.maxPoise*0.02*sp)}}
+  // 그로기 시스템 제거됨 — 포이즈 0 = 즉시 스턴
   // 죽은 적 정리 (매 20프레임 — 누적 방지)
   if(G._gcT===undefined)G._gcT=0;G._gcT++;
   // 생존 적 수 카운트 (소환굴 스폰캡 기준)
@@ -18925,7 +18919,7 @@ function update(){
         P.hp-=_bkD;if(P.hp<=0)die();
         // 무지개탄 포이즈 데미지 (HP 데미지의 50%)
         {const _bkPd=Math.max(8,~~(_bkD*.5));P.poise=(P.poise||P.maxPoise)-_bkPd;P.poiseR=0;
-        if(P.poise<=0&&!P._groggyT){P.poise=0;P._groggyT=300;P.poiseR=0;SFX.groggy();addTxt(P.x,P.y-22,_T('⚠ 그로기!'),'#ff8800',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100)}}
+        if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(300*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}
         P.iframes=Math.max(P.iframes,15);
         addTxt(p.x,p.y-15,_T('💥무지개 폭발! ')+_bkD,'#ff44ff',40);
         SFX.detonate();shake(14);
@@ -21835,7 +21829,7 @@ function isPWin(){return P.s==='sBash'||(P.s==='sBlock'&&P._sbParryT>0)||(P.s===
 function doParry(_inDmg,_px,_py){if(_px===undefined)_px=P.x;if(_py===undefined)_py=P.y;_petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;if(P.s==='sBlock'||P._sbParryT>0){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1))}if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
   P.iframes=Math.max(P.iframes,18);P.st=Math.min(P.mst,P.st+25);P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));
   // 패링 성공 → 그로기 해제 + 포이즈 복원
-  if(P._groggyT>0){P._groggyT=0;P.poise=P.maxPoise;P.poiseR=0;addTxt(P.x,P.y-35,_T('⚡ 그로기 탈출!'),'#44ff88',50)}
+  // 그로기 제거됨 — 포이즈 0 = 즉시 스턴
   if(P.skills.detonate&&P.parryT!==undefined&&P.parryT>0){G.shake=6*OPT.shake/100} // 기폭 충전 중: hitStop/slowMo 없이 흔들림만
   else{G.hitStop=~~(_HS.parry*OPT.hitStop/100);G.slowMo=25;G.shake=14*OPT.shake/100}
   // ═══ 어픽스: parryBonus (패링보너스) — ST 회복 증가 ═══
@@ -26225,12 +26219,13 @@ function hurtP(dmg,opts){
     P.iframes=0;if(P.s!=='charge'&&P.s!=='sBlock'&&P.s!=='pStun'&&P.s!=='whirlwind'){
       // ═══ 포이즈 감소 → 기절 (D4식) ═══
       const _pd=Math.max(5,~~(a*0.3));P.poise=(P.poise||P.maxPoise)-_pd;P.poiseR=0;
-      if(P.poise<=0&&!P._groggyT){P.poise=0;P._groggyT=300;P.poiseR=0;SFX.groggy();addTxt(P.x,P.y-22,_T('⚠ 그로기!'),'#ff8800',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ff8844',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(300*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
       else{P.s='stagger';P.st2=6}
     }
-    // 회전 중: 경직/기절 면역, 포이즈 감소 절반만
+    // 회전 중: 경직 면역, 포이즈 감소 절반
     if(P.s==='whirlwind'){
       const _pd2=Math.max(2,~~(a*0.15));P.poise=(P.poise||P.maxPoise)-_pd2;P.poiseR=0;
+      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(300*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
     }
     if(a>0)addTxt(P.x,P.y-10,'-'+a,'#ff3333',28);
     scrFlash='rgba(200,0,0,.25)';scrFlashA=.25;G.shake=8*OPT.shake/100;addParts(P.x,P.y,'#ff0000',~~(8*OPT.parts/100));
@@ -26484,20 +26479,20 @@ document.addEventListener('fullscreenchange',()=>{
 // ═══════════════════════════════════════
 //  [S18] UI — Skill Panel, Fusion, Slots
 // ═══════════════════════════════════════
-function togglePanel(id){const el=$(id);const isOn=el.classList.contains('on');closeAllPanels();if(!isOn){el.classList.add('on');G.paused=true;if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
+function togglePanel(id){const el=$(id);const isOn=el.classList.contains('on');closeAllPanels();const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(!isOn){el.classList.add('on');G.paused=true;if(id==='invPanel')renderInv();if(id==='settings'){const _rc2=$('resetConfirm');if(_rc2)_rc2.style.display='none';renderSettings();}if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
 function openPanel(id){closeAllPanels();$(id).classList.add('on');G.paused=true;if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='storagePanel')renderStorage()}
 function closePanel(id){$(id).classList.remove('on');G.paused=false}
-function closeAllPanels(){['settings','invPanel','forge','storagePanel','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none'}
+function closeAllPanels(){$('resetConfirm')&&($('resetConfirm').style.display='none');['settings','invPanel','forge','storagePanel','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none'}
 
 // ═══ 스킬 패널 ═══
 const SKILL_CATS=[
-  {id:'move',name:'⚡ 이동스킬',col:'#44aaff'},
-  {id:'phys',name:'⚔️ 물리',col:'#ff8844'},
-  {id:'def',name:'🛡️ 방어',col:'#44aa88'},
-  {id:'magic',name:'🔮 마법',col:'#aa66ff'},
-  {id:'bow',name:'🏹 석궁',col:'#ff4466'},
-  {id:'tech',name:'⚙️ 영역',col:'#ff8800'},
-  {id:'ult',name:'💀 필살기',col:'#ff2200'},
+  {id:'move',name:'⚡ 이동스킬',nameEn:'⚡ Movement',col:'#44aaff'},
+  {id:'phys',name:'⚔️ 물리',nameEn:'⚔️ Physical',col:'#ff8844'},
+  {id:'def',name:'🛡️ 방어',nameEn:'🛡️ Defense',col:'#44aa88'},
+  {id:'magic',name:'🔮 마법',nameEn:'🔮 Magic',col:'#aa66ff'},
+  {id:'bow',name:'🏹 석궁',nameEn:'🏹 Crossbow',col:'#ff4466'},
+  {id:'tech',name:'⚙️ 영역',nameEn:'⚙️ Domain',col:'#ff8800'},
+  {id:'ult',name:'💀 필살기',nameEn:'💀 Ultimate',col:'#ff2200'},
 ];
 const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'Chain Dash: Impact. Dash through enemies dealing damage on collision.',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -27582,7 +27577,7 @@ function activateGhostWalk(){
   P._gwCd=900; // 15초 쿨 (발동 즉시 시작)
   P._gwPrevS=P.s;P.s='ghostWalk';
   // 회피 → 그로기 탈출
-  if(P._groggyT>0){P._groggyT=0;P.poise=P.maxPoise;P.poiseR=0;addTxt(P.x,P.y-45,_T('⚡ 그로기 탈출!'),'#44ff88',50)}
+  // 그로기 제거됨
   SFX.pickup();
   addTxt(P.x,P.y-30,_T('⚡ 암전걸음!'),'#44ddff',40);
   addParts(P.x,P.y,'#8899bb',12);
@@ -28017,7 +28012,7 @@ function renderSkillPanel(){
   if(_isFused('stormBeam')){if(!P.skills.peaceShield)P.skills.peaceShield=1;if(!P.skills.hellRay)P.skills.hellRay=1;}
   $('skillInfo').textContent='LV.'+P.lv+' | ⭐ SP: '+P.sp+(OPT.lang==='en'?' | 👿 Malice: ':' | 👿 악의: ')+G.mats+(OPT.lang==='en'?' | 🔱 Harpoon: ':' | 🔱 작살: ')+~~_harpGauge+'/'+_HARP_GAUGE_MAX;
   const _oldGritBtn=$('gritBtn');if(_oldGritBtn)_oldGritBtn.remove();
-  const _cb=$('skCompBtn');if(_cb)_cb.textContent=_skCompact?'펼치기 [K]':'접기 [K]';
+  const _cb=$('skCompBtn');if(_cb)_cb.textContent=_skCompact?(OPT.lang==='en'?'Expand [K]':'펼치기 [K]'):(OPT.lang==='en'?'Collapse [K]':'접기 [K]');
   const grid=$('skillGrid');grid.innerHTML='';
   SKILL_CATS.forEach(cat=>{
     const _sixMoved=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
@@ -28028,7 +28023,7 @@ function renderSkillPanel(){
     // 카테고리 헤더
     const hdr=document.createElement('div');
     hdr.style.cssText='color:'+cat.col+';font-size:.95rem;font-weight:700;padding:6px 0 4px;border-bottom:2px solid '+cat.col+'66;letter-spacing:.1em;margin-bottom:6px';
-    hdr.textContent=cat.name;
+    hdr.textContent=OPT.lang==='en'?(cat.nameEn||cat.name):cat.name;
     col.appendChild(hdr);
     catSkills.forEach(sk=>_renderSkillRow(sk,col));
     grid.appendChild(col);
@@ -28117,94 +28112,125 @@ function _renderSkillRow(sk,grid){
     d.style.cssText='position:relative;padding:12px;margin-bottom:8px;'+_bdrCss+'background:rgba('+_bgRgb+',.3);'+_gemGlow+((canLearn||canUp)?'cursor:pointer;':'');
     let lockTxt='';
     const _fixedKeyMap={bladeShot:'T자동',fanShot:'T자동',blastShot:'T자동',omniBeam:'E',elemMissile:'E',fireball:'E',blueShot:'E',burstLoop:'E',whirlwind:'좌클',maliceSwipe:'우클',shieldThrow:'우클',chargeBoost:'SH',magicBlink:'SH',ghostWalk:'CT',iceOrb:'CT',chainAssault:'SH+E',chainSlash:'기동+좌클',chainSlam:'SH+우클',giantSlam:'SH+좌클',peaceShield:'Q',hellRay:'E',ghostXbowTurret:'T자동'};
-    const _fixedKey=_fixedKeyMap[sk.id];
-    const _skTypeLbl=_fixedKey?' <span style="color:#7799bb;font-size:.7rem">[고정:'+_fixedKey+']</span>':sk.act?' <span style="color:#cc8844;font-size:.7rem">[선택]</span>':'';
+    const _fixedKeyMapEn={bladeShot:'T-Auto',fanShot:'T-Auto',blastShot:'T-Auto',omniBeam:'E',elemMissile:'E',fireball:'E',blueShot:'E',burstLoop:'E',whirlwind:'LMB',maliceSwipe:'RMB',shieldThrow:'RMB',chargeBoost:'SH',magicBlink:'SH',ghostWalk:'CT',iceOrb:'CT',chainAssault:'SH+E',chainSlash:'Chain+LMB',chainSlam:'SH+RMB',giantSlam:'SH+LMB',peaceShield:'Q',hellRay:'E',ghostXbowTurret:'T-Auto'};
+    const _e=OPT.lang==='en';
+    const _fixedKey=_e?_fixedKeyMapEn[sk.id]:_fixedKeyMap[sk.id];
+    const _skTypeLbl=_fixedKey?' <span style="color:#7799bb;font-size:.7rem">['+(_e?'Fixed':'고정')+':'+_fixedKey+']</span>':sk.act?' <span style="color:#cc8844;font-size:.7rem">['+(_e?'Select':'선택')+']</span>':'';
     if(!learned){
       const _isScarecrowSk=sk.id==='voidScarecrow';
-      lockTxt=!_reqMet?'<span style="color:#ff4444">🔒 선행스킬 ['+((SKILL_LIST.find(s=>s.id===sk.requires)||{}).name||sk.requires)+'] 필요</span>'
-        :!_lvMet&&_isScarecrowSk?'<span style="color:#aa66dd">👻 허수아비 필요</span>'
-        :!_lvMet?'<span style="color:#ff4444">🔒 Lv.'+sk.reqLv+' 필요 (현재 Lv.'+P.lv+')</span>'
-        :'<span style="color:#ffaa44">습득 가능</span>'+_skTypeLbl;
+      const _reqSkName=_e?((SKILL_LIST.find(s=>s.id===sk.requires)||{}).nameEn||(SKILL_LIST.find(s=>s.id===sk.requires)||{}).name||sk.requires):((SKILL_LIST.find(s=>s.id===sk.requires)||{}).name||sk.requires);
+      lockTxt=!_reqMet?'<span style="color:#ff4444">🔒 '+(_e?'Requires ['+_reqSkName+']':'선행스킬 ['+_reqSkName+'] 필요')+'</span>'
+        :!_lvMet&&_isScarecrowSk?'<span style="color:#aa66dd">'+(_e?'👻 Scarecrow needed':'👻 허수아비 필요')+'</span>'
+        :!_lvMet?'<span style="color:#ff4444">🔒 '+(_e?'Req. Lv.'+sk.reqLv+' (Current Lv.'+P.lv+')':'Lv.'+sk.reqLv+' 필요 (현재 Lv.'+P.lv+')')+'</span>'
+        :'<span style="color:#ffaa44">'+(_e?'Can Learn':'습득 가능')+'</span>'+_skTypeLbl;
     }else if(sk.up){
       const bonusPct=(slv-1)*10;
       let upLabel;
       if(_isStormBeam){
-        upLabel='6단합체 Lv.'+slv+' | 회전+빔뎀+20% 진동파뎀+'+(slv-1)*15+'% 빔추적+'+(slv-1)*8+'%';
+        upLabel=_e?'6-Fuse Lv.'+slv+' | Spin+BeamDMG+20% ShockwaveDMG+'+(slv-1)*15+'% BeamTrack+'+(slv-1)*8+'%'
+          :'6단합체 Lv.'+slv+' | 회전+빔뎀+20% 진동파뎀+'+(slv-1)*15+'% 빔추적+'+(slv-1)*8+'%';
       }else if(_isDimBlast){
-        upLabel='6단합체 Lv.'+slv+' | 전폭뎀+'+(slv-1)*15+'% 칼날개뎀+'+(slv-1)*12+'% 파괴뎀+'+(slv-1)*15+'%';
+        upLabel=_e?'6-Fuse Lv.'+slv+' | BurstDMG+'+(slv-1)*15+'% BladeDMG+'+(slv-1)*12+'% DestroyDMG+'+(slv-1)*15+'%'
+          :'6단합체 Lv.'+slv+' | 전폭뎀+'+(slv-1)*15+'% 칼날개뎀+'+(slv-1)*12+'% 파괴뎀+'+(slv-1)*15+'%';
       }else if(_isDimRush){
-        upLabel='5단합체 Lv.'+slv+' | 칼날개뎀+'+(slv-1)*12+'% 범위+'+(slv-1)*15+' 출혈+'+(slv-1)*10+'%';
+        upLabel=_e?'5-Fuse Lv.'+slv+' | BladeDMG+'+(slv-1)*12+'% Range+'+(slv-1)*15+' Bleed+'+(slv-1)*10+'%'
+          :'5단합체 Lv.'+slv+' | 칼날개뎀+'+(slv-1)*12+'% 범위+'+(slv-1)*15+' 출혈+'+(slv-1)*10+'%';
       }else if(_isDimThunder){
-        upLabel='4단합체 Lv.'+slv+' | 파괴뎀+'+(slv-1)*15+'% 암전포이즈+'+(slv-1)*12+'% 범위+'+(slv-1)*20;
+        upLabel=_e?'4-Fuse Lv.'+slv+' | DestroyDMG+'+(slv-1)*15+'% DarkPoise+'+(slv-1)*12+'% Range+'+(slv-1)*20
+          :'4단합체 Lv.'+slv+' | 파괴뎀+'+(slv-1)*15+'% 암전포이즈+'+(slv-1)*12+'% 범위+'+(slv-1)*20;
       }else if(_isDimSlam){
-        upLabel='3단합체 Lv.'+slv+' | 돌진뎀×'+(1.5+(slv-1)*.25).toFixed(1)+' 착지뎀+'+(slv-1)*12+'% 범위'+(300+(slv-1)*15);
+        upLabel=_e?'3-Fuse Lv.'+slv+' | RushDMG\u00d7'+(1.5+(slv-1)*.25).toFixed(1)+' LandDMG+'+(slv-1)*12+'% Range'+(300+(slv-1)*15)
+          :'3단합체 Lv.'+slv+' | 돌진뎀×'+(1.5+(slv-1)*.25).toFixed(1)+' 착지뎀+'+(slv-1)*12+'% 범위'+(300+(slv-1)*15);
       }else if(_isDimFuse){
         const _cdF=Math.max(180,420-slv*20);
-        upLabel='합체 Lv.'+slv+' | 쿨'+(_cdF/60).toFixed(1)+'초 돌진뎀×'+(1.5+(slv-1)*.25).toFixed(1)+' 블링크×'+(1+(slv-1)*.15).toFixed(2);
+        upLabel=_e?'Fuse Lv.'+slv+' | CD'+(_cdF/60).toFixed(1)+'s RushDMG\u00d7'+(1.5+(slv-1)*.25).toFixed(1)+' Blink\u00d7'+(1+(slv-1)*.15).toFixed(2)
+          :'합체 Lv.'+slv+' | 쿨'+(_cdF/60).toFixed(1)+'초 돌진뎀×'+(1.5+(slv-1)*.25).toFixed(1)+' 블링크×'+(1+(slv-1)*.15).toFixed(2);
       }else if(_isBladeFuse){
         const _bladeMax=8+(slv>=10?2:0);
         const _regenF=Math.max(40,90-(slv*2-2)*4);
-        upLabel='합체 Lv.'+slv+' | 칼날'+_bladeMax+'개 리젠'+((_regenF/60).toFixed(1))+'초 보호구체+'+(slv-1);
+        upLabel=_e?'Fuse Lv.'+slv+' | Blade'+_bladeMax+' Regen'+((_regenF/60).toFixed(1))+'s GuardOrb+'+(slv-1)
+          :'합체 Lv.'+slv+' | 칼날'+_bladeMax+'개 리젠'+((_regenF/60).toFixed(1))+'초 보호구체+'+(slv-1);
       }else if(_isIceFuse){
-        upLabel='합체 Lv.'+slv+' | 포격범위+'+(slv-1)*5+'% 얼음칼날'+(12+(slv-1)*2)+'발 쿨10초';
+        upLabel=_e?'Fuse Lv.'+slv+' | BombRange+'+(slv-1)*5+'% IceBlade'+(12+(slv-1)*2)+'shots CD10s'
+          :'합체 Lv.'+slv+' | 포격범위+'+(slv-1)*5+'% 얼음칼날'+(12+(slv-1)*2)+'발 쿨10초';
       }else if(_isElemFuse){
-        upLabel='합체 Lv.'+slv+' | 추적빔뎀+'+(slv-1)*12+'% 유도력+'+(slv-1)*5+'% 사거리'+~~(500+(slv-1)*55.6);
+        upLabel=_e?'3-Fuse Lv.'+slv+' | TrackBeamDMG+'+(slv-1)*12+'% Homing+'+(slv-1)*5+'% Range'+~~(500+(slv-1)*55.6)
+          :'합체 Lv.'+slv+' | 추적빔뎀+'+(slv-1)*12+'% 유도력+'+(slv-1)*5+'% 사거리'+~~(500+(slv-1)*55.6);
       }else if(_isSixFuse){
-        upLabel='합체 Lv.'+slv+' | 방창뎀+'+(slv-1)*10+'% 연사+'+(slv-1)+' 광선뎀+'+(slv-1)*10+'% 사거리'+~~(500+(slv-1)*55.6);
+        upLabel=_e?'Fuse Lv.'+slv+' | BarrageDMG+'+(slv-1)*10+'% Rapid+'+(slv-1)+' BeamDMG+'+(slv-1)*10+'% Range'+~~(500+(slv-1)*55.6)
+          :'합체 Lv.'+slv+' | 방창뎀+'+(slv-1)*10+'% 연사+'+(slv-1)+' 광선뎀+'+(slv-1)*10+'% 사거리'+~~(500+(slv-1)*55.6);
       }else if(_isSlamStorm){
-        upLabel='합체 Lv.'+slv+' | 진동파뎀+'+(slv-1)*12+'% 기절+'+(3+(slv-1)*0.3).toFixed(1)+'초 회전뎀+'+(slv-1)*8+'% 쿨'+(Math.max(60,480-(slv-1)*18)/60).toFixed(1)+'초';
+        upLabel=_e?'3-Fuse Lv.'+slv+' | ShockwaveDMG+'+(slv-1)*12+'% Stun+'+(3+(slv-1)*0.3).toFixed(1)+'s SpinDMG+'+(slv-1)*8+'% CD'+(Math.max(60,480-(slv-1)*18)/60).toFixed(1)+'s'
+          :'합체 Lv.'+slv+' | 진동파뎀+'+(slv-1)*12+'% 기절+'+(3+(slv-1)*0.3).toFixed(1)+'초 회전뎀+'+(slv-1)*8+'% 쿨'+(Math.max(60,480-(slv-1)*18)/60).toFixed(1)+'초';
       }else if(_isSynth){
         const _absRate=(0.70+0+slv*0.005)*100;
-        upLabel='합체 Lv.'+slv+' | 회전범위+'+(slv-1)*11+' 뎀+'+(slv-1)*5+'% 흡수'+_absRate.toFixed(1)+'% 범위'+(300+(slv-1)*10);
+        upLabel=_e?'Fuse Lv.'+slv+' | SpinRange+'+(slv-1)*11+' DMG+'+(slv-1)*5+'% Absorb'+_absRate.toFixed(1)+'% Range'+(300+(slv-1)*10)
+          :'합체 Lv.'+slv+' | 회전범위+'+(slv-1)*11+' 뎀+'+(slv-1)*5+'% 흡수'+_absRate.toFixed(1)+'% 범위'+(300+(slv-1)*10);
       }else if(_isBoneStorm){
-        upLabel='합체 Lv.'+slv+' | 폭풍뎀+'+(slv-1)*10+'% 무덤범위+'+(slv-1)*5+'% 지속+'+(slv-1)*0.5+'초';
+        upLabel=_e?'Fuse Lv.'+slv+' | StormDMG+'+(slv-1)*10+'% TombRange+'+(slv-1)*5+'% Duration+'+(slv-1)*0.5+'s'
+          :'합체 Lv.'+slv+' | 폭풍뎀+'+(slv-1)*10+'% 무덤범위+'+(slv-1)*5+'% 지속+'+(slv-1)*0.5+'초';
       }else if(_isShieldFuse){
-        upLabel='합체 Lv.'+slv+' | 처내기뎀+'+(slv-1)*10+'% 칼등날개뎀+'+(slv-1)*10+'% 쿨감'+(slv-1)*5+'%';
+        upLabel=_e?'Fuse Lv.'+slv+' | SwipeDMG+'+(slv-1)*10+'% WingDMG+'+(slv-1)*10+'% CDReduce'+(slv-1)*5+'%'
+          :'합체 Lv.'+slv+' | 처내기뎀+'+(slv-1)*10+'% 칼등날개뎀+'+(slv-1)*10+'% 쿨감'+(slv-1)*5+'%';
       }else if(_isPlagueFuse){
-        upLabel='합체 Lv.'+slv+' | 칼날뎀+'+(slv-1)*10+'% 독혈관통+'+(slv-1)*5+' 발사 시 독혈 자동발사';
+        upLabel=_e?'Fuse Lv.'+slv+' | BladeDMG+'+(slv-1)*10+'% PlaguePierce+'+(slv-1)*5+' Auto plague on fire'
+          :'합체 Lv.'+slv+' | 칼날뎀+'+(slv-1)*10+'% 독혈관통+'+(slv-1)*5+' 발사 시 독혈 자동발사';
       }else if(_isHolyW4){
-        upLabel='합체 Lv.'+slv+' | 신성한 지배: 땅+감옥+빙결+파쇄+침식+관통+역전';
+        upLabel=_e?'Fuse Lv.'+slv+' | Holy Dominion: Ground+Prison+Freeze+Shatter+Corrode+Pierce+Reversal'
+          :'합체 Lv.'+slv+' | 신성한 지배: 땅+감옥+빙결+파쇄+침식+관통+역전';
       }else if(_isHolyW3){
-        upLabel='합체 Lv.'+slv+' | 신성한 관통: 땅+감옥+빙결+파쇄+침식+관통';
+        upLabel=_e?'Fuse Lv.'+slv+' | Holy Pierce: Ground+Prison+Freeze+Shatter+Corrode+Pierce'
+          :'합체 Lv.'+slv+' | 신성한 관통: 땅+감옥+빙결+파쇄+침식+관통';
       }else if(_isHolyW2){
-        upLabel='합체 Lv.'+slv+' | 신성한 침식: 땅+감옥+빙결+파쇄+침식';
+        upLabel=_e?'Fuse Lv.'+slv+' | Holy Corrode: Ground+Prison+Freeze+Shatter+Corrode'
+          :'합체 Lv.'+slv+' | 신성한 침식: 땅+감옥+빙결+파쇄+침식';
       }else if(_isHolyW1){
-        upLabel='합체 Lv.'+slv+' | 신성한 파쇄: 땅+감옥+빙결+파쇄';
+        upLabel=_e?'Fuse Lv.'+slv+' | Holy Shatter: Ground+Prison+Freeze+Shatter'
+          :'합체 Lv.'+slv+' | 신성한 파쇄: 땅+감옥+빙결+파쇄';
       }else if(_isHolyIce){
-        upLabel='합체 Lv.'+slv+' | 땅+'+(slv-1)*8+' 감옥+'+(slv-1)*33+' 빙결+'+(slv-1)*10+' 지속+'+(slv-1)*0.5+'초';
+        upLabel=_e?'Fuse Lv.'+slv+' | Ground+'+(slv-1)*8+' Prison+'+(slv-1)*33+' Freeze+'+(slv-1)*10+' Duration+'+(slv-1)*0.5+'s'
+          :'합체 Lv.'+slv+' | 땅+'+(slv-1)*8+' 감옥+'+(slv-1)*33+' 빙결+'+(slv-1)*10+' 지속+'+(slv-1)*0.5+'초';
       }else if(_isHolyFuse){
-        upLabel='합체 Lv.'+slv+' | 땅 범위+'+(slv-1)*8+' 감옥범위+'+(slv-1)*33+' 지속+'+(slv-1)*0.5+'초';
+        upLabel=_e?'Fuse Lv.'+slv+' | GroundRange+'+(slv-1)*8+' PrisonRange+'+(slv-1)*33+' Duration+'+(slv-1)*0.5+'s'
+          :'합체 Lv.'+slv+' | 땅 범위+'+(slv-1)*8+' 감옥범위+'+(slv-1)*33+' 지속+'+(slv-1)*0.5+'초';
       }else{
-        upLabel=sk.id==='chargeBoost'?'3충전 거리×'+(2+(slv-1)*.05).toFixed(2)+' 뎀×'+(1.5+(slv-1)*.25).toFixed(1)+' 속도+'+(slv-1)*2+' 폭+'+((slv-1)*2.5+12):sk.id==='detonate'?'비율 '+(15+(slv-1)*5)+'% 범위 '+(150+(slv-1)*10):sk.id==='magicBlink'?'폭발뎀 ×'+(1+(slv-1)*.15).toFixed(2)+' 범위 '+(130+(slv-1)*10)+' (INT)':(sk.id==='giantSlam'||sk.id==='giantSlam2')?'뎀+'+(slv-1)*10+'% 범위'+(500+(slv-1)*15)+' 쿨'+(8-(slv-1)*0.3).toFixed(1)+'초':sk.id==='fanShot'?'뎀 +'+bonusPct+'% 연사+1':'뎀 +'+bonusPct+'%';
+        upLabel=_e
+          ?(sk.id==='chargeBoost'?'3Charge Range\u00d7'+(2+(slv-1)*.05).toFixed(2)+' DMG\u00d7'+(1.5+(slv-1)*.25).toFixed(1)+' Speed+'+(slv-1)*2+' Blast+'+((slv-1)*2.5+12):sk.id==='detonate'?'Ratio '+(15+(slv-1)*5)+'% Range '+(150+(slv-1)*10):sk.id==='magicBlink'?'BlastDMG \u00d7'+(1+(slv-1)*.15).toFixed(2)+' Range '+(130+(slv-1)*10)+' (INT)':(sk.id==='giantSlam'||sk.id==='giantSlam2')?'DMG+'+(slv-1)*10+'% Range'+(500+(slv-1)*15)+' CD'+(8-(slv-1)*0.3).toFixed(1)+'s':sk.id==='fanShot'?'DMG +'+bonusPct+'% Rapid+1':'DMG +'+bonusPct+'%')
+          :(sk.id==='chargeBoost'?'3충전 거리×'+(2+(slv-1)*.05).toFixed(2)+' 뎀×'+(1.5+(slv-1)*.25).toFixed(1)+' 속도+'+(slv-1)*2+' 폭+'+((slv-1)*2.5+12):sk.id==='detonate'?'비율 '+(15+(slv-1)*5)+'% 범위 '+(150+(slv-1)*10):sk.id==='magicBlink'?'폭발뎀 ×'+(1+(slv-1)*.15).toFixed(2)+' 범위 '+(130+(slv-1)*10)+' (INT)':(sk.id==='giantSlam'||sk.id==='giantSlam2')?'뎀+'+(slv-1)*10+'% 범위'+(500+(slv-1)*15)+' 쿨'+(8-(slv-1)*0.3).toFixed(1)+'초':sk.id==='fanShot'?'뎀 +'+bonusPct+'% 연사+1':'뎀 +'+bonusPct+'%');
       }
       const _isMax=slv>=_skMaxLv;
       const _isLocked=slv>=_skLvLock&&!_isMax;
-      lockTxt='<span style="color:#'+(_isStormBeam?'ff6600':_isDimBlast?'00ccaa':_isDimRush?'00bbcc':_isDimThunder?'4422ff':_isDimSlam?'6633ff':_isDimFuse?'aa66ff':_isIceFuse?'66ccff':_isElemFuse?'ff66ff':_isSlamStorm?'ff4400':_isSixFuse?'ffaa00':_isBladeFuse?'dddddd':_isSynth?'ff8844':_isBoneStorm?'55cc77':_isShieldFuse?'8899aa':_isPlagueFuse?'aa2244':_isHolyW4?'ff44ff':_isHolyW3?'ff55dd':_isHolyW2?'ff66bb':_isHolyW1?'ff7799':_isHolyIce?'ff88cc':_isHolyFuse?'ff88aa':_isMax?'ffdd00':'44cc44')+'">습득 Lv.'+slv+(_isMax?' MAX':_isLocked?' 🔒Lv'+(_skLvLock*100)+'해금':'')+' ('+upLabel+')</span>';
-      if(canUp&&!_isMax&&!_isLocked) lockTxt += ' <span style="color:#ffcc44;">[강화 가능: '+(_isFuseUp?'⭐'+_fuseUpSp:'⭐'+_singleUpSp+' 👿'+sk.upMat)+']</span>';
+      lockTxt='<span style="color:#'+(_isStormBeam?'ff6600':_isDimBlast?'00ccaa':_isDimRush?'00bbcc':_isDimThunder?'4422ff':_isDimSlam?'6633ff':_isDimFuse?'aa66ff':_isIceFuse?'66ccff':_isElemFuse?'ff66ff':_isSlamStorm?'ff4400':_isSixFuse?'ffaa00':_isBladeFuse?'dddddd':_isSynth?'ff8844':_isBoneStorm?'55cc77':_isShieldFuse?'8899aa':_isPlagueFuse?'aa2244':_isHolyW4?'ff44ff':_isHolyW3?'ff55dd':_isHolyW2?'ff66bb':_isHolyW1?'ff7799':_isHolyIce?'ff88cc':_isHolyFuse?'ff88aa':_isMax?'ffdd00':'44cc44')+'">'+(_e?'Learned':'습득')+' Lv.'+slv+(_isMax?' MAX':_isLocked?' 🔒Lv'+(_skLvLock*100)+(_e?' unlock':'해금'):'')+' ('+upLabel+')</span>';
+      if(canUp&&!_isMax&&!_isLocked) lockTxt += ' <span style="color:#ffcc44;">['+(_e?'Upgrade: ':'강화 가능: ')+(_isFuseUp?'⭐'+_fuseUpSp:'⭐'+_singleUpSp+' 👿'+sk.upMat)+']</span>';
       else if(_isFuseUp&&!_isMax&&!canUp){
         const _fk3=_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';
-        if(P.sp<_fuseUpSp) lockTxt+=' <span style="color:#ff4444;font-size:.75rem">[SP 부족: '+P.sp+'/'+_fuseUpSp+']</span>';
+        if(P.sp<_fuseUpSp) lockTxt+=' <span style="color:#ff4444;font-size:.75rem">['+(_e?'SP needed: ':'SP 부족: ')+P.sp+'/'+_fuseUpSp+']</span>';
       }
     }else{
-      lockTxt='<span style="color:#44cc44">✅ 습득 완료</span>';
+      lockTxt='<span style="color:#44cc44">'+(_e?'✅ Learned':'✅ 습득 완료')+'</span>';
     }
     // 숙련도 바 (습득 스킬만)
     const _profV=_skProfVal(sk.id);
     const _profCap=_skProfCap(sk.id);
-    if(learned&&_profV<_profCap)lockTxt+='<div style="display:flex;align-items:center;gap:6px;margin-top:4px"><span style="font-size:.7rem;color:#88ccaa;white-space:nowrap">숙련 '+~~_profV+'/'+_profCap+'</span><div style="flex:1;height:8px;background:#1a1a1a;border:1px solid #335544;border-radius:4px;overflow:hidden"><div style="width:'+((_profV/_profCap)*100)+'%;height:100%;background:linear-gradient(90deg,#336644,#44ddaa);border-radius:3px;transition:width .3s"></div></div></div>';
-    else if(learned&&_profV>=_profCap)lockTxt+='<div style="margin-top:4px;font-size:.7rem;color:#44ddaa;font-weight:700">숙련 MAX ✦</div>';
+    if(learned&&_profV<_profCap)lockTxt+='<div style="display:flex;align-items:center;gap:6px;margin-top:4px"><span style="font-size:.7rem;color:#88ccaa;white-space:nowrap">'+(_e?'Mastery':'숙련')+' '+~~_profV+'/'+_profCap+'</span><div style="flex:1;height:8px;background:#1a1a1a;border:1px solid #335544;border-radius:4px;overflow:hidden"><div style="width:'+((_profV/_profCap)*100)+'%;height:100%;background:linear-gradient(90deg,#336644,#44ddaa);border-radius:3px;transition:width .3s"></div></div></div>';
+    else if(learned&&_profV>=_profCap)lockTxt+='<div style="margin-top:4px;font-size:.7rem;color:#44ddaa;font-weight:700">'+(_e?'Mastery MAX ✦':'숙련 MAX ✦')+'</div>';
 
     // 헤더/설명 구성
     const _gemCol=_fuseGem(sk.id);
     // 스킬 성급 별 표시 (★만, 보석 제거)
     const _skStar=Math.max(_skInnateStar(sk.id),_fuseStar(sk.id));
     const _starTxt=_skStar>=1?'<span style="color:#ffcc00;font-size:.75rem;margin-right:3px">'+'★'.repeat(Math.min(_skStar,6))+'</span>':'';
-    const _dispName=_starTxt+(_isStormBeam?'암전나선 [6단합체]':_isDimBlast?'기동:강화전폭 [6단합체]':_isDimRush?'기동:칼날개 [5단합체]':_isDimThunder?'기동:강화습격 [4단합체]':_isDimSlam?'사슬이동:강화 [3단합체]':_isDimFuse?'사슬이동:강화 [합체]':_isIceFuse?'얼음소용돌이 [합체]':_isElemFuse?'추적암전 [3단합체]':_isSlamStorm?'지진폭풍 [3단합체]':_isSixFuse?'암전 [합체]':_isBladeFuse?'악의 해방 [합체]':_isSynth?'회전기폭 [합성]':_isBoneStorm?'해골번개 [합체]':_isElecRepent?'참회 귀환 [합체]':_isShieldFuse?'날개치기 [합체]':_isPlagueFuse?'독혈해방 [합체]':_isHolyIce?'신성한 빙결 [3단합체]':_isHolyFuse?'신성한 결계 [합체]':sk.name);
-    const _dispDesc=_isStormBeam?'지진폭풍 + 추적암전 6단합체. 회전참 중 6원소 추적 빔 동시 발사! 전체 데미지 20% 강화. 종료 시 지진폭풍+빔 동시 폭발':_isDimBlast?'6단합체. 칼날개+전폭+파괴+불꽃 전부 강화. Shift+좌클릭 → 전방 파워웨이브':_isDimRush?'5단합체. 기동칼날개 해금! 이동 중 좌우 칼날 광역 베기+출혈. 파괴+불꽃도 강화':_isDimThunder?'4단합체. 기동파괴+불꽃 강화. 파괴 데미지↑ 포이즈↑ 범위↑':_isDimSlam?'3단합체. 기동불꽃 흡수. 착지 범위↑ 데미지↑':_isDimFuse?'사슬기동:충돌 + 사슬기동:화염 합체. Shift → 관통돌진 후 INT 기반 착지 대폭발! 스톡5, 쿨7초':_isIceFuse?'폭풍소환 + 얼음보주 합체. 마우스 조준 → 얼음 소용돌이 소환! 적을 중심으로 끌어당기며 빙결. 쿨 10초':_isElemFuse?'만화방창 + 멸살광선 + 원소추적탄 3단합체. E홀드 → 6원소 유도 추적 레이저! 각 빔이 가장 가까운 적을 자동 추적':_isSlamStorm?'회전기폭 + 대왕치기 3단합체. 회전 종료 시 기폭+대왕치기 진동파 동시 발동! 대왕치기 쿨타임 소멸, 범위↑':_isSixFuse?'만화방창 + 멸살광선 합체. E홀드 → 6원소 꽈배기 레이저! 원소추적탄 추가 합체 시 추적암전':_isBladeFuse?'악의사냥 + 악의보호자 합체. 암흑칼날이 몸 주위를 돌며 투사체 방어. 슬롯 키로 모인 칼날 전부 발사! (만렙 시 +2칼날)':_isSynth?'회전참 + 기폭팔 합성. 회전 중 패링 쉴드 자동 발동 → 적 공격 흡수 → 종료 시 자동 광역 폭발. 대왕치기 추가 합체 시 지진폭풍!':_isBoneStorm?'악의폭풍 + 해골무덤 합체. 마우스 조준 클릭 → 해골무덤 링 + 내부 암흑 DOT! 3스택 충전제, 벽 차단+지속 데미지':_isElecRepent?'해골번개 + 참회 합체. 참회 설치 시 전기 소용돌이 동시 생성! 데미지 20%↑, 1/5/10렙 차지 1/2/3':_isShieldFuse?'처내기 + 칼등날개 합체. 처내기 시 전방 돌진+내려찍기 충격파 자동 발동! 범위 내 적 히트+스턴+포이즈 삭감':_isPlagueFuse?'악의사냥 + 폭독혈 합체. 칼날 발사 시 독혈 칼날 자동 발사! 칼날 적중 시 전염 폭발':_isHolyIce?'신성한 결계 + 아이스 스톰 3단합체. 신성한 영역 설치 시 감옥+빙결 폭풍 동시 설치! 범위 내 리젠+부활차단+빙결':_isHolyFuse?'신성한 영역 + 구속의 영역 합체. 신성한 영역 설치 시 감옥 동시 설치! 범위 내 리젠+부활차단':(OPT.lang==='en'?(sk.descEn||sk.desc):sk.desc);
+    const _FUSE_NAME_EN={stormBeam:'Lightning Helix [6-Fuse]',dimBlast:'Chain: Full Burst [6-Fuse]',dimRush:'Chain: Bladewing [5-Fuse]',dimThunder:'Chain: Thunder [4-Fuse]',dimSlam:'Chain: Enhanced [3-Fuse]',dimBreach:'Chain: Enhanced [Fuse]',iceMortar:'Ice Vortex [Fuse]',elemFuse:'Tracking Lightning [3-Fuse]',slamStorm:'Quake Storm [3-Fuse]',sixFuse:'Lightning [Fuse]',bladeFuse:'Malice Liberation [Fuse]',whirlDet:'Whirl-Det [Synth]',boneStorm:'Bone Lightning [Fuse]',elecRepent:'Repentance Return [Fuse]',shieldFuse:'Wing Strike [Fuse]',plagueFuse:'Plague Liberation [Fuse]',holyIce:'Holy Freeze [3-Fuse]',holyFuse:'Holy Ward [Fuse]'};
+    const _fuseNameKey=_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isIceFuse?'iceMortar':_isElemFuse?'elemFuse':_isSlamStorm?'slamStorm':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isSynth?'whirlDet':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':null;
+    const _FUSE_NAME_KO={stormBeam:'암전나선 [6단합체]',dimBlast:'기동:강화전폭 [6단합체]',dimRush:'기동:칼날개 [5단합체]',dimThunder:'기동:강화습격 [4단합체]',dimSlam:'사슬이동:강화 [3단합체]',dimBreach:'사슬이동:강화 [합체]',iceMortar:'얼음소용돌이 [합체]',elemFuse:'추적암전 [3단합체]',slamStorm:'지진폭풍 [3단합체]',sixFuse:'암전 [합체]',bladeFuse:'악의 해방 [합체]',whirlDet:'회전기폭 [합성]',boneStorm:'해골번개 [합체]',elecRepent:'참회 귀환 [합체]',shieldFuse:'날개치기 [합체]',plagueFuse:'독혈해방 [합체]',holyIce:'신성한 빙결 [3단합체]',holyFuse:'신성한 결계 [합체]'};
+    const _dispName=_starTxt+(_fuseNameKey?(_e?_FUSE_NAME_EN[_fuseNameKey]:_FUSE_NAME_KO[_fuseNameKey]):(_e?(sk.nameEn||sk.name):sk.name));
+    const _FUSE_DESC_EN={stormBeam:'Quake Storm + Tracking Lightning 6-fuse. Fire 6-element tracking beams while spinning! +20% total DMG. Quake+Beam explosion on end.',dimBlast:'6-fuse. Bladewing+Burst+Destroy+Flame all enhanced. Shift+LMB \u2192 forward power wave.',dimRush:'5-fuse. Chain Bladewing unlocked! Slash left/right blades while moving+bleed. Destroy+Flame enhanced.',dimThunder:'4-fuse. Chain Destroy+Flame enhanced. Destroy DMG\u2191 Poise\u2191 Range\u2191',dimSlam:'3-fuse. Chain Flame absorbed. Land range\u2191 DMG\u2191',dimBreach:'Chain Rush: Impact + Chain Rush: Flame fuse. Shift \u2192 piercing rush then INT-based landing explosion! 5 stocks, 7s CD.',iceMortar:'Storm Summon + Ice Orb fuse. Mouse aim \u2192 summon ice vortex! Pulls enemies in and freezes. 10s CD.',elemFuse:'Barrage + Annihilation Beam + Elemental Tracker 3-fuse. Hold E \u2192 6-element homing lasers! Each beam auto-tracks nearest enemy.',slamStorm:'Whirl-Det + Giant Slam 3-fuse. On spin end, detonate+giant slam shockwave! Giant Slam CD removed, range\u2191',sixFuse:'Barrage + Annihilation Beam fuse. Hold E \u2192 6-element helix laser! Add Elemental Tracker for Tracking Lightning.',bladeFuse:'Malice Hunt + Malice Guardian fuse. Dark blades orbit you, blocking projectiles. Press slot key to fire all blades! (+2 blades at max lv)',whirlDet:'Whirlwind + Detonate synth. Auto parry shield during spin \u2192 absorb attacks \u2192 auto AOE blast on end. Add Giant Slam for Quake Storm!',boneStorm:'Malice Storm + Bone Tomb fuse. Mouse aim click \u2192 bone tomb ring + inner dark DOT! 3 stock charges, wall block+sustained DMG.',elecRepent:'Bone Lightning + Repentance fuse. Repentance placement spawns electric vortex! DMG+20%, charge 1/2/3 at Lv1/5/10.',shieldFuse:'Swipe + Wing Blade fuse. On swipe, auto forward rush+slam shockwave! Hits+stun+poise reduction in range.',plagueFuse:'Malice Hunt + Plague Burst fuse. Auto plague blades on blade fire! Plague explosion on hit.',holyIce:'Holy Ward + Ice Storm 3-fuse. Holy zone places prison+freeze storm! Regen+revive block+freeze in range.',holyFuse:'Holy Domain + Binding Domain fuse. Holy zone auto-places prison! Regen+revive block in range.'};
+    const _FUSE_DESC_KO={stormBeam:'지진폭풍 + 추적암전 6단합체. 회전참 중 6원소 추적 빔 동시 발사! 전체 데미지 20% 강화. 종료 시 지진폭풍+빔 동시 폭발',dimBlast:'6단합체. 칼날개+전폭+파괴+불꽃 전부 강화. Shift+좌클릭 → 전방 파워웨이브',dimRush:'5단합체. 기동칼날개 해금! 이동 중 좌우 칼날 광역 베기+출혈. 파괴+불꽃도 강화',dimThunder:'4단합체. 기동파괴+불꽃 강화. 파괴 데미지↑ 포이즈↑ 범위↑',dimSlam:'3단합체. 기동불꽃 흡수. 착지 범위↑ 데미지↑',dimBreach:'사슬기동:충돌 + 사슬기동:화염 합체. Shift → 관통돌진 후 INT 기반 착지 대폭발! 스톡5, 쿨7초',iceMortar:'폭풍소환 + 얼음보주 합체. 마우스 조준 → 얼음 소용돌이 소환! 적을 중심으로 끌어당기며 빙결. 쿨 10초',elemFuse:'만화방창 + 멸살광선 + 원소추적탄 3단합체. E홀드 → 6원소 유도 추적 레이저! 각 빔이 가장 가까운 적을 자동 추적',slamStorm:'회전기폭 + 대왕치기 3단합체. 회전 종료 시 기폭+대왕치기 진동파 동시 발동! 대왕치기 쿨타임 소멸, 범위↑',sixFuse:'만화방창 + 멸살광선 합체. E홀드 → 6원소 꽈배기 레이저! 원소추적탄 추가 합체 시 추적암전',bladeFuse:'악의사냥 + 악의보호자 합체. 암흑칼날이 몸 주위를 돌며 투사체 방어. 슬롯 키로 모인 칼날 전부 발사! (만렙 시 +2칼날)',whirlDet:'회전참 + 기폭팔 합성. 회전 중 패링 쉴드 자동 발동 → 적 공격 흡수 → 종료 시 자동 광역 폭발. 대왕치기 추가 합체 시 지진폭풍!',boneStorm:'악의폭풍 + 해골무덤 합체. 마우스 조준 클릭 → 해골무덤 링 + 내부 암흑 DOT! 3스택 충전제, 벽 차단+지속 데미지',elecRepent:'해골번개 + 참회 합체. 참회 설치 시 전기 소용돌이 동시 생성! 데미지 20%↑, 1/5/10렙 차지 1/2/3',shieldFuse:'처내기 + 칼등날개 합체. 처내기 시 전방 돌진+내려찍기 충격파 자동 발동! 범위 내 적 히트+스턴+포이즈 삭감',plagueFuse:'악의사냥 + 폭독혈 합체. 칼날 발사 시 독혈 칼날 자동 발사! 칼날 적중 시 전염 폭발',holyIce:'신성한 결계 + 아이스 스톰 3단합체. 신성한 영역 설치 시 감옥+빙결 폭풍 동시 설치! 범위 내 리젠+부활차단+빙결',holyFuse:'신성한 영역 + 구속의 영역 합체. 신성한 영역 설치 시 감옥 동시 설치! 범위 내 리젠+부활차단'};
+    const _dispDesc=_fuseNameKey?(_e?_FUSE_DESC_EN[_fuseNameKey]:_FUSE_DESC_KO[_fuseNameKey]):(_e?(sk.descEn||sk.desc):sk.desc);
     if(_skCompact){
       d.style.cssText=d.style.cssText.replace('padding:12px','padding:4px 8px');
       d.innerHTML='<div style="display:flex;align-items:center;gap:6px"><span style="color:'+(_fGrp?_fGrp.color:'#ffcc66')+';font-size:.8rem;font-weight:700">'+_dispName+'</span>'
-        +(learned?'<span style="color:#44cc44;font-size:.7rem">Lv.'+slv+(slv>=10?' MAX':'')+'</span><span style="color:#88ccaa;font-size:.6rem;margin-left:4px">'+(_profV>=_profCap?'숙련MAX':'숙련'+~~_profV+'/'+_profCap)+'</span>':'<span style="color:#886644;font-size:.7rem">⭐'+sk.spCost+' 👿'+sk.matCost+'</span>')
+        +(learned?'<span style="color:#44cc44;font-size:.7rem">Lv.'+slv+(slv>=10?' MAX':'')+'</span><span style="color:#88ccaa;font-size:.6rem;margin-left:4px">'+(_profV>=_profCap?(_e?'MastMAX':'숙련MAX'):(_e?'Mast '+~~_profV+'/'+_profCap:'숙련'+~~_profV+'/'+_profCap))+'</span>':'<span style="color:#886644;font-size:.7rem">⭐'+sk.spCost+' 👿'+sk.matCost+'</span>')
         +'</div>';
     }else{
       d.innerHTML='<div style="color:'+(_fGrp?_fGrp.color:'#ffcc66')+';font-size:.9rem;font-weight:700;margin-bottom:4px">'+_dispName+'</div>'
@@ -31554,7 +31580,7 @@ function draw(){
       {const bw=e.r*2+6,bx=e.x-bw/2;let by=e.y-e.r-14;
       if(e.hp<e.mhp){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle=gt.col;X.fillRect(bx,by,bw*(e.hp/e.mhp),4);by-=5}
       if(e.eShield>0&&e.eShieldMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),3);by-=4}
-      if(e.stunned>0){const _grMax=90;X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
+      if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
       if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*(e.poise/e.maxPoise),3)}}
       continue;
     }
@@ -37294,9 +37320,13 @@ function drawP(){
       X.globalAlpha=.8;X.fillStyle='#ffdd44';X.font='bold 10px sans-serif';X.textAlign='center';
       X.fillText('✦',_sx,_sy)}
     X.globalAlpha=1;
+    // 남은 시간 표시 (주황 카운트다운)
+    const _pStSec=(P.st2/60).toFixed(1);
+    X.globalAlpha=.9;X.fillStyle='#ff8800';X.font='bold 14px "Noto Sans KR"';X.textAlign='center';
+    X.fillText(_pStSec+'s',P.x,P.y-P.r-22);
     // 탈출 안내
-    X.globalAlpha=.5+Math.sin(t/100)*.3;X.fillStyle='#ffffff';X.font='bold 11px "Noto Sans KR"';X.textAlign='center';
-    X.fillText('Shift '+_T('탈출')+' | '+_T('방향키 연타'),P.x,P.y+P.r+18);X.globalAlpha=1;
+    X.globalAlpha=.5+Math.sin(t/100)*.3;X.fillStyle='#ffffff';X.font='bold 11px "Noto Sans KR"';
+    X.fillText(_T('방향키 연타'),P.x,P.y+P.r+18);X.globalAlpha=1;
   }
 
   // combo UI 제거 (항상 3타 효과)
@@ -37697,11 +37727,12 @@ function updateHUD(slow){
   const _stH=$('stageTimerHud');if(_stH){const _stSec=~~((G.stageTime||0)/60);const _stM=~~(_stSec/60),_stS=_stSec%60;const _taT=G._totalSpawned||0,_taK=G._stageKills||0;const _taPct=_taT>0?~~(_taK/_taT*100):0;const _taBest=G._taRecords&&G._taRecords[G.stage];const _taBestStr=_taBest?(' 🏆'+~~(_taBest/60)+':'+((_taBest%60<10?'0':'')+_taBest%60)):'';const _ptSec=~~((G.playTime||0)/60);const _ptH=~~(_ptSec/3600),_ptM=~~((_ptSec%3600)/60),_ptS=_ptSec%60;const _ptStr=' | ⏰'+_ptH+':'+((_ptM<10?'0':'')+_ptM)+':'+((_ptS<10?'0':'')+_ptS);_stH.textContent='⏱ '+((_stM<10?'0':'')+_stM)+':'+((_stS<10?'0':'')+_stS)+' | 💀'+_taPct+'%'+(_taPct>=90?' ✓':'')+_taBestStr+_ptStr;_stH.style.color=_taPct>=90?'#44ddff':'#88aacc'}
   // 포이즈 게이지 업데이트
   {const _pb=$('poiseBarFill');if(_pb&&P.maxPoise>0){
-    if(P._groggyT>0){// 그로기: 주황 바 카운트다운
-      const _gp=Math.max(0,P._groggyT/300);_pb.style.width=(_gp*100)+'%';_pb.style.background='linear-gradient(90deg,#ff8800,#ff4400)';
+    if(P.s==='pStun'){// 스턴 중: 주황 게이지 카운트다운
+      const _sp=Math.max(0,P.st2/300);_pb.style.width=(_sp*100)+'%';_pb.style.background='linear-gradient(90deg,#ff8800,#ff4400)';
     }else{// 일반: 흰색 포이즈
       const _pp=Math.max(0,Math.min(1,(P.poise||0)/P.maxPoise));_pb.style.width=(_pp*100)+'%';_pb.style.background=_pp>.5?'linear-gradient(90deg,#ffffff,#ddddcc)':_pp>.25?'linear-gradient(90deg,#ffaa44,#ff6622)':'linear-gradient(90deg,#ff3333,#aa0000)';
-    }}}
+    }
+  }}
   $('expBar').style.opacity='1';
   const _eqW=INV.equipped.weapon,_eqS=INV.equipped.shield,_eqB=INV.equipped.boots;
   if(!$('eq0'))return; // eq elements guard
@@ -37949,7 +37980,7 @@ function loop(timestamp){
 
 // ═══ DB-aware startup ═══
 async function startGameFromDB(){
-  showBootLoading('맵과 몬스터 불러오는 중...');
+  showBootLoading(OPT.lang==='en'?'Loading map and monsters...':'맵과 몬스터 불러오는 중...');
   // 1) 인증 체크 — 세션/캐릭터 없으면 로비로 리다이렉트
   let session=null;try{const r=await sb.auth.getSession();session=r?.data?.session}catch(e){}
   if(!session||!_charId){window.location.href='/?lobby=1';return}
@@ -38302,7 +38333,7 @@ function showBootLoading(msg){
   const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg');
   if(!el||!bar||!name) return;
   _bootLoadShownAt=Date.now();
-  name.textContent=msg||'불러오는 중...';
+  name.textContent=msg||(OPT.lang==='en'?'Loading...':'불러오는 중...');
   if(img){
     const idx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[idx];
@@ -38424,7 +38455,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   };
 
   // 초기화 (게임 시작 전 세이브 먼저 로드)
-  showBootLoading('맵과 몬스터 불러오는 중...');
+  showBootLoading(OPT.lang==='en'?'Loading map and monsters...':'맵과 몬스터 불러오는 중...');
   setBootLoading(25,'기본 데이터 준비 중...');
   P=mkP();
   INV.bag=[];INV.equipped={weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,necklace:null,ring1:null,ring2:null,cape:null};INV.selected=null;
@@ -38549,7 +38580,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     }catch(e){console.warn('[WEB] Save failed:',e)}
     finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
   };
-  showBootLoading('맵과 몬스터 불러오는 중...');
+  showBootLoading(OPT.lang==='en'?'Loading map and monsters...':'맵과 몬스터 불러오는 중...');
   setBootLoading(25,'기본 데이터 준비 중...');
   P=mkP();
   INV.bag=[];INV.equipped={weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,necklace:null,ring1:null,ring2:null,cape:null};INV.selected=null;
