@@ -5426,22 +5426,23 @@ addEventListener('keydown',e=>{
     if(_harpActive||_dashActive){_harpActive=false;_dashActive=false;_dashHold=false;_dashLeft=0;_dashTier=0;_dashVX=0;_dashVY=0;_dashPhase=0;P._chainSlamReady=false;P._chainAssaultReady=false;addTxt(P.x,P.y-20,_T('캔슬'),'#ff6666',20);playSample('ui_cancel',.4,1)}
     else if(!_dashHold&&_harpGauge>=_HARP_GAUGE_COST[1]){_dashHold=true;_dashHoldF=0;_dashTier=0}
   }
-  // ═══ 칼날이동 — 방향키 더블탭 감지 ═══
+  // ═══ 칼날이동 — 더블탭 or 방향키+스페이스 동시 입력 ═══
   if(G.on&&!G.paused&&!e.repeat&&P.s!=='fallen'&&P.s!=='dead'&&P.skills&&P.skills.bladeDash>=1){
     const _bdDirs={[BINDS.up]:0,[BINDS.down]:1,[BINDS.left]:2,[BINDS.right]:3};
     if(BINDS2.up)_bdDirs[BINDS2.up]=0;if(BINDS2.down)_bdDirs[BINDS2.down]=1;
     if(BINDS2.left)_bdDirs[BINDS2.left]=2;if(BINDS2.right)_bdDirs[BINDS2.right]=3;
     const _bdDir=_bdDirs[e.code];
     if(_bdDir!==undefined){
-      if((P.skills.bladeDash||0)>=10){
-        // 만렙: 방향키 한번으로 즉시 발동
-        P._bdTrigger=_bdDir;
-      }else{
-        const _now=performance.now();
-        if(P._bdLastDir===_bdDir&&_now-P._bdLastT<250){
-          P._bdTrigger=_bdDir;P._bdLastDir=-1;P._bdLastT=0;
-        }else{P._bdLastDir=_bdDir;P._bdLastT=_now}
-      }
+      // 1) 방향키+스페이스 동시
+      if(_keys['Space']){P._bdTrigger=_bdDir}
+      // 2) 더블탭 (250ms 이내 같은 방향키 2번)
+      else{const _now=performance.now();
+        if(P._bdLastDir===_bdDir&&_now-P._bdLastT<250){P._bdTrigger=_bdDir;P._bdLastDir=-1;P._bdLastT=0}
+        else{P._bdLastDir=_bdDir;P._bdLastT=_now}}
+    }
+    // 스페이스 눌렀을 때 방향키 이미 눌려있으면
+    if(e.code==='Space'){
+      for(const[code,dir]of Object.entries(_bdDirs)){if(_keys[code]){P._bdTrigger=dir;break}}
     }
   }
   // ── 인벤토리 열린 상태: Space=쓰레기 토글, F=중요잠금 토글 ──
