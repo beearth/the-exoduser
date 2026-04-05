@@ -7263,19 +7263,19 @@ function _beanRoll(el,col,sz,spd,dmgMult,e){
   if(e){if(!e._beanCnt)e._beanCnt=0;e._beanCnt++;
     // 10% 확률로 들러리탄 (교대 카운트 안 올림)
     const _dr=Math.random();if(_dr<.10){e._beanCnt--;
-      if(_dr<.03)return{el:EL.P,col:'#111111',sz:1.6,spd:spd*1.1,dmgM:dmgMult*1.3,bwBean:true};
-      if(_dr<.06)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:dmgMult*1.3,gbBean:true};
-      if(_dr<.08)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:dmgMult};
-      return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:dmgMult*1.1}}
-    if(e._beanCnt%4!==0)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:dmgMult*1.5,blackBean:true};
-    return{el:el,col:'#cc1100',sz:1.5,spd:spd,dmgM:dmgMult*1.2,redBean:true,homing:true}}
+      if(_dr<.03)return{el:EL.P,col:'#111111',sz:1.6,spd:spd*1.1,dmgM:dmgMult*2.6,bwBean:true};
+      if(_dr<.06)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:dmgMult*2.6,gbBean:true};
+      if(_dr<.08)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:dmgMult*2.0};
+      return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:dmgMult*2.2}}
+    if(e._beanCnt%4!==0)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:dmgMult*3.0,blackBean:true};
+    return{el:el,col:'#cc1100',sz:1.5,spd:spd,dmgM:dmgMult*2.4,redBean:true,homing:true}}
   const r=Math.random();
-  if(r<.60)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:dmgMult*1.5,blackBean:true};
-  if(r<.82)return{el:el,col:'#cc1100',sz:1.5,spd:spd,dmgM:dmgMult*1.2,redBean:true,homing:true};
-  if(r<.88)return{el:EL.P,col:'#111111',sz:1.6,spd:spd*1.1,dmgM:dmgMult*1.3,bwBean:true};
-  if(r<.94)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:dmgMult*1.3,gbBean:true};
-  if(r<.97)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:dmgMult};
-  return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:dmgMult*1.1}}
+  if(r<.60)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:dmgMult*3.0,blackBean:true};
+  if(r<.82)return{el:el,col:'#cc1100',sz:1.5,spd:spd,dmgM:dmgMult*2.4,redBean:true,homing:true};
+  if(r<.88)return{el:EL.P,col:'#111111',sz:1.6,spd:spd*1.1,dmgM:dmgMult*2.6,bwBean:true};
+  if(r<.94)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:dmgMult*2.6,gbBean:true};
+  if(r<.97)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:dmgMult*2.0};
+  return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:dmgMult*2.2}}
 function radialProjs(e,count,spd,dmgMult,el,life,col,sz){count*=2;life=~~(life*1.5);for(let i=0;i<count;i++){const a=Math.PI*2*i/count;const b=_beanRoll(el,col,sz,spd,dmgMult,e);spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*b.spd,vy:Math.sin(a)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing})}}
 function eProjAt(e,ang,spd,dmgMult,el,life,col,sz){life=~~(life*1.5);const b=_beanRoll(el,col,sz,spd,dmgMult,e);spawnProj({x:e.x,y:e.y,vx:Math.cos(ang)*b.spd,vy:Math.sin(ang)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing})}
 // ═══════════════════════════════════════
@@ -12904,7 +12904,7 @@ function pDefAdd(){return PASSIVES.pDef*5+(P._altDef||0)*30}   // 방어력 +5/l
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
 function pParryDmg(){return 2+PASSIVES.pParry*.50}     // 기본 +100%, 카운터뎀 +50%/lv (10lv=+600%)
-function pParryProjDmgMul(){return 3;}
+function pParryProjDmgMul(){return 9;}
 function pParryBlueBeanBase(p){return Math.max(p.dmg,~~(magicRef()*statInt()*pMagicMul()*0.8));}
 function pParryRmbSpd(){return 1+PASSIVES.pParry*.10}  // 우클릭공속 +10%/lv (10lv=+100%)
 function pParryRainbowDR(){return Math.min(.50,PASSIVES.pParry*.10)} // 무지개탄 피해감소 +10%/lv (최대50%)
@@ -18054,6 +18054,8 @@ function update(){
   if(P.poiseR!==undefined){P.poiseR+=sp;if(P.poiseR>=120&&P.poise<P.maxPoise){P.poise=Math.min(P.maxPoise,P.poise+P.maxPoise*0.02*sp)}}
   // 죽은 적 정리 (매 20프레임 — 누적 방지)
   if(G._gcT===undefined)G._gcT=0;G._gcT++;
+  // 생존 적 수 카운트 (소환굴 스폰캡 기준)
+  {let _ac=0;for(let i=0;i<ens.length;i++)if(ens[i].alive)_ac++;G._aliveEns=_ac}
   // ens 하드캡: 600 초과 시 즉시 정리 (원거리 비보스 우선 제거)
   if(ens.length>600){let _sorted=[];for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive){if(e._reviveTimer>0)_sorted.push(e);continue}_sorted.push(e)}_sorted.sort((a,b)=>(a.ib?0:1)-(b.ib?0:1)||dst2(P.x,P.y,a.x,a.y)-dst2(P.x,P.y,b.x,b.y));if(_sorted.length>500){for(let _ci=500;_ci<_sorted.length;_ci++){if(_sorted[_ci].alive&&!_sorted[_ci].ib){G.kills++;G._stageKills=(G._stageKills||0)+1}}_sorted.length=500}ens.length=0;for(let i=0;i<_sorted.length;i++)ens[i]=_sorted[i];ens.length=_sorted.length;_shDirty=true}
   if(G._gcT>20){G._gcT=0;
@@ -18997,7 +18999,7 @@ function update(){
     if(h._spawnTotal==null){const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';h._spawnTotal=SPAWN_HOLE.cnt[_hType]||50;h._spawned=0;h._spawnCD=0}
     if(h._spawnCD>0){h._spawnCD-=sp;continue}
     const _BATCH=5;
-    if(ens.length>=_maxEns){h._spawnCD=30;continue} // 적 소프트캡 초과 시 스폰 대기
+    if(G._aliveEns>=_maxEns){h._spawnCD=30;continue} // 생존 적 소프트캡 초과 시 스폰 대기
     const _hRemain=Math.min(_BATCH,h._spawnTotal-h._spawned);
     for(let _hj=0;_hj<_hRemain;_hj++){
       let _hsx,_hsy,_hTry=0;
