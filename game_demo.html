@@ -6542,8 +6542,9 @@ function spawnProj(props){
   else{p=_mkProj()}
   for(const k in props)p[k]=props[k];
   if(!p.ml&&p.life)p.ml=p.life;
-  // 적 탄막 속도 30% 증가 (데미지 글로벌 배율 제거)
+  // 적 탄막 속도 30% 증가 + 데미지 2배
   if(!p.friendly){
+    p.dmg=~~(p.dmg*2);
     p.vx*=1.3;p.vy*=1.3;
     // 유령 허수아비: 가까운 대상으로 발사 방향 변경 (무지개콩 제외, 보스탄 포함)
     if(G._voidScarecrow&&G._voidScarecrow.aggroOn&&!p.blackBean){
@@ -7540,7 +7541,7 @@ function teleportE(e,nx,ny,col,n){if(!canMv(nx,ny,e.r))return false;
   return true}
 function _beanRoll(el,col,sz,spd,dmgMult,e){
   // 근거리(150px 이내) → 특수탄 금지, 일반탄만
-  if(e&&dst(e.x,e.y,P.x,P.y)<500)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd,dmgM:dmgMult};
+  if(e&&dst(e.x,e.y,P.x,P.y)<300)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd,dmgM:dmgMult};
   // 무지개:빨콩 75:25 교대 + 10% 들러리 삽입
   if(e){if(!e._beanCnt)e._beanCnt=0;e._beanCnt++;
     // 10% 확률로 들러리탄 (교대 카운트 안 올림)
