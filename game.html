@@ -5337,8 +5337,8 @@ const AFFIX_POOL=[
   {id:'goldBonus',type:1,tiers:[.15,.25,.40],unit:'pct',slots:['boots','ring'],group:'gold',weight:70},
   {id:'potionPower',type:1,tiers:[.20,.35,.55],unit:'pct',slots:['pants'],group:'pot',weight:60},
   {id:'extraST',type:1,tiers:[50,75,100],unit:'val',slots:['boots'],group:'dodg',weight:55},
-  {id:'antiRevive',type:1,tiers:[.10,.20,.30],unit:'pct',slots:['neck','wpn','bracelet'],group:'arev',weight:40},
-  {id:'antiRevive',type:1,tiers:[.01,.10,.20],unit:'pct',slots:['ring'],group:'arev',weight:40},
+  {id:'antiRevive',type:1,tiers:[.04,.08,.12,.16,.20],unit:'pct',slots:['neck','wpn','bracelet'],group:'arev',weight:40,tierW:[50,30,15,4,1]},
+  {id:'antiRevive',type:1,tiers:[.02,.04,.08,.12,.16],unit:'pct',slots:['ring'],group:'arev',weight:40,tierW:[50,30,15,4,1]},
   // 악마의 팔찌 전용: 부활력/부활쿨
   {id:'revivePow',type:0,tiers:[.10,.18,.28],unit:'pct',slots:['bracelet'],group:'rpow',weight:80,brType:'demon'},
   {id:'reviveCd',type:0,tiers:[-.10,-.18,-.28],unit:'pct',slots:['bracelet'],group:'rcd',weight:70,brType:'demon'},
@@ -5458,11 +5458,20 @@ function rollAffixes(grade,slot,brType){
     for(let j=0;j<pool.length;j++){
       const a=pool[j];if(usedG[a.group]||a.tiers[0]==null)continue;
       r-=a.weight;if(r<=0){
-        // T1~maxTier 범위 내 랜덤 값 (skewRoll: 고뎀 극악 편향)
-        const lo=a.tiers[0],hi=a.tiers[maxTier];
-        const _rr=a.skewRoll?Math.pow(Math.random(),a.skewRoll):Math.random();
-        const val=a.unit==='cnt'||a.unit==='val'?lo+~~(_rr*(hi-lo+1)):+(lo+(hi-lo)*_rr).toFixed(4);
-        const tierIdx=val>=a.tiers[Math.min(2,maxTier)]?maxTier:val>=a.tiers[Math.min(1,maxTier)]?Math.min(1,maxTier):0;
+        // T1~maxTier 범위 내 랜덤 값 (skewRoll: 고뎀 극악 편향, tierW: 티어별 가중치)
+        let val,tierIdx;
+        if(a.tierW){
+          // tierW 가중치 기반 티어 선택
+          let _twSum=0;for(let _ti=0;_ti<=maxTier;_ti++)_twSum+=(a.tierW[_ti]||1);
+          let _tr=Math.random()*_twSum;tierIdx=0;
+          for(let _ti=0;_ti<=maxTier;_ti++){_tr-=(a.tierW[_ti]||1);if(_tr<=0){tierIdx=_ti;break}}
+          val=a.tiers[tierIdx];
+        }else{
+          const lo=a.tiers[0],hi=a.tiers[maxTier];
+          const _rr=a.skewRoll?Math.pow(Math.random(),a.skewRoll):Math.random();
+          val=a.unit==='cnt'||a.unit==='val'?lo+~~(_rr*(hi-lo+1)):+(lo+(hi-lo)*_rr).toFixed(4);
+          tierIdx=val>=a.tiers[Math.min(2,maxTier)]?maxTier:val>=a.tiers[Math.min(1,maxTier)]?Math.min(1,maxTier):0;
+        }
         result.push({id:a.id,tier:tierIdx,value:val});usedG[a.group]=1;break}
     }
   }
@@ -14980,6 +14989,9 @@ function _enterBossArena(){
     _bossCx:G._bossCx,_bossCy:G._bossCy,_gateY:G._gateY,_bossEntY:G._bossEntY,
     spawnHoles:G.spawnHoles.slice(),rifts:G.rifts.slice()};
   const si=G.stage;const arena=genBossArena(si);
+  // 아레나 전환: 던전 잔여 몹을 처치율에 반영 (소멸 = 킬로 카운트)
+  {let _survCnt=0;for(let _si=0;_si<ens.length;_si++){if(ens[_si].alive&&!ens[_si].ib)_survCnt++}
+  G._stageKills=(G._stageKills||0)+_survCnt;}
   ens=[];for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;{for(let _ri=0;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=0;};worldItems=[];G.parts=[];G.txts=[];
   G.hitStop=0;G.slowMo=0;G.curRoom=0;if(typeof _eSpCache!=='undefined')_eSpCache.clear();_impacts=[];_vfxAnims.length=0;_fireExps.length=0;
   G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;G._voidScarecrow=null;G._editorEyes=[];
@@ -18452,14 +18464,7 @@ function update(){
       P.iframes=15;addTxt(p.x,p.y-15,'❌ Q키로!','#ff44ff',50);
       SFX.detonate();shake(10);_pHit=true;
     }
-    // 회전참 중: iframes여도 범위 내 탄 소멸 (흡수율 적용 데미지)
-    if(p.blackBean&&!_pHit&&_pDist<_bkHitR&&P.iframes>0&&!P._ioActive&&P.s==='whirlwind'){
-      const _bkAbs3=Math.min(.95,0.70+0+(_isFused('whirlDet')?(P.skills.detonate||1)*0.005:0));
-      const _bkD3=Math.max(1,~~(p.dmg*0.3*(1-_bkAbs3)*(1-pParryRainbowDR())));
-      P.hp-=_bkD3;if(P.hp<=0)die();
-      P.parryBank=(P.parryBank||0)+(_isFused('whirlDet')?(p.dmg||10):~~(p.dmg*0.3*_bkAbs3));
-      addParts(p.x,p.y,'#ff00ff',1);_pHit=true;
-    }
+    // 회전참 중 무지개탄: 흡수/소멸 불가 — Q패링만 가능, 회전참 무시하고 통과
     if(p.blackBean&&!_pHit&&_pDist<_bkHitR&&!P._ioActive){
       if(P.iframes>0&&P.s!=='whirlwind'){_pHit=true;_recycleProj(p);continue} // 무적 중이면 무시
       const _bkParry=_sbPW; // 무지개탄: Q(sBlock) 패링만 가능, 우클릭(sBash) 불가

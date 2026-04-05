@@ -194,7 +194,7 @@ Object.freeze(AFFIX_POOL);
 | extraDodge | 스태미나의 | SUFFIX | 1/1/2 | val | bts,pnt | 사슬게이지 MAX 추가 |
 | stRegen | 회복의 | SUFFIX | 3%/6%/10% | pct | arm,rng,nck | ST 재생 배율 |
 | dpRegen | 마력의 | SUFFIX | 2%/4%/7% | pct | hlm,nck | MP 재생 배율 |
-| antiRevive | 진혼의 | SUFFIX | — | pct | — | 보스 부활 억제 |
+| antiRevive | 진혼의 | SUFFIX | 4%/8%/12%/16%/20% (5티어, 고티어 극악확률 tierW:50/30/15/4/1) | pct | neck,wpn,bracelet (반지: 2/4/8/12/16%) | 보스 부활 억제 (최대20%) |
 
 #### ✅ 구현 완료 (27종, 2026-03-23)
 

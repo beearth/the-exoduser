@@ -349,3 +349,10 @@
 ## 2026-04-05 02:30 (auto)
 - game.html
 
+
+## 2026-04-05 12:30 (auto)
+- docs/2κ²μ„?”μ?Έλ λ²¨λ””?μΈ/2κ²μ„?”μ?Έλ λ²¨λ””?μΈ.md
+- docs/7?„μ΄?λ””?μΈ/exoduser-item-system-full.md
+- docs/8.0λª¬μ¤?°λ””?μΈ/λª¬μ¤??μ΄κ?λ¦?md
+- game.html
+
