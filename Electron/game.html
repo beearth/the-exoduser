@@ -3067,6 +3067,7 @@ const _EN={
 '림보':'Limbo','색욕':'Lust','탐식':'Gluttony','탐욕':'Greed','분노':'Wrath','이단':'Heresy','폭력':'Violence',
 '분노!':'Rage!','탐욕!':'Greed!','💀 분노 폭발!':'💀 Rage Burst!','심연의 분노!':'Abyssal Rage!','쌍둥이의 분노!':'Twin\'s Rage!',
 // --- HUD / misc ---
+'소환굴':'Spawn Hole',
 '레어':'Rare','처치!':'Defeated!','투구 착용':'Helmet On','투구 해제':'Helmet Off',
 '맨손':'Bare','없음':'None','갑옷':'Armor','부츠':'Boots',
 // --- Elite / Mod / Aura ---
@@ -5449,7 +5450,7 @@ addEventListener('keydown',e=>{
     const _bdDir=_bdDirs[e.code];
     if(_bdDir!==undefined){
       // 1) 방향키+스페이스 동시
-      if(KH['Space']){P._bdTrigger=_bdDir}
+      if(KH['Space']){P._bdTrigger=_bdDir;K['Space']=false;KH['Space']=false;return}
       // 2) 더블탭 (250ms 이내 같은 방향키 2번)
       else{const _now=performance.now();
         if(P._bdLastDir===_bdDir&&_now-P._bdLastT<250){P._bdTrigger=_bdDir;P._bdLastDir=-1;P._bdLastT=0}
@@ -5457,7 +5458,7 @@ addEventListener('keydown',e=>{
     }
     // 스페이스 눌렀을 때 방향키 이미 눌려있으면
     if(e.code==='Space'){
-      for(const[code,dir]of Object.entries(_bdDirs)){if(KH[code]){P._bdTrigger=dir;break}}
+      for(const[code,dir]of Object.entries(_bdDirs)){if(KH[code]){P._bdTrigger=dir;K['Space']=false;return}}
     }
   }
   // ── 인벤토리 열린 상태: Space=쓰레기 토글, F=중요잠금 토글 ──
@@ -29469,6 +29470,7 @@ let _invSalSel=new Set(); // 인벤토리 분해 선택
 let _invHover=-1; // 호버 중인 가방 인덱스
 // _invRenderDetail: 우측 패널에 비교+아이템상세 렌더 (호버/선택 공용)
 function _invRenderDetail(idx,source){
+  const _e=OPT.lang==='en';
   const it=source==='eq'?INV.equipped[idx]:source==='st'?(_getStore()[idx]||null):INV.bag[idx];
   if(!it)return;
   const rp=$('invRight');if(!rp)return;
@@ -29500,7 +29502,7 @@ function _invRenderDetail(idx,source){
   // ── 2.5) 결정 슬롯 인터랙티브 UI (장착 아이템만) ──
   if(source==='eq'&&it.socketCount>0){
     const cDiv=document.createElement('div');cDiv.style.cssText='margin-top:6px;padding:6px;border:1px solid #553388;border-radius:4px;background:rgba(100,0,200,.06)';
-    let ch='<div style="color:#bb88ff;font-size:.8rem;font-weight:700;margin-bottom:4px">💎 결정 슬롯 ('+it.socketCount+') — 클릭하여 장착/탈착</div>';
+    let ch='<div style="color:#bb88ff;font-size:.8rem;font-weight:700;margin-bottom:4px">💎 '+(_e?'Crystal Slot':'결정 슬롯')+' ('+it.socketCount+') — '+(_e?'click to equip/detach':'클릭하여 장착/탈착')+'</div>';
     for(let ci=0;ci<it.socketCount;ci++){
       const cr=it.crystals?it.crystals[ci]:null;
       if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],cv=~~crystalVal(cr);
@@ -29509,7 +29511,7 @@ function _invRenderDetail(idx,source){
         ch+='<span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+(cd.pct?'+'+cv+'%':'+'+cv)+'</span>';
         ch+='<span style="color:#aa6644;font-size:.7rem">'+_T('탈착')+'</span></div>';
       }else{
-        ch+='<div onclick="if(_selectedCrystal>=0&&CRYSTAL_BAG[_selectedCrystal]){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',CRYSTAL_BAG[_selectedCrystal],_selectedCrystal);_selectedCrystal=-1;renderInv();_invRenderDetail(\''+idx+'\',\'eq\')}else{openCrystalPicker(function(cr,bi){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',cr,bi);renderInv();_invRenderDetail(\''+idx+'\',\'eq\')})}" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px dashed '+(_selectedCrystal>=0?'#bb88ff':'#554433')+';background:'+(_selectedCrystal>=0?'rgba(187,136,255,.1)':'rgba(0,0,0,.15)')+';border-radius:3px;color:'+(_selectedCrystal>=0?'#bb88ff':'#665544')+';font-size:.8rem" onmouseover="this.style.borderColor=\'#bb88ff\'" onmouseout="this.style.borderColor=\''+(_selectedCrystal>=0?'#bb88ff':'#554433')+'\'">◇ 빈 슬롯'+(_selectedCrystal>=0?' — 클릭하여 선택결정 장착':' — 결정 선택 후 클릭')+'</div>';
+        ch+='<div onclick="if(_selectedCrystal>=0&&CRYSTAL_BAG[_selectedCrystal]){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',CRYSTAL_BAG[_selectedCrystal],_selectedCrystal);_selectedCrystal=-1;renderInv();_invRenderDetail(\''+idx+'\',\'eq\')}else{openCrystalPicker(function(cr,bi){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',cr,bi);renderInv();_invRenderDetail(\''+idx+'\',\'eq\')})}" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px dashed '+(_selectedCrystal>=0?'#bb88ff':'#554433')+';background:'+(_selectedCrystal>=0?'rgba(187,136,255,.1)':'rgba(0,0,0,.15)')+';border-radius:3px;color:'+(_selectedCrystal>=0?'#bb88ff':'#665544')+';font-size:.8rem" onmouseover="this.style.borderColor=\'#bb88ff\'" onmouseout="this.style.borderColor=\''+(_selectedCrystal>=0?'#bb88ff':'#554433')+'\'">◇ '+(_e?'Empty Slot':'빈 슬롯')+''+ (_selectedCrystal>=0?' — '+(_e?'Click to equip selected crystal':'클릭하여 선택결정 장착'):' — '+(_e?'Select crystal then click':'결정 선택 후 클릭'))+'</div>';
       }
     }
     cDiv.innerHTML=ch;rp.appendChild(cDiv);
@@ -29635,12 +29637,12 @@ function _invCardFields(it){
   // ═══ 결정 슬롯 표시 ═══
   if(it.socketCount>0){
     stats+='<div style="margin-top:6px;border-top:1px solid #553388;padding-top:4px">';
-    stats+='<div style="color:#bb88ff;font-size:.8rem;font-weight:700">💎 결정 슬롯 ('+it.socketCount+')</div>';
+    stats+='<div style="color:#bb88ff;font-size:.8rem;font-weight:700">💎 '+(_e?'Crystal Slot':'결정 슬롯')+' ('+it.socketCount+')</div>';
     for(let ci=0;ci<it.socketCount;ci++){
       const cr=it.crystals?it.crystals[ci]:null;
       if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],cv=~~crystalVal(cr);
         stats+='<div style="color:'+cs.color+';font-size:.8rem">'+cd.emoji+' '+_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+ ' ('+(cd.pct?'+'+cv+'%':'+'+cv)+')</div>';
-      }else stats+='<div style="color:#555;font-size:.8rem">◇ 빈 슬롯</div>';
+      }else stats+='<div style="color:#555;font-size:.8rem">◇ '+(_e?'Empty Slot':'빈 슬롯')+'</div>';
     }
     stats+='</div>';
   }
@@ -29648,9 +29650,11 @@ function _invCardFields(it){
 }
 // ── 장착 비교 HTML 빌드 ──
 function _invBuildCompare(item,curEq){
+  const _e=OPT.lang==='en';
+  const _cmpEN={'ST소모':'ST Cost','무기사거리':'Weapon Range','공격범위':'Attack Arc','무기경직':'Weapon Stagger','발사속도':'Fire Rate','활사거리':'Bow Range','관통확률':'Pierce Chance','ST총량':'ST Total','돌진력':'Charge Power','돌진거리':'Charge Dist','돌진거리+':'Charge Dist+','돌진폭':'Charge Width','광역범위':'AoE Range','돌진충전':'Charge CD','경직력':'Stagger','블록율':'Block Rate','무게':'Weight','스플래시범위':'Splash Range','스플래시배율':'Splash Mult','마법관통':'Magic Pen','사거리+':'Range+','ST회복':'ST Regen','MP회복':'MP Regen','공격속도':'ATK Speed','물약쿨감':'Potion CD','추가HP':'Bonus HP','경험치보너스':'EXP Bonus','치명률':'Crit Rate','치명뎀':'Crit DMG','마법DP':'Magic DP','돌진충전+':'Charge Stock+','에너지방어':'Energy DEF'};
   const cmpKeys=[['atk','ATK'],['def','DEF'],['spd','SPD'],['wStCost','ST소모',true],['wRange','무기사거리'],['wArcW','공격범위'],['wStagger','무기경직'],['bowSpd','발사속도'],['bowRange','활사거리'],['bowPierce','관통확률'],['bonusSt','ST총량'],['charge','돌진력'],['chargeDist','돌진거리'],['bonusChargeDist','돌진거리+'],['chargeW','돌진폭'],['chargeAoE','광역범위'],['chargeCharge','돌진충전'],['stagger','경직력'],['blockRate','블록율'],['shieldWt','무게',true],['splashR','스플래시범위'],['splashMul','스플래시배율'],['magicPen','마법관통'],['bonusRange','사거리+'],['stRegen','ST회복'],['mpRegen','MP회복'],['bStr','STR'],['bDex','DEX'],['bInt','INT'],['atkSpd','공격속도'],['potCd','물약쿨감',true],['bonusHp','추가HP'],['expBonus','경험치보너스'],['critRate','치명률'],['critDmg','치명뎀'],['beamDmg','마법DP'],['bonusChargeStock','돌진충전+'],['eDef','에너지방어']];
   let diffs='';
-  for(const ck of cmpKeys){const k=ck[0],label=ck[1],invert=ck[2];const nv=item[k],ov=curEq[k];if(nv===undefined&&ov===undefined)continue;const diff=(nv||0)-(ov||0);if(Math.abs(diff)>0.0001){const good=invert?diff<0:diff>0;const c=good?'#44cc44':'#cc4444';const sign=diff>0?'+':'';const fmt=(typeof nv==='number'&&!Number.isInteger(nv))||(typeof ov==='number'&&!Number.isInteger(ov));diffs+=`<div style="color:${c};font-size:.85rem">${label}: ${sign}${fmt?diff.toFixed(3):diff}</div>`}}
+  for(const ck of cmpKeys){const k=ck[0],label=_e?(_cmpEN[ck[1]]||ck[1]):ck[1],invert=ck[2];const nv=item[k],ov=curEq[k];if(nv===undefined&&ov===undefined)continue;const diff=(nv||0)-(ov||0);if(Math.abs(diff)>0.0001){const good=invert?diff<0:diff>0;const c=good?'#44cc44':'#cc4444';const sign=diff>0?'+':'';const fmt=(typeof nv==='number'&&!Number.isInteger(nv))||(typeof ov==='number'&&!Number.isInteger(ov));diffs+=`<div style="color:${c};font-size:.85rem">${label}: ${sign}${fmt?diff.toFixed(3):diff}</div>`}}
   // Weapon/Bow DPS delta in compare panel
   if(item.atk&&curEq.atk&&(item.wtype||item.btype||curEq.wtype||curEq.btype)){
     const _dpsOf=function(_it){
@@ -29722,12 +29726,12 @@ function _invBuildCompare(item,curEq){
     :'';
   const diffsHtml=(diffs||_xferNote)
     ?'<div style="border-bottom:1px solid #332211;padding-bottom:8px;margin-bottom:8px">'
-    +'<div style="font-size:.78rem;color:#666;margin-bottom:6px">베이스 스탯 비교 (강화 수치 제외)</div>'
+    +'<div style="font-size:.78rem;color:#666;margin-bottom:6px">'+(_e?'Base stat comparison (excluding enhancement)':'베이스 스탯 비교 (강화 수치 제외)')+'</div>'
     +_xferNote
-    +'<div style="font-size:.85rem;color:#aa6644;font-weight:700;margin-bottom:6px;letter-spacing:.1em">\u2694 스탯 변화</div>'
+    +'<div style="font-size:.85rem;color:#aa6644;font-weight:700;margin-bottom:6px;letter-spacing:.1em">'+(_e?'\u2694 Stat Changes':'\u2694 스탯 변화')+'</div>'
     +'<div style="background:rgba(0,0,0,.2);border:1px solid #332211;padding:8px;border-radius:3px">'+diffs+'</div>'
     +'</div>':'';
-  const eqHtml='<div style="border-bottom:1px solid #332211;padding-bottom:8px;margin-bottom:8px"><div style="background:rgba(0,0,0,.2);border:1px solid #332211;padding:8px;border-radius:3px"><div style="height:3px;background:'+RARITY_C[curEq.rarity]+';margin:-8px -8px 6px -8px;border-radius:3px 3px 0 0"></div><div style="font-size:.75rem;color:#666">현재 장착</div><div style="color:'+RARITY_C[curEq.rarity]+';font-size:.95rem;font-weight:700">'+curEq.name+(curEq.enh?' <span style="color:'+enhColor(curEq.enh)+'">+'+curEq.enh+'</span>':'')+'</div><div class="id-stats" style="font-size:.8rem">'+_invCardFields(curEq)+'</div></div></div>';
+  const eqHtml='<div style="border-bottom:1px solid #332211;padding-bottom:8px;margin-bottom:8px"><div style="background:rgba(0,0,0,.2);border:1px solid #332211;padding:8px;border-radius:3px"><div style="height:3px;background:'+RARITY_C[curEq.rarity]+';margin:-8px -8px 6px -8px;border-radius:3px 3px 0 0"></div><div style="font-size:.75rem;color:#666">'+(_e?'Currently Equipped':'현재 장착')+'</div><div style="color:'+RARITY_C[curEq.rarity]+';font-size:.95rem;font-weight:700">'+curEq.name+(curEq.enh?' <span style="color:'+enhColor(curEq.enh)+'">+'+curEq.enh+'</span>':'')+'</div><div class="id-stats" style="font-size:.8rem">'+_invCardFields(curEq)+'</div></div></div>';
   return {diffs:diffsHtml,eqCard:eqHtml};
 }
 // ═══ 인벤토리 드래그 시스템 ═══
@@ -30056,8 +30060,9 @@ function renderForge(){
   BGM.play('forge');
   $('forgeMats').textContent=`👿 ${_T('악의')}: ${G.mats}`;
   const tabs=$('fgTabs');tabs.innerHTML='';
+  const _fgTabEN={upgrade:'⭐ Enhance',potion:'🧪 Potion',salvage:'🔥 Salvage',reroll:'🔄 Reroll',crystal:'💎 Crystal',weapon:'⚔️ Weapon',shield:'🛡️ Shield',armor:'🦺 Armor',helmet:'⛑️ Helmet',boots:'👢 Boots',bow:'🏹 Bow',gloves:'🧤 Gloves',pants:'👖 Pants',necklace:'📿 Necklace',ring:'💍 Ring',bracelet:'⭕ Bracelet',headband:'🎀 Headband'};
   [['upgrade','⭐ 강화'],['potion','🧪 물약'],['salvage','🔥 분해'],['reroll','🔄 리롤'],['crystal','💎 결정'],['weapon','⚔️ 무기'],['shield','🛡️ 견갑'],['armor','🦺 갑옷'],['helmet','⛑️ 투구'],['boots','👢 부츠'],['bow','🏹 활'],['gloves','🧤 장갑'],['pants','👖 바지'],['necklace','📿 목걸이'],['ring','💍 반지'],['bracelet','⭕ 팔찌'],['headband','🎀 머리띠']].forEach(([k,v])=>{
-    const d=document.createElement('div');d.className='fg-tab'+(G.forgeTab===k?' act':'');d.textContent=v;d.onclick=()=>{G.forgeTab=k;_forgeSel=null;_salSel.clear();_rerollSel=null;_crForgeSel=-1;renderForge()};tabs.appendChild(d);
+    const d=document.createElement('div');d.className='fg-tab'+(G.forgeTab===k?' act':'');d.textContent=OPT.lang==='en'?_fgTabEN[k]:v;d.onclick=()=>{G.forgeTab=k;_forgeSel=null;_salSel.clear();_rerollSel=null;_crForgeSel=-1;renderForge()};tabs.appendChild(d);
   });
   const grid=$('fgGrid');grid.innerHTML='';
   grid.style.gridTemplateColumns=(G.forgeTab==='upgrade'||G.forgeTab==='potion'||G.forgeTab==='salvage'||G.forgeTab==='reroll'||G.forgeTab==='crystal')?'1fr':'1fr 1fr';
@@ -30078,7 +30083,8 @@ function renderForge(){
     grid.style.gridTemplateColumns='1fr';
     const uhdr=document.createElement('div');uhdr.style.cssText='color:#ffaa44;font-size:.95rem;font-weight:700;margin-bottom:8px;letter-spacing:.1em;text-align:center';
     uhdr.textContent=_T('⚒️ 장비 강화 (실패 시 재료만 소멸)');grid.appendChild(uhdr);
-    const slots=[['weapon','⚔️ 무기'],['shield','🛡️ 견갑'],['armor','🦺 갑옷'],['helmet','⛑️ 투구'],['boots','👢 부츠'],['bow','🏹 활'],['gloves','🧤 장갑'],['pants','👖 바지'],['belt','🥋 벨트'],['necklace','📿 목걸이'],['ring1','💍 반지1'],['ring2','💍 반지2'],['cape','🧣 망토'],['bracelet','⭕ 팔찌'],['headband','🎀 머리띠']];
+    const _slotEN={weapon:'⚔️ Weapon',shield:'🛡️ Shield',armor:'🦺 Armor',helmet:'⛑️ Helmet',boots:'👢 Boots',bow:'🏹 Bow',gloves:'🧤 Gloves',pants:'👖 Pants',belt:'🥋 Belt',necklace:'📿 Necklace',ring1:'💍 Ring1',ring2:'💍 Ring2',cape:'🧣 Cape',bracelet:'⭕ Bracelet',headband:'🎀 Headband'};
+    const slots=[['weapon','⚔️ 무기'],['shield','🛡️ 견갑'],['armor','🦺 갑옷'],['helmet','⛑️ 투구'],['boots','👢 부츠'],['bow','🏹 활'],['gloves','🧤 장갑'],['pants','👖 바지'],['belt','🥋 벨트'],['necklace','📿 목걸이'],['ring1','💍 반지1'],['ring2','💍 반지2'],['cape','🧣 망토'],['bracelet','⭕ 팔찌'],['headband','🎀 머리띠']].map(([k,v])=>[k,OPT.lang==='en'?_slotEN[k]:v]);
     let hasItem=false;
     slots.forEach(([slot,icon])=>{
       const it=INV.equipped[slot];if(!it)return;hasItem=true;
@@ -30455,7 +30461,7 @@ function renderForge(){
     grid.style.gridTemplateColumns='1fr';
     const slot=G.forgeTab;
     const tier=Math.min(SI_TO_HELL[G.stage],4);
-    const slotNames={weapon:'무기',shield:'견갑',armor:'갑옷',helmet:'투구',boots:'부츠',bow:'활',gloves:'장갑',pants:'바지',necklace:'목걸이',ring:'반지',bracelet:'팔찌',headband:'머리띠'};
+    const slotNames=OPT.lang==='en'?{weapon:'Weapon',shield:'Shield',armor:'Armor',helmet:'Helmet',boots:'Boots',bow:'Bow',gloves:'Gloves',pants:'Pants',necklace:'Necklace',ring:'Ring',bracelet:'Bracelet',headband:'Headband'}:{weapon:'무기',shield:'견갑',armor:'갑옷',helmet:'투구',boots:'부츠',bow:'활',gloves:'장갑',pants:'바지',necklace:'목걸이',ring:'반지',bracelet:'팔찌',headband:'머리띠'};
     const slotEmoji={weapon:'⚔️',shield:'🛡️',armor:'🦺',helmet:'⛑️',boots:'👢',bow:'🏹',gloves:'🧤',pants:'👖',necklace:'📿',ring:'💍'};
 
     // 현재 장착 표시
@@ -31516,7 +31522,7 @@ function draw(){
       X.globalAlpha=.4;X.fillStyle='#000000';X.beginPath();X.arc(h.x,h.y,_shSize/2,0,Math.PI*2);X.fill();
     }
     X.globalAlpha=.7;X.font='bold 10px monospace';X.textAlign='center';X.fillStyle=SPAWN_HOLE.col;
-    X.fillText(SPAWN_HOLE.name,h.x,h.y-_shSize/2-6);X.textAlign='left';
+    X.fillText(_T(SPAWN_HOLE.name),h.x,h.y-_shSize/2-6);X.textAlign='left';
     X.globalAlpha=1;
   }
   X.restore();}
