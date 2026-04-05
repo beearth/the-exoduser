@@ -28115,7 +28115,7 @@ function _renderSkillRow(sk,grid){
         const _gNm=_FUSE_NAMES[_grp.key]||_grp.key;
         _fBtn.style.cssText='margin-top:6px;padding:5px 10px;border:1.5px solid '+_rdC+';border-radius:4px;color:'+_rdC+';font-size:.8rem;text-align:center;cursor:pointer;background:rgba(0,0,0,.4);transition:all .15s;opacity:'+_rdO+';'+(_isSel&&!_grpDone?'background:'+_grp.color+'33;box-shadow:0 0 12px '+_grp.color+'66;font-weight:700;border-color:'+_grp.color+';color:'+_grp.color+';opacity:1;':_grpPS?'background:'+_grp.color+'22;border-style:dashed;animation:_fglow 1s ease-in-out infinite;opacity:1;':'');
         const _spLbl=_grpDone?'':' (SP'+_fBtnSpc+')';
-        _fBtn.textContent=_isSel&&!_grpDone?'▶ '+_gNm+' — 파트너 클릭!'+_spLbl:_grpPS?(_grpReady?(_fBtnSpOk?'⬛ '+_gNm+' 합체!'+_spLbl:'⚠ '+_gNm+' SP부족! ('+P.sp+'/'+_fBtnSpc+')'):'🔒 '+_gNm):_grpDone?'✅ '+_gNm+' 완료':_grpReady?(_fBtnSpOk?'◆ '+_gNm+' 합체 가능'+_spLbl:'◆ '+_gNm+' ⚠SP부족 ('+P.sp+'/'+_fBtnSpc+')'):'◆ '+_gNm+_spLbl;
+        _fBtn.textContent=_isSel&&!_grpDone?'▶ '+_gNm+' — '+_T('파트너 클릭!')+_spLbl:_grpPS?(_grpReady?(_fBtnSpOk?'⬛ '+_gNm+' '+_T('합체!')+_spLbl:'⚠ '+_gNm+' SP'+_T('부족!')+' ('+P.sp+'/'+_fBtnSpc+')'):'🔒 '+_gNm):_grpDone?'✅ '+_gNm+' '+_T('완료'):_grpReady?(_fBtnSpOk?'◆ '+_gNm+' '+_T('합체 가능')+_spLbl:'◆ '+_gNm+' ⚠SP'+_T('부족')+' ('+P.sp+'/'+_fBtnSpc+')'):'◆ '+_gNm+_spLbl;
         // 합체 조건 미달 시 호버 툴팁 생성
         let _fuseTip='';
         if(!_grpReady&&!_grpDone){
@@ -28356,7 +28356,7 @@ function _renderSkillRow(sk,grid){
     {const _dG=_fuseGem(sk.id),_dK=_getFuseKey(sk.id);
     if(learned&&_dG&&_dK&&!_isFused(_dK)&&!_canFuse(_dK)){
       const _wH=document.createElement('div');_wH.style.cssText='margin-top:4px;color:'+_dG+'88;font-size:.7rem;text-align:center';
-      _wH.textContent='◆ 같은 보석 스킬 습득 시 합체 가능';d.appendChild(_wH);
+      _wH.textContent=_T('◆ 같은 보석 스킬 습득 시 합체 가능');d.appendChild(_wH);
     }}
     // ═══ 하스스톤 드래그 핸들러 (습득된 스킬만) ═══
     if(learned){
@@ -29086,7 +29086,7 @@ function syncSettingsUI(){
   if($('optLang')){$('optLang').value=OPT.lang||'ko';_applyLang()}
   if($('optDiff')){ 
     $('optDiff').value=OPT.diff;$('optDiff').max=10;
-    $('optDiffVal').textContent=DIFF_NAME[OPT.diff]||'일반'; 
+    $('optDiffVal').textContent=DIFF_NAME[OPT.diff]||_T('일반');
   }
   if($('optAutoPot')){const _apV=~~((OPT.autoPotThr||0.99)*100);$('optAutoPot').value=_apV;$('optAutoPotVal').textContent=OPT.lang==='en'?'HP '+_apV+'% or below':'HP '+_apV+'% 이하'}
   if($('optMinRar')){
@@ -29262,12 +29262,12 @@ function _invRenderDetail(idx,source){
       const _oeq=INV.equipped[it.slot];
       const _fe=_oeq?(_oeq.enh||0):0;
       const _xc=_fe>0?xferCost(_fe):0;
-      const _lbl=_fe>0?'장착 (\u2692+'+_fe+' \u2192 '+_xc.toLocaleString()+'악의'+((G.mats||0)<_xc?' \u26A0':'')+')'  :'장착';
-      _actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><div class="id-btn equip" onclick="const _it=INV.bag[${idx}];const _s=_it?.slot;const _old=_s?INV.equipped[_s]:null;equipItem(_it);applyStats();if(_old){const _oi=INV.bag.indexOf(_old);INV.selected=_oi>=0?_oi:null}else{INV.selected=_s?'eq:'+_s:null}renderInv()">${_lbl}</div><div class="id-btn" onclick="dropItem(${idx});renderInv()">🔥 분해 (👿+${_salV})</div></div>`;
+      const _lbl=_fe>0?_T('장착')+' (\u2692+'+_fe+' \u2192 '+_xc.toLocaleString()+(OPT.lang==='en'?' Malice':'악의')+((G.mats||0)<_xc?' \u26A0':'')+')'  :_T('장착');
+      _actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><div class="id-btn equip" onclick="const _it=INV.bag[${idx}];const _s=_it?.slot;const _old=_s?INV.equipped[_s]:null;equipItem(_it);applyStats();if(_old){const _oi=INV.bag.indexOf(_old);INV.selected=_oi>=0?_oi:null}else{INV.selected=_s?'eq:'+_s:null}renderInv()">${_lbl}</div><div class="id-btn" onclick="dropItem(${idx});renderInv()">🔥 ${_T('분해')} (👿+${_salV})</div></div>`;
     } else if(source==='eq'){
-      _actB.innerHTML=`<div class="id-btns"><div class="id-btn" onclick="const _it=INV.equipped['${idx}'];unequipItem('${idx}');applyStats();const _ui=INV.bag.indexOf(_it);INV.selected=_ui>=0?_ui:null;renderInv()">해제</div></div>`;
+      _actB.innerHTML=`<div class="id-btns"><div class="id-btn" onclick="const _it=INV.equipped['${idx}'];unequipItem('${idx}');applyStats();const _ui=INV.bag.indexOf(_it);INV.selected=_ui>=0?_ui:null;renderInv()">${_T('해제')}</div></div>`;
     } else if(source==='st'){
-      _actB.innerHTML=`<div class="id-btns"><div class="id-btn equip" onclick="withdrawStorage(${idx})">꺼내기</div></div>`;
+      _actB.innerHTML=`<div class="id-btns"><div class="id-btn equip" onclick="withdrawStorage(${idx})">${_T('꺼내기')}</div></div>`;
     } else _actB.innerHTML='';
   }
 }
@@ -29281,7 +29281,7 @@ function _invClearHover(){
   if(INV.selected!==null&&typeof INV.selected==='string'&&INV.selected.startsWith('eq:')){
     const _eqS=INV.selected.slice(3);if(INV.equipped[_eqS])_invRenderDetail(_eqS,'eq');return;
   }
-  const rp=$('invRight');if(rp)rp.innerHTML='<div style="color:#554433;font-size:.85rem;text-align:center;padding:30px 10px">아이템에 마우스를 올리거나 좌클릭으로 선택하세요</div>';
+  const rp=$('invRight');if(rp)rp.innerHTML='<div style="color:#554433;font-size:.85rem;text-align:center;padding:30px 10px">'+_T('아이템에 마우스를 올리거나 좌클릭으로 선택하세요')+'</div>';
   const _actB=$('invActionBtns');if(_actB)_actB.innerHTML='';
 }
 // ── 아이템 카드 스탯 HTML (renderCardFields 추출) ──
