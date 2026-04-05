@@ -8497,3 +8497,8 @@
 - test/pixellab8dirFiles.test.js
 - tools/complete_ch1_8dir.mjs
 
+
+## 2026-04-05 17:30 (auto)
+- docs/4.1맵디?�인+?�정/맵메?�킹_가?�드.md
+- game.html
+

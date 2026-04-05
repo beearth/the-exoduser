@@ -11487,7 +11487,18 @@ function initGlowObjects(){
 const _SAME_TYPE_DIST=1200; // 동일 에셋 최소 거리 (한 화면 내 중복 방지)
 function _nearbyTypeCount(list,type,x,y,radius){let c=0;for(const o of list)if(o.type===type&&dst(x,y,o.x,o.y)<radius)c++;return c}
 function initMapObjects(){
-  const _editorObjs=MAP_OBJS.filter(o=>o.type&&!['bonfire','lore','breakable','trap','altar'].includes(o.type));
+  let _editorObjs=MAP_OBJS.filter(o=>o.type&&!['bonfire','lore','breakable','trap','altar'].includes(o.type));
+  // 소환굴/시작방/보스방 근처 충돌체 에디터 오브젝트 제거
+  if(G.spawnHoles&&G.spawnHoles.length>0){
+    const _startRm=G.rooms.find(r=>r.type==='start'),_bossRm=G.rooms.find(r=>r.type==='boss');
+    _editorObjs=_editorObjs.filter(o=>{
+      const m=_OBJ_META[o.type];if(!m||(!m.collision&&!m.col))return true; // 비충돌체는 유지
+      for(let i=0;i<G.spawnHoles.length;i++){if((o.x-G.spawnHoles[i].x)*(o.x-G.spawnHoles[i].x)+(o.y-G.spawnHoles[i].y)*(o.y-G.spawnHoles[i].y)<250*250)return false}
+      if(_startRm){const sx=(_startRm.cx+.5)*T,sy=(_startRm.cy+.5)*T;if((o.x-sx)*(o.x-sx)+(o.y-sy)*(o.y-sy)<300*300)return false}
+      if(_bossRm){const bx=(_bossRm.cx+.5)*T,by=(_bossRm.cy+.5)*T;if((o.x-bx)*(o.x-bx)+(o.y-by)*(o.y-by)<300*300)return false}
+      return true;
+    });
+  }
   MAP_OBJS=[];const hell=SI_TO_HELL[G.stage],map=G.map,rooms=G.rooms;
   // 공간 해시 그리드 (O(1) 근접 체크, O(n²) 제거)
   const _GRID_SZ=200;const _moGrid={};
@@ -14800,6 +14811,23 @@ function genFromTemplate(tmpl,si){
     }
     if(_aOk2)break;
   }}
+
+  // ── 7.5 좁은 통로 자동 확장 (폭 5타일 미만 → 양쪽 1칸씩 확장) ──
+  {const _widen=[];
+  for(let y=2;y<mh-2;y++)for(let x=2;x<mw-2;x++){
+    if(map[y][x]!==0)continue;
+    // 수평 통로: 위아래 2칸 내에 벽
+    const _up=map[y-1][x]===1&&map[y-2][x]===1;
+    const _dn=map[y+1][x]===1&&map[y+2][x]===1;
+    if(_up&&!_dn)_widen.push({x,y:y-1});
+    if(_dn&&!_up)_widen.push({x,y:y+1});
+    // 수직 통로: 좌우 2칸 내에 벽
+    const _lt=map[y][x-1]===1&&map[y][x-2]===1;
+    const _rt=map[y][x+1]===1&&map[y][x+2]===1;
+    if(_lt&&!_rt)_widen.push({x:x-1,y});
+    if(_rt&&!_lt)_widen.push({x:x+1,y});
+  }
+  for(const w of _widen){if(w.x>0&&w.x<mw-1&&w.y>0&&w.y<mh-1)map[w.y][w.x]=0}}
 
   // ── 8. 보스 거리맵 ──
   const _bdm=_tBossDistMap(mw,mh,bossRm?bossRm.cy:0);
@@ -19042,12 +19070,19 @@ function update(){
     const _hRemain=Math.min(_BATCH,h._spawnTotal-h._spawned);
     for(let _hj=0;_hj<_hRemain;_hj++){
       let _hsx,_hsy,_hTry=0;
-      do{const _ha=Math.PI*2*Math.random(),_hr=80+Math.random()*200+h.size*120;
+      do{const _ha=Math.PI*2*Math.random(),_hr=40+Math.random()*300+h.size*150;
         _hsx=h.x+Math.cos(_ha)*_hr;_hsy=h.y+Math.sin(_ha)*_hr;_hTry++;
-      }while(_hTry<12&&isW(_hsx,_hsy,true));
-      if(isW(_hsx,_hsy,true)){_hsx=h.x;_hsy=h.y}
-      // 소환 위치가 벽 타일이면 스폰 취소 + 분모 차감 (충돌체는 허용 — 몹이 밀려남)
-      {const _stx=~~(_hsx/T),_sty=~~(_hsy/T);if(_stx<0||_sty<0||_stx>=G.mw||_sty>=G.mh||G.map[_sty][_stx]===1){h._spawned++;G._totalSpawned=Math.max(0,(G._totalSpawned||0)-1);continue}}
+      }while(_hTry<30&&isW(_hsx,_hsy,true));
+      // 실패 시 소환굴 중심에서 나선 탐색으로 바닥 찾기
+      if(isW(_hsx,_hsy,true)){
+        const _ctx=~~(h.x/T),_cty=~~(h.y/T);let _sf=false;
+        for(let _sr=1;_sr<10&&!_sf;_sr++)for(let _sdy=-_sr;_sdy<=_sr&&!_sf;_sdy++)for(let _sdx=-_sr;_sdx<=_sr;_sdx++){
+          if(Math.abs(_sdx)!==_sr&&Math.abs(_sdy)!==_sr)continue;
+          const _nx=_ctx+_sdx,_ny=_cty+_sdy;
+          if(_nx>0&&_ny>0&&_nx<G.mw-1&&_ny<G.mh-1&&G.map[_ny][_nx]===0){_hsx=(_nx+.5)*T;_hsy=(_ny+.5)*T;_sf=true}
+        }
+        if(!_sf){h._spawned++;G._totalSpawned=Math.max(0,(G._totalSpawned||0)-1);continue}
+      }
       const ne=mkEn(_hsx,_hsy,_hSi,rollEtype(_hSi),false,undefined,h.room);
       ens.push(ne);
       h._spawned++;
