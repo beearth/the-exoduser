@@ -27887,7 +27887,7 @@ function activateMaliceHunt(){
     if(_isPlagueGF)P._pbCd=~~(1200*(1+_eqAffix('cooldownRed'))); // 독혈해방 20초 쿨
     const _goCnt=P._gOrbs.length;
     const _goR=(34)+P.r;
-    const _fbDmg=~~(meleeRef()*statStr()*pAtkMul()*10*_fuseMul('maliceHunt'));
+    const _fbDmg=~~(meleeRef()*statStr()*pAtkMul()*10*(1+(_mhLv-1)*0.10)*_fuseMul('maliceHunt')); // Lv당 +10% (카드표시와 동기)
     const _fbPierce=~~(30+(_mhLv-1)*20/9); // 1렙=30, 10렙=50
     const _fbBombR=80+_mhLv*5; // 히트 시 폭발 반경
     // 가장 가까운 적 또는 바라보는 방향

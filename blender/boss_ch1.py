@@ -356,11 +356,11 @@ bpy.ops.object.parent_set(type='ARMATURE_AUTO')
 # ═══════════════════════════════════════════════
 # 5. 카메라 (사이드뷰 — 2D 횡스크롤 시점)
 # ═══════════════════════════════════════════════
-bpy.ops.object.camera_add(location=(0, -8, 2.0))
+bpy.ops.object.camera_add(location=(0.3, -6, 2.2))
 cam = bpy.context.active_object
 cam.name = 'Boss_Camera'
-cam.rotation_euler = (math.radians(82), 0, 0)  # 거의 정면
-cam.data.lens = 85  # 망원으로 원근 왜곡 최소화
+cam.rotation_euler = (math.radians(78), 0, 0)
+cam.data.lens = 35  # 광각으로 전신 포착
 cam.data.clip_end = 50
 scene.camera = cam
 
@@ -630,13 +630,15 @@ def set_bezier(obj):
         return
     action = obj.animation_data.action
     curves = []
-    if hasattr(action, 'fcurves'):
+    if hasattr(action, 'fcurves') and not action.is_action_layered:
         curves = list(action.fcurves)
     else:
         for layer in action.layers:
             for strip in layer.strips:
-                for ch in strip.channels:
-                    curves.extend(ch.fcurves)
+                for slot in action.slots:
+                    cb = strip.channelbag(slot)
+                    if cb:
+                        curves.extend(cb.fcurves)
     for fc in curves:
         for kf in fc.keyframe_points:
             kf.interpolation = 'BEZIER'
