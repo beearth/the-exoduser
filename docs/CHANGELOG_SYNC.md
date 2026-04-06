@@ -12316,3 +12316,9 @@
 - subtitle.py
 - subtitle_out.txt
 
+
+## 2026-04-06 18:00 (auto)
+- ch1_need_8dir.json
+- game.html
+- subtitle_out.txt
+

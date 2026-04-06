@@ -1,0 +1,1087 @@
+[
+  {
+    "key": "001_etype35",
+    "name": "etype35",
+    "prompt": "dark furred werewolf with claws",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "003_etype85_절망기사",
+    "name": "etype85 절망기사",
+    "prompt": "Dark hollow knight armor, empty black armor with glowing red eyes visible through the visor, dark smoke sword, ghostly dark aura, medieval dark fantasy warrior",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "005_etype95_시간사도",
+    "name": "etype95 시간사도",
+    "prompt": "Time apostle, ancient robed figure with hourglass staff, faded green-grey robes, clockwork gears floating around, ghostly old sage, dark fantasy time mage",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "006_Skeleton_Melee",
+    "name": "Skeleton Melee",
+    "prompt": "skeleton warrior with rusty sword, undead bones, tattered cloth, dark fantasy dungeon enemy, top-down RPG view",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "008_etype92_거울사도",
+    "name": "etype92 거울사도",
+    "prompt": "Mirror apostle, reflective silvery robed figure, mirror mask face, crystalline body, pale blue-white ethereal being, dark fantasy mystic",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "009_etype86_거꾸로천사",
+    "name": "etype86 거꾸로천사",
+    "prompt": "Inverted fallen angel hanging upside down, decayed rotting wings, cracked golden halo, broken spear, pale grey skin, corrupted holy being, dark fantasy",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "010_Shield_Knight",
+    "name": "Shield Knight",
+    "prompt": "undead knight with large tower shield, heavy armor, dark blue tabard, glowing eyes behind visor, defensive stance, dark fantasy",
+    "size": 52,
+    "view": "low top-down"
+  },
+  {
+    "key": "011_Heavy_Tank",
+    "name": "Heavy Tank",
+    "prompt": "massive armored undead knight, heavy plate armor, tower shield, grey steel, glowing blue eyes, imposing dark fantasy tank",
+    "size": 56,
+    "view": "low top-down"
+  },
+  {
+    "key": "012_Swarm_Imp",
+    "name": "Swarm Imp",
+    "prompt": "tiny green imp demon, small horns, bat wings, sharp claws, mischievous face, dark fantasy swarm creature",
+    "size": 32,
+    "view": "low top-down"
+  },
+  {
+    "key": "013_g73",
+    "name": "g73",
+    "prompt": "small red bat",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "014_f72",
+    "name": "f72",
+    "prompt": "orange blob",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "017_etype36_serpentApostle",
+    "name": "etype36_serpentApostle",
+    "prompt": "snake warrior with scales and cobra hood",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "026_etype94_사슬죄수",
+    "name": "etype94 사슬죄수",
+    "prompt": "Muscular prisoner bound in iron chains, iron mask covering face, scarred grey skin, dungeon captive",
+    "size": 56,
+    "view": "low top-down"
+  },
+  {
+    "key": "027_etype93_상인악마",
+    "name": "etype93 상인악마",
+    "prompt": "Brown robed demon merchant with small horns, carrying sack of goods on back, greedy eyes",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "029_etype91_보물악마",
+    "name": "etype91 보물악마",
+    "prompt": "Small golden imp demon carrying treasure sack, horns, golden skin",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "032_etype34",
+    "name": "etype34",
+    "prompt": "green acid dripping humanoid warrior",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "033_etype33_miniDemon",
+    "name": "etype33_miniDemon",
+    "prompt": "small red imp with tiny horns and bat wings",
+    "size": 32,
+    "view": "low top-down"
+  },
+  {
+    "key": "034_etype31_thornApostle",
+    "name": "etype31_thornApostle",
+    "prompt": "thorn warrior, thorns and vines on body, green-brown skin",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "040_Shadow_Apostle",
+    "name": "Shadow Apostle",
+    "prompt": "tall thin shadow creature, dark grey body, featureless smooth head, no face, long slender limbs, glowing purple eyes, dark fantasy",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "046_etype30_huntDog",
+    "name": "etype30_huntDog",
+    "prompt": "demonic hunting dog, four legs, dark red fur, glowing orange eyes, sharp fangs, hellhound",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "047_구울중형v3",
+    "name": "구울 중형 v3",
+    "prompt": "Berserk dark fantasy grotesque medium undead ghoul, hunched humanoid zombie abomination, multiple bloodshot eyeballs growing from bloated belly and torso like tumors, exposed ribs and rotting organs visible, one arm grotesquely oversized with bone blade, face torn open showing teeth and jaw, patches of green-gray rotting flesh hanging off, dark veins across body, hellish undead monster",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "049_g76",
+    "name": "g76",
+    "prompt": "tiny red imp",
+    "size": 32,
+    "view": "low top-down"
+  },
+  {
+    "key": "052_etype80_bugSkin",
+    "name": "etype80_bugSkin",
+    "prompt": "insect skin mutant, chitinous exoskeleton, compound eyes, mandibles, dark green-brown carapace, bug humanoid",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "053_etype37_predatorApostle",
+    "name": "etype37_predatorApostle",
+    "prompt": "predator apostle, dark hunter with bone mask, tribal armor, dual daggers, stealthy assassin",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "062_Alchemist",
+    "name": "Alchemist",
+    "prompt": "hunched plague alchemist, gas mask, brown leather coat, carrying potion bottles, toxic green fumes, dark fantasy",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "063_Womb_Apostle",
+    "name": "Womb Apostle",
+    "prompt": "round bloated flesh creature, pinkish body, pulsating veins, no legs just a round mass, small red eyes, dark fantasy horror",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "064_h84",
+    "name": "h84",
+    "prompt": "glowing yellow knight",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "067_Demon_Dog",
+    "name": "Demon Dog",
+    "prompt": "demonic hellhound, red-black fur, glowing red eyes, sharp fangs, four-legged beast, dark fantasy",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "068_Splitter_Worm",
+    "name": "Splitter Worm",
+    "prompt": "segmented worm demon, round tooth-filled mouth, six body rings, dark brown skin, dark fantasy creature",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "069_Vampire_Apostle",
+    "name": "Vampire Apostle",
+    "prompt": "vampire demon, pale skin, dark robes with red trim, sharp fangs, red glowing eyes, dark fantasy",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "070_Shadow_Wraith",
+    "name": "Shadow Wraith",
+    "prompt": "dark shadow creature, transparent ghostly body, glowing red eyes, wispy dark tendrils, floating dark fantasy wraith",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "072_g75",
+    "name": "g75",
+    "prompt": "orange snake",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "073_f66",
+    "name": "f66",
+    "prompt": "pink rock creature",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "074_t67",
+    "name": "t67",
+    "prompt": "dark mage with staff",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "075_t63",
+    "name": "t63",
+    "prompt": "crab monster",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "080_Minor_Wraith",
+    "name": "Minor Wraith",
+    "prompt": "small pale ghost spirit, wispy translucent body, white glowing eyes, floating undead, dark fantasy",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "081_Mother_Apostle",
+    "name": "Mother Apostle",
+    "prompt": "large bulbous womb-like demon, round fleshy body, healing tentacles extending outward, three green glowing eyes, small head, dark fantasy",
+    "size": 56,
+    "view": "low top-down"
+  },
+  {
+    "key": "083_Womb_Horror",
+    "name": "Womb Horror",
+    "prompt": "fleshy grotesque creature, exposed muscles, pulsating body, multiple eyes, body horror monster, dark fantasy abomination",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "084_Bone_Beast",
+    "name": "Bone Beast",
+    "prompt": "skeletal bone beast, white bones, four legs, exposed spine and ribs, glowing eyes, dark fantasy undead",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "087_Wing_Apostle",
+    "name": "Wing Apostle",
+    "prompt": "thin bat-winged demon, large dark bat wings, slender body, sharp talons, pointed head, orange glowing eyes, dark fantasy",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "088_Ghost_Wraith",
+    "name": "Ghost Wraith",
+    "prompt": "pale thin ghost, long black hair, green glowing eyes, dark robes, floating spirit, dark fantasy undead",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "092_Torturer_Demon",
+    "name": "Torturer Demon",
+    "prompt": "demonic torturer, pale gray skin, chains and hooks on body, bloody apron, muscular, dark fantasy",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "094_Spider_Apostle",
+    "name": "Spider Apostle",
+    "prompt": "dark spider demon humanoid, purple skin, four arms, spider legs, dark fantasy, glowing purple eyes",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "096_소형구울v2",
+    "name": "소형 구울 v2",
+    "prompt": "Berserk manga style grotesque small undead ghoul, feral crawling beast with multiple eyeballs embedded in its belly and back, exposed intestines, rotting gray-green flesh peeling off, sharp bone claws, spine fully exposed, distorted jaw unhinged with rows of teeth, eyeballs growing from torso like tumors, dark fantasy horror creature, Kentaro Miura inspired grotesque design",
+    "size": 32,
+    "view": "low top-down"
+  },
+  {
+    "key": "097_구울중형",
+    "name": "구울 중형",
+    "prompt": "Savage undead ghoul warrior, hunched bipedal zombie, rotting dark green flesh with exposed muscle and bone, glowing red eyes, wide gaping mouth with sharp teeth, long clawed arms dragging on ground, tattered remnants of clothing, dark blood dripping, hellish undead abomination",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "098_소형구울",
+    "name": "소형 구울",
+    "prompt": "Feral undead ghoul beast, small hunched four-legged creature crawling on all fours, rotting green-gray flesh, exposed ribs and spine bones, glowing yellow eyes, sharp claws, torn skin hanging from limbs, hellish zombie dog-like monster, dark blood stains",
+    "size": 32,
+    "view": "low top-down"
+  },
+  {
+    "key": "099_Ghoul",
+    "name": "Ghoul",
+    "prompt": "Medium undead ghoul zombie, standing upright but slouched, decaying grey-green flesh, exposed ribs and bones, glowing orange-red eyes, torn medieval clothing, arms hanging low, shambling undead warrior",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "100_Small_Ghoul",
+    "name": "Small Ghoul",
+    "prompt": "Small feral undead ghoul, hunched posture, crawling on all fours, rotting green-brown skin, glowing red eyes, sharp claws, tattered rags, skeletal limbs, fast and aggressive zombie creature",
+    "size": 32,
+    "view": "low top-down"
+  },
+  {
+    "key": "103_Fusion_Creature",
+    "name": "Fusion Creature",
+    "prompt": "grotesque fused humanoid, stitched body parts, multiple arms, purple flesh, dark fantasy horror",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "104_Deformed_Walker_v2",
+    "name": "Deformed Walker",
+    "prompt": "twisted deformed humanoid walker, hunched pale body, long arms, exposed bones, horror dark fantasy",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "105_Hell_Spider",
+    "name": "Hell Spider",
+    "prompt": "small dark red spider demon, eight legs, multiple glowing eyes, venomous fangs, dark fantasy creature",
+    "size": 32,
+    "view": "low top-down"
+  },
+  {
+    "key": "108_mob_81",
+    "name": "mob_81",
+    "prompt": "dark torment shade ghost",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "109_mob_80",
+    "name": "mob_80",
+    "prompt": "pain crawler insect demon",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "110_mob_99",
+    "name": "mob_99",
+    "prompt": "dark hooded reaper",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "111_mob_98",
+    "name": "mob_98",
+    "prompt": "void purple floating entity",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "112_mob_96",
+    "name": "mob_96",
+    "prompt": "golden greedy imp",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "113_mob_95",
+    "name": "mob_95",
+    "prompt": "purple robed time mage",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "114_mob_94",
+    "name": "mob_94",
+    "prompt": "blue chained ghost",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "115_mob_93",
+    "name": "mob_93",
+    "prompt": "demon merchant with bag",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "116_mob_92",
+    "name": "mob_92",
+    "prompt": "mirror apostle crystal white",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "117_mob_91",
+    "name": "mob_91",
+    "prompt": "treasure chest demon with gold",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "119_mob_89",
+    "name": "mob_89",
+    "prompt": "big dark demon boss",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "120_mob_88",
+    "name": "mob_88",
+    "prompt": "chained demon torturer",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "121_mob_87",
+    "name": "mob_87",
+    "prompt": "red slime golem",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "123_mob_85",
+    "name": "mob_85",
+    "prompt": "skinless red muscle humanoid",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "124_mob_84",
+    "name": "mob_84",
+    "prompt": "spiky demon covered in needles",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "125_mob_83",
+    "name": "mob_83",
+    "prompt": "screaming ghost with wide open mouth",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "127_mob_81_Torment_Shade",
+    "name": "mob_81 Torment Shade",
+    "prompt": "dark purple shadowy ghost with chains",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "128_mob_80_Pain_Crawler",
+    "name": "mob_80 Pain Crawler",
+    "prompt": "twisted pale humanoid covered in thorns and barbs",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "142_mob_66_Barnacle_Knight",
+    "name": "mob_66 Barnacle Knight",
+    "prompt": "corroded green knight in rusty armor",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "147_mob_60_Deep_One",
+    "name": "mob_60 Deep One",
+    "prompt": "fish-like humanoid, blue-green scales, webbed hands, bulging eyes, fins on head",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "149_mob_58_Mirror_Monster",
+    "name": "mob_58 Mirror Monster",
+    "prompt": "silver shiny humanoid with no face",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "150_mob_57_Fetus_Giant",
+    "name": "mob_57 Fetus Giant",
+    "prompt": "big pale fat giant with oversized bald head",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "152_mob_55_Bone_Beast",
+    "name": "mob_55 Bone Beast",
+    "prompt": "skeleton monster made of bones with skull head",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "159_mob_48_Hell_Priest",
+    "name": "mob_48 Hell Priest",
+    "prompt": "evil priest in dark red robes with skull staff",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "160_mob_47_Shadow_Twin",
+    "name": "mob_47 Shadow Twin",
+    "prompt": "dark shadow humanoid, pure black body, glowing white eyes, ghostly aura",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "161_mob_46_Pillar_Demon",
+    "name": "mob_46 Pillar Demon",
+    "prompt": "big grey stone golem with glowing orange cracks",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "162_mob_45_Winged_Demon",
+    "name": "mob_45 Winged Demon",
+    "prompt": "red demon with bat wings and horns",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "163_mob_44_Torturer",
+    "name": "mob_44 Torturer",
+    "prompt": "hooded grey demon with leather apron and whip",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "164_mob_43_Hell_Hound",
+    "name": "mob_43 Hell Hound",
+    "prompt": "dark demonic dog, red glowing eyes, black fur",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "165_mob_42_Flesh_Heap",
+    "name": "mob_42 Flesh Heap",
+    "prompt": "bloated mass of flesh, pink-red skin, multiple limbs sticking out, grotesque mound shape, tiny eyes",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "167_mob_40_Lesser_Wraith",
+    "name": "mob_40 Lesser Wraith",
+    "prompt": "ghostly floating wraith, translucent pale blue body, hollow dark eyes, tattered spectral robes, wispy arms",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "168_mob_39_Wild_Arch_Apostle",
+    "name": "mob_39 Wild Arch-Apostle",
+    "prompt": "big red demon boss with horns and dark armor",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "169_mob_38_Spawning_Apostle",
+    "name": "mob_38 Spawning Apostle",
+    "prompt": "bloated pale demon, swollen body, wide mouth, short legs, grotesque",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "170_mob_37_Predator_Apostle",
+    "name": "mob_37 Predator Apostle",
+    "prompt": "dark purple hunter demon, lean build, blade arms, violet eyes, crouching",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "171_mob_36_Serpent_Apostle",
+    "name": "mob_36 Serpent Apostle",
+    "prompt": "snake-like humanoid demon, scaled dark green skin, serpentine lower body, forked tongue, hood-like cobra head flaps, venomous fangs, slithering pose",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "172_mob_35_Beast_Apostle",
+    "name": "mob_35 Beast Apostle",
+    "prompt": "large muscular beast-man demon, dark brown fur, wolf-like head with horns, massive clawed arms, hunched back, feral stance, glowing amber eyes",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "173_mob_34_Corrosion_Apostle",
+    "name": "mob_34 Corrosion Apostle",
+    "prompt": "acid-dripping humanoid demon, green-yellow corroded skin, melting flesh texture, toxic drool, skeletal frame visible through dissolving skin, dark tattered robes",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "174_mob_33_Small_Yoma",
+    "name": "mob_33 Small Yoma",
+    "prompt": "tiny imp demon, grey skin, big clawed hands, red eyes, sharp teeth, crouching",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "175_Beast_Apostle",
+    "name": "Beast Apostle",
+    "prompt": "Brown furred werewolf beast standing upright with claws",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "176_Corrosion_Apostle",
+    "name": "Corrosion Apostle",
+    "prompt": "Green poisonous demon creature oozing toxic slime",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "177_Small_Yoma",
+    "name": "Small Yoma",
+    "prompt": "Tiny red goblin creature with oversized teeth",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "178_Boulder_Apostle",
+    "name": "Boulder Apostle",
+    "prompt": "Massive stone-skinned demon with huge rocky fists, grey-brown body, slow tank creature. Dark fantasy.",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "179_Spike_Apostle",
+    "name": "Spike Apostle",
+    "prompt": "Demon with bone spikes growing from back, brown skin, ranged attacker pose. Dark fantasy creature.",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "180_Hound_Apostle",
+    "name": "Hound Apostle",
+    "prompt": "Four-legged demon hound with split jaw, brown-red skin, sharp fangs, charging pose. Dark fantasy.",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "191_Vampiric_Apostle",
+    "name": "Vampiric Apostle",
+    "prompt": "Undead vampire creature with fangs and red glowing eyes, wearing tattered dark robes.",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "192_Giant_Apostle",
+    "name": "Giant Apostle",
+    "prompt": "Huge muscular ogre demon, dark skin, massive fists, tiny head, towering body, stomping pose. Pixel art dark fantasy.",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "193_Trap_Apostle",
+    "name": "Trap Apostle",
+    "prompt": "Hunched goblin-like demon carrying traps and bombs, dark green skin, multiple cunning eyes, sneaky posture, mechanical claw arm. Dark fantasy pixel art creature.",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "194_Fission_Apostle",
+    "name": "Fission Apostle",
+    "prompt": "Grotesque humanoid monster with two merged faces on one head, asymmetric body ready to split apart, one oversized arm, grey-brown mottled skin, small growths on torso. Dark fantasy pixel art creature.",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "195_Wing_Apostle_v2",
+    "name": "Wing Apostle",
+    "prompt": "Dark fantasy flying demon. Lean humanoid with large bat wings, clawed feet, dark green-brown skin, sharp beak mouth, eyes on wing membranes. Pixel art monster sprite.",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "196_Spider_Apostle_v2",
+    "name": "Spider Apostle",
+    "prompt": "Dark fantasy creature, spider-human hybrid. Human upper body fused with spider lower body, six legs, dark purple-brown skin, multiple small red eyes, web spinnerets, mandibles on face. Pixel art monster sprite.",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "197_Berserker_Apostle",
+    "name": "Berserker Apostle",
+    "prompt": "Dark fantasy grotesque creature. A massive muscular humanoid with bulging veins, grey skin covered in scars and cracks glowing red, oversized fists, hunched aggressive posture, multiple eyes on shoulders, rage-filled expression with too many teeth. Berserk apostle aesthetic, top-down game sprite.",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "198_Womb_Apostle_v2",
+    "name": "Womb Apostle",
+    "prompt": "Dark fantasy grotesque creature. A bloated fleshy humanoid with a massive distended belly full of writhing smaller creatures visible through translucent skin, multiple breasts, hunched posture, brown-red flesh with pustules. Berserk apostle body horror aesthetic, top-down game sprite.",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "199_Shadow_Apostle_v2",
+    "name": "Shadow Apostle",
+    "prompt": "Dark fantasy grotesque creature. A translucent shadowy humanoid with wispy black smoke emanating from body, glowing red eyes visible through darkness, elongated claws, partially invisible form with cracks of dark purple light. Berserk apostle aesthetic, top-down game sprite.",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "200_Skeleton_Archer_v2",
+    "name": "Skeleton Archer",
+    "prompt": "skeleton archer with bone bow, undead bones, hooded tattered cloak, quiver on back, dark fantasy dungeon enemy, top-down RPG view",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "201_Sorcerer",
+    "name": "Sorcerer",
+    "prompt": "dark robed skeleton sorcerer, floating magical orbs around hands, long dark wizard robe, glowing purple eyes, casting spell pose, dark fantasy dungeon enemy, top-down RPG view",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "202_Alchemist_v2",
+    "name": "Alchemist",
+    "prompt": "hunched undead alchemist, carrying glass potion bottles, leather apron, goggles on skull, throwing stance, dark fantasy dungeon enemy, top-down RPG view",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "203_Lich_v2",
+    "name": "Lich",
+    "prompt": "floating undead lich mage, tattered dark robes, glowing blue skull eyes, ancient magic staff, necromancer, dark fantasy dungeon enemy, top-down RPG view",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "204_Shield_Bearer",
+    "name": "Shield Bearer",
+    "prompt": "skeleton soldier with large round wooden shield and bone spear, defensive stance, dark fantasy dungeon enemy, top-down RPG view",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "205_Suicide_Bomber_v2",
+    "name": "Suicide Bomber",
+    "prompt": "bloated undead zombie, glowing unstable green belly about to explode, shambling suicide bomber, dark fantasy dungeon enemy, top-down RPG view",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "206_Tank",
+    "name": "Tank",
+    "prompt": "massive armored undead knight, tower shield, heavy dark plate armor, slow powerful tank, dark fantasy dungeon enemy, top-down RPG view",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "207_Swarm",
+    "name": "Swarm",
+    "prompt": "tiny dark crawling insect swarm cluster, many small bugs grouped together, dark fantasy vermin, top-down RPG enemy",
+    "size": 32,
+    "view": "low top-down"
+  },
+  {
+    "key": "208_Charger",
+    "name": "Charger",
+    "prompt": "large hulking undead beast, horned skull, massive bone claws, muscular rotting flesh, dark fantasy dungeon charger enemy, top-down RPG view",
+    "size": 48,
+    "view": "low top-down"
+  },
+  {
+    "key": "213_si30_불완전사도",
+    "name": "si30 불완전 사도",
+    "prompt": "Imperfect apostle, half-human half-demon with asymmetric body, one arm mutated into dark claw, torn robes, dark fantasy horror pixel art",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "215_War_Wreckage_v2",
+    "name": "War Wreckage v2",
+    "prompt": "Undead war commander boss, massive dark iron armor with skull pauldrons, glowing red eyes beneath horned helmet, tattered blood-stained war cape, wielding huge war hammer, dark fantasy undead warlord",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "220_etype88_심판자",
+    "name": "etype88 심판자",
+    "prompt": "Dark robed judge, tall figure in black flowing robes, featureless void face, holding balance scales, broken wings, dark fantasy arbiter",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "221_Flesh_Abomination",
+    "name": "Flesh Abomination",
+    "prompt": "Twisted flesh horror boss, grotesque body made of fused human parts, multiple eyes, tentacles of muscle and bone, stitched skin, dark fantasy body horror abomination",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "225_Flesh_Wall_Lord",
+    "name": "Flesh Wall Lord",
+    "prompt": "Flesh wall lord boss, massive humanoid made of fused insect parts, chitin armor plates, mandible jaws, dark fantasy bug horror",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "227_si2_숲의사냥꾼",
+    "name": "si2 숲의 사냥꾼",
+    "prompt": "Corrupted forest hunter boss. Agile dark elf-like figure with tattered leaf cloak and bone mask. Wields dual curved blades made of dark thorns. Lean muscular build, dark skin with green tribal markings. Red glowing eyes behind skull mask. Stealthy predator aesthetic.",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "231_벌레수호자",
+    "name": "벌레 수호자",
+    "prompt": "Giant insect guardian boss. Massive beetle-like creature with thick chitinous armor plates, mandibles dripping acid, multiple segmented legs. Dark green and brown exoskeleton with glowing yellow-green pustules. Intimidating insect overlord.",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "234_etype99_죽음",
+    "name": "etype99 죽음",
+    "prompt": "Grim reaper skeleton in black hooded robe, holding large scythe, glowing red eyes",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "235_si1_독버섯거인",
+    "name": "si1 독버섯 거인",
+    "prompt": "Giant poisonous mushroom boss monster. Massive bloated humanoid body covered in toxic mushroom growths and spores. Large mushroom cap head with dripping purple poison. Pale sickly flesh with purple and green toxic veins. Bulky arms with fungal growths.",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "237_Giant_Egg_Sac",
+    "name": "Giant Egg Sac",
+    "prompt": "Giant egg sac boss, massive pulsating organic sphere, translucent membrane showing larvae inside, web-covered, dark fantasy",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "238_etype32_boulderApostle",
+    "name": "etype32_boulderApostle",
+    "prompt": "stone golem warrior, rocky armor, huge fists, grey brown",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "240_Parasitic_Tree_v2",
+    "name": "Parasitic Tree",
+    "prompt": "Parasitic tree boss, twisted dark ancient tree with tortured human faces trapped in bark, long reaching branch-claw arms, glowing red sap veins pulsing through trunk, dark fantasy horror tree monster, menacing",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "241_si22_뼈산의왕",
+    "name": "si22 뼈산의 왕",
+    "prompt": "Bone mountain king, skeletal warlord with crown of skulls, massive bone sword, tattered royal cape, dark fantasy undead boss pixel art",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "244_si3_숲의기생수",
+    "name": "si3 숲의 기생수",
+    "prompt": "Parasitic corrupted ancient tree boss. Giant humanoid tree creature with twisted bark body, glowing red sap veins, screaming faces in the trunk. Root-tentacle legs, gnarled branch arms with claw hands. Dark brown bark with pulsing crimson energy. Horror treant monster.",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "248_Forest_Hunter_v2",
+    "name": "Forest Hunter",
+    "prompt": "Dark forest hunter boss, lean muscular build, antler helmet, bone spear, tattered dark green cloak, glowing yellow predator eyes, tribal war paint, dark fantasy",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "249_Parasitic_Tree",
+    "name": "Parasitic Tree",
+    "prompt": "Parasitic tree monster boss, twisted living tree with grasping branches as arms, glowing red sap veins, dark hollow face in trunk, roots as legs, corrupted ancient treant",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "250_Iron_Wall_Captain",
+    "name": "Iron Wall Captain",
+    "prompt": "Iron wall knight captain boss, massive tower shield warrior in heavy steel plate armor, impenetrable fortress knight, glowing blue visor, spiked shield taller than body, unbreakable defender",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "253_Giant_Egg_Sac_v2",
+    "name": "Giant Egg Sac",
+    "prompt": "Giant egg sac monster boss, massive pulsating organic sac with translucent membrane showing larvae inside, supported by insect legs, veiny surface, grotesque birthing horror",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "254_Poison_Mushroom_Giant_v2",
+    "name": "Poison Mushroom Giant",
+    "prompt": "Giant poisonous mushroom boss monster, bulbous purple-green cap, spore clouds, thick fungal stalk body, glowing toxic veins, dark fantasy mushroom horror",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "256_Slime_Beast_v2",
+    "name": "Slime Beast v2",
+    "prompt": "Giant slime beast boss, massive amorphous blob creature with multiple eyes, translucent green-purple body with bones visible inside, dripping acidic ooze, tentacle appendages",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "257_Forest_Hunter",
+    "name": "Forest Hunter",
+    "prompt": "Dark forest hunter boss, twisted wooden armor made of bark and thorns, antler helm, glowing green eyes, wielding a jagged vine whip, corrupted forest spirit warrior",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "260_대형구울v2",
+    "name": "대형 구울 v2",
+    "prompt": "Berserk manga style grotesque massive undead ghoul brute, hulking monstrous abomination covered in dozens of eyeballs across swollen belly and shoulders, massive tumor growths with eyes inside them, grotesquely muscular with bone spikes erupting from back, giant mouth on stomach filled with teeth, face is a mass of fused skulls, enormous arms ending in jagged bone claws, dark blood oozing from every crack, apostle-like hellish monstrosity, Kentaro Miura inspired eldritch horror design",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "262_War_Remnant",
+    "name": "War Remnant",
+    "prompt": "Undead war commander boss, heavy dark iron armor with skull pauldrons, glowing red eyes, tattered war banner on back, wielding massive rusted battle axe, undead general risen from battlefield",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "263_etype38_broodApostle",
+    "name": "etype38_broodApostle",
+    "prompt": "brood apostle, bloated insect queen, multiple legs, egg sac on back, chitinous armor, large",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "264_Poison_Mushroom_Giant",
+    "name": "Poison Mushroom Giant",
+    "prompt": "Giant mushroom monster boss, massive purple-green poisonous mushroom cap as head, thick mossy body, dripping toxic spores, dark forest creature, menacing fungal giant",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "266_t69",
+    "name": "t69",
+    "prompt": "large purple demon",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "269_Bone_Mountain_King",
+    "name": "Bone Mountain King",
+    "prompt": "Bone mountain king boss, colossal skeleton lord made of thousands of bones fused together, bone crown, ribcage exposed with dark energy core inside, towering undead bone titan",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "270_Flesh_Wall_Lord_v2",
+    "name": "Flesh Wall Lord",
+    "prompt": "Flesh wall lord boss, towering mass of merged insect bodies and flesh, multiple faces screaming, chitinous plates mixed with raw meat, dark red and brown, living wall of horror",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "271_Parasite_Mother_v2",
+    "name": "Parasite Mother v2",
+    "prompt": "Parasite mother boss, bloated insect queen with swollen egg sac, multiple legs, dark chitinous armor, mandibles dripping venom, parasitic worms crawling on body",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "272_Mouth_Monster",
+    "name": "Mouth Monster",
+    "prompt": "giant mouth creature, massive jaw with rows of sharp teeth, tongue tentacle, small body with huge gaping maw, orange glowing eyes on top, dark fantasy horror",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "273_Bone_Watcher",
+    "name": "Bone Watcher",
+    "prompt": "Human bone watcher boss, tall figure assembled from human bones and skulls, ribcage torso with dark energy swirling inside, skull head with multiple eye sockets glowing, bone sentinel",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "276_Giant_Demon",
+    "name": "Giant Demon",
+    "prompt": "massive muscular demon, very large body, tiny head, huge fists, short thick legs, dark red skin, dark fantasy",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "281_Pillar_Demon",
+    "name": "Pillar Demon",
+    "prompt": "tall stone golem demon, elongated grey body, glowing orange runes carved on body, heavy arms, dark fantasy",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "284_숲의사냥꾼",
+    "name": "숲의 사냥꾼",
+    "prompt": "Fast forest predator boss with antler horns, bark armor, sharp claws. Brown and green, amber eyes.",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "285_독버섯거인",
+    "name": "독버섯 거인",
+    "prompt": "Giant poison mushroom boss. Huge humanoid mushroom creature with spotted toxic cap, spore-releasing pores, thick fungal body, vine-like arms. Purple and sickly green colors with glowing yellow spores.",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "286_대형구울",
+    "name": "대형 구울",
+    "prompt": "Massive undead ghoul brute, hulking monstrous zombie giant, thick rotting dark green flesh covered in bone spikes and tumors, one giant glowing red eye, massive jaw with protruding fangs, enormous muscular arms with bone claws, hunched back with spine protrusions, hellish abomination covered in dark blood and decay",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "287_Large_Ghoul",
+    "name": "Large Ghoul",
+    "prompt": "Large hulking undead ghoul abomination, massive muscular rotting body, dark green-brown decayed skin, huge arms dragging on ground, glowing crimson eyes, exposed skull fragments, bone spikes protruding from shoulders, heavy and menacing undead brute",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "288_전쟁의잔해_si21",
+    "name": "전쟁의 잔해 (si21)",
+    "prompt": "Undead war commander boss, heavy dark iron armor with skull pauldrons, glowing red eyes, tattered war banner, massive rusted battle axe",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "294_기생충모체_si6",
+    "name": "기생충 모체 (si6)",
+    "prompt": "Parasite mother boss, bloated insect queen with swollen egg sac, multiple legs, dark chitinous armor, mandibles dripping venom, parasitic worms crawling on body",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "295_점액괴수_si5",
+    "name": "점액 괴수 (si5)",
+    "prompt": "Giant slime beast boss, massive amorphous blob creature with multiple eyes, translucent green-purple body with bones visible inside, dripping acidic ooze, tentacle appendages",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "296_si27_인간뼈감시자",
+    "name": "si27 인간뼈 감시자",
+    "prompt": "Human bone watcher, grotesque flesh and bone hybrid guardian, skull face, bone armor fused with flesh, dark fantasy horror pixel art",
+    "size": 64,
+    "view": "low top-down"
+  },
+  {
+    "key": "297_si31_대사도",
+    "name": "si31 대사도",
+    "prompt": "Grand apostle, fully transformed dark apostle in flowing dark purple robes, floating, multiple dark energy halos, glowing purple eyes, staff of darkness, dark fantasy boss pixel art",
+    "size": 64,
+    "view": "low top-down"
+  }
+]

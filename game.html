@@ -17736,7 +17736,7 @@ function update(){
     }
     else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=20;_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3){var _ve2=['voice_grunt','male_grunt'];playSample(_ve2[~~(Math.random()*2)],1,_r(1,.15))}if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
     // ── H키: 버스트루프 밀기/당기기 토글 ──
-    if(_chkJust('KeyH')&&P.skills.burstLoop>=1){P._blPullMode=!P._blPullMode;addTxt(P.x,P.y-30,P._blPullMode?_T('🌀 당기기 모드'):_T('💥 밀어내기 모드'),P._blPullMode?'#44ccff':'#ff6644',40);playSample('shield_activate',.4,_r(1,.1))}
+    else if(_chkJust('KeyH')&&P.skills.burstLoop>=1){P._blPullMode=!P._blPullMode;addTxt(P.x,P.y-30,P._blPullMode?_T('🌀 당기기 모드'):_T('💥 밀어내기 모드'),P._blPullMode?'#44ccff':'#ff6644',40);playSample('shield_activate',.4,_r(1,.1))}
     // ── X키: 처형 (그로기 보스 전용, HP/MP/ST 10% 소모 → 사슬기동 자동 돌진 → 보스 HP 30% 순수뎀, 쿨 20초) ──
     else if(_chkJust('KeyX')&&P.skills.execution>=1&&(P._execCd||0)<=0){
       const _exBoss=G._bossRef&&G._bossRef.alive&&G._bossRef.stunned>0?G._bossRef:null;
@@ -29046,7 +29046,7 @@ function renderStorage(){
   if(INV.bag.length===0){const e=document.createElement('div');e.style.cssText='color:#666;font-size:1rem;padding:4px';e.textContent=_T('가방이 비어있습니다');grid.appendChild(e)}
   INV.bag.forEach((it,idx)=>{
     const d=document.createElement('div');d.className='fg-i';d.style.borderLeftColor=RARITY_C[it.rarity];
-    d.innerHTML=`<div class="fg-in" style="color:${RARITY_C[it.rarity]}">${it.emoji} ${it.name}</div><div class="fg-id">Lv.${it.itemLv||0} ${_rarName(it.rarity)}</div><div class="fg-ic" style="color:#88cc66;cursor:pointer">${_T('보관')}</div>`;
+    d.innerHTML=`<div class="fg-in" style="color:${RARITY_C[it.rarity]}">${it.emoji} ${_T(it.name)}</div><div class="fg-id">Lv.${it.itemLv||0} ${_rarName(it.rarity)}</div><div class="fg-ic" style="color:#88cc66;cursor:pointer">${_T('보관')}</div>`;
     d.onclick=()=>{if(store.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return}store.push(it);INV.bag.splice(idx,1);SFX.pickup();renderStorage();dbSaveNow()};
     grid.appendChild(d);
   });
@@ -29055,7 +29055,7 @@ function renderStorage(){
   if(store.length===0){const e=document.createElement('div');e.style.cssText='color:#666;font-size:1rem;padding:4px';e.textContent=_T('창고가 비어있습니다');grid.appendChild(e)}
   store.forEach((it,idx)=>{
     const d=document.createElement('div');d.className='fg-i';d.style.borderLeftColor=RARITY_C[it.rarity];
-    d.innerHTML=`<div class="fg-in" style="color:${RARITY_C[it.rarity]}">${it.emoji} ${it.name}</div><div class="fg-id">Lv.${it.itemLv||0} ${_rarName(it.rarity)}</div><div class="fg-ic" style="color:#66aacc;cursor:pointer">${_T('꺼내기')}</div>`;
+    d.innerHTML=`<div class="fg-in" style="color:${RARITY_C[it.rarity]}">${it.emoji} ${_T(it.name)}</div><div class="fg-id">Lv.${it.itemLv||0} ${_rarName(it.rarity)}</div><div class="fg-ic" style="color:#66aacc;cursor:pointer">${_T('꺼내기')}</div>`;
     d.onclick=()=>{if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}INV.bag.push(it);store.splice(idx,1);SFX.pickup();renderStorage();dbSaveNow()};
     grid.appendChild(d);
   });
@@ -29090,7 +29090,7 @@ function renderInvStorage(){
   INV.bag.forEach((it,idx)=>{
     const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:2px 3px;font-size:1rem;cursor:pointer;border-bottom:1px solid #1a0e00;transition:background .1s';
     d.onmouseenter=()=>d.style.background='rgba(136,170,102,.08)';d.onmouseleave=()=>d.style.background='';
-    d.innerHTML=`<span style="color:${RARITY_C[it.rarity]};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px">${it.emoji} ${it.name}</span><span style="color:#88cc66;font-size:1rem;flex-shrink:0;margin-left:4px">${_T('보관')}</span>`;
+    d.innerHTML=`<span style="color:${RARITY_C[it.rarity]};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px">${it.emoji} ${_T(it.name)}</span><span style="color:#88cc66;font-size:1rem;flex-shrink:0;margin-left:4px">${_T('보관')}</span>`;
     d.onclick=()=>{if(store.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return}store.push(it);INV.bag.splice(idx,1);SFX.pickup();renderInv();dbSaveNow()};
     bagList.appendChild(d);
   });
@@ -29974,7 +29974,7 @@ function _invRenderDetail(idx,source){
   d.innerHTML=`
     <div style="height:3px;background:${RARITY_C[it.rarity]};margin:-10px -10px 8px -10px;border-radius:2px 2px 0 0"></div>
     <div style="font-size:.75rem;color:#666">${srcLabel}${_jfTag}</div>
-    <div class="id-name" style="color:${RARITY_C[it.rarity]};font-size:1.1rem">${it.name}${it.enh?' <span style="color:'+enhColor(it.enh)+'">+'+it.enh+'</span>':''}</div>
+    <div class="id-name" style="color:${RARITY_C[it.rarity]};font-size:1.1rem">${_T(it.name)}${it.enh?' <span style="color:'+enhColor(it.enh)+'">+'+it.enh+'</span>':''}</div>
     <div class="id-stats" style="font-size:.95rem;flex:1;overflow-y:auto;min-height:0">${_invCardFields(it)}</div>
     <div style="font-size:.7rem;color:#555;margin-top:4px">좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금</div>
   `;
@@ -30401,7 +30401,7 @@ function renderInv(){
     const ip=itemPower(item);
     const _eSz=_GC>=48?(Math.min(w,h)>1?'1.8rem':'1.3rem'):(Math.min(w,h)>1?'1.3rem':'1rem');
     const _ipSz=_GC>=48?'9px':'8px';
-    const _nmHtml=(w*h>=4&&_GC>=42)?`<div style="font-size:${_GC>=48?'.65rem':'.55rem'};color:${RARITY_C[item.rarity]}88;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:${w*_GC-6}px;pointer-events:none;line-height:1;margin-top:1px">${item.name}</div>`:'';
+    const _nmHtml=(w*h>=4&&_GC>=42)?`<div style="font-size:${_GC>=48?'.65rem':'.55rem'};color:${RARITY_C[item.rarity]}88;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:${w*_GC-6}px;pointer-events:none;line-height:1;margin-top:1px">${_T(item.name)}</div>`:'';
     div.innerHTML=`<span style="color:${RARITY_C[item.rarity]};font-size:${_eSz}">${item.emoji}</span>${_nmHtml}<div class="rarity-dot" style="background:${RARITY_C[item.rarity]}"></div>${_markHtml}<div style="font-size:${_ipSz};color:#aa9977;position:absolute;bottom:1px;right:2px;pointer-events:none">${ip}</div>${isSal?'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#ff3333;text-shadow:0 0 6px #000;pointer-events:none;font-weight:900">✕</div>':''}`;
     // 드래그 시작
     div.onmousedown=(ev)=>{
@@ -30572,7 +30572,7 @@ function renderForge(){
       const isMax=false; // 무한 강화
       const rc=RARITY_C[it.rarity||0];
       const ec=enhColor(enh);
-      const label=icon+' '+(it.name||slot);
+      const label=icon+' '+_T(it.name||slot);
       const sel=_forgeSel&&_forgeSel.name===label;
       const d=document.createElement('div');d.className='fg-i'+(sel?' fg-sel':'');
       if(isMax){
@@ -30774,7 +30774,7 @@ function renderForge(){
       if(it){
         const rc=RARITY_C[it.rarity||0];
         let info=`<span style="color:${rc};font-weight:700">${it.emoji||SLOT_EMOJI[i]} ${itemDispName(it)}${it.enh?' <span style="color:'+enhColor(it.enh)+'">+'+it.enh+'</span>':''}</span>`;
-        const afxHtml=it.affixes&&it.affixes.length?it.affixes.map(af=>'<span style="color:'+(AFFIX_POOL.find(a=>a.id===af.id&&a.type===0)?'#66ddff':'#ffcc44')+';font-size:.75rem">['+(AFFIX_NAMES_KO[af.id]||af.id)+' '+_affixValStr(af)+']</span>').join(' '):'';
+        const afxHtml=it.affixes&&it.affixes.length?it.affixes.map(af=>'<span style="color:'+(AFFIX_POOL.find(a=>a.id===af.id&&a.type===0)?'#66ddff':'#ffcc44')+';font-size:.75rem">['+_T(AFFIX_NAMES_KO[af.id]||af.id)+' '+_affixValStr(af)+']</span>').join(' '):'';
         if(afxHtml)info+=' '+afxHtml;
         else if(canReroll)info+=` <span style="color:#554433;font-size:.75rem">어픽스 없음</span>`;
         d.innerHTML=info;
@@ -30789,7 +30789,7 @@ function renderForge(){
       const rIt=INV.equipped[_rerollSel];
       const detDiv=document.createElement('div');detDiv.style.cssText='padding:12px;background:rgba(0,0,0,.35);border:1px solid #44ccff;border-radius:6px';
       const rc=RARITY_C[rIt.rarity||0];
-      const _afxHtml=rIt.affixes&&rIt.affixes.length?rIt.affixes.map(af=>{const p=AFFIX_POOL.find(a=>a.id===af.id);const c=p&&p.type===0?'#66ddff':'#ffcc44';return'<div style="color:'+c+';font-size:.85rem">'+(AFFIX_NAMES_KO[af.id]||af.id)+' '+_affixValStr(af)+'</div>'}).join(''):'<div style="color:#554433;font-size:.85rem">어픽스 없음</div>';
+      const _afxHtml=rIt.affixes&&rIt.affixes.length?rIt.affixes.map(af=>{const p=AFFIX_POOL.find(a=>a.id===af.id);const c=p&&p.type===0?'#66ddff':'#ffcc44';return'<div style="color:'+c+';font-size:.85rem">'+_T(AFFIX_NAMES_KO[af.id]||af.id)+' '+_affixValStr(af)+'</div>'}).join(''):'<div style="color:#554433;font-size:.85rem">'+_T('어픽스 없음')+'</div>';
       let _implHtml='';
       if(rIt._implicitKo&&rIt._implicitVal!==undefined){_implHtml='<div style="color:#aaddff;font-size:.8rem">\u25C6 '+rIt._implicitKo.replace('X',rIt._implicitVal)+'</div>'}
       let _legHtml='';
