@@ -13334,7 +13334,7 @@ function pDefAdd(){return PASSIVES.pDef*5+(P._altDef||0)*30}   // 방어력 +5/l
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
 function pParryDmg(){return 2+PASSIVES.pParry*.50}     // 기본 +100%, 카운터뎀 +50%/lv (10lv=+600%)
-function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;const _lvScale=1+P.lv*0.01;return ~~((scale*5+bulletDmg*3)*pParryDmg()*_afxPB*_legSP*_lvScale);} // _lvScale: 레벨당+1% (Lv600=+600%)
+function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;return ~~(Math.max(scale*2,bulletDmg*8)*pParryDmg()*_afxPB*_legSP);} // max(스탯기반, 탄뎀×8) — 적이 강하면 반사도 강함
 function pParryBlueBeanBase(p){return Math.max(p.dmg,~~(magicRef()*statInt()*pMagicMul()*0.8));}
 function pParryRmbSpd(){return 1+PASSIVES.pParry*.10}  // 우클릭공속 +10%/lv (10lv=+100%)
 function pParryRainbowDR(){return Math.min(.50,PASSIVES.pParry*.10)} // 무지개탄 피해감소 +10%/lv (최대50%)
@@ -15778,7 +15778,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
   const _lvHp=Math.floor((ib?6000:600)*Math.pow(1.013,monLv)*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 기본600(×3), 1.3%복리, 스테이지당+2%, 보스=일반×10
-  const _atk=Math.floor(((ib?20:13)+monLv*(ib?1.5:1))*dm*et.atkMul); // 일반: 13+lv×1 (무지개max 1렙21,50렙95,500렙770,1000렙1520), 보스: 20+lv×1.5
+  const _atk=Math.floor(((ib?60:49)+monLv*(ib?1.5:1))*dm*et.atkMul); // 일반: 49+lv×1 (1렙50,50렙99,500렙549,1000렙1049,무지개×1.5), 보스: 60+lv×1.5
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   if(!window._noProjEtypes)window._noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
   let _projCd=ib?50 // 보스: 별도
@@ -17667,7 +17667,7 @@ function update(){
                 // 레드빈 → 파란 유도탄으로 변환
                 let _bbTgt=null,_bbMin=600;
                 {const _bbNe2=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_bbNe2.length;_ri++){const e=_bbNe2[_ri];if(!e.alive)continue;const dd=dst(P.x,P.y,e.x,e.y);if(dd<_bbMin){_bbMin=dd;_bbTgt=e}}}
-                if(_bbTgt){const _bbA=Math.atan2(_bbTgt.y-P.y,_bbTgt.x-P.x);p.vx=Math.cos(_bbA)*3.5;p.vy=Math.sin(_bbA)*3.5}
+                if(_bbTgt){const _bbA=Math.atan2(_bbTgt.y-P.y,_bbTgt.x-P.x);const _bbSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_bbA)*_bbSpd;p.vy=Math.sin(_bbA)*_bbSpd}
                 else{p.vx*=-2;p.vy*=-2}
                 p.friendly=true;p.life=240;p.ml=240;p._aoeR=160;
                 const _wingMul=(P._stWingT||0)>0?1.5:1;
@@ -18957,7 +18957,7 @@ function update(){
         // Q 패링 성공: 반사 + 유도
         let _bkTgt=null,_bkMin=600;
         {const _bkNe2=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_bkNe2.length;_ri++){const e=_bkNe2[_ri];if(!e.alive)continue;const dd=dst(P.x,P.y,e.x,e.y);if(dd<_bkMin){_bkMin=dd;_bkTgt=e}}}
-        if(_bkTgt){const _bkA=Math.atan2(_bkTgt.y-P.y,_bkTgt.x-P.x);p.vx=Math.cos(_bkA)*4;p.vy=Math.sin(_bkA)*4}
+        if(_bkTgt){const _bkA=Math.atan2(_bkTgt.y-P.y,_bkTgt.x-P.x);const _bkSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_bkA)*_bkSpd;p.vy=Math.sin(_bkA)*_bkSpd}
         else{p.vx*=-2;p.vy*=-2}
         {p.dmg=~~(pParryProjDmg(p.dmg,true)*3);}
         p.friendly=true;p.life=300;p.ml=300;p._aoeR=180;p._aoeDmg=p.dmg*4;
@@ -18997,7 +18997,7 @@ function update(){
       if(isPWin()&&_pDist<_rbDeflR){
         let _bwTgt=null,_bwMin=600;
         {const _bwNe=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_bwNe.length;_ri++){const e=_bwNe[_ri];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d<_bwMin){_bwMin=d;_bwTgt=e}}}
-        if(_bwTgt){const _bwA=Math.atan2(_bwTgt.y-P.y,_bwTgt.x-P.x);p.vx=Math.cos(_bwA)*3.5;p.vy=Math.sin(_bwA)*3.5}
+        if(_bwTgt){const _bwA=Math.atan2(_bwTgt.y-P.y,_bwTgt.x-P.x);const _bwSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_bwA)*_bwSpd;p.vy=Math.sin(_bwA)*_bwSpd}
         else{p.vx*=-2;p.vy*=-2}
         {p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,_sbPW)*1.5);p.life=180;p.ml=180;p.bwBean=false;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=140;p._aoeDmg=p.dmg*3;}
         SFX.deflect();addTxt(P.x,P.y-28,_T('🛡️💎 블루콩!'),'#00e5ff',50);
@@ -19013,7 +19013,7 @@ function update(){
       if(isPWin()){
         let _gbTgt=null,_gbMin=600;
         {const _gbNe=shQuery(P.x,P.y,600);for(let _gi=0;_gi<_gbNe.length;_gi++){const e=_gbNe[_gi];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d<_gbMin){_gbMin=d;_gbTgt=e}}}
-        if(_gbTgt){const _ga=Math.atan2(_gbTgt.y-P.y,_gbTgt.x-P.x);p.vx=Math.cos(_ga)*3.5;p.vy=Math.sin(_ga)*3.5}
+        if(_gbTgt){const _ga=Math.atan2(_gbTgt.y-P.y,_gbTgt.x-P.x);const _gaSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_ga)*_gaSpd;p.vy=Math.sin(_ga)*_gaSpd}
         else{p.vx*=-2;p.vy*=-2}
         {p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,_sbPW)*2);p.life=200;p.ml=200;p.gbBean=false;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=160;p._aoeDmg=p.dmg*4;}
         SFX.deflect();addTxt(P.x,P.y-28,_T('✨💎 블루콩!'),'#00e5ff',50);
@@ -19044,7 +19044,7 @@ function update(){
         // 유도 반사 (빨콩과 동일)
         let _npTgt=null,_npMin=600;
         {const _npNe=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_npNe.length;_ri++){const e=_npNe[_ri];if(!e.alive)continue;const d=dst(P.x,P.y,e.x,e.y);if(d<_npMin){_npMin=d;_npTgt=e}}}
-        if(_npTgt){const _npA=Math.atan2(_npTgt.y-P.y,_npTgt.x-P.x);p.vx=Math.cos(_npA)*3.5;p.vy=Math.sin(_npA)*3.5}
+        if(_npTgt){const _npA=Math.atan2(_npTgt.y-P.y,_npTgt.x-P.x);const _npSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_npA)*_npSpd;p.vy=Math.sin(_npA)*_npSpd}
         else{p.vx*=-2;p.vy*=-2}
         {p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,_sbPW)*1.5);p.life=180;p.ml=180;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=120;p._aoeDmg=p.dmg*3;}
         P.parryBank=(P.parryBank||0)+(p.dmg||10);

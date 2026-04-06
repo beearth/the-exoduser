@@ -83,13 +83,7 @@ def main():
                 continue
 
             # Whisper 인식
-            result = model.transcribe(
-                audio,
-                language=args.lang,
-                fp16=False,
-                no_speech_threshold=0.6,
-                condition_on_previous_text=False,
-            )
+            result = model.transcribe(audio, language="ko", task="translate", fp16=False)
             text = result["text"].strip()
 
             if not text or text in (".", "...", "Thank you.", "자막 제공"):

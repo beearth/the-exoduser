@@ -12284,3 +12284,11 @@
 - subtitle.py
 - subtitle_out.txt
 
+
+## 2026-04-06 15:30 (auto)
+- docs/8.0몬스?�디?�인/몬스??공격?�스??md
+- docs/8.0몬스?�디?�인/몬스??총�?�?md
+- game.html
+- subtitle.py
+- subtitle_out.txt
+
