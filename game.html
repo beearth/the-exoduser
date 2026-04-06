@@ -31265,6 +31265,7 @@ function draw(){
     }
   }
   // ═══ MAP_OBJS 렌더 ═══
+  const _tMObj=performance.now();
   const _wvl=G.cam.x-C.width/2-40,_wvr=G.cam.x+C.width/2+40,_wvt=G.cam.y-C.height/2-40,_wvb=G.cam.y+C.height/2+40;
   for(const mo of MAP_OBJS){
     if(mo.type==='breakable'&&!mo.alive)continue;
@@ -31409,6 +31410,7 @@ function draw(){
     }
     X.globalAlpha=1;
   }
+  const _tWI=performance.now();
   // World items (화면 내만 렌더)
   for(let _wii=0;_wii<worldItems.length;_wii++){const it=worldItems[_wii];if(it.picked)continue;if(it.x<_wvl||it.x>_wvr||it.y<_wvt||it.y>_wvb)continue;const b=Math.sin(_now/300+it.x)*3;X.textAlign='center';
     if(it.type==='forge'){X.font='28px sans-serif';X.fillText('⚒️',it.x,it.y+b);X.font='14px "Noto Sans KR"';X.fillStyle='#ff8844';X.fillText('['+keyName(BINDS.forge)+']',it.x,it.y+b+20)}
@@ -33929,7 +33931,7 @@ function draw(){
   if(_DEBUG_PERF){_dbgDMap=_dd1-_dd0;_dbgDEns=_dd2-_dd1;_dbgDProj=_dd3-_dd2;_dbgDPart=_dd4-_dd3}
   if(_dbgDPost>16){const _pA=_pB0-_pA0,_pB=_pC0-_pB0,_pC=_dd5-_pC0;console.warn('[POST SPIKE] '+_dbgDPost.toFixed(1)+'ms | A(hud+lowHP):'+_pA.toFixed(1)+' B(flash+lit+bloom+torch):'+_pB.toFixed(1)+' C:'+_pC.toFixed(1)+' [bonfire:'+(_pC1-_pC0).toFixed(1)+' fog:'+(_pC2-_pC1).toFixed(1)+' envVig:'+(_pC3-_pC2).toFixed(1)+' grainScan:'+(_pC4-_pC3).toFixed(1)+' bossCine:'+(_pC5-_pC4).toFixed(1)+' minimap:'+(_dd5-_pC5).toFixed(1)+']')}}
   const _drawTotal=performance.now()-_drawStart;
-  if(_drawTotal>16)console.log('[DRAW TOTAL] '+_drawTotal.toFixed(2)+'ms | ens:'+(_dd2-_dd1).toFixed(1)+' ens_gl:'+_dbgEnsGL.toFixed(1)+' proj:'+(_dd3-_dd2).toFixed(1)+' PART:'+(_dd4-_dd3).toFixed(1)+' [drawP:'+(_tDP1-_tDP0).toFixed(1)+' pool:'+(_tDP2-_tDP1).toFixed(1)+' corpse:'+(_tDP2b-_tDP2).toFixed(1)+' vfx:'+(_tDP3-_tDP2b).toFixed(1)+' impact:'+(_dd4-_tDP3).toFixed(1)+'] post:'+_dbgDPost.toFixed(1));
+  if(_drawTotal>16)console.log('[DRAW TOTAL] '+_drawTotal.toFixed(2)+'ms | MAP:'+(_dd1-_dd0).toFixed(1)+' [para:'+(_tMap-_tPara).toFixed(1)+' cache:'+(_tMObj-_tMap).toFixed(1)+' mobj:'+(_tWI-_tMObj).toFixed(1)+' items:'+(_dd1-_tWI).toFixed(1)+'] ens:'+(_dd2-_dd1).toFixed(1)+' proj:'+(_dd3-_dd2).toFixed(1)+' PART:'+(_dd4-_dd3).toFixed(1)+' post:'+_dbgDPost.toFixed(1));
 }
 
 // Element glow colors (brighter versions for FX)
