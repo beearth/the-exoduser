@@ -11084,36 +11084,38 @@ function _assignBossSkin(e,si){
   if(m){e._mobSkin=bs.f;e._mobCol=m.col;e._mobRow=m.row;e._mobWalkRow=m.walk_row!==undefined?m.walk_row:-1;e._mobIdx=m.idx}
 }
 
-// 적 스폰 시 ch풀에서 랜덤 몹ID 배정 (보스는 고정 스킨)
+// 적 스폰 시 ch풀에서 스킨 배정 (보스는 고정 스킨) — 8방향 우선, 4방향 폴백
+let _skinSeqIdx=0; // 순차 배정 카운터 (모든 스킨 1회 이상 등장 보장)
 function _assignMobSkin(e){
   if(e.ib){_assignBossSkin(e,G.stage);return}
   const chN=(SI_TO_HELL[G.stage]||0)+1;
   e._mobCh=chN;
-  // 8방향 직접 할당
+  // 8방향 순차 할당
   const a8=_ch8Atlas[chN];
   if(a8&&a8.mobList&&a8.mobList.length){
-    const idx8=~~(Math.random()*a8.mobList.length);
+    const idx8=_skinSeqIdx%a8.mobList.length;
+    _skinSeqIdx++;
     e._mob8dir=true;
     e._mob8Skin=a8.mobList[idx8];
     const m8=a8.meta?a8.meta.mobs[e._mob8Skin]:null;
     if(m8){e._mob8Col=m8.col;e._mob8Row=m8.row;}
     e._mobSkinPending=false;
   }
-  // 4방향도 항상 할당 (폴백용)
+  // 4방향도 할당 (폴백용)
   const a=_chAtlas[chN];
   if(!a||!a.mobList||!a.mobList.length){
-    e._mobSkinPending=true;
+    if(!e._mob8dir)e._mobSkinPending=true;
     return;
   }
   _applyMobSkin(e,a);
 }
 function _applyMobSkin(e,a){
-  // 8방향 아틀라스 우선 시도
   const chN=e._mobCh;
+  // 8방향 순차 할당
   const a8=_ch8Atlas[chN];
-  if(!e._8dDbg){e._8dDbg=true;console.log('[SKIN] chN='+chN+' a8?='+(!!a8)+' mobList?='+(a8&&a8.mobList?a8.mobList.length:'null'))}
   if(a8&&a8.mobList&&a8.mobList.length){
-    const idx8=~~(Math.random()*a8.mobList.length);
+    const idx8=_skinSeqIdx%a8.mobList.length;
+    _skinSeqIdx++;
     e._mob8dir=true;
     e._mob8Skin=a8.mobList[idx8];
     const m8=a8.meta?a8.meta.mobs[e._mob8Skin]:null;
@@ -16789,6 +16791,7 @@ function spawnCorridorEns(si){
 function initStage(si){
   if(si>=TOTAL_STAGES)si=TOTAL_STAGES-1; // 35스테이지 초과 시 마지막 스테이지 폴백
   G.stage=si;
+  _skinSeqIdx=0; // 스킨 순차 배정 카운터 리셋
   _loadChAtlas(SI_TO_HELL[si]||0); // ch 아틀라스 로드
   ens=[];for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;{for(let _ri=0;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=0;};worldItems=[];MAP_OBJS=[];G.parts=[];G.txts=[];G.hitStop=0;G.slowMo=0;G.curRoom=0;G._flashT=0;G._flashCol='#ffffff';G._chromaT=0;_eSpCache.clear();_impacts=[];_vfxAnims.length=0;_fireExps.length=0;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;_shDirty=true;_eyeObjs.length=0;_eyeInited=false;
   // ── 보스 패턴 배열 전수 초기화 (메모리 누수 방지) ──

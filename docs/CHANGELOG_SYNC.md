@@ -13204,3 +13204,20 @@
 ## 2026-04-07 07:19 (auto)
 - subtitle_out.txt
 
+
+## 2026-04-07 08:30 (auto)
+- blender/boss_ch1.py
+- blender/sprites/boss_ch1_0000.png
+- blender/sprites/boss_ch1_0045.png
+- blender/sprites/boss_ch1_0055.png
+- blender/sprites/boss_ch1_0080.png
+- docs/8.0ëª¬ìŠ¤?°ë””?ì¸/ëª¬ìŠ¤???¤í‚¨_?Œë”ë§??Œì´?„ë¼??md
+- game.html
+- img/atlas_ch1.json
+- img/atlas_ch1_east.png
+- img/atlas_ch1_north.png
+- img/atlas_ch1_south.png
+- img/atlas_ch1_walk.png
+- img/atlas_ch1_west.png
+- subtitle_out.txt
+

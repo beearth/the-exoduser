@@ -29,7 +29,7 @@ for a in list(bpy.data.armatures):
 
 scene = bpy.context.scene
 scene.frame_start = 0
-scene.frame_end = 95
+scene.frame_end = 99
 scene.render.fps = 24
 
 
@@ -356,11 +356,13 @@ bpy.ops.object.parent_set(type='ARMATURE_AUTO')
 # ═══════════════════════════════════════════════
 # 5. 카메라 (사이드뷰 — 2D 횡스크롤 시점)
 # ═══════════════════════════════════════════════
-bpy.ops.object.camera_add(location=(0.3, -6, 2.2))
+# 사이드뷰: 보스가 X방향으로 길므로, 카메라를 Y축 앞에서 약간 낮게
+bpy.ops.object.camera_add(location=(0, -10, 1.8))
 cam = bpy.context.active_object
 cam.name = 'Boss_Camera'
-cam.rotation_euler = (math.radians(78), 0, 0)
-cam.data.lens = 35  # 광각으로 전신 포착
+cam.rotation_euler = (math.radians(90), 0, 0)  # 정면
+cam.data.type = 'ORTHO'  # 직교 — 2D 스프라이트에 적합
+cam.data.ortho_scale = 5.0  # 전신이 들어오는 크기
 cam.data.clip_end = 50
 scene.camera = cam
 
@@ -567,10 +569,10 @@ for f in range(56, 64):
     kf_bone('Tail', f, rot=(0, 0.3 * (1 - t), 0))
     kf_bone('Jaw', f, rot=(0.35 * (1 - t), 0, 0))
 
-# ── STAGGER (64~73f): 경직 — 비틀거림 ──
+# ── STAGGER (64~75f): 경직 — 비틀거림 ──
 kf_all_rest(64)
-for f in range(64, 74):
-    t = (f - 64) / 9.0
+for f in range(64, 76):
+    t = (f - 64) / 11.0
     decay = 1.0 - t * 0.6
     shake = math.sin(t * math.pi * 6) * decay
     # 몸통 흔들림
@@ -583,11 +585,11 @@ for f in range(64, 74):
     kf_bone('Leg_BL', f, rot=(-shake * 0.1, 0, 0))
     kf_bone('Leg_BR', f, rot=(shake * 0.13, 0, 0))
 
-# ── DEATH (74~95f): 쓰러짐 ──
-kf_all_rest(74)
-# 비틀거리며 무릎 꿇기 (74~82)
-for f in range(74, 83):
-    t = (f - 74) / 8.0
+# ── DEATH (76~99f): 쓰러짐 ──
+kf_all_rest(76)
+# 비틀거리며 무릎 꿇기 (76~85)
+for f in range(76, 86):
+    t = (f - 76) / 9.0
     wobble = math.sin(t * 5) * (1 - t) * 0.08
     kf_bone('Root', f, loc=(0, wobble, -t * 0.25), rot=(t * 0.15, wobble * 2, 0))
     kf_bone('Head', f, rot=(-t * 0.2, 0, 0))
@@ -597,9 +599,9 @@ for f in range(74, 83):
     kf_bone('Leg_BR', f, rot=(t * 0.45, 0, 0))
     kf_bone('Tail', f, rot=(0, t * 0.1, 0))
     kf_bone('Jaw', f, rot=(t * 0.3, 0, 0))
-# 완전히 쓰러짐 (83~90)
-for f in range(83, 91):
-    t = (f - 83) / 7.0
+# 완전히 쓰러짐 (86~93)
+for f in range(86, 94):
+    t = (f - 86) / 7.0
     kf_bone('Root', f, loc=(0, 0, -0.25 - t * 0.5),
             rot=(0.15 + t * 1.2, 0, t * 0.3))
     kf_bone('Head', f, rot=(-0.2 - t * 0.4, t * 0.2, 0))
@@ -611,9 +613,9 @@ for f in range(83, 91):
     kf_bone('Jaw', f, rot=(0.3 + t * 0.2, 0, 0))
     kf_bone('HornL', f, rot=(t * 0.15, 0, 0))
     kf_bone('HornR', f, rot=(t * 0.1, 0, 0))
-# 바닥 충돌 후 정지 (90~95)
-for f in range(91, 96):
-    t = (f - 91) / 4.0
+# 바닥 충돌 후 정지 (94~99)
+for f in range(94, 100):
+    t = (f - 94) / 5.0
     settle = math.sin(t * math.pi) * 0.02 * (1 - t)
     kf_bone('Root', f, loc=(0, 0, -0.75 + settle), rot=(1.35 + settle, 0, 0.3))
     kf_bone('Head', f, rot=(-0.6, 0.2, 0))
@@ -667,8 +669,8 @@ print("    idle    :  0 ~ 23f  (breathing + weight shift)")
 print("    walk    : 24 ~ 39f  (quadruped diagonal gait)")
 print("    windup  : 40 ~ 51f  (rear up, motion read)")
 print("    attack  : 52 ~ 63f  (antler slam)")
-print("    stagger : 64 ~ 73f  (groggy shake)")
-print("    death   : 74 ~ 95f  (collapse + settle)")
+print("    stagger : 64 ~ 75f  (groggy shake)")
+print("    death   : 76 ~ 99f  (collapse + settle)")
 print("")
 print("  Render: Ctrl+F12 or --render-anim")
 print("=" * 55)
