@@ -1,8 +1,8 @@
 {
   "cell": 48,
-  "cols": 4,
+  "cols": 5,
   "rows": 4,
-  "total": 14,
+  "total": 19,
   "directions": [
     "south",
     "south-east",
@@ -19,69 +19,94 @@
       "col": 0,
       "row": 0
     },
-    "crawler": {
+    "blood_priest": {
       "idx": 1,
       "col": 1,
       "row": 0
     },
-    "cursed_knight": {
+    "bone_collector": {
       "idx": 2,
       "col": 2,
       "row": 0
     },
-    "flesh_golem": {
+    "corrupted_monk": {
       "idx": 3,
       "col": 3,
       "row": 0
     },
-    "heart_eater": {
+    "crawler": {
       "idx": 4,
+      "col": 4,
+      "row": 0
+    },
+    "cursed_knight": {
+      "idx": 5,
       "col": 0,
+      "row": 1
+    },
+    "flesh_golem": {
+      "idx": 6,
+      "col": 1,
+      "row": 1
+    },
+    "heart_eater": {
+      "idx": 7,
+      "col": 2,
+      "row": 1
+    },
+    "hive_carrier": {
+      "idx": 8,
+      "col": 3,
+      "row": 1
+    },
+    "hook_horror": {
+      "idx": 9,
+      "col": 4,
       "row": 1
     },
     "plague_doctor": {
-      "idx": 5,
-      "col": 1,
-      "row": 1
+      "idx": 10,
+      "col": 0,
+      "row": 2
     },
     "reaper_assassin": {
-      "idx": 6,
-      "col": 2,
-      "row": 1
+      "idx": 11,
+      "col": 1,
+      "row": 2
     },
     "shadow_stalker": {
-      "idx": 7,
-      "col": 3,
-      "row": 1
+      "idx": 12,
+      "col": 2,
+      "row": 2
     },
     "skinless_horror": {
-      "idx": 8,
-      "col": 0,
+      "idx": 13,
+      "col": 3,
       "row": 2
     },
     "spine_beast": {
-      "idx": 9,
-      "col": 1,
+      "idx": 14,
+      "col": 4,
       "row": 2
     },
     "thorn_demon": {
-      "idx": 10,
-      "col": 2,
-      "row": 2
-    },
-    "troll": {
-      "idx": 11,
-      "col": 3,
-      "row": 2
-    },
-    "wraith_assassin": {
-      "idx": 12,
+      "idx": 15,
       "col": 0,
       "row": 3
     },
-    "wraith_blade": {
-      "idx": 13,
+    "troll": {
+      "idx": 16,
       "col": 1,
+      "row": 3
+    },
+    "wraith_assassin": {
+      "idx": 17,
+      "col": 2,
+      "row": 3
+    },
+    "wraith_blade": {
+      "idx": 18,
+      "col": 3,
       "row": 3
     }
   }
