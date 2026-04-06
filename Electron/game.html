@@ -26893,6 +26893,8 @@ function _isAbsorbed(skId){
   return false;
 }
 const _FUSE_NAMES={dimBreach:'사슬이동:강화',dimSlam:'사슬이동:강화기습',dimThunder:'사슬기동:기습충돌',dimRush:'기동:칼날개',dimBlast:'기동:강화전폭',whirlDet:'회전기폭',slamStorm:'지진폭풍',stormBeam:'암전나선',stormBurst:'암전폭류',bladeFuse:'악의 해방',iceMortar:'얼음소용돌이',sixFuse:'만화광선',elemFuse:'추적암전',boneStorm:'해골번개',elecRepent:'참회 귀환',shieldFuse:'날개치기',plagueFuse:'독혈해방',holyFuse:'신성한 결계',holyIce:'신성한 빙결',holyWeak1:'신성한 파쇄',holyWeak2:'신성한 침식',holyWeak3:'신성한 관통',holyWeak4:'신성한 지배',pillarSpike:'기둥가시',pillarSlam:'기둥강타',infernoSlam:'지옥강타',siegeGhost:'공성유령'};
+const _FUSE_NAMES_EN={dimBreach:'Chain:Enhanced',dimSlam:'Chain:Rush',dimThunder:'Chain:Thunder',dimRush:'Chain:Bladewing',dimBlast:'Chain:FullBurst',whirlDet:'Whirl-Det',slamStorm:'Quake Storm',stormBeam:'Lightning Helix',stormBurst:'Lightning Burst',bladeFuse:'Malice Liberation',iceMortar:'Ice Vortex',sixFuse:'Luminescence',elemFuse:'Tracking Lightning',boneStorm:'Bone Lightning',elecRepent:'Repentance Return',shieldFuse:'Wing Strike',plagueFuse:'Plague Liberation',holyFuse:'Holy Ward',holyIce:'Holy Freeze',holyWeak1:'Holy Shatter',holyWeak2:'Holy Corrode',holyWeak3:'Holy Pierce',holyWeak4:'Holy Dominion',pillarSpike:'Pillar Spike',pillarSlam:'Pillar Slam',infernoSlam:'Inferno Slam',siegeGhost:'Siege Ghost'};
+function _fuseName(key){return OPT.lang==='en'?(_FUSE_NAMES_EN[key]||key):(_FUSE_NAMES[key]||key)}
 // ═══ 리셋 후 활성 스킬 변수 동기화 ═══
 function _syncActiveSkAfterReset(resetIds){
   const s=new Set(resetIds);
@@ -28282,7 +28284,7 @@ function _renderSkillRow(sk,grid){
         const _fBtnSpc=_fBtnStar*3;
         const _fBtnSpOk=P.sp>=_fBtnSpc;
         const _rdC=_grpReady||_grpDone?_grp.color:'#888888',_rdO=_grpReady||_grpDone?'1':'0.6';
-        const _gNm=_FUSE_NAMES[_grp.key]||_grp.key;
+        const _gNm=_fuseName(_grp.key);
         _fBtn.style.cssText='margin-top:6px;padding:5px 10px;border:1.5px solid '+_rdC+';border-radius:4px;color:'+_rdC+';font-size:.8rem;text-align:center;cursor:pointer;background:rgba(0,0,0,.4);transition:all .15s;opacity:'+_rdO+';'+(_isSel&&!_grpDone?'background:'+_grp.color+'33;box-shadow:0 0 12px '+_grp.color+'66;font-weight:700;border-color:'+_grp.color+';color:'+_grp.color+';opacity:1;':_grpPS?'background:'+_grp.color+'22;border-style:dashed;animation:_fglow 1s ease-in-out infinite;opacity:1;':'');
         const _spLbl=_grpDone?'':' (SP'+_fBtnSpc+')';
         _fBtn.textContent=_isSel&&!_grpDone?'▶ '+_gNm+' — '+_T('파트너 클릭!')+_spLbl:_grpPS?(_grpReady?(_fBtnSpOk?'⬛ '+_gNm+' '+_T('합체!')+_spLbl:'⚠ '+_gNm+' SP'+_T('부족!')+' ('+P.sp+'/'+_fBtnSpc+')'):'🔒 '+_gNm):_grpDone?'✅ '+_gNm+' '+_T('완료'):_grpReady?(_fBtnSpOk?'◆ '+_gNm+' '+_T('합체 가능')+_spLbl:'◆ '+_gNm+' ⚠SP'+_T('부족')+' ('+P.sp+'/'+_fBtnSpc+')'):'◆ '+_gNm+_spLbl;
@@ -28356,7 +28358,7 @@ function _renderSkillRow(sk,grid){
                 addTxt(P.x,P.y-60,_e?'🕊️ Hidden: Aegis of Peace!':_T('🕊️ 히든: 평화의보호 해금!'),'#aaffaa',80);
                 addTxt(P.x,P.y-80,_e?'✝ Hidden: Repentance!':_T('✝ 히든: 참회 해금!'),'#ffd700',80);
               }
-              let _fTxt=(_FUSE_NAMES[_grp.key]||(_e?'Fuse':'합체'))+(_e?' Complete!':' 완성!');if(_refSp>0||_refMat>0)_fTxt+=' (SP+'+_refSp+(_e?' Malice+':' 악의+')+_refMat+')';
+              let _fTxt=_fuseName(_grp.key)+(_e?' Complete!':' 완성!');if(_refSp>0||_refMat>0)_fTxt+=' (SP+'+_refSp+(_e?' Malice+':' 악의+')+_refMat+')';
               addTxt(P.x,P.y-30,_fTxt,_grp.color,80);
               const absorbed=_getAbsorbed(_grp.key);
               absorbed.forEach(rid=>{for(let j=0;j<SKILL_SLOTS.length;j++){if(SKILL_SLOTS[j]===rid)SKILL_SLOTS[j]=null}if(ULT_SLOT===rid)ULT_SLOT=null});
@@ -28437,8 +28439,8 @@ function _renderSkillRow(sk,grid){
             }
             _totalSp+=_gemCnt*3; // 합체 생성 비용 환불
             for(let _fl=1;_fl<_fuseLv;_fl++)_totalSp+=_fuseUpSpCost(_fl,_gemCnt); // 합체 강화 비용 환불
-            const _fuseName=_FUSE_NAMES[_rstKey]||_rstKey;
-            if(!confirm(_fuseName+(OPT.lang==='en'?' unfuse\n'+_names.join('+')+' all reset\n⭐ SP +'+_totalSp+' refund':' 합체 해제\n'+_names.join('+')+' 모두 리셋\n⭐ SP +'+_totalSp+' 환불')))return;
+            const _fuseNm=_fuseName(_rstKey);
+            if(!confirm(_fuseNm+(OPT.lang==='en'?' unfuse\n'+_names.join('+')+' all reset\n⭐ SP +'+_totalSp+' refund':' 합체 해제\n'+_names.join('+')+' 모두 리셋\n⭐ SP +'+_totalSp+' 환불')))return;
             for(const sid of _rstSkills){P.skills[sid]=0;for(let j=0;j<SKILL_SLOTS.length;j++){if(SKILL_SLOTS[j]===sid)SKILL_SLOTS[j]=null}if(ULT_SLOT===sid)ULT_SLOT=null}
             P.sp+=_totalSp;
             // 하위 합체도 모두 해제
@@ -28447,7 +28449,7 @@ function _renderSkillRow(sk,grid){
             }
             // ═══ 활성 스킬 변수 동기화 ═══
             _syncActiveSkAfterReset(_rstSkills);
-            addTxt(P.x,P.y-30,_fuseName+(_e?' Unfused!':' 해제!'),'#ff6666',60);
+            addTxt(P.x,P.y-30,_fuseNm+(_e?' Unfused!':' 해제!'),'#ff6666',60);
           }else{
             // 합체 안 된 일반 스킬 리셋
             const _slv=P.skills[sk.id]||0;
