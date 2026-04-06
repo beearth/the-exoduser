@@ -6,6 +6,7 @@ import io, wave, json, urllib.request, urllib.parse
 RATE = 16000
 CHUNK_SEC = 3
 SILENCE_THRESH = 0.01
+MIC_DEVICE = 2  # Comica_VM30 RX
 
 def translate_google(text, src="ko", dest="en"):
     url = "https://translate.googleapis.com/translate_a/single"
@@ -22,7 +23,7 @@ print("자막 시작... (ko→en 번역 모드, Ctrl+C 종료)")
 
 while True:
     try:
-        audio = sd.rec(int(CHUNK_SEC * RATE), samplerate=RATE, channels=1, dtype="int16")
+        audio = sd.rec(int(CHUNK_SEC * RATE), samplerate=RATE, channels=1, dtype="int16", device=MIC_DEVICE)
         sd.wait()
         rms = np.sqrt(np.mean(audio.astype(np.float32) ** 2))
         if rms < SILENCE_THRESH * 32768:
