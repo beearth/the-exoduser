@@ -10957,13 +10957,16 @@ function _applyMobSkin(e,a){
   }
 }
 // 방향 결정
-// 몹 방향: 4방향 스냅 (탑뷰 회전 없음)
+// 몹 방향: 8방향 계산 → 4방향 아틀라스에선 가까운 방향으로 스냅
+const _PI2=Math.PI*2;
+function _mobFacingDir8(f){
+  const a=((f%_PI2)+_PI2)%_PI2;
+  const idx=Math.round(a/(Math.PI/4))%8;
+  return ['east','south-east','south','south-west','west','north-west','north','north-east'][idx];
+}
+const _DIR8_TO_4={'east':'east','south-east':'south','south':'south','south-west':'south','west':'west','north-west':'north','north':'north','north-east':'east'};
 function _mobFacingDir(f){
-  const af=Math.abs(f);
-  if(af<Math.PI/4)return 'east';
-  if(af>Math.PI*3/4)return 'west';
-  if(f>0)return 'south';
-  return 'north';
+  return _DIR8_TO_4[_mobFacingDir8(f)];
 }
 function _mobFlip(f){return _mobFacingDir(f)==='west'}
 function _mobDirKey(f){const d=_mobFacingDir(f);return d==='west'?'east':d}
@@ -17735,10 +17738,19 @@ function update(){
       }else SFX.slash();
     }
     else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=20;_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3){var _ve2=['voice_grunt','male_grunt'];playSample(_ve2[~~(Math.random()*2)],1,_r(1,.15))}if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
-    // ── H키: 버스트루프 밀기/당기기 토글 ──
-    else if(_chkJust('KeyH')&&P.skills.burstLoop>=1){P._blPullMode=!P._blPullMode;addTxt(P.x,P.y-30,P._blPullMode?_T('🌀 당기기 모드'):_T('💥 밀어내기 모드'),P._blPullMode?'#44ccff':'#ff6644',40);playSample('shield_activate',.4,_r(1,.1))}
+    // Space키: SKILL_SLOTS[4]로 처리 (keydown에서 _dispatchSkillSlot)
+    // ── 작살: idle에서 Shift 홀드→릴리즈로 발사 (상단 홀드 로직에서 처리) ──
+    else if(_isFused('stormBeam')&&isJust('beam')&&P.skills.hellRay>=1&&!_isFused('elecRepent')&&(P.activeMagicSk||'fireball')==='hellRay'){
+      if(P._hrAiming){P._hrAiming=false;showPH(_T('취소'),'#888')}
+      else if((P._hrStk||0)<=0){showPH(_T('충전 중...'),'#ffd700')}
+      else if(P.mp>=100){P._hrAiming=true}
+      else showPH(_T('MP 부족!'),'#4488ff');
+    }
+    else if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
+    // ── H키: 버스트루프 밀기/당기기 토글 (공격과 독립) ──
+    if(_chkJust('KeyH')&&P.skills.burstLoop>=1){P._blPullMode=!P._blPullMode;addTxt(P.x,P.y-30,P._blPullMode?_T('🌀 당기기 모드'):_T('💥 밀어내기 모드'),P._blPullMode?'#44ccff':'#ff6644',40);playSample('shield_activate',.4,_r(1,.1))}
     // ── X키: 처형 (그로기 보스 전용, HP/MP/ST 10% 소모 → 사슬기동 자동 돌진 → 보스 HP 30% 순수뎀, 쿨 20초) ──
-    else if(_chkJust('KeyX')&&P.skills.execution>=1&&(P._execCd||0)<=0){
+    if(_chkJust('KeyX')&&P.skills.execution>=1&&(P._execCd||0)<=0){
       const _exBoss=G._bossRef&&G._bossRef.alive&&G._bossRef.stunned>0?G._bossRef:null;
       if(!_exBoss){showPH(_T('그로기 보스 없음!'),'#888')}
       else{
@@ -17792,15 +17804,6 @@ function update(){
         }
       }
     }
-    // Space키: SKILL_SLOTS[4]로 처리 (keydown에서 _dispatchSkillSlot)
-    // ── 작살: idle에서 Shift 홀드→릴리즈로 발사 (상단 홀드 로직에서 처리) ──
-    else if(_isFused('stormBeam')&&isJust('beam')&&P.skills.hellRay>=1&&!_isFused('elecRepent')&&(P.activeMagicSk||'fireball')==='hellRay'){
-      if(P._hrAiming){P._hrAiming=false;showPH(_T('취소'),'#888')}
-      else if((P._hrStk||0)<=0){showPH(_T('충전 중...'),'#ffd700')}
-      else if(P.mp>=100){P._hrAiming=true}
-      else showPH(_T('MP 부족!'),'#4488ff');
-    }
-    else if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
     // Forge — 게임루프 상단에서 처리 (paused 상태에서도 동작)
 
     break;
