@@ -17311,6 +17311,13 @@ function update(){
         _addSkProf('chainSlam');
         G.hitStop=0;G.slowMo=0;
         MB[2]=false;MBjust[2]=false;P._sbCd=Math.max(P._sbCd||0,30);
+        // 기동파괴 착지 패링: 반경100 내 적 투사체 전부 패링
+        for(let _pi=projs.length-1;_pi>=0;_pi--){const p=projs[_pi];if(p.friendly||!p.life)continue;
+          if(dst(P.x,P.y,p.x,p.y)<=100){
+            p.friendly=true;p.vx*=-1.5;p.vy*=-1.5;p.life=80;p.ml=80;
+            p.dmg=~~(pParryProjDmg(p.dmg,true)*1.5);p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=120;p._aoeDmg=p.dmg*1.5;
+          }
+        }
       }
       // ── 기동칼날개: 착지 시 데미지 특화 AOE ──
       if(P._chainAssaultReady){
