@@ -10558,7 +10558,7 @@ function drawEnBody(X,e,_now,sa){
 // 상태별 관절 목표 각도 (라디안). t = _now*0.003
 const _bPose={
   idle:function(t){return{
-    body:{r:0,y:Math.sin(t*2)*0.12},
+    body:{r:0,y:Math.sin(t*2)*0.18},
     legFL:{r:Math.sin(t*3)*0.4},legFR:{r:-Math.sin(t*3)*0.4},
     legBL:{r:-Math.sin(t*3)*0.35},legBR:{r:Math.sin(t*3)*0.35},
     tail:{r:Math.sin(t*1.5)*0.5},
@@ -10583,7 +10583,7 @@ const _bPose={
     weapon:{r:2.5},
     legFL:{r:0.8},legFR:{r:0.8},
     legBL:{r:-0.5},legBR:{r:-0.5},
-    tail:{r:0.8},hornL:{r:0.12},hornR:{r:-0.12}
+    tail:{r:0.8},hornL:{r:0.9},hornR:{r:-0.9}
   }},
   walk:function(t){return{
     body:{r:0,y:Math.sin(t*4)*0.08},
@@ -10614,7 +10614,13 @@ const _bPose={
     weapon:{r:Math.sin(t*5)*0.4},hornL:{r:Math.sin(t*6)*0.15},hornR:{r:-Math.sin(t*6)*0.15}
   }}
 };
-_bPose.rage_attack=_bPose.attack;
+_bPose.rage_attack=function(t){return{
+    body:{r:0.8,y:0.08},
+    weapon:{r:2.5},
+    legFL:{r:0.8},legFR:{r:0.8},
+    legBL:{r:-0.5},legBR:{r:-0.5},
+    tail:{r:0.8},hornL:{r:1.1},hornR:{r:-1.1}
+  }};
 _bPose.rage_windup=_bPose.windup;
 
 // ═══ 보스 포즈 보간 (오브젝트 풀링, new 금지) ═══
@@ -17380,7 +17386,7 @@ function update(){
       const _csLv=P.skills.chainSlash||1;
       const _csR=160+(_csLv-1)*5; // 반경 160+Lv×5 (docs 기준)
       const _csNe=shQuery(P.x,P.y,_csR);
-      const _csDmg=~~(meleeRef()*statStr()*(6.0+(_csLv-1)*0.30)*_fuseMul('chainSlash'));
+      const _csDmg=~~(meleeRef()*statStr()*(12.0+(_csLv-1)*0.60)*_fuseMul('chainSlash')); // 1히트 기준 회전참 1초 DPS급
       const _csAng=Math.atan2(_dashVY,_dashVX);
       for(let _ci=0;_ci<_csNe.length;_ci++){
         const e=_csNe[_ci];if(!e.alive)continue;
@@ -20255,7 +20261,8 @@ function update(){
     const _bb=$('bossBar');_bb.classList.add('on','intro');setTimeout(()=>_bb.classList.remove('intro'),2000)}
   if(bE){
     $('bossBar').classList.add('on');
-    const _phLbl=BOSS_PHASES[bE._bossPhase]?(' ['+BOSS_PHASES[bE._bossPhase].label+']'):'';
+    const _deathN=bE.deaths||0;
+    const _phLbl=_deathN>0?(' ['+(_deathN<=3?'⚠':'🔥')+' '+_deathN+(OPT.lang==='en'?' Revive':' 차 부활')+']'):'';
     $('bossName').textContent=_T(STG[G.stage].bn)+_phLbl;
     // 인트로 중 HP바 서서히 채우기
     if(_bossCine.active&&_bossCine._introFill!=null){_bossCine._introFill=Math.min(1,_bossCine._introFill+_dtSp/90);$('bossHpF').style.width=(_bossCine._introFill*100)+'%'}
@@ -25910,6 +25917,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     hurtP(~~(e.atk*1.5*elMul(e.el,ar().el)));addTxt(P.x,P.y-25,_T('💢 반격!'),'#cc00ff',55);
     void 0;shake(12);doHitFlash('#00ccff',0.25);P.iframes=15;return;
   }
+  // ═══ 보스: 패링 반사탄 데미지 캡 (최대 HP 10%) ═══
+  if(e.ib&&opts&&opts.parryBlueBean){dmg=Math.min(dmg,~~(e.mhp*.10))}
   // ═══ 레어몹 특수 피격 ═══
   // 99:죽음 — 최대 데미지 HP 1%
   if(e.etype===99){dmg=Math.min(dmg,~~(e.mhp*.01));if(dmg<1)dmg=1}
@@ -26165,12 +26174,11 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       const _revCh=Math.max(0,_revBase-(e.deaths-1)*0.15-_bSuppress);
       if(Math.random()<_revCh)_doRevive=true;
       const _revPct=~~(_revCh*100);
-      if(_doRevive){addTxt(e.x,e.y-55,_T('부활력 ')+_revPct+'%',_revPct>=80?'#ff2244':_revPct>=50?'#ff8844':'#ffcc44',50)}
+      if(_doRevive){addTxt(e.x,e.y-55,_T('💀 ')+e.deaths+(OPT.lang==='en'?' Revive! ':'차 부활! ')+_revPct+'%',_revPct>=80?'#ff2244':_revPct>=50?'#ff8844':'#ffcc44',50)}
       else if(_bSuppress>0){addTxt(e.x,e.y-40,_T('✟ 신성력 억제! (')+_revPct+'%)','#ffdd88',60)}
       else{addTxt(e.x,e.y-40,_T('부활 실패 (')+_revPct+'%)','#888888',40)}
       if(_doRevive){
-        // 부활마다 최대체력 2배 + 풀피 부활
-        e.mhp=~~(e.mhp*(_isH7?2.5:2));
+        // 풀피 부활 (HP 변동 없음)
         e.hp=e.mhp;e.eShield=e.mhp;e.eShieldMax=e.mhp;
         e._bossPhase=0; // 풀피 부활 → 페이즈 리셋
         e.alive=true;e.s='recover';e.st2=90;e.stunned=0;e.poise=e.maxPoise;
