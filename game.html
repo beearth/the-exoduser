@@ -3082,6 +3082,43 @@ const _EN={
 '함성':'War Cry','치유':'Heal','신속':'Swiftness','수호':'Guardian',
 // --- Character ---
 '다크 판타지 전사. 거대검+검은 갑옷':'Dark fantasy warrior. Greatsword + Black armor',
+// --- Phase 11: missing addTxt/showPH/notify translations ---
+'⚡ 사슬이동:강화!':'⚡ Chain:Enhanced!',
+'⚡ 사슬기동:화염!':'⚡ Chain Drive: Flame!',
+'달성!':'Achieved!',
+'ST':'ST','부족!':'Insufficient!',
+'타':'Hit',
+'🌀 당기기 모드':'🌀 Pull Mode',
+'💥 밀어내기 모드':'💥 Push Mode',
+'🕊️빨콩 흡수':'🕊️Red bean absorb',
+'🕊️흡수':'🕊️Absorb',
+'💎유도 폭발!':'💎Homing explosion!',
+'💥반사 폭발!':'💥Reflect explosion!',
+'⚡✝ 참회 귀환!':'⚡✝ Repentance Return!',
+'✝ 참회!':'✝ Repentance!',
+'파도!':'Wave!',
+'암전!':'Lightning!',
+'암흑!':'Dark!',
+'암흑창!':'Dark Spear!',
+'빛창!':'Light Spear!',
+'체 소환!':'summoned!',
+'개 설치!':'placed!',
+'💥 보스 그로기!':'💥 Boss Groggy!',
+'💥 그로기!':'💥 Groggy!',
+'보상':'Bonus',
+'⚡ 암전나선!':'⚡ Lightning Helix!',
+'🌋 지진폭풍!':'🌋 Quake Storm!',
+'SP슬롯':'SP Slot',
+'F슬롯':'F Slot',
+'⚔🩸 독혈해방!':'⚔🩸 Plague Liberation!',
+'⚔ 칼날 해방!':'⚔ Blade Liberation!',
+'혼돈의 투구':'Helm of Chaos',
+'전지전능의 투구':'Helm of Omnipotence',
+'악마의 팔찌':'Demon Bracelet',
+'생명의 팔찌':'Life Bracelet',
+// --- wave direction names (full addTxt strings) ---
+'🌊 위→아래 파도!':'🌊 Top→Bottom Wave!','🌊 오른→왼 파도!':'🌊 Right→Left Wave!',
+'🌊 아래→위 파도!':'🌊 Bottom→Top Wave!','🌊 왼→오른 파도!':'🌊 Left→Right Wave!',
 };
 // --- 장비명 조합 번역 (접두사 + 기본형) ---
 const _EN_PFX={'녹슨':'Rusty','강철':'Steel','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Judgment','천벌의':'Divine Wrath','파멸의':'Destruction',
@@ -6621,9 +6658,10 @@ function spawnProj(props){
   else{p=_mkProj()}
   for(const k in props)p[k]=props[k];
   if(!p.ml&&p.life)p.ml=p.life;
-  // 적 탄막 속도 30% 증가 (데미지 글로벌 배율 제거)
+  // 적 탄막 속도 60% 증가 + 데미지 2배
   if(!p.friendly){
-    p.vx*=1.3;p.vy*=1.3;
+    p.dmg=~~(p.dmg*2);
+    p.vx*=1.6;p.vy*=1.6;
     // 유령 허수아비: 가까운 대상으로 발사 방향 변경 (무지개콩 제외, 보스탄 포함)
     if(G._voidScarecrow&&G._voidScarecrow.aggroOn&&!p.blackBean){
       const _t=_aggroXY(p.x,p.y);
@@ -13296,7 +13334,7 @@ function pDefAdd(){return PASSIVES.pDef*5+(P._altDef||0)*30}   // 방어력 +5/l
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
 function pParryDmg(){return 2+PASSIVES.pParry*.50}     // 기본 +100%, 카운터뎀 +50%/lv (10lv=+600%)
-function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;return ~~((scale*5+bulletDmg*3)*pParryDmg()*_afxPB*_legSP);}
+function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;const _lvScale=1+P.lv*0.01;return ~~((scale*5+bulletDmg*3)*pParryDmg()*_afxPB*_legSP*_lvScale);} // _lvScale: 레벨당+1% (Lv600=+600%)
 function pParryBlueBeanBase(p){return Math.max(p.dmg,~~(magicRef()*statInt()*pMagicMul()*0.8));}
 function pParryRmbSpd(){return 1+PASSIVES.pParry*.10}  // 우클릭공속 +10%/lv (10lv=+100%)
 function pParryRainbowDR(){return Math.min(.50,PASSIVES.pParry*.10)} // 무지개탄 피해감소 +10%/lv (최대50%)
@@ -18878,7 +18916,7 @@ function update(){
     if(p.redBean&&_pDist<_wrongR&&_sbPW&&!P._ioActive&&P.iframes<=0){
       // Q 패링 시도 → 잘못된 입력, 데미지
       const _rbWrongD=p.dmg;hurtP(_rbWrongD,{dtype:'magic',src:'빨콩오패링'});
-      P.iframes=15;addTxt(p.x,p.y-15,_T('❌ 우클릭으로! -')+_rbWrongD,'#ff4444',50);
+      P.iframes=3;addTxt(p.x,p.y-15,_T('❌ 우클릭으로! -')+_rbWrongD,'#ff4444',50);
       SFX.detonate();shake(10);_pHit=true;
     }
     if(p.redBean&&!_pHit&&_pDist<_rbDeflR&&P.s==='sBash'){
@@ -18901,7 +18939,7 @@ function update(){
     // 우클릭(sBash)으로 무지개탄 패링 시도 → 잘못된 입력, 데미지
     if(p.blackBean&&!_pHit&&_pDist<_wrongR&&P.s==='sBash'&&!P._ioActive&&P.iframes<=0){
       const _bkWrongD=p.dmg;hurtP(_bkWrongD,{dtype:'magic',src:'무지개오패링'});
-      P.iframes=15;addTxt(p.x,p.y-15,_T('❌ Q키로! -')+_bkWrongD,'#ff44ff',50);
+      P.iframes=3;addTxt(p.x,p.y-15,_T('❌ Q키로! -')+_bkWrongD,'#ff44ff',50);
       SFX.detonate();shake(10);_pHit=true;
     }
     // 회전참 중: iframes여도 범위 내 탄 소멸 (흡수율 적용 데미지)
@@ -18986,13 +19024,13 @@ function update(){
         addParts(p.x,p.y,'#22cc66',6);addParts(p.x,p.y,'#4488ff',6);_pHit=true;
       }
     }
-    // ══ 회전참 중 iframes 탄 흡수: 보호막과 동일 흡수율 (pGuardAbsorb) ══
-    if(!p.blackBean&&!p.bwBean&&!p.gbBean&&!p.poisonZone&&!p.mine&&!p.elemBall&&!p.dimRift&&!_pHit&&_pDist<_normalR&&P.iframes>0&&!P._ioActive&&P.s==='whirlwind'){
+    // ══ 회전참 범위 내 탄 흡수: 보호막과 동일 흡수율 (pGuardAbsorb), iframes 무관 ══
+    if(!p.blackBean&&!p.bwBean&&!p.gbBean&&!p.poisonZone&&!p.mine&&!p.elemBall&&!p.dimRift&&!_pHit&&_pDist<_normalR&&!P._ioActive&&P.s==='whirlwind'){
       const _wwAbs=pGuardAbsorb();
       const _wwD=Math.max(1,~~(p.dmg*(1-_wwAbs)));
       hurtP(_wwD,{dtype:'magic',src:'회전흡수'});
       P.parryBank=(P.parryBank||0)+(_isFused('whirlDet')?(p.dmg||10):~~(p.dmg*_wwAbs));
-      addParts(p.x,p.y,ELC[p.el]||'#888',1);_pHit=true;
+      addParts(p.x,p.y,ELC[p.el]||'#888',1);_pHit=true;_recycleProj(p);continue;
     }
     // ══ 일반탄: 원래 좁은 범위로 판정 (회전기폭: 빨콩도 넓은 흡수 범위) ══
     const _wwAbsR=_wwDetAbs?90:_normalR;
