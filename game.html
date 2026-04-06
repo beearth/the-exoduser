@@ -3514,7 +3514,7 @@ const _EN={
 '강화하면 공격력이 쭉쭉 올라가! 악의만 있으면 돼!':'Enhancement boosts ATK fast! Just need Malice!',
 '강화 확률은 +1에서 99%. 높을수록 떨어진다.':'Enhancement chance starts at 99% for +1. Drops as it goes.',
 '실패하면 악의만 날아가~ 장비는 안 부서져!':'On fail, only Malice is lost~ Gear survives!',
-'대장간에서 장비 제작도 된다. 악의 100개면 영웅급 이상.':'Forge can craft gear too. 100 Malice for Heroic+.',
+'대장간에서 장비 제작도 된다. 악의 50000개면 영웅급 이상.':'Forge can craft gear too. 50000 Malice for Heroic+.',
 '랜덤이지만 좋은 거 나올 수도 있어!':'Random, but you might get something great!',
 '쉴드는 마법으로, HP는 물리로 깎아야 제대로 먹힌다.':'Shield needs magic, HP needs physical to be effective.',
 '반대로 치면 50%만 들어가! 무기 바꿔가면서 싸워!':'Wrong type only does 50%! Switch weapons!',
@@ -3975,7 +3975,7 @@ function _checkPetDialogue(){
           ['LCK를 올리면 레어 드롭률이 오른다.','운빨 게임이긴 하지~ LCK 올려봐!'],
           ['G를 눌러. 대장간에서 장비를 강화할 수 있다.','강화하면 공격력이 쭉쭉 올라가! 악의만 있으면 돼!'],
           ['강화 확률은 +1에서 99%. 높을수록 떨어진다.','실패하면 악의만 날아가~ 장비는 안 부서져!'],
-          ['대장간에서 장비 제작도 된다. 악의 100개면 영웅급 이상.','랜덤이지만 좋은 거 나올 수도 있어!'],
+          ['대장간에서 장비 제작도 된다. 악의 50000개면 영웅급 이상.','랜덤이지만 좋은 거 나올 수도 있어!'],
           ['쉴드는 마법으로, HP는 물리로 깎아야 제대로 먹힌다.','반대로 치면 50%만 들어가! 무기 바꿔가면서 싸워!'],
           ['장비에 접두사, 접미사가 붙으면 특수 효과가 생긴다.','영웅급 이상 장비에만 붙어! 좋은 거 나오면 강화해!'],
           ['강화는 장비를 바꿔도 자동 이전된다. 악의만 있으면.','더 좋은 장비 나오면 바로 장착해! 강화 수치 그대로 옮겨가!']
@@ -8129,7 +8129,22 @@ function drawEnBody(X,e,_now,sa){
     const _pa=_chAtlas[e._mobCh];
     if(_pa&&_pa.mobList&&_pa.mobList.length)_applyMobSkin(e,_pa);
   }
-  // ── 새 ch 아틀라스 스킨 ──
+  // ── 8방향 아틀라스 렌더링 (우선) ──
+  if(e._mob8dir&&e._mobCh){
+    const a8=_ch8Atlas[e._mobCh];
+    if(a8&&a8.meta){
+      const _bsz=Math.max(e.r*3.5,30);
+      const dk8=_mobFacingDir8(e.facing);
+      const da8=a8.dirs[dk8];
+      if(da8&&da8.ready&&e._mob8Col!==undefined){
+        const cell8=a8.meta.cell;
+        X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
+        X.drawImage(da8.img,e._mob8Col*cell8,e._mob8Row*cell8,cell8,cell8,-_bsz/2,-_bsz/2,_bsz,_bsz);
+        X.restore();return;
+      }
+    }
+  }
+  // ── 4방향 ch 아틀라스 스킨 (폴백) ──
   if(e._mobSkin&&e._mobCh){
     const a=_chAtlas[e._mobCh];
     if(a){
@@ -10945,6 +10960,23 @@ function _assignMobSkin(e){
   _applyMobSkin(e,a);
 }
 function _applyMobSkin(e,a){
+  // 8방향 아틀라스 우선 시도
+  const chN=e._mobCh;
+  const a8=_ch8Atlas[chN];
+  if(a8&&a8.mobList&&a8.mobList.length){
+    const idx8=~~(Math.random()*a8.mobList.length);
+    e._mob8dir=true;
+    e._mob8Skin=a8.mobList[idx8];
+    const m8=a8.meta?a8.meta.mobs[e._mob8Skin]:null;
+    if(m8){e._mob8Col=m8.col;e._mob8Row=m8.row;}
+    e._mobSkinPending=false;
+    // 4방향도 폴백용으로 할당
+    const idx=~~(Math.random()*a.mobList.length);
+    e._mobSkin=a.mobList[idx];e._mobIdx=idx;
+    const m=a.meta?a.meta.mobs[e._mobSkin]:null;
+    if(m){e._mobCol=m.col;e._mobRow=m.row;e._mobWalkRow=m.walk_row!==undefined?m.walk_row:-1;}
+    return;
+  }
   const idx=~~(Math.random()*a.mobList.length);
   e._mobSkin=a.mobList[idx];
   e._mobIdx=idx;
@@ -10972,6 +11004,31 @@ function _mobFlip(f){return _mobFacingDir(f)==='west'}
 function _mobDirKey(f){const d=_mobFacingDir(f);return d==='west'?'east':d}
 function _mobTilt(){return 0}
 _loadChAtlas(0); // 시작 시 ch1 미리 로드
+
+// ── 8방향 몬스터 아틀라스 시스템 ──
+const _8DIR_NAMES=['south','south_east','east','north_east','north','north_west','west','south_west'];
+const _8DIR_KEYS=['south','south-east','east','north-east','north','north-west','west','south-west'];
+const _ch8Atlas={}; // {chN: {dirs:{south:{img,ready},...}, meta, mobList}}
+function _load8DirAtlas(chN){
+  if(_ch8Atlas[chN])return;
+  const a={dirs:{},meta:null,mobList:null,mobIdx:{}};
+  _8DIR_NAMES.forEach(function(dn,i){
+    const dk=_8DIR_KEYS[i];
+    a.dirs[dk]={img:null,ready:false};
+    const img=new Image();
+    img.src='img/atlas_ch'+chN+'_8dir_'+dn+'.png?v=1';
+    a.dirs[dk].img=img;
+    img.onload=function(){a.dirs[dk].ready=true;console.log('[CH'+chN+'_8DIR_'+dn.toUpperCase()+'] 로드 완료')};
+    img.onerror=function(){console.warn('[CH'+chN+'_8DIR_'+dn+'] 로드 실패')};
+  });
+  fetch('img/atlas_ch'+chN+'_8dir.json?v=1').then(function(r){return r.json()}).then(function(j){
+    a.meta=j;a.mobList=Object.keys(j.mobs);
+    a.mobList.forEach(function(k,i){a.mobIdx[k]=i});
+    console.log('[CH'+chN+'_8DIR] 메타 로드: '+a.mobList.length+'종');
+  }).catch(function(){});
+  _ch8Atlas[chN]=a;
+}
+_load8DirAtlas(1); // ch1 8방향 미리 로드
 
 // ── 보스 걷기 아틀라스 (35행 × 20칸, 64px) ──
 const _bossWalkAtlas={img:null,ready:false};
@@ -17893,7 +17950,8 @@ function update(){
         // 히트 처리 (4프레임마다)
         if(!P._sbHitF)P._sbHitF=0;P._sbHitF++;
         const _sbDoHit=P._sbHitF%4===0;
-        const _sbDmgBase=~~(magicRef()*statInt()*pMagicMul()*.03*(1+(_sbOmniLv-1)*.12)*2*_sbMul*_fuseMul('omniBeam')*_sbDrainBonus);
+        const _sbBeamLvMul=Math.min(2.0,0.2+P.lv*0.016);
+        const _sbDmgBase=~~(magicRef()*statInt()*pMagicMul()*.44*(1+(_sbOmniLv-1)*.18)*_sbBeamLvMul*_fuseMul('omniBeam')*_sbDrainBonus*0.5*_sbMul); // 추적암전과 동일 라인: 0.44×0.5(6발)×1.2(합체)
         for(let _bi=0;_bi<6;_bi++){
           const _tgt=P._sbTgts[_bi];if(!_tgt||!_tgt.alive)continue;
           const _elIdx=_allEl[_bi];
@@ -18761,7 +18819,7 @@ function update(){
     // 빔 데미지 = 기본마법뎀 × 스킬레벨 배율 (틱당, MP 소비는 지속시간만 결정)
     const _omniSlv=P.skills.omniBeam||1;
     const _beamLvMul=Math.min(2.0,0.2+P.lv*0.016); // 선형+캡2.0: 1렙=0.22, 50렙=1.0, 113렙+=2.0(캡)
-    const _beamDmgBase=magicRef()*statInt()*pMagicMul()*.22*(1+(_omniSlv-1)*.18)*_beamLvMul*_fuseMul('omniBeam')*_beamDrainBonus; // 밸런스: 0.15→0.22 (단독 강화)
+    const _beamDmgBase=magicRef()*statInt()*pMagicMul()*.44*(1+(_omniSlv-1)*.18)*_beamLvMul*_fuseMul('omniBeam')*_beamDrainBonus; // 밸런스: 0.22→0.44 (2배 버프)
     // 레이저류: 끝점에서만 데미지 (관통 없음)
     // 빔 중첩: 적에게 빔 지속 적중 시 중첩+1 (최대30), 데미지 배율 = 1 + 중첩*0.1 (최대 4배)
     if(_isOmni){
@@ -30497,7 +30555,7 @@ $('invClose').onclick=()=>{_invSalSel.clear();$('invCompareFloat').style.display
 let _forgeSel=null; // {name,desc,cost,fn}
 let _potAmt=1; // 물약 제작 수량
 let _salSel=new Set(); // 분해 선택된 bag 인덱스
-const CRAFT_COST=100; // 제작 비용 (악의)
+const CRAFT_COST=50000; // 제작 비용 (악의)
 // ═══ 접두사/접미사 시스템 ═══
 // ═══ 어픽스 표시 함수 ═══
 function _affixValStr(af){
