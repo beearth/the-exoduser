@@ -1,0 +1,17 @@
+{
+  "created": [
+    {"key":"001_etype35","id":"da98e77a-5562-4146-a1bd-d8014d9841f0","name":"etype35_8dir"},
+    {"key":"003_etype85_절망기사","id":"004c6eee-78c6-474f-adc6-602478457f46","name":"etype85_절망기사_8dir"},
+    {"key":"005_etype95_시간사도","id":"dc6a1a64-2fa2-445d-b8a9-1603e41df371","name":"etype95_시간사도_8dir"},
+    {"key":"006_Skeleton_Melee","id":"7a6e0d3c-dd0e-4903-be65-9422acb5156e","name":"Skeleton_Melee_8dir"},
+    {"key":"008_etype92_거울사도","id":"d670983c-ff56-407e-9785-a7577d51e229","name":"etype92_거울사도_8dir"},
+    {"key":"009_etype86_거꾸로천사","id":"924db81f-7686-408e-b7d2-0b9bf99bd808","name":"etype86_거꾸로천사_8dir"},
+    {"key":"010_Shield_Knight","id":"1c67745f-3490-4d6e-b935-27c41919f9ae","name":"Shield_Knight_8dir"},
+    {"key":"011_Heavy_Tank","id":"9ff52557-0030-436b-8e8f-777a307e4e67","name":"Heavy_Tank_8dir"},
+    {"key":"012_Swarm_Imp","id":"76aaeed3-6267-4d0e-ab22-e0d74c43a2f8","name":"Swarm_Imp_8dir"},
+    {"key":"013_g73","id":"ffd92ddd-b317-43cf-aac7-cd68a174a418","name":"g73_8dir"}
+  ],
+  "animated": [],
+  "total_need": 155,
+  "created_count": 10
+}

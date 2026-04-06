@@ -12322,3 +12322,8 @@
 - game.html
 - subtitle_out.txt
 
+
+## 2026-04-06 18:30 (auto)
+- ch1_8dir_progress.json
+- subtitle_out.txt
+
