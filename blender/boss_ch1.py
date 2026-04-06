@@ -12,6 +12,14 @@ import bpy
 import math
 import os
 
+
+def get_bsdf(mat):
+    """언어 무관하게 Principled BSDF 노드를 타입으로 찾기"""
+    for node in mat.node_tree.nodes:
+        if node.type == 'BSDF_PRINCIPLED':
+            return node
+    return None
+
 # ─────────────────────────────────────────────
 # 0. 씬 초기화
 # ─────────────────────────────────────────────
@@ -41,7 +49,7 @@ bpy.ops.object.shade_smooth()
 # 다크 판타지 머티리얼
 mat_body = bpy.data.materials.new(name="Mat_DarkBody")
 mat_body.use_nodes = True
-bsdf = mat_body.node_tree.nodes["Principled BSDF"]
+bsdf = get_bsdf(mat_body)
 bsdf.inputs["Base Color"].default_value = (0.08, 0.02, 0.02, 1.0)  # 짙은 암적색
 bsdf.inputs["Roughness"].default_value = 0.7
 bsdf.inputs["Metallic"].default_value = 0.3
@@ -50,7 +58,7 @@ body.data.materials.append(mat_body)
 # --- 뿔 2개 ---
 horn_mat = bpy.data.materials.new(name="Mat_Horn")
 horn_mat.use_nodes = True
-horn_bsdf = horn_mat.node_tree.nodes["Principled BSDF"]
+horn_bsdf = get_bsdf(horn_mat)
 horn_bsdf.inputs["Base Color"].default_value = (0.15, 0.08, 0.03, 1.0)  # 어두운 뼈색
 horn_bsdf.inputs["Roughness"].default_value = 0.4
 
@@ -70,7 +78,7 @@ for side in [-1, 1]:
 # --- 다리 4개 ---
 leg_mat = bpy.data.materials.new(name="Mat_Leg")
 leg_mat.use_nodes = True
-leg_bsdf = leg_mat.node_tree.nodes["Principled BSDF"]
+leg_bsdf = get_bsdf(leg_mat)
 leg_bsdf.inputs["Base Color"].default_value = (0.06, 0.01, 0.01, 1.0)
 leg_bsdf.inputs["Roughness"].default_value = 0.8
 
@@ -105,7 +113,7 @@ bpy.ops.object.shade_smooth()
 # --- 눈 (장식) ---
 eye_mat = bpy.data.materials.new(name="Mat_Eye")
 eye_mat.use_nodes = True
-eye_bsdf = eye_mat.node_tree.nodes["Principled BSDF"]
+eye_bsdf = get_bsdf(eye_mat)
 eye_bsdf.inputs["Base Color"].default_value = (1.0, 0.15, 0.0, 1.0)  # 붉은 오렌지
 eye_bsdf.inputs["Emission Color"].default_value = (1.0, 0.2, 0.0, 1.0)
 eye_bsdf.inputs["Emission Strength"].default_value = 5.0
@@ -326,7 +334,17 @@ for f in range(59, 67):
 # ─────────────────────────────────────────────
 for obj in bpy.data.objects:
     if obj.animation_data and obj.animation_data.action:
-        for fcurve in obj.animation_data.action.fcurves:
+        action = obj.animation_data.action
+        # Blender 5.x: action.fcurves → action.layers[].strips[].channels[].fcurves
+        if hasattr(action, 'fcurves'):
+            curves = action.fcurves
+        else:
+            curves = []
+            for layer in action.layers:
+                for strip in layer.strips:
+                    for ch in strip.channels:
+                        curves.extend(ch.fcurves)
+        for fcurve in curves:
             for kf in fcurve.keyframe_points:
                 kf.interpolation = 'BEZIER'
                 kf.handle_left_type = 'AUTO_CLAMPED'

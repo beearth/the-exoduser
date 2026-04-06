@@ -1,8 +1,8 @@
 {
   "cell": 48,
-  "cols": 5,
-  "rows": 4,
-  "total": 19,
+  "cols": 6,
+  "rows": 5,
+  "total": 27,
   "directions": [
     "south",
     "south-east",
@@ -14,100 +14,140 @@
     "south-west"
   ],
   "mobs": {
-    "apostle_abomination": {
+    "acid_spitter": {
       "idx": 0,
       "col": 0,
       "row": 0
     },
-    "blood_priest": {
+    "apostle_abomination": {
       "idx": 1,
       "col": 1,
       "row": 0
     },
-    "bone_collector": {
+    "blood_priest": {
       "idx": 2,
       "col": 2,
       "row": 0
     },
-    "corrupted_monk": {
+    "blood_weeper": {
       "idx": 3,
       "col": 3,
       "row": 0
     },
-    "crawler": {
+    "bog_lurker": {
       "idx": 4,
       "col": 4,
       "row": 0
     },
-    "cursed_knight": {
+    "bone_collector": {
       "idx": 5,
+      "col": 5,
+      "row": 0
+    },
+    "corpse_knight": {
+      "idx": 6,
       "col": 0,
+      "row": 1
+    },
+    "corrupted_monk": {
+      "idx": 7,
+      "col": 1,
+      "row": 1
+    },
+    "crawler": {
+      "idx": 8,
+      "col": 2,
+      "row": 1
+    },
+    "crucified_wraith": {
+      "idx": 9,
+      "col": 3,
+      "row": 1
+    },
+    "cursed_knight": {
+      "idx": 10,
+      "col": 4,
+      "row": 1
+    },
+    "eye_stalker": {
+      "idx": 11,
+      "col": 5,
       "row": 1
     },
     "flesh_golem": {
-      "idx": 6,
-      "col": 1,
-      "row": 1
+      "idx": 12,
+      "col": 0,
+      "row": 2
     },
     "heart_eater": {
-      "idx": 7,
-      "col": 2,
-      "row": 1
+      "idx": 13,
+      "col": 1,
+      "row": 2
     },
     "hive_carrier": {
-      "idx": 8,
-      "col": 3,
-      "row": 1
+      "idx": 14,
+      "col": 2,
+      "row": 2
     },
     "hook_horror": {
-      "idx": 9,
-      "col": 4,
-      "row": 1
+      "idx": 15,
+      "col": 3,
+      "row": 2
     },
     "plague_doctor": {
-      "idx": 10,
-      "col": 0,
+      "idx": 16,
+      "col": 4,
       "row": 2
     },
     "reaper_assassin": {
-      "idx": 11,
-      "col": 1,
+      "idx": 17,
+      "col": 5,
       "row": 2
     },
     "shadow_stalker": {
-      "idx": 12,
-      "col": 2,
-      "row": 2
-    },
-    "skinless_horror": {
-      "idx": 13,
-      "col": 3,
-      "row": 2
-    },
-    "spine_beast": {
-      "idx": 14,
-      "col": 4,
-      "row": 2
-    },
-    "thorn_demon": {
-      "idx": 15,
+      "idx": 18,
       "col": 0,
       "row": 3
     },
-    "troll": {
-      "idx": 16,
+    "siege_breaker": {
+      "idx": 19,
       "col": 1,
       "row": 3
     },
-    "wraith_assassin": {
-      "idx": 17,
+    "skinless_horror": {
+      "idx": 20,
       "col": 2,
       "row": 3
     },
-    "wraith_blade": {
-      "idx": 18,
+    "spine_beast": {
+      "idx": 21,
       "col": 3,
       "row": 3
+    },
+    "split_face": {
+      "idx": 22,
+      "col": 4,
+      "row": 3
+    },
+    "thorn_demon": {
+      "idx": 23,
+      "col": 5,
+      "row": 3
+    },
+    "troll": {
+      "idx": 24,
+      "col": 0,
+      "row": 4
+    },
+    "wraith_assassin": {
+      "idx": 25,
+      "col": 1,
+      "row": 4
+    },
+    "wraith_blade": {
+      "idx": 26,
+      "col": 2,
+      "row": 4
     }
   }
 }
