@@ -10554,117 +10554,12 @@ function drawEnBody(X,e,_now,sa){
   }
 }
 
-// ═══ 보스 스켈레탈 애니메이션 — 포즈 테이블 ═══
-// 상태별 관절 목표 각도 (라디안). t = _now*0.003
-const _bPose={
-  idle:function(t){return{
-    body:{r:0,y:Math.sin(t*2)*0.12},
-    legFL:{r:Math.sin(t*3)*0.4},legFR:{r:-Math.sin(t*3)*0.4},
-    legBL:{r:-Math.sin(t*3)*0.35},legBR:{r:Math.sin(t*3)*0.35},
-    tail:{r:Math.sin(t*1.5)*0.5},
-    weapon:{r:0},hornL:{r:0},hornR:{r:0}
-  }},
-  breath:function(t){return{
-    body:{r:0,y:Math.sin(t*1.5)*0.15},
-    legFL:{r:Math.sin(t*2)*0.2},legFR:{r:-Math.sin(t*2)*0.2},
-    legBL:{r:-Math.sin(t*2)*0.15},legBR:{r:Math.sin(t*2)*0.15},
-    tail:{r:Math.sin(t)*0.35},
-    weapon:{r:-0.4},hornL:{r:0},hornR:{r:0}
-  }},
-  windup:function(t){return{
-    body:{r:-0.3,y:-0.12},
-    weapon:{r:-2.0-Math.sin(t*8)*0.2},
-    legFL:{r:-0.6},legFR:{r:-0.6},
-    legBL:{r:0.25},legBR:{r:0.25},
-    tail:{r:-0.6},hornL:{r:0},hornR:{r:0}
-  }},
-  attack:function(t){return{
-    body:{r:0.4,y:0.08},
-    weapon:{r:2.5},
-    legFL:{r:0.8},legFR:{r:0.8},
-    legBL:{r:-0.5},legBR:{r:-0.5},
-    tail:{r:0.8},hornL:{r:0.12},hornR:{r:-0.12}
-  }},
-  walk:function(t){return{
-    body:{r:0,y:Math.sin(t*4)*0.08},
-    legFL:{r:Math.sin(t*6)*1.0},legFR:{r:-Math.sin(t*6)*1.0},
-    legBL:{r:-Math.sin(t*6)*1.0},legBR:{r:Math.sin(t*6)*1.0},
-    tail:{r:Math.sin(t*3)*0.6},
-    weapon:{r:Math.sin(t*6)*0.25},hornL:{r:0},hornR:{r:0}
-  }},
-  stagger:function(t){return{
-    body:{r:Math.sin(t*15)*0.4,y:0},
-    legFL:{r:0.5},legFR:{r:-0.5},legBL:{r:0.3},legBR:{r:-0.3},
-    tail:{r:Math.sin(t*12)*0.8},
-    weapon:{r:1.2},hornL:{r:0.25},hornR:{r:-0.25}
-  }},
-  death:function(t){
-    var f=t*0.5;if(f>1)f=1;
-    return{
-      body:{r:f*1.8,y:f*0.2},
-      legFL:{r:f*1.2},legFR:{r:f*1.0},legBL:{r:f*1.1},legBR:{r:f*1.3},
-      tail:{r:f*0.9},weapon:{r:f*2.5},hornL:{r:f*0.4},hornR:{r:f*0.5}
-    };
-  },
-  rage:function(t){return{
-    body:{r:Math.sin(t*5)*0.12,y:Math.sin(t*3)*0.06},
-    legFL:{r:Math.sin(t*4)*0.45},legFR:{r:-Math.sin(t*4)*0.45},
-    legBL:{r:-Math.sin(t*4)*0.4},legBR:{r:Math.sin(t*4)*0.4},
-    tail:{r:Math.sin(t*2)*0.65},
-    weapon:{r:Math.sin(t*5)*0.4},hornL:{r:Math.sin(t*6)*0.15},hornR:{r:-Math.sin(t*6)*0.15}
-  }}
-};
-_bPose.rage_attack=_bPose.attack;
-_bPose.rage_windup=_bPose.windup;
-
-// ═══ 보스 포즈 보간 (오브젝트 풀링, new 금지) ═══
-var _bCurPose={};  // [entityId][partName] = {r,y}
-var _bPoseTs={};   // [entityId] = 상태진입 시각
-var _bPosePrev={}; // [entityId] = 이전 상태명
-function _bLerpPose(e,targetPose,dt){
-  var id=e.id!=null?e.id:0;
-  if(!_bCurPose[id]){_bCurPose[id]={};for(var k in targetPose){_bCurPose[id][k]={r:0,y:0}}}
-  var pool=_bCurPose[id];
-  // 공격 전환 시 보간 속도 증가 (모션 리딩: windup→attack 빠른 전환)
-  var animSt=_getBossAnimState(e);
-  var spd=8;
-  if(animSt==='attack'||animSt==='rage_attack')spd=15;
-  else if(animSt==='death')spd=3;
-  var lim=spd*dt;if(lim>1)lim=1;
-  for(var k in targetPose){
-    if(!pool[k])pool[k]={r:0,y:0};
-    var c=pool[k],tgt=targetPose[k];
-    c.r+=(((tgt&&tgt.r)||0)-c.r)*lim;
-    c.y+=(((tgt&&tgt.y)||0)-c.y)*lim;
-  }
-  return pool;
-}
-// 보스 death 시작 시각 추적
-function _bGetDeathT(e,now){
-  var id=e.id!=null?e.id:0;
-  var st=_getBossAnimState(e);
-  if(st!==_bPosePrev[id]){_bPosePrev[id]=st;_bPoseTs[id]=now}
-  if(st==='death')return(now-(_bPoseTs[id]||now))*0.001;
-  return 0;
-}
-
-// 보스 절차적 바디 렌더링 (스켈레탈 애니메이션 적용)
+// 보스 절차적 바디 렌더링
 function drawBossBody(X,e,_now,sa){
-  var r=e.r,f=e.facing,t=_now*.003,col=e.col,ec=ELC[e.el];
-  // ── 스켈레탈 포즈 계산 ──
-  var animSt=_getBossAnimState(e);
-  var poseFn=_bPose[animSt]||_bPose.idle;
-  var deathT=_bGetDeathT(e,_now);
-  var poseT=(animSt==='death')?deathT:t;
-  var targetPose=poseFn(poseT);
-  var dt=0.016; // ~60fps 기본값
-  var pose=_bLerpPose(e,targetPose,dt);
-
+  const r=e.r,f=e.facing,t=_now*.003,col=e.col,ec=ELC[e.el];
+  const moving=e._isMoving||e.s==='eApproach';
+  const legT=moving?_now*.008:0;
   X.save();X.translate(e.x,e.y);
-
-  // 몸통 Y오프셋 (숨쉬기/피격 상하 움직임)
-  var bodyY=(pose.body?pose.body.y:0)*r;
-  X.translate(0,bodyY);
 
   // 속성 글로우 (다중 레이어)
   X.globalAlpha=sa*.08;X.fillStyle=ec;X.beginPath();X.arc(0,0,r*2.5,0,Math.PI*2);X.fill();
@@ -10672,104 +10567,80 @@ function drawBossBody(X,e,_now,sa){
   X.globalAlpha=sa*.25;X.beginPath();X.arc(0,0,r*1.3,0,Math.PI*2);X.fill();
   X.globalAlpha=sa;
 
-  // ── 다리 4개 (스켈레탈 관절 회전) ──
-  var _legKeys=['legFL','legFR','legBL','legBR'];
-  var _legAngBase=[-.4,-.13,.13,.4]; // facing 기준 오프셋 (앞좌,앞우,뒤좌,뒤우)
-  for(var i=0;i<4;i++){
-    var la=f+Math.PI+.8*(i/3-.5);
-    var pLeg=pose[_legKeys[i]];
-    var legRot=(pLeg?pLeg.r:0);
-    // 피벗: 몸통 가장자리
-    var pvX=Math.cos(la)*r*.4,pvY=Math.sin(la)*r*.4;
-    // 다리 끝점: 피벗에서 관절 회전 적용
-    var legLen=r*.6+10;
-    var tipA=la+legRot;
-    var tipX=pvX+Math.cos(tipA)*legLen;
-    var tipY=pvY+Math.sin(tipA)*legLen;
+  // 다리 4개 (거대)
+  for(let i=0;i<4;i++){
+    const la=f+Math.PI+.8*(i/3-.5);
+    const lk=Math.sin(legT+i*Math.PI/2)*5;
     X.strokeStyle=col;X.lineWidth=4;
-    X.beginPath();X.moveTo(pvX,pvY);X.lineTo(tipX,tipY);X.stroke();
+    X.beginPath();X.moveTo(Math.cos(la)*r*.4,Math.sin(la)*r*.4);X.lineTo(Math.cos(la)*(r+10+lk),Math.sin(la)*(r+10+lk));X.stroke();
   }
-
-  // ── 꼬리 (스켈레탈 회전) ──
-  var tailA=f+Math.PI;
-  var pTail=pose.tail;
-  var tailRot=(pTail?pTail.r:0);
-  var tailA2=tailA+tailRot;
+  // 꼬리 (두꺼운 베지어)
+  const tailA=f+Math.PI;
+  const tw=Math.sin(t*2)*8;
   X.strokeStyle=col;X.lineWidth=4;
-  var tPvX=Math.cos(tailA)*r*.5,tPvY=Math.sin(tailA)*r*.5;
-  var tMidX=tPvX+Math.cos(tailA2)*r,tMidY=tPvY+Math.sin(tailA2)*r;
-  var tEndX=tPvX+Math.cos(tailA2)*r*1.5,tEndY=tPvY+Math.sin(tailA2)*r*1.5;
-  X.beginPath();X.moveTo(tPvX,tPvY);
-  X.quadraticCurveTo(tMidX,tMidY,tEndX,tEndY);X.stroke();
+  X.beginPath();X.moveTo(Math.cos(tailA)*r*.5,Math.sin(tailA)*r*.5);
+  X.quadraticCurveTo(Math.cos(tailA)*r*1.5+tw,Math.sin(tailA)*r*1.5+tw,Math.cos(tailA)*r*2+tw*1.5,Math.sin(tailA)*r*2+tw*1.5);X.stroke();
   // 꼬리 끝 삼각
+  const ttx=Math.cos(tailA)*r*2+tw*1.5,tty=Math.sin(tailA)*r*2+tw*1.5;
   X.fillStyle=ec;X.beginPath();
-  X.moveTo(tEndX+Math.cos(tailA2)*6,tEndY+Math.sin(tailA2)*6);
-  X.lineTo(tEndX+Math.cos(tailA2+.5)*4,tEndY+Math.sin(tailA2+.5)*4);
-  X.lineTo(tEndX+Math.cos(tailA2-.5)*4,tEndY+Math.sin(tailA2-.5)*4);X.fill();
+  X.moveTo(ttx+Math.cos(tailA)*6,tty+Math.sin(tailA)*6);
+  X.lineTo(ttx+Math.cos(tailA+.5)*4,tty+Math.sin(tailA+.5)*4);
+  X.lineTo(ttx+Math.cos(tailA-.5)*4,tty+Math.sin(tailA-.5)*4);X.fill();
 
-  // ── 큰 몸통 (타원 + 스켈레탈 기울기) ──
-  var bodyRot=(pose.body?pose.body.r:0);
-  X.fillStyle=col;X.save();X.rotate(f+bodyRot);X.scale(1,.8);
+  // 큰 몸통 (타원)
+  X.fillStyle=col;X.save();X.rotate(f);X.scale(1,.8);
   X.beginPath();X.arc(0,0,r,0,Math.PI*2);X.fill();X.restore();
   // 갑옷 선
-  X.strokeStyle=ec;X.lineWidth=1.5;X.globalAlpha=sa*.4;X.save();X.rotate(f+bodyRot);
+  X.strokeStyle=ec;X.lineWidth=1.5;X.globalAlpha=sa*.4;X.save();X.rotate(f);
   X.beginPath();X.arc(0,0,r*.7,-.5,.5);X.stroke();
   X.beginPath();X.arc(0,0,r*.5,-1,1);X.stroke();X.restore();
   X.globalAlpha=sa;
 
-  // ── 뿔 2개 (스켈레탈 회전) ──
+  // 뿔 (큰 것 2개)
   X.fillStyle='#ccaa44';
-  var _hornPose=[pose.hornL,pose.hornR];
-  var _hornSide=[-.35,.35];
-  for(var hi=0;hi<2;hi++){
-    var ha=f+_hornSide[hi];
-    var hRot=(_hornPose[hi]?_hornPose[hi].r:0);
-    var ha2=ha+hRot;
-    var hBase=r*.8,hTip=r+16;
-    X.beginPath();X.moveTo(Math.cos(ha)*hBase,Math.sin(ha)*hBase);
-    X.lineTo(Math.cos(ha2-.1)*hTip,Math.sin(ha2-.1)*hTip);
-    X.lineTo(Math.cos(ha2+.1)*(r+2),Math.sin(ha2+.1)*(r+2));X.fill();
+  for(let hi=0;hi<2;hi++){
+    const ha=f+(hi===0?-.35:.35);
+    X.beginPath();X.moveTo(Math.cos(ha)*r*.8,Math.sin(ha)*r*.8);
+    X.lineTo(Math.cos(ha-.1)*(r+16),Math.sin(ha-.1)*(r+16));
+    X.lineTo(Math.cos(ha+.1)*(r+2),Math.sin(ha+.1)*(r+2));X.fill();
   }
-
-  // ═══ 무기: 곤봉 (스켈레탈 관절 회전) ═══
-  var pWeapon=pose.weapon;
-  var weaponRot=(pWeapon?pWeapon.r:0);
-  var _wAng=f+0.45;
-  var _wSwing=(e._weaponAng||0)+weaponRot;
-  var _wLen=r*1.8+6;
-  var _wBaseX=Math.cos(_wAng)*r*.6,_wBaseY=Math.sin(_wAng)*r*.6;
-  var _wTipX=_wBaseX+Math.cos(_wAng+_wSwing)*_wLen;
-  var _wTipY=_wBaseY+Math.sin(_wAng+_wSwing)*_wLen;
+  // ═══ 무기: 곤봉 (보스 facing 방향 오른팔) ═══
+  const _wAng=f+0.45; // 오른쪽에 장착
+  const _wSwing=e._weaponAng||0; // 휘두르기 애니메이션 각도
+  const _wLen=r*1.8+6; // 곤봉 길이
+  const _wBaseX=Math.cos(_wAng)*r*.6, _wBaseY=Math.sin(_wAng)*r*.6;
+  const _wTipX=_wBaseX+Math.cos(_wAng+_wSwing)*_wLen;
+  const _wTipY=_wBaseY+Math.sin(_wAng+_wSwing)*_wLen;
   // 손잡이
   X.strokeStyle='#8B4513';X.lineWidth=4;X.lineCap='round';
   X.beginPath();X.moveTo(_wBaseX,_wBaseY);X.lineTo(_wTipX,_wTipY);X.stroke();
   // 곤봉 머리 (둥근 쇠뭉치)
-  var _mhX=_wTipX,_mhY=_wTipY;
-  var _phR=e._bossPhase||0;
-  X.fillStyle='#555555';X.beginPath();X.arc(_mhX,_mhY,5+_phR,0,Math.PI*2);X.fill();
-  X.strokeStyle='#333333';X.lineWidth=1.5;X.beginPath();X.arc(_mhX,_mhY,5+_phR,0,Math.PI*2);X.stroke();
+  const _mhX=_wTipX,_mhY=_wTipY;
+  X.fillStyle='#555555';X.beginPath();X.arc(_mhX,_mhY,5+(e._bossPhase||0),0,Math.PI*2);X.fill();
+  X.strokeStyle='#333333';X.lineWidth=1.5;X.beginPath();X.arc(_mhX,_mhY,5+(e._bossPhase||0),0,Math.PI*2);X.stroke();
   // 가시 돌기
-  var _spkCnt=4+_phR;
+  const _spkCnt=4+(e._bossPhase||0);
   X.fillStyle='#777777';
-  for(var si=0;si<_spkCnt;si++){
-    var sa2=Math.PI*2*si/_spkCnt+t*2;var sr=7+_phR;
+  for(let si=0;si<_spkCnt;si++){
+    const sa2=Math.PI*2*si/_spkCnt+t*2;const sr=7+(e._bossPhase||0);
     X.beginPath();X.moveTo(_mhX+Math.cos(sa2)*3,_mhY+Math.sin(sa2)*3);
     X.lineTo(_mhX+Math.cos(sa2)*sr,_mhY+Math.sin(sa2)*sr);
     X.lineTo(_mhX+Math.cos(sa2+.3)*3,_mhY+Math.sin(sa2+.3)*3);X.fill();
   }
   // 공격 중 무기 글로우
-  if(e.s&&(e.s.indexOf('Slash')!==-1||e.s.indexOf('Slam')!==-1||e.s.indexOf('Sweep')!==-1)){
+  if(e.s&&(e.s.includes('Slash')||e.s.includes('Slam')||e.s.includes('Sweep'))){
     X.globalAlpha=sa*.4;X.strokeStyle='#ff4400';X.lineWidth=8;X.lineCap='round';
     X.beginPath();X.moveTo(_wBaseX,_wBaseY);X.lineTo(_wTipX,_wTipY);X.stroke();
     X.globalAlpha=sa;
   }
 
-  // ── 눈 2개 (크고 빛남) ──
-  var ph=e._bossPhase||0;
-  var eyeCol=ph>=2?'#ff0000':ph>=1?'#ffaa00':'#ff4400';
-  for(var ei=0;ei<2;ei++){
-    var ea=f+bodyRot+(ei===0?-.2:.2);
-    var ex=Math.cos(ea)*r*.5,ey=Math.sin(ea)*r*.5;
+  // 눈 2개 (크고 빛남)
+  const ph=e._bossPhase||0;
+  const eyeCol=ph>=2?'#ff0000':ph>=1?'#ffaa00':'#ff4400';
+  for(let ei=0;ei<2;ei++){
+    const ea=f+(ei===0?-.2:.2);
+    const ex=Math.cos(ea)*r*.5,ey=Math.sin(ea)*r*.5;
+    // 글로우
     X.globalAlpha=sa*.4;X.fillStyle=eyeCol;X.beginPath();X.arc(ex,ey,4,0,Math.PI*2);X.fill();
     X.globalAlpha=sa;X.fillStyle=eyeCol;X.beginPath();X.arc(ex,ey,2.5,0,Math.PI*2);X.fill();
     X.fillStyle='#ffffff';X.beginPath();X.arc(ex,ey,1,0,Math.PI*2);X.fill();
@@ -11083,17 +10954,6 @@ function _assignMobSkin(e){
   if(e.ib){_assignBossSkin(e,G.stage);return}
   const chN=(SI_TO_HELL[G.stage]||0)+1;
   e._mobCh=chN;
-  // 8방향 직접 할당
-  const a8=_ch8Atlas[chN];
-  if(a8&&a8.mobList&&a8.mobList.length){
-    const idx8=~~(Math.random()*a8.mobList.length);
-    e._mob8dir=true;
-    e._mob8Skin=a8.mobList[idx8];
-    const m8=a8.meta?a8.meta.mobs[e._mob8Skin]:null;
-    if(m8){e._mob8Col=m8.col;e._mob8Row=m8.row;}
-    e._mobSkinPending=false;
-  }
-  // 4방향도 항상 할당 (폴백용)
   const a=_chAtlas[chN];
   if(!a||!a.mobList||!a.mobList.length){
     e._mobSkinPending=true;
@@ -11105,7 +10965,6 @@ function _applyMobSkin(e,a){
   // 8방향 아틀라스 우선 시도
   const chN=e._mobCh;
   const a8=_ch8Atlas[chN];
-  if(!e._8dDbg){e._8dDbg=true;console.log('[SKIN] chN='+chN+' a8?='+(!!a8)+' mobList?='+(a8&&a8.mobList?a8.mobList.length:'null'))}
   if(a8&&a8.mobList&&a8.mobList.length){
     const idx8=~~(Math.random()*a8.mobList.length);
     e._mob8dir=true;
@@ -17380,7 +17239,7 @@ function update(){
       const _csLv=P.skills.chainSlash||1;
       const _csR=160+(_csLv-1)*5; // 반경 160+Lv×5 (docs 기준)
       const _csNe=shQuery(P.x,P.y,_csR);
-      const _csDmg=~~(meleeRef()*statStr()*(6.0+(_csLv-1)*0.30)*_fuseMul('chainSlash'));
+      const _csDmg=~~(meleeRef()*statStr()*(2.0+(_csLv-1)*0.12));
       const _csAng=Math.atan2(_dashVY,_dashVX);
       for(let _ci=0;_ci<_csNe.length;_ci++){
         const e=_csNe[_ci];if(!e.alive)continue;
@@ -22785,16 +22644,7 @@ function updateE(e,sp){
   }
   // 오라 ATK 버프 적용 (M12 이후)
   if(e._aAtkM!==1)e.atk=~~(e.atk*e._aAtkM);
-  if(d>1800&&!e._alerted){
-    // idle 배회: 어그로 안 걸린 몬스터 자연스럽게 돌아다님
-    if(!e._wanderT){e._wanderT=60+~~(Math.random()*120);e._wanderA=Math.random()*Math.PI*2}
-    e._wanderT-=sp;
-    if(e._wanderT<=0){e._wanderT=60+~~(Math.random()*180);e._wanderA=Math.random()*Math.PI*2}
-    const wx=Math.cos(e._wanderA)*e.spd*0.3*sp,wy=Math.sin(e._wanderA)*e.spd*0.3*sp;
-    if(canMv(e.x+wx,e.y+wy,e.r)){e.x+=wx;e.y+=wy;e._isMoving=true}else{e._wanderA=Math.random()*Math.PI*2;e._isMoving=false}
-    e.facing=e._wanderA;
-    return;
-  }
+  if(d>1800&&!e._alerted)return;
   // 스테이지 시작 후 5초간 비피격 몬스터 AI 비활성 (멀리서 달려오는 현상 방지)
   if(P.iframes>0&&!e._alerted&&!e.ib&&d>400)return;
   const _fd0=_ffDir(e.x,e.y);e.facing=_fd0?Math.atan2(_fd0.y,_fd0.x):Math.atan2(P.y-e.y,P.x-e.x);e.st2-=sp;
@@ -33098,23 +32948,7 @@ function draw(){
       // ── 몬스터 스킨 아틀라스 렌더링 (etype 0-99, 최우선) ──
       if(!_ensGLQueued&&!_eDrew&&e._mobCh){
         if(e._mobSkinPending){const _pa2=_chAtlas[e._mobCh];if(_pa2&&_pa2.mobList&&_pa2.mobList.length)_applyMobSkin(e,_pa2)}
-        // ── 8방향 아틀라스 우선 ──
-        if(e._mob8dir){
-          const _a8=_ch8Atlas[e._mobCh];
-          if(_a8&&_a8.meta){
-            const _baseSz=Math.max(e.r*3.5,30);
-            const _dk8=_mobFacingDir8(e.facing);
-            const _da8=_a8.dirs[_dk8];
-            if(_da8&&_da8.ready&&e._mob8Col!==undefined){
-              const _c8=_a8.meta.cell;
-              X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
-              X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
-              X.restore();_eDrew=true;_usedSpr=true;
-            }
-          }
-        }
-        // ── 4방향 폴백 ──
-        if(!_eDrew&&e._mobSkin){
+        if(e._mobSkin){
           const _ca=_chAtlas[e._mobCh];
           if(_ca){
             const _minSz=30;const _baseSz=Math.max(e.r*3.5,_minSz);
