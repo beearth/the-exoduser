@@ -5143,6 +5143,7 @@ const _activeNodes=[];      // {src,gain,pri,key,_dn} 재생 중 노드 추적
 const _MAX_PROJ_NODES=5;    // PROJ(탄막히트) 동시 최대 5개
 const _MAX_HIT_NODES=3;     // HIT 동시 최대 3개
 function _sfxPri(key){
+  if(key.startsWith('player_dead'))return _SFX_PRI.VOICE; // 플레이어 사망=최우선급
   if(key.startsWith('voice_')||key==='male_grunt')return _SFX_PRI.VOICE;
   if(key.startsWith('boss_'))return _SFX_PRI.SKILL; // 보스=스킬급
   if(_isSkillSfx(key))return _SFX_PRI.SKILL;
@@ -13991,7 +13992,7 @@ function pDefAdd(){return PASSIVES.pDef*5+(P._altDef||0)*30}   // 방어력 +5/l
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
 function pParryDmg(){const _lvMul=Math.pow(2,((P.lv||1)-1)/70);return(1+PASSIVES.pParry*.50)*_lvMul}     // 기본 ×1, 70렙마다 2배, 카운터뎀 +50%/lv (1랩=×1, 70렙=×2, 1000렙=×19700)
-function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*2*(1+_gearBonus);const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;return ~~(_base*pParryDmg()*_afxPB*_legSP);} // 탄뎀×2 베이스 + 장비보너스(0~100%), 1랩≈300
+function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*(1+_gearBonus);const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;return ~~(_base*pParryDmg()*_afxPB*_legSP);} // 탄뎀×1 베이스 + 장비보너스(0~100%)
 function pParryBlueBeanBase(p){return Math.max(p.dmg,~~(magicRef()*statInt()*pMagicMul()*0.8));}
 function pParryRmbSpd(){return 1+PASSIVES.pParry*.10}  // 우클릭공속 +10%/lv (10lv=+100%)
 function pParryRainbowDR(){return Math.min(.50,PASSIVES.pParry*.10)} // 무지개탄 피해감소 +10%/lv (최대50%)
@@ -27113,7 +27114,7 @@ function die(){
   G.slowMo=Math.max(G.slowMo,30); // 슬로모 연출
   if(_gxTurret){_gxTurret=null;_xbowEquipped=false;addTxt(P.x,P.y-10,_T('감시 회수'),'#888',20)} // 공성쇠뇌 자동 회수
   SFX.beamStop();_stopShieldLoop();
-  playSample('player_dead'+(1+~~(Math.random()*4)),.8,_r(1,.1));
+  playSample('player_dead'+(1+~~(Math.random()*4)),.8,_r(1,.1),1);
   shake(20);
   // 부활 확률 미리 계산
   let _revZoneBonus=0;
