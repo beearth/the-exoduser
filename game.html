@@ -11008,23 +11008,9 @@ function _getMappedEtype(et){
   if(et>=85 && et<=89) return 84; // 7장 지옥성 → Light 스킨
   return 0;                      // Skeleton (기본 폴백)
 }
-// ── 구울 스프라이트 (4방향 로테이션) ──
+// ── 구울 스프라이트 (4방향 제거됨 — 프로시저럴 폴백 사용) ──
 const _ghoulImgs={100:{},101:{},102:{}};
 const _ghoulReady={100:false,101:false,102:false};
-(function _loadGhoulSprites(){
-  const dirs=['south','east','north','west'];
-  const map={100:'small_ghoul',101:'medium_ghoul',102:'large_ghoul'};
-  for(const et of [100,101,102]){
-    let loaded=0;
-    for(const d of dirs){
-      const img=new Image();
-      img.src='img/mobs/'+et+'/'+d+'.png';
-      _ghoulImgs[et][d]=img;
-      img.onload=function(){if(img.decode){img.decode().then(function(){if(++loaded>=4)_ghoulReady[et]=true}).catch(function(){if(++loaded>=4)_ghoulReady[et]=true})}else{if(++loaded>=4)_ghoulReady[et]=true}};
-      if(img.complete&&img.naturalWidth>0){loaded++;if(loaded>=4)_ghoulReady[et]=true}
-    }
-  }
-})();
 function _ghoulDir(facing){
   const a=((facing%(Math.PI*2))+(Math.PI*2))%(Math.PI*2);
   if(a<Math.PI*.25||a>=Math.PI*1.75)return 'east';
@@ -11089,23 +11075,10 @@ function _loadChAtlas(ch){
   _curChAtlas=a;
 }
 // ── 보스 스프라이트 매핑: si → {ch, folder} ──
-const _BOSS_SKIN={
-  0:{ch:1,f:'23_si0_숲의감시자'},1:{ch:1,f:'34_Forest_Guardian'},2:{ch:1,f:'27_Slime_Beast'},3:{ch:1,f:'10_촉수의어미_si29_128px'},
-  4:{ch:2,f:'31_Queen_Maggot'},5:{ch:2,f:'33_Bug_Queen'},6:{ch:2,f:'22_Parasite_Mother'},7:{ch:2,f:'15_뒤틀린자_si28_128px'},8:{ch:2,f:'06_기생충모체_si6_128px'},9:{ch:2,f:'05_점액괴수_si5_128px'},
-  10:{ch:3,f:'33_Frost_Colossus_96px_3_1'},11:{ch:3,f:'35_얼음망령'},12:{ch:3,f:'34_Frozen_Demon_Lord_96px_3_3'},13:{ch:3,f:'35_Sealed_Ice_Titan_96px3_4'},
-  14:{ch:4,f:'26_si15_불기둥수호자'},15:{ch:4,f:'19_화염전사_si17_128px'},16:{ch:4,f:'17_화염쌍두_si18_128px'},17:{ch:4,f:'18_불벌레군주_si19_128px'},18:{ch:4,f:'21_화염감옥지기_si20_128px'},19:{ch:4,f:'03_용암의심장_si16_128px'},20:{ch:4,f:'02_etype89_고통의왕_80px'},
-  21:{ch:5,f:'30_si24_철벽기사단장'},22:{ch:5,f:'25_si25_군단지휘관'},23:{ch:5,f:'16_전쟁의잔해_si21_128px'},24:{ch:5,f:'13_악마사령관_si23_128px'},25:{ch:5,f:'20_군단지휘관_si25_128px'},
-  26:{ch:6,f:'11_불완전사도_si30_128px'},27:{ch:6,f:'14_뼈산의왕_si22_128px'},28:{ch:6,f:'02_etype89_고통의왕_80px'},29:{ch:6,f:'07_Flesh_Demon_Lord_80px'},30:{ch:6,f:'09_Killu_si33_128px'},31:{ch:6,f:'04_etype79_dragonApostle_80px'},
-  32:{ch:7,f:'32_검은성의수호자'},33:{ch:7,f:'12_대사도_si31_128px'},34:{ch:7,f:'01_Hell_Lord_128px'}
-};
+// ── 보스 스킨: atlas_bosses.png 단일 시스템 (4방향 ch아틀라스 제거됨) ──
+const _BOSS_SKIN={};
 function _assignBossSkin(e,si){
-  const bs=_BOSS_SKIN[si];if(!bs)return;
-  e._mobCh=bs.ch;
-  _loadChAtlas(bs.ch-1); // 해당 ch 아틀라스 로드
-  const a=_chAtlas[bs.ch];
-  if(!a||!a.meta){e._bossSkinPending=si;return}
-  const m=a.meta.mobs[bs.f];
-  if(m){e._mobSkin=bs.f;e._mobCol=m.col;e._mobRow=m.row;e._mobWalkRow=m.walk_row!==undefined?m.walk_row:-1;e._mobIdx=m.idx}
+  // atlas_bosses.png가 boss_0~boss_34로 전부 커버 — 별도 스킨 할당 불필요
 }
 
 // 적 스폰 시 ch풀에서 스킨 배정 (보스는 고정 스킨) — 8방향 우선, 4방향 폴백
@@ -11225,14 +11198,9 @@ const _BWA={idle:{s:0,n:4},walk:{s:4,n:4},attack:{s:8,n:6},hit:{s:14,n:6},death:
 // (function _loadBossWalkAtlas(){})();
 // ── 보스 방향별 아틀라스 (스테이지별 개별 파일, 4행=S/E/N/W × 20칸) ──
 const _bossDirAtlas={};
-// ── 보스 방향별 아틀라스 로드 (4행 S/E/N/W × 32열 × 64px) ──
-const _BOSS_DIR_ATLAS_FILES={0:'img/mobs/atlas_boss_si0_dir.png'};
+// ── 보스 방향별 아틀라스 (4방향 제거됨 — atlas_bosses.png 단일 사용) ──
+const _BOSS_DIR_ATLAS_FILES={};
 (function _loadBossDirAtlases(){
-  for(const si in _BOSS_DIR_ATLAS_FILES){
-    const img=new Image();
-    img.src=_BOSS_DIR_ATLAS_FILES[si]+'?v=1';
-    img.onload=()=>{_bossDirAtlas[+si]={img,ready:true};console.log('[BOSS] dirAtlas si'+si+' loaded')};
-  }
 })();
 function _getBossWalkState(e){
   const s=e.s;
@@ -28153,12 +28121,11 @@ function activatePlagueBurst(){
 // ═══ 방패던지기 — 고정스킬 (칼등치기 합체) ═══
 // 칼등치기(우클릭) 시 shieldThrow 스킬이 있으면 자동 발사
 function _autoShieldThrow(){
-  const _stWingCost=stCost('shield'); // 보통 우클릭과 동일한 ST 소비
-  if((P._stCd||0)>0||P.st<_stWingCost)return;
+  if((P._stCd||0)>0)return; // ST 추가소모 없음 — 우클릭(useStPct('shield'))에서 이미 차감됨
   _addSkProf('shieldThrow');
   const _sfFused=P.skills.maliceSwipe>=1&&P.skills.shieldThrow>=1&&_isFused('shieldFuse');
   const _sfLv=_sfFused?Math.min(P.skills.maliceSwipe||1,P.skills.shieldThrow||1):0;
-  P.st-=_stWingCost;P._stCd=_sfFused?Math.max(120,300-_sfLv*15):300;
+  P._stCd=_sfFused?Math.max(120,300-_sfLv*15):300;
   const slv=P.skills.shieldThrow||1;
   const a=P.facing;
   if(!INV.equipped.shield)return;
@@ -33101,23 +33068,7 @@ function draw(){
           }
         }
       }
-      // ── 새 ch 아틀라스 보스 렌더링 ──
-      if(!_bDrew&&e._mobSkin&&e._mobCh){
-        const _bca=_chAtlas[e._mobCh];
-        if(_bca){
-          const _dk=_mobDirKey(e.facing);const _da=_bca[_dk];
-          if(_da&&_da.ready&&e._mobCol!==undefined){
-            const _bsz=Math.max(e.r*3.5,40);
-            X.save();X.translate(e.x,e.y+_tdY);X.globalAlpha=sa;
-            if(_mobFlip(e.facing))X.scale(-1,1);
-            X.drawImage(_da.img,e._mobCol*_MOB_CELL,e._mobRow*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_bsz/2,-_bsz/2,_bsz,_bsz);
-            X.restore();_bDrew=true;
-          }
-        }
-      }
-      // ── 보스 방향별 아틀라스 (우선) + 걷기 아틀라스 (폴백) ──
-      if(!_bDrew&&_bossDirAtlas[G.stage]&&_bossDirAtlas[G.stage].ready){_bDrew=_drawBossWalk(X,e,_now,sa,_tdY)}
-      if(!_bDrew&&_bossWalkAtlas.ready){_bDrew=_drawBossWalk(X,e,_now,sa,_tdY)}
+      // ── (4방향 ch아틀라스/방향별 아틀라스 제거됨 — atlas_bosses.png가 최우선) ──
       if(!_bDrew&&_atlasBReady&&_atlasB){
         const _bPal=_getPalIdx(e.el!=null?e.el:0);
         const _bFr=_getBossFrame(e,_now);
