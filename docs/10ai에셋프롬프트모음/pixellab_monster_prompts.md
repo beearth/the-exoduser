@@ -1,101 +1,20 @@
 # HELL: EXODUSER — PixelLab 몬스터 프롬프트 마스터
 
-## 공통 접미사 (모든 몬스터에 붙일 것)
+---
+
+## 🔥 1. 1장 전용 베르세르크 스타일 톤
 
 ```
-STRICT top-down 90 degree view, no perspective, no angle,
-pure bird's-eye view, designed for gameplay readability, not illustration.
-consistent design across 8 directions,
-same proportions, same silhouette, same colors in all rotations,
-no distortion between directions.
-clear silhouette from distance,
-feet grounded for map placement,
-centered body mass, stable structure.
-limited color palette (4~6 tones),
-high contrast edges for visibility.
-no background, transparent,
-no outline glow, no background halo, clean cut edges,
-no UI, no extra elements
-```
-
-## 색감 접미사 (선택)
-
-```
-dark palette with subtle red glowing veins,
-occasional sick green or purple accents
+dark fantasy grotesque monster inspired by Berserk manga atmosphere,
+brutal, organic, disturbing design with flesh and bone fusion,
+exposed muscle, scars, torn skin, unnatural anatomy.
+low body close to ground, heavy and oppressive presence.
+deep shadows, strong highlights, subtle blood red accents.
 ```
 
 ---
 
-## 1. 살덩이 괴물 (기본몹)
-
-```
-Grotesque quadruped flesh beast,
-bloated body, exposed muscle and veins,
-bone spikes growing irregularly from back,
-slow heavy creature, wide stance,
-low body close to ground.
-```
-
-## 2. 기어다니는 벌레형 (빠른몹)
-
-```
-Crawling insect-like horror creature,
-multiple thin legs, low crawling posture,
-elongated body, twitchy and aggressive,
-sharp mandibles, unnatural movement feel.
-```
-
-## 3. 뒤틀린 짐승형 (밸런스몹)
-
-```
-Corrupted wolf-like beast,
-lean muscular body, fast and aggressive,
-spine twisted with bone protrusions,
-glowing eyes, hunting posture.
-```
-
-## 4. 뼈 스파이크 괴물 (딜러몹)
-
-```
-Bone-armored creature,
-body covered in sharp spikes and plates,
-jagged silhouette, dangerous appearance,
-thin but deadly structure.
-```
-
-## 5. 눈 + 촉수 괴물 (특수몹)
-
-```
-Amorphous flesh mass with multiple eyes,
-tentacles spreading outward,
-irregular organic shape,
-central glowing eye, disturbing presence.
-```
-
-## 6. 기사형 몬스터 (엘리트몹 / 보스)
-
-```
-Corrupted armored knight,
-humanoid shape, wearing broken dark armor,
-flesh growing through armor gaps,
-large weapon, heavy presence,
-intimidating silhouette.
-```
-
----
-
-## 사용법
-
-1. 몬스터 프롬프트 선택
-2. 뒤에 **공통 접미사** 붙이기
-3. 필요시 **색감 접미사** 추가
-4. PixelLab create_character 호출 시 description에 합쳐서 입력
-5. n_directions: 8, size: 64 (일반몹) / 128 (보스)
-
----
-
-## 🔥 1장 전용 베르세르크 스타일 공통 프롬프트
+## 🔥 2. 공통 BASE (무조건 붙여라) [base100]
 
 ```
 STRICT top-down 90 degree view, no perspective, no angle,
@@ -104,52 +23,190 @@ pure bird's-eye view, designed for gameplay readability, not illustration.
 consistent design across 8 directions,
 same proportions, same silhouette, same colors in all rotations.
 
-dark fantasy grotesque monster inspired by Berserk manga atmosphere,
-brutal, organic, disturbing design with flesh and bone fusion,
-exposed muscle, scars, torn skin, unnatural anatomy.
-
 clear silhouette from above,
-legs and body clearly readable, strong shape contrast.
+feet grounded for map placement.
 
-low body close to ground, heavy and oppressive presence.
-
-dark limited color palette (4~6 tones),
-deep shadows, strong highlights, subtle blood red accents.
+limited color palette (4~6 tones),
+high contrast edges for visibility.
 
 no background, transparent,
-no glow, no halo, clean cut edges,
+no outline glow, no background halo, clean cut edges,
 no UI, no extra elements
 ```
 
-## 🔥 변형 1 — 광전사 기사형 (엘리트/보스)
+---
+
+## 🔥 3. BODY 타입 (10개)
+
+| # | BODY |
+|---|------|
+| 1 | grotesque flesh beast, bloated body, bone spikes |
+| 2 | corrupted wolf-like creature, lean and aggressive |
+| 3 | crawling insect monster, multiple legs |
+| 4 | humanoid corrupted knight, heavy armor fused with flesh |
+| 5 | tentacle mass creature, no clear limbs |
+| 6 | skeletal beast, exposed bones and joints |
+| 7 | slug-like slime horror, melting body |
+| 8 | armored shell creature, thick plates |
+| 9 | floating ghost entity, no legs |
+| 10 | parasite-infested creature, swollen body parts |
+
+---
+
+## 🔥 4. TRAIT 변이 (15개)
+
+| # | TRAIT |
+|---|-------|
+| 1 | glowing red veins |
+| 2 | multiple eyes across body |
+| 3 | oversized jaw with sharp teeth |
+| 4 | broken limbs but still moving |
+| 5 | spikes growing randomly |
+| 6 | pulsating flesh core |
+| 7 | stitched body parts |
+| 8 | leaking black fluid |
+| 9 | exposed ribs and organs |
+| 10 | elongated arms dragging ground |
+| 11 | split face mutation |
+| 12 | bone armor covering torso |
+| 13 | parasite clusters moving under skin |
+| 14 | asymmetrical body growth |
+| 15 | twisted spine deformation |
+
+---
+
+## 🔥 5. ATTACK 스타일 (10개)
+
+| # | ATTACK |
+|---|--------|
+| 1 | lunging forward predator |
+| 2 | slow heavy stomp attacker |
+| 3 | fast crawling ambusher |
+| 4 | ranged spitting creature |
+| 5 | tentacle grabbing type |
+| 6 | explosive suicide monster |
+| 7 | charging beast |
+| 8 | summoner type creature |
+| 9 | swarm leader |
+| 10 | teleporting entity |
+
+---
+
+## 🔥 6. COLOR (5개)
+
+| # | COLOR |
+|---|-------|
+| 1 | dark with blood red accents |
+| 2 | dark with sick green poison glow |
+| 3 | dark with purple cursed energy |
+| 4 | desaturated bone white + black |
+| 5 | black + subtle blue ghost glow |
+
+---
+
+## 🔥 7. 실제 프롬프트 생성법
+
+`[base100]` 자리에 공통 BASE 전문을 붙이고, BODY + TRAIT + ATTACK + COLOR 조합:
 
 ```
-corrupted knight monster, heavy armor fused with flesh,
-oversized weapon, brutal presence,
-helmet broken, red glowing eyes,
-Berserk apostle style, monstrous human form
+[base100]
+
+{BODY},
+{TRAIT},
+{ATTACK},
+
+{COLOR}
 ```
 
-## 🔥 변형 2 — 사도 촉수형 (특수몹)
+---
+
+## 🔥 8. 예시 5개 (완성형)
+
+### 예시 1 — 늑대형 돌진
 
 ```
-apostle-like creature, tentacles and mouths,
-multiple eyes, writhing organic mass,
-unholy and disturbing shape, chaotic flesh structure
+[base100]
+
+corrupted wolf-like creature, lean and aggressive,
+elongated arms dragging ground,
+charging beast,
+
+dark with blood red accents
 ```
 
-## 🔥 변형 3 — 뒤틀린 짐승형 (사냥꾼)
+### 예시 2 — 벌레형 매복
 
 ```
-twisted beast, wolf-like but deformed,
-elongated limbs, exposed ribs, aggressive stance,
-hunting predator energy, fast and violent
+[base100]
+
+crawling insect monster, multiple legs,
+spikes growing randomly,
+fast crawling ambusher,
+
+dark with sick green poison glow
 ```
 
-## 🔥 1장 색감 접미사
+### 예시 3 — 기사형 스톰퍼
 
 ```
-dark palette with blood red highlights,
-occasional sick green or purple accents,
-high contrast for readability
+[base100]
+
+humanoid corrupted knight, heavy armor fused with flesh,
+broken limbs but still moving,
+slow heavy stomp attacker,
+
+desaturated bone white + black
 ```
+
+### 예시 4 — 촉수형 그래버
+
+```
+[base100]
+
+tentacle mass creature, no clear limbs,
+pulsating flesh core,
+tentacle grabbing type,
+
+dark with purple cursed energy
+```
+
+### 예시 5 — 유령형 텔레포터
+
+```
+[base100]
+
+floating ghost entity, no legs,
+split face mutation,
+teleporting entity,
+
+black + subtle blue ghost glow
+```
+
+---
+
+## 🔥 9. 레퍼런스 방향
+
+- ❌ 포스터처럼 만들지 말 것
+- ✅ **한 마리 집중**으로 만들어라
+
+---
+
+## 🔥 10. 전략
+
+- BODY: 10개
+- TRAIT: 15개
+- ATTACK: 10개
+- COLOR: 5개
+- **조합 = 10 × 15 × 10 × 5 = 7,500개 가능**
+
+---
+
+## PixelLab 호출 설정
+
+- 일반몹: `size: 64`, `n_directions: 8`
+- 보스: `size: 128`, `n_directions: 8`
+- `body_type: "quadruped"` (짐승) / `"humanoid"` (기사) / `"custom"` (촉수/유령)
+- `outline: "single color black outline"`
+- `shading: "detailed shading"`
+- `detail: "high detail"`
+- `ai_freedom: 600`

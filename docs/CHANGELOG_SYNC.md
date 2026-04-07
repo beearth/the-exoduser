@@ -14074,3 +14074,8 @@
 - img/atlas_ch1_8dir_walk_south_west.png
 - img/atlas_ch1_8dir_walk_west.png
 
+
+## 2026-04-07 21:30 (auto)
+- docs/10ai?ì…‹?„ë¡¬?„íŠ¸ëª¨ìŒ/pixellab_monster_prompts.md
+- game.html
+
