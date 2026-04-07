@@ -1677,8 +1677,10 @@ const BGM={
 
 const C=document.getElementById('c'),CT=document.getElementById('ct');
 const MC=document.getElementById('mm'),MX=MC.getContext('2d');
+MX.imageSmoothingEnabled=false;
 let GPU=null,GL=null,_useGPU=false,_useGL=false,_gpuCtx=null,_bGL=null;
 const _txCtx=CT.getContext('2d');
+_txCtx.imageSmoothingEnabled=false;
 let X=null;
 let _renderRes=null; // {w,h} 커스텀 렌더 해상도 (null=네이티브)
 let _dpr=1; // devicePixelRatio 캐시
@@ -10559,13 +10561,14 @@ const _BWA={idle:{s:0,n:4},walk:{s:4,n:4},attack:{s:8,n:6},hit:{s:14,n:6},death:
 // (function _loadBossWalkAtlas(){})();
 // ── 보스 방향별 아틀라스 (스테이지별 개별 파일, 4행=S/E/N/W × 20칸) ──
 const _bossDirAtlas={};
-// ── 보스 방향별 아틀라스 로드 (4행 S/E/N/W × 32열 × 64px) ──
-const _BOSS_DIR_ATLAS_FILES={0:'img/mobs/atlas_boss_si0_dir.png'};
+// ── 보스 방향별 아틀라스 (스테이지별 개별 파일, 4행=S/E/N/W) ──
+const _BOSS_DIR_ATLAS_FILES={0:{src:'img/mobs/atlas_boss_si0_dir.png',cell:128}};
 (function _loadBossDirAtlases(){
   for(const si in _BOSS_DIR_ATLAS_FILES){
+    const cfg=_BOSS_DIR_ATLAS_FILES[si];
     const img=new Image();
-    img.src=_BOSS_DIR_ATLAS_FILES[si]+'?v=1';
-    img.onload=()=>{_bossDirAtlas[+si]={img,ready:true};console.log('[BOSS] dirAtlas si'+si+' loaded')};
+    img.src=cfg.src+'?v=1';
+    img.onload=()=>{_bossDirAtlas[+si]={img,ready:true,cell:cfg.cell};console.log('[BOSS] dirAtlas si'+si+' loaded '+img.width+'x'+img.height)};
   }
 })();
 function _getBossWalkState(e){
@@ -10608,17 +10611,18 @@ function _drawBossWalk(X,e,now,sa,tdY){
   // ── 방향별 아틀라스 (우선) ──
   const da=_bossDirAtlas[si];
   if(da&&da.ready){
+    const cc=da.cell||_BWA_CELL;
     const st=_getBossWalkState(e);
     const off=_BWA[st]||_BWA.idle;
     const fi=~~(now/200)%off.n;
     const col=off.s+fi;
     const dirRow=_facingToDir4(e.facing);
-    const sx=col*_BWA_CELL,sy=dirRow*_BWA_CELL;
-    const sc=e.r*2/_BWA_CELL*1.2;
-    const dw=_BWA_CELL*sc,dh=_BWA_CELL*sc;
+    const sx=col*cc,sy=dirRow*cc;
+    const sc=e.r*2/cc*1.2;
+    const dw=cc*sc,dh=cc*sc;
     X.save();X.translate(e.x,e.y+(tdY||0));
     X.globalAlpha=sa;
-    X.drawImage(da.img,sx,sy,_BWA_CELL,_BWA_CELL,-dw/2,-dh/2,dw,dh);
+    X.drawImage(da.img,sx,sy,cc,cc,-dw/2,-dh/2,dw,dh);
     X.restore();
     return true;
   }

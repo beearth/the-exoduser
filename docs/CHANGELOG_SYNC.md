@@ -13565,3 +13565,34 @@
 - docs/5.0? ë‹ˆë©”ì´?˜íŒŒ?´í”„?¼ì¸/5.0? ë‹ˆë©”ì´?˜íŒŒ?´í”„?¼ì¸.md
 - game.html
 
+
+## 2026-04-07 17:30 (auto)
+- Electron/game.html
+- build_boss_stag_atlas.py
+- docs/10ai?ì…‹?„ë¡¬?„íŠ¸ëª¨ìŒ/boss_reference_corrupted_knight.png
+- docs/10ai?ì…‹?„ë¡¬?„íŠ¸ëª¨ìŒ/monster_reference_nightmare.png
+- docs/10ai?ì…‹?„ë¡¬?„íŠ¸ëª¨ìŒ/monster_reference_style.png
+- docs/10ai?ì…‹?„ë¡¬?„íŠ¸ëª¨ìŒ/monster_reference_style_2.png
+- docs/10ai?ì…‹?„ë¡¬?„íŠ¸ëª¨ìŒ/pixellab_monster_prompts.md
+- game.html
+- img/atlas_ch1_8dir.json
+- img/atlas_ch1_8dir_east.png
+- img/atlas_ch1_8dir_north.png
+- img/atlas_ch1_8dir_north_east.png
+- img/atlas_ch1_8dir_north_west.png
+- img/atlas_ch1_8dir_south.png
+- img/atlas_ch1_8dir_south_east.png
+- img/atlas_ch1_8dir_south_west.png
+- img/atlas_ch1_8dir_west.png
+- img/bosses/pro_forest_guardian/metadata.json
+- img/bosses/pro_forest_guardian/pro_forest_guardian.zip
+- img/bosses/pro_forest_guardian/rotations/east.png
+- img/bosses/pro_forest_guardian/rotations/north-east.png
+- img/bosses/pro_forest_guardian/rotations/north-west.png
+- img/bosses/pro_forest_guardian/rotations/north.png
+- img/bosses/pro_forest_guardian/rotations/south-east.png
+- img/bosses/pro_forest_guardian/rotations/south-west.png
+- img/bosses/pro_forest_guardian/rotations/south.png
+- img/bosses/pro_forest_guardian/rotations/west.png
+- img/mobs/atlas_boss_si0_dir.png
+

@@ -1677,8 +1677,10 @@ const BGM={
 
 const C=document.getElementById('c'),CT=document.getElementById('ct');
 const MC=document.getElementById('mm'),MX=MC.getContext('2d');
+MX.imageSmoothingEnabled=false;
 let GPU=null,GL=null,_useGPU=false,_useGL=false,_gpuCtx=null,_bGL=null;
 const _txCtx=CT.getContext('2d');
+_txCtx.imageSmoothingEnabled=false;
 let X=null;
 let _renderRes=null; // {w,h} 커스텀 렌더 해상도 (null=네이티브)
 let _dpr=1; // devicePixelRatio 캐시
@@ -3681,10 +3683,25 @@ function _addBlastLight(x,y,r,life,cr,cg,cb){
   if(_blCnt>=_BL_MAX){let oldest=0,oLife=999;for(let i=0;i<_BL_MAX;i++){if(_blastLights[i].life<oLife){oLife=_blastLights[i].life;oldest=i}}
     var b=_blastLights[oldest];b.x=x;b.y=y;b.r=r;b.life=life;b.ml=life;b.cr=cr||255;b.cg=cg||200;b.cb=cb||100;return}
   var b=_blastLights[_blCnt++];b.x=x;b.y=y;b.r=r;b.life=life;b.ml=life;b.cr=cr||255;b.cg=cg||200;b.cb=cb||100}
-// ═══ [FOG] 안개 시스템 ═══
-const _FOG_MAX=60;const _fogPool=[];for(let i=0;i<_FOG_MAX;i++)_fogPool.push({x:0,y:0,vx:0,vy:0,r:60,life:0,ml:0,alpha:0,col:'#000'});
-let _fogCnt=0,_fogSpawnT=0;
-const _FOG_COLS=['rgba(100,140,180,','rgba(40,60,20,','rgba(80,20,10,','rgba(50,20,60,','rgba(60,50,10,','rgba(50,50,40,','rgba(30,10,50,'];
+// ═══ [SMOG] 스모그 시스템 — 소프트 그라데이션 스탬프 방식 ═══
+const _SMOG_MAX=40;const _smogPool=[];for(let i=0;i<_SMOG_MAX;i++)_smogPool.push({x:0,y:0,vx:0,vy:0,r:120,life:0,ml:0,alpha:0,rot:0,rotSpd:0});
+let _smogCnt=0,_smogSpawnT=0;
+// 지옥별 스모그 색상 [r,g,b]
+const _SMOG_COLS=[[100,140,180],[40,60,20],[80,20,10],[50,20,60],[60,50,10],[50,50,40],[30,10,50]];
+// 프리렌더 스모그 스탬프 캐시 (색상별)
+const _smogStamps={};
+function _getSmogStamp(r,g,b){
+  const key=r+','+g+','+b;if(_smogStamps[key])return _smogStamps[key];
+  const sz=256,c=document.createElement('canvas');c.width=sz;c.height=sz;
+  const cx=c.getContext('2d'),h=sz/2;
+  const grd=cx.createRadialGradient(h,h,0,h,h,h);
+  grd.addColorStop(0,'rgba('+r+','+g+','+b+',1)');
+  grd.addColorStop(.3,'rgba('+r+','+g+','+b+',.6)');
+  grd.addColorStop(.6,'rgba('+r+','+g+','+b+',.2)');
+  grd.addColorStop(1,'rgba('+r+','+g+','+b+',0)');
+  cx.fillStyle=grd;cx.fillRect(0,0,sz,sz);
+  _smogStamps[key]=c;return c;
+}
 // ═══ [GRAIN] 필름 그레인 ═══
 let _grainCvs=null,_grainCtx=null,_grainT=0,_grainPat=null,_grainPatDirty=true;
 // spark dot stamp (pre-rendered 6px circle, replaces per-frame arc fill in BOOM)
@@ -11198,9 +11215,15 @@ const _BWA={idle:{s:0,n:4},walk:{s:4,n:4},attack:{s:8,n:6},hit:{s:14,n:6},death:
 // (function _loadBossWalkAtlas(){})();
 // ── 보스 방향별 아틀라스 (스테이지별 개별 파일, 4행=S/E/N/W × 20칸) ──
 const _bossDirAtlas={};
-// ── 보스 방향별 아틀라스 (4방향 제거됨 — atlas_bosses.png 단일 사용) ──
-const _BOSS_DIR_ATLAS_FILES={};
+// ── 보스 방향별 아틀라스 (스테이지별 개별 파일, 4행=S/E/N/W) ──
+const _BOSS_DIR_ATLAS_FILES={0:{src:'img/mobs/atlas_boss_si0_dir.png',cell:128}};
 (function _loadBossDirAtlases(){
+  for(const si in _BOSS_DIR_ATLAS_FILES){
+    const cfg=_BOSS_DIR_ATLAS_FILES[si];
+    const img=new Image();
+    img.src=cfg.src+'?v=1';
+    img.onload=()=>{_bossDirAtlas[+si]={img,ready:true,cell:cfg.cell};console.log('[BOSS] dirAtlas si'+si+' loaded '+img.width+'x'+img.height)};
+  }
 })();
 function _getBossWalkState(e){
   const s=e.s;
@@ -11242,17 +11265,18 @@ function _drawBossWalk(X,e,now,sa,tdY){
   // ── 방향별 아틀라스 (우선) ──
   const da=_bossDirAtlas[si];
   if(da&&da.ready){
+    const cc=da.cell||_BWA_CELL;
     const st=_getBossWalkState(e);
     const off=_BWA[st]||_BWA.idle;
     const fi=~~(now/200)%off.n;
     const col=off.s+fi;
     const dirRow=_facingToDir4(e.facing);
-    const sx=col*_BWA_CELL,sy=dirRow*_BWA_CELL;
-    const sc=e.r*2/_BWA_CELL*1.2;
-    const dw=_BWA_CELL*sc,dh=_BWA_CELL*sc;
+    const sx=col*cc,sy=dirRow*cc;
+    const sc=e.r*2/cc*1.2;
+    const dw=cc*sc,dh=cc*sc;
     X.save();X.translate(e.x,e.y+(tdY||0));
     X.globalAlpha=sa;
-    X.drawImage(da.img,sx,sy,_BWA_CELL,_BWA_CELL,-dw/2,-dh/2,dw,dh);
+    X.drawImage(da.img,sx,sy,cc,cc,-dw/2,-dh/2,dw,dh);
     X.restore();
     return true;
   }
@@ -20234,25 +20258,26 @@ function update(){
       if(_ambData[i+6]>0){if(_aw!==idx){for(let k=0;k<10;k++){const tmp=_ambData[_aw*10+k];_ambData[_aw*10+k]=_ambData[i+k];_ambData[i+k]=tmp}
         const tc=_ambCols[_aw];_ambCols[_aw]=_ambCols[idx];_ambCols[idx]=tc;
         const tt=_ambTypes[_aw];_ambTypes[_aw]=_ambTypes[idx];_ambTypes[idx]=tt}_aw++}}_ambCnt=_aw}
-  // [FOG] 업데이트
-  if(OPT.fog&&_hwTier!=='C'&&_hwTier!=='B'){const _fHell=SI_TO_HELL[G.stage];_fogSpawnT-=sp;
-    if(_fogSpawnT<=0&&_fogCnt<_FOG_MAX){_fogSpawnT=2+Math.random()*5;const f=_fogPool[_fogCnt];
-      f.x=G.cam.x+(Math.random()-.5)*C.width*1.8;f.y=G.cam.y+(Math.random()-.5)*C.height*1.8;
-      f.vx=(Math.random()-.5)*.2;f.vy=(Math.random()-.5)*.15;f.r=80+Math.random()*120;
-      const ml=400+Math.random()*500;f.life=ml;f.ml=ml;f.alpha=.08+Math.random()*.07;
-      f.col=_FOG_COLS[_fHell];_fogCnt++}
-    // 플레이어+요정 주변 안개 밀어내기
-    const _fogPushR=400,_fogIrisR=300;
-    const _fogIx=(G.pets&&G.pets.iris&&!G._irisOff)?G.pets.iris.x:-9999;
-    const _fogIy=(G.pets&&G.pets.iris&&!G._irisOff)?G.pets.iris.y:-9999;
-    let fw=0;for(let i=0;i<_fogCnt;i++){const f=_fogPool[i];f.x+=f.vx*sp;f.y+=f.vy*sp;f.life-=sp;
-      // 플레이어 근처: 안개 밀어냄
-      const _fpDx=f.x-P.x,_fpDy=f.y-P.y,_fpD=Math.sqrt(_fpDx*_fpDx+_fpDy*_fpDy);
-      if(_fpD<_fogPushR&&_fpD>1){const _push=(.3*(1-_fpD/_fogPushR))*sp;f.x+=(_fpDx/_fpD)*_push;f.y+=(_fpDy/_fpD)*_push;f.alpha=Math.max(0,f.alpha-.001*sp)}
-      // 요정 근처: 안개 밀어냄
-      const _fiDx=f.x-_fogIx,_fiDy=f.y-_fogIy,_fiD=Math.sqrt(_fiDx*_fiDx+_fiDy*_fiDy);
-      if(_fiD<_fogIrisR&&_fiD>1){const _push2=(.2*(1-_fiD/_fogIrisR))*sp;f.x+=(_fiDx/_fiD)*_push2;f.y+=(_fiDy/_fiD)*_push2;f.alpha=Math.max(0,f.alpha-.001*sp)}
-      if(f.life>0){if(fw!==i){const t=_fogPool[fw];_fogPool[fw]=_fogPool[i];_fogPool[i]=t}fw++}}_fogCnt=fw}
+  // [SMOG] 스모그 업데이트 — 소프트 그라데이션 스탬프
+  if(OPT.fog&&_hwTier!=='C'){const _sHell=SI_TO_HELL[G.stage];_smogSpawnT-=sp;
+    if(_smogSpawnT<=0&&_smogCnt<_SMOG_MAX){_smogSpawnT=4+Math.random()*8;const f=_smogPool[_smogCnt];
+      f.x=G.cam.x+(Math.random()-.5)*C.width*2;f.y=G.cam.y+(Math.random()-.5)*C.height*2;
+      f.vx=(Math.random()-.5)*.12;f.vy=(Math.random()-.5)*.08;
+      f.r=150+Math.random()*200;
+      const ml=600+Math.random()*800;f.life=ml;f.ml=ml;
+      f.alpha=.04+Math.random()*.04;
+      f.rot=Math.random()*Math.PI*2;f.rotSpd=(Math.random()-.5)*.003;
+      _smogCnt++}
+    // 플레이어+요정 주변 스모그 밀어내기
+    const _sPushR=350,_sIrisR=250;
+    const _sIx=(G.pets&&G.pets.iris&&!G._irisOff)?G.pets.iris.x:-9999;
+    const _sIy=(G.pets&&G.pets.iris&&!G._irisOff)?G.pets.iris.y:-9999;
+    let sw=0;for(let i=0;i<_smogCnt;i++){const f=_smogPool[i];f.x+=f.vx*sp;f.y+=f.vy*sp;f.life-=sp;f.rot+=f.rotSpd*sp;
+      const _spDx=f.x-P.x,_spDy=f.y-P.y,_spD=Math.sqrt(_spDx*_spDx+_spDy*_spDy);
+      if(_spD<_sPushR&&_spD>1){const _push=(.25*(1-_spD/_sPushR))*sp;f.x+=(_spDx/_spD)*_push;f.y+=(_spDy/_spD)*_push}
+      const _siDx=f.x-_sIx,_siDy=f.y-_sIy,_siD=Math.sqrt(_siDx*_siDx+_siDy*_siDy);
+      if(_siD<_sIrisR&&_siD>1){const _push2=(.15*(1-_siD/_sIrisR))*sp;f.x+=(_siDx/_siD)*_push2;f.y+=(_siDy/_siD)*_push2}
+      if(f.life>0){if(sw!==i){const t=_smogPool[sw];_smogPool[sw]=_smogPool[i];_smogPool[i]=t}sw++}}_smogCnt=sw}
   // 보스 바 — 캐시된 참조 사용 (매 프레임 find 제거)
   if(!G._bossRef||!G._bossRef.alive)G._bossRef=null;
   if(!G._bossRef&&G.bossAlive){G._bossRef=findBoss()}
@@ -33104,12 +33129,13 @@ function draw(){
         if(e._mob8dir){
           const _a8=_ch8Atlas[e._mobCh];
           if(_a8&&_a8.meta){
-            const _baseSz=Math.max(e.r*3.5,30);
+            const _baseSz=Math.max(e.r*7,80);
             const _dk8=_mobFacingDir8(e.facing);
             const _da8=_a8.dirs[_dk8];
             if(_da8&&_da8.ready&&e._mob8Col!==undefined){
               const _c8=_a8.meta.cell;
               X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
+              X.imageSmoothingEnabled=false;X.imageSmoothingQuality='low';
               X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
               X.restore();_eDrew=true;_usedSpr=true;
             }
@@ -34595,14 +34621,23 @@ function draw(){
       X.fillText('☲',_bfsx+Math.cos(_ra)*_bfDrawR*.85-5,_bfsy+Math.sin(_ra)*_bfDrawR*.85+4)}
     X.restore()}
   _pC1=performance.now(); // bonfire end
-  // [FOG] 안개 렌더 (매 프레임 — 교대 렌더 제거, 깜빡임 방지)
-  if(OPT.fog&&_fogCnt>0&&OPT.quality!=='low'){X.save();X.setTransform(1,0,0,1,0,0);const _fHell2=SI_TO_HELL[G.stage];
-    for(let i=0;i<_fogCnt;i++){const f=_fogPool[i];const sx=C.width/2+(f.x-G.cam.x),sy=C.height/2+(f.y-G.cam.y);
+  // [SMOG] 스모그 렌더 — 프리렌더 스탬프 + 회전
+  if(OPT.fog&&_smogCnt>0&&OPT.quality!=='low'){
+    const _sHell2=SI_TO_HELL[G.stage];const _sc=_SMOG_COLS[_sHell2]||[50,50,50];
+    const _stamp=_getSmogStamp(_sc[0],_sc[1],_sc[2]);
+    X.save();X.setTransform(1,0,0,1,0,0);
+    for(let i=0;i<_smogCnt;i++){const f=_smogPool[i];
+      const sx=C.width/2+(f.x-G.cam.x),sy=C.height/2+(f.y-G.cam.y);
       if(sx<-f.r*2||sx>C.width+f.r*2||sy<-f.r*2||sy>C.height+f.r*2)continue;
-      const fadeIn=Math.min(1,(f.ml-f.life)/40),fadeOut=Math.min(1,f.life/60);
-      X.globalAlpha=f.alpha*fadeIn*fadeOut;X.fillStyle=_FOG_COLS[_fHell2]+'.5)';
-      if(_useGPU||_useGL){X.fillRect(sx-f.r,sy-f.r,f.r*2,f.r*2)}else{X.beginPath();X.arc(sx,sy,f.r,0,Math.PI*2);X.fill()}}
-    X.globalAlpha=1;X.restore()}
+      const fadeIn=Math.min(1,(f.ml-f.life)/60),fadeOut=Math.min(1,f.life/80);
+      X.globalAlpha=f.alpha*fadeIn*fadeOut;
+      const sz=f.r*2;
+      X.save();X.translate(sx,sy);X.rotate(f.rot);
+      X.drawImage(_stamp,-sz/2,-sz/2,sz,sz);
+      X.restore();
+    }
+    X.globalAlpha=1;X.restore();
+  }
   _pC2=performance.now(); // fog end
   // ── 동적 환경광 오버레이 (매 프레임 — 교대 렌더 제거, 깜빡임 방지) ──
   {const _elHell=SI_TO_HELL[G.stage||0];
