@@ -13620,3 +13620,8 @@
 - docs/10ai?ì…‹?„ë¡¬?„íŠ¸ëª¨ìŒ/monster_reference_berserk.png
 - game.html
 
+
+## 2026-04-07 19:30 (auto)
+- docs/10ai?ì…‹?„ë¡¬?„íŠ¸ëª¨ìŒ/pixellab_monster_prompts.md
+- game.html
+

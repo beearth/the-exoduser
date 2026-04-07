@@ -19216,7 +19216,7 @@ function update(){
   if(G._gcT>20){G._gcT=0;
     // 시체 미생성 사망 fallback — GC 시점에만 (매 프레임→20프레임 주기)
     for(let i=0;i<ens.length;i++){if(!ens[i].alive&&!ens[i]._corpseSpawned&&!ens[i]._isDecoy&&ens[i].mhp>0){_addCorpse(ens[i],Math.atan2(ens[i].y-P.y,ens[i].x-P.x),4)}}
-    let w=0,_deadCnt=0;for(let i=0;i<ens.length;i++){if(ens[i].alive){ens[w++]=ens[i]}else{if(ens[i].hp>0)console.warn('[GC-REMOVE] alive=false BUT hp='+ens[i].hp+'/'+ens[i].mhp+' etype='+ens[i].etype+' skin8='+!!ens[i]._mob8dir+' x='+~~ens[i].x+' y='+~~ens[i].y);if(ens[i]._reviveTimer>0&&_deadCnt<50){ens[w++]=ens[i];_deadCnt++}}}ens.length=w;
+    let w=0,_deadCnt=0;for(let i=0;i<ens.length;i++){if(ens[i].alive){ens[w++]=ens[i]}else if(ens[i]._reviveTimer>0&&_deadCnt<50){ens[w++]=ens[i];_deadCnt++}}ens.length=w;
     // worldItems picked 정리
     let ww=0;for(let i=0;i<worldItems.length;i++){if(!worldItems[i].picked)worldItems[ww++]=worldItems[i]}worldItems.length=ww;
     // G.txts: 링 버퍼 풀이므로 compaction 불필요 (축소 시 재할당 유발)
@@ -19287,7 +19287,7 @@ function update(){
             if(_rtx2>=0&&_rty2>=0&&_rtx2<G.mw&&_rty2<G.mh&&G.map[_rty2][_rtx2]!==1){e.x=_wx;e.y=_wy;e.kb.x=0;e.kb.y=0;_rescued=true;break}
           }
         }
-        if(!_rescued){console.warn('[WALL-KILL] etype='+e.etype+' x='+~~e.x+' y='+~~e.y+' hp='+e.hp+' skin8='+!!e._mob8dir);e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1}
+        if(!_rescued){e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1}
       }}
     else if(e._reviveTimer>0){
       e._reviveTimer-=sp;
