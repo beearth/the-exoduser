@@ -27,6 +27,7 @@ idle → (거리 조건) → windup → attack → recover → idle
 | `eCharge` | 돌진 공격 | 벽/거리 초과 → recover |
 | `eSelfDestruct` | 자폭 | st2 소진 → 사망 |
 | `eShieldBash` | 방패 돌진 | 벽/거리 → recover |
+| `eShootWind` | 탄막 발사 준비 (최소 1초) | st2 소진 → `_swFire()` 실행 → idle |
 
 ---
 
