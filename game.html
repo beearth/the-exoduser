@@ -16813,7 +16813,8 @@ function initStage(si){
   if(si>=TOTAL_STAGES)si=TOTAL_STAGES-1; // 35스테이지 초과 시 마지막 스테이지 폴백
   G.stage=si;
   _skinSeqIdx=0; // 스킨 순차 배정 카운터 리셋
-  _loadChAtlas(SI_TO_HELL[si]||0); // ch 아틀라스 로드
+  // _loadChAtlas(SI_TO_HELL[si]||0); // 레거시 4방향 비활성화 — 8dir 사용
+  _load8DirAtlas(1); // 8dir 아틀라스 로드
   ens=[];for(let _i=0;_i<projs.length;_i++)_recycleProj(projs[_i]);projs.length=0;{for(let _ri=0;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=0;};worldItems=[];MAP_OBJS=[];G.parts=[];G.txts=[];G.hitStop=0;G.slowMo=0;G.curRoom=0;G._flashT=0;G._flashCol='#ffffff';G._chromaT=0;_eSpCache.clear();_impacts=[];_vfxAnims.length=0;_fireExps.length=0;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;_shDirty=true;_eyeObjs.length=0;_eyeInited=false;
   // ── 보스 패턴 배열 전수 초기화 (메모리 누수 방지) ──
   G._spiralBullets=[];G._phantomSwords=[];G._doppelgangers=[];G._judgeCuts=[];G._pillars=[];
@@ -19215,7 +19216,7 @@ function update(){
   if(G._gcT>20){G._gcT=0;
     // 시체 미생성 사망 fallback — GC 시점에만 (매 프레임→20프레임 주기)
     for(let i=0;i<ens.length;i++){if(!ens[i].alive&&!ens[i]._corpseSpawned&&!ens[i]._isDecoy&&ens[i].mhp>0){_addCorpse(ens[i],Math.atan2(ens[i].y-P.y,ens[i].x-P.x),4)}}
-    let w=0,_deadCnt=0;for(let i=0;i<ens.length;i++){if(ens[i].alive){ens[w++]=ens[i]}else if(ens[i]._reviveTimer>0&&_deadCnt<50){ens[w++]=ens[i];_deadCnt++}}ens.length=w;
+    let w=0,_deadCnt=0;for(let i=0;i<ens.length;i++){if(ens[i].alive){ens[w++]=ens[i]}else{if(ens[i].hp>0)console.warn('[GC-REMOVE] alive=false BUT hp='+ens[i].hp+'/'+ens[i].mhp+' etype='+ens[i].etype+' skin8='+!!ens[i]._mob8dir+' x='+~~ens[i].x+' y='+~~ens[i].y);if(ens[i]._reviveTimer>0&&_deadCnt<50){ens[w++]=ens[i];_deadCnt++}}}ens.length=w;
     // worldItems picked 정리
     let ww=0;for(let i=0;i<worldItems.length;i++){if(!worldItems[i].picked)worldItems[ww++]=worldItems[i]}worldItems.length=ww;
     // G.txts: 링 버퍼 풀이므로 compaction 불필요 (축소 시 재할당 유발)
@@ -19286,7 +19287,7 @@ function update(){
             if(_rtx2>=0&&_rty2>=0&&_rtx2<G.mw&&_rty2<G.mh&&G.map[_rty2][_rtx2]!==1){e.x=_wx;e.y=_wy;e.kb.x=0;e.kb.y=0;_rescued=true;break}
           }
         }
-        if(!_rescued){e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1}
+        if(!_rescued){console.warn('[WALL-KILL] etype='+e.etype+' x='+~~e.x+' y='+~~e.y+' hp='+e.hp+' skin8='+!!e._mob8dir);e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1}
       }}
     else if(e._reviveTimer>0){
       e._reviveTimer-=sp;
@@ -22614,13 +22615,15 @@ function updateE(e,sp){
           if(rd<_riftR+e.r){const _crDmg=~~(_kbSpd2*4);hurtE(e,_crDmg);
             addTxt(e.x,e.y-18,_T('균열 충돌! ')+_crDmg,'#9933ff',30);addParts(e.x,e.y,'#aa44ff',8);
             SFX.block();shake(6);e.kb.x=0;e.kb.y=0;break}}}}}
-    else{// 벽 충돌 데미지: 넉백속도 비례 + 적 최대HP% (만렙에도 유효)
+    else{// 벽 충돌 데미지: 실제 타일 벽만 (MAP_OBJS 제외)
+      const _wbTx=~~(nx/T),_wbTy=~~(ny/T);
+      const _isRealWall=_wbTx<0||_wbTy<0||_wbTx>=G.mw||_wbTy>=G.mh||G.map[_wbTy][_wbTx]===1;
       const kbSpd=Math.sqrt(e.kb.x*e.kb.x+e.kb.y*e.kb.y);
-      if(kbSpd>2){const _wPct=Math.min(0.08,kbSpd*0.004); // 넉백속도당 0.4%, 최대 8%
+      if(_isRealWall&&kbSpd>2){const _wPct=Math.min(0.08,kbSpd*0.004); // 넉백속도당 0.4%, 최대 8%
         const wallDmg=Math.max(~~(kbSpd*4),~~(e.mhp*_wPct)); // 고정뎀 vs %뎀 중 큰 쪽
         hurtE(e,wallDmg);
         addTxt(e.x,e.y-18,_T('벽 충돌! ')+wallDmg,'#cc8844',30);addParts(e.x,e.y,'#aa7744',8);
-        SFX.block();shake(8);e.kb.x=0;e.kb.y=0}
+        SFX.block();shake(8)}
       else{e.kb.x=0;e.kb.y=0}}
     const _ekD=.85**sp;e.kb.x*=_ekD;e.kb.y*=_ekD}
   if(e._bluHitCD>0)e._bluHitCD-=sp;
