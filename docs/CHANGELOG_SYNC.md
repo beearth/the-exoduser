@@ -13252,3 +13252,8 @@
 - docs/9?ai?¨í„´?”ì??9_?AI?¨í„´?”ì??md
 - game.html
 
+
+## 2026-04-07 15:30 (auto)
+- blender/sprites/boss_ch1_stag.zip
+- boss_gen_queue.json
+
