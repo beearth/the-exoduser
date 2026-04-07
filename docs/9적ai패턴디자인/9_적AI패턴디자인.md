@@ -25,7 +25,7 @@ idle → (거리 조건) → windup → attack → recover → idle
 | `recover` | 공격 후 경직 | st2 소진 → idle |
 | `eCircle` | 어택티켓 대기 공전 | 티켓 획득 시 → idle/windup |
 | `eCharge` | 돌진 공격 | 벽/거리 초과 → recover |
-| `eSelfDestruct` | 자폭 | st2 소진 → 사망 |
+| ~~`eSelfDestruct`~~ | ~~자폭~~ | 삭제됨 — etype 5는 탄막몹(windup→발사)으로 전환 |
 | `eShieldBash` | 방패 돌진 | 벽/거리 → recover |
 | `eShootWind` | 탄막 발사 준비 (최소 1초) | st2 소진 → `_swFire()` 실행 → idle |
 
@@ -87,7 +87,7 @@ atkTicketRelease(e) → 티켓 반환
 |-------|------|-----------|-----------|
 | 2 | 돌진사도 | idle→eCharge 돌진 | d<1200, d>50, 속도 5px/f, 쿨 100~160f |
 | 3 | 요마 | windup 짧음 | windup st2=5 (다른몹 8) |
-| 5 | 태아형악마 | 자폭 | d<35+P.r, 폭발R=55, 뎀=atk×2 |
+| 5 | 태아형악마 | 탄막 (자폭 제거) | d<35+P.r → windup st2=20, 이후 탄막 발사 |
 | 6 | 철갑사도 | 방패돌진 | d<150, d>30, 속도 4.5px/f, 쉴드 파괴 후만 |
 | 8 | 부풀은사도 | 근접 기습 | d<40 |
 | 51 | 융합체 | 근접 | d<35+e.r, windup st2=20 |

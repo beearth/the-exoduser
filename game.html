@@ -11158,7 +11158,7 @@ function _assignBossSkin(e,si){
 }
 
 // 적 스폰 시 8dir 스킨 즉시 배정 (meta 로드 불필요, col/row 직접 계산)
-const _MOB8_TOTAL=23, _MOB8_COLS=5; // atlas_ch1_8dir 레이아웃
+const _MOB8_TOTAL=23, _MOB8_COLS=6; // atlas_ch1_8dir 레이아웃 (23종, 6x4)
 let _skinSeqIdx=0;
 function _assignMobSkin(e){
   if(e.ib){_assignBossSkin(e,G.stage);return}
@@ -22945,7 +22945,7 @@ function updateE(e,sp){
   // Charger enemy: dash attack
   if(e.etype===2&&e.s==='idle'){e.chargeT-=sp;if(e.chargeT<=0&&d<1200&&d>50&&atkTicketRequest(e)){e.s='eCharge';e.st2=20;e.echDx=Math.cos(e.facing);e.echDy=Math.sin(e.facing);e.chargeT=e.chargeCd;addParts(e.x,e.y,e.col,5)}}
   // Exploder: 근접 시 자폭 카운트다운
-  if(e.etype===5&&e.s==='idle'&&d<35+P.r&&atkTicketRequest(e)){e.s='eSelfDestruct';e.st2=28;addTxt(e.x,e.y-15,'💥','#ff6600',28)}
+  if(e.etype===5&&e.s==='idle'&&d<35+P.r&&atkTicketRequest(e)){e.s='windup';e.st2=20;}
   // 방패돌격병: 에너지 쉴드 재생 + 방패 추적 + 호위 AI + 돌격
   // ═══ 쉴드 리젠 (모든 쉴드 소유 몹 공통) ═══
   if(e.eShieldMax>0){
@@ -24825,21 +24825,7 @@ function updateE(e,sp){
       const ang=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ang)*8;P.kb.y+=Math.sin(ang)*8}
     if(e.shockR>=e.shockMax||e.st2<=0){e.s='recover';e.st2=55}break}
   // ── 자폭: 카운트다운 → 폭발 ──
-  case'eSelfDestruct':{
-    // 점점 빨라지는 접근
-    const mx=Math.cos(e.facing)*e.speed*1.3*(e._aSpdM||1)*sp,my=Math.sin(e.facing)*e.speed*1.3*(e._aSpdM||1)*sp;
-    const nx=e.x+mx,ny=e.y+my;if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}
-    if(Math.random()>.4)poolPart(e.x+(Math.random()-.5)*8,e.y+(Math.random()-.5)*8,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ff4400',3+Math.random()*3,8);
-    if(e.st2<=0){
-      const blastR=55;
-      if(dst(P.x,P.y,e.x,e.y)<blastR&&P.iframes<=0&&P.s!=='charge'){
-        if(isPWin()){P.parryBank=(P.parryBank||0)+~~(e.atk*2);doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0;addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35)}
-        else{hurtP(~~(e.atk*2*elMul(e.el,ar().el)));
-          const ang=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ang)*12;P.kb.y+=Math.sin(ang)*12}}
-      const _blNe=shQuery(e.x,e.y,blastR+20);for(let _bi=0;_bi<_blNe.length;_bi++){const oe=_blNe[_bi];if(oe!==e&&dst(oe.x,oe.y,e.x,e.y)<blastR){hurtE(oe,~~(e.atk*1.2),Math.atan2(oe.y-e.y,oe.x-e.x))}}
-      addParts(e.x,e.y,'#ff6600',30);G.shake=8*OPT.shake/100;SFX.groggy();
-      e.hp=0;atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;_petOnKill();_addCorpse(e,Math.atan2(e.y-P.y,e.x-P.x),5);
-    }break}
+  case'eSelfDestruct':{e.s='idle';e.st2=30;break} // 자폭 제거 — idle로 복귀
   // ── 방패돌격병: 방패 돌진 ──
   case'eShieldBash':{
     const spd=4.5*sp;const nx=e.x+e.echDx*spd,ny=e.y+e.echDy*spd;
@@ -32445,8 +32431,16 @@ function draw(){
           X.restore();
         }
       }else{
-        // 폴백: 간단한 원
-        X.globalAlpha=.7;X.fillStyle=gt.col;X.beginPath();X.arc(e.x,e.y,e.r,0,Math.PI*2);X.fill();
+        // 구울 폴백: 8dir 아틀라스
+        if(e._mob8Col===undefined||e._mob8Col===null){
+          const _gs=((e.etype||0)*7+~~((e._homeX||e.x)*31))&0x7fffffff;
+          e._mob8Col=(_gs%_MOB8_TOTAL)%_MOB8_COLS;e._mob8Row=~~((_gs%_MOB8_TOTAL)/_MOB8_COLS);
+        }
+        const _gA8=_ch8Atlas[1];
+        if(_gA8){let _gD=_gA8.dirs[_mobFacingDir8(e.facing)];if(!_gD||!_gD.ready)_gD=_gA8.dirs['south'];
+          if(_gD&&_gD.ready){const _gc=(_gA8.meta?_gA8.meta.cell:256),_gsz=Math.max(e.r*7,80);
+            X.save();X.translate(e.x,e.y);X.globalAlpha=.9;X.imageSmoothingEnabled=false;
+            X.drawImage(_gD.img,e._mob8Col*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz);X.restore();}}
       }
 
       X.globalAlpha=1;
@@ -32510,28 +32504,25 @@ function draw(){
     if(_eLite){
       // 간소화: 이펙트 생략, 스킨은 유지
       const _er=e.r;
-      if(e._mobSkin&&e._mobCol!==undefined&&e._mobCh){
-        const _ca=_chAtlas[e._mobCh];
-        if(_ca){
-        const _bsz=Math.max(_er*3.5,30);
-        const _tl3=_mobTilt(e.facing);
-        X.globalAlpha=1;X.save();X.translate(e.x,e.y);
-        if(_mobFlip(e.facing))X.scale(-1,1);
-        if(_tl3)X.rotate(_tl3);
-        const _mv3=e._isMoving||e.s==='eCharge'||e.s==='eApproach';
-        if(_mv3&&e._mobWalkRow>=0&&_ca.walk.ready){
-          const _di3=['south','east','north','west'].indexOf(_mobDirKey(e.facing));
-          const _fr3=~~(_now*0.004)%4;
-          X.drawImage(_ca.walk.img,(_di3*4+_fr3)*_MOB_CELL,e._mobWalkRow*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_bsz/2,-_bsz/2,_bsz,_bsz);
-        }else{
-          const _dk3=_mobDirKey(e.facing);const _da3=_ca[_dk3];
-          if(_da3&&_da3.ready){
-            X.drawImage(_da3.img,e._mobCol*_MOB_CELL,e._mobRow*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_bsz/2,-_bsz/2,_bsz,_bsz);
+      // 8dir 아틀라스 간소화 렌더 (eLite)
+      {
+        if(e._mob8Col===undefined||e._mob8Col===null){
+          const _seed2=((e.etype||0)*7+~~((e._homeX||e.x)*31))&0x7fffffff;
+          const _idx2=_seed2%_MOB8_TOTAL;
+          e._mob8Col=_idx2%_MOB8_COLS;e._mob8Row=~~(_idx2/_MOB8_COLS);
+        }
+        const _a8L=_ch8Atlas[1];
+        if(_a8L){
+          const _bsz=Math.max(_er*7,80);
+          let _daL=_a8L.dirs['south'];
+          if(_daL&&_daL.ready){
+            const _c8L=(_a8L.meta?_a8L.meta.cell:256);
+            X.globalAlpha=1;X.save();X.translate(e.x,e.y);X.imageSmoothingEnabled=false;
+            X.drawImage(_daL.img,e._mob8Col*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz);
+            X.restore();
           }
         }
-        X.restore();
-        }
-      }else{X.globalAlpha=1;X.fillStyle=e.col;X.beginPath();X.arc(e.x,e.y,_er,0,Math.PI*2);X.fill();}
+      }
       {const bw=_er*2+6,bx=e.x-bw/2;let by=e.y-_er-16;
       if(e.hp<e.mhp){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);by-=5}
 
@@ -33190,148 +33181,33 @@ function draw(){
       }
       if(!_bDrew){X.save();X.translate(0,_tdY);drawBossBody(X,e,_now,sa);X.restore()}
     }else{
-      // ── 일반 적 렌더링 ──
+      // ── 일반 적 렌더링 (8dir 단일 경로) ──
       let _eDrew=false;
-      // ── 몬스터 스킨 아틀라스 렌더링 (etype 0-99, 최우선) ──
-      if(!_ensGLQueued&&!_eDrew){
-        // 스킨 미배정 → 즉시 배정 (meta 불필요, col/row 직접 계산)
-        if(!e.ib&&(e._mob8Col===undefined||e._mob8Col===null)){
-          e._mobCh=1;
+      {
+        // 스킨 미배정 → 즉시 확정
+        if(e._mob8Col===undefined||e._mob8Col===null){
           const _seed=((e.etype||0)*7+~~((e._homeX||e.x)*31))&0x7fffffff;
           const _idx=_seed%_MOB8_TOTAL;
           e._mob8Col=_idx%_MOB8_COLS;
           e._mob8Row=~~(_idx/_MOB8_COLS);
-          e._mob8dir=true;
         }
-        // ── 8방향 아틀라스 렌더 ──
-        if(e._mob8dir&&e._mob8Col!==undefined){
-          const _a8=_ch8Atlas[1]; // ch1 고정
-          if(_a8){
-            const _baseSz=Math.max(e.r*7,80);
-            const _dk8=_mobFacingDir8(e.facing);
-            const _c8=(_a8.meta?_a8.meta.cell:256); // meta 없으면 256 기본값
-            const _isWalk=e._isMoving||e.s==='eCharge'||e.s==='eApproach'||e.s==='eCircle'||e.s==='eRetreat';
-            // ── 8방향 걷기 애니 ──
-            if(_isWalk&&_a8.walkDirs&&_a8.walkMeta&&e._mob8Skin){
-              const _wm=_a8.walkMeta.mobs[e._mob8Skin];
-              if(_wm!==undefined){
-                const _wd=_a8.walkDirs[_dk8];
-                if(_wd&&_wd.ready){
-                  const _wc=_a8.walkMeta.cell;
-                  const _wf=~~(_now*0.005)%_a8.walkMeta.frames;
-                  X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
-                  X.imageSmoothingEnabled=false;
-                  X.drawImage(_wd.img,_wf*_wc,_wm.row*_wc,_wc,_wc,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
-                  X.restore();_eDrew=true;_usedSpr=true;
-                }
-              }
-            }
-            // ── 8방향 정지 (해당 방향 미로드 시 south 폴백) ──
-            if(!_eDrew){
-              let _da8=_a8.dirs[_dk8];
-              if(!_da8||!_da8.ready)_da8=_a8.dirs['south']; // 폴백
-              if(_da8&&_da8.ready&&e._mob8Col!==undefined){
-                X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
-                X.imageSmoothingEnabled=false;X.imageSmoothingQuality='low';
-                X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
-                X.restore();_eDrew=true;_usedSpr=true;
-              }
-            }
-          }
-        }
-        // ── 4방향 폴백 ──
-        if(!_eDrew&&e._mobSkin){
-          const _ca=_chAtlas[e._mobCh];
-          if(_ca){
-            const _minSz=30;const _baseSz=Math.max(e.r*3.5,_minSz);
-            const _tl=_mobTilt(e.facing);
+        // 8dir 아틀라스 렌더
+        const _a8=_ch8Atlas[1];
+        if(_a8){
+          const _baseSz=Math.max(e.r*7,80);
+          const _dk8=_mobFacingDir8(e.facing);
+          let _da8=_a8.dirs[_dk8];
+          if(!_da8||!_da8.ready)_da8=_a8.dirs['south'];
+          if(_da8&&_da8.ready){
+            const _c8=(_a8.meta?_a8.meta.cell:256);
             X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
-            if(_mobFlip(e.facing))X.scale(-1,1);
-            if(_tl)X.rotate(_tl);
-            const _mv2=e._isMoving||e.s==='eCharge'||e.s==='eApproach';
-            if(_mv2&&e._mobWalkRow>=0&&_ca.walk.ready){
-              const _di2=['south','east','north','west'].indexOf(_mobDirKey(e.facing));
-              const _fr2=~~(_now*0.004)%4;
-              X.drawImage(_ca.walk.img,(_di2*4+_fr2)*_MOB_CELL,e._mobWalkRow*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
-            }else{
-              const _dk2=_mobDirKey(e.facing);const _da2=_ca[_dk2];
-              if(_da2&&_da2.ready&&e._mobCol!==undefined){
-                X.drawImage(_da2.img,e._mobCol*_MOB_CELL,e._mobRow*_MOB_CELL,_MOB_CELL,_MOB_CELL,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
-              }
-            }
+            X.imageSmoothingEnabled=false;
+            X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
             X.restore();_eDrew=true;_usedSpr=true;
           }
         }
-      }
-      // ── 외부 적 아틀라스 렌더링 (atlas_enemies.png) — ch1은 8방향 전용이므로 스킵 ──
-      if(!_ensGLQueued&&!_eDrew&&_atlasExtEReady&&e._mobCh!==1){
-        const etKey='etype_'+String(e.etype).padStart(2,'0');
-        const extFr=_atlasExtE_frames[etKey];
-        if(extFr){
-          const ast=_getEAnimState(e);
-          const frames=extFr[ast]||extFr.idle||extFr[Object.keys(extFr)[0]];
-          if(frames&&frames.length){
-            const fi=~~(_now/200)%frames.length,f=frames[fi];
-            const palIdx=_getPalIdx(e.el!=null?e.el:0);
-            const src=_getExtECanvas(palIdx);
-            const sc=e.r*2/f.w;
-            X.save();X.translate(e.x,e.y);
-            if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);
-            X.globalAlpha=sa;
-            X.drawImage(src,f.x,f.y,f.w,f.h,-f.w*sc/2,-f.h*sc/2,f.w*sc,f.h*sc);
-            if(e.elite>0){
-              X.globalCompositeOperation='source-atop';
-              X.globalAlpha=e.elite>=3?.25:.15;
-              X.fillStyle=ELITE_TIERS[e.elite].col;
-              X.beginPath();X.arc(0,0,f.w*sc/2,0,Math.PI*2);X.fill();
-            }
-            X.restore();_eDrew=true;_usedSpr=true;
-          }
-        }
-      }
-      if(_ensGLQueued===1){_eDrew=true;_usedSpr=true}
-      if(!_eDrew&&_atlasEReady&&_atlasE&&!e._mob8dir&&e._mobCh!==1){
-        const _ePal=_getPalIdx(e.el!=null?e.el:0);
-        const _eFr=_getEFrame(e,_now);
-        const et=e.etype>=0&&e.etype<ATLAS_ENEMY_LAYOUT.length?e.etype:0;
-        const _mEt=_getMappedEtype(et); // 스킨 매핑 적용
-        const euv=_atlasEUV[_mEt]&&_atlasEUV[_mEt][_ePal]&&_atlasEUV[_mEt][_ePal][_eFr];
-        if(euv){
-          X.save();X.translate(e.x,e.y);X.rotate(e.facing);X.globalAlpha=sa;
-          const _aBaseR=ETYPE_R[et];
-          const _eSc=_aBaseR>0?e.r/_aBaseR:1;
-          const _dw=euv.sw*_eSc,_dh=euv.sh*_eSc;
-          X.drawImage(_atlasE,euv.sx,euv.sy,euv.sw,euv.sh,-_dw/2,-_dh/2,_dw,_dh);
-          X.restore();_eDrew=true;_usedSpr=true;
-        }
-      }
-      if(!_eDrew&&_atlasReady&&!e._mob8dir){
-        const _aIdx=e.etype>=0&&e.etype<ATLAS_ENEMY_LAYOUT.length?e.etype:0;
-        const _aEl=(e.el!=null&&e.el<_AELS)?e.el:0;
-        const _aFr=~~(_now/250)%_AFRAMES;
-        const uv=_atlasUV[_aIdx]&&_atlasUV[_aIdx][_aEl]&&_atlasUV[_aIdx][_aEl][_aFr];
-        if(uv){
-          X.save();X.translate(e.x,e.y);X.rotate(e.facing);X.globalAlpha=sa;
-          const _aBaseR=ETYPE_R[e.etype];
-          const _aSc=_aBaseR>0?e.r/_aBaseR:1;
-          const _dw=uv.sw*_aSc,_dh=uv.sh*_aSc;
-          X.drawImage(_atlas,uv.sx,uv.sy,uv.sw,uv.sh,-_dw/2,-_dh/2,_dw,_dh);
-          X.restore();_eDrew=true;_usedSpr=true;
-        }
-      }
-      if(!_eDrew){
-        if(e.etype===1&&typeof _archerReady!=='undefined'&&_archerReady&&_archerFrames.length===4){
-          const fi=~~(_now/200)%4;const fc=_archerFrames[fi];
-          if(!fc||!_safeDraw(fc)){drawEnBody(X,e,_now,sa);_usedSpr=true;}else{
-          X.save();X.translate(e.x,e.y);
-          if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);
-          const _aw=e.r*3.5,_ah=_aw*(fc.height/fc.width);
-          X.drawImage(fc,-_aw/2,-_ah/2,_aw,_ah);
-          X.restore();X.globalAlpha=sa;
-        }}else{
-          // 8dir 렌더 실패 시 프로시저럴 폴백
-          drawEnBody(X,e,_now,sa);_usedSpr=true;
-        }
+        // 아틀라스 미로드 시 — 안 그림 (노스킨 동그라미 제거)
+        if(!_eDrew){_usedSpr=true;}
       }
     }
     // ═══ 근접 공격 예비동작 전조 (❗ 텍스트만, 원형 제거) ═══

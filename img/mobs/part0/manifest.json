@@ -1,0 +1,140 @@
+[
+  {
+    "part": 0,
+    "name": "blood_swarm",
+    "id": "04941b16-85d2-4db8-8ffa-012cc62147e6",
+    "folder": "img/mobs/part0"
+  },
+  {
+    "part": 1,
+    "name": "apostle_mass",
+    "id": "b215e7a0-6336-4a73-b338-5b62cf66149e",
+    "folder": "img/mobs/part1"
+  },
+  {
+    "part": 2,
+    "name": "apostle_knight",
+    "id": "4e506ba8-0a20-47a2-b3a9-0a5e8c2bf424",
+    "folder": "img/mobs/part2"
+  },
+  {
+    "part": 3,
+    "name": "soul_flame",
+    "id": "1928ffd1-bb39-4b4a-b453-f058b1c5b594",
+    "folder": "img/mobs/part3"
+  },
+  {
+    "part": 4,
+    "name": "hive_bloater",
+    "id": "1574146f-ac2e-498f-8546-21e35f73fec2",
+    "folder": "img/mobs/part4"
+  },
+  {
+    "part": 5,
+    "name": "spine_beast",
+    "id": "7d319b64-50b3-4edf-a8a7-0f3368f2fe71",
+    "folder": "img/mobs/part5"
+  },
+  {
+    "part": 6,
+    "name": "flesh_crawler",
+    "id": "1e159b4b-249f-45dc-a2c1-81e88ac4a974",
+    "folder": "img/mobs/part6"
+  },
+  {
+    "part": 7,
+    "name": "carapace_predator",
+    "id": "1ff79754-3610-4f7d-a9e6-815980b15f01",
+    "folder": "img/mobs/part7"
+  },
+  {
+    "part": 8,
+    "name": "bone_centipede_pro",
+    "id": "1a9b5f11-b3bd-4eea-ace0-74b5962af3ca",
+    "folder": "img/mobs/part8"
+  },
+  {
+    "part": 9,
+    "name": "gas_zombie",
+    "id": "f138750c-a7d0-4666-9b72-2ab5dadd731f",
+    "folder": "img/mobs/part9"
+  },
+  {
+    "part": 10,
+    "name": "needle_tentacle",
+    "id": "10708932-e02e-4a03-8ebb-65b001e9d64c",
+    "folder": "img/mobs/part10"
+  },
+  {
+    "part": 11,
+    "name": "rotting_slime_mass",
+    "id": "a69aaa09-7309-4cac-a327-003913874a01",
+    "folder": "img/mobs/part11"
+  },
+  {
+    "part": 12,
+    "name": "flesh_eye_mass",
+    "id": "dd7e5f31-243c-4ff5-8ce6-65f31e1fe49b",
+    "folder": "img/mobs/part12"
+  },
+  {
+    "part": 13,
+    "name": "corrupted_wolf",
+    "id": "15dd8ebb-d94c-4501-ad54-a96432fb837c",
+    "folder": "img/mobs/part13"
+  },
+  {
+    "part": 14,
+    "name": "crawling_horror",
+    "id": "5fdbbad8-b631-490f-8b38-69a49693ba8a",
+    "folder": "img/mobs/part14"
+  },
+  {
+    "part": 15,
+    "name": "eye_stalker_pro",
+    "id": "decd76fa-902e-4854-8df0-f976caa98aa7",
+    "folder": "img/mobs/part15"
+  },
+  {
+    "part": 16,
+    "name": "iron_butcher_pro",
+    "id": "bc0855ec-ccdc-4d03-ab2e-492f0437c461",
+    "folder": "img/mobs/part16"
+  },
+  {
+    "part": 17,
+    "name": "plague_doctor_pro",
+    "id": "6a0cd036-d301-43db-aeec-b1dd95d454d4",
+    "folder": "img/mobs/part17"
+  },
+  {
+    "part": 18,
+    "name": "grotesque_quadruped",
+    "id": "cb7cfd95-11c1-428c-a3ce-e1d7bb9f3018",
+    "folder": "img/mobs/part18"
+  },
+  {
+    "part": 19,
+    "name": "black_castle_guardian",
+    "id": "86feebb2-a815-45ea-94bc-4ff0762c691a",
+    "folder": "img/mobs/part19"
+  },
+  {
+    "part": 20,
+    "name": "poison_mushroom_giant",
+    "id": "ae830a8d-7f2c-4aa2-8ddc-e5e323918f1f",
+    "folder": "img/mobs/part20"
+  },
+  {
+    "part": 21,
+    "name": "forest_watcher",
+    "id": "2d15ba18-b5b2-4593-8a25-d41e2692569a",
+    "folder": "img/mobs/part21"
+  },
+  {
+    "part": 22,
+    "name": "boss_ch1_stag",
+    "id": "1d2cba78-f46f-4133-8efa-d8e4a8d9e875",
+    "folder": "img/mobs/part22"
+  }
+]

@@ -1,7 +1,7 @@
 {
   "cell": 256,
-  "cols": 5,
-  "rows": 5,
+  "cols": 6,
+  "rows": 4,
   "total": 23,
   "directions": [
     "south",
@@ -14,110 +14,120 @@
     "south-west"
   ],
   "mobs": {
-    "black_castle_guardian": {
+    "blood_swarm": {
+      "idx": 0,
+      "col": 0,
+      "row": 0
+    },
+    "apostle_mass": {
       "idx": 1,
       "col": 1,
       "row": 0
     },
-    "poison_mushroom_giant": {
+    "apostle_knight": {
       "idx": 2,
       "col": 2,
       "row": 0
     },
-    "forest_watcher": {
+    "soul_flame": {
       "idx": 3,
       "col": 3,
       "row": 0
     },
-    "gas_zombie": {
+    "hive_bloater": {
+      "idx": 4,
+      "col": 4,
+      "row": 0
+    },
+    "spine_beast": {
       "idx": 5,
+      "col": 5,
+      "row": 0
+    },
+    "flesh_crawler": {
+      "idx": 6,
       "col": 0,
+      "row": 1
+    },
+    "carapace_predator": {
+      "idx": 7,
+      "col": 1,
+      "row": 1
+    },
+    "bone_centipede_pro": {
+      "idx": 8,
+      "col": 2,
+      "row": 1
+    },
+    "gas_zombie": {
+      "idx": 9,
+      "col": 3,
       "row": 1
     },
     "needle_tentacle": {
-      "idx": 6,
-      "col": 1,
+      "idx": 10,
+      "col": 4,
       "row": 1
     },
     "rotting_slime_mass": {
-      "idx": 7,
-      "col": 2,
+      "idx": 11,
+      "col": 5,
       "row": 1
     },
     "flesh_eye_mass": {
-      "idx": 8,
-      "col": 3,
-      "row": 1
+      "idx": 12,
+      "col": 0,
+      "row": 2
     },
     "corrupted_wolf": {
-      "idx": 9,
-      "col": 4,
-      "row": 1
+      "idx": 13,
+      "col": 1,
+      "row": 2
     },
     "crawling_horror": {
-      "idx": 10,
-      "col": 0,
+      "idx": 14,
+      "col": 2,
       "row": 2
     },
     "eye_stalker_pro": {
-      "idx": 11,
-      "col": 1,
+      "idx": 15,
+      "col": 3,
+      "row": 2
+    },
+    "iron_butcher_pro": {
+      "idx": 16,
+      "col": 4,
       "row": 2
     },
     "plague_doctor_pro": {
-      "idx": 12,
-      "col": 2,
+      "idx": 17,
+      "col": 5,
       "row": 2
     },
-    "carapace_predator": {
-      "idx": 13,
-      "col": 3,
-      "row": 2
-    },
-    "bone_centipede_pro": {
-      "idx": 14,
-      "col": 4,
-      "row": 2
-    },
-    "pro_plague_doctor": {
+    "grotesque_quadruped": {
+      "idx": 18,
       "col": 0,
       "row": 3
     },
-    "pro_iron_butcher": {
+    "black_castle_guardian": {
+      "idx": 19,
       "col": 1,
       "row": 3
     },
-    "pro_eye_stalker": {
+    "poison_mushroom_giant": {
+      "idx": 20,
       "col": 2,
       "row": 3
     },
-    "pro_rotting_slime_mass": {
+    "forest_watcher": {
+      "idx": 21,
       "col": 3,
       "row": 3
     },
-    "pro_needle_tentacle": {
+    "boss_ch1_stag": {
+      "idx": 22,
       "col": 4,
       "row": 3
-    },
-    "pro_gas_zombie": {
-      "col": 0,
-      "row": 4
-    },
-    "pro_flesh_crawler": {
-      "col": 1,
-      "row": 4
-    },
-    "pro_spine_beast": {
-      "col": 2,
-      "row": 4
-    },
-    "pro_hive_bloater": {
-      "col": 3,
-      "row": 4
-    },
-    "pro_soul_flame": {
-      "col": 4,
-      "row": 4
     }
   }
 }
