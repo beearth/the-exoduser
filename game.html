@@ -27470,7 +27470,7 @@ const _FUSE_GEM_GROUPS={
   holyWeak3: {color:'#ff88aa',color2:'#6688ff',tier:'clear',minLv:25,star:6,skills:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj']}, // +관통 6성
   holyWeak4: {color:'#ff88aa',color2:'#ffdd00',tier:'clear',minLv:30,star:7,skills:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj','weakRev']}, // +부활 7성
   pillarSpike:{color:'#7722cc',color2:'#66aa44',tier:'clear',minLv:1,skills:['darkPillar','spikeTrap']}, // 악의기둥(모체) + 가시덫 흡수, 2성(=skills.length)
-  pillarSlam:{color:'#ff8844',color2:'#7722cc',tier:'clear',minLv:300,skills:['giantSlam2','darkPillar'],hidden:true}, // 히든: 대왕치기2(모체) + 악의기둥 흡수, Lv300+, 2성
+  pillarSlam:{color:'#ff8844',color2:'#7722cc',tier:'clear',minLv:1,skills:['giantSlam2','darkPillar']}, // 대왕치기2(모체) + 악의기둥 흡수, 2성
   infernoSlam:{color:'#ff6622',color2:'#ff4400',tier:'clear',minLv:1,skills:['giantSlam2','fireAura']}, // 대왕치기2(모체) + 지옥진, 2성 (구성 2개)
   siegeGhost: {color:'#6688cc',color2:'#aa66dd',tier:'clear',minLv:1,star:2,skills:['ghostXbowTurret','voidScarecrow']}, // 공성쇠뇌(모체) + 유령허수아비
 };
@@ -27691,7 +27691,7 @@ function _canFuse(key){
   if(key==='holyFuse'&&_isFused('holyFuse'))return false;
   if(key==='holyIce'&&_isFused('holyIce'))return false;
   if(key==='holyIce'&&!_isFused('holyFuse'))return false; // 신성한 결계 선행 필요
-  if(key==='pillarSlam'&&P.lv<300)return false; // 히든: Lv300+
+  // pillarSlam 레벨 제한 해제
   // 시간 기반 합체 숙련 체크 (추적암전, 지진폭풍)
   if(_FUSE_TIME_REQ[key])return _fuseProfSec(key)>=_FUSE_TIME_REQ[key];
   // 구성 스킬 습득 여부 체크 (미습득 스킬로 합체 방지)
