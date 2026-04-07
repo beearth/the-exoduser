@@ -19287,7 +19287,7 @@ function update(){
   // 생존 적 수 카운트 (소환굴 스폰캡 기준)
   {let _ac=0;for(let i=0;i<ens.length;i++)if(ens[i].alive)_ac++;G._aliveEns=_ac}
   // ens 하드캡: 900 초과 시 즉시 정리 (원거리 비보스 우선 제거)
-  if(ens.length>900){let _sorted=[];for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive){if(e._reviveTimer>0)_sorted.push(e);continue}_sorted.push(e)}_sorted.sort((a,b)=>(a.ib?0:1)-(b.ib?0:1)||dst2(P.x,P.y,a.x,a.y)-dst2(P.x,P.y,b.x,b.y));if(_sorted.length>800){for(let _ci=800;_ci<_sorted.length;_ci++){if(_sorted[_ci].alive&&!_sorted[_ci].ib){G.kills++;G._stageKills=(G._stageKills||0)+1}}_sorted.length=800}ens.length=0;for(let i=0;i<_sorted.length;i++)ens[i]=_sorted[i];ens.length=_sorted.length;_shDirty=true}
+  if(ens.length>900){console.warn('[ENS-CAP] ens='+ens.length+' alive='+G._aliveEns+' → 800으로 컬링');let _sorted=[];for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive){if(e._reviveTimer>0)_sorted.push(e);continue}_sorted.push(e)}_sorted.sort((a,b)=>(a.ib?0:1)-(b.ib?0:1)||dst2(P.x,P.y,a.x,a.y)-dst2(P.x,P.y,b.x,b.y));if(_sorted.length>800){for(let _ci=800;_ci<_sorted.length;_ci++){if(_sorted[_ci].alive&&!_sorted[_ci].ib){G.kills++;G._stageKills=(G._stageKills||0)+1}}_sorted.length=800}ens.length=0;for(let i=0;i<_sorted.length;i++)ens[i]=_sorted[i];ens.length=_sorted.length;_shDirty=true}
   if(G._gcT>20){G._gcT=0;
     // 시체 미생성 사망 fallback — GC 시점에만 (매 프레임→20프레임 주기)
     for(let i=0;i<ens.length;i++){if(!ens[i].alive&&!ens[i]._corpseSpawned&&!ens[i]._isDecoy&&ens[i].mhp>0){_addCorpse(ens[i],Math.atan2(ens[i].y-P.y,ens[i].x-P.x),4)}}
@@ -20224,9 +20224,9 @@ function update(){
     // 구속의 영역 fireZone 범위 내 → 즉시 제거
     // 신성한 땅은 소환굴을 제거하지 않음 — 처치율 분모 보존
     const _hd2=_hqd;
-    // 1200px 이내 접근 시 트리거 시작
+    // 850px 이내 접근 시 트리거 시작
     if(!h._triggered){
-      if(_hd2<1440000)h._triggered=true; // 1200^2
+      if(_hd2<722500)h._triggered=true; // 850^2
       continue;
     }
     // 트리거 후 연출 타이머 (3초 동안 소환굴 빛남)
