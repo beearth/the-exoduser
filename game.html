@@ -18294,7 +18294,7 @@ function update(){
     if(P.s==='wWindup'){if(P.st2<=0){P.s='wSwing';P.st2=5;P.swProg=0}}
     else if(P.s==='wSwing'){P.swProg=(5-P.st2)/5;
       if(P.st2<=3&&P.st2+sp>3){
-        const _wRange=((wp().wRange||50)+(wp().bonusRange||0)*4)*3;
+        const _wRange=(wp().wRange||50)+(wp().bonusRange||0)*4;
         const _wArc=(wp().wArcW||.95);
         hitArc(P.atkArc,_wRange,_wArc,~~(((P.baseAtk+(wp().atk||0)+enhMul(wp().enh||0))+15)*2),wp().el,'weapon');
       }
@@ -33041,18 +33041,7 @@ function draw(){
       X.fill();
       X.globalAlpha = sa;
     }
-    // ═══ 몬스터 고유 오라 글로우 ═══
-    if(!_ensGLQueued&&e.alive&&sa>0.1&&!e.ib&&e.etype>=0&&e.etype<=99){
-      const _aRgb=_ENT_AURA_RGB[e.etype];
-      if(_aRgb){
-        const _aLow=e.hp<e.mhp*.3;
-        const _aAlpha=_aLow?sa*(.2+Math.sin(_now/120)*.1):sa*.12;
-        const _aRad=_aLow?e.r*1.6:e.r*1.25;
-        X.globalAlpha=_aAlpha;X.fillStyle='rgba('+_aRgb+',0.6)';
-        X.beginPath();X.arc(e.x,e.y,_aRad,0,Math.PI*2);X.fill();
-        X.globalAlpha=sa;
-      }
-    }
+    // ═══ 몬스터 오라 글로우 제거됨 (스프라이트 위 원형 겹침 방지) ═══
     // ═══ 텔레그래프 경고 원 ═══
     if(!_ensGLQueued&&e._telegraphT>0&&e._telegraphT<20){
       const _tgProg=1-e._telegraphT/20;
@@ -33140,15 +33129,15 @@ function draw(){
       // ── 몬스터 스킨 아틀라스 렌더링 (etype 0-99, 최우선) ──
       if(!_ensGLQueued&&!_eDrew){
         // 스킨 미배정 → 강제 배정 (ch1 고정)
-        if(!e._mob8dir||!e._mob8Skin){
+        if(e._mob8Col===undefined||e._mob8Col===null){
           e._mobCh=1;
           const _a8r=_ch8Atlas[1];
-          if(_a8r&&_a8r.mobList&&_a8r.mobList.length){
-            const _i8r=(e.etype*7+~~(e.x*31))%_a8r.mobList.length; // etype+위치 기반 결정적 배정
-            e._mob8dir=true;e._mob8Skin=_a8r.mobList[_i8r];
-            const _m8r=_a8r.meta?_a8r.meta.mobs[e._mob8Skin]:null;
-            if(_m8r){e._mob8Col=_m8r.col;e._mob8Row=_m8r.row;}
-            e._mobSkinPending=false;
+          if(_a8r&&_a8r.meta&&_a8r.mobList&&_a8r.mobList.length){
+            if(!e._mob8Seed)e._mob8Seed=((e.etype||0)*7+~~((e._homeX||0)*31))&0x7fffffff;
+            const _i8r=e._mob8Seed%_a8r.mobList.length;
+            e._mob8Skin=_a8r.mobList[_i8r];
+            const _m8r=_a8r.meta.mobs[e._mob8Skin];
+            if(_m8r){e._mob8Col=_m8r.col;e._mob8Row=_m8r.row;e._mob8dir=true;e._mobSkinPending=false;}
           }
         }
         // ── 8방향 아틀라스 렌더 ──
@@ -33257,7 +33246,8 @@ function draw(){
           X.drawImage(fc,-_aw/2,-_ah/2,_aw,_ah);
           X.restore();X.globalAlpha=sa;
         }}else{
-          drawEnBody(X,e,_now,sa);_usedSpr=true;
+          // 8dir 스킨 없으면 투명 처리 (프로시저럴 동그라미 제거)
+          _usedSpr=true;
         }
       }
     }

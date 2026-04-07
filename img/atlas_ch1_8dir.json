@@ -1,7 +1,7 @@
 {
   "cell": 256,
   "cols": 5,
-  "rows": 3,
+  "rows": 5,
   "total": 15,
   "directions": [
     "south",
@@ -88,6 +88,46 @@
       "idx": 14,
       "col": 4,
       "row": 2
+    },
+    "pro_plague_doctor": {
+      "col": 0,
+      "row": 3
+    },
+    "pro_iron_butcher": {
+      "col": 1,
+      "row": 3
+    },
+    "pro_eye_stalker": {
+      "col": 2,
+      "row": 3
+    },
+    "pro_rotting_slime_mass": {
+      "col": 3,
+      "row": 3
+    },
+    "pro_needle_tentacle": {
+      "col": 4,
+      "row": 3
+    },
+    "pro_gas_zombie": {
+      "col": 0,
+      "row": 4
+    },
+    "pro_flesh_crawler": {
+      "col": 1,
+      "row": 4
+    },
+    "pro_spine_beast": {
+      "col": 2,
+      "row": 4
+    },
+    "pro_hive_bloater": {
+      "col": 3,
+      "row": 4
+    },
+    "pro_soul_flame": {
+      "col": 4,
+      "row": 4
     }
   }
 }
