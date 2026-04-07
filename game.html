@@ -12256,13 +12256,18 @@ function _addCorpse(e,killAng,power){
   c.r=a+Math.PI*.5;c.rv=(Math.random()-.5)*.2; // 회전 속도
   c.mt=e.ib?600:420;c.t=c.mt;c.active=true;c.bounced=0;
   c.ctx.clearRect(0,0,48,48);
-  if(_hasWalkAnim(e.etype)&&_walkAtlas.ready){
-    c.ctx.drawImage(_walkAtlas.img,0,_waRow(e.etype)*_MOB_CELL,_MOB_CELL,_MOB_CELL,0,0,48,48);
-  }else if(_mobAtlas.ready&&_mobAtlas.img&&e.etype>=0&&e.etype<=99){
-    const mc=e.etype%_MOB_COLS,mr=~~(e.etype/_MOB_COLS);
-    c.ctx.drawImage(_mobAtlas.img,mc*_MOB_CELL,mr*_MOB_CELL,_MOB_CELL,_MOB_CELL,0,0,48,48);
-  }else{
-    c.ctx.fillStyle=e.col||'#cc0000';c.ctx.beginPath();c.ctx.arc(24,24,20,0,Math.PI*2);c.ctx.fill();
+  // 8dir 아틀라스에서 시체 이미지 캡처
+  {const _ca8=_ch8Atlas[1];
+  let _cDrawn=false;
+  if(_ca8){
+    let _cda=_ca8.dirs['south'];
+    if(_cda&&_cda.ready&&e._mob8Col!==undefined){
+      const _cc8=(_ca8.meta?_ca8.meta.cell:256);
+      c.ctx.drawImage(_cda.img,e._mob8Col*_cc8,e._mob8Row*_cc8,_cc8,_cc8,0,0,48,48);
+      _cDrawn=true;
+    }
+  }
+  if(!_cDrawn){c.ctx.fillStyle=e.col||'#cc0000';c.ctx.beginPath();c.ctx.arc(24,24,20,0,Math.PI*2);c.ctx.fill();}
   }
 }
 // ── Gib 시스템: 폭발 사망 시 시체 부위 조각 ──
@@ -12278,13 +12283,17 @@ function _addGibs(e,boomX,boomY,boomR){
   _gibThrottle++;
   const pw=Math.max(1,(boomR||50)/50);
   _gibX.clearRect(0,0,48,48);
-  if(_hasWalkAnim(e.etype)&&_walkAtlas.ready){
-    _gibX.drawImage(_walkAtlas.img,0,_waRow(e.etype)*_MOB_CELL,_MOB_CELL,_MOB_CELL,0,0,48,48);
-  }else if(_mobAtlas.ready&&_mobAtlas.img&&e.etype>=0&&e.etype<=99){
-    const mc=e.etype%_MOB_COLS,mr=~~(e.etype/_MOB_COLS);
-    _gibX.drawImage(_mobAtlas.img,mc*_MOB_CELL,mr*_MOB_CELL,_MOB_CELL,_MOB_CELL,0,0,48,48);
-  }else{
-    _gibX.fillStyle=e.col||'#cc0000';_gibX.beginPath();_gibX.arc(24,24,20,0,Math.PI*2);_gibX.fill();
+  {const _ga8=_ch8Atlas[1];
+  let _gDrawn=false;
+  if(_ga8){
+    let _gda=_ga8.dirs['south'];
+    if(_gda&&_gda.ready&&e._mob8Col!==undefined){
+      const _gc8=(_ga8.meta?_ga8.meta.cell:256);
+      _gibX.drawImage(_gda.img,e._mob8Col*_gc8,e._mob8Row*_gc8,_gc8,_gc8,0,0,48,48);
+      _gDrawn=true;
+    }
+  }
+  if(!_gDrawn){_gibX.fillStyle=e.col||'#cc0000';_gibX.beginPath();_gibX.arc(24,24,20,0,Math.PI*2);_gibX.fill();}
   }
   const ang=Math.atan2(e.y-(boomY||e.y),e.x-(boomX||e.x));
   for(let gy=0;gy<3;gy++)for(let gx=0;gx<3;gx++){
@@ -22745,8 +22754,8 @@ function updateE(e,sp){
     _ffMoveE(e,sp,2);
     d=dst(P.x,P.y,e.x,e.y);if(d<=200)e._reviveChase=false
   }
-  // 시야 어그로: 거리 600 이내면 자동 알림 (피격 없이도)
-  if(!e._alerted&&d<1000&&(e.s==='idle'||e.s==='recover'))e._alerted=true;
+  // 시야 어그로: 거리 400 이내면 자동 알림 (피격 없이도) — 400px 밖은 배회
+  if(!e._alerted&&d<400&&(e.s==='idle'||e.s==='recover'))e._alerted=true;
   // ── 방향 추적: idle/배회 중에도 플레이어 방향으로 부드럽게 회전 ──
   if(d<800&&(e.s==='idle'||e.s==='recover'||e.s==='eApproach')){
     const _tgtA=Math.atan2(P.y-e.y,P.x-e.x);
@@ -26127,6 +26136,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(dmg > 0) {
     if(G._sStats){G._sStats.dmgDealt+=dmg;if(dmg>G._sStats.maxHit)G._sStats.maxHit=dmg}
     e._alerted=true; // 피격 시 즉시 플레이어 인식 (거리 무시 추적)
+    // 피격 즉시 반격: recover 상태면 idle 전환 (즉시 공격 판정 가능)
+    if(!isDot&&!e.ib&&e.s==='recover'){e.s='idle';e.st2=0}
     if(e.eShield>0){
       const _shDmg=_isMagicDmg?dmg:(~~(dmg*_ppRate)||1);
       if(_shDmg>=e.eShield){const _rawUsed=Math.min(dmg,_isMagicDmg?e.eShield:~~(e.eShield/_ppRate));e.eShield=0;const _rawLeft=dmg-_rawUsed;if(_rawLeft>0)e.hp-=_isMagicDmg?(~~(_rawLeft*_magicHpRate)||1):_rawLeft}
