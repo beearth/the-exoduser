@@ -19286,8 +19286,8 @@ function update(){
   if(G._gcT===undefined)G._gcT=0;G._gcT++;
   // 생존 적 수 카운트 (소환굴 스폰캡 기준)
   {let _ac=0;for(let i=0;i<ens.length;i++)if(ens[i].alive)_ac++;G._aliveEns=_ac}
-  // ens 하드캡: 600 초과 시 즉시 정리 (원거리 비보스 우선 제거)
-  if(ens.length>600){let _sorted=[];for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive){if(e._reviveTimer>0)_sorted.push(e);continue}_sorted.push(e)}_sorted.sort((a,b)=>(a.ib?0:1)-(b.ib?0:1)||dst2(P.x,P.y,a.x,a.y)-dst2(P.x,P.y,b.x,b.y));if(_sorted.length>500){for(let _ci=500;_ci<_sorted.length;_ci++){if(_sorted[_ci].alive&&!_sorted[_ci].ib){G.kills++;G._stageKills=(G._stageKills||0)+1}}_sorted.length=500}ens.length=0;for(let i=0;i<_sorted.length;i++)ens[i]=_sorted[i];ens.length=_sorted.length;_shDirty=true}
+  // ens 하드캡: 900 초과 시 즉시 정리 (원거리 비보스 우선 제거)
+  if(ens.length>900){let _sorted=[];for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive){if(e._reviveTimer>0)_sorted.push(e);continue}_sorted.push(e)}_sorted.sort((a,b)=>(a.ib?0:1)-(b.ib?0:1)||dst2(P.x,P.y,a.x,a.y)-dst2(P.x,P.y,b.x,b.y));if(_sorted.length>800){for(let _ci=800;_ci<_sorted.length;_ci++){if(_sorted[_ci].alive&&!_sorted[_ci].ib){G.kills++;G._stageKills=(G._stageKills||0)+1}}_sorted.length=800}ens.length=0;for(let i=0;i<_sorted.length;i++)ens[i]=_sorted[i];ens.length=_sorted.length;_shDirty=true}
   if(G._gcT>20){G._gcT=0;
     // 시체 미생성 사망 fallback — GC 시점에만 (매 프레임→20프레임 주기)
     for(let i=0;i<ens.length;i++){if(!ens[i].alive&&!ens[i]._corpseSpawned&&!ens[i]._isDecoy&&ens[i].mhp>0){_addCorpse(ens[i],Math.atan2(ens[i].y-P.y,ens[i].x-P.x),4)}}
@@ -20237,7 +20237,7 @@ function update(){
     if(h._spawnTotal==null){const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';h._spawnTotal=SPAWN_HOLE.cnt[_hType]||50;h._spawned=0;h._spawnCD=0}
     if(h._spawnCD>0){h._spawnCD-=sp;continue}
     const _BATCH=5;
-    if(G._aliveEns>=500){h._spawnCD=30;continue} // 생존 적 500 이상이면 스폰 대기 (하드캡 600 전 여유)
+    if(G._aliveEns>=750){h._spawnCD=30;continue} // 생존 적 750 이상이면 스폰 대기 (하드캡 900 전 여유)
     const _hRemain=Math.min(_BATCH,h._spawnTotal-h._spawned);
     for(let _hj=0;_hj<_hRemain;_hj++){
       let _hsx,_hsy,_hTry=0;
