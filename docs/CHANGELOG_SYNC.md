@@ -14058,3 +14058,19 @@
 - img/bosses/pro_mobs/spine_beast/rotations/south.png
 - img/bosses/pro_mobs/spine_beast/rotations/west.png
 
+
+## 2026-04-07 21:00 (auto)
+- docs/3.3 ?¤ë°”?¸ë”©+?¤ì •/3.3 ?¤ë°”?¸ë”©+?¤ì •.md
+- docs/6?¬ìš´?œë””?ì¸/6?¬ìš´?œë””?ì¸.md
+- game.html
+- img/atlas_ch1_8dir.json
+- img/atlas_ch1_8dir_walk.json
+- img/atlas_ch1_8dir_walk_east.png
+- img/atlas_ch1_8dir_walk_north.png
+- img/atlas_ch1_8dir_walk_north_east.png
+- img/atlas_ch1_8dir_walk_north_west.png
+- img/atlas_ch1_8dir_walk_south.png
+- img/atlas_ch1_8dir_walk_south_east.png
+- img/atlas_ch1_8dir_walk_south_west.png
+- img/atlas_ch1_8dir_walk_west.png
+

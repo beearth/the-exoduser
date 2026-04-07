@@ -679,16 +679,58 @@ canvas{display:block;position:fixed;inset:0}
             <select id="optBgmTrack" style="flex:1;background:#1a1008;border:1px solid #443322;color:#ddc;font-family:'Noto Sans KR';font-size:.9rem;padding:4px 8px;border-radius:4px">
               <option value="auto">자동 (스테이지별)</option>
               <option value="lobby">로비</option>
-              <option value="hell1">1장 - 썩은 숲</option>
-              <option value="hell2">2장 - 벌레굴</option>
-              <option value="hell3">3장 - 얼음굴</option>
-              <option value="hell4">4장 - 화염지대</option>
-              <option value="hell5">5장 - 지옥군단</option>
-              <option value="hell6">6장 - 사도마굴</option>
-              <option value="hell7">7장 - 지옥성</option>
-              <option value="boss">보스</option>
-              <option value="finalboss">최종보스</option>
-              <option value="forge">대장간</option>
+              <optgroup label="── 1장 - 썩은 숲 ──">
+                <option value="hell1">1장 랜덤</option>
+                <option value="t:bgm/1장_썩은숲/Ashes of the Fallen Gate.mp3">Ashes of the Fallen Gate</option>
+                <option value="t:bgm/1장_썩은숲/h0_explore.mp3">h0_explore</option>
+                <option value="t:bgm/1장_썩은숲/hell1_ice.mp3">hell1_ice</option>
+              </optgroup>
+              <optgroup label="── 2장 - 벌레굴 ──">
+                <option value="hell2">2장 랜덤</option>
+                <option value="t:bgm/2장_벌레굴/Carapace Cathedral.mp3">Carapace Cathedral</option>
+                <option value="t:bgm/2장_벌레굴/hell2_insect.mp3">hell2_insect</option>
+              </optgroup>
+              <optgroup label="── 3장 - 얼음굴 ──">
+                <option value="hell3">3장 랜덤</option>
+                <option value="t:bgm/3장_얼음굴/Abyssal Drift.mp3">Abyssal Drift</option>
+                <option value="t:bgm/3장_얼음굴/hell3_fire.mp3">hell3_fire</option>
+              </optgroup>
+              <optgroup label="── 4장 - 화염지대 ──">
+                <option value="hell4">4장 랜덤</option>
+                <option value="t:bgm/4장_화염지대/Ignis et Sanguis.mp3">Ignis et Sanguis</option>
+                <option value="t:bgm/4장_화염지대/Inferno Liturgia.mp3">Inferno Liturgia</option>
+                <option value="t:bgm/4장_화염지대/hell4_abyss.mp3">hell4_abyss</option>
+              </optgroup>
+              <optgroup label="── 5장 - 지옥군단 ──">
+                <option value="hell5">5장 랜덤</option>
+                <option value="t:bgm/5장_지옥군단/Abyss Below.mp3">Abyss Below</option>
+                <option value="t:bgm/5장_지옥군단/hell5_thunder.mp3">hell5_thunder</option>
+              </optgroup>
+              <optgroup label="── 6장 - 사도마굴 ──">
+                <option value="hell6">6장 랜덤</option>
+                <option value="t:bgm/6장_사도마굴/Kiln of Broken Crowns.mp3">Kiln of Broken Crowns</option>
+                <option value="t:bgm/6장_사도마굴/hell6_bone.mp3">hell6_bone</option>
+              </optgroup>
+              <optgroup label="── 7장 - 지옥성 ──">
+                <option value="hell7">7장 랜덤</option>
+                <option value="t:bgm/7장_지옥성/Midnight Cathedral of Ash.mp3">Midnight Cathedral of Ash</option>
+                <option value="t:bgm/7장_지옥성/Teeth in the Choir.mp3">Teeth in the Choir</option>
+                <option value="t:bgm/7장_지옥성/hell7_chaos.mp3">hell7_chaos</option>
+              </optgroup>
+              <optgroup label="── 공통 ──">
+                <option value="boss">보스</option>
+                <option value="finalboss">최종보스</option>
+                <option value="forge">대장간 랜덤</option>
+                <option value="t:bgm/공통/forge.mp3">forge</option>
+                <option value="t:bgm/공통/복수의 대장간.mp3">복수의 대장간</option>
+                <option value="t:bgm/공통/Anvil Ashes.mp3">Anvil Ashes</option>
+                <option value="death">사망 랜덤</option>
+                <option value="t:bgm/공통/death.mp3">death</option>
+                <option value="t:bgm/공통/지옥 추락 사망 징글.mp3">지옥 추락 사망 징글</option>
+                <option value="victory">승리 랜덤</option>
+                <option value="t:bgm/공통/victory.mp3">victory</option>
+                <option value="t:bgm/공통/탈출 성공.mp3">탈출 성공</option>
+              </optgroup>
             </select>
           </div>
           <div class="set-range-row"><span class="set-name">난이도</span><input type="range" id="optDiff" min="0" max="10" value="0"><span class="set-range-val" id="optDiffVal">일반</span></div>
@@ -1630,7 +1672,24 @@ const BGM={
     a.play().catch(()=>{});
     BGM._cur=a;
   },
+  playTrack(src){
+    // 개별 트랙 직접 재생 (드롭다운 t: 접두사)
+    this.stop();
+    this._curKey='_track';
+    this._lastSrc=src;
+    const a=this._getAudio(src);
+    a.volume=this._vol;
+    a.currentTime=0;
+    a.loop=true;
+    a.onended=null;
+    a.play().catch(()=>{
+      this._pending='_track';
+      if(!this._bound){this._bound=true;['click','keydown','pointerdown','touchstart','mousemove'].forEach(e=>document.addEventListener(e,BGM._onInteract,{passive:true}))}
+    });
+    this._cur=a;
+  },
   play(key,force){
+    if(!force&&OPT.bgmTrack&&OPT.bgmTrack.startsWith('t:'))return; // 개별 트랙 선택 중 자동 전환 차단
     if(!force&&OPT.bgmTrack!=='auto'&&key!=='death'&&key!=='victory'&&key!=='forge'&&key!==OPT.bgmTrack)return;
     if(this._curKey===key)return;
     this.stop();
@@ -11203,6 +11262,21 @@ function _load8DirAtlas(chN){
       }
     }
   }).catch(function(){});
+  // ── 8방향 워크 아틀라스 로드 ──
+  a.walkDirs={};a.walkMeta=null;
+  _8DIR_NAMES.forEach(function(dn,i){
+    const dk=_8DIR_KEYS[i];
+    a.walkDirs[dk]={img:null,ready:false};
+    const wImg=new Image();
+    wImg.src='img/atlas_ch'+chN+'_8dir_walk_'+dn+'.png?v=1';
+    a.walkDirs[dk].img=wImg;
+    wImg.onload=function(){a.walkDirs[dk].ready=true;console.log('[CH'+chN+'_8DIR_WALK_'+dn.toUpperCase()+'] 로드')};
+    wImg.onerror=function(){};
+  });
+  fetch('img/atlas_ch'+chN+'_8dir_walk.json?v=1').then(function(r){return r.json()}).then(function(j){
+    a.walkMeta=j;
+    console.log('[CH'+chN+'_8DIR_WALK] 메타 로드: '+Object.keys(j.mobs).length+'종');
+  }).catch(function(){});
   _ch8Atlas[chN]=a;
 }
 _load8DirAtlas(1); // ch1 8방향 미리 로드
@@ -16947,8 +17021,11 @@ function canMv(x,y,r){return!isW(x-r,y-r)&&!isW(x+r,y-r)&&!isW(x-r,y+r)&&!isW(x+
 function canMvBlink(x,y,r){return!isW(x-r,y-r,1)&&!isW(x+r,y-r,1)&&!isW(x-r,y+r,1)&&!isW(x+r,y+r,1)}
 // 안전한 위치 찾기: (x,y)가 벽이면 주변 나선탐색으로 빈 곳 반환
 function safePt(x,y,r){if(canMv(x,y,r))return{x,y};for(let d=T;d<=T*5;d+=T/2)for(let a=0;a<8;a++){const nx=x+Math.cos(Math.PI/4*a)*d,ny=y+Math.sin(Math.PI/4*a)*d;if(canMv(nx,ny,r))return{x:nx,y:ny}}return null}
-// 벽 안에 있는 엔티티 밀어내기
-function _pushOutWall(e){if(canMv(e.x,e.y,e.r))return;const p=safePt(e.x,e.y,e.r);if(p){e.x=p.x;e.y=p.y}}
+// 타일 벽만 체크 (MAP_OBJS 제외 — 적 밀어내기 전용)
+function _isWallTile(px,py){const tx=~~(px/T),ty=~~(py/T);return tx<0||ty<0||tx>=G.mw||ty>=G.mh||G.map[ty][tx]===1}
+function _canMvTile(x,y,r){return!_isWallTile(x-r,y-r)&&!_isWallTile(x+r,y-r)&&!_isWallTile(x-r,y+r)&&!_isWallTile(x+r,y+r)}
+// 벽 안에 있는 엔티티 밀어내기 (타일 벽만 — MAP_OBJS 무시)
+function _pushOutWall(e){if(_canMvTile(e.x,e.y,e.r))return;for(let d=T;d<=T*5;d+=T/2)for(let a=0;a<8;a++){const nx=e.x+Math.cos(Math.PI/4*a)*d,ny=e.y+Math.sin(Math.PI/4*a)*d;if(_canMvTile(nx,ny,e.r)){e.x=nx;e.y=ny;return}}}
 function dst(a,b,c,d){return Math.sqrt((c-a)**2+(d-b)**2)}
 function dst2(a,b,c,d){return(c-a)**2+(d-b)**2} // 제곱거리 (sqrt 제거)
 // ═══ 플로우필드 패스파인딩 ═══
@@ -19795,7 +19872,7 @@ function update(){
     if(!_pHit)projs[pw++]=p;else _recycleProj(p);
   }projs.length=pw;}
   // ── 석궁 자동 발사 (공성쇠뇌 터렛 설치 중엔 플레이어 발사 안 함) ──
-  if(_xbowEquipped&&P&&P.hp>0&&!_gxTurret){
+  if(_xbowEquipped&&P&&P.hp>0&&!_gxTurret&&INV.equipped.bow){
     _xbowTimer+=_dtSp;
     _xbowTarget=null;
     const _xbPet=G.pets&&G.pets.xbow;
@@ -29540,7 +29617,7 @@ $('optShake').oninput=function(){OPT.shake=+this.value;$('optShakeVal').textCont
 $('optParts').oninput=function(){OPT.parts=+this.value;$('optPartsVal').textContent=this.value+'%';_renderPresetBtns();saveSettings()};
 $('optSfx').oninput=function(){OPT.sfxVol=+this.value;$('optSfxVal').textContent=this.value+'%';if(_mbus)_mbus.gain.value=sfxVol();saveSettings()};
 $('optBgm').oninput=function(){OPT.bgmVol=+this.value;$('optBgmVal').textContent=this.value+'%';BGM.setVol(this.value/100);saveSettings()};
-$('optBgmTrack').onchange=function(){OPT.bgmTrack=this.value;if(this.value==='auto'){BGM.play(BGM.stageKey(G.stage))}else{BGM.play(this.value)}saveSettings()};
+$('optBgmTrack').onchange=function(){OPT.bgmTrack=this.value;if(this.value==='auto'){BGM.play(BGM.stageKey(G.stage))}else if(this.value.startsWith('t:')){BGM.playTrack(this.value.slice(2))}else{BGM.play(this.value,true)}saveSettings()};
 $('optLang').onchange=function(){OPT.lang=this.value;_applyLang();saveSettings()};
 function _applyLang(){try{
   const _e=OPT.lang==='en';
@@ -29561,7 +29638,7 @@ function _applyLang(){try{
   const _shMap={};_sh.forEach(([k,e])=>{_shMap[k]=e});
   _st?.querySelectorAll('.set-label').forEach(el=>{const ko=el.dataset.ko||(el.textContent.trim());if(!el.dataset.ko)el.dataset.ko=ko;el.textContent=_e?(_shMap[ko]||ko):ko});
   // BGM select options
-  const _bgmOpt=$('optBgmTrack');if(_bgmOpt){const _bo=[['자동 (스테이지별)','Auto (per stage)'],['로비','Lobby'],['1장 - 썩은 숲','CH1 - Rotten Forest'],['2장 - 벌레굴','CH2 - Worm Nest'],['3장 - 얼음굴','CH3 - Ice Cavern'],['4장 - 화염지대','CH4 - Infernal Wastes'],['5장 - 지옥군단','CH5 - Hell Legion'],['6장 - 사도마굴','CH6 - Apostle Den'],['7장 - 지옥성','CH7 - Hell Citadel'],['보스','Boss'],['최종보스','Final Boss'],['대장간','Forge']];const _boMap={};_bo.forEach(([k,e])=>{_boMap[k]=e});Array.from(_bgmOpt.options).forEach(o=>{const ko=o.dataset.ko||(o.textContent);if(!o.dataset.ko)o.dataset.ko=ko;o.textContent=_e?(_boMap[ko]||ko):ko})}
+  const _bgmOpt=$('optBgmTrack');if(_bgmOpt){const _bo=[['자동 (스테이지별)','Auto (per stage)'],['로비','Lobby'],['1장 랜덤','CH1 Random'],['2장 랜덤','CH2 Random'],['3장 랜덤','CH3 Random'],['4장 랜덤','CH4 Random'],['5장 랜덤','CH5 Random'],['6장 랜덤','CH6 Random'],['7장 랜덤','CH7 Random'],['보스','Boss'],['최종보스','Final Boss'],['대장간 랜덤','Forge Random'],['사망 랜덤','Death Random'],['승리 랜덤','Victory Random'],['복수의 대장간','Forge of Vengeance'],['지옥 추락 사망 징글','Death Jingle'],['탈출 성공','Escape Victory']];const _boMap={};_bo.forEach(([k,e])=>{_boMap[k]=e});Array.from(_bgmOpt.options).forEach(o=>{const ko=o.dataset.ko||(o.textContent);if(!o.dataset.ko)o.dataset.ko=ko;o.textContent=_e?(_boMap[ko]||ko):ko});Array.from(_bgmOpt.querySelectorAll('optgroup')).forEach(g=>{const _gm={'── 1장 - 썩은 숲 ──':'── CH1 - Rotten Forest ──','── 2장 - 벌레굴 ──':'── CH2 - Worm Nest ──','── 3장 - 얼음굴 ──':'── CH3 - Ice Cavern ──','── 4장 - 화염지대 ──':'── CH4 - Infernal Wastes ──','── 5장 - 지옥군단 ──':'── CH5 - Hell Legion ──','── 6장 - 사도마굴 ──':'── CH6 - Apostle Den ──','── 7장 - 지옥성 ──':'── CH7 - Hell Citadel ──','── 공통 ──':'── Common ──'};const ko=g.dataset.ko||g.label;if(!g.dataset.ko)g.dataset.ko=ko;g.label=_e?(_gm[ko]||ko):ko})}
   // Display mode options
   const _dm=$('optDispMode');if(_dm){const _dmo=[['창 모드','Windowed'],['보더리스','Borderless'],['전체화면','Fullscreen']];const _dmoMap={};_dmo.forEach(([k,e])=>{_dmoMap[k]=e});Array.from(_dm.options).forEach(o=>{const ko=o.dataset.ko||(o.textContent);if(!o.dataset.ko)o.dataset.ko=ko;o.textContent=_e?(_dmoMap[ko]||ko):ko})}
   // Buttons
@@ -33051,8 +33128,8 @@ function draw(){
     // ═══ 적 바디 렌더링 (신규 아틀라스 → 레거시 아틀라스 → 절차적 폴백) ═══
     let _usedSpr=false;
     if(e.ib){
-      // ── 보스 오라 글로우 ──
-      if(e.alive&&sa>0.1){
+      // ── 보스 오라 글로우 제거됨 ──
+      if(false&&e.alive&&sa>0.1){
         const _bAuraRgb=['200,200,200','255,100,30','80,180,255','120,0,180','255,255,80','255,255,255'][e.el!=null?e.el:0]||'200,200,200';
         const _bLow=e.hp<e.mhp*.3;
         const _bAA=_bLow?sa*(.25+Math.sin(_now/100)*.12):sa*.15;
@@ -33128,8 +33205,8 @@ function draw(){
       let _eDrew=false;
       // ── 몬스터 스킨 아틀라스 렌더링 (etype 0-99, 최우선) ──
       if(!_ensGLQueued&&!_eDrew){
-        // 스킨 미배정 → 강제 배정 (ch1 고정)
-        if(e._mob8Col===undefined||e._mob8Col===null){
+        // 스킨 미배정 → 강제 배정 (ch1 고정, 보스 제외)
+        if(!e.ib&&(e._mob8Col===undefined||e._mob8Col===null)){
           e._mobCh=1;
           const _a8r=_ch8Atlas[1];
           if(_a8r&&_a8r.meta&&_a8r.mobList&&_a8r.mobList.length){
@@ -33142,17 +33219,37 @@ function draw(){
         }
         // ── 8방향 아틀라스 렌더 ──
         if(e._mob8dir){
-          const _a8=_ch8Atlas[e._mobCh];
+          const _a8=_ch8Atlas[1]; // ch1 고정
           if(_a8&&_a8.meta){
             const _baseSz=Math.max(e.r*7,80);
             const _dk8=_mobFacingDir8(e.facing);
-            const _da8=_a8.dirs[_dk8];
-            if(_da8&&_da8.ready&&e._mob8Col!==undefined){
-              const _c8=_a8.meta.cell;
-              X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
-              X.imageSmoothingEnabled=false;X.imageSmoothingQuality='low';
-              X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
-              X.restore();_eDrew=true;_usedSpr=true;
+            const _isWalk=e._isMoving||e.s==='eCharge'||e.s==='eApproach'||e.s==='eCircle'||e.s==='eRetreat';
+            // ── 8방향 걷기 애니 ──
+            if(_isWalk&&_a8.walkDirs&&_a8.walkMeta&&e._mob8Skin){
+              const _wm=_a8.walkMeta.mobs[e._mob8Skin];
+              if(_wm!==undefined){
+                const _wd=_a8.walkDirs[_dk8];
+                if(_wd&&_wd.ready){
+                  const _wc=_a8.walkMeta.cell;
+                  const _wf=~~(_now*0.005)%_a8.walkMeta.frames;
+                  X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
+                  X.imageSmoothingEnabled=false;
+                  X.drawImage(_wd.img,_wf*_wc,_wm.row*_wc,_wc,_wc,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
+                  X.restore();_eDrew=true;_usedSpr=true;
+                }
+              }
+            }
+            // ── 8방향 정지 (해당 방향 미로드 시 south 폴백) ──
+            if(!_eDrew){
+              let _da8=_a8.dirs[_dk8];
+              if(!_da8||!_da8.ready)_da8=_a8.dirs['south']; // 폴백
+              if(_da8&&_da8.ready&&e._mob8Col!==undefined){
+                const _c8=_a8.meta.cell;
+                X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
+                X.imageSmoothingEnabled=false;X.imageSmoothingQuality='low';
+                X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
+                X.restore();_eDrew=true;_usedSpr=true;
+              }
             }
           }
         }

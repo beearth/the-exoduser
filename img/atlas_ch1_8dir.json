@@ -2,7 +2,7 @@
   "cell": 256,
   "cols": 5,
   "rows": 5,
-  "total": 15,
+  "total": 23,
   "directions": [
     "south",
     "south-east",
@@ -14,11 +14,6 @@
     "south-west"
   ],
   "mobs": {
-    "grotesque_quadruped": {
-      "idx": 0,
-      "col": 0,
-      "row": 0
-    },
     "black_castle_guardian": {
       "idx": 1,
       "col": 1,
@@ -32,11 +27,6 @@
     "forest_watcher": {
       "idx": 3,
       "col": 3,
-      "row": 0
-    },
-    "boss_ch1_stag": {
-      "idx": 4,
-      "col": 4,
       "row": 0
     },
     "gas_zombie": {
