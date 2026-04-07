@@ -11168,7 +11168,7 @@ function _mobFacingDir(f){
 function _mobFlip(f){return _mobFacingDir(f)==='west'}
 function _mobDirKey(f){const d=_mobFacingDir(f);return d==='west'?'east':d}
 function _mobTilt(){return 0}
-_loadChAtlas(0); // 시작 시 ch1 미리 로드
+// _loadChAtlas(0); // 레거시 4방향 비활성화 — 8dir 아틀라스 사용
 
 // ── 8방향 몬스터 아틀라스 시스템 ──
 const _8DIR_NAMES=['south','south_east','east','north_east','north','north_west','west','south_west'];
@@ -19275,15 +19275,15 @@ function update(){
       if(_bfActive&&!e.ib){const _bfd2b=dst2(_bf.x,_bf.y,e.x,e.y);if(_bfd2b<_bfR2){const _bfdb=Math.sqrt(_bfd2b)||1;const _bfa2=Math.atan2(e.y-_bf.y,e.x-_bf.x);e.x=_bf.x+Math.cos(_bfa2)*_bf.r;e.y=_bf.y+Math.sin(_bfa2)*_bf.r}}
       const _edd=(e.x-_eox)*(e.x-_eox)+(e.y-_eoy)*(e.y-_eoy);e._isMoving=_edd>1;if(_edd>0)e._walkDist=(e._walkDist||0)+Math.sqrt(_edd)
       // 벽 끼임 처리: 실제 타일 벽만 체크 (MAP_OBJS collision 제외)
-      {const _etx=~~(e.x/T),_ety=~~(e.y/T);
+      const _etx=~~(e.x/T),_ety=~~(e.y/T);
       if(_etx<0||_ety<0||_etx>=G.mw||_ety>=G.mh||G.map[_ety][_etx]===1){
         let _rescued=false;
         for(let _wr=1;_wr<=5&&!_rescued;_wr++){
           for(let _wd=0;_wd<8;_wd++){
             const _wa=_wd*Math.PI/4;
             const _wx=e.x+Math.cos(_wa)*T*_wr,_wy=e.y+Math.sin(_wa)*T*_wr;
-            {const _rtx=~~(_wx/T),_rty=~~(_wy/T);
-            if(_rtx>=0&&_rty>=0&&_rtx<G.mw&&_rty<G.mh&&G.map[_rty][_rtx]!==1){e.x=_wx;e.y=_wy;e.kb.x=0;e.kb.y=0;_rescued=true;break}}
+            const _rtx2=~~(_wx/T),_rty2=~~(_wy/T);
+            if(_rtx2>=0&&_rty2>=0&&_rtx2<G.mw&&_rty2<G.mh&&G.map[_rty2][_rtx2]!==1){e.x=_wx;e.y=_wy;e.kb.x=0;e.kb.y=0;_rescued=true;break}
           }
         }
         if(!_rescued){e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1}
