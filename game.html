@@ -11102,7 +11102,7 @@ function _assignBossSkin(e,si){
 let _skinSeqIdx=0; // 순차 배정 카운터 (모든 스킨 1회 이상 등장 보장)
 function _assignMobSkin(e){
   if(e.ib){_assignBossSkin(e,G.stage);return}
-  const chN=(SI_TO_HELL[G.stage]||0)+1;
+  const chN=1; // 모든 스테이지가 ch1 8dir 아틀라스 공유
   e._mobCh=chN;
   // 8방향 순차 할당
   const a8=_ch8Atlas[chN];
@@ -18308,7 +18308,7 @@ function update(){
         const _gsDmg2=~~(((sh().atk||3)+P.baseAtk*0.3+10)*(_sdLv>=1?1.2*(0.5*(1+(_sdLv-1)*0.08)):0.15)*statStr()*pShieldMul())+(P._atkBon||0);P._atkBon=0; // 밸런스: 0.8→1.2
         // ═══ 칼등날개 충격파 히트 (_gSlamHit 방식) ═══
         G._noHitStopT=40;
-        _gSlamHit(P.facing,_gsRange2,Math.PI*0.8,_gsDmg2,wp().el||0,0,0.8);
+        _gSlamHit(P.facing,_gsRange2,Math.PI*0.8,_gsDmg2,wp().el||0,1.5,0.8);
         G.hitStop=0;G.slowMo=0;
         // 진동파 VFX
         if(!G._gSlamWave)G._gSlamWave=[];
@@ -19274,8 +19274,20 @@ function update(){
       // 화톳불 배리어: 이동 후에도 재확인
       if(_bfActive&&!e.ib){const _bfd2b=dst2(_bf.x,_bf.y,e.x,e.y);if(_bfd2b<_bfR2){const _bfdb=Math.sqrt(_bfd2b)||1;const _bfa2=Math.atan2(e.y-_bf.y,e.x-_bf.x);e.x=_bf.x+Math.cos(_bfa2)*_bf.r;e.y=_bf.y+Math.sin(_bfa2)*_bf.r}}
       const _edd=(e.x-_eox)*(e.x-_eox)+(e.y-_eoy)*(e.y-_eoy);e._isMoving=_edd>1;if(_edd>0)e._walkDist=(e._walkDist||0)+Math.sqrt(_edd)
-      // 벽 끼임 처리: 벽 안에 있으면 즉사
-      if(isW(e.x,e.y,true)){e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1;if(e.ib){e._bossRevJudged=true;e._reviveTimer=180;e._reviveX=e.x;e._reviveY=e.y;e._bossRevChance=0;e._bossRevRoll=1;console.log('[BOSS-WALL] boss stuck in wall → revive timer (will fail)');}}}
+      // 벽 끼임 처리: 실제 타일 벽만 체크 (MAP_OBJS collision 제외)
+      {const _etx=~~(e.x/T),_ety=~~(e.y/T);
+      if(_etx<0||_ety<0||_etx>=G.mw||_ety>=G.mh||G.map[_ety][_etx]===1){
+        let _rescued=false;
+        for(let _wr=1;_wr<=5&&!_rescued;_wr++){
+          for(let _wd=0;_wd<8;_wd++){
+            const _wa=_wd*Math.PI/4;
+            const _wx=e.x+Math.cos(_wa)*T*_wr,_wy=e.y+Math.sin(_wa)*T*_wr;
+            {const _rtx=~~(_wx/T),_rty=~~(_wy/T);
+            if(_rtx>=0&&_rty>=0&&_rtx<G.mw&&_rty<G.mh&&G.map[_rty][_rtx]!==1){e.x=_wx;e.y=_wy;e.kb.x=0;e.kb.y=0;_rescued=true;break}}
+          }
+        }
+        if(!_rescued){e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1}
+      }}
     else if(e._reviveTimer>0){
       e._reviveTimer-=sp;
       // 부활 전조 파티클
@@ -28308,7 +28320,7 @@ function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
     const ang=Math.atan2(e.y-P.y,e.x-P.x);
     const mult=elMul(el,e.el);const fd=~~(dmg*mult);
     // 데미지 범위 안이면 데미지 적용
-    if(d<=range+e.r){hurtE(e,fd,ang,false,{kbMult:0,noPoise:true},el)}
+    if(d<=range+e.r){hurtE(e,fd,ang,false,{kbMult:kbM||0,noPoise:true},el)}
     if(!e.alive)continue; // 데미지로 죽었으면 스턴 스킵
     // 스턴 범위 안이면 포이즈+스턴 적용
     // 대왕치기: 데미지의 1500% 포이즈 데미지 (뎀 낮고 포이즈 특화)
@@ -33123,9 +33135,20 @@ function draw(){
       // ── 일반 적 렌더링 ──
       let _eDrew=false;
       // ── 몬스터 스킨 아틀라스 렌더링 (etype 0-99, 최우선) ──
-      if(!_ensGLQueued&&!_eDrew&&e._mobCh){
-        if(e._mobSkinPending){const _a8r=_ch8Atlas[e._mobCh];if(_a8r&&_a8r.mobList&&_a8r.mobList.length){const _i8r=_skinSeqIdx%_a8r.mobList.length;_skinSeqIdx++;e._mob8dir=true;e._mob8Skin=_a8r.mobList[_i8r];const _m8r=_a8r.meta?_a8r.meta.mobs[e._mob8Skin]:null;if(_m8r){e._mob8Col=_m8r.col;e._mob8Row=_m8r.row;}e._mobSkinPending=false}else{const _pa2=_chAtlas[e._mobCh];if(_pa2&&_pa2.mobList&&_pa2.mobList.length)_applyMobSkin(e,_pa2)}}
-        // ── 8방향 아틀라스 우선 ──
+      if(!_ensGLQueued&&!_eDrew){
+        // 스킨 미배정 → 강제 배정 (ch1 고정)
+        if(!e._mob8dir||!e._mob8Skin){
+          e._mobCh=1;
+          const _a8r=_ch8Atlas[1];
+          if(_a8r&&_a8r.mobList&&_a8r.mobList.length){
+            const _i8r=(e.etype*7+~~(e.x*31))%_a8r.mobList.length; // etype+위치 기반 결정적 배정
+            e._mob8dir=true;e._mob8Skin=_a8r.mobList[_i8r];
+            const _m8r=_a8r.meta?_a8r.meta.mobs[e._mob8Skin]:null;
+            if(_m8r){e._mob8Col=_m8r.col;e._mob8Row=_m8r.row;}
+            e._mobSkinPending=false;
+          }
+        }
+        // ── 8방향 아틀라스 렌더 ──
         if(e._mob8dir){
           const _a8=_ch8Atlas[e._mobCh];
           if(_a8&&_a8.meta){
@@ -33235,40 +33258,25 @@ function draw(){
         }
       }
     }
-    // ═══ 근접 공격 예비동작 전조 (빨간 깜박임 + ❗) ═══
+    // ═══ 근접 공격 예비동작 전조 (❗ 텍스트만, 원형 제거) ═══
     if(e._atkWindup>0){
-      const _awA=.3+Math.sin(_now*.02)*0.2;
-      X.globalAlpha=_awA;X.fillStyle='#ff2200';
-      X.beginPath();X.arc(e.x,e.y,e.r*1.3,0,Math.PI*2);X.fill();
       X.globalAlpha=.9;X.fillStyle='#ff4444';X.font='bold 16px "Noto Sans KR"';X.textAlign='center';
       X.fillText('❗',e.x,e.y-e.r-8);
       X.globalAlpha=sa;
     }
-    // ═══ 탄막 차징 전조 (해당 색으로 깜빡임 + 차징 링) ═══
+    // ═══ 탄막 차징 전조 (차징 링 + 코어 빛) ═══
     if(e._projChargeT>0&&e._projChargeCol){
-      const _pcProg=1-e._projChargeT/60; // 0→1 진행률
-      const _pcBlink=Math.sin(_now*.03+_pcProg*20)*.5+.5; // 점점 빨라지는 깜빡임
-      const _pcA=(.15+_pcProg*.35)*_pcBlink;
-      X.globalAlpha=_pcA;X.fillStyle=e._projChargeCol;
-      X.beginPath();X.arc(e.x,e.y,e.r*1.4,0,Math.PI*2);X.fill();
-      // 차징 링 (진행률에 따라 채워짐)
+      const _pcProg=1-e._projChargeT/60;
       X.globalAlpha=.6+_pcProg*.3;X.strokeStyle=e._projChargeCol;X.lineWidth=2.5;
       X.beginPath();X.arc(e.x,e.y,e.r*1.6,-Math.PI/2,-Math.PI/2+Math.PI*2*_pcProg);X.stroke();
-      // 코어 빛 (발사 직전 강해짐)
       if(_pcProg>.7){
         X.globalAlpha=(_pcProg-.7)*3*.4;X.fillStyle=e._projChargeCol;
         X.beginPath();X.arc(e.x,e.y,e.r*.5,0,Math.PI*2);X.fill();
       }
       X.globalAlpha=sa;
     }
-    // ═══ 피격 플래시 오버레이 (save/restore 제거) ═══
+    // ═══ 피격 플래시 (타이머만 감소, 원형 제거) ═══
     if(e._hitFlash > 0) {
-      X.globalAlpha = Math.min(0.5, e._hitFlash * 0.08);
-      X.fillStyle = '#ffffff';
-      X.beginPath();
-      X.arc(e.x, e.y, e.r, 0, Math.PI * 2);
-      X.fill();
-      X.globalAlpha=sa;
       e._hitFlash -= 1;
     }
     // ═══ 프리즌(빙결) 비주얼 — 파란 틴트(multiply) + 서리 테두리 + 파티클 ═══
@@ -33513,7 +33521,7 @@ function draw(){
     // 리치 소환 채널링 글로우
     if(_eDecor&&e.s==='eSummon'){X.globalAlpha=.3+Math.sin(_now/100)*.2;X.strokeStyle='#8833cc';X.lineWidth=3;X.beginPath();X.arc(e.x,e.y,e.r+12,0,Math.PI*2);X.stroke();X.globalAlpha=sa}
     // 속성 링 (보스만 — 일반몹은 스프라이트 캐시에 포함)
-    if(!_usedSpr){X.strokeStyle=ELC[e.el];X.lineWidth=e.ib?4:2;X.beginPath();X.arc(e.x,e.y,e.r+3,0,Math.PI*2);X.stroke();}
+    // 속성 링 제거됨 (스프라이트 위에 원형 겹침 방지)
     // 속성 표시: 보스만 이모지 (일반몹은 스프라이트에 포함)
     if(e.ib){X.font='16px sans-serif';X.textAlign='center';X.fillText(ELE[e.el],e.x,e.y-e.r-12)}
     // 눈: 보스만 (일반몹 arc 2개 절약)
