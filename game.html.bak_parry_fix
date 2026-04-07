@@ -19757,7 +19757,7 @@ function update(){
           if(!_isBlue)re.stunned=Math.max(re.stunned,~~(80*rf))}
         _addBoom(p.x,p.y,_rbR,_isBlue?32:26,'redbean');
       }else{
-        const _blR=p._aoeR||100,_blD=p._aoeDmg||p.dmg||15;
+        const _blR=100,_blD=~~((p.dmg||15)*3);
         const _blNe=shQuery(p.x,p.y,_blR);
         for(let _bli=0;_bli<_blNe.length;_bli++){const be=_blNe[_bli];if(!be.alive)continue;
           const bd=dst(p.x,p.y,be.x,be.y);if(bd>_blR)continue;
