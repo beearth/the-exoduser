@@ -19362,7 +19362,7 @@ function update(){
             if(_rtx2>=0&&_rty2>=0&&_rtx2<G.mw&&_rty2<G.mh&&G.map[_rty2][_rtx2]!==1){e.x=_wx;e.y=_wy;e.kb.x=0;e.kb.y=0;_rescued=true;break}
           }
         }
-        if(!_rescued){e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1}
+        if(!_rescued){const _ra=Math.atan2(e.y-P.y,e.x-P.x);e.x=P.x+Math.cos(_ra)*80;e.y=P.y+Math.sin(_ra)*80;e.kb.x=0;e.kb.y=0;}
       }}
     else if(e._reviveTimer>0){
       e._reviveTimer-=sp;
@@ -20224,9 +20224,9 @@ function update(){
     // 구속의 영역 fireZone 범위 내 → 즉시 제거
     // 신성한 땅은 소환굴을 제거하지 않음 — 처치율 분모 보존
     const _hd2=_hqd;
-    // 1000px 이내 접근 시 트리거 시작
+    // 1200px 이내 접근 시 트리거 시작
     if(!h._triggered){
-      if(_hd2<1000000)h._triggered=true; // 1000^2
+      if(_hd2<1440000)h._triggered=true; // 1200^2
       continue;
     }
     // 트리거 후 연출 타이머 (3초 동안 소환굴 빛남)
@@ -22754,8 +22754,8 @@ function updateE(e,sp){
     _ffMoveE(e,sp,2);
     d=dst(P.x,P.y,e.x,e.y);if(d<=200)e._reviveChase=false
   }
-  // 시야 어그로: 거리 400 이내면 자동 알림 (피격 없이도) — 400px 밖은 배회
-  if(!e._alerted&&d<400&&(e.s==='idle'||e.s==='recover'))e._alerted=true;
+  // 시야 어그로: 거리 800 이내면 자동 알림 (피격 없이도)
+  if(!e._alerted&&d<800&&(e.s==='idle'||e.s==='recover'))e._alerted=true;
   // ── 방향 추적: idle/배회 중에도 플레이어 방향으로 부드럽게 회전 ──
   if(d<800&&(e.s==='idle'||e.s==='recover'||e.s==='eApproach')){
     const _tgtA=Math.atan2(P.y-e.y,P.x-e.x);
@@ -22765,15 +22765,14 @@ function updateE(e,sp){
     if(Math.abs(_dA)>0.05)e.facing+=(_dA>0?1:-1)*Math.min(Math.abs(_dA),_turnSpd);
   }
   // 어그로 추적: 플로우필드로 벽도 돌아옴 — 30px까지 밀착
-  if(e._alerted&&d>30&&(e.s==='idle'||e.s==='recover')){
-    _ffMoveE(e,sp,e.ib?2:1.2);
-    d=dst(P.x,P.y,e.x,e.y);if(d<=30)e._alerted=false
+  if(e._alerted&&d>80&&(e.s==='idle'||e.s==='recover')){
+    _ffMoveE(e,sp,e.ib?2:1);
+    d=dst(P.x,P.y,e.x,e.y);if(d<=80)e._alerted=false
   }
-  // ── 들러붙기: 어그로 안 걸려도 가까우면(400px) 플레이어한테 접근 ──
-  if(!e._alerted&&!e.ib&&d<400&&d>30&&(e.s==='idle'||e.s==='recover')){
-    _ffMoveE(e,sp,0.8);
-    d=dst(P.x,P.y,e.x,e.y);
-  }
+  // ── 들러붙기: 200px 내 비어그로 몹 느리게 접근 ──
+  if(!e._alerted&&!e.ib&&d<200&&d>80&&(e.s==='idle'||e.s==='recover')){_ffMoveE(e,sp,0.5)}
+
+
   // 회전참 피격 스택 감소: 1초간 안 맞으면 초당 3스택씩 감소
   if(e._wwStk>0){if(e._wwStkT>0)e._wwStkT-=sp;else{e._wwStk=Math.max(0,e._wwStk-~~(3*sp/60));}}
   // ═══ D4식 DOT — 히트뎀% 풀 축적, 틱마다 풀에서 드레인 ═══
@@ -25612,7 +25611,7 @@ function _updateGhostIris(){
     const _iAng=pet.t*.03;
     const tx=pet._tgt.x+Math.cos(_iAng)*20;
     const ty=pet._tgt.y-pet._tgt.r-15+Math.sin(_iAng)*8;
-    if(pet._tgt.x!==0||pet._tgt.y!==0){pet.x+=(tx-pet.x)*.12;pet.y+=(ty-pet.y)*.12;}
+    if(pet._tgt.x>10||pet._tgt.y>10){pet.x+=(tx-pet.x)*.12;pet.y+=(ty-pet.y)*.12;}
   }else{
     // 적 없으면 플레이어 주위 360° 궤도
     const _iAng=pet.t*.02;
@@ -27472,7 +27471,7 @@ const _FUSE_GEM_GROUPS={
   holyWeak4: {color:'#ff88aa',color2:'#ffdd00',tier:'clear',minLv:30,star:7,skills:['holyDome','holyPrison','iceStorm','weakPhys','weakMag','weakPj','weakRev']}, // +부활 7성
   pillarSpike:{color:'#7722cc',color2:'#66aa44',tier:'clear',minLv:1,skills:['darkPillar','spikeTrap']}, // 악의기둥(모체) + 가시덫 흡수, 2성(=skills.length)
   pillarSlam:{color:'#ff8844',color2:'#7722cc',tier:'clear',minLv:300,skills:['giantSlam2','darkPillar'],hidden:true}, // 히든: 대왕치기2(모체) + 악의기둥 흡수, Lv300+, 2성
-  infernoSlam:{color:'#ff6622',color2:'#ff4400',tier:'clear',minLv:1,star:1,skills:['giantSlam2','fireAura']}, // 대왕치기2(모체) + 지옥진
+  infernoSlam:{color:'#ff6622',color2:'#ff4400',tier:'clear',minLv:1,skills:['giantSlam2','fireAura']}, // 대왕치기2(모체) + 지옥진, 2성 (구성 2개)
   siegeGhost: {color:'#6688cc',color2:'#aa66dd',tier:'clear',minLv:1,star:2,skills:['ghostXbowTurret','voidScarecrow']}, // 공성쇠뇌(모체) + 유령허수아비
 };
 // 하위호환: 기존 _FUSE_GEMS 색상맵 자동 생성
