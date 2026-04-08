@@ -6931,7 +6931,7 @@ function pickupItem(item){
 }
 function recalcSt(){
   _eqAffixCache=null;_eqStatCache=null; // 어픽스/스탯 캐시 무효화
-  const base=200+~~(P.lv*1.0)+STATS.dex*2;
+  const base=100+~~(P.lv*.5)+STATS.dex*1;
   let bonus=0;
   for(const slot of SLOT_NAMES){const it=INV.equipped[slot];if(it&&it.bonusSt)bonus+=it.bonusSt}
   P.mst=~~(base+bonus+~~(P._crystalStats?P._crystalStats.st:0))+_gritStFlat();P.st=Math.min(P.st,P.mst);
@@ -17383,6 +17383,10 @@ function update(){
   // ─── [S16b] PLAYER_ACT — 플레이어 행동 (이동/공격/스킬) ───
   const _pPrevX=P.x,_pPrevY=P.y; // 투사체 충돌용: 이동 전 위치 저장
   const _pDead=P.s==='fallen'||P.s==='dead'||P.s==='pStun';
+  // ═══ 전격이동 탈출: 경직/상태이상 중에도 더블탭으로 발동 ═══
+  if(!_pDead&&P._bdTrigger!=null&&P.skills.bladeDash>=1&&(P._bdStk==null||(P._bdStk||0)>0)&&P.mp>=(10+((P.skills.bladeDash||1)-1)*5)&&!(P._seaParalyzed>0)){
+    activateBladeDash(P._bdTrigger);P._bdTrigger=null;
+  }
   if(G.pets)updatePet(); // 펫 이동은 항상, 수거는 petAuto 토글
   _updateBurst(_dtSp); // GPU Burst (별도 context)
   mergeMatItems(); // 악의 아이템 자동 합체
@@ -32578,7 +32582,6 @@ function draw(){
             const _lIdx=e._mob8Row*_MOB8_COLS+e._mob8Col;
             const _lHasW=_a8L.walkDirs&&_a8L.walkMeta&&_a8L.walkMeta._idxSet&&_a8L.walkMeta._idxSet.has(_lIdx);
             X.globalAlpha=1;X.save();X.translate(e.x,e.y);X.imageSmoothingEnabled=false;
-            if(_lHasW){const _lW=_a8L.walkDirs[_mobFacingDir8(e.facing)];
             X.drawImage(_daL.img,e._mob8Col*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz);
             if(e._isMoving&&_lHasW){const _lW=_a8L.walkDirs[_mobFacingDir8(e.facing)];
               if(_lW&&_lW.ready){const _lwf=_a8L.walkMeta.framesPerMob||4;const _lwFr=~~((e._walkDist||0)/128)%_lwf;X.drawImage(_lW.img,(e._mob8Col*_lwf+_lwFr)*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz)}}
