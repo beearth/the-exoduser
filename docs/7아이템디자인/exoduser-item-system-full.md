@@ -157,6 +157,12 @@ const AFFIX_POOL = [
   {id:'extraDodge',type:1, ko:'스태미나의',stat:'_aExDodge', tiers:[1,1,2],     unit:'val', slots:['bts','pnt'],           group:'dodg', weight:55},
   {id:'stRegen',   type:1, ko:'회복의',  stat:'stRegen',     tiers:[0.03,0.06,0.10],unit:'pct', slots:['arm','rng','nck'],group:'sreg', weight:80},
   {id:'dpRegen',   type:1, ko:'마력의',  stat:'mpRegen',     tiers:[0.02,0.04,0.07],unit:'pct', slots:['hlm','nck'],      group:'dreg', weight:75},
+  // ── 크리티컬 데미지 어픽스 2종 (행운의+극대화의 → 반지 최대50%, 목걸이 최대100%) ──
+  // 5티어, tierW:[40,30,20,8,2] 극악 편향, 200렙당 maxTier +1
+  {id:'critDmgA',type:0, ko:'행운의',  stat:'critDmgA',tiers:[.05,.10,.15,.20,.25],unit:'pct', slots:['ring'],group:'cdmgA',weight:60,tierW:[40,30,20,8,2]},
+  {id:'critDmgB',type:1, ko:'극대화의',stat:'critDmgB',tiers:[.05,.10,.15,.20,.25],unit:'pct', slots:['ring'],group:'cdmgB',weight:60,tierW:[40,30,20,8,2]},
+  {id:'critDmgA',type:0, ko:'행운의',  stat:'critDmgA',tiers:[.10,.20,.30,.40,.50],unit:'pct', slots:['neck'],group:'cdmgA',weight:60,tierW:[40,30,20,8,2]},
+  {id:'critDmgB',type:1, ko:'극대화의',stat:'critDmgB',tiers:[.10,.20,.30,.40,.50],unit:'pct', slots:['neck'],group:'cdmgB',weight:60,tierW:[40,30,20,8,2]},
   // ── 플랫 ATK 어픽스 3종 (극악 득템, skewRoll:3 = Math.random()^3 편향) ──
   {id:'sharpAtk',  type:0, ko:'예리한',  stat:'flatAtk',     tiers:[50,170,330],    unit:'val', slots:['wpn','hlm'],      group:'satk', weight:25, skewRoll:3},
   {id:'brutalAtk', type:0, ko:'맹렬한',  stat:'flatAtk',     tiers:[50,170,330],    unit:'val', slots:['wpn','hlm'],      group:'batk', weight:20, skewRoll:3},
@@ -176,7 +182,7 @@ Object.freeze(AFFIX_POOL);
 | iceDot | 냉기의 | PREFIX | 7/12/18 | val | wpn | hurtE: e._iceDotT 설정 |
 | lifeSteal | 피흡의 | PREFIX | 4%/7%/12% | pct | wpn,rng | hurtE: 피흡 HP 회복 |
 | critChance | 광폭의 | PREFIX | 6%/10%/16% | pct | wpn,rng | statCrit() |
-| critDmg | 처형의 | PREFIX | 25%/40%/65% | pct | wpn | statCritDmg() |
+| critDmg | 처형의 | PREFIX | 25%/40%/65% | pct | wpn | statCritDmg() (무기 전용, 레거시) |
 | atkSpeed | 쾌속의 | PREFIX | 6%/10%/16% | pct | wpn,glv | statDex() |
 | maxHPFlat | 강인의 | PREFIX | 100/200/300 | val | 전 방어구 | statMaxHP() |
 | shieldFlat | 수호의 | PREFIX | 100/200/300 | val | 전 방어구 | P.mshield |
@@ -195,6 +201,8 @@ Object.freeze(AFFIX_POOL);
 | stRegen | 회복의 | SUFFIX | 3%/6%/10% | pct | arm,rng,nck | ST 재생 배율 |
 | dpRegen | 마력의 | SUFFIX | 2%/4%/7% | pct | hlm,nck | MP 재생 배율 |
 | antiRevive | 진혼의 | SUFFIX | 4%/8%/12%/16%/20% (5티어, 고티어 극악확률 tierW:50/30/15/4/1) | pct | neck,wpn,bracelet (반지: 2/4/8/12/16%) | 보스 부활 억제 (최대20%) |
+| critDmgA | 행운의 | PREFIX | 반지: 5%/10%/15%/20%/25% (5티어, tierW:40/30/20/8/2) / 목걸이: 10%/20%/30%/40%/50% | pct | ring,neck | statCritDmg() — 크리뎀 |
+| critDmgB | 극대화의 | SUFFIX | 반지: 5%/10%/15%/20%/25% (5티어, tierW:40/30/20/8/2) / 목걸이: 10%/20%/30%/40%/50% | pct | ring,neck | statCritDmg() — 크리뎀 |
 
 #### ✅ 구현 완료 (27종, 2026-03-23)
 
@@ -329,8 +337,14 @@ Object.freeze(LEGENDARY_SPECIAL);
     return pool[pool.length-1];
   }
 
-  // 티어 결정: 전설=T3, 영웅=T2, 그 외=T1
-  const _tierIdx = rarity >= 4 ? 2 : rarity >= 3 ? 1 : 0;
+  // 티어 결정: 등급 기반 + 200렙당 +1 (5티어 어픽스 해금용)
+  // baseTier: 전설=2, 영웅=1, 그 외=0
+  // lvBonus: ~~(P.lv / 200) → 200렙=+1, 400렙=+2, 600렙=+3, 800렙=+4
+  // maxTier = min(affix.tiers.length - 1, baseTier + lvBonus)
+  // 예) 전설+800렙 = min(4, 2+4) = 4 → 5티어 어픽스 최고 티어 해금
+  const _baseTier = rarity >= 4 ? 2 : rarity >= 3 ? 1 : 0;
+  const _lvBonus = ~~((P ? P.lv : 1) / 200);
+  // const _tierIdx = Math.min(affix.tiers.length - 1, _baseTier + _lvBonus);
 
   for(var _ai=0; _ai<_affixCount; _ai++){
     // 홀수번째 = Prefix 우선, 짝수번째 = Suffix 우선
