@@ -44,7 +44,7 @@ idle → (거리 조건) → windup → attack → recover → idle
 | **텔레그래프** | _telegraphT=20f | 20f |
 | **시야 어그로** | d<600 자동 알림 | 동일 |
 | **추적 해제** | d≤80 도달 시 (복구) | 동일 |
-| **방향 추적 (facing)** | d<800 && idle/recover/eApproach/windup/attack → 즉시 facing=플레이어 방향 (8방향 스프라이트 즉시 전환) | 보스 포함 |
+| **방향 추적 (facing)** | d<800 → 상태 무관 즉시 facing=플레이어 방향 (매 프레임) | 보스 포함 |
 | **근접 어그로** | d<100 && d>50 && idle/recover → 즉시 _alerted=true (이동 없음) | 보스 제외 |
 | **밀어내기** | 제거됨 (pushStr 블록 삭제, 플레이어-몬스터 겹침 허용) | — |
 | **피격 즉시 반격** | hurtE 시 _alerted=true + recover→idle 강제전환(st2=0) — DOT 제외 (2026-04-07 신규) | 보스 제외 |

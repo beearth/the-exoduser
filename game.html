@@ -22788,10 +22788,8 @@ function updateE(e,sp){
   }
   // 시야 어그로: 거리 800 이내면 자동 알림 (피격 없이도)
   if(!e._alerted&&d<800&&(e.s==='idle'||e.s==='recover'))e._alerted=true;
-  // ── 방향 추적: idle/배회 중에도 플레이어 방향으로 부드럽게 회전 ──
-  if(d<800&&(e.s==='idle'||e.s==='recover'||e.s==='eApproach'||e.s==='windup'||e.s==='attack')){
-    e.facing=Math.atan2(P.y-e.y,P.x-e.x);
-  }
+  // ── 방향 추적: 항상 플레이어를 바라봄 ──
+  if(d<800){e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
   // 어그로 추적: 플로우필드로 벽도 돌아옴 — 30px까지 밀착
   if(e._alerted&&d>80&&(e.s==='idle'||e.s==='recover')){
     _ffMoveE(e,sp,e.ib?2:1);
