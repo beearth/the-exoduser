@@ -5246,7 +5246,8 @@ function _sfxPri(key){
 function _evictLowest(newPri){
   let minI=-1,minP=Infinity,minT=Infinity;
   for(let i=0;i<_activeNodes.length;i++){const n=_activeNodes[i];if(n.pri<minP||(n.pri===minP&&(n._st||0)<minT)){minP=n.pri;minT=n._st||0;minI=i}}
-  if(minI>=0&&newPri>minP){const n=_activeNodes[minI];try{n.src.stop()}catch(e){}n._dn();return true}
+  // 스킬(SKILL=10)은 같은 우선순위라도 가장 오래된 노드 교체 허용
+  if(minI>=0&&(newPri>minP||(newPri>=_SFX_PRI.SKILL&&newPri>=minP))){const n=_activeNodes[minI];try{n.src.stop()}catch(e){}n._dn();return true}
   return false;
 }
 function _playSampleNow(key,vol,rate,startTime,pan){
@@ -6364,11 +6365,8 @@ function rollAffixes(grade,slot,brType){
   const order=grade%2===1?[cc.pre,cc.suf]:[cc.suf,cc.pre];
   for(let i=0;i<maxCount;i++){
     const pool=order[i%2];
-    // 티어 상한: 등급 기반 + 200렙당 +1 (5티어 어픽스 해금용)
-    const _afxCap=a.tiers.length-1;
     const _baseTier=grade>=4?2:grade>=3?1:0;
     const _lvBonus=~~((P?P.lv:1)/200);
-    const maxTier=Math.min(_afxCap,_baseTier+_lvBonus);
     // 가중치 선택 (중복 그룹 제외, T1이 null이면 제외)
     let tw=0;for(let j=0;j<pool.length;j++){if(!usedG[pool[j].group]&&pool[j].tiers[0]!=null)tw+=pool[j].weight}
     if(tw<=0)continue;
@@ -6376,10 +6374,10 @@ function rollAffixes(grade,slot,brType){
     for(let j=0;j<pool.length;j++){
       const a=pool[j];if(usedG[a.group]||a.tiers[0]==null)continue;
       r-=a.weight;if(r<=0){
-        // T1~maxTier 범위 내 랜덤 값 (skewRoll: 고뎀 극악 편향, tierW: 티어별 가중치)
+        // 티어 상한: 등급 + 200렙 보너스, 어픽스별 cap
+        const maxTier=Math.min(a.tiers.length-1,_baseTier+_lvBonus);
         let val,tierIdx;
         if(a.tierW){
-          // tierW 가중치 기반 티어 선택
           let _twSum=0;for(let _ti=0;_ti<=maxTier;_ti++)_twSum+=(a.tierW[_ti]||1);
           let _tr=Math.random()*_twSum;tierIdx=0;
           for(let _ti=0;_ti<=maxTier;_ti++){_tr-=(a.tierW[_ti]||1);if(_tr<=0){tierIdx=_ti;break}}
@@ -8254,7 +8252,7 @@ function drawEnBody(X,e,_now,sa){
         const wa8=a8.walkDirs[dk8];
         if(wa8&&wa8.ready){
           const _wf=a8.walkMeta.framesPerMob||4;
-          const _wFrame=~~(_now*0.005)%_wf;
+          const _wFrame=~~((e._walkDist||0)/32)%_wf;
           const _wCol=e._mob8Col*_wf+_wFrame;
           X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
           X.drawImage(wa8.img,_wCol*cell8,e._mob8Row*cell8,cell8,cell8,-_bsz/2,-_bsz/2,_bsz,_bsz);
@@ -14633,8 +14631,10 @@ function _isMagicBeam(){
 }
 // ── 마력연사 발사 함수 (1발 즉발) ──
 function _fireEnergyShot(){
-  if(!P||P.mp<10)return;
-  P.mp-=10;
+  const _esLvC=P.skills.energyShot||1;
+  const _esMpC=~~(12*(1+(_esLvC-1)*0.10)); // 마력연사 발당 MP: DPS비례 +10%/Lv (Lv1=12, Lv10=22, 4발/초=48~88/초)
+  if(!P||P.mp<_esMpC)return;
+  P.mp-=_esMpC;
   P.atkArc=Math.atan2(mouse.y-C.height/2,mouse.x-C.width/2);P.facing=P.atkArc;
   const _esLv=P.skills.energyShot||1;
   const _esRange=500+(_esLv-1)*30;
@@ -17228,9 +17228,9 @@ function _ffMoveE(e,sp,spdMul){
   if(fd){e._lastFdx=dx;e._lastFdy=dy}
   const s=e.speed*(e._aSpdM||1)*sp*(spdMul||1);
   const nx=e.x+dx*s,ny=e.y+dy*s;
-  if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}
-  else if(canMv(nx,e.y,e.r)){e.x=nx;e._lastFdx=dx;e._lastFdy=0}
-  else if(canMv(e.x,ny,e.r)){e.y=ny;e._lastFdx=0;e._lastFdy=dy}
+  if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny;e._isMoving=true}
+  else if(canMv(nx,e.y,e.r)){e.x=nx;e._lastFdx=dx;e._lastFdy=0;e._isMoving=true}
+  else if(canMv(e.x,ny,e.r)){e.y=ny;e._lastFdx=0;e._lastFdy=dy;e._isMoving=true}
   else{
     const _escAng=Math.atan2(dy,dx);const _escSpd=s*0.8;let _escaped=false;
     for(let _ei2=1;_ei2<=4&&!_escaped;_ei2++){
@@ -17247,10 +17247,10 @@ function _ffMoveE(e,sp,spdMul){
 // 카테고리: weapon=5, magic=7, bow=6
 let _lastCost=0;
 const _COST_BASE={
-  weapon:10,finisher:10,shield:10,giantSlam:10,
-  charge:10,bladeDash:10,
-  bow:10,bladeShot:10,blastShot:10,shieldThrow:10,fanShot:10,
-  magic:10,blink:10,iceOrb:10,dimBreach:10,exBolt:10,mortar:10,
+  weapon:10,finisher:250,shield:10,giantSlam:250,
+  charge:250,bladeDash:250,
+  bow:250,bladeShot:250,blastShot:250,shieldThrow:250,fanShot:250,
+  magic:250,blink:250,iceOrb:250,dimBreach:250,exBolt:250,mortar:250,
   whirlTick:.4,sBlockTick:.4,qsTick:.5
 };
 const _COST_SK={
@@ -17260,18 +17260,26 @@ const _COST_SK={
   charge:'chargeBoost',bladeDash:'bladeDash',giantSlam:'giantSlam',
   whirlTick:'whirlwind',sBlockTick:'maliceSwipe',exBolt:'maliceSwipe'
 };
+// DPS 비례 비용 스케일 (각 스킬의 DPS 성장률과 동일)
+const _COST_DPS={
+  giantSlam:.10,charge:.10,bladeDash:.10,finisher:.10,
+  bow:.05,fanShot:.05,bladeShot:.10,blastShot:.10,shieldThrow:.08,
+  magic:.15,blink:.10,iceOrb:.15,dimBreach:.10,exBolt:.10,mortar:.15,
+  whirlTick:.05,sBlockTick:.05,qsTick:.05
+};
 function _skLv(key){const id=_COST_SK[key];return id?(P.skills[id]||1):1}
+function _dpsCostMul(key){const lv=_skLv(key);const s=_COST_DPS[key]||.10;return 1+(lv-1)*s}
 function _stDisc(key){const d=(key==='bow'||key==='bladeShot'||key==='fanShot')?pBowCost():(key==='weapon'||key==='shield'||key==='charge'||key==='finisher'||key==='whirlTick'||key==='sBlockTick'||key==='giantSlam')?pAtkCost()*pMeleeStCost():1;return _gxFiring?d*0.5:d}
 function stCost(key,m){
-  if(key==='weapon')return P.activeLMBSk==='kiSlash'?5+((P.skills.kiSlash||1)-1)*2:5; // 기검참 선택 시 Lv당 +2ST, 기본공격은 고정5
-  if(key==='shield')return 5+((P.skills.maliceSwipe||1)-1)*2; // 칼등처내기 Lv당 +2ST
+  if(key==='weapon')return P.activeLMBSk==='kiSlash'?5+((P.skills.kiSlash||1)-1)*2:5;
+  if(key==='shield')return 5+((P.skills.maliceSwipe||1)-1)*2;
   const base=_COST_BASE[key]||5;
-  return~~(base*_skLv(key)*(m||1)*_stDisc(key));
+  return~~(base*_dpsCostMul(key)*(m||1)*_stDisc(key));
 }
 function useStPct(key,m){const c=stCost(key,m);if(P.st<c){_lastCost=0;return 0;}P.st-=c;_lastCost=c;return c}
 function mpCost(key){
   const base=_COST_BASE[key]||7;
-  return~~(base*_skLv(key)*pMagicCost());
+  return~~(base*_dpsCostMul(key)*pMagicCost());
 }
 function useMp(key){const c=mpCost(key),b=P.mp;P.mp=Math.max(0,P.mp-c);_lastCost=b-P.mp;return _lastCost}
 
@@ -18185,7 +18193,7 @@ function update(){
     let wnx=P.x+wdx*wms,wny=P.y+wdy*wms;
     if(canMv(wnx,P.y,P.r))P.x=wnx;if(canMv(P.x,wny,P.r))P.y=wny;
     const _wwLv=P.skills.whirlwind||1;
-    const _wwCostSec=(10+(_wwLv-1)*10); // ST/초
+    const _wwCostSec=~~(30*(1+(_wwLv-1)*0.05)); // ST/초 (DPS비례: +5%/Lv, Lv1=30 Lv10=43)
     const _wwDrainTick=_wwCostSec/60*sp; P.st-=_wwDrainTick;
     const _wwDrainBonus=1+_wwCostSec*0.001; // 소비량 보너스: 소비/초 비례
     P.wwAng=(P.wwAng||0)+0.35*_dtSp; // 회전 각도 (슬로우 무시)
@@ -18243,7 +18251,7 @@ function update(){
       if(!P._sbPtsCnt)P._sbPtsCnt=new Int32Array(6);
       // MP 소비: 초당 7% 고정소모 + 소비량 보너스
       const _sbLv=P.skills.detonate||1;
-      const _sbCostSec=(10+(_sbLv-1)*10); // MP/초
+      const _sbCostSec=~~(30*(1+(_sbLv-1)*0.05)); // MP/초 (DPS비례: +5%/Lv, Lv1=30 Lv10=43)
       const _sbMpCost=_sbCostSec/60*sp;
       const _sbDrainBonus=1+_sbCostSec*0.001;
       if(P.mp>_sbMpCost){
@@ -18627,7 +18635,7 @@ function update(){
       } else if(_mcSk==='fireBeam'&&P.skills.fireBeam>=1){
         // ── 업화선: 화염빔 투사체 1발 발사 (드래곤볼식) ──
         const _fbLv=P.skills.fireBeam||1;
-        P.mp-=10;
+        P.mp-=~~(50*(1+(_fbLv-1)*0.12)); // 업화선 발당 MP: DPS비례 +12%/Lv (Lv1=50, Lv10=104, 쿨1초=초당50~104)
         const _fbDmg=~~(magicRef()*statInt()*pMagicMul()*5*(1+(_fbLv-1)*0.12)); // 업화선 3.5→5
         const _fbRange=700+(_fbLv-1)*50; // 1렙700, 만렙~1200
         const _fbDx=Math.cos(P.atkArc),_fbDy=Math.sin(P.atkArc);
@@ -19053,7 +19061,7 @@ function update(){
     const _isElemBeam=_isOmni&&!!(P.skills.elemMissile&&_isFused('elemFuse'));
     const _bLv=(P.skills.omniBeam||1);const _bMul=_isElemBeam?(0.5+(_bLv-1)*0.078)*.9:(0.5+(_bLv-1)*0.078);
     // 빔 MP소비: 초당 7% 고정소모 + 소비량 보너스
-    const _bcostSec=(10+(_bLv-1)*10); // MP/초
+    const _bcostSec=~~(30*(1+(_bLv-1)*0.18)); // MP/초 (DPS비례: +18%/Lv, Lv1=30 Lv10=79)
     const _bcost=_bcostSec/60;
     const _mpBefore=P.mp;
     P.mp=Math.max(0,P.mp-_bcost*sp);
@@ -22765,6 +22773,7 @@ function updateE(e,sp){
     if(e.stunned>0){e.stunned=0;e._expectedStun=undefined}
     e.poise=e.maxPoise;
   }
+  e._isMoving=false; // 매 프레임 리셋 → 이동 시 true로 설정
   // ═══ 프리즌(빙결) — 행동불가 + 파란 틴트 ═══
   if(e._frozen>0){
     e._frozen-=sp;
@@ -32472,8 +32481,15 @@ function draw(){
         if(_gA8){if(P){const _fdG=dst(P.x,P.y,e.x,e.y);if(_fdG<800&&P.hp>0)e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
           let _gD=_gA8.dirs[_mobFacingDir8(e.facing)];if(!_gD||!_gD.ready)_gD=_gA8.dirs['south'];
           if(_gD&&_gD.ready){const _gc=(_gA8.meta?_gA8.meta.cell:256),_gsz=Math.max(e.r*7,80);
+            const _gMv=e._isMoving||e.s==='eCharge'||e.s==='eApproach';
+            const _gIdx=e._mob8Row*_MOB8_COLS+e._mob8Col;
             X.save();X.translate(e.x,e.y);X.globalAlpha=.9;X.imageSmoothingEnabled=false;
-            X.drawImage(_gD.img,e._mob8Col*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz);X.restore();}}
+            if(_gMv&&_gA8.walkDirs&&_gA8.walkMeta&&_gA8.walkMeta._idxSet&&_gA8.walkMeta._idxSet.has(_gIdx)){
+              const _gW=_gA8.walkDirs[_mobFacingDir8(e.facing)];
+              if(_gW&&_gW.ready){const _gwf=_gA8.walkMeta.framesPerMob||4;const _gwFr=~~((e._walkDist||0)/32)%_gwf;X.drawImage(_gW.img,(e._mob8Col*_gwf+_gwFr)*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz)}
+              else{X.drawImage(_gD.img,e._mob8Col*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz)}
+            }else{X.drawImage(_gD.img,e._mob8Col*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz)}
+            X.restore();}}
       }
 
       X.globalAlpha=1;
@@ -32551,8 +32567,14 @@ function draw(){
           let _daL=_a8L.dirs[_mobFacingDir8(e.facing)]||_a8L.dirs['south'];
           if(_daL&&_daL.ready){
             const _c8L=(_a8L.meta?_a8L.meta.cell:256);
+            const _lMv=e._isMoving||e.s==='eCharge'||e.s==='eApproach';
+            const _lIdx=e._mob8Row*_MOB8_COLS+e._mob8Col;
             X.globalAlpha=1;X.save();X.translate(e.x,e.y);X.imageSmoothingEnabled=false;
-            X.drawImage(_daL.img,e._mob8Col*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz);
+            if(_lMv&&_a8L.walkDirs&&_a8L.walkMeta&&_a8L.walkMeta._idxSet&&_a8L.walkMeta._idxSet.has(_lIdx)){
+              const _lW=_a8L.walkDirs[_mobFacingDir8(e.facing)];
+              if(_lW&&_lW.ready){const _lwf=_a8L.walkMeta.framesPerMob||4;const _lwFr=~~((e._walkDist||0)/32)%_lwf;X.drawImage(_lW.img,(e._mob8Col*_lwf+_lwFr)*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz)}
+              else{X.drawImage(_daL.img,e._mob8Col*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz)}
+            }else{X.drawImage(_daL.img,e._mob8Col*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz)}
             X.restore();
           }
         }
@@ -33235,9 +33257,15 @@ function draw(){
           if(!_da8||!_da8.ready)_da8=_a8.dirs['south'];
           if(_da8&&_da8.ready){
             const _c8=(_a8.meta?_a8.meta.cell:256);
+            const _m8mv=e._isMoving||e.s==='eCharge'||e.s==='eApproach';
+            const _m8idx=e._mob8Row*_MOB8_COLS+e._mob8Col;
             X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
             X.imageSmoothingEnabled=false;
-            X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
+            if(_m8mv&&_a8.walkDirs&&_a8.walkMeta&&_a8.walkMeta._idxSet&&_a8.walkMeta._idxSet.has(_m8idx)){
+              const _wa8m=_a8.walkDirs[_dk8];
+              if(_wa8m&&_wa8m.ready){const _wf=_a8.walkMeta.framesPerMob||4;const _wFr=~~((e._walkDist||0)/32)%_wf;X.drawImage(_wa8m.img,(e._mob8Col*_wf+_wFr)*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz)}
+              else{X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz)}
+            }else{X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz)}
             X.restore();_eDrew=true;_usedSpr=true;
           }
         }

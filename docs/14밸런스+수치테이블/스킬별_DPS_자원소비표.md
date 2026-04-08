@@ -8,17 +8,28 @@
 ## 비용 공식 참조
 
 ```
-stCost(key) = COST_BASE[key] × skLv × 할인계수
+stCost(key) = COST_BASE[key] × (1 + (skLv-1) × DPS스케일) × 할인계수
   - 할인계수(물리계): pAtkCost() × pMeleeStCost()  → 최소 0.30
   - 할인계수(석궁계): pBowCost()                    → 최소 0.60
-mpCost(key) = COST_BASE[key] × skLv × pMagicCost() → 최소 0.40
+mpCost(key) = COST_BASE[key] × (1 + (skLv-1) × DPS스케일) × pMagicCost() → 최소 0.40
 
-COST_BASE:
-  weapon:10, finisher:10, shield:10, giantSlam:10
-  charge:10, bladeDash:10
-  bow:10, bladeShot:10, blastShot:10, shieldThrow:10, fanShot:10
-  magic:10, blink:10, iceOrb:10, dimBreach:10, exBolt:10, mortar:10
+COST_BASE: (단발성 기본 250, 기본공격 10)
+  weapon:10, finisher:250, shield:10, giantSlam:250
+  charge:250, bladeDash:250
+  bow:250, bladeShot:250, blastShot:250, shieldThrow:250, fanShot:250
+  magic:250, blink:250, iceOrb:250, dimBreach:250, exBolt:250, mortar:250
   whirlTick:0.4, sBlockTick:0.4, qsTick:0.5
+
+DPS스케일 (_COST_DPS): 각 스킬의 DPS 성장률과 동일
+  물리(+10%): giantSlam, charge, bladeDash, finisher
+  석궁(+5~10%): bow/fanShot(5%), bladeShot/blastShot(10%), shieldThrow(8%)
+  마법(+10~15%): magic/iceOrb/mortar(15%), blink/dimBreach/exBolt(10%)
+
+채널링: 기본 30/초 × (1+(Lv-1)×DPS스케일)
+  회전참/보호막: +5%/Lv (Lv1=30, Lv10=43)
+  멸살광선: +18%/Lv (Lv1=30, Lv10=79)
+  마력연사: 12/발×DPS(+10%), 4발/초 (Lv1=48, Lv10=88/초)
+  업화선: 50/발×DPS(+12%), 쿨1초 (Lv1=50, Lv10=104/초)
 
 DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 ```
@@ -44,7 +55,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | kiSlash | 기검참 | ST | 5+(Lv-1)×2 = **5→23** | 없음 | weaponDmg + STR 스케일 | 기본공격 3단 콤보 검기, Lv당 뎀+10% 거리+15px |
 | whirlwind | 회전참 | ST(틱) | **10+(Lv-1)×10 ST/초** (Lv1=10, Lv10=100) | 없음 (홀드) | weaponDmg × (1+(Lv-1)×0.05) × drainBonus | 360도 지속, Lv당 범위+5 뎀+5% |
-| giantSlam | 대왕치기 | ST + 악의20 | stCost(10×Lv) (물리할인) | max(60, 480-(Lv-1)×18)f = **8초→1초** | STR × meleeRef × 2 | 포이즈 15배, 보스 체간 40% 파괴 |
+| giantSlam | 대왕치기 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 480-(Lv-1)×18)f = **8초→1초** | STR × meleeRef × 2 | 포이즈 15배, 보스 체간 40% 파괴 |
 | giantSlam2 | 대왕치기 2 | ST + 악의20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
 
 ---
@@ -57,7 +68,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | detonate | 기폭팔 | 없음 (흡수) | 패링 축적 에너지 | 없음 | 흡수뎀 × 배율, 범위 150→285 | Q 3초홀드 후 폭발 |
 | guardian | 악의 보호자 | 없음 | 패시브 | 3초마다 생성 | 자동 방어구체 (Lv1=2개, Lv당+1) | 투사체 자동 파괴 |
 | ghostWalk | 암전걸음 | 없음 | 무료 | **900f (15초)** | INT×3.5 × (1+(Lv-1)×0.15) | 5초 유령화, 적/탄 수×10% 폭발뎀, 캡=Lv×5(최대50) |
-| iceOrb | 얼음보주 | MP | 10×Lv (마법할인) | max(600, 1200-(Lv-1)×60)f = **20→10초** | INT×5 × (1+(Lv-1)×0.15) | 파쇄: 칼날 4+Lv×4발(8→44발) |
+| iceOrb | 얼음보주 | MP | 250×DPS (마법할인) | max(600, 1200-(Lv-1)×60)f = **20→10초** | INT×5 × (1+(Lv-1)×0.15) | 파쇄: 칼날 4+Lv×4발(8→44발) |
 | peaceShield | 평화의보호 | MP(틱) | 홀드 중 MP 지속소모 | 없음 | HP 10%/초 회복 + 크기비례 DR | 히든(암전나선 합체) |
 | voidScarecrow | 유령 허수아비 | ST | 100 고정 | **600f (10초)** 회수 후 | 탄막 흡수 → HP/MP/ST 각 100/개 | Lv700 해금, 용량 20+(Lv-1)×3 |
 
@@ -67,10 +78,10 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 | 쿨다운 | 데미지 공식 | DPS 비고 |
 |---|---|---|---|---|---|---|
-| fanShot | 만화방창 | ST | 10×Lv (석궁할인) | 없음 (자동) | DEX × bowRef × pBowMul × DPS_BAL.bow ÷6×2 | 6발 부채꼴, 속도×2 |
-| bladeShot | 붉은꽃 | ST | 10×Lv (석궁할인) | **30f (0.5초)** | DEX × bowRef × pBowMul × 6 | 핏빛 칼날, 사거리 400→796 |
+| fanShot | 만화방창 | ST | 250×DPS (석궁할인) | 없음 (자동) | DEX × bowRef × pBowMul × DPS_BAL.bow ÷6×2 | 6발 부채꼴, 속도×2 |
+| bladeShot | 붉은꽃 | ST | 250×DPS (석궁할인) | **30f (0.5초)** | DEX × bowRef × pBowMul × 6 | 핏빛 칼날, 사거리 400→796 |
 | needleShot | 만화방창 II | ST | 8 고정 | **90f (1.5초)** | DEX × bowRef × pMagicMul × 1.2 | 5→10발 관통, 속도 30 |
-| blastShot | 폭산탄 | ST + 악의5 | 10×Lv (석궁할인) + 악의5 | **30f (0.5초)** | 폭발계 DEX 스케일 | 1→2→5발 (Lv1/5/10), 범위130+10%/Lv |
+| blastShot | 폭산탄 | ST + 악의5 | 250×DPS (석궁할인) + 악의5 | **30f (0.5초)** | 폭발계 DEX 스케일 | 1→2→5발 (Lv1/5/10), 범위130+10%/Lv |
 | shieldThrow | 칼등날개 | ST | 0 (우클릭에서 이미 차감) | **300f (5초)** | STR 스케일 | 합체 전용, 제자리 처내기+충격파, Lv당 뎀+12%, **넉백 1.5** |
 | ghostXbowTurret | 공성쇠뇌 | ST | 100 고정 | 없음 | DEX × (뎀+50%, 공속+50%, 사거리+50%) | Lv500 해금, 터렛 설치 중 본체 석궁 불가 |
 
@@ -80,13 +91,13 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 | 쿨다운 | 데미지 공식 | DPS 비고 |
 |---|---|---|---|---|---|---|
-| fireball | 악의구 | MP | 10×Lv (마법할인) | 없음 | INT × magicRef × pMagicMul × 1.3 | 기본 E, 범위폭발+넉백, Lv당 크기+10% 뎀+15% |
+| fireball | 악의구 | MP | 250×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × 1.3 | 기본 E, 범위폭발+넉백, Lv당 크기+10% 뎀+15% |
 | omniBeam | 멸살광선 | MP(틱) | **10+(Lv-1)×10 MP/초** (Lv1=10, Lv10=100) | 과부하 **300f (5초)** | INT × magicRef × DPS_BAL.beam × drainBonus | 직선레이저, 합체→만화광선(3발)/추적암전(6발) |
-| elemMissile | 원소추적탄 | MP | ~10×Lv (마법할인) | 없음 | INT + Lv당 뎀+10% | 6원소 유도, 곡선궤적, 사거리+20/Lv |
+| elemMissile | 원소추적탄 | MP | ~250×DPS (마법할인) | 없음 | INT + Lv당 뎀+10% | 6원소 유도, 곡선궤적, 사거리+20/Lv |
 | energyShot | 마력연사 | MP | **5/발 (4발/초=20MP/초)** | 없음 (홀드) | INT + Lv당 뎀+10% | 유도+착탄폭발, 사거리+30/Lv |
 | fireBeam | 업화선 | MP | 10/발 | DEX 스케일 | INT + Lv당 뎀+12% | 100%관통+유도+화상, 사거리+50/Lv |
 | fireAura | 지옥진 | MP | **100** 고정 | **720f (12초)** | 100+Lv×20 /틱 | 10초간 용암기둥, 범위+10%/Lv 뎀+12%/Lv |
-| maliceMortar | 폭풍소환 | MP | 10×Lv (마법할인, key=mortar) | **660f (11초)** | INT 스케일 | 6.5초간 소용돌이, 범위 260+(Lv-1)×28, 흡인력 0.78+Lv×0.104 |
+| maliceMortar | 폭풍소환 | MP | 250×DPS (마법할인, key=mortar) | **660f (11초)** | INT 스케일 | 6.5초간 소용돌이, 범위 260+(Lv-1)×28, 흡인력 0.78+Lv×0.104 |
 | plagueBurst | 폭독칼날 | 악의 | **15** 고정 | **1200f (20초)** | STR 스케일 | 관통 30→100, 전염+처형, 사거리 4000 |
 | maliceStorm | 악의폭풍 | MP | 90 추정 | **1200f (20초)** | 100+Lv×20 /틱 (10틱) | 3초 암전나선, 범위+22/Lv |
 | darkPillar | 악의기둥 | MP | mpCost 기반 | **900f (15초)** | INT 스케일 | 9기둥 5초, 범위 250+(Lv-1)×22 |
