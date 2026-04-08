@@ -17525,7 +17525,7 @@ function update(){
       const _csLv=P.skills.chainSlash||1;
       const _csR=160+(_csLv-1)*5; // 반경 160+Lv×5 (docs 기준)
       const _csNe=shQuery(P.x,P.y,_csR);
-      const _csDmg=~~(meleeRef()*statStr()*(12+(_csLv-1))*_fuseMul('chainSlash')); // 1히트 기준 회전참 1초 DPS급, flat +1/Lv
+      const _csDmg=~~(meleeRef()*statStr()*(20+(_csLv-1))*_fuseMul('chainSlash')); // 1히트 기준, flat +1/Lv (Lv1=20, Lv10=29)
       const _csAng=Math.atan2(_dashVY,_dashVX);
       for(let _ci=0;_ci<_csNe.length;_ci++){
         const e=_csNe[_ci];if(!e.alive)continue;
