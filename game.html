@@ -1961,7 +1961,7 @@ function _renderLighting(){
 }
 
 // ═══ 동적 품질/텍스트 캐시 전역 (WebGL 블록 이전에 선언) ═══
-var _maxEns=IS_ELECTRON?400:150,_dynERMax=IS_ELECTRON?60:45,_dynPLim=IS_ELECTRON?800:500,_flushCnt=0;
+var _maxEns=IS_ELECTRON?400:150,_dynERMax=IS_ELECTRON?60:45,_dynPLim=IS_ELECTRON?500:300,_flushCnt=0;
 var _txtTick=0,_txtUVSize=0;
 var _txtEvict=function(){};
 var _txDirty=false; // 오버레이 캔버스 dirty 플래그
@@ -2156,6 +2156,72 @@ function _flushVfxGL(){
   if(_glMainProg)GL.useProgram(_glMainProg);
   const n=_vfxGLCount;_dbgVfxGLDrawn+=n;_vfxGLCount=0;_vfxGLCurTex=null;
   return n;
+}
+// ═══ PARTICLE GL Instancing (단색 사각형) ═══
+const _PART_GL_MAX=1024,_PART_GL_STRIDE=7;
+const _partGLCpu=new Float32Array(_PART_GL_MAX*_PART_GL_STRIDE);
+let _partGLProg=null,_partGLVao=null,_partGLQuadVBO=null,_partGLInstVBO=null,_partGLURes=null,_partGLCount=0,_partGLMode=false;
+function _resetPartGL(){_partGLProg=null;_partGLVao=null;_partGLQuadVBO=null;_partGLInstVBO=null;_partGLURes=null;_partGLCount=0;_partGLMode=false}
+function _initPartGL(){
+  if(!GL)return;
+  try{
+    function _ps(src,t){const s=GL.createShader(t);GL.shaderSource(s,src);GL.compileShader(s);if(!GL.getShaderParameter(s,GL.COMPILE_STATUS))throw new Error(GL.getShaderInfoLog(s)||'partGL shader');return s}
+    const _vs=`#version 300 es
+precision highp float;
+layout(location=0)in vec2 a_quad;
+layout(location=1)in vec3 a_pos_sz;
+layout(location=2)in vec3 a_col;
+layout(location=3)in float a_alpha;
+uniform vec2 u_res;
+out vec4 vCol;
+void main(){
+  vec2 sp=a_pos_sz.xy+a_quad*a_pos_sz.z;
+  vec2 ndc=sp/u_res*2.0-1.0;ndc.y=-ndc.y;
+  vCol=vec4(a_col,a_alpha);
+  gl_Position=vec4(ndc,0.0,1.0);
+}`;
+    const _fs=`#version 300 es
+precision mediump float;
+in vec4 vCol;out vec4 oC;
+void main(){oC=vCol;}
+`;
+    _partGLProg=GL.createProgram();GL.attachShader(_partGLProg,_ps(_vs,GL.VERTEX_SHADER));GL.attachShader(_partGLProg,_ps(_fs,GL.FRAGMENT_SHADER));GL.linkProgram(_partGLProg);
+    if(!GL.getProgramParameter(_partGLProg,GL.LINK_STATUS))throw new Error(GL.getProgramInfoLog(_partGLProg)||'partGL link');
+    const _quad=new Float32Array([-.5,-.5,.5,-.5,-.5,.5,.5,.5]),_st=_PART_GL_STRIDE*4;
+    _partGLVao=GL.createVertexArray();_partGLQuadVBO=GL.createBuffer();_partGLInstVBO=GL.createBuffer();
+    GL.bindVertexArray(_partGLVao);
+    GL.bindBuffer(GL.ARRAY_BUFFER,_partGLQuadVBO);GL.bufferData(GL.ARRAY_BUFFER,_quad,GL.STATIC_DRAW);
+    GL.vertexAttribPointer(0,2,GL.FLOAT,false,8,0);GL.enableVertexAttribArray(0);
+    GL.bindBuffer(GL.ARRAY_BUFFER,_partGLInstVBO);GL.bufferData(GL.ARRAY_BUFFER,_partGLCpu.byteLength,GL.DYNAMIC_DRAW);
+    GL.vertexAttribPointer(1,3,GL.FLOAT,false,_st,0);GL.enableVertexAttribArray(1);GL.vertexAttribDivisor(1,1);
+    GL.vertexAttribPointer(2,3,GL.FLOAT,false,_st,12);GL.enableVertexAttribArray(2);GL.vertexAttribDivisor(2,1);
+    GL.vertexAttribPointer(3,1,GL.FLOAT,false,_st,24);GL.enableVertexAttribArray(3);GL.vertexAttribDivisor(3,1);
+    GL.bindVertexArray(null);GL.bindBuffer(GL.ARRAY_BUFFER,null);
+    _partGLURes=GL.getUniformLocation(_partGLProg,'u_res');
+    _partGLMode=true;
+    console.log('[PART-GL] instancing 초기화 성공');
+  }catch(e){console.warn('[PART-GL] 초기화 실패:',e.message||e);_resetPartGL()}
+}
+function _queuePartGL(x,y,sz,col,alpha){
+  if(!_partGLMode)return;
+  if(_partGLCount>=_PART_GL_MAX)_flushPartGL();
+  const c=_parseCol(col);
+  const o=_partGLCount*_PART_GL_STRIDE;
+  _partGLCpu[o]=x;_partGLCpu[o+1]=y;_partGLCpu[o+2]=sz;
+  _partGLCpu[o+3]=c[0];_partGLCpu[o+4]=c[1];_partGLCpu[o+5]=c[2];
+  _partGLCpu[o+6]=alpha*c[3];
+  _partGLCount++;
+}
+function _flushPartGL(){
+  if(!_partGLMode||!GL||!_partGLProg||_partGLCount<1)return 0;
+  GL.useProgram(_partGLProg);GL.uniform2f(_partGLURes,C.width,C.height);
+  GL.enable(GL.BLEND);GL.blendFunc(GL.SRC_ALPHA,GL.ONE_MINUS_SRC_ALPHA);
+  GL.bindVertexArray(_partGLVao);GL.bindBuffer(GL.ARRAY_BUFFER,_partGLInstVBO);
+  GL.bufferSubData(GL.ARRAY_BUFFER,0,_partGLCpu,0,_partGLCount*_PART_GL_STRIDE);
+  GL.drawArraysInstanced(GL.TRIANGLE_STRIP,0,4,_partGLCount);
+  GL.bindVertexArray(null);
+  if(_glMainProg)GL.useProgram(_glMainProg);
+  const n=_partGLCount;_partGLCount=0;return n;
 }
 function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
   _dbgEnsGL=0;_ensGLCount=0;
@@ -2520,6 +2586,7 @@ oC=c;}`;
   _clearFrame=function(){_flush();GL.clearColor(0,0,0,1);GL.clear(GL.COLOR_BUFFER_BIT);_qCnt=0;_bufOff=0;_curTex=wt};
   _initEnemyInstancing();
   _initVfxInstancing();
+  _initPartGL();
 
   if(!IS_ELECTRON)console.log('[GPU] WebGL2 ready — maxTex:'+_glMaxTex);
   // ── WebGL context lost/restored 핸들러 ──
@@ -2527,7 +2594,7 @@ oC=c;}`;
     ev.preventDefault();
     console.warn('[GPU] WebGL context lost — Canvas2D 폴백');
     _useGL=false;_useGPU=false;GL=null;GPU=null;
-    _glMainProg=null;_resetEnemyInstanced();_resetVfxInstanced();
+    _glMainProg=null;_resetEnemyInstanced();_resetVfxInstanced();_resetPartGL();
     _flush=function(){};_setTex=function(){};_getTex=function(){return null};
     _setBlend=function(){};_glFlush=function(){};
     _clearFrame=function(){};
@@ -8088,19 +8155,24 @@ function poolUpdate(sp){
 // 파티클 렌더: 타입별 분기 — save/restore 제거, 컬러캐싱 최적화
 const _partGrid=new Uint8Array(64*64); // 32px 그리드, 64x64 셀 — overdraw 제한
 function poolRender(X,vl,vr,vt,vb){
-  // 교대 렌더 제거 — 깜빡임 원인. 그리드 overdraw 제한으로 충분
-  const _pCellMax=_hiFPS?2:3; // 고FPS: 셀당 2개, 일반: 3개
+  const _pCellMax=_hiFPS?2:3;
   var _lf='',_ls='';
-  _partGrid.fill(0); // 그리드 초기화
-  const _pgOx=vl,_pgOy=vt; // 그리드 원점 = 뷰포트 좌상
+  _partGrid.fill(0);
+  const _pgOx=vl,_pgOy=vt;
+  const _glPart=_useGL&&_partGLMode; // WebGL2 파티클 instancing 활성 여부
   for(var i=0;i<_partCnt;i++){
     const p=_partPool[i];
     if(p.x<vl||p.x>vr||p.y<vt||p.y>vb)continue;
-    // 같은 셀에 파티클 3개 이상이면 스킵 (overdraw 제한)
     const _pgx=~~((p.x-_pgOx)/32),_pgy=~~((p.y-_pgOy)/32);
     if(_pgx>=0&&_pgx<64&&_pgy>=0&&_pgy<64){const _pgi=_pgy*64+_pgx;if(_partGrid[_pgi]>=_pCellMax)continue;_partGrid[_pgi]++}
     const fa=p.ml>0?(p.life/p.ml*1.5<1?p.life/p.ml*1.5:1):.6;
-    X.globalAlpha=Math.min(1,fa*1.4);
+    const _pa=Math.min(1,fa*1.4);
+    // WebGL2 instancing: tp 0,1 (사각형/원→사각형) 전용
+    if(_glPart&&(p.tp===0||p.tp===1||p.tp===undefined)){
+      _queuePartGL(p.x,p.y,p.sz,p.col,_pa);
+      continue;
+    }
+    X.globalAlpha=_pa;
     if(_useGPU||_useGL){switch(p.tp){
       case 1:{if(p.col!==_lf){X.fillStyle=p.col;_lf=p.col}const _ps=p.sz*.5;X.fillRect(p.x-_ps,p.y-_ps,p.sz,p.sz);break;}
       case 2:{if(p.col!==_ls){X.strokeStyle=p.col;_ls=p.col}const c2=Math.cos(p.rot),s2=Math.sin(p.rot),hw2=p.sz*1.5;X.lineWidth=1;X.beginPath();X.moveTo(p.x-c2*hw2,p.y-s2*hw2);X.lineTo(p.x+c2*hw2,p.y+s2*hw2);X.stroke();break;}
@@ -8113,6 +8185,7 @@ function poolRender(X,vl,vr,vt,vb){
       default:{if(p.col!==_lf){X.fillStyle=p.col;_lf=p.col}const hs3=p.sz*.5;X.fillRect(p.x-hs3,p.y-hs3,p.sz,p.sz);}
     }}
   }
+  if(_glPart)_flushPartGL(); // 루프 끝 1회 flush
   X.globalAlpha=1;
 }
 
@@ -17245,7 +17318,7 @@ const _COST_BASE={
   weapon:10,finisher:50,shield:10,giantSlam:50,
   charge:50,bladeDash:50,
   bow:50,bladeShot:50,blastShot:50,shieldThrow:50,fanShot:50,
-  magic:50,blink:50,iceOrb:50,dimBreach:50,exBolt:50,mortar:50,
+  magic:10,blink:50,iceOrb:50,dimBreach:50,exBolt:50,mortar:50,
   whirlTick:.4,sBlockTick:.4,qsTick:.5
 };
 const _COST_SK={
@@ -18312,7 +18385,7 @@ function update(){
     // ═══ 암전폭류: 회전 중 버스트루프 자동 차징+폭발 ═══
     if(_isFused('stormBurst')&&P.skills.burstLoop>=1){
       P._blAutoCharge=(P._blAutoCharge||0)+sp;
-      const _blAutoMax=120; // 2초 만충 (기폭팔과 동일 타이밍)
+      const _blAutoMax=_isFused('slamStorm')?150:120; // 지진폭풍 2.5초, 기폭팔 2초 — 동시 폭발 보장
       const _blAutoTier=P._blAutoCharge>=_blAutoMax?3:P._blAutoCharge>=_blAutoMax*0.67?2:P._blAutoCharge>=_blAutoMax*0.33?1:0;
       if(P._blAutoCharge>=_blAutoMax){
         _burstLoopExplode(3);
@@ -18341,10 +18414,9 @@ function update(){
       else addTxt(P.x,P.y-30,_T('충전 중...'),'#ff8844',30);
     }
     if(!isAct('weapon')||P.st<=0||(_wwFused&&P.hp<=P.mhp*.05)){
-      // 스킬 합성: 회전참+기폭팔 → 종료 시 자동 폭발
-      console.log('[WW-END] wwFused='+_wwFused+' parryT='+(P.parryT||0)+' ssCD='+_ssCD+' slamStorm='+_isFused('slamStorm')+' stormBeam='+_isFused('stormBeam'));
-      if(_wwFused&&(P.parryT||0)>=_ssCD){
-        console.log('[WW-END] BOOM! slamStorm='+_isFused('slamStorm'));
+      // 스킬 합성: 회전참+기폭팔 → 종료 시 폭발 (총 회전 2초 이상이면 발동)
+      console.log('[WW-END] fused='+_wwFused+' detTimer='+(P._wwDetTimer||0)+' ssCD='+_ssCD+' parryT='+(P.parryT||0));
+      if(_wwFused&&(P._wwDetTimer||0)>=_ssCD){
         if(_isFused('slamStorm')){_slamStormBlast()}
         else{_detonateBlast('회전기폭!',EL.P)}
       }
@@ -31609,7 +31681,9 @@ function renderStatSummary(){
     // ── 방어 ──
     `<div style="${_sHd}">🛡️ ${_L('방어','Defense')}</div>`+
     `<div style="${_sLn}">${_L('물리방어','Phys DEF')}: <span style="color:#ffaa44">${_sTotalPDef.toFixed(1)}</span> → <span style="color:#44ff88">${(_sPhysDR*100).toFixed(1)}%${_L('감소','red')}</span> <span style="color:#887766;font-size:1.1rem">(${_L('캡','cap')}${~~(DR_CAP*100)}%)</span></div>`+
+    `<div style="font-size:1rem;color:#887766;line-height:1.6;margin-left:12px">${_L('기본','base')}:${P.baseDef} | ${_L('패시브','passive')}:${pDefAdd()} | ${_L('견갑','shield')}:${sh().def||0} | ${_L('갑옷','armor')}:${ar().def||0} | ${_L('부츠','boots')}:${bt().def||0} | ${_L('장갑','gloves')}:${gl().def||0} | ${_L('바지','pants')}:${pt().def||0} | ${_L('강화','enhance')}:${_sEnhDef}</div>`+
     `<div style="${_sLn}">${_L('속성방어','Elem DEF')}: <span style="color:#bb88ff">${_sTotalEDef}</span> → <span style="color:#44ff88">${(_sElemDR*100).toFixed(1)}%${_L('감소','red')}</span></div>`+
+    `<div style="font-size:1rem;color:#887766;line-height:1.6;margin-left:12px">${_L('투구','helmet')}:${hm().eDef||0} | ${_L('목걸이','necklace')}:${nc().eDef||0} | ${_L('반지1','ring1')}:${rg1().eDef||0} | ${_L('반지2','ring2')}:${rg2().eDef||0}</div>`+
     `<div style="${_sLn}">${_L('반사','Reflect')}: <span style="color:${_afc('reflect','#aaaaff')}">${_afp('reflect')}</span> | ${_L('가시','Thorns')}: <span style="color:${_afc('thorns','#ff8844')}">${_af('thorns').toFixed(0)}</span> | ${_L('배리어','Barrier')}: <span style="color:${_afc('barrier','#4488ff')}">${_af('barrier').toFixed(0)}</span></div>`+
     `<div style="${_sLn}">${_L('보호막 흡수','Shield Absorb')}: <span style="color:#55bbff">${~~(pGuardAbsorb()*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}70% +pGuard ${PASSIVES.pGuard||0}lv)</span></div>`+
     // ── 속성 저항 ──
@@ -32467,6 +32541,9 @@ function draw(){
     }
     if(e.x<_vl||e.x>_vr||e.y<_vt||e.y>_vb)continue;
     _eRCnt++;const _eLite=!e.ib&&_eRCnt>_E_RMAX; // 초과 시 간소화 모드
+    // LOD: 카메라 900px+ → 단순 원형 (스프라이트 스킵)
+    const _eCamD2=(e.x-G.cam.x)*(e.x-G.cam.x)+(e.y-G.cam.y)*(e.y-G.cam.y);
+    if(_eCamD2>810000&&!e.ib){X.globalAlpha=.6;X.fillStyle=e.col||'#aa4444';X.beginPath();X.arc(e.x,e.y,e.r,0,Math.PI*2);X.fill();X.globalAlpha=1;continue}
     // ── 구울 전용 렌더 (3종 스프라이트) ──
     if(e._isGhoul){
       const gt=GHOUL_DEFS[e.etype]||GHOUL_DEFS[101];
@@ -34545,7 +34622,7 @@ function draw(){
   if(!G._litFrame)G._litFrame=0;G._litFrame++;
   {const _l0=performance.now();if(_gameFrame%3===0){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
   // ═══ 블룸 패스 (3프레임마다 계산 — 라이팅과 1프레임 오프셋) ═══
-  {const _bl0=performance.now();if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
+  {const _bl0=performance.now();const _hasGlow=G.bossAlive||_blCnt>0||pProjs.length>0||projs.length>0||(G.pets&&G.pets.iris&&!G._irisOff);if(_hasGlow){if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
   // [TORCH] 횃불 조명 어둠 오버레이 (_gameFrame%3===0 만 재계산)
   const _tc0=performance.now();
   if(OPT.torch&&OPT.postfx&&OPT.quality!=='low'){X.save();X.setTransform(1,0,0,1,0,0);
