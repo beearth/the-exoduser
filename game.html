@@ -5846,7 +5846,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       else showPH(_T('악의 부족! (12)'),'#ff4444');break;
     case 'maliceHunt':
       if((P._mhCd||0)>0){break}
-      if(G.mats>=30){activateMaliceHunt();P._mhCd=~~(900*(1+_eqAffix('cooldownRed')));_skOk=true}
+      if(G.mats>=30){activateMaliceHunt();P._mhCd=~~((900-((P.skills.maliceHunt||1)-1)*30)*(1+_eqAffix('cooldownRed')));_skOk=true}
       else showPH(_T('악의 부족! (30)'),'#ff4444');break;
     case 'maliceStorm':
       if(P._msAiming){P._msAiming=false;showPH(_T('취소'),'#888');break}
@@ -8229,6 +8229,8 @@ function drawEnBody(X,e,_now,sa){
       if(_pa&&_pa.mobList&&_pa.mobList.length)_applyMobSkin(e,_pa);
     }
   }
+  // ── facing 강제: 800px 이내 몬스터는 항상 플레이어를 바라봄 (렌더 직전) ──
+  if(P){const _fd=dst(P.x,P.y,e.x,e.y);if(_fd<800&&P.hp>0)e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
   // ── 8방향 아틀라스 렌더링 (우선) ──
   if(e._mob8dir&&e._mobCh){
     const a8=_ch8Atlas[e._mobCh];
@@ -12173,7 +12175,7 @@ let _deathSfxCd=0; // 사망 사운드 쿨다운 (60프레임=1초)
 let _hitSfxCd=0; // 히트사운드 쿨다운
 function deathFX(x,y,r,col,isBoss,noSound,et){
   if(!noSound&&_deathSfxCd<=0){
-    _deathSfxCd=60; // 1초 쿨다운
+    _deathSfxCd=6; // 0.1초 쿨다운 (대량 사망 시에도 연속 재생)
     // 사망음은 큐 우회 — 직접 재생 (대량 전투에서 큐 포화로 씹히는 것 방지)
     const _dVol=sfxVol();
     if(isBoss){const _bd=_bossSfx(G.stage);_playSampleNow(_bd?_bd.die:'death_boss',.5*_dVol,_r(_bd?_bd.dieP:.7,.15))}
@@ -21627,7 +21629,7 @@ function update(){
               const _isAdd=e.ib?(15+_isLv*2):(35+_isLv*4);
               e._freezeGauge=Math.min(e._freezeMax,e._freezeGauge+_isAdd);
               if(e._freezeGauge>=e._freezeMax){
-                e._frozen=e.ib?90:180;e._freezeGauge=0;
+                e._frozen=180;e._freezeGauge=0;
                 addTxt(e.x,e.y-25,_T('❄프리즌!'),'#44ddff',50);
                 addParts(e.x,e.y,'#88eeff',12);void 0;
               }
@@ -21673,7 +21675,7 @@ function update(){
                 if(!e._freezeMax)e._freezeMax=e.ib?500:100;
                 if(!e._freezeGauge)e._freezeGauge=0;
                 e._freezeGauge=Math.min(e._freezeMax,e._freezeGauge+(e.ib?10:25));
-                if(e._freezeGauge>=e._freezeMax){e._frozen=e.ib?90:180;e._freezeGauge=0;
+                if(e._freezeGauge>=e._freezeMax){e._frozen=180;e._freezeGauge=0;
                   addTxt(e.x,e.y-25,_T('❄프리즌!'),'#44ddff',50);addParts(e.x,e.y,'#88eeff',12);void 0}
               }
             }else{
@@ -22790,14 +22792,10 @@ function updateE(e,sp){
   if(!e._alerted&&d<800&&(e.s==='idle'||e.s==='recover'))e._alerted=true;
   // ── 방향 추적: 항상 플레이어를 바라봄 ──
   if(d<800){e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
-  // 어그로 추적: 플로우필드로 벽도 돌아옴 — 30px까지 밀착
-  if(e._alerted&&d>80&&(e.s==='idle'||e.s==='recover')){
+  // 어그로 추적: 플로우필드로 벽도 돌아옴 — 밀착까지 추적 (해제 없음)
+  if(e._alerted&&d>30&&(e.s==='idle'||e.s==='recover')){
     _ffMoveE(e,sp,e.ib?2:1);
-    d=dst(P.x,P.y,e.x,e.y);if(d<=80)e._alerted=false
-  }
-  // ── 근접 어그로: 100px 이내 접근 시 즉시 알림 ──
-  if(!e._alerted&&!e.ib&&d<100&&d>50&&(e.s==='idle'||e.s==='recover')){
-    e._alerted=true;
+    d=dst(P.x,P.y,e.x,e.y);
   }
   // 회전참 피격 스택 감소: 1초간 안 맞으면 초당 3스택씩 감소
   if(e._wwStk>0){if(e._wwStkT>0)e._wwStkT-=sp;else{e._wwStk=Math.max(0,e._wwStk-~~(3*sp/60));}}
@@ -26233,7 +26231,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       const _fzAdd=(e.ib?dmg*.3:dmg)*_iceResMul*_iceShardMul; // 보스는 축적량 30%
       e._freezeGauge=Math.min(e._freezeMax,e._freezeGauge+_fzAdd);
       if(e._freezeGauge>=e._freezeMax){
-        e._frozen=e.ib?90:180; // 보스 1.5초, 일반 3초
+        e._frozen=180; // 보스 1.5초, 일반 3초
         e._freezeGauge=0;
         if(_txtPerFrame<_TXT_BUDGET)addTxt(e.x,e.y-25,_T('❄프리즌!'),'#44ddff',50);
         addParts(e.x,e.y,'#88eeff',12);void 0;
@@ -28014,7 +28012,7 @@ function activateMaliceHunt(){
     const _isPlagueGF=P.skills.plagueBurst>=1&&_isFused('plagueFuse');
     if(_isPlagueGF&&(P._pbCd||0)>0){return}
     G.mats-=30;P.mp=Math.max(0,P.mp-_mhMpCost);
-    if(_isPlagueGF)P._pbCd=~~(1200*(1+_eqAffix('cooldownRed'))); // 독혈해방 20초 쿨
+    if(_isPlagueGF)P._pbCd=~~((900-((P.skills.plagueBurst||1)-1)*30)*(1+_eqAffix('cooldownRed'))); // 독혈해방 15초 - Lv당 0.5초
     const _goCnt=P._gOrbs.length;
     const _goR=(34)+P.r;
     const _fbDmg=~~(meleeRef()*statStr()*pAtkMul()*10*(1+(_mhLv-1)*0.10)*_fuseMul('maliceHunt')); // Lv당 +10% (카드표시와 동기)
@@ -28228,7 +28226,7 @@ function activateVoidScarecrow(){
 // ═══ 폭독칼날 — 발동 (1발 관통 칼날, 쿨12초) ═══
 function activatePlagueBurst(){
   if(G.mats<15||(P._pbCd||0)>0)return;
-  G.mats-=15;P._pbCd=~~(1200*(1+_eqAffix('cooldownRed'))); // 20초
+  G.mats-=15;P._pbCd=~~((900-((P.skills.plagueBurst||1)-1)*30)*(1+_eqAffix('cooldownRed'))); // 15초 - Lv당 0.5초
   const slv=P.skills.plagueBurst||1;
   const a=P.atkArc;
   const _pbPierce=Math.min(100,~~(30+(slv-1)*70/9)); // Lv1=30, Lv10=100
@@ -32465,7 +32463,8 @@ function draw(){
           e._mob8Col=(_gs%_MOB8_TOTAL)%_MOB8_COLS;e._mob8Row=~~((_gs%_MOB8_TOTAL)/_MOB8_COLS);
         }
         const _gA8=_ch8Atlas[1];
-        if(_gA8){let _gD=_gA8.dirs[_mobFacingDir8(e.facing)];if(!_gD||!_gD.ready)_gD=_gA8.dirs['south'];
+        if(_gA8){if(P){const _fdG=dst(P.x,P.y,e.x,e.y);if(_fdG<800&&P.hp>0)e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
+          let _gD=_gA8.dirs[_mobFacingDir8(e.facing)];if(!_gD||!_gD.ready)_gD=_gA8.dirs['south'];
           if(_gD&&_gD.ready){const _gc=(_gA8.meta?_gA8.meta.cell:256),_gsz=Math.max(e.r*7,80);
             X.save();X.translate(e.x,e.y);X.globalAlpha=.9;X.imageSmoothingEnabled=false;
             X.drawImage(_gD.img,e._mob8Col*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz);X.restore();}}
@@ -32542,7 +32541,8 @@ function draw(){
         const _a8L=_ch8Atlas[1];
         if(_a8L){
           const _bsz=Math.max(_er*7,80);
-          let _daL=_a8L.dirs['south'];
+          if(P){const _fdL=dst(P.x,P.y,e.x,e.y);if(_fdL<800&&P.hp>0)e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
+          let _daL=_a8L.dirs[_mobFacingDir8(e.facing)]||_a8L.dirs['south'];
           if(_daL&&_daL.ready){
             const _c8L=(_a8L.meta?_a8L.meta.cell:256);
             X.globalAlpha=1;X.save();X.translate(e.x,e.y);X.imageSmoothingEnabled=false;
@@ -33222,6 +33222,7 @@ function draw(){
         // 8dir 아틀라스 렌더
         const _a8=_ch8Atlas[1];
         if(_a8){
+          if(P){const _fdM=dst(P.x,P.y,e.x,e.y);if(_fdM<800&&P.hp>0)e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
           const _baseSz=Math.max(e.r*7,80);
           const _dk8=_mobFacingDir8(e.facing);
           let _da8=_a8.dirs[_dk8];
