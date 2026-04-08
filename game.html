@@ -6004,14 +6004,14 @@ addEventListener('keydown',e=>{
     const _bdDir=_bdDirs[e.code];
     if(_bdDir!==undefined){
       // 1) 방향키+스페이스 동시
-      if(KH['Space']){P._bdTrigger=_bdDir;K['Space']=false;KH['Space']=false;return}
+      if(KH['Space']&&!SKILL_SLOTS[4]){P._bdTrigger=_bdDir;K['Space']=false;KH['Space']=false;return}
       // 2) 더블탭 (250ms 이내 같은 방향키 2번)
       else{const _now=performance.now();
         if(P._bdLastDir===_bdDir&&_now-P._bdLastT<250){P._bdTrigger=_bdDir;P._bdLastDir=-1;P._bdLastT=0}
         else{P._bdLastDir=_bdDir;P._bdLastT=_now}}
     }
-    // 스페이스 눌렀을 때 방향키 이미 눌려있으면
-    if(e.code==='Space'){
+    // 스페이스 눌렀을 때 방향키 이미 눌려있으면 (스킬슬롯 배정 시 스킬 우선)
+    if(e.code==='Space'&&!SKILL_SLOTS[4]){
       for(const[code,dir]of Object.entries(_bdDirs)){if(KH[code]){P._bdTrigger=dir;K['Space']=false;return}}
     }
   }
@@ -8252,7 +8252,7 @@ function drawEnBody(X,e,_now,sa){
         const wa8=a8.walkDirs[dk8];
         if(wa8&&wa8.ready){
           const _wf=a8.walkMeta.framesPerMob||4;
-          const _wFrame=~~((e._walkDist||0)/32)%_wf;
+          const _wFrame=~~((e._walkDist||0)/128)%_wf;
           const _wCol=e._mob8Col*_wf+_wFrame;
           X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
           X.drawImage(wa8.img,_wCol*cell8,e._mob8Row*cell8,cell8,cell8,-_bsz/2,-_bsz/2,_bsz,_bsz);
@@ -17228,9 +17228,9 @@ function _ffMoveE(e,sp,spdMul){
   if(fd){e._lastFdx=dx;e._lastFdy=dy}
   const s=e.speed*(e._aSpdM||1)*sp*(spdMul||1);
   const nx=e.x+dx*s,ny=e.y+dy*s;
-  if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny;e._isMoving=true}
-  else if(canMv(nx,e.y,e.r)){e.x=nx;e._lastFdx=dx;e._lastFdy=0;e._isMoving=true}
-  else if(canMv(e.x,ny,e.r)){e.y=ny;e._lastFdx=0;e._lastFdy=dy;e._isMoving=true}
+  if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny;}
+  else if(canMv(nx,e.y,e.r)){e.x=nx;e._lastFdx=dx;e._lastFdy=0;}
+  else if(canMv(e.x,ny,e.r)){e.y=ny;e._lastFdx=0;e._lastFdy=dy;}
   else{
     const _escAng=Math.atan2(dy,dx);const _escSpd=s*0.8;let _escaped=false;
     for(let _ei2=1;_ei2<=4&&!_escaped;_ei2++){
@@ -17274,7 +17274,8 @@ function stCost(key,m){
   if(key==='weapon')return P.activeLMBSk==='kiSlash'?5+((P.skills.kiSlash||1)-1)*2:5;
   if(key==='shield')return 5+((P.skills.maliceSwipe||1)-1)*2;
   const base=_COST_BASE[key]||5;
-  return~~(base*_dpsCostMul(key)*(m||1)*_stDisc(key));
+  const raw=~~(base*_dpsCostMul(key)*(m||1)*_stDisc(key));
+  return Math.min(raw,~~(P.mst*0.95)); // ST 풀이면 항상 발동 가능 (최대ST의 95% 캡)
 }
 function useStPct(key,m){const c=stCost(key,m);if(P.st<c){_lastCost=0;return 0;}P.st-=c;_lastCost=c;return c}
 function mpCost(key){
@@ -19388,10 +19389,10 @@ function update(){
       const _ed2=dst2(P.x,P.y,e.x,e.y);
       // 뷰포트 컬링: 카메라 화면+300px 밖이면 AI 스킵 (보스/피격/근접 제외, hp/상태는 위에서 처리)
       const _eInView=e.ib||e.hurt>0||(_ed2<900)||(e.x>G.cam.x-C.width/2-300&&e.x<G.cam.x+C.width/2+300&&e.y>G.cam.y-C.height/2-300&&e.y<G.cam.y+C.height/2+300);
-      if(!_eInView){e._isMoving=false;if(e._alerted&&(G._eTierFrame&7)===0)_ffMoveE(e,sp*4,0.5);continue}
+      if(!_eInView){if(e._alerted&&(G._eTierFrame&7)===0)_ffMoveE(e,sp*4,0.5);continue}
       // 짝홀 분산: 보스/피격중/근접200px(40000) 이내 → 항상, 나머지 → 짝홀
       const _eAlways=e.ib||e.hurt>0||(_ed2<40000);
-      if(!_eAlways&&((_ei&1)!==_eo)){e._isMoving=false;continue}
+      if(!_eAlways&&((_ei&1)!==_eo)){continue}
       if(_ed2<1000000){
         const _doAI=e.ib||_ed2<40000||((_ed2<160000)?(G._eTierFrame&1)===0:(_ed2<360000)?(G._eTierFrame&3)===0:(G._eTierFrame&7)===0);
         if(_doAI)updateE(e,_doAI===true?sp:e.ib?sp:_ed2<160000?sp*1.5:_ed2<360000?sp*2:sp*4);
@@ -19401,7 +19402,7 @@ function update(){
       }
       // 화톳불 배리어: 이동 후에도 재확인
       if(_bfActive&&!e.ib){const _bfd2b=dst2(_bf.x,_bf.y,e.x,e.y);if(_bfd2b<_bfR2){const _bfdb=Math.sqrt(_bfd2b)||1;const _bfa2=Math.atan2(e.y-_bf.y,e.x-_bf.x);e.x=_bf.x+Math.cos(_bfa2)*_bf.r;e.y=_bf.y+Math.sin(_bfa2)*_bf.r}}
-      const _edd=(e.x-_eox)*(e.x-_eox)+(e.y-_eoy)*(e.y-_eoy);e._isMoving=_edd>1;if(_edd>0)e._walkDist=(e._walkDist||0)+Math.sqrt(_edd)
+      const _edd=(e.x-_eox)*(e.x-_eox)+(e.y-_eoy)*(e.y-_eoy);if(_edd>0)e._walkDist=(e._walkDist||0)+Math.sqrt(_edd)
       // 벽 끼임: 상단에서 이미 처리됨 (컬링 이전)
       }
     else if(e._reviveTimer>0){
@@ -22773,7 +22774,12 @@ function updateE(e,sp){
     if(e.stunned>0){e.stunned=0;e._expectedStun=undefined}
     e.poise=e.maxPoise;
   }
-  e._isMoving=false; // 매 프레임 리셋 → 이동 시 true로 설정
+  // 이동 판정: 이전 위치와 비교
+  {const _dx=e.x-(e._prevX||e.x),_dy=e.y-(e._prevY||e.y);const _moved=_dx*_dx+_dy*_dy>0.5;
+  if(_moved){e._isMoving=true;e._moveHold=20;e._walkDist=(e._walkDist||0)+Math.sqrt(_dx*_dx+_dy*_dy)}
+  else if(e._moveHold>0){e._moveHold-=sp}
+  else{e._isMoving=false;e._walkDist=0}
+  e._prevX=e.x;e._prevY=e.y}
   // ═══ 프리즌(빙결) — 행동불가 + 파란 틴트 ═══
   if(e._frozen>0){
     e._frozen-=sp;
@@ -22977,11 +22983,11 @@ function updateE(e,sp){
       const _wSpd=e.spd*0.35*sp;
       const _pNx=_pDx/_pD,_pNy=_pDy/_pD;
       const wx=_pNx*_wSpd,wy=_pNy*_wSpd;
-      if(canMv(e.x+wx,e.y+wy,e.r)){e.x+=wx;e.y+=wy;e._isMoving=true}
-      else{e._patrolT=0;e._isMoving=false} // 벽이면 즉시 새 웨이포인트
+      if(canMv(e.x+wx,e.y+wy,e.r)){e.x+=wx;e.y+=wy;}
+      else{e._patrolT=0} // 벽이면 즉시 새 웨이포인트
       // facing: 어그로 시 플레이어, 비어그로 시 이동 방향
       if(!e._alerted){const _wTgt=Math.atan2(_pDy,_pDx);e.facing=_wTgt;}
-    }else{e._isMoving=false}
+    }
     if(d>400)return; // 멀면 순찰만, 가까우면 아래 전투 로직도 진행
   }
   // 스테이지 시작 후 5초간 비피격 몬스터 AI 비활성 (멀리서 달려오는 현상 방지)
@@ -32486,7 +32492,7 @@ function draw(){
             X.save();X.translate(e.x,e.y);X.globalAlpha=.9;X.imageSmoothingEnabled=false;
             if(_gMv&&_gA8.walkDirs&&_gA8.walkMeta&&_gA8.walkMeta._idxSet&&_gA8.walkMeta._idxSet.has(_gIdx)){
               const _gW=_gA8.walkDirs[_mobFacingDir8(e.facing)];
-              if(_gW&&_gW.ready){const _gwf=_gA8.walkMeta.framesPerMob||4;const _gwFr=~~((e._walkDist||0)/32)%_gwf;X.drawImage(_gW.img,(e._mob8Col*_gwf+_gwFr)*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz)}
+              if(_gW&&_gW.ready){const _gwf=_gA8.walkMeta.framesPerMob||4;const _gwFr=~~((e._walkDist||0)/128)%_gwf;X.drawImage(_gW.img,(e._mob8Col*_gwf+_gwFr)*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz)}
               else{X.drawImage(_gD.img,e._mob8Col*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz)}
             }else{X.drawImage(_gD.img,e._mob8Col*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz)}
             X.restore();}}
@@ -32572,7 +32578,7 @@ function draw(){
             X.globalAlpha=1;X.save();X.translate(e.x,e.y);X.imageSmoothingEnabled=false;
             if(_lMv&&_a8L.walkDirs&&_a8L.walkMeta&&_a8L.walkMeta._idxSet&&_a8L.walkMeta._idxSet.has(_lIdx)){
               const _lW=_a8L.walkDirs[_mobFacingDir8(e.facing)];
-              if(_lW&&_lW.ready){const _lwf=_a8L.walkMeta.framesPerMob||4;const _lwFr=~~((e._walkDist||0)/32)%_lwf;X.drawImage(_lW.img,(e._mob8Col*_lwf+_lwFr)*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz)}
+              if(_lW&&_lW.ready){const _lwf=_a8L.walkMeta.framesPerMob||4;const _lwFr=~~((e._walkDist||0)/128)%_lwf;X.drawImage(_lW.img,(e._mob8Col*_lwf+_lwFr)*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz)}
               else{X.drawImage(_daL.img,e._mob8Col*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz)}
             }else{X.drawImage(_daL.img,e._mob8Col*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz)}
             X.restore();
@@ -33263,7 +33269,7 @@ function draw(){
             X.imageSmoothingEnabled=false;
             if(_m8mv&&_a8.walkDirs&&_a8.walkMeta&&_a8.walkMeta._idxSet&&_a8.walkMeta._idxSet.has(_m8idx)){
               const _wa8m=_a8.walkDirs[_dk8];
-              if(_wa8m&&_wa8m.ready){const _wf=_a8.walkMeta.framesPerMob||4;const _wFr=~~((e._walkDist||0)/32)%_wf;X.drawImage(_wa8m.img,(e._mob8Col*_wf+_wFr)*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz)}
+              if(_wa8m&&_wa8m.ready){const _wf=_a8.walkMeta.framesPerMob||4;const _wFr=~~((e._walkDist||0)/128)%_wf;X.drawImage(_wa8m.img,(e._mob8Col*_wf+_wFr)*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz)}
               else{X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz)}
             }else{X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz)}
             X.restore();_eDrew=true;_usedSpr=true;
