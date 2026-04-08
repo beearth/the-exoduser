@@ -16924,6 +16924,16 @@ function initStage(si){
   // ── 시작방 안전지대: 플레이어 주변 500px 이내 몹 제거 ──
   const _safeR=500;const _safeR2=_safeR*_safeR;
   for(let _ei=ens.length-1;_ei>=0;_ei--){const _e=ens[_ei];if((_e.x-P.x)*(_e.x-P.x)+(_e.y-P.y)*(_e.y-P.y)<_safeR2)ens.splice(_ei,1)}
+  // ── 벽 끼인 몬스터 제거/이동 (스폰 직후 정리) ──
+  for(let _ei=ens.length-1;_ei>=0;_ei--){const _e=ens[_ei];
+    const _wc=function(px,py){const tx=~~(px/T),ty=~~(py/T);return tx<0||ty<0||tx>=G.mw||ty>=G.mh||G.map[ty][tx]===1};
+    if(_wc(_e.x,_e.y)||_wc(_e.x-_e.r,_e.y-_e.r)||_wc(_e.x+_e.r,_e.y-_e.r)||_wc(_e.x-_e.r,_e.y+_e.r)||_wc(_e.x+_e.r,_e.y+_e.r)){
+      let _moved=false;
+      for(let _d=T;_d<=T*5;_d+=T/2)for(let _a=0;_a<8;_a++){const _nx=_e.x+Math.cos(Math.PI/4*_a)*_d,_ny=_e.y+Math.sin(Math.PI/4*_a)*_d;
+        if(!_wc(_nx,_ny)&&!_wc(_nx-_e.r,_ny-_e.r)&&!_wc(_nx+_e.r,_ny-_e.r)&&!_wc(_nx-_e.r,_ny+_e.r)&&!_wc(_nx+_e.r,_ny+_e.r)){_e.x=_nx;_e.y=_ny;_moved=true;break}}
+      if(!_moved)ens.splice(_ei,1);
+    }
+  }
   // 맵 전체 최소 밀도 보장 (tileRLE 아닌 경우만)
   if(!G._isTileRLE){const _minFill=80;
   let _aliveCnt=0;for(let _ai=0;_ai<ens.length;_ai++)if(ens[_ai].alive)_aliveCnt++;
@@ -19331,6 +19341,16 @@ function update(){
     if(e.alive){
       // 화톳불 배리어: 시작방 영역 진입 시 밀어내기
       if(_bfActive&&!e.ib){const _bfd2=dst2(_bf.x,_bf.y,e.x,e.y);if(_bfd2<_bfR2){const _bfd=Math.sqrt(_bfd2)||1;const _pushStr=(_bf.r-_bfd)*.15*sp;const _bfa=Math.atan2(e.y-_bf.y,e.x-_bf.x);e.x+=Math.cos(_bfa)*_pushStr;e.y+=Math.sin(_bfa)*_pushStr}}
+      // 벽 끼임 처리 (컬링 이전 — 중심+4코너 체크)
+      {const _ewChk=function(px,py){const tx=~~(px/T),ty=~~(py/T);return tx<0||ty<0||tx>=G.mw||ty>=G.mh||G.map[ty][tx]===1};
+      if(_ewChk(e.x,e.y)||_ewChk(e.x-e.r,e.y-e.r)||_ewChk(e.x+e.r,e.y-e.r)||_ewChk(e.x-e.r,e.y+e.r)||_ewChk(e.x+e.r,e.y+e.r)){
+        let _rescued0=false;
+        for(let _wr0=1;_wr0<=5&&!_rescued0;_wr0++){for(let _wd0=0;_wd0<8;_wd0++){
+          const _wa0=_wd0*Math.PI/4,_wx0=e.x+Math.cos(_wa0)*T*_wr0,_wy0=e.y+Math.sin(_wa0)*T*_wr0;
+          const _rtx0=~~(_wx0/T),_rty0=~~(_wy0/T);
+          if(_rtx0>=0&&_rty0>=0&&_rtx0<G.mw&&_rty0<G.mh&&G.map[_rty0][_rtx0]!==1){e.x=_wx0;e.y=_wy0;e.kb.x=0;e.kb.y=0;_rescued0=true;break}}}
+        if(!_rescued0){e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1;continue}
+      }}
       const _eox=e.x,_eoy=e.y;
       if(e.reviveIframes>0)e.reviveIframes=Math.max(0,e.reviveIframes-sp);
       const _ed2=dst2(P.x,P.y,e.x,e.y);
@@ -19350,20 +19370,8 @@ function update(){
       // 화톳불 배리어: 이동 후에도 재확인
       if(_bfActive&&!e.ib){const _bfd2b=dst2(_bf.x,_bf.y,e.x,e.y);if(_bfd2b<_bfR2){const _bfdb=Math.sqrt(_bfd2b)||1;const _bfa2=Math.atan2(e.y-_bf.y,e.x-_bf.x);e.x=_bf.x+Math.cos(_bfa2)*_bf.r;e.y=_bf.y+Math.sin(_bfa2)*_bf.r}}
       const _edd=(e.x-_eox)*(e.x-_eox)+(e.y-_eoy)*(e.y-_eoy);e._isMoving=_edd>1;if(_edd>0)e._walkDist=(e._walkDist||0)+Math.sqrt(_edd)
-      // 벽 끼임 처리: 실제 타일 벽만 체크 (MAP_OBJS collision 제외)
-      const _etx=~~(e.x/T),_ety=~~(e.y/T);
-      if(_etx<0||_ety<0||_etx>=G.mw||_ety>=G.mh||G.map[_ety][_etx]===1){
-        let _rescued=false;
-        for(let _wr=1;_wr<=5&&!_rescued;_wr++){
-          for(let _wd=0;_wd<8;_wd++){
-            const _wa=_wd*Math.PI/4;
-            const _wx=e.x+Math.cos(_wa)*T*_wr,_wy=e.y+Math.sin(_wa)*T*_wr;
-            const _rtx2=~~(_wx/T),_rty2=~~(_wy/T);
-            if(_rtx2>=0&&_rty2>=0&&_rtx2<G.mw&&_rty2<G.mh&&G.map[_rty2][_rtx2]!==1){e.x=_wx;e.y=_wy;e.kb.x=0;e.kb.y=0;_rescued=true;break}
-          }
-        }
-        if(!_rescued){e.hp=0;atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;deathFX(e.x,e.y,e.r,e.col,false,false,e.etype);}
-      }}
+      // 벽 끼임: 상단에서 이미 처리됨 (컬링 이전)
+      }
     else if(e._reviveTimer>0){
       e._reviveTimer-=sp;
       // 부활 전조 파티클
@@ -22755,7 +22763,7 @@ function updateE(e,sp){
     d=dst(P.x,P.y,e.x,e.y);if(d<=200)e._reviveChase=false
   }
   // 시야 어그로: 거리 800 이내면 자동 알림 (피격 없이도)
-  if(!e._alerted&&d<800&&(e.s==='idle'||e.s==='recover'))e._alerted=true;
+  if(!e._alerted&&d<600&&(e.s==='idle'||e.s==='recover'))e._alerted=true;
   // ── 방향 추적: idle/배회 중에도 플레이어 방향으로 부드럽게 회전 ──
   if(d<800&&(e.s==='idle'||e.s==='recover'||e.s==='eApproach')){
     const _tgtA=Math.atan2(P.y-e.y,P.x-e.x);
@@ -22769,10 +22777,10 @@ function updateE(e,sp){
     _ffMoveE(e,sp,e.ib?2:1);
     d=dst(P.x,P.y,e.x,e.y);if(d<=80)e._alerted=false
   }
-  // ── 들러붙기: 200px 내 비어그로 몹 느리게 접근 ──
-  if(!e._alerted&&!e.ib&&d<200&&d>80&&(e.s==='idle'||e.s==='recover')){_ffMoveE(e,sp,0.5)}
-
-
+  // ── 근접 어그로: 100px 이내 접근 시 즉시 알림 ──
+  if(!e._alerted&&!e.ib&&d<100&&d>50&&(e.s==='idle'||e.s==='recover')){
+    e._alerted=true;
+  }
   // 회전참 피격 스택 감소: 1초간 안 맞으면 초당 3스택씩 감소
   if(e._wwStk>0){if(e._wwStkT>0)e._wwStkT-=sp;else{e._wwStk=Math.max(0,e._wwStk-~~(3*sp/60));}}
   // ═══ D4식 DOT — 히트뎀% 풀 축적, 틱마다 풀에서 드레인 ═══
@@ -25430,12 +25438,6 @@ function updateE(e,sp){
     if(dst(P.x,P.y,e.x,e.y)<e.r+30&&atkTicketRequest(e)){e._telegraphT=20;e.s='windup';e.st2=35}
     break}}
   // 몬스터 비비기 방지: 플레이어에 너무 가까우면 밀어내기 (접촉 데미지 제거)
-  if(!e.ib&&d<P.r+e.r&&e.s!=='recover'&&!e.s.startsWith('boss')){
-    const _pushAng=Math.atan2(e.y-P.y,e.x-P.x);
-    const _pushStr=0;
-    const _enx=e.x+Math.cos(_pushAng)*_pushStr,_eny=e.y+Math.sin(_pushAng)*_pushStr;
-    if(canMv(_enx,_eny,e.r)){e.x=_enx;e.y=_eny}
-  }
   // ── 보스 아레나: 매 프레임 위치 클램핑 (벽 뚫기 방지) ──
   if(G._bossArena&&e.ib&&e.alive)_pushOutWall(e);
 }
