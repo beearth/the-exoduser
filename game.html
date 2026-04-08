@@ -8235,13 +8235,26 @@ function drawEnBody(X,e,_now,sa){
     if(a8&&a8.meta){
       const _bsz=Math.max(e.r*3.5,30);
       const dk8=_mobFacingDir8(e.facing);
+      const cell8=a8.meta.cell;
+      const _m8moving=e._isMoving||e.s==='eCharge'||e.s==='eApproach';
+      // 8방향 걷기 애니메이션
+      const _m8idx=e._mob8Row*_MOB8_COLS+e._mob8Col;
+      if(_m8moving&&a8.walkDirs&&a8.walkMeta&&a8.walkMeta._idxSet&&a8.walkMeta._idxSet.has(_m8idx)){
+        const wa8=a8.walkDirs[dk8];
+        if(wa8&&wa8.ready){
+          const _wf=a8.walkMeta.framesPerMob||4;
+          const _wFrame=~~(_now*0.005)%_wf;
+          const _wCol=e._mob8Col*_wf+_wFrame;
+          X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
+          X.drawImage(wa8.img,_wCol*cell8,e._mob8Row*cell8,cell8,cell8,-_bsz/2,-_bsz/2,_bsz,_bsz);
+          X.restore();return;
+        }
+      }
+      // 8방향 정지 (idle)
       const da8=a8.dirs[dk8];
       if(da8&&da8.ready&&e._mob8Col!==undefined){
-        const cell8=a8.meta.cell;
         X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
         X.drawImage(da8.img,e._mob8Col*cell8,e._mob8Row*cell8,cell8,cell8,-_bsz/2,-_bsz/2,_bsz,_bsz);
-        // DEBUG 방향 텍스트 (테스트 후 제거)
-        X.fillStyle='#ff0';X.font='bold 9px monospace';X.textAlign='center';X.fillText(dk8,0,-_bsz/2-3);
         X.restore();return;
       }else if(!e._8dLog){e._8dLog=true;console.warn('[8DIR] fail:',dk8,'da8?',!!da8,'ready?',da8&&da8.ready,'col?',e._mob8Col)}
     }
@@ -11158,7 +11171,7 @@ function _assignBossSkin(e,si){
 }
 
 // 적 스폰 시 8dir 스킨 즉시 배정 (meta 로드 불필요, col/row 직접 계산)
-const _MOB8_TOTAL=23, _MOB8_COLS=6; // atlas_ch1_8dir 레이아웃 (23종, 6x4)
+const _MOB8_TOTAL=39, _MOB8_COLS=7; // atlas_ch1_8dir 레이아웃 (39종, 7x6)
 let _skinSeqIdx=0;
 function _assignMobSkin(e){
   if(e.ib){_assignBossSkin(e,G.stage);return}
@@ -11264,7 +11277,9 @@ function _load8DirAtlas(chN){
   });
   fetch('img/atlas_ch'+chN+'_8dir_walk.json?v=1').then(function(r){return r.json()}).then(function(j){
     a.walkMeta=j;
-    console.log('[CH'+chN+'_8DIR_WALK] 메타 로드: '+Object.keys(j.mobs).length+'종');
+    // idx 기반 빠른 조회 Set 빌드
+    j._idxSet=new Set();for(var _wk in j.mobs)j._idxSet.add(j.mobs[_wk].idx);
+    console.log('[CH'+chN+'_8DIR_WALK] 메타 로드: '+Object.keys(j.mobs).length+'종 (walk idx:'+j._idxSet.size+')');
   }).catch(function(){});
   _ch8Atlas[chN]=a;
 }
@@ -16926,16 +16941,9 @@ function initStage(si){
   // ── 시작방 안전지대: 플레이어 주변 500px 이내 몹 제거 ──
   const _safeR=500;const _safeR2=_safeR*_safeR;
   for(let _ei=ens.length-1;_ei>=0;_ei--){const _e=ens[_ei];if((_e.x-P.x)*(_e.x-P.x)+(_e.y-P.y)*(_e.y-P.y)<_safeR2)ens.splice(_ei,1)}
-  // ── 벽/오브젝트 끼인+근접 몬스터 제거/이동 (스폰 직후 정리) ──
+  // ── 타일 벽 끼인 몬스터만 이동 (MAP_OBJS 무시 — 오브젝트 근처는 정상) ──
   for(let _ei=ens.length-1;_ei>=0;_ei--){const _e=ens[_ei];
-    // 1) canMv 실패 (벽/오브젝트 충돌)
-    let _stuck=!canMv(_e.x,_e.y,_e.r);
-    // 2) MAP_OBJS collision 오브젝트와 반경 겹침 (렌더링 크기 고려)
-    if(!_stuck){const _vizR=Math.max(_e.r*3.5,30);
-      for(let _oi=0;_oi<MAP_OBJS.length;_oi++){const _po=MAP_OBJS[_oi];const _pm=_OBJ_META[_po.type];
-        if(_pm&&(_pm.collision||_pm.col)){const _oR=_pm.sz*.4;
-          if(dst(_e.x,_e.y,_po.x,_po.y)<_oR+_vizR*.5){_stuck=true;break}}}}
-    if(_stuck){
+    if(!_canMvTile(_e.x,_e.y,_e.r)){
       const _sp=safePt(_e.x,_e.y,_e.r);
       if(_sp){_e.x=_sp.x;_e.y=_sp.y}else{ens.splice(_ei,1)}
     }
@@ -17210,7 +17218,6 @@ function _ffMoveE(e,sp,spdMul){
     else{const a=Math.atan2(P.y-e.y,P.x-e.x);dx=Math.cos(a);dy=Math.sin(a)}
   }
   if(fd){e._lastFdx=dx;e._lastFdy=dy}
-  e.facing=Math.atan2(dy,dx);
   const s=e.speed*(e._aSpdM||1)*sp*(spdMul||1);
   const nx=e.x+dx*s,ny=e.y+dy*s;
   if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}
@@ -17587,9 +17594,10 @@ function update(){
         _addSkProf('chainSlam');
         G.hitStop=0;G.slowMo=0;
         MB[2]=false;MBjust[2]=false;P._sbCd=Math.max(P._sbCd||0,30);
-        // 기동파괴 착지 패링: 반경100 내 적 투사체 전부 패링
+        // 기동파괴 착지 패링: 반경 150+Lv×15 내 적 투사체 전부 패링
+        const _csParryR=150+(_csLv-1)*15;
         for(let _pi=projs.length-1;_pi>=0;_pi--){const p=projs[_pi];if(p.friendly||!p.life)continue;
-          if(dst(P.x,P.y,p.x,p.y)<=100){
+          if(dst(P.x,P.y,p.x,p.y)<=_csParryR){
             p.friendly=true;p.vx*=-1.5;p.vy*=-1.5;p.life=80;p.ml=80;
             p.dmg=~~(pParryProjDmg(p.dmg,true)*1.5);p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=120;p._aoeDmg=p.dmg*1.5;
           }
@@ -18409,8 +18417,9 @@ function update(){
         addTxt(P.x,P.y-30,_T('🔨 칼등날개!'),'#66ccff',45);
         // 전방 파편
         for(var _pk=0;_pk<14;_pk++){var _pda=P.facing+(_pk/14-.5)*1.8,_pdd=30+Math.random()*_gsRange2;poolPart(P.x+Math.cos(_pda)*_pdd,P.y+Math.sin(_pda)*_pdd,Math.cos(_pda)*5+Math.random()*2,Math.sin(_pda)*5+Math.random()*2,'#8899aa',3+Math.random()*3,12+Math.random()*6)}
-        // 투사체 반사 (기존 유지)
-        var _sdRange=_gsRange2;
+        // 투사체 반사 — 날개치기(shieldFuse) 시 패링 범위 50% 확대
+        const _sfActive=P.skills.maliceSwipe>=1&&P.skills.shieldThrow>=1&&_isFused('shieldFuse');
+        var _sdRange=_sfActive?~~(_gsRange2*1.5):_gsRange2;
         const _msReflect=pShieldMul();
         for(let i=projs.length-1;i>=0;i--){
           const p=projs[i];if(p.friendly||p.noParry)continue;
@@ -18450,11 +18459,12 @@ function update(){
                   poolPart(P.x,P.y,Math.cos(sa)*sv,Math.sin(sa)*sv,k%4===0?'#00e5ff':k%4===1?'#40f0ff':k%4===2?'#80ffff':'#ffffff',3+Math.random()*4,12+Math.random()*8)}
                 doParry(0,p.x,p.y); // 빨간콩 반사: 관통뎀 없음
               }else{
-              // 칼등 처내기: 일반 투사체 반사
+              // 칼등 처내기: 일반 투사체 반사 → 블루콩 변환 + 패링 사운드
               p.vx*=-2;p.vy*=-2;p.friendly=true;
               p.el=[EL.P,EL.F,EL.I,EL.D,EL.L,EL.H][~~(Math.random()*6)];
               {p.dmg=~~(pParryProjDmg(p.dmg,false)*1.5*(1+(_sdLv-1)*0.1)*_msReflect*((P._stWingT||0)>0?1.5:1));}
               p.life=80;p.ml=80;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=120;p._aoeDmg=p.dmg*1.5;
+              SFX.deflect();G.hitStop=~~(_HS.parryReflect*OPT.hitStop/100);shake(8);
               addTxt(p.x,p.y-10,_T('⚡💎 블루콩!'),'#00e5ff',35);
               for(let ei=0;ei<5;ei++)addParts(p.x,p.y,ELC[ei],3);
               doParry(p.dmg,p.x,p.y);}
@@ -20730,17 +20740,24 @@ function update(){
             SFX.block();shake(6);
           }
         }
-        // 파워웨이브: 적 투사체도 파괴 (무지개탄 제외 — Q패링만 가능)
+        // 파워웨이브: 적 투사체 → 블루콩 변환 패링 (무지개탄 제외 — Q패링만 가능)
         for(let _pi=projs.length-1;_pi>=0;_pi--){
           const p=projs[_pi];if(p.friendly||p.blackBean)continue;
           const dx=p.x-st.x,dy=p.y-st.y;
           const along=dx*Math.cos(st.ang)+dy*Math.sin(st.ang);
           const perp=dx*Math.cos(_wvPerp)+dy*Math.sin(_wvPerp);
           if(along>-st.r&&along<st.r+20&&Math.abs(perp)<_wvHW){
-            p.vx*=-1.5;p.vy*=-1.5;p.friendly=true;
-            p.dmg=~~(p.dmg*1.2);p.life=80;p.ml=80;
-            addTxt(p.x,p.y-10,_T('⚡반사!'),'#ffcc44',35);
-            addParts(p.x,p.y,'#ffaa44',5);
+            // 유도 타겟 탐색
+            let _wvTgt=null,_wvMin=600;
+            {const _wvNe=shQuery(p.x,p.y,600);for(let _ri=0;_ri<_wvNe.length;_ri++){const e=_wvNe[_ri];if(!e.alive)continue;const dd=dst(p.x,p.y,e.x,e.y);if(dd<_wvMin){_wvMin=dd;_wvTgt=e}}}
+            if(_wvTgt){const _wvA=Math.atan2(_wvTgt.y-p.y,_wvTgt.x-p.x);const _wvSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_wvA)*_wvSpd;p.vy=Math.sin(_wvA)*_wvSpd}
+            else{p.vx*=-2;p.vy*=-2}
+            p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,true)*1.5);
+            p.life=120;p.ml=120;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=120;p._aoeDmg=p.dmg*1.5;
+            SFX.deflect();shake(6);
+            addTxt(p.x,p.y-10,_T('⚡💎 블루콩!'),'#00e5ff',35);
+            addParts(p.x,p.y,'#00e5ff',8);
+            doParry(p.dmg,p.x,p.y);
           }
         }
         // 파워웨이브 파티클: 좌우로 먼지 + 땅 갈라짐
@@ -22772,12 +22789,8 @@ function updateE(e,sp){
   // 시야 어그로: 거리 800 이내면 자동 알림 (피격 없이도)
   if(!e._alerted&&d<800&&(e.s==='idle'||e.s==='recover'))e._alerted=true;
   // ── 방향 추적: idle/배회 중에도 플레이어 방향으로 부드럽게 회전 ──
-  if(d<800&&(e.s==='idle'||e.s==='recover'||e.s==='eApproach')){
-    const _tgtA=Math.atan2(P.y-e.y,P.x-e.x);
-    let _dA=_tgtA-e.facing;
-    if(_dA>Math.PI)_dA-=Math.PI*2;if(_dA<-Math.PI)_dA+=Math.PI*2;
-    const _turnSpd=0.15*sp;
-    if(Math.abs(_dA)>0.05)e.facing+=(_dA>0?1:-1)*Math.min(Math.abs(_dA),_turnSpd);
+  if(d<800&&(e.s==='idle'||e.s==='recover'||e.s==='eApproach'||e.s==='windup'||e.s==='attack')){
+    e.facing=Math.atan2(P.y-e.y,P.x-e.x);
   }
   // 어그로 추적: 플로우필드로 벽도 돌아옴 — 30px까지 밀착
   if(e._alerted&&d>80&&(e.s==='idle'||e.s==='recover')){
@@ -22955,16 +22968,14 @@ function updateE(e,sp){
       const wx=_pNx*_wSpd,wy=_pNy*_wSpd;
       if(canMv(e.x+wx,e.y+wy,e.r)){e.x+=wx;e.y+=wy;e._isMoving=true}
       else{e._patrolT=0;e._isMoving=false} // 벽이면 즉시 새 웨이포인트
-      // facing을 이동 방향으로
-      const _wTgt=Math.atan2(_pDy,_pDx);let _wDA=_wTgt-e.facing;
-      if(_wDA>Math.PI)_wDA-=Math.PI*2;if(_wDA<-Math.PI)_wDA+=Math.PI*2;
-      e.facing+=(_wDA>0?1:-1)*Math.min(Math.abs(_wDA),0.1*sp);
+      // facing: 어그로 시 플레이어, 비어그로 시 이동 방향
+      if(!e._alerted){const _wTgt=Math.atan2(_pDy,_pDx);e.facing=_wTgt;}
     }else{e._isMoving=false}
     if(d>400)return; // 멀면 순찰만, 가까우면 아래 전투 로직도 진행
   }
   // 스테이지 시작 후 5초간 비피격 몬스터 AI 비활성 (멀리서 달려오는 현상 방지)
   if(P.iframes>0&&!e._alerted&&!e.ib&&d>400)return;
-  const _fd0=_ffDir(e.x,e.y);e.facing=_fd0?Math.atan2(_fd0.y,_fd0.x):Math.atan2(P.y-e.y,P.x-e.x);e.st2-=sp;
+  const _fd0=_ffDir(e.x,e.y);e._moveAng=_fd0?Math.atan2(_fd0.y,_fd0.x):Math.atan2(P.y-e.y,P.x-e.x);e.st2-=sp;
   // Charger enemy: dash attack
   if(e.etype===2&&e.s==='idle'){e.chargeT-=sp;if(e.chargeT<=0&&d<1200&&d>50&&atkTicketRequest(e)){e.s='eCharge';e.st2=20;e.echDx=Math.cos(e.facing);e.echDy=Math.sin(e.facing);e.chargeT=e.chargeCd;addParts(e.x,e.y,e.col,5)}}
   // Exploder: 근접 시 자폭 카운트다운

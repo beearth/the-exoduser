@@ -1,1 +1,140 @@
-{"cell":256,"cols":1,"rows":1,"frames":4,"mobs":{}}
+{
+  "cell": 256,
+  "cols": 7,
+  "rows": 6,
+  "frames": 4,
+  "framesPerMob": 4,
+  "sampleIndices": [
+    0,
+    1,
+    3,
+    5
+  ],
+  "mobs": {
+    "blood_swarm": {
+      "idx": 0,
+      "col": 0,
+      "row": 0
+    },
+    "apostle_mass": {
+      "idx": 1,
+      "col": 1,
+      "row": 0
+    },
+    "apostle_knight": {
+      "idx": 2,
+      "col": 2,
+      "row": 0
+    },
+    "soul_flame": {
+      "idx": 3,
+      "col": 3,
+      "row": 0
+    },
+    "hive_bloater": {
+      "idx": 4,
+      "col": 4,
+      "row": 0
+    },
+    "spine_beast": {
+      "idx": 5,
+      "col": 5,
+      "row": 0
+    },
+    "flesh_crawler": {
+      "idx": 6,
+      "col": 6,
+      "row": 0
+    },
+    "carapace_predator": {
+      "idx": 7,
+      "col": 0,
+      "row": 1
+    },
+    "bone_centipede_pro": {
+      "idx": 8,
+      "col": 1,
+      "row": 1
+    },
+    "gas_zombie": {
+      "idx": 9,
+      "col": 2,
+      "row": 1
+    },
+    "needle_tentacle": {
+      "idx": 10,
+      "col": 3,
+      "row": 1
+    },
+    "rotting_slime_mass": {
+      "idx": 11,
+      "col": 4,
+      "row": 1
+    },
+    "flesh_eye_mass": {
+      "idx": 12,
+      "col": 5,
+      "row": 1
+    },
+    "corrupted_wolf": {
+      "idx": 13,
+      "col": 6,
+      "row": 1
+    },
+    "eye_stalker_pro": {
+      "idx": 15,
+      "col": 1,
+      "row": 2
+    },
+    "iron_butcher_pro": {
+      "idx": 16,
+      "col": 2,
+      "row": 2
+    },
+    "plague_doctor_pro": {
+      "idx": 17,
+      "col": 3,
+      "row": 2
+    },
+    "black_castle_guardian": {
+      "idx": 19,
+      "col": 5,
+      "row": 2
+    },
+    "poison_mushroom_giant": {
+      "idx": 20,
+      "col": 6,
+      "row": 2
+    },
+    "forest_watcher": {
+      "idx": 21,
+      "col": 0,
+      "row": 3
+    },
+    "deformed_giant_new": {
+      "idx": 26,
+      "col": 5,
+      "row": 3
+    },
+    "gut_witch": {
+      "idx": 27,
+      "col": 6,
+      "row": 3
+    },
+    "iron_torturer": {
+      "idx": 28,
+      "col": 0,
+      "row": 4
+    },
+    "jaw_stalker": {
+      "idx": 29,
+      "col": 1,
+      "row": 4
+    },
+    "fallen_paladin": {
+      "idx": 30,
+      "col": 2,
+      "row": 4
+    }
+  }
+}
