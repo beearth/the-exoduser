@@ -2157,75 +2157,6 @@ function _flushVfxGL(){
   const n=_vfxGLCount;_dbgVfxGLDrawn+=n;_vfxGLCount=0;_vfxGLCurTex=null;
   return n;
 }
-// ═══ PARTICLE GL Instancing (단색 사각형) ═══
-const _PART_GL_MAX=1024,_PART_GL_STRIDE=7;
-const _partGLCpu=new Float32Array(_PART_GL_MAX*_PART_GL_STRIDE);
-let _partGLProg=null,_partGLVao=null,_partGLQuadVBO=null,_partGLInstVBO=null,_partGLURes=null,_partGLCount=0,_partGLMode=false;
-function _resetPartGL(){_partGLProg=null;_partGLVao=null;_partGLQuadVBO=null;_partGLInstVBO=null;_partGLURes=null;_partGLCount=0;_partGLMode=false}
-function _initPartGL(){
-  if(!GL)return;
-  try{
-    function _ps(src,t){const s=GL.createShader(t);GL.shaderSource(s,src);GL.compileShader(s);if(!GL.getShaderParameter(s,GL.COMPILE_STATUS))throw new Error(GL.getShaderInfoLog(s)||'partGL shader');return s}
-    const _vs=`#version 300 es
-precision highp float;
-layout(location=0)in vec2 a_quad;
-layout(location=1)in vec3 a_pos_sz;
-layout(location=2)in vec3 a_col;
-layout(location=3)in float a_alpha;
-uniform vec2 u_res;
-out vec4 vCol;
-void main(){
-  vec2 center=a_pos_sz.xy/u_res*2.0-1.0;
-  center.y=-center.y;
-  vec2 offset=a_quad*(a_pos_sz.z/u_res)*2.0;
-  vCol=vec4(a_col,a_alpha);
-  gl_Position=vec4(center+offset,0.0,1.0);
-}`;
-    const _fs=`#version 300 es
-precision mediump float;
-in vec4 vCol;out vec4 oC;
-void main(){oC=vCol;}
-`;
-    _partGLProg=GL.createProgram();GL.attachShader(_partGLProg,_ps(_vs,GL.VERTEX_SHADER));GL.attachShader(_partGLProg,_ps(_fs,GL.FRAGMENT_SHADER));GL.linkProgram(_partGLProg);
-    if(!GL.getProgramParameter(_partGLProg,GL.LINK_STATUS))throw new Error(GL.getProgramInfoLog(_partGLProg)||'partGL link');
-    const _quad=new Float32Array([-.5,-.5,.5,-.5,-.5,.5,.5,.5]),_st=_PART_GL_STRIDE*4;
-    _partGLVao=GL.createVertexArray();_partGLQuadVBO=GL.createBuffer();_partGLInstVBO=GL.createBuffer();
-    GL.bindVertexArray(_partGLVao);
-    GL.bindBuffer(GL.ARRAY_BUFFER,_partGLQuadVBO);GL.bufferData(GL.ARRAY_BUFFER,_quad,GL.STATIC_DRAW);
-    GL.vertexAttribPointer(0,2,GL.FLOAT,false,8,0);GL.enableVertexAttribArray(0);
-    GL.bindBuffer(GL.ARRAY_BUFFER,_partGLInstVBO);GL.bufferData(GL.ARRAY_BUFFER,_partGLCpu.byteLength,GL.DYNAMIC_DRAW);
-    GL.vertexAttribPointer(1,3,GL.FLOAT,false,_st,0);GL.enableVertexAttribArray(1);GL.vertexAttribDivisor(1,1);
-    GL.vertexAttribPointer(2,3,GL.FLOAT,false,_st,12);GL.enableVertexAttribArray(2);GL.vertexAttribDivisor(2,1);
-    GL.vertexAttribPointer(3,1,GL.FLOAT,false,_st,24);GL.enableVertexAttribArray(3);GL.vertexAttribDivisor(3,1);
-    GL.bindVertexArray(null);GL.bindBuffer(GL.ARRAY_BUFFER,null);
-    _partGLURes=GL.getUniformLocation(_partGLProg,'u_res');
-    _partGLMode=true;
-    console.log('[PART-GL] instancing 초기화 성공');
-  }catch(e){console.warn('[PART-GL] 초기화 실패:',e.message||e);_resetPartGL()}
-}
-function _queuePartGL(x,y,sz,col,alpha){
-  if(!_partGLMode)return;
-  if(_partGLCount>=_PART_GL_MAX)_flushPartGL();
-  const c=_parseCol(col);
-  const o=_partGLCount*_PART_GL_STRIDE;
-  // 월드좌표 → 스크린좌표 (카메라 오프셋 적용)
-  _partGLCpu[o]=C.width*.5+(x-G.cam.x);_partGLCpu[o+1]=C.height*.5+(y-G.cam.y);_partGLCpu[o+2]=sz;
-  _partGLCpu[o+3]=c[0];_partGLCpu[o+4]=c[1];_partGLCpu[o+5]=c[2];
-  _partGLCpu[o+6]=alpha*c[3];
-  _partGLCount++;
-}
-function _flushPartGL(){
-  if(!_partGLMode||!GL||!_partGLProg||_partGLCount<1)return 0;
-  GL.useProgram(_partGLProg);GL.viewport(0,0,C.width,C.height);GL.uniform2f(_partGLURes,C.width,C.height);
-  GL.enable(GL.BLEND);GL.blendFunc(GL.SRC_ALPHA,GL.ONE);
-  GL.bindVertexArray(_partGLVao);GL.bindBuffer(GL.ARRAY_BUFFER,_partGLInstVBO);
-  GL.bufferSubData(GL.ARRAY_BUFFER,0,_partGLCpu,0,_partGLCount*_PART_GL_STRIDE);
-  GL.drawArraysInstanced(GL.TRIANGLE_STRIP,0,4,_partGLCount);
-  GL.bindVertexArray(null);
-  GL.blendFunc(GL.SRC_ALPHA,GL.ONE_MINUS_SRC_ALPHA); // blend 복원
-  if(_glMainProg)GL.useProgram(_glMainProg);
-  const n=_partGLCount;_partGLCount=0;return n;
-}
 function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
   _dbgEnsGL=0;_ensGLCount=0;
   for(let _egi=0;_egi<ens.length;_egi++)ens[_egi]._ensGLMode=0;
@@ -2236,7 +2167,7 @@ function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
     if(!e.alive)continue;
     if(e.x<_vl||e.x>_vr||e.y<_vt||e.y>_vb)continue;
     _eRCnt2++;
-    if(e.ib||e._isGhoul||e._isSlime||e._mobCh||_eRCnt2>_E_RMAX)continue;
+    if(e.ib||e._isGhoul||e._isSlime||e._mobCh)continue;
     const isStunned=e.stunned>0,isReviving=e.reviveIframes>0;
     const _isStealth=(e.modT&&e.modT.stealthT>0)||e._cloaked;
     const sa=_isStealth?(.08+Math.sin(_now/300)*.05):(isReviving?(.2+Math.sin(_now/40)*.5):(isStunned?.6:1));
@@ -2589,7 +2520,6 @@ oC=c;}`;
   _clearFrame=function(){_flush();GL.clearColor(0,0,0,1);GL.clear(GL.COLOR_BUFFER_BIT);_qCnt=0;_bufOff=0;_curTex=wt};
   _initEnemyInstancing();
   _initVfxInstancing();
-  _initPartGL();
 
   if(!IS_ELECTRON)console.log('[GPU] WebGL2 ready — maxTex:'+_glMaxTex);
   // ── WebGL context lost/restored 핸들러 ──
@@ -2597,7 +2527,7 @@ oC=c;}`;
     ev.preventDefault();
     console.warn('[GPU] WebGL context lost — Canvas2D 폴백');
     _useGL=false;_useGPU=false;GL=null;GPU=null;
-    _glMainProg=null;_resetEnemyInstanced();_resetVfxInstanced();_resetPartGL();
+    _glMainProg=null;_resetEnemyInstanced();_resetVfxInstanced();
     _flush=function(){};_setTex=function(){};_getTex=function(){return null};
     _setBlend=function(){};_glFlush=function(){};
     _clearFrame=function(){};
@@ -8158,24 +8088,19 @@ function poolUpdate(sp){
 // 파티클 렌더: 타입별 분기 — save/restore 제거, 컬러캐싱 최적화
 const _partGrid=new Uint8Array(64*64); // 32px 그리드, 64x64 셀 — overdraw 제한
 function poolRender(X,vl,vr,vt,vb){
-  const _pCellMax=_hiFPS?2:3;
+  // 교대 렌더 제거 — 깜빡임 원인. 그리드 overdraw 제한으로 충분
+  const _pCellMax=_hiFPS?2:3; // 고FPS: 셀당 2개, 일반: 3개
   var _lf='',_ls='';
-  _partGrid.fill(0);
-  const _pgOx=vl,_pgOy=vt;
-  const _glPart=_useGL&&_partGLMode; // WebGL2 파티클 instancing 활성 여부
+  _partGrid.fill(0); // 그리드 초기화
+  const _pgOx=vl,_pgOy=vt; // 그리드 원점 = 뷰포트 좌상
   for(var i=0;i<_partCnt;i++){
     const p=_partPool[i];
     if(p.x<vl||p.x>vr||p.y<vt||p.y>vb)continue;
+    // 같은 셀에 파티클 3개 이상이면 스킵 (overdraw 제한)
     const _pgx=~~((p.x-_pgOx)/32),_pgy=~~((p.y-_pgOy)/32);
     if(_pgx>=0&&_pgx<64&&_pgy>=0&&_pgy<64){const _pgi=_pgy*64+_pgx;if(_partGrid[_pgi]>=_pCellMax)continue;_partGrid[_pgi]++}
     const fa=p.ml>0?(p.life/p.ml*1.5<1?p.life/p.ml*1.5:1):.6;
-    const _pa=Math.min(1,fa*1.4);
-    // WebGL2 instancing: tp 0,1 (사각형/원→사각형) 전용
-    if(_glPart&&(p.tp===0||p.tp===1||p.tp===undefined)){
-      _queuePartGL(p.x,p.y,p.sz,p.col,_pa);
-      continue;
-    }
-    X.globalAlpha=_pa;
+    X.globalAlpha=Math.min(1,fa*1.4);
     if(_useGPU||_useGL){switch(p.tp){
       case 1:{if(p.col!==_lf){X.fillStyle=p.col;_lf=p.col}const _ps=p.sz*.5;X.fillRect(p.x-_ps,p.y-_ps,p.sz,p.sz);break;}
       case 2:{if(p.col!==_ls){X.strokeStyle=p.col;_ls=p.col}const c2=Math.cos(p.rot),s2=Math.sin(p.rot),hw2=p.sz*1.5;X.lineWidth=1;X.beginPath();X.moveTo(p.x-c2*hw2,p.y-s2*hw2);X.lineTo(p.x+c2*hw2,p.y+s2*hw2);X.stroke();break;}
@@ -8188,7 +8113,6 @@ function poolRender(X,vl,vr,vt,vb){
       default:{if(p.col!==_lf){X.fillStyle=p.col;_lf=p.col}const hs3=p.sz*.5;X.fillRect(p.x-hs3,p.y-hs3,p.sz,p.sz);}
     }}
   }
-  if(_glPart)_flushPartGL(); // 루프 끝 1회 flush
   X.globalAlpha=1;
 }
 
@@ -11251,7 +11175,7 @@ function _assignBossSkin(e,si){
 }
 
 // 적 스폰 시 8dir 스킨 즉시 배정 (meta 로드 불필요, col/row 직접 계산)
-const _MOB8_TOTAL=39, _MOB8_COLS=7; // atlas_ch1_8dir 레이아웃 (39종, 7x6)
+const _MOB8_TOTAL=40, _MOB8_COLS=8; // atlas_ch1_8dir 레이아웃 (40종, 8x5)
 let _skinSeqIdx=0;
 function _assignMobSkin(e){
   if(e.ib){_assignBossSkin(e,G.stage);return}
@@ -14708,7 +14632,7 @@ function _fireEnergyShot(){
   P.mp-=_esMpC;
   P.atkArc=Math.atan2(mouse.y-C.height/2,mouse.x-C.width/2);P.facing=P.atkArc;
   const _esLv=P.skills.energyShot||1;
-  const _esRange=500+(_esLv-1)*30;
+  const _esRange=1000+(_esLv-1)*60; // 사거리 2배
   const _esDmg=~~(magicRef()*statInt()*pMagicMul()*(3+(_esLv-1))); // 마력연사 8→3
   const cx=Math.cos(P.atkArc),cy=Math.sin(P.atkArc);
   const _esNe=shQuery(P.x+cx*_esRange*.5,P.y+cy*_esRange*.5,_esRange*.6);
@@ -16613,7 +16537,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  const _lvHp=Math.floor((ib?12000:600)*Math.pow(1.0121,monLv)*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 기본600, 1.21%복리, 스테이지당+2%, 보스=일반×20 (Lv1000≈1억)
+  const _lvHp=Math.floor(((ib?12000:600)+monLv*(ib?2000:100))*Math.pow(1.0121,monLv)*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 기본600+Lv×100(보스12000+Lv×2000), 1.21%복리, 스테이지당+2%
   const _atk=Math.floor(((ib?75:50)+monLv*(ib?2.9:1.95))*dm*et.atkMul); // 일반: 50+lv×1.95 (1000렙=2000), 보스: 75+lv×2.9 (1000렙≈3000, 일반×1.5)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   if(!window._noProjEtypes)window._noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
@@ -17601,7 +17525,7 @@ function update(){
       const _csLv=P.skills.chainSlash||1;
       const _csR=160+(_csLv-1)*5; // 반경 160+Lv×5 (docs 기준)
       const _csNe=shQuery(P.x,P.y,_csR);
-      const _csDmg=~~(meleeRef()*statStr()*(20+(_csLv-1))*_fuseMul('chainSlash')); // 1히트 기준, flat +1/Lv (Lv1=20, Lv10=29)
+      const _csDmg=~~(meleeRef()*statStr()*(5+(_csLv-1)*~~(25/9))*_fuseMul('chainSlash')); // 1히트, Lv1=5 Lv10=30 (약+2.8/Lv)
       const _csAng=Math.atan2(_dashVY,_dashVX);
       for(let _ci=0;_ci<_csNe.length;_ci++){
         const e=_csNe[_ci];if(!e.alive)continue;
@@ -18728,7 +18652,7 @@ function update(){
         {const _pp=_getPProj();_pp.x=P.x+_fbDx*20;_pp.y=P.y+_fbDy*20;
         _pp.vx=_fbDx*7;_pp.vy=_fbDy*7;_pp.dmg=_fbDmg;_pp.el=EL.F;
         _pp.maxDist=_fbRange;_pp.dist=0;_pp.r=16;_pp.stagger=0;_pp.kb=0;
-        _pp.magic=true;_pp.fireBeamProj=true;_pp.fireball=true;_pp.explR=~~(100+_fbLv*8);_pp.explDmg=~~(_fbDmg*.6);_pp.homing=true; // 착탄 폭발 + 유도
+        _pp.magic=true;_pp.fireBeamProj=true;_pp.fireball=true;_pp.explR=~~((100+_fbLv*8)*2);_pp.explDmg=~~(_fbDmg*.6);_pp.homing=true; // 착탄 폭발 + 유도, 폭발범위 2배
         pProjs[pProjs.length]=_pp;}
         P._fbCd=~~(60/pMagicSpd()); // 1초 기본, DEX(민첩)로 공속 스케일
         playSample('beam_fire',.8,_r(.8,.1));_addSkProf('fireBeam');
@@ -18739,7 +18663,7 @@ function update(){
       } else {
         // ── 악의구 (기본 폴백) ──
         const _fbLv=P.skills.fireball||1;
-        const _fbScale=1+(_fbLv-1)*0.10;
+        const _fbScale=1+(_fbLv-1)*0.50;
         const mdmg=~~(magicRef()*statInt()*pMagicMul()*(1.3+(_fbLv-1)))+(P._mpBon||0);P._mpBon=0; // 밸런스: 0.8→1.3
         const _fbDx=Math.cos(P.atkArc),_fbDy=Math.sin(P.atkArc);
         const _fbR=~~(12*_fbScale),_fbExplR=~~(80*_fbScale);
@@ -27472,7 +27396,7 @@ const SKILL_LIST=[
   {id:'ghostWalk',name:'암전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 15초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 15s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
   {id:'bladeDash',name:'전격이동',cat:'move',desc:'방향키 더블탭 → 500유닛 전기 대시. 10충전 (8초→Lv당-0.5초, 최소3초). 만렙 시 방향키 한번으로 즉시 발동',descEn:'Double-tap direction → 500-unit electric dash. 10 stocks (8s→-0.5s/Lv, min 3s). At max Lv: instant on single tap',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
   {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 5+Lv당2. Lv당 뎀+10% 거리+15px',descEn:'LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 5+2/Lv. Per Lv DMG+10% range+15px',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
-  {id:'fireball',name:'악의구',cat:'magic',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+10% 뎀+15%',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+10% DMG+15%',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
+  {id:'fireball',name:'악의구',cat:'magic',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% 뎀+15%',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% DMG+15%',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'detonate',name:'기폭팔',cat:'def',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발. Lv당 범위+15 (1렙150, 10렙285)',descEn:'Parry 3s hold → absorbed DMG AoE explosion. Per Lv range+15 (Lv1: 150, Lv10: 285)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceSwipe',name:'칼등 처내기',cat:'def',desc:'우클 처내기 강화. Lv당 반사 데미지 +10%. 홀드 시 연사',descEn:'RMB swipe enhanced. Per Lv reflect DMG +10%. Hold for rapid fire',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
@@ -32543,10 +32467,7 @@ function draw(){
       continue;
     }
     if(e.x<_vl||e.x>_vr||e.y<_vt||e.y>_vb)continue;
-    _eRCnt++;const _eLite=!e.ib&&_eRCnt>_E_RMAX; // 초과 시 간소화 모드
-    // LOD: 카메라 1200px+ → 단순 원형 (스프라이트 스킵)
-    const _eCamD2=(e.x-G.cam.x)*(e.x-G.cam.x)+(e.y-G.cam.y)*(e.y-G.cam.y);
-    if(_eCamD2>1440000&&!e.ib){X.globalAlpha=.6;X.fillStyle=e.col||'#aa4444';X.beginPath();X.arc(e.x,e.y,e.r,0,Math.PI*2);X.fill();X.globalAlpha=1;continue}
+    _eRCnt++;const _eLite=false; // LOD 스위칭 비활성화 (_dynERMax가 동적 제한)
     // ── 구울 전용 렌더 (3종 스프라이트) ──
     if(e._isGhoul){
       const gt=GHOUL_DEFS[e.etype]||GHOUL_DEFS[101];

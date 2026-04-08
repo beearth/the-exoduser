@@ -91,7 +91,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 | 쿨다운 | 데미지 공식 | DPS 비고 |
 |---|---|---|---|---|---|---|
-| fireball | 악의구 | MP | 250×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × 1.3 | 기본 E, 범위폭발+넉백, Lv당 크기+10% 뎀+15% |
+| fireball | 악의구 | MP | 50×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × 1.3 | 기본 E, 범위폭발+넉백, Lv당 크기+50% 뎀+15% |
 | omniBeam | 멸살광선 | MP(틱) | **10+(Lv-1)×10 MP/초** (Lv1=10, Lv10=100) | 과부하 **300f (5초)** | INT × magicRef × DPS_BAL.beam × drainBonus | 직선레이저, 합체→만화광선(3발)/추적암전(6발) |
 | elemMissile | 원소추적탄 | MP | ~250×DPS (마법할인) | 없음 | INT + Lv당 뎀+10% | 6원소 유도, 곡선궤적, 사거리+20/Lv |
 | energyShot | 마력연사 | MP | **5/발 (4발/초=20MP/초)** | 없음 (홀드) | INT × (3+(Lv-1)) | 유도+착탄폭발, 사거리+30/Lv, Lv당 뎀+1 |

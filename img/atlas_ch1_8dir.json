@@ -1,8 +1,8 @@
 {
   "cell": 256,
-  "cols": 7,
-  "rows": 6,
-  "total": 39,
+  "cols": 8,
+  "rows": 5,
+  "total": 40,
   "directions": [
     "south",
     "south-east",
@@ -51,163 +51,168 @@
     },
     "carapace_predator": {
       "idx": 7,
-      "col": 0,
-      "row": 1
+      "col": 7,
+      "row": 0
     },
     "bone_centipede_pro": {
       "idx": 8,
-      "col": 1,
+      "col": 0,
       "row": 1
     },
     "gas_zombie": {
       "idx": 9,
-      "col": 2,
+      "col": 1,
       "row": 1
     },
     "needle_tentacle": {
       "idx": 10,
-      "col": 3,
+      "col": 2,
       "row": 1
     },
     "rotting_slime_mass": {
       "idx": 11,
-      "col": 4,
+      "col": 3,
       "row": 1
     },
     "flesh_eye_mass": {
       "idx": 12,
-      "col": 5,
+      "col": 4,
       "row": 1
     },
     "corrupted_wolf": {
       "idx": 13,
-      "col": 6,
+      "col": 5,
       "row": 1
     },
     "crawling_horror": {
       "idx": 14,
-      "col": 0,
-      "row": 2
+      "col": 6,
+      "row": 1
     },
     "eye_stalker_pro": {
       "idx": 15,
-      "col": 1,
-      "row": 2
+      "col": 7,
+      "row": 1
     },
     "iron_butcher_pro": {
       "idx": 16,
-      "col": 2,
+      "col": 0,
       "row": 2
     },
     "plague_doctor_pro": {
       "idx": 17,
-      "col": 3,
+      "col": 1,
       "row": 2
     },
     "grotesque_quadruped": {
       "idx": 18,
-      "col": 4,
+      "col": 2,
       "row": 2
     },
     "black_castle_guardian": {
       "idx": 19,
-      "col": 5,
+      "col": 3,
       "row": 2
     },
     "poison_mushroom_giant": {
       "idx": 20,
-      "col": 6,
+      "col": 4,
       "row": 2
     },
     "forest_watcher": {
       "idx": 21,
-      "col": 0,
-      "row": 3
+      "col": 5,
+      "row": 2
     },
     "boss_ch1_stag": {
       "idx": 22,
-      "col": 1,
-      "row": 3
+      "col": 6,
+      "row": 2
     },
     "headless_knight": {
       "idx": 23,
-      "col": 2,
-      "row": 3
+      "col": 7,
+      "row": 2
     },
     "plague_censer": {
       "idx": 24,
-      "col": 3,
+      "col": 0,
       "row": 3
     },
     "skinless_hound": {
       "idx": 25,
-      "col": 4,
+      "col": 1,
       "row": 3
     },
     "deformed_giant": {
       "idx": 26,
-      "col": 5,
+      "col": 2,
       "row": 3
     },
     "gut_witch": {
       "idx": 27,
-      "col": 6,
+      "col": 3,
       "row": 3
     },
     "iron_torturer": {
       "idx": 28,
-      "col": 0,
-      "row": 4
+      "col": 4,
+      "row": 3
     },
     "jaw_stalker": {
       "idx": 29,
-      "col": 1,
-      "row": 4
+      "col": 5,
+      "row": 3
     },
     "fallen_paladin": {
       "idx": 30,
-      "col": 2,
-      "row": 4
+      "col": 6,
+      "row": 3
     },
     "flesh_executioner": {
       "idx": 31,
-      "col": 3,
-      "row": 4
+      "col": 7,
+      "row": 3
     },
     "void_cultist": {
       "idx": 32,
-      "col": 4,
+      "col": 0,
       "row": 4
     },
     "skull_brute": {
       "idx": 33,
-      "col": 5,
+      "col": 1,
       "row": 4
     },
     "chain_wraith": {
       "idx": 34,
-      "col": 6,
+      "col": 2,
       "row": 4
     },
     "bone_archer": {
       "idx": 35,
-      "col": 0,
-      "row": 5
+      "col": 3,
+      "row": 4
     },
     "bloated_warrior": {
       "idx": 36,
-      "col": 1,
-      "row": 5
+      "col": 4,
+      "row": 4
     },
     "rot_knight": {
       "idx": 37,
-      "col": 2,
-      "row": 5
+      "col": 5,
+      "row": 4
     },
     "etype1_archer": {
       "idx": 38,
-      "col": 3,
-      "row": 5
+      "col": 6,
+      "row": 4
+    },
+    "blind_swordsman": {
+      "idx": 39,
+      "col": 7,
+      "row": 4
     }
   }
 }
