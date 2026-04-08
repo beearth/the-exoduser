@@ -19362,7 +19362,7 @@ function update(){
             if(_rtx2>=0&&_rty2>=0&&_rtx2<G.mw&&_rty2<G.mh&&G.map[_rty2][_rtx2]!==1){e.x=_wx;e.y=_wy;e.kb.x=0;e.kb.y=0;_rescued=true;break}
           }
         }
-        if(!_rescued){const _ra=Math.atan2(e.y-P.y,e.x-P.x);e.x=P.x+Math.cos(_ra)*80;e.y=P.y+Math.sin(_ra)*80;e.kb.x=0;e.kb.y=0;}
+        if(!_rescued){e.hp=0;atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;deathFX(e.x,e.y,e.r,e.col,false,false,e.etype);}
       }}
     else if(e._reviveTimer>0){
       e._reviveTimer-=sp;
@@ -25432,7 +25432,7 @@ function updateE(e,sp){
   // 몬스터 비비기 방지: 플레이어에 너무 가까우면 밀어내기 (접촉 데미지 제거)
   if(!e.ib&&d<P.r+e.r&&e.s!=='recover'&&!e.s.startsWith('boss')){
     const _pushAng=Math.atan2(e.y-P.y,e.x-P.x);
-    const _pushStr=(P.r+e.r-d)*0.3;
+    const _pushStr=0;
     const _enx=e.x+Math.cos(_pushAng)*_pushStr,_eny=e.y+Math.sin(_pushAng)*_pushStr;
     if(canMv(_enx,_eny,e.r)){e.x=_enx;e.y=_eny}
   }
