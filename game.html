@@ -6004,14 +6004,14 @@ addEventListener('keydown',e=>{
     const _bdDir=_bdDirs[e.code];
     if(_bdDir!==undefined){
       // 1) 방향키+스페이스 동시
-      if(KH['Space']&&!SKILL_SLOTS[4]){P._bdTrigger=_bdDir;K['Space']=false;KH['Space']=false;return}
+      if(KH['Space']){P._bdTrigger=_bdDir;K['Space']=false;KH['Space']=false;return}
       // 2) 더블탭 (250ms 이내 같은 방향키 2번)
       else{const _now=performance.now();
         if(P._bdLastDir===_bdDir&&_now-P._bdLastT<250){P._bdTrigger=_bdDir;P._bdLastDir=-1;P._bdLastT=0}
         else{P._bdLastDir=_bdDir;P._bdLastT=_now}}
     }
     // 스페이스 눌렀을 때 방향키 이미 눌려있으면 (스킬슬롯 배정 시 스킬 우선)
-    if(e.code==='Space'&&!SKILL_SLOTS[4]){
+    if(e.code==='Space'){
       for(const[code,dir]of Object.entries(_bdDirs)){if(KH[code]){P._bdTrigger=dir;K['Space']=false;return}}
     }
   }
@@ -17275,7 +17275,7 @@ function stCost(key,m){
   if(key==='shield')return 5+((P.skills.maliceSwipe||1)-1)*2;
   const base=_COST_BASE[key]||5;
   const raw=~~(base*_dpsCostMul(key)*(m||1)*_stDisc(key));
-  return Math.min(raw,~~(P.mst*0.95)); // ST 풀이면 항상 발동 가능 (최대ST의 95% 캡)
+  return Math.min(raw,~~(P.mst*0.90)); // 최대ST 90% 캡 — 풀ST면 항상 발동 가능
 }
 function useStPct(key,m){const c=stCost(key,m);if(P.st<c){_lastCost=0;return 0;}P.st-=c;_lastCost=c;return c}
 function mpCost(key){
@@ -22774,11 +22774,11 @@ function updateE(e,sp){
     if(e.stunned>0){e.stunned=0;e._expectedStun=undefined}
     e.poise=e.maxPoise;
   }
-  // 이동 판정: 이전 위치와 비교
-  {const _dx=e.x-(e._prevX||e.x),_dy=e.y-(e._prevY||e.y);const _moved=_dx*_dx+_dy*_dy>0.5;
-  if(_moved){e._isMoving=true;e._moveHold=20;e._walkDist=(e._walkDist||0)+Math.sqrt(_dx*_dx+_dy*_dy)}
+  // 이동 판정: 이전 위치와 비교 (3프레임 유지)
+  {const _dx=e.x-(e._prevX||e.x),_dy=e.y-(e._prevY||e.y);
+  if(_dx*_dx+_dy*_dy>0.25){e._isMoving=true;e._moveHold=3}
   else if(e._moveHold>0){e._moveHold-=sp}
-  else{e._isMoving=false;e._walkDist=0}
+  else{e._isMoving=false}
   e._prevX=e.x;e._prevY=e.y}
   // ═══ 프리즌(빙결) — 행동불가 + 파란 틴트 ═══
   if(e._frozen>0){
