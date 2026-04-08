@@ -14633,7 +14633,7 @@ function _fireEnergyShot(){
   {const _tgtA=Math.atan2(mouse.y-C.height/2,mouse.x-C.width/2);let _da=_tgtA-P.atkArc;if(_da>Math.PI)_da-=Math.PI*2;if(_da<-Math.PI)_da+=Math.PI*2;P.atkArc+=_da*0.15;P.facing=P.atkArc;} // 부드러운 회전 (lerp 15%)
   const _esLv=P.skills.energyShot||1;
   const _esRange=1000+(_esLv-1)*60; // 사거리 2배
-  const _esDmg=~~(magicRef()*statInt()*pMagicMul()*(10+(_esLv-1)*8)*_fuseMul('energyShot')); // 마력연사 +8/Lv (Lv1=10, Lv10=82)
+  const _esDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('energyShot')*_fuseMul('energyShot')); // 통일공식: _skMul
   const cx=Math.cos(P.atkArc),cy=Math.sin(P.atkArc);
   const _esNe=shQuery(P.x+cx*_esRange*.5,P.y+cy*_esRange*.5,_esRange*.6);
   for(let _ei=0;_ei<_esNe.length;_ei++){
@@ -14722,7 +14722,7 @@ function _burstLoopExplode(tier){
   const _blR=(_blFused?[0,800,1200,1600]:[0,600,1000,1400])[tier]; // 합체 시 범위 확대
   const _blDmgMul=(_blFused?[0,2,6,10]:[0,1,3,5])[tier]; // 합체 시 배율 2배
   const _blBase=magicRef()*statInt()*pMagicMul();
-  const _blDmg=Math.max(10,~~(_blBase*(_blDmgMul+(_blLv-1))));
+  const _blDmg=Math.max(10,~~(_blBase*_skMul('burstLoop'))); // 통일공식: _skMul
   console.log('[BL] tier='+tier+' base='+~~_blBase+' mul='+_blDmgMul+' dmg='+_blDmg+' melee='+~~meleeRef()+' str='+statStr().toFixed(3)+' atk='+pAtkMul().toFixed(3));
   const _blCols=['','#8866ff','#ffaa44','#ff2244'];
   const _blNames=['','버스트!','더블버스트!!','트리플버스트!!!'];
@@ -17525,7 +17525,7 @@ function update(){
       const _csLv=P.skills.chainSlash||1;
       const _csR=160+(_csLv-1)*5; // 반경 160+Lv×5 (docs 기준)
       const _csNe=shQuery(P.x,P.y,_csR);
-      const _csDmg=~~(meleeRef()*statStr()*(5+(_csLv-1)*~~(25/9))*_fuseMul('chainSlash')); // 1히트, Lv1=5 Lv10=30 (약+2.8/Lv)
+      const _csDmg=~~(meleeRef()*statStr()*_skMul('chainSlash')*_fuseMul('chainSlash')); // 통일공식: _skMul
       const _csAng=Math.atan2(_dashVY,_dashVX);
       for(let _ci=0;_ci<_csNe.length;_ci++){
         const e=_csNe[_ci];if(!e.alive)continue;
@@ -17557,7 +17557,7 @@ function update(){
     if((_harpSk==='magicBlink'||_harpSk==='dimBreach')&&~~(_dashLeft)%3===0){
       if(!G._fireZones)G._fireZones=[];
       const _ltnLv=P.skills.magicBlink||1;
-      const _ltnDmg=~~(magicRef()*(0.5+(_ltnLv-1))*statInt()*pMagicMul());
+      const _ltnDmg=~~(magicRef()*_skMul('magicBlink')*statInt()*pMagicMul()); // 통일공식: _skMul (DOT)
       G._fireZones.push({type:'fireTrail',x:P.x,y:P.y,r:40+_ltnLv*3,dmg:_ltnDmg,el:EL.F,t:0,maxT:720,lv:_ltnLv});
       if(Math.random()>.5)poolPart(P.x+(Math.random()-.5)*10,P.y+(Math.random()-.5)*10,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ff6600',2+Math.random()*2,8);
     }
@@ -17566,7 +17566,7 @@ function update(){
       if(!G._fireZones)G._fireZones=[];
       const _bfLv=P.skills.chainSlash||1;
       const _bfR=160+(_bfLv-1)*5; // 칼날개 범위와 동일
-      const _bfDmg=~~(meleeRef()*statStr()*(1.5+(_bfLv-1)));
+      const _bfDmg=~~(meleeRef()*statStr()*_skMul('chainSlash')); // 통일공식: _skMul (blade fang)
       G._fireZones.push({type:'fireTrail',x:P.x,y:P.y,r:_bfR,dmg:_bfDmg,el:EL.F,t:0,maxT:480,lv:_bfLv});
       poolPart(P.x+(Math.random()-.5)*_bfR,P.y+(Math.random()-.5)*_bfR,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ff6622',3+Math.random()*2,8+Math.random()*4);
     }
@@ -17593,7 +17593,7 @@ function update(){
         const _csR=450+(_csLv-1)*~~(225/9); // 1렙450, 10렙675
         const _csTravD=dst(P._csSlamOX||P.x,P._csSlamOY||P.y,P.x,P.y);
         const _csDistMul=1+Math.min(_csTravD/150,2.5); // 밸런스: 거리캡 3→2.5 (최대×3.5)
-        const _csDmg=~~(meleeRef()*(3.3+(_csLv-1))*statStr()*_csDistMul*_fuseMul('chainSlam'));
+        const _csDmg=~~(meleeRef()*_skMul('chainSlam')*statStr()*_csDistMul*_fuseMul('chainSlam'));
         const _csEl=wp().el||0;
         G._noHitStopT=40;
         const _csNe=shQuery(P.x,P.y,_csR+20);
@@ -17635,7 +17635,7 @@ function update(){
         const _stR=450+(_stLv-1)*~~(225/9); // 1렙450, 10렙675
         const _stTravD=dst(P._csStunOX||P.x,P._csStunOY||P.y,P.x,P.y);
         const _stDistMul=1+Math.min(_stTravD/200,2); // 거리 보너스 최대x3
-        const _stDmg=~~(magicRef()*(4.4+(_stLv-1))*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 화염 마법 데미지
+        const _stDmg=~~(magicRef()*_skMul('chainAssault')*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 통일공식: _skMul
         const _stEl=EL.F;
         G._noHitStopT=40;
         const _stNe=shQuery(P.x,P.y,_stR+20);
@@ -17676,7 +17676,7 @@ function update(){
         const _cbLv=Math.min(P.skills.giantSlam||1,P.skills.chainSlam||1,P.skills.chainAssault||1);
         const _cbTravD=dst(P._csBlastOX||P.x,P._csBlastOY||P.y,P.x,P.y);
         const _cbDistMul=1+Math.min(_cbTravD/150,5); // 이동거리 비례 최대 x6
-        const _cbBaseDmg=~~(meleeRef()*(8+(_cbLv-1))*statStr()*_cbDistMul*_fuseMul('giantSlam'));
+        const _cbBaseDmg=~~(meleeRef()*_skMul('giantSlam')*statStr()*_cbDistMul*_fuseMul('giantSlam')); // 통일공식: _skMul
         const _cbAng=P.facing;
         const _cbW=120+_cbLv*8; // 파동 폭
         const _cbMaxDist=300+_cbLv*20; // 파동 사거리
@@ -18229,7 +18229,7 @@ function update(){
       const _wwMin=100;const _wwMax=200+(_wwLv-1)*15; // 1렙200, 5렙260, 10렙335
       const _wwRangeBase=_wwMin+(_wwMax-_wwMin)*Math.min(1,_wwGrow);
       const _wwRange=_wwRangeBase;
-      const _wwDmg=~~(meleeRef()*statStr()*pAtkMul()*(2+(_wwLv-1)*2)*_fuseMul('whirlwind')); // 통일공식: ref×stat×passive×(기본+Lv성장)×fuseMul (Lv1=2, Lv10=20)
+      const _wwDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('whirlwind')*_fuseMul('whirlwind')); // 통일공식: _skMul
       const _wwHits=hitArc(P.wwAng,_wwRange,Math.PI*2,_wwDmg,wp().el,'weapon');
       SFX.slashSeq(); // 회전 스윙 사운드 (히트 무관)
       // [WW-NEAR] 디버그 로그 제거 (ens.filter+sort = 핫패스 금지 패턴)
@@ -18268,7 +18268,7 @@ function update(){
         // 히트 처리 (4프레임마다)
         if(!P._sbHitF)P._sbHitF=0;P._sbHitF++;
         const _sbDoHit=P._sbHitF%4===0;
-        const _sbDmgBase=~~(magicRef()*statInt()*pMagicMul()*(1+(_sbOmniLv-1)*2)*_fuseMul('omniBeam')); // 통일공식: ref×stat×passive×(기본+Lv성장)×fuseMul — 히든보정 제거 (Lv1=1, Lv10=19/빔/틱)
+        const _sbDmgBase=~~(magicRef()*statInt()*pMagicMul()*_skMul('omniBeam')*_fuseMul('omniBeam')); // 통일공식: _skMul
         for(let _bi=0;_bi<6;_bi++){
           const _tgt=P._sbTgts[_bi];if(!_tgt||!_tgt.alive)continue;
           const _elIdx=_allEl[_bi];
@@ -18598,7 +18598,7 @@ function update(){
       if(_mcSk==='elemMissile'&&P.skills.elemMissile>=1){
         const _emLv=P.skills.elemMissile||1;
         const _emCnt=Math.min(6,~~(3+(_emLv-1)*0.33));
-        const mdmg=~~(magicRef()*statInt()*pMagicMul()*(0.6+(_emLv-1)*0.1))+(P._mpBon||0);P._mpBon=0; // 속성미사일 1.2→0.6
+        const mdmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('elemMissile'))+(P._mpBon||0);P._mpBon=0; // 통일공식: _skMul
         const _mcEl=[EL.F,EL.I,EL.D,EL.L,EL.H,EL.E];
         const _mcRange=450+(_emLv-1)*22+(hm().bonusRange||0)*20;
         const _bkA=P.atkArc+Math.PI;const _half=(_emCnt-1)/2;
@@ -18633,7 +18633,7 @@ function update(){
       } else if(_mcSk==='fireAura'&&P.skills.fireAura>=1){
         const _faLv=P.skills.fireAura||1;
         const _faR=200+~~(200*(_faLv-1)*0.10); // 1렙200, 만렙~400
-        const _faDmg=~~(magicRef()*statInt()*pMagicMul()*(6+(_faLv-1))*_fuseMul('fireAura')); // 지옥진 14→6
+        const _faDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('fireAura')*_fuseMul('fireAura')); // 통일공식: _skMul
         if(!G._fireZones)G._fireZones=[];
         G._fireZones.push({type:'fireAura',x:P.x,y:P.y,r:_faR,dmg:_faDmg,el:EL.F,t:0,maxT:600,lv:_faLv,_tickCd:0,follow:true,_faFr:0});
         P._faCd=720;
@@ -18645,7 +18645,7 @@ function update(){
         // ── 업화선: 화염빔 투사체 1발 발사 (드래곤볼식) ──
         const _fbLv=P.skills.fireBeam||1;
         P.mp-=~~(50*(1+(_fbLv-1)*0.12)); // 업화선 발당 MP: DPS비례 +12%/Lv (Lv1=50, Lv10=104, 쿨1초=초당50~104)
-        const _fbDmg=~~(magicRef()*statInt()*pMagicMul()*(15+(_fbLv-1)*8)*_fuseMul('fireBeam')); // 업화선 +8/Lv (Lv1=15, Lv10=87)
+        const _fbDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('fireBeam')*_fuseMul('fireBeam')); // 통일공식: _skMul
         const _fbRange=700+(_fbLv-1)*50; // 1렙700, 만렙~1200
         const _fbDx=Math.cos(P.atkArc),_fbDy=Math.sin(P.atkArc);
         {const _pp=_getPProj();_pp.x=P.x+_fbDx*20;_pp.y=P.y+_fbDy*20;
@@ -18663,7 +18663,7 @@ function update(){
         // ── 악의구 (기본 폴백) ──
         const _fbLv=P.skills.fireball||1;
         const _fbScale=1+(_fbLv-1)*0.50;
-        const mdmg=~~(magicRef()*statInt()*pMagicMul()*(1.3+(_fbLv-1))*_fuseMul('fireball'))+(P._mpBon||0);P._mpBon=0; // 밸런스: 0.8→1.3
+        const mdmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('fireball')*_fuseMul('fireball'))+(P._mpBon||0);P._mpBon=0; // 통일공식: _skMul
         const _fbDx=Math.cos(P.atkArc),_fbDy=Math.sin(P.atkArc);
         const _fbR0=12,_fbR=~~(12*_fbScale),_fbExplR=~~(80*_fbScale);
         {const _pp=_getPProj();_pp.x=P.x+_fbDx*14;_pp.y=P.y+_fbDy*14;_pp.vx=_fbDx*5.5;_pp.vy=_fbDy*5.5;_pp.dmg=mdmg;_pp.el=EL.D;_pp.maxDist=400+(_fbLv-1)*50+(hm().bonusRange||0)*20;_pp.dist=0;_pp.r=_fbR0;_pp.stagger=0;_pp.kb=0.005;_pp.kbMult=0.1;_pp.magic=true;_pp.fireball=true;_pp.explR=_fbExplR;_pp.explDmg=~~(mdmg*.6);_pp._fbR0=_fbR0;_pp._fbRMax=_fbR;pProjs[pProjs.length]=_pp;}
@@ -19138,7 +19138,7 @@ function update(){
     }
     // 빔 데미지 = 기본마법뎀 × 스킬레벨 배율 (틱당, MP 소비는 지속시간만 결정)
     const _omniSlv=P.skills.omniBeam||1;
-    const _beamDmgBase=magicRef()*statInt()*pMagicMul()*(1+(_omniSlv-1)*2)*_fuseMul('omniBeam'); // 통일공식: ref×stat×passive×(기본+Lv성장)×fuseMul (Lv1=1, Lv10=19/틱)
+    const _beamDmgBase=magicRef()*statInt()*pMagicMul()*_skMul('omniBeam')*_fuseMul('omniBeam'); // 통일공식: _skMul
     // 레이저류: 끝점에서만 데미지 (관통 없음)
     // 빔 중첩: 적에게 빔 지속 적중 시 중첩+1 (최대30), 데미지 배율 = 1 + 중첩*0.1 (최대 4배)
     if(_isOmni){
@@ -19904,16 +19904,16 @@ function update(){
           if(!_isBlue)re.stunned=Math.max(re.stunned,~~(80*rf))}
         _addBoom(p.x,p.y,_rbR,_isBlue?32:26,'redbean');
       }else{
-        const _isParried=p.parryBlueBean;
-        const _blR=_isParried?40:(p._aoeR||100),_blD=_isParried?~~(p.dmg*0.1):(p._aoeDmg||p.dmg||15);
+        const _blR=p._aoeR||100,_blD=p._aoeDmg||p.dmg||15;
         const _blNe=shQuery(p.x,p.y,_blR);
         for(let _bli=0;_bli<_blNe.length;_bli++){const be=_blNe[_bli];if(!be.alive)continue;
           const bd=dst(p.x,p.y,be.x,be.y);if(bd>_blR)continue;
           const ba=Math.atan2(be.y-p.y,be.x-p.x);const bf=Math.max(0,1-bd/_blR);
-          hurtE(be,~~(_blD*(.8+bf*.2)),ba,false,{kbMult:_isParried?0.5:2,magic:!!p.magic,blueBean:!!p.blueBean,parryBlueBean:!!p.parryBlueBean},p.el);
-          if(!_isParried){be.kb.x+=Math.cos(ba)*18*bf;be.kb.y+=Math.sin(ba)*18*bf}}
-        if(!_isParried){_addBoom(p.x,p.y,_blR,32,'redbean');SFX.detonate();G.shake=18*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25;}
-        addParts(p.x,p.y,'#00ccff',_isParried?6:20);addTxt(p.x,p.y-20,_T(_isParried?'💎반사!':'💥반사 폭발!'),_isParried?'#00e5ff':'#00e5ff',_isParried?30:50)}
+          hurtE(be,~~(_blD*(.8+bf*.2)),ba,false,{kbMult:2,magic:!!p.magic,blueBean:!!p.blueBean,parryBlueBean:!!p.parryBlueBean},p.el);
+          be.kb.x+=Math.cos(ba)*18*bf;be.kb.y+=Math.sin(ba)*18*bf}
+        _addBoom(p.x,p.y,_blR,32,'redbean');SFX.detonate();
+        G.shake=18*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25;
+        addParts(p.x,p.y,'#00ccff',20);addTxt(p.x,p.y-20,_T('💥반사 폭발!'),'#00e5ff',50)}
       _pHit=true;break}}}
     if(!_pHit)projs[pw++]=p;else _recycleProj(p);
   }projs.length=pw;}
@@ -20581,7 +20581,7 @@ function update(){
     const _bsCost=~~(100+(_bsLv-1)*11.1); // 1렙100, 10렙200
     if(P.mp>=_bsCost){
       P.mp-=_bsCost;
-      const _bsDmgBase=~~(magicRef()*statInt()*pMagicMul()*(20+(_bsLv-1)*8)*_fuseMul('blueShot')); // 푸른비 +8/Lv (Lv1=20, Lv10=92)
+      const _bsDmgBase=~~(magicRef()*statInt()*pMagicMul()*_skMul('blueShot')*_fuseMul('blueShot')); // 통일공식: _skMul
       P._blueBarrage={cnt:0,max:100,interval:3,timer:0,dmg:~~(_bsDmgBase/5),range:750+(_bsLv-1)*45,lv:_bsLv};
     } else {
       P._blueOn=false;P._blueCd=300;
@@ -20646,7 +20646,7 @@ function update(){
       const chgPct=_gs.chgPct||0; // 차징 비율 0~1
       const _baseMul=1+chgPct*2; // 차징 뎀 배율: 1x~3x
       const _gsR=~~(60+(slv-1)*5+chgPct*80); // 폭발 범위: 60~140
-      const _gsDmg=~~(bowRef()*statDex()*pBowMul()*_baseMul*(2+(slv-1))*_fuseMul('blastShot'));
+      const _gsDmg=~~(bowRef()*statDex()*pBowMul()*_baseMul*_skMul('blastShot')*_fuseMul('blastShot')); // 통일공식: _skMul
       // 착탄점 폭발
       const _gsNe=shQuery(bx,by,_gsR+20);
       for(let gi=0;gi<_gsNe.length;gi++){const e=_gsNe[gi];if(!e.alive)continue;
@@ -20695,7 +20695,7 @@ function update(){
       if(_bs.phase==='boom'){
         const slv=_bs.slv||1;const bx=_bs.x,by=_bs.y;
         const boomR=~~(130*(1+(slv-1)*0.1));
-        const boomDmg=~~(bowRef()*statDex()*pBowMul()*(6+(slv-1))*_fuseMul('blastShot')); // 밸런스: 13→6
+        const boomDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('blastShot')*_fuseMul('blastShot')); // 통일공식: _skMul
         const ne=shQuery(bx,by,boomR+20);
         for(let i=0;i<ne.length;i++){const e=ne[i];if(!e.alive)continue;
           if(dst(bx,by,e.x,e.y)<boomR+e.r){
@@ -20854,7 +20854,7 @@ function update(){
       const _hrLv=P.skills.hellRay||1;
       const _hrR=200+(_hrLv-1)*22; // 1렙250 +22/렙, 10렙448
       const _hrElec=_isFused('elecRepent'); // 참회 귀환 합체
-      const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*(5+(_hrLv-1))*(_hrElec?1.2:1)*_fuseMul('hellRay')); // 참회광선 10→5
+      const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('hellRay')*(_hrElec?1.2:1)*_fuseMul('hellRay')); // 통일공식: _skMul
       P.mp-=100;P._hrStk--;const _hrMx3=_hrElec?(_hrLv>=10?3:_hrLv>=5?2:1):1;if(P._hrStk<_hrMx3&&!P._hrRech)P._hrRech=600;
       const _hrDur=600; // 10초 고정
       if(!G._fireZones)G._fireZones=[];
@@ -20864,7 +20864,7 @@ function update(){
         // 전기 소용돌이 동시 생성 — storm DOT 장판
         const _msLv=P.skills.maliceStorm||1;
         const _msR=~~(_hrR*0.8);
-        const _msDmg=~~(magicRef()*statInt()*pMagicMul()*(5+(_msLv-1))*_fuseMul('maliceStorm'));
+        const _msDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('maliceStorm')*_fuseMul('maliceStorm'));
         G._fireZones.push({x:_hrwx,y:_hrwy,r:_msR,t:0,maxT:_hrDur,
           dmg:_msDmg,el:EL.L,lv:_msLv,type:'storm'});
       }
@@ -20899,7 +20899,7 @@ function update(){
       }
       if(_msBlocked){showPH(_T('이미 폭풍 지역!'),'#cc88ff')}
       else{
-        const _msDmg=~~(magicRef()*statInt()*pMagicMul()*(5+(_msLv-1))*_fuseMul('maliceStorm'));
+        const _msDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('maliceStorm')*_fuseMul('maliceStorm'));
         let _castSuccess=false;
         if(_msBF){
           const _bsMpCost=50;
@@ -20912,7 +20912,7 @@ function update(){
             const _erF=_isFused('elecRepent');
             const _hrLv=_erF?(P.skills.hellRay||1):0;
             const _syncDur=600; // 10초 고정 (악의폭풍과 동일)
-            const _bsRiseDmg=~~(meleeRef()*statStr()*pAtkMul()*(8+(_bsLv-1))*_fuseMul('boneWall'));
+            const _bsRiseDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('boneWall')*_fuseMul('boneWall'));
             if(!G._boneWalls)G._boneWalls=[];
             G._boneWalls.push({x:_mswx,y:_mswy,ringR:_bsRingR,wallThk:14,
               t:0,riseT:60,maxT:_syncDur,dmg:_bsRiseDmg,hitSet:new Set(),phase:'rise'});
@@ -20921,7 +20921,7 @@ function update(){
             G.mats=Math.max(0,G.mats-12);
             // elecRepent: 참회(hellRay)도 같은 포인트에 동시 설치
             if(_erF&&P.skills.hellRay>=1){
-              const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*(5+(_hrLv-1))*1.2); // 참회광선 합체 10→5
+              const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('hellRay')*1.2); // 통일공식: _skMul (합체)
               G._fireZones.push({x:_mswx,y:_mswy,r:200+(_hrLv-1)*22,t:0,maxT:_syncDur,
                 dmg:_hrDmg,el:EL.L,lv:_hrLv,type:'hellRay',ang:0,elec:true});
               SFX.magic(EL.L);playSample('repentance',.7,_r(1,.08));
@@ -21089,7 +21089,7 @@ function update(){
     if(P._gwT>=P._gwMax){
       // ═══ 레인라이트닝 시작 — 실제 왕복 이동 ═══
       const _gwSlv=P.skills.ghostWalk||1;
-      const _gwBaseDmg=~~(magicRef()*statInt()*pMagicMul()*3.5*(1+(_gwSlv-1)*0.15)*_fuseMul('ghostWalk'));
+      const _gwBaseDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('ghostWalk')*_fuseMul('ghostWalk')); // 통일공식: _skMul
       const _gwBonusMul=1+P._gwCount*0.10;
       const _gwPts=P._gwPath||[{x:P.x,y:P.y}];
       _gwPts.push({x:P.x,y:P.y});
@@ -21274,7 +21274,7 @@ function update(){
         if(mb.vortex){
           const bx=mb.tx,by=mb.ty,_vSlv=mb.slv||1,_vR=mb.r;
           if(!G._fireZones)G._fireZones=[];
-          const baseDmg=~~(magicRef()*statInt()*pMagicMul()*(5+(_vSlv-1))*_fuseMul('maliceMortar'));
+          const baseDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('maliceMortar')*_fuseMul('maliceMortar')); // 통일공식: _skMul (폭풍소환)
           if(mb.iceFuse){
             // 합체: 소용돌이 + 얼음보주 동시 전개
             G._fireZones.push({x:bx,y:by,r:_vR,t:0,maxT:390,dmg:baseDmg,el:EL.I,lv:_vSlv,type:'iceVortex'});
@@ -21308,7 +21308,7 @@ function update(){
             // 9렙 이하: 폭발 → 잔재로 얼음보주
             const bx=mb.tx,by=mb.ty,br=mb.r;
             const _ifSlv2=P.skills.maliceMortar||1;
-            const mmDmg=~~(magicRef()*statInt()*pMagicMul()*10*(1+(_ifSlv2-1)*0.15)*_fuseMul('maliceMortar'));
+            const mmDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('maliceMortar')*_fuseMul('maliceMortar')); // 통일공식: _skMul (얼음합체 9렙이하)
             const _neM=shQuery(bx,by,br+30);
             for(let mi=0;mi<_neM.length;mi++){const e=_neM[mi];if(!e.alive)continue;
               if(dst(bx,by,e.x,e.y)<br+e.r){const a=Math.atan2(e.y-by,e.x-bx);
@@ -21332,7 +21332,7 @@ function update(){
         }else{
           // 9렙 이하: 즉시 폭발
           const bx=mb.tx,by=mb.ty,br=mb.r;
-          const mmDmg=~~(magicRef()*statInt()*pMagicMul()*10*(1+(slv-1)*0.15)*_fuseMul('maliceMortar')); // 밸런스: 15/+20%→10/+15%
+          const mmDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('maliceMortar')*_fuseMul('maliceMortar')); // 통일공식: _skMul (9렙이하 즉시폭발)
           const _neM=shQuery(bx,by,br+30);
           for(let mi=0;mi<_neM.length;mi++){const e=_neM[mi];if(!e.alive)continue;
             if(dst(bx,by,e.x,e.y)<br+e.r){const a=Math.atan2(e.y-by,e.x-bx);
@@ -21390,7 +21390,7 @@ function update(){
         // 파쇄: 얼음칼날 방사
         const slvIO=P.skills.iceOrb||1;const slvMM=P.skills.maliceMortar||1;
         const nBlades=8+slvIO*4+slvMM*2; // 합체 보너스
-        const baseDmg=~~(magicRef()*statInt()*pMagicMul()*5*(1+(slvIO-1)*0.15)*(1+(slvMM-1)*0.1)*_fuseMul('maliceMortar'));
+        const baseDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('maliceMortar')*_fuseMul('maliceMortar')); // 통일공식: _skMul (얼음보주 파쇄)
         const bladeDmg=Math.max(1,~~(baseDmg*0.3)); // 다수 발사 보정, 최소1
         const _ioSpawnR=P.r+32;
         for(let i=0;i<nBlades;i++){
@@ -21434,7 +21434,7 @@ function update(){
       // 흡인 완료 → 2타 대폭발
       if(mb.pullT>=mb.pullMax){
         const slv=P.skills.maliceMortar||1;
-        const mmDmg=~~(magicRef()*statInt()*pMagicMul()*20*(1+(slv-1)*0.2)*_fuseMul('maliceMortar'));
+        const mmDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('maliceMortar')*_fuseMul('maliceMortar')); // 통일공식: _skMul (10렙 2타 대폭발)
         const _neM=shQuery(bx,by,br+30);
         for(let mi=0;mi<_neM.length;mi++){const e=_neM[mi];if(!e.alive)continue;
           if(dst(bx,by,e.x,e.y)<br+e.r){const a=Math.atan2(e.y-by,e.x-bx);
@@ -26489,7 +26489,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(e._plagued){
       const _pbLv=e._plagueLv||1;
       const _pbR=~~((160+(_pbLv-1)*8)*0.5); // 폭발 범위 50%↓
-      const _pbDmg=~~(magicRef()*statInt()*pMagicMul()*(0.45+(_pbLv-1)));
+      const _pbDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('plagueBurst')); // 통일공식: _skMul
       const _pbNear=shQuery(e.x,e.y,_pbR);
       for(let _pbi=0;_pbi<_pbNear.length;_pbi++){
         const oe=_pbNear[_pbi];if(oe===e||!oe.alive)continue;
@@ -26949,7 +26949,7 @@ function _slamStormBlast(){
   const _ssLv=P.skills.giantSlam||1;const _ssR=200+(_ssLv-1)*22; // 200→400 (만렙10)
   const _ssStunR=_ssR; // 스턴 범위 = 데미지 범위와 동일
   // 대왕치기 데미지 × 0.7 + parryBank 축적분 × 0.7
-  const _baseDmg=~~(meleeRef()*(7+(_ssLv-1)));
+  const _baseDmg=~~(meleeRef()*_skMul('giantSlam')); // 통일공식: _skMul (slamStorm)
   const _bankBonus=~~((P.parryBank||0)*1.75);
   const _ssDmg=~~((_baseDmg+_bankBonus)*_fuseMul('giantSlam')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1));
   G._noHitStopT=60;
@@ -27661,6 +27661,8 @@ function _fuseStar(skId){
   for(const[k,v]of Object.entries(_FUSE_PAIRS)){if(!_isFused(k))continue;if(!v.includes(skId))continue;const _s=(_FUSE_GEM_GROUPS[k]&&_FUSE_GEM_GROUPS[k].star)||v.length;if(_s>_max)_max=_s}
   return _max;
 }
+// 통일 스킬 배율: Lv1=300, +10/Lv (Lv10=390, Lv20=490)
+function _skMul(skId){const lv=P.skills[skId]||1;return 300+(lv-1)*10}
 function _fuseMul(skId){const s=_fuseStar(skId);const _fm=s>=2?1+(s-1)*.2:1;return skId==='chargeBoost'||skId==='magicBlink'?_fm:_fm*(1+_eqAffix('skillBoost'))}
 // ═══ 카테고리별 숙련도 시스템 ═══
 // 스킬 카테고리(cat)별로 사용시간(초) 축적. 합체 해금 조건 = 구성스킬 각 카테고리 600초(10분)
@@ -28047,7 +28049,7 @@ function activateMaliceHunt(){
     if(_isPlagueGF)P._pbCd=~~((900-((P.skills.plagueBurst||1)-1)*30)*(1+_eqAffix('cooldownRed'))); // 독혈해방 15초 - Lv당 0.5초
     const _goCnt=P._gOrbs.length;
     const _goR=(34)+P.r;
-    const _fbDmg=~~(meleeRef()*statStr()*pAtkMul()*(10+(_mhLv-1))*_fuseMul('maliceHunt')); // Lv당 +1 (카드표시와 동기)
+    const _fbDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('maliceHunt')*_fuseMul('maliceHunt')); // 통일공식: _skMul
     const _fbPierce=~~(30+(_mhLv-1)*20/9); // 1렙=30, 10렙=50
     const _fbBombR=80+_mhLv*5; // 히트 시 폭발 반경
     // 가장 가까운 적 또는 바라보는 방향
@@ -28327,7 +28329,7 @@ function _autoShieldThrow(){
 function activateDarkPillar(){
   const _dpLv=P.skills.darkPillar||1;
   const _dpR=250+(_dpLv-1)*22;
-  const _dpDmg=~~(magicRef()*statInt()*pMagicMul()*(4+(_dpLv-1)));
+  const _dpDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('darkPillar')); // 통일공식: _skMul
   if(!G._fireZones)G._fireZones=[];
   if(!G._dpQueue)G._dpQueue=[];
   // 9개 기둥 위치: 중앙 1 + 내원 4 + 외원 4
@@ -28359,7 +28361,7 @@ function activateDarkPillar(){
   if(_isFused('pillarSpike')&&P.skills.spikeTrap>=1){
     const _stLv=P.skills.spikeTrap||1;
     const _stR=200+(_stLv-1)*22;
-    const _stDmg=~~(magicRef()*statInt()*pMagicMul()*(3+(_stLv-1))); // 기둥가시: flat +1/Lv (슬로우+출혈 유틸 감안)
+    const _stDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap')); // 통일공식: _skMul
     for(let _pi=0;_pi<_positions.length;_pi++){
       const p=_positions[_pi];
       G._fireZones.push({x:p.x,y:p.y,r:_stR,t:0,maxT:300,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap'});
@@ -28384,7 +28386,7 @@ function activateGiantSlam(srcId){
   // 즉시 히트 (hitStop/slowMo 억제)
   G._noHitStopT=60;
   const _gs1R=500+(slv-1)*15;
-  const _gs1Dmg=~~(meleeRef()*statStr()*(2+(slv-1)*1)); // Lv당 ×1 추가 (Lv1=×2, Lv5=×6, Lv10=×11)
+  const _gs1Dmg=~~(meleeRef()*statStr()*_skMul('giantSlam')); // 통일공식: _skMul
   const _gs1El=wp().el||0;
   _gSlamHit(P.facing,_gs1R,Math.PI,_gs1Dmg,_gs1El,0,1.0);
   G.hitStop=0;G.slowMo=0;
@@ -28553,7 +28555,7 @@ function activateIceShatter(){
   P._ioActive=false; // 중복 호출 방지 — 즉시 비활성화
   const slv=P.skills.iceOrb||1;
   const nBlades=4+slv*4; // 1렙=8, 2렙=12, 5렙=24, 10렙=44
-  const baseDmg=~~(magicRef()*statInt()*pMagicMul()*(5+(slv-1)))+(P._ioBon||0);P._ioBon=0;
+  const baseDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('iceOrb'))+(P._ioBon||0);P._ioBon=0; // 통일공식: _skMul
   const bladeDmg=Math.max(1,~~(baseDmg*0.3)); // 다수 발사 보정, 최소1
   const cx=P.x,cy=P.y;
   // 전방위 얼음파편 방사 (큰 파편)
