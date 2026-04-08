@@ -1,0 +1,81 @@
+{
+  "character": {
+    "id": "15dd8ebb-d94c-4501-ad54-a96432fb837c",
+    "name": "STRICT top-down 90 degree view, no perspective, no angle,\npure bird's-eye view, designed for gameplay readability, not illustration.\n\nconsistent design across 8 directions,\nsame proportions, same silhouette, same colors in all rotations,\nno distortion between directions.\n\nclear silhouette from distance,\nfeet grounded for map placement,\ncentered body mass, stable structure.\n\nlimited color palette (4~6 tones),\nhigh contrast edges for visibility.\n\nno background, transparent,\nno outline glow, no background halo, clean cut edges,\nno UI, no extra elements\n\nCorrupted wolf-like beast,\nlean muscular body, fast and aggressive,\nspine twisted with bone protrusions,\nglowing eyes, hunting posture.",
+    "prompt": "STRICT top-down 90 degree view, no perspective, no angle,\npure bird's-eye view, designed for gameplay readability, not illustration.\n\nconsistent design across 8 directions,\nsame proportions, same silhouette, same colors in all rotations,\nno distortion between directions.\n\nclear silhouette from distance,\nfeet grounded for map placement,\ncentered body mass, stable structure.\n\nlimited color palette (4~6 tones),\nhigh contrast edges for visibility.\n\nno background, transparent,\nno outline glow, no background halo, clean cut edges,\nno UI, no extra elements\n\nCorrupted wolf-like beast,\nlean muscular body, fast and aggressive,\nspine twisted with bone protrusions,\nglowing eyes, hunting posture.",
+    "size": {
+      "width": 92,
+      "height": 92
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "low top-down",
+    "created_at": "2026-04-07T08:06:56.656999+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "animating-7e50bea5": {
+        "south-west": [
+          "animations/animating-7e50bea5/south-west/frame_000.png",
+          "animations/animating-7e50bea5/south-west/frame_001.png",
+          "animations/animating-7e50bea5/south-west/frame_002.png",
+          "animations/animating-7e50bea5/south-west/frame_003.png"
+        ],
+        "south": [
+          "animations/animating-7e50bea5/south/frame_000.png",
+          "animations/animating-7e50bea5/south/frame_001.png",
+          "animations/animating-7e50bea5/south/frame_002.png",
+          "animations/animating-7e50bea5/south/frame_003.png"
+        ],
+        "north-east": [
+          "animations/animating-7e50bea5/north-east/frame_000.png",
+          "animations/animating-7e50bea5/north-east/frame_001.png",
+          "animations/animating-7e50bea5/north-east/frame_002.png",
+          "animations/animating-7e50bea5/north-east/frame_003.png"
+        ],
+        "north-west": [
+          "animations/animating-7e50bea5/north-west/frame_000.png",
+          "animations/animating-7e50bea5/north-west/frame_001.png",
+          "animations/animating-7e50bea5/north-west/frame_002.png",
+          "animations/animating-7e50bea5/north-west/frame_003.png"
+        ],
+        "east": [
+          "animations/animating-7e50bea5/east/frame_000.png",
+          "animations/animating-7e50bea5/east/frame_001.png",
+          "animations/animating-7e50bea5/east/frame_002.png",
+          "animations/animating-7e50bea5/east/frame_003.png"
+        ],
+        "north": [
+          "animations/animating-7e50bea5/north/frame_000.png",
+          "animations/animating-7e50bea5/north/frame_001.png",
+          "animations/animating-7e50bea5/north/frame_002.png",
+          "animations/animating-7e50bea5/north/frame_003.png"
+        ],
+        "west": [
+          "animations/animating-7e50bea5/west/frame_000.png",
+          "animations/animating-7e50bea5/west/frame_001.png",
+          "animations/animating-7e50bea5/west/frame_002.png",
+          "animations/animating-7e50bea5/west/frame_003.png"
+        ],
+        "south-east": [
+          "animations/animating-7e50bea5/south-east/frame_000.png",
+          "animations/animating-7e50bea5/south-east/frame_001.png",
+          "animations/animating-7e50bea5/south-east/frame_002.png",
+          "animations/animating-7e50bea5/south-east/frame_003.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-04-08T14:57:21.382394"
+}

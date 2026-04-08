@@ -1,0 +1,327 @@
+{
+  "total": 40,
+  "cell": 256,
+  "cols": 7,
+  "mobs": {
+    "blood_swarm": {
+      "idx": 0,
+      "col": 0,
+      "row": 0,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "apostle_mass": {
+      "idx": 1,
+      "col": 1,
+      "row": 0,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "apostle_knight": {
+      "idx": 2,
+      "col": 2,
+      "row": 0,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "soul_flame": {
+      "idx": 3,
+      "col": 3,
+      "row": 0,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "hive_bloater": {
+      "idx": 4,
+      "col": 4,
+      "row": 0,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "spine_beast": {
+      "idx": 5,
+      "col": 5,
+      "row": 0,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "flesh_crawler": {
+      "idx": 6,
+      "col": 6,
+      "row": 0,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "carapace_predator": {
+      "idx": 7,
+      "col": 0,
+      "row": 1,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "bone_centipede_pro": {
+      "idx": 8,
+      "col": 1,
+      "row": 1,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "gas_zombie": {
+      "idx": 9,
+      "col": 2,
+      "row": 1,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "needle_tentacle": {
+      "idx": 10,
+      "col": 3,
+      "row": 1,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "rotting_slime_mass": {
+      "idx": 11,
+      "col": 4,
+      "row": 1,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "flesh_eye_mass": {
+      "idx": 12,
+      "col": 5,
+      "row": 1,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "corrupted_wolf": {
+      "idx": 13,
+      "col": 6,
+      "row": 1,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "crawling_horror": {
+      "idx": 14,
+      "col": 0,
+      "row": 2,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 8
+    },
+    "eye_stalker_pro": {
+      "idx": 15,
+      "col": 1,
+      "row": 2,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "iron_butcher_pro": {
+      "idx": 16,
+      "col": 2,
+      "row": 2,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "plague_doctor_pro": {
+      "idx": 17,
+      "col": 3,
+      "row": 2,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 4
+    },
+    "grotesque_quadruped": {
+      "idx": 18,
+      "col": 4,
+      "row": 2,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 8
+    },
+    "black_castle_guardian": {
+      "idx": 19,
+      "col": 5,
+      "row": 2,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "poison_mushroom_giant": {
+      "idx": 20,
+      "col": 6,
+      "row": 2,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "forest_watcher": {
+      "idx": 21,
+      "col": 0,
+      "row": 3,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "boss_ch1_stag": {
+      "idx": 22,
+      "col": 1,
+      "row": 3,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "headless_knight": {
+      "idx": 23,
+      "col": 2,
+      "row": 3,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "plague_censer": {
+      "idx": 24,
+      "col": 3,
+      "row": 3,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "skinless_hound": {
+      "idx": 25,
+      "col": 4,
+      "row": 3,
+      "idle": true,
+      "walk": false,
+      "walkFrames": 0
+    },
+    "deformed_giant": {
+      "idx": 26,
+      "col": 5,
+      "row": 3,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "gut_witch": {
+      "idx": 27,
+      "col": 6,
+      "row": 3,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "iron_torturer": {
+      "idx": 28,
+      "col": 0,
+      "row": 4,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "jaw_stalker": {
+      "idx": 29,
+      "col": 1,
+      "row": 4,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "fallen_paladin": {
+      "idx": 30,
+      "col": 2,
+      "row": 4,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "flesh_executioner": {
+      "idx": 31,
+      "col": 3,
+      "row": 4,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "void_cultist": {
+      "idx": 32,
+      "col": 4,
+      "row": 4,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "skull_brute": {
+      "idx": 33,
+      "col": 5,
+      "row": 4,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "chain_wraith": {
+      "idx": 34,
+      "col": 6,
+      "row": 4,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "bone_archer": {
+      "idx": 35,
+      "col": 0,
+      "row": 5,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "bloated_warrior": {
+      "idx": 36,
+      "col": 1,
+      "row": 5,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "rot_knight": {
+      "idx": 37,
+      "col": 2,
+      "row": 5,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "etype1_archer": {
+      "idx": 38,
+      "col": 3,
+      "row": 5,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    },
+    "blind_swordsman": {
+      "idx": 39,
+      "col": 4,
+      "row": 5,
+      "idle": true,
+      "walk": true,
+      "walkFrames": 6
+    }
+  }
+}

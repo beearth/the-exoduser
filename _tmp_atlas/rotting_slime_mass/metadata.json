@@ -1,0 +1,81 @@
+{
+  "character": {
+    "id": "a69aaa09-7309-4cac-a327-003913874a01",
+    "name": "rotting_slime_mass",
+    "prompt": "Rotting slime mass monster, top-down view, bloated decaying flesh blob with exposed organs floating inside translucent body, multiple skulls embedded in gelatinous mass, sticky tendrils dragging on ground, sickly green-purple palette with red glowing core, grotesque body horror, dark fantasy pixel art, no background transparent",
+    "size": {
+      "width": 252,
+      "height": 252
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "low top-down",
+    "created_at": "2026-04-07T08:13:45.249309+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "animating-5a5f112f": {
+        "north-east": [
+          "animations/animating-5a5f112f/north-east/frame_000.png",
+          "animations/animating-5a5f112f/north-east/frame_001.png",
+          "animations/animating-5a5f112f/north-east/frame_002.png",
+          "animations/animating-5a5f112f/north-east/frame_003.png"
+        ],
+        "north-west": [
+          "animations/animating-5a5f112f/north-west/frame_000.png",
+          "animations/animating-5a5f112f/north-west/frame_001.png",
+          "animations/animating-5a5f112f/north-west/frame_002.png",
+          "animations/animating-5a5f112f/north-west/frame_003.png"
+        ],
+        "west": [
+          "animations/animating-5a5f112f/west/frame_000.png",
+          "animations/animating-5a5f112f/west/frame_001.png",
+          "animations/animating-5a5f112f/west/frame_002.png",
+          "animations/animating-5a5f112f/west/frame_003.png"
+        ],
+        "north": [
+          "animations/animating-5a5f112f/north/frame_000.png",
+          "animations/animating-5a5f112f/north/frame_001.png",
+          "animations/animating-5a5f112f/north/frame_002.png",
+          "animations/animating-5a5f112f/north/frame_003.png"
+        ],
+        "south": [
+          "animations/animating-5a5f112f/south/frame_000.png",
+          "animations/animating-5a5f112f/south/frame_001.png",
+          "animations/animating-5a5f112f/south/frame_002.png",
+          "animations/animating-5a5f112f/south/frame_003.png"
+        ],
+        "east": [
+          "animations/animating-5a5f112f/east/frame_000.png",
+          "animations/animating-5a5f112f/east/frame_001.png",
+          "animations/animating-5a5f112f/east/frame_002.png",
+          "animations/animating-5a5f112f/east/frame_003.png"
+        ],
+        "south-east": [
+          "animations/animating-5a5f112f/south-east/frame_000.png",
+          "animations/animating-5a5f112f/south-east/frame_001.png",
+          "animations/animating-5a5f112f/south-east/frame_002.png",
+          "animations/animating-5a5f112f/south-east/frame_003.png"
+        ],
+        "south-west": [
+          "animations/animating-5a5f112f/south-west/frame_000.png",
+          "animations/animating-5a5f112f/south-west/frame_001.png",
+          "animations/animating-5a5f112f/south-west/frame_002.png",
+          "animations/animating-5a5f112f/south-west/frame_003.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-04-08T14:57:06.555525"
+}

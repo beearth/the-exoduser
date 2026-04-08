@@ -1,0 +1,81 @@
+{
+  "character": {
+    "id": "1ff79754-3610-4f7d-a9e6-815980b15f01",
+    "name": "carapace_predator",
+    "prompt": "Armored carapace predator, hunched low quadruped beast with layered chitinous shell plates fused with human bones, exposed raw muscle between armor gaps, multiple glowing red eyes under heavy brow ridge, massive crushing jaw with jagged teeth, bone claws scraping ground, dark brown-black with red vein cracks, grotesque body horror. STRICT top-down 90 degree view, dark palette with subtle red glowing veins, limited color palette 4-6 tones, high contrast edges, no background transparent, clean cut edges",
+    "size": {
+      "width": 252,
+      "height": 252
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "low top-down",
+    "created_at": "2026-04-07T08:25:15.435219+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "animating-dda1a4f1": {
+        "west": [
+          "animations/animating-dda1a4f1/west/frame_000.png",
+          "animations/animating-dda1a4f1/west/frame_001.png",
+          "animations/animating-dda1a4f1/west/frame_002.png",
+          "animations/animating-dda1a4f1/west/frame_003.png"
+        ],
+        "south-west": [
+          "animations/animating-dda1a4f1/south-west/frame_000.png",
+          "animations/animating-dda1a4f1/south-west/frame_001.png",
+          "animations/animating-dda1a4f1/south-west/frame_002.png",
+          "animations/animating-dda1a4f1/south-west/frame_003.png"
+        ],
+        "north": [
+          "animations/animating-dda1a4f1/north/frame_000.png",
+          "animations/animating-dda1a4f1/north/frame_001.png",
+          "animations/animating-dda1a4f1/north/frame_002.png",
+          "animations/animating-dda1a4f1/north/frame_003.png"
+        ],
+        "south-east": [
+          "animations/animating-dda1a4f1/south-east/frame_000.png",
+          "animations/animating-dda1a4f1/south-east/frame_001.png",
+          "animations/animating-dda1a4f1/south-east/frame_002.png",
+          "animations/animating-dda1a4f1/south-east/frame_003.png"
+        ],
+        "south": [
+          "animations/animating-dda1a4f1/south/frame_000.png",
+          "animations/animating-dda1a4f1/south/frame_001.png",
+          "animations/animating-dda1a4f1/south/frame_002.png",
+          "animations/animating-dda1a4f1/south/frame_003.png"
+        ],
+        "north-west": [
+          "animations/animating-dda1a4f1/north-west/frame_000.png",
+          "animations/animating-dda1a4f1/north-west/frame_001.png",
+          "animations/animating-dda1a4f1/north-west/frame_002.png",
+          "animations/animating-dda1a4f1/north-west/frame_003.png"
+        ],
+        "east": [
+          "animations/animating-dda1a4f1/east/frame_000.png",
+          "animations/animating-dda1a4f1/east/frame_001.png",
+          "animations/animating-dda1a4f1/east/frame_002.png",
+          "animations/animating-dda1a4f1/east/frame_003.png"
+        ],
+        "north-east": [
+          "animations/animating-dda1a4f1/north-east/frame_000.png",
+          "animations/animating-dda1a4f1/north-east/frame_001.png",
+          "animations/animating-dda1a4f1/north-east/frame_002.png",
+          "animations/animating-dda1a4f1/north-east/frame_003.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-04-08T14:56:50.579086"
+}

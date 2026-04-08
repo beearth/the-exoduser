@@ -2175,10 +2175,11 @@ layout(location=3)in float a_alpha;
 uniform vec2 u_res;
 out vec4 vCol;
 void main(){
-  vec2 sp=a_pos_sz.xy+a_quad*a_pos_sz.z;
-  vec2 ndc=sp/u_res*2.0-1.0;ndc.y=-ndc.y;
+  vec2 center=a_pos_sz.xy/u_res*2.0-1.0;
+  center.y=-center.y;
+  vec2 offset=a_quad*(a_pos_sz.z/u_res)*2.0;
   vCol=vec4(a_col,a_alpha);
-  gl_Position=vec4(ndc,0.0,1.0);
+  gl_Position=vec4(center+offset,0.0,1.0);
 }`;
     const _fs=`#version 300 es
 precision mediump float;
@@ -2207,19 +2208,21 @@ function _queuePartGL(x,y,sz,col,alpha){
   if(_partGLCount>=_PART_GL_MAX)_flushPartGL();
   const c=_parseCol(col);
   const o=_partGLCount*_PART_GL_STRIDE;
-  _partGLCpu[o]=x;_partGLCpu[o+1]=y;_partGLCpu[o+2]=sz;
+  // 월드좌표 → 스크린좌표 (카메라 오프셋 적용)
+  _partGLCpu[o]=C.width*.5+(x-G.cam.x);_partGLCpu[o+1]=C.height*.5+(y-G.cam.y);_partGLCpu[o+2]=sz;
   _partGLCpu[o+3]=c[0];_partGLCpu[o+4]=c[1];_partGLCpu[o+5]=c[2];
   _partGLCpu[o+6]=alpha*c[3];
   _partGLCount++;
 }
 function _flushPartGL(){
   if(!_partGLMode||!GL||!_partGLProg||_partGLCount<1)return 0;
-  GL.useProgram(_partGLProg);GL.uniform2f(_partGLURes,C.width,C.height);
-  GL.enable(GL.BLEND);GL.blendFunc(GL.SRC_ALPHA,GL.ONE_MINUS_SRC_ALPHA);
+  GL.useProgram(_partGLProg);GL.viewport(0,0,C.width,C.height);GL.uniform2f(_partGLURes,C.width,C.height);
+  GL.enable(GL.BLEND);GL.blendFunc(GL.SRC_ALPHA,GL.ONE);
   GL.bindVertexArray(_partGLVao);GL.bindBuffer(GL.ARRAY_BUFFER,_partGLInstVBO);
   GL.bufferSubData(GL.ARRAY_BUFFER,0,_partGLCpu,0,_partGLCount*_PART_GL_STRIDE);
   GL.drawArraysInstanced(GL.TRIANGLE_STRIP,0,4,_partGLCount);
   GL.bindVertexArray(null);
+  GL.blendFunc(GL.SRC_ALPHA,GL.ONE_MINUS_SRC_ALPHA); // blend 복원
   if(_glMainProg)GL.useProgram(_glMainProg);
   const n=_partGLCount;_partGLCount=0;return n;
 }
@@ -28504,7 +28507,7 @@ function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
     const ang=Math.atan2(e.y-P.y,e.x-P.x);
     const mult=elMul(el,e.el);const fd=~~(dmg*mult);
     // 데미지 범위 안이면 데미지 적용
-    if(d<=range+e.r){hurtE(e,fd,ang,false,{kbMult:kbM||0,noPoise:true},el)}
+    if(d<=range+e.r){hurtE(e,fd,ang,false,{kbMult:kbM||0,noPoise:true,explode:true},el);e.kb.x+=Math.cos(ang)*8;e.kb.y+=Math.sin(ang)*8}
     if(!e.alive)continue; // 데미지로 죽었으면 스턴 스킵
     // 스턴 범위 안이면 포이즈+스턴 적용
     // 대왕치기: 데미지의 1500% 포이즈 데미지 (뎀 낮고 포이즈 특화)
@@ -32541,9 +32544,9 @@ function draw(){
     }
     if(e.x<_vl||e.x>_vr||e.y<_vt||e.y>_vb)continue;
     _eRCnt++;const _eLite=!e.ib&&_eRCnt>_E_RMAX; // 초과 시 간소화 모드
-    // LOD: 카메라 900px+ → 단순 원형 (스프라이트 스킵)
+    // LOD: 카메라 1200px+ → 단순 원형 (스프라이트 스킵)
     const _eCamD2=(e.x-G.cam.x)*(e.x-G.cam.x)+(e.y-G.cam.y)*(e.y-G.cam.y);
-    if(_eCamD2>810000&&!e.ib){X.globalAlpha=.6;X.fillStyle=e.col||'#aa4444';X.beginPath();X.arc(e.x,e.y,e.r,0,Math.PI*2);X.fill();X.globalAlpha=1;continue}
+    if(_eCamD2>1440000&&!e.ib){X.globalAlpha=.6;X.fillStyle=e.col||'#aa4444';X.beginPath();X.arc(e.x,e.y,e.r,0,Math.PI*2);X.fill();X.globalAlpha=1;continue}
     // ── 구울 전용 렌더 (3종 스프라이트) ──
     if(e._isGhoul){
       const gt=GHOUL_DEFS[e.etype]||GHOUL_DEFS[101];

@@ -1,0 +1,81 @@
+{
+  "character": {
+    "id": "4e506ba8-0a20-47a2-b3a9-0a5e8c2bf424",
+    "name": "apostle_knight",
+    "prompt": "Corrupted knight monster, heavy broken armor fused with rotting flesh growing through gaps, oversized rusted cleaver, helmet cracked revealing one burning red eye, hunched brutal stance, Berserk apostle style monstrous human form. STRICT top-down 90 degree view, dark fantasy grotesque, dark limited color palette 4-6 tones, deep shadows, strong highlights, subtle blood red accents, no background transparent, no glow, clean cut edges",
+    "size": {
+      "width": 224,
+      "height": 224
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "low top-down",
+    "created_at": "2026-04-07T11:50:52.655688+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "animating-bff44b3a": {
+        "south-east": [
+          "animations/animating-bff44b3a/south-east/frame_000.png",
+          "animations/animating-bff44b3a/south-east/frame_001.png",
+          "animations/animating-bff44b3a/south-east/frame_002.png",
+          "animations/animating-bff44b3a/south-east/frame_003.png"
+        ],
+        "north": [
+          "animations/animating-bff44b3a/north/frame_000.png",
+          "animations/animating-bff44b3a/north/frame_001.png",
+          "animations/animating-bff44b3a/north/frame_002.png",
+          "animations/animating-bff44b3a/north/frame_003.png"
+        ],
+        "east": [
+          "animations/animating-bff44b3a/east/frame_000.png",
+          "animations/animating-bff44b3a/east/frame_001.png",
+          "animations/animating-bff44b3a/east/frame_002.png",
+          "animations/animating-bff44b3a/east/frame_003.png"
+        ],
+        "west": [
+          "animations/animating-bff44b3a/west/frame_000.png",
+          "animations/animating-bff44b3a/west/frame_001.png",
+          "animations/animating-bff44b3a/west/frame_002.png",
+          "animations/animating-bff44b3a/west/frame_003.png"
+        ],
+        "south": [
+          "animations/animating-bff44b3a/south/frame_000.png",
+          "animations/animating-bff44b3a/south/frame_001.png",
+          "animations/animating-bff44b3a/south/frame_002.png",
+          "animations/animating-bff44b3a/south/frame_003.png"
+        ],
+        "south-west": [
+          "animations/animating-bff44b3a/south-west/frame_000.png",
+          "animations/animating-bff44b3a/south-west/frame_001.png",
+          "animations/animating-bff44b3a/south-west/frame_002.png",
+          "animations/animating-bff44b3a/south-west/frame_003.png"
+        ],
+        "north-east": [
+          "animations/animating-bff44b3a/north-east/frame_000.png",
+          "animations/animating-bff44b3a/north-east/frame_001.png",
+          "animations/animating-bff44b3a/north-east/frame_002.png",
+          "animations/animating-bff44b3a/north-east/frame_003.png"
+        ],
+        "north-west": [
+          "animations/animating-bff44b3a/north-west/frame_000.png",
+          "animations/animating-bff44b3a/north-west/frame_001.png",
+          "animations/animating-bff44b3a/north-west/frame_002.png",
+          "animations/animating-bff44b3a/north-west/frame_003.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-04-08T14:56:27.910937"
+}
