@@ -42,7 +42,7 @@ idle → (거리 조건) → windup → attack → recover → idle
 | **recover** | 35f (0.58초) | 35f (max 20으로 클램프) |
 | **근접 사거리** | d < 30+P.r+18 ≈ 48~50px | d < 50+P.r+18 ≈ 68~70px |
 | **텔레그래프** | _telegraphT=20f | 20f |
-| **시야 어그로** | d<600 자동 알림 | 동일 |
+| **시야 어그로** | d<800 자동 알림 | 동일 |
 | **추적 해제** | d≤80 도달 시 (복구) | 동일 |
 | **근접 어그로** | d<100 && d>50 && idle/recover → 즉시 _alerted=true (이동 없음) | 보스 제외 |
 | **피격 즉시 반격** | hurtE 시 _alerted=true + recover→idle 강제전환(st2=0) — DOT 제외 (2026-04-07 신규) | 보스 제외 |

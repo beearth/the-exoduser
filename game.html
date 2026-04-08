@@ -16499,6 +16499,8 @@ function eModHitP(e){
 
 function mkEn(x,y,si,etype,ib,el,room){
   if(!isFinite(x)||!isFinite(y))return null; // NaN 좌표 스폰 차단
+  // 스폰 좌표가 벽/오브젝트 안이면 가장 가까운 빈 곳으로 이동
+  if(!canMv(x,y,ib?22:10)){const _sp=safePt(x,y,ib?22:10);if(_sp){x=_sp.x;y=_sp.y}else return null}
   const dm=1;
   const monLv=(P.lv||1)+(DIFF_LV_OFF[OPT.diff]||0); // 플레이어 레벨 + 난이도 오프셋
   // HP: 스테이지 제곱 × 플레이어레벨 배율, ATK: 동일
@@ -16924,14 +16926,18 @@ function initStage(si){
   // ── 시작방 안전지대: 플레이어 주변 500px 이내 몹 제거 ──
   const _safeR=500;const _safeR2=_safeR*_safeR;
   for(let _ei=ens.length-1;_ei>=0;_ei--){const _e=ens[_ei];if((_e.x-P.x)*(_e.x-P.x)+(_e.y-P.y)*(_e.y-P.y)<_safeR2)ens.splice(_ei,1)}
-  // ── 벽 끼인 몬스터 제거/이동 (스폰 직후 정리) ──
+  // ── 벽/오브젝트 끼인+근접 몬스터 제거/이동 (스폰 직후 정리) ──
   for(let _ei=ens.length-1;_ei>=0;_ei--){const _e=ens[_ei];
-    const _wc=function(px,py){const tx=~~(px/T),ty=~~(py/T);return tx<0||ty<0||tx>=G.mw||ty>=G.mh||G.map[ty][tx]===1};
-    if(_wc(_e.x,_e.y)||_wc(_e.x-_e.r,_e.y-_e.r)||_wc(_e.x+_e.r,_e.y-_e.r)||_wc(_e.x-_e.r,_e.y+_e.r)||_wc(_e.x+_e.r,_e.y+_e.r)){
-      let _moved=false;
-      for(let _d=T;_d<=T*5;_d+=T/2)for(let _a=0;_a<8;_a++){const _nx=_e.x+Math.cos(Math.PI/4*_a)*_d,_ny=_e.y+Math.sin(Math.PI/4*_a)*_d;
-        if(!_wc(_nx,_ny)&&!_wc(_nx-_e.r,_ny-_e.r)&&!_wc(_nx+_e.r,_ny-_e.r)&&!_wc(_nx-_e.r,_ny+_e.r)&&!_wc(_nx+_e.r,_ny+_e.r)){_e.x=_nx;_e.y=_ny;_moved=true;break}}
-      if(!_moved)ens.splice(_ei,1);
+    // 1) canMv 실패 (벽/오브젝트 충돌)
+    let _stuck=!canMv(_e.x,_e.y,_e.r);
+    // 2) MAP_OBJS collision 오브젝트와 반경 겹침 (렌더링 크기 고려)
+    if(!_stuck){const _vizR=Math.max(_e.r*3.5,30);
+      for(let _oi=0;_oi<MAP_OBJS.length;_oi++){const _po=MAP_OBJS[_oi];const _pm=_OBJ_META[_po.type];
+        if(_pm&&(_pm.collision||_pm.col)){const _oR=_pm.sz*.4;
+          if(dst(_e.x,_e.y,_po.x,_po.y)<_oR+_vizR*.5){_stuck=true;break}}}}
+    if(_stuck){
+      const _sp=safePt(_e.x,_e.y,_e.r);
+      if(_sp){_e.x=_sp.x;_e.y=_sp.y}else{ens.splice(_ei,1)}
     }
   }
   // 맵 전체 최소 밀도 보장 (tileRLE 아닌 경우만)
@@ -20244,6 +20250,7 @@ function update(){
     const _hSi=G.stage;
     if(h._spawnTotal==null){const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';h._spawnTotal=SPAWN_HOLE.cnt[_hType]||50;h._spawned=0;h._spawnCD=0}
     if(h._spawnCD>0){h._spawnCD-=sp;continue}
+    if(dst(P.x,P.y,h.x,h.y)>1000)continue; // 소환굴 반응 거리 1000px
     const _BATCH=5;
     if(G._aliveEns>=750){h._spawnCD=30;continue} // 생존 적 750 이상이면 스폰 대기 (하드캡 900 전 여유)
     const _hRemain=Math.min(_BATCH,h._spawnTotal-h._spawned);
@@ -22686,7 +22693,7 @@ function updateE(e,sp){
   // ═══ 텔레그래프 VFX 타이머 감소 ═══
   if(e._telegraphT>0){e._telegraphT-=sp;e._telegraphR=e.r+20}
   // 벽 안에 있는 적 밀어내기 (넉백/텔레포트 등으로 벽에 끼인 경우)
-  if(!canMv(e.x,e.y,e.r))_pushOutWall(e);
+  if(!_canMvTile(e.x,e.y,e.r))_pushOutWall(e);
   if(e.reviveIframes>0){e.reviveIframes=Math.max(0,e.reviveIframes-sp);} // 부활 무적 자연 감소
   if(e._cursed>0)e._cursed-=sp; // 저주 타이머 감소
   if(Math.abs(e.kb.x)>.1||Math.abs(e.kb.y)>.1){const nx=e.x+e.kb.x*sp,ny=e.y+e.kb.y*sp;
@@ -22763,7 +22770,7 @@ function updateE(e,sp){
     d=dst(P.x,P.y,e.x,e.y);if(d<=200)e._reviveChase=false
   }
   // 시야 어그로: 거리 800 이내면 자동 알림 (피격 없이도)
-  if(!e._alerted&&d<600&&(e.s==='idle'||e.s==='recover'))e._alerted=true;
+  if(!e._alerted&&d<800&&(e.s==='idle'||e.s==='recover'))e._alerted=true;
   // ── 방향 추적: idle/배회 중에도 플레이어 방향으로 부드럽게 회전 ──
   if(d<800&&(e.s==='idle'||e.s==='recover'||e.s==='eApproach')){
     const _tgtA=Math.atan2(P.y-e.y,P.x-e.x);
