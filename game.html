@@ -6931,7 +6931,7 @@ function pickupItem(item){
 }
 function recalcSt(){
   _eqAffixCache=null;_eqStatCache=null; // 어픽스/스탯 캐시 무효화
-  const base=100+~~(P.lv*.5)+STATS.dex*1;
+  const base=200+~~(P.lv*1.0)+STATS.dex*2;
   let bonus=0;
   for(const slot of SLOT_NAMES){const it=INV.equipped[slot];if(it&&it.bonusSt)bonus+=it.bonusSt}
   P.mst=~~(base+bonus+~~(P._crystalStats?P._crystalStats.st:0))+_gritStFlat();P.st=Math.min(P.st,P.mst);
@@ -8245,25 +8245,20 @@ function drawEnBody(X,e,_now,sa){
       const _bsz=Math.max(e.r*3.5,30);
       const dk8=_mobFacingDir8(e.facing);
       const cell8=a8.meta.cell;
-      const _m8moving=e._isMoving||e.s==='eCharge'||e.s==='eApproach';
-      // 8방향 걷기 애니메이션
-      const _m8idx=e._mob8Row*_MOB8_COLS+e._mob8Col;
-      if(_m8moving&&a8.walkDirs&&a8.walkMeta&&a8.walkMeta._idxSet&&a8.walkMeta._idxSet.has(_m8idx)){
-        const wa8=a8.walkDirs[dk8];
-        if(wa8&&wa8.ready){
-          const _wf=a8.walkMeta.framesPerMob||4;
-          const _wFrame=~~((e._walkDist||0)/128)%_wf;
-          const _wCol=e._mob8Col*_wf+_wFrame;
-          X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
-          X.drawImage(wa8.img,_wCol*cell8,e._mob8Row*cell8,cell8,cell8,-_bsz/2,-_bsz/2,_bsz,_bsz);
-          X.restore();return;
-        }
-      }
-      // 8방향 정지 (idle)
+      // 8방향 렌더: idle 항상 그리고, 이동 중이면 walk 덮어쓰기
       const da8=a8.dirs[dk8];
       if(da8&&da8.ready&&e._mob8Col!==undefined){
         X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
+        // idle 베이스 (항상)
         X.drawImage(da8.img,e._mob8Col*cell8,e._mob8Row*cell8,cell8,cell8,-_bsz/2,-_bsz/2,_bsz,_bsz);
+        // walk 오버레이 (이동 중만)
+        if(e._isMoving){
+          const _m8idx=e._mob8Row*_MOB8_COLS+e._mob8Col;
+          const _hasW=a8.walkDirs&&a8.walkMeta&&a8.walkMeta._idxSet&&a8.walkMeta._idxSet.has(_m8idx);
+          if(_hasW){const wa8=a8.walkDirs[dk8];
+            if(wa8&&wa8.ready){const _wf=a8.walkMeta.framesPerMob||4;const _wFr=~~((e._walkDist||0)/128)%_wf;
+            X.drawImage(wa8.img,(e._mob8Col*_wf+_wFr)*cell8,e._mob8Row*cell8,cell8,cell8,-_bsz/2,-_bsz/2,_bsz,_bsz)}}
+        }
         X.restore();return;
       }else if(!e._8dLog){e._8dLog=true;console.warn('[8DIR] fail:',dk8,'da8?',!!da8,'ready?',da8&&da8.ready,'col?',e._mob8Col)}
     }
@@ -17247,10 +17242,10 @@ function _ffMoveE(e,sp,spdMul){
 // 카테고리: weapon=5, magic=7, bow=6
 let _lastCost=0;
 const _COST_BASE={
-  weapon:10,finisher:250,shield:10,giantSlam:250,
-  charge:250,bladeDash:250,
-  bow:250,bladeShot:250,blastShot:250,shieldThrow:250,fanShot:250,
-  magic:250,blink:250,iceOrb:250,dimBreach:250,exBolt:250,mortar:250,
+  weapon:10,finisher:50,shield:10,giantSlam:50,
+  charge:50,bladeDash:50,
+  bow:50,bladeShot:50,blastShot:50,shieldThrow:50,fanShot:50,
+  magic:50,blink:50,iceOrb:50,dimBreach:50,exBolt:50,mortar:50,
   whirlTick:.4,sBlockTick:.4,qsTick:.5
 };
 const _COST_SK={
@@ -17262,9 +17257,9 @@ const _COST_SK={
 };
 // DPS 비례 비용 스케일 (각 스킬의 DPS 성장률과 동일)
 const _COST_DPS={
-  giantSlam:.10,charge:.10,bladeDash:.10,finisher:.10,
-  bow:.05,fanShot:.05,bladeShot:.10,blastShot:.10,shieldThrow:.08,
-  magic:.15,blink:.10,iceOrb:.15,dimBreach:.10,exBolt:.10,mortar:.15,
+  giantSlam:.45,charge:.45,bladeDash:.30,finisher:.45,
+  bow:.15,fanShot:.15,bladeShot:.30,blastShot:.30,shieldThrow:.25,
+  magic:.35,blink:.30,iceOrb:.35,dimBreach:.30,exBolt:.30,mortar:.35,
   whirlTick:.05,sBlockTick:.05,qsTick:.05
 };
 function _skLv(key){const id=_COST_SK[key];return id?(P.skills[id]||1):1}
@@ -17561,6 +17556,15 @@ function update(){
       const _ltnDmg=~~(magicRef()*0.5*(1+(_ltnLv-1)*0.1)*statInt()*pMagicMul());
       G._fireZones.push({type:'fireTrail',x:P.x,y:P.y,r:40+_ltnLv*3,dmg:_ltnDmg,el:EL.F,t:0,maxT:720,lv:_ltnLv});
       if(Math.random()>.5)poolPart(P.x+(Math.random()-.5)*10,P.y+(Math.random()-.5)*10,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ff6600',2+Math.random()*2,8);
+    }
+    // ── 기동칼날개(dimBlast 6성 합체): 칼날개 범위만큼 불꽃 장판 ──
+    if(P._chainSlashActive&&_isFused('dimBlast')&&~~(_dashLeft)%4===0){
+      if(!G._fireZones)G._fireZones=[];
+      const _bfLv=P.skills.chainSlash||1;
+      const _bfR=160+(_bfLv-1)*5; // 칼날개 범위와 동일
+      const _bfDmg=~~(meleeRef()*statStr()*1.5*(1+(_bfLv-1)*0.08));
+      G._fireZones.push({type:'fireTrail',x:P.x,y:P.y,r:_bfR,dmg:_bfDmg,el:EL.F,t:0,maxT:480,lv:_bfLv});
+      poolPart(P.x+(Math.random()-.5)*_bfR,P.y+(Math.random()-.5)*_bfR,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ff6622',3+Math.random()*2,8+Math.random()*4);
     }
     // ── 기동칼날개/기동파괴: 이동 중 좌클릭/우클릭 → 플래그 세팅 (아래 착지 블록에서 AOE 발동) ──
     // NOTE: _harpActive 중 준비는 dashActive 밖 공통 블록에서 처리
@@ -32487,14 +32491,12 @@ function draw(){
         if(_gA8){if(P){const _fdG=dst(P.x,P.y,e.x,e.y);if(_fdG<800&&P.hp>0)e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
           let _gD=_gA8.dirs[_mobFacingDir8(e.facing)];if(!_gD||!_gD.ready)_gD=_gA8.dirs['south'];
           if(_gD&&_gD.ready){const _gc=(_gA8.meta?_gA8.meta.cell:256),_gsz=Math.max(e.r*7,80);
-            const _gMv=e._isMoving||e.s==='eCharge'||e.s==='eApproach';
             const _gIdx=e._mob8Row*_MOB8_COLS+e._mob8Col;
+            const _gHasW=_gA8.walkDirs&&_gA8.walkMeta&&_gA8.walkMeta._idxSet&&_gA8.walkMeta._idxSet.has(_gIdx);
             X.save();X.translate(e.x,e.y);X.globalAlpha=.9;X.imageSmoothingEnabled=false;
-            if(_gMv&&_gA8.walkDirs&&_gA8.walkMeta&&_gA8.walkMeta._idxSet&&_gA8.walkMeta._idxSet.has(_gIdx)){
-              const _gW=_gA8.walkDirs[_mobFacingDir8(e.facing)];
-              if(_gW&&_gW.ready){const _gwf=_gA8.walkMeta.framesPerMob||4;const _gwFr=~~((e._walkDist||0)/128)%_gwf;X.drawImage(_gW.img,(e._mob8Col*_gwf+_gwFr)*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz)}
-              else{X.drawImage(_gD.img,e._mob8Col*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz)}
-            }else{X.drawImage(_gD.img,e._mob8Col*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz)}
+            X.drawImage(_gD.img,e._mob8Col*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz);
+            if(e._isMoving&&_gHasW){const _gW=_gA8.walkDirs[_mobFacingDir8(e.facing)];
+              if(_gW&&_gW.ready){const _gwf=_gA8.walkMeta.framesPerMob||4;const _gwFr=~~((e._walkDist||0)/128)%_gwf;X.drawImage(_gW.img,(e._mob8Col*_gwf+_gwFr)*_gc,e._mob8Row*_gc,_gc,_gc,-_gsz/2,-_gsz/2,_gsz,_gsz)}}
             X.restore();}}
       }
 
@@ -32573,14 +32575,13 @@ function draw(){
           let _daL=_a8L.dirs[_mobFacingDir8(e.facing)]||_a8L.dirs['south'];
           if(_daL&&_daL.ready){
             const _c8L=(_a8L.meta?_a8L.meta.cell:256);
-            const _lMv=e._isMoving||e.s==='eCharge'||e.s==='eApproach';
             const _lIdx=e._mob8Row*_MOB8_COLS+e._mob8Col;
+            const _lHasW=_a8L.walkDirs&&_a8L.walkMeta&&_a8L.walkMeta._idxSet&&_a8L.walkMeta._idxSet.has(_lIdx);
             X.globalAlpha=1;X.save();X.translate(e.x,e.y);X.imageSmoothingEnabled=false;
-            if(_lMv&&_a8L.walkDirs&&_a8L.walkMeta&&_a8L.walkMeta._idxSet&&_a8L.walkMeta._idxSet.has(_lIdx)){
-              const _lW=_a8L.walkDirs[_mobFacingDir8(e.facing)];
-              if(_lW&&_lW.ready){const _lwf=_a8L.walkMeta.framesPerMob||4;const _lwFr=~~((e._walkDist||0)/128)%_lwf;X.drawImage(_lW.img,(e._mob8Col*_lwf+_lwFr)*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz)}
-              else{X.drawImage(_daL.img,e._mob8Col*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz)}
-            }else{X.drawImage(_daL.img,e._mob8Col*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz)}
+            if(_lHasW){const _lW=_a8L.walkDirs[_mobFacingDir8(e.facing)];
+            X.drawImage(_daL.img,e._mob8Col*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz);
+            if(e._isMoving&&_lHasW){const _lW=_a8L.walkDirs[_mobFacingDir8(e.facing)];
+              if(_lW&&_lW.ready){const _lwf=_a8L.walkMeta.framesPerMob||4;const _lwFr=~~((e._walkDist||0)/128)%_lwf;X.drawImage(_lW.img,(e._mob8Col*_lwf+_lwFr)*_c8L,e._mob8Row*_c8L,_c8L,_c8L,-_bsz/2,-_bsz/2,_bsz,_bsz)}}
             X.restore();
           }
         }
@@ -33263,15 +33264,13 @@ function draw(){
           if(!_da8||!_da8.ready)_da8=_a8.dirs['south'];
           if(_da8&&_da8.ready){
             const _c8=(_a8.meta?_a8.meta.cell:256);
-            const _m8mv=e._isMoving||e.s==='eCharge'||e.s==='eApproach';
-            const _m8idx=e._mob8Row*_MOB8_COLS+e._mob8Col;
+            const _mIdx=e._mob8Row*_MOB8_COLS+e._mob8Col;
+            const _mHasW=_a8.walkDirs&&_a8.walkMeta&&_a8.walkMeta._idxSet&&_a8.walkMeta._idxSet.has(_mIdx);
             X.save();X.translate(e.x,e.y);X.globalAlpha=sa;
             X.imageSmoothingEnabled=false;
-            if(_m8mv&&_a8.walkDirs&&_a8.walkMeta&&_a8.walkMeta._idxSet&&_a8.walkMeta._idxSet.has(_m8idx)){
-              const _wa8m=_a8.walkDirs[_dk8];
-              if(_wa8m&&_wa8m.ready){const _wf=_a8.walkMeta.framesPerMob||4;const _wFr=~~((e._walkDist||0)/128)%_wf;X.drawImage(_wa8m.img,(e._mob8Col*_wf+_wFr)*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz)}
-              else{X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz)}
-            }else{X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz)}
+            X.drawImage(_da8.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz);
+            if(e._isMoving&&_mHasW){const _mW=_a8.walkDirs[_dk8];
+              if(_mW&&_mW.ready){const _mwf=_a8.walkMeta.framesPerMob||4;const _mwFr=~~((e._walkDist||0)/128)%_mwf;X.drawImage(_mW.img,(e._mob8Col*_mwf+_mwFr)*_c8,e._mob8Row*_c8,_c8,_c8,-_baseSz/2,-_baseSz/2,_baseSz,_baseSz)}}
             X.restore();_eDrew=true;_usedSpr=true;
           }
         }
