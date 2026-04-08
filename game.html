@@ -18342,7 +18342,9 @@ function update(){
     }
     if(!isAct('weapon')||P.st<=0||(_wwFused&&P.hp<=P.mhp*.05)){
       // 스킬 합성: 회전참+기폭팔 → 종료 시 자동 폭발
+      console.log('[WW-END] wwFused='+_wwFused+' parryT='+(P.parryT||0)+' ssCD='+_ssCD+' slamStorm='+_isFused('slamStorm')+' stormBeam='+_isFused('stormBeam'));
       if(_wwFused&&(P.parryT||0)>=_ssCD){
+        console.log('[WW-END] BOOM! slamStorm='+_isFused('slamStorm'));
         if(_isFused('slamStorm')){_slamStormBlast()}
         else{_detonateBlast('회전기폭!',EL.P)}
       }
