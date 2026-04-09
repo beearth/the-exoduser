@@ -189,10 +189,10 @@ canvas{display:block;position:fixed;inset:0}
 
 /* Minimap */
 #mmLvl.on{opacity:1!important}
-#mmWrap{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 22px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px));z-index:20;pointer-events:none;opacity:0;transition:opacity .5s;transform:scale(calc(var(--ui-scale) * .85));transform-origin:top right}
+#mmWrap{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 4px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px));z-index:20;pointer-events:none;opacity:0;transition:opacity .5s;transform:scale(calc(var(--ui-scale) * .85));transform-origin:top right;padding:18px}
 #mmWrap.on{opacity:.7}
-#mm{position:relative;z-index:2;border:none}
-#mmFrame{position:absolute;top:-18px;left:-18px;width:calc(100% + 36px);height:calc(100% + 36px);z-index:3;pointer-events:none}
+#mm{display:block;z-index:2;border:none}
+#mmFrame{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
 
 #bossBar{position:fixed;top:calc(var(--ui-inset-top,0px) + env(safe-area-inset-top, 0px) + 18px);left:50%;transform:translateX(-50%) scale(var(--ui-scale));z-index:22;pointer-events:none;opacity:0;transition:opacity .6s;text-align:center;transform-origin:top center}
 #bossBar.on{opacity:1}
@@ -16539,7 +16539,8 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  const _lvHp=Math.floor((ib?12000:600)*Math.pow(1.0121,monLv)*dm*et.hpMul+monLv*(ib?20000:1000));let _hp=Math.floor(_lvHp*(1+si*0.02)); // 기본×복리 + Lv×1000(보스×20000) 보너스(복리 밖), 스테이지당+2%
+  const _hpBonus=monLv*(285+15*monLv); // 누적보너스: 1랩+300, 2랩+330, 10랩+570... (1랩당 +30씩 증가)
+  const _lvHp=Math.floor((ib?12000:600)*Math.pow(1.0121,monLv)*dm*et.hpMul+(ib?_hpBonus*20:_hpBonus));let _hp=Math.floor(_lvHp*(1+si*0.02)); // 기본×복리 + 누적보너스(복리 밖), 스테이지당+2%
   const _atk=Math.floor(((ib?75:50)+monLv*(ib?2.9:1.95))*dm*et.atkMul); // 일반: 50+lv×1.95 (1000렙=2000), 보스: 75+lv×2.9 (1000렙≈3000, 일반×1.5)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   if(!window._noProjEtypes)window._noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
@@ -27299,7 +27300,7 @@ function _fallenResolve(){
   P.s='dead';P.iframes=0;if(G._sStats)G._sStats.deaths++;
   SFX.die();G.on=false;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;G._voidScarecrow=null;
   BGM.fadeOut(500);setTimeout(()=>BGM.play('death'),600);
-  ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.remove('on'));
+  ['hud','hudTop','mmWrap','skBar','mmLvl'].forEach(id=>$(id).classList.remove('on'));
   const expLoss=~~(P.exp*0.3);
   const _eL=OPT.lang==='en';
   const _hn=_T(HELL_NAMES[STG[G.stage].hell]);
@@ -27327,7 +27328,7 @@ function nextStage(){SFX.beamStop();$('stageClear').style.opacity='0';$('stageCl
 function doWin(){
   SFX.beamStop();G.on=false;
   BGM.fadeOut(800);setTimeout(()=>BGM.play('victory'),1000);
-  ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>{const el=$(id);if(el)el.classList.remove('on')});
+  ['hud','hudTop','mmWrap','skBar','mmLvl'].forEach(id=>{const el=$(id);if(el)el.classList.remove('on')});
   $('victory').classList.add('on');
   SFX.victory();
   // Phase 1: light appears
@@ -27664,7 +27665,17 @@ function _fuseStar(skId){
   return _max;
 }
 // 통일 스킬 배율: Lv1=300, +10/Lv (Lv10=390, Lv20=490)
-function _skMul(skId){const lv=P.skills[skId]||1;return 300+(lv-1)*10}
+// 스킬별 배율 테이블: {b:기본, g:Lv당 성장}
+const _SK_MUL={
+  giantSlam:{b:2,g:1},whirlwind:{b:2,g:2},chainSlam:{b:3.3,g:1},chainAssault:{b:4.4,g:1},
+  chainSlash:{b:5,g:2.8},maliceHunt:{b:10,g:1},boneWall:{b:8,g:1},
+  fireball:{b:1.3,g:1},fireBeam:{b:15,g:8},fireAura:{b:6,g:1},blueShot:{b:20,g:8},
+  omniBeam:{b:1,g:2},hellRay:{b:5,g:1},maliceStorm:{b:5,g:1},darkPillar:{b:4,g:1},
+  iceOrb:{b:5,g:1},maliceMortar:{b:5,g:1},spikeTrap:{b:3,g:1},burstLoop:{b:5,g:1},
+  plagueBurst:{b:0.45,g:1},ghostWalk:{b:3.5,g:1},elemMissile:{b:0.6,g:0.1},
+  magicBlink:{b:6,g:1},blastShot:{b:2,g:1},energyShot:{b:10,g:8},
+};
+function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];if(!t)return 1;return t.b+(lv-1)*t.g}
 function _fuseMul(skId){const s=_fuseStar(skId);const _fm=s>=2?1+(s-1)*.2:1;return skId==='chargeBoost'||skId==='magicBlink'?_fm:_fm*(1+_eqAffix('skillBoost'))}
 // ═══ 카테고리별 숙련도 시스템 ═══
 // 스킬 카테고리(cat)별로 사용시간(초) 축적. 합체 해금 조건 = 구성스킬 각 카테고리 600초(10분)
@@ -38937,7 +38948,7 @@ async function startGameFromDB(){
   setBootLoading(80,'맵과 몬스터 생성 중...');
   applyStats();
   if(_stageTestReq>=0)G.stage=_stageTestReq;
-  ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
+  ['hud','hudTop','mmWrap','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
   updateQS();updateSkSlot();
   _bootMapBuildDefer=1;
   initStage(G.stage);
@@ -39182,7 +39193,7 @@ $('retryBtn').onclick=async()=>{
   G._bonfire={x:P.x,y:P.y,t:300,r:280};
   // 스탯 재적용
   applyStats();
-  ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
+  ['hud','hudTop','mmWrap','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
   updateQS();G.on=true;
   // DB에 즉시 반영
   if(_dbReady)await dbSave();
@@ -39417,7 +39428,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     setBootLoading(80,'맵과 몬스터 생성 중...');
   applyStats();
     if(_stageTestReq>=0)G.stage=_stageTestReq;
-    ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
+    ['hud','hudTop','mmWrap','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
     updateQS();updateSkSlot();
     _bootMapBuildDefer=1;
     initStage(G.stage);
@@ -39524,7 +39535,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     setBootLoading(80,'맵과 몬스터 생성 중...');
     applyStats();
     if(_stageTestReq>=0)G.stage=_stageTestReq;
-    ['hud','hudTop','mm','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
+    ['hud','hudTop','mmWrap','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
     updateQS();updateSkSlot();
     _bootMapBuildDefer=1;
     initStage(G.stage);
