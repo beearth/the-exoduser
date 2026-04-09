@@ -367,19 +367,19 @@ canvas{display:block;position:fixed;inset:0}
 /* 슬롯 개별 프레임 제거 — 통째 스킬바 이미지 사용 */
 /* 13슬롯 절대좌표 (이미지 격자선 기반, %단위) */
 .qs{position:absolute!important;top:22px!important;width:52px!important;height:52px!important;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none!important}
-#qs0{left:100px}
-#qs1{left:156px}
-#qs2{left:212px}
-#qs3{left:268px}
-#qs5{left:324px}
-#ultSlot{left:380px}
-#skSlotLMB{left:436px}
-#skSlotRMB{left:492px}
-#skSlot0{left:548px}
-#qsE{left:604px}
-#qsQ{left:660px}
-#skSlotCT{left:716px}
-#skSlot1{left:772px}
+#qs0{left:109px;width:44px}
+#qs1{left:156px;width:44px}
+#qs2{left:203px;width:45px}
+#qs3{left:251px;width:45px}
+#qs5{left:299px;width:44px}
+#ultSlot{left:345px;width:44px}
+#skSlotLMB{left:392px;width:43px}
+#skSlotRMB{left:438px;width:43px}
+#skSlot0{left:484px;width:45px}
+#qsE{left:532px;width:37px}
+#qsQ{left:572px;width:44px}
+#skSlotCT{left:618px;width:50px}
+#skSlot1{left:672px;width:45px}
 
 .qs .qs-key {
   position: absolute;
@@ -39476,6 +39476,18 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
 }
 } // end _EDITOR_MODE else
 })().catch(function(e){console.error('[BOOT] Fatal:',e);if(!X)X=C.getContext('2d');_buildAtlas();_buildAtlasE();_buildAtlasB();_startLoop()});
+if(location.search.includes('slotdebug')){
+  setTimeout(()=>{
+    document.querySelectorAll('.qs').forEach((el,i)=>{
+      el.style.border='2px solid red';
+      el.style.zIndex='9999';
+      const lbl=document.createElement('span');
+      lbl.textContent=i;
+      lbl.style.cssText='position:absolute;top:0;left:0;color:lime;font-size:10px;font-weight:900;z-index:10000;background:rgba(0,0,0,.7);padding:1px 3px';
+      el.appendChild(lbl);
+    });
+  },2000);
+}
 </script>
 </body>
 </html>
