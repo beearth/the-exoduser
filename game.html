@@ -28,7 +28,7 @@ canvas{display:block;position:fixed;inset:0}
 
 /* ══ HUD: Orbs of Fate ══ */
 :root {
-  --globe-size: 140px;
+  --globe-size: 175px;
   --iron-border: inset 0 0 12px rgba(0,0,0,0.8), 0 2px 10px rgba(0,0,0,0.6);
 }
 
@@ -38,7 +38,7 @@ canvas{display:block;position:fixed;inset:0}
   left: 0;
   right: 0;
   z-index: 20;
-  padding: 60px 40px 60px;
+  padding: 60px 40px 15px;
   pointer-events: none;
   opacity: 0;
   transition: opacity .5s, transform .6s cubic-bezier(0.15, 0.85, 0.35, 1.15);
@@ -85,7 +85,7 @@ canvas{display:block;position:fixed;inset:0}
 
 .globe-liquid-wrap {
   position: absolute;
-  inset: 4px;
+  inset: 0;
   border-radius: 50%;
   overflow: hidden;
   background: #080808;
@@ -111,22 +111,7 @@ canvas{display:block;position:fixed;inset:0}
   box-shadow: inset 0 20px 30px rgba(0,100,255,0.4);
 }
 
-/* Wave animation */
-.globe-liquid::before {
-  content: '';
-  position: absolute;
-  top: -15px; left: 0; width: 100%; height: 30px;
-  background: inherit;
-  filter: brightness(1.2);
-  border-radius: 40% 60% 50% 50% / 30% 30% 70% 70%;
-  animation: waveRotate 6s linear infinite;
-  opacity: 0.8;
-}
-
-@keyframes waveRotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+/* Wave animation 제거 */
 
 .globe-val {
   position: absolute;
@@ -614,28 +599,24 @@ canvas{display:block;position:fixed;inset:0}
     <!-- Center: (Removed old bars, handled via rings) -->
     <div class="hud-center-bars" style="display:none"></div>
 
-    <!-- Right: MP+SP 원형 바 (왼쪽=MP 파랑, 오른쪽=SP 초록) -->
-    <div class="globe-container mp-globe">
-      <div class="globe-ring-wrap">
-        <div class="globe-ring-bg"></div>
-      </div>
+    <!-- Right: MP+SP 구슬 -->
+    <div class="globe-container mp-globe" style="position:relative">
+      <!-- 1층: 색 채움 (MP 파랑 + SP 초록) -->
       <div class="globe-liquid-wrap" style="display:flex;overflow:hidden;background:#080a0c">
-        <div id="mpHalf" style="width:50%;height:100%;background:radial-gradient(ellipse at 55% 35%,#24507A 0%,#193A59 40%,#10263B 100%);transition:filter .3s,opacity .3s"></div>
-        <div id="stHalf" style="width:50%;height:100%;background:radial-gradient(ellipse at 45% 35%,#2B6A32 0%,#1F4D24 40%,#143118 100%);transition:filter .3s,opacity .3s"></div>
+        <div id="mpHalf" style="width:50%;height:100%;background:radial-gradient(ellipse at 55% 35%,#3388cc 0%,#1a4488 40%,#0c2244 100%);transition:filter .3s,opacity .3s"></div>
+        <div id="stHalf" style="width:50%;height:100%;background:radial-gradient(ellipse at 45% 35%,#2a8844 0%,#1a5533 40%,#0c3322 100%);transition:filter .3s,opacity .3s"></div>
       </div>
-      <!-- 유리 효과 (광량 50% 감소) -->
-      <div style="position:absolute;inset:4px;border-radius:50%;z-index:25;pointer-events:none;background:radial-gradient(ellipse at 45% 30%,rgba(255,255,255,0.06) 0%,rgba(255,255,255,0.02) 30%,transparent 60%)"></div>
+      <!-- 2층: 프레임 (2.png — 중앙 투명, 프레임만) -->
       <div class="globe-glass"></div>
-      <!-- 중앙 분리선 (정확히 50:50) -->
-      <div style="position:absolute;left:calc(50% - 1px);top:4px;bottom:4px;width:2px;background:linear-gradient(180deg,transparent 0%,#0a0a0a 10%,#1a1a1a 50%,#0a0a0a 90%,transparent 100%);z-index:31;pointer-events:none"></div>
+      <!-- 3층: 숫자 -->
       <div class="globe-val" style="flex-direction:row;gap:2px">
         <div style="flex:1;display:flex;flex-direction:column;align-items:center">
-          <div style="font-size:.5rem;color:#66bbff;font-weight:700">MP</div>
+          <div style="font-size:.5rem;color:#88bbff;font-weight:700">MP</div>
           <div id="mpCur" style="font-size:1rem;font-weight:900;color:#fff">0</div>
           <div id="mpMax" style="font-size:.5rem;color:rgba(255,255,255,.5)">/0</div>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;align-items:center">
-          <div style="font-size:.5rem;color:#66dd66;font-weight:700">SP</div>
+          <div style="font-size:.5rem;color:#88dd88;font-weight:700">SP</div>
           <div id="stCur" style="font-size:1rem;font-weight:900;color:#fff">0</div>
           <div id="stMax" style="font-size:.5rem;color:rgba(255,255,255,.5)">/0</div>
         </div>
@@ -38637,13 +38618,11 @@ function updateHUD(slow){
   const shAlpha = P.mshield > 0 ? Math.max(0.1, P.shield / P.mshield) : 0;
   $('shieldRing').style.background = shPct > 0 ? `conic-gradient(rgba(50,150,255,${(.9*shAlpha).toFixed(2)}) ${shPct}%, transparent 0%)` : 'none';
   
-  // ST+MP 원형 반원 업데이트 (밝기로 게이지 표현)
+  // ST+MP 구슬 업데이트 (밝기로 게이지 표현)
   const stR = Math.max(0, Math.min(1, P.st / P.mst));
-  $('stHalf').style.filter = `brightness(${0.15 + stR * 0.85})`;
-  $('stHalf').style.opacity = `${0.3 + stR * 0.7}`;
   const mpR = Math.max(0, Math.min(1, ~~P.mp / P.mmp));
-  $('mpHalf').style.filter = `brightness(${0.15 + mpR * 0.85})`;
-  $('mpHalf').style.opacity = `${0.3 + mpR * 0.7}`;
+  {const e=$('stHalf');if(e){e.style.filter=`brightness(${0.15+stR*0.85})`;e.style.opacity=`${0.3+stR*0.7}`}}
+  {const e=$('mpHalf');if(e){e.style.filter=`brightness(${0.15+mpR*0.85})`;e.style.opacity=`${0.3+mpR*0.7}`}}
   $('mpCur').textContent = ~~P.mp;
   $('mpMax').textContent = `/${P.mmp}`;
   $('stCur').textContent = ~~P.st;
