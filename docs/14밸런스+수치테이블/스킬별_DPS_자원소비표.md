@@ -55,7 +55,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | kiSlash | 기검참 | ST | 5+(Lv-1)×2 = **5→23** | 없음 | weaponDmg + STR 스케일 | 기본공격 3단 콤보 검기, Lv당 뎀+10% 거리+15px |
 | whirlwind | 회전참 | ST(틱) | **10+(Lv-1)×10 ST/초** (Lv1=10, Lv10=100) | 없음 (홀드) | weaponDmg × (2+(Lv-1)) × drainBonus | 360도 지속, Lv당 범위+5 뎀+1 |
-| giantSlam | 대왕치기 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 480-(Lv-1)×18)f = **8초→1초** | STR × meleeRef × 2 | 포이즈 15배, 보스 체간 40% 파괴 |
+| giantSlam | 대왕치기 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 480-(Lv-1)×18)f = **8초→1초** | STR × meleeRef × 2 × **0.5** | 포이즈 22.5배(뎀↓50% 포이즈↑50%), 보스 체간 붕괴 |
 | giantSlam2 | 대왕치기 2 | ST + 악의20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
 
 ---
