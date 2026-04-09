@@ -38,7 +38,7 @@ canvas{display:block;position:fixed;inset:0}
   left: 0;
   right: 0;
   z-index: 20;
-  padding: 20px 40px;
+  padding: 60px 40px 50px;
   pointer-events: none;
   opacity: 0;
   transition: opacity .5s, transform .6s cubic-bezier(0.15, 0.85, 0.35, 1.15);
@@ -61,13 +61,14 @@ canvas{display:block;position:fixed;inset:0}
   height: var(--globe-size);
   filter: drop-shadow(0 5px 15px rgba(0,0,0,0.7));
   will-change: transform;
+  overflow: visible;
+  margin: -20px 0;
 }
 
 .globe-glass {
   position: absolute;
-  inset: -30px;
+  inset: -44px;
   border-radius: 0;
-  background: none;
   border: none;
   box-shadow: none;
   z-index: 30;
@@ -84,10 +85,10 @@ canvas{display:block;position:fixed;inset:0}
 
 .globe-liquid-wrap {
   position: absolute;
-  inset: 6px;
+  inset: 12px;
   border-radius: 50%;
   overflow: hidden;
-  background: #050200;
+  background: #080808;
   z-index: 5;
 }
 
@@ -618,11 +619,15 @@ canvas{display:block;position:fixed;inset:0}
       <div class="globe-ring-wrap">
         <div class="globe-ring-bg"></div>
       </div>
-      <div class="globe-liquid-wrap" style="display:flex;overflow:hidden;background:#080808">
-        <div id="mpHalf" style="width:50%;height:100%;background:radial-gradient(circle at 60% 40%,#44aaff,#0044cc,#001144);transition:filter .3s,opacity .3s"></div>
-        <div id="stHalf" style="width:50%;height:100%;background:radial-gradient(circle at 40% 40%,#44dd55,#1a6600,#0a2e00);transition:filter .3s,opacity .3s"></div>
+      <div class="globe-liquid-wrap" style="display:flex;overflow:hidden;background:#0a0a0e">
+        <div id="mpHalf" style="width:50%;height:100%;background:radial-gradient(ellipse at 55% 35%,#3388cc 0%,#1a4488 30%,#0c2244 60%,#060e1a 100%);transition:filter .3s,opacity .3s"></div>
+        <div id="stHalf" style="width:50%;height:100%;background:radial-gradient(ellipse at 45% 35%,#2a8844 0%,#1a5533 30%,#0c3322 60%,#060e0a 100%);transition:filter .3s,opacity .3s"></div>
       </div>
+      <!-- 유리 효과 (중앙 투명 하이라이트) -->
+      <div style="position:absolute;inset:12px;border-radius:50%;z-index:25;pointer-events:none;background:radial-gradient(ellipse at 45% 30%,rgba(255,255,255,0.12) 0%,rgba(255,255,255,0.04) 30%,transparent 60%);"></div>
       <div class="globe-glass"></div>
+      <!-- 중앙 분리선 -->
+      <div style="position:absolute;left:50%;top:12px;bottom:12px;width:2px;margin-left:-1px;background:linear-gradient(180deg,transparent 0%,#111 10%,#2a2a2a 50%,#111 90%,transparent 100%);z-index:31;pointer-events:none"></div>
       <div class="globe-val" style="flex-direction:row;gap:2px">
         <div style="flex:1;display:flex;flex-direction:column;align-items:center">
           <div style="font-size:.5rem;color:#66bbff;font-weight:700">MP</div>
