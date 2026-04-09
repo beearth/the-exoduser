@@ -544,18 +544,21 @@ canvas{display:block;position:fixed;inset:0}
 <canvas id="c"></canvas>
 <canvas id="burstCvs" style="position:fixed;inset:0;pointer-events:none;z-index:1"></canvas>
 <canvas id="ct" style="position:fixed;inset:0;pointer-events:none;z-index:2"></canvas>
-<div id="mmLvl" style="position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 4px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 4px);z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;text-align:center;width:180px;height:120px;transform-origin:top right;transform:scale(var(--ui-scale));background:url('img/ui_gothic_frame.png') no-repeat center/100% 100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:6px 14px">
+<div id="mmLvl" style="position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 4px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 4px);z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;text-align:center;width:230px;height:150px;transform-origin:top right;transform:scale(var(--ui-scale));background:url('img/ui_gothic_frame.png') no-repeat center/100% 100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:10px 20px">
   <span id="charNameHud" style="color:#aa8866;font-size:0.55rem;font-weight:700;letter-spacing:0.08em;display:none"></span>
-  <div style="font-size:0.55rem;color:#998866;font-weight:700;letter-spacing:0.15em;text-shadow:1px 1px 2px #000">LV</div>
-  <span id="lvLbl" style="color:#c9a35a;font-size:1.4rem;font-weight:900;text-shadow:0 2px 4px rgba(0,0,0,0.8),0 0 8px rgba(201,163,90,0.3);line-height:1;letter-spacing:0.05em">1</span>
-  <div id="expBar" style="width:80%;height:3px;background:rgba(20,15,10,0.8);border:1px solid #332211;position:relative;overflow:hidden;margin:4px 0 5px">
+  <!-- 상단: LV + 숫자 -->
+  <div style="font-size:0.6rem;color:#887766;font-weight:700;letter-spacing:0.2em;text-shadow:1px 1px 2px #000;margin-bottom:-2px">LV</div>
+  <span id="lvLbl" style="color:#c9a35a;font-size:1.6rem;font-weight:900;text-shadow:0 2px 4px rgba(0,0,0,0.9),0 0 10px rgba(201,163,90,0.25);line-height:1;letter-spacing:0.05em">1</span>
+  <!-- 중단: EXP 바 -->
+  <div id="expBar" style="width:85%;height:4px;background:rgba(10,8,5,0.9);border:1px solid #332211;position:relative;overflow:hidden;margin:6px 0">
     <div id="expF" style="height:100%;background:linear-gradient(90deg, #aa8844, #ffcc44);width:0%;box-shadow:0 0 6px rgba(255,204,68,0.3)"></div>
-    <div id="expTxt" style="position:absolute;top:-1px;right:0;font-size:0.45rem;color:#aa9966;pointer-events:none;white-space:nowrap"></div>
+    <div id="expTxt" style="position:absolute;top:-1px;right:2px;font-size:0.45rem;color:#aa9966;pointer-events:none;white-space:nowrap"></div>
   </div>
-  <div style="display:flex;justify-content:center;gap:8px">
-    <div class="st-b" id="killCnt" style="color:#cc4433;font-size:0.65rem;text-shadow:1px 1px 2px #000">💀 0</div>
-    <div class="st-b" id="matCnt" style="color:#cc88ff;font-size:0.65rem;text-shadow:1px 1px 2px #000">👿 0</div>
-    <div class="st-b" id="comboRecord" style="color:#ff8800;font-size:0.65rem;text-shadow:1px 1px 2px #000">🔥 0</div>
+  <!-- 하단: 스탯 -->
+  <div style="display:flex;justify-content:center;gap:12px;margin-top:2px">
+    <div class="st-b" id="killCnt" style="color:#cc4433;font-size:0.7rem;text-shadow:1px 1px 2px #000">💀 0</div>
+    <div class="st-b" id="matCnt" style="color:#cc88ff;font-size:0.7rem;text-shadow:1px 1px 2px #000">👿 0</div>
+    <div class="st-b" id="comboRecord" style="color:#ff8800;font-size:0.7rem;text-shadow:1px 1px 2px #000">🔥 0</div>
   </div>
 </div>
 <div id="mmWrap"><canvas id="mm" width="130" height="130" style="z-index:2"></canvas><img id="mmFrame" src="img/mm_frame.png" alt=""></div>
@@ -6442,6 +6445,26 @@ const CRYSTAL_DEFS={
   cr_mpReg:{ko:'마력결정',stat:'mpR',base:0.08,cat:'util',emoji:'🔵'},
   cr_drop:{ko:'행운결정',stat:'drop',base:0.15,cat:'util',emoji:'🍀',pct:true},
 };
+const _CR_DESC={
+  hp:{ko:'최대 HP 증가',en:'Max HP increase'},
+  st:{ko:'최대 기력(ST) 증가',en:'Max Stamina increase'},
+  mp:{ko:'최대 마력(MP) 증가',en:'Max MP increase'},
+  atk:{ko:'기본 공격력 증가',en:'Base ATK increase'},
+  def:{ko:'기본 방어력 증가',en:'Base DEF increase'},
+  spd:{ko:'이동속도 증가 (%)',en:'Move speed increase (%)'},
+  crit:{ko:'치명타 확률 증가 (%)',en:'Critical hit chance (%)'},
+  cdmg:{ko:'치명타 데미지 증가 (%)',en:'Critical damage increase (%)'},
+  fire:{ko:'화염 속성 데미지 증가',en:'Fire elemental DMG'},
+  ice:{ko:'냉기 속성 데미지 증가',en:'Ice elemental DMG'},
+  dark:{ko:'암흑 속성 데미지 증가',en:'Dark elemental DMG'},
+  light:{ko:'번개 속성 데미지 증가',en:'Lightning elemental DMG'},
+  holy:{ko:'신성 속성 데미지 증가',en:'Holy elemental DMG'},
+  hpR:{ko:'초당 HP 자연 회복',en:'HP regen per second'},
+  stR:{ko:'초당 기력 자연 회복',en:'Stamina regen per second'},
+  mpR:{ko:'초당 마력 자연 회복',en:'MP regen per second'},
+  drop:{ko:'아이템 드롭률 증가 (%)',en:'Item drop rate increase (%)'},
+};
+function _crDescTxt(cd){const d=_CR_DESC[cd.stat];return d?(OPT.lang==='en'?d.en:d.ko):cd.stat}
 const CRYSTAL_IDS=Object.keys(CRYSTAL_DEFS);
 const CRYSTAL_STAR=[
   {name:'조각',en:'Fragment',mul:1.0,color:'#888888'},
@@ -6453,7 +6476,7 @@ const CRYSTAL_STAR=[
 function _crStarN(s){return OPT.lang==='en'?s.en:s.name}
 function _crDefN(d){return OPT.lang==='en'?_T(d.ko):d.ko}
 const CRYSTAL_STAR_COST_MUL=[1,1.5,2.5,4,7];
-const CRYSTAL_BAG_MAX=100;
+const CRYSTAL_BAG_MAX=9999;
 let CRYSTAL_BAG=[];
 let CRYSTAL_DUST=0;
 function crystalVal(cr){
@@ -6894,6 +6917,30 @@ function equipItem(item){
       notify(OPT.lang==='en'?`Not enough Malice! Transfer cost ${xc.toLocaleString()} (Have: ${(G.mats||0).toLocaleString()})`:`악의 부족! 강화 이전 비용 ${xc.toLocaleString()}악의 (보유: ${(G.mats||0).toLocaleString()})`);
       return;
     }
+  }
+  // ═══ 결정 자동 전승 ═══
+  if(old&&old.crystals&&old.crystals.length>0){
+    // 새 아이템 소켓 준비
+    if(!item.socketCount)item.socketCount=0;
+    if(!item.crystals)item.crystals=new Array(item.socketCount).fill(null);
+    let _crMsg=[];
+    for(let _ci=0;_ci<old.crystals.length;_ci++){
+      const _cr=old.crystals[_ci];if(!_cr)continue;
+      // 새 아이템에 빈 슬롯 있으면 전승
+      let _placed=false;
+      for(let _ni=0;_ni<item.crystals.length;_ni++){
+        if(!item.crystals[_ni]){item.crystals[_ni]=_cr;_placed=true;break}
+      }
+      if(!_placed){
+        // 슬롯 부족 → 주머니로 자동 탈착
+        CRYSTAL_BAG.push(_cr);
+        const _cd=CRYSTAL_DEFS[_cr.id];
+        _crMsg.push((_cd?_cd.emoji:'💎')+(_cd?_crDefN(_cd):_cr.id));
+      }
+      old.crystals[_ci]=null;
+    }
+    if(_crMsg.length>0)notify(OPT.lang==='en'?'💎 Crystal to bag: '+_crMsg.join(', '):'💎 결정 주머니로: '+_crMsg.join(', '));
+    else if(item.crystals.some(c=>c))notify(OPT.lang==='en'?'💎 Crystals transferred':'💎 결정 자동 전승 완료');
   }
   // 새 아이템의 그리드 위치를 old에 넘기기 (같은 자리에 교체)
   const _swapGx=item._gx,_swapGy=item._gy;
@@ -30347,7 +30394,7 @@ function _invRenderDetail(idx,source){
     for(let ci=0;ci<it.socketCount;ci++){
       const cr=it.crystals?it.crystals[ci]:null;
       if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],cv=~~crystalVal(cr);
-        ch+='<div onclick="detachCrystal(INV.equipped[\''+idx+'\'],'+ci+');renderInv();_invRenderDetail(\''+idx+'\',\'eq\')" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px solid '+cs.color+'44;background:rgba(0,0,0,.2);border-radius:3px;display:flex;align-items:center;gap:4px" onmouseover="this.style.borderColor=\'#ff6644\'" onmouseout="this.style.borderColor=\''+cs.color+'44\'">';
+        ch+='<div title="'+_crDescTxt(cd)+'" onclick="detachCrystal(INV.equipped[\''+idx+'\'],'+ci+');renderInv();_invRenderDetail(\''+idx+'\',\'eq\')" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px solid '+cs.color+'44;background:rgba(0,0,0,.2);border-radius:3px;display:flex;align-items:center;gap:4px" onmouseover="this.style.borderColor=\'#ff6644\'" onmouseout="this.style.borderColor=\''+cs.color+'44\'">';
         ch+='<span style="color:'+cs.color+';font-size:.85rem">'+cd.emoji+' '+_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+'</span>';
         ch+='<span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+(cd.pct?'+'+cv+'%':'+'+cv)+'</span>';
         ch+='<span style="color:#aa6644;font-size:.7rem">'+_T('탈착')+'</span></div>';
@@ -30700,7 +30747,7 @@ function renderInv(){
       const _b=document.createElement('div');
       const _isSel=_selectedCrystal===_bi;
       _b.style.cssText='width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1px solid '+(_isSel?'#ffaa33':cs.color+'66')+';background:'+(_isSel?'rgba(255,170,50,.25)':'rgba(0,0,0,.3)')+';border-radius:2px;cursor:pointer;font-size:.85rem;position:relative';
-      _b.title=_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+' (+'+(~~crystalVal(cr))+(cd.pct?'%':'')+')';
+      _b.title=_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+' (+'+(~~crystalVal(cr))+(cd.pct?'%':'')+')\n'+_crDescTxt(cd);
       _b.innerHTML=cd.emoji+'<span style="position:absolute;top:-2px;left:0;font-size:.45rem;color:'+cs.color+'">'+(cr.star+1)+'★</span>'+(cr.enh>0?'<span style="position:absolute;bottom:-1px;right:0;font-size:.5rem;color:#ffcc00">+'+cr.enh+'</span>':'');
       _b.onclick=()=>{_selectedCrystal=_isSel?-1:_bi;renderInv()};
       _b.oncontextmenu=(ev)=>{ev.preventDefault();
