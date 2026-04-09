@@ -28053,7 +28053,7 @@ function activateMaliceHunt(){
     const _goCnt=P._gOrbs.length;
     const _goR=(34)+P.r;
     const _fbDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('maliceHunt')*_fuseMul('maliceHunt')); // 통일공식: _skMul
-    const _fbPierce=~~(30+(_mhLv-1)*20/9); // 1렙=30, 10렙=50
+    const _fbPierce=35+(_mhLv-1)*5; // 1렙=35, 10렙=80
     const _fbBombR=80+_mhLv*5; // 히트 시 폭발 반경
     // 가장 가까운 적 또는 바라보는 방향
     const _neF=shQuery(P.x,P.y,400);
