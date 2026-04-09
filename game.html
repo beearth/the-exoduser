@@ -27683,7 +27683,7 @@ const _SK_MUL={
   plagueBurst:{b:0.45,g:1},ghostWalk:{b:3.5,g:1},elemMissile:{b:0.6,g:0.1},
   magicBlink:{b:6,g:1},blastShot:{b:2,g:1},energyShot:{b:10,g:8},
 };
-function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];if(!t)return 1;return(t.b+(lv-1)*t.g)*(1+(P.lv||1)*0.01)} // 캐릭터 레벨당 +1% 데미지 (Lv100=×2, Lv1000=×11)
+function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];if(!t)return 1;return(t.b+(lv-1)*t.g)*(1+(P.lv||1)*0.002)} // 캐릭터 레벨당 +0.2% 데미지 (Lv100=×1.2, Lv500=×2, Lv1000=×3)
 function _fuseMul(skId){const s=_fuseStar(skId);const _fm=s>=2?1+(s-1)*.2:1;return skId==='chargeBoost'||skId==='magicBlink'?_fm:_fm*(1+_eqAffix('skillBoost'))}
 // ═══ 카테고리별 숙련도 시스템 ═══
 // 스킬 카테고리(cat)별로 사용시간(초) 축적. 합체 해금 조건 = 구성스킬 각 카테고리 600초(10분)
