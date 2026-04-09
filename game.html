@@ -189,9 +189,9 @@ canvas{display:block;position:fixed;inset:0}
 
 /* Minimap */
 #mmLvl.on{opacity:1!important}
-#mmWrap{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 4px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px));z-index:20;pointer-events:none;opacity:0;transition:opacity .5s;transform:scale(calc(var(--ui-scale) * .85));transform-origin:top right;padding:18px}
+#mmWrap{position:fixed;top:8px;left:8px;z-index:20;pointer-events:none;opacity:0;transition:opacity .5s;transform:scale(calc(var(--ui-scale) * .85));transform-origin:top left;width:166px;height:166px}
 #mmWrap.on{opacity:.7}
-#mm{display:block;z-index:2;border:none}
+#mm{position:absolute;top:18px;left:18px;z-index:2;border:none;width:130px;height:130px}
 #mmFrame{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none}
 
 #bossBar{position:fixed;top:calc(var(--ui-inset-top,0px) + env(safe-area-inset-top, 0px) + 18px);left:50%;transform:translateX(-50%) scale(var(--ui-scale));z-index:22;pointer-events:none;opacity:0;transition:opacity .6s;text-align:center;transform-origin:top center}
@@ -680,6 +680,7 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">BGM 선택</span>
             <select id="optBgmTrack" style="flex:1;background:#1a1008;border:1px solid #443322;color:#ddc;font-family:'Noto Sans KR';font-size:.9rem;padding:4px 8px;border-radius:4px">
               <option value="auto">자동 (스테이지별)</option>
+              <option value="allRandom">전체 랜덤</option>
               <option value="lobby">로비</option>
               <optgroup label="── 1장 - 썩은 숲 ──">
                 <option value="hell1">1장 랜덤</option>
@@ -982,7 +983,7 @@ canvas{display:block;position:fixed;inset:0}
 <div id="spStart" style="margin-top:18px;font-size:clamp(.6rem,1.2vw,.9rem);color:#886644;letter-spacing:.2em;animation:spBlink 1.2s ease-in-out infinite">— 클릭하여 시작 —</div>
 </div></div>
 <div id="deathReplay"><canvas id="drCvs"></canvas><div id="drLabel">☠ 사망 리플레이</div><div id="drTime"></div><div id="drBar"><div id="drBarFill"></div></div></div>
-<div id="death"><div class="dt" id="deathTitle">빛이 꺼졌다</div><div class="ds" id="deathSub">어둠이 삼켰다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry" id="toLobbyBtn" style="margin-top:8px;background:rgba(0,0,0,.3);border-color:#554433;color:#886644;font-size:.9rem">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div></div>
+<div id="death"><div class="dt" id="deathTitle">빛이 꺼졌다</div><div class="ds" id="deathSub">누군가는 너를 기다리고 있다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry" id="toLobbyBtn" style="margin-top:8px;background:rgba(0,0,0,.3);border-color:#554433;color:#886644;font-size:.9rem">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div></div>
 
 <!-- LEVEL UP SCREEN (10렙마다) -->
 <div id="lvUpScreen" style="position:fixed;inset:0;z-index:35;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.92);opacity:0;pointer-events:none;transition:opacity .4s">
@@ -1648,6 +1649,14 @@ const BGM={
     do{pick=arr[Math.random()*arr.length|0]}while(arr.length>1&&pick===this._lastSrc);
     return pick;
   },
+  _pickAllRandom(){
+    const keys=['hell1','hell2','hell3','hell4','hell5','hell6','hell7'];
+    let all=[];for(let i=0;i<keys.length;i++){const a=this.tracks[keys[i]];if(a)for(let j=0;j<a.length;j++)all.push(a[j])}
+    if(!all.length)return null;
+    let pick;
+    do{pick=all[Math.random()*all.length|0]}while(all.length>1&&pick===this._lastSrc);
+    return pick;
+  },
   _pending:null,
   _bound:false,
   _pendingExtra:[],
@@ -1664,7 +1673,7 @@ const BGM={
   _onEnded(){
     const key=BGM._curKey;
     if(!key)return;
-    const src=BGM._pickRandom(key);
+    const src=OPT.bgmTrack==='allRandom'?BGM._pickAllRandom():BGM._pickRandom(key);
     if(!src)return;
     BGM._lastSrc=src;
     const a=BGM._getAudio(src);
@@ -1692,11 +1701,10 @@ const BGM={
   },
   play(key,force){
     if(!force&&OPT.bgmTrack&&OPT.bgmTrack.startsWith('t:'))return; // 개별 트랙 선택 중 자동 전환 차단
-    if(!force&&OPT.bgmTrack!=='auto'&&key!=='death'&&key!=='victory'&&key!=='forge'&&key!==OPT.bgmTrack)return;
-    if(this._curKey===key)return;
+    if(!force&&OPT.bgmTrack!=='auto'&&OPT.bgmTrack!=='allRandom'&&key!=='death'&&key!=='victory'&&key!=='forge'&&key!==OPT.bgmTrack)return;
     this.stop();
     this._curKey=key;
-    const src=this._pickRandom(key);
+    const src=OPT.bgmTrack==='allRandom'&&key!=='death'&&key!=='victory'&&key!=='forge'?this._pickAllRandom():this._pickRandom(key);
     if(!src)return;
     this._lastSrc=src;
     const a=this._getAudio(src);
@@ -14409,14 +14417,14 @@ function _updateActionKeys(){
   if(elBow){const _spSk=SKILL_SLOTS[4];
     const _techAim=P._mmAiming;
     // 모든 Space 슬롯 스킬 쿨다운 맵
-    const _spCdMap={maliceMortar:P._mmCd||0,giantSlam:P._gslCd||0,giantSlam2:P._gslCd||0,darkPillar:P._dpCd||0,spikeTrap:P._gcCd||0,chainSlam:P._csCd||0,chainAssault:P._caCd||0,holyBlast:P._hbCd||0,blastShot:P._bsCd2||0,needleShot:P._ndCd||0,holyDome:P._hdCd||0,peaceShield:P._psCd||0,ghostXbowTurret:0,voidScarecrow:P._vsCd||0,execution:P._execCd||0,fireAura:P._faCd||0,fireBeam:P._fbCd||0,shieldThrow:P._stCd||0};
+    const _spCdMap={maliceMortar:P._mmCd||0,maliceStorm:P._msCd||0,giantSlam:P._gslCd||0,giantSlam2:P._gslCd||0,darkPillar:P._dpCd||0,spikeTrap:P._gcCd||0,chainSlam:P._csCd||0,chainAssault:P._caCd||0,holyBlast:P._hbCd||0,blastShot:P._bsCd2||0,needleShot:P._ndCd||0,holyDome:P._hdCd||0,peaceShield:P._psCd||0,ghostXbowTurret:0,voidScarecrow:P._vsCd||0,execution:P._execCd||0,fireAura:P._faCd||0,fireBeam:P._fbCd||0,shieldThrow:P._stCd||0};
     const _spCdNow=_spCdMap[_spSk]||0;
     const _spOnCd=_spCdNow>0;
     // 스택형 스킬 처리
     let _spStkTxt='',_spIsStk=false;
-    if(_spSk==='maliceStorm'||_spSk==='iceStorm'||_spSk==='boneWall'||_spSk==='hellRay'){
-      const _sStkMap={maliceStorm:null,iceStorm:P._isStk,boneWall:P._bwStk,hellRay:P._hrStk};
-      const _sRchMap={maliceStorm:P._msRech||0,iceStorm:P._isRech||0,boneWall:P._bwRech||0,hellRay:P._hrRech||0};
+    if(_spSk==='iceStorm'||_spSk==='boneWall'||_spSk==='hellRay'){
+      const _sStkMap={iceStorm:P._isStk,boneWall:P._bwStk,hellRay:P._hrStk};
+      const _sRchMap={iceStorm:P._isRech||0,boneWall:P._bwRech||0,hellRay:P._hrRech||0};
       const _sLv=(P.skills[_spSk]||1);
       const _sMx=_spSk==='hellRay'?1:_sLv>=10?3:2;
       const _sStk=_sStkMap[_spSk]!=null?_sStkMap[_spSk]:_sMx;
@@ -16539,7 +16547,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  const _hpBonus=monLv*(285+15*monLv); // 누적보너스: 1랩+300, 2랩+330, 10랩+570... (1랩당 +30씩 증가)
+  const _hpBonus=15*monLv*(monLv+1); // HP 누적보너스: 1랩+30, 2랩+60, 3랩+90... (Lv×30씩 릴레이 누적)
   const _lvHp=Math.floor((ib?12000:600)*Math.pow(1.0121,monLv)*dm*et.hpMul+(ib?_hpBonus*20:_hpBonus));let _hp=Math.floor(_lvHp*(1+si*0.02)); // 기본×복리 + 누적보너스(복리 밖), 스테이지당+2%
   const _atk=Math.floor(((ib?75:50)+monLv*(ib?2.9:1.95))*dm*et.atkMul); // 일반: 50+lv×1.95 (1000렙=2000), 보스: 75+lv×2.9 (1000렙≈3000, 일반×1.5)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
@@ -27675,7 +27683,7 @@ const _SK_MUL={
   plagueBurst:{b:0.45,g:1},ghostWalk:{b:3.5,g:1},elemMissile:{b:0.6,g:0.1},
   magicBlink:{b:6,g:1},blastShot:{b:2,g:1},energyShot:{b:10,g:8},
 };
-function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];if(!t)return 1;return t.b+(lv-1)*t.g}
+function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];if(!t)return 1;return(t.b+(lv-1)*t.g)*(1+(P.lv||1)*0.01)} // 캐릭터 레벨당 +1% 데미지 (Lv100=×2, Lv1000=×11)
 function _fuseMul(skId){const s=_fuseStar(skId);const _fm=s>=2?1+(s-1)*.2:1;return skId==='chargeBoost'||skId==='magicBlink'?_fm:_fm*(1+_eqAffix('skillBoost'))}
 // ═══ 카테고리별 숙련도 시스템 ═══
 // 스킬 카테고리(cat)별로 사용시간(초) 축적. 합체 해금 조건 = 구성스킬 각 카테고리 600초(10분)
@@ -29665,7 +29673,7 @@ $('optShake').oninput=function(){OPT.shake=+this.value;$('optShakeVal').textCont
 $('optParts').oninput=function(){OPT.parts=+this.value;$('optPartsVal').textContent=this.value+'%';_renderPresetBtns();saveSettings()};
 $('optSfx').oninput=function(){OPT.sfxVol=+this.value;$('optSfxVal').textContent=this.value+'%';if(_mbus)_mbus.gain.value=sfxVol();saveSettings()};
 $('optBgm').oninput=function(){OPT.bgmVol=+this.value;$('optBgmVal').textContent=this.value+'%';BGM.setVol(this.value/100);saveSettings()};
-$('optBgmTrack').onchange=function(){OPT.bgmTrack=this.value;if(this.value==='auto'){BGM.play(BGM.stageKey(G.stage))}else if(this.value.startsWith('t:')){BGM.playTrack(this.value.slice(2))}else{BGM.play(this.value,true)}saveSettings()};
+$('optBgmTrack').onchange=function(){OPT.bgmTrack=this.value;if(this.value==='auto'){BGM.play(BGM.stageKey(G.stage))}else if(this.value==='allRandom'){BGM.playTrack(BGM._pickAllRandom())}else if(this.value.startsWith('t:')){BGM.playTrack(this.value.slice(2))}else{BGM.play(this.value,true)}saveSettings()};
 $('optLang').onchange=function(){OPT.lang=this.value;_applyLang();saveSettings()};
 function _applyLang(){try{
   const _e=OPT.lang==='en';
@@ -29753,7 +29761,7 @@ function _applyLang(){try{
   for(const[id,[ko,en]]of Object.entries(_titles)){const el=$(id);if(el)el.title=_e?en:ko}
   // Death screen
   const _dt=$('deathTitle');if(_dt)_dt.textContent=_e?'The light faded':'빛이 꺼졌다';
-  const _ds=$('deathSub');if(_ds)_ds.textContent=_e?'Darkness consumed you':'어둠이 삼켰다';
+  const _ds=$('deathSub');if(_ds)_ds.textContent=_e?'Someone is waiting for you':'누군가는 너를 기다리고 있다';
   const _rb=$('retryBtn');if(_rb)_rb.textContent=_e?'Rise Again':'다시 일어서라';
   const _tlb=$('toLobbyBtn');if(_tlb)_tlb.textContent=_e?'Return to Lobby':'로비로 돌아가기';
   const _drl=$('drLabel');if(_drl)_drl.textContent=_e?'☠ Death Replay':'☠ 사망 리플레이';
