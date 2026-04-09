@@ -18723,3 +18723,45 @@
 - realesrgan_bin/vcomp140.dll
 - realesrgan_bin/vcomp140d.dll
 
+
+## 2026-04-10 03:00 (auto)
+- docs/2_7 ?¸ë²¤? ë¦¬+?¥ë¹„?œìŠ¤??2_7 ?¸ë²¤? ë¦¬+?¥ë¹„?œìŠ¤??md
+- game.html
+- img/balls/arrow.png
+- img/balls/proj_blackbean.png
+- img/balls/proj_bluebean.png
+- img/balls/proj_bolt_dark.png
+- img/balls/proj_bolt_fire.png
+- img/balls/proj_bolt_holy.png
+- img/balls/proj_bolt_ice.png
+- img/balls/proj_bolt_ltn.png
+- img/balls/proj_bolt_phys.png
+- img/balls/proj_shard_dark.png
+- img/balls/proj_shard_fire.png
+- img/balls/proj_shard_holy.png
+- img/boom_lava.png
+- img/boom_plague.png
+- img/cat_pet/east.png
+- img/cat_pet/north-east.png
+- img/cat_pet/north-west.png
+- img/cat_pet/north.png
+- img/cat_pet/south-east.png
+- img/cat_pet/south-west.png
+- img/cat_pet/south.png
+- img/cat_pet/west.png
+- img/crow/east.png
+- img/crow/north-east.png
+- img/crow/north-west.png
+- img/crow/north.png
+- img/crow/south-east.png
+- img/crow/south-west.png
+- img/crow/south.png
+- img/crow/west.png
+- img/fx/flame01.png
+- img/fx/flame02.png
+- img/fx/flame03.png
+- img/fx/flame04.png
+- img/ui_globe_hp.png
+- img/ui_globe_mp.png
+- img/ui_globe_mp_full.png
+
