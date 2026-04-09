@@ -14426,9 +14426,7 @@ function _updateActionKeys(){
       const _spSkDef=SKILL_LIST.find(s=>s.id===_spSk);
       const _spCdMax=_spSkDef?_spSkDef.cd||600:600;
       const _spPct=Math.min(_spCdNow/_spCdMax,1);
-      const _spEmoji=_spSkDef?_spSkDef.emoji||'🔮':'🔮';
-      const _spNm=_spSkDef?_spSkDef.name:'SP';
-      elBow.innerHTML=`<span class="qs-key" style="font-size:.55rem;color:#666">SP</span><span style="font-size:16px;opacity:.4">${_spEmoji}</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:#666;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 2px">${_spNm}</div>${_spStkTxt}<div style="position:absolute;bottom:0;left:0;right:0;height:${~~(_spPct*100)}%;background:rgba(0,0,0,.5);pointer-events:none"></div><span style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.75rem;color:#ff8844;font-weight:700">${(_spCdNow/60).toFixed(1)}s</span>`;
+      elBow.innerHTML=`${_skIcon(_spSk)}${_spStkTxt}${_skCdSweep(_spPct,(_spCdNow/60).toFixed(1)+'s')}`;
     }
   }
   // qsQ: 보호막 — 활성 상태
@@ -14451,8 +14449,8 @@ function _updateActionKeys(){
     elCT.style.boxShadow=ac?'inset 0 0 10px rgba(68,221,255,.4)':'none';
     const _ctEmoji=info?info.emoji:'👻';
     const _ctName=info?_skN(info):'CT';
-    let _ctCd='';if(onCd)_ctCd=`<div style="position:absolute;bottom:0;left:0;right:0;height:${~~(Math.min(cd/240,1)*100)}%;background:rgba(0,0,0,.5);pointer-events:none"></div><span style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.75rem;color:#ff8844;font-weight:700">${(cd/60).toFixed(1)}s</span>`;
-    elCT.innerHTML=`<span class="qs-key" style="font-size:.5rem;color:${ac?'#44ddff':onCd?'#666':'#77bbdd'}">CT</span><span style="font-size:16px;${onCd?'opacity:.4':''}">${_ctEmoji}</span><div style="position:absolute;bottom:1px;left:0;right:0;text-align:center;font-size:.55rem;color:${onCd?'#666':'#77bbdd'};font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 2px">${_ctName}</div>${_ctCd}`;
+    const _ctPct=onCd?Math.min(cd/240,1):0;
+    elCT.innerHTML=`${_skIcon(sid)}${onCd?_skCdSweep(_ctPct,(cd/60).toFixed(1)+'s'):''}`;
   }
   // skSlotRMB: 우클스킬 — 방패 상태 + 칼등날개 쿨타임
   const elRMB=$('skSlotRMB');
