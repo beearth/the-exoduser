@@ -45,24 +45,31 @@ canvas{display:block;position:fixed;inset:0}
   transform: translateY(30px);
 }
 #hud.on { opacity: 1; transform: translateY(0); }
+#globeHP, #globeMP { opacity: 0; transition: opacity .5s; }
+#globeHP.on, #globeMP.on { opacity: 1; }
 
-.hud-bot { 
-  display: flex; 
-  justify-content: space-between; 
+.hud-bot {
+  display: flex;
+  justify-content: space-between;
   align-items: flex-end;
   max-width: 1400px;
   margin: 0 auto;
+  padding-bottom: 44px;
 }
 
 /* Orbs */
 .globe-container {
-  position: relative;
+  position: fixed;
   width: var(--globe-size);
   height: var(--globe-size);
   filter: drop-shadow(0 5px 15px rgba(0,0,0,0.7));
   will-change: transform;
   overflow: visible;
-  margin: -20px 0;
+  z-index: 22;
+  pointer-events: none;
+}
+.hp-globe { left: 15px; bottom: 15px; }
+.mp-globe { right: 15px; bottom: 15px; }
 }
 
 .globe-glass {
@@ -578,49 +585,40 @@ canvas{display:block;position:fixed;inset:0}
 </div>
 
 <div id="hud">
-  <div class="hud-bot">
-    <!-- Left: Health Globe -->
-    <div class="globe-container hp-globe">
-      <div class="globe-ring-wrap">
-        <div class="globe-ring-bg"></div>
-        <div id="shieldRing" class="globe-ring"></div>
-      </div>
-      <div class="globe-liquid-wrap">
-        <div id="hpLiquid" class="globe-liquid"></div>
-      </div>
-      <div class="globe-glass"></div>
-      <div class="globe-val">
-        <div id="hpCur" class="cur">0</div>
-        <div id="hpMax" class="max">/ 0</div>
-      </div>
-      <span id="hpPotCd" style="position:absolute;top:-45px;left:50%;transform:translateX(-50%);font-size:.9rem;color:#ff8844;font-weight:700;white-space:nowrap"></span>
+  <div class="hud-bot"></div>
+</div>
+<!-- 구슬: hud 밖 독립 fixed -->
+<div id="globeHP" class="globe-container hp-globe">
+  <div class="globe-ring-wrap">
+    <div class="globe-ring-bg"></div>
+    <div id="shieldRing" class="globe-ring"></div>
+  </div>
+  <div class="globe-liquid-wrap">
+    <div id="hpLiquid" class="globe-liquid"></div>
+  </div>
+  <div class="globe-glass"></div>
+  <div class="globe-val">
+    <div id="hpCur" class="cur">0</div>
+    <div id="hpMax" class="max">/ 0</div>
+  </div>
+  <span id="hpPotCd" style="position:absolute;top:-45px;left:50%;transform:translateX(-50%);font-size:.9rem;color:#ff8844;font-weight:700;white-space:nowrap"></span>
+</div>
+<div id="globeMP" class="globe-container mp-globe">
+  <div class="globe-liquid-wrap" style="display:flex;overflow:hidden;background:#080a0c">
+    <div id="mpHalf" style="width:50%;height:100%;background:radial-gradient(ellipse at 55% 35%,#3388cc 0%,#1a4488 40%,#0c2244 100%);transition:filter .3s,opacity .3s"></div>
+    <div id="stHalf" style="width:50%;height:100%;background:radial-gradient(ellipse at 45% 35%,#2a8844 0%,#1a5533 40%,#0c3322 100%);transition:filter .3s,opacity .3s"></div>
+  </div>
+  <div class="globe-glass"></div>
+  <div class="globe-val" style="flex-direction:row;gap:2px">
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center">
+      <div style="font-size:.5rem;color:#88bbff;font-weight:700">MP</div>
+      <div id="mpCur" style="font-size:1rem;font-weight:900;color:#fff">0</div>
+      <div id="mpMax" style="font-size:.5rem;color:rgba(255,255,255,.5)">/0</div>
     </div>
-
-    <!-- Center: (Removed old bars, handled via rings) -->
-    <div class="hud-center-bars" style="display:none"></div>
-
-    <!-- Right: MP+SP 구슬 -->
-    <div class="globe-container mp-globe" style="position:relative">
-      <!-- 1층: 색 채움 (MP 파랑 + SP 초록) -->
-      <div class="globe-liquid-wrap" style="display:flex;overflow:hidden;background:#080a0c">
-        <div id="mpHalf" style="width:50%;height:100%;background:radial-gradient(ellipse at 55% 35%,#3388cc 0%,#1a4488 40%,#0c2244 100%);transition:filter .3s,opacity .3s"></div>
-        <div id="stHalf" style="width:50%;height:100%;background:radial-gradient(ellipse at 45% 35%,#2a8844 0%,#1a5533 40%,#0c3322 100%);transition:filter .3s,opacity .3s"></div>
-      </div>
-      <!-- 2층: 프레임 (2.png — 중앙 투명, 프레임만) -->
-      <div class="globe-glass"></div>
-      <!-- 3층: 숫자 -->
-      <div class="globe-val" style="flex-direction:row;gap:2px">
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center">
-          <div style="font-size:.5rem;color:#88bbff;font-weight:700">MP</div>
-          <div id="mpCur" style="font-size:1rem;font-weight:900;color:#fff">0</div>
-          <div id="mpMax" style="font-size:.5rem;color:rgba(255,255,255,.5)">/0</div>
-        </div>
-        <div style="flex:1;display:flex;flex-direction:column;align-items:center">
-          <div style="font-size:.5rem;color:#88dd88;font-weight:700">SP</div>
-          <div id="stCur" style="font-size:1rem;font-weight:900;color:#fff">0</div>
-          <div id="stMax" style="font-size:.5rem;color:rgba(255,255,255,.5)">/0</div>
-        </div>
-      </div>
+    <div style="flex:1;display:flex;flex-direction:column;align-items:center">
+      <div style="font-size:.5rem;color:#88dd88;font-weight:700">SP</div>
+      <div id="stCur" style="font-size:1rem;font-weight:900;color:#fff">0</div>
+      <div id="stMax" style="font-size:.5rem;color:rgba(255,255,255,.5)">/0</div>
     </div>
   </div>
 </div>
@@ -27317,7 +27315,7 @@ function _fallenResolve(){
   P.s='dead';P.iframes=0;if(G._sStats)G._sStats.deaths++;
   SFX.die();G.on=false;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;G._voidScarecrow=null;
   BGM.fadeOut(500);setTimeout(()=>BGM.play('death'),600);
-  ['hud','hudTop','mmWrap','skBar','mmLvl'].forEach(id=>$(id).classList.remove('on'));
+  ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.remove('on'));
   const expLoss=~~(P.exp*0.3);
   const _eL=OPT.lang==='en';
   const _hn=_T(HELL_NAMES[STG[G.stage].hell]);
@@ -27345,7 +27343,7 @@ function nextStage(){SFX.beamStop();$('stageClear').style.opacity='0';$('stageCl
 function doWin(){
   SFX.beamStop();G.on=false;
   BGM.fadeOut(800);setTimeout(()=>BGM.play('victory'),1000);
-  ['hud','hudTop','mmWrap','skBar','mmLvl'].forEach(id=>{const el=$(id);if(el)el.classList.remove('on')});
+  ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>{const el=$(id);if(el)el.classList.remove('on')});
   $('victory').classList.add('on');
   SFX.victory();
   // Phase 1: light appears
@@ -38964,7 +38962,7 @@ async function startGameFromDB(){
   setBootLoading(80,'맵과 몬스터 생성 중...');
   applyStats();
   if(_stageTestReq>=0)G.stage=_stageTestReq;
-  ['hud','hudTop','mmWrap','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
+  ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.add('on'));
   updateQS();updateSkSlot();
   _bootMapBuildDefer=1;
   initStage(G.stage);
@@ -39209,7 +39207,7 @@ $('retryBtn').onclick=async()=>{
   G._bonfire={x:P.x,y:P.y,t:300,r:280};
   // 스탯 재적용
   applyStats();
-  ['hud','hudTop','mmWrap','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
+  ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.add('on'));
   updateQS();G.on=true;
   // DB에 즉시 반영
   if(_dbReady)await dbSave();
@@ -39444,7 +39442,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     setBootLoading(80,'맵과 몬스터 생성 중...');
   applyStats();
     if(_stageTestReq>=0)G.stage=_stageTestReq;
-    ['hud','hudTop','mmWrap','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
+    ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.add('on'));
     updateQS();updateSkSlot();
     _bootMapBuildDefer=1;
     initStage(G.stage);
@@ -39551,7 +39549,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     setBootLoading(80,'맵과 몬스터 생성 중...');
     applyStats();
     if(_stageTestReq>=0)G.stage=_stageTestReq;
-    ['hud','hudTop','mmWrap','skBar','mmLvl'].forEach(id=>$(id).classList.add('on'));
+    ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.add('on'));
     updateQS();updateSkSlot();
     _bootMapBuildDefer=1;
     initStage(G.stage);
