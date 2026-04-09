@@ -18363,3 +18363,58 @@
 - img/skills/skill_iceOrb.png
 - tools/install-auto-sync-task.ps1
 
+
+## 2026-04-09 21:00 (auto)
+- game.html
+- img/skillskin/blackStar.png
+- img/skillskin/bladeDash.png
+- img/skillskin/bladeShot.png
+- img/skillskin/boneWall.png
+- img/skillskin/burstLoop.png
+- img/skillskin/chainAssault.png
+- img/skillskin/chainSlam.png
+- img/skillskin/chainSlash.png
+- img/skillskin/chargeBoost.png
+- img/skillskin/darkPillar.png
+- img/skillskin/detonate.png
+- img/skillskin/elemMissile.png
+- img/skillskin/execution.png
+- img/skillskin/fanShot.png
+- img/skillskin/fireAura.png
+- img/skillskin/fireBeam.png
+- img/skillskin/fireball.png
+- img/skillskin/ghostWalk.png
+- img/skillskin/ghostXbowTurret.png
+- img/skillskin/giantSlam.png
+- img/skillskin/holyBlast.png
+- img/skillskin/holyDome.png
+- img/skillskin/holyPrison.png
+- img/skillskin/iceOrb.png
+- img/skillskin/iceStorm.png
+- img/skillskin/kiSlash.png
+- img/skillskin/lavaSummon.png
+- img/skillskin/magicBlink.png
+- img/skillskin/maliceHunt.png
+- img/skillskin/maliceHunt2.png
+- img/skillskin/maliceMortar.png
+- img/skillskin/maliceStorm.png
+- img/skillskin/maliceSwipe.png
+- img/skillskin/needleShot.png
+- img/skillskin/omniBeam.png
+- img/skillskin/peaceShield.png
+- img/skillskin/plagueBurst.png
+- img/skillskin/shieldThrow.png
+- img/skillskin/spikeTrap.png
+- img/skillskin/voidScarecrow.png
+- img/skillskin/whirlwind.png
+- img/skillskin/?…ë§ˆ??ê³¨ì¡° UI ?„ë ˆ??png
+- img/skillskin/?´ë‘???í?ì§€ UI ?¸íŠ¸.png
+- img/skillskin/?´ë‘???í?ì§€ ê²Œì„ UI ?„ë ˆ??png
+- img/skillskin/?´ë‘???í?ì§€ ê²Œì„ UI ?„ë ˆ??_2.png
+- img/skillskin/?´ë‘???í?ì§€ ê²Œì„ UI ?„ë ˆ??.png
+- img/skillskin/?´ë‘???í?ì§€ ê²Œì„ UI ?„ë ˆ??_1.png
+- img/skillskin/?´ë‘???í?ì§€ ê²Œì„ UI ?„ë ˆ??_.png
+- img/skillskin/?´ë‘???í?ì§€ ê²Œì„ UI ?„ë ˆ??.png
+- img/skillskin/?´ë‘???í?ì§€ ê²Œì„ UI ?„ë ˆ??_2.png
+- img/skillskin/?´ë‘???í?ì§€ ê¸°ìˆ  ?„ì´ì½?ëª¨ìŒ1.png
+

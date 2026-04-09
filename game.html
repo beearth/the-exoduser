@@ -366,7 +366,7 @@ canvas{display:block;position:fixed;inset:0}
 .qs:hover { filter: brightness(1.3); }
 /* 슬롯 개별 프레임 제거 — 통째 스킬바 이미지 사용 */
 /* 13슬롯 절대좌표 (이미지 격자선 기반, %단위) */
-.qs{top:12.7%;height:75.4%}
+.qs{top:12.7%;height:75.4%;overflow:hidden}
 #qs0{left:13.1%;width:5.7%}
 #qs1{left:18.8%;width:5.0%}
 #qs2{left:23.8%;width:5.8%}
@@ -27391,8 +27391,8 @@ const SKILL_CATS=[
   {id:'tech',name:'⚙️ 영역',nameEn:'⚙️ Domain',col:'#ff8800'},
   {id:'ult',name:'💀 필살기',nameEn:'💀 Ultimate',col:'#ff2200'},
 ];
-const SKILL_ICONS={ghostWalk:'sk_ghostWalk',maliceHunt:'sk_maliceHunt',maliceMortar:'sk_maliceMortar',boneWall:'sk_boneWall',plagueBurst:'sk_plagueBurst',maliceStorm:'sk_maliceStorm',darkPillar:'sk_darkPillar',holyDome:'sk_holyDome',holyPrison:'sk_holyPrison',iceStorm:'sk_iceStorm',giantSlam:'sk_giantSlam',giantSlam2:'sk_giantSlam',holyBlast:'sk_holyBlast',blackStar:'sk_blackStar',lavaSummon:'sk_lavaSummon',kiSlash:'sk_kiSlash',maliceSwipe:'sk_maliceSwipe',whirlwind:'sk_whirlwind',bladeShot:'sk_bladeShot',fireball:'sk_fireball',iceOrb:'sk_iceOrb'};
-function _skIcon(id){const f=SKILL_ICONS[id];return f?`<img src="img/${f}.png" style="width:100%;height:100%;object-fit:cover;opacity:.85;pointer-events:none">`:''}
+const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:'giantSlam',holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,chargeBoost:1,bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:1,chainAssault:1,chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,ghostXbowTurret:1,voidScarecrow:1};
+function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img src="img/skillskin/${f}.png" style="width:100%;height:100%;object-fit:cover;pointer-events:none">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;inset:0;background:conic-gradient(rgba(0,0,0,.65) ${deg}deg,transparent ${deg}deg);pointer-events:none"></div>${txt?`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#ff8844;font-weight:900;text-shadow:0 1px 3px #000">${txt}</div>`:''}`}
 const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
