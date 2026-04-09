@@ -366,20 +366,20 @@ canvas{display:block;position:fixed;inset:0}
 .qs:hover { filter: brightness(1.3); }
 /* 슬롯 개별 프레임 제거 — 통째 스킬바 이미지 사용 */
 /* 13슬롯 절대좌표 (이미지 격자선 기반, %단위) */
-.qs{top:12.7%;height:75.4%;overflow:hidden}
-#qs0{left:13.1%;width:5.7%}
-#qs1{left:18.8%;width:5.0%}
-#qs2{left:23.8%;width:5.8%}
-#qs3{left:29.6%;width:6.6%}
-#qs5{left:36.2%;width:5.7%}
-#ultSlot{left:41.9%;width:5.7%}
-#skSlotLMB{left:47.6%;width:5.6%}
-#skSlotRMB{left:53.2%;width:5.7%}
-#skSlot0{left:58.9%;width:5.0%}
-#qsE{left:63.9%;width:5.7%}
-#qsQ{left:69.6%;width:6.4%}
-#skSlotCT{left:76.1%;width:4.9%}
-#skSlot1{left:81.0%;width:5.7%}
+.qs{top:16.15%;height:72.85%;overflow:hidden;display:flex;align-items:center;justify-content:center}
+#qs0{left:13.13%;width:4.9%}
+#qs1{left:18.04%;width:5.69%}
+#qs2{left:23.73%;width:6.65%}
+#qs3{left:30.38%;width:5.86%}
+#qs5{left:36.25%;width:5.69%}
+#ultSlot{left:41.94%;width:5.69%}
+#skSlotLMB{left:47.63%;width:4.85%}
+#skSlotRMB{left:52.48%;width:4.85%}
+#skSlot0{left:58.91%;width:4.9%}
+#qsE{left:63.81%;width:5.75%}
+#qsQ{left:69.56%;width:5.69%}
+#skSlotCT{left:75.25%;width:5.69%}
+#skSlot1{left:80.95%;width:5.75%}
 
 .qs .qs-key {
   position: absolute;
@@ -1566,7 +1566,7 @@ function dbRestore(d){
   const _fixedKick=['bladeShot','fanShot','omniBeam','bladeDash','ghostWalk','iceOrb'];
   for(let _si=0;_si<6;_si++){if(_fixedKick.includes(SKILL_SLOTS[_si]))SKILL_SLOTS[_si]=null}
   // 배운 액티브 스킬이 슬롯에 없으면 자동 배정 (합체 흡수/고정슬롯 제외)
-  const _fixedSlotSk=['bladeShot','fanShot','omniBeam','bladeDash','shieldThrow','blastShot','ghostWalk','iceOrb','spikeTrap','chainSlam','chainAssault','chainSlash','needleShot','peaceShield','hellRay','blueShot','burstLoop','holyDome','giantSlam','fireball']; // 고정스킬 (슬롯 자동배정 제외)
+  const _fixedSlotSk=['bladeShot','fanShot','omniBeam','bladeDash','shieldThrow','blastShot','ghostWalk','iceOrb','spikeTrap','chainSlam','chainAssault','chainSlash','needleShot','peaceShield','hellRay','blueShot','burstLoop','holyDome','fireball']; // 고정스킬 (슬롯 자동배정 제외)
   const _actIds=SKILL_LIST.filter(sk=>sk.act&&!sk.ult&&P.skills[sk.id]>=1&&!_fKick.includes(sk.id)&&!_fixedSlotSk.includes(sk.id)).map(sk=>sk.id);
   _actIds.forEach(id=>{
     if(!SKILL_SLOTS.includes(id)){const _ei=SKILL_SLOTS.findIndex((s)=>s===null);if(_ei>=0)SKILL_SLOTS[_ei]=id}
@@ -26182,8 +26182,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(dmg > 0) {
     if(G._sStats){G._sStats.dmgDealt+=dmg;if(dmg>G._sStats.maxHit)G._sStats.maxHit=dmg}
     e._alerted=true; // 피격 시 즉시 플레이어 인식 (거리 무시 추적)
-    // 피격 즉시 반격: recover 상태면 idle 전환 (즉시 공격 판정 가능)
-    if(!isDot&&!e.ib&&e.s==='recover'){e.s='idle';e.st2=0}
+    // 피격 즉시 반격: recover/idle 상태면 즉시 전투 전환
+    if(!isDot&&!e.ib){if(e.s==='recover'){e.s='idle';e.st2=0}else if(e.s==='idle'&&e.st2>5){e.st2=5}}
     if(e.eShield>0){
       const _shDmg=_isMagicDmg?dmg:(~~(dmg*_ppRate)||1);
       if(_shDmg>=e.eShield){const _rawUsed=Math.min(dmg,_isMagicDmg?e.eShield:~~(e.eShield/_ppRate));e.eShield=0;const _rawLeft=dmg-_rawUsed;if(_rawLeft>0)e.hp-=_isMagicDmg?(~~(_rawLeft*_magicHpRate)||1):_rawLeft}
@@ -27391,8 +27391,8 @@ const SKILL_CATS=[
   {id:'tech',name:'⚙️ 영역',nameEn:'⚙️ Domain',col:'#ff8800'},
   {id:'ult',name:'💀 필살기',nameEn:'💀 Ultimate',col:'#ff2200'},
 ];
-const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:'giantSlam',holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,chargeBoost:1,bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:1,chainAssault:1,chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,ghostXbowTurret:1,voidScarecrow:1};
-function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img src="img/skillskin/${f}.png" style="width:100%;height:100%;object-fit:cover;pointer-events:none">`}
+const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:'giantSlam',holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:1,chainAssault:1,chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,ghostXbowTurret:1,voidScarecrow:1,blueShot:1};
+function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img src="img/skillskin/${f}.png" style="width:90%;height:90%;object-fit:contain;border-radius:4px;pointer-events:none">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;inset:0;background:conic-gradient(rgba(0,0,0,.65) ${deg}deg,transparent ${deg}deg);pointer-events:none"></div>${txt?`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#ff8844;font-weight:900;text-shadow:0 1px 3px #000">${txt}</div>`:''}`}
 const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -27928,7 +27928,7 @@ function _openSkillSlotPop(slotIdx){
   // 습득된 액티브 스킬 + bow 스킬 목록
   // 합체로 흡수된 스킬 자동 제외
   const _fusedOut=_getAllAbsorbed();
-  const _fixedOnly=['bladeShot','fanShot','omniBeam','elemMissile','shieldThrow','blastShot','ghostWalk','iceOrb','needleShot','peaceShield','hellRay','blueShot','giantSlam','fireball']; // 고정스킬 (슬롯 배정 불가)
+  const _fixedOnly=['bladeShot','fanShot','omniBeam','elemMissile','shieldThrow','blastShot','ghostWalk','iceOrb','needleShot','peaceShield','hellRay','blueShot','fireball']; // 고정스킬 (슬롯 배정 불가)
   const _actSkills=SKILL_LIST.filter(sk=>sk.act&&!sk.ult&&P.skills[sk.id]>=1&&!_fusedOut.includes(sk.id)&&!_fixedOnly.includes(sk.id));
   if(_actSkills.length===0){addTxt(P.x,P.y-20,_T('배정 가능한 스킬 없음'),'#888',30);return}
   // 기존 팝업 재활용 (skSlotPop)
