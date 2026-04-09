@@ -544,21 +544,18 @@ canvas{display:block;position:fixed;inset:0}
 <canvas id="c"></canvas>
 <canvas id="burstCvs" style="position:fixed;inset:0;pointer-events:none;z-index:1"></canvas>
 <canvas id="ct" style="position:fixed;inset:0;pointer-events:none;z-index:2"></canvas>
-<div id="mmLvl" style="position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px));right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;text-align:right;width:160px;transform-origin:top right;transform:scale(var(--ui-scale))">
-  <div style="display:flex;flex-direction:column;gap:4px;background:rgba(0,0,0,0.4);padding:8px;border-right:2px solid #ffaa00;">
-    <div style="display:flex;justify-content:flex-end;align-items:center;gap:8px">
-      <span id="charNameHud" style="color:#aa8866;font-size:0.75rem;font-weight:900;letter-spacing:0.1em"></span>
-      <span id="lvLbl" style="color:#ffcc44;font-size:0.9rem;font-weight:900;text-shadow:0 0 5px rgba(255,204,68,0.4)">LV.1</span>
-    </div>
-    <div id="expBar" style="width:100%;height:4px;background:rgba(20,15,10,0.8);border:1px solid #332211;position:relative;overflow:hidden">
-      <div id="expF" style="height:100%;background:linear-gradient(90deg, #aa8844, #ffcc44);width:0%;box-shadow:0 0 8px rgba(255,204,68,0.3)"></div>
-      <div id="expTxt" style="position:absolute;top:-1px;right:0;font-size:0.55rem;color:#aa9966;pointer-events:none;white-space:nowrap"></div>
-    </div>
-    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:2px">
-      <div class="st-b" id="killCnt" style="color:#cc4433;font-size:0.75rem">💀 0</div>
-      <div class="st-b" id="matCnt" style="color:#cc66ff;font-size:0.75rem">👿 0</div>
-      <div class="st-b" id="comboRecord" style="color:#ff8800;font-size:0.75rem">🔥 0</div>
-    </div>
+<div id="mmLvl" style="position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 4px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 4px);z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;text-align:center;width:180px;height:120px;transform-origin:top right;transform:scale(var(--ui-scale));background:url('img/ui_gothic_frame.png') no-repeat center/100% 100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:6px 14px">
+  <span id="charNameHud" style="color:#aa8866;font-size:0.55rem;font-weight:700;letter-spacing:0.08em;display:none"></span>
+  <div style="font-size:0.55rem;color:#998866;font-weight:700;letter-spacing:0.15em;text-shadow:1px 1px 2px #000">LV</div>
+  <span id="lvLbl" style="color:#c9a35a;font-size:1.4rem;font-weight:900;text-shadow:0 2px 4px rgba(0,0,0,0.8),0 0 8px rgba(201,163,90,0.3);line-height:1;letter-spacing:0.05em">1</span>
+  <div id="expBar" style="width:80%;height:3px;background:rgba(20,15,10,0.8);border:1px solid #332211;position:relative;overflow:hidden;margin:4px 0 5px">
+    <div id="expF" style="height:100%;background:linear-gradient(90deg, #aa8844, #ffcc44);width:0%;box-shadow:0 0 6px rgba(255,204,68,0.3)"></div>
+    <div id="expTxt" style="position:absolute;top:-1px;right:0;font-size:0.45rem;color:#aa9966;pointer-events:none;white-space:nowrap"></div>
+  </div>
+  <div style="display:flex;justify-content:center;gap:8px">
+    <div class="st-b" id="killCnt" style="color:#cc4433;font-size:0.65rem;text-shadow:1px 1px 2px #000">💀 0</div>
+    <div class="st-b" id="matCnt" style="color:#cc88ff;font-size:0.65rem;text-shadow:1px 1px 2px #000">👿 0</div>
+    <div class="st-b" id="comboRecord" style="color:#ff8800;font-size:0.65rem;text-shadow:1px 1px 2px #000">🔥 0</div>
   </div>
 </div>
 <div id="mmWrap"><canvas id="mm" width="130" height="130" style="z-index:2"></canvas><img id="mmFrame" src="img/mm_frame.png" alt=""></div>
@@ -27417,7 +27414,7 @@ const SKILL_CATS=[
 ];
 const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:'giantSlam',holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1};
 function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img src="img/skillskin/${f}.png" style="width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none">`}
-function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.65) ${deg}deg,transparent ${deg}deg);pointer-events:none"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:#ff8844;font-weight:900;text-shadow:0 1px 3px #000">${txt}</div>`:''}`}
+function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.65) ${deg}deg,transparent ${deg}deg);pointer-events:none"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#ffdd55;font-weight:900;text-shadow:0 0 6px #000,0 0 12px #000,0 1px 2px #000">${txt}</div>`:''}`}
 const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -38541,6 +38538,9 @@ function updateHUD(slow){
   const shPct = P.mshield > 0 ? Math.max(0, Math.min(100, (P.shield / P.mshield) * 100)) : 0;
   const shAlpha = P.mshield > 0 ? Math.max(0.1, P.shield / P.mshield) : 0;
   $('shieldRing').style.background = shPct > 0 ? `conic-gradient(rgba(50,150,255,${(.9*shAlpha).toFixed(2)}) ${shPct}%, transparent 0%)` : 'none';
+  // 쉴드 글로우: HP 글로브 프레임 테두리에 파란 발광
+  const _hpGlass=document.querySelector('.hp-globe .globe-glass');
+  if(_hpGlass){_hpGlass.style.filter=shPct>0?`drop-shadow(0 0 ${4+shAlpha*8}px rgba(50,150,255,${(.5*shAlpha).toFixed(2)}))`:'none'}
   
   // ST+MP 구슬 업데이트 (아래→위 차오름)
   const stR = Math.max(0, Math.min(1, P.st / P.mst));
@@ -38569,7 +38569,7 @@ function updateHUD(slow){
   $('roomLbl').textContent=OPT.lang==='en'?`${rtName} — Enemies ${_hudAlive}${G.bossAlive?'':' | Exit Open'}`:`${rtName} — 적 ${_hudAlive}${G.bossAlive?'':' | 출구 개방'}`;
   $('killCnt').textContent=`💀 ${G.kills}`;$('matCnt').textContent=OPT.lang==='en'?`👿 Malice ${G.mats}`:`👿 악의 ${G.mats}`;$('matCnt').style.color=G.mats>=3?'#cc66ff':'#665544';
   $('comboRecord').textContent=`🔥 ${G.combo>0?G.combo+' (MAX:'+G.comboMax+')':G.comboMax>0?'MAX:'+G.comboMax:'0'}`;$('comboRecord').style.color=G.combo>=10?'#ff4400':G.combo>=2?'#ff8800':'#886644';
-  $('lvLbl').textContent=`LV. ${P.lv}`;$('spCnt').textContent=`⭐${P.sp} SP${P.ap?' | 🔮'+P.ap+' AP':''}`;$('cpHud').textContent=`${STG[G.stage].hell+1}-${STG[G.stage].hellFloor+1} ⚡${calcCP().total}`;
+  $('lvLbl').textContent=P.lv;$('spCnt').textContent=`⭐${P.sp} SP${P.ap?' | 🔮'+P.ap+' AP':''}`;$('cpHud').textContent=`${STG[G.stage].hell+1}-${STG[G.stage].hellFloor+1} ⚡${calcCP().total}`;
   if(_charName)$('charNameHud').textContent=_charName;
   // 콤보 HUD
   const _cH=$('comboHud');if(_cH){if(G.combo>=2){_cH.style.display='';_cH.textContent='🔥 '+G.combo+' COMBO'+(G.comboMax>G.combo?' (MAX:'+G.comboMax+')':'');_cH.style.color=G.combo>=50?'#ff2200':G.combo>=20?'#ff6600':G.combo>=10?'#ffaa00':'#ffcc44';_cH.style.fontSize=Math.min(1.2,0.85+G.combo*0.005)+'rem'}else{_cH.style.display='none'}}
