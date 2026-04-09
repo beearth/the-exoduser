@@ -181,7 +181,7 @@ canvas{display:block;position:fixed;inset:0}
 }
 .mini-bar.st .fill { background: linear-gradient(90deg, #114400, #44aa00); }
 .mini-bar.sh .fill { background: linear-gradient(90deg, #002266, #44aaff); }
-#skBar{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%) scale(calc(var(--ui-scale) * .9));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;transform-origin:bottom center;background:url('img/ui_bar_only.png') no-repeat center/100% 100%;width:820px;height:134px}
+#skBar{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%) scale(calc(var(--ui-scale) * .9));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;transform-origin:bottom center;background:url('img/ui_bar_only.png') no-repeat center/100% 100%;width:820px;height:135px}
 .qs-row{position:absolute;top:0;left:0;width:100%;height:100%}
 .qs{position:absolute!important;flex:none!important}
 #poiseBarWrap{display:none!important}
@@ -366,20 +366,20 @@ canvas{display:block;position:fixed;inset:0}
 .qs:hover { filter: brightness(1.3); }
 /* 슬롯 개별 프레임 제거 — 통째 스킬바 이미지 사용 */
 /* 13슬롯 절대좌표 (이미지 격자선 기반, %단위) */
-.qs{position:absolute!important;top:24%;height:50%;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none!important}
-#qs0{left:11.5%;width:5.67%}
-#qs1{left:17.17%;width:5.67%}
-#qs2{left:22.84%;width:5.67%}
-#qs3{left:28.51%;width:5.67%}
-#qs5{left:34.18%;width:5.67%}
-#ultSlot{left:39.85%;width:5.67%}
-#skSlotLMB{left:45.52%;width:5.67%}
-#skSlotRMB{left:51.19%;width:5.67%}
-#skSlot0{left:56.86%;width:5.67%}
-#qsE{left:62.53%;width:5.67%}
-#qsQ{left:68.2%;width:5.67%}
-#skSlotCT{left:73.87%;width:5.67%}
-#skSlot1{left:79.54%;width:5.67%}
+.qs{position:absolute!important;top:22px!important;width:52px!important;height:52px!important;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none!important}
+#qs0{left:100px}
+#qs1{left:156px}
+#qs2{left:212px}
+#qs3{left:268px}
+#qs5{left:324px}
+#ultSlot{left:380px}
+#skSlotLMB{left:436px}
+#skSlotRMB{left:492px}
+#skSlot0{left:548px}
+#qsE{left:604px}
+#qsQ{left:660px}
+#skSlotCT{left:716px}
+#skSlot1{left:772px}
 
 .qs .qs-key {
   position: absolute;
@@ -700,6 +700,12 @@ canvas{display:block;position:fixed;inset:0}
                 <option value="t:bgm/1장_썩은숲/Ashes of the Fallen Gate.mp3">Ashes of the Fallen Gate</option>
                 <option value="t:bgm/1장_썩은숲/h0_explore.mp3">h0_explore</option>
                 <option value="t:bgm/1장_썩은숲/hell1_ice.mp3">hell1_ice</option>
+                <option value="t:bgm/1장_썩은숲/Bloodsteel Ascension.mp3">Bloodsteel Ascension</option>
+                <option value="t:bgm/1장_썩은숲/Bloodsteel Ascension 2.mp3">Bloodsteel Ascension 2</option>
+                <option value="t:bgm/1장_썩은숲/Exoduser.mp3">Exoduser</option>
+                <option value="t:bgm/1장_썩은숲/Exoduser2.mp3">Exoduser2</option>
+                <option value="t:bgm/1장_썩은숲/Blood Moon Siege.mp3">Blood Moon Siege</option>
+                <option value="t:bgm/1장_썩은숲/Blood Moon Siege2.mp3">Blood Moon Siege2</option>
               </optgroup>
               <optgroup label="── 2장 - 벌레굴 ──">
                 <option value="hell2">2장 랜덤</option>
@@ -1637,7 +1643,7 @@ const BGM={
   _cur:null, _curKey:'', _vol:0.3, _fade:null, _lastSrc:'',
   tracks:{
     lobby:['bgm/공통/lobby.mp3'],
-    hell1:['bgm/1장_썩은숲/Ashes of the Fallen Gate.mp3','bgm/1장_썩은숲/h0_explore.mp3','bgm/1장_썩은숲/hell1_ice.mp3'],
+    hell1:['bgm/1장_썩은숲/Ashes of the Fallen Gate.mp3','bgm/1장_썩은숲/h0_explore.mp3','bgm/1장_썩은숲/hell1_ice.mp3','bgm/1장_썩은숲/Bloodsteel Ascension.mp3','bgm/1장_썩은숲/Bloodsteel Ascension 2.mp3','bgm/1장_썩은숲/Exoduser.mp3','bgm/1장_썩은숲/Exoduser2.mp3','bgm/1장_썩은숲/Blood Moon Siege.mp3','bgm/1장_썩은숲/Blood Moon Siege2.mp3'],
     hell2:['bgm/2장_벌레굴/Carapace Cathedral.mp3','bgm/2장_벌레굴/hell2_insect.mp3'],
     hell3:['bgm/3장_얼음굴/Abyssal Drift.mp3','bgm/3장_얼음굴/hell3_fire.mp3'],
     hell4:['bgm/4장_화염지대/Ignis et Sanguis.mp3','bgm/4장_화염지대/Inferno Liturgia.mp3','bgm/4장_화염지대/hell4_abyss.mp3'],
@@ -27389,7 +27395,7 @@ const SKILL_CATS=[
   {id:'tech',name:'⚙️ 영역',nameEn:'⚙️ Domain',col:'#ff8800'},
   {id:'ult',name:'💀 필살기',nameEn:'💀 Ultimate',col:'#ff2200'},
 ];
-const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:'giantSlam',holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,ghostXbowTurret:1,voidScarecrow:1,blueShot:1};
+const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:'giantSlam',holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1};
 function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img src="img/skillskin/${f}.png" style="width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.65) ${deg}deg,transparent ${deg}deg);pointer-events:none"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.55rem;color:#ff8844;font-weight:900;text-shadow:0 1px 3px #000">${txt}</div>`:''}`}
 const SKILL_LIST=[
