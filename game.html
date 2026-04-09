@@ -65,23 +65,21 @@ canvas{display:block;position:fixed;inset:0}
 
 .globe-glass {
   position: absolute;
-  inset: -18px;
+  inset: -24px;
   border-radius: 0;
   background: none;
   border: none;
   box-shadow: none;
   z-index: 10;
   pointer-events: none;
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
 }
 .hp-globe .globe-glass {
-  background: url('img/ui_globes.png') no-repeat;
-  background-size: 200% 100%;
-  background-position: 0% 0%;
+  background-image: url('img/ui_globe_hp.png');
 }
 .mp-globe .globe-glass {
-  background: url('img/ui_globes.png') no-repeat;
-  background-size: 200% 100%;
-  background-position: 100% 0%;
+  background-image: url('img/ui_globe_mp.png');
 }
 
 .globe-liquid-wrap {
@@ -190,8 +188,8 @@ canvas{display:block;position:fixed;inset:0}
 }
 .mini-bar.st .fill { background: linear-gradient(90deg, #114400, #44aa00); }
 .mini-bar.sh .fill { background: linear-gradient(90deg, #002266, #44aaff); }
-#skBar{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%) scale(calc(var(--ui-scale) * .9));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;transform-origin:bottom center;background:url('img/ui_skillbar_full.png') no-repeat center/100% 100%;width:768px;height:168px}
-.qs-row{display:flex;align-items:stretch;height:79px;margin:40px 96px 0 91px;gap:0}
+#skBar{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%) scale(calc(var(--ui-scale) * .9));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;transform-origin:bottom center;background:url('img/ui_bar_only.png') no-repeat center/100% 100%;width:820px;height:205px}
+.qs-row{display:flex;align-items:stretch;height:103px;margin:51px 72px 0 75px;gap:0}
 #poiseBarWrap{display:none!important}
 #skBar.on{opacity:1}
 .hud-top{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px));left:50%;transform:translateX(-50%) scale(var(--ui-scale));z-index:20;pointer-events:none;display:flex;gap:4px;align-items:center;opacity:0;transition:opacity .5s;transform-origin:top center;font-size:.56rem;white-space:nowrap}
@@ -561,19 +559,19 @@ canvas{display:block;position:fixed;inset:0}
     <div id="poiseBarFill" style="height:100%;width:100%;background:linear-gradient(90deg,#ffffff,#ddddcc);transition:width .15s;border-radius:2px"></div>
   </div>
   <div class="qs-row" id="qsRow">
-    <div class="qs empty" id="qs0"><span class="qs-key">1</span><span class="qs-auto">A</span><span class="qs-cnt"></span></div>
-    <div class="qs empty" id="qs1"><span class="qs-key">2</span><span class="qs-auto">A</span><span class="qs-cnt"></span></div>
-    <div class="qs empty" id="qs2"><span class="qs-key">3</span><span class="qs-auto">A</span><span class="qs-cnt"></span></div>
-    <div class="qs empty" id="qs3"><span class="qs-key">4</span><span class="qs-auto">A</span><span class="qs-cnt"></span></div>
-    <div class="qs empty" id="qs5"><span class="qs-key" style="font-size:.6rem">F</span><span class="qs-cnt"></span></div>
-    <div class="qs" id="ultSlot" style="cursor:pointer" onclick="_cycleUlt()"></div>
-    <div class="qs" id="skSlotLMB" style="cursor:pointer" title="좌클릭"><span class="qs-key" style="font-size:.5rem">LMB</span></div>
-    <div class="qs" id="skSlotRMB" style="cursor:pointer" title="우클릭"><span class="qs-key" style="font-size:.5rem">RMB</span></div>
-    <div class="qs" id="skSlot0" style="cursor:pointer" title="Shift"><span class="qs-key" style="font-size:.5rem">SH</span></div>
-    <div class="qs" id="qsE" style="cursor:pointer" title="E"><span class="qs-key" style="font-size:.6rem">E</span></div>
-    <div class="qs" id="qsQ" style="cursor:pointer" title="Q"><span class="qs-key" style="font-size:.6rem">Q</span></div>
-    <div class="qs" id="skSlotCT" style="cursor:pointer" title="Ctrl"><span class="qs-key" style="font-size:.5rem">CT</span></div>
-    <div class="qs" id="skSlot1" style="display:none"><span class="qs-key" style="font-size:.5rem">SP</span></div>
+    <div class="qs" id="qs0"><span class="qs-cnt"></span></div>
+    <div class="qs" id="qs1"><span class="qs-cnt"></span></div>
+    <div class="qs" id="qs2"><span class="qs-cnt"></span></div>
+    <div class="qs" id="qs3"><span class="qs-cnt"></span></div>
+    <div class="qs" id="qs5"><span class="qs-cnt"></span></div>
+    <div class="qs" id="ultSlot" onclick="_cycleUlt()"></div>
+    <div class="qs" id="skSlotLMB"></div>
+    <div class="qs" id="skSlotRMB"></div>
+    <div class="qs" id="skSlot0"></div>
+    <div class="qs" id="qsE"></div>
+    <div class="qs" id="qsQ"></div>
+    <div class="qs" id="skSlotCT"></div>
+    <div class="qs" id="skSlot1"></div>
   </div>
   <div style="display:none"><div class="qs" id="qsK"></div><div class="qs" id="qsG"></div><div class="qs" id="qsTAB"></div><div class="qs" id="qsESC"></div></div>
 </div>
