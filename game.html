@@ -544,21 +544,22 @@ canvas{display:block;position:fixed;inset:0}
 <canvas id="c"></canvas>
 <canvas id="burstCvs" style="position:fixed;inset:0;pointer-events:none;z-index:1"></canvas>
 <canvas id="ct" style="position:fixed;inset:0;pointer-events:none;z-index:2"></canvas>
-<div id="mmLvl" style="position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 4px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 4px);z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;text-align:center;width:230px;height:150px;transform-origin:top right;transform:scale(var(--ui-scale));background:url('img/ui_gothic_frame.png') no-repeat center/100% 100%;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:10px 20px">
+<div id="mmLvl" style="position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 4px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 4px);z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;text-align:center;width:230px;transform-origin:top right;transform:scale(var(--ui-scale));display:flex;flex-direction:column;align-items:center">
   <span id="charNameHud" style="color:#aa8866;font-size:0.55rem;font-weight:700;letter-spacing:0.08em;display:none"></span>
-  <!-- 상단: LV + 숫자 -->
-  <div style="font-size:0.6rem;color:#887766;font-weight:700;letter-spacing:0.2em;text-shadow:1px 1px 2px #000;margin-bottom:-2px">LV</div>
-  <span id="lvLbl" style="color:#c9a35a;font-size:1.6rem;font-weight:900;text-shadow:0 2px 4px rgba(0,0,0,0.9),0 0 10px rgba(201,163,90,0.25);line-height:1;letter-spacing:0.05em">1</span>
-  <!-- 중단: EXP 바 -->
-  <div id="expBar" style="width:85%;height:4px;background:rgba(10,8,5,0.9);border:1px solid #332211;position:relative;overflow:hidden;margin:6px 0">
-    <div id="expF" style="height:100%;background:linear-gradient(90deg, #aa8844, #ffcc44);width:0%;box-shadow:0 0 6px rgba(255,204,68,0.3)"></div>
-    <div id="expTxt" style="position:absolute;top:-1px;right:2px;font-size:0.45rem;color:#aa9966;pointer-events:none;white-space:nowrap"></div>
-  </div>
-  <!-- 하단: 스탯 -->
-  <div style="display:flex;justify-content:center;gap:12px;margin-top:2px">
-    <div class="st-b" id="killCnt" style="color:#cc4433;font-size:0.7rem;text-shadow:1px 1px 2px #000">💀 0</div>
-    <div class="st-b" id="matCnt" style="color:#cc88ff;font-size:0.7rem;text-shadow:1px 1px 2px #000">👿 0</div>
-    <div class="st-b" id="comboRecord" style="color:#ff8800;font-size:0.7rem;text-shadow:1px 1px 2px #000">🔥 0</div>
+  <!-- LV + 숫자: 프레임 바깥 위 -->
+  <div style="font-size:0.6rem;color:#887766;font-weight:700;letter-spacing:0.25em;text-shadow:1px 1px 2px #000">LV</div>
+  <span id="lvLbl" style="color:#c9a35a;font-size:1.8rem;font-weight:900;text-shadow:0 2px 6px rgba(0,0,0,0.9),0 0 12px rgba(201,163,90,0.3);line-height:1;letter-spacing:0.05em;margin-bottom:4px">1</span>
+  <!-- 고딕 프레임: EXP + 스탯 -->
+  <div style="width:100%;background:url('img/ui_gothic_frame.png') no-repeat center/100% 100%;padding:18px 24px 14px;display:flex;flex-direction:column;align-items:center;min-height:70px">
+    <div id="expBar" style="width:85%;height:4px;background:rgba(10,8,5,0.9);border:1px solid #332211;position:relative;overflow:hidden;margin-bottom:8px">
+      <div id="expF" style="height:100%;background:linear-gradient(90deg, #aa8844, #ffcc44);width:0%;box-shadow:0 0 6px rgba(255,204,68,0.3)"></div>
+      <div id="expTxt" style="position:absolute;top:-1px;right:2px;font-size:0.45rem;color:#aa9966;pointer-events:none;white-space:nowrap"></div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:12px">
+      <div class="st-b" id="killCnt" style="color:#cc4433;font-size:0.7rem;text-shadow:1px 1px 2px #000">💀 0</div>
+      <div class="st-b" id="matCnt" style="color:#cc88ff;font-size:0.7rem;text-shadow:1px 1px 2px #000">👿 0</div>
+      <div class="st-b" id="comboRecord" style="color:#ff8800;font-size:0.7rem;text-shadow:1px 1px 2px #000">🔥 0</div>
+    </div>
   </div>
 </div>
 <div id="mmWrap"><canvas id="mm" width="130" height="130" style="z-index:2"></canvas><img id="mmFrame" src="img/mm_frame.png" alt=""></div>
@@ -707,6 +708,10 @@ canvas{display:block;position:fixed;inset:0}
                 <option value="t:bgm/1장_썩은숲/Exoduser2.mp3">Exoduser2</option>
                 <option value="t:bgm/1장_썩은숲/Blood Moon Siege.mp3">Blood Moon Siege</option>
                 <option value="t:bgm/1장_썩은숲/Blood Moon Siege2.mp3">Blood Moon Siege2</option>
+                <option value="t:bgm/1장_썩은숲/Exoduser3.mp3">Exoduser3</option>
+                <option value="t:bgm/1장_썩은숲/Exoduser2.1.mp3">Exoduser2.1</option>
+                <option value="t:bgm/1장_썩은숲/Wrath of the Golden Age.mp3">Wrath of the Golden Age</option>
+                <option value="t:bgm/1장_썩은숲/Iron Oath Under Ash.mp3">Iron Oath Under Ash</option>
               </optgroup>
               <optgroup label="── 2장 - 벌레굴 ──">
                 <option value="hell2">2장 랜덤</option>
@@ -1644,7 +1649,7 @@ const BGM={
   _cur:null, _curKey:'', _vol:0.3, _fade:null, _lastSrc:'',
   tracks:{
     lobby:['bgm/공통/lobby.mp3'],
-    hell1:['bgm/1장_썩은숲/Ashes of the Fallen Gate.mp3','bgm/1장_썩은숲/h0_explore.mp3','bgm/1장_썩은숲/hell1_ice.mp3','bgm/1장_썩은숲/Bloodsteel Ascension.mp3','bgm/1장_썩은숲/Bloodsteel Ascension 2.mp3','bgm/1장_썩은숲/Exoduser.mp3','bgm/1장_썩은숲/Exoduser2.mp3','bgm/1장_썩은숲/Blood Moon Siege.mp3','bgm/1장_썩은숲/Blood Moon Siege2.mp3'],
+    hell1:['bgm/1장_썩은숲/Ashes of the Fallen Gate.mp3','bgm/1장_썩은숲/h0_explore.mp3','bgm/1장_썩은숲/hell1_ice.mp3','bgm/1장_썩은숲/Bloodsteel Ascension.mp3','bgm/1장_썩은숲/Bloodsteel Ascension 2.mp3','bgm/1장_썩은숲/Exoduser.mp3','bgm/1장_썩은숲/Exoduser2.mp3','bgm/1장_썩은숲/Blood Moon Siege.mp3','bgm/1장_썩은숲/Blood Moon Siege2.mp3','bgm/1장_썩은숲/Exoduser3.mp3','bgm/1장_썩은숲/Exoduser2.1.mp3','bgm/1장_썩은숲/Wrath of the Golden Age.mp3','bgm/1장_썩은숲/Iron Oath Under Ash.mp3'],
     hell2:['bgm/2장_벌레굴/Carapace Cathedral.mp3','bgm/2장_벌레굴/hell2_insect.mp3'],
     hell3:['bgm/3장_얼음굴/Abyssal Drift.mp3','bgm/3장_얼음굴/hell3_fire.mp3'],
     hell4:['bgm/4장_화염지대/Ignis et Sanguis.mp3','bgm/4장_화염지대/Inferno Liturgia.mp3','bgm/4장_화염지대/hell4_abyss.mp3'],
