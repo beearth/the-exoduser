@@ -18765,3 +18765,13 @@
 - img/ui_globe_mp.png
 - img/ui_globe_mp_full.png
 
+
+## 2026-04-10 03:30 (auto)
+- bgm/1???©ì???Exoduser2.1.mp3
+- bgm/1???©ì???Exoduser3.mp3
+- bgm/1???©ì???Iron Oath Under Ash.mp3
+- bgm/1???©ì???Wrath of the Golden Age.mp3
+- docs/6?¬ìš´?œë””?ì¸/6?¬ìš´?œë””?ì¸.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+
