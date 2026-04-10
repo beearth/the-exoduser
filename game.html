@@ -690,6 +690,7 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">화면 흔들림</span><input type="range" id="optShake" min="0" max="100" value="80"><span class="set-range-val" id="optShakeVal">80%</span></div>
           <!-- 히트스톱 제거됨 -->
           <div class="set-range-row"><span class="set-name">파티클 양</span><input type="range" id="optParts" min="5" max="100" step="5" value="80"><span class="set-range-val" id="optPartsVal">80%</span></div>
+          <div class="set-range-row"><span class="set-name">UI 크기</span><input type="range" id="optUiScale" min="50" max="150" step="5" value="100"><span class="set-range-val" id="optUiScaleVal">100%</span></div>
           <div class="set-range-row"><span class="set-name">효과음 볼륨</span><input type="range" id="optSfx" min="0" max="100" value="60"><span class="set-range-val" id="optSfxVal">60%</span></div>
           <div class="set-range-row"><span class="set-name">음악 볼륨</span><input type="range" id="optBgm" min="0" max="100" value="30"><span class="set-range-val" id="optBgmVal">30%</span></div>
           <div class="set-range-row"><span class="set-name">BGM 선택</span>
@@ -18199,6 +18200,7 @@ function update(){
     else if(P._seaParalyzed>0){} // 마비 중 모든 행동 차단
     else if(_dashActive||_harpActive){} // 사슬기동 중 행동 차단 (기동칼날개 등은 대시 블록에서 처리)
     else if(false){} // 진동보행: 선택슬롯으로 이동됨
+    else if(P._hrAiming&&isJust('beam')){P._hrAiming=false;showPH(_T('취소'),'#888')} // 참회 조준 중 E 취소
     else if(P._msAiming||P._isAiming||P._bwAiming||P._ebAiming||P._hrAiming){} // 조준 모드 중 공격 차단
     else if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()} // Q: 얼음보주
     else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()} // Q: 평화의보호 (stormBeam)
@@ -27498,7 +27500,7 @@ const SKILL_CATS=[
   {id:'tech',name:'⚙️ 영역',nameEn:'⚙️ Domain',col:'#ff8800'},
   {id:'ult',name:'💀 필살기',nameEn:'💀 Ultimate',col:'#ff2200'},
 ];
-const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:'giantSlam',holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1};
+const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:'giantSlam',holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1};
 function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img src="img/skillskin/${f}.png" style="width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.65) ${deg}deg,transparent ${deg}deg);pointer-events:none"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#ffdd55;font-weight:900;text-shadow:0 0 6px #000,0 0 12px #000,0 1px 2px #000">${txt}</div>`:''}`}
 const SKILL_LIST=[
@@ -29687,6 +29689,7 @@ function saveSettings(){try{localStorage.setItem('hellcave_settings',JSON.string
 $('optShake').oninput=function(){OPT.shake=+this.value;$('optShakeVal').textContent=this.value+'%';saveSettings()};
 // hitStop 옵션 제거됨
 $('optParts').oninput=function(){OPT.parts=+this.value;$('optPartsVal').textContent=this.value+'%';_renderPresetBtns();saveSettings()};
+$('optUiScale').oninput=function(){const v=+this.value/100;OPT.uiScale=v;$('optUiScaleVal').textContent=this.value+'%';document.documentElement.style.setProperty('--ui-scale',v);saveSettings()};
 $('optSfx').oninput=function(){OPT.sfxVol=+this.value;$('optSfxVal').textContent=this.value+'%';if(_mbus)_mbus.gain.value=sfxVol();saveSettings()};
 $('optBgm').oninput=function(){OPT.bgmVol=+this.value;$('optBgmVal').textContent=this.value+'%';BGM.setVol(this.value/100);saveSettings()};
 $('optBgmTrack').onchange=function(){OPT.bgmTrack=this.value;if(this.value==='auto'){BGM.play(BGM.stageKey(G.stage))}else if(this.value==='allRandom'){BGM.playTrack(BGM._pickAllRandom())}else if(this.value.startsWith('t:')){BGM.playTrack(this.value.slice(2))}else{BGM.play(this.value,true)}saveSettings()};
@@ -30272,6 +30275,7 @@ function syncSettingsUI(){
   if($('optShake')){ $('optShake').value=OPT.shake; $('optShakeVal').textContent=OPT.shake+'%'; }
   // hitStop 옵션 제거됨
   if($('optParts')){ $('optParts').value=OPT.parts; $('optPartsVal').textContent=OPT.parts+'%'; }
+  if($('optUiScale')){const _usV=~~((OPT.uiScale||1)*100);$('optUiScale').value=_usV;$('optUiScaleVal').textContent=_usV+'%'}
   if($('optSfx')){ $('optSfx').value=OPT.sfxVol; $('optSfxVal').textContent=OPT.sfxVol+'%'; }
   if($('optBgm')){ $('optBgm').value=OPT.bgmVol||30; $('optBgmVal').textContent=(OPT.bgmVol||30)+'%'; }
   if($('optBgmTrack'))$('optBgmTrack').value=OPT.bgmTrack||'auto';
@@ -30335,6 +30339,7 @@ try{
     if(BINDS.parry==='KeyF')BINDS.parry='KeyQ';
     try{saveSettings()}catch(e){}
     if(OPT.bgmVol!==undefined)BGM.setVol(OPT.bgmVol/100);
+    if(OPT.uiScale!==undefined)document.documentElement.style.setProperty('--ui-scale',OPT.uiScale);
     syncSettingsUI();
   }
 }catch(e){}
