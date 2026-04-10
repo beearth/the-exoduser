@@ -14095,10 +14095,10 @@ let _qsSwapSel=-1; // 스왑 선택 인덱스 (-1=미선택)
 // ═══ 5대 스탯 시스템 (POE2 스타일) ═══
 // 레벨당 SP 3개. 각 스탯 max 200 (200×5=1000, 레벨 333+에서 올스탯 가능)
 const STAT_DEF=[
-  {key:'str',name:'💪 힘 (STR)',nameEn:'💪 STR',desc:'물리 공격력 +0.5%, MAX HP +1, HP리젠 +0.002',descEn:'Phys ATK +0.5%, MAX HP +1, HP regen +0.002',col:'#ff4444',icon:'💪'},
-  {key:'dex',name:'🏹 민첩 (DEX)',nameEn:'🏹 DEX',desc:'공격속도 +0.3%, 이동속도 +0.005, 크리 +0.03%, ST리젠 +0.002, MAX ST +1',descEn:'ATK speed +0.3%, Move speed +0.005, Crit +0.03%, ST regen +0.002, MAX ST +1',col:'#44ff44',icon:'🏹'},
-  {key:'int',name:'🔮 지능 (INT)',nameEn:'🔮 INT',desc:'마법 데미지 +0.5%, MAX MP +1, MP리젠 +0.003, 쉴드리젠 +0.003/f',descEn:'Magic DMG +0.5%, MAX MP +1, MP regen +0.003, Shield regen +0.003/f',col:'#4488ff',icon:'🔮'},
-  {key:'lck',name:'🍀 행운 (LCK)',nameEn:'🍀 LCK',desc:'크리 +0.05%, 크리뎀 +0.005, 드롭률 +0.15%',descEn:'Crit +0.05%, Crit DMG +0.005, Drop rate +0.15%',col:'#cc44ff',icon:'🍀'},
+  {key:'str',name:'💪 힘 (STR)',nameEn:'💪 STR',desc:'물리 ATK +1 (1:1), MAX HP +1, HP리젠 +0.002',descEn:'Phys ATK +1 (1:1), MAX HP +1, HP regen +0.002',col:'#ff4444',icon:'💪'},
+  {key:'dex',name:'🏹 민첩 (DEX)',nameEn:'🏹 DEX',desc:'석궁 ATK +1 (1:1), 공격속도 +0.05%, 이동속도 +0.005, ST리젠 +0.005',descEn:'Bow ATK +1 (1:1), ATK speed +0.05%, Move speed +0.005, ST regen +0.005',col:'#44ff44',icon:'🏹'},
+  {key:'int',name:'🔮 지능 (INT)',nameEn:'🔮 INT',desc:'마법 ATK +1 (1:1), MAX MP +1, MP리젠 +0.005, 쉴드리젠 +0.003/f',descEn:'Magic ATK +1 (1:1), MAX MP +1, MP regen +0.005, Shield regen +0.003/f',col:'#4488ff',icon:'🔮'},
+  {key:'lck',name:'🍀 행운 (LCK)',nameEn:'🍀 LCK',desc:'크리확률 +0.025/pt (LCK1000=25%), 크리뎀 +0.005, 드롭률 +0.15%',descEn:'Crit rate +0.025/pt (LCK1000=25%), Crit DMG +0.005, Drop rate +0.15%',col:'#cc44ff',icon:'🍀'},
 ];
 let STATS={str:0,dex:0,int:0,vit:0,lck:0};
 const STAT_MAX={str:500,dex:500,int:500,vit:500,lck:500};
@@ -14185,9 +14185,9 @@ function _eqAffixRebuild(){_eqAffixCache={};for(let si=0;si<SLOT_NAMES.length;si
 function _eqAffix(id){if(!_eqAffixCache)_eqAffixRebuild();return _eqAffixCache[id]||0}
 // 장비 임플리싯 합산 (stat명별)
 function _eqImplicit(stat){let v=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it._implicitStat===stat)v+=it._implicitVal}return v}
-function statStr(){return 1+(STATS.str+_eqStat('Str'))*.001} // STR 물리: 포인트당 +0.1% (1000pt=+100%)
-function statDex(){return 1+(STATS.dex+_eqStat('Dex'))*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01} // DEX 공속: 포인트당 +0.05%
-function statInt(){return 1+(STATS.int+_eqStat('Int'))*.001} // INT 마법: 포인트당 +0.1% (1000pt=+100%)
+function statStr(){return 1} // STR은 ref 함수에서 직접 ATK로 더해짐 (1:1)
+function statDex(){return 1+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01} // DEX는 공속만 별도 (ATK는 ref에서 1:1 가산)
+function statInt(){return 1} // INT는 ref 함수에서 직접 ATK로 더해짐 (1:1)
 function statCrit(){return STATS.lck*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+(P._crystalStats?P._crystalStats.crit:0)}
 function statCritDmg(){return 1.3+STATS.lck*.005+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // LCK당 +0.005 크리뎀, 크리뎀 어픽스(반지+목걸이)
 function statDropBonus(){return 1+STATS.lck*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
@@ -14713,9 +14713,9 @@ function _autoFireBowSkill(tx,ty){
   P.s=_sS;P.st2=_sSt2;
 }
 function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];if(a.id==='sharpAtk'||a.id==='brutalAtk'||a.id==='ruinAtk')s+=a.value}return s}
-function meleeRef(){return(((wp().atk||0)+enhMul(wp().enh||0))+_slotFlatAtk(wp())+15+P.baseAtk)*(P._weaponSeal>0?.3:1)}
-function bowRef(){return(((bw().atk||0)+enhMul(bw().enh||0))+_slotFlatAtk(bw())+15+P.baseAtk)*(P._weaponSeal>0?.3:1)}
-function magicRef(){return(((hm().atk||0)+enhMul(hm().enh||0))+_slotFlatAtk(hm())+15+P.baseAtk)*(P._weaponSeal>0?.3:1)}
+function meleeRef(){return(((wp().atk||0)+enhMul(wp().enh||0))+_slotFlatAtk(wp())+15+P.baseAtk+(STATS.str+_eqStat('Str')))*(P._weaponSeal>0?.3:1)} // STR 1:1 ATK (1000=1000ATK)
+function bowRef(){return(((bw().atk||0)+enhMul(bw().enh||0))+_slotFlatAtk(bw())+15+P.baseAtk+(STATS.dex+_eqStat('Dex')))*(P._weaponSeal>0?.3:1)} // DEX 1:1 ATK
+function magicRef(){return(((hm().atk||0)+enhMul(hm().enh||0))+_slotFlatAtk(hm())+15+P.baseAtk+(STATS.int+_eqStat('Int')))*(P._weaponSeal>0?.3:1)} // INT 1:1 ATK
 const DPS_BAL={bow:0.77,magic:0.475,beam:0.0080};
 function beamCost(){return(75+((P.skills.omniBeam||1)-1)*8)/60*pMagicCost()} // 틱당: 초당75+lv*8 소비 (패시브 할인 적용)
 // ═══ E키 마법 라우팅 — 합체/스킬 상태 → beam/magicCast 자동 분기 ═══
