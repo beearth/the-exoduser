@@ -551,9 +551,9 @@ canvas{display:block;position:fixed;inset:0}
   <span id="lvLbl" style="color:#c9a35a;font-size:1.8rem;font-weight:900;text-shadow:0 2px 6px rgba(0,0,0,0.9),0 0 12px rgba(201,163,90,0.3);line-height:1;letter-spacing:0.05em;margin-bottom:4px">1</span>
   <!-- 고딕 프레임: EXP + 스탯 -->
   <div style="width:100%;background:url('img/ui_gothic_frame.png') no-repeat center/100% 100%;padding:18px 24px 14px;display:flex;flex-direction:column;align-items:center;min-height:70px">
-    <div id="expBar" style="width:85%;height:4px;background:rgba(10,8,5,0.9);border:1px solid #332211;position:relative;overflow:hidden;margin-bottom:8px">
-      <div id="expF" style="height:100%;background:linear-gradient(90deg, #aa8844, #ffcc44);width:0%;box-shadow:0 0 6px rgba(255,204,68,0.3)"></div>
-      <div id="expTxt" style="position:absolute;top:-1px;right:2px;font-size:0.45rem;color:#aa9966;pointer-events:none;white-space:nowrap"></div>
+    <div id="expBar" style="width:90%;height:14px;background:url('img/ui_exp_bar.png') no-repeat center/100% 100%;position:relative;overflow:hidden;margin-bottom:6px;padding:3px 4px;box-sizing:border-box">
+      <div id="expF" style="height:100%;background:linear-gradient(90deg, #aa8844, #ffcc44);width:0%;box-shadow:0 0 6px rgba(255,204,68,0.3);border-radius:1px"></div>
+      <div id="expTxt" style="position:absolute;top:0;right:6px;font-size:0.5rem;color:#aa9966;pointer-events:none;white-space:nowrap;line-height:14px;text-shadow:1px 1px 2px #000"></div>
     </div>
     <div style="display:flex;justify-content:center;gap:12px">
       <div class="st-b" id="killCnt" style="color:#cc4433;font-size:0.7rem;text-shadow:1px 1px 2px #000">💀 0</div>
@@ -6498,7 +6498,9 @@ let _crBagOpen=false,_crBagFilter='all',_crBagSel=-1;
 let _crPickCb=null;
 let _crForgeTab='enhance',_crForgeSel=-1,_crSynthType=null,_crSynthStar=-1,_crCraftType=null,_crCraftStar=0;
 function _crLabel(cr){if(!cr)return'';const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star];return d.emoji+' '+_crStarN(s)+' '+_crDefN(d)+(cr.enh>0?' +'+cr.enh:'');}
-function _crValStr(cr){if(!cr)return'';const d=CRYSTAL_DEFS[cr.id],v=~~crystalVal(cr);return d.pct?'+'+v+'%':'+'+v;}
+function _crValFmt(v){return v===~~v?''+v:v.toFixed(1)}
+const _CR_UNIT={hpR:'/s',stR:'/s',mpR:'/s'};
+function _crValStr(cr){if(!cr)return'';const d=CRYSTAL_DEFS[cr.id],v=crystalVal(cr);const u=_CR_UNIT[d.stat]||'';return d.pct?'+'+_crValFmt(v)+'%':'+'+_crValFmt(v)+u;}
 function renderCrystalBag(){
   let pop=$('crBagPop');
   if(!pop){pop=document.createElement('div');pop.id='crBagPop';pop.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:380px;max-height:70vh;background:#1a1008;border:2px solid #553388;border-radius:8px;z-index:9999;display:flex;flex-direction:column;padding:10px;box-shadow:0 0 30px rgba(100,0,200,.3)';document.body.appendChild(pop);}
@@ -14440,9 +14442,12 @@ function _updateUltSlot(){
   if(ULT_SLOT==='holyBlast'){const cn=P._hbCd||0,cm=sk.cd||3600;onCd=cn>0;cdPct=onCd?Math.min(cn/cm,1):0;cdTxt=onCd?(cn/60).toFixed(0)+'s':''}
   else if(ULT_SLOT==='blackStar'){const cn=P._bsCd||0,cm=sk.cd||3600;onCd=cn>0;cdPct=onCd?Math.min(cn/cm,1):0;cdTxt=onCd?(cn/60).toFixed(0)+'s':''}
   else if(ULT_SLOT==='lavaSummon'){const cn=P._lvCd||0,cm=sk.cd||3600;onCd=cn>0;cdPct=onCd?Math.min(cn/cm,1):0;cdTxt=onCd?(cn/60).toFixed(0)+'s':''}
-  let ih=_skIcon(ULT_SLOT);
-  if(onCd){ih+='<div style="position:absolute;bottom:0;left:0;right:0;height:'+~~(cdPct*100)+'%;background:rgba(0,0,0,.55);pointer-events:none"></div>';ih+='<div style="position:absolute;bottom:2px;left:0;right:0;text-align:center;font-size:.75rem;color:#ff4444;font-weight:700">'+cdTxt+'</div>'}
-  el.innerHTML=ih;
+  if(el._skId!==ULT_SLOT){el._skId=ULT_SLOT;el.innerHTML=_skIcon(ULT_SLOT)}
+  let _ultCdEl=el.querySelector('._skCd');
+  if(onCd){
+    if(!_ultCdEl){_ultCdEl=document.createElement('div');_ultCdEl.className='_skCd';_ultCdEl.style.cssText='position:absolute;inset:0;pointer-events:none';el.appendChild(_ultCdEl)}
+    _ultCdEl.innerHTML=_skCdSweep(cdPct,cdTxt);
+  }else if(_ultCdEl){_ultCdEl.remove()}
 }
 function _updateSkCdHud(){} // qsRow에 통합됨
 // ═══ 액션키 슬롯 업데이트 (LMB/E/Shift/SP/Q) ═══
@@ -30398,7 +30403,7 @@ function _invRenderDetail(idx,source){
     let ch='<div style="color:#bb88ff;font-size:.8rem;font-weight:700;margin-bottom:4px">💎 '+(_e?'Crystal Slot':'결정 슬롯')+' ('+it.socketCount+') — '+(_e?'click to equip/detach':'클릭하여 장착/탈착')+'</div>';
     for(let ci=0;ci<it.socketCount;ci++){
       const cr=it.crystals?it.crystals[ci]:null;
-      if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],cv=~~crystalVal(cr);
+      if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],cv=_crValFmt(crystalVal(cr));
         ch+='<div title="'+_crDescTxt(cd)+'" onclick="detachCrystal(INV.equipped[\''+idx+'\'],'+ci+');renderInv();_invRenderDetail(\''+idx+'\',\'eq\')" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px solid '+cs.color+'44;background:rgba(0,0,0,.2);border-radius:3px;display:flex;align-items:center;gap:4px" onmouseover="this.style.borderColor=\'#ff6644\'" onmouseout="this.style.borderColor=\''+cs.color+'44\'">';
         ch+='<span style="color:'+cs.color+';font-size:.85rem">'+cd.emoji+' '+_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+'</span>';
         ch+='<span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+(cd.pct?'+'+cv+'%':'+'+cv)+'</span>';
@@ -30533,7 +30538,7 @@ function _invCardFields(it){
     stats+='<div style="color:#bb88ff;font-size:.8rem;font-weight:700">💎 '+(_e?'Crystal Slot':'결정 슬롯')+' ('+it.socketCount+')</div>';
     for(let ci=0;ci<it.socketCount;ci++){
       const cr=it.crystals?it.crystals[ci]:null;
-      if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],cv=~~crystalVal(cr);
+      if(cr){const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star],cv=_crValFmt(crystalVal(cr));
         stats+='<div style="color:'+cs.color+';font-size:.8rem">'+cd.emoji+' '+_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+ ' ('+(cd.pct?'+'+cv+'%':'+'+cv)+')</div>';
       }else stats+='<div style="color:#555;font-size:.8rem">◇ '+(_e?'Empty Slot':'빈 슬롯')+'</div>';
     }
@@ -30752,7 +30757,7 @@ function renderInv(){
       const _b=document.createElement('div');
       const _isSel=_selectedCrystal===_bi;
       _b.style.cssText='width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1px solid '+(_isSel?'#ffaa33':cs.color+'66')+';background:'+(_isSel?'rgba(255,170,50,.25)':'rgba(0,0,0,.3)')+';border-radius:2px;cursor:pointer;font-size:.85rem;position:relative';
-      _b.title=_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+' (+'+(~~crystalVal(cr))+(cd.pct?'%':'')+')\n'+_crDescTxt(cd);
+      _b.title=_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+' (+'+(_crValFmt(crystalVal(cr)))+(cd.pct?'%':'')+')\n'+_crDescTxt(cd);
       _b.innerHTML=cd.emoji+'<span style="position:absolute;top:-2px;left:0;font-size:.45rem;color:'+cs.color+'">'+(cr.star+1)+'★</span>'+(cr.enh>0?'<span style="position:absolute;bottom:-1px;right:0;font-size:.5rem;color:#ffcc00">+'+cr.enh+'</span>':'');
       _b.onclick=()=>{_selectedCrystal=_isSel?-1:_bi;renderInv()};
       _b.oncontextmenu=(ev)=>{ev.preventDefault();
