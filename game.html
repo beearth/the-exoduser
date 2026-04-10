@@ -6432,24 +6432,29 @@ function rollAffixes(grade,slot,brType){
 
 const SLOT_NAMES=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
 // ═══ 결정 슬롯 시스템 — 데이터 정의 ═══
+// 슬롯 분류: 공격계(3) vs 방어계(12)
+const CR_ATK_SLOTS=['weapon','bow','helmet']; // 주무기/석궁/투구
+const CR_DEF_SLOTS=['shield','boots','armor','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
 const CRYSTAL_DEFS={
-  cr_hp:{ko:'HP결정',stat:'hp',base:8,cat:'stat',emoji:'❤',craft:true},
-  cr_st:{ko:'ST결정',stat:'st',base:5,cat:'stat',emoji:'⚡',craft:true},
-  cr_mp:{ko:'MP결정',stat:'mp',base:5,cat:'stat',emoji:'💧',craft:true},
-  cr_atk:{ko:'ATK결정',stat:'atk',base:2,cat:'stat',emoji:'⚔'},
-  cr_def:{ko:'DEF결정',stat:'def',base:1,cat:'stat',emoji:'🛡'},
-  cr_spd:{ko:'속도결정',stat:'spd',base:0.08,cat:'stat',emoji:'💨',pct:true},
-  cr_crit:{ko:'크리결정',stat:'crit',base:0.3,cat:'stat',emoji:'🎯',pct:true},
-  cr_cdmg:{ko:'치명결정',stat:'cdmg',base:0.1,cat:'stat',emoji:'💥',pct:true},
-  cr_fire:{ko:'화염결정',stat:'fire',base:1.2,cat:'elem',emoji:'🔥'},
-  cr_ice:{ko:'냉기결정',stat:'ice',base:1,cat:'elem',emoji:'❄'},
-  cr_dark:{ko:'암흑결정',stat:'dark',base:1.2,cat:'elem',emoji:'🌑'},
-  cr_light:{ko:'번개결정',stat:'light',base:1.5,cat:'elem',emoji:'⚡'},
-  cr_holy:{ko:'신성결정',stat:'holy',base:1,cat:'elem',emoji:'✨'},
-  cr_hpReg:{ko:'생명결정',stat:'hpR',base:0.15,cat:'util',emoji:'💚'},
-  cr_stReg:{ko:'기력결정',stat:'stR',base:0.08,cat:'util',emoji:'🟢'},
-  cr_mpReg:{ko:'마력결정',stat:'mpR',base:0.08,cat:'util',emoji:'🔵'},
-  cr_drop:{ko:'행운결정',stat:'drop',base:0.15,cat:'util',emoji:'🍀',pct:true},
+  // 공격계 (무기/석궁/투구 3슬롯 전용)
+  cr_atk:{ko:'ATK결정',stat:'atk',base:2,cat:'atk',emoji:'⚔',slots:CR_ATK_SLOTS},
+  cr_crit:{ko:'크리결정',stat:'crit',base:0.3,cat:'atk',emoji:'🎯',pct:true,slots:CR_ATK_SLOTS},
+  cr_cdmg:{ko:'치명결정',stat:'cdmg',base:0.1,cat:'atk',emoji:'💥',pct:true,slots:CR_ATK_SLOTS},
+  cr_fire:{ko:'화염결정',stat:'fire',base:1.2,cat:'atk',emoji:'🔥',slots:CR_ATK_SLOTS},
+  cr_ice:{ko:'냉기결정',stat:'ice',base:1,cat:'atk',emoji:'❄',slots:CR_ATK_SLOTS},
+  cr_dark:{ko:'암흑결정',stat:'dark',base:1.2,cat:'atk',emoji:'🌑',slots:CR_ATK_SLOTS},
+  cr_light:{ko:'번개결정',stat:'light',base:1.5,cat:'atk',emoji:'⚡',slots:CR_ATK_SLOTS},
+  cr_holy:{ko:'신성결정',stat:'holy',base:1,cat:'atk',emoji:'✨',slots:CR_ATK_SLOTS},
+  // 방어계 (방어구 12슬롯 전용)
+  cr_hp:{ko:'HP결정',stat:'hp',base:8,cat:'def',emoji:'❤',craft:true,slots:CR_DEF_SLOTS},
+  cr_st:{ko:'ST결정',stat:'st',base:5,cat:'def',emoji:'🟡',craft:true,slots:CR_DEF_SLOTS},
+  cr_mp:{ko:'MP결정',stat:'mp',base:5,cat:'def',emoji:'💧',craft:true,slots:CR_DEF_SLOTS},
+  cr_def:{ko:'DEF결정',stat:'def',base:1,cat:'def',emoji:'🛡',slots:CR_DEF_SLOTS},
+  cr_spd:{ko:'속도결정',stat:'spd',base:0.08,cat:'def',emoji:'💨',pct:true,slots:CR_DEF_SLOTS},
+  cr_hpReg:{ko:'생명결정',stat:'hpR',base:0.15,cat:'def',emoji:'💚',slots:CR_DEF_SLOTS},
+  cr_stReg:{ko:'기력결정',stat:'stR',base:0.08,cat:'def',emoji:'🟢',slots:CR_DEF_SLOTS},
+  cr_mpReg:{ko:'마력결정',stat:'mpR',base:0.08,cat:'def',emoji:'🔵',slots:CR_DEF_SLOTS},
+  cr_drop:{ko:'행운결정',stat:'drop',base:0.15,cat:'def',emoji:'🍀',pct:true,slots:CR_DEF_SLOTS},
 };
 const _CR_DESC={
   hp:{ko:'최대 HP 증가',en:'Max HP increase'},
@@ -6502,6 +6507,7 @@ function _crLabel(cr){if(!cr)return'';const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR
 function _crValFmt(v){return v===~~v?''+v:v.toFixed(1)}
 const _CR_UNIT={hpR:'/s',stR:'/s',mpR:'/s'};
 function _crValStr(cr){if(!cr)return'';const d=CRYSTAL_DEFS[cr.id],v=crystalVal(cr);const u=_CR_UNIT[d.stat]||'';return d.pct?'+'+_crValFmt(v)+'%':'+'+_crValFmt(v)+u;}
+function _crSlotsStr(cd){if(!cd||!cd.slots)return'';return(OPT.lang==='en'?'Slots: ':'슬롯: ')+cd.slots.map(s=>_slotName(SLOT_NAMES.indexOf(s))).join(',');}
 function renderCrystalBag(){
   let pop=$('crBagPop');
   if(!pop){pop=document.createElement('div');pop.id='crBagPop';pop.style.cssText='position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);width:380px;max-height:70vh;background:#1a1008;border:2px solid #553388;border-radius:8px;z-index:9999;display:flex;flex-direction:column;padding:10px;box-shadow:0 0 30px rgba(100,0,200,.3)';document.body.appendChild(pop);}
@@ -6540,6 +6546,12 @@ function closeCrystalPicker(){_crPickCb=null;var p=$('crBagPop');if(p)p.style.di
 function attachCrystal(item,slotIdx,cr,bagIdx){
   if(!item||!item.crystals||slotIdx>=item.crystals.length)return false;
   if(item.crystals[slotIdx])return false;
+  // 결정 슬롯 제한 체크
+  const _cd=CRYSTAL_DEFS[cr.id];
+  if(_cd&&_cd.slots&&_cd.slots.indexOf(item.slot)<0){
+    notify((OPT.lang==='en'?'Can only equip on: ':'장착 가능: ')+_cd.slots.map(s=>_slotName(SLOT_NAMES.indexOf(s))).join(', '));
+    return false;
+  }
   item.crystals[slotIdx]=cr;CRYSTAL_BAG.splice(bagIdx,1);applyStats();return true;
 }
 function detachCrystal(item,slotIdx){
@@ -14153,10 +14165,10 @@ function applyStats(){
   // ═══ 바이블 기준: ATK = 15+(stage-1)*2 ═══
   P.baseAtk=G.on?15+((G.stage||1)-1)*2:15;
   P.speed=(2.6+s.dex*.005)*(1+(P._altSpd||0)+_eqAffix('movSpeed')+_eqImplicit('_iMovSpd')*.01);
-  P.stR=.05+s.dex*.005+P.lv*.001; // ST리젠: DEX + 레벨 (/8 적용)
+  P.stR=.05+s.dex*.01+P.lv*.002; // ST리젠: DEX + 레벨 (/8 적용, 출처 증가)
   P.hpR=.05+s.str*.002+P.lv*.001+_eqAffix('lifeRegen')/60; // HP리젠: 초당 + STR + 레벨 + 생명팔찌
   P.mmp=~~((100+P.lv*.5+s.int*1)*(1+_eqAffix('maxMPPct')));
-  P.mpR=.05+s.int*.005+P.lv*.001; // MP리젠: 초당 + INT + 레벨 (/8 적용)
+  P.mpR=.05+s.int*.01+P.lv*.002; // MP리젠: 초당 + INT + 레벨 (/8 적용, 출처 증가)
   // ═══ 결정 스탯 합산 ═══
   const _cr={hp:0,st:0,mp:0,atk:0,def:0,spd:0,crit:0,cdmg:0,fire:0,ice:0,dark:0,light:0,holy:0,hpR:0,stR:0,mpR:0,drop:0};
   for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(!it||!it.crystals)continue;
@@ -14186,10 +14198,10 @@ function _eqAffix(id){if(!_eqAffixCache)_eqAffixRebuild();return _eqAffixCache[i
 // 장비 임플리싯 합산 (stat명별)
 function _eqImplicit(stat){let v=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it._implicitStat===stat)v+=it._implicitVal}return v}
 function statStr(){return 1} // STR은 ref 함수에서 직접 ATK로 더해짐 (1:1)
-function statDex(){return 1+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01} // DEX는 공속만 별도 (ATK는 ref에서 1:1 가산)
+function statDex(){return 1+(STATS.dex+_eqStat('Dex'))*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01} // DEX 공속 배율 +0.05%/pt (DEX1000=+50%) + 어픽스
 function statInt(){return 1} // INT는 ref 함수에서 직접 ATK로 더해짐 (1:1)
 function statCrit(){return STATS.lck*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+(P._crystalStats?P._crystalStats.crit:0)}
-function statCritDmg(){return 1.3+STATS.lck*.005+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // LCK당 +0.005 크리뎀, 크리뎀 어픽스(반지+목걸이)
+function statCritDmg(){return 1.5+STATS.lck*.00005+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5 (+50%), LCK 0.005% per pt (LCK1000=+5%)
 function statDropBonus(){return 1+STATS.lck*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
 // 패시브 배율 함수 (max5, 효과 2배)
 function pAtkMul(){return 1+PASSIVES.pAtk*.12+(P._altAtk||0)}  // 무기뎀 +12%/lv (10lv=+120%)
@@ -30792,7 +30804,7 @@ function renderInv(){
       const _b=document.createElement('div');
       const _isSel=_selectedCrystal===_bi;
       _b.style.cssText='width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1px solid '+(_isSel?'#ffaa33':cs.color+'66')+';background:'+(_isSel?'rgba(255,170,50,.25)':'rgba(0,0,0,.3)')+';border-radius:2px;cursor:pointer;font-size:.85rem;position:relative';
-      _b.title=_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+' (+'+(_crValFmt(crystalVal(cr)))+(cd.pct?'%':'')+')\n'+_crDescTxt(cd);
+      _b.title=_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+' (+'+(_crValFmt(crystalVal(cr)))+(cd.pct?'%':'')+')\n'+_crDescTxt(cd)+(cd.slots?'\n'+_crSlotsStr(cd):'');
       _b.innerHTML=cd.emoji+'<span style="position:absolute;top:-2px;left:0;font-size:.45rem;color:'+cs.color+'">'+(cr.star+1)+'★</span>'+(cr.enh>0?'<span style="position:absolute;bottom:-1px;right:0;font-size:.5rem;color:#ffcc00">+'+cr.enh+'</span>':'');
       _b.onclick=()=>{_selectedCrystal=_isSel?-1:_bi;renderInv()};
       _b.oncontextmenu=(ev)=>{ev.preventDefault();
@@ -31638,7 +31650,7 @@ function renderStatSummary(){
     `<div style="${_sLn}">STR: <span style="color:#ff9944">${_tStr}</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}${STATS.str}+${_L('장비','gear')}${_eqStat('Str')})</span> → ${_L('물리배율','Phys Mult')} <span style="color:#ff9944">×${statStr().toFixed(3)}</span></div>`+
     `<div style="${_sLn}">DEX: <span style="color:#ffcc44">${_tDex}</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}${STATS.dex}+${_L('장비','gear')}${_eqStat('Dex')})</span> → ${_L('공속','AtkSpd')} <span style="color:#ffcc44">×${statDex().toFixed(3)}</span></div>`+
     `<div style="${_sLn}">INT: <span style="color:#66aaff">${_tInt}</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}${STATS.int}+${_L('장비','gear')}${_eqStat('Int')})</span> → ${_L('마법배율','Magic Mult')} <span style="color:#66aaff">×${statInt().toFixed(3)}</span></div>`+
-    `<div style="${_sLn}">LCK: <span style="color:#88ff88">${_tLck}</span> <span style="color:#887766;font-size:1.1rem">(${_L('크리','Crit')}${statCrit().toFixed(1)}%, ${_L('크리뎀','CritDmg')}×${statCritDmg().toFixed(2)}, ${_L('드롭','Drop')}×${statDropBonus().toFixed(2)})</span></div>`+
+    `<div style="${_sLn}">LCK: <span style="color:#88ff88">${_tLck}</span> <span style="color:#887766;font-size:1.1rem">(${_L('크리','Crit')}${statCrit().toFixed(1)}%, ${_L('크리뎀','CritDmg')}+${((statCritDmg()-1)*100).toFixed(0)}%, ${_L('드롭','Drop')}+${((statDropBonus()-1)*100).toFixed(0)}%)</span></div>`+
     `<div style="${_sLn}">${_L('근성','Grit')}: <span style="color:#ffaa33">Lv.${_grit}</span> <span style="color:#887766;font-size:1.1rem">(HP/MP/ST ${_L('각각','each')} +${_grit}, ${_L('SP 1당 +1','SP +1 each')})</span></div>`+
     `<div style="${_sHd}">📊 ${_L('종합 지표','Overview')}</div>`+
     `<div style="${_sLn}">${_L('근접 DPS','Melee DPS')}: <span style="color:#ff9944">${_sMeleeDPS}</span> <span style="color:#887766;font-size:1.1rem">(${_L('공격력×공속×크리','ATK×Spd×Crit')})</span></div>`+
@@ -31647,11 +31659,11 @@ function renderStatSummary(){
     `<div style="${_sLn}">${_L('유효 HP (EHP)','Effective HP (EHP)')}: <span style="color:#ff6666">${_sEHP}</span> <span style="color:#887766;font-size:1.1rem">(HP÷(1-DR)+${_L('쉴드','Shield')})</span></div>`+
     `<div style="${_sLn}">${_L('장비 파워','Gear Power')}: <span style="color:#ffaa00">${_sGearScore}</span></div>`+
     `<div style="${_sHd}">⚔️ ${_L('공격','Attack')}</div>`+
-    `<div style="${_sLn}">${_L('근접 공격력','Melee ATK')}: <span style="color:#ff9944">${_sMeleeAtk}</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}${P.baseAtk} + ${_L('무기','wpn')}${~~((wp().atk||0)+enhMul(wp().enh||0))} × STR${statStr().toFixed(2)} × ${_L('맹공','Onsl')}${pAtkMul().toFixed(2)})</span></div>`+
-    (_sBowAtk?`<div style="${_sLn}">${_L('활 공격력','Bow ATK')}: <span style="color:#66dd66">${_sBowAtk}</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}${P.baseAtk} + ${_L('석궁','xbow')}${~~((bw().atk||0)+enhMul(bw().enh||0))} × ${_L('정밀','Prec')}${pBowMul().toFixed(2)})</span></div>`:'')+
-    `<div style="${_sLn}">${_L('마법 공격력','Magic ATK')}: <span style="color:#66aaff">${_sMagicAtk}</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}${P.baseAtk} + ${_L('투구','helm')}${~~((hm().atk||0)+enhMul(hm().enh||0))} × INT${statInt().toFixed(2)} × ${_L('마력','Arcane')}${pMagicMul().toFixed(2)})</span></div>`+
+    `<div style="${_sLn}">${_L('근접 공격력','Melee ATK')}: <span style="color:#ff9944">${_sMeleeAtk}</span> <span style="color:#887766;font-size:1.1rem">((${_L('기본','base')}${P.baseAtk} + ${_L('무기','wpn')}${~~((wp().atk||0)+enhMul(wp().enh||0))} + STR${STATS.str+_eqStat('Str')}) × ${_L('맹공','Onsl')}${pAtkMul().toFixed(2)})</span></div>`+
+    (_sBowAtk?`<div style="${_sLn}">${_L('활 공격력','Bow ATK')}: <span style="color:#66dd66">${_sBowAtk}</span> <span style="color:#887766;font-size:1.1rem">((${_L('기본','base')}${P.baseAtk} + ${_L('석궁','xbow')}${~~((bw().atk||0)+enhMul(bw().enh||0))} + DEX${STATS.dex+_eqStat('Dex')}) × ${_L('정밀','Prec')}${pBowMul().toFixed(2)})</span></div>`:'')+
+    `<div style="${_sLn}">${_L('마법 공격력','Magic ATK')}: <span style="color:#66aaff">${_sMagicAtk}</span> <span style="color:#887766;font-size:1.1rem">((${_L('기본','base')}${P.baseAtk} + ${_L('투구','helm')}${~~((hm().atk||0)+enhMul(hm().enh||0))} + INT${STATS.int+_eqStat('Int')}) × ${_L('마력','Arcane')}${pMagicMul().toFixed(2)})</span></div>`+
     `<div style="${_sLn}">${_L('공격속도','Atk Speed')}: <span style="color:#ffcc44">×${statDex().toFixed(2)}</span></div>`+
-    `<div style="${_sLn}">${_L('크리티컬','Critical')}: <span style="color:#ff6666">${statCrit().toFixed(1)}%</span> (×${_sCritMul.toFixed(2)}${_L('배율','mult')}) <span style="color:#887766;font-size:1.1rem">${_L('확률','Rate')}: DEX${((STATS.dex+_eqStat('Dex'))*.015).toFixed(1)}%+LCK${(STATS.lck*.05).toFixed(1)}%+${_L('패시브','passive')}${(PASSIVES.pCrit*1).toFixed(1)}%+${_L('장비','gear')}${((rg1().critRate||0)+(rg2().critRate||0)).toFixed(1)}% | ${_L('배율','Mult')}: ${_L('기본','base')}1.3+LCK${(STATS.lck*.005).toFixed(2)}+${_L('패시브','passive')}${(PASSIVES.pCrit*.04).toFixed(2)}+${_L('장비','gear')}${((rg1().critDmg||0)+(rg2().critDmg||0)).toFixed(2)}</span></div>`+
+    `<div style="${_sLn}">${_L('크리티컬','Critical')}: <span style="color:#ff6666">${statCrit().toFixed(1)}%</span> (+${((_sCritMul-1)*100).toFixed(0)}% ${_L('데미지','dmg')}) <span style="color:#887766;font-size:1.1rem">${_L('확률','Rate')}: DEX${((STATS.dex+_eqStat('Dex'))*.015).toFixed(1)}%+LCK${(STATS.lck*.025).toFixed(1)}%+${_L('패시브','passive')}${(PASSIVES.pCrit*1.5).toFixed(1)}%+${_L('장비','gear')}${((rg1().critRate||0)+(rg2().critRate||0)).toFixed(1)}% | ${_L('추가뎀','bonus')}: ${_L('기본','base')}+50%+LCK+${(STATS.lck*.5).toFixed(0)}%+${_L('패시브','passive')}+${(PASSIVES.pCrit*8).toFixed(0)}%+${_L('장비','gear')}+${(((rg1().critDmg||0)+(rg2().critDmg||0))*100).toFixed(0)}%</span></div>`+
     `<div style="${_sLn}">${_L('패링 카운터뎀','Parry Counter DMG')}: <span style="color:#44ff88">×${_sParryDmg.toFixed(2)}</span> | ${_L('우클공속','RMB Spd')}: <span style="color:#ffdd00">×${_sRmbSpd.toFixed(2)}</span> | ${_L('무지개탄DR','Rainbow DR')}: <span style="color:#ff44ff">${~~(_sRainDR*100)}%</span></div>`+
     `<div style="${_sLn}">${_L('포이즈파괴','Poise Break')}: <span style="color:${_afc('staggerBns','#ffaa44')}">${_af('staggerBns').toFixed(0)}</span> | ${_L('방어관통','Armor Pen')}: <span style="color:${_afc('armorPen','#ff8844')}">${_afp('armorPen')}</span></div>`+
     (()=>{const _ppLv=PASSIVES.pPierce||0;const _bpB=(bw().bowPierce||0);const _totalP=Math.min(0.95,_bpB+_ppLv*0.05);return`<div style="${_sLn}">🔱 ${_L('관통력','Pierce')}: <span style="color:${_totalP>0?'#44ffcc':'#555544'}">${~~(_totalP*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${_L('패시브','passive')}${_ppLv}lv+${_L('장비','gear')}${~~(_bpB*100)}%)</span></div>`})()+
@@ -31679,7 +31691,11 @@ function renderStatSummary(){
     (()=>{const _stgH=G.on?100+((G.stage||1)-1)*6:100;const _lvH=P.lv;const _strH=(P._effStats?P._effStats.str:0);let _eqH=0,_enhH=0;const _ds2=['shield','armor','boots','helmet','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];for(const sl of _ds2){const it=INV.equipped[sl];if(it){_eqH+=(it.bonusHp||0);if(it.enh>0)_enhH+=it.enh}};const _afF=_eqAffix('maxHPFlat'),_afP=_eqAffix('maxHPPct')+_eqAffix('lifeMaxHP'),_imH=_eqImplicit('_iMaxHP'),_imP=_eqImplicit('_iMaxHPPct')+_eqImplicit('_iLifeHPPct');const _pMel=(PASSIVES.pMelee||0)*.03;const _mul=1+_afP+_imP*.01+_pMel;const _base=_stgH+_lvH+_strH+_eqH+_afF+_imH+_enhH;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_stgH} + Lv${_lvH} + STR${_strH} + ${_L('장비HP','gearHP')}${_eqH}${_afF?(' + '+_L('어픽스','affix')+_afF):''}${_imH?(' + '+_L('임플','impl')+_imH):''}${_enhH?(' + '+_L('강화','enh')+_enhH):''} = ${~~_base} × ${_mul.toFixed(2)} = ${~~(_base*_mul)}</div>`})()+
     (P.mshield>0?(()=>{const _sInt=P._effStats?P._effStats.int:0;const _srBase=0.3,_srInt=_sInt*0.003;const _srTotal=(_srBase+_srInt)*pMRegenMul()*60;const _shBase=150,_shLv=~~(P.lv*.5),_shInt=~~((_sInt-100)*2.5);let _shEq=0;const _ds3=['shield','armor','boots','helmet','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];for(const sl of _ds3){const it=INV.equipped[sl];if(it)_shEq+=(it.bonusShield||0)};const _shAf=_eqAffix('shieldFlat');return`<div style="${_sLn}">${_L('에너지쉴드','Energy Shield')}: <span style="color:#4488ff">${~~P.shield}/${P.mshield}</span> <span style="color:#887766;font-size:1.1rem">(+${_srTotal.toFixed(1)}/${_L('초','s')})</span></div>`+`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_shBase} + Lv${_shLv} + INT${_shInt}${_shEq?' + '+_L('장비','gear')+_shEq:''}${_shAf?' + '+_L('어픽스','affix')+_shAf:''}</div>`+`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: ${_L('기본','base')}${_srBase} + INT${_srInt.toFixed(3)} = ${(_srBase+_srInt).toFixed(3)}/f × ${_L('패시브','passive')}${pMRegenMul().toFixed(2)} = ${_srTotal.toFixed(1)}/${_L('초','s')}</div>`})():'')+
     `<div style="${_sLn}">${_L('스태미나','Stamina')}: <span style="color:#44dd44">${~~P.st}/${P.mst}</span> <span style="color:#887766;font-size:1.1rem">(+${(P.stR/8*60*pRegenMul()).toFixed(1)}/${_L('초','s')})</span></div>`+
+    (()=>{const _stBase=100,_stLv=~~(P.lv*.5),_stDex=(P._effStats?P._effStats.dex:0);let _stEq=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it.bonusSt)_stEq+=it.bonusSt}const _stCr=~~(P._crystalStats?P._crystalStats.st:0);const _stGrit=_gritStFlat();return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_stBase} + Lv${_stLv} + DEX${_stDex}${_stEq?' + '+_L('장비','gear')+_stEq:''}${_stCr?' + '+_L('결정','crystal')+_stCr:''}${_stGrit?' + '+_L('성장','grit')+_stGrit:''} = ${P.mst}</div>`})()+
+    (()=>{const _dex=(P._effStats?P._effStats.dex:0);const _rBase=.05,_rDex=_dex*.005,_rLv=P.lv*.001;const _rRaw=_rBase+_rDex+_rLv;const _rPas=pRegenMul();const _rTotal=_rRaw/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: ${_L('기본','base')}${_rBase} + DEX${_rDex.toFixed(3)} + Lv${_rLv.toFixed(3)} = ${_rRaw.toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
     `<div style="${_sLn}">MP: <span style="color:#4488ff">${~~P.mp}/${P.mmp}</span> <span style="color:#887766;font-size:1.1rem">(+${(P.mpR/8*60).toFixed(1)}/${_L('초','s')})</span></div>`+
+    (()=>{const _mpBase=100,_mpLv=~~(P.lv*.5),_mpInt=(P._effStats?P._effStats.int:0);const _mpCr=~~(P._crystalStats?P._crystalStats.mp:0);const _mpGrit=_gritMpFlat();const _mpPct=_eqAffix('maxMPPct');const _mpPre=_mpBase+_mpLv+_mpInt;const _mpMul=1+_mpPct;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_mpBase} + Lv${_mpLv} + INT${_mpInt} = ${_mpPre} × ${_mpMul.toFixed(2)}${_mpPct?' ('+_L('MP%어픽스','MP% affix')+' +'+~~(_mpPct*100)+'%)':''}${_mpCr?' + '+_L('결정','crystal')+_mpCr:''}${_mpGrit?' + '+_L('성장','grit')+_mpGrit:''} = ${P.mmp}</div>`})()+
+    (()=>{const _int=(P._effStats?P._effStats.int:0);const _rBase=.05,_rInt=_int*.005,_rLv=P.lv*.001;const _rRaw=_rBase+_rInt+_rLv;const _rPas=pMRegenMul();const _rTotal=_rRaw/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: ${_L('기본','base')}${_rBase} + INT${_rInt.toFixed(3)} + Lv${_rLv.toFixed(3)} = ${_rRaw.toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
     `<div style="${_sLn}">${_L('이동속도','Move Speed')}: <span style="color:#ffcc44">${P.speed.toFixed(2)}</span> <span style="color:#665544;font-size:1rem">(${_L('기본','base')}2.6 + DEX×0.005${_eqAffix('movSpeed')?' + '+_L('어픽스','affix')+(_eqAffix('movSpeed')*100).toFixed(0)+'%':''})</span></div>`+
     `<div style="${_sLn}">${_L('포이즈','Poise')}: <span style="color:#ffdd44">${~~(P.poise||0)}/${~~P.maxPoise}</span> <span style="color:#665544;font-size:1rem">(${_L('기본','base')}80 + STR×0.2)</span></div>`+
     `<div style="${_sLn}">${_L('한방캡','1-Hit Cap')}: <span style="color:#ff6666">${~~(P.mhp*.33)}</span> <span style="color:#887766;font-size:1.1rem">(${_L('최대HP의33%','33% of Max HP')})</span></div>`+
