@@ -87,6 +87,12 @@ canvas{display:block;position:fixed;inset:0}
 .hp-globe .globe-glass {
   background-image: url('img/ui_globe_hp.png');
 }
+/* 해골 눈깔 — 쉴드/포이즈 풀일 때만 빨간 글로우 */
+.skull-eye{position:absolute;width:7px;height:7px;border-radius:50%;background:#ff2200;box-shadow:0 0 12px #ff3300,0 0 20px #ff0000;z-index:50;pointer-events:none;opacity:0;transition:opacity .3s}
+.skull-eye.on{opacity:1}
+/* 해골은 글라스(inset:-44px) 상단 ~11% 위치. 글라스 크기 = 글로브+88px */
+.skull-eye-l{top:-20px;left:calc(50% - 12px)}
+.skull-eye-r{top:-20px;left:calc(50% + 5px)}
 .mp-globe .globe-glass {
   background-image: url('img/ui_globe_mp.png');
 }
@@ -599,6 +605,8 @@ canvas{display:block;position:fixed;inset:0}
     <div id="hpLiquid" class="globe-liquid"></div>
   </div>
   <div class="globe-glass"></div>
+  <div class="skull-eye skull-eye-l" id="hpEyeL"></div>
+  <div class="skull-eye skull-eye-r" id="hpEyeR"></div>
   <div class="globe-val">
     <div id="hpCur" class="cur">0</div>
     <div id="hpMax" class="max">/ 0</div>
@@ -617,6 +625,8 @@ canvas{display:block;position:fixed;inset:0}
     </div>
   </div>
   <div class="globe-glass"></div>
+  <div class="skull-eye skull-eye-l" id="mpEyeL"></div>
+  <div class="skull-eye skull-eye-r" id="mpEyeR"></div>
   <div class="globe-val" style="flex-direction:row;gap:2px">
     <div style="flex:1;display:flex;flex-direction:column;align-items:center">
       <div style="font-size:.5rem;color:#88bbff;font-weight:700">MP</div>
@@ -777,6 +787,8 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name" style="color:#44aaff">유령불꽃 크기</span><input type="range" id="optIrisSz" min="1" max="100" value="20" style="accent-color:#44aaff"><span class="set-range-val" id="optIrisSzVal" style="color:#44aaff">20</span></div>
           <div class="set-range-row"><span class="set-name" style="color:#ddddaa">화면 명암</span><input type="range" id="optBrightness" min="70" max="130" value="100" style="accent-color:#ddddaa"><span class="set-range-val" id="optBrightnessVal" style="color:#ddddaa">100%</span></div>
           <div class="set-range-row"><span class="set-name" style="color:#44aaff">유령 글로우</span><input type="range" id="optIrisGlow" min="100" max="400" value="250" style="accent-color:#44aaff"><span class="set-range-val" id="optIrisGlowVal" style="color:#44aaff">250</span></div>
+          <div class="set-range-row" style="margin-top:8px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optXbowAuto" checked style="width:16px;height:16px;accent-color:#ffe066"><span class="set-name" style="color:#ffe066">석궁 자동발사 (T)</span></label></div>
+          <div class="set-range-row" style="margin-top:8px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optBlPullMode" style="width:16px;height:16px;accent-color:#44ccff"><span class="set-name" style="color:#44ccff">버스트루프 당기기 (H)</span></label></div>
           <div class="set-range-row" style="margin-top:8px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optBladeAuto" style="width:16px;height:16px;accent-color:#ff4466"><span class="set-name" style="color:#ff4466">기동:칼날개 AUTO</span></label></div>
           <div class="set-range-row" style="margin-top:8px"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optBossDbg" style="width:16px;height:16px;accent-color:#ff8844"><span class="set-name" style="color:#ff8844">보스 AI 디버그</span></label></div>
         </div>
@@ -6026,6 +6038,7 @@ addEventListener('keydown',e=>{
   // ── T키 석궁 자동발사 토글 ──
   if(e.code==='KeyT'&&G.on&&!G.paused&&!e.repeat){
     _xbowEquipped=!_xbowEquipped;_xbowTimer=0;_xbowTarget=null;showPH(_xbowEquipped?(OPT.lang==='en'?'Auto Crossbow ON':'석궁 자동발사 ON'):(OPT.lang==='en'?'Auto Crossbow OFF':'석궁 자동발사 OFF'),_xbowEquipped?'#ffe066':'#888888');
+    if($('optXbowAuto'))$('optXbowAuto').checked=_xbowEquipped;
   }
   // ── Shift 작살: 홀드 시작 ──
   if(e.code==='ShiftLeft'&&G.on&&!G.paused&&!e.repeat&&P.s!=='fallen'&&P.s!=='dead'){
@@ -14201,7 +14214,7 @@ function statStr(){return 1} // STR은 ref 함수에서 직접 ATK로 더해짐 
 function statDex(){return 1+(STATS.dex+_eqStat('Dex'))*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01} // DEX 공속 배율 +0.05%/pt (DEX1000=+50%) + 어픽스
 function statInt(){return 1} // INT는 ref 함수에서 직접 ATK로 더해짐 (1:1)
 function statCrit(){return STATS.lck*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+(P._crystalStats?P._crystalStats.crit:0)}
-function statCritDmg(){return 1.5+STATS.lck*.00005+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5 (+50%), LCK 0.005% per pt (LCK1000=+5%)
+function statCritDmg(){return 1.5+STATS.lck*.002+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5, LCK 1당 +0.2% (LCK1000=+200%, 1.5→3.5)
 function statDropBonus(){return 1+STATS.lck*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
 // 패시브 배율 함수 (max5, 효과 2배)
 function pAtkMul(){return 1+PASSIVES.pAtk*.12+(P._altAtk||0)}  // 무기뎀 +12%/lv (10lv=+120%)
@@ -18241,7 +18254,7 @@ function update(){
     }
     else if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
     // ── H키: 버스트루프 밀기/당기기 토글 (공격과 독립) ──
-    if(_chkJust('KeyH')&&P.skills.burstLoop>=1){P._blPullMode=!P._blPullMode;addTxt(P.x,P.y-30,P._blPullMode?_T('🌀 당기기 모드'):_T('💥 밀어내기 모드'),P._blPullMode?'#44ccff':'#ff6644',40);playSample('shield_activate',.4,_r(1,.1))}
+    if(_chkJust('KeyH')&&P.skills.burstLoop>=1){P._blPullMode=!P._blPullMode;addTxt(P.x,P.y-30,P._blPullMode?_T('🌀 당기기 모드'):_T('💥 밀어내기 모드'),P._blPullMode?'#44ccff':'#ff6644',40);playSample('shield_activate',.4,_r(1,.1));if($('optBlPullMode'))$('optBlPullMode').checked=P._blPullMode}
     // ── X키: 처형 (그로기 보스 전용, HP/MP/ST 10% 소모 → 사슬기동 자동 돌진 → 보스 HP 30% 순수뎀, 쿨 20초) ──
     if(_chkJust('KeyX')&&P.skills.execution>=1&&(P._execCd||0)<=0){
       const _exBoss=G._bossRef&&G._bossRef.alive&&G._bossRef.stunned>0?G._bossRef:null;
@@ -29830,6 +29843,8 @@ $('optPetAuto').onchange=function(){OPT.petAuto=this.checked;saveSettings()};
 $('optIrisSz').oninput=function(){const v=+this.value;G._irisSz=v;if(G.pets&&G.pets.iris)G.pets.iris.sz=v;$('optIrisSzVal').textContent=v;saveSettings()};
 $('optBrightness').oninput=function(){OPT.brightness=+this.value;$('optBrightnessVal').textContent=this.value+'%';C.style.filter='brightness('+(OPT.brightness/100)+')';saveSettings()};
 $('optIrisGlow').oninput=function(){OPT.irisGlow=+this.value;$('optIrisGlowVal').textContent=this.value;saveSettings()};
+$('optXbowAuto').onchange=function(){_xbowEquipped=this.checked;_xbowTimer=0;_xbowTarget=null;showPH(_xbowEquipped?(OPT.lang==='en'?'Auto Crossbow ON':'석궁 자동발사 ON'):(OPT.lang==='en'?'Auto Crossbow OFF':'석궁 자동발사 OFF'),_xbowEquipped?'#ffe066':'#888888')};
+$('optBlPullMode').onchange=function(){if(P){P._blPullMode=this.checked;addTxt(P.x,P.y-30,P._blPullMode?_T('🌀 당기기 모드'):_T('💥 밀어내기 모드'),P._blPullMode?'#44ccff':'#ff6644',40)}};
 $('optBladeAuto').onchange=function(){OPT.bladeAuto=this.checked;saveSettings()};
 $('optBossDbg').onchange=function(){OPT.bossDebug=this.checked;saveSettings()};
 // ── 그래픽 프리셋 ──
@@ -30321,6 +30336,8 @@ function syncSettingsUI(){
   if($('optIrisSz')){const _isz=G._irisSz||20;$('optIrisSz').value=_isz;$('optIrisSzVal').textContent=_isz}
   if($('optBrightness')){const _br=OPT.brightness||100;$('optBrightness').value=_br;$('optBrightnessVal').textContent=_br+'%';C.style.filter='brightness('+(_br/100)+')';}
   if($('optIrisGlow')){const _ig=OPT.irisGlow||250;$('optIrisGlow').value=_ig;$('optIrisGlowVal').textContent=_ig}
+  if($('optXbowAuto'))$('optXbowAuto').checked=_xbowEquipped;
+  if($('optBlPullMode'))$('optBlPullMode').checked=!!(P&&P._blPullMode);
   if($('optBladeAuto')){$('optBladeAuto').checked=!!OPT.bladeAuto}
   if($('optBossDbg')){$('optBossDbg').checked=!!OPT.bossDebug}
   if($('optBloom'))$('optBloom').checked=!!OPT.bloom;
@@ -31690,12 +31707,12 @@ function renderStatSummary(){
     `<div style="${_sLn}">HP: <span style="color:#ff4444">${~~P.hp}/${~~P.mhp}</span> <span style="color:#887766;font-size:1.1rem">(+${(P.hpR*6*pRegenMul()).toFixed(1)}/${_L('초','s')})</span></div>`+
     (()=>{const _stgH=G.on?100+((G.stage||1)-1)*6:100;const _lvH=P.lv;const _strH=(P._effStats?P._effStats.str:0);let _eqH=0,_enhH=0;const _ds2=['shield','armor','boots','helmet','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];for(const sl of _ds2){const it=INV.equipped[sl];if(it){_eqH+=(it.bonusHp||0);if(it.enh>0)_enhH+=it.enh}};const _afF=_eqAffix('maxHPFlat'),_afP=_eqAffix('maxHPPct')+_eqAffix('lifeMaxHP'),_imH=_eqImplicit('_iMaxHP'),_imP=_eqImplicit('_iMaxHPPct')+_eqImplicit('_iLifeHPPct');const _pMel=(PASSIVES.pMelee||0)*.03;const _mul=1+_afP+_imP*.01+_pMel;const _base=_stgH+_lvH+_strH+_eqH+_afF+_imH+_enhH;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_stgH} + Lv${_lvH} + STR${_strH} + ${_L('장비HP','gearHP')}${_eqH}${_afF?(' + '+_L('어픽스','affix')+_afF):''}${_imH?(' + '+_L('임플','impl')+_imH):''}${_enhH?(' + '+_L('강화','enh')+_enhH):''} = ${~~_base} × ${_mul.toFixed(2)} = ${~~(_base*_mul)}</div>`})()+
     (P.mshield>0?(()=>{const _sInt=P._effStats?P._effStats.int:0;const _srBase=0.3,_srInt=_sInt*0.003;const _srTotal=(_srBase+_srInt)*pMRegenMul()*60;const _shBase=150,_shLv=~~(P.lv*.5),_shInt=~~((_sInt-100)*2.5);let _shEq=0;const _ds3=['shield','armor','boots','helmet','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];for(const sl of _ds3){const it=INV.equipped[sl];if(it)_shEq+=(it.bonusShield||0)};const _shAf=_eqAffix('shieldFlat');return`<div style="${_sLn}">${_L('에너지쉴드','Energy Shield')}: <span style="color:#4488ff">${~~P.shield}/${P.mshield}</span> <span style="color:#887766;font-size:1.1rem">(+${_srTotal.toFixed(1)}/${_L('초','s')})</span></div>`+`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_shBase} + Lv${_shLv} + INT${_shInt}${_shEq?' + '+_L('장비','gear')+_shEq:''}${_shAf?' + '+_L('어픽스','affix')+_shAf:''}</div>`+`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: ${_L('기본','base')}${_srBase} + INT${_srInt.toFixed(3)} = ${(_srBase+_srInt).toFixed(3)}/f × ${_L('패시브','passive')}${pMRegenMul().toFixed(2)} = ${_srTotal.toFixed(1)}/${_L('초','s')}</div>`})():'')+
-    `<div style="${_sLn}">${_L('스태미나','Stamina')}: <span style="color:#44dd44">${~~P.st}/${P.mst}</span> <span style="color:#887766;font-size:1.1rem">(+${(P.stR/8*60*pRegenMul()).toFixed(1)}/${_L('초','s')})</span></div>`+
+    (()=>{const _gEq=(wp().stRegen||0)+(sh().stRegen||0)+(bt().stRegen||0)+(ar().stRegen||0)+(hm().stRegen||0)+(bw().stRegen||0)+(gl().stRegen||0)+(pt().stRegen||0)+(nc().stRegen||0)+(rg1().stRegen||0)+(rg2().stRegen||0)+(cp().stRegen||0);const _stTot=((P.stR+_gEq)*pRegenMul()/8*60).toFixed(1);return`<div style="${_sLn}">${_L('스태미나','Stamina')}: <span style="color:#44dd44">${~~P.st}/${P.mst}</span> <span style="color:#887766;font-size:1.1rem">(+${_stTot}/${_L('초','s')})</span></div>`})()+
     (()=>{const _stBase=100,_stLv=~~(P.lv*.5),_stDex=(P._effStats?P._effStats.dex:0);let _stEq=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it.bonusSt)_stEq+=it.bonusSt}const _stCr=~~(P._crystalStats?P._crystalStats.st:0);const _stGrit=_gritStFlat();return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_stBase} + Lv${_stLv} + DEX${_stDex}${_stEq?' + '+_L('장비','gear')+_stEq:''}${_stCr?' + '+_L('결정','crystal')+_stCr:''}${_stGrit?' + '+_L('성장','grit')+_stGrit:''} = ${P.mst}</div>`})()+
-    (()=>{const _dex=(P._effStats?P._effStats.dex:0);const _rBase=.05,_rDex=_dex*.005,_rLv=P.lv*.001;const _rRaw=_rBase+_rDex+_rLv;const _rPas=pRegenMul();const _rTotal=_rRaw/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: ${_L('기본','base')}${_rBase} + DEX${_rDex.toFixed(3)} + Lv${_rLv.toFixed(3)} = ${_rRaw.toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
-    `<div style="${_sLn}">MP: <span style="color:#4488ff">${~~P.mp}/${P.mmp}</span> <span style="color:#887766;font-size:1.1rem">(+${(P.mpR/8*60).toFixed(1)}/${_L('초','s')})</span></div>`+
+    (()=>{const _dex=(P._effStats?P._effStats.dex:0);const _rBase=.05,_rDex=_dex*.01,_rLv=P.lv*.002;const _rRaw=_rBase+_rDex+_rLv;const _rPas=pRegenMul();const _gEq=(wp().stRegen||0)+(sh().stRegen||0)+(bt().stRegen||0)+(ar().stRegen||0)+(hm().stRegen||0)+(bw().stRegen||0)+(gl().stRegen||0)+(pt().stRegen||0)+(nc().stRegen||0)+(rg1().stRegen||0)+(rg2().stRegen||0)+(cp().stRegen||0);const _rTotal=(_rRaw+_gEq)/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: (${_L('기본','base')}${_rBase} + DEX${_rDex.toFixed(3)} + Lv${_rLv.toFixed(3)}${_gEq?' + '+_L('장비','gear')+_gEq.toFixed(2):''}) = ${(_rRaw+_gEq).toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
+    (()=>{const _gEq=(wp().mpRegen||0)+(sh().mpRegen||0)+(bt().mpRegen||0)+(ar().mpRegen||0)+(hm().mpRegen||0)+(bw().mpRegen||0)+(gl().mpRegen||0)+(pt().mpRegen||0)+(nc().mpRegen||0)+(rg1().mpRegen||0)+(rg2().mpRegen||0)+(cp().mpRegen||0);const _mpTot=((P.mpR+_gEq)*pMRegenMul()/8*60).toFixed(1);return`<div style="${_sLn}">MP: <span style="color:#4488ff">${~~P.mp}/${P.mmp}</span> <span style="color:#887766;font-size:1.1rem">(+${_mpTot}/${_L('초','s')})</span></div>`})()+
     (()=>{const _mpBase=100,_mpLv=~~(P.lv*.5),_mpInt=(P._effStats?P._effStats.int:0);const _mpCr=~~(P._crystalStats?P._crystalStats.mp:0);const _mpGrit=_gritMpFlat();const _mpPct=_eqAffix('maxMPPct');const _mpPre=_mpBase+_mpLv+_mpInt;const _mpMul=1+_mpPct;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_mpBase} + Lv${_mpLv} + INT${_mpInt} = ${_mpPre} × ${_mpMul.toFixed(2)}${_mpPct?' ('+_L('MP%어픽스','MP% affix')+' +'+~~(_mpPct*100)+'%)':''}${_mpCr?' + '+_L('결정','crystal')+_mpCr:''}${_mpGrit?' + '+_L('성장','grit')+_mpGrit:''} = ${P.mmp}</div>`})()+
-    (()=>{const _int=(P._effStats?P._effStats.int:0);const _rBase=.05,_rInt=_int*.005,_rLv=P.lv*.001;const _rRaw=_rBase+_rInt+_rLv;const _rPas=pMRegenMul();const _rTotal=_rRaw/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: ${_L('기본','base')}${_rBase} + INT${_rInt.toFixed(3)} + Lv${_rLv.toFixed(3)} = ${_rRaw.toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
+    (()=>{const _int=(P._effStats?P._effStats.int:0);const _rBase=.05,_rInt=_int*.01,_rLv=P.lv*.002;const _rRaw=_rBase+_rInt+_rLv;const _rPas=pMRegenMul();const _gEq=(wp().mpRegen||0)+(sh().mpRegen||0)+(bt().mpRegen||0)+(ar().mpRegen||0)+(hm().mpRegen||0)+(bw().mpRegen||0)+(gl().mpRegen||0)+(pt().mpRegen||0)+(nc().mpRegen||0)+(rg1().mpRegen||0)+(rg2().mpRegen||0)+(cp().mpRegen||0);const _rTotal=(_rRaw+_gEq)/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: (${_L('기본','base')}${_rBase} + INT${_rInt.toFixed(3)} + Lv${_rLv.toFixed(3)}${_gEq?' + '+_L('장비','gear')+_gEq.toFixed(2):''}) = ${(_rRaw+_gEq).toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
     `<div style="${_sLn}">${_L('이동속도','Move Speed')}: <span style="color:#ffcc44">${P.speed.toFixed(2)}</span> <span style="color:#665544;font-size:1rem">(${_L('기본','base')}2.6 + DEX×0.005${_eqAffix('movSpeed')?' + '+_L('어픽스','affix')+(_eqAffix('movSpeed')*100).toFixed(0)+'%':''})</span></div>`+
     `<div style="${_sLn}">${_L('포이즈','Poise')}: <span style="color:#ffdd44">${~~(P.poise||0)}/${~~P.maxPoise}</span> <span style="color:#665544;font-size:1rem">(${_L('기본','base')}80 + STR×0.2)</span></div>`+
     `<div style="${_sLn}">${_L('한방캡','1-Hit Cap')}: <span style="color:#ff6666">${~~(P.mhp*.33)}</span> <span style="color:#887766;font-size:1.1rem">(${_L('최대HP의33%','33% of Max HP')})</span></div>`+
@@ -38659,6 +38676,23 @@ function updateHUD(slow){
   // 쉴드 글로우: HP 글로브 프레임 테두리에 파란 발광
   const _hpGlass=document.querySelector('.hp-globe .globe-glass');
   if(_hpGlass){_hpGlass.style.filter=shPct>0?`drop-shadow(0 0 ${4+shAlpha*8}px rgba(50,150,255,${(.5*shAlpha).toFixed(2)}))`:'none'}
+  // HP 해골 눈깔: HP 비율로 토글 (50% 이하 한쪽 OFF, 0% 양쪽 OFF)
+  const _hpRat=P.mhp>0?P.hp/P.mhp:0;
+  const _hpEL=$('hpEyeL'),_hpER=$('hpEyeR');
+  if(_hpEL){_hpEL.classList.toggle('on',_hpRat>0);_hpER.classList.toggle('on',_hpRat>0.5)}
+  // 포이즈 글로우: MP 글로브 프레임에 노란 발광 (포이즈 풀 + 스턴 아닐 때만)
+  const _mpGlass=document.querySelector('.mp-globe .globe-glass');
+  let _poiseOk=false;
+  if(_mpGlass&&P.maxPoise>0){
+    const pPct=Math.max(0,Math.min(1,P.poise/P.maxPoise));
+    const _stunned=P.s==='pStun';
+    _poiseOk=(pPct>=0.99&&!_stunned);
+    _mpGlass.style.filter=_poiseOk?`drop-shadow(0 0 10px rgba(255,204,68,.7))`:'none';
+  }
+  // MP 해골 눈깔: MP 비율로 토글 (50% 이하 한쪽 OFF, 0% 양쪽 OFF)
+  const _mpRat=P.mmp>0?P.mp/P.mmp:0;
+  const _mpEL=$('mpEyeL'),_mpER=$('mpEyeR');
+  if(_mpEL){_mpEL.classList.toggle('on',_mpRat>0);_mpER.classList.toggle('on',_mpRat>0.5)}
   
   // ST+MP 구슬 업데이트 (아래→위 차오름)
   const stR = Math.max(0, Math.min(1, P.st / P.mst));
