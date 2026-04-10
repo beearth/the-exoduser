@@ -6438,8 +6438,8 @@ const CRYSTAL_DEFS={
   cr_atk:{ko:'ATK결정',stat:'atk',base:2,cat:'stat',emoji:'⚔'},
   cr_def:{ko:'DEF결정',stat:'def',base:1,cat:'stat',emoji:'🛡'},
   cr_spd:{ko:'속도결정',stat:'spd',base:0.08,cat:'stat',emoji:'💨',pct:true},
-  cr_crit:{ko:'크리결정',stat:'crit',base:1,cat:'stat',emoji:'🎯',pct:true},
-  cr_cdmg:{ko:'치명결정',stat:'cdmg',base:0.3,cat:'stat',emoji:'💥',pct:true},
+  cr_crit:{ko:'크리결정',stat:'crit',base:0.3,cat:'stat',emoji:'🎯',pct:true},
+  cr_cdmg:{ko:'치명결정',stat:'cdmg',base:0.1,cat:'stat',emoji:'💥',pct:true},
   cr_fire:{ko:'화염결정',stat:'fire',base:1.2,cat:'elem',emoji:'🔥'},
   cr_ice:{ko:'냉기결정',stat:'ice',base:1,cat:'elem',emoji:'❄'},
   cr_dark:{ko:'암흑결정',stat:'dark',base:1.2,cat:'elem',emoji:'🌑'},
@@ -6756,9 +6756,20 @@ function mkItem(slot,tier,el,rarity,wtype){
     item.potCd=+([.03,.06,.10,.15,.22][rarity]*(0.9+Math.random()*.2)).toFixed(3);
     item.bonusHp=(item.bonusHp||0)+~~((3+tier*2+rarity*4)*(0.9+Math.random()*.2));
   }
-  // 반지: 크리율 (크리뎀은 어픽스 critDmgA/B로 이전)
+  // 반지: 5티어 크리율 (5%씩) + 어픽스 2개
   if(slot==='ring1'||slot==='ring2'){
-    item.critRate=+((0.5+rarity*0.8+tier*0.3)*(0.9+Math.random()*.2)).toFixed(2);
+    const _rCritTier=[1,2,3,4,5]; // T0=1%, T1=2%, T2=3%, T3=4%, T4=5%
+    item.critRate=+(_rCritTier[tier]*(0.9+Math.random()*.2)).toFixed(2);
+    // 반지 전용 어픽스 2개 추가 (기존 어픽스와 별도)
+    const _ringAffPool=['critDmgA','critDmgB','atkSpeed','armorPen','elemFocus','killSlayer','parryBonus'];
+    const _rAff1=_ringAffPool[~~(Math.random()*_ringAffPool.length)];
+    let _rAff2=_ringAffPool[~~(Math.random()*_ringAffPool.length)];
+    while(_rAff2===_rAff1)_rAff2=_ringAffPool[~~(Math.random()*_ringAffPool.length)];
+    if(!item.affixes)item.affixes=[];
+    const _affDef=AFFIX_DEFS.find(a=>a.id===_rAff1);
+    const _affDef2=AFFIX_DEFS.find(a=>a.id===_rAff2);
+    if(_affDef){const _aTier=Math.min(tier,_affDef.tiers.length-1);item.affixes.push({id:_rAff1,val:_affDef.tiers[_aTier]})}
+    if(_affDef2){const _aTier2=Math.min(tier,_affDef2.tiers.length-1);item.affixes.push({id:_rAff2,val:_affDef2.tiers[_aTier2]})}
   }
   // ── 스탯 보너스: 언커먼+ 아이템에 STR/DEX/INT 랜덤 부여 ──
   if(rarity>=1){
@@ -14160,7 +14171,7 @@ function _eqImplicit(stat){let v=0;for(const sl of SLOT_NAMES){const it=INV.equi
 function statStr(){return 1+(STATS.str+_eqStat('Str'))*.001} // STR 물리: 포인트당 +0.1% (1000pt=+100%)
 function statDex(){return 1+(STATS.dex+_eqStat('Dex'))*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01} // DEX 공속: 포인트당 +0.05%
 function statInt(){return 1+(STATS.int+_eqStat('Int'))*.001} // INT 마법: 포인트당 +0.1% (1000pt=+100%)
-function statCrit(){return (STATS.dex+_eqStat('Dex'))*.015+STATS.lck*.05+PASSIVES.pCrit*2+(rg1().critRate||0)+(rg2().critRate||0)+(P._crystalStats?P._crystalStats.crit:0)}
+function statCrit(){return (STATS.dex+_eqStat('Dex'))*.01+STATS.lck*.01+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(P._crystalStats?P._crystalStats.crit:0)}
 function statCritDmg(){return 1.3+STATS.lck*.005+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // LCK당 +0.005 크리뎀, 크리뎀 어픽스(반지+목걸이)
 function statDropBonus(){return 1+STATS.lck*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
 // 패시브 배율 함수 (max5, 효과 2배)
@@ -26910,8 +26921,9 @@ function _canTransLv(){
   return P._transLvCount<1;
 }
 function _calcMaxExp(lv){
-  if(lv<1000)return ~~(15+lv*2.5+lv*lv*.05);
-  // 초월: 500만 + (초월렙)² × 10000 — 몹 1XP 기준 500만킬
+  if(lv<=500)return ~~(100*Math.pow(1.01,lv)); // 1~500: 1% 복리 (초반 완만, 500렙≈14,477)
+  if(lv<1000){const _b500=100*Math.pow(1.01,500);return ~~(_b500*Math.pow(1.005,lv-500))} // 501~999: 0.5% 복리 (후반 도전적)
+  // 초월: 500만 + (초월렙)² × 10000
   const t=lv-999;
   return ~~(5000000+t*t*10000);
 }
