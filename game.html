@@ -6771,6 +6771,22 @@ function mkItem(slot,tier,el,rarity,wtype){
     if(_affDef){const _aTier=Math.min(tier,_affDef.tiers.length-1);item.affixes.push({id:_rAff1,val:_affDef.tiers[_aTier]})}
     if(_affDef2){const _aTier2=Math.min(tier,_affDef2.tiers.length-1);item.affixes.push({id:_rAff2,val:_affDef2.tiers[_aTier2]})}
   }
+  // 목걸이: 5티어 크리율 (10%씩) + 어픽스 2개
+  if(slot==='necklace'){
+    const _nCritTier=[2,4,6,8,10]; // T0=2%, T1=4%, T2=6%, T3=8%, T4=10%
+    item.critRate=+(_nCritTier[tier]*(0.9+Math.random()*.2)).toFixed(2);
+    const _nDmgTier=[10,20,30,40,50]; // T0=10%, T1=20%, T2=30%, T3=40%, T4=50%
+    item.dmgBonus=+(_nDmgTier[tier]*(0.9+Math.random()*.2)).toFixed(1);
+    const _neckAffPool=['critDmgA','critDmgB','cooldownRed','maxHPFlat','shieldFlat','elemFocus','parryBonus'];
+    const _nAff1=_neckAffPool[~~(Math.random()*_neckAffPool.length)];
+    let _nAff2=_neckAffPool[~~(Math.random()*_neckAffPool.length)];
+    while(_nAff2===_nAff1)_nAff2=_neckAffPool[~~(Math.random()*_neckAffPool.length)];
+    if(!item.affixes)item.affixes=[];
+    const _nDef1=AFFIX_DEFS.find(a=>a.id===_nAff1);
+    const _nDef2=AFFIX_DEFS.find(a=>a.id===_nAff2);
+    if(_nDef1){const _nt=Math.min(tier,_nDef1.tiers.length-1);item.affixes.push({id:_nAff1,val:_nDef1.tiers[_nt]})}
+    if(_nDef2){const _nt2=Math.min(tier,_nDef2.tiers.length-1);item.affixes.push({id:_nAff2,val:_nDef2.tiers[_nt2]})}
+  }
   // ── 스탯 보너스: 언커먼+ 아이템에 STR/DEX/INT 랜덤 부여 ──
   if(rarity>=1){
     const _statPool=['bStr','bDex','bInt'];
@@ -14171,7 +14187,7 @@ function _eqImplicit(stat){let v=0;for(const sl of SLOT_NAMES){const it=INV.equi
 function statStr(){return 1+(STATS.str+_eqStat('Str'))*.001} // STR 물리: 포인트당 +0.1% (1000pt=+100%)
 function statDex(){return 1+(STATS.dex+_eqStat('Dex'))*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01} // DEX 공속: 포인트당 +0.05%
 function statInt(){return 1+(STATS.int+_eqStat('Int'))*.001} // INT 마법: 포인트당 +0.1% (1000pt=+100%)
-function statCrit(){return (STATS.dex+_eqStat('Dex'))*.01+STATS.lck*.01+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(P._crystalStats?P._crystalStats.crit:0)}
+function statCrit(){return STATS.lck*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+(P._crystalStats?P._crystalStats.crit:0)}
 function statCritDmg(){return 1.3+STATS.lck*.005+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // LCK당 +0.005 크리뎀, 크리뎀 어픽스(반지+목걸이)
 function statDropBonus(){return 1+STATS.lck*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
 // 패시브 배율 함수 (max5, 효과 2배)
@@ -26232,6 +26248,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(P.hp<P.mhp*.3&&_eqAffix('crisisBoost')>0)dmg=~~(dmg*(1+_eqAffix('crisisBoost')));
   // ═══ 어픽스: killSlayer (처치보너스) — 처치 후 3초간 뎀업 ═══
   if(P._killBuff>0)dmg=~~(dmg*(1+P._killMul));
+  // 목걸이 데미지 보너스
+  if(nc().dmgBonus)dmg=~~(dmg*(1+(nc().dmgBonus||0)*0.01));
   // 최소 데미지 1 보장 (DR 중첩으로 0뎀 방지)
   if(dmg<1)dmg=1;
   // 넉백/그로기 전용 배율
@@ -26921,8 +26939,7 @@ function _canTransLv(){
   return P._transLvCount<1;
 }
 function _calcMaxExp(lv){
-  if(lv<=500)return ~~(100*Math.pow(1.01,lv)); // 1~500: 1% 복리 (초반 완만, 500렙≈14,477)
-  if(lv<1000){const _b500=100*Math.pow(1.01,500);return ~~(_b500*Math.pow(1.005,lv-500))} // 501~999: 0.5% 복리 (후반 도전적)
+  if(lv<1000)return ~~((15+lv*2.5+lv*lv*.05)*Math.pow(1.001,lv)); // 올드공식 × 0.1%복리 (초반 유지, 후반 도전적)
   // 초월: 500만 + (초월렙)² × 10000
   const t=lv-999;
   return ~~(5000000+t*t*10000);
@@ -30519,6 +30536,7 @@ function _invCardFields(it){
   if(it.bDex)stats+=`<div style="color:#44ff44">🏹 DEX: <span>+${it.bDex}</span></div>`;
   if(it.bInt)stats+=`<div style="color:#4488ff">🔮 INT: <span>+${it.bInt}</span></div>`;
   if(it.critRate)stats+=`<div style="color:#ff6666">${_e?'Crit Rate':'치명률'}: <span>+${(it.critRate).toFixed(1)}%</span></div>`;
+  if(it.dmgBonus)stats+=`<div style="color:#ff8844">${_e?'DMG Bonus':'데미지 보너스'}: <span>+${(+it.dmgBonus).toFixed(1)}%</span></div>`;
   if(it.critDmg)stats+=`<div style="color:#ff4444">${_e?'Crit DMG':'치명뎀'}: <span>+${~~(it.critDmg*100)}%</span></div>`;// 레거시 호환
   if(it.slot==='helmet'&&it.elements){for(const em of it.elements)stats+=`<div style="color:${ELC[em.el]};font-size:.9rem">${ELE[em.el]} ${em.dmg}</div>`}
   // 임플리싯 표시
@@ -31269,17 +31287,26 @@ function renderForge(){
       // 선택된 결정 상세+강화 버튼
       if(_crForgeSel>=0&&_crForgeSel<CRYSTAL_BAG.length){
         const cr=CRYSTAL_BAG[_crForgeSel],d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star];
-        const cost=crystalEnhCost(cr),maxed=(cr.enh||0)>=20,ok=!maxed&&G.mats>=cost;
+        const cost=crystalEnhCost(cr),maxed=(cr.enh||0)>=20;
+        // 동급 결정 재료 체크 (같은 id + 같은 star, 자기 자신 제외)
+        const _feedIdx=CRYSTAL_BAG.findIndex((c,ci)=>ci!==_crForgeSel&&c.id===cr.id&&c.star===cr.star);
+        const hasFeed=_feedIdx>=0;
+        const ok=!maxed&&G.mats>=cost&&hasFeed;
         const det=document.createElement('div');det.style.cssText='padding:8px;border:1px solid #553388;border-radius:4px;background:rgba(100,0,200,.06)';
         det.innerHTML='<div style="color:'+s.color+';font-size:1rem;font-weight:700;margin-bottom:4px">'+d.emoji+' '+_crStarN(s)+' '+_crDefN(d)+(cr.enh>0?' <span style="color:#44ccff">+'+cr.enh+'</span>':'')+'</div>'
           +'<div style="color:#88cc88;font-size:.9rem">'+_T('현재')+': '+_crValStr(cr)+'</div>'
           +(maxed?'<div style="color:#ffaa00;font-size:.85rem;margin-top:4px">'+_T('최대 강화 달성 (+20)')+'</div>'
-          :'<div style="color:#aaaaaa;font-size:.85rem;margin-top:4px">'+_T('강화 시')+': '+(d.pct?'+'+~~(d.base*s.mul*(1+((cr.enh||0)+1)*0.1))+'%':'+'+~~(d.base*s.mul*(1+((cr.enh||0)+1)*0.1)))+'</div>'
-          +'<div style="color:#cc66ff;font-size:.85rem">'+(OPT.lang==='en'?'Cost':'비용')+': 👿 '+cost+(ok?'':(OPT.lang==='en'?' <span style="color:#ff4444">(insufficient)</span>':' <span style="color:#ff4444">(부족)</span>'))+'</div>');
+          :'<div style="color:#aaaaaa;font-size:.85rem;margin-top:4px">'+_T('강화 시')+': '+(d.pct?'+'+_crValFmt(d.base*s.mul*(1+((cr.enh||0)+1)*0.1))+'%':'+'+_crValFmt(d.base*s.mul*(1+((cr.enh||0)+1)*0.1)))+'</div>'
+          +'<div style="color:#cc66ff;font-size:.85rem">'+(OPT.lang==='en'?'Cost':'비용')+': 👿'+cost+' + 💎'+_crStarN(s)+' '+_crDefN(d)+' ×1'
+          +(ok?'':(!hasFeed?' <span style="color:#ff4444">'+(OPT.lang==='en'?'(no feed crystal)':'(재료 결정 없음)')+'</span>':' <span style="color:#ff4444">'+(OPT.lang==='en'?'(insufficient)':'(악의 부족)')+'</span>'))+'</div>');
         if(!maxed){
           const btn=document.createElement('button');btn.style.cssText='margin-top:6px;padding:6px 24px;font-size:.9rem;font-family:"Noto Sans KR";font-weight:700;cursor:'+(ok?'pointer':'not-allowed')+';border:2px solid '+(ok?'#bb88ff':'#443322')+';background:'+(ok?'rgba(187,136,255,.15)':'rgba(0,0,0,.2)')+';color:'+(ok?'#ffcc44':'#554433')+';border-radius:6px';
-          btn.textContent='💎 '+_T('강화')+' (👿'+cost+')';
-          btn.onclick=()=>{if(G.mats<cost)return;G.mats-=cost;cr.enh=(cr.enh||0)+1;SFX.forge();addTxt(P.x,P.y-20,_crDefN(d)+' +'+cr.enh+'!','#bb88ff',50);applyStats();renderForge();dbSaveNow()};
+          btn.textContent='💎 '+_T('강화')+' (👿'+cost+' + 💎×1)';
+          btn.onclick=()=>{if(G.mats<cost||!hasFeed)return;G.mats-=cost;
+            // 재료 결정 소모 (다시 찾기 — 인덱스 변동 대비)
+            const _fi=CRYSTAL_BAG.findIndex((c,ci)=>ci!==_crForgeSel&&c.id===cr.id&&c.star===cr.star);
+            if(_fi>=0){CRYSTAL_BAG.splice(_fi,1);if(_crForgeSel>_fi)_crForgeSel--}
+            cr.enh=(cr.enh||0)+1;SFX.forge();addTxt(P.x,P.y-20,_crDefN(d)+' +'+cr.enh+'!','#bb88ff',50);applyStats();renderForge();dbSaveNow()};
           det.appendChild(btn);
         }
         grid.appendChild(det);
