@@ -6720,20 +6720,23 @@ function mkItem(slot,tier,el,rarity,wtype){
     weapon:{atk:_atkRoll,spd:1},
     // DEF/eDef 5티어 선형 통일: T0=10, T1=20, T2=30, T3=40, T4=50 (12슬롯 × 50 = 총 600 방어)
     // eDef는 전 속성 공통이라 절반 스케일 (T4=25, 총 최대 ~150)
-    shield:{atk:3+tier*2,def:10+tier*10,stagger:15+tier*8,blockRate:50+tier*8,shieldWt:10-tier,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
-    boots:{def:10+tier*10,spd:tier*.08,bonusSt:5+tier*4,chargeDist:14+tier*3,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
-    armor:{def:10+tier*10,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:4+tier*3,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
-    helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,def:10+tier*10,eDef:5+tier*5,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
+    // 방어구 파트: bonusHp 5티어 [100,200,300,400,500] (2026-04-11 재밸런스)
+    shield:{atk:3+tier*2,def:10+tier*10,stagger:15+tier*8,blockRate:50+tier*8,shieldWt:10-tier,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
+    boots:{def:10+tier*10,spd:tier*.08,bonusSt:5+tier*4,chargeDist:14+tier*3,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
+    armor:{def:10+tier*10,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:4+tier*3,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
+    // 무기 파트(helmet,weapon,bow): bonusHp 금지 — 무기 파트는 공격 전용
+    helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,def:10+tier*10,eDef:5+tier*5},
     bow:{atk:_atkRoll,spd:1},
-    gloves:{atk:2+tier*2,def:10+tier*10,spd:tier*.04,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
-    pants:{def:10+tier*10,bonusSt:3+tier*3,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
-    belt:{def:10+tier*10,bonusSt:4+tier*3,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
-    necklace:{def:10+tier*10,eDef:5+tier*5,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
-    ring1:{def:10+tier*10,eDef:5+tier*5,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
-    ring2:{def:10+tier*10,eDef:5+tier*5,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
-    cape:{def:10+tier*10,eDef:5+tier*5,spd:tier*.03,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
-    bracelet:{def:10+tier*10,eDef:5+tier*5,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40},
-    headband:{def:10+tier*10,eDef:5+tier*5,mpRegen:1+tier*1,bonusHp:(tier+1)*40,bonusShield:(tier+1)*40}
+    gloves:{atk:2+tier*2,def:10+tier*10,spd:tier*.04,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
+    pants:{def:10+tier*10,bonusSt:3+tier*3,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
+    // 장신구 파트: bonusHp 5티어 [100,200,300,400,500]
+    belt:{def:10+tier*10,bonusSt:4+tier*3,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
+    necklace:{def:10+tier*10,eDef:5+tier*5,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
+    ring1:{def:10+tier*10,eDef:5+tier*5,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
+    ring2:{def:10+tier*10,eDef:5+tier*5,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
+    cape:{def:10+tier*10,eDef:5+tier*5,spd:tier*.03,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
+    bracelet:{def:10+tier*10,eDef:5+tier*5,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
+    headband:{def:10+tier*10,eDef:5+tier*5,mpRegen:1+tier*1,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100}
   };
   const b=base[slot];
   if(!b)return{id:~~(performance.now()*1000)+~~(Math.random()*9999),slot,el,rarity,tier,name:'???',emoji:'❓'};
@@ -14225,10 +14228,11 @@ function applyStats(){
   // ═══ 바이블 기준: HP = 100+(stage-1)*6 + VIT*2 + STR*1 + 장비HP ═══
   const _stgHp=G.on?100+((G.stage||1)-1)*6:100;
   const _afHpF=_eqAffix('maxHPFlat'),_afHpP=_eqAffix('maxHPPct')+_eqAffix('lifeMaxHP'),_imHp=_eqImplicit('_iMaxHP'),_imHpP=_eqImplicit('_iMaxHPPct')+_eqImplicit('_iLifeHPPct');
-  // 전 슬롯 bonusHp + bonusShield 합산 + 강화 HP
+  // bonusHp: 방어구 파트(6) + 장신구 파트(6) = 12슬롯 (무기 파트 weapon/bow/helmet 제외)
+  // 강화 HP: 1강당 +0.5 HP (2026-04-11)
   let _totalBonusHp=0,_totalBonusShield=0,_enhHp=0;
-  const _allDefSlots=['shield','armor','boots','helmet','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
-  for(let _di=0;_di<_allDefSlots.length;_di++){const _dit=INV.equipped[_allDefSlots[_di]];if(_dit){_totalBonusHp+=(_dit.bonusHp||0);_totalBonusShield+=(_dit.bonusShield||0);if(_dit.enh>0)_enhHp+=_dit.enh}}
+  const _allDefSlots=['shield','armor','boots','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
+  for(let _di=0;_di<_allDefSlots.length;_di++){const _dit=INV.equipped[_allDefSlots[_di]];if(_dit){_totalBonusHp+=(_dit.bonusHp||0);_totalBonusShield+=(_dit.bonusShield||0);if(_dit.enh>0)_enhHp+=_dit.enh*0.5}}
   P.mhp=~~((_stgHp+P.lv*1+s.str*1+_totalBonusHp+_afHpF+_imHp+_enhHp)*(1+_afHpP+_imHpP*.01+(PASSIVES.pMelee||0)*.03));
   P.baseDef=2;
   P.maxPoise=80+s.str*0.2;
