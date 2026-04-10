@@ -27143,7 +27143,7 @@ function hurtP(dmg,opts){
   // 돌진 중 데미지 70% 감소
   if(P.s==='charge')a=Math.max(1,~~(a*.3));
   // 한방 데미지 캡: 최대 HP의 30% + 캡 발동 시 1초 무적
-  const _hitCap=~~(P.mhp*.3);
+  const _hitCap=~~(P.mhp*.33);
   if(a>_hitCap){a=_hitCap;P.iframes=Math.max(P.iframes,60);addTxt(P.x,P.y-35,_T('💥한방캡!'),'#ff8800',40)}
   // ═══ 물리/에너지 이원 방어 시스템 ═══
   // 에너지쉴드: 물리→pDef 적용(강함), 에너지→eDef 없음(약함)
@@ -31636,8 +31636,9 @@ function renderStatSummary(){
     (P.mshield>0?(()=>{const _sInt=P._effStats?P._effStats.int:0;const _srBase=0.3,_srInt=_sInt*0.003;const _srTotal=(_srBase+_srInt)*pMRegenMul()*60;const _shBase=150,_shLv=~~(P.lv*.5),_shInt=~~((_sInt-100)*2.5);let _shEq=0;const _ds3=['shield','armor','boots','helmet','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];for(const sl of _ds3){const it=INV.equipped[sl];if(it)_shEq+=(it.bonusShield||0)};const _shAf=_eqAffix('shieldFlat');return`<div style="${_sLn}">${_L('에너지쉴드','Energy Shield')}: <span style="color:#4488ff">${~~P.shield}/${P.mshield}</span> <span style="color:#887766;font-size:1.1rem">(+${_srTotal.toFixed(1)}/${_L('초','s')})</span></div>`+`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_shBase} + Lv${_shLv} + INT${_shInt}${_shEq?' + '+_L('장비','gear')+_shEq:''}${_shAf?' + '+_L('어픽스','affix')+_shAf:''}</div>`+`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: ${_L('기본','base')}${_srBase} + INT${_srInt.toFixed(3)} = ${(_srBase+_srInt).toFixed(3)}/f × ${_L('패시브','passive')}${pMRegenMul().toFixed(2)} = ${_srTotal.toFixed(1)}/${_L('초','s')}</div>`})():'')+
     `<div style="${_sLn}">${_L('스태미나','Stamina')}: <span style="color:#44dd44">${~~P.st}/${P.mst}</span> <span style="color:#887766;font-size:1.1rem">(+${(P.stR/8*60*pRegenMul()).toFixed(1)}/${_L('초','s')})</span></div>`+
     `<div style="${_sLn}">MP: <span style="color:#4488ff">${~~P.mp}/${P.mmp}</span> <span style="color:#887766;font-size:1.1rem">(+${(P.mpR/8*60).toFixed(1)}/${_L('초','s')})</span></div>`+
-    `<div style="${_sLn}">${_L('이동속도','Move Speed')}: <span style="color:#ffcc44">${P.speed.toFixed(2)}</span> | ${_L('포이즈','Poise')}: <span style="color:#ffdd44">${~~(P.poise||0)}/${~~P.maxPoise}</span></div>`+
-    `<div style="${_sLn}">${_L('한방캡','1-Hit Cap')}: <span style="color:#ff6666">${~~(P.mhp*.5)}</span> <span style="color:#887766;font-size:1.1rem">(${_L('최대HP의50%','50% of Max HP')})</span></div>`+
+    `<div style="${_sLn}">${_L('이동속도','Move Speed')}: <span style="color:#ffcc44">${P.speed.toFixed(2)}</span> <span style="color:#665544;font-size:1rem">(${_L('기본','base')}2.6 + DEX×0.005${_eqAffix('movSpeed')?' + '+_L('어픽스','affix')+(_eqAffix('movSpeed')*100).toFixed(0)+'%':''})</span></div>`+
+    `<div style="${_sLn}">${_L('포이즈','Poise')}: <span style="color:#ffdd44">${~~(P.poise||0)}/${~~P.maxPoise}</span> <span style="color:#665544;font-size:1rem">(${_L('기본','base')}80 + STR×0.2)</span></div>`+
+    `<div style="${_sLn}">${_L('한방캡','1-Hit Cap')}: <span style="color:#ff6666">${~~(P.mhp*.33)}</span> <span style="color:#887766;font-size:1.1rem">(${_L('최대HP의33%','33% of Max HP')})</span></div>`+
     // ── 비용/효율 ──
     `<div style="${_sHd}">⚡ ${_L('비용/효율','Cost/Efficiency')}</div>`+
     `<div style="${_sLn}">${_L('근접ST','Melee ST')}: <span style="color:#44dd44">×${_sAtkCost.toFixed(2)}</span> | ${_L('활ST','Bow ST')}: <span style="color:#44dd44">×${_sBowCost.toFixed(2)}</span> | ${_L('마법MP','Magic MP')}: <span style="color:#4488ff">×${_sMagicCost.toFixed(2)}</span></div>`+
