@@ -6532,7 +6532,7 @@ function crystalEnhCost(cr){
 const CRYSTAL_DUST_COST=[50,200,500,1500,5000];
 let _selectedCrystal=-1; // 결정 주머니에서 선택된 인덱스 (-1=미선택)
 let _crBagOpen=false,_crBagFilter='all',_crBagSel=-1;
-let _crPickCb=null;
+let _crPickCb=null,_crPickSlot=null; // _crPickSlot: 피커 필터용 target 슬롯명 (weapon/bow/helmet/shield/armor/gloves/pants/boots/cape/belt/bracelet/ring1/ring2/necklace/headband)
 let _crForgeTab='enhance',_crForgeSel=-1,_crSynthType=null,_crSynthStar=-1,_crCraftType=null,_crCraftStar=0;
 function _crLabel(cr){if(!cr)return'';const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star];return d.emoji+' '+_crStarN(s)+' '+_crDefN(d)+(cr.enh>0?' +'+cr.enh:'');}
 function _crValFmt(v){return v===~~v?''+v:v.toFixed(1)}
@@ -6556,6 +6556,8 @@ function renderCrystalBag(){
   h+='</div><div style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:2px">';
   CRYSTAL_BAG.forEach((cr,i)=>{
     const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star];
+    // 피커 모드: 타겟 슬롯에 장착 불가능한 결정 숨김
+    if(_crPickSlot&&d.slots&&d.slots.indexOf(_crPickSlot)<0)return;
     if(_crBagFilter!=='all'){
       if(_crBagFilter==='stat'&&d.cat!=='stat')return;
       if(_crBagFilter==='elem'&&d.cat!=='elem')return;
@@ -6572,7 +6574,7 @@ function renderCrystalBag(){
   if(CRYSTAL_BAG.length===0)h+='<div style="color:#554433;text-align:center;padding:20px">'+_T('결정이 없습니다')+'</div>';
   h+='</div>';pop.innerHTML=h;
 }
-function openCrystalPicker(cb){_crPickCb=function(idx){const cr=CRYSTAL_BAG[idx];cb(cr,idx);_crPickCb=null;var p=$('crBagPop');if(p)p.style.display='none'};_crBagSel=-1;renderCrystalBag();}
+function openCrystalPicker(cb,targetSlot){_crPickSlot=targetSlot||null;_crPickCb=function(idx){const cr=CRYSTAL_BAG[idx];cb(cr,idx);_crPickCb=null;_crPickSlot=null;var p=$('crBagPop');if(p)p.style.display='none'};_crBagSel=-1;renderCrystalBag();}
 function closeCrystalPicker(){_crPickCb=null;var p=$('crBagPop');if(p)p.style.display='none';}
 function attachCrystal(item,slotIdx,cr,bagIdx){
   if(!item||!item.crystals||slotIdx>=item.crystals.length)return false;
@@ -6601,22 +6603,24 @@ const SLOT_EN=['Weapon','Shield','Boots','Armor','Helmet','Crossbow','Gloves','P
 function _slotName(i){return OPT.lang==='en'?SLOT_EN[i]:SLOT_KR[i]}
 const SLOT_EMOJI=['⚔️','🛡️','👢','🦺','⛑️','🏹','🧤','👖','🪢','📿','💍','💍','🧣','⭕','🎀'];
 // Paper doll slot positions [left, top] — indexed by SLOT_NAMES
+// 3파트 레이아웃: Row0(0)=무기 3종 / Row1~2(44,88)=장신구 6종 / Row3~4(132,176)=방어구 6종
+// cols: L=16, M=120, R=224
 const EQ_POS=[
-  [16,88],   // 0 weapon   — 왼쪽 중간
-  [224,88],  // 1 shield   — 오른쪽 중간
-  [120,176], // 2 boots    — 하단 중앙
-  [120,44],  // 3 armor    — 상단 중앙
-  [120,0],   // 4 helmet   — 최상단 중앙
-  [16,176],  // 5 bow      — 좌하단
-  [16,44],   // 6 gloves   — 상단 좌
-  [120,132], // 7 pants    — 중하단 중앙
-  [120,88],  // 8 belt     — 중앙 (바지 위)
-  [224,44],  // 9 necklace — 상단 우
-  [16,132],  // 10 ring1   — 하단 좌
-  [224,132], // 11 ring2   — 하단 우
-  [224,176], // 12 cape    — 우하단
-  [16,0],    // 13 bracelet — 좌상단
-  [224,0],   // 14 headband — 우상단
+  [16,0],    // 0 weapon   — Row0 L (무기)
+  [224,132], // 1 shield   — Row3 R (방어구)
+  [120,176], // 2 boots    — Row4 M (방어구)
+  [120,132], // 3 armor    — Row3 M (방어구)
+  [120,0],   // 4 helmet   — Row0 M (무기)
+  [224,0],   // 5 bow      — Row0 R (무기)
+  [16,132],  // 6 gloves   — Row3 L (방어구)
+  [16,176],  // 7 pants    — Row4 L (방어구)
+  [224,88],  // 8 belt     — Row2 R (장신구)
+  [120,44],  // 9 necklace — Row1 M (장신구)
+  [16,88],   // 10 ring1   — Row2 L (장신구)
+  [120,88],  // 11 ring2   — Row2 M (장신구)
+  [224,176], // 12 cape    — Row4 R (방어구)
+  [16,44],   // 13 bracelet — Row1 L (장신구)
+  [224,44],  // 14 headband — Row1 R (장신구)
 ];
 
 // ═══ WEAPON TYPES ═══
@@ -14201,10 +14205,10 @@ function applyStats(){
   // ═══ 바이블 기준: ATK = 15+(stage-1)*2 ═══
   P.baseAtk=G.on?15+((G.stage||1)-1)*2:15;
   P.speed=(2.6+s.dex*.005)*(1+(P._altSpd||0)+_eqAffix('movSpeed')+_eqImplicit('_iMovSpd')*.01);
-  P.stR=.05+s.dex*.01+P.lv*.002; // ST리젠: DEX + 레벨 (/8 적용, 출처 증가)
+  P.stR=.05+s.dex*.005+P.lv*.001; // ST리젠: DEX + 레벨 (/8 적용)
   P.hpR=.05+s.str*.002+P.lv*.001+_eqAffix('lifeRegen')/60; // HP리젠: 초당 + STR + 레벨 + 생명팔찌
   P.mmp=~~(100+P.lv*.5+s.int*1+_eqAffix('maxMPFlat'));
-  P.mpR=.05+s.int*.01+P.lv*.002; // MP리젠: 초당 + INT + 레벨 (/8 적용, 출처 증가)
+  P.mpR=.05+s.int*.005+P.lv*.001; // MP리젠: 초당 + INT + 레벨 (/8 적용)
   // ═══ 결정 스탯 합산 ═══
   const _cr={hp:0,st:0,mp:0,atk:0,def:0,spd:0,crit:0,cdmg:0,fire:0,ice:0,dark:0,light:0,holy:0,hpR:0,stR:0,mpR:0,drop:0};
   for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(!it||!it.crystals)continue;
@@ -30499,7 +30503,7 @@ function _invRenderDetail(idx,source){
         ch+='<span style="color:#88cc88;font-size:.8rem;margin-left:auto">'+(cd.pct?'+'+cv+'%':'+'+cv)+'</span>';
         ch+='<span style="color:#aa6644;font-size:.7rem">'+_T('탈착')+'</span></div>';
       }else{
-        ch+='<div onclick="if(_selectedCrystal>=0&&CRYSTAL_BAG[_selectedCrystal]){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',CRYSTAL_BAG[_selectedCrystal],_selectedCrystal);_selectedCrystal=-1;renderInv();_invRenderDetail(\''+idx+'\',\'eq\')}else{openCrystalPicker(function(cr,bi){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',cr,bi);renderInv();_invRenderDetail(\''+idx+'\',\'eq\')})}" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px dashed '+(_selectedCrystal>=0?'#bb88ff':'#554433')+';background:'+(_selectedCrystal>=0?'rgba(187,136,255,.1)':'rgba(0,0,0,.15)')+';border-radius:3px;color:'+(_selectedCrystal>=0?'#bb88ff':'#665544')+';font-size:.8rem" onmouseover="this.style.borderColor=\'#bb88ff\'" onmouseout="this.style.borderColor=\''+(_selectedCrystal>=0?'#bb88ff':'#554433')+'\'">◇ '+(_e?'Empty Slot':'빈 슬롯')+''+ (_selectedCrystal>=0?' — '+(_e?'Click to equip selected crystal':'클릭하여 선택결정 장착'):' — '+(_e?'Select crystal then click':'결정 선택 후 클릭'))+'</div>';
+        ch+='<div onclick="if(_selectedCrystal>=0&&CRYSTAL_BAG[_selectedCrystal]){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',CRYSTAL_BAG[_selectedCrystal],_selectedCrystal);_selectedCrystal=-1;renderInv();_invRenderDetail(\''+idx+'\',\'eq\')}else{openCrystalPicker(function(cr,bi){attachCrystal(INV.equipped[\''+idx+'\'],'+ci+',cr,bi);renderInv();_invRenderDetail(\''+idx+'\',\'eq\')},\''+idx+'\')}" style="cursor:pointer;padding:3px 6px;margin:2px 0;border:1px dashed '+(_selectedCrystal>=0?'#bb88ff':'#554433')+';background:'+(_selectedCrystal>=0?'rgba(187,136,255,.1)':'rgba(0,0,0,.15)')+';border-radius:3px;color:'+(_selectedCrystal>=0?'#bb88ff':'#665544')+';font-size:.8rem" onmouseover="this.style.borderColor=\'#bb88ff\'" onmouseout="this.style.borderColor=\''+(_selectedCrystal>=0?'#bb88ff':'#554433')+'\'">◇ '+(_e?'Empty Slot':'빈 슬롯')+''+ (_selectedCrystal>=0?' — '+(_e?'Click to equip selected crystal':'클릭하여 선택결정 장착'):' — '+(_e?'Select crystal then click':'결정 선택 후 클릭'))+'</div>';
       }
     }
     cDiv.innerHTML=ch;rp.appendChild(cDiv);
@@ -31783,7 +31787,7 @@ function renderStatSummary(){
     (P.mshield>0?(()=>{const _sInt=P._effStats?P._effStats.int:0;const _srBase=0.3,_srInt=_sInt*0.003;const _srTotal=(_srBase+_srInt)*pMRegenMul()*60;const _shBase=150,_shLv=~~(P.lv*.5),_shInt=~~((_sInt-100)*2.5);let _shEq=0;const _ds3=['shield','armor','boots','helmet','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];for(const sl of _ds3){const it=INV.equipped[sl];if(it)_shEq+=(it.bonusShield||0)};const _shAf=_eqAffix('shieldFlat');return`<div style="${_sLn}">${_L('에너지쉴드','Energy Shield')}: <span style="color:#4488ff">${~~P.shield}/${P.mshield}</span> <span style="color:#887766;font-size:1.1rem">(+${_srTotal.toFixed(1)}/${_L('초','s')})</span></div>`+`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_shBase} + Lv${_shLv} + INT${_shInt}${_shEq?' + '+_L('장비','gear')+_shEq:''}${_shAf?' + '+_L('어픽스','affix')+_shAf:''}</div>`+`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: ${_L('기본','base')}${_srBase} + INT${_srInt.toFixed(3)} = ${(_srBase+_srInt).toFixed(3)}/f × ${_L('패시브','passive')}${pMRegenMul().toFixed(2)} = ${_srTotal.toFixed(1)}/${_L('초','s')}</div>`})():'')+
     (()=>{const _gEq=(wp().stRegen||0)+(sh().stRegen||0)+(bt().stRegen||0)+(ar().stRegen||0)+(hm().stRegen||0)+(bw().stRegen||0)+(gl().stRegen||0)+(pt().stRegen||0)+(nc().stRegen||0)+(rg1().stRegen||0)+(rg2().stRegen||0)+(cp().stRegen||0);const _stTot=((P.stR+_gEq)*pRegenMul()/8*60).toFixed(1);return`<div style="${_sLn}">${_L('스태미나','Stamina')}: <span style="color:#44dd44">${~~P.st}/${P.mst}</span> <span style="color:#887766;font-size:1.1rem">(+${_stTot}/${_L('초','s')})</span></div>`})()+
     (()=>{const _stBase=100,_stLv=~~(P.lv*.5),_stDex=(P._effStats?P._effStats.dex:0);let _stEq=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it.bonusSt)_stEq+=it.bonusSt}const _stCr=~~(P._crystalStats?P._crystalStats.st:0);const _stGrit=_gritStFlat();return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_stBase} + Lv${_stLv} + DEX${_stDex}${_stEq?' + '+_L('장비','gear')+_stEq:''}${_stCr?' + '+_L('결정','crystal')+_stCr:''}${_stGrit?' + '+_L('성장','grit')+_stGrit:''} = ${P.mst}</div>`})()+
-    (()=>{const _dex=(P._effStats?P._effStats.dex:0);const _rBase=.05,_rDex=_dex*.01,_rLv=P.lv*.002;const _rRaw=_rBase+_rDex+_rLv;const _rPas=pRegenMul();const _gEq=(wp().stRegen||0)+(sh().stRegen||0)+(bt().stRegen||0)+(ar().stRegen||0)+(hm().stRegen||0)+(bw().stRegen||0)+(gl().stRegen||0)+(pt().stRegen||0)+(nc().stRegen||0)+(rg1().stRegen||0)+(rg2().stRegen||0)+(cp().stRegen||0);const _rTotal=(_rRaw+_gEq)/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: (${_L('기본','base')}${_rBase} + DEX×0.01=${_rDex.toFixed(3)} + Lv×0.002=${_rLv.toFixed(3)}${_gEq?' + '+_L('장비','gear')+_gEq.toFixed(2):''}) = ${(_rRaw+_gEq).toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
+    (()=>{const _dex=(P._effStats?P._effStats.dex:0);const _rBase=.05,_rDex=_dex*.005,_rLv=P.lv*.001;const _rRaw=_rBase+_rDex+_rLv;const _rPas=pRegenMul();const _gEq=(wp().stRegen||0)+(sh().stRegen||0)+(bt().stRegen||0)+(ar().stRegen||0)+(hm().stRegen||0)+(bw().stRegen||0)+(gl().stRegen||0)+(pt().stRegen||0)+(nc().stRegen||0)+(rg1().stRegen||0)+(rg2().stRegen||0)+(cp().stRegen||0);const _rTotal=(_rRaw+_gEq)/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: (${_L('기본','base')}${_rBase} + DEX×0.005=${_rDex.toFixed(3)} + Lv×0.001=${_rLv.toFixed(3)}${_gEq?' + '+_L('장비','gear')+_gEq.toFixed(2):''}) = ${(_rRaw+_gEq).toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
     (()=>{const _gEq=(wp().mpRegen||0)+(sh().mpRegen||0)+(bt().mpRegen||0)+(ar().mpRegen||0)+(hm().mpRegen||0)+(bw().mpRegen||0)+(gl().mpRegen||0)+(pt().mpRegen||0)+(nc().mpRegen||0)+(rg1().mpRegen||0)+(rg2().mpRegen||0)+(cp().mpRegen||0);const _mpTot=((P.mpR+_gEq)*pMRegenMul()/8*60).toFixed(1);return`<div style="${_sLn}">MP: <span style="color:#4488ff">${~~P.mp}/${P.mmp}</span> <span style="color:#887766;font-size:1.1rem">(+${_mpTot}/${_L('초','s')})</span></div>`})()+
     (()=>{const _mpBase=100,_mpLv=~~(P.lv*.5),_mpInt=(P._effStats?P._effStats.int:0);const _mpCr=~~(P._crystalStats?P._crystalStats.mp:0);const _mpGrit=_gritMpFlat();const _mpPct=_eqAffix('maxMPPct');const _mpPre=_mpBase+_mpLv+_mpInt;const _mpMul=1+_mpPct;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_mpBase} + Lv${_mpLv} + INT${_mpInt} = ${_mpPre} × ${_mpMul.toFixed(2)}${_mpPct?' ('+_L('MP%어픽스','MP% affix')+' +'+~~(_mpPct*100)+'%)':''}${_mpCr?' + '+_L('결정','crystal')+_mpCr:''}${_mpGrit?' + '+_L('성장','grit')+_mpGrit:''} = ${P.mmp}</div>`})()+
     (()=>{const _int=(P._effStats?P._effStats.int:0);const _rBase=.05,_rInt=_int*.01,_rLv=P.lv*.002;const _rRaw=_rBase+_rInt+_rLv;const _rPas=pMRegenMul();const _gEq=(wp().mpRegen||0)+(sh().mpRegen||0)+(bt().mpRegen||0)+(ar().mpRegen||0)+(hm().mpRegen||0)+(bw().mpRegen||0)+(gl().mpRegen||0)+(pt().mpRegen||0)+(nc().mpRegen||0)+(rg1().mpRegen||0)+(rg2().mpRegen||0)+(cp().mpRegen||0);const _rTotal=(_rRaw+_gEq)/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: (${_L('기본','base')}${_rBase} + INT×0.01=${_rInt.toFixed(3)} + Lv×0.002=${_rLv.toFixed(3)}${_gEq?' + '+_L('장비','gear')+_gEq.toFixed(2):''}) = ${(_rRaw+_gEq).toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
