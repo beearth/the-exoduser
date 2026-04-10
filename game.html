@@ -6510,6 +6510,7 @@ const CRYSTAL_DEFS={
   // 방어결정 — 방어구 6슬롯 전용
   cr_hp:{ko:'HP결정',stat:'hp',base:8,cat:'def',emoji:'❤',craft:true,slots:CR_ARMOR_SLOTS},
   cr_def:{ko:'DEF결정',stat:'def',base:1,cat:'def',emoji:'🛡',slots:CR_ARMOR_SLOTS},
+  cr_eDef:{ko:'속성방어결정',stat:'eDef',base:0.5,cat:'def',emoji:'🔰',slots:CR_ARMOR_SLOTS},
   cr_spd:{ko:'속도결정',stat:'spd',base:0.08,cat:'def',emoji:'💨',pct:true,slots:CR_ARMOR_SLOTS},
   cr_hpReg:{ko:'생명결정',stat:'hpR',base:0.15,cat:'def',emoji:'💚',slots:CR_ARMOR_SLOTS},
   cr_drop:{ko:'행운결정',stat:'drop',base:0.15,cat:'def',emoji:'🍀',pct:true,slots:CR_ARMOR_SLOTS},
@@ -6525,6 +6526,7 @@ const _CR_DESC={
   mp:{ko:'최대 마력(MP) 증가',en:'Max MP increase'},
   atk:{ko:'기본 공격력 증가',en:'Base ATK increase'},
   def:{ko:'기본 방어력 증가',en:'Base DEF increase'},
+  eDef:{ko:'속성방어 증가 (전 속성 공통)',en:'Elemental DEF increase (all elements)'},
   spd:{ko:'이동속도 증가 (%)',en:'Move speed increase (%)'},
   crit:{ko:'치명타 확률 증가 (%)',en:'Critical hit chance (%)'},
   cdmg:{ko:'치명타 데미지 증가 (%)',en:'Critical damage increase (%)'},
@@ -14240,7 +14242,7 @@ function applyStats(){
   P.mmp=~~(100+P.lv*.5+s.int*1+_eqAffix('maxMPFlat'));
   P.mpR=.05+s.int*.005+P.lv*.0015; // MP리젠: 초당 + INT + 레벨 (/8 적용, Lv계수 0.001→0.0015)
   // ═══ 결정 스탯 합산 ═══
-  const _cr={hp:0,st:0,mp:0,atk:0,def:0,spd:0,crit:0,cdmg:0,fire:0,ice:0,dark:0,light:0,holy:0,hpR:0,stR:0,mpR:0,drop:0};
+  const _cr={hp:0,st:0,mp:0,atk:0,def:0,eDef:0,spd:0,crit:0,cdmg:0,fire:0,ice:0,dark:0,light:0,holy:0,hpR:0,stR:0,mpR:0,drop:0};
   for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(!it||!it.crystals)continue;
     for(let ci=0;ci<it.crystals.length;ci++){const c=it.crystals[ci];if(!c)continue;
       const v=crystalVal(c);const d=CRYSTAL_DEFS[c.id];if(d)_cr[d.stat]+=v}}
@@ -14728,20 +14730,15 @@ function fireBow(){
   P.atkArc=P.facing;
   const b=bw();
   const ael=b.el||0;
-  // 관통 계산: 석궁 기본30% + 무기보너스 + 패시브(레벨당10%)
-  const _apLv=PASSIVES.pPierce||0;
-  const _xbBase=(b.btype==='crossbow')?0.30:0;
-  const _basePierce=(b.bowPierce||0)+_xbBase;
-  const _prc=_basePierce>0?Math.min(0.95,_basePierce+_apLv*0.05):0;
-  const _prMax=_basePierce>0?1+_apLv:0;
+  // [2026-04-10 개편] 석궁 단일타겟 극단적 뎀, 관통 완전 제거
   // ── 일반 석궁 발사 (만화방창은 E키로 이동) ──
   {
     if(G.mats>=1){
       G.mats--;
       const _brd=BOWTYPES[b.btype||'crossbow']||BOWTYPES.crossbow;const range=(Math.max(b.bowRange||0,_brd.range)+(b.bonusRange||0)*12)*pBowRange(),bspd=b.bowProjSpd||8;
-      const dmg=~~(bowRef()*pBowMul())+(P._bowBon||0);P._bowBon=0;
+      const dmg=~~(bowRef()*pBowMul()*10)+(P._bowBon||0);P._bowBon=0; // 단일뎀 ×10 강화
       const bdx=Math.cos(P.atkArc),bdy=Math.sin(P.atkArc);
-      {const _pp=_getPProj();_pp.x=P.x+bdx*12;_pp.y=P.y+bdy*12;_pp.vx=bdx*bspd;_pp.vy=bdy*bspd;_pp.dmg=dmg;_pp.el=ael;_pp.maxDist=range;_pp.dist=0;_pp.r=3;_pp.stagger=0;_pp.kb=0;_pp.pierce=_prc;_pp.pierceMax=_prMax;_pp.normalBow=true;pProjs[pProjs.length]=_pp;}
+      {const _pp=_getPProj();_pp.x=P.x+bdx*12;_pp.y=P.y+bdy*12;_pp.vx=bdx*bspd;_pp.vy=bdy*bspd;_pp.dmg=dmg;_pp.el=ael;_pp.maxDist=range;_pp.dist=0;_pp.r=3;_pp.stagger=0;_pp.kb=0;_pp.pierce=0;_pp.pierceMax=0;_pp.normalBow=true;pProjs[pProjs.length]=_pp;} // 관통 0
       if((bw().btype||'')==='crossbow'){playSample('crossbow_shot',.7,_r(1,.1))}else SFX.bow();
       P.s='bowRecover';P.st2=~~(45/pBowSpd());
       return true;
@@ -27250,7 +27247,7 @@ function hurtP(dmg,opts){
   const totalPDef=P.baseDef+pDefAdd()+(sh().def||0)+(ar().def||0)+(bt().def||0)+(gl().def||0)+(pt().def||0)+_enhDef;
   // 에너지방어: 투구/목걸이/반지 (마법장비)
   const _enhEDef=~~(enhMul(sh().enh||0)+enhMul(ar().enh||0)+enhMul(bt().enh||0)+enhMul(gl().enh||0)+enhMul(pt().enh||0)+enhMul(hm().enh||0)+enhMul(nc().enh||0)+enhMul(rg1().enh||0)+enhMul(rg2().enh||0));
-  const totalEDef=(hm().eDef||0)+(nc().eDef||0)+(rg1().eDef||0)+(rg2().eDef||0)+(cp().eDef||0)+(sh().eDef||0)+(ar().eDef||0)+(bt().eDef||0)+(gl().eDef||0)+(pt().eDef||0)+(blt().eDef||0)+(INV.equipped.bracelet&&INV.equipped.bracelet.eDef||0)+(INV.equipped.headband&&INV.equipped.headband.eDef||0)+_eqAffix('eDefFlat')+_enhEDef;
+  const totalEDef=(hm().eDef||0)+(nc().eDef||0)+(rg1().eDef||0)+(rg2().eDef||0)+(cp().eDef||0)+(sh().eDef||0)+(ar().eDef||0)+(bt().eDef||0)+(gl().eDef||0)+(pt().eDef||0)+(blt().eDef||0)+(INV.equipped.bracelet&&INV.equipped.bracelet.eDef||0)+(INV.equipped.headband&&INV.equipped.headband.eDef||0)+_eqAffix('eDefFlat')+_enhEDef+~~(P._crystalStats?P._crystalStats.eDef:0);
   // DR 캡 적용 (바이블 75%) + 어픽스 physDR
   const pDR=Math.min(DR_CAP,totalPDef/(totalPDef+2500)+_eqAffix('physDR'));
   const eDR=Math.min(DR_CAP,totalEDef/(totalEDef+2500));
@@ -27597,7 +27594,7 @@ const SKILL_LIST=[
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'detonate',name:'기폭팔',cat:'def',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발. Lv당 범위+15 (1렙150, 10렙285)',descEn:'Parry 3s hold → absorbed DMG AoE explosion. Per Lv range+15 (Lv1: 150, Lv10: 285)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceSwipe',name:'칼등 처내기',cat:'def',desc:'우클 처내기 강화. Lv당 반사 데미지 +10%. 홀드 시 연사',descEn:'RMB swipe enhanced. Per Lv reflect DMG +10%. Hold for rapid fire',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
-  {id:'fanShot',name:'만화방창',cat:'bow',desc:'[고정: T 자동] 물리 바늘 6발 부채꼴 발사. 작고 빠른 바늘',descEn:'[Fixed: T auto] 6 physical needles fan spread. Small and fast needles',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'fanShot',name:'만화방창',cat:'bow',desc:'[고정: T 자동] 물리 바늘 3방향 3발 발사. 관통 없음',descEn:'[Fixed: T auto] 3 physical needles 3-way spread. No pierce',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'omniBeam',name:'멸살광선',cat:'magic',desc:'[고정: E] 1발 직선 레이저. +만화방창 → 만화광선(3발 꽈배기). +원소추적탄 → 추적암전(6발 유도)',descEn:'[Fixed: E] 1 straight laser. +Barrage → Omni Beam (3 spiral). +Elem Seeker → Homing Dark (6 homing)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'elemMissile',name:'원소추적탄',cat:'magic',desc:'E탭 마법을 6원소 유도 미사일로 변경. 곡선 궤적으로 적을 추적. 레벨당 사거리+20, 뎀+10%',descEn:'Changes E-tap magic to 6-element homing missiles. Curved trajectory tracking enemies. Per Lv range+20, DMG+10%',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
 
@@ -27610,9 +27607,9 @@ const SKILL_LIST=[
   {id:'lavaSummon',name:'용암소환',cat:'ult',act:true,ult:true,emoji:'🌋',desc:'빨간 오망성 시전 → 범위 1500+Lv×100px 화염폭발+10초간 화상. 틱당 적 최대HP 1.75%(+Lv당+1.5%). 10초 20틱. 거리감쇠 30%. Lv당 초기뎀+10%. (MP 30%, 쿨 90초)',descEn:'Red pentagram cast → range 1500+Lv×100px fire explosion+10s burn. Per tick enemy maxHP 1.75%(+1.5%/Lv). 10s 20 ticks. 30% distance falloff. Per Lv initial DMG+10%. (MP 30%, CD 90s)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
   {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스를 섬광 관통 처형. 근접 타겟 지정. HP/MP/ST 10% 소모 → 보스 최대HP 30% 순수 데미지. 쿨 20초',descEn:'X key: Flash-pierce execute groggy boss. Melee target select. HP/MP/ST 10% cost → boss maxHP 30% pure DMG. CD 20s',spCost:10,matCost:100,cd:1200,up:false,upSp:0,upMat:0},
   {id:'demonRevive',name:'악마화 부활',cat:'ult',ult:true,emoji:'☠',desc:'[패시브] 사망 시 부활력 기반 확률 부활. 1Lv: HP 50% 부활. Lv당 HP+5%, 쿨-30초, 부활확률+2%. 쿨 10분',descEn:'[Passive] Revive power-based chance revive on death. Lv1: revive at HP 50%. Per Lv HP+5%, CD-30s, revive chance+2%. CD 10min',spCost:15,matCost:150,up:true,upSp:10,upMat:0},
-  {id:'bladeShot',name:'붉은꽃',cat:'bow',act:true,emoji:'🩸',desc:'[고정: T 자동] 핏빛 칼날 발사: 전진하며 핏빛 조각 방사 (ST 50, 쿨 0.5초). Lv당 크기+11% 뎀+10%',descEn:'[Fixed: T auto] Blood blade fire: radiates blood shards while advancing (ST 50, CD 0.5s). Per Lv size+11% DMG+10%',spCost:10,matCost:100,cd:60,up:true,upSp:5,upMat:0},
+  // [SKILL REMOVED 2026-04-10] bladeShot (붉은꽃) — 석궁 개편
   {id:'iceOrb',name:'얼음보주',cat:'def',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',descEn:'Enter ice — invincible. Re-press to shatter → 48 ice blades fan spread (MP 40, CD 20s). Per Lv blades+2 DMG+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
-  {id:'needleShot',name:'만화방창 II',cat:'bow',act:true,emoji:'✨',desc:'[고정: T 자동] 최대속도 바늘 5~10연발. 좁은 간격 초고속 관통. ST 8. 쿨 1.5초. Lv당 뎀+12% 관통+1 발수+',descEn:'[Fixed: T auto] Max-speed 5~10 needles burst. Tight spread ultra-fast pierce. ST 8. CD 1.5s. Per Lv DMG+12% pierce+1 shots+',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
+  {id:'needleShot',name:'만화방창 II',cat:'bow',act:true,emoji:'✨',desc:'[고정: T 자동] 초고속 바늘 연발. 1렙 2발, 5렙마다 +1발. 관통 없음. ST 8. 쿨 1.5초. Lv당 뎀+100%',descEn:'[Fixed: T auto] Ultra-fast needles burst. Lv1 2 shots, +1 per 5 levels. No pierce. ST 8. CD 1.5s',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
   {id:'energyShot',name:'마력연사',cat:'magic',emoji:'⚡',desc:'E홀드: 에너지탄 연사 (4발/초). MP 5/발. 유도+착탄 폭발. Lv당 뎀+10% 사거리+30',descEn:'E hold: rapid energy shots (4 shots/s). MP 5/shot. Homing+impact explosion. Per Lv DMG+10% range+30',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
   {id:'fireBeam',name:'업화선',cat:'magic',emoji:'🔥',desc:'E탭: 화염 유도빔 발사. MP10. 쿨1초(DEX 스케일). 100% 관통+유도+화상. Lv당 사거리+50 뎀+12%',descEn:'E tap: fire homing beam. MP 10. CD 1s (DEX scale). 100% pierce+homing+burn. Per Lv range+50 DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'fireAura',name:'지옥진',cat:'magic',emoji:'🌋',desc:'E: 10초간 대지 진동. 범위 내 용암 기둥이 순차적으로 솟아올라 화상+틱 데미지. MP 100. 쿨 12초. Lv당 범위+10% 뎀+12%',descEn:'E: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -27632,7 +27629,7 @@ const SKILL_LIST=[
   {id:'peaceShield',name:'평화의보호',cat:'def',fixed:true,hidden:true,emoji:'🕊️',desc:'[히든: 암전나선 합체] Q 홀드 시 보호막이 점점 커지며 HP 초당 10% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모',descEn:'[Hidden: Dark Spiral fuse] Q hold: shield grows over time + HP 10%/s regen. DMG reduction scales with shield size. MP cost',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'✝',desc:'[히든: 암전나선 합체] E로 조준, 클릭 설치. 신성 십자가를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. Lv당 거리+50',descEn:'[Hidden: Dark Spiral fuse] E to aim, click to place. Holy cross planted on ground — rotates+DMG. MP 100. 1 charge CD 10s. 5s+0.5s/Lv duration. Per Lv range+50',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'칼등날개',cat:'def',fixed:true,emoji:'🔨',desc:'[고정: 칼등치기 합체] 보유 시 칼등치기에 전방 충격파 자동 발동. 제자리 처내기. 쿨 5초. Lv당 뎀+12% 범위+20',descEn:'[Fixed: Blade Parry fuse] When owned, swipe auto-triggers forward shockwave. Stationary swipe. CD 5s. Per Lv DMG+12% range+20',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
-  {id:'blastShot',name:'폭산탄',cat:'bow',fixed:true,emoji:'💥',desc:'[고정: T 자동] 폭탄 1발(사거리500). Lv5→2발, Lv10→5발. 충돌 시 화염 폭발(범위130). 악의 5. Lv당 범위+10% 뎀+10%. 쿨 0.5초',descEn:'[Fixed: T auto] 1 bomb (range 500). Lv5→2 shots, Lv10→5 shots. Fire explosion on hit (range 130). Malice 5. Per Lv range+10% DMG+10%. CD 0.5s',spCost:10,matCost:80,cd:60,up:true,upSp:5,upMat:0},
+  // [SKILL REMOVED 2026-04-10] blastShot (폭산탄) — 석궁 개편
   {id:'weakPhys',name:'파쇄의 영역',cat:'tech',act:true,emoji:'⚔',desc:'현재 위치에 파쇄 영역 설치 (10초). 범위 내 적 물리방어력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place shatter domain at current pos (10s). Enemy phys DEF -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'weakMag',name:'침식의 영역',cat:'tech',act:true,emoji:'🔮',desc:'현재 위치에 침식 영역 설치 (10초). 범위 내 적 마법저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place corrosion domain at current pos (10s). Enemy magic resist -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'weakPj',name:'관통의 영역',cat:'tech',act:true,emoji:'🏹',desc:'현재 위치에 관통 영역 설치 (10초). 범위 내 적 투사체저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place pierce domain at current pos (10s). Enemy projectile resist -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
@@ -27663,8 +27660,8 @@ const SKILL_SLOT_DEFS={
     info:{normal:{name:'일반사격',nameEn:'Normal Shot',emoji:'🏹',desc:'T자동: 기본 화살',descEn:'T auto: Basic arrow'},
           bladeShot:{name:'붉은꽃',nameEn:'Red Bloom',emoji:'🌹',desc:'T자동: 붉은 꽃잎 칼날 (ST50)',descEn:'T auto: Red petal blade (ST50)'},
           blastShot:{name:'폭산탄',nameEn:'Blast Shot',emoji:'💥',desc:'T자동: 폭탄 (악의5, 쿨0.5초)',descEn:'T auto: Bomb (malice 5, cd 0.5s)'},
-          fanShot:{name:'만화방창',nameEn:'Barrage',emoji:'✨',desc:'T자동: 물리 바늘 6발 부채꼴',descEn:'T auto: 6 physical needles fan spread'},
-          needleShot:{name:'만화방창 II',nameEn:'Barrage II',emoji:'✨',desc:'T자동: 초고속 바늘 5연발 (ST8, 쿨1.5초)',descEn:'T auto: Ultra-fast 5 needles (ST8, cd 1.5s)'},
+          fanShot:{name:'만화방창',nameEn:'Barrage',emoji:'✨',desc:'T자동: 물리 바늘 3방향 3발 (관통X)',descEn:'T auto: 3 physical needles 3-way (no pierce)'},
+          needleShot:{name:'만화방창 II',nameEn:'Barrage II',emoji:'✨',desc:'T자동: 초고속 바늘 2발+5렙당1 (ST8, 쿨1.5초)',descEn:'T auto: Ultra-fast 2 needles +1/5lv (ST8, cd 1.5s)'},
           ghostXbowTurret:{name:'공성쇠뇌',nameEn:'Siege Ballista',emoji:'🏹',desc:'선택스킬: 터렛 설치/철거 (Lv500, ST100, 쿨없음)',descEn:'Select skill: Deploy/remove turret (Lv500, ST100, no cd)'},
           }},
   tech:{name:'영역 스킬',nameEn:'Area Skill',key:'tech',skills:['giantSlam','spikeTrap'],
@@ -28099,11 +28096,9 @@ function _fireFanShot(){
   if(P.st<_fsStC){showPH(_T('ST 부족!'),'#ff4444');return false}
   _addSkProf('fanShot');
   P.st-=_fsStC;P.atkArc=P.facing;
-  const _apLv=PASSIVES.pPierce||0;
-  const _prc=Math.min(0.95,0.3+_apLv*0.10);
-  const _prMax=1+_apLv;
   const _fanLv=P.skills.fanShot||1;
-  const _fanCnt=6; // 항상 6발
+  const _fanCnt=3; // 3방향 3발 고정 (2026-04-10 개편)
+  const _prc=0,_prMax=0; // 관통 제거
   const range=400+(_fanLv-1)*68;const bspd=20; // 탄속 2배
   const _baseDmg=bowRef()*statDex()*pBowMul();
   const dmg=~~(_baseDmg*(_fanLv)/_fanCnt*2)+~~(_fsStC*1.5);
@@ -28290,9 +28285,9 @@ function activateNeedleShot(){
   _addSkProf('needleShot');
   P.st-=_nStC;P._ndCd=90;
   const dmg=~~(bowRef()*statDex()*pBowMul()*(1.2+(slv-1)));
-  const _nPierce=Math.min(0.95,0.3+slv*0.05);const _nPMax=2+slv;
-  const _nCnt=5+~~(slv/2); // 2렙당 +1발 (1렙5, 10렙10)
-  P._needleBurst={cnt:0,max:_nCnt,interval:2,timer:0,dmg:dmg,pierce:_nPierce,pierceMax:_nPMax,range:600,spd:30,aim:P.facing};
+  // 관통 제거, 1렙 2발 / 5렙마다 +1발 (1렙=2, 5렙=3, 10렙=3)
+  const _nCnt=2+~~((slv-1)/5); // 1렙=2, 6렙=3, 11렙=4...
+  P._needleBurst={cnt:0,max:_nCnt,interval:2,timer:0,dmg:dmg,pierce:0,pierceMax:0,range:600,spd:30,aim:P.facing};
   playSample('crossbow_shot',.8,_r(1.4,.1));
   addTxt(P.x,P.y-30,_T('🪡 바늘출!'),'#ccddff',35);shake(2);
 }
@@ -31750,7 +31745,7 @@ function renderStatSummary(){
   const _sEnhDef=~~(enhMul(sh().enh||0)+enhMul(ar().enh||0)+enhMul(bt().enh||0)+enhMul(gl().enh||0)+enhMul(pt().enh||0)+enhMul(hm().enh||0)+enhMul(nc().enh||0)+enhMul(rg1().enh||0)+enhMul(rg2().enh||0));
   const _sTotalPDef=P.baseDef+pDefAdd()+(sh().def||0)+(ar().def||0)+(bt().def||0)+(gl().def||0)+(pt().def||0)+_sEnhDef;
   const _sEnhEDef=~~(enhMul(sh().enh||0)+enhMul(ar().enh||0)+enhMul(bt().enh||0)+enhMul(gl().enh||0)+enhMul(pt().enh||0)+enhMul(hm().enh||0)+enhMul(nc().enh||0)+enhMul(rg1().enh||0)+enhMul(rg2().enh||0));
-  const _sTotalEDef=(hm().eDef||0)+(nc().eDef||0)+(rg1().eDef||0)+(rg2().eDef||0)+(cp().eDef||0)+(sh().eDef||0)+(ar().eDef||0)+(bt().eDef||0)+(gl().eDef||0)+(pt().eDef||0)+(blt().eDef||0)+(INV.equipped.bracelet&&INV.equipped.bracelet.eDef||0)+(INV.equipped.headband&&INV.equipped.headband.eDef||0)+_eqAffix('eDefFlat')+_sEnhEDef;
+  const _sTotalEDef=(hm().eDef||0)+(nc().eDef||0)+(rg1().eDef||0)+(rg2().eDef||0)+(cp().eDef||0)+(sh().eDef||0)+(ar().eDef||0)+(bt().eDef||0)+(gl().eDef||0)+(pt().eDef||0)+(blt().eDef||0)+(INV.equipped.bracelet&&INV.equipped.bracelet.eDef||0)+(INV.equipped.headband&&INV.equipped.headband.eDef||0)+_eqAffix('eDefFlat')+_sEnhEDef+~~(P._crystalStats?P._crystalStats.eDef:0);
   const _sPDefPct=(_sTotalPDef/(_sTotalPDef+2500)*100);
   const _sEDefPct=(_sTotalEDef/(_sTotalEDef+2500)*100);
   const _sMeleeAtk=~~(meleeRef()*statStr()*pAtkMul());
