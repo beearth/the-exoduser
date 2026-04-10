@@ -68,8 +68,9 @@ canvas{display:block;position:fixed;inset:0}
   z-index: 22;
   pointer-events: none;
 }
-.hp-globe { left: 15px; bottom: 15px; }
-.mp-globe { right: 15px; bottom: 15px; }
+/* 스킬바 양옆에 붙이기: 스킬바 width=820px, 중앙 기준 좌/우 약간 더 바깥 */
+.hp-globe { left: 50%; bottom: calc(var(--ui-inset-bottom, 0px) + env(safe-area-inset-bottom, 0px)); margin-left: calc(-490px * var(--ui-scale) * .9 - (var(--globe-size) * 0.5)); transform: scale(calc(var(--ui-scale) * .9)); transform-origin: bottom center; }
+.mp-globe { left: 50%; bottom: calc(var(--ui-inset-bottom, 0px) + env(safe-area-inset-bottom, 0px)); margin-left: calc(490px * var(--ui-scale) * .9 - (var(--globe-size) * 0.5)); transform: scale(calc(var(--ui-scale) * .9)); transform-origin: bottom center; }
 
 .globe-glass {
   position: absolute;
@@ -188,7 +189,7 @@ canvas{display:block;position:fixed;inset:0}
 }
 .mini-bar.st .fill { background: linear-gradient(90deg, #114400, #44aa00); }
 .mini-bar.sh .fill { background: linear-gradient(90deg, #002266, #44aaff); }
-#skBar{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px));left:50%;transform:translateX(-50%) scale(calc(var(--ui-scale) * .9));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;transform-origin:bottom center;background:url('img/ui_bar_only.png') no-repeat center/100% 100%;width:820px;height:182px;filter:brightness(0.8)}
+#skBar{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px) - 25px);left:50%;transform:translateX(-50%) scale(calc(var(--ui-scale) * .9));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;transform-origin:bottom center;background:url('img/ui_bar_only.png') no-repeat center/100% 100%;width:820px;height:182px;filter:brightness(0.8)}
 .qs-row{position:absolute;top:0;left:0;width:100%;height:100%}
 .qs{position:absolute!important;flex:none!important}
 #poiseBarWrap{display:none!important}
@@ -238,7 +239,7 @@ canvas{display:block;position:fixed;inset:0}
 .set-section{margin-bottom:14px}
 .set-label{color:var(--c-text);font-size:1rem;font-weight:700;letter-spacing:.15em;margin-bottom:6px;border-bottom:1px solid #332211;padding-bottom:3px}
 .set-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
-.set-name{color:var(--c-border-hover);font-size:1rem}
+.set-name{color:var(--c-border-hover);font-size:1rem;flex:1;text-align:left}
 .set-key{padding:4px 12px;background:rgba(0,0,0,.4);border:1px solid var(--c-border);color:var(--c-text-bright);font-size:1rem;font-family:var(--font);cursor:pointer;min-width:80px;text-align:center;transition:all .2s}
 .set-key:hover{border-color:var(--c-border-active)}
 .set-key.listening{border-color:#ffaa00;color:#ffdd44;animation:pulse .8s infinite}
@@ -3952,7 +3953,8 @@ const _petBubble={who:null,txt:'',t:0,mt:0,pair:null,pairFired:false};
 const _petDlgCD={}; // 대사 쿨다운 {id: remainFrames}
 // 튜토리얼 플래그 (1회성, 세이브 불필요 — 스테이지0 전용)
 const _petTut={start:false,atk3:false,atk7:false,charge:false,firstCharge:false,firstHit:false,hit2:false,parryHint:false,firstParry:false,redBean:false,rainbowBean:false,firstKill:false,
-  keyK:false,keyC:false,keyG:false,keyF:false,keyZ:false,keyCT:false,keyL:false,keyV:false,keyESC:false};
+  keyK:false,keyC:false,keyG:false,keyF:false,keyZ:false,keyCT:false,keyL:false,keyV:false,keyESC:false,
+  firstItem:false,potionCraft:false,firstDebris:false,firstChest:false,firstForge:false};
 // 누적 카운터 (세이브 불필요 — 런 내 일시)
 let _petAtkCnt=0,_petHitCnt=0,_petParryCnt=0,_petKillCnt=0,_petChargeUsed=false,_petIdleT=0;
 
@@ -4010,6 +4012,10 @@ function _checkPetDialogue(){
     if(!_petTut.firstParry&&_petParryCnt>=1){_petTut.firstParry=true;_petSayCD('tut_1stparry','crow','됐어! 감 잡았구나.',4,9999,'cat','...운이 좋았을 뿐이야. 아마.',5);return}
     if(!_petTut.firstKill&&_petKillCnt>=1){_petTut.firstKill=true;_petSayCD('tut_1stkill','crow','하나 죽었군.',4,9999,'cat','...고기 냄새. 싫진 않네.',5);return}
     if(!_petTut.bowIntro&&_petKillCnt>=3){_petTut.bowIntro=true;_petSayCD('tut_bow','crow','유령쇠뇌야. 인사해.',3,9999,'cat','...말은 못해.',4);return}
+    // 첫 아이템 습득 → TAB 안내
+    if(!_petTut.firstItem&&INV.bag.length>=1){_petTut.firstItem=true;_petSayCD('tut_firstItem','crow','TAB을 눌러. 가방을 열고 장비를 입어야 한다.',5,9999,'cat','주웠으면 껴야지! TAB!',4);return}
+    // Lv100 → G키 물약제작 안내
+    if(!_petTut.potionCraft&&P.lv>=100){_petTut.potionCraft=true;_petSayCD('tut_potionCraft','crow','G. 대장간에서 물약도 제작할 수 있다.',5,9999,'cat','악의로 물약 만들어! G키야!',4);return}
   }
 
   // ── 빨간/무지개 탄 (프레임마다 체크하지 않기 위해 쿨다운 사용) ──
@@ -4031,24 +4037,35 @@ function _checkPetDialogue(){
   }
 
   // 패링 가이드
-  if(_petParryCnt<3)_petSayCD('parry_low','crow','우클릭. 적 손목이 꺾일 때 쳐.',4,30,'cat','그게 패링이야! 타이밍이 전부야~',4);
+  if(_petParryCnt<3)_petSayCD('parry_low','crow','우클릭. 적 손목이 꺾일 때 쳐.',4,30,'cat','우클릭 타이밍 맞추면 패링 돼~',4);
   else if(_petParryCnt<10)_petSayCD('parry_mid','crow','빨간 탄은 악의 덩어리다. 쳐내서 이용해.',4,30,'cat','무지개빛만 피하면 돼! 나머지는 다 패링!',4);
 
   // 방패 미장착
-  if(!INV.equipped.shield)_petSayCD('no_shield','cat','Q 보호막도 패링이 가능해!',4,300);
+  if(!INV.equipped.shield)_petSayCD('no_shield','cat','방패 하나 껴! Q로 보호막이랑 패링 쓸 수 있어!',4,300,'crow','방패 없이 싸우는 건 도박이야.',4);
   // 위험 경고 (HP 30% 이하)
   if(P.hp<P.mhp*.3&&P.hp>0)_petSayCD('danger_hp','crow','위험해! 쉬프트 사슬기동으로 피해!!',3,300);
+  // 기절 경고
+  if(P.s==='pStun')_petSayCD('stun_warn','cat','기절이야! 탈출스킬을 써!',3,10,'crow','Shift/Q/Ctrl 연타해서 빠져나와!',3);
   // 쉬프트 안내 (돌진 미사용 + 전투 중)
   if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야! 끌려가면서 무적이라고!',4,300);
   // SP 안내 (10 이상)
   if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트가 쌓였어! K 눌러서 스킬 배우자!',4,300);
   // 자원 부족 (50% 이하 → 패링 안내, 30% 이하 → 신성한 영역 안내)
   if(P.hp<P.mhp*.5||P.mp<P.mmp*.5||P.st<P.mst*.5)_petSayCD('resource_parry','cat','패링을 써야 자원을 흡수한다고!',3,300);
-  if(P.hp<P.mhp*.3||P.mp<P.mmp*.3||P.st<P.mst*.3)_petSayCD('resource_low','crow','F키 신성한 영역을 써봐. 자원이 차올라.',4,300);
+  if(P.hp<P.mhp*.3||P.mp<P.mmp*.3||P.st<P.mst*.3){
+    if(P.skills.holyDome>0)_petSayCD('resource_low','crow','F키 신성한 영역을 써봐. 자원이 차올라.',4,300);
+    else _petSayCD('resource_low','crow','빠져! 물약 마시고 안전한 곳에서 회복해.',4,300,'cat','자원 없으면 도망가는 게 답이야!',4);
+  }
   // 근접 적 경고 (300px 내 적 수 기반)
   {let _nearCnt=0;for(let _ni=0;_ni<ens.length;_ni++){if(ens[_ni].alive&&dst2(P.x,P.y,ens[_ni].x,ens[_ni].y)<90000)_nearCnt++}
-  if(_nearCnt>=10)_petSayCD('melee_trap','cat','적이 근접하면 스페이스키야! 가시덫을 활용해!',4,300);
-  if(_nearCnt>=20)_petSayCD('melee_slam','crow','기절시켜! 그로기가 터지면 데미지가 1.5배야!',4,300,'cat','1번 대왕치기로 밀어버려!',3)}
+  if(_nearCnt>=10){
+    if(P.skills.spikeTrap>0)_petSayCD('melee_trap','cat','스페이스! 가시덫으로 적 묶어버려!',4,300);
+    else _petSayCD('melee_trap','cat','근접이 너무 많아! 거리 벌려!',4,300,'crow','...둘러싸이면 끝이야. 빠져나와.',4);
+  }
+  if(_nearCnt>=20){
+    if(P.skills.giantSlam>0)_petSayCD('melee_slam','crow','1번 대왕치기로 쓸어버려!',4,300,'cat','그로기 터지면 데미지 1.5배!',3);
+    else _petSayCD('melee_slam','crow','회전참이나 광역기로 몰아! 한 놈씩 상대하면 죽어.',4,300,'cat','뭉쳐있을 때가 기회야!',3);
+  }}
 
   // 보스 속성
   if(G.bossAlive&&G._bossRef&&G._bossRef.el>0)_petSayCD('boss_elem','crow','속성을 읽어. 약점을 찌르면 두 배로 썩는다.',4,30,'cat','화염엔 빙결! 암전엔 암흑! 기억해!',4);
@@ -19581,6 +19598,12 @@ function update(){
           if(_rtx0>=0&&_rty0>=0&&_rtx0<G.mw&&_rty0<G.mh&&G.map[_rty0][_rtx0]!==1){e.x=_wx0;e.y=_wy0;e.kb.x=0;e.kb.y=0;_rescued0=true;break}}}
         if(!_rescued0){e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1;continue}
       }}
+      // ── 타이머 감소 (컬링/짝홀 상관없이 항상 실행) ──
+      if(e.stunned>0)e.stunned-=sp;
+      if(e._hitStun>0)e._hitStun-=sp;
+      if(e._stunImmune>0)e._stunImmune-=sp;
+      if(e._pImmune>0)e._pImmune-=sp;
+      if(e.stunned<=0&&e._maxStunned)e._maxStunned=0;
       const _eox=e.x,_eoy=e.y;
       if(e.reviveIframes>0)e.reviveIframes=Math.max(0,e.reviveIframes-sp);
       const _ed2=dst2(P.x,P.y,e.x,e.y);
@@ -19639,7 +19662,7 @@ function update(){
           e.hp=e.mhp;e.s='recover';e.st2=60;e.stunned=0;e.kb={x:0,y:0};
           e.poise=e.maxPoise;e._reviveChase=true;e._alerted=true;
           _reviveVFX(e.x,e.y,e.col,'💀본모습 부활!',{partN:12,partSpd:4,shake:4,vfxSize:80});
-          if(!G._reviveTutDone){G._reviveTutDone=true;_petSayCD('tut_revive','crow','몬스터는 부활력을 가지고 있어. 악의력을 많이 쓰면 악마가 돼서 부활력이 생긴대.',6,9999,'cat','혹시 너도...',4)}
+          if(!G._reviveTutDone){G._reviveTutDone=true;_petSayCD('tut_revive','crow','악의에 중독되면 악마가 돼서 부활력이 생긴대. 저 녀석처럼.',6,9999,'cat','혹시 너도...?',4)}
         }
       }
     }
@@ -22952,9 +22975,8 @@ function updateE(e,sp){
       else{e.kb.x=0;e.kb.y=0}}
     const _ekD=.85**sp;e.kb.x*=_ekD;e.kb.y*=_ekD}
   if(e._bluHitCD>0)e._bluHitCD-=sp;
-  if(e._stunImmune>0)e._stunImmune-=sp;
-  // 피격 경직 (짧은 히트스턴)
-  if(e._hitStun>0){e._hitStun-=sp;return}
+  // _stunImmune / _hitStun 은 루프 초반에서 이미 감소됨
+  if(e._hitStun>0)return; // 피격 경직: AI 스킵
   if(e.stunned>0){
     // 스턴 면역: 스턴 중 새 스턴/포이즈 갱신 차단
     if((e._stunImmune||0)>0&&e._expectedStun!==undefined&&e.stunned>e._expectedStun){
@@ -22964,11 +22986,11 @@ function updateE(e,sp){
     if(e.stunned>_stunCap){e.stunned=_stunCap}
     if(!e._maxStunned)e._maxStunned=e.stunned;
     e._stunImmune=Math.max(e._stunImmune||0,2); // 스턴 중 면역 유지
-    e.poise=e.maxPoise; // 스턴 중 포이즈 풀 유지 (추가 포이즈 충격 무효)
-    e.stunned-=sp;
+    e.poise=e.maxPoise; // 스턴 중 포이즈 풀 유지
+    // stunned 감소는 루프 초반에서 처리됨
     e._expectedStun=Math.max(0,e.stunned);
-    if(e.stunned<=0){e._maxStunned=0;e._stunImmune=180;e._expectedStun=undefined; // 해제 후 3초 면역
-      if(e.ib)e._pImmune=Math.max(e._pImmune||0,300)} // 보스: 그로기 해제 후 5초 면역
+    if(e.stunned<=0){e._maxStunned=0;e._stunImmune=180;e._expectedStun=undefined;
+      if(e.ib)e._pImmune=Math.max(e._pImmune||0,300)}
     return;
   }else if((e._stunImmune||0)>0){
     // 면역 기간: 새 스턴 차단 + 포이즈 보호
@@ -32632,7 +32654,7 @@ function draw(){
   // [EDITOR] 에디터 모드: 맵+MAP_OBJS까지만 그리고 종료
   if(_EDITOR_MODE){X.restore();return}
   // Enemies (화면 내만 렌더, 최대 렌더 수 제한)
-  const _vl=G.cam.x-C.width/2-60,_vr=G.cam.x+C.width/2+60,_vt=G.cam.y-C.height/2-60,_vb=G.cam.y+C.height/2+60;
+  const _vl=G.cam.x-C.width/2-200,_vr=G.cam.x+C.width/2+200,_vt=G.cam.y-C.height/2-200,_vb=G.cam.y+C.height/2+200;
   let _eRCnt=0;const _E_RMAX=_dynERMax;
   _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX);
   for(let _eri=0;_eri<ens.length;_eri++){const e=ens[_eri];
@@ -39601,6 +39623,10 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         if(j.ok&&j.data&&j.data.player){
           dbRestore(j.data);_loaded=true;
           if(!IS_ELECTRON)console.log('[LOCAL] 로드 완료 ← saves/'+_SLOT+'.json — Lv.'+P.lv+' Stage '+G.stage);
+          // 빈 장비 슬롯 자동 보충: 흰장비 기본 장착
+          const _diE=defaultItems();
+          for(const it of _diE){if(!INV.equipped[it.slot])INV.equipped[it.slot]=it}
+          recalcSt();
         }
       }
       if(!_loaded){
@@ -39723,7 +39749,12 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
       let _loaded=false;
       if(_raw){
         const _d=JSON.parse(_raw);
-        if(_d&&_d.player){dbRestore(_d);_loaded=true;console.log('[WEB] 로드 완료 — Lv.'+P.lv+' Stage '+G.stage)}
+        if(_d&&_d.player){dbRestore(_d);_loaded=true;console.log('[WEB] 로드 완료 — Lv.'+P.lv+' Stage '+G.stage);
+          // 빈 장비 슬롯 자동 보충: 흰장비 기본 장착
+          const _diW=defaultItems();
+          for(const it of _diW){if(!INV.equipped[it.slot])INV.equipped[it.slot]=it}
+          recalcSt();
+        }
       }
       if(!_loaded){
         console.log('[WEB] 세이브 없음, 새 게임 시작');
