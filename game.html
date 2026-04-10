@@ -91,8 +91,8 @@ canvas{display:block;position:fixed;inset:0}
 .skull-eye{position:absolute;width:7px;height:7px;border-radius:50%;background:#ff2200;box-shadow:0 0 12px #ff3300,0 0 20px #ff0000;z-index:50;pointer-events:none;opacity:0;transition:opacity .3s}
 .skull-eye.on{opacity:1}
 /* 해골은 글라스(inset:-44px) 상단 ~11% 위치. 글라스 크기 = 글로브+88px */
-.skull-eye-l{top:-20px;left:calc(50% - 12px)}
-.skull-eye-r{top:-20px;left:calc(50% + 5px)}
+.skull-eye-l{top:-10px;left:calc(50% - 12px)}
+.skull-eye-r{top:-10px;left:calc(50% + 5px)}
 .mp-globe .globe-glass {
   background-image: url('img/ui_globe_mp.png');
 }
@@ -6038,6 +6038,7 @@ addEventListener('keydown',e=>{
   // ── T키 석궁 자동발사 토글 ──
   if(e.code==='KeyT'&&G.on&&!G.paused&&!e.repeat){
     _xbowEquipped=!_xbowEquipped;_xbowTimer=0;_xbowTarget=null;showPH(_xbowEquipped?(OPT.lang==='en'?'Auto Crossbow ON':'석궁 자동발사 ON'):(OPT.lang==='en'?'Auto Crossbow OFF':'석궁 자동발사 OFF'),_xbowEquipped?'#ffe066':'#888888');
+    OPT.xbowAuto=_xbowEquipped;saveSettings();
     if($('optXbowAuto'))$('optXbowAuto').checked=_xbowEquipped;
   }
   // ── Shift 작살: 홀드 시작 ──
@@ -14862,7 +14863,7 @@ function _burstLoopExplode(tier){
   for(let i=0;i<ens.length;i++){
     const e=ens[i];if(!e.alive)continue;
     const d=dst(P.x,P.y,e.x,e.y);if(d>_blR+e.r)continue;
-    const _blPull=P._blPullMode||false; // H키 토글: 밀기/당기기
+    const _blPull=(P._blPullMode!=null?P._blPullMode:!!OPT.blPullMode); // H키 토글: 밀기/당기기 (OPT에 영구저장)
     const ang=_blPull?Math.atan2(P.y-e.y,P.x-e.x):Math.atan2(e.y-P.y,e.x-P.x);
     const mult=elMul(EL.E,e.el);
     const dmg=~~(_blDmg*mult);
@@ -18254,7 +18255,7 @@ function update(){
     }
     else if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
     // ── H키: 버스트루프 밀기/당기기 토글 (공격과 독립) ──
-    if(_chkJust('KeyH')&&P.skills.burstLoop>=1){P._blPullMode=!P._blPullMode;addTxt(P.x,P.y-30,P._blPullMode?_T('🌀 당기기 모드'):_T('💥 밀어내기 모드'),P._blPullMode?'#44ccff':'#ff6644',40);playSample('shield_activate',.4,_r(1,.1));if($('optBlPullMode'))$('optBlPullMode').checked=P._blPullMode}
+    if(_chkJust('KeyH')&&P.skills.burstLoop>=1){P._blPullMode=!P._blPullMode;addTxt(P.x,P.y-30,P._blPullMode?_T('🌀 당기기 모드'):_T('💥 밀어내기 모드'),P._blPullMode?'#44ccff':'#ff6644',40);playSample('shield_activate',.4,_r(1,.1));OPT.blPullMode=P._blPullMode;saveSettings();if($('optBlPullMode'))$('optBlPullMode').checked=P._blPullMode}
     // ── X키: 처형 (그로기 보스 전용, HP/MP/ST 10% 소모 → 사슬기동 자동 돌진 → 보스 HP 30% 순수뎀, 쿨 20초) ──
     if(_chkJust('KeyX')&&P.skills.execution>=1&&(P._execCd||0)<=0){
       const _exBoss=G._bossRef&&G._bossRef.alive&&G._bossRef.stunned>0?G._bossRef:null;
@@ -29843,8 +29844,8 @@ $('optPetAuto').onchange=function(){OPT.petAuto=this.checked;saveSettings()};
 $('optIrisSz').oninput=function(){const v=+this.value;G._irisSz=v;if(G.pets&&G.pets.iris)G.pets.iris.sz=v;$('optIrisSzVal').textContent=v;saveSettings()};
 $('optBrightness').oninput=function(){OPT.brightness=+this.value;$('optBrightnessVal').textContent=this.value+'%';C.style.filter='brightness('+(OPT.brightness/100)+')';saveSettings()};
 $('optIrisGlow').oninput=function(){OPT.irisGlow=+this.value;$('optIrisGlowVal').textContent=this.value;saveSettings()};
-$('optXbowAuto').onchange=function(){_xbowEquipped=this.checked;_xbowTimer=0;_xbowTarget=null;showPH(_xbowEquipped?(OPT.lang==='en'?'Auto Crossbow ON':'석궁 자동발사 ON'):(OPT.lang==='en'?'Auto Crossbow OFF':'석궁 자동발사 OFF'),_xbowEquipped?'#ffe066':'#888888')};
-$('optBlPullMode').onchange=function(){if(P){P._blPullMode=this.checked;addTxt(P.x,P.y-30,P._blPullMode?_T('🌀 당기기 모드'):_T('💥 밀어내기 모드'),P._blPullMode?'#44ccff':'#ff6644',40)}};
+$('optXbowAuto').onchange=function(){_xbowEquipped=this.checked;_xbowTimer=0;_xbowTarget=null;OPT.xbowAuto=_xbowEquipped;saveSettings();showPH(_xbowEquipped?(OPT.lang==='en'?'Auto Crossbow ON':'석궁 자동발사 ON'):(OPT.lang==='en'?'Auto Crossbow OFF':'석궁 자동발사 OFF'),_xbowEquipped?'#ffe066':'#888888')};
+$('optBlPullMode').onchange=function(){OPT.blPullMode=this.checked;saveSettings();if(P){P._blPullMode=this.checked;addTxt(P.x,P.y-30,P._blPullMode?_T('🌀 당기기 모드'):_T('💥 밀어내기 모드'),P._blPullMode?'#44ccff':'#ff6644',40)}};
 $('optBladeAuto').onchange=function(){OPT.bladeAuto=this.checked;saveSettings()};
 $('optBossDbg').onchange=function(){OPT.bossDebug=this.checked;saveSettings()};
 // ── 그래픽 프리셋 ──
@@ -30337,7 +30338,7 @@ function syncSettingsUI(){
   if($('optBrightness')){const _br=OPT.brightness||100;$('optBrightness').value=_br;$('optBrightnessVal').textContent=_br+'%';C.style.filter='brightness('+(_br/100)+')';}
   if($('optIrisGlow')){const _ig=OPT.irisGlow||250;$('optIrisGlow').value=_ig;$('optIrisGlowVal').textContent=_ig}
   if($('optXbowAuto'))$('optXbowAuto').checked=_xbowEquipped;
-  if($('optBlPullMode'))$('optBlPullMode').checked=!!(P&&P._blPullMode);
+  if($('optBlPullMode'))$('optBlPullMode').checked=(P&&P._blPullMode!=null?P._blPullMode:!!OPT.blPullMode);
   if($('optBladeAuto')){$('optBladeAuto').checked=!!OPT.bladeAuto}
   if($('optBossDbg')){$('optBossDbg').checked=!!OPT.bossDebug}
   if($('optBloom'))$('optBloom').checked=!!OPT.bloom;
@@ -30360,6 +30361,8 @@ try{
     if(data.binds){for(const k in data.binds){if(k in BINDS)BINDS[k]=data.binds[k]}}
     if(data.binds2){for(const k in data.binds2){if(k in BINDS2||k in BINDS)BINDS2[k]=data.binds2[k]}}
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
+    // 토글 상태 복원: 석궁 자동발사(T), 버스트루프 당기기(H)
+    if(typeof OPT.xbowAuto==='boolean')_xbowEquipped=OPT.xbowAuto;
     // 로비에서 선택한 언어 반영
     const _lobbyLang=localStorage.getItem('hellLang');if(_lobbyLang)OPT.lang=_lobbyLang;
     // 키바인딩 마이그레이션: 구버전 찌꺼기 정리 + forge=KeyQ → KeyG
