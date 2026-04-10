@@ -1281,6 +1281,8 @@ async function dbSave(){
   if(!_charId||!_dbReady||_saving)return;
   if(!P)return;
   _saving=true;
+  // 계정 공유: 악의와 창고는 localStorage에 저장
+  try{_saveSharedMats(G.mats||0);_persistSharedStorage()}catch(e){}
   try{
     const saveData={
       player:{
@@ -1294,10 +1296,10 @@ async function dbSave(){
       stats:{...STATS},
       passives:{...PASSIVES},grit:_grit,gritCostModeV2:1,
       qslots:QSLOTS,
-      game:{stage:G.stage,kills:G.kills,mats:G.mats,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0},
+      game:{stage:G.stage,kills:G.kills,mats:0,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0},
       bagMax:BAG_MAX,
       hellCleared:G.hellCleared||[],
-      storage:STORAGE||{},
+      storage:{}, /* 창고는 localStorage 공유 */
       crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
       upgrades:{...UPGRADES},
       potLv:{...POT_LV},
@@ -1365,8 +1367,8 @@ function dbRestore(d){
     INV.bag.forEach(_fixBr);_fixBr(INV.equipped.bracelet);
     if(STORAGE&&STORAGE.items)STORAGE.items.forEach(_fixBr);
     if(INV.equipped.headband===undefined)INV.equipped.headband=null;
-    // 팔찌/머리띠 ??? 아이템 수리 마이그레이션
-    const _fixBrHb=(it)=>{if(it&&it.name==='???'){const _n={bracelet:{0:['낡은 팔찌','은 팔찌','흑요석 팔찌','미스릴 팔찌','천벌의 팔찌']},headband:{0:['낡은 머리띠','은사 머리띠','흑요석 머리띠','미스릴 머리띠','천벌의 머리띠']}};if(_n[it.slot]){it.name=(_n[it.slot][it.el||0]||_n[it.slot][0])[Math.min(it.tier||0,4)];it.emoji=SLOT_EMOJI[SLOT_NAMES.indexOf(it.slot)];if(!it.def&&it.slot==='bracelet'){it.def=1+(it.tier||0);it.eDef=1+(it.tier||0);it.bonusHp=5+(it.tier||0)*5}if(!it.eDef&&it.slot==='headband'){it.eDef=2+(it.tier||0)*2;it.mpRegen=1+(it.tier||0)}}}};
+    // 팔찌/귀걸이 ??? 아이템 수리 마이그레이션
+    const _fixBrHb=(it)=>{if(it&&it.name==='???'){const _n={bracelet:{0:['낡은 팔찌','은 팔찌','흑요석 팔찌','미스릴 팔찌','천벌의 팔찌']},headband:{0:['낡은 귀걸이','은사 귀걸이','흑요석 귀걸이','미스릴 귀걸이','천벌의 귀걸이']}};if(_n[it.slot]){it.name=(_n[it.slot][it.el||0]||_n[it.slot][0])[Math.min(it.tier||0,4)];it.emoji=SLOT_EMOJI[SLOT_NAMES.indexOf(it.slot)];if(!it.def&&it.slot==='bracelet'){it.def=1+(it.tier||0);it.eDef=1+(it.tier||0);it.bonusHp=5+(it.tier||0)*5}if(!it.eDef&&it.slot==='headband'){it.eDef=2+(it.tier||0)*2;it.mpRegen=1+(it.tier||0)}}}};
     INV.bag.forEach(_fixBrHb);_fixBrHb(INV.equipped.bracelet);_fixBrHb(INV.equipped.headband);
     // 방패→견갑 이름 마이그레이션
     const _fixShieldName=(it)=>{if(it&&it.name&&it.slot==='shield')it.name=it.name.replace(/방패/g,'견갑').replace(/대견갑/g,'대견갑')};
@@ -1413,7 +1415,11 @@ function dbRestore(d){
   if(d.game){
     G.stage=d.game.stage||0;
     G.kills=d.game.kills||0;
-    G.mats=d.game.mats||0;
+    // 악의(mats)도 계정 공유: 세이브에 남은 건 공유 풀로 이관
+    const _savedMats=d.game.mats||0;
+    const _sharedMats=_loadSharedMats();
+    if(_savedMats>0&&_savedMats!==_sharedMats){_saveSharedMats(_sharedMats+_savedMats);d.game.mats=0}
+    G.mats=_loadSharedMats();
     G._irisSz=d.game.irisSz||20;
     G._taRecords=d.game.taRecords||{};G.comboMax=d.game.comboMax||0;G.playTime=d.game.playTime||0;
   }
@@ -1421,8 +1427,14 @@ function dbRestore(d){
   BAG_MAX=d.bagMax||300;
   // Hell cleared
   G.hellCleared=d.hellCleared||[];
-  // Storage
-  if(d.storage)STORAGE=d.storage;
+  // Storage: 세이브 파일 무시하고 계정 공유 로드 (기존 세이브에 남은 아이템은 1회 이관)
+  if(d.storage&&d.storage[0]&&d.storage[0].length>0){
+    const _sharedBefore=_loadSharedStorage();
+    const _merged=_sharedBefore.concat(d.storage[0]);
+    _saveSharedStorage(_merged);
+    d.storage={}; // 세이브에서 제거
+  }
+  STORAGE={};STORAGE._synced=false;_getStore();
   // 결정 주머니 복원 + 마이그레이션
   CRYSTAL_BAG=d.crystalBag||[];CRYSTAL_DUST=d.crystalDust||0;
   const _fixCr=it=>{if(!it)return;if(it.socketCount===undefined){const _r=Math.random();it.socketCount=_r<.5?1:_r<.8?2:_r<.95?3:4;it.crystals=new Array(it.socketCount).fill(null)}};
@@ -3666,7 +3678,7 @@ const _EN_BASE={'대검':'Greatsword','석궁':'Crossbow','연사석궁':'Repeat
 '견갑':'Shield','대견갑':'Great Shield','전투화':'Combat Boots','갑옷':'Armor','갑주':'Armor',
 '투구':'Helmet','장갑':'Gloves','건틀릿':'Gauntlets','바지':'Pants','각반':'Leggings',
 '허리띠':'Belt','벨트':'Belt','부적':'Talisman','목걸이':'Necklace','반지':'Ring',
-'망토':'Cape','팔찌':'Bracelet','머리띠':'Headband'};
+'망토':'Cape','팔찌':'Bracelet','귀걸이':'Earring'};
 function _T(s){
   if(OPT.lang!=='en')return s;
   if(_EN[s])return _EN[s];
@@ -6243,60 +6255,94 @@ const FINALBOSS_HP_MULT=15,FINALBOSS_ATK_MULT=5;
 const DR_CAP=0.75; // 방어 DR 상한 75%
 // ═══ 어픽스 시스템 (접두/접미) ═══
 // 게임 슬롯→어픽스 슬롯 매핑
-const _AFSLOT={weapon:'wpn',shield:'shield',boots:'boots',armor:'armor',helmet:'helm',bow:'wpn',gloves:'gloves',pants:'pants',belt:'armor',necklace:'neck',ring1:'ring',ring2:'ring',cape:'cloak',bracelet:'bracelet',headband:'headband'};
+// 3파트 분류 주석:
+// 무기 파트(wpn,helm): weapon/bow→'wpn', helmet→'helm'
+// 방어구 파트(armor,shield,boots,gloves,pants,cloak): 각자 슬롯
+// 장신구 파트(belt,bracelet,ring,neck,headband): 각자 슬롯 (belt 버그 수정: 구버전 'armor' → 'belt')
+const _AFSLOT={weapon:'wpn',shield:'shield',boots:'boots',armor:'armor',helmet:'helm',bow:'wpn',gloves:'gloves',pants:'pants',belt:'belt',necklace:'neck',ring1:'ring',ring2:'ring',cape:'cloak',bracelet:'bracelet',headband:'headband'};
+// ═══ AFFIX_POOL (3파트 룰 적용 2026-04-10) ═══
+// 무기 파트(wpn,helm): 공격/크리/원소/DoT만, 스탯 금지
+// 방어구 파트(armor,shield,gloves,pants,boots,cloak): 방어(+50 5티어)/HP/이속/방어유틸
+// 장신구 파트(belt,bracelet,ring,neck,headband): 속성저항 전담/ST/MP/LCK/GRIT
+// 회피 어픽스는 일단 제외 (나중에 추가 예정)
 const AFFIX_POOL=[
-  // PREFIX: 공격 DoT (무기 전용)
+  // ─── 무기 파트 PREFIX ─── (wpn=weapon/bow, helm=helmet)
+  // 공격 DoT (weapon 전용, bow는 shot 기반이라 DoT 제외)
   {id:'poisonDot',type:0,tiers:[8,14,22],unit:'dps',slots:['wpn'],group:'poison',weight:100},
   {id:'fireDot',type:0,tiers:[10,17,26],unit:'dps',slots:['wpn'],group:'fire',weight:100},
   {id:'iceDot',type:0,tiers:[7,12,18],unit:'dps',slots:['wpn'],group:'ice',weight:90},
   {id:'lightChain',type:0,tiers:[13,22,35],unit:'dmg',slots:['wpn'],group:'lightning',weight:85},
   {id:'darkCurse',type:0,tiers:[.20,.35,.55],unit:'prob',slots:['wpn'],group:'dark',weight:70},
+  // 공격 스킬 관련 (무기만)
   {id:'armorPen',type:0,tiers:[.08,.14,.22],unit:'pct',slots:['wpn'],group:'pen',weight:75},
-  // critChance 어픽스 제거됨
   {id:'staggerBns',type:0,tiers:[8,14,22],unit:'val',slots:['wpn'],group:'stagger',weight:70},
   {id:'chainTarget',type:0,tiers:[1,2,3],unit:'cnt',slots:['wpn'],group:'chain',weight:60},
   {id:'killSlayer',type:0,tiers:[.15,.25,.40],unit:'pct',slots:['wpn'],group:'kill',weight:75},
-  // critExplosion 어픽스 제거됨
-  {id:'elemFocus',type:0,tiers:[.12,.20,.32],unit:'pct',slots:['wpn','neck'],group:'elemfcs',weight:70},
-  {id:'atkSpeed',type:0,tiers:[.06,.10,.16],unit:'pct',slots:['wpn','gloves'],group:'aspd',weight:85},
-  {id:'parryBonus',type:0,tiers:[.20,.35,.55],unit:'pct',slots:['wpn','cloak'],group:'parry',weight:65},
   {id:'comboBoost',type:0,tiers:[.20,.35,.55],unit:'pct',slots:['wpn'],group:'combo',weight:60},
-  {id:'dashBoost',type:0,tiers:[.25,.40,.65],unit:'pct',slots:['wpn','boots'],group:'dash',weight:55},
+  {id:'dashBoost',type:0,tiers:[.25,.40,.65],unit:'pct',slots:['wpn'],group:'dash',weight:55},
   {id:'skillBoost',type:0,tiers:[.15,.25,.40],unit:'pct',slots:['wpn'],group:'skill',weight:65},
-  {id:'cooldownRed',type:0,tiers:[-.08,-.14,-.22],unit:'pct',slots:['helm','neck'],group:'cd',weight:70},
-  {id:'maxHPFlat',type:0,tiers:[100,200,300],unit:'val',slots:['armor','helm','neck','shield','boots','gloves','pants','belt','ring','cloak','bracelet','headband'],group:'hp',weight:90},
-  {id:'shieldFlat',type:0,tiers:[100,200,300],unit:'val',slots:['armor','helm','neck','shield','boots','gloves','pants','belt','ring','cloak','bracelet','headband'],group:'shd',weight:80},
-  {id:'maxHPPct',type:0,tiers:[.08,.14,.22],unit:'pct',slots:['armor','neck'],group:'hpp',weight:80},
-  {id:'movSpeed',type:0,tiers:[.05,.09,.14],unit:'pct',slots:['boots','cloak'],group:'mspd',weight:85},
-  // SUFFIX: 원소 저항
-  {id:'fireRes',type:1,tiers:[.12,.20,.32],unit:'pct',slots:['armor','ring','neck'],group:'rfir',weight:100},
-  {id:'iceRes',type:1,tiers:[.12,.20,.32],unit:'pct',slots:['armor','ring','neck'],group:'rice',weight:100},
-  {id:'lightRes',type:1,tiers:[.12,.20,.32],unit:'pct',slots:['armor','ring','neck'],group:'rlit',weight:100},
-  {id:'darkRes',type:1,tiers:[.12,.20,.32],unit:'pct',slots:['armor','ring','neck'],group:'rdark',weight:90},
-  {id:'poisonRes',type:1,tiers:[.10,.18,.28],unit:'pct',slots:['armor','ring','neck'],group:'rpoi',weight:90},
-  {id:'allRes',type:1,tiers:[.05,.09,.15],unit:'pct',slots:['neck'],group:'rall',weight:50},
-  // SUFFIX: 방어
-  {id:'physDR',type:1,tiers:[.06,.10,.16],unit:'pct',slots:['armor','shield'],group:'pdr',weight:80},
-  {id:'reflect',type:1,tiers:[.05,.09,.15],unit:'pct',slots:['armor','shield','ring'],group:'refl',weight:70},
-  {id:'thorns',type:1,tiers:[4,8,14],unit:'val',slots:['armor','gloves'],group:'thorn',weight:65},
-  {id:'barrier',type:1,tiers:[15,28,45],unit:'val',slots:['armor','helm'],group:'bar',weight:60},
-  {id:'ccRes',type:1,tiers:[.12,.20,.32],unit:'pct',slots:['helm','pants'],group:'ccr',weight:70},
-  // SUFFIX: 조건부 트리거
-  {id:'crisisBoost',type:1,tiers:[.25,.40,.65],unit:'pct',slots:['armor','neck'],group:'cris',weight:45},
-  {id:'counterHit',type:1,tiers:[.15,.25,.40],unit:'prob',slots:['armor','shield'],group:'cnt',weight:40},
-  {id:'parryExplosion',type:1,tiers:[.40,.70,1.10],unit:'atk',slots:['wpn','shield'],group:'pexp',weight:35},
+  // 무기+helm 공유 (무기 파트 전역)
+  {id:'elemFocus',type:0,tiers:[.12,.20,.32],unit:'pct',slots:['wpn','helm'],group:'elemfcs',weight:70},
+  {id:'atkSpeed',type:0,tiers:[.06,.10,.16],unit:'pct',slots:['wpn','helm'],group:'aspd',weight:85},
+  {id:'parryBonus',type:0,tiers:[.20,.35,.55],unit:'pct',slots:['wpn'],group:'parry',weight:65},
+  {id:'cooldownRed',type:0,tiers:[-.08,-.14,-.22],unit:'pct',slots:['wpn','helm'],group:'cd',weight:70},
+  // ─── 무기 파트: 크리티컬 어픽스 (순수 크리확률/크리배율) ─── (NEW 2026-04-10)
+  {id:'critRate',type:0,tiers:[.05,.10,.15,.20,.25],unit:'pct',slots:['wpn','helm'],group:'crt',weight:60,tierW:[40,30,20,8,2]},
+  {id:'critDmgW',type:1,tiers:[.10,.20,.30,.40,.50],unit:'pct',slots:['wpn','helm'],group:'cdmgW',weight:60,tierW:[40,30,20,8,2]},
+  // 플랫 ATK 어픽스 3종 (극악 득템)
+  {id:'sharpAtk',type:0,tiers:[50,170,330],unit:'val',slots:['wpn','helm'],group:'satk',weight:25,skewRoll:3},
+  {id:'brutalAtk',type:0,tiers:[50,170,330],unit:'val',slots:['wpn','helm'],group:'batk',weight:20,skewRoll:3},
+  {id:'ruinAtk',type:1,tiers:[50,170,330],unit:'val',slots:['wpn','helm'],group:'ratk',weight:15,skewRoll:3},
+  // 마법 관련 (무기 파트: helm+wpn)
+  {id:'magicDmg',type:0,tiers:[.10,.18,.28],unit:'pct',slots:['wpn','helm'],group:'mdmg',weight:85},
+  // 무기 SUFFIX: 조건부 트리거
   {id:'staggerExplosion',type:1,tiers:[.30,.50,.80],unit:'pct',slots:['wpn'],group:'sexp',weight:35},
-  {id:'elemConvert',type:1,tiers:[.20,.35,.55],unit:'prob',slots:['wpn','neck'],group:'elcv',weight:40},
-  {id:'statusClean',type:1,tiers:[1,1,2],unit:'cnt',slots:['helm','pants'],group:'clean',weight:50},
+  {id:'elemConvert',type:1,tiers:[.20,.35,.55],unit:'prob',slots:['wpn'],group:'elcv',weight:40},
+  {id:'parryExplosion',type:1,tiers:[.40,.70,1.10],unit:'atk',slots:['wpn'],group:'pexp',weight:35},
+
+  // ─── 방어구 파트 PREFIX ─── (armor,shield,gloves,pants,boots,cloak)
+  // 방어 어픽스: flat DEF 5티어 최대 50 (방어구 전용)
+  {id:'defFlat',type:0,tiers:[10,20,30,40,50],unit:'val',slots:['armor','shield','gloves','pants','boots','cloak'],group:'defF',weight:100},
+  // HP/쉴드
+  {id:'maxHPFlat',type:0,tiers:[100,200,300],unit:'val',slots:['armor','shield','gloves','pants','boots','cloak'],group:'hp',weight:90},
+  {id:'shieldFlat',type:0,tiers:[100,200,300],unit:'val',slots:['armor','shield','gloves','pants','boots','cloak'],group:'shd',weight:80},
+  {id:'maxHPPct',type:0,tiers:[.08,.14,.22],unit:'pct',slots:['armor'],group:'hpp',weight:80},
+  // 이동
+  {id:'movSpeed',type:0,tiers:[.05,.09,.14],unit:'pct',slots:['boots','cloak'],group:'mspd',weight:85},
+  // 방어 SUFFIX
+  {id:'physDR',type:1,tiers:[.06,.10,.16],unit:'pct',slots:['armor','shield'],group:'pdr',weight:80},
+  {id:'reflect',type:1,tiers:[.05,.09,.15],unit:'pct',slots:['armor','shield'],group:'refl',weight:70},
+  {id:'thorns',type:1,tiers:[4,8,14],unit:'val',slots:['armor','gloves'],group:'thorn',weight:65},
+  {id:'barrier',type:1,tiers:[15,28,45],unit:'val',slots:['armor'],group:'bar',weight:60},
+  {id:'ccRes',type:1,tiers:[.12,.20,.32],unit:'pct',slots:['pants'],group:'ccr',weight:70},
+  {id:'crisisBoost',type:1,tiers:[.25,.40,.65],unit:'pct',slots:['armor'],group:'cris',weight:45},
+  {id:'counterHit',type:1,tiers:[.15,.25,.40],unit:'prob',slots:['armor','shield'],group:'cnt',weight:40},
+  {id:'statusClean',type:1,tiers:[1,1,2],unit:'cnt',slots:['pants'],group:'clean',weight:50},
   {id:'lastStand',type:1,tiers:[null,null,1],unit:'cnt',slots:['armor'],weight:20,group:'lst'},
   {id:'reviveOnce',type:1,tiers:[null,null,.30],unit:'hp',slots:['armor'],weight:10,group:'rev'},
-  // SUFFIX: 유틸
+  // 방어구 유틸
   {id:'dropRate',type:1,tiers:[.12,.20,.32],unit:'pct',slots:['boots','cloak'],group:'drop',weight:70},
-  {id:'expBonus',type:1,tiers:[.10,.18,.28],unit:'pct',slots:['helm','neck'],group:'exp',weight:65},
-  {id:'goldBonus',type:1,tiers:[.15,.25,.40],unit:'pct',slots:['boots','ring'],group:'gold',weight:70},
+  {id:'goldBonus',type:1,tiers:[.15,.25,.40],unit:'pct',slots:['boots'],group:'gold',weight:70},
   {id:'potionPower',type:1,tiers:[.20,.35,.55],unit:'pct',slots:['pants'],group:'pot',weight:60},
-  {id:'extraST',type:1,tiers:[50,75,100],unit:'val',slots:['boots'],group:'dodg',weight:55},
-  {id:'antiRevive',type:1,tiers:[.04,.08,.12,.16,.20],unit:'pct',slots:['neck','wpn','bracelet'],group:'arev',weight:40,tierW:[50,30,15,4,1]},
+
+  // ─── 장신구 파트 PREFIX/SUFFIX ─── (belt,bracelet,ring,neck,headband)
+  // 속성 저항 (장신구 전담)
+  {id:'fireRes',type:1,tiers:[.12,.20,.32],unit:'pct',slots:['ring','neck','belt','headband','bracelet'],group:'rfir',weight:100},
+  {id:'iceRes',type:1,tiers:[.12,.20,.32],unit:'pct',slots:['ring','neck','belt','headband','bracelet'],group:'rice',weight:100},
+  {id:'lightRes',type:1,tiers:[.12,.20,.32],unit:'pct',slots:['ring','neck','belt','headband','bracelet'],group:'rlit',weight:100},
+  {id:'darkRes',type:1,tiers:[.12,.20,.32],unit:'pct',slots:['ring','neck','belt','headband','bracelet'],group:'rdark',weight:90},
+  {id:'poisonRes',type:1,tiers:[.10,.18,.28],unit:'pct',slots:['ring','neck','belt','headband','bracelet'],group:'rpoi',weight:90},
+  {id:'allRes',type:1,tiers:[.05,.09,.15],unit:'pct',slots:['neck'],group:'rall',weight:50},
+  // eDefFlat: 속성방어 (장신구 전용, 전 속성 작용, 희귀·저수치)
+  {id:'eDefFlat',type:1,tiers:[50,100,150],unit:'val',slots:['neck','ring','belt','headband','bracelet'],group:'edf',weight:40},
+  // ST/MP 자원 (장신구 전용, 5티어 대칭)
+  {id:'maxSTFlat',type:0,tiers:[10,20,30,40,50],unit:'val',slots:['belt','bracelet','ring','neck','headband'],group:'stf',weight:75},
+  {id:'maxMPFlat',type:0,tiers:[10,20,30,40,50],unit:'val',slots:['belt','bracelet','ring','neck','headband'],group:'mpf',weight:75},
+  // MP 소비 감소 (귀걸이/목걸이)
+  {id:'mpCostRed',type:0,tiers:[-.08,-.14,-.22],unit:'pct',slots:['headband','neck'],group:'mpcr',weight:80},
+  // 장신구 유틸
+  {id:'expBonus',type:1,tiers:[.10,.18,.28],unit:'pct',slots:['neck'],group:'exp',weight:65},
+  {id:'antiRevive',type:1,tiers:[.04,.08,.12,.16,.20],unit:'pct',slots:['neck','bracelet'],group:'arev',weight:40,tierW:[50,30,15,4,1]},
   {id:'antiRevive',type:1,tiers:[.02,.04,.08,.12,.16],unit:'pct',slots:['ring'],group:'arev',weight:40,tierW:[50,30,15,4,1]},
   // 악마의 팔찌 전용: 부활력/부활쿨
   {id:'revivePow',type:0,tiers:[.10,.18,.28],unit:'pct',slots:['bracelet'],group:'rpow',weight:80,brType:'demon'},
@@ -6305,38 +6351,20 @@ const AFFIX_POOL=[
   {id:'lifeMaxHP',type:0,tiers:[.08,.14,.22],unit:'pct',slots:['bracelet'],group:'lhp',weight:85,brType:'life'},
   {id:'lifeRegen',type:0,tiers:[3,6,10],unit:'val',slots:['bracelet'],group:'lrg',weight:80,brType:'life'},
   {id:'lifeHealPow',type:0,tiers:[.10,.18,.28],unit:'pct',slots:['bracelet'],group:'lhl',weight:75,brType:'life'},
-  // 크리티컬 데미지 어픽스 2종 (행운의+극대화의 → 최대 반지50%, 목걸이100%)
-  {id:'critDmgA',type:0,tiers:[.05,.10,.15,.20,.25],unit:'pct',slots:['ring'],group:'cdmgA',weight:60,tierW:[40,30,20,8,2]},
-  {id:'critDmgB',type:1,tiers:[.05,.10,.15,.20,.25],unit:'pct',slots:['ring'],group:'cdmgB',weight:60,tierW:[40,30,20,8,2]},
-  {id:'critDmgA',type:0,tiers:[.10,.20,.30,.40,.50],unit:'pct',slots:['neck'],group:'cdmgA',weight:60,tierW:[40,30,20,8,2]},
-  {id:'critDmgB',type:1,tiers:[.10,.20,.30,.40,.50],unit:'pct',slots:['neck'],group:'cdmgB',weight:60,tierW:[40,30,20,8,2]},
-  // 플랫 ATK 어픽스 3종 (극악 득템)
-  {id:'sharpAtk',type:0,tiers:[50,170,330],unit:'val',slots:['wpn','helm'],group:'satk',weight:25,skewRoll:3},
-  {id:'brutalAtk',type:0,tiers:[50,170,330],unit:'val',slots:['wpn','helm'],group:'batk',weight:20,skewRoll:3},
-  {id:'ruinAtk',type:1,tiers:[50,170,330],unit:'val',slots:['wpn','helm'],group:'ratk',weight:15,skewRoll:3},
-  // 머리띠 전용: 마법뎀/MP소비/MP%
-  {id:'magicDmg',type:0,tiers:[.10,.18,.28],unit:'pct',slots:['headband'],group:'mdmg',weight:85},
-  {id:'mpCostRed',type:0,tiers:[-.08,-.14,-.22],unit:'pct',slots:['headband'],group:'mpcr',weight:80},
-  // maxMPPct 제거 (MP% 어픽스 → ST/MP 비대칭 해소)
-  // maxSTFlat / maxMPFlat: 5티어 대칭 어픽스, 방어구 10종 (최대 10슬롯 × 50 = 500)
-  {id:'maxSTFlat',type:0,tiers:[10,20,30,40,50],unit:'val',slots:['armor','helm','shield','boots','gloves','pants','belt','cloak','bracelet','headband'],group:'stf',weight:75},
-  {id:'maxMPFlat',type:0,tiers:[10,20,30,40,50],unit:'val',slots:['armor','helm','shield','boots','gloves','pants','belt','cloak','bracelet','headband'],group:'mpf',weight:75},
-  // eDefFlat: 속성방어는 전 속성에 작용하므로 희귀·저수치 (3티어 [50,100,150], 드랍 weight 40)
-  {id:'eDefFlat',type:1,tiers:[50,100,150],unit:'val',slots:['armor','helm','neck','shield','cloak','bracelet','headband','ring'],group:'edf',weight:40},
   // 장신구 전용 LCK/근성 어픽스 — 5티어
   {id:'lckFlatN',type:0,tiers:[20,40,60,80,100],unit:'val',slots:['neck'],group:'lckN',weight:80},
-  {id:'lckFlatR',type:0,tiers:[10,20,30,40,50],unit:'val',slots:['ring','bracelet'],group:'lckR',weight:80},
+  {id:'lckFlatR',type:0,tiers:[10,20,30,40,50],unit:'val',slots:['ring','bracelet','belt','headband'],group:'lckR',weight:80},
   {id:'gritFlatN',type:1,tiers:[20,40,60,80,100],unit:'val',slots:['neck'],group:'grtN',weight:80},
-  {id:'gritFlatR',type:1,tiers:[10,20,30,40,50],unit:'val',slots:['ring','bracelet'],group:'grtR',weight:80},
+  {id:'gritFlatR',type:1,tiers:[10,20,30,40,50],unit:'val',slots:['ring','bracelet','belt','headband'],group:'grtR',weight:80},
 ];
 const AFFIX_NAMES_KO={
   poisonDot:'맹독의',fireDot:'불꽃의',iceDot:'냉기의',lightChain:'번개의',darkCurse:'암흑의',
   armorPen:'관통의',critChance:'광폭의',staggerBns:'파쇄의',chainTarget:'연쇄의',
   killSlayer:'학살의',critExplosion:'폭발의',elemFocus:'집중의',atkSpeed:'쾌속의',parryBonus:'패리의',
   comboBoost:'추적자의',dashBoost:'작살의',skillBoost:'궁극의',cooldownRed:'집중력의',
-  maxHPFlat:'강인의',shieldFlat:'수호의',maxHPPct:'활력의',movSpeed:'신속의',
+  defFlat:'강철의',maxHPFlat:'강인의',shieldFlat:'수호의',maxHPPct:'활력의',movSpeed:'신속의',
   fireRes:'화염수호',iceRes:'빙결수호',lightRes:'암전수호',darkRes:'암흑수호',poisonRes:'독수호',allRes:'전원소수호',
-  physDR:'강철의',reflect:'반사의',thorns:'가시의',barrier:'흡수의',ccRes:'인내의',
+  physDR:'물리방패의',reflect:'반사의',thorns:'가시의',barrier:'흡수의',ccRes:'인내의',
   crisisBoost:'위기의',counterHit:'피격반격의',
   parryExplosion:'패링폭발의',staggerExplosion:'스태거폭발의',elemConvert:'원소전환의',statusClean:'정화의',
   lastStand:'불굴의',reviveOnce:'부활의',
@@ -6345,7 +6373,10 @@ const AFFIX_NAMES_KO={
   revivePow:'부활의',reviveCd:'윤회의',
   lifeMaxHP:'생명력의',lifeRegen:'재생의',lifeHealPow:'치유의',
   magicDmg:'마력의',mpCostRed:'절약의',maxMPPct:'영혼의',
+  maxSTFlat:'지속의',maxMPFlat:'마나의',eDefFlat:'원소수호의',
+  lckFlatN:'행운의',lckFlatR:'행운의',gritFlatN:'근성의',gritFlatR:'근성의',
   sharpAtk:'예리한',brutalAtk:'맹렬한',ruinAtk:'파멸의',
+  critRate:'광폭의',critDmgW:'극대화의',
   critDmgA:'행운의',critDmgB:'극대화의'
 };
 const _AFFIX_DESC={
@@ -6353,7 +6384,8 @@ const _AFFIX_DESC={
   armorPen:'방어무시',critChance:'치명타율',staggerBns:'스태거+',chainTarget:'체인타겟+',
   killSlayer:'처치 후 뎀+',critExplosion:'크리폭발(ATK×)',elemFocus:'원소뎀+',atkSpeed:'공격속도+',parryBonus:'패리보너스+',
   comboBoost:'추적콤보+10',dashBoost:'작살뎀+',skillBoost:'스킬뎀+',cooldownRed:'쿨다운-',
-  maxHPFlat:'HP+',shieldFlat:'쉴드+',maxHPPct:'HP%+',movSpeed:'이동속도+',
+  defFlat:'방어력+',maxHPFlat:'HP+',shieldFlat:'쉴드+',maxHPPct:'HP%+',movSpeed:'이동속도+',
+  critRate:'크리확률+',critDmgW:'크리배율+',
   fireRes:'화염저항',iceRes:'빙결저항',lightRes:'암전저항',darkRes:'암흑저항',poisonRes:'독저항',allRes:'전원소저항',
   physDR:'물리DR',reflect:'반사%',thorns:'가시뎀',barrier:'배리어',ccRes:'CC저항',
   crisisBoost:'위기뎀+',counterHit:'피격반격',
@@ -6598,8 +6630,8 @@ const ITEM_SIZE={weapon:[2,2],shield:[2,2],boots:[2,2],armor:[2,2],helmet:[2,2],
 const WTYPE_SIZE={sword:[2,2],dagger:[2,2],hammer:[2,2],mace:[2,2],club:[2,2],axe:[2,2],spear:[2,2]};
 const BTYPE_SIZE={crossbow:[2,2],repeater:[2,2],arcane:[2,2]};
 const INV_COLS=10;
-const SLOT_KR=['무기','견갑','부츠','갑옷','투구','석궁','장갑','바지','벨트','목걸이','반지1','반지2','망토','팔찌','머리띠'];
-const SLOT_EN=['Weapon','Shield','Boots','Armor','Helmet','Crossbow','Gloves','Pants','Belt','Necklace','Ring1','Ring2','Cape','Bracelet','Headband'];
+const SLOT_KR=['무기','견갑','부츠','갑옷','투구','석궁','장갑','바지','벨트','목걸이','반지1','반지2','망토','팔찌','귀걸이'];
+const SLOT_EN=['Weapon','Shield','Boots','Armor','Helmet','Crossbow','Gloves','Pants','Belt','Necklace','Ring1','Ring2','Cape','Bracelet','Earring'];
 function _slotName(i){return OPT.lang==='en'?SLOT_EN[i]:SLOT_KR[i]}
 const SLOT_EMOJI=['⚔️','🛡️','👢','🦺','⛑️','🏹','🧤','👖','🪢','📿','💍','💍','🧣','⭕','🎀'];
 // Paper doll slot positions [left, top] — indexed by SLOT_NAMES
@@ -6676,7 +6708,7 @@ function mkItem(slot,tier,el,rarity,wtype){
     ring2:null,// ring1 이름 공유
     cape:{0:['낡은 망토','가죽 망토','강철사 망토','미스릴 망토','천벌의 망토'],1:['불꽃 망토','화염 망토','염화 망토','지옥 망토','멸화의 망토'],2:['냉기 망토','빙결 망토','빙하 망토','서리의 망토','영겁빙 망토'],3:['그림자 망토','암흑 망토','심연 망토','나락 망토','무간의 망토'],4:['전기 망토','낙뢰 망토','암전 망토','뇌신 망토','만뢰의 망토'],5:['축복 망토','성광 망토','신성 망토','천사의 망토','신벌의 망토']},
     bracelet:{0:['낡은 팔찌','은 팔찌','흑요석 팔찌','미스릴 팔찌','천벌의 팔찌'],1:['불꽃 팔찌','화염 팔찌','염화 팔찌','지옥 팔찌','멸화의 팔찌'],2:['냉기 팔찌','빙결 팔찌','빙하 팔찌','서리의 팔찌','영겁빙 팔찌'],3:['그림자 팔찌','암흑 팔찌','심연 팔찌','나락 팔찌','무간의 팔찌'],4:['전기 팔찌','낙뢰 팔찌','암전 팔찌','뇌신 팔찌','만뢰의 팔찌'],5:['축복 팔찌','성광 팔찌','신성 팔찌','천사의 팔찌','신벌의 팔찌']},
-    headband:{0:['낡은 머리띠','은사 머리띠','흑요석 머리띠','미스릴 머리띠','천벌의 머리띠'],1:['불꽃 머리띠','화염 머리띠','염화 머리띠','지옥 머리띠','멸화의 머리띠'],2:['냉기 머리띠','빙결 머리띠','빙하 머리띠','서리의 머리띠','영겁빙 머리띠'],3:['그림자 머리띠','암흑 머리띠','심연 머리띠','나락 머리띠','무간의 머리띠'],4:['전기 머리띠','낙뢰 머리띠','암전 머리띠','뇌신 머리띠','만뢰의 머리띠'],5:['축복 머리띠','성광 머리띠','신성 머리띠','천사의 머리띠','신벌의 머리띠']},
+    headband:{0:['낡은 귀걸이','은사 귀걸이','흑요석 귀걸이','미스릴 귀걸이','천벌의 귀걸이'],1:['불꽃 귀걸이','화염 귀걸이','염화 귀걸이','지옥 귀걸이','멸화의 귀걸이'],2:['냉기 귀걸이','빙결 귀걸이','빙하 귀걸이','서리의 귀걸이','영겁빙 귀걸이'],3:['그림자 귀걸이','암흑 귀걸이','심연 귀걸이','나락 귀걸이','무간의 귀걸이'],4:['전기 귀걸이','낙뢰 귀걸이','암전 귀걸이','뇌신 귀걸이','만뢰의 귀걸이'],5:['축복 귀걸이','성광 귀걸이','신성 귀걸이','천사의 귀걸이','신벌의 귀걸이']},
   };
   // ═══ 디아블로식 ATK 롤: base × skew랜덤, 레어리티=최소보장 ═══
   const _atkMax=200+tier*200+(P.lv||1); // tier0=200, tier4=1000, +레벨
@@ -6806,12 +6838,10 @@ function mkItem(slot,tier,el,rarity,wtype){
     item.potCd=+([.03,.06,.10,.15,.22][rarity]*(0.9+Math.random()*.2)).toFixed(3);
     item.bonusHp=(item.bonusHp||0)+~~((3+tier*2+rarity*4)*(0.9+Math.random()*.2));
   }
-  // 반지: 5티어 크리율 (5%씩) + 어픽스 2개
+  // 반지: 장신구 파트 (크리 어픽스 제거 2026-04-10, 속성저항/자원 어픽스 2개 추가)
   if(slot==='ring1'||slot==='ring2'){
-    const _rCritTier=[1,2,3,4,5]; // T0=1%, T1=2%, T2=3%, T3=4%, T4=5%
-    item.critRate=+(_rCritTier[tier]*(0.9+Math.random()*.2)).toFixed(2);
-    // 반지 전용 어픽스 2개 추가 (기존 어픽스와 별도)
-    const _ringAffPool=['critDmgA','critDmgB','atkSpeed','armorPen','elemFocus','killSlayer','parryBonus'];
+    // 반지 전용 추가 어픽스 2개 (장신구 파트 룰 준수)
+    const _ringAffPool=['fireRes','iceRes','lightRes','darkRes','poisonRes','maxSTFlat','maxMPFlat','eDefFlat','lckFlatR','gritFlatR'];
     const _rAff1=_ringAffPool[~~(Math.random()*_ringAffPool.length)];
     let _rAff2=_ringAffPool[~~(Math.random()*_ringAffPool.length)];
     while(_rAff2===_rAff1)_rAff2=_ringAffPool[~~(Math.random()*_ringAffPool.length)];
@@ -6821,13 +6851,9 @@ function mkItem(slot,tier,el,rarity,wtype){
     if(_affDef){const _aTier=Math.min(tier,_affDef.tiers.length-1);item.affixes.push({id:_rAff1,val:_affDef.tiers[_aTier]})}
     if(_affDef2){const _aTier2=Math.min(tier,_affDef2.tiers.length-1);item.affixes.push({id:_rAff2,val:_affDef2.tiers[_aTier2]})}
   }
-  // 목걸이: 5티어 크리율 (10%씩) + 어픽스 2개
+  // 목걸이: 장신구 파트 (크리/뎀보너스 제거 2026-04-10, 속성저항/자원 어픽스 2개 추가)
   if(slot==='necklace'){
-    const _nCritTier=[2,4,6,8,10]; // T0=2%, T1=4%, T2=6%, T3=8%, T4=10%
-    item.critRate=+(_nCritTier[tier]*(0.9+Math.random()*.2)).toFixed(2);
-    const _nDmgTier=[10,20,30,40,50]; // T0=10%, T1=20%, T2=30%, T3=40%, T4=50%
-    item.dmgBonus=+(_nDmgTier[tier]*(0.9+Math.random()*.2)).toFixed(1);
-    const _neckAffPool=['critDmgA','critDmgB','cooldownRed','maxHPFlat','shieldFlat','elemFocus','parryBonus'];
+    const _neckAffPool=['fireRes','iceRes','lightRes','darkRes','poisonRes','allRes','maxSTFlat','maxMPFlat','eDefFlat','lckFlatN','gritFlatN','mpCostRed','expBonus'];
     const _nAff1=_neckAffPool[~~(Math.random()*_neckAffPool.length)];
     let _nAff2=_neckAffPool[~~(Math.random()*_neckAffPool.length)];
     while(_nAff2===_nAff1)_nAff2=_neckAffPool[~~(Math.random()*_neckAffPool.length)];
@@ -6838,9 +6864,13 @@ function mkItem(slot,tier,el,rarity,wtype){
     if(_nDef2){const _nt2=Math.min(tier,_nDef2.tiers.length-1);item.affixes.push({id:_nAff2,val:_nDef2.tiers[_nt2]})}
   }
   // ── 스탯 보너스: 언커먼+ 아이템에 랜덤 부여 ──
-  // 장신구(반지/목걸이/팔찌)는 LCK/근성만, 나머지는 STR/DEX/INT
-  if(rarity>=1){
-    const _isAccess=(slot==='ring1'||slot==='ring2'||slot==='necklace'||slot==='bracelet');
+  // 3파트 룰 (2026-04-10):
+  //   무기 파트(weapon/bow/helmet): 스탯 보너스 금지
+  //   장신구 파트(belt/bracelet/ring1/ring2/necklace/headband): LCK/근성만
+  //   방어구 파트(shield/armor/gloves/pants/boots/cape): STR/DEX/INT
+  const _isWeaponPart=(slot==='weapon'||slot==='bow'||slot==='helmet');
+  const _isAccess=(slot==='belt'||slot==='bracelet'||slot==='ring1'||slot==='ring2'||slot==='necklace'||slot==='headband');
+  if(rarity>=1 && !_isWeaponPart){
     const _statPool=_isAccess?['bLck','bGrit']:['bStr','bDex','bInt'];
     const _statCount=rarity>=4?(_isAccess?2:3):rarity>=3?2:rarity>=2?Math.random()<.6?2:1:Math.random()<.4?1:0;
     const _picked=[];for(let i=0;i<_statCount;i++){const pool=_statPool.filter(s=>!_picked.includes(s));if(!pool.length)break;const s=pool[~~(Math.random()*pool.length)];_picked.push(s)}
@@ -14205,10 +14235,10 @@ function applyStats(){
   // ═══ 바이블 기준: ATK = 15+(stage-1)*2 ═══
   P.baseAtk=G.on?15+((G.stage||1)-1)*2:15;
   P.speed=(2.6+s.dex*.005)*(1+(P._altSpd||0)+_eqAffix('movSpeed')+_eqImplicit('_iMovSpd')*.01);
-  P.stR=.05+s.dex*.005+P.lv*.001; // ST리젠: DEX + 레벨 (/8 적용)
+  P.stR=.05+s.dex*.005+P.lv*.0015; // ST리젠: DEX + 레벨 (/8 적용, Lv계수 0.001→0.0015)
   P.hpR=.05+s.str*.002+P.lv*.001+_eqAffix('lifeRegen')/60; // HP리젠: 초당 + STR + 레벨 + 생명팔찌
   P.mmp=~~(100+P.lv*.5+s.int*1+_eqAffix('maxMPFlat'));
-  P.mpR=.05+s.int*.005+P.lv*.001; // MP리젠: 초당 + INT + 레벨 (/8 적용)
+  P.mpR=.05+s.int*.005+P.lv*.0015; // MP리젠: 초당 + INT + 레벨 (/8 적용, Lv계수 0.001→0.0015)
   // ═══ 결정 스탯 합산 ═══
   const _cr={hp:0,st:0,mp:0,atk:0,def:0,spd:0,crit:0,cdmg:0,fire:0,ice:0,dark:0,light:0,holy:0,hpR:0,stR:0,mpR:0,drop:0};
   for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(!it||!it.crystals)continue;
@@ -14217,7 +14247,7 @@ function applyStats(){
   P._crystalStats=_cr;
   P.mhp=~~(P.mhp+~~_cr.hp)+_gritHpFlat();P.hp=Math.min(P.hp,P.mhp);
   P.baseAtk+=~~_cr.atk;
-  P.baseDef+=~~_cr.def;
+  P.baseDef+=~~_cr.def+_eqAffix('defFlat'); // 결정 DEF + defFlat 어픽스 (방어구 파트 전용)
   P.speed*=(1+_cr.spd*0.01);
   P.hpR+=_cr.hpR/60;
   P.mpR+=_cr.mpR/60;
@@ -14241,8 +14271,8 @@ function statStr(){return 1} // STR은 ref 함수에서 직접 ATK로 더해짐 
 function statDex(){return 1+(STATS.dex+_eqStat('Dex'))*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01} // DEX 공속 배율 +0.05%/pt (DEX1000=+50%) + 어픽스
 function statInt(){return 1} // INT는 ref 함수에서 직접 ATK로 더해짐 (1:1)
 function _eqLckTotal(){return STATS.lck+_eqStat('Lck')+_eqAffix('lckFlatN')+_eqAffix('lckFlatR')}
-function statCrit(){return _eqLckTotal()*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+(P._crystalStats?P._crystalStats.crit:0)}
-function statCritDmg(){return 1.5+_eqLckTotal()*.002+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5, LCK 1당 +0.2% (LCK1000=+200%, 1.5→3.5)
+function statCrit(){return _eqLckTotal()*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+_eqAffix('critRate')*100+(P._crystalStats?P._crystalStats.crit:0)} // critRate 어픽스 (무기 파트) pct단위 → %로 환산
+function statCritDmg(){return 1.5+_eqLckTotal()*.002+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5, LCK 1당 +0.2% (LCK1000=+200%, 1.5→3.5), critDmgW 추가 (무기 파트)
 function statDropBonus(){return 1+_eqLckTotal()*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
 // 패시브 배율 함수 (max5, 효과 2배)
 function pAtkMul(){return 1+PASSIVES.pAtk*.12+(P._altAtk||0)}  // 무기뎀 +12%/lv (10lv=+120%)
@@ -14255,8 +14285,8 @@ function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagi
 function pParryBlueBeanBase(p){return Math.max(p.dmg,~~(magicRef()*statInt()*pMagicMul()*0.8));}
 function pParryRmbSpd(){return 1+PASSIVES.pParry*.10}  // 우클릭공속 +10%/lv (10lv=+100%)
 function pParryRainbowDR(){return Math.min(.50,PASSIVES.pParry*.10)} // 무지개탄 피해감소 +10%/lv (최대50%)
-function pMagicMul(){return 1+PASSIVES.pMagic*.15+_eqAffix('magicDmg')+_eqImplicit('_iMagDmg')*.01}     // 마법뎀 +15%/lv + 머리띠 어픽스
-function pMagicCost(){return Math.max(.40,1-PASSIVES.pMagic*.04-_eqAffix('mpCostRed'))} // MP비용 -4%/lv + 머리띠 어픽스
+function pMagicMul(){return 1+PASSIVES.pMagic*.15+_eqAffix('magicDmg')+_eqImplicit('_iMagDmg')*.01}     // 마법뎀 +15%/lv + 귀걸이 어픽스
+function pMagicCost(){return Math.max(.40,1-PASSIVES.pMagic*.04-_eqAffix('mpCostRed'))} // MP비용 -4%/lv + 귀걸이 어픽스
 function pBowMul(){return 1+PASSIVES.pBow*.10}         // 석궁뎀 +10%/lv (10lv=+100%)
 function pBowCost(){return Math.max(.60,1-PASSIVES.pBow*.04)} // ST비용(석궁) -4%/lv (10lv=-40%)
 function pBowRange(){return 1+PASSIVES.pBow*.08}       // 석궁사거리 +8%/lv (10lv=+80%)
@@ -29528,14 +29558,26 @@ function _renderSkillRow(sk,grid){
 //  [S19] PANELS — Storage, Settings, Forge, Inv Render
 // ═══════════════════════════════════════
 let _storageViewFloor=0;
+// ═══ 계정 전체 공유 창고 (localStorage) ═══
+const _SHARED_STORAGE_KEY='hellcave_sharedStorage';
+const _SHARED_MATS_KEY='hellcave_sharedMats';
+function _loadSharedStorage(){try{const raw=localStorage.getItem(_SHARED_STORAGE_KEY);if(raw){const arr=JSON.parse(raw);if(Array.isArray(arr))return arr}}catch(e){}return[]}
+function _saveSharedStorage(arr){try{localStorage.setItem(_SHARED_STORAGE_KEY,JSON.stringify(arr||[]))}catch(e){}}
+function _loadSharedMats(){try{const v=localStorage.getItem(_SHARED_MATS_KEY);return v?~~v:0}catch(e){return 0}}
+function _saveSharedMats(v){try{localStorage.setItem(_SHARED_MATS_KEY,String(~~v))}catch(e){}}
 function _getStore(){
-  // 하위호환: 기존 층별 데이터 통합
-  if(!STORAGE[0])STORAGE[0]=[];
-  if(typeof STORAGE==='object'){
-    for(const k in STORAGE){if(k==='0')continue;if(Array.isArray(STORAGE[k])&&STORAGE[k].length>0){STORAGE[0]=STORAGE[0].concat(STORAGE[k]);STORAGE[k]=[]}}
+  // 계정 공유 창고: localStorage에서 로드, STORAGE[0]은 참조만 유지
+  if(!STORAGE[0]||!STORAGE._synced){
+    STORAGE[0]=_loadSharedStorage();
+    STORAGE._synced=true;
+    // 하위호환: 기존 층별 데이터가 있으면 이관
+    for(const k in STORAGE){if(k==='0'||k==='_synced')continue;if(Array.isArray(STORAGE[k])&&STORAGE[k].length>0){STORAGE[0]=STORAGE[0].concat(STORAGE[k]);STORAGE[k]=[]}}
+    _saveSharedStorage(STORAGE[0]);
   }
   return STORAGE[0];
 }
+// 창고 변경 시 자동 저장 헬퍼
+function _persistSharedStorage(){if(STORAGE[0])_saveSharedStorage(STORAGE[0])}
 function renderStorage(){
   const nav=$('storageFloorNav');nav.innerHTML='';
   const grid=$('storageGrid');grid.innerHTML='';
@@ -29550,7 +29592,7 @@ function renderStorage(){
   INV.bag.forEach((it,idx)=>{
     const d=document.createElement('div');d.className='fg-i';d.style.borderLeftColor=RARITY_C[it.rarity];
     d.innerHTML=`<div class="fg-in" style="color:${RARITY_C[it.rarity]}">${it.emoji} ${_T(it.name)}</div><div class="fg-id">Lv.${it.itemLv||0} ${_rarName(it.rarity)}</div><div class="fg-ic" style="color:#88cc66;cursor:pointer">${_T('보관')}</div>`;
-    d.onclick=()=>{if(store.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return}store.push(it);INV.bag.splice(idx,1);SFX.pickup();renderStorage();dbSaveNow()};
+    d.onclick=()=>{if(store.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return}store.push(it);INV.bag.splice(idx,1);SFX.pickup();_persistSharedStorage();renderStorage();dbSaveNow()};
     grid.appendChild(d);
   });
   // 꺼내기 (창고→가방)
@@ -29559,7 +29601,7 @@ function renderStorage(){
   store.forEach((it,idx)=>{
     const d=document.createElement('div');d.className='fg-i';d.style.borderLeftColor=RARITY_C[it.rarity];
     d.innerHTML=`<div class="fg-in" style="color:${RARITY_C[it.rarity]}">${it.emoji} ${_T(it.name)}</div><div class="fg-id">Lv.${it.itemLv||0} ${_rarName(it.rarity)}</div><div class="fg-ic" style="color:#66aacc;cursor:pointer">${_T('꺼내기')}</div>`;
-    d.onclick=()=>{if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}INV.bag.push(it);store.splice(idx,1);SFX.pickup();renderStorage();dbSaveNow()};
+    d.onclick=()=>{if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}INV.bag.push(it);store.splice(idx,1);SFX.pickup();_persistSharedStorage();renderStorage();dbSaveNow()};
     grid.appendChild(d);
   });
 }
@@ -29594,7 +29636,7 @@ function renderInvStorage(){
     const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:2px 3px;font-size:1rem;cursor:pointer;border-bottom:1px solid #1a0e00;transition:background .1s';
     d.onmouseenter=()=>d.style.background='rgba(136,170,102,.08)';d.onmouseleave=()=>d.style.background='';
     d.innerHTML=`<span style="color:${RARITY_C[it.rarity]};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px">${it.emoji} ${_T(it.name)}</span><span style="color:#88cc66;font-size:1rem;flex-shrink:0;margin-left:4px">${_T('보관')}</span>`;
-    d.onclick=()=>{if(store.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return}store.push(it);INV.bag.splice(idx,1);SFX.pickup();renderInv();dbSaveNow()};
+    d.onclick=()=>{if(store.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return}store.push(it);INV.bag.splice(idx,1);SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow()};
     bagList.appendChild(d);
   });
   sec.appendChild(bagList);
@@ -29602,7 +29644,7 @@ function renderInvStorage(){
 function withdrawStorage(idx){
   if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}
   const store=_getStore();if(!store[idx])return;
-  INV.bag.push(store[idx]);store.splice(idx,1);INV.selected=null;SFX.pickup();renderInv();
+  INV.bag.push(store[idx]);store.splice(idx,1);INV.selected=null;SFX.pickup();_persistSharedStorage();renderInv();
 }
 
 // ═══ SETTINGS RENDER ═══
@@ -31055,8 +31097,8 @@ function renderForge(){
   BGM.play('forge');
   $('forgeMats').textContent=`👿 ${_T('악의')}: ${G.mats}`;
   const tabs=$('fgTabs');tabs.innerHTML='';
-  const _fgTabEN={upgrade:'⭐ Enhance',potion:'🧪 Potion',salvage:'🔥 Salvage',reroll:'🔄 Reroll',crystal:'💎 Crystal',weapon:'⚔️ Weapon',shield:'🛡️ Shield',armor:'🦺 Armor',helmet:'⛑️ Helmet',boots:'👢 Boots',bow:'🏹 Bow',gloves:'🧤 Gloves',pants:'👖 Pants',necklace:'📿 Necklace',ring:'💍 Ring',bracelet:'⭕ Bracelet',headband:'🎀 Headband'};
-  [['upgrade','⭐ 강화'],['potion','🧪 물약'],['salvage','🔥 분해'],['reroll','🔄 리롤'],['crystal','💎 결정'],['weapon','⚔️ 무기'],['shield','🛡️ 견갑'],['armor','🦺 갑옷'],['helmet','⛑️ 투구'],['boots','👢 부츠'],['bow','🏹 활'],['gloves','🧤 장갑'],['pants','👖 바지'],['necklace','📿 목걸이'],['ring','💍 반지'],['bracelet','⭕ 팔찌'],['headband','🎀 머리띠']].forEach(([k,v])=>{
+  const _fgTabEN={upgrade:'⭐ Enhance',potion:'🧪 Potion',salvage:'🔥 Salvage',reroll:'🔄 Reroll',crystal:'💎 Crystal',weapon:'⚔️ Weapon',shield:'🛡️ Shield',armor:'🦺 Armor',helmet:'⛑️ Helmet',boots:'👢 Boots',bow:'🏹 Bow',gloves:'🧤 Gloves',pants:'👖 Pants',necklace:'📿 Necklace',ring:'💍 Ring',bracelet:'⭕ Bracelet',headband:'🎀 Earring'};
+  [['upgrade','⭐ 강화'],['potion','🧪 물약'],['salvage','🔥 분해'],['reroll','🔄 리롤'],['crystal','💎 결정'],['weapon','⚔️ 무기'],['shield','🛡️ 견갑'],['armor','🦺 갑옷'],['helmet','⛑️ 투구'],['boots','👢 부츠'],['bow','🏹 활'],['gloves','🧤 장갑'],['pants','👖 바지'],['necklace','📿 목걸이'],['ring','💍 반지'],['bracelet','⭕ 팔찌'],['headband','🎀 귀걸이']].forEach(([k,v])=>{
     const d=document.createElement('div');d.className='fg-tab'+(G.forgeTab===k?' act':'');d.textContent=OPT.lang==='en'?_fgTabEN[k]:v;d.onclick=()=>{G.forgeTab=k;_forgeSel=null;_salSel.clear();_rerollSel=null;_crForgeSel=-1;renderForge()};tabs.appendChild(d);
   });
   const grid=$('fgGrid');grid.innerHTML='';
@@ -31078,8 +31120,8 @@ function renderForge(){
     grid.style.gridTemplateColumns='1fr';
     const uhdr=document.createElement('div');uhdr.style.cssText='color:#ffaa44;font-size:.95rem;font-weight:700;margin-bottom:8px;letter-spacing:.1em;text-align:center';
     uhdr.textContent=_T('⚒️ 장비 강화 (실패 시 재료만 소멸)');grid.appendChild(uhdr);
-    const _slotEN={weapon:'⚔️ Weapon',shield:'🛡️ Shield',armor:'🦺 Armor',helmet:'⛑️ Helmet',boots:'👢 Boots',bow:'🏹 Bow',gloves:'🧤 Gloves',pants:'👖 Pants',belt:'🥋 Belt',necklace:'📿 Necklace',ring1:'💍 Ring1',ring2:'💍 Ring2',cape:'🧣 Cape',bracelet:'⭕ Bracelet',headband:'🎀 Headband'};
-    const slots=[['weapon','⚔️ 무기'],['shield','🛡️ 견갑'],['armor','🦺 갑옷'],['helmet','⛑️ 투구'],['boots','👢 부츠'],['bow','🏹 활'],['gloves','🧤 장갑'],['pants','👖 바지'],['belt','🥋 벨트'],['necklace','📿 목걸이'],['ring1','💍 반지1'],['ring2','💍 반지2'],['cape','🧣 망토'],['bracelet','⭕ 팔찌'],['headband','🎀 머리띠']].map(([k,v])=>[k,OPT.lang==='en'?_slotEN[k]:v]);
+    const _slotEN={weapon:'⚔️ Weapon',shield:'🛡️ Shield',armor:'🦺 Armor',helmet:'⛑️ Helmet',boots:'👢 Boots',bow:'🏹 Bow',gloves:'🧤 Gloves',pants:'👖 Pants',belt:'🥋 Belt',necklace:'📿 Necklace',ring1:'💍 Ring1',ring2:'💍 Ring2',cape:'🧣 Cape',bracelet:'⭕ Bracelet',headband:'🎀 Earring'};
+    const slots=[['weapon','⚔️ 무기'],['shield','🛡️ 견갑'],['armor','🦺 갑옷'],['helmet','⛑️ 투구'],['boots','👢 부츠'],['bow','🏹 활'],['gloves','🧤 장갑'],['pants','👖 바지'],['belt','🥋 벨트'],['necklace','📿 목걸이'],['ring1','💍 반지1'],['ring2','💍 반지2'],['cape','🧣 망토'],['bracelet','⭕ 팔찌'],['headband','🎀 귀걸이']].map(([k,v])=>[k,OPT.lang==='en'?_slotEN[k]:v]);
     let hasItem=false;
     slots.forEach(([slot,icon])=>{
       const it=INV.equipped[slot];if(!it)return;hasItem=true;
@@ -31509,7 +31551,7 @@ function renderForge(){
     grid.style.gridTemplateColumns='1fr';
     const slot=G.forgeTab;
     const tier=Math.min(SI_TO_HELL[G.stage],4);
-    const slotNames=OPT.lang==='en'?{weapon:'Weapon',shield:'Shield',armor:'Armor',helmet:'Helmet',boots:'Boots',bow:'Bow',gloves:'Gloves',pants:'Pants',necklace:'Necklace',ring:'Ring',bracelet:'Bracelet',headband:'Headband'}:{weapon:'무기',shield:'견갑',armor:'갑옷',helmet:'투구',boots:'부츠',bow:'활',gloves:'장갑',pants:'바지',necklace:'목걸이',ring:'반지',bracelet:'팔찌',headband:'머리띠'};
+    const slotNames=OPT.lang==='en'?{weapon:'Weapon',shield:'Shield',armor:'Armor',helmet:'Helmet',boots:'Boots',bow:'Bow',gloves:'Gloves',pants:'Pants',necklace:'Necklace',ring:'Ring',bracelet:'Bracelet',headband:'Earring'}:{weapon:'무기',shield:'견갑',armor:'갑옷',helmet:'투구',boots:'부츠',bow:'활',gloves:'장갑',pants:'바지',necklace:'목걸이',ring:'반지',bracelet:'팔찌',headband:'귀걸이'};
     const slotEmoji={weapon:'⚔️',shield:'🛡️',armor:'🦺',helmet:'⛑️',boots:'👢',bow:'🏹',gloves:'🧤',pants:'👖',necklace:'📿',ring:'💍'};
 
     // 현재 장착 표시
@@ -31787,10 +31829,10 @@ function renderStatSummary(){
     (P.mshield>0?(()=>{const _sInt=P._effStats?P._effStats.int:0;const _srBase=0.3,_srInt=_sInt*0.003;const _srTotal=(_srBase+_srInt)*pMRegenMul()*60;const _shBase=150,_shLv=~~(P.lv*.5),_shInt=~~((_sInt-100)*2.5);let _shEq=0;const _ds3=['shield','armor','boots','helmet','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];for(const sl of _ds3){const it=INV.equipped[sl];if(it)_shEq+=(it.bonusShield||0)};const _shAf=_eqAffix('shieldFlat');return`<div style="${_sLn}">${_L('에너지쉴드','Energy Shield')}: <span style="color:#4488ff">${~~P.shield}/${P.mshield}</span> <span style="color:#887766;font-size:1.1rem">(+${_srTotal.toFixed(1)}/${_L('초','s')})</span></div>`+`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_shBase} + Lv${_shLv} + INT${_shInt}${_shEq?' + '+_L('장비','gear')+_shEq:''}${_shAf?' + '+_L('어픽스','affix')+_shAf:''}</div>`+`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: ${_L('기본','base')}${_srBase} + INT${_srInt.toFixed(3)} = ${(_srBase+_srInt).toFixed(3)}/f × ${_L('패시브','passive')}${pMRegenMul().toFixed(2)} = ${_srTotal.toFixed(1)}/${_L('초','s')}</div>`})():'')+
     (()=>{const _gEq=(wp().stRegen||0)+(sh().stRegen||0)+(bt().stRegen||0)+(ar().stRegen||0)+(hm().stRegen||0)+(bw().stRegen||0)+(gl().stRegen||0)+(pt().stRegen||0)+(nc().stRegen||0)+(rg1().stRegen||0)+(rg2().stRegen||0)+(cp().stRegen||0);const _stTot=((P.stR+_gEq)*pRegenMul()/8*60).toFixed(1);return`<div style="${_sLn}">${_L('스태미나','Stamina')}: <span style="color:#44dd44">${~~P.st}/${P.mst}</span> <span style="color:#887766;font-size:1.1rem">(+${_stTot}/${_L('초','s')})</span></div>`})()+
     (()=>{const _stBase=100,_stLv=~~(P.lv*.5),_stDex=(P._effStats?P._effStats.dex:0);let _stEq=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it.bonusSt)_stEq+=it.bonusSt}const _stCr=~~(P._crystalStats?P._crystalStats.st:0);const _stGrit=_gritStFlat();return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_stBase} + Lv${_stLv} + DEX${_stDex}${_stEq?' + '+_L('장비','gear')+_stEq:''}${_stCr?' + '+_L('결정','crystal')+_stCr:''}${_stGrit?' + '+_L('성장','grit')+_stGrit:''} = ${P.mst}</div>`})()+
-    (()=>{const _dex=(P._effStats?P._effStats.dex:0);const _rBase=.05,_rDex=_dex*.005,_rLv=P.lv*.001;const _rRaw=_rBase+_rDex+_rLv;const _rPas=pRegenMul();const _gEq=(wp().stRegen||0)+(sh().stRegen||0)+(bt().stRegen||0)+(ar().stRegen||0)+(hm().stRegen||0)+(bw().stRegen||0)+(gl().stRegen||0)+(pt().stRegen||0)+(nc().stRegen||0)+(rg1().stRegen||0)+(rg2().stRegen||0)+(cp().stRegen||0);const _rTotal=(_rRaw+_gEq)/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: (${_L('기본','base')}${_rBase} + DEX×0.005=${_rDex.toFixed(3)} + Lv×0.001=${_rLv.toFixed(3)}${_gEq?' + '+_L('장비','gear')+_gEq.toFixed(2):''}) = ${(_rRaw+_gEq).toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
+    (()=>{const _dex=(P._effStats?P._effStats.dex:0);const _rBase=.05,_rDex=_dex*.005,_rLv=P.lv*.0015;const _rRaw=_rBase+_rDex+_rLv;const _rPas=pRegenMul();const _gEq=(wp().stRegen||0)+(sh().stRegen||0)+(bt().stRegen||0)+(ar().stRegen||0)+(hm().stRegen||0)+(bw().stRegen||0)+(gl().stRegen||0)+(pt().stRegen||0)+(nc().stRegen||0)+(rg1().stRegen||0)+(rg2().stRegen||0)+(cp().stRegen||0);const _rTotal=(_rRaw+_gEq)/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: (${_L('기본','base')}${_rBase} + DEX×0.005=${_rDex.toFixed(3)} + Lv×0.0015=${_rLv.toFixed(3)}${_gEq?' + '+_L('장비','gear')+_gEq.toFixed(2):''}) = ${(_rRaw+_gEq).toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
     (()=>{const _gEq=(wp().mpRegen||0)+(sh().mpRegen||0)+(bt().mpRegen||0)+(ar().mpRegen||0)+(hm().mpRegen||0)+(bw().mpRegen||0)+(gl().mpRegen||0)+(pt().mpRegen||0)+(nc().mpRegen||0)+(rg1().mpRegen||0)+(rg2().mpRegen||0)+(cp().mpRegen||0);const _mpTot=((P.mpR+_gEq)*pMRegenMul()/8*60).toFixed(1);return`<div style="${_sLn}">MP: <span style="color:#4488ff">${~~P.mp}/${P.mmp}</span> <span style="color:#887766;font-size:1.1rem">(+${_mpTot}/${_L('초','s')})</span></div>`})()+
     (()=>{const _mpBase=100,_mpLv=~~(P.lv*.5),_mpInt=(P._effStats?P._effStats.int:0);const _mpCr=~~(P._crystalStats?P._crystalStats.mp:0);const _mpGrit=_gritMpFlat();const _mpPct=_eqAffix('maxMPPct');const _mpPre=_mpBase+_mpLv+_mpInt;const _mpMul=1+_mpPct;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('기본','base')}${_mpBase} + Lv${_mpLv} + INT${_mpInt} = ${_mpPre} × ${_mpMul.toFixed(2)}${_mpPct?' ('+_L('MP%어픽스','MP% affix')+' +'+~~(_mpPct*100)+'%)':''}${_mpCr?' + '+_L('결정','crystal')+_mpCr:''}${_mpGrit?' + '+_L('성장','grit')+_mpGrit:''} = ${P.mmp}</div>`})()+
-    (()=>{const _int=(P._effStats?P._effStats.int:0);const _rBase=.05,_rInt=_int*.01,_rLv=P.lv*.002;const _rRaw=_rBase+_rInt+_rLv;const _rPas=pMRegenMul();const _gEq=(wp().mpRegen||0)+(sh().mpRegen||0)+(bt().mpRegen||0)+(ar().mpRegen||0)+(hm().mpRegen||0)+(bw().mpRegen||0)+(gl().mpRegen||0)+(pt().mpRegen||0)+(nc().mpRegen||0)+(rg1().mpRegen||0)+(rg2().mpRegen||0)+(cp().mpRegen||0);const _rTotal=(_rRaw+_gEq)/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: (${_L('기본','base')}${_rBase} + INT×0.01=${_rInt.toFixed(3)} + Lv×0.002=${_rLv.toFixed(3)}${_gEq?' + '+_L('장비','gear')+_gEq.toFixed(2):''}) = ${(_rRaw+_gEq).toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
+    (()=>{const _int=(P._effStats?P._effStats.int:0);const _rBase=.05,_rInt=_int*.005,_rLv=P.lv*.0015;const _rRaw=_rBase+_rInt+_rLv;const _rPas=pMRegenMul();const _gEq=(wp().mpRegen||0)+(sh().mpRegen||0)+(bt().mpRegen||0)+(ar().mpRegen||0)+(hm().mpRegen||0)+(bw().mpRegen||0)+(gl().mpRegen||0)+(pt().mpRegen||0)+(nc().mpRegen||0)+(rg1().mpRegen||0)+(rg2().mpRegen||0)+(cp().mpRegen||0);const _rTotal=(_rRaw+_gEq)/8*60*_rPas;return`<div style="font-size:1rem;color:#665544;margin-left:8px">${_L('리젠','Regen')}: (${_L('기본','base')}${_rBase} + INT×0.005=${_rInt.toFixed(3)} + Lv×0.0015=${_rLv.toFixed(3)}${_gEq?' + '+_L('장비','gear')+_gEq.toFixed(2):''}) = ${(_rRaw+_gEq).toFixed(3)}/f × ${_L('패시브','passive')}${_rPas.toFixed(2)} = ${_rTotal.toFixed(1)}/${_L('초','s')}</div>`})()+
     `<div style="${_sLn}">${_L('이동속도','Move Speed')}: <span style="color:#ffcc44">${P.speed.toFixed(2)}</span> <span style="color:#665544;font-size:1rem">(${_L('기본','base')}2.6 + DEX×0.005${_eqAffix('movSpeed')?' + '+_L('어픽스','affix')+(_eqAffix('movSpeed')*100).toFixed(0)+'%':''})</span></div>`+
     `<div style="${_sLn}">${_L('포이즈','Poise')}: <span style="color:#ffdd44">${~~(P.poise||0)}/${~~P.maxPoise}</span> <span style="color:#665544;font-size:1rem">(${_L('기본','base')}80 + STR×0.2)</span></div>`+
     `<div style="${_sLn}">${_L('한방캡','1-Hit Cap')}: <span style="color:#ff6666">${~~(P.mhp*.33)}</span> <span style="color:#887766;font-size:1.1rem">(${_L('최대HP의33%','33% of Max HP')})</span></div>`+
@@ -39080,7 +39122,7 @@ async function startGameFromDB(){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};
+  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=_loadSharedMats()||1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
   // forge gauge removed (CRAFT_COST system)
 
   // 3) DB에서 캐릭터 데이터 로드
@@ -39550,7 +39592,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};
+  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=_loadSharedMats()||1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
   (async()=>{
     let _loaded=false;
     try{
@@ -39675,7 +39717,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};
+  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=_loadSharedMats()||1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
   (async()=>{
     try{
       const _raw=localStorage.getItem(_LS_KEY);
