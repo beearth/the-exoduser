@@ -199,7 +199,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | pAtkCost | ST -4%/Lv (10Lv=-40%) | 0.60 | 무기·칼등·기동·회전참·대왕치기 |
 | pMeleeStCost | ST -5%/Lv (10Lv=-50%) | 0.50 | 위와 동일 (곱연산) |
 | pBowCost | ST -4%/Lv (10Lv=-40%) | 0.60 | 석궁·붉은꽃·만화방창 |
-| pMagicCost | MP -4%/Lv + 머리띠어픽스 | 0.40 | 모든 마법 스킬 |
+| pMagicCost | MP -4%/Lv + 귀걸이어픽스 | 0.40 | 모든 마법 스킬 |
 
 **물리 최대 할인**: pAtkCost×pMeleeStCost = 0.60×0.50 = **0.30** (원래의 30%)
 **석궁 최대 할인**: pBowCost = **0.60** (원래의 60%)
