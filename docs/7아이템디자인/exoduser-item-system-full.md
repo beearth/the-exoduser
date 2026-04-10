@@ -61,6 +61,8 @@ const _SL = {
 // weapon:   atk=20+tier*10 (wtype별 atkMul 적용)
 // bow:      atk=3+tier*2 (btype별 atkMul 적용)
 // helmet:   atk=20+tier*10, beamDmg=1.5+tier*1.2, eDef=2+tier*2 → magicRef() 기반
+// ring1/2:  critRate T0~T4 = 1/2/3/4/5% + 전용 어픽스 2개 (critDmg/atkSpd/armorPen/elemFocus/killSlayer/parryBonus)
+// necklace: critRate T0~T4 = 2/4/6/8/10% + dmgBonus T0~T4 = 10/20/30/40/50% + 전용 어픽스 2개 (critDmg/cooldownRed/maxHP/shield/elemFocus/parryBonus)
 // bracelet: def=1+tier, eDef=1+tier, bonusHp=5+tier*5
 // headband: eDef=2+tier*2, mpRegen=1+tier
 // 팔찌 타입: demon(부활력/부활쿨), life(HP/리젠/회복력)
