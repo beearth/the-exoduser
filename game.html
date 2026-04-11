@@ -26406,16 +26406,17 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   // 넉백/그로기 전용 배율
   const kbM = (opts && opts.kbMult !== undefined) ? opts.kbMult : 1.0;
   const psM = (opts && opts.poiseMult !== undefined) ? opts.poiseMult : 1.0;
+  const _isPure=!!(opts&&opts.pure); // 순수데미지: 쉴드/관통률 무시, HP 직격
 
   // ═══ 이원 데미지 판정 플래그 ═══
-  const _isArrow=opts&&opts.maxDist!==undefined&&!opts.magic;
+  const _isArrow=!_isPure&&opts&&opts.maxDist!==undefined&&!opts.magic;
   const _isGunpowder=_isArrow||(opts&&opts.explode&&!opts.magic); // 석궁탄+화약폭발=물리판정 (magic 플래그면 제외)
-  const _isMagicDmg=!_isGunpowder&&(atkEl>0||(opts&&(opts.beam||opts.magic))); // 마법/원소/빔/magic투사체 판정
+  const _isMagicDmg=!_isPure&&!_isGunpowder&&(atkEl>0||(opts&&(opts.beam||opts.magic))); // 마법/원소/빔/magic투사체 판정
 
   // ═══ 디버프 영역: 물리/마법/투사체 방어 하락 ═══
-  if(e._weakPhys>0&&!_isMagicDmg&&!_isArrow)dmg=~~(dmg*(1+e._weakPhys)); // 물리 피격 증가
-  if(e._weakMag>0&&_isMagicDmg)dmg=~~(dmg*(1+e._weakMag)); // 마법 피격 증가
-  if(e._weakPj>0&&_isArrow)dmg=~~(dmg*(1+e._weakPj)); // 투사체 피격 증가
+  if(!_isPure&&e._weakPhys>0&&!_isMagicDmg&&!_isArrow)dmg=~~(dmg*(1+e._weakPhys)); // 물리 피격 증가
+  if(!_isPure&&e._weakMag>0&&_isMagicDmg)dmg=~~(dmg*(1+e._weakMag)); // 마법 피격 증가
+  if(!_isPure&&e._weakPj>0&&_isArrow)dmg=~~(dmg*(1+e._weakPj)); // 투사체 피격 증가
   // 콤보뎀: 어픽스(comboBoost) + 패시브(pCombo) — 같은 적 연속 공격 시 +1%/중첩
   const _cbAf=_eqAffix('comboBoost');
   const _cbPas=PASSIVES.pCombo||0;
@@ -26442,7 +26443,9 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     e._alerted=true; // 피격 시 즉시 플레이어 인식 (거리 무시 추적)
     // 피격 즉시 반격: recover/idle 상태면 즉시 전투 전환
     if(!isDot&&!e.ib){if(e.s==='recover'){e.s='idle';e.st2=0}else if(e.s==='idle'&&e.st2>5){e.st2=5}}
-    if(e.eShield>0){
+    if(_isPure){
+      e.hp-=dmg;
+    }else if(e.eShield>0){
       const _shDmg=_isMagicDmg?dmg:(~~(dmg*_ppRate)||1);
       if(_shDmg>=e.eShield){const _rawUsed=Math.min(dmg,_isMagicDmg?e.eShield:~~(e.eShield/_ppRate));e.eShield=0;const _rawLeft=dmg-_rawUsed;if(_rawLeft>0)e.hp-=_isMagicDmg?(~~(_rawLeft*_magicHpRate)||1):_rawLeft}
       else{e.eShield-=_shDmg}
@@ -28742,7 +28745,7 @@ function activateDarkPillar(){
     const _stDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap')); // 통일공식: _skMul
     for(let _pi=0;_pi<_positions.length;_pi++){
       const p=_positions[_pi];
-      G._fireZones.push({x:p.x,y:p.y,r:_stR,t:0,maxT:300,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap'});
+      G._fireZones.push({x:p.x,y:p.y,r:_stR,t:0,maxT:300,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap',_pillarSpike:true});
     }
     P._gcCd=~~(600*(1+_eqAffix('cooldownRed'))); // 가시덫 쿨다운 소비
     addTxt(cx,cy-50,_T('🌿 기둥가시!'),'#88cc44',30);
@@ -28989,24 +28992,26 @@ function fireHolyBlast(){
   P._hbCasting=false;ultUnmute();
   const slv=P.skills.holyBlast||1;
   P._hbCd=~~(5400*(1+_eqAffix('cooldownRed')));
-  // 필살기: 1렙 3000% (×30), 20렙 15000% (×150), Lv당 +6.32 선형 (5배 성장)
-  const dmg=~~(magicRef()*statInt()*pMagicMul()*(30+(slv-1)*6.32));
+  // 필살기(순수 배율): 1렙 5000% (×50), 20렙 25000% (×250), Lv당 +10.53 선형
+  const dmg=~~(magicRef()*statInt()*pMagicMul()*(50+(slv-1)*10.53));
   const cx=P._hbX,cy=P._hbY;
   // 범위: 1500+Lv*100 (1렙=1600, 10렙=2500)
   const blastR=1500+slv*100;
+  // 중앙 별(핵심 판정): 이 반경 안에서는 데미지 2배
+  const centerR=Math.max(180,blastR*0.18);
   for(let i=0;i<ens.length;i++){
     const e=ens[i];
     if(!e.alive)continue;
     const ang=Math.atan2(e.y-cy,e.x-cx);
     const d=dst(e.x,e.y,cx,cy);
     if(d>blastR)continue;
-    const falloff=Math.max(0.5,1-d/blastR);
-    hurtE(e,~~(dmg*falloff),ang,false,{},EL.H);
+    const centerMul=(d<=centerR)?2:1;
+    hurtE(e,~~(dmg*centerMul),ang,false,{pure:true},EL.H);
     // 넉백: 범위 끝까지 밀어냄 (blastR - 현재거리)
     const kbDist=Math.max(10,blastR-d);
     e.kb.x+=Math.cos(ang)*kbDist*0.15;
     e.kb.y+=Math.sin(ang)*kbDist*0.15;
-    e.stunned=Math.max(e.stunned,~~(120*falloff));
+    e.stunned=Math.max(e.stunned,120);
   }
   // 빛기둥+플래시 이펙트
   G._hbPillar={x:cx,y:cy,t:0,maxT:120};
@@ -36024,9 +36029,10 @@ function drawP(){
       }else if(fz.type==='spikeTrap'){
         // ═══ 가시덫 — 바닥 그래디언트 + 스프라이트 + 외곽 ═══
         const _deployT=Math.min(1,fz.t/12);
+        const _stVis=fz._pillarSpike ? 0.08 : 1;
         const _stSz=fz.r*2*_deployT;
         // 바닥 그래디언트 (악의폭풍과 동일 스타일)
-        X.globalAlpha=(.10+.03*Math.sin(_now*.003))*_fzFade;
+        X.globalAlpha=(.10+.03*Math.sin(_now*.003))*_fzFade*_stVis;
         {const _stRad=fz.r*_deployT;if(!fz._grd_st||fz._grdR_st!==_stRad||fz._grdX_st!==fz.x||fz._grdY_st!==fz.y){const _g=X.createRadialGradient(fz.x,fz.y,0,fz.x,fz.y,_stRad);_g.addColorStop(0,'rgba(80,120,40,.3)');_g.addColorStop(.6,'rgba(60,90,30,.15)');_g.addColorStop(1,'rgba(40,60,20,0)');fz._grd_st=_g;fz._grdR_st=_stRad;fz._grdX_st=fz.x;fz._grdY_st=fz.y}}
         const _stG=fz._grd_st;
         X.fillStyle=_stG;X.beginPath();X.arc(fz.x,fz.y,fz.r*_deployT,0,Math.PI*2);X.fill();
@@ -36034,11 +36040,11 @@ function drawP(){
         if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/spike_trap.webp'}
         const _stImg=G._spikeTrapImg;
         if(_stImg.complete&&_stImg.naturalWidth>0){
-          X.globalAlpha=.25*_fzFade;
+          X.globalAlpha=.25*_fzFade*_stVis;
           X.drawImage(_stImg,fz.x-_stSz/2,fz.y-_stSz/2,_stSz,_stSz);
         }
         // 외곽 점선
-        X.globalAlpha=(.2+.06*Math.sin(_now*.004))*_fzFade;
+        X.globalAlpha=(.2+.06*Math.sin(_now*.004))*_fzFade*_stVis;
         X.strokeStyle='#88aa44';X.lineWidth=1.5;
         X.setLineDash([4,4]);X.lineDashOffset=-_now*.05;
         X.beginPath();X.arc(fz.x,fz.y,fz.r*_deployT,0,Math.PI*2);X.stroke();X.setLineDash([]);
