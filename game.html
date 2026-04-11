@@ -18327,7 +18327,8 @@ function update(){
         _cresStep=(_cresStep%3)+1;_cresComboT=120;_cresCd=_cresStep===3?20:12;
         _playKiSlashComboSfx(_cresStep);
         const _ksLv=P.skills.kiSlash||1,_ksDistMul=(_ksLv-1)*15;
-        spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*(_cresStep===3?2:1.2)*statStr()*(1+(_ksLv-1))),0,_cresStep,_ksDistMul);
+        // 1타/2타 150%, 3타 250%, Lv20에서 5배 (Lv당 +21% 선형)
+        spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*(_cresStep===3?2.5:1.5)*statStr()*(1+(_ksLv-1)*0.21)),0,_cresStep,_ksDistMul);
         addTxt(P.x,P.y-40,_cresStep+(OPT.lang==='en'?' Hit':'타'),'#ffcc00',20);
       }else SFX.slash();
     }
@@ -18649,7 +18650,8 @@ function update(){
         // ═══ 칼등날개: 전방 반원 충격파 히트 ═══
         const _sdLv=P.skills.maliceSwipe||0;
         const _gsRange2=140+(_sdLv>=1?(_sdLv-1)*12:0)+(sh().bonusRange||0)*4;
-        const _gsDmg2=~~(((sh().atk||3)+P.baseAtk*0.3+10)*(_sdLv>=1?(0.6+(_sdLv-1)):0.15)*statStr()*pShieldMul())+(P._atkBon||0);P._atkBon=0; // 밸런스: 1.2*0.5=0.6 base, flat +1/Lv
+        // 우클릭(칼등 처내기): meleeRef × 2.0 (200%), Lv20=1000% (5배 성장, +21%/Lv 곱연산)
+        const _gsDmg2=~~(meleeRef()*2.0*(1+(_sdLv>=1?(_sdLv-1)*0.21:0))*statStr()*pShieldMul())+(P._atkBon||0);P._atkBon=0;
         // ═══ 칼등날개 충격파 히트 (_gSlamHit 방식) ═══
         G._noHitStopT=40;
         _gSlamHit(P.facing,_gsRange2,Math.PI*0.8,_gsDmg2,wp().el||0,1.5,0.8);
@@ -29321,71 +29323,95 @@ function renderSkillPanel(){
   _drawSkillFuseLines();
 }
 
-// 펼친 스킬 ↔ 합체 가능 파트너 사이에 곡선 라인 그리기
+// 펼친 스킬 ↔ 현재 합체 가능 파트너 사이에 곡선 라인 그리기
+// - 선행 합체 미완(_canFuse false)이면 라인 안 그림 → 사용자 혼란 방지
+// - 박스 가장자리(직사각형 경계)에서 시작/종료
 function _drawSkillFuseLines(){
   const svg=$('skillFuseLines');if(!svg)return;
   svg.innerHTML='';
   if(!_skExpandedId)return;
-  // 컴패치 좌표계 (svg와 같은 wrap 기준)
   const wrap=$('skillGridWrap');if(!wrap)return;
   const wrapRect=wrap.getBoundingClientRect();
-  // wrap 크기로 SVG viewBox 갱신
   svg.setAttribute('viewBox','0 0 '+wrapRect.width+' '+wrapRect.height);
   svg.setAttribute('width',wrapRect.width);
   svg.setAttribute('height',wrapRect.height);
-  // 펼친 스킬 카드의 중심 (소스)
   const _all=svg.parentNode.querySelectorAll('[data-sk-id]');
   let _src=null;
   const _targets=[];
+  // 펼친 스킬의 합체 그룹 + 현재 _canFuse 통과 그룹만 후보
+  const _selSkGrps=(typeof _allFuseGemGroups==='function')?_allFuseGemGroups(_skExpandedId):[];
+  const _readyGrps=_selSkGrps.filter(g=>!_isFused(g.key)&&_canFuse(g.key));
+  if(!_readyGrps.length){
+    // 단일 fallback: _fuseGemGroup
+    const _fg=_fuseGemGroup(_skExpandedId);
+    if(_fg&&!_isFused(_fg.key)&&_canFuse(_fg.key))_readyGrps.push(_fg);
+  }
+  if(!_readyGrps.length)return;
+  // ready 그룹의 파트너 스킬 ID 수집
+  const _partnerIds=new Set();
+  _readyGrps.forEach(g=>{
+    const _ids=_FUSE_PAIRS[g.key]||[];
+    _ids.forEach(id=>{if(id!==_skExpandedId)_partnerIds.add(id)});
+  });
+  if(!_partnerIds.size)return;
   _all.forEach(el=>{
     const id=el.dataset.skId;
     if(id===_skExpandedId){_src=el;return}
-    // 합체 파트너 판정
-    const _selGrp=_fuseGemGroup(_skExpandedId);
-    const _myGrp=_fuseGemGroup(id);
-    const _share=_selGrp&&_myGrp&&(_selGrp.key===_myGrp.key||(_FUSE_PAIRS[_selGrp.key]||[]).includes(id)||(_FUSE_PAIRS[_myGrp.key]||[]).includes(_skExpandedId));
-    if(_share){
-      _targets.push({el,grp:_myGrp||_selGrp});
+    if(_partnerIds.has(id)){
+      // 어느 그룹에 속하는지 (색상용)
+      const _myGrp=_readyGrps.find(g=>(_FUSE_PAIRS[g.key]||[]).includes(id))||_readyGrps[0];
+      _targets.push({el,grp:_myGrp});
     }
   });
   if(!_src||!_targets.length)return;
   const _srcR=_src.getBoundingClientRect();
-  const _sx=_srcR.left+_srcR.width/2-wrapRect.left;
-  const _sy=_srcR.top+_srcR.height/2-wrapRect.top;
-  // 정의: glow filter
-  const _defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
-  _defs.innerHTML='<filter id="_fuseGlow"><feGaussianBlur stdDeviation="2"/></filter>';
-  svg.appendChild(_defs);
+  const _sCx=_srcR.left+_srcR.width/2-wrapRect.left;
+  const _sCy=_srcR.top+_srcR.height/2-wrapRect.top;
+  const _sHw=_srcR.width/2,_sHh=_srcR.height/2;
+  // 박스 가장자리 교차점 계산 (중심에서 타겟 방향으로 박스 경계까지)
+  const _edgePoint=(cx,cy,hw,hh,tx,ty)=>{
+    const dx=tx-cx,dy=ty-cy;
+    if(dx===0&&dy===0)return{x:cx,y:cy};
+    const _absX=Math.abs(dx),_absY=Math.abs(dy);
+    // 박스 경계까지의 t (0~1)
+    const _tx=hw/_absX,_ty=hh/_absY;
+    const _t=Math.min(_tx,_ty);
+    return{x:cx+dx*_t,y:cy+dy*_t};
+  };
   _targets.forEach(t=>{
     const _tr=t.el.getBoundingClientRect();
-    const _tx=_tr.left+_tr.width/2-wrapRect.left;
-    const _ty=_tr.top+_tr.height/2-wrapRect.top;
+    const _tCx=_tr.left+_tr.width/2-wrapRect.left;
+    const _tCy=_tr.top+_tr.height/2-wrapRect.top;
+    const _tHw=_tr.width/2,_tHh=_tr.height/2;
+    // 소스/타겟 양쪽 박스 경계 좌표
+    const _sp=_edgePoint(_sCx,_sCy,_sHw,_sHh,_tCx,_tCy);
+    const _tp=_edgePoint(_tCx,_tCy,_tHw,_tHh,_sCx,_sCy);
     const _col=t.grp&&t.grp.color?t.grp.color:'#ffdd44';
-    // 베지어 곡선: 중간 컨트롤 포인트는 두 점 중간에서 약간 위
-    const _midX=(_sx+_tx)/2;
-    const _midY=(_sy+_ty)/2-Math.min(60,Math.abs(_tx-_sx)*0.3);
+    // 베지어 곡선
+    const _midX=(_sp.x+_tp.x)/2;
+    const _midY=(_sp.y+_tp.y)/2-Math.min(60,Math.abs(_tp.x-_sp.x)*0.3);
     const _path=document.createElementNS('http://www.w3.org/2000/svg','path');
-    _path.setAttribute('d','M '+_sx+' '+_sy+' Q '+_midX+' '+_midY+' '+_tx+' '+_ty);
+    _path.setAttribute('d','M '+_sp.x+' '+_sp.y+' Q '+_midX+' '+_midY+' '+_tp.x+' '+_tp.y);
     _path.setAttribute('stroke',_col);
     _path.setAttribute('stroke-width','2.5');
     _path.setAttribute('fill','none');
-    _path.setAttribute('opacity','0.85');
+    _path.setAttribute('opacity','0.9');
     _path.setAttribute('stroke-dasharray','6 4');
     _path.style.filter='drop-shadow(0 0 4px '+_col+')';
     svg.appendChild(_path);
-    // 끝점에 작은 원 마커
+    // 끝점 마커
     const _dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
-    _dot.setAttribute('cx',_tx);_dot.setAttribute('cy',_ty);_dot.setAttribute('r','4');
-    _dot.setAttribute('fill',_col);_dot.setAttribute('opacity','0.9');
+    _dot.setAttribute('cx',_tp.x);_dot.setAttribute('cy',_tp.y);_dot.setAttribute('r','4');
+    _dot.setAttribute('fill',_col);_dot.setAttribute('opacity','0.95');
     _dot.style.filter='drop-shadow(0 0 4px '+_col+')';
     svg.appendChild(_dot);
+    // 시작점 마커 (이 라인의 그룹 색)
+    const _sDot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    _sDot.setAttribute('cx',_sp.x);_sDot.setAttribute('cy',_sp.y);_sDot.setAttribute('r','5');
+    _sDot.setAttribute('fill',_col);_sDot.setAttribute('opacity','0.95');
+    _sDot.style.filter='drop-shadow(0 0 5px '+_col+')';
+    svg.appendChild(_sDot);
   });
-  // 시작점 (펼친 스킬) 큰 원
-  const _srcDot=document.createElementNS('http://www.w3.org/2000/svg','circle');
-  _srcDot.setAttribute('cx',_sx);_srcDot.setAttribute('cy',_sy);_srcDot.setAttribute('r','6');
-  _srcDot.setAttribute('fill','#ffdd44');_srcDot.setAttribute('opacity','0.95');
-  _srcDot.style.filter='drop-shadow(0 0 6px #ffdd44)';
-  svg.appendChild(_srcDot);
 }
 function _renderSkillRow(sk,grid){
     // ═══ 흡수된 스킬은 스킬창에서 완전 제거 ═══
