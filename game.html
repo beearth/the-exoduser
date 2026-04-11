@@ -1417,10 +1417,11 @@ function dbRestore(d){
     G.stage=d.game.stage||0;
     G.kills=d.game.kills||0;
     // 악의(mats)도 계정 공유: 세이브에 남은 건 공유 풀로 이관
-    const _savedMats=d.game.mats||0;
+    // 음수/NaN 방어 (32bit overflow 복구용)
+    const _savedMats=Math.max(0,~~(d.game.mats||0));
     const _sharedMats=_loadSharedMats();
     if(_savedMats>0&&_savedMats!==_sharedMats){_saveSharedMats(_sharedMats+_savedMats);d.game.mats=0}
-    G.mats=_loadSharedMats();
+    G.mats=Math.max(0,_loadSharedMats());
     G._irisSz=d.game.irisSz||20;
     G._taRecords=d.game.taRecords||{};G.comboMax=d.game.comboMax||0;G.playTime=d.game.playTime||0;
   }
@@ -29599,8 +29600,10 @@ const _SHARED_STORAGE_KEY='hellcave_sharedStorage';
 const _SHARED_MATS_KEY='hellcave_sharedMats';
 function _loadSharedStorage(){try{const raw=localStorage.getItem(_SHARED_STORAGE_KEY);if(raw){const arr=JSON.parse(raw);if(Array.isArray(arr))return arr}}catch(e){}return[]}
 function _saveSharedStorage(arr){try{localStorage.setItem(_SHARED_STORAGE_KEY,JSON.stringify(arr||[]))}catch(e){}}
-function _loadSharedMats(){try{const v=localStorage.getItem(_SHARED_MATS_KEY);return v?~~v:0}catch(e){return 0}}
-function _saveSharedMats(v){try{localStorage.setItem(_SHARED_MATS_KEY,String(~~v))}catch(e){}}
+// 악의 저장/로드: ~~v 대신 Math.floor 사용 (32비트 오버플로우 방지)
+// 음수/NaN 방어 + 안전 정수 캡 (Number.MAX_SAFE_INTEGER)
+function _loadSharedMats(){try{const v=localStorage.getItem(_SHARED_MATS_KEY);if(!v)return 0;const n=parseInt(v,10);return(isFinite(n)&&n>=0)?Math.min(n,Number.MAX_SAFE_INTEGER):0}catch(e){return 0}}
+function _saveSharedMats(v){try{const n=Math.max(0,Math.min(Math.floor(+v||0),Number.MAX_SAFE_INTEGER));localStorage.setItem(_SHARED_MATS_KEY,String(n))}catch(e){}}
 function _getStore(){
   // 계정 공유 창고: localStorage에서 로드, STORAGE[0]은 참조만 유지
   if(!STORAGE[0]||!STORAGE._synced){
