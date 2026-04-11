@@ -14867,7 +14867,7 @@ function _fireEnergyShot(){
 }
 function _startFireBeamCast(){
   if(P.skills.fireBeam<1)return false;
-  if(P._fbCasting){showPH(_T('시전 중...'),'#ff4400');return true}
+  if(P._fbCasting){fireHellfireBeam();return true} // 차징 중 재입력: 즉시 발사
   if((P._fbCd||0)>0){showPH(_T('쿨 ')+~~((P._fbCd||0)/60)+(OPT.lang==='en'?'s':'초'),'#ff4400');return true}
   const _fbLv=P.skills.fireBeam||1;
   const _fbMp=~~(50*(1+(_fbLv-1)*0.12));
@@ -20369,7 +20369,18 @@ function update(){
         const hitCol=ELP[p.el];if(!p.bladeShard&&!p.maliceHunt&&!p.iceBlade){const pCount=p.lightning?2:~~(Math.max(3,Math.min(dmg/3,10))*OPT.parts/100);
         for(let k=0;k<pCount;k++){poolPart(e.x+(Math.random()-.5)*6,e.y+(Math.random()-.5)*6,Math.cos(ang+Math.PI)*(1+Math.random()*2)+(Math.random()-.5),Math.sin(ang+Math.PI)*(1+Math.random()*2)+(Math.random()-.5),hitCol,2+Math.random()*3,8+Math.random()*8)}}
         // ── 파이어볼 폭발: 적 명중 시 ──
-        if(p.fireball&&p.explR){_fireballExplode(p);hit=true;break}
+        if(p.fireball&&p.explR){
+          _fireballExplode(p);
+          // 업화선: 폭발 후에도 관통 가능 (차징 관통력 소진 전까지)
+          if(p.fireBeamProj&&p.pierce>0&&(p._pierceCount||0)<(p.pierceMax||0)){
+            p._pierceCount=(p._pierceCount||0)+1;
+            if(!p._hitSet)p._hitSet=new Set();
+            p._hitSet.add(e);
+            addTxt(e.x,e.y-26,_T('관통!'),'#44ffcc',25);
+            hit=false;continue;
+          }
+          hit=true;break
+        }
         // ── 파란콩 AoE 폭발: 명중 시 주변 80px 40% 데미지 ──
         if(p.blueBean&&p._aoeR){
           const _bbNe=shQuery(p.x,p.y,p._aoeR+20);
@@ -21408,10 +21419,10 @@ function update(){
     P._lvT+=sp;
     if(P._lvT>=360){fireLavaSummon()}
   }
-  // ═══ 업화선 — 시전 (3초 → 자동 발동) ═══
+  // ═══ 업화선 — 시전 (5초 → 자동 발동) ═══
   if(P._fbCasting){
     P._fbT+=sp;
-    if(P._fbT>=180){fireHellfireBeam()}
+    if(P._fbT>=300){fireHellfireBeam()}
   }
   // ═══ 용암소환 — 화상 틱 (20초간 0.5초마다, 크리 없음) ═══
   if(G._lavaField){
@@ -29084,6 +29095,32 @@ function fireLavaSummon(){
   setTimeout(()=>{playVFXAng('lava_erupt',cx,_lvOy,2.6,3,0,true);SFX.detonate();shake(20);for(let i=0;i<20;i++){const a=Math.random()*Math.PI*2;poolPart(cx+Math.cos(a)*80,cy+Math.sin(a)*80,Math.cos(a)*6,Math.sin(a)*6-2,'#ff4400',3+Math.random()*4,15)}},1000);
   setTimeout(()=>{playVFXAng('lava_erupt',cx,_lvOy,2.6,3,0,true);SFX.detonate();shake(15);for(let i=0;i<20;i++){const a=Math.random()*Math.PI*2;poolPart(cx+Math.cos(a)*80,cy+Math.sin(a)*80,Math.cos(a)*6,Math.sin(a)*6-2,'#ff6600',3+Math.random()*4,15)}},2000);
 }
+// ═══ 업화선 발동 (3초 차징 완료) ═══
+function fireHellfireBeam(){
+  if(!P._fbCasting)return;
+  const _chargeT=Math.min(P._fbT||0,300);
+  const _chargeSec=_chargeT/60;
+  const _chargeMul=Math.max(10,_chargeSec*40); // 즉발 최소 10배, 초당 40배, 5초 풀차징=200배
+  const _chargePierce=~~(100+_chargeSec*20); // 기본 100, 차징 1초당 +20
+  P._fbCasting=false;
+  const _fbLv=P.skills.fireBeam||1;
+  const _fbDmg=~~(magicRef()*statInt()*pMagicMul()*pBeamMul()*_skMul('fireBeam')*_fuseMul('fireBeam')*_chargeMul);
+  const _fbRange=700+(_fbLv-1)*50; // 1렙700, 만렙~1200
+  // 발사 순간 기준으로 다시 조준(마우스 방향 고정 정확도)
+  {const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;P.atkArc=Math.atan2(mouse.y-sy,mouse.x-sx);P.facing=P.atkArc;}
+  const _fbDx=Math.cos(P.atkArc),_fbDy=Math.sin(P.atkArc);
+  {const _pp=_getPProj();_pp.x=P.x+_fbDx*20;_pp.y=P.y+_fbDy*20;
+  _pp.vx=_fbDx*14;_pp.vy=_fbDy*14;_pp.dmg=_fbDmg;_pp.el=EL.F; // 탄속 2배 (7 -> 14)
+  _pp.maxDist=_fbRange;_pp.dist=0;_pp.r=16;_pp.stagger=0;_pp.kb=0;
+  _pp.magic=true;_pp.fireBeamProj=true;_pp.fireball=true;_pp.explR=~~((100+_fbLv*8)*2);_pp.explDmg=~~(_fbDmg*.6);_pp.homing=true;
+  _pp.pierce=1;_pp.pierceMax=_chargePierce;_pp._pierceCount=0;
+  pProjs[pProjs.length]=_pp;}
+  P._fbCd=~~(60/pMagicSpd());
+  playSample('beam_fire',.9,_r(.85,.1));_addSkProf('fireBeam');
+  addTxt(P.x,P.y-25,_T('🔥 업화선!'),'#ff4400',55);
+  shake(10);
+  for(let _fp=0;_fp<14;_fp++){const _a=P.atkArc+(Math.random()-.5)*.6;poolPart(P.x,P.y,Math.cos(_a)*7,Math.sin(_a)*7,'#ff6600',3+Math.random()*3,8+Math.random()*6)}
+}
 // ═══ 블랙 — 이펙트 진행 ═══
 // (update loop에서 처리)
 
@@ -35752,7 +35789,18 @@ function drawP(){
         // ═══ 악의기둥 — 기둥 VFX만 (범위 가이드 없음) ═══
         const _dpt=_now*.001;
         const _isPs=!!fz._pillarSpike;
-        const _dpVis=_isPs?0.18:1; // 기둥가시는 약하게 표시
+        if(_isPs){
+          // 기둥가시는 문양 스프라이트 대신 판정 링만 표시
+          X.globalAlpha=.35*_fzFade;
+          X.strokeStyle='rgba(190,150,240,0.95)';
+          X.lineWidth=3;
+          X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.stroke();
+          X.globalAlpha=.12*_fzFade;
+          X.fillStyle='rgba(130,90,180,1)';
+          X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.fill();
+          continue;
+        }
+        const _dpVis=1;
         if(_MM_EXP_IMGS&&_MM_EXP_IMGS[0]&&_MM_EXP_IMGS[0].complete){
           if(!fz._vfxFrame)fz._vfxFrame=0;
           if(!fz._vfxTimer)fz._vfxTimer=0;
@@ -35761,19 +35809,12 @@ function drawP(){
           const _dpImg=_MM_EXP_IMGS[fz._vfxFrame];
           if(_dpImg&&_dpImg.complete){
             const _dpScale=fz.r/120;
-            const _dpW=_isPs?fz.r*2.05:384*_dpScale;
-            const _dpH=_dpW;
+            const _dpW=384*_dpScale;
+            const _dpH=384*_dpScale;
             X.globalAlpha=(.65+.1*Math.sin(_dpt*4))*_fzFade*_dpVis;
             const _prevComp=X.globalCompositeOperation;
-            X.globalCompositeOperation=_isPs?'source-over':'lighter';
-            X.drawImage(_dpImg,fz.x-_dpW/2,_isPs?(fz.y-_dpH/2):(fz.y-_dpH*0.75),_dpW,_dpH);
-            if(_isPs){
-              // 실제 피해 반경을 읽기 쉽도록 얇은 경계 링 표시
-              X.globalAlpha=.22*_fzFade;
-              X.strokeStyle='rgba(170,130,220,0.95)';
-              X.lineWidth=2;
-              X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.stroke();
-            }
+            X.globalCompositeOperation='lighter';
+            X.drawImage(_dpImg,fz.x-_dpW/2,fz.y-_dpH*0.75,_dpW,_dpH);
             X.globalCompositeOperation=_prevComp;
           }
         }
@@ -36802,23 +36843,7 @@ function drawP(){
   }
   // ══ 블랙 — 폭발 이펙트 ══
   if(G._bsPillar){
-    const bp=G._bsPillar,prog=bp.t/bp.maxT;
-    const fadeIn=Math.min(1,prog*5),fadeOut=Math.max(0,1-prog),alpha=fadeIn*fadeOut;
-    X.save();
-    if(prog<0.3){X.restore();X.save();X.setTransform(1,0,0,1,0,0);X.globalAlpha=(1-prog/0.3)*0.5;X.fillStyle='#220033';X.fillRect(0,0,C.width,C.height);X.restore();X.save();X.translate(C.width/2-G.cam.x,C.height/2-G.cam.y)}
-    const pillarR=120+80*fadeIn;
-    X.globalAlpha=alpha*0.6;
-    const grd=X.createRadialGradient(bp.x,bp.y,0,bp.x,bp.y,pillarR);
-    grd.addColorStop(0,'#aa00ff');grd.addColorStop(.5,'#440066');grd.addColorStop(1,'transparent');
-    X.fillStyle=grd;X.beginPath();X.arc(bp.x,bp.y,pillarR,0,Math.PI*2);X.fill();
-    X.globalAlpha=alpha*.8;X.strokeStyle='#cc44ff';X.lineWidth=3;
-    X.beginPath();const _bRot=-_now*0.005;
-    for(let i=0;i<5;i++){const a1=_bRot+(i*4*Math.PI/5)-Math.PI/2,a2=_bRot+((i+1)*4*Math.PI/5)-Math.PI/2;
-      X.moveTo(bp.x+Math.cos(a1)*pillarR,bp.y+Math.sin(a1)*pillarR);X.lineTo(bp.x+Math.cos(a2)*pillarR,bp.y+Math.sin(a2)*pillarR)}
-    X.stroke();
-    X.globalAlpha=alpha;X.fillStyle='#cc44ff';X.font='bold 18px monospace';X.textAlign='center';
-    X.fillText('\u26e7 \uBE14\uB799 \u26e7',bp.x,bp.y-pillarR-15);
-    X.restore();
+    // 블랙 오망성 문양 숨김 (판정은 유지)
   }
   // ══ 용암소환 — 시전 중 빨간 오망성 ══
   if(P._lvCasting){
