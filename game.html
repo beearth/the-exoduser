@@ -19366,7 +19366,7 @@ function update(){
       // 만화광선(3발)/추적암전(6발): 원소 레이저
       const _omniLv=P.skills.omniBeam||1;
       const _emLv2=P.skills.elemMissile||1;
-      const _dmgMul=_isElemBeam?(0.5+(_emLv2-1)*.06):2.0; // 멸살광선 _dmgMul 2.0 고정 (Lv 성장은 _SK_MUL g로 처리, DPS 1000~5000%/초)
+      const _dmgMul=_isElemBeam?(0.5+(_emLv2-1)*.06):5.0; // 만화광선 총합 약 1500%/초 (Lv1, 3갈래 합산, 30판정/초)
       const _bRng=~~(450+((_isElemBeam?_emLv2:_omniLv)-1)*22); // 1렙450, 10렙648≈650
       if(!P._omniPts)P._omniPts=_beamPtsPool; // 풀 참조
       const _twistSpd=_now*0.004;
