@@ -20407,7 +20407,7 @@ function update(){
             if(p._pierced<=mPen){hit=false;continue} // keep going, don't splice
           }
         }
-        // ── 악의사냥 관통: 1000=100회 100%, 이후 90/80/70%... 확률로 사라짐 ──
+        // ── 악의사냥 관통: 1000=91회 보장 + 9회 확률(90/80/70.../10%) = 최대 100회 ──
         if(p.maliceHunt&&p._mhMaxPierce>0){
           if(!p._hitSet)p._hitSet=new Set();
           if(p._hitSet.has(e)){hit=false;continue} // 같은 적 중복히트 방지
@@ -20415,13 +20415,25 @@ function update(){
           p._pierced=(p._pierced||0)+1;
           // DoT: 5초간 출혈 지속뎀
           e._mhDot=(e._mhDot||0)+150;e._mhDotDmg=~~(p.dmg*0.15);
-          // 보장 관통수 = _mhMaxPierce/10 (1000=100회)
-          const _mhGuaranteed=Math.floor(p._mhMaxPierce/10);
-          if(p._pierced<=_mhGuaranteed){hit=false;continue} // 보장 구간
-          // 보장 초과 시: 1.0 - (초과량×0.1) 확률로 생존
+          // 보장 관통수 = 관통률 × 91 / 1000 (1000=91, 500=45)
+          const _mhGuaranteed=Math.floor(p._mhMaxPierce*91/1000);
+          if(p._pierced<=_mhGuaranteed){hit=false;continue}
+          // 보장 초과 후 9회 확률 시도: 1회=90%, 2회=80%, ..., 9회=10%
           const _over=p._pierced-_mhGuaranteed;
           const _surviveP=Math.max(0,1-_over*0.1);
           if(_surviveP>0&&Math.random()<_surviveP){hit=false;continue}
+        }
+        // ── 통일 관통 시스템: _pierceRate 기반, 1000=91회 보장+9회 확률 ──
+        if(p._pierceRate>0){
+          if(!p._hitSet)p._hitSet=new Set();
+          if(p._hitSet.has(e)){hit=false;continue}
+          p._hitSet.add(e);
+          p._pierced=(p._pierced||0)+1;
+          const _gtd=Math.floor(p._pierceRate*91/1000);
+          if(p._pierced<=_gtd){hit=false;continue}
+          const _ov=p._pierced-_gtd;
+          const _sP=Math.max(0,1-_ov*0.1);
+          if(_sP>0&&Math.random()<_sP){hit=false;continue}
         }
         // ── 칼날살 오브: 무한 관통 + 출혈 ──
         if(p.bladeOrb){
@@ -20834,7 +20846,7 @@ function update(){
       for(let _bsi=0;_bsi<_bbDirs;_bsi++){
         const _bbA=P.facing+(_bbDirs>1?(_bsi-_bbHalf)/_bbHalf*1.2:0)+(Math.random()-.5)*.08;
         const _bbSpd=(6+Math.random()*3)*1.3;
-        const _pp=_getPProj();_pp.x=P.x+Math.cos(_bbA)*16;_pp.y=P.y+Math.sin(_bbA)*16;_pp.vx=Math.cos(_bbA)*_bbSpd;_pp.vy=Math.sin(_bbA)*_bbSpd;_pp.dmg=~~(_bb.dmg/_bbDirs);_pp.el=EL.I;_pp.maxDist=_bb.range;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.pierce=Math.min(0.95,(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05);_pp.pierceMax=3+(PASSIVES.pPierce||0);_pp._aoeR=100;_pp._aoeDmg=~~(_bb.dmg*.07);pProjs[pProjs.length]=_pp;
+        const _pp=_getPProj();_pp.x=P.x+Math.cos(_bbA)*16;_pp.y=P.y+Math.sin(_bbA)*16;_pp.vx=Math.cos(_bbA)*_bbSpd;_pp.vy=Math.sin(_bbA)*_bbSpd;_pp.dmg=~~(_bb.dmg/_bbDirs);_pp.el=EL.I;_pp.maxDist=_bb.range;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.blueBean=true;_pp.blueShot=true;_pp._pierceRate=200+(bw().bowPierce||0)*1000+(PASSIVES.pPierce||0)*100;_pp._pierced=0;_pp._hitSet=new Set();_pp._aoeR=100;_pp._aoeDmg=~~(_bb.dmg*.07);pProjs[pProjs.length]=_pp;
       }
       _bb.cnt++;
       if(_bb.cnt%20===0)poolPart(P.x,P.y,0,0,'#00e5ff',5,6);
@@ -27907,7 +27919,7 @@ function _fuseStar(skId){
 // 통일 스킬 배율: Lv1=300, +10/Lv (Lv10=390, Lv20=490)
 // 스킬별 배율 테이블: {b:기본, g:Lv당 성장}
 const _SK_MUL={
-  giantSlam:{b:2,g:1},whirlwind:{b:2,g:2},chainSlam:{b:3.3,g:1},chainAssault:{b:4.4,g:1},
+  giantSlam:{b:10,g:3.16},whirlwind:{b:2,g:2},chainSlam:{b:3.3,g:1},chainAssault:{b:4.4,g:1},
   chainSlash:{b:5,g:2.8},maliceHunt:{b:10,g:1},boneWall:{b:8,g:1},
   fireball:{b:1.3,g:1},fireBeam:{b:15,g:8},fireAura:{b:6,g:1},blueShot:{b:20,g:8},
   omniBeam:{b:1,g:2},hellRay:{b:5,g:1},maliceStorm:{b:5,g:1},darkPillar:{b:4,g:1},
@@ -29479,7 +29491,19 @@ function _renderSkillRow(sk,grid){
     const _iconImg='<img src="img/skillskin_upscaled/'+sk.id+'.png" style="width:48px;height:48px;image-rendering:pixelated;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.nextSibling&&(this.nextSibling.style.display=\'block\')"><div style="font-size:1.6rem;line-height:1;display:none;text-align:center">'+(sk.emoji||'⚡')+'</div>';
     if(_skCompact && !_isExpanded){
       // 아이콘 모드: PNG + 이름 + 레벨 (이름 명확하게 표시)
+      // ── 합체 선택 모드: _skExpandedId(상세 펼친 스킬) 있을 때 합체 가능 스킬만 컬러, 나머지 페이드 ──
+      // 단 _skExpandedId === sk.id 인 경우는 펼침 모드로 분기되므로 여기 안 옴
+      let _fadeOut=false,_fuseHighlight=false;
+      if(_skExpandedId){
+        // 펼쳐진 스킬과 같은 합체 그룹이 있는지 확인
+        const _selGrp=_fuseGemGroup(_skExpandedId);
+        const _shareGrp=_selGrp&&_fGrp&&(_selGrp.key===_fGrp.key||(_FUSE_PAIRS[_selGrp.key]||[]).includes(sk.id)||(_FUSE_PAIRS[_fGrp.key]||[]).includes(_skExpandedId));
+        if(_shareGrp)_fuseHighlight=true;
+        else _fadeOut=true;
+      }
       d.style.cssText=d.style.cssText.replace('padding:12px','padding:4px 2px')+';display:inline-flex;flex-direction:column;align-items:center;justify-content:flex-start;width:74px;height:108px;margin:2px;text-align:center;vertical-align:top;box-sizing:border-box';
+      if(_fadeOut)d.style.cssText+=';opacity:0.15;filter:grayscale(1) brightness(0.4);pointer-events:none';
+      else if(_fuseHighlight)d.style.cssText+=';outline:2px dashed '+(_fGrp?_fGrp.color:'#ffdd88')+';outline-offset:2px;box-shadow:0 0 16px '+(_fGrp?_fGrp.color:'#ffdd88')+'aa';
       const _cleanName=_dispName.replace(/<[^>]+>/g,'').replace(/★/g,'').trim();
       d.innerHTML=_iconImg
         +'<div style="font-size:11px;color:'+(_fGrp?_fGrp.color:(learned?'#ffdd88':'#aa8866'))+';font-weight:700;margin-top:4px;line-height:1.15;width:70px;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 1px;text-shadow:0 1px 2px rgba(0,0,0,0.85)">'+_cleanName+'</div>'
