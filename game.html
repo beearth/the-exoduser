@@ -27610,7 +27610,7 @@ document.addEventListener('fullscreenchange',()=>{
 function togglePanel(id){const el=$(id);const isOn=el.classList.contains('on');closeAllPanels();const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(!isOn){el.classList.add('on');G.paused=true;if(id==='invPanel')renderInv();if(id==='settings'){const _rc2=$('resetConfirm');if(_rc2)_rc2.style.display='none';renderSettings();}if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
 function openPanel(id){closeAllPanels();$(id).classList.add('on');G.paused=true;if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='storagePanel')renderStorage()}
 function closePanel(id){$(id).classList.remove('on');G.paused=false}
-function closeAllPanels(){$('resetConfirm')&&($('resetConfirm').style.display='none');['settings','invPanel','forge','storagePanel','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none'}
+function closeAllPanels(){$('resetConfirm')&&($('resetConfirm').style.display='none');['settings','invPanel','forge','storagePanel','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;_skExpandedId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none'}
 
 // ═══ 스킬 패널 ═══
 const SKILL_CATS=[
@@ -27906,7 +27906,7 @@ const _SK_MUL={
   plagueBurst:{b:0.45,g:1},ghostWalk:{b:3.5,g:1},elemMissile:{b:0.6,g:0.1},
   magicBlink:{b:6,g:1},blastShot:{b:2,g:1},energyShot:{b:10,g:8},
 };
-function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];if(!t)return 1;return(t.b+(lv-1)*t.g)*(1+(P.lv||1)*0.002)} // 캐릭터 레벨당 +0.2% 데미지 (Lv100=×1.2, Lv500=×2, Lv1000=×3)
+function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];if(!t)return 1;return(t.b+(lv-1)*t.g*0.5)*(1+(P.lv||1)*0.002)} // 스킬레벨 효과 절반 (10→20단계 쪼개기), 캐릭터 레벨당 +0.2% (Lv500=×2, Lv1000=×3)
 function _fuseMul(skId){const s=_fuseStar(skId);const _fm=s>=2?1+(s-1)*.2:1;return skId==='chargeBoost'||skId==='magicBlink'?_fm:_fm*(1+_eqAffix('skillBoost'))}
 // ═══ 카테고리별 숙련도 시스템 ═══
 // 스킬 카테고리(cat)별로 사용시간(초) 축적. 합체 해금 조건 = 구성스킬 각 카테고리 600초(10분)
@@ -28041,7 +28041,167 @@ function _syncActiveSkAfterReset(resetIds){
   if(P.activeRMBSk&&s.has(P.activeRMBSk))P.activeRMBSk='maliceSwipe';
 }
 let _fuseSelId=null; // 클릭 합체: 현재 선택된 스킬 ID
-const _skCompact=false; // 스킬패널 접기 비활성화
+let _skCompact=true; // 기본 아이콘 모드 (2026-04-11): 클릭 시 상세 펼침
+let _skExpandedId=null; // 현재 펼쳐진 스킬 ID (한 번에 하나만)
+
+// ═══ 디아블로식 스킬 상세 툴팁 ═══
+// sk: 스킬 정의, slv: 현재 레벨 (0=미습득)
+function _skDetailHTML(sk, slv){
+  const _e=OPT.lang==='en';
+  const lv=Math.max(1,slv);
+  const learned=slv>=1;
+  // 안전한 ref 함수 (P 없을 때 0 반환)
+  const _safeMelee=()=>{try{return typeof meleeRef==='function'?meleeRef():0}catch(e){return 0}};
+  const _safeBow=()=>{try{return typeof bowRef==='function'?bowRef():0}catch(e){return 0}};
+  const _safeMagic=()=>{try{return typeof magicRef==='function'?magicRef():0}catch(e){return 0}};
+  const _safeStr=()=>{try{return typeof statStr==='function'?statStr():1}catch(e){return 1}};
+  const _safeDex=()=>{try{return typeof statDex==='function'?statDex():1}catch(e){return 1}};
+  const _safeInt=()=>{try{return typeof statInt==='function'?statInt():1}catch(e){return 1}};
+  const _safeCrit=()=>{try{return typeof statCrit==='function'?statCrit():0}catch(e){return 0}};
+  const _safeCDmg=()=>{try{return typeof statCritDmg==='function'?statCritDmg():1.5}catch(e){return 1.5}};
+  const _safePAtk=()=>{try{return typeof pAtkMul==='function'?pAtkMul():1}catch(e){return 1}};
+  const _safePMag=()=>{try{return typeof pMagicMul==='function'?pMagicMul():1}catch(e){return 1}};
+  const _safePBow=()=>{try{return typeof pBowMul==='function'?pBowMul():1}catch(e){return 1}};
+  const mRef=_safeMelee(),bRef=_safeBow(),iRef=_safeMagic();
+  const cRate=Math.min(100,_safeCrit()),cDmg=_safeCDmg();
+  // 카테고리 → 메인 ref 결정
+  const _isMag=sk.cat==='magic';
+  const _isBow=sk.cat==='bow';
+  const _isPhys=!_isMag&&!_isBow;
+  const baseRef=_isMag?iRef:_isBow?bRef:mRef;
+  const statM=_isMag?_safeInt():_isBow?_safeDex():_safeStr();
+  const passM=_isMag?_safePMag():_isBow?_safePBow():_safePAtk();
+  const lvMul=1+(lv-1); // 1렙=1×, 10렙=10×
+  const baseDmg=baseRef*statM*passM;
+  // 평균 데미지 (크리 포함)
+  const critFactor=1+(cRate/100)*(cDmg-1);
+  // 섹션 빌더
+  const _sec=(title,rows)=>{
+    let h='<div style="color:#cc8844;font-size:.78rem;font-weight:700;letter-spacing:.05em;margin:8px 0 3px;border-bottom:1px solid #553322;padding-bottom:2px">'+title+'</div>';
+    h+='<div style="display:flex;flex-direction:column;gap:1px">';
+    rows.forEach(r=>{if(!r)return;h+='<div style="display:flex;justify-content:space-between;font-size:.78rem;color:#aa9966"><span>'+r[0]+'</span><span style="color:'+(r[2]||'#ddc488')+'">'+r[1]+'</span></div>'});
+    h+='</div>';
+    return h;
+  };
+  let html='';
+  // ── 1) 기본 정보 ──
+  const _cdF=sk.cd?(sk.cd/60).toFixed(1)+'s':(_e?'None':'없음');
+  html+=_sec(_e?'Skill Info':'스킬 정보',[
+    [_e?'Type':'타입',_isPhys?(_e?'Physical':'물리'):_isBow?(_e?'Bow':'활'):(_e?'Magic':'마법'),_isPhys?'#ffaa44':_isBow?'#88cc88':'#88aaff'],
+    [_e?'Level':'레벨',learned?'Lv.'+slv+'/10':(_e?'Not Learned':'미습득'),learned?'#44cc44':'#888'],
+    [_e?'SP Cost':'SP 비용','⭐'+sk.spCost,'#ffcc44'],
+    [_e?'Malice Cost':'악의 비용','👿'+sk.matCost,'#cc66ff'],
+    sk.cd?[_e?'Cooldown':'쿨다운',_cdF,'#aaccff']:null,
+    sk.reqLv?[_e?'Req. Lv':'요구 레벨','Lv.'+sk.reqLv,(P&&P.lv>=sk.reqLv)?'#44cc44':'#cc4444']:null,
+  ]);
+  // ── 2) 데미지 — 기본 ref 기반 추정치 ──
+  if(learned){
+    const dmgRows=[
+      [_e?'Base Reference':'기본 참조뎀',~~baseRef,'#88ccff'],
+      [_e?'Stat Mult':'스탯 배율','×'+statM.toFixed(2),'#ddaa44'],
+      [_e?'Passive Mult':'패시브 배율','×'+passM.toFixed(2),'#cc88ff'],
+      [_e?'Skill Lv Mult':'레벨 배율','×'+lvMul.toFixed(1)+' (Lv'+slv+')','#88cc88'],
+      [_e?'Estimated Avg DMG':'예상 평균 뎀',~~(baseDmg*lvMul*critFactor),'#ffcc66'],
+    ];
+    html+=_sec(_e?'Damage':'데미지',dmgRows);
+    // ── 3) 치명타 ──
+    html+=_sec(_e?'Critical':'치명타',[
+      [_e?'Crit Rate':'치명타 확률',cRate.toFixed(1)+'%','#ff8866'],
+      [_e?'Crit Dmg':'치명타 배율','×'+cDmg.toFixed(2),'#ff6644'],
+      [_e?'Effective Mult':'유효 배율','×'+critFactor.toFixed(2),'#ffaa44'],
+    ]);
+  }
+  // ── 4) 스킬 고유 (id별 분기) ──
+  const _skSpecific=_skSpecificDetails(sk,slv);
+  if(_skSpecific)html+=_sec(_e?'Skill Specific':'스킬 고유',_skSpecific);
+  // ── 5) 설명 (원본 desc) ──
+  const _desc=_e?(sk.descEn||sk.desc):sk.desc;
+  if(_desc){
+    html+='<div style="color:#998866;font-size:.75rem;margin-top:8px;padding-top:6px;border-top:1px solid #443322;line-height:1.45;font-style:italic">'+_desc+'</div>';
+  }
+  return html;
+}
+
+// 스킬 ID별 고유 수치 (rows 배열 반환)
+function _skSpecificDetails(sk,slv){
+  const _e=OPT.lang==='en';
+  const lv=Math.max(1,slv);
+  const id=sk.id;
+  if(id==='kiSlash'){
+    const _ksDist=250+(lv-1)*15;
+    return [
+      [_e?'1-Hit Mult':'1타 배율','×1.2','#88cc88'],
+      [_e?'2-Hit Mult':'2타 배율','×1.2','#88cc88'],
+      [_e?'3-Hit Mult':'3타 배율','×2.0 (Combo)','#ffcc44'],
+      [_e?'Per Lv DMG':'레벨당 뎀','+100% per Lv','#88aaff'],
+      [_e?'Crescent Range':'검기 거리',_ksDist+'px','#ddaa66'],
+      [_e?'Lv Range Bonus':'레벨당 거리','+15px','#88aaff'],
+    ];
+  }
+  if(id==='whirlwind'){
+    return [
+      [_e?'ST/Tick':'ST/틱','2','#ffcc44'],
+      [_e?'AoE Range':'범위','120~180','#ddaa66'],
+      [_e?'Per Lv DMG':'레벨당 뎀','+10%','#88aaff'],
+    ];
+  }
+  if(id==='fireball'){
+    return [
+      [_e?'Per Lv Size':'레벨당 크기','+50%','#88aaff'],
+      [_e?'Per Lv DMG':'레벨당 뎀','+15%','#88aaff'],
+      [_e?'Knockback':'넉백','0.5%','#cc8866'],
+    ];
+  }
+  if(id==='detonate'){
+    const _r=150+(lv-1)*15;
+    return [
+      [_e?'Charge Time':'충전 시간','3s','#ffcc44'],
+      [_e?'Range':'범위',_r+'px','#ddaa66'],
+      [_e?'Per Lv Range':'레벨당 범위','+15px','#88aaff'],
+    ];
+  }
+  if(id==='maliceHunt'){
+    const _pierce=20+(lv-1)*10;
+    return [
+      [_e?'Pierce':'관통',_pierce,'#88cc88'],
+      [_e?'DOT Duration':'지속뎀','5s','#ffcc44'],
+      [_e?'Range':'사거리',_e?'Infinite':'무한','#ddaa66'],
+      [_e?'Malice Cost':'악의 비용','30','#cc66ff'],
+    ];
+  }
+  if(id==='giantSlam'||id==='giantSlam2'){
+    return [
+      [_e?'AoE Type':'타격 형식',_e?'Shockwave':'진동파','#ffcc44'],
+      [_e?'Stagger':'스태거',_e?'High':'높음','#ff8844'],
+      [_e?'CD':'쿨다운','8s','#aaccff'],
+    ];
+  }
+  if(id==='chargeBoost'||id==='magicBlink'){
+    return [
+      [_e?'Stocks':'스톡','5','#ffcc44'],
+      [_e?'CD':'쿨다운','7s','#aaccff'],
+    ];
+  }
+  if(id==='darkPillar'){
+    const _r=250+(lv-1)*22;
+    return [
+      [_e?'Pillars':'기둥 수','9','#ffcc44'],
+      [_e?'Range':'범위',_r+'px','#ddaa66'],
+      [_e?'Duration':'지속','5s','#88aaff'],
+      [_e?'CD':'쿨다운','15s','#aaccff'],
+    ];
+  }
+  if(id==='spikeTrap'){
+    const _r=200+(lv-1)*22;
+    const _slow=Math.min(90,70+(lv-1)*2);
+    return [
+      [_e?'Radius':'반경',_r+'px','#ddaa66'],
+      [_e?'Slow':'슬로우',_slow+'%','#88aaff'],
+      [_e?'CD':'쿨다운','10s','#aaccff'],
+    ];
+  }
+  return null;
+}
 
 function _execDimBreach(){
   P.chargeStocks--;
@@ -29090,7 +29250,15 @@ function renderSkillPanel(){
     hdr.style.cssText='color:'+cat.col+';font-size:.95rem;font-weight:700;padding:6px 0 4px;border-bottom:2px solid '+cat.col+'66;letter-spacing:.1em;margin-bottom:6px';
     hdr.textContent=OPT.lang==='en'?(cat.nameEn||cat.name):cat.name;
     col.appendChild(hdr);
-    catSkills.forEach(sk=>_renderSkillRow(sk,col));
+    // compact 모드: 아이콘들을 flex-wrap 그리드로 묶기 / 펼침 모드: 세로
+    const _isCompactMode=_skCompact;
+    const _iconBox=_isCompactMode?document.createElement('div'):col;
+    if(_isCompactMode){_iconBox.style.cssText='display:flex;flex-wrap:wrap;gap:2px;margin-bottom:4px';col.appendChild(_iconBox)}
+    catSkills.forEach(sk=>{
+      // 펼쳐진 스킬은 컬럼 직접에 추가 (전체 폭 차지), 나머지는 아이콘 박스에
+      if(_isCompactMode && _skExpandedId===sk.id) _renderSkillRow(sk,col);
+      else _renderSkillRow(sk,_iconBox);
+    });
     grid.appendChild(col);
   });
 }
@@ -29155,8 +29323,8 @@ function _renderSkillRow(sk,grid){
     const _hasUltLearned=false; // 필살기 전부 습득 가능
     const _lvMet=sk.reqLv?P.lv>=sk.reqLv:true;
     const canLearn=!learned&&_reqMet&&_lvMet&&P.sp>=sk.spCost&&G.mats>=sk.matCost;
-    const _skMaxLv=10;
-    const _skLvLock=Math.min(10,~~(P.lv/100)+1); // Lv100=2렙, Lv200=3렙, ... Lv900=10렙
+    const _skMaxLv=20;
+    const _skLvLock=Math.min(20,~~(P.lv/50)+1); // 50렙당 +1 (Lv1=1렙, Lv50=2렙, Lv100=3렙, ... Lv950=20렙)
     // 합체 강화 통합: 구성 스킬 upSp/upMat 합산
     const _isFuseUp=_isStormBeam||_isDimBlast||_isDimRush||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isHolyFuse||_isHolyIce||_isHolyW1||_isHolyW2||_isHolyW3||_isHolyW4||_isPillarSlam||_isPillarSpike;
     let _fuseUpSp=0,_fuseUpMat=0,_fuseCanUp=false;
@@ -29296,11 +29464,20 @@ function _renderSkillRow(sk,grid){
     const _FUSE_DESC_EN={stormBeam:'Quake Storm + Tracking Lightning 6-fuse. Fire 6-element tracking beams while spinning! +20% total DMG. Quake+Beam explosion on end.',dimBlast:'6-fuse. Bladewing+Burst+Destroy+Flame all enhanced. Shift+LMB \u2192 forward power wave.',dimRush:'5-fuse. Chain Bladewing unlocked! Slash left/right blades while moving+bleed. Destroy+Flame enhanced.',dimThunder:'4-fuse. Chain Destroy+Flame enhanced. Destroy DMG\u2191 Poise\u2191 Range\u2191',dimSlam:'3-fuse. Chain Flame absorbed. Land range\u2191 DMG\u2191',dimBreach:'Chain Rush: Impact + Chain Rush: Flame fuse. Shift \u2192 piercing rush then INT-based landing explosion! 5 stocks, 7s CD.',iceMortar:'Storm Summon + Ice Orb fuse. Mouse aim \u2192 summon ice vortex! Pulls enemies in and freezes. 10s CD.',elemFuse:'Barrage + Annihilation Beam + Elemental Tracker 3-fuse. Hold E \u2192 6-element homing lasers! Each beam auto-tracks nearest enemy.',slamStorm:'Whirl-Det + Giant Slam 3-fuse. On spin end, detonate+giant slam shockwave! Giant Slam CD removed, range\u2191',sixFuse:'Barrage + Annihilation Beam fuse. Hold E \u2192 6-element helix laser! Add Elemental Tracker for Tracking Lightning.',bladeFuse:'Malice Hunt + Malice Guardian fuse. Dark blades orbit you, blocking projectiles. Press slot key to fire all blades! (+2 blades at max lv)',whirlDet:'Whirlwind + Detonate synth. Auto parry shield during spin \u2192 absorb attacks \u2192 auto AOE blast on end. Add Giant Slam for Quake Storm!',boneStorm:'Malice Storm + Bone Tomb fuse. Mouse aim click \u2192 bone tomb ring + inner dark DOT! 3 stock charges, wall block+sustained DMG.',elecRepent:'Bone Lightning + Repentance fuse. Repentance placement spawns electric vortex! DMG+20%, charge 1/2/3 at Lv1/5/10.',shieldFuse:'Swipe + Wing Blade fuse. On swipe, auto forward rush+slam shockwave! Hits+stun+poise reduction in range.',plagueFuse:'Malice Hunt + Plague Burst fuse. Auto plague blades on blade fire! Plague explosion on hit.',pillarSlam:'Giant Slam II + Dark Pillar fuse. Giant Slam auto-deploys 9 dark pillars (+spike traps if Pillar Thorn fused)! Lv300+ hidden.',pillarSpike:'Dark Pillar + Spike Trap fuse. Each pillar auto-places spike trap! Slow+bleed at every pillar position.',holyIce:'Holy Ward + Ice Storm 3-fuse. Holy zone places prison+freeze storm! Regen+revive block+freeze in range.',holyFuse:'Holy Domain + Binding Domain fuse. Holy zone auto-places prison! Regen+revive block in range.'};
     const _FUSE_DESC_KO={stormBeam:'지진폭풍 + 추적암전 6단합체. 회전참 중 6원소 추적 빔 동시 발사! 전체 데미지 20% 강화. 종료 시 지진폭풍+빔 동시 폭발',dimBlast:'6단합체. 칼날개+전폭+파괴+불꽃 전부 강화. Shift+좌클릭 → 전방 파워웨이브',dimRush:'5단합체. 기동칼날개 해금! 이동 중 좌우 칼날 광역 베기+출혈. 파괴+불꽃도 강화',dimThunder:'4단합체. 기동파괴+불꽃 강화. 파괴 데미지↑ 포이즈↑ 범위↑',dimSlam:'3단합체. 기동불꽃 흡수. 착지 범위↑ 데미지↑',dimBreach:'사슬기동:충돌 + 사슬기동:화염 합체. Shift → 관통돌진 후 INT 기반 착지 대폭발! 스톡5, 쿨7초',iceMortar:'폭풍소환 + 얼음보주 합체. 마우스 조준 → 얼음 소용돌이 소환! 적을 중심으로 끌어당기며 빙결. 쿨 10초',elemFuse:'만화방창 + 멸살광선 + 원소추적탄 3단합체. E홀드 → 6원소 유도 추적 레이저! 각 빔이 가장 가까운 적을 자동 추적',slamStorm:'회전기폭 + 대왕치기 3단합체. 회전 종료 시 기폭+대왕치기 진동파 동시 발동! 대왕치기 쿨타임 소멸, 범위↑',sixFuse:'만화방창 + 멸살광선 합체. E홀드 → 6원소 꽈배기 레이저! 원소추적탄 추가 합체 시 추적암전',bladeFuse:'악의사냥 + 악의보호자 합체. 암흑칼날이 몸 주위를 돌며 투사체 방어. 슬롯 키로 모인 칼날 전부 발사! (만렙 시 +2칼날)',whirlDet:'회전참 + 기폭팔 합성. 회전 중 패링 쉴드 자동 발동 → 적 공격 흡수 → 종료 시 자동 광역 폭발. 대왕치기 추가 합체 시 지진폭풍!',boneStorm:'악의폭풍 + 해골무덤 합체. 마우스 조준 클릭 → 해골무덤 링 + 내부 암흑 DOT! 3스택 충전제, 벽 차단+지속 데미지',elecRepent:'해골번개 + 참회 합체. 참회 설치 시 전기 소용돌이 동시 생성! 데미지 20%↑, 1/5/10렙 차지 1/2/3',shieldFuse:'처내기 + 칼등날개 합체. 처내기 시 전방 돌진+내려찍기 충격파 자동 발동! 범위 내 적 히트+스턴+포이즈 삭감',plagueFuse:'악의사냥 + 폭독혈 합체. 칼날 발사 시 독혈 칼날 자동 발사! 칼날 적중 시 전염 폭발',pillarSlam:'대왕치기2 + 악의기둥 합체. 대왕치기 시 9개 악의기둥 자동 전개 (+기둥가시 합체 시 가시덫 포함)! Lv300+ 히든',pillarSpike:'악의기둥 + 가시덫 합체. 각 기둥 위치에 가시덫 자동 설치! 슬로우+출혈',holyIce:'신성한 결계 + 아이스 스톰 3단합체. 신성한 영역 설치 시 감옥+빙결 폭풍 동시 설치! 범위 내 리젠+부활차단+빙결',holyFuse:'신성한 영역 + 구속의 영역 합체. 신성한 영역 설치 시 감옥 동시 설치! 범위 내 리젠+부활차단'};
     const _dispDesc=_fuseNameKey?(_e?_FUSE_DESC_EN[_fuseNameKey]:_FUSE_DESC_KO[_fuseNameKey]):(_e?(sk.descEn||sk.desc):sk.desc);
-    if(_skCompact){
-      d.style.cssText=d.style.cssText.replace('padding:12px','padding:4px 8px');
-      d.innerHTML='<div style="display:flex;align-items:center;gap:6px"><span style="color:'+(_fGrp?_fGrp.color:'#ffcc66')+';font-size:.8rem;font-weight:700">'+_dispName+'</span>'
-        +(learned?'<span style="color:#44cc44;font-size:.7rem">Lv.'+slv+(slv>=10?' MAX':'')+'</span><span style="color:#88ccaa;font-size:.6rem;margin-left:4px">'+(_profV>=_profCap?(_e?'MastMAX':'숙련MAX'):(_e?'Mast '+~~_profV+'/'+_profCap:'숙련'+~~_profV+'/'+_profCap))+'</span>':'<span style="color:#886644;font-size:.7rem">⭐'+sk.spCost+' 👿'+sk.matCost+'</span>')
-        +'</div>';
+    const _isExpanded=_skExpandedId===sk.id;
+    // 스킬 아이콘 PNG (img/skillskin_upscaled/{id}.png) — onerror로 폴백
+    const _iconImg='<img src="img/skillskin_upscaled/'+sk.id+'.png" style="width:48px;height:48px;image-rendering:pixelated;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.nextSibling&&(this.nextSibling.style.display=\'block\')"><div style="font-size:1.6rem;line-height:1;display:none;text-align:center">'+(sk.emoji||'⚡')+'</div>';
+    if(_skCompact && !_isExpanded){
+      // 아이콘 모드: PNG + 레벨
+      d.style.cssText=d.style.cssText.replace('padding:12px','padding:4px 2px')+';display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:74px;margin:2px;text-align:center;vertical-align:top';
+      d.innerHTML=_iconImg
+        +'<div style="font-size:.6rem;color:'+(_fGrp?_fGrp.color:(learned?'#44cc44':'#886644'))+';font-weight:700;margin-top:2px;line-height:1">'+(learned?'Lv.'+slv+(slv>=10?'★':''):'⭐'+sk.spCost)+'</div>';
+      d.title=_dispName+' — '+_dispDesc;
+    }else if(_skCompact && _isExpanded){
+      // 디아블로식 상세보기 — 아이콘 헤더 + 카테고리 섹션별 동적 스탯 + 원본 설명
+      d.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid #553322"><img src="img/skillskin_upscaled/'+sk.id+'.png" style="width:48px;height:48px;image-rendering:pixelated" onerror="this.style.display=\'none\'"><div style="flex:1"><div style="color:'+(_fGrp?_fGrp.color:'#ffcc66')+';font-size:1.05rem;font-weight:700">'+_dispName+'</div>'+(learned?'<div style="color:#88ccaa;font-size:.7rem">'+(_e?'Mastery':'숙련')+' '+~~_profV+'/'+_profCap+'</div>':'')+'</div><span data-nodrag onclick="event.stopPropagation();_skExpandedId=null;renderSkillPanel()" style="cursor:pointer;color:#aa6644;font-size:1.1rem;padding:0 6px">✕</span></div>'
+        +_skDetailHTML(sk,slv)
+        +(lockTxt?'<div style="margin-top:6px">'+lockTxt+'</div>':'');
     }else{
       d.innerHTML='<div style="color:'+(_fGrp?_fGrp.color:'#ffcc66')+';font-size:.9rem;font-weight:700;margin-bottom:4px">'+_dispName+'</div>'
         +'<div style="color:#aa9966;font-size:.85rem;margin-bottom:6px">'+_dispDesc+'</div>'
@@ -29308,10 +29485,26 @@ function _renderSkillRow(sk,grid){
         +'<div>'+lockTxt+'</div>';
     }
 
-    // ═══ compact: 리셋 + 클릭강화만, 나머지 스킵 ═══
-    if(_skCompact){
-      if(learned){const _rb2=document.createElement('span');_rb2.textContent='🔄';_rb2.style.cssText='margin-left:auto;padding:2px 4px;color:#ff6666;font-size:.9rem;cursor:pointer;opacity:.5;flex-shrink:0';_rb2.onmouseenter=()=>{_rb2.style.opacity='1'};_rb2.onmouseleave=()=>{_rb2.style.opacity='.5'};_rb2.onclick=(ev)=>{ev.stopPropagation();_skCompact=false;renderSkillPanel()};_rb2.title=_T('펼쳐서 초기화');d.firstChild.appendChild(_rb2)}
-      if(canLearn||canUp){d.style.cursor='pointer';d.onmouseenter=()=>{d.style.borderColor='#aa8833';d.style.background='rgba(50,40,20,0.5)'};d.onmouseleave=()=>{d.style.borderColor=learned?'#448833':'#443322';d.style.background='rgba(0,0,0,0.3)'};d.onclick=_skClick}
+    // ═══ compact 아이콘 모드 (펼쳐지지 않음): 클릭 → 상세보기 펼치기 ═══
+    if(_skCompact && !_isExpanded){
+      d.style.cursor='pointer';
+      d.onmouseenter=()=>{d.style.borderColor='#aa8833';d.style.transform='scale(1.08)'};
+      d.onmouseleave=()=>{d.style.borderColor=learned?'#448833':'#443322';d.style.transform='scale(1)'};
+      d.onclick=()=>{_skExpandedId=sk.id;renderSkillPanel()};
+      grid.appendChild(d);return;
+    }
+    // ═══ compact 펼침 모드: 닫기 버튼은 상단 ✕로, 학습/강화 버튼은 아래에 추가 ═══
+    if(_skCompact && _isExpanded){
+      if(canLearn||canUp){
+        const _btn=document.createElement('div');
+        _btn.dataset.nodrag='1';
+        _btn.style.cssText='margin-top:6px;padding:6px 10px;background:rgba(60,40,15,0.6);border:1px solid #aa8833;border-radius:4px;color:#ffcc66;font-size:.85rem;text-align:center;cursor:pointer;font-weight:700';
+        _btn.textContent=canLearn?(_e?'Learn (⭐'+sk.spCost+' 👿'+sk.matCost+')':'습득 (⭐'+sk.spCost+' 👿'+sk.matCost+')'):(_e?'Upgrade (⭐'+_singleUpSp+')':'강화 (⭐'+_singleUpSp+')');
+        _btn.onmouseenter=()=>{_btn.style.background='rgba(80,55,20,0.7)'};
+        _btn.onmouseleave=()=>{_btn.style.background='rgba(60,40,15,0.6)'};
+        _btn.onclick=(ev)=>{ev.stopPropagation();_skClick();_skExpandedId=null;renderSkillPanel()};
+        d.appendChild(_btn);
+      }
       grid.appendChild(d);return;
     }
     // ═══ 클릭 합체 시스템 (모든 합체 그룹 버튼 표시) ═══
