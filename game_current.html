@@ -27153,10 +27153,7 @@ function drawP(){
         // 1) 바닥 — 희미한 어두운 얼룩 (원판X, 산개된 점)
         X.globalAlpha=.06*_fzFade;X.fillStyle='#333322';
         X.beginPath();X.arc(fz.x,fz.y,fz.r*_deployT*.7,0,Math.PI*2);X.fill();
-        // 2) 외곽 — 희미한 점선
-        X.globalAlpha=(.15+.05*Math.sin(_stt*4))*_fzFade;
-        X.strokeStyle='#667744';X.lineWidth=1;
-        X.setLineDash([4,6]);X.beginPath();X.arc(fz.x,fz.y,fz.r*_deployT*.95,0,Math.PI*2);X.stroke();X.setLineDash([]);
+        // 2) 외곽 점선 제거 (경계선 숨김)
         // 3) 은색 표창 — 삼각형 날카로운 압정
         if(!fz._tacks){
           fz._tacks=[];
@@ -27918,6 +27915,10 @@ function drawP(){
     X.globalAlpha=1;
   }
   _dpS4=performance.now(); // S4=궁극기(블랙/용암/신성) 끝
+  const __hideSkillBoundary=true;
+  const __strokeBak=__hideSkillBoundary?X.stroke:null;
+  const __dashBak=__hideSkillBoundary?X.setLineDash:null;
+  if(__hideSkillBoundary){X.stroke=function(){};X.setLineDash=function(){};}
   // ══ 추적 장판 (chaseAoe) 렌더 ══
   if(G._chaseAoes){
     for(let ci=0;ci<G._chaseAoes.length;ci++){
@@ -27988,17 +27989,17 @@ function drawP(){
       }
     }X.globalAlpha=1;
   }
+  if(__hideSkillBoundary){X.stroke=__strokeBak;X.setLineDash=__dashBak;}
   // ══ 지옥기둥 렌더 ══
   if(G._pillars&&G._pillars.length>0){
-    const _plVis=(_isFused('pillarSpike')&&P.skills.darkPillar>=1&&P.skills.spikeTrap>=1)?0.01:1; // 기둥가시 중엔 거의 안 보이게
     for(let pi=0;pi<G._pillars.length;pi++){
       const pl=G._pillars[pi];const _plCol=ELC[pl.el]||'#ff4400';
+      const _plVis=pl._pillarSpike?0.2:1;
       if(pl.t<pl.delay){
         // 전조 원
         const _wp=pl.t/pl.delay;
         X.globalAlpha=_wp*.2*_plVis;X.fillStyle=_plCol;X.beginPath();X.arc(pl.x,pl.y,pl.r,0,Math.PI*2);X.fill();
-        X.globalAlpha=_wp*(.5+Math.sin(_now*.02)*.2)*_plVis;X.strokeStyle=_plCol;X.lineWidth=2;
-        X.beginPath();X.arc(pl.x,pl.y,pl.r*(1-_wp*.3),0,Math.PI*2);X.stroke();
+        // 전조 경계선 제거 (경계선 숨김)
       }else{
         const _ap=(pl.t-pl.delay)/(pl.maxT-pl.delay);
         const _fade=_ap>.8?(1-(_ap-.8)/.2):Math.min(1,_ap*5);
