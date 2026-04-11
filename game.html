@@ -29999,6 +29999,53 @@ function _renderSkillRow(sk,grid){
       d.appendChild(_rstBtn);
     }
 
+    // 공용 (-) 처리: 레벨다운/취소/합체해제
+    function _skMinusClick(){
+        if(!learned)return;
+        const _unfuseAllNow=()=>{
+          let _refundedSp=0;
+          if(P._fused){
+            for(const _fk in P._fused){
+              if(!P._fused[_fk])continue;
+              const _fIds=_FUSE_PAIRS[_fk]||[];
+              const _grpDef=_FUSE_GEM_GROUPS&&_FUSE_GEM_GROUPS[_fk];
+              if(_fIds.includes(sk.id)||(_grpDef&&_grpDef.skills&&_grpDef.skills.includes(sk.id))){
+                delete P._fused[_fk];
+                const _avgLv=_fIds.length?Math.min.apply(null,_fIds.map(id=>P.skills[id]||1)):1;
+                if(_avgLv>1){
+                  const _gemC=_fIds.length||1;
+                  for(let _l=1;_l<_avgLv;_l++){_refundedSp+=_fuseUpSpCost(_l,_gemC)}
+                }
+              }
+            }
+          }
+          return _refundedSp;
+        };
+        const _fGrpNow=_fuseGemGroup(sk.id);
+        const _isFusedNow=_fGrpNow&&_isFused(_fGrpNow.key);
+        if(_isFusedNow){
+          const _refSp=_unfuseAllNow();
+          if(_refSp>0)P.sp+=_refSp;
+          SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+(_e?' Unfused (+'+_refSp+'SP)':' 합체 해제 (+'+_refSp+'SP)'),'#ff8844',60);
+        }else if(slv>1){
+          const _refundSp=_skillUpSpCost(slv-1,false);
+          P.skills[sk.id]=slv-1;P.sp+=_refundSp;G.mats+=(sk.upMat||0);
+          SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+' Lv.'+(slv-1)+' (-)','#ff8844',60);
+        }else{
+          delete P.skills[sk.id];
+          P.sp+=sk.spCost;G.mats+=sk.matCost;
+          for(let _si=0;_si<6;_si++){if(SKILL_SLOTS[_si]===sk.id)SKILL_SLOTS[_si]=null}
+          if(P.activeLMBSk===sk.id&&sk.id!=='kiSlash')P.activeLMBSk='kiSlash';
+          if(P.activeChargeSk===sk.id)P.activeChargeSk=null;
+          if(P.activeBowSk===sk.id)P.activeBowSk=null;
+          if(P.activeMagicSk===sk.id)P.activeMagicSk='fireball';
+          if(P.activeQSk===sk.id)P.activeQSk=null;
+          if(P.activeTechSk===sk.id)P.activeTechSk=null;
+          if(ULT_SLOT===sk.id)ULT_SLOT=null;
+          SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+(_e?' Reset':' 리셋!'),'#ff4444',60);
+        }
+        renderSkillPanel();updateSkSlot&&updateSkSlot();updateQS&&updateQS();dbSaveForce();
+    }
     // 박스 클릭 이벤트: 습득 또는 강화 (function 선언 — 호이스팅으로 compact에서도 사용)
     function _skClick(){
         if(!learned){
@@ -30052,6 +30099,35 @@ function _renderSkillRow(sk,grid){
       d.onmouseenter=()=>{d.style.borderColor='#aa8833';d.style.background='rgba(50,40,20,0.5)'};
       d.onmouseleave=()=>{d.style.borderColor=learned?'#448833':'#443322';d.style.background='rgba(0,0,0,0.3)'};
       d.onclick=_skClick;
+    }
+    // 일반 카드(+/-) 버튼: compact 펼침 카드는 자체 버튼을 사용
+    if(!(_skCompact&&_isExpanded)&&(learned||canLearn||canUp)){
+      const _btnRow2=document.createElement('div');
+      _btnRow2.dataset.nodrag='1';
+      _btnRow2.style.cssText='display:flex;gap:6px;margin-top:8px;justify-content:flex-end';
+      if(learned){
+        const _bMin2=document.createElement('div');
+        _bMin2.dataset.nodrag='1';
+        _bMin2.style.cssText='padding:3px 8px;min-width:28px;background:rgba(80,30,30,0.45);border:1px solid #cc4444;border-radius:4px;color:#ff8888;font-size:.95rem;text-align:center;cursor:pointer;font-weight:700;line-height:1.1';
+        _bMin2.textContent='-';
+        _bMin2.title=_e?'Level down / cancel':'레벨다운 / 취소';
+        _bMin2.onmouseenter=()=>{_bMin2.style.background='rgba(120,40,40,0.7)'};
+        _bMin2.onmouseleave=()=>{_bMin2.style.background='rgba(80,30,30,0.45)'};
+        _bMin2.onclick=(ev)=>{ev.stopPropagation();_skMinusClick()};
+        _btnRow2.appendChild(_bMin2);
+      }
+      if(canLearn||canUp){
+        const _bPlus2=document.createElement('div');
+        _bPlus2.dataset.nodrag='1';
+        _bPlus2.style.cssText='padding:3px 8px;min-width:28px;background:rgba(60,40,15,0.6);border:1px solid #aa8833;border-radius:4px;color:#ffcc66;font-size:.95rem;text-align:center;cursor:pointer;font-weight:700;line-height:1.1';
+        _bPlus2.textContent='+';
+        _bPlus2.title=canLearn?( _e?'Learn':'습득' ):( _e?'Level up':'레벨업' );
+        _bPlus2.onmouseenter=()=>{_bPlus2.style.background='rgba(80,55,20,0.7)'};
+        _bPlus2.onmouseleave=()=>{_bPlus2.style.background='rgba(60,40,15,0.6)'};
+        _bPlus2.onclick=(ev)=>{ev.stopPropagation();_skClick()};
+        _btnRow2.appendChild(_bPlus2);
+      }
+      if(_btnRow2.children.length>0)d.appendChild(_btnRow2);
     }
     // (클릭 합체는 위에서 처리됨 — _fuseReady 블록)
     {const _dG=_fuseGem(sk.id),_dK=_getFuseKey(sk.id);
