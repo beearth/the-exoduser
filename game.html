@@ -16754,8 +16754,8 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  const _hpBonus=15*monLv*(monLv+1); // HP 누적보너스: 1랩+30, 2랩+60, 3랩+90... (Lv×30씩 릴레이 누적)
-  const _lvHp=Math.floor((ib?12000:600)*Math.pow(1.0121,monLv)*dm*et.hpMul+(ib?_hpBonus*20:_hpBonus));let _hp=Math.floor(_lvHp*(1+si*0.02)); // 기본×복리 + 누적보너스(복리 밖), 스테이지당+2%
+  const _hpBonus=10*monLv*monLv; // HP 누적보너스 약한 이차: 10×Lv² (Lv1=10, Lv50=25000, Lv1000=10M) — 2026-04-11 재조정
+  const _lvHp=Math.floor((ib?12000:500)*Math.pow(1.0121,monLv)*dm*et.hpMul+(ib?_hpBonus*20:_hpBonus));let _hp=Math.floor(_lvHp*(1+si*0.02)); // 기본 500×복리 + 누적보너스, 스테이지당+2% (2026-04-11 600→500)
   const _atk=Math.floor(((ib?75:50)+monLv*(ib?2.9:1.95))*dm*et.atkMul); // 일반: 50+lv×1.95 (1000렙=2000), 보스: 75+lv×2.9 (1000렙≈3000, 일반×1.5)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   if(!window._noProjEtypes)window._noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
