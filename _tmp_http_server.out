@@ -1,0 +1,5 @@
+[serve:test] root: G:\hell
+[serve:test] url: http://127.0.0.1:8080/
+[serve:test] play 1-4: http://127.0.0.1:8080/1_4
+[serve:test] editor shortcut: http://127.0.0.1:8080/1_4_editor
+[serve:test] editor 1-4: http://127.0.0.1:8080/game.html?editor=1&editorStage=3
