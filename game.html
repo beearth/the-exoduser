@@ -21411,7 +21411,7 @@ function update(){
     P._lvT+=sp;
     if(P._lvT>=360){fireLavaSummon()}
   }
-  // ═══ 용암소환 — 화상 틱 (10초간 0.5초마다 최대HP 1%, 크리 없음) ═══
+  // ═══ 용암소환 — 화상 틱 (20초간 0.5초마다, 크리 없음) ═══
   if(G._lavaField){
     G._lavaField.t+=sp;
     G._lavaField.tickT+=sp;
@@ -21420,24 +21420,16 @@ function update(){
       for(let i=0;i<ens.length;i++){
         const e=ens[i];if(!e.alive)continue;
         const _lvSlv=G._lavaField.slv||1;
-        // 필살기 다틱 2배 상향: 1렙 1틱=400% (8000% 누적), 20렙 2000% (40000% 누적), 5배 성장
-        let tickDmg=Math.max(1,~~(magicRef()*statInt()*pMagicMul()*(4+(_lvSlv-1)*0.842)));
-        // 쉴드 먼저 깎기
-        if(e.eShield>0){
-          if(tickDmg>=e.eShield){tickDmg-=e.eShield;e.eShield=0;addTxt(e.x,e.y-20,_T('⚡쉴드!'),'#44aaff',20)}
-          else{e.eShield-=tickDmg;if(Math.random()<.3)addTxt(e.x,e.y-15,'🛡🔥'+tickDmg,'#88bbff',18);tickDmg=0}
-        }
+        // 필살기 10배 스케일: 용암 도트 틱 Lv1 ×4, Lv20 ×40
+        const _ult10xMul=(1+((_lvSlv-1)*9/19)); // Lv1=1.0, Lv20=10.0
+        let tickDmg=Math.max(1,~~(magicRef()*statInt()*pMagicMul()*(4*_ult10xMul)));
         if(tickDmg>0){
-          e.hp-=tickDmg;
-          if(e.hp<=0){e.hp=0;atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;addExp(e.exp||1);deathFX(e.x,e.y,e.r,e.col,!!e.ib,false,e.etype);_addCorpse(e,Math.atan2(e.y-P.y,e.x-P.x),1);
-            const isTopTier=e.ib||e.elite>=2;
-            if(isTopTier)G.mats+=(e.matDrop||1);
-          }
-          if(Math.random()<.3)addTxt(e.x,e.y-15,'🔥'+tickDmg,'#ff4400',18);
+          // 용암 도트도 순수데미지: 물리/마법/투사체 분류 및 쉴드 관통 규칙 무시
+          hurtE(e,tickDmg,Math.atan2(e.y-P.y,e.x-P.x),true,{dot:true,pure:true,magic:true,noImpact:true},EL.F);
         }
       }
     }
-    if(G._lavaField.t>=600)G._lavaField=null; // 10초 끝
+    if(G._lavaField.t>=1200)G._lavaField=null; // 20초 끝
   }
   // ═══ 블랙 — 시전 (3초 → 자동 발동) ═══
   if(P._bsCasting){
@@ -28995,11 +28987,13 @@ function fireHolyBlast(){
   P._hbCasting=false;ultUnmute();
   const slv=P.skills.holyBlast||1;
   P._hbCd=~~(5400*(1+_eqAffix('cooldownRed')));
-  // 필살기(순수 배율): 1렙 5000% (×50), 20렙 25000% (×250), Lv당 +10.53 선형
-  const dmg=~~(magicRef()*statInt()*pMagicMul()*(50+(slv-1)*10.53));
+  // 필살기 10배 스케일: Lv20 = Lv1의 10배
+  const _ult10xMul=(1+((slv-1)*9/19)); // Lv1=1.0, Lv20=10.0
+  // 신성폭발: Lv1 ×50, Lv20 ×500 (중앙 별은 추가 2배)
+  const dmg=~~(magicRef()*statInt()*pMagicMul()*(50*_ult10xMul));
   const cx=P._hbX,cy=P._hbY;
-  // 범위: 1500+Lv*100 (1렙=1600, 10렙=2500)
-  const blastR=1500+slv*100;
+  // 범위: Lv1=2000, Lv20=4000 선형 확장
+  const blastR=2000+((slv-1)*(2000/19));
   // 중앙 별(핵심 판정): 이 반경 안에서는 데미지 2배
   const centerR=Math.max(180,blastR*0.18);
   for(let i=0;i<ens.length;i++){
@@ -29038,15 +29032,13 @@ function fireBlackStar(){
     const a=Math.PI*2*k/80;const spd=5+Math.random()*10;
     poolPart(cx+Math.cos(a)*30,cy+Math.sin(a)*30,Math.cos(a)*spd,Math.sin(a)*spd,k%3===0?'#220033':k%3===1?'#aa00ff':'#660099',4+Math.random()*6,25+Math.random()*20);
   }
-  // 폭발 데미지 + 스턴 + 넉백
-  const bsDmg=~~(magicRef()*statInt()*pMagicMul()*5*(1+(slv-1)*0.12));
-  const bsR=1500+slv*100;
+  // 블랙은 유틸 스킬: 데미지 없음 (범위/흡인 중심)
+  const bsR=2000+((slv-1)*(2000/19));
   for(let i=0;i<ens.length;i++){
     const e=ens[i];if(!e.alive)continue;
     const d=dst(e.x,e.y,cx,cy);if(d>bsR)continue;
     const ang=Math.atan2(e.y-cy,e.x-cx);
     const falloff=Math.max(0.3,1-d/bsR);
-    hurtE(e,~~(bsDmg*falloff),ang,false,{kbMult:1.5,noPoise:true,explode:true,magic:true},EL.D);
     e.stunned=Math.max(e.stunned,~~(90*falloff));
     e.kb.x+=Math.cos(ang)*12*falloff;e.kb.y+=Math.sin(ang)*12*falloff;
   }
@@ -29062,10 +29054,11 @@ function fireLavaSummon(){
   const slv=P.skills.lavaSummon||1;
   P._lvCd=~~(5400*(1+_eqAffix('cooldownRed')));
   const cx=P._lvX,cy=P._lvY;
-  // 용암소환 직격 2배 상향
-  const dmg=~~(magicRef()*statInt()*pMagicMul()*8*(1+(slv-1)*0.10));
-  // 범위: 1500+Lv*100 (1렙=1600, 10렙=2500)
-  const blastR=1500+slv*100;
+  const _ult10xMul=(1+((slv-1)*9/19)); // Lv1=1.0, Lv20=10.0
+  // 용암소환 직격: Lv1 ×8, Lv20 ×80
+  const dmg=~~(magicRef()*statInt()*pMagicMul()*(8*_ult10xMul));
+  // 범위: Lv1=2000, Lv20=4000 선형 확장
+  const blastR=2000+((slv-1)*(2000/19));
   for(let i=0;i<ens.length;i++){
     const e=ens[i];if(!e.alive)continue;
     const ang=Math.atan2(e.y-cy,e.x-cx);
@@ -35755,6 +35748,7 @@ function drawP(){
       }else if(fz.type==='darkPillar'){
         // ═══ 악의기둥 — 기둥 VFX만 (범위 가이드 없음) ═══
         const _dpt=_now*.001;
+        const _dpVis=(_isFused('pillarSpike')&&P.skills.darkPillar>=1&&P.skills.spikeTrap>=1)?0.06:1;
         if(_MM_EXP_IMGS&&_MM_EXP_IMGS[0]&&_MM_EXP_IMGS[0].complete){
           if(!fz._vfxFrame)fz._vfxFrame=0;
           if(!fz._vfxTimer)fz._vfxTimer=0;
@@ -35764,7 +35758,7 @@ function drawP(){
           if(_dpImg&&_dpImg.complete){
             const _dpScale=fz.r/120;
             const _dpW=384*_dpScale,_dpH=384*_dpScale;
-            X.globalAlpha=(.65+.1*Math.sin(_dpt*4))*_fzFade;
+            X.globalAlpha=(.65+.1*Math.sin(_dpt*4))*_fzFade*_dpVis;
             const _prevComp=X.globalCompositeOperation;
             X.globalCompositeOperation='lighter';
             X.drawImage(_dpImg,fz.x-_dpW/2,fz.y-_dpH*0.75,_dpW,_dpH);
@@ -36033,10 +36027,9 @@ function drawP(){
       }else if(fz.type==='spikeTrap'){
         // ═══ 가시덫 — 바닥 그래디언트 + 스프라이트 + 외곽 ═══
         const _deployT=Math.min(1,fz.t/12);
-        const _stVis=0.09;
         const _stSz=fz.r*2*_deployT;
         // 바닥 그래디언트 (악의폭풍과 동일 스타일)
-        X.globalAlpha=(.10+.03*Math.sin(_now*.003))*_fzFade*_stVis;
+        X.globalAlpha=(.10+.03*Math.sin(_now*.003))*_fzFade;
         {const _stRad=fz.r*_deployT;if(!fz._grd_st||fz._grdR_st!==_stRad||fz._grdX_st!==fz.x||fz._grdY_st!==fz.y){const _g=X.createRadialGradient(fz.x,fz.y,0,fz.x,fz.y,_stRad);_g.addColorStop(0,'rgba(80,120,40,.3)');_g.addColorStop(.6,'rgba(60,90,30,.15)');_g.addColorStop(1,'rgba(40,60,20,0)');fz._grd_st=_g;fz._grdR_st=_stRad;fz._grdX_st=fz.x;fz._grdY_st=fz.y}}
         const _stG=fz._grd_st;
         X.fillStyle=_stG;X.beginPath();X.arc(fz.x,fz.y,fz.r*_deployT,0,Math.PI*2);X.fill();
@@ -36044,11 +36037,11 @@ function drawP(){
         if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/spike_trap.webp'}
         const _stImg=G._spikeTrapImg;
         if(_stImg.complete&&_stImg.naturalWidth>0){
-          X.globalAlpha=.25*_fzFade*_stVis;
+          X.globalAlpha=.25*_fzFade;
           X.drawImage(_stImg,fz.x-_stSz/2,fz.y-_stSz/2,_stSz,_stSz);
         }
         // 외곽 점선
-        X.globalAlpha=(.2+.06*Math.sin(_now*.004))*_fzFade*_stVis;
+        X.globalAlpha=(.2+.06*Math.sin(_now*.004))*_fzFade;
         X.strokeStyle='#88aa44';X.lineWidth=1.5;
         X.setLineDash([4,4]);X.lineDashOffset=-_now*.05;
         X.beginPath();X.arc(fz.x,fz.y,fz.r*_deployT,0,Math.PI*2);X.stroke();X.setLineDash([]);
@@ -37263,7 +37256,7 @@ function drawP(){
   }
   // ══ 지옥기둥 렌더 ══
   if(G._pillars&&G._pillars.length>0){
-    const _plVis=(_isFused('pillarSpike')&&P.skills.darkPillar>=1&&P.skills.spikeTrap>=1)?0.09:1;
+    const _plVis=(_isFused('pillarSpike')&&P.skills.darkPillar>=1&&P.skills.spikeTrap>=1)?0.01:1; // 기둥가시 중엔 거의 안 보이게
     for(let pi=0;pi<G._pillars.length;pi++){
       const pl=G._pillars[pi];const _plCol=ELC[pl.el]||'#ff4400';
       if(pl.t<pl.delay){

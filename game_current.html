@@ -27990,25 +27990,26 @@ function drawP(){
   }
   // ══ 지옥기둥 렌더 ══
   if(G._pillars&&G._pillars.length>0){
+    const _plVis=(_isFused('pillarSpike')&&P.skills.darkPillar>=1&&P.skills.spikeTrap>=1)?0.01:1; // 기둥가시 중엔 거의 안 보이게
     for(let pi=0;pi<G._pillars.length;pi++){
       const pl=G._pillars[pi];const _plCol=ELC[pl.el]||'#ff4400';
       if(pl.t<pl.delay){
         // 전조 원
         const _wp=pl.t/pl.delay;
-        X.globalAlpha=_wp*.2;X.fillStyle=_plCol;X.beginPath();X.arc(pl.x,pl.y,pl.r,0,Math.PI*2);X.fill();
-        X.globalAlpha=_wp*(.5+Math.sin(_now*.02)*.2);X.strokeStyle=_plCol;X.lineWidth=2;
+        X.globalAlpha=_wp*.2*_plVis;X.fillStyle=_plCol;X.beginPath();X.arc(pl.x,pl.y,pl.r,0,Math.PI*2);X.fill();
+        X.globalAlpha=_wp*(.5+Math.sin(_now*.02)*.2)*_plVis;X.strokeStyle=_plCol;X.lineWidth=2;
         X.beginPath();X.arc(pl.x,pl.y,pl.r*(1-_wp*.3),0,Math.PI*2);X.stroke();
       }else{
         const _ap=(pl.t-pl.delay)/(pl.maxT-pl.delay);
         const _fade=_ap>.8?(1-(_ap-.8)/.2):Math.min(1,_ap*5);
         // 기둥 (수직선)
         const _plH=60+_fade*40;
-        X.globalAlpha=_fade*.15;X.fillStyle=_plCol;X.fillRect(pl.x-pl.r,pl.y-_plH,pl.r*2,_plH);
-        X.globalAlpha=_fade*.4;X.fillStyle=_plCol;X.fillRect(pl.x-pl.r*.5,pl.y-_plH*.8,pl.r,_plH*.8);
+        X.globalAlpha=_fade*.15*_plVis;X.fillStyle=_plCol;X.fillRect(pl.x-pl.r,pl.y-_plH,pl.r*2,_plH);
+        X.globalAlpha=_fade*.4*_plVis;X.fillStyle=_plCol;X.fillRect(pl.x-pl.r*.5,pl.y-_plH*.8,pl.r,_plH*.8);
         // 바닥 글로우
-        X.globalAlpha=_fade*.2;X.beginPath();X.arc(pl.x,pl.y,pl.r*1.5,0,Math.PI*2);X.fill();
+        X.globalAlpha=_fade*.2*_plVis;X.beginPath();X.arc(pl.x,pl.y,pl.r*1.5,0,Math.PI*2);X.fill();
         // 상단 불꽃
-        X.globalAlpha=_fade*.6;X.fillStyle='#ffffff';X.beginPath();X.arc(pl.x,pl.y-_plH,pl.r*.4+Math.sin(_now*.03)*2,0,Math.PI*2);X.fill();
+        X.globalAlpha=_fade*.6*_plVis;X.fillStyle='#ffffff';X.beginPath();X.arc(pl.x,pl.y-_plH,pl.r*.4+Math.sin(_now*.03)*2,0,Math.PI*2);X.fill();
       }
     }X.globalAlpha=1;
   }
@@ -30706,4 +30707,3 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
 </script>
 </body>
 </html>
-
