@@ -1007,10 +1007,13 @@ canvas{display:block;position:fixed;inset:0}
 </div>
 
 <div class="panel" id="skillPanel">
-  <div class="pbox" style="width:95vw;max-width:1200px;max-height:95vh;overflow-y:auto">
+  <div class="pbox" style="width:95vw;max-width:1200px;max-height:95vh;overflow-y:auto;position:relative">
     <div class="ptitle">💀 전투 스킬</div>
     <div id="skillInfo" style="color:#886644;font-size:.9rem;margin-bottom:10px;text-align:center"></div>
-    <div id="skillGrid" style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:center"></div>
+    <div id="skillGridWrap" style="position:relative">
+      <svg id="skillFuseLines" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;overflow:visible"></svg>
+      <div id="skillGrid" style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:center;position:relative;z-index:1"></div>
+    </div>
     <div style="text-align:center;margin-top:12px"><button class="pclose" onclick="closePanel('skillPanel')">닫기 [ESC]</button></div>
   </div>
 </div>
@@ -27645,7 +27648,7 @@ const SKILL_CATS=[
   {id:'ult',name:'💀 필살기',nameEn:'💀 Ultimate',col:'#ff2200'},
 ];
 const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,demonRevive:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1};
-function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img src="img/skillskin/${f}.png" style="width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none">`}
+function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img src="img/skillskin_upscaled/${f}.png" style="width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.65) ${deg}deg,transparent ${deg}deg);pointer-events:none"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#ffdd55;font-weight:900;text-shadow:0 0 6px #000,0 0 12px #000,0 1px 2px #000">${txt}</div>`:''}`}
 const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -29314,6 +29317,75 @@ function renderSkillPanel(){
     });
     grid.appendChild(col);
   });
+  // ═══ 합체 가능 스킬 라인 연결 (SVG 오버레이) ═══
+  _drawSkillFuseLines();
+}
+
+// 펼친 스킬 ↔ 합체 가능 파트너 사이에 곡선 라인 그리기
+function _drawSkillFuseLines(){
+  const svg=$('skillFuseLines');if(!svg)return;
+  svg.innerHTML='';
+  if(!_skExpandedId)return;
+  // 컴패치 좌표계 (svg와 같은 wrap 기준)
+  const wrap=$('skillGridWrap');if(!wrap)return;
+  const wrapRect=wrap.getBoundingClientRect();
+  // wrap 크기로 SVG viewBox 갱신
+  svg.setAttribute('viewBox','0 0 '+wrapRect.width+' '+wrapRect.height);
+  svg.setAttribute('width',wrapRect.width);
+  svg.setAttribute('height',wrapRect.height);
+  // 펼친 스킬 카드의 중심 (소스)
+  const _all=svg.parentNode.querySelectorAll('[data-sk-id]');
+  let _src=null;
+  const _targets=[];
+  _all.forEach(el=>{
+    const id=el.dataset.skId;
+    if(id===_skExpandedId){_src=el;return}
+    // 합체 파트너 판정
+    const _selGrp=_fuseGemGroup(_skExpandedId);
+    const _myGrp=_fuseGemGroup(id);
+    const _share=_selGrp&&_myGrp&&(_selGrp.key===_myGrp.key||(_FUSE_PAIRS[_selGrp.key]||[]).includes(id)||(_FUSE_PAIRS[_myGrp.key]||[]).includes(_skExpandedId));
+    if(_share){
+      _targets.push({el,grp:_myGrp||_selGrp});
+    }
+  });
+  if(!_src||!_targets.length)return;
+  const _srcR=_src.getBoundingClientRect();
+  const _sx=_srcR.left+_srcR.width/2-wrapRect.left;
+  const _sy=_srcR.top+_srcR.height/2-wrapRect.top;
+  // 정의: glow filter
+  const _defs=document.createElementNS('http://www.w3.org/2000/svg','defs');
+  _defs.innerHTML='<filter id="_fuseGlow"><feGaussianBlur stdDeviation="2"/></filter>';
+  svg.appendChild(_defs);
+  _targets.forEach(t=>{
+    const _tr=t.el.getBoundingClientRect();
+    const _tx=_tr.left+_tr.width/2-wrapRect.left;
+    const _ty=_tr.top+_tr.height/2-wrapRect.top;
+    const _col=t.grp&&t.grp.color?t.grp.color:'#ffdd44';
+    // 베지어 곡선: 중간 컨트롤 포인트는 두 점 중간에서 약간 위
+    const _midX=(_sx+_tx)/2;
+    const _midY=(_sy+_ty)/2-Math.min(60,Math.abs(_tx-_sx)*0.3);
+    const _path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    _path.setAttribute('d','M '+_sx+' '+_sy+' Q '+_midX+' '+_midY+' '+_tx+' '+_ty);
+    _path.setAttribute('stroke',_col);
+    _path.setAttribute('stroke-width','2.5');
+    _path.setAttribute('fill','none');
+    _path.setAttribute('opacity','0.85');
+    _path.setAttribute('stroke-dasharray','6 4');
+    _path.style.filter='drop-shadow(0 0 4px '+_col+')';
+    svg.appendChild(_path);
+    // 끝점에 작은 원 마커
+    const _dot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    _dot.setAttribute('cx',_tx);_dot.setAttribute('cy',_ty);_dot.setAttribute('r','4');
+    _dot.setAttribute('fill',_col);_dot.setAttribute('opacity','0.9');
+    _dot.style.filter='drop-shadow(0 0 4px '+_col+')';
+    svg.appendChild(_dot);
+  });
+  // 시작점 (펼친 스킬) 큰 원
+  const _srcDot=document.createElementNS('http://www.w3.org/2000/svg','circle');
+  _srcDot.setAttribute('cx',_sx);_srcDot.setAttribute('cy',_sy);_srcDot.setAttribute('r','6');
+  _srcDot.setAttribute('fill','#ffdd44');_srcDot.setAttribute('opacity','0.95');
+  _srcDot.style.filter='drop-shadow(0 0 6px #ffdd44)';
+  svg.appendChild(_srcDot);
 }
 function _renderSkillRow(sk,grid){
     // ═══ 흡수된 스킬은 스킬창에서 완전 제거 ═══
@@ -29391,6 +29463,7 @@ function _renderSkillRow(sk,grid){
     const _singleUpSp=_skillUpSpCost(slv,false);
     const canUp=(learned&&sk.up&&slv<_skMaxLv&&slv<_skLvLock&&P.sp>=_singleUpSp&&G.mats>=(sk.upMat||100)&&!_isFuseUp)||(_fuseCanUp&&slv<_skLvLock);
     const d=document.createElement('div');
+    d.dataset.skId=sk.id; // 라인 연결용 식별자
     // 합체 보석 그룹 — 습득된 스킬은 항상 그룹색 글로우
     const _fGrp=_fuseGemGroup(sk.id);
     const _fuseReady=learned&&_fGrp&&!_isFused(_fGrp.key)&&_canFuse(_fGrp.key);
