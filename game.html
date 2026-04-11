@@ -14865,6 +14865,21 @@ function _fireEnergyShot(){
   P._esAnim={fr:0,tmr:0,ang:P.atkArc,range:_esRange,x:P.x,y:P.y};
   playSample('beam_fire',.5,_r(1.2,.1));shake(4);_addSkProf('energyShot');
 }
+function _startFireBeamCast(){
+  if(P.skills.fireBeam<1)return false;
+  if(P._fbCasting){showPH(_T('시전 중...'),'#ff4400');return true}
+  if((P._fbCd||0)>0){showPH(_T('쿨 ')+~~((P._fbCd||0)/60)+(OPT.lang==='en'?'s':'초'),'#ff4400');return true}
+  const _fbLv=P.skills.fireBeam||1;
+  const _fbMp=~~(50*(1+(_fbLv-1)*0.12));
+  if(P.mp<_fbMp){showPH(_T('MP 부족! (')+_fbMp+')','#ff4400');return true}
+  P.mp-=_fbMp;
+  P._fbCasting=true;P._fbT=0;
+  {const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;P.atkArc=Math.atan2(mouse.y-sy,mouse.x-sx);P.facing=P.atkArc;}
+  addTxt(P.x,P.y-25,_T('🔥 업화선 시전...'),'#ff4400',45);
+  playSample('beam_fire',.65,_r(.9,.08));
+  P.s='magicRecover';P.st2=12;
+  return true;
+}
 // ── E슬롯 마법 디스패처 (스킬ID 기반, 순서 독립) ──
 const _MAGIC_E_HANDLERS={
   burstLoop(sk){
@@ -14918,12 +14933,7 @@ const _MAGIC_E_HANDLERS={
     return true;
   },
   fireBeam(){
-    if(P.skills.fireBeam<1)return false;
-    if((P._fbCd||0)>0){showPH(_T('쿨 ')+~~((P._fbCd||0)/60)+(OPT.lang==='en'?'s':'초'),'#ff4400');return true}
-    if(P.mp<10){showPH(_T('MP 부족! (10)'),'#ff4400');return true}
-    P.s='magicCast';P.st2=~~(8/pMagicSpd());
-    {const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;P.atkArc=Math.atan2(mouse.y-sy,mouse.x-sx);}
-    return true;
+    return _startFireBeamCast();
   },
 };
 function _execMagicE(){
@@ -18866,23 +18876,7 @@ function update(){
         for(let _fp=0;_fp<16;_fp++){const _fa2=Math.PI*2*_fp/16;poolPart(P.x,P.y,Math.cos(_fa2)*5,Math.sin(_fa2)*5,'#ff6600',4,10)}
         P.s='magicRecover';P.st2=15;
       } else if(_mcSk==='fireBeam'&&P.skills.fireBeam>=1){
-        // ── 업화선: 화염빔 투사체 1발 발사 (드래곤볼식) ──
-        const _fbLv=P.skills.fireBeam||1;
-        P.mp-=~~(50*(1+(_fbLv-1)*0.12)); // 업화선 발당 MP: DPS비례 +12%/Lv (Lv1=50, Lv10=104, 쿨1초=초당50~104)
-        const _fbDmg=~~(magicRef()*statInt()*pMagicMul()*pBeamMul()*_skMul('fireBeam')*_fuseMul('fireBeam')); // 통일공식: _skMul + 빔 장비 배율
-        const _fbRange=700+(_fbLv-1)*50; // 1렙700, 만렙~1200
-        const _fbDx=Math.cos(P.atkArc),_fbDy=Math.sin(P.atkArc);
-        {const _pp=_getPProj();_pp.x=P.x+_fbDx*20;_pp.y=P.y+_fbDy*20;
-        _pp.vx=_fbDx*7;_pp.vy=_fbDy*7;_pp.dmg=_fbDmg;_pp.el=EL.F;
-        _pp.maxDist=_fbRange;_pp.dist=0;_pp.r=16;_pp.stagger=0;_pp.kb=0;
-        _pp.magic=true;_pp.fireBeamProj=true;_pp.fireball=true;_pp.explR=~~((100+_fbLv*8)*2);_pp.explDmg=~~(_fbDmg*.6);_pp.homing=true; // 착탄 폭발 + 유도, 폭발범위 2배
-        pProjs[pProjs.length]=_pp;}
-        P._fbCd=~~(60/pMagicSpd()); // 1초 기본, DEX(민첩)로 공속 스케일
-        playSample('beam_fire',.8,_r(.8,.1));_addSkProf('fireBeam');
-        addTxt(P.x,P.y-25,_T('🔥 업화선!'),'#ff4400',50);
-        shake(6);
-        for(let _fp=0;_fp<12;_fp++){const _a=P.atkArc+(Math.random()-.5)*.6;poolPart(P.x,P.y,Math.cos(_a)*6,Math.sin(_a)*6,'#ff6600',3+Math.random()*3,8+Math.random()*6)}
-        P.s='magicRecover';P.st2=12;
+        _startFireBeamCast();
       } else {
         // ── 악의구 (기본 폴백) ──
         const _fbLv=P.skills.fireball||1;
@@ -21413,6 +21407,11 @@ function update(){
   if(P._lvCasting){
     P._lvT+=sp;
     if(P._lvT>=360){fireLavaSummon()}
+  }
+  // ═══ 업화선 — 시전 (3초 → 자동 발동) ═══
+  if(P._fbCasting){
+    P._fbT+=sp;
+    if(P._fbT>=180){fireHellfireBeam()}
   }
   // ═══ 용암소환 — 화상 틱 (20초간 0.5초마다, 크리 없음) ═══
   if(G._lavaField){
