@@ -20407,7 +20407,7 @@ function update(){
             if(p._pierced<=mPen){hit=false;continue} // keep going, don't splice
           }
         }
-        // ── 악의사냥 관통: _mhMaxPierce회 관통, 적 추적 ──
+        // ── 악의사냥 관통: 1000=100회 100%, 이후 90/80/70%... 확률로 사라짐 ──
         if(p.maliceHunt&&p._mhMaxPierce>0){
           if(!p._hitSet)p._hitSet=new Set();
           if(p._hitSet.has(e)){hit=false;continue} // 같은 적 중복히트 방지
@@ -20415,7 +20415,13 @@ function update(){
           p._pierced=(p._pierced||0)+1;
           // DoT: 5초간 출혈 지속뎀
           e._mhDot=(e._mhDot||0)+150;e._mhDotDmg=~~(p.dmg*0.15);
-          if(p._pierced<=p._mhMaxPierce){hit=false;continue}
+          // 보장 관통수 = _mhMaxPierce/10 (1000=100회)
+          const _mhGuaranteed=Math.floor(p._mhMaxPierce/10);
+          if(p._pierced<=_mhGuaranteed){hit=false;continue} // 보장 구간
+          // 보장 초과 시: 1.0 - (초과량×0.1) 확률로 생존
+          const _over=p._pierced-_mhGuaranteed;
+          const _surviveP=Math.max(0,1-_over*0.1);
+          if(_surviveP>0&&Math.random()<_surviveP){hit=false;continue}
         }
         // ── 칼날살 오브: 무한 관통 + 출혈 ──
         if(p.bladeOrb){
@@ -28400,7 +28406,7 @@ function activateMaliceHunt(){
     if(P.st<_mhStCost){showPH(_T('ST 부족!'),'#ff4444');return}
     G.mats-=30;P.st=Math.max(0,P.st-_mhStCost);
     const _mhDmg=~~(meleeRef()*statStr()*pAtkMul()*(10+(_mhLv-1)*0.5));
-    const _mhPierce=20+_mhLv*10; // 기본20 + 렙당10
+    const _mhPierce=1000+_mhLv*100; // 기본 1000 (100회 관통) + Lv당 100, ÷10 = 실제 관통수
     const _mdx=Math.cos(P.atkArc),_mdy=Math.sin(P.atkArc);
     {const _pp=_getPProj();_pp.x=P.x+_mdx*16;_pp.y=P.y+_mdy*16;_pp.vx=_mdx*18;_pp.vy=_mdy*18;_pp.dmg=_mhDmg;_pp.el=EL.P;_pp.maxDist=6000;_pp.dist=0;_pp.r=10;_pp.stagger=8;_pp.kb=0;_pp.magic=true;_pp.maliceHunt=true;_pp.mhBlade=true;_pp._pierced=0;_pp._mhMaxPierce=_mhPierce;_pp._hitSet=new Set();_pp._maxBounce=10;pProjs[pProjs.length]=_pp;}
     SFX.slash();playSample(Math.random()<.5?'voice_dark_skill':'voice_bladefuse',.8,_r(1,.08));addTxt(P.x,P.y-25,_T('⚔ 악의사냥!'),'#ffffff',35);
@@ -29472,12 +29478,13 @@ function _renderSkillRow(sk,grid){
     // 스킬 아이콘 PNG (img/skillskin_upscaled/{id}.png) — onerror로 폴백
     const _iconImg='<img src="img/skillskin_upscaled/'+sk.id+'.png" style="width:48px;height:48px;image-rendering:pixelated;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.nextSibling&&(this.nextSibling.style.display=\'block\')"><div style="font-size:1.6rem;line-height:1;display:none;text-align:center">'+(sk.emoji||'⚡')+'</div>';
     if(_skCompact && !_isExpanded){
-      // 아이콘 모드: PNG + 이름 + 레벨
-      d.style.cssText=d.style.cssText.replace('padding:12px','padding:4px 2px')+';display:inline-flex;flex-direction:column;align-items:center;justify-content:flex-start;width:64px;height:92px;margin:2px;text-align:center;vertical-align:top;overflow:hidden';
+      // 아이콘 모드: PNG + 이름 + 레벨 (이름 명확하게 표시)
+      d.style.cssText=d.style.cssText.replace('padding:12px','padding:4px 2px')+';display:inline-flex;flex-direction:column;align-items:center;justify-content:flex-start;width:74px;height:108px;margin:2px;text-align:center;vertical-align:top;box-sizing:border-box';
+      const _cleanName=_dispName.replace(/<[^>]+>/g,'').replace(/★/g,'').trim();
       d.innerHTML=_iconImg
-        +'<div style="font-size:.65rem;color:'+(_fGrp?_fGrp.color:'#ddc488')+';font-weight:700;margin-top:3px;line-height:1.1;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 1px">'+_dispName.replace(/<[^>]+>/g,'')+'</div>'
-        +'<div style="font-size:.6rem;color:'+(learned?'#44cc44':'#886644')+';font-weight:700;margin-top:1px;line-height:1">'+(learned?'Lv.'+slv+(slv>=10?'★':''):'⭐'+sk.spCost)+'</div>';
-      d.title=_dispName.replace(/<[^>]+>/g,'')+' — '+_dispDesc;
+        +'<div style="font-size:11px;color:'+(_fGrp?_fGrp.color:(learned?'#ffdd88':'#aa8866'))+';font-weight:700;margin-top:4px;line-height:1.15;width:70px;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 1px;text-shadow:0 1px 2px rgba(0,0,0,0.85)">'+_cleanName+'</div>'
+        +'<div style="font-size:10px;color:'+(learned?'#44ff66':'#ff8844')+';font-weight:700;margin-top:2px;line-height:1">'+(learned?'Lv.'+slv+(slv>=10?'★':''):'⭐'+sk.spCost)+'</div>';
+      d.title=_cleanName+' — '+_dispDesc;
     }else if(_skCompact && _isExpanded){
       // 디아블로식 상세보기 — 아이콘 헤더 + 카테고리 섹션별 동적 스탯 + 원본 설명
       d.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid #553322"><img src="img/skillskin_upscaled/'+sk.id+'.png" style="width:48px;height:48px;image-rendering:pixelated" onerror="this.style.display=\'none\'"><div style="flex:1"><div style="color:'+(_fGrp?_fGrp.color:'#ffcc66')+';font-size:1.05rem;font-weight:700">'+_dispName+'</div>'+(learned?'<div style="color:#88ccaa;font-size:.7rem">'+(_e?'Mastery':'숙련')+' '+~~_profV+'/'+_profCap+'</div>':'')+'</div><span data-nodrag onclick="event.stopPropagation();_skExpandedId=null;renderSkillPanel()" style="cursor:pointer;color:#aa6644;font-size:1.1rem;padding:0 6px">✕</span></div>'
