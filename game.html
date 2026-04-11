@@ -7506,7 +7506,7 @@ let _xbowEquipped=true; // T키 토글 (기본 ON)
 // ── 공성쇠뇌 터렛 ──
 // GXBOW_CD 제거됨 — 공성쇠뇌 쿨다운 없음
 const GXBOW_ST=100;      // ST 소비 (반감)
-const GXBOW_DMG_MUL=1.2; // 터렛 고정 시 데미지 기본 +20%
+const GXBOW_DMG_MUL=1.5; // 터렛 고정 시 데미지 기본 +50% (호스트 석궁 스킬에 ×1.5)
 const GXBOW_SPD_MUL=1.5; // 터렛 고정 시 공속 +50%
 let _gxTurret=null;      // {x,y,timer,ang} 설치된 터렛
 let _gxFiring=0;         // 터렛 발사 중 데미지 배율 (0이면 비활성)
@@ -19366,7 +19366,7 @@ function update(){
       // 만화광선(3발)/추적암전(6발): 원소 레이저
       const _omniLv=P.skills.omniBeam||1;
       const _emLv2=P.skills.elemMissile||1;
-      const _dmgMul=_isElemBeam?(0.5+(_emLv2-1)*.06):(2.0+(_omniLv-1)*.1); // 추적암전: 6발 광역이라 개별 ×0.5 (총×3.0)
+      const _dmgMul=_isElemBeam?(0.5+(_emLv2-1)*.06):2.0; // 멸살광선 _dmgMul 2.0 고정 (Lv 성장은 _SK_MUL g로 처리, DPS 1000~5000%/초)
       const _bRng=~~(450+((_isElemBeam?_emLv2:_omniLv)-1)*22); // 1렙450, 10렙648≈650
       if(!P._omniPts)P._omniPts=_beamPtsPool; // 풀 참조
       const _twistSpd=_now*0.004;
@@ -19777,9 +19777,9 @@ function update(){
   {let pw=0;const _camX=G.cam?G.cam.x:P.x,_camY=G.cam?G.cam.y:P.y;
   for(let i=0;i<projs.length;i++){
     const p=projs[i];
-    // 카메라에서 800px 이상 떨어진 탄 즉사 (정적 장판 제외)
+    // 카메라에서 2500px 이상 떨어진 탄 즉사 (정적 장판 제외) — 화면 밖 큰 여유
     if(!p.mine&&!p.trap&&!p.poisonZone&&!p.iceZone&&!p.dimRift&&!p._coralSpike){
-      const _cdx=p.x-_camX,_cdy=p.y-_camY;if(_cdx*_cdx+_cdy*_cdy>640000){_recycleProj(p);continue}}
+      const _cdx=p.x-_camX,_cdy=p.y-_camY;if(_cdx*_cdx+_cdy*_cdy>6250000){_recycleProj(p);continue}}
     // 트레일 업데이트
     if(OPT.trail&&!p.mine&&!p.trap&&!p.dimRift&&!p.web&&!p.poisonZone){if(!p._trail){p._trail=new Array(6);for(let _ti=0;_ti<6;_ti++)p._trail[_ti]={x:0,y:0};p._trH=0;p._trLen=0}const _tSlot=p._trail[p._trH%6];_tSlot.x=p.x;_tSlot.y=p.y;p._trH=(p._trH+1)%6;if(p._trLen<6)p._trLen++}
     p.life-=sp*0.667;let _dead=false; // 사정거리 1.5배 (수명 감소 67%)
@@ -19851,7 +19851,7 @@ function update(){
       if(!_bQuiet){_addBoom(p.x,p.y,br,22,'fire');shake(4);}
       _dead=true;
     }
-    if(!_dead&&p.life<=0){if(p.life<=-900||p.mine||p.bomb)_dead=true;else if(p.redBean){_addBoom(p.x,p.y,40,20,'redbean');_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#ff2200',12);shake(3);_dead=true}else{const _cdx=p.x-G.cam.x,_cdy=p.y-G.cam.y;if(_cdx*_cdx+_cdy*_cdy>2250000)_dead=true;else p.life=1}}
+    if(!_dead&&p.life<=0){if(p.life<=-900||p.mine||p.bomb)_dead=true;else if(p.redBean){_addBoom(p.x,p.y,40,20,'redbean');_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#ff2200',12);shake(3);_dead=true}else{const _cdx=p.x-G.cam.x,_cdy=p.y-G.cam.y;if(_cdx*_cdx+_cdy*_cdy>6250000)_dead=true;else p.life=1}}
     // 히트 임팩트 이펙트 (투사체 소멸 시)
     if(_dead&&OPT.deathFx&&!p.mine&&!p.trap&&!p.dimRift&&!p.web&&!p.poisonZone&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade){
       _addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx));
@@ -21417,7 +21417,8 @@ function update(){
       for(let i=0;i<ens.length;i++){
         const e=ens[i];if(!e.alive)continue;
         const _lvSlv=G._lavaField.slv||1;
-        let tickDmg=Math.max(1,~~(e.mhp*(0.0175+(_lvSlv-1)*0.015)));
+        // 필살기 다틱: 1렙 1틱=200% (4000% 누적), 20렙 1000% (20000% 누적), 5배 성장
+        let tickDmg=Math.max(1,~~(magicRef()*statInt()*pMagicMul()*(2+(_lvSlv-1)*0.421)));
         // 쉴드 먼저 깎기
         if(e.eShield>0){
           if(tickDmg>=e.eShield){tickDmg-=e.eShield;e.eShield=0;addTxt(e.x,e.y-20,_T('⚡쉴드!'),'#44aaff',20)}
@@ -27942,10 +27943,10 @@ const _SK_MUL={
   fireball:{b:0.5,g:0.2},
   fireBeam:{b:0.5,g:0.2},
   energyShot:{b:0.5,g:0.2},
-  // ── 채널링 (60틱/초) ──
-  whirlwind:{b:0.083,g:0.033},
-  omniBeam:{b:0.083,g:0.033},
-  maliceHunt:{b:0.5,g:0.2},  // 8발/초
+  // ── 채널링 (주력기, DPS 1000%/초~5000%/초) ──
+  whirlwind:{b:2.5,g:1.05},   // 평균 4히트/초 → DPS 1000% (Lv1), 5000% (Lv20)
+  omniBeam:{b:0.083,g:0.035}, // 60히트/초 × _dmgMul 2.0 고정 → DPS 1000%/초 (Lv1), 5000%/초 (Lv20)
+  maliceHunt:{b:0.5,g:0.2},   // 8발/초
   // ── 이동콤보 (조건부, 거리 보너스 별도) ──
   chainSlam:{b:3,g:1.2},      // ×거리(1~3.5), 최대 ATK×10.5
   chainAssault:{b:4,g:1.6},   // ×거리(1~4), 최대 ATK×16
@@ -28988,7 +28989,8 @@ function fireHolyBlast(){
   P._hbCasting=false;ultUnmute();
   const slv=P.skills.holyBlast||1;
   P._hbCd=~~(5400*(1+_eqAffix('cooldownRed')));
-  const dmg=~~(magicRef()*statInt()*pMagicMul()*(15+(slv-1)));
+  // 필살기: 1렙 3000% (×30), 20렙 15000% (×150), Lv당 +6.32 선형 (5배 성장)
+  const dmg=~~(magicRef()*statInt()*pMagicMul()*(30+(slv-1)*6.32));
   const cx=P._hbX,cy=P._hbY;
   // 범위: 1500+Lv*100 (1렙=1600, 10렙=2500)
   const blastR=1500+slv*100;
@@ -29321,6 +29323,13 @@ function renderSkillPanel(){
   });
   // ═══ 합체 가능 스킬 라인 연결 (SVG 오버레이) ═══
   _drawSkillFuseLines();
+  // ═══ 펼친 카드 자동 스크롤 (사용자 시야에 들어오도록) ═══
+  if(_skExpandedId){
+    requestAnimationFrame(()=>{
+      const _expEl=document.querySelector('#skillGrid [data-sk-id="'+_skExpandedId+'"]');
+      if(_expEl)_expEl.scrollIntoView({behavior:'smooth',block:'center',inline:'nearest'});
+    });
+  }
 }
 
 // 펼친 스킬 ↔ 현재 합체 가능 파트너 사이에 곡선 라인 그리기
