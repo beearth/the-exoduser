@@ -12473,21 +12473,24 @@ function _addStain(x,y,sz){
 }
 // ── 시체 잔해 시스템 (모든 사망) — 물리 기반 래그돌 ──
 const _CORPSE_MAX=25;const _corpses=[];
-for(let i=0;i<_CORPSE_MAX;i++){const _cc=document.createElement('canvas');_cc.width=48;_cc.height=48;_corpses.push({x:0,y:0,vx:0,vy:0,r:0,rv:0,sz:0,t:0,mt:0,c:_cc,ctx:_cc.getContext('2d'),active:false,bounced:0})}
+for(let i=0;i<_CORPSE_MAX;i++){const _cc=document.createElement('canvas');_cc.width=128;_cc.height=128;_corpses.push({x:0,y:0,vx:0,vy:0,r:0,rv:0,sz:0,t:0,mt:0,c:_cc,ctx:_cc.getContext('2d'),active:false,bounced:0})}
 function _addCorpse(e,killAng,power){
   if(!OPT.deathFx)return;
   e._corpseSpawned=true;
-  _addStain(e.x,e.y,e.ib?30:Math.max(10,e.r));
+  // 피웅덩이: 몬스터 렌더 크기 기준 (스킨 몹 e.r*3.5, 보스 큰 값)
+  const _stainR=e.ib?Math.max(60,e.r*1.5):Math.max(14,e.r*1.4);
+  _addStain(e.x,e.y,_stainR);
   let oldest=0,minT=Infinity;
   for(let i=0;i<_CORPSE_MAX;i++){if(!_corpses[i].active){oldest=i;break}if(_corpses[i].t<minT){minT=_corpses[i].t;oldest=i}}
   const c=_corpses[oldest];
   const a=killAng||0;
   const spd=Math.min(5,1.5+(power||1)*.8); // 거리 무관, 데미지 비례
-  c.x=e.x;c.y=e.y;c.sz=e.ib?40:Math.max(20,Math.min(32,e.r*1.6));
+  // 시체 크기: 보스/큰몹 렌더 크기에 비례 (스킨몹 _bsz=r*2.8 기준)
+  c.x=e.x;c.y=e.y;c.sz=e.ib?Math.max(80,e.r*2.5):Math.max(28,Math.min(80,e.r*2.2));
   c.vx=Math.cos(a)*spd;c.vy=Math.sin(a)*spd;
   c.r=a+Math.PI*.5;c.rv=(Math.random()-.5)*.2; // 회전 속도
   c.mt=e.ib?600:420;c.t=c.mt;c.active=true;c.bounced=0;
-  c.ctx.clearRect(0,0,48,48);
+  c.ctx.clearRect(0,0,128,128);
   // 8dir 아틀라스에서 시체 이미지 캡처
   {const _ca8=_ch8Atlas[1];
   let _cDrawn=false;
@@ -12495,11 +12498,11 @@ function _addCorpse(e,killAng,power){
     let _cda=_ca8.dirs['south'];
     if(_cda&&_cda.ready&&e._mob8Col!==undefined){
       const _cc8=(_ca8.meta?_ca8.meta.cell:256);
-      c.ctx.drawImage(_cda.img,e._mob8Col*_cc8,e._mob8Row*_cc8,_cc8,_cc8,0,0,48,48);
+      c.ctx.drawImage(_cda.img,e._mob8Col*_cc8,e._mob8Row*_cc8,_cc8,_cc8,0,0,128,128);
       _cDrawn=true;
     }
   }
-  if(!_cDrawn){c.ctx.fillStyle=e.col||'#cc0000';c.ctx.beginPath();c.ctx.arc(24,24,20,0,Math.PI*2);c.ctx.fill();}
+  if(!_cDrawn){c.ctx.fillStyle=e.col||'#cc0000';c.ctx.beginPath();c.ctx.arc(64,64,54,0,Math.PI*2);c.ctx.fill();}
   }
 }
 // ── Gib 시스템: 폭발 사망 시 시체 부위 조각 ──
@@ -20319,6 +20322,14 @@ function update(){
         {const _isTurretProj=!!p._fromTurret;
         const _ftV=_isTurretProj&&_gxTurret?Math.max(0,1-dst(P.x,P.y,_gxTurret.x,_gxTurret.y)/2000):1;
         hurtE(e,dmg,ang,_isTurretProj||p.blueBean,p,p.el);
+        // 악의사냥 출혈 DOT: 석궁뎀+DEX 기반, 중첩, 15초 지속, 쉴드 무시
+        if(p.maliceHunt){
+          const _mhBDot=~~(bowRef()*statDex()*1.5*(1+(P.skills.maliceHunt||1)*0.1));
+          e.bleed=1;
+          e.bleedT=Math.max(e.bleedT||0,900); // 15초(60fps)
+          e.bleedStk=Math.min(10,(e.bleedStk||0)+1);
+          e._bleedPool=(e._bleedPool||0)+_mhBDot;
+        }
         if(!_isTurretProj||_ftV>0.01){
           if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
           else if(p.blueBean){if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.1*_ftV,_r(1,.15));P._bbHitCd=4}}
@@ -28182,17 +28193,17 @@ function _openSkillSlotPop(slotIdx){
 // ═══ 악의 사냥 발동 (선택기술) ═══
 function activateMaliceHunt(){
   if(G.mats<30){showPH(_T('악의 부족! (30)'),'#ff4444');return}
-  const _mhMpCost=50;
+  const _mhStCost=50;
   const _mhLv=P.skills.maliceHunt||1;
   const _mhShotCnt=Math.min(6,1+_mhLv); // 1렙=2발, 2렙=3, ... 5렙+=6발
   const _mhGF=P.skills.guardian>=1&&_isFused('bladeFuse');
   if(_mhGF){
-    if(P.mp<_mhMpCost){showPH('MP ??! (50)','#4488ff');return}
+    if(P.st<_mhStCost){showPH(_T('ST 부족!'),'#ff4444');return}
     // 합체: 궤도 칼날 전부 발사
     if(!P._gOrbs||P._gOrbs.length===0){showPH(_T('칼날 없음!'),'#cccccc');return}
     const _isPlagueGF=P.skills.plagueBurst>=1&&_isFused('plagueFuse');
     if(_isPlagueGF&&(P._pbCd||0)>0){return}
-    G.mats-=30;P.mp=Math.max(0,P.mp-_mhMpCost);
+    G.mats-=30;P.st=Math.max(0,P.st-_mhStCost);
     if(_isPlagueGF)P._pbCd=~~((900-((P.skills.plagueBurst||1)-1)*30)*(1+_eqAffix('cooldownRed'))); // 독혈해방 15초 - Lv당 0.5초
     const _goCnt=P._gOrbs.length;
     const _goR=(34)+P.r;
@@ -28222,7 +28233,8 @@ function activateMaliceHunt(){
     shake(6);
   }else{
     // 단독: 1발, 레벨 스케일 데미지, 10회 관통
-    G.mats-=30;P.mp=Math.max(0,P.mp-_mhMpCost);
+    if(P.st<_mhStCost){showPH(_T('ST 부족!'),'#ff4444');return}
+    G.mats-=30;P.st=Math.max(0,P.st-_mhStCost);
     const _mhDmg=~~(meleeRef()*statStr()*pAtkMul()*(10+(_mhLv-1)*0.5));
     const _mhPierce=20+_mhLv*10; // 기본20 + 렙당10
     const _mdx=Math.cos(P.atkArc),_mdy=Math.sin(P.atkArc);
