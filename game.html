@@ -3690,6 +3690,9 @@ function _T(s){
   return s;
 }
 // ═══ 스킬별 히트스톱 기본 프레임 (OPT.hitStop/100 곱해서 사용) ═══
+// 스턴 상수: 미니스턴 1초, 풀스턴 3초
+const _MINI_STUN=60;
+const _FULL_STUN=180;
 const _HS={
   blink:2,charge:2,chargeHit:3,chargeWall:3,finisher:5,galeSlam:5,
   melee:4,meleeSh:3,meleeUn:3, // weapon/shield/unarmed
@@ -20009,7 +20012,7 @@ function update(){
         hurtP(_bkD,{dtype:'magic',src:'무지개폭발'});
         // 무지개탄 포이즈 데미지 (빨콩 2배 = maxPoise*0.2)
         {const _bkPd=Math.max(2,~~(P.maxPoise*0.2));P.poise=(P.poise||P.maxPoise)-_bkPd;P.poiseR=0;
-        if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(300*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}
+        if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}
         P.iframes=Math.max(P.iframes,15);
         addTxt(p.x,p.y-15,_T('💥무지개 폭발! ')+_bkD,'#ff44ff',40);
         SFX.detonate();shake(14);
@@ -25373,7 +25376,7 @@ function updateE(e,sp){
           e.stunned=60;hurtE(e,_pd2,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd2;doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
         else{
           hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
-          P.s='pStun';P.st2=300; // 5초 스턴
+          P.s='pStun';P.st2=180; // 3초 풀스턴
           SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절! 3초'),'#ffaa00',60);
           G.hitStop=~~(8*OPT.hitStop/100);if(G.slowMo<=0)G.slowMo=15;
           for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}
@@ -27347,13 +27350,13 @@ function hurtP(dmg,opts){
     P.iframes=0;if(P.s!=='charge'&&P.s!=='sBlock'&&P.s!=='pStun'&&P.s!=='whirlwind'){
       // ═══ 포이즈 감소 → 기절 (D4식) ═══ 일반탄: maxPoise/10 (10발 스턴), 근접: 기존 공식
       const _pd=_isProj?Math.max(1,~~(P.maxPoise*0.1)):Math.max(5,~~(a*0.3));P.poise=(P.poise||P.maxPoise)-_pd;P.poiseR=0;
-      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(300*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
       else{P.s='stagger';P.st2=6}
     }
     // 회전 중: 경직 면역, 포이즈 감소 절반
     if(P.s==='whirlwind'){
       const _pd2=_isProj?Math.max(1,~~(P.maxPoise*0.05)):Math.max(2,~~(a*0.15));P.poise=(P.poise||P.maxPoise)-_pd2;P.poiseR=0;
-      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(300*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
     }
     if(a>0)addTxt(P.x,P.y-10,'-'+a,'#ff3333',28);
     scrFlash='rgba(200,0,0,.25)';scrFlashA=.25;G.shake=8*OPT.shake/100;addParts(P.x,P.y,'#ff0000',~~(8*OPT.parts/100));
@@ -27622,7 +27625,7 @@ const SKILL_CATS=[
   {id:'tech',name:'⚙️ 영역',nameEn:'⚙️ Domain',col:'#ff8800'},
   {id:'ult',name:'💀 필살기',nameEn:'💀 Ultimate',col:'#ff2200'},
 ];
-const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:'giantSlam',holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1};
+const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,demonRevive:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1};
 function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img src="img/skillskin/${f}.png" style="width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.65) ${deg}deg,transparent ${deg}deg);pointer-events:none"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#ffdd55;font-weight:900;text-shadow:0 0 6px #000,0 0 12px #000,0 1px 2px #000">${txt}</div>`:''}`}
 const SKILL_LIST=[
@@ -28771,14 +28774,15 @@ function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
         for(let j=0;j<14;j++){const a=Math.PI*2*j/14;poolPart(e.x,e.y,Math.cos(a)*7,Math.sin(a)*7,'#ffaa44',3+Math.random()*4,18)}
       }else{addTxt(e.x,e.y-18,_T('💫 진동!'),'#ffaa00',30)}
     }else{
-      // 일반몹: 강한 포이즈 피해
+      // 일반몹: 강한 포이즈 피해 + 기본 미니스턴(1초)
+      e.stunned=Math.max(e.stunned||0,_MINI_STUN); // 대왕치기 기본 미니스턴
       if(e.poise<=0){
-        const stunDur=Math.min(120,45+((P._gslLv||P.skills.giantSlam||1)-1)*6); // 최대 2초 캡
+        const stunDur=Math.min(180,90+((P._gslLv||P.skills.giantSlam||1)-1)*9); // 풀스턴 최대 3초
         e.stunned=Math.max(e.stunned||0,~~(stunDur*mult));
         e.poise=0;
         addTxt(e.x,e.y-18,_T('💥 체간 붕괴!'),'#ffcc00',45);
       }else{
-        addTxt(e.x,e.y-18,_T('💫 포이즈 파괴!'),'#ffaa00',30);
+        addTxt(e.x,e.y-18,_T('💫 미니스턴!'),'#ffaa00',30);
       }
     }
     if(mult>=2){addTxt(e.x,e.y-28,_T('약점!'),ELC[el],38)}
@@ -29468,11 +29472,12 @@ function _renderSkillRow(sk,grid){
     // 스킬 아이콘 PNG (img/skillskin_upscaled/{id}.png) — onerror로 폴백
     const _iconImg='<img src="img/skillskin_upscaled/'+sk.id+'.png" style="width:48px;height:48px;image-rendering:pixelated;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.nextSibling&&(this.nextSibling.style.display=\'block\')"><div style="font-size:1.6rem;line-height:1;display:none;text-align:center">'+(sk.emoji||'⚡')+'</div>';
     if(_skCompact && !_isExpanded){
-      // 아이콘 모드: PNG + 레벨
-      d.style.cssText=d.style.cssText.replace('padding:12px','padding:4px 2px')+';display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:60px;height:74px;margin:2px;text-align:center;vertical-align:top';
+      // 아이콘 모드: PNG + 이름 + 레벨
+      d.style.cssText=d.style.cssText.replace('padding:12px','padding:4px 2px')+';display:inline-flex;flex-direction:column;align-items:center;justify-content:flex-start;width:64px;height:92px;margin:2px;text-align:center;vertical-align:top;overflow:hidden';
       d.innerHTML=_iconImg
-        +'<div style="font-size:.6rem;color:'+(_fGrp?_fGrp.color:(learned?'#44cc44':'#886644'))+';font-weight:700;margin-top:2px;line-height:1">'+(learned?'Lv.'+slv+(slv>=10?'★':''):'⭐'+sk.spCost)+'</div>';
-      d.title=_dispName+' — '+_dispDesc;
+        +'<div style="font-size:.65rem;color:'+(_fGrp?_fGrp.color:'#ddc488')+';font-weight:700;margin-top:3px;line-height:1.1;width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 1px">'+_dispName.replace(/<[^>]+>/g,'')+'</div>'
+        +'<div style="font-size:.6rem;color:'+(learned?'#44cc44':'#886644')+';font-weight:700;margin-top:1px;line-height:1">'+(learned?'Lv.'+slv+(slv>=10?'★':''):'⭐'+sk.spCost)+'</div>';
+      d.title=_dispName.replace(/<[^>]+>/g,'')+' — '+_dispDesc;
     }else if(_skCompact && _isExpanded){
       // 디아블로식 상세보기 — 아이콘 헤더 + 카테고리 섹션별 동적 스탯 + 원본 설명
       d.innerHTML='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;padding-bottom:6px;border-bottom:1px solid #553322"><img src="img/skillskin_upscaled/'+sk.id+'.png" style="width:48px;height:48px;image-rendering:pixelated" onerror="this.style.display=\'none\'"><div style="flex:1"><div style="color:'+(_fGrp?_fGrp.color:'#ffcc66')+';font-size:1.05rem;font-weight:700">'+_dispName+'</div>'+(learned?'<div style="color:#88ccaa;font-size:.7rem">'+(_e?'Mastery':'숙련')+' '+~~_profV+'/'+_profCap+'</div>':'')+'</div><span data-nodrag onclick="event.stopPropagation();_skExpandedId=null;renderSkillPanel()" style="cursor:pointer;color:#aa6644;font-size:1.1rem;padding:0 6px">✕</span></div>'
@@ -29493,18 +29498,59 @@ function _renderSkillRow(sk,grid){
       d.onclick=()=>{_skExpandedId=sk.id;renderSkillPanel()};
       grid.appendChild(d);return;
     }
-    // ═══ compact 펼침 모드: 닫기 버튼은 상단 ✕로, 학습/강화 버튼은 아래에 추가 ═══
+    // ═══ compact 펼침 모드: + 강화/습득, - 레벨다운/취소 ═══
     if(_skCompact && _isExpanded){
-      if(canLearn||canUp){
-        const _btn=document.createElement('div');
-        _btn.dataset.nodrag='1';
-        _btn.style.cssText='margin-top:6px;padding:6px 10px;background:rgba(60,40,15,0.6);border:1px solid #aa8833;border-radius:4px;color:#ffcc66;font-size:.85rem;text-align:center;cursor:pointer;font-weight:700';
-        _btn.textContent=canLearn?(_e?'Learn (⭐'+sk.spCost+' 👿'+sk.matCost+')':'습득 (⭐'+sk.spCost+' 👿'+sk.matCost+')'):(_e?'Upgrade (⭐'+_singleUpSp+')':'강화 (⭐'+_singleUpSp+')');
-        _btn.onmouseenter=()=>{_btn.style.background='rgba(80,55,20,0.7)'};
-        _btn.onmouseleave=()=>{_btn.style.background='rgba(60,40,15,0.6)'};
-        _btn.onclick=(ev)=>{ev.stopPropagation();_skClick();_skExpandedId=null;renderSkillPanel()};
-        d.appendChild(_btn);
+      // 레벨다운/취소 함수 (SP+악의 환불)
+      const _skUnclick=()=>{
+        if(!learned)return;
+        if(slv>1){
+          // 레벨 다운: 직전 강화 비용 환불
+          const _refundSp=_skillUpSpCost(slv-1,false);
+          P.skills[sk.id]=slv-1;P.sp+=_refundSp;G.mats+=(sk.upMat||0);
+          SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+' Lv.'+(slv-1)+' (-)','#ff8844',60);
+        }else{
+          // 습득 취소: 학습 비용 환불 + 슬롯 해제
+          delete P.skills[sk.id];
+          P.sp+=sk.spCost;G.mats+=sk.matCost;
+          // 슬롯 자동 해제
+          for(let _si=0;_si<6;_si++){if(SKILL_SLOTS[_si]===sk.id)SKILL_SLOTS[_si]=null}
+          if(P.activeLMBSk===sk.id&&sk.id!=='kiSlash')P.activeLMBSk='kiSlash';
+          if(P.activeChargeSk===sk.id)P.activeChargeSk=null;
+          if(P.activeBowSk===sk.id)P.activeBowSk=null;
+          if(P.activeMagicSk===sk.id)P.activeMagicSk='fireball';
+          if(P.activeQSk===sk.id)P.activeQSk=null;
+          if(P.activeTechSk===sk.id)P.activeTechSk=null;
+          if(ULT_SLOT===sk.id)ULT_SLOT=null;
+          SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+(_e?' Cancelled':' 취소!'),'#ff4444',60);
+        }
+        renderSkillPanel();updateSkSlot&&updateSkSlot();updateQS&&updateQS();dbSaveForce();
+      };
+      // 버튼 행 컨테이너
+      const _btnRow=document.createElement('div');
+      _btnRow.dataset.nodrag='1';
+      _btnRow.style.cssText='display:flex;gap:4px;margin-top:8px;justify-content:center';
+      // (-) 레벨다운/취소 버튼 — learned이면 항상 표시
+      if(learned){
+        const _bMin=document.createElement('div');
+        _bMin.style.cssText='flex:0 0 auto;padding:6px 14px;background:rgba(80,30,30,0.5);border:1px solid #cc4444;border-radius:4px;color:#ff8888;font-size:.95rem;text-align:center;cursor:pointer;font-weight:700';
+        _bMin.textContent=slv>1?(_e?'− Lv':'− 레벨'):(_e?'− Cancel':'− 취소');
+        _bMin.title=slv>1?(_e?'Refund SP':'SP 환불'):(_e?'Refund all':'전액 환불');
+        _bMin.onmouseenter=()=>{_bMin.style.background='rgba(120,40,40,0.7)'};
+        _bMin.onmouseleave=()=>{_bMin.style.background='rgba(80,30,30,0.5)'};
+        _bMin.onclick=(ev)=>{ev.stopPropagation();_skUnclick()};
+        _btnRow.appendChild(_bMin);
       }
+      // (+) 학습/강화 버튼
+      if(canLearn||canUp){
+        const _bPlus=document.createElement('div');
+        _bPlus.style.cssText='flex:1;padding:6px 10px;background:rgba(60,40,15,0.6);border:1px solid #aa8833;border-radius:4px;color:#ffcc66;font-size:.85rem;text-align:center;cursor:pointer;font-weight:700';
+        _bPlus.textContent=canLearn?(_e?'+ Learn (⭐'+sk.spCost+' 👿'+sk.matCost+')':'+ 습득 (⭐'+sk.spCost+' 👿'+sk.matCost+')'):(_e?'+ Lv Up (⭐'+_singleUpSp+')':'+ 레벨업 (⭐'+_singleUpSp+')');
+        _bPlus.onmouseenter=()=>{_bPlus.style.background='rgba(80,55,20,0.7)'};
+        _bPlus.onmouseleave=()=>{_bPlus.style.background='rgba(60,40,15,0.6)'};
+        _bPlus.onclick=(ev)=>{ev.stopPropagation();_skClick()};
+        _btnRow.appendChild(_bPlus);
+      }
+      if(_btnRow.children.length>0)d.appendChild(_btnRow);
       grid.appendChild(d);return;
     }
     // ═══ 클릭 합체 시스템 (모든 합체 그룹 버튼 표시) ═══
