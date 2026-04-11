@@ -35287,23 +35287,7 @@ function drawP(){
   }
   // ══ 블랙 — 폭발 이펙트 ══
   if(G._bsPillar){
-    const bp=G._bsPillar,prog=bp.t/bp.maxT;
-    const fadeIn=Math.min(1,prog*5),fadeOut=Math.max(0,1-prog),alpha=fadeIn*fadeOut;
-    X.save();
-    if(prog<0.3){X.restore();X.save();X.setTransform(1,0,0,1,0,0);X.globalAlpha=(1-prog/0.3)*0.5;X.fillStyle='#220033';X.fillRect(0,0,C.width,C.height);X.restore();X.save();X.translate(C.width/2-G.cam.x,C.height/2-G.cam.y)}
-    const pillarR=120+80*fadeIn;
-    X.globalAlpha=alpha*0.6;
-    const grd=X.createRadialGradient(bp.x,bp.y,0,bp.x,bp.y,pillarR);
-    grd.addColorStop(0,'#aa00ff');grd.addColorStop(.5,'#440066');grd.addColorStop(1,'transparent');
-    X.fillStyle=grd;X.beginPath();X.arc(bp.x,bp.y,pillarR,0,Math.PI*2);X.fill();
-    X.globalAlpha=alpha*.8;X.strokeStyle='#cc44ff';X.lineWidth=3;
-    X.beginPath();const _bRot=-_now*0.005;
-    for(let i=0;i<5;i++){const a1=_bRot+(i*4*Math.PI/5)-Math.PI/2,a2=_bRot+((i+1)*4*Math.PI/5)-Math.PI/2;
-      X.moveTo(bp.x+Math.cos(a1)*pillarR,bp.y+Math.sin(a1)*pillarR);X.lineTo(bp.x+Math.cos(a2)*pillarR,bp.y+Math.sin(a2)*pillarR)}
-    X.stroke();
-    X.globalAlpha=alpha;X.fillStyle='#cc44ff';X.font='bold 18px monospace';X.textAlign='center';
-    X.fillText('\u26e7 \uBE14\uB799 \u26e7',bp.x,bp.y-pillarR-15);
-    X.restore();
+    // 블랙 오망성 문양 숨김 (판정은 유지)
   }
   // ══ 용암소환 — 시전 중 빨간 오망성 ══
   if(P._lvCasting){
