@@ -546,8 +546,20 @@ canvas{display:block;position:fixed;inset:0}
 .fg-potions{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
 /* ══ STAT PANEL ══ */
 .stat-row{display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:10px;background:rgba(0,0,0,.3);border:1px solid #2a2211;transition:all .2s;border-radius:4px}
-.stat-row:hover{border-color:#665533;background:rgba(255,150,0,.03)}
-.stat-icon{font-size:3rem;width:48px;text-align:center}
+.stat-row:hover{border-color:#8f6238;background:linear-gradient(180deg,rgba(52,28,19,.34),rgba(18,10,10,.45))}
+.stat-icon{
+  font-size:2.2rem;
+  width:56px;
+  height:56px;
+  text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  border:1px solid rgba(169,102,58,.7);
+  background:linear-gradient(180deg,rgba(66,31,21,.66),rgba(24,13,11,.88));
+  box-shadow:inset 0 0 0 1px rgba(255,164,98,.13),0 6px 12px rgba(0,0,0,.35);
+}
 .stat-info{flex:1}
 .stat-name{font-size:1.6rem;font-weight:700;letter-spacing:.08em}
 .stat-desc{font-size:1.2rem;color:var(--c-text-dim);margin-top:4px}
@@ -556,13 +568,44 @@ canvas{display:block;position:fixed;inset:0}
 .stat-btn{width:56px;height:48px;background:rgba(0,0,0,.4);border:1px solid var(--c-border);color:var(--c-text-bright);font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;user-select:none}
 .stat-btn:hover{border-color:var(--c-accent);color:var(--c-gold);background:rgba(255,100,0,.08)}
 .stat-btn.dis{opacity:.25;cursor:default;pointer-events:none}
+.stat-op-btn{
+  width:48px;height:48px;
+  border-radius:8px;
+  border:1px solid #6f4632;
+  background:linear-gradient(180deg,rgba(42,21,16,.74),rgba(18,10,9,.9));
+  box-shadow:inset 0 0 0 1px rgba(255,158,102,.1);
+  color:#d6a074;
+  font-size:1.35rem;
+  font-weight:700;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .15s;
+}
+.stat-op-btn.plus{border-color:#8f6b3f;color:#e0b27a}
+.stat-op-btn.minus{border-color:#774646;color:#cf7f7f}
+.stat-op-btn:hover{transform:translateY(-1px);border-color:#e48a4b;color:#ffd3aa;box-shadow:0 0 12px rgba(255,128,64,.28),inset 0 0 0 1px rgba(255,190,140,.16)}
+.stat-op-btn.dis{opacity:.3;cursor:not-allowed;transform:none;box-shadow:none}
 .stat-bar{height:6px;background:rgba(255,255,255,.05);margin-top:6px;border-radius:2px;overflow:hidden}
 .stat-bar-fill{height:100%;transition:width .2s}
 .passive-row{display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:10px;background:rgba(0,0,0,.3);border:1px solid #2a2211;cursor:pointer;transition:all .2s;border-radius:4px}
-.passive-row:hover{border-color:#8855cc;background:rgba(150,50,255,.04)}
-.passive-row.maxed{border-color:#bb66ff;background:rgba(150,50,255,.06)}
+.passive-row:hover{border-color:#9a5ea4;background:linear-gradient(180deg,rgba(57,25,58,.35),rgba(20,11,22,.5))}
+.passive-row.maxed{border-color:#bb66ff;background:linear-gradient(180deg,rgba(83,37,86,.35),rgba(29,14,31,.56))}
 .passive-row.dis{opacity:.35;cursor:default}
-.passive-icon{font-size:2.8rem;width:48px;text-align:center}
+.passive-icon{
+  font-size:2.1rem;
+  width:56px;
+  height:56px;
+  text-align:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:12px;
+  border:1px solid rgba(140,80,154,.72);
+  background:linear-gradient(180deg,rgba(56,24,61,.72),rgba(20,11,23,.88));
+  box-shadow:inset 0 0 0 1px rgba(220,148,255,.12),0 6px 12px rgba(0,0,0,.35);
+}
 .passive-info{flex:1}
 .passive-name{font-size:1.5rem;font-weight:700}
 .passive-desc{font-size:1.2rem;color:var(--c-text-dim);margin-top:4px}
@@ -658,6 +701,146 @@ canvas{display:block;position:fixed;inset:0}
 .sk-opt:hover{
   border-color:#c77642;
   background:linear-gradient(180deg,rgba(62,30,20,.8),rgba(28,14,12,.86));
+}
+#mmLvl{
+  filter:drop-shadow(0 10px 24px rgba(0,0,0,.45));
+}
+#settings .pbox,
+#invPanel .pbox,
+#forge .pbox,
+#storagePanel .pbox,
+#statPanel .pbox{
+  background:
+    radial-gradient(900px 420px at 50% -120px,rgba(130,64,30,.16),transparent 65%),
+    linear-gradient(180deg,rgba(24,12,11,.96),rgba(11,7,7,.98));
+}
+#settings .set-section{
+  border:1px solid rgba(96,56,36,.45)!important;
+  border-radius:10px;
+  padding:12px 12px 10px!important;
+  background:linear-gradient(180deg,rgba(28,15,12,.45),rgba(13,8,8,.6));
+}
+#settings .set-label{
+  color:#e1ad80!important;
+  border-bottom:1px solid rgba(126,75,48,.55);
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+#settings .set-range-row{
+  padding:3px 0;
+}
+#settings select,
+#settings input[type="range"],
+#settings button:not(.pclose){
+  border-radius:6px;
+}
+#settings button:not(.pclose){
+  border:1px solid #6a3f2a!important;
+  background:linear-gradient(180deg,rgba(44,20,15,.75),rgba(20,11,10,.86))!important;
+  color:#dba677!important;
+}
+#settings button:not(.pclose):hover{
+  border-color:#d0713f!important;
+  color:#ffd1a2!important;
+}
+#invPanel #combatPower{
+  border-color:#6a3f2a!important;
+  background:linear-gradient(180deg,rgba(30,16,12,.6),rgba(12,9,8,.7))!important;
+  border-radius:6px!important;
+}
+#invPanel #invClose{
+  border-radius:6px;
+  background:linear-gradient(180deg,rgba(30,15,12,.65),rgba(12,8,8,.85))!important;
+}
+#invPanel .inv-storage-toggle{
+  color:#d6a173;
+  padding:8px 10px;
+  border:1px solid rgba(101,60,40,.5);
+  border-radius:8px;
+  background:linear-gradient(180deg,rgba(34,18,14,.55),rgba(14,9,9,.68));
+}
+#invPanel .inv-storage-toggle:hover{
+  color:#ffd0a2;
+  border-color:#cd7745;
+}
+#invPanel .inv-grid>div{
+  border-radius:6px;
+}
+#forge .fg-tabs{
+  gap:6px;
+}
+#forge .fg-tab{
+  border-radius:8px;
+  border-color:#6a3e2a;
+  color:#cda178;
+  background:linear-gradient(180deg,rgba(36,18,14,.6),rgba(15,10,9,.78));
+}
+#forge .fg-tab:hover{
+  border-color:#d07842;
+  color:#ffcb97;
+}
+#forge .fg-tab.act{
+  border-color:#df7e45;
+  color:#ffd2a1;
+  background:linear-gradient(180deg,rgba(94,44,24,.42),rgba(34,16,12,.82));
+  box-shadow:inset 0 0 0 1px rgba(255,152,95,.12),0 0 10px rgba(255,124,66,.2);
+}
+#forge #forgeMats{
+  border-color:#5f3a67!important;
+  background:linear-gradient(180deg,rgba(55,24,76,.35),rgba(22,11,28,.6))!important;
+}
+#statPanel #smToggleBtn{
+  border-radius:8px!important;
+  border-color:#a96333!important;
+  background:linear-gradient(180deg,rgba(62,30,18,.6),rgba(25,12,10,.82))!important;
+}
+#statPanel #statSummary{
+  border-color:#8d5832!important;
+  border-radius:10px!important;
+  background:linear-gradient(180deg,rgba(24,14,12,.97),rgba(12,8,8,.98))!important;
+}
+#settings .ptitle,
+#invPanel .ptitle,
+#forge .ptitle,
+#storagePanel .ptitle,
+#statPanel .ptitle{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 0 8px;
+  border-bottom:1px solid rgba(125,72,47,.45);
+}
+#statPanel .stat-row,
+#statPanel .passive-row{
+  border:1px solid rgba(114,64,40,.6);
+  border-radius:10px;
+  background:linear-gradient(180deg,rgba(28,15,12,.52),rgba(14,9,9,.66));
+  box-shadow:inset 0 0 0 1px rgba(255,147,94,.08);
+}
+#statPanel .psv-btn{
+  width:48px;
+  height:48px;
+  border-radius:8px;
+  border:1px solid #763f42!important;
+  background:linear-gradient(180deg,rgba(46,19,21,.7),rgba(20,10,11,.88))!important;
+  color:#d08186!important;
+  box-shadow:inset 0 0 0 1px rgba(255,143,143,.1);
+  transition:all .15s;
+}
+#statPanel .psv-btn:hover{
+  border-color:#d26568!important;
+  color:#ffb3b7!important;
+  box-shadow:0 0 12px rgba(227,88,97,.24),inset 0 0 0 1px rgba(255,170,175,.14);
+}
+#statPanel .passive-pips .passive-pip{
+  border-color:#5a355f;
+  border-radius:4px;
+  background:rgba(20,12,22,.8);
+}
+#statPanel .passive-pips .passive-pip.filled{
+  border-color:#c87dff;
+  background:linear-gradient(180deg,#c87dff,#9449d8);
+  box-shadow:0 0 10px rgba(190,102,255,.42);
 }
 
 /* ══ 반응형 ══ */
@@ -1044,6 +1227,7 @@ canvas{display:block;position:fixed;inset:0}
           <span id="cpBreak" style="color:#776655;font-size:.75rem"></span>
         </div>
         <div onclick="_crBagOpen=true;_crPickCb=null;_crBagSel=-1;renderCrystalBag()" style="padding:2px 8px;cursor:pointer;border:1px solid #553388;color:#bb88ff;font-size:.8rem;font-weight:700;background:rgba(100,0,200,.08);border-radius:3px" onmouseover="this.style.borderColor='#bb88ff';this.style.background='rgba(100,0,200,.15)'" onmouseout="this.style.borderColor='#553388';this.style.background='rgba(100,0,200,.08)'">💎 결정</div>
+        <div id="invResBar" style="padding:2px 10px;font-size:.8rem;color:#887766;background:rgba(0,0,0,.3);border:1px solid #443322;border-radius:3px;white-space:nowrap"></div>
         <div id="invClose" style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #554433;color:#aa8866;font-size:1.2rem;font-weight:900;background:rgba(0,0,0,.3)" onmouseover="this.style.color='#ff6633';this.style.borderColor='#ff6633'" onmouseout="this.style.color='#aa8866';this.style.borderColor='#554433'">✕</div>
       </div>
     </div>
@@ -15073,6 +15257,7 @@ function _fireEnergyShot(){
   const _esRange=1000+(_esLv-1)*60; // 사거리 2배
   const _esDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('energyShot')*_fuseMul('energyShot')); // 통일공식: _skMul
   const cx=Math.cos(P.atkArc),cy=Math.sin(P.atkArc);
+  // 비합체 기본형: 직선 즉시타격 (유도/분열/착탄폭발 없음)
   const _esNe=shQuery(P.x+cx*_esRange*.5,P.y+cy*_esRange*.5,_esRange*.6);
   for(let _ei=0;_ei<_esNe.length;_ei++){
     const e=_esNe[_ei];if(!e.alive)continue;
@@ -21051,9 +21236,11 @@ function update(){
     // 매 프레임 마우스 방향 추적 (레이저 핸들링)
     {const _tgtA=Math.atan2(mouse.y-C.height/2,mouse.x-C.width/2);let _da=_tgtA-P.atkArc;if(_da>Math.PI)_da-=Math.PI*2;if(_da<-Math.PI)_da+=Math.PI*2;P.atkArc+=_da*0.25*sp;P.facing=P.atkArc;}
     P._esAutoTimer=(P._esAutoTimer||0)+sp;
-    if(P._esAutoTimer>=~~(40/pMagicSpd())){ // ~0.66초 기본, DEX로 빨라짐
+    if(P._esAutoTimer>=~~(30/pMagicSpd())){ // 기본 4발/초, 시전속도 증가 시 더 빨라짐
       P._esAutoTimer=0;
-      if(P.mp>=10){_fireEnergyShot()}
+      const _esLvAf=P.skills.energyShot||1;
+      const _esMpNeed=~~(12*(1+(_esLvAf-1)*0.10));
+      if(P.mp>=_esMpNeed){_fireEnergyShot()}
       else{P._esAutoFire=false;addTxt(P.x,P.y-25,_T('MP 부족 — 연사 해제'),'#888',30)}
     }
   }
@@ -27912,7 +28099,7 @@ const SKILL_LIST=[
   // [SKILL REMOVED 2026-04-10] bladeShot (붉은꽃) — 석궁 개편
   {id:'iceOrb',name:'얼음보주',cat:'bow',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',descEn:'Enter ice — invincible. Re-press to shatter → 48 ice blades fan spread (MP 40, CD 20s). Per Lv blades+2 DMG+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'needleShot',name:'만화방창 II',cat:'bow',act:true,emoji:'✨',desc:'[고정: T 자동] 초고속 바늘 연발. 1렙 2발, 5렙마다 +1발. 관통 없음. ST 8. 쿨 1.5초. Lv당 뎀+100%',descEn:'[Fixed: T auto] Ultra-fast needles burst. Lv1 2 shots, +1 per 5 levels. No pierce. ST 8. CD 1.5s',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
-  {id:'energyShot',name:'마력연사',cat:'bow',emoji:'⚡',desc:'E홀드: 에너지탄 연사 (4발/초). MP 5/발. 유도+착탄 폭발. Lv당 뎀+10% 사거리+30',descEn:'E hold: rapid energy shots (4 shots/s). MP 5/shot. Homing+impact explosion. Per Lv DMG+10% range+30',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
+  {id:'energyShot',name:'마력연사',cat:'bow',emoji:'⚡',desc:'E토글: 에너지탄 자동 연사 (기본 4발/초). MP 12~22/발(Lv 스케일). 직선 즉시타격(비합체 기본형). Lv당 뎀 증가, 사거리+60',descEn:'E toggle: auto rapid energy shots (base 4 shots/s). MP 12~22/shot (Lv scaling). Straight instant hit (non-fusion base). Per Lv DMG up, range+60',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
   {id:'fireBeam',name:'업화선',cat:'bow',emoji:'🔥',desc:'E탭: 화염 유도빔 발사. MP10. 쿨1초(DEX 스케일). 100% 관통+유도+화상. Lv당 사거리+50 뎀+12%',descEn:'E tap: fire homing beam. MP 10. CD 1s (DEX scale). 100% pierce+homing+burn. Per Lv range+50 DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'fireAura',name:'지옥진',cat:'magic',emoji:'🌋',desc:'E: 10초간 대지 진동. 범위 내 용암 기둥이 순차적으로 솟아올라 화상+틱 데미지. MP 100. 쿨 12초. Lv당 범위+10% 뎀+12%',descEn:'E: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'plagueBurst',name:'폭독칼날',cat:'bow',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 1렙 30관통(만렙100). 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)',descEn:'Fire 1 poison-blood blade: Lv1 30 pierce (max Lv 100). Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)',spCost:10,matCost:80,cd:1200,up:true,upSp:5,upMat:0},
@@ -27957,7 +28144,7 @@ const SKILL_SLOT_DEFS={
           burstLoop:{name:'버스트루프',nameEn:'Burst Loop',emoji:'💫',desc:'E 홀드: 3단계 차지 범위폭발 (Lv700 히든)',descEn:'E Hold: 3-stage charge AoE (Lv700 hidden)'},
           fireAura:{name:'지옥진',nameEn:'Inferno Field',emoji:'🌋',desc:'E: 10초 대지진동 (용암기둥+화상+틱뎀, MP100, 쿨12초)',descEn:'E: 10s ground quake (lava+burn+tick, MP100, cd 12s)'},
           fireBeam:{name:'업화선',nameEn:'Karma Beam',emoji:'🔥',desc:'E탭: 유도 화염빔 (100%관통+유도+화상, MP10, DEX공속)',descEn:'E tap: Homing fire beam (100% pierce+homing+burn, MP10, DEX aspd)'},
-          energyShot:{name:'마력연사',nameEn:'Energy Barrage',emoji:'⚡',desc:'E홀드: 에너지탄 연사 (4발/초, MP5/발, 유도+폭발)',descEn:'E Hold: Energy shots (4/s, MP5/shot, homing+explode)'}}},
+          energyShot:{name:'마력연사',nameEn:'Energy Barrage',emoji:'⚡',desc:'E토글: 에너지탄 자동연사 (4발/초, MP12~22/발, 직선 즉시타격)',descEn:'E toggle: auto energy shots (4/s, MP12~22/shot, straight instant hit)'}}},
   bow:{name:'석궁 자동(T)',nameEn:'Crossbow Auto(T)',key:'bow',skills:['normal','bladeShot','blastShot','fanShot','needleShot','ghostXbowTurret'],
     info:{normal:{name:'일반사격',nameEn:'Normal Shot',emoji:'🏹',desc:'T자동: 기본 화살',descEn:'T auto: Basic arrow'},
           bladeShot:{name:'붉은꽃',nameEn:'Red Bloom',emoji:'🌹',desc:'T자동: 붉은 꽃잎 칼날 (ST50)',descEn:'T auto: Red petal blade (ST50)'},
@@ -28719,6 +28906,7 @@ function fireMaliceMortar(){
 function fireBoneWall(tx,ty){
   try{
   P._bwAiming=false;
+  if(G.mats<12){showPH(_T('악의 부족!'),'#ff4444');return}
   G.mats-=12;
   const slv=P.skills.boneWall||1;
   P._bwStk--;const _bwMx2=(P.skills.boneWall>=10)?3:2;if(P._bwStk<_bwMx2&&!P._bwRech)P._bwRech=1500;
@@ -28988,6 +29176,7 @@ function activateGiantSlam(srcId){
   srcId=srcId||'giantSlam';
   const slv=P.skills[srcId]||P.skills.giantSlam||1;
   _addSkProf(srcId);
+  if(G.mats<20){showPH(_T('악의 부족!'),'#ff4444');return}
   useStPct('giantSlam');G.mats-=20;
   P._gslCd=~~(Math.max(60,480-(slv-1)*18)*(1+_eqAffix('cooldownRed')));
   P._gslDir=P.facing;P._gslLv=slv;
@@ -30345,6 +30534,7 @@ function _renderSkillRow(sk,grid){
     function _skClick(){
         if(!learned){
           // 습득
+          if(P.sp<sk.spCost||G.mats<sk.matCost){showPH(_T('자원 부족!'),'#ff4444');return}
           P.skills[sk.id]=1;P.sp-=sk.spCost;G.mats-=sk.matCost;
           // chainAssault 습득 시 chainSlam 자동 부여
           if(sk.id==='chainAssault'&&!P.skills.chainSlam)P.skills.chainSlam=1;
@@ -30384,7 +30574,8 @@ function _renderSkillRow(sk,grid){
         } else {
           // 강화
           if(slv>=_skMaxLv||slv>=_skLvLock){if(slv>=_skLvLock&&slv<_skMaxLv)showPH('Lv'+(_skLvLock*100)+(OPT.lang==='en'?' to unlock!':' 도달 시 해금!'),'#ff8844');return;}
-          P.skills[sk.id]++;P.sp-=_skillUpSpCost(slv,false);G.mats-=sk.upMat;
+          {const _upSp=_skillUpSpCost(slv,false),_upMat=sk.upMat||0;if(P.sp<_upSp||G.mats<_upMat){showPH(_T('자원 부족!'),'#ff4444');return}
+          P.skills[sk.id]++;P.sp-=_upSp;G.mats-=_upMat;}
           SFX.levelup();const nlv=P.skills[sk.id];
           addTxt(P.x,P.y-30,_T(sk.name)+' Lv.'+nlv+(nlv>=_skMaxLv?' MAX!!':'!!'),'#ffaa00',60);
         }
@@ -30456,7 +30647,10 @@ function _saveSharedStorage(arr){try{localStorage.setItem(_SHARED_STORAGE_KEY,JS
 function _loadSharedMats(){try{const v=localStorage.getItem(_SHARED_MATS_KEY);if(!v)return 0;const n=parseInt(v,10);return(isFinite(n)&&n>=0)?Math.min(n,Number.MAX_SAFE_INTEGER):0}catch(e){return 0}}
 function _saveSharedMats(v){try{const n=Math.max(0,Math.min(Math.floor(+v||0),Number.MAX_SAFE_INTEGER));localStorage.setItem(_SHARED_MATS_KEY,String(n));_saveSharedMatsToServer(n)}catch(e){}}
 // ═══ 악의 서버 동기화 ═══
+let _matsSyncTimer=0,_matsSyncLast=0,_matsSyncDirty=false,_matsPrev=0;
 function _saveSharedMatsToServer(n){try{fetch('/api/mats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mats:n})}).catch(()=>{})}catch(e){}}
+// 디바운스 동기화: mats 변경 시 호출, 3초 이내 중복 방지
+function _matsDirty(){_matsSyncDirty=true;const now=Date.now();if(now-_matsSyncLast>=3000){_matsSyncLast=now;_matsSyncDirty=false;_saveSharedMats(G.mats||0)}else if(!_matsSyncTimer){_matsSyncTimer=setTimeout(()=>{_matsSyncTimer=0;if(_matsSyncDirty){_matsSyncLast=Date.now();_matsSyncDirty=false;_saveSharedMats(G.mats||0)}},3000-(now-_matsSyncLast))}}
 async function _loadSharedMatsFromServer(){try{const r=await fetch('/api/mats');if(r.ok){const j=await r.json();if(j.ok&&isFinite(j.mats)&&j.mats>=0){const n=Math.min(j.mats,Number.MAX_SAFE_INTEGER);localStorage.setItem(_SHARED_MATS_KEY,String(n));return n}}return _loadSharedMats()}catch(e){return _loadSharedMats()}}
 function _getStore(){
   // 계정 공유 창고: localStorage에서 로드, STORAGE[0]은 참조만 유지
@@ -31703,6 +31897,8 @@ function renderInv(){
   const cp=calcCP();
   $('cpVal').textContent=cp.total;
   $('cpBreak').textContent=`⚔${cp.atk} 🛡${cp.def} ✨${cp.extra}`;
+  // ── 리소스 바 ──
+  {const _rb=$('invResBar');if(_rb)_rb.innerHTML=OPT.lang==='en'?'💎 '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | Dust: <span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | 👿 <span style="color:#cc66ff">'+G.mats+'</span>':'💎 '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | 가루: <span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | 👿 악의: <span style="color:#cc66ff">'+G.mats+'</span>'}
   // ── 창고 컬럼 (항상 렌더) ──
   try{renderInvStorage()}catch(e){console.error('창고 렌더 오류:',e)}
   // Equipped slots (paper doll)
@@ -31797,7 +31993,27 @@ function renderInv(){
         const dust=~~(CRYSTAL_DUST_COST[cr.star]*.5);
         if(confirm(_crStarN(cs)+' '+_crDefN(cd)+(OPT.lang==='en'?' decompose?\nCrystal dust +'+dust:' 분해?\n결정가루 +'+dust))){CRYSTAL_BAG.splice(_bi,1);CRYSTAL_DUST+=dust;_selectedCrystal=-1;renderInv()}};
       _crWrap.appendChild(_b)}
-    _crDiv.appendChild(_crWrap)}}
+    _crDiv.appendChild(_crWrap);
+    // ── 인벤 내 최상위 일괄합성 버튼 ──
+    const _cbk=(()=>{const _g={};CRYSTAL_BAG.forEach(cr=>{if(cr.star>=4)return;const k=cr.id+'_'+cr.star;_g[k]=(_g[k]||0)+1});for(const k in _g)if(_g[k]>=3)return true;return false})();
+    const _cbBtn=document.createElement('button');
+    _cbBtn.style.cssText='width:100%;margin-top:4px;padding:5px 10px;font-size:.8rem;font-family:"Noto Sans KR";font-weight:700;cursor:'+(_cbk?'pointer':'not-allowed')+';border:2px solid '+(_cbk?'#ffcc44':'#443322')+';background:'+(_cbk?'rgba(255,204,68,.12)':'rgba(0,0,0,.2)')+';color:'+(_cbk?'#ffdd66':'#554433')+';border-radius:4px';
+    _cbBtn.textContent='⚡ '+_T('최상위 일괄합성');
+    _cbBtn.onclick=()=>{
+      if(!_cbk)return;
+      let _total=0;
+      while(true){
+        const _g={};CRYSTAL_BAG.forEach((cr,i)=>{if(cr.star>=4)return;const k=cr.id+'_'+cr.star;if(!_g[k])_g[k]={id:cr.id,star:cr.star,idxs:[]};_g[k].idxs.push(i)});
+        let _did=false;
+        for(const k in _g){const _gr=_g[k];if(_gr.idxs.length<3)continue;
+          const _times=~~(_gr.idxs.length/3);
+          _gr.idxs.slice(0,_times*3).sort((a,b)=>b-a).forEach(ri=>CRYSTAL_BAG.splice(ri,1));
+          for(let t=0;t<_times;t++){CRYSTAL_BAG.push({id:_gr.id,star:_gr.star+1,enh:0});_total++}
+          _did=true;break}
+        if(!_did)break}
+      if(_total>0){SFX.forge();addTxt(P.x,P.y-20,_T('일괄합성 완료')+' ×'+_total,'#ffdd66',60);applyStats();renderInv();dbSaveNow()}
+    };
+    _crDiv.appendChild(_cbBtn)}}
 
   // ── Bag grid (2D 디아블로식) ──
   const grid=$('invGrid');grid.innerHTML='';
@@ -32255,7 +32471,7 @@ function renderForge(){
         if(ok){b.onmouseenter=()=>{b.style.borderColor='#88eeff';b.style.boxShadow='0 0 12px #44ccff44'};b.onmouseleave=()=>{b.style.borderColor='#44ccff';b.style.boxShadow='none'};b.onclick=fn}
         return b;
       };
-      btnRow.appendChild(mkBtn(OPT.lang==='en'?'Affix Reroll':'어픽스 리롤',REROLL_COST,()=>{G.mats-=REROLL_COST;rerollAffixes(rIt);SFX.forge();addTxt(P.x,P.y-20,_T('어픽스 리롤!'),'#44ccff',60);recalcSt();applyStats();renderForge();dbSaveNow()}));
+      btnRow.appendChild(mkBtn(OPT.lang==='en'?'Affix Reroll':'어픽스 리롤',REROLL_COST,()=>{if(G.mats<REROLL_COST){notify(_T('악의 부족!'));return}G.mats-=REROLL_COST;rerollAffixes(rIt);SFX.forge();addTxt(P.x,P.y-20,_T('어픽스 리롤!'),'#44ccff',60);recalcSt();applyStats();renderForge();dbSaveNow()}));
       detDiv.appendChild(btnRow);
       grid.appendChild(detDiv);
     }
@@ -39991,6 +40207,8 @@ function loop(timestamp){
   if(_DEBUG_PERF&&_perfFrames%30===0)console.log('[PERF] U:'+_prof.u.toFixed(1)+' D:'+_prof.d.toFixed(1)+' | map:'+_dbgDMap.toFixed(1)+' ens:'+_dbgDEns.toFixed(1)+' proj:'+_dbgDProj.toFixed(1)+' part:'+_dbgDPart.toFixed(1)+' post:'+_dbgDPost.toFixed(1)+' (lit:'+_dbgDLit.toFixed(1)+' bloom:'+_dbgDBloom.toFixed(1)+' torch:'+_dbgDTorch.toFixed(1)+') pj:'+projs.length+' en:'+ens.length+' comp:'+_dbgCompCnt);
   if(_DEBUG_PERF&&_pn-(_dbgMemLast||0)>30000){_dbgMemLast=_pn;console.log('[MEM] ens:'+ens.length+' projs:'+projs.length+' pProjs:'+pProjs.length+' worldItems:'+worldItems.length+' projFree:'+_projFree.length+' txts:'+G.txts.length+' parts:'+_partCnt+' impacts:'+_impacts.length+' spiralB:'+(G._spiralBullets?G._spiralBullets.length:0)+' phantomS:'+(G._phantomSwords?G._phantomSwords.length:0)+' doppel:'+(G._doppelgangers?G._doppelgangers.length:0)+' boneW:'+(G._boneWalls?G._boneWalls.length:0)+' fireZ:'+(G._fireZones?G._fireZones.length:0)+' chaseA:'+(G._chaseAoes?G._chaseAoes.length:0)+' eSpCache:'+_eSpCache.size+' streamCh:'+_streamChunkCnt+' shGrid:'+_shGrid.size)}
   }// end if(G.on)
+  // ── 악의(mats) 변경 감지 → 디바운스 서버 동기화 ──
+  if(G.mats!==_matsPrev){_matsPrev=G.mats;_matsDirty()}
   }catch(_loopErr){console.error('[LOOP CRASH]',_loopErr.message,_loopErr.stack);document.title='ERR: '+_loopErr.message+' @'+(_loopErr.stack||'').match(/:(\d+):/)?.[1]}
   requestAnimationFrame(loop);
 }
