@@ -22984,7 +22984,7 @@ function doParry(_inDmg,_px,_py){if(_px===undefined)_px=P.x;if(_py===undefined)_
   else{G.hitStop=~~(_HS.parry*OPT.hitStop/100);G.slowMo=25;G.shake=14*OPT.shake/100}
   // ═══ 어픽스: parryBonus (패링보너스) — ST 회복 증가 ═══
   const _pbMul=1+_eqAffix('parryBonus');
-  P.iframes=25;P.st=Math.min(P.mst,P.st+~~(25*_pbMul));P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));G.mats+=100;addTxt(P.x,P.y-60,_T('👿악의+100'),'#cc44ff',40);
+  P.iframes=25;P.st=Math.min(P.mst,P.st+~~(25*_pbMul));P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));G.mats+=10;addTxt(P.x,P.y-60,_T('👿악의+10'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
   playVFXAng('parry_flash',_px,_py,0.75,3,P.facing,true);}
@@ -29691,6 +29691,28 @@ function _renderSkillRow(sk,grid){
       d.innerHTML=_starHtml+_iconImg
         +'<div style="font-size:11px;color:'+(_fGrp?_fGrp.color:(learned?'#ffdd88':'#aa8866'))+';font-weight:700;margin-top:4px;line-height:1.15;width:70px;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 1px;text-shadow:0 1px 2px rgba(0,0,0,0.85)">'+_cleanName+'</div>'
         +'<div style="font-size:10px;color:'+(learned?'#44ff66':'#ff8844')+';font-weight:700;margin-top:2px;line-height:1">'+(learned?'Lv.'+slv+(slv>=10?'★':''):'⭐'+sk.spCost)+'</div>';
+      if(learned||canLearn||canUp){
+        const _mini=document.createElement('div');
+        _mini.dataset.nodrag='1';
+        _mini.style.cssText='position:absolute;right:2px;bottom:2px;display:flex;gap:2px;z-index:3';
+        if(learned){
+          const _mMin=document.createElement('div');
+          _mMin.dataset.nodrag='1';
+          _mMin.textContent='-';
+          _mMin.style.cssText='width:16px;height:16px;display:flex;align-items:center;justify-content:center;border:1px solid #cc4444;border-radius:3px;background:rgba(80,30,30,.75);color:#ffaaaa;font-size:12px;font-weight:700;cursor:pointer;line-height:1';
+          _mMin.onclick=(ev)=>{ev.stopPropagation();_skMinusClick()};
+          _mini.appendChild(_mMin);
+        }
+        if(canLearn||canUp){
+          const _mPlus=document.createElement('div');
+          _mPlus.dataset.nodrag='1';
+          _mPlus.textContent='+';
+          _mPlus.style.cssText='width:16px;height:16px;display:flex;align-items:center;justify-content:center;border:1px solid #aa8833;border-radius:3px;background:rgba(60,40,15,.82);color:#ffdd88;font-size:12px;font-weight:700;cursor:pointer;line-height:1';
+          _mPlus.onclick=(ev)=>{ev.stopPropagation();_skClick()};
+          _mini.appendChild(_mPlus);
+        }
+        if(_mini.children.length>0)d.appendChild(_mini);
+      }
       d.title=(_skStar>=1?'★'.repeat(_skStar)+' ':'')+_cleanName+' — '+_dispDesc;
     }else if(_skCompact && _isExpanded){
       // 디아블로식 상세보기 — 아이콘 헤더 + 카테고리 섹션별 동적 스탯 + 원본 설명
