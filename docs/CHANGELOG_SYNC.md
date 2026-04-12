@@ -19300,3 +19300,8 @@
 - docs/2_7 ?¸ë²¤? ë¦¬+?¥ë¹„?œìŠ¤??2_7 ?¸ë²¤? ë¦¬+?¥ë¹„?œìŠ¤??md
 - game.html
 
+
+## 2026-04-12 22:30 (auto)
+- EXODUSER_prototype_v2.zip
+- EXODUSER_prototype_v3.zip
+
