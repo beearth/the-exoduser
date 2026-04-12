@@ -305,37 +305,6 @@ canvas{display:block;position:fixed;inset:0}
   color:#ffb074;
   box-shadow:0 0 16px rgba(210,107,51,.28);
 }
-.sk-drag-ghost{
-  position:fixed;
-  transform:translate(-50%,-50%);
-  pointer-events:none;
-  z-index:10020;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:7px 10px;
-  border:1px solid #7a4429;
-  border-radius:8px;
-  background:linear-gradient(180deg,rgba(25,11,9,.95),rgba(14,6,6,.98));
-  box-shadow:0 10px 24px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,136,74,.09);
-}
-.sk-dg-rune{
-  width:16px;
-  height:16px;
-  border-radius:4px;
-  border:1px solid #b86b3e;
-  background:
-    radial-gradient(circle at 30% 30%,rgba(255,191,124,.55),transparent 45%),
-    linear-gradient(145deg,#3d1a13,#1f0a08);
-  box-shadow:0 0 8px rgba(255,124,64,.35),inset 0 0 10px rgba(255,170,106,.2);
-}
-.sk-dg-name{
-  color:#e4a26f;
-  font-size:.85rem;
-  font-weight:700;
-  letter-spacing:.03em;
-  text-shadow:0 1px 2px rgba(0,0,0,.85);
-}
 
 /* ══ SETTINGS ══ */
 .set-section{margin-bottom:14px}
@@ -545,9 +514,9 @@ canvas{display:block;position:fixed;inset:0}
 .sk-opt:hover{background:rgba(220,200,160,.18);border-color:rgba(255,220,120,.7)}
 /* ══ SKILL CARD DRAG (Hearthstone-style) ══ */
 .sk-drag-glow{box-shadow:0 0 20px rgba(255,220,120,.5),inset 0 0 30px rgba(255,220,120,.1)!important;border-color:rgba(255,220,120,.7)!important;transform:scale(1.03);transition:box-shadow .15s,transform .15s}
-.sk-drag-ghost{position:fixed;z-index:99999;pointer-events:none;opacity:.85;border:2px solid rgba(255,220,120,.7);background:rgba(15,15,18,.92);box-shadow:0 0 30px rgba(255,220,120,.5),0 0 60px rgba(255,180,80,.2);border-radius:6px;padding:10px 14px;max-width:220px;transform:translate(-50%,-110%) rotate(-3deg);transition:opacity .15s}
-.sk-drag-ghost .sk-dg-emoji{font-size:24px;margin-right:8px}
-.sk-drag-ghost .sk-dg-name{color:rgba(210,205,195,.9);font-weight:700;font-size:1rem}
+.sk-drag-ghost{position:fixed;transform:translate(-50%,-50%);pointer-events:none;z-index:10020;display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid #7a4429;border-radius:8px;background:linear-gradient(180deg,rgba(25,11,9,.95),rgba(14,6,6,.98));box-shadow:0 10px 24px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,136,74,.09)}
+.sk-dg-rune{width:16px;height:16px;border-radius:4px;border:1px solid #b86b3e;background:radial-gradient(circle at 30% 30%,rgba(255,191,124,.55),transparent 45%),linear-gradient(145deg,#3d1a13,#1f0a08);box-shadow:0 0 8px rgba(255,124,64,.35),inset 0 0 10px rgba(255,170,106,.2)}
+.sk-dg-name{color:#e4a26f;font-size:.85rem;font-weight:700;letter-spacing:.03em;text-shadow:0 1px 2px rgba(0,0,0,.85)}
 .qs.sk-drop-hover{border-color:rgba(255,220,120,.7)!important;box-shadow:0 0 16px rgba(255,220,120,.5),inset 0 0 12px rgba(255,220,120,.2)!important;transform:scale(1.15);transition:all .12s}
 .sk-opt.active{border-color:rgba(255,220,120,.7);background:rgba(220,200,160,.18)}
 .sk-opt.locked{opacity:.35;cursor:default}
@@ -1511,6 +1480,17 @@ function dbRestore(d){
   if(d.stats)for(const k in d.stats)STATS[k]=d.stats[k]||0;
   // Passives
   if(d.passives)for(const k in d.passives)PASSIVES[k]=d.passives[k]||0;
+  // removed passive migration: pShield(수호) -> AP refund
+  {
+    const _legacyLv=Math.max(0,~~(PASSIVES.pShield||0));
+    if(_legacyLv>0){
+      const _pcv=[1,1,1,2,2,2,3,3,3,5];
+      let _refundAP=0;
+      for(let _i=0;_i<_legacyLv;_i++)_refundAP+=(_pcv[_i]||5);
+      P.ap=(P.ap||0)+_refundAP;
+      PASSIVES.pShield=0;
+    }
+  }
   _grit=d.grit||0;
   if(_grit>0&&!d.gritCostModeV2){const _legacySpent=_grit*3+((_grit-1)*_grit)/2;const _refund=Math.max(0,_legacySpent-_grit);if(_refund>0)P.sp+=_refund;}
   // Quickslots (filter out removed potions)
@@ -14346,7 +14326,6 @@ const PASSIVE_DEF=[
   {key:'pParry', name:'⚡ 반격',nameEn:'⚡ Retaliation',desc:'카운터뎀 +50%/lv, 우클릭 공속 +10%/lv, 무지개탄 피해감소 +10%/lv (최대50%)',descEn:'Counter DMG +50%/lv, RMB ATK speed +10%/lv, Rainbow shot DMG reduction +10%/lv (max 50%)',max:10,icon:'⚡',col:'#ffdd00'},
   {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +15%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +15%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
   {key:'pBow',   name:'🎯 정밀사격',nameEn:'🎯 Precision',desc:'석궁뎀 +10%, 공속 +10%, 사거리 +8%, ST비용 -4%/lv',descEn:'Crossbow DMG +10%, ATK speed +10%, Range +8%, ST cost -4%/lv',max:10, icon:'🎯',col:'#44ddaa'},
-  {key:'pShield',name:'🔰 수호',nameEn:'🔰 Guardian',    desc:'견갑뎀 +15%, 블록률 +3%/lv',descEn:'Pauldron DMG +15%, Block rate +3%/lv',max:10, icon:'🔰',col:'#4488dd'},
   {key:'pGuard', name:'🛡 수호신',nameEn:'🛡 Aegis',  desc:'보호막 흡수 +2%/lv (기본70→최대90%), 보호막 중 HP리젠 +0.1%/lv',descEn:'Shield absorb +2%/lv (base 70 to max 90%), HP regen during shield +0.1%/lv',max:10, icon:'🛡',col:'#55bbff'},
   {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv',max:10, icon:'💚',col:'#33cc66'},
   {key:'pCrit',  name:'💥 급소',nameEn:'💥 Vital Strike',    desc:'크리률 +2%, 크리뎀 +8%/lv',descEn:'Crit rate +2%, Crit DMG +8%/lv',max:10,icon:'💥',col:'#ff2266'},
@@ -14453,8 +14432,8 @@ function pXbowSpd(){return 1+(PASSIVES.pXbow||0)*.05}   // 자동쇠뇌공속 +5
 function pMeleeMul(){return 1+(PASSIVES.pMelee||0)*.10}  // 근접스킬뎀 +10%/lv (10lv=+100%)
 function pMeleeStCost(){return Math.max(.5,1-(PASSIVES.pMelee||0)*.05)} // ST소모 -5%/lv (10lv=-50%, 최소50%)
 function pMagicSpd(){return 2+PASSIVES.pMagic*.08}     // 기본 2배속 + 시전속도 +8%/lv (10lv=+80%)
-function pShieldMul(){return 1+PASSIVES.pShield*.15}    // 견갑뎀 +15%/lv (10lv=+150%)
-function pShieldBlock(){return PASSIVES.pShield*.03}    // 블록률 +3%/lv (10lv=+30%)
+function pShieldMul(){return 1}    // removed passive pShield (수호)
+function pShieldBlock(){return 0}  // removed passive pShield (수호)
 function pGuardAbsorb(){return Math.min(.90,.70+PASSIVES.pGuard*.02)} // 보호막 흡수 70→90% (+2%/lv)
 function pGuardRegen(){return PASSIVES.pGuard*.001}     // 보호막 중 HP리젠 +0.1%/lv
 function pRegenMul(){return 1+PASSIVES.pRegen*.03}      // HP/ST리젠 +3%/lv (10lv=+30%)
@@ -30092,23 +30071,36 @@ function _renderSkillRow(sk,grid){
             const _rstSkills=_rstGrp.skills;
             let _totalSp=0;
             const _names=[];
-            // 합체 환불: 습득비 + 합체생성비(성급×3) + 합체강화비(_fuseUpSpCost)
-            const _gemCnt=(_rstGrp.star)||_rstSkills.length;
-            const _fuseLv=Math.min(..._rstSkills.map(id=>P.skills[id]||1));
+            // 합체 환불: 습득비 + (해제되는 모든 합체 단계의 생성비/강화비)
             for(const sid of _rstSkills){
               const _sSk=SKILL_LIST.find(s=>s.id===sid);
               if(_sSk){_totalSp+=_sSk.spCost||0;_names.push(_sSk.name)}
             }
-            _totalSp+=_gemCnt*3; // 합체 생성 비용 환불
-            for(let _fl=1;_fl<_fuseLv;_fl++)_totalSp+=_fuseUpSpCost(_fl,_gemCnt); // 합체 강화 비용 환불
+            // 최상위 그룹과 스킬셋이 겹치는 "현재 활성 합체" 전부 환불
+            // 중요: _FUSE_GEM_GROUPS 누락 키가 있을 수 있어 P._fused 실제 키 기준으로 계산
+            const _rstFuseKeys=[];
+            for(const k2 of Object.keys(P._fused||{})){
+              if(!P._fused[k2])continue;
+              const _g2=_FUSE_GEM_GROUPS[k2]||{};
+              const _ids2=(_g2.skills&&_g2.skills.length)?_g2.skills:(_FUSE_PAIRS[k2]||[]);
+              if(!_ids2.length)continue;
+              if(_ids2.some(s=>_rstSkills.includes(s)))_rstFuseKeys.push(k2);
+            }
+            for(const _fk of _rstFuseKeys){
+              const _fg=_FUSE_GEM_GROUPS[_fk]||{};
+              const _fids=(_fg.skills&&_fg.skills.length)?_fg.skills:(_FUSE_PAIRS[_fk]||[]);
+              if(!_fids.length)continue;
+              const _gemCnt=(_fg.star)||_fids.length;
+              const _fuseLv=Math.min(..._fids.map(id=>P.skills[id]||1));
+              _totalSp+=_gemCnt*3; // 합체 생성 비용
+              for(let _fl=1;_fl<_fuseLv;_fl++)_totalSp+=_fuseUpSpCost(_fl,_gemCnt); // 합체 강화 비용
+            }
             const _fuseNm=_fuseName(_rstKey);
             if(!confirm(_fuseNm+(OPT.lang==='en'?' unfuse\n'+_names.join('+')+' all reset\n⭐ SP +'+_totalSp+' refund':' 합체 해제\n'+_names.join('+')+' 모두 리셋\n⭐ SP +'+_totalSp+' 환불')))return;
             for(const sid of _rstSkills){P.skills[sid]=0;for(let j=0;j<SKILL_SLOTS.length;j++){if(SKILL_SLOTS[j]===sid)SKILL_SLOTS[j]=null}if(ULT_SLOT===sid)ULT_SLOT=null}
             P.sp+=_totalSp;
-            // 하위 합체도 모두 해제
-            for(const[k2,g2]of Object.entries(_FUSE_GEM_GROUPS)){
-              if(g2.skills.some(s=>_rstSkills.includes(s)))delete P._fused[k2];
-            }
+            // 환불에 포함된 합체들만 해제
+            for(const _fk of _rstFuseKeys)delete P._fused[_fk];
             // ═══ 활성 스킬 변수 동기화 ═══
             _syncActiveSkAfterReset(_rstSkills);
             addTxt(P.x,P.y-30,_fuseNm+(_e?' Unfused!':' 해제!'),'#ff6666',60);
