@@ -8349,6 +8349,8 @@ const _FX_FRAMES=12,_FX_FW=300,_FX_FH=300;
 const _ES_IMG=new Image();_ES_IMG.src='assets/vfx/energy_shot/raw_sheet.png';
 let _esReady=false;_ES_IMG.onload=()=>{_esReady=true};
 const _ES_FRAMES=30,_ES_FW=546,_ES_FH=51;
+const _ES_DRAW_H=150;              // 마력연사 시각 두께(px)
+const _ES_HIT_HALF_W=(_ES_DRAW_H*.5); // 타격 반폭(px) — 시각과 판정 일치
 // ═══ 마법 오브 투사체 (vfx_magic_orb.png 6열×5행=30프레임) ═══
 const _MO_IMG=new Image();_MO_IMG.src='assets/vfx/vfx_magic_orb.png';
 let _moReady=false;_MO_IMG.onload=()=>{_moReady=true};
@@ -15263,7 +15265,7 @@ function _fireEnergyShot(){
     const e=_esNe[_ei];if(!e.alive)continue;
     const dx=e.x-P.x,dy=e.y-P.y;
     const proj=dx*cx+dy*cy;if(proj<0||proj>_esRange)continue;
-    const perp=Math.abs(dx*cy-dy*cx);if(perp>35+e.r)continue;
+    const perp=Math.abs(dx*cy-dy*cx);if(perp>_ES_HIT_HALF_W+e.r)continue;
     hurtE(e,~~(_esDmg*elMul(EL.D,e.el)),Math.atan2(dy,dx),false,{kbMult:0},EL.D);
     if(Math.random()<.5)addParts(e.x,e.y,'#aa66ff',3);
   }
@@ -35557,7 +35559,7 @@ function draw(){
     if(ea.fr<_ES_FRAMES){
       const prog=ea.fr/_ES_FRAMES;
       const alpha=prog<.05?prog/.05:prog>.7?1-(prog-.7)/.3:1;
-      const _drawH=150;
+      const _drawH=_ES_DRAW_H;
       X.save();X.translate(ea.x,ea.y);X.rotate(ea.ang);
       X.globalAlpha=alpha;
       X.drawImage(_ES_IMG,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_drawH/2,ea.range,_drawH);
@@ -36379,17 +36381,7 @@ function drawP(){
         // ═══ 악의기둥 — 기둥 VFX만 (범위 가이드 없음) ═══
         const _dpt=_now*.001;
         const _isPs=!!fz._pillarSpike;
-        if(_isPs){
-          // 기둥가시는 문양 스프라이트 대신 판정 링만 표시
-          X.globalAlpha=.35*_fzFade;
-          X.strokeStyle='rgba(190,150,240,0.95)';
-          X.lineWidth=3;
-          X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.stroke();
-          X.globalAlpha=.12*_fzFade;
-          X.fillStyle='rgba(130,90,180,1)';
-          X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.fill();
-          continue;
-        }
+        // 기둥가시 합체 시에도 스프라이트만 표시 (판정 링 제거)
         const _dpVis=1;
         if(_MM_EXP_IMGS&&_MM_EXP_IMGS[0]&&_MM_EXP_IMGS[0].complete){
           if(!fz._vfxFrame)fz._vfxFrame=0;
@@ -36401,7 +36393,7 @@ function drawP(){
             const _dpScale=fz.r/120;
             const _dpW=384*_dpScale;
             const _dpH=384*_dpScale;
-            X.globalAlpha=(.65+.1*Math.sin(_dpt*4))*_fzFade*_dpVis;
+            X.globalAlpha=(.12+.03*Math.sin(_dpt*4))*_fzFade*_dpVis;
             const _prevComp=X.globalCompositeOperation;
             X.globalCompositeOperation='lighter';
             X.drawImage(_dpImg,fz.x-_dpW/2,fz.y-_dpH*0.75,_dpW,_dpH);
@@ -36671,19 +36663,13 @@ function drawP(){
         // ═══ 가시덫 — 바닥 그래디언트 + 스프라이트 + 외곽 ═══
         const _deployT=Math.min(1,fz.t/12);
         const _stSz=fz.r*2*_deployT;
-        // 바닥 그래디언트 (악의폭풍과 동일 스타일)
-        X.globalAlpha=(.10+.03*Math.sin(_now*.003))*_fzFade;
-        {const _stRad=fz.r*_deployT;if(!fz._grd_st||fz._grdR_st!==_stRad||fz._grdX_st!==fz.x||fz._grdY_st!==fz.y){const _g=X.createRadialGradient(fz.x,fz.y,0,fz.x,fz.y,_stRad);_g.addColorStop(0,'rgba(80,120,40,.3)');_g.addColorStop(.6,'rgba(60,90,30,.15)');_g.addColorStop(1,'rgba(40,60,20,0)');fz._grd_st=_g;fz._grdR_st=_stRad;fz._grdX_st=fz.x;fz._grdY_st=fz.y}}
-        const _stG=fz._grd_st;
-        X.fillStyle=_stG;X.beginPath();X.arc(fz.x,fz.y,fz.r*_deployT,0,Math.PI*2);X.fill();
-        // 스프라이트
+        // 스프라이트만 희미하게 (바닥 그래디언트·경계선 제거)
         if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/spike_trap.webp'}
         const _stImg=G._spikeTrapImg;
         if(_stImg.complete&&_stImg.naturalWidth>0){
-          X.globalAlpha=.25*_fzFade;
+          X.globalAlpha=.15*_fzFade;
           X.drawImage(_stImg,fz.x-_stSz/2,fz.y-_stSz/2,_stSz,_stSz);
         }
-        // 외곽 점선 제거 (경계선 숨김)
       }else if(fz.type==='weakPhys'||fz.type==='weakMag'||fz.type==='weakPj'||fz.type==='weakRev'){
         // ═══ 영역 스킬 — 파쇄/침식/관통/부활 ═══
         const _wt=_now*.001;
