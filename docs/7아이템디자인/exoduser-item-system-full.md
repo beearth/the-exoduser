@@ -199,7 +199,7 @@ Object.freeze(AFFIX_POOL);
 | allRes | 전원소수호 | SUFFIX | 5%/9%/15% | pct | nck | 모든 원소 저항 추가 |
 | physDR | 강철의 | SUFFIX | 6%/10%/16% | pct | arm,shd | 물리 피해 감소 |
 | dropRate | 약탈의 | SUFFIX | 12%/20%/32% | pct | bts,clk | statDropBonus() |
-| extraDodge | 스태미나의 | SUFFIX | 1/1/2 | val | bts,pnt | 사슬게이지 MAX 추가 |
+| extraST | 사슬의 | SUFFIX | 10/20/30 | val | bts,pnt | 사슬게이지 MAX 추가 |
 | stRegen | 회복의 | SUFFIX | 3%/6%/10% | pct | arm,rng,nck | ST 재생 배율 |
 | dpRegen | 마력의 | SUFFIX | 2%/4%/7% | pct | hlm,nck | MP 재생 배율 |
 | antiRevive | 진혼의 | SUFFIX | 4%/8%/12%/16%/20% (5티어, 고티어 극악확률 tierW:50/30/15/4/1) | pct | neck,wpn,bracelet (반지: 2/4/8/12/16%) | 보스 부활 억제 (최대20%) |

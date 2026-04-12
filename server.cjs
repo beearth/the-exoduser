@@ -90,6 +90,25 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(res, 200, { ok: true, data });
     }
 
+    // ═══ 악의(mats) 공유 풀 — 서버 동기화 ═══
+    const MATS_FILE = path.join(SAVE_DIR, '_sharedMats.json');
+    if (pathname === '/api/mats' && req.method === 'GET') {
+      try {
+        if (fs.existsSync(MATS_FILE)) {
+          const d = JSON.parse(fs.readFileSync(MATS_FILE, 'utf8'));
+          return sendJSON(res, 200, { ok: true, mats: d.mats || 0 });
+        }
+      } catch (e) {}
+      return sendJSON(res, 200, { ok: true, mats: 0 });
+    }
+
+    if (pathname === '/api/mats' && req.method === 'POST') {
+      const body = await readBody(req);
+      const n = Math.max(0, Math.min(Math.floor(+body.mats || 0), Number.MAX_SAFE_INTEGER));
+      fs.writeFileSync(MATS_FILE, JSON.stringify({ mats: n, ts: Date.now() }), 'utf8');
+      return sendJSON(res, 200, { ok: true, mats: n });
+    }
+
     if (pathname.startsWith('/api/save/') && req.method === 'DELETE') {
       const slot = sanitizeSlot(decodeURIComponent(pathname.slice(10)));
       const fp = path.join(SAVE_DIR, slot + '.json');
