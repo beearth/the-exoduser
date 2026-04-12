@@ -29762,29 +29762,14 @@ function _renderSkillRow(sk,grid){
         // ── 합체된 스킬은 합체 해제 우선 ──
         const _fGrpNow=_fuseGemGroup(sk.id);
         const _isFusedNow=_fGrpNow&&_isFused(_fGrpNow.key);
-        if(_isFusedNow){
-          const _refSp=_unfuseAll();
-          if(_refSp>0)P.sp+=_refSp;
-          SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+(_e?' Unfused (+'+_refSp+'SP)':' 합체 해제 (+'+_refSp+'SP)'),'#ff8844',60);
-        }else if(slv>1){
+        if(slv>1){
           // 레벨 다운: 직전 강화 비용 환불
           const _refundSp=_skillUpSpCost(slv-1,false);
           P.skills[sk.id]=slv-1;P.sp+=_refundSp;G.mats+=(sk.upMat||0);
           SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+' Lv.'+(slv-1)+' (-)','#ff8844',60);
         }else{
-          // 습득 취소 (slv===1): 학습 비용 환불 + 슬롯 해제
-          delete P.skills[sk.id];
-          P.sp+=sk.spCost;G.mats+=sk.matCost;
-          // 슬롯 자동 해제
-          for(let _si=0;_si<6;_si++){if(SKILL_SLOTS[_si]===sk.id)SKILL_SLOTS[_si]=null}
-          if(P.activeLMBSk===sk.id&&sk.id!=='kiSlash')P.activeLMBSk='kiSlash';
-          if(P.activeChargeSk===sk.id)P.activeChargeSk=null;
-          if(P.activeBowSk===sk.id)P.activeBowSk=null;
-          if(P.activeMagicSk===sk.id)P.activeMagicSk='fireball';
-          if(P.activeQSk===sk.id)P.activeQSk=null;
-          if(P.activeTechSk===sk.id)P.activeTechSk=null;
-          if(ULT_SLOT===sk.id)ULT_SLOT=null;
-          SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+(_e?' Reset':' 리셋!'),'#ff4444',60);
+          addTxt(P.x,P.y-30,_e?'Use Reset button for reset/unfuse':'리셋/합체해제는 리셋 버튼 사용','#ff6666',60);
+          return;
         }
         renderSkillPanel();updateSkSlot&&updateSkSlot();updateQS&&updateQS();dbSaveForce();
       };
@@ -30045,26 +30030,13 @@ function _renderSkillRow(sk,grid){
         };
         const _fGrpNow=_fuseGemGroup(sk.id);
         const _isFusedNow=_fGrpNow&&_isFused(_fGrpNow.key);
-        if(_isFusedNow){
-          const _refSp=_unfuseAllNow();
-          if(_refSp>0)P.sp+=_refSp;
-          SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+(_e?' Unfused (+'+_refSp+'SP)':' 합체 해제 (+'+_refSp+'SP)'),'#ff8844',60);
-        }else if(slv>1){
+        if(slv>1){
           const _refundSp=_skillUpSpCost(slv-1,false);
           P.skills[sk.id]=slv-1;P.sp+=_refundSp;G.mats+=(sk.upMat||0);
           SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+' Lv.'+(slv-1)+' (-)','#ff8844',60);
         }else{
-          delete P.skills[sk.id];
-          P.sp+=sk.spCost;G.mats+=sk.matCost;
-          for(let _si=0;_si<6;_si++){if(SKILL_SLOTS[_si]===sk.id)SKILL_SLOTS[_si]=null}
-          if(P.activeLMBSk===sk.id&&sk.id!=='kiSlash')P.activeLMBSk='kiSlash';
-          if(P.activeChargeSk===sk.id)P.activeChargeSk=null;
-          if(P.activeBowSk===sk.id)P.activeBowSk=null;
-          if(P.activeMagicSk===sk.id)P.activeMagicSk='fireball';
-          if(P.activeQSk===sk.id)P.activeQSk=null;
-          if(P.activeTechSk===sk.id)P.activeTechSk=null;
-          if(ULT_SLOT===sk.id)ULT_SLOT=null;
-          SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+(_e?' Reset':' 리셋!'),'#ff4444',60);
+          addTxt(P.x,P.y-30,_e?'Use Reset button for reset/unfuse':'리셋/합체해제는 리셋 버튼 사용','#ff6666',60);
+          return;
         }
         renderSkillPanel();updateSkSlot&&updateSkSlot();updateQS&&updateQS();dbSaveForce();
     }
