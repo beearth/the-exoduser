@@ -1351,11 +1351,42 @@ const _editorStageReq=+(new URLSearchParams(window.location.search).get('editorS
 const _mapTestReq=new URLSearchParams(window.location.search).get('mapTest')||'';
 const _stageTestReq=(function(){const _v=new URLSearchParams(window.location.search).get('stage');return _v===null?-1:Math.max(0,~~(+_v||0))})();
 
+// 저장/표시 전 핵심 상태 정규화 (입력값 -> 출력값 동기화)
+function _sanitizeCoreState(){
+  if(!P||!G)return;
+  const _toInt=(v,d=0)=>{const n=Number(v);return Number.isFinite(n)?Math.floor(n):d};
+  P.sp=Math.max(0,_toInt(P.sp,0));
+  P.ap=Math.max(0,_toInt(P.ap,0));
+  G.mats=Math.max(0,_toInt(G.mats,0));
+  if(P.skills&&typeof P.skills==='object'){
+    for(const k in P.skills){
+      const lv=Math.max(0,_toInt(P.skills[k],0));
+      P.skills[k]=lv;
+    }
+  }
+  if(P._fused&&typeof P._fused==='object'){
+    for(const fk of Object.keys(P._fused)){
+      if(!P._fused[fk]){delete P._fused[fk];continue}
+      const fg=_FUSE_GEM_GROUPS&&_FUSE_GEM_GROUPS[fk]?_FUSE_GEM_GROUPS[fk]:null;
+      const ids=(fg&&fg.skills&&fg.skills.length)?fg.skills:(_FUSE_PAIRS[fk]||[]);
+      if(!ids.length){delete P._fused[fk];continue}
+      let minLv=9999;
+      for(const id of ids){
+        const lv=Math.max(1,_toInt((P.skills&&P.skills[id])||1,1));
+        P.skills[id]=lv;
+        if(lv<minLv)minLv=lv;
+      }
+      for(const id of ids){if(P.skills[id]>minLv)P.skills[id]=minLv}
+    }
+  }
+}
+
 // ─── [S01c] SAVE/LOAD — 세이브/로드, 자동저장 ───
 async function dbSave(){
   if(!_charId||!_dbReady||_saving)return;
   if(!P)return;
   _saving=true;
+  _sanitizeCoreState();
   // 계정 공유: 악의와 창고는 localStorage에 저장
   try{_saveSharedMats(G.mats||0);_persistSharedStorage()}catch(e){}
   try{
@@ -29868,11 +29899,42 @@ function _renderSkillRow(sk,grid){
         // ── 합체된 스킬은 합체 해제 우선 ──
         const _fGrpNow=_fuseGemGroup(sk.id);
         const _isFusedNow=_fGrpNow&&_isFused(_fGrpNow.key);
-        if(slv>1){
-          // 레벨 다운: 직전 강화 비용 환불
-          const _refundSp=_skillUpSpCost(slv-1,false);
-          P.skills[sk.id]=slv-1;P.sp+=_refundSp;G.mats+=(sk.upMat||0);
-          SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+' Lv.'+(slv-1)+' (-)','#ff8844',60);
+        const _curLv=(P.skills[sk.id]||0);
+        if(_curLv>1){
+          // 합체 상태면 합체 단위로 레벨 다운 + 합체 강화비 환불
+          const _activeFuseKeys=[];
+          for(const _fk of Object.keys(P._fused||{})){
+            if(!P._fused[_fk])continue;
+            const _fg=_FUSE_GEM_GROUPS[_fk]||{};
+            const _ids=(_fg.skills&&_fg.skills.length)?_fg.skills:(_FUSE_PAIRS[_fk]||[]);
+            if(_ids.includes(sk.id))_activeFuseKeys.push(_fk);
+          }
+          if(_activeFuseKeys.length){
+            let _bestK=_activeFuseKeys[0],_bestN=0;
+            for(const _fk of _activeFuseKeys){
+              const _fg=_FUSE_GEM_GROUPS[_fk]||{};
+              const _ids=(_fg.skills&&_fg.skills.length)?_fg.skills:(_FUSE_PAIRS[_fk]||[]);
+              if(_ids.length>_bestN){_bestN=_ids.length;_bestK=_fk}
+            }
+            const _bg=_FUSE_GEM_GROUPS[_bestK]||{};
+            const _ids=(_bg.skills&&_bg.skills.length)?_bg.skills:(_FUSE_PAIRS[_bestK]||[]);
+            const _gemC=(_bg.star)||_ids.length||1;
+            const _fLv=Math.min(..._ids.map(id=>P.skills[id]||1));
+            if(_fLv>1){
+              const _refundSp=_fuseUpSpCost(_fLv-1,_gemC);
+              _ids.forEach(id=>{if((P.skills[id]||1)>=_fLv)P.skills[id]=_fLv-1});
+              P.sp+=_refundSp;
+              SFX.pickup();addTxt(P.x,P.y-30,_T('합체 Lv.')+(_fLv-1)+' (-)','##55ccff',60);
+            }else{
+              addTxt(P.x,P.y-30,_e?'Use Reset button for reset/unfuse':'리셋/합체해제는 리셋 버튼 사용','#ff6666',60);
+              return;
+            }
+          }else{
+            // 일반 스킬 레벨 다운
+            const _refundSp=_skillUpSpCost(_curLv-1,false);
+            P.skills[sk.id]=_curLv-1;P.sp+=_refundSp;G.mats+=(sk.upMat||0);
+            SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+' Lv.'+(_curLv-1)+' (-)','#ff8844',60);
+          }
         }else{
           addTxt(P.x,P.y-30,_e?'Use Reset button for reset/unfuse':'리셋/합체해제는 리셋 버튼 사용','#ff6666',60);
           return;
@@ -30149,10 +30211,41 @@ function _renderSkillRow(sk,grid){
         };
         const _fGrpNow=_fuseGemGroup(sk.id);
         const _isFusedNow=_fGrpNow&&_isFused(_fGrpNow.key);
-        if(slv>1){
-          const _refundSp=_skillUpSpCost(slv-1,false);
-          P.skills[sk.id]=slv-1;P.sp+=_refundSp;G.mats+=(sk.upMat||0);
-          SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+' Lv.'+(slv-1)+' (-)','#ff8844',60);
+        const _curLv=(P.skills[sk.id]||0);
+        if(_curLv>1){
+          // 합체 상태면 합체 단위로 레벨 다운 + 합체 강화비 환불
+          const _activeFuseKeys=[];
+          for(const _fk of Object.keys(P._fused||{})){
+            if(!P._fused[_fk])continue;
+            const _fg=_FUSE_GEM_GROUPS[_fk]||{};
+            const _ids=(_fg.skills&&_fg.skills.length)?_fg.skills:(_FUSE_PAIRS[_fk]||[]);
+            if(_ids.includes(sk.id))_activeFuseKeys.push(_fk);
+          }
+          if(_activeFuseKeys.length){
+            let _bestK=_activeFuseKeys[0],_bestN=0;
+            for(const _fk of _activeFuseKeys){
+              const _fg=_FUSE_GEM_GROUPS[_fk]||{};
+              const _ids=(_fg.skills&&_fg.skills.length)?_fg.skills:(_FUSE_PAIRS[_fk]||[]);
+              if(_ids.length>_bestN){_bestN=_ids.length;_bestK=_fk}
+            }
+            const _bg=_FUSE_GEM_GROUPS[_bestK]||{};
+            const _ids=(_bg.skills&&_bg.skills.length)?_bg.skills:(_FUSE_PAIRS[_bestK]||[]);
+            const _gemC=(_bg.star)||_ids.length||1;
+            const _fLv=Math.min(..._ids.map(id=>P.skills[id]||1));
+            if(_fLv>1){
+              const _refundSp=_fuseUpSpCost(_fLv-1,_gemC);
+              _ids.forEach(id=>{if((P.skills[id]||1)>=_fLv)P.skills[id]=_fLv-1});
+              P.sp+=_refundSp;
+              SFX.pickup();addTxt(P.x,P.y-30,_T('합체 Lv.')+(_fLv-1)+' (-)','##55ccff',60);
+            }else{
+              addTxt(P.x,P.y-30,_e?'Use Reset button for reset/unfuse':'리셋/합체해제는 리셋 버튼 사용','#ff6666',60);
+              return;
+            }
+          }else{
+            const _refundSp=_skillUpSpCost(_curLv-1,false);
+            P.skills[sk.id]=_curLv-1;P.sp+=_refundSp;G.mats+=(sk.upMat||0);
+            SFX.pickup();addTxt(P.x,P.y-30,_T(sk.name)+' Lv.'+(_curLv-1)+' (-)','#ff8844',60);
+          }
         }else{
           addTxt(P.x,P.y-30,_e?'Use Reset button for reset/unfuse':'리셋/합체해제는 리셋 버튼 사용','#ff6666',60);
           return;
