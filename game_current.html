@@ -9091,6 +9091,25 @@ function _addGibs(e,boomX,boomY,boomR){
   for(let i=0;i<pn;i++){const a=ang+(Math.random()-.5)*2;
     poolPart(e.x,e.y,Math.cos(a)*(2+Math.random()*3)*pw,Math.sin(a)*(2+Math.random()*3)*pw-1.5,'#880022',2+Math.random()*3,10+Math.random()*8*pw,0,0,.1)}
 }
+function _spawnLargeMonsterDeathFx(e,ang){
+  if(!OPT.deathFx)return;
+  const _isLarge=!!e.ib||e.r>=18||e.mhp>=220;
+  if(!_isLarge)return;
+  const _boomR=Math.max(36,Math.min(120,e.r*2.8));
+  const _burstN=e.ib?26:16;
+  const _colA=e.ib?'#ff5577':'#ffaa66';
+  const _colB=e.ib?'#ffccdd':'#ffd9aa';
+  _addBoom(e.x,e.y,_boomR,e.ib?36:28,e.ib?'dark':'fire');
+  for(let i=0;i<_burstN;i++){
+    const a=Math.PI*2*i/_burstN+(Math.random()-.5)*0.4;
+    const v=(e.ib?4.6:3.2)+Math.random()*(e.ib?3.2:2.0);
+    const c=(i%3===0)?_colB:_colA;
+    poolPart(e.x,e.y,Math.cos(a)*v,Math.sin(a)*v-0.6,c,2.4+Math.random()*2.8,14+Math.random()*10,0,0,.08);
+  }
+  addParts(e.x,e.y,_colA,e.ib?18:10);
+  if(e.ib){shake(8)}
+  else if(e.r>=22){shake(4)}
+}
 // ── 히트 임팩트 이펙트 시스템 ──
 let _impPerFrame=0,_txtPerFrame=0;
 const _TXT_BUDGET=12; // 프레임당 최대 데미지 텍스트 수
@@ -19946,8 +19965,10 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     }
     const _isBurnDeath=atkEl===EL.F||(opts&&opts.beam);
     atkTicketRelease(e);e.alive=false;G.kills++;_petOnKill();deathFX(e.x,e.y,e.r,e.col,!!e.ib,_isBurnDeath,e.etype);if(!(G._noHitStopT>0)){G.hitStop=~~(_HS.kill*OPT.hitStop/100)}
+    const _killAng=ang!==undefined?ang:Math.atan2(e.y-P.y,e.x-P.x);
+    _spawnLargeMonsterDeathFx(e,_killAng);
     // 시체 잔해 — 모든 사망 (화염은 burnCorpse가 대신)
-    if(!_isBurnDeath){const _cp=Math.min(8,dmg/Math.max(1,e.mhp)*20);_addCorpse(e,ang!==undefined?ang:Math.atan2(e.y-P.y,e.x-P.x),_cp)}
+    if(!_isBurnDeath){const _cp=Math.min(8,dmg/Math.max(1,e.mhp)*20);_addCorpse(e,_killAng,_cp)}
     // 화염/빔 사망 → 불타는 시체 + 전용 사운드
     if(_isBurnDeath){_addBurnCorpse(e);playSample((opts&&opts.beam)?['fire_death','fire_death2','fire_death3'][Math.random()*3|0]:'fire_hit',.5,_r(1,.15))}
     // 폭발/포이즈스킬 사망 시 gib — explode, poiseHit(기폭팔), noPoise(대왕치기), poiseSkill(칼등치기)

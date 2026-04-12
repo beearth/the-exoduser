@@ -234,6 +234,108 @@ canvas{display:block;position:fixed;inset:0}
 .ptitle{font-weight:900;font-size:var(--fs-xl);color:var(--c-accent);letter-spacing:.25em;text-align:center;margin-bottom:14px}
 .pclose{display:block;margin:12px auto 0;padding:8px 24px;background:transparent;border:1px solid var(--c-border);color:#aa6644;font-size:1.1rem;cursor:pointer}
 .pclose:hover{border-color:var(--c-border-active);color:#ff7744}
+/* ══ SKILL PANEL (main scene matched) ══ */
+#skillPanel{
+  background:radial-gradient(ellipse at center,rgba(18,8,6,.72) 0%,rgba(6,2,2,.9) 58%,rgba(0,0,0,.96) 100%);
+  backdrop-filter:blur(2px);
+}
+#skillPanel .skill-pbox{
+  width:min(94vw,1480px);
+  height:min(92vh,980px);
+  max-height:92vh;
+  border-radius:14px;
+  border:1px solid #4b2a1d;
+  padding:18px 18px 14px;
+  background:
+    radial-gradient(1000px 500px at 50% -80px,rgba(110,45,22,.28),transparent 60%),
+    radial-gradient(700px 360px at 50% 120%,rgba(70,22,12,.24),transparent 70%),
+    linear-gradient(180deg,rgba(22,10,8,.96),rgba(15,6,6,.97));
+  box-shadow:0 24px 80px rgba(0,0,0,.65),inset 0 0 0 1px rgba(255,146,88,.08),inset 0 18px 40px rgba(130,60,26,.08);
+}
+#skillPanel .ptitle{
+  color:#ff944f;
+  letter-spacing:.18em;
+  text-shadow:0 2px 10px rgba(255,120,52,.35);
+  margin-bottom:10px;
+}
+#skillInfo{
+  color:#b38763;
+  font-size:.88rem;
+  margin-bottom:10px;
+  text-align:center;
+}
+#skillGridWrap{
+  position:relative;
+  border:1px solid #3a2118;
+  border-radius:10px;
+  background:linear-gradient(180deg,rgba(23,9,9,.75),rgba(13,5,5,.88));
+  box-shadow:inset 0 0 26px rgba(0,0,0,.45),0 0 0 1px rgba(255,132,71,.05);
+  padding:12px;
+}
+#skillFuseLines{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:5;
+  overflow:visible;
+}
+#skillGrid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  align-items:flex-start;
+  justify-content:center;
+  position:relative;
+  z-index:1;
+}
+#skillPanel .skill-close{
+  text-align:center;
+  margin-top:12px;
+}
+#skillPanel .pclose{
+  border-color:#5a3322;
+  color:#d29462;
+  background:linear-gradient(180deg,rgba(30,14,10,.65),rgba(20,8,7,.75));
+}
+#skillPanel .pclose:hover{
+  border-color:#d26b33;
+  color:#ffb074;
+  box-shadow:0 0 16px rgba(210,107,51,.28);
+}
+.sk-drag-ghost{
+  position:fixed;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+  z-index:10020;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:7px 10px;
+  border:1px solid #7a4429;
+  border-radius:8px;
+  background:linear-gradient(180deg,rgba(25,11,9,.95),rgba(14,6,6,.98));
+  box-shadow:0 10px 24px rgba(0,0,0,.55),inset 0 0 0 1px rgba(255,136,74,.09);
+}
+.sk-dg-rune{
+  width:16px;
+  height:16px;
+  border-radius:4px;
+  border:1px solid #b86b3e;
+  background:
+    radial-gradient(circle at 30% 30%,rgba(255,191,124,.55),transparent 45%),
+    linear-gradient(145deg,#3d1a13,#1f0a08);
+  box-shadow:0 0 8px rgba(255,124,64,.35),inset 0 0 10px rgba(255,170,106,.2);
+}
+.sk-dg-name{
+  color:#e4a26f;
+  font-size:.85rem;
+  font-weight:700;
+  letter-spacing:.03em;
+  text-shadow:0 1px 2px rgba(0,0,0,.85);
+}
 
 /* ══ SETTINGS ══ */
 .set-section{margin-bottom:14px}
@@ -1007,14 +1109,14 @@ canvas{display:block;position:fixed;inset:0}
 </div>
 
 <div class="panel" id="skillPanel">
-  <div class="pbox" style="width:95vw;max-width:1200px;max-height:95vh;overflow-y:auto;position:relative">
-    <div class="ptitle">💀 전투 스킬</div>
-    <div id="skillInfo" style="color:#886644;font-size:.9rem;margin-bottom:10px;text-align:center"></div>
-    <div id="skillGridWrap" style="position:relative">
-      <svg id="skillFuseLines" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;overflow:visible"></svg>
-      <div id="skillGrid" style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-start;justify-content:center;position:relative;z-index:1"></div>
+  <div class="pbox skill-pbox">
+    <div class="ptitle">전투 스킬</div>
+    <div id="skillInfo"></div>
+    <div id="skillGridWrap">
+      <svg id="skillFuseLines"></svg>
+      <div id="skillGrid"></div>
     </div>
-    <div style="text-align:center;margin-top:12px"><button class="pclose" onclick="closePanel('skillPanel')">닫기 [ESC]</button></div>
+    <div class="skill-close"><button class="pclose" onclick="closePanel('skillPanel')">닫기 [ESC]</button></div>
   </div>
 </div>
 
@@ -1419,11 +1521,11 @@ function dbRestore(d){
   if(d.game){
     G.stage=d.game.stage||0;
     G.kills=d.game.kills||0;
-    // 악의(mats)도 계정 공유: 세이브에 남은 건 공유 풀로 이관
-    // 음수/NaN 방어 (32bit overflow 복구용)
-    const _savedMats=Math.max(0,~~(d.game.mats||0));
+    // 악의(mats)도 계정 공유: 세이브 잔여분은 "합산"이 아닌 "최댓값 동기화"만 수행
+    // 재접속 시 같은 세이브 잔여 악의를 반복 합산해 폭증하던 회귀 방지
+    const _savedMats=Math.max(0,Math.floor(+d.game.mats||0));
     const _sharedMats=_loadSharedMats();
-    if(_savedMats>0&&_savedMats!==_sharedMats){_saveSharedMats(_sharedMats+_savedMats);d.game.mats=0}
+    if(_savedMats>0&&_savedMats!==_sharedMats){_saveSharedMats(Math.max(_sharedMats,_savedMats));d.game.mats=0}
     G.mats=Math.max(0,_loadSharedMats());
     G._irisSz=d.game.irisSz||20;
     G._taRecords=d.game.taRecords||{};G.comboMax=d.game.comboMax||0;G.playTime=d.game.playTime||0;
@@ -12559,6 +12661,25 @@ function _addGibs(e,boomX,boomY,boomR){
   const pn=~~(4+pw*6);
   for(let i=0;i<pn;i++){const a=ang+(Math.random()-.5)*2;
     poolPart(e.x,e.y,Math.cos(a)*(2+Math.random()*3)*pw,Math.sin(a)*(2+Math.random()*3)*pw-1.5,'#880022',2+Math.random()*3,10+Math.random()*8*pw,0,0,.1)}
+}
+function _spawnLargeMonsterDeathFx(e,ang){
+  if(!OPT.deathFx)return;
+  const _isLarge=!!e.ib||e.r>=18||e.mhp>=220;
+  if(!_isLarge)return;
+  const _boomR=Math.max(36,Math.min(120,e.r*2.8));
+  const _burstN=e.ib?26:16;
+  const _colA=e.ib?'#ff5577':'#ffaa66';
+  const _colB=e.ib?'#ffccdd':'#ffd9aa';
+  _addBoom(e.x,e.y,_boomR,e.ib?36:28,e.ib?'dark':'fire');
+  for(let i=0;i<_burstN;i++){
+    const a=Math.PI*2*i/_burstN+(Math.random()-.5)*0.4;
+    const v=(e.ib?4.6:3.2)+Math.random()*(e.ib?3.2:2.0);
+    const c=(i%3===0)?_colB:_colA;
+    poolPart(e.x,e.y,Math.cos(a)*v,Math.sin(a)*v-0.6,c,2.4+Math.random()*2.8,14+Math.random()*10,0,0,.08);
+  }
+  addParts(e.x,e.y,_colA,e.ib?18:10);
+  if(e.ib){shake(8)}
+  else if(e.r>=22){shake(4)}
 }
 // ── 히트 임팩트 이펙트 시스템 ──
 let _impPerFrame=0,_txtPerFrame=0;
@@ -26711,8 +26832,10 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     else{G.comboTimer=Math.min(1200,G.comboTimer+60)} // 일반: +1초, 최대 20초
     if(G.combo>G.comboMax)G.comboMax=G.combo;
     if(G.combo>=5&&G.combo%5===0){const _cbPct=~~((~~(G.combo/100)*0.05+(OPT.diff||0)*0.10)*100);addTxt(P.x,P.y-40,'🔥 '+G.combo+' COMBO!'+(_cbPct>0?' +'+_cbPct+(OPT.lang==='en'?'% Bonus':'%보상'):''),'#ffaa00',50)}
+    const _killAng=ang!==undefined?ang:Math.atan2(e.y-P.y,e.x-P.x);
+    _spawnLargeMonsterDeathFx(e,_killAng);
     // 시체 잔해 — 모든 사망 (화염은 burnCorpse가 대신)
-    if(!_isBurnDeath){const _cp=Math.min(8,dmg/Math.max(1,e.mhp)*20);_addCorpse(e,ang!==undefined?ang:Math.atan2(e.y-P.y,e.x-P.x),_cp)}
+    if(!_isBurnDeath){const _cp=Math.min(8,dmg/Math.max(1,e.mhp)*20);_addCorpse(e,_killAng,_cp)}
     // 화염/빔 사망 → 불타는 시체 + 전용 사운드
     if(_isBurnDeath){_addBurnCorpse(e);playSample((opts&&opts.beam)?['fire_death','fire_death2','fire_death3'][Math.random()*3|0]:'fire_hit',.5,_r(1,.15))}
     // 폭발/포이즈스킬 사망 시 gib — explode, poiseHit(기폭팔), noPoise(대왕치기), poiseSkill(칼등치기)
@@ -29242,7 +29365,7 @@ function _skDragActivate(d,mx,my){
   d.started=true;
   const ghost=document.createElement('div');
   ghost.className='sk-drag-ghost';
-  ghost.innerHTML='<span class="sk-dg-emoji">'+(d.sk.emoji||'🔮')+'</span><span class="sk-dg-name">'+_T(d.sk.name)+'</span>';
+  ghost.innerHTML='<span class="sk-dg-rune"></span><span class="sk-dg-name">'+_T(d.sk.name)+'</span>';
   ghost.style.left=mx+'px';ghost.style.top=my+'px';
   document.body.appendChild(ghost);
   d.ghost=ghost;
@@ -29337,20 +29460,24 @@ addEventListener('mouseup',e=>{
 function renderSkillPanel(){
   // stormBeam 합체 시 히든 스킬 자동 복구
   if(_isFused('stormBeam')){if(!P.skills.peaceShield)P.skills.peaceShield=1;if(!P.skills.hellRay)P.skills.hellRay=1;}
-  $('skillInfo').textContent='LV.'+P.lv+' | ⭐ SP: '+P.sp+(OPT.lang==='en'?' | 👿 Malice: ':' | 👿 악의: ')+G.mats+(OPT.lang==='en'?' | 🔱 Harpoon: ':' | 🔱 작살: ')+~~_harpGauge+'/'+_HARP_GAUGE_MAX;
+  const _si=$('skillInfo');
+  _si.innerHTML='LV.'+P.lv+' | SP: '+P.sp+(OPT.lang==='en'?' | Malice: ':' | 악의: ')+G.mats+(OPT.lang==='en'?' | Harpoon: ':' | 작살: ')+~~_harpGauge+'/'+_HARP_GAUGE_MAX;
   const _oldGritBtn=$('gritBtn');if(_oldGritBtn)_oldGritBtn.remove();
   const _cb=$('skCompBtn');if(_cb)_cb.textContent=_skCompact?(OPT.lang==='en'?'Expand [K]':'펼치기 [K]'):(OPT.lang==='en'?'Collapse [K]':'접기 [K]');
   const grid=$('skillGrid');grid.innerHTML='';
+  const _stripHeadIcon=(t)=>String(t||'').replace(/^[^A-Za-z0-9가-힣]+/,'').trim();
   SKILL_CATS.forEach(cat=>{
     const _sixMoved=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
     const catSkills=SKILL_LIST.filter(s=>{let c=s.cat;if(s.id==='fanShot'&&_sixMoved)c='magic';return c===cat.id});
     if(!catSkills.length)return;
     const col=document.createElement('div');
-    col.style.cssText='flex:1;min-width:0;max-width:280px';
+    col.style.cssText='flex:1;min-width:0;max-width:310px';
     // 카테고리 헤더
     const hdr=document.createElement('div');
-    hdr.style.cssText='color:'+cat.col+';font-size:.95rem;font-weight:700;padding:6px 0 4px;border-bottom:2px solid '+cat.col+'66;letter-spacing:.1em;margin-bottom:6px';
-    hdr.textContent=OPT.lang==='en'?(cat.nameEn||cat.name):cat.name;
+    hdr.style.cssText='color:'+cat.col+';font-size:.92rem;font-weight:800;padding:8px 8px 6px;border:1px solid #3a251c;border-radius:8px;background:linear-gradient(180deg,rgba(22,10,10,.78),rgba(12,5,5,.86));box-shadow:inset 0 0 0 1px rgba(255,140,82,.06);letter-spacing:.08em;margin-bottom:8px;display:flex;align-items:center;gap:8px';
+    const _catRaw=OPT.lang==='en'?(cat.nameEn||cat.name):cat.name;
+    const _catLabel=_stripHeadIcon(_catRaw);
+    hdr.innerHTML='<span style="width:14px;height:14px;border-radius:4px;border:1px solid '+cat.col+';background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.35),transparent 42%),linear-gradient(145deg,rgba(50,18,14,.9),rgba(15,6,6,.95));box-shadow:0 0 8px '+cat.col+'66,inset 0 0 8px '+cat.col+'33;flex:0 0 14px"></span><span>'+_catLabel+'</span>';
     col.appendChild(hdr);
     // compact 모드: 아이콘들을 flex-wrap 그리드로 묶기 / 펼침 모드: 세로
     const _isCompactMode=_skCompact;
@@ -29549,7 +29676,7 @@ function _renderSkillRow(sk,grid){
     const _bdrCss=_fGrp?'border:2px solid transparent;border-image:linear-gradient(135deg,'+_fGrp.color+','+(_fGrp.color2||_fGrp.color)+') 1;':'border:1px solid '+(learned?'#448833':'#443322')+';';
     const _bgMap={dimBreach:'40,15,80',dimSlam:'40,15,80',dimThunder:'40,15,80',sixFuse:'70,45,0',elemFuse:'70,45,0',whirlDet:'70,35,0',slamStorm:'70,35,0',stormBeam:'80,30,0',bladeFuse:'60,55,50',iceMortar:'15,50,85',boneStorm:'20,70,35',elecRepent:'30,70,20',shieldFuse:'45,45,60',plagueFuse:'60,55,50',pillarSlam:'80,40,0',pillarSpike:'50,15,70',holyFuse:'70,35,45'};
     const _bgRgb=_fGrp?(_bgMap[_fGrp.key]||'0,0,0'):'0,0,0';
-    d.style.cssText='position:relative;padding:12px;margin-bottom:8px;'+_bdrCss+'background:rgba('+_bgRgb+',.3);'+_gemGlow+((canLearn||canUp)?'cursor:pointer;':'');
+    d.style.cssText='position:relative;padding:10px 10px 8px;margin-bottom:10px;border-radius:10px;'+_bdrCss+'background:linear-gradient(180deg,rgba('+_bgRgb+',.24),rgba(10,4,4,.76));box-shadow:inset 0 0 0 1px rgba(255,142,87,.05),0 4px 12px rgba(0,0,0,.28);'+_gemGlow+((canLearn||canUp)?'cursor:pointer;':'');
     let lockTxt='';
     const _fixedKeyMap={bladeShot:'T자동',fanShot:'T자동',blastShot:'T자동',omniBeam:'E',elemMissile:'E',fireball:'E',blueShot:'E',burstLoop:'E',whirlwind:'좌클',maliceSwipe:'우클',shieldThrow:'우클',chargeBoost:'SH',magicBlink:'SH',ghostWalk:'CT',iceOrb:'CT',chainAssault:'SH+E',chainSlash:'기동+좌클',chainSlam:'SH+우클',giantSlam:'SH+좌클',peaceShield:'Q',hellRay:'E',ghostXbowTurret:'T자동'};
     const _fixedKeyMapEn={bladeShot:'T-Auto',fanShot:'T-Auto',blastShot:'T-Auto',omniBeam:'E',elemMissile:'E',fireball:'E',blueShot:'E',burstLoop:'E',whirlwind:'LMB',maliceSwipe:'RMB',shieldThrow:'RMB',chargeBoost:'SH',magicBlink:'SH',ghostWalk:'CT',iceOrb:'CT',chainAssault:'SH+E',chainSlash:'Chain+LMB',chainSlam:'SH+RMB',giantSlam:'SH+LMB',peaceShield:'Q',hellRay:'E',ghostXbowTurret:'T-Auto'};
@@ -29682,14 +29809,14 @@ function _renderSkillRow(sk,grid){
         if(_shareGrp)_fuseHighlight=true;
         else _fadeOut=true;
       }
-      d.style.cssText=d.style.cssText.replace('padding:12px','padding:4px 2px')+';display:inline-flex;flex-direction:column;align-items:center;justify-content:flex-start;width:74px;height:118px;margin:2px;text-align:center;vertical-align:top;box-sizing:border-box;position:relative';
+      d.style.cssText=d.style.cssText.replace('padding:10px 10px 8px','padding:6px 4px 5px')+';display:inline-flex;flex-direction:column;align-items:center;justify-content:flex-start;width:86px;height:132px;margin:3px;text-align:center;vertical-align:top;box-sizing:border-box;position:relative';
       if(_fadeOut)d.style.cssText+=';opacity:0.15;filter:grayscale(1) brightness(0.4);pointer-events:none';
       else if(_fuseHighlight)d.style.cssText+=';outline:2px dashed '+(_fGrp?_fGrp.color:'#ffdd88')+';outline-offset:2px;box-shadow:0 0 16px '+(_fGrp?_fGrp.color:'#ffdd88')+'aa';
       // ★ 성급 표시 (좌상단 배지) — _skStar 그대로 사용
       const _starHtml=_skStar>=1?'<div style="position:absolute;top:1px;left:2px;color:#ffcc00;font-size:9px;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,0.95);line-height:1;letter-spacing:-1px;z-index:2">'+'★'.repeat(Math.min(_skStar,6))+'</div>':'';
       const _cleanName=_dispName.replace(/<[^>]+>/g,'').replace(/★/g,'').trim();
       d.innerHTML=_starHtml+_iconImg
-        +'<div style="font-size:11px;color:'+(_fGrp?_fGrp.color:(learned?'#ffdd88':'#aa8866'))+';font-weight:700;margin-top:4px;line-height:1.15;width:70px;max-width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 1px;text-shadow:0 1px 2px rgba(0,0,0,0.85)">'+_cleanName+'</div>'
+        +'<div style="font-size:11px;color:'+(_fGrp?_fGrp.color:(learned?'#ffdd88':'#aa8866'))+';font-weight:700;margin-top:5px;line-height:1.15;width:80px;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 1px;text-shadow:0 1px 2px rgba(0,0,0,0.85)">'+_cleanName+'</div>'
         +'<div style="font-size:10px;color:'+(learned?'#44ff66':'#ff8844')+';font-weight:700;margin-top:2px;line-height:1">'+(learned?'Lv.'+slv+(slv>=10?'★':''):'⭐'+sk.spCost)+'</div>';
       if(learned||canLearn||canUp){
         const _mini=document.createElement('div');
@@ -29729,7 +29856,7 @@ function _renderSkillRow(sk,grid){
     // ═══ compact 아이콘 모드 (펼쳐지지 않음): 클릭 → 상세보기 펼치기 ═══
     if(_skCompact && !_isExpanded){
       d.style.cursor='pointer';
-      d.onmouseenter=()=>{d.style.borderColor='#aa8833';d.style.transform='scale(1.08)'};
+      d.onmouseenter=()=>{d.style.borderColor='#aa8833';d.style.transform='scale(1.04)'};
       d.onmouseleave=()=>{d.style.borderColor=learned?'#448833':'#443322';d.style.transform='scale(1)'};
       d.onclick=()=>{_skExpandedId=sk.id;renderSkillPanel()};
       grid.appendChild(d);return;
@@ -30459,7 +30586,7 @@ function _applyLang(){try{
     const _scc=$('statClose');if(_scc)_scc.textContent=_e?'Close [C]':'닫기 [C]';
   }
   const _skP=$('skillPanel');if(_skP){
-    const _pt5=_skP.querySelector('.ptitle');if(_pt5)_pt5.textContent=_e?'💀 Combat Skills':'💀 전투 스킬';
+    const _pt5=_skP.querySelector('.ptitle');if(_pt5)_pt5.textContent=_e?'Combat Skills':'전투 스킬';
     const _skc=_skP.querySelector('.pclose');if(_skc)_skc.textContent=_e?'Close [ESC]':'닫기 [ESC]';
   }
   for(const[id,[ko,en]]of Object.entries(_titles)){const el=$(id);if(el)el.title=_e?en:ko}
