@@ -95,7 +95,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | fireball | 악의구 | MP | 50×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × 1.3 | 기본 E, 범위폭발+넉백, Lv당 크기+50% 뎀+15% |
 | omniBeam | 멸살광선 | MP(틱) | **30×(1+(Lv-1)×0.18) MP/초** (Lv1=30, Lv10=79) | 과부하 **300f (5초)** | INT × magicRef × `pBeamMul()` × `_skMul('omniBeam')` × drainBonus | 단독 15판정/초 직선레이저(틱당 2배 보정), sixFuse 총합 약 2490%/초, elemFuse도 6직격 총합 약 2490%/초 |
 | elemMissile | 원소추적탄 | MP | ~250×DPS (마법할인) | 없음 | INT + Lv당 뎀+10% | 6원소 유도, 곡선궤적, 사거리+20/Lv |
-| energyShot | 마력연사 | MP | **5/발 (4발/초=20MP/초)** | 없음 (홀드) | INT × (3+(Lv-1)) | 유도+착탄폭발, 사거리+30/Lv, Lv당 뎀+1 |
+| energyShot | 마력연사 | MP | **12~22/발 (4발/초=48~88MP/초)** | 없음 (토글) | INT × (3+(Lv-1)) | 직선 즉시타격(비합체), 사거리+60/Lv, Lv당 뎀+1 |
 | fireBeam | 업화선 | MP | 10/발 | DEX 스케일 | INT × (5+(Lv-1)) | 100%관통+유도+화상, 사거리+50/Lv, Lv당 뎀+1 |
 | fireAura | 지옥진 | MP | **100** 고정 | **720f (12초)** | INT × (6+(Lv-1)) /틱 | 10초간 용암기둥, 범위+10%/Lv 뎀+1/Lv |
 | maliceMortar | 폭풍소환 | MP | 250×DPS (마법할인, key=mortar) | **660f (11초)** | INT 스케일 | 6.5초간 소용돌이, 범위 260+(Lv-1)×28, 흡인력 0.78+Lv×0.104 |
@@ -154,7 +154,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|
 | fireball 악의구 | E탭 | 10 | ~0.5~1초 | **10~20** |
 | omniBeam 멸살광선 | E홀드 | Lv스케일 | 틱 | **10→100/초** (Lv1→10) |
-| energyShot 마력연사 | E홀드 | 5/발 | 4발/초 | **20** |
+| energyShot 마력연사 | E토글 | 12~22/발 | 4발/초 | **48~88** |
 | fireBeam 업화선 | E탭 | 10 | ~1초(DEX) | **10** |
 | fireAura 지옥진 | 액티브 | 100 | 12초 | **8.3** |
 | maliceMortar 폭풍소환 | 액티브 | 10 | 11초 | **0.9** |
