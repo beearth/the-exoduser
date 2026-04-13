@@ -129,10 +129,15 @@ const server = http.createServer(async (req, res) => {
 
       if (range) {
         const parts = range.replace(/bytes=/, "").split("-");
-        const start = parseInt(parts[0], 10);
-        const end = parts[1] ? parseInt(parts[1], 10) : stat.size - 1;
+        const start = parseInt(parts[0], 10) || 0;
+        const end = Math.min(parts[1] ? parseInt(parts[1], 10) : stat.size - 1, stat.size - 1);
+        if (start >= stat.size || start > end) {
+          res.writeHead(416, { 'Content-Range': `bytes */${stat.size}` });
+          return res.end();
+        }
         const chunksize = (end - start) + 1;
         const file = fs.createReadStream(filePath, { start, end });
+        file.on('error', (err) => { console.error('[Stream] Range error:', err.message); if (!res.headersSent) res.writeHead(500); res.end(); });
         res.writeHead(206, {
           'Content-Range': `bytes ${start}-${end}/${stat.size}`,
           'Accept-Ranges': 'bytes',
@@ -148,7 +153,9 @@ const server = http.createServer(async (req, res) => {
           'Pragma': 'no-cache',
           'Expires': '0'
         });
-        return fs.createReadStream(filePath).pipe(res);
+        const file200 = fs.createReadStream(filePath);
+        file200.on('error', (err) => { console.error('[Stream] Read error:', err.message); if (!res.headersSent) res.writeHead(500); res.end(); });
+        return file200.pipe(res);
       }
     }
 
