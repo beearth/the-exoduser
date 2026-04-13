@@ -618,6 +618,16 @@ canvas{display:block;position:fixed;inset:0}
 .fg-tab.act{border-color:#ff8800;color:#ffcc44;background:rgba(255,100,0,.1)}
 .fg-tab-ico{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-right:6px;font-size:.85rem;border-radius:5px;background:rgba(0,0,0,.22);border:1px solid rgba(124,76,52,.35);vertical-align:middle}
 .fg-tab-txt{vertical-align:middle;letter-spacing:.01em}
+.fg-tab-ico.atlas{
+  color:transparent;
+  font-size:0;
+  background-repeat:no-repeat;
+  background-size:400% 300%;
+  background-position:var(--ix,0%) var(--iy,0%);
+  image-rendering:auto;
+}
+.fg-tab-ico.atlas-v1{background-image:url('output/imagegen/forge-icon-sheet-v1.png')}
+.fg-tab-ico.atlas-v2{background-image:url('output/imagegen/forge-icon-sheet-v2.png')}
 .fg-i{background:rgba(0,0,0,.3);border:1px solid #332211;padding:6px 8px;cursor:pointer;transition:all .2s}
 .fg-i:hover{border-color:var(--c-border-hover);background:rgba(255,100,0,.04)}
 .fg-i.dis{opacity:.4;cursor:default}
@@ -1798,8 +1808,8 @@ function dbRestore(d){
   INV.selected=null;
   // Stats
   if(d.stats)for(const k in d.stats)STATS[k]=d.stats[k]||0;
-  // Passives
-  if(d.passives)for(const k in d.passives)PASSIVES[k]=d.passives[k]||0;
+  // Passives (known keys only)
+  if(d.passives)for(const k in d.passives)if(PASSIVES.hasOwnProperty(k))PASSIVES[k]=d.passives[k]||0;
   // removed passive migration: pShield(수호) -> AP refund
   {
     const _legacyLv=Math.max(0,~~(PASSIVES.pShield||0));
@@ -1809,6 +1819,16 @@ function dbRestore(d){
       for(let _i=0;_i<_legacyLv;_i++)_refundAP+=(_pcv[_i]||5);
       P.ap=(P.ap||0)+_refundAP;
       PASSIVES.pShield=0;
+    }
+  }
+  // removed passive migration: pDef(철벽) -> AP refund
+  {
+    const _legacyLv=Math.max(0,~~((d.passives&&d.passives.pDef)||0));
+    if(_legacyLv>0){
+      const _pcv=[1,1,1,2,2,2,3,3,3,5];
+      let _refundAP=0;
+      for(let _i=0;_i<_legacyLv;_i++)_refundAP+=(_pcv[_i]||5);
+      P.ap=(P.ap||0)+_refundAP;
     }
   }
   _grit=d.grit||0;
@@ -14711,7 +14731,6 @@ const STAT_MAX={str:500,dex:500,int:500,vit:500,lck:500};
 // ═══ 패시브 스킬 (5레벨마다 AP 1개) ═══
 const PASSIVE_DEF=[
   {key:'pAtk',   name:'⚔️ 맹공',nameEn:'⚔️ Onslaught',desc:'근접뎀 +12%, ST비용 -4%/lv (최대-40%)',descEn:'Melee DMG +12%, ST cost -4%/lv (max -40%)',max:10,icon:'⚔️',col:'#ff6644'},
-  {key:'pDef',   name:'🛡️ 철벽',nameEn:'🛡️ Fortitude',    desc:'방어력 +5/lv (최대+50)',descEn:'DEF +5/lv (max +50)',             max:10,icon:'🛡️',col:'#66aaff'},
   {key:'pCharge',name:'🔱 돌파',nameEn:'🔱 Breakthrough',    desc:'작살 사거리 +2%/lv, 기동게이지 회복 +3%/lv',descEn:'Harpoon range +2%/lv, Mobility gauge recovery +3%/lv',max:10, icon:'🔱',col:'#ff8800'},
   {key:'pParry', name:'⚡ 반격',nameEn:'⚡ Retaliation',desc:'카운터뎀 +50%/lv, 우클릭 공속 +10%/lv, 무지개탄 피해감소 +10%/lv (최대50%)',descEn:'Counter DMG +50%/lv, RMB ATK speed +10%/lv, Rainbow shot DMG reduction +10%/lv (max 50%)',max:10,icon:'⚡',col:'#ffdd00'},
   {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +15%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +15%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
@@ -14802,7 +14821,7 @@ function statDropBonus(){return 1+_eqLckTotal()*.0015+PASSIVES.pDrop*.08+_eqAffi
 // 패시브 배율 함수 (max5, 효과 2배)
 function pAtkMul(){return 1+PASSIVES.pAtk*.12+(P._altAtk||0)}  // 무기뎀 +12%/lv (10lv=+120%)
 function pAtkCost(){return Math.max(.60,1-PASSIVES.pAtk*.04)} // ST비용 유지
-function pDefAdd(){return PASSIVES.pDef*5+(P._altDef||0)*30}   // 방어력 +5/lv +제단 (10lv=+50)
+function pDefAdd(){return (P._altDef||0)*30}   // 철벽 패시브 제거: 제단 보너스만 유지
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
 function pParryDmg(){const _lvMul=Math.pow(2,((P.lv||1)-1)/70);return(1+PASSIVES.pParry*.50)*_lvMul}     // 기본 ×1, 70렙마다 2배, 카운터뎀 +50%/lv (1랩=×1, 70렙=×2, 1000렙=×19700)
@@ -15334,9 +15353,9 @@ function _autoFireBowSkill(tx,ty){
   P.s=_sS;P.st2=_sSt2;
 }
 function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];if(a.id==='sharpAtk'||a.id==='brutalAtk'||a.id==='ruinAtk')s+=a.value}return s}
-function meleeRef(){return(((wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+15+P.baseAtk+(STATS.str+_eqStat('Str')))*(P._weaponSeal>0?.3:1)} // STR 1:1 ATK (1000=1000ATK)
-function bowRef(){return(((bw().atk||0)+enhMulAtk(bw().enh||0))+_slotFlatAtk(bw())+15+P.baseAtk+(STATS.dex+_eqStat('Dex')))*(P._weaponSeal>0?.3:1)} // DEX 1:1 ATK
-function magicRef(){return(((hm().atk||0)+enhMulAtk(hm().enh||0))+_slotFlatAtk(hm())+15+P.baseAtk+(STATS.int+_eqStat('Int')))*(P._weaponSeal>0?.3:1)} // INT 1:1 ATK
+function meleeRef(){return(((wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')))*(P._weaponSeal>0?.3:1)} // STR 1:1 ATK (1000=1000ATK)
+function bowRef(){return(((bw().atk||0)+enhMulAtk(bw().enh||0))+_slotFlatAtk(bw())+P.baseAtk+(STATS.dex+_eqStat('Dex')))*(P._weaponSeal>0?.3:1)} // DEX 1:1 ATK
+function magicRef(){return(((hm().atk||0)+enhMulAtk(hm().enh||0))+_slotFlatAtk(hm())+P.baseAtk+(STATS.int+_eqStat('Int')))*(P._weaponSeal>0?.3:1)} // INT 1:1 ATK
 const DPS_BAL={bow:0.77,magic:0.475,beam:0.0080};
 function beamCost(){return(75+((P.skills.omniBeam||1)-1)*8)/60*pMagicCost()} // 틱당: 초당75+lv*8 소비 (패시브 할인 적용)
 // ═══ E키 마법 라우팅 — 합체/스킬 상태 → beam/magicCast 자동 분기 ═══
@@ -32186,13 +32205,49 @@ function renderInv(){
         if(confirm(_crStarN(cs)+' '+_crDefN(cd)+(OPT.lang==='en'?' decompose?\nCrystal dust +'+dust:' 분해?\n결정가루 +'+dust))){CRYSTAL_BAG.splice(_bi,1);CRYSTAL_DUST+=dust;_selectedCrystal=-1;renderInv()}};
       _crWrap.appendChild(_b)}
     _crDiv.appendChild(_crWrap);
-    // ── 인벤 내 최상위 일괄합성 버튼 ──
+    // ── 인벤 내 버튼 행: 일괄합성 + 일괄강화+합성 ──
+    const _btnRow=document.createElement('div');_btnRow.style.cssText='display:flex;gap:4px;margin-top:4px';
+    // 1) 일괄합성
     const _cbk=_canBatchCrystalMerge();
     const _cbBtn=document.createElement('button');
-    _cbBtn.style.cssText='width:100%;margin-top:4px;padding:5px 10px;font-size:.8rem;font-family:"Noto Sans KR";font-weight:700;cursor:'+(_cbk?'pointer':'not-allowed')+';border:2px solid '+(_cbk?'#ffcc44':'#443322')+';background:'+(_cbk?'rgba(255,204,68,.12)':'rgba(0,0,0,.2)')+';color:'+(_cbk?'#ffdd66':'#554433')+';border-radius:4px';
-    _cbBtn.textContent='⚡ '+_T('최상위 일괄합성');
+    _cbBtn.style.cssText='flex:1;padding:5px 6px;font-size:.78rem;font-family:"Noto Sans KR";font-weight:700;cursor:'+(_cbk?'pointer':'not-allowed')+';border:2px solid '+(_cbk?'#ffcc44':'#443322')+';background:'+(_cbk?'rgba(255,204,68,.12)':'rgba(0,0,0,.2)')+';color:'+(_cbk?'#ffdd66':'#554433')+';border-radius:4px';
+    _cbBtn.textContent='⚡ '+_T('일괄합성');
     _cbBtn.onclick=()=>_runBatchCrystalMerge();
-    _crDiv.appendChild(_cbBtn)}}
+    _btnRow.appendChild(_cbBtn);
+    // 2) 일괄강화+합성
+    const _canBE=(()=>{for(let i=0;i<CRYSTAL_BAG.length;i++){const cr=CRYSTAL_BAG[i];if((cr.enh||0)>=20)continue;const cost=crystalEnhCost(cr);if(G.mats<cost)continue;if(CRYSTAL_BAG.findIndex((c,ci)=>ci!==i&&c.id===cr.id&&c.star===cr.star)>=0)return true}return _cbk})();
+    const _beBtn=document.createElement('button');
+    _beBtn.style.cssText='flex:1;padding:5px 6px;font-size:.78rem;font-family:"Noto Sans KR";font-weight:700;cursor:'+(_canBE?'pointer':'not-allowed')+';border:2px solid '+(_canBE?'#bb88ff':'#443322')+';background:'+(_canBE?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';color:'+(_canBE?'#ffcc44':'#554433')+';border-radius:4px';
+    _beBtn.textContent='💎 '+_T('일괄강화+합성');
+    _beBtn.onclick=()=>{
+      if(!_canBE)return;
+      let _enhCnt=0,_synthCnt=0;
+      while(true){
+        let _didAny=false;
+        while(true){let _did=false;
+          for(let i=0;i<CRYSTAL_BAG.length;i++){const cr=CRYSTAL_BAG[i];if((cr.enh||0)>=20)continue;
+            const cost=crystalEnhCost(cr);if(G.mats<cost)continue;
+            const _fi=CRYSTAL_BAG.findIndex((c,ci)=>ci!==i&&c.id===cr.id&&c.star===cr.star);
+            if(_fi<0)continue;G.mats-=cost;CRYSTAL_BAG.splice(_fi,1);if(i>_fi)i--;
+            cr.enh=(cr.enh||0)+1;_enhCnt++;_did=true;_didAny=true;break}
+          if(!_did)break}
+        while(true){const _g={};
+          CRYSTAL_BAG.forEach((cr,i)=>{if(cr.star>=4)return;const k=cr.id+'_'+cr.star;if(!_g[k])_g[k]={id:cr.id,star:cr.star,idxs:[]};_g[k].idxs.push(i)});
+          let _did2=false;
+          for(const k in _g){const _gr=_g[k];if(_gr.idxs.length<3)continue;
+            const _times=~~(_gr.idxs.length/3);
+            _gr.idxs.slice(0,_times*3).sort((a,b)=>b-a).forEach(ri=>CRYSTAL_BAG.splice(ri,1));
+            for(let t=0;t<_times;t++){CRYSTAL_BAG.push({id:_gr.id,star:_gr.star+1,enh:0});_synthCnt++}
+            _did2=true;_didAny=true;break}
+          if(!_did2)break}
+        if(!_didAny)break}
+      if(_enhCnt+_synthCnt>0){SFX.forge();
+        if(_enhCnt>0)addTxt(P.x,P.y-20,_T('강화')+' ×'+_enhCnt,'#bb88ff',60);
+        if(_synthCnt>0)addTxt(P.x,P.y-40,_T('합성')+' ×'+_synthCnt,'#ffdd66',60);
+        applyStats();renderInv();dbSaveNow()}
+    };
+    _btnRow.appendChild(_beBtn);
+    _crDiv.appendChild(_btnRow)}}
 
   // ── Bag grid (2D 디아블로식) ──
   const grid=$('invGrid');grid.innerHTML='';
@@ -32386,30 +32441,38 @@ function renderForge(){
   $('forgeMats').textContent=`👿 ${_T('악의')}: ${G.mats}`;
   const tabs=$('fgTabs');tabs.innerHTML='';
   const _fgTabMeta={
-    upgrade:{icon:'⭐',ko:'강화',en:'Enhance'},
-    potion:{icon:'🧪',ko:'물약',en:'Potion'},
-    salvage:{icon:'🔥',ko:'분해',en:'Salvage'},
-    reroll:{icon:'🔄',ko:'리롤',en:'Reroll'},
-    crystal:{icon:'💎',ko:'결정',en:'Crystal'},
-    weapon:{icon:'⚔️',ko:'무기',en:'Weapon'},
-    shield:{icon:'🛡️',ko:'견갑',en:'Shield'},
-    armor:{icon:'🦺',ko:'갑옷',en:'Armor'},
-    helmet:{icon:'⛑️',ko:'투구',en:'Helmet'},
-    boots:{icon:'👢',ko:'부츠',en:'Boots'},
-    bow:{icon:'🏹',ko:'활',en:'Bow'},
-    gloves:{icon:'🧤',ko:'장갑',en:'Gloves'},
-    pants:{icon:'👖',ko:'바지',en:'Pants'},
-    necklace:{icon:'📿',ko:'목걸이',en:'Necklace'},
-    ring:{icon:'💍',ko:'반지',en:'Ring'},
-    bracelet:{icon:'⭕',ko:'팔찌',en:'Bracelet'},
-    headband:{icon:'🎀',ko:'귀걸이',en:'Earring'}
+    // v1 icon atlas (4x3): 0 anvil, 1 hammer, 2 tongs, 3 molten ingot
+    //                       4 furnace flame, 5 sharpening wheel, 6 shield, 7 blade
+    //                       8 rune crystal, 9 salvage scrap, 10 reroll spiral, 11 upgrade star
+    upgrade:{icon:'⭐',ko:'강화',en:'Enhance',si:11,atlas:'v1'},
+    potion:{icon:'🧪',ko:'물약',en:'Potion',si:3,atlas:'v1'},
+    salvage:{icon:'🔥',ko:'분해',en:'Salvage',si:9,atlas:'v1'},
+    reroll:{icon:'🔄',ko:'리롤',en:'Reroll',si:10,atlas:'v1'},
+    crystal:{icon:'💎',ko:'결정',en:'Crystal',si:8,atlas:'v1'},
+    weapon:{icon:'⚔️',ko:'무기',en:'Weapon',si:7,atlas:'v2'},
+    shield:{icon:'🛡️',ko:'견갑',en:'Shield',si:6,atlas:'v2'},
+    armor:{icon:'🦺',ko:'갑옷',en:'Armor',si:0,atlas:'v2'},
+    helmet:{icon:'⛑️',ko:'투구',en:'Helmet',si:1,atlas:'v2'},
+    boots:{icon:'👢',ko:'부츠',en:'Boots',si:2,atlas:'v2'},
+    bow:{icon:'🏹',ko:'활',en:'Bow',si:7,atlas:'v2'},
+    gloves:{icon:'🧤',ko:'장갑',en:'Gloves',si:2,atlas:'v2'},
+    pants:{icon:'👖',ko:'바지',en:'Pants',si:0,atlas:'v2'},
+    necklace:{icon:'📿',ko:'목걸이',en:'Necklace',si:8,atlas:'v2'},
+    ring:{icon:'💍',ko:'반지',en:'Ring',si:10,atlas:'v2'},
+    bracelet:{icon:'⭕',ko:'팔찌',en:'Bracelet',si:5,atlas:'v2'},
+    headband:{icon:'🎀',ko:'귀걸이',en:'Earring',si:8,atlas:'v2'}
   };
   ['upgrade','potion','salvage','reroll','crystal','weapon','shield','armor','helmet','boots','bow','gloves','pants','necklace','ring','bracelet','headband'].forEach((k)=>{
     const _m=_fgTabMeta[k];
     const _txt=OPT.lang==='en'?_m.en:_m.ko;
     const d=document.createElement('div');
     d.className='fg-tab'+(G.forgeTab===k?' act':'');
-    d.innerHTML='<span class="fg-tab-ico">'+_m.icon+'</span><span class="fg-tab-txt">'+_txt+'</span>';
+    const _si=typeof _m.si==='number'?_m.si:0;
+    const _sx=_si%4,_sy=~~(_si/4);
+    const _x=(_sx/3*100).toFixed(3)+'%';
+    const _y=(_sy/2*100).toFixed(3)+'%';
+    const _atlas='atlas-'+(_m.atlas||'v1');
+    d.innerHTML='<span class="fg-tab-ico atlas '+_atlas+'" style="--ix:'+_x+';--iy:'+_y+'">'+_m.icon+'</span><span class="fg-tab-txt">'+_txt+'</span>';
     d.onclick=()=>{G.forgeTab=k;_forgeSel=null;_salSel.clear();_rerollSel=null;_crForgeSel=-1;renderForge()};
     tabs.appendChild(d);
   });
@@ -33169,7 +33232,7 @@ function renderStatSummary(){
     // ── 방어 ──
     `<div style="${_sHd}">🛡️ ${_L('방어','Defense')}</div>`+
     `<div style="${_sLn}">${_L('물리방어','Phys DEF')}: <span style="color:#ffaa44">${_sTotalPDef.toFixed(1)}</span> → <span style="color:#44ff88">${(_sPhysDR*100).toFixed(1)}%${_L('감소','red')}</span> <span style="color:#887766;font-size:1.1rem">(${_L('캡','cap')}${~~(DR_CAP*100)}%)</span></div>`+
-    `<div style="font-size:1rem;color:#887766;line-height:1.6;margin-left:12px">${_L('기본','base')}:${P.baseDef} | ${_L('패시브','passive')}:${pDefAdd()} | ${_L('견갑','shield')}:${sh().def||0} | ${_L('갑옷','armor')}:${ar().def||0} | ${_L('부츠','boots')}:${bt().def||0} | ${_L('장갑','gloves')}:${gl().def||0} | ${_L('바지','pants')}:${pt().def||0} | ${_L('강화','enhance')}:${_sEnhDef}</div>`+
+    `<div style="font-size:1rem;color:#887766;line-height:1.6;margin-left:12px">${_L('기본','base')}:${P.baseDef} | ${_L('제단','altar')}:${pDefAdd()} | ${_L('견갑','shield')}:${sh().def||0} | ${_L('갑옷','armor')}:${ar().def||0} | ${_L('부츠','boots')}:${bt().def||0} | ${_L('장갑','gloves')}:${gl().def||0} | ${_L('바지','pants')}:${pt().def||0} | ${_L('강화','enhance')}:${_sEnhDef}</div>`+
     `<div style="${_sLn}">${_L('속성방어','Elem DEF')}: <span style="color:#bb88ff">${_sTotalEDef}</span> → <span style="color:#44ff88">${(_sElemDR*100).toFixed(1)}%${_L('감소','red')}</span></div>`+
     `<div style="font-size:1rem;color:#887766;line-height:1.6;margin-left:12px">${_L('투구','helmet')}:${hm().eDef||0} | ${_L('목걸이','necklace')}:${nc().eDef||0} | ${_L('반지1','ring1')}:${rg1().eDef||0} | ${_L('반지2','ring2')}:${rg2().eDef||0}</div>`+
     `<div style="${_sLn}">${_L('반사','Reflect')}: <span style="color:${_afc('reflect','#aaaaff')}">${_afp('reflect')}</span> | ${_L('가시','Thorns')}: <span style="color:${_afc('thorns','#ff8844')}">${_af('thorns').toFixed(0)}</span> | ${_L('배리어','Barrier')}: <span style="color:${_afc('barrier','#4488ff')}">${_af('barrier').toFixed(0)}</span></div>`+
@@ -39370,7 +39433,7 @@ function drawP(){
       X.closePath();X.fill();
       // 선단 빛점
       X.globalAlpha=fa*.3;X.fillStyle='#ffdd00';X.beginPath();X.arc(p.x,p.y,3+Math.sin(_now*.06),0,Math.PI*2);X.fill();
-      X.globalAlpha=fa*.3;X.fillStyle='#ffee66';X.beginPath();X.arc(_pts[_segs].x,_pts[_segs].y,2+Math.sin(_now*.08),0,Math.PI*2);X.fill();
+      X.globalAlpha=fa*.3;X.fillStyle='#ffee66';X.beginPath();X.arc(_clBufX[_segs],_clBufY[_segs],2+Math.sin(_now*.08),0,Math.PI*2);X.fill();
     }else if(p.magic){
       // ── MAGIC PROJECTILE — element-specific visuals ──
       const mt=_now;const me=p.el;
@@ -41140,3 +41203,4 @@ if(location.search.includes('slotdebug')){
 </script>
 </body>
 </html>
+

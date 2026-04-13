@@ -218,6 +218,8 @@ style 맨 아래에 추가:
 | 탭 구조 | 텍스트만 출력 → `아이콘 박스 + 라벨` 2요소 구조로 분리 (`fg-tab-ico`, `fg-tab-txt`) | `game.html` `renderForge()` |
 | 탭 메타 | 탭별 `icon/ko/en` 메타 객체 도입 (`_fgTabMeta`)으로 아이콘/언어 라벨 일관화 | `game.html` `renderForge()` |
 | 탭 시각 | 대장간 탭에 아이콘 전용 프레임(18x18), 활성 탭 아이콘 하이라이트 추가 | `game.html` `.fg-tab`, `.fg-tab-ico` |
+| 아이콘 소스 | `v1 + v2` 혼합 사용: 시스템 탭(강화/물약/분해/리롤/결정)=v1, 장비 슬롯 탭(무기~귀걸이)=v2 | `game.html` `.fg-tab-ico.atlas-v1/.atlas-v2`, `_fgTabMeta.atlas` |
+| 에셋 경로 | `output/imagegen/forge-icon-sheet-v1.png`, `output/imagegen/forge-icon-sheet-v2.png` | 프로젝트 루트 출력물 |
 
 ---
 
