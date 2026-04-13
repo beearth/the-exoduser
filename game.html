@@ -5705,7 +5705,8 @@ function _sfxPri(key){
   if(key.startsWith('death_')||key==='monster_die1'||key==='death_grunt')return _SFX_PRI.DEATH;
   if(key==='bullet_hit'||key==='bean_hit'||key==='bolt_hit')return _SFX_PRI.PROJ;
   if(key.startsWith('monster_hit')||key==='flat_hit'||key.startsWith('player_hit')||key==='melee_hit1')return _SFX_PRI.HIT;
-  if(key.startsWith('amb_')||key.startsWith('m_'))return _SFX_PRI.AMB;
+  if(key.startsWith('m_')||key==='monster_crawl'||key==='monster_crawl1')return _SFX_PRI.PROJ;
+  if(key.startsWith('amb_'))return _SFX_PRI.AMB;
   return _SFX_PRI.HIT;
 }
 function _evictLowest(newPri){
@@ -22667,7 +22668,7 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
     // 회전참 피격 스택 카운트만 유지 (데미지 보너스 제거됨)
     if(_isWW){e._wwStk=Math.min(20,(e._wwStk||0)+1);e._wwStkT=60;}
     hurtE(e,dmg,ang,true,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0:1.5,noPoise:_isWW,poiseHit:type==='shield',poiseSkill:type==='shield'},el);_hitCount++;
-    if(_isWW&&_hitCount<=10){_impacts.push({x:e.x,y:e.y,el:el,ang:ang,t:0,ml:16,sz:0.8,type:'slash'});} // 회전참: 맞은 적 위치에 물리 임팩트 (최대10)
+    if(_isWW&&_hitCount<=9){_impacts.push({x:e.x,y:e.y,el:el,ang:ang,t:0,ml:16,sz:0.8,type:'slash'});} // 회전참: 맞은 적 위치에 물리 임팩트 (최대9)
       // parryBank는 적 공격 흡수로만 축적 (hitArc 공격 축적 삭제)
       if(!_isWW){
       // 칼등치기만 포이즈 데미지 (데미지의 200%)
