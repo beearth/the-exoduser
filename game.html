@@ -12918,8 +12918,8 @@ function _addCorpse(e,killAng,power){
 // ── Gib 시스템: 폭발 사망 시 시체 부위 조각 ──
 const _GIB_MAX=60;const _gibs=[];
 // 풀링: 캔버스를 미리 생성해두고 재사용 (GC 방지)
-const _GIB_GS=16;
-for(let i=0;i<_GIB_MAX;i++){const _gc=document.createElement('canvas');_gc.width=_GIB_GS;_gc.height=_GIB_GS;_gibs.push({x:0,y:0,vx:0,vy:0,r:0,life:0,ml:0,c:_gc,ctx:_gc.getContext('2d'),active:false})}
+const _GIB_MAX_CELL=24;
+for(let i=0;i<_GIB_MAX;i++){const _gc=document.createElement('canvas');_gc.width=_GIB_MAX_CELL;_gc.height=_GIB_MAX_CELL;_gibs.push({x:0,y:0,vx:0,vy:0,r:0,life:0,ml:0,c:_gc,ctx:_gc.getContext('2d'),active:false})}
 const _gibC=document.createElement('canvas');_gibC.width=48;_gibC.height=48;const _gibX=_gibC.getContext('2d',{willReadFrequently:true});
 let _gibThrottle=0; // 프레임당 gib 생성 제한
 function _addGibs(e,boomX,boomY,boomR){
@@ -12941,22 +12941,30 @@ function _addGibs(e,boomX,boomY,boomR){
   if(!_gDrawn){_gibX.fillStyle=e.col||'#cc0000';_gibX.beginPath();_gibX.arc(24,24,20,0,Math.PI*2);_gibX.fill();}
   }
   const ang=Math.atan2(e.y-(boomY||e.y),e.x-(boomX||e.x));
-  for(let gy=0;gy<3;gy++)for(let gx=0;gx<3;gx++){
-    const sx=gx*_GIB_GS,sy=gy*_GIB_GS;
-    const id=_gibX.getImageData(sx,sy,_GIB_GS,_GIB_GS);let alphaSum=0;
+  const _isLarge=!!e.ib||e.r>=18||e.mhp>=220;
+  const _gibSplit=e.ib?4:(_isLarge?3:2); // 보스 16조각, 큰 몬스터 9조각, 일반 4조각
+  const _cell=~~(48/_gibSplit);
+  const _gibCenter=(_gibSplit-1)*.5;
+  const _offStep=e.r*1.2/Math.max(1,_gibSplit-1);
+  const _alphaMin=200*(_cell*_cell)/(16*16);
+  const _gibDrawSz=_isLarge?Math.max(14,Math.min(24,e.r*.7)):10;
+  for(let gy=0;gy<_gibSplit;gy++)for(let gx=0;gx<_gibSplit;gx++){
+    const sx=gx*_cell,sy=gy*_cell;
+    const id=_gibX.getImageData(sx,sy,_cell,_cell);let alphaSum=0;
     for(let pi=3;pi<id.data.length;pi+=4)alphaSum+=id.data[pi];
-    if(alphaSum<200)continue;
+    if(alphaSum<_alphaMin)continue;
     // 풀에서 비활성 or 가장 오래된 gib 재사용
     let oldest=0,minLife=Infinity;
     for(let i=0;i<_GIB_MAX;i++){if(!_gibs[i].active){oldest=i;break}if(_gibs[i].life<minLife){minLife=_gibs[i].life;oldest=i}}
     const g=_gibs[oldest];
-    g.ctx.clearRect(0,0,_GIB_GS,_GIB_GS);
-    g.ctx.putImageData(id,0,0);
-    const cx=e.x+(gx-1)*e.r*.6,cy=e.y+(gy-1)*e.r*.6;
+    g.ctx.clearRect(0,0,_GIB_MAX_CELL,_GIB_MAX_CELL);
+    const _ox=~~((_GIB_MAX_CELL-_cell)*.5),_oy=~~((_GIB_MAX_CELL-_cell)*.5);
+    g.ctx.putImageData(id,_ox,_oy);
+    const cx=e.x+(gx-_gibCenter)*_offStep,cy=e.y+(gy-_gibCenter)*_offStep;
     const gibAng=ang+(Math.random()-.5)*1.2;
     const spd=(1.5+Math.random()*2.5)*pw;
     g.x=cx;g.y=cy;g.vx=Math.cos(gibAng)*spd;g.vy=Math.sin(gibAng)*spd-1.25*pw;
-    g.r=Math.random()*Math.PI*2;g.life=300+Math.random()*120;g.ml=g.life;g.active=true;
+    g.r=Math.random()*Math.PI*2;g.life=300+Math.random()*120;g.ml=g.life;g.sz=_gibDrawSz;g.active=true;
   }
   const pn=~~(4+pw*6);
   for(let i=0;i<pn;i++){const a=ang+(Math.random()-.5)*2;
@@ -12966,11 +12974,9 @@ function _spawnLargeMonsterDeathFx(e,ang){
   if(!OPT.deathFx)return;
   const _isLarge=!!e.ib||e.r>=18||e.mhp>=220;
   if(!_isLarge)return;
-  const _boomR=Math.max(36,Math.min(120,e.r*2.8));
   const _burstN=e.ib?26:16;
   const _colA=e.ib?'#ff5577':'#ffaa66';
   const _colB=e.ib?'#ffccdd':'#ffd9aa';
-  _addBoom(e.x,e.y,_boomR,e.ib?36:28,e.ib?'dark':'fire');
   for(let i=0;i<_burstN;i++){
     const a=Math.PI*2*i/_burstN+(Math.random()-.5)*0.4;
     const v=(e.ib?4.6:3.2)+Math.random()*(e.ib?3.2:2.0);
@@ -12978,8 +12984,6 @@ function _spawnLargeMonsterDeathFx(e,ang){
     poolPart(e.x,e.y,Math.cos(a)*v,Math.sin(a)*v-0.6,c,2.4+Math.random()*2.8,14+Math.random()*10,0,0,.08);
   }
   addParts(e.x,e.y,_colA,e.ib?18:10);
-  if(e.ib){shake(8)}
-  else if(e.r>=22){shake(4)}
 }
 // ── 히트 임팩트 이펙트 시스템 ──
 let _impPerFrame=0,_txtPerFrame=0;
@@ -17887,11 +17891,15 @@ function _ffMoveE(e,sp,spdMul){
   if(fd){e._lastFdx=dx;e._lastFdy=dy}
   const s=e.speed*(e._aSpdM||1)*sp*(spdMul||1);
   const nx=e.x+dx*s,ny=e.y+dy*s;
-  if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny;}
-  else if(canMv(nx,e.y,e.r)){e.x=nx;e._lastFdx=dx;e._lastFdy=0;}
-  else if(canMv(e.x,ny,e.r)){e.y=ny;e._lastFdx=0;e._lastFdy=dy;}
+  if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny;e._stuckT=0;}
+  else if(canMv(nx,e.y,e.r)){e.x=nx;e._lastFdx=dx;e._lastFdy=0;e._stuckT=0;}
+  else if(canMv(e.x,ny,e.r)){e.y=ny;e._lastFdx=0;e._lastFdy=dy;e._stuckT=0;}
   else{
+    // stuck 누적 — 오래 걸릴수록 더 넓은 각도로 우회 시도
+    if(!e._stuckT)e._stuckT=0;
+    e._stuckT+=sp;
     const _escAng=Math.atan2(dy,dx);const _escSpd=s*0.8;let _escaped=false;
+    // 기본 8방향 우회 (45도 간격)
     for(let _ei2=1;_ei2<=4&&!_escaped;_ei2++){
       const _a1=_escAng+_ei2*Math.PI/4,_a2=_escAng-_ei2*Math.PI/4;
       const _ex1=e.x+Math.cos(_a1)*_escSpd,_ey1=e.y+Math.sin(_a1)*_escSpd;
@@ -17899,6 +17907,26 @@ function _ffMoveE(e,sp,spdMul){
       else{const _ex2=e.x+Math.cos(_a2)*_escSpd,_ey2=e.y+Math.sin(_a2)*_escSpd;
         if(canMv(_ex2,_ey2,e.r)){e.x=_ex2;e.y=_ey2;e._lastFdx=Math.cos(_a2);e._lastFdy=Math.sin(_a2);_escaped=true}}
     }
+    // 30프레임(0.5초) 이상 stuck → 더 작은 반경으로 r 축소 시도 + 16방향
+    if(!_escaped&&e._stuckT>30){
+      const _sr=Math.max(2,e.r-2);
+      for(let _ei3=1;_ei3<=8&&!_escaped;_ei3++){
+        const _a3=_escAng+_ei3*Math.PI/8,_a4=_escAng-_ei3*Math.PI/8;
+        const _ex3=e.x+Math.cos(_a3)*_escSpd,_ey3=e.y+Math.sin(_a3)*_escSpd;
+        if(canMv(_ex3,_ey3,_sr)){e.x=_ex3;e.y=_ey3;e._lastFdx=Math.cos(_a3);e._lastFdy=Math.sin(_a3);_escaped=true}
+        else{const _ex4=e.x+Math.cos(_a4)*_escSpd,_ey4=e.y+Math.sin(_a4)*_escSpd;
+          if(canMv(_ex4,_ey4,_sr)){e.x=_ex4;e.y=_ey4;e._lastFdx=Math.cos(_a4);e._lastFdy=Math.sin(_a4);_escaped=true}}
+      }
+    }
+    // 90프레임(1.5초) 이상 stuck → 플레이어 직선 방향으로 강제 텔레포트 (벽 뚫기)
+    if(!_escaped&&e._stuckT>90){
+      const _tpA=Math.atan2(P.y-e.y,P.x-e.x);
+      for(let _tpD=s*2;_tpD<=s*6;_tpD+=s){
+        const _tx=e.x+Math.cos(_tpA)*_tpD,_ty=e.y+Math.sin(_tpA)*_tpD;
+        if(canMv(_tx,_ty,e.r)){e.x=_tx;e.y=_ty;e._stuckT=0;break}
+      }
+    }
+    if(_escaped)e._stuckT=0;
   }
 }
 // ═══ 레벨 스케일링 자원 소비 ═══
@@ -20984,7 +21012,7 @@ function update(){
     if(h._spawnTotal==null){const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';h._spawnTotal=SPAWN_HOLE.cnt[_hType]||50;h._spawned=0;h._spawnCD=0}
     if(h._spawnCD>0){h._spawnCD-=sp;continue}
     if(dst(P.x,P.y,h.x,h.y)>1000)continue; // 소환굴 반응 거리 1000px
-    const _BATCH=5;
+    const _BATCH=3; // 프레임당 최대 3마리 (스파이크 방지)
     if(G._aliveEns>=750){h._spawnCD=30;continue} // 생존 적 750 이상이면 스폰 대기 (하드캡 900 전 여유)
     const _hRemain=Math.min(_BATCH,h._spawnTotal-h._spawned);
     for(let _hj=0;_hj<_hRemain;_hj++){
@@ -21003,10 +21031,11 @@ function update(){
         if(!_sf){h._spawned++;G._totalSpawned=Math.max(0,(G._totalSpawned||0)-1);continue}
       }
       const ne=mkEn(_hsx,_hsy,_hSi,rollEtype(_hSi),false,undefined,h.room);
-      ens.push(ne);
+      ne.reviveIframes=15; // 스폰 페이드인 (15프레임 반투명 → 렌더 경량)
+      ens[ens.length]=ne;
       h._spawned++;
     }
-    h._spawnCD=2; // 2프레임 간격
+    h._spawnCD=5; // 5프레임 간격 (스파이크 분산)
     // 전부 소환 완료 → 이펙트 + 제거
     if(h._spawned>=h._spawnTotal){
       addParts(h.x,h.y,SPAWN_HOLE.col,15);
@@ -27160,9 +27189,15 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(!_isBurnDeath){const _cp=Math.min(8,dmg/Math.max(1,e.mhp)*20);_addCorpse(e,_killAng,_cp)}
     // 화염/빔 사망 → 불타는 시체 + 전용 사운드
     if(_isBurnDeath){_addBurnCorpse(e);playSample((opts&&opts.beam)?['fire_death','fire_death2','fire_death3'][Math.random()*3|0]:'fire_hit',.5,_r(1,.15))}
+    // 큰 몬스터는 기본 사망 시 큰 시체 파편(gib) 생성
+    const _isLargeCorpse=!!e.ib||e.r>=18||e.mhp>=220;
+    let _didGib=false;
+    if(_isLargeCorpse&&!_isBurnDeath){_addGibs(e,e.x,e.y,Math.max(70,e.r*3));_didGib=true}
     // 폭발/포이즈스킬 사망 시 gib — explode, poiseHit(기폭팔), noPoise(대왕치기), poiseSkill(칼등치기)
-    if(opts&&(opts.explode||opts.poiseHit||opts.noPoise||opts.poiseSkill)){_addGibs(e,P.x,P.y,60)}
-    else{for(let _bi=0;_bi<_BOOM_MAX;_bi++){const _bb=_booms[_bi];if(_bb.active&&dst(e.x,e.y,_bb.x,_bb.y)<_bb.r+e.r){_addGibs(e,_bb.x,_bb.y,_bb.r);break}}}
+    if(!_didGib){
+      if(opts&&(opts.explode||opts.poiseHit||opts.noPoise||opts.poiseSkill)){_addGibs(e,P.x,P.y,60)}
+      else{for(let _bi=0;_bi<_BOOM_MAX;_bi++){const _bb=_booms[_bi];if(_bb.active&&dst(e.x,e.y,_bb.x,_bb.y)<_bb.r+e.r){_addGibs(e,_bb.x,_bb.y,_bb.r);break}}}
+    }
     if(e._fromHole!=null&&G.spawnHoles[e._fromHole])G.spawnHoles[e._fromHole].alive--;
     if(e.ib&&e._bossRevJudged){addTxt(e.x,e.y-45,_T('💀 부활 판정 중...'),'#ff8844',90);G._flashT=3;G._flashCol='#ff4400'}
     else if(e.ib){addTxt(e.x,e.y-45,_T('☠ 완전 사망!'),'#ff4400',90);G._flashT=6;G._flashCol='#ffffff';G._chromaT=5}
@@ -28114,25 +28149,25 @@ const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'ghostWalk',name:'암전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 15초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 15s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
-  {id:'bladeDash',name:'전격이동',cat:'move',desc:'방향키 더블탭 → 500유닛 전기 대시. 10충전 (8초→Lv당-0.5초, 최소3초). 만렙 시 방향키 한번으로 즉시 발동',descEn:'Double-tap direction → 500-unit electric dash. 10 stocks (8s→-0.5s/Lv, min 3s). At max Lv: instant on single tap',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
+  {id:'bladeDash',name:'전격이동',cat:'move',noDmg:true,desc:'[이동기] 데미지 없음. 방향키 더블탭으로 발동, 대각선은 방향키 2개 동시. 스페이스+방향키로도 발동. 500유닛 순간이동, 이동 중 무적(15프레임). MP 소모(10+Lv×5). 10충전, 충전속도 8초→Lv당-0.5초(최소3초). 만렙 시 방향키 한번으로 즉시 발동',descEn:'[Mobility] No damage. Double-tap direction key to activate, hold 2 keys for diagonal. Space+direction also works. 500-unit instant dash, invincible during dash (15 frames). MP cost (10+Lv×5). 10 stocks, recharge 8s→-0.5s/Lv (min 3s). At max Lv: single tap to activate',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
   {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 5+Lv당2. Lv당 뎀+10% 거리+15px',descEn:'LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 5+2/Lv. Per Lv DMG+10% range+15px',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
-  {id:'fireball',name:'악의구',cat:'bow',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% 뎀+40%',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% DMG+40%',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
+  {id:'fireball',name:'악의구',cat:'bow',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'detonate',name:'기폭팔',cat:'def',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발. Lv당 범위+15 (1렙150, 10렙285)',descEn:'Parry 3s hold → absorbed DMG AoE explosion. Per Lv range+15 (Lv1: 150, Lv10: 285)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceSwipe',name:'칼등 처내기',cat:'def',desc:'우클 처내기 강화. Lv당 반사 데미지 +10%. 홀드 시 연사',descEn:'RMB swipe enhanced. Per Lv reflect DMG +10%. Hold for rapid fire',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
   {id:'fanShot',name:'만화방창',cat:'bow',desc:'[고정: T 자동] 물리 바늘 3방향 3발 발사. 관통 없음',descEn:'[Fixed: T auto] 3 physical needles 3-way spread. No pierce',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'omniBeam',name:'멸살광선',cat:'magic',desc:'[고정: E] 1발 직선 레이저. +만화방창 → 만화광선(3발 꽈배기). +원소추적탄 → 추적암전(6발 유도)',descEn:'[Fixed: E] 1 straight laser. +Barrage → Omni Beam (3 spiral). +Elem Seeker → Homing Dark (6 homing)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'elemMissile',name:'원소추적탄',cat:'bow',desc:'E탭 마법을 6원소 유도 미사일로 변경. 곡선 궤적으로 적을 추적. 레벨당 사거리+20, 뎀+10%',descEn:'Changes E-tap magic to 6-element homing missiles. Curved trajectory tracking enemies. Per Lv range+20, DMG+10%',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
+  {id:'elemMissile',name:'원소추적탄',cat:'bow',desc:'E탭 마법을 6원소 유도 미사일로 변경. 곡선 궤적으로 적을 추적. 레벨당 사거리+20 (뎀은 _skMul 계수 적용)',descEn:'Changes E-tap magic to 6-element homing missiles. Curved trajectory tracking enemies. Per Lv range+20 (DMG uses _skMul)',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
 
-  {id:'guardian',name:'악의 보호자',cat:'def',desc:'3초마다 악의 구체 생성(1렙 2개). 몸에 밀착하여 적 투사체를 자동 방어(파괴). 레벨당 구체+1',descEn:'Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'guardian',name:'악의 보호자',cat:'def',noDmg:true,desc:'3초마다 악의 구체 생성(1렙 2개). 몸에 밀착하여 적 투사체를 자동 방어(파괴). 레벨당 구체+1',descEn:'Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceHunt',name:'악의 사냥',cat:'bow',act:true,emoji:'⚔',desc:'유도 물리 칼날 1발 (악의30+ST50). 관통률 1000+Lv×100 (91회 보장+9회 확률). 지속뎀 5초, 무한사거리. 쿨 15초(Lv당-0.5초)',descEn:'1 homing physical blade (malice 30 + ST 50). Pierce rate 1000+Lv×100 (91 guaranteed +9 prob). DOT 5s, infinite range. CD 15s (-0.5s/Lv)',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
   {id:'maliceMortar',name:'폭풍소환',cat:'magic',act:true,emoji:'🌪️',desc:'어둠 소용돌이 소환 (마우스 조준 설치, MP 소모, 쿨 11초, INT 스케일링, 1렙 200범위 +30/렙, 5초 지속, 적 흡인)',descEn:'Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 200 +30/Lv, 5s duration, pulls enemies)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초',descEn:'Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발. 범위 1500+Lv×100px. 범위 끝까지 넉백(주 성능). 거리감쇠 50%. 스턴 2초. Lv당 뎀+10%. (MP 30%, 쿨 90초)',descEn:'Pentagram cast → holy light pillar mega-explosion. Range 1500+Lv×100px. Full-range knockback (main feature). 50% distance falloff. Stun 2s. Per Lv DMG+10%. (MP 30%, CD 90s)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
-  {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 90초)',descEn:'Summon black pentagram. 7s (+0.5s/Lv) strong pull (no DMG, pure utility). Range 1500+Lv×100px. Pull force base 5+0.5/Lv. (MP 30%, CD 90s)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
+  {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,noDmg:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 90초)',descEn:'Summon black pentagram. 7s (+0.5s/Lv) strong pull (no DMG, pure utility). Range 1500+Lv×100px. Pull force base 5+0.5/Lv. (MP 30%, CD 90s)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
   {id:'lavaSummon',name:'용암소환',cat:'ult',act:true,ult:true,emoji:'🌋',desc:'빨간 오망성 시전 → 범위 1500+Lv×100px 화염폭발+10초간 화상. 틱당 적 최대HP 1.75%(+Lv당+1.5%). 10초 20틱. 거리감쇠 30%. Lv당 초기뎀+10%. (MP 30%, 쿨 90초)',descEn:'Red pentagram cast → range 1500+Lv×100px fire explosion+10s burn. Per tick enemy maxHP 1.75%(+1.5%/Lv). 10s 20 ticks. 30% distance falloff. Per Lv initial DMG+10%. (MP 30%, CD 90s)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
   {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스를 섬광 관통 처형. 근접 타겟 지정. HP/MP/ST 10% 소모 → 보스 최대HP 30% 순수 데미지. 쿨 20초',descEn:'X key: Flash-pierce execute groggy boss. Melee target select. HP/MP/ST 10% cost → boss maxHP 30% pure DMG. CD 20s',spCost:10,matCost:100,cd:1200,up:false,upSp:0,upMat:0},
-  {id:'demonRevive',name:'악마화 부활',cat:'ult',ult:true,emoji:'☠',desc:'[패시브] 사망 시 부활력 기반 확률 부활. 1Lv: HP 50% 부활. Lv당 HP+5%, 쿨-30초, 부활확률+2%. 쿨 10분',descEn:'[Passive] Revive power-based chance revive on death. Lv1: revive at HP 50%. Per Lv HP+5%, CD-30s, revive chance+2%. CD 10min',spCost:15,matCost:150,up:true,upSp:10,upMat:0},
+  {id:'demonRevive',name:'악마화 부활',cat:'ult',ult:true,noDmg:true,emoji:'☠',desc:'[패시브] 사망 시 부활력 기반 확률 부활. 1Lv: HP 50% 부활. Lv당 HP+5%, 쿨-30초, 부활확률+2%. 쿨 10분',descEn:'[Passive] Revive power-based chance revive on death. Lv1: revive at HP 50%. Per Lv HP+5%, CD-30s, revive chance+2%. CD 10min',spCost:15,matCost:150,up:true,upSp:10,upMat:0},
   // [SKILL REMOVED 2026-04-10] bladeShot (붉은꽃) — 석궁 개편
   {id:'iceOrb',name:'얼음보주',cat:'bow',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',descEn:'Enter ice — invincible. Re-press to shatter → 48 ice blades fan spread (MP 40, CD 20s). Per Lv blades+2 DMG+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'needleShot',name:'만화방창 II',cat:'bow',act:true,emoji:'✨',desc:'[고정: T 자동] 초고속 바늘 연발. 1렙 2발, 5렙마다 +1발. 관통 없음. ST 8. 쿨 1.5초. Lv당 뎀+100%',descEn:'[Fixed: T auto] Ultra-fast needles burst. Lv1 2 shots, +1 per 5 levels. No pierce. ST 8. CD 1.5s',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
@@ -28142,9 +28177,9 @@ const SKILL_LIST=[
   {id:'plagueBurst',name:'폭독칼날',cat:'bow',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 1렙 30관통(만렙100). 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)',descEn:'Fire 1 poison-blood blade: Lv1 30 pierce (max Lv 100). Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)',spCost:10,matCost:80,cd:1200,up:true,upSp:5,upMat:0},
   {id:'maliceStorm',name:'악의폭풍',cat:'magic',act:true,emoji:'🌀',desc:'마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (3초, 10틱, 틱당 100+Lv*20). Lv당 범위+22. 같은 지역 중복 불가',descEn:'Mouse-aim placement. CD 20s. Dark spiral at click pos (3s, 10 ticks, 100+Lv*20/tick). Per Lv range+22. No stacking same area',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
   {id:'darkPillar',name:'악의기둥',cat:'magic',act:true,emoji:'🏛️',desc:'현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 대왕치기와 합체→기둥강타. 쿨 15초',descEn:'9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Giant Slam → Pillar Strike. CD 15s',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
-  {id:'holyDome',name:'신성한 영역',cat:'tech',act:true,emoji:'🛡',desc:'현재 위치에 신성한 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초',descEn:'Place holy domain at current pos (12s duration). On ground: HP/MP/ST +10/s regen + 2x recovery + 2x CD speed. CD 30s. Per Lv range+20 duration+0.5s',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
-  {id:'holyPrison',name:'구속의 영역',cat:'tech',act:true,emoji:'✟',desc:'범위 내 몬스터 부활력 -15%~30%(Lv1=15%, Lv10=30%). Lv1 범위400, Lv10 범위697. Lv당 범위+33. 쿨 30초. 지속 10초',descEn:'Monsters in range: revive power -15%~30%(Lv1=15%, Lv10=30%). Lv1 range 400, Lv10 range 697. Per Lv range+33. CD 30s. Duration 10s',spCost:10,matCost:80,cd:1800,up:true,upSp:5,upMat:0},
-  {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,emoji:'❄',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 3초 지속. MP 40. Lv당 범위+22 축적+10%',descEn:'Mouse-aim placement. 2 stocks (15s/charge, Lv10→3 stocks). Freeze resist -50% in range, rapid freeze gauge buildup. 3s duration. MP 40. Per Lv range+22 buildup+10%',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
+  {id:'holyDome',name:'신성한 영역',cat:'tech',act:true,noDmg:true,emoji:'🛡',desc:'현재 위치에 신성한 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초',descEn:'Place holy domain at current pos (12s duration). On ground: HP/MP/ST +10/s regen + 2x recovery + 2x CD speed. CD 30s. Per Lv range+20 duration+0.5s',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
+  {id:'holyPrison',name:'구속의 영역',cat:'tech',act:true,noDmg:true,emoji:'✟',desc:'범위 내 몬스터 부활력 -15%~30%(Lv1=15%, Lv10=30%). Lv1 범위400, Lv10 범위697. Lv당 범위+33. 쿨 30초. 지속 10초',descEn:'Monsters in range: revive power -15%~30%(Lv1=15%, Lv10=30%). Lv1 range 400, Lv10 range 697. Per Lv range+33. CD 30s. Duration 10s',spCost:10,matCost:80,cd:1800,up:true,upSp:5,upMat:0},
+  {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,noDmg:true,emoji:'❄',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 3초 지속. MP 40. Lv당 범위+22 축적+10%',descEn:'Mouse-aim placement. 2 stocks (15s/charge, Lv10→3 stocks). Freeze resist -50% in range, rapid freeze gauge buildup. 3s duration. MP 40. Per Lv range+22 buildup+10%',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
   {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 회전기폭과 합체→지진폭풍!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Whirlwind Detonate → Earthquake Storm!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:480},
   {id:'giantSlam2',name:'대왕치기 2',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 악의기둥과 합체→기둥강타!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Dark Pillar → Pillar Slam!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:480},
   // quakeStride 삭제됨
@@ -28156,12 +28191,12 @@ const SKILL_LIST=[
   {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'✝',desc:'[히든: 암전나선 합체] E로 조준, 클릭 설치. 신성 십자가를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. Lv당 거리+50',descEn:'[Hidden: Dark Spiral fuse] E to aim, click to place. Holy cross planted on ground — rotates+DMG. MP 100. 1 charge CD 10s. 5s+0.5s/Lv duration. Per Lv range+50',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'칼등날개',cat:'def',fixed:true,emoji:'🔨',desc:'[고정: 칼등치기 합체] 보유 시 칼등치기에 전방 충격파 자동 발동. 제자리 처내기. 쿨 5초. Lv당 뎀+12% 범위+20',descEn:'[Fixed: Blade Parry fuse] When owned, swipe auto-triggers forward shockwave. Stationary swipe. CD 5s. Per Lv DMG+12% range+20',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
   // [SKILL REMOVED 2026-04-10] blastShot (폭산탄) — 석궁 개편
-  {id:'weakPhys',name:'파쇄의 영역',cat:'tech',act:true,emoji:'⚔',desc:'현재 위치에 파쇄 영역 설치 (10초). 범위 내 적 물리방어력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place shatter domain at current pos (10s). Enemy phys DEF -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
+  {id:'weakPhys',name:'파쇄의 영역',cat:'tech',act:true,noDmg:true,emoji:'⚔',desc:'현재 위치에 파쇄 영역 설치 (10초). 범위 내 적 물리방어력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place shatter domain at current pos (10s). Enemy phys DEF -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'weakMag',name:'침식의 영역',cat:'tech',act:true,emoji:'🔮',desc:'현재 위치에 침식 영역 설치 (10초). 범위 내 적 마법저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place corrosion domain at current pos (10s). Enemy magic resist -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'weakPj',name:'관통의 영역',cat:'tech',act:true,emoji:'🏹',desc:'현재 위치에 관통 영역 설치 (10초). 범위 내 적 투사체저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place pierce domain at current pos (10s). Enemy projectile resist -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'weakRev',name:'부활의 영역',cat:'tech',act:true,emoji:'💀',desc:'현재 위치에 부활 영역 설치 (10초). 영역 안에서 부활력 +10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (1렙 반경200, 10렙398). 슬로우 70%(+2%/Lv, 최대90%)+출혈. INT×magicRef×3(+10%/Lv). 악의 10, 쿨 10초. Lv당 범위+22',descEn:'[Fixed: Space] Place spike trap at current pos (Lv1 radius 200, Lv10 398). Slow 70%(+2%/Lv, max 90%)+bleed. INT×magicRef×3(+10%/Lv). Malice 10, CD 10s. Per Lv range+22',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},
-  {id:'blueShot',name:'푸른비',cat:'bow',fixed:true,emoji:'💎',desc:'[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 뎀+10% 사거리+30',descEn:'[Fixed: E, unlock Lv300] 50 homing blue shots fired sequentially (over 5s). MP 100(+1.5/Lv) cost. Tracks enemies. CD 5s. Per Lv DMG+10% range+30',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:300},
+  {id:'blueShot',name:'푸른비',cat:'bow',fixed:true,emoji:'💎',desc:'[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)',descEn:'[Fixed: E, unlock Lv300] 50 homing blue shots fired sequentially (over 5s). MP 100(+1.5/Lv) cost. Tracks enemies. CD 5s. Per Lv range+30 (DMG uses _skMul)',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:300},
   {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: E, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.5/1.0/1.5초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',descEn:'[Hidden: E, unlock Lv700] Hold for 3-stage charge AoE explosion (0.5/1.0/1.5s). Range 600/1000/1400px. Stage 3 full charge auto-detonates. INT scale, no element',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700},
   {id:'voidScarecrow',name:'유령 허수아비',cat:'def',act:true,emoji:'👻',desc:'[Lv700 해금] 유령 허수아비를 소환하여 유도탄막 어그로를 끈다. 탄막을 흡수해 자원 축적 (기본 20개, Lv당+3). 1개당 HP/MP/ST 각 100. R키로 회수. 쿨 30초',descEn:'[Unlock Lv700] Summon phantom scarecrow to draw homing projectile aggro. Absorbs projectiles for resource buildup (base 20, +3/Lv). Per absorbed: HP/MP/ST +100 each. R key to retrieve. CD 30s',spCost:10,matCost:100,cd:1800,up:true,upSp:5,upMat:0,reqLv:700},
   {id:'ghostXbowTurret',name:'공성쇠뇌',cat:'bow',act:true,emoji:'🏹',desc:'[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거(무료). 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 쿨없음. Lv당 뎀+5% 공속+5% 사거리+5%',descEn:'[Select: 1~4, unlock Lv500] Deploy siege crossbow turret at current pos. Re-press to dismantle (free). While deployed: player crossbow disabled (turret fires only). DMG+50%, ATK SPD+50%, range+50%. ST 100. No CD. Per Lv DMG+5% ATK SPD+5% range+5%',spCost:10,matCost:120,up:true,upSp:5,upMat:0,reqLv:500}
@@ -28173,7 +28208,7 @@ const SKILL_SLOT_DEFS={
     info:{charge:{name:'작살',nameEn:'Harpoon',emoji:'🔱',desc:'Shift: 작살 발사 → 끌려감',descEn:'Shift: Fire harpoon → pull toward'},
           magicBlink:{name:'사슬기동:화염',nameEn:'Chain Drive: Flame',emoji:'🔥',desc:'Shift: 화염길+화상',descEn:'Shift: Flame trail + burn'}}},
   magic:{name:'마법스킬',nameEn:'Magic Skill',key:'magic',skills:['fireball','omniBeam','elemMissile','hellRay','blueShot','burstLoop','fireAura','fireBeam','energyShot'],
-    info:{fireball:{name:'악의구',nameEn:'Malice Orb',emoji:'🔮',desc:'E: 어둠 오브 (Lv당 크기+50% 뎀+40%)',descEn:'E: Dark orb (size+50% dmg+40%/Lv)'},
+    info:{fireball:{name:'악의구',nameEn:'Malice Orb',emoji:'🔮',desc:'E: 어둠 오브 (크기+50%/Lv, 데미지 _skMul)',descEn:'E: Dark orb (size+50%/Lv, DMG via _skMul)'},
           omniBeam:{name:'멸살광선',nameEn:'Omni Beam',emoji:'☄️',desc:'E: 1발 직선 레이저',descEn:'E: Single straight laser'},
           elemMissile:{name:'원소추적탄',nameEn:'Elem Missile',emoji:'🎯',desc:'E: 6원소 유도 미사일',descEn:'E: 6-element homing missiles'},
           hellRay:{name:'참회',nameEn:'Repentance',emoji:'✝',desc:'E: 신성한 선 설치 (시계방향 회전)',descEn:'E: Place holy line (clockwise rotation)'},
@@ -28395,11 +28430,11 @@ const _SK_MUL={
   darkPillar:{b:8,g:3.2},   // 15초쿨, 9기둥
   spikeTrap:{b:6,g:2.4},    // 10초쿨, 트랩
   // ── 중쿨 다발 ──
-  blueShot:{b:3,g:1.2},     // ATK×3 (50발 합산), 5초쿨
+  blueShot:{b:4,g:1.6},     // ATK×4 (50발 합산), 5초쿨
   // ── 단일 연사 (~0.5초 사이클) ──
   fireball:{b:5.0,g:2.0}, // 악의구: 업화선 기준 상향 (2026-04-13)
   fireBeam:{b:0.5,g:0.2},
-  energyShot:{b:2.5,g:1.0}, // 업화선 즉발(최소차징) 대비 약 1/2 화력 목표
+  energyShot:{b:3.0,g:1.2}, // 업화선 즉발(최소차징) 대비 화력 보강
   // ── 채널링 (주력기, DPS 1000%/초~5000%/초) ──
   whirlwind:{b:2.5,g:1.05},   // 평균 4히트/초 → DPS 1000% (Lv1), 5000% (Lv20)
   omniBeam:{b:0.332,g:0.14},  // 단독 멸살광선 약 1000%/초 (Lv1), 합체빔은 별도 계수로 조절
@@ -28416,7 +28451,7 @@ const _SK_MUL={
   boneWall:{b:9,g:3.6},
   plagueBurst:{b:0.5,g:0.2},
   ghostWalk:{b:3.5,g:1.4},
-  elemMissile:{b:0.6,g:0.24},
+  elemMissile:{b:1.0,g:0.4},
   // ── 석궁 ──
   blastShot:{b:0.5,g:0.2},
 };
@@ -28609,8 +28644,8 @@ function _skDetailHTML(sk, slv){
     sk.cd?[_e?'Cooldown':'쿨다운',_cdF,'#aaccff']:null,
     sk.reqLv?[_e?'Req. Lv':'요구 레벨','Lv.'+sk.reqLv,(P&&P.lv>=sk.reqLv)?'#44cc44':'#cc4444']:null,
   ]);
-  // ── 2) 데미지 — 기본 ref 기반 추정치 ──
-  if(learned){
+  // ── 2) 데미지 — 기본 ref 기반 추정치 (noDmg 스킬 제외) ──
+  if(learned&&!sk.noDmg){
     const dmgRows=[
       [_e?'Base Reference':'기본 참조뎀',~~baseRef,'#88ccff'],
       [_e?'Stat Mult':'스탯 배율','×'+statM.toFixed(2),'#ddaa44'],
@@ -33786,7 +33821,8 @@ function draw(){
   // [EDITOR] 에디터 모드: 맵+MAP_OBJS까지만 그리고 종료
   if(_EDITOR_MODE){X.restore();return}
   // Enemies (화면 내만 렌더, 최대 렌더 수 제한)
-  const _vl=G.cam.x-C.width/2-200,_vr=G.cam.x+C.width/2+200,_vt=G.cam.y-C.height/2-200,_vb=G.cam.y+C.height/2+200;
+  const _eVpad=_hiFPS?120:200;
+  const _vl=G.cam.x-C.width/2-_eVpad,_vr=G.cam.x+C.width/2+_eVpad,_vt=G.cam.y-C.height/2-_eVpad,_vb=G.cam.y+C.height/2+_eVpad;
   let _eRCnt=0;const _E_RMAX=_dynERMax;
   _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX);
   for(let _eri=0;_eri<ens.length;_eri++){const e=ens[_eri];
@@ -33830,7 +33866,8 @@ function draw(){
       continue;
     }
     if(e.x<_vl||e.x>_vr||e.y<_vt||e.y>_vb)continue;
-    _eRCnt++;const _eLite=false; // LOD 스위칭 비활성화 (_dynERMax가 동적 제한)
+    if(++_eRCnt>_E_RMAX&&!e.ib)continue; // 렌더 캡 초과: 보스 제외 스킵
+    const _eLite=false; // LOD 스위칭 비활성화 (_dynERMax가 동적 제한)
     // ── 구울 전용 렌더 (3종 스프라이트) ──
     if(e._isGhoul){
       const gt=GHOUL_DEFS[e.etype]||GHOUL_DEFS[101];
@@ -33891,7 +33928,7 @@ function draw(){
       X.ellipse(e.x,e.y+e.r*.5,e.r*1.2,e.r*.3,0,0,Math.PI*2);X.fill();
       // 본체 — 흐물거리는 불규칙체 (gradient 제거 → 단색+하이라이트)
       X.globalAlpha=.85;X.fillStyle='#7722bb';X.beginPath();
-      for(let a=0;a<Math.PI*2;a+=.15){
+      for(let a=0;a<6.2832;a+=.3){
         const _slR=_slSz*(1+Math.sin(a*4+_slT*5)*.12+Math.sin(a*7+_slT*3)*.08);
         const px=e.x+Math.cos(a)*_slR+_slWx,py=e.y+Math.sin(a)*_slR*.75+_slWy;
         a<.01?X.moveTo(px,py):X.lineTo(px,py);
@@ -34120,11 +34157,8 @@ function draw(){
           X.globalAlpha=_pcPulse*.6;X.strokeStyle='hsl('+_rHue+',100%,55%)';
           X.beginPath();X.arc(e.x,e.y,_ringR,Math.PI*2*_ri/_rbSegs,Math.PI*2*(_ri+1)/_rbSegs);X.stroke();
         }
-        // 안쪽 무지개 글로우
-        const _rgrd=X.createRadialGradient(e.x,e.y,0,e.x,e.y,e.r+12);
-        _rgrd.addColorStop(0,'hsla('+(_now*.5%360)+',100%,60%,0)');
-        _rgrd.addColorStop(1,'hsla('+(_now*.5%360)+',100%,60%,.12)');
-        X.globalAlpha=_pcPulse;X.fillStyle=_rgrd;
+        // 안쪽 무지개 글로우 (gradient 제거 → 단색 대체)
+        X.globalAlpha=_pcPulse*.12;X.fillStyle='hsl('+(_now*.5%360)+',100%,60%)';
         X.beginPath();X.arc(e.x,e.y,e.r+12,0,Math.PI*2);X.fill();
         // 텍스트: 무지개색
         X.globalAlpha=_pcPulse*.9;X.font='bold 10px sans-serif';X.textAlign='center';
@@ -34728,8 +34762,8 @@ function draw(){
       X.fillStyle='#ff2244';X.fillText('\u{1FA78}'+_plStk,e.x,_plY);
       X.globalAlpha=sa;
     }
-    // ═══ 장식 이펙트: 히트스톱 중만 스킵 (교대 렌더 제거 — 깜빡임 원인) ═══
-    const _eDecor=!(G.hitStop>0&&!e.ib);
+    // ═══ 장식 이펙트: 히트스톱 또는 원거리 적 스킵 ═══
+    const _eDecor=!(G.hitStop>0&&!e.ib)&&(e.ib||dst(P.x,P.y,e.x,e.y)<600);
     // 자폭 글로우 (절차적 바디 위에 추가)
     if(_eDecor&&e.etype===5&&e.s!=='eSelfDestruct'){X.globalAlpha=.3+Math.sin(_now/200)*.2;X.fillStyle='#ff4400';X.beginPath();X.arc(e.x,e.y,e.r+6,0,Math.PI*2);X.fill();X.globalAlpha=sa}
     // 균열 악마: 보라색 소용돌이 오라
@@ -35008,6 +35042,7 @@ function draw(){
     X.globalAlpha=1}
 
   const _dd2=performance.now();
+  if(_dd2-_dd1>20)console.log('[ENS-DETAIL] '+(_dd2-_dd1).toFixed(1)+'ms | drawn:'+_eRCnt+' total:'+ens.length);
   // ═══ 적 투사체 3패스 렌더 (composite 전환 최소화) ═══
   // 패스 0: 가시 인덱스 수집 + 트레일 (source-over)
   const _visProjs=[];
@@ -35536,7 +35571,7 @@ function draw(){
   const _tDP2b=performance.now(); // corpse만 측정 끝
   if(performance.now()-_fStart>_fBudget)_fOverBudget=true;
   // gib 조각 렌더 (source-over, 최대 10개)
-  if(!_fOverBudget){let _gibDrw=0;for(let gi=0;gi<_GIB_MAX;gi++){const g=_gibs[gi];if(!g.active||!g.c)continue;if(g.x<_vl-20||g.x>_vr+20||g.y<_vt-20||g.y>_vb+20)continue;if(++_gibDrw>10)break;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>15?1:g.life/15;const gs=10;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.r);X.drawImage(g.c,-gs*sc,-gs*sc,gs*2*sc,gs*2*sc);X.restore();}}
+  if(!_fOverBudget){let _gibDrw=0;for(let gi=0;gi<_GIB_MAX;gi++){const g=_gibs[gi];if(!g.active||!g.c)continue;if(g.x<_vl-20||g.x>_vr+20||g.y<_vt-20||g.y>_vb+20)continue;if(++_gibDrw>10)break;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>15?1:g.life/15;const gs=g.sz||10;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.r);X.drawImage(g.c,-gs*sc,-gs*sc,gs*2*sc,gs*2*sc);X.restore();}}
   // ── VFX GL 인스턴싱 (lighter 블록 밖 — 자체 additive blend, compositeOp stall 회피) ──
   _dbgVfxGLDrawn=0;
   if(_vfxAnims.length>0){
