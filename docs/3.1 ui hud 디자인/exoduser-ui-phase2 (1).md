@@ -163,11 +163,11 @@ style 맨 아래에 추가:
   .pbox { width: 100vw !important; max-width: 100vw !important; height: 100vh; max-height: 100vh; border: none; border-radius: 0; }
   
   /* 인벤토리 세로 스택 */
-  .inv-wrap { flex-direction: column; overflow-y: auto; }
-  .inv-storage { width: 100%; min-width: 0; border-right: none; border-bottom: 1px solid var(--c-border); padding-right: 0; padding-bottom: 10px; max-height: 200px; }
-  .inv-left { min-width: 0; }
-  .inv-right { width: 100%; min-width: 0; }
-  .inv-grid { grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); }
+  .inv-wrap { flex-direction: column; overflow-y: auto; gap: 10px; }
+  .inv-left { width: 100%; min-width: 0; border-right: none; border-bottom: 1px solid var(--c-border); }
+  .inv-storage { width: 100%; min-width: 0; border-top: 1px solid var(--c-border); padding-right: 0; padding-bottom: 10px; max-height: 220px; }
+  .inv-right { width: 100%; min-width: 0; border-left: none; border-top: 1px solid var(--c-border); }
+  .inv-grid { grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); max-height: none; }
   
   /* 능력치 패널 세로 스택 */
   #statPanel .pbox > div:nth-child(2) { flex-direction: column; }
@@ -196,6 +196,20 @@ style 맨 아래에 추가:
 - 미니맵 캔버스는 JS에서 `width/height` 속성으로 그리므로, CSS `!important`로 표시 크기만 변경
 - 인벤토리 그리드 `repeat(30,1fr)`은 900px 이하에서 `auto-fill`로 전환
 - 능력치 패널의 좌/우 레이아웃도 세로 스택으로
+
+#### 2026-04-14 적용 로그 (코드 동기화)
+
+| 구분 | 적용값 | 위치 |
+|---|---|---|
+| 퀵슬롯 1200px | `.qs 40x40`, `.qs-key .65rem`, `.qs-cnt .75rem` | `game.html` `@media (max-width:1200px)` |
+| 퀵슬롯 900px | `.qs 36x36`, `.qs-key .55rem`, `.qs-cnt .72rem` | `game.html` `@media (max-width:900px)` |
+| 인벤토리 세로 스택 | `.inv-wrap{flex-direction:column}` | `game.html` `@media (max-width:900px)` |
+| 좌측 장비영역 | `.inv-left{width:100%;min-width:0;border-right:none;border-bottom:1px solid var(--c-border)}` | `game.html` `@media (max-width:900px)` |
+| 창고영역 | `.inv-storage{width:100%;min-width:0;border-top:1px solid var(--c-border);padding-right:0;padding-bottom:10px;max-height:220px}` | `game.html` `@media (max-width:900px)` |
+| 우측 상세영역 | `.inv-right{width:100%;min-width:0;border-left:none;border-top:1px solid var(--c-border);padding:10px 0 0}` | `game.html` `@media (max-width:900px)` |
+| 가방 그리드 | `.inv-grid{repeat(auto-fill,minmax(38px,1fr))}`, `#invGrid{max-height:42vh}` | `game.html` `@media (max-width:900px)` |
+| 창고 그리드 | `#invStGrid{repeat(8,minmax(28px,1fr))}` | `game.html` `@media (max-width:900px)` |
+| 600px 보조 규칙 | `.hud-top{left:8px;right:8px;justify-content:center}` | `game.html` `@media (max-width:600px)` |
 
 ---
 
