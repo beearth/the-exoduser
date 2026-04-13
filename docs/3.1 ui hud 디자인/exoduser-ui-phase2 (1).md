@@ -211,6 +211,14 @@ style 맨 아래에 추가:
 | 창고 그리드 | `#invStGrid{repeat(8,minmax(28px,1fr))}` | `game.html` `@media (max-width:900px)` |
 | 600px 보조 규칙 | `.hud-top{left:8px;right:8px;justify-content:center}` | `game.html` `@media (max-width:600px)` |
 
+#### 2026-04-14 대장간 아이콘 가독성 개선
+
+| 항목 | 변경 내용 | 위치 |
+|---|---|---|
+| 탭 구조 | 텍스트만 출력 → `아이콘 박스 + 라벨` 2요소 구조로 분리 (`fg-tab-ico`, `fg-tab-txt`) | `game.html` `renderForge()` |
+| 탭 메타 | 탭별 `icon/ko/en` 메타 객체 도입 (`_fgTabMeta`)으로 아이콘/언어 라벨 일관화 | `game.html` `renderForge()` |
+| 탭 시각 | 대장간 탭에 아이콘 전용 프레임(18x18), 활성 탭 아이콘 하이라이트 추가 | `game.html` `.fg-tab`, `.fg-tab-ico` |
+
 ---
 
 ### WORK 3: eq-row 데드코드 완전 제거
