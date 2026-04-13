@@ -17836,7 +17836,7 @@ function dst(a,b,c,d){return Math.sqrt((c-a)**2+(d-b)**2)}
 function dst2(a,b,c,d){return(c-a)**2+(d-b)**2} // 제곱거리 (sqrt 제거)
 // ═══ 플로우필드 패스파인딩 ═══
 const _FF_CELL=T; // 타일 크기 = 플로우필드 셀 크기
-let _ffField=null,_ffW=0,_ffH=0,_ffTimer=0,_ffFlatFB=null;
+let _ffField=null,_ffW=0,_ffH=0,_ffTimer=0;
 // ── Web Worker: _ffBuild 오프로드 ──
 const _FF_WORKER_SRC=`
 self.onmessage=function(e){
@@ -17951,18 +17951,12 @@ function _ffBuild(){
     if(flatMap.buffer.byteLength===0)flatMap=(_ffBufFlip?(_ffBufB=new Int8Array(sz)):(_ffBufA=new Int8Array(sz)));
     for(let y=0;y<mh;y++){const row=G.map[y],off=y*mw;for(let x=0;x<mw;x++)flatMap[off+x]=row[x]}
     _ffBufFlip=!_ffBufFlip;
-    _ffStampObjs(flatMap,mw,mh);
     _ffWorkerBusy=true;
     _ffWorker.postMessage({map:flatMap.buffer,mw:mw,mh:mh,ptx:ptx,pty:pty,bufSize:sz,px:P.x,py:P.y,cell:_FF_CELL},[flatMap.buffer]);
     return;
   }
   // 폴백: 메인스레드 BFS (Worker 미지원 or busy)
   const _sz=mw*mh,map=G.map;
-  // flat 복사본에 MAP_OBJS 충돌 스탬프
-  if(!_ffFlatFB||_ffFlatFB.length<_sz)_ffFlatFB=new Int8Array(_sz);
-  const flat=_ffFlatFB;
-  for(let y=0;y<mh;y++){const row=map[y],off=y*mw;for(let x=0;x<mw;x++)flat[off+x]=row[x]}
-  _ffStampObjs(flat,mw,mh);
   if(!_ffField||_ffField.length!==_sz*2)_ffField=new Float32Array(_sz*2);
   const dist=new Int16Array(_sz);dist.fill(-1);
   const q=new Int32Array(_sz);let qH=0,qT=0;
@@ -17975,8 +17969,9 @@ function _ffBuild(){
       if(nx<0||ny<0||nx>=mw||ny>=mh)continue;
       const ni=ny*mw+nx;
       if(dist[ni]>=0)continue;
-      if(flat[ni]===1)continue;
-      if(i>=4){if(flat[cy*mw+nx]===1||flat[ny*mw+cx]===1)continue}
+      const v=map[ny][nx];
+      if(v===1)continue;
+      if(i>=4){const v1=map[cy][nx],v2=map[ny][cx];if(v1===1||v2===1)continue}
       dist[ni]=cd+1;q[qT++]=ni;
     }
   }
@@ -17990,20 +17985,6 @@ function _ffBuild(){
     else{const m=Math.sqrt(bx*bx+by*by);_ffField[fi]=bx/m;_ffField[fi+1]=by/m}
   }
   _ffW=mw;_ffH=mh;
-}
-// MAP_OBJS 충돌을 flat맵에 벽으로 스탬프 (플로우필드용)
-function _ffStampObjs(flat,mw,mh){
-  for(let i=0;i<MAP_OBJS.length;i++){
-    const o=MAP_OBJS[i],m=_OBJ_META[o.type];
-    if(!m||!(m.collision||m.col))continue;
-    const r=m.sz*.4;
-    const txMin=Math.max(0,~~((o.x-r)/T)),tyMin=Math.max(0,~~((o.y-r)/T));
-    const txMax=Math.min(mw-1,~~((o.x+r)/T)),tyMax=Math.min(mh-1,~~((o.y+r)/T));
-    for(let ty=tyMin;ty<=tyMax;ty++)for(let tx=txMin;tx<=txMax;tx++){
-      const cx=tx*T+T/2,cy=ty*T+T/2,dx=cx-o.x,dy=cy-o.y;
-      if(dx*dx+dy*dy<r*r)flat[ty*mw+tx]=1;
-    }
-  }
 }
 const _ffOut={x:0,y:0};
 function _ffDir(px,py){
@@ -23700,10 +23681,10 @@ function updateE(e,sp){
     _ffMoveE(e,sp,2);
     d=dst(P.x,P.y,e.x,e.y);if(d<=200)e._reviveChase=false
   }
-  // 시야 어그로: 거리 800 이내 + LOS 확보 시에만 알림 (벽 뒤는 무시)
-  if(!e._alerted&&d<800&&(e.s==='idle'||e.s==='recover')&&hasLOS(e.x,e.y,P.x,P.y))e._alerted=true;
-  // ── 방향 추적: 어그로 상태일 때만 플레이어를 바라봄 ──
-  if(d<800&&e._alerted){e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
+  // 시야 어그로: 거리 800 이내면 자동 알림 (피격 없이도)
+  if(!e._alerted&&d<800&&(e.s==='idle'||e.s==='recover'))e._alerted=true;
+  // ── 방향 추적: 항상 플레이어를 바라봄 ──
+  if(d<800){e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
   // 어그로 추적: 플로우필드로 벽도 돌아옴 — 밀착까지 추적 (해제 없음)
   if(e._alerted&&d>30&&(e.s==='idle'||e.s==='recover')){
     _ffMoveE(e,sp,e.ib?2:1);
@@ -28592,7 +28573,7 @@ const _SK_MUL={
   // ── 채널링 (주력기, DPS 1000%/초~5000%/초) ──
   whirlwind:{b:2.5,g:1.05},   // 평균 4히트/초 → DPS 1000% (Lv1), 5000% (Lv20)
   omniBeam:{b:0.332,g:0.14},  // 단독 멸살광선 약 1000%/초 (Lv1), 합체빔은 별도 계수로 조절
-  maliceHunt:{b:1.0,g:0.4},   // 8발/초, 2026-04-14 데미지 2배
+  maliceHunt:{b:0.5,g:0.2},   // 8발/초
   // ── 이동콤보 (조건부, 거리 보너스 별도) ──
   chainSlam:{b:3,g:1.2},      // ×거리(1~3.5), 최대 ATK×10.5
   chainAssault:{b:4,g:1.6},   // ×거리(1~4), 최대 ATK×16
