@@ -20854,13 +20854,13 @@ function update(){
         {const _isTurretProj=!!p._fromTurret;
         const _ftV=_isTurretProj&&_gxTurret?Math.max(0,1-dst(P.x,P.y,_gxTurret.x,_gxTurret.y)/2000):1;
         hurtE(e,dmg,ang,_isTurretProj||p.blueBean,p,p.el);
-        // 악의사냥 출혈 DOT: 석궁뎀+DEX 기반, 중첩, 15초 지속, 쉴드 무시
-        if(p.maliceHunt){
-          const _mhBDot=~~(bowRef()*statDex()*1.5*(1+(P.skills.maliceHunt||1)*0.1));
+        // 칼날 출혈 DOT: 적중데미지의 10% 축적, 무한 중첩, 15초 지속
+        if(p.maliceHunt||p.plagueBlade){
+          const _bladeBleed=Math.max(1,~~(dmg*0.10));
           e.bleed=1;
           e.bleedT=Math.max(e.bleedT||0,900); // 15초(60fps)
-          e.bleedStk=Math.min(10,(e.bleedStk||0)+1);
-          e._bleedPool=(e._bleedPool||0)+_mhBDot;
+          e.bleedStk=(e.bleedStk||0)+1; // 무한 중첩
+          e._bleedPool=(e._bleedPool||0)+_bladeBleed;
         }
         if(!_isTurretProj||_ftV>0.01){
           if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
