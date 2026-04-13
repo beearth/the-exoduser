@@ -42,7 +42,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | chargeBoost | 사슬기동:충돌 | ST | 10×1=10 → 10×10=100 (물리할인) | 3회 충전식 | STR × meleeRef × pAtkMul | 충전 3회, 이동중 무적, 관통뎀+그로기 |
 | magicBlink | 사슬기동:화염 | MP | 10×1=10 → 10×10=100 (마법할인) | 없음 | INT × magicRef × pMagicMul | 경로 화염길 3초 DOT, 합체 시 착지폭발 |
-| bladeDash | 전격이동 | MP | 10×1=10 → 10×10=100 (마법할인) | 10스택 (480f→180f/스택) | 전기물리 | 500유닛 대시, 더블탭 or 방향키+스페이스 |
+| bladeDash | 전격이동 | MP | 10+(Lv-1)×5 (1렙10, 10렙55) | 10스택 (480f→Lv당-30f, 최소180f) | **데미지 없음** | 순수 이동기. 방향키 더블탭 or 스페이스+방향키. 500유닛 대시, 이동 중 무적(15f). 만렙 시 방향키 1번으로 즉시 발동 |
 | chainAssault | 기동불꽃 | MP | mpCost('dimBreach') | 없음 (이동 중) | INT × (4.4+(Lv-1)) × 거리배율(×1~×4) | 착지 화염폭발, Lv당 뎀+1 |
 | chainSlam | 기동파괴 | ST + 악의20 | stCost('giantSlam') | 없음 (이동 중) | STR × (3.3+(Lv-1)) × 거리배율(×1~×3.5) | 보스 체간 대량삭감, 즉기절 5초, Lv당 뎀+1 |
 | chainSlash | 기동칼날개 | 없음 | 0 (Lv200 해금) | 없음 (이동 중) | STR 물리 | 전방 광역 베기+출혈, 다단히트 |
@@ -92,17 +92,17 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 | 쿨다운 | 데미지 공식 | DPS 비고 |
 |---|---|---|---|---|---|---|
-| fireball | 악의구 | MP | 50×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('fireball') (b=1.0, g=0.4) | 기본 E, 범위폭발+넉백, Lv당 크기+50% |
+| fireball | 악의구 | MP | 50×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('fireball') (b=5.0, g=2.0) | 기본 E, 범위폭발+넉백, Lv당 크기+50% (업화선 기준 상향) |
 | omniBeam | 멸살광선 | MP(틱) | **30×(1+(Lv-1)×0.18) MP/초** (Lv1=30, Lv10=79) | 과부하 **300f (5초)** | INT × magicRef × `pBeamMul()` × `_skMul('omniBeam')` × drainBonus | 단독 15판정/초 직선레이저(틱당 2배 보정), sixFuse 총합 약 2490%/초, elemFuse도 6직격 총합 약 2490%/초 |
-| elemMissile | 원소추적탄 | MP | ~250×DPS (마법할인) | 없음 | INT + Lv당 뎀+10% | 6원소 유도, 곡선궤적, 사거리+20/Lv |
-| energyShot | 마력연사 | MP | **12~22/발 (4발/초=48~88MP/초)** | 없음 (토글) | INT × (3+(Lv-1)) | 직선 즉시타격(비합체), 사거리+60/Lv, Lv당 뎀+1 |
+| elemMissile | 원소추적탄 | MP | ~250×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('elemMissile') (b=1.0, g=0.4) | 6원소 유도, 곡선궤적, 사거리+20/Lv |
+| energyShot | 마력연사 | MP | **12~22/발 (4발/초=48~88MP/초)** | 없음 (토글) | INT × magicRef × pMagicMul × _skMul('energyShot') (b=3.0, g=1.2) | 직선 즉시타격(비합체), 사거리+60/Lv |
 | fireBeam | 업화선 | MP | 10/발 | DEX 스케일 | INT × (5+(Lv-1)) | 100%관통+유도+화상, 사거리+50/Lv, Lv당 뎀+1 |
 | fireAura | 지옥진 | MP | **100** 고정 | **720f (12초)** | INT × (6+(Lv-1)) /틱 | 10초간 용암기둥, 범위+10%/Lv 뎀+1/Lv |
 | maliceMortar | 폭풍소환 | MP | 250×DPS (마법할인, key=mortar) | **660f (11초)** | INT 스케일 | 6.5초간 소용돌이, 범위 260+(Lv-1)×28, 흡인력 0.78+Lv×0.104 |
 | plagueBurst | 폭독칼날 | 악의 | **15** 고정 | **1200f (20초)** | STR 스케일 | 관통 30→100, 전염+처형, 사거리 4000 |
 | maliceStorm | 악의폭풍 | MP | 90 추정 | **1200f (20초)** | INT × (5+(Lv-1)) /틱 (10틱) | 3초 암전나선, 범위+22/Lv, Lv당 뎀+1 |
 | darkPillar | 악의기둥 | MP | mpCost 기반 | **900f (15초)** | INT × (4+(Lv-1)) | 9기둥 5초, 범위 250+(Lv-1)×22, Lv당 뎀+1 |
-| blueShot | 푸른비 | MP | **100+1.5×Lv** (110~115) | **300f (5초)** | INT × (8+(Lv-1)) | 50발 순차유도, Lv300 해금, Lv당 뎀+1 |
+| blueShot | 푸른비 | MP | **100+1.5×Lv** (110~115) | **300f (5초)** | INT × magicRef × pMagicMul × _skMul('blueShot') (b=4.0, g=1.6) | 50발 순차유도, Lv300 해금 |
 | burstLoop | 버스트루프 | 없음 | 0 | 없음 | INT × (mul+(Lv-1)) mul=1/3/5 | 홀드 차지, 범위 600/1000/1400px, Lv700, Lv당 뎀+1 |
 | hellRay | 참회 | MP | **100/충전** | **600f (10초)/충전** | INT × (5+(Lv-1)) | 신성십자가, 회전+뎀, Lv당 뎀+1 |
 
