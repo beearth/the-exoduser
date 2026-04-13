@@ -220,6 +220,8 @@ style 맨 아래에 추가:
 | 탭 시각 | 대장간 탭에 아이콘 전용 프레임(18x18), 활성 탭 아이콘 하이라이트 추가 | `game.html` `.fg-tab`, `.fg-tab-ico` |
 | 아이콘 소스 | `v1 + v2` 혼합 사용: 시스템 탭(강화/물약/분해/리롤/결정)=v1, 장비 슬롯 탭(무기~귀걸이)=v2 | `game.html` `.fg-tab-ico.atlas-v1/.atlas-v2`, `_fgTabMeta.atlas` |
 | 에셋 경로 | `output/imagegen/forge-icon-sheet-v1.png`, `output/imagegen/forge-icon-sheet-v2.png` | 프로젝트 루트 출력물 |
+| 가독성 미세조정 | 아이콘 18→22px, 탭 패딩 5→6px, 아틀라스 확대 `400x300% → 460x345%`, 대비/밝기/글로우 강화 | `game.html` `.fg-tab`, `.fg-tab-ico`, `.fg-tab-ico.atlas` |
+| 폴백 안전장치 | 아틀라스 크롭 실패/미표시 시 빈 네모 방지: 아이콘 이모지 컬러/그림자 폴백 노출 | `game.html` `.fg-tab-ico.atlas` |
 
 ---
 
