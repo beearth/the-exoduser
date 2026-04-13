@@ -22668,7 +22668,7 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
     // 회전참 피격 스택 카운트만 유지 (데미지 보너스 제거됨)
     if(_isWW){e._wwStk=Math.min(20,(e._wwStk||0)+1);e._wwStkT=60;}
     hurtE(e,dmg,ang,true,{kbMult:(_isWW||type==='shield')?0:1,poiseMult:_isWW?0:1.5,noPoise:_isWW,poiseHit:type==='shield',poiseSkill:type==='shield'},el);_hitCount++;
-    if(_isWW&&_hitCount<=9){_impacts.push({x:e.x,y:e.y,el:el,ang:ang,t:0,ml:16,sz:0.8,type:'slash'});} // 회전참: 맞은 적 위치에 물리 임팩트 (최대9)
+    if(_isWW&&_hitCount<=9&&e.alive){_impacts.push({x:e.x,y:e.y,el:el,ang:ang,t:0,ml:16,sz:0.8,type:'slash'});} // 회전참: 생존 대상에만 물리 임팩트 (최대9)
       // parryBank는 적 공격 흡수로만 축적 (hitArc 공격 축적 삭제)
       if(!_isWW){
       // 칼등치기만 포이즈 데미지 (데미지의 200%)
@@ -27136,6 +27136,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // ═══ 어픽스: killSlayer (처치보너스) — 처치 시 3초간 뎀업 ═══
     if(_eqAffix('killSlayer')>0){P._killBuff=180;P._killMul=_eqAffix('killSlayer')}
     const _isBurnDeath=atkEl===EL.F||(opts&&opts.beam);
+    const _isWhirlKill=(P.s==='whirlwind'&&!(opts&&opts.detonate));
     atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;_petOnKill();
     // 버스트루프 광역 사망음 카운터
     if(opts&&opts._blastKill&&G._blDeathSndQ!==undefined){
@@ -27154,7 +27155,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(G.combo>G.comboMax)G.comboMax=G.combo;
     if(G.combo>=5&&G.combo%5===0){const _cbPct=~~((~~(G.combo/100)*0.05+(OPT.diff||0)*0.10)*100);addTxt(P.x,P.y-40,'🔥 '+G.combo+' COMBO!'+(_cbPct>0?' +'+_cbPct+(OPT.lang==='en'?'% Bonus':'%보상'):''),'#ffaa00',50)}
     const _killAng=ang!==undefined?ang:Math.atan2(e.y-P.y,e.x-P.x);
-    _spawnLargeMonsterDeathFx(e,_killAng);
+    if(!_isWhirlKill)_spawnLargeMonsterDeathFx(e,_killAng);
     // 시체 잔해 — 모든 사망 (화염은 burnCorpse가 대신)
     if(!_isBurnDeath){const _cp=Math.min(8,dmg/Math.max(1,e.mhp)*20);_addCorpse(e,_killAng,_cp)}
     // 화염/빔 사망 → 불타는 시체 + 전용 사운드
@@ -28115,7 +28116,7 @@ const SKILL_LIST=[
   {id:'ghostWalk',name:'암전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 15초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 15s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
   {id:'bladeDash',name:'전격이동',cat:'move',desc:'방향키 더블탭 → 500유닛 전기 대시. 10충전 (8초→Lv당-0.5초, 최소3초). 만렙 시 방향키 한번으로 즉시 발동',descEn:'Double-tap direction → 500-unit electric dash. 10 stocks (8s→-0.5s/Lv, min 3s). At max Lv: instant on single tap',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
   {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 5+Lv당2. Lv당 뎀+10% 거리+15px',descEn:'LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 5+2/Lv. Per Lv DMG+10% range+15px',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
-  {id:'fireball',name:'악의구',cat:'bow',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% 뎀+15%',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% DMG+15%',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
+  {id:'fireball',name:'악의구',cat:'bow',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% 뎀+40%',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% DMG+40%',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'detonate',name:'기폭팔',cat:'def',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발. Lv당 범위+15 (1렙150, 10렙285)',descEn:'Parry 3s hold → absorbed DMG AoE explosion. Per Lv range+15 (Lv1: 150, Lv10: 285)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceSwipe',name:'칼등 처내기',cat:'def',desc:'우클 처내기 강화. Lv당 반사 데미지 +10%. 홀드 시 연사',descEn:'RMB swipe enhanced. Per Lv reflect DMG +10%. Hold for rapid fire',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
@@ -28172,7 +28173,7 @@ const SKILL_SLOT_DEFS={
     info:{charge:{name:'작살',nameEn:'Harpoon',emoji:'🔱',desc:'Shift: 작살 발사 → 끌려감',descEn:'Shift: Fire harpoon → pull toward'},
           magicBlink:{name:'사슬기동:화염',nameEn:'Chain Drive: Flame',emoji:'🔥',desc:'Shift: 화염길+화상',descEn:'Shift: Flame trail + burn'}}},
   magic:{name:'마법스킬',nameEn:'Magic Skill',key:'magic',skills:['fireball','omniBeam','elemMissile','hellRay','blueShot','burstLoop','fireAura','fireBeam','energyShot'],
-    info:{fireball:{name:'악의구',nameEn:'Malice Orb',emoji:'🔮',desc:'E: 어둠 오브 (Lv당 크기+10% 뎀+15%)',descEn:'E: Dark orb (size+10% dmg+15%/Lv)'},
+    info:{fireball:{name:'악의구',nameEn:'Malice Orb',emoji:'🔮',desc:'E: 어둠 오브 (Lv당 크기+50% 뎀+40%)',descEn:'E: Dark orb (size+50% dmg+40%/Lv)'},
           omniBeam:{name:'멸살광선',nameEn:'Omni Beam',emoji:'☄️',desc:'E: 1발 직선 레이저',descEn:'E: Single straight laser'},
           elemMissile:{name:'원소추적탄',nameEn:'Elem Missile',emoji:'🎯',desc:'E: 6원소 유도 미사일',descEn:'E: 6-element homing missiles'},
           hellRay:{name:'참회',nameEn:'Repentance',emoji:'✝',desc:'E: 신성한 선 설치 (시계방향 회전)',descEn:'E: Place holy line (clockwise rotation)'},
@@ -28396,7 +28397,7 @@ const _SK_MUL={
   // ── 중쿨 다발 ──
   blueShot:{b:3,g:1.2},     // ATK×3 (50발 합산), 5초쿨
   // ── 단일 연사 (~0.5초 사이클) ──
-  fireball:{b:0.5,g:0.2},
+  fireball:{b:1.0,g:0.4}, // 악의구 2배 버프 (2026-04-13)
   fireBeam:{b:0.5,g:0.2},
   energyShot:{b:2.5,g:1.0}, // 업화선 즉발(최소차징) 대비 약 1/2 화력 목표
   // ── 채널링 (주력기, DPS 1000%/초~5000%/초) ──

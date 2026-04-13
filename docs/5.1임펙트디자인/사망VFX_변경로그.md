@@ -26,9 +26,10 @@
 | id | 한글명 | 처리 순서 | 적용 위치 |
 |---|---|---|---|
 | `killAngShared` | 킬 각도 공용화 | `_killAng = ang ?? atan2(e.y-P.y, e.x-P.x)` 생성 후 재사용 | 공용 적 사망 블록 |
-| `largeDeathFxHook` | 큰 몬스터 사망 VFX 호출 | `_spawnLargeMonsterDeathFx(e, _killAng)` | 공용 적 사망 블록 |
+| `largeDeathFxHook` | 큰 몬스터 사망 VFX 호출 | `_isWhirlKill`이 아닐 때 `_spawnLargeMonsterDeathFx(e, _killAng)` | 공용 적 사망 블록 |
 | `corpseReuseKillAng` | 시체 생성 각도 일치 | `_addCorpse(e, _killAng, _cp)`로 통일 | 공용 적 사망 블록 |
 
 ### 비고
 - 기존 화염 사망(`_isBurnDeath`) 분기, gib 분기, 부활/보스 판정 로직은 유지.
+- 2026-04-13: 회전참(`P.s==='whirlwind'`, 비기폭 처치) 킬에서는 `deathFX`만 유지하고 `largeDeathFx`는 호출하지 않음.
 - 이번 변경은 연출 추가이며 기존 데미지 판정/사망 판정 공식은 변경하지 않음.
