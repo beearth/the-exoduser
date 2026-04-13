@@ -616,6 +616,8 @@ canvas{display:block;position:fixed;inset:0}
 .fg-tab{padding:5px 12px;background:rgba(0,0,0,.4);border:1px solid #332211;color:var(--c-border-hover);font-size:.9rem;cursor:pointer;transition:all .2s;white-space:nowrap}
 .fg-tab:hover{border-color:var(--c-border-hover);color:var(--c-text-bright)}
 .fg-tab.act{border-color:#ff8800;color:#ffcc44;background:rgba(255,100,0,.1)}
+.fg-tab-ico{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-right:6px;font-size:.85rem;border-radius:5px;background:rgba(0,0,0,.22);border:1px solid rgba(124,76,52,.35);vertical-align:middle}
+.fg-tab-txt{vertical-align:middle;letter-spacing:.01em}
 .fg-i{background:rgba(0,0,0,.3);border:1px solid #332211;padding:6px 8px;cursor:pointer;transition:all .2s}
 .fg-i:hover{border-color:var(--c-border-hover);background:rgba(255,100,0,.04)}
 .fg-i.dis{opacity:.4;cursor:default}
@@ -770,6 +772,8 @@ canvas{display:block;position:fixed;inset:0}
   gap:6px;
 }
 #forge .fg-tab{
+  display:inline-flex;
+  align-items:center;
   border-radius:8px;
   border-color:#6a3e2a;
   color:#cda178;
@@ -784,6 +788,14 @@ canvas{display:block;position:fixed;inset:0}
   color:#ffd2a1;
   background:linear-gradient(180deg,rgba(94,44,24,.42),rgba(34,16,12,.82));
   box-shadow:inset 0 0 0 1px rgba(255,152,95,.12),0 0 10px rgba(255,124,66,.2);
+}
+#forge .fg-tab .fg-tab-ico{
+  border-color:rgba(188,112,72,.42);
+  background:linear-gradient(180deg,rgba(56,31,22,.78),rgba(20,11,10,.9));
+}
+#forge .fg-tab.act .fg-tab-ico{
+  border-color:rgba(255,168,112,.45);
+  background:linear-gradient(180deg,rgba(120,57,29,.72),rgba(52,23,16,.9));
 }
 #forge #forgeMats{
   border-color:#5f3a67!important;
@@ -11806,13 +11818,16 @@ function _assignBossSkin(e,si){
   // atlas_bosses.png가 boss_0~boss_34로 전부 커버 — 별도 스킨 할당 불필요
 }
 
-// ═══ 아틀라스 텍스처 워밍업 (프레임 분산, 첫 drawImage 스파이크 제거) ═══
+// ═══ 아틀라스 텍스처 워밍업 (오프스크린 + setTimeout 백그라운드) ═══
 var _ensWarmDone=false;
-var _wqBuf=new Array(40); // 워밍업 대상 이미지 고정 배열
+var _wqBuf=new Array(40);
 var _wqLen=0,_wqIdx=0,_wqTotal=0;
-// 워밍업 큐 적재 (1회)
+// 오프스크린 1×1 캔버스 (메인 캔버스 상태 오염 없음)
+var _wqCvs=document.createElement('canvas');_wqCvs.width=1;_wqCvs.height=1;
+var _wqCtx=_wqCvs.getContext('2d');
+// 워밍업 큐 적재
 function _warmupEnsAtlas(){
-  if(_ensWarmDone||_wqLen>0)return; // 이미 완료 또는 진행 중
+  if(_ensWarmDone||_wqLen>0)return;
   _wqLen=0;_wqIdx=0;
   var a8=_ch8Atlas[1];
   var _dks=['south','south-east','east','north-east','north','north-west','west','south-west'];
@@ -11832,22 +11847,18 @@ function _warmupEnsAtlas(){
     if(_ghoulReady[gt]){var gm=_ghoulImgs[gt];
       for(var gk in gm){if(gm[gk]&&gm[gk].complete&&gm[gk].naturalWidth>0&&_wqLen<40)_wqBuf[_wqLen++]=gm[gk]}}}
   _wqTotal=_wqLen;
-  if(_wqLen===0)_ensWarmDone=true;
+  if(_wqLen===0){_ensWarmDone=true;return}
+  // setTimeout 체인으로 1장씩 백그라운드 워밍업 (게임 루프 밖)
+  _warmupNext();
 }
-// 매 프레임 2장씩 더미 드로우 (게임 루프에서 호출)
-function _warmupTick(){
-  if(_ensWarmDone||_wqLen===0)return;
-  X.save();X.globalAlpha=0;
-  var n=0;
-  while(_wqIdx<_wqLen&&n<2){
-    var img=_wqBuf[_wqIdx];
-    if(img)X.drawImage(img,0,0,1,1,-9999,-9999,1,1);
-    _wqBuf[_wqIdx]=null; // 참조 해제
-    _wqIdx++;n++;
-  }
-  X.restore();
+function _warmupNext(){
   if(_wqIdx>=_wqLen){_ensWarmDone=true;_wqLen=0;_wqIdx=0;
-    console.log('[ENS-WARM] '+_wqTotal+' atlas textures warmed up ('+_wqTotal+' frames)')}
+    console.log('[ENS-WARM] '+_wqTotal+' textures warmed up (offscreen)');return}
+  var img=_wqBuf[_wqIdx];
+  if(img)_wqCtx.drawImage(img,0,0,1,1,0,0,1,1);
+  _wqBuf[_wqIdx]=null;
+  _wqIdx++;
+  setTimeout(_warmupNext,0);
 }
 
 // 적 스폰 시 8dir 스킨 즉시 배정 (meta 로드 불필요, col/row 직접 계산)
@@ -15338,13 +15349,25 @@ function _isMagicBeam(){
   if(_amsk==='omniBeam')return true;
   return false;
 }
+function _aimEnergyShotToMouse(_blend){
+  const _sx=P.x-G.cam.x+C.width/2,_sy=P.y-G.cam.y+C.height/2;
+  const _tgtA=Math.atan2(mouse.y-_sy,mouse.x-_sx);
+  let _da=_tgtA-P.atkArc;
+  if(_da>Math.PI)_da-=Math.PI*2;
+  if(_da<-Math.PI)_da+=Math.PI*2;
+  const _b=Math.max(0,Math.min(1,_blend==null?1:_blend));
+  if(_b>=1)P.atkArc=_tgtA;
+  else P.atkArc+=_da*_b;
+  P.facing=P.atkArc;
+  return _tgtA;
+}
 // ── 마력연사 발사 함수 (1발 즉발) ──
 function _fireEnergyShot(){
   const _esLvC=P.skills.energyShot||1;
   const _esMpC=~~(12*(1+(_esLvC-1)*0.10)); // 마력연사 발당 MP: DPS비례 +10%/Lv (Lv1=12, Lv10=22, 4발/초=48~88/초)
   if(!P||P.mp<_esMpC)return;
   P.mp-=_esMpC;
-  {const _tgtA=Math.atan2(mouse.y-C.height/2,mouse.x-C.width/2);let _da=_tgtA-P.atkArc;if(_da>Math.PI)_da-=Math.PI*2;if(_da<-Math.PI)_da+=Math.PI*2;P.atkArc+=_da*0.15;P.facing=P.atkArc;} // 부드러운 회전 (lerp 15%)
+  _aimEnergyShotToMouse(0.28); // 360도 추적 + 느긋형 보간
   const _esLv=P.skills.energyShot||1;
   const _esRange=1000+(_esLv-1)*60; // 사거리 2배
   const _esDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('energyShot')*_fuseMul('energyShot')); // 통일공식: _skMul
@@ -15361,7 +15384,8 @@ function _fireEnergyShot(){
     if(Math.random()<.5)addParts(e.x,e.y,'#aa66ff',3);
   }
   P._esAnim={fr:0,tmr:0,ang:P.atkArc,range:_esRange,x:P.x,y:P.y};
-  playSample('beam_fire',.5,_r(1.2,.1));if(Math.random()<.3)playSample('voice_beam',.7,_r(1,.08));shake(4);_addSkProf('energyShot');
+  if((P._esSfxCd||0)<=0){playSample('beam_fire',.42,_r(1.15,.08));P._esSfxCd=6;}
+  shake(4);_addSkProf('energyShot');
 }
 function _startFireBeamCast(){
   if(P.skills.fireBeam<1)return false;
@@ -15425,6 +15449,7 @@ const _MAGIC_E_HANDLERS={
     if(P.mp<10){showPH(_T('MP 부족! (10)'),'#8844ff');return true}
     // 연사 ON
     P._esAutoFire=true;P._esAutoTimer=0;
+    if((P._esVoiceCd||0)<=0){playSample('voice_magic',.9,_r(1,.06));P._esVoiceCd=90;} // 연사 시작 시 1회
     _fireEnergyShot(); // 즉시 1발
     addTxt(P.x,P.y-25,_T('⚡ 마력연사!'),'#aa66ff',40);
     P.s='magicRecover';P.st2=15; // E홀드 반복호출 방지
@@ -21349,10 +21374,12 @@ function update(){
   if(P._faCd>0)P._faCd-=sp+_hdCdBonus;
   if(P._fbCd>0)P._fbCd-=sp+_hdCdBonus;
   if(P._esCd>0)P._esCd-=sp+_hdCdBonus;
+  if(P._esVoiceCd>0)P._esVoiceCd-=sp;
+  if(P._esSfxCd>0)P._esSfxCd-=sp;
   // 마력연사 자동 연사 (토글 ON 상태)
   if(P._esAutoFire&&G.on){
-    // 매 프레임 마우스 방향 추적 (레이저 핸들링)
-    {const _tgtA=Math.atan2(mouse.y-C.height/2,mouse.x-C.width/2);let _da=_tgtA-P.atkArc;if(_da>Math.PI)_da-=Math.PI*2;if(_da<-Math.PI)_da+=Math.PI*2;P.atkArc+=_da*0.25*sp;P.facing=P.atkArc;}
+    // 매 프레임 마우스 방향 360도 추적 (플레이어 기준, 부드럽게)
+    _aimEnergyShotToMouse(Math.min(1,0.22*sp));
     P._esAutoTimer=(P._esAutoTimer||0)+sp;
     if(P._esAutoTimer>=~~(30/pMagicSpd())){ // 기본 4발/초, 시전속도 증가 시 더 빨라짐
       P._esAutoTimer=0;
@@ -32358,9 +32385,33 @@ function renderForge(){
   BGM.play('forge');
   $('forgeMats').textContent=`👿 ${_T('악의')}: ${G.mats}`;
   const tabs=$('fgTabs');tabs.innerHTML='';
-  const _fgTabEN={upgrade:'⭐ Enhance',potion:'🧪 Potion',salvage:'🔥 Salvage',reroll:'🔄 Reroll',crystal:'💎 Crystal',weapon:'⚔️ Weapon',shield:'🛡️ Shield',armor:'🦺 Armor',helmet:'⛑️ Helmet',boots:'👢 Boots',bow:'🏹 Bow',gloves:'🧤 Gloves',pants:'👖 Pants',necklace:'📿 Necklace',ring:'💍 Ring',bracelet:'⭕ Bracelet',headband:'🎀 Earring'};
-  [['upgrade','⭐ 강화'],['potion','🧪 물약'],['salvage','🔥 분해'],['reroll','🔄 리롤'],['crystal','💎 결정'],['weapon','⚔️ 무기'],['shield','🛡️ 견갑'],['armor','🦺 갑옷'],['helmet','⛑️ 투구'],['boots','👢 부츠'],['bow','🏹 활'],['gloves','🧤 장갑'],['pants','👖 바지'],['necklace','📿 목걸이'],['ring','💍 반지'],['bracelet','⭕ 팔찌'],['headband','🎀 귀걸이']].forEach(([k,v])=>{
-    const d=document.createElement('div');d.className='fg-tab'+(G.forgeTab===k?' act':'');d.textContent=OPT.lang==='en'?_fgTabEN[k]:v;d.onclick=()=>{G.forgeTab=k;_forgeSel=null;_salSel.clear();_rerollSel=null;_crForgeSel=-1;renderForge()};tabs.appendChild(d);
+  const _fgTabMeta={
+    upgrade:{icon:'⭐',ko:'강화',en:'Enhance'},
+    potion:{icon:'🧪',ko:'물약',en:'Potion'},
+    salvage:{icon:'🔥',ko:'분해',en:'Salvage'},
+    reroll:{icon:'🔄',ko:'리롤',en:'Reroll'},
+    crystal:{icon:'💎',ko:'결정',en:'Crystal'},
+    weapon:{icon:'⚔️',ko:'무기',en:'Weapon'},
+    shield:{icon:'🛡️',ko:'견갑',en:'Shield'},
+    armor:{icon:'🦺',ko:'갑옷',en:'Armor'},
+    helmet:{icon:'⛑️',ko:'투구',en:'Helmet'},
+    boots:{icon:'👢',ko:'부츠',en:'Boots'},
+    bow:{icon:'🏹',ko:'활',en:'Bow'},
+    gloves:{icon:'🧤',ko:'장갑',en:'Gloves'},
+    pants:{icon:'👖',ko:'바지',en:'Pants'},
+    necklace:{icon:'📿',ko:'목걸이',en:'Necklace'},
+    ring:{icon:'💍',ko:'반지',en:'Ring'},
+    bracelet:{icon:'⭕',ko:'팔찌',en:'Bracelet'},
+    headband:{icon:'🎀',ko:'귀걸이',en:'Earring'}
+  };
+  ['upgrade','potion','salvage','reroll','crystal','weapon','shield','armor','helmet','boots','bow','gloves','pants','necklace','ring','bracelet','headband'].forEach((k)=>{
+    const _m=_fgTabMeta[k];
+    const _txt=OPT.lang==='en'?_m.en:_m.ko;
+    const d=document.createElement('div');
+    d.className='fg-tab'+(G.forgeTab===k?' act':'');
+    d.innerHTML='<span class="fg-tab-ico">'+_m.icon+'</span><span class="fg-tab-txt">'+_txt+'</span>';
+    d.onclick=()=>{G.forgeTab=k;_forgeSel=null;_salSel.clear();_rerollSel=null;_crForgeSel=-1;renderForge()};
+    tabs.appendChild(d);
   });
   const grid=$('fgGrid');grid.innerHTML='';
   grid.style.gridTemplateColumns=(G.forgeTab==='upgrade'||G.forgeTab==='potion'||G.forgeTab==='salvage'||G.forgeTab==='reroll'||G.forgeTab==='crystal')?'1fr':'1fr 1fr';
@@ -32644,6 +32695,50 @@ function renderForge(){
     grid.appendChild(cInfo);
 
     if(_crForgeTab==='enhance'){
+      // ── 일괄강화 버튼 ──
+      const _canBulkEnh=(()=>{for(let i=0;i<CRYSTAL_BAG.length;i++){const cr=CRYSTAL_BAG[i];if((cr.enh||0)>=20)continue;const cost=crystalEnhCost(cr);if(G.mats<cost)continue;if(CRYSTAL_BAG.findIndex((c,ci)=>ci!==i&&c.id===cr.id&&c.star===cr.star)>=0)return true}return false})();
+      const bulkEnhBtn=document.createElement('button');
+      bulkEnhBtn.style.cssText='width:100%;margin-bottom:8px;padding:6px 12px;font-size:.85rem;font-family:"Noto Sans KR";font-weight:700;cursor:'+(_canBulkEnh?'pointer':'not-allowed')+';border:2px solid '+(_canBulkEnh?'#bb88ff':'#443322')+';background:'+(_canBulkEnh?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';color:'+(_canBulkEnh?'#ffcc44':'#554433')+';border-radius:4px';
+      bulkEnhBtn.textContent='💎 '+_T('일괄강화+합성');
+      bulkEnhBtn.onclick=()=>{
+        if(!_canBulkEnh)return;
+        let _enhCnt=0,_synthCnt=0;
+        // 반복: 강화 → 합성 → 더 이상 못할 때까지
+        while(true){
+          let _didAny=false;
+          // 1) 강화: 같은 id+star 재료를 먹여서 +1
+          while(true){
+            let _did=false;
+            for(let i=0;i<CRYSTAL_BAG.length;i++){
+              const cr=CRYSTAL_BAG[i];if((cr.enh||0)>=20)continue;
+              const cost=crystalEnhCost(cr);if(G.mats<cost)continue;
+              const _fi=CRYSTAL_BAG.findIndex((c,ci)=>ci!==i&&c.id===cr.id&&c.star===cr.star);
+              if(_fi<0)continue;
+              G.mats-=cost;CRYSTAL_BAG.splice(_fi,1);if(i>_fi)i--;
+              cr.enh=(cr.enh||0)+1;_enhCnt++;_did=true;_didAny=true;break;
+            }
+            if(!_did)break;
+          }
+          // 2) 합성: 같은 id+star 3개 → 1성급 상승 (강화 리셋)
+          while(true){
+            const _g={};
+            CRYSTAL_BAG.forEach((cr,i)=>{if(cr.star>=4)return;const k=cr.id+'_'+cr.star;if(!_g[k])_g[k]={id:cr.id,star:cr.star,idxs:[]};_g[k].idxs.push(i)});
+            let _did2=false;
+            for(const k in _g){const _gr=_g[k];if(_gr.idxs.length<3)continue;
+              const _times=~~(_gr.idxs.length/3);
+              _gr.idxs.slice(0,_times*3).sort((a,b)=>b-a).forEach(ri=>CRYSTAL_BAG.splice(ri,1));
+              for(let t=0;t<_times;t++){CRYSTAL_BAG.push({id:_gr.id,star:_gr.star+1,enh:0});_synthCnt++}
+              _did2=true;_didAny=true;break}
+            if(!_did2)break;
+          }
+          if(!_didAny)break;
+        }
+        if(_enhCnt+_synthCnt>0){SFX.forge();
+          if(_enhCnt>0)addTxt(P.x,P.y-20,_T('강화')+' ×'+_enhCnt,'#bb88ff',60);
+          if(_synthCnt>0)addTxt(P.x,P.y-40,_T('합성')+' ×'+_synthCnt,'#ffdd66',60);
+          applyStats();renderForge();dbSaveNow()}
+      };
+      grid.appendChild(bulkEnhBtn);
       // ── 결정 강화 ──
       const cList=document.createElement('div');cList.style.cssText='display:flex;flex-direction:column;gap:2px;max-height:180px;overflow-y:auto;margin-bottom:8px';
       CRYSTAL_BAG.forEach((cr,i)=>{
@@ -33061,7 +33156,7 @@ function renderStatSummary(){
     (_sBowAtk?`<div style="${_sLn}">${_L('활 공격력','Bow ATK')}: <span style="color:#66dd66">${_sBowAtk}</span> <span style="color:#887766;font-size:1.1rem">((${_L('기본','base')}${P.baseAtk} + ${_L('석궁','xbow')}${~~((bw().atk||0)+enhMulAtk(bw().enh||0))} + DEX${STATS.dex+_eqStat('Dex')}) × ${_L('정밀','Prec')}${pBowMul().toFixed(2)})</span></div>`:'')+
     `<div style="${_sLn}">${_L('마법 공격력','Magic ATK')}: <span style="color:#66aaff">${_sMagicAtk}</span> <span style="color:#887766;font-size:1.1rem">((${_L('기본','base')}${P.baseAtk} + ${_L('투구','helm')}${~~((hm().atk||0)+enhMulAtk(hm().enh||0))} + INT${STATS.int+_eqStat('Int')}) × ${_L('마력','Arcane')}${pMagicMul().toFixed(2)})</span></div>`+
     `<div style="${_sLn}">${_L('공격속도','Atk Speed')}: <span style="color:#ffcc44">×${statDex().toFixed(2)}</span></div>`+
-    `<div style="${_sLn}">${_L('크리티컬','Critical')}: <span style="color:#ff6666">${statCrit().toFixed(1)}%</span> (+${((_sCritMul-1)*100).toFixed(0)}% ${_L('데미지','dmg')}) <span style="color:#887766;font-size:1.1rem">${_L('확률','Rate')}: DEX${((STATS.dex+_eqStat('Dex'))*.015).toFixed(1)}%+LCK${(STATS.lck*.025).toFixed(1)}%+${_L('패시브','passive')}${(PASSIVES.pCrit*1.5).toFixed(1)}%+${_L('장비','gear')}${((rg1().critRate||0)+(rg2().critRate||0)).toFixed(1)}% | ${_L('추가뎀','bonus')}: ${_L('기본','base')}+50%+LCK+${(STATS.lck*0.2).toFixed(0)}%+${_L('패시브','passive')}+${(PASSIVES.pCrit*8).toFixed(0)}%+${_L('장비','gear')}+${((_eqAffix('critDmgA')+_eqAffix('critDmgB'))*100).toFixed(0)}%</span></div>`+
+    `<div style="${_sLn}">${_L('크리티컬','Critical')}: <span style="color:#ff6666">${statCrit().toFixed(1)}%</span> (+${((_sCritMul-1)*100).toFixed(0)}% ${_L('데미지','dmg')}) <span style="color:#887766;font-size:1.1rem">${_L('확률','Rate')}: LCK${(_eqLckTotal()*.025).toFixed(1)}%+${_L('패시브','passive')}${(PASSIVES.pCrit*1.5).toFixed(1)}%+${_L('어픽스','affix')}${(_eqAffix('critRate')*100).toFixed(1)}%+${_L('레거시','legacy')}${(((rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0))*100).toFixed(1)}%+${_L('결정','crystal')}${(P._crystalStats?P._crystalStats.crit:0).toFixed(1)}% | ${_L('추가뎀','bonus')}: ${_L('기본','base')}50%+LCK${(_eqLckTotal()*.2).toFixed(0)}%+${_L('패시브','passive')}${(PASSIVES.pCrit*8).toFixed(0)}%+${_L('어픽스','affix')}${((_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW'))*100).toFixed(0)}%+${_L('결정','crystal')}${(P._crystalStats?P._crystalStats.cdmg:0).toFixed(0)}%</span></div>`+
     `<div style="${_sLn}">${_L('패링 카운터뎀','Parry Counter DMG')}: <span style="color:#44ff88">×${_sParryDmg.toFixed(2)}</span> | ${_L('우클공속','RMB Spd')}: <span style="color:#ffdd00">×${_sRmbSpd.toFixed(2)}</span> | ${_L('무지개탄DR','Rainbow DR')}: <span style="color:#ff44ff">${~~(_sRainDR*100)}%</span></div>`+
     `<div style="${_sLn}">${_L('포이즈파괴','Poise Break')}: <span style="color:${_afc('staggerBns','#ffaa44')}">${_af('staggerBns').toFixed(0)}</span> | ${_L('방어관통','Armor Pen')}: <span style="color:${_afc('armorPen','#ff8844')}">${_afp('armorPen')}</span></div>`+
     (()=>{const _ppLv=PASSIVES.pPierce||0;const _bpB=(bw().bowPierce||0);const _totalP=Math.min(0.95,_bpB+_ppLv*0.05);return`<div style="${_sLn}">🔱 ${_L('관통력','Pierce')}: <span style="color:${_totalP>0?'#44ffcc':'#555544'}">${~~(_totalP*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${_L('패시브','passive')}${_ppLv}lv+${_L('장비','gear')}${~~(_bpB*100)}%)</span></div>`})()+
@@ -33896,7 +33991,7 @@ function draw(){
   const _eVpad=_hiFPS?120:200;
   const _vl=G.cam.x-C.width/2-_eVpad,_vr=G.cam.x+C.width/2+_eVpad,_vt=G.cam.y-C.height/2-_eVpad,_vb=G.cam.y+C.height/2+_eVpad;
   let _eRCnt=0;const _E_RMAX=_dynERMax;
-  if(!_ensWarmDone){if(_wqLen>0)_warmupTick();else _warmupEnsAtlas();} // 프레임 분산 워밍업
+  if(!_ensWarmDone)_warmupEnsAtlas(); // 오프스크린 백그라운드 워밍업 시작 (setTimeout 체인)
   _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX);
   for(let _eri=0;_eri<ens.length;_eri++){const e=ens[_eri];
     if(!e.alive){
