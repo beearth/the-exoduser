@@ -6,6 +6,31 @@
 <title>HELL: EXODUSER</title>
 <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
 <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
+<script>
+(() => {
+  const v = '20260414-hotfix2-' + Date.now();
+  const iconIco = '/favicon.ico?v=' + v;
+  const iconPng = '/img/icon-256.png?v=' + v;
+  const applyFavicon = () => {
+    document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]').forEach((n) => n.remove());
+    const specs = [
+      { rel: 'icon', type: 'image/x-icon', href: iconIco },
+      { rel: 'shortcut icon', type: 'image/x-icon', href: iconIco },
+      { rel: 'icon', type: 'image/png', href: iconPng },
+      { rel: 'apple-touch-icon', type: 'image/png', href: iconPng },
+    ];
+    specs.forEach((s) => {
+      const link = document.createElement('link');
+      link.rel = s.rel;
+      link.type = s.type;
+      link.href = s.href;
+      document.head.appendChild(link);
+    });
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyFavicon, { once: true });
+  else applyFavicon();
+})();
+</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Cinzel+Decorative:wght@700&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
