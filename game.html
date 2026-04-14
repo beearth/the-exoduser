@@ -27726,7 +27726,7 @@ function addExp(v,trans){
     P.lv++;lvd++;P.exp-=P.maxExp;
     P.maxExp=_calcMaxExp(P.lv);
     P.sp+=3;if(P.lv%5===0)P.sp+=2;
-    if(P.lv%10===0){P.ap=(P.ap||0)+2;apGain+=2;}
+    if(P.lv%5===0){P.ap=(P.ap||0)+1;apGain+=1;}
     if(P.lv>1000){P._transLvCount=(P._transLvCount||0)+1}
   }
   if(lvd>0){
