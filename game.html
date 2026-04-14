@@ -6,6 +6,31 @@
 <title>HELL: EXODUSER</title>
 <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
 <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
+<script>
+(() => {
+  const v = '20260414-hotfix2-' + Date.now();
+  const iconIco = '/favicon.ico?v=' + v;
+  const iconPng = '/img/icon-256.png?v=' + v;
+  const applyFavicon = () => {
+    document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]').forEach((n) => n.remove());
+    const specs = [
+      { rel: 'icon', type: 'image/x-icon', href: iconIco },
+      { rel: 'shortcut icon', type: 'image/x-icon', href: iconIco },
+      { rel: 'icon', type: 'image/png', href: iconPng },
+      { rel: 'apple-touch-icon', type: 'image/png', href: iconPng },
+    ];
+    specs.forEach((s) => {
+      const link = document.createElement('link');
+      link.rel = s.rel;
+      link.type = s.type;
+      link.href = s.href;
+      document.head.appendChild(link);
+    });
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyFavicon, { once: true });
+  else applyFavicon();
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="maps_data.js"></script>
 <style>
@@ -12997,7 +13022,7 @@ function _addCorpse(e,killAng,power){
   const a=killAng||0;
   const spd=Math.min(5,1.5+(power||1)*.8); // 거리 무관, 데미지 비례
   // 시체 크기: 보스/큰몹 렌더 크기에 비례 (스킨몹 _bsz=r*2.8 기준)
-  c.x=e.x;c.y=e.y;c.sz=e.ib?Math.max(80,e.r*2.5):Math.max(28,Math.min(80,e.r*2.2));
+  c.x=e.x;c.y=e.y;c.sz=e.ib?Math.max(80,e.r*2.5):Math.max(28,Math.min(200,e.r*2.2));
   c.vx=Math.cos(a)*spd;c.vy=Math.sin(a)*spd;
   c.r=a+Math.PI*.5;c.rv=(Math.random()-.5)*.2; // 회전 속도
   c.mt=e.ib?600:420;c.t=c.mt;c.active=true;c.bounced=0;
@@ -13015,6 +13040,28 @@ function _addCorpse(e,killAng,power){
   }
   if(!_cDrawn){c.ctx.fillStyle=e.col||'#cc0000';c.ctx.beginPath();c.ctx.arc(64,64,54,0,Math.PI*2);c.ctx.fill();}
   }
+  // 내장 오버레이 (반투명 붉은 얼룩)
+  c.ctx.globalAlpha=0.35;
+  c.ctx.fillStyle='#cc1100';
+  for(let _gi=0;_gi<3;_gi++){
+    const _gx=30+Math.random()*68,_gy=30+Math.random()*68;
+    const _gr=8+Math.random()*14;
+    c.ctx.beginPath();c.ctx.ellipse(_gx,_gy,_gr,_gr*.6,Math.random()*Math.PI,0,Math.PI*2);c.ctx.fill();
+  }
+  // 눈알 (2~3개, 흰자+검은동공)
+  c.ctx.globalAlpha=0.85;
+  const _eyeN=2+~~(Math.random()*2);
+  for(let _ei=0;_ei<_eyeN;_ei++){
+    const _ex=24+Math.random()*80,_ey=24+Math.random()*80;
+    c.ctx.fillStyle='#ddddcc';c.ctx.beginPath();c.ctx.arc(_ex,_ey,4+Math.random()*3,0,Math.PI*2);c.ctx.fill();
+    c.ctx.fillStyle='#110000';c.ctx.beginPath();c.ctx.arc(_ex,_ey,2,0,Math.PI*2);c.ctx.fill();
+    c.ctx.fillStyle='rgba(200,0,0,0.4)';c.ctx.beginPath();c.ctx.arc(_ex,_ey,5+Math.random()*3,0,Math.PI*2);c.ctx.stroke();
+  }
+  // 피 웅덩이 (시체 아래)
+  c.ctx.globalAlpha=0.25;
+  c.ctx.fillStyle='#880000';
+  c.ctx.beginPath();c.ctx.ellipse(64,90,40+Math.random()*20,12+Math.random()*8,0,0,Math.PI*2);c.ctx.fill();
+  c.ctx.globalAlpha=1.0;
 }
 // ── Gib 시스템: 폭발 사망 시 시체 부위 조각 ──
 const _GIB_MAX=60;const _gibs=[];

@@ -30,6 +30,7 @@ app.commandLine.appendSwitch('disable-gpu-sandbox');
 app.commandLine.appendSwitch('disable-frame-rate-limit');
 // DPI ?ㅼ??쇰쭅 媛뺤젣 1x ??Windows 諛곗쑉(125%,150%) 臾댁떆, 1CSS px = 1臾쇰━ px
 app.commandLine.appendSwitch('force-device-scale-factor', '1');
+if (process.platform === 'win32') app.setAppUserModelId('hell.exoduser');
 
 // ?먥븧???댁옣 HTTP ?쒕쾭 (?몄씠釉?濡쒕뱶 API + ?뺤쟻 ?뚯씪) ?먥븧??
 const PORT = 3333;
@@ -295,6 +296,9 @@ function createWindow() {
       experimentalFeatures: true,   // WebGPU ?쒖꽦??
     }
   });
+  if (APP_ICON_PATH && typeof mainWindow.setIcon === 'function') {
+    try { mainWindow.setIcon(APP_ICON_PATH); } catch (_) {}
+  }
 
   // ?댁옣 ?쒕쾭?먯꽌 ?명듃濡쒕????쒖옉
   mainWindow.loadURL(`http://localhost:${PORT}/`);
