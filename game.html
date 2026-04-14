@@ -21220,7 +21220,7 @@ function update(){
           const _nx=_ctx+_sdx,_ny=_cty+_sdy;
           if(_nx>0&&_ny>0&&_nx<G.mw-1&&_ny<G.mh-1&&G.map[_ny][_nx]===0){_hsx=(_nx+.5)*T;_hsy=(_ny+.5)*T;_sf=true}
         }
-        if(!_sf){h._spawned++;G._totalSpawned=Math.max(0,(G._totalSpawned||0)-1);continue}
+        if(!_sf){h._spawnCD=30;break} // 바닥 못 찾으면 잠시 대기 후 재시도 (카운트 소모 안 함)
       }
       const ne=mkEn(_hsx,_hsy,_hSi,rollEtype(_hSi),false,undefined,h.room);
       ne.reviveIframes=15; // 스폰 페이드인 (15프레임 반투명 → 렌더 경량)
@@ -21805,10 +21805,13 @@ function update(){
   }
   // ═══ 악의폭풍 — 조준 모드 (좌클릭=설치, 우클릭/ESC=취소) ═══
   if(P._msAiming){
-    const _mswx=mouse.x-C.width/2+G.cam.x;
-    const _mswy=mouse.y-C.height/2+G.cam.y;
+    let _mswx=mouse.x-C.width/2+G.cam.x;
+    let _mswy=mouse.y-C.height/2+G.cam.y;
     const _msLv=P.skills.maliceStorm||1;
     const _msR=200+(_msLv-1)*22; // 1렙250, 10렙448 (조준원)
+    // 사거리 1000px 클램프
+    const _msDst=dst(P.x,P.y,_mswx,_mswy);
+    if(_msDst>1000){const _msA=Math.atan2(_mswy-P.y,_mswx-P.x);_mswx=P.x+Math.cos(_msA)*1000;_mswy=P.y+Math.sin(_msA)*1000}
     if(MBjust[2]||K['Escape']){P._msAiming=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]){
       MBjust[0]=false;
