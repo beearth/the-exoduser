@@ -17397,9 +17397,9 @@ function mkEn(x,y,si,etype,ib,el,room){
   const _atk=Math.floor(((ib?75:50)+monLv*(ib?2.9:1.95))*dm*et.atkMul); // 일반: 50+lv×1.95 (1000렙=2000), 보스: 75+lv×2.9 (1000렙≈3000, 일반×1.5)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   if(!window._noProjEtypes)window._noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
-  let _projCd=ib?65 // 보스: 65f ≈ 0.92발/초 (2026-04-14 쿨+30%)
+  let _projCd=ib?50 // 보스: 50f 원래값 유지
     :_noProjEtypes[etype]?9999
-    :78; // 일반몹: 78f ≈ 0.77발/초 (2026-04-14 쿨+30%)
+    :120; // 일반몹: 120f(2초), +차징60f = 3초/발
   if(mods.includes('M02'))_projCd=~~(_projCd*.85); // M02 공격속도+15%
   if(elite>0)_projCd=~~(_projCd*(elite>=3?.6:elite>=2?.7:.8)); // 정예: 약간 빠르게
   // ═══ 모든 몬스터 eShield = HP (50:50 이원 방어) ═══
