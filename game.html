@@ -17397,9 +17397,9 @@ function mkEn(x,y,si,etype,ib,el,room){
   const _atk=Math.floor(((ib?75:50)+monLv*(ib?2.9:1.95))*dm*et.atkMul); // 일반: 50+lv×1.95 (1000렙=2000), 보스: 75+lv×2.9 (1000렙≈3000, 일반×1.5)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   if(!window._noProjEtypes)window._noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
-  let _projCd=ib?50 // 보스: 별도
+  let _projCd=ib?65 // 보스: 65f ≈ 0.92발/초 (2026-04-14 쿨+30%)
     :_noProjEtypes[etype]?9999
-    :60; // 일반몹: 초당 1발 (60프레임)
+    :78; // 일반몹: 78f ≈ 0.77발/초 (2026-04-14 쿨+30%)
   if(mods.includes('M02'))_projCd=~~(_projCd*.85); // M02 공격속도+15%
   if(elite>0)_projCd=~~(_projCd*(elite>=3?.6:elite>=2?.7:.8)); // 정예: 약간 빠르게
   // ═══ 모든 몬스터 eShield = HP (50:50 이원 방어) ═══
@@ -25577,17 +25577,20 @@ function updateE(e,sp){
           const _aimAng=Math.atan2(P.y-e.y,P.x-e.x);
           e.facing=_aimAng;
           const _fc=e._projChargeCol,_fb=e._projChargeBean;
+          // 탄 수명 = 사거리에 비례 (200=60, 400=120, 600=180, 800=240, 1000=300)
+          const _pRange=ETYPE_RANGE[e.etype]||600;
+          const _pLife=~~(_pRange*.3);
           if(_fb==='black'){
             spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*4.4,vy:Math.sin(e.facing)*4.4,dmg:~~(e.atk*1.5),el:EL.P,friendly:false,life:400,ml:400,col:'#00aa00',sz:2.0,blackBean:true});
             addParts(e.x,e.y,'#00aa00',3);
           }else if(_fb==='red'){
-            spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*2.8,vy:Math.sin(e.facing)*2.8,dmg:~~(e.atk*2.5),el:e.el,friendly:false,life:300,ml:300,col:'#cc1100',sz:1.5,redBean:true,homing:true});
+            spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*2.8,vy:Math.sin(e.facing)*2.8,dmg:~~(e.atk*2.5),el:e.el,friendly:false,life:Math.max(200,_pLife),ml:Math.max(200,_pLife),col:'#cc1100',sz:1.5,redBean:true,homing:true});
             addParts(e.x,e.y,'#cc1100',3);
           }else if(_fb==='special'){
-            spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*3,vy:Math.sin(e.facing)*3,dmg:~~(e.atk*1),el:e.el,friendly:false,life:280,ml:280,col:ELC[e.el]||e.col,sz:2.5});
+            spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*3,vy:Math.sin(e.facing)*3,dmg:~~(e.atk*1),el:e.el,friendly:false,life:_pLife,ml:_pLife,col:ELC[e.el]||e.col,sz:2.5});
             addParts(e.x,e.y,e.col,3);
           }else{
-            spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*3,vy:Math.sin(e.facing)*3,dmg:~~(e.atk*.8),el:e.el,friendly:false,life:280,ml:280,col:ELC[e.el]||e.col,sz:1.5});
+            spawnProj({x:e.x,y:e.y,vx:Math.cos(e.facing)*3,vy:Math.sin(e.facing)*3,dmg:~~(e.atk*.8),el:e.el,friendly:false,life:_pLife,ml:_pLife,col:ELC[e.el]||e.col,sz:1.5});
             addParts(e.x,e.y,e.col,2);
           }
           e._projChargeT=0;e._projChargeCol=null;e._projChargeBean=null;
