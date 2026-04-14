@@ -20279,7 +20279,7 @@ function update(){
       const _ed2=dst2(P.x,P.y,e.x,e.y);
       // 뷰포트 컬링: 카메라 화면+300px 밖이면 AI 스킵 (보스/피격/근접 제외, hp/상태는 위에서 처리)
       const _eInView=e.ib||e.hurt>0||(_ed2<900)||(e.x>G.cam.x-C.width/2-300&&e.x<G.cam.x+C.width/2+300&&e.y>G.cam.y-C.height/2-300&&e.y<G.cam.y+C.height/2+300);
-      if(!_eInView){if(e._alerted&&(G._eTierFrame&7)===0)_ffMoveE(e,sp*4,0.5);continue}
+      if(!_eInView){if(e._alerted&&(G._eTierFrame&7)===0){const _erOff=ETYPE_RANGE[e.etype]||600;if(_erOff<=400||dst(P.x,P.y,e.x,e.y)>_erOff*.85)_ffMoveE(e,sp*4,0.5)}continue}
       // ═══ 4단계 AI 티어링 (보스=항상 T1) ═══
       // T1: 매프레임     | 보스, 피격중, <150px
       // T2: 2프레임마다   | <350px
@@ -20296,7 +20296,7 @@ function update(){
         if((G._eTierFrame&3)===(_ei&3))updateE(e,sp*4);
       }else{
         // T4: 700px+ — 8프레임마다 flowfield 이동만
-        if((G._eTierFrame&7)===(_ei&7)){if(e._alerted)_ffMoveE(e,sp*4,0.6);else updateE(e,sp*8)}
+        if((G._eTierFrame&7)===(_ei&7)){if(e._alerted){const _erT4=ETYPE_RANGE[e.etype]||600;if(_erT4<=400||dst(P.x,P.y,e.x,e.y)>_erT4*.85)_ffMoveE(e,sp*4,0.6)}else updateE(e,sp*8)}
       }
       // 화톳불 배리어: 이동 후에도 재확인
       if(_bfActive&&!e.ib){const _bfd2b=dst2(_bf.x,_bf.y,e.x,e.y);if(_bfd2b<_bfR2){const _bfdb=Math.sqrt(_bfd2b)||1;const _bfa2=Math.atan2(e.y-_bf.y,e.x-_bf.x);e.x=_bf.x+Math.cos(_bfa2)*_bf.r;e.y=_bf.y+Math.sin(_bfa2)*_bf.r}}
@@ -20545,7 +20545,7 @@ function update(){
         const _hAng=Math.atan2(_hTy-p.y,_hTx-p.x);
         const _cAng=Math.atan2(p.vy,p.vx);
         let _diff=_hAng-_cAng;while(_diff>Math.PI)_diff-=Math.PI*2;while(_diff<-Math.PI)_diff+=Math.PI*2;
-        const _turnRate=p.blackBean?.0135:p.elemBall?.045:p.phantomSword?.04:p._closeBean?.024:p.redBean?.0072:.03; // 근접빨콩 80%, 원거리빨콩 24% (2026-04-14 유도-20%)
+        const _turnRate=p.blackBean?.0135:p.elemBall?.045:p.phantomSword?.04:p._closeBean?.0168:p.redBean?.005:.03; // 근접빨콩 56%, 원거리빨콩 17% (2026-04-14 유도-44%)
         const _turn=Math.min(Math.abs(_diff),_turnRate*sp)*Math.sign(_diff);
         const _spd=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
         const _nAng=_cAng+_turn;
@@ -21208,29 +21208,26 @@ function update(){
     // 구속의 영역 fireZone 범위 내 → 즉시 제거
     // 신성한 땅은 소환굴을 제거하지 않음 — 처치율 분모 보존
     const _hd2=_hqd;
-    // 화면에 보이면 트리거 (뷰포트 + 여유 50px)
+    // 2000px 이내 접근 시 트리거
     if(!h._triggered){
-      const _hvx=Math.abs(h.x-G.cam.x),_hvy=Math.abs(h.y-G.cam.y);
-      if(_hvx<C.width/2+50&&_hvy<C.height/2+50)h._triggered=true;
+      if(_hqd<4000000)h._triggered=true; // 2000^2
       continue;
     }
-    // 트리거 후 연출 타이머 (3초 동안 소환굴 빛남)
+    // 트리거 후 연출 타이머 (1.5초 빛남)
     if(h._spawnDelay==null)h._spawnDelay=90;
     if(h._spawnDelay>0){h._spawnDelay-=sp;continue}
-    // 몹 스폰 — 프레임 분산 (한 프레임 최대 5마리)
+    // 스폰 총량/간격 초기화: 5초(300f)에 걸쳐 순차 소환
     const _hSi=G.stage;
-    if(h._spawnTotal==null){const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';h._spawnTotal=SPAWN_HOLE.cnt[_hType]||50;h._spawned=0;h._spawnCD=0}
+    if(h._spawnTotal==null){const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';h._spawnTotal=SPAWN_HOLE.cnt[_hType]||50;h._spawned=0;h._spawnCD=0;h._spawnInterval=~~(300/h._spawnTotal)} // 5초÷총량=간격
     if(h._spawnCD>0){h._spawnCD-=sp;continue}
-    if(dst(P.x,P.y,h.x,h.y)>2500){h._spawnCD=30;continue} // 2500px 밖이면 스폰 지연 (트리거된 소환굴은 완료까지 유지)
-    const _BATCH=3; // 프레임당 최대 3마리 (스파이크 방지)
-    if(G._aliveEns>=750){h._spawnCD=30;continue} // 생존 적 750 이상이면 스폰 대기 (하드캡 900 전 여유)
-    const _hRemain=Math.min(_BATCH,h._spawnTotal-h._spawned);
-    for(let _hj=0;_hj<_hRemain;_hj++){
+    if(G._aliveEns>=750){h._spawnCD=30;continue} // 생존 적 750 이상이면 스폰 대기
+    // 1마리씩 순차 소환 (간격 = 300f/총량)
+    {
       let _hsx,_hsy,_hTry=0;
       do{const _ha=Math.PI*2*Math.random(),_hr=120+Math.random()*300+h.size*150;
         _hsx=h.x+Math.cos(_ha)*_hr;_hsy=h.y+Math.sin(_ha)*_hr;_hTry++;
       }while(_hTry<30&&isW(_hsx,_hsy,true));
-      // 실패 시 소환굴 중심에서 나선 탐색으로 바닥 찾기
+      // 실패 시 나선 탐색
       if(isW(_hsx,_hsy,true)){
         const _ctx=~~(h.x/T),_cty=~~(h.y/T);let _sf=false;
         for(let _sr=1;_sr<20&&!_sf;_sr++)for(let _sdy=-_sr;_sdy<=_sr&&!_sf;_sdy++)for(let _sdx=-_sr;_sdx<=_sr;_sdx++){
@@ -21238,14 +21235,14 @@ function update(){
           const _nx=_ctx+_sdx,_ny=_cty+_sdy;
           if(_nx>0&&_ny>0&&_nx<G.mw-1&&_ny<G.mh-1&&G.map[_ny][_nx]===0){_hsx=(_nx+.5)*T;_hsy=(_ny+.5)*T;_sf=true}
         }
-        if(!_sf){h._failCnt=(h._failCnt||0)+1;if(h._failCnt>=5){h._spawned=h._spawnTotal;break}h._spawnCD=30;break} // 5회 연속 실패 → 강제 완료
+        if(!_sf){_hsx=h.x;_hsy=h.y} // 최종 실패 → 소환굴 중심에 강제 스폰
       }
       const ne=mkEn(_hsx,_hsy,_hSi,rollEtype(_hSi),false,undefined,h.room);
-      ne.reviveIframes=15; // 스폰 페이드인 (15프레임 반투명 → 렌더 경량)
+      ne.reviveIframes=15;
       ens[ens.length]=ne;
       h._spawned++;
     }
-    h._spawnCD=5; // 5프레임 간격 (스파이크 분산)
+    h._spawnCD=Math.max(1,h._spawnInterval||5); // 순차 간격
     // 전부 소환 완료 → 이펙트 + 제거
     if(h._spawned>=h._spawnTotal){
       addParts(h.x,h.y,SPAWN_HOLE.col,15);
@@ -25136,9 +25133,9 @@ function updateE(e,sp){
     }
     if(e.hp<e.mhp*.5&&d<120){const fa=Math.atan2(e.y-P.y,e.x-P.x);const _fs3=e.speed*(e._aSpdM||1)*sp*1.5;e.x+=Math.cos(fa)*_fs3;e.y+=Math.sin(fa)*_fs3}
   }
-  // ── 83:살가죽 수집가 — 고속 접근+연속 베기(높은 데미지) ──
+  // ── 83:살가죽 수집가 — 고속 접근+연속 베기(높은 데미지) [단거리400]──
   if(e.etype===83&&e.s==='idle'){
-    if(d>35&&(d<1200||e._alerted)){_ffMoveE(e,sp,.8)}
+    if(d>35&&d>30&&(d<1200||e._alerted)){_ffMoveE(e,sp,.8)}
     if(d<30+e.r&&P.iframes<=0&&Math.random()<.22*sp){
       hurtP(~~(e.atk*1.5));addTxt(P.x,P.y-10,_T('베기!'),'#886655',25);/*SFX.hit()*/;
       if(Math.random()<.3)addTxt(P.x,P.y-25,_T('관통!'),'#aa6644',20);
@@ -25194,7 +25191,7 @@ function updateE(e,sp){
         }
       }
     }
-    if(d>50&&(d<1200||e._alerted)){_ffMoveE(e,sp,.6)}
+    if(d>50&&(d<1200||e._alerted)){_ffMoveE(e,sp,.6)} // 85=단거리, 밀착OK
   }
   // ── 86:거꾸로 된 천사 — 빛 창+암흑 폭발+속성 교대 ──
   if(e.etype===86&&e.s==='idle'){
@@ -25220,13 +25217,12 @@ function updateE(e,sp){
       e._dgCopied=true;e.atk=Math.max(e.atk,~~(P.atk*.7));e.speed=Math.max(e.speed,P.speed*.8);
       addTxt(e.x,e.y-15,_T('...복사...'),'#cc9988',40);addParts(e.x,e.y,'#998877',10);
     }
-    if(d>30&&(d<1200||e._alerted)){_ffMoveE(e,sp,1)}
-    if(d<35+e.r&&P.iframes<=0&&Math.random()<.18*sp){
-      hurtP(~~(e.atk));addTxt(P.x,P.y-10,_T('베기!'),'#998877',25);/*SFX.hit()*/;
-    }
-    if(d>100&&d<1200&&Math.random()<.008*sp){
+    // 87=중거리(600), 사거리 유지 (390~510px)
+    if(d>510&&(d<1200||e._alerted)){_ffMoveE(e,sp,1)}
+    else if(d<390&&d>30){const _ba87=Math.atan2(e.y-P.y,e.x-P.x);const _bs87=e.speed*sp*.5;const _nx87=e.x+Math.cos(_ba87)*_bs87,_ny87=e.y+Math.sin(_ba87)*_bs87;if(!isW(_nx87,_ny87,true)){e.x=_nx87;e.y=_ny87}}
+    if(d<600&&Math.random()<.008*sp){
       const pa=Math.atan2(P.y-e.y,P.x-e.x);
-      eProjAt(e,pa,3,.6,e.el,120,'#998877',2);
+      eProjAt(e,pa,3,.6,e.el,180,'#998877',2);
     }
   }
   // ── 88:심판자 — HP비율 심판+기둥+처형 ──
@@ -28634,7 +28630,7 @@ const _SK_MUL={
   // ── 광역 지속 ──
   fireAura:{b:5,g:2},       // 12초쿨 10초지속, 다틱 분산
   darkPillar:{b:8,g:3.2},   // 15초쿨, 9기둥
-  spikeTrap:{b:6,g:2.4},    // 10초쿨, 트랩
+  spikeTrap:{b:6,g:3.6},    // 10초쿨, 트랩 (1렙당 +30%→+30% 강화)
   // ── 중쿨 다발 ──
   blueShot:{b:4,g:1.6},     // ATK×4 (50발 합산), 5초쿨
   // ── 단일 연사 (~0.5초 사이클) ──
