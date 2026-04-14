@@ -5,7 +5,8 @@ const path = require('path');
 const PORT = 3333;
 const ROOT = __dirname;
 const SAVE_DIR = path.join(ROOT, 'saves');
-const FAVICON_PATH = path.join(ROOT, 'img', 'hellgate.png');
+const FAVICON_ICO_PATH = path.join(ROOT, 'favicon.ico');
+const FAVICON_PNG_PATH = path.join(ROOT, 'img', 'icon-256.png');
 if (!fs.existsSync(SAVE_DIR)) fs.mkdirSync(SAVE_DIR, { recursive: true });
 
 const MIME = {
@@ -51,9 +52,13 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (pathname === '/favicon.ico') {
-    if (fs.existsSync(FAVICON_PATH)) {
+    if (fs.existsSync(FAVICON_ICO_PATH)) {
+      res.writeHead(200, { 'Content-Type': 'image/x-icon', 'Access-Control-Allow-Origin': '*' });
+      return fs.createReadStream(FAVICON_ICO_PATH).pipe(res);
+    }
+    if (fs.existsSync(FAVICON_PNG_PATH)) {
       res.writeHead(200, { 'Content-Type': 'image/png', 'Access-Control-Allow-Origin': '*' });
-      return fs.createReadStream(FAVICON_PATH).pipe(res);
+      return fs.createReadStream(FAVICON_PNG_PATH).pipe(res);
     }
     res.writeHead(204, { 'Access-Control-Allow-Origin': '*' });
     return res.end();
