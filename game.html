@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
-<link rel="icon" type="image/png" href="img/hellgate.png?v=20260414-icon">
+<link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="maps_data.js"></script>
 <style>
@@ -15337,24 +15338,29 @@ function _autoFireBowSkill(tx,ty){
   const _abs=P.activeBowSk||'normal';
   // 공성쇠뇌: 터렛 설치 중이면 플레이어 석궁 사용 불가 (터렛만 발사)
   if(_gxTurret&&!_gxFiring){return}
-  if(_abs==='normal'){_fireXbow(tx,ty);return}
+  // 터렛 발사 시: 공성쇠뇌 자체가 선택돼있으면 기본 석궁으로 전환
+  const _effAbs=(_gxFiring&&_abs==='ghostXbowTurret')?'normal':_abs;
+  if(_effAbs==='normal'){_fireXbow(tx,ty);return}
   const a=Math.atan2(ty-P.y,tx-P.x);
   const _sS=P.s,_sSt2=P.st2,_sSt=P.st;
   P.facing=a;P.atkArc=a;
   let fired=false;
-  if(_abs==='bladeShot'&&P.skills.bladeShot&&(P._bltCd||0)<=0){activateBladeShot();fired=true}
-  else if(_abs==='blastShot'&&P.skills.blastShot&&G.mats>=_malCost(5)&&(P._bsCd2||0)<=0){activateBlastShot();fired=true} // 밸런스: 악의 8→5 (50% 할인 반영)
-  else if(_abs==='fanShot'&&P.skills.fanShot&&!_isFused('sixFuse')&&!_isFused('elemFuse')&&!_isFused('stormBeam')){_fireFanShot();fired=true}
-  else if(_abs==='needleShot'&&P.skills.needleShot&&(P._ndCd||0)<=0){activateNeedleShot();fired=true}
-  else if(_abs==='ghostXbowTurret'&&P.skills.ghostXbowTurret){
-    if(!_gxTurret&&P.st>=GXBOW_ST){activateGhostXbowTurret()}
-    fired=true;
+  const _pBefore=pProjs.length; // 실제 투사체 생성 여부 확인용
+  if(_effAbs==='bladeShot'&&P.skills.bladeShot&&(P._bltCd||0)<=0){activateBladeShot();fired=pProjs.length>_pBefore}
+  else if(_effAbs==='blastShot'&&P.skills.blastShot&&G.mats>=_malCost(5)&&(P._bsCd2||0)<=0){activateBlastShot();fired=true} // 밸런스: 악의 8→5 (50% 할인 반영)
+  else if(_effAbs==='fanShot'&&P.skills.fanShot&&!_isFused('sixFuse')&&!_isFused('elemFuse')&&!_isFused('stormBeam')){_fireFanShot();fired=true}
+  else if(_effAbs==='needleShot'&&P.skills.needleShot&&(P._ndCd||0)<=0){activateNeedleShot();fired=pProjs.length>_pBefore}
+  else if(_effAbs==='ghostXbowTurret'&&P.skills.ghostXbowTurret){
+    if(!_gxTurret&&P.st>=GXBOW_ST){activateGhostXbowTurret();fired=true}
   }
   if(!fired){
-    // 스킬 쿨다운 중이면 평타 대신 대기
-    const _skOnCd=(_abs==='bladeShot'&&(P._bltCd||0)>0)||(_abs==='blastShot'&&(P._bsCd2||0)>0)||(_abs==='needleShot'&&(P._ndCd||0)>0);
-    if(_skOnCd){P.s=_sS;P.st2=_sSt2;return}
-    _fireXbow(tx,ty)
+    // 스킬 실패/쿨다운 → 터렛이면 기본 석궁 폴백, 플레이어면 쿨다운 대기
+    if(_gxFiring){_fireXbow(tx,ty)}
+    else{
+      const _skOnCd=(_effAbs==='bladeShot'&&(P._bltCd||0)>0)||(_effAbs==='blastShot'&&(P._bsCd2||0)>0)||(_effAbs==='needleShot'&&(P._ndCd||0)>0);
+      if(_skOnCd){P.s=_sS;P.st2=_sSt2;return}
+      _fireXbow(tx,ty)
+    }
   }
   // 자동석궁 ST 소모: 기본3 + 레벨당3
   const _xbStCost=3+(P.skills.fanShot||0)*3;
@@ -17312,7 +17318,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   const et=ELITE_TIERS[elite];
   const _rare=isRareEtype(etype);const _rd=_rare?RARE_ETYPE[etype]:null;
   const hp=ib?400:_rare?_rd.hp:ETYPE_HP[etype], atk=ib?22:_rare?_rd.atk:ETYPE_ATK[etype];
-  let spd=ib?.5:_rare?(_rd.spd+Math.random()*.05)*4:(ETYPE_SPD[etype]+Math.random()*.08)*4; // 이동속도 4배
+  let spd=ib?.5:_rare?(_rd.spd+Math.random()*.05)*1.5:(ETYPE_SPD[etype]+Math.random()*.08)*1.5; // 이동속도 1.5배
   if(mods.includes('M02'))spd*=1.5; // M02 초속
   const r=(ib?22:_rare?_rd.r+Math.random()*2:ETYPE_R[etype]+Math.random()*2)*2;
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
@@ -17840,7 +17846,7 @@ function dst(a,b,c,d){return Math.sqrt((c-a)**2+(d-b)**2)}
 function dst2(a,b,c,d){return(c-a)**2+(d-b)**2} // 제곱거리 (sqrt 제거)
 // ═══ 플로우필드 패스파인딩 ═══
 const _FF_CELL=T; // 타일 크기 = 플로우필드 셀 크기
-let _ffField=null,_ffW=0,_ffH=0,_ffTimer=0,_ffFlatFB=null;
+let _ffField=null,_ffW=0,_ffH=0,_ffTimer=0;
 // ── Web Worker: _ffBuild 오프로드 ──
 const _FF_WORKER_SRC=`
 self.onmessage=function(e){
@@ -17955,18 +17961,12 @@ function _ffBuild(){
     if(flatMap.buffer.byteLength===0)flatMap=(_ffBufFlip?(_ffBufB=new Int8Array(sz)):(_ffBufA=new Int8Array(sz)));
     for(let y=0;y<mh;y++){const row=G.map[y],off=y*mw;for(let x=0;x<mw;x++)flatMap[off+x]=row[x]}
     _ffBufFlip=!_ffBufFlip;
-    _ffStampObjs(flatMap,mw,mh);
     _ffWorkerBusy=true;
     _ffWorker.postMessage({map:flatMap.buffer,mw:mw,mh:mh,ptx:ptx,pty:pty,bufSize:sz,px:P.x,py:P.y,cell:_FF_CELL},[flatMap.buffer]);
     return;
   }
   // 폴백: 메인스레드 BFS (Worker 미지원 or busy)
   const _sz=mw*mh,map=G.map;
-  // flat 복사본에 MAP_OBJS 충돌 스탬프
-  if(!_ffFlatFB||_ffFlatFB.length<_sz)_ffFlatFB=new Int8Array(_sz);
-  const flat=_ffFlatFB;
-  for(let y=0;y<mh;y++){const row=map[y],off=y*mw;for(let x=0;x<mw;x++)flat[off+x]=row[x]}
-  _ffStampObjs(flat,mw,mh);
   if(!_ffField||_ffField.length!==_sz*2)_ffField=new Float32Array(_sz*2);
   const dist=new Int16Array(_sz);dist.fill(-1);
   const q=new Int32Array(_sz);let qH=0,qT=0;
@@ -17979,8 +17979,9 @@ function _ffBuild(){
       if(nx<0||ny<0||nx>=mw||ny>=mh)continue;
       const ni=ny*mw+nx;
       if(dist[ni]>=0)continue;
-      if(flat[ni]===1)continue;
-      if(i>=4){if(flat[cy*mw+nx]===1||flat[ny*mw+cx]===1)continue}
+      const v=map[ny][nx];
+      if(v===1)continue;
+      if(i>=4){const v1=map[cy][nx],v2=map[ny][cx];if(v1===1||v2===1)continue}
       dist[ni]=cd+1;q[qT++]=ni;
     }
   }
@@ -17995,20 +17996,7 @@ function _ffBuild(){
   }
   _ffW=mw;_ffH=mh;
 }
-// MAP_OBJS 충돌을 flat맵에 벽으로 스탬프 (플로우필드용)
-function _ffStampObjs(flat,mw,mh){
-  for(let i=0;i<MAP_OBJS.length;i++){
-    const o=MAP_OBJS[i],m=_OBJ_META[o.type];
-    if(!m||!(m.collision||m.col))continue;
-    const r=m.sz*.4;
-    const txMin=Math.max(0,~~((o.x-r)/T)),tyMin=Math.max(0,~~((o.y-r)/T));
-    const txMax=Math.min(mw-1,~~((o.x+r)/T)),tyMax=Math.min(mh-1,~~((o.y+r)/T));
-    for(let ty=tyMin;ty<=tyMax;ty++)for(let tx=txMin;tx<=txMax;tx++){
-      const cx=tx*T+T/2,cy=ty*T+T/2,dx=cx-o.x,dy=cy-o.y;
-      if(dx*dx+dy*dy<r*r)flat[ty*mw+tx]=1;
-    }
-  }
-}
+
 const _ffOut={x:0,y:0};
 function _ffDir(px,py){
   if(!_ffField||!_ffW)return null;
@@ -23861,30 +23849,7 @@ function updateE(e,sp){
   }
   // 오라 ATK 버프 적용 (M12 이후)
   if(e._aAtkM!==1)e.atk=~~(e.atk*e._aAtkM);
-  if(!e._alerted&&!e.ib&&(e.s==='idle'||e.s==='recover')){
-    // ── 순찰 배회: 스폰 지점 기준 100px 반경 웨이포인트 왕복 ──
-    e._patrolT-=sp;
-    if(e._patrolT<=0){
-      // 새 웨이포인트: 홈 기준 40~100px 랜덤 방향
-      const _pAng=Math.random()*Math.PI*2;
-      const _pDst=40+Math.random()*60;
-      e._patrolX=e._homeX+Math.cos(_pAng)*_pDst;
-      e._patrolY=e._homeY+Math.sin(_pAng)*_pDst;
-      e._patrolT=90+~~(Math.random()*120); // 1.5~3.5초 후 다음 웨이포인트
-    }
-    const _pDx=e._patrolX-e.x,_pDy=e._patrolY-e.y;
-    const _pD=Math.sqrt(_pDx*_pDx+_pDy*_pDy);
-    if(_pD>5){ // 웨이포인트까지 5px 이상이면 이동
-      const _wSpd=e.spd*0.35*sp;
-      const _pNx=_pDx/_pD,_pNy=_pDy/_pD;
-      const wx=_pNx*_wSpd,wy=_pNy*_wSpd;
-      if(canMv(e.x+wx,e.y+wy,e.r)){e.x+=wx;e.y+=wy;}
-      else{e._patrolT=0} // 벽이면 즉시 새 웨이포인트
-      // facing: 어그로 시 플레이어, 비어그로 시 이동 방향
-      if(!e._alerted){const _wTgt=Math.atan2(_pDy,_pDx);e.facing=_wTgt;}
-    }
-    if(d>400)return; // 멀면 순찰만, 가까우면 아래 전투 로직도 진행
-  }
+  if(!e._alerted&&!e.ib&&d>400)return; // 비어그로+멀면 대기
   // 스테이지 시작 후 5초간 비피격 몬스터 AI 비활성 (멀리서 달려오는 현상 방지)
   if(P.iframes>0&&!e._alerted&&!e.ib&&d>400)return;
   const _fd0=_ffDir(e.x,e.y);e._moveAng=_fd0?Math.atan2(_fd0.y,_fd0.x):Math.atan2(P.y-e.y,P.x-e.x);e.st2-=sp;

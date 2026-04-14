@@ -36,7 +36,11 @@ const PORT = 3333;
 const ROOT = IS_PACKAGED
   ? path.join(process.resourcesPath, 'game')
   : path.join(__dirname, '..'); // dev: ?꾨줈?앺듃 猷⑦듃, prod: resources/game
-const FAVICON_PATH = path.join(ROOT, 'img', 'hellgate.png');
+const FAVICON_ICO_PATH = path.join(ROOT, 'favicon.ico');
+const FAVICON_PNG_PATH = path.join(ROOT, 'img', 'icon-256.png');
+const APP_ICON_PATH = fs.existsSync(path.join(__dirname, 'icon.ico'))
+  ? path.join(__dirname, 'icon.ico')
+  : (fs.existsSync(FAVICON_ICO_PATH) ? FAVICON_ICO_PATH : (fs.existsSync(FAVICON_PNG_PATH) ? FAVICON_PNG_PATH : undefined));
 const SAVE_DIR = IS_PACKAGED
   ? path.join(app.getPath('userData'), 'saves')
   : path.join(ROOT, 'saves'); // prod: ?ъ슜???곗씠???대뜑 (?곌린 媛??
@@ -122,9 +126,13 @@ const server = http.createServer(async (req, res) => {
   }
 
   if (pathname === '/favicon.ico') {
-    if (fs.existsSync(FAVICON_PATH)) {
+    if (fs.existsSync(FAVICON_ICO_PATH)) {
+      res.writeHead(200, { 'Content-Type': 'image/x-icon', 'Access-Control-Allow-Origin': '*' });
+      return fs.createReadStream(FAVICON_ICO_PATH).pipe(res);
+    }
+    if (fs.existsSync(FAVICON_PNG_PATH)) {
       res.writeHead(200, { 'Content-Type': 'image/png', 'Access-Control-Allow-Origin': '*' });
-      return fs.createReadStream(FAVICON_PATH).pipe(res);
+      return fs.createReadStream(FAVICON_PNG_PATH).pipe(res);
     }
     res.writeHead(204, { 'Access-Control-Allow-Origin': '*' });
     return res.end();
@@ -273,7 +281,7 @@ function createWindow() {
     fullscreenable: true,
     simpleFullscreen: true,
     title: 'THE EXODUSER',
-    icon: fs.existsSync(FAVICON_PATH) ? FAVICON_PATH : undefined,
+    icon: APP_ICON_PATH,
     backgroundColor: '#000000',
     autoHideMenuBar: true,
     frame: false, // ??댄?諛??쒓굅 (??ㅽ겕由?寃뚯엫)
