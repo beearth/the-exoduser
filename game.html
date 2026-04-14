@@ -2670,7 +2670,8 @@ function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
     if(e.ib||e._isGhoul||e._isSlime||e._mobCh)continue;
     const isStunned=e.stunned>0,isReviving=e.reviveIframes>0;
     const _isStealth=(e.modT&&e.modT.stealthT>0)||e._cloaked;
-    const sa=_isStealth?(.08+Math.sin(_now/300)*.05):(isReviving?(.2+Math.sin(_now/40)*.5):(isStunned?.6:1));
+    const _spAlpha=e._spawnT>0?Math.max(0,1-e._spawnT/20):1;
+    const sa=_spAlpha*(_isStealth?(.08+Math.sin(_now/300)*.05):(isReviving?(.2+Math.sin(_now/40)*.5):(isStunned?.6:1)));
     if(sa<=0.02)continue;
     const _ePal=_getPalIdx(e.el!=null?e.el:0);
     const _eFr=_getEFrame(e,_now);
@@ -17580,7 +17581,8 @@ function mkEn(x,y,si,etype,ib,el,room){
     _grGold:0,_grGrowth:1,_grAbsorbCd:0, // 96:탐욕사도
     _twPhase:etype===97?'melee':null,_twRotT:etype===97?300:0,_twReviveT:0,_twDead:false, // 97:쌍둥이
     _drTpCd:etype===98?120:9999,_drRiftCd:etype===98?300:9999,_drSumCd:etype===98?400:9999, // 98:차원균열체
-    _deathT:etype===99?1800:0,_deathSent:0,_deathScCd:etype===99?120:9999 // 99:죽음
+    _deathT:etype===99?1800:0,_deathSent:0,_deathScCd:etype===99?120:9999, // 99:죽음
+    _spawnT:20 // 스폰 페이드인 (20프레임 ≈ 0.33초)
   };
   _assignMobSkin(_e);
   return _e;
@@ -20248,6 +20250,7 @@ function update(){
         if(!_rescued0){e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1;continue}
       }}
       // ── 타이머 감소 (컬링/짝홀 상관없이 항상 실행) ──
+      if(e._spawnT>0)e._spawnT--;
       if(e.stunned>0)e.stunned-=sp;
       if(e._hitStun>0)e._hitStun-=sp;
       if(e._stunImmune>0)e._stunImmune-=sp;
@@ -20524,7 +20527,7 @@ function update(){
         const _hAng=Math.atan2(_hTy-p.y,_hTx-p.x);
         const _cAng=Math.atan2(p.vy,p.vx);
         let _diff=_hAng-_cAng;while(_diff>Math.PI)_diff-=Math.PI*2;while(_diff<-Math.PI)_diff+=Math.PI*2;
-        const _turnRate=p.blackBean?.0135:p.elemBall?.045:p.phantomSword?.04:p._closeBean?.03:p.redBean?.009:.03; // 근접빨콩 100%, 원거리빨콩 30%
+        const _turnRate=p.blackBean?.0135:p.elemBall?.045:p.phantomSword?.04:p._closeBean?.024:p.redBean?.0072:.03; // 근접빨콩 80%, 원거리빨콩 24% (2026-04-14 유도-20%)
         const _turn=Math.min(Math.abs(_diff),_turnRate*sp)*Math.sign(_diff);
         const _spd=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
         const _nAng=_cAng+_turn;
@@ -21187,9 +21190,10 @@ function update(){
     // 구속의 영역 fireZone 범위 내 → 즉시 제거
     // 신성한 땅은 소환굴을 제거하지 않음 — 처치율 분모 보존
     const _hd2=_hqd;
-    // 850px 이내 접근 시 트리거 시작
+    // 화면에 보이면 트리거 (뷰포트 + 여유 50px)
     if(!h._triggered){
-      if(_hd2<722500)h._triggered=true; // 850^2
+      const _hvx=Math.abs(h.x-G.cam.x),_hvy=Math.abs(h.y-G.cam.y);
+      if(_hvx<C.width/2+50&&_hvy<C.height/2+50)h._triggered=true;
       continue;
     }
     // 트리거 후 연출 타이머 (3초 동안 소환굴 빛남)
@@ -21199,13 +21203,13 @@ function update(){
     const _hSi=G.stage;
     if(h._spawnTotal==null){const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';h._spawnTotal=SPAWN_HOLE.cnt[_hType]||50;h._spawned=0;h._spawnCD=0}
     if(h._spawnCD>0){h._spawnCD-=sp;continue}
-    if(dst(P.x,P.y,h.x,h.y)>1000)continue; // 소환굴 반응 거리 1000px
+    if(dst(P.x,P.y,h.x,h.y)>2500){h._spawnCD=30;continue} // 2500px 밖이면 스폰 지연 (트리거된 소환굴은 완료까지 유지)
     const _BATCH=3; // 프레임당 최대 3마리 (스파이크 방지)
     if(G._aliveEns>=750){h._spawnCD=30;continue} // 생존 적 750 이상이면 스폰 대기 (하드캡 900 전 여유)
     const _hRemain=Math.min(_BATCH,h._spawnTotal-h._spawned);
     for(let _hj=0;_hj<_hRemain;_hj++){
       let _hsx,_hsy,_hTry=0;
-      do{const _ha=Math.PI*2*Math.random(),_hr=40+Math.random()*300+h.size*150;
+      do{const _ha=Math.PI*2*Math.random(),_hr=120+Math.random()*300+h.size*150;
         _hsx=h.x+Math.cos(_ha)*_hr;_hsy=h.y+Math.sin(_ha)*_hr;_hTry++;
       }while(_hTry<30&&isW(_hsx,_hsy,true));
       // 실패 시 소환굴 중심에서 나선 탐색으로 바닥 찾기
@@ -34315,7 +34319,8 @@ function draw(){
     const isStunned=e.stunned>0;
     const isReviving=e.reviveIframes>0;
     const _isStealth=(e.modT&&e.modT.stealthT>0)||e._cloaked;
-    const sa=_isStealth?(.08+Math.sin(_now/300)*.05):(isReviving?(.2+Math.sin(_now/40)*.5):(isStunned?.6:1));X.globalAlpha=sa;
+    const _spAlpha=e._spawnT>0?Math.max(0,1-e._spawnT/20):1;
+    const sa=_spAlpha*(_isStealth?(.08+Math.sin(_now/300)*.05):(isReviving?(.2+Math.sin(_now/40)*.5):(isStunned?.6:1)));X.globalAlpha=sa;
     const _ensGLQueued=e._ensGLMode||0;
     // Stun glow ring
     if(isStunned){X.globalAlpha=.4+Math.sin(_now/60)*.3;X.strokeStyle='#ffaa00';X.lineWidth=3;X.beginPath();X.arc(e.x,e.y,e.r+8,0,Math.PI*2);X.stroke();
