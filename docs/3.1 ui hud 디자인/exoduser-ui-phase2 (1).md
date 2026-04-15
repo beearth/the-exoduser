@@ -217,7 +217,7 @@ style 맨 아래에 추가:
 |---|---|---|
 | 탭 구조 | 텍스트만 출력 → `아이콘 박스 + 라벨` 2요소 구조로 분리 (`fg-tab-ico`, `fg-tab-txt`) | `game.html` `renderForge()` |
 | 탭 메타 | 탭별 `icon/ko/en` 메타 객체 도입 (`_fgTabMeta`)으로 아이콘/언어 라벨 일관화 | `game.html` `renderForge()` |
-| 탭 시각 | 대장간 탭에 밝은 대비 칩 프레임(26x26), 활성 탭 전용 골드 하이라이트, 이미지 밝기/대비/채도/드롭섀도 보정 추가 | `game.html` `.fg-tab`, `.fg-tab-ico`, `.fg-tab.act .fg-tab-ico`, `.fg-tab-ico-img` |
+| 탭 시각 | 대장간 전용 `#forge` 오버라이드에서 아이콘 칩을 밝은 대비 프레임(30x30)으로 재정의, 활성 탭 골드 하이라이트와 이미지 밝기/대비/채도/드롭섀도 보정 강화 | `game.html` `#forge .fg-tab .fg-tab-ico`, `#forge .fg-tab.act .fg-tab-ico`, `#forge .fg-tab .fg-tab-ico-img` |
 | 아이콘 소스 | 탭별 개별 PNG 직접 삽입: `output/imagegen/forge-tabs-tight/{tabKey}.png` | `game.html` `renderForge()` |
 | 에셋 경로 | `output/imagegen/forge-tabs-tight/upgrade.png` ~ `headband.png` (총 17개) | 프로젝트 루트 출력물 |
 | 가독성 미세조정 | 아이콘 18→22px, 탭 패딩 5→6px, 아틀라스 배율 `400x300%`(4x3 시트 기준), 대비/밝기/글로우 강화 | `game.html` `.fg-tab`, `.fg-tab-ico`, `.fg-tab-ico.atlas` |
