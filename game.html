@@ -649,10 +649,11 @@ canvas{display:block;position:fixed;inset:0}
 .fg-tab{padding:6px 12px;background:rgba(0,0,0,.4);border:1px solid #332211;color:var(--c-border-hover);font-size:.9rem;cursor:pointer;transition:all .2s;white-space:nowrap}
 .fg-tab:hover{border-color:var(--c-border-hover);color:var(--c-text-bright)}
 .fg-tab.act{border-color:#ff8800;color:#ffcc44;background:rgba(255,100,0,.1)}
-.fg-tab-ico{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;margin-right:7px;font-size:.95rem;border-radius:6px;background:rgba(0,0,0,.28);border:1px solid rgba(124,76,52,.45);vertical-align:middle}
+.fg-tab-ico{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;margin-right:7px;font-size:.95rem;border-radius:7px;background:linear-gradient(180deg,rgba(255,232,204,.28),rgba(116,63,34,.26));border:1px solid rgba(255,170,92,.72);box-shadow:inset 0 0 0 1px rgba(255,245,226,.1),0 0 8px rgba(255,131,52,.12);vertical-align:middle}
 .fg-tab-txt{vertical-align:middle;letter-spacing:.01em}
-.fg-tab-ico-img{width:16px;height:16px;display:block;object-fit:contain;image-rendering:auto}
+.fg-tab-ico-img{width:20px;height:20px;display:block;object-fit:contain;image-rendering:auto;filter:brightness(1.38) contrast(1.34) saturate(1.28) drop-shadow(0 0 3px rgba(255,214,160,.28))}
 .fg-tab-ico-fb{display:none;font-size:.95rem;line-height:1}
+.fg-tab.act .fg-tab-ico{background:linear-gradient(180deg,rgba(255,238,188,.42),rgba(170,84,36,.38));border-color:rgba(255,205,118,.92);box-shadow:inset 0 0 0 1px rgba(255,249,222,.22),0 0 12px rgba(255,166,74,.3)}
 .fg-tab-ico.atlas{
   color:transparent;
   font-size:0;
@@ -7705,16 +7706,16 @@ function mkItem(slot,tier,el,rarity,wtype){
   const _atkFloor=[0,.05,.15,.25,.40][rarity]||0; // 일반0%, 고급5%, 희귀15%, 영웅25%, 전설40%
   const _atkRoll=Math.max(1,~~(_atkMax*(_atkFloor+(1-_atkFloor)*Math.pow(Math.random(),2)))); // skew: 고뎀 극악, 최소1
   const base={
-    weapon:{atk:_atkRoll,spd:1},
+    weapon:{atk:_atkRoll,spd:1,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
     // DEF/eDef 5티어 선형 통일: T0=10, T1=20, T2=30, T3=40, T4=50 (12슬롯 × 50 = 총 600 방어)
     // eDef는 전 속성 공통이라 절반 스케일 (T4=25, 총 최대 ~150)
     // 방어구 파트: bonusHp 5티어 [100,200,300,400,500] (2026-04-11 재밸런스)
-    shield:{atk:3+tier*2,def:10+tier*10,stagger:15+tier*8,blockRate:50+tier*8,shieldWt:10-tier,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
+    shield:{atk:3+tier*2,def:10+tier*10,stagger:15+tier*8,blockRate:50+tier*8,shieldWt:10-tier,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
     boots:{def:10+tier*10,spd:tier*.08,bonusSt:5+tier*4,chargeDist:14+tier*3,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
     armor:{def:10+tier*10,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:4+tier*3,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
     // 무기 파트(helmet,weapon,bow): bonusHp 금지 — 무기 파트는 공격 전용
     helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,def:10+tier*10,eDef:5+tier*5},
-    bow:{atk:_atkRoll,spd:1},
+    bow:{atk:_atkRoll,spd:1,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
     gloves:{atk:2+tier*2,def:10+tier*10,spd:tier*.04,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
     pants:{def:10+tier*10,bonusSt:3+tier*3,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
     // 장신구 파트: bonusHp 5티어 [100,200,300,400,500]
@@ -23084,6 +23085,8 @@ function update(){
   }
   // ═══ 불장판 DOT 업데이트 ═══
   if(G._fireZones&&G._fireZones.length>0){
+    // 겹침 캡 리셋: 매 프레임 적별 darkPillar/spikeTrap 히트 카운터 초기화
+    for(let _ri=0;_ri<ens.length;_ri++){ens[_ri]._dpHitCap=0;ens[_ri]._stHitCap=0}
     let _fzW=0;for(let _fzi=0;_fzi<G._fireZones.length;_fzi++){
       const fz=G._fireZones[_fzi];
       fz.t+=sp;
@@ -31035,7 +31038,9 @@ function _renderSkillRow(sk,grid){
     const _dispName=_starTxt+(_fuseNameKey?(_e?_FUSE_NAME_EN[_fuseNameKey]:_FUSE_NAME_KO[_fuseNameKey]):_T(sk.name));
     const _FUSE_DESC_EN={stormBeam:'Quake Storm + Tracking Lightning 6-fuse. Fire 6-element tracking beams while spinning! +20% total DMG. Quake+Beam explosion on end.',dimBlast:'6-fuse. Bladewing+Burst+Destroy+Flame all enhanced. Shift+LMB \u2192 forward power wave.',dimRush:'5-fuse. Chain Bladewing unlocked! Slash left/right blades while moving+bleed. Destroy+Flame enhanced.',dimThunder:'4-fuse. Chain Destroy+Flame enhanced. Destroy DMG\u2191 Poise\u2191 Range\u2191',dimSlam:'3-fuse. Chain Flame absorbed. Land range\u2191 DMG\u2191',dimBreach:'Chain Rush: Impact + Chain Rush: Flame fuse. Shift \u2192 piercing rush then INT-based landing explosion! 5 stocks, 7s CD.',iceMortar:'Storm Summon + Ice Orb fuse. Mouse aim \u2192 summon ice vortex! Pulls enemies in and freezes. 10s CD.',elemFuse:'Barrage + Annihilation Beam + Elemental Tracker 3-fuse. Hold E \u2192 6-element homing lasers! Each beam auto-tracks nearest enemy.',slamStorm:'Whirl-Det + Giant Slam 3-fuse. On spin end, detonate+giant slam shockwave! Giant Slam CD removed, range\u2191',sixFuse:'Barrage + Annihilation Beam fuse. Hold E \u2192 6-element helix laser! Add Elemental Tracker for Tracking Lightning.',bladeFuse:'Malice Hunt + Malice Guardian fuse. Dark blades orbit you, blocking projectiles. Press slot key to fire all blades! (+2 blades at max lv)',whirlDet:'Whirlwind + Detonate synth. Auto parry shield during spin \u2192 absorb attacks \u2192 auto AOE blast on end. Add Giant Slam for Quake Storm!',boneStorm:'Malice Storm + Bone Tomb fuse. Mouse aim click \u2192 bone tomb ring + inner dark DOT! 3 stock charges, wall block+sustained DMG.',elecRepent:'Bone Lightning + Repentance fuse. Repentance placement spawns electric vortex! DMG+20%, charge 1/2/3 at Lv1/5/10.',shieldFuse:'Swipe + Wing Blade fuse. On swipe, auto forward rush+slam shockwave! Hits+stun+poise reduction in range.',plagueFuse:'Malice Hunt + Plague Burst fuse. Auto plague blades on blade fire! Plague explosion on hit.',pillarSlam:'Giant Slam II + Dark Pillar fuse. Giant Slam auto-deploys 9 dark pillars (+spike traps if Pillar Thorn fused)! Lv300+ hidden.',pillarSpike:'Dark Pillar + Spike Trap fuse. Each pillar auto-places spike trap! Slow+bleed at every pillar position.',holyIce:'Holy Ward + Ice Storm 3-fuse. Holy zone places prison+freeze storm! Regen+revive block+freeze in range.',holyFuse:'Holy Domain + Binding Domain fuse. Holy zone auto-places prison! Regen+revive block in range.'};
     const _FUSE_DESC_KO={stormBeam:'지진폭풍 + 추적암전 6단합체. 회전참 중 6원소 추적 빔 동시 발사! 전체 데미지 20% 강화. 종료 시 지진폭풍+빔 동시 폭발',dimBlast:'6단합체. 칼날개+전폭+파괴+불꽃 전부 강화. Shift+좌클릭 → 전방 파워웨이브',dimRush:'5단합체. 기동칼날개 해금! 이동 중 좌우 칼날 광역 베기+출혈. 파괴+불꽃도 강화',dimThunder:'4단합체. 기동파괴+불꽃 강화. 파괴 데미지↑ 포이즈↑ 범위↑',dimSlam:'3단합체. 기동불꽃 흡수. 착지 범위↑ 데미지↑',dimBreach:'사슬기동:충돌 + 사슬기동:화염 합체. Shift → 관통돌진 후 INT 기반 착지 대폭발! 스톡5, 쿨7초',iceMortar:'폭풍소환 + 얼음보주 합체. 마우스 조준 → 얼음 소용돌이 소환! 적을 중심으로 끌어당기며 빙결. 쿨 10초',elemFuse:'만화방창 + 멸살광선 + 원소추적탄 3단합체. E홀드 → 6원소 유도 추적 레이저! 각 빔이 가장 가까운 적을 자동 추적',slamStorm:'회전기폭 + 대왕치기 3단합체. 회전 종료 시 기폭+대왕치기 진동파 동시 발동! 대왕치기 쿨타임 소멸, 범위↑',sixFuse:'만화방창 + 멸살광선 합체. E홀드 → 6원소 꽈배기 레이저! 원소추적탄 추가 합체 시 추적암전',bladeFuse:'악의사냥 + 악의보호자 합체. 암흑칼날이 몸 주위를 돌며 투사체 방어. 슬롯 키로 모인 칼날 전부 발사! (만렙 시 +2칼날)',whirlDet:'회전참 + 기폭팔 합성. 회전 중 패링 쉴드 자동 발동 → 적 공격 흡수 → 종료 시 자동 광역 폭발. 대왕치기 추가 합체 시 지진폭풍!',boneStorm:'악의폭풍 + 해골무덤 합체. 마우스 조준 클릭 → 해골무덤 링 + 내부 암흑 DOT! 3스택 충전제, 벽 차단+지속 데미지',elecRepent:'해골번개 + 참회 합체. 참회 설치 시 전기 소용돌이 동시 생성! 데미지 20%↑, 1/5/10렙 차지 1/2/3',shieldFuse:'처내기 + 칼등날개 합체. 처내기 시 전방 돌진+내려찍기 충격파 자동 발동! 범위 내 적 히트+스턴+포이즈 삭감',plagueFuse:'악의사냥 + 폭독혈 합체. 칼날 발사 시 독혈 칼날 자동 발사! 칼날 적중 시 전염 폭발',pillarSlam:'대왕치기2 + 악의기둥 합체. 대왕치기 시 9개 악의기둥 자동 전개 (+기둥가시 합체 시 가시덫 포함)! Lv300+ 히든',pillarSpike:'악의기둥 + 가시덫 합체. 각 기둥 위치에 가시덫 자동 설치! 슬로우+출혈',holyIce:'신성한 결계 + 아이스 스톰 3단합체. 신성한 영역 설치 시 감옥+빙결 폭풍 동시 설치! 범위 내 리젠+부활차단+빙결',holyFuse:'신성한 영역 + 구속의 영역 합체. 신성한 영역 설치 시 감옥 동시 설치! 범위 내 리젠+부활차단'};
-    const _dispDesc=_fuseNameKey?(_e?_FUSE_DESC_EN[_fuseNameKey]:_FUSE_DESC_KO[_fuseNameKey]):(_e?(sk.descEn||sk.desc):sk.desc);
+    let _dispDesc=_fuseNameKey?(_e?_FUSE_DESC_EN[_fuseNameKey]:_FUSE_DESC_KO[_fuseNameKey]):(_e?(sk.descEn||sk.desc):sk.desc);
+    // [고정: X] / [Fixed: X] → 컬러 배지로 치환
+    _dispDesc=_dispDesc.replace(/\[(고정|Fixed):\s*([^\]]+)\]/g,'<span style="background:#1a3355;border:1px solid #4488cc;border-radius:3px;padding:1px 6px;color:#66ddff;font-size:.82rem;font-weight:700">$2</span>');
     const _isExpanded=_skExpandedId===sk.id;
     // 스킬 아이콘 PNG (img/skillskin_upscaled/{id}.png) — onerror로 폴백
     const _iconImg='<img src="img/skillskin_upscaled/'+sk.id+'.png" style="width:48px;height:48px;image-rendering:pixelated;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.nextSibling&&(this.nextSibling.style.display=\'block\')"><div style="font-size:1.6rem;line-height:1;display:none;text-align:center">'+(sk.emoji||'⚡')+'</div>';
@@ -33272,7 +33277,7 @@ function renderForge(){
     const _txt=OPT.lang==='en'?_m.en:_m.ko;
     const d=document.createElement('div');
     d.className='fg-tab'+(G.forgeTab===k?' act':'');
-    const _img='output/imagegen/forge-tabs/'+k+'.png?v=20260415-insert3';
+    const _img='output/imagegen/forge-tabs-tight/'+k+'.png?v=20260415-tight1';
     const _fb=_forgeTabFallbackData(_m.icon);
     d.innerHTML='<span class="fg-tab-ico"><img class="fg-tab-ico-img" src="'+_img+'" alt="" onerror="this.onerror=null;this.src=&apos;'+_fb+'&apos;"></span><span class="fg-tab-txt">'+_txt+'</span>';
     d.onclick=()=>{G.forgeTab=k;_forgeSel=null;_salSel.clear();_rerollSel=null;_crForgeSel=-1;renderForge()};
