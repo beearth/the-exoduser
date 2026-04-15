@@ -20161,7 +20161,7 @@ function update(){
     // ── 빔 히트 프레임 통일: 4프레임마다 히트 판정 (15타/초) ──
     if(!P._beamHitFrame)P._beamHitFrame=0;P._beamHitFrame++;
     const _beamDoHit=P._beamHitFrame%4===0;
-    const _beamTickDmgMul=4;
+    const _beamTickDmgMul=2;
     let _beamHitCap=0;
     // ═══ 레이저 공통: 빔 방향의 가장 가까운 적 찾기 ═══
     // 빔 경로를 step마다 체크, 첫 적에서 멈춤. 적 없으면 null+사거리 끝 반환
@@ -23852,14 +23852,19 @@ function _bossAI(e,sp,d){
 
 function isPWin(){return P.s==='sBash'||(P.s==='sBlock'&&P._sbParryT>0)||(P.s==='peaceShield'&&P._sbParryT>0)||(P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent'&&P._sbParryT>0)} // 칼등치기 + 보호막 + 평화보호 패링윈도우
 function doParry(_inDmg,_px,_py){if(_px===undefined)_px=P.x;if(_py===undefined)_py=P.y;_petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;if(P.s==='sBlock'||P._sbParryT>0){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1));playSample(['sword_back','sword_back2','sword_back3'][~~(Math.random()*3)],.5,_r(1.1,.1))}if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
-  P.iframes=Math.max(P.iframes,18);P.st=Math.min(P.mst,P.st+25);P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));
+  P.iframes=Math.max(P.iframes,18);
   // 패링 성공 → 그로기 해제 + 포이즈 복원
   // 그로기 제거됨 — 포이즈 0 = 즉시 스턴
   if(P.skills.detonate&&P.parryT!==undefined&&P.parryT>0){G.shake=6*OPT.shake/100} // 기폭 충전 중: hitStop/slowMo 없이 흔들림만
   else{G.hitStop=~~(_HS.parry*OPT.hitStop/100);G.slowMo=25;G.shake=14*OPT.shake/100}
-  // ═══ 어픽스: parryBonus (패링보너스) — ST 회복 증가 ═══
+  // ═══ 패링 보상: 고정값 20 + Lv×0.03 (1000Lv=50) ═══
   const _pbMul=1+_eqAffix('parryBonus');
-  P.iframes=25;P.st=Math.min(P.mst,P.st+~~(25*_pbMul));P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));G.mats+=10;addTxt(P.x,P.y-60,_T('👿악의+10'),'#cc44ff',40);
+  const _prBase=~~((20+P.lv*0.03)*_pbMul);
+  P.iframes=25;
+  P.hp=Math.min(P.mhp,P.hp+_prBase);
+  P.st=Math.min(P.mst,P.st+_prBase);
+  P.mp=Math.min(P.mmp,P.mp+_prBase);
+  G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
   playVFXAng('parry_flash',_px,_py,0.75,3,P.facing,true);}
@@ -27277,15 +27282,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   const _elBn=[0,'fireDmgBns','iceDmgBns','darkDmgBns','lightDmgBns',0,0];
   if(atkEl>0&&atkEl<=4){const _ev=_eqAffix(_elAx[atkEl])+_eqAffix(_elBn[atkEl]);if(_ev>0)dmg=~~(dmg*(1+_ev))}
   if(atkEl===0){const _pv=_eqAffix('poisonDmgPct')+_eqAffix('poisonDmgBns');if(_pv>0&&(opts&&opts.poison))dmg=~~(dmg*(1+_pv))}}
-  // ═══ Phase2: 타입별 뎀% (근접/원거리/마법/빔/DoT/투사체) ═══
-  {let _tyAx=0;
-  if(!_isMagicDmg&&!_isArrow&&!isDot)_tyAx+=_eqAffix('meleeDmgPct'); // 근접
-  if(_isArrow)_tyAx+=_eqAffix('rangedDmgPct')+_eqAffix('projDmgPct'); // 원거리+투사체
-  if(_isMagicDmg&&!(opts&&opts.beam))_tyAx+=_eqAffix('spellDmgPct'); // 마법
-  if(opts&&opts.beam)_tyAx+=_eqAffix('beamDmgPct')+_eqAffix('spellDmgPct'); // 빔
-  if(isDot)_tyAx+=_eqAffix('dotDmgPct'); // DoT
-  if(opts&&opts.proj)_tyAx+=_eqAffix('projDmgPct'); // 투사체
-  if(_tyAx>0)dmg=~~(dmg*(1+_tyAx))}
+  // Phase2 타입별 뎀%는 _isMagicDmg 선언 후 처리 (아래로 이동)
   // ═══ 어픽스: crisisBoost (위기강화) — HP 30% 이하 시 뎀업 ═══
   if(P.hp<P.mhp*.3&&_eqAffix('crisisBoost')>0)dmg=~~(dmg*(1+_eqAffix('crisisBoost')));
   // ═══ 어픽스: killSlayer (처치보너스) — 처치 후 3초간 뎀업 ═══
@@ -27331,6 +27328,16 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   const _isArrow=!_isPure&&opts&&opts.maxDist!==undefined&&!opts.magic;
   const _isGunpowder=_isArrow||(opts&&opts.explode&&!opts.magic); // 석궁탄+화약폭발=물리판정 (magic 플래그면 제외)
   const _isMagicDmg=!_isPure&&!_isGunpowder&&(atkEl>0||(opts&&(opts.beam||opts.magic))); // 마법/원소/빔/magic투사체 판정
+
+  // ═══ Phase2: 타입별 뎀% (근접/원거리/마법/빔/DoT/투사체) ═══
+  {let _tyAx=0;
+  if(!_isMagicDmg&&!_isArrow&&!isDot)_tyAx+=_eqAffix('meleeDmgPct'); // 근접
+  if(_isArrow)_tyAx+=_eqAffix('rangedDmgPct')+_eqAffix('projDmgPct'); // 원거리+투사체
+  if(_isMagicDmg&&!(opts&&opts.beam))_tyAx+=_eqAffix('spellDmgPct'); // 마법
+  if(opts&&opts.beam)_tyAx+=_eqAffix('beamDmgPct')+_eqAffix('spellDmgPct'); // 빔
+  if(isDot)_tyAx+=_eqAffix('dotDmgPct'); // DoT
+  if(opts&&opts.proj)_tyAx+=_eqAffix('projDmgPct'); // 투사체
+  if(_tyAx>0)dmg=~~(dmg*(1+_tyAx))}
 
   // ═══ 디버프 영역: 물리/마법/투사체 방어 하락 ═══
   if(!_isPure&&e._weakPhys>0&&!_isMagicDmg&&!_isArrow)dmg=~~(dmg*(1+e._weakPhys)); // 물리 피격 증가

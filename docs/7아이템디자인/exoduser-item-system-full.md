@@ -217,7 +217,7 @@ Object.freeze(AFFIX_POOL);
 | chainTarget | 연쇄의 | PREFIX | 1/2/3 | val | wpn | 주변 적 N명에게 30% 뎀 (반경100) |
 | killSlayer | 학살의 | PREFIX | 15%/25%/40% | pct | wpn | 처치 후 3초간 뎀×(1+배율) |
 | elemFocus | 원소집중의 | PREFIX | 12%/20%/32% | pct | wpn,nck | 속성 공격 시 뎀×(1+배율) |
-| parryBonus | 패리의 | PREFIX | 20%/35%/55% | pct | wpn,clk | 패링 ST 회복량 ×(1+배율) |
+| parryBonus | 패리의 | PREFIX | 20%/35%/55% | pct | wpn,clk | 패링 HP/ST/MP 회복량 ×(1+배율) |
 | comboBoost | 콤보의 | PREFIX | 20%/35%/55% | pct | wpn | 같은 적 연속 공격 시 +5%/중첩 |
 | dashBoost | 돌진의 | PREFIX | 25%/40%/65% | pct | wpn,bts | 작살/돌진 데미지 ×(1+배율) |
 | skillBoost | 궁극의 | PREFIX | 15%/25%/40% | pct | wpn | 선택스킬 데미지 ×(1+배율) (_fuseMul 내장) |
