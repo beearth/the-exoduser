@@ -651,11 +651,11 @@ canvas{display:block;position:fixed;inset:0}
 .fg-tab-ico{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;margin-right:7px;font-size:.95rem;border-radius:6px;background:rgba(0,0,0,.28);border:1px solid rgba(124,76,52,.45);vertical-align:middle}
 .fg-tab-txt{vertical-align:middle;letter-spacing:.01em}
 .fg-tab-ico.atlas{
-  color:transparent;
-  font-size:0;
-  text-shadow:none;
+  color:#ffd8b0;
+  font-size:.95rem;
+  text-shadow:0 1px 2px rgba(0,0,0,.65);
   background-repeat:no-repeat;
-  background-size:460% 345%;
+  background-size:400% 300%;
   background-position:var(--ix,0%) var(--iy,0%);
   filter:saturate(1.12) brightness(1.13) contrast(1.18);
   box-shadow:inset 0 0 0 1px rgba(255,162,97,.08),0 0 8px rgba(255,122,56,.16);
@@ -6819,7 +6819,7 @@ const AFFIX_POOL=[
   {id:'onKillHeal',type:1,tiers:[5,10,18,28,40],unit:'val',slots:['wpn','helm'],group:'okHl',weight:50},
   {id:'onKillMana',type:1,tiers:[5,10,18,28,40],unit:'val',slots:['wpn','helm'],group:'okMn',weight:50},
   {id:'onKillStam',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['wpn'],group:'okSt',weight:45},
-  {id:'onKillExplode',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'okEx',weight:25,tierW:[40,30,20,8,2]},
+  // onKillExplode 삭제 (시체폭발 시스템 없음)
   {id:'onKillSpeed',type:1,tiers:[.05,.08,.12,.18,.25],unit:'pct',slots:['wpn'],group:'okSp',weight:40},
 
   // ═══════════════════════════════════════════════════
@@ -6959,6 +6959,276 @@ const AFFIX_POOL=[
   {id:'shieldBypass',type:1,tiers:[.05,.08,.14,.22,.32],unit:'prob',slots:['wpn'],group:'shBp',weight:30,tierW:[40,30,20,8,2]},
   {id:'armorShred',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['wpn'],group:'arSh',weight:50},
   {id:'projSpeedPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'pjSp',weight:55},
+
+  // ═══ Phase 3: On-Hit/Crit 프록 (25종) ═══
+  {id:'onHitFireball',type:1,tiers:[.04,.07,.11,.16,.22],unit:'prob',slots:['wpn'],group:'ohFb',weight:25,tierW:[40,30,20,8,2]},
+  {id:'onHitChainL',type:1,tiers:[.04,.07,.11,.16,.22],unit:'prob',slots:['wpn'],group:'ohCL',weight:25,tierW:[40,30,20,8,2]},
+  {id:'onHitFreeze',type:1,tiers:[.05,.08,.14,.22,.30],unit:'prob',slots:['wpn'],group:'ohFz',weight:40},
+  {id:'onHitStun',type:1,tiers:[.03,.05,.09,.15,.22],unit:'prob',slots:['wpn'],group:'ohSt',weight:35},
+  {id:'onHitPoison',type:1,tiers:[.06,.10,.16,.24,.34],unit:'prob',slots:['wpn'],group:'ohPo',weight:45},
+  {id:'onHitBleed',type:1,tiers:[.05,.08,.14,.22,.30],unit:'prob',slots:['wpn'],group:'ohBl',weight:40},
+  {id:'onHitWeaken',type:1,tiers:[.04,.07,.11,.16,.22],unit:'prob',slots:['wpn'],group:'ohWk',weight:35},
+  {id:'onHitSlow',type:1,tiers:[.06,.10,.16,.24,.34],unit:'prob',slots:['wpn'],group:'ohSl',weight:40},
+  {id:'onHitMark',type:1,tiers:[.05,.08,.14,.22,.30],unit:'prob',slots:['wpn'],group:'ohMk',weight:30},
+  {id:'onCritExplode',type:1,tiers:[.20,.35,.55,.80,1.15],unit:'pct',slots:['wpn'],group:'ocEx',weight:20,tierW:[40,30,20,8,2]},
+  {id:'onCritChain',type:1,tiers:[.15,.25,.40,.60,.85],unit:'pct',slots:['wpn'],group:'ocCh',weight:20,tierW:[40,30,20,8,2]},
+  {id:'onCritFreeze',type:1,tiers:[.10,.18,.28,.40,.55],unit:'prob',slots:['wpn'],group:'ocFz',weight:30},
+  {id:'onCritHeal',type:1,tiers:[5,10,18,28,40],unit:'val',slots:['wpn'],group:'ocHl',weight:35},
+  {id:'onCritMana',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['wpn'],group:'ocMn',weight:35},
+  {id:'onCritShield',type:1,tiers:[5,10,18,28,40],unit:'val',slots:['wpn','helm'],group:'ocSh',weight:30},
+  {id:'onHitDefBoost',type:1,tiers:[5,10,18,28,40],unit:'val',slots:['armor','shield'],group:'ohDb',weight:40},
+  {id:'onHitThorns',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['armor','gloves'],group:'ohTh',weight:45},
+  // procIceNova/procDarkShield/procHealPulse/procCorpseExplode 삭제 (미구현 시스템)
+  {id:'onDodgeDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['boots','cloak'],group:'odDm',weight:35},
+  {id:'onParryBurst',type:1,tiers:[.15,.25,.40,.60,.85],unit:'pct',slots:['shield'],group:'opBs',weight:30},
+  {id:'onBlockHeal',type:1,tiers:[5,10,18,28,40],unit:'val',slots:['shield'],group:'oBHl',weight:40},
+  {id:'onBlockMana',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['shield'],group:'oBMn',weight:40},
+
+  // ═══ Phase 3: 스킬 개별 강화 (20종) ═══
+  {id:'skWhirlDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sWD',weight:40},
+  {id:'skBeamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sBD',weight:40},
+  {id:'skFireballDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sFD',weight:40},
+  {id:'skMissileDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sMD',weight:40},
+  {id:'skBlueShotDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sBSD',weight:40},
+  {id:'skBlastShotDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sBShD',weight:40},
+  {id:'skHellRayDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sHRD',weight:35},
+  {id:'skMaliceStormDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sMSD',weight:35},
+  {id:'skChainSlashDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sCSD',weight:40},
+  {id:'skGiantSlamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sGSD',weight:40},
+  {id:'skGhostWalkDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sGWD',weight:35},
+  {id:'skMaliceMortarDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sMMD',weight:35},
+  {id:'skFireAuraDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sFAD',weight:40},
+  {id:'skIceOrbDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sIOD',weight:35},
+  {id:'skFireBeamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sFBD',weight:35},
+  {id:'skMaliceHuntDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sMHD',weight:35},
+  {id:'skDarkPillarDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sDPD',weight:35},
+  {id:'skPlagueDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sPBD',weight:35},
+  {id:'skSpikeAuraDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sSAD',weight:35},
+  {id:'skChainAssaultDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sCAD',weight:35},
+
+  // ═══ Phase 3: 생존/방어 확장 (30종) ═══
+  {id:'blockChance',type:0,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['shield'],group:'blkC',weight:65},
+  {id:'blockAmount',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['shield'],group:'blkA',weight:60},
+  {id:'dodgeChance',type:1,tiers:[.02,.04,.06,.09,.13],unit:'pct',slots:['boots','cloak'],group:'ddgC',weight:45,tierW:[40,30,20,8,2]},
+  {id:'dodgeCooldown',type:1,tiers:[-.05,-.08,-.14,-.22,-.30],unit:'pct',slots:['boots'],group:'ddgCd',weight:50},
+  {id:'maxHPPctArmor',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['pants','shield'],group:'hpPA',weight:65},
+  {id:'shieldPct',type:0,tiers:[.05,.08,.14,.22,.32],unit:'pct',slots:['armor'],group:'shPct',weight:55},
+  {id:'shieldRegenPct',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['armor','shield'],group:'shRgP',weight:50},
+  {id:'shieldCdRed',type:1,tiers:[-.05,-.08,-.14,-.22,-.30],unit:'pct',slots:['shield'],group:'shCdR',weight:45},
+  {id:'hpRegenFlat',type:0,tiers:[1,2,4,7,11],unit:'val',slots:['armor','gloves'],group:'hpRgF',weight:60},
+  {id:'hpRegenPct',type:0,tiers:[.03,.05,.09,.15,.22],unit:'pct',slots:['armor'],group:'hpRgP',weight:50},
+  {id:'stRegenFlat',type:0,tiers:[1,2,3,5,8],unit:'val',slots:['boots','pants'],group:'stRgF',weight:55},
+  {id:'stRegenPct',type:0,tiers:[.03,.05,.09,.15,.22],unit:'pct',slots:['belt'],group:'stRgP',weight:50},
+  {id:'mpRegenFlat',type:0,tiers:[1,2,3,5,8],unit:'val',slots:['headband','neck'],group:'mpRgF',weight:55},
+  {id:'mpRegenPct',type:0,tiers:[.03,.05,.09,.15,.22],unit:'pct',slots:['headband'],group:'mpRgP',weight:50},
+  {id:'fireDR',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['armor','cloak'],group:'fDR',weight:55},
+  {id:'iceDR',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['armor','pants'],group:'iDR',weight:55},
+  {id:'lightDR',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['armor','gloves'],group:'lDR',weight:55},
+  {id:'darkDR',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['armor','shield'],group:'dkDR',weight:50},
+  {id:'poisonDRdef',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['armor','boots'],group:'psDR',weight:50},
+  {id:'allDR',type:1,tiers:[.02,.04,.06,.09,.13],unit:'pct',slots:['armor'],group:'aDR',weight:15,tierW:[40,30,20,8,2]},
+  {id:'eliteDR',type:1,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['armor'],group:'eDR',weight:35},
+  {id:'stunRes',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['pants','gloves'],group:'stRs',weight:55},
+  {id:'freezeRes',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['pants','boots'],group:'fzRs',weight:55},
+  {id:'slowRes',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['boots'],group:'slRs',weight:55},
+  {id:'knockbackRes',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['armor','shield'],group:'kbRs',weight:50},
+  {id:'dashRange',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['boots'],group:'dshR',weight:45},
+  {id:'dashCooldown',type:1,tiers:[-.04,-.07,-.11,-.16,-.22],unit:'pct',slots:['boots','cloak'],group:'dshCd',weight:45},
+  {id:'movSpeedCombat',type:0,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['boots'],group:'mspC',weight:40},
+  {id:'movSpeedOOC',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['boots','cloak'],group:'mspO',weight:60},
+  {id:'pickupRadius',type:1,tiers:[10,20,35,55,80],unit:'val',slots:['boots'],group:'pkRd',weight:55},
+
+  // ═══ Phase 3: 장신구 확장 (30종) ═══
+  {id:'strFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['bracelet','ring'],group:'strF',weight:60},
+  {id:'dexFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['bracelet','ring'],group:'dexF',weight:60},
+  {id:'intFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['headband','ring'],group:'intF',weight:60},
+  {id:'allStat',type:1,tiers:[2,4,7,11,16],unit:'val',slots:['neck'],group:'allS',weight:15,tierW:[40,30,20,8,2]},
+  {id:'maxSTPct',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['belt','bracelet'],group:'stPct',weight:55},
+  {id:'maxMPPct',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['headband','neck'],group:'mpPct',weight:55},
+  {id:'resourceOnHit',type:1,tiers:[1,2,3,5,8],unit:'val',slots:['ring'],group:'rsOH',weight:35},
+  {id:'fireResMax',type:1,tiers:[1,2,3,4,5],unit:'val',slots:['neck','ring'],group:'fRM',weight:20,tierW:[40,30,20,8,2]},
+  {id:'iceResMax',type:1,tiers:[1,2,3,4,5],unit:'val',slots:['neck','ring'],group:'iRM',weight:20,tierW:[40,30,20,8,2]},
+  {id:'lightResMax',type:1,tiers:[1,2,3,4,5],unit:'val',slots:['neck','ring'],group:'lRM',weight:20,tierW:[40,30,20,8,2]},
+  {id:'darkResMax',type:1,tiers:[1,2,3,4,5],unit:'val',slots:['neck','ring'],group:'dRM',weight:20,tierW:[40,30,20,8,2]},
+  {id:'poisonResMax',type:1,tiers:[1,2,3,4,5],unit:'val',slots:['neck','ring'],group:'pRM',weight:20,tierW:[40,30,20,8,2]},
+  {id:'skillCdRed',type:1,tiers:[-.04,-.07,-.11,-.16,-.22],unit:'pct',slots:['headband'],group:'skCd',weight:50},
+  {id:'potionCdRed',type:1,tiers:[-.04,-.07,-.11,-.16,-.22],unit:'pct',slots:['belt'],group:'ptCd',weight:55},
+  {id:'craftBonus',type:1,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['ring'],group:'crfB',weight:15,tierW:[40,30,20,8,2]},
+  {id:'goldFind',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['belt'],group:'glFn',weight:55},
+  {id:'expBonusRing',type:1,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['ring'],group:'exR',weight:50},
+  {id:'dropRateAcc',type:1,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['neck','ring'],group:'drAc',weight:45},
+  {id:'demonDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['bracelet'],group:'dmDm',weight:55,brType:'demon'},
+  {id:'demonDR',type:1,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['bracelet'],group:'dmDR',weight:50,brType:'demon'},
+  {id:'soulHarvest',type:1,tiers:[1,2,3,5,8],unit:'val',slots:['bracelet'],group:'slHv',weight:40,brType:'demon'},
+  {id:'lifeLeechBr',type:1,tiers:[.005,.01,.018,.028,.04],unit:'pct',slots:['bracelet'],group:'llBr',weight:40,brType:'life'},
+  {id:'overhealShield',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['bracelet'],group:'ohSh',weight:25,brType:'life',tierW:[40,30,20,8,2]},
+  {id:'onFullManaDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['headband'],group:'fmDm',weight:40},
+  {id:'whileMovingDR',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['belt'],group:'wmDR',weight:40},
+  {id:'whileStationaryDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['ring'],group:'wsDm',weight:35},
+  {id:'afterDodgeDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['ring','bracelet'],group:'adDm',weight:30},
+  {id:'afterParryShield',type:1,tiers:[10,18,28,40,60],unit:'val',slots:['bracelet','shield'],group:'apSh',weight:35},
+  {id:'comboThreshold',type:1,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['ring','neck'],group:'cmTh',weight:30},
+  // ═══ Phase 4: 슬롯 세분화 + 하이브리드 ═══
+  {id:'flatPhysDmg',type:0,tiers:[8,16,28,44,65],unit:'val',slots:['wpn'],group:'fPD',weight:80},
+  {id:'flatFireDmg',type:0,tiers:[6,12,22,36,52],unit:'val',slots:['wpn'],group:'fFrD',weight:65},
+  {id:'flatIceDmg',type:0,tiers:[5,10,18,30,44],unit:'val',slots:['wpn'],group:'fIcD',weight:65},
+  {id:'flatLightDmg',type:0,tiers:[7,14,24,38,55],unit:'val',slots:['wpn'],group:'fLtD',weight:65},
+  {id:'flatDarkDmg',type:0,tiers:[6,12,22,36,52],unit:'val',slots:['wpn'],group:'fDkD',weight:60},
+  {id:'flatPoisonDmg',type:0,tiers:[5,10,18,30,44],unit:'val',slots:['wpn'],group:'fPoD',weight:60},
+  {id:'minDmgFlat',type:0,tiers:[3,6,10,16,24],unit:'val',slots:['wpn'],group:'mnDm',weight:55},
+  {id:'maxDmgFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['wpn'],group:'mxDm',weight:55},
+  {id:'atkPctAll',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['wpn','helm'],group:'aAll',weight:50},
+  {id:'weaponRange',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['wpn'],group:'wRng',weight:55},
+  {id:'bowRange',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['wpn'],group:'bRng',weight:55},
+  {id:'doubleStrike',type:1,tiers:[.02,.04,.06,.09,.13],unit:'prob',slots:['wpn'],group:'dStr',weight:20,tierW:[40,30,20,8,2]},
+  {id:'multiShot',type:1,tiers:[.03,.05,.08,.12,.18],unit:'prob',slots:['wpn'],group:'mSht',weight:20,tierW:[40,30,20,8,2]},
+  {id:'pierceChance',type:0,tiers:[.05,.08,.14,.22,.30],unit:'prob',slots:['wpn'],group:'prCh',weight:50},
+  {id:'pierceCount',type:0,tiers:[1,1,2,2,3],unit:'cnt',slots:['wpn'],group:'prCt',weight:40},
+  {id:'pierceDmgKeep',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'prDK',weight:40},
+  {id:'chainDmgKeep',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'chDK',weight:40},
+  {id:'splashRadius',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['wpn'],group:'spRd',weight:45},
+  {id:'splashDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'spDm',weight:35},
+  {id:'chargeAtkDmg',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'chAD',weight:50},
+  {id:'counterAtkDmg',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'ctAD',weight:45},
+  {id:'backstabDmg',type:1,tiers:[.12,.20,.32,.46,.65],unit:'pct',slots:['wpn'],group:'bkSt',weight:35},
+  {id:'executeDmg',type:1,tiers:[.15,.25,.40,.60,.85],unit:'pct',slots:['wpn'],group:'exDm',weight:30,tierW:[40,30,20,8,2]},
+  {id:'dotTickRate',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['wpn'],group:'dtTk',weight:40},
+  {id:'bleedDps',type:0,tiers:[5,10,18,28,40],unit:'dps',slots:['wpn'],group:'blDp',weight:60},
+  {id:'bleedDuration',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'blDr',weight:50},
+  {id:'flatMagicDmg',type:0,tiers:[6,12,22,36,52],unit:'val',slots:['wpn','helm'],group:'fMgD',weight:60},
+  {id:'spellAmp',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['helm'],group:'spAm',weight:45},
+  {id:'killStreakDmg',type:1,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['wpn'],group:'kSD',weight:35},
+  {id:'killStreakSpd',type:1,tiers:[.02,.04,.06,.09,.13],unit:'pct',slots:['wpn'],group:'kSS',weight:35},
+  {id:'momentumDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'momD',weight:35},
+  {id:'standingDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'stdD',weight:35},
+  {id:'movingDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'mvDm',weight:35},
+  {id:'recentParryDmg',type:1,tiers:[.12,.20,.32,.46,.65],unit:'pct',slots:['wpn'],group:'rpDm',weight:30},
+  {id:'nearDeathDmg',type:1,tiers:[.20,.35,.55,.80,1.10],unit:'pct',slots:['wpn'],group:'ndDm',weight:20,tierW:[40,30,20,8,2]},
+  {id:'fullStaminaDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'fsDm',weight:35},
+  {id:'fullManaDmg2',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'fmD2',weight:35},
+  {id:'freshKillDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'fkDm',weight:35},
+  {id:'stunDuration',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'stDr',weight:45},
+  {id:'freezeDuration',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'fzDr',weight:45},
+  {id:'slowEfficiency',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'slEf',weight:40},
+  {id:'poisonStack',type:1,tiers:[1,1,2,2,3],unit:'cnt',slots:['wpn'],group:'poSk',weight:35},
+  {id:'bleedStack',type:1,tiers:[1,1,2,2,3],unit:'cnt',slots:['wpn'],group:'blSk',weight:35},
+  {id:'igniteDmg',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'igDm',weight:50},
+  {id:'frostbiteDmg',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'fbDm',weight:50},
+  {id:'shockDmg',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'skDm',weight:50},
+  {id:'critMultiOnLowHP',type:1,tiers:[.10,.20,.30,.40,.50],unit:'pct',slots:['wpn'],group:'cmLH',weight:25,tierW:[40,30,20,8,2]},
+  // 방어구 세분화
+  {id:'armorDefPct',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['armor'],group:'adPc',weight:65},
+  {id:'shieldBlockDR',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['shield'],group:'sBDR',weight:50},
+  {id:'shieldBashDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['shield'],group:'sBsD',weight:45},
+  {id:'shieldStagger',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['shield'],group:'sStg',weight:45},
+  {id:'glovesAtkSpd',type:0,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['gloves'],group:'gAS',weight:55},
+  {id:'glovesCritDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['gloves'],group:'gCD',weight:45},
+  {id:'glovesStagger',type:0,tiers:[2,4,7,11,16],unit:'val',slots:['gloves'],group:'gStg',weight:50},
+  {id:'pantsHPRegen',type:0,tiers:[1,2,3,5,8],unit:'val',slots:['pants'],group:'pHRg',weight:55},
+  {id:'pantsCCDuration',type:1,tiers:[-.06,-.10,-.16,-.24,-.34],unit:'pct',slots:['pants'],group:'pCCD',weight:45},
+  {id:'bootsDashDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['boots'],group:'bDD',weight:45},
+  {id:'bootsChargeRange',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['boots'],group:'bCR',weight:45},
+  {id:'bootsMSOnKill',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['boots'],group:'bMOK',weight:40},
+  {id:'cloakDodgeDR',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['cloak'],group:'cDDR',weight:35},
+  {id:'cloakMSPct',type:0,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['cloak'],group:'cMSP',weight:50},
+  {id:'cloakElemDR',type:1,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['cloak'],group:'cEDR',weight:40},
+  {id:'helmMPPct',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['helm'],group:'hMPP',weight:50},
+  {id:'helmCastSpd',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['helm'],group:'hCSp',weight:50},
+  {id:'helmCooldown',type:0,tiers:[-.04,-.07,-.11,-.16,-.22],unit:'pct',slots:['helm'],group:'hCd',weight:45},
+  {id:'helmExpPct',type:1,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['helm'],group:'hExp',weight:45},
+  // 하이브리드
+  {id:'hybAtkHP',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['armor'],group:'hAH',weight:30},
+  {id:'hybDefSpd',type:1,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['boots'],group:'hDS',weight:30},
+  {id:'hybCritLeech',type:1,tiers:[.005,.01,.015,.02,.03],unit:'pct',slots:['wpn'],group:'hCL',weight:20,tierW:[40,30,20,8,2]},
+  {id:'hybHPMP',type:0,tiers:[30,60,100,150,220],unit:'val',slots:['armor'],group:'hHM',weight:25},
+  {id:'hybHPST',type:0,tiers:[30,60,100,150,220],unit:'val',slots:['armor'],group:'hHS',weight:25},
+  {id:'hybMPST',type:0,tiers:[20,40,70,110,160],unit:'val',slots:['belt'],group:'hMSt',weight:25},
+  {id:'hybAllRegen',type:0,tiers:[1,2,3,5,8],unit:'val',slots:['armor'],group:'hAR',weight:20,tierW:[40,30,20,8,2]},
+  {id:'hybStrDex',type:0,tiers:[3,6,10,16,24],unit:'val',slots:['ring'],group:'hSD',weight:30},
+  {id:'hybStrInt',type:0,tiers:[3,6,10,16,24],unit:'val',slots:['ring'],group:'hSI',weight:30},
+  {id:'hybDexInt',type:0,tiers:[3,6,10,16,24],unit:'val',slots:['headband'],group:'hDI',weight:30},
+  {id:'hybLckGrit',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['neck'],group:'hLG',weight:25},
+  {id:'hybDropExp',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['boots'],group:'hDE',weight:30},
+  {id:'hybFireIce',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['wpn'],group:'hFI',weight:25},
+  {id:'hybLightDark',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['wpn'],group:'hLkD',weight:25},
+  {id:'hybMeleeSpell',type:1,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['wpn','helm'],group:'hMS',weight:25},
+  {id:'hybElemDotDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['wpn','helm'],group:'hEDD',weight:30},
+  // ═══ Phase 5: 장신구 대확장 + 아키타입 + 엔드게임 ═══
+  // 반지 전용
+  {id:'ringFireDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['ring'],group:'rFD',weight:50},
+  {id:'ringIceDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['ring'],group:'rID',weight:50},
+  {id:'ringLightDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['ring'],group:'rLD',weight:50},
+  {id:'ringDarkDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['ring'],group:'rDD',weight:50},
+  {id:'ringPoisonDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['ring'],group:'rPD',weight:50},
+  {id:'ringDmgPerCombo',type:1,tiers:[.002,.004,.006,.009,.013],unit:'pct',slots:['ring'],group:'rDPC',weight:25},
+  {id:'ringMPOnKill',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['ring'],group:'rMOK',weight:40},
+  {id:'ringProjPierce',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['ring'],group:'rPP',weight:30},
+  // 목걸이 전용
+  {id:'neckAllDmg',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['neck'],group:'nAD',weight:25,tierW:[40,30,20,8,2]},
+  {id:'neckCritDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['neck'],group:'nCD',weight:35},
+  {id:'neckElemPen',type:1,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['neck'],group:'nEP',weight:25,tierW:[40,30,20,8,2]},
+  {id:'neckSkillDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['neck'],group:'nSkD',weight:35},
+  {id:'neckComboMax',type:1,tiers:[5,10,15,20,30],unit:'val',slots:['neck'],group:'nCM',weight:30},
+  {id:'neckKillHeal',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['neck'],group:'nKH',weight:40},
+  // 벨트 전용
+  {id:'beltSTMax',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['belt'],group:'bSTM',weight:55},
+  {id:'beltPotionHP',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['belt'],group:'bPHP',weight:50},
+  {id:'beltSTRegen',type:0,tiers:[1,2,3,5,8],unit:'val',slots:['belt'],group:'bSRg',weight:50},
+  {id:'beltGoldDrop',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['belt'],group:'bGD',weight:50},
+  // 머리띠 전용
+  {id:'headbandMPMax',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['headband'],group:'hbMM',weight:55},
+  {id:'headbandCastSpd',type:0,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['headband'],group:'hbCS',weight:50},
+  {id:'headbandMPRegen',type:0,tiers:[1,2,3,5,8],unit:'val',slots:['headband'],group:'hbMR',weight:50},
+  {id:'headbandSpellDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['headband'],group:'hbSD',weight:45},
+  {id:'headbandElemDmg',type:1,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['headband'],group:'hbED',weight:40},
+  // 팔찌 확장
+  {id:'demonDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['bracelet'],group:'dmDm',weight:55,brType:'demon'},
+  {id:'demonDR',type:1,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['bracelet'],group:'dmDR',weight:50,brType:'demon'},
+  {id:'soulHarvest',type:1,tiers:[1,2,3,5,8],unit:'val',slots:['bracelet'],group:'slHv',weight:40,brType:'demon'},
+  {id:'lifeLeechBr',type:1,tiers:[.005,.01,.018,.028,.04],unit:'pct',slots:['bracelet'],group:'llBr',weight:40,brType:'life'},
+  {id:'overhealShield',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['bracelet'],group:'ohSh',weight:25,brType:'life',tierW:[40,30,20,8,2]},
+  // 아키타입: 전사/마법사/궁수/탱크/암살자
+  {id:'arcWarriorDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'awD',weight:30},
+  {id:'arcWarriorHP',type:0,tiers:[30,60,100,150,220],unit:'val',slots:['armor'],group:'awHP',weight:30},
+  {id:'arcWarriorLifeSteal',type:1,tiers:[.004,.008,.014,.022,.032],unit:'pct',slots:['wpn'],group:'awLS',weight:20,tierW:[40,30,20,8,2]},
+  {id:'arcWarriorPoise',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['armor'],group:'awPo',weight:35},
+  {id:'arcMageDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'amD',weight:30},
+  {id:'arcMageMP',type:0,tiers:[20,40,70,110,160],unit:'val',slots:['headband'],group:'amMP',weight:30},
+  {id:'arcMageShield',type:0,tiers:[30,60,100,150,220],unit:'val',slots:['armor'],group:'amSh',weight:30},
+  {id:'arcMageElemDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['wpn','helm'],group:'amED',weight:30},
+  {id:'arcRangerDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'arD2',weight:30},
+  {id:'arcRangerRange',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['wpn'],group:'arRg',weight:30},
+  {id:'arcRangerPierce',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['wpn'],group:'arPr',weight:30},
+  {id:'arcRangerMS',type:0,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['boots'],group:'arMS',weight:35},
+  {id:'arcTankHP',type:0,tiers:[40,80,130,200,280],unit:'val',slots:['armor'],group:'atHP',weight:30},
+  {id:'arcTankDef',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['armor','shield'],group:'atDf',weight:30},
+  {id:'arcTankBlock',type:0,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['shield'],group:'atBk',weight:30},
+  {id:'arcTankThorns',type:1,tiers:[4,8,14,22,32],unit:'val',slots:['armor'],group:'atTh',weight:35},
+  {id:'arcAssassinCrit',type:1,tiers:[.02,.04,.06,.09,.13],unit:'pct',slots:['wpn'],group:'aaCr',weight:25},
+  {id:'arcAssassinBack',type:1,tiers:[.15,.25,.40,.60,.85],unit:'pct',slots:['wpn'],group:'aaBk',weight:20,tierW:[40,30,20,8,2]},
+  {id:'arcAssassinPoison',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'aaPo',weight:30},
+  {id:'arcAssassinDodge',type:1,tiers:[.02,.04,.06,.09,.13],unit:'pct',slots:['cloak'],group:'aaDg',weight:25},
+  // 엔드게임 전용
+  {id:'endBossKiller',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'eBK',weight:15,tierW:[40,30,20,8,2]},
+  {id:'endSurvival',type:1,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['armor'],group:'eSv',weight:15,tierW:[40,30,20,8,2]},
+  {id:'endShield',type:0,tiers:[50,100,180,280,400],unit:'val',slots:['armor'],group:'eSh',weight:15},
+  {id:'endCritDmg',type:1,tiers:[.10,.20,.30,.40,.50],unit:'pct',slots:['wpn'],group:'eCD',weight:10,tierW:[40,30,20,8,2]},
+  {id:'endAtkFlat',type:0,tiers:[30,70,150,260,400],unit:'val',slots:['wpn'],group:'eAF',weight:8,tierW:[40,30,20,8,2],skewRoll:3},
+  {id:'endAllRes',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['neck'],group:'eAR',weight:10,tierW:[40,30,20,8,2]},
+  {id:'endAllDmg',type:1,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['neck'],group:'eAD',weight:8,tierW:[40,30,20,8,2]},
+  {id:'endAllDR',type:1,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['armor'],group:'eADR',weight:8,tierW:[40,30,20,8,2]},
+  {id:'endLeech',type:1,tiers:[.006,.012,.020,.030,.042],unit:'pct',slots:['wpn'],group:'eLch',weight:8,tierW:[40,30,20,8,2]},
+  {id:'endPoise',type:0,tiers:[10,20,35,55,80],unit:'val',slots:['armor'],group:'ePo',weight:15},
+  {id:'endCooldownAll',type:1,tiers:[-.03,-.05,-.08,-.12,-.18],unit:'pct',slots:['helm'],group:'eCA',weight:10,tierW:[40,30,20,8,2]},
+  {id:'endExpBonus',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['neck'],group:'eEB',weight:15},
+  {id:'endDropBonus',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['boots'],group:'eDB',weight:15},
+  {id:'endMaliceGain',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['ring'],group:'eMG',weight:20},
+  {id:'endSTR',type:0,tiers:[8,16,28,44,65],unit:'val',slots:['ring'],group:'eStr',weight:12},
+  {id:'endDEX',type:0,tiers:[8,16,28,44,65],unit:'val',slots:['ring'],group:'eDex',weight:12},
+  {id:'endINT',type:0,tiers:[8,16,28,44,65],unit:'val',slots:['ring'],group:'eInt',weight:12},
+  {id:'endLCK',type:0,tiers:[15,30,50,75,110],unit:'val',slots:['neck'],group:'eLck',weight:10},
+  {id:'endGrit',type:1,tiers:[15,30,50,75,110],unit:'val',slots:['neck'],group:'eGrt',weight:10},
+  {id:'endKillChain',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['wpn'],group:'eKCh',weight:15},
 ];
 const AFFIX_NAMES_KO={
   poisonDot:'맹독의',fireDot:'불꽃의',iceDot:'냉기의',lightChain:'번개의',darkCurse:'암흑의',
@@ -6997,6 +7267,56 @@ const AFFIX_NAMES_KO={
   meleeDmgPct:'격투의',rangedDmgPct:'원사의',spellDmgPct:'주술의',beamDmgPct:'광선의',dotDmgPct:'침식의',projDmgPct:'탄도의',aoeRadiusPct:'확산의',
   critRateMelee:'근접회심의',critRateSpell:'마법회심의',critRateBow:'사격회심의',meleeAtkSpd:'근접쾌속의',bowAtkSpd:'사격쾌속의',castSpeed:'영창의',
   elemPenAll:'전속성관통의',shieldBypass:'쉴드파괴의',armorShred:'갑옷분쇄의',projSpeedPct:'탄속의',
+  onHitFireball:'화구발사의',onHitChainL:'연쇄뇌격의',onHitFreeze:'동결타의',onHitStun:'경직타의',onHitPoison:'독침의',onHitBleed:'출혈의',onHitWeaken:'약화의',onHitSlow:'둔화의',onHitMark:'표적의',
+  onCritExplode:'회심폭발의',onCritChain:'회심연쇄의',onCritFreeze:'회심빙결의',onCritHeal:'회심치유의',onCritMana:'회심영력의',onCritShield:'회심수호의',
+  onHitDefBoost:'피격강화의',onHitThorns:'반격가시의',procIceNova:'빙결파동의',procDarkShield:'암흑보호의',procHealPulse:'치유파동의',procCorpseExplode:'시체폭발의',
+  onDodgeDmg:'회피반격의',onParryBurst:'패링폭파의',onBlockHeal:'블록치유의',onBlockMana:'블록영력의',
+  skWhirlDmg:'회전참강화',skBeamDmg:'옴니빔강화',skFireballDmg:'화구강화',skMissileDmg:'미사일강화',skBlueShotDmg:'청탄강화',skBlastShotDmg:'폭렬탄강화',
+  skHellRayDmg:'지옥광선강화',skMaliceStormDmg:'악의폭풍강화',skChainSlashDmg:'연쇄참강화',skGiantSlamDmg:'거인강타강화',
+  skGhostWalkDmg:'유령보행강화',skMaliceMortarDmg:'악의박격강화',skFireAuraDmg:'화염오라강화',skIceOrbDmg:'빙구강화',skFireBeamDmg:'화염빔강화',
+  skMaliceHuntDmg:'악의사냥강화',skDarkPillarDmg:'암흑기둥강화',skPlagueDmg:'역병강화',skSpikeAuraDmg:'가시오라강화',skChainAssaultDmg:'연쇄돌격강화',
+  blockChance:'블록확률의',blockAmount:'블록량의',dodgeChance:'회피의',dodgeCooldown:'회피쿨감의',
+  maxHPPctArmor:'생명력의',shieldPct:'수호력의',shieldRegenPct:'수호재생의',shieldCdRed:'수호쿨감의',
+  hpRegenFlat:'재생의',hpRegenPct:'재생력의',stRegenFlat:'활력재생의',stRegenPct:'활력의',mpRegenFlat:'마력재생의',mpRegenPct:'마력의',
+  fireDR:'화염보호의',iceDR:'빙결보호의',lightDR:'뇌전보호의',darkDR:'암흑보호의',poisonDRdef:'해독의',allDR:'만물보호의',eliteDR:'정예보호의',
+  stunRes:'경직저항의',freezeRes:'빙결저항의',slowRes:'감속저항의',knockbackRes:'넉백저항의',
+  dashRange:'돌진거리의',dashCooldown:'돌진쿨감의',movSpeedCombat:'전투질주의',movSpeedOOC:'평화질주의',pickupRadius:'습득범위의',
+  strFlat:'힘의',dexFlat:'민첩의',intFlat:'지능의',allStat:'만능의',
+  maxSTPct:'지구력의',maxMPPct:'마나력의',resourceOnHit:'타격자원의',
+  fireResMax:'화염한계의',iceResMax:'빙결한계의',lightResMax:'뇌전한계의',darkResMax:'암흑한계의',poisonResMax:'독한계의',
+  skillCdRed:'스킬쿨감의',potionCdRed:'물약쿨감의',craftBonus:'장인의',goldFind:'탐욕의',expBonusRing:'수련의',dropRateAcc:'수집의',
+  demonDmg:'악마의힘',demonDR:'악마보호의',soulHarvest:'영혼수확의',lifeLeechBr:'생명흡수의',overhealShield:'과치유수호의',
+  onFullManaDmg:'만마력의',whileMovingDR:'이동방어의',whileStationaryDmg:'정지공세의',afterDodgeDmg:'회피공세의',afterParryShield:'패링보호의',comboThreshold:'콤보폭발의',
+  // Phase 4+5
+  flatPhysDmg:'물리타격의',flatFireDmg:'화염타격의',flatIceDmg:'빙결타격의',flatLightDmg:'뇌전타격의',flatDarkDmg:'암흑타격의',flatPoisonDmg:'독타격의',
+  minDmgFlat:'최소공격의',maxDmgFlat:'최대공격의',atkPctAll:'전투력의',weaponRange:'무기사거리의',bowRange:'활사거리의',
+  doubleStrike:'이중타의',multiShot:'다중발사의',pierceChance:'관통의',pierceCount:'관통횟수의',pierceDmgKeep:'관통유지의',chainDmgKeep:'연쇄유지의',
+  splashRadius:'범위확장의',splashDmg:'범위피해의',chargeAtkDmg:'돌진공격의',counterAtkDmg:'반격공격의',backstabDmg:'후방타의',executeDmg:'처형의',
+  dotTickRate:'침식가속의',bleedDps:'출혈의',bleedDuration:'출혈지속의',flatMagicDmg:'마법타격의',spellAmp:'주문증폭의',
+  killStreakDmg:'연살뎀의',killStreakSpd:'연살속의',momentumDmg:'기세의',standingDmg:'정지공격의',movingDmg:'이동공격의',
+  recentParryDmg:'패링공세의',nearDeathDmg:'임사폭발의',fullStaminaDmg:'만기력공의',fullManaDmg2:'만마력공의',freshKillDmg:'신선처치의',
+  stunDuration:'경직연장의',freezeDuration:'빙결연장의',slowEfficiency:'둔화강화의',poisonStack:'독중첩의',bleedStack:'출혈중첩의',
+  igniteDmg:'발화강화의',frostbiteDmg:'동상강화의',shockDmg:'감전강화의',critMultiOnLowHP:'사선회심의',
+  armorDefPct:'갑옷강화의',shieldBlockDR:'블록흡수의',shieldBashDmg:'방패타격의',shieldStagger:'방패경직의',
+  glovesAtkSpd:'격투속의',glovesCritDmg:'격투회심의',glovesStagger:'격투경직의',pantsHPRegen:'하반재생의',pantsCCDuration:'CC단축의',
+  bootsDashDmg:'돌진타의',bootsChargeRange:'돌진범위의',bootsMSOnKill:'처치질주의',cloakDodgeDR:'회피감쇠의',cloakMSPct:'은신질주의',cloakElemDR:'속성감쇠의',
+  helmMPPct:'마나투구의',helmCastSpd:'시전투구의',helmCooldown:'쿨감투구의',helmExpPct:'경험투구의',
+  hybAtkHP:'공생의',hybDefSpd:'수질의',hybCritLeech:'회심흡의',hybHPMP:'체마의',hybHPST:'체기의',hybMPST:'마기의',hybAllRegen:'전재생의',
+  hybStrDex:'힘민의',hybStrInt:'힘지의',hybDexInt:'민지의',hybLckGrit:'운근의',hybDropExp:'수확의',hybFireIce:'빙화의',hybLightDark:'뇌암의',hybMeleeSpell:'근마의',hybElemDotDmg:'속성침식의',
+  ringFireDmg:'화염반지의',ringIceDmg:'빙결반지의',ringLightDmg:'뇌전반지의',ringDarkDmg:'암흑반지의',ringPoisonDmg:'독반지의',
+  ringDmgPerCombo:'콤보반지의',ringMPOnKill:'처치마나의',ringProjPierce:'관통반지의',
+  neckAllDmg:'만능목걸이의',neckCritDmg:'회심목걸이의',neckElemPen:'관통목걸이의',neckSkillDmg:'스킬목걸이의',neckComboMax:'콤보한계의',neckKillHeal:'처치치유의',
+  beltSTMax:'지구벨트의',beltPotionHP:'포션벨트의',beltSTRegen:'활력벨트의',beltGoldDrop:'탐욕벨트의',
+  headbandMPMax:'마나띠의',headbandCastSpd:'시전띠의',headbandMPRegen:'마력띠의',headbandSpellDmg:'주술띠의',headbandElemDmg:'속성띠의',
+  arcWarriorDmg:'전사의힘',arcWarriorHP:'전사생명의',arcWarriorLifeSteal:'전사흡혈의',arcWarriorPoise:'전사인내의',
+  arcMageDmg:'마법사의힘',arcMageMP:'마법사마나의',arcMageShield:'마법사수호의',arcMageElemDmg:'마법사속성의',
+  arcRangerDmg:'궁수의힘',arcRangerRange:'궁수사거리의',arcRangerPierce:'궁수관통의',arcRangerMS:'궁수질주의',
+  arcTankHP:'탱크생명의',arcTankDef:'탱크방어의',arcTankBlock:'탱크블록의',arcTankThorns:'탱크가시의',
+  arcAssassinCrit:'암살회심의',arcAssassinBack:'암살후방의',arcAssassinPoison:'암살독의',arcAssassinDodge:'암살회피의',
+  endBossKiller:'종결자의',endSurvival:'생존자의',endShield:'종결수호의',endCritDmg:'종결회심의',endAtkFlat:'종결공격의',
+  endAllRes:'종결저항의',endAllDmg:'종결파괴의',endAllDR:'종결보호의',endLeech:'종결흡혈의',endPoise:'종결인내의',
+  endCooldownAll:'종결쿨감의',endExpBonus:'종결경험의',endDropBonus:'종결약탈의',endMaliceGain:'종결악의의',
+  endSTR:'종결힘의',endDEX:'종결민첩의',endINT:'종결지능의',endLCK:'종결행운의',endGrit:'종결근성의',endKillChain:'종결연살의',
   healthyAtk:'건강공세의',injuredDmg:'중상폭발의',injuredLeech:'중상흡혈의',vsBossDmg:'토벌의',vsEliteDmg:'정예토벌의',
   sharpAtk:'예리한',brutalAtk:'맹렬한',ruinAtk:'파멸의',
   critRate:'광폭의',critDmgW:'극대화의',
@@ -7027,6 +7347,26 @@ const _AFFIX_DESC={
   meleeDmgPct:'근접뎀%+',rangedDmgPct:'원거리뎀%+',spellDmgPct:'마법뎀%+',beamDmgPct:'빔뎀%+',dotDmgPct:'DoT뎀%+',projDmgPct:'투사체뎀%+',aoeRadiusPct:'범위반경+',
   critRateMelee:'근접크리+',critRateSpell:'마법크리+',critRateBow:'석궁크리+',meleeAtkSpd:'근접공속+',bowAtkSpd:'석궁공속+',castSpeed:'시전속도+',
   elemPenAll:'전속성관통',shieldBypass:'쉴드관통',armorShred:'방어력깎기',projSpeedPct:'투사체속도+',
+  onHitFireball:'적중시화구',onHitChainL:'적중시연쇄뇌격',onHitFreeze:'적중빙결%',onHitStun:'적중스턴%',onHitPoison:'적중중독%',onHitBleed:'적중출혈%',onHitWeaken:'적중약화%',onHitSlow:'적중감속%',onHitMark:'적중표적%',
+  onCritExplode:'크리폭발(HP%)',onCritChain:'크리연쇄(HP%)',onCritFreeze:'크리빙결%',onCritHeal:'크리HP+',onCritMana:'크리MP+',onCritShield:'크리쉴드+',
+  onHitDefBoost:'피격방어+',onHitThorns:'반격가시',procIceNova:'빙결파동%',procDarkShield:'자동암흑막',procHealPulse:'주기치유',procCorpseExplode:'시체폭발%',
+  onDodgeDmg:'회피뎀+',onParryBurst:'패링폭발%',onBlockHeal:'블록HP+',onBlockMana:'블록MP+',
+  skWhirlDmg:'회전참뎀+',skBeamDmg:'옴니빔뎀+',skFireballDmg:'화구뎀+',skMissileDmg:'미사일뎀+',skBlueShotDmg:'청탄뎀+',skBlastShotDmg:'폭렬탄뎀+',
+  skHellRayDmg:'지옥광선뎀+',skMaliceStormDmg:'악의폭풍뎀+',skChainSlashDmg:'연쇄참뎀+',skGiantSlamDmg:'거인강타뎀+',
+  skGhostWalkDmg:'유령보행뎀+',skMaliceMortarDmg:'악의박격뎀+',skFireAuraDmg:'화염오라뎀+',skIceOrbDmg:'빙구뎀+',skFireBeamDmg:'화염빔뎀+',
+  skMaliceHuntDmg:'악의사냥뎀+',skDarkPillarDmg:'암흑기둥뎀+',skPlagueDmg:'역병뎀+',skSpikeAuraDmg:'가시오라뎀+',skChainAssaultDmg:'연쇄돌격뎀+',
+  blockChance:'블록확률+',blockAmount:'블록량+',dodgeChance:'회피확률+',dodgeCooldown:'회피쿨-',
+  maxHPPctArmor:'HP%+',shieldPct:'쉴드%+',shieldRegenPct:'쉴드리젠%+',shieldCdRed:'쉴드쿨-',
+  hpRegenFlat:'HP리젠+',hpRegenPct:'HP리젠%+',stRegenFlat:'ST리젠+',stRegenPct:'ST리젠%+',mpRegenFlat:'MP리젠+',mpRegenPct:'MP리젠%+',
+  fireDR:'화염DR',iceDR:'빙결DR',lightDR:'뇌전DR',darkDR:'암흑DR',poisonDRdef:'독DR',allDR:'전체DR',eliteDR:'엘리트DR',
+  stunRes:'스턴저항',freezeRes:'빙결저항',slowRes:'감속저항',knockbackRes:'넉백저항',
+  dashRange:'돌진거리+',dashCooldown:'돌진쿨-',movSpeedCombat:'전투이속+',movSpeedOOC:'비전투이속+',pickupRadius:'습득범위+',
+  strFlat:'STR+',dexFlat:'DEX+',intFlat:'INT+',allStat:'전스탯+',
+  maxSTPct:'ST%+',maxMPPct:'MP%+',resourceOnHit:'적중자원+',
+  fireResMax:'화염최대저항+',iceResMax:'빙결최대저항+',lightResMax:'뇌전최대저항+',darkResMax:'암흑최대저항+',poisonResMax:'독최대저항+',
+  skillCdRed:'스킬쿨-',potionCdRed:'물약쿨-',craftBonus:'강화성공+',goldFind:'악의획득+',expBonusRing:'경험치+',dropRateAcc:'드롭률+',
+  demonDmg:'악마화뎀+',demonDR:'악마화DR',soulHarvest:'영혼수확+',lifeLeechBr:'생명흡혈%',overhealShield:'과치유→쉴드',
+  onFullManaDmg:'만마나뎀+',whileMovingDR:'이동DR',whileStationaryDmg:'정지뎀+',afterDodgeDmg:'회피후뎀+',afterParryShield:'패링쉴드+',comboThreshold:'콤보보너스+',
   abundDmg:'HP≥70%뎀+',predDmg:'적HP≤50%뎀+',
   fullLifeDmg:'HP100%뎀+',lowLifeDmg:'HP≤35%뎀+',overkilDmg:'적HP≤20%뎀+',
   closeDmg:'근접뎀+',farDmg:'원거리뎀+',
@@ -18349,7 +18689,7 @@ function _skLv(key){const id=_COST_SK[key];return id?(P.skills[id]||1):1}
 function _dpsCostMul(key){const lv=_skLv(key);const s=_COST_DPS[key]||.10;return 1+(lv-1)*s}
 function _stDisc(key){const d=(key==='bow'||key==='bladeShot'||key==='fanShot')?pBowCost():(key==='weapon'||key==='shield'||key==='charge'||key==='finisher'||key==='whirlTick'||key==='sBlockTick'||key==='giantSlam')?pAtkCost()*pMeleeStCost():1;const _axSt=_eqAffix('stCostRed');return(_gxFiring?d*0.5:d)*(1+(_axSt<0?_axSt:0))}
 function stCost(key,m){
-  if(key==='weapon')return P.activeLMBSk==='kiSlash'?5+((P.skills.kiSlash||1)-1)*2:5;
+  if(key==='weapon')return P.activeLMBSk==='kiSlash'?10+((P.skills.kiSlash||1)-1)*5:5;
   if(key==='shield')return 5+((P.skills.maliceSwipe||1)-1)*2;
   const base=_COST_BASE[key]||5;
   const raw=~~(base*_dpsCostMul(key)*(m||1)*_stDisc(key));
@@ -19194,7 +19534,7 @@ function update(){
         _playKiSlashComboSfx(_cresStep);
         const _ksLv=P.skills.kiSlash||1,_ksDistMul=(_ksLv-1)*15;
         // 1타/2타 150%, 3타 250%, Lv20에서 5배 (Lv당 +21% 선형)
-        spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*(_cresStep===3?5.0:1.5)*statStr()*(1+(_ksLv-1)*0.21)),0,_cresStep,_ksDistMul);
+        spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*(_cresStep===3?5.0:1.5)*statStr()*pAtkMul()*(1+(_ksLv-1)*0.21)),0,_cresStep,_ksDistMul);
         addTxt(P.x,P.y-40,_cresStep+(OPT.lang==='en'?' Hit':'타'),_cresStep===3?'#ff4444':'#ffcc00',20);
       }else SFX.slash();
     }
@@ -19654,7 +19994,7 @@ function update(){
           _cresStep=(_cresStep%3)+1;_cresComboT=120;_cresCd=_cresStep===3?20:12;
           _playKiSlashComboSfx(_cresStep);
           const _ksLv=P.skills.kiSlash||1,_ksDistMul=(_ksLv-1)*15;
-          spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*(_cresStep===3?2:1.2)*statStr()*(1+(_ksLv-1))),0,_cresStep,_ksDistMul);
+          spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*(_cresStep===3?2:1.2)*statStr()*pAtkMul()*(1+(_ksLv-1))),0,_cresStep,_ksDistMul);
           addTxt(P.x,P.y-40,_cresStep+(OPT.lang==='en'?' Hit':'타'),'#ffcc00',20);
         }else SFX.slash();}
       else if(isAct('charge')&&P.chargeStocks>0&&!_harpActive&&(P.activeChargeSk==='magicBlink'?P.mp>=mpCost('blink'):useStPct('charge'))){
@@ -27634,7 +27974,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     const _okS=_eqAffix('onKillStam');if(_okS>0)P.st=Math.min(P.mst,P.st+_okS);
     const _okSh=_eqAffix('shieldOnKill');if(_okSh>0)P.shield=Math.min(P.mshield,P.shield+_okSh);
     const _okSp=_eqAffix('onKillSpeed');if(_okSp>0){P._okSpdBuff=120;P._okSpdMul=_okSp}
-    const _okEx=_eqAffix('onKillExplode');if(_okEx>0){const _exR=60;const _exDmg=~~(e.mhp*_okEx);const _exN=shQuery(e.x,e.y,_exR);for(let _exi=0;_exi<_exN.length;_exi++){const _exe=_exN[_exi];if(_exe!==e&&_exe.alive)hitEnemy(_exe,_exDmg,0,true)}}}
+    }
     const _isBurnDeath=atkEl===EL.F||(opts&&opts.beam);
     const _isWhirlKill=(P.s==='whirlwind'&&!(opts&&opts.detonate));
     atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;_petOnKill();
@@ -28632,7 +28972,7 @@ const SKILL_LIST=[
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'ghostWalk',name:'암전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 15초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 15s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
   {id:'bladeDash',name:'전격이동',cat:'move',noDmg:true,desc:'[이동기] 데미지 없음. 방향키 더블탭으로 발동, 대각선은 방향키 2개 동시. 스페이스+방향키로도 발동. 500유닛 순간이동, 이동 중 무적(15프레임). MP 소모(10+Lv×5). 10충전, 충전속도 8초→Lv당-0.5초(최소3초). 만렙 시 방향키 한번으로 즉시 발동',descEn:'[Mobility] No damage. Double-tap direction key to activate, hold 2 keys for diagonal. Space+direction also works. 500-unit instant dash, invincible during dash (15 frames). MP cost (10+Lv×5). 10 stocks, recharge 8s→-0.5s/Lv (min 3s). At max Lv: single tap to activate',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
-  {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 5+Lv당2. Lv당 뎀+10% 거리+15px',descEn:'LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 5+2/Lv. Per Lv DMG+10% range+15px',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
+  {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 10+Lv당5. Lv당 뎀+10% 거리+15px',descEn:'LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 10+5/Lv. Per Lv DMG+10% range+15px',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'fireball',name:'악의구',cat:'bow',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'detonate',name:'기폭팔',cat:'def',desc:'패링 3초 홀드 → 흡수 데미지 광역 폭발. Lv당 범위+15 (1렙150, 10렙285)',descEn:'Parry 3s hold → absorbed DMG AoE explosion. Per Lv range+15 (Lv1: 150, Lv10: 285)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -28711,7 +29051,7 @@ const SKILL_SLOT_DEFS={
     info:{giantSlam:{name:'대왕치기',nameEn:'Giant Slam',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨8초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 8s)'},
           spikeTrap:{name:'가시덫',nameEn:'Spike Trap',emoji:'🌿',desc:'Space: 가시덫 설치 (악의10, 쿨10초)',descEn:'Space: Place spike trap (malice 10, cd 10s)'}}},
   lmb:{name:'좌클 스킬',nameEn:'LMB Skill',key:'lmb',skills:['kiSlash','whirlwind'],
-    info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클: 3단 콤보 검기 (ST 고정 10)',descEn:'LMB: 3-hit combo ki blade (ST fixed 10)'},
+    info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클: 3단 콤보 검기 (ST 10+Lv당5)',descEn:'LMB: 3-hit combo ki blade (ST 10+5/Lv)'},
           whirlwind:{name:'회전참',nameEn:'Whirlwind',emoji:'🌀',desc:'좌클 홀드: 회전 베기',descEn:'LMB Hold: Spin attack'}}},
   rmb:{name:'우클 스킬',nameEn:'RMB Skill',key:'rmb',skills:['maliceSwipe'],
     info:{maliceSwipe:{name:'칼등 처내기',nameEn:'Blade Parry',emoji:'💀',desc:'우클: 칼등 처내기 (홀드 연사, Lv당 반사뎀+10%)',descEn:'RMB: Blade parry (hold rapid, reflect dmg+10%/Lv)'}}},
@@ -32767,7 +33107,7 @@ $('invClose').onclick=()=>{_invSalSel.clear();$('invCompareFloat').style.display
 let _forgeSel=null; // {name,desc,cost,fn}
 let _potAmt=1; // 물약 제작 수량
 let _salSel=new Set(); // 분해 선택된 bag 인덱스
-const CRAFT_COST=_malCost(30000); // 제작 비용 (악의, 50% 할인 반영)
+const CRAFT_COST=_malCost(200000); // 제작 비용 10만악의 (200000×0.5=100000)
 // ═══ 접두사/접미사 시스템 ═══
 // ═══ 어픽스 표시 함수 ═══
 function _affixValStr(af){
@@ -32874,8 +33214,10 @@ function renderForge(){
     const _sx=_si%4,_sy=~~(_si/4);
     const _x=(_sx/3*100).toFixed(3)+'%';
     const _y=(_sy/2*100).toFixed(3)+'%';
-    const _atlas='atlas-'+(_m.atlas||'v1');
-    d.innerHTML='<span class="fg-tab-ico atlas '+_atlas+'" style="--ix:'+_x+';--iy:'+_y+'">'+_m.icon+'</span><span class="fg-tab-txt">'+_txt+'</span>';
+    const _atlasKey=_m.atlas||'v1';
+    const _atlasReady=!!_fgAtlasState[_atlasKey];
+    const _atlasCls=_atlasReady?(' atlas atlas-'+_atlasKey):'';
+    d.innerHTML='<span class="fg-tab-ico'+_atlasCls+'" style="--ix:'+_x+';--iy:'+_y+'">'+_m.icon+'</span><span class="fg-tab-txt">'+_txt+'</span>';
     d.onclick=()=>{G.forgeTab=k;_forgeSel=null;_salSel.clear();_rerollSel=null;_crForgeSel=-1;renderForge()};
     tabs.appendChild(d);
   });
@@ -33399,12 +33741,12 @@ function renderForge(){
     matsDiv.innerHTML=OPT.lang==='en'?`👿 Malice: <span style="color:#cc66ff;font-weight:700">${G.mats}</span> &nbsp;|&nbsp; Cost: <span style="color:#ffaa44;font-weight:700">${CRAFT_COST}</span>`:`👿 보유 악의: <span style="color:#cc66ff;font-weight:700">${G.mats}</span> &nbsp;|&nbsp; 제작 비용: <span style="color:#ffaa44;font-weight:700">${CRAFT_COST}</span>`;
     grid.appendChild(matsDiv);
 
-    // 레어리티 확률 (영웅 75%, 전설 25%)
+    // 레어리티 확률 (영웅 90%, 전설 10%)
     const distDiv=document.createElement('div');
     distDiv.style.cssText='margin:10px auto;width:90%;max-width:300px;padding:8px;background:rgba(0,0,0,.3);border:1px solid #221100;border-radius:4px';
     distDiv.innerHTML=`<div style="color:#776655;font-size:.95rem;margin-bottom:6px;text-align:center">${_T('제작 확률')}</div>
-      <div style="display:flex;align-items:center;gap:4px;margin:2px 0"><span style="color:${RARITY_C[3]};font-size:.95rem;width:28px;text-align:right">${_T('영웅')}</span><div style="flex:1;height:8px;background:rgba(0,0,0,.4);border-radius:3px;overflow:hidden"><div style="height:100%;width:75%;background:${RARITY_C[3]};border-radius:3px;opacity:.7"></div></div><span style="color:#776655;font-size:1rem;width:28px">75%</span></div>
-      <div style="display:flex;align-items:center;gap:4px;margin:2px 0"><span style="color:${RARITY_C[4]};font-size:.95rem;width:28px;text-align:right">${_T('전설')}</span><div style="flex:1;height:8px;background:rgba(0,0,0,.4);border-radius:3px;overflow:hidden"><div style="height:100%;width:25%;background:${RARITY_C[4]};border-radius:3px;opacity:.7"></div></div><span style="color:#776655;font-size:1rem;width:28px">25%</span></div>`;
+      <div style="display:flex;align-items:center;gap:4px;margin:2px 0"><span style="color:${RARITY_C[3]};font-size:.95rem;width:28px;text-align:right">${_T('영웅')}</span><div style="flex:1;height:8px;background:rgba(0,0,0,.4);border-radius:3px;overflow:hidden"><div style="height:100%;width:90%;background:${RARITY_C[3]};border-radius:3px;opacity:.7"></div></div><span style="color:#776655;font-size:1rem;width:28px">90%</span></div>
+      <div style="display:flex;align-items:center;gap:4px;margin:2px 0"><span style="color:${RARITY_C[4]};font-size:.95rem;width:28px;text-align:right">${_T('전설')}</span><div style="flex:1;height:8px;background:rgba(0,0,0,.4);border-radius:3px;overflow:hidden"><div style="height:100%;width:10%;background:${RARITY_C[4]};border-radius:3px;opacity:.7"></div></div><span style="color:#776655;font-size:1rem;width:28px">10%</span></div>`;
     grid.appendChild(distDiv);
 
     // 제작 버튼
@@ -33418,7 +33760,7 @@ function renderForge(){
       if(G.mats<CRAFT_COST){notify(_T('악의가 부족합니다!'));return}
       G.mats-=CRAFT_COST;
       const rEl=[EL.P,EL.F,EL.I,EL.D,EL.L,EL.H][~~(Math.random()*6)];
-      const rar=Math.random()<0.75?3:4; // 영웅 75%, 전설 25%
+      const rar=Math.random()<0.90?3:4; // 영웅 90%, 전설 10%
       const craftSlot=slot==='ring'?(!INV.equipped.ring1?'ring1':!INV.equipped.ring2?'ring2':'ring1'):slot;
       const wt=craftSlot==='weapon'?WTYPE_KEYS[~~(Math.random()*WTYPE_KEYS.length)]:craftSlot==='bow'?BTYPE_KEYS[~~(Math.random()*BTYPE_KEYS.length)]:undefined;
       const item=mkItem(craftSlot,tier,rEl,rar,wt);
