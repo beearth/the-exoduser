@@ -7974,7 +7974,7 @@ function spawnCrescent(x,y,ang,dmg,el,step,distMul){
     c.life=_stepLife;c.ml=c.life;
     c._hitSet=new Set();
     c.dmg=dmg;c.el=el||0;
-    c.r=step===3?80:55;
+    c.r=step===3?120:55; // 3타 범위 +50% (80→120)
     c.step=step;
     for(let t=0;t<5;t++){c.trail[t].x=x;c.trail[t].y=y;}
     c._th=0;
@@ -8764,7 +8764,7 @@ function renderCrescents(X){
     const alpha=Math.max(.15,1-prog*1.1);
     const _is3=c.step===3;
     // 트레일 글로우 (stamp drawImage)
-    {const _trSt=_getSparkStamp(_is3?'#ffaa44':'#66bbff'),_trR=_is3?12:8;
+    {const _trSt=_getSparkStamp(_is3?'#ff3322':'#66bbff'),_trR=_is3?14:8;
     for(let t=0;t<5;t++){
       const tr=c.trail[t];
       X.globalAlpha=((t+1)/5)*0.4*alpha;
@@ -8913,7 +8913,7 @@ function updateCrescents(sp){
         hurtE(e,c.dmg,Math.atan2(e.y-c.y,e.x-c.x),true,{poiseHit:true,kbMult:0.5,noImpact:true},c.el);
         if(c.step===3){G.hitStop=Math.max(G.hitStop,6);shake(8);}
         else G.hitStop=Math.max(G.hitStop,3);
-        addParts(c.x,c.y,'#aaddff',c.step===3?12:6);
+        addParts(c.x,c.y,c.step===3?'#ff4444':'#aaddff',c.step===3?14:6);
         playVFXAng('ice_slash',e.x,e.y,c.step===3?1.25:0.9,3,c.ang+(Math.random()-.5)*1.2,true);
         // 무한관통 — 같은 적만 중복히트 방지
       }
@@ -19194,8 +19194,8 @@ function update(){
         _playKiSlashComboSfx(_cresStep);
         const _ksLv=P.skills.kiSlash||1,_ksDistMul=(_ksLv-1)*15;
         // 1타/2타 150%, 3타 250%, Lv20에서 5배 (Lv당 +21% 선형)
-        spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*(_cresStep===3?2.5:1.5)*statStr()*(1+(_ksLv-1)*0.21)),0,_cresStep,_ksDistMul);
-        addTxt(P.x,P.y-40,_cresStep+(OPT.lang==='en'?' Hit':'타'),'#ffcc00',20);
+        spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*(_cresStep===3?5.0:1.5)*statStr()*(1+(_ksLv-1)*0.21)),0,_cresStep,_ksDistMul);
+        addTxt(P.x,P.y-40,_cresStep+(OPT.lang==='en'?' Hit':'타'),_cresStep===3?'#ff4444':'#ffcc00',20);
       }else SFX.slash();
     }
     else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=20;_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3){var _ve2=['voice_grunt','male_grunt'];playSample(_ve2[~~(Math.random()*2)],1,_r(1,.15))}if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
