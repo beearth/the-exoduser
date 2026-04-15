@@ -19508,3 +19508,13 @@
 - game.html
 - index.html
 
+
+## 2026-04-15 15:30 (auto)
+- Electron/icon.ico
+- docs/13출시·마�???13출시·마�???md
+- docs/14밸런???�치?�이�?14밸런???�치?�이�?md
+- docs/14밸런???�치?�이�??�시브효과표.md
+- favicon.ico
+- game.html
+- img/icon-256.png
+

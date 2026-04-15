@@ -6787,6 +6787,9 @@ const AFFIX_POOL=[
   {id:'staggerExplosion',type:1,tiers:[.30,.50,.80],unit:'pct',slots:['wpn'],group:'sexp',weight:35},
   {id:'elemConvert',type:1,tiers:[.20,.35,.55],unit:'prob',slots:['wpn'],group:'elcv',weight:40},
   {id:'parryExplosion',type:1,tiers:[.40,.70,1.10],unit:'atk',slots:['wpn'],group:'pexp',weight:35},
+  // 조건부 DPS 어픽스 (무기 파트 SUFFIX)
+  {id:'abundDmg',type:1,tiers:[.12,.20,.32],unit:'pct',slots:['wpn','helm'],group:'abnd',weight:45},
+  {id:'predDmg',type:1,tiers:[.12,.20,.32],unit:'pct',slots:['wpn','helm'],group:'pred',weight:45},
 
   // ─── 방어구 파트 PREFIX ─── (armor,shield,gloves,pants,boots,cloak)
   // 방어 어픽스: flat DEF 5티어 최대 50 (방어구 전용)
@@ -6864,6 +6867,7 @@ const AFFIX_NAMES_KO={
   magicDmg:'마력의',mpCostRed:'절약의',maxMPPct:'영혼의',
   maxSTFlat:'지속의',maxMPFlat:'마나의',eDefFlat:'원소수호의',
   lckFlatN:'행운의',lckFlatR:'행운의',gritFlatN:'근성의',gritFlatR:'근성의',
+  abundDmg:'풍요의',predDmg:'약자포식의',
   sharpAtk:'예리한',brutalAtk:'맹렬한',ruinAtk:'파멸의',
   critRate:'광폭의',critDmgW:'극대화의',
   critDmgA:'행운의',critDmgB:'극대화의'
@@ -6885,6 +6889,7 @@ const _AFFIX_DESC={
   revivePow:'부활력+',reviveCd:'부활쿨-',
   lifeMaxHP:'최대HP%+',lifeRegen:'HP리젠+',lifeHealPow:'회복력+',
   magicDmg:'마법뎀+',mpCostRed:'MP소비-',maxMPPct:'MP%+',
+  abundDmg:'HP≥70%뎀+',predDmg:'적HP≤50%뎀+',
   sharpAtk:'공격력+',brutalAtk:'공격력+',ruinAtk:'공격력+',
   critDmgA:'크리뎀+',critDmgB:'크리뎀+'
 };
@@ -14808,6 +14813,8 @@ const PASSIVE_DEF=[
   {key:'pCombo', name:'🎯 추적자',nameEn:'🎯 Tracker',desc:'콤보 최대 중첩 +5/lv (1렙5, 10렙50), 같은 적 연속 공격 시 +1%/중첩',descEn:'Max combo stacks +5/lv (lv1=5, lv10=50), +1%/stack on same target',max:10, icon:'🎯',col:'#ff66aa'},
   {key:'pPhysPen',name:'🗡 물리관통',nameEn:'🗡 Phys Penetration',desc:'물리→쉴드 패널티 관통 +4%/lv (기본10%, 10lv=50%)',descEn:'Phys to Shield penalty pierce +4%/lv (base 10%, lv10=50%)',max:10, icon:'🗡',col:'#dd6644'},
   {key:'pMagPen', name:'🔮 마법관통',nameEn:'🔮 Magic Penetration',desc:'마법→HP 패널티 관통 +4%/lv (기본10%, 10lv=50%)',descEn:'Magic to HP penalty pierce +4%/lv (base 10%, lv10=50%)',max:10, icon:'🔮',col:'#aa44dd'},
+  {key:'pAbund',  name:'🌿 풍요',nameEn:'🌿 Abundance',desc:'내 HP 70%↑: 뎀+20%/lv, 회복력+5%/lv (합연산)',descEn:'My HP≥70%: DMG+20%/lv, Recovery+5%/lv (additive)',max:10, icon:'🌿',col:'#66cc44'},
+  {key:'pPred',   name:'🐺 약자포식',nameEn:'🐺 Predator',desc:'적HP 50%↓: 뎀+20%/lv. 내HP 50%↓: 회복력+10%/lv, 이속+5%/lv (합연산)',descEn:'Enemy HP≤50%: DMG+20%/lv. My HP≤50%: Recovery+10%/lv, Move SPD+5%/lv (additive)',max:10, icon:'🐺',col:'#cc4444'},
 ];
 let PASSIVES={};PASSIVE_DEF.forEach(p=>PASSIVES[p.key]=0);
 // ═══ 근성 (보조스텟): SP 소모, 무한 레벨, HP/MP/ST 각각 +1/lv ═══
@@ -14840,7 +14847,7 @@ function applyStats(){
   if(P.poiseR===undefined)P.poiseR=0;
   // ═══ 바이블 기준: ATK = 15+(stage-1)*2 ═══
   P.baseAtk=G.on?15+((G.stage||1)-1)*2:15;
-  P.speed=(2.6+s.dex*.005)*(1+(P._altSpd||0)+_eqAffix('movSpeed')+_eqImplicit('_iMovSpd')*.01);
+  P.speed=(2.6+s.dex*.005)*(1+(P._altSpd||0)+_eqAffix('movSpeed')+_eqImplicit('_iMovSpd')*.01+pPredSpd());
   P.stR=.05+s.dex*.005+P.lv*.0015; // ST리젠: DEX + 레벨 (/8 적용, Lv계수 0.001→0.0015)
   P.hpR=.05+s.str*.002+P.lv*.001+_eqAffix('lifeRegen')/60; // HP리젠: 초당 + STR + 레벨 + 생명팔찌
   P.mmp=~~(100+P.lv*.5+s.int*1+_eqAffix('maxMPFlat'));
@@ -14912,6 +14919,11 @@ function pMRegenMul(){return 1+PASSIVES.pMRegen*.03}    // MP/쉴드리젠 +3%/l
 function pPhysPen(){return Math.min(.50,.10+(PASSIVES.pPhysPen||0)*.04)} // 물리→쉴드 관통 10%→50% (+4%/lv)
 function pMagPen(){return Math.min(.50,.10+(PASSIVES.pMagPen||0)*.04)}   // 마법→HP 관통 10%→50% (+4%/lv)
 function pShieldCdMul(){return 1-Math.min(.3,PASSIVES.pMRegen*.03)} // 쉴드쿨 -3%/lv (최대-30%)
+function pAbundDmg(){return P.hp>=P.mhp*.7?(PASSIVES.pAbund||0)*.20:0}    // 풍요: 내HP≥70% → 뎀+20%/lv (합연산)
+function pAbundRegen(){return P.hp>=P.mhp*.7?(PASSIVES.pAbund||0)*.05:0}  // 풍요: 내HP≥70% → 회복력+5%/lv (합연산)
+function pPredDmg(e){return e&&e.hp<=e.mhp*.5?(PASSIVES.pPred||0)*.20:0}  // 약자포식: 적HP≤50% → 뎀+20%/lv (합연산)
+function pPredRegen(){return P.hp<=P.mhp*.5?(PASSIVES.pPred||0)*.10:0}    // 약자포식: 내HP≤50% → 회복력+10%/lv (합연산)
+function pPredSpd(){return P.hp<=P.mhp*.5?(PASSIVES.pPred||0)*.05:0}      // 약자포식: 내HP≤50% → 이속+5%/lv (합연산)
 // ═══ 이전 호환 ═══
 let UPGRADES={hp:0,atk:0,def:0,mp:0,st:0,spd:0};
 let POT_LV={hp:0}; // 물약 강화 레벨 (0~10)
@@ -18782,7 +18794,7 @@ function update(){
   const _mpr=(P.mpR+(wp().mpRegen||0)+(sh().mpRegen||0)+(bt().mpRegen||0)+(ar().mpRegen||0)+(hm().mpRegen||0)+(bw().mpRegen||0)+(gl().mpRegen||0)+(pt().mpRegen||0)+(nc().mpRegen||0)+(rg1().mpRegen||0)+(rg2().mpRegen||0)+(cp().mpRegen||0))*pMRegenMul()*_hdMul;
   const _str=(P.stR+(wp().stRegen||0)+(sh().stRegen||0)+(bt().stRegen||0)+(ar().stRegen||0)+(hm().stRegen||0)+(bw().stRegen||0)+(gl().stRegen||0)+(pt().stRegen||0)+(nc().stRegen||0)+(rg1().stRegen||0)+(rg2().stRegen||0)+(cp().stRegen||0))*pRegenMul()*_hdMul;
   // HP 자연 리젠 (VIT + 레벨 기반, 회복력 패시브 + 생명팔찌 적용)
-  const _hpr=(P.hpR||0)*pRegenMul()*_hdMul*(1+_eqAffix('lifeHealPow'));
+  const _hpr=(P.hpR||0)*pRegenMul()*_hdMul*(1+_eqAffix('lifeHealPow'))*(1+pAbundRegen()+pPredRegen());
   const _regenDiv=P.s==='idle'?8:16;
   if(_hpr>0&&P.hp>0&&P.hp<P.mhp){P.hp=Math.min(P.mhp,P.hp+_hpr/_regenDiv*sp)}
   {const _stBefore=P.st,_mpBefore=P.mp,_hpBefore=P.hp;
@@ -27127,6 +27139,10 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(P._killBuff>0)dmg=~~(dmg*(1+P._killMul));
   // 목걸이 데미지 보너스
   if(nc().dmgBonus)dmg=~~(dmg*(1+(nc().dmgBonus||0)*0.01));
+  // ═══ 패시브: 풍요(pAbund) + 약자포식(pPred) — 조건부 뎀업 (합연산) ═══
+  {const _paDmg=pAbundDmg()+pPredDmg(e);if(_paDmg>0)dmg=~~(dmg*(1+_paDmg))}
+  // ═══ 어픽스: abundDmg (풍요) — 내HP≥70% 뎀업 / predDmg (약자포식) — 적HP≤50% 뎀업 (합연산) ═══
+  {const _axAb=P.hp>=P.mhp*.7?_eqAffix('abundDmg'):0;const _axPr=e.hp<=e.mhp*.5?_eqAffix('predDmg'):0;if(_axAb+_axPr>0)dmg=~~(dmg*(1+_axAb+_axPr))}
   // 최소 데미지 1 보장 (DR 중첩으로 0뎀 방지)
   if(dmg<1)dmg=1;
   // 넉백/그로기 전용 배율
@@ -33439,6 +33455,7 @@ function renderStatSummary(){
     `<div style="${_sHd}">✨ ${_L('특수 효과','Special Effects')}</div>`+
     `<div style="${_sLn}">${_L('처치뎀+','Kill DMG+')}: <span style="color:${_afc('killSlayer','#ff4444')}">${_afp('killSlayer')}</span></div>`+
     `<div style="${_sLn}">${_L('위기뎀+','Crisis DMG+')}: <span style="color:${_afc('crisisBoost','#ff2222')}">${_afp('crisisBoost')}</span> | ${_L('피격반격','Hit Counter')}: <span style="color:${_afc('counterHit','#ff6644')}">${_afp('counterHit')}</span></div>`+
+    `<div style="${_sLn}">${_L('풍요(HP≥70%뎀+)','Abundance(HP≥70%DMG+)')}: <span style="color:${_afc('abundDmg','#66cc44')}">${_afp('abundDmg')}</span> | ${_L('약자포식(적HP≤50%뎀+)','Predator(EnemyHP≤50%DMG+)')}: <span style="color:${_afc('predDmg','#cc4444')}">${_afp('predDmg')}</span></div>`+
     `<div style="${_sLn}">${_L('패링폭발','Parry Blast')}: <span style="color:${_afc('parryExplosion','#ffaa00')}">${_af('parryExplosion')?'ATK×'+_af('parryExplosion').toFixed(2):'0'}</span> | ${_L('체간파괴+','Posture Break+')}: <span style="color:${_afc('staggerExplosion','#ff8800')}">${_afp('staggerExplosion')}</span></div>`+
     `<div style="${_sLn}">${_L('콤보뎀+','Combo DMG+')}: <span style="color:${_afc('comboBoost','#ff9944')}">${_afp('comboBoost')}</span> | ${_L('작살뎀+','Harpoon DMG+')}: <span style="color:${_afc('dashBoost','#ff6644')}">${_afp('dashBoost')}</span> | ${_L('스킬뎀+','Skill DMG+')}: <span style="color:${_afc('skillBoost','#bb44ff')}">${_afp('skillBoost')}</span></div>`+
     `<div style="${_sLn}">${_L('패리+','Parry+')}: <span style="color:${_afc('parryBonus','#44ff88')}">${_afp('parryBonus')}</span> | ${_L('체인','Chain')}: <span style="color:${_afc('chainTarget','#ffcc44')}">+${_af('chainTarget').toFixed(0)}</span> | ${_L('정화','Purify')}: <span style="color:${_afc('statusClean','#44ff88')}">${_af('statusClean').toFixed(0)}${_L('회','x')}</span></div>`+
