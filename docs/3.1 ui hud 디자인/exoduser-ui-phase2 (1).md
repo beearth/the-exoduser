@@ -218,10 +218,10 @@ style 맨 아래에 추가:
 | 탭 구조 | 텍스트만 출력 → `아이콘 박스 + 라벨` 2요소 구조로 분리 (`fg-tab-ico`, `fg-tab-txt`) | `game.html` `renderForge()` |
 | 탭 메타 | 탭별 `icon/ko/en` 메타 객체 도입 (`_fgTabMeta`)으로 아이콘/언어 라벨 일관화 | `game.html` `renderForge()` |
 | 탭 시각 | 대장간 탭에 아이콘 전용 프레임(18x18), 활성 탭 아이콘 하이라이트 추가 | `game.html` `.fg-tab`, `.fg-tab-ico` |
-| 아이콘 소스 | `v1 + v2` 혼합 사용: 시스템 탭(강화/물약/분해/리롤/결정)=v1, 장비 슬롯 탭(무기~귀걸이)=v2 | `game.html` `.fg-tab-ico.atlas-v1/.atlas-v2`, `_fgTabMeta.atlas` |
-| 에셋 경로 | `output/imagegen/forge-icon-sheet-v1.png`, `output/imagegen/forge-icon-sheet-v2.png` | 프로젝트 루트 출력물 |
+| 아이콘 소스 | `v1 + v3` 혼합 사용: 시스템 탭(강화/물약/분해/리롤/결정)=v1, 장비 슬롯 탭(무기~귀걸이)=v3 | `game.html` `.fg-tab-ico.atlas-v1/.atlas-v2`, `_fgTabMeta.atlas` |
+| 에셋 경로 | `output/imagegen/forge-icon-sheet-v1.png`, `output/imagegen/forge-icon-sheet-v3.png` | 프로젝트 루트 출력물 |
 | 가독성 미세조정 | 아이콘 18→22px, 탭 패딩 5→6px, 아틀라스 배율 `400x300%`(4x3 시트 기준), 대비/밝기/글로우 강화 | `game.html` `.fg-tab`, `.fg-tab-ico`, `.fg-tab-ico.atlas` |
-| 렌더 우선순위 | 이모지는 항상 표시(전경), 아틀라스는 배경 장식으로 병행 렌더(빈 아이콘 박스 방지) | `game.html` `.fg-tab-ico.atlas`, `renderForge()`, `_fgAtlasState` |
+| 렌더 우선순위 | 아틀라스 로드 성공 시 이미지 아이콘 우선 렌더, 실패 시 이모지 폴백 | `game.html` `.fg-tab-ico.atlas`, `renderForge()`, `_fgAtlasState` |
 | 로드 재시도 | 최초 이미지 로드 실패 시에도 대장간 열림 상태에서 1.3초 간격 자동 재시도(1회 실패 고정 방지) | `game.html` `_ensureForgeAtlasLoad()` |
 
 ---
