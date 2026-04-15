@@ -1378,7 +1378,7 @@ canvas{display:block;position:fixed;inset:0}
   <div class="pbox" style="width:400px">
     <div class="ptitle">⚒ 복수의 대장간 ⚒</div>
     <div id="forgeMats" style="text-align:center;margin-bottom:6px;padding:4px 12px;background:rgba(120,0,200,.08);border:1px solid #553388;font-size:1rem;color:#cc66ff;font-weight:700">👿 악의: 0</div>
-    <div style="color:#665544;font-size:.8rem;text-align:center;margin-bottom:8px">🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭</div>
+    <div id="forgeLore" style="color:#665544;font-size:.8rem;text-align:center;margin-bottom:8px">🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭</div>
     <div class="fg-tabs" id="fgTabs"></div>
     <div class="fg-grid" id="fgGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:36vh;overflow-y:auto"></div>
     <div id="forgeConfirm" style="display:none;margin-top:8px;padding:8px;background:rgba(255,170,0,.06);border:1px solid #665522;text-align:center">
@@ -6404,7 +6404,8 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       else if(P.mp<mpCost('iceOrb'))showPH(_T('MP 부족!'),'#4488ff');break;
     case 'maliceMortar':
       if(G._mmBomb&&G._mmBomb.phase==='throw'){G._mmBomb.t=G._mmBomb.maxT;break}
-      if(P.mp>=mpCost('mortar')&&(P._mmCd||0)<=0&&!P._mmAiming){P._mmAiming=true;P._mmCharging=false;P._mmDist=150;P._mmKey=keyCode;_skOk=true}
+      if(P._mmAiming){P._mmAiming=false;showPH(_T('취소'),'#888');break}
+      if(P.mp>=mpCost('mortar')&&(P._mmCd||0)<=0){P._mmAiming=true;_skOk=true}
       else if(P.mp<mpCost('mortar'))showPH(_T('MP 부족!'),'#4488ff');break;
     case 'boneWall':
       if(P._bwAiming){P._bwAiming=false;showPH(_T('취소'),'#888');break}
@@ -15313,7 +15314,7 @@ const PASSIVE_DEF=[
   {key:'pMRegen',name:'💠 마력회복',nameEn:'💠 Mana Recovery',desc:'MP리젠 +3%/lv, 쉴드리젠 +3%/lv, 쉴드쿨 -3%/lv',descEn:'MP regen +3%/lv, Shield regen +3%/lv, Shield cooldown -3%/lv',max:10, icon:'💠',col:'#6688ff'},
   {key:'pXbow',  name:'🏹 쇠뇌력',nameEn:'🏹 Crossbow Mastery',  desc:'자동쇠뇌 뎀 +5%/lv, 공속 +5%/lv',descEn:'Auto crossbow DMG +5%/lv, ATK speed +5%/lv',max:10, icon:'🏹',col:'#ccaa44'},
   {key:'pMelee', name:'⚔ 광전사',nameEn:'⚔ Berserker',desc:'물리뎀 +15%/lv, HP +3%/lv, ST소모 -5%/lv',descEn:'Phys DMG +15%/lv, HP +3%/lv, ST cost -5%/lv',max:10, icon:'⚔',col:'#ff8844'},
-  {key:'pCombo', name:'🎯 추적자',nameEn:'🎯 Tracker',desc:'콤보 최대 중첩 +5/lv (1렙5, 10렙50), 같은 적 연속 공격 시 +1%/중첩',descEn:'Max combo stacks +5/lv (lv1=5, lv10=50), +1%/stack on same target',max:10, icon:'🎯',col:'#ff66aa'},
+  {key:'pCombo', name:'🎯 추적자',nameEn:'🎯 Tracker',desc:'적에게 약점노출 디버프. 직접 공격 시 스택+1, 스택당 피격뎀 +3%. 최대 Lv×5 중첩 (1렙5, 10렙50). 초당 20% 감소, 5초 미피격 시 리셋. DOT/장판 제외',descEn:'Weakness debuff on enemies. +1 stack per direct hit, +3% DMG/stack. Max Lv×5 (Lv1=5, Lv10=50). -20%/s decay, reset after 5s. DOT excluded',max:10, icon:'🎯',col:'#ff66aa'},
   {key:'pPhysPen',name:'🗡 물리관통',nameEn:'🗡 Phys Penetration',desc:'물리→쉴드 패널티 관통 +5%/lv (기본10%, 10lv=60%)',descEn:'Phys to Shield penalty pierce +5%/lv (base 10%, lv10=60%)',max:10, icon:'🗡',col:'#dd6644'},
   {key:'pMagPen', name:'🔮 마법관통',nameEn:'🔮 Magic Penetration',desc:'마법→HP 패널티 관통 +5%/lv (기본10%, 10lv=60%)',descEn:'Magic to HP penalty pierce +5%/lv (base 10%, lv10=60%)',max:10, icon:'🔮',col:'#aa44dd'},
   {key:'pAbund',  name:'🌿 풍요',nameEn:'🌿 Abundance',desc:'내 HP 70%↑: 뎀+20%/lv, 회복력+5%/lv (합연산)',descEn:'My HP≥70%: DMG+20%/lv, Recovery+5%/lv (additive)',max:10, icon:'🌿',col:'#66cc44'},
@@ -22348,8 +22349,9 @@ function update(){
     }
   }
   if(P._hrAiming){
-    const _hrwx=mouse.x-C.width/2+G.cam.x;
-    const _hrwy=mouse.y-C.height/2+G.cam.y;
+    let _hrwx=mouse.x-C.width/2+G.cam.x;
+    let _hrwy=mouse.y-C.height/2+G.cam.y;
+    {const _hrD3=dst(P.x,P.y,_hrwx,_hrwy);if(_hrD3>1000){const _hrA3=Math.atan2(_hrwy-P.y,_hrwx-P.x);_hrwx=P.x+Math.cos(_hrA3)*1000;_hrwy=P.y+Math.sin(_hrA3)*1000}}
     if(MBjust[2]||K['Escape']){P._hrAiming=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]){
       MBjust[0]=false;
@@ -22483,8 +22485,9 @@ function update(){
   }
   // ═══ 아이스스톰 — 조준 모드 ═══
   if(P._isAiming){
-    const _iswx=mouse.x-C.width/2+G.cam.x;
-    const _iswy=mouse.y-C.height/2+G.cam.y;
+    let _iswx=mouse.x-C.width/2+G.cam.x;
+    let _iswy=mouse.y-C.height/2+G.cam.y;
+    {const _isD3=dst(P.x,P.y,_iswx,_iswy);if(_isD3>1000){const _isA3=Math.atan2(_iswy-P.y,_iswx-P.x);_iswx=P.x+Math.cos(_isA3)*1000;_iswy=P.y+Math.sin(_isA3)*1000}}
     const _isLv=P.skills.iceStorm||1;
     const _isR=200+(_isLv-1)*22;
     if(MBjust[2]||K['Escape']){P._isAiming=false;MBjust[2]=false;K['Escape']=false}
@@ -22513,18 +22516,24 @@ function update(){
   // ═══ 독가스탄 — 쿨다운 ═══
   if((P._gcCd||0)>0)P._gcCd-=sp;
   // 공성쇠뇌 쿨다운 제거됨
-  // ═══ 폭풍소환 — 조준 (키 홀드=거리, 릴리즈=발사) ═══
+  // ═══ 폭풍소환 — 마우스 조준 클릭 설치 (악의폭풍과 동일) ═══
   if(P._mmAiming){
-    const _mmK=P._mmKey||'Space';
-    if(KH[_mmK]||isHeld('bow')){P._mmCharging=true;P._mmDist=Math.min(P._mmDist+30*sp,900)}
-    else if(P._mmCharging){fireMaliceMortar()}
+    if(MBjust[2]||K['Escape']){P._mmAiming=false;MBjust[2]=false;K['Escape']=false}
+    else if(MBjust[0]){
+      MBjust[0]=false;
+      let _mmwx=mouse.x-C.width/2+G.cam.x,_mmwy=mouse.y-C.height/2+G.cam.y;
+      const _mmDst=dst(P.x,P.y,_mmwx,_mmwy);
+      if(_mmDst>1000){const _mmA=Math.atan2(_mmwy-P.y,_mmwx-P.x);_mmwx=P.x+Math.cos(_mmA)*1000;_mmwy=P.y+Math.sin(_mmA)*1000}
+      P._mmDist=dst(P.x,P.y,_mmwx,_mmwy);P.facing=Math.atan2(_mmwy-P.y,_mmwx-P.x);
+      fireMaliceMortar(_mmwx,_mmwy);
+    }
   }
   // ═══ 벽소환 — 조준 (키 홀드=거리, 릴리즈=발사) ═══
   if(P._bwAiming){
     if(MBjust[2]||K['Escape']){P._bwAiming=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]){
       MBjust[0]=false;
-      fireBoneWall(mouse.x-C.width/2+G.cam.x,mouse.y-C.height/2+G.cam.y);
+      {let _bwTx2=mouse.x-C.width/2+G.cam.x,_bwTy2=mouse.y-C.height/2+G.cam.y;const _bwD3=dst(P.x,P.y,_bwTx2,_bwTy2);if(_bwD3>1000){const _bwA3=Math.atan2(_bwTy2-P.y,_bwTx2-P.x);_bwTx2=P.x+Math.cos(_bwA3)*1000;_bwTy2=P.y+Math.sin(_bwA3)*1000}fireBoneWall(_bwTx2,_bwTy2)}
     }
   }
   // ═══ 레인라이트닝 — 전류 폭파 헬퍼 ═══
@@ -24368,6 +24377,17 @@ function updateE(e,sp){
   }
   // 회전참 피격 스택 감소: 1초간 안 맞으면 초당 3스택씩 감소
   if(e._wwStk>0){if(e._wwStkT>0)e._wwStkT-=sp;else{e._wwStk=Math.max(0,e._wwStk-~~(3*sp/60));}}
+  // 약점노출: 초당 20% 감소 + 5초(300f) 안 때리면 리셋
+  if((e._comboStk||0)>0){
+    if(!e._comboHitT)e._comboHitT=0;
+    e._comboHitT+=sp;
+    if(e._comboHitT>=300){e._comboStk=0;e._comboHitT=0} // 5초 미피격 → 리셋
+    else if(e._comboHitT>=60){// 1초 이상 미피격 시 초당 20% 감소 시작
+      if(!e._comboDecayT)e._comboDecayT=0;
+      e._comboDecayT+=sp;
+      if(e._comboDecayT>=60){e._comboDecayT-=60;e._comboStk=Math.max(0,e._comboStk-Math.max(1,~~(e._comboStk*0.20)))}
+    }
+  }
   // ═══ D4식 DOT — 히트뎀% 풀 축적, 틱마다 풀에서 드레인 ═══
   // 출혈: 50% 축적, 5초, 중첩 (풀 누적) — pDotDmg()+pDotDur() 적용
   if(e.bleedT>0){ e.bleedT-=sp/pDotDur();
@@ -27721,15 +27741,17 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(!_isPure&&e._weakPhys>0&&!_isMagicDmg&&!_isArrow)dmg=~~(dmg*(1+e._weakPhys)); // 물리 피격 증가
   if(!_isPure&&e._weakMag>0&&_isMagicDmg)dmg=~~(dmg*(1+e._weakMag)); // 마법 피격 증가
   if(!_isPure&&e._weakPj>0&&_isArrow)dmg=~~(dmg*(1+e._weakPj)); // 투사체 피격 증가
-  // 약점노출: 어픽스(comboBoost) + 패시브(pCombo) — 피격 몬스터에 스택 축적, +3%/중첩, 3초 지속
-  // DOT 제외, 빔류는 4틱마다 1스택
+  // 약점노출: 어픽스(comboBoost) + 패시브(pCombo) — 직접 공격으로 몬스터별 스택 축적, +3%/중첩
+  // DOT/장판 제외, 빔 4틱당 1스택, 초당 20% 감소, 5초 미피격 리셋
   const _cbAf=_eqAffix('comboBoost');
   const _cbPas=PASSIVES.pCombo||0;
-  if(!isDot&&(_cbAf>0||_cbPas>0)){
-    const _cbMax=(_cbPas>0?10+_cbPas*7:0)+(_cbAf>0?10:0); // 패시브: 기본10+Lv×7 + 어픽스: +10 (10lv=최대90)
-    let _cbAdd=true;
-    if(opts&&opts.beam){if(!e._comboBmT)e._comboBmT=0;e._comboBmT++;if(e._comboBmT<4)_cbAdd=false;else e._comboBmT=0}
-    if(_cbAdd){e._comboStk=Math.min(_cbMax,(e._comboStk||0)+1);e._comboT=180} // 3초(180f) 지속
+  if(_cbAf>0||_cbPas>0){
+    const _cbMax=(_cbPas>0?_cbPas*5:0)+(_cbAf>0?10:0); // 패시브: Lv×5 (1렙5, 10렙50) + 어픽스: +10 (10lv=최대60)
+    if(!isDot){ // DOT/장판은 스택 안 쌓음
+      let _cbAdd=true;
+      if(opts&&opts.beam){if(!e._comboBmT)e._comboBmT=0;e._comboBmT++;if(e._comboBmT<4)_cbAdd=false;else e._comboBmT=0}
+      if(_cbAdd){e._comboStk=Math.min(_cbMax,(e._comboStk||0)+1);e._comboHitT=0;e._comboDecayT=0}
+    }
     if((e._comboStk||0)>0){dmg=~~(dmg*(1+e._comboStk*0.03))}
   }
   // 크리티컬 판정 (서브타입 크리 보너스 합산)
@@ -29843,12 +29865,13 @@ function activateMaliceHunt(){
 }
 
 // ═══ 폭풍소환 발사 (키홀드 거리 → 기원 투척 → 착지 시 소용돌이 전개) ═══
-function fireMaliceMortar(){
-  const dist=P._mmDist;P._mmAiming=false;
+function fireMaliceMortar(_tx,_ty){
+  P._mmAiming=false;
   useMp('mortar');
-  const tx=P.x+Math.cos(P.facing)*dist,ty=P.y+Math.sin(P.facing)*dist;
+  const tx=_tx!=null?_tx:P.x+Math.cos(P.facing)*(P._mmDist||150);
+  const ty=_ty!=null?_ty:P.y+Math.sin(P.facing)*(P._mmDist||150);
   const _mmSlv=P.skills.maliceMortar||1;
-  const _mmR=260+(_mmSlv-1)*28;
+  const _mmR=200+(_mmSlv-1)*22; // 악의폭풍과 동일 범위 공식
   const _iceFuse=P.skills.iceOrb>=1&&_isFused('iceMortar');
   if(_iceFuse){P._mmCd=660;P._ioCd=600;}else{P._mmCd=660;}
   G._mmBomb={sx:P.x,sy:P.y,tx:tx,ty:ty,x:P.x,y:P.y,t:0,maxT:40,r:_mmR,phase:'throw',
@@ -30217,7 +30240,7 @@ function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
       // 일반몹: 강한 포이즈 피해 + 기본 미니스턴(1초)
       e.stunned=Math.max(e.stunned||0,_MINI_STUN); // 대왕치기 기본 미니스턴
       if(e.poise<=0){
-        const stunDur=Math.min(180,90+((P._gslLv||P.skills.giantSlam||1)-1)*9); // 풀스턴 최대 3초
+        const stunDur=Math.min(300,150+((P._gslLv||P.skills.giantSlam||1)-1)*15); // 풀스턴: 1렙2.5초, 10렙5초
         e.stunned=Math.max(e.stunned||0,~~(stunDur*mult));
         e.poise=0;
         addTxt(e.x,e.y-18,_T('💥 체간 붕괴!'),'#ffcc00',45);
@@ -37232,7 +37255,8 @@ function drawP(){
   // ══ 참회 조준 인디케이터 ══
   if(P._hrAiming){
     const _hrLv=P.skills.hellRay||1;const _hrAimR=500+(_hrLv-1)*50;
-    const _hrTx=mouse.x-C.width/2+G.cam.x;const _hrTy=mouse.y-C.height/2+G.cam.y;
+    let _hrTx=mouse.x-C.width/2+G.cam.x,_hrTy=mouse.y-C.height/2+G.cam.y;
+    {const _hrD2=dst(P.x,P.y,_hrTx,_hrTy);if(_hrD2>1000){const _hrA2=Math.atan2(_hrTy-P.y,_hrTx-P.x);_hrTx=P.x+Math.cos(_hrA2)*1000;_hrTy=P.y+Math.sin(_hrA2)*1000}}
     const _hrt2=_now*.005;
     X.save();
     // 범위 원
@@ -37252,34 +37276,31 @@ function drawP(){
     X.fillText('✝ R:'+_hrAimR,_hrTx,_hrTy-_hrAimR-8);
     X.restore();
   }
-  // ══ 폭풍소환 조준 인디케이터 (키홀드 거리) ══
+  // ══ 폭풍소환 조준 인디케이터 (마우스 커서 위치 — 악의폭풍과 동일) ══
   if(P._mmAiming){
     const _mmSlvR=P.skills.maliceMortar||1;const _aimR=200+(_mmSlvR-1)*22;
     const _iceFuse=P.skills.iceOrb>=1&&_isFused('iceMortar');
-    const md=P._mmDist,tx=P.x+Math.cos(P.facing)*md,ty=P.y+Math.sin(P.facing)*md,_mt=_now*.06;
+    let _mmTx=mouse.x-C.width/2+G.cam.x,_mmTy=mouse.y-C.height/2+G.cam.y;
+    const _mmDst2=dst(P.x,P.y,_mmTx,_mmTy);
+    if(_mmDst2>1000){const _mmA2=Math.atan2(_mmTy-P.y,_mmTx-P.x);_mmTx=P.x+Math.cos(_mmA2)*1000;_mmTy=P.y+Math.sin(_mmA2)*1000}
+    const _mt=_now*.06;
     X.save();
     // 착지점 소용돌이 범위 미리보기
     X.globalAlpha=.08+Math.sin(_mt)*.04;X.fillStyle=_iceFuse?'#224466':'#330044';
-    X.beginPath();X.arc(tx,ty,_aimR,0,Math.PI*2);X.fill();
+    X.beginPath();X.arc(_mmTx,_mmTy,_aimR,0,Math.PI*2);X.fill();
     // 소용돌이 회전 링
     for(let ri=0;ri<3;ri++){
       const _rr=_aimR*(1-ri*.2);const _ra=_now*.003*(ri%2?1:-1);
       X.globalAlpha=.15+.05*Math.sin(_mt+ri);X.strokeStyle=_iceFuse?(ri%2?'#66ccff':'#aaeeff'):(ri%2?'#cc44ff':'#8822aa');
       X.lineWidth=2;X.setLineDash([10,8]);X.lineDashOffset=-_now*.15*(ri%2?1:-1.5);
-      X.beginPath();X.arc(tx,ty,_rr,_ra,_ra+Math.PI*2);X.stroke();X.setLineDash([]);
+      X.beginPath();X.arc(_mmTx,_mmTy,_rr,_ra,_ra+Math.PI*2);X.stroke();X.setLineDash([]);
     }
     // 십자선
     X.globalAlpha=.4;X.strokeStyle=_iceFuse?'#88ddff':'#ff00ff';X.lineWidth=1;
-    X.beginPath();X.moveTo(tx-15,ty);X.lineTo(tx+15,ty);X.moveTo(tx,ty-15);X.lineTo(tx,ty+15);X.stroke();
-    // 궤적선
-    X.globalAlpha=.3;X.strokeStyle=_iceFuse?'#66ccff':'#cc66ff';X.lineWidth=1;X.setLineDash([4,8]);X.beginPath();X.moveTo(P.x,P.y);
-    X.quadraticCurveTo(P.x+Math.cos(P.facing)*md*.4,P.y+Math.sin(P.facing)*md*.4-80,tx,ty);X.stroke();X.setLineDash([]);
-    // 파워 게이지
-    const gw=60,gx=P.x-30,gy=P.y-35,pwr=md/900;
-    X.globalAlpha=.6;X.fillStyle='#222';X.fillRect(gx,gy,gw,6);
-    X.fillStyle=pwr>.7?'#ff2244':pwr>.4?'#ffaa00':'#44ff44';X.fillRect(gx,gy,gw*pwr,6);
-    X.strokeStyle='#888';X.lineWidth=1;X.strokeRect(gx,gy,gw,6);
-    X.globalAlpha=.8;X.fillStyle=_iceFuse?'#88ddff':'#cc88ff';X.font='bold 10px monospace';X.textAlign='center';X.fillText(~~md+'px',P.x,gy-3);
+    X.beginPath();X.moveTo(_mmTx-12,_mmTy);X.lineTo(_mmTx+12,_mmTy);X.moveTo(_mmTx,_mmTy-12);X.lineTo(_mmTx,_mmTy+12);X.stroke();
+    // 텍스트
+    X.globalAlpha=.8;X.fillStyle=_iceFuse?'#88ddff':'#cc88ff';X.font='bold 10px monospace';X.textAlign='center';
+    X.fillText((_iceFuse?'❄ ':'🌪️ ')+_T('폭풍소환'),_mmTx,_mmTy-_aimR-8);
     X.restore();
   }
   // ══ 악의폭풍 조준 인디케이터 (마우스 커서 위치) ══
@@ -37288,8 +37309,9 @@ function drawP(){
     const _msBF=_isFused('boneStorm')||_isFused('elecRepent');
     const _bwLv=P.skills.boneWall||1;
     const _msAimR=_msBF?(200+(_bwLv-1)*22):(200+(_msLv-1)*22);
-    const _msTx=mouse.x-C.width/2+G.cam.x;
-    const _msTy=mouse.y-C.height/2+G.cam.y;
+    let _msTx=mouse.x-C.width/2+G.cam.x;
+    let _msTy=mouse.y-C.height/2+G.cam.y;
+    const _msDst3=dst(P.x,P.y,_msTx,_msTy);if(_msDst3>1000){const _msA3=Math.atan2(_msTy-P.y,_msTx-P.x);_msTx=P.x+Math.cos(_msA3)*1000;_msTy=P.y+Math.sin(_msA3)*1000}
     const _mst=_now*.005;
     X.save();
     if(_msBF){
@@ -37345,7 +37367,8 @@ function drawP(){
   // ══ 아이스스톰 조준 인디케이터 ══
   if(P._isAiming){
     const _isLv=P.skills.iceStorm||1,_isAimR=200+(_isLv-1)*22;
-    const _isTx=mouse.x-C.width/2+G.cam.x,_isTy=mouse.y-C.height/2+G.cam.y;
+    let _isTx=mouse.x-C.width/2+G.cam.x,_isTy=mouse.y-C.height/2+G.cam.y;
+    {const _isD2=dst(P.x,P.y,_isTx,_isTy);if(_isD2>1000){const _isA2=Math.atan2(_isTy-P.y,_isTx-P.x);_isTx=P.x+Math.cos(_isA2)*1000;_isTy=P.y+Math.sin(_isA2)*1000}}
     X.save();
     X.globalAlpha=.1+.03*Math.sin(_now*.04);X.fillStyle='#2288cc';
     X.beginPath();X.arc(_isTx,_isTy,_isAimR,0,Math.PI*2);X.fill();
@@ -37365,7 +37388,8 @@ function drawP(){
   // ══ 벽소환 조준 인디케이터 (포격식 원형) ══
   if(P._bwAiming){
     const bwSlv=P.skills.boneWall||1;
-    const bwTx=mouse.x-C.width/2+G.cam.x,bwTy=mouse.y-C.height/2+G.cam.y;
+    let bwTx=mouse.x-C.width/2+G.cam.x,bwTy=mouse.y-C.height/2+G.cam.y;
+    const _bwD2=dst(P.x,P.y,bwTx,bwTy);if(_bwD2>1000){const _bwA2=Math.atan2(bwTy-P.y,bwTx-P.x);bwTx=P.x+Math.cos(_bwA2)*1000;bwTy=P.y+Math.sin(_bwA2)*1000}
     const bwR=~~(200+bwSlv*20);
     const _bwt=_now*.06;
     X.save();
