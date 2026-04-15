@@ -217,12 +217,27 @@ style 맨 아래에 추가:
 |---|---|---|
 | 탭 구조 | 텍스트만 출력 → `아이콘 박스 + 라벨` 2요소 구조로 분리 (`fg-tab-ico`, `fg-tab-txt`) | `game.html` `renderForge()` |
 | 탭 메타 | 탭별 `icon/ko/en` 메타 객체 도입 (`_fgTabMeta`)으로 아이콘/언어 라벨 일관화 | `game.html` `renderForge()` |
-| 탭 시각 | 대장간 전용 `#forge` 오버라이드에서 아이콘 칩을 밝은 대비 프레임(30x30)으로 재정의, 활성 탭 골드 하이라이트와 이미지 밝기/대비/채도/드롭섀도 보정 강화 | `game.html` `#forge .fg-tab .fg-tab-ico`, `#forge .fg-tab.act .fg-tab-ico`, `#forge .fg-tab .fg-tab-ico-img` |
-| 아이콘 소스 | 탭별 개별 PNG 직접 삽입: `output/imagegen/forge-tabs-tight/{tabKey}.png` | `game.html` `renderForge()` |
-| 에셋 경로 | `output/imagegen/forge-tabs-tight/upgrade.png` ~ `headband.png` (총 17개) | 프로젝트 루트 출력물 |
+| 탭 시각 | 대장간 전용 `#forge` 오버라이드에서 4열 카드형 탭, 34x34 아이콘 칩, 활성 탭 주홍-금색 하이라이트, hover 리프트를 적용 | `game.html` `#forge .fg-tabs`, `#forge .fg-tab`, `#forge .fg-tab .fg-tab-ico`, `#forge .fg-tab.act` |
+| 아이콘 소스 | 탭별 개별 PNG 직접 삽입: `output/imagegen/forge-tabs-v3/{tabKey}.png` | `game.html` `renderForge()` |
+| 에셋 경로 | `output/imagegen/forge-tabs-v3/upgrade.png` ~ `headband.png` (총 17개) | 프로젝트 루트 출력물 |
 | 가독성 미세조정 | 아이콘 18→22px, 탭 패딩 5→6px, 아틀라스 배율 `400x300%`(4x3 시트 기준), 대비/밝기/글로우 강화 | `game.html` `.fg-tab`, `.fg-tab-ico`, `.fg-tab-ico.atlas` |
-| 렌더 우선순위 | `<img>` 직접 렌더, 여백 제거된 tight PNG 우선 사용, 파일 누락/로드 실패 시 data URI SVG 아이콘으로 자동 대체(빈칸 방지) | `game.html` `.fg-tab-ico-img`, `_forgeTabFallbackData()`, `renderForge()` |
+| 렌더 우선순위 | `<img>` 직접 렌더, v3 기반 PNG 우선 사용, 파일 누락/로드 실패 시 data URI SVG 아이콘으로 자동 대체(빈칸 방지) | `game.html` `.fg-tab-ico-img`, `_forgeTabFallbackData()`, `renderForge()` |
 | 로드 재시도 | 최초 이미지 로드 실패 시에도 대장간 열림 상태에서 1.3초 간격 자동 재시도(1회 실패 고정 방지) | `game.html` `_ensureForgeAtlasLoad()` |
+
+---
+
+### 2026-04-16 하드코어 고어 UI 디자인셋 개편
+
+| 항목 | 변경 내용 | 위치 |
+|---|---|---|
+| 디자인 방향 | `Diablo IV` 계층감 + `Path of Exile` 정보 밀도 + `Darkest Dungeon` 대비 + `Hades` 버튼 식별성을 참조한 `검은 금속 / 피빛 봉합선 / 악의 보라 코어` 세트로 통일 | 구현 의도 |
+| 타이포그래피 | 공통 본문은 `Noto Sans KR`, 타이틀/핵심 라벨은 `Black Han Sans`로 분리 (`--font-display`) | `game.html` `@import`, `:root`, `.ptitle`, `#bossBar .bn`, `#forge #forgeMats` |
+| HUD 상단 | 자원/정보칸을 뼈빛 텍스트 + 혈흔 금속 캡슐 배경으로 재정의 | `game.html` `#hud`, `.hud-top`, `.st-b`, `#matCnt`, `#goldCnt` |
+| 보스바 | 이름은 디스플레이 폰트, 체력/포이즈 바는 혈흔-뼈색 그라데이션으로 재정의 | `game.html` `#bossBar .bn`, `.bhw`, `.bhf`, `.bpw`, `.bpf` |
+| 공통 패널 | 모든 `pbox`에 검은 금속 배경, 주홍 반사광, 봉합선 텍스처, 라운드 18px 프레임 적용 | `game.html` `.panel`, `.pbox`, `.pbox::before`, `.ptitle`, `.pclose` |
+| 퀵슬롯 | 슬롯 프레임을 둥근 금속 조각 형태로 변경하고 키캡/카운트 가독성 강화 | `game.html` `.qs`, `.qs .qs-key`, `.qs .qs-cnt`, `.sk-pop`, `.sk-opt` |
+| 대장간 성소화 | 대장간 패널 폭 확대, 보라 악의 바, 4열 탭, 고어 금속 카드, 강화된 제작 확인 바 적용 | `game.html` `#forge .pbox`, `#forge #forgeMats`, `#forge #forgeLore`, `#forge .fg-tabs`, `#forge .fg-i`, `#forge #forgeConfirm`, `#forge #fgCraftBtn` |
+| 인벤/스탯 카드 | 인벤 슬롯과 스탯/패시브 행에 동일한 검은 금속 카드 재질과 좌측 혈흔 액센트 추가 | `game.html` `#invPanel .inv-grid>div`, `#statPanel .stat-row`, `#statPanel .passive-row` |
 
 ---
 

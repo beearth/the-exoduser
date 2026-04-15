@@ -104,7 +104,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | darkPillar | 악의기둥 | MP | mpCost 기반 | **900f (15초)** | INT × (4+(Lv-1)) | 9기둥 5초, 범위 250+(Lv-1)×22, Lv당 뎀+1 |
 | blueShot | 푸른비 | MP | **100+1.5×Lv** (110~115) | **300f (5초)** | INT × magicRef × pMagicMul × _skMul('blueShot') (b=4.0, g=1.6) | 50발 순차유도, Lv300 해금 |
 | burstLoop | 버스트루프 | 없음 | 0 | 없음 | INT × (mul+(Lv-1)) mul=1/3/5 | 홀드 차지, 범위 600/1000/1400px, Lv700, Lv당 뎀+1 |
-| hellRay | 참회 | MP | **100/충전** | **600f (10초)/충전** | INT × (5+(Lv-1)) | 신성십자가, 회전+뎀, Lv당 뎀+1 |
+| hellRay | 참회 | MP | **100/충전** | **600f (10초)/충전** | INT × (5+(Lv-1)) | 에너지 쐐기, 회전+뎀, Lv당 뎀+1 |
 
 ---
 
