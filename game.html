@@ -23295,10 +23295,19 @@ function update(){
       if(!fz._tickTimer)fz._tickTimer=0;
       fz._tickTimer+=sp;
       if(fz._tickTimer>=_fzTick){fz._tickTimer-=_fzTick;
+        // 동일 타입 존 겹침 캡: darkPillar/spikeTrap은 적당 최대 2존까지만 히트
+        const _fzCapType=fz.type==='darkPillar'||fz.type==='spikeTrap';
         const _fzNe=shQuery(fz.x,fz.y,fz.r).slice(); // 복사 (hurtE 내부 shQuery 오염 방지)
         for(let _fei=0;_fei<_fzNe.length;_fei++){
           const e=_fzNe[_fei];if(!e.alive)continue;
           const _fed=dst(fz.x,fz.y,e.x,e.y);if(_fed>fz.r)continue;
+          // 겹침 캡 체크: 이번 틱에 이 적이 같은 타입 존에서 이미 2회 피격됐으면 스킵
+          if(_fzCapType){
+            const _capKey=fz.type==='darkPillar'?'_dpHitCap':'_stHitCap';
+            if(!e[_capKey])e[_capKey]=0;
+            if(e[_capKey]>=1)continue;
+            e[_capKey]++;
+          }
           if(fz.type==='dim'){
             const _dimDot=~~(e.mhp*(fz.hpPct||0.05));
             e.hp-=Math.max(1,_dimDot);
