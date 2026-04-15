@@ -661,8 +661,8 @@ canvas{display:block;position:fixed;inset:0}
   box-shadow:inset 0 0 0 1px rgba(255,162,97,.08),0 0 8px rgba(255,122,56,.16);
   image-rendering:auto;
 }
-.fg-tab-ico.atlas-v1{background-image:url('output/imagegen/forge-icon-sheet-codex-v1.png')}
-.fg-tab-ico.atlas-v2{background-image:url('output/imagegen/forge-icon-sheet-codex-v2.png')}
+.fg-tab-ico.atlas-v1{background-image:url('output/imagegen/forge-icon-sheet-v1.png')}
+.fg-tab-ico.atlas-v2{background-image:url('output/imagegen/forge-icon-sheet-v3.png')}
 .fg-i{background:rgba(0,0,0,.3);border:1px solid #332211;padding:6px 8px;cursor:pointer;transition:all .2s}
 .fg-i:hover{border-color:var(--c-border-hover);background:rgba(255,100,0,.04)}
 .fg-i.dis{opacity:.4;cursor:default}
@@ -2399,7 +2399,7 @@ function _initLightStamps(){
 }
 // CH1 amber glow stamps (lighter blend용)
 var _amberStamps={};
-// ── 암전걸음 전기구체 그라디언트 스탬프 (createRadialGradient 제거) ──
+// ── 뇌전걸음 전기구체 그라디언트 스탬프 (createRadialGradient 제거) ──
 var _gwGlowStamp=null,_gwCoreStamp=null,_gwStampR=0;
 function _mkGwStamps(r){
   if(_gwStampR===r&&_gwGlowStamp)return;_gwStampR=r;
@@ -3465,7 +3465,7 @@ const _EN={
 '원소추적탄':'Elemental Seeker','악의 보호자':'Malice Guardian','악의 사냥':'Malice Hunt',
 '폭풍소환':'Vortex Summon','해골무덤':'Bone Tomb','신성폭발':'Holy Blast',
 '블랙':'Black Star','용암소환':'Lava Summon','처형':'Execution','악마화 부활':'Demon Revive',
-'붉은꽃':'Crimson Bloom','얼음보주':'Ice Orb','암전걸음':'Ghost Walk',
+'붉은꽃':'Crimson Bloom','얼음보주':'Ice Orb','뇌전걸음':'Ghost Walk',
 '만화방창 II':'Needle Barrage II','마력연사':'Arcane Barrage','업화선':'Hellfire Beam',
 '지옥진':'Inferno Array','폭독칼날':'Plague Blade','악의폭풍':'Malice Storm',
 '악의기둥':'Dark Pillar','신성한 영역':'Sacred Domain','구속의 영역':'Binding Domain',
@@ -3494,7 +3494,7 @@ const _EN={
 '날개치기':'Wing Strike','처내기':'Parry',
 'Shift: 작살 발사 → 끌려감':'Shift: Harpoon throw → pull',
 'Shift: 화염길+화상':'Shift: Flame trail+burn',
-'CT: 전류변신+암전걸음 (쿨4초)':'CT: Lightning form+Ghost Walk (CD 4s)',
+'CT: 전류변신+뇌전걸음 (쿨4초)':'CT: Lightning form+Ghost Walk (CD 4s)',
 'CT: 방어구체+빙결 (재입력: 파쇄)':'CT: Ice sphere+freeze (re-press: shatter)',
 // --- HUD ---
 '근접':'Melee','견갑':'Guard','작살':'Harpoon','마법':'Magic','보막':'Shield','유령':'Ghost',
@@ -3618,7 +3618,7 @@ const _EN={
 '지옥의 군단':'Hell Legion','사도의 마굴':"Apostle's Den",'지옥성':'Hell Citadel',
 // --- Misc ---
 '엑소듀서 전사':'Exoduser Warrior','포이즈':'Poise',
-'신성폭발':'Holy Blast','암전걸음':'Ghost Walk',
+'신성폭발':'Holy Blast','뇌전걸음':'Ghost Walk',
 '지옥창고':'Hell Storage','선택분해':'Selective Dismantle','쓰레기':'Junk',
 '복구 불가!':'Cannot recover!','중요잠금':'Important-locked',
 // --- Phase 9 additions ---
@@ -4021,7 +4021,7 @@ const _EN={
 '🌋 지옥강타!':'🌋 Inferno Slam!',
 '💥 체간 붕괴!':'💥 Posture Break!',
 '💫 포이즈 파괴!':'💫 Poise Destroy!',
-'⚡ 암전걸음!':'⚡ Ghost Walk!',
+'⚡ 뇌전걸음!':'⚡ Ghost Walk!',
 '✟ 구속의 영역!':'✟ Binding Domain!',
 '✟ 신성폭발!':'✟ Holy Blast!',
 '⛧ 블랙!':'⛧ Black Star!',
@@ -8452,7 +8452,7 @@ var _dpS0=0,_dpS1=0,_dpS2=0,_dpS3=0,_dpS4=0,_dpS5=0,_dpS6=0,_dpS7=0;
 var _clBufX=new Float32Array(16),_clBufY=new Float32Array(16),_clBufT=new Float32Array(16);
 var _dpT0=0,_dpT1=0,_dpT2=0,_dpT3=0,_dpT4=0,_dpT5=0,_dpT6=0,_dpT7=0;
 // ── 석궁 자동 스킬 ──────────────────
-const XBOW_RANGE=500;   // 자동 감지 범위 px
+const XBOW_RANGE=1000;   // 자동 감지 범위 px (2배 버프)
 const XBOW_INTERVAL=120; // 발사 간격 프레임 (120f = 2초)
 const XBOW_DMG=28;      // 기본 데미지
 const XBOW_SPEED=13;    // 투사체 속도
@@ -18668,7 +18668,7 @@ let _lastCost=0;
 const _COST_BASE={
   weapon:10,finisher:50,shield:10,giantSlam:50,
   charge:50,bladeDash:50,
-  bow:50,bladeShot:50,blastShot:50,shieldThrow:50,fanShot:50,
+  bow:35,bladeShot:35,blastShot:35,shieldThrow:35,fanShot:35,
   magic:10,blink:50,iceOrb:50,dimBreach:50,exBolt:50,mortar:50,
   whirlTick:.4,sBlockTick:.4,qsTick:.5
 };
@@ -20560,7 +20560,7 @@ function update(){
       const _omniLv=P.skills.omniBeam||1;
       const _emLv2=P.skills.elemMissile||1;
       const _dmgMul=_isElemBeam?(0.5+(_emLv2-1)*.06)*(5/6):2.5; // 단일보스 실전 보정: 만화광선/추적암전 갈래 합산을 크게 상향
-      const _bRng=~~(450+((_isElemBeam?_emLv2:_omniLv)-1)*22); // 1렙450, 10렙648≈650
+      const _bRng=~~(540+((_isElemBeam?_emLv2:_omniLv)-1)*26); // 1렙540, 10렙774 (+20% 버프)
       if(!P._omniPts)P._omniPts=_beamPtsPool; // 풀 참조
       const _twistSpd=_now*0.004;
       // 추적암전: 타겟 캐싱 (6프레임마다 갱신, 타겟 죽으면 즉시)
@@ -20729,7 +20729,7 @@ function update(){
       }
     }break;
   case 'stagger':{
-    // 탈출기: Shift(작살), Q(얼음보주/암전걸음), Ctrl(유령걸음) → 경직 즉시 탈출
+    // 탈출기: Shift(작살), Q(얼음보주/뇌전걸음), Ctrl(유령걸음) → 경직 즉시 탈출
     if(isJust('charge')){P.s='idle';P.st2=0;break}
     if(isJust('parry')){P.s='idle';P.st2=0;break}
     if(isJust('skill7')){P.s='idle';P.st2=0;break}
@@ -21084,7 +21084,7 @@ function update(){
         const _hAng=Math.atan2(_hTy-p.y,_hTx-p.x);
         const _cAng=Math.atan2(p.vy,p.vx);
         let _diff=_hAng-_cAng;while(_diff>Math.PI)_diff-=Math.PI*2;while(_diff<-Math.PI)_diff+=Math.PI*2;
-        const _turnRate=p.blackBean?.0135:p.elemBall?.045:p.phantomSword?.04:p._closeBean?.0168:p.redBean?.005:.03; // 근접빨콩 56%, 원거리빨콩 17% (2026-04-14 유도-44%)
+        const _turnRate=p.blackBean?.0095:p.elemBall?.045:p.phantomSword?.04:p._closeBean?.0168:p.redBean?.005:.03; // 무지개탄 0.0135→0.0095 (-30%), 근접빨콩 56%, 원거리빨콩 17%
         const _turn=Math.min(Math.abs(_diff),_turnRate*sp)*Math.sign(_diff);
         const _spd=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
         const _nAng=_cAng+_turn;
@@ -22529,7 +22529,7 @@ function update(){
     _addBoom(cx,cy,w+40,30,'lightning');
     G._gwPillar={x:cx,y:cy,t:0,maxT:60,r:w+40,stk:stk||5};
   }
-  // ═══ 암전걸음 — 상태 처리 ═══
+  // ═══ 뇌전걸음 — 상태 처리 ═══
   if(P._gwActive){
     P._gwT+=sp;_addSkProfTick('ghostWalk');
     P.iframes=Math.max(P.iframes,3); // 무적 유지
@@ -22591,7 +22591,7 @@ function update(){
       P.iframes=Math.max(P.iframes,120);
     }
   }
-  // ═══ 암전걸음 — 쿨다운 ═══
+  // ═══ 뇌전걸음 — 쿨다운 ═══
   if(P._gwCd>0)P._gwCd-=sp+_hdCdBonus;
   // ═══ 대왕치기 — 쿨다운 ═══
   if(P._gslCd>0)P._gslCd-=sp+_hdCdBonus;
@@ -22928,7 +22928,7 @@ function update(){
   }
   // ═══ 블랙 — 이펙트 진행 ═══
   if(G._bsPillar){G._bsPillar.t+=sp;if(G._bsPillar.t>=G._bsPillar.maxT)G._bsPillar=null}
-  // ═══ 암전걸음 — 전기 기둥 진행 ═══
+  // ═══ 뇌전걸음 — 전기 기둥 진행 ═══
   if(G._gwPillar){G._gwPillar.t+=sp;if(G._gwPillar.t>=G._gwPillar.maxT)G._gwPillar=null}
   if(G._gwLightning){G._gwLightning.t+=sp;if(G._gwLightning.t>=G._gwLightning.maxT)G._gwLightning=null}
   // ═══ 추적 장판 (chaseAoe) — 독립 업데이트 ═══
@@ -28971,7 +28971,7 @@ function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<di
 const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'ghostWalk',name:'암전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 15초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 15s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
+  {id:'ghostWalk',name:'뇌전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 15초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 15s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
   {id:'bladeDash',name:'전격이동',cat:'move',noDmg:true,desc:'[이동기] 데미지 없음. 방향키 더블탭으로 발동, 대각선은 방향키 2개 동시. 스페이스+방향키로도 발동. 500유닛 순간이동, 이동 중 무적(15프레임). MP 소모(10+Lv×5). 10충전, 충전속도 8초→Lv당-0.5초(최소3초). 만렙 시 방향키 한번으로 즉시 발동',descEn:'[Mobility] No damage. Double-tap direction key to activate, hold 2 keys for diagonal. Space+direction also works. 500-unit instant dash, invincible during dash (15 frames). MP cost (10+Lv×5). 10 stocks, recharge 8s→-0.5s/Lv (min 3s). At max Lv: single tap to activate',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
   {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 10+Lv당2. Lv당 뎀+10% 거리+15px',descEn:'LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 10+2/Lv. Per Lv DMG+10% range+15px',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'fireball',name:'악의구',cat:'bow',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
@@ -29061,7 +29061,7 @@ const SKILL_SLOT_DEFS={
           detonate:{name:'기폭팔',nameEn:'Detonate',emoji:'💥',desc:'Q 홀드: 흡수 데미지 축적 → 해제 시 광역 폭발',descEn:'Q Hold: Accumulate absorbed dmg → AoE explosion on release'},
           peaceShield:{name:'평화의보호',nameEn:'Aegis of Peace',emoji:'🕊️',desc:'Q 홀드: 버블 보호막+힐+반사. 해제 시 충격파',descEn:'Q Hold: Bubble shield+heal+reflect. Shockwave on release'}}},
   ct:{name:'CT 스킬',nameEn:'CT Skill',key:'ct',skills:['ghostWalk','iceOrb'],
-    info:{ghostWalk:{name:'암전걸음',nameEn:'Ghost Walk',emoji:'⚡',desc:'CT: 전류변신+암전걸음 (쿨4초)',descEn:'CT: Lightning shift + ghost walk (cd 4s)'},
+    info:{ghostWalk:{name:'뇌전걸음',nameEn:'Ghost Walk',emoji:'⚡',desc:'CT: 전류변신+뇌전걸음 (쿨4초)',descEn:'CT: Lightning shift + ghost walk (cd 4s)'},
           iceOrb:{name:'얼음보주',nameEn:'Ice Orb',emoji:'❄️',desc:'CT: 방어구체+빙결 (재입력: 파쇄)',descEn:'CT: Defense orb + freeze (re-press: shatter)'}}}
 };
 // ── 스킬 슬롯 info 이름/설명 lang 헬퍼 ──
@@ -30025,7 +30025,7 @@ function _autoShieldThrow(){
 }
 
 
-// ═══ 암전걸음 — 발동 ═══
+// ═══ 뇌전걸음 — 발동 ═══
 // ═══ 대왕치기 — 땅 찍기 → 원형 진동파 + 포이즈 파괴 ═══
 // ═══ 악의기둥 — 즉시 발동 (현재 위치, 9개 순차) ═══
 function activateDarkPillar(){
@@ -30189,7 +30189,7 @@ function activateGhostWalk(){
   // 회피 → 그로기 탈출
   // 그로기 제거됨
   SFX.pickup();
-  addTxt(P.x,P.y-30,_T('⚡ 암전걸음!'),'#44ddff',40);
+  addTxt(P.x,P.y-30,_T('⚡ 뇌전걸음!'),'#44ddff',40);
   addParts(P.x,P.y,'#8899bb',12);
   shake(3);
 }
@@ -33174,8 +33174,8 @@ function _ensureForgeAtlasLoad(){
       _fgAtlasState[_rq]=false;
     }
   };
-  _load('v1','output/imagegen/forge-icon-sheet-codex-v1.png');
-  _load('v2','output/imagegen/forge-icon-sheet-codex-v2.png');
+  _load('v1','output/imagegen/forge-icon-sheet-v1.png');
+  _load('v2','output/imagegen/forge-icon-sheet-v3.png');
 }
 function renderForge(){
   G.forgeOpen=true;
@@ -39196,7 +39196,7 @@ function drawP(){
       X.fillStyle='#cc4444';X.fillRect(dg.x-15,dg.y-dg.r-8,30*Math.max(0,hpR),4);
     }X.globalAlpha=1;
   }
-  // ══ 암전걸음 — 전기 기둥 이펙트 ══
+  // ══ 뇌전걸음 — 전기 기둥 이펙트 ══
   if(G._gwPillar){
     const gp=G._gwPillar;
     const prog=gp.t/gp.maxT;
@@ -39254,7 +39254,7 @@ function drawP(){
     }
     // 라벨
     X.globalAlpha=alpha*.9;X.fillStyle='#44ddff';X.font='bold 18px "Noto Sans KR"';X.textAlign='center';
-    X.fillText('⚡ '+_T('암전걸음')+' ⚡',gp.x,gp.y-pilH*fadeIn-12);
+    X.fillText('⚡ '+_T('뇌전걸음')+' ⚡',gp.x,gp.y-pilH*fadeIn-12);
     X.restore();X.globalAlpha=1;
   }
   // ══ 레인라이트닝 — 번개 왕복 이펙트 ══
@@ -39330,7 +39330,7 @@ function drawP(){
     X.globalAlpha=1;
   }
 
-  // ══ DIM BREACH LAND — 사슬이동:강화 착지 (암전걸음 기둥은 _gwPillar가 렌더) ══
+  // ══ DIM BREACH LAND — 사슬이동:강화 착지 (뇌전걸음 기둥은 _gwPillar가 렌더) ══
   if(P.s==='dimBreachLand'){
     const _dbProg=1-P.st2/15;
     // 출발점 잔상 연결 (전기 스파크 선)
@@ -39349,7 +39349,7 @@ function drawP(){
     X.globalAlpha=1;
   }
 
-  // ══ THUNDER BURST — 암전걸음 이펙트 (카운트 비례 스케일) ══
+  // ══ THUNDER BURST — 뇌전걸음 이펙트 (카운트 비례 스케일) ══
   if(P._gwActive){
     const _gwP=Math.min(1,(P._gwT||0)/300);
     const _gwC=P._gwCount||0;
@@ -39542,7 +39542,7 @@ function drawP(){
   const shW=isCharge?_pR+6:_pR+2;
   X.fillStyle='rgba(0,0,0,.25)';X.beginPath();X.ellipse(_px,_py+_pR+12,shW,_pR*.35,0,0,Math.PI*2);X.fill();
   X.globalAlpha=fl?.3:1;
-  // ══ 암전걸음: 전기구체 변신 (카운트 비례 스케일) ══
+  // ══ 뇌전걸음: 전기구체 변신 (카운트 비례 스케일) ══
   if(P._gwActive&&!isDead){
     const _eT=_now;
     const _eP=Math.min(1,(P._gwT||0)/300);
