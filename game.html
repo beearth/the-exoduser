@@ -34,17 +34,19 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="maps_data.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
 :root{
-  --c-bg:#0a0600;--c-panel-bg:#1a0e08;--c-panel-bg2:#221510;
-  --c-border:#443322;--c-border-hover:#886644;--c-border-active:#ff6633;
-  --c-text:#aa8866;--c-text-bright:#ccaa77;--c-text-dim:#665544;--c-text-muted:#443322;
-  --c-accent:#ff8844;--c-accent-dim:#cc6622;--c-gold:#ffcc44;
-  --c-red:#cc2200;--c-green:#44aa00;--c-blue:#4488dd;--c-purple:#bb66ff;
-  --ui-surface:#120909;--ui-surface-2:#1a0d0b;--ui-metal:#3e251b;--ui-metal-hi:#a55a33;
-  --ui-ink:#0b0707;--ui-glow:rgba(255,120,62,.28);--ui-text:#d0a27a;--ui-text-dim:#8f684d;
+  --c-bg:#090505;--c-panel-bg:#160b0c;--c-panel-bg2:#221111;
+  --c-border:#5a2b22;--c-border-hover:#a95c3c;--c-border-active:#ff6d3a;
+  --c-text:#b89472;--c-text-bright:#efd0a8;--c-text-dim:#7b5a47;--c-text-muted:#4c342a;
+  --c-accent:#ff8a43;--c-accent-dim:#ca5628;--c-gold:#ffcc72;
+  --c-red:#b81d16;--c-green:#45aa5a;--c-blue:#4f84da;--c-purple:#b56bff;
+  --ui-surface:#12090a;--ui-surface-2:#1b1011;--ui-metal:#4d241d;--ui-metal-hi:#d07140;
+  --ui-ink:#080506;--ui-glow:rgba(255,118,52,.34);--ui-text:#d9b08a;--ui-text-dim:#9b735a;
+  --ui-blood:#8f1716;--ui-blood-hi:#ff5d3b;--ui-bone:#f1d0a5;--ui-amethyst:#b96bff;--ui-shadow:rgba(0,0,0,.62);
   --hud-bar-h:12px;--qs-size:46px;--panel-pad:20px;--gap-sm:4px;--gap-md:8px;--gap-lg:16px;
   --font:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
+  --font-display:'Black Han Sans','Noto Sans KR',sans-serif;
   --fs-xs:.75rem;--fs-sm:.85rem;--fs-md:1rem;--fs-lg:1.2rem;--fs-xl:1.6rem;--fs-title:2.2rem;
   --ui-scale:1;
   --ui-inset-top:10px;
@@ -259,10 +261,10 @@ canvas{display:block;position:fixed;inset:0}
 /* ══ PANELS (shared) ══ */
 .panel{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.88);opacity:0;pointer-events:none;transition:opacity .25s}
 .panel.on{opacity:1;pointer-events:all}
-.pbox{background:linear-gradient(135deg,var(--c-panel-bg),var(--c-panel-bg2),var(--c-panel-bg));border:1px solid var(--c-border);padding:var(--panel-pad);overflow-y:auto}
-.ptitle{font-weight:900;font-size:var(--fs-xl);color:var(--c-accent);letter-spacing:.25em;text-align:center;margin-bottom:14px}
-.pclose{display:block;margin:12px auto 0;padding:8px 24px;background:transparent;border:1px solid var(--c-border);color:#aa6644;font-size:1.1rem;cursor:pointer}
-.pclose:hover{border-color:var(--c-border-active);color:#ff7744}
+.pbox{position:relative;background:linear-gradient(180deg,rgba(22,10,11,.985),rgba(10,6,7,.992));border:1px solid rgba(120,48,34,.78);border-radius:18px;padding:var(--panel-pad);overflow-y:auto;box-shadow:0 26px 70px rgba(0,0,0,.58),inset 0 0 0 1px rgba(255,150,104,.08),inset 0 24px 40px rgba(255,82,46,.04)}
+.ptitle{font-family:var(--font-display);font-size:calc(var(--fs-xl) + .15rem);color:var(--ui-bone);letter-spacing:.08em;text-align:center;margin-bottom:14px;text-shadow:0 2px 0 rgba(33,12,10,.9),0 0 18px rgba(255,115,64,.3)}
+.pclose{display:block;margin:14px auto 0;padding:10px 26px;background:linear-gradient(180deg,rgba(60,22,18,.86),rgba(20,10,11,.94));border:1px solid rgba(173,84,54,.86);border-radius:999px;color:#efc79d;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,214,172,.08),0 10px 24px rgba(0,0,0,.28);transition:all .16s}
+.pclose:hover{border-color:#ff9966;color:#fff0d4;box-shadow:0 0 18px rgba(255,108,58,.24),inset 0 0 0 1px rgba(255,231,195,.14)}
 /* ══ SKILL PANEL (main scene matched) ══ */
 #skillPanel{
   background:radial-gradient(ellipse at center,rgba(18,8,6,.72) 0%,rgba(6,2,2,.9) 58%,rgba(0,0,0,.96) 100%);
@@ -676,82 +678,81 @@ canvas{display:block;position:fixed;inset:0}
 .fg-ic{font-size:.85rem;color:var(--c-text);margin-top:3px}
 
 /* ══ GLOBAL UI REDESIGN LAYER ══ */
-#hud{filter:drop-shadow(0 10px 28px rgba(0,0,0,.55))}
-#skBar{filter:brightness(.88) contrast(1.05) drop-shadow(0 8px 20px rgba(0,0,0,.55))}
+#hud{filter:drop-shadow(0 14px 34px rgba(0,0,0,.62))}
+#skBar{filter:brightness(.94) contrast(1.12) saturate(1.04) drop-shadow(0 12px 30px rgba(0,0,0,.62))}
 .hud-top{
-  padding:6px 10px;
-  border:1px solid rgba(88,54,40,.55);
-  border-radius:8px;
-  background:linear-gradient(180deg,rgba(18,10,10,.56),rgba(10,6,6,.7));
-  box-shadow:inset 0 0 0 1px rgba(255,140,82,.06),0 6px 18px rgba(0,0,0,.35);
-}
-.st-b{color:#b98a63;text-shadow:0 1px 2px rgba(0,0,0,.85)}
-#mmWrap.on{opacity:.86}
-#mmFrame{filter:drop-shadow(0 6px 14px rgba(0,0,0,.45))}
-#bossBar .bn{color:#ff9a65;text-shadow:0 0 14px rgba(255,128,70,.35),0 2px 4px rgba(0,0,0,.85)}
-#bossBar .bhw{border:1px solid #6b3320;background:rgba(15,7,7,.82);box-shadow:0 0 12px rgba(110,48,25,.35)}
-#bossBar .bhf{background:linear-gradient(90deg,#5a120b,#b0331e 55%,#ff7f3f)}
-#bossBar .bpw,#bossBar .bpow{border-color:#5b4637;background:rgba(10,8,8,.68)}
-#bossBar .bpf,#bossBar .bpof{background:linear-gradient(90deg,#7f705f,#e2c6aa)}
-.panel{
-  background:
-    radial-gradient(1200px 640px at 50% -20%,rgba(90,32,18,.2),transparent 60%),
-    linear-gradient(180deg,rgba(5,3,3,.9),rgba(0,0,0,.95));
-}
-.pbox{
-  border:1px solid var(--ui-metal);
+  padding:7px 12px;
+  border:1px solid rgba(126,58,42,.7);
   border-radius:12px;
   background:
-    linear-gradient(180deg,rgba(25,12,11,.96),rgba(12,7,7,.97));
-  box-shadow:0 18px 50px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,148,93,.07);
+    linear-gradient(180deg,rgba(33,12,12,.78),rgba(10,6,7,.9)),
+    radial-gradient(180px 60px at 50% 0,rgba(255,102,63,.14),transparent 80%);
+  box-shadow:inset 0 0 0 1px rgba(255,198,156,.08),0 10px 24px rgba(0,0,0,.38);
+  backdrop-filter:blur(6px);
+}
+.st-b{color:var(--ui-bone);text-shadow:0 1px 2px rgba(0,0,0,.92),0 0 10px rgba(255,127,58,.16);font-weight:700}
+#matCnt,#goldCnt{
+  padding:3px 10px;
+  border-radius:999px;
+  border:1px solid rgba(145,63,48,.72);
+  background:linear-gradient(180deg,rgba(31,12,12,.82),rgba(12,6,7,.92));
+  box-shadow:inset 0 0 0 1px rgba(255,200,156,.06),0 0 10px rgba(255,94,46,.08);
+}
+#mmWrap.on{opacity:.94}
+#mmFrame{filter:drop-shadow(0 10px 24px rgba(0,0,0,.5)) brightness(1.05)}
+#bossBar .bn{font-family:var(--font-display);color:#ffd3a2;text-shadow:0 0 16px rgba(255,118,72,.34),0 2px 4px rgba(0,0,0,.9);letter-spacing:.08em}
+#bossBar .bhw{border:1px solid rgba(125,44,32,.92);border-radius:14px;background:linear-gradient(180deg,rgba(20,7,7,.9),rgba(9,5,6,.96));box-shadow:0 0 18px rgba(118,38,23,.38),inset 0 0 0 1px rgba(255,169,119,.08)}
+#bossBar .bhf{background:linear-gradient(90deg,#2d0405,#7f1212 38%,#cf361f 72%,#ffb16a 100%)}
+#bossBar .bpw,#bossBar .bpow{border-color:#654840;background:linear-gradient(180deg,rgba(18,12,11,.82),rgba(8,6,6,.92))}
+#bossBar .bpf,#bossBar .bpof{background:linear-gradient(90deg,#5c463b,#9f816e 48%,#f0dbc0)}
+.panel{
+  background:
+    radial-gradient(900px 420px at 50% -5%,rgba(140,28,18,.24),transparent 62%),
+    radial-gradient(780px 420px at 50% 100%,rgba(92,14,44,.18),transparent 68%),
+    linear-gradient(180deg,rgba(4,2,3,.84),rgba(0,0,0,.94));
+}
+.pbox{
   color:var(--ui-text);
 }
 .ptitle{
-  color:#ff9a5b;
-  text-shadow:0 2px 10px rgba(255,130,72,.3);
-  letter-spacing:.14em;
+  letter-spacing:.08em;
 }
 .pclose{
-  border-color:#6a3a25;
-  color:#d39a6d;
-  background:linear-gradient(180deg,rgba(34,16,12,.65),rgba(20,10,9,.76));
-  border-radius:8px;
-}
-.pclose:hover{
-  border-color:#d46e38;
-  color:#ffc192;
-  box-shadow:0 0 14px var(--ui-glow);
+  border-radius:999px;
 }
 .qs{
-  border:1px solid rgba(88,53,40,.85)!important;
-  border-radius:6px!important;
-  background:linear-gradient(180deg,rgba(25,13,10,.55),rgba(14,8,7,.7))!important;
-  box-shadow:inset 0 0 0 1px rgba(255,142,82,.08),0 4px 10px rgba(0,0,0,.3)!important;
+  border:1px solid rgba(145,64,46,.88)!important;
+  border-radius:11px!important;
+  background:
+    linear-gradient(180deg,rgba(28,12,13,.84),rgba(10,6,7,.94))!important;
+  box-shadow:inset 0 0 0 1px rgba(255,204,158,.07),0 10px 20px rgba(0,0,0,.34)!important;
 }
 .qs .qs-key{
-  background:rgba(10,7,7,.86);
-  border:1px solid rgba(98,63,46,.68);
-  color:#d3a37b;
-  border-radius:3px;
+  background:linear-gradient(180deg,rgba(255,244,224,.18),rgba(34,14,13,.92));
+  border:1px solid rgba(161,81,58,.78);
+  color:#f7d0a7;
+  border-radius:999px;
+  padding:1px 5px;
 }
 .qs .qs-cnt{
-  color:#f4c176;
-  text-shadow:0 1px 2px rgba(0,0,0,.9),0 0 8px rgba(255,168,90,.35);
+  color:#ffd48a;
+  text-shadow:0 1px 2px rgba(0,0,0,.94),0 0 10px rgba(255,155,74,.34);
 }
 .qs.cd::before{background:rgba(8,7,8,.72)}
 .sk-pop{
-  background:linear-gradient(180deg,rgba(21,12,11,.95),rgba(12,8,8,.97));
-  border:1px solid #6d4330;
-  border-radius:8px;
-  box-shadow:0 12px 26px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,143,84,.09);
+  background:linear-gradient(180deg,rgba(24,10,11,.96),rgba(10,6,7,.99));
+  border:1px solid rgba(137,64,46,.88);
+  border-radius:14px;
+  box-shadow:0 18px 34px rgba(0,0,0,.54),inset 0 0 0 1px rgba(255,184,142,.07);
 }
 .sk-opt{
-  border:1px solid rgba(103,71,53,.4);
-  background:linear-gradient(180deg,rgba(33,17,14,.82),rgba(17,10,10,.88));
+  border:1px solid rgba(112,55,42,.72);
+  border-radius:10px;
+  background:linear-gradient(180deg,rgba(28,12,13,.88),rgba(12,7,8,.94));
 }
 .sk-opt:hover{
-  border-color:#c77642;
-  background:linear-gradient(180deg,rgba(62,30,20,.8),rgba(28,14,12,.86));
+  border-color:#ee8751;
+  background:linear-gradient(180deg,rgba(52,20,17,.9),rgba(18,8,8,.96));
 }
 #mmLvl{
   filter:drop-shadow(0 10px 24px rgba(0,0,0,.45));
@@ -762,14 +763,33 @@ canvas{display:block;position:fixed;inset:0}
 #storagePanel .pbox,
 #statPanel .pbox{
   background:
-    radial-gradient(900px 420px at 50% -120px,rgba(130,64,30,.16),transparent 65%),
-    linear-gradient(180deg,rgba(24,12,11,.96),rgba(11,7,7,.98));
+    radial-gradient(480px 160px at 50% 0,rgba(255,96,62,.12),transparent 74%),
+    radial-gradient(420px 200px at 50% 100%,rgba(152,34,98,.08),transparent 80%),
+    linear-gradient(180deg,rgba(20,9,10,.985),rgba(9,5,6,.992));
+  border-color:rgba(134,56,42,.82);
+  box-shadow:0 28px 72px rgba(0,0,0,.6),inset 0 0 0 1px rgba(255,174,126,.08),inset 0 28px 44px rgba(255,88,54,.04);
+}
+#settings .pbox::before,
+#invPanel .pbox::before,
+#forge .pbox::before,
+#storagePanel .pbox::before,
+#statPanel .pbox::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  pointer-events:none;
+  background:
+    linear-gradient(135deg,rgba(255,234,210,.06),transparent 22%,transparent 78%,rgba(255,144,94,.05)),
+    repeating-linear-gradient(115deg,rgba(255,255,255,.015) 0 2px,transparent 2px 9px);
+  opacity:.7;
 }
 #settings .set-section{
-  border:1px solid rgba(96,56,36,.45)!important;
-  border-radius:10px;
+  border:1px solid rgba(116,56,40,.62)!important;
+  border-radius:14px;
   padding:12px 12px 10px!important;
-  background:linear-gradient(180deg,rgba(28,15,12,.45),rgba(13,8,8,.6));
+  background:linear-gradient(180deg,rgba(26,12,12,.72),rgba(12,7,8,.84));
+  box-shadow:inset 0 0 0 1px rgba(255,183,130,.05);
 }
 #settings .set-label{
   color:#e1ad80!important;
@@ -795,79 +815,212 @@ canvas{display:block;position:fixed;inset:0}
   color:#ffd1a2!important;
 }
 #invPanel #combatPower{
-  border-color:#6a3f2a!important;
-  background:linear-gradient(180deg,rgba(30,16,12,.6),rgba(12,9,8,.7))!important;
-  border-radius:6px!important;
+  border-color:rgba(145,71,48,.9)!important;
+  background:linear-gradient(180deg,rgba(34,15,15,.78),rgba(12,8,9,.92))!important;
+  border-radius:12px!important;
+  box-shadow:inset 0 0 0 1px rgba(255,194,148,.05);
 }
 #invPanel #invClose{
-  border-radius:6px;
-  background:linear-gradient(180deg,rgba(30,15,12,.65),rgba(12,8,8,.85))!important;
+  border-radius:999px;
+  background:linear-gradient(180deg,rgba(63,24,19,.8),rgba(20,10,10,.92))!important;
 }
 #invPanel .inv-storage-toggle{
-  color:#d6a173;
+  color:#f0c89f;
   padding:8px 10px;
-  border:1px solid rgba(101,60,40,.5);
-  border-radius:8px;
-  background:linear-gradient(180deg,rgba(34,18,14,.55),rgba(14,9,9,.68));
+  border:1px solid rgba(130,63,44,.72);
+  border-radius:12px;
+  background:linear-gradient(180deg,rgba(34,14,14,.72),rgba(12,8,9,.86));
 }
 #invPanel .inv-storage-toggle:hover{
-  color:#ffd0a2;
-  border-color:#cd7745;
+  color:#fff1d4;
+  border-color:#ff9462;
 }
 #invPanel .inv-grid>div{
-  border-radius:6px;
+  border-radius:12px;
+  border:1px solid rgba(112,49,38,.58);
+  background:linear-gradient(180deg,rgba(24,10,11,.88),rgba(11,7,8,.96));
+  box-shadow:inset 0 0 0 1px rgba(255,178,130,.04);
 }
 #forge .fg-tabs{
-  gap:6px;
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+  margin-bottom:14px;
+}
+#forge .pbox{
+  width:min(468px,calc(100vw - 40px))!important;
+  overflow:hidden;
+}
+#forge .ptitle{
+  justify-content:center;
+  font-size:2rem;
+  color:#ffd3a4;
+  text-shadow:0 2px 0 rgba(34,12,10,.92),0 0 22px rgba(255,108,58,.32);
 }
 #forge .fg-tab{
   display:inline-flex;
   align-items:center;
-  border-radius:8px;
-  border-color:#6a3e2a;
-  color:#cda178;
-  background:linear-gradient(180deg,rgba(36,18,14,.6),rgba(15,10,9,.78));
+  justify-content:flex-start;
+  gap:9px;
+  min-height:54px;
+  padding:9px 10px;
+  border-radius:14px;
+  border-color:rgba(123,53,39,.86);
+  color:#e8c49b;
+  background:
+    linear-gradient(180deg,rgba(32,12,13,.92),rgba(12,7,8,.98)),
+    radial-gradient(80px 38px at 50% 0,rgba(255,112,78,.08),transparent 82%);
+  box-shadow:inset 0 0 0 1px rgba(255,191,140,.05),inset 3px 0 0 rgba(156,28,22,.62);
+  position:relative;
+  overflow:hidden;
+}
+#forge .fg-tab-txt{
+  font-weight:700;
+  letter-spacing:.015em;
 }
 #forge .fg-tab:hover{
-  border-color:#d07842;
-  color:#ffcb97;
+  border-color:#f48957;
+  color:#fff0d3;
+  transform:translateY(-1px);
+  box-shadow:0 12px 18px rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,214,173,.08),inset 3px 0 0 rgba(255,73,48,.82);
 }
 #forge .fg-tab.act{
-  border-color:#df7e45;
-  color:#ffd2a1;
-  background:linear-gradient(180deg,rgba(94,44,24,.42),rgba(34,16,12,.82));
-  box-shadow:inset 0 0 0 1px rgba(255,152,95,.12),0 0 10px rgba(255,124,66,.2);
+  border-color:#ff9e62;
+  color:#fff2da;
+  background:
+    linear-gradient(180deg,rgba(64,20,17,.94),rgba(18,8,8,.98)),
+    radial-gradient(96px 44px at 50% 0,rgba(255,121,74,.2),transparent 84%);
+  box-shadow:0 14px 24px rgba(0,0,0,.32),inset 0 0 0 1px rgba(255,216,178,.12),inset 3px 0 0 rgba(255,98,68,.96);
 }
 #forge .fg-tab .fg-tab-ico{
-  width:30px;
-  height:30px;
-  border-color:rgba(255,201,144,.88);
-  background:linear-gradient(180deg,rgba(255,242,214,.92),rgba(192,124,72,.56));
-  box-shadow:inset 0 0 0 1px rgba(255,250,234,.35),0 0 12px rgba(255,168,89,.18);
+  width:34px;
+  height:34px;
+  border-radius:11px;
+  border-color:rgba(255,186,130,.82);
+  background:linear-gradient(180deg,rgba(255,232,208,.17),rgba(65,21,15,.88));
+  box-shadow:inset 0 0 0 1px rgba(255,241,214,.08),0 0 10px rgba(255,115,68,.1);
 }
 #forge .fg-tab.act .fg-tab-ico{
-  border-color:rgba(255,222,160,.98);
-  background:linear-gradient(180deg,rgba(255,247,221,.98),rgba(214,132,74,.68));
-  box-shadow:inset 0 0 0 1px rgba(255,252,240,.45),0 0 14px rgba(255,176,84,.34);
+  border-color:rgba(255,214,152,.96);
+  background:linear-gradient(180deg,rgba(255,246,224,.22),rgba(88,27,18,.92));
+  box-shadow:inset 0 0 0 1px rgba(255,246,224,.16),0 0 14px rgba(255,146,76,.22);
 }
 #forge .fg-tab .fg-tab-ico-img{
-  width:22px;
-  height:22px;
-  filter:brightness(1.7) contrast(1.5) saturate(1.45) drop-shadow(0 0 4px rgba(120,48,12,.22));
+  width:24px;
+  height:24px;
+  filter:brightness(1.52) contrast(1.34) saturate(1.22) drop-shadow(0 0 4px rgba(255,176,104,.22));
 }
 #forge #forgeMats{
-  border-color:#5f3a67!important;
-  background:linear-gradient(180deg,rgba(55,24,76,.35),rgba(22,11,28,.6))!important;
+  margin-bottom:10px!important;
+  padding:10px 14px!important;
+  border-color:rgba(151,92,213,.78)!important;
+  border-radius:14px!important;
+  background:
+    linear-gradient(180deg,rgba(63,20,82,.82),rgba(22,9,26,.94))!important;
+  color:#f2cfff!important;
+  font-family:var(--font-display)!important;
+  letter-spacing:.04em!important;
+  box-shadow:inset 0 0 0 1px rgba(255,214,255,.08),0 0 18px rgba(153,70,255,.12)!important;
+}
+#forge #forgeLore{
+  color:#ab8877!important;
+  font-size:.8rem!important;
+  line-height:1.55;
+  text-align:center;
+  margin-bottom:14px!important;
+  text-shadow:0 1px 1px rgba(0,0,0,.8);
+}
+#forge #fgGrid{
+  gap:10px!important;
+  max-height:42vh!important;
+  padding-right:4px;
+}
+#forge #fgGrid::-webkit-scrollbar{
+  width:10px;
+}
+#forge #fgGrid::-webkit-scrollbar-track{
+  background:rgba(15,9,10,.84);
+  border-radius:999px;
+}
+#forge #fgGrid::-webkit-scrollbar-thumb{
+  border-radius:999px;
+  border:2px solid rgba(14,8,8,.9);
+  background:linear-gradient(180deg,rgba(255,184,118,.82),rgba(136,44,28,.82));
+}
+#forge .fg-i{
+  border-radius:14px;
+  border:1px solid rgba(121,52,39,.72);
+  background:
+    linear-gradient(180deg,rgba(23,9,10,.92),rgba(10,6,7,.98)),
+    radial-gradient(140px 44px at 0 0,rgba(255,104,74,.06),transparent 70%);
+  box-shadow:inset 0 0 0 1px rgba(255,188,142,.04),inset 2px 0 0 rgba(144,25,22,.55);
+  padding:10px 12px;
+}
+#forge .fg-i:hover{
+  border-color:#e48454;
+  background:linear-gradient(180deg,rgba(33,12,13,.94),rgba(12,7,8,.99));
+  box-shadow:0 12px 20px rgba(0,0,0,.24),inset 0 0 0 1px rgba(255,210,164,.06),inset 2px 0 0 rgba(255,77,54,.78);
+}
+#forge .fg-i.fg-sel{
+  border-color:#ffb06a;
+  background:linear-gradient(180deg,rgba(49,18,15,.96),rgba(16,8,8,.99));
+  box-shadow:0 16px 26px rgba(0,0,0,.3),inset 0 0 0 1px rgba(255,224,184,.08),inset 2px 0 0 rgba(255,112,68,.92);
+}
+#forge .fg-in{
+  font-size:1.02rem;
+  font-weight:700;
+  letter-spacing:.015em;
+}
+#forge .fg-id{
+  color:#9f7b67;
+  font-size:.78rem;
+  line-height:1.42;
+}
+#forge .fg-ic{
+  margin-top:6px;
+  color:#e5bf94;
+}
+#forge #forgeConfirm{
+  margin-top:12px!important;
+  padding:12px 14px!important;
+  border-radius:16px!important;
+  border-color:rgba(146,69,44,.86)!important;
+  background:linear-gradient(180deg,rgba(33,12,12,.9),rgba(12,7,8,.96))!important;
+  box-shadow:inset 0 0 0 1px rgba(255,196,148,.05),0 14px 24px rgba(0,0,0,.22);
+}
+#forge #fgSelName{
+  color:#ffd08d!important;
+  font-family:var(--font-display)!important;
+  letter-spacing:.05em;
+}
+#forge #fgSelDesc{
+  color:#be9373!important;
+}
+#forge #fgCraftBtn{
+  padding:10px 34px!important;
+  border-radius:999px!important;
+  border-color:rgba(214,112,58,.96)!important;
+  background:linear-gradient(180deg,rgba(96,28,18,.94),rgba(28,11,9,.98))!important;
+  color:#ffe3c0!important;
+  font-family:var(--font-display)!important;
+  letter-spacing:.08em!important;
+  box-shadow:0 12px 24px rgba(0,0,0,.28),inset 0 0 0 1px rgba(255,211,171,.08);
+}
+#forge #fgCraftBtn:hover{
+  box-shadow:0 0 18px rgba(255,108,54,.24),0 12px 24px rgba(0,0,0,.3),inset 0 0 0 1px rgba(255,229,198,.12);
+}
+#forge #fgClose{
+  min-width:150px;
 }
 #statPanel #smToggleBtn{
-  border-radius:8px!important;
-  border-color:#a96333!important;
-  background:linear-gradient(180deg,rgba(62,30,18,.6),rgba(25,12,10,.82))!important;
+  border-radius:999px!important;
+  border-color:#c77442!important;
+  background:linear-gradient(180deg,rgba(74,28,18,.82),rgba(21,10,10,.94))!important;
 }
 #statPanel #statSummary{
   border-color:#8d5832!important;
-  border-radius:10px!important;
-  background:linear-gradient(180deg,rgba(24,14,12,.97),rgba(12,8,8,.98))!important;
+  border-radius:14px!important;
+  background:linear-gradient(180deg,rgba(24,12,12,.97),rgba(10,7,8,.99))!important;
 }
 #settings .ptitle,
 #invPanel .ptitle,
@@ -882,10 +1035,10 @@ canvas{display:block;position:fixed;inset:0}
 }
 #statPanel .stat-row,
 #statPanel .passive-row{
-  border:1px solid rgba(114,64,40,.6);
-  border-radius:10px;
-  background:linear-gradient(180deg,rgba(28,15,12,.52),rgba(14,9,9,.66));
-  box-shadow:inset 0 0 0 1px rgba(255,147,94,.08);
+  border:1px solid rgba(116,54,41,.72);
+  border-radius:14px;
+  background:linear-gradient(180deg,rgba(25,11,12,.84),rgba(11,7,8,.92));
+  box-shadow:inset 0 0 0 1px rgba(255,171,124,.05),inset 2px 0 0 rgba(146,27,26,.42);
 }
 #statPanel .psv-btn{
   width:48px;
@@ -3700,8 +3853,8 @@ const _EN={
 '🕊️흡수':'🕊️Absorb',
 '💎유도 폭발!':'💎Homing explosion!',
 '💥반사 폭발!':'💥Reflect explosion!',
-'⚡✝ 참회 귀환!':'⚡✝ Repentance Return!',
-'✝ 참회!':'✝ Repentance!',
+'⚡⚡ 참회 귀환!':'⚡⚡ Repentance Return!',
+'⚡ 참회!':'⚡ Repentance!',
 '파도!':'Wave!',
 '암전!':'Lightning!',
 '암흑!':'Dark!',
@@ -3735,7 +3888,7 @@ const _EN={
 '⚡ 사슬이동:강화!':'⚡ Chain:Enhanced!','⚡ 사슬기동:화염!':'⚡ Chain Drive: Flame!',
 '🌀 당기기 모드':'🌀 Pull Mode','💥 밀어내기 모드':'💥 Push Mode',
 '💎유도 폭발!':'💎Homing Blast!','💥반사 폭발!':'💥Reflect Blast!',
-'⚡✝ 참회 귀환!':'⚡✝ Repentance Return!','✝ 참회!':'✝ Repentance!',
+'⚡⚡ 참회 귀환!':'⚡⚡ Repentance Return!','⚡ 참회!':'⚡ Repentance!',
 '암전!':'Lightning!','암흑!':'Dark!','암흑창!':'Dark Spear!','빛창!':'Light Spear!',
 '💥 보스 그로기!':'💥 Boss Groggy!','💥 그로기!':'💥 Groggy!',
 '⚡ 암전나선!':'⚡ Lightning Helix!','🌋 지진폭풍!':'🌋 Quake Storm!',
@@ -3844,7 +3997,7 @@ const _EN={
 'MP 부족 — 연사 해제':'MP low — Rapid Fire Off',
 'MP 부족 — 푸른비 OFF':'MP low — Azure Rain OFF',
 '🛡️반사!':'🛡️Reflect!',
-'✝🦴 참회 귀환!':'✝🦴 Repentance Return!',
+'⚡🦴 참회 귀환!':'⚡🦴 Repentance Return!',
 '🦴⚡해골번개!':'🦴⚡Bone Lightning!',
 '⚡악의폭풍!':'⚡Malice Storm!',
 '❄아이스스톰!':'❄Ice Storm!',
@@ -3866,7 +4019,7 @@ const _EN={
 '💀 도넛!':'💀 Donut!','💀 전멸!':'💀 Annihilation!',
 '🌊 파도!':'🌊 Wave!','속박!':'Bind!','반격!':'Counter!',
 '분신!':'Clone!','분신 파괴!':'Clone Destroyed!','무기 해방!':'Weapon Liberation!',
-'❄프리즌!':'❄Prison!','✝ 증표 ':'✝ Mark ',
+'❄프리즌!':'❄Prison!','⚡ 증표 ':'⚡ Mark ',
 '흔들!':'Shake!','⚠ 광역 발사!':'⚠ AoE Fire!',
 '🔥 확산!':'🔥 Spread!','⚠ 돌진!':'⚠ Charge!',
 '🦅 도약!':'🦅 Leap!','⚡ 레이저!':'⚡ Laser!',
@@ -3899,7 +4052,7 @@ const _EN={
 '💀 내 곁으로!':'💀 Come to Me!',
 '⭕ 안전!':'⭕ Safe!',
 '💀💀 전멸 폭발!':'💀💀 Annihilation Blast!',
-'✝ 십자 소멸!':'✝ Cross Extinction!',
+'⚡ 쐐기 소멸!':'⚡ Wedge Extinction!',
 '🌊충격파!':'🌊Shockwave!',
 '👿악의+100':'👿Malice+100',
 '💥패링폭발!':'💥Parry Blast!',
@@ -4043,7 +4196,7 @@ const _EN={
 '완료':'Complete','합체 가능':'Can Fuse','부족':'Insufficient',
 'SP 부족! (':'SP needed! (',
 '🕊️ 히든: 평화의보호 해금!':'🕊️ Hidden: Aegis of Peace unlocked!',
-'✝ 히든: 참회 해금!':'✝ Hidden: Repentance unlocked!',
+'⚡ 히든: 참회 해금!':'⚡ Hidden: Repentance unlocked!',
 '배정됨':'Assigned',
 '합체 Lv.':'Fuse Lv.',
 '◆ 같은 보석 스킬 습득 시 합체 가능':'◆ Can fuse when learning same gem skill',
@@ -13351,7 +13504,7 @@ function _fireballExplode(p){
       const _fireballKbOpts=!p.fireBeamProj&&p.fireball?{kbMult:0.1}:{};
       hurtE(e,~~(dmg*m),a,false,_fireballKbOpts,el);
       // 업화선 폭발: 화상 부여
-      if(p.fireBeamProj){e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+pDotPool()*dmg*0.4}
+      if(p.fireBeamProj){e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*dmg*0.4}
     }}
   // 업화선 전용 폭발 애니
   if(p.fireBeamProj){_spawnFxAnim(p.x,p.y,r*2.5);playSample('fireball',.9,_r(.7,.1));shake(8)}
@@ -18986,7 +19139,7 @@ function update(){
         P._chainSlashHits.push(e);
         const _eA=Math.atan2(e.y-P.y,e.x-P.x);
         hurtE(e,_csDmg,_eA,true,{kbMult:0,poiseHit:true,poiseMult:1.2},wp().el||0);
-        e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);e._bleedPool=(e._bleedPool||0)+pDotPool()*_csDmg*0.50;e.bleed=1;
+        e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*_csDmg*0.10;e.bleed=1;
         addTxt(e.x,e.y-18,_T('⚔ 칼날!'),'#ff4466',25);
         playVFXAng('ice_slash',e.x,e.y,1.0,3,_eA,true);
         for(let j=0;j<4;j++){const a=_eA+Math.PI+(Math.random()-.5)*1.2;poolPart(e.x,e.y,Math.cos(a)*5,Math.sin(a)*5,'#ff4466',2+Math.random()*2,8+Math.random()*5)}
@@ -20433,7 +20586,7 @@ function update(){
           const _fa2=Math.atan2(e.y-P.y,e.x-P.x);
           const _ff=Math.max(0,1-_fd/_fbR);
           hurtE(e,~~(_fbDmg*(.5+_ff*.5)),_fa2,false,{kbMult:2},EL.F);
-          {const _bDmg=~~(_fbDmg*(.5+_ff*.5));e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+pDotPool()*_bDmg*0.60}
+          {const _bDmg=~~(_fbDmg*(.5+_ff*.5));e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*_bDmg*0.10}
         }
         SFX.magic(EL.F);shake(10);
         addTxt(P.x,P.y-30,_T('🔥 불장판!'),'#ff4400',50);
@@ -20662,7 +20815,7 @@ function update(){
               _branchHit.add(_tgt);_beamHitCap++;
               
               hurtE(_tgt,_beamTickDmgBase*_dmgMul*elMul(bel,_tgt.el),_beamAng,true,{beam:true},bel);
-              {const _bHit=_beamTickDmgBase*_dmgMul;_tgt.burnT=180;_tgt.burnStk=Math.min(10,(_tgt.burnStk||0)+1);_tgt._burnPool=(_tgt._burnPool||0)+_bHit*0.60}G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(_tgt.x,_tgt.y,ELC[bel],2);
+              {const _bHit=_beamTickDmgBase*_dmgMul;_tgt.burnT=180;_tgt.burnStk=Math.min(10,(_tgt.burnStk||0)+1);if((_tgt.burnStk||0)<10)_tgt._burnPool=(_tgt._burnPool||0)+pDotPool()*_bHit*0.10}G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(_tgt.x,_tgt.y,ELC[bel],2);
               if(Math.random()<.25)playVFXAng('magic_burst',_tgt.x,_tgt.y,0.3,1,_beamAng);
               // 타겟 주변 광역
               const _etAoeR=150+(_omniSlv-1)*10;
@@ -20672,7 +20825,7 @@ function update(){
                 if(dst(_tgt.x,_tgt.y,e.x,e.y)>_etAoeR)continue;
                 _branchHit.add(e);_beamHitCap++;
                 hurtE(e,_beamTickDmgBase*_dmgMul*elMul(bel,e.el)/3,_beamAng,true,{beam:true},bel);
-                {const _bH2=_beamTickDmgBase*_dmgMul/3;e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+pDotPool()*_bH2*0.60}if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);
+                {const _bH2=_beamTickDmgBase*_dmgMul/3;e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*_bH2*0.10}if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);
               }
             }
           }
@@ -20702,7 +20855,7 @@ function update(){
               _branchHit.add(e);_beamHitCap++;
               const _bsMul=1;
               hurtE(e,_beamTickDmgBase*_dmgMul*_bsMul*elMul(bel,e.el)/3,P.facing,true,{beam:true},bel);
-              {const _bH3=_beamTickDmgBase*_dmgMul/3;e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+pDotPool()*_bH3*0.60}addTxt(e.x,e.y-20,_T('관통!'),'#44ffcc',20);
+              {const _bH3=_beamTickDmgBase*_dmgMul/3;e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*_bH3*0.10}addTxt(e.x,e.y-20,_T('관통!'),'#44ffcc',20);
             }
             const _mAoeNe=shQuery(_mEndX,_mEndY,_mAoeR);
             for(let _ai=0;_ai<_mAoeNe.length&&_beamHitCap<20;_ai++){
@@ -20711,7 +20864,7 @@ function update(){
               _branchHit.add(e);_beamHitCap++;
               const _bsMul=1;
               hurtE(e,_beamTickDmgBase*_dmgMul*_bsMul*elMul(bel,e.el)/3,P.facing,true,{beam:true},bel);
-              {const _bH4=_beamTickDmgBase*_dmgMul/3;e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+pDotPool()*_bH4*0.60}G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);
+              {const _bH4=_beamTickDmgBase*_dmgMul/3;e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*_bH4*0.10}G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));if(Math.random()>.93)addParts(e.x,e.y,ELC[bel],2);
             }
           }
         }
@@ -20737,7 +20890,7 @@ function update(){
           let totalDmg=0;const _eC=elms.length||1;
           for(let _ei2=0;_ei2<elms.length;_ei2++){totalDmg+=_beamTickDmgBase*_bsMul*elMul(elms[_ei2].el,e.el)/_eC}
           hurtE(e,totalDmg,Math.atan2(e.y-P.y,e.x-P.x),true,{beam:true},elms[0].el);
-          {e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+pDotPool()*totalDmg*0.60}addTxt(e.x,e.y-20,_T('관통!'),'#44ffcc',20);
+          {e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*totalDmg*0.10}addTxt(e.x,e.y-20,_T('관통!'),'#44ffcc',20);
         }
         const _bAoeNe=shQuery(_bEndX,_bEndY,_bAoeR).slice();
         for(let _ai=0;_ai<_bAoeNe.length&&_beamHitCap<20;_ai++){
@@ -20748,7 +20901,7 @@ function update(){
           let totalDmg=0;
           const _eC=elms.length||1;for(let _ei2=0;_ei2<elms.length;_ei2++){totalDmg+=_beamTickDmgBase*_bsMul*elMul(elms[_ei2].el,e.el)/_eC}
           hurtE(e,totalDmg,Math.atan2(e.y-_bEndY,e.x-_bEndX),true,{beam:true},elms[0].el);
-          {e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+pDotPool()*totalDmg*0.60}
+          {e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*totalDmg*0.10}
           if(Math.random()>.9)addParts(e.x,e.y,ELC[elms[~~(Math.random()*elms.length)].el],2);
         }
         G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));
@@ -21574,7 +21727,7 @@ function update(){
           e.bleed=1;
           e.bleedT=Math.max(e.bleedT||0,900); // 15초(60fps)
           e.bleedStk=(e.bleedStk||0)+1; // 무한 중첩
-          e._bleedPool=(e._bleedPool||0)+pDotPool()*_bladeBleed;
+          if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*_bladeBleed;
         }
         if(!_isTurretProj||_ftV>0.01){
           if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
@@ -21691,7 +21844,7 @@ function update(){
         // ── 칼날살 오브: 무한 관통 + 출혈 ──
         if(p.bladeOrb){
           if(!p._hitSet)p._hitSet=new Set();p._hitSet.add(e);
-          e.bleed=1;e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);e._bleedPool=(e._bleedPool||0)+pDotPool()*p.dmg*0.50;
+          e.bleed=1;e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*p.dmg*0.10;
           hit=false;continue;
         }
         // ── 얼음보주 칼날: 75% 확률 관통 + 빙결(짧은 스턴) ──
@@ -22156,7 +22309,7 @@ function update(){
         if(dst(bx,by,e.x,e.y)<_gsR+e.r){
           const a=Math.atan2(e.y-by,e.x-bx);
           hurtE(e,_gsDmg,a,true,{explode:true},EL.F);
-          e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+pDotPool()*_gsDmg*0.60;
+          e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*_gsDmg*0.10;
           e.kb.x+=Math.cos(a)*(3+chgPct*6);e.kb.y+=Math.sin(a)*(3+chgPct*6);
         }
       }
@@ -22204,7 +22357,7 @@ function update(){
           if(dst(bx,by,e.x,e.y)<boomR+e.r){
             const a=Math.atan2(e.y-by,e.x-bx);
             hurtE(e,boomDmg,a,true,{explode:true},EL.F);
-            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+pDotPool()*boomDmg*0.60;
+            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*boomDmg*0.10;
             e.kb.x+=Math.cos(a)*8;e.kb.y+=Math.sin(a)*8;
           }
         }
@@ -22375,7 +22528,7 @@ function update(){
       P._hrAiming=false;_addSkProf('hellRay');
       SFX.magic(_hrElec?4:5);playSample('repentance',.7,_r(1,.08));
       if(_hrElec)playSample(Math.random()>.5?'electric_storm':'electric_storm2',.5,_r(1,.1));
-      addTxt(_hrwx,_hrwy-20,_hrElec?_T('⚡✝ 참회 귀환!'):_T('✝ 참회!'),_hrElec?'#ffee44':'#ffd700',50);shake(_hrElec?10:6);
+      addTxt(_hrwx,_hrwy-20,_hrElec?_T('⚡⚡ 참회 귀환!'):_T('⚡ 참회!'),_hrElec?'#ffee44':'#ffd700',50);shake(_hrElec?10:6);
     }
   }
   // ═══ 해골번개 쿨다운 ═══
@@ -22432,7 +22585,7 @@ function update(){
               G._fireZones.push({x:_mswx,y:_mswy,r:200+(_hrLv-1)*22,t:0,maxT:_syncDur,
                 dmg:_hrDmg,el:EL.L,lv:_hrLv,type:'hellRay',ang:0,elec:true});
               SFX.magic(EL.L);playSample('repentance',.7,_r(1,.08));
-              addTxt(_mswx,_mswy-20,_T('✝🦴 참회 귀환!'),'#ffee44',50);
+              addTxt(_mswx,_mswy-20,_T('⚡🦴 참회 귀환!'),'#ffee44',50);
               shake(10);_addSkProf('hellRay');
             }else{
               SFX.magic(EL.D);playSample('skull_summon',.6,_r(.9,.15));
@@ -23041,8 +23194,8 @@ function update(){
   if(G._donutSlams&&G._donutSlams.length>0){let _dsW=0;for(let di=0;di<G._donutSlams.length;di++){const ds=G._donutSlams[di];ds.t+=sp;if(!ds.hit&&ds.t>=ds.warnT){ds.hit=true;SFX.detonate();shake(25);const _pd=dst(P.x,P.y,ds.x,ds.y);if((_pd>ds.innerR||_pd>ds.outerR)&&P.iframes<=0&&P.s!=='charge'){hurtP(~~(ds.dmg*elMul(ds.el,ar().el)));addTxt(P.x,P.y-20,_T('💀 도넛!'),'#ff0044',40);const ka=Math.atan2(P.y-ds.y,P.x-ds.x);P.kb.x+=Math.cos(ka)*12;P.kb.y+=Math.sin(ka)*12}for(let k=0;k<30;k++){const a=Math.PI*2*k/30;const _rd=ds.outerR*(0.3+Math.random()*.7);poolPart(ds.x+Math.cos(a)*_rd,ds.y+Math.sin(a)*_rd,Math.cos(a)*3,Math.sin(a)*3,'#ff4400',4,12)}}if(ds.t<ds.maxT)G._donutSlams[_dsW++]=ds}G._donutSlams.length=_dsW}
   // ═══ 안전지대 축소 업데이트 ═══
   if(G._safeCorners&&G._safeCorners.length>0){let _scW2=0;for(let si=0;si<G._safeCorners.length;si++){const sc=G._safeCorners[si];sc.t+=sp;if(!sc.hit&&sc.t>=sc.warnT){sc.hit=true;SFX.detonate();shake(30);if((dst(P.x,P.y,sc.safeX,sc.safeY)>sc.safeR)&&P.iframes<=0&&P.s!=='charge'){hurtP(~~(sc.dmg*elMul(sc.el,ar().el)));addTxt(P.x,P.y-20,_T('💀 전멸!'),'#ff0000',50);const ka=Math.atan2(P.y-sc.cy,P.x-sc.cx);P.kb.x+=Math.cos(ka)*15;P.kb.y+=Math.sin(ka)*15}for(let k=0;k<40;k++){const a=Math.PI*2*k/40;const _rd=sc.fullR*(0.2+Math.random()*.8);poolPart(sc.cx+Math.cos(a)*_rd,sc.cy+Math.sin(a)*_rd,(Math.random()-.5)*5,(Math.random()-.5)*5,'#ff2200',5,15)}}if(sc.t<sc.maxT)G._safeCorners[_scW2++]=sc}G._safeCorners.length=_scW2}
-  // ═══ 십자 소멸 업데이트 ═══
-  if(G._crossWipes&&G._crossWipes.length>0){let _cwW2=0;for(let ci=0;ci<G._crossWipes.length;ci++){const cw=G._crossWipes[ci];cw.t+=sp;const _cwWaveLen=~~(cw.maxT/cw.waves);const _cwWave=~~(cw.t/_cwWaveLen);const _cwLocal=cw.t-_cwWave*_cwWaveLen;const _cwAng0=_cwWave*(Math.PI/4);if(cw.t>=cw.warnT){cw.tickT=(cw.tickT||0)+sp;if(cw.tickT>=20&&P.iframes<=0&&_cwLocal>=30){cw.tickT=0;for(let a2=0;a2<4;a2++){const _ca=_cwAng0+Math.PI/2*a2;const _dx=P.x-cw.x,_dy=P.y-cw.y;const _parD=Math.cos(_ca)*_dx+Math.sin(_ca)*_dy;const _perpD=Math.abs(-Math.sin(_ca)*_dx+Math.cos(_ca)*_dy);if(_parD>0&&_parD<cw.len&&_perpD<cw.w){hurtP(~~(cw.dmg*.4*elMul(cw.el,ar().el)));addTxt(P.x,P.y-15,'✝','#ff44ff',25);break}}}}if(cw.t<cw.maxT)G._crossWipes[_cwW2++]=cw}G._crossWipes.length=_cwW2}
+  // ═══ 쐐기 소멸 업데이트 ═══
+  if(G._crossWipes&&G._crossWipes.length>0){let _cwW2=0;for(let ci=0;ci<G._crossWipes.length;ci++){const cw=G._crossWipes[ci];cw.t+=sp;const _cwWaveLen=~~(cw.maxT/cw.waves);const _cwWave=~~(cw.t/_cwWaveLen);const _cwLocal=cw.t-_cwWave*_cwWaveLen;const _cwAng0=_cwWave*(Math.PI/4);if(cw.t>=cw.warnT){cw.tickT=(cw.tickT||0)+sp;if(cw.tickT>=20&&P.iframes<=0&&_cwLocal>=30){cw.tickT=0;for(let a2=0;a2<4;a2++){const _ca=_cwAng0+Math.PI/2*a2;const _dx=P.x-cw.x,_dy=P.y-cw.y;const _parD=Math.cos(_ca)*_dx+Math.sin(_ca)*_dy;const _perpD=Math.abs(-Math.sin(_ca)*_dx+Math.cos(_ca)*_dy);if(_parD>0&&_parD<cw.len&&_perpD<cw.w){hurtP(~~(cw.dmg*.4*elMul(cw.el,ar().el)));addTxt(P.x,P.y-15,'⚡','#ff44ff',25);break}}}}if(cw.t<cw.maxT)G._crossWipes[_cwW2++]=cw}G._crossWipes.length=_cwW2}
   // ═══ 파도 밀기 업데이트 ═══
   if(G._tidalWipes&&G._tidalWipes.length>0){let _twW2=0;for(let ti=0;ti<G._tidalWipes.length;ti++){const tw2=G._tidalWipes[ti];tw2.t+=sp;if(tw2.t>=tw2.warnT){tw2.dist+=tw2.spd*sp;const _twCx=tw2.x+Math.cos(tw2.ang)*tw2.dist;const _twCy=tw2.y+Math.sin(tw2.ang)*tw2.dist;const _perpAng=tw2.ang+Math.PI/2;const _toPx=P.x-_twCx,_toPy=P.y-_twCy;const _parD=Math.cos(tw2.ang)*_toPx+Math.sin(tw2.ang)*_toPy;const _perpD=Math.abs(Math.cos(_perpAng)*_toPx+Math.sin(_perpAng)*_toPy);if(!tw2.hit&&Math.abs(_parD)<tw2.thick&&_perpD<tw2.w/2&&P.iframes<=0&&P.s!=='charge'){tw2.hit=true;hurtP(~~(tw2.dmg*elMul(tw2.el,ar().el)));const ka=tw2.ang;P.kb.x+=Math.cos(ka)*18;P.kb.y+=Math.sin(ka)*18;addTxt(P.x,P.y-20,_T('🌊 파도!'),'#4488ff',40);SFX.block();shake(15)}}if(tw2.t<tw2.maxT)G._tidalWipes[_twW2++]=tw2}G._tidalWipes.length=_twW2}
   // ═══ 감옥 업데이트 ═══
@@ -23258,7 +23411,7 @@ function update(){
             hurtE(e,~~(fz.dmg*0.02),ang,true,{dot:true},EL.F); // 틱당 2%
             // 화상 부여 (5초)
             e.burn=1;e.burnT=Math.max(e.burnT||0,300);e.burnStk=Math.min(5,(e.burnStk||0)+1);
-            e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.01;
+            if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.01;
           }
         }
         if(Math.random()>.5){
@@ -23269,10 +23422,10 @@ function update(){
         }
         G._fireZones[_fzW++]=fz;continue;
       }
-      // ═══ 참회: 시계방향 회전 십자가 데미지 ═══
+      // ═══ 참회: 시계방향 회전 쐐기 데미지 ═══
       if(fz.type==='hellRay'){
         fz.ang=(fz.ang||0)+Math.PI*2/fz.maxT*sp*2; // 지속시간에 2회전
-        // 십자가 판정 — 세로축 위r*.5/아래r, 가로축 r*.6
+        // 쐐기 판정 — 세로축 위r*.5/아래r, 가로축 r*.6
         if(~~(fz.t)%10<~~(sp)+1){
           const _hrNe=shQuery(fz.x,fz.y,fz.r+20);
           const _hrMinMax=[[fz.r*.8,fz.r],[fz.r*.6,fz.r*.6]]; // [세로:위,아래],[가로:좌,우]
@@ -23296,11 +23449,11 @@ function update(){
               const _hrMarkMul=1+e._hrMark/100; // 50→1.5x, 100→2x, ... 250→3.5x
               const _hrAmpDmg=~~(fz.dmg*_hrMarkMul);
               hurtE(e,_hrAmpDmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},fz.el);
-              if(_hrOld<e._hrMark){const _stk=e._hrMark/50;addTxt(e.x,e.y-30,_T('✝ 증표 ')+_stk+'/5 (-'+e._hrMark+')','#ffd700',30)}
+              if(_hrOld<e._hrMark){const _stk=e._hrMark/50;addTxt(e.x,e.y-30,_T('⚡ 증표 ')+_stk+'/5 (-'+e._hrMark+')','#ffd700',30)}
             }
           }
         }
-        // 십자가 팔 파티클
+        // 쐐기 팔 파티클
         if(Math.random()>.5){
           const _ai=~~(Math.random()*2);const _a=fz.ang+_ai*Math.PI*.5;
           const _hrd=(Math.random()*2-1)*fz.r;
@@ -23331,14 +23484,14 @@ function update(){
           if(fz.type==='dim'){
             const _dimDot=~~(e.mhp*(fz.hpPct||0.05));
             e.hp-=Math.max(1,_dimDot);
-            e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);e._bleedPool=(e._bleedPool||0)+pDotPool()*_dimDot*0.50;
-            e.poisonT=Math.max(e.poisonT||0,300);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);e._poisonPool=(e._poisonPool||0)+pDotPool()*_dimDot*0.40;
+            e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*_dimDot*0.10;
+            e.poisonT=Math.max(e.poisonT||0,300);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*_dimDot*0.10;
             e.bleed=1;e.poison=1;
             e.flashT=6;
             if(e.hp<=0){e.hp=0;atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;e.deathAng=Math.atan2(e.y-fz.y,e.x-fz.x);deathFX(e.x,e.y,e.r,e.col,!!e.ib,false,e.etype);_addCorpse(e,e.deathAng,2)}
           }else if(fz.type==='dimPoison'){
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.D);
-            e.poisonT=Math.max(e.poisonT||0,300);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);e._poisonPool=(e._poisonPool||0)+pDotPool()*fz.dmg*0.40;e.poison=1;
+            e.poisonT=Math.max(e.poisonT||0,300);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*fz.dmg*0.10;e.poison=1;
             e._webSlow=Math.max(e._webSlow||0,15);
           }else if(fz.type==='storm'){
             // 악의폭풍: 암전 데미지 + 감속 (hurtE 경유)
@@ -23360,21 +23513,21 @@ function update(){
             // 가시덫: 물리 DOT + 슬로우(70%+lv×2%, 최대90%) + 출혈
             if(Math.random()<.3)playSampleAt('melee_hit1',.25,_r(1.2,.15),e.x,e.y);
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.P);
-            e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);e._bleedPool=(e._bleedPool||0)+pDotPool()*fz.dmg*0.50;e.bleed=1;
+            e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*fz.dmg*0.10;e.bleed=1;
             e._spikeSlow=Math.max(e._spikeSlow||0,90); // 1.5초 갱신
             e._spikeSlowLv=fz.lv||1;
           }else if(fz.type==='assaultFlame'){
             // 기동칼날개 불바닥: 화염 DOT + 화상
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.F);
-            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.60;
+            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.10;
           }else if(fz.type==='fireTrail'){
             // 사슬기동:화염 경로 불길: 화염 DOT + 화상 + 감속
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.F);
-            e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.40;
+            e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.10;
             e._webSlow=Math.max(e._webSlow||0,20);
           }else{
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),false,{},EL.F);
-            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.60;
+            e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.10;
           }
         }
       }
@@ -24021,7 +24174,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       e.s='recover';e.st2=60;break;
     }
     case'crossWipe':{
-      // 십자 소멸 — 보스 중심 십자 장판 → 45도 회전 반복 (로아 스타일)
+      // 쐐기 소멸 — 보스 중심 십자 장판 → 45도 회전 반복 (로아 스타일)
       if(!G._crossWipes)G._crossWipes=[];
       const _cwPh=e._bossPhase||0;
       const _cwLen=~~(Math.max((G.mw||50),(G.mh||42))*T*.55);
@@ -24030,7 +24183,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         t:0,maxT:300,rotSpd:0,phase:0,warnT:60,
         dmg:~~(e.atk*2),el:e.el,tickT:0,
         waves:2+~~(_cwPh/2)}); // 2~4파
-      addTxt(e.x,e.y-30,_T('✝ 십자 소멸!'),'#ff44ff',70);SFX.charge();shake(8);
+      addTxt(e.x,e.y-30,_T('⚡ 쐐기 소멸!'),'#ff44ff',70);SFX.charge();shake(8);
       e.s='recover';e.st2=45;break;
     }
     case'tidalWipe':{
@@ -24389,6 +24542,7 @@ function updateE(e,sp){
     }
   }
   // ═══ D4식 DOT — 히트뎀% 풀 축적, 틱마다 풀에서 드레인 ═══
+  // 캡: 스택 10이면 풀 축적 중단 (축적 시점에서 가드, mHP 캡 없음)
   // 출혈: 50% 축적, 5초, 중첩 (풀 누적) — pDotDmg()+pDotDur() 적용
   if(e.bleedT>0){ e.bleedT-=sp/pDotDur();
     if(Math.floor(e.bleedT/60)<Math.floor((e.bleedT+sp)/60)){
@@ -27633,8 +27787,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(opts&&opts.parryBlueBean&&e.mhp>0){dmg=Math.max(dmg,~~(e.mhp*0.10))}
   if(!isDot){
     // D4식: 히트뎀의 %를 풀에 축적
-    if(opts&&opts.bleed){e.bleed=1;e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);e._bleedPool=(e._bleedPool||0)+pDotPool()*dmg*0.50} // 출혈: 50%, 5초
-    if(opts&&opts.poison){e.poison=1;e.poisonT=Math.max(e.poisonT||0,300);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);e._poisonPool=(e._poisonPool||0)+pDotPool()*dmg*0.40} // 중독: 40%, 5초
+    if(opts&&opts.bleed){e.bleed=1;e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*dmg*0.10} // 출혈: 10%, 5초
+    if(opts&&opts.poison){e.poison=1;e.poisonT=Math.max(e.poisonT||0,300);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*dmg*0.10} // 중독: 10%, 5초
   }
   // ═══ 물리 방패 방어 — Type 6만 (정면 70% 감소) ═══
   if(e.etype===6&&ang!==undefined){
@@ -27836,10 +27990,10 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(!isDot){
       const _apDot=_eqAffix('poisonDot'),_afDot=_eqAffix('fireDot'),_aiDot=_eqAffix('iceDot');
       if(_apDot>0){
-        e.poison=1;e.poisonT=Math.max(e.poisonT||0,300);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);e._poisonPool=(e._poisonPool||0)+pDotPool()*dmg*0.40;
+        e.poison=1;e.poisonT=Math.max(e.poisonT||0,300);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*dmg*0.10;
       }
       if(_afDot>0){
-        e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);e._burnPool=(e._burnPool||0)+pDotPool()*dmg*0.60;
+        e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*dmg*0.10;
       }
       if(_aiDot>0&&!e.ib){
         if(!e._iceDotT&&_txtPerFrame<_TXT_BUDGET)addTxt(e.x,e.y-15,_T('빙결!'),'#88ccff',20);
@@ -29067,7 +29221,7 @@ const SKILL_LIST=[
   // earthBreaker 삭제됨
   {id:'chainSlash',name:'기동칼날개',cat:'move',fixed:true,hidden:true,emoji:'⚔',desc:'[히든: 5성 dimRush 합체, Lv200] 사슬기동 중 좌클릭 → 이동 중 전방 광역 베기+출혈. STR 스케일 물리데미지. 다단히트. Lv당 뎀+12% 범위+15',descEn:'[Hidden: 5-star dimRush fuse, Lv200] During chain dash LMB → forward AoE slash+bleed while moving. STR scale physical DMG. Multi-hit. Per Lv DMG+12% range+15',spCost:0,matCost:0,reqLv:200,up:true,upSp:5,upMat:0},
   {id:'peaceShield',name:'평화의보호',cat:'def',fixed:true,hidden:true,noDmg:true,emoji:'🕊️',desc:'[히든: 암전나선 합체] Q 홀드 시 보호막이 점점 커지며 HP 초당 10% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모',descEn:'[Hidden: Dark Spiral fuse] Q hold: shield grows over time + HP 10%/s regen. DMG reduction scales with shield size. MP cost',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
-  {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'✝',desc:'[히든: 암전나선 합체] E로 조준, 클릭 설치. 신성 십자가를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. Lv당 거리+50',descEn:'[Hidden: Dark Spiral fuse] E to aim, click to place. Holy cross planted on ground — rotates+DMG. MP 100. 1 charge CD 10s. 5s+0.5s/Lv duration. Per Lv range+50',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
+  {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'⚡',desc:'[히든: 암전나선 합체] E로 조준, 클릭 설치. 에너지 쐐기를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. Lv당 거리+50',descEn:'[Hidden: Dark Spiral fuse] E to aim, click to place. Energy wedge planted on ground — rotates+DMG. MP 100. 1 charge CD 10s. 5s+0.5s/Lv duration. Per Lv range+50',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'칼등날개',cat:'def',fixed:true,emoji:'🔨',desc:'[고정: 칼등치기 합체] 보유 시 칼등치기에 전방 충격파 자동 발동. 제자리 처내기. 쿨 5초. Lv당 뎀+12% 범위+20',descEn:'[Fixed: Blade Parry fuse] When owned, swipe auto-triggers forward shockwave. Stationary swipe. CD 5s. Per Lv DMG+12% range+20',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
   // [SKILL REMOVED 2026-04-10] blastShot (폭산탄) — 석궁 개편
   {id:'weakPhys',name:'파쇄의 영역',cat:'tech',act:true,noDmg:true,emoji:'⚔',desc:'현재 위치에 파쇄 영역 설치 (10초). 범위 내 적 물리방어력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place shatter domain at current pos (10s). Enemy phys DEF -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
@@ -29090,7 +29244,7 @@ const SKILL_SLOT_DEFS={
     info:{fireball:{name:'악의구',nameEn:'Malice Orb',emoji:'🔮',desc:'E: 어둠 오브 (크기+50%/Lv, 데미지 _skMul)',descEn:'E: Dark orb (size+50%/Lv, DMG via _skMul)'},
           omniBeam:{name:'멸살광선',nameEn:'Omni Beam',emoji:'☄️',desc:'E: 1발 직선 레이저',descEn:'E: Single straight laser'},
           elemMissile:{name:'원소추적탄',nameEn:'Elem Missile',emoji:'🎯',desc:'E: 6원소 유도 미사일',descEn:'E: 6-element homing missiles'},
-          hellRay:{name:'참회',nameEn:'Repentance',emoji:'✝',desc:'E: 신성한 선 설치 (시계방향 회전)',descEn:'E: Place holy line (clockwise rotation)'},
+          hellRay:{name:'참회',nameEn:'Repentance',emoji:'⚡',desc:'E: 신성한 선 설치 (시계방향 회전)',descEn:'E: Place holy line (clockwise rotation)'},
           blueShot:{name:'푸른비',nameEn:'Blue Rain',emoji:'💎',desc:'E: 5초간 50발 파란콩 순차 발사 (MP100+1.5/Lv, 추적, 쿨5초)',descEn:'E: 50 blue shots over 5s (MP100+1.5/Lv, homing, cd 5s)'},
           burstLoop:{name:'버스트루프',nameEn:'Burst Loop',emoji:'💫',desc:'E 홀드: 3단계 차지 범위폭발 (Lv700 히든)',descEn:'E Hold: 3-stage charge AoE (Lv700 hidden)'},
           fireAura:{name:'지옥진',nameEn:'Inferno Field',emoji:'🌋',desc:'E: 10초 대지진동 (용암기둥+화상+틱뎀, MP100, 쿨12초)',descEn:'E: 10s ground quake (lava+burn+tick, MP100, cd 12s)'},
@@ -29664,7 +29818,7 @@ function _execDimBreach(){
     if(dst(px,py,e.x,e.y)>_hitW+e.r)continue;
     const baseDmg=~~(((ar().charge||10)+P.baseAtk)*_dbDotMul*2)+_dbBon;
     hurtE(e,baseDmg,Math.atan2(e.y-P.y,e.x-P.x),false,{bleed:true},EL.L);
-    e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);e._bleedPool=(e._bleedPool||0)+pDotPool()*baseDmg*0.50;
+    e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*baseDmg*0.10;
     e.bleed=1;e.shockT=Math.max(e.shockT||0,120+_blLv*15);
     P._dimBreachHitCount++;
     for(let j=0;j<6;j++){const ja=Math.PI*2*j/6;poolPart(e.x,e.y,Math.cos(ja)*4,Math.sin(ja)*4,j%2?'#eeff00':'#ffffff',2+Math.random()*3,12)}
@@ -31324,7 +31478,7 @@ function _renderSkillRow(sk,grid){
                 if(!P.skills.hellRay)P.skills.hellRay=1;
                 P.activeMagicSk='hellRay'; // E슬롯 자동 전환
                 addTxt(P.x,P.y-60,_e?'🕊️ Hidden: Aegis of Peace!':_T('🕊️ 히든: 평화의보호 해금!'),'#aaffaa',80);
-                addTxt(P.x,P.y-80,_e?'✝ Hidden: Repentance!':_T('✝ 히든: 참회 해금!'),'#ffd700',80);
+                addTxt(P.x,P.y-80,_e?'⚡ Hidden: Repentance!':_T('⚡ 히든: 참회 해금!'),'#ffd700',80);
               }
               let _fTxt=_fuseName(_grp.key)+(_e?' Complete!':' 완성!');if(_refSp>0||_refMat>0)_fTxt+=' (SP+'+_refSp+(_e?' Malice+':' 악의+')+_refMat+')';
               addTxt(P.x,P.y-30,_fTxt,_grp.color,80);
@@ -33305,7 +33459,7 @@ function renderForge(){
     const _txt=OPT.lang==='en'?_m.en:_m.ko;
     const d=document.createElement('div');
     d.className='fg-tab'+(G.forgeTab===k?' act':'');
-    const _img='output/imagegen/forge-tabs-tight/'+k+'.png?v=20260415-tight1';
+    const _img='output/imagegen/forge-tabs-v3/'+k+'.png?v=20260416-v3set1';
     const _fb=_forgeTabFallbackData(_m.icon);
     d.innerHTML='<span class="fg-tab-ico"><img class="fg-tab-ico-img" src="'+_img+'" alt="" onerror="this.onerror=null;this.src=&apos;'+_fb+'&apos;"></span><span class="fg-tab-txt">'+_txt+'</span>';
     d.onclick=()=>{G.forgeTab=k;_forgeSel=null;_salSel.clear();_rerollSel=null;_crForgeSel=-1;renderForge()};
@@ -37273,7 +37427,7 @@ function drawP(){
     X.beginPath();X.moveTo(_hrTx-12,_hrTy);X.lineTo(_hrTx+12,_hrTy);X.moveTo(_hrTx,_hrTy-12);X.lineTo(_hrTx,_hrTy+12);X.stroke();
     // 텍스트
     X.globalAlpha=.8;X.fillStyle='#ffd700';X.font='bold 11px monospace';X.textAlign='center';
-    X.fillText('✝ R:'+_hrAimR,_hrTx,_hrTy-_hrAimR-8);
+    X.fillText('⚡ R:'+_hrAimR,_hrTx,_hrTy-_hrAimR-8);
     X.restore();
   }
   // ══ 폭풍소환 조준 인디케이터 (마우스 커서 위치 — 악의폭풍과 동일) ══
@@ -37850,7 +38004,7 @@ function drawP(){
           else X.lineTo(fz.x+Math.cos(_ra)*_rr,fz.y+Math.sin(_ra)*_rr);
         }
         X.closePath();X.stroke();
-        // 3) 십자가 문양 (중앙)
+        // 3) 쐐기 문양 (중앙)
         X.globalAlpha=.15*_fzFade;X.strokeStyle='#fff8dc';X.lineWidth=3;
         const _cSz=fz.r*.3;
         X.beginPath();X.moveTo(fz.x,fz.y-_cSz);X.lineTo(fz.x,fz.y+_cSz);X.moveTo(fz.x-_cSz*.6,fz.y-_cSz*.3);X.lineTo(fz.x+_cSz*.6,fz.y-_cSz*.3);X.stroke();
@@ -37864,9 +38018,9 @@ function drawP(){
       }else if(fz.type==='holyPrison'){
         // 감옥은 별도 렌더 (27793행 부근) — 여기서 skip
       }else if(fz.type==='hellRay'){
-        // ═══ 참회 — 회전하는 신성 십자가 ═══
+        // ═══ 참회 — 회전하는 신성 쐐기 ═══
         const _hrt=_now*.001;const _hrAng=fz.ang||0;
-        // 십자가 4개 끝점
+        // 쐐기 4개 끝점
         const _hrAL=[fz.r*.8,fz.r*.6,fz.r,fz.r*.6]; // 위,오른,아래(긴),왼
         const _hrArms=[];
         for(let _ai=0;_ai<4;_ai++){
@@ -37874,7 +38028,7 @@ function drawP(){
           _hrArms.push([fz.x+Math.cos(_a)*_hrAL[_ai],fz.y+Math.sin(_a)*_hrAL[_ai]]);
         }
         // (바닥 원 제거됨)
-        // 2) 십자가 팔 4개 — 굵은 황금 빔 (중심→끝 페이드)
+        // 2) 쐐기 팔 4개 — 굵은 황금 빔 (중심→끝 페이드)
         for(let _ai=0;_ai<4;_ai++){
           const _ex=_hrArms[_ai][0],_ey=_hrArms[_ai][1];
           const _g=X.createLinearGradient(fz.x,fz.y,_ex,_ey);
@@ -38935,7 +39089,7 @@ function drawP(){
       }
     }X.globalAlpha=1;
   }
-  // ══ 십자 소멸 렌더 ══
+  // ══ 쐐기 소멸 렌더 ══
   if(G._crossWipes&&G._crossWipes.length>0){
     for(let ci=0;ci<G._crossWipes.length;ci++){
       const cw=G._crossWipes[ci];const _cwWL=~~(cw.maxT/cw.waves);const _cwWv=~~(cw.t/_cwWL);
@@ -40785,7 +40939,7 @@ function drawP(){
     // 2) 외곽 — 점선 원 + 물결
     X.strokeStyle='#ffdd88';X.lineWidth=1.5;X.globalAlpha=(.25+.1*Math.sin(_hpt*5))*_hpProg;
     X.setLineDash([8,8]);X.beginPath();X.arc(_fz.x,_fz.y,_fz.r+Math.sin(_hpt*6)*2,0,Math.PI*2);X.stroke();X.setLineDash([]);
-    // 3) 십자가 6개 회전
+    // 3) 쐐기 6개 회전
     X.globalAlpha=(.25+Math.sin(_hpt*4)*.1)*_hpProg;X.font='bold 14px serif';X.textAlign='center';X.fillStyle='#ffdd88';
     for(let ci=0;ci<6;ci++){const ca=ci*Math.PI/3+_hpt*.8;X.fillText('✟',_fz.x+Math.cos(ca)*_fz.r*.92,_fz.y+Math.sin(ca)*_fz.r*.92+5)}
     // 4) 빛 파티클
