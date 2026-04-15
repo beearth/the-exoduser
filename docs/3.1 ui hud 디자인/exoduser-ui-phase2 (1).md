@@ -424,6 +424,16 @@ function showStageTransition(callback) {
 
 > 새 스킬 추가 시 _skCdMap에 쿨다운 변수 등록 필수. 등록하지 않으면 HUD에 쿨다운 미표시.
 
+### T 석궁 슬롯 (qsT) — 2026-04-15 추가
+- T키 석궁 자동발사 스킬 표시 (normal/bladeShot/blastShot/fanShot/needleShot/ghostXbowTurret)
+- 클릭 시 bow 스킬 팝업, 터렛 설치 시 파란 테두리
+- `updateTSlot()` + `_updateActionKeys()` 내 실시간 갱신
+
+### 고정슬롯 키 라벨 (2026-04-15)
+모든 고정슬롯에 키 이름 라벨 표시: LMB, RMB, Shift, E, T, Q, Ctrl, Space
+- `_initFixedSlotKeys()`: 1회 초기화, `.qs-key` span 삽입
+- 어떤 키에 어떤 스킬이 배정됐는지 한눈에 확인 가능
+
 ### Space 슬롯 (skSlot1) 쿨다운 표시
 Space 슬롯(SKILL_SLOTS[4])에도 모든 스킬 쿨다운 오버레이+숫자 표시 추가됨.
 - `_spCdMap`: 1~4번 슬롯과 동일한 쿨다운 변수 참조
