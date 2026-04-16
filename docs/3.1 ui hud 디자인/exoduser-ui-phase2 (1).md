@@ -239,6 +239,14 @@ style 맨 아래에 추가:
 | 대장간 성소화 | 대장간 패널 폭 확대, 보라 악의 바, 4열 탭, 고어 금속 카드, 강화된 제작 확인 바 적용 | `game.html` `#forge .pbox`, `#forge #forgeMats`, `#forge #forgeLore`, `#forge .fg-tabs`, `#forge .fg-i`, `#forge #forgeConfirm`, `#forge #fgCraftBtn` |
 | 인벤/스탯 카드 | 인벤 슬롯과 스탯/패시브 행에 동일한 검은 금속 카드 재질과 좌측 혈흔 액센트 추가 | `game.html` `#invPanel .inv-grid>div`, `#statPanel .stat-row`, `#statPanel .passive-row` |
 
+### 2026-04-16 스킬 슬롯 아이콘 인셋 보정
+
+| 항목 | 변경 내용 | 위치 |
+|---|---|---|
+| 슬롯 내부 여백 | `.qs`에 `padding: 4px 4px 12px`를 추가해 스킬 아이콘이 프레임 테두리와 키캡 영역을 덮지 않도록 보정 | `game.html` `.qs` |
+| 아이콘 렌더 클래스 | `_skIcon()`이 인라인 `width:100%; height:100%` 대신 `.qs-icon` 클래스를 사용하도록 변경 | `game.html` `_skIcon()` |
+| 아이콘 기준점 | `.qs-icon`에 `object-fit: contain`, `object-position: center`, `transform: translateY(-1px)`를 적용해 금속 프레임 안쪽으로 시각 중심을 고정 | `game.html` `.qs .qs-icon` |
+
 ---
 
 ### WORK 3: eq-row 데드코드 완전 제거
