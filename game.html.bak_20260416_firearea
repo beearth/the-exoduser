@@ -1539,7 +1539,7 @@ canvas{display:block;position:fixed;inset:0}
       <!-- 왼쪽 컨테이너: 키 설정 -->
       <div style="flex:1;min-width:350px;">
         <div class="set-section" style="margin:0;padding:0;">
-          <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">조작 키 설정 (클릭하여 변경)</div>
+          <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">⌨ 조작 키 설정 (클릭하여 변경)</div>
           <div id="keyBindList"></div>
         </div>
       </div>
@@ -1548,7 +1548,7 @@ canvas{display:block;position:fixed;inset:0}
       <!-- 오른쪽 컨테이너: 게임 설정 및 기타 액션 -->
       <div style="flex:1;min-width:350px;">
         <div class="set-section" style="margin:0;padding:0;">
-          <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">게임 설정</div>
+          <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">⚙ 게임 설정</div>
           <div class="set-range-row"><span class="set-name">화면 흔들림</span><input type="range" id="optShake" min="0" max="100" value="80"><span class="set-range-val" id="optShakeVal">80%</span></div>
           <!-- 히트스톱 제거됨 -->
           <div class="set-range-row"><span class="set-name">파티클 양</span><input type="range" id="optParts" min="5" max="100" step="5" value="80"><span class="set-range-val" id="optPartsVal">80%</span></div>
@@ -1741,7 +1741,7 @@ canvas{display:block;position:fixed;inset:0}
 <div class="panel" id="invPanel">
   <div class="pbox" style="width:100vw;height:100vh;max-width:100vw;max-height:100vh;display:flex;flex-direction:column;overflow-y:auto;padding:12px 20px;box-sizing:border-box;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-shrink:0;">
-      <div class="ptitle" style="font-size:1.3rem;margin:0;">인벤토리</div>
+      <div class="ptitle" style="font-size:1.3rem;margin:0;">📦 인벤토리</div>
       <div style="display:flex;align-items:center;gap:10px">
         <div id="combatPower" style="display:flex;align-items:center;gap:8px;padding:2px 10px;background:rgba(0,0,0,.3);border:1px solid #443322;border-radius:3px;">
           <span style="color:#886644;font-size:.75rem">전투력</span>
@@ -1799,9 +1799,9 @@ canvas{display:block;position:fixed;inset:0}
     </div>
     <div style="display:flex;gap:6px;justify-content:center;align-items:center;flex-shrink:0;padding:6px 0 2px">
       <span id="invActionBtns" style="display:inline-flex;gap:6px"></span>
-      <button class="pclose" id="invJunkSelBtn" style="background:rgba(180,120,20,.15);border-color:#aa8822;color:#ccaa44;display:none">쓰레기 전체선택</button>
-      <button class="pclose" id="invJunkBtn" style="background:rgba(200,80,20,.15);border-color:#cc6622;color:#ffaa44;display:none">쓰레기 전부 분해</button>
-      <button class="pclose" id="invSalvageBtn" style="background:rgba(200,50,20,.15);border-color:#cc4422;color:#ff6644;display:none">선택분해 (0개)</button>
+      <button class="pclose" id="invJunkSelBtn" style="background:rgba(180,120,20,.15);border-color:#aa8822;color:#ccaa44;display:none">🗑️ 쓰레기 전체선택</button>
+      <button class="pclose" id="invJunkBtn" style="background:rgba(200,80,20,.15);border-color:#cc6622;color:#ffaa44;display:none">🗑️ 쓰레기 전부 분해</button>
+      <button class="pclose" id="invSalvageBtn" style="background:rgba(200,50,20,.15);border-color:#cc4422;color:#ff6644;display:none">🔥 선택분해 (0개)</button>
     </div>
   </div>
   <div id="invCompareFloat" class="inv-cmp-float"></div>
@@ -1810,15 +1810,15 @@ canvas{display:block;position:fixed;inset:0}
 <!-- FORGE -->
 <div class="panel" id="forge">
   <div class="pbox" style="width:400px">
-    <div class="ptitle">복수의 대장간</div>
-    <div id="forgeMats" style="text-align:center;margin-bottom:6px;padding:4px 12px;background:rgba(120,0,200,.08);border:1px solid #553388;font-size:1rem;color:#cc66ff;font-weight:700">악의: 0</div>
+    <div class="ptitle">⚒ 복수의 대장간 ⚒</div>
+    <div id="forgeMats" style="text-align:center;margin-bottom:6px;padding:4px 12px;background:rgba(120,0,200,.08);border:1px solid #553388;font-size:1rem;color:#cc66ff;font-weight:700">👿 악의: 0</div>
     <div id="forgeLore" style="color:#665544;font-size:.8rem;text-align:center;margin-bottom:8px">🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭</div>
     <div class="fg-tabs" id="fgTabs"></div>
     <div class="fg-grid" id="fgGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:36vh;overflow-y:auto"></div>
     <div id="forgeConfirm" style="display:none;margin-top:8px;padding:8px;background:rgba(255,170,0,.06);border:1px solid #665522;text-align:center">
       <div id="fgSelName" style="color:#ffcc44;font-size:.95rem;font-weight:700;margin-bottom:4px"></div>
       <div id="fgSelDesc" style="color:#998866;font-size:.95rem;margin-bottom:6px"></div>
-      <button id="fgCraftBtn" style="padding:6px 32px;background:rgba(255,170,0,.15);border:2px solid #aa8833;color:#ffcc44;font-family:'Noto Sans KR';font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:.15em;transition:all .2s">제작</button>
+      <button id="fgCraftBtn" style="padding:6px 32px;background:rgba(255,170,0,.15);border:2px solid #aa8833;color:#ffcc44;font-family:'Noto Sans KR';font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:.15em;transition:all .2s">⚒ 제작</button>
     </div>
     <button class="pclose" id="fgClose">닫기 [G]</button>
   </div>
@@ -1826,7 +1826,7 @@ canvas{display:block;position:fixed;inset:0}
 
 <div class="panel" id="storagePanel">
   <div class="pbox" style="width:420px">
-    <div class="ptitle">창고</div>
+    <div class="ptitle">📦 창고</div>
     <div id="storageFloorNav" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;justify-content:center"></div>
     <div id="storageGrid" style="display:grid;grid-template-columns:1fr;gap:6px;max-height:50vh;overflow-y:auto"></div>
     <button class="pclose" id="storageClose">닫기 [V]</button>
@@ -1836,12 +1836,12 @@ canvas{display:block;position:fixed;inset:0}
 <!-- STAT/PASSIVE PANEL -->
 <div class="panel" id="statPanel">
   <div class="pbox" style="width:90vw !important; height:auto !important; max-height:90vh !important; overflow-y:auto; padding:25px 35px !important; display:flex; flex-direction:column;">
-    <div class="ptitle" style="font-size:2.2rem !important; margin-bottom:15px !important;">능력치</div>
+    <div class="ptitle" style="font-size:2.2rem !important; margin-bottom:15px !important;">📊 능력치</div>
     <div style="display:flex;gap:30px; flex:1; min-height:0;">
       <div id="statLeft" style="flex:1;min-width:400px; display:flex; flex-direction:column;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;position:relative;z-index:50;">
           <div style="display:flex;align-items:center;gap:15px;">
-            <div style="color:#ffcc44;font-size:1.8rem !important;font-weight:700;letter-spacing:.1em">스탯 포인트</div>
+            <div style="color:#ffcc44;font-size:1.8rem !important;font-weight:700;letter-spacing:.1em">🔶 스탯 포인트</div>
             <div id="smToggleBtn" style="padding:6px 14px;background:rgba(255,170,0,.15);border:2px solid #aa8833;color:#ffcc44;font-size:1.2rem;font-weight:700;cursor:pointer;border-radius:6px;user-select:none;transition:all 0.2s;" onmouseover="this.style.background='rgba(255,170,0,.25)'" onmouseout="this.style.background='rgba(255,170,0,.15)'">📋 능력치 요약 ▼</div>
           </div>
           <div id="spRemain" style="color:#ffaa00;font-size:2rem !important;font-weight:900"></div>
@@ -1851,14 +1851,14 @@ canvas{display:block;position:fixed;inset:0}
       </div>
       <div id="statRight" style="flex:1;min-width:400px; display:flex; flex-direction:column;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px">
-          <div style="color:#cc77ff;font-size:1.8rem !important;font-weight:700;letter-spacing:.1em">패시브 스킬</div>
+          <div style="color:#cc77ff;font-size:1.8rem !important;font-weight:700;letter-spacing:.1em">🔮 패시브 스킬</div>
           <div id="apRemain" style="color:#bb66ff;font-size:2rem !important;font-weight:900"></div>
         </div>
         <div id="passiveGrid" style="flex:1; overflow-y:auto; padding-right:10px;"></div>
       </div>
     </div>
     <div style="display:flex;gap:20px;justify-content:center;margin-top:20px">
-      <button class="pclose" id="statResetBtn" style="color:#ff6666;border-color:#663333;font-size:1.5rem !important;padding:12px 40px !important;margin:0;">올 리셋</button>
+      <button class="pclose" id="statResetBtn" style="color:#ff6666;border-color:#663333;font-size:1.5rem !important;padding:12px 40px !important;margin:0;">⟲ 올 리셋</button>
       <button class="pclose" id="statClose" style="font-size:1.5rem !important;padding:12px 40px !important;margin:0;">닫기 [C]</button>
     </div>
   </div>
@@ -20559,7 +20559,7 @@ function update(){
         P.s='magicRecover';P.st2=10;
       } else if(_mcSk==='fireAura'&&P.skills.fireAura>=1){
         const _faLv=P.skills.fireAura||1;
-        const _faR=400+~~(400*(_faLv-1)*0.10); // 1렙400, 만렙~800 (2배 상향)
+        const _faR=200+~~(200*(_faLv-1)*0.10); // 1렙200, 만렙~400
         const _faDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('fireAura')*_fuseMul('fireAura')); // 통일공식: _skMul
         if(!G._fireZones)G._fireZones=[];
         G._fireZones.push({type:'fireAura',x:P.x,y:P.y,r:_faR,dmg:_faDmg,el:EL.F,t:0,maxT:600,lv:_faLv,_tickCd:0,follow:true,_faFr:0});
@@ -30673,7 +30673,7 @@ function activateGiantSlam(srcId){
   // 지옥강타: 대왕치기2 시 지옥진 자동 발동 (5초)
   if(srcId==='giantSlam2'&&_isFused('infernoSlam')&&P.skills.fireAura>=1){
     const _ifLv=P.skills.fireAura||1;
-    const _ifR=400+~~(400*(_ifLv-1)*0.10); // 2배 상향
+    const _ifR=200+~~(200*(_ifLv-1)*0.10);
     const _ifDmg=~~(magicRef()*statInt()*pMagicMul()*(6+(_ifLv-1)));
     if(!G._fireZones)G._fireZones=[];
     G._fireZones.push({type:'fireAura',x:P.x,y:P.y,r:_ifR,dmg:_ifDmg,el:EL.F,t:0,maxT:300,lv:_ifLv,_tickCd:0,follow:false,_faFr:0});
@@ -32351,13 +32351,13 @@ function _applyLang(){try{
   const _ph={'ptitle-inv':'인벤토리','ptitle-forge':'복수의 대장간','ptitle-passive':'패시브 스킬','ptitle-combat':'전투 스킬'};
   for(const[id,ko]of Object.entries(_ph)){const el=$(id);if(el)el.textContent=(el.dataset.emoji||'')+_T(ko)}
   // Settings panel title
-  const _st=$('settings');if(_st){const pt=_st.querySelector('.ptitle');if(pt)pt.textContent=_e?'Settings':'설정'}
+  const _st=$('settings');if(_st){const pt=_st.querySelector('.ptitle');if(pt)pt.textContent=_e?'⚙ Settings':'⚙ 설정'}
   // Settings section labels (set-name spans)
   const _sn=[['화면 흔들림','Screen Shake'],['파티클 양','Particle Amount'],['효과음 볼륨','SFX Volume'],['음악 볼륨','Music Volume'],['BGM 선택','BGM Select'],['난이도','Difficulty'],['자동 물약','Auto Potion'],['최소 줍기 등급','Min Pickup Grade'],['최소 줍기 티어','Min Pickup Tier'],['FPS 제한','FPS Limit'],['해상도 스케일','Resolution Scale'],['펫 자동수거','Pet Auto-Collect'],['유령불꽃 크기','Ghost Flame Size'],['화면 명암','Brightness'],['유령 글로우','Ghost Glow'],['기동:칼날개 AUTO','Bladewing AUTO'],['보스 AI 디버그','Boss AI Debug'],['화면 모드','Display Mode'],['해상도','Resolution'],['커서 크기','Cursor Size'],['블룸 효과','Bloom'],['잔상 트레일','Trail'],['슬래시 이펙트','Slash FX'],['후처리 효과','Post-processing'],['사망 이펙트','Death FX'],['동적 조명','Dynamic Lighting'],['횃불 조명 (어둠)','Torch (Darkness)'],['앰비언트 파티클','Ambient Particles'],['안개 효과','Fog'],['필름 그레인','Film Grain'],['캐릭터 외곽선','Character Outline']];
   const _snMap={};_sn.forEach(([k,e])=>{_snMap[k]=e});
   _st?.querySelectorAll('.set-name').forEach(el=>{const ko=el.dataset.ko||(el.textContent.trim());if(!el.dataset.ko)el.dataset.ko=ko;el.textContent=_e?(_snMap[ko]||ko):ko});
   // Settings section headers
-  const _sh=[['조작 키 설정 (클릭하여 변경)','Key Bindings (Click to Change)'],['게임 설정','Game Settings'],['화면 설정','Display Settings'],['캐릭터 선택','Character Select'],['마우스 커서','Mouse Cursor'],['그래픽 품질','Graphics Quality'],['하드웨어 진단','Hardware Diagnostics']];
+  const _sh=[['⌨ 조작 키 설정 (클릭하여 변경)','⌨ Key Bindings (Click to Change)'],['⚙ 게임 설정','⚙ Game Settings'],['화면 설정','Display Settings'],['🗡 캐릭터 선택','🗡 Character Select'],['🖱 마우스 커서','🖱 Mouse Cursor'],['🎨 그래픽 품질','🎨 Graphics Quality'],['🔍 하드웨어 진단','🔍 Hardware Diagnostics']];
   const _shMap={};_sh.forEach(([k,e])=>{_shMap[k]=e});
   _st?.querySelectorAll('.set-label').forEach(el=>{const ko=el.dataset.ko||(el.textContent.trim());if(!el.dataset.ko)el.dataset.ko=ko;el.textContent=_e?(_shMap[ko]||ko):ko});
   // BGM select options
@@ -32365,10 +32365,10 @@ function _applyLang(){try{
   // Display mode options
   const _dm=$('optDispMode');if(_dm){const _dmo=[['창 모드','Windowed'],['보더리스','Borderless'],['전체화면','Fullscreen']];const _dmoMap={};_dmo.forEach(([k,e])=>{_dmoMap[k]=e});Array.from(_dm.options).forEach(o=>{const ko=o.dataset.ko||(o.textContent);if(!o.dataset.ko)o.dataset.ko=ko;o.textContent=_e?(_dmoMap[ko]||ko):ko})}
   // Buttons
-  const _btns={saveP1:['세팅1 저장','Save Preset 1'],loadP1:['세팅1','Preset 1'],saveP2:['세팅2 저장','Save Preset 2'],loadP2:['세팅2','Preset 2'],btnRedetect:['재진단','Re-detect'],resetBtn:['게임 리셋 (처음부터)','Reset Game (from start)'],toLobbyBtn2:['캐릭터 선택 (로비)','Character Select (Lobby)'],setClose:['닫기 [ESC]','Close [ESC]'],resetYes:['확인','Confirm'],resetNo:['취소','Cancel']};
+  const _btns={saveP1:['💾 세팅1 저장','💾 Save Preset 1'],loadP1:['📂 세팅1','📂 Preset 1'],saveP2:['💾 세팅2 저장','💾 Save Preset 2'],loadP2:['📂 세팅2','📂 Preset 2'],btnRedetect:['🔄 재진단','🔄 Re-detect'],resetBtn:['⚠ 게임 리셋 (처음부터)','⚠ Reset Game (from start)'],toLobbyBtn2:['🏠 캐릭터 선택 (로비)','🏠 Character Select (Lobby)'],setClose:['닫기 [ESC]','Close [ESC]'],resetYes:['확인','Confirm'],resetNo:['취소','Cancel']};
   for(const[id,[ko,en]]of Object.entries(_btns)){const el=$(id);if(el)el.textContent=_e?en:ko}
   // Fullscreen button (no id, onclick)
-  _st?.querySelectorAll('button').forEach(b=>{if(b.onclick&&b.textContent.includes('전체화면'))b.textContent=_e?'Fullscreen (F11)':'전체화면 (F11)'});
+  _st?.querySelectorAll('button').forEach(b=>{if(b.onclick&&b.textContent.includes('전체화면'))b.textContent=_e?'🖥 Fullscreen (F11)':'🖥 전체화면 (F11)'});
   // Auto-save text, preset text
   _st?.querySelectorAll('div').forEach(d=>{
     if(d.children.length>2)return;
@@ -32394,31 +32394,31 @@ function _applyLang(){try{
   const _titles={skSlotLMB:['좌클스킬 (클릭 전환)','LMB Skill (click to switch)'],skSlotRMB:['우클스킬 (클릭 전환)','RMB Skill (click to switch)'],skSlot0:['이동스킬 (클릭 전환)','Move Skill (click to switch)'],qsE:['마법스킬 (클릭 전환)','Magic Skill (click to switch)'],skSlot1:['영역스킬 (클릭 전환)','Area Skill (click to switch)'],qsQ:['피보호막 (클릭 전환)','Blood Shield (click to switch)'],skSlotCT:['CT스킬 (클릭 전환)','CT Skill (click to switch)'],spCnt:['[C] 능력치','[C] Stats']};
   // Inventory / Forge / Stats / Skill panel labels
   const _invP=$('invPanel');if(_invP){
-const _pt=_invP.querySelector('.ptitle');if(_pt)_pt.textContent=_e?'Inventory':'인벤토리';
+    const _pt=_invP.querySelector('.ptitle');if(_pt)_pt.textContent=_e?'📦 Inventory':'📦 인벤토리';
     const _cpLbl=_invP.querySelector('#combatPower>span:first-child');if(_cpLbl)_cpLbl.textContent=_e?'CP':'전투력';
     const _crBtn=_invP.querySelector('#combatPower')?.nextElementSibling;if(_crBtn&&(_crBtn.textContent.includes('결정')||_crBtn.dataset.ko==='결정')){_crBtn.dataset.ko='결정';_crBtn.textContent=_e?'💎 Crystal':'💎 결정'}
     const _eqLbl=_invP.querySelector('.inv-equip>div');if(_eqLbl&&(_eqLbl.textContent.includes('장착')||_eqLbl.dataset.ko==='장착 중')){_eqLbl.dataset.ko='장착 중';_eqLbl.textContent=_e?'Equipped':'장착 중'}
     const _stTgl=_invP.querySelector('.inv-storage-toggle>span');if(_stTgl&&(_stTgl.textContent.includes('지옥창고')||_stTgl.dataset.ko==='지옥창고')){_stTgl.dataset.ko='지옥창고';_stTgl.textContent=_e?'🏚 Hell Storage':'🏚 지옥창고'}
     const _bagLbl=_invP.querySelector('#invCenter>div>div');if(_bagLbl){const _bc=_bagLbl.querySelector('#invCount'),_bm=_bagLbl.querySelector('#invMax');if(_bc&&_bm){const _cv=_bc.textContent,_mv=_bm.textContent;_bagLbl.innerHTML=_e?'Bag (<span id="invCount">'+_cv+'</span>/<span id="invMax">'+_mv+'</span>)':'가방 (<span id="invCount">'+_cv+'</span>/<span id="invMax">'+_mv+'</span>)'}}
     const _sortB=$('invSortBtn');if(_sortB)_sortB.textContent=_e?'↕ Sort':'↕ 정렬';
-const _jSelB=$('invJunkSelBtn');if(_jSelB)_jSelB.textContent=_e?'Select All Junk':'쓰레기 전체선택';
-const _jBtn=$('invJunkBtn');if(_jBtn)_jBtn.textContent=_e?'Salvage All Junk':'쓰레기 전부 분해';
+    const _jSelB=$('invJunkSelBtn');if(_jSelB)_jSelB.textContent=_e?'🗑️ Select All Junk':'🗑️ 쓰레기 전체선택';
+    const _jBtn=$('invJunkBtn');if(_jBtn)_jBtn.textContent=_e?'🗑️ Salvage All Junk':'🗑️ 쓰레기 전부 분해';
   }
   const _fgP=$('forge');if(_fgP){
-const _pt2=_fgP.querySelector('.ptitle');if(_pt2)_pt2.textContent=_e?'Forge of Vengeance':'복수의 대장간';
-const _cb=$('fgCraftBtn');if(_cb)_cb.textContent=_e?'Craft':'제작';
+    const _pt2=_fgP.querySelector('.ptitle');if(_pt2)_pt2.textContent=_e?'⚒ Forge of Vengeance ⚒':'⚒ 복수의 대장간 ⚒';
+    const _cb=$('fgCraftBtn');if(_cb)_cb.textContent=_e?'⚒ Craft':'⚒ 제작';
     const _fc=$('fgClose');if(_fc)_fc.textContent=_e?'Close [G]':'닫기 [G]';
   }
   const _stpP=$('storagePanel');if(_stpP){
-const _pt3=_stpP.querySelector('.ptitle');if(_pt3)_pt3.textContent=_e?'Storage':'창고';
+    const _pt3=_stpP.querySelector('.ptitle');if(_pt3)_pt3.textContent=_e?'📦 Storage':'📦 창고';
     const _sc=$('storageClose');if(_sc)_sc.textContent=_e?'Close [V]':'닫기 [V]';
   }
   const _spP=$('statPanel');if(_spP){
-const _pt4=_spP.querySelector('.ptitle');if(_pt4)_pt4.textContent=_e?'Stats':'능력치';
-const _spLbl=_spP.querySelector('#statLeft div[style*="ffcc44"]');if(_spLbl)_spLbl.textContent=_e?'Stat Points':'스탯 포인트';
+    const _pt4=_spP.querySelector('.ptitle');if(_pt4)_pt4.textContent=_e?'📊 Stats':'📊 능력치';
+    const _spLbl=_spP.querySelector('#statLeft div[style*="ffcc44"]');if(_spLbl)_spLbl.textContent=_e?'🔶 Stat Points':'🔶 스탯 포인트';
     const _smBtn=$('smToggleBtn');if(_smBtn){const _ar=_smBtn.textContent.includes('▲')?'▲':'▼';_smBtn.textContent=_e?'📋 Stat Summary '+_ar:'📋 능력치 요약 '+_ar}
-const _psLbl=_spP.querySelector('#statRight div[style*="cc77ff"]');if(_psLbl)_psLbl.textContent=_e?'Passive Skills':'패시브 스킬';
-const _srb=$('statResetBtn');if(_srb)_srb.textContent=_e?'Reset All':'올 리셋';
+    const _psLbl=_spP.querySelector('#statRight div[style*="cc77ff"]');if(_psLbl)_psLbl.textContent=_e?'🔮 Passive Skills':'🔮 패시브 스킬';
+    const _srb=$('statResetBtn');if(_srb)_srb.textContent=_e?'⟲ Reset All':'⟲ 올 리셋';
     const _scc=$('statClose');if(_scc)_scc.textContent=_e?'Close [C]':'닫기 [C]';
   }
   const _skP=$('skillPanel');if(_skP){
@@ -33363,7 +33363,7 @@ function renderInv(){
   $('cpVal').textContent=cp.total;
   $('cpBreak').textContent=`⚔${cp.atk} 🛡${cp.def} ✨${cp.extra}`;
   // ── 리소스 바 ──
-{const _rb=$('invResBar');if(_rb)_rb.innerHTML=OPT.lang==='en'?'Crystals '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | Dust: <span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | Malice: <span style="color:#cc66ff">'+G.mats+'</span>':'결정 '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | 가루: <span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | 악의: <span style="color:#cc66ff">'+G.mats+'</span>'}
+  {const _rb=$('invResBar');if(_rb)_rb.innerHTML=OPT.lang==='en'?'💎 '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | Dust: <span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | 👿 <span style="color:#cc66ff">'+G.mats+'</span>':'💎 '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | 가루: <span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | 👿 악의: <span style="color:#cc66ff">'+G.mats+'</span>'}
   // ── 창고 컬럼 (항상 렌더) ──
   try{renderInvStorage()}catch(e){console.error('창고 렌더 오류:',e)}
   // Equipped slots (paper doll)
@@ -33627,7 +33627,7 @@ function renderInv(){
     const _isCnt=_invSalSel.size;
     if(_isCnt>0){
       let _isTot=0;for(const idx of _invSalSel){const it=INV.bag[idx];if(it)_isTot+=salvageVal(it)}
-_isBtn.style.display='';_isBtn.textContent=OPT.lang==='en'?`Salvage (${_isCnt} -> +${_isTot} Malice)`:`선택분해 (${_isCnt}개 -> 악의 +${_isTot})`;
+      _isBtn.style.display='';_isBtn.textContent=OPT.lang==='en'?`🔥 Salvage (${_isCnt} → 👿+${_isTot})`:`🔥 선택분해 (${_isCnt}개 → 👿+${_isTot})`;
       _isBtn.onclick=()=>{
         if(!confirm(OPT.lang==='en'?`Salvage ${_isCnt} items.\n👿 ${_isTot} Malice gained.\n\n⚠️ Cannot undo!`:`${_isCnt}개 아이템을 분해합니다.\n👿 ${_isTot} 악의 획득.\n\n⚠️ 복구 불가!`))return;
         const idxArr=[..._invSalSel].sort((a,b)=>b-a);
@@ -33653,7 +33653,7 @@ _isBtn.style.display='';_isBtn.textContent=OPT.lang==='en'?`Salvage (${_isCnt} -
     const _jkItems=INV.bag.filter(it=>it.junk&&!it.fav);
     if(_jkItems.length>0){
       let _jkTot=0;for(const it of _jkItems)_jkTot+=salvageVal(it);
-_jkBtn.style.display='';_jkBtn.textContent=OPT.lang==='en'?`Salvage all junk (${_jkItems.length} -> +${_jkTot} Malice)`:`쓰레기 전부 분해 (${_jkItems.length}개 -> 악의 +${_jkTot})`;
+      _jkBtn.style.display='';_jkBtn.textContent=OPT.lang==='en'?`🗑️ Salvage all junk (${_jkItems.length} → 👿+${_jkTot})`:`🗑️ 쓰레기 전부 분해 (${_jkItems.length}개 → 👿+${_jkTot})`;
       _jkBtn.onclick=()=>{
         if(!confirm(OPT.lang==='en'?`🗑️ Bulk salvage ${_jkItems.length} junk items.\n👿 ${_jkTot} Malice gained.\n\n⚠️ Favorited items excluded.\n⚠️ Cannot undo!`:`🗑️ 쓰레기 ${_jkItems.length}개를 일괄 분해합니다.\n👿 ${_jkTot} 악의 획득.\n\n⚠️ 중요잠금 아이템은 제외됩니다.\n⚠️ 복구 불가!`))return;
         INV.bag=INV.bag.filter(it=>!(it.junk&&!it.fav));
@@ -33752,7 +33752,7 @@ function renderForge(){
   G.forgeOpen=true;
   _ensureForgeAtlasLoad();
   BGM.play('forge');
-$('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
+  $('forgeMats').textContent=`👿 ${_T('악의')}: ${G.mats}`;
   const tabs=$('fgTabs');tabs.innerHTML='';
   tabs.classList.add('atlas-v1-ready','atlas-v2-ready');
   const _fgTabMeta={
@@ -33937,7 +33937,7 @@ $('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
     };
     // 헤더
     const shdr=document.createElement('div');shdr.style.cssText='color:#ff6644;font-size:1rem;font-weight:700;margin-bottom:8px;letter-spacing:.1em;text-align:center';
-shdr.textContent=_T('악의의 분해로 — 장비를 악의로 갈아버려라');grid.appendChild(shdr);
+    shdr.textContent=_T('🔥 악의의 분해로 — 장비를 악의로 갈아버려라');grid.appendChild(shdr);
     // 필터 - 레어리티
     const fBar=document.createElement('div');fBar.style.cssText='display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;align-items:center';
     fBar.innerHTML='<span style="color:#776655;font-size:.8rem;margin-right:2px">'+_T('레어')+':</span>';
@@ -33983,11 +33983,11 @@ shdr.textContent=_T('악의의 분해로 — 장비를 악의로 갈아버려라
     const selArr=[..._salSel].filter(i=>i<INV.bag.length);
     const totalMats=selArr.reduce((s,i)=>s+_salVal(INV.bag[i]),0);
     const sumDiv=document.createElement('div');sumDiv.style.cssText='text-align:center;padding:10px;border-top:1px solid #332211';
-sumDiv.innerHTML=OPT.lang==='en'?`<div style="color:#aa8855;font-size:.9rem;margin-bottom:6px">Selected <span style="color:#ff6644;font-weight:700">${selArr.length}</span> items -> <span style="color:#cc66ff;font-weight:700">${totalMats}</span> Malice expected</div>`:`<div style="color:#aa8855;font-size:.9rem;margin-bottom:6px">선택 <span style="color:#ff6644;font-weight:700">${selArr.length}</span>개 -> <span style="color:#cc66ff;font-weight:700">${totalMats}</span> 악의 획득 예상</div>`;
+    sumDiv.innerHTML=OPT.lang==='en'?`<div style="color:#aa8855;font-size:.9rem;margin-bottom:6px">Selected <span style="color:#ff6644;font-weight:700">${selArr.length}</span> → 👿 <span style="color:#cc66ff;font-weight:700">${totalMats}</span> Malice expected</div>`:`<div style="color:#aa8855;font-size:.9rem;margin-bottom:6px">선택 <span style="color:#ff6644;font-weight:700">${selArr.length}</span>개 → 👿 <span style="color:#cc66ff;font-weight:700">${totalMats}</span> 악의 획득 예상</div>`;
     if(selArr.length>0){
       const btn=document.createElement('button');
       btn.style.cssText='display:block;margin:0 auto;padding:10px 28px;font-size:1rem;font-family:"Noto Sans KR";font-weight:700;cursor:pointer;border:2px solid #cc3322;background:linear-gradient(180deg,rgba(204,51,34,.2),rgba(100,20,10,.4));color:#ff6644;border-radius:6px;letter-spacing:.1em';
-btn.textContent=OPT.lang==='en'?`Salvage (${selArr.length} -> ${totalMats} Malice)`:`분해 (${selArr.length}개 -> 악의 ${totalMats})`;
+      btn.textContent=OPT.lang==='en'?`🔥 Salvage! (${selArr.length} → 👿 ${totalMats} Malice)`:`🔥 분해! (${selArr.length}개 → 👿 ${totalMats} 악의)`;
       btn.onmouseenter=()=>{btn.style.borderColor='#ff6644';btn.style.boxShadow='0 0 16px #cc332244'};
       btn.onmouseleave=()=>{btn.style.borderColor='#cc3322';btn.style.boxShadow='none'};
       btn.onclick=()=>{
@@ -34066,7 +34066,7 @@ btn.textContent=OPT.lang==='en'?`Salvage (${selArr.length} -> ${totalMats} Malic
     grid.appendChild(cSubBar);
     // 보유 표시
     const cInfo=document.createElement('div');cInfo.style.cssText='text-align:center;font-size:.85rem;color:#887766;margin-bottom:6px';
-cInfo.innerHTML=OPT.lang==='en'?'Owned: '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | Dust: <span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | Malice: <span style="color:#cc66ff">'+G.mats+'</span>':'보유: '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | 가루: <span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | 악의: <span style="color:#cc66ff">'+G.mats+'</span>';
+    cInfo.innerHTML=OPT.lang==='en'?'💎 Owned: '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | Dust: <span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | 👿 Malice: <span style="color:#cc66ff">'+G.mats+'</span>':'💎 보유: '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | 가루: <span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | 👿 악의: <span style="color:#cc66ff">'+G.mats+'</span>';
     grid.appendChild(cInfo);
 
     if(_crForgeTab==='enhance'){
@@ -34264,7 +34264,7 @@ cInfo.innerHTML=OPT.lang==='en'?'Owned: '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX
       }
       // ── 악의로 1성 결정 직접 제작 ──
       const _crMatsCost=_malCost(50);
-const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff;font-size:.9rem;font-weight:700;margin-bottom:4px;margin-top:8px;border-top:1px solid #332211;padding-top:6px';secHdr3.textContent=OPT.lang==='en'?'Craft 1★ Crystal ('+_crMatsCost+' Malice)':'악의로 1성 결정 제작 ('+_crMatsCost+' 악의)';grid.appendChild(secHdr3);
+      const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff;font-size:.9rem;font-weight:700;margin-bottom:4px;margin-top:8px;border-top:1px solid #332211;padding-top:6px';secHdr3.textContent=OPT.lang==='en'?'👿 Craft 1★ Crystal ('+_crMatsCost+' Malice)':'👿 악의로 1성 결정 제작 ('+_crMatsCost+' 악의)';grid.appendChild(secHdr3);
       const mBar=document.createElement('div');mBar.style.cssText='display:flex;flex-wrap:wrap;gap:3px;margin-bottom:4px';
       CRYSTAL_IDS.forEach(id=>{
         const d=CRYSTAL_DEFS[id];
@@ -34305,7 +34305,7 @@ const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff
     // 보유 악의 표시
     const matsDiv=document.createElement('div');
     matsDiv.style.cssText='text-align:center;padding:4px;font-size:.95rem;color:#776655';
-matsDiv.innerHTML=OPT.lang==='en'?`Malice: <span style="color:#cc66ff;font-weight:700">${G.mats}</span> &nbsp;|&nbsp; Cost: <span style="color:#ffaa44;font-weight:700">${CRAFT_COST}</span>`:`보유 악의: <span style="color:#cc66ff;font-weight:700">${G.mats}</span> &nbsp;|&nbsp; 제작 비용: <span style="color:#ffaa44;font-weight:700">${CRAFT_COST}</span>`;
+    matsDiv.innerHTML=OPT.lang==='en'?`👿 Malice: <span style="color:#cc66ff;font-weight:700">${G.mats}</span> &nbsp;|&nbsp; Cost: <span style="color:#ffaa44;font-weight:700">${CRAFT_COST}</span>`:`👿 보유 악의: <span style="color:#cc66ff;font-weight:700">${G.mats}</span> &nbsp;|&nbsp; 제작 비용: <span style="color:#ffaa44;font-weight:700">${CRAFT_COST}</span>`;
     grid.appendChild(matsDiv);
 
     // 레어리티 확률 (영웅 90%, 전설 10%)
