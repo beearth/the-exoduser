@@ -44,7 +44,7 @@ idle → (거리 조건) → windup → attack → recover → idle
 | **텔레그래프** | _telegraphT=20f | 20f |
 | **시야 어그로** | d<800 && hasLOS(벽 뒤 무시) 시 자동 알림 | 동일 |
 | **추적 해제** | 없음 — 어그로 잡히면 d≤30까지 밀착 추적 (해제 없음) | 동일 |
-| **방향 추적 (facing)** | d<800 && _alerted 상태일 때만 facing=플레이어 방향 (매 프레임) | 보스 포함 |
+| **방향 추적 (facing)** | **이동 중**: facing=이동방향(_moveAng, atan2(dy,dx)) / **정지 중**: d<800에서 facing=플레이어 방향. (2026-04-16: 이동 시 이동방향 우선 — walk 애니/스프라이트가 진행방향 표시) | 보스 포함 |
 | **근접 어그로** | d<100 && d>50 && idle/recover → 즉시 _alerted=true (이동 없음) | 보스 제외 |
 | **밀어내기** | 제거됨 (pushStr 블록 삭제, 플레이어-몬스터 겹침 허용) | — |
 | **피격 즉시 반격** | hurtE 시 _alerted=true + recover→idle(st2=0) + idle대기→5프레임 단축 — DOT 제외 | 보스 제외 |
