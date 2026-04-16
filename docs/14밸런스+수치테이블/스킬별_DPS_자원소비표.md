@@ -43,8 +43,8 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | chargeBoost | 사슬기동:충돌 | ST | 10×1=10 → 10×10=100 (물리할인) | 3회 충전식 | STR × meleeRef × pAtkMul | 충전 3회, 이동중 무적, 관통뎀+그로기 |
 | magicBlink | 사슬기동:화염 | MP | 10×1=10 → 10×10=100 (마법할인) | 없음 | INT × magicRef × pMagicMul | 경로 화염길 3초 DOT, 합체 시 착지폭발 |
 | bladeDash | 전격이동 | MP | 10+(Lv-1)×5 (1렙10, 10렙55) | 10스택 (480f→Lv당-30f, 최소180f) | **데미지 없음** | 순수 이동기. 방향키 더블탭 or 스페이스+방향키. 500유닛 대시, 이동 중 무적(15f). 만렙 시 방향키 1번으로 즉시 발동 |
-| chainAssault | 기동불꽃 | MP | mpCost('dimBreach') | 없음 (이동 중) | INT × _skMul('chainAssault') × **티어3단계(×3/×30/×100)** | 착지 화염폭발, 3티어(Shift 0.2초 차징)=업화선급 |
-| chainSlam | 기동파괴 | ST + 악의20 | stCost('giantSlam') | 없음 (이동 중) | STR × _skMul('chainSlam') × **티어3단계(×3/×30/×100)** | 보스 체간 대량삭감, 즉기절 5초, 3티어(Shift 0.2초 차징)=업화선급 |
+| chainAssault | 기동불꽃 | MP | mpCost('dimBreach') | 없음 (이동 중) | INT × _skMul('chainAssault') × **티어3단계(×30/×60/×100)** | 착지 화염폭발, 3티어=업화선 2.5초 차징급 |
+| chainSlam | 기동파괴 | ST + 악의20 | stCost('giantSlam') | 없음 (이동 중) | STR × _skMul('chainSlam') × **티어3단계(×30/×60/×100)** | 보스 체간 대량삭감, 즉기절 5초, 3티어=업화선 2.5초 차징급 |
 | chainSlash | 기동칼날개 | 없음 | 0 (Lv200 해금) | 없음 (이동 중) | STR 물리 | 전방 광역 베기+출혈, 다단히트 |
 
 ---
