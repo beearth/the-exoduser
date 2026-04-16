@@ -1463,19 +1463,6 @@ canvas{display:block;position:fixed;inset:0}
 #skillPanel .skill-pbox{
   width:min(1120px,94vw) !important;
   padding:30px 38px 26px !important;
-  display:flex !important;
-  flex-direction:column !important;
-}
-/* 2026-04-17: 스킬창 내부 스크롤 — 타이틀/닫기 고정, 가운데 스킬 그리드 영역만 스크롤 */
-#skillPanel .frame-inner-panel-stack{
-  flex:1 1 auto !important;
-  min-height:0 !important;
-  overflow-y:auto !important;
-  padding-right:8px !important;
-}
-#skillPanel .ptitle,
-#skillPanel .skill-close{
-  flex-shrink:0 !important;
 }
 #settings .pbox,
 #invPanel .pbox,
@@ -28677,7 +28664,6 @@ function checkRooms(){
 // ─── [S16i] HURT_E — 적 피격 (방어/속성/사망) ───
 function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(!e||!e.alive)return;
-  if(e.hp<=0)return; // 2026-04-17 이미 죽은 적 이중 처리 방지 (alive 플래그 지연 케이스)
   _petOnAtk();
   const isDot=opts&&opts.dot;
   // 부활 무적 (캡 180, 피격마다 감소)
