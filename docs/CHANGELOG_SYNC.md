@@ -19815,3 +19815,18 @@
 ## 2026-04-16 22:30 (auto)
 - docs/3.1 ui hud ?”ì??exoduser-ui-phase2 (1).md
 
+
+## 2026-04-16 23:30 (auto)
+- docs/10ai?ì…‹?„ë¡¬?„íŠ¸ëª¨ìŒ/10ai?ì…‹?„ë¡¬?„íŠ¸ëª¨ìŒ.md
+- docs/10ai?ì…‹?„ë¡¬?„íŠ¸ëª¨ìŒ/UI_?„ë ˆ??ë°°ê²½_?ì„±?„ë¡¬?„íŠ¸.md
+- docs/3.1 ui hud ?”ì??exoduser-ui-phase2 (1).md
+- docs/3.3 ?¤ë°”?¸ë”©+?¤ì •/3.3 ?¤ë°”?¸ë”©+?¤ì •.md
+- game.html
+- game.html.bak_window_frames_20260416_2335
+- img/ui_refs/window_frames/panel-forge-relic.png
+- img/ui_refs/window_frames/panel-inventory-bloodhands.png
+- img/ui_refs/window_frames/panel-settings-chains.png
+- img/ui_refs/window_frames/panel-skills-runes.png
+- img/ui_refs/window_frames/panel-stats-thorns.png
+- img/ui_refs/window_frames/panel-storage-bones.png
+
