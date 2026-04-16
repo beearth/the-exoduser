@@ -1629,52 +1629,6 @@ canvas{display:block;position:fixed;inset:0}
   background-clip:text;
 }
 
-/* ══ SHARP FRAME BOOST (SETTINGS) ══ */
-.window-frame-bg{
-  background-size:100% 100%;
-  background-repeat:no-repeat;
-  image-rendering:auto;
-}
-#settings .window-frame-bg{
-  --frame-art:url('img/ui_refs/window_frames/panel-settings-chains.png');
-  background:#080707 !important;
-}
-#settings .window-frame-bg::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  display:block !important;
-  pointer-events:none;
-  z-index:0;
-  background-image:var(--frame-art);
-  background-position:center;
-  background-repeat:no-repeat;
-  background-size:100% 100%;
-  image-rendering:auto;
-  filter:contrast(1.08) saturate(1.05) brightness(0.92);
-}
-#settings .window-frame-bg::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  z-index:0;
-  background:
-    linear-gradient(180deg,rgba(255,126,52,.12),transparent 12%,transparent 82%,rgba(255,92,28,.1)),
-    linear-gradient(90deg,rgba(255,106,34,.08),transparent 10%,transparent 90%,rgba(255,106,34,.08)),
-    radial-gradient(circle at center,rgba(0,0,0,.52),rgba(0,0,0,.72) 48%,rgba(0,0,0,.84));
-  box-shadow:
-    inset 0 0 0 1px rgba(255,120,40,.14),
-    inset 0 0 32px rgba(255,80,20,.06),
-    inset 0 22px 26px rgba(255,98,30,.08),
-    inset 14px 0 18px rgba(255,86,24,.04),
-    inset -14px 0 18px rgba(255,86,24,.04),
-    inset 0 -16px 24px rgba(255,84,24,.05);
-}
-#settings .window-frame-bg .ptitle{
-  text-shadow:0 1px 0 rgba(0,0,0,.82),0 0 8px rgba(255,118,40,.08) !important;
-}
-
 /* ══ 반응형 ══ */
 @media (max-width:1200px){
   .qs{width:40px;height:40px}
@@ -1860,7 +1814,7 @@ canvas{display:block;position:fixed;inset:0}
 
 <!-- SETTINGS PANEL -->
 <div class="panel" id="settings">
-  <div class="pbox window-frame-bg" style="width:85vw;max-width:1000px;display:flex;flex-direction:column;max-height:90vh;overflow:hidden;padding:25px 35px;">
+  <div class="pbox" style="width:85vw;max-width:1000px;display:flex;flex-direction:column;max-height:90vh;overflow:hidden;padding:25px 35px;">
     <div class="ptitle" style="font-size:2.2rem;margin-bottom:20px;">설정</div>
     <div class="frame-inner-panel frame-inner-panel-split" style="display:flex;gap:30px;flex:1;overflow-y:auto;padding-right:10px;">
       <!-- 왼쪽 컨테이너: 키 설정 -->
@@ -21018,7 +20972,7 @@ function update(){
           // 패링 윈도우 아닐 때 OR 빨콩: 흡수 (pGuardAbsorb 적용)
           const _psBlk2=Math.min(.90,pGuardAbsorb()+(sh().blockRate||0)*.002+pShieldBlock());
           const _absDmg=Math.max(1,~~(p.dmg*(1-_psBlk2)));
-          if(_absDmg>0){hurtP(_absDmg,{dtype:'magic',src:'보호막흡수',redBean:!!p.redBean})}
+          if(_absDmg>0){hurtP(_absDmg,{dtype:'magic',src:'보호막흡수'})}
           addTxt(p.x,p.y-10,(p.redBean?(OPT.lang==='en'?'🕊️Red absorb -':'🕊️빨콩 흡수 -'):(OPT.lang==='en'?'🕊️Absorb -':'🕊️흡수 -'))+_absDmg,p.redBean?'#ff6644':'#ffaadd',25);
           addParts(p.x,p.y,p.redBean?'#ff4422':'#ffaacc',2);
           _recycleProj(p);projs[_pi]=projs[projs.length-1];projs.length--;
@@ -21997,7 +21951,7 @@ function update(){
     const _wrongR=100; // 반대 패링 패널티: 고정 100px
     if(p.redBean&&_pDist<_wrongR&&_sbPW&&!P._ioActive&&P.iframes<=0){
       // Q 패링 시도 → 잘못된 입력, 데미지
-      const _rbWrongD=p.dmg;hurtP(_rbWrongD,{dtype:'magic',src:'빨콩오패링',redBean:true});
+      const _rbWrongD=p.dmg;hurtP(_rbWrongD,{dtype:'magic',src:'빨콩오패링'});
       P.iframes=3;addTxt(p.x,p.y-15,_T('❌ 우클릭으로! -')+_rbWrongD,'#ff4444',50);
       SFX.detonate();shake(10);_pHit=true;
     }
@@ -23329,7 +23283,7 @@ function update(){
   // ═══ 폭풍소환 — 조준 (마우스=방향, 키 홀드=거리 충전, 릴리즈=발사) ═══
   if(P._mmAiming){
     const _mmK=P._mmAimKey;
-    if(_mmK&&KH[_mmK]){P._mmCharging=true;P._mmDist=Math.min((P._mmDist||150)+12*sp,1000)}
+    if(_mmK&&KH[_mmK]){P._mmCharging=true;P._mmDist=Math.min((P._mmDist||150)+6*sp,1000)}
     const _mmRel=P._mmCharging&&_mmK&&!KH[_mmK];
     if(MBjust[2]||K['Escape']){P._mmAiming=false;P._mmCharging=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]||_mmRel){

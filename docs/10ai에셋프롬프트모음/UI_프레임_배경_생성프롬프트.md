@@ -12,19 +12,19 @@
 
 ## 기본 베이스 프롬프트
 
+> 기본 방향: `더 고어`가 아니라 `더 선명한 UI 프레임`.
+> 컨셉아트처럼 흐리는 표현보다 `professional game interface template`, `ultra crisp`, `not blurry`를 우선한다.
+
 ```text
-dark fantasy game UI background frame, gothic horror style,
-ornate metal frame with chains and subtle skull decorations only on edges,
-center area clean and low detail for UI readability,
-dark brown and black gradient background,
-slight grunge texture but very soft in center,
-high detail only on border,
-no text, no icons, no characters, no UI elements,
-empty panels, clean layout,
-cinematic lighting, ember glow, subtle orange highlights,
-symmetrical composition,
-designed for game menu interface,
-ultra high resolution, 4k
+dark fantasy game UI frame, sharp and clean ornamental border,
+designed as a professional game interface template, not concept art,
+high clarity metal frame, strong silhouette, large readable chain shapes,
+crisp corner decorations, subtle skull motifs only in corners,
+clean center, smooth dark gradient center,
+very sharp edge detail, minimal noise, minimal grunge,
+bronze and black metal, subtle ember highlights,
+front view, symmetrical layout, no text, no icons, no characters,
+high resolution, polished game UI asset, ultra crisp, not blurry
 ```
 
 ## 필수 키워드
@@ -44,12 +44,17 @@ ultra high resolution, 4k
 ### 1. 체인 버전 (설정용)
 
 ```text
-dark fantasy UI frame, heavy chains wrapping around edges,
-chains hanging only on borders,
-center completely clean and dark,
-burnt metal texture, ember glow,
-no blood in center, minimal noise,
-gothic style, game menu background, no text
+dark fantasy game UI frame, sharp and clean ornamental border,
+heavy chains wrapping around edges, chains hanging only on borders,
+designed as a professional game interface template, not concept art,
+high clarity metal frame, strong silhouette, large readable chain shapes,
+crisp corner decorations, subtle skull motifs only in corners,
+center area clean and low detail for UI readability,
+smooth dark gradient center,
+very sharp edge detail, minimal noise, minimal grunge,
+bronze and black metal, subtle ember highlights,
+front view, symmetrical layout, no text, no icons, no characters,
+high resolution, polished game UI asset, ultra crisp, not blurry
 ```
 
 ### 2. 고어 버전 (이벤트/팝업용)
@@ -83,6 +88,12 @@ game skill menu background, no text
 | `grunge full background` | 전체 배경이 시끄러워짐 |
 | `blood splatter all over` | 중앙 정보 영역 오염 |
 | `complex texture center` | 텍스트/수치 식별 실패 |
+| `blurry` | 프레임 선예도 붕괴 |
+| `painterly` | UI 자산 대신 회화풍 컨셉아트로 흐름 |
+| `soft focus` | 테두리 실루엣 약화 |
+| `concept art` | 실제 게임 UI 템플릿이 아닌 컨셉 이미지로 이탈 |
+| `cinematic scene` | 프레임보다 장면 연출이 우세해짐 |
+| `messy texture` | 읽기 영역 오염 |
 
 ## 검수 체크리스트
 
@@ -95,6 +106,8 @@ game skill menu background, no text
 | 중앙 저대비 | 그룬지/피/룬이 중앙까지 침범하지 않는가 |
 | 무문자 | 텍스트, 숫자, 가짜 버튼, 가짜 UI가 없는가 |
 | 대칭성 | 프레임 실루엣이 UI 패널용으로 안정적인가 |
+| 선예도 | 상단 바, 좌우 체인, 코너 장식이 흐리지 않고 또렷한가 |
+| 프레임 존재감 | 중앙보다 외곽 프레임 실루엣이 분명하게 읽히는가 |
 
 ## 현재 패널 배정 가이드
 
@@ -109,3 +122,4 @@ game skill menu background, no text
 | 이벤트 팝업 | 고어 버전 |
 
 > 앞으로 새 UI 프레임을 생성할 때는 이 문서의 베이스 프롬프트를 먼저 붙이고, 창별 파생 프롬프트를 뒤에 덧붙인다.
+> 설정 프레임처럼 체인 실루엣이 중요한 창은 `large readable chain shapes`, `ultra crisp`, `not blurry`를 반드시 유지한다.
