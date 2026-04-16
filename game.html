@@ -6835,32 +6835,32 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       else if(P.mp<mpCost('iceOrb'))showPH(_T('MP 부족!'),'#4488ff');break;
     case 'maliceMortar':
       if(G._mmBomb&&G._mmBomb.phase==='throw'){G._mmBomb.t=G._mmBomb.maxT;break}
-      if(P._mmAiming){P._mmAiming=false;showPH(_T('취소'),'#888');break}
-      if(P.mp>=mpCost('mortar')&&(P._mmCd||0)<=0){P._mmAiming=true;P._mmAimKey=keyCode;P._mmAimT=0;_skOk=true}
+      if(P._mmAiming){P._mmAiming=false;P._mmCharging=false;showPH(_T('취소'),'#888');break}
+      if(P.mp>=mpCost('mortar')&&(P._mmCd||0)<=0){P._mmAiming=true;P._mmAimKey=keyCode;P._mmDist=150;P._mmCharging=false;_skOk=true}
       else if(P.mp<mpCost('mortar'))showPH(_T('MP 부족!'),'#4488ff');break;
     case 'boneWall':
-      if(P._bwAiming){P._bwAiming=false;showPH(_T('취소'),'#888');break}
+      if(P._bwAiming){P._bwAiming=false;P._bwCharging=false;showPH(_T('취소'),'#888');break}
       if((P._bwStk||0)<=0){showPH(_T('충전 중...'),'#ff8844');break}
-      if(G.mats>=_malCost(12)){P._bwAiming=true;P._bwAimKey=keyCode;P._bwAimT=0;_skOk=true}
+      if(G.mats>=_malCost(12)){P._bwAiming=true;P._bwAimKey=keyCode;P._bwDist=150;P._bwCharging=false;_skOk=true}
       else showPH(_T('악의 부족! (')+_malCost(12)+')','#ff4444');break;
     case 'maliceHunt':
       if((P._mhCd||0)>0){break}
       if(G.mats>=_malCost(30)){activateMaliceHunt();P._mhCd=~~((900-((P.skills.maliceHunt||1)-1)*30)*(1+_eqAffix('cooldownRed')));_skOk=true}
       else showPH(_T('악의 부족! (')+_malCost(30)+')','#ff4444');break;
     case 'maliceStorm':
-      if(P._msAiming){P._msAiming=false;showPH(_T('취소'),'#888');break}
+      if(P._msAiming){P._msAiming=false;P._msCharging=false;showPH(_T('취소'),'#888');break}
       {const _msBsFused2=_isFused('boneStorm')||_isFused('elecRepent');
       if(_msBsFused2){if((P._bnsCd||0)>0){showPH(_T('쿨다운 중...'),'#ff8844');break}}
       else{if((P._msCd||0)>0){showPH(_T('쿨다운 중...'),'#ff8844');break}}}
-      P._msAiming=true;P._msAimKey=keyCode;P._msAimT=0;_skOk=true;break;
+      P._msAiming=true;P._msAimKey=keyCode;P._msDist=150;P._msCharging=false;_skOk=true;break;
     case 'darkPillar':
       if((P._dpCd||0)>0){showPH(_T('쿨다운 중...'),'#ff8844');break}
       {activateDarkPillar();_skOk=true}break;
     case 'iceStorm':
-      if(P._isAiming){P._isAiming=false;showPH(_T('취소'),'#888');break}
+      if(P._isAiming){P._isAiming=false;P._isCharging=false;showPH(_T('취소'),'#888');break}
       if((P._isStk||0)<=0){showPH(_T('충전 중...'),'#ff8844');break}
       if(P.mp<40){showPH(_T('MP 부족! (40)'),'#4488ff');break}
-      P._isAiming=true;P._isAimKey=keyCode;P._isAimT=0;_skOk=true;break;
+      P._isAiming=true;P._isAimKey=keyCode;P._isDist=150;P._isCharging=false;_skOk=true;break;
     case 'holyBlast':
       if(P.mp>=P.mmp*0.3&&(P._hbCd||0)<=0&&!P._hbCasting){P._hbCasting=true;P._hbT=0;P._hbX=P.x;P._hbY=P.y;P.mp-=P.mmp*0.3;addTxt(P.x,P.y-30,_T('✟ 시전...'),'#ffd700',30);ultMute();playVoiceDirect('voice_ult',1,1);_skOk=true}
       else if(P.mp<P.mmp*0.3)showPH(_T('MP 부족!'),'#4488ff');break;
@@ -7027,9 +7027,10 @@ addEventListener('keydown',e=>{
     }
   }
   // ═══ Digit1~4 스킬슬롯 (통합 디스패치) ═══
+  // 꾹 누르고 있는 동안 aim 조준 키홀드 유지 — e.repeat 이벤트는 무시 (dispatch 재호출 시 aim 취소되는 버그 방지)
   for(let _di=0;_di<4;_di++){if(e.code==='Digit'+(_di+1)){
-    if(SKILL_SLOTS[_di]){_dispatchSkillSlot(_di,'Digit'+(_di+1))}
-    else{useQuickslot(_di)}
+    if(!e.repeat){if(SKILL_SLOTS[_di]){_dispatchSkillSlot(_di,'Digit'+(_di+1))}
+    else{useQuickslot(_di)}}
     e.preventDefault();
   }}
   // Space키: 얼음보주 진입 중 → 즉시 산산조각
@@ -7048,20 +7049,20 @@ addEventListener('keydown',e=>{
     G._mmBomb=null;
     K['Space']=false;return;
   }
-  // Space키 스킬슬롯 (SKILL_SLOTS[4])
-  if(e.code==='Space'&&G.on&&!G.paused&&SKILL_SLOTS[4]){
+  // Space키 스킬슬롯 (SKILL_SLOTS[4]) — e.repeat 무시 (aim 홀드 시 dispatch 재호출로 취소되는 버그 방지)
+  if(e.code==='Space'&&G.on&&!G.paused&&SKILL_SLOTS[4]&&!e.repeat){
     if(_dispatchSkillSlot(4,'Space')){K['Space']=false;return}
   }
   // F키 스킬슬롯 (SKILL_SLOTS[5])
-  if(e.code==='KeyF'&&G.on&&!G.paused&&SKILL_SLOTS[5]){
+  if(e.code==='KeyF'&&G.on&&!G.paused&&SKILL_SLOTS[5]&&!e.repeat){
     if(_dispatchSkillSlot(5,'KeyF')){K['KeyF']=false;return}
   }
   // Ctrl키 고정스킬 (유령걸음/얼음보주)
-  if(e.code==='ControlLeft'&&G.on&&!G.paused&&P.activeCtSk){
+  if(e.code==='ControlLeft'&&G.on&&!G.paused&&P.activeCtSk&&!e.repeat){
     if(_dispatchCtSkill()){K['ControlLeft']=false;e.preventDefault();return}
   }
   // Z키: 필살기 슬롯
-  if(e.code==='KeyZ'&&G.on&&!G.paused&&ULT_SLOT&&!P._gwActive){
+  if(e.code==='KeyZ'&&G.on&&!G.paused&&ULT_SLOT&&!P._gwActive&&!e.repeat){
     _dispatchSkillSlot(-1,'KeyZ');e.preventDefault();
   }
   // Z키 눌렀는데 ULT_SLOT 미설정 시 안내
@@ -19511,9 +19512,9 @@ function update(){
         P._chainSlamReady=false;
         const _csLv=P.skills.chainSlam||1;
         const _csR=450+(_csLv-1)*~~(225/9); // 1렙450, 10렙675
-        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×3, 2티어(0.1초)=×30, 3티어(0.2초)=×100 (업화선급)
+        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×30, 2티어(0.1초)=×60, 3티어(0.2초)=×100 (업화선급)
         const _csTier=Math.max(1,Math.min(3,_harpTier||1));
-        const _csDistMul=_csTier===3?100:_csTier===2?30:3;
+        const _csDistMul=_csTier===3?100:_csTier===2?60:30;
         const _csDmg=~~(meleeRef()*_skMul('chainSlam')*statStr()*pAtkMul()*_csDistMul*_fuseMul('chainSlam'));
         const _csEl=wp().el||0;
         G._noHitStopT=40;
@@ -19555,9 +19556,9 @@ function update(){
         P._chainAssaultReady=false;
         const _stLv=P.skills.chainAssault||1;
         const _stR=450+(_stLv-1)*~~(225/9); // 1렙450, 10렙675
-        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×3, 2티어(0.1초)=×30, 3티어(0.2초)=×100 (업화선급)
+        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×30, 2티어(0.1초)=×60, 3티어(0.2초)=×100 (업화선급)
         const _stTier=Math.max(1,Math.min(3,_harpTier||1));
-        const _stDistMul=_stTier===3?100:_stTier===2?30:3;
+        const _stDistMul=_stTier===3?100:_stTier===2?60:30;
         const _stDmg=~~(magicRef()*_skMul('chainAssault')*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 통일공식: _skMul
         const _stEl=EL.F;
         G._noHitStopT=40;
@@ -22858,18 +22859,16 @@ function update(){
   if(P._dpCd>0)P._dpCd-=sp;
   if(P.skills.maliceStorm>=1){
   }
-  // ═══ 악의폭풍 — 조준 모드 (좌클릭=설치, 우클릭/ESC=취소) ═══
+  // ═══ 악의폭풍 — 조준 (마우스=방향, 키 홀드=거리 충전, 릴리즈=발사) ═══
   if(P._msAiming){
-    P._msAimT=(P._msAimT||0)+sp;
-    const _msRel=P._msAimKey&&P._msAimT>=8&&!KH[P._msAimKey];
-    let _mswx=mouse.x-C.width/2+G.cam.x;
-    let _mswy=mouse.y-C.height/2+G.cam.y;
+    const _msK=P._msAimKey;
+    if(_msK&&KH[_msK]){P._msCharging=true;P._msDist=Math.min((P._msDist||150)+6*sp,1000)}
+    const _mswx=P.x+Math.cos(P.facing)*(P._msDist||150);
+    const _mswy=P.y+Math.sin(P.facing)*(P._msDist||150);
     const _msLv=P.skills.maliceStorm||1;
     const _msR=200+(_msLv-1)*22; // 1렙250, 10렙448 (조준원)
-    // 사거리 1000px 클램프
-    const _msDst=dst(P.x,P.y,_mswx,_mswy);
-    if(_msDst>1000){const _msA=Math.atan2(_mswy-P.y,_mswx-P.x);_mswx=P.x+Math.cos(_msA)*1000;_mswy=P.y+Math.sin(_msA)*1000}
-    if(MBjust[2]||K['Escape']){P._msAiming=false;MBjust[2]=false;K['Escape']=false}
+    const _msRel=P._msCharging&&_msK&&!KH[_msK];
+    if(MBjust[2]||K['Escape']){P._msAiming=false;P._msCharging=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]||_msRel){
       MBjust[0]=false;
       if(!G._fireZones)G._fireZones=[];
@@ -22928,7 +22927,7 @@ function update(){
           if(Math.random()<.3)playSample('voice_magic',1,1);else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))};
           if(_msBF){P._bnsCd=1500}else{P._msCd=1200}
           _addSkProf('maliceStorm');
-          P._msAiming=false;
+          P._msAiming=false;P._msCharging=false;
         }
       }
     }
@@ -22958,17 +22957,16 @@ function update(){
       if(P._isRech<=0){P._isStk=Math.min(_isMax,P._isStk+1);P._isRech=P._isStk<_isMax?1500:0}
     }
   }
-  // ═══ 아이스스톰 — 조준 모드 ═══
+  // ═══ 아이스스톰 — 조준 (마우스=방향, 키 홀드=거리 충전, 릴리즈=발사) ═══
   if(P._isAiming){
-    P._isAimT=(P._isAimT||0)+sp;
-    let _iswx=mouse.x-C.width/2+G.cam.x;
-    let _iswy=mouse.y-C.height/2+G.cam.y;
-    {const _isD3=dst(P.x,P.y,_iswx,_iswy);if(_isD3>1000){const _isA3=Math.atan2(_iswy-P.y,_iswx-P.x);_iswx=P.x+Math.cos(_isA3)*1000;_iswy=P.y+Math.sin(_isA3)*1000}}
+    const _isK=P._isAimKey;
+    if(_isK&&KH[_isK]){P._isCharging=true;P._isDist=Math.min((P._isDist||150)+6*sp,1000)}
+    const _iswx=P.x+Math.cos(P.facing)*(P._isDist||150);
+    const _iswy=P.y+Math.sin(P.facing)*(P._isDist||150);
     const _isLv=P.skills.iceStorm||1;
     const _isR=200+(_isLv-1)*22;
-    // 키 릴리즈 발사: 최소 8프레임 홀드 후 키 떼면 현재 위치 발사 (MBjust와 동일 경로)
-    const _isRel=P._isAimKey&&P._isAimT>=8&&!KH[P._isAimKey];
-    if(MBjust[2]||K['Escape']){P._isAiming=false;MBjust[2]=false;K['Escape']=false}
+    const _isRel=P._isCharging&&_isK&&!KH[_isK];
+    if(MBjust[2]||K['Escape']){P._isAiming=false;P._isCharging=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]||_isRel){
       MBjust[0]=false;
       if(!G._fireZones)G._fireZones=[];
@@ -22977,7 +22975,7 @@ function update(){
         const fz=G._fireZones[fi];
         if(fz.type==='iceStorm'&&dst(fz.x,fz.y,_iswx,_iswy)<fz.r+_isR){_isBlocked=true;break}
       }
-      if(_isBlocked){showPH(_T('이미 빙풍 지역!'),'#88ccff')}
+      if(_isBlocked){showPH(_T('이미 빙풍 지역!'),'#88ccff');P._isAiming=false;P._isCharging=false}
       else{
         P.mp=Math.max(0,P.mp-40);
         G._fireZones.push({x:_iswx,y:_iswy,r:_isR,t:0,maxT:120+_isLv*18,
@@ -22987,35 +22985,39 @@ function update(){
         addTxt(_iswx,_iswy-20,_T('❄아이스스톰!'),'#88ddff',30);
         shake(4);
         playSample('voice_magic',1,1);
-        P._isStk--;const _isMx2=(P.skills.iceStorm>=10)?3:2;if(P._isStk<_isMx2&&!P._isRech)P._isRech=1500;P._isAiming=false;
+        P._isStk--;const _isMx2=(P.skills.iceStorm>=10)?3:2;if(P._isStk<_isMx2&&!P._isRech)P._isRech=1500;P._isAiming=false;P._isCharging=false;
       }
     }
   }
   // ═══ 독가스탄 — 쿨다운 ═══
   if((P._gcCd||0)>0)P._gcCd-=sp;
   // 공성쇠뇌 쿨다운 제거됨
-  // ═══ 폭풍소환 — 홀드=조준, 릴리즈=발사 (MBjust[0] 호환) ═══
+  // ═══ 폭풍소환 — 조준 (마우스=방향, 키 홀드=거리 충전, 릴리즈=발사) ═══
   if(P._mmAiming){
-    P._mmAimT=(P._mmAimT||0)+sp;
-    const _mmRel=P._mmAimKey&&P._mmAimT>=8&&!KH[P._mmAimKey];
-    if(MBjust[2]||K['Escape']){P._mmAiming=false;MBjust[2]=false;K['Escape']=false}
+    const _mmK=P._mmAimKey;
+    if(_mmK&&KH[_mmK]){P._mmCharging=true;P._mmDist=Math.min((P._mmDist||150)+6*sp,1000)}
+    const _mmRel=P._mmCharging&&_mmK&&!KH[_mmK];
+    if(MBjust[2]||K['Escape']){P._mmAiming=false;P._mmCharging=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]||_mmRel){
       MBjust[0]=false;
-      let _mmwx=mouse.x-C.width/2+G.cam.x,_mmwy=mouse.y-C.height/2+G.cam.y;
-      const _mmDst=dst(P.x,P.y,_mmwx,_mmwy);
-      if(_mmDst>1000){const _mmA=Math.atan2(_mmwy-P.y,_mmwx-P.x);_mmwx=P.x+Math.cos(_mmA)*1000;_mmwy=P.y+Math.sin(_mmA)*1000}
-      P._mmDist=dst(P.x,P.y,_mmwx,_mmwy);P.facing=Math.atan2(_mmwy-P.y,_mmwx-P.x);
+      const _mmwx=P.x+Math.cos(P.facing)*(P._mmDist||150);
+      const _mmwy=P.y+Math.sin(P.facing)*(P._mmDist||150);
       fireMaliceMortar(_mmwx,_mmwy);
+      P._mmCharging=false;
     }
   }
-  // ═══ 벽소환 — 조준 (키 홀드=거리, 릴리즈=발사) ═══
+  // ═══ 벽소환 — 조준 (마우스=방향, 키 홀드=거리 충전, 릴리즈=발사) ═══
   if(P._bwAiming){
-    P._bwAimT=(P._bwAimT||0)+sp;
-    const _bwRel=P._bwAimKey&&P._bwAimT>=8&&!KH[P._bwAimKey];
-    if(MBjust[2]||K['Escape']){P._bwAiming=false;MBjust[2]=false;K['Escape']=false}
+    const _bwK=P._bwAimKey;
+    if(_bwK&&KH[_bwK]){P._bwCharging=true;P._bwDist=Math.min((P._bwDist||150)+6*sp,1000)}
+    const _bwRel=P._bwCharging&&_bwK&&!KH[_bwK];
+    if(MBjust[2]||K['Escape']){P._bwAiming=false;P._bwCharging=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]||_bwRel){
       MBjust[0]=false;
-      {let _bwTx2=mouse.x-C.width/2+G.cam.x,_bwTy2=mouse.y-C.height/2+G.cam.y;const _bwD3=dst(P.x,P.y,_bwTx2,_bwTy2);if(_bwD3>1000){const _bwA3=Math.atan2(_bwTy2-P.y,_bwTx2-P.x);_bwTx2=P.x+Math.cos(_bwA3)*1000;_bwTy2=P.y+Math.sin(_bwA3)*1000}fireBoneWall(_bwTx2,_bwTy2)}
+      const _bwTx2=P.x+Math.cos(P.facing)*(P._bwDist||150);
+      const _bwTy2=P.y+Math.sin(P.facing)*(P._bwDist||150);
+      fireBoneWall(_bwTx2,_bwTy2);
+      P._bwCharging=false;
     }
   }
   // ═══ 레인라이트닝 — 전류 폭파 헬퍼 ═══
@@ -37758,9 +37760,7 @@ function drawP(){
   if(P._mmAiming){
     const _mmSlvR=P.skills.maliceMortar||1;const _aimR=200+(_mmSlvR-1)*22;
     const _iceFuse=P.skills.iceOrb>=1&&_isFused('iceMortar');
-    let _mmTx=mouse.x-C.width/2+G.cam.x,_mmTy=mouse.y-C.height/2+G.cam.y;
-    const _mmDst2=dst(P.x,P.y,_mmTx,_mmTy);
-    if(_mmDst2>1000){const _mmA2=Math.atan2(_mmTy-P.y,_mmTx-P.x);_mmTx=P.x+Math.cos(_mmA2)*1000;_mmTy=P.y+Math.sin(_mmA2)*1000}
+    const _mmTx=P.x+Math.cos(P.facing)*(P._mmDist||150),_mmTy=P.y+Math.sin(P.facing)*(P._mmDist||150);
     const _mt=_now*.06;
     X.save();
     // 착지점 소용돌이 범위 미리보기
@@ -37787,9 +37787,8 @@ function drawP(){
     const _msBF=_isFused('boneStorm')||_isFused('elecRepent');
     const _bwLv=P.skills.boneWall||1;
     const _msAimR=_msBF?(200+(_bwLv-1)*22):(200+(_msLv-1)*22);
-    let _msTx=mouse.x-C.width/2+G.cam.x;
-    let _msTy=mouse.y-C.height/2+G.cam.y;
-    const _msDst3=dst(P.x,P.y,_msTx,_msTy);if(_msDst3>1000){const _msA3=Math.atan2(_msTy-P.y,_msTx-P.x);_msTx=P.x+Math.cos(_msA3)*1000;_msTy=P.y+Math.sin(_msA3)*1000}
+    const _msTx=P.x+Math.cos(P.facing)*(P._msDist||150);
+    const _msTy=P.y+Math.sin(P.facing)*(P._msDist||150);
     const _mst=_now*.005;
     X.save();
     if(_msBF){
@@ -37842,11 +37841,10 @@ function drawP(){
     X.restore();
   }
   // 악의기둥 조준 인디케이터 삭제 (즉시 발동으로 변경)
-  // ══ 아이스스톰 조준 인디케이터 ══
+  // ══ 아이스스톰 조준 인디케이터 (마우스=방향, 키 홀드=거리) ══
   if(P._isAiming){
     const _isLv=P.skills.iceStorm||1,_isAimR=200+(_isLv-1)*22;
-    let _isTx=mouse.x-C.width/2+G.cam.x,_isTy=mouse.y-C.height/2+G.cam.y;
-    {const _isD2=dst(P.x,P.y,_isTx,_isTy);if(_isD2>1000){const _isA2=Math.atan2(_isTy-P.y,_isTx-P.x);_isTx=P.x+Math.cos(_isA2)*1000;_isTy=P.y+Math.sin(_isA2)*1000}}
+    const _isTx=P.x+Math.cos(P.facing)*(P._isDist||150),_isTy=P.y+Math.sin(P.facing)*(P._isDist||150);
     X.save();
     X.globalAlpha=.1+.03*Math.sin(_now*.04);X.fillStyle='#2288cc';
     X.beginPath();X.arc(_isTx,_isTy,_isAimR,0,Math.PI*2);X.fill();
@@ -37863,11 +37861,10 @@ function drawP(){
     X.fillText('❄ '+_T('아이스스톰'),_isTx,_isTy-_isAimR-8);
     X.restore();
   }
-  // ══ 벽소환 조준 인디케이터 (포격식 원형) ══
+  // ══ 벽소환 조준 인디케이터 (마우스=방향, 키 홀드=거리) ══
   if(P._bwAiming){
     const bwSlv=P.skills.boneWall||1;
-    let bwTx=mouse.x-C.width/2+G.cam.x,bwTy=mouse.y-C.height/2+G.cam.y;
-    const _bwD2=dst(P.x,P.y,bwTx,bwTy);if(_bwD2>1000){const _bwA2=Math.atan2(bwTy-P.y,bwTx-P.x);bwTx=P.x+Math.cos(_bwA2)*1000;bwTy=P.y+Math.sin(_bwA2)*1000}
+    const bwTx=P.x+Math.cos(P.facing)*(P._bwDist||150),bwTy=P.y+Math.sin(P.facing)*(P._bwDist||150);
     const bwR=~~(200+bwSlv*20);
     const _bwt=_now*.06;
     X.save();
