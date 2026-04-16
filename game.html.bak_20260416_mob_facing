@@ -9898,11 +9898,8 @@ function drawEnBody(X,e,_now,sa){
       if(_pa&&_pa.mobList&&_pa.mobList.length)_applyMobSkin(e,_pa);
     }
   }
-  // ── facing: 이동 중이면 이동방향, 정지 중이면 800px 이내 플레이어 바라봄 (2026-04-16) ──
-  if(P){const _fd=dst(P.x,P.y,e.x,e.y);
-    if(e._isMoving&&e._moveAng!=null)e.facing=e._moveAng;
-    else if(_fd<800&&P.hp>0)e.facing=Math.atan2(P.y-e.y,P.x-e.x);
-  }
+  // ── facing 강제: 800px 이내 몬스터는 항상 플레이어를 바라봄 (렌더 직전) ──
+  if(P){const _fd=dst(P.x,P.y,e.x,e.y);if(_fd<800&&P.hp>0)e.facing=Math.atan2(P.y-e.y,P.x-e.x)}
   // ── 8방향 아틀라스 렌더링 (우선) ──
   if(e._mob8dir&&e._mobCh){
     const a8=_ch8Atlas[e._mobCh];
@@ -24812,9 +24809,9 @@ function updateE(e,sp){
     if(e.stunned>0){e.stunned=0;e._expectedStun=undefined}
     e.poise=e.maxPoise;
   }
-  // 이동 판정: 이전 위치와 비교 (3프레임 유지) + 이동방향 _moveAng 기록 (2026-04-16)
+  // 이동 판정: 이전 위치와 비교 (3프레임 유지)
   {const _dx=e.x-(e._prevX||e.x),_dy=e.y-(e._prevY||e.y);
-  if(_dx*_dx+_dy*_dy>0.25){e._isMoving=true;e._moveHold=3;e._moveAng=Math.atan2(_dy,_dx)}
+  if(_dx*_dx+_dy*_dy>0.25){e._isMoving=true;e._moveHold=3}
   else if(e._moveHold>0){e._moveHold-=sp}
   else{e._isMoving=false}
   e._prevX=e.x;e._prevY=e.y}
