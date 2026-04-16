@@ -860,6 +860,7 @@ canvas{display:block;position:fixed;inset:0}
   margin-bottom:14px;
 }
 #forge .pbox{
+  width:min(468px,calc(100vw - 40px))!important;
   overflow:hidden;
 }
 #forge .ptitle{
@@ -1429,20 +1430,14 @@ canvas{display:block;position:fixed;inset:0}
 }
 
 /* ══ PANEL-SPECIFIC FRAME ART ══ */
-/* 2026-04-17: Settings/Inventory/Forge 공통 사이즈 통일 (프레임 비율 ~1.5:1 최대 크기) */
 #settings .pbox,
-#invPanel .pbox,
-#forge .pbox{
-  width:min(1800px,95vw) !important;
-  height:min(1080px,90vh) !important;
-  max-width:95vw !important;
-  max-height:90vh !important;
-  padding:28px 38px 22px !important;
-  box-sizing:border-box !important;
-}
 #statPanel .pbox{
   width:min(1180px,94vw) !important;
   padding:32px 42px 26px !important;
+}
+#forge .pbox{
+  width:min(760px,92vw) !important;
+  padding:26px 30px 22px !important;
 }
 #storagePanel .pbox{
   width:min(780px,92vw) !important;
@@ -1451,6 +1446,13 @@ canvas{display:block;position:fixed;inset:0}
 #skillPanel .skill-pbox{
   width:min(1120px,94vw) !important;
   padding:30px 38px 26px !important;
+}
+#invPanel .pbox{
+  width:min(1600px,96vw) !important;
+  height:min(94vh,1040px) !important;
+  max-width:96vw !important;
+  max-height:94vh !important;
+  padding:24px 34px 20px !important;
 }
 #settings .pbox,
 #invPanel .pbox,
@@ -1492,15 +1494,15 @@ canvas{display:block;position:fixed;inset:0}
   display:none;
 }
 #settings .pbox{
-  background:#080707 url('img/ui_refs/window_frames/panel-settings-chains-v2.png?v=20260417a') no-repeat center/100% 100% !important;
+  background:#080707 url('img/ui_refs/window_frames/panel-settings-chains.png') no-repeat center/100% 100% !important;
   border-color:rgba(108,95,90,.22) !important;
 }
 #invPanel .pbox{
-  background:#090505 url('img/ui_refs/window_frames/panel-inventory-chains-v2.png?v=20260417a') no-repeat center/100% 100% !important;
+  background:#090505 url('img/ui_refs/window_frames/panel-inventory-bloodhands.png') no-repeat center/100% 100% !important;
   border-color:rgba(136,46,38,.24) !important;
 }
 #forge .pbox{
-  background:#090606 url('img/ui_refs/window_frames/panel-forge-skulls-v2.png?v=20260417a') no-repeat center/100% 100% !important;
+  background:#090606 url('img/ui_refs/window_frames/panel-forge-relic.png') no-repeat center/100% 100% !important;
   border-color:rgba(150,96,58,.24) !important;
 }
 #storagePanel .pbox{
@@ -1634,7 +1636,7 @@ canvas{display:block;position:fixed;inset:0}
   image-rendering:auto;
 }
 #settings .window-frame-bg{
-  --frame-art:url('img/ui_refs/window_frames/panel-settings-chains-v2.png?v=20260417a');
+  --frame-art:url('img/ui_refs/window_frames/panel-settings-chains.png');
   background:#080707 !important;
 }
 #settings .window-frame-bg::before{
@@ -1858,7 +1860,7 @@ canvas{display:block;position:fixed;inset:0}
 
 <!-- SETTINGS PANEL -->
 <div class="panel" id="settings">
-  <div class="pbox window-frame-bg" style="display:flex;flex-direction:column;overflow:hidden;">
+  <div class="pbox window-frame-bg" style="width:85vw;max-width:1000px;display:flex;flex-direction:column;max-height:90vh;overflow:hidden;padding:25px 35px;">
     <div class="ptitle" style="font-size:2.2rem;margin-bottom:20px;">설정</div>
     <div class="frame-inner-panel frame-inner-panel-split" style="display:flex;gap:30px;flex:1;overflow-y:auto;padding-right:10px;">
       <!-- 왼쪽 컨테이너: 키 설정 -->
@@ -2064,7 +2066,7 @@ canvas{display:block;position:fixed;inset:0}
 
 <!-- INVENTORY PANEL -->
 <div class="panel" id="invPanel">
-  <div class="pbox" style="display:flex;flex-direction:column;overflow-y:auto;box-sizing:border-box;">
+  <div class="pbox" style="width:100vw;height:100vh;max-width:100vw;max-height:100vh;display:flex;flex-direction:column;overflow-y:auto;padding:12px 20px;box-sizing:border-box;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-shrink:0;">
       <div class="ptitle" style="font-size:1.3rem;margin:0;">인벤토리</div>
       <div style="display:flex;align-items:center;gap:10px">
@@ -2134,7 +2136,7 @@ canvas{display:block;position:fixed;inset:0}
 
 <!-- FORGE -->
 <div class="panel" id="forge">
-  <div class="pbox" style="display:flex;flex-direction:column;overflow:hidden;">
+  <div class="pbox" style="width:400px">
     <div class="ptitle">복수의 대장간</div>
     <div class="frame-inner-panel frame-inner-panel-stack">
       <div id="forgeMats" style="text-align:center;margin-bottom:6px;padding:4px 12px;background:rgba(120,0,200,.08);border:1px solid #553388;font-size:1rem;color:#cc66ff;font-weight:700">악의: 0</div>
