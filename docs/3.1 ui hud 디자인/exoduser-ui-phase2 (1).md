@@ -243,9 +243,9 @@ style 맨 아래에 추가:
 
 | 항목 | 변경 내용 | 위치 |
 |---|---|---|
-| 슬롯 내부 여백 | `.qs`에 `padding: 4px 4px 12px`를 추가해 스킬 아이콘이 프레임 테두리와 키캡 영역을 덮지 않도록 보정 | `game.html` `.qs` |
+| 슬롯 컨테이너 유지 | `.qs`의 크기/배치/패딩은 원본 그대로 유지하고, 슬롯 실루엣은 건드리지 않음 | `game.html` `.qs` |
 | 아이콘 렌더 클래스 | `_skIcon()`이 인라인 `width:100%; height:100%` 대신 `.qs-icon` 클래스를 사용하도록 변경 | `game.html` `_skIcon()` |
-| 아이콘 기준점 | `.qs-icon`에 `object-fit: contain`, `object-position: center`, `transform: translateY(-1px)`를 적용해 금속 프레임 안쪽으로 시각 중심을 고정 | `game.html` `.qs .qs-icon` |
+| 아이콘 인셋 | `.qs-icon`을 `position:absolute`로 두고 `top:3px; left:3px; width:calc(100% - 6px); height:calc(100% - 6px)`를 적용해 슬롯 내부 공백을 상하좌우 대칭으로 유지 | `game.html` `.qs .qs-icon` |
 
 ---
 
@@ -447,18 +447,46 @@ function showStageTransition(callback) {
 
 > 새 스킬 추가 시 _skCdMap에 쿨다운 변수 등록 필수. 등록하지 않으면 HUD에 쿨다운 미표시.
 
-### T 석궁 슬롯 (qsT) — 2026-04-15 추가
-- T키 석궁 자동발사 스킬 표시 (normal/bladeShot/blastShot/fanShot/needleShot/ghostXbowTurret)
-- 클릭 시 bow 스킬 팝업, 터렛 설치 시 파란 테두리
-- `updateTSlot()` + `_updateActionKeys()` 내 실시간 갱신
+### 메인 스킬바 13슬롯 복구 (2026-04-16)
+- 메인 스킬바는 원본 기준 13슬롯만 사용: `qs0~qs3`, `qs5`, `ultSlot`, `skSlotLMB`, `skSlotRMB`, `skSlot0`, `qsE`, `qsQ`, `skSlotCT`, `skSlot1`
+- `qsT`는 메인바 DOM/호버 집합에서 제외해 13칸 바에 14번째 스킬 아이콘이 올라오지 않도록 복구
+- `qsQ`, `skSlotCT`, `skSlot1` 좌표를 한 칸씩 당겨 원본 실루엣으로 복귀
 
-### 고정슬롯 키 라벨 (2026-04-15)
-모든 고정슬롯에 키 이름 라벨 표시: LMB, RMB, Shift, E, T, Q, Ctrl, Space
-- `_initFixedSlotKeys()`: 1회 초기화, `.qs-key` span 삽입
-- 어떤 키에 어떤 스킬이 배정됐는지 한눈에 확인 가능
+### 메인바 키 텍스트 오버레이 제거 (2026-04-16)
+- `_initFixedSlotKeys()`는 visible 슬롯의 `.qs-key`를 제거만 수행
+- 키 표기는 스킬 이미지 위 오버레이 대신 바 하단 원본 아트 라벨 기준으로 유지
+- `#qsRow .qs .qs-key { display:none }`로 잔여 키캡 노드가 있어도 메인바 위에 표시되지 않게 고정
 
 ### Space 슬롯 (skSlot1) 쿨다운 표시
 Space 슬롯(SKILL_SLOTS[4])에도 모든 스킬 쿨다운 오버레이+숫자 표시 추가됨.
 - `_spCdMap`: 1~4번 슬롯과 동일한 쿨다운 변수 참조
 - 스택형 스킬(maliceStorm/iceStorm/boneWall/hellRay)도 스택 숫자 표시
 - 쿨다운 중: 어두운 오버레이 + 초 단위 카운트다운 + 이모지 반투명
+
+### 고정 슬롯 CD sweep 추가 (2026-04-16)
+`_updateActionKeys()` 내 3개 슬롯에 `_skCdSweep(pct,txt)` conic-gradient 오버레이 + 초단위 카운트다운 신규 적용. (`game.html:15882`)
+
+> **z-index 버그 수정 (2026-04-16)**: 모든 `_skCd` 오버레이 cssText에 `z-index:3` 추가. 이전: `.qs .qs-icon { z-index:1 }`이 sweep 오버레이(기본 z-index:auto)를 덮어 전 슬롯(skSlot0/qsE/qsQ/skSlotCT/skSlot1/ultSlot/qs0~5) sweep이 보이지 않았음. RMB `_rmbCdOv`만 bottom-up fill 구조라 무관했음.
+
+| 슬롯 | 대상 쿨다운 | Max 공식 | 비고 |
+|------|------------|----------|------|
+| `skSlot0` (Shift/돌진) | `P.chargeCd` | `isDimBreach()?max(180,420-cbLv*20):(chargeBoost>=1?600:300)` | 스택<최대 && cd>0 일 때만 표시. `chargeBoost` 레벨에 따라 차원돌진 감소 반영 |
+| `qsE` (E/마법) | `activeMagicSk` 기반 | blueShot:300, fireAura:720, 나머지는 `SKILL_LIST[...].cd` | fireball/omniBeam/elemMissile/burstLoop은 내장 CD 없음 (미표시) |
+| `qsQ` (Q/보호막) | `activeQSk==='peaceShield'?P._psCd:0` | `SKILL_LIST.peaceShield.cd` 또는 폴백 900 | 기본 `parry`는 CD 없음 |
+
+공통: pct = cdNow/cdMax, txt = `(cd/60).toFixed(1)+'s'`. 요소는 `._skCd` 클래스로 DOM 생성/제거.
+
+### HUD CD sweep 전체 커버리지 (2026-04-16 완료 후)
+13개 메인 스킬바 슬롯 전부 CD 가시화:
+
+| 슬롯 | CD 표기 방식 | 구현 위치 |
+|------|--------------|-----------|
+| qs0~qs3, qs5 | 포션: 하단 초, 스킬: sweep+초 | `updateQS` (game.html:15792) |
+| ultSlot | sweep+초 | `_updateUltSlot` (15864) |
+| skSlotLMB | 없음 (회전참은 hold-to-spin) | — |
+| skSlotRMB | 하단 bottom-up bar (shieldThrow) | `_updateActionKeys` (15977) |
+| skSlot0 | sweep+초 (chargeCd) | **신규** 15915 |
+| qsE | sweep+초 (magic CD) | **신규** 15892 |
+| qsQ | sweep+초 (peaceShield) | **신규** 15952 |
+| skSlotCT | sweep+초 | `_updateActionKeys` (15968) |
+| skSlot1 | sweep+초 (Space) | `_updateActionKeys` (15937) |

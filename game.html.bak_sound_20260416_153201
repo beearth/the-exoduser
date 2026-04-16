@@ -481,7 +481,7 @@ canvas{display:block;position:fixed;inset:0}
 #skBarTip .sbt-desc{color:#b8956e;font-size:.75rem}
 /* 슬롯 개별 프레임 제거 — 통째 스킬바 이미지 사용 */
 /* 13슬롯 절대좌표 (이미지 격자선 기반, %단위) */
-.qs{position:absolute!important;top:70px;width:37px!important;height:45px!important;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none!important;background:transparent!important}
+.qs{position:absolute!important;top:70px;width:37px!important;height:45px!important;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none!important;background:transparent!important;padding:4px 4px 12px}
 #qs0{left:128px}
 #qs1{left:173px}
 #qs2{left:217px}
@@ -492,9 +492,10 @@ canvas{display:block;position:fixed;inset:0}
 #skSlotRMB{left:436px}
 #skSlot0{left:479px}
 #qsE{left:522px}
-#qsQ{left:566px}
-#skSlotCT{left:610px}
-#skSlot1{left:654px}
+#qsT{left:566px}
+#qsQ{left:610px}
+#skSlotCT{left:654px}
+#skSlot1{left:698px}
 
 .qs .qs-key {
   position: absolute;
@@ -509,18 +510,18 @@ canvas{display:block;position:fixed;inset:0}
   z-index: 2;
   border-radius: 2px;
 }
-#qsRow .qs .qs-key{display:none}
 .qs .qs-icon{
-  position:absolute;
-  top:3px;
-  left:3px;
-  width:calc(100% - 6px);
-  height:calc(100% - 6px);
   display:block;
+  width:100%;
+  height:100%;
+  max-width:100%;
+  max-height:100%;
   object-fit:contain;
   object-position:center;
   pointer-events:none;
+  position:relative;
   z-index:1;
+  transform:translateY(-1px);
 }
 .qs .qs-auto{display:none}
 .qs .qs-cnt {
@@ -1167,6 +1168,7 @@ canvas{display:block;position:fixed;inset:0}
     <div class="qs" id="skSlotRMB"></div>
     <div class="qs" id="skSlot0"></div>
     <div class="qs" id="qsE"></div>
+    <div class="qs" id="qsT"></div>
     <div class="qs" id="qsQ"></div>
     <div class="qs" id="skSlotCT"></div>
     <div class="qs" id="skSlot1"></div>
@@ -5180,7 +5182,7 @@ const _sampleFiles={
   boss_howl1:'sfx/monster/boss_howl1.mp3',
   // death/ — 몬스터 사망 (etype별 매핑: _deathSfxKey)
   monster_die1:'sfx/death/monster_die1.mp3',   // 범용 사망
-  die_human:'sfx/death/die_human.mp3',         // 인간형 사망 — HUMANOID 풀 변형
+  // die_normal 삭제됨 — HUMANOID는 crush 변형 사용
   die_boss:'sfx/death/die_boss.mp3',           // 보스 사망
   death_grunt:'sfx/death/death_grunt_01.mp3',  // 사망 신음 — 15% 랜덤 추가
   death_slime:'sfx/death/death_slime_splat.mp3',  // 슬라임 사망
@@ -5193,51 +5195,55 @@ const _sampleFiles={
   player_dead2:'sfx/death/player_dead2.mp3',      // 플레이어 사망2
   player_dead3:'sfx/death/player_dead3.mp3',      // 플레이어 사망3
   player_dead4:'sfx/death/player_dead4.mp3',      // 플레이어 사망4
-  // ACE 업그레이드 버전 사용 (2026-04-16) — sfx/death/ACE/ 폴더
-  death_insect:'sfx/death/ACE/death_insect.mp3',      // 벌레 사망
-  death_insect2:'sfx/death/ACE/death_insect2.mp3',    // 벌레 사망 변형
-  death_ghost:'sfx/death/ACE/death_ghost.mp3',        // 유령 사망
-  death_flesh:'sfx/death/ACE/death_flesh.mp3',        // 살덩이 사망
-  death_flesh2:'sfx/death/ACE/death_flesh2.mp3',      // 살덩이 사망 변형
-  death_bone:'sfx/death/ACE/death_bone.mp3',          // 해골 사망
-  death_bone2:'sfx/death/ACE/death_bone2.mp3',        // 뼈+살 박살1
-  death_bone3:'sfx/death/ACE/death_bone3.mp3',        // 뼈+살 박살2
-  death_bone_shatter1:'sfx/death/ACE/death_bone_shatter1.mp3', // 뼈 산산조각1
-  death_bone_shatter2:'sfx/death/ACE/death_bone_shatter2.mp3', // 뼈 산산조각2
-  death_bone_shatter3:'sfx/death/ACE/death_bone_shatter3.mp3', // 뼈 산산조각3
-  death_bone_shatter4:'sfx/death/ACE/death_bone_shatter4.mp3', // 뼈 산산조각4
-  death_magic:'sfx/death/death_magic.mp3',        // 마법체 사망 (ACE 없음, 원본 유지)
-  death_armor:'sfx/death/ACE/death_armor.mp3',        // 갑옷 사망
-  death_crush2:'sfx/death/ACE/death_crush2.mp3',      // 묵직한 괴물 으스러짐2
-  death_monster1:'sfx/death/ACE/death_monster1.mp3',    // 괴물 사망 비명1
-  death_monster2:'sfx/death/ACE/death_monster2.mp3',    // 괴물 사망 비명2
-  death_monster3:'sfx/death/ACE/death_monster3.mp3',    // 괴물 사망 비명3
-  death_monster4:'sfx/death/ACE/death_monster4.mp3',    // 괴물 사망 비명4
-  death_beast1:'sfx/death/ACE/death_beast1.mp3',      // 동물형 사망1
-  death_beast2:'sfx/death/ACE/death_beast2.mp3',      // 동물형 사망2
-  death_beast3:'sfx/death/ACE/death_beast3.mp3',      // 동물형 사망3
-  death_beast4:'sfx/death/ACE/death_beast4.mp3',      // 동물형 사망4
-  death_crack1:'sfx/death/ACE/death_crack1.mp3',      // 생물몹 터짐1
-  death_crack2:'sfx/death/ACE/death_crack2.mp3',      // 생물몹 터짐2
-  death_crack3:'sfx/death/ACE/death_crack3.mp3',      // 생물몹 터짐3
-  death_crack4:'sfx/death/ACE/death_crack4.mp3',      // 생물몹 터짐4
-  death_skull:'sfx/death/ACE/skull.mp3',              // 해골 부서짐 — BONE_ET 변형
-  death_ghoul1:'sfx/death/ACE/death_ghoul1.mp3',      // 구울 소 — etype 100
-  death_ghoul1_v2:'sfx/death/ACE/death_ghoul1_v2.mp3', // 구울 소 변형2
-  death_ghoul1_v3:'sfx/death/ACE/death_ghoul1_v3.mp3', // 구울 소 변형3
-  death_ghoul1_v4:'sfx/death/ACE/death_ghoul1_v4.mp3', // 구울 소 변형4
-  death_ghoul1_v5:'sfx/death/ACE/death_ghoul1_v5.mp3', // 구울 소 변형5
-  death_ghoul2:'sfx/death/ACE/death_ghoul2.mp3',      // 구울 중 — etype 101
-  death_ghoul2_v2:'sfx/death/ACE/death_ghoul2_v2.mp3', // 구울 중 변형2
-  death_ghoul2_v3:'sfx/death/ACE/death_ghoul2_v3.mp3', // 구울 중 변형3
-  death_ghoul2_v4:'sfx/death/ACE/death_ghoul2_v4.mp3', // 구울 중 변형4
-  death_ghoul2_v5:'sfx/death/ACE/death_ghoul2_v5.mp3', // 구울 중 변형5
-  death_ghoul3:'sfx/death/ACE/death_ghoul3.mp3',      // 구울 대 — etype 102
-  death_ghoul3_v2:'sfx/death/ACE/death_ghoul3_v2.mp3', // 구울 대 변형2
-  death_ghoul3_v3:'sfx/death/ACE/death_ghoul3_v3.mp3', // 구울 대 변형3
-  death_ghoul3_v4:'sfx/death/ACE/death_ghoul3_v4.mp3', // 구울 대 변형4
-  death_ghoul3_v5:'sfx/death/ACE/death_ghoul3_v5.mp3', // 구울 대 변형5
-  death_ghoul3_v6:'sfx/death/ACE/death_ghoul3_v6.mp3', // 구울 대 변형6
+  death_insect:'sfx/death/death_insect.mp3',      // 벌레 사망
+  death_insect2:'sfx/death/death_insect2.mp3',    // 벌레 사망 변형
+  death_ghost:'sfx/death/death_ghost.mp3',        // 유령 사망
+  death_flesh:'sfx/death/death_flesh.mp3',        // 살덩이 사망
+  death_flesh2:'sfx/death/death_flesh2.mp3',      // 살덩이 사망 변형
+  death_bone:'sfx/death/death_bone.mp3',          // 해골 사망
+  death_bone2:'sfx/death/death_bone2.mp3',        // 뼈+살 박살1
+  death_bone3:'sfx/death/death_bone3.mp3',        // 뼈+살 박살2
+  death_bone_shatter1:'sfx/death/death_bone_shatter1.mp3', // 뼈 산산조각1
+  death_bone_shatter2:'sfx/death/death_bone_shatter2.mp3', // 뼈 산산조각2
+  death_bone_shatter3:'sfx/death/death_bone_shatter3.mp3', // 뼈 산산조각3
+  death_bone_shatter4:'sfx/death/death_bone_shatter4.mp3', // 뼈 산산조각4
+  death_magic:'sfx/death/death_magic.mp3',        // 마법체 사망
+  death_armor:'sfx/death/death_armor.mp3',        // 갑옷 사망
+  death_crush1:'sfx/death/death_crush1.mp3',      // 묵직한 괴물 으스러짐1
+  death_monster1:'sfx/death/death_monster1.mp3',    // 괴물 사망 비명1
+  death_monster2:'sfx/death/death_monster2.mp3',    // 괴물 사망 비명2
+  death_monster3:'sfx/death/death_monster3.mp3',    // 괴물 사망 비명3
+  death_monster4:'sfx/death/death_monster4.mp3',    // 괴물 사망 비명4
+  death_crush2:'sfx/death/death_crush2.mp3',      // 묵직한 괴물 으스러짐2
+  death_crush3:'sfx/death/death_crush3.mp3',      // 묵직한 괴물 으스러짐3
+  death_splat1:'sfx/death/death_splat1.mp3',      // 살덩이 터짐1
+  death_splat2:'sfx/death/death_splat2.mp3',      // 살덩이 찢어짐2
+  death_splat3:'sfx/death/death_splat3.mp3',      // 살덩이 물컹 터짐3
+  death_ghoul1:'sfx/death/death_ghoul1.mp3',      // 구울 소 — etype 100
+  death_ghoul1_v2:'sfx/death/death_ghoul1_v2.mp3', // 구울 소 변형2
+  death_ghoul1_v3:'sfx/death/death_ghoul1_v3.mp3', // 구울 소 변형3
+  death_ghoul1_v4:'sfx/death/death_ghoul1_v4.mp3', // 구울 소 변형4
+  death_ghoul1_v5:'sfx/death/death_ghoul1_v5.mp3', // 구울 소 변형5
+  death_ghoul2:'sfx/death/death_ghoul2.mp3',      // 구울 중 — etype 101
+  death_ghoul2_v2:'sfx/death/death_ghoul2_v2.mp3', // 구울 중 변형2
+  death_ghoul2_v3:'sfx/death/death_ghoul2_v3.mp3', // 구울 중 변형3
+  death_ghoul2_v4:'sfx/death/death_ghoul2_v4.mp3', // 구울 중 변형4
+  death_ghoul2_v5:'sfx/death/death_ghoul2_v5.mp3', // 구울 중 변형5
+  death_ghoul3:'sfx/death/death_ghoul3.mp3',      // 구울 대 — etype 102
+  death_ghoul3_v2:'sfx/death/death_ghoul3_v2.mp3', // 구울 대 변형2
+  death_ghoul3_v3:'sfx/death/death_ghoul3_v3.mp3', // 구울 대 변형3
+  death_ghoul3_v4:'sfx/death/death_ghoul3_v4.mp3', // 구울 대 변형4
+  death_ghoul3_v5:'sfx/death/death_ghoul3_v5.mp3', // 구울 대 변형5
+  death_ghoul3_v6:'sfx/death/death_ghoul3_v6.mp3', // 구울 대 변형6
+  death_skull:'sfx/death/skull.mp3',               // 해골 부서짐 — BONE_ET 변형
+  death_crack1:'sfx/death/death_crack1.mp3',      // 생물몹 터짐1
+  death_crack2:'sfx/death/death_crack2.mp3',      // 생물몹 터짐2
+  death_crack3:'sfx/death/death_crack3.mp3',      // 생물몹 터짐3
+  death_crack4:'sfx/death/death_crack4.mp3',      // 생물몹 터짐4
+  death_beast1:'sfx/death/death_beast1.mp3',      // 동물형 사망1
+  death_beast2:'sfx/death/death_beast2.mp3',      // 동물형 사망2
+  death_beast3:'sfx/death/death_beast3.mp3',      // 동물형 사망3
+  death_beast4:'sfx/death/death_beast4.mp3',      // 동물형 사망4
   // q_parry/ — 보호막
   shield_activate:'sfx/q_parry/q_start.mp3',
   shield_end:'sfx/q_parry/q_end.mp3',
@@ -13539,24 +13545,13 @@ const _BEAST_ET=new Set([22,27,30,33,35,38,39,43,63,64,73,75]); // 늑대/박쥐
 const _MAGIC_ET=new Set([25,59,69,79,89,97,98,99]); // 마법/차원/특수 개체
 const _ARMOR_ET=new Set([28,29,32,49,61,62,68,77,80,81,87,91,92]); // 갑옷/골렘/기사/중장 (77=화산거인)
 // 사망 사운드 변형 맵 — 카테고리 키 → [변형키 배열]
-// ACE 사운드 전용 풀 (2026-04-16) — sfx/death/ACE/ 43개 파일만 편성
 const _DEATH_VARIANTS={
-  // HUMANOID 25종 — 인간형 비명 + 쓰러짐
-  death_humanoid:['death_monster1','death_monster2','death_monster3','death_monster4','death_flesh','death_flesh2','death_crack1','death_crack2','death_bone_shatter1','death_bone_shatter2'],
-  // ARMOR 13종 — 갑옷/골렘 금속 충돌 + 붕괴
-  death_armor:['death_armor','death_crush2','death_bone_shatter3','death_bone_shatter4','death_bone2','death_bone3','death_skull'],
-  // FLESH 9종 — 살덩이 터짐
-  death_flesh:['death_flesh','death_flesh2','death_crack1','death_crack2','death_crack3','death_crack4','death_monster1','death_monster2'],
-  // INSECT 11종 — 벌레 껍질 균열
-  death_insect:['death_insect','death_insect2','death_crack1','death_crack2','death_crack3','death_crack4','death_crush2'],
-  // BONE 8종 — 뼈 부서짐 + 으스러짐
-  death_bone:['death_bone','death_bone2','death_bone3','death_skull','death_bone_shatter1','death_bone_shatter2','death_bone_shatter3','death_bone_shatter4','death_crush2','death_ghoul3_v2','death_ghoul3_v3','death_ghoul3_v4'],
-  // BEAST 12종 — 짐승 포효 + 둔탁 충돌
-  death_beast:['death_beast1','death_beast2','death_beast3','death_beast4','death_crack1','death_crack2','death_crack3','death_crack4','death_crush2','death_monster1','death_monster2'],
-  // GHOST 14종 — 에테르 소멸
-  death_ghost:['death_ghost','death_bone_shatter1','death_bone_shatter2','death_bone_shatter3','death_monster3','death_monster4'],
-  // MAGIC 8종 — 마법 소실
-  death_magic:['death_ghost','death_bone_shatter3','death_bone_shatter4','death_monster3','death_monster4','death_insect2','death_crack3'],
+  death_armor:['death_armor','death_crush1','death_crush2'],
+  death_flesh:['death_flesh','death_flesh2','death_splat1','death_splat2','death_splat3','death_crack1','death_crack2','death_crack3','death_crack4'],
+  death_heavy:['death_heavy','death_heavy3','death_crush1','death_crush2','death_crush3','death_flesh','death_flesh2','death_splat1','death_splat2','death_splat3','death_crack1','death_crack2','death_crack3','death_crack4'],
+  death_insect:['death_insect','death_insect2','death_crush3'],
+  death_bone:['death_bone','death_skull','death_crush1','death_crush2','death_crush3','death_bone2','death_bone3','death_bone_shatter1','death_bone_shatter2','death_bone_shatter3','death_bone_shatter4','death_ghoul3_v2','death_ghoul3_v3','death_ghoul3_v4'],
+  death_beast:['death_heavy','death_crush2','death_crush3','death_splat1','death_crack1','death_crack2','death_crack3','death_crack4','death_beast1','death_beast2','death_beast3','death_beast4'],
   death_ghoul1:['death_ghoul1','death_ghoul1_v2','death_ghoul1_v3','death_ghoul1_v4','death_ghoul1_v5'],
   death_ghoul2:['death_ghoul2','death_ghoul2_v2','death_ghoul2_v3','death_ghoul2_v4','death_ghoul2_v5'],
   death_ghoul3:['death_ghoul3','death_ghoul3_v2','death_ghoul3_v3','death_ghoul3_v4','death_ghoul3_v5','death_ghoul3_v6']
@@ -13576,13 +13571,13 @@ function _deathSfxKey(et){
   if(et===101)return _pickDeathVar('death_ghoul2'); // 구울 중
   if(et===102)return _pickDeathVar('death_ghoul3'); // 구울 대
   if(_ARMOR_ET.has(et))return _pickDeathVar('death_armor');
-  if(_HUMANOID_ET.has(et))return _pickDeathVar('death_humanoid'); // 인간형→비명+쓰러짐 풀
+  if(_HUMANOID_ET.has(et))return _pickDeathVar('death_heavy'); // 인간형→묵직한 사망음
   if(_INSECT_ET.has(et))return _pickDeathVar('death_insect');
-  if(_GHOST_ET.has(et))return _pickDeathVar('death_ghost'); // 에테르 소멸 풀
+  if(_GHOST_ET.has(et))return 'death_ghost';
   if(_FLESH_ET.has(et))return _pickDeathVar('death_flesh');
   if(_BONE_ET.has(et))return _pickDeathVar('death_bone');
   if(_BEAST_ET.has(et))return _pickDeathVar('death_beast');
-  if(_MAGIC_ET.has(et))return _pickDeathVar('death_magic'); // 마법 소실 풀
+  if(_MAGIC_ET.has(et))return 'death_magic';
   if(et>=50)return 'death_demon';
   if(et>=40)return _pickDeathVar('death_heavy');
   if(et>=20)return 'death_ice';
@@ -15837,7 +15832,7 @@ function updateQS(){
         let _cdEl=el.querySelector('._skCd');
         if(_skOnCd||_skStkTxt){
           const _cdHtml=`${_skStkTxt}${_skOnCd?_skCdSweep(_cdPct,_cdSec):''}`;
-          if(!_cdEl){_cdEl=document.createElement('div');_cdEl.className='_skCd';_cdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';el.appendChild(_cdEl)}
+          if(!_cdEl){_cdEl=document.createElement('div');_cdEl.className='_skCd';_cdEl.style.cssText='position:absolute;inset:0;pointer-events:none';el.appendChild(_cdEl)}
           _cdEl.innerHTML=_cdHtml;
         }else if(_cdEl){_cdEl.remove()}
         continue;
@@ -15873,14 +15868,14 @@ function _updateUltSlot(){
   if(el._skId!==ULT_SLOT){el._skId=ULT_SLOT;el.innerHTML=_skIcon(ULT_SLOT)}
   let _ultCdEl=el.querySelector('._skCd');
   if(onCd){
-    if(!_ultCdEl){_ultCdEl=document.createElement('div');_ultCdEl.className='_skCd';_ultCdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';el.appendChild(_ultCdEl)}
+    if(!_ultCdEl){_ultCdEl=document.createElement('div');_ultCdEl.className='_skCd';_ultCdEl.style.cssText='position:absolute;inset:0;pointer-events:none';el.appendChild(_ultCdEl)}
     _ultCdEl.innerHTML=_skCdSweep(cdPct,cdTxt);
   }else if(_ultCdEl){_ultCdEl.remove()}
 }
 function _updateSkCdHud(){} // qsRow에 통합됨
 // ═══ 액션키 슬롯 업데이트 (LMB/E/Shift/SP/Q) ═══
 function _updateActionKeys(){
-  // qsE: 마법스킬 — 활성 상태 표시 + CD sweep
+  // qsE: 마법스킬 — 활성 상태 표시
   const elE=$('qsE');
   if(elE){const bm=P.s==='beam'||P.s==='magicCast';
     const _isSix=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
@@ -15888,18 +15883,6 @@ function _updateActionKeys(){
     elE.style.boxShadow=bm?'inset 0 0 10px rgba(100,68,255,.4)':'none';
     if(!bm&&!_isSix)elE.style.borderColor=_bc; // 전투 중에만 테두리 변경
     if(bm)elE.style.borderColor=_bc;
-    // 마법스킬 CD sweep — 활성 마법 스킬에 따라
-    const _msk=P.activeMagicSk||'fireball';
-    const _eCdMap={fireball:P._fbCd||0,blueShot:P._blueCd||0,fireAura:P._faCd||0,fireBeam:P._fbCd||0,omniBeam:0,elemMissile:0,burstLoop:0};
-    const _eCdMaxMap={fireball:0,blueShot:300,fireAura:720,fireBeam:0};
-    const _eCdNow=_eCdMap[_msk]||0;
-    const _eSkDef=SKILL_LIST.find(s=>s.id===_msk);
-    const _eCdMax=_eCdMaxMap[_msk]||(_eSkDef&&_eSkDef.cd)||0;
-    let _eCdEl=elE.querySelector('._skCd');
-    if(_eCdNow>0&&_eCdMax>0){
-      if(!_eCdEl){_eCdEl=document.createElement('div');_eCdEl.className='_skCd';_eCdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';elE.appendChild(_eCdEl)}
-      _eCdEl.innerHTML=_skCdSweep(Math.min(_eCdNow/_eCdMax,1),(_eCdNow/60).toFixed(1)+'s');
-    }else if(_eCdEl)_eCdEl.remove();
   }
   // qsT: 석궁 자동(T) — 활성 스킬 표시
   const elT=$('qsT');
@@ -15921,12 +15904,6 @@ function _updateActionKeys(){
     else if(recharging){elS.style.borderColor=isDimBreach()?'#6633bb':'#335566';elS.style.boxShadow='inset 0 0 6px rgba(68,119,136,.15)'}
     else{elS.style.borderColor=isDimBreach()?'#8844ff':'#447788';elS.style.boxShadow='inset 0 0 6px rgba(68,119,136,.2)'}
     const _hgE=$('_hgTxt');if(_hgE){_hgE.textContent=~~_harpGauge+'/'+_HARP_GAUGE_MAX;_hgE.style.color=_harpGauge>=_HARP_GAUGE_MAX?'#44ffaa':_harpGauge>0?'#88ccff':'#555'}
-    // 돌진 스택 충전 CD sweep
-    let _sCdEl=elS.querySelector('._skCd');
-    if(recharging){const _dimB=isDimBreach(),_cbLv=(P.skills.chargeBoost||0),_cbMax=_dimB?Math.max(180,420-_cbLv*20):((P.skills.chargeBoost>=1)?600:300);
-      if(!_sCdEl){_sCdEl=document.createElement('div');_sCdEl.className='_skCd';_sCdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';elS.appendChild(_sCdEl)}
-      _sCdEl.innerHTML=_skCdSweep(Math.min(cd/_cbMax,1),(cd/60).toFixed(1)+'s');
-    }else if(_sCdEl)_sCdEl.remove();
   }
   // skSlot1: Space 선택슬롯 — 쿨다운 표시 (모든 스킬)
   const elBow=$('skSlot1');
@@ -15956,25 +15933,15 @@ function _updateActionKeys(){
       const _spSkDef=SKILL_LIST.find(s=>s.id===_spSk);
       const _spCdMax=_spSkDef?_spSkDef.cd||600:600;
       const _spPct=Math.min(_spCdNow/_spCdMax,1);
-      if(!_spCdEl){_spCdEl=document.createElement('div');_spCdEl.className='_skCd';_spCdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';elBow.appendChild(_spCdEl)}
+      if(!_spCdEl){_spCdEl=document.createElement('div');_spCdEl.className='_skCd';_spCdEl.style.cssText='position:absolute;inset:0;pointer-events:none';elBow.appendChild(_spCdEl)}
       _spCdEl.innerHTML=`${_spStkTxt}${_skCdSweep(_spPct,(_spCdNow/60).toFixed(1)+'s')}`;
     }else if(_spCdEl){_spCdEl.remove()}
   }
-  // qsQ: 보호막 — 활성 상태 + 평화보호 CD
+  // qsQ: 보호막 — 활성 상태
   const elF=$('qsQ');
   if(elF){const ac=P.s==='sBlock'||P.s==='parryWin';
     elF.style.borderColor=ac?'#4488ff':'#443322';
     elF.style.boxShadow=ac?'inset 0 0 10px rgba(68,136,255,.4)':'none';
-    // 평화보호 CD sweep
-    const _qSk=P.activeQSk||'parry';
-    const _qCdNow=_qSk==='peaceShield'?(P._psCd||0):0;
-    const _qSkDef=SKILL_LIST.find(s=>s.id===_qSk);
-    const _qCdMax=(_qSkDef&&_qSkDef.cd)||900;
-    let _qCdEl=elF.querySelector('._skCd');
-    if(_qCdNow>0){
-      if(!_qCdEl){_qCdEl=document.createElement('div');_qCdEl.className='_skCd';_qCdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';elF.appendChild(_qCdEl)}
-      _qCdEl.innerHTML=_skCdSweep(Math.min(_qCdNow/_qCdMax,1),(_qCdNow/60).toFixed(1)+'s');
-    }else if(_qCdEl)_qCdEl.remove();
   }
   // skSlotCT: CT스킬 — 유령걸음/얼음보주 활성 상태 (합체 흡수 시 폴백)
   const elCT=$('skSlotCT');
@@ -15993,7 +15960,7 @@ function _updateActionKeys(){
     const _ctPct=onCd?Math.min(cd/240,1):0;
     if(elCT._skId!==sid){elCT._skId=sid;elCT.innerHTML=_skIcon(sid)}
     let _ctCdEl=elCT.querySelector('._skCd');
-    if(onCd){if(!_ctCdEl){_ctCdEl=document.createElement('div');_ctCdEl.className='_skCd';_ctCdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';elCT.appendChild(_ctCdEl)}_ctCdEl.innerHTML=_skCdSweep(_ctPct,(cd/60).toFixed(1)+'s')}else if(_ctCdEl){_ctCdEl.remove()}
+    if(onCd){if(!_ctCdEl){_ctCdEl=document.createElement('div');_ctCdEl.className='_skCd';_ctCdEl.style.cssText='position:absolute;inset:0;pointer-events:none';elCT.appendChild(_ctCdEl)}_ctCdEl.innerHTML=_skCdSweep(_ctPct,(cd/60).toFixed(1)+'s')}else if(_ctCdEl){_ctCdEl.remove()}
   }
   // skSlotRMB: 우클스킬 — 방패 상태 + 칼등날개 쿨타임
   const elRMB=$('skSlotRMB');
@@ -16084,6 +16051,7 @@ if($('qsESC'))$('qsESC').addEventListener('click',()=>{togglePanel('settings')})
     if(elId==='skSlotRMB')return 'maliceSwipe';
     if(elId==='skSlot0')return P.activeChargeSk||'charge';
     if(elId==='qsE')return P.activeMagicSk||'fireball';
+    if(elId==='qsT')return P.activeBowSk||'normal';
     if(elId==='qsQ')return P.activeQSk||'parry';
     if(elId==='skSlotCT')return P.activeCtSk||'ghostWalk';
     if(elId==='skSlot1')return SKILL_SLOTS[4]||null;
@@ -16101,7 +16069,7 @@ if($('qsESC'))$('qsESC').addEventListener('click',()=>{togglePanel('settings')})
     if(sk)return{name:sk.name,nameEn:sk.nameEn||sk.name,desc:sk.desc,descEn:sk.descEn||sk.desc};
     return null;
   }
-  const _allSlots=['qs0','qs1','qs2','qs3','qs5','ultSlot','skSlotLMB','skSlotRMB','skSlot0','qsE','qsQ','skSlotCT','skSlot1'];
+  const _allSlots=['qs0','qs1','qs2','qs3','qs5','ultSlot','skSlotLMB','skSlotRMB','skSlot0','qsE','qsT','qsQ','skSlotCT','skSlot1'];
   _allSlots.forEach(id=>{
     const el=$(id);if(!el)return;
     el.addEventListener('mouseenter',()=>{
@@ -19244,10 +19212,8 @@ function update(){
         const _csDistMul=1+Math.min(_csTravD/150,2.5); // 밸런스: 거리캡 3→2.5 (최대×3.5)
         const _csDmg=~~(meleeRef()*_skMul('chainSlam')*statStr()*pAtkMul()*_csDistMul*_fuseMul('chainSlam'));
         const _csEl=wp().el||0;
-        console.log('[기동파괴] lv=',_csLv,'R=',_csR,'meleeRef=',meleeRef(),'skMul=',_skMul('chainSlam'),'pAtk=',pAtkMul(),'distMul=',_csDistMul.toFixed(2),'fuseMul=',_fuseMul('chainSlam'),'csDmg=',_csDmg,'el=',_csEl);
         G._noHitStopT=40;
         const _csNe=shQuery(P.x,P.y,_csR+20);
-        console.log('[기동파괴] neCount=',_csNe.length,'pos=',~~P.x,~~P.y);
         for(let _ci=0;_ci<_csNe.length;_ci++){const e=_csNe[_ci];if(!e.alive)continue;
           const d=dst(P.x,P.y,e.x,e.y);if(d>_csR+e.r)continue;
           const ang=Math.atan2(e.y-P.y,e.x-P.x);
@@ -19288,10 +19254,8 @@ function update(){
         const _stDistMul=1+Math.min(_stTravD/200,2); // 거리 보너스 최대x3
         const _stDmg=~~(magicRef()*_skMul('chainAssault')*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 통일공식: _skMul
         const _stEl=EL.F;
-        console.log('[기동불꽃] lv=',_stLv,'R=',_stR,'magicRef=',magicRef(),'skMul=',_skMul('chainAssault'),'pMag=',pMagicMul(),'distMul=',_stDistMul.toFixed(2),'fuseMul=',_fuseMul('chainAssault'),'stDmg=',_stDmg,'el=',_stEl);
         G._noHitStopT=40;
         const _stNe=shQuery(P.x,P.y,_stR+20);
-        console.log('[기동불꽃] neCount=',_stNe.length,'pos=',~~P.x,~~P.y);
         for(let _si=0;_si<_stNe.length;_si++){const e=_stNe[_si];if(!e.alive)continue;
           const d=dst(P.x,P.y,e.x,e.y);if(d>_stR+e.r)continue;
           const ang=Math.atan2(e.y-P.y,e.x-P.x);
@@ -29933,16 +29897,21 @@ function updateTSlot(){
   const sk=P.activeBowSk||'normal';
   if(el._skId!==sk){el._skId=sk;el.innerHTML=_skIcon(sk==='normal'?'fanShot':sk)}
 }
-// ═══ 메인바 키 텍스트 오버레이 제거 ═══
+// ═══ 고정슬롯 키 라벨 초기화 (1회) ═══
 let _fixedKeysInited=false;
 function _initFixedSlotKeys(){
-  const ids=['skSlotLMB','skSlotRMB','skSlot0','qsE','qsQ','skSlotCT','skSlot1'];
-  for(let i=0;i<ids.length;i++){
-    const el=$(ids[i]);if(!el)continue;
-    const ks=el.querySelectorAll('.qs-key');
-    for(let j=0;j<ks.length;j++)ks[j].remove();
+  if(_fixedKeysInited)return;_fixedKeysInited=true;
+  const map=[
+    ['skSlotLMB','LMB'],['skSlotRMB','RMB'],['skSlot0','Shift'],
+    ['qsE','E'],['qsT','T'],['qsQ','Q'],['skSlotCT','Ctrl'],['skSlot1','Space']
+  ];
+  for(let i=0;i<map.length;i++){
+    const el=$(map[i][0]);if(!el)continue;
+    if(el.querySelector('.qs-key'))continue;
+    el.style.position='relative';
+    const k=document.createElement('span');k.className='qs-key';
+    k.textContent=map[i][1];el.appendChild(k);
   }
-  _fixedKeysInited=true;
 }
 // ═══ 만화방창 독립 발사 (Space키, ST소모) ═══
 function _fireFanShot(){
@@ -30347,7 +30316,7 @@ function activateDarkPillar(){
     const _stDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap')); // 통일공식: _skMul
     for(let _pi=0;_pi<_positions.length;_pi++){
       const p=_positions[_pi];
-      G._fireZones.push({x:p.x,y:p.y,r:_stR,t:0,maxT:600,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap'});
+      G._fireZones.push({x:p.x,y:p.y,r:_stR,t:0,maxT:300,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap'});
     }
     P._gcCd=~~(600*(1+_eqAffix('cooldownRed'))); // 가시덫 쿨다운 소비
     addTxt(cx,cy-50,_T('🌿 기둥가시!'),'#88cc44',30);
