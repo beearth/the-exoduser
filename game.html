@@ -35,6 +35,7 @@
 <script src="maps_data.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 :root{
   --c-bg:#090505;--c-panel-bg:#160b0c;--c-panel-bg2:#221111;
   --c-border:#5a2b22;--c-border-hover:#a95c3c;--c-border-active:#ff6d3a;
@@ -47,8 +48,20 @@
   --hud-bar-h:12px;--qs-size:46px;--panel-pad:20px;--gap-sm:4px;--gap-md:8px;--gap-lg:16px;
   --font:'Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',sans-serif;
   --font-display:'Black Han Sans','Noto Sans KR',sans-serif;
+  --font-hell:'Nanum Myeongjo','Noto Serif KR','Gowun Batang',serif;
+  --font-hell-title:'Cinzel Decorative','Nanum Myeongjo','Noto Serif KR',serif;
   --fs-xs:.75rem;--fs-sm:.85rem;--fs-md:1rem;--fs-lg:1.2rem;--fs-xl:1.6rem;--fs-title:2.2rem;
-  --ui-scale:1;
+  /* ══ UI 고정 디자인 시스템 (2026-04-17) ══
+     Reference Resolution 1920×1080, Match Shortest Side 방식.
+     --ui-auto-scale: 창 크기 기반 자동 배율 (JS에서 주입)
+     --ui-user-scale: 사용자 접근성 배율 (OPT.uiScale, 0.5~2.0)
+     --ui-scale: 최종 스케일 = auto × user (CSS calc 곱연산) */
+  --ui-auto-scale:1;
+  --ui-user-scale:1;
+  --ui-scale:calc(var(--ui-auto-scale) * var(--ui-user-scale));
+  --icon-sm:calc(32px * var(--ui-scale));
+  --icon-md:calc(48px * var(--ui-scale));
+  --icon-lg:calc(64px * var(--ui-scale));
   --ui-inset-top:10px;
   --ui-inset-right:10px;
   --ui-inset-bottom:10px
@@ -1673,6 +1686,260 @@ canvas{display:block;position:fixed;inset:0}
   text-shadow:0 1px 0 rgba(0,0,0,.82),0 0 8px rgba(255,118,40,.08) !important;
 }
 
+/* ══════════════════════════════════════════════════════════════ */
+/* 2026-04-17 HELLISH PANEL RESET — 설정/인벤/대장간 박스 해제     */
+/* 프레임 원본 아트를 살리고 내부 컨테이너는 전부 투명 처리,       */
+/* 텍스트만 프레임 위에 명조체로 올림 (텍스트 그림자로 대비 확보)   */
+/* ══════════════════════════════════════════════════════════════ */
+
+/* 1) 중앙 다크닝 대폭 약화 — 프레임 원본 톤 드러냄 */
+#settings .pbox::after,
+#invPanel .pbox::after,
+#forge .pbox::after{
+  background:radial-gradient(circle at center,rgba(0,0,0,.12),rgba(0,0,0,.26) 58%,rgba(0,0,0,.42)) !important;
+}
+#settings .window-frame-bg::after{
+  background:
+    linear-gradient(180deg,rgba(255,126,52,.04),transparent 10%,transparent 86%,rgba(255,92,28,.05)),
+    radial-gradient(circle at center,rgba(0,0,0,.14),rgba(0,0,0,.28) 56%,rgba(0,0,0,.44)) !important;
+  box-shadow:none !important;
+}
+
+/* 2) 내부 프레임 패널 박스 해제 */
+#settings .frame-inner-panel,
+#invPanel .frame-inner-panel,
+#forge .frame-inner-panel{
+  background:transparent !important;
+  border:none !important;
+  box-shadow:none !important;
+  padding:10px 8px !important;
+}
+#settings .frame-inner-panel-split,
+#invPanel .frame-inner-panel-split{
+  gap:40px !important;
+}
+
+/* 3) 설정창 세부 */
+#settings .set-section{
+  background:transparent !important;
+  border:none !important;
+  border-top:1px dashed rgba(255,150,70,.18) !important;
+  box-shadow:none !important;
+  padding:14px 4px 8px !important;
+  margin-top:18px !important;
+}
+#settings .set-section:first-child,
+#settings #keyBindList + *,
+#settings > .pbox > .frame-inner-panel > div > .set-section:first-child{
+  border-top:none !important;
+  margin-top:0 !important;
+}
+#settings .set-label{
+  background:transparent !important;
+  border:none !important;
+  border-bottom:none !important;
+  color:#ffcd97 !important;
+  font-family:var(--font-hell-title) !important;
+  font-weight:900 !important;
+  letter-spacing:.28em !important;
+  text-transform:none !important;
+  text-shadow:0 0 18px rgba(255,110,42,.55),0 0 6px rgba(255,80,30,.5),0 2px 0 rgba(0,0,0,.92) !important;
+  padding:2px 12px 10px !important;
+  position:relative !important;
+  display:inline-block !important;
+  width:auto !important;
+  margin-left:50% !important;
+  transform:translateX(-50%) !important;
+}
+#settings .set-label::before,
+#settings .set-label::after{
+  content:'';
+  position:absolute;
+  top:45%;
+  width:64px;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,150,72,.55),transparent);
+}
+#settings .set-label::before{ left:-70px; }
+#settings .set-label::after{ right:-70px; }
+
+#settings .set-row,
+#settings .set-range-row{
+  background:transparent !important;
+  border:none !important;
+  padding:6px 2px !important;
+}
+#settings .set-name{
+  font-family:var(--font-hell) !important;
+  color:#e8c8a4 !important;
+  text-shadow:0 1px 0 rgba(0,0,0,.95),0 0 6px rgba(0,0,0,.6) !important;
+  letter-spacing:.04em !important;
+}
+#settings .set-range-val{
+  font-family:var(--font-hell) !important;
+  color:#ffc690 !important;
+  text-shadow:0 0 10px rgba(255,110,50,.35),0 1px 0 rgba(0,0,0,.92) !important;
+}
+#settings .set-key{
+  background:rgba(28,10,8,.35) !important;
+  border:1px solid rgba(255,130,62,.38) !important;
+  color:#ffe1b4 !important;
+  font-family:var(--font-hell) !important;
+  font-weight:700 !important;
+  letter-spacing:.08em !important;
+  text-shadow:0 0 10px rgba(255,110,40,.35),0 1px 0 rgba(0,0,0,.92) !important;
+  box-shadow:0 0 0 1px rgba(255,160,80,.08) inset !important;
+}
+#settings .set-key:hover{
+  border-color:#ff9c58 !important;
+  background:rgba(60,20,10,.48) !important;
+  color:#fff2d2 !important;
+}
+#settings .set-key.listening{
+  border-color:#ffb060 !important;
+  background:rgba(90,30,14,.55) !important;
+  color:#ffe7c2 !important;
+  box-shadow:0 0 14px rgba(255,130,60,.4),0 0 0 1px rgba(255,160,80,.25) inset !important;
+}
+
+#settings select{
+  background:rgba(18,8,6,.55) !important;
+  border:1px solid rgba(255,130,62,.3) !important;
+  color:#ffd8ab !important;
+  font-family:var(--font-hell) !important;
+}
+#settings input[type="range"]{
+  background:transparent !important;
+  border:none !important;
+}
+#settings button:not(.pclose){
+  background:transparent !important;
+  border:1px solid rgba(255,130,62,.42) !important;
+  color:#ffcb99 !important;
+  font-family:var(--font-hell) !important;
+  font-weight:700 !important;
+  letter-spacing:.18em !important;
+  text-shadow:0 0 8px rgba(255,110,40,.3),0 1px 0 rgba(0,0,0,.92) !important;
+}
+#settings button:not(.pclose):hover{
+  border-color:#ff9c58 !important;
+  background:rgba(60,20,12,.35) !important;
+  color:#fff1d2 !important;
+}
+
+/* 4) 인벤토리 세부 */
+#invPanel .inv-left,
+#invPanel .inv-center,
+#invPanel .inv-right{
+  background:transparent !important;
+  border:none !important;
+  padding:8px 10px !important;
+}
+#invPanel #combatPower,
+#invPanel #invResBar{
+  background:transparent !important;
+  border:1px solid rgba(255,130,62,.18) !important;
+}
+#invPanel .inv-storage-toggle{
+  background:transparent !important;
+  border:1px solid rgba(255,130,62,.28) !important;
+}
+#invPanel .inv-grid > div{
+  background:rgba(16,8,7,.28) !important;
+  border:1px solid rgba(255,140,70,.18) !important;
+  box-shadow:none !important;
+}
+#invPanel .inv-grid > div:hover{
+  border-color:rgba(255,180,100,.5) !important;
+}
+#invPanel #invCenter > div:first-child,
+#invPanel .inv-equip > div:first-child{
+  font-family:var(--font-hell-title) !important;
+  color:#ffcd97 !important;
+  letter-spacing:.2em !important;
+  text-shadow:0 0 14px rgba(255,110,42,.45),0 2px 0 rgba(0,0,0,.92) !important;
+}
+
+/* 5) 대장간 세부 */
+#forge #forgeMats{
+  background:transparent !important;
+  border:1px solid rgba(200,120,255,.28) !important;
+  font-family:var(--font-hell) !important;
+}
+#forge #forgeLore{
+  background:transparent !important;
+  border:none !important;
+  font-family:var(--font-hell) !important;
+  font-style:italic !important;
+  color:#b59a7c !important;
+  text-shadow:0 1px 0 rgba(0,0,0,.9) !important;
+}
+#forge #fgGrid{
+  background:transparent !important;
+  border:none !important;
+  padding:6px !important;
+}
+#forge .fg-tab{
+  background:rgba(22,10,10,.32) !important;
+  box-shadow:none !important;
+  border:1px solid rgba(255,130,62,.32) !important;
+}
+#forge .fg-tab.act{
+  background:rgba(70,22,18,.5) !important;
+  border-color:#ff9c58 !important;
+  box-shadow:0 0 18px rgba(255,110,50,.3) inset !important;
+}
+#forge #forgeConfirm{
+  background:transparent !important;
+  border:1px dashed rgba(255,180,80,.28) !important;
+}
+
+/* 6) 패널 타이틀 — 극적 그림자 / 카빙 느낌 */
+#settings .ptitle,
+#invPanel .ptitle,
+#forge .ptitle{
+  font-family:var(--font-hell-title) !important;
+  font-weight:900 !important;
+  letter-spacing:.38em !important;
+  font-size:2.4rem !important;
+  background:linear-gradient(180deg,#ffd7a8 0%,#d4835a 48%,#6b2a1f 100%) !important;
+  -webkit-background-clip:text !important;
+  background-clip:text !important;
+  color:transparent !important;
+  text-shadow:
+    0 0 32px rgba(255,90,30,.55),
+    0 0 12px rgba(255,120,60,.4),
+    0 2px 0 rgba(30,8,6,.95) !important;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.9));
+  margin-bottom:10px !important;
+}
+
+/* 7) 기본 폰트 — 3개 패널 내부 전부 명조체로 */
+#settings, #settings input, #settings select, #settings button, #settings label, #settings span, #settings div,
+#invPanel, #invPanel input, #invPanel select, #invPanel button, #invPanel label, #invPanel span, #invPanel div,
+#forge, #forge input, #forge select, #forge button, #forge label, #forge span, #forge div{
+  font-family:var(--font-hell) !important;
+}
+
+/* 8) 닫기 버튼 — 미니멀 아웃라인 */
+#settings .pclose,
+#invPanel .pclose,
+#forge .pclose{
+  background:transparent !important;
+  border:1px solid rgba(255,130,62,.42) !important;
+  color:#ffc090 !important;
+  font-family:var(--font-hell-title) !important;
+  letter-spacing:.28em !important;
+  text-shadow:0 0 12px rgba(255,110,40,.35),0 2px 0 rgba(0,0,0,.92) !important;
+}
+#settings .pclose:hover,
+#invPanel .pclose:hover,
+#forge .pclose:hover{
+  border-color:#ff9c58 !important;
+  background:rgba(60,20,12,.4) !important;
+  color:#fff2d2 !important;
+}
+
 /* ══ 반응형 ══ */
 @media (max-width:1200px){
   .qs{width:40px;height:40px}
@@ -1877,7 +2144,8 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">화면 흔들림</span><input type="range" id="optShake" min="0" max="100" value="80"><span class="set-range-val" id="optShakeVal">80%</span></div>
           <!-- 히트스톱 제거됨 -->
           <div class="set-range-row"><span class="set-name">파티클 양</span><input type="range" id="optParts" min="5" max="100" step="5" value="80"><span class="set-range-val" id="optPartsVal">80%</span></div>
-          <div class="set-range-row"><span class="set-name">UI 크기</span><input type="range" id="optUiScale" min="50" max="150" step="5" value="100"><span class="set-range-val" id="optUiScaleVal">100%</span></div>
+          <div class="set-range-row"><span class="set-name">UI 배율 (접근성)</span><input type="range" id="optUiScale" min="70" max="150" step="5" value="100"><span class="set-range-val" id="optUiScaleVal">100%</span></div>
+          <div style="color:#7a5a42;font-size:.78rem;padding:0 4px 6px;letter-spacing:.03em">화면 크기에 맞춰 자동 조절됩니다. 더 크게 보려면 배율을 올리세요.</div>
           <div class="set-range-row"><span class="set-name">효과음 볼륨</span><input type="range" id="optSfx" min="0" max="100" value="60"><span class="set-range-val" id="optSfxVal">60%</span></div>
           <div class="set-range-row"><span class="set-name">음악 볼륨</span><input type="range" id="optBgm" min="0" max="100" value="30"><span class="set-range-val" id="optBgmVal">30%</span></div>
           <div class="set-range-row"><span class="set-name">BGM 선택</span>
@@ -4158,7 +4426,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko'};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',uiScale:1};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -16473,9 +16741,9 @@ function _updateUltSlot(){
   const sk=SKILL_LIST.find(s=>s.id===ULT_SLOT);
   if(!sk||!(P.skills[ULT_SLOT]>=1)){ULT_SLOT=null;el.innerHTML='';return}
   let onCd=false,cdPct=0,cdTxt='';
-  if(ULT_SLOT==='holyBlast'){const cn=P._hbCd||0,cm=sk.cd||3600;onCd=cn>0;cdPct=onCd?Math.min(cn/cm,1):0;cdTxt=onCd?(cn/60).toFixed(0)+'s':''}
-  else if(ULT_SLOT==='blackStar'){const cn=P._bsCd||0,cm=sk.cd||3600;onCd=cn>0;cdPct=onCd?Math.min(cn/cm,1):0;cdTxt=onCd?(cn/60).toFixed(0)+'s':''}
-  else if(ULT_SLOT==='lavaSummon'){const cn=P._lvCd||0,cm=sk.cd||3600;onCd=cn>0;cdPct=onCd?Math.min(cn/cm,1):0;cdTxt=onCd?(cn/60).toFixed(0)+'s':''}
+  if(ULT_SLOT==='holyBlast'){const cn=P._hbCd||0,cm=sk.cd||7200;onCd=cn>0;cdPct=onCd?Math.min(cn/cm,1):0;cdTxt=onCd?(cn/60).toFixed(0)+'s':''}
+  else if(ULT_SLOT==='blackStar'){const cn=P._bsCd||0,cm=sk.cd||7200;onCd=cn>0;cdPct=onCd?Math.min(cn/cm,1):0;cdTxt=onCd?(cn/60).toFixed(0)+'s':''}
+  else if(ULT_SLOT==='lavaSummon'){const cn=P._lvCd||0,cm=sk.cd||7200;onCd=cn>0;cdPct=onCd?Math.min(cn/cm,1):0;cdTxt=onCd?(cn/60).toFixed(0)+'s':''}
   if(el._skId!==ULT_SLOT){el._skId=ULT_SLOT;el.innerHTML=_skIcon(ULT_SLOT)}
   let _ultCdEl=el.querySelector('._skCd');
   if(onCd){
@@ -29856,9 +30124,9 @@ const SKILL_LIST=[
   {id:'maliceHunt',name:'악의 사냥',cat:'bow',act:true,emoji:'⚔',desc:'유도 물리 칼날 1발 (악의30+ST50). 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영. 독혈해방 합체 칼날은 +100. 지속뎀 5초, 무한사거리. 쿨 15초(Lv당-0.5초)',descEn:'1 homing physical blade (malice 30 + ST 50). Base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling. Plague-fused blades gain +100. DOT 5s, infinite range. CD 15s (-0.5s/Lv)',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
   {id:'maliceMortar',name:'폭풍소환',cat:'magic',act:true,emoji:'🌪️',desc:'어둠 소용돌이 소환 (마우스 조준 설치, MP 소모, 쿨 11초, INT 스케일링, 1렙 200범위 +30/렙, 5초 지속, 적 흡인)',descEn:'Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 200 +30/Lv, 5s duration, pulls enemies)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초',descEn:'Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발. 범위 1500+Lv×100px. 범위 끝까지 넉백(주 성능). 거리감쇠 50%. 스턴 2초. Lv당 뎀+10%. (MP 30%, 쿨 90초)',descEn:'Pentagram cast → holy light pillar mega-explosion. Range 1500+Lv×100px. Full-range knockback (main feature). 50% distance falloff. Stun 2s. Per Lv DMG+10%. (MP 30%, CD 90s)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
-  {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,noDmg:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 90초)',descEn:'Summon black pentagram. 7s (+0.5s/Lv) strong pull (no DMG, pure utility). Range 1500+Lv×100px. Pull force base 5+0.5/Lv. (MP 30%, CD 90s)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
-  {id:'lavaSummon',name:'용암소환',cat:'ult',act:true,ult:true,emoji:'🌋',desc:'빨간 오망성 시전 → 범위 1500+Lv×100px 화염폭발+10초간 화상. 틱당 적 최대HP 1.75%(+Lv당+1.5%). 10초 20틱. 거리감쇠 30%. Lv당 초기뎀+10%. (MP 30%, 쿨 90초)',descEn:'Red pentagram cast → range 1500+Lv×100px fire explosion+10s burn. Per tick enemy maxHP 1.75%(+1.5%/Lv). 10s 20 ticks. 30% distance falloff. Per Lv initial DMG+10%. (MP 30%, CD 90s)',spCost:10,matCost:100,cd:5400,up:true,upSp:5,upMat:0},
+  {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발. 범위 1500+Lv×100px. 범위 끝까지 넉백(주 성능). 거리감쇠 50%. 스턴 2초. Lv당 뎀+10%. (MP 30%, 쿨 120초)',descEn:'Pentagram cast → holy light pillar mega-explosion. Range 1500+Lv×100px. Full-range knockback (main feature). 50% distance falloff. Stun 2s. Per Lv DMG+10%. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
+  {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,noDmg:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)',descEn:'Summon black pentagram. 7s (+0.5s/Lv) strong pull (no DMG, pure utility). Range 1500+Lv×100px. Pull force base 5+0.5/Lv. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
+  {id:'lavaSummon',name:'용암소환',cat:'ult',act:true,ult:true,emoji:'🌋',desc:'빨간 오망성 시전 → 범위 1500+Lv×100px 화염폭발+10초간 화상. 틱당 적 최대HP 1.75%(+Lv당+1.5%). 10초 20틱. 거리감쇠 30%. Lv당 초기뎀+10%. (MP 30%, 쿨 120초)',descEn:'Red pentagram cast → range 1500+Lv×100px fire explosion+10s burn. Per tick enemy maxHP 1.75%(+1.5%/Lv). 10s 20 ticks. 30% distance falloff. Per Lv initial DMG+10%. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
   {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스를 섬광 관통 처형. 근접 타겟 지정. HP/MP/ST 10% 소모 → 보스 최대HP 30% 순수 데미지. 쿨 20초',descEn:'X key: Flash-pierce execute groggy boss. Melee target select. HP/MP/ST 10% cost → boss maxHP 30% pure DMG. CD 20s',spCost:10,matCost:100,cd:1200,up:false,upSp:0,upMat:0},
   {id:'demonRevive',name:'악마화 부활',cat:'ult',ult:true,noDmg:true,emoji:'☠',desc:'[패시브] 사망 시 부활력 기반 확률 부활. 1Lv: HP 50% 부활. Lv당 HP+5%, 쿨-30초, 부활확률+2%. 쿨 10분',descEn:'[Passive] Revive power-based chance revive on death. Lv1: revive at HP 50%. Per Lv HP+5%, CD-30s, revive chance+2%. CD 10min',spCost:15,matCost:150,up:true,upSp:10,upMat:0},
   // [SKILL REMOVED 2026-04-10] bladeShot (붉은꽃) — 석궁 개편
@@ -31205,7 +31473,7 @@ function fireHolyBlast(){
   if(!P._hbCasting)return;
   P._hbCasting=false;ultUnmute();
   const slv=P.skills.holyBlast||1;
-  P._hbCd=~~(5400*(1+_eqAffix('cooldownRed')));
+  P._hbCd=~~(7200*(1+_eqAffix('cooldownRed')));
   // 필살기 10배 스케일: Lv20 = Lv1의 10배
   const _ult10xMul=(1+((slv-1)*9/19)); // Lv1=1.0, Lv20=10.0
   // 신성폭발: Lv1 ×50, Lv20 ×500 (중앙 별은 추가 2배)
@@ -31244,7 +31512,7 @@ function fireBlackStar(){
   if(!P._bsCasting)return;
   P._bsCasting=false;ultUnmute();
   const slv=P.skills.blackStar||1;
-  P._bsCd=~~(5400*(1+_eqAffix('cooldownRed')));
+  P._bsCd=~~(7200*(1+_eqAffix('cooldownRed')));
   const cx=P._bsX,cy=P._bsY;
   G._bsPillar={x:cx,y:cy,t:0,maxT:120};
   for(let k=0;k<80;k++){
@@ -31271,7 +31539,7 @@ function fireLavaSummon(){
   if(!P._lvCasting)return;
   P._lvCasting=false;ultUnmute();
   const slv=P.skills.lavaSummon||1;
-  P._lvCd=~~(5400*(1+_eqAffix('cooldownRed')));
+  P._lvCd=~~(7200*(1+_eqAffix('cooldownRed')));
   const cx=P._lvX,cy=P._lvY;
   const _ult10xMul=(1+((slv-1)*9/19)); // Lv1=1.0, Lv20=10.0
   // 용암소환 직격: Lv1 ×8, Lv20 ×80
@@ -32666,10 +32934,34 @@ $('setClose').onclick=()=>closePanel('settings');
 if($('showTutorialBtn'))$('showTutorialBtn').onclick=()=>{closePanel('settings');showTutorial()};
 // ── 자동 저장 함수 ──
 function saveSettings(){try{localStorage.setItem('hellcave_settings',JSON.stringify({binds:{...BINDS},binds2:{...BINDS2},opt:{...OPT}}));localStorage.setItem('hellLang',OPT.lang)}catch(e){}}
+
+// ══ 2026-04-17 UI 고정 디자인 시스템 — Reference Resolution 1920×1080 ══
+// 최종 스케일 = auto(창기반) × user(접근성). CSS calc으로 곱연산되므로 JS는 각각만 주입.
+function applyUIScale(){
+  const dw=1920, dh=1080;
+  const sw=window.innerWidth, sh=window.innerHeight;
+  // Match Shortest Side: 가로/세로 중 작은 쪽. 16:9보다 넓은 화면(21:9 등)은 가로 여백, UI는 중앙 고정.
+  const autoScale=Math.min(sw/dw, sh/dh);
+  // 극단 화면 방어 (0.5 ~ 3.0)
+  const clampedAuto=Math.max(0.5, Math.min(3.0, autoScale));
+  document.documentElement.style.setProperty('--ui-auto-scale', clampedAuto.toFixed(4));
+  // 사용자 배율 (접근성) — OPT.uiScale 숫자값만. 'auto' 문자열 하위호환으로 1 처리
+  let userScale=1;
+  if(typeof OPT!=='undefined' && OPT.uiScale!==undefined){
+    const u=parseFloat(OPT.uiScale);
+    userScale=isNaN(u)?1:Math.max(0.5, Math.min(2.0, u));
+  }
+  document.documentElement.style.setProperty('--ui-user-scale', userScale.toFixed(3));
+}
+window.applyUIScale=applyUIScale;
+window.addEventListener('resize', applyUIScale);
+// 페이지 로드 시 즉시 1회 적용 (OPT 저장값이 없어도 auto scale 반영)
+try{applyUIScale()}catch(e){}
+
 $('optShake').oninput=function(){OPT.shake=+this.value;$('optShakeVal').textContent=this.value+'%';saveSettings()};
 // hitStop 옵션 제거됨
 $('optParts').oninput=function(){OPT.parts=+this.value;$('optPartsVal').textContent=this.value+'%';_renderPresetBtns();saveSettings()};
-$('optUiScale').oninput=function(){const v=+this.value/100;OPT.uiScale=v;$('optUiScaleVal').textContent=this.value+'%';document.documentElement.style.setProperty('--ui-scale',v);saveSettings()};
+$('optUiScale').oninput=function(){const v=+this.value/100;OPT.uiScale=v;$('optUiScaleVal').textContent=this.value+'%';applyUIScale();saveSettings()};
 $('optSfx').oninput=function(){OPT.sfxVol=+this.value;$('optSfxVal').textContent=this.value+'%';if(_mbus)_mbus.gain.value=sfxVol();saveSettings()};
 $('optBgm').oninput=function(){OPT.bgmVol=+this.value;$('optBgmVal').textContent=this.value+'%';BGM.setVol(this.value/100);saveSettings()};
 $('optBgmTrack').onchange=function(){OPT.bgmTrack=this.value;if(this.value==='auto'){BGM.play(BGM.stageKey(G.stage))}else if(this.value==='allRandom'){BGM.playTrack(BGM._pickAllRandom())}else if(this.value.startsWith('t:')){BGM.playTrack(this.value.slice(2))}else{BGM.play(this.value,true)}saveSettings()};
@@ -33257,7 +33549,7 @@ function syncSettingsUI(){
   if($('optShake')){ $('optShake').value=OPT.shake; $('optShakeVal').textContent=OPT.shake+'%'; }
   // hitStop 옵션 제거됨
   if($('optParts')){ $('optParts').value=OPT.parts; $('optPartsVal').textContent=OPT.parts+'%'; }
-  if($('optUiScale')){const _usV=~~((OPT.uiScale||1)*100);$('optUiScale').value=_usV;$('optUiScaleVal').textContent=_usV+'%'}
+  if($('optUiScale')){const _cur=(typeof OPT.uiScale==='number')?OPT.uiScale:(parseFloat(OPT.uiScale)||1);const _usV=~~(_cur*100);$('optUiScale').value=_usV;$('optUiScaleVal').textContent=_usV+'%';try{applyUIScale()}catch(e){}}
   if($('optSfx')){ $('optSfx').value=OPT.sfxVol; $('optSfxVal').textContent=OPT.sfxVol+'%'; }
   if($('optBgm')){ $('optBgm').value=OPT.bgmVol||30; $('optBgmVal').textContent=(OPT.bgmVol||30)+'%'; }
   if($('optBgmTrack'))$('optBgmTrack').value=OPT.bgmTrack||'auto';
@@ -33325,7 +33617,7 @@ try{
     if(BINDS.parry==='KeyF')BINDS.parry='KeyQ';
     try{saveSettings()}catch(e){}
     if(OPT.bgmVol!==undefined)BGM.setVol(OPT.bgmVol/100);
-    if(OPT.uiScale!==undefined)document.documentElement.style.setProperty('--ui-scale',OPT.uiScale);
+    try{applyUIScale()}catch(e){}
     syncSettingsUI();
   }
 }catch(e){}
