@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1400" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#221112"/>
+      <stop offset="52%" stop-color="#12090a"/>
+      <stop offset="100%" stop-color="#0a0607"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffbf88"/>
+      <stop offset="28%" stop-color="#8f3f28"/>
+      <stop offset="65%" stop-color="#3b1814"/>
+      <stop offset="100%" stop-color="#f3d0a3"/>
+    </linearGradient>
+    <linearGradient id="blood" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#3f0d10"/>
+      <stop offset="50%" stop-color="#84171d"/>
+      <stop offset="100%" stop-color="#24070a"/>
+    </linearGradient>
+    <pattern id="scratch" width="24" height="24" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
+      <line x1="0" y1="0" x2="0" y2="24" stroke="#ffffff" stroke-opacity=".035" stroke-width="1"/>
+      <line x1="12" y1="0" x2="12" y2="24" stroke="#ff8f6f" stroke-opacity=".03" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="900" height="1400" rx="48" fill="url(#bg)"/>
+  <rect x="10" y="10" width="880" height="1380" rx="42" fill="none" stroke="url(#rim)" stroke-width="10"/>
+  <rect x="24" y="24" width="852" height="1352" rx="34" fill="none" stroke="#2e1314" stroke-width="4"/>
+  <rect x="28" y="28" width="844" height="1344" rx="32" fill="url(#scratch)" opacity=".55"/>
+  <path d="M90 0 L120 38 L180 20 L230 52 L290 16 L340 44 L450 8 L560 44 L610 16 L670 52 L720 20 L780 38 L810 0" fill="#180d0e"/>
+  <path d="M120 0 L145 34 L210 16 L258 46 L318 14 L362 38 L450 18 L538 38 L582 14 L642 46 L690 16 L755 34 L780 0" fill="none" stroke="#7b261d" stroke-width="3" opacity=".8"/>
+  <path d="M82 120 L146 120" stroke="#ff8c62" stroke-width="2" opacity=".45"/>
+  <path d="M754 120 L818 120" stroke="#ff8c62" stroke-width="2" opacity=".45"/>
+  <path d="M130 1290 C220 1230, 320 1230, 410 1288" fill="none" stroke="url(#blood)" stroke-width="5" opacity=".6"/>
+  <path d="M770 1290 C680 1230, 580 1230, 490 1288" fill="none" stroke="url(#blood)" stroke-width="5" opacity=".6"/>
+  <circle cx="82" cy="82" r="10" fill="#1a0908" stroke="#a44f34" stroke-width="3"/>
+  <circle cx="818" cy="82" r="10" fill="#1a0908" stroke="#a44f34" stroke-width="3"/>
+  <circle cx="82" cy="1318" r="10" fill="#1a0908" stroke="#a44f34" stroke-width="3"/>
+  <circle cx="818" cy="1318" r="10" fill="#1a0908" stroke="#a44f34" stroke-width="3"/>
+</svg>
