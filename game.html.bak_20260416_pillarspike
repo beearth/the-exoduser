@@ -15837,7 +15837,7 @@ function updateQS(){
         let _cdEl=el.querySelector('._skCd');
         if(_skOnCd||_skStkTxt){
           const _cdHtml=`${_skStkTxt}${_skOnCd?_skCdSweep(_cdPct,_cdSec):''}`;
-          if(!_cdEl){_cdEl=document.createElement('div');_cdEl.className='_skCd';_cdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';el.appendChild(_cdEl)}
+          if(!_cdEl){_cdEl=document.createElement('div');_cdEl.className='_skCd';_cdEl.style.cssText='position:absolute;inset:0;pointer-events:none';el.appendChild(_cdEl)}
           _cdEl.innerHTML=_cdHtml;
         }else if(_cdEl){_cdEl.remove()}
         continue;
@@ -15873,14 +15873,14 @@ function _updateUltSlot(){
   if(el._skId!==ULT_SLOT){el._skId=ULT_SLOT;el.innerHTML=_skIcon(ULT_SLOT)}
   let _ultCdEl=el.querySelector('._skCd');
   if(onCd){
-    if(!_ultCdEl){_ultCdEl=document.createElement('div');_ultCdEl.className='_skCd';_ultCdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';el.appendChild(_ultCdEl)}
+    if(!_ultCdEl){_ultCdEl=document.createElement('div');_ultCdEl.className='_skCd';_ultCdEl.style.cssText='position:absolute;inset:0;pointer-events:none';el.appendChild(_ultCdEl)}
     _ultCdEl.innerHTML=_skCdSweep(cdPct,cdTxt);
   }else if(_ultCdEl){_ultCdEl.remove()}
 }
 function _updateSkCdHud(){} // qsRow에 통합됨
 // ═══ 액션키 슬롯 업데이트 (LMB/E/Shift/SP/Q) ═══
 function _updateActionKeys(){
-  // qsE: 마법스킬 — 활성 상태 표시 + CD sweep
+  // qsE: 마법스킬 — 활성 상태 표시
   const elE=$('qsE');
   if(elE){const bm=P.s==='beam'||P.s==='magicCast';
     const _isSix=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
@@ -15888,18 +15888,6 @@ function _updateActionKeys(){
     elE.style.boxShadow=bm?'inset 0 0 10px rgba(100,68,255,.4)':'none';
     if(!bm&&!_isSix)elE.style.borderColor=_bc; // 전투 중에만 테두리 변경
     if(bm)elE.style.borderColor=_bc;
-    // 마법스킬 CD sweep — 활성 마법 스킬에 따라
-    const _msk=P.activeMagicSk||'fireball';
-    const _eCdMap={fireball:P._fbCd||0,blueShot:P._blueCd||0,fireAura:P._faCd||0,fireBeam:P._fbCd||0,omniBeam:0,elemMissile:0,burstLoop:0};
-    const _eCdMaxMap={fireball:0,blueShot:300,fireAura:720,fireBeam:0};
-    const _eCdNow=_eCdMap[_msk]||0;
-    const _eSkDef=SKILL_LIST.find(s=>s.id===_msk);
-    const _eCdMax=_eCdMaxMap[_msk]||(_eSkDef&&_eSkDef.cd)||0;
-    let _eCdEl=elE.querySelector('._skCd');
-    if(_eCdNow>0&&_eCdMax>0){
-      if(!_eCdEl){_eCdEl=document.createElement('div');_eCdEl.className='_skCd';_eCdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';elE.appendChild(_eCdEl)}
-      _eCdEl.innerHTML=_skCdSweep(Math.min(_eCdNow/_eCdMax,1),(_eCdNow/60).toFixed(1)+'s');
-    }else if(_eCdEl)_eCdEl.remove();
   }
   // qsT: 석궁 자동(T) — 활성 스킬 표시
   const elT=$('qsT');
@@ -15921,12 +15909,6 @@ function _updateActionKeys(){
     else if(recharging){elS.style.borderColor=isDimBreach()?'#6633bb':'#335566';elS.style.boxShadow='inset 0 0 6px rgba(68,119,136,.15)'}
     else{elS.style.borderColor=isDimBreach()?'#8844ff':'#447788';elS.style.boxShadow='inset 0 0 6px rgba(68,119,136,.2)'}
     const _hgE=$('_hgTxt');if(_hgE){_hgE.textContent=~~_harpGauge+'/'+_HARP_GAUGE_MAX;_hgE.style.color=_harpGauge>=_HARP_GAUGE_MAX?'#44ffaa':_harpGauge>0?'#88ccff':'#555'}
-    // 돌진 스택 충전 CD sweep
-    let _sCdEl=elS.querySelector('._skCd');
-    if(recharging){const _dimB=isDimBreach(),_cbLv=(P.skills.chargeBoost||0),_cbMax=_dimB?Math.max(180,420-_cbLv*20):((P.skills.chargeBoost>=1)?600:300);
-      if(!_sCdEl){_sCdEl=document.createElement('div');_sCdEl.className='_skCd';_sCdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';elS.appendChild(_sCdEl)}
-      _sCdEl.innerHTML=_skCdSweep(Math.min(cd/_cbMax,1),(cd/60).toFixed(1)+'s');
-    }else if(_sCdEl)_sCdEl.remove();
   }
   // skSlot1: Space 선택슬롯 — 쿨다운 표시 (모든 스킬)
   const elBow=$('skSlot1');
@@ -15956,25 +15938,15 @@ function _updateActionKeys(){
       const _spSkDef=SKILL_LIST.find(s=>s.id===_spSk);
       const _spCdMax=_spSkDef?_spSkDef.cd||600:600;
       const _spPct=Math.min(_spCdNow/_spCdMax,1);
-      if(!_spCdEl){_spCdEl=document.createElement('div');_spCdEl.className='_skCd';_spCdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';elBow.appendChild(_spCdEl)}
+      if(!_spCdEl){_spCdEl=document.createElement('div');_spCdEl.className='_skCd';_spCdEl.style.cssText='position:absolute;inset:0;pointer-events:none';elBow.appendChild(_spCdEl)}
       _spCdEl.innerHTML=`${_spStkTxt}${_skCdSweep(_spPct,(_spCdNow/60).toFixed(1)+'s')}`;
     }else if(_spCdEl){_spCdEl.remove()}
   }
-  // qsQ: 보호막 — 활성 상태 + 평화보호 CD
+  // qsQ: 보호막 — 활성 상태
   const elF=$('qsQ');
   if(elF){const ac=P.s==='sBlock'||P.s==='parryWin';
     elF.style.borderColor=ac?'#4488ff':'#443322';
     elF.style.boxShadow=ac?'inset 0 0 10px rgba(68,136,255,.4)':'none';
-    // 평화보호 CD sweep
-    const _qSk=P.activeQSk||'parry';
-    const _qCdNow=_qSk==='peaceShield'?(P._psCd||0):0;
-    const _qSkDef=SKILL_LIST.find(s=>s.id===_qSk);
-    const _qCdMax=(_qSkDef&&_qSkDef.cd)||900;
-    let _qCdEl=elF.querySelector('._skCd');
-    if(_qCdNow>0){
-      if(!_qCdEl){_qCdEl=document.createElement('div');_qCdEl.className='_skCd';_qCdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';elF.appendChild(_qCdEl)}
-      _qCdEl.innerHTML=_skCdSweep(Math.min(_qCdNow/_qCdMax,1),(_qCdNow/60).toFixed(1)+'s');
-    }else if(_qCdEl)_qCdEl.remove();
   }
   // skSlotCT: CT스킬 — 유령걸음/얼음보주 활성 상태 (합체 흡수 시 폴백)
   const elCT=$('skSlotCT');
@@ -15993,7 +15965,7 @@ function _updateActionKeys(){
     const _ctPct=onCd?Math.min(cd/240,1):0;
     if(elCT._skId!==sid){elCT._skId=sid;elCT.innerHTML=_skIcon(sid)}
     let _ctCdEl=elCT.querySelector('._skCd');
-    if(onCd){if(!_ctCdEl){_ctCdEl=document.createElement('div');_ctCdEl.className='_skCd';_ctCdEl.style.cssText='position:absolute;inset:0;pointer-events:none;z-index:3';elCT.appendChild(_ctCdEl)}_ctCdEl.innerHTML=_skCdSweep(_ctPct,(cd/60).toFixed(1)+'s')}else if(_ctCdEl){_ctCdEl.remove()}
+    if(onCd){if(!_ctCdEl){_ctCdEl=document.createElement('div');_ctCdEl.className='_skCd';_ctCdEl.style.cssText='position:absolute;inset:0;pointer-events:none';elCT.appendChild(_ctCdEl)}_ctCdEl.innerHTML=_skCdSweep(_ctPct,(cd/60).toFixed(1)+'s')}else if(_ctCdEl){_ctCdEl.remove()}
   }
   // skSlotRMB: 우클스킬 — 방패 상태 + 칼등날개 쿨타임
   const elRMB=$('skSlotRMB');
@@ -19244,10 +19216,8 @@ function update(){
         const _csDistMul=1+Math.min(_csTravD/150,2.5); // 밸런스: 거리캡 3→2.5 (최대×3.5)
         const _csDmg=~~(meleeRef()*_skMul('chainSlam')*statStr()*pAtkMul()*_csDistMul*_fuseMul('chainSlam'));
         const _csEl=wp().el||0;
-        console.log('[기동파괴] lv=',_csLv,'R=',_csR,'meleeRef=',meleeRef(),'skMul=',_skMul('chainSlam'),'pAtk=',pAtkMul(),'distMul=',_csDistMul.toFixed(2),'fuseMul=',_fuseMul('chainSlam'),'csDmg=',_csDmg,'el=',_csEl);
         G._noHitStopT=40;
         const _csNe=shQuery(P.x,P.y,_csR+20);
-        console.log('[기동파괴] neCount=',_csNe.length,'pos=',~~P.x,~~P.y);
         for(let _ci=0;_ci<_csNe.length;_ci++){const e=_csNe[_ci];if(!e.alive)continue;
           const d=dst(P.x,P.y,e.x,e.y);if(d>_csR+e.r)continue;
           const ang=Math.atan2(e.y-P.y,e.x-P.x);
@@ -19288,10 +19258,8 @@ function update(){
         const _stDistMul=1+Math.min(_stTravD/200,2); // 거리 보너스 최대x3
         const _stDmg=~~(magicRef()*_skMul('chainAssault')*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 통일공식: _skMul
         const _stEl=EL.F;
-        console.log('[기동불꽃] lv=',_stLv,'R=',_stR,'magicRef=',magicRef(),'skMul=',_skMul('chainAssault'),'pMag=',pMagicMul(),'distMul=',_stDistMul.toFixed(2),'fuseMul=',_fuseMul('chainAssault'),'stDmg=',_stDmg,'el=',_stEl);
         G._noHitStopT=40;
         const _stNe=shQuery(P.x,P.y,_stR+20);
-        console.log('[기동불꽃] neCount=',_stNe.length,'pos=',~~P.x,~~P.y);
         for(let _si=0;_si<_stNe.length;_si++){const e=_stNe[_si];if(!e.alive)continue;
           const d=dst(P.x,P.y,e.x,e.y);if(d>_stR+e.r)continue;
           const ang=Math.atan2(e.y-P.y,e.x-P.x);
@@ -30347,7 +30315,7 @@ function activateDarkPillar(){
     const _stDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap')); // 통일공식: _skMul
     for(let _pi=0;_pi<_positions.length;_pi++){
       const p=_positions[_pi];
-      G._fireZones.push({x:p.x,y:p.y,r:_stR,t:0,maxT:600,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap'});
+      G._fireZones.push({x:p.x,y:p.y,r:_stR,t:0,maxT:300,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap'});
     }
     P._gcCd=~~(600*(1+_eqAffix('cooldownRed'))); // 가시덫 쿨다운 소비
     addTxt(cx,cy-50,_T('🌿 기둥가시!'),'#88cc44',30);
