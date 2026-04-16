@@ -1463,19 +1463,6 @@ canvas{display:block;position:fixed;inset:0}
 #skillPanel .skill-pbox{
   width:min(1120px,94vw) !important;
   padding:30px 38px 26px !important;
-  display:flex !important;
-  flex-direction:column !important;
-}
-/* 2026-04-17: 스킬창 내부 스크롤 — 타이틀/닫기 고정, 가운데 스킬 그리드 영역만 스크롤 */
-#skillPanel .frame-inner-panel-stack{
-  flex:1 1 auto !important;
-  min-height:0 !important;
-  overflow-y:auto !important;
-  padding-right:8px !important;
-}
-#skillPanel .ptitle,
-#skillPanel .skill-close{
-  flex-shrink:0 !important;
 }
 #settings .pbox,
 #invPanel .pbox,
@@ -28677,7 +28664,6 @@ function checkRooms(){
 // ─── [S16i] HURT_E — 적 피격 (방어/속성/사망) ───
 function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(!e||!e.alive)return;
-  if(e.hp<=0)return; // 2026-04-17 이미 죽은 적 이중 처리 방지 (alive 플래그 지연 케이스)
   _petOnAtk();
   const isDot=opts&&opts.dot;
   // 부활 무적 (캡 180, 피격마다 감소)
@@ -42367,55 +42353,6 @@ if(_EDITOR_MODE)window.addEventListener('message',function(ev){
 let _loopRunning=false;
 let _fpsCapInterval=1000/(OPT.fpsCap||60);
 let _lastLoopTs=0;
-// ═══ 500마리 난전 프로파일러 (2026-04-17) — 측정 전용, 로직 무수정 ═══
-const _PERF_PROF={enabled:false,frameCnt:0,
-  ai:[],coll:[],render:[],dom:[],drawCalls:0,
-  _aiAcc:0,_collAcc:0,_renderAcc:0,_domAcc:0,
-  _hooked:false,_origACR:null,_origDCW:null};
-function _perfHookGL(){
-  if(_PERF_PROF._hooked)return;
-  // GL 드로우콜 카운터 후킹 (메인 GL + 보조 _bGL)
-  const _glCands=[(typeof GL!=='undefined')?GL:null,(typeof _bGL!=='undefined')?_bGL:null];
-  for(let _gi=0;_gi<_glCands.length;_gi++){const g=_glCands[_gi];if(!g||g.__perfHooked)continue;
-    g.__perfHooked=true;
-    const oA=g.drawArrays.bind(g),oE=g.drawElements.bind(g);
-    g.drawArrays=function(){_PERF_PROF.drawCalls++;return oA.apply(g,arguments)};
-    g.drawElements=function(){_PERF_PROF.drawCalls++;return oE.apply(g,arguments)};
-  }
-  // 충돌 함수 후킹 (update 내부 무수정 — 외부에서 함수 참조 교체)
-  if(typeof _applyColResult==='function'&&!_PERF_PROF._origACR){
-    _PERF_PROF._origACR=_applyColResult;
-    _applyColResult=function(){const t=performance.now();const r=_PERF_PROF._origACR.apply(this,arguments);if(_PERF_PROF.enabled)_PERF_PROF._collAcc+=performance.now()-t;return r};
-  }
-  if(typeof _dispatchColWorker==='function'&&!_PERF_PROF._origDCW){
-    _PERF_PROF._origDCW=_dispatchColWorker;
-    _dispatchColWorker=function(){const t=performance.now();const r=_PERF_PROF._origDCW.apply(this,arguments);if(_PERF_PROF.enabled)_PERF_PROF._collAcc+=performance.now()-t;return r};
-  }
-  _PERF_PROF._hooked=true;
-}
-function _perfReport(){
-  let _alive=0;for(let _ai=0;_ai<ens.length;_ai++)if(ens[_ai].alive)_alive++;
-  const _fmt=function(arr){if(!arr.length)return'0.0/0.0';let s=0,m=0;for(let i=0;i<arr.length;i++){s+=arr[i];if(arr[i]>m)m=arr[i]}return(s/arr.length).toFixed(1)+'/'+m.toFixed(1)};
-  const _heap=(performance.memory&&performance.memory.usedJSHeapSize)?(performance.memory.usedJSHeapSize/1048576).toFixed(0)+'MB':'n/a';
-  console.log('[PERF] enemies='+_alive+' drawCalls='+_PERF_PROF.drawCalls+' ai(avg/max)='+_fmt(_PERF_PROF.ai)+'ms coll='+_fmt(_PERF_PROF.coll)+'ms render='+_fmt(_PERF_PROF.render)+'ms dom='+_fmt(_PERF_PROF.dom)+'ms heap='+_heap);
-  _PERF_PROF.drawCalls=0;
-}
-function _perfFrameTick(){
-  let _alive=0;for(let _ai=0;_ai<ens.length;_ai++)if(ens[_ai].alive)_alive++;
-  const _shouldOn=_alive>300;
-  if(_shouldOn&&!_PERF_PROF.enabled){_PERF_PROF.enabled=true;_perfHookGL();console.log('[PERF] ON (enemies='+_alive+')')}
-  else if(!_shouldOn&&_PERF_PROF.enabled){_PERF_PROF.enabled=false;console.log('[PERF] OFF (enemies='+_alive+')');_PERF_PROF.ai.length=0;_PERF_PROF.coll.length=0;_PERF_PROF.render.length=0;_PERF_PROF.dom.length=0;_PERF_PROF.drawCalls=0}
-  if(_PERF_PROF.enabled){
-    // ai = update 전체 시간 - 충돌 시간 (충돌은 update 내부에서 호출됨)
-    const _aiNet=Math.max(0,_PERF_PROF._aiAcc-_PERF_PROF._collAcc);
-    if(_PERF_PROF.ai.length>=60)_PERF_PROF.ai.shift();_PERF_PROF.ai.push(_aiNet);
-    if(_PERF_PROF.coll.length>=60)_PERF_PROF.coll.shift();_PERF_PROF.coll.push(_PERF_PROF._collAcc);
-    if(_PERF_PROF.render.length>=60)_PERF_PROF.render.shift();_PERF_PROF.render.push(_PERF_PROF._renderAcc);
-    if(_PERF_PROF.dom.length>=60)_PERF_PROF.dom.shift();_PERF_PROF.dom.push(_PERF_PROF._domAcc);
-    _PERF_PROF.frameCnt++;if(_PERF_PROF.frameCnt%60===0)_perfReport();
-  }
-  _PERF_PROF._aiAcc=0;_PERF_PROF._collAcc=0;_PERF_PROF._renderAcc=0;_PERF_PROF._domAcc=0;
-}
 function loop(timestamp){
   if(!_bootLoadKilled) hideBootLoading();
   if(!timestamp)timestamp=performance.now();
@@ -42454,7 +42391,6 @@ function loop(timestamp){
   const _prevCamX=G.cam?G.cam.x:0,_prevCamY=G.cam?G.cam.y:0;
   const _prevPx=P?P.x:0,_prevPy=P?P.y:0;
   let _didUpdate=false;
-  const _aiT0=_PERF_PROF.enabled?performance.now():0;
   while(_acc>=PHYS_STEP){
     _gameTime+=PHYS_STEP;
     _now=_gameTime;
@@ -42462,12 +42398,10 @@ function loop(timestamp){
     _acc-=PHYS_STEP;
     _didUpdate=true;
   }
-  if(_PERF_PROF.enabled)_PERF_PROF._aiAcc+=performance.now()-_aiT0;
   const _p1=performance.now();
   _now=_gameTime+_acc;
   if(G.on){
   // 렌더 보간: 물리틱 사이 부드러운 카메라/플레이어 위치
-  const _rndT0=_PERF_PROF.enabled?performance.now():0;
   if(_didUpdate&&G.cam){
     const _alpha=_acc/PHYS_STEP;
     const _realCx=G.cam.x,_realCy=G.cam.y,_realPx=P.x,_realPy=P.y;
@@ -42478,12 +42412,9 @@ function loop(timestamp){
     draw();
     G.cam.x=_realCx;G.cam.y=_realCy;P.x=_realPx;P.y=_realPy;
   }else{draw()}
-  if(_PERF_PROF.enabled)_PERF_PROF._renderAcc+=performance.now()-_rndT0;
   const _p2=performance.now();
-  const _domT0=_PERF_PROF.enabled?performance.now():0;
   _fpsDraw();if(_useGPU||_useGL)_glFlush();
   _drawBurst(); // GPU Burst (별도 context — 기존 배처 무관)
-  if(_PERF_PROF.enabled)_PERF_PROF._domAcc+=performance.now()-_domT0;
   // 사망 리플레이 캡처 (10fps)
   _drCaptT+=frameTime;if(_drCaptT>=1000/_DR_FPS){_drCaptT-=1000/_DR_FPS;_drCapture()}
   const _p3=performance.now();
@@ -42501,7 +42432,6 @@ function loop(timestamp){
   // ── 악의(mats) 변경 감지 → 디바운스 서버 동기화 ──
   if(G.mats!==_matsPrev){_matsPrev=G.mats;_matsDirty()}
   }catch(_loopErr){console.error('[LOOP CRASH]',_loopErr.message,_loopErr.stack);document.title='ERR: '+_loopErr.message+' @'+(_loopErr.stack||'').match(/:(\d+):/)?.[1]}
-  _perfFrameTick();
   requestAnimationFrame(loop);
 }
 
