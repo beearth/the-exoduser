@@ -1665,18 +1665,18 @@ canvas{display:block;position:fixed;inset:0}
         </div>
 
         <div class="set-section" style="margin-top:20px;border-top:1px solid #443322;padding-top:15px">
-          <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">🗡 캐릭터 선택</div>
+          <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">캐릭터 선택</div>
           <div id="charSelectGrid" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center"></div>
         </div>
 
         <div class="set-section" style="margin-top:20px;border-top:1px solid #443322;padding-top:15px">
-          <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">🖱 마우스 커서</div>
+          <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">마우스 커서</div>
           <div id="cursorGrid" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center"></div>
           <div class="set-range-row" style="margin-top:10px"><span class="set-name">커서 크기</span><input type="range" id="optCursorSize" min="30" max="100" step="5" style="flex:1;accent-color:#ccaa77"><span id="cursorSizeVal" style="min-width:36px;text-align:right;color:#ccaa77;font-size:.9rem">50%</span></div>
         </div>
 
         <div class="set-section" style="margin-top:20px;border-top:1px solid #443322;padding-top:15px">
-          <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">🎨 그래픽 품질</div>
+          <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">그래픽 품질</div>
           <div id="gfxPresetRow" style="display:flex;gap:4px;margin-bottom:12px;justify-content:center"></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optBloom" checked style="width:16px;height:16px;accent-color:#ff66aa"><span class="set-name">블룸 효과</span></label></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optTrail" checked style="width:16px;height:16px;accent-color:#66aaff"><span class="set-name">잔상 트레일</span></label></div>
@@ -1692,37 +1692,37 @@ canvas{display:block;position:fixed;inset:0}
         </div>
 
         <div class="set-section" style="margin-top:20px;border-top:1px solid #443322;padding-top:15px">
-          <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">🔍 하드웨어 진단</div>
+          <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">하드웨어 진단</div>
           <div style="background:rgba(0,0,0,.3);border:1px solid #332211;border-radius:6px;padding:12px;font-family:monospace;font-size:.85rem;line-height:1.6">
             <div><span style="color:#888">GPU:</span> <span id="diagGpu" style="color:#aaeeff;word-break:break-all">검출 중...</span></div>
             <div><span style="color:#888">WebGL:</span> <span id="diagGL" style="color:#aaeeff">-</span></div>
             <div><span style="color:#888">성능 등급:</span> <span id="diagTier" style="color:#ffcc44;font-weight:bold;font-size:1.1rem">?</span> <span id="diagTierDesc" style="color:#888;font-size:.8rem"></span></div>
             <div><span style="color:#888">벤치 FPS:</span> <span id="diagBenchFps" style="color:#aaeeff">측정 중...</span></div>
           </div>
-          <button id="btnRedetect" style="display:block;width:100%;padding:8px;margin-top:8px;background:rgba(20,60,100,.15);border:1px solid #224466;color:#55aadd;font-family:'Noto Sans KR';font-weight:700;font-size:.95rem;cursor:pointer;letter-spacing:.1em;transition:all .3s">🔄 재진단</button>
+          <button id="btnRedetect" style="display:block;width:100%;padding:8px;margin-top:8px;background:rgba(20,60,100,.15);border:1px solid #224466;color:#55aadd;font-family:'Noto Sans KR';font-weight:700;font-size:.95rem;cursor:pointer;letter-spacing:.1em;transition:all .3s">재진단</button>
         </div>
         
         <div class="set-section" style="margin-top:20px;border-top:1px solid #443322;padding-top:15px">
           <div style="text-align:center;color:#44cc88;font-size:.9rem;margin-bottom:6px;letter-spacing:.1em">✓ 설정 자동 저장</div>
           <div style="text-align:center;color:#887755;font-size:1rem;margin-bottom:10px">세팅 프리셋 저장/불러오기</div>
           <div style="display:flex;gap:6px">
-            <button id="saveP1" style="flex:1;padding:8px;background:rgba(0,100,50,.15);border:1px solid #226644;color:#44cc88;font-family:'Noto Sans KR';font-weight:700;font-size:1rem;cursor:pointer;letter-spacing:.05em;transition:all .3s">💾 세팅1 저장</button>
-            <button id="loadP1" style="flex:1;padding:8px;background:rgba(50,80,120,.15);border:1px solid #335577;color:#6699cc;font-family:'Noto Sans KR';font-weight:700;font-size:1rem;cursor:pointer;letter-spacing:.05em;transition:all .3s">📂 세팅1</button>
+            <button id="saveP1" style="flex:1;padding:8px;background:rgba(0,100,50,.15);border:1px solid #226644;color:#44cc88;font-family:'Noto Sans KR';font-weight:700;font-size:1rem;cursor:pointer;letter-spacing:.05em;transition:all .3s">세팅1 저장</button>
+            <button id="loadP1" style="flex:1;padding:8px;background:rgba(50,80,120,.15);border:1px solid #335577;color:#6699cc;font-family:'Noto Sans KR';font-weight:700;font-size:1rem;cursor:pointer;letter-spacing:.05em;transition:all .3s">세팅1</button>
           </div>
           <div style="display:flex;gap:6px;margin-top:6px">
-            <button id="saveP2" style="flex:1;padding:8px;background:rgba(0,100,50,.15);border:1px solid #226644;color:#44cc88;font-family:'Noto Sans KR';font-weight:700;font-size:1rem;cursor:pointer;letter-spacing:.05em;transition:all .3s">💾 세팅2 저장</button>
-            <button id="loadP2" style="flex:1;padding:8px;background:rgba(50,80,120,.15);border:1px solid #335577;color:#6699cc;font-family:'Noto Sans KR';font-weight:700;font-size:1rem;cursor:pointer;letter-spacing:.05em;transition:all .3s">📂 세팅2</button>
+            <button id="saveP2" style="flex:1;padding:8px;background:rgba(0,100,50,.15);border:1px solid #226644;color:#44cc88;font-family:'Noto Sans KR';font-weight:700;font-size:1rem;cursor:pointer;letter-spacing:.05em;transition:all .3s">세팅2 저장</button>
+            <button id="loadP2" style="flex:1;padding:8px;background:rgba(50,80,120,.15);border:1px solid #335577;color:#6699cc;font-family:'Noto Sans KR';font-weight:700;font-size:1rem;cursor:pointer;letter-spacing:.05em;transition:all .3s">세팅2</button>
           </div>
           <div id="saveMsg" style="text-align:center;font-size:.9rem;margin-top:6px;color:#555"></div>
         </div>
         
         <div class="set-section" style="margin-top:20px;border-top:1px solid #332211;padding-top:15px">
-          <button onclick="toggleFullscreen()" style="display:block;width:100%;padding:10px;background:rgba(20,60,100,.15);border:1px solid #224466;color:#55aadd;font-family:'Noto Sans KR';font-weight:700;font-size:1.1rem;cursor:pointer;letter-spacing:.15em;transition:all .3s;margin-bottom:8px">🖥 전체화면 (F11)</button>
-          <button id="toLobbyBtn2" style="display:block;width:100%;padding:10px;background:rgba(50,80,120,.15);border:1px solid #335577;color:#6699cc;font-family:'Noto Sans KR';font-weight:700;font-size:1.1rem;cursor:pointer;letter-spacing:.15em;transition:all .3s;margin-bottom:8px">🏠 캐릭터 선택 (로비)</button>
+          <button onclick="toggleFullscreen()" style="display:block;width:100%;padding:10px;background:rgba(20,60,100,.15);border:1px solid #224466;color:#55aadd;font-family:'Noto Sans KR';font-weight:700;font-size:1.1rem;cursor:pointer;letter-spacing:.15em;transition:all .3s;margin-bottom:8px">전체화면 (F11)</button>
+          <button id="toLobbyBtn2" style="display:block;width:100%;padding:10px;background:rgba(50,80,120,.15);border:1px solid #335577;color:#6699cc;font-family:'Noto Sans KR';font-weight:700;font-size:1.1rem;cursor:pointer;letter-spacing:.15em;transition:all .3s;margin-bottom:8px">캐릭터 선택 (로비)</button>
         </div>
         
         <div class="set-section" style="margin-top:15px;border-top:1px solid #442222;padding-top:15px">
-          <button id="resetBtn" style="display:block;width:100%;padding:10px;background:rgba(100,0,0,.2);border:1px solid #660000;color:#cc4444;font-family:'Noto Sans KR';font-weight:700;font-size:1.1rem;cursor:pointer;letter-spacing:.15em;transition:all .3s">⚠ 게임 리셋 (처음부터)</button>
+          <button id="resetBtn" style="display:block;width:100%;padding:10px;background:rgba(100,0,0,.2);border:1px solid #660000;color:#cc4444;font-family:'Noto Sans KR';font-weight:700;font-size:1.1rem;cursor:pointer;letter-spacing:.15em;transition:all .3s">게임 리셋 (처음부터)</button>
           <div id="resetConfirm" style="display:none;text-align:center;margin-top:8px">
             <div style="color:#ff4444;font-size:1rem;margin-bottom:8px">정말 모든 진행을 초기화하시겠습니까?</div>
             <button id="resetYes" style="padding:6px 20px;background:rgba(150,0,0,.3);border:1px solid #880000;color:#ff4444;font-size:1rem;cursor:pointer;margin-right:8px">확인</button>
@@ -4228,9 +4228,10 @@ const _EN={
 '💥 착지!':'💥 Landing!',
 '💫 기절!':'💫 Stunned!',
 '⚡ 체간삭감!':'⚡ Poise Break!',
-'⚡ 기동파괴! x':'⚡ Chain Crush! x',
+'⚡ 기동파괴! ':'⚡ Chain Crush! T',
 '🔥 기동불꽃!':'🔥 Chain Blaze!',
-'🔥 기동불꽃! x':'🔥 Chain Blaze! x',
+'🔥 기동불꽃! ':'🔥 Chain Blaze! T',
+'단계 ×':' x',
 '⚡ 기동전폭! x':'⚡ Chain Burst! x',
 '🔥 기동불꽃 준비!':'🔥 Chain Blaze Ready!',
 '🔨 기동파괴 준비!':'🔨 Chain Crush Ready!',
@@ -19510,14 +19511,13 @@ function update(){
         P._chainSlamReady=false;
         const _csLv=P.skills.chainSlam||1;
         const _csR=450+(_csLv-1)*~~(225/9); // 1렙450, 10렙675
-        const _csTravD=dst(P._csSlamOX||P.x,P._csSlamOY||P.y,P.x,P.y);
-        const _csDistMul=1+Math.min(_csTravD/150,2.5); // 밸런스: 거리캡 3→2.5 (최대×3.5)
+        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×3, 2티어(0.1초)=×30, 3티어(0.2초)=×100 (업화선급)
+        const _csTier=Math.max(1,Math.min(3,_harpTier||1));
+        const _csDistMul=_csTier===3?100:_csTier===2?30:3;
         const _csDmg=~~(meleeRef()*_skMul('chainSlam')*statStr()*pAtkMul()*_csDistMul*_fuseMul('chainSlam'));
         const _csEl=wp().el||0;
-        console.log('[기동파괴] lv=',_csLv,'R=',_csR,'meleeRef=',meleeRef(),'skMul=',_skMul('chainSlam'),'pAtk=',pAtkMul(),'distMul=',_csDistMul.toFixed(2),'fuseMul=',_fuseMul('chainSlam'),'csDmg=',_csDmg,'el=',_csEl);
         G._noHitStopT=40;
         const _csNe=shQuery(P.x,P.y,_csR+20);
-        console.log('[기동파괴] neCount=',_csNe.length,'pos=',~~P.x,~~P.y);
         for(let _ci=0;_ci<_csNe.length;_ci++){const e=_csNe[_ci];if(!e.alive)continue;
           const d=dst(P.x,P.y,e.x,e.y);if(d>_csR+e.r)continue;
           const ang=Math.atan2(e.y-P.y,e.x-P.x);
@@ -19529,7 +19529,8 @@ function update(){
           for(let j=0;j<8;j++){const a2=Math.PI*2*j/8;poolPart(e.x,e.y,Math.cos(a2)*4,Math.sin(a2)*4,'#ffcc00',3+Math.random()*4,14)}
         }
         playSample('heavy_hit',1,_r(.8,.1));
-        addTxt(P.x,P.y-30,_T('⚡ 기동파괴! x')+_csDistMul.toFixed(1),_csDistMul>=3?'#ffaa00':'#ffcc44',45);
+        const _csTierCol=_csTier>=3?'#ff2200':_csTier>=2?'#ffaa00':'#ffcc44';
+        addTxt(P.x,P.y-30,_T('⚡ 기동파괴! ')+_csTier+'단계 ×'+_csDistMul,_csTierCol,_csTier>=3?55:45);
         shake(60);G.chromaT=15;
         playVFXAng('earthquake',P.x,P.y-_csR*0.255,_csR/256,7,0,true); // 대지충격 VFX (~1초)
         if(!G._gSlamWave)G._gSlamWave=[];
@@ -19554,14 +19555,13 @@ function update(){
         P._chainAssaultReady=false;
         const _stLv=P.skills.chainAssault||1;
         const _stR=450+(_stLv-1)*~~(225/9); // 1렙450, 10렙675
-        const _stTravD=dst(P._csStunOX||P.x,P._csStunOY||P.y,P.x,P.y);
-        const _stDistMul=1+Math.min(_stTravD/200,2); // 거리 보너스 최대x3
+        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×3, 2티어(0.1초)=×30, 3티어(0.2초)=×100 (업화선급)
+        const _stTier=Math.max(1,Math.min(3,_harpTier||1));
+        const _stDistMul=_stTier===3?100:_stTier===2?30:3;
         const _stDmg=~~(magicRef()*_skMul('chainAssault')*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 통일공식: _skMul
         const _stEl=EL.F;
-        console.log('[기동불꽃] lv=',_stLv,'R=',_stR,'magicRef=',magicRef(),'skMul=',_skMul('chainAssault'),'pMag=',pMagicMul(),'distMul=',_stDistMul.toFixed(2),'fuseMul=',_fuseMul('chainAssault'),'stDmg=',_stDmg,'el=',_stEl);
         G._noHitStopT=40;
         const _stNe=shQuery(P.x,P.y,_stR+20);
-        console.log('[기동불꽃] neCount=',_stNe.length,'pos=',~~P.x,~~P.y);
         for(let _si=0;_si<_stNe.length;_si++){const e=_stNe[_si];if(!e.alive)continue;
           const d=dst(P.x,P.y,e.x,e.y);if(d>_stR+e.r)continue;
           const ang=Math.atan2(e.y-P.y,e.x-P.x);
@@ -19574,7 +19574,8 @@ function update(){
           for(let j=0;j<pC;j++)poolPart(e.x+(Math.random()-.5)*8,e.y+(Math.random()-.5)*8,Math.cos(ang)*(2+Math.random()*4),Math.sin(ang)*(2+Math.random()*4),ELP[_stEl],3+Math.random()*4,12);
         }
         playSample('chain_assault_fire',.8,_r(1,.1));{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}
-        addTxt(P.x,P.y-30,_T('🔥 기동불꽃! x')+_stDistMul.toFixed(1),_stDistMul>=3?'#ff0000':_stDistMul>=2?'#ff4400':'#ff8800',45);
+        const _stTierCol=_stTier>=3?'#ff0000':_stTier>=2?'#ff4400':'#ff8800';
+        addTxt(P.x,P.y-30,_T('🔥 기동불꽃! ')+_stTier+'단계 ×'+_stDistMul,_stTierCol,_stTier>=3?55:45);
         shake(50);G.chromaT=12;G._flashT=10;G._flashCol='#ff4400';
         // 용암분출 VFX (스프라이트시트)
         playVFXAng('lava_erupt',P.x,P.y-_stR*0.378,_stR/384,6.7,0,true);
@@ -33115,7 +33116,7 @@ function _invRenderDetail(idx,source){
       const _fe=_oeq?(_oeq.enh||0):0;
       const _xc=_fe>0?xferCost(_fe):0;
       const _lbl=_fe>0?_T('장착')+' (\u2692+'+_fe+' \u2192 '+_xc.toLocaleString()+(OPT.lang==='en'?' Malice':'악의')+((G.mats||0)<_xc?' \u26A0':'')+')'  :_T('장착');
-      _actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><div class="id-btn equip" onclick="const _it=INV.bag[${idx}];const _s=_it?.slot;const _old=_s?INV.equipped[_s]:null;equipItem(_it);applyStats();if(_old){const _oi=INV.bag.indexOf(_old);INV.selected=_oi>=0?_oi:null}else{INV.selected=_s?'eq:'+_s:null}renderInv()">${_lbl}</div><div class="id-btn" onclick="dropItem(${idx});renderInv()">🔥 ${_T('분해')} (👿+${_salV})</div></div>`;
+_actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><div class="id-btn equip" onclick="const _it=INV.bag[${idx}];const _s=_it?.slot;const _old=_s?INV.equipped[_s]:null;equipItem(_it);applyStats();if(_old){const _oi=INV.bag.indexOf(_old);INV.selected=_oi>=0?_oi:null}else{INV.selected=_s?'eq:'+_s:null}renderInv()">${_lbl}</div><div class="id-btn" onclick="dropItem(${idx});renderInv()">${_T('분해')} (악의+${_salV})</div></div>`;
     } else if(source==='eq'){
       _actB.innerHTML=`<div class="id-btns"><div class="id-btn" onclick="const _it=INV.equipped['${idx}'];unequipItem('${idx}');applyStats();const _ui=INV.bag.indexOf(_it);INV.selected=_ui>=0?_ui:null;renderInv()">${_T('해제')}</div></div>`;
     } else if(source==='st'){
@@ -33643,7 +33644,7 @@ _isBtn.style.display='';_isBtn.textContent=OPT.lang==='en'?`Salvage (${_isCnt} -
   if(_jkSelBtn){
     const _nonJunk=INV.bag.filter(it=>it&&!it.junk&&!it.fav);
     if(_nonJunk.length>0){
-      _jkSelBtn.style.display='';_jkSelBtn.textContent=OPT.lang==='en'?`🗑️ Mark all junk (${_nonJunk.length})`:`🗑️ 전체 쓰레기 지정 (${_nonJunk.length}개)`;
+_jkSelBtn.style.display='';_jkSelBtn.textContent=OPT.lang==='en'?`Mark all junk (${_nonJunk.length})`:`전체 쓰레기 지정 (${_nonJunk.length}개)`;
       _jkSelBtn.onclick=()=>{for(const it of INV.bag){if(it&&!it.fav)it.junk=true}renderInv()};
     }else{_jkSelBtn.style.display='none'}
   }
@@ -33796,7 +33797,7 @@ $('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
     const ok=G.mats>=_forgeSel.cost;
     cfm.style.display='';
     $('fgSelName').textContent=_T(_forgeSel.name);
-    $('fgSelDesc').textContent=_forgeSel.desc+' — 👿 '+_forgeSel.cost;
+$('fgSelDesc').textContent=_forgeSel.desc+' — 악의 '+_forgeSel.cost;
     $('fgCraftBtn').style.opacity=ok?'1':'.4';
     $('fgCraftBtn').style.borderColor=ok?'#aa8833':'#443322';
     $('fgCraftBtn').onclick=_fgCraft;
@@ -33806,7 +33807,7 @@ $('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
     // ═══ 장비 강화 (무한 강화, 성공률 시스템) ═══
     grid.style.gridTemplateColumns='1fr';
     const uhdr=document.createElement('div');uhdr.style.cssText='color:#ffaa44;font-size:.95rem;font-weight:700;margin-bottom:8px;letter-spacing:.1em;text-align:center';
-    uhdr.textContent=_T('⚒️ 장비 강화 (실패 시 재료만 소멸)');grid.appendChild(uhdr);
+uhdr.textContent=_T('장비 강화 (실패 시 재료만 소멸)');grid.appendChild(uhdr);
     const _slotEN={weapon:'⚔️ Weapon',shield:'🛡️ Shield',armor:'🦺 Armor',helmet:'⛑️ Helmet',boots:'👢 Boots',bow:'🏹 Bow',gloves:'🧤 Gloves',pants:'👖 Pants',belt:'🥋 Belt',necklace:'📿 Necklace',ring1:'💍 Ring1',ring2:'💍 Ring2',cape:'🧣 Cape',bracelet:'⭕ Bracelet',headband:'🎀 Earring'};
     const slots=[['weapon','⚔️ 무기'],['shield','🛡️ 견갑'],['armor','🦺 갑옷'],['helmet','⛑️ 투구'],['boots','👢 부츠'],['bow','🏹 활'],['gloves','🧤 장갑'],['pants','👖 바지'],['belt','🥋 벨트'],['necklace','📿 목걸이'],['ring1','💍 반지1'],['ring2','💍 반지2'],['cape','🧣 망토'],['bracelet','⭕ 팔찌'],['headband','🎀 귀걸이']].map(([k,v])=>[k,OPT.lang==='en'?_slotEN[k]:v]);
     let hasItem=false;
@@ -33837,7 +33838,7 @@ $('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
         if(it.def)bonusTxt+=(bonusTxt?' | ':'')+ `DEF +${defMulNow}% → +${defMulNext}%`;
         if(_isDefSlot)bonusTxt+=(bonusTxt?' | ':'')+`HP +${enh} → +${enh+1}`;
         if(!bonusTxt)bonusTxt=_T('강화 보너스 적용');
-        d.innerHTML=`<div class="fg-in" style="color:${rc}">${label} <span style="color:${ec}">+${enh}</span></div><div class="fg-id">${bonusTxt}</div><div class="fg-ic" style="display:flex;justify-content:space-between"><span style="color:${rateCol};font-weight:700">${_T('성공률')} ${ratePct}%</span><span>👿 ${cost}</span></div>`;
+d.innerHTML=`<div class="fg-in" style="color:${rc}">${label} <span style="color:${ec}">+${enh}</span></div><div class="fg-id">${bonusTxt}</div><div class="fg-ic" style="display:flex;justify-content:space-between"><span style="color:${rateCol};font-weight:700">${_T('성공률')} ${ratePct}%</span><span>${_T('악의')} ${cost}</span></div>`;
         d.onclick=()=>{
           const {rate:r2,cost:c2}=enhCost(it.enh||0,it.rarity);
           if(G.mats<c2){notify(_T('악의가 부족합니다!'));return}
@@ -33917,7 +33918,7 @@ $('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
       const sel=_forgeSel&&_forgeSel.name===label;
       const d=document.createElement('div');d.className='fg-i'+(sel?' fg-sel':'');
       const _lvTxt=maxed?'':(!lvOk?' <span style="color:#ff4444">⚠ Lv.'+reqLv+' '+_T('필요')+'</span>':'');
-      d.innerHTML=`<div class="fg-in" style="color:${item.col}">${label}</div><div class="fg-id">${maxed?_T('최대 강화'):_T('회복량')+' '+cur+' → '+nxt}${_lvTxt}</div>${maxed?'':'<div class="fg-ic">👿 '+cost+'</div>'}`;
+d.innerHTML=`<div class="fg-in" style="color:${item.col}">${label}</div><div class="fg-id">${maxed?_T('최대 강화'):_T('회복량')+' '+cur+' → '+nxt}${_lvTxt}</div>${maxed?'':'<div class="fg-ic">'+_T('악의')+' '+cost+'</div>'}`;
       if(!maxed&&lvOk)d.onclick=()=>_fgSelect(label,item.n+(OPT.lang==='en'?' Enhance Lv.':' 강화 Lv.')+(lv+1),cost,()=>{POT_LV[item.type]++;G.mats-=cost;addTxt(P.x,P.y-20,item.n+' Lv.'+POT_LV[item.type]+'!','#ffcc00',50);renderForge()});
       grid.appendChild(d);
     });
@@ -33973,7 +33974,7 @@ shdr.textContent=_T('악의의 분해로 — 장비를 악의로 갈아버려라
       d.style.cssText=`border:1px solid ${sel?'#cc3322':'#332211'};background:${sel?'rgba(204,51,34,.12)':'rgba(0,0,0,.25)'};cursor:pointer;position:relative;padding:6px`;
       d.innerHTML=`${sel?'<div style="position:absolute;top:2px;right:6px;color:#ff4444;font-weight:700;font-size:.9rem">✗</div>':''}
         <div class="fg-in" style="color:${rc}">${it.emoji||''} ${itemDispName(it)}${it.enh?' <span style="color:'+enhColor(it.enh)+'">+'+it.enh+'</span>':''}</div>
-        <div class="fg-id">${_rarName(it.rarity||0)} T${it.tier||0} → 👿 ${val}</div>`;
+<div class="fg-id">${_rarName(it.rarity||0)} T${it.tier||0} → ${_T('악의')} ${val}</div>`;
       d.onclick=()=>{if(_salSel.has(i))_salSel.delete(i);else _salSel.add(i);renderForge()};
       itemGrid.appendChild(d);
     });
@@ -34007,7 +34008,7 @@ btn.textContent=OPT.lang==='en'?`Salvage (${selArr.length} -> ${totalMats} Malic
     // ═══ 리롤 — 접두/접미 재설정 ═══
     grid.style.gridTemplateColumns='1fr';
     const rHdr=document.createElement('div');rHdr.style.cssText='color:#44ccff;font-size:1rem;font-weight:700;margin-bottom:8px;letter-spacing:.1em;text-align:center';
-    rHdr.textContent=OPT.lang==='en'?'🔄 Reroll — Reset prefix/suffix | 👿 '+REROLL_COST:'🔄 리롤 — 접두/접미 재설정 | 👿 '+REROLL_COST;grid.appendChild(rHdr);
+rHdr.textContent=OPT.lang==='en'?'Reroll — Reset prefix/suffix | Malice '+REROLL_COST:'리롤 — 접두/접미 재설정 | 악의 '+REROLL_COST;grid.appendChild(rHdr);
     const eqList=document.createElement('div');eqList.style.cssText='display:flex;flex-direction:column;gap:4px;margin-bottom:8px;max-height:280px;overflow-y:auto';
     SLOT_NAMES.forEach((slot,i)=>{
       const it=INV.equipped[slot];
@@ -34059,7 +34060,7 @@ btn.textContent=OPT.lang==='en'?`Salvage (${selArr.length} -> ${totalMats} Malic
     grid.style.gridTemplateColumns='1fr';
     // 서브탭
     const cSubBar=document.createElement('div');cSubBar.style.cssText='display:flex;gap:4px;margin-bottom:8px;justify-content:center';
-    [['enhance','💎 강화'],['synth','🔄 합성'],['decomp','🔨 분해/제작']].forEach(([k,v])=>{
+[['enhance','강화'],['synth','합성'],['decomp','분해/제작']].forEach(([k,v])=>{
       const b=document.createElement('div');b.style.cssText='padding:3px 10px;font-size:.85rem;cursor:pointer;border:1px solid '+(_crForgeTab===k?'#bb88ff':'#443322')+';color:'+(_crForgeTab===k?'#ddaaff':'#887766')+';background:'+(_crForgeTab===k?'rgba(187,136,255,.12)':'rgba(0,0,0,.2)')+';border-radius:3px';
       b.textContent=v;b.onclick=()=>{_crForgeTab=k;_crForgeSel=-1;renderForge()};cSubBar.appendChild(b);
     });
@@ -34221,7 +34222,7 @@ cInfo.innerHTML=OPT.lang==='en'?'Owned: '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX
       if(!hasGroup){const em=document.createElement('div');em.style.cssText='color:#554433;text-align:center;padding:20px';em.textContent=_T('합성 가능한 결정이 없습니다 (같은 종류·성급 3개 필요)');grid.appendChild(em)}
     }else if(_crForgeTab==='decomp'){
       // ── 분해 / 제작 ──
-      const secHdr1=document.createElement('div');secHdr1.style.cssText='color:#ff8844;font-size:.9rem;font-weight:700;margin-bottom:4px';secHdr1.textContent=_T('🔥 결정 분해 → 결정 가루');grid.appendChild(secHdr1);
+const secHdr1=document.createElement('div');secHdr1.style.cssText='color:#ff8844;font-size:.9rem;font-weight:700;margin-bottom:4px';secHdr1.textContent=_T('결정 분해 → 결정 가루');grid.appendChild(secHdr1);
       const dList=document.createElement('div');dList.style.cssText='display:flex;flex-direction:column;gap:2px;max-height:140px;overflow-y:auto;margin-bottom:8px';
       CRYSTAL_BAG.forEach((cr,i)=>{
         const d=CRYSTAL_DEFS[cr.id],s=CRYSTAL_STAR[cr.star];
@@ -38227,7 +38228,7 @@ function drawP(){
         if(_gcReady&&_gcFW>0){
           const _gcFi=~~(fz.t*.08)%_GC_FRAMES;
           const _gcSz=fz.r*2.5; // 1렙 r=200 → 500px
-          X.globalAlpha=(.6+.15*Math.sin(fz.t*.1))*_faFade;
+          X.globalAlpha=(.3+.075*Math.sin(fz.t*.1))*_faFade; // 2026-04-16 균열 진하기 반감
           X.save();X.translate(fz.x+_quakeStr,fz.y+_quakeStr*.5);
           X.rotate(fz.t*.015);
           X.drawImage(_GC_IMG,_gcFi*_gcFW,0,_gcFW,_gcFH,-_gcSz/2,-_gcSz/2,_gcSz,_gcSz);
