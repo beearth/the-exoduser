@@ -878,52 +878,43 @@ canvas{display:block;position:fixed;inset:0}
 #forge #fgTabs{
   display:flex !important;
   flex-direction:column !important;
-  gap:3px !important;
+  justify-content:center !important;
+  gap:6px !important;
+  height:100%;
 }
 #forge #fgTabs .fg-tab{
   width:100% !important;
-  min-height:48px;
+  min-height:44px;
   display:flex !important;
   align-items:center !important;
-  justify-content:center !important;
-  gap:0 !important;
-  padding:0 !important;
-  position:relative;
-  overflow:hidden;
-  border:none !important;
-  background:transparent !important;
-  cursor:pointer;
+  gap:10px !important;
+  padding:8px 12px !important;
+  text-align:left !important;
 }
-#forge #fgTabs .fg-tab .fg-tab-bg{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  object-fit:cover;
-  object-position:left center;
-  mix-blend-mode:screen;
-  opacity:.55;
-  transition:opacity .15s;
-  pointer-events:none;
+#forge #fgTabs .fg-tab img,
+#forge #fgTabs .fg-tab svg{
+  width:28px !important;
+  height:28px !important;
+  flex-shrink:0;
 }
-#forge #fgTabs .fg-tab:hover .fg-tab-bg{opacity:.85}
-#forge #fgTabs .fg-tab.act .fg-tab-bg{opacity:1}
-#forge #fgTabs .fg-tab .fg-tab-txt{
-  position:relative;z-index:1;
-  width:100%;
-  text-align:center;
-  padding:6px 0;
-  font-size:.9rem;font-weight:700;
-  color:#aa8866;
-  text-shadow:0 1px 3px rgba(0,0,0,.8);
-  letter-spacing:.05em;
-  transition:color .15s;
+#forge #fgTabs .fg-tab .fg-tab-label{
+  flex:1;
+  font-size:.95em;
 }
-#forge #fgTabs .fg-tab:hover .fg-tab-txt{color:#ffcc88}
-#forge #fgTabs .fg-tab.act .fg-tab-txt{color:#ffdd99;text-shadow:0 0 8px rgba(255,170,68,.4)}
-#forge .ptitle{
+#forge .ptitle,
+#invPanel .ptitle{
   justify-content:center;
-  font-size:2rem;
-  color:#ffd3a4;
-  text-shadow:0 2px 0 rgba(34,12,10,.92),0 0 22px rgba(255,108,58,.32);
+  font-size:1.6rem;
+  color:#f0d0a0 !important;
+  background:url('output/imagegen/forge-tabs-v4/tab-bar.png') center/100% 100% no-repeat !important;
+  -webkit-background-clip:border-box !important;
+  background-clip:border-box !important;
+  padding:10px 24px 10px !important;
+  margin-bottom:10px;
+  border-bottom:none !important;
+  border:none !important;
+  text-shadow:0 2px 4px rgba(0,0,0,.9),0 0 16px rgba(255,108,58,.25);
+  letter-spacing:.12em !important;
 }
 #forge .fg-tab{
   display:inline-flex;
@@ -1344,18 +1335,23 @@ canvas{display:block;position:fixed;inset:0}
   box-shadow:inset 0 0 0 1px rgba(255,228,194,.06),0 12px 22px rgba(0,0,0,.2),0 0 18px rgba(255,120,56,.08) !important;
 }
 #forge .fg-tab .fg-tab-ico{
-  width:38px;
-  height:38px;
+  width:40px;
+  height:40px;
   margin-right:0;
-  border-radius:12px;
+  border-radius:8px;
   border:1px solid rgba(165,101,58,.42) !important;
-  background:linear-gradient(180deg,rgba(40,24,20,.93),rgba(12,8,8,.985)) !important;
+  background:rgba(10,6,6,.9) !important;
   box-shadow:inset 0 0 0 1px rgba(255,231,204,.03),0 6px 14px rgba(0,0,0,.16) !important;
+  overflow:hidden;
 }
 #forge .fg-tab .fg-tab-ico-img{
-  width:24px;
-  height:24px;
-  filter:grayscale(.08) sepia(.24) brightness(1.02) contrast(1.06) saturate(.9);
+  width:36px;
+  height:36px;
+  object-fit:cover;
+  object-position:25% center;
+  mix-blend-mode:screen;
+  filter:brightness(1.2) saturate(1.1);
+  border-radius:6px;
 }
 #forge .fg-tab-txt{
   display:block;
@@ -30184,7 +30180,7 @@ function addParts(x,y,col,n){const orig=n;n=~~(n*.6);for(let i=0;i<n&&_partCnt<P
 // ── 텍스트 풀 (zero-alloc ring buffer) ──
 var _FLOAT_TEXT_ENABLED=true; // true=플로팅텍스트 표시, false=전부 스킵
 // ── 반복 전투 텍스트 블랙리스트 (5초에 5회 이상 뜨는 것만) ──
-var _FLOAT_TEXT_BLACKLIST=['관통','약점','광역','칼날','기동불꽃','방어','저항','반사','흡수','반격','기절','빙결','감전','화상','중독','독!','가시','독혈','피웅덩이','잡힘','익사','속박','작살 약점','폭발','☠','충격파','프리즌','블루콩','빨콩','무지개','유도반사','반사 폭발','콤보 종료','포효','강화','DOUBLE','TRIPLE','MULTI','악의+','PARRY','패링','패링폭발','Penetrate','Weakness','AoE','Blade','Defense','Resist','Reflect','Absorb','Counter','Stun','Freeze','Shock','Burn','Poison','Thorn','Drown','Bind','Parry','Malice+'];
+var _FLOAT_TEXT_BLACKLIST=['관통','약점','광역','칼날','기동불꽃','방어','저항','반사','흡수','반격','기절','빙결','감전','화상','중독','독!','가시','독혈','피웅덩이','잡힘','익사','속박','작살 약점','폭발','☠','충격파','프리즌','블루콩','빨콩','무지개','유도반사','반사 폭발','콤보 종료','포효','강화','악의 추출','암전','균열','구울','웅덩이','소환','발광','울화','나선','파편','결정','획득','증표','🔥','🩸','🟢','DOUBLE','TRIPLE','MULTI','악의+','PARRY','패링','패링폭발','Penetrate','Weakness','AoE','Blade','Defense','Resist','Reflect','Absorb','Counter','Stun','Freeze','Shock','Burn','Poison','Thorn','Drown','Bind','Parry','Malice+'];
 let _txtNext=0;
 function addTxt(x,y,t,c,l){
   if(G.txts.length<TXTS_MAX){for(let _i=G.txts.length;_i<TXTS_MAX;_i++)G.txts.push({x:0,y:0,t:'',c:'#fff',life:0,ml:0});_txtNext=0}
@@ -34533,9 +34529,11 @@ $('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
     const _txt=OPT.lang==='en'?_m.en:_m.ko;
     const d=document.createElement('div');
     d.className='fg-tab'+(G.forgeTab===k?' act':'');
-    const _bgImg='output/imagegen/forge-tabs-v4/'+k+'.png?v=20260417-v4';
-    const _imgOld='output/imagegen/forge-tabs-v3/'+k+'.png?v=20260416-v3set1';
-    d.innerHTML='<img class="fg-tab-bg" src="'+_bgImg+'" alt="" onerror="this.style.display=\'none\'"><span class="fg-tab-txt">'+_txt+'</span>';
+    const _v4='output/imagegen/forge-tabs-v4/'+k+'.png?v=20260417-v4';
+    const _v3='output/imagegen/forge-tabs-v3/'+k+'.png?v=20260416-v3set1';
+    const _fb=_forgeTabFallbackData(_m.icon);
+    const _src=(['upgrade','potion','salvage','reroll','crystal','craft'].indexOf(k)>=0)?_v4:_v3;
+    d.innerHTML='<span class="fg-tab-ico"><img class="fg-tab-ico-img" src="'+_src+'" alt="" onerror="this.onerror=null;this.src=&apos;'+_fb+'&apos;"></span><span class="fg-tab-txt">'+_txt+'</span>';
     d.onclick=()=>{G.forgeTab=k;_forgeSel=null;_salSel.clear();_rerollSel=null;_crForgeSel=-1;renderForge()};
     tabs.appendChild(d);
   });
@@ -35990,8 +35988,9 @@ function draw(){
   }
   const _tWI=performance.now();
   if(_fc2d){var _dMobj=_PERF_PROF._delta(_snapMobj);_PERF_PROF._mobj_di=_dMobj.di}
-  // World items (화면 내만 렌더)
-  for(let _wii=0;_wii<worldItems.length;_wii++){const it=worldItems[_wii];if(it.picked)continue;if(it.x<_wvl||it.x>_wvr||it.y<_wvt||it.y>_wvb)continue;const b=Math.sin(_now/300+it.x)*3;X.textAlign='center';
+  // World items (화면 내만 렌더, 캡 30)
+  var _wiDrawn=0;
+  for(let _wii=0;_wii<worldItems.length;_wii++){const it=worldItems[_wii];if(it.picked)continue;var _sx=it.x-G.cam.x,_sy=it.y-G.cam.y;var _pad=40;if(_sx<-C.width/2-_pad||_sx>C.width/2+_pad||_sy<-C.height/2-_pad||_sy>C.height/2+_pad)continue;if(++_wiDrawn>30)break;const b=Math.sin(_now/300+it.x)*3;X.textAlign='center';
     if(it.type==='forge'){X.font='28px sans-serif';X.fillText('⚒️',it.x,it.y+b);X.font='14px "Noto Sans KR"';X.fillStyle='#ff8844';X.fillText('['+keyName(BINDS.forge)+']',it.x,it.y+b+20)}
     else if(it.type==='hp'){X.font='22px sans-serif';X.fillText('❤️',it.x,it.y+b);
       if(dst(P.x,P.y,it.x,it.y)<60){X.font='11px "Noto Sans KR"';X.fillStyle='#33ff33';X.fillText('['+keyName(BINDS.interact)+']',it.x,it.y+b+18)}}
@@ -38071,7 +38070,7 @@ function draw(){
   renderHitVFX(X);renderElecVFX(X);renderOldBurstVFX(X);renderDarkBurstVFX(X);renderLightningBurstVFX(X);
   renderCrescents(X);
   renderMmExpVFX(X);_renderIceOrbVfx(X);
-  {const _t0=performance.now();if(_FLOAT_TEXT_ENABLED){X.font='bold 22px sans-serif';X.textAlign='center';for(let _ti=0;_ti<G.txts.length;_ti++){const t=G.txts[_ti];if(t.life<=0)continue;if(t.x<_vl||t.x>_vr||t.y<_vt||t.y>_vb)continue;var _blk=false;var _isN2=t.t.length>0&&t.t.length<10;if(_isN2){_blk=true;for(var _ni2=0;_ni2<t.t.length;_ni2++){var _cc2=t.t.charCodeAt(_ni2);if(!((_cc2>=48&&_cc2<=57)||_cc2===45||_cc2===43)){_blk=false;break}}}if(!_blk){for(var _bi=0;_bi<_FLOAT_TEXT_BLACKLIST.length;_bi++){if(t.t.indexOf(_FLOAT_TEXT_BLACKLIST[_bi])!==-1){_blk=true;break}}}if(_blk)continue;const _ta=t.life/t.ml;X.globalAlpha=_ta*.9;X.fillStyle='#000000';X.fillText(t.t,t.x+1,t.y+1);X.fillText(t.t,t.x-1,t.y+1);X.globalAlpha=_ta;X.fillStyle=t.c;X.fillText(t.t,t.x,t.y)}X.globalAlpha=1}if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
+  {const _t0=performance.now();if(_FLOAT_TEXT_ENABLED){X.font='bold 22px sans-serif';X.textAlign='center';for(let _ti=0;_ti<G.txts.length;_ti++){const t=G.txts[_ti];if(t.life<=0)continue;if(t.x<_vl||t.x>_vr||t.y<_vt||t.y>_vb)continue;var _blk=false;var _isN2=t.t.length>0&&t.t.length<16;if(_isN2){_blk=true;for(var _ni2=0;_ni2<t.t.length;_ni2++){var _cc2=t.t.charCodeAt(_ni2);if(!((_cc2>=48&&_cc2<=57)||_cc2===45||_cc2===43)){_blk=false;break}}}if(!_blk){for(var _bi=0;_bi<_FLOAT_TEXT_BLACKLIST.length;_bi++){if(t.t.indexOf(_FLOAT_TEXT_BLACKLIST[_bi])!==-1){_blk=true;break}}}if(_blk)continue;const _ta=t.life/t.ml;X.globalAlpha=_ta*.9;X.fillStyle='#000000';X.fillText(t.t,t.x+1,t.y+1);X.fillText(t.t,t.x-1,t.y+1);X.globalAlpha=_ta;X.fillStyle=t.c;X.fillText(t.t,t.x,t.y)}X.globalAlpha=1}if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
   X.restore();
   const _dd4=performance.now();
   if(_fc2d){var _dPart=_PERF_PROF._delta(_snapPart);_PERF_PROF._part_di=_dPart.di;_PERF_PROF._part_st=_dPart.st;_PERF_PROF._part_fr=_dPart.fr;_PERF_PROF._part_ga=_dPart.ga;var _snapPost=_PERF_PROF._snap()}
