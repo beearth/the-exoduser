@@ -8845,7 +8845,7 @@ function mkItem(slot,tier,el,rarity,wtype){
     // DEF/eDef 5티어 선형 통일: T0=10, T1=20, T2=30, T3=40, T4=50 (12슬롯 × 50 = 총 600 방어)
     // eDef는 전 속성 공통이라 절반 스케일 (T4=25, 총 최대 ~150)
     // 방어구 파트: bonusHp 5티어 [100,200,300,400,500] (2026-04-11 재밸런스)
-    shield:{def:10+tier*10,stagger:15+tier*8,blockRate:50+tier*8,shieldWt:10-tier,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
+    shield:{def:10+tier*10,stagger:15+tier*8,shieldWt:10-tier,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
     boots:{def:10+tier*10,spd:tier*.08,bonusSt:5+tier*4,chargeDist:14+tier*3,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
     armor:{def:10+tier*10,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:4+tier*3,bonusHp:(tier+1)*100,bonusShield:(tier+1)*100},
     // 무기 파트(helmet,weapon,bow): bonusHp 금지 — 무기 파트는 공격 전용
