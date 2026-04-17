@@ -6761,7 +6761,6 @@ const _decorImgs={};
 const _wallTreeImgs={};
 // ── 1-2 해골 벽 타일 (단일) ──
 const _skullWallImg=new Image();_skullWallImg.src='assets/map/ch2/skull_wall_tile.png';
-const _holySigilV=new Image();_holySigilV.src='img/skills/holy_sigil_v.png';
 const _wallEdgeImg=new Image();_wallEdgeImg.src='assets/map/ch2/wall_edge_tile.png';
 let _skullWallPat=null;
 function _buildSkullWallPat(){
@@ -10426,22 +10425,18 @@ function poolRender(X,vl,vr,vt,vb){
   var _lf='',_ls='';
   var _prDrawn=0;
   const _szMul=_hiFPS?.7:1; // 고FPS: 사이즈 0.7배
-  const _psub=_s7Active; // [PART-SUB] 계측 guard
   _partGrid.fill(0);
   const _pgOx=vl,_pgOy=vt;
-  if(_psub)_PERF_PROF._partLooped+=_partCnt;
-  if(_psub)_PERF_PROF._partActive+=_partCnt; // poolUpdate가 compact — 전부 alive
   for(var i=0;i<_partCnt;i++){
     if(_prDrawn>=_PR_CAP)break;
     const p=_partPool[i];
-    if(p.x<vl||p.x>vr||p.y<vt||p.y>vb){if(_psub)_PERF_PROF._partCulled++;continue;}
+    if(p.x<vl||p.x>vr||p.y<vt||p.y>vb)continue;
     const _pgx=~~((p.x-_pgOx)/32),_pgy=~~((p.y-_pgOy)/32);
     if(_pgx>=0&&_pgx<64&&_pgy>=0&&_pgy<64){const _pgi=_pgy*64+_pgx;if(_partGrid[_pgi]>=_pCellMax)continue;_partGrid[_pgi]++}
     const fa=p.ml>0?(p.life/p.ml*1.5<1?p.life/p.ml*1.5:1):.6;
     // opacity 0.15 미만 스킵 (캡 근접 시 흐린 것 우선 탈락)
     if(fa<0.15&&_prDrawn>50)continue;
     _prDrawn++;
-    if(_psub)_PERF_PROF._partAlphaSwitch++;
     X.globalAlpha=Math.min(1,fa*1.4);
     const _psz=p.sz*_szMul;
     if(_useGPU||_useGL){switch(p.tp){
@@ -10456,7 +10451,6 @@ function poolRender(X,vl,vr,vt,vb){
       default:{if(p.col!==_lf){X.fillStyle=p.col;_lf=p.col}const hs3=_psz*.5;X.fillRect(p.x-hs3,p.y-hs3,_psz,_psz);}
     }}
   }
-  if(_psub){_PERF_PROF._partDrawn+=_prDrawn;_PERF_PROF._partAlphaSwitch++} // +1 for reset to 1
   X.globalAlpha=1;
 }
 
@@ -13950,16 +13944,18 @@ function _draw3DProj(x,y,r,el,t,ang,a){
       X.lineTo(Math.cos(ba+.4)*(s+3)+Math.sin(t*.02+i*5)*2,Math.sin(ba+.4)*(s+3)+Math.cos(t*.03+i*3)*2);X.stroke()}
     // 깜빡임
     if(Math.sin(t*.03)>.4){X.globalAlpha=a*.1;X.fillStyle='#ffffcc';X.beginPath();X.arc(0,0,s+2,0,Math.PI*2);X.fill()}
-  }else if(el===5){// ── HOLY: 회전 V 시길 ──
+  }else if(el===5){// ── HOLY: 회전 황금 십자성 ──
     const rot=t*.003;X.rotate(rot);
     // 8방향 광휘
     X.globalAlpha=a*.12;X.fillStyle='#ffdd44';
     for(let i=0;i<8;i++){const ra=Math.PI*2*i/8;
       X.beginPath();X.moveTo(0,0);X.lineTo(Math.cos(ra-.12)*(s+5),Math.sin(ra-.12)*(s+5));X.lineTo(Math.cos(ra+.12)*(s+5),Math.sin(ra+.12)*(s+5));X.fill()}
-    // V 시길 이미지
-    if(_holySigilV.complete&&_holySigilV.naturalWidth){
-      X.globalAlpha=a;const _vSz=s*2.4;X.drawImage(_holySigilV,-_vSz/2,-_vSz/2,_vSz,_vSz);
-    }else{X.globalAlpha=a;X.fillStyle='#ffcc22';X.fillRect(-s*.15,-s*.9,s*.3,s*1.8);X.fillRect(-s*.9,-s*.15,s*1.8,s*.3)}
+    // 십자 (어두운 금)
+    X.globalAlpha=a*.9;X.fillStyle='#cc9900';
+    X.fillRect(-s*.3,-s*1.1,s*.6,s*2.2);X.fillRect(-s*1.1,-s*.3,s*2.2,s*.6);
+    // 십자 (밝은 금)
+    X.globalAlpha=a;X.fillStyle='#ffcc22';
+    X.fillRect(-s*.15,-s*.9,s*.3,s*1.8);X.fillRect(-s*.9,-s*.15,s*1.8,s*.3);
     // 중심 보석
     X.globalAlpha=a;X.fillStyle='#fff8cc';X.beginPath();X.arc(0,0,s*.3,0,Math.PI*2);X.fill();
     X.globalAlpha=a*.6;X.fillStyle='#ffffff';X.beginPath();X.arc(-s*.08,-s*.1,s*.12,0,Math.PI*2);X.fill();
@@ -37793,7 +37789,6 @@ function draw(){
   const _tDP1=performance.now();
   // G.parts 레거시 렌더 제거됨 — poolRender()로 통합
   // 오브젝트 풀 파티클 렌더 (additive로 밝은 폭발 대비)
-  if(_s7Active)_PERF_PROF._partAdditive++;
   X.save();X.globalCompositeOperation='lighter';
   poolRender(X,_vl,_vr,_vt,_vb);
   X.globalCompositeOperation='source-over';X.restore();
@@ -39061,11 +39056,10 @@ function drawP(){
           else X.lineTo(fz.x+Math.cos(_ra)*_rr,fz.y+Math.sin(_ra)*_rr);
         }
         X.closePath();X.stroke();
-        // 3) V 시길 문양 (중앙)
+        // 3) 쐐기 문양 (중앙)
+        X.globalAlpha=.15*_fzFade;X.strokeStyle='#fff8dc';X.lineWidth=3;
         const _cSz=fz.r*.3;
-        if(_holySigilV.complete&&_holySigilV.naturalWidth){
-          X.globalAlpha=.2*_fzFade;const _vSz2=_cSz*2;X.drawImage(_holySigilV,fz.x-_vSz2/2,fz.y-_vSz2/2,_vSz2,_vSz2);
-        }else{X.globalAlpha=.15*_fzFade;X.strokeStyle='#fff8dc';X.lineWidth=3;X.beginPath();X.moveTo(fz.x,fz.y-_cSz);X.lineTo(fz.x,fz.y+_cSz);X.moveTo(fz.x-_cSz*.6,fz.y-_cSz*.3);X.lineTo(fz.x+_cSz*.6,fz.y-_cSz*.3);X.stroke()}
+        X.beginPath();X.moveTo(fz.x,fz.y-_cSz);X.lineTo(fz.x,fz.y+_cSz);X.moveTo(fz.x-_cSz*.6,fz.y-_cSz*.3);X.lineTo(fz.x+_cSz*.6,fz.y-_cSz*.3);X.stroke();
         // 4) 빛 파티클
         for(let _si=0;_si<4;_si++){
           const _sa=Math.random()*Math.PI*2;const _sd=Math.random()*fz.r*.8;
@@ -39094,13 +39088,10 @@ function drawP(){
           X.globalAlpha=(.55+.12*Math.sin(_hrt*12+_ai))*_fzFade;X.strokeStyle=_g;X.lineWidth=10;
           X.beginPath();X.moveTo(fz.x,fz.y);X.lineTo(_ex,_ey);X.stroke();
         }
-        // 3) 코어 V 시길 (십자 대체)
-        if(_holySigilV.complete&&_holySigilV.naturalWidth){
-          X.globalAlpha=(.6+.2*Math.sin(_hrt*15))*_fzFade;const _hrVSz=fz.r*.5;
-          X.save();X.translate(fz.x,fz.y);X.rotate((_hrt*2)%(Math.PI*2));X.drawImage(_holySigilV,-_hrVSz/2,-_hrVSz/2,_hrVSz,_hrVSz);X.restore();
-        }else{X.globalAlpha=(.7+.2*Math.sin(_hrt*15))*_fzFade;X.strokeStyle='#fff8dc';X.lineWidth=3;
-          X.beginPath();X.moveTo(_hrArms[0][0],_hrArms[0][1]);X.lineTo(_hrArms[2][0],_hrArms[2][1]);X.stroke();
-          X.beginPath();X.moveTo(_hrArms[1][0],_hrArms[1][1]);X.lineTo(_hrArms[3][0],_hrArms[3][1]);X.stroke()}
+        // 3) 코어 십자 — 밝은 흰빛 (얇고 선명)
+        X.globalAlpha=(.7+.2*Math.sin(_hrt*15))*_fzFade;X.strokeStyle='#fff8dc';X.lineWidth=3;
+        X.beginPath();X.moveTo(_hrArms[0][0],_hrArms[0][1]);X.lineTo(_hrArms[2][0],_hrArms[2][1]);X.stroke();
+        X.beginPath();X.moveTo(_hrArms[1][0],_hrArms[1][1]);X.lineTo(_hrArms[3][0],_hrArms[3][1]);X.stroke();
         // 4) 중심 — 빛나는 코어
         const _coreR=12+Math.sin(_hrt*10)*4;
         X.globalAlpha=(.5+.2*Math.sin(_hrt*8))*_fzFade;X.fillStyle='#ffd700';
@@ -41335,7 +41326,7 @@ function drawP(){
   // [S7-BREAKDOWN] 진입 스냅샷 (2026-04-17) — _PERF_PROF guard 재사용, 300마리 이하면 패스스루
   const _s7Active=(typeof _PERF_PROF!=='undefined'&&_PERF_PROF.enabled);
   // [S7-C2D] 카운터 리셋 (2026-04-17)
-  if(_s7Active){_PERF_PROF._c2dSave=0;_PERF_PROF._c2dRestore=0;_PERF_PROF._c2dGco=0;_PERF_PROF._c2dAlpha=0;_PERF_PROF._c2dDrawImage=0;_PERF_PROF._c2dFillRect=0;_PERF_PROF._c2dArc=0;_PERF_PROF._partLooped=0;_PERF_PROF._partActive=0;_PERF_PROF._partDrawn=0;_PERF_PROF._partCulled=0;_PERF_PROF._partAdditive=0;_PERF_PROF._partAlphaSwitch=0}
+  if(_s7Active){_PERF_PROF._c2dSave=0;_PERF_PROF._c2dRestore=0;_PERF_PROF._c2dGco=0;_PERF_PROF._c2dAlpha=0;_PERF_PROF._c2dDrawImage=0;_PERF_PROF._c2dFillRect=0;_PERF_PROF._c2dArc=0}
   const _s7DC0=_s7Active?_PERF_PROF.drawCalls:0;
   const _s7Pg0=_s7Active?(_PERF_PROF._glProg||0):0;
   const _s7Tx0=_s7Active?(_PERF_PROF._glTex||0):0;
@@ -42541,9 +42532,7 @@ const _PERF_PROF={enabled:false,frameCnt:0,
   _s7WarnedOnce:false, // S7 고비용 경고 1회 throttle (3초 reset, 2026-04-17)
   // S7-C2D 카운터 (2026-04-17)
   _c2dSave:0,_c2dRestore:0,_c2dGco:0,_c2dAlpha:0,_c2dDrawImage:0,_c2dFillRect:0,_c2dArc:0,
-  _c2dHooked:false,
-  // [PART-SUB] 파티클 서브 카운터 (2026-04-17)
-  _partLooped:0,_partActive:0,_partDrawn:0,_partCulled:0,_partAdditive:0,_partAlphaSwitch:0};
+  _c2dHooked:false};
 function _perfHookGL(){
   if(_PERF_PROF._hooked)return;
   // GL 드로우콜 + state change 카운터 후킹 (메인 GL + 보조 _bGL)
