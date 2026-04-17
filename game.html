@@ -1988,12 +1988,31 @@ canvas{display:block;position:fixed;inset:0}
   padding:6px !important;
 }
 #forge .fg-tab{
-  background:rgba(22,10,10,.32) !important;
+  background-color:rgba(22,10,10,.32) !important;
+  background-image:none !important;
   box-shadow:none !important;
   border:1px solid rgba(255,130,62,.32) !important;
 }
-#forge .fg-tab.act{
-  background:rgba(70,22,18,.5) !important;
+#forge .fg-tab.fg-tab-v4{
+  background-color:transparent !important;
+  background-image:var(--fg-tab-bg) !important;
+  background-size:cover !important;
+  background-position:center !important;
+  border:none !important;
+  overflow:hidden;
+  opacity:.75;
+  transition:opacity .15s;
+}
+#forge .fg-tab.fg-tab-v4:hover{
+  opacity:.9;
+}
+#forge .fg-tab.fg-tab-v4.act{
+  opacity:1;
+  border:1px solid rgba(255,160,80,.5) !important;
+  box-shadow:0 0 14px rgba(255,110,50,.25) inset !important;
+}
+#forge .fg-tab.act:not(.fg-tab-v4){
+  background-color:rgba(70,22,18,.5) !important;
   border-color:#ff9c58 !important;
   box-shadow:0 0 18px rgba(255,110,50,.3) inset !important;
 }
@@ -13934,20 +13953,20 @@ function _draw3DProj(x,y,r,el,t,ang,a){
     if(Math.sin(t*.03)>.4){X.globalAlpha=a*.1;X.fillStyle='#ffffcc';X.beginPath();X.arc(0,0,s+2,0,Math.PI*2);X.fill()}
   }else if(el===5){// ── HOLY: 회전 오망성 ──
     const rot=t*.003;X.rotate(rot);
-    // 5방향 광휘
-    X.globalAlpha=a*.12;X.fillStyle='#ffdd44';
-    for(let i=0;i<5;i++){const ra=-Math.PI/2+Math.PI*2*i/5;
-      X.beginPath();X.moveTo(0,0);X.lineTo(Math.cos(ra-.15)*(s+5),Math.sin(ra-.15)*(s+5));X.lineTo(Math.cos(ra+.15)*(s+5),Math.sin(ra+.15)*(s+5));X.fill()}
-    // 오망성 라인
-    X.globalAlpha=a;X.strokeStyle='#ffcc22';X.lineWidth=1.5;
-    X.beginPath();
-    for(let i=0;i<5;i++){const pa=-Math.PI/2+i*Math.PI*4/5;
-      if(i===0)X.moveTo(Math.cos(pa)*s,Math.sin(pa)*s);
-      else X.lineTo(Math.cos(pa)*s,Math.sin(pa)*s);}
-    X.closePath();X.stroke();
-    // 중심 보석
-    X.globalAlpha=a;X.fillStyle='#fff8cc';X.beginPath();X.arc(0,0,s*.3,0,Math.PI*2);X.fill();
-    X.globalAlpha=a*.6;X.fillStyle='#ffffff';X.beginPath();X.arc(-s*.08,-s*.1,s*.12,0,Math.PI*2);X.fill();
+    // 오망성 — 10점 fill + 3중 글로우
+    X.lineJoin='round';const _sIn=s*.38;
+    const _orbStar=function(){X.beginPath();
+      for(let i=0;i<5;i++){
+        const _aO=-Math.PI/2+i*Math.PI*.4;
+        const _aI=-Math.PI/2+(i+.5)*Math.PI*.4;
+        if(i===0)X.moveTo(Math.cos(_aO)*s,Math.sin(_aO)*s);
+        else X.lineTo(Math.cos(_aO)*s,Math.sin(_aO)*s);
+        X.lineTo(Math.cos(_aI)*_sIn,Math.sin(_aI)*_sIn);}
+      X.closePath();};
+    _orbStar();X.globalAlpha=a*.4;X.fillStyle='#7711cc';X.fill();
+    X.lineWidth=3;X.strokeStyle='#aa22ff';X.stroke();
+    _orbStar();X.globalAlpha=a*.7;X.lineWidth=1.5;X.strokeStyle='#ff4488';X.stroke();
+    _orbStar();X.globalAlpha=a;X.lineWidth=.8;X.strokeStyle='#ffffff';X.stroke();
   }else{// ── PHYSICAL: 회전 정팔면체 ──
     const rot=t*.003+x*.08;const c=Math.cos(rot);
     X.globalAlpha=a*.85;X.fillStyle='#aaaaaa';
@@ -34514,11 +34533,16 @@ $('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
     const _txt=OPT.lang==='en'?_m.en:_m.ko;
     const d=document.createElement('div');
     d.className='fg-tab'+(G.forgeTab===k?' act':'');
-    const _v4='output/imagegen/forge-tabs-v4/'+k+'.png?v=20260417-v4';
-    const _v3='output/imagegen/forge-tabs-v3/'+k+'.png?v=20260416-v3set1';
-    const _fb=_forgeTabFallbackData(_m.icon);
-    const _src=(['upgrade','potion','salvage','reroll','crystal','craft'].indexOf(k)>=0)?_v4:_v3;
-    d.innerHTML='<span class="fg-tab-ico"><img class="fg-tab-ico-img" src="'+_src+'" alt="" onerror="this.onerror=null;this.src=&apos;'+_fb+'&apos;"></span><span class="fg-tab-txt">'+_txt+'</span>';
+    const _hasV4=['upgrade','potion','salvage','reroll','crystal','craft'].indexOf(k)>=0;
+    if(_hasV4){
+      d.style.setProperty('--fg-tab-bg','url(output/imagegen/forge-tabs-v4/'+k+'.png?v=20260417-v4)');
+      d.classList.add('fg-tab-v4');
+      d.innerHTML='<span class="fg-tab-txt" style="position:relative;z-index:1;text-shadow:0 2px 4px rgba(0,0,0,.95),0 0 12px rgba(0,0,0,.7);margin-left:55%;text-align:left">'+_txt+'</span>';
+    }else{
+      const _v3='output/imagegen/forge-tabs-v3/'+k+'.png?v=20260416-v3set1';
+      const _fb=_forgeTabFallbackData(_m.icon);
+      d.innerHTML='<span class="fg-tab-ico"><img class="fg-tab-ico-img" src="'+_v3+'" alt="" onerror="this.onerror=null;this.src=&apos;'+_fb+'&apos;"></span><span class="fg-tab-txt">'+_txt+'</span>';
+    }
     d.onclick=()=>{G.forgeTab=k;_forgeSel=null;_salSel.clear();_rerollSel=null;_crForgeSel=-1;renderForge()};
     tabs.appendChild(d);
   });
@@ -39135,23 +39159,21 @@ function drawP(){
           else X.lineTo(fz.x+Math.cos(_ra)*_rr,fz.y+Math.sin(_ra)*_rr);
         }
         X.closePath();X.stroke();
-        // 3) 오망성 문양 (중앙, 느린 회전) — 글로우 + 코어
-        const _cSz=fz.r*.3;
-        X.save();X.translate(fz.x,fz.y);X.rotate(_hdt*.5);
-        // 글로우
-        X.globalAlpha=.25*_fzFade;X.strokeStyle='#ff4400';X.lineWidth=8;
-        X.beginPath();
-        for(let _pi=0;_pi<5;_pi++){const _pa=-Math.PI/2+_pi*Math.PI*4/5;
-          if(_pi===0)X.moveTo(Math.cos(_pa)*_cSz,Math.sin(_pa)*_cSz);
-          else X.lineTo(Math.cos(_pa)*_cSz,Math.sin(_pa)*_cSz);}
-        X.closePath();X.stroke();
-        // 코어
-        X.globalAlpha=.7*_fzFade;X.strokeStyle='#ffcc44';X.lineWidth=2;
-        X.beginPath();
-        for(let _pi=0;_pi<5;_pi++){const _pa=-Math.PI/2+_pi*Math.PI*4/5;
-          if(_pi===0)X.moveTo(Math.cos(_pa)*_cSz,Math.sin(_pa)*_cSz);
-          else X.lineTo(Math.cos(_pa)*_cSz,Math.sin(_pa)*_cSz);}
-        X.closePath();X.stroke();
+        // 3) 오망성 문양 (중앙, 느린 회전) — 10점 fill
+        const _cSz=fz.r*.3;const _cIn=fz.r*.12;
+        X.save();X.translate(fz.x,fz.y);X.rotate(_hdt*.5);X.lineJoin='round';
+        const _hdStar=function(){X.beginPath();
+          for(let _pi=0;_pi<5;_pi++){
+            const _aO=-Math.PI/2+_pi*Math.PI*.4;
+            const _aI=-Math.PI/2+(_pi+.5)*Math.PI*.4;
+            if(_pi===0)X.moveTo(Math.cos(_aO)*_cSz,Math.sin(_aO)*_cSz);
+            else X.lineTo(Math.cos(_aO)*_cSz,Math.sin(_aO)*_cSz);
+            X.lineTo(Math.cos(_aI)*_cIn,Math.sin(_aI)*_cIn);}
+          X.closePath();};
+        _hdStar();X.globalAlpha=.35*_fzFade;X.fillStyle='#7711cc';X.fill();
+        X.lineWidth=8;X.strokeStyle='#aa22ff';X.stroke();
+        _hdStar();X.globalAlpha=.6*_fzFade;X.lineWidth=3;X.strokeStyle='#ff4488';X.stroke();
+        _hdStar();X.globalAlpha=.85*_fzFade;X.lineWidth=1;X.strokeStyle='#ffffff';X.stroke();
         X.restore();
         // 4) 빛 파티클
         for(let _si=0;_si<4;_si++){
@@ -39165,24 +39187,27 @@ function drawP(){
       }else if(fz.type==='hellRay'){
         // ═══ 참회 — 회전하는 오망성(펜타그램) ═══
         const _hrt=_now*.001;const _hrAng=fz.ang||0;
-        // 오망성 5꼭짓점
-        const _hrPts=[];
+        // 외곽 5꼭짓점 + 내곽 5교차점 = 10점 별 경로
+        const _hrOuter=[];const _hrInner=[];
+        const _hrOR=fz.r*.85,_hrIR=fz.r*.33; // 외곽/내곽 반지름
         for(let _pi=0;_pi<5;_pi++){
           const _aO=_hrAng+_pi*Math.PI*.4-Math.PI*.5;
-          _hrPts.push([fz.x+Math.cos(_aO)*fz.r*.85,fz.y+Math.sin(_aO)*fz.r*.85]);
+          const _aI=_hrAng+(_pi+.5)*Math.PI*.4-Math.PI*.5;
+          _hrOuter.push([fz.x+Math.cos(_aO)*_hrOR,fz.y+Math.sin(_aO)*_hrOR]);
+          _hrInner.push([fz.x+Math.cos(_aI)*_hrIR,fz.y+Math.sin(_aI)*_hrIR]);
         }
-        // 별 라인 (0→2→4→1→3→0) — 글로우 + 코어
-        const _starOrd=[0,2,4,1,3];
-        // 외곽 글로우 (넓고 반투명)
-        X.globalAlpha=.35*_fzFade;X.lineWidth=10;X.strokeStyle='#ff4400';
-        X.beginPath();X.moveTo(_hrPts[_starOrd[0]][0],_hrPts[_starOrd[0]][1]);
-        for(let _si=1;_si<5;_si++)X.lineTo(_hrPts[_starOrd[_si]][0],_hrPts[_starOrd[_si]][1]);
-        X.closePath();X.stroke();
-        // 코어 라인 (선명)
-        X.globalAlpha=.9*_fzFade;X.lineWidth=2.5;X.strokeStyle='#ffcc44';
-        X.beginPath();X.moveTo(_hrPts[_starOrd[0]][0],_hrPts[_starOrd[0]][1]);
-        for(let _si=1;_si<5;_si++)X.lineTo(_hrPts[_starOrd[_si]][0],_hrPts[_starOrd[_si]][1]);
-        X.closePath();X.stroke();
+        // 별 경로 함수 (외곽-내곽 교대: 10각형)
+        const _hrStar=function(){X.beginPath();
+          X.moveTo(_hrOuter[0][0],_hrOuter[0][1]);
+          for(let _si=0;_si<5;_si++){X.lineTo(_hrInner[_si][0],_hrInner[_si][1]);X.lineTo(_hrOuter[(_si+1)%5][0],_hrOuter[(_si+1)%5][1]);}
+          X.closePath();};
+        // 1) 넓은 글로우 채움 (보라)
+        _hrStar();X.globalAlpha=.4*_fzFade;X.fillStyle='#7711cc';X.fill();
+        X.lineWidth=12;X.strokeStyle='#aa22ff';X.lineJoin='round';X.stroke();
+        // 2) 중간 테두리 (붉은 핑크)
+        _hrStar();X.globalAlpha=.7*_fzFade;X.lineWidth=4;X.strokeStyle='#ff4488';X.stroke();
+        // 3) 코어 테두리 (흰색, 선명)
+        _hrStar();X.globalAlpha=.95*_fzFade;X.lineWidth=1.5;X.strokeStyle='#ffffff';X.stroke();
       }else if(fz.type==='assaultFlame'){
         // 기동칼날개 불바닥 — 불꽃 스프라이트
         if(_flameImgs.length>=4){
