@@ -10426,22 +10426,18 @@ function poolRender(X,vl,vr,vt,vb){
   var _lf='',_ls='';
   var _prDrawn=0;
   const _szMul=_hiFPS?.7:1; // 고FPS: 사이즈 0.7배
-  const _psub=_s7Active; // [PART-SUB] 계측 guard
   _partGrid.fill(0);
   const _pgOx=vl,_pgOy=vt;
-  if(_psub)_PERF_PROF._partLooped+=_partCnt;
-  if(_psub)_PERF_PROF._partActive+=_partCnt; // poolUpdate가 compact — 전부 alive
   for(var i=0;i<_partCnt;i++){
     if(_prDrawn>=_PR_CAP)break;
     const p=_partPool[i];
-    if(p.x<vl||p.x>vr||p.y<vt||p.y>vb){if(_psub)_PERF_PROF._partCulled++;continue;}
+    if(p.x<vl||p.x>vr||p.y<vt||p.y>vb)continue;
     const _pgx=~~((p.x-_pgOx)/32),_pgy=~~((p.y-_pgOy)/32);
     if(_pgx>=0&&_pgx<64&&_pgy>=0&&_pgy<64){const _pgi=_pgy*64+_pgx;if(_partGrid[_pgi]>=_pCellMax)continue;_partGrid[_pgi]++}
     const fa=p.ml>0?(p.life/p.ml*1.5<1?p.life/p.ml*1.5:1):.6;
     // opacity 0.15 미만 스킵 (캡 근접 시 흐린 것 우선 탈락)
     if(fa<0.15&&_prDrawn>50)continue;
     _prDrawn++;
-    if(_psub)_PERF_PROF._partAlphaSwitch++;
     X.globalAlpha=Math.min(1,fa*1.4);
     const _psz=p.sz*_szMul;
     if(_useGPU||_useGL){switch(p.tp){
@@ -10456,7 +10452,6 @@ function poolRender(X,vl,vr,vt,vb){
       default:{if(p.col!==_lf){X.fillStyle=p.col;_lf=p.col}const hs3=_psz*.5;X.fillRect(p.x-hs3,p.y-hs3,_psz,_psz);}
     }}
   }
-  if(_psub){_PERF_PROF._partDrawn+=_prDrawn;_PERF_PROF._partAlphaSwitch++} // +1 for reset to 1
   X.globalAlpha=1;
 }
 
@@ -37793,7 +37788,6 @@ function draw(){
   const _tDP1=performance.now();
   // G.parts 레거시 렌더 제거됨 — poolRender()로 통합
   // 오브젝트 풀 파티클 렌더 (additive로 밝은 폭발 대비)
-  if(_s7Active)_PERF_PROF._partAdditive++;
   X.save();X.globalCompositeOperation='lighter';
   poolRender(X,_vl,_vr,_vt,_vb);
   X.globalCompositeOperation='source-over';X.restore();
@@ -41335,7 +41329,7 @@ function drawP(){
   // [S7-BREAKDOWN] 진입 스냅샷 (2026-04-17) — _PERF_PROF guard 재사용, 300마리 이하면 패스스루
   const _s7Active=(typeof _PERF_PROF!=='undefined'&&_PERF_PROF.enabled);
   // [S7-C2D] 카운터 리셋 (2026-04-17)
-  if(_s7Active){_PERF_PROF._c2dSave=0;_PERF_PROF._c2dRestore=0;_PERF_PROF._c2dGco=0;_PERF_PROF._c2dAlpha=0;_PERF_PROF._c2dDrawImage=0;_PERF_PROF._c2dFillRect=0;_PERF_PROF._c2dArc=0;_PERF_PROF._partLooped=0;_PERF_PROF._partActive=0;_PERF_PROF._partDrawn=0;_PERF_PROF._partCulled=0;_PERF_PROF._partAdditive=0;_PERF_PROF._partAlphaSwitch=0}
+  if(_s7Active){_PERF_PROF._c2dSave=0;_PERF_PROF._c2dRestore=0;_PERF_PROF._c2dGco=0;_PERF_PROF._c2dAlpha=0;_PERF_PROF._c2dDrawImage=0;_PERF_PROF._c2dFillRect=0;_PERF_PROF._c2dArc=0}
   const _s7DC0=_s7Active?_PERF_PROF.drawCalls:0;
   const _s7Pg0=_s7Active?(_PERF_PROF._glProg||0):0;
   const _s7Tx0=_s7Active?(_PERF_PROF._glTex||0):0;
@@ -42541,9 +42535,7 @@ const _PERF_PROF={enabled:false,frameCnt:0,
   _s7WarnedOnce:false, // S7 고비용 경고 1회 throttle (3초 reset, 2026-04-17)
   // S7-C2D 카운터 (2026-04-17)
   _c2dSave:0,_c2dRestore:0,_c2dGco:0,_c2dAlpha:0,_c2dDrawImage:0,_c2dFillRect:0,_c2dArc:0,
-  _c2dHooked:false,
-  // [PART-SUB] 파티클 서브 카운터 (2026-04-17)
-  _partLooped:0,_partActive:0,_partDrawn:0,_partCulled:0,_partAdditive:0,_partAlphaSwitch:0};
+  _c2dHooked:false};
 function _perfHookGL(){
   if(_PERF_PROF._hooked)return;
   // GL 드로우콜 + state change 카운터 후킹 (메인 GL + 보조 _bGL)
