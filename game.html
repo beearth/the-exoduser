@@ -872,7 +872,7 @@ canvas{display:block;position:fixed;inset:0}
   margin-bottom:14px;
 }
 #forge .pbox{
-  overflow:visible !important;
+  overflow:hidden;
 }
 /* 2026-04-17: 대장간 탭바 세로 전환 (기존 grid 4열 → flex column 덮어쓰기) */
 #forge #fgTabs{
@@ -918,22 +918,11 @@ canvas{display:block;position:fixed;inset:0}
 #invPanel .ptitle::before{
   display:none !important;
 }
-#forge .forge-title-split{
-  display:flex !important;
-  justify-content:space-between !important;
-  align-items:center;
-  margin:-14px 14px 0 14px !important;
-  padding:0 !important;
-  background:none !important;
-  border:none !important;
-  color:#f0d0a0;
-  font-size:1.8rem;
-  font-weight:700;
-  letter-spacing:.15em;
-  text-shadow:0 2px 4px rgba(0,0,0,.9),0 0 16px rgba(255,108,58,.3);
-  flex-shrink:0;
-  z-index:2;
-  position:relative;
+#forge .ptitle{
+  justify-content:center;
+  font-size:2rem;
+  color:#ffd3a4;
+  text-shadow:0 2px 0 rgba(34,12,10,.92),0 0 22px rgba(255,108,58,.32);
 }
 #forge .fg-tab{
   display:inline-flex;
@@ -1162,6 +1151,7 @@ canvas{display:block;position:fixed;inset:0}
 }
 #settings .pbox,
 #invPanel .pbox,
+#forge .pbox,
 #storagePanel .pbox,
 #statPanel .pbox,
 #skillPanel .skill-pbox{
@@ -1520,10 +1510,6 @@ canvas{display:block;position:fixed;inset:0}
   display:flex !important;
   flex-direction:column !important;
 }
-#forge .pbox{
-  overflow:visible !important;
-  padding-top:12px !important;
-}
 /* 2026-04-17: 대장간 2컬럼 Grid 레이아웃 — 좌측 세로탭 + 우측 콘텐츠 */
 #forge .frame-inner-panel-stack{
   display:grid !important;
@@ -1595,10 +1581,6 @@ canvas{display:block;position:fixed;inset:0}
 #skillPanel .skill-pbox{
   position:relative;
   overflow:hidden;
-}
-#forge .pbox{
-  position:relative;
-  overflow:visible !important;
 }
 #settings .pbox > *,
 #invPanel .pbox > *,
@@ -2526,8 +2508,8 @@ canvas{display:block;position:fixed;inset:0}
 
 <!-- FORGE -->
 <div class="panel" id="forge">
-  <div class="pbox" style="display:flex;flex-direction:column;">
-    <div class="forge-title-split" id="forgeTitleBar"><span id="forgeTitleL">복수의</span><span id="forgeTitleR">대장간</span></div>
+  <div class="pbox" style="display:flex;flex-direction:column;overflow:hidden;">
+    <div class="ptitle">복수의 대장간</div>
     <div class="frame-inner-panel frame-inner-panel-stack">
       <div id="forgeMats" style="text-align:center;margin-bottom:6px;padding:4px 12px;background:rgba(120,0,200,.08);border:1px solid #553388;font-size:1rem;color:#cc66ff;font-weight:700">악의: 0</div>
       <div id="forgeLore" style="color:#665544;font-size:.8rem;text-align:center;margin-bottom:8px">🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭</div>
@@ -2875,6 +2857,7 @@ function _sanitizeCoreState(){
     }
   }
   if(P._fused&&typeof P._fused==='object'){
+    // 합체 구성 스킬 존재 보장만 (min-level 강제 제거 — 하위 합체가 상위 스킬을 끌어내리는 버그 방지)
     for(const fk of Object.keys(P._fused)){
       if(!P._fused[fk]){delete P._fused[fk];continue}
       const _hasFG=typeof _FUSE_GEM_GROUPS!=='undefined'&&_FUSE_GEM_GROUPS&&_FUSE_GEM_GROUPS[fk];
@@ -2882,13 +2865,11 @@ function _sanitizeCoreState(){
       const _pairs=(typeof _FUSE_PAIRS!=='undefined'&&_FUSE_PAIRS)?_FUSE_PAIRS:{};
       const ids=(fg&&fg.skills&&fg.skills.length)?fg.skills:(_pairs[fk]||[]);
       if(!ids.length){delete P._fused[fk];continue}
-      let minLv=9999;
+      // 스킬 존재 보장 (레벨 0이면 1로) — min 강제 안 함
       for(const id of ids){
         const lv=Math.max(1,_toInt((P.skills&&P.skills[id])||1,1));
         P.skills[id]=lv;
-        if(lv<minLv)minLv=lv;
       }
-      for(const id of ids){if(P.skills[id]>minLv)P.skills[id]=minLv}
     }
   }
 }
@@ -3146,38 +3127,8 @@ function dbRestore(d){
   for(const[_fk,_fv]of Object.entries(_FUSE_PAIRS||{})){
     if(P._fused&&P._fused[_fk]){for(const _sid of _fv){if(!P.skills[_sid])P.skills[_sid]=1}}
   }
-  // 합체 동시강화: 양쪽 레벨 다르면 낮은쪽으로 맞춤 (SP는 재계산에서 자동 보정)
-  {
-    const _fMap={whirlDet:['whirlwind','detonate'],bladeFuse:['maliceHunt','guardian'],iceMortar:['maliceMortar','iceOrb'],sixFuse:['fanShot','omniBeam'],dimBreach:['chargeBoost','magicBlink'],dimRush:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam'],dimBlast:['chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam','giantSlam'],plagueFuse:['maliceHunt','guardian','plagueBurst'],boneStorm:['maliceStorm','boneWall'],elecRepent:['maliceStorm','boneWall','hellRay'],shieldFuse:['maliceSwipe','shieldThrow']};
-    // elemFuse: 3단합체 레벨 싱크
-    if(P._fused&&P._fused.elemFuse){
-      const _efIds=['fanShot','omniBeam','elemMissile'];
-      const _efLvs=_efIds.map(id=>P.skills[id]||1);const _efMin=Math.min(..._efLvs);
-      _efIds.forEach((id,i)=>{if(_efLvs[i]>_efMin)P.skills[id]=_efMin});
-    }
-    // slamStorm: 3단합체 레벨 싱크
-    if(P._fused&&P._fused.slamStorm){
-      const _ssIds=['whirlwind','detonate','giantSlam'];
-      const _ssLvs=_ssIds.map(id=>P.skills[id]||1);const _ssMin=Math.min(..._ssLvs);
-      _ssIds.forEach((id,i)=>{if(_ssLvs[i]>_ssMin)P.skills[id]=_ssMin});
-    }
-    // stormBeam: 6단합체 레벨 싱크
-    if(P._fused&&P._fused.stormBeam){
-      const _sbIds=['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile'];
-      const _sbLvs=_sbIds.map(id=>P.skills[id]||1);const _sbMin=Math.min(..._sbLvs);
-      _sbIds.forEach((id,i)=>{if(_sbLvs[i]>_sbMin)P.skills[id]=_sbMin});
-    }
-    for(const[fk,sids]of Object.entries(_fMap)){
-      if(!P._fused||!P._fused[fk])continue;
-      // bladeFuse+plagueFuse 동시 활성: maliceHunt는 plagueFuse가 관리하므로 bladeFuse 싱크에서 제외
-      let _syncIds=sids;
-      if(fk==='bladeFuse'&&P._fused.plagueFuse)_syncIds=sids.filter(id=>id!=='maliceHunt');
-      if(_syncIds.length<2){continue}
-      const lvs=_syncIds.map(id=>P.skills[id]||1);const minLv=Math.min(...lvs);
-      _syncIds.forEach((id,i)=>{if(lvs[i]>minLv)P.skills[id]=minLv});
-    }
-    // dimBreach는 _fMap에서 처리됨 (2스킬: chargeBoost+magicBlink)
-  }
+  // min-level 강제 전면 제거 — 하위 합체가 상위 스킬을 끌어내리는 버그 방지
+  // 합체 레벨 동기화는 스킬 패널(_skClick)에서만 처리
   // 스킬 슬롯 복원
   if(d.activeChargeSk)P.activeChargeSk=d.activeChargeSk;
   // 진동보행 삭제됨 — 마이그레이션
@@ -32148,6 +32099,12 @@ function _renderSkillRow(sk,grid){
     const _pillarSpikeF=P.skills.darkPillar>=1&&P.skills.spikeTrap>=1&&_isFused('pillarSpike')&&!_pillarSlamF;
     const _isPillarSlam=sk.id==='giantSlam2'&&_pillarSlamF;
     const _isPillarSpike=sk.id==='darkPillar'&&_pillarSpikeF;
+    const _infernoSlamF=P.skills.giantSlam2>=1&&P.skills.fireAura>=1&&_isFused('infernoSlam')&&!_pillarSlamF;
+    const _isInfernoSlam=sk.id==='giantSlam2'&&_infernoSlamF;
+    const _siegeGhostF=P.skills.ghostXbowTurret>=1&&P.skills.voidScarecrow>=1&&_isFused('siegeGhost');
+    const _isSiegeGhost=sk.id==='ghostXbowTurret'&&_siegeGhostF;
+    const _stormBurstF=_stormBeamF&&P.skills.burstLoop>=1&&_isFused('stormBurst');
+    const _isStormBurst=sk.id==='whirlwind'&&_stormBurstF;
     const slv=P.skills[sk.id]||0; // 0=미습득, 1+=습득(강화 횟수)
     const learned=slv>=1;
     const _reqMet=sk.requires?(P.skills[sk.requires]||0)>=1:true;
@@ -32157,10 +32114,10 @@ function _renderSkillRow(sk,grid){
     const _skMaxLv=20;
     const _skLvLock=Math.min(20,~~(P.lv/50)+1); // 50렙당 +1 (Lv1=1렙, Lv50=2렙, Lv100=3렙, ... Lv950=20렙)
     // 합체 강화 통합: 구성 스킬 upSp/upMat 합산
-    const _isFuseUp=_isStormBeam||_isDimBlast||_isDimRush||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isHolyFuse||_isHolyIce||_isHolyW1||_isHolyW2||_isHolyW3||_isHolyW4||_isPillarSlam||_isPillarSpike;
+    const _isFuseUp=_isStormBurst||_isStormBeam||_isDimBlast||_isDimRush||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isHolyFuse||_isHolyIce||_isHolyW1||_isHolyW2||_isHolyW3||_isHolyW4||_isPillarSlam||_isPillarSpike||_isInfernoSlam||_isSiegeGhost;
     let _fuseUpSp=0,_fuseUpMat=0,_fuseCanUp=false;
     if(_isFuseUp){
-      const _fk2=_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isPillarSlam?'pillarSlam':_isPillarSpike?'pillarSpike':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';
+      const _fk2=_isStormBurst?'stormBurst':_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isPillarSlam?'pillarSlam':_isPillarSpike?'pillarSpike':_isInfernoSlam?'infernoSlam':_isSiegeGhost?'siegeGhost':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';
       const _fIds2=_fk2==='stormBeam'?['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile']:_fk2==='elemFuse'?['fanShot','omniBeam','elemMissile']:_fk2==='slamStorm'?['whirlwind','detonate','giantSlam']:(_FUSE_PAIRS[_fk2]||[]);
       const _fLv2=Math.min(..._fIds2.map(id=>P.skills[id]||1));
       const _gemGrp=_FUSE_GEM_GROUPS[_fk2];const _gemCnt=(_gemGrp&&_gemGrp.star)||_fIds2.length;_fuseUpSp=_fuseUpSpCost(_fLv2,_gemCnt);
@@ -32774,9 +32731,9 @@ function _renderSkillRow(sk,grid){
             const _emptyIdx=SKILL_SLOTS.findIndex(s=>s===null);
             if(_emptyIdx>=0&&!SKILL_SLOTS.includes(sk.id)){SKILL_SLOTS[_emptyIdx]=sk.id;const _e=OPT.lang==='en';const _asLbl=_emptyIdx<4?(_e?'Slot ':'슬롯 ')+(_emptyIdx+1):_emptyIdx===4?(_e?'SP Slot':'SP슬롯'):(_e?'F Slot':'F슬롯');addTxt(P.x,P.y-50,_asLbl+(_e?' Assigned!':' 배정!'),'#ff8844',40);updateQS()}
           }
-        } else if(_isStormBeam||_isDimBlast||_isDimRush||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isHolyIce||_isHolyFuse||_isHolyW1||_isHolyW2||_isHolyW3||_isHolyW4||_isPillarSlam||_isPillarSpike){
+        } else if(_isStormBurst||_isStormBeam||_isDimBlast||_isDimRush||_isDimFuse||_isDimSlam||_isDimThunder||_isSlamStorm||_isSynth||_isElemFuse||_isSixFuse||_isBladeFuse||_isIceFuse||_isBoneStorm||_isElecRepent||_isShieldFuse||_isPlagueFuse||_isHolyIce||_isHolyFuse||_isHolyW1||_isHolyW2||_isHolyW3||_isHolyW4||_isPillarSlam||_isPillarSpike||_isInfernoSlam||_isSiegeGhost){
           // ═══ 통합 합체 강화: 전 스킬 동시 +1, 비용 = 구성원 upSp/upMat 합산 ═══
-          const _fuseKey=_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isPillarSlam?'pillarSlam':_isPillarSpike?'pillarSpike':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';
+          const _fuseKey=_isStormBurst?'stormBurst':_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isSlamStorm?'slamStorm':_isSynth?'whirlDet':_isElemFuse?'elemFuse':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isPillarSlam?'pillarSlam':_isPillarSpike?'pillarSpike':_isInfernoSlam?'infernoSlam':_isSiegeGhost?'siegeGhost':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':'iceMortar';
           const _fuseIds=_fuseKey==='stormBeam'?['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile']:_fuseKey==='elemFuse'?['fanShot','omniBeam','elemMissile']:_fuseKey==='slamStorm'?['whirlwind','detonate','giantSlam']:(_FUSE_PAIRS[_fuseKey]||[]);
           const _fuseSks=_fuseIds.map(id=>SKILL_LIST.find(s=>s.id===id)).filter(Boolean);
           const _fuseLv=Math.min(..._fuseIds.map(id=>P.skills[id]||1));
@@ -33173,7 +33130,7 @@ const _jSelB=$('invJunkSelBtn');if(_jSelB)_jSelB.textContent=_e?'Select All Junk
 const _jBtn=$('invJunkBtn');if(_jBtn)_jBtn.textContent=_e?'Salvage All Junk':'쓰레기 전부 분해';
   }
   const _fgP=$('forge');if(_fgP){
-const _ftL=$('forgeTitleL'),_ftR=$('forgeTitleR');if(_ftL)_ftL.textContent=_e?'Forge of':'복수의';if(_ftR)_ftR.textContent=_e?'Vengeance':'대장간';
+const _pt2=_fgP.querySelector('.ptitle');if(_pt2)_pt2.textContent=_e?'Forge of Vengeance':'복수의 대장간';
 const _cb=$('fgCraftBtn');if(_cb)_cb.textContent=_e?'Craft':'제작';
     const _fc=$('fgClose');if(_fc)_fc.textContent=_e?'Close [G]':'닫기 [G]';
   }
@@ -39178,15 +39135,24 @@ function drawP(){
           else X.lineTo(fz.x+Math.cos(_ra)*_rr,fz.y+Math.sin(_ra)*_rr);
         }
         X.closePath();X.stroke();
-        // 3) 오망성 문양 (중앙, 느린 회전)
+        // 3) 오망성 문양 (중앙, 느린 회전) — 글로우 + 코어
         const _cSz=fz.r*.3;
-        X.globalAlpha=.2*_fzFade;X.strokeStyle='#fff8dc';X.lineWidth=2;
         X.save();X.translate(fz.x,fz.y);X.rotate(_hdt*.5);
+        // 글로우
+        X.globalAlpha=.25*_fzFade;X.strokeStyle='#ff4400';X.lineWidth=8;
         X.beginPath();
         for(let _pi=0;_pi<5;_pi++){const _pa=-Math.PI/2+_pi*Math.PI*4/5;
           if(_pi===0)X.moveTo(Math.cos(_pa)*_cSz,Math.sin(_pa)*_cSz);
           else X.lineTo(Math.cos(_pa)*_cSz,Math.sin(_pa)*_cSz);}
-        X.closePath();X.stroke();X.restore();
+        X.closePath();X.stroke();
+        // 코어
+        X.globalAlpha=.7*_fzFade;X.strokeStyle='#ffcc44';X.lineWidth=2;
+        X.beginPath();
+        for(let _pi=0;_pi<5;_pi++){const _pa=-Math.PI/2+_pi*Math.PI*4/5;
+          if(_pi===0)X.moveTo(Math.cos(_pa)*_cSz,Math.sin(_pa)*_cSz);
+          else X.lineTo(Math.cos(_pa)*_cSz,Math.sin(_pa)*_cSz);}
+        X.closePath();X.stroke();
+        X.restore();
         // 4) 빛 파티클
         for(let _si=0;_si<4;_si++){
           const _sa=Math.random()*Math.PI*2;const _sd=Math.random()*fz.r*.8;
@@ -39205,9 +39171,15 @@ function drawP(){
           const _aO=_hrAng+_pi*Math.PI*.4-Math.PI*.5;
           _hrPts.push([fz.x+Math.cos(_aO)*fz.r*.85,fz.y+Math.sin(_aO)*fz.r*.85]);
         }
-        // 별 라인 (0→2→4→1→3→0)
+        // 별 라인 (0→2→4→1→3→0) — 글로우 + 코어
         const _starOrd=[0,2,4,1,3];
-        X.globalAlpha=(.65+.15*Math.sin(_hrt*12))*_fzFade;X.lineWidth=3;X.strokeStyle='#ffd700';
+        // 외곽 글로우 (넓고 반투명)
+        X.globalAlpha=.35*_fzFade;X.lineWidth=10;X.strokeStyle='#ff4400';
+        X.beginPath();X.moveTo(_hrPts[_starOrd[0]][0],_hrPts[_starOrd[0]][1]);
+        for(let _si=1;_si<5;_si++)X.lineTo(_hrPts[_starOrd[_si]][0],_hrPts[_starOrd[_si]][1]);
+        X.closePath();X.stroke();
+        // 코어 라인 (선명)
+        X.globalAlpha=.9*_fzFade;X.lineWidth=2.5;X.strokeStyle='#ffcc44';
         X.beginPath();X.moveTo(_hrPts[_starOrd[0]][0],_hrPts[_starOrd[0]][1]);
         for(let _si=1;_si<5;_si++)X.lineTo(_hrPts[_starOrd[_si]][0],_hrPts[_starOrd[_si]][1]);
         X.closePath();X.stroke();
