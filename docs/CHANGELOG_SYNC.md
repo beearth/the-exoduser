@@ -5,11 +5,11 @@
 ## 2026-04-17
 
 ### 대장간 제작 아코디언 탭 시스템
-- 장비 제작 12개 탭을 "제작 ▶/▼" 아코디언 하위로 접어넣음 → 좌측 탭 바가 초기 6개(강화/물약/분해/리롤/결정/제작)만 표시
-- `_fgTabMeta` 에 `craft:{icon:'🔨',ko:'제작',en:'Craft'}` 추가, 탭 배열 6번째 위치에 `'craft'` 삽입
+- 장비 제작 14개 탭을 "제작 ▶/▼" 아코디언 하위로 접어넣음 → 좌측 탭 바가 초기 6개(강화/물약/분해/리롤/결정/제작)만 표시
+- `_fgTabMeta` 에 `craft` + 14종 장비(weapon/bow/armor/shield/helmet/pants/gloves/boots/**belt**/necklace/ring/**cape**/bracelet/headband) 메타 추가
 - `G.forgeExpanded` 상태 추가 (기본 `false`). 제작 탭 클릭 시 토글, 펼칠 때 `G.forgeTab='craft'` (종합 화면)
-- 제작 종합 화면: `G.forgeTab==='craft'` 분기 — 12종 장비를 3×4 카드 그리드로 표시, 현재 장착 아이템명, 비용/확률 정보, 카드 클릭 시 해당 슬롯 개별 제작 UI로 이동
-- `_EQUIPMENT_TABS` Set 으로 12개 장비 키 관리, `!G.forgeExpanded` 시 탭 생성 skip
+- 제작 종합 화면: `G.forgeTab==='craft'` 분기 — 14종 장비를 카드 그리드로 표시, 현재 장착 아이템명, 비용/확률 정보, 카드 클릭 시 해당 슬롯 개별 제작 UI로 이동
+- `_EQUIPMENT_TABS` Set 으로 14개 장비 키 관리, `!G.forgeExpanded` 시 탭 생성 skip
 - CSS: `.fg-tab-craft` (아코디언 헤더 + 화살표), `.fg-tab-sub` (들여쓰기+세로 연결선+축소 아이콘)
 - 기존 `_fgCategories` 카테고리 헤더 + `.fg-category-header` CSS 제거 (아코디언이 대체)
 - `renderForge` 호출 수: 34. JS 구조: forEach 내부 craft 분기 + equipment skip + craft 종합 화면 분기
@@ -20069,6 +20069,11 @@
 
 
 ## 2026-04-17 17:30 (auto)
+- docs/CHANGELOG_SYNC.md
+- game.html
+
+
+## 2026-04-17 18:00 (auto)
 - docs/CHANGELOG_SYNC.md
 - game.html
 
