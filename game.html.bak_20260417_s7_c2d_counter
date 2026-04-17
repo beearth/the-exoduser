@@ -874,31 +874,6 @@ canvas{display:block;position:fixed;inset:0}
 #forge .pbox{
   overflow:hidden;
 }
-/* 2026-04-17: 대장간 탭바 세로 전환 (기존 grid 4열 → flex column 덮어쓰기) */
-#forge #fgTabs{
-  display:flex !important;
-  flex-direction:column !important;
-  gap:4px !important;
-}
-#forge #fgTabs .fg-tab{
-  width:100% !important;
-  min-height:44px;
-  display:flex !important;
-  align-items:center !important;
-  gap:10px !important;
-  padding:8px 12px !important;
-  text-align:left !important;
-}
-#forge #fgTabs .fg-tab img,
-#forge #fgTabs .fg-tab svg{
-  width:28px !important;
-  height:28px !important;
-  flex-shrink:0;
-}
-#forge #fgTabs .fg-tab .fg-tab-label{
-  flex:1;
-  font-size:.95em;
-}
 #forge .ptitle{
   justify-content:center;
   font-size:2rem;
@@ -1479,53 +1454,16 @@ canvas{display:block;position:fixed;inset:0}
   display:flex !important;
   flex-direction:column !important;
 }
-/* 2026-04-17: 대장간 2컬럼 Grid 레이아웃 — 좌측 세로탭 + 우측 콘텐츠 */
+/* 2026-04-17: 대장간 내부 스크롤 — 제목/닫기 고정, 중간 영역만 스크롤 */
 #forge .frame-inner-panel-stack{
-  display:grid !important;
-  grid-template-areas:
-    "mats    mats"
-    "tabs    lore"
-    "tabs    grid"
-    "tabs    confirm" !important;
-  grid-template-columns:220px 1fr !important;
-  grid-template-rows:auto auto 1fr auto !important;
-  gap:12px !important;
   flex:1 1 auto !important;
   min-height:0 !important;
-  overflow:hidden !important;
-  padding-right:0 !important;
-}
-#forge #forgeMats{grid-area:mats}
-#forge #forgeLore{grid-area:lore;font-size:.85em;opacity:.85;
-  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;max-height:3em}
-#forge #fgTabs{grid-area:tabs;overflow-y:auto;overflow-x:hidden;padding-right:4px}
-#forge #fgGrid{grid-area:grid;overflow-y:auto;max-height:none !important;align-content:start;min-height:400px}
-#forge #forgeConfirm{grid-area:confirm}
-/* STEP 3: 탭 카테고리 구분선 (action 5개 → equipment 12개 경계) */
-#forge #fgTabs .fg-tab:nth-child(5){
-  margin-bottom:8px;border-bottom:1px solid rgba(201,168,106,.3);padding-bottom:12px !important;
+  overflow-y:auto !important;
+  padding-right:8px !important;
 }
 #forge > .pbox > .ptitle,
 #forge > .pbox > .pclose{
   flex-shrink:0 !important;
-}
-/* STEP 6: 반응형 폴백 — 1200px 미만에서 기존 세로 레이아웃 복귀 */
-@media (max-width:1200px){
-  #forge .frame-inner-panel-stack{
-    grid-template-areas:"mats" "lore" "tabs" "grid" "confirm" !important;
-    grid-template-columns:1fr !important;
-    grid-template-rows:auto auto auto 1fr auto !important;
-  }
-  #forge #fgTabs{
-    flex-direction:row !important;
-    flex-wrap:wrap !important;
-  }
-  #forge #fgTabs .fg-tab:nth-child(5){
-    border-bottom:none !important;
-    padding-bottom:8px !important;
-    margin-bottom:0 !important;
-  }
-  #forge #fgGrid{min-height:200px}
 }
 #statPanel .pbox{
   width:min(1180px,94vw) !important;
@@ -41299,8 +41237,6 @@ function drawP(){
   const _s7t0=performance.now();
   // [S7-BREAKDOWN] 진입 스냅샷 (2026-04-17) — _PERF_PROF guard 재사용, 300마리 이하면 패스스루
   const _s7Active=(typeof _PERF_PROF!=='undefined'&&_PERF_PROF.enabled);
-  // [S7-C2D] 카운터 리셋 (2026-04-17)
-  if(_s7Active){_PERF_PROF._c2dSave=0;_PERF_PROF._c2dRestore=0;_PERF_PROF._c2dGco=0;_PERF_PROF._c2dAlpha=0;_PERF_PROF._c2dDrawImage=0;_PERF_PROF._c2dFillRect=0;_PERF_PROF._c2dArc=0}
   const _s7DC0=_s7Active?_PERF_PROF.drawCalls:0;
   const _s7Pg0=_s7Active?(_PERF_PROF._glProg||0):0;
   const _s7Tx0=_s7Active?(_PERF_PROF._glTex||0):0;
@@ -42130,8 +42066,6 @@ function drawP(){
         _bdSetup=0;_bdDraw=_bdRest*0.95;_bdPost=_bdRest*0.05;
       }
       console.log('[S7-BREAKDOWN] iter='+_bdIter.toFixed(1)+'ms setup='+_bdSetup.toFixed(1)+'ms draw='+_bdDraw.toFixed(1)+'ms post='+_bdPost.toFixed(1)+'ms | instances='+_bdInst+' glStates={prog:'+_bdProg+', tex:'+_bdTex+', blend:'+_bdBlend+'}');
-      // [S7-C2D] Canvas2D 호출 카운터 (2026-04-17)
-      console.log('[S7-C2D] save='+_PERF_PROF._c2dSave+'/restore='+_PERF_PROF._c2dRestore+' gco='+_PERF_PROF._c2dGco+' alpha='+_PERF_PROF._c2dAlpha+' drawImage='+_PERF_PROF._c2dDrawImage+' fillRect='+_PERF_PROF._c2dFillRect+' arc='+_PERF_PROF._c2dArc);
     }
     // [S7-DEBUG] (2026-04-17) S7 무거운데 BREAKDOWN 안 나오면 게이트 값 출력
     if(_dpT7>8&&!_s7Active){
@@ -42495,10 +42429,7 @@ const _PERF_PROF={enabled:false,frameCnt:0,
   _aiAcc:0,_collAcc:0,_renderAcc:0,_domAcc:0,
   _hooked:false,_origACR:null,_origDCW:null,
   _glProg:0,_glTex:0,_glBlend:0, // S7-BREAKDOWN용 GL state change 카운터 (2026-04-17)
-  _s7WarnedOnce:false, // S7 고비용 경고 1회 throttle (3초 reset, 2026-04-17)
-  // S7-C2D 카운터 (2026-04-17)
-  _c2dSave:0,_c2dRestore:0,_c2dGco:0,_c2dAlpha:0,_c2dDrawImage:0,_c2dFillRect:0,_c2dArc:0,
-  _c2dHooked:false};
+  _s7WarnedOnce:false}; // S7 고비용 경고 1회 throttle (3초 reset, 2026-04-17)
 function _perfHookGL(){
   if(_PERF_PROF._hooked)return;
   // GL 드로우콜 + state change 카운터 후킹 (메인 GL + 보조 _bGL)
@@ -42524,38 +42455,6 @@ function _perfHookGL(){
     _dispatchColWorker=function(){const t=performance.now();const r=_PERF_PROF._origDCW.apply(this,arguments);if(_PERF_PROF.enabled)_PERF_PROF._collAcc+=performance.now()-t;return r};
   }
   _PERF_PROF._hooked=true;
-  _perfHookC2D(); // Canvas2D 카운터 후킹
-}
-// ═══ Canvas2D 메서드/프로퍼티 카운터 후킹 (S7-C2D, 2026-04-17) ═══
-function _perfHookC2D(){
-  if(_PERF_PROF._c2dHooked||!X)return;
-  _PERF_PROF._c2dHooked=true;
-  // ── 메서드 래핑: save, restore, drawImage, fillRect, arc ──
-  const _c2dMethods=[['save','_c2dSave'],['restore','_c2dRestore'],['drawImage','_c2dDrawImage'],['fillRect','_c2dFillRect'],['arc','_c2dArc']];
-  for(let _mi=0;_mi<_c2dMethods.length;_mi++){
-    const _mn=_c2dMethods[_mi][0],_mk=_c2dMethods[_mi][1];
-    const _orig=X[_mn];
-    if(typeof _orig==='function'){
-      X['__orig_'+_mn]=_orig;
-      X[_mn]=(function(_o,_k){return function(){if(_PERF_PROF.enabled)_PERF_PROF[_k]++;return _o.apply(X,arguments)}}(_orig,_mk));
-    }
-  }
-  // ── Setter 래핑: globalCompositeOperation, globalAlpha ──
-  // 원본 디스크립터 백업 (복구 가능)
-  const _propHooks=[['globalCompositeOperation','_c2dGco'],['globalAlpha','_c2dAlpha']];
-  for(let _pi=0;_pi<_propHooks.length;_pi++){
-    const _pn=_propHooks[_pi][0],_pk=_propHooks[_pi][1];
-    const _ownD=Object.getOwnPropertyDescriptor(X,_pn);
-    const _protoD=_ownD?null:Object.getOwnPropertyDescriptor(Object.getPrototypeOf(X)||{},_pn);
-    const _origD=_ownD||_protoD;
-    if(!_origD||!_origD.set)continue;
-    _PERF_PROF['__origDesc_'+_pn]={desc:_origD,own:!!_ownD};
-    Object.defineProperty(X,_pn,{
-      get:_origD.get?function(){return _origD.get.call(X)}:undefined,
-      set:(function(_d,_k){return function(v){if(_PERF_PROF.enabled)_PERF_PROF[_k]++;_d.set.call(X,v)}}(_origD,_pk)),
-      configurable:true,enumerable:true
-    });
-  }
 }
 function _perfReport(){
   let _alive=0;for(let _ai=0;_ai<ens.length;_ai++)if(ens[_ai].alive)_alive++;
