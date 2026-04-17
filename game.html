@@ -30176,6 +30176,15 @@ function addTxt(x,y,t,c,l){
   const p=G.txts[_txtNext];p.x=x;p.y=y;p.t=_T(t);p.c=c;p.life=l||35;p.ml=l||35;
   _txtNext=(_txtNext+1)%TXTS_MAX;
 }
+// ── 숫자 아틀라스 (fillText→drawImage 전환, 1회 생성) ──
+var _numAtlas=document.createElement('canvas');
+_numAtlas.width=512;_numAtlas.height=96;
+var _numAx=_numAtlas.getContext('2d');
+_numAx.font='bold 22px sans-serif';_numAx.textBaseline='top';_numAx.textAlign='left';
+var _NUM_W=16,_NUM_H=28;
+var _numColors=['#ffffff','#ffcc00','#ff4444'];
+for(var _nr=0;_nr<3;_nr++){_numAx.fillStyle='#000000';for(var _nc=0;_nc<10;_nc++){var _ch=String(_nc);_numAx.fillText(_ch,_nc*_NUM_W+2,_nr*_NUM_H+3);_numAx.fillText(_ch,_nc*_NUM_W,_nr*_NUM_H+3);_numAx.fillText(_ch,_nc*_NUM_W+1,_nr*_NUM_H+1);_numAx.fillText(_ch,_nc*_NUM_W+1,_nr*_NUM_H+4)}_numAx.fillStyle=_numColors[_nr];for(var _nc2=0;_nc2<10;_nc2++)_numAx.fillText(String(_nc2),_nc2*_NUM_W+1,_nr*_NUM_H+2)}
+function drawNumStr(X,num,x,y,ci){var s=typeof num==='number'?String(~~num):num;var yy=(ci||0)*_NUM_H;var tw=s.length*(_NUM_W-2);var ox=x-tw/2;for(var i=0;i<s.length;i++){var d=s.charCodeAt(i)-48;if(d<0||d>9)continue;X.drawImage(_numAtlas,d*_NUM_W,yy,_NUM_W,_NUM_H,~~(ox+i*(_NUM_W-2)),~~y,_NUM_W,_NUM_H)}}
 function $(id){return document.getElementById(id)}
 // ═══ 전체화면 ═══
 function toggleFullscreen(){
@@ -38060,7 +38069,7 @@ function draw(){
   renderHitVFX(X);renderElecVFX(X);renderOldBurstVFX(X);renderDarkBurstVFX(X);renderLightningBurstVFX(X);
   renderCrescents(X);
   renderMmExpVFX(X);_renderIceOrbVfx(X);
-  {const _t0=performance.now();X.font='bold 22px sans-serif';X.textAlign='center';for(let _ti=0;_ti<G.txts.length;_ti++){const t=G.txts[_ti];if(t.life<=0)continue;if(t.x<_vl||t.x>_vr||t.y<_vt||t.y>_vb)continue;const _ta=t.life/t.ml;X.globalAlpha=_ta*.9;X.fillStyle='#000000';X.fillText(t.t,t.x+1,t.y+1);X.fillText(t.t,t.x-1,t.y+1);X.globalAlpha=_ta;X.fillStyle=t.c;X.fillText(t.t,t.x,t.y)}X.globalAlpha=1;if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
+  {const _t0=performance.now();X.font='bold 22px sans-serif';X.textAlign='center';for(let _ti=0;_ti<G.txts.length;_ti++){const t=G.txts[_ti];if(t.life<=0)continue;if(t.x<_vl||t.x>_vr||t.y<_vt||t.y>_vb)continue;const _ta=t.life/t.ml;var _isN=t.t.length>0&&t.t.length<10;if(_isN){for(var _ni=0;_ni<t.t.length;_ni++){var _cc=t.t.charCodeAt(_ni);if(!((_cc>=48&&_cc<=57)||_cc===45||_cc===43)){_isN=false;break}}}if(_isN){X.globalAlpha=_ta;var _ci=(t.c.charCodeAt(1)===102&&t.c.charCodeAt(2)===102)?(t.c.charCodeAt(3)<53?2:1):0;drawNumStr(X,t.t,t.x,t.y-20,_ci)}else{X.globalAlpha=_ta*.9;X.fillStyle='#000000';X.fillText(t.t,t.x+1,t.y+1);X.fillText(t.t,t.x-1,t.y+1);X.globalAlpha=_ta;X.fillStyle=t.c;X.fillText(t.t,t.x,t.y)}}X.globalAlpha=1;if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
   X.restore();
   const _dd4=performance.now();
   if(_fc2d){var _dPart=_PERF_PROF._delta(_snapPart);_PERF_PROF._part_di=_dPart.di;_PERF_PROF._part_st=_dPart.st;_PERF_PROF._part_fr=_dPart.fr;_PERF_PROF._part_ga=_dPart.ga;var _snapPost=_PERF_PROF._snap()}
