@@ -885,9 +885,9 @@ canvas{display:block;position:fixed;inset:0}
   min-height:48px;
   display:flex !important;
   align-items:center !important;
+  justify-content:center !important;
   gap:0 !important;
   padding:0 !important;
-  text-align:left !important;
   position:relative;
   overflow:hidden;
   border:none !important;
@@ -898,18 +898,19 @@ canvas{display:block;position:fixed;inset:0}
   position:absolute;inset:0;
   width:100%;height:100%;
   object-fit:cover;
-  object-position:center center;
+  object-position:left center;
   mix-blend-mode:screen;
   opacity:.55;
   transition:opacity .15s;
   pointer-events:none;
 }
 #forge #fgTabs .fg-tab:hover .fg-tab-bg{opacity:.85}
-#forge #fgTabs .fg-tab.act .fg-tab-bg{opacity:1;mix-blend-mode:screen}
+#forge #fgTabs .fg-tab.act .fg-tab-bg{opacity:1}
 #forge #fgTabs .fg-tab .fg-tab-txt{
   position:relative;z-index:1;
-  margin-left:auto;
-  padding:6px 14px 6px 0;
+  width:100%;
+  text-align:center;
+  padding:6px 0;
   font-size:.9rem;font-weight:700;
   color:#aa8866;
   text-shadow:0 1px 3px rgba(0,0,0,.8);
@@ -22388,7 +22389,7 @@ function update(){
     }
     // ══ 무지개콩탄: Q(sBlock)만 패링 가능, 우클릭(sBash) 시 데미지 ══
     const _wwDetAbs=P.s==='whirlwind'&&_isFused('whirlDet');
-    const _bkHitR=P.s==='sBash'||_sbPW?_rbDeflR:_pCollR+16;
+    const _bkHitR=P.s==='sBash'||_anyPW?_rbDeflR:_pCollR+16;
     // 우클릭(sBash)으로 무지개탄 패링 시도 → 잘못된 입력, 데미지
     if(p.blackBean&&!_pHit&&_pDist<_wrongR&&P.s==='sBash'&&!P._ioActive&&P.iframes<=0){
       const _bkWrongD=p.dmg;hurtP(_bkWrongD,{dtype:'magic',src:'무지개오패링'});
@@ -22405,7 +22406,7 @@ function update(){
     }
     if(p.blackBean&&!_pHit&&_pDist<_bkHitR&&!P._ioActive){
       if(P.iframes>0&&P.s!=='whirlwind'){_pHit=true;_recycleProj(p);continue} // 무적 중이면 무시
-      const _bkParry=_sbPW; // 무지개탄: Q(sBlock) 패링만 가능, 우클릭(sBash) 불가
+      const _bkParry=_anyPW; // 무지개탄: Q(sBlock) 패링 + 해제 패링 모두 가능, 우클릭(sBash) 불가
       if(_bkParry){
         // Q 패링 성공: 반사 + 유도
         let _bkTgt=null,_bkMin=600;
@@ -22422,7 +22423,16 @@ function update(){
         for(let k=0;k<20;k++){const sa=Math.random()*Math.PI*2;const sv=5+Math.random()*8;
           poolPart(P.x,P.y,Math.cos(sa)*sv,Math.sin(sa)*sv,k%4===0?'#ff00ff':k%4===1?'#ff44ff':k%4===2?'#ffaaff':'#ffffff',3+Math.random()*4,12+Math.random()*8)}
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
-        doParry(p.dmg,p.x,p.y);projs[pw++]=p;_pHit=true;continue;
+        // ═══ 무지개탄 패링 자원회복 (doParry와 동일) ═══
+        {const _pbMul2=1+_eqAffix('parryBonus');const _pr2=Math.max(20,~~((20+P.lv*0.03)*_pbMul2));
+        P.hp=Math.min(P.mhp,P.hp+_pr2);P.st=Math.min(P.mst,P.st+_pr2);P.mp=Math.min(P.mmp,P.mp+_pr2);
+        G.mats+=1000;addTxt(P.x,P.y-60,'HP+'+_pr2+' ST+'+_pr2+' MP+'+_pr2,'#44ff88',45);addTxt(P.x,P.y-72,_T('👿악의+1000'),'#cc44ff',40);
+        if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-52,_T('💥패링폭발!'),'#ff6644',35)}}
+        _petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;P.iframes=25;
+        if(P.s==='sBlock'||P._sbParryT>0){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1))}
+        if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
+        playVFXAng('parry_flash',p.x,p.y,0.75,3,P.facing,true);
+        projs[pw++]=p;_pHit=true;continue;
       }else{
         // 패링 실패: 폭발 + 풀 피해
         const _bkD=Math.max(~~(P.mhp*.15*(1-pParryRainbowDR())),~~(p.dmg*.7*(1-pParryRainbowDR())));
@@ -29238,7 +29248,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(e.ib){G.comboTimer=Math.min(1800,G.comboTimer+1800)} // 보스: +30초, 최대 30초
     else{G.comboTimer=Math.min(1200,G.comboTimer+60)} // 일반: +1초, 최대 20초
     if(G.combo>G.comboMax)G.comboMax=G.combo;
-    if(G.combo>=5&&G.combo%5===0){const _cbPct=~~((~~(G.combo/100)*0.05+(OPT.diff||0)*0.10)*100);addTxt(P.x,P.y-40,'🔥 '+G.combo+' COMBO!'+(_cbPct>0?' +'+_cbPct+(OPT.lang==='en'?'% Bonus':'%보상'):''),'#ffaa00',50)}
+    if(G.combo>=1000&&G.combo%1000===0){const _cbPct=~~((~~(G.combo/100)*0.05+(OPT.diff||0)*0.10)*100);addTxt(P.x,P.y-40,'🔥 '+G.combo+' COMBO!'+(_cbPct>0?' +'+_cbPct+(OPT.lang==='en'?'% Bonus':'%보상'):''),'#ffaa00',50)}
     const _killAng=ang!==undefined?ang:Math.atan2(e.y-P.y,e.x-P.x);
     if(!_isWhirlKill)_spawnLargeMonsterDeathFx(e,_killAng);
     // 시체 잔해 — 모든 사망 (화염은 burnCorpse가 대신)
@@ -30172,6 +30182,9 @@ const TXTS_MAX=40;
 function addParts(x,y,col,n){const orig=n;n=~~(n*.6);for(let i=0;i<n&&_partCnt<POOL_SZ;i++)poolPart(x,y,(Math.random()-.5)*7,(Math.random()-.5)*7,col,2+Math.random()*4,12+Math.random()*12);
   if(orig>=10){const _pc=_parseCol(col);_addBlastLight(x,y,80+orig*4,15+orig*.5,~~(_pc[0]*255),~~(_pc[1]*255),~~(_pc[2]*255))}}
 // ── 텍스트 풀 (zero-alloc ring buffer) ──
+var _FLOAT_TEXT_ENABLED=true; // true=플로팅텍스트 표시, false=전부 스킵
+// ── 반복 전투 텍스트 블랙리스트 (5초에 5회 이상 뜨는 것만) ──
+var _FLOAT_TEXT_BLACKLIST=['관통','약점','광역','칼날','기동불꽃','방어','저항','반사','흡수','반격','기절','빙결','감전','화상','중독','독!','가시','독혈','피웅덩이','잡힘','익사','속박','작살 약점','폭발','☠','충격파','프리즌','블루콩','빨콩','무지개','유도반사','반사 폭발','콤보 종료','포효','강화','DOUBLE','TRIPLE','MULTI','악의+','PARRY','패링','패링폭발','Penetrate','Weakness','AoE','Blade','Defense','Resist','Reflect','Absorb','Counter','Stun','Freeze','Shock','Burn','Poison','Thorn','Drown','Bind','Parry','Malice+'];
 let _txtNext=0;
 function addTxt(x,y,t,c,l){
   if(G.txts.length<TXTS_MAX){for(let _i=G.txts.length;_i<TXTS_MAX;_i++)G.txts.push({x:0,y:0,t:'',c:'#fff',life:0,ml:0});_txtNext=0}
@@ -38058,7 +38071,7 @@ function draw(){
   renderHitVFX(X);renderElecVFX(X);renderOldBurstVFX(X);renderDarkBurstVFX(X);renderLightningBurstVFX(X);
   renderCrescents(X);
   renderMmExpVFX(X);_renderIceOrbVfx(X);
-  {const _t0=performance.now();X.font='bold 22px sans-serif';X.textAlign='center';for(let _ti=0;_ti<G.txts.length;_ti++){const t=G.txts[_ti];if(t.life<=0)continue;if(t.x<_vl||t.x>_vr||t.y<_vt||t.y>_vb)continue;const _ta=t.life/t.ml;var _isN=t.t.length>0&&t.t.length<10;if(_isN){for(var _ni=0;_ni<t.t.length;_ni++){var _cc=t.t.charCodeAt(_ni);if(!((_cc>=48&&_cc<=57)||_cc===45||_cc===43)){_isN=false;break}}}if(_isN){continue}else{X.globalAlpha=_ta*.9;X.fillStyle='#000000';X.fillText(t.t,t.x+1,t.y+1);X.fillText(t.t,t.x-1,t.y+1);X.globalAlpha=_ta;X.fillStyle=t.c;X.fillText(t.t,t.x,t.y)}}X.globalAlpha=1;if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
+  {const _t0=performance.now();if(_FLOAT_TEXT_ENABLED){X.font='bold 22px sans-serif';X.textAlign='center';for(let _ti=0;_ti<G.txts.length;_ti++){const t=G.txts[_ti];if(t.life<=0)continue;if(t.x<_vl||t.x>_vr||t.y<_vt||t.y>_vb)continue;var _blk=false;var _isN2=t.t.length>0&&t.t.length<10;if(_isN2){_blk=true;for(var _ni2=0;_ni2<t.t.length;_ni2++){var _cc2=t.t.charCodeAt(_ni2);if(!((_cc2>=48&&_cc2<=57)||_cc2===45||_cc2===43)){_blk=false;break}}}if(!_blk){for(var _bi=0;_bi<_FLOAT_TEXT_BLACKLIST.length;_bi++){if(t.t.indexOf(_FLOAT_TEXT_BLACKLIST[_bi])!==-1){_blk=true;break}}}if(_blk)continue;const _ta=t.life/t.ml;X.globalAlpha=_ta*.9;X.fillStyle='#000000';X.fillText(t.t,t.x+1,t.y+1);X.fillText(t.t,t.x-1,t.y+1);X.globalAlpha=_ta;X.fillStyle=t.c;X.fillText(t.t,t.x,t.y)}X.globalAlpha=1}if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
   X.restore();
   const _dd4=performance.now();
   if(_fc2d){var _dPart=_PERF_PROF._delta(_snapPart);_PERF_PROF._part_di=_dPart.di;_PERF_PROF._part_st=_dPart.st;_PERF_PROF._part_fr=_dPart.fr;_PERF_PROF._part_ga=_dPart.ga;var _snapPost=_PERF_PROF._snap()}
