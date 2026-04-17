@@ -901,7 +901,6 @@ canvas{display:block;position:fixed;inset:0}
   flex:1;
   font-size:.95em;
 }
-#forge .ptitle,
 #invPanel .ptitle{
   justify-content:center;
   font-size:1.6rem;
@@ -909,12 +908,33 @@ canvas{display:block;position:fixed;inset:0}
   background:url('output/imagegen/forge-tabs-v4/tab-bar.png') center/100% 100% no-repeat !important;
   -webkit-background-clip:border-box !important;
   background-clip:border-box !important;
-  padding:10px 24px 10px !important;
+  padding:12px 24px 14px !important;
   margin-bottom:10px;
   border-bottom:none !important;
   border:none !important;
   text-shadow:0 2px 4px rgba(0,0,0,.9),0 0 16px rgba(255,108,58,.25);
   letter-spacing:.12em !important;
+}
+#invPanel .ptitle::before{
+  display:none !important;
+}
+#forge .forge-title-split{
+  display:flex !important;
+  justify-content:space-between !important;
+  align-items:center;
+  padding:2px 32px !important;
+  margin:0 !important;
+  background:none !important;
+  border:none !important;
+  border-bottom:none !important;
+  color:#f0d0a0 !important;
+  font-size:1.8rem;
+  font-weight:700;
+  letter-spacing:.15em !important;
+  text-shadow:0 2px 4px rgba(0,0,0,.9),0 0 16px rgba(255,108,58,.3);
+}
+#forge .forge-title-split::before{
+  display:none !important;
 }
 #forge .fg-tab{
   display:inline-flex;
@@ -1312,12 +1332,12 @@ canvas{display:block;position:fixed;inset:0}
   gap:9px;
 }
 #forge .fg-tab{
-  min-height:72px;
-  padding:10px 8px;
-  flex-direction:column;
-  justify-content:center;
-  gap:6px;
-  text-align:center;
+  min-height:54px;
+  padding:9px 10px;
+  flex-direction:row;
+  justify-content:flex-start;
+  gap:9px;
+  text-align:left;
   background:linear-gradient(180deg,rgba(31,18,16,.96),rgba(10,6,6,.995)) !important;
   border:1px solid rgba(134,79,48,.4) !important;
   box-shadow:inset 0 0 0 1px rgba(255,224,191,.02),inset 0 1px 0 rgba(255,255,255,.02) !important;
@@ -2494,8 +2514,8 @@ canvas{display:block;position:fixed;inset:0}
 
 <!-- FORGE -->
 <div class="panel" id="forge">
-  <div class="pbox" style="display:flex;flex-direction:column;overflow:hidden;">
-    <div class="ptitle">복수의 대장간</div>
+  <div class="pbox" style="display:flex;flex-direction:column;overflow:hidden;position:relative;">
+    <div class="ptitle forge-title-split" style="display:flex;justify-content:space-between;align-items:center;padding:6px 20px !important;margin-bottom:0;border-bottom:none !important;"><span id="forgeTitleL">복수의</span><span id="forgeTitleR">대장간</span></div>
     <div class="frame-inner-panel frame-inner-panel-stack">
       <div id="forgeMats" style="text-align:center;margin-bottom:6px;padding:4px 12px;background:rgba(120,0,200,.08);border:1px solid #553388;font-size:1rem;color:#cc66ff;font-weight:700">악의: 0</div>
       <div id="forgeLore" style="color:#665544;font-size:.8rem;text-align:center;margin-bottom:8px">🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭</div>
@@ -22419,16 +22439,7 @@ function update(){
         for(let k=0;k<20;k++){const sa=Math.random()*Math.PI*2;const sv=5+Math.random()*8;
           poolPart(P.x,P.y,Math.cos(sa)*sv,Math.sin(sa)*sv,k%4===0?'#ff00ff':k%4===1?'#ff44ff':k%4===2?'#ffaaff':'#ffffff',3+Math.random()*4,12+Math.random()*8)}
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
-        // ═══ 무지개탄 패링 자원회복 (doParry와 동일) ═══
-        {const _pbMul2=1+_eqAffix('parryBonus');const _pr2=Math.max(20,~~((20+P.lv*0.03)*_pbMul2));
-        P.hp=Math.min(P.mhp,P.hp+_pr2);P.st=Math.min(P.mst,P.st+_pr2);P.mp=Math.min(P.mmp,P.mp+_pr2);
-        G.mats+=1000;addTxt(P.x,P.y-60,'HP+'+_pr2+' ST+'+_pr2+' MP+'+_pr2,'#44ff88',45);addTxt(P.x,P.y-72,_T('👿악의+1000'),'#cc44ff',40);
-        if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-52,_T('💥패링폭발!'),'#ff6644',35)}}
-        _petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;P.iframes=25;
-        if(P.s==='sBlock'||P._sbParryT>0){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1))}
-        if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
-        playVFXAng('parry_flash',p.x,p.y,0.75,3,P.facing,true);
-        projs[pw++]=p;_pHit=true;continue;
+        doParry(p.dmg,p.x,p.y);projs[pw++]=p;_pHit=true;continue;
       }else{
         // 패링 실패: 폭발 + 풀 피해
         const _bkD=Math.max(~~(P.mhp*.15*(1-pParryRainbowDR())),~~(p.dmg*.7*(1-pParryRainbowDR())));
@@ -25430,7 +25441,7 @@ function _bossAI(e,sp,d){
 }
 
 function isPWin(){return P.s==='sBash'||(P.s==='sBlock'&&P._sbParryT>0)||(P.s==='peaceShield'&&P._sbParryT>0)||(P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent'&&P._sbParryT>0)} // 칼등치기 + 보호막 + 평화보호 패링윈도우
-function doParry(_inDmg,_px,_py){if(_px===undefined)_px=P.x;if(_py===undefined)_py=P.y;_petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;if(P.s==='sBlock'||P._sbParryT>0){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1));playSample(['sword_back','sword_back2','sword_back3'][~~(Math.random()*3)],.5,_r(1.1,.1))}if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
+function doParry(_inDmg,_px,_py){if(_px===undefined)_px=P.x;if(_py===undefined)_py=P.y;console.log('[doParry] s='+P.s+' sbPT='+P._sbParryT+' HP:'+P.hp.toFixed(0)+'/'+P.mhp+' ST:'+P.st.toFixed(0)+'/'+P.mst+' MP:'+P.mp.toFixed(0)+'/'+P.mmp+' mats='+G.mats);_petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;if(P.s==='sBlock'||P._sbParryT>0){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1));playSample(['sword_back','sword_back2','sword_back3'][~~(Math.random()*3)],.5,_r(1.1,.1))}if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
   P.iframes=Math.max(P.iframes,18);
   // 패링 성공 → 그로기 해제 + 포이즈 복원
   // 그로기 제거됨 — 포이즈 0 = 즉시 스턴
@@ -29822,15 +29833,16 @@ function hurtP(dmg,opts){
   if(P.s==='burstLoop'){P._blCharge=0;P._blTier=0;P.s='idle';addTxt(P.x,P.y-30,_T('집중 해제!'),'#888',30)}
   // 해제 패링: sBlock 뗀 직후 패링 윈도우 (빨콩은 Q패링 불가)
   if(P.s!=='sBlock'&&P._sbParryT>0&&!(opts&&opts.redBean)){
-    P._sbParryT=0;dmg=0;{playSample('q_parry',.8,_r(1,.08))};showPH('PARRY!','#ffdd00');playVFXAng('magic_burst',P.x,P.y,0.4,1,0,true);playVFXAng('parry_flash',P.x,P.y,0.75,3,P.facing,true);P.iframes=Math.max(P.iframes,18);P.st=Math.min(P.mst,P.st+25);P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));
+    P._sbParryT=0;dmg=0;showPH('PARRY!','#ffdd00');playVFXAng('magic_burst',P.x,P.y,0.4,1,0,true);
+    doParry(0,P.x,P.y);
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+100;if((P.parryT||0)>=120)_detonateBlast('해제기폭!',wp().el||0)}
     return;
   }
   // 평화의보호: 데미지 70% 감소 (sBlock과 동일)
   if(P.s==='peaceShield'){
     if(P._sbParryT>0&&!(opts&&opts.redBean)){
-      P._sbParryT=0;dmg=0;
-      {playSample('q_parry',.8,_r(1,.08))};showPH('PARRY!','#ffdd00');playVFXAng('magic_burst',P.x,P.y,0.4,1,0,true);playVFXAng('parry_flash',P.x,P.y,0.75,3,P.facing,true);P.iframes=Math.max(P.iframes,18);P.st=Math.min(P.mst,P.st+25);P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));
+      P._sbParryT=0;dmg=0;showPH('PARRY!','#ffdd00');playVFXAng('magic_burst',P.x,P.y,0.4,1,0,true);
+      doParry(0,P.x,P.y);
       return;
     }
     // 보호막 흡수: 피격 사운드 없음
@@ -29843,8 +29855,8 @@ function hurtP(dmg,opts){
   else if(P.s==='sBlock'){
     // ── 보호막 패링: Q 전용 사운드 (빨콩은 Q패링 불가) ──
     if(P._sbParryT>0&&!(opts&&opts.redBean)){
-      P._sbParryT=0;dmg=0;
-      {playSample('q_parry',.8,_r(1,.08))};showPH('PARRY!','#ffdd00');playVFXAng('magic_burst',P.x,P.y,0.4,1,0,true);playVFXAng('parry_flash',P.x,P.y,0.75,3,P.facing,true);P.iframes=Math.max(P.iframes,18);P.st=Math.min(P.mst,P.st+25);P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*.08));
+      P._sbParryT=0;dmg=0;showPH('PARRY!','#ffdd00');playVFXAng('magic_burst',P.x,P.y,0.4,1,0,true);
+      doParry(0,P.x,P.y);
       if(P.skills.detonate){P.parryBank=(P.parryBank||0)+100}
       return;
     }
@@ -30178,7 +30190,7 @@ const TXTS_MAX=40;
 function addParts(x,y,col,n){const orig=n;n=~~(n*.6);for(let i=0;i<n&&_partCnt<POOL_SZ;i++)poolPart(x,y,(Math.random()-.5)*7,(Math.random()-.5)*7,col,2+Math.random()*4,12+Math.random()*12);
   if(orig>=10){const _pc=_parseCol(col);_addBlastLight(x,y,80+orig*4,15+orig*.5,~~(_pc[0]*255),~~(_pc[1]*255),~~(_pc[2]*255))}}
 // ── 텍스트 풀 (zero-alloc ring buffer) ──
-var _FLOAT_TEXT_ENABLED=true; // true=플로팅텍스트 표시, false=전부 스킵
+var _FLOAT_TEXT_ENABLED=false; // true=플로팅텍스트 표시, false=전부 스킵
 // ── 반복 전투 텍스트 블랙리스트 (5초에 5회 이상 뜨는 것만) ──
 var _FLOAT_TEXT_BLACKLIST=['관통','약점','광역','칼날','기동불꽃','방어','저항','반사','흡수','반격','기절','빙결','감전','화상','중독','독!','가시','독혈','피웅덩이','잡힘','익사','속박','작살 약점','폭발','☠','충격파','프리즌','블루콩','빨콩','무지개','유도반사','반사 폭발','콤보 종료','포효','강화','악의 추출','암전','균열','구울','웅덩이','소환','발광','울화','나선','파편','결정','획득','증표','🔥','🩸','🟢','DOUBLE','TRIPLE','MULTI','악의+','PARRY','패링','패링폭발','Penetrate','Weakness','AoE','Blade','Defense','Resist','Reflect','Absorb','Counter','Stun','Freeze','Shock','Burn','Poison','Thorn','Drown','Bind','Parry','Malice+'];
 let _txtNext=0;
@@ -33145,7 +33157,7 @@ const _jSelB=$('invJunkSelBtn');if(_jSelB)_jSelB.textContent=_e?'Select All Junk
 const _jBtn=$('invJunkBtn');if(_jBtn)_jBtn.textContent=_e?'Salvage All Junk':'쓰레기 전부 분해';
   }
   const _fgP=$('forge');if(_fgP){
-const _pt2=_fgP.querySelector('.ptitle');if(_pt2)_pt2.textContent=_e?'Forge of Vengeance':'복수의 대장간';
+const _ftL=$('forgeTitleL'),_ftR=$('forgeTitleR');if(_ftL)_ftL.textContent=_e?'Forge of':'복수의';if(_ftR)_ftR.textContent=_e?'Vengeance':'대장간';
 const _cb=$('fgCraftBtn');if(_cb)_cb.textContent=_e?'Craft':'제작';
     const _fc=$('fgClose');if(_fc)_fc.textContent=_e?'Close [G]':'닫기 [G]';
   }
