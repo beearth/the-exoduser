@@ -13950,16 +13950,19 @@ function _draw3DProj(x,y,r,el,t,ang,a){
       X.lineTo(Math.cos(ba+.4)*(s+3)+Math.sin(t*.02+i*5)*2,Math.sin(ba+.4)*(s+3)+Math.cos(t*.03+i*3)*2);X.stroke()}
     // 깜빡임
     if(Math.sin(t*.03)>.4){X.globalAlpha=a*.1;X.fillStyle='#ffffcc';X.beginPath();X.arc(0,0,s+2,0,Math.PI*2);X.fill()}
-  }else if(el===5){// ── HOLY: 회전 V 시길 ──
+  }else if(el===5){// ── HOLY: 회전 오망성 ──
     const rot=t*.003;X.rotate(rot);
-    // 8방향 광휘
+    // 5방향 광휘
     X.globalAlpha=a*.12;X.fillStyle='#ffdd44';
-    for(let i=0;i<8;i++){const ra=Math.PI*2*i/8;
-      X.beginPath();X.moveTo(0,0);X.lineTo(Math.cos(ra-.12)*(s+5),Math.sin(ra-.12)*(s+5));X.lineTo(Math.cos(ra+.12)*(s+5),Math.sin(ra+.12)*(s+5));X.fill()}
-    // V 시길 이미지
-    if(_holySigilV.complete&&_holySigilV.naturalWidth){
-      X.globalAlpha=a;const _vSz=s*2.4;X.drawImage(_holySigilV,-_vSz/2,-_vSz/2,_vSz,_vSz);
-    }else{X.globalAlpha=a;X.fillStyle='#ffcc22';X.fillRect(-s*.15,-s*.9,s*.3,s*1.8);X.fillRect(-s*.9,-s*.15,s*1.8,s*.3)}
+    for(let i=0;i<5;i++){const ra=-Math.PI/2+Math.PI*2*i/5;
+      X.beginPath();X.moveTo(0,0);X.lineTo(Math.cos(ra-.15)*(s+5),Math.sin(ra-.15)*(s+5));X.lineTo(Math.cos(ra+.15)*(s+5),Math.sin(ra+.15)*(s+5));X.fill()}
+    // 오망성 라인
+    X.globalAlpha=a;X.strokeStyle='#ffcc22';X.lineWidth=1.5;
+    X.beginPath();
+    for(let i=0;i<5;i++){const pa=-Math.PI/2+i*Math.PI*4/5;
+      if(i===0)X.moveTo(Math.cos(pa)*s,Math.sin(pa)*s);
+      else X.lineTo(Math.cos(pa)*s,Math.sin(pa)*s);}
+    X.closePath();X.stroke();
     // 중심 보석
     X.globalAlpha=a;X.fillStyle='#fff8cc';X.beginPath();X.arc(0,0,s*.3,0,Math.PI*2);X.fill();
     X.globalAlpha=a*.6;X.fillStyle='#ffffff';X.beginPath();X.arc(-s*.08,-s*.1,s*.12,0,Math.PI*2);X.fill();
@@ -34491,14 +34494,16 @@ $('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
     pants:{icon:'👖',ko:'바지',en:'Pants',si:0,atlas:'v2'},
     gloves:{icon:'🧤',ko:'장갑',en:'Gloves',si:2,atlas:'v2'},
     boots:{icon:'👢',ko:'부츠',en:'Boots',si:2,atlas:'v2'},
+    belt:{icon:'🥋',ko:'벨트',en:'Belt',si:3,atlas:'v2'},
     necklace:{icon:'📿',ko:'목걸이',en:'Necklace',si:8,atlas:'v2'},
     ring:{icon:'💍',ko:'반지',en:'Ring',si:10,atlas:'v2'},
+    cape:{icon:'🧣',ko:'망토',en:'Cape',si:4,atlas:'v2'},
     bracelet:{icon:'⭕',ko:'팔찌',en:'Bracelet',si:5,atlas:'v2'},
     headband:{icon:'🎀',ko:'귀걸이',en:'Earring',si:8,atlas:'v2'},
     craft:{icon:'🔨',ko:'제작',en:'Craft',si:11,atlas:'v1'}
   };
-  const _EQUIPMENT_TABS=new Set(['weapon','bow','armor','shield','helmet','pants','gloves','boots','necklace','ring','bracelet','headband']);
-  ['upgrade','potion','salvage','reroll','crystal','craft','weapon','bow','armor','shield','helmet','pants','gloves','boots','necklace','ring','bracelet','headband'].forEach((k)=>{
+  const _EQUIPMENT_TABS=new Set(['weapon','bow','armor','shield','helmet','pants','gloves','boots','belt','necklace','ring','cape','bracelet','headband']);
+  ['upgrade','potion','salvage','reroll','crystal','craft','weapon','bow','armor','shield','helmet','pants','gloves','boots','belt','necklace','ring','cape','bracelet','headband'].forEach((k)=>{
     if(k==='craft'){
       const _cm=_fgTabMeta[k];const _ctxt=OPT.lang==='en'?_cm.en:_cm.ko;
       const d=document.createElement('div');
@@ -35015,9 +35020,9 @@ const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff
   }else if(G.forgeTab==='craft'){
     // ═══ 제작 종합 — 모든 장비 한눈에 ═══
     grid.style.gridTemplateColumns='1fr';
-    const _craftSlots=['weapon','bow','armor','shield','helmet','pants','gloves','boots','necklace','ring','bracelet','headband'];
-    const _csNames=OPT.lang==='en'?{weapon:'Weapon',bow:'Bow',armor:'Armor',shield:'Shield',helmet:'Helmet',pants:'Pants',gloves:'Gloves',boots:'Boots',necklace:'Necklace',ring:'Ring',bracelet:'Bracelet',headband:'Earring'}:{weapon:'무기',bow:'활',armor:'갑옷',shield:'견갑',helmet:'투구',pants:'바지',gloves:'장갑',boots:'부츠',necklace:'목걸이',ring:'반지',bracelet:'팔찌',headband:'귀걸이'};
-    const _csEmoji={weapon:'⚔️',bow:'🏹',armor:'🦺',shield:'🛡️',helmet:'⛑️',pants:'👖',gloves:'🧤',boots:'👢',necklace:'📿',ring:'💍',bracelet:'⭕',headband:'🎀'};
+    const _craftSlots=['weapon','bow','armor','shield','helmet','pants','gloves','boots','belt','necklace','ring','cape','bracelet','headband'];
+    const _csNames=OPT.lang==='en'?{weapon:'Weapon',bow:'Bow',armor:'Armor',shield:'Shield',helmet:'Helmet',pants:'Pants',gloves:'Gloves',boots:'Boots',belt:'Belt',necklace:'Necklace',ring:'Ring',cape:'Cape',bracelet:'Bracelet',headband:'Earring'}:{weapon:'무기',bow:'활',armor:'갑옷',shield:'견갑',helmet:'투구',pants:'바지',gloves:'장갑',boots:'부츠',belt:'벨트',necklace:'목걸이',ring:'반지',cape:'망토',bracelet:'팔찌',headband:'귀걸이'};
+    const _csEmoji={weapon:'⚔️',bow:'🏹',armor:'🦺',shield:'🛡️',helmet:'⛑️',pants:'👖',gloves:'🧤',boots:'👢',belt:'🥋',necklace:'📿',ring:'💍',cape:'🧣',bracelet:'⭕',headband:'🎀'};
     // 헤더
     const chdr=document.createElement('div');chdr.style.cssText='text-align:center;padding:8px;color:#ffcc44;font-size:1.05rem;font-weight:700;letter-spacing:.15em';
     chdr.textContent=OPT.lang==='en'?'🔨 Equipment Crafting':'🔨 장비 제작';
@@ -35052,8 +35057,8 @@ const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff
     grid.style.gridTemplateColumns='1fr';
     const slot=G.forgeTab;
     const tier=Math.min(SI_TO_HELL[G.stage],4);
-    const slotNames=OPT.lang==='en'?{weapon:'Weapon',shield:'Shield',armor:'Armor',helmet:'Helmet',boots:'Boots',bow:'Bow',gloves:'Gloves',pants:'Pants',necklace:'Necklace',ring:'Ring',bracelet:'Bracelet',headband:'Earring'}:{weapon:'무기',shield:'견갑',armor:'갑옷',helmet:'투구',boots:'부츠',bow:'활',gloves:'장갑',pants:'바지',necklace:'목걸이',ring:'반지',bracelet:'팔찌',headband:'귀걸이'};
-    const slotEmoji={weapon:'⚔️',shield:'🛡️',armor:'🦺',helmet:'⛑️',boots:'👢',bow:'🏹',gloves:'🧤',pants:'👖',necklace:'📿',ring:'💍'};
+    const slotNames=OPT.lang==='en'?{weapon:'Weapon',shield:'Shield',armor:'Armor',helmet:'Helmet',boots:'Boots',bow:'Bow',gloves:'Gloves',pants:'Pants',belt:'Belt',necklace:'Necklace',ring:'Ring',cape:'Cape',bracelet:'Bracelet',headband:'Earring'}:{weapon:'무기',shield:'견갑',armor:'갑옷',helmet:'투구',boots:'부츠',bow:'활',gloves:'장갑',pants:'바지',belt:'벨트',necklace:'목걸이',ring:'반지',cape:'망토',bracelet:'팔찌',headband:'귀걸이'};
+    const slotEmoji={weapon:'⚔️',shield:'🛡️',armor:'🦺',helmet:'⛑️',boots:'👢',bow:'🏹',gloves:'🧤',pants:'👖',belt:'🥋',necklace:'📿',ring:'💍',cape:'🧣',bracelet:'⭕',headband:'🎀'};
 
     // 현재 장착 표시
     const curEq=slot==='ring'?INV.equipped.ring1||INV.equipped.ring2:INV.equipped[slot];
@@ -38547,13 +38552,17 @@ function drawP(){
     X.beginPath();X.arc(_hrTx,_hrTy,_hrAimR,0,Math.PI*2);X.fill();
     X.globalAlpha=.3;X.strokeStyle='#ffd700';X.lineWidth=2;X.setLineDash([8,6]);X.lineDashOffset=-_now*.1;
     X.beginPath();X.arc(_hrTx,_hrTy,_hrAimR,0,Math.PI*2);X.stroke();X.setLineDash([]);
-    // 예상 회전 선
-    const _hrPa=_hrt2*2;
-    X.globalAlpha=.25;X.strokeStyle='#ffd700';X.lineWidth=4;
-    X.beginPath();X.moveTo(_hrTx,_hrTy);X.lineTo(_hrTx+Math.cos(_hrPa)*_hrAimR,_hrTy+Math.sin(_hrPa)*_hrAimR);X.stroke();
-    // 십자선
-    X.globalAlpha=.4;X.strokeStyle='#ffd700';X.lineWidth=1;
-    X.beginPath();X.moveTo(_hrTx-12,_hrTy);X.lineTo(_hrTx+12,_hrTy);X.moveTo(_hrTx,_hrTy-12);X.lineTo(_hrTx,_hrTy+12);X.stroke();
+    // 예상 오망성 프리뷰
+    const _hrPa=_hrt2*2;const _hrPR=_hrAimR*.35;
+    X.globalAlpha=.25;X.strokeStyle='#ffd700';X.lineWidth=2;
+    X.beginPath();
+    for(let _pi=0;_pi<5;_pi++){const _pa=_hrPa-Math.PI/2+_pi*Math.PI*4/5;
+      if(_pi===0)X.moveTo(_hrTx+Math.cos(_pa)*_hrPR,_hrTy+Math.sin(_pa)*_hrPR);
+      else X.lineTo(_hrTx+Math.cos(_pa)*_hrPR,_hrTy+Math.sin(_pa)*_hrPR);}
+    X.closePath();X.stroke();
+    // 중심 점
+    X.globalAlpha=.5;X.fillStyle='#ffd700';
+    X.beginPath();X.arc(_hrTx,_hrTy,3,0,Math.PI*2);X.fill();
     // 텍스트
     X.globalAlpha=.8;X.fillStyle='#ffd700';X.font='bold 11px monospace';X.textAlign='center';
     X.fillText('⚡ R:'+_hrAimR,_hrTx,_hrTy-_hrAimR-8);
@@ -39131,11 +39140,15 @@ function drawP(){
           else X.lineTo(fz.x+Math.cos(_ra)*_rr,fz.y+Math.sin(_ra)*_rr);
         }
         X.closePath();X.stroke();
-        // 3) V 시길 문양 (중앙)
+        // 3) 오망성 문양 (중앙, 느린 회전)
         const _cSz=fz.r*.3;
-        if(_holySigilV.complete&&_holySigilV.naturalWidth){
-          X.globalAlpha=.2*_fzFade;const _vSz2=_cSz*2;X.drawImage(_holySigilV,fz.x-_vSz2/2,fz.y-_vSz2/2,_vSz2,_vSz2);
-        }else{X.globalAlpha=.15*_fzFade;X.strokeStyle='#fff8dc';X.lineWidth=3;X.beginPath();X.moveTo(fz.x,fz.y-_cSz);X.lineTo(fz.x,fz.y+_cSz);X.moveTo(fz.x-_cSz*.6,fz.y-_cSz*.3);X.lineTo(fz.x+_cSz*.6,fz.y-_cSz*.3);X.stroke()}
+        X.globalAlpha=.2*_fzFade;X.strokeStyle='#fff8dc';X.lineWidth=2;
+        X.save();X.translate(fz.x,fz.y);X.rotate(_hdt*.5);
+        X.beginPath();
+        for(let _pi=0;_pi<5;_pi++){const _pa=-Math.PI/2+_pi*Math.PI*4/5;
+          if(_pi===0)X.moveTo(Math.cos(_pa)*_cSz,Math.sin(_pa)*_cSz);
+          else X.lineTo(Math.cos(_pa)*_cSz,Math.sin(_pa)*_cSz);}
+        X.closePath();X.stroke();X.restore();
         // 4) 빛 파티클
         for(let _si=0;_si<4;_si++){
           const _sa=Math.random()*Math.PI*2;const _sd=Math.random()*fz.r*.8;
@@ -39146,42 +39159,48 @@ function drawP(){
       }else if(fz.type==='holyPrison'){
         // 감옥은 별도 렌더 (27793행 부근) — 여기서 skip
       }else if(fz.type==='hellRay'){
-        // ═══ 참회 — 회전하는 신성 쐐기 ═══
+        // ═══ 참회 — 회전하는 오망성(펜타그램) ═══
         const _hrt=_now*.001;const _hrAng=fz.ang||0;
-        // 쐐기 4개 끝점
-        const _hrAL=[fz.r*.8,fz.r*.6,fz.r,fz.r*.6]; // 위,오른,아래(긴),왼
-        const _hrArms=[];
-        for(let _ai=0;_ai<4;_ai++){
-          const _a=_hrAng+_ai*Math.PI*.5;
-          _hrArms.push([fz.x+Math.cos(_a)*_hrAL[_ai],fz.y+Math.sin(_a)*_hrAL[_ai]]);
+        // 오망성 5꼭짓점 (외곽)
+        const _hrPts=[];const _hrIn=[];
+        for(let _pi=0;_pi<5;_pi++){
+          const _aO=_hrAng+_pi*Math.PI*.4-Math.PI*.5; // 72도 간격, 꼭대기 시작
+          const _aI=_hrAng+(_pi+.5)*Math.PI*.4-Math.PI*.5;
+          _hrPts.push([fz.x+Math.cos(_aO)*fz.r*.85,fz.y+Math.sin(_aO)*fz.r*.85]);
+          _hrIn.push([fz.x+Math.cos(_aI)*fz.r*.35,fz.y+Math.sin(_aI)*fz.r*.35]);
         }
-        // (바닥 원 제거됨)
-        // 2) 쐐기 팔 4개 — 굵은 황금 빔 (중심→끝 페이드)
-        for(let _ai=0;_ai<4;_ai++){
-          const _ex=_hrArms[_ai][0],_ey=_hrArms[_ai][1];
+        // 1) 오망성 별 라인 (꼭짓점 연결: 0→2→4→1→3→0)
+        const _starOrd=[0,2,4,1,3];
+        X.globalAlpha=(.6+.15*Math.sin(_hrt*12))*_fzFade;X.lineWidth=3;
+        const _gStar=X.createRadialGradient(fz.x,fz.y,0,fz.x,fz.y,fz.r*.9);
+        _gStar.addColorStop(0,'rgba(255,220,80,.95)');_gStar.addColorStop(.6,'rgba(255,200,60,.7)');_gStar.addColorStop(1,'rgba(255,255,200,.1)');
+        X.strokeStyle=_gStar;
+        X.beginPath();X.moveTo(_hrPts[_starOrd[0]][0],_hrPts[_starOrd[0]][1]);
+        for(let _si=1;_si<5;_si++)X.lineTo(_hrPts[_starOrd[_si]][0],_hrPts[_starOrd[_si]][1]);
+        X.closePath();X.stroke();
+        // 2) 오망성 팔 빔 (중심→꼭짓점 페이드)
+        for(let _ai=0;_ai<5;_ai++){
+          const _ex=_hrPts[_ai][0],_ey=_hrPts[_ai][1];
           const _g=X.createLinearGradient(fz.x,fz.y,_ex,_ey);
-          _g.addColorStop(0,'rgba(255,220,80,.9)');_g.addColorStop(.4,'rgba(255,240,150,.6)');_g.addColorStop(1,'rgba(255,255,220,0)');
-          X.globalAlpha=(.55+.12*Math.sin(_hrt*12+_ai))*_fzFade;X.strokeStyle=_g;X.lineWidth=10;
+          _g.addColorStop(0,'rgba(255,220,80,.85)');_g.addColorStop(.5,'rgba(255,240,150,.4)');_g.addColorStop(1,'rgba(255,255,220,0)');
+          X.globalAlpha=(.4+.1*Math.sin(_hrt*10+_ai*1.3))*_fzFade;X.strokeStyle=_g;X.lineWidth=6;
           X.beginPath();X.moveTo(fz.x,fz.y);X.lineTo(_ex,_ey);X.stroke();
         }
-        // 3) 코어 V 시길 (십자 대체)
-        if(_holySigilV.complete&&_holySigilV.naturalWidth){
-          X.globalAlpha=(.6+.2*Math.sin(_hrt*15))*_fzFade;const _hrVSz=fz.r*.5;
-          X.save();X.translate(fz.x,fz.y);X.rotate((_hrt*2)%(Math.PI*2));X.drawImage(_holySigilV,-_hrVSz/2,-_hrVSz/2,_hrVSz,_hrVSz);X.restore();
-        }else{X.globalAlpha=(.7+.2*Math.sin(_hrt*15))*_fzFade;X.strokeStyle='#fff8dc';X.lineWidth=3;
-          X.beginPath();X.moveTo(_hrArms[0][0],_hrArms[0][1]);X.lineTo(_hrArms[2][0],_hrArms[2][1]);X.stroke();
-          X.beginPath();X.moveTo(_hrArms[1][0],_hrArms[1][1]);X.lineTo(_hrArms[3][0],_hrArms[3][1]);X.stroke()}
+        // 3) 내부 오각형 (은은한 채움)
+        X.globalAlpha=(.12+.06*Math.sin(_hrt*8))*_fzFade;X.fillStyle='#ffd700';
+        X.beginPath();X.moveTo(_hrIn[0][0],_hrIn[0][1]);
+        for(let _ii=1;_ii<5;_ii++)X.lineTo(_hrIn[_ii][0],_hrIn[_ii][1]);
+        X.closePath();X.fill();
         // 4) 중심 — 빛나는 코어
         const _coreR=12+Math.sin(_hrt*10)*4;
         X.globalAlpha=(.5+.2*Math.sin(_hrt*8))*_fzFade;X.fillStyle='#ffd700';
         X.beginPath();X.arc(fz.x,fz.y,_coreR,0,Math.PI*2);X.fill();
         X.globalAlpha=(.8+.15*Math.sin(_hrt*14))*_fzFade;X.fillStyle='#ffffff';
         X.beginPath();X.arc(fz.x,fz.y,_coreR*.4,0,Math.PI*2);X.fill();
-        // 5) 팔 끝 — 빛 플레어
-        for(let _ai=0;_ai<4;_ai++){
-          const _d=dst(fz.x,fz.y,_hrArms[_ai][0],_hrArms[_ai][1]);if(_d<fz.r*.3)continue;
-          X.globalAlpha=(.3+.15*Math.sin(_hrt*10+_ai*1.5))*_fzFade;X.fillStyle='#ffd700';
-          X.beginPath();X.arc(_hrArms[_ai][0],_hrArms[_ai][1],4+Math.sin(_hrt*18+_ai)*2,0,Math.PI*2);X.fill();
+        // 5) 꼭짓점 플레어
+        for(let _ai=0;_ai<5;_ai++){
+          X.globalAlpha=(.3+.15*Math.sin(_hrt*10+_ai*1.2))*_fzFade;X.fillStyle='#ffd700';
+          X.beginPath();X.arc(_hrPts[_ai][0],_hrPts[_ai][1],3+Math.sin(_hrt*16+_ai)*2,0,Math.PI*2);X.fill();
         }
         // 6) 범위 원 (은은한 점선)
         X.globalAlpha=.06*_fzFade;X.strokeStyle='#ffd700';X.lineWidth=1;X.setLineDash([6,10]);
@@ -41832,7 +41851,7 @@ function drawP(){
   if(P.s==='peaceShield'&&(P._psShieldR||0)>0){
     const _psR=P._psShieldR;
     const _psPW=P._sbParryT>0;
-    if(_paReady){
+    if(_paReady&&!_s7Active){
       _paTimer++;if(_paTimer>=3){_paTimer=0;_paFrame=(_paFrame+1)%_PA_FRAMES}
       const _paCol=_paFrame%_PA_COLS,_paRow=~~(_paFrame/_PA_COLS);
       const _paSz=_psR*3.3;
@@ -41862,7 +41881,7 @@ function drawP(){
     const pulse=_sbPW?1:_sbPhase===3?(.6+Math.sin(t/8)*.4):(.85+Math.sin(_sbT*3)*.15);
     const ringR=_sbPhase===3?(_sbR+Math.sin(t/6)*4):_sbR;
     // ── 보호막 오라 — 스프라이트 (기폭팔: 파란→빨간 3초 크로스페이드) ──
-    if(_saReady){
+    if(_saReady&&!_s7Active){
       _saTimer++;if(_saTimer>=3){_saTimer=0;_saFrame=(_saFrame+1)%_SA_FRAMES}
       const _saCol2=_saFrame%_SA_COLS,_saRow2=~~(_saFrame/_SA_COLS);
       const _saSz=ringR*3.75;
@@ -41993,7 +42012,7 @@ function drawP(){
   if(_harpActive){
     const _ha=Math.atan2(_harpVY,_harpVX);
     const _hDist=dst(P.x,P.y,_harpX,_harpY);
-    if(_chainShurikenImg&&_chainShurikenImg.complete&&_chainShurikenImg.naturalWidth>0){
+    if(_chainShurikenImg&&_chainShurikenImg.complete&&_chainShurikenImg.naturalWidth>0&&!_s7Active){
       // 스프라이트 작살: chain_shuriken_2.webp
       const _csAspect=_chainShurikenImg.naturalWidth/_chainShurikenImg.naturalHeight;
       // 체인 길이를 거리에 맞춰 스케일
@@ -42105,7 +42124,7 @@ function drawP(){
     if(isCrow){
       // 까마귀: 8방향 정적 스프라이트
       const _ci=_PET_IMGS.crow[_dir8];
-      if(_ci&&_ci.complete&&_ci.naturalWidth){
+      if(_ci&&_ci.complete&&_ci.naturalWidth&&!_s7Active){
         X.drawImage(_ci,px-_petSz/2,py-_petSz/2,_petSz,_petSz);
       }else{
         X.fillStyle='#111';X.beginPath();X.arc(px,py,2,0,Math.PI*2);X.fill();
@@ -42128,7 +42147,7 @@ function drawP(){
       }
       // fallback: 정적 스프라이트
       if(!_catImg||!_catImg.complete||!_catImg.naturalWidth){_catImg=_PET_IMGS.cat._static[_dir8];_flip=false}
-      if(_catImg&&_catImg.complete&&_catImg.naturalWidth){
+      if(_catImg&&_catImg.complete&&_catImg.naturalWidth&&!_s7Active){
         if(_flip){X.save();X.translate(px,py-_petSz/2);X.scale(-1,1);X.drawImage(_catImg,-_petSz/2,0,_petSz,_petSz);X.restore()}
         else{X.drawImage(_catImg,px-_petSz/2,py-_petSz/2,_petSz,_petSz)}
       }else{
@@ -42244,19 +42263,7 @@ function drawP(){
       console.log('[S7-BREAKDOWN] iter='+_bdIter.toFixed(1)+'ms setup='+_bdSetup.toFixed(1)+'ms draw='+_bdDraw.toFixed(1)+'ms post='+_bdPost.toFixed(1)+'ms | instances='+_bdInst+' glStates={prog:'+_bdProg+', tex:'+_bdTex+', blend:'+_bdBlend+'}');
       // [S7-C2D] → [FRAME-C2D]로 이동됨 (draw() 종료부)
     }
-    // [S7-DEBUG] (2026-04-17) S7 무거운데 BREAKDOWN 안 나오면 게이트 값 출력
-    if(_dpT7>8&&!_s7Active){
-      console.log('[S7-SKIP] BREAKDOWN gate fail | _dpT7='+_dpT7.toFixed(2)+
-              ' _s7Active='+(typeof _s7Active!=='undefined'?_s7Active:'UNDEF'));
-    }
-    // [S7-WARN] (2026-04-17) PROF 비활성인데 S7>15ms면 1회 경고 (3초 throttle)
-    if(!_PERF_PROF.enabled&&_dpT7>15){
-      if(!_PERF_PROF._s7WarnedOnce){
-        console.warn('[S7-WARN] 고비용 S7 감지 but PROF 비활성: '+_dpT7.toFixed(1)+'ms');
-        _PERF_PROF._s7WarnedOnce=true;
-        setTimeout(()=>{_PERF_PROF._s7WarnedOnce=false},3000);
-      }
-    }
+    // S7-SKIP, S7-WARN 제거됨 — FRAME-C2D로 대체 (2026-04-17)
   }
   X.globalAlpha=1;
 }
