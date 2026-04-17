@@ -878,44 +878,46 @@ canvas{display:block;position:fixed;inset:0}
 #forge #fgTabs{
   display:flex !important;
   flex-direction:column !important;
-  gap:4px !important;
+  gap:3px !important;
 }
 #forge #fgTabs .fg-tab{
   width:100% !important;
-  min-height:44px;
+  min-height:48px;
   display:flex !important;
   align-items:center !important;
-  gap:10px !important;
-  padding:8px 12px !important;
+  gap:0 !important;
+  padding:0 !important;
   text-align:left !important;
+  position:relative;
+  overflow:hidden;
+  border:none !important;
+  background:transparent !important;
+  cursor:pointer;
 }
-#forge #fgTabs .fg-tab img,
-#forge #fgTabs .fg-tab svg{
-  width:28px !important;
-  height:28px !important;
-  flex-shrink:0;
+#forge #fgTabs .fg-tab .fg-tab-bg{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+  object-position:center center;
+  mix-blend-mode:screen;
+  opacity:.55;
+  transition:opacity .15s;
+  pointer-events:none;
 }
-#forge #fgTabs .fg-tab .fg-tab-label{
-  flex:1;
-  font-size:.95em;
+#forge #fgTabs .fg-tab:hover .fg-tab-bg{opacity:.85}
+#forge #fgTabs .fg-tab.act .fg-tab-bg{opacity:1;mix-blend-mode:screen}
+#forge #fgTabs .fg-tab .fg-tab-txt{
+  position:relative;z-index:1;
+  margin-left:auto;
+  padding:6px 14px 6px 0;
+  font-size:.9rem;font-weight:700;
+  color:#aa8866;
+  text-shadow:0 1px 3px rgba(0,0,0,.8);
+  letter-spacing:.05em;
+  transition:color .15s;
 }
-/* 2026-04-17: 제작 아코디언 + 하위 탭 스타일 */
-#forge #fgTabs .fg-tab-craft{position:relative}
-#forge #fgTabs .fg-tab-craft .fg-tab-arrow{
-  margin-left:auto;font-size:.8em;opacity:.7;transition:transform .2s;
-}
-#forge #fgTabs .fg-tab-craft.expanded .fg-tab-arrow{opacity:1}
-#forge #fgTabs .fg-tab-sub{
-  padding-left:24px !important;font-size:.82em !important;opacity:.9;min-height:32px !important;position:relative;
-}
-#forge #fgTabs .fg-tab-sub img,
-#forge #fgTabs .fg-tab-sub svg{width:20px !important;height:20px !important}
-#forge #fgTabs .fg-tab-sub.act{
-  opacity:1;background:rgba(201,168,106,.15);border-left:2px solid rgba(201,168,106,.6);
-}
-#forge #fgTabs .fg-tab-sub::before{
-  content:'';position:absolute;left:12px;top:0;bottom:0;width:1px;background:rgba(201,168,106,.15);
-}
+#forge #fgTabs .fg-tab:hover .fg-tab-txt{color:#ffcc88}
+#forge #fgTabs .fg-tab.act .fg-tab-txt{color:#ffdd99;text-shadow:0 0 8px rgba(255,170,68,.4)}
 #forge .ptitle{
   justify-content:center;
   font-size:2rem;
@@ -34518,9 +34520,9 @@ $('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
     const _txt=OPT.lang==='en'?_m.en:_m.ko;
     const d=document.createElement('div');
     d.className='fg-tab'+(G.forgeTab===k?' act':'');
-    const _img='output/imagegen/forge-tabs-v3/'+k+'.png?v=20260416-v3set1';
-    const _fb=_forgeTabFallbackData(_m.icon);
-    d.innerHTML='<span class="fg-tab-ico"><img class="fg-tab-ico-img" src="'+_img+'" alt="" onerror="this.onerror=null;this.src=&apos;'+_fb+'&apos;"></span><span class="fg-tab-txt">'+_txt+'</span>';
+    const _bgImg='output/imagegen/forge-tabs-v4/'+k+'.png?v=20260417-v4';
+    const _imgOld='output/imagegen/forge-tabs-v3/'+k+'.png?v=20260416-v3set1';
+    d.innerHTML='<img class="fg-tab-bg" src="'+_bgImg+'" alt="" onerror="this.style.display=\'none\'"><span class="fg-tab-txt">'+_txt+'</span>';
     d.onclick=()=>{G.forgeTab=k;_forgeSel=null;_salSel.clear();_rerollSel=null;_crForgeSel=-1;renderForge()};
     tabs.appendChild(d);
   });
@@ -38056,7 +38058,7 @@ function draw(){
   renderHitVFX(X);renderElecVFX(X);renderOldBurstVFX(X);renderDarkBurstVFX(X);renderLightningBurstVFX(X);
   renderCrescents(X);
   renderMmExpVFX(X);_renderIceOrbVfx(X);
-  {const _t0=performance.now();X.font='bold 22px sans-serif';X.textAlign='center';for(let _ti=0;_ti<G.txts.length;_ti++){const t=G.txts[_ti];if(t.life<=0)continue;if(t.x<_vl||t.x>_vr||t.y<_vt||t.y>_vb)continue;const _ta=t.life/t.ml;var _isN=t.t.length>0&&t.t.length<10;if(_isN){for(var _ni=0;_ni<t.t.length;_ni++){var _cc=t.t.charCodeAt(_ni);if(!((_cc>=48&&_cc<=57)||_cc===45||_cc===43)){_isN=false;break}}}if(_isN){X.globalAlpha=_ta;var _ci=(t.c.charCodeAt(1)===102&&t.c.charCodeAt(2)===102)?(t.c.charCodeAt(3)<53?2:1):0;drawNumStr(X,t.t,t.x,t.y-20,_ci)}else{X.globalAlpha=_ta*.9;X.fillStyle='#000000';X.fillText(t.t,t.x+1,t.y+1);X.fillText(t.t,t.x-1,t.y+1);X.globalAlpha=_ta;X.fillStyle=t.c;X.fillText(t.t,t.x,t.y)}}X.globalAlpha=1;if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
+  {const _t0=performance.now();X.font='bold 22px sans-serif';X.textAlign='center';for(let _ti=0;_ti<G.txts.length;_ti++){const t=G.txts[_ti];if(t.life<=0)continue;if(t.x<_vl||t.x>_vr||t.y<_vt||t.y>_vb)continue;const _ta=t.life/t.ml;var _isN=t.t.length>0&&t.t.length<10;if(_isN){for(var _ni=0;_ni<t.t.length;_ni++){var _cc=t.t.charCodeAt(_ni);if(!((_cc>=48&&_cc<=57)||_cc===45||_cc===43)){_isN=false;break}}}if(_isN){continue}else{X.globalAlpha=_ta*.9;X.fillStyle='#000000';X.fillText(t.t,t.x+1,t.y+1);X.fillText(t.t,t.x-1,t.y+1);X.globalAlpha=_ta;X.fillStyle=t.c;X.fillText(t.t,t.x,t.y)}}X.globalAlpha=1;if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
   X.restore();
   const _dd4=performance.now();
   if(_fc2d){var _dPart=_PERF_PROF._delta(_snapPart);_PERF_PROF._part_di=_dPart.di;_PERF_PROF._part_st=_dPart.st;_PERF_PROF._part_fr=_dPart.fr;_PERF_PROF._part_ga=_dPart.ga;var _snapPost=_PERF_PROF._snap()}
@@ -41387,6 +41389,7 @@ function drawP(){
   const _s7t0=performance.now();
   // [S7-BREAKDOWN] 진입 스냅샷 (2026-04-17) — _PERF_PROF guard 재사용, 300마리 이하면 패스스루
   const _s7Active=(typeof _PERF_PROF!=='undefined'&&_PERF_PROF.enabled);
+  const _s7UseLite=pProjs.length<=2; // pProjs 0~2: 보호막 오라 멀티패스 스킵
   // C2D 리셋은 draw() 진입부로 이동됨 (FRAME-C2D)
   const _s7DC0=_s7Active?_PERF_PROF.drawCalls:0;
   const _s7Pg0=_s7Active?(_PERF_PROF._glProg||0):0;
@@ -41821,9 +41824,9 @@ function drawP(){
       const _paSz=_psR*3.3;
       X.save();X.globalCompositeOperation='lighter';X.globalAlpha=_psPW?1:.95;
       X.drawImage(_PA_IMG,_paCol*_PA_CW,_paRow*_PA_CH,_PA_CW,_PA_CH,P.x-_paSz/2,P.y-_paSz/2,_paSz,_paSz);
-      X.drawImage(_PA_IMG,_paCol*_PA_CW,_paRow*_PA_CH,_PA_CW,_PA_CH,P.x-_paSz/2,P.y-_paSz/2,_paSz,_paSz);
+      if(!_s7UseLite){X.drawImage(_PA_IMG,_paCol*_PA_CW,_paRow*_PA_CH,_PA_CW,_PA_CH,P.x-_paSz/2,P.y-_paSz/2,_paSz,_paSz);
       X.globalAlpha=_psPW?.6:.4;
-      X.drawImage(_PA_IMG,_paCol*_PA_CW,_paRow*_PA_CH,_PA_CW,_PA_CH,P.x-_paSz/2,P.y-_paSz/2,_paSz,_paSz);
+      X.drawImage(_PA_IMG,_paCol*_PA_CW,_paRow*_PA_CH,_PA_CW,_PA_CH,P.x-_paSz/2,P.y-_paSz/2,_paSz,_paSz);}
       X.restore();
     }
   }
@@ -41858,16 +41861,16 @@ function drawP(){
         const _bA=pulse*(1-_detProg);
         X.globalAlpha=Math.min(1,_bA*1.4);
         X.drawImage(_SA_IMG,_sx,_sy,_SA_CW,_SA_CH,_dx,_dy,_saSz,_saSz);
-        X.globalAlpha=_bA*.6;
-        X.drawImage(_SA_IMG,_sx,_sy,_SA_CW,_SA_CH,_dx,_dy,_saSz,_saSz);
+        if(!_s7UseLite){X.globalAlpha=_bA*.6;
+        X.drawImage(_SA_IMG,_sx,_sy,_SA_CW,_SA_CH,_dx,_dy,_saSz,_saSz);}
       }
       // 빨간 오라 (progress) — 2패스
       if(_detProg>0){
         const _rA=pulse*_detProg;
         X.globalAlpha=Math.min(1,_rA*1.4);
         X.drawImage(_SA_IMG_R,_sx,_sy,_SA_CW,_SA_CH,_dx,_dy,_saSz,_saSz);
-        X.globalAlpha=_rA*.6;
-        X.drawImage(_SA_IMG_R,_sx,_sy,_SA_CW,_SA_CH,_dx,_dy,_saSz,_saSz);
+        if(!_s7UseLite){X.globalAlpha=_rA*.6;
+        X.drawImage(_SA_IMG_R,_sx,_sy,_SA_CW,_SA_CH,_dx,_dy,_saSz,_saSz);}
       }
       X.restore();
     }
