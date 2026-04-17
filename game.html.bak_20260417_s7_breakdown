@@ -1451,19 +1451,6 @@ canvas{display:block;position:fixed;inset:0}
   max-height:90vh !important;
   padding:28px 38px 22px !important;
   box-sizing:border-box !important;
-  display:flex !important;
-  flex-direction:column !important;
-}
-/* 2026-04-17: 대장간 내부 스크롤 — 제목/닫기 고정, 중간 영역만 스크롤 */
-#forge .frame-inner-panel-stack{
-  flex:1 1 auto !important;
-  min-height:0 !important;
-  overflow-y:auto !important;
-  padding-right:8px !important;
-}
-#forge > .pbox > .ptitle,
-#forge > .pbox > .pclose{
-  flex-shrink:0 !important;
 }
 #statPanel .pbox{
   width:min(1180px,94vw) !important;
@@ -41235,12 +41222,6 @@ function drawP(){
 
   _dpS6=performance.now(); // S6=스킬이펙트+스프라이트+무기 끝
   const _s7t0=performance.now();
-  // [S7-BREAKDOWN] 진입 스냅샷 (2026-04-17) — _PERF_PROF guard 재사용, 300마리 이하면 패스스루
-  const _s7Active=(typeof _PERF_PROF!=='undefined'&&_PERF_PROF.enabled);
-  const _s7DC0=_s7Active?_PERF_PROF.drawCalls:0;
-  const _s7Pg0=_s7Active?(_PERF_PROF._glProg||0):0;
-  const _s7Tx0=_s7Active?(_PERF_PROF._glTex||0):0;
-  const _s7Bl0=_s7Active?(_PERF_PROF._glBlend||0):0;
   // ══ Player projectiles — 트레일 + 글로우 + 본체 ══
   // 트레일 (OPT.trail)
   const _PP_DRAW_MAX=_hiFPS?40:60;
@@ -42043,43 +42024,6 @@ function drawP(){
     _dpT4=_dpS4-_dpS3;_dpT5=_dpS5-_dpS4;_dpT6=_dpS6-_dpS5;_dpT7=_dpEnd-_dpS6;
     console.log('[drawP] '+_dpTotal.toFixed(2)+'ms | S0:'+_dpT0.toFixed(1)+' S1:'+_dpT1.toFixed(1)+' S2:'+_dpT2.toFixed(1)+' S3:'+_dpT3.toFixed(1)+' S4:'+_dpT4.toFixed(1)+' S5:'+_dpT5.toFixed(1)+' S6:'+_dpT6.toFixed(1)+' S7:'+_dpT7.toFixed(1));
     if(_dpT7>8)console.log('[S7-DETAIL] proj:'+(_s7t1-_s7t0).toFixed(1)+' shield+pet:'+(_dpEnd-_s7t1).toFixed(1)+' pProjs:'+pProjs.length+' ppDrawn:'+_ppDrawN);
-    // [S7-BREAKDOWN] (2026-04-17) — _PERF_PROF.enabled(>300마리) 시에만 출력
-    if(_s7Active&&_dpT7>8){
-      const _bdInst=_PERF_PROF.drawCalls-_s7DC0;
-      const _bdProg=(_PERF_PROF._glProg||0)-_s7Pg0;
-      const _bdTex=(_PERF_PROF._glTex||0)-_s7Tx0;
-      const _bdBlend=(_PERF_PROF._glBlend||0)-_s7Bl0;
-      const _bdIter=_s7t1-_s7t0;        // pProjs 루프 (실측)
-      const _bdRest=_dpEnd-_s7t1;       // shield+pet 묶음 (실측)
-      // 휴리스틱 분할 — drawcall vs state-change 비율로 setup/draw/post 추정
-      // (drawP 본체 무수정 제약상 인라인 마커 추가 불가 → 비율 분할)
-      const _bdGsCnt=_bdProg+_bdTex+_bdBlend;
-      const _bdTotalCalls=_bdGsCnt+_bdInst;
-      let _bdSetup,_bdDraw,_bdPost;
-      if(_bdTotalCalls>0){
-        const _setupR=_bdGsCnt/_bdTotalCalls; // state 비율 → setup
-        const _drawR=_bdInst/_bdTotalCalls;   // draw 비율
-        _bdSetup=_bdRest*_setupR*0.95;
-        _bdDraw=_bdRest*_drawR*0.95;
-        _bdPost=_bdRest*0.05;                 // 잔여 후처리
-      }else{
-        _bdSetup=0;_bdDraw=_bdRest*0.95;_bdPost=_bdRest*0.05;
-      }
-      console.log('[S7-BREAKDOWN] iter='+_bdIter.toFixed(1)+'ms setup='+_bdSetup.toFixed(1)+'ms draw='+_bdDraw.toFixed(1)+'ms post='+_bdPost.toFixed(1)+'ms | instances='+_bdInst+' glStates={prog:'+_bdProg+', tex:'+_bdTex+', blend:'+_bdBlend+'}');
-    }
-    // [S7-DEBUG] (2026-04-17) S7 무거운데 BREAKDOWN 안 나오면 게이트 값 출력
-    if(_dpT7>8&&!_s7Active){
-      console.log('[S7-SKIP] BREAKDOWN gate fail | _dpT7='+_dpT7.toFixed(2)+
-              ' _s7Active='+(typeof _s7Active!=='undefined'?_s7Active:'UNDEF'));
-    }
-    // [S7-WARN] (2026-04-17) PROF 비활성인데 S7>15ms면 1회 경고 (3초 throttle)
-    if(!_PERF_PROF.enabled&&_dpT7>15){
-      if(!_PERF_PROF._s7WarnedOnce){
-        console.warn('[S7-WARN] 고비용 S7 감지 but PROF 비활성: '+_dpT7.toFixed(1)+'ms');
-        _PERF_PROF._s7WarnedOnce=true;
-        setTimeout(()=>{_PERF_PROF._s7WarnedOnce=false},3000);
-      }
-    }
   }
   X.globalAlpha=1;
 }
@@ -42427,23 +42371,16 @@ let _lastLoopTs=0;
 const _PERF_PROF={enabled:false,frameCnt:0,
   ai:[],coll:[],render:[],dom:[],drawCalls:0,
   _aiAcc:0,_collAcc:0,_renderAcc:0,_domAcc:0,
-  _hooked:false,_origACR:null,_origDCW:null,
-  _glProg:0,_glTex:0,_glBlend:0, // S7-BREAKDOWN용 GL state change 카운터 (2026-04-17)
-  _s7WarnedOnce:false}; // S7 고비용 경고 1회 throttle (3초 reset, 2026-04-17)
+  _hooked:false,_origACR:null,_origDCW:null};
 function _perfHookGL(){
   if(_PERF_PROF._hooked)return;
-  // GL 드로우콜 + state change 카운터 후킹 (메인 GL + 보조 _bGL)
+  // GL 드로우콜 카운터 후킹 (메인 GL + 보조 _bGL)
   const _glCands=[(typeof GL!=='undefined')?GL:null,(typeof _bGL!=='undefined')?_bGL:null];
   for(let _gi=0;_gi<_glCands.length;_gi++){const g=_glCands[_gi];if(!g||g.__perfHooked)continue;
     g.__perfHooked=true;
     const oA=g.drawArrays.bind(g),oE=g.drawElements.bind(g);
     g.drawArrays=function(){_PERF_PROF.drawCalls++;return oA.apply(g,arguments)};
     g.drawElements=function(){_PERF_PROF.drawCalls++;return oE.apply(g,arguments)};
-    // S7-BREAKDOWN: GL state change 카운터 (useProgram/bindTexture/blendFunc) — 2026-04-17
-    if(g.useProgram){const oUP=g.useProgram.bind(g);g.useProgram=function(){_PERF_PROF._glProg++;return oUP.apply(g,arguments)}}
-    if(g.bindTexture){const oBT=g.bindTexture.bind(g);g.bindTexture=function(){_PERF_PROF._glTex++;return oBT.apply(g,arguments)}}
-    if(g.blendFunc){const oBF=g.blendFunc.bind(g);g.blendFunc=function(){_PERF_PROF._glBlend++;return oBF.apply(g,arguments)}}
-    if(g.blendFuncSeparate){const oBFS=g.blendFuncSeparate.bind(g);g.blendFuncSeparate=function(){_PERF_PROF._glBlend++;return oBFS.apply(g,arguments)}}
   }
   // 충돌 함수 후킹 (update 내부 무수정 — 외부에서 함수 참조 교체)
   if(typeof _applyColResult==='function'&&!_PERF_PROF._origACR){

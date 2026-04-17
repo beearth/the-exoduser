@@ -42067,19 +42067,6 @@ function drawP(){
       }
       console.log('[S7-BREAKDOWN] iter='+_bdIter.toFixed(1)+'ms setup='+_bdSetup.toFixed(1)+'ms draw='+_bdDraw.toFixed(1)+'ms post='+_bdPost.toFixed(1)+'ms | instances='+_bdInst+' glStates={prog:'+_bdProg+', tex:'+_bdTex+', blend:'+_bdBlend+'}');
     }
-    // [S7-DEBUG] (2026-04-17) S7 무거운데 BREAKDOWN 안 나오면 게이트 값 출력
-    if(_dpT7>8&&!_s7Active){
-      console.log('[S7-SKIP] BREAKDOWN gate fail | _dpT7='+_dpT7.toFixed(2)+
-              ' _s7Active='+(typeof _s7Active!=='undefined'?_s7Active:'UNDEF'));
-    }
-    // [S7-WARN] (2026-04-17) PROF 비활성인데 S7>15ms면 1회 경고 (3초 throttle)
-    if(!_PERF_PROF.enabled&&_dpT7>15){
-      if(!_PERF_PROF._s7WarnedOnce){
-        console.warn('[S7-WARN] 고비용 S7 감지 but PROF 비활성: '+_dpT7.toFixed(1)+'ms');
-        _PERF_PROF._s7WarnedOnce=true;
-        setTimeout(()=>{_PERF_PROF._s7WarnedOnce=false},3000);
-      }
-    }
   }
   X.globalAlpha=1;
 }
@@ -42428,8 +42415,7 @@ const _PERF_PROF={enabled:false,frameCnt:0,
   ai:[],coll:[],render:[],dom:[],drawCalls:0,
   _aiAcc:0,_collAcc:0,_renderAcc:0,_domAcc:0,
   _hooked:false,_origACR:null,_origDCW:null,
-  _glProg:0,_glTex:0,_glBlend:0, // S7-BREAKDOWN용 GL state change 카운터 (2026-04-17)
-  _s7WarnedOnce:false}; // S7 고비용 경고 1회 throttle (3초 reset, 2026-04-17)
+  _glProg:0,_glTex:0,_glBlend:0}; // S7-BREAKDOWN용 GL state change 카운터 (2026-04-17)
 function _perfHookGL(){
   if(_PERF_PROF._hooked)return;
   // GL 드로우콜 + state change 카운터 후킹 (메인 GL + 보조 _bGL)
