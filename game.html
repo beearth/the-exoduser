@@ -34513,23 +34513,11 @@ $('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
   };
   const _EQUIPMENT_TABS=new Set(['weapon','bow','armor','shield','helmet','pants','gloves','boots','belt','necklace','ring','cape','bracelet','headband']);
   ['upgrade','potion','salvage','reroll','crystal','craft','weapon','bow','armor','shield','helmet','pants','gloves','boots','belt','necklace','ring','cape','bracelet','headband'].forEach((k)=>{
-    if(k==='craft'){
-      const _cm=_fgTabMeta[k];const _ctxt=OPT.lang==='en'?_cm.en:_cm.ko;
-      const d=document.createElement('div');
-      d.className='fg-tab fg-tab-craft'+(G.forgeExpanded?' expanded':'')+(G.forgeTab==='craft'?' act':'');
-      const _cimg='output/imagegen/forge-tabs-v3/'+k+'.png?v=20260416-v3set1';
-      const _cfb=_forgeTabFallbackData(_cm.icon);
-      const _arrow=G.forgeExpanded?'▼':'▶';
-      d.innerHTML='<span class="fg-tab-ico"><img class="fg-tab-ico-img" src="'+_cimg+'" alt="" onerror="this.onerror=null;this.src=&apos;'+_cfb+'&apos;"></span><span class="fg-tab-txt">'+_ctxt+'</span><span class="fg-tab-arrow">'+_arrow+'</span>';
-      d.onclick=()=>{G.forgeExpanded=!G.forgeExpanded;if(G.forgeExpanded){G.forgeTab='craft';_forgeSel=null}renderForge()};
-      tabs.appendChild(d);
-      return;
-    }
-    if(_EQUIPMENT_TABS.has(k)&&!G.forgeExpanded)return;
+    if(_EQUIPMENT_TABS.has(k))return;
     const _m=_fgTabMeta[k];
     const _txt=OPT.lang==='en'?_m.en:_m.ko;
     const d=document.createElement('div');
-    d.className='fg-tab'+(_EQUIPMENT_TABS.has(k)?' fg-tab-sub':'')+(G.forgeTab===k?' act':'');
+    d.className='fg-tab'+(G.forgeTab===k?' act':'');
     const _img='output/imagegen/forge-tabs-v3/'+k+'.png?v=20260416-v3set1';
     const _fb=_forgeTabFallbackData(_m.icon);
     d.innerHTML='<span class="fg-tab-ico"><img class="fg-tab-ico-img" src="'+_img+'" alt="" onerror="this.onerror=null;this.src=&apos;'+_fb+'&apos;"></span><span class="fg-tab-txt">'+_txt+'</span>';
@@ -35045,15 +35033,14 @@ const secHdr3=document.createElement('div');secHdr3.style.cssText='color:#cc66ff
     _craftSlots.forEach(sl=>{
       const curEq=sl==='ring'?INV.equipped.ring1||INV.equipped.ring2:INV.equipped[sl];
       const card=document.createElement('div');
-      const ok=G.mats>=CRAFT_COST;
-      card.style.cssText='cursor:'+(ok?'pointer':'not-allowed')+';padding:8px 4px;text-align:center;background:rgba(0,0,0,.3);border:1px solid '+(ok?'#443322':'#221100')+';border-radius:6px;transition:all .15s';
-      card.onmouseenter=()=>{if(ok){card.style.borderColor='#bb44ff';card.style.boxShadow='0 0 8px #bb44ff33'}};
-      card.onmouseleave=()=>{card.style.borderColor=ok?'#443322':'#221100';card.style.boxShadow='none'};
+      card.style.cssText='cursor:pointer;padding:8px 4px;text-align:center;background:rgba(0,0,0,.3);border:1px solid #443322;border-radius:6px;transition:all .15s';
+      card.onmouseenter=()=>{card.style.borderColor='#bb44ff';card.style.boxShadow='0 0 8px #bb44ff33'};
+      card.onmouseleave=()=>{card.style.borderColor='#443322';card.style.boxShadow='none'};
       let curTxt='';
       if(curEq)curTxt='<div style="color:'+RARITY_C[curEq.rarity||0]+';font-size:.7rem;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+_T(curEq.name)+'</div>';
       else curTxt='<div style="color:#443322;font-size:.7rem;margin-top:3px">—</div>';
       card.innerHTML='<div style="font-size:1.3rem">'+(_csEmoji[sl]||'')+'</div><div style="color:#ccaa77;font-size:.8rem;font-weight:700">'+_csNames[sl]+'</div>'+curTxt;
-      card.onclick=()=>{if(!ok){notify(_T('악의가 부족합니다!'));return}G.forgeExpanded=true;G.forgeTab=sl;_forgeSel=null;renderForge()};
+      card.onclick=()=>{G.forgeTab=sl;_forgeSel=null;renderForge()};
       cGrid.appendChild(card);
     });
     grid.appendChild(cGrid);
@@ -39170,50 +39157,18 @@ function drawP(){
       }else if(fz.type==='hellRay'){
         // ═══ 참회 — 회전하는 오망성(펜타그램) ═══
         const _hrt=_now*.001;const _hrAng=fz.ang||0;
-        // 오망성 5꼭짓점 (외곽)
-        const _hrPts=[];const _hrIn=[];
+        // 오망성 5꼭짓점
+        const _hrPts=[];
         for(let _pi=0;_pi<5;_pi++){
-          const _aO=_hrAng+_pi*Math.PI*.4-Math.PI*.5; // 72도 간격, 꼭대기 시작
-          const _aI=_hrAng+(_pi+.5)*Math.PI*.4-Math.PI*.5;
+          const _aO=_hrAng+_pi*Math.PI*.4-Math.PI*.5;
           _hrPts.push([fz.x+Math.cos(_aO)*fz.r*.85,fz.y+Math.sin(_aO)*fz.r*.85]);
-          _hrIn.push([fz.x+Math.cos(_aI)*fz.r*.35,fz.y+Math.sin(_aI)*fz.r*.35]);
         }
-        // 1) 오망성 별 라인 (꼭짓점 연결: 0→2→4→1→3→0)
+        // 별 라인 (0→2→4→1→3→0)
         const _starOrd=[0,2,4,1,3];
-        X.globalAlpha=(.6+.15*Math.sin(_hrt*12))*_fzFade;X.lineWidth=3;
-        const _gStar=X.createRadialGradient(fz.x,fz.y,0,fz.x,fz.y,fz.r*.9);
-        _gStar.addColorStop(0,'rgba(255,220,80,.95)');_gStar.addColorStop(.6,'rgba(255,200,60,.7)');_gStar.addColorStop(1,'rgba(255,255,200,.1)');
-        X.strokeStyle=_gStar;
+        X.globalAlpha=(.65+.15*Math.sin(_hrt*12))*_fzFade;X.lineWidth=3;X.strokeStyle='#ffd700';
         X.beginPath();X.moveTo(_hrPts[_starOrd[0]][0],_hrPts[_starOrd[0]][1]);
         for(let _si=1;_si<5;_si++)X.lineTo(_hrPts[_starOrd[_si]][0],_hrPts[_starOrd[_si]][1]);
         X.closePath();X.stroke();
-        // 2) 오망성 팔 빔 (중심→꼭짓점 페이드)
-        for(let _ai=0;_ai<5;_ai++){
-          const _ex=_hrPts[_ai][0],_ey=_hrPts[_ai][1];
-          const _g=X.createLinearGradient(fz.x,fz.y,_ex,_ey);
-          _g.addColorStop(0,'rgba(255,220,80,.85)');_g.addColorStop(.5,'rgba(255,240,150,.4)');_g.addColorStop(1,'rgba(255,255,220,0)');
-          X.globalAlpha=(.4+.1*Math.sin(_hrt*10+_ai*1.3))*_fzFade;X.strokeStyle=_g;X.lineWidth=6;
-          X.beginPath();X.moveTo(fz.x,fz.y);X.lineTo(_ex,_ey);X.stroke();
-        }
-        // 3) 내부 오각형 (은은한 채움)
-        X.globalAlpha=(.12+.06*Math.sin(_hrt*8))*_fzFade;X.fillStyle='#ffd700';
-        X.beginPath();X.moveTo(_hrIn[0][0],_hrIn[0][1]);
-        for(let _ii=1;_ii<5;_ii++)X.lineTo(_hrIn[_ii][0],_hrIn[_ii][1]);
-        X.closePath();X.fill();
-        // 4) 중심 — 빛나는 코어
-        const _coreR=12+Math.sin(_hrt*10)*4;
-        X.globalAlpha=(.5+.2*Math.sin(_hrt*8))*_fzFade;X.fillStyle='#ffd700';
-        X.beginPath();X.arc(fz.x,fz.y,_coreR,0,Math.PI*2);X.fill();
-        X.globalAlpha=(.8+.15*Math.sin(_hrt*14))*_fzFade;X.fillStyle='#ffffff';
-        X.beginPath();X.arc(fz.x,fz.y,_coreR*.4,0,Math.PI*2);X.fill();
-        // 5) 꼭짓점 플레어
-        for(let _ai=0;_ai<5;_ai++){
-          X.globalAlpha=(.3+.15*Math.sin(_hrt*10+_ai*1.2))*_fzFade;X.fillStyle='#ffd700';
-          X.beginPath();X.arc(_hrPts[_ai][0],_hrPts[_ai][1],3+Math.sin(_hrt*16+_ai)*2,0,Math.PI*2);X.fill();
-        }
-        // 6) 범위 원 (은은한 점선)
-        X.globalAlpha=.06*_fzFade;X.strokeStyle='#ffd700';X.lineWidth=1;X.setLineDash([6,10]);
-        X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.stroke();X.setLineDash([]);
       }else if(fz.type==='assaultFlame'){
         // 기동칼날개 불바닥 — 불꽃 스프라이트
         if(_flameImgs.length>=4){
@@ -41860,7 +41815,7 @@ function drawP(){
   if(P.s==='peaceShield'&&(P._psShieldR||0)>0){
     const _psR=P._psShieldR;
     const _psPW=P._sbParryT>0;
-    if(_paReady&&!_s7Active){
+    if(_paReady){
       _paTimer++;if(_paTimer>=3){_paTimer=0;_paFrame=(_paFrame+1)%_PA_FRAMES}
       const _paCol=_paFrame%_PA_COLS,_paRow=~~(_paFrame/_PA_COLS);
       const _paSz=_psR*3.3;
@@ -41890,7 +41845,7 @@ function drawP(){
     const pulse=_sbPW?1:_sbPhase===3?(.6+Math.sin(t/8)*.4):(.85+Math.sin(_sbT*3)*.15);
     const ringR=_sbPhase===3?(_sbR+Math.sin(t/6)*4):_sbR;
     // ── 보호막 오라 — 스프라이트 (기폭팔: 파란→빨간 3초 크로스페이드) ──
-    if(_saReady&&!_s7Active){
+    if(_saReady){
       _saTimer++;if(_saTimer>=3){_saTimer=0;_saFrame=(_saFrame+1)%_SA_FRAMES}
       const _saCol2=_saFrame%_SA_COLS,_saRow2=~~(_saFrame/_SA_COLS);
       const _saSz=ringR*3.75;
@@ -42021,7 +41976,7 @@ function drawP(){
   if(_harpActive){
     const _ha=Math.atan2(_harpVY,_harpVX);
     const _hDist=dst(P.x,P.y,_harpX,_harpY);
-    if(_chainShurikenImg&&_chainShurikenImg.complete&&_chainShurikenImg.naturalWidth>0&&!_s7Active){
+    if(_chainShurikenImg&&_chainShurikenImg.complete&&_chainShurikenImg.naturalWidth>0){
       // 스프라이트 작살: chain_shuriken_2.webp
       const _csAspect=_chainShurikenImg.naturalWidth/_chainShurikenImg.naturalHeight;
       // 체인 길이를 거리에 맞춰 스케일
@@ -42133,7 +42088,7 @@ function drawP(){
     if(isCrow){
       // 까마귀: 8방향 정적 스프라이트
       const _ci=_PET_IMGS.crow[_dir8];
-      if(_ci&&_ci.complete&&_ci.naturalWidth&&!_s7Active){
+      if(_ci&&_ci.complete&&_ci.naturalWidth){
         X.drawImage(_ci,px-_petSz/2,py-_petSz/2,_petSz,_petSz);
       }else{
         X.fillStyle='#111';X.beginPath();X.arc(px,py,2,0,Math.PI*2);X.fill();
@@ -42156,7 +42111,7 @@ function drawP(){
       }
       // fallback: 정적 스프라이트
       if(!_catImg||!_catImg.complete||!_catImg.naturalWidth){_catImg=_PET_IMGS.cat._static[_dir8];_flip=false}
-      if(_catImg&&_catImg.complete&&_catImg.naturalWidth&&!_s7Active){
+      if(_catImg&&_catImg.complete&&_catImg.naturalWidth){
         if(_flip){X.save();X.translate(px,py-_petSz/2);X.scale(-1,1);X.drawImage(_catImg,-_petSz/2,0,_petSz,_petSz);X.restore()}
         else{X.drawImage(_catImg,px-_petSz/2,py-_petSz/2,_petSz,_petSz)}
       }else{
