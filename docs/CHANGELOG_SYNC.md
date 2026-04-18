@@ -20169,3 +20169,13 @@
 ## 2026-04-18 19:37 (auto)
 - game.html
 
+
+## 2026-04-18 20:30 (auto)
+- assets/gore/blood_splat_1.png
+- assets/gore/flesh_chunk_2.png
+- assets/gore/intestine_1.png
+- assets/gore/spine.png
+- game.html
+- gen_gore_assets.py
+- server.cjs
+

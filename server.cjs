@@ -1,6 +1,16 @@
 const http = require('http');
+const https = require('https');
 const fs = require('fs');
 const path = require('path');
+
+// .env 로드
+const _envPath = path.join(__dirname, '.env');
+if (fs.existsSync(_envPath)) {
+  fs.readFileSync(_envPath, 'utf8').split('\n').forEach(line => {
+    const m = line.match(/^\s*([^#=]+?)\s*=\s*(.*)\s*$/);
+    if (m && !process.env[m[1]]) process.env[m[1]] = m[2];
+  });
+}
 
 const PORT = 3333;
 const ROOT = __dirname;
@@ -117,6 +127,62 @@ const server = http.createServer(async (req, res) => {
       const n = Math.max(0, Math.min(Math.floor(+body.mats || 0), Number.MAX_SAFE_INTEGER));
       fs.writeFileSync(MATS_FILE, JSON.stringify({ mats: n, ts: Date.now() }), 'utf8');
       return sendJSON(res, 200, { ok: true, mats: n });
+    }
+
+    // ═══ GPT 이미지 생성 API ═══
+    if (pathname === '/api/gpt-image' && req.method === 'POST') {
+      const apiKey = process.env.OPENAI_API_KEY;
+      if (!apiKey) return sendJSON(res, 500, { ok: false, error: 'OPENAI_API_KEY not set' });
+      const body = await readBody(req);
+      const prompt = body.prompt;
+      const size = body.size || '1024x1024';
+      const model = body.model || 'gpt-image-1';
+      const quality = body.quality || 'auto';
+      const n = Math.min(body.n || 1, 4);
+      if (!prompt) return sendJSON(res, 400, { ok: false, error: 'No prompt' });
+
+      const postData = JSON.stringify({ model, prompt, n, size, quality });
+      const result = await new Promise((resolve, reject) => {
+        const r = https.request({
+          hostname: 'api.openai.com',
+          path: '/v1/images/generations',
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + apiKey,
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(postData),
+          }
+        }, (resp) => {
+          const chunks = [];
+          resp.on('data', c => chunks.push(c));
+          resp.on('end', () => {
+            try { resolve(JSON.parse(Buffer.concat(chunks).toString())); }
+            catch (e) { reject(e); }
+          });
+        });
+        r.on('error', reject);
+        r.write(postData);
+        r.end();
+      });
+
+      if (result.error) return sendJSON(res, 400, { ok: false, error: result.error.message });
+
+      // base64 이미지를 파일로 저장
+      const imgDir = path.join(ROOT, 'img', 'gpt_gen');
+      if (!fs.existsSync(imgDir)) fs.mkdirSync(imgDir, { recursive: true });
+      const saved = [];
+      for (let i = 0; i < (result.data || []).length; i++) {
+        const d = result.data[i];
+        const fname = `gpt_${Date.now()}_${i}.png`;
+        if (d.b64_json) {
+          fs.writeFileSync(path.join(imgDir, fname), Buffer.from(d.b64_json, 'base64'));
+          saved.push({ file: 'img/gpt_gen/' + fname, revised_prompt: d.revised_prompt });
+        } else if (d.url) {
+          saved.push({ url: d.url, revised_prompt: d.revised_prompt });
+        }
+      }
+      console.log('[GPT-IMG] Generated', saved.length, 'images for:', prompt.slice(0, 50));
+      return sendJSON(res, 200, { ok: true, images: saved });
     }
 
     if (pathname.startsWith('/api/save/') && req.method === 'DELETE') {

@@ -14608,7 +14608,7 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
   // 4) 랜덤 파편 — 중력 적용 (tp=0 rect, grav>0) 개수↓ 수명↑ 속도↓
   const dn=isBoss?8:4;
   for(let i=0;i<dn&&_partCnt<POOL_SZ;i++){
-    poolPart(x+(Math.random()-.5)*r,y+(Math.random()-.5)*r,(Math.random()-.5)*3,-1-Math.random()*2,col,3+Math.random()*6,60+Math.random()*30,0,0,.12);
+    {const _da=Math.PI*2*Math.random(),_ds=1.5+Math.random()*1.5;poolPart(x+(Math.random()-.5)*r,y+(Math.random()-.5)*r,Math.cos(_da)*_ds,Math.sin(_da)*_ds-1.5,col,3+Math.random()*6,60+Math.random()*30,0,0,.12)}
   }
   // 5) 피 폭발 — 사방으로 튀는 혈흔 개수↓ 수명↑ 속도↓
   const _bCols2=['#aa0000','#880000','#cc1111','#770000','#990000'];
@@ -14722,7 +14722,7 @@ const _gibC=document.createElement('canvas');_gibC.width=48;_gibC.height=48;cons
 let _gibThrottle=0; // 프레임당 gib 생성 제한
 function _addGibs(e,boomX,boomY,boomR){
   if(!OPT.deathFx)return;
-  if(_gibThrottle>2)return; // 프레임당 최대 3회
+  if(_gibThrottle>5)return; // 프레임당 최대 6회
   _gibThrottle++;
   const pw=Math.max(1,(boomR||50)/50);
   _gibX.clearRect(0,0,48,48);
@@ -14767,6 +14767,88 @@ function _addGibs(e,boomX,boomY,boomR){
   const pn=~~(4+pw*6);
   for(let i=0;i<pn;i++){const a=ang+(Math.random()-.5)*2;
     poolPart(e.x,e.y,Math.cos(a)*(2+Math.random()*3)*pw,Math.sin(a)*(2+Math.random()*3)*pw-1.5,'#880022',2+Math.random()*3,10+Math.random()*8*pw,0,0,.1)}
+}
+// ── 고어 파편 시스템 (스프라이트 이미지 기반) ──
+const _GORE_MAX=30;const _gorePieces=[];
+const _GORE_TYPES=['spine','intestine_1','flesh_chunk_1','flesh_chunk_2','blood_splat_1'];
+const _goreImgs={};let _goreReady=false;
+{let _gl=0;
+_GORE_TYPES.forEach(function(t){const img=new Image();img.onload=function(){_gl++;if(_gl>=_GORE_TYPES.length)_goreReady=true};img.onerror=function(){_gl++;if(_gl>=_GORE_TYPES.length)_goreReady=true};img.src='assets/gore/'+t+'.png';_goreImgs[t]=img})}
+for(let i=0;i<_GORE_MAX;i++)_gorePieces.push({x:0,y:0,vx:0,vy:0,rot:0,rv:0,life:0,ml:0,sz:0,img:null,active:false});
+const _GORE_ALIAS={flesh:'flesh_chunk_1',blood:'blood_splat_1',spine:'spine',intestine:'intestine_1'};
+function _addGorePiece(x,y,type){
+  if(!OPT.deathFx||!_goreReady)return;
+  const key=_GORE_ALIAS[type]||type;
+  const img=_goreImgs[key];if(!img||!img.complete||!img.naturalWidth)return;
+  let oldest=0,minL=Infinity;
+  for(let i=0;i<_GORE_MAX;i++){if(!_gorePieces[i].active){oldest=i;break}if(_gorePieces[i].life<minL){minL=_gorePieces[i].life;oldest=i}}
+  const g=_gorePieces[oldest];
+  g.x=x+(Math.random()-.5)*20;g.y=y+(Math.random()-.5)*20;
+  const a=Math.random()*Math.PI*2;const spd=1.5+Math.random()*3;
+  g.vx=Math.cos(a)*spd;g.vy=Math.sin(a)*spd-2;
+  g.rot=Math.random()*Math.PI*2;g.rv=(Math.random()-.5)*.12;
+  g.sz=type==='blood'?14+Math.random()*8:12+Math.random()*10;
+  g.life=150;g.ml=150; // 2.5초
+  g.img=img;g.active=true;
+}
+// ── 스프라이트 분할 시체 시스템 (2~4조각, 큰 크롭) ──
+const _SPLIT_MAX=24;const _splits=[];
+const _SPLIT_CELL=64; // 각 조각 캔버스 크기
+for(let i=0;i<_SPLIT_MAX;i++){const _sc=document.createElement('canvas');_sc.width=_SPLIT_CELL;_sc.height=_SPLIT_CELL;_splits.push({x:0,y:0,vx:0,vy:0,rot:0,rv:0,life:0,ml:0,sz:0,c:_sc,ctx:_sc.getContext('2d'),active:false})}
+function _addSplitGibs(e,killAng){
+  if(!OPT.deathFx)return;
+  // 스프라이트 캡처 (48x48 임시 캔버스 _gibC 재사용)
+  _gibX.clearRect(0,0,48,48);
+  let _drawn=false;
+  {const _a8=_ch8Atlas[1];
+  if(_a8){let _da=_a8.dirs['south'];
+    if(_da&&_da.ready&&e._mob8Col!==undefined){
+      const _c8=(_a8.meta?_a8.meta.cell:256);
+      _gibX.drawImage(_da.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,0,0,48,48);
+      _drawn=true;
+    }
+  }
+  if(!_drawn){_gibX.fillStyle=e.col||'#cc0000';_gibX.beginPath();_gibX.arc(24,24,20,0,Math.PI*2);_gibX.fill()}}
+  // 패턴 선택
+  const roll=Math.random();
+  let cuts; // [{sx,sy,sw,sh, ox,oy}] — 크롭 소스 + 오프셋
+  if(roll<.40){
+    // A. 상하 2조각
+    cuts=[{sx:0,sy:0,sw:48,sh:24, ox:0,oy:-.25},{sx:0,sy:24,sw:48,sh:24, ox:0,oy:.25}];
+  }else if(roll<.70){
+    // B. 참수 2조각 (머리 30% + 몸 70%)
+    cuts=[{sx:0,sy:0,sw:48,sh:14, ox:0,oy:-.35},{sx:0,sy:14,sw:48,sh:34, ox:0,oy:.17}];
+  }else if(roll<.85){
+    // C. 좌우 2조각
+    cuts=[{sx:0,sy:0,sw:24,sh:48, ox:-.25,oy:0},{sx:24,sy:0,sw:24,sh:48, ox:.25,oy:0}];
+  }else{
+    // D. 4분할
+    cuts=[{sx:0,sy:0,sw:24,sh:24, ox:-.25,oy:-.25},{sx:24,sy:0,sw:24,sh:24, ox:.25,oy:-.25},
+          {sx:0,sy:24,sw:24,sh:24, ox:-.25,oy:.25},{sx:24,sy:24,sw:24,sh:24, ox:.25,oy:.25}];
+  }
+  const renderSz=Math.max(28,e.r*3.5); // 실제 렌더 크기
+  const ang=killAng||0;
+  for(let ci=0;ci<cuts.length;ci++){
+    const ct=cuts[ci];
+    // 풀에서 비활성 or 가장 오래된 슬롯
+    let oldest=0,minL=Infinity;
+    for(let i=0;i<_SPLIT_MAX;i++){if(!_splits[i].active){oldest=i;break}if(_splits[i].life<minL){minL=_splits[i].life;oldest=i}}
+    const s=_splits[oldest];
+    s.ctx.clearRect(0,0,_SPLIT_CELL,_SPLIT_CELL);
+    s.ctx.drawImage(_gibC,ct.sx,ct.sy,ct.sw,ct.sh,0,0,_SPLIT_CELL,_SPLIT_CELL);
+    // 위치: 적 중심 + 조각 오프셋
+    s.x=e.x+ct.ox*renderSz;s.y=e.y+ct.oy*renderSz;
+    // 속도: 킬 방향 + 오프셋 방향 혼합
+    const offAng=Math.atan2(ct.oy,ct.ox||.01);
+    const spd=1.5+Math.random()*2;
+    s.vx=Math.cos(ang)*spd*.5+Math.cos(offAng)*spd;
+    s.vy=Math.sin(ang)*spd*.5+Math.sin(offAng)*spd-1.5;
+    s.rot=Math.random()*Math.PI*2;
+    s.rv=(Math.random()-.5)*.15; // 회전 속도
+    s.sz=renderSz*(ct.sw/48); // 크롭 비율에 맞춘 렌더 크기
+    s.life=120;s.ml=120; // 2초
+    s.active=true;
+  }
 }
 function _spawnLargeMonsterDeathFx(e,ang){
   if(!OPT.deathFx)return;
@@ -17131,13 +17213,8 @@ function _autoFireBowSkill(tx,ty){
   const _abs=P.activeBowSk||'normal';
   // 공성쇠뇌: 터렛 설치 중이면 플레이어 석궁 사용 불가 (터렛만 발사)
   if(_gxTurret&&!_gxFiring){return}
-  // 터렛 발사 시: 공성쇠뇌 자체가 선택돼있으면 습득 석궁 스킬 중 최선 사용
-  let _effAbs=_abs;
-  if(_gxFiring&&_abs==='ghostXbowTurret'){
-    const _bowOrd=['bladeShot','needleShot','fanShot','blastShot'];
-    _effAbs='normal';
-    for(let _bi=0;_bi<4;_bi++){if(P.skills[_bowOrd[_bi]]>=1){_effAbs=_bowOrd[_bi];break;}}
-  }
+  // 터렛 발사 시: 공성쇠뇌 자체가 선택돼있으면 기본 석궁으로 전환
+  const _effAbs=(_gxFiring&&_abs==='ghostXbowTurret')?'normal':_abs;
   if(_effAbs==='normal'){_fireXbow(tx,ty);return}
   const a=Math.atan2(ty-P.y,tx-P.x);
   const _sS=P.s,_sSt2=P.st2,_sSt=P.st;
@@ -17148,9 +17225,8 @@ function _autoFireBowSkill(tx,ty){
   else if(_effAbs==='blastShot'&&P.skills.blastShot&&G.mats>=_malCost(5)&&(P._bsCd2||0)<=0){activateBlastShot();fired=true} // 밸런스: 악의 8→5 (50% 할인 반영)
   else if(_effAbs==='fanShot'&&P.skills.fanShot&&!_isFused('sixFuse')&&!_isFused('elemFuse')&&!_isFused('stormBeam')){_fireFanShot();fired=true}
   else if(_effAbs==='needleShot'&&P.skills.needleShot&&(P._ndCd||0)<=0){activateNeedleShot();fired=pProjs.length>_pBefore}
-  else if(_effAbs==='ghostXbowTurret'){
-    // 터렛 설치는 수동(스킬키)으로만 — 자동발사에서 설치도 폴백 발사도 금지
-    return;
+  else if(_effAbs==='ghostXbowTurret'&&P.skills.ghostXbowTurret){
+    // 자동설치 금지 — 수동(스킬키)으로만 설치
   }
   if(!fired){
     // 스킬 실패/쿨다운 → 터렛이면 기본 석궁 폴백, 플레이어면 쿨다운 대기
@@ -22143,6 +22219,10 @@ function update(){
   // gib 조각 업데이트
   _gibThrottle=0;
   for(let gi=0;gi<_GIB_MAX;gi++){const g=_gibs[gi];if(!g.active)continue;g.life-=sp;if(g.life<=0){g.active=false;continue}g.x+=g.vx*sp;g.y+=g.vy*sp;g.vy+=.15*sp;g.vx*=.97**sp;g.r+=g.vx*.08*sp;}
+  // split 조각 업데이트 (중력+회전+감속)
+  for(let si=0;si<_SPLIT_MAX;si++){const s=_splits[si];if(!s.active)continue;s.life-=sp;if(s.life<=0){s.active=false;continue}s.x+=s.vx*sp;s.y+=s.vy*sp;s.vy+=.12*sp;s.vx*=.96**sp;s.rot+=s.rv*sp;s.rv*=.98**sp;}
+  // gore 파편 업데이트 (중력+회전+감속)
+  for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active)continue;g.life-=sp;if(g.life<=0){g.active=false;continue}g.x+=g.vx*sp;g.y+=g.vy*sp;g.vy+=.10*sp;g.vx*=.97**sp;g.rot+=g.rv*sp;g.rv*=.97**sp;}
   // 불타는 시체 업데이트 — 스프라이트를 직접 태움
   for(let bi=0;bi<_BURN_MAX;bi++){const bc=_burnCorpses[bi];if(!bc.active)continue;bc.t-=sp;if(bc.t<=0){bc.active=false;continue}
     const prog=1-bc.t/bc.mt; // 0→1
@@ -22606,10 +22686,16 @@ function update(){
       _gxVolMul*=_gxVolMul; // 제곱 감쇠 (근접 0.0225, 멀면 0)
       P.x=_gxTurret.x;P.y=_gxTurret.y;P.facing=ang;P.atkArc=ang;
       _gxFiring=_gxDmgMul;
+      // activeBowSk가 ghostXbowTurret/normal이면 습득 스킬로 임시 교체
+      const _svBowSk=P.activeBowSk;
+      if(P.activeBowSk==='ghostXbowTurret'||P.activeBowSk==='normal'){
+        const _bOrd=['bladeShot','needleShot','fanShot','blastShot'];
+        for(let _bi=0;_bi<4;_bi++){if(P.skills[_bOrd[_bi]]>=1){P.activeBowSk=_bOrd[_bi];break;}}
+      }
       const _gxPBefore=pProjs.length;
       _autoFireBowSkill(_gxTarget.x,_gxTarget.y);
       for(let _gi=_gxPBefore;_gi<pProjs.length;_gi++){pProjs[_gi].dmg=~~(pProjs[_gi].dmg*_gxDmgMul);pProjs[_gi]._fromTurret=true;}
-      _gxFiring=0;_gxVolMul=1; // 리셋
+      _gxFiring=0;_gxVolMul=1;P.activeBowSk=_svBowSk; // 리셋
       P.x=_svX;P.y=_svY;P.facing=_svFa;P.atkArc=_svArc;
     }
   }
@@ -29249,14 +29335,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // 화염/빔 사망 → 불타는 시체 + 전용 사운드
     if(_isBurnDeath){_addBurnCorpse(e);playSample((opts&&opts.beam)?['fire_death','fire_death2','fire_death3'][Math.random()*3|0]:'fire_hit',.5,_r(1,.15))}
     // 큰 몬스터는 기본 사망 시 큰 시체 파편(gib) 생성
-    const _isLargeCorpse=!!e.ib||e.r>=18||e.mhp>=220;
-    let _didGib=false;
-    if(_isLargeCorpse&&!_isBurnDeath){_addGibs(e,e.x,e.y,Math.max(70,e.r*3));_didGib=true}
-    // 폭발/포이즈스킬 사망 시 gib — explode, poiseHit(기폭팔), noPoise(대왕치기), poiseSkill(칼등치기)
-    if(!_didGib){
-      if(opts&&(opts.explode||opts.poiseHit||opts.noPoise||opts.poiseSkill)){_addGibs(e,P.x,P.y,60)}
-      else{for(let _bi=0;_bi<_BOOM_MAX;_bi++){const _bb=_booms[_bi];if(_bb.active&&dst(e.x,e.y,_bb.x,_bb.y)<_bb.r+e.r){_addGibs(e,_bb.x,_bb.y,_bb.r);break}}}
-    }
+    // 모든 사망 시 gib + 스프라이트 분할 (화염 제외)
+    if(!_isBurnDeath){_addGibs(e,e.x,e.y,Math.max(50,e.r*3));_addSplitGibs(e,_killAng)}
     if(e._fromHole!=null&&G.spawnHoles[e._fromHole])G.spawnHoles[e._fromHole].alive--;
     if(e.ib&&e._bossRevJudged){addTxt(e.x,e.y-45,_T('💀 부활 판정 중...'),'#ff8844',90);G._flashT=3;G._flashCol='#ff4400'}
     else if(e.ib){addTxt(e.x,e.y-45,_T('☠ 완전 사망!'),'#ff4400',90);G._flashT=6;G._flashCol='#ffffff';G._chromaT=5}
@@ -37935,6 +38015,8 @@ function draw(){
   if(performance.now()-_fStart>_fBudget)_fOverBudget=true;
   // gib 조각 렌더 (source-over, 최대 10개)
   if(!_fOverBudget){let _gibDrw=0;for(let gi=0;gi<_GIB_MAX;gi++){const g=_gibs[gi];if(!g.active||!g.c)continue;if(g.x<_vl-20||g.x>_vr+20||g.y<_vt-20||g.y>_vb+20)continue;if(++_gibDrw>10)break;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>15?1:g.life/15;const gs=g.sz||10;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.r);X.drawImage(g.c,-gs*sc,-gs*sc,gs*2*sc,gs*2*sc);X.restore();}}
+  // split 조각 렌더 (스프라이트 크롭 큰 조각)
+  if(!_fOverBudget){for(let si=0;si<_SPLIT_MAX;si++){const s=_splits[si];if(!s.active||!s.c)continue;if(s.x<_vl-40||s.x>_vr+40||s.y<_vt-40||s.y>_vb+40)continue;const alpha=Math.min(1,s.life/s.ml*3);const sc=s.life>10?1:s.life/10;const hs=s.sz*sc*.5;X.save();X.globalAlpha=alpha;X.translate(s.x,s.y);X.rotate(s.rot);X.drawImage(s.c,-hs,-hs,s.sz*sc,s.sz*sc);X.restore();}}
   // ── VFX GL 인스턴싱 (lighter 블록 밖 — 자체 additive blend, compositeOp stall 회피) ──
   _dbgVfxGLDrawn=0;
   if(_vfxAnims.length>0){
