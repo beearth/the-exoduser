@@ -20179,3 +20179,20 @@
 - gen_gore_assets.py
 - server.cjs
 
+
+## 2026-04-18 21:00 (auto)
+- assets/gore/blood_impact_2.png
+- assets/gore/blood_impact_3.png
+- assets/gore/blood_impact_4.png
+- assets/gore/bone_1.png
+- assets/gore/bone_1.png.bak
+- assets/gore/bone_2.png
+- assets/gore/bone_2.png.bak
+- assets/gore/eye.png
+- assets/gore/eye.png.bak
+- assets/gore/heart.png
+- assets/gore/heart.png.bak
+- assets/gore/skull_chunk.png
+- assets/gore/skull_chunk.png.bak
+- game.html
+
