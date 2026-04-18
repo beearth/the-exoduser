@@ -120,7 +120,7 @@ const AFFIX_POOL = [
 
   // ── PREFIX: 능력치 ──
   {id:'maxHPFlat', type:0, ko:'강인의',  stat:'_aMaxHP',     tiers:[100,200,300],  unit:'val', slots:['전 방어구'],group:'hp',     weight:90},
-  {id:'shieldFlat',type:0, ko:'수호의',  stat:'_aShield',    tiers:[100,200,300],  unit:'val', slots:['전 방어구'],group:'shd',    weight:80},
+  {id:'shieldFlat',type:0, ko:'수호의',  stat:'_aShield',    tiers:[120,200,400,600,840],  unit:'val', slots:['전 방어구'],group:'shd',    weight:80},
   {id:'maxHPPct',  type:0, ko:'활력의',  stat:'_aMaxHPPct',  tiers:[0.08,0.14,0.22],unit:'pct', slots:['arm','nck'], group:'hpp',   weight:80},
   {id:'movSpd',    type:0, ko:'신속의',  stat:'_aMovSpd',    tiers:[0.05,0.09,0.14],unit:'pct', slots:['bts','clk'], group:'mspd',  weight:85},
   {id:'killHeal',  type:0, ko:'회복의',  stat:'_aKillHeal',  tiers:[8,15,25],   unit:'val', slots:['arm','rng'],    group:'kheal',  weight:75},
@@ -157,8 +157,8 @@ const AFFIX_POOL = [
   {id:'goldBonus', type:1, ko:'골드의',  stat:'_aGold',      tiers:[0.15,0.25,0.40],unit:'pct', slots:['bts','rng'],      group:'gold', weight:70},
   {id:'potionPow', type:1, ko:'포션강화의',stat:'_aPotPow',  tiers:[0.20,0.35,0.55],unit:'pct', slots:['pnt'],            group:'pot',  weight:60},
   {id:'extraDodge',type:1, ko:'스태미나의',stat:'_aExDodge', tiers:[1,1,2],     unit:'val', slots:['bts','pnt'],           group:'dodg', weight:55},
-  {id:'stRegen',   type:1, ko:'회복의',  stat:'stRegen',     tiers:[0.03,0.06,0.10],unit:'pct', slots:['arm','rng','nck'],group:'sreg', weight:80},
-  {id:'dpRegen',   type:1, ko:'마력의',  stat:'mpRegen',     tiers:[0.02,0.04,0.07],unit:'pct', slots:['hlm','nck'],      group:'dreg', weight:75},
+  {id:'stRegen',   type:1, ko:'회복의',  stat:'stRegen',     tiers:[0.06,0.10,0.18],unit:'pct', slots:['arm','rng','nck'],group:'sreg', weight:80},
+  {id:'dpRegen',   type:1, ko:'마력의',  stat:'mpRegen',     tiers:[0.06,0.10,0.18],unit:'pct', slots:['hlm','nck'],      group:'dreg', weight:75},
   // ── 크리티컬 데미지 어픽스 2종 (행운의+극대화의 → 반지 최대50%, 목걸이 최대100%) ──
   // 5티어, tierW:[40,30,20,8,2] 극악 편향, 200렙당 maxTier +1
   {id:'critDmgA',type:0, ko:'행운의',  stat:'critDmgA',tiers:[.05,.10,.15,.20,.25],unit:'pct', slots:['ring'],group:'cdmgA',weight:60,tierW:[40,30,20,8,2]},
@@ -187,7 +187,7 @@ Object.freeze(AFFIX_POOL);
 | critDmg | 처형의 | PREFIX | 25%/40%/65% | pct | wpn | statCritDmg() (무기 전용, 레거시) |
 | atkSpeed | 쾌속의 | PREFIX | 6%/10%/16% | pct | wpn,glv | statDex() |
 | maxHPFlat | 강인의 | PREFIX | 100/200/300 | val | 전 방어구 | statMaxHP() |
-| shieldFlat | 수호의 | PREFIX | 100/200/300 | val | 전 방어구 | P.mshield |
+| shieldFlat | 수호의 | PREFIX | 120/200/400/600/840 | val | 전 방어구 | P.mshield |
 | maxHPPct | 활력의 | PREFIX | 8%/14%/22% | pct | arm,nck | statMaxHP() |
 | movSpd | 신속의 | PREFIX | 5%/9%/14% | pct | bts,clk | statPlayerSpeed() |
 | killHeal | 회복의 | PREFIX | 8/15/25 | val | arm,rng | 적 처치 시 HP 회복 |
@@ -200,8 +200,8 @@ Object.freeze(AFFIX_POOL);
 | physDR | 강철의 | SUFFIX | 6%/10%/16% | pct | arm,shd | 물리 피해 감소 |
 | dropRate | 약탈의 | SUFFIX | 12%/20%/32% | pct | bts,clk | statDropBonus() |
 | extraST | 사슬의 | SUFFIX | 10/20/30 | val | bts,pnt | 사슬게이지 MAX 추가 |
-| stRegen | 회복의 | SUFFIX | 3%/6%/10% | pct | arm,rng,nck | ST 재생 배율 |
-| dpRegen | 마력의 | SUFFIX | 2%/4%/7% | pct | hlm,nck | MP 재생 배율 |
+| stRegen | 회복의 | SUFFIX | 6%/10%/18% | pct | arm,rng,nck | ST 재생 배율 |
+| dpRegen | 마력의 | SUFFIX | 6%/10%/18% | pct | hlm,nck | MP 재생 배율 |
 | antiRevive | 진혼의 | SUFFIX | 4%/8%/12%/16%/20% (5티어, 고티어 극악확률 tierW:50/30/15/4/1) | pct | neck,wpn,bracelet (반지: 2/4/8/12/16%) | 보스 부활 억제 (최대20%) |
 | critDmgA | 행운의 | PREFIX | 반지: 5%/10%/15%/20%/25% (5티어, tierW:40/30/20/8/2) / 목걸이: 10%/20%/30%/40%/50% | pct | ring,neck | statCritDmg() — 크리뎀 |
 | critDmgB | 극대화의 | SUFFIX | 반지: 5%/10%/15%/20%/25% (5티어, tierW:40/30/20/8/2) / 목걸이: 10%/20%/30%/40%/50% | pct | ring,neck | statCritDmg() — 크리뎀 |
