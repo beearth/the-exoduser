@@ -14768,14 +14768,35 @@ function _addGibs(e,boomX,boomY,boomR){
   for(let i=0;i<pn;i++){const a=ang+(Math.random()-.5)*2;
     poolPart(e.x,e.y,Math.cos(a)*(2+Math.random()*3)*pw,Math.sin(a)*(2+Math.random()*3)*pw-1.5,'#880022',2+Math.random()*3,10+Math.random()*8*pw,0,0,.1)}
 }
+// ── 데드 임팩트 시스템 (사망 시 혈흔 폭발 이펙트) ──
+const _DI_MAX=12;const _diPool=[];
+const _DI_NAMES=['blood_impact_2','blood_impact_3','blood_impact_4'];
+const _diImgs={};let _diReady=false;
+{let _dl=0;
+_DI_NAMES.forEach(function(t){const img=new Image();img.onload=function(){_dl++;if(_dl>=_DI_NAMES.length)_diReady=true};img.onerror=function(){_dl++;if(_dl>=_DI_NAMES.length)_diReady=true};img.src='assets/gore/'+t+'.png';_diImgs[t]=img})}
+for(let i=0;i<_DI_MAX;i++)_diPool.push({x:0,y:0,life:0,ml:0,maxSz:0,img:null,active:false});
+function _addDeathImpact(x,y,r){
+  if(!OPT.deathFx||!_diReady)return;
+  const key=_DI_NAMES[~~(Math.random()*_DI_NAMES.length)];
+  const img=_diImgs[key];if(!img||!img.complete||!img.naturalWidth)return;
+  let oldest=0,minL=Infinity;
+  for(let i=0;i<_DI_MAX;i++){if(!_diPool[i].active){oldest=i;break}if(_diPool[i].life<minL){minL=_diPool[i].life;oldest=i}}
+  const d=_diPool[oldest];
+  d.x=x;d.y=y;
+  d.maxSz=Math.max(40,r*4);
+  d.life=1.0;d.ml=1.0;
+  d.img=img;d.active=true;
+}
 // ── 고어 파편 시스템 (스프라이트 이미지 기반) ──
-const _GORE_MAX=30;const _gorePieces=[];
-const _GORE_TYPES=['spine','intestine_1','flesh_chunk_1','flesh_chunk_2','blood_splat_1'];
+const _GORE_MAX=16;const _gorePieces=[];
+const _GORE_TYPES=['spine','intestine_1','flesh_chunk_1','flesh_chunk_2','blood_splat_1','bone_1','bone_2','eye','skull_chunk','heart'];
 const _goreImgs={};let _goreReady=false;
 {let _gl=0;
 _GORE_TYPES.forEach(function(t){const img=new Image();img.onload=function(){_gl++;if(_gl>=_GORE_TYPES.length)_goreReady=true};img.onerror=function(){_gl++;if(_gl>=_GORE_TYPES.length)_goreReady=true};img.src='assets/gore/'+t+'.png';_goreImgs[t]=img})}
 for(let i=0;i<_GORE_MAX;i++)_gorePieces.push({x:0,y:0,vx:0,vy:0,rot:0,rv:0,life:0,ml:0,sz:0,img:null,active:false});
-const _GORE_ALIAS={flesh:'flesh_chunk_1',blood:'blood_splat_1',spine:'spine',intestine:'intestine_1'};
+const _GORE_ALIAS={flesh:'flesh_chunk_1',blood:'blood_splat_1',spine:'spine',intestine:'intestine_1',bone:'bone_1',eye:'eye',skull:'skull_chunk',heart:'heart'};
+// 타입별 크기 — 알아볼 수 있게 크게
+const _GORE_SZ={spine:40,intestine_1:35,flesh_chunk_1:30,flesh_chunk_2:28,blood_splat_1:32,bone_1:28,bone_2:26,eye:22,skull_chunk:30,heart:28};
 function _addGorePiece(x,y,type){
   if(!OPT.deathFx||!_goreReady)return;
   const key=_GORE_ALIAS[type]||type;
@@ -14787,7 +14808,7 @@ function _addGorePiece(x,y,type){
   const a=Math.random()*Math.PI*2;const spd=1.5+Math.random()*3;
   g.vx=Math.cos(a)*spd;g.vy=Math.sin(a)*spd-2;
   g.rot=Math.random()*Math.PI*2;g.rv=(Math.random()-.5)*.12;
-  g.sz=type==='blood'?14+Math.random()*8:12+Math.random()*10;
+  g.sz=(_GORE_SZ[key]||30)+(Math.random()-.5)*8;
   g.life=150;g.ml=150; // 2.5초
   g.img=img;g.active=true;
 }
@@ -22223,6 +22244,8 @@ function update(){
   for(let si=0;si<_SPLIT_MAX;si++){const s=_splits[si];if(!s.active)continue;s.life-=sp;if(s.life<=0){s.active=false;continue}s.x+=s.vx*sp;s.y+=s.vy*sp;s.vy+=.12*sp;s.vx*=.96**sp;s.rot+=s.rv*sp;s.rv*=.98**sp;}
   // gore 파편 업데이트 (중력+회전+감속)
   for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active)continue;g.life-=sp;if(g.life<=0){g.active=false;continue}g.x+=g.vx*sp;g.y+=g.vy*sp;g.vy+=.10*sp;g.vx*=.97**sp;g.rot+=g.rv*sp;g.rv*=.97**sp;}
+  // 데드 임팩트 업데이트 (life 1.0→0.0 감소, 속도=초당0.8)
+  for(let di=0;di<_DI_MAX;di++){const d=_diPool[di];if(!d.active)continue;d.life-=sp/60*0.8;if(d.life<=0){d.active=false}}
   // 불타는 시체 업데이트 — 스프라이트를 직접 태움
   for(let bi=0;bi<_BURN_MAX;bi++){const bc=_burnCorpses[bi];if(!bc.active)continue;bc.t-=sp;if(bc.t<=0){bc.active=false;continue}
     const prog=1-bc.t/bc.mt; // 0→1
@@ -22686,16 +22709,16 @@ function update(){
       _gxVolMul*=_gxVolMul; // 제곱 감쇠 (근접 0.0225, 멀면 0)
       P.x=_gxTurret.x;P.y=_gxTurret.y;P.facing=ang;P.atkArc=ang;
       _gxFiring=_gxDmgMul;
-      // activeBowSk가 ghostXbowTurret/normal이면 습득 스킬로 임시 교체
-      const _svBowSk=P.activeBowSk;
-      if(P.activeBowSk==='ghostXbowTurret'||P.activeBowSk==='normal'){
-        const _bOrd=['bladeShot','needleShot','fanShot','blastShot'];
-        for(let _bi=0;_bi<4;_bi++){if(P.skills[_bOrd[_bi]]>=1){P.activeBowSk=_bOrd[_bi];break;}}
-      }
       const _gxPBefore=pProjs.length;
-      _autoFireBowSkill(_gxTarget.x,_gxTarget.y);
+      // 터렛 직접 발사 — 습득 스킬 우선, 쿨/조건 안 맞으면 기본샷 (합체 제한 무시)
+      let _gxFired=false;
+      if(P.skills.bladeShot&&(P._bltCd||0)<=0){activateBladeShot();_gxFired=pProjs.length>_gxPBefore}
+      else if(P.skills.needleShot&&(P._ndCd||0)<=0){activateNeedleShot();_gxFired=pProjs.length>_gxPBefore}
+      else if(P.skills.fanShot){_fireFanShot();_gxFired=true}
+      else if(P.skills.blastShot&&G.mats>=_malCost(5)&&(P._bsCd2||0)<=0){activateBlastShot();_gxFired=true}
+      if(!_gxFired){_fireXbow(_gxTarget.x,_gxTarget.y)}
       for(let _gi=_gxPBefore;_gi<pProjs.length;_gi++){pProjs[_gi].dmg=~~(pProjs[_gi].dmg*_gxDmgMul);pProjs[_gi]._fromTurret=true;}
-      _gxFiring=0;_gxVolMul=1;P.activeBowSk=_svBowSk; // 리셋
+      _gxFiring=0;_gxVolMul=1; // 리셋
       P.x=_svX;P.y=_svY;P.facing=_svFa;P.atkArc=_svArc;
     }
   }
@@ -29336,7 +29359,13 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(_isBurnDeath){_addBurnCorpse(e);playSample((opts&&opts.beam)?['fire_death','fire_death2','fire_death3'][Math.random()*3|0]:'fire_hit',.5,_r(1,.15))}
     // 큰 몬스터는 기본 사망 시 큰 시체 파편(gib) 생성
     // 모든 사망 시 gib + 스프라이트 분할 (화염 제외)
-    if(!_isBurnDeath){_addGibs(e,e.x,e.y,Math.max(50,e.r*3));_addSplitGibs(e,_killAng)}
+    if(!_isBurnDeath){_addSplitGibs(e,_killAng);
+      // gore 파편: 일반 2개, 대형/보스 4개
+      {const _gLarge=e.ib||e.r>=18;const _gPick=['flesh','blood','bone','eye','skull','heart'];
+      _addGorePiece(e.x,e.y,_gPick[~~(Math.random()*(_gLarge?6:2))]);
+      _addGorePiece(e.x,e.y,_gLarge?'spine':'blood');
+      if(_gLarge){_addGorePiece(e.x,e.y,_gPick[2+~~(Math.random()*4)]);_addGorePiece(e.x,e.y,'intestine')}}
+      _addDeathImpact(e.x,e.y,e.r)}
     if(e._fromHole!=null&&G.spawnHoles[e._fromHole])G.spawnHoles[e._fromHole].alive--;
     if(e.ib&&e._bossRevJudged){addTxt(e.x,e.y-45,_T('💀 부활 판정 중...'),'#ff8844',90);G._flashT=3;G._flashCol='#ff4400'}
     else if(e.ib){addTxt(e.x,e.y-45,_T('☠ 완전 사망!'),'#ff4400',90);G._flashT=6;G._flashCol='#ffffff';G._chromaT=5}
@@ -38017,6 +38046,10 @@ function draw(){
   if(!_fOverBudget){let _gibDrw=0;for(let gi=0;gi<_GIB_MAX;gi++){const g=_gibs[gi];if(!g.active||!g.c)continue;if(g.x<_vl-20||g.x>_vr+20||g.y<_vt-20||g.y>_vb+20)continue;if(++_gibDrw>10)break;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>15?1:g.life/15;const gs=g.sz||10;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.r);X.drawImage(g.c,-gs*sc,-gs*sc,gs*2*sc,gs*2*sc);X.restore();}}
   // split 조각 렌더 (스프라이트 크롭 큰 조각)
   if(!_fOverBudget){for(let si=0;si<_SPLIT_MAX;si++){const s=_splits[si];if(!s.active||!s.c)continue;if(s.x<_vl-40||s.x>_vr+40||s.y<_vt-40||s.y>_vb+40)continue;const alpha=Math.min(1,s.life/s.ml*3);const sc=s.life>10?1:s.life/10;const hs=s.sz*sc*.5;X.save();X.globalAlpha=alpha;X.translate(s.x,s.y);X.rotate(s.rot);X.drawImage(s.c,-hs,-hs,s.sz*sc,s.sz*sc);X.restore();}}
+  // gore 파편 렌더 (이미지 스프라이트)
+  if(!_fOverBudget&&_goreReady){for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active||!g.img)continue;if(g.x<_vl-30||g.x>_vr+30||g.y<_vt-30||g.y>_vb+30)continue;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>10?1:g.life/10;const hs=g.sz*sc*.5;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.rot);X.drawImage(g.img,-hs,-hs,g.sz*sc,g.sz*sc);X.restore();}}
+  // 데드 임팩트 렌더 (additive blend 혈흔 폭발)
+  if(!_fOverBudget&&_diReady){for(let di=0;di<_DI_MAX;di++){const d=_diPool[di];if(!d.active||!d.img)continue;if(d.x<_vl-60||d.x>_vr+60||d.y<_vt-60||d.y>_vb+60)continue;const _lt=1-d.life;const _eo=_lt<.3?_lt/.3:1+(_lt-.3)*.2;const sz=d.maxSz*_eo;const alpha=d.life<.3?1:1-(d.life-.3)/.7;X.save();X.globalAlpha=Math.max(0,alpha);X.globalCompositeOperation='lighter';X.drawImage(d.img,d.x-sz*.5,d.y-sz*.5,sz,sz);X.restore();}}
   // ── VFX GL 인스턴싱 (lighter 블록 밖 — 자체 additive blend, compositeOp stall 회피) ──
   _dbgVfxGLDrawn=0;
   if(_vfxAnims.length>0){
