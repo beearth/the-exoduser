@@ -14817,13 +14817,13 @@ function _addGorePiece(x,y,type){
   const g=_gorePieces[oldest];
   g.img=img;g.active=true;
   g.sz=(_GORE_SZ[key]||30)+(Math.random()-.5)*8;
-  // 20% 카메라 플링: 화면 앞으로 확대되며 날아옴
-  if(Math.random()<0.2){
+  // 30% 카메라 플링: 모니터 뚫고 튀어나오는 느낌
+  if(Math.random()<0.3){
     g.camFling=true;g.x=x+(Math.random()-.5)*10;g.y=y+(Math.random()-.5)*10;
     g.vx=(Math.random()-.5)*.5;g.vy=(Math.random()-.5)*.5;
-    g.vz=-0.08;g.scale=0.3;
-    g.rot=Math.random()*Math.PI*2;g.rv=0.08+Math.random()*0.07;
-    g.life=60;g.ml=60; // 1초
+    g.vz=-0.18;g.scale=0.5;
+    g.rot=Math.random()*Math.PI*2;g.rv=0.15+Math.random()*0.15;
+    g.life=40;g.ml=40; // 0.67초 짧고 강렬
   }else{
     g.camFling=false;g.scale=1;g.vz=0;
     g.x=x+(Math.random()-.5)*20;g.y=y+(Math.random()-.5)*20;
@@ -16694,7 +16694,22 @@ function statCrit(){return _eqLckTotal()*.025+PASSIVES.pCrit*1.5+(rg1().critRate
 function statCritDmg(){return 1.5+_eqLckTotal()*.002+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5, LCK 1당 +0.2% (LCK1000=+200%, 1.5→3.5), critDmgW 추가 (무기 파트)
 function statDropBonus(){return 1+_eqLckTotal()*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
 // 패시브 배율 함수 (max5, 효과 2배)
-function pAtkMul(){return 1+PASSIVES.pAtk*.10+(P._altAtk||0)}  // 무기뎀 +10%/lv (10lv=+100%)
+// ═══ 통합 합연산 배율: 모든 데미지 패시브를 한 곳에서 합산 ═══
+// 기존 곱연산(pAtk×pMelee×pAbund×pPred=45×) → 합연산(1+all=7.5×)으로 전환
+function _passDmgSum(type){
+  let s=0;
+  s+=PASSIVES.pAtk*.10+(P._altAtk||0); // 맹공: +10%/lv
+  if(type==='melee')s+=(PASSIVES.pMelee||0)*.15; // 물리: +15%/lv (근접전용)
+  if(type==='magic')s+=PASSIVES.pMagic*.15+_eqAffix('magicDmg')+_eqImplicit('_iMagDmg')*.01; // 마법: +15%/lv (마법전용)
+  if(type==='bow')s+=PASSIVES.pBow*.10; // 석궁: +10%/lv
+  if(type==='xbow')s+=(PASSIVES.pXbow||0)*.05; // 자동쇠뇌: +5%/lv
+  if(type==='dot')s+=(PASSIVES.pDot||0)*.15; // 침식: +15%/lv
+  if(P.hp>=P.mhp*.7)s+=(PASSIVES.pAbund||0)*.20; // 풍요: +20%/lv (플레이어 상태, 항상 판정 가능)
+  return 1+s;
+}
+// 약자포식 보너스: 적 HP≤50% 시 합연산 추가 (hitEnemy에서 적용)
+function _predBonus(e){return e&&e.hp<=e.mhp*.5?(PASSIVES.pPred||0)*.20:0}
+function pAtkMul(){return _passDmgSum('melee')}  // 근접 통합배율 (합연산)
 function pAtkCost(){return Math.max(.60,1-PASSIVES.pAtk*.04)} // ST비용 유지
 function pDefAdd(){return (P._altDef||0)*30}   // 철벽 패시브 제거: 제단 보너스만 유지
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
@@ -16704,16 +16719,16 @@ function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagi
 function pParryBlueBeanBase(p){return Math.max(p.dmg,~~(magicRef()*statInt()*pMagicMul()*0.8));}
 function pParryRmbSpd(){return 1+PASSIVES.pParry*.10}  // 우클릭공속 +10%/lv (10lv=+100%)
 function pParryRainbowDR(){return Math.min(.50,PASSIVES.pParry*.10)} // 무지개탄 피해감소 +10%/lv (최대50%)
-function pMagicMul(){return 1+PASSIVES.pMagic*.15+_eqAffix('magicDmg')+_eqImplicit('_iMagDmg')*.01}     // 마법뎀 +15%/lv + 귀걸이 어픽스
+function pMagicMul(){return _passDmgSum('magic')}     // 마법 통합배율 (합연산)
 function pBeamMul(){return 1+Math.max(0,(hm().beamDmg||0))*0.08} // 투구 beamDmg를 실제 레이저 전용 배율로 환산
 function pMagicCost(){return Math.max(.40,1-PASSIVES.pMagic*.04-_eqAffix('mpCostRed'))} // MP비용 -4%/lv + 귀걸이 어픽스
-function pBowMul(){return 1+PASSIVES.pBow*.10}         // 석궁뎀 +10%/lv (10lv=+100%)
+function pBowMul(){return _passDmgSum('bow')}         // 석궁 통합배율 (합연산)
 function pBowCost(){return Math.max(.60,1-PASSIVES.pBow*.04)} // ST비용(석궁) -4%/lv (10lv=-40%)
 function pBowRange(){return 1+PASSIVES.pBow*.08}       // 석궁사거리 +8%/lv (10lv=+80%)
 function pBowSpd(){return 1+PASSIVES.pBow*.10}         // 석궁공속 +10%/lv (10lv=+100%)
-function pXbowMul(){return 1+(PASSIVES.pXbow||0)*.05}   // 자동쇠뇌뎀 +5%/lv (10lv=+50%)
+function pXbowMul(){return _passDmgSum('xbow')}   // 자동쇠뇌 통합배율 (합연산)
 function pXbowSpd(){return 1+(PASSIVES.pXbow||0)*.05}   // 자동쇠뇌공속 +5%/lv (10lv=+50%)
-function pMeleeMul(){return 1+(PASSIVES.pMelee||0)*.15}  // 물리뎀 +15%/lv (10lv=+150%)
+function pMeleeMul(){return 1}  // 합연산으로 pAtkMul에 통합됨
 function pMeleeStCost(){return Math.max(.5,1-(PASSIVES.pMelee||0)*.05)} // ST소모 -5%/lv (10lv=-50%, 최소50%)
 function pMagicSpd(){return 2+PASSIVES.pMagic*.08}     // 기본 2배속 + 시전속도 +8%/lv (10lv=+80%)
 function pShieldMul(){return 1}    // removed passive pShield (수호)
@@ -16730,7 +16745,7 @@ function pAbundRegen(){return P.hp>=P.mhp*.7?(PASSIVES.pAbund||0)*.05:0}  // 풍
 function pPredDmg(e){return e&&e.hp<=e.mhp*.5?(PASSIVES.pPred||0)*.20:0}  // 약자포식: 적HP≤50% → 뎀+20%/lv (합연산)
 function pPredRegen(){return P.hp<=P.mhp*.5?(PASSIVES.pPred||0)*.10:0}    // 약자포식: 내HP≤50% → 회복력+10%/lv (합연산)
 function pPredSpd(){return P.hp<=P.mhp*.5?(PASSIVES.pPred||0)*.05:0}      // 약자포식: 내HP≤50% → 이속+5%/lv (합연산)
-function pDotDmg(){return 1+(PASSIVES.pDot||0)*.15}   // 침식: DOT 틱뎀 +15%/lv (10lv=+150%)
+function pDotDmg(){return _passDmgSum('dot')}   // 침식 통합배율 (합연산)
 function pDotDur(){return 1+(PASSIVES.pDot||0)*.10}    // 침식: DOT 지속시간 +10%/lv (10lv=+100%)
 function pDotPool(){return 1+(PASSIVES.pDot||0)*.05}   // 침식: DOT 축적률 +5%/lv (10lv=+50%)
 // ═══ 이전 호환 ═══
@@ -29049,8 +29064,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(P._killBuff>0)dmg=~~(dmg*(1+P._killMul));
   // 목걸이 데미지 보너스
   if(nc().dmgBonus)dmg=~~(dmg*(1+(nc().dmgBonus||0)*0.01));
-  // ═══ 패시브: 풍요(pAbund) + 약자포식(pPred) — 조건부 뎀업 (합연산) ═══
-  {const _paDmg=pAbundDmg()+pPredDmg(e);if(_paDmg>0)dmg=~~(dmg*(1+_paDmg))}
+  // ═══ 패시브: 풍요+약자포식 → _passDmgSum에 통합됨, 여기서 중복적용 안 함 ═══
   // ═══ 조건부 어픽스 뎀업 (전부 합연산 후 1회 곱) ═══
   {let _cAx=0;
     // HP 기반
@@ -38309,7 +38323,7 @@ function draw(){
     X.globalAlpha=1;
   }
   // ── 카메라 플링 고어 (최상단 — 화면 앞으로 날아오는 파편) ──
-  if(_goreReady){for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active||!g.img||!g.camFling)continue;const gsz=g.sz*g.scale;const alpha=g.scale<2.5?1:Math.max(0,1-(g.scale-2.5)*0.5);if(alpha<=0){g.active=false;continue}X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.rot);X.drawImage(g.img,-gsz*.5,-gsz*.5,gsz,gsz);X.restore();}}
+  if(_goreReady){for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active||!g.img||!g.camFling)continue;const gsz=g.sz*g.scale;const alpha=g.scale<4.5?1:Math.max(0,1-(g.scale-4.5)*0.3);if(alpha<=0){g.active=false;continue}X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.rot);X.drawImage(g.img,-gsz*.5,-gsz*.5,gsz,gsz);X.restore();}}
   // ── 히트 플래시 (순간 백플래시) ──
   if(_hitFlash.a>0){X.globalAlpha=_hitFlash.a;X.fillStyle=_hitFlash.col;X.fillRect(0,0,C.width,C.height);X.globalAlpha=1;_hitFlash.a-=0.08*_dtSp;if(_hitFlash.a<0)_hitFlash.a=0}
   if(scrFlashA>0){X.globalAlpha=scrFlashA;X.fillStyle=scrFlash;X.fillRect(0,0,C.width,C.height);X.globalAlpha=1;scrFlashA-=.018*_dtSp;if(scrFlashA<0)scrFlashA=0}
