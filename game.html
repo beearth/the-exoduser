@@ -14595,7 +14595,7 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
   // 1) 방사형 스파크 — 회전하는 불꽃 선 (tp=2) 개수↓ 수명↑ 속도↓
   for(let i=0;i<n;i++){
     const a=Math.PI*2*i/n;const spd=isBoss?(2+Math.random()*3):(1.5+Math.random()*2);
-    poolPart(x,y,Math.cos(a)*spd,Math.sin(a)*spd,ec,isBoss?3:2,isBoss?70:50,2,a,0);
+    poolPart(x,y,Math.cos(a)*spd,Math.sin(a)*spd,ec,isBoss?6:4,isBoss?70:50,2,a,0);
   }
   // 2) 중심 플래시 링 (tp=3, 확장하는 원)
   poolPart(x,y,0,0,'#ffffff',r||8,isBoss?12:8,3,0,0);
@@ -14608,7 +14608,7 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
   // 4) 랜덤 파편 — 중력 적용 (tp=0 rect, grav>0) 개수↓ 수명↑ 속도↓
   const dn=isBoss?8:4;
   for(let i=0;i<dn&&_partCnt<POOL_SZ;i++){
-    poolPart(x+(Math.random()-.5)*r,y+(Math.random()-.5)*r,(Math.random()-.5)*3,-1-Math.random()*2,col,1.5+Math.random()*3,60+Math.random()*30,0,0,.12);
+    poolPart(x+(Math.random()-.5)*r,y+(Math.random()-.5)*r,(Math.random()-.5)*3,-1-Math.random()*2,col,3+Math.random()*6,60+Math.random()*30,0,0,.12);
   }
   // 5) 피 폭발 — 사방으로 튀는 혈흔 개수↓ 수명↑ 속도↓
   const _bCols2=['#aa0000','#880000','#cc1111','#770000','#990000'];
@@ -14617,7 +14617,7 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
     const a=Math.PI*2*Math.random();const s=1+Math.random()*2;
     poolPart(x+(Math.random()-.5)*r,y+(Math.random()-.5)*r,
       Math.cos(a)*s,Math.sin(a)*s-Math.random()*1,
-      _bCols2[~~(Math.random()*5)],2+Math.random()*3,60+Math.random()*40,0,0,.1);
+      _bCols2[~~(Math.random()*5)],4+Math.random()*6,60+Math.random()*40,0,0,.1);
   }
   // 5) 보스 전용: 외곽 원형 불꽃 (tp=1 circle)
   if(isBoss){
@@ -17131,8 +17131,13 @@ function _autoFireBowSkill(tx,ty){
   const _abs=P.activeBowSk||'normal';
   // 공성쇠뇌: 터렛 설치 중이면 플레이어 석궁 사용 불가 (터렛만 발사)
   if(_gxTurret&&!_gxFiring){return}
-  // 터렛 발사 시: 공성쇠뇌 자체가 선택돼있으면 기본 석궁으로 전환
-  const _effAbs=(_gxFiring&&_abs==='ghostXbowTurret')?'normal':_abs;
+  // 터렛 발사 시: 공성쇠뇌 자체가 선택돼있으면 습득 석궁 스킬 중 최선 사용
+  let _effAbs=_abs;
+  if(_gxFiring&&_abs==='ghostXbowTurret'){
+    const _bowOrd=['bladeShot','needleShot','fanShot','blastShot'];
+    _effAbs='normal';
+    for(let _bi=0;_bi<4;_bi++){if(P.skills[_bowOrd[_bi]]>=1){_effAbs=_bowOrd[_bi];break;}}
+  }
   if(_effAbs==='normal'){_fireXbow(tx,ty);return}
   const a=Math.atan2(ty-P.y,tx-P.x);
   const _sS=P.s,_sSt2=P.st2,_sSt=P.st;
