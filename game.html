@@ -3228,8 +3228,8 @@ function dbRestore(d){
 // 합체: 성급별 전용 테이블 — 2성 2,2,2/3,3,3/4,4,4/6  3성 3,3,3/4,4,4/5,5,5/6  4성 4,4,4/5,5,5/6,6,6/8
 function _skillUpSpCost(curLv){
   const _nextLv=curLv+1;
-  const _tbl=[0,1,1,1,2,2,2,3,3,3,5];
-  return _tbl[Math.max(1,Math.min(10,_nextLv))]||5;
+  const _tbl=[0,1,1,1,1,1,1,1,1,1,1];
+  return _tbl[Math.max(1,Math.min(10,_nextLv))]||1;
 }
 function _fuseUpSpCost(curLv,gemCnt){
   const _base=_skillUpSpCost(curLv);
@@ -14773,28 +14773,65 @@ function _addDeathImpact(x,y,r){
 }
 // ── 고어 파편 시스템 (스프라이트 이미지 기반) ──
 const _GORE_MAX=16;const _gorePieces=[];
-const _GORE_TYPES=['spine','intestine_1','flesh_chunk_1','flesh_chunk_2','blood_splat_1','bone_1','bone_2','eye','skull_chunk','heart'];
+const _GORE_TYPES=[
+  'spine','spine_short','spine_broken',
+  'intestine_1','intestine_2','intestine_3','stomach','liver',
+  'flesh_chunk_2','flesh_chunk_3','flesh_chunk_4','flesh_chunk_5','flesh_chunk_6',
+  'blood_splat_1',
+  'bone_1','bone_2','bone_3','bone_4','bone_5',
+  'eye','eye_bloody','eye_torn',
+  'skull_chunk','skull_half','skull_crushed',
+  'heart','heart_damaged',
+  'tooth_1','tooth_2',
+  'finger_1','finger_2','severed_hand',
+  'tendon_1','tendon_2'
+];
 const _goreImgs={};let _goreReady=false;
 {let _gl=0;
 _GORE_TYPES.forEach(function(t){const img=new Image();img.onload=function(){_gl++;if(_gl>=_GORE_TYPES.length)_goreReady=true};img.onerror=function(){_gl++;if(_gl>=_GORE_TYPES.length)_goreReady=true};img.src='assets/gore/'+t+'.png';_goreImgs[t]=img})}
-for(let i=0;i<_GORE_MAX;i++)_gorePieces.push({x:0,y:0,vx:0,vy:0,rot:0,rv:0,life:0,ml:0,sz:0,img:null,active:false});
-const _GORE_ALIAS={flesh:'flesh_chunk_1',blood:'blood_splat_1',spine:'spine',intestine:'intestine_1',bone:'bone_1',eye:'eye',skull:'skull_chunk',heart:'heart'};
-// 타입별 크기 — 알아볼 수 있게 크게
-const _GORE_SZ={spine:40,intestine_1:35,flesh_chunk_1:30,flesh_chunk_2:28,blood_splat_1:32,bone_1:28,bone_2:26,eye:22,skull_chunk:30,heart:28};
+for(let i=0;i<_GORE_MAX;i++)_gorePieces.push({x:0,y:0,vx:0,vy:0,rot:0,rv:0,life:0,ml:0,sz:0,img:null,active:false,camFling:false,scale:1,vz:0});
+// 카테고리별 랜덤 풀
+const _GORE_CAT={
+  flesh:['flesh_chunk_2','flesh_chunk_3','flesh_chunk_4','flesh_chunk_5','flesh_chunk_6'],
+  blood:['blood_splat_1'],
+  spine:['spine','spine_short','spine_broken'],
+  intestine:['intestine_1','intestine_2','intestine_3'],
+  organ:['stomach','liver'],
+  bone:['bone_1','bone_2','bone_3','bone_4','bone_5'],
+  eye:['eye','eye_bloody','eye_torn'],
+  skull:['skull_chunk','skull_half','skull_crushed'],
+  heart:['heart','heart_damaged'],
+  tooth:['tooth_1','tooth_2'],
+  finger:['finger_1','finger_2','severed_hand'],
+  tendon:['tendon_1','tendon_2']
+};
+function _goreRand(cat){const arr=_GORE_CAT[cat];return arr?arr[~~(Math.random()*arr.length)]:cat}
+// 타입별 크기
+const _GORE_SZ={spine:40,spine_short:32,spine_broken:34,intestine_1:35,intestine_2:33,intestine_3:36,stomach:32,liver:30,flesh_chunk_2:28,flesh_chunk_3:30,flesh_chunk_4:24,flesh_chunk_5:26,flesh_chunk_6:26,blood_splat_1:32,bone_1:28,bone_2:26,bone_3:32,bone_4:22,bone_5:34,eye:22,eye_bloody:24,eye_torn:22,skull_chunk:30,skull_half:34,skull_crushed:28,heart:28,heart_damaged:26,tooth_1:16,tooth_2:14,finger_1:20,finger_2:18,severed_hand:28,tendon_1:24,tendon_2:22};
 function _addGorePiece(x,y,type){
   if(!OPT.deathFx||!_goreReady)return;
-  const key=_GORE_ALIAS[type]||type;
+  const key=_goreRand(type)||type;
   const img=_goreImgs[key];if(!img||!img.complete||!img.naturalWidth)return;
   let oldest=0,minL=Infinity;
   for(let i=0;i<_GORE_MAX;i++){if(!_gorePieces[i].active){oldest=i;break}if(_gorePieces[i].life<minL){minL=_gorePieces[i].life;oldest=i}}
   const g=_gorePieces[oldest];
-  g.x=x+(Math.random()-.5)*20;g.y=y+(Math.random()-.5)*20;
-  const a=Math.random()*Math.PI*2;const spd=1.5+Math.random()*3;
-  g.vx=Math.cos(a)*spd;g.vy=Math.sin(a)*spd-2;
-  g.rot=Math.random()*Math.PI*2;g.rv=(Math.random()-.5)*.12;
-  g.sz=(_GORE_SZ[key]||30)+(Math.random()-.5)*8;
-  g.life=150;g.ml=150; // 2.5초
   g.img=img;g.active=true;
+  g.sz=(_GORE_SZ[key]||30)+(Math.random()-.5)*8;
+  // 20% 카메라 플링: 화면 앞으로 확대되며 날아옴
+  if(Math.random()<0.2){
+    g.camFling=true;g.x=x+(Math.random()-.5)*10;g.y=y+(Math.random()-.5)*10;
+    g.vx=(Math.random()-.5)*.5;g.vy=(Math.random()-.5)*.5;
+    g.vz=-0.08;g.scale=0.3;
+    g.rot=Math.random()*Math.PI*2;g.rv=0.08+Math.random()*0.07;
+    g.life=60;g.ml=60; // 1초
+  }else{
+    g.camFling=false;g.scale=1;g.vz=0;
+    g.x=x+(Math.random()-.5)*20;g.y=y+(Math.random()-.5)*20;
+    const a=Math.random()*Math.PI*2;const spd=1.5+Math.random()*3;
+    g.vx=Math.cos(a)*spd;g.vy=Math.sin(a)*spd-2;
+    g.rot=Math.random()*Math.PI*2;g.rv=(Math.random()-.5)*.12;
+    g.life=150;g.ml=150; // 2.5초
+  }
 }
 // ── 스프라이트 분할 시체 시스템 (2~4조각, 큰 크롭) ──
 const _SPLIT_MAX=24;const _splits=[];
@@ -16563,7 +16600,7 @@ let STATS={str:0,dex:0,int:0,vit:0,lck:0};
 const STAT_MAX={str:500,dex:500,int:500,vit:500,lck:500};
 // ═══ 패시브 스킬 (5레벨마다 AP 1개) ═══
 const PASSIVE_DEF=[
-  {key:'pAtk',   name:'⚔️ 맹공',nameEn:'⚔️ Onslaught',desc:'근접뎀 +20%, ST비용 -4%/lv (최대-40%)',descEn:'Melee DMG +20%, ST cost -4%/lv (max -40%)',max:10,icon:'⚔️',col:'#ff6644'},
+  {key:'pAtk',   name:'⚔️ 맹공',nameEn:'⚔️ Onslaught',desc:'근접뎀 +10%, ST비용 -4%/lv (최대-40%)',descEn:'Melee DMG +10%, ST cost -4%/lv (max -40%)',max:10,icon:'⚔️',col:'#ff6644'},
   {key:'pCharge',name:'🔱 돌파',nameEn:'🔱 Breakthrough',    desc:'작살 사거리 +2%/lv, 기동게이지 회복 +3%/lv',descEn:'Harpoon range +2%/lv, Mobility gauge recovery +3%/lv',max:10, icon:'🔱',col:'#ff8800'},
   {key:'pParry', name:'⚡ 반격',nameEn:'⚡ Retaliation',desc:'카운터뎀 +50%/lv, 우클릭 공속 +10%/lv, 무지개탄 피해감소 +10%/lv (최대50%)',descEn:'Counter DMG +50%/lv, RMB ATK speed +10%/lv, Rainbow shot DMG reduction +10%/lv (max 50%)',max:10,icon:'⚡',col:'#ffdd00'},
   {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +15%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +15%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
@@ -16657,7 +16694,7 @@ function statCrit(){return _eqLckTotal()*.025+PASSIVES.pCrit*1.5+(rg1().critRate
 function statCritDmg(){return 1.5+_eqLckTotal()*.002+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5, LCK 1당 +0.2% (LCK1000=+200%, 1.5→3.5), critDmgW 추가 (무기 파트)
 function statDropBonus(){return 1+_eqLckTotal()*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
 // 패시브 배율 함수 (max5, 효과 2배)
-function pAtkMul(){return 1+PASSIVES.pAtk*.20+(P._altAtk||0)}  // 무기뎀 +20%/lv (10lv=+200%)
+function pAtkMul(){return 1+PASSIVES.pAtk*.10+(P._altAtk||0)}  // 무기뎀 +10%/lv (10lv=+100%)
 function pAtkCost(){return Math.max(.60,1-PASSIVES.pAtk*.04)} // ST비용 유지
 function pDefAdd(){return (P._altDef||0)*30}   // 철벽 패시브 제거: 제단 보너스만 유지
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
@@ -19256,12 +19293,15 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  // ═══ HP 공식 v3: 삼차→복리 전환 (500=5000만, 만렙1000=1.5억) ═══
-  // Lv≤500: 0.4×Lv³+199×Lv+100 (Lv1=300,Lv2=500,Lv3=700, +200/렙→가속), Lv>500: 5000만×1.0022^(Lv-500)
-  const _baseHpCurve=monLv<=500?0.4*monLv*monLv*monLv+199*monLv+100:50000000*Math.pow(1.0022,monLv-500);
+  // ═══ HP 공식 v6: 삼차→복리 전환 (500=5000만, 만렙1000=3억) ═══
+  // Lv≤500: 0.4×Lv³+199×Lv+100, Lv>500: 5000만×1.0036^(Lv-500)
+  const _baseHpCurve=monLv<=500?0.4*monLv*monLv*monLv+199*monLv+100:50000000*Math.pow(1.0036,monLv-500);
   const _bossMul=ib?24:1; // 보스 24배
   const _lvHp=Math.floor(_baseHpCurve*_bossMul*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 스테이지당+2%
-  const _atk=Math.floor(((ib?75:50)+monLv*(ib?2.9:1.95))*dm*et.atkMul*0.5); // 일반: 50+lv×1.95 (1000렙=2000), 보스: 75+lv×2.9 (1000렙≈3000, 일반×1.5) ×0.5 반감
+  // ═══ ATK 공식 v2: Lv≤500 선형, Lv>500 복리 가속 ═══
+  const _baseAtkLin=(ib?75:50)+monLv*(ib?2.9:1.95);
+  const _atkCurve=monLv<=500?_baseAtkLin:_baseAtkLin*Math.pow(1.0018,monLv-500);
+  const _atk=Math.floor(_atkCurve*dm*et.atkMul*0.5);
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   if(!window._noProjEtypes)window._noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
   let _projCd=ib?50 // 보스: 50f 원래값 유지
@@ -22261,7 +22301,9 @@ function update(){
   // split 조각 업데이트 (중력+회전+감속)
   for(let si=0;si<_SPLIT_MAX;si++){const s=_splits[si];if(!s.active)continue;s.life-=sp;if(s.life<=0){s.active=false;continue}s.x+=s.vx*sp;s.y+=s.vy*sp;s.vy+=.12*sp;s.vx*=.96**sp;s.rot+=s.rv*sp;s.rv*=.98**sp;}
   // gore 파편 업데이트 (중력+회전+감속)
-  for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active)continue;g.life-=sp;if(g.life<=0){g.active=false;continue}g.x+=g.vx*sp;g.y+=g.vy*sp;g.vy+=.10*sp;g.vx*=.97**sp;g.rot+=g.rv*sp;g.rv*=.97**sp;}
+  for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active)continue;g.life-=sp;if(g.life<=0){g.active=false;continue}
+    if(g.camFling){g.scale-=g.vz*sp;g.rot+=g.rv*sp;g.x+=g.vx*sp;g.y+=g.vy*sp}
+    else{g.x+=g.vx*sp;g.y+=g.vy*sp;g.vy+=.10*sp;g.vx*=.97**sp;g.rot+=g.rv*sp;g.rv*=.97**sp}}
   // 데드 임팩트 업데이트 (life 1.0→0.0 감소, 속도=초당0.8)
   for(let di=0;di<_DI_MAX;di++){const d=_diPool[di];if(!d.active)continue;d.life-=sp/60*0.8;if(d.life<=0){d.active=false}}
   // 불타는 시체 업데이트 — 스프라이트를 직접 태움
@@ -22727,17 +22769,19 @@ function update(){
       _gxVolMul*=_gxVolMul; // 제곱 감쇠 (근접 0.0225, 멀면 0)
       P.x=_gxTurret.x;P.y=_gxTurret.y;P.facing=ang;P.atkArc=ang;
       _gxFiring=_gxDmgMul;
+      const _svS=P.s,_svSt2=P.st2,_svSt=P.st;
       const _gxPBefore=pProjs.length;
-      // 터렛 직접 발사 — 습득 스킬 우선, 쿨/조건 안 맞으면 기본샷 (합체 제한 무시)
+      // 터렛 직접 발사 — 합체 제한 무시, 습득 스킬 우선
       let _gxFired=false;
       if(P.skills.bladeShot&&(P._bltCd||0)<=0){activateBladeShot();_gxFired=pProjs.length>_gxPBefore}
       else if(P.skills.needleShot&&(P._ndCd||0)<=0){activateNeedleShot();_gxFired=pProjs.length>_gxPBefore}
-      else if(P.skills.fanShot){_fireFanShot();_gxFired=true}
-      else if(P.skills.blastShot&&G.mats>=_malCost(5)&&(P._bsCd2||0)<=0){activateBlastShot();_gxFired=true}
+      else if(P.skills.fanShot){_fireFanShot();_gxFired=pProjs.length>_gxPBefore}
+      else if(P.skills.blastShot&&G.mats>=_malCost(5)&&(P._bsCd2||0)<=0){activateBlastShot();_gxFired=pProjs.length>_gxPBefore}
       if(!_gxFired){_fireXbow(_gxTarget.x,_gxTarget.y)}
       for(let _gi=_gxPBefore;_gi<pProjs.length;_gi++){pProjs[_gi].dmg=~~(pProjs[_gi].dmg*_gxDmgMul);pProjs[_gi]._fromTurret=true;}
-      _gxFiring=0;_gxVolMul=1; // 리셋
+      _gxFiring=0;_gxVolMul=1;
       P.x=_svX;P.y=_svY;P.facing=_svFa;P.atkArc=_svArc;
+      P.s=_svS;P.st2=_svSt2;P.st=_svSt;
     }
   }
   // Player arrows (bow) — 최대 60발 제한
@@ -29378,11 +29422,13 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // 큰 몬스터는 기본 사망 시 큰 시체 파편(gib) 생성
     // 모든 사망 시 gib + 스프라이트 분할 (화염 제외)
     if(!_isBurnDeath){//_addSplitGibs(e,_killAng); // 비활성 — 고어 시스템으로 대체
-      // gore 파편: 일반 2개, 대형/보스 4개
-      {const _gLarge=e.ib||e.r>=18;const _gPick=['flesh','blood','bone','eye','skull','heart'];
-      _addGorePiece(e.x,e.y,_gPick[~~(Math.random()*(_gLarge?6:2))]);
-      _addGorePiece(e.x,e.y,_gLarge?'spine':'blood');
-      if(_gLarge){_addGorePiece(e.x,e.y,_gPick[2+~~(Math.random()*4)]);_addGorePiece(e.x,e.y,'intestine')}}
+      // gore 파편: 일반 2개, 대형/보스 4개 (전 카테고리 랜덤)
+      {const _gL=e.ib||e.r>=18;
+      const _gAll=['flesh','blood','bone','eye','skull','heart','tooth','finger','tendon','organ'];
+      const _gSmall=['flesh','blood','bone','tooth','tendon'];
+      _addGorePiece(e.x,e.y,_gSmall[~~(Math.random()*_gSmall.length)]);
+      _addGorePiece(e.x,e.y,_gL?_gAll[~~(Math.random()*_gAll.length)]:'blood');
+      if(_gL){_addGorePiece(e.x,e.y,'spine');_addGorePiece(e.x,e.y,_gAll[~~(Math.random()*_gAll.length)])}}
       _addHeadGib(e,_killAng);
       _addDeathImpact(e.x,e.y,e.r)}
     if(e._fromHole!=null&&G.spawnHoles[e._fromHole])G.spawnHoles[e._fromHole].alive--;
@@ -31492,7 +31538,8 @@ function activateGiantSlam(srcId){
   _addSkProf(srcId);
   if(G.mats<_malCost(20)){showPH(_T('악의 부족!'),'#ff4444');return}
   useStPct('giantSlam');G.mats-=_malCost(20);
-  P._gslCd=~~(Math.max(60,480-(slv-1)*18)*(1+_eqAffix('cooldownRed')));
+  const _gslBase=(srcId==='giantSlam2'&&_isFused('pillarSlam'))?420:(srcId==='giantSlam2'&&_isFused('infernoSlam'))?420:Math.max(60,480-(slv-1)*18);
+  P._gslCd=~~(_gslBase*(1+_eqAffix('cooldownRed')));
   P._gslDir=P.facing;P._gslLv=slv;
   P.s='gSlamWindup';P.st2=10;
   // 상태 변경 없이 즉시 발동 (이동 유지)
@@ -38066,8 +38113,8 @@ function draw(){
   if(!_fOverBudget){let _gibDrw=0;for(let gi=0;gi<_GIB_MAX;gi++){const g=_gibs[gi];if(!g.active||!g.c)continue;if(g.x<_vl-20||g.x>_vr+20||g.y<_vt-20||g.y>_vb+20)continue;if(++_gibDrw>10)break;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>15?1:g.life/15;const gs=g.sz||10;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.r);X.drawImage(g.c,-gs*sc,-gs*sc,gs*2*sc,gs*2*sc);X.restore();}}
   // split 조각 렌더 (스프라이트 크롭 큰 조각)
   if(!_fOverBudget){for(let si=0;si<_SPLIT_MAX;si++){const s=_splits[si];if(!s.active||!s.c)continue;if(s.x<_vl-40||s.x>_vr+40||s.y<_vt-40||s.y>_vb+40)continue;const alpha=Math.min(1,s.life/s.ml*3);const sc=s.life>10?1:s.life/10;const hs=s.sz*sc*.5;X.save();X.globalAlpha=alpha;X.translate(s.x,s.y);X.rotate(s.rot);X.drawImage(s.c,-hs,-hs,s.sz*sc,s.sz*sc);X.restore();}}
-  // gore 파편 렌더 (이미지 스프라이트)
-  if(!_fOverBudget&&_goreReady){for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active||!g.img)continue;if(g.x<_vl-30||g.x>_vr+30||g.y<_vt-30||g.y>_vb+30)continue;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>10?1:g.life/10;const hs=g.sz*sc*.5;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.rot);X.drawImage(g.img,-hs,-hs,g.sz*sc,g.sz*sc);X.restore();}}
+  // gore 파편 렌더 — 일반 (camFling=false만)
+  if(!_fOverBudget&&_goreReady){for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active||!g.img||g.camFling)continue;if(g.x<_vl-30||g.x>_vr+30||g.y<_vt-30||g.y>_vb+30)continue;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>10?1:g.life/10;const hs=g.sz*sc*.5;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.rot);X.drawImage(g.img,-hs,-hs,g.sz*sc,g.sz*sc);X.restore();}}
   // 데드 임팩트 렌더 (additive blend 혈흔 폭발)
   if(!_fOverBudget&&_diReady){for(let di=0;di<_DI_MAX;di++){const d=_diPool[di];if(!d.active||!d.img)continue;if(d.x<_vl-60||d.x>_vr+60||d.y<_vt-60||d.y>_vb+60)continue;const _lt=1-d.life;const _eo=_lt<.3?_lt/.3:1+(_lt-.3)*.2;const sz=d.maxSz*_eo;const alpha=d.life<.3?1:1-(d.life-.3)/.7;X.save();X.globalAlpha=Math.max(0,alpha);X.globalCompositeOperation='lighter';X.drawImage(d.img,d.x-sz*.5,d.y-sz*.5,sz,sz);X.restore();}}
   // ── VFX GL 인스턴싱 (lighter 블록 밖 — 자체 additive blend, compositeOp stall 회피) ──
@@ -38261,6 +38308,8 @@ function draw(){
     X.globalAlpha=.7;X.fillStyle=isMax?'#ff4444':'#ffaa44';X.fillRect(bx,by,bw*(G._chainT/180),bh);
     X.globalAlpha=1;
   }
+  // ── 카메라 플링 고어 (최상단 — 화면 앞으로 날아오는 파편) ──
+  if(_goreReady){for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active||!g.img||!g.camFling)continue;const gsz=g.sz*g.scale;const alpha=g.scale<2.5?1:Math.max(0,1-(g.scale-2.5)*0.5);if(alpha<=0){g.active=false;continue}X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.rot);X.drawImage(g.img,-gsz*.5,-gsz*.5,gsz,gsz);X.restore();}}
   // ── 히트 플래시 (순간 백플래시) ──
   if(_hitFlash.a>0){X.globalAlpha=_hitFlash.a;X.fillStyle=_hitFlash.col;X.fillRect(0,0,C.width,C.height);X.globalAlpha=1;_hitFlash.a-=0.08*_dtSp;if(_hitFlash.a<0)_hitFlash.a=0}
   if(scrFlashA>0){X.globalAlpha=scrFlashA;X.fillStyle=scrFlash;X.fillRect(0,0,C.width,C.height);X.globalAlpha=1;scrFlashA-=.018*_dtSp;if(scrFlashA<0)scrFlashA=0}
