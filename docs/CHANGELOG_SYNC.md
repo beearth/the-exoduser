@@ -20319,3 +20319,8 @@
 - docs/CHANGELOG_SYNC.md
 - game.html
 
+
+## 2026-04-19 00:00 (auto)
+- docs/14밸런???�치?�이�??�시브효과표.md
+- game.html
+
