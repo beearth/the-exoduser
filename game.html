@@ -14591,11 +14591,11 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
   }
   // 동시 사망 과다 시 파티클 절감
   const _tooMany=_partCnt>300;
-  const n=isBoss?24:(_tooMany?4:12);const ec=ELC[col]||col;
-  // 1) 방사형 스파크 — 회전하는 불꽃 선 (tp=2)
+  const n=isBoss?10:(_tooMany?4:6);const ec=ELC[col]||col;
+  // 1) 방사형 스파크 — 회전하는 불꽃 선 (tp=2) 개수↓ 수명↑ 속도↓
   for(let i=0;i<n;i++){
-    const a=Math.PI*2*i/n;const spd=isBoss?(4+Math.random()*5):(2.5+Math.random()*3);
-    poolPart(x,y,Math.cos(a)*spd,Math.sin(a)*spd,ec,isBoss?3:2,isBoss?20:14,2,a,0);
+    const a=Math.PI*2*i/n;const spd=isBoss?(2+Math.random()*3):(1.5+Math.random()*2);
+    poolPart(x,y,Math.cos(a)*spd,Math.sin(a)*spd,ec,isBoss?3:2,isBoss?70:50,2,a,0);
   }
   // 2) 중심 플래시 링 (tp=3, 확장하는 원)
   poolPart(x,y,0,0,'#ffffff',r||8,isBoss?12:8,3,0,0);
@@ -14605,19 +14605,19 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
   for(let i=0;i<fc;i++){
     poolPart(x+(Math.random()-.5)*4,y+(Math.random()-.5)*4,(Math.random()-.5)*.3,(Math.random()-.5)*.3,'#ffffff',isBoss?6:4,isBoss?6:4,1,0,0);
   }
-  // 4) 랜덤 파편 — 중력 적용 (tp=0 rect, grav>0)
-  const dn=isBoss?14:6;
+  // 4) 랜덤 파편 — 중력 적용 (tp=0 rect, grav>0) 개수↓ 수명↑ 속도↓
+  const dn=isBoss?8:4;
   for(let i=0;i<dn&&_partCnt<POOL_SZ;i++){
-    poolPart(x+(Math.random()-.5)*r,y+(Math.random()-.5)*r,(Math.random()-.5)*6,-1.5-Math.random()*3,col,1.5+Math.random()*3,10+Math.random()*10,0,0,.12);
+    poolPart(x+(Math.random()-.5)*r,y+(Math.random()-.5)*r,(Math.random()-.5)*3,-1-Math.random()*2,col,1.5+Math.random()*3,60+Math.random()*30,0,0,.12);
   }
-  // 5) 피 폭발 — 사방으로 튀는 혈흔
+  // 5) 피 폭발 — 사방으로 튀는 혈흔 개수↓ 수명↑ 속도↓
   const _bCols2=['#aa0000','#880000','#cc1111','#770000','#990000'];
-  const _bn2=isBoss?20:8;
+  const _bn2=isBoss?10:4;
   for(let i=0;i<_bn2&&_partCnt<POOL_SZ;i++){
-    const a=Math.PI*2*Math.random();const s=2+Math.random()*4;
+    const a=Math.PI*2*Math.random();const s=1+Math.random()*2;
     poolPart(x+(Math.random()-.5)*r,y+(Math.random()-.5)*r,
-      Math.cos(a)*s,Math.sin(a)*s-Math.random()*2,
-      _bCols2[~~(Math.random()*5)],2+Math.random()*3,15+Math.random()*15,0,0,.1);
+      Math.cos(a)*s,Math.sin(a)*s-Math.random()*1,
+      _bCols2[~~(Math.random()*5)],2+Math.random()*3,60+Math.random()*40,0,0,.1);
   }
   // 5) 보스 전용: 외곽 원형 불꽃 (tp=1 circle)
   if(isBoss){
@@ -17111,7 +17111,7 @@ function fireBow(){
 }
 // ═══ 석궁 자동 발사 ═══
 function _fireXbow(tx,ty){
-  const xb=G.pets&&G.pets.xbow;
+  const xb=_gxFiring?null:(G.pets&&G.pets.xbow); // 터렛 발사 시 펫 무시
   const ox=xb?xb.x:P.x,oy=xb?xb.y:P.y;
   const ang=Math.atan2(ty-oy,tx-ox);
   const cdx=Math.cos(ang),cdy=Math.sin(ang);
@@ -23921,7 +23921,7 @@ function update(){
     // 궤도(방어) 내구도 1: 탄막 1발에 소멸, 발사(공격)는 pProjs pierce로 별도 처리
     if(_isGF){for(let _mi=0;_mi<P._gOrbs.length;_mi++){const _orb=P._gOrbs[_mi];if(_orb&&typeof _orb==='object'){if((_orb.hp||1)>1)_orb.hp=1;}else if(_orb>1)P._gOrbs[_mi]=1;}}
     const _mhLvF=P.skills.maliceHunt||1;const _gLvF=_goLv;
-    const _fusedBase=Math.min(10,3+Math.max(0,Math.max(_gLvF,_mhLvF)-3)); // 기본3, 4렙부터+1 (max10)
+    const _fusedBase=Math.min(6,3+Math.max(0,Math.max(_gLvF,_mhLvF)-3)); // 기본3, 4렙부터+1 (max6, 2026-04-18)
     const _goMax=_isGF?_fusedBase:(1+_goLv); // 단독: 1렙=2, 2렙=3, ... 5렙=6
     const _fusedRegen=Math.max(40,90-(_mhLvF+_gLvF-2)*4); // lv 올릴수록 빨라짐 (90→40프레임)
     const _goRegenT=_isGF?_fusedRegen:180;
