@@ -17143,8 +17143,9 @@ function _autoFireBowSkill(tx,ty){
   else if(_effAbs==='blastShot'&&P.skills.blastShot&&G.mats>=_malCost(5)&&(P._bsCd2||0)<=0){activateBlastShot();fired=true} // 밸런스: 악의 8→5 (50% 할인 반영)
   else if(_effAbs==='fanShot'&&P.skills.fanShot&&!_isFused('sixFuse')&&!_isFused('elemFuse')&&!_isFused('stormBeam')){_fireFanShot();fired=true}
   else if(_effAbs==='needleShot'&&P.skills.needleShot&&(P._ndCd||0)<=0){activateNeedleShot();fired=pProjs.length>_pBefore}
-  else if(_effAbs==='ghostXbowTurret'&&P.skills.ghostXbowTurret){
-    if(!_gxTurret&&P.st>=GXBOW_ST){activateGhostXbowTurret();fired=true}
+  else if(_effAbs==='ghostXbowTurret'){
+    // 터렛 설치는 수동(스킬키)으로만 — 자동발사에서 설치도 폴백 발사도 금지
+    return;
   }
   if(!fired){
     // 스킬 실패/쿨다운 → 터렛이면 기본 석궁 폴백, 플레이어면 쿨다운 대기
