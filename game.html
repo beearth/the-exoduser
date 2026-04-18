@@ -2225,6 +2225,8 @@ canvas{display:block;position:fixed;inset:0}
   <div id="comboHud" style="color:#ff6600;text-shadow:0 0 8px rgba(255,100,0,.5);display:none">COMBO 0</div>
   <div id="comboTimerHud" style="color:#ff8844;font-size:0.8rem;display:none">⏱ 20.0s</div>
   <span style="color: #665544; margin: 0 10px;">|</span>
+  <div id="dmgPeakHud" style="color:#ff4444;font-size:0.85rem;text-shadow:0 0 8px rgba(255,50,50,.5);display:none">MAX HIT 0</div>
+  <span style="color: #665544; margin: 0 10px;">|</span>
   <div id="stageTimerHud" style="color:#88aacc;font-size:0.8rem">⏱ 00:00</div>
 </div>
 <div id="keyGuide" style="display:none;position:fixed;top:38px;right:10px;background:rgba(0,0,0,.85);border:1px solid #554422;border-radius:6px;padding:12px 16px;z-index:50;font-size:.8rem;color:#ccaa77;line-height:1.7;pointer-events:auto;max-width:300px">
@@ -2352,6 +2354,8 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">자동 물약</span><input type="range" id="optAutoPot" min="30" max="95" step="5" value="99"><span class="set-range-val" id="optAutoPotVal">HP 99% 이하</span></div>
           <div class="set-range-row"><span class="set-name">최소 줍기 등급</span><input type="range" id="optMinRar" min="0" max="4" value="0"><span class="set-range-val" id="optMinRarVal">일반 이상</span></div>
           <div class="set-range-row"><span class="set-name">최소 줍기 티어</span><input type="range" id="optMinLv" min="0" max="7" value="0"><span class="set-range-val" id="optMinLvVal">사용 안 함</span></div>
+          <div class="set-range-row"><span class="set-name">결정 자동합성</span><input type="range" id="optCrAutoFuse" min="-1" max="3" step="1" value="-1"><span class="set-range-val" id="optCrAutoFuseVal">사용 안 함</span></div>
+          <div class="set-range-row"><span class="set-name">결정 자동강화</span><input type="range" id="optCrAutoEnh" min="-1" max="4" step="1" value="-1"><span class="set-range-val" id="optCrAutoEnhVal">사용 안 함</span></div>
           <div class="set-range-row"><span class="set-name">Language</span>
             <select id="optLang" style="flex:1;background:#1a1008;border:1px solid #443322;color:#ddc;font-family:'Noto Sans KR';font-size:.9rem;padding:4px 8px;border-radius:4px">
               <option value="ko">한국어</option><option value="en">English</option>
@@ -4520,7 +4524,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko'};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -8684,6 +8688,38 @@ function crystalVal(cr){
 function crystalEnhCost(cr){
   if(!cr)return Infinity;
   return _malCost(Math.ceil(500*(1+(cr.enh||0)*0.5)*CRYSTAL_STAR_COST_MUL[cr.star]));
+}
+// ═══ 결정 자동합성/강화 ═══
+// crAutoFuse: -1=꺼짐, 0~3=해당 성급 이하 자동합성 (3개→다음성급)
+// crAutoEnh: -1=꺼짐, 0~4=해당 성급 이상 자동강화 (같은종류+성급 2개 필요, 악의 소모)
+function _crAutoProcess(){
+  const fuseCap=OPT.crAutoFuse,enhMin=OPT.crAutoEnh;
+  if(fuseCap<0&&enhMin<0)return;
+  let did=false;
+  // 자동합성: fuseCap 이하 성급, 같은 종류+성급 3개 → 다음 성급
+  if(fuseCap>=0){
+    let pass=true;
+    while(pass){pass=false;
+      const g={};
+      for(let i=0;i<CRYSTAL_BAG.length;i++){const cr=CRYSTAL_BAG[i];if(cr.star>fuseCap||cr.star>=4)continue;const k=cr.id+'_'+cr.star;if(!g[k])g[k]={id:cr.id,star:cr.star,idxs:[]};g[k].idxs.push(i)}
+      for(const k in g){const gr=g[k];if(gr.idxs.length<3)continue;
+        gr.idxs.slice(0,3).sort((a,b)=>b-a).forEach(ri=>CRYSTAL_BAG.splice(ri,1));
+        CRYSTAL_BAG.push({id:gr.id,star:gr.star+1,enh:0});
+        pass=true;did=true;break}
+    }
+  }
+  // 자동강화: enhMin 이상 성급, enh<20, 같은 종류+성급 2개+악의
+  if(enhMin>=0){
+    let pass=true;
+    while(pass){pass=false;
+      for(let i=0;i<CRYSTAL_BAG.length;i++){const cr=CRYSTAL_BAG[i];if(cr.star<enhMin||(cr.enh||0)>=20)continue;
+        const cost=crystalEnhCost(cr);if(G.mats<cost)continue;
+        const fi=CRYSTAL_BAG.findIndex((c,ci)=>ci!==i&&c.id===cr.id&&c.star===cr.star);
+        if(fi<0)continue;G.mats-=cost;CRYSTAL_BAG.splice(fi,1);if(i>fi)i--;
+        cr.enh=(cr.enh||0)+1;pass=true;did=true;break}
+    }
+  }
+  if(did)applyStats();
 }
 const CRYSTAL_DUST_COST=[50,200,500,1500,5000];
 let _selectedCrystal=-1; // 결정 주머니에서 선택된 인덱스 (-1=미선택)
@@ -16714,7 +16750,7 @@ function pAtkCost(){return Math.max(.60,1-PASSIVES.pAtk*.04)} // ST비용 유지
 function pDefAdd(){return (P._altDef||0)*30}   // 철벽 패시브 제거: 제단 보너스만 유지
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
-function pParryDmg(){const _lvMul=Math.pow(2,((P.lv||1)-1)/70);return(1+PASSIVES.pParry*.50)*_lvMul}     // 기본 ×1, 70렙마다 2배, 카운터뎀 +50%/lv (1랩=×1, 70렙=×2, 1000렙=×19700)
+function pParryDmg(){return 1+PASSIVES.pParry*.50}     // 카운터뎀 +50%/lv (10lv=×6)
 function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*(1+_gearBonus);const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;return ~~(_base*pParryDmg()*_afxPB*_legSP);} // 탄뎀×1 베이스 + 장비보너스(0~100%)
 function pParryBlueBeanBase(p){return Math.max(p.dmg,~~(magicRef()*statInt()*pMagicMul()*0.8));}
 function pParryRmbSpd(){return 1+PASSIVES.pParry*.10}  // 우클릭공속 +10%/lv (10lv=+100%)
@@ -19308,9 +19344,9 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  // ═══ HP 공식 v6: 삼차→복리 전환 (500=5000만, 만렙1000=3억) ═══
-  // Lv≤500: 0.4×Lv³+199×Lv+100, Lv>500: 5000만×1.0036^(Lv-500)
-  const _baseHpCurve=monLv<=500?0.4*monLv*monLv*monLv+199*monLv+100:50000000*Math.pow(1.0036,monLv-500);
+  // ═══ HP 공식 v9: 삼차→복리 전환 (500=5000만, 만렙1000=1억) ═══
+  // Lv≤500: 0.4×Lv³+199×Lv+100, Lv>500: 5000만×1.0014^(Lv-500)
+  const _baseHpCurve=monLv<=500?0.4*monLv*monLv*monLv+199*monLv+100:50000000*Math.pow(1.0014,monLv-500);
   const _bossMul=ib?24:1; // 보스 24배
   const _lvHp=Math.floor(_baseHpCurve*_bossMul*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 스테이지당+2%
   // ═══ ATK 공식 v2: Lv≤500 선형, Lv>500 복리 가속 ═══
@@ -19700,7 +19736,7 @@ function initStage(si){
   if(G.map[_spY]&&G.map[_spY][_spX]!==0){for(let _sr=1;_sr<30;_sr++)for(let _sdy=-_sr;_sdy<=_sr;_sdy++)for(let _sdx=-_sr;_sdx<=_sr;_sdx++){const _sx=_spX+_sdx,_sy=_spY+_sdy;if(_sx>0&&_sy>0&&_sx<G.mw-1&&_sy<G.mh-1&&G.map[_sy]&&G.map[_sy][_sx]===0){_spX=_sx;_spY=_sy;_sr=99;break}}}
   P.x=(_spX+.5)*T;P.y=(_spY+.5)*T;
   P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle';P.iframes=360;P.kb={x:0,y:0};P._webSlow=0;P._trapSlowT=0;P._freezeSlow=0;P.burnT=0;P.poison=0;P._ioActive=false;P._ioT=0;P._altAtk=0;P._altDef=0;P._altSpd=0;P._lastStandUsed=false;P._reviveOnceUsed=false;
-  G.stageCleared=false;G._deathSpawned=false;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G.stageTime=0;G.combo=0;G.comboTimer=0;G._stageKills=0;G._sStats={deaths:0,dmgDealt:0,dmgTaken:0,parries:0,potions:0,items:0,dodges:0,crits:0,maxHit:0,dashDist:0,dashCount:0,walked:0,_prevX:0,_prevY:0};
+  G.stageCleared=false;G._deathSpawned=false;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G.stageTime=0;G.combo=0;G.comboTimer=0;G._stageKills=0;G._sStats={deaths:0,dmgDealt:0,dmgTaken:0,parries:0,potions:0,items:0,dodges:0,crits:0,maxHit:0,dashDist:0,dashCount:0,walked:0,_prevX:0,_prevY:0};G._dmgPeak={val:0,t:0};
   if(typeof _clearExtEPalCache==='function')_clearExtEPalCache();
   if(typeof _clearExtBPalCache==='function')_clearExtBPalCache();
   // 여신의 가호: 제거됨 (2026-04-15)
@@ -20135,6 +20171,7 @@ function rollDrop(e){
       CRYSTAL_BAG.push(_newCr);
       const _crDef=CRYSTAL_DEFS[_crId];
       addTxt(e.x,e.y-40,_crStarN(CRYSTAL_STAR[_crStar])+' '+_crDefN(_crDef)+' '+_T('획득!'),CRYSTAL_STAR[_crStar].color,50);
+      _crAutoProcess();
     }
   }
 }
@@ -20664,6 +20701,8 @@ function update(){
   if(P._okSpdBuff>0)P._okSpdBuff-=sp;
   // 콤보 타이머 감소 (20초)
   if(G.comboTimer>0){G.comboTimer-=sp;if(G.comboTimer<=0&&G.combo>0){if(G.combo>=10)addTxt(P.x,P.y-50,_T('콤보 종료: ')+G.combo,'#ff6644',60);G.combo=0}}
+  // 5초 최고 데미지 타이머 감소
+  if(G._dmgPeak&&G._dmgPeak.t>0){G._dmgPeak.t-=sp;if(G._dmgPeak.t<=0)G._dmgPeak.val=0}
   // 스테이지 경과시간 + 이동거리 추적
   G.stageTime=(G.stageTime||0)+sp;G.playTime=(G.playTime||0)+sp;
   if(G._sStats){const _ss=G._sStats;if(_ss._prevX||_ss._prevY){const _dx=P.x-_ss._prevX,_dy=P.y-_ss._prevY,_dd=Math.sqrt(_dx*_dx+_dy*_dy);if(_dd>0.5&&_dd<500){if(_harpActive||_dashActive)_ss.dashDist+=_dd;else _ss.walked+=_dd}}_ss._prevX=P.x;_ss._prevY=P.y}
@@ -29064,7 +29103,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(P._killBuff>0)dmg=~~(dmg*(1+P._killMul));
   // 목걸이 데미지 보너스
   if(nc().dmgBonus)dmg=~~(dmg*(1+(nc().dmgBonus||0)*0.01));
-  // ═══ 패시브: 풍요+약자포식 → _passDmgSum에 통합됨, 여기서 중복적용 안 함 ═══
+  // ═══ 패시브: 약자포식 — 적HP≤50% 시 합연산 추가 (풍요는 _passDmgSum에 통합) ═══
+  {const _pb=_predBonus(e);if(_pb>0)dmg=~~(dmg*(1+_pb))}
   // ═══ 조건부 어픽스 뎀업 (전부 합연산 후 1회 곱) ═══
   {let _cAx=0;
     // HP 기반
@@ -29148,6 +29188,9 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
 
   if(dmg > 0) {
     if(G._sStats){G._sStats.dmgDealt+=dmg;if(dmg>G._sStats.maxHit)G._sStats.maxHit=dmg}
+    // ═══ 5초 롤링 최고 데미지 트래커 ═══
+    if(!G._dmgPeak)G._dmgPeak={val:0,t:0};
+    if(dmg>G._dmgPeak.val){G._dmgPeak.val=dmg;G._dmgPeak.t=300} // 5초(300프레임) 유지
     // ═══ 흡수 어픽스: lifeLeech/manaLeech/stLeech/lifeOnHit ═══
     if(!isDot){
       const _ll=_eqAffix('lifeLeech')+(_eqAffix('injuredLeech')>0&&P.hp<=P.mhp*.35?_eqAffix('injuredLeech'):0);
@@ -29167,14 +29210,12 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       else{e.eShield-=_shDmg}
     }else{e.hp-=_isMagicDmg?(~~(dmg*_magicHpRate)||1):dmg}
     e.eShieldRegenT=300;
-    // ── 1초 압축 데미지 표시 (개별 텍스트 없음) ──
-    if(!e._dmgAcc)e._dmgAcc=0;
-    if(!e._dmgAccT)e._dmgAccT=0;
-    e._dmgAcc+=dmg;
-    e._dmgAccT+=1;
-    if(e._dmgAccT>=60){ // 1초(60프레임) 경과
-      if(_txtPerFrame<_TXT_BUDGET)addTxt(e.x,e.y-12,'-'+e._dmgAcc,e._dmgAcc>=1000?'#ff4444':e._dmgAcc>=100?'#ffaa00':'#ffcc66',40);
-      e._dmgAcc=0;e._dmgAccT=0;
+    // ── 한방 데미지 즉시 표시 (K/M/B 축약) ──
+    if(_txtPerFrame<_TXT_BUDGET&&!isDot){
+      const _dv=dmg;const _ds=_dv>=1e9?(_dv/1e9).toFixed(1)+'B':_dv>=1e6?(_dv/1e6).toFixed(1)+'M':_dv>=1e3?(_dv/1e3).toFixed(1)+'K':String(_dv);
+      const _dc=_dv>=1e7?'#ff2222':_dv>=1e6?'#ff6644':_dv>=1e5?'#ffaa44':_dv>=1e4?'#ffcc66':'#ddddaa';
+      const _dl=_dv>=1e6?55:_dv>=1e5?45:35;
+      addTxt(e.x+(Math.random()-.5)*16,e.y-18-Math.random()*12,_ds,_dc,_dl);
     }
     if(isDot){
       // DOT: 텍스트 압축에 포함됨, 추가 표시 없음
@@ -30729,8 +30770,8 @@ const _SK_MUL={
   // ── 석궁 ──
   blastShot:{b:0.5,g:0.2},
 };
-// 캐릭터 레벨 복리 보너스: 1.006^(lv-1) → HP 성장 1.0121^lv의 sqrt (50% 따라가기, 나머지는 장비)
-function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];if(!t)return 1;const _lvB=Math.pow(1.006,(P.lv||1)-1);return(t.b+(lv-1)*t.g*0.5)*_lvB}
+// 레벨 복리 보너스 삭제됨 — 스킬 배율은 순수 (b + (lv-1)*g*0.5) 만 사용
+function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];if(!t)return 1;return t.b+(lv-1)*t.g*0.5}
 function _fuseMul(skId){const s=_fuseStar(skId);const _fm=s>=2?1+(s-1)*.2:1;return skId==='chargeBoost'||skId==='magicBlink'?_fm:_fm*(1+_eqAffix('skillBoost'))}
 // ═══ 카테고리별 숙련도 시스템 ═══
 // 스킬 카테고리(cat)별로 사용시간(초) 축적. 합체 해금 조건 = 구성스킬 각 카테고리 600초(10분)
@@ -33394,6 +33435,12 @@ $('optMinLv').oninput=function(){
   saveSettings();
 };
 
+// 결정 자동합성/강화 옵션 핸들러
+const _crAutoFuseLabel=v=>v<0?_T('사용 안 함'):(v+1)+(OPT.lang==='en'?'★ and below':'성 이하');
+const _crAutoEnhLabel=v=>v<0?_T('사용 안 함'):(v+1)+(OPT.lang==='en'?'★ and above':'성 이상');
+$('optCrAutoFuse').oninput=function(){OPT.crAutoFuse=+this.value;const el=$('optCrAutoFuseVal');el.textContent=_crAutoFuseLabel(OPT.crAutoFuse);el.style.color=OPT.crAutoFuse>=0?CRYSTAL_STAR[OPT.crAutoFuse].color:'';_crAutoProcess();saveSettings()};
+$('optCrAutoEnh').oninput=function(){OPT.crAutoEnh=+this.value;const el=$('optCrAutoEnhVal');el.textContent=_crAutoEnhLabel(OPT.crAutoEnh);el.style.color=OPT.crAutoEnh>=0?CRYSTAL_STAR[OPT.crAutoEnh].color:'';_crAutoProcess();saveSettings()};
+
 const _FPS_STEPS=[30,60,120,144,244];
 $('optFps').oninput=function(){OPT.fpsCap=_FPS_STEPS[+this.value];$('optFpsVal').textContent=OPT.fpsCap;saveSettings()};
 $('optResScale').oninput=function(){OPT.resScale=+this.value;$('optResScaleVal').textContent=this.value+'%';rz();saveSettings()};
@@ -33879,6 +33926,18 @@ function syncSettingsUI(){
     const l=t===7?1000:(t*100);
     $('optMinLv').value=t;
     $('optMinLvVal').textContent=t===0?_T('사용 안 함'):(t+(OPT.lang==='en'?'T ('+l+'Lv+)':'단 ('+l+'Lv+)'));
+  }
+  if($('optCrAutoFuse')){
+    const _cf=OPT.crAutoFuse!=null?OPT.crAutoFuse:-1;
+    $('optCrAutoFuse').value=_cf;
+    $('optCrAutoFuseVal').textContent=_crAutoFuseLabel(_cf);
+    if(_cf>=0)$('optCrAutoFuseVal').style.color=CRYSTAL_STAR[_cf].color;
+  }
+  if($('optCrAutoEnh')){
+    const _ce=OPT.crAutoEnh!=null?OPT.crAutoEnh:-1;
+    $('optCrAutoEnh').value=_ce;
+    $('optCrAutoEnhVal').textContent=_crAutoEnhLabel(_ce);
+    if(_ce>=0)$('optCrAutoEnhVal').style.color=CRYSTAL_STAR[_ce].color;
   }
   if($('optFps')){
     const _fi=_FPS_STEPS.indexOf(OPT.fpsCap);
@@ -35521,7 +35580,7 @@ function renderStatSummary(){
     `<div style="${_sLn}">${_L('유효 HP (EHP)','Effective HP (EHP)')}: <span style="color:#ff6666">${_sEHP}</span> <span style="color:#887766;font-size:1.1rem">(HP÷(1-DR)+${_L('쉴드','Shield')})</span></div>`+
     `<div style="${_sLn}">${_L('장비 파워','Gear Power')}: <span style="color:#ffaa00">${_sGearScore}</span></div>`+
     `<div style="${_sHd}">⚔️ ${_L('공격','Attack')}</div>`+
-    `<div style="${_sLn}">${_L('근접 공격력','Melee ATK')}: <span style="color:#ff9944">${_sMeleeAtk}</span> <span style="color:#887766;font-size:1.1rem">((${_L('기본','base')}${P.baseAtk} + ${_L('무기','wpn')}${~~((wp().atk||0)+enhMulAtk(wp().enh||0))} + STR${STATS.str+_eqStat('Str')}) × ${_L('맹공','Onsl')}${pAtkMul().toFixed(2)})</span></div>`+
+    `<div style="${_sLn}">${_L('근접 공격력','Melee ATK')}: <span style="color:#ff9944">${_sMeleeAtk}</span> <span style="color:#887766;font-size:1.1rem">((${_L('기본','base')}${P.baseAtk} + ${_L('무기','wpn')}${~~((wp().atk||0)+enhMulAtk(wp().enh||0))} + STR${STATS.str+_eqStat('Str')}) × ${_L('패시브','Pass')}${pAtkMul().toFixed(2)})</span></div>`+
     (_sBowAtk?`<div style="${_sLn}">${_L('활 공격력','Bow ATK')}: <span style="color:#66dd66">${_sBowAtk}</span> <span style="color:#887766;font-size:1.1rem">((${_L('기본','base')}${P.baseAtk} + ${_L('석궁','xbow')}${~~((bw().atk||0)+enhMulAtk(bw().enh||0))} + DEX${STATS.dex+_eqStat('Dex')}) × ${_L('정밀','Prec')}${pBowMul().toFixed(2)})</span></div>`:'')+
     `<div style="${_sLn}">${_L('마법 공격력','Magic ATK')}: <span style="color:#66aaff">${_sMagicAtk}</span> <span style="color:#887766;font-size:1.1rem">((${_L('기본','base')}${P.baseAtk} + ${_L('투구','helm')}${~~((hm().atk||0)+enhMulAtk(hm().enh||0))} + INT${STATS.int+_eqStat('Int')}) × ${_L('마력','Arcane')}${pMagicMul().toFixed(2)})</span></div>`+
     `<div style="${_sLn}">${_L('공격속도','Atk Speed')}: <span style="color:#ffcc44">×${statDex().toFixed(2)}</span></div>`+
@@ -42631,6 +42690,8 @@ function updateHUD(slow){
   if(_charName)$('charNameHud').textContent=_charName;
   // 콤보 HUD
   const _cH=$('comboHud');if(_cH){if(G.combo>=2){_cH.style.display='';_cH.textContent='COMBO '+G.combo+(G.comboMax>G.combo?' (MAX:'+G.comboMax+')':'');_cH.style.color=G.combo>=50?'#ff2200':G.combo>=20?'#ff6600':G.combo>=10?'#ffaa00':'#ffcc44';_cH.style.fontSize=Math.min(1.2,0.85+G.combo*0.005)+'rem'}else{_cH.style.display='none'}}
+  // 5초 최고 데미지 HUD
+  const _dpH=$('dmgPeakHud');if(_dpH){if(G._dmgPeak&&G._dmgPeak.val>0){_dpH.style.display='';const _dpV=G._dmgPeak.val;const _dpStr=_dpV>=1e9?(_dpV/1e9).toFixed(2)+'B':_dpV>=1e6?(_dpV/1e6).toFixed(1)+'M':_dpV>=1e3?(_dpV/1e3).toFixed(1)+'K':_dpV+'';_dpH.textContent='MAX HIT '+_dpStr;_dpH.style.color=_dpV>=1e7?'#ff2222':_dpV>=1e6?'#ff6644':_dpV>=1e5?'#ffaa44':'#ffcc66'}else{_dpH.style.display='none'}}
   // 콤보 타이머 카운트다운
   const _ctH=$('comboTimerHud');if(_ctH){if(G.combo>=1&&G.comboTimer>0){const _ctSec=(G.comboTimer/60).toFixed(1);_ctH.style.display='';_ctH.textContent='TIMER '+_ctSec+'s';_ctH.style.color=G.comboTimer<300?'#ff4444':G.comboTimer<600?'#ff8844':'#ffcc44'}else{_ctH.style.display='none'}}
   // 스테이지 타임어택
