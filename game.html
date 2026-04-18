@@ -8157,14 +8157,14 @@ const AFFIX_POOL=[
   {id:'dodgeCooldown',type:1,tiers:[-.05,-.08,-.14,-.22,-.30],unit:'pct',slots:['boots'],group:'ddgCd',weight:50},
   {id:'maxHPPctArmor',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['pants','shield'],group:'hpPA',weight:65},
   {id:'shieldPct',type:0,tiers:[.10,.16,.28,.44,.64],unit:'pct',slots:['armor'],group:'shPct',weight:55},
-  {id:'shieldRegenPct',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['armor','shield'],group:'shRgP',weight:50},
-  {id:'shieldCdRed',type:1,tiers:[-.10,-.16,-.28,-.44,-.60],unit:'pct',slots:['shield'],group:'shCdR',weight:45},
+  {id:'shieldRegenPct',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['armor','shield'],group:'shRgP',weight:50},
+  {id:'shieldCdRed',type:1,tiers:[-.05,-.08,-.14,-.22,-.30],unit:'pct',slots:['shield'],group:'shCdR',weight:45},
   {id:'hpRegenFlat',type:0,tiers:[1,2,4,7,11],unit:'val',slots:['armor','gloves'],group:'hpRgF',weight:60},
   {id:'hpRegenPct',type:0,tiers:[.03,.05,.09,.15,.22],unit:'pct',slots:['armor'],group:'hpRgP',weight:50},
-  {id:'stRegenFlat',type:0,tiers:[2,4,6,10,16],unit:'val',slots:['boots','pants'],group:'stRgF',weight:55},
-  {id:'stRegenPct',type:0,tiers:[.06,.10,.18,.30,.44],unit:'pct',slots:['belt'],group:'stRgP',weight:50},
-  {id:'mpRegenFlat',type:0,tiers:[2,4,6,10,16],unit:'val',slots:['headband','neck'],group:'mpRgF',weight:55},
-  {id:'mpRegenPct',type:0,tiers:[.06,.10,.18,.30,.44],unit:'pct',slots:['headband'],group:'mpRgP',weight:50},
+  {id:'stRegenFlat',type:0,tiers:[1,2,3,5,8],unit:'val',slots:['boots','pants'],group:'stRgF',weight:55},
+  {id:'stRegenPct',type:0,tiers:[.03,.05,.09,.15,.22],unit:'pct',slots:['belt'],group:'stRgP',weight:50},
+  {id:'mpRegenFlat',type:0,tiers:[1,2,3,5,8],unit:'val',slots:['headband','neck'],group:'mpRgF',weight:55},
+  {id:'mpRegenPct',type:0,tiers:[.03,.05,.09,.15,.22],unit:'pct',slots:['headband'],group:'mpRgP',weight:50},
   {id:'fireDR',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['armor','cloak'],group:'fDR',weight:55},
   {id:'iceDR',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['armor','pants'],group:'iDR',weight:55},
   {id:'lightDR',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['armor','gloves'],group:'lDR',weight:55},
@@ -8835,7 +8835,7 @@ function mkItem(slot,tier,el,rarity,wtype){
     headband:{0:['낡은 귀걸이','은사 귀걸이','흑요석 귀걸이','미스릴 귀걸이','천벌의 귀걸이'],1:['불꽃 귀걸이','화염 귀걸이','염화 귀걸이','지옥 귀걸이','멸화의 귀걸이'],2:['냉기 귀걸이','빙결 귀걸이','빙하 귀걸이','서리의 귀걸이','영겁빙 귀걸이'],3:['그림자 귀걸이','암흑 귀걸이','심연 귀걸이','나락 귀걸이','무간의 귀걸이'],4:['전기 귀걸이','낙뢰 귀걸이','암전 귀걸이','뇌신 귀걸이','만뢰의 귀걸이'],5:['축복 귀걸이','성광 귀걸이','신성 귀걸이','천사의 귀걸이','신벌의 귀걸이']},
   };
   // ═══ 디아블로식 ATK 롤: base × skew랜덤, 레어리티=최소보장 ═══
-  const _atkMax=200+tier*200+(P.lv||1); // tier0=200, tier4=1000, +레벨
+  const _atkMax=~~((200+tier*200+(P.lv||1))*0.5); // tier0=100, tier4=500, +레벨/2 (반감)
   const _atkFloor=[0,.05,.15,.25,.40][rarity]||0; // 일반0%, 고급5%, 희귀15%, 영웅25%, 전설40%
   const _atkRoll=Math.max(1,~~(_atkMax*(_atkFloor+(1-_atkFloor)*Math.pow(Math.random(),2)))); // skew: 고뎀 극악, 최소1
   const base={
@@ -13960,7 +13960,6 @@ function _draw3DProj(x,y,r,el,t,ang,a){
         else X.lineTo(Math.cos(_aO)*s,Math.sin(_aO)*s);
         X.lineTo(Math.cos(_aI)*_sIn,Math.sin(_aI)*_sIn);}
       X.closePath();};
-    _orbStar();X.globalAlpha=a*.15;X.fillStyle='#000000';X.fill();
     _orbStar();X.globalAlpha=a*.7;X.lineWidth=.8;X.strokeStyle='#666666';X.stroke();
   }else{// ── PHYSICAL: 회전 정팔면체 ──
     const rot=t*.003+x*.08;const c=Math.cos(rot);
@@ -16497,10 +16496,10 @@ function applyStats(){
   // ═══ 바이블 기준: ATK = 15+(stage-1)*2 ═══
   P.baseAtk=G.on?15+((G.stage||1)-1)*2:15;
   P.speed=(2.6+s.dex*.005)*(1+(P._altSpd||0)+_eqAffix('movSpeed')+_eqImplicit('_iMovSpd')*.01+pPredSpd()+(P._okSpdBuff>0?P._okSpdMul||0:0)+(_eqAffix('injuredSpeed')>0&&P.hp<=P.mhp*.5?_eqAffix('injuredSpeed'):0));
-  P.stR=.10+s.dex*.010+P.lv*.003; // ST리젠: DEX + 레벨 (/8 적용, ×2)
+  P.stR=.05+s.dex*.005+P.lv*.0015; // ST리젠: DEX + 레벨 (/8 적용)
   P.hpR=.05+s.str*.002+P.lv*.001+_eqAffix('lifeRegen')/60; // HP리젠: 초당 + STR + 레벨 + 생명팔찌
   P.mmp=~~(200+P.lv*1+s.int*2+_eqAffix('maxMPFlat')+_enhMp); // 악세사리 강화: 1강당 +0.1 MP
-  P.mpR=.10+s.int*.010+P.lv*.003; // MP리젠: 초당 + INT + 레벨 (/8 적용, ×2)
+  P.mpR=.05+s.int*.005+P.lv*.0015; // MP리젠: 초당 + INT + 레벨 (/8 적용)
   // ═══ 결정 스탯 합산 ═══
   const _cr={hp:0,st:0,mp:0,atk:0,def:0,eDef:0,spd:0,crit:0,cdmg:0,fire:0,ice:0,dark:0,light:0,holy:0,hpR:0,stR:0,mpR:0,drop:0};
   for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(!it||!it.crystals)continue;
@@ -17162,9 +17161,9 @@ function _autoFireBowSkill(tx,ty){
   P.s=_sS;P.st2=_sSt2;
 }
 function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];if(a.id==='sharpAtk'||a.id==='brutalAtk'||a.id==='ruinAtk')s+=a.value}return s}
-function meleeRef(){return(((wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')))*(P._weaponSeal>0?.3:1)*0.5} // STR 1:1 ATK ×0.5 반감
-function bowRef(){return(((bw().atk||0)+enhMulAtk(bw().enh||0))+_slotFlatAtk(bw())+P.baseAtk+(STATS.dex+_eqStat('Dex')))*(P._weaponSeal>0?.3:1)*0.5} // DEX 1:1 ATK ×0.5 반감
-function magicRef(){return(((hm().atk||0)+enhMulAtk(hm().enh||0))+_slotFlatAtk(hm())+P.baseAtk+(STATS.int+_eqStat('Int')))*(P._weaponSeal>0?.3:1)*0.5} // INT 1:1 ATK ×0.5 반감
+function meleeRef(){return(((wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')))*(P._weaponSeal>0?.3:1)} // STR 1:1 ATK
+function bowRef(){return(((bw().atk||0)+enhMulAtk(bw().enh||0))+_slotFlatAtk(bw())+P.baseAtk+(STATS.dex+_eqStat('Dex')))*(P._weaponSeal>0?.3:1)} // DEX 1:1 ATK
+function magicRef(){return(((hm().atk||0)+enhMulAtk(hm().enh||0))+_slotFlatAtk(hm())+P.baseAtk+(STATS.int+_eqStat('Int')))*(P._weaponSeal>0?.3:1)} // INT 1:1 ATK
 const DPS_BAL={bow:0.77,magic:0.475,beam:0.0080};
 function beamCost(){return(75+((P.skills.omniBeam||1)-1)*8)/60*pMagicCost()} // 틱당: 초당75+lv*8 소비 (패시브 할인 적용)
 // ═══ E키 마법 라우팅 — 합체/스킬 상태 → beam/magicCast 자동 분기 ═══
@@ -20507,7 +20506,7 @@ function update(){
   // ═══ 에너지 쉴드 자동 리젠 (피격 후 3초 쿨다운, INT 비례, 마력회복 패시브) ═══
   if(P.mshield>0){
     if(P.shieldRegenT>0)P.shieldRegenT-=sp*((1/pShieldCdMul())||1);
-    else if(P.shield<P.mshield){P.shield=Math.min(P.mshield,P.shield+(0.6+STATS.int*0.006)*pMRegenMul()*sp)}
+    else if(P.shield<P.mshield){P.shield=Math.min(P.mshield,P.shield+(0.3+STATS.int*0.003)*pMRegenMul()*sp)}
   }
 
   if(Math.abs(P.kb.x)>.1||Math.abs(P.kb.y)>.1){const nx=P.x+P.kb.x*.5*sp,ny=P.y+P.kb.y*.5*sp;if(canMv(nx,ny,P.r)){P.x=nx;P.y=ny}const _kbD=.65**sp;P.kb.x*=_kbD;P.kb.y*=_kbD}
@@ -34444,11 +34443,17 @@ function rerollAffixes(item){item.affixes=rollAffixes(item.rarity,item.slot)}
 function _fgSelect(name,desc,cost,fn){
   _forgeSel={name,desc,cost,fn};renderForge();
 }
-function _fgCraft(){
+function _fgCraft(e){
   if(!_forgeSel)return;
   const s=_forgeSel;
-  if(G.mats<s.cost){notify(_T('악의가 부족합니다!'));return}
-  s.fn();_forgeSel=null;renderForge();dbSaveNow();
+  var _cnt=(e&&(e.shiftKey||e.ctrlKey))?10:1;
+  var _done=0;
+  for(var _ci=0;_ci<_cnt;_ci++){
+    if(G.mats<s.cost)break;
+    s.fn();_done++;
+  }
+  if(_done===0){notify(_T('악의가 부족합니다!'));return}
+  _forgeSel=null;renderForge();dbSaveNow();
 }
 const _fgAtlasState={v1:false,v2:false,v1Req:false,v2Req:false,lastTry:0};
 function _ensureForgeAtlasLoad(){
@@ -35110,23 +35115,28 @@ matsDiv.innerHTML=OPT.lang==='en'?`Malice: <span style="color:#cc66ff;font-weigh
     btn.textContent=OPT.lang==='en'?`🔨 Craft (👿${CRAFT_COST})`:`🔨 제작 (👿${CRAFT_COST})`;
     btn.onmouseenter=()=>{if(ok)btn.style.borderColor='#ffaa44';btn.style.boxShadow='0 0 12px #bb44ff44'};
     btn.onmouseleave=()=>{btn.style.borderColor=ok?'#bb44ff':'#332211';btn.style.boxShadow='none'};
-    btn.onclick=()=>{
-      if(G.mats<CRAFT_COST){notify(_T('악의가 부족합니다!'));return}
-      G.mats-=CRAFT_COST;
-      const rEl=[EL.P,EL.F,EL.I,EL.D,EL.L,EL.H][~~(Math.random()*6)];
-      const rar=Math.random()<0.90?3:4; // 영웅 90%, 전설 10%
-      const craftSlot=slot==='ring'?(!INV.equipped.ring1?'ring1':!INV.equipped.ring2?'ring2':'ring1'):slot;
-      const wt=craftSlot==='weapon'?WTYPE_KEYS[~~(Math.random()*WTYPE_KEYS.length)]:craftSlot==='bow'?BTYPE_KEYS[~~(Math.random()*BTYPE_KEYS.length)]:undefined;
-      const item=mkItem(craftSlot,tier,rEl,rar,wt);
-      if(!INV.equipped[craftSlot]){
-        INV.equipped[craftSlot]=item;
-        SFX.pickup();notify(`${_rarName(rar)} ${_T(item.name)} ${_T('자동 장착!')}`);
-        recalcSt();applyStats();
-      }else{
-        pickupItem(item);
+    btn.onclick=function(_ev){
+      var _cnt=(_ev&&(_ev.shiftKey||_ev.ctrlKey))?10:1;
+      var _done=0;
+      for(var _ci=0;_ci<_cnt;_ci++){
+        if(G.mats<CRAFT_COST)break;
+        G.mats-=CRAFT_COST;
+        const rEl=[EL.P,EL.F,EL.I,EL.D,EL.L,EL.H][~~(Math.random()*6)];
+        const rar=Math.random()<0.90?3:4;
+        const craftSlot=slot==='ring'?(!INV.equipped.ring1?'ring1':!INV.equipped.ring2?'ring2':'ring1'):slot;
+        const wt=craftSlot==='weapon'?WTYPE_KEYS[~~(Math.random()*WTYPE_KEYS.length)]:craftSlot==='bow'?BTYPE_KEYS[~~(Math.random()*BTYPE_KEYS.length)]:undefined;
+        const item=mkItem(craftSlot,tier,rEl,rar,wt);
+        if(!INV.equipped[craftSlot]){
+          INV.equipped[craftSlot]=item;
+          SFX.pickup();notify(`${_rarName(rar)} ${_T(item.name)} ${_T('자동 장착!')}`);
+          recalcSt();applyStats();
+        }else{
+          pickupItem(item);
+        }
+        _done++;
       }
-      addTxt(P.x,P.y-20,_rarName(rar)+' '+_T(item.name),RARITY_C[rar],90);
-      addParts(P.x,P.y,RARITY_C[rar],25);
+      if(_done===0){notify(_T('악의가 부족합니다!'));return}
+      if(_done>1)notify(_done+(OPT.lang==='en'?' items crafted!':'개 제작 완료!'));
       G.shake=4;SFX.pickup();
       renderForge();
     };
@@ -39164,7 +39174,6 @@ function drawP(){
             else X.lineTo(Math.cos(_aO)*_cSz,Math.sin(_aO)*_cSz);
             X.lineTo(Math.cos(_aI)*_cIn,Math.sin(_aI)*_cIn);}
           X.closePath();};
-        _hdStar();X.globalAlpha=.1*_fzFade;X.fillStyle='#000000';X.fill();
         _hdStar();X.globalAlpha=.6*_fzFade;X.lineWidth=1.5;X.strokeStyle='#666666';X.stroke();
         X.restore();
         // 4) 빛 파티클
@@ -39189,9 +39198,6 @@ function drawP(){
             else X.lineTo(Math.cos(_aO)*_hrOR,Math.sin(_aO)*_hrOR);
             X.lineTo(Math.cos(_aI)*_hrIR,Math.sin(_aI)*_hrIR);}
           X.closePath();};
-        // 1) 채움 (아주 옅은 검정)
-        _hrStar();X.globalAlpha=.1*_fzFade;X.fillStyle='#000000';X.fill();
-        // 2) 라인 (회색)
         _hrStar();X.globalAlpha=.7*_fzFade;X.lineWidth=2;X.strokeStyle='#666666';X.stroke();
         X.restore();
       }else if(fz.type==='assaultFlame'){
