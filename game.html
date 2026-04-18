@@ -14591,34 +14591,18 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
   }
   // 동시 사망 과다 시 파티클 절감
   const _tooMany=_partCnt>300;
-  const n=isBoss?10:(_tooMany?4:6);const ec=ELC[col]||col;
-  // 1) 방사형 스파크 — 회전하는 불꽃 선 (tp=2) 개수↓ 수명↑ 속도↓
-  for(let i=0;i<n;i++){
-    const a=Math.PI*2*i/n;const spd=isBoss?(2+Math.random()*3):(1.5+Math.random()*2);
-    poolPart(x,y,Math.cos(a)*spd,Math.sin(a)*spd,ec,isBoss?6:4,isBoss?70:50,2,a,0);
-  }
-  // 2) 중심 플래시 링 (tp=3, 확장하는 원)
+  const ec=ELC[col]||col;
+  // 1) 방사형 스파크 tp=2 — 비활성 (고어 시스템으로 대체)
+  // 2) 중심 플래시 링 (tp=3, 확장하는 원) — 유지
   poolPart(x,y,0,0,'#ffffff',r||8,isBoss?12:8,3,0,0);
   if(isBoss)poolPart(x,y,0,0,ec,r*1.5||12,15,3,0,0);
-  // 3) 중심 원형 플래시 (tp=1)
+  // 3) 중심 원형 플래시 (tp=1) — 유지
   const fc=isBoss?3:1;
   for(let i=0;i<fc;i++){
     poolPart(x+(Math.random()-.5)*4,y+(Math.random()-.5)*4,(Math.random()-.5)*.3,(Math.random()-.5)*.3,'#ffffff',isBoss?6:4,isBoss?6:4,1,0,0);
   }
-  // 4) 랜덤 파편 — 중력 적용 (tp=0 rect, grav>0) 개수↓ 수명↑ 속도↓
-  const dn=isBoss?8:4;
-  for(let i=0;i<dn&&_partCnt<POOL_SZ;i++){
-    {const _da=Math.PI*2*Math.random(),_ds=1.5+Math.random()*1.5;poolPart(x+(Math.random()-.5)*r,y+(Math.random()-.5)*r,Math.cos(_da)*_ds,Math.sin(_da)*_ds-1.5,col,3+Math.random()*6,60+Math.random()*30,0,0,.12)}
-  }
-  // 5) 피 폭발 — 사방으로 튀는 혈흔 개수↓ 수명↑ 속도↓
-  const _bCols2=['#aa0000','#880000','#cc1111','#770000','#990000'];
-  const _bn2=isBoss?10:4;
-  for(let i=0;i<_bn2&&_partCnt<POOL_SZ;i++){
-    const a=Math.PI*2*Math.random();const s=1+Math.random()*2;
-    poolPart(x+(Math.random()-.5)*r,y+(Math.random()-.5)*r,
-      Math.cos(a)*s,Math.sin(a)*s-Math.random()*1,
-      _bCols2[~~(Math.random()*5)],4+Math.random()*6,60+Math.random()*40,0,0,.1);
-  }
+  // 4) 랜덤 파편 tp=0 — 비활성 (고어 시스템으로 대체)
+  // 5) 피 폭발 — 비활성 (고어 시스템으로 대체)
   // 5) 보스 전용: 외곽 원형 불꽃 (tp=1 circle)
   if(isBoss){
     for(let i=0;i<8;i++){
@@ -14870,6 +14854,40 @@ function _addSplitGibs(e,killAng){
     s.life=120;s.ml=120; // 2초
     s.active=true;
   }
+}
+// ── 참수 파편: 머리 상단 30% 크롭 → _splits 풀에 1개 생성 ──
+function _addHeadGib(e,killAng){
+  if(!OPT.deathFx)return;
+  // 스프라이트 캡처 (48x48 임시 캔버스 _gibC 재사용)
+  _gibX.clearRect(0,0,48,48);
+  let _hdrawn=false;
+  {const _a8=_ch8Atlas[1];
+  if(_a8){let _da=_a8.dirs['south'];
+    if(_da&&_da.ready&&e._mob8Col!==undefined){
+      const _c8=(_a8.meta?_a8.meta.cell:256);
+      _gibX.drawImage(_da.img,e._mob8Col*_c8,e._mob8Row*_c8,_c8,_c8,0,0,48,48);
+      _hdrawn=true;
+    }
+  }
+  if(!_hdrawn){_gibX.fillStyle=e.col||'#cc0000';_gibX.beginPath();_gibX.arc(24,12,10,0,Math.PI*2);_gibX.fill()}}
+  // _splits 풀에서 슬롯 확보
+  let oldest=0,minL=Infinity;
+  for(let i=0;i<_SPLIT_MAX;i++){if(!_splits[i].active){oldest=i;break}if(_splits[i].life<minL){minL=_splits[i].life;oldest=i}}
+  const s=_splits[oldest];
+  s.ctx.clearRect(0,0,_SPLIT_CELL,_SPLIT_CELL);
+  // 상단 30% 크롭 (머리)
+  s.ctx.drawImage(_gibC,0,0,48,14,0,0,_SPLIT_CELL,_SPLIT_CELL);
+  const renderSz=Math.max(28,e.r*3.5);
+  s.x=e.x;s.y=e.y-renderSz*.3; // 머리 위치 (적 상단)
+  const ang=killAng||0;
+  const spd=2+Math.random()*2.5;
+  s.vx=Math.cos(ang)*spd+(Math.random()-.5)*2;
+  s.vy=-2.5-Math.random()*2; // 위로 튀어오름
+  s.rot=(Math.random()-.5)*.5;
+  s.rv=(Math.random()-.5)*.2; // 빠른 회전
+  s.sz=renderSz*.5; // 머리 크기 = 몸의 절반
+  s.life=180;s.ml=180; // 3초
+  s.active=true;
 }
 function _spawnLargeMonsterDeathFx(e,ang){
   if(!OPT.deathFx)return;
@@ -29359,12 +29377,13 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(_isBurnDeath){_addBurnCorpse(e);playSample((opts&&opts.beam)?['fire_death','fire_death2','fire_death3'][Math.random()*3|0]:'fire_hit',.5,_r(1,.15))}
     // 큰 몬스터는 기본 사망 시 큰 시체 파편(gib) 생성
     // 모든 사망 시 gib + 스프라이트 분할 (화염 제외)
-    if(!_isBurnDeath){_addSplitGibs(e,_killAng);
+    if(!_isBurnDeath){//_addSplitGibs(e,_killAng); // 비활성 — 고어 시스템으로 대체
       // gore 파편: 일반 2개, 대형/보스 4개
       {const _gLarge=e.ib||e.r>=18;const _gPick=['flesh','blood','bone','eye','skull','heart'];
       _addGorePiece(e.x,e.y,_gPick[~~(Math.random()*(_gLarge?6:2))]);
       _addGorePiece(e.x,e.y,_gLarge?'spine':'blood');
       if(_gLarge){_addGorePiece(e.x,e.y,_gPick[2+~~(Math.random()*4)]);_addGorePiece(e.x,e.y,'intestine')}}
+      _addHeadGib(e,_killAng);
       _addDeathImpact(e.x,e.y,e.r)}
     if(e._fromHole!=null&&G.spawnHoles[e._fromHole])G.spawnHoles[e._fromHole].alive--;
     if(e.ib&&e._bossRevJudged){addTxt(e.x,e.y-45,_T('💀 부활 판정 중...'),'#ff8844',90);G._flashT=3;G._flashCol='#ff4400'}
@@ -29414,7 +29433,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         }
       }
       // 폭발 이펙트
-      _addBoom(e.x,e.y,_pbR,26,'black');_addGibs(e,e.x,e.y,_pbR);
+      _addBoom(e.x,e.y,_pbR,26,'black');//_addGibs(e,e.x,e.y,_pbR); // 비활성 — 고어 대체
       addTxt(e.x,e.y-35,_T('💥폭독혈!'),'#882222',50);shake(8);
     }
     // 화약병 사망 폭발
@@ -29422,7 +29441,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       const blR=50;
       const _neX=shQuery(e.x,e.y,blR);for(let _xi=0;_xi<_neX.length;_xi++){const oe=_neX[_xi];if(oe!==e&&oe.alive&&dst(oe.x,oe.y,e.x,e.y)<blR)hurtE(oe,~~(e.atk*1.0),Math.atan2(oe.y-e.y,oe.x-e.x))}
       if(dst(P.x,P.y,e.x,e.y)<blR&&P.iframes<=0&&P.s!=='charge')hurtP(~~(e.atk*1.0),{dtype:'magic'});
-      _addBoom(e.x,e.y,blR,20,'fire');_addGibs(e,e.x,e.y,blR);shake(5);
+      _addBoom(e.x,e.y,blR,20,'fire');//_addGibs(e,e.x,e.y,blR); // 비활성 — 고어 대체
+      shake(5);
     }
     // 분열사도(15): 사망 시 소형 2마리로 분열
     if(e.etype===15&&!e._splitDone){
@@ -31135,7 +31155,7 @@ function activateMaliceHunt(){
     const _bladePierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30);
     const _mhBasePierce=800+_mhLv*20+_bladePierceBonus;
     const _fbBaseDmg=~~(meleeRef()*statStr()*pAtkMul()*(10+(_mhLv-1)*0.5)*_fuseMul('maliceHunt')); // 단독과 동일 공식 (b:10, g:0.5) + fuseMul
-    const _fbDmg=_isPlagueGF?~~(_fbBaseDmg*3*1.3):~~(_fbBaseDmg*3); // 칼날 3배 데미지, 독혈해방: +30%
+    const _fbDmg=_isPlagueGF?~~(_fbBaseDmg*20*1.3):~~(_fbBaseDmg*20); // 칼날 20배 데미지, 독혈해방: +30%
     const _fbPierce=_isPlagueGF?(_mhBasePierce+100):_mhBasePierce;
     const _fbBombR=80+_mhLv*5; // 히트 시 폭발 반경
     // 가장 가까운 적 또는 바라보는 방향

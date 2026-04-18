@@ -20196,3 +20196,36 @@
 - assets/gore/skull_chunk.png.bak
 - game.html
 
+
+## 2026-04-18 21:30 (auto)
+- assets/gore/bone_3.png
+- assets/gore/bone_4.png
+- assets/gore/bone_5.png
+- assets/gore/eye_bloody.png
+- assets/gore/eye_torn.png
+- assets/gore/finger_1.png
+- assets/gore/finger_2.png
+- assets/gore/flesh_chunk_3.png
+- assets/gore/flesh_chunk_4.png
+- assets/gore/flesh_chunk_5.png
+- assets/gore/flesh_chunk_6.png
+- assets/gore/heart_damaged.png
+- assets/gore/intestine_2.png
+- assets/gore/intestine_3.png
+- assets/gore/liver.png
+- assets/gore/severed_hand.png
+- assets/gore/skull_crushed.png
+- assets/gore/skull_half.png
+- assets/gore/spine_broken.png
+- assets/gore/spine_short.png
+- assets/gore/stomach.png
+- assets/gore/tendon_1.png
+- assets/gore/tendon_2.png
+- assets/gore/tooth_1.png
+- assets/gore/tooth_2.png
+- docs/14ë°¸ëŸ°???˜ì¹˜?Œì´ë¸??¤í‚¬_ë°¸ëŸ°??ë¦¬í¬??md
+- docs/14ë°¸ëŸ°???˜ì¹˜?Œì´ë¸??¤í‚¬?°ë?ì§€ê³µì‹??md
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤??md
+- game.html
+- gen_gore_batch.py
+
