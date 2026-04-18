@@ -31015,12 +31015,13 @@ function activateMaliceHunt(){
     if(_isPlagueGF&&(P._pbCd||0)>0){return}
     G.mats-=_malCost(30);P.st=Math.max(0,P.st-_mhStCost);
     if(_isPlagueGF)P._pbCd=~~((900-((P.skills.plagueBurst||1)-1)*30)*(1+_eqAffix('cooldownRed'))); // 독혈해방 15초 - Lv당 0.5초
-    const _goCnt=P._gOrbs.length;
+    const _goCntRaw=P._gOrbs.length;
+    const _goCnt=Math.min(_goCntRaw,6); // 최대 6발 (초과분은 데미지에 흡수)
     const _goR=(34)+P.r;
     const _bladePierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30);
     const _mhBasePierce=800+_mhLv*20+_bladePierceBonus;
     const _fbBaseDmg=~~(meleeRef()*statStr()*pAtkMul()*(10+(_mhLv-1)*0.5)*_fuseMul('maliceHunt')); // 단독과 동일 공식 (b:10, g:0.5) + fuseMul
-    const _fbDmg=_isPlagueGF?~~(_fbBaseDmg*1.3):_fbBaseDmg; // 독혈해방: 칼날 데미지 +30%
+    const _fbDmg=_isPlagueGF?~~(_fbBaseDmg*3*1.3):~~(_fbBaseDmg*3); // 칼날 3배 데미지, 독혈해방: +30%
     const _fbPierce=_isPlagueGF?(_mhBasePierce+100):_mhBasePierce;
     const _fbBombR=80+_mhLv*5; // 히트 시 폭발 반경
     // 가장 가까운 적 또는 바라보는 방향
