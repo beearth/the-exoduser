@@ -2127,10 +2127,10 @@ canvas{display:block;position:fixed;inset:0}
       <div id="expF" style="height:100%;background:linear-gradient(90deg, #aa8844, #ffcc44);width:0%;box-shadow:0 0 6px rgba(255,204,68,0.3);border-radius:1px"></div>
       <div id="expTxt" style="position:absolute;top:0;right:6px;font-size:0.5rem;color:#aa9966;pointer-events:none;white-space:nowrap;line-height:14px;text-shadow:1px 1px 2px #000"></div>
     </div>
-    <div style="display:flex;justify-content:center;gap:12px">
-      <div class="st-b" id="killCnt" style="color:#cc4433;font-size:0.7rem;text-shadow:1px 1px 2px #000">KILL 0</div>
-      <div class="st-b" id="matCnt" style="color:#cc88ff;font-size:0.7rem;text-shadow:1px 1px 2px #000">MALICE 0</div>
-      <div class="st-b" id="comboRecord" style="color:#ff8800;font-size:0.7rem;text-shadow:1px 1px 2px #000">COMBO 0</div>
+    <div style="display:flex;justify-content:center;gap:16px;width:100%">
+      <div class="st-b" style="text-align:center;flex:1"><div style="color:#886655;font-size:0.5rem;letter-spacing:.1em">KILL</div><div id="killCnt" style="color:#cc4433;font-size:0.75rem;text-shadow:1px 1px 2px #000">0</div></div>
+      <div class="st-b" style="text-align:center;flex:1"><div style="color:#886655;font-size:0.5rem;letter-spacing:.1em" id="matLbl">악의</div><div id="matCnt" style="color:#cc88ff;font-size:0.75rem;text-shadow:1px 1px 2px #000">0</div></div>
+      <div class="st-b" style="text-align:center;flex:1"><div style="color:#886655;font-size:0.5rem;letter-spacing:.1em">COMBO</div><div id="comboRecord" style="color:#ff8800;font-size:0.75rem;text-shadow:1px 1px 2px #000">0</div></div>
     </div>
   </div>
 </div>
@@ -31491,7 +31491,7 @@ function activateVoidScarecrow(){
 // ═══ 폭독칼날 — 발동 (1발 관통 칼날, 쿨12초) ═══
 function activatePlagueBurst(){
   if(G.mats<_malCost(15)||(P._pbCd||0)>0)return;
-  G.mats-=_malCost(15);P._pbCd=~~((900-((P.skills.plagueBurst||1)-1)*30)*(1+_eqAffix('cooldownRed'))); // 15초 - Lv당 0.5초
+  G.mats-=_malCost(15);P._pbCd=~~((540-((P.skills.plagueBurst||1)-1)*18)*(1+_eqAffix('cooldownRed'))); // 9초 - Lv당 0.3초
   const slv=P.skills.plagueBurst||1;
   const a=P.atkArc;
   const _bladePierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30);
@@ -42703,8 +42703,8 @@ function updateHUD(slow){
   const room=G.rooms[G.curRoom];
   const rtype=room?room.type:'';const rtName=OPT.lang==='en'?(rtype==='boss'?'Boss Arena':rtype==='forge'?'Forge':rtype==='start'?'Start':'Plaza'):(rtype==='boss'?'보스광장':rtype==='forge'?'대장간':rtype==='start'?'시작점':'광장');
   $('roomLbl').textContent=OPT.lang==='en'?`${rtName} — Enemies ${_hudAlive}${G.bossAlive?'':' | Exit Open'}`:`${rtName} — 적 ${_hudAlive}${G.bossAlive?'':' | 출구 개방'}`;
-  $('killCnt').textContent=`KILL ${G.kills}`;$('matCnt').textContent=OPT.lang==='en'?`MALICE ${G.mats}`:`악의 ${G.mats}`;$('matCnt').style.color=G.mats>=3?'#cc66ff':'#665544';
-  $('comboRecord').textContent=`COMBO ${G.combo>0?G.combo+' (MAX:'+G.comboMax+')':G.comboMax>0?'MAX:'+G.comboMax:'0'}`;$('comboRecord').style.color=G.combo>=10?'#ff4400':G.combo>=2?'#ff8800':'#886644';
+  $('killCnt').textContent=G.kills;$('matCnt').textContent=G.mats;$('matCnt').style.color=G.mats>=3?'#cc66ff':'#665544';if($('matLbl'))$('matLbl').textContent=OPT.lang==='en'?'MALICE':'악의';
+  $('comboRecord').textContent=G.combo>0?G.combo+' (MAX:'+G.comboMax+')':G.comboMax>0?'MAX:'+G.comboMax:'0';$('comboRecord').style.color=G.combo>=10?'#ff4400':G.combo>=2?'#ff8800':'#886644';
   $('lvLbl').textContent=P.lv;$('spCnt').textContent=`SP ${P.sp}${P.ap?' | AP '+P.ap:''}`;$('cpHud').textContent=`${STG[G.stage].hell+1}-${STG[G.stage].hellFloor+1} CP ${calcCP().total}`;
   if(_charName)$('charNameHud').textContent=_charName;
   // 콤보 HUD
