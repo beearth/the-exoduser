@@ -32442,7 +32442,10 @@ function _renderSkillRow(sk,grid){
     const _bdrCss=_fGrp?'border:2px solid transparent;border-image:linear-gradient(135deg,'+_fGrp.color+','+(_fGrp.color2||_fGrp.color)+') 1;':'border:1px solid '+(learned?'#448833':'#443322')+';';
     const _bgMap={dimBreach:'40,15,80',dimSlam:'40,15,80',dimThunder:'40,15,80',sixFuse:'70,45,0',elemFuse:'70,45,0',whirlDet:'70,35,0',slamStorm:'70,35,0',stormBeam:'80,30,0',bladeFuse:'60,55,50',iceMortar:'15,50,85',boneStorm:'20,70,35',elecRepent:'30,70,20',shieldFuse:'45,45,60',plagueFuse:'60,55,50',pillarSlam:'80,40,0',pillarSpike:'50,15,70',holyFuse:'70,35,45'};
     const _bgRgb=_fGrp?(_bgMap[_fGrp.key]||'0,0,0'):'0,0,0';
-    d.style.cssText='position:relative;padding:10px 10px 8px;margin-bottom:10px;border-radius:10px;'+_bdrCss+'background:linear-gradient(180deg,rgba('+_bgRgb+',.24),rgba(10,4,4,.76));box-shadow:inset 0 0 0 1px rgba(255,142,87,.05),0 4px 12px rgba(0,0,0,.28);'+_gemGlow+((canLearn||canUp)?'cursor:pointer;':'');
+    const _isLocked=!learned&&(!_reqMet||!_lvMet);
+    const _lockBdr=_isLocked?'border:1px solid #661111;':'';
+    const _lockBg=_isLocked?'background:linear-gradient(180deg,rgba(40,5,5,.4),rgba(15,2,2,.8));opacity:.6;':'background:linear-gradient(180deg,rgba('+_bgRgb+',.24),rgba(10,4,4,.76));';
+    d.style.cssText='position:relative;padding:10px 10px 8px;margin-bottom:10px;border-radius:10px;'+(_isLocked?_lockBdr:_bdrCss)+_lockBg+'box-shadow:inset 0 0 0 1px rgba(255,142,87,.05),0 4px 12px rgba(0,0,0,.28);'+(_isLocked?'':_gemGlow)+((canLearn||canUp)?'cursor:pointer;':'');
     let lockTxt='';
     const _fixedKeyMap={bladeShot:'T자동',fanShot:'T자동',blastShot:'T자동',omniBeam:'E',elemMissile:'E',fireball:'E',blueShot:'E',burstLoop:'E',whirlwind:'좌클',maliceSwipe:'우클',shieldThrow:'우클',chargeBoost:'SH',magicBlink:'SH',ghostWalk:'CT',iceOrb:'CT',chainAssault:'SH+E',chainSlash:'기동+좌클',chainSlam:'SH+우클',giantSlam:'SH+좌클',peaceShield:'Q',hellRay:'E',ghostXbowTurret:'T자동'};
     const _fixedKeyMapEn={bladeShot:'T-Auto',fanShot:'T-Auto',blastShot:'T-Auto',omniBeam:'E',elemMissile:'E',fireball:'E',blueShot:'E',burstLoop:'E',whirlwind:'LMB',maliceSwipe:'RMB',shieldThrow:'RMB',chargeBoost:'SH',magicBlink:'SH',ghostWalk:'CT',iceOrb:'CT',chainAssault:'SH+E',chainSlash:'Chain+LMB',chainSlam:'SH+RMB',giantSlam:'SH+LMB',peaceShield:'Q',hellRay:'E',ghostXbowTurret:'T-Auto'};
