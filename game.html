@@ -716,11 +716,7 @@ canvas{display:block;position:fixed;inset:0}
 }
 .st-b{color:var(--ui-bone);text-shadow:0 1px 2px rgba(0,0,0,.92),0 0 10px rgba(255,127,58,.16);font-weight:700}
 #matCnt,#goldCnt{
-  padding:3px 10px;
-  border-radius:999px;
-  border:1px solid rgba(145,63,48,.72);
-  background:linear-gradient(180deg,rgba(31,12,12,.82),rgba(12,6,7,.92));
-  box-shadow:inset 0 0 0 1px rgba(255,200,156,.06),0 0 10px rgba(255,94,46,.08);
+  padding:2px 6px;
 }
 #mmWrap.on{opacity:.94}
 #mmFrame{filter:drop-shadow(0 10px 24px rgba(0,0,0,.5)) brightness(1.05)}
@@ -2120,13 +2116,13 @@ canvas{display:block;position:fixed;inset:0}
 <canvas id="c"></canvas>
 <canvas id="burstCvs" style="position:fixed;inset:0;pointer-events:none;z-index:1"></canvas>
 <canvas id="ct" style="position:fixed;inset:0;pointer-events:none;z-index:2"></canvas>
-<div id="mmLvl" style="position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 4px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 4px);z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;text-align:center;width:230px;transform-origin:top right;transform:scale(var(--ui-scale));display:flex;flex-direction:column;align-items:center">
+<div id="mmLvl" style="position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 4px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 4px);z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;text-align:center;width:340px;transform-origin:top right;transform:scale(var(--ui-scale));display:flex;flex-direction:column;align-items:center">
   <span id="charNameHud" style="color:#aa8866;font-size:0.55rem;font-weight:700;letter-spacing:0.08em;display:none"></span>
   <!-- LV + 숫자: 프레임 바깥 위 -->
   <div style="font-size:0.6rem;color:#887766;font-weight:700;letter-spacing:0.25em;text-shadow:1px 1px 2px #000">LV</div>
   <span id="lvLbl" style="color:#c9a35a;font-size:1.8rem;font-weight:900;text-shadow:0 2px 6px rgba(0,0,0,0.9),0 0 12px rgba(201,163,90,0.3);line-height:1;letter-spacing:0.05em;margin-bottom:4px">1</span>
   <!-- 고딕 프레임: EXP + 스탯 -->
-  <div style="width:100%;background:url('img/ui_gothic_frame.png') no-repeat center/100% 100%;padding:18px 24px 14px;display:flex;flex-direction:column;align-items:center;min-height:70px">
+  <div style="width:100%;background:url('img/ui_gothic_frame.png') no-repeat center/100% 100%;padding:28px 16px 24px;display:flex;flex-direction:column;align-items:center;min-height:130px;overflow:hidden">
     <div id="expBar" style="width:90%;height:14px;background:url('img/ui_exp_bar.png') no-repeat center/100% 100%;position:relative;overflow:hidden;margin-bottom:6px;padding:3px 4px;box-sizing:border-box">
       <div id="expF" style="height:100%;background:linear-gradient(90deg, #aa8844, #ffcc44);width:0%;box-shadow:0 0 6px rgba(255,204,68,0.3);border-radius:1px"></div>
       <div id="expTxt" style="position:absolute;top:0;right:6px;font-size:0.5rem;color:#aa9966;pointer-events:none;white-space:nowrap;line-height:14px;text-shadow:1px 1px 2px #000"></div>
@@ -14740,6 +14736,7 @@ const _GIB_MAX_CELL=24;
 for(let i=0;i<_GIB_MAX;i++){const _gc=document.createElement('canvas');_gc.width=_GIB_MAX_CELL;_gc.height=_GIB_MAX_CELL;_gibs.push({x:0,y:0,vx:0,vy:0,r:0,life:0,ml:0,c:_gc,ctx:_gc.getContext('2d'),active:false})}
 const _gibC=document.createElement('canvas');_gibC.width=48;_gibC.height=48;const _gibX=_gibC.getContext('2d',{willReadFrequently:true});
 let _gibThrottle=0; // 프레임당 gib 생성 제한
+let _flingThrottle=0; // 프레임당 fling 생성 제한
 function _addGibs(e,boomX,boomY,boomR){
   if(!OPT.deathFx)return;
   if(_gibThrottle>5)return; // 프레임당 최대 6회
@@ -14851,16 +14848,16 @@ function _addGorePiece(x,y,type){
   let oldest=0,minL=Infinity;
   for(let i=0;i<_GORE_MAX;i++){if(!_gorePieces[i].active){oldest=i;break}if(_gorePieces[i].life<minL){minL=_gorePieces[i].life;oldest=i}}
   const g=_gorePieces[oldest];
-  g.img=img;g.active=true;
+  g.img=img;g.active=true;g.camFling=false;g.scale=1;g.vz=0;g.rv=0;
   g.sz=(_GORE_SZ[key]||30)+(Math.random()-.5)*8;
-  // 30% 카메라 플링: 모니터 뚫고 튀어나오는 느낌
-  if(Math.random()<0.3){
+  // 30% 카메라 플링: 모니터 뚫고 튀어나오는 느낌 (프레임당 최대 5개)
+  if(Math.random()<0.3&&_flingThrottle<5){
+    _flingThrottle++;
     g.camFling=true;g.x=x+(Math.random()-.5)*10;g.y=y+(Math.random()-.5)*10;
     g.vx=(Math.random()-.5)*.5;g.vy=(Math.random()-.5)*.5;
     g.vz=-0.18;g.scale=0.5;
     g.rot=Math.random()*Math.PI*2;g.rv=0.15+Math.random()*0.15;
     g.life=40;g.ml=40; // 0.67초 짧고 강렬
-    console.log('[FLING] spawned scale='+g.scale+' vz='+g.vz);
   }else{
     g.camFling=false;g.scale=1;g.vz=0;
     g.x=x+(Math.random()-.5)*20;g.y=y+(Math.random()-.5)*20;
@@ -16656,7 +16653,8 @@ const PASSIVE_DEF=[
   {key:'pAbund',  name:'🌿 풍요',nameEn:'🌿 Abundance',desc:'내 HP 70%↑: 뎀+20%/lv, 회복력+5%/lv (합연산)',descEn:'My HP≥70%: DMG+20%/lv, Recovery+5%/lv (additive)',max:10, icon:'🌿',col:'#66cc44'},
   {key:'pPred',   name:'🐺 약자포식',nameEn:'🐺 Predator',desc:'적HP 50%↓: 뎀+20%/lv. 내HP 50%↓: 회복력+10%/lv, 이속+5%/lv (합연산)',descEn:'Enemy HP≤50%: DMG+20%/lv. My HP≤50%: Recovery+10%/lv, Move SPD+5%/lv (additive)',max:10, icon:'🐺',col:'#cc4444'},
   {key:'pDot',    name:'☠ 침식',nameEn:'☠ Corrosion',desc:'DOT 틱뎀 +15%/lv, DOT 지속시간 +10%/lv, DOT 축적률 +5%/lv',descEn:'DOT tick DMG +15%/lv, DOT duration +10%/lv, DOT pool rate +5%/lv',max:10, icon:'☠',col:'#88cc22'},
-  {key:'pVital',  name:'💎 생명력',nameEn:'💎 Vitality',desc:'MP +50/lv, ST +50/lv, MP회복 +1%/lv, ST회복 +1%/lv',descEn:'MP +50/lv, ST +50/lv, MP regen +1%/lv, ST regen +1%/lv',max:10, icon:'💎',col:'#44ccdd'},
+  {key:'pVital',  name:'💎 마력그릇',nameEn:'💎 Mana Vessel',desc:'MP +50/lv, MP회복 +1%/lv',descEn:'MP +50/lv, MP regen +1%/lv',max:10, icon:'💎',col:'#4488ff'},
+  {key:'pStamina',name:'💪 힘의그릇',nameEn:'💪 Stamina Vessel',desc:'ST +50/lv, ST회복 +1%/lv',descEn:'ST +50/lv, ST regen +1%/lv',max:10, icon:'💪',col:'#ff8844'},
 ];
 let PASSIVES={};PASSIVE_DEF.forEach(p=>PASSIVES[p.key]=0);
 // ═══ 근성 (보조스텟): SP 소모, 무한 레벨, HP/MP/ST 각각 +1/lv ═══
@@ -16710,9 +16708,12 @@ function applyStats(){
   P.mpR+=_cr.mpR/60;
   P.stR+=_cr.stR/60;
   P.mmp=~~(P.mmp+~~_cr.mp)+_gritMpFlat();P.mp=Math.min(P.mp,P.mmp);
-  // ═══ 생명력 패시브: MP/ST +50/lv, 회복 +1%/lv ═══
+  // ═══ 마력그릇: MP +50/lv, MP회복 +1%/lv ═══
   const _vLv=PASSIVES.pVital||0;
-  if(_vLv>0){P.mmp+=_vLv*50;P.mp=Math.min(P.mp,P.mmp);P.mst+=_vLv*50;P.st=Math.min(P.st,P.mst);P.mpR*=(1+_vLv*0.01);P.stR*=(1+_vLv*0.01)}
+  if(_vLv>0){P.mmp+=_vLv*50;P.mp=Math.min(P.mp,P.mmp);P.mpR*=(1+_vLv*0.01)}
+  // ═══ 힘의그릇: ST +50/lv, ST회복 +1%/lv ═══
+  const _sLv=PASSIVES.pStamina||0;
+  if(_sLv>0){P.mst+=_sLv*50;P.st=Math.min(P.st,P.mst);P.stR*=(1+_sLv*0.01)}
   // ═══ 에너지 쉴드: Lv1부터 기본 제공 + INT 스케일 + 장비 bonusShield + 어픽스 ═══
   P.mshield=~~(100+P.lv*1+s.int*5+_totalBonusShield+_eqAffix('shieldFlat'));
   P.shield=Math.min(P.shield,P.mshield);
@@ -17515,7 +17516,6 @@ function _burstLoopExplode(tier){
   const _blDmgMul=(_blFused?[0,2,6,10]:[0,1,3,5])[tier]; // 합체 시 배율 2배
   const _blBase=magicRef()*statInt()*pMagicMul();
   const _blDmg=Math.max(10,~~(_blBase*_skMul('burstLoop'))); // 통일공식: _skMul
-  console.log('[BL] tier='+tier+' base='+~~_blBase+' mul='+_blDmgMul+' dmg='+_blDmg+' melee='+~~meleeRef()+' str='+statStr().toFixed(3)+' atk='+pAtkMul().toFixed(3));
   const _blCols=['','#8866ff','#ffaa44','#ff2244'];
   const _blNames=['','버스트!','더블버스트!!','트리플버스트!!!'];
   // 범위 내 적 타격 (광역 — 사운드 1회만)
@@ -18030,10 +18030,15 @@ function genGauntlet(fi){
     // [규칙2] 보스 인접 방에 최소 2개
     if(_preBossRoom&&r===_preBossRoom)_holeCount=Math.max(2,_holeCount);
     for(let _hci=0;_hci<_holeCount;_hci++){
-      const _ox=(Math.random()-.5)*_rW*.7*T;
-      const _oy=(Math.random()-.5)*_rH*.7*T;
-      const hx=(r.cx+.5)*T+_ox,hy=(r.cy+.5)*T+_oy;
-      spawnHoles.push({x:hx,y:hy,size:_hSize,timer:600+Math.random()*60,alive:0,room:ri});
+      let _tries=0,_placed=false;
+      while(_tries<200&&!_placed){_tries++;
+        const _ox=(Math.random()-.5)*_rW*.7*T;
+        const _oy=(Math.random()-.5)*_rH*.7*T;
+        const hx=(r.cx+.5)*T+_ox,hy=(r.cy+.5)*T+_oy;
+        let _tooClose=false;
+        for(let _shi=0;_shi<spawnHoles.length;_shi++){const _sh=spawnHoles[_shi];const _sdx=_sh.x-hx,_sdy=_sh.y-hy;if(_sdx*_sdx+_sdy*_sdy<250000){_tooClose=true;break}}
+        if(!_tooClose){spawnHoles.push({x:hx,y:hy,size:_hSize,timer:600+Math.random()*60,alive:0,room:ri});_placed=true}
+      }
     }
   }
   // 복도 spine 전체에 균열 배치 (12개 고정)
@@ -18045,24 +18050,26 @@ function genGauntlet(fi){
     const hx2=(sp2.cx+.5)*T,hy2=(sp2.y+.5)*T;
     let inRoom=false;
     for(const r of rooms){const rw2=r.w||r.rx*2||12,rh2=r.h||r.ry*2||8;if(sp2.cx>=r.cx-rw2/2&&sp2.cx<=r.cx+rw2/2&&sp2.y>=r.cy-rh2/2&&sp2.y<=r.cy+rh2/2){inRoom=true;break}}
-    if(!inRoom)spawnHoles.push({x:hx2,y:hy2,size:.3,timer:600+Math.random()*60,alive:0,room:-1});
+    if(!inRoom){let _tooClose=false;for(let _shi=0;_shi<spawnHoles.length;_shi++){const _sh=spawnHoles[_shi];const _sdx=_sh.x-hx2,_sdy=_sh.y-hy2;if(_sdx*_sdx+_sdy*_sdy<250000){_tooClose=true;break}}
+      if(!_tooClose)spawnHoles.push({x:hx2,y:hy2,size:.3,timer:600+Math.random()*60,alive:0,room:-1});}
   }
-  // [규칙4] 총량 정규화 — 방 수 기반 목표치 (방당 3개 기준)
+  // [규칙4] 총량 정규화 — 방 수 기반 목표치 (방당 2개 기준)
   const _normalRooms=rooms.filter(r=>r.type!=='start'&&r.type!=='boss');
-  const _targetHoles=_normalRooms.length*3;
-  // 최소 보장
-  while(spawnHoles.length<Math.max(5,_targetHoles-3)){
+  const _targetHoles=_normalRooms.length*2;
+  // 최소 보장 (거리 체크 + 시도 상한)
+  {let _fillTries=0;
+  while(spawnHoles.length<Math.max(5,_targetHoles-2)&&_fillTries<200){_fillTries++;
     const _cands=_normalRooms;
     if(_cands.length===0)break;
     const _rr=_cands[~~(Math.random()*_cands.length)];
     const _rrW=_rr.w||_rr.rx*2||12,_rrH=_rr.h||_rr.ry*2||8;
     const _ox2=(Math.random()-.5)*_rrW*.5*T,_oy2=(Math.random()-.5)*_rrH*.5*T;
-    const _dr=bossDistMax>0?Math.max(0,1-(_rr.cy/bossDistMax)):0;
-    const _rrW2=_rr.w||_rr.rx*2||12,_rrH2=_rr.h||_rr.ry*2||8;
-    spawnHoles.push({x:(_rr.cx+.5)*T+_ox2,y:(_rr.cy+.5)*T+_oy2,size:Math.min(1,Math.max(0,_rrW2*_rrH2/400)),timer:600+Math.random()*60,alive:0,room:-1});
-  }
-  // 초과분 제거 — 복도(room===-1)부터 우선 제거
-  const _maxHoles=_targetHoles+3;
+    const _fx=(_rr.cx+.5)*T+_ox2,_fy=(_rr.cy+.5)*T+_oy2;
+    let _tooClose=false;for(let _shi=0;_shi<spawnHoles.length;_shi++){const _sh=spawnHoles[_shi];const _sdx=_sh.x-_fx,_sdy=_sh.y-_fy;if(_sdx*_sdx+_sdy*_sdy<250000){_tooClose=true;break}}
+    if(!_tooClose)spawnHoles.push({x:_fx,y:_fy,size:Math.min(1,Math.max(0,_rrW*_rrH/400)),timer:600+Math.random()*60,alive:0,room:-1});
+  }}
+  // 초과분 제거 — 복도(room===-1)부터 우선 제거, 최대 15개
+  const _maxHoles=Math.min(_targetHoles+3,15);
   while(spawnHoles.length>_maxHoles){
     const _ci=spawnHoles.findIndex(h=>h.room===-1);
     if(_ci>=0)spawnHoles.splice(_ci,1);
@@ -18786,26 +18793,42 @@ function genFromTemplate(tmpl,si){
     // 1) tmpl.spawnHoles (내보내기에서 변환된 것)
     if(tmpl.spawnHoles&&tmpl.spawnHoles.length>0){
       for(const sh of tmpl.spawnHoles){const hSize=sh.type==='S'?.3:sh.type==='M'?.5:.8;
-        spawnHoles.push({x:(sh.x+.5)*T,y:(sh.y+.5)*T,size:hSize,timer:600+Math.random()*60,alive:0,room:1})}
+        const _tx=(sh.x+.5)*T,_ty=(sh.y+.5)*T;let _tooClose=false;
+        for(let _shi=0;_shi<spawnHoles.length;_shi++){const _s=spawnHoles[_shi];const _dx=_s.x-_tx,_dy=_s.y-_ty;if(_dx*_dx+_dy*_dy<250000){_tooClose=true;break}}
+        if(!_tooClose)spawnHoles.push({x:_tx,y:_ty,size:hSize,timer:600+Math.random()*60,alive:0,room:1})}
     }
     // 2) tmpl.objs에서 hole_ 오브젝트도 소환굴로 변환
     if(tmpl.objs){for(const o of tmpl.objs){
       if(o.id==='hole_s'||o.id==='hole_m'||o.id==='hole_l'){
         const hSize=o.id==='hole_l'?.8:o.id==='hole_m'?.5:.3;
-        spawnHoles.push({x:(o.x+.5)*T,y:(o.y+.5)*T,size:hSize,timer:600+Math.random()*60,alive:0,room:1})}
+        const _tx=(o.x+.5)*T,_ty=(o.y+.5)*T;let _tooClose=false;
+        for(let _shi=0;_shi<spawnHoles.length;_shi++){const _s=spawnHoles[_shi];const _dx=_s.x-_tx,_dy=_s.y-_ty;if(_dx*_dx+_dy*_dy<250000){_tooClose=true;break}}
+        if(!_tooClose)spawnHoles.push({x:_tx,y:_ty,size:hSize,timer:600+Math.random()*60,alive:0,room:1})}
     }}
     // 3) rooms.spawns에서도 소환굴 생성 (에디터 방 데이터)
     for(const rd of tmpl.rooms){if(rd.spawns){for(const sp of rd.spawns){
-      spawnHoles.push({x:(rd.cx+sp.dx+.5)*T,y:(rd.cy+sp.dy+.5)*T,size:.3+sp.grade*.25,timer:600+Math.random()*60,alive:0,room:1})}}}
+      const _tx=(rd.cx+sp.dx+.5)*T,_ty=(rd.cy+sp.dy+.5)*T;let _tooClose=false;
+      for(let _shi=0;_shi<spawnHoles.length;_shi++){const _s=spawnHoles[_shi];const _dx=_s.x-_tx,_dy=_s.y-_ty;if(_dx*_dx+_dy*_dy<250000){_tooClose=true;break}}
+      if(!_tooClose)spawnHoles.push({x:_tx,y:_ty,size:.3+sp.grade*.25,timer:600+Math.random()*60,alive:0,room:1})}}}
     // corridorSpawns도 소환굴로
     if(tmpl.corridorSpawns){for(const cs of tmpl.corridorSpawns){
-      spawnHoles.push({x:(cs.x+.5)*T,y:(cs.y+.5)*T,size:.3,timer:600+Math.random()*60,alive:0,room:-1})}}
+      const _tx=(cs.x+.5)*T,_ty=(cs.y+.5)*T;let _tooClose=false;
+      for(let _shi=0;_shi<spawnHoles.length;_shi++){const _s=spawnHoles[_shi];const _dx=_s.x-_tx,_dy=_s.y-_ty;if(_dx*_dx+_dy*_dy<250000){_tooClose=true;break}}
+      if(!_tooClose)spawnHoles.push({x:_tx,y:_ty,size:.3,timer:600+Math.random()*60,alive:0,room:-1})}}
+    // tileRLE 최대 캡 12개 — 복도(room===-1)부터 제거
+    while(spawnHoles.length>12){
+      let _ci=-1;for(let _i=spawnHoles.length-1;_i>=0;_i--){if(spawnHoles[_i].room===-1){_ci=_i;break}}
+      if(_ci>=0)spawnHoles.splice(_ci,1);
+      else spawnHoles.splice(spawnHoles.length-1,1);
+    }
     console.log('[HOLE] tileRLE: spawnHoles='+spawnHoles.length+' (tmpl.spawnHoles='+(tmpl.spawnHoles?tmpl.spawnHoles.length:0)+' objs='+(tmpl.objs?tmpl.objs.filter(o=>o.id&&o.id.startsWith('hole_')).length:0)+' roomSpawns='+(tmpl.rooms.filter(r=>r.spawns).length)+')');
   } else {
     // ── 기존 방 기반 배치 ──
     if(tmpl.spawnHoles&&tmpl.spawnHoles.length>0){
       for(const sh of tmpl.spawnHoles){const hSize=sh.type==='S'?.3:sh.type==='M'?.5:.8;
-        spawnHoles.push({x:(sh.x+.5)*T,y:(sh.y+.5)*T,size:hSize,timer:600+Math.random()*60,alive:0,room:-1})}
+        const _tx=(sh.x+.5)*T,_ty=(sh.y+.5)*T;let _tooClose=false;
+        for(let _shi=0;_shi<spawnHoles.length;_shi++){const _s=spawnHoles[_shi];const _dx=_s.x-_tx,_dy=_s.y-_ty;if(_dx*_dx+_dy*_dy<250000){_tooClose=true;break}}
+        if(!_tooClose)spawnHoles.push({x:_tx,y:_ty,size:hSize,timer:600+Math.random()*60,alive:0,room:-1})}
     }
     const bossDistMax=bossRm?bossRm.cy:1;
     let _preBossRm=null,_preBossD=Infinity;
@@ -18813,30 +18836,52 @@ function genFromTemplate(tmpl,si){
       const _d=Math.abs(r.cy-(bossRm?bossRm.cy:0))+Math.abs(r.cx-(bossRm?bossRm.cx:0));if(_d<_preBossD){_preBossD=_d;_preBossRm=r}}
     for(let ri=0;ri<rooms.length;ri++){const r=rooms[ri];if(r.type==='start'||r.type==='boss')continue;
       const _rSize=Math.min(1,Math.max(0,r.w*r.h/400));const rd=tmpl.rooms[ri];
-      if(rd&&rd.spawns){for(const sp of rd.spawns){spawnHoles.push({x:(r.cx+sp.dx+.5)*T,y:(r.cy+sp.dy+.5)*T,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri})}}
-      let _roomHoles=spawnHoles.filter(h=>h.room===ri).length;const _targetPerRoom=(r.w>15||r.h>15)?3:2;
-      for(let _fi=_roomHoles;_fi<_targetPerRoom;_fi++){spawnHoles.push({x:(r.cx+.5)*T+(Math.random()-.5)*r.w*.6*T,y:(r.cy+.5)*T+(Math.random()-.5)*r.h*.6*T,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri})}
-      if(_preBossRm&&r===_preBossRm){_roomHoles=spawnHoles.filter(h=>h.room===ri).length;
-        for(let _bi=_roomHoles;_bi<3;_bi++){spawnHoles.push({x:(r.cx+.5)*T+(Math.random()-.5)*r.w*.5*T,y:(r.cy+.5)*T+(Math.random()-.5)*r.h*.5*T,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri})}}
+      if(rd&&rd.spawns){for(const sp of rd.spawns){const _tx=(r.cx+sp.dx+.5)*T,_ty=(r.cy+sp.dy+.5)*T;let _tooClose=false;
+        for(let _shi=0;_shi<spawnHoles.length;_shi++){const _s=spawnHoles[_shi];const _dx=_s.x-_tx,_dy=_s.y-_ty;if(_dx*_dx+_dy*_dy<250000){_tooClose=true;break}}
+        if(!_tooClose)spawnHoles.push({x:_tx,y:_ty,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri})}}
+      let _roomHoles=0;for(let _rc=0;_rc<spawnHoles.length;_rc++)if(spawnHoles[_rc].room===ri)_roomHoles++;
+      const _targetPerRoom=(r.w>15||r.h>15)?3:2;
+      for(let _fi=_roomHoles;_fi<_targetPerRoom;_fi++){let _tries=0,_placed=false;
+        while(_tries<200&&!_placed){_tries++;
+          const _fx=(r.cx+.5)*T+(Math.random()-.5)*r.w*.6*T,_fy=(r.cy+.5)*T+(Math.random()-.5)*r.h*.6*T;
+          let _tooClose=false;for(let _shi=0;_shi<spawnHoles.length;_shi++){const _sh=spawnHoles[_shi];const _sdx=_sh.x-_fx,_sdy=_sh.y-_fy;if(_sdx*_sdx+_sdy*_sdy<250000){_tooClose=true;break}}
+          if(!_tooClose){spawnHoles.push({x:_fx,y:_fy,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri});_placed=true}
+        }}
+      if(_preBossRm&&r===_preBossRm){_roomHoles=0;for(let _rc=0;_rc<spawnHoles.length;_rc++)if(spawnHoles[_rc].room===ri)_roomHoles++;
+        for(let _bi=_roomHoles;_bi<3;_bi++){let _tries=0,_placed=false;
+          while(_tries<200&&!_placed){_tries++;
+            const _fx=(r.cx+.5)*T+(Math.random()-.5)*r.w*.5*T,_fy=(r.cy+.5)*T+(Math.random()-.5)*r.h*.5*T;
+            let _tooClose=false;for(let _shi=0;_shi<spawnHoles.length;_shi++){const _sh=spawnHoles[_shi];const _sdx=_sh.x-_fx,_sdy=_sh.y-_fy;if(_sdx*_sdx+_sdy*_sdy<250000){_tooClose=true;break}}
+            if(!_tooClose){spawnHoles.push({x:_fx,y:_fy,size:_rSize,timer:600+Math.random()*60,alive:0,room:ri});_placed=true}
+          }}}
     }
-    if(tmpl.corridorSpawns){for(const cs of tmpl.corridorSpawns)spawnHoles.push({x:(cs.x+.5)*T,y:(cs.y+.5)*T,size:.3,timer:600+Math.random()*60,alive:0,room:-1})}
-    const _normalRooms2=rooms.filter(r=>r.type!=='start'&&r.type!=='boss');const _targetHoles2=_normalRooms2.length*3;
-    while(spawnHoles.length<Math.max(5,_targetHoles2-3)){if(_normalRooms2.length===0)break;const _rr=_normalRooms2[~~(Math.random()*_normalRooms2.length)];
-      spawnHoles.push({x:(_rr.cx+.5)*T+(Math.random()-.5)*_rr.w*.4*T,y:(_rr.cy+.5)*T+(Math.random()-.5)*_rr.h*.4*T,size:Math.min(1,Math.max(0,_rr.w*_rr.h/400)),timer:600+Math.random()*60,alive:0,room:-1})}
-    const _maxHoles2=_targetHoles2+3;
+    if(tmpl.corridorSpawns){for(const cs of tmpl.corridorSpawns){
+      const _cx=(cs.x+.5)*T,_cy=(cs.y+.5)*T;let _tooClose=false;
+      for(let _shi=0;_shi<spawnHoles.length;_shi++){const _sh=spawnHoles[_shi];const _sdx=_sh.x-_cx,_sdy=_sh.y-_cy;if(_sdx*_sdx+_sdy*_sdy<250000){_tooClose=true;break}}
+      if(!_tooClose)spawnHoles.push({x:_cx,y:_cy,size:.3,timer:600+Math.random()*60,alive:0,room:-1})}}
+    const _normalRooms2=rooms.filter(r=>r.type!=='start'&&r.type!=='boss');const _targetHoles2=_normalRooms2.length*2;
+    {let _fillTries=0;
+    while(spawnHoles.length<Math.max(5,_targetHoles2-2)&&_fillTries<200){_fillTries++;if(_normalRooms2.length===0)break;const _rr=_normalRooms2[~~(Math.random()*_normalRooms2.length)];
+      const _fx=(_rr.cx+.5)*T+(Math.random()-.5)*_rr.w*.4*T,_fy=(_rr.cy+.5)*T+(Math.random()-.5)*_rr.h*.4*T;
+      let _tooClose=false;for(let _shi=0;_shi<spawnHoles.length;_shi++){const _sh=spawnHoles[_shi];const _sdx=_sh.x-_fx,_sdy=_sh.y-_fy;if(_sdx*_sdx+_sdy*_sdy<250000){_tooClose=true;break}}
+      if(!_tooClose)spawnHoles.push({x:_fx,y:_fy,size:Math.min(1,Math.max(0,_rr.w*_rr.h/400)),timer:600+Math.random()*60,alive:0,room:-1})}}
+    const _maxHoles2=Math.min(_targetHoles2+3,15);
     while(spawnHoles.length>_maxHoles2){
       const _ci=spawnHoles.findIndex(h=>h.room===-1);
       if(_ci>=0)spawnHoles.splice(_ci,1);
       else spawnHoles.splice(~~(Math.random()*spawnHoles.length),1);
     }
   }
-  // ── 9.5 최소 소환굴 보장 (20개) — 부족하면 전투방에 자동 추가 ──
-  const _minHoles=20;
+  // ── 9.5 최소 소환굴 보장 (6개) — 부족하면 전투방에 자동 추가 (거리 체크) ──
+  const _minHoles=6;
   const _normalRms=rooms.filter(r=>r.type!=='start'&&r.type!=='boss'&&r.type!=='forge');
-  while(spawnHoles.length<_minHoles&&_normalRms.length>0){
+  {let _minTries=0;
+  while(spawnHoles.length<_minHoles&&_normalRms.length>0&&_minTries<200){_minTries++;
     const _rr=_normalRms[~~(Math.random()*_normalRms.length)];
-    spawnHoles.push({x:(_rr.cx+.5)*T+(Math.random()-.5)*_rr.w*.5*T,y:(_rr.cy+.5)*T+(Math.random()-.5)*_rr.h*.5*T,size:Math.min(1,Math.max(0,_rr.w*_rr.h/400)),timer:600+Math.random()*60,alive:0,room:-1});
-  }
+    const _fx=(_rr.cx+.5)*T+(Math.random()-.5)*_rr.w*.5*T,_fy=(_rr.cy+.5)*T+(Math.random()-.5)*_rr.h*.5*T;
+    let _tooClose=false;for(let _shi=0;_shi<spawnHoles.length;_shi++){const _sh=spawnHoles[_shi];const _sdx=_sh.x-_fx,_sdy=_sh.y-_fy;if(_sdx*_sdx+_sdy*_sdy<40000){_tooClose=true;break}}
+    if(!_tooClose)spawnHoles.push({x:_fx,y:_fy,size:Math.min(1,Math.max(0,_rr.w*_rr.h/400)),timer:600+Math.random()*60,alive:0,room:-1});
+  }}
   // 소환굴 유효성 검증: 벽 위면 바닥으로 이동, 주변 바닥 부족하면 제거
   for(let _shi=spawnHoles.length-1;_shi>=0;_shi--){
     const _sh=spawnHoles[_shi];let _stx=~~(_sh.x/T),_sty=~~(_sh.y/T);
@@ -19248,7 +19293,7 @@ _buildAtlasE(); // 신규 적 아틀라스 (가변프레임 × 7팔레트)
 _buildAtlasB(); // 신규 보스 아틀라스 (27프레임 × 7팔레트)
 
 // ═══ 소환굴 등급 ═══
-const SPAWN_HOLE={name:'소환굴',col:'#aa4444',cnt:{S:50,M:100,L:200}};
+const SPAWN_HOLE={name:'소환굴',col:'#aa4444',cnt:{S:50,M:100,L:100}};
 
 // ═══ 엘리트/모디파이어 시스템 ═══
 const ELITE_TIERS=[
@@ -20696,7 +20741,7 @@ function update(){
   {const _stBefore=P.st,_mpBefore=P.mp,_hpBefore=P.hp;
   if(P.s==='idle'){P.st=Math.min(P.mst,P.st+_str/8*sp);P.mp=Math.min(P.mmp,P.mp+_mpr/8*sp)}
   else{P.st=Math.min(P.mst,P.st+_str/16*sp);const _mpMul=P.s==='beam'?.5:1;P.mp=Math.min(P.mmp,P.mp+_mpr/16*_mpMul*sp)}
-  if(_gameFrame%300===0&&(P.st<P.mst||P.mp<P.mmp||P.hp<P.mhp))console.log('[REGEN] s='+P.s+' _str='+_str.toFixed(4)+' _mpr='+_mpr.toFixed(4)+' _hpr='+(_hpr||0).toFixed(4)+' sp='+sp+' ST:'+_stBefore.toFixed(2)+'→'+P.st.toFixed(2)+' MP:'+_mpBefore.toFixed(2)+'→'+P.mp.toFixed(2)+' HP:'+_hpBefore.toFixed(2)+'→'+P.hp.toFixed(2)+' ch='+SI_TO_HELL[G.stage]);}
+  }
   // 악마화 부활 쿨다운 감소
   if(P._demonRevCd>0)P._demonRevCd-=sp;
   // ═══ 어픽스: killSlayer 카운트다운 ═══
@@ -21187,7 +21232,6 @@ function update(){
     }
     if(!isAct('weapon')||P.st<=0||(_wwFused&&P.hp<=P.mhp*.05)){
       // 스킬 합성: 회전참+기폭팔 → 종료 시 폭발 (총 회전 2초 이상이면 발동)
-      console.log('[WW-END] fused='+_wwFused+' detTimer='+(P._wwDetTimer||0)+' ssCD='+_ssCD+' parryT='+(P.parryT||0));
       if(_wwFused&&(P._wwDetTimer||0)>=_ssCD){
         if(_isFused('slamStorm')){_slamStormBlast()}
         else{_detonateBlast('회전기폭!',EL.P)}
@@ -22353,13 +22397,13 @@ function update(){
     rb.alpha=rb.frame<5?1:1-(rb.frame-5)/4;
   }
   // gib 조각 업데이트
-  _gibThrottle=0;
+  _gibThrottle=0;_flingThrottle=0;
   for(let gi=0;gi<_GIB_MAX;gi++){const g=_gibs[gi];if(!g.active)continue;g.life-=sp;if(g.life<=0){g.active=false;continue}g.x+=g.vx*sp;g.y+=g.vy*sp;g.vy+=.15*sp;g.vx*=.97**sp;g.r+=g.vx*.08*sp;}
   // split 조각 업데이트 (중력+회전+감속)
   for(let si=0;si<_SPLIT_MAX;si++){const s=_splits[si];if(!s.active)continue;s.life-=sp;if(s.life<=0){s.active=false;continue}s.x+=s.vx*sp;s.y+=s.vy*sp;s.vy+=.12*sp;s.vx*=.96**sp;s.rot+=s.rv*sp;s.rv*=.98**sp;}
   // gore 파편 업데이트 (중력+회전+감속)
-  for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active)continue;g.life-=sp;if(g.life<=0){g.active=false;continue}
-    if(g.camFling){g.scale-=g.vz*sp;g.rot+=g.rv*sp;g.x+=g.vx*sp;g.y+=g.vy*sp;if(~~(g.life)%5===0)console.log('[FLING] scale='+g.scale.toFixed(2)+' life='+~~(g.life))}
+  for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active)continue;if(g.life<=0){g.active=false;continue}g.life-=sp;if(g.life<=0){g.active=false;continue}
+    if(g.camFling){if(g.scale>3.0){g.life=0;g.active=false;continue}g.scale-=g.vz*sp;g.rot+=g.rv*sp;g.x+=g.vx*sp;g.y+=g.vy*sp}
     else{g.x+=g.vx*sp;g.y+=g.vy*sp;g.vy+=.10*sp;g.vx*=.97**sp;g.rot+=g.rv*sp;g.rv*=.97**sp}}
   // 데드 임팩트 업데이트 (life 1.0→0.0 감소, 속도=초당0.8)
   for(let di=0;di<_DI_MAX;di++){const d=_diPool[di];if(!d.active)continue;d.life-=sp/60*0.8;if(d.life<=0){d.active=false}}
@@ -22797,6 +22841,7 @@ function update(){
       if(_gxTurret){
         const _tsvX=P.x,_tsvY=P.y,_tsvS=P.s,_tsvSt2=P.st2;
         P.x=_gxTurret.x;P.y=_gxTurret.y;_gxFiring=1;
+        document.title='TURRET px='+~~P.x+' tx='+~~_gxTurret.x+' sk='+P.activeBowSk;
         _autoFireBowSkill(_xbowTarget.x,_xbowTarget.y);
         _gxFiring=0;P.x=_tsvX;P.y=_tsvY;P.s=_tsvS;P.st2=_tsvSt2;
       }else{_autoFireBowSkill(_xbowTarget.x,_xbowTarget.y)}
@@ -31223,7 +31268,7 @@ function activateMaliceHunt(){
     const _isPlagueGF=P.skills.plagueBurst>=1&&_isFused('plagueFuse');
     if(_isPlagueGF&&(P._pbCd||0)>0){return}
     G.mats-=_malCost(30);P.st=Math.max(0,P.st-_mhStCost);
-    if(_isPlagueGF)P._pbCd=~~((900-((P.skills.plagueBurst||1)-1)*30)*(1+_eqAffix('cooldownRed'))); // 독혈해방 15초 - Lv당 0.5초
+    if(_isPlagueGF)P._pbCd=~~((540-((P.skills.plagueBurst||1)-1)*18)*(1+_eqAffix('cooldownRed'))); // 독혈해방 9초 - Lv당 0.3초
     const _goCntRaw=P._gOrbs.length;
     const _goCnt=Math.min(_goCntRaw,6); // 최대 6발 (초과분은 데미지에 흡수)
     const _goR=(34)+P.r;
@@ -37626,7 +37671,7 @@ function draw(){
 
   const _dd2=performance.now();
   if(_fc2d){var _dEns=_PERF_PROF._delta(_snapEns);_PERF_PROF._ens_di=_dEns.di;_PERF_PROF._ens_st=_dEns.st;_PERF_PROF._ens_fr=_dEns.fr;_PERF_PROF._ens_ga=_dEns.ga;var _snapProj=_PERF_PROF._snap()}
-  if(_dd2-_dd1>20)console.log('[ENS-DETAIL] '+(_dd2-_dd1).toFixed(1)+'ms | drawn:'+_eRCnt+' total:'+ens.length);
+  if(G.debugPerf&&_dd2-_dd1>20)console.log('[ENS-DETAIL] '+(_dd2-_dd1).toFixed(1)+'ms | drawn:'+_eRCnt+' total:'+ens.length);
   // ═══ 적 투사체 3패스 렌더 (composite 전환 최소화) ═══
   // 패스 0: 가시 인덱스 수집 + 트레일 (source-over)
   const _visProjs=[];
@@ -38356,7 +38401,7 @@ function draw(){
     X.globalAlpha=1;
   }
   // ── 카메라 플링 고어 (최상단 — 화면 앞으로 날아오는 파편) ──
-  if(_goreReady){for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active||!g.img||!g.camFling)continue;const gsz=g.sz*g.scale;const alpha=g.scale<4.5?1:Math.max(0,1-(g.scale-4.5)*0.3);if(alpha<=0){g.active=false;continue}console.log('[FLING RENDER] sz='+gsz.toFixed(1)+' scale='+g.scale.toFixed(2));X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.rot);X.drawImage(g.img,-gsz*.5,-gsz*.5,gsz,gsz);X.restore();}}
+  if(_goreReady){for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active||!g.img||!g.camFling)continue;const gsz=g.sz*g.scale;const alpha=g.scale<4.5?1:Math.max(0,1-(g.scale-4.5)*0.3);if(alpha<=0){g.active=false;continue}X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.rot);X.drawImage(g.img,-gsz*.5,-gsz*.5,gsz,gsz);X.restore();}}
   // ── 히트 플래시 (순간 백플래시) ──
   if(_hitFlash.a>0){X.globalAlpha=_hitFlash.a;X.fillStyle=_hitFlash.col;X.fillRect(0,0,C.width,C.height);X.globalAlpha=1;_hitFlash.a-=0.08*_dtSp;if(_hitFlash.a<0)_hitFlash.a=0}
   if(scrFlashA>0){X.globalAlpha=scrFlashA;X.fillStyle=scrFlash;X.fillRect(0,0,C.width,C.height);X.globalAlpha=1;scrFlashA-=.018*_dtSp;if(scrFlashA<0)scrFlashA=0}
@@ -38706,7 +38751,7 @@ function draw(){
   if(_DEBUG_PERF){_dbgDMap=_dd1-_dd0;_dbgDEns=_dd2-_dd1;_dbgDProj=_dd3-_dd2;_dbgDPart=_dd4-_dd3}
   if(_dbgDPost>16){const _pA=_pB0-_pA0,_pB=_pC0-_pB0,_pC=_dd5-_pC0;console.warn('[POST SPIKE] '+_dbgDPost.toFixed(1)+'ms | A(hud+lowHP):'+_pA.toFixed(1)+' B(flash+lit+bloom+torch):'+_pB.toFixed(1)+' C:'+_pC.toFixed(1)+' [bonfire:'+(_pC1-_pC0).toFixed(1)+' fog:'+(_pC2-_pC1).toFixed(1)+' envVig:'+(_pC3-_pC2).toFixed(1)+' grainScan:'+(_pC4-_pC3).toFixed(1)+' bossCine:'+(_pC5-_pC4).toFixed(1)+' minimap:'+(_dd5-_pC5).toFixed(1)+']')}}
   const _drawTotal=performance.now()-_drawStart;
-  if(_drawTotal>16)console.log('[DRAW TOTAL] '+_drawTotal.toFixed(2)+'ms | MAP:'+(_dd1-_dd0).toFixed(1)+' [para:'+(_tMap-_tPara).toFixed(1)+' cache:'+(_tMObj-_tMap).toFixed(1)+' mobj:'+(_tWI-_tMObj).toFixed(1)+' items:'+(_dd1-_tWI).toFixed(1)+'] ens:'+(_dd2-_dd1).toFixed(1)+' proj:'+(_dd3-_dd2).toFixed(1)+' PART:'+(_dd4-_dd3).toFixed(1)+' post:'+_dbgDPost.toFixed(1));
+  if(G.debugPerf&&_drawTotal>16)console.log('[DRAW TOTAL] '+_drawTotal.toFixed(2)+'ms | MAP:'+(_dd1-_dd0).toFixed(1)+' [para:'+(_tMap-_tPara).toFixed(1)+' cache:'+(_tMObj-_tMap).toFixed(1)+' mobj:'+(_tWI-_tMObj).toFixed(1)+' items:'+(_dd1-_tWI).toFixed(1)+'] ens:'+(_dd2-_dd1).toFixed(1)+' proj:'+(_dd3-_dd2).toFixed(1)+' PART:'+(_dd4-_dd3).toFixed(1)+' post:'+_dbgDPost.toFixed(1));
   // [FRAME-C2D] 전체 draw() C2D 카운터 출력 — 60프레임당 1회 (비활성화)
   if(false&&typeof _PERF_PROF!=='undefined'&&_PERF_PROF.enabled){
     if(!_PERF_PROF._frameC2Dcnt)_PERF_PROF._frameC2Dcnt=0;
@@ -42964,7 +43009,7 @@ function loop(timestamp){
   _perfFrames++;
   const _pn=performance.now();
   if(_pn-_perfLast>5000){
-    if(!IS_ELECTRON)console.log('[PERF] fps:'+(_perfFrames/5).toFixed(0));
+    if(G.debugPerf)console.log('[PERF] fps:'+(_perfFrames/5).toFixed(0));
     _perfFrames=0;_perfLast=_pn;
   }
   if(document.hidden){_prevTs=0;requestAnimationFrame(loop);return}
@@ -43512,7 +43557,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
       };
       const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:_SLOT,data:saveData})});
       const j=await res.json();
-      if(j.ok){_lastSaveTime=Date.now();if(!IS_ELECTRON)console.log('[LOCAL] saved -> saves/'+_SLOT+'.json')}
+      if(j.ok){_lastSaveTime=Date.now()}
       else{if(!IS_ELECTRON)console.error('[LOCAL] Save failed:',j.error)}
     }catch(e){if(!IS_ELECTRON)console.error('[LOCAL] Save failed:',e)}
     finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
