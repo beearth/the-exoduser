@@ -30212,13 +30212,13 @@ function hurtP(dmg,opts){
     P.iframes=0;if(P.s!=='charge'&&P.s!=='sBlock'&&P.s!=='pStun'&&P.s!=='whirlwind'){
       // ═══ 포이즈 감소 → 기절 (D4식) ═══ 일반탄: maxPoise/10 (10발 스턴), 근접: 기존 공식
       const _pd=_isProj?Math.max(1,~~(P.maxPoise*0.1)):Math.max(5,~~(a*0.3));P.poise=(P.poise||P.maxPoise)-_pd;P.poiseR=0;
-      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
       else{P.s='stagger';P.st2=6}
     }
     // 회전 중: 경직 면역, 포이즈 감소 절반
     if(P.s==='whirlwind'){
       const _pd2=_isProj?Math.max(1,~~(P.maxPoise*0.05)):Math.max(2,~~(a*0.15));P.poise=(P.poise||P.maxPoise)-_pd2;P.poiseR=0;
-      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
     }
     if(a>0)addTxt(P.x,P.y-10,'-'+a,'#ff3333',28);
     // ═══ 데미지 비례 넉백: dmg/mhp 비율로 밀림 (최소1, 최대12) ═══
@@ -31473,9 +31473,15 @@ function activateSpikeTrap(){
   const dmg=~~(magicRef()*statInt()*pMagicMul()*(3+(lv-1))); // INT 스케일, flat +1/Lv (슬로우+출혈 유틸 감안)
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:r,t:0,maxT:600,dmg:dmg,el:EL.P,lv:lv,type:'spikeTrap'});
+  // 설치 즉발 데미지: DOT의 5배 (범위 내 전체)
+  const _stBurst=dmg*5;
+  const _stNe=shQuery(P.x,P.y,r);
+  for(let _si=0;_si<_stNe.length;_si++){const _se=_stNe[_si];if(!_se.alive||dst(P.x,P.y,_se.x,_se.y)>r)continue;
+    hurtE(_se,_stBurst,Math.atan2(_se.y-P.y,_se.x-P.x),false,{noPoise:true},EL.P)}
+  if(_stNe.length>0)addTxt(P.x,P.y-35,'🌿'+_stBurst+'!','#88cc44',40);
   playSample('spike_trap',.8,_r(1,.08));
   addTxt(P.x,P.y-20,_T('🌿 가시덫!'),'#66aa44',30);
-  shake(2);
+  shake(4);
 }
 // ═══ 공성쇠뇌 터렛 — 발동 ═══
 function activateGhostXbowTurret(){
@@ -32222,6 +32228,8 @@ function renderSkillPanel(){
     const _sixMoved=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
     const catSkills=SKILL_LIST.filter(s=>{let c=s.cat;if(s.id==='fanShot'&&_sixMoved)c='magic';return c===cat.id});
     if(!catSkills.length)return;
+    // 성급 정렬: 높은 성급 위, 없는 것 아래
+    catSkills.sort((a,b)=>{const ga=_allFuseGemGroups(a.id),gb=_allFuseGemGroups(b.id);return gb.length-ga.length});
     const col=document.createElement('div');
     col.style.cssText='flex:1;min-width:0;max-width:310px';
     // 카테고리 헤더
