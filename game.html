@@ -42747,10 +42747,7 @@ function updateHUD(slow){
   // 쉴드 글로우: HP 글로브 프레임 테두리에 파란 발광
   const _hpGlass=document.querySelector('.hp-globe .globe-glass');
   if(_hpGlass){_hpGlass.style.filter=shPct>0?`drop-shadow(0 0 ${4+shAlpha*8}px rgba(50,150,255,${(.5*shAlpha).toFixed(2)}))`:'none'}
-  // HP 해골 눈깔: HP 비율로 토글 (50% 이하 한쪽 OFF, 0% 양쪽 OFF)
-  const _hpRat=P.mhp>0?P.hp/P.mhp:0;
-  const _hpEL=$('hpEyeL'),_hpER=$('hpEyeR');
-  if(_hpEL){_hpEL.classList.toggle('on',_hpRat>0);_hpER.classList.toggle('on',_hpRat>0.5)}
+  // HP 해골 눈깔: poise 전용으로 이동됨 (아래 포이즈 블록에서 제어)
   // 포이즈 글로우: MP 글로브 프레임에 노란 발광 (포이즈 풀 + 스턴 아닐 때만)
   const _mpGlass=document.querySelector('.mp-globe .globe-glass');
   let _poiseOk=false;
