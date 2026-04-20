@@ -1566,7 +1566,8 @@ canvas{display:block;position:fixed;inset:0}
   padding-right:8px !important;
 }
 #skillPanel .ptitle,
-#skillPanel .skill-close{
+#skillPanel .skill-close,
+#skSlotBar{
   flex-shrink:0 !important;
 }
 #settings .pbox,
@@ -2594,8 +2595,7 @@ canvas{display:block;position:fixed;inset:0}
         <div id="skillGrid"></div>
       </div>
     </div>
-    <div id="skSlotBar"></div>
-    <div class="skill-close"><button class="pclose" onclick="closePanel('skillPanel')">닫기 [ESC]</button></div>
+    <div class="skill-close"><div id="skSlotBar"></div><button class="pclose" onclick="closePanel('skillPanel')">닫기 [ESC]</button></div>
   </div>
 </div>
 
@@ -30545,6 +30545,26 @@ const SKILL_CATS=[
   {id:'tech',name:'⚙️ 영역',nameEn:'⚙️ Domain',col:'#ff8800'},
   {id:'ult',name:'💀 필살기',nameEn:'💀 Ultimate',col:'#ff2200'},
 ];
+// ═══ 추천 빌드 순서 (고정) ═══
+const SKILL_REC_PATH=[
+  {phase:'1. 악의폭풍',phaseEn:'1. Malice Storm',skills:['maliceStorm'],fuse:null,desc:'핵심 광역기 — 먼저 배워서 정리력 확보',descEn:'Core AoE — learn first for mob clearing'},
+  {phase:'2. 칼날 계열',phaseEn:'2. Blade Skills',skills:['maliceHunt','guardian'],fuse:'bladeFuse',desc:'악의 사냥 + 보호자 → 합체: 칼날 해방',descEn:'Malice Hunt + Guardian → Fuse: Blade Liberation'},
+  {phase:'3. 역병 확장',phaseEn:'3. Plague Expand',skills:['plagueBurst'],fuse:'plagueFuse',desc:'폭독혈 추가 → 합체: 독혈 해방 (칼날+독)',descEn:'Plague Burst → Fuse: Plague Liberation (blade+poison)'},
+  {phase:'4. 이동스킬 마스터',phaseEn:'4. Movement Master',skills:['chargeBoost','magicBlink'],fuse:'dimBreach',desc:'충돌+화염 → 합체: 사슬기동 (무적이동 핵심)',descEn:'Impact+Flame → Fuse: Chain Breach (invincible dash core)'},
+  {phase:'5. 사슬 확장',phaseEn:'5. Chain Expand',skills:['chainAssault','chainSlash','chainSlam'],fuse:'dimThunder',desc:'사슬 체인 확장 → 차원돌파/차원파쇄/차원뇌격',descEn:'Chain expansion → Dimensional combos'},
+  {phase:'6. 전기: 참회',phaseEn:'6. Electric: Repentance',skills:['hellRay'],fuse:'elecRepent',desc:'참회 습득 → 악의폭풍과 합체: 뇌전참회',descEn:'Learn Repentance → Fuse with Malice Storm: Lightning Repentance'},
+  {phase:'7. 멸살광선',phaseEn:'7. Omni Beam',skills:['omniBeam'],fuse:null,desc:'E키 마법 — 강력한 직선 레이저',descEn:'E key magic — powerful straight laser'},
+  {phase:'8. 회전참 합체',phaseEn:'8. Whirlwind Fuse',skills:['whirlwind','detonate'],fuse:'whirlDet',desc:'회전참 + 기폭 → 합체: 회전기폭',descEn:'Whirlwind + Detonate → Fuse: Whirl-Det'},
+  {phase:'9. 대왕 합체',phaseEn:'9. Giant Fuse',skills:['giantSlam'],fuse:'slamStorm',desc:'대왕치기 추가 → 합체: 지진폭풍',descEn:'Giant Slam → Fuse: Slam Storm'},
+  {phase:'10. 석궁: 만화방창',phaseEn:'10. Crossbow: Barrage',skills:['fanShot'],fuse:'sixFuse',desc:'만화방창 + 멸살광선 → 합체: 연사+빔',descEn:'Barrage + Omni Beam → Fuse: Rapid+Beam'},
+  {phase:'11. 원소 합체',phaseEn:'11. Elemental Fuse',skills:['elemMissile'],fuse:'elemFuse',desc:'원소추적탄 추가 → 3단합체: 추적빔',descEn:'Elem Missile → 3-Fuse: Tracking Beam'},
+  {phase:'12. 6단합체: 폭풍빔',phaseEn:'12. 6-Fuse: Storm Beam',skills:[],fuse:'stormBeam',desc:'회전참+기폭+대왕+만화+멸살+원소 → 최종합체',descEn:'Whirl+Det+Giant+Barrage+Beam+Elem → Ultimate Fuse'},
+  {phase:'13. 방패 합체',phaseEn:'13. Shield Fuse',skills:['maliceSwipe','shieldThrow'],fuse:'shieldFuse',desc:'칼등치기 + 칼등날개 → 합체: 처내기 강화',descEn:'Blade Parry + Shield Wing → Fuse: Parry Enhanced'},
+  {phase:'14. 신성 영역',phaseEn:'14. Holy Domain',skills:['holyDome','holyPrison'],fuse:'holyFuse',desc:'회복 + 구속 → 합체: 신성한 영역',descEn:'Recovery + Prison → Fuse: Holy Domain'},
+  {phase:'15. 신성+빙결',phaseEn:'15. Holy+Ice',skills:['iceStorm'],fuse:'holyIce',desc:'아이스스톰 추가 → 합체: 신성빙결',descEn:'Ice Storm → Fuse: Holy Ice'},
+  {phase:'16. 암흑+가시',phaseEn:'16. Dark+Spike',skills:['darkPillar','spikeTrap'],fuse:'pillarSpike',desc:'암흑기둥 + 가시덫 → 합체: 기둥가시',descEn:'Dark Pillar + Spike Trap → Fuse: Pillar Spike'},
+  {phase:'17. 사슬 최종',phaseEn:'17. Chain Final',skills:['chainSlash'],fuse:'dimRush',desc:'기동칼날개 추가 → 5단합체: 차원질주',descEn:'Chain Bladewing → 5-Fuse: Dimensional Rush'},
+];
 const SKILL_HIER=[
   {id:'rec',name:'⭐ 추천',nameEn:'⭐ Recommend',col:'#ffcc44',cats:null},
   {id:'atk',name:'⚔ 공격',nameEn:'⚔ Attack',col:'#ff6644',cats:['phys','magic','bow']},
@@ -32288,77 +32308,69 @@ function renderSkillPanel(){
   const _curHier=SKILL_HIER.find(h=>h.id===_skHierTab)||SKILL_HIER[1];
   const _isRecTab=_curHier.cats===null;
   const _visibleCats=_isRecTab?SKILL_CATS.map(c=>c.id):_curHier.cats;
-  // ── 추천 탭: 습득 가능 / 합체 가능 / 강화 가능 스킬만 모아서 표시 ──
+  // ── 추천 탭: 고정 빌드 패스 ──
   if(_isRecTab){
-    const _recLearn=[],_recFuse=[],_recUp=[];
-    for(let _ri=0;_ri<SKILL_LIST.length;_ri++){const sk=SKILL_LIST[_ri];
-      if(_isAbsorbed(sk.id))continue;
-      const slv=P.skills[sk.id]||0;const learned=slv>=1;
-      const _reqMet=sk.requires?(P.skills[sk.requires]||0)>=1:true;
-      const _lvMet=sk.reqLv?P.lv>=sk.reqLv:true;
-      if(!learned&&_reqMet&&_lvMet&&P.sp>=sk.spCost&&G.mats>=_malCost(sk.matCost||0))_recLearn.push(sk);
-      else if(learned){
-        const _fk=_getFuseKey(sk.id);
-        if(_fk&&_canFuse(_fk))_recFuse.push(sk);
-        else if(sk.up&&slv<20&&slv<Math.min(20,~~(P.lv/50)+1)){_recUp.push(sk)}
-      }
+    const col=document.createElement('div');col.style.cssText='min-width:0;grid-column:1/-1;max-width:700px;margin:0 auto';
+    let _curPhaseIdx=-1;
+    for(let _pi=0;_pi<SKILL_REC_PATH.length;_pi++){
+      const ph=SKILL_REC_PATH[_pi];
+      // 이 단계 스킬 전부 습득했는지
+      let _allLearned=true;for(let _si=0;_si<ph.skills.length;_si++){if(!(P.skills[ph.skills[_si]]>=1)){_allLearned=false;break}}
+      // 합체까지 완료했는지
+      const _fuseDone=ph.fuse?_isFused(ph.fuse):true;
+      const _done=_allLearned&&_fuseDone;
+      if(!_done&&_curPhaseIdx<0)_curPhaseIdx=_pi;
     }
-    const _stripHeadIcon2=(t)=>String(t||'').replace(/^[^A-Za-z0-9가-힣]+/,'').trim();
-    const _addRecHdr=(title,col2)=>{
-      if(!title)return;
-      const hdr=document.createElement('div');
-      hdr.style.cssText='color:#ffcc44;font-size:.88rem;font-weight:700;padding:6px 8px;border:1px solid #554422;border-radius:6px;background:rgba(40,25,5,.5);margin-bottom:6px;letter-spacing:.06em';
-      hdr.textContent=title;col2.appendChild(hdr);
-    };
-    // 습득 가능
-    if(_recLearn.length||_recFuse.length||_recUp.length){
-      const col=document.createElement('div');col.style.cssText='min-width:0';
-      // ── 습득 가능 ──
-      if(_recLearn.length){
-        _addRecHdr(_e2?'✨ Can Learn ('+_recLearn.length+')':'✨ 습득 가능 ('+_recLearn.length+')',col);
-        _recLearn.forEach(sk=>_renderSkillRow(sk,col));
+    for(let _pi=0;_pi<SKILL_REC_PATH.length;_pi++){
+      const ph=SKILL_REC_PATH[_pi];
+      let _allLearned=true;for(let _si=0;_si<ph.skills.length;_si++){if(!(P.skills[ph.skills[_si]]>=1)){_allLearned=false;break}}
+      const _fuseDone=ph.fuse?_isFused(ph.fuse):true;
+      const _done=_allLearned&&_fuseDone;
+      const _isCur=_pi===_curPhaseIdx;
+      const _isFuture=_pi>_curPhaseIdx&&_curPhaseIdx>=0;
+      // 단계 헤더
+      const phDiv=document.createElement('div');
+      phDiv.style.cssText='margin-bottom:12px;border:1px solid '+(_isCur?'#ffaa44':_done?'#336633':'#332211')+';border-radius:8px;padding:8px 10px;background:'+(_isCur?'rgba(60,30,5,.5)':_done?'rgba(10,30,10,.3)':'rgba(10,5,2,.4)')+';'+(_isFuture?'opacity:.5;':'');
+      const phHdr=document.createElement('div');
+      phHdr.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:6px';
+      const _check=_done?'✅':_isCur?'👉':'⬜';
+      phHdr.innerHTML='<span style="font-size:1.1rem">'+_check+'</span><span style="color:'+(_isCur?'#ffcc44':_done?'#66aa66':'#887766')+';font-size:.95rem;font-weight:700">'+(_e2?ph.phaseEn:ph.phase)+'</span>';
+      phDiv.appendChild(phHdr);
+      // 설명
+      const phDesc=document.createElement('div');
+      phDesc.style.cssText='color:#998877;font-size:.8rem;margin-bottom:6px;padding-left:28px';
+      phDesc.textContent=_e2?ph.descEn:ph.desc;
+      phDiv.appendChild(phDesc);
+      // 스킬 카드들 (가로 배치)
+      const skRow=document.createElement('div');
+      skRow.style.cssText='display:flex;gap:6px;align-items:flex-start;flex-wrap:wrap;padding-left:28px';
+      for(let _si=0;_si<ph.skills.length;_si++){
+        const skId=ph.skills[_si];
+        const sk=SKILL_LIST.find(s=>s.id===skId);if(!sk)continue;
+        const _learned=(P.skills[skId]||0)>=1;
+        const skWrap=document.createElement('div');skWrap.style.cssText='flex:1;min-width:120px;max-width:220px';
+        _renderSkillRow(sk,skWrap);
+        skRow.appendChild(skWrap);
+        // 스킬 사이 + 표시
+        if(_si<ph.skills.length-1){const plus=document.createElement('div');plus.style.cssText='display:flex;align-items:center;color:#776655;font-size:1.2rem;flex:0 0 16px;justify-content:center;padding-top:12px';plus.textContent='+';skRow.appendChild(plus)}
       }
-      // ── 합체 가능: 파트너 카드 나란히 ──
-      if(_recFuse.length){
-        _addRecHdr(_e2?'🔗 Can Fuse ('+_recFuse.length+')':'🔗 합체 가능 ('+_recFuse.length+')',col);
-        const _shownFuse={};
-        _recFuse.forEach(sk=>{
-          if(_shownFuse[sk.id])return;
-          const _fk=_getFuseKey(sk.id);
-          const _fp=_fk?_FUSE_PAIRS[_fk]:null;
-          // 파트너 찾기
-          let _partner=null;
-          if(_fp){for(let _pi=0;_pi<_fp.length;_pi++){if(_fp[_pi]!==sk.id){const _ps=SKILL_LIST.find(s=>s.id===_fp[_pi]);if(_ps&&(P.skills[_ps.id]||0)>=1){_partner=_ps;break}}}}
-          if(_partner){
-            _shownFuse[sk.id]=1;_shownFuse[_partner.id]=1;
-            const row=document.createElement('div');
-            row.style.cssText='display:flex;gap:8px;align-items:stretch;margin-bottom:4px';
-            const _l=document.createElement('div');_l.style.cssText='flex:1;min-width:0';
-            _renderSkillRow(sk,_l);
-            const _link=document.createElement('div');
-            _link.style.cssText='display:flex;align-items:center;color:#ffaa44;font-size:1.2rem;flex:0 0 20px;justify-content:center';
-            _link.textContent='🔗';
-            const _r=document.createElement('div');_r.style.cssText='flex:1;min-width:0';
-            _renderSkillRow(_partner,_r);
-            row.appendChild(_l);row.appendChild(_link);row.appendChild(_r);
-            col.appendChild(row);
-          } else {
-            _renderSkillRow(sk,col);
-          }
-        });
+      // 합체 표시
+      if(ph.fuse){
+        const fuseTag=document.createElement('div');
+        fuseTag.style.cssText='display:flex;align-items:center;color:'+(_fuseDone?'#66cc66':'#ffaa44')+';font-size:.85rem;flex:0 0 auto;padding-top:12px;gap:4px;font-weight:700';
+        fuseTag.textContent=(_fuseDone?'✅':'→')+' '+(_e2?'Fuse':'합체');
+        skRow.appendChild(fuseTag);
       }
-      grid.appendChild(col);
-      // ── 강화 가능 ──
-      if(_recUp.length){const col2=document.createElement('div');col2.style.cssText='min-width:0';
-        _addRecHdr(_e2?'⬆ Can Upgrade ('+_recUp.length+')':'⬆ 강화 가능 ('+_recUp.length+')',col2);
-        _recUp.forEach(sk=>_renderSkillRow(sk,col2));
-        grid.appendChild(col2);
-      }
-    } else {
-      const _empty=document.createElement('div');_empty.style.cssText='color:#665544;font-size:1rem;text-align:center;padding:30px;grid-column:1/-1';
-      _empty.textContent=_e2?'No recommendations — all skills learned & maxed!':'추천 없음 — 모든 스킬 습득/강화 완료!';
-      grid.appendChild(_empty);
+      phDiv.appendChild(skRow);
+      col.appendChild(phDiv);
     }
+    // 전부 완료 시
+    if(_curPhaseIdx<0){
+      const _cg=document.createElement('div');_cg.style.cssText='color:#66cc66;font-size:1rem;text-align:center;padding:12px;border:1px solid #336633;border-radius:8px;background:rgba(10,40,10,.3)';
+      _cg.textContent=_e2?'🎉 All recommended builds complete! Try other skills freely.':'🎉 추천 빌드 완료! 나머지 스킬 자유롭게 선택하세요.';
+      col.appendChild(_cg);
+    }
+    grid.appendChild(col);
   }
   const _stripHeadIcon=(t)=>String(t||'').replace(/^[^A-Za-z0-9가-힣]+/,'').trim();
   if(!_isRecTab) SKILL_CATS.forEach(cat=>{
@@ -32436,7 +32448,7 @@ function renderSkillPanel(){
     for(let _si=0;_si<_slotDefs.length;_si++){
       const sd=_slotDefs[_si];const skId=sd.get();
       const d=document.createElement('div');
-      d.style.cssText='width:36px;height:36px;border:1px solid '+(skId?'#554422':'#332211')+';border-radius:5px;background:'+(skId?'rgba(30,15,5,.7)':'rgba(10,5,2,.5)')+';display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;cursor:default';
+      d.style.cssText='width:36px;height:36px;border:1px solid '+(skId?'#554422':'#332211')+';border-radius:5px;background:'+(skId?'rgba(30,15,5,.7)':'rgba(10,5,2,.5)')+';display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;cursor:pointer';
       if(skId){
         const _ico=SKILL_ICONS[skId];const _iSrc=_ico?(_ico===1?skId:_ico):'';
         if(_iSrc)d.innerHTML='<img src="img/skillskin_upscaled/'+_iSrc+'.png" style="width:22px;height:22px;image-rendering:pixelated">';
@@ -32447,6 +32459,13 @@ function renderSkillPanel(){
       _lbl.textContent=sd.key;d.appendChild(_lbl);
       if(skId){const _skDef=SKILL_LIST.find(s=>s.id===skId);
         d.title=(_skDef?(OPT.lang==='en'?(_skDef.nameEn||_skDef.name):_skDef.name):skId)+' ['+sd.key+']'}
+      {const _numSlotMap={s1:0,s2:1,s3:2,s4:3,sp:4,sf:5};
+        const _fixedSlotMap={lmb:'lmb',rmb:'rmb',sh:'charge',magic:'magic',q:'q',ct:'ct'};
+        if(_numSlotMap[sd.id]!=null){d.onclick=()=>_openSkillSlotPop(_numSlotMap[sd.id])}
+        else if(_fixedSlotMap[sd.id]){d.onclick=()=>openSkSlotPop(_fixedSlotMap[sd.id])}
+        else if(sd.id==='ult'){d.onclick=()=>openSkSlotPop('ult')}
+        d.onmouseenter=function(){this.style.borderColor='#ffaa44'};
+        d.onmouseleave=function(){this.style.borderColor=skId?'#554422':'#332211'}}
       _sb.appendChild(d);
     }
   }}
@@ -35823,16 +35842,17 @@ function renderStatSummary(){
   const _afc=(id,col)=>_UNIMPL.has(id)?'#33332288':_af(id)?col:'#555544';
   const _afp=id=>{const v=_af(id)?~~(_af(id)*100)+'%':'0';return _UNIMPL.has(id)?v+'<span style="color:#33332288;font-size:.9rem"> ('+_L('미구현','N/A')+')</span>':v};
 
-  const _tStr=STATS.str+_eqStat('Str'),_tDex=STATS.dex+_eqStat('Dex'),_tInt=STATS.int+_eqStat('Int'),_tLck=STATS.lck;
+  const _lb2=_lvB();
+  const _tStr=STATS.str+_lb2+_eqStat('Str'),_tDex=STATS.dex+_lb2+_eqStat('Dex'),_tInt=STATS.int+_lb2+_eqStat('Int'),_tLck=STATS.lck+_lb2;
   const _e=OPT.lang==='en';
   const _L=(ko,en)=>_e?en:ko;
   sm.innerHTML=
     `<div style="${_sHd}">💠 ${_L('스탯 총량','Stat Totals')}</div>`+
-    `<div style="${_sLn}">STR: <span style="color:#ff9944">${_tStr}</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}${STATS.str}+${_L('장비','gear')}${_eqStat('Str')})</span> → ${_L('물리배율','Phys Mult')} <span style="color:#ff9944">×${statStr().toFixed(3)}</span></div>`+
-    `<div style="${_sLn}">DEX: <span style="color:#ffcc44">${_tDex}</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}${STATS.dex}+${_L('장비','gear')}${_eqStat('Dex')})</span> → ${_L('공속','AtkSpd')} <span style="color:#ffcc44">×${statDex().toFixed(3)}</span></div>`+
-    `<div style="${_sLn}">INT: <span style="color:#66aaff">${_tInt}</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}${STATS.int}+${_L('장비','gear')}${_eqStat('Int')})</span> → ${_L('마법배율','Magic Mult')} <span style="color:#66aaff">×${statInt().toFixed(3)}</span></div>`+
-    `<div style="${_sLn}">LCK: <span style="color:#88ff88">${_tLck}</span> <span style="color:#887766;font-size:1.1rem">(${_L('크리','Crit')}${statCrit().toFixed(1)}%, ${_L('크리뎀','CritDmg')}+${((statCritDmg()-1)*100).toFixed(0)}%, ${_L('드롭','Drop')}+${((statDropBonus()-1)*100).toFixed(0)}%)</span></div>`+
-    `<div style="${_sLn}">${_L('근성','Grit')}: <span style="color:#ffaa33">Lv.${_grit}</span></div>`+
+    `<div style="${_sLn}">STR: <span style="color:#ff9944">${_tStr}</span> <span style="color:#887766;font-size:1.1rem">(SP${STATS.str}+Lv${_lb2}+${_L('장비','gear')}${_eqStat('Str')})</span></div>`+
+    `<div style="${_sLn}">DEX: <span style="color:#ffcc44">${_tDex}</span> <span style="color:#887766;font-size:1.1rem">(SP${STATS.dex}+Lv${_lb2}+${_L('장비','gear')}${_eqStat('Dex')})</span> → ${_L('공속','AtkSpd')} <span style="color:#ffcc44">×${statDex().toFixed(3)}</span></div>`+
+    `<div style="${_sLn}">INT: <span style="color:#66aaff">${_tInt}</span> <span style="color:#887766;font-size:1.1rem">(SP${STATS.int}+Lv${_lb2}+${_L('장비','gear')}${_eqStat('Int')})</span></div>`+
+    `<div style="${_sLn}">LCK: <span style="color:#88ff88">${_tLck}</span> <span style="color:#887766;font-size:1.1rem">(SP${STATS.lck}+Lv${_lb2}+${_L('크리','Crit')}${statCrit().toFixed(1)}% ${_L('크리뎀','CritDmg')}+${((statCritDmg()-1)*100).toFixed(0)}%)</span></div>`+
+    `<div style="${_sLn}">${_L('근성','Grit')}: <span style="color:#ffaa33">Lv.${_grit+_lb2}</span> <span style="color:#887766;font-size:1.1rem">(SP${_grit}+Lv${_lb2})</span></div>`+
     `<div style="${_sHd}">📊 ${_L('종합 지표','Overview')}</div>`+
     `<div style="${_sLn}">${_L('근접 DPS','Melee DPS')}: <span style="color:#ff9944">${_sMeleeDPS}</span> <span style="color:#887766;font-size:1.1rem">(${_L('공격력×공속×크리','ATK×Spd×Crit')})</span></div>`+
     (_sBowDPS?`<div style="${_sLn}">${_L('활 DPS','Bow DPS')}: <span style="color:#66dd66">${_sBowDPS}</span></div>`:'')+
