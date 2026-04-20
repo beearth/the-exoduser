@@ -2177,6 +2177,7 @@ canvas{display:block;position:fixed;inset:0}
   <div class="globe-val">
     <div id="hpCur" class="cur">0</div>
     <div id="hpMax" class="max">/ 0</div>
+    <div id="hpShield" style="font-size:.55rem;color:#4499ff;opacity:.7;margin-top:-1px"></div>
   </div>
   <span id="hpPotCd" style="position:absolute;top:-45px;left:50%;transform:translateX(-50%);font-size:.9rem;color:#ff8844;font-weight:700;white-space:nowrap"></span>
 </div>
@@ -4894,7 +4895,7 @@ const _EN={
 '슬롯':'Slot','자동 ON':' Auto ON','자동 OFF':' Auto OFF','스킬 해제':' skill unset',
 '필살기':'Ultimate','필살기 해제':'Ultimate Unset',
 '연사 해제':'Rapid Fire Off',
-'닫기':'Close',
+'닫기':'Close','장착 중':'Equipped','보관 아이템':'Stored Item',
 // --- Phase 13: massive batch — skill activation ---
 '클릭으로 선택 · ESC로 닫기':'Click to select · ESC to close',
 '선택됨':'Selected',
@@ -5613,10 +5614,11 @@ function _updatePetBubble(){
 function _checkPetDialogue(){
   if(!G.on||!G.pets)return;
   _updatePetBubble();
+  if(P.lv>500)return; // Lv500 이후 펫 대사 전부 비활성
   const si=G.stage||0;
 
-  // ── 튜토리얼 (Stage 0 전용) ──
-  if(si===0){
+  // ── 튜토리얼 (Stage 0 전용, Lv200 이하) ──
+  if(si===0&&P.lv<=200){
     if(!_petTut.start){_petTut.start=true;_petSayCD('tut_start','crow','일어나. 여신이 널 여기 보낸 건 죽으라고가 아니야.',5,9999,'cat','...아직 살아있네. 좌클릭으로 저것들 쳐봐.',5);return}
     if(!_petTut.atk3&&_petAtkCnt>=3&&_petAtkCnt<7){_petTut.atk3=true;_petSayCD('tut_atk3','crow','좋아, 감각이 있군. 계속 쳐!',5,9999,'cat','...치는 건 할 줄 아네. 피하는 건?',5);return}
     if(!_petTut.atk7&&_petAtkCnt>=7&&!_petChargeUsed){_petTut.atk7=true;_petSayCD('tut_charge','crow','Shift를 눌러. 작살이다. 땅에 꽂아서 끌려가!',5,9999);return}
@@ -5646,17 +5648,13 @@ function _checkPetDialogue(){
   // 위기: HP < 30%
   if(P.hp<P.mhp*.3&&P.hp>0)_petSayCD('crisis_hp30','crow','피가 새고 있다. Shift. 빠져.',4,30,'cat','작살 던져! 끌려가면 무적이야!',4);
 
-  // 위기: HP < 40% + 물약
-  if(P.hp<P.mhp*.4&&P.hp>0){let _hasPot=false;for(let q=0;q<4;q++){if(QSLOTS[q]&&QSLOTS[q].count>0){_hasPot=true;break}}
-    if(_hasPot)_petSayCD('crisis_pot','cat','물약 있잖아! 숫자키!',4,30,'crow','...마시든 말든. 네 목숨이니까.',4);
-  }
+
 
   // 패링 가이드
   if(_petParryCnt<3)_petSayCD('parry_low','crow','우클릭. 적 손목이 꺾일 때 쳐.',4,30,'cat','우클릭 타이밍 맞추면 패링 돼~',4);
   else if(_petParryCnt<10)_petSayCD('parry_mid','crow','빨간 탄은 악의 덩어리다. 쳐내서 이용해.',4,30,'cat','무지개빛만 피하면 돼! 나머지는 다 패링!',4);
 
-  // 방패 미장착
-  if(!INV.equipped.shield)_petSayCD('no_shield','cat','방패 하나 껴! Q로 보호막이랑 패링 쓸 수 있어!',4,300,'crow','방패 없이 싸우는 건 도박이야.',4);
+  // 방패 대사 제거됨 (방패 시스템 삭제)
   // 위험 경고 (HP 30% 이하)
   if(P.hp<P.mhp*.3&&P.hp>0)_petSayCD('danger_hp','crow','위험해! 쉬프트 사슬기동으로 피해!!',3,300);
   // 기절 경고
@@ -5715,7 +5713,8 @@ function _checkPetDialogue(){
   let _noEn=true;for(let i=0;i<ens.length;i++){if(ens[i].alive){_noEn=false;break}}
   if(_noEn&&P.s==='idle')_petSayCD('idle_noE','crow','...멈추지 마. 여신은 기다리지 않는다.',4,30,'cat','앞으로 가자~ 나도 여기 오래 있기 싫어.',4);
 
-  // ── 키 안내 (1회성, 조건 트리거) ──
+  // ── 키 안내 (1회성, 조건 트리거, Lv200 이하) ──
+  if(P.lv<=200){
   // K: 스킬 — 레벨 3+ & SP 있을 때
   if(!_petTut.keyK&&P.lv>=3&&P.sp>0){_petTut.keyK=true;_petSayCD('tut_keyK','cat','K를 눌러봐! 스킬을 배울 수 있어!',5,9999,'crow','...힘을 골라라. 전부 가질 순 없다.',4)}
   // C: 능력치 — 레벨 5+ & AP 있을 때
@@ -5737,6 +5736,7 @@ function _checkPetDialogue(){
   if(!_petTut.keyV&&INV.bag.length>=20){_petTut.keyV=true;_petSayCD('tut_keyV','cat','가방 터지겠다! V 눌러서 창고에 넣어둬!',5,9999,'crow','...버리기 아까운 건 창고에.',4)}
   // ESC: 설정 — 레벨 10+
   if(!_petTut.keyESC&&P.lv>=10){_petTut.keyESC=true;_petSayCD('tut_keyESC','cat','ESC로 설정 열 수 있어! 난이도 바꾸기, 자동물약 조절~',5,9999,'crow','...살아남은 것만으로도 대단하군. 설정을 확인해.',4)}
+  } // Lv200 이하 키 안내 닫기
 
   // 가만있을 때 게임팁 (idle 시 30% 확률)
   if(P.s==='idle'){_petIdleT+=_dtSp;
@@ -8874,23 +8874,23 @@ function mkItem(slot,tier,el,rarity,wtype){
     weapon:{atk:_atkRoll,spd:1,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
     // DEF/eDef 5티어 선형 통일: T0=10, T1=20, T2=30, T3=40, T4=50 (12슬롯 × 50 = 총 600 방어)
     // eDef는 전 속성 공통이라 절반 스케일 (T4=25, 총 최대 ~150)
-    // 방어구 파트: bonusHp 5티어 [100,200,300,400,500] (2026-04-11 재밸런스)
-    shield:{def:10+tier*10,stagger:15+tier*8,shieldWt:10-tier,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
-    boots:{def:10+tier*10,spd:tier*.08,bonusSt:(5+tier*4)*2,chargeDist:14+tier*3,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    armor:{def:10+tier*10,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:(4+tier*3)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    // 방어구 6파트: 물리DEF만, 20+tier*20 (T0=20~T4=100, 6세트 풀=600)
+    shield:{def:20+tier*20,stagger:15+tier*8,shieldWt:10-tier,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
+    boots:{def:20+tier*20,spd:tier*.08,bonusSt:(5+tier*4)*2,chargeDist:14+tier*3,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    armor:{def:20+tier*20,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:(4+tier*3)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
     // 무기 파트(helmet,weapon,bow): bonusHp 금지 — 무기 파트는 공격 전용
-    helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,def:10+tier*10,eDef:5+tier*5},
+    helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,def:20+tier*20},
     bow:{atk:_atkRoll,spd:1,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
-    gloves:{def:10+tier*10,spd:tier*.04,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    pants:{def:10+tier*10,bonusSt:(3+tier*3)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    // 장신구 파트: bonusHp 5티어 [100,200,300,400,500]
-    belt:{def:10+tier*10,bonusSt:(4+tier*3)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    necklace:{def:10+tier*10,eDef:5+tier*5,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    ring1:{def:10+tier*10,eDef:5+tier*5,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    ring2:{def:10+tier*10,eDef:5+tier*5,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    cape:{def:10+tier*10,eDef:5+tier*5,spd:tier*.03,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    bracelet:{def:10+tier*10,eDef:5+tier*5,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    headband:{def:10+tier*10,eDef:5+tier*5,mpRegen:(1+tier*1)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200}
+    gloves:{def:20+tier*20,spd:tier*.04,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    pants:{def:20+tier*20,bonusSt:(3+tier*3)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    cape:{def:20+tier*20,spd:tier*.03,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    // 장신구 6파트: 속성eDef만 (belt/necklace/ring1/ring2/bracelet/headband)
+    belt:{eDef:20+tier*20,bonusSt:(4+tier*3)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    necklace:{eDef:20+tier*20,critRate:10,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    ring1:{eDef:20+tier*20,critRate:5,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    ring2:{eDef:20+tier*20,critRate:5,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    bracelet:{eDef:20+tier*20,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    headband:{eDef:20+tier*20,mpRegen:(1+tier*1)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200}
   };
   const b=base[slot];
   if(!b)return{id:~~(performance.now()*1000)+~~(Math.random()*9999),slot,el,rarity,tier,name:'???',emoji:'❓'};
@@ -15653,6 +15653,11 @@ function initMapObjects(){
     // ── scatter 에셋: 방 전체 랜덤 배치 (벽 무관) ──
     const _scatterDeco=_baseDeco.filter(d=>d.scatter);
     if(_scatterDeco.length>0){
+      // 시작방/보스방 중심 좌표 (scatter 배치 금지 영역)
+      const _scStartRm=G.rooms.find(r=>r.type==='start');
+      const _scBossRm=G.rooms.find(r=>r.type==='boss');
+      const _scStartX=_scStartRm?(_scStartRm.cx+.5)*T:0,_scStartY=_scStartRm?(_scStartRm.cy+.5)*T:0;
+      const _scBossX=_scBossRm?(_scBossRm.cx+.5)*T:0,_scBossY=_scBossRm?(_scBossRm.cy+.5)*T:0;
       const _scBase=Math.min(30,Math.max(3,~~(_dcFloors.length/100)));
       const _scMax=_scBase;
       const _scMinDist=500; // scatter끼리 500px 이상 간격
@@ -15662,6 +15667,9 @@ function initMapObjects(){
         const fi=~~(_dcSeed()*_dcFloors.length);
         const f=_dcFloors[fi];
         const px=f.x*T+T/2,py=f.y*T+T/2;
+        // 시작방/보스방 300px 이내 배치 금지
+        if(_scStartRm&&(px-_scStartX)*(px-_scStartX)+(py-_scStartY)*(py-_scStartY)<300*300)continue;
+        if(_scBossRm&&(px-_scBossX)*(px-_scBossX)+(py-_scBossY)*(py-_scBossY)<300*300)continue;
         // 벽에서 3타일 이상 떨어진 곳 (방 내부)
         let wallOk=true;
         for(let dy=-3;dy<=3&&wallOk;dy++)for(let dx=-3;dx<=3&&wallOk;dx++){
@@ -16657,8 +16665,16 @@ const PASSIVE_DEF=[
   {key:'pDot',    name:'☠ 침식',nameEn:'☠ Corrosion',desc:'DOT 틱뎀 +15%/lv, DOT 지속시간 +10%/lv, DOT 축적률 +5%/lv',descEn:'DOT tick DMG +15%/lv, DOT duration +10%/lv, DOT pool rate +5%/lv',max:10, icon:'☠',col:'#88cc22'},
   {key:'pVital',  name:'💎 마력그릇',nameEn:'💎 Mana Vessel',desc:'MP +50/lv, MP회복 +1%/lv',descEn:'MP +50/lv, MP regen +1%/lv',max:10, icon:'💎',col:'#4488ff'},
   {key:'pStamina',name:'💪 힘의그릇',nameEn:'💪 Stamina Vessel',desc:'ST +50/lv, ST회복 +1%/lv',descEn:'ST +50/lv, ST regen +1%/lv',max:10, icon:'💪',col:'#ff8844'},
+  {key:'pMalice', name:'👿 악의중독',nameEn:'👿 Malice Addict',desc:'악의 드롭 +8%/lv',descEn:'Malice drop +8%/lv',max:10, icon:'👿',col:'#cc66ff'},
+  {key:'pFortify',name:'❤️ 강인',nameEn:'❤️ Fortify',desc:'HP +300/lv',descEn:'HP +300/lv',max:10, icon:'❤️',col:'#ff4444'},
+  {key:'pArmor',  name:'🛡 철벽',nameEn:'🛡 Iron Wall',desc:'DEF +20/lv',descEn:'DEF +20/lv',max:10, icon:'🛡',col:'#8899aa'},
+  {key:'pHunter', name:'🎯 사냥꾼',nameEn:'🎯 Hunter',desc:'엘리트/보스 추가뎀 +10%/lv',descEn:'Elite/Boss bonus DMG +10%/lv',max:10, icon:'🎯',col:'#ff6600'},
 ];
 let PASSIVES={};PASSIVE_DEF.forEach(p=>PASSIVES[p.key]=0);
+// ═══ 악의중독 배율 (악의 획득 시 곱연산) ═══
+function _maliceMul(){return 1+(PASSIVES.pMalice||0)*0.08}
+// ═══ 사냥꾼 배율 (엘리트/보스 추가뎀) ═══
+function _hunterMul(e){return(e&&(e.isBoss||e.isElite||e.etype>=90))?1+(PASSIVES.pHunter||0)*0.10:1}
 // ═══ 근성 (보조스텟): SP 소모, 무한 레벨, HP/MP/ST 각각 +1/lv ═══
 let _grit=0; // 근성 레벨
 function _gritCost(){return 1;} // 일반 스탯처럼 SP 1당 근성 1
@@ -16716,6 +16732,12 @@ function applyStats(){
   // ═══ 힘의그릇: ST +50/lv, ST회복 +1%/lv ═══
   const _sLv=PASSIVES.pStamina||0;
   if(_sLv>0){P.mst+=_sLv*50;P.st=Math.min(P.st,P.mst);P.stR*=(1+_sLv*0.01)}
+  // ═══ 강인: HP +300/lv ═══
+  const _fLv=PASSIVES.pFortify||0;
+  if(_fLv>0){P.mhp+=_fLv*300;P.hp=Math.min(P.hp,P.mhp)}
+  // ═══ 철벽: DEF +20/lv ═══
+  const _aLv=PASSIVES.pArmor||0;
+  if(_aLv>0){P.baseDef+=_aLv*20}
   // ═══ 에너지 쉴드: Lv1부터 기본 제공 + INT 스케일 + 장비 bonusShield + 어픽스 ═══
   P.mshield=~~(100+P.lv*1+s.int*5+_totalBonusShield+_eqAffix('shieldFlat'));
   P.shield=Math.min(P.shield,P.mshield);
@@ -23203,7 +23225,7 @@ function update(){
   }
   for(let _wai=0;_wai<worldItems.length;_wai++){const it=worldItems[_wai];if(it.picked||it.type==='forge'||it.type==='item'||it.type==='chest'||it.type==='hp'||it.type==='o2bubble')continue;
     if(dst(P.x,P.y,it.x,it.y)<36){
-      if(it.type==='mat'){const mv=~~((it.matVal||1)*(1+_eqAffix('goldBonus')));it.picked=true;G.mats+=mv;}
+      if(it.type==='mat'){const mv=~~((it.matVal||1)*(1+_eqAffix('goldBonus'))*_maliceMul());it.picked=true;G.mats+=mv;}
       else if(it.type==='potion'){
         const pt=POT[it.potType];
         if(pt && addPotion(it.potType,it.potCount||1)){it.picked=true;addTxt(it.x,it.y,pt.name+' +'+(it.potCount||1),pt.col,40)}
@@ -28547,7 +28569,7 @@ function _updateOnePet(key){
           }
         }
       }else if(it.type==='hp'){it.picked=true;P.hp=Math.min(P.hp+50,P.mhp);addTxt(it.x,it.y,'+50 HP','#33ff33',40);ok=true}
-      else if(it.type==='mat'){const mv=~~((it.matVal||1)*(1+_eqAffix('goldBonus')));it.picked=true;G.mats+=mv;ok=true}
+      else if(it.type==='mat'){const mv=~~((it.matVal||1)*(1+_eqAffix('goldBonus'))*_maliceMul());it.picked=true;G.mats+=mv;ok=true}
       else if(it.type==='potion'){const pt=POT[it.potType];if(pt){ok=addPotion(it.potType,it.potCount||1);if(ok){it.picked=true;addTxt(it.x,it.y,pt.name,pt.col,40)}else{it._petSkip=300}}}
       if(ok)addParts(it.x,it.y,def.col,6);
       pet.s='follow';pet._tRef=null;pet._fetchT=0;
@@ -28601,7 +28623,7 @@ function updatePet(){
       const it=worldItems[i];
       if(it.picked||it.type!=='mat')continue;
       if(dst(P.x,P.y,it.x,it.y)>_catR)continue;
-      const mv=~~((it.matVal||1)*(1+_eqAffix('goldBonus')));it.picked=true;G.mats+=mv;_catCnt++;
+      const mv=~~((it.matVal||1)*(1+_eqAffix('goldBonus'))*_maliceMul());it.picked=true;G.mats+=mv;_catCnt++;
       addTxt(it.x,it.y,'+'+mv+(OPT.lang==='en'?' Malice':' 악의'),'#cc66ff',30);
     }
   }
@@ -29141,10 +29163,12 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(P.hp<P.mhp*.3&&_eqAffix('crisisBoost')>0)dmg=~~(dmg*(1+_eqAffix('crisisBoost')));
   // ═══ 어픽스: killSlayer (처치보너스) — 처치 후 3초간 뎀업 ═══
   if(P._killBuff>0)dmg=~~(dmg*(1+P._killMul));
-  // 목걸이 데미지 보너스
-  if(nc().dmgBonus)dmg=~~(dmg*(1+(nc().dmgBonus||0)*0.01));
+  // 목걸이+반지 데미지 보너스
+  {const _accDmg=((nc().dmgBonus||0)+(rg1().dmgBonus||0)+(rg2().dmgBonus||0))*0.01;if(_accDmg>0)dmg=~~(dmg*(1+_accDmg))}
   // ═══ 패시브: 약자포식 — 적HP≤50% 시 합연산 추가 (풍요는 _passDmgSum에 통합) ═══
   {const _pb=_predBonus(e);if(_pb>0)dmg=~~(dmg*(1+_pb))}
+  // ═══ 사냥꾼: 엘리트/보스 추가뎀 ═══
+  {const _hm=_hunterMul(e);if(_hm>1)dmg=~~(dmg*_hm)}
   // ═══ 조건부 어픽스 뎀업 (전부 합연산 후 1회 곱) ═══
   {let _cAx=0;
     // HP 기반
@@ -34130,14 +34154,14 @@ function _invRenderDetail(idx,source){
   const d=document.createElement('div');d.className='item-detail';
   d.style.cssText='display:flex;flex-direction:column;overflow:visible';
   const _jfTag=it.fav?' 🔒':it.junk?' 🗑️':'';
-  const srcLabel=source==='eq'?'장착 중':source==='st'?'보관 아이템':'';
+  const srcLabel=source==='eq'?_T('장착 중'):source==='st'?_T('보관 아이템'):'';
   const isSel=source==='bag'&&INV.selected===idx;
   d.innerHTML=`
     <div style="height:3px;background:${RARITY_C[it.rarity]};margin:-10px -10px 8px -10px;border-radius:2px 2px 0 0"></div>
     <div style="font-size:.75rem;color:#666">${srcLabel}${_jfTag}</div>
     <div class="id-name" style="color:${RARITY_C[it.rarity]};font-size:1.1rem">${_T(it.name)}${it.enh?' <span style="color:'+enhColor(it.enh)+'">+'+it.enh+'</span>':''}</div>
     <div class="id-stats" style="font-size:.95rem;flex:1;overflow-y:auto;min-height:0">${_invCardFields(it)}</div>
-    <div style="font-size:.7rem;color:#555;margin-top:4px">좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금</div>
+    <div style="font-size:.7rem;color:#555;margin-top:4px">${OPT.lang==='en'?'LMB: Select | RMB: Equip | Space: Junk | F: Lock':'좌클릭: 선택 | 우클릭: 장착 | Space: 쓰레기 | F: 잠금'}</div>
   `;
   rp.appendChild(d);
   // ── 2.5) 결정 슬롯 인터랙티브 UI (장착 아이템만) ──
@@ -34470,10 +34494,10 @@ function renderInv(){
   SLOT_NAMES.forEach((s,i)=>mkF(_slotName(i),'slot',s,'#ccaa77'));
   fBar.appendChild(document.createTextNode(' '));
   // Rarity filters
-  ['일반','고급','희귀','영웅','전설'].forEach((n,i)=>mkF(n,'rarity',i,RARITY_C[i]));
+  [0,1,2,3,4].forEach(i=>mkF(_rarName(i),'rarity',i,RARITY_C[i]));
   fBar.appendChild(document.createTextNode(' '));
   // Element filters
-  [['물리',EL.P],['화염',EL.F],['빙결',EL.I],['암흑',EL.D],['암전',EL.L]].forEach(([n,e])=>mkF(n,'el',e,ELC[e]));
+  [['물리',EL.P],['화염',EL.F],['빙결',EL.I],['암흑',EL.D],['암전',EL.L]].forEach(([n,e])=>mkF(_T(n),'el',e,ELC[e]));
 
   // ── Bag expand button ──
   const expDiv=$('invExpand');expDiv.innerHTML='';
@@ -34813,6 +34837,7 @@ function renderForge(){
   _ensureForgeAtlasLoad();
   BGM.play('forge');
 $('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
+$('forgeLore').textContent=OPT.lang==='en'?'🔴Fire→Ice 2x | 🔵Ice→Fire 2x | ⚪Phys=Neutral | Kill demons for malice souls':'🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭';
   const tabs=$('fgTabs');tabs.innerHTML='';
   tabs.classList.add('atlas-v1-ready','atlas-v2-ready');
   const _fgTabMeta={
@@ -35014,7 +35039,7 @@ shdr.textContent=_T('악의의 분해로 — 장비를 악의로 갈아버려라
     // 필터 - 레어리티
     const fBar=document.createElement('div');fBar.style.cssText='display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;align-items:center';
     fBar.innerHTML='<span style="color:#776655;font-size:.8rem;margin-right:2px">'+_T('레어')+':</span>';
-    [[-1,'전체'],[0,'일반'],[1,'고급'],[2,'희귀'],[3,'영웅'],[4,'전설']].forEach(([r,n])=>{
+    [[-1,_T('전체')],[0,_rarName(0)],[1,_rarName(1)],[2,_rarName(2)],[3,_rarName(3)],[4,_rarName(4)]].forEach(([r,n])=>{
       const b=document.createElement('div');const act=G._salRarF===r;
       b.style.cssText=`padding:2px 8px;font-size:.75rem;cursor:pointer;border:1px solid ${act?'#ff6644':'#332211'};color:${act?(r>=0?RARITY_C[r]:'#ff6644'):'#665544'};background:${act?'rgba(255,102,68,.1)':'transparent'};border-radius:3px`;
       b.textContent=n;b.onclick=()=>{G._salRarF=r;_salSel.clear();renderForge()};fBar.appendChild(b);
@@ -35912,9 +35937,13 @@ function draw(){
         }
       }
     }else if(!G.bossAlive){
-      // 보스 사망 후 출구 (초록 맥동)
-      const pulse=.4+Math.sin(_now/300)*.3;X.fillStyle=`rgba(68,255,136,${pulse})`;X.fillRect(px+1,py+1,T-2,T-2);
-      X.strokeStyle='#44ff88';X.lineWidth=1;X.strokeRect(px+1,py+1,T-2,T-2);
+      // 보스 사망 후 출구 (포탈 애니) — 모든 출구 타일 바닥 덮고 중앙에 포탈
+      X.fillStyle=stg.f;X.fillRect(px,py,T,T);
+      if(ei===~~(G.exits.length/2)){
+        const _exCx=G.exits.reduce((s,e)=>s+e.x,0)/G.exits.length;
+        const _exCy=G.exits.reduce((s,e)=>s+e.y,0)/G.exits.length;
+        _drawPortal(X,(_exCx+.5)*T,(_exCy+.5)*T,T*3,_now,SI_TO_HELL[G.stage]);
+      }
     }else{X.fillStyle='rgba(80,80,80,.5)';X.fillRect(px+2,py+2,T-4,T-4)}
   }
   // ── 던전 보스 게이트 입구 (나무 + 포탈) — 실시간 렌더 ──
@@ -42693,6 +42722,7 @@ function updateHUD(slow){
   $('hpLiquid').style.transform = `translateY(${100 - hpPct}%)`;
   $('hpCur').textContent = ~~P.hp;
   $('hpMax').textContent = `/ ${P.mhp}`;
+  $('hpShield').textContent = P.mshield>0?`🛡${~~P.shield}/${~~P.mshield}`:'';
   
   // [쉴드 링] 파란색 — 쉴드 비율 + alpha 페이드
   const shPct = P.mshield > 0 ? Math.max(0, Math.min(100, (P.shield / P.mshield) * 100)) : 0;
