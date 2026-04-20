@@ -62,7 +62,7 @@ const _SL = {
 // bow:      atk=3+tier*2 (btype별 atkMul 적용)
 // helmet:   atk=20+tier*10, beamDmg=1.5+tier*1.2, eDef=2+tier*2 → magicRef() 기반
 // ring1/2:  critRate T0~T4 = 1/2/3/4/5% + 전용 어픽스 2개 (critDmg/atkSpd/armorPen/elemFocus/killSlayer/parryBonus)
-// necklace: critRate T0~T4 = 2/4/6/8/10% + dmgBonus T0~T4 = 10/20/30/40/50% + 전용 어픽스 2개 (critDmg/cooldownRed/maxHP/shield/elemFocus/parryBonus)
+// necklace: critRate T0~T4 = 2/4/6/8/10% + dmgBonus T0~T4 = 10/20/30/40/50% + 전용 어픽스 2개 (critDmg/maxHP/shield/elemFocus/parryBonus)
 // bracelet: def=1+tier, eDef=1+tier, bonusHp=5+tier*5
 // headband: eDef=2+tier*2, mpRegen=1+tier
 // 팔찌 타입: demon(부활력/부활쿨), life(HP/리젠/회복력)
@@ -115,7 +115,7 @@ const AFFIX_POOL = [
   {id:'comboBoost',type:0, ko:'콤보의',  stat:'_aCombo',     tiers:[0.20,0.35,0.55],unit:'pct', slots:['wpn'],       group:'combo',    weight:60},
   {id:'dashBoost', type:0, ko:'돌진의',  stat:'_aDash',      tiers:[0.25,0.40,0.65],unit:'pct', slots:['wpn','bts'], group:'dash',    weight:55},
   {id:'skillBoost',type:0, ko:'궁극의',  stat:'_aSkill',     tiers:[0.15,0.25,0.40],unit:'pct', slots:['wpn'],       group:'skill',   weight:65},
-  {id:'cdReduce',  type:0, ko:'집중력의',stat:'_aCdRed',     tiers:[0.08,0.14,0.22],unit:'pct', slots:['hlm','nck'], group:'cd',      weight:70},
+  {id:'cooldownRed',  type:0, ko:'집중력의',stat:'_aCdRed',     tiers:[0.02,0.03,0.05,0.07,0.10],unit:'pct', slots:['wpn'], group:'cd',      weight:70},
   {id:'elemFocus', type:0, ko:'원소집중의',stat:'_aElemFcs', tiers:[0.12,0.20,0.32],unit:'pct', slots:['wpn','nck'], group:'elemfcs', weight:70},
 
   // ── PREFIX: 능력치 ──
@@ -221,7 +221,7 @@ Object.freeze(AFFIX_POOL);
 | comboBoost | 콤보의 | PREFIX | 20%/35%/55% | pct | wpn | 같은 적 연속 공격 시 +5%/중첩 |
 | dashBoost | 돌진의 | PREFIX | 25%/40%/65% | pct | wpn,bts | 작살/돌진 데미지 ×(1+배율) |
 | skillBoost | 궁극의 | PREFIX | 15%/25%/40% | pct | wpn | 선택스킬 데미지 ×(1+배율) (_fuseMul 내장) |
-| cooldownRed | 집중력의 | PREFIX | -8%/-14%/-22% | pct | hlm,nck | 스킬 쿨다운 ×(1+값) (음수=감소) |
+| cooldownRed | 집중력의 | PREFIX | -2%/-3%/-5%/-7%/-10% | pct | wpn | 스킬 쿨다운 ×(1+값) (음수=감소) |
 | reflect | 반사의 | SUFFIX | 5%/9%/15% | pct | arm,shd,rng | 피격 데미지×배율 반사 (반경80, 1명) |
 | thorns | 가시의 | SUFFIX | 4/8/14 | val | arm,glv | 피격 시 고정 가시뎀 (반경80, 1명) |
 | barrier | 흡수의 | SUFFIX | 15/28/45 | val | arm,hlm | DEF 감산 후 고정 데미지 감소 |
