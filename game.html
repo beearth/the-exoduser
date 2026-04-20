@@ -5685,7 +5685,7 @@ function _checkPetDialogue(){
   for(let i=0;i<ens.length;i++){if(ens[i].alive&&ens[i].frozen>0){_petSayCD('enemy_ice','crow','...얼어붙은 놈은 오래 안 간다.',4,30,'cat','얼었어! 빙결 중 1.5배야!',4);break}}
 
   // SP 있음
-  if(P.lv>=5&&P.sp>0)_petSayCD('has_sp','cat','스킬 포인트 있어! K 눌러서 스킬 찍어봐!',5,30,'crow','F키로 스킬 슬롯에 넣어야 쓸 수 있어.',4);
+  if(P.lv>=5&&P.sp>0)_petSayCD('has_sp','cat','스킬 포인트 있어! K 눌러서 스킬 찍어봐!',5,30,'crow','L키로 스킬 슬롯에 넣어야 쓸 수 있어.',4);
   if(P.st<P.mst*.5&&P.lv<=100)_petSayCD('low_st','crow','스태미나가 부족하다. 무리하지 마.',4,30,'cat','ST 없으면 스킬 못 써! 잠깐 빠져!',4);
 
   // 아이템 많음
