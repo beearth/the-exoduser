@@ -327,7 +327,7 @@ canvas{display:block;position:fixed;inset:0}
 }
 #skillGrid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
   gap:12px;
   align-items:start;
   position:relative;
@@ -16694,7 +16694,7 @@ function _hunterMul(e){return(e&&(e.isBoss||e.isElite||e.etype>=90))?1+(PASSIVES
 let _grit=0; // 근성 레벨
 function _gritCost(){return 1;} // 일반 스탯처럼 SP 1당 근성 1
 function _gritBatchCost(n){return Math.max(0,n);} // +10 = SP 10
-function _gritTotal(){return _grit+_eqStat('Grit')+_eqAffix('gritFlatN')+_eqAffix('gritFlatR')}
+function _gritTotal(){return _grit+_lvB()+_eqStat('Grit')+_eqAffix('gritFlatN')+_eqAffix('gritFlatR')}
 function _gritHpFlat(){return _gritTotal();}
 function _gritMpFlat(){return _gritTotal();}
 function _gritStFlat(){return _gritTotal();}
@@ -17416,7 +17416,7 @@ function _autoFireBowSkill(tx,ty){
 function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];if(a.id==='sharpAtk'||a.id==='brutalAtk'||a.id==='ruinAtk')s+=a.value}return s}
 // 레벨 자동 성장: 비하인드 적용 (UI에 안 보임, 장비처럼 계산에만 반영)
 function _lvB(){return~~(P.lv*.5)}
-function _gritEff(){return _grit+_lvB()} // 근성 유효값 (SP투자 + 레벨 보너스)
+
 function meleeRef(){return(((wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')+_lvB()))*(P._weaponSeal>0?.3:1)}
 function bowRef(){return(((bw().atk||0)+enhMulAtk(bw().enh||0))+_slotFlatAtk(bw())+P.baseAtk+(STATS.dex+_eqStat('Dex')+_lvB()))*(P._weaponSeal>0?.3:1)}
 function magicRef(){return(((hm().atk||0)+enhMulAtk(hm().enh||0))+_slotFlatAtk(hm())+P.baseAtk+(STATS.int+_eqStat('Int')+_lvB()))*(P._weaponSeal>0?.3:1)}
@@ -20812,7 +20812,7 @@ function update(){
   // ═══ 에너지 쉴드 자동 리젠 (피격 후 3초 쿨다운, INT 비례, 마력회복 패시브) ═══
   if(P.mshield>0){
     if(P.shieldRegenT>0)P.shieldRegenT-=sp*((1/pShieldCdMul())||1);
-    else if(P.shield<P.mshield){P.shield=Math.min(P.mshield,P.shield+(0.3+STATS.int*0.003)*pMRegenMul()*sp)}
+    else if(P.shield<P.mshield){P.shield=Math.min(P.mshield,P.shield+(0.3+(STATS.int+_lvB())*0.003)*pMRegenMul()*sp)}
   }
 
   if(Math.abs(P.kb.x)>.1||Math.abs(P.kb.y)>.1){const nx=P.x+P.kb.x*.5*sp,ny=P.y+P.kb.y*.5*sp;if(canMv(nx,ny,P.r)){P.x=nx;P.y=ny}const _kbD=.65**sp;P.kb.x*=_kbD;P.kb.y*=_kbD}
@@ -22248,7 +22248,7 @@ function update(){
     // ═══ 기절: Shift/Ctrl 탈출기로 즉시 해제 + 방향키 연타 단축 ═══
     if(isJust('charge')){P.s='idle';P.iframes=30;P.poise=4;P.poiseR=0;break}
     if(isJust('skill7')){P.s='idle';P.iframes=30;P.poise=4;P.poiseR=0;break}
-    if(isJust('up')||isJust('down')||isJust('left')||isJust('right'))P.st2-=8;
+    if(isJust('up')||isJust('down')||isJust('left')||isJust('right'))P.st2-=2;
     if(P.st2<=0){P.s='idle';P.iframes=60;P.poise=4;P.poiseR=0}
     break;}
   }
@@ -30544,6 +30544,12 @@ const SKILL_CATS=[
   {id:'tech',name:'⚙️ 영역',nameEn:'⚙️ Domain',col:'#ff8800'},
   {id:'ult',name:'💀 필살기',nameEn:'💀 Ultimate',col:'#ff2200'},
 ];
+const SKILL_HIER=[
+  {id:'atk',name:'⚔ 공격',nameEn:'⚔ Attack',col:'#ff6644',cats:['phys','magic','bow']},
+  {id:'def',name:'🛡 방어',nameEn:'🛡 Defense',col:'#44aa88',cats:['def','move']},
+  {id:'spec',name:'⚙ 특수',nameEn:'⚙ Special',col:'#ff8800',cats:['tech','ult']},
+];
+let _skHierTab='atk';
 const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,demonRevive:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1};
 function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.65) ${deg}deg,transparent ${deg}deg);pointer-events:none"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#ffdd55;font-weight:900;text-shadow:0 0 6px #000,0 0 12px #000,0 1px 2px #000">${txt}</div>`:''}`}
@@ -31514,12 +31520,7 @@ function activateSpikeTrap(){
   const dmg=~~(magicRef()*statInt()*pMagicMul()*(3+(lv-1))); // INT 스케일, flat +1/Lv (슬로우+출혈 유틸 감안)
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:r,t:0,maxT:600,dmg:dmg,el:EL.P,lv:lv,type:'spikeTrap'});
-  // 설치 즉발 데미지: DOT의 5배 (범위 내 전체)
-  const _stBurst=dmg*5;
-  const _stNe=shQuery(P.x,P.y,r);
-  for(let _si=0;_si<_stNe.length;_si++){const _se=_stNe[_si];if(!_se.alive||dst(P.x,P.y,_se.x,_se.y)>r)continue;
-    hurtE(_se,_stBurst,undefined,true,{noPoise:true,dot:true},EL.P)}
-  if(_stNe.length>0)addTxt(P.x,P.y-35,'🌿'+_stBurst+'!','#88cc44',40);
+  // 설치 즉발 데미지 제거됨 — DOT만 (슬로우+출혈 유틸 스킬)
   playSample('spike_trap',.8,_r(1,.08));
   addTxt(P.x,P.y-20,_T('🌿 가시덫!'),'#66aa44',30);
   shake(4);
@@ -32266,15 +32267,34 @@ function renderSkillPanel(){
   const _oldGritBtn=$('gritBtn');if(_oldGritBtn)_oldGritBtn.remove();
   const _cb=$('skCompBtn');if(_cb)_cb.textContent=_skCompact?(OPT.lang==='en'?'Expand [K]':'펼치기 [K]'):(OPT.lang==='en'?'Collapse [K]':'접기 [K]');
   const grid=$('skillGrid');grid.innerHTML='';
+  // ── 대분류 탭 바 ──
+  const _hierBar=document.createElement('div');
+  _hierBar.style.cssText='display:flex;gap:6px;margin-bottom:10px;justify-content:center;grid-column:1/-1';
+  const _e2=OPT.lang==='en';
+  SKILL_HIER.forEach(h=>{
+    const _act=_skHierTab===h.id;
+    const tb=document.createElement('div');
+    tb.style.cssText='padding:6px 18px;font-size:1rem;font-weight:800;cursor:pointer;border:2px solid '+(_act?h.col:'#332211')+';border-radius:8px;color:'+(_act?h.col:'#776655')+';background:'+(_act?h.col+'18':'rgba(0,0,0,.3)')+';letter-spacing:.1em;transition:all .15s';
+    tb.textContent=_e2?(h.nameEn||h.name):h.name;
+    tb.onmouseenter=function(){if(!_act)this.style.borderColor=h.col+'88';this.style.color=h.col};
+    tb.onmouseleave=function(){if(!_act){this.style.borderColor='#332211';this.style.color='#776655'}};
+    tb.onclick=function(){_skHierTab=h.id;renderSkillPanel()};
+    _hierBar.appendChild(tb);
+  });
+  grid.appendChild(_hierBar);
+  // ── 현재 대분류의 하위 카테고리만 표시 ──
+  const _curHier=SKILL_HIER.find(h=>h.id===_skHierTab)||SKILL_HIER[0];
+  const _visibleCats=_curHier.cats;
   const _stripHeadIcon=(t)=>String(t||'').replace(/^[^A-Za-z0-9가-힣]+/,'').trim();
   SKILL_CATS.forEach(cat=>{
+    if(_visibleCats.indexOf(cat.id)<0)return;
     const _sixMoved=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
     const catSkills=SKILL_LIST.filter(s=>{let c=s.cat;if(s.id==='fanShot'&&_sixMoved)c='magic';return c===cat.id});
     if(!catSkills.length)return;
-    // 성급 정렬: 높은 성급 위, 없는 것 아래
+    // 성급 정렬: 1성(기본) 위, 높은 성급 아래
     catSkills.sort((a,b)=>{const ga=_allFuseGemGroups(a.id),gb=_allFuseGemGroups(b.id);return ga.length-gb.length});
     const col=document.createElement('div');
-    col.style.cssText='flex:1;min-width:0;max-width:310px';
+    col.style.cssText='min-width:0';
     // 카테고리 헤더
     const hdr=document.createElement('div');
     hdr.style.cssText='color:'+cat.col+';font-size:.92rem;font-weight:800;padding:8px 8px 6px;border:1px solid #3a251c;border-radius:8px;background:linear-gradient(180deg,rgba(22,10,10,.78),rgba(12,5,5,.86));box-shadow:inset 0 0 0 1px rgba(255,140,82,.06);letter-spacing:.08em;margin-bottom:8px;display:flex;align-items:center;gap:8px';
@@ -42760,11 +42780,7 @@ function updateHUD(slow){
     _poiseOk=(pPct>=0.99&&!_stunned);
     _mpGlass.style.filter=_poiseOk?`drop-shadow(0 0 10px rgba(255,204,68,.7))`:'none';
   }
-  // MP 해골 눈깔: MP 비율로 토글 (50% 이하 한쪽 OFF, 0% 양쪽 OFF)
-  // MP 해골 눈깔: 스턴/사망 시 양쪽 OFF
-  const _mpOff=P.s==='pStun'||P.s==='dead'||P.s==='fallen'||P.hp<=0;
-  const _mpEL=$('mpEyeL'),_mpER=$('mpEyeR');
-  if(_mpEL){_mpEL.classList.toggle('on',!_mpOff);_mpER.classList.toggle('on',!_mpOff)}
+  // MP 해골 눈깔: 포이즈 눈알로 통합 (아래 42831에서 처리) — 여기서 건드리지 않음
   
   // ST+MP 구슬 업데이트 (아래→위 차오름)
   const stR = Math.max(0, Math.min(1, P.st / P.mst));
