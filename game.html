@@ -132,7 +132,7 @@ canvas{display:block;position:fixed;inset:0}
   background-image: url('img/ui_globe_hp.png');
 }
 /* 해골 눈깔 — 쉴드/포이즈 풀일 때만 빨간 글로우 */
-.skull-eye{position:absolute;width:7px;height:7px;border-radius:50%;background:#ff2200;box-shadow:0 0 12px #ff3300,0 0 20px #ff0000;z-index:50;pointer-events:none;opacity:0;transition:opacity .3s}
+.skull-eye{position:absolute;width:7px;height:7px;border-radius:50%;background:#ff2200;box-shadow:0 0 12px #ff3300,0 0 20px #ff0000;z-index:50;pointer-events:none;opacity:0}
 .skull-eye.on{opacity:1}
 /* 해골은 글라스(inset:-44px) 상단 ~11% 위치. 글라스 크기 = 글로브+88px */
 .skull-eye-l{top:-9px;left:calc(50% - 11px)}
@@ -5674,7 +5674,11 @@ function _checkPetDialogue(){
   if(_nearCnt>=20){
     if(P.skills.giantSlam>0)_petSayCD('melee_slam','crow','1번 대왕치기로 쓸어버려!',4,300,'cat','그로기 터지면 데미지 1.5배!',3);
     else _petSayCD('melee_slam','crow','회전참이나 광역기로 몰아! 한 놈씩 상대하면 죽어.',4,300,'cat','뭉쳐있을 때가 기회야!',3);
-  }}
+  }
+  // eShield 힌트: 근처 적이 쉴드 보유 시
+  if(_nearCnt>=1){let _hasES=false;const _esNe=shQuery(P.x,P.y,300);for(let _i=0;_i<_esNe.length;_i++){if(_esNe[_i].alive&&_esNe[_i].eShield>0){_hasES=true;break}}
+  if(_hasES)_petSayCD('eshield_hint','cat','E로 마력공격을 해봐! 악의 쉴드를 해제할려면 마법 공격을 해야 해!',5,600,'crow','쉴드는 마법으로, HP는 물리로. 반대로 치면 데미지 안 들어간다.',5)}
+  }
 
   // 보스 속성
   if(G.bossAlive&&G._bossRef&&G._bossRef.el>0)_petSayCD('boss_elem','crow','속성을 읽어. 약점을 찌르면 두 배로 썩는다.',4,30,'cat','화염엔 빙결! 암전엔 암흑! 기억해!',4);
@@ -9292,7 +9296,7 @@ function pickupItem(item){
 }
 function recalcSt(){
   _eqAffixCache=null;_eqStatCache=null; // 어픽스/스탯 캐시 무효화
-  const base=200+~~(P.lv*1)+STATS.dex*2;
+  const base=200+(STATS.dex+~~(P.lv*.5))*2;
   let bonus=0,_enhSt2=0;
   const _armorSet2=new Set(['shield','armor','gloves','pants','boots','cape']);
   for(const slot of SLOT_NAMES){const it=INV.equipped[slot];if(it){if(it.bonusSt)bonus+=it.bonusSt;if(it.enh>0&&_armorSet2.has(slot))_enhSt2+=it.enh*0.1}}
@@ -16699,7 +16703,9 @@ function applyStats(){
   // 장비 보너스 스탯 합산
   let _eqStr=0,_eqDex=0,_eqInt=0;
   for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it){_eqStr+=(it.bStr||0);_eqDex+=(it.bDex||0);_eqInt+=(it.bInt||0)}}
-  const s={str:STATS.str+_eqStr,dex:STATS.dex+_eqDex,int:STATS.int+_eqInt,vit:0,lck:STATS.lck};
+  // 레벨 자동 성장: 레벨당 전 스탯 +0.5 (Lv1000=+500)
+  const _lvBonus=~~(P.lv*.5);
+  const s={str:STATS.str+_eqStr+_lvBonus,dex:STATS.dex+_eqDex+_lvBonus,int:STATS.int+_eqInt+_lvBonus,vit:0,lck:STATS.lck+_lvBonus};
   P._effStats=s; // 유효 스탯 캐시 (UI 표시용)
   // ═══ 바이블 기준: HP = 100+(stage-1)*6 + VIT*2 + STR*1 + 장비HP ═══
   const _stgHp=G.on?100+((G.stage||1)-1)*6:100;
@@ -16711,7 +16717,7 @@ function applyStats(){
   const _armorSet=new Set(['shield','armor','gloves','pants','boots','cape']);
   const _accSet=new Set(['belt','bracelet','ring1','ring2','necklace','headband']);
   for(let _di=0;_di<_allDefSlots.length;_di++){const _dit=INV.equipped[_allDefSlots[_di]];if(_dit){_totalBonusHp+=(_dit.bonusHp||0);_totalBonusShield+=(_dit.bonusShield||0);if(_dit.enh>0){_enhHp+=_dit.enh*0.5;if(_accSet.has(_allDefSlots[_di]))_enhMp+=_dit.enh*0.1;if(_armorSet.has(_allDefSlots[_di]))_enhSt+=_dit.enh*0.1}}}
-  P.mhp=~~((_stgHp+P.lv*1+s.str*1+_totalBonusHp+_afHpF+_imHp+_enhHp)*(1+_afHpP+_imHpP*.01+(PASSIVES.pMelee||0)*.03));
+  P.mhp=~~((_stgHp+s.str*1+_totalBonusHp+_afHpF+_imHp+_enhHp)*(1+_afHpP+_imHpP*.01+(PASSIVES.pMelee||0)*.03));
   P.baseDef=2;
   P.maxPoise=4; // 4칸 고정 (해골 눈알 4개)
   if(P.poise===undefined||P.poise>4)P.poise=4;
@@ -16719,10 +16725,10 @@ function applyStats(){
   // ═══ 바이블 기준: ATK = 15+(stage-1)*2 ═══
   P.baseAtk=G.on?15+((G.stage||1)-1)*2:15;
   P.speed=(2.6+s.dex*.005)*(1+(P._altSpd||0)+_eqAffix('movSpeed')+_eqImplicit('_iMovSpd')*.01+pPredSpd()+(P._okSpdBuff>0?P._okSpdMul||0:0)+(_eqAffix('injuredSpeed')>0&&P.hp<=P.mhp*.5?_eqAffix('injuredSpeed'):0));
-  P.stR=.05+s.dex*.005+P.lv*.0015; // ST리젠: DEX + 레벨 (/8 적용)
-  P.hpR=.05+s.str*.002+P.lv*.001+_eqAffix('lifeRegen')/60; // HP리젠: 초당 + STR + 레벨 + 생명팔찌
-  P.mmp=~~(200+P.lv*1+s.int*2+_eqAffix('maxMPFlat')+_enhMp); // 악세사리 강화: 1강당 +0.1 MP
-  P.mpR=.05+s.int*.005+P.lv*.0015; // MP리젠: 초당 + INT + 레벨 (/8 적용)
+  P.stR=.05+s.dex*.005; // ST리젠: DEX 기반 (레벨→스탯 자동성장으로 간접 반영)
+  P.hpR=.05+s.str*.002+_eqAffix('lifeRegen')/60; // HP리젠: STR 기반 + 생명팔찌
+  P.mmp=~~(200+s.int*2+_eqAffix('maxMPFlat')+_enhMp); // MP: INT 기반
+  P.mpR=.05+s.int*.005; // MP리젠: INT 기반 (레벨→스탯 자동성장으로 간접 반영)
   // ═══ 결정 스탯 합산 ═══
   const _cr={hp:0,st:0,mp:0,atk:0,def:0,eDef:0,spd:0,crit:0,cdmg:0,fire:0,ice:0,dark:0,light:0,holy:0,hpR:0,stR:0,mpR:0,drop:0};
   for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(!it||!it.crystals)continue;
@@ -16750,7 +16756,7 @@ function applyStats(){
   const _aLv=PASSIVES.pArmor||0;
   if(_aLv>0){P.baseDef+=_aLv*20}
   // ═══ 에너지 쉴드: Lv1부터 기본 제공 + INT 스케일 + 장비 bonusShield + 어픽스 ═══
-  P.mshield=~~(100+P.lv*1+s.int*5+_totalBonusShield+_eqAffix('shieldFlat'));
+  P.mshield=~~(100+s.int*5+_totalBonusShield+_eqAffix('shieldFlat'));
   P.shield=Math.min(P.shield,P.mshield);
   recalcSt();
 }
@@ -17381,7 +17387,6 @@ function _autoFireBowSkill(tx,ty){
   const _abs=P.activeBowSk||'normal';
   // ghostXbowTurret이 석궁슬롯에 남아있으면 normal 폴백
   const _effAbs=(_abs==='ghostXbowTurret')?'normal':_abs;
-  console.log('[BOW-FIRE] activeBowSk='+_abs+' effAbs='+_effAbs+' gxFiring='+_gxFiring+' skills.bladeShot='+(P.skills.bladeShot||0));
   if(_effAbs==='normal'){_fireXbow(tx,ty);return}
   const a=Math.atan2(ty-P.y,tx-P.x);
   const _sS=P.s,_sSt2=P.st2,_sSt=P.st;
@@ -22238,17 +22243,13 @@ function update(){
     if(isJust('skill7')){P.s='idle';P.st2=0;break}
     if(P.st2<=0)P.s='idle';break;}
   case 'pStun':{
-    // ═══ 기절: Shift/Q/Ctrl 즉시 탈출 + 방향키 연타 단축 ═══
-    if(isJust('charge')){P.s='idle';P.iframes=30;P.poise=4;P.poiseR=0;break}
-    if(isJust('parry')){P.s='idle';P.iframes=20;P.poise=4;P.poiseR=0;break}
-    if(isJust('skill7')){P.s='idle';P.iframes=20;P.poise=4;P.poiseR=0;break}
-    if(isJust('up')||isJust('down')||isJust('left')||isJust('right'))P.st2-=15;
+    // ═══ 기절: 방향키 연타로 단축 (즉시 탈출 제거) ═══
+    if(isJust('up')||isJust('down')||isJust('left')||isJust('right'))P.st2-=8;
     if(P.st2<=0){P.s='idle';P.iframes=60;P.poise=4;P.poiseR=0}
     break;}
   }
 
-  // ═══ 플레이어 포이즈 회복 (2초마다 1칸, 피격 후 2초 대기) ═══
-  if(P.poiseR!==undefined){P.poiseR+=sp;if(P.poiseR>=120&&P.poise<4){P.poiseR=0;P.poise=Math.min(4,P.poise+1)}}
+  // ═══ 플레이어 포이즈 자동회복 제거됨 — 탈출기(작살/유령걸음)로만 회복 ═══
   // 그로기 시스템 제거됨 — 포이즈 0 = 즉시 스턴
   // 죽은 적 정리 (매 20프레임 — 누적 방지)
   if(G._gcT===undefined)G._gcT=0;G._gcT++;
@@ -22748,7 +22749,7 @@ function update(){
         hurtP(_bkD,{dtype:'magic',src:'무지개폭발'});
         // 무지개탄 포이즈 데미지 (2칸 소모)
         {P.poise=Math.max(0,(P.poise||4)-2);P.poiseR=0;
-        if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(300*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}
+        if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}
         // 넉백 + 피격플래시
         {const _bkA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bkA)*7;P.kb.y+=Math.sin(_bkA)*7}
         P.iframes=Math.max(P.iframes,15);
@@ -22893,7 +22894,6 @@ function update(){
     const _xbSpdMul=(bw().bowSpd||1)*pXbowSpd();
     if(_xbowTimer>=XBOW_INTERVAL/_xbSpdMul&&_xbowTarget&&P.st>P.mst*.2){
       _xbowTimer=0;
-      console.error('[XBOW-FIRE] gx='+!!_gxTurret+' sk='+P.activeBowSk);
       if(_gxTurret){
         const _tsvX=P.x,_tsvY=P.y,_tsvS=P.s,_tsvSt2=P.st2;
         P.x=_gxTurret.x;P.y=_gxTurret.y;_gxFiring=1;
@@ -30242,22 +30242,21 @@ function hurtP(dmg,opts){
   if(G._sStats)G._sStats.dmgTaken+=a;
   P.hp-=a;
   if(_isDot){
-    // DOT: 넉백/경직/화면흔들림 없음
+    // DOT: 넉백/경직/화면흔들림/포이즈 없음
     P.iframes=0;
-    if(a>0)addTxt(P.x,P.y-10,'-'+a,'#ff8844',18);
   }else{
     const _isProj=opts&&opts.projHit;
-    P.iframes=0;if(P.s!=='charge'&&P.s!=='sBlock'&&P.s!=='pStun'&&P.s!=='whirlwind'){
+    P.iframes=0;if(P.s!=='charge'&&P.s!=='pStun'&&P.s!=='whirlwind'){
       // ═══ 포이즈 감소 → 기절 (4칸 시스템) ═══ 탄막 1칸, 근접 1칸
       P.poise=Math.max(0,(P.poise||4)-1);P.poiseR=0;
-      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(300*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
       else{P.s='stagger';P.st2=6}
     }
     // 회전 중: 경직 면역, 포이즈 감소 절반
     if(P.s==='whirlwind'){
       // 회전참 중: 포이즈 감소 절반 (2발에 1칸)
       P._wwPoiseAcc=(P._wwPoiseAcc||0)+0.5;if(P._wwPoiseAcc>=1){P.poise=Math.max(0,(P.poise||4)-1);P._wwPoiseAcc=0}P.poiseR=0;
-      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(300*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
     }
     if(a>0)addTxt(P.x,P.y-10,'-'+a,'#ff3333',28);
     // ═══ 데미지 비례 넉백: dmg/mhp 비율로 밀림 (최소1, 최대12) ═══
