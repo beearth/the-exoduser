@@ -2594,6 +2594,7 @@ canvas{display:block;position:fixed;inset:0}
         <div id="skillGrid"></div>
       </div>
     </div>
+    <div id="skSlotBar"></div>
     <div class="skill-close"><button class="pclose" onclick="closePanel('skillPanel')">닫기 [ESC]</button></div>
   </div>
 </div>
@@ -32413,6 +32414,42 @@ function renderSkillPanel(){
     });
     grid.appendChild(col);
   });
+  // ═══ 스킬 슬롯 미니 바 ═══
+  {const _sb=$('skSlotBar');if(_sb){
+    _sb.style.cssText='display:flex;gap:4px;justify-content:center;align-items:center;padding:8px 0 4px;border-top:1px solid #332211';
+    _sb.innerHTML='';
+    const _slotDefs=[
+      {key:'LMB',id:'lmb',get:()=>{const s=SKILL_LIST.find(s=>s.id==='whirlwind'&&P.skills.whirlwind>=1);return s?'whirlwind':P.skills.kiSlash>=1?'kiSlash':null}},
+      {key:'RMB',id:'rmb',get:()=>P.skills.maliceSwipe>=1?'maliceSwipe':null},
+      {key:'SH',id:'sh',get:()=>P.skills.magicBlink>=1?'magicBlink':P.skills.chargeBoost>=1?'chargeBoost':null},
+      {key:'E',id:'magic',get:()=>{const d=SKILL_SLOT_DEFS.magic;if(!d)return null;for(let i=0;i<d.skills.length;i++){const sid=d.skills[i];if(P.skills[sid]>=1)return sid}return null}},
+      {key:'Q',id:'q',get:()=>P.skills.peaceShield>=1?'peaceShield':null},
+      {key:'CT',id:'ct',get:()=>{const d=SKILL_SLOT_DEFS.ct;if(!d)return null;for(let i=0;i<d.skills.length;i++){const sid=d.skills[i];if(P.skills[sid]>=1)return sid}return null}},
+      {key:'SP',id:'sp',get:()=>SKILL_SLOTS[4]||null},
+      {key:'1',id:'s1',get:()=>SKILL_SLOTS[0]||null},
+      {key:'2',id:'s2',get:()=>SKILL_SLOTS[1]||null},
+      {key:'3',id:'s3',get:()=>SKILL_SLOTS[2]||null},
+      {key:'4',id:'s4',get:()=>SKILL_SLOTS[3]||null},
+      {key:'F',id:'sf',get:()=>SKILL_SLOTS[5]||null},
+      {key:'Z',id:'ult',get:()=>ULT_SLOT||null},
+    ];
+    for(let _si=0;_si<_slotDefs.length;_si++){
+      const sd=_slotDefs[_si];const skId=sd.get();
+      const d=document.createElement('div');
+      d.style.cssText='width:36px;height:36px;border:1px solid '+(skId?'#554422':'#332211')+';border-radius:5px;background:'+(skId?'rgba(30,15,5,.7)':'rgba(10,5,2,.5)')+';display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;cursor:default';
+      if(skId){
+        const _ico=SKILL_ICONS[skId];const _iSrc=_ico?(_ico===1?skId:_ico):'';
+        if(_iSrc)d.innerHTML='<img src="img/skillskin_upscaled/'+_iSrc+'.png" style="width:22px;height:22px;image-rendering:pixelated">';
+        else{const _skDef=SKILL_LIST.find(s=>s.id===skId);d.innerHTML='<span style="font-size:14px">'+(_skDef?(_skDef.name||'').charAt(0):'?')+'</span>'}
+      }
+      const _lbl=document.createElement('div');
+      _lbl.style.cssText='position:absolute;bottom:-1px;right:1px;font-size:.5rem;color:#887766;font-weight:700;line-height:1;text-shadow:0 0 3px #000';
+      _lbl.textContent=sd.key;d.appendChild(_lbl);
+      if(skId){const _skDef=SKILL_LIST.find(s=>s.id===skId);
+        d.title=(_skDef?(OPT.lang==='en'?(_skDef.nameEn||_skDef.name):_skDef.name):skId)+' ['+sd.key+']'}
+      _sb.appendChild(d);
+    }
+  }}
   // ═══ 합체 가능 스킬 라인 연결 (SVG 오버레이) ═══
   _drawSkillFuseLines();
   // ═══ 펼친 카드 자동 스크롤 (사용자 시야에 들어오도록) ═══
