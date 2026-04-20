@@ -326,11 +326,10 @@ canvas{display:block;position:fixed;inset:0}
   overflow:visible;
 }
 #skillGrid{
-  display:flex;
-  flex-wrap:wrap;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
   gap:12px;
-  align-items:flex-start;
-  justify-content:center;
+  align-items:start;
   position:relative;
   z-index:1;
 }
@@ -2904,7 +2903,7 @@ async function dbSave(){
     const saveData={
       player:{
         lv:P.lv, exp:P.exp, maxExp:P.maxExp, sp:P.sp, ap:P.ap||0,
-        transLvDate:P._transLvDate||null, transLvCount:P._transLvCount||0, apBossCleared:P._apBossCleared||[], goddessGift:P._goddessGift||[],
+        transLvDate:P._transLvDate||null, transLvCount:P._transLvCount||0, apBossCleared:P._apBossCleared||[], goddessGift:P._goddessGift||[], _lvStatMigrated:P._lvStatMigrated||false,
         baseAtk:P.baseAtk, baseDef:P.baseDef, mpR:P.mpR, stR:P.stR,
         hp:P.hp, mhp:P.mhp, mp:P.mp, mmp:P.mmp, st:P.st, mst:P.mst, speed:P.speed,
         shield:P.shield, mshield:P.mshield, maskOn:P.maskOn
@@ -3045,6 +3044,8 @@ function dbRestore(d){
   }
   _grit=d.grit||0;
   if(_grit>0&&!d.gritCostModeV2){const _legacySpent=_grit*3+((_grit-1)*_grit)/2;const _refund=Math.max(0,_legacySpent-_grit);if(_refund>0)P.sp+=_refund;}
+  // 레벨 자동 성장 마이그레이션: 기존 세이브에 올스탯+근성 레벨 보너스 적용
+  if(!pd._lvStatMigrated){const _lvB=~~(P.lv*.5);STATS.str+=_lvB;STATS.dex+=_lvB;STATS.int+=_lvB;STATS.lck+=_lvB;_grit+=_lvB;P._lvStatMigrated=true}
   // Quickslots (filter out removed potions)
   if(d.qslots){
     QSLOTS=d.qslots.map(s => (s.type && !POT[s.type]) ? {type:null,count:0} : s);
@@ -4607,7 +4608,7 @@ const _EN={
 '붉은꽃':'Crimson Bloom','얼음보주':'Ice Orb','뇌전걸음':'Ghost Walk',
 '만화방창 II':'Needle Barrage II','마력연사':'Arcane Barrage','업화선':'Hellfire Beam',
 '지옥진':'Inferno Array','폭독칼날':'Plague Blade','악의폭풍':'Malice Storm',
-'악의기둥':'Dark Pillar','신성한 영역':'Sacred Domain','구속의 영역':'Binding Domain',
+'악의기둥':'Dark Pillar','회복의 영역':'Sacred Domain','구속의 영역':'Binding Domain',
 '아이스스톰':'Ice Storm','대왕치기':'Giant Slam','대왕치기 2':'Giant Slam II',
 '기동불꽃':'Chain Blaze','기동파괴':'Chain Crush','기동칼날개':'Chain Bladewing',
 '평화의보호':'Aegis of Peace','참회':'Repentance','칼등날개':'Shield Wing',
@@ -4847,7 +4848,7 @@ const _EN={
 '🔨🌋 지옥강타!':'🔨🌋 Inferno Slam!',
 '🔨 대왕치기!':'🔨 Giant Slam!',
 '✟ 신성한 결계!':'✟ Sacred Barrier!',
-'🛡 신성한 영역!':'🛡 Sacred Domain!',
+'🛡 회복의 영역!':'🛡 Sacred Domain!',
 '기폭팔!':'Detonate!','강제기폭!':'Force Detonate!','자동기폭!':'Auto Detonate!',
 '회전기폭!':'Whirl Detonate!','해제기폭!':'Release Detonate!','지진기폭!':'Quake Detonate!',
 '혼돈의 투구':'Helm of Chaos',
@@ -4867,7 +4868,7 @@ const _EN={
 '⚡ 암전나선!':'⚡ Lightning Helix!','🌋 지진폭풍!':'🌋 Quake Storm!',
 '⚔🩸 독혈해방!':'⚔🩸 Plague Liberation!','⚔ 칼날 해방!':'⚔ Blade Liberation!',
 '🔨🌋 지옥강타!':'🔨🌋 Inferno Slam!','🔨 대왕치기!':'🔨 Giant Slam!',
-'✟ 신성한 결계!':'✟ Sacred Barrier!','🛡 신성한 영역!':'🛡 Sacred Domain!',
+'✟ 신성한 결계!':'✟ Sacred Barrier!','🛡 회복의 영역!':'🛡 Sacred Domain!',
 '파도!':'Wave!',
 // --- rare mob / special ---
 '무적!':'Invincible!','🪞 반격!':'🪞 Counter!','💢 반격!':'💢 Counter!',
@@ -5257,7 +5258,7 @@ const _EN={
 '더 좋은 장비 나오면 바로 장착해! 강화 수치 그대로 옮겨가!':'Equip better gear right away! Enhancement carries over!',
 // --- Phase 14: additional tutorial lines ---
 '패링을 써야 자원을 흡수한다고!':'You need to parry to absorb resources!',
-'F키 신성한 영역을 써봐. 자원이 차올라.':'Try F-key Sacred Domain. Resources fill up.',
+'F키 회복의 영역을 써봐. 자원이 차올라.':'Try F-key Sacred Domain. Resources fill up.',
 '적이 근접하면 스페이스키야! 가시덫을 활용해!':'When enemies get close, use Space! Use Spike Trap!',
 '기절시켜! 그로기가 터지면 데미지가 1.5배야!':'Stun them! Groggy means 1.5x damage!',
 '1번 대왕치기로 밀어버려!':'Use key 1 Giant Slam to push them back!',
@@ -5659,10 +5660,10 @@ function _checkPetDialogue(){
   if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야! 끌려가면서 무적이라고!',4,300);
   // SP 안내 (10 이상)
   if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트가 쌓였어! K 눌러서 스킬 배우자!',4,300);
-  // 자원 부족 (50% 이하 → 패링 안내, 30% 이하 → 신성한 영역 안내)
+  // 자원 부족 (50% 이하 → 패링 안내, 30% 이하 → 회복의 영역 안내)
   if(P.hp<P.mhp*.5||P.mp<P.mmp*.5||P.st<P.mst*.5)_petSayCD('resource_parry','cat','패링을 써야 자원을 흡수한다고!',3,300);
   if(P.hp<P.mhp*.3||P.mp<P.mmp*.3||P.st<P.mst*.3){
-    if(P.skills.holyDome>0)_petSayCD('resource_low','crow','F키 신성한 영역을 써봐. 자원이 차올라.',4,300);
+    if(P.skills.holyDome>0)_petSayCD('resource_low','crow','F키 회복의 영역을 써봐. 자원이 차올라.',4,300);
     else _petSayCD('resource_low','crow','빠져! 물약 마시고 안전한 곳에서 회복해.',4,300,'cat','자원 없으면 도망가는 게 답이야!',4);
   }
   // 근접 적 경고 (300px 내 적 수 기반)
@@ -9297,7 +9298,7 @@ function pickupItem(item){
 }
 function recalcSt(){
   _eqAffixCache=null;_eqStatCache=null; // 어픽스/스탯 캐시 무효화
-  const base=200+(STATS.dex+~~(P.lv*.5))*2;
+  const base=200+STATS.dex*2;
   let bonus=0,_enhSt2=0;
   const _armorSet2=new Set(['shield','armor','gloves','pants','boots','cape']);
   for(const slot of SLOT_NAMES){const it=INV.equipped[slot];if(it){if(it.bonusSt)bonus+=it.bonusSt;if(it.enh>0&&_armorSet2.has(slot))_enhSt2+=it.enh*0.1}}
@@ -16704,9 +16705,7 @@ function applyStats(){
   // 장비 보너스 스탯 합산
   let _eqStr=0,_eqDex=0,_eqInt=0;
   for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it){_eqStr+=(it.bStr||0);_eqDex+=(it.bDex||0);_eqInt+=(it.bInt||0)}}
-  // 레벨 자동 성장: 레벨당 전 스탯 +0.5 (Lv1000=+500)
-  const _lvBonus=~~(P.lv*.5);
-  const s={str:STATS.str+_eqStr+_lvBonus,dex:STATS.dex+_eqDex+_lvBonus,int:STATS.int+_eqInt+_lvBonus,vit:0,lck:STATS.lck+_lvBonus};
+  const s={str:STATS.str+_eqStr,dex:STATS.dex+_eqDex,int:STATS.int+_eqInt,vit:0,lck:STATS.lck};
   P._effStats=s; // 유효 스탯 캐시 (UI 표시용)
   // ═══ 바이블 기준: HP = 100+(stage-1)*6 + VIT*2 + STR*1 + 장비HP ═══
   const _stgHp=G.on?100+((G.stage||1)-1)*6:100;
@@ -16771,7 +16770,7 @@ function _eqAffix(id){if(!_eqAffixCache)_eqAffixRebuild();return _eqAffixCache[i
 // 장비 임플리싯 합산 (stat명별)
 function _eqImplicit(stat){let v=0;for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it&&it._implicitStat===stat)v+=it._implicitVal}return v}
 function statStr(){return 1} // STR은 ref 함수에서 직접 ATK로 더해짐 (1:1)
-function statDex(){return 1+(STATS.dex+_eqStat('Dex'))*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01} // DEX 공속 배율 +0.05%/pt (DEX1000=+50%) + 어픽스
+function statDex(){return 1+(STATS.dex+_eqStat('Dex'))*.0005+(gl().atkSpd||0)+_eqAffix('atkSpeed')+_eqImplicit('_iAtkSpd')*.01} // DEX 공속 배율 +0.05%/pt
 function statInt(){return 1} // INT는 ref 함수에서 직접 ATK로 더해짐 (1:1)
 function _eqLckTotal(){return STATS.lck+_eqStat('Lck')+_eqAffix('lckFlatN')+_eqAffix('lckFlatR')}
 function statCrit(){return _eqLckTotal()*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+_eqAffix('critRate')*100+(P._crystalStats?P._crystalStats.crit:0)} // critRate 어픽스 (무기 파트) pct단위 → %로 환산
@@ -20768,11 +20767,11 @@ function update(){
     ps._atkC=~~(ps._atkC*.8);ps._kiteC=~~(ps._kiteC*.8);
   }
 
-  // ═══ 신성한 영역 — 안에 있는지 체크 ═══
+  // ═══ 회복의 영역 — 안에 있는지 체크 ═══
   let _inHolyDome=false,_hdLv=1;
   if(G._fireZones){for(let _hdi=0;_hdi<G._fireZones.length;_hdi++){const _hd=G._fireZones[_hdi];if(_hd.type==='holyDome'&&dst(P.x,P.y,_hd.x,_hd.y)<_hd.r){_inHolyDome=true;_hdLv=_hd.lv||1;break}}}
   const _hdMul=_inHolyDome?2:1;
-  // 신성한 영역 — 전 자원 초당 10+Lv*2 리젠
+  // 회복의 영역 — 전 자원 초당 10+Lv*2 리젠
   if(_inHolyDome&&P.hp>0){const _hdFlat=(10+_hdLv*2)/60*sp*_fuseMul('holyDome');P.hp=Math.min(P.mhp,P.hp+_hdFlat);P.mp=Math.min(P.mmp,P.mp+_hdFlat);P.st=Math.min(P.mst,P.st+_hdFlat)}
   const _mpr=(P.mpR+(wp().mpRegen||0)+(sh().mpRegen||0)+(bt().mpRegen||0)+(ar().mpRegen||0)+(hm().mpRegen||0)+(bw().mpRegen||0)+(gl().mpRegen||0)+(pt().mpRegen||0)+(nc().mpRegen||0)+(rg1().mpRegen||0)+(rg2().mpRegen||0)+(cp().mpRegen||0))*pMRegenMul()*_hdMul;
   const _str=(P.stR+(wp().stRegen||0)+(sh().stRegen||0)+(bt().stRegen||0)+(ar().stRegen||0)+(hm().stRegen||0)+(bw().stRegen||0)+(gl().stRegen||0)+(pt().stRegen||0)+(nc().stRegen||0)+(rg1().stRegen||0)+(rg2().stRegen||0)+(cp().stRegen||0))*pRegenMul()*_hdMul;
@@ -22743,8 +22742,7 @@ function update(){
           poolPart(P.x,P.y,Math.cos(sa)*sv,Math.sin(sa)*sv,k%4===0?'#ff00ff':k%4===1?'#ff44ff':k%4===2?'#ffaaff':'#ffffff',3+Math.random()*4,12+Math.random()*8)}
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
         doParry(p.dmg,p.x,p.y);
-        // ═══ 무지개탄 보너스: 일반 패링(80) 위에 추가 고정 200 ═══
-        {const _bkPB=1+_eqAffix('parryBonus');const _bkR=~~(200*_bkPB);P.hp=Math.min(P.mhp,P.hp+_bkR);P.st=Math.min(P.mst,P.st+_bkR);P.mp=Math.min(P.mmp,P.mp+_bkR)}
+        // 무지개탄 보너스 제거 — doParry 보상(50)만 적용
         projs[pw++]=p;_pHit=true;continue;
       }else{
         // 패링 실패: 폭발 + 풀 피해
@@ -23503,7 +23501,7 @@ function update(){
     if(_b.r>=_b.maxR)G._sbBurst=null;
   }
   // (보호막 패링 충격파 제거됨 — doParry()로 통합)
-  // ═══ 신성한 영역 — 쿨다운 2배 가속 체크 ═══
+  // ═══ 회복의 영역 — 쿨다운 2배 가속 체크 ═══
   let _hdCdBonus=0;
   if(G._fireZones){for(let _hi=0;_hi<G._fireZones.length;_hi++){const _h=G._fireZones[_hi];if(_h.type==='holyDome'&&dst(P.x,P.y,_h.x,_h.y)<_h.r){_hdCdBonus=sp;break}}}
   // ═══ 유령 허수아비 — 쿨다운 ═══
@@ -24150,7 +24148,7 @@ function update(){
       SFX.charge();addTxt(P.x,P.y-20,_T('❄ 탈출!'),'#aaeeff',30);
     }
   }
-  // ═══ 필살기 쿨다운 (신성한 영역 2배속 미적용) ═══
+  // ═══ 필살기 쿨다운 (회복의 영역 2배속 미적용) ═══
   if(P._hbCd>0)P._hbCd-=sp;
   if(P._bsCd>0)P._bsCd-=sp;
   if(P._lvCd>0)P._lvCd-=sp;
@@ -29976,6 +29974,8 @@ function addExp(v,trans){
     P.lv++;lvd++;P.exp-=P.maxExp;
     P.maxExp=_calcMaxExp(P.lv);
     P.sp+=3;
+    // 레벨업 시 올스탯+근성 +0.5 (2레벨당 +1)
+    if(P.lv%2===1){STATS.str++;STATS.dex++;STATS.int++;STATS.lck++;_grit++}
     if(P.lv%2===0){P.ap=(P.ap||0)+1;apGain+=1;}
     if(P.lv>1000){P._transLvCount=(P._transLvCount||0)+1}
   }
@@ -30579,7 +30579,7 @@ const SKILL_LIST=[
   {id:'plagueBurst',name:'폭독칼날',cat:'bow',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)',descEn:'Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)',spCost:10,matCost:80,cd:1200,up:true,upSp:5,upMat:0},
   {id:'maliceStorm',name:'악의폭풍',cat:'magic',act:true,emoji:'🌀',desc:'마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (3초, 10틱, 틱당 100+Lv*20). Lv당 범위+22. 같은 지역 중복 불가',descEn:'Mouse-aim placement. CD 20s. Dark spiral at click pos (3s, 10 ticks, 100+Lv*20/tick). Per Lv range+22. No stacking same area',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
   {id:'darkPillar',name:'악의기둥',cat:'magic',act:true,emoji:'🏛️',desc:'현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 대왕치기와 합체→기둥강타. 쿨 15초',descEn:'9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Giant Slam → Pillar Strike. CD 15s',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
-  {id:'holyDome',name:'신성한 영역',cat:'tech',act:true,noDmg:true,emoji:'🛡',desc:'현재 위치에 신성한 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초',descEn:'Place holy domain at current pos (12s duration). On ground: HP/MP/ST +10/s regen + 2x recovery + 2x CD speed. CD 30s. Per Lv range+20 duration+0.5s',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
+  {id:'holyDome',name:'회복의 영역',cat:'tech',act:true,noDmg:true,emoji:'🛡',desc:'현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초',descEn:'Place holy domain at current pos (12s duration). On ground: HP/MP/ST +10/s regen + 2x recovery + 2x CD speed. CD 30s. Per Lv range+20 duration+0.5s',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
   {id:'holyPrison',name:'구속의 영역',cat:'tech',act:true,noDmg:true,emoji:'✟',desc:'범위 내 몬스터 부활력 -15%~30%(Lv1=15%, Lv10=30%). Lv1 범위400, Lv10 범위697. Lv당 범위+33. 쿨 30초. 지속 10초',descEn:'Monsters in range: revive power -15%~30%(Lv1=15%, Lv10=30%). Lv1 range 400, Lv10 range 697. Per Lv range+33. CD 30s. Duration 10s',spCost:10,matCost:80,cd:1800,up:true,upSp:5,upMat:0},
   {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,noDmg:true,emoji:'❄',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 3초 지속. MP 40. Lv당 범위+22 축적+10%',descEn:'Mouse-aim placement. 2 stocks (15s/charge, Lv10→3 stocks). Freeze resist -50% in range, rapid freeze gauge buildup. 3s duration. MP 40. Per Lv range+22 buildup+10%',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
   {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 회전기폭과 합체→지진폭풍!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Whirlwind Detonate → Earthquake Storm!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:480},
@@ -31821,7 +31821,7 @@ function activateWeakZone(type){
   _addSkProf(type);
 }
 
-// ═══ 신성한 영역 — 발동 ═══
+// ═══ 회복의 영역 — 발동 ═══
 function activateHolyDome(){
   const slv=P.skills.holyDome||1;
   const _isHF=P.skills.holyPrison>=1&&_isFused('holyFuse');
@@ -31833,11 +31833,11 @@ function activateHolyDome(){
   // 합체: 신성한 결계 — 감옥 동시 설치
   if(_isHF){
     const _hpSlv=P.skills.holyPrison||1;
-    const _hpR=_hdR; // 신성한 영역과 동일 범위
+    const _hpR=_hdR; // 회복의 영역과 동일 범위
     G._fireZones.push({x:P.x,y:P.y,r:_hpR,t:0,maxT:_hdDur,type:'holyPrison',lv:_hpSlv});
   }
   SFX.pickup();playSample(Math.random()<.5?'voice_holyDome':'voice_holyDome2',1,1);
-  addTxt(P.x,P.y-30,_isHF?_T('✟ 신성한 결계!'):_T('🛡 신성한 영역!'),_isHF?'#ffdd88':'#ffd700',50);
+  addTxt(P.x,P.y-30,_isHF?_T('✟ 신성한 결계!'):_T('🛡 회복의 영역!'),_isHF?'#ffdd88':'#ffd700',50);
   addParts(P.x,P.y,_isHF?'#ffdd88':'#ffd700',15);shake(_isHF?5:3);
 }
 
@@ -32604,7 +32604,7 @@ function _renderSkillRow(sk,grid){
     const _FUSE_NAME_KO={stormBeam:'암전나선 [6단합체]',dimBlast:'기동:강화전폭 [6단합체]',dimRush:'기동:칼날개 [5단합체]',dimThunder:'기동:강화습격 [4단합체]',dimSlam:'사슬이동:강화 [3단합체]',dimBreach:'사슬이동:강화 [합체]',iceMortar:'얼음소용돌이 [합체]',elemFuse:'추적암전 [3단합체]',slamStorm:'지진폭풍 [3단합체]',sixFuse:'암전 [합체]',bladeFuse:'악의 해방 [합체]',whirlDet:'회전기폭 [합성]',boneStorm:'해골번개 [합체]',elecRepent:'참회 귀환 [합체]',shieldFuse:'날개치기 [합체]',plagueFuse:'독혈해방 [합체]',pillarSlam:'기둥강타 [합체]',pillarSpike:'기둥가시 [합체]',holyIce:'신성한 빙결 [3단합체]',holyFuse:'신성한 결계 [합체]'};
     const _dispName=_starTxt+(_fuseNameKey?(_e?_FUSE_NAME_EN[_fuseNameKey]:_FUSE_NAME_KO[_fuseNameKey]):_T(sk.name));
     const _FUSE_DESC_EN={stormBeam:'Quake Storm + Tracking Lightning 6-fuse. Fire 6-element tracking beams while spinning! +20% total DMG. Quake+Beam explosion on end.',dimBlast:'6-fuse. Bladewing+Burst+Destroy+Flame all enhanced. Shift+LMB \u2192 forward power wave.',dimRush:'5-fuse. Chain Bladewing unlocked! Slash left/right blades while moving+bleed. Destroy+Flame enhanced.',dimThunder:'4-fuse. Chain Destroy+Flame enhanced. Destroy DMG\u2191 Poise\u2191 Range\u2191',dimSlam:'3-fuse. Chain Flame absorbed. Land range\u2191 DMG\u2191',dimBreach:'Chain Rush: Impact + Chain Rush: Flame fuse. Shift \u2192 piercing rush then INT-based landing explosion! 5 stocks, 7s CD.',iceMortar:'Storm Summon + Ice Orb fuse. Mouse aim \u2192 summon ice vortex! Pulls enemies in and freezes. 10s CD.',elemFuse:'Barrage + Annihilation Beam + Elemental Tracker 3-fuse. Hold E \u2192 6-element homing lasers! Each beam auto-tracks nearest enemy.',slamStorm:'Whirl-Det + Giant Slam 3-fuse. On spin end, detonate+giant slam shockwave! Giant Slam CD removed, range\u2191',sixFuse:'Barrage + Annihilation Beam fuse. Hold E \u2192 6-element helix laser! Add Elemental Tracker for Tracking Lightning.',bladeFuse:'Malice Hunt + Malice Guardian fuse. Dark blades orbit you, blocking projectiles. Press slot key to fire all blades! (+2 blades at max lv)',whirlDet:'Whirlwind + Detonate synth. Auto parry shield during spin \u2192 absorb attacks \u2192 auto AOE blast on end. Add Giant Slam for Quake Storm!',boneStorm:'Malice Storm + Bone Tomb fuse. Mouse aim click \u2192 bone tomb ring + inner dark DOT! 3 stock charges, wall block+sustained DMG.',elecRepent:'Bone Lightning + Repentance fuse. Repentance placement spawns electric vortex! DMG+20%, charge 1/2/3 at Lv1/5/10.',shieldFuse:'Swipe + Wing Blade fuse. On swipe, auto forward rush+slam shockwave! Hits+stun+poise reduction in range.',plagueFuse:'Malice Hunt + Plague Burst fuse. Auto plague blades on blade fire! Plague explosion on hit.',pillarSlam:'Giant Slam II + Dark Pillar fuse. Giant Slam auto-deploys 9 dark pillars (+spike traps if Pillar Thorn fused)! Lv300+ hidden.',pillarSpike:'Dark Pillar + Spike Trap fuse. Each pillar auto-places spike trap! Slow+bleed at every pillar position.',holyIce:'Holy Ward + Ice Storm 3-fuse. Holy zone places prison+freeze storm! Regen+revive block+freeze in range.',holyFuse:'Holy Domain + Binding Domain fuse. Holy zone auto-places prison! Regen+revive block in range.'};
-    const _FUSE_DESC_KO={stormBeam:'지진폭풍 + 추적암전 6단합체. 회전참 중 6원소 추적 빔 동시 발사! 전체 데미지 20% 강화. 종료 시 지진폭풍+빔 동시 폭발',dimBlast:'6단합체. 칼날개+전폭+파괴+불꽃 전부 강화. Shift+좌클릭 → 전방 파워웨이브',dimRush:'5단합체. 기동칼날개 해금! 이동 중 좌우 칼날 광역 베기+출혈. 파괴+불꽃도 강화',dimThunder:'4단합체. 기동파괴+불꽃 강화. 파괴 데미지↑ 포이즈↑ 범위↑',dimSlam:'3단합체. 기동불꽃 흡수. 착지 범위↑ 데미지↑',dimBreach:'사슬기동:충돌 + 사슬기동:화염 합체. Shift → 관통돌진 후 INT 기반 착지 대폭발! 스톡5, 쿨7초',iceMortar:'폭풍소환 + 얼음보주 합체. 마우스 조준 → 얼음 소용돌이 소환! 적을 중심으로 끌어당기며 빙결. 쿨 10초',elemFuse:'만화방창 + 멸살광선 + 원소추적탄 3단합체. E홀드 → 6원소 유도 추적 레이저! 각 빔이 가장 가까운 적을 자동 추적',slamStorm:'회전기폭 + 대왕치기 3단합체. 회전 종료 시 기폭+대왕치기 진동파 동시 발동! 대왕치기 쿨타임 소멸, 범위↑',sixFuse:'만화방창 + 멸살광선 합체. E홀드 → 6원소 꽈배기 레이저! 원소추적탄 추가 합체 시 추적암전',bladeFuse:'악의사냥 + 악의보호자 합체. 암흑칼날이 몸 주위를 돌며 투사체 방어. 슬롯 키로 모인 칼날 전부 발사! (만렙 시 +2칼날)',whirlDet:'회전참 + 기폭팔 합성. 회전 중 패링 쉴드 자동 발동 → 적 공격 흡수 → 종료 시 자동 광역 폭발. 대왕치기 추가 합체 시 지진폭풍!',boneStorm:'악의폭풍 + 해골무덤 합체. 마우스 조준 클릭 → 해골무덤 링 + 내부 암흑 DOT! 3스택 충전제, 벽 차단+지속 데미지',elecRepent:'해골번개 + 참회 합체. 참회 설치 시 전기 소용돌이 동시 생성! 데미지 20%↑, 1/5/10렙 차지 1/2/3',shieldFuse:'처내기 + 칼등날개 합체. 처내기 시 전방 돌진+내려찍기 충격파 자동 발동! 범위 내 적 히트+스턴+포이즈 삭감',plagueFuse:'악의사냥 + 폭독혈 합체. 칼날 발사 시 독혈 칼날 자동 발사! 칼날 적중 시 전염 폭발',pillarSlam:'대왕치기2 + 악의기둥 합체. 대왕치기 시 9개 악의기둥 자동 전개 (+기둥가시 합체 시 가시덫 포함)! Lv300+ 히든',pillarSpike:'악의기둥 + 가시덫 합체. 각 기둥 위치에 가시덫 자동 설치! 슬로우+출혈',holyIce:'신성한 결계 + 아이스 스톰 3단합체. 신성한 영역 설치 시 감옥+빙결 폭풍 동시 설치! 범위 내 리젠+부활차단+빙결',holyFuse:'신성한 영역 + 구속의 영역 합체. 신성한 영역 설치 시 감옥 동시 설치! 범위 내 리젠+부활차단'};
+    const _FUSE_DESC_KO={stormBeam:'지진폭풍 + 추적암전 6단합체. 회전참 중 6원소 추적 빔 동시 발사! 전체 데미지 20% 강화. 종료 시 지진폭풍+빔 동시 폭발',dimBlast:'6단합체. 칼날개+전폭+파괴+불꽃 전부 강화. Shift+좌클릭 → 전방 파워웨이브',dimRush:'5단합체. 기동칼날개 해금! 이동 중 좌우 칼날 광역 베기+출혈. 파괴+불꽃도 강화',dimThunder:'4단합체. 기동파괴+불꽃 강화. 파괴 데미지↑ 포이즈↑ 범위↑',dimSlam:'3단합체. 기동불꽃 흡수. 착지 범위↑ 데미지↑',dimBreach:'사슬기동:충돌 + 사슬기동:화염 합체. Shift → 관통돌진 후 INT 기반 착지 대폭발! 스톡5, 쿨7초',iceMortar:'폭풍소환 + 얼음보주 합체. 마우스 조준 → 얼음 소용돌이 소환! 적을 중심으로 끌어당기며 빙결. 쿨 10초',elemFuse:'만화방창 + 멸살광선 + 원소추적탄 3단합체. E홀드 → 6원소 유도 추적 레이저! 각 빔이 가장 가까운 적을 자동 추적',slamStorm:'회전기폭 + 대왕치기 3단합체. 회전 종료 시 기폭+대왕치기 진동파 동시 발동! 대왕치기 쿨타임 소멸, 범위↑',sixFuse:'만화방창 + 멸살광선 합체. E홀드 → 6원소 꽈배기 레이저! 원소추적탄 추가 합체 시 추적암전',bladeFuse:'악의사냥 + 악의보호자 합체. 암흑칼날이 몸 주위를 돌며 투사체 방어. 슬롯 키로 모인 칼날 전부 발사! (만렙 시 +2칼날)',whirlDet:'회전참 + 기폭팔 합성. 회전 중 패링 쉴드 자동 발동 → 적 공격 흡수 → 종료 시 자동 광역 폭발. 대왕치기 추가 합체 시 지진폭풍!',boneStorm:'악의폭풍 + 해골무덤 합체. 마우스 조준 클릭 → 해골무덤 링 + 내부 암흑 DOT! 3스택 충전제, 벽 차단+지속 데미지',elecRepent:'해골번개 + 참회 합체. 참회 설치 시 전기 소용돌이 동시 생성! 데미지 20%↑, 1/5/10렙 차지 1/2/3',shieldFuse:'처내기 + 칼등날개 합체. 처내기 시 전방 돌진+내려찍기 충격파 자동 발동! 범위 내 적 히트+스턴+포이즈 삭감',plagueFuse:'악의사냥 + 폭독혈 합체. 칼날 발사 시 독혈 칼날 자동 발사! 칼날 적중 시 전염 폭발',pillarSlam:'대왕치기2 + 악의기둥 합체. 대왕치기 시 9개 악의기둥 자동 전개 (+기둥가시 합체 시 가시덫 포함)! Lv300+ 히든',pillarSpike:'악의기둥 + 가시덫 합체. 각 기둥 위치에 가시덫 자동 설치! 슬로우+출혈',holyIce:'신성한 결계 + 아이스 스톰 3단합체. 회복의 영역 설치 시 감옥+빙결 폭풍 동시 설치! 범위 내 리젠+부활차단+빙결',holyFuse:'회복의 영역 + 구속의 영역 합체. 회복의 영역 설치 시 감옥 동시 설치! 범위 내 리젠+부활차단'};
     let _dispDesc=_fuseNameKey?(_e?_FUSE_DESC_EN[_fuseNameKey]:_FUSE_DESC_KO[_fuseNameKey]):(_e?(sk.descEn||sk.desc):sk.desc);
     // [고정: X] / [Fixed: X] → 컬러 배지로 치환
     _dispDesc=_dispDesc.replace(/\[(고정|Fixed):\s*([^\]]+)\]/g,'<span style="background:#1a3355;border:1px solid #4488cc;border-radius:3px;padding:1px 6px;color:#66ddff;font-size:.82rem;font-weight:700">$2</span>');
@@ -39520,7 +39520,7 @@ function drawP(){
         const _wE=fz.type==='weakPhys'?'⚔':fz.type==='weakMag'?'🔮':fz.type==='weakPj'?'🏹':'💀';
         X.fillText(_wE,fz.x,fz.y);
       }else if(fz.type==='holyDome'){
-        // ═══ 신성한 영역 — 황금 보호막 ═══
+        // ═══ 회복의 영역 — 황금 보호막 ═══
         const _hdt=_now*.001;
         // 1) 바닥 — 은은한 황금 원
         X.globalAlpha=(.08+.03*Math.sin(_hdt*4))*_fzFade;
@@ -43357,7 +43357,7 @@ function _showIntroDiff(){
 // ── 키 안내 3단계 ──
 const _INTRO_KEY_STEPS=[
   {title:['공격','Attack'],body:['<span style="color:#ffcc44">좌클릭</span> — 무기 공격<br><span style="color:#ffcc44">우클릭 / Q</span> — 패링·보호막<br><span style="color:#ffcc44">SHIFT</span> — 돌진 (적을 관통, 무적)','<span style="color:#ffcc44">LMB</span> — Weapon Attack<br><span style="color:#ffcc44">RMB / Q</span> — Parry / Shield<br><span style="color:#ffcc44">SHIFT</span> — Dash (pierce enemies, invincible)'],hint:['클릭하여 계속','Click to continue']},
-  {title:['스킬','Skills'],body:['<span style="color:#ffcc44">SPACE</span> — 대왕치기 (광역 기절)<br><span style="color:#ffcc44">1</span> — 가시덫 (슬로우+출혈)<br><span style="color:#ffcc44">E</span> — 마법 (탭=투사체, 홀드=빔)<br><span style="color:#ffcc44">F</span> — 신성한 영역 (리젠 장판)<br><span style="color:#ffcc44">CTRL</span> — 얼음보주 (무적+빙결)<br><span style="color:#ffcc44">T</span> — 석궁 자동발사','<span style="color:#ffcc44">SPACE</span> — Giant Slam (AoE stun)<br><span style="color:#ffcc44">1</span> — Spike Trap (slow+bleed)<br><span style="color:#ffcc44">E</span> — Magic (tap=projectile, hold=beam)<br><span style="color:#ffcc44">F</span> — Holy Domain (regen zone)<br><span style="color:#ffcc44">CTRL</span> — Ice Orb (invincible+freeze)<br><span style="color:#ffcc44">T</span> — Auto Crossbow'],hint:['클릭하여 계속','Click to continue']},
+  {title:['스킬','Skills'],body:['<span style="color:#ffcc44">SPACE</span> — 대왕치기 (광역 기절)<br><span style="color:#ffcc44">1</span> — 가시덫 (슬로우+출혈)<br><span style="color:#ffcc44">E</span> — 마법 (탭=투사체, 홀드=빔)<br><span style="color:#ffcc44">F</span> — 회복의 영역 (리젠 장판)<br><span style="color:#ffcc44">CTRL</span> — 얼음보주 (무적+빙결)<br><span style="color:#ffcc44">T</span> — 석궁 자동발사','<span style="color:#ffcc44">SPACE</span> — Giant Slam (AoE stun)<br><span style="color:#ffcc44">1</span> — Spike Trap (slow+bleed)<br><span style="color:#ffcc44">E</span> — Magic (tap=projectile, hold=beam)<br><span style="color:#ffcc44">F</span> — Holy Domain (regen zone)<br><span style="color:#ffcc44">CTRL</span> — Ice Orb (invincible+freeze)<br><span style="color:#ffcc44">T</span> — Auto Crossbow'],hint:['클릭하여 계속','Click to continue']},
   {title:['생존','Survival'],body:['<span style="color:#ffcc44">1~4</span> — 선택 스킬 슬롯<br><span style="color:#ffcc44">R</span> — 아이템 줍기 <span style="font-size:.85em;color:#887766">(펫이 자동 수거)</span><br><span style="color:#ffcc44">TAB</span> — 인벤토리<br><span style="font-size:.85em;color:#887766">물약은 설정한 HP% 이하 시 자동 사용</span>','<span style="color:#ffcc44">1~4</span> — Skill Slots<br><span style="color:#ffcc44">R</span> — Pick Up Item <span style="font-size:.85em;color:#887766">(pet auto-collects)</span><br><span style="color:#ffcc44">TAB</span> — Inventory<br><span style="font-size:.85em;color:#887766">Potions auto-use when HP falls below set %</span>'],hint:['클릭하여 시작','Click to start']}
 ];
 function _showIntroKeys(step){
