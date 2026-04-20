@@ -30545,11 +30545,12 @@ const SKILL_CATS=[
   {id:'ult',name:'💀 필살기',nameEn:'💀 Ultimate',col:'#ff2200'},
 ];
 const SKILL_HIER=[
+  {id:'rec',name:'⭐ 추천',nameEn:'⭐ Recommend',col:'#ffcc44',cats:null},
   {id:'atk',name:'⚔ 공격',nameEn:'⚔ Attack',col:'#ff6644',cats:['phys','magic','bow']},
   {id:'def',name:'🛡 방어',nameEn:'🛡 Defense',col:'#44aa88',cats:['def','move']},
   {id:'spec',name:'⚙ 특수',nameEn:'⚙ Special',col:'#ff8800',cats:['tech','ult']},
 ];
-let _skHierTab='atk';
+let _skHierTab='rec';
 const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,demonRevive:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1};
 function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.65) ${deg}deg,transparent ${deg}deg);pointer-events:none"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#ffdd55;font-weight:900;text-shadow:0 0 6px #000,0 0 12px #000,0 1px 2px #000">${txt}</div>`:''}`}
@@ -32283,10 +32284,83 @@ function renderSkillPanel(){
   });
   grid.appendChild(_hierBar);
   // ── 현재 대분류의 하위 카테고리만 표시 ──
-  const _curHier=SKILL_HIER.find(h=>h.id===_skHierTab)||SKILL_HIER[0];
-  const _visibleCats=_curHier.cats;
+  const _curHier=SKILL_HIER.find(h=>h.id===_skHierTab)||SKILL_HIER[1];
+  const _isRecTab=_curHier.cats===null;
+  const _visibleCats=_isRecTab?SKILL_CATS.map(c=>c.id):_curHier.cats;
+  // ── 추천 탭: 습득 가능 / 합체 가능 / 강화 가능 스킬만 모아서 표시 ──
+  if(_isRecTab){
+    const _recLearn=[],_recFuse=[],_recUp=[];
+    for(let _ri=0;_ri<SKILL_LIST.length;_ri++){const sk=SKILL_LIST[_ri];
+      if(_isAbsorbed(sk.id))continue;
+      const slv=P.skills[sk.id]||0;const learned=slv>=1;
+      const _reqMet=sk.requires?(P.skills[sk.requires]||0)>=1:true;
+      const _lvMet=sk.reqLv?P.lv>=sk.reqLv:true;
+      if(!learned&&_reqMet&&_lvMet&&P.sp>=sk.spCost&&G.mats>=_malCost(sk.matCost||0))_recLearn.push(sk);
+      else if(learned){
+        const _fk=_getFuseKey(sk.id);
+        if(_fk&&_canFuse(_fk))_recFuse.push(sk);
+        else if(sk.up&&slv<20&&slv<Math.min(20,~~(P.lv/50)+1)){_recUp.push(sk)}
+      }
+    }
+    const _stripHeadIcon2=(t)=>String(t||'').replace(/^[^A-Za-z0-9가-힣]+/,'').trim();
+    const _addRecHdr=(title,col2)=>{
+      if(!title)return;
+      const hdr=document.createElement('div');
+      hdr.style.cssText='color:#ffcc44;font-size:.88rem;font-weight:700;padding:6px 8px;border:1px solid #554422;border-radius:6px;background:rgba(40,25,5,.5);margin-bottom:6px;letter-spacing:.06em';
+      hdr.textContent=title;col2.appendChild(hdr);
+    };
+    // 습득 가능
+    if(_recLearn.length||_recFuse.length||_recUp.length){
+      const col=document.createElement('div');col.style.cssText='min-width:0';
+      // ── 습득 가능 ──
+      if(_recLearn.length){
+        _addRecHdr(_e2?'✨ Can Learn ('+_recLearn.length+')':'✨ 습득 가능 ('+_recLearn.length+')',col);
+        _recLearn.forEach(sk=>_renderSkillRow(sk,col));
+      }
+      // ── 합체 가능: 파트너 카드 나란히 ──
+      if(_recFuse.length){
+        _addRecHdr(_e2?'🔗 Can Fuse ('+_recFuse.length+')':'🔗 합체 가능 ('+_recFuse.length+')',col);
+        const _shownFuse={};
+        _recFuse.forEach(sk=>{
+          if(_shownFuse[sk.id])return;
+          const _fk=_getFuseKey(sk.id);
+          const _fp=_fk?_FUSE_PAIRS[_fk]:null;
+          // 파트너 찾기
+          let _partner=null;
+          if(_fp){for(let _pi=0;_pi<_fp.length;_pi++){if(_fp[_pi]!==sk.id){const _ps=SKILL_LIST.find(s=>s.id===_fp[_pi]);if(_ps&&(P.skills[_ps.id]||0)>=1){_partner=_ps;break}}}}
+          if(_partner){
+            _shownFuse[sk.id]=1;_shownFuse[_partner.id]=1;
+            const row=document.createElement('div');
+            row.style.cssText='display:flex;gap:8px;align-items:stretch;margin-bottom:4px';
+            const _l=document.createElement('div');_l.style.cssText='flex:1;min-width:0';
+            _renderSkillRow(sk,_l);
+            const _link=document.createElement('div');
+            _link.style.cssText='display:flex;align-items:center;color:#ffaa44;font-size:1.2rem;flex:0 0 20px;justify-content:center';
+            _link.textContent='🔗';
+            const _r=document.createElement('div');_r.style.cssText='flex:1;min-width:0';
+            _renderSkillRow(_partner,_r);
+            row.appendChild(_l);row.appendChild(_link);row.appendChild(_r);
+            col.appendChild(row);
+          } else {
+            _renderSkillRow(sk,col);
+          }
+        });
+      }
+      grid.appendChild(col);
+      // ── 강화 가능 ──
+      if(_recUp.length){const col2=document.createElement('div');col2.style.cssText='min-width:0';
+        _addRecHdr(_e2?'⬆ Can Upgrade ('+_recUp.length+')':'⬆ 강화 가능 ('+_recUp.length+')',col2);
+        _recUp.forEach(sk=>_renderSkillRow(sk,col2));
+        grid.appendChild(col2);
+      }
+    } else {
+      const _empty=document.createElement('div');_empty.style.cssText='color:#665544;font-size:1rem;text-align:center;padding:30px;grid-column:1/-1';
+      _empty.textContent=_e2?'No recommendations — all skills learned & maxed!':'추천 없음 — 모든 스킬 습득/강화 완료!';
+      grid.appendChild(_empty);
+    }
+  }
   const _stripHeadIcon=(t)=>String(t||'').replace(/^[^A-Za-z0-9가-힣]+/,'').trim();
-  SKILL_CATS.forEach(cat=>{
+  if(!_isRecTab) SKILL_CATS.forEach(cat=>{
     if(_visibleCats.indexOf(cat.id)<0)return;
     const _sixMoved=P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse');
     const catSkills=SKILL_LIST.filter(s=>{let c=s.cat;if(s.id==='fanShot'&&_sixMoved)c='magic';return c===cat.id});
@@ -32307,9 +32381,35 @@ function renderSkillPanel(){
     const _iconBox=_isCompactMode?document.createElement('div'):col;
     if(_isCompactMode){_iconBox.style.cssText='display:flex;flex-wrap:wrap;gap:2px;margin-bottom:4px';col.appendChild(_iconBox)}
     catSkills.forEach(sk=>{
-      // 펼쳐진 스킬은 컬럼 직접에 추가 (전체 폭 차지), 나머지는 아이콘 박스에
-      if(_isCompactMode && _skExpandedId===sk.id) _renderSkillRow(sk,col);
-      else _renderSkillRow(sk,_iconBox);
+      // 펼쳐진 스킬: 다른 탭 합체 파트너가 있으면 가로 배치
+      if(_skExpandedId===sk.id){
+        // 합체 파트너 1개 찾기 (다른 탭에서, 가장 직접적인 합체만)
+        let _fusePartner=null;
+        const _fk=_getFuseKey(sk.id);
+        if(_fk){const _fp=_FUSE_PAIRS[_fk];if(_fp){for(let _pi=0;_pi<_fp.length;_pi++){
+          if(_fp[_pi]===sk.id)continue;
+          const _psk=SKILL_LIST.find(s=>s.id===_fp[_pi]);if(!_psk)continue;
+          let _pCat=_psk.cat;if(_psk.id==='fanShot'&&P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse'))_pCat='magic';
+          if(_visibleCats.indexOf(_pCat)<0){_fusePartner=_psk;break}
+        }}}
+        if(_fusePartner){
+          const _row=document.createElement('div');
+          _row.style.cssText='display:flex;gap:8px;align-items:flex-start;margin-bottom:10px';
+          const _left=document.createElement('div');_left.style.cssText='flex:1;min-width:0';
+          _renderSkillRow(sk,_left);
+          const _right=document.createElement('div');_right.style.cssText='flex:0 0 auto;width:120px;display:flex;flex-direction:column;align-items:center;gap:4px';
+          const _tag=document.createElement('div');_tag.style.cssText='color:#ffaa44;font-size:.7rem;opacity:.7';_tag.textContent='🔗 '+(_e2?'Partner':'파트너');
+          _right.appendChild(_tag);
+          _renderSkillRow(_fusePartner,_right);
+          _row.appendChild(_left);_row.appendChild(_right);
+          col.appendChild(_row);
+        } else {
+          if(_isCompactMode) _renderSkillRow(sk,col);
+          else _renderSkillRow(sk,_iconBox);
+        }
+      } else {
+        _renderSkillRow(sk,_iconBox);
+      }
     });
     grid.appendChild(col);
   });
