@@ -5082,7 +5082,7 @@ const _EN={
 '⚡패링!':'⚡Parry!','경직!':'Stagger!',
 '⚠ 잡혔다!':'⚠ Grabbed!','💥 내던지기!':'💥 Throw!',
 '💥 소용돌이 폭발!':'💥 Vortex Explosion!',
-'👻 순간이동!':'👻 Teleport!','💫 기절! 3초':'💫 Stunned! 3s',
+'👻 순간이동!':'👻 Teleport!','💫 기절! 5초':'💫 Stunned! 5s',
 '찌르기 반격!':'Thrust Counter!','💢 폭발!':'💢 Explosion!',
 '반격 실패':'Counter Failed','탈취 반격!':'Steal Counter!',
 '무기 봉인!':'Weapon Seal!','냠!':'Nom!',
@@ -22748,7 +22748,7 @@ function update(){
         hurtP(_bkD,{dtype:'magic',src:'무지개폭발'});
         // 무지개탄 포이즈 데미지 (2칸 소모)
         {P.poise=Math.max(0,(P.poise||4)-2);P.poiseR=0;
-        if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}
+        if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(300*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}
         // 넉백 + 피격플래시
         {const _bkA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bkA)*7;P.kb.y+=Math.sin(_bkA)*7}
         P.iframes=Math.max(P.iframes,15);
@@ -25778,7 +25778,8 @@ function updateE(e,sp){
         addTxt(e.x,e.y-18,_T('벽 충돌! ')+wallDmg,'#cc8844',30);addParts(e.x,e.y,'#aa7744',8);
         SFX.block();shake(8)}
       else{e.kb.x=0;e.kb.y=0}}
-    const _ekD=.85**sp;e.kb.x*=_ekD;e.kb.y*=_ekD}
+    const _ekD=.85**sp;e.kb.x*=_ekD;e.kb.y*=_ekD;
+    if(e._spikeSlow>0){const _ssP=Math.min(.9,.7+((e._spikeSlowLv||1)-1)*.02);e.kb.x*=(1-_ssP);e.kb.y*=(1-_ssP)}}
   if(e._bluHitCD>0)e._bluHitCD-=sp;
   // _stunImmune / _hitStun 은 루프 초반에서 이미 감소됨
   if(e._hitStun>0)return; // 피격 경직: AI 스킵
@@ -28175,8 +28176,8 @@ function updateE(e,sp){
           e.stunned=60;hurtE(e,_pd2,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd2;doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
         else{
           hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
-          P.s='pStun';P.st2=180; // 3초 풀스턴
-          SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절! 3초'),'#ffaa00',60);
+          P.s='pStun';P.st2=300; // 5초 풀스턴
+          SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절! 5초'),'#ffaa00',60);
           G.hitStop=~~(8*OPT.hitStop/100);if(G.slowMo<=0)G.slowMo=15;
           for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}
         }
@@ -30249,14 +30250,14 @@ function hurtP(dmg,opts){
     P.iframes=0;if(P.s!=='charge'&&P.s!=='sBlock'&&P.s!=='pStun'&&P.s!=='whirlwind'){
       // ═══ 포이즈 감소 → 기절 (4칸 시스템) ═══ 탄막 1칸, 근접 1칸
       P.poise=Math.max(0,(P.poise||4)-1);P.poiseR=0;
-      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(300*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
       else{P.s='stagger';P.st2=6}
     }
     // 회전 중: 경직 면역, 포이즈 감소 절반
     if(P.s==='whirlwind'){
       // 회전참 중: 포이즈 감소 절반 (2발에 1칸)
       P._wwPoiseAcc=(P._wwPoiseAcc||0)+0.5;if(P._wwPoiseAcc>=1){P.poise=Math.max(0,(P.poise||4)-1);P._wwPoiseAcc=0}P.poiseR=0;
-      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(300*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
     }
     if(a>0)addTxt(P.x,P.y-10,'-'+a,'#ff3333',28);
     // ═══ 데미지 비례 넉백: dmg/mhp 비율로 밀림 (최소1, 최대12) ═══
@@ -42802,8 +42803,8 @@ function updateHUD(slow){
   const _stH=$('stageTimerHud');if(_stH){const _stSec=~~((G.stageTime||0)/60);const _stM=~~(_stSec/60),_stS=_stSec%60;const _taT=G._totalSpawned||0,_taK=G._stageKills||0;const _taPct=_taT>0?~~(_taK/_taT*100):0;const _taBest=G._taRecords&&G._taRecords[G.stage];const _taBestStr=_taBest?(' BEST '+~~(_taBest/60)+':'+((_taBest%60<10?'0':'')+_taBest%60)):'';const _ptSec=~~((G.playTime||0)/60);const _ptH=~~(_ptSec/3600),_ptM=~~((_ptSec%3600)/60),_ptS=_ptSec%60;const _ptStr=' | TOTAL '+_ptH+':'+((_ptM<10?'0':'')+_ptM)+':'+((_ptS<10?'0':'')+_ptS);_stH.textContent='TIME '+((_stM<10?'0':'')+_stM)+':'+((_stS<10?'0':'')+_stS)+' | CLEAR '+_taPct+'%'+(_taPct>=90?' OK':'')+_taBestStr+_ptStr;_stH.style.color=_taPct>=90?'#44ddff':'#88aacc'}
   // 포이즈 빨간 눈알 업데이트 (기존 skull-eye 4개 재활용)
   {var _pc=P.poise||0;if(P.s==='pStun')_pc=0;
-  var _peIds=['hpEyeL','hpEyeR','mpEyeL','mpEyeR'];
-  for(var _pi=0;_pi<4;_pi++){var _pe=$(_peIds[_pi]);if(_pe){if(_pi<_pc){_pe.classList.add('on')}else{_pe.classList.remove('on')}}}}
+  var _peIds=['hpEyeL','hpEyeR','mpEyeL','mpEyeR']; // 1=좌, 2, 3, 4=우
+  for(var _pi=0;_pi<4;_pi++){var _pe=$(_peIds[_pi]);if(_pe){if(_pi>=4-_pc){_pe.classList.add('on')}else{_pe.classList.remove('on')}}}}
   $('expBar').style.opacity='1';
   const _eqW=INV.equipped.weapon,_eqS=INV.equipped.shield,_eqB=INV.equipped.boots;
   if(!$('eq0'))return; // eq elements guard
