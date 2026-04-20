@@ -236,8 +236,6 @@ canvas{display:block;position:fixed;inset:0}
 .qs-row{position:absolute;top:0;left:0;width:100%;height:100%}
 .qs{position:absolute!important;flex:none!important}
 #poiseBarWrap{display:none!important}
-.poise-eye{position:absolute;width:8px;height:8px;border-radius:50%;background:#ff2200;box-shadow:0 0 10px #ff3300,0 0 18px #ff0000;pointer-events:none;z-index:50;opacity:1;transition:opacity .25s}
-.poise-eye.off{opacity:0}
 #skBar.on{opacity:1}
 .hud-top{position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px));left:50%;transform:translateX(-50%) scale(var(--ui-scale));z-index:20;pointer-events:none;display:flex;gap:4px;align-items:center;opacity:0;transition:opacity .5s;transform-origin:top center;font-size:.56rem;white-space:nowrap}
 .hud-top.on{opacity:.3}
@@ -2141,14 +2139,6 @@ canvas{display:block;position:fixed;inset:0}
 <div id="skBarTip"></div>
 <div id="skBar">
   <div id="poiseBarWrap" style="display:none"><div id="poiseBarFill"></div></div>
-  <div id="ps0L" class="poise-eye" style="left:42px;top:52px"></div>
-  <div id="ps0R" class="poise-eye" style="left:56px;top:52px"></div>
-  <div id="ps1L" class="poise-eye" style="left:97px;top:64px"></div>
-  <div id="ps1R" class="poise-eye" style="left:111px;top:64px"></div>
-  <div id="ps2L" class="poise-eye" style="left:700px;top:64px"></div>
-  <div id="ps2R" class="poise-eye" style="left:714px;top:64px"></div>
-  <div id="ps3L" class="poise-eye" style="left:755px;top:52px"></div>
-  <div id="ps3R" class="poise-eye" style="left:769px;top:52px"></div>
   <div class="qs-row" id="qsRow">
     <div class="qs" id="qs0"><span class="qs-cnt"></span></div>
     <div class="qs" id="qs1"><span class="qs-cnt"></span></div>
@@ -5622,8 +5612,15 @@ function _updatePetBubble(){
 function _checkPetDialogue(){
   if(!G.on||!G.pets)return;
   _updatePetBubble();
-  if(P.lv>500)return; // Lv500 이후 펫 대사 전부 비활성
   const si=G.stage||0;
+
+  // ── 반응형 대사 (레벨 무관, 항상 작동) ──
+  if(P.hp<P.mhp*.3&&P.hp>0)_petSayCD('crisis_hp30','crow','피가 새고 있다. Shift. 빠져.',4,30,'cat','작살 던져! 끌려가면 무적이야!',4);
+  if(P.hp<P.mhp*.3&&P.hp>0)_petSayCD('danger_hp','crow','위험해! 쉬프트 사슬기동으로 피해!!',3,300);
+  if(P.s==='pStun')_petSayCD('stun_warn','cat','기절이야! Ctrl 눌러!',3,10,'crow',P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출!':'Ctrl 얼음보주로 탈출! 없으면 방향키 연타!',3);
+  if(G._bossRef&&G._bossRef.stunned>0)_petSayCD('boss_groggy','crow','무릎 꿇었다.',3,30,'cat','지금이야! 몰아쳐!!',3);
+
+  if(P.lv>500)return; // Lv500 이후 나머지 대사 비활성
 
   // ── 튜토리얼 (Stage 0 전용, Lv200 이하) ──
   if(si===0&&P.lv<=200){
@@ -5653,20 +5650,11 @@ function _checkPetDialogue(){
 
   // ── 일반 대사 (반복, 쿨다운) ──
 
-  // 위기: HP < 30%
-  if(P.hp<P.mhp*.3&&P.hp>0)_petSayCD('crisis_hp30','crow','피가 새고 있다. Shift. 빠져.',4,30,'cat','작살 던져! 끌려가면 무적이야!',4);
-
-
-
   // 패링 가이드
-  if(_petParryCnt<3)_petSayCD('parry_low','crow','우클릭. 적 손목이 꺾일 때 쳐.',4,30,'cat','우클릭 타이밍 맞추면 패링 돼~',4);
-  else if(_petParryCnt<10)_petSayCD('parry_mid','crow','빨간 탄은 악의 덩어리다. 쳐내서 이용해.',4,30,'cat','무지개빛만 피하면 돼! 나머지는 다 패링!',4);
+  if(_petParryCnt<3)_petSayCD('parry_low','crow','빨간 탄은 우클릭 패링. 무지개는 Q 패링.',4,30,'cat','나머지는 전부 우클릭 패링 가능해!',4);
+  else if(_petParryCnt<10)_petSayCD('parry_mid','crow','빨강=우클릭, 무지개=Q 패링. 나머진 다 쳐내.',4,30,'cat','무지개는 Q로 패링! 나머지는 전부 우클릭!',4);
 
-  // 방패 대사 제거됨 (방패 시스템 삭제)
-  // 위험 경고 (HP 30% 이하)
-  if(P.hp<P.mhp*.3&&P.hp>0)_petSayCD('danger_hp','crow','위험해! 쉬프트 사슬기동으로 피해!!',3,300);
-  // 기절 경고
-  if(P.s==='pStun')_petSayCD('stun_warn','cat','기절이야! 탈출스킬을 써!',3,10,'crow','Shift/Q/Ctrl 연타해서 빠져나와!',3);
+  // crisis_hp30, danger_hp, stun_warn, boss_groggy → 반응형 블록으로 이동됨
   // 쉬프트 안내 (돌진 미사용 + 전투 중)
   if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야! 끌려가면서 무적이라고!',4,300);
   // SP 안내 (10 이상)
@@ -5691,14 +5679,14 @@ function _checkPetDialogue(){
   // 보스 속성
   if(G.bossAlive&&G._bossRef&&G._bossRef.el>0)_petSayCD('boss_elem','crow','속성을 읽어. 약점을 찌르면 두 배로 썩는다.',4,30,'cat','화염엔 빙결! 암전엔 암흑! 기억해!',4);
 
-  // 보스 그로기
-  if(G._bossRef&&G._bossRef.stunned>0)_petSayCD('boss_groggy','crow','무릎 꿇었다.',3,30,'cat','지금이야! 몰아쳐!!',3);
+  // 보스 그로기 → 반응형 블록으로 이동됨
 
   // 적 빙결
   for(let i=0;i<ens.length;i++){if(ens[i].alive&&ens[i].frozen>0){_petSayCD('enemy_ice','crow','...얼어붙은 놈은 오래 안 간다.',4,30,'cat','얼었어! 빙결 중 1.5배야!',4);break}}
 
   // SP 있음
-  if(P.lv>=5&&P.sp>0)_petSayCD('has_sp','cat','스킬 포인트 있어! K 눌러서 스킬 찍어봐!',5,30,'crow','...힘이 없으면 여기서 끝이야.',4);
+  if(P.lv>=5&&P.sp>0)_petSayCD('has_sp','cat','스킬 포인트 있어! K 눌러서 스킬 찍어봐!',5,30,'crow','F키로 스킬 슬롯에 넣어야 쓸 수 있어.',4);
+  if(P.st<P.mst*.5&&P.lv<=100)_petSayCD('low_st','crow','스태미나가 부족하다. 무리하지 마.',4,30,'cat','ST 없으면 스킬 못 써! 잠깐 빠져!',4);
 
   // 아이템 많음
   if(INV.bag.length>=15)_petSayCD('bag_full','crow','...쓸 거 아니면 분해해.',4,30,'cat','아이템 넘쳐나네~ 우리가 주워줄게!',4);
@@ -22251,11 +22239,11 @@ function update(){
     if(P.st2<=0)P.s='idle';break;}
   case 'pStun':{
     // ═══ 기절: Shift/Q/Ctrl 즉시 탈출 + 방향키 연타 단축 ═══
-    if(isJust('charge')){P.s='idle';P.iframes=30;addTxt(P.x,P.y-20,_T('탈출!'),'#ffffff',30);break}
-    if(isJust('parry')){P.s='idle';P.iframes=20;addTxt(P.x,P.y-20,_T('탈출!'),'#88ddff',30);break}
-    if(isJust('skill7')){P.s='idle';P.iframes=20;addTxt(P.x,P.y-20,_T('탈출!'),'#88aacc',30);break}
+    if(isJust('charge')){P.s='idle';P.iframes=30;P.poise=4;P.poiseR=0;break}
+    if(isJust('parry')){P.s='idle';P.iframes=20;P.poise=4;P.poiseR=0;break}
+    if(isJust('skill7')){P.s='idle';P.iframes=20;P.poise=4;P.poiseR=0;break}
     if(isJust('up')||isJust('down')||isJust('left')||isJust('right'))P.st2-=15;
-    if(P.st2<=0){P.s='idle';P.iframes=60;addTxt(P.x,P.y-15,_T('기절 해제'),'#aaaaaa',20)}
+    if(P.st2<=0){P.s='idle';P.iframes=60;P.poise=4;P.poiseR=0}
     break;}
   }
 
@@ -22760,7 +22748,7 @@ function update(){
         hurtP(_bkD,{dtype:'magic',src:'무지개폭발'});
         // 무지개탄 포이즈 데미지 (2칸 소모)
         {P.poise=Math.max(0,(P.poise||4)-2);P.poiseR=0;
-        if(P.poise<=0){P.poise=P.maxPoise;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절!'),'#ffaa00',60);G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}
+        if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}
         // 넉백 + 피격플래시
         {const _bkA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bkA)*7;P.kb.y+=Math.sin(_bkA)*7}
         P.iframes=Math.max(P.iframes,15);
@@ -22903,7 +22891,7 @@ function update(){
       if(d<_xbNear){_xbNear=d;_xbowTarget=e}
     }}
     const _xbSpdMul=(bw().bowSpd||1)*pXbowSpd();
-    if(_xbowTimer>=XBOW_INTERVAL/_xbSpdMul&&_xbowTarget&&P.st>P.mst*.1){
+    if(_xbowTimer>=XBOW_INTERVAL/_xbSpdMul&&_xbowTarget&&P.st>P.mst*.2){
       _xbowTimer=0;
       console.error('[XBOW-FIRE] gx='+!!_gxTurret+' sk='+P.activeBowSk);
       if(_gxTurret){
@@ -30261,14 +30249,14 @@ function hurtP(dmg,opts){
     P.iframes=0;if(P.s!=='charge'&&P.s!=='sBlock'&&P.s!=='pStun'&&P.s!=='whirlwind'){
       // ═══ 포이즈 감소 → 기절 (4칸 시스템) ═══ 탄막 1칸, 근접 1칸
       P.poise=Math.max(0,(P.poise||4)-1);P.poiseR=0;
-      if(P.poise<=0){P.poise=4;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
       else{P.s='stagger';P.st2=6}
     }
     // 회전 중: 경직 면역, 포이즈 감소 절반
     if(P.s==='whirlwind'){
       // 회전참 중: 포이즈 감소 절반 (2발에 1칸)
       P._wwPoiseAcc=(P._wwPoiseAcc||0)+0.5;if(P._wwPoiseAcc>=1){P.poise=Math.max(0,(P.poise||4)-1);P._wwPoiseAcc=0}P.poiseR=0;
-      if(P.poise<=0){P.poise=4;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(180*(1-Math.min(.5,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
     }
     if(a>0)addTxt(P.x,P.y-10,'-'+a,'#ff3333',28);
     // ═══ 데미지 비례 넉백: dmg/mhp 비율로 밀림 (최소1, 최대12) ═══
@@ -42815,9 +42803,10 @@ function updateHUD(slow){
   const _ctH=$('comboTimerHud');if(_ctH){if(G.combo>=1&&G.comboTimer>0){const _ctSec=(G.comboTimer/60).toFixed(1);_ctH.style.display='';_ctH.textContent='TIMER '+_ctSec+'s';_ctH.style.color=G.comboTimer<300?'#ff4444':G.comboTimer<600?'#ff8844':'#ffcc44'}else{_ctH.style.display='none'}}
   // 스테이지 타임어택
   const _stH=$('stageTimerHud');if(_stH){const _stSec=~~((G.stageTime||0)/60);const _stM=~~(_stSec/60),_stS=_stSec%60;const _taT=G._totalSpawned||0,_taK=G._stageKills||0;const _taPct=_taT>0?~~(_taK/_taT*100):0;const _taBest=G._taRecords&&G._taRecords[G.stage];const _taBestStr=_taBest?(' BEST '+~~(_taBest/60)+':'+((_taBest%60<10?'0':'')+_taBest%60)):'';const _ptSec=~~((G.playTime||0)/60);const _ptH=~~(_ptSec/3600),_ptM=~~((_ptSec%3600)/60),_ptS=_ptSec%60;const _ptStr=' | TOTAL '+_ptH+':'+((_ptM<10?'0':'')+_ptM)+':'+((_ptS<10?'0':'')+_ptS);_stH.textContent='TIME '+((_stM<10?'0':'')+_stM)+':'+((_stS<10?'0':'')+_stS)+' | CLEAR '+_taPct+'%'+(_taPct>=90?' OK':'')+_taBestStr+_ptStr;_stH.style.color=_taPct>=90?'#44ddff':'#88aacc'}
-  // 포이즈 빨간 눈알 업데이트 (4쌍 = 8개)
+  // 포이즈 빨간 눈알 업데이트 (기존 skull-eye 4개 재활용)
   {var _pc=P.poise||0;if(P.s==='pStun')_pc=0;
-  for(var _pi=0;_pi<4;_pi++){var _on=_pi<_pc?'poise-eye':'poise-eye off';var _eL=$('ps'+_pi+'L'),_eR=$('ps'+_pi+'R');if(_eL)_eL.className=_on;if(_eR)_eR.className=_on}}
+  var _peIds=['hpEyeL','hpEyeR','mpEyeL','mpEyeR'];
+  for(var _pi=0;_pi<4;_pi++){var _pe=$(_peIds[_pi]);if(_pe){if(_pi<_pc){_pe.classList.add('on')}else{_pe.classList.remove('on')}}}}
   $('expBar').style.opacity='1';
   const _eqW=INV.equipped.weapon,_eqS=INV.equipped.shield,_eqB=INV.equipped.boots;
   if(!$('eq0'))return; // eq elements guard
