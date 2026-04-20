@@ -2177,7 +2177,7 @@ canvas{display:block;position:fixed;inset:0}
   <div class="globe-val">
     <div id="hpCur" class="cur">0</div>
     <div id="hpMax" class="max">/ 0</div>
-    <div id="hpShield" style="font-size:.55rem;color:#4499ff;opacity:.7;margin-top:-1px"></div>
+    <div id="hpShield" style="font-size:.66rem;color:#66bbff;opacity:.85;margin-top:-1px;font-weight:700"></div>
   </div>
   <span id="hpPotCd" style="position:absolute;top:-45px;left:50%;transform:translateX(-50%);font-size:.9rem;color:#ff8844;font-weight:700;white-space:nowrap"></span>
 </div>
@@ -8885,12 +8885,12 @@ function mkItem(slot,tier,el,rarity,wtype){
     pants:{def:20+tier*20,bonusSt:(3+tier*3)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
     cape:{def:20+tier*20,spd:tier*.03,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
     // 장신구 6파트: 속성eDef만 (belt/necklace/ring1/ring2/bracelet/headband)
-    belt:{eDef:20+tier*20,bonusSt:(4+tier*3)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    necklace:{eDef:20+tier*20,critRate:10,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    ring1:{eDef:20+tier*20,critRate:5,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    ring2:{eDef:20+tier*20,critRate:5,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    bracelet:{eDef:20+tier*20,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    headband:{eDef:20+tier*20,mpRegen:(1+tier*1)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200}
+    belt:{eDef:20+tier*20,dmgBonus:10+tier*10,bonusSt:(4+tier*3)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    necklace:{eDef:20+tier*20,critRate:10,dmgBonus:20+tier*20,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    ring1:{eDef:20+tier*20,critRate:5,dmgBonus:10+tier*10,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    ring2:{eDef:20+tier*20,critRate:5,dmgBonus:10+tier*10,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    bracelet:{eDef:20+tier*20,dmgBonus:10+tier*10,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
+    headband:{eDef:20+tier*20,dmgBonus:10+tier*10,mpRegen:(1+tier*1)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200}
   };
   const b=base[slot];
   if(!b)return{id:~~(performance.now()*1000)+~~(Math.random()*9999),slot,el,rarity,tier,name:'???',emoji:'❓'};
@@ -29163,8 +29163,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(P.hp<P.mhp*.3&&_eqAffix('crisisBoost')>0)dmg=~~(dmg*(1+_eqAffix('crisisBoost')));
   // ═══ 어픽스: killSlayer (처치보너스) — 처치 후 3초간 뎀업 ═══
   if(P._killBuff>0)dmg=~~(dmg*(1+P._killMul));
-  // 목걸이+반지 데미지 보너스
-  {const _accDmg=((nc().dmgBonus||0)+(rg1().dmgBonus||0)+(rg2().dmgBonus||0))*0.01;if(_accDmg>0)dmg=~~(dmg*(1+_accDmg))}
+  // 장신구 데미지 보너스 (목걸이/반지/벨트/팔찌/귀걸이)
+  {const _eq=INV.equipped;const _accDmg=((nc().dmgBonus||0)+(rg1().dmgBonus||0)+(rg2().dmgBonus||0)+((_eq.belt||{}).dmgBonus||0)+((_eq.bracelet||{}).dmgBonus||0)+((_eq.headband||{}).dmgBonus||0))*0.01;if(_accDmg>0)dmg=~~(dmg*(1+_accDmg))}
   // ═══ 패시브: 약자포식 — 적HP≤50% 시 합연산 추가 (풍요는 _passDmgSum에 통합) ═══
   {const _pb=_predBonus(e);if(_pb>0)dmg=~~(dmg*(1+_pb))}
   // ═══ 사냥꾼: 엘리트/보스 추가뎀 ═══
@@ -31321,7 +31321,7 @@ function activateMaliceHunt(){
     const _isPlagueGF=P.skills.plagueBurst>=1&&_isFused('plagueFuse');
     if(_isPlagueGF&&(P._pbCd||0)>0){return}
     G.mats-=_malCost(30);P.st=Math.max(0,P.st-_mhStCost);
-    if(_isPlagueGF)P._pbCd=~~((540-((P.skills.plagueBurst||1)-1)*18)*(1+_eqAffix('cooldownRed'))); // 독혈해방 9초 - Lv당 0.3초
+    if(_isPlagueGF)P._pbCd=~~((600-((P.skills.plagueBurst||1)-1)*18)*(1+_eqAffix('cooldownRed'))); // 독혈해방 10초 - Lv당 0.3초
     const _goCntRaw=P._gOrbs.length;
     const _goCnt=Math.min(_goCntRaw,6); // 최대 6발 (초과분은 데미지에 흡수)
     const _goR=(34)+P.r;
@@ -31550,7 +31550,7 @@ function activateVoidScarecrow(){
 // ═══ 폭독칼날 — 발동 (1발 관통 칼날, 쿨12초) ═══
 function activatePlagueBurst(){
   if(G.mats<_malCost(15)||(P._pbCd||0)>0)return;
-  G.mats-=_malCost(15);P._pbCd=~~((540-((P.skills.plagueBurst||1)-1)*18)*(1+_eqAffix('cooldownRed'))); // 9초 - Lv당 0.3초
+  G.mats-=_malCost(15);P._pbCd=~~((600-((P.skills.plagueBurst||1)-1)*18)*(1+_eqAffix('cooldownRed'))); // 10초 - Lv당 0.3초
   const slv=P.skills.plagueBurst||1;
   const a=P.atkArc;
   const _bladePierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30);
@@ -42722,7 +42722,7 @@ function updateHUD(slow){
   $('hpLiquid').style.transform = `translateY(${100 - hpPct}%)`;
   $('hpCur').textContent = ~~P.hp;
   $('hpMax').textContent = `/ ${P.mhp}`;
-  $('hpShield').textContent = P.mshield>0?`🛡${~~P.shield}/${~~P.mshield}`:'';
+  $('hpShield').textContent = P.mshield>0?`${~~P.shield} / ${~~P.mshield}`:'';
   
   // [쉴드 링] 파란색 — 쉴드 비율 + alpha 페이드
   const shPct = P.mshield > 0 ? Math.max(0, Math.min(100, (P.shield / P.mshield) * 100)) : 0;
