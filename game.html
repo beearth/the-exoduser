@@ -22932,7 +22932,7 @@ function update(){
     if(p._bounceCool>0)p._bounceCool-=sp;
     // ── 유도: 일반 매 2프레임, ebHoming 매 6프레임 ──
     if(!(p._bounceCool>0)&&!p.explosive&&!p.bladeOrb&&!p.iceBlade&&!p.burstBolt&&!p.fireball&&!p.normalBow&&!(p._arcLock&&p.dist<p._arcLock)&&spd>0&&(G._gcT+i)%(p.ebHoming?6:2)===0){
-      let bestE=null,bestD=p.plagueHoming?1000:p.mhBlade?450:p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.magic?250:200;
+      let bestE=null,bestD=p.plagueHoming?1000:p.mhBlade?200:p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.magic?250:200;
       const _neH=shQuery(p.x,p.y,bestD);
       for(let h=0;h<_neH.length;h++){const e=_neH[h];if(!e.alive)continue;
         if(p._hitSet&&p._hitSet.has(e)){if(p.plagueHoming||p.mhBlade){let _anyAlive=false;for(let _pi=0;_pi<_neH.length;_pi++){if(_neH[_pi].alive&&!p._hitSet.has(_neH[_pi])){_anyAlive=true;break}}if(!_anyAlive)p._hitSet.clear();}continue;}
@@ -24234,7 +24234,7 @@ function update(){
     // 궤도(방어) 내구도 1: 탄막 1발에 소멸, 발사(공격)는 pProjs pierce로 별도 처리
     if(_isGF){for(let _mi=0;_mi<P._gOrbs.length;_mi++){const _orb=P._gOrbs[_mi];if(_orb&&typeof _orb==='object'){if((_orb.hp||1)>1)_orb.hp=1;}else if(_orb>1)P._gOrbs[_mi]=1;}}
     const _mhLvF=P.skills.maliceHunt||1;const _gLvF=_goLv;
-    const _fusedBase=Math.min(6,3+Math.max(0,Math.max(_gLvF,_mhLvF)-3)); // 기본3, 4렙부터+1 (max6, 2026-04-18)
+    const _fusedBase=Math.min(8,2+~~(Math.max(_gLvF,_mhLvF)*6/19)); // 1렙=2, 20렙=8 (선형)
     const _goMax=_isGF?_fusedBase:(1+_goLv); // 단독: 1렙=2, 2렙=3, ... 5렙=6
     const _fusedRegen=Math.max(40,90-(_mhLvF+_gLvF-2)*4); // lv 올릴수록 빨라짐 (90→40프레임)
     const _goRegenT=_isGF?_fusedRegen:180;
@@ -30557,18 +30557,17 @@ const SKILL_REC_PATH=[
   {phase:'3. 역병 확장',phaseEn:'3. Plague Expand',skills:['plagueBurst'],fuse:'plagueFuse',desc:'폭독혈 추가 → 합체: 독혈 해방 (칼날+독)',descEn:'Plague Burst → Fuse: Plague Liberation (blade+poison)'},
   {phase:'4. 이동스킬 마스터',phaseEn:'4. Movement Master',skills:['chargeBoost','magicBlink'],fuse:'dimBreach',desc:'충돌+화염 → 합체: 사슬기동 (무적이동 핵심)',descEn:'Impact+Flame → Fuse: Chain Breach (invincible dash core)'},
   {phase:'5. 사슬 확장',phaseEn:'5. Chain Expand',skills:['chainAssault','chainSlash','chainSlam'],fuse:'dimThunder',desc:'사슬 체인 확장 → 차원돌파/차원파쇄/차원뇌격',descEn:'Chain expansion → Dimensional combos'},
-  {phase:'6. 전기: 참회',phaseEn:'6. Electric: Repentance',skills:['hellRay'],fuse:'elecRepent',desc:'참회 습득 → 악의폭풍과 합체: 뇌전참회',descEn:'Learn Repentance → Fuse with Malice Storm: Lightning Repentance'},
-  {phase:'7. 멸살광선',phaseEn:'7. Omni Beam',skills:['omniBeam'],fuse:null,desc:'E키 마법 — 강력한 직선 레이저',descEn:'E key magic — powerful straight laser'},
-  {phase:'8. 회전참 합체',phaseEn:'8. Whirlwind Fuse',skills:['whirlwind','detonate'],fuse:'whirlDet',desc:'회전참 + 기폭 → 합체: 회전기폭',descEn:'Whirlwind + Detonate → Fuse: Whirl-Det'},
-  {phase:'9. 대왕 합체',phaseEn:'9. Giant Fuse',skills:['giantSlam'],fuse:'slamStorm',desc:'대왕치기 추가 → 합체: 지진폭풍',descEn:'Giant Slam → Fuse: Slam Storm'},
-  {phase:'10. 석궁: 만화방창',phaseEn:'10. Crossbow: Barrage',skills:['fanShot'],fuse:'sixFuse',desc:'만화방창 + 멸살광선 → 합체: 연사+빔',descEn:'Barrage + Omni Beam → Fuse: Rapid+Beam'},
-  {phase:'11. 원소 합체',phaseEn:'11. Elemental Fuse',skills:['elemMissile'],fuse:'elemFuse',desc:'원소추적탄 추가 → 3단합체: 추적빔',descEn:'Elem Missile → 3-Fuse: Tracking Beam'},
-  {phase:'12. 6단합체: 폭풍빔',phaseEn:'12. 6-Fuse: Storm Beam',skills:[],fuse:'stormBeam',desc:'회전참+기폭+대왕+만화+멸살+원소 → 최종합체',descEn:'Whirl+Det+Giant+Barrage+Beam+Elem → Ultimate Fuse'},
-  {phase:'13. 방패 합체',phaseEn:'13. Shield Fuse',skills:['maliceSwipe','shieldThrow'],fuse:'shieldFuse',desc:'칼등치기 + 칼등날개 → 합체: 처내기 강화',descEn:'Blade Parry + Shield Wing → Fuse: Parry Enhanced'},
-  {phase:'14. 신성 영역',phaseEn:'14. Holy Domain',skills:['holyDome','holyPrison'],fuse:'holyFuse',desc:'회복 + 구속 → 합체: 신성한 영역',descEn:'Recovery + Prison → Fuse: Holy Domain'},
-  {phase:'15. 신성+빙결',phaseEn:'15. Holy+Ice',skills:['iceStorm'],fuse:'holyIce',desc:'아이스스톰 추가 → 합체: 신성빙결',descEn:'Ice Storm → Fuse: Holy Ice'},
-  {phase:'16. 암흑+가시',phaseEn:'16. Dark+Spike',skills:['darkPillar','spikeTrap'],fuse:'pillarSpike',desc:'암흑기둥 + 가시덫 → 합체: 기둥가시',descEn:'Dark Pillar + Spike Trap → Fuse: Pillar Spike'},
-  {phase:'17. 사슬 최종',phaseEn:'17. Chain Final',skills:['chainSlash'],fuse:'dimRush',desc:'기동칼날개 추가 → 5단합체: 차원질주',descEn:'Chain Bladewing → 5-Fuse: Dimensional Rush'},
+  {phase:'6. 멸살광선',phaseEn:'6. Omni Beam',skills:['omniBeam'],fuse:null,desc:'E키 마법 — 강력한 직선 레이저',descEn:'E key magic — powerful straight laser'},
+  {phase:'7. 회전참 합체',phaseEn:'7. Whirlwind Fuse',skills:['whirlwind','detonate'],fuse:'whirlDet',desc:'회전참 + 기폭 → 합체: 회전기폭',descEn:'Whirlwind + Detonate → Fuse: Whirl-Det'},
+  {phase:'8. 대왕 합체',phaseEn:'8. Giant Fuse',skills:['giantSlam'],fuse:'slamStorm',desc:'대왕치기 추가 → 합체: 지진폭풍',descEn:'Giant Slam → Fuse: Slam Storm'},
+  {phase:'9. 석궁: 만화방창',phaseEn:'9. Crossbow: Barrage',skills:['fanShot'],fuse:'sixFuse',desc:'만화방창 + 멸살광선 → 합체: 연사+빔',descEn:'Barrage + Omni Beam → Fuse: Rapid+Beam'},
+  {phase:'10. 원소 합체',phaseEn:'10. Elemental Fuse',skills:['elemMissile'],fuse:'elemFuse',desc:'원소추적탄 추가 → 3단합체: 추적빔',descEn:'Elem Missile → 3-Fuse: Tracking Beam'},
+  {phase:'11. 6단합체: 폭풍빔',phaseEn:'11. 6-Fuse: Storm Beam',skills:[],fuse:'stormBeam',desc:'회전참+기폭+대왕+만화+멸살+원소 → 최종합체',descEn:'Whirl+Det+Giant+Barrage+Beam+Elem → Ultimate Fuse'},
+  {phase:'12. 방패 합체',phaseEn:'12. Shield Fuse',skills:['maliceSwipe','shieldThrow'],fuse:'shieldFuse',desc:'칼등치기 + 칼등날개 → 합체: 처내기 강화',descEn:'Blade Parry + Shield Wing → Fuse: Parry Enhanced'},
+  {phase:'13. 신성 영역',phaseEn:'13. Holy Domain',skills:['holyDome','holyPrison'],fuse:'holyFuse',desc:'회복 + 구속 → 합체: 신성한 영역',descEn:'Recovery + Prison → Fuse: Holy Domain'},
+  {phase:'14. 신성+빙결',phaseEn:'14. Holy+Ice',skills:['iceStorm'],fuse:'holyIce',desc:'아이스스톰 추가 → 합체: 신성빙결',descEn:'Ice Storm → Fuse: Holy Ice'},
+  {phase:'15. 암흑+가시',phaseEn:'15. Dark+Spike',skills:['darkPillar','spikeTrap'],fuse:'pillarSpike',desc:'암흑기둥 + 가시덫 → 합체: 기둥가시',descEn:'Dark Pillar + Spike Trap → Fuse: Pillar Spike'},
+  {phase:'16. 사슬 최종',phaseEn:'16. Chain Final',skills:['chainSlash'],fuse:'dimRush',desc:'기동칼날개 추가 → 5단합체: 차원질주',descEn:'Chain Bladewing → 5-Fuse: Dimensional Rush'},
 ];
 const SKILL_HIER=[
   {id:'rec',name:'⭐ 추천',nameEn:'⭐ Recommend',col:'#ffcc44',cats:null},
@@ -31373,12 +31372,12 @@ function activateMaliceHunt(){
     G.mats-=_malCost(30);P.st=Math.max(0,P.st-_mhStCost);
     if(_isPlagueGF)P._pbCd=Math.max(300,~~((600-((P.skills.plagueBurst||1)-1)*36)*(1+_eqAffix('cooldownRed')))); // 독혈해방 10초 - Lv당 0.6초, 최소 5초
     const _goCntRaw=P._gOrbs.length;
-    const _goCnt=Math.min(_goCntRaw,6); // 최대 6발 (초과분은 데미지에 흡수)
+    const _goCnt=Math.min(_goCntRaw,8); // 최대 8발
     const _goR=(34)+P.r;
     const _bladePierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30);
     const _mhBasePierce=800+_mhLv*20+_bladePierceBonus;
-    const _fbBaseDmg=~~(meleeRef()*statStr()*pAtkMul()*(10+(_mhLv-1)*0.5)*_fuseMul('maliceHunt')); // 단독과 동일 공식 (b:10, g:0.5) + fuseMul
-    const _fbDmg=~~(_fbBaseDmg*20); // 칼날 20배 데미지 (악의해방/독혈해방 동일)
+    const _fbBaseDmg=~~(meleeRef()*statStr()*pAtkMul()*(20+(_mhLv-1)*4.21)*_fuseMul('maliceHunt')); // 단독과 동일 공식 (b:20, g:4.21) + fuseMul
+    const _fbDmg=_fbBaseDmg; // 단독과 동일 1발 데미지 (합체 이점 = 발수 2→8)
     const _fbPierce=_mhBasePierce; // 악의해방/독혈해방 관통률 동일
     const _fbBombR=80+_mhLv*5; // 히트 시 폭발 반경
     // 가장 가까운 적 또는 바라보는 방향
@@ -31407,7 +31406,7 @@ function activateMaliceHunt(){
     // 단독: 1발, 레벨 스케일 데미지, 10회 관통
     if(P.st<_mhStCost){showPH(_T('ST 부족!'),'#ff4444');return}
     G.mats-=_malCost(30);P.st=Math.max(0,P.st-_mhStCost);
-    const _mhDmg=~~(meleeRef()*statStr()*pAtkMul()*(10+(_mhLv-1)*0.5));
+    const _mhDmg=~~(meleeRef()*statStr()*pAtkMul()*(20+(_mhLv-1)*4.21));
     const _bladePierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30);
     const _mhPierce=800+_mhLv*20+_bladePierceBonus;
     const _mdx=Math.cos(P.atkArc),_mdy=Math.sin(P.atkArc);
