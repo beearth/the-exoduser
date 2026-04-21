@@ -7576,7 +7576,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       else showPH(_T('악의 부족! (')+_malCost(12)+')','#ff4444');break;
     case 'maliceHunt':
       if((P._mhCd||0)>0){break}
-      if(G.mats>=_malCost(30)){activateMaliceHunt();P._mhCd=Math.max(300,~~((600-((P.skills.maliceHunt||1)-1)*36)*(1+_eqAffix('cooldownRed'))));_skOk=true}
+      if(G.mats>=_malCost(30)){activateMaliceHunt();P._mhCd=Math.max(600,~~(900*(1+_eqAffix('cooldownRed'))));_skOk=true}
       else showPH(_T('악의 부족! (')+_malCost(30)+')','#ff4444');break;
     case 'maliceStorm':
       if(P._msAiming){P._msAiming=false;showPH(_T('취소'),'#888');break}
@@ -23635,7 +23635,7 @@ function update(){
       const _nb=P._needleBurst;
       const _na=(_nb.aim!=null?_nb.aim:P.facing)+(Math.random()-.5)*0.08; // 약간 랜덤 산포
       const dx=Math.cos(_na),dy=Math.sin(_na);
-      {const _pp=_getPProj();_pp.x=P.x+dx*12;_pp.y=P.y+dy*12;_pp.vx=dx*_nb.spd;_pp.vy=dy*_nb.spd;_pp.dmg=_nb.dmg;_pp.el=EL.P;_pp.maxDist=_nb.range;_pp.dist=0;_pp.r=1.5;_pp.stagger=2;_pp.kb=0;_pp.pierce=_nb.pierce;_pp.pierceMax=_nb.pierceMax;_pp.normalBow=true;_pp.needle=true;pProjs[pProjs.length]=_pp;}
+      {const _nbx=_nb.ox||P.x,_nby=_nb.oy||P.y;const _pp=_getPProj();_pp.x=_nbx+dx*12;_pp.y=_nby+dy*12;_pp.vx=dx*_nb.spd;_pp.vy=dy*_nb.spd;_pp.dmg=_nb.dmg;_pp.el=EL.P;_pp.maxDist=_nb.range;_pp.dist=0;_pp.r=1.5;_pp.stagger=2;_pp.kb=0;_pp.pierce=_nb.pierce;_pp.pierceMax=_nb.pierceMax;_pp.normalBow=true;_pp.needle=true;pProjs[pProjs.length]=_pp;}
       _nb.cnt++;
       if(_nb.cnt%3===0)playSample('crossbow_shot',.3,_r(1.5,.15));
     }
@@ -30621,7 +30621,7 @@ const SKILL_LIST=[
   {id:'elemMissile',name:'원소추적탄',cat:'bow',desc:'E탭 마법을 6원소 유도 미사일로 변경. 곡선 궤적으로 적을 추적. 레벨당 사거리+20 (뎀은 _skMul 계수 적용)',descEn:'Changes E-tap magic to 6-element homing missiles. Curved trajectory tracking enemies. Per Lv range+20 (DMG uses _skMul)',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
 
   {id:'guardian',name:'악의 보호자',cat:'def',noDmg:true,desc:'3초마다 악의 구체 생성(1렙 2개). 몸에 밀착하여 적 투사체를 자동 방어(파괴). 레벨당 구체+1',descEn:'Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'maliceHunt',name:'악의 사냥',cat:'bow',act:true,emoji:'⚔',desc:'유도 물리 칼날 1발 (악의30+ST50). 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영. 독혈해방 합체 칼날은 +100. 지속뎀 5초, 무한사거리. 쿨 10초(Lv당-0.6초)',descEn:'1 homing physical blade (malice 30 + ST 50). Base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling. Plague-fused blades gain +100. DOT 5s, infinite range. CD 10s (-0.6s/Lv)',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
+  {id:'maliceHunt',name:'악의 사냥',cat:'bow',act:true,emoji:'⚔',desc:'유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초',descEn:'1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
   {id:'maliceMortar',name:'폭풍소환',cat:'magic',act:true,emoji:'🌪️',desc:'어둠 소용돌이 소환 (마우스 조준 설치, MP 소모, 쿨 11초, INT 스케일링, 1렙 200범위 +30/렙, 5초 지속, 적 흡인)',descEn:'Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 200 +30/Lv, 5s duration, pulls enemies)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초',descEn:'Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발. 범위 1500+Lv×100px. 범위 끝까지 넉백(주 성능). 거리감쇠 50%. 스턴 2초. Lv당 뎀+10%. (MP 30%, 쿨 120초)',descEn:'Pentagram cast → holy light pillar mega-explosion. Range 1500+Lv×100px. Full-range knockback (main feature). 50% distance falloff. Stun 2s. Per Lv DMG+10%. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
@@ -31397,7 +31397,7 @@ function activateMaliceHunt(){
     const _isPlagueGF=P.skills.plagueBurst>=1&&_isFused('plagueFuse');
     if(_isPlagueGF&&(P._pbCd||0)>0){return}
     G.mats-=_malCost(30);P.st=Math.max(0,P.st-_mhStCost);
-    if(_isPlagueGF)P._pbCd=Math.max(300,~~((600-((P.skills.plagueBurst||1)-1)*36)*(1+_eqAffix('cooldownRed')))); // 독혈해방 10초 - Lv당 0.6초, 최소 5초
+    if(_isPlagueGF)P._pbCd=Math.max(600,~~(900*(1+_eqAffix('cooldownRed')))); // 독혈해방 15초, 최소 10초
     const _goCntRaw=P._gOrbs.length;
     const _goCnt=Math.min(_goCntRaw,8); // 최대 8발
     const _goR=(34)+P.r;
@@ -31529,7 +31529,7 @@ function activateNeedleShot(){
   const dmg=~~(bowRef()*statDex()*pBowMul()*(1.2+(slv-1)));
   // 관통 제거, 1렙 2발 / 5렙마다 +1발 (1렙=2, 5렙=3, 10렙=3)
   const _nCnt=2+~~((slv-1)/5); // 1렙=2, 6렙=3, 11렙=4...
-  P._needleBurst={cnt:0,max:_nCnt,interval:2,timer:0,dmg:dmg,pierce:0,pierceMax:0,range:600,spd:30,aim:P.facing};
+  P._needleBurst={cnt:0,max:_nCnt,interval:2,timer:0,dmg:dmg,pierce:0,pierceMax:0,range:600,spd:30,aim:P.facing,ox:P.x,oy:P.y};
   playSample('crossbow_shot',.8,_r(1.4,.1));
   addTxt(P.x,P.y-30,_T('🪡 바늘출!'),'#ccddff',35);shake(2);
 }
@@ -31623,7 +31623,7 @@ function activateVoidScarecrow(){
 // ═══ 폭독칼날 — 발동 (1발 관통 칼날, 쿨12초) ═══
 function activatePlagueBurst(){
   if(G.mats<_malCost(15)||(P._pbCd||0)>0)return;
-  G.mats-=_malCost(15);P._pbCd=Math.max(300,~~((600-((P.skills.plagueBurst||1)-1)*36)*(1+_eqAffix('cooldownRed')))); // 10초 - Lv당 0.6초, 최소 5초
+  G.mats-=_malCost(15);P._pbCd=Math.max(600,~~(900*(1+_eqAffix('cooldownRed')))); // 폭독칼날 15초, 최소 10초
   const slv=P.skills.plagueBurst||1;
   const a=P.atkArc;
   const _bladePierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30);
