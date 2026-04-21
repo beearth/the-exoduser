@@ -2136,6 +2136,7 @@ canvas{display:block;position:fixed;inset:0}
 </div>
 <div id="mmWrap"><canvas id="mm" width="130" height="130" style="z-index:2"></canvas><img id="mmFrame" src="img/mm_frame.png" alt=""></div>
 
+<div id="petSubtitle" style="position:fixed;bottom:90px;left:50%;transform:translateX(-50%);color:#ffdd88;font-size:1.1rem;font-weight:700;font-family:'Malgun Gothic',sans-serif;text-align:center;pointer-events:none;z-index:999;text-shadow:0 0 6px rgba(0,0,0,.9),0 0 12px rgba(0,0,0,.7);opacity:0;transition:opacity .3s;white-space:nowrap"></div>
 <div id="skBarTip"></div>
 <div id="skBar">
   <div id="poiseBarWrap" style="display:none"><div id="poiseBarFill"></div></div>
@@ -5580,6 +5581,8 @@ function _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur){
   _petBubble.pairFired=false;
   if(pairWho&&pairTxt){_petBubble.pair={who:pairWho,txt:_T(pairTxt),mt:~~((pairDur||5)*60)}}
   else{_petBubble.pair=null}
+  // 자막 표시
+  {const _ps=$('petSubtitle');if(_ps){const _isCrow=who==='crow';_ps.style.color=_isCrow?'#ccbbff':'#ffdd88';_ps.textContent=(_isCrow?'까마귀: ':'고양이: ')+_T(txt);_ps.style.opacity='1'}}
   return true;
 }
 let _petGlobalCD=0; // 글로벌 쿨다운 (30초 — 연속 대사 방지)
@@ -5604,8 +5607,14 @@ function _updatePetBubble(){
       _petBubble.who=_petBubble.pair.who;_petBubble.txt=_petBubble.pair.txt;
       _petBubble.mt=_petBubble.pair.mt;_petBubble.t=_petBubble.pair.mt;
       _petBubble.pair=null;
+      // 자막 갱신 (페어 대사)
+      {const _ps=$('petSubtitle');if(_ps){const _isCrow=_petBubble.who==='crow';_ps.style.color=_isCrow?'#ccbbff':'#ffdd88';_ps.textContent=(_isCrow?'까마귀: ':'고양이: ')+_petBubble.txt;_ps.style.opacity='1'}}
     }
+    // 자막 페이드아웃 (마지막 0.5초)
+    if(_petBubble.t>0&&_petBubble.t<30){const _ps=$('petSubtitle');if(_ps)_ps.style.opacity=(_petBubble.t/30).toFixed(2)}
   }
+  // 대사 완전 종료 시 자막 숨김
+  if(_petBubble.t<=0&&!_petBubble.pair){const _ps=$('petSubtitle');if(_ps&&_ps.style.opacity!=='0')_ps.style.opacity='0'}
 }
 
 // 대사 트리거 체크 (updatePet에서 매 프레임 호출)
@@ -19833,6 +19842,7 @@ function initStage(si){
   if(G.map[_spY]&&G.map[_spY][_spX]!==0){for(let _sr=1;_sr<30;_sr++)for(let _sdy=-_sr;_sdy<=_sr;_sdy++)for(let _sdx=-_sr;_sdx<=_sr;_sdx++){const _sx=_spX+_sdx,_sy=_spY+_sdy;if(_sx>0&&_sy>0&&_sx<G.mw-1&&_sy<G.mh-1&&G.map[_sy]&&G.map[_sy][_sx]===0){_spX=_sx;_spY=_sy;_sr=99;break}}}
   P.x=(_spX+.5)*T;P.y=(_spY+.5)*T;
   P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle';P.iframes=360;P.kb={x:0,y:0};P._webSlow=0;P._trapSlowT=0;P._freezeSlow=0;P.burnT=0;P.poison=0;P._ioActive=false;P._ioT=0;P._altAtk=0;P._altDef=0;P._altSpd=0;P._lastStandUsed=false;P._reviveOnceUsed=false;
+  P.chargeStocks=P.maxChargeStocks||1;P.chargeCd=0;
   G.stageCleared=false;G._deathSpawned=false;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G.stageTime=0;G.combo=0;G.comboTimer=0;G._stageKills=0;G._sStats={deaths:0,dmgDealt:0,dmgTaken:0,parries:0,potions:0,items:0,dodges:0,crits:0,maxHit:0,dashDist:0,dashCount:0,walked:0,_prevX:0,_prevY:0};G._dmgPeak={val:0,t:0};
   if(typeof _clearExtEPalCache==='function')_clearExtEPalCache();
   if(typeof _clearExtBPalCache==='function')_clearExtBPalCache();
@@ -21208,7 +21218,7 @@ function update(){
         // 히트 처리 (4프레임마다)
         if(!P._sbHitF)P._sbHitF=0;P._sbHitF++;
         const _sbDoHit=P._sbHitF%4===0;
-        const _sbDmgBase=~~(magicRef()*statInt()*pMagicMul()*pBeamMul()*_skMul('omniBeam')*_fuseMul('omniBeam')*_sbMul); // 통일공식: _skMul + 빔 장비 배율 + 암전나선 전체 강화
+        const _sbDmgBase=~~(magicRef()*statInt()*pMagicMul()*pBeamMul()*_skMul('omniBeam')*_fuseMul('omniBeam')*_sbMul/3); // 6줄기÷3 분배 + 전체 강화
         for(let _bi=0;_bi<6;_bi++){
           const _tgt=P._sbTgts[_bi];if(!_tgt||!_tgt.alive)continue;
           const _elIdx=_allEl[_bi];
@@ -21997,8 +22007,9 @@ function update(){
     const _isOmni=!!(P.skills.omniBeam&&P.skills.fanShot&&_isFused('sixFuse'));
     const _isElemBeam=_isOmni&&!!(P.skills.elemMissile&&_isFused('elemFuse'));
     const _bLv=(P.skills.omniBeam||1);const _bMul=_isElemBeam?(0.5+(_bLv-1)*0.078)*.9:(0.5+(_bLv-1)*0.078);
-    // 빔 MP소비: 초당 7% 고정소모 + 소비량 보너스
-    const _bcostSec=~~(30*(1+(_bLv-1)*0.18)); // MP/초 (DPS비례: +18%/Lv, Lv1=30 Lv10=79)
+    // 빔 MP소비: 줄기별 차등 (1줄기=10, 3줄기=15, 6줄기=30)
+    const _beamMpBase=_isElemBeam?30:_isOmni?15:10; // 추적암전30, 만화광선15, 멸살10
+    const _bcostSec=~~(_beamMpBase*(1+(_bLv-1)*0.18));
     const _bcost=_bcostSec/60;
     const _mpBefore=P.mp;
     P.mp=Math.max(0,P.mp-_bcost*sp);
@@ -22018,7 +22029,7 @@ function update(){
     // ── 빔 히트 프레임 통일: 4프레임마다 히트 판정 (15타/초) ──
     if(!P._beamHitFrame)P._beamHitFrame=0;P._beamHitFrame++;
     const _beamDoHit=P._beamHitFrame%4===0;
-    const _beamTickDmgMul=2;
+    const _beamTickDmgMul=4; // 전체 레이저 데미지 2배 (2→4)
     let _beamHitCap=0;
     // ═══ 레이저 공통: 빔 방향의 가장 가까운 적 찾기 ═══
     // 빔 경로를 step마다 체크, 첫 적에서 멈춤. 적 없으면 null+사거리 끝 반환
@@ -22075,7 +22086,7 @@ function update(){
       // 만화광선(3발)/추적암전(6발): 원소 레이저
       const _omniLv=P.skills.omniBeam||1;
       const _emLv2=P.skills.elemMissile||1;
-      const _dmgMul=_isElemBeam?(0.5+(_emLv2-1)*.06)*(5/6):2.5; // 단일보스 실전 보정: 만화광선/추적암전 갈래 합산을 크게 상향
+      const _dmgMul=_isElemBeam?(0.5+(_emLv2-1)*.06)*(5/6)/3:2.5/2; // 줄기 분배: 추적암전÷3, 만화광선÷2
       const _bRng=~~(540+((_isElemBeam?_emLv2:_omniLv)-1)*26); // 1렙540, 10렙774 (+20% 버프)
       if(!P._omniPts)P._omniPts=_beamPtsPool; // 풀 참조
       const _twistSpd=_now*0.004;
@@ -30581,7 +30592,7 @@ const SKILL_HIER=[
 let _skHierTab='rec';
 const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,demonRevive:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1};
 function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="">`}
-function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.65) ${deg}deg,transparent ${deg}deg);pointer-events:none"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.7rem;color:#ffdd55;font-weight:900;text-shadow:0 0 6px #000,0 0 12px #000,0 1px 2px #000">${txt}</div>`:''}`}
+function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.55) ${deg}deg,transparent ${deg}deg);pointer-events:none;z-index:1"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#ffee66;font-weight:900;text-shadow:0 0 4px #000,0 0 8px #000,0 1px 3px #000;z-index:2">${txt}</div>`:''}`}
 const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -43653,6 +43664,7 @@ $('retryBtn').onclick=async()=>{
     initStage(G.stage);
   }
   P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle';P.iframes=300;P.kb={x:0,y:0};
+  P.chargeStocks=P.maxChargeStocks||1;P.chargeCd=0;
   G._bonfire={x:P.x,y:P.y,t:300,r:280};
   // 스탯 재적용
   applyStats();
