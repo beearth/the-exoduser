@@ -94,7 +94,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | ID | 이름 | 자원 | 비용 | 쿨다운 | 데미지 공식 | DPS 비고 |
 |---|---|---|---|---|---|---|
 | fireball | 악의구 | MP | 50×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('fireball') (b=5.0, g=2.0) | 기본 E, 범위폭발+넉백, Lv당 크기+50% (업화선 기준 상향) |
-| omniBeam | 멸살광선 | MP(틱) | 멸살:**10**(1+(Lv-1)×0.18)/초, 만화광선:**15**, 추적암전:**30** | 과부하 **300f (5초)** | INT × magicRef × pBeamMul × _skMul × drainBonus | tickMul=4(전체×2), 줄기분배: 만화÷2, 추적/암전÷3. 1적 DPS: 멸살>만화>추적 (2026-04-21) |
+| omniBeam | 멸살광선 | MP(틱) | 멸살:**10**(1+(Lv-1)×0.18)/초, 만화광선:**15**, 추적암전:**30** | 과부하 **300f (5초)** | INT × magicRef × pBeamMul × _skMul × drainBonus | tickMul=4(전체×2), 단독 멸살 ×3 집중보너스, 합체는 줄기별 풀뎀. 1적 DPS: 멸살 최강 (2026-04-21) |
 | elemMissile | 원소추적탄 | MP | ~250×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('elemMissile') (b=1.0, g=0.4) | 6원소 유도, 곡선궤적, 사거리+20/Lv |
 | energyShot | 마력연사 | MP | **12~22/발 (4발/초=48~88MP/초)** | 없음 (토글) | INT × magicRef × pMagicMul × _skMul('energyShot') (b=3.0, g=1.2) | 직선 즉시타격(비합체), 사거리+60/Lv |
 | fireBeam | 업화선 | MP | 10/발 | DEX 스케일 | INT × (5+(Lv-1)) | 100%관통+유도+화상, 사거리+50/Lv, Lv당 뎀+1 |
