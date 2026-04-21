@@ -23905,7 +23905,7 @@ function update(){
     let _mswx=mouse.x-C.width/2+G.cam.x;
     let _mswy=mouse.y-C.height/2+G.cam.y;
     const _msLv=P.skills.maliceStorm||1;
-    const _msR=200+(_msLv-1)*22; // 1렙250, 10렙448 (조준원)
+    const _msR=400+(_msLv-1)*18; // 1렙400(×2), 20렙742(+20%)
     // 사거리 1000px 클램프
     const _msDst=dst(P.x,P.y,_mswx,_mswy);
     if(_msDst>1000){const _msA=Math.atan2(_mswy-P.y,_mswx-P.x);_mswx=P.x+Math.cos(_msA)*1000;_mswy=P.y+Math.sin(_msA)*1000}
@@ -31449,7 +31449,7 @@ function fireMaliceMortar(_tx,_ty){
   const tx=_tx!=null?_tx:P.x+Math.cos(P.facing)*(P._mmDist||150);
   const ty=_ty!=null?_ty:P.y+Math.sin(P.facing)*(P._mmDist||150);
   const _mmSlv=P.skills.maliceMortar||1;
-  const _mmR=200+(_mmSlv-1)*22; // 악의폭풍과 동일 범위 공식
+  const _mmR=400+(_mmSlv-1)*18; // 1렙400(×2), 20렙742(+20%)
   const _iceFuse=P.skills.iceOrb>=1&&_isFused('iceMortar');
   if(_iceFuse){P._mmCd=660;P._ioCd=600;}else{P._mmCd=660;}
   G._mmBomb={sx:P.x,sy:P.y,tx:tx,ty:ty,x:P.x,y:P.y,t:0,maxT:40,r:_mmR,phase:'throw',
@@ -31548,7 +31548,7 @@ function activateBladeDash(dir){
   // 10스택 소모 + 충전 시작 (8초→Lv당-0.5초, 최소3초, 돌파 패시브 적용)
   if(P._bdStk==null)P._bdStk=10;
   P._bdStk--;
-  addTxt(P.x,P.y-45,'⚡'+(P._bdStk)+'/10','#44ddff',30);
+  addTxt(P.x,P.y-45,'⚡'+(P._bdStk)+'/10','#44ddff',30);showPH('⚡'+(P._bdStk)+'/10','#44ddff');
   const _bdLv2=P.skills.bladeDash||1;
   if(P._bdStk<10&&(P._bdRech||0)<=0)P._bdRech=~~(Math.max(180,(480-(_bdLv2-1)*30))*1);
   P._bdAng=_bdAng;
