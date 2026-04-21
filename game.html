@@ -24004,7 +24004,7 @@ function update(){
     let _iswy=mouse.y-C.height/2+G.cam.y;
     {const _isD3=dst(P.x,P.y,_iswx,_iswy);if(_isD3>1000){const _isA3=Math.atan2(_iswy-P.y,_iswx-P.x);_iswx=P.x+Math.cos(_isA3)*1000;_iswy=P.y+Math.sin(_isA3)*1000}}
     const _isLv=P.skills.iceStorm||1;
-    const _isR=200+(_isLv-1)*22;
+    const _isR=400+(_isLv-1)*18; // 1렙400(×2), 20렙742(+20%)
     if(MBjust[2]||K['Escape']){P._isAiming=false;MBjust[2]=false;K['Escape']=false}
     else if(MBjust[0]){
       MBjust[0]=false;
@@ -31548,6 +31548,7 @@ function activateBladeDash(dir){
   // 10스택 소모 + 충전 시작 (8초→Lv당-0.5초, 최소3초, 돌파 패시브 적용)
   if(P._bdStk==null)P._bdStk=10;
   P._bdStk--;
+  addTxt(P.x,P.y-45,'⚡'+(P._bdStk)+'/10','#44ddff',30);
   const _bdLv2=P.skills.bladeDash||1;
   if(P._bdStk<10&&(P._bdRech||0)<=0)P._bdRech=~~(Math.max(180,(480-(_bdLv2-1)*30))*1);
   P._bdAng=_bdAng;
