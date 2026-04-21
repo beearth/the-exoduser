@@ -2136,7 +2136,7 @@ canvas{display:block;position:fixed;inset:0}
 </div>
 <div id="mmWrap"><canvas id="mm" width="130" height="130" style="z-index:2"></canvas><img id="mmFrame" src="img/mm_frame.png" alt=""></div>
 
-<div id="petSubtitle" style="position:fixed;bottom:90px;left:50%;transform:translateX(-50%);color:#ffdd88;font-size:1.1rem;font-weight:700;font-family:'Malgun Gothic',sans-serif;text-align:center;pointer-events:none;z-index:999;text-shadow:0 0 6px rgba(0,0,0,.9),0 0 12px rgba(0,0,0,.7);opacity:0;transition:opacity .3s;white-space:nowrap"></div>
+<div id="petSubtitle" style="position:fixed;bottom:140px;left:50%;transform:translateX(-50%);color:#ffdd88;font-size:1.1rem;font-weight:700;font-family:'Malgun Gothic',sans-serif;text-align:center;pointer-events:none;z-index:999;text-shadow:0 0 6px rgba(0,0,0,.9),0 0 12px rgba(0,0,0,.7);opacity:0;transition:opacity .3s;white-space:nowrap"></div>
 <div id="skBarTip"></div>
 <div id="skBar">
   <div id="poiseBarWrap" style="display:none"><div id="poiseBarFill"></div></div>
@@ -5751,7 +5751,19 @@ function _checkPetDialogue(){
   if(P.s==='idle'){_petIdleT+=_dtSp;
     if(_petIdleT>60*20){ // 20초
       _petIdleT=0;
+      // 50% 재촉 대사, 50% 게임팁
       if(Math.random()<.5){
+        const _nags=[
+          ['시간이 없어. 움직여.','멍하게 서있으면 안 돼!'],
+          ['...뭘 기다리는 거야?','가자가자! 몬스터가 기다려!'],
+          ['여기 오래 있으면 위험해.','움직여야 해! 가만있으면 둘러싸여!'],
+          ['쉬는 건 죽고 나서 해.','살아있을 때 쉬면 안 돼!'],
+          ['적이 몰려오고 있어. 빨리 움직여.','냄새 맡고 올 거야. 빨리!'],
+          ['...아직 살아있는 거 맞지?','혹시 잠든 거야...?'],
+        ];
+        const _ni=~~(Math.random()*_nags.length);
+        _petSayCD('idle_nag'+_ni,'crow',_nags[_ni][0],4,30,'cat',_nags[_ni][1],4);
+      }else if(Math.random()<.5){
         const _tips=[
           ['작살을 땅에 꽂으면 끌려간다.','Shift로 작살 던져봐!'],
           ['패링 성공하면 ST가 회복된다. 공짜 자원이야.','패링 많이 하면 ST 걱정 없어~'],
@@ -21218,7 +21230,7 @@ function update(){
         // 히트 처리 (4프레임마다)
         if(!P._sbHitF)P._sbHitF=0;P._sbHitF++;
         const _sbDoHit=P._sbHitF%4===0;
-        const _sbDmgBase=~~(magicRef()*statInt()*pMagicMul()*pBeamMul()*_skMul('omniBeam')*_fuseMul('omniBeam')*_sbMul/3); // 6줄기÷3 분배 + 전체 강화
+        const _sbDmgBase=~~(magicRef()*statInt()*pMagicMul()*pBeamMul()*_skMul('omniBeam')*_fuseMul('omniBeam')*_sbMul); // 줄기별 풀 데미지 (원복)
         for(let _bi=0;_bi<6;_bi++){
           const _tgt=P._sbTgts[_bi];if(!_tgt||!_tgt.alive)continue;
           const _elIdx=_allEl[_bi];
@@ -22079,14 +22091,15 @@ function update(){
     // 빔 데미지 = 기본마법뎀 × 스킬레벨 배율 (틱당, MP 소비는 지속시간만 결정)
     const _omniSlv=P.skills.omniBeam||1;
     const _beamDmgBase=magicRef()*statInt()*pMagicMul()*pBeamMul()*_skMul('omniBeam')*_fuseMul('omniBeam'); // 통일공식: _skMul + 빔 장비 배율
-    const _beamTickDmgBase=_beamDmgBase*_beamTickDmgMul; // 15타/초 통일에 맞춰 틱당 피해 보정
+    const _beamSoloMul=_isOmni?1:3; // 단독 멸살 ×3 집중 보너스
+    const _beamTickDmgBase=_beamDmgBase*_beamTickDmgMul*_beamSoloMul;
     // 레이저류: 끝점에서만 데미지 (관통 없음)
     // 빔 중첩: 적에게 빔 지속 적중 시 중첩+1 (최대30), 데미지 배율 = 1 + 중첩*0.1 (최대 4배)
     if(_isOmni){
       // 만화광선(3발)/추적암전(6발): 원소 레이저
       const _omniLv=P.skills.omniBeam||1;
       const _emLv2=P.skills.elemMissile||1;
-      const _dmgMul=_isElemBeam?(0.5+(_emLv2-1)*.06)*(5/6)/3:2.5/2; // 줄기 분배: 추적암전÷3, 만화광선÷2
+      const _dmgMul=_isElemBeam?(0.5+(_emLv2-1)*.06)*(5/6):2.5; // 줄기별 풀 데미지 (원복)
       const _bRng=~~(540+((_isElemBeam?_emLv2:_omniLv)-1)*26); // 1렙540, 10렙774 (+20% 버프)
       if(!P._omniPts)P._omniPts=_beamPtsPool; // 풀 참조
       const _twistSpd=_now*0.004;
@@ -33036,9 +33049,16 @@ function _renderSkillRow(sk,grid){
           ev.stopPropagation();
           if(_grpDone)return;
           if(!_grpReady&&!_isSel&&!_grpPS){const _fp2=_FUSE_PAIRS[_grp.key]||[];const _fp2R=_fuseReqProf(_grp.key);const _cs2={};for(const s of _fp2){const c=_SK_CAT[s];if(c)_cs2[c]=true}const _fp2Txt=Object.keys(_cs2).map(c=>c+' '+~~(_catProfVal(c)/60)+'m/'+~~(_fp2R/60)+'m').join(' ');addTxt(P.x,P.y-40,_gNm+": "+_fp2Txt,"#ff4444",60);return}
-          if(!_fuseSelId){_fuseSelId=sk.id;renderSkillPanel()}
-          else if(_fuseSelId===sk.id){_fuseSelId=null;renderSkillPanel()}
-          else{
+          if(!_fuseSelId){
+            // 자동 합체: 파트너가 모두 습득됐으면 파트너 클릭 없이 즉시 합체
+            const _autoFuseIds=_FUSE_PAIRS[_grp.key]||[];
+            const _autoAllLearned=_autoFuseIds.length>=2&&_autoFuseIds.every(function(id){return(P.skills[id]||0)>=1});
+            if(_autoAllLearned&&_canFuse(_grp.key)){
+              _fuseSelId=sk.id; // 임시 설정 후 아래 합체 로직 실행
+            }else{_fuseSelId=sk.id;renderSkillPanel();return}
+          }
+          if(_fuseSelId===sk.id&&!_canFuse(_grp.key)){_fuseSelId=null;renderSkillPanel();return}
+          {
             const srcGrp=_fuseGemGroup(_fuseSelId);
             const _srcInGrp=srcGrp&&(_FUSE_PAIRS[_grp.key]||[]).includes(_fuseSelId);
             if(srcGrp&&(srcGrp.key===_grp.key||_srcInGrp)){
@@ -42767,35 +42787,7 @@ function drawP(){
   // (유령불꽃은 포스트프로세싱 위에서 렌더 — _dbgDTorch 이후)
   if(false){
   }
-  // ── 펫 말풍선 렌더 ──
-  if(_petBubble.t>0&&_petBubble.who&&G.pets[_petBubble.who]){
-    const _bPet=G.pets[_petBubble.who];
-    // viewport 컬링 — 말풍선 주인 펫이 화면 밖 300px 초과 시 스킵 (2026-04-17)
-    if(!(_bPet.x<_vl-300||_bPet.x>_vr+300||_bPet.y<_vt-300||_bPet.y>_vb+300)){
-    const _bIsCrow=_petBubble.who==='crow';
-    const _bBob=Math.sin(_bPet.t*(_bIsCrow?.1:.06))*(_bIsCrow?2:1);
-    const _bx=~~_bPet.x,_by=~~(_bPet.y+_bBob)-(_bIsCrow?18:14);
-    const _bTxt=(_bIsCrow?'까마귀: ':'고양이: ')+_petBubble.txt;
-    X.save();
-    X.font='bold 22px "Malgun Gothic",sans-serif';
-    // 줄 나누기 (최대 18자)
-    const _bLines=[];
-    for(let ci=0;ci<_bTxt.length;ci+=18)_bLines.push(_bTxt.substring(ci,ci+18));
-    const _lh=28,_bPad=6;
-    let _maxW=0;for(let li=0;li<_bLines.length;li++){const w=X.measureText(_bLines[li]).width;if(w>_maxW)_maxW=w}
-    const _bW=_maxW+_bPad*2,_bH=_bLines.length*_lh+_bPad*2;
-    const _bLeft=_bx-_bW/2,_bTop=_by-_bH;
-    // 페이드
-    const _fadeA=Math.min(1,_petBubble.t/30);
-    // 텍스트만 (박스 없음)
-    X.globalAlpha=_fadeA;
-    X.fillStyle=_bIsCrow?'#ccbbff':'#ffdd88';X.textAlign='center';X.textBaseline='top';
-    
-    for(let li=0;li<_bLines.length;li++)X.fillText(_bLines[li],_bx,_bTop+_bPad+li*_lh);
-    
-    X.restore();
-    } // viewport 컬링 닫기
-  }
+  // ── 펫 말풍선: 월드 렌더 제거됨 — HUD 자막(petSubtitle)으로 이동 ──
   // S0=charge/recover S1=조준+해골 S2=fireZone(장판5종)
   // S3=방패/유탄/폭발/포격 S4=궁극기 S5=보스패턴30종
   // S6=스킬FX+스프라이트+무기 S7=pProjs+보호막+펫
