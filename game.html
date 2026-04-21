@@ -7726,6 +7726,7 @@ addEventListener('keydown',e=>{
   if(e.code==='ShiftLeft'&&G.on&&!G.paused&&!e.repeat&&P.s!=='fallen'&&P.s!=='dead'){
     if(_harpActive||_dashActive){_harpActive=false;_dashActive=false;_dashHold=false;_dashLeft=0;_dashTier=0;_dashVX=0;_dashVY=0;_dashPhase=0;P._chainSlamReady=false;P._chainAssaultReady=false;addTxt(P.x,P.y-20,_T('캔슬'),'#ff6666',20);playSample('ui_cancel',.4,1)}
     else if(!_dashHold&&_harpGauge>=_HARP_GAUGE_COST[1]){_dashHold=true;_dashHoldF=0;_dashTier=0}
+    else if(!_dashHold&&_harpGauge<_HARP_GAUGE_COST[1]){showPH(_T('충전 중...'),'#ff8844')}
   }
   // ═══ 칼날이동 — 더블탭 or 방향키+스페이스 동시 입력 ═══
   if(G.on&&!G.paused&&!e.repeat&&P.s!=='fallen'&&P.s!=='dead'&&P.skills&&P.skills.bladeDash>=1){
@@ -14899,11 +14900,11 @@ function _addGorePiece(x,y,type){
     g.life=40;g.ml=40; // 0.67초 짧고 강렬
   }else{
     g.camFling=false;g.scale=1;g.vz=0;
-    g.x=x+(Math.random()-.5)*20;g.y=y+(Math.random()-.5)*20;
-    const a=Math.random()*Math.PI*2;const spd=1.5+Math.random()*3;
+    g.x=x+(Math.random()-.5)*8;g.y=y+(Math.random()-.5)*8;
+    const a=Math.random()*Math.PI*2;const spd=5+Math.random()*7;
     g.vx=Math.cos(a)*spd;g.vy=Math.sin(a)*spd-2;
-    g.rot=Math.random()*Math.PI*2;g.rv=(Math.random()-.5)*.12;
-    g.life=60;g.ml=60; // 1초
+    g.rot=Math.random()*Math.PI*2;g.rv=(Math.random()-.5)*.3;
+    g.life=90;g.ml=90; // 1.5초
   }
 }
 // ── 스프라이트 분할 시체 시스템 (2~4조각, 큰 크롭) ──
@@ -22736,7 +22737,7 @@ function update(){
     // 우클릭(sBash)으로 무지개탄 패링 시도 → 잘못된 입력, 데미지
     if(p.blackBean&&!_pHit&&_pDist<_wrongR&&P.s==='sBash'&&!P._ioActive&&P.iframes<=0){
       // 우클릭 패링 시도 → 잘못된 입력: 폭발 + 넉백
-      const _bkWrongD=p.dmg;hurtP(_bkWrongD,{dtype:'magic',src:'무지개오패링'});
+      const _bkWrongD=~~(P.mhp*0.10);hurtP(_bkWrongD,{dtype:'magic',src:'무지개오패링'}); // 최대HP 10% 고정 페널티
       P.iframes=3;addTxt(p.x,p.y-15,_T('❌ Q키로! -')+_bkWrongD,'#ff44ff',50);
       {const _bkA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bkA)*6;P.kb.y+=Math.sin(_bkA)*6}
       SFX.detonate();shake(12);doHitFlash('#ff00ff',0.25);
@@ -22946,7 +22947,7 @@ function update(){
     if(_gxTgt2)_gxTurret.ang=Math.atan2(_gxTgt2.y-_gxTurret.y,_gxTgt2.x-_gxTurret.x);
   }
   // Player arrows (bow) — 최대 60발 제한
-  {const _ppCap=P._blueBarrage?110:60;if(pProjs.length>_ppCap){for(let _ri=_ppCap;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=_ppCap;}}
+  {const _ppCap=P._blueBarrage?150:80;if(pProjs.length>_ppCap){for(let _ri=_ppCap;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=_ppCap;}}
   {let w=0;for(let i=0;i<pProjs.length;i++){
     const p=pProjs[i];
     // 트레일 업데이트
@@ -36848,7 +36849,7 @@ function draw(){
       if(e.hp<e.mhp){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle=gt.col;X.fillRect(bx,by,bw*(e.hp/e.mhp),4);by-=5}
       if(e.eShield>0&&e.eShieldMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),3);by-=4}
       if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
-      if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*(e.poise/e.maxPoise),3)}}
+      if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*Math.max(0,Math.min(1,e.poise/e.maxPoise)),3)}}
       continue;
     }
     // ── 슬라임 괴물 전용 렌더 ──
@@ -36897,7 +36898,7 @@ function draw(){
 
       if(e.eShield>0&&e.eShieldMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),3);by-=4}
       if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
-      if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*(e.poise/e.maxPoise),3)}}
+      if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*Math.max(0,Math.min(1,e.poise/e.maxPoise)),3)}}
       continue;
     }
     if(_eLite){
@@ -36932,7 +36933,7 @@ function draw(){
 
       if(e.eShield>0&&e.eShieldMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),3);by-=4}
       if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
-      if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*(e.poise/e.maxPoise),3)}
+      if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*Math.max(0,Math.min(1,e.poise/e.maxPoise)),3)}
       }continue;}
     const isStunned=e.stunned>0;
     const isReviving=e.reviveIframes>0;
