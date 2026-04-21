@@ -20673,3 +20673,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/all_assets/bosses/boss_rotten_raven/walking_west_4.png
 - img/all_assets/bosses/boss_rotten_raven/walking_west_5.png
 
+
+## 2026-04-21 23:30 (auto)
+- game.html
+

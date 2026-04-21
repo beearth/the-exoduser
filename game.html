@@ -19471,7 +19471,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   // ═══ ATK 공식 v2: Lv≤500 선형, Lv>500 복리 가속 ═══
   const _baseAtkLin=(ib?75:50)+monLv*(ib?2.9:1.95);
   const _atkCurve=monLv<=500?_baseAtkLin:_baseAtkLin*Math.pow(1.0018,monLv-500);
-  const _atk=Math.floor(_atkCurve*dm*et.atkMul);
+  const _atk=Math.floor(_atkCurve*dm*et.atkMul*0.5); // ATK 반감 (2026-04-21)
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   if(!window._noProjEtypes)window._noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
   let _projCd=ib?50 // 보스: 50f 원래값 유지
