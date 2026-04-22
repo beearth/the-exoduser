@@ -7930,7 +7930,7 @@ const DR_CAP=0.75; // 방어 DR 상한 75%
 // 무기 파트(wpn,helm): weapon/bow→'wpn', helmet→'helm'
 // 방어구 파트(armor,shield,boots,gloves,pants,cloak): 각자 슬롯
 // 장신구 파트(belt,bracelet,ring,neck,headband): 각자 슬롯 (belt 버그 수정: 구버전 'armor' → 'belt')
-const _AFSLOT={weapon:'wpn',shield:'shield',boots:'boots',armor:'armor',helmet:'helm',bow:'wpn',gloves:'gloves',pants:'pants',belt:'belt',necklace:'neck',ring1:'ring',ring2:'ring',cape:'cloak',bracelet:'bracelet',headband:'headband'};
+const _AFSLOT={weapon:'wpn',shield:'shield',boots:'boots',armor:'armor',helmet:'helm',bow:'xbow',gloves:'gloves',pants:'pants',belt:'belt',necklace:'neck',ring1:'ring',ring2:'ring',cape:'cloak',bracelet:'bracelet',headband:'headband'};
 // ═══ AFFIX_POOL (3파트 룰 적용 2026-04-10) ═══
 // 무기 파트(wpn,helm): 공격/크리/원소/DoT만, 스탯 금지
 // 방어구 파트(armor,shield,gloves,pants,boots,cloak): 방어(+50 5티어)/HP/이속/방어유틸
@@ -7945,29 +7945,29 @@ const AFFIX_POOL=[
   {id:'fireDot',type:0,tiers:[6,10,17,26,38],unit:'dps',slots:['wpn'],group:'fire',weight:100},
   {id:'iceDot',type:0,tiers:[4,7,12,18,26],unit:'dps',slots:['wpn'],group:'ice',weight:90},
   {id:'lightChain',type:0,tiers:[8,13,22,35,50],unit:'dmg',slots:['wpn'],group:'lightning',weight:85},
-  {id:'darkCurse',type:0,tiers:[.12,.20,.35,.55,.75],unit:'prob',slots:['wpn'],group:'dark',weight:70},
+  {id:'darkCurse',type:0,tiers:[.12,.20,.35,.55,.75],unit:'prob',slots:['helm'],group:'dark',weight:70},
   // 공격 스킬 관련
   {id:'armorPen',type:0,tiers:[.05,.08,.14,.22,.32],unit:'pct',slots:['wpn'],group:'pen',weight:75},
   {id:'staggerBns',type:0,tiers:[5,8,14,22,32],unit:'val',slots:['wpn'],group:'stagger',weight:70},
-  {id:'chainTarget',type:0,tiers:[1,1,2,3,4],unit:'cnt',slots:['wpn'],group:'chain',weight:60},
+  {id:'chainTarget',type:0,tiers:[1,1,2,3,4],unit:'cnt',slots:['xbow'],group:'chain',weight:60},
   {id:'killSlayer',type:0,tiers:[.10,.15,.25,.40,.55],unit:'pct',slots:['wpn'],group:'kill',weight:75},
   {id:'comboBoost',type:0,tiers:[.12,.20,.35,.55,.75],unit:'pct',slots:['wpn'],group:'combo',weight:60},
   {id:'dashBoost',type:0,tiers:[.15,.25,.40,.65,.90],unit:'pct',slots:['wpn'],group:'dash',weight:55},
   {id:'skillBoost',type:0,tiers:[.10,.15,.25,.40,.55],unit:'pct',slots:['wpn'],group:'skill',weight:65},
   // 무기+helm 공유
-  {id:'elemFocus',type:0,tiers:[.08,.12,.20,.32,.44],unit:'pct',slots:['wpn','helm'],group:'elemfcs',weight:70},
+  {id:'elemFocus',type:0,tiers:[.08,.12,.20,.32,.44],unit:'pct',slots:['helm'],group:'elemfcs',weight:70},
   {id:'atkSpeed',type:0,tiers:[.04,.06,.10,.16,.22],unit:'pct',slots:['wpn','helm'],group:'aspd',weight:85},
   {id:'parryBonus',type:0,tiers:[.12,.20,.35,.55,.75],unit:'pct',slots:['wpn'],group:'parry',weight:65},
   {id:'cooldownRed',type:0,tiers:[-.02,-.03,-.05,-.07,-.10],unit:'pct',slots:['wpn'],group:'cd',weight:70},
-  {id:'magicDmg',type:0,tiers:[.06,.10,.18,.28,.40],unit:'pct',slots:['wpn','helm'],group:'mdmg',weight:85},
+  {id:'magicDmg',type:0,tiers:[.06,.10,.18,.28,.40],unit:'pct',slots:['helm'],group:'mdmg',weight:85},
   // 크리티컬 (5티어)
   {id:'critDmgW',type:1,tiers:[.10,.20,.30,.40,.50],unit:'pct',slots:['wpn','helm'],group:'cdmgW',weight:60,tierW:[40,30,20,8,2]},
   {id:'critRate',type:0,tiers:[.01,.02,.03,.04,.05],unit:'pct',slots:['ring','neck','bracelet'],group:'crt',weight:50,tierW:[40,30,20,8,2]},
   {id:'critDmgW',type:1,tiers:[.10,.20,.30,.40,.50],unit:'pct',slots:['ring','neck','bracelet'],group:'cdmgW',weight:50,tierW:[40,30,20,8,2]},
   // 플랫 ATK (극악)
-  {id:'sharpAtk',type:0,tiers:[20,50,170,330,500],unit:'val',slots:['wpn','helm'],group:'satk',weight:25,skewRoll:3,tierW:[40,30,20,8,2]},
-  {id:'brutalAtk',type:0,tiers:[20,50,170,330,500],unit:'val',slots:['wpn','helm'],group:'batk',weight:20,skewRoll:3,tierW:[40,30,20,8,2]},
-  {id:'ruinAtk',type:1,tiers:[20,50,170,330,500],unit:'val',slots:['wpn','helm'],group:'ratk',weight:15,skewRoll:3,tierW:[40,30,20,8,2]},
+  {id:'sharpAtk',type:0,tiers:[20,50,170,330,500],unit:'val',slots:['wpn'],group:'satk',weight:25,skewRoll:3,tierW:[40,30,20,8,2]},
+  {id:'brutalAtk',type:0,tiers:[20,50,170,330,500],unit:'val',slots:['wpn'],group:'batk',weight:20,skewRoll:3,tierW:[40,30,20,8,2]},
+  {id:'ruinAtk',type:1,tiers:[20,50,170,330,500],unit:'val',slots:['wpn'],group:'ratk',weight:15,skewRoll:3,tierW:[40,30,20,8,2]},
   // 무기 SUFFIX: 트리거
   {id:'staggerExplosion',type:1,tiers:[.18,.30,.50,.80,1.15],unit:'pct',slots:['wpn'],group:'sexp',weight:35},
   {id:'elemConvert',type:1,tiers:[.12,.20,.35,.55,.75],unit:'prob',slots:['wpn'],group:'elcv',weight:40},
@@ -7979,8 +7979,8 @@ const AFFIX_POOL=[
   {id:'lowLifeDmg',type:1,tiers:[.15,.25,.40,.60,.85],unit:'pct',slots:['wpn'],group:'llDmg',weight:35,tierW:[40,30,20,8,2]},
   {id:'overkilDmg',type:1,tiers:[.20,.35,.55,.80,1.10],unit:'pct',slots:['wpn'],group:'okDmg',weight:30,tierW:[40,30,20,8,2]},
   // ── 조건부 DPS (거리 기반) ──
-  {id:'closeDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'clDmg',weight:50},
-  {id:'farDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'frDmg',weight:50},
+  {id:'closeDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'clDmg',weight:50},
+  {id:'farDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'frDmg',weight:50},
   // ── 조건부 DPS (적 상태 기반) ──
   {id:'stunDmgUp',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'stDU',weight:55},
   {id:'frozenDmgUp',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'frDU',weight:55},
@@ -8084,65 +8084,65 @@ const AFFIX_POOL=[
   // Phase 2: 속성별 분화 (5원소 × 6변형 = 30종)
   // ═══════════════════════════════════════════════════
   // ── 화염(F) ──
-  {id:'fireDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'fDmP',weight:70},
+  {id:'fireDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'fDmP',weight:70},
   {id:'firePen',type:1,tiers:[.05,.08,.14,.22,.32],unit:'pct',slots:['wpn'],group:'fPen',weight:50},
   {id:'fireOnHit',type:1,tiers:[.08,.14,.22,.32,.44],unit:'prob',slots:['wpn'],group:'fOH',weight:55},
   {id:'fireBurst',type:1,tiers:[15,28,45,70,100],unit:'val',slots:['wpn'],group:'fBst',weight:35},
-  {id:'fireDuration',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn','helm'],group:'fDur',weight:55},
+  {id:'fireDuration',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['helm'],group:'fDur',weight:55},
   {id:'fireDmgBns',type:1,tiers:[.06,.10,.18,.28,.40],unit:'pct',slots:['ring','neck'],group:'fBns',weight:60},
   // ── 빙결(I) ──
-  {id:'iceDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'iDmP',weight:70},
+  {id:'iceDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'iDmP',weight:70},
   {id:'icePen',type:1,tiers:[.05,.08,.14,.22,.32],unit:'pct',slots:['wpn'],group:'iPen',weight:50},
   {id:'iceOnHit',type:1,tiers:[.06,.10,.16,.24,.34],unit:'prob',slots:['wpn'],group:'iOH',weight:50},
   {id:'iceBurst',type:1,tiers:[12,22,38,58,85],unit:'val',slots:['wpn'],group:'iBst',weight:35},
-  {id:'iceDuration',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn','helm'],group:'iDur',weight:55},
+  {id:'iceDuration',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['helm'],group:'iDur',weight:55},
   {id:'iceDmgBns',type:1,tiers:[.06,.10,.18,.28,.40],unit:'pct',slots:['ring','neck'],group:'iBns',weight:60},
   // ── 뇌전(L) ──
-  {id:'lightDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'lDmP',weight:70},
+  {id:'lightDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'lDmP',weight:70},
   {id:'lightPen',type:1,tiers:[.05,.08,.14,.22,.32],unit:'pct',slots:['wpn'],group:'lPen',weight:50},
   {id:'lightOnHit',type:1,tiers:[.06,.10,.16,.24,.34],unit:'prob',slots:['wpn'],group:'lOH',weight:50},
   {id:'lightBurst',type:1,tiers:[18,32,52,80,115],unit:'val',slots:['wpn'],group:'lBst',weight:35},
-  {id:'lightDuration',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn','helm'],group:'lDur',weight:55},
+  {id:'lightDuration',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['helm'],group:'lDur',weight:55},
   {id:'lightDmgBns',type:1,tiers:[.06,.10,.18,.28,.40],unit:'pct',slots:['ring','neck'],group:'lBns',weight:60},
   // ── 암흑(D) ──
-  {id:'darkDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'dDmP',weight:65},
+  {id:'darkDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'dDmP',weight:65},
   {id:'darkPen',type:1,tiers:[.05,.08,.14,.22,.32],unit:'pct',slots:['wpn'],group:'dPen',weight:45},
   {id:'darkOnHit',type:1,tiers:[.06,.10,.16,.24,.34],unit:'prob',slots:['wpn'],group:'dOH',weight:45},
   {id:'darkBurst',type:1,tiers:[14,26,42,65,95],unit:'val',slots:['wpn'],group:'dBst',weight:30},
-  {id:'darkDuration',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn','helm'],group:'dDur',weight:50},
+  {id:'darkDuration',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['helm'],group:'dDur',weight:50},
   {id:'darkDmgBns',type:1,tiers:[.06,.10,.18,.28,.40],unit:'pct',slots:['ring','neck'],group:'dBns',weight:55},
   // ── 독(P→poison) ──
-  {id:'poisonDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'pDmP',weight:65},
+  {id:'poisonDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'pDmP',weight:65},
   {id:'poisonPen',type:1,tiers:[.05,.08,.14,.22,.32],unit:'pct',slots:['wpn'],group:'pPen',weight:45},
   {id:'poisonOnHit',type:1,tiers:[.08,.14,.22,.32,.44],unit:'prob',slots:['wpn'],group:'pOH',weight:55},
   {id:'poisonBurst',type:1,tiers:[10,20,35,55,80],unit:'val',slots:['wpn'],group:'pBst',weight:30},
-  {id:'poisonDuration',type:0,tiers:[.12,.20,.32,.46,.65],unit:'pct',slots:['wpn','helm'],group:'pDur',weight:55},
+  {id:'poisonDuration',type:0,tiers:[.12,.20,.32,.46,.65],unit:'pct',slots:['helm'],group:'pDur',weight:55},
   {id:'poisonDmgBns',type:1,tiers:[.06,.10,.18,.28,.40],unit:'pct',slots:['ring','neck'],group:'pBns',weight:55},
 
   // ═══════════════════════════════════════════════════
   // Phase 2: 타입별 데미지 분화 (7종)
   // ═══════════════════════════════════════════════════
   {id:'meleeDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'mlDm',weight:75},
-  {id:'rangedDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'rnDm',weight:75},
-  {id:'spellDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'spDm',weight:75},
-  {id:'beamDmgPct',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn','helm'],group:'bmDm',weight:55},
+  {id:'rangedDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'rnDm',weight:75},
+  {id:'spellDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'spDm',weight:75},
+  {id:'beamDmgPct',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['helm'],group:'bmDm',weight:55},
   {id:'dotDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'dtDm',weight:60},
-  {id:'projDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'pjDm',weight:65},
+  {id:'projDmgPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'pjDm',weight:65},
   {id:'aoeRadiusPct',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['wpn','helm'],group:'aoRd',weight:55},
 
   // ═══════════════════════════════════════════════════
   // Phase 2: 크리/공속/관통 확장 (10종)
   // ═══════════════════════════════════════════════════
   {id:'critRateMelee',type:0,tiers:[.01,.02,.03,.04,.06],unit:'pct',slots:['wpn'],group:'crM',weight:45,tierW:[40,30,20,8,2]},
-  {id:'critRateSpell',type:0,tiers:[.01,.02,.03,.04,.06],unit:'pct',slots:['wpn','helm'],group:'crS',weight:45,tierW:[40,30,20,8,2]},
-  {id:'critRateBow',type:0,tiers:[.01,.02,.03,.04,.06],unit:'pct',slots:['wpn'],group:'crB',weight:45,tierW:[40,30,20,8,2]},
+  {id:'critRateSpell',type:0,tiers:[.01,.02,.03,.04,.06],unit:'pct',slots:['helm'],group:'crS',weight:45,tierW:[40,30,20,8,2]},
+  {id:'critRateBow',type:0,tiers:[.01,.02,.03,.04,.06],unit:'pct',slots:['xbow'],group:'crB',weight:45,tierW:[40,30,20,8,2]},
   {id:'meleeAtkSpd',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['wpn'],group:'mAS',weight:65},
-  {id:'bowAtkSpd',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['wpn'],group:'bAS',weight:65},
-  {id:'castSpeed',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['wpn','helm'],group:'cSpd',weight:65},
+  {id:'bowAtkSpd',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['xbow'],group:'bAS',weight:65},
+  {id:'castSpeed',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['helm'],group:'cSpd',weight:65},
   {id:'elemPenAll',type:1,tiers:[.03,.05,.09,.15,.22],unit:'pct',slots:['wpn'],group:'ePnA',weight:30,tierW:[40,30,20,8,2]},
   {id:'shieldBypass',type:1,tiers:[.05,.08,.14,.22,.32],unit:'prob',slots:['wpn'],group:'shBp',weight:30,tierW:[40,30,20,8,2]},
   {id:'armorShred',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['wpn'],group:'arSh',weight:50},
-  {id:'projSpeedPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'pjSp',weight:55},
+  {id:'projSpeedPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'pjSp',weight:55},
 
   // ═══ Phase 3: On-Hit/Crit 프록 (25종) ═══
   {id:'onHitFireball',type:1,tiers:[.04,.07,.11,.16,.22],unit:'prob',slots:['wpn'],group:'ohFb',weight:25,tierW:[40,30,20,8,2]},
@@ -8170,25 +8170,25 @@ const AFFIX_POOL=[
 
   // ═══ Phase 3: 스킬 개별 강화 (20종) ═══
   {id:'skWhirlDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sWD',weight:40},
-  {id:'skBeamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sBD',weight:40},
-  {id:'skFireballDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sFD',weight:40},
-  {id:'skMissileDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sMD',weight:40},
-  {id:'skBlueShotDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sBSD',weight:40},
-  {id:'skBlastShotDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sBShD',weight:40},
-  {id:'skHellRayDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sHRD',weight:35},
-  {id:'skMaliceStormDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sMSD',weight:35},
+  {id:'skBeamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sBD',weight:40},
+  {id:'skFireballDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sFD',weight:40},
+  {id:'skMissileDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sMD',weight:40},
+  {id:'skBlueShotDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sBSD',weight:40},
+  {id:'skBlastShotDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sBShD',weight:40},
+  {id:'skHellRayDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sHRD',weight:35},
+  {id:'skMaliceStormDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sMSD',weight:35},
   {id:'skChainSlashDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sCSD',weight:40},
   {id:'skGiantSlamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sGSD',weight:40},
-  {id:'skGhostWalkDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sGWD',weight:35},
-  {id:'skMaliceMortarDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sMMD',weight:35},
-  {id:'skFireAuraDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sFAD',weight:40},
-  {id:'skIceOrbDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sIOD',weight:35},
-  {id:'skFireBeamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sFBD',weight:35},
-  {id:'skMaliceHuntDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sMHD',weight:35},
-  {id:'skDarkPillarDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sDPD',weight:35},
-  {id:'skPlagueDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sPBD',weight:35},
-  {id:'skSpikeAuraDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sSAD',weight:35},
-  {id:'skChainAssaultDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'sCAD',weight:35},
+  {id:'skGhostWalkDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sGWD',weight:35},
+  {id:'skMaliceMortarDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sMMD',weight:35},
+  {id:'skFireAuraDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sFAD',weight:40},
+  {id:'skIceOrbDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sIOD',weight:35},
+  {id:'skFireBeamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sFBD',weight:35},
+  {id:'skMaliceHuntDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sMHD',weight:35},
+  {id:'skDarkPillarDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sDPD',weight:35},
+  {id:'skPlagueDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sPBD',weight:35},
+  {id:'skSpikeAuraDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sSAD',weight:35},
+  {id:'skChainAssaultDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sCAD',weight:35},
 
   // ═══ Phase 3: 생존/방어 확장 (30종) ═══
   {id:'dodgeChance',type:1,tiers:[.02,.04,.06,.09,.13],unit:'pct',slots:['boots','cloak'],group:'ddgC',weight:45,tierW:[40,30,20,8,2]},
@@ -8261,15 +8261,15 @@ const AFFIX_POOL=[
   {id:'maxDmgFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['wpn'],group:'mxDm',weight:55},
   {id:'atkPctAll',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['wpn','helm'],group:'aAll',weight:50},
   {id:'weaponRange',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['wpn'],group:'wRng',weight:55},
-  {id:'bowRange',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['wpn'],group:'bRng',weight:55},
+  {id:'bowRange',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['xbow'],group:'bRng',weight:55},
   {id:'doubleStrike',type:1,tiers:[.02,.04,.06,.09,.13],unit:'prob',slots:['wpn'],group:'dStr',weight:20,tierW:[40,30,20,8,2]},
-  {id:'multiShot',type:1,tiers:[.03,.05,.08,.12,.18],unit:'prob',slots:['wpn'],group:'mSht',weight:20,tierW:[40,30,20,8,2]},
-  {id:'pierceChance',type:0,tiers:[.05,.08,.14,.22,.30],unit:'prob',slots:['wpn'],group:'prCh',weight:50},
-  {id:'pierceCount',type:0,tiers:[1,1,2,2,3],unit:'cnt',slots:['wpn'],group:'prCt',weight:40},
-  {id:'pierceDmgKeep',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'prDK',weight:40},
+  {id:'multiShot',type:1,tiers:[.03,.05,.08,.12,.18],unit:'prob',slots:['xbow'],group:'mSht',weight:20,tierW:[40,30,20,8,2]},
+  {id:'pierceChance',type:0,tiers:[.05,.08,.14,.22,.30],unit:'prob',slots:['xbow'],group:'prCh',weight:50},
+  {id:'pierceCount',type:0,tiers:[1,1,2,2,3],unit:'cnt',slots:['xbow'],group:'prCt',weight:40},
+  {id:'pierceDmgKeep',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['xbow'],group:'prDK',weight:40},
   {id:'chainDmgKeep',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'chDK',weight:40},
-  {id:'splashRadius',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['wpn'],group:'spRd',weight:45},
-  {id:'splashDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'spDm',weight:35},
+  {id:'splashRadius',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['xbow'],group:'spRd',weight:45},
+  {id:'splashDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['xbow'],group:'spDm',weight:35},
   {id:'chargeAtkDmg',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'chAD',weight:50},
   {id:'counterAtkDmg',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'ctAD',weight:45},
   {id:'backstabDmg',type:1,tiers:[.12,.20,.32,.46,.65],unit:'pct',slots:['wpn'],group:'bkSt',weight:35},
@@ -8277,7 +8277,7 @@ const AFFIX_POOL=[
   {id:'dotTickRate',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['wpn'],group:'dtTk',weight:40},
   {id:'bleedDps',type:0,tiers:[5,10,18,28,40],unit:'dps',slots:['wpn'],group:'blDp',weight:60},
   {id:'bleedDuration',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'blDr',weight:50},
-  {id:'flatMagicDmg',type:0,tiers:[6,12,22,36,52],unit:'val',slots:['wpn','helm'],group:'fMgD',weight:60},
+  {id:'flatMagicDmg',type:0,tiers:[6,12,22,36,52],unit:'val',slots:['helm'],group:'fMgD',weight:60},
   {id:'spellAmp',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['helm'],group:'spAm',weight:45},
   {id:'killStreakDmg',type:1,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['wpn'],group:'kSD',weight:35},
   {id:'killStreakSpd',type:1,tiers:[.02,.04,.06,.09,.13],unit:'pct',slots:['wpn'],group:'kSS',weight:35},
@@ -8294,9 +8294,9 @@ const AFFIX_POOL=[
   {id:'slowEfficiency',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'slEf',weight:40},
   {id:'poisonStack',type:1,tiers:[1,1,2,2,3],unit:'cnt',slots:['wpn'],group:'poSk',weight:35},
   {id:'bleedStack',type:1,tiers:[1,1,2,2,3],unit:'cnt',slots:['wpn'],group:'blSk',weight:35},
-  {id:'igniteDmg',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'igDm',weight:50},
-  {id:'frostbiteDmg',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'fbDm',weight:50},
-  {id:'shockDmg',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'skDm',weight:50},
+  {id:'igniteDmg',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'igDm',weight:50},
+  {id:'frostbiteDmg',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'fbDm',weight:50},
+  {id:'shockDmg',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'skDm',weight:50},
   {id:'critMultiOnLowHP',type:1,tiers:[.10,.20,.30,.40,.50],unit:'pct',slots:['wpn'],group:'cmLH',weight:25,tierW:[40,30,20,8,2]},
   // 방어구 세분화
   {id:'armorDefPct',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['armor'],group:'adPc',weight:65},
@@ -8369,13 +8369,13 @@ const AFFIX_POOL=[
   {id:'arcWarriorHP',type:0,tiers:[30,60,100,150,220],unit:'val',slots:['armor'],group:'awHP',weight:30},
   {id:'arcWarriorLifeSteal',type:1,tiers:[.004,.008,.014,.022,.032],unit:'pct',slots:['wpn'],group:'awLS',weight:20,tierW:[40,30,20,8,2]},
   {id:'arcWarriorPoise',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['armor'],group:'awPo',weight:35},
-  {id:'arcMageDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm'],group:'amD',weight:30},
+  {id:'arcMageDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'amD',weight:30},
   {id:'arcMageMP',type:0,tiers:[20,40,70,110,160],unit:'val',slots:['headband'],group:'amMP',weight:30},
   {id:'arcMageShield',type:0,tiers:[30,60,100,150,220],unit:'val',slots:['armor'],group:'amSh',weight:30},
-  {id:'arcMageElemDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['wpn','helm'],group:'amED',weight:30},
-  {id:'arcRangerDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'arD2',weight:30},
-  {id:'arcRangerRange',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['wpn'],group:'arRg',weight:30},
-  {id:'arcRangerPierce',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['wpn'],group:'arPr',weight:30},
+  {id:'arcMageElemDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['helm'],group:'amED',weight:30},
+  {id:'arcRangerDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'arD2',weight:30},
+  {id:'arcRangerRange',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['xbow'],group:'arRg',weight:30},
+  {id:'arcRangerPierce',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['xbow'],group:'arPr',weight:30},
   {id:'arcRangerMS',type:0,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['boots'],group:'arMS',weight:35},
   {id:'arcTankHP',type:0,tiers:[40,80,130,200,280],unit:'val',slots:['armor'],group:'atHP',weight:30},
   {id:'arcTankDef',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['armor','shield'],group:'atDf',weight:30},
@@ -8913,23 +8913,24 @@ function mkItem(slot,tier,el,rarity,wtype){
     // DEF/eDef 5티어 선형 통일: T0=10, T1=20, T2=30, T3=40, T4=50 (12슬롯 × 50 = 총 600 방어)
     // eDef는 전 속성 공통이라 절반 스케일 (T4=25, 총 최대 ~150)
     // 방어구 6파트: 물리DEF만, 20+tier*20 (T0=20~T4=100, 6세트 풀=600)
-    // 방어구 6파트: bonusHp만 [100,200,300,400,500]
-    shield:{def:20+tier*20,stagger:15+tier*8,shieldWt:10-tier,bonusHp:(tier+1)*100,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
-    boots:{def:20+tier*20,spd:tier*.08,bonusSt:(5+tier*4)*2,chargeDist:14+tier*3,bonusHp:(tier+1)*100},
-    armor:{def:20+tier*20,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:(4+tier*3)*2,bonusHp:(tier+1)*100},
+    // bonusHp/Shield 티어별 랜덤 범위: T0=20~100, T1=100~200, T2=200~300, T3=300~400, T4=400~500
+    // 방어구 6파트: bonusHp만
+    shield:{def:20+tier*20,stagger:15+tier*8,shieldWt:10-tier,bonusHp:~~(tier*100+20+Math.random()*(100-20)),antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
+    boots:{def:20+tier*20,spd:tier*.08,bonusSt:(5+tier*4)*2,chargeDist:14+tier*3,bonusHp:~~(tier*100+20+Math.random()*(100-20))},
+    armor:{def:20+tier*20,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:(4+tier*3)*2,bonusHp:~~(tier*100+20+Math.random()*(100-20))},
     // 무기 파트(helmet,weapon,bow): bonusHp/bonusShield 없음 — 공격 전용
     helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,def:20+tier*20},
     bow:{atk:_atkRoll,spd:1,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
-    gloves:{def:20+tier*20,spd:tier*.04,bonusHp:(tier+1)*100},
-    pants:{def:20+tier*20,bonusSt:(3+tier*3)*2,bonusHp:(tier+1)*100},
-    cape:{def:20+tier*20,spd:tier*.03,bonusHp:(tier+1)*100},
-    // 장신구 6파트: bonusShield만 [100,200,300,400,500]
-    belt:{eDef:20+tier*20,dmgBonus:10+tier*10,bonusSt:(4+tier*3)*2,bonusShield:(tier+1)*100},
-    necklace:{eDef:20+tier*20,critRate:10,dmgBonus:20+tier*20,bonusShield:(tier+1)*100},
-    ring1:{eDef:20+tier*20,critRate:5,dmgBonus:10+tier*10,bonusShield:(tier+1)*100},
-    ring2:{eDef:20+tier*20,critRate:5,dmgBonus:10+tier*10,bonusShield:(tier+1)*100},
-    bracelet:{eDef:20+tier*20,dmgBonus:10+tier*10,bonusShield:(tier+1)*100},
-    headband:{eDef:20+tier*20,dmgBonus:10+tier*10,mpRegen:(1+tier*1)*2,bonusShield:(tier+1)*100}
+    gloves:{def:20+tier*20,spd:tier*.04,bonusHp:~~(tier*100+20+Math.random()*(100-20))},
+    pants:{def:20+tier*20,bonusSt:(3+tier*3)*2,bonusHp:~~(tier*100+20+Math.random()*(100-20))},
+    cape:{def:20+tier*20,spd:tier*.03,bonusHp:~~(tier*100+20+Math.random()*(100-20))},
+    // 장신구 6파트: bonusShield만
+    belt:{eDef:20+tier*20,dmgBonus:10+tier*10,bonusSt:(4+tier*3)*2,bonusShield:~~(tier*100+20+Math.random()*(100-20))},
+    necklace:{eDef:20+tier*20,critRate:10,dmgBonus:20+tier*20,bonusShield:~~(tier*100+20+Math.random()*(100-20))},
+    ring1:{eDef:20+tier*20,critRate:5,dmgBonus:10+tier*10,bonusShield:~~(tier*100+20+Math.random()*(100-20))},
+    ring2:{eDef:20+tier*20,critRate:5,dmgBonus:10+tier*10,bonusShield:~~(tier*100+20+Math.random()*(100-20))},
+    bracelet:{eDef:20+tier*20,dmgBonus:10+tier*10,bonusShield:~~(tier*100+20+Math.random()*(100-20))},
+    headband:{eDef:20+tier*20,dmgBonus:10+tier*10,mpRegen:(1+tier*1)*2,bonusShield:~~(tier*100+20+Math.random()*(100-20))}
   };
   const b=base[slot];
   if(!b)return{id:~~(performance.now()*1000)+~~(Math.random()*9999),slot,el,rarity,tier,name:'???',emoji:'❓'};
@@ -16719,7 +16720,7 @@ let _qsSwapSel=-1; // 스왑 선택 인덱스 (-1=미선택)
 // 레벨당 SP 3개. 각 스탯 max 200 (200×5=1000, 레벨 333+에서 올스탯 가능)
 const STAT_DEF=[
   {key:'str',name:'💪 힘 (STR)',nameEn:'💪 STR',desc:'물리 ATK +1, MAX HP +5, HP리젠 +0.002',descEn:'Phys ATK +1, MAX HP +5, HP regen +0.002',col:'#ff4444',icon:'💪'},
-  {key:'dex',name:'🏹 민첩 (DEX)',nameEn:'🏹 DEX',desc:'석궁 ATK +1, 공격속도 +0.05%, MAX ST +2, ST리젠 +0.005',descEn:'Bow ATK +1, ATK speed +0.05%, MAX ST +2, ST regen +0.005',col:'#44ff44',icon:'🏹'},
+  {key:'dex',name:'🏹 민첩 (DEX)',nameEn:'🏹 DEX',desc:'석궁 ATK +1, 공격속도 +0.05%, MAX ST +2, ST리젠 +0.005, 회피 +0.05%',descEn:'Bow ATK +1, ATK speed +0.05%, MAX ST +2, ST regen +0.005, Dodge +0.05%',col:'#44ff44',icon:'🏹'},
   {key:'int',name:'🔮 지능 (INT)',nameEn:'🔮 INT',desc:'마법 ATK +1, MAX MP +2, MP리젠 +0.005, MAX 쉴드 +5',descEn:'Magic ATK +1, MAX MP +2, MP regen +0.005, MAX Shield +5',col:'#4488ff',icon:'🔮'},
   {key:'lck',name:'🍀 행운 (LCK)',nameEn:'🍀 LCK',desc:'크리확률 +0.025%, 크리뎀 +0.2%, 드롭률 +0.15%',descEn:'Crit rate +0.025%, Crit DMG +0.2%, Drop rate +0.15%',col:'#cc44ff',icon:'🍀'},
 ];
@@ -21074,6 +21075,8 @@ function update(){
     if(P._trapSlowT>0)P._trapSlowT-=sp;
     // 화상 데미지 (초당 HP 4%, 3초)
     if(P.burnT>0){P.burnT-=sp;if(Math.floor(P.burnT/60)<Math.floor((P.burnT+sp)/60)){const bd=~~(P.mhp*.04);hurtP(bd,{dot:true,src:_T('화상')});addTxt(P.x,P.y-15,'🔥'+bd,'#ff4400',18);addParts(P.x,P.y,'#ff4400',3)}}
+    // 전류 효과 타이머 감소
+    if(P._elecT>0)P._elecT-=sp;
     // 독 데미지 (초당 HP 0.8%, 감소)
     if(P.poison>0){P.poison-=sp*.02;if(Math.floor(P.poison*10)%6<1){const pd=~~(P.mhp*.008);hurtP(pd,{dot:true,src:_T('중독')});addTxt(P.x,P.y-15,'☠'+pd,'#33aa22',15);addParts(P.x,P.y,'#33aa22',2)}}
     // ═══ 5장 지옥의 군단: 잡기/마비 상태 ═══
@@ -22925,7 +22928,7 @@ function update(){
           hurtP(~~((p.dmg||10)*elMul(p.el,ar().el)),{dtype:'magic'});
           if(P.s!=='charge'&&P.s!=='sBlock'){P.s='stagger';P.st2=30}
           addTxt(P.x,P.y-20,_T('⚠트랩!'),'#997744',30);addParts(P.x,P.y,'#997744',8);_pHit=true}
-        else{hurtP(~~((p.dmg||10)*elMul(p.el,ar().el)),{dtype:'magic',redBean:!!p.redBean,projHit:true});_addBoom(p.x,p.y,p.redBean?80:24,p.redBean?30:14,p.redBean?'redbean':p.el===EL.I?'ice':p.el===EL.L?'lightning':p.el===EL.D?'dark':'fire');if(p.redBean){addParts(p.x,p.y,'#ff2200',20);shake(8);SFX.detonate();doHitFlash('#ff2200',0.2)}_pHit=true}}}
+        else{hurtP(~~((p.dmg||10)*elMul(p.el,ar().el)),{dtype:'magic',redBean:!!p.redBean,projHit:true});_addBoom(p.x,p.y,p.redBean?80:24,p.redBean?30:14,p.redBean?'redbean':p.el===EL.I?'ice':p.el===EL.L?'lightning':p.el===EL.D?'dark':'fire');if(p.el===EL.L)P._elecT=Math.max(P._elecT||0,30);if(p.redBean){addParts(p.x,p.y,'#ff2200',20);shake(8);SFX.detonate();doHitFlash('#ff2200',0.2)}_pHit=true}}}
     if(!_pHit&&p.friendly){const _fHitR=Math.max(6,(p.r||4)+Math.min(18,Math.sqrt(p.vx*p.vx+p.vy*p.vy)*0.5));const _ne3=shQuery(p.x,p.y,_fHitR+20);for(let ni=0;ni<_ne3.length;ni++){const e=_ne3[ni];if(!e.alive)continue;if(e._bluHitCD>0)continue;if(dst(p.x,p.y,e.x,e.y)<e.r+_fHitR){if(p.friendly&&p.redBean)e._bluHitCD=3;
       if(p.bomb){
         // 반사 폭발탄: 착탄 시 광역 폭발
@@ -30206,6 +30209,11 @@ function hurtP(dmg,opts){
   if(P._gwActive){addTxt(P.x,P.y-18,_T('\u{1F47B} 유령!'),'#88aacc',18);return}
   // 이동스킬 무적 (블링크, 돌진 등)
   if(P.iframes>0){addTxt(P.x,P.y-18,_T('무적!'),'#aaaaff',18);return}
+  // ═══ 회피 판정: DEX 0.05%/pt + 근성 0.5%/pt + dodgeChance 어픽스 (캡 35%, DOT 제외) ═══
+  if(!(opts&&opts.dot)){
+    const _dodgePct=Math.min(35,(STATS.dex+_lvB()+_eqStat('Dex'))*.05+_gritTotal()*.5+_eqAffix('dodgeChance')*100);
+    if(Math.random()*100<_dodgePct){addTxt(P.x,P.y-18,_T('회피!'),'#44ffaa',25);if(G._sStats)G._sStats.dodges++;return}
+  }
   const _isDotEarly=opts&&opts.dot;
   if(G._pStats)G._pStats._pA++;if(P.s==='beam'){SFX.beamStop()}
   if(P.s==='burstLoop'){P._blCharge=0;P._blTier=0;P.s='idle';addTxt(P.x,P.y-30,_T('집중 해제!'),'#888',30)}
@@ -35841,7 +35849,7 @@ function renderStatPanel(){
     _gRow.innerHTML=`<div class="stat-icon" style="font-size:2.4rem;width:50px;text-align:center">💪</div>
       <div class="stat-info" style="flex:1">
         <div class="stat-name" style="color:#ffaa33;font-size:1.6rem;font-weight:700;letter-spacing:.05em">${OPT.lang==='en'?'GRIT':'근성 (GRIT)'}</div>
-        <div class="stat-desc" style="font-size:1.1rem;color:#665544;margin-top:4px">${OPT.lang==='en'?'HP/MP/ST +1, DEF/eDEF +0.5':'HP/MP/ST +1, 방어력/속성방어 +0.5'}</div>
+        <div class="stat-desc" style="font-size:1.1rem;color:#665544;margin-top:4px">${OPT.lang==='en'?'HP/MP/ST +1, DEF/eDEF +0.5, Dodge +0.5%':'HP/MP/ST +1, 방어력/속성방어 +0.5, 회피 +0.5%'}</div>
         <div class="stat-bar" style="height:8px;background:rgba(255,255,255,.05);margin-top:8px;border-radius:4px;overflow:hidden"><div class="stat-bar-fill" style="width:${_gPct}%;background:#ffaa33;height:100%"></div></div>
       </div>
       <div class="stat-val" style="color:#ffaa33;font-size:2rem;font-weight:900;min-width:60px;text-align:right">${_grit}</div>`;
@@ -41774,6 +41782,24 @@ function drawP(){
     X.rotate(_rot);X.scale(_sx,_sy);
     if(_useActFrame&&_aS){const aw=_aS.width/4,ah=_aS.height/3;for(let _i=0;_i<4;_i++)X.drawImage(_aS,_aC*aw,_aR*ah,aw,ah,-bw/2,-bh/2-2,bw,bh);}
     else if(_pS){const iw=_pS.width/2,ih=_pS.height;const fu=Math.sin(P.facing)<-0.3;for(let _i=0;_i<4;_i++)X.drawImage(_pS,fu?iw:0,0,iw,ih,-bw/2,-bh/2-2,bw,bh);}
+    // ═══ 전류 이펙트: 번개 속성 피격 시 캐릭터에 지그재그 번개 ═══
+    if(P._elecT>0){
+      const _eA=P._elecT/30;
+      X.strokeStyle=`rgba(100,200,255,${.5*_eA})`;X.lineWidth=1.5;X.shadowColor='#44ccff';X.shadowBlur=6;
+      for(let _ei=0;_ei<3;_ei++){
+        const _ea=Math.random()*Math.PI*2;
+        const _er=bw*.4;
+        X.beginPath();
+        let _ex=Math.cos(_ea)*_er*.3,_ey=Math.sin(_ea)*_er*.3-bh*.2;
+        X.moveTo(_ex,_ey);
+        for(let _es=0;_es<4;_es++){
+          _ex+=((Math.random()-.5)*_er*.6);_ey+=((Math.random()-.5)*_er*.4);
+          X.lineTo(_ex,_ey);
+        }
+        X.stroke();
+      }
+      X.shadowBlur=0;
+    }
     X.restore();
     X.globalAlpha=fl?.3:1;
   }else{

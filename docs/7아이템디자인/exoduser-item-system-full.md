@@ -380,7 +380,8 @@ Object.freeze(LEGENDARY_SPECIAL);
 
   // 슬롯 코드 역매핑 (item.slot → AFFIX_POOL slots 배열 키)
   const _slotKey = (function(s){
-    if(s==='weapon'||s==='bow')    return 'wpn';
+    if(s==='weapon')               return 'wpn';
+    if(s==='bow')                  return 'xbow';
     if(s==='armor')                return 'arm';
     if(s==='helmet')               return 'hlm';
     if(s==='gloves')               return 'glv';
@@ -708,7 +709,7 @@ function rerollPrefix(item){
   const _old = item.affixes.findIndex(function(a){ return a.type===0; });
   if(_old >= 0) item.affixes.splice(_old, 1);
   // 새 prefix 롤
-  const _sl = (item.slot==='weapon'||item.slot==='bow') ? 'wpn'
+  const _sl = item.slot==='weapon' ? 'wpn' : item.slot==='bow' ? 'xbow'
     : item.slot==='ring1'||item.slot==='ring2' ? 'rng'
     : item.slot==='necklace' ? 'nck' : item.slot.slice(0,3);
   const _pool = AFFIX_POOL.filter(function(a){
@@ -726,7 +727,7 @@ function rerollSuffix(item){
   if(!item || !item.affixes) return;
   const _old = item.affixes.findIndex(function(a){ return a.type===1; });
   if(_old >= 0) item.affixes.splice(_old, 1);
-  const _sl = (item.slot==='weapon'||item.slot==='bow') ? 'wpn'
+  const _sl = item.slot==='weapon' ? 'wpn' : item.slot==='bow' ? 'xbow'
     : item.slot==='ring1'||item.slot==='ring2' ? 'rng'
     : item.slot==='necklace' ? 'nck' : item.slot.slice(0,3);
   const _pool = AFFIX_POOL.filter(function(a){
