@@ -10592,26 +10592,26 @@ function teleportE(e,nx,ny,col,n){if(!canMv(nx,ny,e.r))return false;
   _addTpBolt(ox,oy,nx,ny,12,col);
   return true}
 function _beanRoll(el,col,sz,spd,dmgMult,e){
-  // ═══ 탄막 데미지 등급 (고정): 일반 ×1.2, 빨콩 ×1.5, 무지개 ×2.0 ═══
+  // ═══ 탄막 데미지 등급 (평준화): 들러리 ×1.0, 빨콩 ×1.2, 무지개 ×1.5 ═══
   // 근거리(500px 이내) → 빨간탄만 (우클릭 패링 유도, 속도 4.0, 유도 100%)
-  if(e&&dst(e.x,e.y,P.x,P.y)<500)return{el:el,col:'#cc1100',sz:1.5,spd:Math.max(4,spd),dmgM:1.5,redBean:true,homing:true,_closeBean:true};
+  if(e&&dst(e.x,e.y,P.x,P.y)<500)return{el:el,col:'#cc1100',sz:1.5,spd:Math.max(4,spd),dmgM:1.2,redBean:true,homing:true,_closeBean:true};
   // 무지개:빨콩 75:25 교대 + 10% 들러리 삽입
   if(e){if(!e._beanCnt)e._beanCnt=0;e._beanCnt++;
     // 10% 확률로 들러리탄 (교대 카운트 안 올림)
     const _dr=Math.random();if(_dr<.10){e._beanCnt--;
-      if(_dr<.03)return{el:EL.P,col:'#111111',sz:1.6,spd:spd*1.1,dmgM:1.2,bwBean:true};
-      if(_dr<.06)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:1.2,gbBean:true};
-      if(_dr<.08)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:1.2};
-      return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:1.2}}
-    if(e._beanCnt%4!==0)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:2.0,blackBean:true};
-    return{el:el,col:'#cc1100',sz:1.5,spd:spd*2.0,dmgM:1.5,redBean:true,homing:true}}
+      if(_dr<.03)return{el:EL.P,col:'#111111',sz:1.6,spd:spd*1.1,dmgM:1.0,bwBean:true};
+      if(_dr<.06)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:1.0,gbBean:true};
+      if(_dr<.08)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:1.0};
+      return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:1.0}}
+    if(e._beanCnt%4!==0)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:1.5,blackBean:true};
+    return{el:el,col:'#cc1100',sz:1.5,spd:spd*2.0,dmgM:1.2,redBean:true,homing:true}}
   const r=Math.random();
-  if(r<.60)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:2.0,blackBean:true};
-  if(r<.82)return{el:el,col:'#cc1100',sz:1.5,spd:spd*2.0,dmgM:1.5,redBean:true,homing:true};
-  if(r<.88)return{el:EL.P,col:'#111111',sz:1.6,spd:spd*1.1,dmgM:1.2,bwBean:true};
-  if(r<.94)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:1.2,gbBean:true};
-  if(r<.97)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:1.2};
-  return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:1.2}}
+  if(r<.60)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:1.5,blackBean:true};
+  if(r<.82)return{el:el,col:'#cc1100',sz:1.5,spd:spd*2.0,dmgM:1.2,redBean:true,homing:true};
+  if(r<.88)return{el:EL.P,col:'#111111',sz:1.6,spd:spd*1.1,dmgM:1.0,bwBean:true};
+  if(r<.94)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:1.0,gbBean:true};
+  if(r<.97)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:1.0};
+  return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:1.0}}
 // 몬스터 입 오프셋: facing 방향으로 반지름×0.7 앞에서 발사
 function _eMouthXY(e,ang){const off=(e.r||12)*.7;return{x:e.x+Math.cos(ang||e.facing||0)*off,y:e.y+Math.sin(ang||e.facing||0)*off}}
 function radialProjs(e,count,spd,dmgMult,el,life,col,sz){count*=2;life=~~(life*1.5);const _fa=e.facing||Math.atan2(P.y-e.y,P.x-e.x);const _m=_eMouthXY(e,_fa);for(let i=0;i<count;i++){const a=Math.PI*2*i/count;const b=_beanRoll(el,col,sz,spd,dmgMult,e);spawnProj({x:_m.x,y:_m.y,vx:Math.cos(a)*b.spd,vy:Math.sin(a)*b.spd,dmg:~~(e.atk*b.dmgM),el:b.el,friendly:false,life:b.blackBean?400:life,ml:b.blackBean?400:life,col:b.col,sz:b.sz,redBean:b.redBean,blackBean:b.blackBean,bwBean:b.bwBean,gbBean:b.gbBean,homing:b.homing})}}
@@ -19468,10 +19468,9 @@ function mkEn(x,y,si,etype,ib,el,room){
   const _baseHpCurve=monLv<=500?0.4*monLv*monLv*monLv+199*monLv+100:50000000*Math.pow(1.0014,monLv-500);
   const _bossMul=ib?24:1; // 보스 24배
   const _lvHp=Math.floor(_baseHpCurve*_bossMul*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 스테이지당+2%
-  // ═══ ATK 공식 v2: Lv≤500 선형, Lv>500 복리 가속 ═══
+  // ═══ ATK 공식: 선형 (복리 가속 제거) ═══
   const _baseAtkLin=(ib?75:50)+monLv*(ib?2.9:1.95);
-  const _atkCurve=monLv<=500?_baseAtkLin:_baseAtkLin*Math.pow(1.0018,monLv-500);
-  const _atk=Math.floor(_atkCurve*dm*et.atkMul*0.5); // ATK 반감 (2026-04-21)
+  const _atk=Math.floor(_baseAtkLin*dm*et.atkMul);
   // projCd: 투사체 쿨다운. 9999=발사안함(자폭/소환전용/특수AI전용)
   if(!window._noProjEtypes)window._noProjEtypes={5:1,9:1,11:1,20:1,24:1,50:1,51:1,52:1,53:1,54:1,55:1,56:1,57:1,58:1,59:1}; // 자폭/소환/괴물길(전용AI)
   let _projCd=ib?50 // 보스: 50f 원래값 유지
@@ -22947,7 +22946,9 @@ function update(){
     if(_gxTgt2)_gxTurret.ang=Math.atan2(_gxTgt2.y-_gxTurret.y,_gxTgt2.x-_gxTurret.x);
   }
   // Player arrows (bow) — 최대 60발 제한
-  {const _ppCap=P._blueBarrage?150:80;if(pProjs.length>_ppCap){for(let _ri=_ppCap;_ri<pProjs.length;_ri++)_recyclePProj(pProjs[_ri]);pProjs.length=_ppCap;}}
+  {const _ppCap=P._blueBarrage?150:80;if(pProjs.length>_ppCap){
+    // 석궁/스킬 투사체 우선 보존 — blueShot만 컬링
+    let _ppW=0;for(let _ri=0;_ri<pProjs.length;_ri++){const _rp=pProjs[_ri];if(_rp.blueShot&&_ppW>=_ppCap){_recyclePProj(_rp)}else{pProjs[_ppW++]=_rp}}pProjs.length=_ppW;}}
   {let w=0;for(let i=0;i<pProjs.length;i++){
     const p=pProjs[i];
     // 트레일 업데이트
