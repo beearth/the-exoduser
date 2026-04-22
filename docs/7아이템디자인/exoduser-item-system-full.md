@@ -119,8 +119,8 @@ const AFFIX_POOL = [
   {id:'elemFocus', type:0, ko:'원소집중의',stat:'_aElemFcs', tiers:[0.12,0.20,0.32],unit:'pct', slots:['wpn','nck'], group:'elemfcs', weight:70},
 
   // ── PREFIX: 능력치 ──
-  {id:'maxHPFlat', type:0, ko:'강인의',  stat:'_aMaxHP',     tiers:[100,200,300],  unit:'val', slots:['전 방어구'],group:'hp',     weight:90},
-  {id:'shieldFlat',type:0, ko:'수호의',  stat:'_aShield',    tiers:[120,200,400,600,840],  unit:'val', slots:['전 방어구'],group:'shd',    weight:80},
+  {id:'maxHPFlat', type:0, ko:'강인의',  stat:'_aMaxHP',     tiers:[100,200,300],  unit:'val', slots:['방어구'],group:'hp',     weight:90},
+  {id:'shieldFlat',type:0, ko:'수호의',  stat:'_aShield',    tiers:[120,200,400,600,840],  unit:'val', slots:['장신구'],group:'shd',    weight:80},
   {id:'maxHPPct',  type:0, ko:'활력의',  stat:'_aMaxHPPct',  tiers:[0.08,0.14,0.22],unit:'pct', slots:['arm','nck'], group:'hpp',   weight:80},
   {id:'movSpd',    type:0, ko:'신속의',  stat:'_aMovSpd',    tiers:[0.05,0.09,0.14],unit:'pct', slots:['bts','clk'], group:'mspd',  weight:85},
   {id:'killHeal',  type:0, ko:'회복의',  stat:'_aKillHeal',  tiers:[8,15,25],   unit:'val', slots:['arm','rng'],    group:'kheal',  weight:75},
@@ -186,8 +186,8 @@ Object.freeze(AFFIX_POOL);
 | critChance | 광폭의 | PREFIX | 6%/10%/16% | pct | wpn,rng | statCrit() |
 | critDmg | 처형의 | PREFIX | 25%/40%/65% | pct | wpn | statCritDmg() (무기 전용, 레거시) |
 | atkSpeed | 쾌속의 | PREFIX | 6%/10%/16% | pct | wpn,glv | statDex() |
-| maxHPFlat | 강인의 | PREFIX | 100/200/300 | val | 전 방어구 | statMaxHP() |
-| shieldFlat | 수호의 | PREFIX | 120/200/400/600/840 | val | 전 방어구 | P.mshield |
+| maxHPFlat | 강인의 | PREFIX | 100/200/300 | val | 방어구 | statMaxHP() |
+| shieldFlat | 수호의 | PREFIX | 120/200/400/600/840 | val | 장신구 | P.mshield |
 | maxHPPct | 활력의 | PREFIX | 8%/14%/22% | pct | arm,nck | statMaxHP() |
 | movSpd | 신속의 | PREFIX | 5%/9%/14% | pct | bts,clk | statPlayerSpeed() |
 | killHeal | 회복의 | PREFIX | 8/15/25 | val | arm,rng | 적 처치 시 HP 회복 |
