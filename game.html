@@ -23010,7 +23010,7 @@ function update(){
     if(p._bounceCool>0)p._bounceCool-=sp;
     // ── 유도: 일반 매 2프레임, ebHoming 매 6프레임 ──
     if(!(p._bounceCool>0)&&!p.explosive&&!p.bladeOrb&&!p.iceBlade&&!p.burstBolt&&!p.fireball&&!p.normalBow&&!(p._arcLock&&p.dist<p._arcLock)&&spd>0&&(G._gcT+i)%(p.ebHoming?6:2)===0){
-      let bestE=null,bestD=p.plagueHoming?500:p.mhBlade?500:p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.magic?250:200;
+      let bestE=null,bestD=p.plagueHoming?300:p.mhBlade?300:p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.magic?250:200;
       const _neH=shQuery(p.x,p.y,bestD);
       for(let h=0;h<_neH.length;h++){const e=_neH[h];if(!e.alive)continue;
         if(p._hitSet&&p._hitSet.has(e)){if(p.plagueHoming||p.mhBlade){let _anyAlive=false;for(let _pi=0;_pi<_neH.length;_pi++){if(_neH[_pi].alive&&!p._hitSet.has(_neH[_pi])){_anyAlive=true;break}}if(!_anyAlive)p._hitSet.clear();}continue;}
@@ -30643,9 +30643,9 @@ const SKILL_REC_PATH=[
   {phase:'2. 칼날 계열',phaseEn:'2. Blade Skills',skills:['maliceHunt','guardian'],fuse:'bladeFuse',desc:'악의 사냥 + 보호자 → 합체: 칼날 해방',descEn:'Malice Hunt + Guardian → Fuse: Blade Liberation'},
   {phase:'3. 역병 확장',phaseEn:'3. Plague Expand',skills:['plagueBurst'],fuse:'plagueFuse',desc:'폭독혈 추가 → 합체: 독혈 해방 (칼날+독)',descEn:'Plague Burst → Fuse: Plague Liberation (blade+poison)'},
   {phase:'4. 이동스킬 마스터',phaseEn:'4. Movement Master',skills:['chargeBoost','magicBlink'],fuse:'dimBreach',desc:'충돌+화염 → 합체: 사슬기동 (무적이동 핵심)',descEn:'Impact+Flame → Fuse: Chain Breach (invincible dash core)'},
-  {phase:'5. 사슬 확장',phaseEn:'5. Chain Expand',skills:['chainAssault','chainSlash','chainSlam'],fuse:'dimThunder',desc:'사슬 체인 확장 → 차원돌파/차원파쇄/차원뇌격',descEn:'Chain expansion → Dimensional combos'},
+  {phase:'5. 사슬 확장',phaseEn:'5. Chain Expand',skills:['chainAssault','chainSlash','chainSlam'],fuse:'dimThunder',desc:'사슬 체인 확장 → 기동:기습/기동:파쇄/기동:전폭',descEn:'Chain expansion → Assault/Slam/Thunder combos'},
   {phase:'6. 💀 필살기 선택',phaseEn:'6. 💀 Ultimate Pick',skills:['holyBlast','blackStar','lavaSummon','execution','demonRevive'],fuse:null,pick:true,desc:'필살기 1개 선택! 신성폭발(넉백) / 블랙(흡인) / 용암(화상) / 처형(보스킬) / 악마화(부활)',descEn:'Pick 1 ultimate! Holy Blast(knockback) / Black Star(pull) / Lava(burn) / Execution(boss kill) / Demon Revive(revive)'},
-  {phase:'7. 멸살광선',phaseEn:'7. Omni Beam',skills:['omniBeam'],fuse:null,desc:'E키 마법 — 강력한 직선 레이저',descEn:'E key magic — powerful straight laser'},
+  {phase:'7. 멸살광선+전격이동',phaseEn:'7. Omni Beam+Blink',skills:['omniBeam','magicBlink'],fuse:null,desc:'E키 레이저 + Shift 전격이동 (번개 범위뎀)',descEn:'E key laser + Shift lightning blink (AoE dmg)'},
   {phase:'8. 회전참 합체',phaseEn:'8. Whirlwind Fuse',skills:['whirlwind','detonate'],fuse:'whirlDet',desc:'회전참 + 기폭 → 합체: 회전기폭',descEn:'Whirlwind + Detonate → Fuse: Whirl-Det'},
   {phase:'9. 대왕 합체',phaseEn:'9. Giant Fuse',skills:['giantSlam'],fuse:'slamStorm',desc:'대왕치기 추가 → 합체: 지진폭풍',descEn:'Giant Slam → Fuse: Slam Storm'},
   {phase:'10. 석궁: 만화방창',phaseEn:'10. Crossbow: Barrage',skills:['fanShot'],fuse:'sixFuse',desc:'만화방창 + 멸살광선 → 합체: 연사+빔',descEn:'Barrage + Omni Beam → Fuse: Rapid+Beam'},
@@ -30708,7 +30708,7 @@ const SKILL_LIST=[
   {id:'chainAssault',name:'기동불꽃',cat:'move',desc:'사슬기동 중 E → 즉시 착지하며 화염폭발. 범위200~350 INT 스케일 화염 마법데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). MP 소모. Lv당 범위+16 뎀+12%',descEn:'During chain dash E → instant land with fire explosion. Range 200~350 INT scale fire magic DMG+knockback. DMG scales with travel distance (max x4.0). MP cost. Per Lv range+16 DMG+12%',spCost:10,matCost:0,up:true,upSp:5,upMat:0},
   {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 우클릭 → 땅 내려찍기. 범위200~350 데미지x8 그로기x6. 이동거리 비례 최대x6. 일반몹 즉시 기절(5초), 보스 체간 대량 삭감. Lv당 범위+16 데미지+15% 그로기+15%',descEn:'During chain dash RMB → ground slam. Range 200~350 DMG x8 groggy x6. Distance scale max x6. Instant stun mobs (5s), massive boss posture break. Per Lv range+16 DMG+15% groggy+15%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   // earthBreaker 삭제됨
-  {id:'chainSlash',name:'기동칼날개',cat:'move',fixed:true,hidden:true,emoji:'⚔',desc:'[히든: 5성 dimRush 합체, Lv200] 사슬기동 중 좌클릭 → 이동 중 전방 광역 베기+출혈. STR 스케일 물리데미지. 다단히트. Lv당 뎀+12% 범위+15',descEn:'[Hidden: 5-star dimRush fuse, Lv200] During chain dash LMB → forward AoE slash+bleed while moving. STR scale physical DMG. Multi-hit. Per Lv DMG+12% range+15',spCost:0,matCost:0,reqLv:200,up:true,upSp:5,upMat:0},
+  {id:'chainSlash',name:'기동칼날개',cat:'move',fixed:true,hidden:true,emoji:'⚔',desc:'[히든: 5성 dimRush 합체] 사슬기동 중 좌클릭 → 이동 중 전방 광역 베기+출혈. STR 스케일 물리데미지. 다단히트. Lv당 뎀+12% 범위+15',descEn:'[Hidden: 5-star dimRush fuse] During chain dash LMB → forward AoE slash+bleed while moving. STR scale physical DMG. Multi-hit. Per Lv DMG+12% range+15',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'peaceShield',name:'평화의보호',cat:'def',fixed:true,hidden:true,noDmg:true,emoji:'🕊️',desc:'[히든: 암전나선 합체] Q 홀드 시 보호막이 점점 커지며 HP 초당 10% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모',descEn:'[Hidden: Dark Spiral fuse] Q hold: shield grows over time + HP 10%/s regen. DMG reduction scales with shield size. MP cost',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'⚡',desc:'[히든: 암전나선 합체] E로 조준, 클릭 설치. 에너지 쐐기를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. Lv당 거리+50',descEn:'[Hidden: Dark Spiral fuse] E to aim, click to place. Energy wedge planted on ground — rotates+DMG. MP 100. 1 charge CD 10s. 5s+0.5s/Lv duration. Per Lv range+50',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'칼등날개',cat:'def',fixed:true,emoji:'🔨',desc:'[고정: 칼등치기 합체] 보유 시 칼등치기에 전방 충격파 자동 발동. 제자리 처내기. 쿨 5초. Lv당 뎀+12% 범위+20',descEn:'[Fixed: Blade Parry fuse] When owned, swipe auto-triggers forward shockwave. Stationary swipe. CD 5s. Per Lv DMG+12% range+20',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
@@ -31092,8 +31092,8 @@ function _isAbsorbed(skId){
   }
   return false;
 }
-const _FUSE_NAMES={dimBreach:'사슬이동:강화',dimSlam:'사슬이동:강화기습',dimThunder:'사슬기동:기습충돌',dimRush:'기동:칼날개',dimBlast:'기동:강화전폭',whirlDet:'회전기폭',slamStorm:'지진폭풍',stormBeam:'암전나선',stormBurst:'암전폭류',bladeFuse:'악의 해방',iceMortar:'얼음소용돌이',sixFuse:'만화광선',elemFuse:'추적암전',boneStorm:'해골번개',elecRepent:'참회 귀환',shieldFuse:'날개치기',plagueFuse:'독혈해방',holyFuse:'신성한 결계',holyIce:'신성한 빙결',holyWeak1:'신성한 파쇄',holyWeak2:'신성한 침식',holyWeak3:'신성한 관통',holyWeak4:'신성한 지배',pillarSpike:'기둥가시',pillarSlam:'기둥강타',infernoSlam:'지옥강타',siegeGhost:'공성유령'};
-const _FUSE_NAMES_EN={dimBreach:'Chain:Enhanced',dimSlam:'Chain:Rush',dimThunder:'Chain:Thunder',dimRush:'Chain:Bladewing',dimBlast:'Chain:FullBurst',whirlDet:'Whirl-Det',slamStorm:'Quake Storm',stormBeam:'Lightning Helix',stormBurst:'Lightning Burst',bladeFuse:'Malice Liberation',iceMortar:'Ice Vortex',sixFuse:'Luminescence',elemFuse:'Tracking Lightning',boneStorm:'Bone Lightning',elecRepent:'Repentance Return',shieldFuse:'Wing Strike',plagueFuse:'Plague Liberation',holyFuse:'Holy Ward',holyIce:'Holy Freeze',holyWeak1:'Holy Shatter',holyWeak2:'Holy Corrode',holyWeak3:'Holy Pierce',holyWeak4:'Holy Dominion',pillarSpike:'Pillar Spike',pillarSlam:'Pillar Slam',infernoSlam:'Inferno Slam',siegeGhost:'Siege Ghost'};
+const _FUSE_NAMES={dimBreach:'기동:기습',dimSlam:'기동:파쇄',dimThunder:'기동:전폭',dimRush:'기동:칼날개',dimBlast:'기동:섬멸',whirlDet:'회전기폭',slamStorm:'지진폭풍',stormBeam:'암전나선',stormBurst:'암전폭류',bladeFuse:'악의 해방',iceMortar:'얼음소용돌이',sixFuse:'만화광선',elemFuse:'추적암전',boneStorm:'해골번개',elecRepent:'참회 귀환',shieldFuse:'날개치기',plagueFuse:'독혈해방',holyFuse:'신성한 결계',holyIce:'신성한 빙결',holyWeak1:'신성한 파쇄',holyWeak2:'신성한 침식',holyWeak3:'신성한 관통',holyWeak4:'신성한 지배',pillarSpike:'기둥가시',pillarSlam:'기둥강타',infernoSlam:'지옥강타',siegeGhost:'공성유령'};
+const _FUSE_NAMES_EN={dimBreach:'Maneuver:Ambush',dimSlam:'Maneuver:Shatter',dimThunder:'Maneuver:Thunder',dimRush:'Maneuver:Bladewing',dimBlast:'Maneuver:Annihilate',whirlDet:'Whirl-Det',slamStorm:'Quake Storm',stormBeam:'Lightning Helix',stormBurst:'Lightning Burst',bladeFuse:'Malice Liberation',iceMortar:'Ice Vortex',sixFuse:'Luminescence',elemFuse:'Tracking Lightning',boneStorm:'Bone Lightning',elecRepent:'Repentance Return',shieldFuse:'Wing Strike',plagueFuse:'Plague Liberation',holyFuse:'Holy Ward',holyIce:'Holy Freeze',holyWeak1:'Holy Shatter',holyWeak2:'Holy Corrode',holyWeak3:'Holy Pierce',holyWeak4:'Holy Dominion',pillarSpike:'Pillar Spike',pillarSlam:'Pillar Slam',infernoSlam:'Inferno Slam',siegeGhost:'Siege Ghost'};
 function _fuseName(key){return OPT.lang==='en'?(_FUSE_NAMES_EN[key]||key):(_FUSE_NAMES[key]||key)}
 // ═══ 리셋 후 활성 스킬 변수 동기화 ═══
 function _syncActiveSkAfterReset(resetIds){
@@ -32177,7 +32177,7 @@ function openSkSlotPop(tab){
   const tabs=[
     {key:'lmb',label:'좌클',color:'#cc4444',fused:_isFused('stormBurst')?true:_isFused('stormBeam')?true:_isFused('slamStorm')?true:_isFused('whirlDet'),fuseName:_isFused('stormBurst')?'💫 암전폭류':_isFused('stormBeam')?'⚡ 암전나선':_isFused('slamStorm')?'🌋 지진폭풍':'🔥 회전기폭'},
     {key:'rmb',label:'우클',color:'#4488aa',fused:false,fuseName:''},
-    {key:'charge',label:'SH',color:'#447788',fused:isDimBreach(),fuseName:_isFused('dimBlast')?'⚔ 강화전폭':_isFused('dimRush')?'⚔ 칼날개':_isFused('dimThunder')?'⚡ 강화습격':_isFused('dimSlam')?'🌀 사슬:강화':'🌀 사슬:강화'},
+    {key:'charge',label:'SH',color:'#447788',fused:isDimBreach(),fuseName:_isFused('dimBlast')?'⚔ 기동:섬멸':_isFused('dimRush')?'⚔ 기동:칼날개':_isFused('dimThunder')?'⚡ 기동:전폭':_isFused('dimSlam')?'🌀 기동:파쇄':'🌀 기동:기습'},
     {key:'magic',label:'E',color:'#8866cc',fused:_isFused('stormBurst')?true:_isFused('stormBeam')?true:_isFused('elemFuse')?true:P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse'),fuseName:_isFused('stormBurst')?'💫 →좌클 통합':_isFused('stormBeam')?'⚡ →좌클 통합':_isFused('elemFuse')?'🎯 추적암전':'☆ 만화광선'},
     {key:'bow',label:'T자동',color:'#cc8844'},
     {key:'q',label:'Q',color:'#55aa77',fused:false,fuseName:''},
@@ -36026,7 +36026,7 @@ function renderStatSummary(){
     `<div style="${_sHd}">🎁 ${_L('기타','Misc')}</div>`+
     (()=>{const _pGl=gl().potCd||0,_pBl=blt().potCd||0,_pRg=PASSIVES.pRegen*.03;const _pSum=_pGl+_pBl+_pRg;const _pCdF=Math.max(6,~~(300*(1-_pSum)));return`<div style="${_sLn}">${_L('물약쿨','Potion CD')}: <span style="color:#66ddaa">${(_pCdF/60).toFixed(1)}${_L('초','s')}</span> | ${_L('회복+','Recovery+')}: <span style="color:${_afc('potionPower','#66ddaa')}">${_afp('potionPower')}</span></div>`})()+
     `<div style="${_sLn}">${_L('드롭','Drop')}: <span style="color:#ffdd44">×${statDropBonus().toFixed(2)}</span> | ${_L('경험치+','EXP+')}: <span style="color:${_afc('expBonus','#88ff88')}">${_afp('expBonus')}</span> | ${_L('골드+','Gold+')}: <span style="color:${_afc('goldBonus','#ffdd44')}">${_afp('goldBonus')}</span></div>`+
-    (()=>{const _gBase=_isFused('dimRush')?600:_isFused('dimThunder')?500:isDimBreach()?300:(P.skills.chargeBoost>=1||(P.skills.magicBlink||0)>=1)?200:100;const _gSrc=_isFused('dimRush')?_L('차원돌진','dimRush'):_isFused('dimThunder')?_L('차원뇌격','dimThunder'):isDimBreach()?_L('차원균열','dimBreach'):(P.skills.chargeBoost>=1||(P.skills.magicBlink||0)>=1)?_L('충전스킬','chargeSk'):_L('기본','base');const _gAfx=~~(_eqAffix('extraST')||0);const _gTotal=_gBase+_gAfx;return`<div style="${_sLn}">${_L('사슬게이지','Chain Gauge')}: <span style="color:#ffcc44">${_gTotal}</span> <span style="color:#887766;font-size:1.1rem">(${_gSrc}${_gBase}${_gAfx?' + '+_L('어픽스','affix')+_gAfx:''})</span></div>`})()+
+    (()=>{const _gBase=_isFused('dimRush')?600:_isFused('dimThunder')?500:isDimBreach()?300:(P.skills.chargeBoost>=1||(P.skills.magicBlink||0)>=1)?200:100;const _gSrc=_isFused('dimRush')?_L('기동:칼날개','dimRush'):_isFused('dimThunder')?_L('기동:전폭','dimThunder'):isDimBreach()?_L('기동:기습','dimBreach'):(P.skills.chargeBoost>=1||(P.skills.magicBlink||0)>=1)?_L('충전스킬','chargeSk'):_L('기본','base');const _gAfx=~~(_eqAffix('extraST')||0);const _gTotal=_gBase+_gAfx;return`<div style="${_sLn}">${_L('사슬게이지','Chain Gauge')}: <span style="color:#ffcc44">${_gTotal}</span> <span style="color:#887766;font-size:1.1rem">(${_gSrc}${_gBase}${_gAfx?' + '+_L('어픽스','affix')+_gAfx:''})</span></div>`})()+
     // ── 특수 효과 ──
     `<div style="${_sHd}">✨ ${_L('특수 효과','Special Effects')}</div>`+
     `<div style="${_sLn}">${_L('처치뎀+','Kill DMG+')}: <span style="color:${_afc('killSlayer','#ff4444')}">${_afp('killSlayer')}</span></div>`+
@@ -38750,6 +38750,19 @@ function draw(){
   renderHitVFX(X);renderElecVFX(X);renderOldBurstVFX(X);renderDarkBurstVFX(X);renderLightningBurstVFX(X);
   renderCrescents(X);
   renderMmExpVFX(X);_renderIceOrbVfx(X);
+  // ═══ Shift 게이지: 플레이어 머리 위 (홀드/비행/대시 중) ═══
+  if(_dashHold||_harpActive||_dashActive){
+    const _hgPct=_harpGauge/_HARP_GAUGE_MAX;
+    const _hgCol=_hgPct>=1?'#44ffaa':_hgPct>.5?'#88ccff':_hgPct>.2?'#ffaa44':'#ff4444';
+    X.font='bold 11px sans-serif';X.textAlign='center';X.textBaseline='bottom';
+    X.globalAlpha=.9;X.fillStyle='#000';X.fillText(~~_harpGauge+'/'+_HARP_GAUGE_MAX,P.x+1,P.y-P.r-12+1);
+    X.fillStyle=_hgCol;X.fillText(~~_harpGauge+'/'+_HARP_GAUGE_MAX,P.x,P.y-P.r-12);
+    // 미니 바
+    const _hgBW=32,_hgBH=3,_hgBX=P.x-_hgBW/2,_hgBY=P.y-P.r-10;
+    X.fillStyle='rgba(0,0,0,.6)';X.fillRect(_hgBX,_hgBY,_hgBW,_hgBH);
+    X.fillStyle=_hgCol;X.fillRect(_hgBX,_hgBY,_hgBW*_hgPct,_hgBH);
+    X.globalAlpha=1;
+  }
   {const _t0=performance.now();if(_FLOAT_TEXT_ENABLED){X.font='bold 22px sans-serif';X.textAlign='center';for(let _ti=0;_ti<G.txts.length;_ti++){const t=G.txts[_ti];if(t.life<=0)continue;if(t.x<_vl||t.x>_vr||t.y<_vt||t.y>_vb)continue;var _blk=false;var _isN2=t.t.length>0&&t.t.length<16;if(_isN2){_blk=true;for(var _ni2=0;_ni2<t.t.length;_ni2++){var _cc2=t.t.charCodeAt(_ni2);if(!((_cc2>=48&&_cc2<=57)||_cc2===45||_cc2===43)){_blk=false;break}}}if(!_blk){for(var _bi=0;_bi<_FLOAT_TEXT_BLACKLIST.length;_bi++){if(t.t.indexOf(_FLOAT_TEXT_BLACKLIST[_bi])!==-1){_blk=true;break}}}if(_blk)continue;const _ta=t.life/t.ml;X.globalAlpha=_ta*.9;X.fillStyle='#000000';X.fillText(t.t,t.x+1,t.y+1);X.fillText(t.t,t.x-1,t.y+1);X.globalAlpha=_ta;X.fillStyle=t.c;X.fillText(t.t,t.x,t.y)}X.globalAlpha=1}if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
   X.restore();
   const _dd4=performance.now();

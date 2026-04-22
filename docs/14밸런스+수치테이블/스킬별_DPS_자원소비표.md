@@ -46,7 +46,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | bladeDash | 전격이동 | MP | 10+(Lv-1)×5 (1렙10, 10렙55) | 10스택 (480f→Lv당-30f, 최소180f) | **데미지 없음** | 순수 이동기. 방향키 더블탭 or 스페이스+방향키. 500유닛 대시, 이동 중 무적(15f). 만렙 시 방향키 1번으로 즉시 발동 |
 | chainAssault | 기동불꽃 | MP | mpCost('dimBreach') | 없음 (이동 중) | INT × _skMul('chainAssault') × **티어3단계(×30/×60/×100)** | 착지 화염폭발, 3티어=업화선 2.5초 차징급 |
 | chainSlam | 기동파괴 | ST + 악의20 | stCost('giantSlam') | 없음 (이동 중) | STR × _skMul('chainSlam') × **티어3단계(×30/×60/×100)** | 보스 체간 대량삭감, 즉기절 5초, 3티어=업화선 2.5초 차징급 |
-| chainSlash | 기동칼날개 | 없음 | 0 (Lv200 해금) | 없음 (이동 중) | STR 물리 | 전방 광역 베기+출혈, 다단히트 |
+| chainSlash | 기동칼날개 | 없음 | 0 | 없음 (이동 중) | STR 물리 | 전방 광역 베기+출혈, 다단히트 (레벨제한 없음) |
 
 ---
 
@@ -188,7 +188,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | weakMag 침식의 영역 | 0 | 쿨 25초만 |
 | weakPj 관통의 영역 | 0 | 쿨 25초만 |
 | weakRev 부활의 영역 | 0 | 쿨 25초만 |
-| chainSlash 기동칼날개 | 0 | Lv200 히든 |
+| chainSlash 기동칼날개 | 0 | 히든 (레벨제한 없음) |
 | burstLoop 버스트루프 | 0 | Lv700 히든 |
 | peaceShield 평화의보호 | MP틱 | 홀드 중만 소모 |
 
