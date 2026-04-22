@@ -8913,22 +8913,23 @@ function mkItem(slot,tier,el,rarity,wtype){
     // DEF/eDef 5티어 선형 통일: T0=10, T1=20, T2=30, T3=40, T4=50 (12슬롯 × 50 = 총 600 방어)
     // eDef는 전 속성 공통이라 절반 스케일 (T4=25, 총 최대 ~150)
     // 방어구 6파트: 물리DEF만, 20+tier*20 (T0=20~T4=100, 6세트 풀=600)
-    shield:{def:20+tier*20,stagger:15+tier*8,shieldWt:10-tier,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
-    boots:{def:20+tier*20,spd:tier*.08,bonusSt:(5+tier*4)*2,chargeDist:14+tier*3,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    armor:{def:20+tier*20,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:(4+tier*3)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    // 무기 파트(helmet,weapon,bow): bonusHp 금지 — 무기 파트는 공격 전용
+    // 방어구 6파트: bonusHp만 [100,200,300,400,500]
+    shield:{def:20+tier*20,stagger:15+tier*8,shieldWt:10-tier,bonusHp:(tier+1)*100,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
+    boots:{def:20+tier*20,spd:tier*.08,bonusSt:(5+tier*4)*2,chargeDist:14+tier*3,bonusHp:(tier+1)*100},
+    armor:{def:20+tier*20,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:(4+tier*3)*2,bonusHp:(tier+1)*100},
+    // 무기 파트(helmet,weapon,bow): bonusHp/bonusShield 없음 — 공격 전용
     helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,def:20+tier*20},
     bow:{atk:_atkRoll,spd:1,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
-    gloves:{def:20+tier*20,spd:tier*.04,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    pants:{def:20+tier*20,bonusSt:(3+tier*3)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    cape:{def:20+tier*20,spd:tier*.03,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    // 장신구 6파트: 속성eDef만 (belt/necklace/ring1/ring2/bracelet/headband)
-    belt:{eDef:20+tier*20,dmgBonus:10+tier*10,bonusSt:(4+tier*3)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    necklace:{eDef:20+tier*20,critRate:10,dmgBonus:20+tier*20,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    ring1:{eDef:20+tier*20,critRate:5,dmgBonus:10+tier*10,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    ring2:{eDef:20+tier*20,critRate:5,dmgBonus:10+tier*10,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    bracelet:{eDef:20+tier*20,dmgBonus:10+tier*10,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200},
-    headband:{eDef:20+tier*20,dmgBonus:10+tier*10,mpRegen:(1+tier*1)*2,bonusHp:(tier+1)*100,bonusShield:(tier+1)*200}
+    gloves:{def:20+tier*20,spd:tier*.04,bonusHp:(tier+1)*100},
+    pants:{def:20+tier*20,bonusSt:(3+tier*3)*2,bonusHp:(tier+1)*100},
+    cape:{def:20+tier*20,spd:tier*.03,bonusHp:(tier+1)*100},
+    // 장신구 6파트: bonusShield만 [100,200,300,400,500]
+    belt:{eDef:20+tier*20,dmgBonus:10+tier*10,bonusSt:(4+tier*3)*2,bonusShield:(tier+1)*100},
+    necklace:{eDef:20+tier*20,critRate:10,dmgBonus:20+tier*20,bonusShield:(tier+1)*100},
+    ring1:{eDef:20+tier*20,critRate:5,dmgBonus:10+tier*10,bonusShield:(tier+1)*100},
+    ring2:{eDef:20+tier*20,critRate:5,dmgBonus:10+tier*10,bonusShield:(tier+1)*100},
+    bracelet:{eDef:20+tier*20,dmgBonus:10+tier*10,bonusShield:(tier+1)*100},
+    headband:{eDef:20+tier*20,dmgBonus:10+tier*10,mpRegen:(1+tier*1)*2,bonusShield:(tier+1)*100}
   };
   const b=base[slot];
   if(!b)return{id:~~(performance.now()*1000)+~~(Math.random()*9999),slot,el,rarity,tier,name:'???',emoji:'❓'};
@@ -13763,7 +13764,7 @@ const _BOSS_DIR_ATLAS_FILES={0:{src:'img/mobs/atlas_boss_si0_dir.png',cell:128}}
   for(const si in _BOSS_DIR_ATLAS_FILES){
     const cfg=_BOSS_DIR_ATLAS_FILES[si];
     const img=new Image();
-    img.src=cfg.src+'?v=1';
+    img.src=cfg.src+'?v=2';
     img.onload=()=>{_bossDirAtlas[+si]={img,ready:true,cell:cfg.cell};console.log('[BOSS] dirAtlas si'+si+' loaded '+img.width+'x'+img.height)};
   }
 })();
@@ -13814,7 +13815,7 @@ function _drawBossWalk(X,e,now,sa,tdY){
     const col=off.s+fi;
     const dirRow=_facingToDir4(e.facing);
     const sx=col*cc,sy=dirRow*cc;
-    const sc=e.r*2/cc*1.2;
+    const sc=e.r*2/cc*6.0;
     const dw=cc*sc,dh=cc*sc;
     X.save();X.translate(e.x,e.y+(tdY||0));
     X.globalAlpha=sa;
@@ -14746,13 +14747,20 @@ function _addCorpse(e,killAng,power){
   }
   if(!_cDrawn){c.ctx.fillStyle=e.col||'#cc0000';c.ctx.beginPath();c.ctx.arc(64,64,54,0,Math.PI*2);c.ctx.fill();}
   }
-  // 내장 오버레이 (반투명 붉은 얼룩)
-  c.ctx.globalAlpha=0.35;
-  c.ctx.fillStyle='#cc1100';
-  for(let _gi=0;_gi<3;_gi++){
-    const _gx=30+Math.random()*68,_gy=30+Math.random()*68;
-    const _gr=8+Math.random()*14;
-    c.ctx.beginPath();c.ctx.ellipse(_gx,_gy,_gr,_gr*.6,Math.random()*Math.PI,0,Math.PI*2);c.ctx.fill();
+  // 내장 오버레이 (선홍색 얼룩 + 짙은 핏줄)
+  c.ctx.globalAlpha=0.45;
+  var _goreColors=['#ff2233','#ee1122','#dd0033','#cc0044','#ff4455'];
+  for(let _gi=0;_gi<6;_gi++){
+    const _gx=20+Math.random()*88,_gy=20+Math.random()*88;
+    const _gr=6+Math.random()*18;
+    c.ctx.fillStyle=_goreColors[~~(Math.random()*5)];
+    c.ctx.beginPath();c.ctx.ellipse(_gx,_gy,_gr,_gr*.5,Math.random()*Math.PI,0,Math.PI*2);c.ctx.fill();
+  }
+  // 핏줄 (선홍색 라인 3~4개)
+  c.ctx.globalAlpha=0.3;c.ctx.strokeStyle='#ff1133';c.ctx.lineWidth=1.5;
+  for(let _vi=0;_vi<3+~~(Math.random()*2);_vi++){
+    c.ctx.beginPath();c.ctx.moveTo(20+Math.random()*88,20+Math.random()*88);
+    c.ctx.quadraticCurveTo(20+Math.random()*88,20+Math.random()*88,20+Math.random()*88,20+Math.random()*88);c.ctx.stroke();
   }
   // 눈알 (2~3개, 흰자+검은동공)
   c.ctx.globalAlpha=0.85;
@@ -14763,11 +14771,35 @@ function _addCorpse(e,killAng,power){
     c.ctx.fillStyle='#110000';c.ctx.beginPath();c.ctx.arc(_ex,_ey,2,0,Math.PI*2);c.ctx.fill();
     c.ctx.fillStyle='rgba(200,0,0,0.4)';c.ctx.beginPath();c.ctx.arc(_ex,_ey,5+Math.random()*3,0,Math.PI*2);c.ctx.stroke();
   }
-  // 피 웅덩이 (시체 아래)
-  c.ctx.globalAlpha=0.25;
-  c.ctx.fillStyle='#880000';
+  // 피 웅덩이 (시체 아래, 선홍색)
+  c.ctx.globalAlpha=0.3;
+  c.ctx.fillStyle='#cc1122';
   c.ctx.beginPath();c.ctx.ellipse(64,90,40+Math.random()*20,12+Math.random()*8,0,0,Math.PI*2);c.ctx.fill();
   c.ctx.globalAlpha=1.0;
+}
+// ── 선홍색 고어 파편 아틀라스 (10종, 프리렌더) ──
+var _goreAtlas=document.createElement('canvas');_goreAtlas.width=320;_goreAtlas.height=32;
+var _goreAx=_goreAtlas.getContext('2d');
+var _GORE_W=32,_GORE_N=10;
+var _goreCols=['#ff2233','#ee1122','#dd0033','#cc0044','#ff4455','#ff1144','#ee0033','#cc1133','#ff3344','#dd2244'];
+for(var _gi=0;_gi<_GORE_N;_gi++){
+  var _gx=_gi*_GORE_W+16,_gy=16;
+  _goreAx.fillStyle=_goreCols[_gi];_goreAx.globalAlpha=0.9;
+  // 불규칙 살점 덩어리
+  _goreAx.beginPath();
+  var _gPts=5+~~(Math.random()*4);
+  for(var _gp=0;_gp<_gPts;_gp++){
+    var _ga=Math.PI*2*_gp/_gPts;var _gr=4+Math.random()*8;
+    if(_gp===0)_goreAx.moveTo(_gx+Math.cos(_ga)*_gr,_gy+Math.sin(_ga)*_gr);
+    else _goreAx.lineTo(_gx+Math.cos(_ga)*_gr,_gy+Math.sin(_ga)*_gr);
+  }
+  _goreAx.closePath();_goreAx.fill();
+  // 어두운 테두리
+  _goreAx.strokeStyle='#880011';_goreAx.lineWidth=1;_goreAx.stroke();
+  // 핏방울 하이라이트
+  _goreAx.globalAlpha=0.5;_goreAx.fillStyle='#ff6677';
+  _goreAx.beginPath();_goreAx.arc(_gx-2+Math.random()*4,_gy-2+Math.random()*4,2+Math.random()*2,0,Math.PI*2);_goreAx.fill();
+  _goreAx.globalAlpha=1;
 }
 // ── Gib 시스템: 폭발 사망 시 시체 부위 조각 ──
 const _GIB_MAX=60;const _gibs=[];
@@ -14797,7 +14829,7 @@ function _addGibs(e,boomX,boomY,boomR){
   }
   const ang=Math.atan2(e.y-(boomY||e.y),e.x-(boomX||e.x));
   const _isLarge=!!e.ib||e.r>=18||e.mhp>=220;
-  const _gibSplit=e.ib?4:(_isLarge?3:2); // 보스 16조각, 큰 몬스터 9조각, 일반 4조각
+  const _gibSplit=e.ib?5:(_isLarge?4:3); // 보스 25조각, 큰 몬스터 16조각, 일반 9조각
   const _cell=~~(48/_gibSplit);
   const _gibCenter=(_gibSplit-1)*.5;
   const _offStep=e.r*1.2/Math.max(1,_gibSplit-1);
@@ -14820,6 +14852,19 @@ function _addGibs(e,boomX,boomY,boomR){
     const spd=(1.5+Math.random()*2.5)*pw;
     g.x=cx;g.y=cy;g.vx=Math.cos(gibAng)*spd;g.vy=Math.sin(gibAng)*spd-1.25*pw;
     g.r=Math.random()*Math.PI*2;g.life=300+Math.random()*120;g.ml=g.life;g.sz=_gibDrawSz;g.active=true;
+  }
+  // 선홍색 고어 파편 추가 (아틀라스에서 랜덤 3~5개)
+  var _goreN=3+~~(Math.random()*3);
+  for(var _gri=0;_gri<_goreN;_gri++){
+    var _grOld=0,_grMin=Infinity;
+    for(var _grf=0;_grf<_GIB_MAX;_grf++){if(!_gibs[_grf].active){_grOld=_grf;break}if(_gibs[_grf].life<_grMin){_grMin=_gibs[_grf].life;_grOld=_grf}}
+    var _grG=_gibs[_grOld];var _grIdx=~~(Math.random()*_GORE_N);
+    _grG.ctx.clearRect(0,0,_GIB_MAX_CELL,_GIB_MAX_CELL);
+    _grG.ctx.drawImage(_goreAtlas,_grIdx*_GORE_W,0,_GORE_W,_GORE_W,0,0,_GIB_MAX_CELL,_GIB_MAX_CELL);
+    var _grAng=ang+(Math.random()-.5)*2;var _grSpd=(2+Math.random()*3)*pw;
+    _grG.x=e.x+(Math.random()-.5)*e.r;_grG.y=e.y+(Math.random()-.5)*e.r;
+    _grG.vx=Math.cos(_grAng)*_grSpd;_grG.vy=Math.sin(_grAng)*_grSpd-1.5*pw;
+    _grG.r=Math.random()*Math.PI*2;_grG.life=250+Math.random()*100;_grG.ml=_grG.life;_grG.sz=8+Math.random()*6;_grG.active=true;
   }
   const pn=~~(4+pw*6);
   for(let i=0;i<pn;i++){const a=ang+(Math.random()-.5)*2;
@@ -22880,7 +22925,7 @@ function update(){
           hurtP(~~((p.dmg||10)*elMul(p.el,ar().el)),{dtype:'magic'});
           if(P.s!=='charge'&&P.s!=='sBlock'){P.s='stagger';P.st2=30}
           addTxt(P.x,P.y-20,_T('⚠트랩!'),'#997744',30);addParts(P.x,P.y,'#997744',8);_pHit=true}
-        else{hurtP(~~((p.dmg||10)*elMul(p.el,ar().el)),{dtype:'magic',redBean:!!p.redBean,projHit:true});_addBoom(p.x,p.y,p.redBean?40:24,p.redBean?20:14,p.redBean?'redbean':p.el===EL.I?'ice':p.el===EL.L?'lightning':p.el===EL.D?'dark':'fire');if(p.redBean){addParts(p.x,p.y,'#ff2200',10);shake(4)}_pHit=true}}}
+        else{hurtP(~~((p.dmg||10)*elMul(p.el,ar().el)),{dtype:'magic',redBean:!!p.redBean,projHit:true});_addBoom(p.x,p.y,p.redBean?80:24,p.redBean?30:14,p.redBean?'redbean':p.el===EL.I?'ice':p.el===EL.L?'lightning':p.el===EL.D?'dark':'fire');if(p.redBean){addParts(p.x,p.y,'#ff2200',20);shake(8);SFX.detonate();doHitFlash('#ff2200',0.2)}_pHit=true}}}
     if(!_pHit&&p.friendly){const _fHitR=Math.max(6,(p.r||4)+Math.min(18,Math.sqrt(p.vx*p.vx+p.vy*p.vy)*0.5));const _ne3=shQuery(p.x,p.y,_fHitR+20);for(let ni=0;ni<_ne3.length;ni++){const e=_ne3[ni];if(!e.alive)continue;if(e._bluHitCD>0)continue;if(dst(p.x,p.y,e.x,e.y)<e.r+_fHitR){if(p.friendly&&p.redBean)e._bluHitCD=3;
       if(p.bomb){
         // 반사 폭발탄: 착탄 시 광역 폭발
@@ -29595,11 +29640,13 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // 큰 몬스터는 기본 사망 시 큰 시체 파편(gib) 생성
     // 모든 사망 시 gib + 스프라이트 분할 (화염 제외)
     if(!_isBurnDeath){//_addSplitGibs(e,_killAng); // 비활성 — 고어 시스템으로 대체
-      // gore 파편: 일반 1개, 대형/보스 2개
+      // gore 파편: 일반 1개(살점/피/내장 위주), 대형/보스 2개
       {const _gL=e.ib||e.r>=18;
-      const _gAll=['flesh','blood','bone','eye','skull','heart','tooth','finger','tendon','organ'];
-      _addGorePiece(e.x,e.y,_gAll[~~(Math.random()*(_gL?10:5))]);
-      if(_gL)_addGorePiece(e.x,e.y,'spine')}
+      const _gCommon=['flesh','flesh','flesh','blood','blood','intestine','organ','tendon'];
+      const _gRare=['bone','eye','skull','heart','finger','tooth'];
+      const _gPick=Math.random()<.8?_gCommon:_gRare;
+      _addGorePiece(e.x,e.y,_gPick[~~(Math.random()*_gPick.length)]);
+      if(_gL)_addGorePiece(e.x,e.y,Math.random()<.5?'intestine':'organ')}
       _addDeathImpact(e.x,e.y,e.r)}
     if(e._fromHole!=null&&G.spawnHoles[e._fromHole])G.spawnHoles[e._fromHole].alive--;
     if(e.ib&&e._bossRevJudged){addTxt(e.x,e.y-45,_T('💀 부활 판정 중...'),'#ff8844',90);G._flashT=3;G._flashCol='#ff4400'}
@@ -37558,7 +37605,9 @@ function draw(){
           }
         }
       }
-      // ── (4방향 ch아틀라스/방향별 아틀라스 제거됨 — atlas_bosses.png가 최우선) ──
+      // ── 방향별 보스 아틀라스 (스테이지별 개별 파일) ──
+      if(!_bDrew){_bDrew=_drawBossWalk(X,e,_now,sa,_tdY)}
+      // ── 내부 보스 아틀라스 (폴백) ──
       if(!_bDrew&&_atlasBReady&&_atlasB){
         const _bPal=_getPalIdx(e.el!=null?e.el:0);
         const _bFr=_getBossFrame(e,_now);
@@ -42038,10 +42087,14 @@ function drawP(){
   }}
   // Additive 글로우 제거됨 (alpha .001~.003 = 보이지 않음, compositeOp 전환 비용만 낭비)
 
+  // 2패스 렌더: 푸른비(뒤) → 석궁/스킬(앞) — 석궁이 푸른비에 묻히지 않게
   let _ppDrawN=0;
+  for(let _ppPass=0;_ppPass<2;_ppPass++){
   for(let _ppi3=0;_ppi3<pProjs.length;_ppi3++){const p=pProjs[_ppi3];
-    if(p.x<_vl-20||p.x>_vr+20||p.y<_vt-20||p.y>_vb+20)continue; // 화면 밖 스킵
-    if(++_ppDrawN>_PP_DRAW_MAX)break; // 프레임당 투사체 렌더 캡
+    if(_ppPass===0&&!p.blueShot)continue; // 1패스: 푸른비만
+    if(_ppPass===1&&p.blueShot)continue;  // 2패스: 나머지만
+    if(p.x<_vl-20||p.x>_vr+20||p.y<_vt-20||p.y>_vb+20)continue;
+    if(++_ppDrawN>_PP_DRAW_MAX)break;
     if(p._sprFr==null)p._sprFr=Math.random()*8;p._sprFr+=.15;
     const ang=Math.atan2(p.vy,p.vx);const ac=p.plagueBlade?'#cc0033':(ELC[p.el]||'#fff');const ag=p.plagueBlade?'#880022':(ELG2[p.el]||'#fff');
     const fa=Math.min(1,1-p.dist/p.maxDist*.3);
@@ -42352,7 +42405,7 @@ function drawP(){
       if(!_drawProjPNG(p.x,p.y,'arrow',p.el,p._sprFr,22,ang,fa)&&!_drawProjSprite(p.x,p.y,_PA_ARROW[p.el]||0,22,ang,fa))
         _drawProcArrow(p.x,p.y,p.el,ang,22,fa);
     }
-  }
+  }} // end 2패스 + pProjs for
   const _s7t1=performance.now(); // pProjs 끝
 
   // ══ 보호막 Q진입 — 초반 임팩트 버스트 렌더 ══
