@@ -23010,7 +23010,7 @@ function update(){
     if(p._bounceCool>0)p._bounceCool-=sp;
     // ── 유도: 일반 매 2프레임, ebHoming 매 6프레임 ──
     if(!(p._bounceCool>0)&&!p.explosive&&!p.bladeOrb&&!p.iceBlade&&!p.burstBolt&&!p.fireball&&!p.normalBow&&!(p._arcLock&&p.dist<p._arcLock)&&spd>0&&(G._gcT+i)%(p.ebHoming?6:2)===0){
-      let bestE=null,bestD=p.plagueHoming?1000:p.mhBlade?200:p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.magic?250:200;
+      let bestE=null,bestD=p.plagueHoming?500:p.mhBlade?500:p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.magic?250:200;
       const _neH=shQuery(p.x,p.y,bestD);
       for(let h=0;h<_neH.length;h++){const e=_neH[h];if(!e.alive)continue;
         if(p._hitSet&&p._hitSet.has(e)){if(p.plagueHoming||p.mhBlade){let _anyAlive=false;for(let _pi=0;_pi<_neH.length;_pi++){if(_neH[_pi].alive&&!p._hitSet.has(_neH[_pi])){_anyAlive=true;break}}if(!_anyAlive)p._hitSet.clear();}continue;}
@@ -31482,10 +31482,11 @@ function activateMaliceHunt(){
     // 독혈해방 합체: 폭독칼날 1발 동시 발사
     if(_isPlagueGF){
       const _pfLv=P.skills.plagueBurst||1;
-      const _pfPrc=800+_pfLv*20+_bladePierceBonus+100;
+      const _pfPrc=800+(_pfLv-1)*20+_bladePierceBonus+100; // 1렙800+100, 레벨당+20
+      const _pfRange=2000+(_pfLv-1)*100; // 1렙2000, 레벨당+100
       const _pfCap=Math.floor(_pfPrc*91/1000)+9; // 1000=91보장+9확률=최대 100관통
       const _pfAng=_bestE?Math.atan2(_bestE.y-P.y,_bestE.x-P.x):P.facing;
-      {const _pp=_getPProj();_pp.x=P.x+Math.cos(_pfAng)*16;_pp.y=P.y+Math.sin(_pfAng)*16;_pp.vx=Math.cos(_pfAng)*18;_pp.vy=Math.sin(_pfAng)*18;_pp.dmg=_fbDmg;_pp.el=EL.P;_pp.maxDist=3000+~~(P.lv*2);_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.plagueBlade=true;_pp.plagueHoming=true;_pp._plagueLv=_pfLv;_pp._plagueHit=0;_pp._plagueMax=_pfPrc;_pp._plagueCap=_pfCap;_pp._maxBounce=_pfCap;_pp._hitSet=new Set();pProjs[pProjs.length]=_pp;}
+      {const _pp=_getPProj();_pp.x=P.x+Math.cos(_pfAng)*16;_pp.y=P.y+Math.sin(_pfAng)*16;_pp.vx=Math.cos(_pfAng)*18;_pp.vy=Math.sin(_pfAng)*18;_pp.dmg=_fbDmg;_pp.el=EL.P;_pp.maxDist=_pfRange;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.plagueBlade=true;_pp.plagueHoming=true;_pp._plagueLv=_pfLv;_pp._plagueHit=0;_pp._plagueMax=_pfPrc;_pp._plagueCap=_pfCap;_pp._maxBounce=_pfCap;_pp._hitSet=new Set();pProjs[pProjs.length]=_pp;}
     }
     P._gOrbs.length=0;
     SFX.slash();playSample(Math.random()<.5?'voice_dark_skill':'voice_bladefuse',1,_r(1,.05));addTxt(P.x,P.y-30,_isPlagueGF?_T('⚔🩸 독혈해방!'):_T('⚔ 칼날 해방!'),_isPlagueGF?'#cc2244':'#ffffff',50);
@@ -31496,9 +31497,10 @@ function activateMaliceHunt(){
     G.mats-=_malCost(30);P.st=Math.max(0,P.st-_mhStCost);
     const _mhDmg=~~(meleeRef()*statStr()*pAtkMul()*(20+(_mhLv-1)*4.21));
     const _bladePierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30);
-    const _mhPierce=800+_mhLv*20+_bladePierceBonus;
+    const _mhPierce=800+(_mhLv-1)*20+_bladePierceBonus; // 1렙800, 레벨당+20
+    const _mhRange=2000+(_mhLv-1)*100; // 1렙2000, 레벨당+100
     const _mdx=Math.cos(P.atkArc),_mdy=Math.sin(P.atkArc);
-    {const _pp=_getPProj();_pp.x=P.x+_mdx*16;_pp.y=P.y+_mdy*16;_pp.vx=_mdx*18;_pp.vy=_mdy*18;_pp.dmg=_mhDmg;_pp.el=EL.P;_pp.maxDist=3000+~~(P.lv*2);_pp.dist=0;_pp.r=10;_pp.stagger=8;_pp.kb=0;_pp.magic=true;_pp.maliceHunt=true;_pp.mhBlade=true;_pp._pierced=0;_pp._mhMaxPierce=_mhPierce;_pp._hitSet=new Set();_pp._maxBounce=10;pProjs[pProjs.length]=_pp;}
+    {const _pp=_getPProj();_pp.x=P.x+_mdx*16;_pp.y=P.y+_mdy*16;_pp.vx=_mdx*18;_pp.vy=_mdy*18;_pp.dmg=_mhDmg;_pp.el=EL.P;_pp.maxDist=_mhRange;_pp.dist=0;_pp.r=10;_pp.stagger=8;_pp.kb=0;_pp.magic=true;_pp.maliceHunt=true;_pp.mhBlade=true;_pp._pierced=0;_pp._mhMaxPierce=_mhPierce;_pp._hitSet=new Set();_pp._maxBounce=10;pProjs[pProjs.length]=_pp;}
     SFX.slash();playSample(Math.random()<.5?'voice_dark_skill':'voice_bladefuse',.8,_r(1,.08));addTxt(P.x,P.y-25,_T('⚔ 악의사냥!'),'#ffffff',35);
   }
 }
@@ -31688,10 +31690,11 @@ function activatePlagueBurst(){
   const slv=P.skills.plagueBurst||1;
   const a=P.atkArc;
   const _bladePierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30);
-  const _pbPierce=800+slv*20+_bladePierceBonus+100;
+  const _pbPierce=800+(slv-1)*20+_bladePierceBonus+100; // 1렙800+100, 레벨당+20
+  const _pbRange=2000+(slv-1)*100; // 1렙2000, 레벨당+100
   const _pbCap=Math.floor(_pbPierce*91/1000)+9; // 1000=91보장+9확률
   // 1발 빨간칼날: 강유도 + 관통
-  {const _pp=_getPProj();_pp.x=P.x+Math.cos(a)*16;_pp.y=P.y+Math.sin(a)*16;_pp.vx=Math.cos(a)*18;_pp.vy=Math.sin(a)*18;_pp.dmg=0;_pp.el=EL.P;_pp.maxDist=3000+~~(P.lv*2);_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.plagueBlade=true;_pp.plagueHoming=true;_pp._plagueLv=slv;_pp._plagueHit=0;_pp._plagueMax=_pbPierce;_pp._plagueCap=_pbCap;_pp._maxBounce=_pbCap;_pp._hitSet=new Set();pProjs[pProjs.length]=_pp;}
+  {const _pp=_getPProj();_pp.x=P.x+Math.cos(a)*16;_pp.y=P.y+Math.sin(a)*16;_pp.vx=Math.cos(a)*18;_pp.vy=Math.sin(a)*18;_pp.dmg=0;_pp.el=EL.P;_pp.maxDist=_pbRange;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.plagueBlade=true;_pp.plagueHoming=true;_pp._plagueLv=slv;_pp._plagueHit=0;_pp._plagueMax=_pbPierce;_pp._plagueCap=_pbCap;_pp._maxBounce=_pbCap;_pp._hitSet=new Set();pProjs[pProjs.length]=_pp;}
   SFX.slash();playSample(Math.random()<.5?'voice_dark_skill':'voice_bladefuse',1,_r(1,.05));addTxt(P.x,P.y-30,_T('🩸 폭독칼날!'),'#cc0033',40);
   shake(3);
 }
