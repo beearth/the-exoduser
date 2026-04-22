@@ -9317,7 +9317,9 @@ function pickupItem(item){
   const pos=_invFindSpace(w,h,INV.bag.length-1);
   if(!pos){INV.bag.pop();notify(_T('가방에 공간이 없습니다!'));return false}
   item._gx=pos.x;item._gy=pos.y;item._pickT=Date.now();
-  SFX.pickup();notify(`${_rarName(item.rarity)} ${_T(item.name)} ${_T('획득!')}`);dbSaveForce();return true;
+  SFX.pickup();notify(`${_rarName(item.rarity)} ${_T(item.name)} ${_T('획득!')}`);
+  if(item.rarity>=3)_petSayCD('item_pickup','crow','탭 장비창을 열어봐. 아이템을 주워왔어!',4,60,'cat','좋은 거 나왔다! TAB 열어서 확인해봐!',4);
+  dbSaveForce();return true;
 }
 function recalcSt(){
   _eqAffixCache=null;_eqStatCache=null; // 어픽스/스탯 캐시 무효화
@@ -30211,7 +30213,7 @@ function hurtP(dmg,opts){
   if(P.iframes>0){addTxt(P.x,P.y-18,_T('무적!'),'#aaaaff',18);return}
   // ═══ 회피 판정: DEX 0.05%/pt + 근성 0.5%/pt + dodgeChance 어픽스 (캡 35%, DOT 제외) ═══
   if(!(opts&&opts.dot)){
-    const _dodgePct=Math.min(35,(STATS.dex+_lvB()+_eqStat('Dex'))*.05+_gritTotal()*.5+_eqAffix('dodgeChance')*100);
+    const _dodgePct=Math.min(35,(STATS.dex+_lvB()+_eqStat('Dex'))*.05+_eqAffix('dodgeChance')*100);
     if(Math.random()*100<_dodgePct){addTxt(P.x,P.y-18,_T('회피!'),'#44ffaa',25);if(G._sStats)G._sStats.dodges++;return}
   }
   const _isDotEarly=opts&&opts.dot;
@@ -35849,7 +35851,7 @@ function renderStatPanel(){
     _gRow.innerHTML=`<div class="stat-icon" style="font-size:2.4rem;width:50px;text-align:center">💪</div>
       <div class="stat-info" style="flex:1">
         <div class="stat-name" style="color:#ffaa33;font-size:1.6rem;font-weight:700;letter-spacing:.05em">${OPT.lang==='en'?'GRIT':'근성 (GRIT)'}</div>
-        <div class="stat-desc" style="font-size:1.1rem;color:#665544;margin-top:4px">${OPT.lang==='en'?'HP/MP/ST +1, DEF/eDEF +0.5, Dodge +0.5%':'HP/MP/ST +1, 방어력/속성방어 +0.5, 회피 +0.5%'}</div>
+        <div class="stat-desc" style="font-size:1.1rem;color:#665544;margin-top:4px">${OPT.lang==='en'?'HP/MP/ST +1, DEF/eDEF +0.5':'HP/MP/ST +1, 방어력/속성방어 +0.5'}</div>
         <div class="stat-bar" style="height:8px;background:rgba(255,255,255,.05);margin-top:8px;border-radius:4px;overflow:hidden"><div class="stat-bar-fill" style="width:${_gPct}%;background:#ffaa33;height:100%"></div></div>
       </div>
       <div class="stat-val" style="color:#ffaa33;font-size:2rem;font-weight:900;min-width:60px;text-align:right">${_grit}</div>`;
