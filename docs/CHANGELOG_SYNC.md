@@ -20893,3 +20893,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/vfx_hellray/hellray_v3.png
 - img/vfx_hellray/hellray_v4.png
 
+
+## 2026-04-23 18:00 (auto)
+- game.html
+
