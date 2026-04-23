@@ -20865,3 +20865,15 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/vfx_scarecrow/scarecrow_idle_1.png
 - img/vfx_scarecrow/scarecrow_idle_2.png
 
+
+## 2026-04-23 12:30 (auto)
+- game.html
+- img/crow/fly/east_fly1.png
+- img/crow/fly/east_fly2.png
+- img/crow/fly/north_east_fly1.png
+- img/crow/fly/north_east_fly2.png
+- img/crow/fly/south_east_fly1.png
+- img/crow/fly/south_east_fly2.png
+- img/crow/fly/south_fly1.png
+- img/crow/fly/south_fly2.png
+

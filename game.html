@@ -23345,15 +23345,15 @@ function update(){
   if(_gameFrame<120){}else // 시작 2초간 트리거 차단
   for(let hi=G.spawnHoles.length-1;hi>=0;hi--){
     const h=G.spawnHoles[hi];
-    // 800px 밖 소환굴 스킵 (위치만 유지, 렌더/로직 스킵)
+    // 2000px 밖 소환굴 스킵 (위치만 유지, 렌더/로직 스킵)
     const _hqd=(P.x-h.x)*(P.x-h.x)+(P.y-h.y)*(P.y-h.y);
-    if(_hqd>640000&&!h._triggered)continue; // 800^2, 트리거 안 된 것만 스킵
+    if(_hqd>4000000&&!h._triggered)continue; // 2000^2, 트리거 안 된 것만 스킵
     // 구속의 영역 fireZone 범위 내 → 즉시 제거
     // 신성한 땅은 소환굴을 제거하지 않음 — 처치율 분모 보존
     const _hd2=_hqd;
     // 2000px 이내 접근 시 트리거
     if(!h._triggered){
-      if(_hqd<640000)h._triggered=true; // 800^2
+      if(_hqd<4000000)h._triggered=true; // 2000^2
       continue;
     }
     // 트리거 후 연출 타이머 (1.5초 빛남)
@@ -39940,46 +39940,11 @@ function drawP(){
     // 스프라이트 렌더 시도 (2프레임 교대)
     var _scFrame=~~(_now/300)%2;var _scImg=window._scImgs[_scFrame];
     if(_scImg&&_scImg.complete&&_scImg.naturalWidth){
-      var _scSz=64;X.globalAlpha=_vs.aggroOn?0.7:0.4;
+      var _scSz=128;X.globalAlpha=_vs.aggroOn?0.7:0.4;
       X.drawImage(_scImg,_vs.x-_scSz/2,_vs.y+_vsF-_scSz/2,_scSz,_scSz);
       X.globalAlpha=1;
     }
-    // 어그로 범위 표시 없음 (유령 본체만)
-    X.save();X.translate(_vs.x,_vs.y+_vsF);
-    X.globalAlpha=.15;X.fillStyle='#6633aa';
-    X.beginPath();X.ellipse(0,16,10+Math.sin(_vt*3)*2,3,0,0,Math.PI*2);X.fill();
-    const _bg=X.createLinearGradient(0,-28,0,14);
-    _bg.addColorStop(0,_vs.aggroOn?'rgba(160,100,220,.6)':'rgba(100,100,100,.3)');
-    _bg.addColorStop(.6,_vs.aggroOn?'rgba(130,70,200,.35)':'rgba(80,80,80,.15)');
-    _bg.addColorStop(1,'rgba(100,50,180,0)');
-    X.fillStyle=_bg;X.globalAlpha=_vsB;
-    X.beginPath();X.moveTo(-10,-20);X.quadraticCurveTo(-14,-5,-12,8);
-    X.quadraticCurveTo(-8,14,-4,14+Math.sin(_vt*4)*2);
-    X.quadraticCurveTo(0,12,4,14+Math.cos(_vt*4)*2);
-    X.quadraticCurveTo(8,14,12,8);X.quadraticCurveTo(14,-5,10,-20);
-    X.quadraticCurveTo(0,-30,-10,-20);X.fill();
-    X.globalAlpha=_vs.aggroOn?_vsB+.15:.25;
-    X.fillStyle=_vs.aggroOn?'#bb88ee':'#888';
-    X.beginPath();X.arc(0,-22,9,0,Math.PI*2);X.fill();
-    X.globalAlpha=_vsB*.5;X.strokeStyle=_vs.aggroOn?'#cc99ff':'#666';X.lineWidth=1.5;
-    X.beginPath();X.arc(0,-22,10,Math.PI*.8,Math.PI*2.2);X.stroke();
-    if(_vs.aggroOn){
-      const _eg=.5+.5*Math.sin(_vt*6);
-      X.globalAlpha=_eg;X.shadowColor='#cc44ff';X.shadowBlur=8;
-      X.fillStyle='#ee66ff';
-      X.beginPath();X.arc(-3,-23,2,0,Math.PI*2);X.fill();
-      X.beginPath();X.arc(3,-23,2,0,Math.PI*2);X.fill();
-      X.shadowBlur=0;
-    }else{
-      X.globalAlpha=.3;X.fillStyle='#aaa';
-      X.beginPath();X.arc(-3,-23,1.5,0,Math.PI*2);X.fill();
-      X.beginPath();X.arc(3,-23,1.5,0,Math.PI*2);X.fill();
-    }
-    if(_vs.aggroOn&&Math.random()<.3){
-      poolPart(_vs.x+(Math.random()-.5)*16,_vs.y+_vsF-10-Math.random()*20,(Math.random()-.5)*.5,-.5-Math.random()*.8,
-        Math.random()>.5?'#bb88ee':'#9955cc',1+Math.random()*2,10+Math.random()*8);
-    }
-    X.restore();
+    // 허수아비 눈 글로우 제거됨
     const _vsR2=_vs.absorbed/_vs.maxAbsorb;
     X.globalAlpha=.5;X.fillStyle='rgba(20,10,30,.6)';
     X.fillRect(_vs.x-15,_vs.y+_vsF+20,30,4);
@@ -42837,6 +42802,11 @@ function drawP(){
       const _ci=_PET_IMGS.crow[_dir8];
       if(_ci&&_ci.complete&&_ci.naturalWidth){
         X.drawImage(_ci,px-_petSz/2,py-_petSz/2,_petSz,_petSz);
+        // 까마귀 눈 글로우 (붉은색)
+        var _ceG=.4+.3*Math.sin(_pet.t*.08);
+        X.globalAlpha=_ceG*.3;X.fillStyle='#ff2200';X.beginPath();X.arc(px-3,py-3,5,0,Math.PI*2);X.fill();
+        X.globalAlpha=_ceG;X.fillStyle='#ff4422';X.beginPath();X.arc(px-3,py-3,2,0,Math.PI*2);X.fill();
+        X.globalAlpha=1;
       }else{
         X.fillStyle='#111';X.beginPath();X.arc(px,py,2,0,Math.PI*2);X.fill();
       }
@@ -42861,6 +42831,13 @@ function drawP(){
       if(_catImg&&_catImg.complete&&_catImg.naturalWidth){
         if(_flip){X.save();X.translate(px,py-_petSz/2);X.scale(-1,1);X.drawImage(_catImg,-_petSz/2,0,_petSz,_petSz);X.restore()}
         else{X.drawImage(_catImg,px-_petSz/2,py-_petSz/2,_petSz,_petSz)}
+        // 고양이 눈 글로우 (노란색)
+        var _catEG=.4+.3*Math.sin(_pet.t*.06);
+        X.globalAlpha=_catEG*.3;X.fillStyle='#ffcc00';X.beginPath();X.arc(px-3,py-4,4,0,Math.PI*2);X.fill();
+        X.beginPath();X.arc(px+3,py-4,4,0,Math.PI*2);X.fill();
+        X.globalAlpha=_catEG;X.fillStyle='#ffee44';X.beginPath();X.arc(px-3,py-4,1.5,0,Math.PI*2);X.fill();
+        X.beginPath();X.arc(px+3,py-4,1.5,0,Math.PI*2);X.fill();
+        X.globalAlpha=1;
       }else{
         X.fillStyle='#111';X.beginPath();X.arc(px,py,2,0,Math.PI*2);X.fill();
       }
