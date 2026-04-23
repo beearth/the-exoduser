@@ -5536,8 +5536,10 @@ const PETS={
 // ── 펫 스프라이트 프리로드 ──
 const _PET_DIRS=['south','south-west','west','north-west','north','north-east','east','south-east'];
 const _PET_IMGS={crow:{},cat:{}};
-// 까마귀: 8방향 정적
+// 까마귀: 8방향 정적 + 비행 2프레임
 _PET_DIRS.forEach(d=>{const i=new Image();i.src='img/crow/'+d+'.png';_PET_IMGS.crow[d]=i});
+_PET_IMGS.crow._fly={};
+_PET_DIRS.forEach(d=>{_PET_IMGS.crow._fly[d]=[];for(var _fi=1;_fi<=2;_fi++){var _im=new Image();_im.src='img/crow/fly/'+d+'_fly'+_fi+'.png';_PET_IMGS.crow._fly[d].push(_im)}});
 // 고양이: 8방향 정적(idle fallback) + idle 애니 + run 애니
 _PET_IMGS.cat._static={};_PET_IMGS.cat._idle={};_PET_IMGS.cat._run={};
 _PET_DIRS.forEach(d=>{const i=new Image();i.src='img/cat_pet/'+d+'.png';_PET_IMGS.cat._static[d]=i});
@@ -25822,7 +25824,7 @@ function _bossAI(e,sp,d){
 }
 
 function isPWin(){return P.s==='sBash'||(P.s==='sBlock'&&P._sbParryT>0)||(P.s==='peaceShield'&&P._sbParryT>0)||(P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent'&&P._sbParryT>0)} // 칼등치기 + 보호막 + 평화보호 패링윈도우
-function doParry(_inDmg,_px,_py){if(_px===undefined)_px=P.x;if(_py===undefined)_py=P.y;_petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;if(P.s==='sBlock'||P._sbParryT>0){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1));playSample(['sword_back','sword_back2','sword_back3'][~~(Math.random()*3)],.5,_r(1.1,.1))}if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
+function doParry(_inDmg,_px,_py){if(_px===undefined)_px=P.x;if(_py===undefined)_py=P.y;_petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;if(P.s==='sBlock'||P.s==='peaceShield'||P._sbParryT>0){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1));playSample(['sword_back','sword_back2','sword_back3'][~~(Math.random()*3)],.5,_r(1.1,.1))}if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
   P.iframes=Math.max(P.iframes,18);
   // 패링 성공 → 그로기 해제 + 포이즈 복원
   // 그로기 제거됨 — 포이즈 0 = 즉시 스턴
@@ -39871,20 +39873,20 @@ function drawP(){
       }else if(fz.type==='holyPrison'){
         // 감옥은 별도 렌더 (27793행 부근) — 여기서 skip
       }else if(fz.type==='hellRay'){
-        // ═══ 참회 — 회전하는 오망성(펜타그램) ═══
-        const _hrt=_now*.001;const _hrAng=fz.ang||0;
-        const _hrOR=fz.r*.85,_hrIR=_hrOR*.382; // 황금비 내곽
-        X.save();X.translate(fz.x,fz.y);X.lineJoin='round';
-        const _hrStar=function(){X.beginPath();
-          for(let _pi=0;_pi<5;_pi++){
-            const _aO=_hrAng+_pi*Math.PI*.4-Math.PI*.5;
-            const _aI=_hrAng+(_pi+.5)*Math.PI*.4-Math.PI*.5;
-            if(_pi===0)X.moveTo(Math.cos(_aO)*_hrOR,Math.sin(_aO)*_hrOR);
-            else X.lineTo(Math.cos(_aO)*_hrOR,Math.sin(_aO)*_hrOR);
-            X.lineTo(Math.cos(_aI)*_hrIR,Math.sin(_aI)*_hrIR);}
-          X.closePath();};
-        _hrStar();X.globalAlpha=.7*_fzFade;X.lineWidth=2;X.strokeStyle='#666666';X.stroke();
-        X.restore();
+        // ═══ 참회 — + 십자 광선 (세로 25% 길게, 회전) ═══
+        var _hrH=fz.r*.9,_hrW=_hrH*.75; // 세로:가로 = 4:3
+        X.save();X.translate(fz.x,fz.y);X.rotate(fz.ang||0);
+        X.globalCompositeOperation='lighter';
+        // 외곽 글로우
+        X.globalAlpha=.12*_fzFade;X.fillStyle='#ffdd44';
+        X.fillRect(-_hrW,-8,_hrW*2,16);X.fillRect(-8,-_hrH,16,_hrH*2);
+        // 중간 빔
+        X.globalAlpha=(.4+.15*Math.sin(_now*.008))*_fzFade;X.fillStyle='#ffee88';
+        X.fillRect(-_hrW,-4,_hrW*2,8);X.fillRect(-4,-_hrH,8,_hrH*2);
+        // 코어 빔
+        X.globalAlpha=(.7+.2*Math.sin(_now*.01))*_fzFade;X.fillStyle='#ffffff';
+        X.fillRect(-_hrW,-1.5,_hrW*2,3);X.fillRect(-1.5,-_hrH,3,_hrH*2);
+        X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();
       }else if(fz.type==='assaultFlame'){
         // 기동칼날개 불바닥 — 불꽃 스프라이트
         if(_flameImgs.length>=4){
@@ -42798,10 +42800,12 @@ function drawP(){
     const _dir8=_petDir8(_pDx,_pDy);
     const _petSz=24; // 화면 표시 크기 (16→24, +50%)
     if(isCrow){
-      // 까마귀: 8방향 정적 스프라이트
-      const _ci=_PET_IMGS.crow[_dir8];
-      if(_ci&&_ci.complete&&_ci.naturalWidth){
-        X.drawImage(_ci,px-_petSz/2,py-_petSz/2,_petSz,_petSz);
+      // 까마귀: 비행 2프레임 애니 (날개 펄덕)
+      var _crFlyFrames=_PET_IMGS.crow._fly&&_PET_IMGS.crow._fly[_dir8];
+      var _crFi=~~(_pet.t*.06)%2;
+      var _crImg=(_crFlyFrames&&_crFlyFrames[_crFi]&&_crFlyFrames[_crFi].complete&&_crFlyFrames[_crFi].naturalWidth)?_crFlyFrames[_crFi]:_PET_IMGS.crow[_dir8];
+      if(_crImg&&_crImg.complete&&_crImg.naturalWidth){
+        X.drawImage(_crImg,px-_petSz/2,py-_petSz/2,_petSz,_petSz);
         // 까마귀 눈 글로우 (붉은색)
         var _ceG=.4+.3*Math.sin(_pet.t*.08);
         X.globalAlpha=_ceG*.3;X.fillStyle='#ff2200';X.beginPath();X.arc(px-3,py-3,5,0,Math.PI*2);X.fill();

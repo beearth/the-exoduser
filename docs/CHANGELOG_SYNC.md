@@ -20877,3 +20877,19 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/crow/fly/south_fly1.png
 - img/crow/fly/south_fly2.png
 
+
+## 2026-04-23 13:30 (auto)
+- game.html
+- img/crow/fly/north_fly1.png
+- img/crow/fly/north_fly2.png
+- img/crow/fly/north_west_fly1.png
+- img/crow/fly/north_west_fly2.png
+- img/crow/fly/south_west_fly1.png
+- img/crow/fly/south_west_fly2.png
+- img/crow/fly/west_fly1.png
+- img/crow/fly/west_fly2.png
+- img/vfx_hellray/hellray_v1.png
+- img/vfx_hellray/hellray_v2.png
+- img/vfx_hellray/hellray_v3.png
+- img/vfx_hellray/hellray_v4.png
+
