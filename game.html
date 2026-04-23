@@ -13826,8 +13826,9 @@ function _drawBossWalk(X,e,now,sa,tdY){
     const sc=e.r*2/cc*6.0;
     const dw=cc*sc,dh=cc*sc;
     X.save();X.translate(e.x,e.y+(tdY||0));
-    X.globalAlpha=sa;
+    X.globalAlpha=sa;X.imageSmoothingEnabled=false;
     X.drawImage(da.img,sx,sy,cc,cc,-dw/2,-dh/2,dw,dh);
+    X.imageSmoothingEnabled=true;
     X.restore();
     return true;
   }
@@ -14900,7 +14901,7 @@ function _addDeathImpact(x,y,r){
 // ── 고어 파편 시스템 (스프라이트 이미지 기반) ──
 const _GORE_MAX=16;const _gorePieces=[];
 const _GORE_TYPES=[
-  'spine','spine_short','spine_broken',
+  'spine','spine_broken',
   'intestine_1','intestine_2','intestine_3','stomach','liver',
   'flesh_chunk_2','flesh_chunk_3','flesh_chunk_4','flesh_chunk_5','flesh_chunk_6',
   'blood_splat_1',
@@ -14920,7 +14921,7 @@ for(let i=0;i<_GORE_MAX;i++)_gorePieces.push({x:0,y:0,vx:0,vy:0,rot:0,rv:0,life:
 const _GORE_CAT={
   flesh:['flesh_chunk_2','flesh_chunk_3','flesh_chunk_4','flesh_chunk_5','flesh_chunk_6'],
   blood:['blood_splat_1'],
-  spine:['spine','spine_short','spine_broken'],
+  spine:['spine','spine_broken'],
   intestine:['intestine_1','intestine_2','intestine_3'],
   organ:['stomach','liver'],
   bone:['bone_1','bone_2','bone_3','bone_4','bone_5'],
@@ -22340,6 +22341,8 @@ function update(){
     break;}
   }
 
+  // ═══ 보스 몸통 충돌 — 플레이어가 보스를 통과 못 하게 밀어내기 ═══
+  if(P.hp>0&&P.s!=='charge'&&P.s!=='bladeDash'){for(let _bi=0;_bi<ens.length;_bi++){const _be=ens[_bi];if(!_be.ib||!_be.alive)continue;const _bd=dst(P.x,P.y,_be.x,_be.y);const _bCollR=_be.r+P.r;if(_bd<_bCollR&&_bd>0){const _bAng=Math.atan2(P.y-_be.y,P.x-_be.x);const _bPush=_bCollR-_bd;const _bnx=P.x+Math.cos(_bAng)*_bPush,_bny=P.y+Math.sin(_bAng)*_bPush;if(canMv(_bnx,_bny,P.r)){P.x=_bnx;P.y=_bny}}}}
   // ═══ 플레이어 포이즈 자동회복 제거됨 — 탈출기(작살/유령걸음)로만 회복 ═══
   // 그로기 시스템 제거됨 — 포이즈 0 = 즉시 스턴
   // 죽은 적 정리 (매 20프레임 — 누적 방지)
@@ -23342,15 +23345,15 @@ function update(){
   if(_gameFrame<120){}else // 시작 2초간 트리거 차단
   for(let hi=G.spawnHoles.length-1;hi>=0;hi--){
     const h=G.spawnHoles[hi];
-    // 2000px 밖 소환굴 스킵 (위치만 유지, 렌더/로직 스킵)
+    // 800px 밖 소환굴 스킵 (위치만 유지, 렌더/로직 스킵)
     const _hqd=(P.x-h.x)*(P.x-h.x)+(P.y-h.y)*(P.y-h.y);
-    if(_hqd>4000000&&!h._triggered)continue; // 2000^2, 트리거 안 된 것만 스킵
+    if(_hqd>640000&&!h._triggered)continue; // 800^2, 트리거 안 된 것만 스킵
     // 구속의 영역 fireZone 범위 내 → 즉시 제거
     // 신성한 땅은 소환굴을 제거하지 않음 — 처치율 분모 보존
     const _hd2=_hqd;
     // 2000px 이내 접근 시 트리거
     if(!h._triggered){
-      if(_hqd<4000000)h._triggered=true; // 2000^2
+      if(_hqd<640000)h._triggered=true; // 800^2
       continue;
     }
     // 트리거 후 연출 타이머 (1.5초 빛남)
@@ -39930,9 +39933,17 @@ function drawP(){
   }
   _dpS2=performance.now(); // S2=fireZone(5종장판) 끝
   // ══ 유령 허수아비 — 렌더 ══
+  if(!window._scImgs){window._scImgs=[];for(var _sci=0;_sci<2;_sci++){var _im=new Image();_im.src='img/vfx_scarecrow/scarecrow_idle_'+(_sci+1)+'.png';window._scImgs.push(_im)}}
   if(G._voidScarecrow){
     const _vs=G._voidScarecrow;const _vt=_now*.001;
     const _vsF=Math.sin(_vt*2.5)*3;const _vsB=.35+.15*Math.sin(_vt*1.8);
+    // 스프라이트 렌더 시도 (2프레임 교대)
+    var _scFrame=~~(_now/300)%2;var _scImg=window._scImgs[_scFrame];
+    if(_scImg&&_scImg.complete&&_scImg.naturalWidth){
+      var _scSz=64;X.globalAlpha=_vs.aggroOn?0.7:0.4;
+      X.drawImage(_scImg,_vs.x-_scSz/2,_vs.y+_vsF-_scSz/2,_scSz,_scSz);
+      X.globalAlpha=1;
+    }
     // 어그로 범위 표시 없음 (유령 본체만)
     X.save();X.translate(_vs.x,_vs.y+_vsF);
     X.globalAlpha=.15;X.fillStyle='#6633aa';
