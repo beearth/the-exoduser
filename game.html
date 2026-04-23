@@ -24215,10 +24215,11 @@ function update(){
   if(P._wmCd>0)P._wmCd-=sp+_hdCdBonus;
   if(P._wjCd>0)P._wjCd-=sp+_hdCdBonus;
   if(P._wrCd>0)P._wrCd-=sp+_hdCdBonus;
-  // ═══ 전격이동 — 10스택 충전 (8초→Lv당-0.5초, 최소3초, 돌파 패시브 적용) ═══
-  if(P._bdStk!=null&&P._bdStk<10){
-    if((P._bdRech||0)>0){P._bdRech-=sp;if(P._bdRech<=0){P._bdStk++;const _bdLv=P.skills.bladeDash||1;P._bdRech=P._bdStk<10?~~(Math.max(180,(480-(_bdLv-1)*30))*1):0}}
-  }
+  // ═══ 전격이동 — 충전 (1렙5개, 4렙마다+1, 최대10) ═══
+  {var _bdLv2=P.skills.bladeDash||1;var _bdMaxStk=Math.min(10,5+~~((_bdLv2-1)/4));
+  if(P._bdStk!=null&&P._bdStk<_bdMaxStk){
+    if((P._bdRech||0)>0){P._bdRech-=sp;if(P._bdRech<=0){P._bdStk++;P._bdRech=P._bdStk<_bdMaxStk?~~(Math.max(120,(480-(_bdLv2-1)*18))*1):0}}
+  }}
   // ═══ 얼음보주 — 쿨다운 ═══
   if(P._ioCd>0)P._ioCd-=sp+_hdCdBonus;
   // ═══ 얼음보주 — 자동 파쇄 (3초) / Shift 즉시 탈출 ═══
@@ -30672,7 +30673,7 @@ const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'ghostWalk',name:'뇌전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 15초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 15s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
-  {id:'bladeDash',name:'전격이동',cat:'move',noDmg:true,desc:'[이동기] 데미지 없음. 방향키 더블탭으로 발동, 대각선은 방향키 2개 동시. 스페이스+방향키로도 발동. 500유닛 순간이동, 이동 중 무적(15프레임). MP 소모(10+Lv×5). 10충전, 충전속도 8초→Lv당-0.5초(최소3초). 만렙 시 방향키 한번으로 즉시 발동',descEn:'[Mobility] No damage. Double-tap direction key to activate, hold 2 keys for diagonal. Space+direction also works. 500-unit instant dash, invincible during dash (15 frames). MP cost (10+Lv×5). 10 stocks, recharge 8s→-0.5s/Lv (min 3s). At max Lv: single tap to activate',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
+  {id:'bladeDash',name:'전격이동',cat:'move',noDmg:true,desc:'[이동기] 데미지 없음. 방향키 더블탭으로 발동. 500유닛 순간이동, 무적(15프레임). MP(10+Lv×5). 1렙5충전, 4렙마다+1(최대10). 쿨 8초→Lv당-0.5초(최소3초)',descEn:'[Mobility] No damage. Double-tap to activate. 500-unit blink, invincible 15f. MP(10+Lv×5). Lv1=5 stocks, +1 per 4Lv (max 10). CD 8s→-0.5s/Lv (min 3s)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
   {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 10+Lv당2. Lv당 뎀+10% 거리+15px',descEn:'LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 10+2/Lv. Per Lv DMG+10% range+15px',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'fireball',name:'악의구',cat:'bow',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
