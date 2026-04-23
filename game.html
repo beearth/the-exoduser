@@ -2220,6 +2220,7 @@ canvas{display:block;position:fixed;inset:0}
   <span style="color: #665544; margin: 0 10px;">|</span>
   <div id="comboHud" style="color:#ff6600;text-shadow:0 0 8px rgba(255,100,0,.5);display:none">COMBO 0</div>
   <div id="comboTimerHud" style="color:#ff8844;font-size:0.8rem;display:none">⏱ 20.0s</div>
+  <div id="dpsHud" style="color:#ff4466;font-size:1.4rem;font-weight:900;text-shadow:0 0 12px rgba(255,50,80,.7),0 0 4px #000;display:none;letter-spacing:.05em">DPS 0</div>
   <span style="color: #665544; margin: 0 10px;">|</span>
   <div id="dmgPeakHud" style="color:#ff4444;font-size:0.85rem;text-shadow:0 0 8px rgba(255,50,50,.5);display:none">MAX HIT 0</div>
   <span style="color: #665544; margin: 0 10px;">|</span>
@@ -9686,6 +9687,8 @@ let _xbowEquipped=true; // T키 토글 (기본 ON)
 const GXBOW_ST=100;      // ST 소비 (반감)
 const GXBOW_DMG_MUL=1.5; // 터렛 고정 시 데미지 기본 +50% (호스트 석궁 스킬에 ×1.5)
 const GXBOW_SPD_MUL=1.5; // 터렛 고정 시 공속 +50%
+// ═══ DPS 추적 시스템 ═══
+let _dpsDmg=0,_dpsT=0,_dpsVal=0; // 누적 데미지, 타이머, 현재 DPS
 let _gxTurret=null;      // {x,y,timer,ang} 설치된 터렛
 let _gxFiring=0;         // 터렛 발사 중 데미지 배율 (0이면 비활성)
 var _gxPrevBowSk='normal'; // 터렛 설치 전 bow 스킬 백업
@@ -20870,6 +20873,8 @@ function update(){
   if(P._okSpdBuff>0)P._okSpdBuff-=sp;
   // 콤보 타이머 감소 (20초)
   if(G.comboTimer>0){G.comboTimer-=sp;if(G.comboTimer<=0&&G.combo>0){if(G.combo>=10)addTxt(P.x,P.y-50,_T('콤보 종료: ')+G.combo,'#ff6644',60);G.combo=0}}
+  // DPS 계산 (1초마다)
+  _dpsT+=sp;if(_dpsT>=60){_dpsVal=~~(_dpsDmg/(_dpsT/60));_dpsDmg=0;_dpsT=0}
   // 5초 최고 데미지 타이머 감소
   if(G._dmgPeak&&G._dmgPeak.t>0){G._dmgPeak.t-=sp;if(G._dmgPeak.t<=0)G._dmgPeak.val=0}
   // 스테이지 경과시간 + 이동거리 추적
@@ -29376,13 +29381,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       else{e.eShield-=_shDmg}
     }else{e.hp-=_isMagicDmg?(~~(dmg*_magicHpRate)||1):dmg}
     e.eShieldRegenT=300;
-    // ── 한방 데미지 즉시 표시 (K/M/B 축약) ──
-    if(_txtPerFrame<_TXT_BUDGET&&!isDot){
-      const _dv=dmg;const _ds=_dv>=1e9?(_dv/1e9).toFixed(1)+'B':_dv>=1e6?(_dv/1e6).toFixed(1)+'M':_dv>=1e3?(_dv/1e3).toFixed(1)+'K':String(_dv);
-      const _dc=_dv>=1e7?'#ff2222':_dv>=1e6?'#ff6644':_dv>=1e5?'#ffaa44':_dv>=1e4?'#ffcc66':'#ddddaa';
-      const _dl=_dv>=1e6?55:_dv>=1e5?45:35;
-      addTxt(e.x+(Math.random()-.5)*16,e.y-18-Math.random()*12,_ds,_dc,_dl);
-    }
+    _dpsDmg+=dmg; // DPS 누적
+    // ── 한방 데미지 텍스트 제거됨 — DPS HUD로 대체 ──
     if(isDot){
       // DOT: 텍스트 압축에 포함됨, 추가 표시 없음
     }else if(P.s==='whirlwind'&&!(opts&&opts.detonate)){
@@ -30652,10 +30652,11 @@ const SKILL_REC_PATH=[
   {phase:'11. 원소 합체',phaseEn:'11. Elemental Fuse',skills:['elemMissile'],fuse:'elemFuse',desc:'원소추적탄 추가 → 3단합체: 추적빔',descEn:'Elem Missile → 3-Fuse: Tracking Beam'},
   {phase:'12. 6단합체: 폭풍빔',phaseEn:'12. 6-Fuse: Storm Beam',skills:[],fuse:'stormBeam',desc:'회전참+기폭+대왕+만화+멸살+원소 → 최종합체',descEn:'Whirl+Det+Giant+Barrage+Beam+Elem → Ultimate Fuse'},
   {phase:'13. 방패 합체',phaseEn:'13. Shield Fuse',skills:['maliceSwipe','shieldThrow'],fuse:'shieldFuse',desc:'칼등치기 + 칼등날개 → 합체: 처내기 강화',descEn:'Blade Parry + Shield Wing → Fuse: Parry Enhanced'},
-  {phase:'14. 신성 영역',phaseEn:'14. Holy Domain',skills:['holyDome','holyPrison'],fuse:'holyFuse',desc:'회복 + 구속 → 합체: 신성한 영역',descEn:'Recovery + Prison → Fuse: Holy Domain'},
-  {phase:'15. 신성+빙결',phaseEn:'15. Holy+Ice',skills:['iceStorm'],fuse:'holyIce',desc:'아이스스톰 추가 → 합체: 신성빙결',descEn:'Ice Storm → Fuse: Holy Ice'},
-  {phase:'16. 암흑+가시+대왕2',phaseEn:'16. Dark+Spike+Slam2',skills:['darkPillar','spikeTrap','giantSlam2'],fuse:'pillarSpike',desc:'암흑기둥 + 가시덫 + 대왕치기2 → 합체: 기둥가시',descEn:'Dark Pillar + Spike Trap + Giant Slam 2 → Fuse: Pillar Spike'},
-  {phase:'17. 사슬 최종',phaseEn:'17. Chain Final',skills:['chainSlash'],fuse:'dimRush',desc:'기동칼날개 추가 → 5단합체: 차원질주',descEn:'Chain Bladewing → 5-Fuse: Dimensional Rush'},
+  {phase:'14. 해골무덤 합체',phaseEn:'14. Bone Storm',skills:['boneWall'],fuse:'boneStorm',desc:'해골무덤 + 악의폭풍 → 합체: 해골폭풍',descEn:'Bone Wall + Malice Storm → Fuse: Bone Storm'},
+  {phase:'15. 신성 영역',phaseEn:'15. Holy Domain',skills:['holyDome','holyPrison'],fuse:'holyFuse',desc:'회복 + 구속 → 합체: 신성한 영역',descEn:'Recovery + Prison → Fuse: Holy Domain'},
+  {phase:'16. 신성+빙결',phaseEn:'16. Holy+Ice',skills:['iceStorm'],fuse:'holyIce',desc:'아이스스톰 추가 → 합체: 신성빙결',descEn:'Ice Storm → Fuse: Holy Ice'},
+  {phase:'17. 암흑+가시+대왕2',phaseEn:'17. Dark+Spike+Slam2',skills:['darkPillar','spikeTrap','giantSlam2'],fuse:'pillarSpike',desc:'암흑기둥 + 가시덫 + 대왕치기2 → 합체: 기둥가시',descEn:'Dark Pillar + Spike Trap + Giant Slam 2 → Fuse: Pillar Spike'},
+  {phase:'18. 사슬 최종',phaseEn:'18. Chain Final',skills:['chainSlash'],fuse:'dimRush',desc:'기동칼날개 추가 → 5단합체: 차원질주',descEn:'Chain Bladewing → 5-Fuse: Dimensional Rush'},
 ];
 const SKILL_HIER=[
   {id:'rec',name:'⭐ 추천',nameEn:'⭐ Recommend',col:'#ffcc44',cats:null},
@@ -43100,6 +43101,8 @@ function updateHUD(slow){
   const _dpH=$('dmgPeakHud');if(_dpH){if(G._dmgPeak&&G._dmgPeak.val>0){_dpH.style.display='';const _dpV=G._dmgPeak.val;const _dpStr=_dpV>=1e9?(_dpV/1e9).toFixed(2)+'B':_dpV>=1e6?(_dpV/1e6).toFixed(1)+'M':_dpV>=1e3?(_dpV/1e3).toFixed(1)+'K':_dpV+'';_dpH.textContent='MAX HIT '+_dpStr;_dpH.style.color=_dpV>=1e7?'#ff2222':_dpV>=1e6?'#ff6644':_dpV>=1e5?'#ffaa44':'#ffcc66'}else{_dpH.style.display='none'}}
   // 콤보 타이머 카운트다운
   const _ctH=$('comboTimerHud');if(_ctH){if(G.combo>=1&&G.comboTimer>0){const _ctSec=(G.comboTimer/60).toFixed(1);_ctH.style.display='';_ctH.textContent='TIMER '+_ctSec+'s';_ctH.style.color=G.comboTimer<300?'#ff4444':G.comboTimer<600?'#ff8844':'#ffcc44'}else{_ctH.style.display='none'}}
+  // DPS HUD
+  {const _dH=$('dpsHud');if(_dH){if(_dpsVal>0){_dH.style.display='';const _dv=_dpsVal;const _ds=_dv>=1e9?(_dv/1e9).toFixed(1)+'B':_dv>=1e6?(_dv/1e6).toFixed(1)+'M':_dv>=1e3?(_dv/1e3).toFixed(1)+'K':String(_dv);_dH.textContent='DPS '+_ds;_dH.style.fontSize=_dv>=1e6?'1.8rem':_dv>=1e5?'1.6rem':'1.4rem';_dH.style.color=_dv>=1e6?'#ff2244':_dv>=1e5?'#ff4466':'#ff6688'}else{_dH.style.display='none'}}}
   // 스테이지 타임어택
   const _stH=$('stageTimerHud');if(_stH){const _stSec=~~((G.stageTime||0)/60);const _stM=~~(_stSec/60),_stS=_stSec%60;const _taT=G._totalSpawned||0,_taK=G._stageKills||0;const _taPct=_taT>0?~~(_taK/_taT*100):0;const _taBest=G._taRecords&&G._taRecords[G.stage];const _taBestStr=_taBest?(' BEST '+~~(_taBest/60)+':'+((_taBest%60<10?'0':'')+_taBest%60)):'';const _ptSec=~~((G.playTime||0)/60);const _ptH=~~(_ptSec/3600),_ptM=~~((_ptSec%3600)/60),_ptS=_ptSec%60;const _ptStr=' | TOTAL '+_ptH+':'+((_ptM<10?'0':'')+_ptM)+':'+((_ptS<10?'0':'')+_ptS);_stH.textContent='TIME '+((_stM<10?'0':'')+_stM)+':'+((_stS<10?'0':'')+_stS)+' | CLEAR '+_taPct+'%'+(_taPct>=90?' OK':'')+_taBestStr+_ptStr;_stH.style.color=_taPct>=90?'#44ddff':'#88aacc'}
   // 포이즈 빨간 눈알 업데이트 (기존 skull-eye 4개 재활용)
