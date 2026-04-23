@@ -30651,13 +30651,15 @@ const SKILL_REC_PATH=[
   {phase:'9. 대왕 합체',phaseEn:'9. Giant Fuse',skills:['giantSlam'],fuse:'slamStorm',desc:'대왕치기 추가 → 합체: 지진폭풍',descEn:'Giant Slam → Fuse: Slam Storm'},
   {phase:'10. 석궁: 만화방창',phaseEn:'10. Crossbow: Barrage',skills:['fanShot'],fuse:'sixFuse',desc:'만화방창 + 멸살광선 → 합체: 연사+빔',descEn:'Barrage + Omni Beam → Fuse: Rapid+Beam'},
   {phase:'11. 원소 합체',phaseEn:'11. Elemental Fuse',skills:['elemMissile'],fuse:'elemFuse',desc:'원소추적탄 추가 → 3단합체: 추적빔',descEn:'Elem Missile → 3-Fuse: Tracking Beam'},
-  {phase:'12. 6단합체: 폭풍빔',phaseEn:'12. 6-Fuse: Storm Beam',skills:[],fuse:'stormBeam',desc:'회전참+기폭+대왕+만화+멸살+원소 → 최종합체',descEn:'Whirl+Det+Giant+Barrage+Beam+Elem → Ultimate Fuse'},
-  {phase:'13. 방패 합체',phaseEn:'13. Shield Fuse',skills:['maliceSwipe','shieldThrow'],fuse:'shieldFuse',desc:'칼등치기 + 칼등날개 → 합체: 처내기 강화',descEn:'Blade Parry + Shield Wing → Fuse: Parry Enhanced'},
-  {phase:'14. 해골무덤+허수아비',phaseEn:'14. Bone Storm+Scarecrow',skills:['boneWall','voidScarecrow'],fuse:'boneStorm',desc:'해골무덤 + 유령허수아비 → 합체: 해골폭풍',descEn:'Bone Wall + Void Scarecrow → Fuse: Bone Storm'},
-  {phase:'15. 신성 영역',phaseEn:'15. Holy Domain',skills:['holyDome','holyPrison'],fuse:'holyFuse',desc:'회복 + 구속 → 합체: 신성한 영역',descEn:'Recovery + Prison → Fuse: Holy Domain'},
-  {phase:'16. 신성+빙결',phaseEn:'16. Holy+Ice',skills:['iceStorm'],fuse:'holyIce',desc:'아이스스톰 추가 → 합체: 신성빙결',descEn:'Ice Storm → Fuse: Holy Ice'},
-  {phase:'17. 암흑+가시+대왕2',phaseEn:'17. Dark+Spike+Slam2',skills:['darkPillar','spikeTrap','giantSlam2'],fuse:'pillarSpike',desc:'암흑기둥 + 가시덫 + 대왕치기2 → 합체: 기둥가시',descEn:'Dark Pillar + Spike Trap + Giant Slam 2 → Fuse: Pillar Spike'},
-  {phase:'18. 사슬 최종',phaseEn:'18. Chain Final',skills:['chainSlash'],fuse:'dimRush',desc:'기동칼날개 추가 → 5단합체: 차원질주',descEn:'Chain Bladewing → 5-Fuse: Dimensional Rush'},
+  {phase:'12. 방패 합체',phaseEn:'12. Shield Fuse',skills:['maliceSwipe','shieldThrow'],fuse:'shieldFuse',desc:'칼등치기 + 칼등날개 → 합체: 처내기 강화',descEn:'Blade Parry + Shield Wing → Fuse: Parry Enhanced'},
+  {phase:'13. 해골무덤+허수아비',phaseEn:'13. Bone Storm+Scarecrow',skills:['boneWall','voidScarecrow'],fuse:'boneStorm',desc:'해골무덤 + 유령허수아비 → 합체: 해골폭풍',descEn:'Bone Wall + Void Scarecrow → Fuse: Bone Storm'},
+  {phase:'14. 폭풍소환+얼음보주',phaseEn:'14. Storm+Ice Orb',skills:['maliceMortar','iceOrb'],fuse:'iceMortar',desc:'폭풍소환 + 얼음보주 → 합체: 얼음폭풍',descEn:'Malice Mortar + Ice Orb → Fuse: Ice Mortar'},
+  {phase:'15. 뇌전걸음',phaseEn:'15. Ghost Walk',skills:['ghostWalk'],fuse:null,desc:'유령화 이동 + 전기 폭발',descEn:'Ghost phase movement + electric burst'},
+  {phase:'16. 신성 영역',phaseEn:'16. Holy Domain',skills:['holyDome','holyPrison'],fuse:'holyFuse',desc:'회복 + 구속 → 합체: 신성한 영역',descEn:'Recovery + Prison → Fuse: Holy Domain'},
+  {phase:'17. 6단합체: 폭풍빔',phaseEn:'17. 6-Fuse: Storm Beam',skills:[],fuse:'stormBeam',desc:'지진폭풍+추적암전 → 6단합체: 폭풍빔',descEn:'Slam Storm → 6-Fuse: Storm Beam'},
+  {phase:'18. 신성+빙결',phaseEn:'18. Holy+Ice',skills:['iceStorm'],fuse:'holyIce',desc:'아이스스톰 추가 → 합체: 신성빙결',descEn:'Ice Storm → Fuse: Holy Ice'},
+  {phase:'19. 암흑+가시+대왕2',phaseEn:'19. Dark+Spike+Slam2',skills:['darkPillar','spikeTrap','giantSlam2'],fuse:'pillarSpike',desc:'암흑기둥 + 가시덫 + 대왕치기2 → 합체: 기둥가시',descEn:'Dark Pillar + Spike Trap + Giant Slam 2 → Fuse: Pillar Spike'},
+  {phase:'20. 사슬 최종',phaseEn:'20. Chain Final',skills:['chainSlash'],fuse:'dimRush',desc:'기동칼날개 추가 → 5단합체: 차원질주',descEn:'Chain Bladewing → 5-Fuse: Dimensional Rush'},
 ];
 const SKILL_HIER=[
   {id:'rec',name:'⭐ 추천',nameEn:'⭐ Recommend',col:'#ffcc44',cats:null},
@@ -31030,7 +31032,7 @@ function _cardProfSec(key){
 function _cardProfHMS(key){const s=~~_cardProfSec(key);const m=~~(s/60),sec=s%60;return m+'m'+(sec?sec+'s':'')}
 function _addCardProfTick(skId){_addSkProfTick(skId)} // 카테고리 위임
 // ═══ 합체 숙련: stormBeam만 특별 (카테고리 30분) ═══
-const _FUSE_TIME_REQ={'stormBeam':10800}; // 크로스합체: 관련 카테고리 각 3시간
+const _FUSE_TIME_REQ={}; // 숙련도 시간 조건 제거
 function _fuseProfSec(key){return _cardProfSec(key)}
 function _addFuseProfTick(key){_addCardProfTick((_FUSE_PAIRS[key]||[])[0]);}
 function _fuseReqProf(key){return _CATPROF_REQ} // 600초(10분)
@@ -31051,7 +31053,7 @@ function _canFuse(key){
   if(key==='whirlDet'&&_isFused('whirlDet'))return false;
   if(key==='stormBeam'&&(!_isFused('slamStorm')||!_isFused('elemFuse')))return false;
   if(key==='stormBeam'&&(_isFused('stormBeam')||_isFused('stormBurst')))return false;
-  if(key==='stormBeam'){return _catProfVal('phys')>=10800&&_catProfVal('def')>=10800&&_catProfVal('magic')>=10800} // 크로스합체: 관련 카테고리 각 3시간 (bow 제외: 자동석궁)
+  // stormBeam 숙련도 시간 조건 제거 — 스킬+선행합체만 필요
   if(key==='stormBurst'&&!_isFused('stormBeam'))return false; // 선행: 암전나선
   if(key==='stormBurst'&&_isFused('stormBurst'))return false;
   if(key==='stormBurst')return P.lv>=800&&P.skills.burstLoop>=1; // Lv800+버스트루프 습득
@@ -33091,10 +33093,6 @@ function _renderSkillRow(sk,grid){
           else if(_grp.key==='stormBeam'){
             if(!_isFused('slamStorm'))_tipParts.push(_preT+(_FUSE_NAMES.slamStorm||'지진폭풍')+_preS);
             if(!_isFused('elemFuse'))_tipParts.push(_preT+(_FUSE_NAMES.elemFuse||'추적암전')+_preS);
-            if(_isFused('slamStorm')&&_isFused('elemFuse')){
-              const _cats=['phys','def','magic'];
-              for(const _c of _cats){const _cv=~~_catProfVal(_c);if(_cv<10800){const _cm=~~(_cv/60);_tipParts.push(_c+' '+_cm+'m/180m')}}
-            }
           }
           // 시간 기반 숙련 체크
           else if(_FUSE_TIME_REQ[_grp.key]){
