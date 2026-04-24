@@ -21833,6 +21833,7 @@ function update(){
     const _psGrowSec=Math.min(10,P._psHoldT/60); // 0~10초
     P._psShieldR=100+_psGrowSec*10; // 100→200
     // 투사체 반사 (보호막 범위 내) — sBlock과 동일
+    function _projHitFx(px,py,el,isRed){_addBoom(px,py,isRed?80:24,isRed?30:14,isRed?'redbean':el===EL.I?'ice':el===EL.L?'lightning':el===EL.D?'dark':'fire');if(isRed){addParts(px,py,'#ff2200',20);shake(8);SFX.detonate();doHitFlash('#ff2200',0.2)}else{addParts(px,py,ELC[el]||'#ff8844',8);shake(4);doHitFlash(ELC[el]||'#ff8844',0.12)}}
     const _psR=P._psShieldR;
     for(let _pi=projs.length-1;_pi>=0;_pi--){
       const p=projs[_pi];if(p.friendly||p.noParry)continue;
@@ -21845,7 +21846,7 @@ function update(){
           {p.vx*=-1.5;p.vy*=-1.5;p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,true)*1.2);p.life=80;p.ml=80;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;}
           addTxt(p.x,p.y-10,_T('🕊️💎 블루콩!'),'#00e5ff',35);
           P.parryBank=(P.parryBank||0)+p.dmg;
-          doParry(p.dmg,p.x,p.y);
+          doParry(p.dmg,p.x,p.y,true);
         }else{
           // 패링 윈도우 아닐 때 OR 빨콩: 흡수 + 넉백 임팩트 (일반 Q 실패와 동일 연출)
           const _psBlk2=Math.min(.90,pGuardAbsorb()+pShieldBlock());
@@ -22810,12 +22811,7 @@ function update(){
     }
     if(_bombDead){_recycleProj(p);continue}
 
-    // ── 탄막 피격 공통 임팩트 (모든 탄막 피격/패링실패에서 호출) ──
-    function _projHitFx(px,py,el,isRed){
-      _addBoom(px,py,isRed?80:24,isRed?30:14,isRed?'redbean':el===EL.I?'ice':el===EL.L?'lightning':el===EL.D?'dark':'fire');
-      if(isRed){addParts(px,py,'#ff2200',20);shake(8);SFX.detonate();doHitFlash('#ff2200',0.2)}
-      else{addParts(px,py,ELC[el]||'#ff8844',8);shake(4);doHitFlash(ELC[el]||'#ff8844',0.12)}
-    }
+
     // 빠른 거리 체크: 플레이어(현재+이전)에서 400px 초과면 충돌 로직 전체 스킵
     const _pdx2=p.x-P.x,_pdy2=p.y-P.y,_pDist2=_pdx2*_pdx2+_pdy2*_pdy2;
     const _pdxP=p.x-_pPrevX,_pdyP=p.y-_pPrevY,_pDistP2=_pdxP*_pdxP+_pdyP*_pdyP;
@@ -22910,7 +22906,7 @@ function update(){
         scrFlash='rgba(255,220,0,.4)';scrFlashA=.4;
         addTxt(P.x,P.y-28,_T('🛡️💎 무지개→블루콩!'),'#00e5ff',60);
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
-        doParry(p.dmg,p.x,p.y);
+        doParry(p.dmg,p.x,p.y,true);
         // 무지개탄 보너스 제거 — doParry 보상(50)만 적용
         projs[pw++]=p;_pHit=true;continue;
       }else{
@@ -25898,14 +25894,14 @@ function _bossAI(e,sp,d){
 }
 
 function isPWin(){return P.s==='sBash'||(P.s==='sBlock'&&P._sbParryT>0)||(P.s==='peaceShield'&&P._sbParryT>0)||(P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent'&&P._sbParryT>0)} // 칼등치기 + 보호막 + 평화보호 패링윈도우
-function doParry(_inDmg,_px,_py){if(_px===undefined)_px=P.x;if(_py===undefined)_py=P.y;_petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;if(P.s==='sBlock'||P.s==='peaceShield'||P._sbParryT>0){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1));playSample(['sword_back','sword_back2','sword_back3'][~~(Math.random()*3)],.5,_r(1.1,.1))}if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
+function doParry(_inDmg,_px,_py,_forceQ){if(_px===undefined)_px=P.x;if(_py===undefined)_py=P.y;_petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;const _isQ=_forceQ||P.s==='sBlock'||P.s==='peaceShield'||P._sbParryT>0;if(_isQ){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1));playSample(['sword_back','sword_back2','sword_back3'][~~(Math.random()*3)],.5,_r(1.1,.1))}if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
   P.iframes=Math.max(P.iframes,18);
   // 패링 성공 → 그로기 해제 + 포이즈 복원
   // 그로기 제거됨 — 포이즈 0 = 즉시 스턴
   if(P.skills.detonate&&P.parryT!==undefined&&P.parryT>0){G.shake=6*OPT.shake/100} // 기폭 충전 중: hitStop/slowMo 없이 흔들림만
   else{G.hitStop=~~(_HS.parry*OPT.hitStop/100);G.slowMo=25;G.shake=14*OPT.shake/100}
   // ═══ 패링 보상: 우클릭 30, Q 50 (parryBonus 어픽스 적용) ═══
-  const _isQParry=P.s==='sBlock'||P.s==='peaceShield'||P._sbParryT>0;
+  const _isQParry=_isQ;
   const _pbMul=1+_eqAffix('parryBonus');
   const _prBase=~~((_isQParry?50:30)*_pbMul);
   P.iframes=25;
@@ -30325,7 +30321,7 @@ function hurtP(dmg,opts){
   // 해제 패링: sBlock 뗀 직후 패링 윈도우 (빨콩은 Q패링 불가)
   if(P.s!=='sBlock'&&P._sbParryT>0&&!(opts&&opts.redBean)){
     P._sbParryT=0;dmg=0;
-    doParry(0,P.x,P.y);
+    doParry(0,P.x,P.y,true);
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+100;if((P.parryT||0)>=120)_detonateBlast('해제기폭!',wp().el||0)}
     return;
   }
@@ -30333,7 +30329,7 @@ function hurtP(dmg,opts){
   if(P.s==='peaceShield'){
     if(P._sbParryT>0&&!(opts&&opts.redBean)){
       P._sbParryT=0;dmg=0;
-      doParry(0,P.x,P.y);
+      doParry(0,P.x,P.y,true);
       return;
     }
     // 보호막 흡수 (패링 실패): 넉백 + 임팩트 (sBlock과 동일)
@@ -30351,7 +30347,7 @@ function hurtP(dmg,opts){
     // ── 보호막 패링: Q 전용 사운드 (빨콩은 Q패링 불가) ──
     if(P._sbParryT>0&&!(opts&&opts.redBean)){
       P._sbParryT=0;dmg=0;
-      doParry(0,P.x,P.y);
+      doParry(0,P.x,P.y,true);
       if(P.skills.detonate){P.parryBank=(P.parryBank||0)+100}
       return;
     }
@@ -44285,7 +44281,8 @@ _btWait(()=>{
         if(ny>=0&&ny<G.mh&&nx>=0&&nx<G.mw&&!_vis.has(nk)&&G.map[ny][nx]===1){_vis.add(nk);_q.push([nx,ny])}}}
     if(!_edge)for(const[bx,by]of _blk)G.map[by][bx]=4}
   _shDirty=true;if(typeof _queueMapCacheRefresh==='function')_queueMapCacheRefresh()}
-  BGM.play({hell:SI_TO_HELL[_btSi]||0,boss:true});
+  // BGM: 유저 클릭 후 재생 (AudioContext 경고 방지)
+  document.addEventListener('click',function _btBgm(){BGM.play({hell:SI_TO_HELL[_btSi]||0,boss:true});document.removeEventListener('click',_btBgm)},{once:true});
   // ── 3) 보스 참조 + 마네킹 모드 기본 ──
   _btPaused=true;
   setTimeout(()=>{
