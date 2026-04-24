@@ -19,26 +19,35 @@ scene.background = new THREE.Color(0x1a1a2e);
 scene.fog = new THREE.FogExp2(0x1a1a2e, 0.035);
 
 // ── Orthographic Camera (isometric 50°) ──
-const H = 10;
-const ISO_ANGLE = 50 * Math.PI / 180;  // 50도
-const AZI_ANGLE = 45 * Math.PI / 180;  // 45도 (아이소 기본)
+const ISO_ANGLE = 50 * Math.PI / 180;
+const AZI_ANGLE = 45 * Math.PI / 180;
+const CAM_DIST = 20;
+let curFrustum = 8;
 
 const aspect = window.innerWidth / window.innerHeight;
-const frustum = 10;
 const camera = new THREE.OrthographicCamera(
-  -frustum * aspect, frustum * aspect,
-  frustum, -frustum,
+  -curFrustum * aspect, curFrustum * aspect,
+  curFrustum, -curFrustum,
   0.1, 100
 );
 
+function updateCamFrustum() {
+  const a = window.innerWidth / window.innerHeight;
+  camera.left = -curFrustum * a;
+  camera.right = curFrustum * a;
+  camera.top = curFrustum;
+  camera.bottom = -curFrustum;
+  camera.updateProjectionMatrix();
+}
+
 camera.position.set(
-  H * Math.sin(ISO_ANGLE) * Math.cos(AZI_ANGLE),
-  H * Math.cos(ISO_ANGLE),
-  H * Math.sin(ISO_ANGLE) * Math.sin(AZI_ANGLE)
+  CAM_DIST * Math.sin(ISO_ANGLE) * Math.cos(AZI_ANGLE),
+  CAM_DIST * Math.cos(ISO_ANGLE),
+  CAM_DIST * Math.sin(ISO_ANGLE) * Math.sin(AZI_ANGLE)
 );
 camera.lookAt(0, 0, 0);
 
-// ── Lights (Berserk tone: warm key + cool purple ambient) ──
+// ── Lights ──
 const dirLight = new THREE.DirectionalLight(0xffcc88, 0.8);
 dirLight.position.set(5, 12, 5);
 dirLight.castShadow = true;
@@ -54,18 +63,16 @@ scene.add(dirLight);
 const ambLight = new THREE.AmbientLight(0x332244, 0.3);
 scene.add(ambLight);
 
-// 보조 림 라이트 (뒤쪽에서 실루엣 강조)
 const rimLight = new THREE.DirectionalLight(0x4444aa, 0.2);
 rimLight.position.set(-5, 3, -8);
 scene.add(rimLight);
 
-// ── Floor (checker pattern) ──
+// ── Floor ──
 const floorSize = 20;
 const floorSeg = 20;
 const floorGeo = new THREE.PlaneGeometry(floorSize, floorSize, floorSeg, floorSeg);
 floorGeo.rotateX(-Math.PI / 2);
 
-// 체커 패턴 텍스처 생성
 const checkerCanvas = document.createElement('canvas');
 checkerCanvas.width = 256;
 checkerCanvas.height = 256;
@@ -81,15 +88,12 @@ const checkerTex = new THREE.CanvasTexture(checkerCanvas);
 checkerTex.wrapS = checkerTex.wrapT = THREE.RepeatWrapping;
 
 const floorMat = new THREE.MeshStandardMaterial({
-  map: checkerTex,
-  roughness: 0.85,
-  metalness: 0.1
+  map: checkerTex, roughness: 0.85, metalness: 0.1
 });
 const floor = new THREE.Mesh(floorGeo, floorMat);
 floor.receiveShadow = true;
 scene.add(floor);
 
-// 그리드 헬퍼 (가이드 용도)
 const grid = new THREE.GridHelper(floorSize, floorSeg, 0x444466, 0x333355);
 grid.position.y = 0.01;
 scene.add(grid);
@@ -102,7 +106,7 @@ loader.load(
   (gltf) => {
     const boss = gltf.scene;
 
-    // 바운딩박스로 원본 크기 측정 → 2.2m 높이에 맞게 스케일
+    // 1) Box3 측정 → 2.2m 스케일
     const box = new THREE.Box3().setFromObject(boss);
     const size = box.getSize(new THREE.Vector3());
     const rawH = size.y;
@@ -111,7 +115,7 @@ loader.load(
     boss.scale.setScalar(sc);
     console.log(`[BOSS] raw height=${rawH.toFixed(3)} → scale=${sc.toFixed(3)} → ${TARGET_H}m`);
 
-    // 스케일 적용 후 바운딩박스 재측정, 발을 바닥(y=0)에 붙임
+    // 발 바닥 정렬
     const box2 = new THREE.Box3().setFromObject(boss);
     boss.position.set(0, -box2.min.y, 0);
 
@@ -123,31 +127,13 @@ loader.load(
     });
     scene.add(boss);
 
-    // 카메라를 보스 전신이 꽉 차게 조정 (높이 기준)
     const box3 = new THREE.Box3().setFromObject(boss);
-    const center = box3.getCenter(new THREE.Vector3());
     const bossSize = box3.getSize(new THREE.Vector3());
-    const newFrustum = bossSize.y * 1.4;
-    const a = window.innerWidth / window.innerHeight;
-    camera.left = -newFrustum * a;
-    camera.right = newFrustum * a;
-    camera.top = newFrustum;
-    camera.bottom = -newFrustum;
-    camera.updateProjectionMatrix();
+    console.log(`[BOSS] final size: ${bossSize.x.toFixed(2)} x ${bossSize.y.toFixed(2)} x ${bossSize.z.toFixed(2)}`);
 
-    controls.target.copy(center);
-    const camDist = 8;
-    camera.position.set(
-      center.x + camDist * Math.sin(ISO_ANGLE) * Math.cos(AZI_ANGLE),
-      center.y + camDist * Math.cos(ISO_ANGLE),
-      center.z + camDist * Math.sin(ISO_ANGLE) * Math.sin(AZI_ANGLE)
-    );
-    controls.update();
-    console.log(`[BOSS] size: ${bossSize.x.toFixed(2)} x ${bossSize.y.toFixed(2)} x ${bossSize.z.toFixed(2)}, frustum=${newFrustum.toFixed(2)}`);
-
-    // 애니메이션 추출 & 재생
+    // 애니메이션
     const clips = gltf.animations;
-    console.log(`[BOSS] GLB loaded — ${clips.length} animation(s):`);
+    console.log(`[BOSS] ${clips.length} animation(s):`);
     clips.forEach((clip, i) => console.log(`  [${i}] "${clip.name}" (${clip.duration.toFixed(2)}s)`));
 
     if (clips.length > 0) {
@@ -158,42 +144,76 @@ loader.load(
     }
   },
   (progress) => {
-    if (progress.total > 0) {
+    if (progress.total > 0)
       console.log(`[BOSS] Loading... ${(progress.loaded / progress.total * 100).toFixed(0)}%`);
-    }
   },
   (error) => {
     console.warn('[BOSS] GLB load failed:', error);
   }
 );
 
-// 플레이어 위치 마커 (파란 원기둥, 높이 ~1.8)
+// ── 플레이어 마커 ──
+const playerPos = new THREE.Vector3(4, 0, 4);
 const pMarkerGeo = new THREE.CylinderGeometry(0.2, 0.2, 1.8, 8);
 const pMarkerMat = new THREE.MeshStandardMaterial({ color: 0x3355cc, wireframe: true });
 const playerMarker = new THREE.Mesh(pMarkerGeo, pMarkerMat);
-playerMarker.position.set(4, 0.9, 4);
+playerMarker.position.set(playerPos.x, 0.9, playerPos.z);
 playerMarker.castShadow = true;
 scene.add(playerMarker);
 
-// ── OrbitControls (임시, GLB 검증용) ──
+// ── WASD 입력 ──
+const keys = { w: false, a: false, s: false, d: false };
+window.addEventListener('keydown', (e) => {
+  const k = e.key.toLowerCase();
+  if (k in keys) keys[k] = true;
+});
+window.addEventListener('keyup', (e) => {
+  const k = e.key.toLowerCase();
+  if (k in keys) keys[k] = false;
+});
+
+// 카메라 기준 이동 방향 계산용 벡터
+const _forward = new THREE.Vector3();
+const _right = new THREE.Vector3();
+const PLAYER_SPEED = 5;
+
+// ── OrbitControls ──
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
-controls.target.set(0, 1, 0);
+controls.enableZoom = true;
+controls.target.set(playerPos.x, 1, playerPos.z);
 controls.update();
+
+// ── 카메라 추적 타겟 ──
+const camTarget = new THREE.Vector3(playerPos.x, 1, playerPos.z);
+const LERP = 0.1;
 
 // ── Resize ──
 window.addEventListener('resize', () => {
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  const a = w / h;
-  camera.left = -frustum * a;
-  camera.right = frustum * a;
-  camera.top = frustum;
-  camera.bottom = -frustum;
-  camera.updateProjectionMatrix();
-  renderer.setSize(w, h);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  updateCamFrustum();
 });
+
+// ── HUD ──
+const hudEl = document.getElementById('info');
+hudEl.innerHTML = '';
+
+const fpsEl = document.createElement('div');
+fpsEl.style.cssText = 'position:fixed;top:8px;left:12px;color:#aaa;font:13px/1.4 monospace;z-index:10';
+document.body.appendChild(fpsEl);
+
+const hpBarWrap = document.createElement('div');
+hpBarWrap.style.cssText = 'position:fixed;top:12px;left:50%;transform:translateX(-50%);width:300px;z-index:10;text-align:center';
+hpBarWrap.innerHTML = `
+  <div style="color:#ff4444;font:bold 14px monospace;margin-bottom:4px">BOSS — 100 / 100</div>
+  <div style="background:#222;border:1px solid #555;border-radius:3px;height:14px;overflow:hidden">
+    <div id="hp-fill" style="background:linear-gradient(#cc2222,#ff4444);width:100%;height:100%"></div>
+  </div>`;
+document.body.appendChild(hpBarWrap);
+
+// ── FPS 카운터 ──
+let frameCount = 0, fpsTime = 0, fps = 0;
 
 // ── Render Loop ──
 const clock = new THREE.Clock();
@@ -201,17 +221,52 @@ const clock = new THREE.Clock();
 function animate() {
   requestAnimationFrame(animate);
   const dt = clock.getDelta();
-  controls.update();
 
-  // 보스 애니메이션 업데이트
+  // FPS
+  frameCount++;
+  fpsTime += dt;
+  if (fpsTime >= 0.5) {
+    fps = Math.round(frameCount / fpsTime);
+    fpsEl.textContent = `FPS: ${fps}`;
+    frameCount = 0;
+    fpsTime = 0;
+  }
+
+  // 보스 애니메이션
   if (mixer) mixer.update(dt);
 
-  // 마커 회전 (씬이 살아있는지 시각적 확인)
+  // WASD 이동 (카메라 기준 방향)
+  _forward.set(0, 0, 0);
+  _right.set(0, 0, 0);
+
+  // 카메라 → 타겟 방향에서 XZ 평면 forward/right 추출
+  camera.getWorldDirection(_forward);
+  _forward.y = 0;
+  _forward.normalize();
+  _right.crossVectors(camera.up, _forward).normalize();
+
+  const move = new THREE.Vector3();
+  if (keys.w) move.add(_forward);
+  if (keys.s) move.sub(_forward);
+  if (keys.a) move.add(_right);
+  if (keys.d) move.sub(_right);
+
+  if (move.lengthSq() > 0) {
+    move.normalize().multiplyScalar(PLAYER_SPEED * dt);
+    playerPos.add(move);
+  }
+
+  playerMarker.position.set(playerPos.x, 0.9, playerPos.z);
   playerMarker.rotation.y -= 0.5 * dt;
+
+  // 카메라 추적 (Lerp)
+  camTarget.set(playerPos.x, 1, playerPos.z);
+  controls.target.lerp(camTarget, LERP);
+  controls.update();
 
   renderer.render(scene, camera);
 }
 
 animate();
 
-console.log('[POC] Scene ready — loading boss_01.glb');
+console.log('[POC] Scene ready — WASD to move, mouse to orbit');
