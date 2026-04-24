@@ -27767,10 +27767,12 @@ function updateE(e,sp){
       }
     }
   }
+  // ── 테스트베드 마네킹: frozen이면 보스 전체 업데이트 스킵 ──
+  if(e.ib&&e._btFrozen&&e.s==='idle'){e.vx=0;e.vy=0;e.kb={x:0,y:0};return}
   // ── Boss Phase Check (매 프레임, 상태 무관) ──
   if(e.ib&&e.alive)_bossPhaseCheck(e,sp);
   // ── Boss AI (HFSM + Combo + Utility) ──
-  if(e.ib&&e.s==='idle'){_bossIdleMove(e,d,sp);_bossAI(e,sp,d)}
+  if(e.ib&&e.s==='idle'&&!e._btFrozen){_bossIdleMove(e,d,sp);_bossAI(e,sp,d)}
   // ── 페인트 인터셉트: Wind 상태 끝에 공격 취소 ──
   if(e.ib&&e._feinting&&e.s.endsWith('Wind')&&e.st2<=0){
     e.s='recover';e.st2=25;e._feinting=false;
@@ -39098,7 +39100,7 @@ function draw(){
   if(!G._litFrame)G._litFrame=0;G._litFrame++;
   {const _l0=performance.now();if(_gameFrame%3===0){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
   // ═══ 블룸 패스 (3프레임마다 계산 — 라이팅과 1프레임 오프셋) ═══
-  {const _bl0=performance.now();const _hasGlow=G.bossAlive||_blCnt>0||pProjs.length>0||projs.length>0||(G.pets&&G.pets.iris&&!G._irisOff);if(_hasGlow){if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
+  {const _bl0=performance.now();const _hasGlow=G.bossAlive||_blCnt>0||(G.pets&&G.pets.iris&&!G._irisOff);if(_hasGlow){if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
   // [TORCH] 횃불 조명 어둠 오버레이 (_gameFrame%3===0 만 재계산)
   const _tc0=performance.now();
   if(OPT.torch&&OPT.postfx&&OPT.quality!=='low'){X.save();X.setTransform(1,0,0,1,0,0);
@@ -39143,20 +39145,7 @@ function draw(){
     _torchCamX=G.cam.x;_torchCamY=G.cam.y;
     X.drawImage(_torchCache,0,0);X.restore()}}
   if(_DEBUG_PERF)_dbgDTorch=performance.now()-_tc0;
-  // ── 탄막 광원 패스: 어둠 오버레이 위에 캐시 스탬프 글로우 (어둠 뚫고 빛남) ──
-  if(OPT.torch&&projs.length>0){
-    X.save();X.globalCompositeOperation='lighter';
-    for(let _pi4=0;_pi4<projs.length;_pi4++){const p=projs[_pi4];
-      if(p.x<_vl||p.x>_vr||p.y<_vt||p.y>_vb)continue;
-      if(p.mine||p.trap||p.dimRift||p.web||p.poisonZone)continue;
-      const _isSpec=p.redBean||p.blackBean||p.blueBean||p.bwBean||p.gbBean;
-      const _gr=_isSpec?48:24;
-      const _rgb=p.bwBean?[255,255,255]:p.gbBean?[204,68,255]:p.blackBean?[255,0,255]:p.redBean?[255,34,0]:p.blueBean?[0,204,255]:[255,100,50];
-      X.globalAlpha=_isSpec?.3:.08;
-      X.drawImage(_getProjGlow(_gr,_rgb[0],_rgb[1],_rgb[2]),p.x-_gr,p.y-_gr);
-    }
-    X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();
-  }
+  // ── 탄막 광원 패스: 비활성화 (눈부심 제거) ──
   // ── 유령불꽃 스프라이트 (조명은 토치 캐시에서 처리, 여기선 코어+날개+파티클만) ──
   if(G.pets&&G.pets.iris&&!G._irisOff){
     const _irF=G.pets.iris;
@@ -39960,18 +39949,13 @@ function drawP(){
           else X.lineTo(fz.x+Math.cos(_ra)*_rr,fz.y+Math.sin(_ra)*_rr);
         }
         X.closePath();X.stroke();
-        // 3) 오망성 문양 (중앙, 느린 회전) — 10점 fill
-        const _cSz=fz.r*.3;const _cIn=_cSz*.382;
-        X.save();X.translate(fz.x,fz.y);X.rotate(_hdt*.5);X.lineJoin='round';
-        const _hdStar=function(){X.beginPath();
-          for(let _pi=0;_pi<5;_pi++){
-            const _aO=-Math.PI/2+_pi*Math.PI*.4;
-            const _aI=-Math.PI/2+(_pi+.5)*Math.PI*.4;
-            if(_pi===0)X.moveTo(Math.cos(_aO)*_cSz,Math.sin(_aO)*_cSz);
-            else X.lineTo(Math.cos(_aO)*_cSz,Math.sin(_aO)*_cSz);
-            X.lineTo(Math.cos(_aI)*_cIn,Math.sin(_aI)*_cIn);}
-          X.closePath();};
-        _hdStar();X.globalAlpha=.6*_fzFade;X.lineWidth=1.5;X.strokeStyle='#666666';X.stroke();
+        // 3) 십자가 문양 (중앙, 고정)
+        const _cSz=fz.r*.35;
+        X.save();X.translate(fz.x,fz.y);
+        X.globalAlpha=.5*_fzFade;X.strokeStyle='#ffd700';X.lineWidth=3;X.lineCap='round';
+        X.beginPath();X.moveTo(0,-_cSz);X.lineTo(0,_cSz);X.moveTo(-_cSz*.65,0);X.lineTo(_cSz*.65,0);X.stroke();
+        X.globalAlpha=.2*_fzFade;X.strokeStyle='#fff8dc';X.lineWidth=6;
+        X.beginPath();X.moveTo(0,-_cSz);X.lineTo(0,_cSz);X.moveTo(-_cSz*.65,0);X.lineTo(_cSz*.65,0);X.stroke();
         X.restore();
         // 4) 빛 파티클
         for(let _si=0;_si<4;_si++){
@@ -44302,10 +44286,11 @@ _btWait(()=>{
     if(!_edge)for(const[bx,by]of _blk)G.map[by][bx]=4}
   _shDirty=true;if(typeof _queueMapCacheRefresh==='function')_queueMapCacheRefresh()}
   BGM.play({hell:SI_TO_HELL[_btSi]||0,boss:true});
-  // ── 3) 보스 참조 ──
+  // ── 3) 보스 참조 + 마네킹 모드 기본 ──
+  _btPaused=true;
   setTimeout(()=>{
     _btBoss=ens.find(e=>e.isBoss);
-    if(_btBoss)_btUpdateInfo();
+    if(_btBoss){_btBoss._btFrozen=true;_btBoss._origSpd=_btBoss.speed;_btBoss.bossPatT=99999;_btUpdateInfo()}
     _btBuildUI();
   },500);
 },2000);
@@ -44329,11 +44314,16 @@ function _btForcePattern(mvId){
   if(!_btBoss||_btBoss.hp<=0)return;
   const mv=BOSS_MOVES.find(m=>m.id===mvId);
   if(!mv)return;
+  _btBoss._btFrozen=false; // 패턴 실행 위해 잠시 해제
   _btBoss.s='idle';_btBoss.stunned=0;_btBoss._feinting=false;_btBoss._delaying=0;
   const d=Math.hypot(P.x-_btBoss.x,P.y-_btBoss.y);
   const ph=_btBoss._bossPhase||0;
   _bossStartPattern(_btBoss,mv,d,ph,0);
+  addTxt(_btBoss.x,_btBoss.y-50,'▶ '+mvId,'#ffaa00',60);
   _btUpdateInfo();
+  // 패턴 완료 후 다시 frozen (recover→idle 감시)
+  if(_btPaused){const _wi=setInterval(()=>{if(!_btBoss||_btBoss.hp<=0){clearInterval(_wi);return}
+    if(_btBoss.s==='idle'){_btBoss._btFrozen=true;_btBoss.vx=0;_btBoss.vy=0;clearInterval(_wi)}},100)}
 }
 
 // ── 페이즈 강제 세팅 ──
@@ -44443,8 +44433,8 @@ window._btUpdateInfo=_btUpdateInfo;
 window._btPauseToggle=function(){
   _btPaused=!_btPaused;
   if(_btBoss){
-    if(_btPaused){_btBoss._btOrigAI=_btBoss.bossPatT;_btBoss.bossPatT=99999;_btBoss.s='idle';_btBoss.stunned=0}
-    else{_btBoss.bossPatT=_btBoss._btOrigAI||30}
+    if(_btPaused){_btBoss._btOrigAI=_btBoss.bossPatT;_btBoss.bossPatT=99999;_btBoss.s='idle';_btBoss.stunned=0;_btBoss._btFrozen=true;_btBoss.spd=0;_btBoss.vx=0;_btBoss.vy=0}
+    else{_btBoss.bossPatT=_btBoss._btOrigAI||30;_btBoss._btFrozen=false;_btBoss.spd=_btBoss._origSpd||0.5}
   }
   const btn=document.getElementById('_btPauseBtn');
   if(btn){btn.textContent=_btPaused?'▶ AI 재개':'⏸ AI 정지';btn.style.background=_btPaused?'#224433':''}

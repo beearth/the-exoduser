@@ -1,124 +1,63 @@
-#!/usr/bin/env python3
 """
-보스 아틀라스 빌드: atlas_boss_walk.png
-레이아웃: idle(4) + walk(4) + attack(6) + hit(6) = 20cols, 64px
-7행 (장별 1보스)
+그록 생성 보스 이미지 → 게임용 아틀라스 변환
+형식: 4행(S/E/N/W) × 32열(idle4 + walk4 + attack6 + hit6 + death6 + windup6)
+셀 크기: 128×128
+출력: 4096×512
 """
-import os, glob
-import numpy as np
 from PIL import Image
+import os, shutil
 
-BASE = os.path.dirname(__file__)
-BOSS_DIR = os.path.join(BASE, 'img', 'bosses')
-OUT = os.path.join(BASE, 'img', 'mobs', 'atlas_boss_walk.png')
-CELL = 64
-COLS = 20
-DIR_PRIO = ['south','east','west','north']
+BASE = 'G:/hell/img/grok_gen'
+OUT = 'G:/hell/img/mobs/atlas_boss_si0_dir.png'
+BACKUP = 'G:/hell/img/mobs/atlas_boss_si0_dir_backup.png'
+CELL = 128
+COLS = 32
+ROWS = 4
 
-BOSSES = [
-    'boss_ch1_forest',
-    'boss_ch2_bug',
-    'boss_ch3_ice',
-    'boss_ch4_flame',
-    'boss_ch5_war',
-    'boss_ch6_flesh',
-    'boss_ch7_hell',
-]
+DIR_FILES = {
+    0: os.path.join(BASE, 'boss_south.png'),
+    1: os.path.join(BASE, 'boss_east.png'),
+    2: os.path.join(BASE, 'boss_north.png'),
+    3: os.path.join(BASE, 'boss_west.png'),
+}
 
-def load_frames(bdir, anim_name, alts=None):
-    names = [anim_name] + (alts or [])
-    for name in names:
-        for d in DIR_PRIO:
-            path = os.path.join(bdir, 'animations', name, d)
-            if os.path.isdir(path):
-                pngs = sorted(glob.glob(os.path.join(path, 'frame_*.png')))
-                if pngs:
-                    return [Image.open(p).convert('RGBA') for p in pngs]
-    return []
+# 소스 8프레임: 0,1=idle, 2,3=walk, 4,5=windup, 6,7=attack
+ANIM_MAP = {
+    0:0,1:1,2:0,3:1,        # idle 4f
+    4:2,5:3,6:2,7:3,        # walk 4f
+    8:4,9:5,10:6,11:7,12:6,13:7,  # attack 6f
+    14:0,15:1,16:0,17:1,18:0,19:1, # hit 6f
+    20:6,21:7,22:6,23:7,24:6,25:7, # death 6f
+    26:4,27:5,28:4,29:5,30:4,31:5, # windup 6f
+}
 
-def load_rot(bdir):
-    for d in DIR_PRIO:
-        p = os.path.join(bdir, 'rotations', f'{d}.png')
-        if os.path.exists(p):
-            return Image.open(p).convert('RGBA')
-    return None
-
-def fit(img, sz=CELL):
-    if img.size == (sz, sz): return img
+def extract_frames(img_path, num_frames=8):
+    img = Image.open(img_path).convert('RGBA')
     w, h = img.size
-    scale = min(sz/w, sz/h)
-    nw, nh = int(w*scale), int(h*scale)
-    r = img.resize((nw, nh), Image.NEAREST)
-    out = Image.new('RGBA', (sz, sz), (0,0,0,0))
-    out.paste(r, ((sz-nw)//2, (sz-nh)//2))
-    return out
+    fw = w // num_frames
+    frames = []
+    for i in range(num_frames):
+        frame = img.crop((i * fw, 0, (i + 1) * fw, h))
+        frame = frame.resize((CELL, CELL), Image.LANCZOS)
+        frames.append(frame)
+    return frames
 
-def tint(img, rgb, strength):
-    arr = np.array(img).astype(np.float32)
-    for c in range(3):
-        arr[:,:,c] = arr[:,:,c] * (1-strength) + rgb[c] * strength
-    arr[:,:,:3] = np.clip(arr[:,:,:3], 0, 255)
-    return Image.fromarray(arr.astype(np.uint8))
+if os.path.exists(OUT):
+    shutil.copy2(OUT, BACKUP)
+    print(f'백업: {BACKUP}')
 
-def main():
-    W = COLS * CELL  # 1280
-    H = len(BOSSES) * CELL  # 448
-    atlas = Image.new('RGBA', (W, H), (0,0,0,0))
+atlas = Image.new('RGBA', (COLS * CELL, ROWS * CELL), (0, 0, 0, 0))
 
-    fallback_row = None  # ch1 row for palette swap
+for row, src_path in DIR_FILES.items():
+    print(f'처리: {src_path}')
+    frames = extract_frames(src_path)
+    for col in range(COLS):
+        src_idx = ANIM_MAP.get(col, 0)
+        if src_idx < len(frames):
+            frame = frames[src_idx]
+        else:
+            frame = frames[0]
+        atlas.paste(frame, (col * CELL, row * CELL))
 
-    for row, bname in enumerate(BOSSES):
-        bdir = os.path.join(BOSS_DIR, bname)
-        y = row * CELL
-
-        if not os.path.isdir(bdir) or not os.path.exists(os.path.join(bdir, 'rotations')):
-            # ch5 등 실패한 보스 → ch1 팔레트 스왑
-            if fallback_row is not None:
-                print(f'  {bname}: MISSING → palette swap from ch1')
-                src = atlas.crop((0, 0, W, CELL))
-                tinted = tint(src, (100,40,40), 0.4)  # 어두운 적색
-                atlas.paste(tinted, (0, y))
-            continue
-
-        rot = load_rot(bdir)
-        walk = load_frames(bdir, 'walking-4-frames', ['walk-4-frames'])
-        attack = load_frames(bdir, 'cross-punch')
-        hit = load_frames(bdir, 'taking-punch')
-
-        idle_img = fit(rot) if rot else (fit(walk[0]) if walk else None)
-        if not idle_img:
-            print(f'  {bname}: NO sprites, skip')
-            continue
-
-        # idle (0-3)
-        for i in range(4):
-            atlas.paste(idle_img, (i*CELL, y))
-
-        # walk (4-7)
-        src = walk if walk else [idle_img]
-        for i in range(4):
-            atlas.paste(fit(src[i%len(src)]), ((4+i)*CELL, y))
-
-        # attack (8-13)
-        src = attack if attack else (walk if walk else [idle_img])
-        for i in range(6):
-            atlas.paste(fit(src[i%len(src)]), ((8+i)*CELL, y))
-
-        # hit (14-19)
-        src = hit if hit else [idle_img]
-        for i in range(6):
-            atlas.paste(fit(src[i%len(src)]), ((14+i)*CELL, y))
-
-        status = f'walk({len(walk)})' if walk else 'walk(fb)'
-        status += f' atk({len(attack)})' if attack else ' atk(fb)'
-        status += f' hit({len(hit)})' if hit else ' hit(fb)'
-        print(f'  {bname}: {status}')
-
-        if row == 0:
-            fallback_row = True
-
-    atlas.save(OUT, optimize=True)
-    print(f'\nSaved: {OUT} ({W}x{H})')
-
-if __name__ == '__main__':
-    main()
+atlas.save(OUT)
+print(f'아틀라스 저장: {OUT} ({atlas.size[0]}x{atlas.size[1]})')
