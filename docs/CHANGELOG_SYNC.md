@@ -20991,3 +20991,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/mobs/atlas_boss_si0_dir.png
 - img/mobs/atlas_boss_si0_dir_backup.png
 
+
+## 2026-04-25 02:30 (auto)
+- game.html
+
