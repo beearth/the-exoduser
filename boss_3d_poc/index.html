@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Boss 3D POC</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{overflow:hidden;background:#111}
+canvas{display:block;width:100vw;height:100vh}
+#info{position:fixed;top:8px;left:12px;color:#aaa;font:13px/1.4 monospace;pointer-events:none;z-index:10}
+</style>
+</head>
+<body>
+<div id="info">Boss 3D POC — STEP 1-1<br>OrbitControls: drag=rotate, scroll=zoom, right-drag=pan</div>
+<canvas id="poc-canvas"></canvas>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="main.js"></script>
+</body>
+</html>
