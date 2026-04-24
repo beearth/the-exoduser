@@ -20969,3 +20969,25 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - ss_boss_load.png
 - vfx_video/boss_slash_vfx.mp4
 
+
+## 2026-04-25 01:30 (auto)
+- build_boss_atlas.py
+- build_boss_atlas2.py
+- game.html
+- img/grok_gen/boss_east.json
+- img/grok_gen/boss_east.png
+- img/grok_gen/boss_north.json
+- img/grok_gen/boss_north.png
+- img/grok_gen/boss_south.json
+- img/grok_gen/boss_south.png
+- img/grok_gen/boss_west.json
+- img/grok_gen/boss_west.png
+- img/grok_gen/grok_attack_motion.json
+- img/grok_gen/grok_attack_motion.png
+- img/grok_gen/grok_boss_sprite.json
+- img/grok_gen/grok_boss_sprite.png
+- img/grok_gen/grok_tele_effect.json
+- img/grok_gen/grok_tele_effect.png
+- img/mobs/atlas_boss_si0_dir.png
+- img/mobs/atlas_boss_si0_dir_backup.png
+
