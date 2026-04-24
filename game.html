@@ -19027,8 +19027,9 @@ function genFromTemplate(tmpl,si){
       const _tx=(cs.x+.5)*T,_ty=(cs.y+.5)*T;let _tooClose=false;
       for(let _shi=0;_shi<spawnHoles.length;_shi++){const _s=spawnHoles[_shi];const _dx=_s.x-_tx,_dy=_s.y-_ty;if(_dx*_dx+_dy*_dy<250000){_tooClose=true;break}}
       if(!_tooClose)spawnHoles.push({x:_tx,y:_ty,size:.3,timer:600+Math.random()*60,alive:0,room:-1})}}
-    // tileRLE 최대 캡 12개 — 복도(room===-1)부터 제거
-    while(spawnHoles.length>12){
+    // tileRLE 최대 캡 — 에디터 배치 존중 (최대 50개, 복도부터 제거)
+    const _tileHoleCap=50;
+    while(spawnHoles.length>_tileHoleCap){
       let _ci=-1;for(let _i=spawnHoles.length-1;_i>=0;_i--){if(spawnHoles[_i].room===-1){_ci=_i;break}}
       if(_ci>=0)spawnHoles.splice(_ci,1);
       else spawnHoles.splice(spawnHoles.length-1,1);
@@ -21205,7 +21206,7 @@ function update(){
     else if(P._msAiming||P._isAiming||P._bwAiming||P._ebAiming||P._hrAiming){} // 조준 모드 중 공격 차단
     else if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()} // Q: 얼음보주
     else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()} // Q: 평화의보호 (stormBeam)
-    else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=30;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15))} // Q: 보호막 (데미지 감소)
+    else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=30;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop();if(Math.random()<.3)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15))} // Q: 보호막 (데미지 감소)
     // burstLoop는 E키(마법슬롯)에서 발동 → _execMagicE()에서 처리
     else if(isHeld('weapon')&&P.skills.whirlwind&&P.activeLMBSk==='whirlwind'&&P.st>=2){P.s='whirlwind';P.wwAng=0;P.parryT=0;P.parryBank=0;P._wwDetTimer=0;SFX._swIdx=0;SFX.slashSeq();if(_isFused('stormBeam')){P._eStormIdx=0;P._eStormT=0;P._eStormActive=true;playSample(['electric_storm','electric_storm2','electric_storm3','electric_storm4'][~~(Math.random()*4)],.6,_r(1,.1))}if(Math.random()<.45){playSample(['voice_flee','voice_storm_attack'][~~(Math.random()*2)],1,1)}else{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}_addSkProf('whirlwind')}
     else if(isAct('weapon')&&useStPct('weapon')){P._atkBon=~~(_lastCost*1.5);P.s='wSwing';P.st2=5;P.swProg=0;P.atkArc=P.facing;if(G._pStats)G._pStats._atkC++;if(Math.random()<.35){const _ve=['voice_grunt','male_grunt','voice_attack'];playSample(_ve[~~(Math.random()*3)],1,_r(1,.15))}
@@ -21530,7 +21531,7 @@ function update(){
         hitArc(P.atkArc,_wRange,_wArc,~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0))+15)*2),wp().el,'weapon');
       }
       if(P.st2<=0){P.s='wRecover';P.st2=~~(16/((wp().spd||.3)*statDex()))}}
-    else if(P.s==='wRecover'){if(P.st2<=0){if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=30;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}else P.s='idle'}}
+    else if(P.s==='wRecover'){if(P.st2<=0){if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=30;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}else P.s='idle'}}
     else if(P.s==='sBash'){
       // ── 칼등날개: 제자리 처내기 (전진 제거) ──
       if(P.st2<=12&&P.st2+sp>12){
@@ -21660,7 +21661,7 @@ function update(){
       }
       else if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}
       else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}
-      else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=30;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
+      else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=30;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
       else if(P.st2<=0){
         P._stWingT=0; // sRecover 종료 시 날개 비주얼 즉시 해제
         if(isHeld('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=20;_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3){var _ve2=['voice_grunt','male_grunt'];playSample(_ve2[~~(Math.random()*2)],1,_r(1,.15))}if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
@@ -21694,7 +21695,7 @@ function update(){
       }
       else if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}
       else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}
-      else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=30;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
+      else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=30;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
       else if(isJust('shield')&&useStPct('shield')){P._atkBon=~~(_lastCost*1.5);P.s='sBash';P.st2=20;_addSkProf('maliceSwipe');_playSwordBack();if(Math.random()<.3){var _ve2=['voice_grunt','male_grunt'];playSample(_ve2[~~(Math.random()*2)],1,_r(1,.15))}if(P.skills.shieldThrow>=1&&(P._stCd||0)<=0)_autoShieldThrow()}
       else if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
       else if(P.st2<=0){
@@ -21767,7 +21768,7 @@ function update(){
     else if(P.s==='magicRecover'){
       if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()}
       else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()}
-      else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=~~(P.mmp*.08)){P.mp-=~~(P.mmp*.08);P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=30;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
+      else if(isAct('parry')&&!_qIsIceOrb()&&!_qIsPeaceShield()&&(P._sbCd||0)<=0&&P.mp>=10){P.mp-=10;P.s='sBlock';P.st2=999;P._sbParryT=20;P._sbCd=30;G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};playSample('shield_activate',.8,_r(1,.08));_startShieldLoop()}
       else if(P.st2<=0){
       // 홀드 연사: E 누르고 있으면 즉시 재시전/빔/만화방창 전환
       if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
@@ -44253,6 +44254,205 @@ if(location.search.includes('slotdebug')){
     });
   },2000);
 }
+// ═══════════════════════════════════════════════════════════════
+// ═══ BOSS TESTBED — ?bosstest=0 (si번호) 로 실행 ═══
+// ═══════════════════════════════════════════════════════════════
+(function(){
+const _btParam=new URLSearchParams(location.search).get('bosstest');
+if(_btParam===null)return;
+const _btSi=Math.max(0,Math.min(TOTAL_STAGES-1,~~(+_btParam||0)));
+let _btGod=true,_btBoss=null,_btPaused=false;
+
+function _btWait(fn,ms){setTimeout(()=>{if(!G||!P||!G.on)return _btWait(fn,ms);fn()},ms)}
+
+_btWait(()=>{
+  // ── 1) 플레이어 강화 & 스테이지 세팅 ──
+  G.stage=_btSi;
+  P.hp=P.mhp=9999;P.st=P.mst=9999;P.mp=P.mmp=9999;
+  P.shield=P.mshield=500;P.str=300;P.dex=100;P.int=5000;P.luk=50;
+  P.atk=500;P.def=200;P.spd=3;P.r=14;
+  P.iframes=99999;P.mpR=9999; // MP리젠 극대화
+  // ── 2) 보스방 진입 ──
+  initStage(_btSi);
+  _enterBossArena();
+  P.iframes=99999;
+  BGM.play({hell:SI_TO_HELL[_btSi]||0,boss:true});
+  // ── 3) 보스 참조 ──
+  setTimeout(()=>{
+    _btBoss=ens.find(e=>e.isBoss);
+    if(_btBoss)_btUpdateInfo();
+    _btBuildUI();
+  },500);
+},2000);
+
+// ── 보스 정보 업데이트 ──
+function _btUpdateInfo(){
+  if(!_btBoss)return;
+  const el=document.getElementById('_btInfo');
+  if(!el)return;
+  const hpPct=(_btBoss.hp/_btBoss.mhp*100).toFixed(1);
+  const ph=_btBoss._bossPhase||0;
+  el.innerHTML=`<b>${HELL_BOSSES[SI_TO_HELL[_btSi]]?.[STG[_btSi]?.hellFloor]||'Boss'}</b> (si${_btSi})`
+    +`<br>HP: ${~~_btBoss.hp}/${~~_btBoss.mhp} (${hpPct}%)`
+    +`<br>Phase: ${ph} | State: ${_btBoss.s}`
+    +`<br>Poise: ${~~(_btBoss.poise||0)}/${~~(_btBoss.maxPoise||0)}`;
+}
+setInterval(()=>{if(_btBoss&&_btBoss.hp>0)_btUpdateInfo()},200);
+
+// ── 패턴 강제 실행 ──
+function _btForcePattern(mvId){
+  if(!_btBoss||_btBoss.hp<=0)return;
+  const mv=BOSS_MOVES.find(m=>m.id===mvId);
+  if(!mv)return;
+  _btBoss.s='idle';_btBoss.stunned=0;_btBoss._feinting=false;_btBoss._delaying=0;
+  const d=Math.hypot(P.x-_btBoss.x,P.y-_btBoss.y);
+  const ph=_btBoss._bossPhase||0;
+  _bossStartPattern(_btBoss,mv,d,ph,0);
+  _btUpdateInfo();
+}
+
+// ── 페이즈 강제 세팅 ──
+function _btSetPhase(ph){
+  if(!_btBoss)return;
+  _btBoss._bossPhase=ph;
+  // HP를 해당 페이즈 범위로 조정
+  const hpRatios=[0.9,0.7,0.5,0.3,0.1];
+  _btBoss.hp=~~(_btBoss.mhp*hpRatios[ph]);
+  _btUpdateInfo();
+}
+
+// ── 보스 리셋 ──
+function _btResetBoss(){
+  // 기존 보스 제거
+  for(let i=ens.length-1;i>=0;i--)ens.splice(i,1);
+  projs.length=0;
+  // 보스 패턴 배열 초기화
+  G._spiralBullets=[];G._phantomSwords=[];G._doppelgangers=[];G._judgeCuts=[];G._pillars=[];
+  G._darkZones=[];G._mirrorClones=[];G._fissures=[];G._tideWaves=[];G._seekerMines=[];
+  G._rewindMarks=[];G._gravityWells=[];G._wallPushes=[];G._poisonPools=[];G._cageTraps=[];
+  G._chainLights=[];G._orbWeaves=[];G._soulAnchors=[];G._chaseAoes=[];G._lavaPools=[];
+  G._fireRains=[];G._shockGrids=[];G._donutSlams=[];G._safeCorners=[];G._crossWipes=[];G._tidalWipes=[];
+  G._gSlamWave=[];
+  // 재소환
+  _enterBossArena();
+  P.hp=P.mhp;P.iframes=99999;
+  setTimeout(()=>{_btBoss=ens.find(e=>e.isBoss);_btUpdateInfo()},300);
+}
+
+// ── UI 구축 ──
+function _btBuildUI(){
+  const panel=document.createElement('div');
+  panel.id='_btPanel';
+  panel.style.cssText='position:fixed;top:8px;right:8px;width:320px;max-height:90vh;overflow-y:auto;'
+    +'background:rgba(10,8,6,.92);border:2px solid #664422;border-radius:8px;padding:10px;'
+    +'font:12px "Noto Sans KR",sans-serif;color:#ddccaa;z-index:99999;user-select:none';
+  // ── 헤더 ──
+  panel.innerHTML=`<div style="font-size:15px;font-weight:700;color:#ffaa44;margin-bottom:8px;border-bottom:1px solid #553311;padding-bottom:6px">
+    🎯 BOSS TESTBED <span style="font-size:11px;color:#887766">si=${_btSi}</span>
+    <span id="_btMinBtn" style="float:right;cursor:pointer;color:#aa8866">─</span></div>`;
+  // ── 보스 정보 ──
+  panel.innerHTML+=`<div id="_btInfo" style="margin-bottom:8px;padding:6px;background:rgba(0,0,0,.3);border-radius:4px;font-size:11px;line-height:1.5">로딩중...</div>`;
+  // ── 컨트롤 ──
+  panel.innerHTML+=`<div style="margin-bottom:8px;display:flex;gap:4px;flex-wrap:wrap">
+    <button class="_btBtn" onclick="_btGodToggle()" id="_btGodBtn" style="background:#224422;color:#44ff44">🛡 GOD ON</button>
+    <button class="_btBtn" onclick="_btResetBoss()">🔄 리셋</button>
+    <button class="_btBtn" onclick="_btPauseToggle()" id="_btPauseBtn">⏸ AI 정지</button>
+    <button class="_btBtn" onclick="_btBoss.hp=_btBoss.mhp;_btUpdateInfo()">❤ HP풀</button>
+    <button class="_btBtn" onclick="_btBoss.hp=~~(_btBoss.mhp*.5);_btUpdateInfo()">💔 HP50%</button>
+    <button class="_btBtn" onclick="_btBoss.hp=~~(_btBoss.mhp*.1);_btUpdateInfo()">☠ HP10%</button>
+  </div>`;
+  // ── 페이즈 선택 ──
+  panel.innerHTML+=`<div style="margin-bottom:8px"><span style="color:#aa8866;font-size:11px">PHASE:</span>
+    ${[0,1,2,3,4].map(p=>`<button class="_btBtn _btPh" onclick="_btSetPhase(${p})" style="width:36px">${p}</button>`).join('')}
+  </div>`;
+  // ── 패턴 버튼 (해당 스테이지 무브셋) ──
+  const moveSet=_BOSS_MOVESET[_btSi]||null;
+  const availMoves=BOSS_MOVES.filter(m=>!moveSet||moveSet.has(m.id));
+  const otherMoves=BOSS_MOVES.filter(m=>moveSet&&!moveSet.has(m.id));
+  panel.innerHTML+=`<div style="margin-bottom:4px;color:#aa8866;font-size:11px;border-top:1px solid #332211;padding-top:6px">
+    📋 사용 가능 패턴 (${availMoves.length}종)</div>`;
+  panel.innerHTML+=`<div style="display:flex;gap:3px;flex-wrap:wrap;margin-bottom:8px">`
+    +availMoves.map(m=>{
+      const tagCol=m.tags.includes('melee')?'#ff8844':m.tags.includes('ranged')?'#44aaff':
+        m.tags.includes('zone')?'#aa44ff':m.tags.includes('aoe')?'#ff4444':'#aaaaaa';
+      return `<button class="_btBtn _btMv" onclick="_btForcePattern('${m.id}')" title="${m.tags.join(',')}\nCD:${m.cd} Phase:${m.phase.join(',')}" style="border-left:3px solid ${tagCol}">${m.id}</button>`;
+    }).join('')+`</div>`;
+  if(otherMoves.length>0){
+    panel.innerHTML+=`<details style="margin-bottom:8px"><summary style="color:#666;font-size:11px;cursor:pointer">🔒 미해금 패턴 (${otherMoves.length}종)</summary>
+      <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:4px">`
+      +otherMoves.map(m=>`<button class="_btBtn _btMv" onclick="_btForcePattern('${m.id}')" style="opacity:.5;border-left:3px solid #555">${m.id}</button>`).join('')
+      +`</div></details>`;
+  }
+  // ── 전체 패턴 연속 재생 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:4px">
+    <button class="_btBtn" onclick="_btPlayAll()" id="_btPlayAllBtn" style="width:100%;background:#332244;color:#aa88ff">▶ 전체 패턴 순차 재생</button>
+    <button class="_btBtn" onclick="_btStopAll()" style="width:100%;background:#332222;color:#ff6644;margin-top:3px">■ 정지</button>
+  </div>`;
+  document.body.appendChild(panel);
+  // ── 스타일 ──
+  const style=document.createElement('style');
+  style.textContent=`._btBtn{padding:3px 7px;border:1px solid #554422;border-radius:4px;background:#1a1410;color:#ccbb99;font-size:11px;cursor:pointer;font-family:inherit}
+    ._btBtn:hover{background:#2a2218;border-color:#886633}._btBtn:active{background:#443322}
+    ._btMv{font-size:10px;font-family:monospace}._btPh{font-weight:700}
+    #_btPanel::-webkit-scrollbar{width:6px}#_btPanel::-webkit-scrollbar-thumb{background:#443322;border-radius:3px}`;
+  document.head.appendChild(style);
+  // ── 최소화 토글 ──
+  let _btMin=false;
+  document.getElementById('_btMinBtn').onclick=()=>{
+    _btMin=!_btMin;
+    panel.querySelectorAll(':scope>div:not(:first-child),details').forEach(el=>el.style.display=_btMin?'none':'');
+    document.getElementById('_btMinBtn').textContent=_btMin?'□':'─';
+  };
+}
+
+// ── 전역 함수 ──
+window._btForcePattern=_btForcePattern;
+window._btSetPhase=_btSetPhase;
+window._btResetBoss=_btResetBoss;
+window._btGodToggle=function(){
+  _btGod=!_btGod;
+  P.iframes=_btGod?99999:0;
+  const btn=document.getElementById('_btGodBtn');
+  if(btn){btn.textContent=_btGod?'🛡 GOD ON':'💀 GOD OFF';btn.style.background=_btGod?'#224422':'#442222';btn.style.color=_btGod?'#44ff44':'#ff4444'}
+};
+window._btUpdateInfo=_btUpdateInfo;
+window._btPauseToggle=function(){
+  _btPaused=!_btPaused;
+  if(_btBoss){
+    if(_btPaused){_btBoss._btOrigAI=_btBoss.bossPatT;_btBoss.bossPatT=99999;_btBoss.s='idle';_btBoss.stunned=0}
+    else{_btBoss.bossPatT=_btBoss._btOrigAI||30}
+  }
+  const btn=document.getElementById('_btPauseBtn');
+  if(btn){btn.textContent=_btPaused?'▶ AI 재개':'⏸ AI 정지';btn.style.background=_btPaused?'#224433':''}
+};
+
+// ── 전체 패턴 순차 재생 ──
+let _btPlaySeq=null,_btPlayIdx=0;
+window._btPlayAll=function(){
+  const moveSet=_BOSS_MOVESET[_btSi]||null;
+  _btPlaySeq=BOSS_MOVES.filter(m=>!moveSet||moveSet.has(m.id));
+  _btPlayIdx=0;
+  if(!_btPaused)window._btPauseToggle(); // AI 정지
+  _btPlayNext();
+};
+window._btStopAll=function(){_btPlaySeq=null;_btPlayIdx=0;
+  const btn=document.getElementById('_btPlayAllBtn');if(btn)btn.textContent='▶ 전체 패턴 순차 재생'};
+function _btPlayNext(){
+  if(!_btPlaySeq||_btPlayIdx>=_btPlaySeq.length){window._btStopAll();return}
+  const mv=_btPlaySeq[_btPlayIdx];
+  const btn=document.getElementById('_btPlayAllBtn');
+  if(btn)btn.textContent=`▶ ${_btPlayIdx+1}/${_btPlaySeq.length}: ${mv.id}`;
+  _btForcePattern(mv.id);
+  _btPlayIdx++;
+  const wait=(mv.tele+mv.rec+60)*16.67; // 프레임→ms
+  setTimeout(_btPlayNext,Math.max(wait,1500));
+}
+
+// ── GOD모드 유지 (매 프레임) ──
+const _btOrigLoop=window.requestAnimationFrame;
+(function _btGodLoop(){requestAnimationFrame(()=>{if(_btGod&&P)P.iframes=Math.max(P.iframes,99999);_btGodLoop()})})();
+
+})();
 </script>
 </body>
 </html>
