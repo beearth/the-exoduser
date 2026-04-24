@@ -5538,8 +5538,6 @@ const _PET_DIRS=['south','south-west','west','north-west','north','north-east','
 const _PET_IMGS={crow:{},cat:{}};
 // 까마귀: 8방향 정적 + 비행 2프레임
 _PET_DIRS.forEach(d=>{const i=new Image();i.src='img/crow/'+d+'.png';_PET_IMGS.crow[d]=i});
-_PET_IMGS.crow._fly={};
-_PET_DIRS.forEach(d=>{_PET_IMGS.crow._fly[d]=[];for(var _fi=1;_fi<=2;_fi++){var _im=new Image();_im.src='img/crow/fly/'+d+'_fly'+_fi+'.png';_PET_IMGS.crow._fly[d].push(_im)}});
 // 고양이: 8방향 정적(idle fallback) + idle 애니 + run 애니
 _PET_IMGS.cat._static={};_PET_IMGS.cat._idle={};_PET_IMGS.cat._run={};
 _PET_DIRS.forEach(d=>{const i=new Image();i.src='img/cat_pet/'+d+'.png';_PET_IMGS.cat._static[d]=i});
@@ -9989,16 +9987,17 @@ function shRebuild(){
   }
 }
 function _shClearCell(v,k,m){if(v.length===0)m.delete(k);else v.length=0}
-const _shResult=[];
+const _shBufs=[[],[],[],[],[],[],[],[]];let _shBufI=0; // 깊이 기반 버퍼 풀 (8단)
 function shQuery(x,y,r){
-  _shResult.length=0;
+  const result=_shBufs[_shBufI<8?_shBufI:7]; // 오버플로우 방어
+  result.length=0;
   const cx0=~~((x-r)/SHASH_CELL),cx1=~~((x+r)/SHASH_CELL);
   const cy0=~~((y-r)/SHASH_CELL),cy1=~~((y+r)/SHASH_CELL);
   for(let cy=cy0;cy<=cy1;cy++)for(let cx=cx0;cx<=cx1;cx++){
     const c=_shGrid.get(cx+cy*10000);
-    if(c)for(let i=0;i<c.length;i++)_shResult.push(c[i]);
+    if(c)for(let i=0;i<c.length;i++)result.push(c[i]);
   }
-  return _shResult;
+  return result;
 }
 let _deadPool=[];
 function rebuildDeadPool(){_deadPool.length=0;for(let i=0;i<ens.length;i++){if(!ens[i].alive&&!ens[i]._absorbed)_deadPool.push(ens[i])}}
@@ -17540,8 +17539,9 @@ function _fireEnergyShot(){
   const _esDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('energyShot')*_fuseMul('energyShot')); // 통일공식: _skMul
   const cx=Math.cos(P.atkArc),cy=Math.sin(P.atkArc);
   // 비합체 기본형: 직선 즉시타격 (유도/분열/착탄폭발 없음)
-  // shQuery는 재사용 버퍼를 반환하므로 복사본으로 고정해야 루프 중 재조회(hurtE 내부)와 충돌하지 않음
-  const _esNe=shQuery(P.x+cx*_esRange*.5,P.y+cy*_esRange*.5,_esRange*.6).slice();
+  // 깊이 버퍼 사용: hurtE 내부 shQuery와 충돌 방지 (.slice() 제거)
+  const _esNe=shQuery(P.x+cx*_esRange*.5,P.y+cy*_esRange*.5,_esRange*.6);
+  _shBufI++;
   for(let _ei=0;_ei<_esNe.length;_ei++){
     const e=_esNe[_ei];if(!e.alive)continue;
     const dx=e.x-P.x,dy=e.y-P.y;
@@ -17550,6 +17550,7 @@ function _fireEnergyShot(){
     hurtE(e,~~(_esDmg*elMul(EL.D,e.el)),Math.atan2(dy,dx),false,{kbMult:0},EL.D);
     if(Math.random()<.5)addParts(e.x,e.y,'#aa66ff',3);
   }
+  _shBufI--;
   P._esAnim={fr:0,tmr:0,ang:P.atkArc,range:_esRange,x:P.x,y:P.y};
   if((P._esSfxCd||0)<=0){playSample('beam_fire',.42,_r(1.15,.08));P._esSfxCd=6;}
   shake(4);_addSkProf('energyShot');
@@ -20382,6 +20383,7 @@ function update(){
   if(!G.on)return;
   if(_EDITOR_MODE){_editorUpdate();return}
   // 백그라운드 초기화는 update() 끝에서 버짓 기반 처리 (게임 로직 스킵 안 함)
+  _shBufI=0; // shQuery 깊이 버퍼 리셋 (이전 프레임 예외로 인한 누적 방지)
   _gameFrame++;
   // 충돌 분리 Worker (이전 프레임 결과 적용 + 새 디스패치)
   _applyColResult();
@@ -22312,7 +22314,8 @@ function update(){
           hurtE(e,totalDmg,Math.atan2(e.y-P.y,e.x-P.x),true,{beam:true},elms[0].el);
           {e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*totalDmg*0.10}addTxt(e.x,e.y-20,_T('관통!'),'#44ffcc',20);
         }
-        const _bAoeNe=shQuery(_bEndX,_bEndY,_bAoeR).slice();
+        const _bAoeNe=shQuery(_bEndX,_bEndY,_bAoeR);
+        _shBufI++;
         for(let _ai=0;_ai<_bAoeNe.length&&_beamHitCap<20;_ai++){
           const e=_bAoeNe[_ai];if(!e.alive||_bHit.has(e))continue;
           if(dst(_bEndX,_bEndY,e.x,e.y)>_bAoeR)continue;
@@ -22324,6 +22327,7 @@ function update(){
           {e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*totalDmg*0.10}
           if(Math.random()>.9)addParts(e.x,e.y,ELC[elms[~~(Math.random()*elms.length)].el],2);
         }
+        _shBufI--;
         G.hitStop=Math.max(G.hitStop,~~(_HS.beam*OPT.hitStop/100));
       }
       }
@@ -24902,7 +24906,8 @@ function update(){
       if(fz._tickTimer>=_fzTick){fz._tickTimer-=_fzTick;
         // 동일 타입 존 겹침 캡: darkPillar/spikeTrap은 적당 최대 2존까지만 히트
         const _fzCapType=fz.type==='darkPillar'||fz.type==='spikeTrap';
-        const _fzNe=shQuery(fz.x,fz.y,fz.r).slice(); // 복사 (hurtE 내부 shQuery 오염 방지)
+        const _fzNe=shQuery(fz.x,fz.y,fz.r); // 깊이 버퍼 — .slice() 제거
+        _shBufI++;
         for(let _fei=0;_fei<_fzNe.length;_fei++){
           const e=_fzNe[_fei];if(!e.alive)continue;
           const _fed=dst(fz.x,fz.y,e.x,e.y);if(_fed>fz.r)continue;
@@ -24963,6 +24968,7 @@ function update(){
             e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.10;
           }
         }
+        _shBufI--;
       }
       // 파티클 (간헐적)
       if(Math.random()>.7){
@@ -31868,9 +31874,9 @@ function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
   SFX.detonate();
   const _sR=stunRange||range; // 스턴 범위 (없으면 데미지 범위와 동일)
   dmg=~~(dmg*pAtkMul())+(P._atkBon||0);P._atkBon=0;
-  // shQuery 결과 복사 (hurtE 내부 shQuery 호출로 _shResult 오염 방지)
-  const _shSnap=shQuery(P.x,P.y,_sR+20);
-  const _neA=[];for(let i=0;i<_shSnap.length;i++)_neA[i]=_shSnap[i];
+  // 깊이 버퍼 — hurtE 내부 shQuery 오염 방지 (.slice/수동복사 제거)
+  const _neA=shQuery(P.x,P.y,_sR+20);
+  _shBufI++;
   for(let i=0;i<_neA.length;i++){const e=_neA[i];if(!e.alive)continue;
     const d=dst(P.x,P.y,e.x,e.y);
     if(d>_sR+e.r)continue;
@@ -31914,6 +31920,7 @@ function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
         hitCol,2+Math.random()*4,10+Math.random()*10);
     }
   }
+  _shBufI--;
   shake(18);
 }
 // ═══ 진동보행 삭제됨 ═══
@@ -42683,8 +42690,8 @@ function drawP(){
     X.strokeStyle=_dcols[_dashTier];X.lineWidth=1.5;
     X.beginPath();X.arc(_px2,_py2,6,0,Math.PI*2);X.stroke();
     // 단계 텍스트
-    X.font='bold 10px sans-serif';X.fillStyle=_dcols[_dashTier];X.textAlign='center';
-    X.fillText(_dashTier+_T('단'),P.x,P.y-28);
+    X.font='bold 20px sans-serif';X.fillStyle=_dcols[_dashTier];X.textAlign='center';
+    X.fillText(_dashTier+_T('단'),P.x,P.y-34);
     X.globalAlpha=1;
   }
   // ── 작살 비행 렌더 ──
