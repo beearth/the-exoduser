@@ -21008,3 +21008,15 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/grok_gen/boss_west.png
 - img/mobs/atlas_boss_si1_dir.png
 
+
+## 2026-04-25 07:30 (auto)
+- boss_3d_poc/assets/boss_01.glb
+- boss_3d_poc/boss.js
+- boss_3d_poc/combat.js
+- boss_3d_poc/index.html
+- boss_3d_poc/main.js
+- boss_3d_poc/player.js
+- img/mobs/Meshy_AI_1_biped_Animation_Idle_15_withSkin.glb
+- img/mobs/Meshy_AI_1_biped_Animation_Running_withSkin.glb
+- img/mobs/boss_01.glb
+
