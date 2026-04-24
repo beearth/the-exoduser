@@ -19,6 +19,9 @@ server.out.log
 auto-push.sh
 auto-push.log
 EXODUSER_itch.zip
+EXODUSER_prototype*.zip
+cat_pet.zip
+tmp_exoduser_walk.zip
 saves/
 .venv/
 __pycache__/
