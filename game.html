@@ -5486,6 +5486,7 @@ function _addDetVfx(x,y,r,dur,chgBars){
     b.sparks.push({a:a,len:.4+Math.random()*.6,w:2+Math.random()*3,spd:.6+Math.random()*.5})}
 }
 const _BOOM_MAX=12;const _booms=[];for(let i=0;i<_BOOM_MAX;i++)_booms.push({x:0,y:0,r:0,t:0,mt:0,col:'fire',active:false,arms:null});
+function _projHitFx(px,py,el,isRed){_addBoom(px,py,isRed?80:24,isRed?30:14,isRed?'redbean':el===EL.I?'ice':el===EL.L?'lightning':el===EL.D?'dark':'fire');if(isRed){addParts(px,py,'#ff2200',20);shake(8);SFX.detonate();doHitFlash('#ff2200',0.2)}else{addParts(px,py,ELC[el]||'#ff8844',8);shake(4);doHitFlash(ELC[el]||'#ff8844',0.12)}}
 function _addBoom(x,y,r,dur,col){
   let b=null;for(let i=0;i<_BOOM_MAX;i++){if(!_booms[i].active){b=_booms[i];break}}
   if(!b){let oldest=0,oT=999;for(let i=0;i<_BOOM_MAX;i++){if(_booms[i].t/_booms[i].mt>oT){oT=_booms[i].t/_booms[i].mt;oldest=i}}b=_booms[oldest]}
@@ -13847,7 +13848,7 @@ const _BWA={idle:{s:0,n:4},walk:{s:4,n:4},attack:{s:8,n:6},hit:{s:14,n:6},death:
 // ── 보스 방향별 아틀라스 (스테이지별 개별 파일, 4행=S/E/N/W × 20칸) ──
 const _bossDirAtlas={};
 // ── 보스 방향별 아틀라스 (스테이지별 개별 파일, 4행=S/E/N/W) ──
-const _BOSS_DIR_ATLAS_FILES={0:{src:'img/mobs/atlas_boss_si0_dir.png',cell:128}};
+const _BOSS_DIR_ATLAS_FILES={0:{src:'img/mobs/atlas_boss_si0_dir.png',cell:128},1:{src:'img/mobs/atlas_boss_si1_dir.png',cell:128}};
 (function _loadBossDirAtlases(){
   for(const si in _BOSS_DIR_ATLAS_FILES){
     const cfg=_BOSS_DIR_ATLAS_FILES[si];
@@ -14823,15 +14824,48 @@ function _addCorpse(e,killAng,power){
   c.r=a+Math.PI*.5;c.rv=(Math.random()-.5)*.2; // 회전 속도
   c.mt=e.ib?600:420;c.t=c.mt;c.active=true;c.bounced=0;
   c.ctx.clearRect(0,0,128,128);
-  // 8dir 아틀라스에서 시체 이미지 캡처
-  {const _ca8=_ch8Atlas[1];
-  let _cDrawn=false;
-  if(_ca8){
-    let _cda=_ca8.dirs['south'];
-    if(_cda&&_cda.ready&&e._mob8Col!==undefined){
-      const _cc8=(_ca8.meta?_ca8.meta.cell:256);
-      c.ctx.drawImage(_cda.img,e._mob8Col*_cc8,e._mob8Row*_cc8,_cc8,_cc8,0,0,128,128);
+  // 시체 이미지 캡처
+  {let _cDrawn=false;
+  // ── 보스: 보스 전용 아틀라스에서 캡처 ──
+  if(e.ib){
+    const _bsi=G.stage||0;
+    // 1) 방향별 보스 아틀라스
+    const _bda=_bossDirAtlas[_bsi];
+    if(_bda&&_bda.ready){
+      const _bcc=_bda.cell||_BWA_CELL;
+      c.ctx.drawImage(_bda.img,0,0,_bcc,_bcc,0,0,128,128);
       _cDrawn=true;
+    }
+    // 2) 외부 보스 아틀라스
+    if(!_cDrawn&&_atlasExtBReady){
+      const _bKey='boss_'+_bsi;
+      const _bFr=_atlasExtB_frames[_bKey];
+      if(_bFr){
+        const _bFrSet=_bFr.idle||_bFr[Object.keys(_bFr)[0]];
+        if(_bFrSet&&_bFrSet.length){
+          const f=_bFrSet[0];
+          const src=_getExtBCanvas(0);
+          c.ctx.drawImage(src,f.x,f.y,f.w,f.h,0,0,128,128);
+          _cDrawn=true;
+        }
+      }
+    }
+    // 3) 걷기 아틀라스 폴백
+    if(!_cDrawn&&_bossWalkAtlas.ready&&_bsi>=0&&_bsi<=34){
+      c.ctx.drawImage(_bossWalkAtlas.img,0,_bsi*_BWA_CELL,_BWA_CELL,_BWA_CELL,0,0,128,128);
+      _cDrawn=true;
+    }
+  }
+  // ── 일반 몹: 8dir 아틀라스 ──
+  if(!_cDrawn){
+    const _ca8=_ch8Atlas[1];
+    if(_ca8){
+      let _cda=_ca8.dirs['south'];
+      if(_cda&&_cda.ready&&e._mob8Col!==undefined){
+        const _cc8=(_ca8.meta?_ca8.meta.cell:256);
+        c.ctx.drawImage(_cda.img,e._mob8Col*_cc8,e._mob8Row*_cc8,_cc8,_cc8,0,0,128,128);
+        _cDrawn=true;
+      }
     }
   }
   if(!_cDrawn){c.ctx.fillStyle=e.col||'#cc0000';c.ctx.beginPath();c.ctx.arc(64,64,54,0,Math.PI*2);c.ctx.fill();}
@@ -19638,6 +19672,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     _feinting:false,_delaying:0,
     _dbgScores:null,
     shockR:0,shockMax:0,laserAng:0,laserLen:0,deaths:0,reviveIframes:0,meteors:[],
+    _revPts:ib?(150+Math.round(si*4.412)):0,_maxRevPts:ib?(150+Math.round(si*4.412)):0,
     shieldAng:etype===6?Math.random()*Math.PI*2:0,
     eShield:_hp,eShieldMax:_hp,eShieldRegenT:0,
     _firstShot:!ib, // 보스 제외, 첫 교전 시 빨간콩 1발
@@ -21833,7 +21868,6 @@ function update(){
     const _psGrowSec=Math.min(10,P._psHoldT/60); // 0~10초
     P._psShieldR=100+_psGrowSec*10; // 100→200
     // 투사체 반사 (보호막 범위 내) — sBlock과 동일
-    function _projHitFx(px,py,el,isRed){_addBoom(px,py,isRed?80:24,isRed?30:14,isRed?'redbean':el===EL.I?'ice':el===EL.L?'lightning':el===EL.D?'dark':'fire');if(isRed){addParts(px,py,'#ff2200',20);shake(8);SFX.detonate();doHitFlash('#ff2200',0.2)}else{addParts(px,py,ELC[el]||'#ff8844',8);shake(4);doHitFlash(ELC[el]||'#ff8844',0.12)}}
     const _psR=P._psShieldR;
     for(let _pi=projs.length-1;_pi>=0;_pi--){
       const p=projs[_pi];if(p.friendly||p.noParry)continue;
@@ -22527,22 +22561,23 @@ function update(){
       if(e._reviveTimer<=0){
         e._reviveTimer=0;
         if(e.ib){
-          // ── 보스: 3초 카운트다운 후 부활 판정 (125%+스테이지×5%-부활×25%-신성력) ──
+          // ── 보스: 3초 카운트다운 후 부활 판정 (확률+포인트 병행) ──
           if((e._bossRevRoll||1)<(e._bossRevChance||0)){
-            // 부활 성공
+            // 부활 성공 — 포인트 소모 (2차 폴백은 기본 10만 소모)
+            e._revPts=Math.max(0,(e._revPts||0)-10);
             e.alive=true;e.x=e._reviveX;e.y=e._reviveY;
             e.hp=~~(e.mhp*.5);e.eShield=~~(e.mhp*.5);e.eShieldMax=e.mhp;e.s='recover';e.st2=60;e.stunned=0;e.kb={x:0,y:0};
             e.reviveIframes=180;e._bossRevJudged=false; // 리셋 → 다음 사망 시 3초 카운트다운 재발동
             G.bossAlive=true;G._bossRef=e;
             addTxt(e.x,e.y-50,_T('☠ 지옥에서 귀환!'),'#ff4400',100);
-            addTxt(e.x,e.y-30,_T('부활 성공!'),'#ff8844',60);
+            addTxt(e.x,e.y-30,(OPT.lang!=='ko'?'Revive! Power ':'부활 성공! 부활력 ')+e._revPts+'/'+e._maxRevPts,'#ff8844',60);
             _reviveVFX(e.x,e.y,'#ffdd44','',{partN:16,partSpd:5,shake:10,vfxSize:140,flash:3});
             {const _br=_bossSfx(G.stage);playSample(_br?_br.howl:'boss_howl',.5,_r(_br?_br.howlP:.9,.1));}
           }else{
             // 부활 실패 → 완전 사망 (G.bossAlive는 true 유지 — 30프레임 체크에서 게이트 열기)
             e._bossRevived=false;e._reviveTimer=0;
             addTxt(e._reviveX,e._reviveY-50,_T('☠ 완전 사망!'),'#ff2222',100);
-            addTxt(e._reviveX,e._reviveY-30,_T('부활 실패...'),'#888888',60);
+            addTxt(e._reviveX,e._reviveY-30,((e._revPts||0)<=0?_T('부활력 고갈!'):_T('부활 실패...')),((e._revPts||0)<=0?'#ff4444':'#888888'),60);
             // G.bossAlive는 삭제 — 30프레임 체크(125611)에서 _bossLive=false 감지 후 처리
             shake(8);G._flashT=4;G._flashCol='#ffffff';
             {const _bf=_bossSfx(G.stage);playSample(_bf?_bf.die:'death_boss',1,_bf?_bf.dieP:1);}
@@ -29599,9 +29634,10 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       e._dgRevived=true;e.hp=~~(e.mhp*.5);e.eShield=~~(e.mhp*.5);e.eShieldMax=e.mhp;e.alive=true;e.s='idle';e.st2=30;e.stunned=0;
       _reviveVFX(e.x,e.y,'#ffdd44','부활!',{partN:16,partSpd:5,shake:10,vfxSize:140,flash:3});return;
     }
-    // ══ 보스 부활 시스템 ══
-    // 1단=1회, 2단=2회 ... 7단=7회 보장부활 + 이후 70/50/30% 추가부활
-    // 신성력(antiRevive)으로 부활 확률 억제 가능
+    // ══ 보스 부활 시스템 (확률+포인트 병행) ══
+    // 부활력 포인트: 150+round(si×4.412), 부활당 10~15 소모
+    // 확률: 125%+stage×5%-(deaths-1)×15%-신성력
+    // 포인트 고갈 OR 확률 실패 → 최종 사망
     if(e.ib){
       e.deaths=(e.deaths||0)+1;
       const _bHell=STG[G.stage]?STG[G.stage].hell:0;
@@ -29609,14 +29645,27 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       const _isH7=_bHell===6; // 7단 올라운드
       // 신성력 억제
       let _bSuppress=_eqAffix('antiRevive');
-      if(G._fireZones){for(let _fi=0;_fi<G._fireZones.length;_fi++){const _fz=G._fireZones[_fi];if(_fz.type==='holyPrison'&&dst(e.x,e.y,_fz.x,_fz.y)<_fz.r){_bSuppress+=.15+((_fz.lv||1)-1)*(.15/9);break}}} // 15%~30% (Lv1=15%, Lv10=30%)
+      let _hpZone=false;
+      if(G._fireZones){for(let _fi=0;_fi<G._fireZones.length;_fi++){const _fz=G._fireZones[_fi];if(_fz.type==='holyPrison'&&dst(e.x,e.y,_fz.x,_fz.y)<_fz.r){_bSuppress+=.15+((_fz.lv||1)-1)*(.15/9);_hpZone=true;break}}} // 15%~30% (Lv1=15%, Lv10=30%)
+      // ── 부활력 포인트 소모 계산 ──
+      let _revCost=10; // 기본 소모
+      if(_bSuppress>0)_revCost+=~~(Math.min(5,_bSuppress*10+2)); // 신성력 빌드: +2~5
+      if(_hpZone)_revCost+=3; // holyPrison 존 내부 사망: +3
+      if(P.hp>=P.mhp)_revCost+=2; // 완벽 처치 (플레이어 풀피): +2
+      e._revPts=(e._revPts||0)-_revCost;
+      if(e._revPts<0)e._revPts=0;
+      // ── 확률 판정 ──
       let _doRevive=false;
-      // 부활률 = 기본125% + 스테이지×5% - 부활횟수×25% - 신성력억제
       const _revBase=1.25+G.stage*0.05; // 125%+스테이지당5%
       const _revCh=Math.max(0,_revBase-(e.deaths-1)*0.15-_bSuppress);
-      if(Math.random()<_revCh)_doRevive=true;
+      // 포인트 남아있고 확률도 통과해야 부활
+      if(e._revPts>0&&Math.random()<_revCh)_doRevive=true;
       const _revPct=~~(_revCh*100);
-      if(_doRevive){addTxt(e.x,e.y-55,_T('💀 ')+e.deaths+(OPT.lang!=='ko'?' Revive! ':'차 부활! ')+_revPct+'%',_revPct>=80?'#ff2244':_revPct>=50?'#ff8844':'#ffcc44',50)}
+      if(_doRevive){
+        addTxt(e.x,e.y-55,_T('💀 ')+e.deaths+(OPT.lang!=='ko'?' Revive! ':'차 부활! ')+_revPct+'%',_revPct>=80?'#ff2244':_revPct>=50?'#ff8844':'#ffcc44',50);
+        addTxt(e.x,e.y-70,(OPT.lang!=='ko'?'Revive Power -':'부활력 -')+_revCost+' ('+e._revPts+'/'+e._maxRevPts+')',_revCost>=13?'#ffdd44':'#ffffff',60);
+        if(_bSuppress>0)addTxt(e.x,e.y-85,_T('✟ 신성력 억제! +')+~~(Math.min(5,_bSuppress*10+2)),_hpZone?'#ffdd00':'#ffdd88',50);
+      }else if(e._revPts<=0){addTxt(e.x,e.y-55,_T('☠ 부활력 고갈!'),'#ff2222',80);addTxt(e.x,e.y-40,'0/'+e._maxRevPts,'#ff4444',50)}
       else if(_bSuppress>0){addTxt(e.x,e.y-40,_T('✟ 신성력 억제! (')+_revPct+'%)','#ffdd88',60)}
       else{addTxt(e.x,e.y-40,_T('부활 실패 (')+_revPct+'%)','#888888',40)}
       if(_doRevive){
@@ -29697,14 +29746,15 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         addTxt(e.x,e.y-30,_T('✟ 신성력 억제!'),'#ffdd88',50);
       }
     }
-    // 보스: 항상 3초 카운트다운 → 부활률 공식 = 125% + 스테이지×5% - 부활횟수×25% - 신성력
+    // 보스: 부활력 남아있으면 3초 카운트다운 → 부활률 공식 + 포인트 체크
     if(e.ib&&!e._bossRevJudged){
       e._bossRevJudged=true;e._reviveTimer=180;e._reviveX=e.x;e._reviveY=e.y;
       const _rv2Base=1.25+G.stage*0.05; // 기본125% + 스테이지당+5%
       let _rv2Sup=_eqAffix('antiRevive');
       if(G._fireZones){for(let _fi=0;_fi<G._fireZones.length;_fi++){const _fz=G._fireZones[_fi];if(_fz.type==='holyPrison'&&dst(e.x,e.y,_fz.x,_fz.y)<_fz.r){_rv2Sup+=.15+((_fz.lv||1)-1)*(.15/9);break}}} // 15%~30% (Lv1=15%, Lv10=30%)
-      e._bossRevChance=Math.max(0,_rv2Base-(e.deaths||0)*0.25-_rv2Sup);
-      e._bossRevRoll=Math.random();
+      // 부활력 포인트 고갈 시 확률 무관 실패
+      if((e._revPts||0)<=0){e._bossRevChance=0;e._bossRevRoll=1}
+      else{e._bossRevChance=Math.max(0,_rv2Base-(e.deaths||0)*0.25-_rv2Sup);e._bossRevRoll=Math.random()}
       e._bossRevived=true; // 타이머 활성 (실제 부활 여부는 resolve에서)
     }
     // ═══ 어픽스: killSlayer (처치보너스) — 처치 시 3초간 뎀업 ═══
@@ -36948,8 +36998,10 @@ function draw(){
           const _rvCol=_rvFrame%_rvVfx.cols,_rvRow=~~(_rvFrame/_rvVfx.cols);
           const _rvPulse=Math.sin(_now/200+_eri)*.15;
           X.globalAlpha=(.3+_rvProg*.5+_rvPulse);
+          X.globalCompositeOperation='multiply';
           X.drawImage(_rvVfx.img,_rvCol*_rvVfx.fw,_rvRow*_rvVfx.fh,_rvVfx.fw,_rvVfx.fh,
             _rvx-_rvSize/2,_rvy-_rvSize/2,_rvSize,_rvSize);
+          X.globalCompositeOperation='source-over';
           if(_rvProg>.85){const _rvFl=(_rvProg-.85)/.15;
             X.globalAlpha=_rvFl*.4;X.fillStyle=e.ib?'#ff4400':'#aa44cc';
             X.beginPath();X.arc(_rvx,_rvy,_rvSize*.4*_rvFl,0,Math.PI*2);X.fill();}
@@ -38653,10 +38705,10 @@ function draw(){
     if(rb.x<_vl-rb.size||rb.x>_vr+rb.size||rb.y<_vt-rb.size||rb.y>_vb+rb.size)continue;
     const col=rb.frame%_rbVfx.cols,row=~~(rb.frame/_rbVfx.cols);
     const sc=rb.size*(0.6+rb.frame/9*0.8);
-    X.globalAlpha=rb.alpha;
+    X.globalAlpha=rb.alpha;X.globalCompositeOperation='multiply';
     X.drawImage(_rbVfx.img,col*_rbVfx.fw,row*_rbVfx.fh,_rbVfx.fw,_rbVfx.fh,
       rb.x-sc/2,rb.y-sc/2,sc,sc);
-    X.globalAlpha=1;
+    X.globalCompositeOperation='source-over';X.globalAlpha=1;
   }}}
   const _tDP2=performance.now();
   // 피 자국 + 시체 + 불타는 시체 렌더 (통합 캡 30)
