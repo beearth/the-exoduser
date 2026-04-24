@@ -127,7 +127,7 @@ loader.load(
     const box3 = new THREE.Box3().setFromObject(boss);
     const center = box3.getCenter(new THREE.Vector3());
     const bossSize = box3.getSize(new THREE.Vector3());
-    const newFrustum = bossSize.y * 0.85;
+    const newFrustum = bossSize.y * 1.4;
     const a = window.innerWidth / window.innerHeight;
     camera.left = -newFrustum * a;
     camera.right = newFrustum * a;

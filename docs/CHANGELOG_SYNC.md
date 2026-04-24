@@ -21020,3 +21020,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/mobs/Meshy_AI_1_biped_Animation_Running_withSkin.glb
 - img/mobs/boss_01.glb
 
+
+## 2026-04-25 07:37 (auto)
+- boss_3d_poc/main.js
+
