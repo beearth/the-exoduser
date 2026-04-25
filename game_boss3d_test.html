@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Boss 3D Overlay Test</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#000}
+#gameFrame{width:100%;height:100%;border:none}
+#overlay3d{position:fixed;inset:0;pointer-events:none;z-index:50}
+#boss3d-hud{position:fixed;bottom:12px;right:12px;color:#0f0;font:13px/1.5 monospace;
+  background:rgba(0,0,0,.7);padding:8px 12px;border-radius:6px;z-index:60;pointer-events:none;
+  white-space:pre;max-width:420px}
+#boss3d-keys{position:fixed;top:12px;right:12px;color:#ff0;font:bold 13px/1.5 monospace;
+  background:rgba(0,0,0,.8);padding:6px 10px;border-radius:6px;z-index:60;pointer-events:none;
+  white-space:pre}
+</style>
+</head>
+<body>
+<iframe id="gameFrame" src="/game.html"></iframe>
+<canvas id="overlay3d"></canvas>
+<div id="boss3d-keys">F10: 보스전 토글 | F9: 무적 | Shift+R: 리셋</div>
+<div id="boss3d-hud">Boss 3D: 초기화 중...</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const hud = document.getElementById('boss3d-hud');
+const overlay = document.getElementById('overlay3d');
+const iframe = document.getElementById('gameFrame');
+
+// ══════════════════════════════
+// ── Three.js 씬 셋업
+// ══════════════════════════════
+const renderer = new THREE.WebGLRenderer({ canvas: overlay, alpha: true, antialias: false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x000000, 0);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+
+let frustum = 10;
+const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 200);
+cam.position.set(4, 8, 4);
+cam.lookAt(0, 0, 0);
+
+const dirLight = new THREE.DirectionalLight(0xffcc88, 1.0);
+dirLight.position.set(5, 12, 5);
+scene.add(dirLight);
+scene.add(new THREE.AmbientLight(0x554466, 0.4));
+scene.add(new THREE.DirectionalLight(0x4444aa, 0.25)).position.set(-5, 3, -8);
+
+// ── GLB 로드 ──
+let bossModel = null;
+let bossMixer = null;
+let bossReady = false;
+let bossSize = new THREE.Vector3();
+let bossBaseY = 0; // 발바닥 보정값
+let bossMeshes = []; // flash 효과용
+let bossOrigMats = []; // 원본 머티리얼 백업
+
+const loader = new GLTFLoader();
+loader.load(
+  '/boss_3d_poc/assets/boss_01.glb',
+  (gltf) => {
+    bossModel = gltf.scene;
+    const box = new THREE.Box3().setFromObject(bossModel);
+    const sz = box.getSize(new THREE.Vector3());
+    const sc = 2.2 / sz.y;
+    bossModel.scale.setScalar(sc);
+    const box2 = new THREE.Box3().setFromObject(bossModel);
+    bossBaseY = -box2.min.y;
+    bossModel.position.y = bossBaseY;
+
+    // 메시 수집 + 원본 머티리얼 백업 (flash용)
+    bossModel.traverse(c => {
+      if (c.isMesh) {
+        c.castShadow = true;
+        c.receiveShadow = true;
+        bossMeshes.push(c);
+        bossOrigMats.push(c.material);
+      }
+    });
+
+    bossModel.visible = false;
+    scene.add(bossModel);
+    bossSize = new THREE.Box3().setFromObject(bossModel).getSize(new THREE.Vector3());
+
+    if (gltf.animations.length > 0) {
+      bossMixer = new THREE.AnimationMixer(bossModel);
+      bossMixer.clipAction(gltf.animations[0]).play();
+    }
+    bossReady = true;
+    log('GLB OK', `${bossSize.x.toFixed(1)}x${bossSize.y.toFixed(1)}x${bossSize.z.toFixed(1)}`);
+  },
+  null,
+  (err) => { log('GLB 실패', err.message); }
+);
+
+// flash 머티리얼 (피격 시 흰색)
+const flashMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+// ── 리사이즈 ──
+function resize() {
+  const w = window.innerWidth, h = window.innerHeight;
+  renderer.setSize(w, h);
+  const a = w / h;
+  cam.left = -frustum * a; cam.right = frustum * a;
+  cam.top = frustum; cam.bottom = -frustum;
+  cam.updateProjectionMatrix();
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ══════════════════════════════
+// ── 브릿지 주입
+// ══════════════════════════════
+let _bridgeReady = false;
+function injectBridge() {
+  if (_bridgeReady) return;
+  try {
+    const doc = iframe.contentDocument;
+    if (!doc || !doc.body) return;
+    if (iframe.contentWindow._b3d) { _bridgeReady = true; return; }
+    const s = doc.createElement('script');
+    s.textContent = `
+      // ── 3D 모드 상태 ──
+      window._b3d_testMode = false;
+      window._b3d_preBackup = null;
+      window._b3d_lastHitT = 0;   // 마지막 보스 피격 시각
+      window._b3d_prevHP = -1;    // 이전 프레임 보스 HP
+
+      // ── 매 프레임 호출: 2D 보스 숨기기 + 피격 감지 ──
+      window._b3d_tick = () => {
+        if (!window._b3d_testMode) return;
+        const boss = (typeof G!=='undefined' && G._bossRef && G._bossRef.alive) ? G._bossRef : null;
+        if (!boss) return;
+
+        // 2D 보스 렌더링 차단: _spawnT를 999로 유지
+        // (렌더러가 _spawnT>0이면 alpha=max(0,1-_spawnT/20)=0 → continue로 스킵)
+        boss._spawnT = 999;
+
+        // 피격 감지 (HP 감소 or flashT)
+        if (window._b3d_prevHP > 0 && boss.hp < window._b3d_prevHP) {
+          window._b3d_lastHitT = performance.now();
+        }
+        if (boss.flashT > 0) {
+          window._b3d_lastHitT = performance.now();
+        }
+        window._b3d_prevHP = boss.hp;
+      };
+
+      // ── 상태 읽기 ──
+      window._b3d = () => {
+        try {
+          // 틱 실행
+          if (window._b3d_testMode) window._b3d_tick();
+
+          const boss = (typeof G!=='undefined'&&G._bossRef&&G._bossRef.alive) ? G._bossRef : null;
+          // 보스 사망 체크 (alive=false이지만 ref 존재)
+          const deadBoss = (typeof G!=='undefined'&&G._bossRef&&!G._bossRef.alive) ? G._bossRef : null;
+          const c = document.getElementById('c');
+          return {
+            ok: typeof G!=='undefined' && typeof P!=='undefined' && P!==null,
+            gameOn: typeof G!=='undefined' && G.on,
+            bossAlive: typeof G!=='undefined' && G.bossAlive,
+            bossX: boss ? boss.x : (deadBoss ? deadBoss.x : 0),
+            bossY: boss ? boss.y : (deadBoss ? deadBoss.y : 0),
+            bossR: boss ? boss.r : 20,
+            bossEtype: boss ? boss.etype : -1,
+            bossHP: boss ? boss.hp : 0,
+            bossMHP: boss ? boss.mhp : 1,
+            bossVisible: !!boss,
+            bossDead: !!deadBoss && !boss,
+            bossState: boss ? boss.s : '',
+            bossFacing: boss ? boss.facing : 0,
+            bossFlashT: boss ? (boss.flashT || 0) : 0,
+            bossHitT: window._b3d_lastHitT || 0,
+            bossStunned: boss ? (boss.stunned > 0) : false,
+            playerX: (typeof P!=='undefined' && P) ? P.x : 0,
+            playerY: (typeof P!=='undefined' && P) ? P.y : 0,
+            playerHP: (typeof P!=='undefined' && P) ? P.hp : 0,
+            playerMHP: (typeof P!=='undefined' && P) ? P.mhp : 0,
+            camX: typeof G!=='undefined' ? G.cam.x : 0,
+            camY: typeof G!=='undefined' ? G.cam.y : 0,
+            canvasW: c ? c.width : 0,
+            canvasH: c ? c.height : 0,
+            stage: typeof G!=='undefined' ? G.stage : 0,
+            _bossArena: typeof G!=='undefined' && !!G._bossArena,
+            gameFps: (typeof _prof!=='undefined' && _prof.t>0) ? Math.round(1000/_prof.t) : 0,
+            testMode: !!window._b3d_testMode
+          };
+        } catch(e) { return null; }
+      };
+
+      // ── F10: 보스전 진입 ──
+      window._b3d_enterBoss = () => {
+        if(typeof G==='undefined'||!G.on||!P) return 'GAME_NOT_RUNNING';
+        if(G._bossArena) return 'ALREADY_IN_ARENA';
+        if(!G.map||!G.map.length) return 'NO_MAP';
+
+        window._b3d_preBackup = {
+          map: G.map.map(r=>[...r]), mw:G.mw, mh:G.mh,
+          rooms: JSON.parse(JSON.stringify(G.rooms)),
+          exits: G.exits.slice(),
+          bossAlive: G.bossAlive,
+          bossGate: G.bossGate,
+          bossGateOpen: G.bossGateOpen,
+          bossSealed: G.bossSealed,
+          _bossCx: G._bossCx, _bossCy: G._bossCy,
+          _gateY: G._gateY, _bossEntY: G._bossEntY,
+          playerX: P.x, playerY: P.y,
+          camX: G.cam.x, camY: G.cam.y,
+          spawnHoles: G.spawnHoles ? G.spawnHoles.slice() : [],
+          rifts: G.rifts ? G.rifts.slice() : []
+        };
+
+        try {
+          _enterBossArena();
+          window._b3d_testMode = true;
+          window._b3d_prevHP = -1;
+          window._b3d_lastHitT = 0;
+          if(P) { P.hp = P.mhp; P.st = P.mst; P.mp = P.mmp; }
+          return 'OK';
+        } catch(e) { return 'ERROR: ' + e.message; }
+      };
+
+      // ── F10: 복귀 ──
+      window._b3d_exitBoss = () => {
+        if(typeof G==='undefined'||!P) return 'GAME_NOT_RUNNING';
+        if(!G._bossArena) return 'NOT_IN_ARENA';
+        const b = window._b3d_preBackup;
+        if(!b) return 'NO_BACKUP';
+
+        try {
+          // 보스 2D 가시성 복원 (혹시 남아있으면)
+          if(G._bossRef) G._bossRef._spawnT = 0;
+
+          if(typeof ens!=='undefined') ens.length=0;
+          if(typeof projs!=='undefined') {
+            for(let i=0;i<projs.length;i++) if(typeof _recycleProj==='function') _recycleProj(projs[i]);
+            projs.length=0;
+          }
+          if(typeof pProjs!=='undefined') {
+            for(let i=0;i<pProjs.length;i++) if(typeof _recyclePProj==='function') _recyclePProj(pProjs[i]);
+            pProjs.length=0;
+          }
+          if(typeof worldItems!=='undefined') worldItems.length=0;
+          G.parts=[];G.txts=[];G.hitStop=0;G.slowMo=0;
+
+          G.map=b.map;G.mw=b.mw;G.mh=b.mh;G.rooms=b.rooms;G.exits=b.exits;
+          G._fow=new Uint8Array(b.mw*b.mh);G._fowDirty=true;
+          G.bossAlive=b.bossAlive;
+          G.bossGate=b.bossGate;G.bossGateOpen=b.bossGateOpen!==undefined?b.bossGateOpen:true;
+          G.bossSealed=b.bossSealed!==undefined?b.bossSealed:false;
+          G._bossCx=b._bossCx;G._bossCy=b._bossCy;G._gateY=b._gateY;G._bossEntY=b._bossEntY;
+          G.spawnHoles=b.spawnHoles;G.rifts=b.rifts;
+
+          G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;
+          G._bossRef=null;G._crT=0;G.stageCleared=false;
+
+          P.x=b.playerX;P.y=b.playerY;P.s='idle';P.iframes=60;
+          P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;
+          G.cam.x=b.camX;G.cam.y=b.camY;
+
+          if(typeof buildMapCache==='function') buildMapCache();
+
+          // 사망 상태에서 복귀 시 게임 재개
+          if(!G.on) G.on = true;
+          // 사망 UI 닫기
+          const deathEl = document.getElementById('death');
+          if(deathEl) { deathEl.classList.remove('on'); deathEl.style.opacity='0'; deathEl.style.pointerEvents='none'; }
+
+          window._b3d_testMode = false;
+          window._b3d_preBackup = null;
+          return 'OK';
+        } catch(e) { return 'ERROR: ' + e.message; }
+      };
+
+      // ── 리셋 ──
+      window._b3d_reset = () => {
+        if(G._bossArena && window._b3d_preBackup) window._b3d_exitBoss();
+        window._b3d_testMode = false;
+        window._b3d_preBackup = null;
+        if(typeof P!=='undefined'&&P){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.iframes=60}
+        return 'OK';
+      };
+    `;
+    doc.body.appendChild(s);
+    _bridgeReady = true;
+    log('브릿지 주입 OK');
+  } catch (e) { log('브릿지 실패:', e.message); }
+}
+
+// ── 게임 상태 읽기 ──
+function getGameState() {
+  try {
+    injectBridge();
+    const w = iframe.contentWindow;
+    if (!w || !w._b3d) return null;
+    const st = w._b3d();
+    if (!st || !st.ok) return null;
+    return st;
+  } catch (e) { return null; }
+}
+
+// ══════════════════════════════
+// ── 디버그 키 핸들링 (F10/F9/Shift+R)
+// ══════════════════════════════
+let testModeActive = false;
+let godModeActive = false;
+
+window.addEventListener('keydown', (e) => {
+  // F10: 보스전 토글
+  if (e.key === 'F10') {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleBossTest();
+    return;
+  }
+  // F9: 무적 토글
+  if (e.key === 'F9') {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleGodMode();
+    return;
+  }
+  // Shift+R: 리셋
+  if ((e.key === 'r' || e.key === 'R') && e.shiftKey) {
+    e.preventDefault();
+    e.stopPropagation();
+    resetTest();
+    return;
+  }
+  iframe.contentWindow.focus();
+}, true);
+
+function toggleBossTest() {
+  try {
+    const w = iframe.contentWindow;
+    if (!w || !w._b3d_enterBoss) { log('브릿지 미준비'); return; }
+
+    if (!testModeActive) {
+      const r = w._b3d_enterBoss();
+      log('F10 보스전 진입:', r);
+      if (r === 'OK') testModeActive = true;
+    } else {
+      const r = w._b3d_exitBoss();
+      log('F10 복귀:', r);
+      if (r === 'OK') testModeActive = false;
+    }
+    iframe.contentWindow.focus();
+  } catch (e) { log('F10 에러:', e.message); }
+}
+
+function toggleGodMode() {
+  try {
+    const w = iframe.contentWindow;
+    if (!w || !w._b3d) { log('브릿지 미준비'); return; }
+    godModeActive = !godModeActive;
+    log('F9 무적:', godModeActive ? 'ON' : 'OFF');
+    iframe.contentWindow.focus();
+  } catch (e) { log('F9 에러:', e.message); }
+}
+
+function resetTest() {
+  try {
+    const w = iframe.contentWindow;
+    if (!w || !w._b3d_reset) return;
+    w._b3d_reset();
+    log('리셋 OK');
+    testModeActive = false;
+    iframe.contentWindow.focus();
+  } catch (e) {}
+}
+
+// ══════════════════════════════
+// ── 3D 보스 피격 flash
+// ══════════════════════════════
+let flashTimer = 0;
+const FLASH_DUR = 0.12; // 120ms
+
+function applyFlash(isFlashing) {
+  for (let i = 0; i < bossMeshes.length; i++) {
+    bossMeshes[i].material = isFlashing ? flashMat : bossOrigMats[i];
+  }
+}
+
+// ══════════════════════════════
+// ── FPS + HUD
+// ══════════════════════════════
+let frames = 0, fpsTime = 0, curFps = 0;
+const logLines = [];
+function log(...args) { logLines.push(args.join(' ')); if (logLines.length > 10) logLines.shift(); }
+
+function updateHud(state) {
+  const L = [];
+  const tags = [testModeActive ? '★TEST' : '', godModeActive ? '★GOD' : ''].filter(Boolean).join(' ');
+  L.push(`[Boss 3D Overlay] ${tags}`);
+  L.push(`Three.js: OK | GLB: ${bossReady ? 'OK' : '...'}`);
+  if (state) {
+    L.push(`Game: ${state.gameOn?'ON':'OFF'} | Stage: ${state.stage} | Arena: ${state._bossArena}`);
+    if (state.bossVisible) {
+      const dx = state.bossX - state.playerX, dy = state.bossY - state.playerY;
+      L.push(`Boss HP: ${state.bossHP}/${state.bossMHP} (${(state.bossHP/state.bossMHP*100).toFixed(1)}%)`);
+      L.push(`Boss: st=${state.bossState} dist=${Math.sqrt(dx*dx+dy*dy).toFixed(0)} R=${state.bossR}`);
+      L.push(`Boss 2D hidden: ${testModeActive} | 3D vis: ${bossModel?.visible}`);
+      if (state.bossStunned) L.push(`★ STUNNED (그로기)`);
+    } else if (state.bossDead) {
+      L.push(`Boss: ☠ DEAD`);
+    } else {
+      L.push(`Boss: not spawned`);
+    }
+    L.push(`Player HP: ${state.playerHP}/${state.playerMHP}`);
+    L.push(`3D FPS: ${curFps} | Game FPS: ${state.gameFps||'?'}`);
+  } else {
+    L.push(`Game: 접속 대기... | 3D FPS: ${curFps}`);
+  }
+  if (logLines.length) { L.push('---'); logLines.forEach(l => L.push(l)); }
+  hud.textContent = L.join('\n');
+}
+
+// ══════════════════════════════
+// ── 보스 3D 위치 동기 + 렌더
+// ══════════════════════════════
+let prevBossHitT = 0;
+
+function syncBoss(state, dt) {
+  if (!bossModel || !bossReady) return;
+
+  // 보스 사망 → 3D 숨김
+  if (!state || !state.gameOn || state.bossDead || !state.bossVisible) {
+    bossModel.visible = false;
+    applyFlash(false);
+    return;
+  }
+
+  // 테스트 모드 아니면 3D 안 보여줌 (일반 플레이 시)
+  if (!testModeActive) {
+    bossModel.visible = false;
+    return;
+  }
+
+  // 보스 화면 좌표
+  const sx = state.canvasW / 2 + (state.bossX - state.camX);
+  const sy = state.canvasH / 2 + (state.bossY - state.camY);
+
+  // 화면 밖 → 숨김
+  const m = 200;
+  if (sx < -m || sx > state.canvasW + m || sy < -m || sy > state.canvasH + m) {
+    bossModel.visible = false;
+    return;
+  }
+
+  // 화면 픽셀 → Three.js 월드 좌표
+  const ndcX = (sx / window.innerWidth) * 2 - 1;
+  const ndcY = -((sy / window.innerHeight) * 2 - 1);
+  const aspect = window.innerWidth / window.innerHeight;
+
+  bossModel.position.x = ndcX * frustum * aspect;
+  bossModel.position.z = -ndcY * frustum;
+
+  // 스케일 (보스 반경 기반)
+  const uPerPx = (frustum * 2) / window.innerHeight;
+  const tgtH = state.bossR * 3.0 * uPerPx;
+  if (bossSize.y > 0) {
+    bossModel.scale.setScalar(Math.max(0.1, tgtH / bossSize.y));
+  }
+
+  // 보스 facing → Y 회전 (2D 라디안 → 3D)
+  bossModel.rotation.y = -state.bossFacing + Math.PI / 2;
+
+  bossModel.visible = true;
+
+  // ── 피격 flash ──
+  if (state.bossHitT > prevBossHitT) {
+    flashTimer = FLASH_DUR;
+    prevBossHitT = state.bossHitT;
+  }
+  if (flashTimer > 0) {
+    flashTimer -= dt;
+    applyFlash(true);
+  } else {
+    applyFlash(false);
+  }
+
+  // 그로기 시 살짝 흔들림
+  if (state.bossStunned) {
+    bossModel.position.x += Math.sin(performance.now() * 0.03) * 0.02;
+    bossModel.position.z += Math.cos(performance.now() * 0.04) * 0.02;
+  }
+}
+
+// ══════════════════════════════
+// ── 메인 렌더 루프
+// ══════════════════════════════
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = clock.getDelta();
+
+  frames++;
+  fpsTime += dt;
+  if (fpsTime >= 1) { curFps = frames; frames = 0; fpsTime = 0; }
+
+  if (bossMixer) bossMixer.update(dt);
+
+  const state = getGameState();
+
+  // F9 무적: 매 프레임 HP/ST/MP 풀 회복 + iframes
+  if (godModeActive && state && state.gameOn) {
+    try {
+      const w = iframe.contentWindow;
+      const f = w.document.createElement('script');
+      // 한 줄 스크립트로 주입 (매 프레임)
+      if (!w._b3d_godTick) {
+        const gs = w.document.createElement('script');
+        gs.textContent = `window._b3d_godTick = () => { if(typeof P!=='undefined'&&P){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.iframes=Math.max(P.iframes||0,10)} };`;
+        w.document.body.appendChild(gs);
+      }
+      if (w._b3d_godTick) w._b3d_godTick();
+    } catch (e) {}
+  }
+
+  syncBoss(state, dt);
+  updateHud(state);
+
+  renderer.render(scene, cam);
+}
+
+animate();
+log('Three.js 초기화 완료');
+log('F10=보스전, F9=무적, Shift+R=리셋');
+
+// ── iframe 포커스 ──
+iframe.addEventListener('load', () => {
+  iframe.contentWindow.focus();
+  log('game.html 로드 완료');
+});
+window.addEventListener('click', () => iframe.contentWindow.focus());
+</script>
+</body>
+</html>

@@ -24,7 +24,7 @@ const MIME = {
   '.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg',
   '.gif':'image/gif','.svg':'image/svg+xml','.ico':'image/x-icon',
   '.wav':'audio/wav','.mp3':'audio/mpeg','.ogg':'audio/ogg',
-  '.mp4':'video/mp4','.webm':'video/webm',
+  '.mp4':'video/mp4','.webm':'video/webm','.glb':'model/gltf-binary','.gltf':'model/gltf+json',
 };
 
 function sanitizeSlot(name) {
@@ -196,6 +196,11 @@ const server = http.createServer(async (req, res) => {
     if (pathname === '/') filePath = path.join(ROOT, 'index.html');
     else if (pathname === '/game' || pathname === '/game.html') filePath = path.join(ROOT, 'game.html');
     else filePath = path.join(ROOT, decodeURIComponent(pathname).replace(/\.\./g, ''));
+
+    // 디렉토리면 index.html 자동 서빙
+    if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+      filePath = path.join(filePath, 'index.html');
+    }
 
     if (fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
       const stat = fs.statSync(filePath);
