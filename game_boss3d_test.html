@@ -520,26 +520,20 @@ function syncBoss(state, dt) {
   const worldY = -(cssY - H / 2);
 
   bossPivot.position.x = worldX;
-  bossPivot.position.y = worldY;
+  bossPivot.position.y = worldY - 100;
   bossPivot.position.z = 0;
 
   // 스케일 (pivot 단위로 설정)
   const bossRcss = state.bossR / scale;
-  const tgtH = bossRcss * 3.0;
+  const tgtH = bossRcss * 2.0; // 3D 크기를 2D 프레임에 맞춤 (3.0→2.0)
   if (bossSize.y > 0) {
     bossPivot.scale.setScalar(Math.max(0.1, tgtH / bossSize.y));
   }
 
-  // facing → 모델 좌우 반전 + Y축 살짝 회전으로 입체감
-  // 게임 facing: 0=오른쪽, PI/2=아래, PI=왼쪽, -PI/2=위
-  // 정면 카메라에서 2D facing을 Y축 회전으로 완전 표현은 불가능하므로
-  // 좌우 flip(scaleX) + 약간의 Y회전으로 방향감 표현
-  const f = state.bossFacing;
-  const flipX = (Math.abs(f) > Math.PI / 2) ? -1 : 1; // 왼쪽 보면 flip
-  const curScale = bossPivot.scale.x;
-  bossPivot.scale.x = Math.abs(curScale) * flipX;
-  // Y축 살짝 회전 (±15도) — 보는 방향으로 약간 기울어짐
-  bossPivot.rotation.set(0, Math.sin(f) * 0.3, 0);
+  // facing → Y축 회전 (게임 facing을 3D 회전에 직접 매핑)
+  // 게임: 0=오른쪽(3시), PI/2=아래(6시), PI=왼쪽(9시), -PI/2=위(12시)
+  // Three.js Y축 회전: 모델 앞면(-Z)이 facing 방향을 바라보게
+  bossPivot.rotation.set(0, -state.bossFacing + Math.PI, 0);
 
   // 디버그 콘솔 (초당 1회)
   if (!syncBoss._dbgT) syncBoss._dbgT = 0;
