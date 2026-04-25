@@ -15289,7 +15289,13 @@ function _autoChunkConfig(mw,mh){
   else{_STREAM_CHUNK=32;_STREAM_MAX_CHUNKS=64}
 }
 function _shouldStreamMapCache(mw,mh,texLimit){
-  return (mw*mh)>=1000*1000;
+  // 1) 타일 수 기준 (기존)
+  if((mw*mh)>=1000*1000) return true;
+  // 2) 캔버스 픽셀 크기가 texLimit 초과 시 강제 스트리밍 (OOM 방지)
+  if(mw*T>texLimit || mh*T>texLimit) return true;
+  // 3) 캔버스 총 픽셀 수 > 64M px (~8192×8192) 시 강제 스트리밍
+  if((mw*T)*(mh*T) > 64000000) return true;
+  return false;
 }
 // ═══ 맵 초기화 분산 처리 (fps 스파이크 방지) ═══
 // ═══ 백그라운드 분산 초기화 (게임 즉시 시작, 뒤에서 서서히 처리) ═══
