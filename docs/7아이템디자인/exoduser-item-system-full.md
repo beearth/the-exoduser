@@ -229,7 +229,7 @@ Object.freeze(AFFIX_POOL);
 | crisisBoost | 위기의 | SUFFIX | 25%/40%/65% | pct | arm,nck | HP 30% 이하 시 뎀×(1+배율) |
 | counterHit | 피격반격의 | SUFFIX | 15%/25%/40% | prob | arm,shd | 피격 시 확률로 반격(meleeRef×STR) |
 | abundDmg | 풍요의 | SUFFIX | 12%/20%/32% | pct | wpn,hlm | 적HP≥70% 시 뎀×(1+배율). 패시브 풍요와 합연산 (2026-04-21) |
-| predDmg | 약자포식의 | SUFFIX | 12%/20%/32% | pct | wpn,hlm | 적HP≤50% 시 뎀×(1+배율). 패시브 약자포식과 합연산 |
+| predDmg | 약자포식의 | SUFFIX | 12%/20%/32% | pct | wpn,hlm | 적HP≤30% 시 뎀×(1+배율). 패시브 약자포식과 합연산 |
 | parryExplosion | 패링폭발의 | SUFFIX | 0.4/0.7/1.1 | ATK× | wpn,shd | 패링 시 AoE (meleeRef×STR×배율, 반경100) |
 | staggerExplosion | 스태거폭발의 | SUFFIX | 30%/50%/80% | pct | wpn | 그로기 시 AoE (dmg×배율, 반경100) |
 | elemConvert | 원소전환의 | SUFFIX | 20%/35%/55% | prob | wpn,nck | 물리 → 무기 속성 전환 확률 |

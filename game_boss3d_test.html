@@ -658,10 +658,10 @@ function syncBoss(state, dt) {
     bossPivot.scale.setScalar(Math.max(0.1, tgtH / bossSize.y));
   }
 
-  // facing → Y축 회전 (게임 facing을 3D 회전에 직접 매핑)
-  // 게임: 0=오른쪽(3시), PI/2=아래(6시), PI=왼쪽(9시), -PI/2=위(12시)
-  // Three.js Y축 회전: 모델 앞면(-Z)이 facing 방향을 바라보게
-  bossPivot.rotation.set(0, -state.bossFacing + Math.PI, 0);
+  // facing → Y축 풀회전 (캐릭터를 바라보게)
+  // 게임 facing: 보스→플레이어 각도 (0=오른쪽, PI/2=아래)
+  // Three.js Y회전: 모델 앞면(+Z)을 facing 방향으로
+  bossPivot.rotation.set(0, state.bossFacing + Math.PI, 0);
 
   // 디버그 콘솔 (초당 1회)
   if (!syncBoss._dbgT) syncBoss._dbgT = 0;
@@ -715,7 +715,7 @@ function animate() {
       const w = iframe.contentWindow;
       if (!w._b3d_godTick) {
         const gs = w.document.createElement('script');
-        gs.textContent = `window._b3d_godTick = () => { if(typeof P!=='undefined'&&P){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.iframes=Math.max(P.iframes||0,10)} };`;
+        gs.textContent = `window._b3d_godTick = () => { if(typeof P!=='undefined'&&P){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.iframes=9999;P.shield=P.mshield} };`;
         w.document.body.appendChild(gs);
       }
       if (w._b3d_godTick) w._b3d_godTick();
