@@ -56,7 +56,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→48** | 없음 | meleeRef × 콤보(1.5/1.5/5.0) × statStr × pAtkMul × **_skMul(b:1.0,g:0.42)** | **Lv1 DPS ~11×/초, Lv10 ~32×/초 (3타 범위120 붉은색, _skMul 통일 스케일링)** |
 | whirlwind | 회전참 | ST(틱) | **30+(Lv-1)×5 ST/초** (Lv1=30, Lv10=75, Lv20=125) | 없음 (홀드) | meleeRef × statStr × pAtkMul × _skMul × _fuseMul | 360도 광역, Lv당 범위+5 뎀+5% |
-| giantSlam | 대왕치기 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 480-(Lv-1)×18)f = **8초→1초** | STR × meleeRef × 2 × **0.5** | 포이즈 22.5배(뎀↓50% 포이즈↑50%), 보스 체간 붕괴 |
+| giantSlam | 대왕치기 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 480-(Lv-1)×18)f = **8초→1초** | STR × meleeRef × 2 × **0.5** | 보스: maxPoise×25% 고정(3~4방 그로기), 일반몹: 뎀×22.5배 |
 | giantSlam2 | 대왕치기 2 | ST + 악의20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
 
 ---
