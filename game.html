@@ -20716,7 +20716,19 @@ function update(){
           const d=dst(P.x,P.y,e.x,e.y);if(d>_csR+e.r)continue;
           const ang=Math.atan2(e.y-P.y,e.x-P.x);
           const mult=elMul(_csEl,e.el);const fd=~~(_csDmg*mult);
-          hurtE(e,fd,ang,false,{kbMult:0.8,poiseHit:true,poiseMult:1.5*(1+(_csLv-1)*0.10)},_csEl); // 6.0→1.5 (보스 3~5방 그로기)
+          // 기동파괴: 보스는 maxPoise 30% 고정 (3~4방 그로기), 일반몹은 데미지 비례
+          if(e.ib){
+            e.poise-=~~(e.maxPoise*0.30);e.poiseR=0;
+            hurtE(e,fd,ang,false,{kbMult:0.8},_csEl);
+            // 보스 그로기 판정
+            if(e.poise<=0&&!(e._pImmune>0)){
+              e.stunned=Math.max(e.stunned,90);e._maxStunned=Math.max(e._maxStunned||0,90);e.poise=0;
+              e._pImmune=300;SFX.groggy();addTxt(e.x,e.y-22,_T('💥 보스 그로기!'),'#ff8800',60);
+              if(!(G._noHitStopT>0))G.slowMo=20;
+              for(let j=0;j<14;j++){const a2=Math.PI*2*j/14;poolPart(e.x,e.y,Math.cos(a2)*7,Math.sin(a2)*7,'#ffaa44',3+Math.random()*4,18)}
+            }else if(e.alive){addTxt(e.x,e.y-18,_T('⚡ 체간삭감! ')+~~(e.poise/e.maxPoise*100)+'%','#ffcc00',35)}
+          }
+          else{hurtE(e,fd,ang,false,{kbMult:0.8,poiseHit:true,poiseMult:1.5},_csEl)}
           e.kb.x+=Math.cos(ang)*5;e.kb.y+=Math.sin(ang)*5;
           if(!e.isBoss){e.stunned=Math.max(e.stunned,300);addTxt(e.x,e.y-18,_T('💫 기절!'),'#ffcc00',35)}
           else{addTxt(e.x,e.y-18,_T('⚡ 체간삭감!'),'#ffcc00',35)}
