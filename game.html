@@ -5215,7 +5215,6 @@ const _EN={
 '물리':'Physical','영웅':'Heroic','전설':'Legendary',
 '무기 타입':'Weapon Type','활 타입':'Bow Type',
 '보스방':'Boss Room','ST 부족':'Not enough ST',
-'방향키 연타':'Mash Arrow Keys',
 // --- Phase 14: boss phase labels ---
 '💀 광폭화!':'💀 Enraged!',
 // --- Phase 14: chapter pet dialogue ---
@@ -5291,7 +5290,7 @@ const _EN={
 // ── Stun warning ──
 '기절이야! Ctrl 눌러!':'Stunned! Press Ctrl!',
 'Ctrl 유령걸음으로 탈출!':'Ctrl Ghost Walk to escape!',
-'Ctrl 얼음보주로 탈출! 없으면 방향키 연타!':'Ctrl Ice Orb to escape! No skill? Mash arrows!',
+'Ctrl 얼음보주로 탈출!':'Ctrl Ice Orb to escape!',
 // ── Parry guide ──
 '빨간 탄은 우클릭 패링. 무지개는 Q 패링.':'Red bullets: RMB parry. Rainbow: Q parry.',
 '나머지는 전부 우클릭 패링 가능해!':'Everything else can be parried with RMB!',
@@ -5707,7 +5706,7 @@ function _checkPetDialogue(){
   // ── 반응형 대사 (레벨 무관, 항상 작동) ──
   if(P.hp<P.mhp*.3&&P.hp>0)_petSayCD('crisis_hp30','crow','피가 새고 있다. Shift. 빠져.',4,30,'cat','작살 던져! 끌려가면 무적이야!',4);
   if(P.hp<P.mhp*.3&&P.hp>0)_petSayCD('danger_hp','crow','위험해! 쉬프트 사슬기동으로 피해!!',3,300);
-  if(P.s==='pStun')_petSayCD('stun_warn','cat','기절이야! Ctrl 눌러!',3,10,'crow',P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출!':'Ctrl 얼음보주로 탈출! 없으면 방향키 연타!',3);
+  if(P.s==='pStun')_petSayCD('stun_warn','cat','기절이야! Ctrl 눌러!',3,10,'crow',P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출!':'Ctrl 얼음보주로 탈출!',3);
   if(G._bossRef&&G._bossRef.stunned>0)_petSayCD('boss_groggy','crow','무릎 꿇었다.',3,30,'cat','지금이야! 몰아쳐!!',3);
 
   if(P.lv>500)return; // Lv500 이후 나머지 대사 비활성
@@ -22426,10 +22425,9 @@ function update(){
     if(isJust('skill7')){P.s='idle';P.st2=0;break}
     if(P.st2<=0)P.s='idle';break;}
   case 'pStun':{
-    // ═══ 기절: Shift/Ctrl 탈출기로 즉시 해제 + 방향키 연타 단축 ═══
+    // ═══ 기절: Shift/Ctrl 탈출기로 즉시 해제 ═══
     if(isJust('charge')){P.s='idle';P.iframes=30;P.poise=4;P.poiseR=0;break}
     if(isJust('skill7')){P.s='idle';P.iframes=30;P.poise=4;P.poiseR=0;break}
-    if(isJust('up')||isJust('down')||isJust('left')||isJust('right'))P.st2-=2;
     if(P.st2<=0){P.s='idle';P.iframes=60;P.poise=4;P.poiseR=0}
     break;}
   }
@@ -42778,9 +42776,6 @@ function drawP(){
     const _pStSec=(P.st2/60).toFixed(1);
     X.globalAlpha=.9;X.fillStyle='#ff8800';X.font='bold 14px "Noto Sans KR"';X.textAlign='center';
     X.fillText(_pStSec+'s',P.x,P.y-P.r-22);
-    // 탈출 안내
-    X.globalAlpha=.5+Math.sin(t/100)*.3;X.fillStyle='#ffffff';X.font='bold 11px "Noto Sans KR"';
-    X.fillText(_T('방향키 연타'),P.x,P.y+P.r+18);X.globalAlpha=1;
   }
 
   // combo UI 제거 (항상 3타 효과)
