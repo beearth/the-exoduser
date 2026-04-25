@@ -25964,7 +25964,7 @@ function updateE(e,sp){
         hurtE(e,wallDmg);
         addTxt(e.x,e.y-18,_T('벽 충돌! ')+wallDmg,'#cc8844',30);addParts(e.x,e.y,'#aa7744',8);
         SFX.block();shake(8)}
-      else{e.kb.x=0;e.kb.y=0}}
+      e.kb.x=0;e.kb.y=0}
     const _ekD=.85**sp;e.kb.x*=_ekD;e.kb.y*=_ekD;
     if(e._spikeSlow>0){const _ssP=Math.min(.9,.7+((e._spikeSlowLv||1)-1)*.02);e.kb.x*=(1-_ssP);e.kb.y*=(1-_ssP)}}
   if(e._bluHitCD>0)e._bluHitCD-=sp;

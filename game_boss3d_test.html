@@ -520,7 +520,7 @@ function syncBoss(state, dt) {
   const worldY = -(cssY - H / 2);
 
   bossPivot.position.x = worldX;
-  bossPivot.position.y = worldY - 150;  // 2D 보스 위치에 맞추기
+  bossPivot.position.y = worldY;
   bossPivot.position.z = 0;
 
   // 스케일 (pivot 단위로 설정)
@@ -546,7 +546,7 @@ function syncBoss(state, dt) {
   syncBoss._dbgT += dt;
   if (syncBoss._dbgT > 1) {
     syncBoss._dbgT = 0;
-    console.log(`[B3D-SYNC] phys(${physX.toFixed(0)},${physY.toFixed(0)}) →css(${cssX.toFixed(0)},${cssY.toFixed(0)}) →world(${worldX.toFixed(0)},${worldY.toFixed(0)}) scale=${scale.toFixed(2)} bossR=${state.bossR}→${bossRcss.toFixed(1)}css`);
+    console.log(`[B3D-SYNC] phys(${physX.toFixed(0)},${physY.toFixed(0)}) css(${cssX.toFixed(0)},${cssY.toFixed(0)}) world(${worldX.toFixed(0)},${worldY.toFixed(0)}) final.y=${bossPivot.position.y.toFixed(0)} cam:[L${cam.left.toFixed(0)} R${cam.right.toFixed(0)} T${cam.top.toFixed(0)} B${cam.bottom.toFixed(0)}]`);
   }
 
   bossPivot.visible = true;

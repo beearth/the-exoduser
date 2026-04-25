@@ -21039,3 +21039,8 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - game_boss3d_test.html
 
+
+## 2026-04-25 11:30 (auto)
+- game.html
+- game_boss3d_test.html
+
