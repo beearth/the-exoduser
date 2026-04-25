@@ -5607,8 +5607,8 @@ function _applyTierPreset(tier){
 _gpuScoreCache=detectTier();
 // ─── [S03d] PET — 펫 시스템 (까마귀+고양이) ───
 const PETS={
-  crow:{name:'Crow',col:'#111',pickR:1000,spd:22,orbR:38,orbY:-22,desc:'Air pickup helper'},
-  cat:{name:'Cat',col:'#111',pickR:1000,spd:24,orbR:28,orbY:32,desc:'Ground pickup + auto-disassemble'},
+  crow:{name:'Crow',col:'#111',pickR:400,spd:22,orbR:38,orbY:-22,desc:'Air pickup helper'},
+  cat:{name:'Cat',col:'#111',pickR:400,spd:24,orbR:28,orbY:32,desc:'Ground pickup + auto-disassemble'},
   xbow:{name:'GhostXbow',col:'#6688cc',spd:18,orbR:44,orbY:-28,atkR:500,atkCd:120,desc:'Auto-shooting ghost crossbow'},
   iris:{name:'유령불꽃',col:'#44aaff',spd:14,orbR:55,orbY:0,desc:'Ghost iris flame — ambient light, 360° orbit'}
 };
@@ -7041,6 +7041,7 @@ const _MAX_HIT_NODES=3;     // HIT 동시 최대 3개
 function _sfxPri(key){
   if(key.startsWith('player_dead'))return _SFX_PRI.VOICE; // 플레이어 사망=최우선급
   if(key.startsWith('voice_')||key==='male_grunt')return _SFX_PRI.VOICE;
+  if(key==='ghost_laugh')return _SFX_PRI.VOICE; // 유령허수아비 설치=궁극기 바로 아래 (9)
   if(key.startsWith('boss_'))return _SFX_PRI.SKILL; // 보스=스킬급
   if(_isSkillSfx(key))return _SFX_PRI.SKILL;
   if(key.startsWith('death_')||key==='monster_die1'||key==='death_grunt')return _SFX_PRI.DEATH;
@@ -10473,6 +10474,7 @@ registerVFX('blue_vortex','assets/vfx/vfx_dark_burst.png',192,192,5,4);
 registerVFX('ice_slash','assets/vfx/slash_impact_sheet.png',128,128,19,19);
 registerVFX('whirl_slash','assets/vfx/vfx_white_slash.png',192,192,20,5);
 registerVFX('parry_flash','assets/vfx/parry_impact_sheet.png',128,128,20,20);
+registerVFX('burn_death','img/vfx_burn_death.png',211,211,8,8);
 
 // ═══ 빙결 틴트용 오프스크린 캔버스 (몬스터 실루엣 파란 틴트) ═══
 const _iceTintC=document.createElement('canvas');
@@ -13847,15 +13849,16 @@ const _BWA={idle:{s:0,n:4},walk:{s:4,n:4},attack:{s:8,n:6},hit:{s:14,n:6},death:
 // ── 보스 방향별 아틀라스 (스테이지별 개별 파일, 4행=S/E/N/W × 20칸) ──
 const _bossDirAtlas={};
 // ── 보스 방향별 아틀라스 (스테이지별 개별 파일, 4행=S/E/N/W) ──
-const _BOSS_DIR_ATLAS_FILES={0:{src:'img/mobs/atlas_boss_si0_dir.png',cell:128},1:{src:'img/mobs/atlas_boss_si1_dir.png',cell:128}};
-(function _loadBossDirAtlases(){
-  for(const si in _BOSS_DIR_ATLAS_FILES){
-    const cfg=_BOSS_DIR_ATLAS_FILES[si];
-    const img=new Image();
-    img.src=cfg.src+'?v=2';
-    img.onload=()=>{_bossDirAtlas[+si]={img,ready:true,cell:cfg.cell};console.log('[BOSS] dirAtlas si'+si+' loaded '+img.width+'x'+img.height)};
-  }
-})();
+const _BOSS_DIR_ATLAS_FILES={}; // 에셋 미존재 — 파일 준비되면 여기에 등록
+// (function _loadBossDirAtlases(){
+//   for(const si in _BOSS_DIR_ATLAS_FILES){
+//     const cfg=_BOSS_DIR_ATLAS_FILES[si];
+//     const img=new Image();
+//     img.onload=()=>{_bossDirAtlas[+si]={img,ready:true,cell:cfg.cell};console.log('[BOSS] dirAtlas si'+si+' loaded '+img.width+'x'+img.height)};
+//     img.onerror=()=>{};
+//     img.src=cfg.src+'?v=2';
+//   }
+// })();
 function _getBossWalkState(e){
   const s=e.s;
   if(s==='eDeath'||e.hp<=0)return 'death';
@@ -28744,8 +28747,11 @@ function _updateOnePet(key){
     const ox=Math.cos(pet.t*(isCat?.018:.025))*def.orbR;
     const oy=def.orbY+Math.sin(pet.t*(isCat?.022:.035))*(isCat?4:10);
     pet.tx=P.x+ox;pet.ty=P.y+oy;
-    // 주변 아이템 스캔 — petAuto ON일 때만
-    if(OPT.petAuto){
+    // 주변 아이템 스캔 — petAuto ON일 때만, 15틱마다
+    if(!pet._scanCd) pet._scanCd=0;
+    pet._scanCd-=_dtSp;
+    if(OPT.petAuto && pet._scanCd<=0){
+      pet._scanCd=15; // 15틱(~0.25초)마다 스캔
       let closestIt=null,minD=def.pickR;
       for(let i=0;i<worldItems.length;i++){
         const it=worldItems[i];
@@ -29774,7 +29780,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // 시체 잔해 — 모든 사망 (화염은 burnCorpse가 대신)
     if(!_isBurnDeath){const _cp=Math.min(8,dmg/Math.max(1,e.mhp)*20);_addCorpse(e,_killAng,_cp)}
     // 화염/빔 사망 → 불타는 시체 + 전용 사운드
-    if(_isBurnDeath){_addBurnCorpse(e);playSample((opts&&opts.beam)?['fire_death','fire_death2','fire_death3'][Math.random()*3|0]:'fire_hit',.5,_r(1,.15))}
+    if(_isBurnDeath){_addBurnCorpse(e);playSample((opts&&opts.beam)?['fire_death','fire_death2','fire_death3'][Math.random()*3|0]:'fire_hit',.5,_r(1,.15));playVFXAng('burn_death',e.x,e.y-e.r*0.3,Math.max(0.15,e.r*2.2/211),4,0,false)}
     // 큰 몬스터는 기본 사망 시 큰 시체 파편(gib) 생성
     // 모든 사망 시 gib + 스프라이트 분할 (화염 제외)
     if(!_isBurnDeath){//_addSplitGibs(e,_killAng); // 비활성 — 고어 시스템으로 대체
@@ -30134,7 +30140,16 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // DROPS (엘리트만 악의 드롭, 10배)
     if(e.ib||e.elite){const _db=e.elite?ELITE_TIERS[e.elite].dropBonus:0;
      const matCnt=~~((12+G.stage*3)*12*(1+_db));
-     worldItems.push({x:e.x,y:e.y,type:'mat',matVal:matCnt,picked:false,_matLife:1800,_matBorn:G.gt})}
+     // 즉시 수급 + 트레일 이펙트 (worldItems 우회)
+     const _matAmt=~~(matCnt*(1+_eqAffix('goldBonus'))*_maliceMul());
+     G.mats+=_matAmt;
+     addTxt(e.x,e.y-15,_T('악의 +')+_matAmt,'#cc66ff',30);
+     // 트레일 파티클: 드롭 위치 → 플레이어 방향
+     const _mtAng=Math.atan2(P.y-e.y,P.x-e.x);
+     for(let _mi=0;_mi<4;_mi++){const _md=8+_mi*6;
+       poolPart(e.x+Math.cos(_mtAng)*_md,e.y+Math.sin(_mtAng)*_md,
+         Math.cos(_mtAng)*(3+_mi),Math.sin(_mtAng)*(3+_mi),'#cc66ff',2+Math.random()*2,12+_mi*3)}
+     SFX.pickup()}
     // HP 바닥 드랍 제거 — 물약으로만 회복
     // Potion drops → 바로 퀵슬롯 추가 (바닥 드랍 X)
     if(Math.random()<(e.ib?1:1)){
@@ -42568,7 +42583,8 @@ function drawP(){
     }
   }} // end 2패스 + pProjs for
   const _s7t1=performance.now(); // pProjs 끝
-
+  const _s7sub={proj:_s7t1-_s7t0,shield:0,pet:0,orb:0,harp:0,misc:0};
+  let _s7m0=_s7t1;
   // ══ 보호막 Q진입 — 초반 임팩트 버스트 렌더 ══
   if(G._sbBurst){
     const _b=G._sbBurst,_bP=_b.r/_b.maxR,_bF=1-_bP;
@@ -42728,6 +42744,7 @@ function drawP(){
   // ══ 보호막 패링 — 360도 칼등치기 스타일 충격파 ══
   // (보호막 패링 충격파 렌더 제거됨 — doParry()로 통합)
 
+  _s7sub.misc=performance.now()-_s7m0;_s7m0=performance.now();
   // ══ 악의 보호자 궤도 렌더링 (합체=칼날, 단독=구체) ══
   if(P._gOrbs&&P._gOrbs.length>0&&P._gOrbAng!=null){
     const _isFusedR=P.skills.maliceHunt>=1&&P.skills.guardian>=1&&_isFused('bladeFuse');
@@ -42787,6 +42804,7 @@ function drawP(){
 
   // combo UI 제거 (항상 3타 효과)
 
+  _s7sub.orb=performance.now()-_s7m0;_s7m0=performance.now();
   // ── X키 작살 UI ──
   if(_dashHold&&_dashTier>0){
     const _dcols=['','#88ccff','#44ffaa','#ff8833'];
@@ -42907,6 +42925,7 @@ function drawP(){
       X.beginPath();X.arc(_fz.x+Math.cos(_sa)*_sd,_fz.y+Math.sin(_sa)*_sd,1+Math.random()*1.5,0,Math.PI*2);X.fill();}
     X.globalAlpha=1;X.textAlign='left';
   }}
+  _s7sub.shield=performance.now()-_s7m0;_s7m0=performance.now();
   // ══ PET RENDER (검은까마귀=하늘, 검은고양이=땅) ══
   if(G.pets){for(const pk of ['cat','crow']){
     const _pet=G.pets[pk],_pd=PETS[pk];if(!_pet||!_pd)continue;
@@ -42977,6 +42996,7 @@ function drawP(){
       X.beginPath();X.moveTo(px,py);X.lineTo(_ti.x,_ti.y);X.stroke();X.setLineDash([]);
     }
   }}
+  _s7sub.pet=performance.now()-_s7m0;_s7m0=performance.now();
   // ── 유령쇠뇌 렌더 (터렛 설치 중엔 숨김) ──
   if(G.pets&&G.pets.xbow&&!_gxTurret){
     const _xb=G.pets.xbow;
@@ -43019,12 +43039,14 @@ function drawP(){
   // S0=charge/recover S1=조준+해골 S2=fireZone(장판5종)
   // S3=방패/유탄/폭발/포격 S4=궁극기 S5=보스패턴30종
   // S6=스킬FX+스프라이트+무기 S7=pProjs+보호막+펫
+  _s7sub.harp=performance.now()-_s7m0;
   const _dpEnd=performance.now();
   const _dpTotal=_dpEnd-_dpStart;
   if(_dpTotal>16){
     _dpT0=_dpS0-_dpStart;_dpT1=_dpS1-_dpS0;_dpT2=_dpS2-_dpS1;_dpT3=_dpS3-_dpS2;
     _dpT4=_dpS4-_dpS3;_dpT5=_dpS5-_dpS4;_dpT6=_dpS6-_dpS5;_dpT7=_dpEnd-_dpS6;
     console.log('[drawP] '+_dpTotal.toFixed(2)+'ms | S0:'+_dpT0.toFixed(1)+' S1:'+_dpT1.toFixed(1)+' S2:'+_dpT2.toFixed(1)+' S3:'+_dpT3.toFixed(1)+' S4:'+_dpT4.toFixed(1)+' S5:'+_dpT5.toFixed(1)+' S6:'+_dpT6.toFixed(1)+' S7:'+_dpT7.toFixed(1));
+    if(_dpT7>4)console.log('[S7-SUB] proj:'+_s7sub.proj.toFixed(1)+' shield:'+_s7sub.shield.toFixed(1)+' pet:'+_s7sub.pet.toFixed(1)+' xbow+holy:'+_s7sub.misc.toFixed(1)+' orb:'+_s7sub.orb.toFixed(1)+' harp:'+_s7sub.harp.toFixed(1)+' | pProjs:'+pProjs.length);
     if(_dpT7>8)console.log('[S7-DETAIL] proj:'+(_s7t1-_s7t0).toFixed(1)+' shield+pet:'+(_dpEnd-_s7t1).toFixed(1)+' pProjs:'+pProjs.length+' ppDrawn:'+_ppDrawN);
     // [S7-BREAKDOWN] (2026-04-17) — _PERF_PROF.enabled(>300마리) 시에만 출력
     if(_s7Active&&_dpT7>8){
