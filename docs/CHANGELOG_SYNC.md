@@ -21033,3 +21033,9 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game_boss3d_test.html
 - server.cjs
 
+
+## 2026-04-25 10:30 (auto)
+- docs/4.1맵디?�인+?�정/EXODUSER_MAP_BIBLE_v3 (1).md
+- game.html
+- game_boss3d_test.html
+
