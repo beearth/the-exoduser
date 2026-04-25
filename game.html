@@ -29844,6 +29844,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       for(let _spi=0;_spi<2;_spi++){
         const a=Math.PI*_spi+Math.random(),sd=18+Math.random()*8;
         const ne=mkEn(e.x+Math.cos(a)*sd,e.y+Math.sin(a)*sd,G.stage,15,false,e.el,e.room);
+        if(!ne)continue;
         ne.hp=~~(ne.hp*.35);ne.mhp=ne.hp;ne.eShield=ne.mhp;ne.eShieldMax=ne.mhp;ne.r=Math.max(5,~~(e.r*.6));ne.speed*=1.3;ne._splitDone=true;
         ens.push(ne);addParts(ne.x,ne.y,e.col,6);
       }

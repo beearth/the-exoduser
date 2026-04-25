@@ -19,7 +19,7 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000}
 <body>
 <iframe id="gameFrame" src="/game.html"></iframe>
 <canvas id="overlay3d"></canvas>
-<div id="boss3d-keys">F10: 보스전 토글 | F9: 무적 | Shift+R: 리셋</div>
+<div id="boss3d-keys">F10: 보스전 | F9: 무적 | F8: 프로파일 | Shift+R: 리셋</div>
 <div id="boss3d-hud">Boss 3D: 초기화 중...</div>
 
 <script type="importmap">
@@ -174,6 +174,9 @@ function injectBridge() {
           window._b3d_lastHitT = performance.now();
         }
         window._b3d_prevHP = boss.hp;
+
+        // 프로파일링 틱
+        if (window._b3d_profiling) window._b3d_profTick();
       };
 
       // ── 상태 읽기 ──
@@ -181,6 +184,8 @@ function injectBridge() {
         try {
           // 틱 실행
           if (window._b3d_testMode) window._b3d_tick();
+          // 프로파일링은 테스트모드 외에도 동작
+          else if (window._b3d_profiling) window._b3d_profTick();
 
           const boss = (typeof G!=='undefined'&&G._bossRef&&G._bossRef.alive) ? G._bossRef : null;
           // 보스 사망 체크 (alive=false이지만 ref 존재)
@@ -305,6 +310,97 @@ function injectBridge() {
         } catch(e) { return 'ERROR: ' + e.message; }
       };
 
+      // ── 프로파일러 ──
+      window._b3d_profiling = false;
+      window._b3d_profFrames = [];
+      window._b3d_profStart = 0;
+
+      window._b3d_profTick = () => {
+        if (!window._b3d_profiling) return;
+        // 30초 자동 종료
+        if (performance.now() - window._b3d_profStart > 30000) {
+          window._b3d_profEnd();
+          window.parent.postMessage({type:'b3d_prof', active:false}, '*');
+          return;
+        }
+        const f = {
+          t: performance.now(),
+          fps: (typeof _prof!=='undefined' && _prof.t>0) ? 1000/_prof.t : 0,
+          S0: typeof _dpT0!=='undefined' ? _dpT0 : 0,
+          S1: typeof _dpT1!=='undefined' ? _dpT1 : 0,
+          S2: typeof _dpT2!=='undefined' ? _dpT2 : 0,
+          S3: typeof _dpT3!=='undefined' ? _dpT3 : 0,
+          S4: typeof _dpT4!=='undefined' ? _dpT4 : 0,
+          S5: typeof _dpT5!=='undefined' ? _dpT5 : 0,
+          S6: typeof _dpT6!=='undefined' ? _dpT6 : 0,
+          S7: typeof _dpT7!=='undefined' ? _dpT7 : 0,
+          ens: typeof ens!=='undefined' ? ens.filter(e=>e.alive).length : 0,
+          projs: (typeof projs!=='undefined' ? projs.length : 0) + (typeof pProjs!=='undefined' ? pProjs.length : 0),
+          parts: typeof G!=='undefined' && G.parts ? G.parts.length : 0,
+          traps: (typeof G!=='undefined' && G._fireZones ? G._fireZones.length : 0) +
+                 (typeof G!=='undefined' && G._boneWalls ? G._boneWalls.length : 0) +
+                 (typeof G!=='undefined' && G._darkZones ? G._darkZones.length : 0),
+          dc: typeof _PERF_PROF!=='undefined' ? _PERF_PROF.drawCalls : 0,
+          frameMs: typeof _prof!=='undefined' ? _prof.t : 0
+        };
+        window._b3d_profFrames.push(f);
+      };
+
+      window._b3d_profEnd = () => {
+        window._b3d_profiling = false;
+        const frames = window._b3d_profFrames;
+        if (!frames || frames.length < 2) { console.log('[PROF] 데이터 부족'); return; }
+
+        const n = frames.length;
+        const avg = (arr) => arr.reduce((a,b)=>a+b,0)/arr.length;
+        const fpsArr = frames.map(f=>f.fps);
+        const dcArr = frames.map(f=>f.dc);
+
+        // 섹션별 평균
+        const sections = ['S0','S1','S2','S3','S4','S5','S6','S7'];
+        const sAvg = {};
+        sections.forEach(s => { sAvg[s] = avg(frames.map(f=>f[s])); });
+
+        // top3 느린 섹션
+        const sorted = sections.slice().sort((a,b) => sAvg[b] - sAvg[a]);
+        const top3 = sorted.slice(0,3);
+
+        console.log('╔══════════════════════════════════════╗');
+        console.log('║     PERF PROFILE REPORT (30s)        ║');
+        console.log('╠══════════════════════════════════════╣');
+        console.log('║ Frames: ' + n);
+        console.log('║ Avg FPS: ' + avg(fpsArr).toFixed(1));
+        console.log('║ Min FPS: ' + Math.min(...fpsArr).toFixed(1));
+        console.log('║ Avg DrawCalls: ' + avg(dcArr).toFixed(0));
+        console.log('║ Avg ens: ' + avg(frames.map(f=>f.ens)).toFixed(0));
+        console.log('║ Avg projs: ' + avg(frames.map(f=>f.projs)).toFixed(0));
+        console.log('║ Avg parts: ' + avg(frames.map(f=>f.parts)).toFixed(0));
+        console.log('║ Avg traps: ' + avg(frames.map(f=>f.traps)).toFixed(0));
+        console.log('╠── Section Avg (ms) ──────────────────╣');
+        sections.forEach(s => {
+          const mark = top3.includes(s) ? ' ◀ TOP' + (top3.indexOf(s)+1) : '';
+          console.log('║ ' + s + ': ' + sAvg[s].toFixed(2) + 'ms' + mark);
+        });
+        console.log('╠── Top 3 Slowest ─────────────────────╣');
+        top3.forEach((s,i) => console.log('║ #' + (i+1) + ' ' + s + ': ' + sAvg[s].toFixed(2) + 'ms'));
+        console.log('╚══════════════════════════════════════╝');
+
+        // CSV 다운로드
+        const header = 'time,fps,S0,S1,S2,S3,S4,S5,S6,S7,ens,projs,parts,traps,drawCalls,frameMs';
+        const rows = frames.map(f =>
+          [f.t.toFixed(0),f.fps.toFixed(1),f.S0.toFixed(2),f.S1.toFixed(2),f.S2.toFixed(2),f.S3.toFixed(2),
+           f.S4.toFixed(2),f.S5.toFixed(2),f.S6.toFixed(2),f.S7.toFixed(2),
+           f.ens,f.projs,f.parts,f.traps,f.dc,f.frameMs.toFixed(2)].join(',')
+        );
+        const csv = header + '\\n' + rows.join('\\n');
+        const blob = new Blob([csv], {type:'text/csv'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'boss3d_perf_' + new Date().toISOString().slice(0,19).replace(/:/g,'-') + '.csv';
+        a.click(); URL.revokeObjectURL(url);
+        console.log('[PROF] CSV 다운로드: ' + a.download);
+      };
+
       // ── 리셋 ──
       window._b3d_reset = () => {
         if(G._bossArena && window._b3d_preBackup) window._b3d_exitBoss();
@@ -337,6 +433,21 @@ function injectBridge() {
           e.stopImmediatePropagation();
           window._b3d_godMode = !window._b3d_godMode;
           window.parent.postMessage({type:'b3d_god', active:window._b3d_godMode}, '*');
+          return;
+        }
+        // F8: 프로파일러 토글
+        if (e.code === 'F8' || e.key === 'F8') {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          window._b3d_profiling = !window._b3d_profiling;
+          if (window._b3d_profiling) {
+            window._b3d_profFrames = [];
+            window._b3d_profStart = performance.now();
+            console.log('[PROF] 프로파일링 시작 (30초 후 자동 종료)');
+          } else {
+            window._b3d_profEnd();
+          }
+          window.parent.postMessage({type:'b3d_prof', active:window._b3d_profiling}, '*');
           return;
         }
         // Shift+R: 리셋
@@ -374,6 +485,7 @@ function getGameState() {
 // ══════════════════════════════
 let testModeActive = false;
 let godModeActive = false;
+let profilingActive = false;
 
 // iframe에서 올라오는 메시지 수신
 window.addEventListener('message', (ev) => {
@@ -390,9 +502,13 @@ window.addEventListener('message', (ev) => {
   } else if (ev.data.type === 'b3d_god') {
     godModeActive = ev.data.active;
     log('F9 무적:', godModeActive ? 'ON' : 'OFF');
+  } else if (ev.data.type === 'b3d_prof') {
+    profilingActive = ev.data.active;
+    log('F8 프로파일:', profilingActive ? 'ON (30초)' : 'OFF + CSV 저장');
   } else if (ev.data.type === 'b3d_reset') {
     testModeActive = false;
     godModeActive = false;
+    profilingActive = false;
     log('리셋 OK');
   }
 });
@@ -421,6 +537,18 @@ window.addEventListener('keydown', (e) => {
     godModeActive = !godModeActive;
     try { iframe.contentWindow._b3d_godMode = godModeActive; } catch(e2) {}
     log('F9 무적:', godModeActive ? 'ON' : 'OFF');
+    return;
+  }
+  if (e.key === 'F8') {
+    e.preventDefault(); e.stopPropagation();
+    try {
+      const w = iframe.contentWindow;
+      w._b3d_profiling = !w._b3d_profiling;
+      if (w._b3d_profiling) { w._b3d_profFrames = []; w._b3d_profStart = performance.now(); }
+      else { w._b3d_profEnd(); }
+      profilingActive = w._b3d_profiling;
+      log('F8 프로파일:', profilingActive ? 'ON (30초)' : 'OFF + CSV');
+    } catch(e2) {}
     return;
   }
   if ((e.key === 'r' || e.key === 'R') && e.shiftKey) {
@@ -454,7 +582,7 @@ function log(...args) { logLines.push(args.join(' ')); if (logLines.length > 10)
 
 function updateHud(state) {
   const L = [];
-  const tags = [testModeActive ? '★TEST' : '', godModeActive ? '★GOD' : ''].filter(Boolean).join(' ');
+  const tags = [testModeActive ? '★TEST' : '', godModeActive ? '★GOD' : '', profilingActive ? '★PROF' : ''].filter(Boolean).join(' ');
   L.push(`[Boss 3D Overlay] ${tags}`);
   L.push(`Three.js: OK | GLB: ${bossReady ? 'OK' : '...'}`);
   if (state) {
@@ -602,7 +730,7 @@ function animate() {
 
 animate();
 log('Three.js 초기화 완료');
-log('F10=보스전, F9=무적, Shift+R=리셋');
+log('F10=보스전, F9=무적, F8=프로파일, Shift+R=리셋');
 
 // ── iframe 포커스 ──
 iframe.addEventListener('load', () => {
