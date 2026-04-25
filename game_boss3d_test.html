@@ -658,10 +658,8 @@ function syncBoss(state, dt) {
     bossPivot.scale.setScalar(Math.max(0.1, tgtH / bossSize.y));
   }
 
-  // facing → Y축 풀회전 (캐릭터를 바라보게)
-  // 게임 facing: 보스→플레이어 각도 (0=오른쪽, PI/2=아래)
-  // Three.js Y회전: 모델 앞면(+Z)을 facing 방향으로
-  bossPivot.rotation.set(0, state.bossFacing + Math.PI, 0);
+  // facing → Y축 회전 (모델 기본 앞면=6시, 게임 facing 0=3시 → -PI/2 보정)
+  bossPivot.rotation.set(0, -state.bossFacing + Math.PI / 2, 0);
 
   // 디버그 콘솔 (초당 1회)
   if (!syncBoss._dbgT) syncBoss._dbgT = 0;
