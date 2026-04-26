@@ -21146,3 +21146,17 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - docs/3.3 ?¤ë°”?¸ë”©+?¤ì •/3.3 ?¤ë°”?¸ë”©+?¤ì •.md
 - game.html
 
+
+## 2026-04-27 02:30 (auto)
+- boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Alert_withSkin.glb
+- boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb
+- boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Running_withSkin.glb
+- boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Unsteady_Walk_withSkin.glb
+- boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Walking_withSkin.glb
+- boss_3d_poc/main.js
+- docs/2_5 ë¶€???ë„ˆì§€?´ë“œ?œìŠ¤??2_5 ë¶€???ë„ˆì§€?´ë“œ?œìŠ¤??md
+- docs/8.0ëª¬ìŠ¤?°ë””?ì¸/ëª¬ìŠ¤??ê³µê²©?œìŠ¤??md
+- docs/8.1ë³´ìŠ¤?”ì?¸ë°”?´ë¸”/BOSS_00_FOREST_NORMAL_EYE_SENTINEL.md
+- docs/API?°ê²°_ê°€?´ë“œ.md
+- game.html
+

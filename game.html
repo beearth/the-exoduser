@@ -5565,8 +5565,7 @@ function _pNoise(x,y){// 간이 value noise
 function _fbm2(x,y){let v=0,a=.5;for(let i=0;i<4;i++){v+=a*_pNoise(x,y);x*=2;y*=2;a*=.5}return v}
 function _bakeBossFogFrames(hell){
   if(_bossLegFogFrames[hell])return _bossLegFogFrames[hell];
-  const _blfCols=[[90,60,130],[50,100,60],[130,55,35],[100,45,120],[120,100,30],[100,90,50],[70,40,120]];
-  const c0=_blfCols[hell]||[90,60,130];
+  const c0=[30,120,40]; // 독안개 녹색
   const frames=[];
   const w=256,h=128;
   for(let fr=0;fr<_BOSS_FOG_FRAMES;fr++){
@@ -23710,6 +23709,20 @@ function update(){
   if(!G._bossRef||!G._bossRef.alive)G._bossRef=null;
   if(!G._bossRef&&G.bossAlive){G._bossRef=findBoss()}
   const bE=G._bossRef;
+  // ── 보스 독안개 도트 데미지 (보스 발밑 범위 내 플레이어에게 틱) ──
+  if(bE&&bE.alive&&P.hp>0&&P.s!=='dead'&&P.s!=='fallen'){
+    if(!G._bossFogTickCd)G._bossFogTickCd=0;
+    G._bossFogTickCd-=sp;
+    const _bfRange=bE.r*3.5; // 안개 범위 = 렌더 크기와 일치
+    if(G._bossFogTickCd<=0&&dst(P.x,P.y,bE.x,bE.y)<_bfRange&&P.iframes<=0&&P.s!=='charge'){
+      G._bossFogTickCd=45; // 0.75초마다 틱
+      const _bfDmg=Math.max(1,~~(bE.atk*.08)); // 보스 공격력 8%
+      hurtP(_bfDmg,{dot:true,dtype:'magic',src:_T('독안개')});
+      P.poison=(P.poison||0)+1.5;
+      addTxt(P.x,P.y-12,'☠'+_bfDmg,'#33aa22',15);
+      addParts(P.x,P.y,'#33aa22',3);
+    }
+  }
   // [BOSS-CINE] 트리거
   if(bE&&_bossCine.lastBossId!==bE){_bossCine.lastBossId=bE;_bossCine.active=true;_bossCine.t=0;_bossCine.maxT=180;_bossCine.name=STG[G.stage]?_T(STG[G.stage].bn):'???';
     _bossCine._introFill=0; // HP바 채우기 진행도
@@ -29770,7 +29783,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       if(e._revPts<0)e._revPts=0;
       // ── 확률 판정 ──
       let _doRevive=false;
-      const _revBase=1.25+G.stage*0.05; // 125%+스테이지당5%
+      const _revBase=1.50+G.stage*0.05; // 150%+스테이지당5%
       const _revCh=Math.max(0,_revBase-(e.deaths-1)*0.15-_bSuppress);
       // 포인트 남아있고 확률도 통과해야 부활
       if(e._revPts>0&&Math.random()<_revCh)_doRevive=true;
@@ -29863,7 +29876,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // 보스: 부활력 남아있으면 3초 카운트다운 → 부활률 공식 + 포인트 체크
     if(e.ib&&!e._bossRevJudged){
       e._bossRevJudged=true;e._reviveTimer=180;e._reviveX=e.x;e._reviveY=e.y;
-      const _rv2Base=1.25+G.stage*0.05; // 기본125% + 스테이지당+5%
+      const _rv2Base=1.50+G.stage*0.05; // 기본150% + 스테이지당+5%
       let _rv2Sup=_eqAffix('antiRevive');
       if(G._fireZones){for(let _fi=0;_fi<G._fireZones.length;_fi++){const _fz=G._fireZones[_fi];if(_fz.type==='holyPrison'&&dst(e.x,e.y,_fz.x,_fz.y)<_fz.r){_rv2Sup+=.15+((_fz.lv||1)-1)*(.15/9);break}}} // 15%~30% (Lv1=15%, Lv10=30%)
       // 부활력 포인트 고갈 시 확률 무관 실패
@@ -37983,7 +37996,7 @@ function draw(){
         const _bfFi=~~(_now/500)%_BOSS_FOG_FRAMES;
         const _bfS=_bfFrames[_bfFi];
         const _bfW=e.r*7,_bfH=e.r*3.5;
-        const _bfCx=e.x,_bfCy=e.y+e.r*.25+_tdY;
+        const _bfCx=e.x,_bfCy=e.y+e.r*.6+_tdY;
         // 2장 겹침 (현재+다음 프레임, 크로스페이드)
         const _bfFi2=(_bfFi+1)%_BOSS_FOG_FRAMES;
         const _bfS2=_bfFrames[_bfFi2];
