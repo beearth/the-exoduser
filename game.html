@@ -7854,7 +7854,7 @@ addEventListener('keydown',e=>{
   // F11 전체화면 토글
   if(e.code==='F11'){toggleFullscreen();return}
   if(e.code==='F10'){togglePanel('settings');e.preventDefault();return}
-  if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();const _fl=_nf?'ON':'OFF';console.log('[FOG] '+_fl);showPH((_nf?(OPT.lang!=='ko'?'Fog ON':'안개 ON'):(OPT.lang!=='ko'?'Fog OFF':'안개 OFF')),_nf?'#8899cc':'#888888');return}
+  if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();console.log('[FOG TOGGLE] OPT.fog='+_nf+' OPT.bossFog='+_nf);showPH((_nf?(OPT.lang!=='ko'?'Fog ON':'안개 ON'):(OPT.lang!=='ko'?'Fog OFF':'안개 OFF')),_nf?'#8899cc':'#888888');return}
   K[e.code]=true;KH[e.code]=true;
   if(['Space','Tab','Escape','KeyE','KeyQ','KeyZ','KeyX','KeyC','KeyB','KeyN','KeyH','KeyJ','KeyK','KeyL','KeyR','KeyF','KeyG','KeyV','ControlLeft','ControlRight','ShiftLeft','ShiftRight','CapsLock'].includes(e.code))e.preventDefault();
   // ── T키 석궁 자동발사 토글 ──
@@ -10717,6 +10717,36 @@ function bigImpact(x,y,el,ang){
   _speedLines.active=8;_speedLines.x=x;_speedLines.y=y;
 }
 function findBoss(){if(G._bossRef&&G._bossRef.alive)return G._bossRef;for(let i=0;i<ens.length;i++){if(ens[i].alive&&ens[i].ib){G._bossRef=ens[i];return ens[i]}}return null}
+// ═══ 통합 포이즈 시스템 ═══
+// 모든 포이즈 감소/그로기 판정을 이 함수 통해서만 처리
+// amt: 깎을 양 (고정값). 보스는 면역 체크, 일반몹은 그대로
+// returns: 그로기 발동 여부
+function _poiseHit(e, amt, label){
+  if(!e||!e.alive||amt<=0) return false;
+  // 보스 면역 체크
+  if(e.ib && e._pImmune > 0) return false;
+  e.poise -= amt;
+  e.poiseR = 0;
+  if(e.poise <= 0){
+    e.poise = 0;
+    const stunT = e.ib ? 90 : 180; // 보스 1.5초, 일반 3초
+    e.stunned = Math.max(e.stunned||0, stunT);
+    e._maxStunned = Math.max(e._maxStunned||0, stunT);
+    if(e.ib) e._pImmune = 300; // 보스: 5초 면역
+    SFX.groggy();
+    addTxt(e.x, e.y-22, label||_T('💥 그로기!'), '#ff8800', 60);
+    if(!(G._noHitStopT>0)) G.slowMo = 20;
+    for(let j=0;j<14;j++){const a=Math.PI*2*j/14;poolPart(e.x,e.y,Math.cos(a)*7,Math.sin(a)*7,'#ffaa44',3+Math.random()*4,18)}
+    return true;
+  }
+  return false;
+}
+// 보스 포이즈 리셋 (그로기 끝난 후 호출)
+function _poiseReset(e){
+  if(!e) return;
+  e.poise = e.maxPoise;
+  e.poiseR = 0;
+}
 function teleportE(e,nx,ny,col,n){if(!canMv(nx,ny,e.r))return false;
   const ox=e.x,oy=e.y,r=e.r||12;
   const _cr=parseInt(col.slice(1,3),16)||160,_cg=parseInt(col.slice(3,5),16)||0,_cb=parseInt(col.slice(5,7),16)||255;
@@ -20783,24 +20813,14 @@ function update(){
           const d=dst(P.x,P.y,e.x,e.y);if(d>_csR+e.r)continue;
           const ang=Math.atan2(e.y-P.y,e.x-P.x);
           const mult=elMul(_csEl,e.el);const fd=~~(_csDmg*mult);
-          // 기동파괴: 보스는 maxPoise 30% 고정 (3~4방 그로기), 일반몹은 데미지 비례
+          // 기동파괴: 보스 maxPoise 30% 고정, 일반몹 데미지 비례
           if(e.ib){
-            const _psBefore=e.poise;
-            e.poise-=~~(e.maxPoise*0.30);e.poiseR=0;
             hurtE(e,fd,ang,false,{kbMult:0.8},_csEl);
-            console.log('[CHAIN-SLAM] boss poise: '+_psBefore+' → '+e.poise+' / '+e.maxPoise+' (dmg='+fd+', 30%='+~~(e.maxPoise*0.30)+')');
-            // 보스 그로기 판정
-            if(e.poise<=0&&!(e._pImmune>0)){
-              e.stunned=Math.max(e.stunned,90);e._maxStunned=Math.max(e._maxStunned||0,90);e.poise=0;
-              e._pImmune=300;SFX.groggy();addTxt(e.x,e.y-22,_T('💥 보스 그로기!'),'#ff8800',60);
-              if(!(G._noHitStopT>0))G.slowMo=20;
-              for(let j=0;j<14;j++){const a2=Math.PI*2*j/14;poolPart(e.x,e.y,Math.cos(a2)*7,Math.sin(a2)*7,'#ffaa44',3+Math.random()*4,18)}
-            }else if(e.alive){addTxt(e.x,e.y-18,_T('⚡ 체간삭감! ')+~~(e.poise/e.maxPoise*100)+'%','#ffcc00',35)}
+            _poiseHit(e, ~~(e.maxPoise*0.30), _T('💥 기동파괴 그로기!'));
           }
           else{hurtE(e,fd,ang,false,{kbMult:0.8,poiseHit:true,poiseMult:1.5},_csEl)}
           e.kb.x+=Math.cos(ang)*5;e.kb.y+=Math.sin(ang)*5;
-          if(!e.isBoss){e.stunned=Math.max(e.stunned,300);addTxt(e.x,e.y-18,_T('💫 기절!'),'#ffcc00',35)}
-          else{addTxt(e.x,e.y-18,_T('⚡ 체간삭감!'),'#ffcc00',35)}
+          if(!e.ib){e.stunned=Math.max(e.stunned,300);addTxt(e.x,e.y-18,_T('💫 기절!'),'#ffcc00',35)}
           for(let j=0;j<8;j++){const a2=Math.PI*2*j/8;poolPart(e.x,e.y,Math.cos(a2)*4,Math.sin(a2)*4,'#ffcc00',3+Math.random()*4,14)}
         }
         playSample('heavy_hit',1,_r(.8,.1));
@@ -20898,8 +20918,7 @@ function update(){
           const ang=Math.atan2(e.y-P.y,e.x-P.x);
           hurtE(e,~~(_cbBaseDmg*0.5),ang,false,{kbMult:2,poiseHit:true,poiseMult:4.0},EL.P);
           e.kb.x+=Math.cos(ang)*15;e.kb.y+=Math.sin(ang)*15;
-          if(!e.isBoss){e.stunned=Math.max(e.stunned,180);addTxt(e.x,e.y-18,_T('💫 기절!'),'#ffcc00',35)}
-          else{addTxt(e.x,e.y-18,_T('⚡ 체간삭감!'),'#ffaa00',35)}
+          if(!e.ib){e.stunned=Math.max(e.stunned,180);addTxt(e.x,e.y-18,_T('💫 기절!'),'#ffcc00',35)}
         }
         playSample('heavy_hit',1,_r(.7,.1));{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}
         addTxt(P.x,P.y-35,_T('⚡ 기동전폭! x')+_cbDistMul.toFixed(1),_cbDistMul>=4?'#ff4400':_cbDistMul>=2?'#ffaa00':'#ffcc44',50);
@@ -21253,6 +21272,8 @@ function update(){
   }
 
   if(P.s!=='sBlock'&&(P._sbCd||0)>0)P._sbCd-=sp; // 보호막 쿨다운 (해제 후 1.5초)
+  // ── HP≤0 안전장치: idle 상태에서 죽은 캐릭터가 움직이는 버그 방지 ──
+  if(P.hp<=0&&P.s!=='fallen'&&P.s!=='dead'){die()}
   switch(P.s){
   case 'fallen':{
     P.st2-=sp;
@@ -25283,22 +25304,14 @@ function hitArc(angle,range,arcW,baseDmg,el,type){
     if(_isWW&&_hitCount<=9&&e.alive){_impacts.push({x:e.x,y:e.y,el:el,ang:ang,t:0,ml:16,sz:0.8,type:'slash'});} // 회전참: 생존 대상에만 물리 임팩트 (최대9)
       // parryBank는 적 공격 흡수로만 축적 (hitArc 공격 축적 삭제)
       if(!_isWW){
-      // 칼등치기만 포이즈 데미지 (데미지의 200%)
+      // 칼등치기 포이즈 (통합)
       if(type==='shield'){
-        const poiseDmg=~~(dmg*2.0);
-        e.poise-=poiseDmg;e.poiseR=0;
+        const poiseDmg=e.ib ? ~~(e.maxPoise*0.15) : ~~(dmg*2.0); // 보스 15%(~7방), 일반몹 뎀×200%
         const kbAmt=8;e.kb.x+=Math.cos(ang)*kbAmt*mult;e.kb.y+=Math.sin(ang)*kbAmt*mult;
-        if(e.poise<=0&&!(e.ib&&e._pImmune>0)){
-          const stunTime=~~(180*mult);
-          e.stunned=Math.max(e.stunned,stunTime);e._maxStunned=Math.max(e._maxStunned||0,stunTime);e.poise=0;
-          if(e.ib)e._pImmune=300; // 보스: 그로기 1회 → 5초 면역
-          if(dst(e.x,e.y,P.x,P.y)<800)SFX.groggy();addTxt(e.x,e.y-22,_T('💥 그로기!'),'#ff8800',60);
-          G.hitStop=~~(_HS.groggy*OPT.hitStop/100);G.slowMo=20;G.shake=16*OPT.shake/100;
-          for(let j=0;j<14;j++){const a=Math.PI*2*j/14;poolPart(e.x,e.y,Math.cos(a)*7,Math.sin(a)*7,'#ffaa44',3+Math.random()*4,18)}
-        }else{
+        if(!_poiseHit(e, poiseDmg, _T('💥 칼등 그로기!'))){
           e.stunned=Math.max(e.stunned,30);e.s='idle';e.st2=0;
           addTxt(e.x,e.y-15,_T('흔들!'),'#ccaa66',25);
-        }
+        }else{ G.hitStop=~~(_HS.groggy*OPT.hitStop/100);G.shake=16*OPT.shake/100; }
       }
       if(mult>=2){addTxt(e.x,e.y-18,_T('약점!'),ELC[el],38);if(mult>=2)e.stunned+=35}
       else if(mult<=.5)addTxt(e.x,e.y-18,_T('저항!'),'#666',30);
@@ -26085,24 +26098,19 @@ function updateE(e,sp){
   // _stunImmune / _hitStun 은 루프 초반에서 이미 감소됨
   if(e._hitStun>0)return; // 피격 경직: AI 스킵
   if(e.stunned>0){
-    // 스턴 면역: 스턴 중 새 스턴/포이즈 갱신 차단
-    if((e._stunImmune||0)>0&&e._expectedStun!==undefined&&e.stunned>e._expectedStun){
-      e.stunned=e._expectedStun}
-    const _stunResist=e.elite>0||e.ib; // 엘리트/보스 저항
-    const _stunCap=_stunResist?120:180; // 저항 시 2초, 일반 3초
-    if(e.stunned>_stunCap){e.stunned=_stunCap}
-    if(!e._maxStunned)e._maxStunned=e.stunned;
-    e._stunImmune=Math.max(e._stunImmune||0,2); // 스턴 중 면역 유지
-    if(!e.ib) e.poise=e.maxPoise; // 일반몹만 스턴 중 포이즈 풀 유지 (보스는 유지 안 함)
-    // stunned 감소는 루프 초반에서 처리됨
-    e._expectedStun=Math.max(0,e.stunned);
-    if(e.stunned<=0){e._maxStunned=0;e._stunImmune=180;e._expectedStun=undefined;
-      if(e.ib)e._pImmune=Math.max(e._pImmune||0,300)}
+    // 스턴 캡: 보스 3초(180f), 일반 3초(180f)
+    if(e.stunned>180) e.stunned=180;
+    // _maxStunned = 최초 스턴 시간 (게이지 비율 계산용)
+    if(!e._maxStunned || e._maxStunned < e.stunned) e._maxStunned = e.stunned;
+    // stunned 감소는 루프 초반(22509)에서 이미 처리됨
+    // 스턴 종료 체크
+    if(e.stunned <= 0){
+      e.stunned = 0;
+      e._maxStunned = 0;
+      _poiseReset(e); // 포이즈 풀 회복
+      if(e.ib) e._pImmune = Math.max(e._pImmune||0, 300); // 보스: 5초 면역
+    }
     return;
-  }else if((e._stunImmune||0)>0){
-    // 면역 기간: 새 스턴 차단 + 포이즈 보호
-    if(e.stunned>0){e.stunned=0;e._expectedStun=undefined}
-    if(!e.ib) e.poise=e.maxPoise; // 일반몹만 면역 중 포이즈 리셋
   }
   // 이동 판정: 이전 위치와 비교 (3프레임 유지) + 이동방향 _moveAng 기록 (2026-04-16)
   {const _dx=e.x-(e._prevX||e.x),_dy=e.y-(e._prevY||e.y);
@@ -26124,10 +26132,11 @@ function updateE(e,sp){
   if(e._freezeGauge>0){e._freezeGauge=Math.max(0,e._freezeGauge-sp*.3)} // 안 맞으면 게이지 자연 감소
   if(e._pImmune>0)e._pImmune-=sp; // 보스 그로기 면역 타이머
 
-  if(e.stunned>0){e.poiseR=0}
-  else if(e.poise<=0&&!e.ib){e.poise=e.maxPoise;e.poiseR=0} // 일반몹만 즉시 리셋
-  else if(e.poise<=0&&e.ib){e.poiseR=0} // 보스: 포이즈 0 유지 (그로기 판정은 공격 측에서)
-  else if(!e.ib&&e.poise<e.maxPoise){e.poiseR+=sp;if(e.poiseR>=200){e.poise=Math.min(e.maxPoise,e.poise+~~(e.maxPoise*.15));e.poiseR=0}}
+  // 포이즈 틱: 일반몹만 자연회복, 보스는 _poiseHit/_poiseReset으로만 변경
+  if(!e.ib && e.poise < e.maxPoise){
+    e.poiseR += sp;
+    if(e.poiseR >= 200){ e.poise = Math.min(e.maxPoise, e.poise + ~~(e.maxPoise * 0.15)); e.poiseR = 0; }
+  }
   let d=dst(P.x,P.y,e.x,e.y);
   // ── 몬스터 이동 사운드 (거리 1000 이내, 동시 3개 제한) ──
   if(d<1000&&!e.stunned&&!e._frozen){
@@ -28009,7 +28018,7 @@ function updateE(e,sp){
     if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}else{e.s='recover';e.st2=30;break}
     if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+6&&P.iframes<=0){
       if(isPWin()){P.parryBank=(P.parryBank||0)+(e.atk||10);
-        addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35);doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
+        addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35);doParry(e.atk,e.x,e.y);_poiseHit(e,20)}
       else if(P.s!=='charge'){hurtP(~~(e.atk*1.5*elMul(e.el,ar().el)));eModHitP(e);const ang=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ang)*8;P.kb.y+=Math.sin(ang)*8}
       e.s='recover';e.st2=30;break}
     if(Math.random()>.5)poolPart(e.x+(Math.random()-.5)*6,e.y+(Math.random()-.5)*6,-e.echDx*2,-e.echDy*2,e.col,3,8);
@@ -28019,7 +28028,7 @@ function updateE(e,sp){
     const spd=6*sp;const nx=e.x+e.echDx*spd,ny=e.y+e.echDy*spd;
     if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}else{e.s='recover';e.st2=25;break}
     if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+8&&P.iframes<=0){
-      if(isPWin()){P.parryBank=(P.parryBank||0)+(e.atk||10);addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35);doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
+      if(isPWin()){P.parryBank=(P.parryBank||0)+(e.atk||10);addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35);doParry(e.atk,e.x,e.y);_poiseHit(e,20)}
       else if(P.s!=='charge'){hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));eModHitP(e);const ang=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ang)*6;P.kb.y+=Math.sin(ang)*6}
       e.s='recover';e.st2=35;break}
     if(Math.random()>.4)poolPart(e.x+(Math.random()-.5)*8,e.y+(Math.random()-.5)*8,0,0,e.col,3,6);
@@ -28062,7 +28071,7 @@ function updateE(e,sp){
         let _aDiff=_toP-e._fwAng;while(_aDiff>Math.PI)_aDiff-=Math.PI*2;while(_aDiff<-Math.PI)_aDiff+=Math.PI*2;
         if(Math.abs(_aDiff)<_fwW/2){
           if(isPWin()){const _ppd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*3*pParryDmg());
-            e.stunned=60;hurtE(e,_ppd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_ppd;doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
+            e.stunned=60;hurtE(e,_ppd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_ppd;doParry(e.atk,e.x,e.y);_poiseHit(e,20)}
           else{hurtP(~~(_fwDmg*elMul(e.el,ar().el)));
             const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*15;P.kb.y+=Math.sin(ka)*15}
         }
@@ -28103,7 +28112,7 @@ function updateE(e,sp){
           const _perp=Math.abs(-_dx*Math.sin(_rA)+_dy*Math.cos(_rA));
           if(_perp<P.r+8&&P.iframes<=0&&P.s!=='charge'){
             if(isPWin()){const _ppd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*3*pParryDmg());
-              e.stunned=60;hurtE(e,_ppd,_rA+Math.PI);P.parryBank=(P.parryBank||0)+_ppd;doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
+              e.stunned=60;hurtE(e,_ppd,_rA+Math.PI);P.parryBank=(P.parryBank||0)+_ppd;doParry(e.atk,e.x,e.y);_poiseHit(e,20)}
             else{hurtP(~~(_rlDmg*elMul(e.el,ar().el)));
               const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*10;P.kb.y+=Math.sin(ka)*10}
           }
@@ -28146,7 +28155,7 @@ function updateE(e,sp){
       if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*5*pParryDmg());
         if(P.skills.detonate){P.parryBank=(P.parryBank||0)+_pd;e.stunned=60;addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35)}
         else{e.stunned=90;e.kb.x=Math.cos(e.facing+Math.PI)*18;e.kb.y=Math.sin(e.facing+Math.PI)*18;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd}
-        doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
+        doParry(e.atk,e.x,e.y);_poiseHit(e,20)}
       else if(P.s!=='charge'){hurtP(~~(e.atk*2*elMul(e.el,ar().el)));const ang=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ang)*12;P.kb.y+=Math.sin(ang)*12}
       e.s='recover';e.st2=40;break}
     if(Math.random()>.3)poolPart(e.x+(Math.random()-.5)*10,e.y+(Math.random()-.5)*10,-e.echDx*3,-e.echDy*3,e.col,4+Math.random()*3,10);
@@ -28197,7 +28206,7 @@ function updateE(e,sp){
     if(proj>0&&proj<_laserActLen){
       const perp=Math.abs(dx*ly-dy*lx); // 수직 거리
       if(perp<P.r+10&&P.iframes<=0){
-        if(isPWin()){P.parryBank=(P.parryBank||0)+~~(e.atk*1.6);doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0;addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',50)}
+        if(isPWin()){P.parryBank=(P.parryBank||0)+~~(e.atk*1.6);doParry(e.atk,e.x,e.y);_poiseHit(e,20);addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',50)}
         else if(P.s!=='charge'){hurtP(~~(P.mhp*.01),{dtype:'magic'});
           playSample(['fire_death','fire_death2','fire_death3'][Math.random()*3|0],.5,_r(1.2,.15));
           P.iframes=Math.max(P.iframes,60); // 레이저 히트 후 1초 무적
@@ -28228,7 +28237,7 @@ function updateE(e,sp){
     if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}else{e.s='recover';e.st2=20;break} // 벽 충돌: 자신 경직
     if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+8&&P.iframes<=0){
       if(isPWin()){P.parryBank=(P.parryBank||0)+(e.atk||10);
-        addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35);doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
+        addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35);doParry(e.atk,e.x,e.y);_poiseHit(e,20)}
       else if(P.s!=='charge'){hurtP(~~(e.atk*1.3*elMul(e.el,ar().el)));eModHitP(e);
         const ang=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ang)*10;P.kb.y+=Math.sin(ang)*10;
         if(P.s!=='sBlock'){
@@ -28290,7 +28299,7 @@ function updateE(e,sp){
       // 전부 착탄
       for(const mt of e.meteors){
         if(dst(P.x,P.y,mt.x,mt.y)<45&&P.iframes<=0&&P.s!=='charge'){
-          if(isPWin()){P.parryBank=(P.parryBank||0)+~~(e.atk*1.5);doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0;addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35)}
+          if(isPWin()){P.parryBank=(P.parryBank||0)+~~(e.atk*1.5);doParry(e.atk,e.x,e.y);_poiseHit(e,20);addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35)}
           else{hurtP(~~(e.atk*1.5*elMul(e.el,ar().el)));
             const ang=Math.atan2(P.y-mt.y,P.x-mt.x);P.kb.x+=Math.cos(ang)*8;P.kb.y+=Math.sin(ang)*8}}
         addParts(mt.x,mt.y,e.col,15);G.shake=6*OPT.shake/100;
@@ -28344,7 +28353,7 @@ function updateE(e,sp){
     }
     // 근접 판정
     if(dst(P.x,P.y,e.x,e.y)<_spR&&P.iframes<=0&&P.s!=='charge'&&e.st2%12<sp){
-      if(isPWin()){P.parryBank=(P.parryBank||0)+~~(e.atk*1.2);doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
+      if(isPWin()){P.parryBank=(P.parryBank||0)+~~(e.atk*1.2);doParry(e.atk,e.x,e.y);_poiseHit(e,20)}
       else{hurtP(~~(e.atk*1.2*elMul(e.el,ar().el)));
         const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*6;P.kb.y+=Math.sin(ka)*6}
     }
@@ -28494,7 +28503,7 @@ function updateE(e,sp){
       // 플레이어 스턴 판정
       if(dst(P.x,P.y,e.x,e.y)<_tsR&&P.iframes<=0&&P.s!=='charge'){
         if(isPWin()){const _pd2=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*3*pParryDmg());
-          e.stunned=60;hurtE(e,_pd2,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd2;doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
+          e.stunned=60;hurtE(e,_pd2,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd2;doParry(e.atk,e.x,e.y);_poiseHit(e,20)}
         else{
           hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
           P.s='pStun';P.st2=300; // 5초 풀스턴
@@ -28524,7 +28533,7 @@ function updateE(e,sp){
       const _aDiff=Math.abs(((_toP-e.facing)%(Math.PI*2)+(Math.PI*3))%(Math.PI*2)-Math.PI);
       if(_aDiff<1.2){
         if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*3*pParryDmg());
-          e.stunned=60;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
+          e.stunned=60;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);_poiseHit(e,20)}
         else if(P.s!=='charge'){hurtP(~~(e.atk*1.5*elMul(e.el,ar().el)));
           const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*7;P.kb.y+=Math.sin(ka)*7}
       }
@@ -28561,7 +28570,7 @@ function updateE(e,sp){
       const _slamD=dst(P.x,P.y,e.x,e.y);
       if(_slamD<_slamR&&P.iframes<=0){
         if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*4*pParryDmg());
-          e.stunned=80;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
+          e.stunned=80;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);_poiseHit(e,20)}
         else if(P.s!=='charge'){hurtP(~~(e.atk*2.2*elMul(e.el,ar().el)));
           const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*14;P.kb.y+=Math.sin(ka)*14}
       }
@@ -28591,7 +28600,7 @@ function updateE(e,sp){
       const _aDiff2=Math.abs(((_toP2-e.facing)%(Math.PI*2)+(Math.PI*3))%(Math.PI*2)-Math.PI);
       if(_aDiff2<1.7){
         if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*3*pParryDmg());
-          e.stunned=60;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
+          e.stunned=60;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);_poiseHit(e,20)}
         else if(P.s!=='charge'){hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
           const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*10;P.kb.y+=Math.sin(ka)*10}
       }
@@ -28693,7 +28702,7 @@ function updateE(e,sp){
       const _aDiff=Math.abs(((_toP-e.facing)%(Math.PI*2)+(Math.PI*3))%(Math.PI*2)-Math.PI);
       if(_aDiff<1.3){
         if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*3.5*pParryDmg());
-          e.stunned=70;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0}
+          e.stunned=70;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);_poiseHit(e,20)}
         else if(P.s!=='charge'){hurtP(~~(e.atk*2*elMul(e.el,ar().el)));
           const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*10;P.kb.y+=Math.sin(ka)*10}
       }
@@ -28710,7 +28719,7 @@ function updateE(e,sp){
     if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}else{e.s='recover';e.st2=40;break}
     if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+12&&P.iframes<=0){
       if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*5*pParryDmg());
-        e.stunned=120;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);e.poise-=60;e.poiseR=0;
+        e.stunned=120;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);_poiseHit(e,60);
         addTxt(P.x,P.y-30,_T('찌르기 반격!'),'#ffcc00',60)}
       else if(P.s!=='charge'){hurtP(~~(e.atk*2.5*elMul(e.el,ar().el)));
         const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*14;P.kb.y+=Math.sin(ka)*14}
@@ -28744,7 +28753,7 @@ function updateE(e,sp){
       const _aDiff=Math.abs(((_toP-e.facing)%(Math.PI*2)+(Math.PI*3))%(Math.PI*2)-Math.PI);
       if(_aDiff<1.4){
         if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*2*pParryDmg());
-          e.stunned=30;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);e.poise-=15;e.poiseR=0}
+          e.stunned=30;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);_poiseHit(e,15)}
         else if(P.s!=='charge'){hurtP(~~(e.atk*(1+e._ccIdx*.15)*elMul(e.el,ar().el)));
           const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*5;P.kb.y+=Math.sin(ka)*5}
       }
@@ -28775,7 +28784,7 @@ function updateE(e,sp){
     if(canMv(e.x+_sbMx,e.y+_sbMy,e.r)){e.x+=_sbMx;e.y+=_sbMy}
     if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+20&&P.iframes<=0){
       if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*3*pParryDmg());
-        e.stunned=60;hurtE(e,_pd,e._sbAng+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);e.poise-=25;e.poiseR=0}
+        e.stunned=60;hurtE(e,_pd,e._sbAng+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y);_poiseHit(e,25)}
       else if(P.s!=='charge'){hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
         const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*10;P.kb.y+=Math.sin(ka)*10;
         P.stunned=Math.max(P.stunned||0,45)}// 스턴
@@ -28794,7 +28803,7 @@ function updateE(e,sp){
     const _isMx=Math.cos(e._isAng)*8*sp,_isMy=Math.sin(e._isAng)*8*sp;
     if(canMv(e.x+_isMx,e.y+_isMy,e.r)){e.x+=_isMx;e.y+=_isMy}
     if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+15&&P.iframes<=0){
-      if(isPWin()){doParry(e.atk,e.x,e.y);e.poise-=20;e.poiseR=0;
+      if(isPWin()){doParry(e.atk,e.x,e.y);_poiseHit(e,20);
         addTxt(P.x,P.y-25,_T('탈취 반격!'),'#ffcc00',40)}
       else if(P.s!=='charge'){
         // 무기 일시 봉인 (10초)
@@ -29703,25 +29712,14 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(_kbInView){e.kb.x+=Math.cos(ang)*_kbAmt;e.kb.y+=Math.sin(ang)*_kbAmt}
     else{const _nx=e.x+Math.cos(ang)*_kbAmt*3,_ny=e.y+Math.sin(ang)*_kbAmt*3;if(canMv(_nx,_ny,e.r)){e.x=_nx;e.y=_ny}}}
   
-  // 포이즈(그로기) 데미지 — 방패/돌진/땅찍기 등 poiseHit 전용
+  // 포이즈(그로기) 데미지 — poiseHit 전용 (통합 함수 사용)
   if(!isDot && (opts && opts.poiseHit) && !(isBoss && e._pImmune > 0)){
-    let finalPsM = psM;
-    if(isBoss) {
-      finalPsM *= (atkEl > 0 ? 0.2 : 0.5); // 보스: 속성 80% 저항, 물리 50% 저항
-    }
-
-    e.poise -= ~~(dmg*finalPsM);
-    // ═══ 어픽스: staggerBns (스태거보너스) — 포이즈 추가 감소 ═══
-    if(_eqAffix('staggerBns')>0)e.poise-=~~(_eqAffix('staggerBns'));
-    e.poiseR=0;
-    if(e.poise<=0&&!(isBoss&&e._pImmune>0)){
-      const st = isBoss ? 90 : 180; // 보스 기절 1.5초, 일반 3초
-      e.stunned=Math.max(e.stunned,st);e._maxStunned=Math.max(e._maxStunned||0,st);e.poise=0;SFX.groggy();
-      addTxt(e.x,e.y-22,isBoss ? _T('💥 보스 그로기!') : _T('💥 그로기!'),'#ff8800',60);if(!(G._noHitStopT>0))G.slowMo=20;
-      if(isBoss) e._pImmune = 300; // 보스: 그로기 1회 → 5초 면역
-      // ═══ 어픽스: staggerExplosion (스태거폭발) — 그로기 발생 시 주변 AoE ═══
+    let amt = ~~(dmg * psM);
+    if(isBoss) amt = ~~(amt * (atkEl > 0 ? 0.2 : 0.5)); // 보스 저항
+    if(_eqAffix('staggerBns')>0) amt += ~~(_eqAffix('staggerBns'));
+    if(_poiseHit(e, amt)){
+      // 어픽스: staggerExplosion
       if(_eqAffix('staggerExplosion')>0){const _seD=~~(dmg*_eqAffix('staggerExplosion'));const _seQ=shQuery(e.x,e.y,100);for(let _si=0;_si<_seQ.length;_si++){const se=_seQ[_si];if(se!==e&&se.alive)hurtE(se,_seD,0,true,{dot:true},atkEl)}}
-      for(let j=0;j<14;j++){const a=Math.PI*2*j/14;poolPart(e.x,e.y,Math.cos(a)*7,Math.sin(a)*7,'#ffaa44',3+Math.random()*4,18)}
     }
   }
   if(e.hp<=0){
@@ -30389,17 +30387,11 @@ function _detonateBlast(label,elSrc){
     const _boomDmg=~~(boom*(.5+falloff*.5));
     hurtE(e,_boomDmg,ang,false,{kbMult:0,noPoise:true,detonate:true,explode:true},_detEl);
     e.kb.x+=Math.cos(ang)*12*falloff;e.kb.y+=Math.sin(ang)*12*falloff;
-    // 회전기폭/지진폭풍: 캡 전 원본 데미지로 포이즈 200% 직접 처리
+    // 기폭팔/지진폭풍 포이즈 (통합)
     const _elMul=elMul(_detEl,e.el);
-    const _psDmg=~~(_boomDmg*2.0*_elMul);
-    e.poise-=_psDmg;e.poiseR=0;
     if(e.ib){
-      if(e.poise<=0&&!(e._pImmune>0)){
-        const _gLabel=_isFused('slamStorm')?'💥 지진그로기!':'💥 기폭그로기!';
-        const _gSt=~~(25*_elMul);e.stunned=Math.max(e.stunned||0,_gSt);e._maxStunned=Math.max(e._maxStunned||0,_gSt);e.poise=0;
-        e._pImmune=300; // 보스 그로기 1회 → 5초 면역
-        SFX.groggy();addTxt(e.x,e.y-22,_gLabel,'#ff6600',55);
-      }else{addTxt(e.x,e.y-18,_T('💫 진동!'),'#ffaa00',28)}
+      const _gLabel=_isFused('slamStorm')?_T('💥 지진그로기!'):_T('💥 기폭그로기!');
+      _poiseHit(e, ~~(e.maxPoise*0.20), _gLabel); // 보스 20% (5방)
     }else{
       const _sLv=_isFused('slamStorm')?(P.skills.giantSlam||1):_detLv;
       const _sDur=120+(_sLv-1)*8;
@@ -32175,19 +32167,9 @@ function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
     // 데미지 범위 안이면 데미지 적용
     if(d<=range+e.r){hurtE(e,~~(fd*0.5),ang,false,{kbMult:kbM||0,noPoise:true,explode:true},el);e.kb.x+=Math.cos(ang)*8;e.kb.y+=Math.sin(ang)*8} // 데미지 50% 감소
     if(!e.alive)continue; // 데미지로 죽었으면 스턴 스킵
-    // 스턴 범위 안이면 포이즈+스턴 적용
-    // 대왕치기: 보스 maxPoise의 25% 고정 포이즈 데미지 (3~4방 그로기)
-    const poiseDmg=e.ib ? ~~(e.maxPoise*0.25) : ~~(fd*22.5);
-    e.poise-=poiseDmg;e.poiseR=0;
+    // 포이즈 적용 (통합 함수)
     if(e.ib){
-      // 보스: 체간 파괴 시 그로기
-      if(e.poise<=0&&!(e._pImmune>0)){
-        const _gsT=~~(30*mult);e.stunned=Math.max(e.stunned,_gsT);e._maxStunned=Math.max(e._maxStunned||0,_gsT);e.poise=0;
-        e._pImmune=300; // 보스 그로기 1회 → 5초 면역
-        if(dst(e.x,e.y,P.x,P.y)<800)SFX.groggy();addTxt(e.x,e.y-22,_T('💥 그로기!'),'#ff8800',60);
-        if(!(G._noHitStopT>0))G.slowMo=20;
-        for(let j=0;j<14;j++){const a=Math.PI*2*j/14;poolPart(e.x,e.y,Math.cos(a)*7,Math.sin(a)*7,'#ffaa44',3+Math.random()*4,18)}
-      }else{addTxt(e.x,e.y-18,_T('💫 진동!'),'#ffaa00',30)}
+      _poiseHit(e, ~~(e.maxPoise*0.25), _T('💥 대왕치기 그로기!'));
     }else{
       // 일반몹: 강한 포이즈 피해 + 기본 미니스턴(1초)
       e.stunned=Math.max(e.stunned||0,_MINI_STUN); // 대왕치기 기본 미니스턴
@@ -39432,14 +39414,40 @@ function draw(){
     X.globalAlpha=1;X.restore();
   }
   _pC2=performance.now(); // fog end
-  // ── 안개 레이어 (하단 지면 + 상단 대기) ──
+  // ── 안개 레이어 (하단 지면 + 상단 대기 + 동적 입자) ──
   if(OPT.fog&&_hwTier!=='C'){
     const _flHell=SI_TO_HELL[G.stage||0];
     if(!_fogBotCvs||_fogLayerW!==C.width||_fogLayerH!==C.height||_fogLayerHell!==_flHell)_bakeFogLayers(C.width,C.height,_flHell);
     X.save();X.setTransform(1,0,0,1,0,0);
+    // (C) 가장자리 안개 두께 sin 진동 (alpha 0.55±0.15, 주기 4초)
+    const _fogPulse=.55+Math.sin(_now*Math.PI/2000)*.15;
+    X.globalAlpha=_fogPulse;
     X.drawImage(_fogBotCvs,0,0);
+    X.globalAlpha=_fogPulse*.6;
     X.drawImage(_fogTopCvs,0,0);
-    X.restore();
+    // (B) 안개 입자 40개 — 큰 반투명 원, 천천히 떠다님
+    {const _fpSc=_SMOG_COLS[_flHell]||[50,50,50];
+    const _fpCol='rgba('+_fpSc[0]+','+_fpSc[1]+','+_fpSc[2]+',';
+    for(let _fi=0;_fi<40;_fi++){
+      // 결정론적 위치: _fi + _now으로 천천히 이동 (new 없음)
+      const _fSeed=_fi*137.5;
+      const _fxBase=(_fSeed*7.3)%C.width;
+      const _fyBase=(_fSeed*3.1)%C.height;
+      // 느린 드리프트 (각 입자 다른 속도)
+      const _fSpd=.00008+(_fi%7)*.00003;
+      const _fxOff=Math.sin(_now*_fSpd+_fSeed)*(C.width*.15);
+      const _fyOff=Math.cos(_now*_fSpd*.7+_fSeed*1.3)*(C.height*.1);
+      const _fx=((_fxBase+_fxOff)%C.width+C.width)%C.width;
+      const _fy=((_fyBase+_fyOff)%C.height+C.height)%C.height;
+      // 상하단 가장자리에 밀집 (중앙은 희미)
+      const _edgeDist=Math.min(_fy,C.height-_fy)/(C.height*.35);
+      const _fAlpha=(.08+Math.sin(_now*.001+_fi*2.1)*.03)*Math.max(0,1-_edgeDist);
+      if(_fAlpha<.01)continue;
+      const _fR=40+(_fi%5)*18;
+      X.globalAlpha=_fAlpha;X.fillStyle=_fpCol+'.4)';
+      X.beginPath();X.arc(_fx,_fy,_fR,0,Math.PI*2);X.fill();
+    }}
+    X.globalAlpha=1;X.restore();
   }
   // ── 동적 환경광 오버레이 (매 프레임 — 교대 렌더 제거, 깜빡임 방지) ──
   {const _elHell=SI_TO_HELL[G.stage||0];
