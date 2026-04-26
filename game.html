@@ -4618,7 +4618,7 @@ const _EN={
 '평화의보호':'Aegis of Peace','참회':'Repentance','칼등날개':'Shield Wing',
 '폭산탄':'Blast Shot','파쇄의 영역':'Shatter Domain','침식의 영역':'Corrosion Domain',
 '관통의 영역':'Piercing Domain','부활의 영역':'Revival Domain','가시덫':'Spike Trap',
-'푸른비':'Azure Rain','버스트루프':'Burst Loop','유령 허수아비':'Phantom Decoy',
+'푸른비':'Azure Rain','버스트루프':'Burst Loop','유령 허수아비':'Phantom Decoy','폭발 허수아비':'Explosive Decoy',
 '공성쇠뇌':'Siege Crossbow','사슬기동:충돌':'Chain Dash: Impact',
 '사슬기동:화염':'Chain Dash: Flame','전격이동':'Flash Step',
 // --- Skill Activation ---
@@ -5158,6 +5158,9 @@ const _EN={
 '👻 공성유령!':'👻 Siege Ghost!',
 '🏹 공성쇠뇌 설치!':'🏹 Siege Crossbow Placed!',
 '👻 유령 허수아비!':'👻 Phantom Decoy!',
+'💥 폭발 허수아비!':'💥 Explosive Decoy!',
+'축적!':'Stored!','축적 중...':'Storing...','만충! 재입력→폭발':'Full! Re-press→Explode',
+'폭발! ':'Explode! ','불발...':'Fizzle...','뎀':' DMG',
 '🩸 폭독칼날!':'🩸 Plague Blade!',
 '⚡날개치기!':'⚡Wing Strike!',
 '🗡 칼등날개!':'🗡 Shield Wing!',
@@ -7724,6 +7727,13 @@ function _dispatchSkillSlot(slotIdx,keyCode){
         _skOk=true;
       } else if((P._vsCd||0)<=0){activateVoidScarecrow();_skOk=true}
       else showPH(_T('쿨다운 중...'),'#ff8844');break;
+    case 'explodeScarecrow':
+      if(G._explodeScarecrow){
+        // 재입력 → 폭발!
+        _detonateExplodeScarecrow();
+        _skOk=true;
+      } else if((P._exsCd||0)<=0){activateExplodeScarecrow();_skOk=true}
+      else showPH(_T('쿨다운 중...'),'#ff8844');break;
     case 'ghostXbowTurret':
       if(_gxTurret){
         // 이미 설치됨 → 철거 → 이동식으로 복귀
@@ -9645,11 +9655,16 @@ function _resetProj(p){
 }
 // 유령 허수아비: 발사자(ex,ey) 기준 가까운 타겟 반환 (플레이어 vs 허수아비)
 function _aggroXY(ex,ey){
+  let best={x:P.x,y:P.y},bd=dst(ex,ey,P.x,P.y);
   if(G._voidScarecrow&&G._voidScarecrow.aggroOn){
-    const dp=dst(ex,ey,P.x,P.y),dv=dst(ex,ey,G._voidScarecrow.x,G._voidScarecrow.y);
-    if(dv<dp)return{x:G._voidScarecrow.x,y:G._voidScarecrow.y};
+    const dv=dst(ex,ey,G._voidScarecrow.x,G._voidScarecrow.y);
+    if(dv<bd){best={x:G._voidScarecrow.x,y:G._voidScarecrow.y};bd=dv}
   }
-  return{x:P.x,y:P.y};
+  if(G._explodeScarecrow&&G._explodeScarecrow.aggroOn){
+    const de=dst(ex,ey,G._explodeScarecrow.x,G._explodeScarecrow.y);
+    if(de<bd){best={x:G._explodeScarecrow.x,y:G._explodeScarecrow.y};bd=de}
+  }
+  return best;
 }
 function spawnProj(props){
   let p;
@@ -9661,8 +9676,8 @@ function spawnProj(props){
   if(!p.friendly){
     p.dmg=~~(p.dmg*2);
     p.vx*=1.6;p.vy*=1.6;
-    // 유령 허수아비: 가까운 대상으로 발사 방향 변경 (무지개콩 제외, 보스탄 포함)
-    if(G._voidScarecrow&&G._voidScarecrow.aggroOn&&!p.blackBean){
+    // 허수아비: 가까운 대상으로 발사 방향 변경 (무지개콩 제외, 보스탄 포함)
+    if((G._voidScarecrow&&G._voidScarecrow.aggroOn||G._explodeScarecrow&&G._explodeScarecrow.aggroOn)&&!p.blackBean){
       const _t=_aggroXY(p.x,p.y);
       const _spd2=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
       if(_spd2>0){
@@ -17251,8 +17266,11 @@ function updateQS(){
         }else if(_ssid==='voidScarecrow'&&G._voidScarecrow){
           const _vsAb=G._voidScarecrow.absorbed,_vsMx=G._voidScarecrow.maxAbsorb;
           _cdPct=1-_vsAb/_vsMx;_cdSec=_vsAb+'/'+_vsMx;
+        }else if(_ssid==='explodeScarecrow'&&G._explodeScarecrow){
+          const _esAb=G._explodeScarecrow.absorbed,_esMx=G._explodeScarecrow.maxAbsorb;
+          _cdPct=1-_esAb/_esMx;_cdSec=_esAb+'/'+_esMx;
         }else{
-          const _skCdMap={maliceMortar:P._mmCd||0,holyBlast:P._hbCd||0,bladeShot:P._bltCd||0,lavaSummon:P._lvCd||0,iceOrb:P._ioCd||0,ghostWalk:P._gwCd||0,bladeDash:P._bdCd||0,plagueBurst:P._pbCd||0,shieldThrow:P._stCd||0,blastShot:P._bsCd2||0,giantSlam:P._gslCd||0,holyDome:P._hdCd||0,spikeTrap:P._gcCd||0,needleShot:P._ndCd||0,holyPrison:P._hpCd||0,execution:P._execCd||0,peaceShield:P._psCd||0,blueShot:P._blueCd||0,blackStar:P._bsCd||0,weakPhys:P._wpCd||0,weakMag:P._wmCd||0,weakPj:P._wjCd||0,weakRev:P._wrCd||0,giantSlam2:P._gslCd||0,darkPillar:P._dpCd||0,ghostXbowTurret:0,voidScarecrow:P._vsCd||0};
+          const _skCdMap={maliceMortar:P._mmCd||0,holyBlast:P._hbCd||0,bladeShot:P._bltCd||0,lavaSummon:P._lvCd||0,iceOrb:P._ioCd||0,ghostWalk:P._gwCd||0,bladeDash:P._bdCd||0,plagueBurst:P._pbCd||0,shieldThrow:P._stCd||0,blastShot:P._bsCd2||0,giantSlam:P._gslCd||0,holyDome:P._hdCd||0,spikeTrap:P._gcCd||0,needleShot:P._ndCd||0,holyPrison:P._hpCd||0,execution:P._execCd||0,peaceShield:P._psCd||0,blueShot:P._blueCd||0,blackStar:P._bsCd||0,weakPhys:P._wpCd||0,weakMag:P._wmCd||0,weakPj:P._wjCd||0,weakRev:P._wrCd||0,giantSlam2:P._gslCd||0,darkPillar:P._dpCd||0,ghostXbowTurret:0,voidScarecrow:P._vsCd||0,explodeScarecrow:P._exsCd||0};
           const _cn=_skCdMap[_ssid]||0;const _cm=_ssk.cd||0;
           _skOnCd=_cn>0;_cdPct=(_skOnCd&&_cm>0)?Math.min(_cn/_cm,1):0;_cdSec=(_cn/60).toFixed(1)+'s';
         }
@@ -17359,7 +17377,7 @@ function _updateActionKeys(){
   if(elBow){const _spSk=SKILL_SLOTS[4];
     const _techAim=P._mmAiming;
     // 모든 Space 슬롯 스킬 쿨다운 맵
-    const _spCdMap={maliceMortar:P._mmCd||0,maliceStorm:P._msCd||0,maliceHunt:P._mhCd||0,giantSlam:P._gslCd||0,giantSlam2:P._gslCd||0,darkPillar:P._dpCd||0,spikeTrap:P._gcCd||0,chainSlam:P._csCd||0,chainAssault:P._caCd||0,holyBlast:P._hbCd||0,blastShot:P._bsCd2||0,needleShot:P._ndCd||0,holyDome:P._hdCd||0,peaceShield:P._psCd||0,ghostXbowTurret:0,voidScarecrow:P._vsCd||0,execution:P._execCd||0,fireAura:P._faCd||0,fireBeam:P._fbCd||0,shieldThrow:P._stCd||0,ghostWalk:P._gwCd||0,plagueBurst:P._pbCd||0,blueShot:P._blueCd||0,iceOrb:P._ioCd||0,bladeDash:P._bdCd||0};
+    const _spCdMap={maliceMortar:P._mmCd||0,maliceStorm:P._msCd||0,maliceHunt:P._mhCd||0,giantSlam:P._gslCd||0,giantSlam2:P._gslCd||0,darkPillar:P._dpCd||0,spikeTrap:P._gcCd||0,chainSlam:P._csCd||0,chainAssault:P._caCd||0,holyBlast:P._hbCd||0,blastShot:P._bsCd2||0,needleShot:P._ndCd||0,holyDome:P._hdCd||0,peaceShield:P._psCd||0,ghostXbowTurret:0,voidScarecrow:P._vsCd||0,execution:P._execCd||0,fireAura:P._faCd||0,fireBeam:P._fbCd||0,shieldThrow:P._stCd||0,ghostWalk:P._gwCd||0,plagueBurst:P._pbCd||0,blueShot:P._blueCd||0,iceOrb:P._ioCd||0,bladeDash:P._bdCd||0,explodeScarecrow:P._exsCd||0};
     const _spCdNow=_spCdMap[_spSk]||0;
     const _spOnCd=_spCdNow>0;
     // 스택형 스킬 처리
@@ -20718,8 +20736,10 @@ function update(){
           const mult=elMul(_csEl,e.el);const fd=~~(_csDmg*mult);
           // 기동파괴: 보스는 maxPoise 30% 고정 (3~4방 그로기), 일반몹은 데미지 비례
           if(e.ib){
+            const _psBefore=e.poise;
             e.poise-=~~(e.maxPoise*0.30);e.poiseR=0;
             hurtE(e,fd,ang,false,{kbMult:0.8},_csEl);
+            console.log('[CHAIN-SLAM] boss poise: '+_psBefore+' → '+e.poise+' / '+e.maxPoise+' (dmg='+fd+', 30%='+~~(e.maxPoise*0.30)+')');
             // 보스 그로기 판정
             if(e.poise<=0&&!(e._pImmune>0)){
               e.stunned=Math.max(e.stunned,90);e._maxStunned=Math.max(e._maxStunned||0,90);e.poise=0;
@@ -23727,6 +23747,31 @@ function update(){
       }
     }
   }
+  // ═══ 폭발 허수아비 — 쿨다운 ═══
+  if(P._exsCd>0)P._exsCd-=sp+_hdCdBonus;
+  // ═══ 폭발 허수아비 — 탄막 흡수 로직 ═══
+  if(G._explodeScarecrow&&G._explodeScarecrow.aggroOn){
+    const _es=G._explodeScarecrow;
+    for(let _ei=projs.length-1;_ei>=0;_ei--){
+      const p=projs[_ei];
+      if(p.friendly||p.mine||p.trap||p.web||p.poisonZone||p.life<=0)continue;
+      if(dst(p.x,p.y,_es.x,_es.y)<30){
+        _es.absorbed++;_es.dmgPool+=(p.dmg||0);
+        addParts(_es.x,_es.y,'#ff6622',4);
+        addTxt(_es.x,_es.y-20-Math.random()*10,_T('축적!'),'#ff8844',20);
+        p.life=-999;
+        if(_es.absorbed>=_es.maxAbsorb){
+          _es.aggroOn=false;
+          addTxt(_es.x,_es.y-35,_T('만충! 재입력→폭발'),'#ffcc00',50);
+        }
+      }
+    }
+  }
+  // ═══ 폭발 허수아비 — 거리 1000px 자동폭발 ═══
+  if(G._explodeScarecrow){
+    const _esD=dst(P.x,P.y,G._explodeScarecrow.x,G._explodeScarecrow.y);
+    if(_esD>=1000){_detonateExplodeScarecrow()}
+  }
   // ═══ 유령 허수아비 — 거리 1000px 자동회수 (공성유령 합체 시 제외) ═══
   if(G._voidScarecrow&&!G._voidScarecrow.siegeGhost){
     const _vsD=dst(P.x,P.y,G._voidScarecrow.x,G._voidScarecrow.y);
@@ -26030,7 +26075,7 @@ function updateE(e,sp){
   if(e._freezeGauge>0){e._freezeGauge=Math.max(0,e._freezeGauge-sp*.3)} // 안 맞으면 게이지 자연 감소
   if(e._pImmune>0)e._pImmune-=sp; // 보스 그로기 면역 타이머
 
-  if(e.stunned>0){e.poiseR=0}else if(e.poise<=0){e.poise=e.maxPoise;e.poiseR=0}else if(e.poise<e.maxPoise){e.poiseR+=sp;if(e.poiseR>=(e.ib?300:200)){e.poise=Math.min(e.maxPoise,e.poise+~~(e.maxPoise*.15));e.poiseR=0}}
+  if(e.stunned>0){e.poiseR=0}else if(e.poise<=0){e.poise=e.maxPoise;e.poiseR=0}else if(!e.ib&&e.poise<e.maxPoise){e.poiseR+=sp;if(e.poiseR>=200){e.poise=Math.min(e.maxPoise,e.poise+~~(e.maxPoise*.15));e.poiseR=0}}
   let d=dst(P.x,P.y,e.x,e.y);
   // ── 몬스터 이동 사운드 (거리 1000 이내, 동시 3개 제한) ──
   if(d<1000&&!e.stunned&&!e._frozen){
@@ -30886,6 +30931,7 @@ const SKILL_LIST=[
   {id:'blueShot',name:'푸른비',cat:'bow',fixed:true,emoji:'💎',desc:'[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)',descEn:'[Fixed: E, unlock Lv300] 50 homing blue shots fired sequentially (over 5s). MP 100(+1.5/Lv) cost. Tracks enemies. CD 5s. Per Lv range+30 (DMG uses _skMul)',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:300},
   {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: E, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.5/1.0/1.5초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',descEn:'[Hidden: E, unlock Lv700] Hold for 3-stage charge AoE explosion (0.5/1.0/1.5s). Range 600/1000/1400px. Stage 3 full charge auto-detonates. INT scale, no element',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700},
   {id:'voidScarecrow',name:'유령 허수아비',cat:'def',act:true,emoji:'👻',desc:'유령 허수아비를 소환하여 유도탄막 어그로를 끈다. 탄막을 흡수해 자원 축적 (기본 20개, Lv당+3). 1개당 HP/MP/ST 각 100. R키로 회수. 쿨 30초',descEn:'Summon phantom scarecrow to draw homing projectile aggro. Absorbs projectiles for resource buildup (base 20, +3/Lv). Per absorbed: HP/MP/ST +100 each. R key to retrieve. CD 30s',spCost:10,matCost:100,cd:1800,up:true,upSp:5,upMat:0},
+  {id:'explodeScarecrow',name:'폭발 허수아비',cat:'def',act:true,emoji:'💥',desc:'폭발 허수아비 설치. 탄막을 흡수하고 재입력 시 폭발! 흡수 수×150% 데미지, 범위 80+흡수×8. 최대흡수 15+Lv×3. 쿨 20초',descEn:'Place explosive scarecrow. Absorbs projectiles, re-press to detonate! DMG: absorbed×150%, range 80+absorbed×8. Max absorb 15+Lv×3. CD 20s',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'ghostXbowTurret',name:'공성쇠뇌',cat:'bow',act:true,emoji:'🏹',desc:'[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거(무료). 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 쿨없음. Lv당 뎀+5% 공속+5% 사거리+5%',descEn:'[Select: 1~4, unlock Lv500] Deploy siege crossbow turret at current pos. Re-press to dismantle (free). While deployed: player crossbow disabled (turret fires only). DMG+50%, ATK SPD+50%, range+50%. ST 100. No CD. Per Lv DMG+5% ATK SPD+5% range+5%',spCost:10,matCost:120,up:true,upSp:5,upMat:0,reqLv:500}
 ];
 
@@ -31847,6 +31893,47 @@ function activateVoidScarecrow(){
   playSample('ghost_laugh',1.6,_r(1,.1));
   addTxt(P.x,P.y-30,_T('👻 유령 허수아비!'),'#aa66dd',40);
   addParts(P.x,P.y,'#aa66dd',10);shake(2);
+}
+// ═══ 폭발 허수아비 — 설치 + 폭발 ═══
+function activateExplodeScarecrow(){
+  const slv=P.skills.explodeScarecrow||1;
+  const maxAbsorb=15+(slv-1)*3+(slv>=10?3:0); // 기본15, Lv당+3, 10렙보너스+3 (=42)
+  G._explodeScarecrow={x:P.x,y:P.y,maxAbsorb:maxAbsorb,absorbed:0,aggroOn:true,lv:slv,dmgPool:0};
+  playSample('ghost_laugh',1.2,_r(1.3,.1));
+  addTxt(P.x,P.y-30,_T('💥 폭발 허수아비!'),'#ff4422',40);
+  addParts(P.x,P.y,'#ff4422',10);shake(2);
+}
+function _detonateExplodeScarecrow(){
+  const es=G._explodeScarecrow;if(!es)return;
+  const slv=es.lv||1;
+  const absorbed=es.absorbed||0;
+  // 범위: 80 + 흡수×8, 최소 80, 최대 600
+  const boomR=Math.min(600,80+absorbed*8);
+  // 데미지: 흡수한 탄막 데미지 합산 × 1.5 + 기본 (meleeRef×STR×absorbed×0.5)
+  const baseDmg=~~(meleeRef()*statStr()*.5*Math.max(1,absorbed));
+  const poolDmg=~~((es.dmgPool||0)*1.5);
+  const boom=baseDmg+poolDmg;
+  // 범위 내 적에게 데미지
+  const ne=shQuery(es.x,es.y,boomR);
+  for(let i=0;i<ne.length;i++){
+    const e=ne[i];if(!e.alive)continue;
+    const d=dst(e.x,e.y,es.x,es.y);if(d>=boomR)continue;
+    const ang=Math.atan2(e.y-es.y,e.x-es.x);
+    const falloff=Math.max(.3,1-d/boomR);
+    const dmg=~~(boom*falloff);
+    hurtE(e,dmg,ang,false,{kbMult:1.5,explode:true},EL.F);
+    e.kb.x+=Math.cos(ang)*10*falloff;e.kb.y+=Math.sin(ang)*10*falloff;
+  }
+  // VFX: 폭발 이펙트
+  _addBoom(es.x,es.y,boomR*.6,25,'fire');
+  playVFXAng('burn_death',es.x,es.y,Math.max(.3,boomR/300),3,0,false);
+  addParts(es.x,es.y,'#ff6622',25);addParts(es.x,es.y,'#ffcc44',15);
+  shake(Math.min(12,4+absorbed*.3));
+  SFX.detonate();
+  if(absorbed>0)addTxt(es.x,es.y-40,_T('폭발! ')+(boom)+_T(' 뎀'),'#ffcc00',60);
+  else addTxt(es.x,es.y-40,_T('불발...'),'#ff8844',40);
+  G._explodeScarecrow=null;
+  P._exsCd=~~(1200*(1+_eqAffix('cooldownRed'))); // 20초 쿨
 }
 // ═══ 폭독칼날 — 발동 (1발 관통 칼날, 쿨12초) ═══
 function activatePlagueBurst(){
@@ -40120,6 +40207,43 @@ function drawP(){
       X.fillText(_vs.aggroOn?_T('흡수 중...'):_T('흡수 완료 — 재입력으로 회수'),_vs.x,_vs.y+_vsF+32);
     }
     X.globalAlpha=1;
+  }
+  // ══ 폭발 허수아비 — 렌더 (빨간 틴트) ══
+  if(G._explodeScarecrow){
+    const _es=G._explodeScarecrow;const _et=_now*.001;
+    const _esF=Math.sin(_et*3)*2;
+    var _scFrame2=~~(_now/250)%2;var _scImg2=window._scImgs[_scFrame2];
+    if(_scImg2&&_scImg2.complete&&_scImg2.naturalWidth){
+      var _esSz=128;
+      // 빨간 틴트: 임시 캔버스로 틴트 적용
+      if(!window._esTC){window._esTC=document.createElement('canvas');window._esTC.width=256;window._esTC.height=256;window._esTX=window._esTC.getContext('2d')}
+      const _tc=window._esTC,_tx=window._esTX;
+      _tx.clearRect(0,0,256,256);
+      _tx.drawImage(_scImg2,0,0,256,256);
+      _tx.globalCompositeOperation='source-atop';
+      _tx.fillStyle='rgba(255,40,20,0.45)';_tx.fillRect(0,0,256,256);
+      _tx.globalCompositeOperation='source-over';
+      X.globalAlpha=_es.aggroOn?0.8:0.5;
+      X.drawImage(_tc,_es.x-_esSz/2,_es.y+_esF-_esSz/2,_esSz,_esSz);
+      X.globalAlpha=1;
+    }
+    // 축적 게이지 (빨간색)
+    const _esR=_es.absorbed/_es.maxAbsorb;
+    X.globalAlpha=.5;X.fillStyle='rgba(30,10,10,.6)';
+    X.fillRect(_es.x-15,_es.y+_esF+20,30,4);
+    X.fillStyle=_es.aggroOn?'#ff4422':'#ffcc00';X.globalAlpha=.7;
+    X.fillRect(_es.x-15,_es.y+_esF+20,30*_esR,4);
+    X.globalAlpha=.7;X.font='10px "Noto Sans KR"';X.fillStyle=_es.aggroOn?'#ff6644':'#ffaa00';X.textAlign='center';
+    X.fillText(_es.absorbed+'/'+_es.maxAbsorb,_es.x,_es.y+_esF+17);
+    X.globalAlpha=.6;X.font='10px "Noto Sans KR"';X.textAlign='center';
+    X.fillStyle=_es.aggroOn?'#cc4433':'#ffaa44';
+    X.fillText(_es.aggroOn?_T('축적 중...'):_T('만충! 재입력→폭발'),_es.x,_es.y+_esF+32);
+    X.globalAlpha=1;
+    // 축적 중 불꽃 파티클
+    if(_es.absorbed>0&&_es.aggroOn&&Math.random()<.15){
+      const _fa=Math.random()*Math.PI*2;
+      poolPart(_es.x+Math.cos(_fa)*15,_es.y+_esF+Math.sin(_fa)*15,(Math.random()-.5)*.5,-1-Math.random(),Math.random()<.5?'#ff4422':'#ffaa00',1.5,8+Math.random()*5,1,0,0);
+    }
   }
   // ══ 공성쇠뇌 터렛 — 렌더 ══
   if(_gxTurret){
