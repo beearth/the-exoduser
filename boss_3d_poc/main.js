@@ -98,63 +98,107 @@ const grid = new THREE.GridHelper(floorSize, floorSeg, 0x444466, 0x333355);
 grid.position.y = 0.01;
 scene.add(grid);
 
-// ── 보스 다리 안개 ──
+// ── 보스 다리 안개 (ShaderMaterial + Perlin noise) ──
 let _bossFogMesh = null;
 let _bossFogOn = true;
-let _bossRef3d = null;  // 보스 Object3D 참조
-let _bossFogBaseY = 0;  // 안개 기준 Y (바닥 위)
+let _bossRef3d = null;
+let _bossFogBaseY = 0;
 
-const _FOG_DEBUG = true; // ★ 디버그 모드: 빨간색+거대+불투명. 보이면 false로 복구
-function _createBossFog(bossWidth) {
-  // 디버그: 반경 3배(~6m), 정상: 1.5배(~3m)
-  const fogRadius = bossWidth * (_FOG_DEBUG ? 3 : 1.5);
-  const geo = new THREE.PlaneGeometry(fogRadius * 2, fogRadius * 2);
-  geo.rotateX(-Math.PI / 2); // 수평 배치
+// Perlin noise fog 셰이더
+const _fogVert = `
+varying vec2 vUv;
+void main() {
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}`;
 
-  // 텍스처: 디버그=빨강, 정상=보라 그라데이션
-  const texSize = 256;
-  const fogCanvas = document.createElement('canvas');
-  fogCanvas.width = texSize;
-  fogCanvas.height = texSize;
-  const fc = fogCanvas.getContext('2d');
-  const hw = texSize / 2;
-  if (_FOG_DEBUG) {
-    // ★ 디버그: 빨간 원, 완전 불투명 — 무조건 보여야 함
-    const grd = fc.createRadialGradient(hw, hw, 0, hw, hw, hw);
-    grd.addColorStop(0, 'rgba(255,0,0,1)');
-    grd.addColorStop(0.5, 'rgba(255,0,0,0.8)');
-    grd.addColorStop(0.8, 'rgba(255,0,0,0.4)');
-    grd.addColorStop(1, 'rgba(255,0,0,0)');
-    fc.fillStyle = grd;
-    fc.fillRect(0, 0, texSize, texSize);
-  } else {
-    const grd = fc.createRadialGradient(hw, hw, 0, hw, hw, hw);
-    grd.addColorStop(0, 'rgba(50,18,60,0.9)');
-    grd.addColorStop(0.2, 'rgba(40,14,50,0.7)');
-    grd.addColorStop(0.45, 'rgba(30,10,40,0.4)');
-    grd.addColorStop(0.7, 'rgba(22,8,32,0.15)');
-    grd.addColorStop(1, 'rgba(18,6,26,0)');
-    fc.fillStyle = grd;
-    fc.fillRect(0, 0, texSize, texSize);
+const _fogFrag = `
+uniform float uTime;
+uniform vec3 uColor;
+uniform float uDensity;
+varying vec2 vUv;
+
+// --- Simplex-style 3D noise (IQ hash) ---
+vec3 hash33(vec3 p) {
+  p = vec3(dot(p,vec3(127.1,311.7,74.7)),
+           dot(p,vec3(269.5,183.3,246.1)),
+           dot(p,vec3(113.5,271.9,124.6)));
+  return -1.0 + 2.0 * fract(sin(p) * 43758.5453123);
+}
+float snoise(vec3 p) {
+  vec3 i = floor(p);
+  vec3 f = fract(p);
+  vec3 u = f * f * (3.0 - 2.0 * f);
+  return mix(mix(mix(dot(hash33(i+vec3(0,0,0)),f-vec3(0,0,0)),
+                     dot(hash33(i+vec3(1,0,0)),f-vec3(1,0,0)),u.x),
+                 mix(dot(hash33(i+vec3(0,1,0)),f-vec3(0,1,0)),
+                     dot(hash33(i+vec3(1,1,0)),f-vec3(1,1,0)),u.x),u.y),
+             mix(mix(dot(hash33(i+vec3(0,0,1)),f-vec3(0,0,1)),
+                     dot(hash33(i+vec3(1,0,1)),f-vec3(1,0,1)),u.x),
+                 mix(dot(hash33(i+vec3(0,1,1)),f-vec3(0,1,1)),
+                     dot(hash33(i+vec3(1,1,1)),f-vec3(1,1,1)),u.x),u.y),u.z);
+}
+float fbm(vec3 p) {
+  float v = 0.0, a = 0.5;
+  for (int i = 0; i < 4; i++) {
+    v += a * snoise(p);
+    p *= 2.0;
+    a *= 0.5;
   }
+  return v;
+}
+void main() {
+  vec2 c = vUv - 0.5;
+  float dist = length(c) * 2.0;
+  // 원형 페이드 (가장자리 투명)
+  float edge = 1.0 - smoothstep(0.4, 1.0, dist);
+  // 노이즈 흐름
+  vec3 np = vec3(vUv * 3.0, uTime * 0.3);
+  float n = fbm(np) * 0.5 + 0.5;
+  // 2차 레이어 (느린 큰 흐름)
+  float n2 = fbm(np * 0.5 + vec3(5.2, 1.3, uTime * 0.15)) * 0.5 + 0.5;
+  float fog = n * n2 * edge * uDensity;
+  gl_FragColor = vec4(uColor, fog);
+}`;
 
-  const tex = new THREE.CanvasTexture(fogCanvas);
-  tex.needsUpdate = true;
-  const mat = new THREE.MeshBasicMaterial({
-    map: tex,
+function _createBossFog(bossWidth) {
+  const fogRadius = bossWidth * 2.0;
+  const geo = new THREE.PlaneGeometry(fogRadius * 2, fogRadius * 2);
+  geo.rotateX(-Math.PI / 2);
+
+  const mat = new THREE.ShaderMaterial({
+    vertexShader: _fogVert,
+    fragmentShader: _fogFrag,
+    uniforms: {
+      uTime: { value: 0 },
+      uColor: { value: new THREE.Color(0x2a1230) },  // 짙은 보라
+      uDensity: { value: 0.85 }
+    },
     transparent: true,
     depthWrite: false,
-    depthTest: false,       // ★ 디버그: depthTest도 끔 → 무조건 그려짐
     side: THREE.DoubleSide,
-    opacity: _FOG_DEBUG ? 1.0 : 0.85,
-    fog: false              // scene.fog 영향 차단
+    fog: false
   });
+
   _bossFogMesh = new THREE.Mesh(geo, mat);
-  _bossFogMesh.renderOrder = _FOG_DEBUG ? 999 : 2;
-  _bossFogMesh.visible = true;
+  _bossFogMesh.renderOrder = 2;
   _bossFogMesh.frustumCulled = false;
   scene.add(_bossFogMesh);
-  console.log(`[FOG] ★ CREATED — debug=${_FOG_DEBUG}, radius=${fogRadius.toFixed(2)}m, opacity=${mat.opacity}, renderOrder=${_bossFogMesh.renderOrder}, visible=${_bossFogMesh.visible}, parent=${_bossFogMesh.parent===scene?'scene':'???'}, children=${scene.children.length}`);
+
+  // 셰이더 컴파일 검증
+  renderer.compile(scene, camera);
+  const gl = renderer.getContext();
+  const prog = renderer.properties.get(mat).currentProgram;
+  if (prog) {
+    const vs = gl.getShaderParameter(prog.vertexShader, gl.COMPILE_STATUS);
+    const fs = gl.getShaderParameter(prog.fragmentShader, gl.COMPILE_STATUS);
+    console.log(`[FOG-SHADER] compile — vert:${vs} frag:${fs}`);
+    if (!vs) console.error('[FOG-SHADER] vert error:', gl.getShaderInfoLog(prog.vertexShader));
+    if (!fs) console.error('[FOG-SHADER] frag error:', gl.getShaderInfoLog(prog.fragmentShader));
+  } else {
+    console.warn('[FOG-SHADER] program not found — will compile on first render');
+  }
+  console.log(`[FOG] Noise fog created — radius=${fogRadius.toFixed(2)}m`);
 }
 
 // ── 보스 GLB 로드 ──
@@ -313,28 +357,20 @@ function animate() {
   // 보스 애니메이션
   if (mixer) mixer.update(dt);
 
-  // 보스 다리 안개 업데이트 (위치 추적 + 진동 + 회전)
-  if (_bossFogMesh && _bossRef3d) {
+  // 보스 다리 안개 업데이트
+  if (_bossFogMesh) {
     _bossFogMesh.visible = _bossFogOn;
     if (_bossFogOn) {
-      const bx = _bossRef3d.position.x;
-      const bz = _bossRef3d.position.z;
-      // Y: 바닥 위 고정 + sin wave 진동 (amplitude 0.05, 주기 2초)
-      const oscY = Math.sin(clock.elapsedTime * Math.PI) * 0.05;
-      _bossFogMesh.position.set(bx, _bossFogBaseY + oscY, bz);
-      // 천천히 회전 (안개 흐르는 느낌)
+      // uTime 업데이트 (셰이더 노이즈 흐름)
+      _bossFogMesh.material.uniforms.uTime.value = clock.elapsedTime;
+      if (_bossRef3d) {
+        const bx = _bossRef3d.position.x;
+        const bz = _bossRef3d.position.z;
+        const oscY = Math.sin(clock.elapsedTime * Math.PI) * 0.05;
+        _bossFogMesh.position.set(bx, _bossFogBaseY + oscY, bz);
+      }
       _bossFogMesh.rotation.y += 0.001;
     }
-  }
-  // 매 프레임 디버그 로그 (0.5초 주기 FPS 리셋 시점에만)
-  if (_bossFogMesh && fpsTime < dt * 1.5) {
-    const fp = _bossFogMesh.position;
-    const vis = _bossFogMesh.visible;
-    const par = _bossFogMesh.parent ? _bossFogMesh.parent.type : 'NONE';
-    const bossP = _bossRef3d ? _bossRef3d.position : {x:'?',y:'?',z:'?'};
-    console.log(`[FOG-FRAME] visible=${vis} parent=${par} fogPos=(${typeof fp.x==='number'?fp.x.toFixed(2):fp.x},${typeof fp.y==='number'?fp.y.toFixed(2):fp.y},${typeof fp.z==='number'?fp.z.toFixed(2):fp.z}) bossPos=(${typeof bossP.x==='number'?bossP.x.toFixed(2):bossP.x},${typeof bossP.y==='number'?bossP.y.toFixed(2):bossP.y},${typeof bossP.z==='number'?bossP.z.toFixed(2):bossP.z}) renderOrder=${_bossFogMesh.renderOrder} opacity=${_bossFogMesh.material.opacity}`);
-  } else if (!_bossFogMesh && fpsTime < dt * 1.5) {
-    console.warn('[FOG-FRAME] _bossFogMesh is NULL — boss GLB not loaded yet?');
   }
 
   // WASD 이동 (카메라 기준 방향)
