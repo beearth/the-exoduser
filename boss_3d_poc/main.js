@@ -201,67 +201,109 @@ function _createBossFog(bossWidth) {
   console.log(`[FOG] Noise fog created — radius=${fogRadius.toFixed(2)}m`);
 }
 
-// ── 보스 GLB 로드 ──
+// ── 보스 GLB 로드 (5개 애니메이션 파일, 상태별 매핑) ──
 let mixer = null;
 const loader = new GLTFLoader();
-loader.load(
-  'assets/boss_01.glb',
-  (gltf) => {
-    const boss = gltf.scene;
 
-    // 1) Box3 측정 → 2.2m 스케일
-    const box = new THREE.Box3().setFromObject(boss);
-    const size = box.getSize(new THREE.Vector3());
-    const rawH = size.y;
-    const TARGET_H = 2.2;
-    const sc = TARGET_H / rawH;
-    boss.scale.setScalar(sc);
-    console.log(`[BOSS] raw height=${rawH.toFixed(3)} → scale=${sc.toFixed(3)} → ${TARGET_H}m`);
+// 상태 매핑: 키 = 상태명, src = GLB 파일
+const BOSS_ANIMS = {
+  idle:   { src: 'assets/Meshy_AI_1_biped_Animation_Alert_withSkin.glb',         label: 'Alert/Idle' },
+  walk:   { src: 'assets/Meshy_AI_1_biped_Animation_Walking_withSkin.glb',       label: 'Walking' },
+  aggro:  { src: 'assets/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb',  label: 'Monster Walk' },
+  run:    { src: 'assets/Meshy_AI_1_biped_Animation_Running_withSkin.glb',       label: 'Running/Charge' },
+  hit:    { src: 'assets/Meshy_AI_1_biped_Animation_Unsteady_Walk_withSkin.glb', label: 'Stagger/Hit' }
+};
 
-    // 발 바닥 정렬
-    const box2 = new THREE.Box3().setFromObject(boss);
-    boss.position.set(0, -box2.min.y, 0);
+let _bossModel = null;   // 씬에 추가된 보스 모델
+let _bossActions = {};   // 상태명 → AnimationAction
+let _bossState = 'idle'; // 현재 상태
+let _bossScale = 1;
+let _loadedCount = 0;
+const _totalAnims = Object.keys(BOSS_ANIMS).length;
 
-    boss.traverse((child) => {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
+// 첫 번째 GLB로 모델+씬 세팅, 나머지는 애니메이션 클립만 추출
+function _loadBossAnims() {
+  const states = Object.keys(BOSS_ANIMS);
+
+  states.forEach((state, idx) => {
+    const cfg = BOSS_ANIMS[state];
+    loader.load(cfg.src, (gltf) => {
+      _loadedCount++;
+      console.log(`[BOSS] Loaded ${cfg.label} (${_loadedCount}/${_totalAnims})`);
+
+      if (!_bossModel) {
+        // 첫 로드: 모델 씬에 추가
+        const boss = gltf.scene;
+        const box = new THREE.Box3().setFromObject(boss);
+        const size = box.getSize(new THREE.Vector3());
+        const TARGET_H = 2.2;
+        _bossScale = TARGET_H / size.y;
+        boss.scale.setScalar(_bossScale);
+
+        const box2 = new THREE.Box3().setFromObject(boss);
+        boss.position.set(0, -box2.min.y, 0);
+
+        boss.traverse((child) => {
+          if (child.isMesh) { child.castShadow = true; child.receiveShadow = true; }
+        });
+        scene.add(boss);
+        _bossModel = boss;
+        _bossRef3d = boss;
+
+        const box3 = new THREE.Box3().setFromObject(boss);
+        const bossSize = box3.getSize(new THREE.Vector3());
+        console.log(`[BOSS] Model added — size: ${bossSize.x.toFixed(2)}×${bossSize.y.toFixed(2)}×${bossSize.z.toFixed(2)}`);
+
+        // 안개 생성
+        _bossFogBaseY = 0.05;
+        _createBossFog(Math.max(bossSize.x, bossSize.z));
+
+        mixer = new THREE.AnimationMixer(boss);
       }
+
+      // 애니메이션 클립 등록
+      if (gltf.animations.length > 0 && mixer) {
+        const clip = gltf.animations[0];
+        clip.name = state; // 상태명으로 리네임
+        const action = mixer.clipAction(clip);
+        _bossActions[state] = action;
+        console.log(`  [ANIM] ${state} = "${cfg.label}" (${clip.duration.toFixed(2)}s)`);
+
+        // 첫 상태(idle) 자동 재생
+        if (state === 'idle') {
+          action.play();
+          _bossState = 'idle';
+        }
+      }
+
+      // 모든 로드 완료
+      if (_loadedCount === _totalAnims) {
+        console.log(`[BOSS] All ${_totalAnims} animations ready. Keys: 1=idle 2=walk 3=aggro 4=run 5=hit`);
+      }
+    }, null, (err) => {
+      console.warn(`[BOSS] Failed to load ${cfg.label}:`, err);
+      _loadedCount++;
     });
-    scene.add(boss);
+  });
+}
 
-    const box3 = new THREE.Box3().setFromObject(boss);
-    const bossSize = box3.getSize(new THREE.Vector3());
-    console.log(`[BOSS] final size: ${bossSize.x.toFixed(2)} x ${bossSize.y.toFixed(2)} x ${bossSize.z.toFixed(2)}`);
+// 상태 전환
+function _switchBossState(newState) {
+  if (newState === _bossState) return;
+  if (!_bossActions[newState]) { console.warn(`[BOSS] No action for state: ${newState}`); return; }
 
-    // 보스 다리 안개 생성
-    _bossRef3d = boss;
-    // box3.min.y ≈ 0 (발 바닥 정렬 후), 안개는 발 위 0.05m
-    _bossFogBaseY = 0.05;
-    const bossW = Math.max(bossSize.x, bossSize.z);
-    console.log(`[FOG] Creating fog — bossW=${bossW.toFixed(2)}, baseY=${_bossFogBaseY}, bossPos=(${boss.position.x.toFixed(2)},${boss.position.y.toFixed(2)},${boss.position.z.toFixed(2)})`);
-    _createBossFog(bossW);
+  const prev = _bossActions[_bossState];
+  const next = _bossActions[newState];
 
-    // 애니메이션
-    const clips = gltf.animations;
-    console.log(`[BOSS] ${clips.length} animation(s):`);
-    clips.forEach((clip, i) => console.log(`  [${i}] "${clip.name}" (${clip.duration.toFixed(2)}s)`));
-
-    if (clips.length > 0) {
-      mixer = new THREE.AnimationMixer(boss);
-      const action = mixer.clipAction(clips[0]);
-      action.play();
-      console.log(`[BOSS] Playing: "${clips[0].name}"`);
-    }
-  },
-  (progress) => {
-    if (progress.total > 0)
-      console.log(`[BOSS] Loading... ${(progress.loaded / progress.total * 100).toFixed(0)}%`);
-  },
-  (error) => {
-    console.warn('[BOSS] GLB load failed:', error);
+  if (prev) {
+    prev.fadeOut(0.3);
   }
-);
+  next.reset().fadeIn(0.3).play();
+  _bossState = newState;
+  console.log(`[BOSS] State → ${newState} (${BOSS_ANIMS[newState].label})`);
+}
+
+_loadBossAnims();
 
 // ── 플레이어 마커 ──
 const playerPos = new THREE.Vector3(4, 0, 4);
@@ -281,13 +323,12 @@ window.addEventListener('keydown', (e) => {
   if (e.code === 'F4') {
     e.preventDefault();
     _bossFogOn = !_bossFogOn;
-    if (_bossFogMesh) {
-      _bossFogMesh.visible = _bossFogOn;
-      console.log(`[FOG TOGGLE] _bossFogOn=${_bossFogOn}, mesh.visible=${_bossFogMesh.visible}, mesh.parent=${_bossFogMesh.parent?_bossFogMesh.parent.type:'DETACHED'}`);
-    } else {
-      console.warn('[FOG TOGGLE] _bossFogMesh is NULL!');
-    }
+    if (_bossFogMesh) _bossFogMesh.visible = _bossFogOn;
+    console.log('[FOG] ' + (_bossFogOn ? 'ON' : 'OFF'));
   }
+  // 1~5: 보스 상태 전환
+  const stateMap = { '1': 'idle', '2': 'walk', '3': 'aggro', '4': 'run', '5': 'hit' };
+  if (stateMap[e.key]) _switchBossState(stateMap[e.key]);
 });
 window.addEventListener('keyup', (e) => {
   const k = e.key.toLowerCase();
