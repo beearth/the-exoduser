@@ -98,6 +98,46 @@ const grid = new THREE.GridHelper(floorSize, floorSeg, 0x444466, 0x333355);
 grid.position.y = 0.01;
 scene.add(grid);
 
+// ── 보스 다리 안개 ──
+let _bossFogMesh = null;
+let _bossFogOn = true;
+let _bossRef3d = null;  // 보스 Object3D 참조
+let _bossFogBaseY = 0;  // 안개 기준 Y (바닥 위)
+
+function _createBossFog(bossWidth) {
+  // 반경 = 보스 너비 × 1.5, PlaneGeometry
+  const fogRadius = bossWidth * 1.5;
+  const geo = new THREE.PlaneGeometry(fogRadius * 2, fogRadius * 2);
+  geo.rotateX(-Math.PI / 2); // 수평 배치
+
+  // 원형 그라데이션 텍스처 (가운데 #1a0e1a 짙음 → 가장자리 투명)
+  const texSize = 256;
+  const fogCanvas = document.createElement('canvas');
+  fogCanvas.width = texSize;
+  fogCanvas.height = texSize;
+  const fc = fogCanvas.getContext('2d');
+  const grd = fc.createRadialGradient(texSize / 2, texSize / 2, 0, texSize / 2, texSize / 2, texSize / 2);
+  grd.addColorStop(0, 'rgba(26,14,26,0.55)');
+  grd.addColorStop(0.3, 'rgba(26,14,26,0.35)');
+  grd.addColorStop(0.6, 'rgba(26,14,26,0.12)');
+  grd.addColorStop(1, 'rgba(26,14,26,0)');
+  fc.fillStyle = grd;
+  fc.fillRect(0, 0, texSize, texSize);
+
+  const tex = new THREE.CanvasTexture(fogCanvas);
+  const mat = new THREE.MeshBasicMaterial({
+    map: tex,
+    transparent: true,
+    depthWrite: false,
+    side: THREE.DoubleSide,
+    opacity: 0.7
+  });
+  _bossFogMesh = new THREE.Mesh(geo, mat);
+  _bossFogMesh.renderOrder = 1; // 바닥 위 투명 렌더
+  scene.add(_bossFogMesh);
+  console.log(`[FOG] Boss leg fog created: radius=${fogRadius.toFixed(2)}m`);
+}
+
 // ── 보스 GLB 로드 ──
 let mixer = null;
 const loader = new GLTFLoader();
@@ -130,6 +170,11 @@ loader.load(
     const box3 = new THREE.Box3().setFromObject(boss);
     const bossSize = box3.getSize(new THREE.Vector3());
     console.log(`[BOSS] final size: ${bossSize.x.toFixed(2)} x ${bossSize.y.toFixed(2)} x ${bossSize.z.toFixed(2)}`);
+
+    // 보스 다리 안개 생성
+    _bossRef3d = boss;
+    _bossFogBaseY = -box3.min.y + 0.05; // 발 위 살짝 (y = +0.05)
+    _createBossFog(Math.max(bossSize.x, bossSize.z));
 
     // 애니메이션
     const clips = gltf.animations;
@@ -166,6 +211,13 @@ const keys = { w: false, a: false, s: false, d: false };
 window.addEventListener('keydown', (e) => {
   const k = e.key.toLowerCase();
   if (k in keys) keys[k] = true;
+  // F4: 안개 토글
+  if (e.code === 'F4') {
+    e.preventDefault();
+    _bossFogOn = !_bossFogOn;
+    if (_bossFogMesh) _bossFogMesh.visible = _bossFogOn;
+    console.log('[FOG] ' + (_bossFogOn ? 'ON' : 'OFF'));
+  }
 });
 window.addEventListener('keyup', (e) => {
   const k = e.key.toLowerCase();
@@ -234,6 +286,17 @@ function animate() {
 
   // 보스 애니메이션
   if (mixer) mixer.update(dt);
+
+  // 보스 다리 안개 업데이트 (위치 추적 + 진동 + 회전)
+  if (_bossFogMesh && _bossRef3d && _bossFogOn) {
+    const bx = _bossRef3d.position.x;
+    const bz = _bossRef3d.position.z;
+    // Y: 바닥 위 고정 + sin wave 진동 (amplitude 0.05, 주기 2초)
+    const oscY = Math.sin(clock.elapsedTime * Math.PI) * 0.05;
+    _bossFogMesh.position.set(bx, _bossFogBaseY + oscY, bz);
+    // 천천히 회전 (안개 흐르는 느낌)
+    _bossFogMesh.rotation.y += 0.001;
+  }
 
   // WASD 이동 (카메라 기준 방향)
   _forward.set(0, 0, 0);

@@ -3420,6 +3420,31 @@ let _renderRes=null; // {w,h} 커스텀 렌더 해상도 (null=네이티브)
 let _dpr=1; // devicePixelRatio 캐시
 let _vignCvs=null,_vignW=0,_vignH=0;
 let _fogCvs=null,_fogW=0,_fogH=0,_fogHell=-1;
+// ── 안개 레이어 (하단 지면 안개 + 상단 대기 헤이즈) ──
+let _fogBotCvs=null,_fogTopCvs=null,_fogLayerW=0,_fogLayerH=0,_fogLayerHell=-1;
+const _FOG_BOT_COLS=[
+  'rgba(60,90,120,.12)','rgba(20,40,15,.14)','rgba(60,15,8,.13)',
+  'rgba(35,12,50,.14)','rgba(50,40,8,.12)','rgba(40,35,20,.13)','rgba(20,8,40,.15)'
+];
+const _FOG_TOP_COLS=[
+  'rgba(40,60,90,.06)','rgba(12,25,10,.07)','rgba(40,10,5,.06)',
+  'rgba(25,8,35,.07)','rgba(35,28,5,.06)','rgba(28,25,15,.06)','rgba(14,5,28,.07)'
+];
+function _bakeFogLayers(w,h,hell){
+  // 하단 지면 안개 (화면 하단 40%)
+  _fogBotCvs=document.createElement('canvas');_fogBotCvs.width=w;_fogBotCvs.height=h;
+  const bc=_fogBotCvs.getContext('2d');
+  const bg=bc.createLinearGradient(0,h*.6,0,h);
+  bg.addColorStop(0,'rgba(0,0,0,0)');bg.addColorStop(.3,_FOG_BOT_COLS[hell]||'rgba(30,30,30,.1)');bg.addColorStop(1,_FOG_BOT_COLS[hell]||'rgba(30,30,30,.1)');
+  bc.fillStyle=bg;bc.fillRect(0,0,w,h);
+  // 상단 대기 헤이즈 (화면 상단 30%)
+  _fogTopCvs=document.createElement('canvas');_fogTopCvs.width=w;_fogTopCvs.height=h;
+  const tc=_fogTopCvs.getContext('2d');
+  const tg=tc.createLinearGradient(0,0,0,h*.3);
+  tg.addColorStop(0,_FOG_TOP_COLS[hell]||'rgba(20,20,20,.05)');tg.addColorStop(1,'rgba(0,0,0,0)');
+  tc.fillStyle=tg;tc.fillRect(0,0,w,h);
+  _fogLayerW=w;_fogLayerH=h;_fogLayerHell=hell;
+}
 function _bakeVignette(w,h){
   _vignCvs=document.createElement('canvas');_vignCvs.width=w;_vignCvs.height=h;
   const vc=_vignCvs.getContext('2d');
@@ -3467,7 +3492,7 @@ function rz(){
   if(X){X.imageSmoothingEnabled=false}
   C.style.imageRendering='pixelated';CT.style.imageRendering='pixelated';
   if(_bCvs)_bCvs.style.imageRendering='pixelated';
-  _bakeVignette(rw,rh);_fogCvs=null;
+  _bakeVignette(rw,rh);_fogCvs=null;_fogBotCvs=null;_fogTopCvs=null;
 }
 addEventListener('resize',rz);
 
@@ -4524,7 +4549,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -5519,6 +5544,29 @@ function _getSmogStamp(r,g,b){
   grd.addColorStop(1,'rgba('+r+','+g+','+b+',0)');
   cx.fillStyle=grd;cx.fillRect(0,0,sz,sz);
   _smogStamps[key]=c;return c;
+}
+// ── 보스 다리 안개 스탬프 (프리렌더 타원형, 중심 #1a0e1a → 가장자리 투명) ──
+const _bossLegFogStamps={};
+function _getBossLegFogStamp(hell){
+  if(_bossLegFogStamps[hell])return _bossLegFogStamps[hell];
+  // 지옥별 보스톤 색상 (중심 짙음 → 가장자리 투명)
+  const _blfCols=[
+    [26,14,36],[16,30,12],[50,12,8],[36,10,46],[46,36,8],[34,28,16],[18,6,36]
+  ];
+  const c0=_blfCols[hell]||[26,14,26];
+  const w=512,h=256,c=document.createElement('canvas');c.width=w;c.height=h;
+  const cx=c.getContext('2d');
+  // 타원형: scaleY 0.5로 눌러서 타원
+  cx.save();cx.translate(w/2,h/2);cx.scale(1,.5);
+  const grd=cx.createRadialGradient(0,0,0,0,0,w/2);
+  grd.addColorStop(0,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',.85)');
+  grd.addColorStop(.25,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',.6)');
+  grd.addColorStop(.5,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',.3)');
+  grd.addColorStop(.75,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',.08)');
+  grd.addColorStop(1,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',0)');
+  cx.fillStyle=grd;cx.beginPath();cx.arc(0,0,w/2,0,Math.PI*2);cx.fill();
+  cx.restore();
+  _bossLegFogStamps[hell]=c;return c;
 }
 // ═══ [GRAIN] 필름 그레인 ═══
 let _grainCvs=null,_grainCtx=null,_grainT=0,_grainPat=null,_grainPatDirty=true;
@@ -7806,6 +7854,7 @@ addEventListener('keydown',e=>{
   // F11 전체화면 토글
   if(e.code==='F11'){toggleFullscreen();return}
   if(e.code==='F10'){togglePanel('settings');e.preventDefault();return}
+  if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();const _fl=_nf?'ON':'OFF';console.log('[FOG] '+_fl);showPH((_nf?(OPT.lang!=='ko'?'Fog ON':'안개 ON'):(OPT.lang!=='ko'?'Fog OFF':'안개 OFF')),_nf?'#8899cc':'#888888');return}
   K[e.code]=true;KH[e.code]=true;
   if(['Space','Tab','Escape','KeyE','KeyQ','KeyZ','KeyX','KeyC','KeyB','KeyN','KeyH','KeyJ','KeyK','KeyL','KeyR','KeyF','KeyG','KeyV','ControlLeft','ControlRight','ShiftLeft','ShiftRight','CapsLock'].includes(e.code))e.preventDefault();
   // ── T키 석궁 자동발사 토글 ──
@@ -19661,7 +19710,7 @@ function mkEn(x,y,si,etype,ib,el,room){
   const _eShield=_hp; // eShield = HP (50:50 이원 방어)
   const _e={x,y,r,hp:_hp,mhp:_hp,atk:_atk,baseAtk:_atk,
     speed:spd,baseSpd:spd,el,col:ib?ELC[el]:_rare?_rd.col:(ETYPE_COL[etype]||ELC[el]),alive:true,stunned:0,kb:{x:0,y:0},
-    poise:~~(_hp*.5),maxPoise:~~(_hp*.5),poiseR:0,
+    poise:_hp,maxPoise:_hp,poiseR:0, // 포이즈=HP 100% (기존 50%→100%)
     ib,etype,room,lv:monLv,s:'idle',st2:30+Math.random()*50,facing:Math.random()*Math.PI*2,
     elite,mods,aura:elite>=2?rollAura(elite,si):null,
     modT:{regen:0,summon:0,tp:0,chaos:0,vortex:0,lightning:0,twarp:0,cloned:false,revived:false,split:false,sentry:0,sentryAng:0,sentryOn:false,illusioned:false,stealthT:0},
@@ -26044,7 +26093,7 @@ function updateE(e,sp){
     if(e.stunned>_stunCap){e.stunned=_stunCap}
     if(!e._maxStunned)e._maxStunned=e.stunned;
     e._stunImmune=Math.max(e._stunImmune||0,2); // 스턴 중 면역 유지
-    e.poise=e.maxPoise; // 스턴 중 포이즈 풀 유지
+    if(!e.ib) e.poise=e.maxPoise; // 일반몹만 스턴 중 포이즈 풀 유지 (보스는 유지 안 함)
     // stunned 감소는 루프 초반에서 처리됨
     e._expectedStun=Math.max(0,e.stunned);
     if(e.stunned<=0){e._maxStunned=0;e._stunImmune=180;e._expectedStun=undefined;
@@ -26053,7 +26102,7 @@ function updateE(e,sp){
   }else if((e._stunImmune||0)>0){
     // 면역 기간: 새 스턴 차단 + 포이즈 보호
     if(e.stunned>0){e.stunned=0;e._expectedStun=undefined}
-    e.poise=e.maxPoise;
+    if(!e.ib) e.poise=e.maxPoise; // 일반몹만 면역 중 포이즈 리셋
   }
   // 이동 판정: 이전 위치와 비교 (3프레임 유지) + 이동방향 _moveAng 기록 (2026-04-16)
   {const _dx=e.x-(e._prevX||e.x),_dy=e.y-(e._prevY||e.y);
@@ -26075,7 +26124,10 @@ function updateE(e,sp){
   if(e._freezeGauge>0){e._freezeGauge=Math.max(0,e._freezeGauge-sp*.3)} // 안 맞으면 게이지 자연 감소
   if(e._pImmune>0)e._pImmune-=sp; // 보스 그로기 면역 타이머
 
-  if(e.stunned>0){e.poiseR=0}else if(e.poise<=0){e.poise=e.maxPoise;e.poiseR=0}else if(!e.ib&&e.poise<e.maxPoise){e.poiseR+=sp;if(e.poiseR>=200){e.poise=Math.min(e.maxPoise,e.poise+~~(e.maxPoise*.15));e.poiseR=0}}
+  if(e.stunned>0){e.poiseR=0}
+  else if(e.poise<=0&&!e.ib){e.poise=e.maxPoise;e.poiseR=0} // 일반몹만 즉시 리셋
+  else if(e.poise<=0&&e.ib){e.poiseR=0} // 보스: 포이즈 0 유지 (그로기 판정은 공격 측에서)
+  else if(!e.ib&&e.poise<e.maxPoise){e.poiseR+=sp;if(e.poiseR>=200){e.poise=Math.min(e.maxPoise,e.poise+~~(e.maxPoise*.15));e.poiseR=0}}
   let d=dst(P.x,P.y,e.x,e.y);
   // ── 몬스터 이동 사운드 (거리 1000 이내, 동시 3개 제한) ──
   if(d<1000&&!e.stunned&&!e._frozen){
@@ -37926,6 +37978,20 @@ function draw(){
         }
       }
       if(!_bDrew){X.save();X.translate(0,_tdY);drawBossBody(X,e,_now,sa);X.restore()}
+      // ── 보스 다리 안개 (PlaneGeometry 대용: 타원 스탬프, 발 위치 추적, sinwave 진동) ──
+      if(OPT.bossFog&&e.alive&&sa>.1){
+        const _bfHell=SI_TO_HELL[G.stage];
+        const _bfS=_getBossLegFogStamp(_bfHell);
+        // 반경 = 보스 너비(r*2) × 1.5 = r*3, 높이 비율 0.8
+        const _bfW=e.r*6,_bfH=e.r*6*.8;
+        // sinwave Y 진동: amplitude=e.r*0.3, 주기 2초(120프레임≒2000ms)
+        const _bfOscY=Math.sin(_now*Math.PI/1000)*e.r*.3;
+        // 보스 발 좌표 추적 (발 = e.y + e.r*0.25)
+        const _bfFx=e.x,_bfFy=e.y+e.r*.25+_tdY+_bfOscY;
+        X.globalAlpha=sa*.45;
+        X.drawImage(_bfS,_bfFx-_bfW/2,_bfFy-_bfH/2,_bfW,_bfH);
+        X.globalAlpha=sa;
+      }
     }else{
       // ── 일반 적 렌더링 (8dir 단일 경로) ──
       let _eDrew=false;
@@ -39366,6 +39432,15 @@ function draw(){
     X.globalAlpha=1;X.restore();
   }
   _pC2=performance.now(); // fog end
+  // ── 안개 레이어 (하단 지면 + 상단 대기) ──
+  if(OPT.fog&&_hwTier!=='C'){
+    const _flHell=SI_TO_HELL[G.stage||0];
+    if(!_fogBotCvs||_fogLayerW!==C.width||_fogLayerH!==C.height||_fogLayerHell!==_flHell)_bakeFogLayers(C.width,C.height,_flHell);
+    X.save();X.setTransform(1,0,0,1,0,0);
+    X.drawImage(_fogBotCvs,0,0);
+    X.drawImage(_fogTopCvs,0,0);
+    X.restore();
+  }
   // ── 동적 환경광 오버레이 (매 프레임 — 교대 렌더 제거, 깜빡임 방지) ──
   {const _elHell=SI_TO_HELL[G.stage||0];
   const _elCol=_ENV_LIGHT[_elHell];
