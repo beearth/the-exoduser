@@ -31,7 +31,14 @@
   else applyFavicon();
 })();
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+// Supabase CDN: 로컬호스트/Electron에서는 로드 스킵 (Tracking Prevention 경고 방지)
+if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!=='127.0.0.1'){
+  var _sbS=document.createElement('script');
+  _sbS.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+  document.head.appendChild(_sbS);
+}
+</script>
 <script src="maps_data.js"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
@@ -5549,20 +5556,20 @@ function _getSmogStamp(r,g,b){
 const _bossLegFogStamps={};
 function _getBossLegFogStamp(hell){
   if(_bossLegFogStamps[hell])return _bossLegFogStamps[hell];
-  // 지옥별 보스톤 색상 (중심 짙음 → 가장자리 투명)
+  // 지옥별 보스 안개 색상 — 밝은 톤 (배경과 대비)
   const _blfCols=[
-    [26,14,36],[16,30,12],[50,12,8],[36,10,46],[46,36,8],[34,28,16],[18,6,36]
+    [120,90,160],[80,140,90],[160,80,60],[130,70,160],[160,140,60],[140,120,80],[100,60,160]
   ];
-  const c0=_blfCols[hell]||[26,14,26];
+  const c0=_blfCols[hell]||[120,90,140];
   const w=512,h=256,c=document.createElement('canvas');c.width=w;c.height=h;
   const cx=c.getContext('2d');
   // 타원형: scaleY 0.5로 눌러서 타원
   cx.save();cx.translate(w/2,h/2);cx.scale(1,.5);
   const grd=cx.createRadialGradient(0,0,0,0,0,w/2);
-  grd.addColorStop(0,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',.85)');
-  grd.addColorStop(.25,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',.6)');
-  grd.addColorStop(.5,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',.3)');
-  grd.addColorStop(.75,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',.08)');
+  grd.addColorStop(0,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',.6)');
+  grd.addColorStop(.25,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',.4)');
+  grd.addColorStop(.5,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',.2)');
+  grd.addColorStop(.75,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',.06)');
   grd.addColorStop(1,'rgba('+c0[0]+','+c0[1]+','+c0[2]+',0)');
   cx.fillStyle=grd;cx.beginPath();cx.arc(0,0,w/2,0,Math.PI*2);cx.fill();
   cx.restore();
@@ -21353,21 +21360,42 @@ function update(){
     else if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
     // ── H키: 버스트루프 밀기/당기기 토글 (공격과 독립) ──
     if(_chkJust('KeyH')&&P.skills.burstLoop>=1){P._blPullMode=!P._blPullMode;addTxt(P.x,P.y-30,P._blPullMode?_T('🌀 당기기 모드'):_T('💥 밀어내기 모드'),P._blPullMode?'#44ccff':'#ff6644',40);playSample('shield_activate',.4,_r(1,.1));OPT.blPullMode=P._blPullMode;saveSettings();if($('optBlPullMode'))$('optBlPullMode').checked=P._blPullMode}
-    // ── X키: 처형 (그로기 보스 전용, HP/MP/ST 10% 소모 → 사슬기동 자동 돌진 → 보스 HP 30% 순수뎀, 쿨 20초) ──
+    // ── X키: 처형 (현재HP 20% 타격 + 무기뎀×12(=5초DPS), Lv당 HP%+2/뎀+15%, 그로기 보스: +HP30% 순수뎀, 쿨 10초) ──
     if(_chkJust('KeyX')&&P.skills.execution>=1&&(P._execCd||0)<=0){
-      const _exBoss=G._bossRef&&G._bossRef.alive&&G._bossRef.stunned>0?G._bossRef:null;
-      if(!_exBoss){showPH(_T('그로기 보스 없음!'),'#888')}
+      const _exLv=P.skills.execution||1;
+      const _exHpCost=~~(P.mhp*.1),_exMpCost=~~(P.mmp*.1),_exStCost=~~(P.mst*.1);
+      if(P.hp<=_exHpCost){showPH(_T('HP 부족!'),'#ff4444')}
+      else if(P.mp<_exMpCost){showPH(_T('MP 부족!'),'#4488ff')}
+      else if(P.st<_exStCost){showPH(_T('ST 부족!'),'#ffcc00')}
       else{
-        const _exHpCost=~~(P.mhp*.1),_exMpCost=~~(P.mmp*.1),_exStCost=~~(P.mst*.1);
-        if(P.hp<=_exHpCost){showPH(_T('HP 부족!'),'#ff4444')}
-        else if(P.mp<_exMpCost){showPH(_T('MP 부족!'),'#4488ff')}
-        else if(P.st<_exStCost){showPH(_T('ST 부족!'),'#ffcc00')}
-        else{
-          P.hp-=_exHpCost;P.mp-=_exMpCost;P.st-=_exStCost;
-          P._execCd=1200; // 20초 쿨다운
+        P.hp-=_exHpCost;P.mp-=_exMpCost;P.st-=_exStCost;
+        P._execCd=600; // 10초 쿨다운
+        const _exHpPct=.20+(_exLv-1)*.02; // 현재HP 20% + Lv당 2% (10Lv=38%)
+        const _exWpnMul=12*(1+(_exLv-1)*.15); // 무기뎀×12 (=5초DPS), Lv당+15%
+        const _exWpnDmg=~~(meleeRef()*_exWpnMul*statStr()*pAtkMul()); // 풀 스케일링
+        const _exRange=300+_exLv*20; // 처형 범위
+        // ── 범위 내 전체 적: 현재HP 20% + 무기뎀 ──
+        let _exKills=0;
+        const _exNearby=shQuery(P.x,P.y,_exRange);
+        for(let _ei=0;_ei<_exNearby.length;_ei++){
+          const e=_exNearby[_ei];if(!e.alive||dst(P.x,P.y,e.x,e.y)>_exRange)continue;
+          const _hpCut=~~(e.hp*_exHpPct); // 현재HP의 20%+α
+          const _totalDmg=_hpCut+_exWpnDmg;
+          if(!e.ib&&e.hp<=_totalDmg){
+            // 즉사 (데미지가 남은 HP 이상)
+            e.hp=0;e.alive=false;e.s='dead';rollDrop(e);addExp(e.exp||1);G.kills++;G._stageKills=(G._stageKills||0)+1;
+            _addCorpse(e,Math.atan2(e.y-P.y,e.x-P.x),6);
+            addTxt(e.x,e.y-20,_T('⚔ 처형!'),'#ff0000',40);addParts(e.x,e.y,'#ff0000',8);_exKills++;
+          }else{
+            // 생존: HP% + 무기뎀 적용
+            hurtE(e,_totalDmg,Math.atan2(e.y-P.y,e.x-P.x),false,{},wp().el||0);
+          }
+        }
+        // ── 그로기 보스: 추가 HP 30% 순수뎀 + 섬광 돌진 연출 ──
+        const _exBoss=G._bossRef&&G._bossRef.alive&&G._bossRef.stunned>0?G._bossRef:null;
+        if(_exBoss){
           const _exOx=P.x,_exOy=P.y;
           const _exAng=Math.atan2(_exBoss.y-P.y,_exBoss.x-P.x);
-          // ── 섬광 돌진: 보스 관통 → 뒤쪽 벽까지 직선 이동 ──
           let _exEndX=_exBoss.x+Math.cos(_exAng)*30;
           let _exEndY=_exBoss.y+Math.sin(_exAng)*30;
           for(let _es=1;_es<=60;_es++){
@@ -21376,36 +21404,31 @@ function update(){
             if(canMv(_tx,_ty,P.r)){_exEndX=_tx;_exEndY=_ty}else break;
           }
           const _exDist=dst(_exOx,_exOy,_exEndX,_exEndY);
-          // ── 잔상 생성 (출발→보스→벽, 10개) ──
           const _afImgs=[];
-          for(let _ai=0;_ai<10;_ai++){
-            const _tp=_ai/9;
-            _afImgs.push({x:_exOx+(_exEndX-_exOx)*_tp,y:_exOy+(_exEndY-_exOy)*_tp,a:1-_tp*.5});
-          }
-          // 순간이동 + 상태 세팅
+          for(let _ai=0;_ai<10;_ai++){const _tp=_ai/9;_afImgs.push({x:_exOx+(_exEndX-_exOx)*_tp,y:_exOy+(_exEndY-_exOy)*_tp,a:1-_tp*.5})}
           P.x=_exEndX;P.y=_exEndY;P.facing=_exAng+Math.PI;
           P.s='idle';P.st2=0;
-          P.iframes=Math.max(P.iframes,90); // 연출 중 무적
-          // ── 처형 일섬 VFX 시작 (4단계: 암전→돌진→참격선→폭발) ──
-          const _exDmg=~~(_exBoss.mhp*.3);
+          P.iframes=Math.max(P.iframes,90);
+          const _exBossDmg=~~(_exBoss.mhp*.3)+_exWpnDmg;
           _execVfx={
-            phase:0, t:0,                          // 0:암전, 1:돌진잔상, 2:참격선+정지, 3:폭발
-            ox:_exOx, oy:_exOy,                     // 출발 좌표
-            ex:_exEndX, ey:_exEndY,                 // 도착 좌표
-            bx:_exBoss.x, by:_exBoss.y,             // 보스 좌표
-            ang:_exAng, dist:_exDist,
-            afterimages:_afImgs,
-            boss:_exBoss, dmg:_exDmg,
+            phase:0, t:0, ox:_exOx, oy:_exOy, ex:_exEndX, ey:_exEndY,
+            bx:_exBoss.x, by:_exBoss.y, ang:_exAng, dist:_exDist,
+            afterimages:_afImgs, boss:_exBoss, dmg:_exBossDmg,
             dmgApplied:false,
-            slashAng:_exAng+Math.PI*0.15*(Math.random()>.5?1:-1), // 참격 각도 (살짝 틀어짐)
+            slashAng:_exAng+Math.PI*0.15*(Math.random()>.5?1:-1),
             hpCost:_exHpCost, mpCost:_exMpCost, stCost:_exStCost
           };
-          // 즉시 암전 + 히트스톱
           G.hitStop=35;G.slowMo=0;
           {const _cd=['chain_dash','chain_dash2','chain_dash3','chain_dash4'];playSample(_cd[~~(Math.random()*4)],.8,_r(1,.1))}
           playSample(['voice_storm_attack','voice_attack'][~~(Math.random()*2)],1,1);
-          addTxt(P.x,P.y-30,'-HP'+_exHpCost+' -MP'+_exMpCost+' -ST'+_exStCost,'#ff8844',40);
+        }else{
+          // 보스 없음: 범위 처형만 수행, 가벼운 연출
+          P.iframes=Math.max(P.iframes,30);
+          SFX.slash();shake(8);
+          if(_exKills>0)addTxt(P.x,P.y-30,_T('⚔ 처형! ')+'×'+_exKills,'#ff0000',60);
+          else addTxt(P.x,P.y-30,_T('⚔ 처형!'),'#ff4400',40);
         }
+        addTxt(P.x,P.y-50,'-HP'+_exHpCost+' -MP'+_exMpCost+' -ST'+_exStCost,'#ff8844',40);
       }
     }
     // Forge — 게임루프 상단에서 처리 (paused 상태에서도 동작)
@@ -30942,7 +30965,7 @@ const SKILL_LIST=[
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발. 범위 1500+Lv×100px. 범위 끝까지 넉백(주 성능). 거리감쇠 50%. 스턴 2초. Lv당 뎀+10%. (MP 30%, 쿨 120초)',descEn:'Pentagram cast → holy light pillar mega-explosion. Range 1500+Lv×100px. Full-range knockback (main feature). 50% distance falloff. Stun 2s. Per Lv DMG+10%. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
   {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,noDmg:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)',descEn:'Summon black pentagram. 7s (+0.5s/Lv) strong pull (no DMG, pure utility). Range 1500+Lv×100px. Pull force base 5+0.5/Lv. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
   {id:'lavaSummon',name:'용암소환',cat:'ult',act:true,ult:true,emoji:'🌋',desc:'빨간 오망성 시전 → 범위 1500+Lv×100px 화염폭발+10초간 화상. 틱당 적 최대HP 1.75%(+Lv당+1.5%). 10초 20틱. 거리감쇠 30%. Lv당 초기뎀+10%. (MP 30%, 쿨 120초)',descEn:'Red pentagram cast → range 1500+Lv×100px fire explosion+10s burn. Per tick enemy maxHP 1.75%(+1.5%/Lv). 10s 20 ticks. 30% distance falloff. Per Lv initial DMG+10%. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
-  {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스를 섬광 관통 처형. 근접 타겟 지정. HP/MP/ST 10% 소모 → 보스 최대HP 30% 순수 데미지. 쿨 20초',descEn:'X key: Flash-pierce execute groggy boss. Melee target select. HP/MP/ST 10% cost → boss maxHP 30% pure DMG. CD 20s',spCost:10,matCost:100,cd:1200,up:false,upSp:0,upMat:0},
+  {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 범위 내 적 현재HP 20%(+2%/Lv) 타격 + 무기뎀×12(+15%/Lv, ≈5초DPS). 그로기 보스: +HP30% 순수뎀. HP/MP/ST 10% 소모. 쿨 10초. 범위 300+Lv×20',descEn:'X key: Deal 20%(+2%/Lv) current HP + weapon DMG×12(+15%/Lv, ≈5s DPS) to enemies in range. Groggy boss: +30% maxHP pure DMG. HP/MP/ST 10% cost. CD 10s. Range 300+Lv×20',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
   {id:'demonRevive',name:'악마화 부활',cat:'ult',ult:true,noDmg:true,emoji:'☠',desc:'[패시브] 사망 시 부활력 기반 확률 부활. 1Lv: HP 50% 부활. Lv당 HP+5%, 쿨-30초, 부활확률+2%. 쿨 10분',descEn:'[Passive] Revive power-based chance revive on death. Lv1: revive at HP 50%. Per Lv HP+5%, CD-30s, revive chance+2%. CD 10min',spCost:15,matCost:150,up:true,upSp:10,upMat:0},
   // [SKILL REMOVED 2026-04-10] bladeShot (붉은꽃) — 석궁 개편
   {id:'iceOrb',name:'얼음보주',cat:'bow',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',descEn:'Enter ice — invincible. Re-press to shatter → 48 ice blades fan spread (MP 40, CD 20s). Per Lv blades+2 DMG+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
@@ -37960,18 +37983,28 @@ function draw(){
         }
       }
       if(!_bDrew){X.save();X.translate(0,_tdY);drawBossBody(X,e,_now,sa);X.restore()}
-      // ── 보스 다리 안개 (PlaneGeometry 대용: 타원 스탬프, 발 위치 추적, sinwave 진동) ──
-      if(OPT.bossFog&&e.alive&&sa>.1){
-        const _bfHell=SI_TO_HELL[G.stage];
-        const _bfS=_getBossLegFogStamp(_bfHell);
-        // 반경 = 보스 너비(r*2) × 1.5 = r*3, 높이 비율 0.8
-        const _bfW=e.r*6,_bfH=e.r*6*.8;
-        // sinwave Y 진동: amplitude=e.r*0.3, 주기 2초(120프레임≒2000ms)
-        const _bfOscY=Math.sin(_now*Math.PI/1000)*e.r*.3;
-        // 보스 발 좌표 추적 (발 = e.y + e.r*0.25)
-        const _bfFx=e.x,_bfFy=e.y+e.r*.25+_tdY+_bfOscY;
-        X.globalAlpha=sa*.45;
-        X.drawImage(_bfS,_bfFx-_bfW/2,_bfFy-_bfH/2,_bfW,_bfH);
+      // ── 보스 다리 안개 (다층 타원 6겹, 오프셋+호흡으로 자연스러운 안개) ──
+      if(e.alive){
+        const _bfCx=e.x,_bfCy=e.y+e.r*.3+_tdY;
+        const _bfRx=e.r*3.5,_bfRy=e.r*1.5;
+        const _bfRgb=[
+          '80,55,120','45,85,55','120,50,35','90,40,110','105,90,35','90,80,50','65,40,105'
+        ];
+        const _bfC=_bfRgb[SI_TO_HELL[G.stage]]||'80,55,120';
+        X.save();
+        for(let _fl=0;_fl<6;_fl++){
+          const _fPhase=_fl*1.047+_now*.0008; // 각 레이어 다른 위상
+          const _fox=Math.sin(_fPhase)*e.r*.6;
+          const _foy=Math.cos(_fPhase*.7)*e.r*.25;
+          const _fScale=.7+_fl*.1;
+          const _fAlpha=(.12-.01*_fl)+Math.sin(_now*.0012+_fl*1.5)*.03;
+          X.globalAlpha=_fAlpha;
+          X.fillStyle='rgba('+_bfC+',1)';
+          X.beginPath();
+          X.ellipse(_bfCx+_fox,_bfCy+_foy,_bfRx*_fScale,_bfRy*_fScale,_fl*.15,0,Math.PI*2);
+          X.fill();
+        }
+        X.restore();
         X.globalAlpha=sa;
       }
     }else{
@@ -39425,28 +39458,6 @@ function draw(){
     X.drawImage(_fogBotCvs,0,0);
     X.globalAlpha=_fogPulse*.6;
     X.drawImage(_fogTopCvs,0,0);
-    // (B) 안개 입자 40개 — 큰 반투명 원, 천천히 떠다님
-    {const _fpSc=_SMOG_COLS[_flHell]||[50,50,50];
-    const _fpCol='rgba('+_fpSc[0]+','+_fpSc[1]+','+_fpSc[2]+',';
-    for(let _fi=0;_fi<40;_fi++){
-      // 결정론적 위치: _fi + _now으로 천천히 이동 (new 없음)
-      const _fSeed=_fi*137.5;
-      const _fxBase=(_fSeed*7.3)%C.width;
-      const _fyBase=(_fSeed*3.1)%C.height;
-      // 느린 드리프트 (각 입자 다른 속도)
-      const _fSpd=.00008+(_fi%7)*.00003;
-      const _fxOff=Math.sin(_now*_fSpd+_fSeed)*(C.width*.15);
-      const _fyOff=Math.cos(_now*_fSpd*.7+_fSeed*1.3)*(C.height*.1);
-      const _fx=((_fxBase+_fxOff)%C.width+C.width)%C.width;
-      const _fy=((_fyBase+_fyOff)%C.height+C.height)%C.height;
-      // 상하단 가장자리에 밀집 (중앙은 희미)
-      const _edgeDist=Math.min(_fy,C.height-_fy)/(C.height*.35);
-      const _fAlpha=(.08+Math.sin(_now*.001+_fi*2.1)*.03)*Math.max(0,1-_edgeDist);
-      if(_fAlpha<.01)continue;
-      const _fR=40+(_fi%5)*18;
-      X.globalAlpha=_fAlpha;X.fillStyle=_fpCol+'.4)';
-      X.beginPath();X.arc(_fx,_fy,_fR,0,Math.PI*2);X.fill();
-    }}
     X.globalAlpha=1;X.restore();
   }
   // ── 동적 환경광 오버레이 (매 프레임 — 교대 렌더 제거, 깜빡임 방지) ──
