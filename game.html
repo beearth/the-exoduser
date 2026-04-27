@@ -31003,7 +31003,7 @@ const SKILL_LIST=[
   {id:'blueShot',name:'푸른비',cat:'bow',fixed:true,emoji:'💎',desc:'[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)',descEn:'[Fixed: E, unlock Lv300] 50 homing blue shots fired sequentially (over 5s). MP 100(+1.5/Lv) cost. Tracks enemies. CD 5s. Per Lv range+30 (DMG uses _skMul)',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:300},
   {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: E, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.5/1.0/1.5초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',descEn:'[Hidden: E, unlock Lv700] Hold for 3-stage charge AoE explosion (0.5/1.0/1.5s). Range 600/1000/1400px. Stage 3 full charge auto-detonates. INT scale, no element',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700},
   {id:'voidScarecrow',name:'유령 허수아비',cat:'def',act:true,emoji:'👻',desc:'유령 허수아비를 소환하여 유도탄막 어그로를 끈다. 탄막을 흡수해 자원 축적 (기본 20개, Lv당+3). 1개당 HP/MP/ST 각 100. R키로 회수. 쿨 30초',descEn:'Summon phantom scarecrow to draw homing projectile aggro. Absorbs projectiles for resource buildup (base 20, +3/Lv). Per absorbed: HP/MP/ST +100 each. R key to retrieve. CD 30s',spCost:10,matCost:100,cd:1800,up:true,upSp:5,upMat:0},
-  {id:'explodeScarecrow',name:'폭발 허수아비',cat:'def',act:true,emoji:'💥',desc:'폭발 허수아비 설치. 탄막을 흡수하고 재입력 시 폭발! 흡수 수×150% 데미지, 범위 80+흡수×8. 최대흡수 15+Lv×3. 쿨 20초',descEn:'Place explosive scarecrow. Absorbs projectiles, re-press to detonate! DMG: absorbed×150%, range 80+absorbed×8. Max absorb 15+Lv×3. CD 20s',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
+  {id:'explodeScarecrow',name:'폭발 허수아비',cat:'def',act:true,emoji:'💥',desc:'폭발 허수아비 설치. 탄막을 흡수하고 재입력 시 폭발! 흡수 수×150% 데미지, 범위 80+흡수×8. 최대흡수 15+Lv×3. 쿨 5초',descEn:'Place explosive scarecrow. Absorbs projectiles, re-press to detonate! DMG: absorbed×150%, range 80+absorbed×8. Max absorb 15+Lv×3. CD 5s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
   {id:'ghostXbowTurret',name:'공성쇠뇌',cat:'bow',act:true,emoji:'🏹',desc:'[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거(무료). 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 쿨없음. Lv당 뎀+5% 공속+5% 사거리+5%',descEn:'[Select: 1~4, unlock Lv500] Deploy siege crossbow turret at current pos. Re-press to dismantle (free). While deployed: player crossbow disabled (turret fires only). DMG+50%, ATK SPD+50%, range+50%. ST 100. No CD. Per Lv DMG+5% ATK SPD+5% range+5%',spCost:10,matCost:120,up:true,upSp:5,upMat:0,reqLv:500}
 ];
 
@@ -32005,7 +32005,7 @@ function _detonateExplodeScarecrow(){
   if(absorbed>0)addTxt(es.x,es.y-40,_T('폭발! ')+(boom)+_T(' 뎀'),'#ffcc00',60);
   else addTxt(es.x,es.y-40,_T('불발...'),'#ff8844',40);
   G._explodeScarecrow=null;
-  P._exsCd=~~(1200*(1+_eqAffix('cooldownRed'))); // 20초 쿨
+  P._exsCd=~~(300*(1+_eqAffix('cooldownRed'))); // 5초 쿨
 }
 // ═══ 폭독칼날 — 발동 (1발 관통 칼날, 쿨12초) ═══
 function activatePlagueBurst(){
@@ -44755,6 +44755,165 @@ const _btOrigLoop=window.requestAnimationFrame;
 (function _btGodLoop(){requestAnimationFrame(()=>{if(_btGod&&P){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield}if(P&&P.hp<=0){P.hp=P.mhp;P.s='idle'}_btGodLoop()})})();
 
 })();
+</script>
+<!-- ═══ 3D 보스 오버레이 ═══ -->
+<canvas id="boss3dCvs" style="position:fixed;inset:0;pointer-events:none;z-index:50"></canvas>
+<script type="importmap">
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
+const _b3cvs=document.getElementById('boss3dCvs');
+const _b3r=new THREE.WebGLRenderer({canvas:_b3cvs,alpha:true,antialias:false});
+_b3r.setPixelRatio(Math.min(window.devicePixelRatio,2));
+_b3r.setClearColor(0x000000,0);
+_b3r.outputColorSpace=THREE.SRGBColorSpace;
+
+const _b3s=new THREE.Scene();
+const _b3cam=new THREE.OrthographicCamera(-1,1,1,-1,0.1,100);
+_b3cam.position.set(0,0,50);_b3cam.lookAt(0,0,0);
+
+_b3s.add(new THREE.DirectionalLight(0xffcc88,1.0).translateX(100).translateY(200).translateZ(300));
+_b3s.add(new THREE.AmbientLight(0x887799,0.6));
+const _b3rim=new THREE.DirectionalLight(0x4444aa,0.3);_b3rim.position.set(-100,50,-200);_b3s.add(_b3rim);
+
+let _b3pivot=null,_b3model=null,_b3mixer=null,_b3ready=false,_b3size=new THREE.Vector3();
+let _b3meshes=[],_b3origMats=[];
+const _b3flash=new THREE.MeshBasicMaterial({color:0xffffff});
+let _b3flashT=0,_b3prevHP=-1,_b3hitT=0;
+let _b3actions={},_b3state='idle';
+
+// 5개 애니메이션 매핑
+const _B3_ANIMS={
+  idle:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Alert_withSkin.glb'},
+  walk:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Walking_withSkin.glb'},
+  aggro:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
+  run:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Running_withSkin.glb'},
+  hit:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Unsteady_Walk_withSkin.glb'}
+};
+
+// 보스 상태 → 3D 애니메이션 매핑
+function _b3mapState(s,stunned){
+  if(stunned)return 'hit';
+  if(s==='eHit'||s==='eKB'||s==='eStagger')return 'hit';
+  if(s==='eWindup'||s==='eBreath'||s==='eSlamWind'||s==='eSummon'||s==='eShootWind'
+    ||s==='bossChargeWind'||s==='bossMultiDashWind')return 'run';
+  if(s==='eChase'||s==='eApproach')return 'aggro';
+  if(s==='eWalk'||s==='eWander'||s==='ePatrol'||s==='bossRec')return 'walk';
+  return 'idle';
+}
+
+function _b3switchState(ns){
+  if(ns===_b3state||!_b3actions[ns])return;
+  const prev=_b3actions[_b3state];
+  const next=_b3actions[ns];
+  if(prev)prev.fadeOut(0.3);
+  next.reset().fadeIn(0.3).play();
+  _b3state=ns;
+}
+
+const _b3loader=new GLTFLoader();
+// idle 먼저 로드 → 모델 확정 → 나머지 순차
+_b3loader.load(_B3_ANIMS.idle.src,(gltf)=>{
+  _b3model=gltf.scene;
+  const box=new THREE.Box3().setFromObject(_b3model);
+  const sz=box.getSize(new THREE.Vector3());
+  _b3model.scale.setScalar(2.2/(sz.y||1));
+  const box2=new THREE.Box3().setFromObject(_b3model);
+  const center=box2.getCenter(new THREE.Vector3());
+  _b3model.position.sub(center);
+  _b3model.traverse(c=>{if(c.isMesh){c.castShadow=true;_b3meshes.push(c);_b3origMats.push(c.material)}});
+  _b3pivot=new THREE.Group();_b3pivot.add(_b3model);_b3pivot.visible=false;
+  _b3s.add(_b3pivot);
+  _b3size=new THREE.Box3().setFromObject(_b3pivot).getSize(new THREE.Vector3());
+  _b3mixer=new THREE.AnimationMixer(_b3model);
+  // idle 클립 등록+재생
+  if(gltf.animations.length>0){
+    const clip=gltf.animations[0];clip.name='idle';
+    const act=_b3mixer.clipAction(clip);_b3actions.idle=act;act.play();
+  }
+  _b3ready=true;
+  console.log('[BOSS3D] Model loaded',_b3size.x.toFixed(1)+'x'+_b3size.y.toFixed(1)+'x'+_b3size.z.toFixed(1));
+  // 나머지 4개 애니 로드
+  for(const st of ['walk','aggro','run','hit']){
+    _b3loader.load(_B3_ANIMS[st].src,(g2)=>{
+      if(g2.animations.length>0){
+        const clip=g2.animations[0];clip.name=st;
+        _b3actions[st]=_b3mixer.clipAction(clip);
+        console.log('[BOSS3D] Anim loaded:',st);
+      }
+    },null,(err)=>{console.warn('[BOSS3D] Anim failed:',st,err)});
+  }
+},null,(err)=>{console.warn('[BOSS3D] GLB failed:',err)});
+
+function _b3resize(){
+  const w=innerWidth,h=innerHeight;
+  _b3r.setSize(w,h);
+  _b3cam.left=-w/2;_b3cam.right=w/2;_b3cam.top=h/2;_b3cam.bottom=-h/2;
+  _b3cam.updateProjectionMatrix();
+}
+_b3resize();addEventListener('resize',_b3resize);
+
+function _b3applyFlash(on){for(let i=0;i<_b3meshes.length;i++)_b3meshes[i].material=on?_b3flash:_b3origMats[i]}
+
+const _b3clock=new THREE.Clock();
+function _b3animate(){
+  requestAnimationFrame(_b3animate);
+  if(!_b3ready||!_b3pivot)return;
+  const dt=_b3clock.getDelta();
+  if(_b3mixer)_b3mixer.update(dt);
+
+  // 게임 상태 읽기 (같은 윈도우)
+  if(typeof G==='undefined'||typeof P==='undefined'||!P||!G.on){_b3pivot.visible=false;_b3r.render(_b3s,_b3cam);return}
+  const bE=G._bossRef;
+  if(!bE||!bE.alive||!G._bossArena){_b3pivot.visible=false;_b3r.render(_b3s,_b3cam);return}
+
+  // 2D 보스 숨김
+  bE._spawnT=999;
+
+  // 좌표 변환: 게임 캔버스 물리좌표 → CSS 좌표 → Three.js 월드
+  const c=document.getElementById('c');
+  const cW=c?c.width:innerWidth,cH=c?c.height:innerHeight;
+  const physX=cW/2+(bE.x-G.cam.x);
+  const physY=cH/2+(bE.y-G.cam.y);
+  const scale=(typeof _dpr!=='undefined'?_dpr:devicePixelRatio)*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
+  const cssX=physX/scale,cssY=physY/scale;
+  const W=innerWidth,H=innerHeight;
+
+  if(cssX<-200||cssX>W+200||cssY<-200||cssY>H+200){_b3pivot.visible=false;_b3r.render(_b3s,_b3cam);return}
+
+  _b3pivot.position.x=cssX-W/2;
+  _b3pivot.position.y=-(cssY-H/2)-100;
+  _b3pivot.position.z=0;
+
+  // 스케일
+  const bossRcss=bE.r/scale;
+  const tgtH=bossRcss*2.0;
+  if(_b3size.y>0)_b3pivot.scale.setScalar(Math.max(0.1,tgtH/_b3size.y));
+
+  // facing
+  _b3pivot.rotation.set(0,-bE.facing+Math.PI/2,0);
+  _b3pivot.visible=true;
+
+  // 보스 상태 → 3D 애니 전환
+  const _b3ns=_b3mapState(bE.s,bE.stunned>0);
+  _b3switchState(_b3ns);
+
+  // 피격 flash
+  if(_b3prevHP>0&&bE.hp<_b3prevHP)_b3flashT=0.12;
+  _b3prevHP=bE.hp;
+  // flashT 체크 제거 — 2D 렌더와 충돌하여 반복 깜빡임 유발
+  if(_b3flashT>0){_b3flashT-=dt;_b3applyFlash(true)}else{_b3applyFlash(false)}
+
+  // 스턴 흔들림
+  if(bE.stunned>0){_b3pivot.position.x+=Math.sin(performance.now()*.03)*2;_b3pivot.position.y+=Math.cos(performance.now()*.04)*2}
+
+  _b3r.render(_b3s,_b3cam);
+}
+_b3animate();
+console.log('[BOSS3D] Overlay initialized');
 </script>
 </body>
 </html>

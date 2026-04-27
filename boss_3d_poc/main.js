@@ -221,86 +221,88 @@ let _bossScale = 1;
 let _loadedCount = 0;
 const _totalAnims = Object.keys(BOSS_ANIMS).length;
 
-// 첫 번째 GLB로 모델+씬 세팅, 나머지는 애니메이션 클립만 추출
+// idle GLB를 먼저 로드 → 모델 확정 → 나머지 애니 순차 로드
 function _loadBossAnims() {
-  const states = Object.keys(BOSS_ANIMS);
+  const idleCfg = BOSS_ANIMS.idle;
+  console.log('[BOSS] Loading idle model:', idleCfg.src);
 
-  states.forEach((state, idx) => {
-    const cfg = BOSS_ANIMS[state];
-    loader.load(cfg.src, (gltf) => {
-      _loadedCount++;
-      console.log(`[BOSS] Loaded ${cfg.label} (${_loadedCount}/${_totalAnims})`);
+  loader.load(idleCfg.src, (gltf) => {
+    // 모델 세팅
+    const boss = gltf.scene;
+    const box = new THREE.Box3().setFromObject(boss);
+    const size = box.getSize(new THREE.Vector3());
+    const TARGET_H = 2.2;
+    _bossScale = TARGET_H / (size.y || 1);
+    boss.scale.setScalar(_bossScale);
 
-      if (!_bossModel) {
-        // 첫 로드: 모델 씬에 추가
-        const boss = gltf.scene;
-        const box = new THREE.Box3().setFromObject(boss);
-        const size = box.getSize(new THREE.Vector3());
-        const TARGET_H = 2.2;
-        _bossScale = TARGET_H / size.y;
-        boss.scale.setScalar(_bossScale);
+    const box2 = new THREE.Box3().setFromObject(boss);
+    boss.position.set(0, -box2.min.y, 0);
 
-        const box2 = new THREE.Box3().setFromObject(boss);
-        boss.position.set(0, -box2.min.y, 0);
-
-        boss.traverse((child) => {
-          if (child.isMesh) { child.castShadow = true; child.receiveShadow = true; }
-        });
-        scene.add(boss);
-        _bossModel = boss;
-        _bossRef3d = boss;
-
-        const box3 = new THREE.Box3().setFromObject(boss);
-        const bossSize = box3.getSize(new THREE.Vector3());
-        console.log(`[BOSS] Model added — size: ${bossSize.x.toFixed(2)}×${bossSize.y.toFixed(2)}×${bossSize.z.toFixed(2)}`);
-
-        // 안개 생성
-        _bossFogBaseY = 0.05;
-        _createBossFog(Math.max(bossSize.x, bossSize.z));
-
-        mixer = new THREE.AnimationMixer(boss);
-      }
-
-      // 애니메이션 클립 등록
-      if (gltf.animations.length > 0 && mixer) {
-        const clip = gltf.animations[0];
-        clip.name = state; // 상태명으로 리네임
-        const action = mixer.clipAction(clip);
-        _bossActions[state] = action;
-        console.log(`  [ANIM] ${state} = "${cfg.label}" (${clip.duration.toFixed(2)}s)`);
-
-        // 첫 상태(idle) 자동 재생
-        if (state === 'idle') {
-          action.play();
-          _bossState = 'idle';
-        }
-      }
-
-      // 모든 로드 완료
-      if (_loadedCount === _totalAnims) {
-        console.log(`[BOSS] All ${_totalAnims} animations ready. Keys: 1=idle 2=walk 3=aggro 4=run 5=hit`);
-      }
-    }, null, (err) => {
-      console.warn(`[BOSS] Failed to load ${cfg.label}:`, err);
-      _loadedCount++;
+    boss.traverse((child) => {
+      if (child.isMesh) { child.castShadow = true; child.receiveShadow = true; }
     });
+    scene.add(boss);
+    _bossModel = boss;
+    _bossRef3d = boss;
+
+    const box3 = new THREE.Box3().setFromObject(boss);
+    const bossSize = box3.getSize(new THREE.Vector3());
+    console.log(`[BOSS] Model added — size: ${bossSize.x.toFixed(2)}×${bossSize.y.toFixed(2)}×${bossSize.z.toFixed(2)}`);
+
+    // 안개 생성
+    _bossFogBaseY = 0.05;
+    _createBossFog(Math.max(bossSize.x, bossSize.z));
+
+    // 믹서 생성 + idle 클립 등록
+    mixer = new THREE.AnimationMixer(boss);
+    if (gltf.animations.length > 0) {
+      const clip = gltf.animations[0];
+      clip.name = 'idle';
+      const action = mixer.clipAction(clip);
+      _bossActions.idle = action;
+      action.play();
+      _bossState = 'idle';
+      console.log(`  [ANIM] idle = "${idleCfg.label}" (${clip.duration.toFixed(2)}s)`);
+    }
+    _loadedCount++;
+
+    // 나머지 애니메이션 로드 (idle 제외)
+    const otherStates = Object.keys(BOSS_ANIMS).filter(s => s !== 'idle');
+    otherStates.forEach((state) => {
+      const cfg = BOSS_ANIMS[state];
+      loader.load(cfg.src, (g2) => {
+        _loadedCount++;
+        if (g2.animations.length > 0) {
+          const clip = g2.animations[0];
+          clip.name = state;
+          const action = mixer.clipAction(clip);
+          _bossActions[state] = action;
+          console.log(`  [ANIM] ${state} = "${cfg.label}" (${clip.duration.toFixed(2)}s) — ${_loadedCount}/${_totalAnims}`);
+        }
+        if (_loadedCount === _totalAnims) {
+          console.log(`[BOSS] All ${_totalAnims} animations ready. Keys: 1=idle 2=walk 3=aggro 4=run 5=hit`);
+        }
+      }, null, (err) => {
+        console.warn(`[BOSS] Failed: ${cfg.label}`, err);
+        _loadedCount++;
+      });
+    });
+  }, (p) => {
+    if (p.total > 0) console.log(`[BOSS] Loading idle... ${(p.loaded/p.total*100).toFixed(0)}%`);
+  }, (err) => {
+    console.error('[BOSS] IDLE GLB FAILED — no model will appear:', err);
   });
 }
 
-// 상태 전환
+// 상태 전환 (크로스페이드 0.3초)
 function _switchBossState(newState) {
-  if (newState === _bossState) return;
-  if (!_bossActions[newState]) { console.warn(`[BOSS] No action for state: ${newState}`); return; }
-
+  if (newState === _bossState || !_bossActions[newState]) return;
   const prev = _bossActions[_bossState];
   const next = _bossActions[newState];
-
-  if (prev) {
-    prev.fadeOut(0.3);
-  }
+  if (prev) prev.fadeOut(0.3);
   next.reset().fadeIn(0.3).play();
   _bossState = newState;
-  console.log(`[BOSS] State → ${newState} (${BOSS_ANIMS[newState].label})`);
+  console.log(`[BOSS] State → ${newState}`);
 }
 
 _loadBossAnims();
