@@ -44795,13 +44795,26 @@ const _B3_ANIMS={
 };
 
 // 보스 상태 → 3D 애니메이션 매핑
+const _B3_RUN_STATES=new Set(['bossCharge','bossJump','bossDash','bossLeap','bossRush',
+  'bossChargeWind','bossMultiDashWind','bossSpinWind','bossSlamWind',
+  'eCharge','eSwoop','eShieldCharge','eDash']);
+const _B3_AGGRO_STATES=new Set(['eChase','eApproach','eWindup','eBreath','eSlamWind',
+  'eSummon','eShootWind','eAttack','eSlam','eShieldBash',
+  'bossBurstWind','bossFanWind','bossLaserWind','bossShockWind',
+  'bossSummonWind','bossMeteorWind','bossGrabWind','bossMineWind',
+  'bossVortexWind','bossSlashWind','bossSweepWind','bossBeanStormWind',
+  'bossBeanRainWind','bossFanWaveAim','bossRadialAim','bossDelaySlashHold',
+  'bossPerilWind','bossShock','bossLaser','bossBurst','bossFan',
+  'bossSummon','bossMeteor','bossGrab','bossSpin','bossMine',
+  'bossVortex','bossMultiDash','bossSlash','bossSlam','bossSweep']);
+const _B3_HIT_STATES=new Set(['eHit','eKB','eStagger','eDeath']);
+const _B3_WALK_STATES=new Set(['eWalk','eWander','ePatrol','bossRec','eRetreat']);
 function _b3mapState(s,stunned){
   if(stunned)return 'hit';
-  if(s==='eHit'||s==='eKB'||s==='eStagger')return 'hit';
-  if(s==='eWindup'||s==='eBreath'||s==='eSlamWind'||s==='eSummon'||s==='eShootWind'
-    ||s==='bossChargeWind'||s==='bossMultiDashWind')return 'run';
-  if(s==='eChase'||s==='eApproach')return 'aggro';
-  if(s==='eWalk'||s==='eWander'||s==='ePatrol'||s==='bossRec')return 'walk';
+  if(_B3_HIT_STATES.has(s))return 'hit';
+  if(_B3_RUN_STATES.has(s))return 'run';
+  if(_B3_AGGRO_STATES.has(s))return 'aggro';
+  if(_B3_WALK_STATES.has(s))return 'walk';
   return 'idle';
 }
 
@@ -44809,8 +44822,12 @@ function _b3switchState(ns){
   if(ns===_b3state||!_b3actions[ns])return;
   const prev=_b3actions[_b3state];
   const next=_b3actions[ns];
-  if(prev)prev.fadeOut(0.3);
-  next.reset().fadeIn(0.3).play();
+  // 모든 액션 정지 후 새 액션만 재생 (weight/enabled 꼬임 방지)
+  for(const k in _b3actions){
+    const a=_b3actions[k];
+    if(k===ns){a.reset();a.enabled=true;a.setEffectiveWeight(1);a.fadeIn(0.2).play()}
+    else{a.fadeOut(0.2)}
+  }
   _b3state=ns;
 }
 
