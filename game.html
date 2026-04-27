@@ -3223,7 +3223,7 @@ function dbRestore(d){
   const _fixedKick=['bladeShot','fanShot','omniBeam','bladeDash','ghostWalk','iceOrb'];
   for(let _si=0;_si<6;_si++){if(_fixedKick.includes(SKILL_SLOTS[_si]))SKILL_SLOTS[_si]=null}
   // 배운 액티브 스킬이 슬롯에 없으면 자동 배정 (합체 흡수/고정슬롯 제외)
-  const _fixedSlotSk=['bladeShot','fanShot','omniBeam','bladeDash','shieldThrow','blastShot','ghostWalk','iceOrb','spikeTrap','chainSlam','chainAssault','chainSlash','needleShot','peaceShield','hellRay','blueShot','burstLoop','holyDome','fireball']; // 고정스킬 (슬롯 자동배정 제외)
+  const _fixedSlotSk=['bladeShot','fanShot','omniBeam','bladeDash','shieldThrow','blastShot','ghostWalk','iceOrb','spikeTrap','chainSlam','chainAssault','chainSlash','needleShot','peaceShield','hellRay','blueShot','burstLoop','holyDome','fireball','arcLaser']; // 고정스킬 (슬롯 자동배정 제외)
   const _actIds=SKILL_LIST.filter(sk=>sk.act&&!sk.ult&&P.skills[sk.id]>=1&&!_fKick.includes(sk.id)&&!_fixedSlotSk.includes(sk.id)).map(sk=>sk.id);
   _actIds.forEach(id=>{
     if(!SKILL_SLOTS.includes(id)){const _ei=SKILL_SLOTS.findIndex((s)=>s===null);if(_ei>=0)SKILL_SLOTS[_ei]=id}
@@ -4641,7 +4641,7 @@ const _EN={
 '폭풍소환':'Vortex Summon','해골무덤':'Bone Tomb','신성폭발':'Holy Blast',
 '블랙':'Black Star','용암소환':'Lava Summon','처형':'Execution','악마화 부활':'Demon Revive',
 '붉은꽃':'Crimson Bloom','얼음보주':'Ice Orb','뇌전걸음':'Ghost Walk',
-'만화방창 II':'Needle Barrage II','마력연사':'Arcane Barrage','업화선':'Hellfire Beam',
+'만화방창 II':'Needle Barrage II','마력연사':'Arcane Barrage','마력광선':'Arc Laser','업화선':'Hellfire Beam',
 '지옥진':'Inferno Array','폭독칼날':'Plague Blade','악의폭풍':'Malice Storm',
 '악의기둥':'Dark Pillar','회복의 영역':'Sacred Domain','구속의 영역':'Binding Domain',
 '아이스스톰':'Ice Storm','대왕치기':'Giant Slam','대왕치기 2':'Giant Slam II',
@@ -4656,7 +4656,7 @@ const _EN={
 '기동칼날개!':'Bladewing!','기동불꽃!':'Chain Blaze!','기동파괴!':'Chain Crush!',
 '사슬이동:강화!':'Chain Dash!','사슬기동:화염!':'Chain Flame!',
 '작살!':'Harpoon!','진입!':'Enter!','레인라이트닝!':'Rain Lightning!',
-'마력연사!':'Arcane Barrage!','집중...':'Focus...','시전...':'Casting...',
+'마력연사!':'Arcane Barrage!','🔷 마력광선!':'🔷 Arc Laser!','광선 해제':'Laser Off','MP 부족 — 광선 해제':'MP depleted — Laser Off','집중...':'Focus...','시전...':'Casting...',
 '만화방창!':'Needle Barrage!','바늘출!':'Needle Burst!','칼날!':'Blade!',
 '착지!':'Landing!','체간삭감!':'Poise Break!',
 '기동전폭 준비!':'Chain Burst Ready!','기동불꽃 준비!':'Chain Blaze Ready!',
@@ -7791,6 +7791,17 @@ function _dispatchSkillSlot(slotIdx,keyCode){
           addTxt(_vs2.x,_vs2.y-30,'HP+'+_vs2.resHP+' MP+'+_vs2.resMP+' ST+'+_vs2.resST,'#66ffaa',60);
         }
         addParts(_vs2.x,_vs2.y,'#bb88ee',15);SFX.scarecrowRecall();
+        // 합체(dualScarecrow): 회수 시 폭발도 같이!
+        if(_isFused('dualScarecrow')&&_vs2.absorbed>0){
+          const _dsLv=_vs2.lv||1;const _dsAb=_vs2.absorbed;
+          const _dsBoomR=Math.min(600,80+_dsAb*8);
+          const _dsDmg=~~(meleeRef()*statStr()*.5*_dsAb+(_vs2.dmgPool||0)*1.5);
+          const ne=shQuery(_vs2.x,_vs2.y,_dsBoomR);
+          for(let i=0;i<ne.length;i++){const e=ne[i];if(!e.alive)continue;const d=dst(e.x,e.y,_vs2.x,_vs2.y);if(d>=_dsBoomR)continue;const ang=Math.atan2(e.y-_vs2.y,e.x-_vs2.x);const fo=Math.max(.3,1-d/_dsBoomR);hurtE(e,~~(_dsDmg*fo),ang,false,{kbMult:1.5,explode:true},EL.F);e.kb.x+=Math.cos(ang)*10*fo;e.kb.y+=Math.sin(ang)*10*fo;}
+          _addBoom(_vs2.x,_vs2.y,_dsBoomR*.6,25,'fire');playVFXAng('burn_death',_vs2.x,_vs2.y,Math.max(.3,_dsBoomR/300),3,0,false);
+          addParts(_vs2.x,_vs2.y,'#ff6622',25);shake(Math.min(12,4+_dsAb*.3));SFX.detonate();
+          addTxt(_vs2.x,_vs2.y-50,_T('합체 폭발! ')+_dsDmg+_T(' 뎀'),'#ffcc00',60);
+        }
         G._voidScarecrow=null;P._vsCd=~~(600*(1+_eqAffix('cooldownRed'))); // 회수 후 10초 쿨
         _skOk=true;
       } else if((P._vsCd||0)<=0){activateVoidScarecrow();_skOk=true}
@@ -17794,6 +17805,48 @@ function _fireEnergyShot(){
   if((P._esSfxCd||0)<=0){playSample('beam_fire',.42,_r(1.15,.08));P._esSfxCd=6;}
   shake(4);_addSkProf('energyShot');
 }
+// ── 마력광선 채널링 틱 (매 프레임 호출, E 홀드 중 지속) ──
+const _AL_HIT_HALF_W=80; // 타격 반폭 80px
+function _tickArcLaser(sp){
+  const _alLv=P.skills.arcLaser||1;
+  const _alMpPerSec=8+(_alLv-1)*1; // 초당 MP: 8+Lv (60f 기준)
+  const _alMpTick=_alMpPerSec/60*sp;
+  if(P.mp<_alMpTick){P._alActive=false;addTxt(P.x,P.y-25,_T('MP 부족 — 광선 해제'),'#888',30);return}
+  P.mp-=_alMpTick;
+  // 마우스 방향 부드러운 추적
+  {const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;
+  const tgt=Math.atan2(mouse.y-sy,mouse.x-sx);
+  let diff=tgt-P.atkArc;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
+  P.atkArc+=diff*Math.min(1,0.12*sp);P.facing=P.atkArc;}
+  const _alRange=1200+(_alLv-1)*80;
+  const _halfW=_AL_HIT_HALF_W+(_alLv-1)*5;
+  // 데미지 틱 (4프레임마다 = 초당 15회)
+  P._alDmgT=(P._alDmgT||0)+sp;
+  if(P._alDmgT>=4){
+    P._alDmgT=0;
+    const _alDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('arcLaser')/15); // 초당 15틱 → 1틱=총DPS/15
+    const cx=Math.cos(P.atkArc),cy=Math.sin(P.atkArc);
+    const _alNe=shQuery(P.x+cx*_alRange*.5,P.y+cy*_alRange*.5,_alRange*.6);
+    _shBufI++;
+    for(let _ei=0;_ei<_alNe.length;_ei++){
+      const e=_alNe[_ei];if(!e.alive)continue;
+      const dx=e.x-P.x,dy=e.y-P.y;
+      const proj=dx*cx+dy*cy;if(proj<0||proj>_alRange)continue;
+      const perp=Math.abs(dx*cy-dy*cx);if(perp>_halfW+e.r)continue;
+      hurtE(e,~~(_alDmg*elMul(EL.L,e.el)),Math.atan2(dy,dx),false,{kbMult:0.1,noPoise:true},EL.L);
+      e._elecT=Math.max(e._elecT||0,30);
+      if(Math.random()<.15)addParts(e.x,e.y,'#4488ff',2);
+    }
+    _shBufI--;
+    _addSkProf('arcLaser');
+  }
+  // SFX 루프
+  if((P._alSfxCd||0)<=0){playSample('beam_fire',.35,_r(1.4,.08));P._alSfxCd=20;}
+  if(P._alSfxCd>0)P._alSfxCd-=sp;
+  // VFX 데이터 (매 프레임 갱신 — 지속 렌더)
+  P._alBeam={ang:P.atkArc,range:_alRange,x:P.x,y:P.y,w:_halfW*2,t:(P._alBeam?P._alBeam.t+sp:0)};
+  if(((P._alBeam.t|0)%3)<2)shake(1);
+}
 function _startFireBeamCast(){
   if(P.skills.fireBeam<1)return false;
   if(P._fbCasting){fireHellfireBeam();return true} // 차징 중 재입력: 즉시 발사
@@ -17860,6 +17913,17 @@ const _MAGIC_E_HANDLERS={
     _fireEnergyShot(); // 즉시 1발
     addTxt(P.x,P.y-25,_T('⚡ 마력연사!'),'#aa66ff',40);
     P.s='magicRecover';P.st2=15; // E홀드 반복호출 방지
+    return true;
+  },
+  arcLaser(){
+    if(P.skills.arcLaser<1)return false;
+    if(P._alActive){P._alActive=false;P._alBeam=null;addTxt(P.x,P.y-25,_T('광선 해제'),'#888',30);P.s='magicRecover';P.st2=10;return true}
+    if(P.mp<5){showPH(_T('MP 부족!'),'#4488ff');return true}
+    P._alActive=true;P._alDmgT=0;P._alSfxCd=0;
+    {const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;P.atkArc=Math.atan2(mouse.y-sy,mouse.x-sx);P.facing=P.atkArc;}
+    addTxt(P.x,P.y-25,_T('🔷 마력광선!'),'#4488ff',40);
+    playSample('beam_fire',.5,_r(1.3,.1));
+    P.s='beam';P._beamHold=true; // beam 상태 사용 (이동 감속)
     return true;
   },
   fireBeam(){
@@ -23835,6 +23899,7 @@ function update(){
       if(dst(p.x,p.y,_vs.x,_vs.y)<30){
         // 흡수!
         _vs.absorbed++;_vs.resHP+=100;_vs.resMP+=100;_vs.resST+=100;
+        if(_isFused('dualScarecrow'))_vs.dmgPool=(_vs.dmgPool||0)+(p.dmg||0); // 합체: 탄막 데미지도 축적
         addParts(_vs.x,_vs.y,ELC[p.el]||'#aa66dd',4);
         addTxt(_vs.x,_vs.y-20-Math.random()*10,_T('흡수!'),'#cc88ff',20);
         p.life=-999; // 메인 루프에서 정리됨
@@ -23903,6 +23968,12 @@ function update(){
       if(P.mp>=_esMpNeed){_fireEnergyShot()}
       else{P._esAutoFire=false;addTxt(P.x,P.y-25,_T('MP 부족 — 연사 해제'),'#888',30)}
     }
+  }
+  // ═══ 마력광선 채널링 (E 홀드 지속) ═══
+  if(P._alActive&&G.on){
+    // E키 떼면 해제
+    if(!isHeld('beam')){P._alActive=false;P._alBeam=null;P.s='idle';P.st2=0;addTxt(P.x,P.y-25,_T('광선 해제'),'#888',25)}
+    else{_tickArcLaser(sp)}
   }
   // ═══ 푸른비 토글 — 기존 barrage 순차발사 (ON이면 끝날 때 자동 반복) ═══
   if(P._bbHitCd>0)P._bbHitCd-=sp;
@@ -26162,7 +26233,7 @@ function updateE(e,sp){
   if(e._iceShardRes>0){e._iceShardRes-=0.002*sp;if(e._iceShardRes<0)e._iceShardRes=0} // 얼음파편 저항깎기 서서히 회복 (~5초에 10%)
   if(e._weakT>0){e._weakT-=sp;if(e._weakT<=0){e._weakPhys=0;e._weakMag=0;e._weakPj=0}} // 영역 디버프 해제
   if(e._freezeGauge>0){e._freezeGauge=Math.max(0,e._freezeGauge-sp*.3)} // 안 맞으면 게이지 자연 감소
-  if(e._pImmune>0)e._pImmune-=sp; // 보스 그로기 면역 타이머
+  // _pImmune 감소는 루프 초반(22629)에서 처리됨 — 여기서 중복 감소 제거
 
   // 포이즈 틱: 일반몹만 자연회복, 보스는 _poiseHit/_poiseReset으로만 변경
   if(!e.ib && e.poise < e.maxPoise){
@@ -30768,6 +30839,7 @@ function _drReset(){_drBuf=[];_drIdx=0;_drLen=0;_drCaptT=0}
 function die(){
   ultUnmute(); // 궁극기 시전 중 사망 시 음소거 해제
   P._esAutoFire=false; // 마력연사 해제
+  P._alActive=false;P._alBeam=null; // 마력광선 해제
   if(P.s==='fallen'||P.s==='dead')return; // 이미 쓰러진 상태면 중복 방지
   // ═══ 어픽스: reviveOnce (1회부활) — HP 30%로 즉시 부활 ═══
   if(_eqAffix('reviveOnce')>0&&!P._reviveOnceUsed){P._reviveOnceUsed=true;P.hp=~~(P.mhp*_eqAffix('reviveOnce'));P.iframes=120;addTxt(P.x,P.y-25,_T('💀 1회부활!'),'#44ff88',60);return}
@@ -30980,6 +31052,7 @@ const SKILL_LIST=[
   {id:'iceOrb',name:'얼음보주',cat:'bow',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',descEn:'Enter ice — invincible. Re-press to shatter → 48 ice blades fan spread (MP 40, CD 20s). Per Lv blades+2 DMG+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'needleShot',name:'만화방창 II',cat:'bow',act:true,emoji:'✨',desc:'[고정: T 자동] 초고속 바늘 연발. 1렙 2발, 5렙마다 +1발. 관통 없음. ST 8. 쿨 1.5초. Lv당 뎀+100%',descEn:'[Fixed: T auto] Ultra-fast needles burst. Lv1 2 shots, +1 per 5 levels. No pierce. ST 8. CD 1.5s',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
   {id:'energyShot',name:'마력연사',cat:'magic',emoji:'⚡',desc:'E토글: 에너지탄 자동 연사 (기본 4발/초). MP 12~22/발(Lv 스케일). 직선 즉시타격(비합체 기본형). Lv당 뎀 증가, 사거리+60',descEn:'E toggle: auto rapid energy shots (base 4 shots/s). MP 12~22/shot (Lv scaling). Straight instant hit (non-fusion base). Per Lv DMG up, range+60',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
+  {id:'arcLaser',name:'마력광선',cat:'magic',emoji:'🔷',desc:'E홀드: 직선 관통 레이저 채널링. MP 8+Lv/초 지속소모. 폭160+(Lv×10)px, 사거리1200+Lv×80. 관통+감전. Lv당 뎀+21%',descEn:'E hold: Straight piercing laser channeling. MP 8+Lv/s drain. Width 160+(Lv×10)px, range 1200+Lv×80. Pierce+shock. Per Lv DMG+21%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'fireBeam',name:'업화선',cat:'bow',emoji:'🔥',desc:'E탭: 화염 유도빔 발사. MP10. 쿨1초(DEX 스케일). 100% 관통+유도+화상. Lv당 사거리+50 뎀+12%',descEn:'E tap: fire homing beam. MP 10. CD 1s (DEX scale). 100% pierce+homing+burn. Per Lv range+50 DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'fireAura',name:'지옥진',cat:'magic',emoji:'🌋',desc:'E: 10초간 대지 진동. 범위 내 용암 기둥이 순차적으로 솟아올라 화상+틱 데미지. MP 100. 쿨 12초. Lv당 범위+10% 뎀+12%',descEn:'E: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'plagueBurst',name:'폭독칼날',cat:'bow',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)',descEn:'Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)',spCost:10,matCost:80,cd:1200,up:true,upSp:5,upMat:0},
@@ -31007,7 +31080,7 @@ const SKILL_LIST=[
   {id:'blueShot',name:'푸른비',cat:'bow',fixed:true,emoji:'💎',desc:'[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)',descEn:'[Fixed: E, unlock Lv300] 50 homing blue shots fired sequentially (over 5s). MP 100(+1.5/Lv) cost. Tracks enemies. CD 5s. Per Lv range+30 (DMG uses _skMul)',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:300},
   {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: E, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.5/1.0/1.5초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',descEn:'[Hidden: E, unlock Lv700] Hold for 3-stage charge AoE explosion (0.5/1.0/1.5s). Range 600/1000/1400px. Stage 3 full charge auto-detonates. INT scale, no element',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700},
   {id:'voidScarecrow',name:'유령 허수아비',cat:'def',act:true,emoji:'👻',desc:'유령 허수아비를 소환하여 유도탄막 어그로를 끈다. 탄막을 흡수해 자원 축적 (기본 20개, Lv당+3). 1개당 HP/MP/ST 각 100. R키로 회수. 쿨 30초',descEn:'Summon phantom scarecrow to draw homing projectile aggro. Absorbs projectiles for resource buildup (base 20, +3/Lv). Per absorbed: HP/MP/ST +100 each. R key to retrieve. CD 30s',spCost:10,matCost:100,cd:1800,up:true,upSp:5,upMat:0},
-  {id:'explodeScarecrow',name:'폭발 허수아비',cat:'def',act:true,emoji:'💥',desc:'폭발 허수아비 설치. 탄막을 흡수하고 재입력 시 폭발! 흡수 수×150% 데미지, 범위 80+흡수×8. 최대흡수 15+Lv×3. 쿨 5초',descEn:'Place explosive scarecrow. Absorbs projectiles, re-press to detonate! DMG: absorbed×150%, range 80+absorbed×8. Max absorb 15+Lv×3. CD 5s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
+  {id:'explodeScarecrow',name:'폭발 허수아비',cat:'def',act:true,emoji:'💥',desc:'폭발 허수아비 설치. 탄막을 흡수하고 재입력 시 폭발! 흡수 수×150% 데미지, 범위 80+흡수×8. 최대흡수 15+Lv×3. 쿨 10초',descEn:'Place explosive scarecrow. Absorbs projectiles, re-press to detonate! DMG: absorbed×150%, range 80+absorbed×8. Max absorb 15+Lv×3. CD 10s',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
   {id:'ghostXbowTurret',name:'공성쇠뇌',cat:'bow',act:true,emoji:'🏹',desc:'[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거(무료). 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 쿨없음. Lv당 뎀+5% 공속+5% 사거리+5%',descEn:'[Select: 1~4, unlock Lv500] Deploy siege crossbow turret at current pos. Re-press to dismantle (free). While deployed: player crossbow disabled (turret fires only). DMG+50%, ATK SPD+50%, range+50%. ST 100. No CD. Per Lv DMG+5% ATK SPD+5% range+5%',spCost:10,matCost:120,up:true,upSp:5,upMat:0,reqLv:500}
 ];
 
@@ -31016,7 +31089,7 @@ const SKILL_SLOT_DEFS={
   charge:{name:'이동스킬',nameEn:'Movement Skill',key:'charge',skills:['charge','magicBlink'],
     info:{charge:{name:'작살',nameEn:'Harpoon',emoji:'🔱',desc:'Shift: 작살 발사 → 끌려감',descEn:'Shift: Fire harpoon → pull toward'},
           magicBlink:{name:'사슬기동:화염',nameEn:'Chain Drive: Flame',emoji:'🔥',desc:'Shift: 화염길+화상',descEn:'Shift: Flame trail + burn'}}},
-  magic:{name:'마법스킬',nameEn:'Magic Skill',key:'magic',skills:['fireball','omniBeam','elemMissile','hellRay','blueShot','burstLoop','fireAura','fireBeam','energyShot'],
+  magic:{name:'마법스킬',nameEn:'Magic Skill',key:'magic',skills:['fireball','omniBeam','elemMissile','hellRay','blueShot','burstLoop','fireAura','fireBeam','energyShot','arcLaser'],
     info:{fireball:{name:'악의구',nameEn:'Malice Orb',emoji:'🔮',desc:'E: 어둠 오브 (크기+50%/Lv, 데미지 _skMul)',descEn:'E: Dark orb (size+50%/Lv, DMG via _skMul)'},
           omniBeam:{name:'멸살광선',nameEn:'Omni Beam',emoji:'☄️',desc:'E: 1발 직선 레이저',descEn:'E: Single straight laser'},
           elemMissile:{name:'원소추적탄',nameEn:'Elem Missile',emoji:'🎯',desc:'E: 6원소 유도 미사일',descEn:'E: 6-element homing missiles'},
@@ -31025,7 +31098,8 @@ const SKILL_SLOT_DEFS={
           burstLoop:{name:'버스트루프',nameEn:'Burst Loop',emoji:'💫',desc:'E 홀드: 3단계 차지 범위폭발 (Lv700 히든)',descEn:'E Hold: 3-stage charge AoE (Lv700 hidden)'},
           fireAura:{name:'지옥진',nameEn:'Inferno Field',emoji:'🌋',desc:'E: 10초 대지진동 (용암기둥+화상+틱뎀, MP100, 쿨12초)',descEn:'E: 10s ground quake (lava+burn+tick, MP100, cd 12s)'},
           fireBeam:{name:'업화선',nameEn:'Karma Beam',emoji:'🔥',desc:'E탭: 유도 화염빔 (100%관통+유도+화상, MP10, DEX공속)',descEn:'E tap: Homing fire beam (100% pierce+homing+burn, MP10, DEX aspd)'},
-          energyShot:{name:'마력연사',nameEn:'Energy Barrage',emoji:'⚡',desc:'E토글: 에너지탄 자동연사 (4발/초, MP12~22/발, 직선 즉시타격)',descEn:'E toggle: auto energy shots (4/s, MP12~22/shot, straight instant hit)'}}},
+          energyShot:{name:'마력연사',nameEn:'Energy Barrage',emoji:'⚡',desc:'E토글: 에너지탄 자동연사 (4발/초, MP12~22/발, 직선 즉시타격)',descEn:'E toggle: auto energy shots (4/s, MP12~22/shot, straight instant hit)'},
+          arcLaser:{name:'마력광선',nameEn:'Arc Laser',emoji:'🔷',desc:'E홀드: 직선 관통 레이저 채널링 (MP 8+Lv/초, 감전)',descEn:'E hold: straight piercing laser channel (MP 8+Lv/s, shock)'}}},
   bow:{name:'석궁 자동(T)',nameEn:'Crossbow Auto(T)',key:'bow',skills:['normal','bladeShot','blastShot','fanShot','needleShot'],
     info:{normal:{name:'일반사격',nameEn:'Normal Shot',emoji:'🏹',desc:'T자동: 기본 화살',descEn:'T auto: Basic arrow'},
           bladeShot:{name:'붉은꽃',nameEn:'Red Bloom',emoji:'🌹',desc:'T자동: 붉은 꽃잎 칼날 (ST50)',descEn:'T auto: Red petal blade (ST50)'},
@@ -31084,6 +31158,7 @@ const _FUSE_GEM_GROUPS={
   pillarSlam:{color:'#ff8844',color2:'#7722cc',tier:'clear',minLv:1,skills:['giantSlam2','darkPillar']}, // 대왕치기2(모체) + 악의기둥 흡수, 2성
   infernoSlam:{color:'#ff6622',color2:'#ff4400',tier:'clear',minLv:1,skills:['giantSlam2','fireAura']}, // 대왕치기2(모체) + 지옥진, 2성 (구성 2개)
   siegeGhost: {color:'#6688cc',color2:'#aa66dd',tier:'clear',minLv:1,star:2,skills:['ghostXbowTurret','voidScarecrow']}, // 공성쇠뇌(모체) + 유령허수아비
+  dualScarecrow:{color:'#aa66dd',color2:'#ff4422',tier:'clear',minLv:1,star:2,skills:['voidScarecrow','explodeScarecrow']}, // 유령허수아비 + 폭발허수아비
 };
 // 하위호환: 기존 _FUSE_GEMS 색상맵 자동 생성
 const _FUSE_GEMS={},_FUSE_GEMS2={};
@@ -31208,6 +31283,7 @@ const _FUSE_PAIRS={
   pillarSlam:['giantSlam2','darkPillar'],
   infernoSlam:['giantSlam2','fireAura'],
   siegeGhost:['ghostXbowTurret','voidScarecrow'],
+  dualScarecrow:['voidScarecrow','explodeScarecrow'],
 };
 function _getFuseKey(skId){for(const[k,v]of Object.entries(_FUSE_PAIRS)){if(v.includes(skId)){if(_isFused(k))continue;if(k==='sixFuse'&&_isFused('elemFuse'))continue;if(k==='elemFuse'&&(_isFused('stormBeam')||_isFused('stormBurst')))continue;if(k==='whirlDet'&&_isFused('slamStorm'))continue;if(k==='slamStorm'&&(_isFused('stormBeam')||_isFused('stormBurst')))continue;if(k==='stormBeam'&&_isFused('stormBurst'))continue;if(k==='dimBreach'&&(_isFused('dimSlam')||_isFused('dimThunder')||_isFused('dimRush')))continue;if(k==='dimSlam'&&(_isFused('dimThunder')||_isFused('dimRush')))continue;if(k==='dimThunder'&&_isFused('dimRush'))continue;if(k==='dimRush'&&_isFused('dimBlast'))continue;if(k==='elecRepent'&&!_isFused('boneStorm'))continue;if(k==='boneStorm'&&_isFused('elecRepent'))continue;if(k==='holyFuse'&&(_isFused('holyIce')||_isFused('holyWeak1')||_isFused('holyWeak2')||_isFused('holyWeak3')||_isFused('holyWeak4')))continue;if(k==='holyIce'&&(_isFused('holyWeak1')||_isFused('holyWeak2')||_isFused('holyWeak3')||_isFused('holyWeak4')))continue;if(k==='holyWeak1'&&(_isFused('holyWeak2')||_isFused('holyWeak3')||_isFused('holyWeak4')))continue;if(k==='holyWeak2'&&(_isFused('holyWeak3')||_isFused('holyWeak4')))continue;if(k==='holyWeak3'&&_isFused('holyWeak4'))continue;return k}}return null}
 function _isFused(key){return!!(P._fused&&P._fused[key])}
@@ -31244,6 +31320,7 @@ const _SK_MUL={
   fireball:{b:5.0,g:2.0}, // 악의구: 업화선 기준 상향 (2026-04-13)
   fireBeam:{b:0.5,g:0.2},
   energyShot:{b:3.0,g:1.2}, // 업화선 즉발(최소차징) 대비 화력 보강
+  arcLaser:{b:8.0,g:3.36}, // 마력광선: 초당2회, 1발 800%→20Lv=4000% (마력연사 대비 저빈도 고위력)
   // ── 채널링 (주력기, DPS 1000%/초~5000%/초) ──
   whirlwind:{b:2.5,g:1.05},   // 평균 4히트/초 → DPS 1000% (Lv1), 5000% (Lv20)
   omniBeam:{b:0.332,g:0.14},  // 단독 멸살광선 약 1000%/초 (Lv1), 합체빔은 별도 계수로 조절
@@ -31699,7 +31776,7 @@ function _openSkillSlotPop(slotIdx){
   // 습득된 액티브 스킬 + bow 스킬 목록
   // 합체로 흡수된 스킬 자동 제외
   const _fusedOut=_getAllAbsorbed();
-  const _fixedOnly=['bladeShot','fanShot','omniBeam','elemMissile','shieldThrow','blastShot','ghostWalk','iceOrb','needleShot','peaceShield','hellRay','blueShot','fireball']; // 고정스킬 (슬롯 배정 불가)
+  const _fixedOnly=['bladeShot','fanShot','omniBeam','elemMissile','shieldThrow','blastShot','ghostWalk','iceOrb','needleShot','peaceShield','hellRay','blueShot','fireball','arcLaser']; // 고정스킬 (슬롯 배정 불가)
   const _actSkills=SKILL_LIST.filter(sk=>sk.act&&!sk.ult&&P.skills[sk.id]>=1&&!_fusedOut.includes(sk.id)&&!_fixedOnly.includes(sk.id));
   if(_actSkills.length===0){addTxt(P.x,P.y-20,_T('배정 가능한 스킬 없음'),'#888',30);return}
   // 기존 팝업 재활용 (skSlotPop)
@@ -32009,7 +32086,7 @@ function _detonateExplodeScarecrow(){
   if(absorbed>0)addTxt(es.x,es.y-40,_T('폭발! ')+(boom)+_T(' 뎀'),'#ffcc00',60);
   else addTxt(es.x,es.y-40,_T('불발...'),'#ff8844',40);
   G._explodeScarecrow=null;
-  P._exsCd=~~(300*(1+_eqAffix('cooldownRed'))); // 5초 쿨
+  P._exsCd=~~(600*(1+_eqAffix('cooldownRed'))); // 10초 쿨 (유령 허수아비와 동일)
 }
 // ═══ 폭독칼날 — 발동 (1발 관통 칼날, 쿨12초) ═══
 function activatePlagueBurst(){
@@ -39018,6 +39095,39 @@ function draw(){
       X.drawImage(_ES_IMG,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_drawH/2,ea.range,_drawH);
       X.restore();
     }else{P._esAnim=null}
+  }
+  // ── 마력광선 VFX (채널링 지속) ──
+  if(P._alBeam){
+    const al=P._alBeam;
+    const t=al.t||0;
+    const flicker=.85+Math.sin(t*.5)*.1+Math.sin(t*1.3)*.05; // 흔들림
+    const w=al.w*flicker;
+    X.save();X.translate(al.x,al.y);X.rotate(al.ang);
+    X.globalCompositeOperation='lighter';
+    // 외곽 글로우 (넓은 반투명)
+    X.globalAlpha=.25*flicker;
+    const grd0=X.createLinearGradient(0,0,al.range,0);
+    grd0.addColorStop(0,'rgba(40,100,255,.6)');grd0.addColorStop(.3,'rgba(60,140,255,.4)');grd0.addColorStop(1,'rgba(40,100,255,0)');
+    X.fillStyle=grd0;X.fillRect(0,-w*.8,al.range,w*1.6);
+    // 중간층 (메인 빔)
+    X.globalAlpha=.55*flicker;
+    const grd=X.createLinearGradient(0,0,al.range,0);
+    grd.addColorStop(0,'rgba(80,160,255,.9)');grd.addColorStop(.4,'rgba(120,200,255,.7)');grd.addColorStop(1,'rgba(60,120,255,0)');
+    X.fillStyle=grd;X.fillRect(0,-w/2,al.range,w);
+    // 코어 (밝은 중심선)
+    X.globalAlpha=.9*flicker;
+    const cw=w*.25;
+    const grd2=X.createLinearGradient(0,0,al.range,0);
+    grd2.addColorStop(0,'rgba(220,240,255,1)');grd2.addColorStop(.3,'rgba(180,220,255,.9)');grd2.addColorStop(1,'rgba(120,180,255,0)');
+    X.fillStyle=grd2;X.fillRect(0,-cw/2,al.range,cw);
+    // 발사점 플레어
+    X.globalAlpha=.7;
+    const _fr=20+Math.sin(t*.8)*5;
+    const fgrd=X.createRadialGradient(0,0,0,0,0,_fr);
+    fgrd.addColorStop(0,'rgba(200,230,255,.9)');fgrd.addColorStop(.5,'rgba(80,160,255,.4)');fgrd.addColorStop(1,'rgba(40,100,255,0)');
+    X.fillStyle=fgrd;X.fillRect(-_fr,-_fr,_fr*2,_fr*2);
+    X.globalCompositeOperation='source-over';
+    X.restore();
   }
   // ── 업화선 ──
   if(_fxAnims.length>0&&_fxReady){
