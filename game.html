@@ -277,8 +277,7 @@ canvas{display:block;position:fixed;inset:0}
 .bpof{height:100%;background:linear-gradient(90deg,#aaaaaa,#ffffff);transition:width .15s;width:0%;border-radius:1px}
 .bpol{position:absolute;right:-52px;top:-2px;color:#dddddd;font-size:.6rem;text-shadow:0 1px 3px rgba(0,0,0,.8)}
 .bst{display:flex;justify-content:center;gap:6px;margin-top:5px;min-height:22px}
-.bst-i{font-size:.85rem;padding:1px 6px;border-radius:3px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.15);white-space:nowrap;animation:bstIn .3s ease-out}
-@keyframes bstIn{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:scale(1)}}
+.bst-i{font-size:.85rem;padding:1px 6px;border-radius:3px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.15);white-space:nowrap}
 
 /* ══ PANELS (shared) ══ */
 .panel{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.88);opacity:0;pointer-events:none;transition:opacity .25s}
@@ -10765,6 +10764,7 @@ function _poiseHit(e, amt, label){
 // 보스 포이즈 리셋 (그로기 끝난 후 호출)
 function _poiseReset(e){
   if(!e) return;
+  if(e.ib) console.log('[POISE-RESET] boss poise '+e.poise+' → '+e.maxPoise+' (caller: '+new Error().stack.split('\n')[2].trim()+')');
   e.poise = e.maxPoise;
   e.poiseR = 0;
 }
@@ -21386,7 +21386,7 @@ function update(){
         else if(P.st<_exStCost){showPH(_T('ST 부족!'),'#ffcc00')}
         else{
           P.hp-=_exHpCost;P.mp-=_exMpCost;P.st-=_exStCost;
-          P._execCd=600; // 10초 쿨다운
+          P._execCd=300; // 5초 쿨다운
           const _exHpPct=.20+(_exLv-1)*.02; // 보스 현재HP 20% + Lv당 2% (10Lv=38%)
           const _exWpnMul=30*(1+(_exLv-1)*.21); // 무기뎀×30, Lv당+21% (20Lv=150배)
           const _exWpnDmg=~~(meleeRef()*_exWpnMul*statStr()*pAtkMul()); // 풀 스케일링
@@ -26136,7 +26136,11 @@ function updateE(e,sp){
       e.stunned = 0;
       e._maxStunned = 0;
       _poiseReset(e); // 포이즈 풀 회복
-      if(e.ib) e._pImmune = Math.max(e._pImmune||0, 300); // 보스: 5초 면역
+      if(e.ib){
+        e._pImmune = Math.max(e._pImmune||0, 300); // 보스: 5초 면역
+        e.s = 'idle'; e.st2 = 30; // 그로기 해제 → idle 강제 (패턴 중단)
+        e._teleDropY = 0; // 텔레포트 낙하 리셋
+      }
     }
     return;
   }
@@ -30970,7 +30974,7 @@ const SKILL_LIST=[
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발. 범위 1500+Lv×100px. 범위 끝까지 넉백(주 성능). 거리감쇠 50%. 스턴 2초. Lv당 뎀+10%. (MP 30%, 쿨 120초)',descEn:'Pentagram cast → holy light pillar mega-explosion. Range 1500+Lv×100px. Full-range knockback (main feature). 50% distance falloff. Stun 2s. Per Lv DMG+10%. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
   {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,noDmg:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)',descEn:'Summon black pentagram. 7s (+0.5s/Lv) strong pull (no DMG, pure utility). Range 1500+Lv×100px. Pull force base 5+0.5/Lv. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
   {id:'lavaSummon',name:'용암소환',cat:'ult',act:true,ult:true,emoji:'🌋',desc:'빨간 오망성 시전 → 범위 1500+Lv×100px 화염폭발+10초간 화상. 틱당 적 최대HP 1.75%(+Lv당+1.5%). 10초 20틱. 거리감쇠 30%. Lv당 초기뎀+10%. (MP 30%, 쿨 120초)',descEn:'Red pentagram cast → range 1500+Lv×100px fire explosion+10s burn. Per tick enemy maxHP 1.75%(+1.5%/Lv). 10s 20 ticks. 30% distance falloff. Per Lv initial DMG+10%. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
-  {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스 전용. 보스 현재HP 20%(+2%/Lv) + 무기뎀×30(+21%/Lv, 20Lv=150배) + 보스HP 30% 순수뎀. 섬광 돌진 연출. HP/MP/ST 10% 소모. 쿨 10초',descEn:'X key: Groggy boss only. Boss current HP 20%(+2%/Lv) + weapon DMG×30(+21%/Lv, Lv20=150×) + boss HP 30% pure DMG. Flash dash. HP/MP/ST 10% cost. CD 10s',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
+  {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스 전용. 보스 현재HP 20%(+2%/Lv) + 무기뎀×30(+21%/Lv, 20Lv=150배) + 보스HP 30% 순수뎀. 섬광 돌진 연출. HP/MP/ST 10% 소모. 쿨 5초',descEn:'X key: Groggy boss only. Boss current HP 20%(+2%/Lv) + weapon DMG×30(+21%/Lv, Lv20=150×) + boss HP 30% pure DMG. Flash dash. HP/MP/ST 10% cost. CD 5s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
   {id:'demonRevive',name:'악마화 부활',cat:'ult',ult:true,noDmg:true,emoji:'☠',desc:'[패시브] 사망 시 부활력 기반 확률 부활. 1Lv: HP 50% 부활. Lv당 HP+5%, 쿨-30초, 부활확률+2%. 쿨 10분',descEn:'[Passive] Revive power-based chance revive on death. Lv1: revive at HP 50%. Per Lv HP+5%, CD-30s, revive chance+2%. CD 10min',spCost:15,matCost:150,up:true,upSp:10,upMat:0},
   // [SKILL REMOVED 2026-04-10] bladeShot (붉은꽃) — 석궁 개편
   {id:'iceOrb',name:'얼음보주',cat:'bow',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',descEn:'Enter ice — invincible. Re-press to shatter → 48 ice blades fan spread (MP 40, CD 20s). Per Lv blades+2 DMG+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
