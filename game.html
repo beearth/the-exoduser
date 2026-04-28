@@ -10327,6 +10327,10 @@ let _esReady=false;_ES_IMG.onload=()=>{_esReady=true};
 const _ES_FRAMES=30,_ES_FW=546,_ES_FH=51;
 const _ES_DRAW_H=150;              // 마력연사 시각 두께(px)
 const _ES_HIT_HALF_W=(_ES_DRAW_H*.5); // 타격 반폭(px) — 시각과 판정 일치
+// ═══ 마력광선 텍스처 (1408×768, lighter 합성) ═══
+const _AL_IMG=new Image();_AL_IMG.src='assets/vfx/arc_laser/laser_sheet.png';
+let _alImgReady=false;_AL_IMG.onload=()=>{_alImgReady=true};
+const _AL_DRAW_H=80; // 시각 두께(px) — 빔 높이
 // ═══ 마법 오브 투사체 (vfx_magic_orb.png 6열×5행=30프레임) ═══
 const _MO_IMG=new Image();_MO_IMG.src='assets/vfx/vfx_magic_orb.png';
 let _moReady=false;_MO_IMG.onload=()=>{_moReady=true};
@@ -39097,38 +39101,17 @@ function draw(){
       X.restore();
     }else{P._esAnim=null}
   }
-  // ── 마력광선 VFX (채널링 지속) ──
-  if(P._alBeam){
+  // ── 마력광선 VFX (채널링 지속 — 스프라이트 텍스처) ──
+  if(P._alBeam&&_alImgReady){
     const al=P._alBeam;
     const t=al.t||0;
-    const cx=Math.cos(al.ang),cy=Math.sin(al.ang);
-    const ex=al.x+cx*al.range,ey=al.y+cy*al.range;
-    const flk=.9+Math.sin(t*.4)*.08+Math.sin(t*1.1)*.05;
-    X.save();X.lineCap='round';
+    const flk=.85+Math.sin(t*.4)*.1+Math.sin(t*1.1)*.05;
+    const drawH=_AL_DRAW_H*flk;
+    X.save();
+    X.translate(al.x,al.y);X.rotate(al.ang);
     X.globalCompositeOperation='lighter';
-    // 글로우 (얇은)
-    X.beginPath();X.moveTo(al.x,al.y);X.lineTo(ex,ey);
-    X.strokeStyle='rgba(60,140,255,.08)';X.lineWidth=28*flk;X.stroke();
-    // 메인 빔
-    X.beginPath();X.moveTo(al.x,al.y);X.lineTo(ex,ey);
-    X.strokeStyle='rgba(100,180,255,.4)';X.lineWidth=8*flk;X.stroke();
-    // 코어
-    X.beginPath();X.moveTo(al.x,al.y);X.lineTo(ex,ey);
-    X.strokeStyle='rgba(220,240,255,.85)';X.lineWidth=3*flk;X.stroke();
-    // 발사점 플레어
-    X.globalAlpha=.5;
-    const fr=10+Math.sin(t*.7)*3;
-    const fg=X.createRadialGradient(al.x,al.y,0,al.x,al.y,fr);
-    fg.addColorStop(0,'rgba(220,240,255,.8)');fg.addColorStop(1,'rgba(60,140,255,0)');
-    X.fillStyle=fg;X.beginPath();X.arc(al.x,al.y,fr,0,Math.PI*2);X.fill();
-    // 경로 파티클
-    if(Math.random()<.4){
-      const tp=.3+Math.random()*.7;
-      const px=al.x+cx*al.range*tp+(Math.random()-.5)*6;
-      const py=al.y+cy*al.range*tp+(Math.random()-.5)*6;
-      X.globalAlpha=.4+Math.random()*.3;X.fillStyle='#88ccff';
-      X.beginPath();X.arc(px,py,1+Math.random()*2,0,Math.PI*2);X.fill();
-    }
+    X.globalAlpha=.9*flk;
+    X.drawImage(_AL_IMG,0,0,_AL_IMG.naturalWidth,_AL_IMG.naturalHeight,0,-drawH/2,al.range,drawH);
     X.globalCompositeOperation='source-over';X.globalAlpha=1;
     X.restore();
   }
