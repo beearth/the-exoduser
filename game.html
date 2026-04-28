@@ -7798,7 +7798,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
           const _dsDmg=~~(meleeRef()*statStr()*.5*_dsAb+(_vs2.dmgPool||0)*1.5);
           const ne=shQuery(_vs2.x,_vs2.y,_dsBoomR);
           for(let i=0;i<ne.length;i++){const e=ne[i];if(!e.alive)continue;const d=dst(e.x,e.y,_vs2.x,_vs2.y);if(d>=_dsBoomR)continue;const ang=Math.atan2(e.y-_vs2.y,e.x-_vs2.x);const fo=Math.max(.3,1-d/_dsBoomR);hurtE(e,~~(_dsDmg*fo),ang,false,{kbMult:1.5,explode:true},EL.F);e.kb.x+=Math.cos(ang)*10*fo;e.kb.y+=Math.sin(ang)*10*fo;}
-          _addBoom(_vs2.x,_vs2.y,_dsBoomR*.6,25,'fire');playVFXAng('blue_vortex',_vs2.x,_vs2.y,Math.max(.8,_dsBoomR/250),2,0,false);
+          _addBoom(_vs2.x,_vs2.y,_dsBoomR*.6,25,'fire');playVFXAng('eq_impact',_vs2.x,_vs2.y,_dsBoomR*2/512,3,0,false);
           addParts(_vs2.x,_vs2.y,'#ff6622',25);shake(Math.min(12,4+_dsAb*.3));SFX.detonate();
           addTxt(_vs2.x,_vs2.y-50,_T('합체 폭발! ')+_dsDmg+_T(' 뎀'),'#ffcc00',60);
         }
@@ -32079,7 +32079,7 @@ function _detonateExplodeScarecrow(){
   }
   // VFX: 폭발 이펙트
   _addBoom(es.x,es.y,boomR*.6,25,'fire');
-  playVFXAng('blue_vortex',es.x,es.y,Math.max(.8,boomR/250),2,0,false);
+  playVFXAng('eq_impact',es.x,es.y,boomR*2/512,3,0,false);
   addParts(es.x,es.y,'#ff6622',25);addParts(es.x,es.y,'#ffcc44',15);
   shake(Math.min(12,4+absorbed*.3));
   SFX.detonate();
