@@ -7798,7 +7798,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
           const _dsDmg=~~(meleeRef()*statStr()*.5*_dsAb+(_vs2.dmgPool||0)*1.5);
           const ne=shQuery(_vs2.x,_vs2.y,_dsBoomR);
           for(let i=0;i<ne.length;i++){const e=ne[i];if(!e.alive)continue;const d=dst(e.x,e.y,_vs2.x,_vs2.y);if(d>=_dsBoomR)continue;const ang=Math.atan2(e.y-_vs2.y,e.x-_vs2.x);const fo=Math.max(.3,1-d/_dsBoomR);hurtE(e,~~(_dsDmg*fo),ang,false,{kbMult:1.5,explode:true},EL.F);e.kb.x+=Math.cos(ang)*10*fo;e.kb.y+=Math.sin(ang)*10*fo;}
-          _addBoom(_vs2.x,_vs2.y,_dsBoomR*.6,25,'fire');playVFXAng('eq_impact',_vs2.x,_vs2.y,_dsBoomR*2/512,3,0,false);
+          _addBoom(_vs2.x,_vs2.y,_dsBoomR*.6,25,'fire');playVFXAng('burn_death',_vs2.x,_vs2.y,Math.max(.5,_dsBoomR/300),3,0,false);
           addParts(_vs2.x,_vs2.y,'#ff6622',25);shake(Math.min(12,4+_dsAb*.3));SFX.detonate();
           addTxt(_vs2.x,_vs2.y-50,_T('합체 폭발! ')+_dsDmg+_T(' 뎀'),'#ffcc00',60);
         }
@@ -23935,13 +23935,7 @@ function update(){
     const _esD=dst(P.x,P.y,G._explodeScarecrow.x,G._explodeScarecrow.y);
     if(_esD>=3000){_detonateExplodeScarecrow()}
   }
-  // ═══ 폭발 허수아비 — 폭발 애니 틱 ═══
-  if(G._explodeScarecrow&&G._explodeScarecrow.exploding){
-    G._explodeScarecrow.explodeT+=sp;
-    if(G._explodeScarecrow.explodeT>=G._explodeScarecrow.explodeMax){
-      G._explodeScarecrow=null;P._exsCd=~~(600*(1+_eqAffix('cooldownRed')));
-    }
-  }
+  // (폭발 애니 틱 제거됨 — burn_death VFX로 대체, 즉시 삭제)
   // ═══ 유령 허수아비 — 거리 3000px 자동회수 (공성유령 합체 시 제외) ═══
   if(G._voidScarecrow&&!G._voidScarecrow.siegeGhost){
     const _vsD=dst(P.x,P.y,G._voidScarecrow.x,G._voidScarecrow.y);
@@ -32084,16 +32078,16 @@ function _detonateExplodeScarecrow(){
     hurtE(e,dmg,ang,false,{kbMult:1.5,explode:true},EL.F);
     e.kb.x+=Math.cos(ang)*10*falloff;e.kb.y+=Math.sin(ang)*10*falloff;
   }
-  // VFX: 허수아비 팽창 폭발 애니
+  // VFX: burn_death 스프라이트시트 + 폭발 이펙트
   _addBoom(es.x,es.y,boomR*.6,25,'fire');
+  playVFXAng('burn_death',es.x,es.y,Math.max(.5,boomR/300),3,0,false);
   addParts(es.x,es.y,'#ff6622',25);addParts(es.x,es.y,'#ffcc44',15);
   shake(Math.min(12,4+absorbed*.3));
   SFX.detonate();
   if(absorbed>0)addTxt(es.x,es.y-40,_T('폭발! ')+(boom)+_T(' 뎀'),'#ffcc00',60);
   else addTxt(es.x,es.y-40,_T('불발...'),'#ff8844',40);
-  // 허수아비를 폭발 애니 상태로 전환 (렌더에서 팽창+페이드아웃)
-  es.exploding=true;es.explodeT=0;es.explodeMax=20;es.explodeR=boomR;es.aggroOn=false;
-  // 쿨다운은 애니 완료 후 틱에서 설정
+  G._explodeScarecrow=null;
+  P._exsCd=~~(600*(1+_eqAffix('cooldownRed'))); // 10초 쿨
 }
 // ═══ 폭독칼날 — 발동 (1발 관통 칼날, 쿨12초) ═══
 function activatePlagueBurst(){
@@ -40422,14 +40416,13 @@ function drawP(){
     }
     X.globalAlpha=1;
   }
-  // ══ 폭발 허수아비 — 렌더 (빨간 틴트) ══
+  // ══ 폭발 허수아비 — 렌더 (빨간 틴트 + 폭발 팽창 애니) ══
   if(G._explodeScarecrow){
     const _es=G._explodeScarecrow;const _et=_now*.001;
-    const _esF=Math.sin(_et*3)*2;
+    const _esF=_es.exploding?0:Math.sin(_et*3)*2;
     var _scFrame2=~~(_now/250)%2;var _scImg2=window._scImgs[_scFrame2];
     if(_scImg2&&_scImg2.complete&&_scImg2.naturalWidth){
-      var _esSz=128;
-      // 빨간 틴트: 임시 캔버스로 틴트 적용
+      // 빨간 틴트: 임시 캔버스
       if(!window._esTC){window._esTC=document.createElement('canvas');window._esTC.width=256;window._esTC.height=256;window._esTX=window._esTC.getContext('2d')}
       const _tc=window._esTC,_tx=window._esTX;
       _tx.clearRect(0,0,256,256);
@@ -40437,10 +40430,12 @@ function drawP(){
       _tx.globalCompositeOperation='source-atop';
       _tx.fillStyle='rgba(255,40,20,0.45)';_tx.fillRect(0,0,256,256);
       _tx.globalCompositeOperation='source-over';
+      var _esSz=128;
       X.globalAlpha=_es.aggroOn?0.8:0.5;
       X.drawImage(_tc,_es.x-_esSz/2,_es.y+_esF-_esSz/2,_esSz,_esSz);
       X.globalAlpha=1;
     }
+    {
     // 축적 게이지 (빨간색)
     const _esR=_es.absorbed/_es.maxAbsorb;
     X.globalAlpha=.5;X.fillStyle='rgba(30,10,10,.6)';
@@ -40453,8 +40448,9 @@ function drawP(){
     X.fillStyle=_es.aggroOn?'#cc4433':'#ffaa44';
     X.fillText(_es.aggroOn?_T('축적 중...'):_T('만충! 재입력→폭발'),_es.x,_es.y+_esF+32);
     X.globalAlpha=1;
+    }
     // 축적 중 불꽃 파티클
-    if(_es.absorbed>0&&_es.aggroOn&&Math.random()<.15){
+    if(_es.absorbed>0&&_es.aggroOn&&!_es.exploding&&Math.random()<.15){
       const _fa=Math.random()*Math.PI*2;
       poolPart(_es.x+Math.cos(_fa)*15,_es.y+_esF+Math.sin(_fa)*15,(Math.random()-.5)*.5,-1-Math.random(),Math.random()<.5?'#ff4422':'#ffaa00',1.5,8+Math.random()*5,1,0,0);
     }
