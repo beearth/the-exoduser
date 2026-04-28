@@ -23930,15 +23930,15 @@ function update(){
       }
     }
   }
-  // ═══ 폭발 허수아비 — 거리 1000px 자동폭발 ═══
+  // ═══ 폭발 허수아비 — 거리 3000px 자동폭발 ═══
   if(G._explodeScarecrow){
     const _esD=dst(P.x,P.y,G._explodeScarecrow.x,G._explodeScarecrow.y);
-    if(_esD>=1000){_detonateExplodeScarecrow()}
+    if(_esD>=3000){_detonateExplodeScarecrow()}
   }
-  // ═══ 유령 허수아비 — 거리 1000px 자동회수 (공성유령 합체 시 제외) ═══
+  // ═══ 유령 허수아비 — 거리 3000px 자동회수 (공성유령 합체 시 제외) ═══
   if(G._voidScarecrow&&!G._voidScarecrow.siegeGhost){
     const _vsD=dst(P.x,P.y,G._voidScarecrow.x,G._voidScarecrow.y);
-    if(_vsD>=1000){
+    if(_vsD>=3000){
       const _vs=G._voidScarecrow;
       if(_vs.resHP>0||_vs.resMP>0||_vs.resST>0){
         P.hp=Math.min(P.mhp,P.hp+_vs.resHP);P.mp=Math.min(P.mmp,P.mp+_vs.resMP);P.st=Math.min(P.mst,P.st+_vs.resST);
