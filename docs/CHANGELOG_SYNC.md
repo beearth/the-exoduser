@@ -21230,3 +21230,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/ChatGPT Image 2026??4??25???�전 08_13_01.png
 - img/ChatGPT Image 2026??4??28???�후 10_24_59.png
 
+
+## 2026-04-28 23:30 (auto)
+- game.html
+
