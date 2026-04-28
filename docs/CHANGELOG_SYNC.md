@@ -21234,3 +21234,27 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 ## 2026-04-28 23:30 (auto)
 - game.html
 
+
+## 2026-04-29 00:30 (auto)
+- assets/cutscene/images/1.png
+- assets/cutscene/images/10.png
+- assets/cutscene/images/11.png
+- assets/cutscene/images/12.png
+- assets/cutscene/images/13.png
+- assets/cutscene/images/14.png
+- assets/cutscene/images/15.png
+- assets/cutscene/images/16.png
+- assets/cutscene/images/17.png
+- assets/cutscene/images/18.png
+- assets/cutscene/images/19.png
+- assets/cutscene/images/2.png
+- assets/cutscene/images/3.png
+- assets/cutscene/images/4.png
+- assets/cutscene/images/5.png
+- assets/cutscene/images/6.png
+- assets/cutscene/images/7.png
+- assets/cutscene/images/8.png
+- assets/cutscene/images/9.png
+- assets/vfx/arc_laser/laser_sheet.png
+- game.html
+
