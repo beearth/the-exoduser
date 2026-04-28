@@ -23931,9 +23931,16 @@ function update(){
     }
   }
   // ═══ 폭발 허수아비 — 거리 3000px 자동폭발 ═══
-  if(G._explodeScarecrow){
+  if(G._explodeScarecrow&&!G._explodeScarecrow.exploding){
     const _esD=dst(P.x,P.y,G._explodeScarecrow.x,G._explodeScarecrow.y);
     if(_esD>=3000){_detonateExplodeScarecrow()}
+  }
+  // ═══ 폭발 허수아비 — 폭발 애니 틱 ═══
+  if(G._explodeScarecrow&&G._explodeScarecrow.exploding){
+    G._explodeScarecrow.explodeT+=sp;
+    if(G._explodeScarecrow.explodeT>=G._explodeScarecrow.explodeMax){
+      G._explodeScarecrow=null;P._exsCd=~~(600*(1+_eqAffix('cooldownRed')));
+    }
   }
   // ═══ 유령 허수아비 — 거리 3000px 자동회수 (공성유령 합체 시 제외) ═══
   if(G._voidScarecrow&&!G._voidScarecrow.siegeGhost){
@@ -32077,16 +32084,16 @@ function _detonateExplodeScarecrow(){
     hurtE(e,dmg,ang,false,{kbMult:1.5,explode:true},EL.F);
     e.kb.x+=Math.cos(ang)*10*falloff;e.kb.y+=Math.sin(ang)*10*falloff;
   }
-  // VFX: 폭발 이펙트
+  // VFX: 허수아비 팽창 폭발 애니
   _addBoom(es.x,es.y,boomR*.6,25,'fire');
-  playVFXAng('eq_impact',es.x,es.y,boomR*2/512,3,0,false);
   addParts(es.x,es.y,'#ff6622',25);addParts(es.x,es.y,'#ffcc44',15);
   shake(Math.min(12,4+absorbed*.3));
   SFX.detonate();
   if(absorbed>0)addTxt(es.x,es.y-40,_T('폭발! ')+(boom)+_T(' 뎀'),'#ffcc00',60);
   else addTxt(es.x,es.y-40,_T('불발...'),'#ff8844',40);
-  G._explodeScarecrow=null;
-  P._exsCd=~~(600*(1+_eqAffix('cooldownRed'))); // 10초 쿨 (유령 허수아비와 동일)
+  // 허수아비를 폭발 애니 상태로 전환 (렌더에서 팽창+페이드아웃)
+  es.exploding=true;es.explodeT=0;es.explodeMax=20;es.explodeR=boomR;es.aggroOn=false;
+  // 쿨다운은 애니 완료 후 틱에서 설정
 }
 // ═══ 폭독칼날 — 발동 (1발 관통 칼날, 쿨12초) ═══
 function activatePlagueBurst(){
