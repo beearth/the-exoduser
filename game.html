@@ -39096,37 +39096,36 @@ function draw(){
       X.restore();
     }else{P._esAnim=null}
   }
-  // ── 마력광선 VFX (채널링 지속) ──
+  // ── 마력광선 VFX (채널링 지속 — 라인 기반 빔) ──
   if(P._alBeam){
     const al=P._alBeam;
     const t=al.t||0;
-    const flicker=.85+Math.sin(t*.5)*.1+Math.sin(t*1.3)*.05; // 흔들림
-    const w=al.w*flicker;
-    X.save();X.translate(al.x,al.y);X.rotate(al.ang);
-    X.globalCompositeOperation='lighter';
-    // 외곽 글로우 (넓은 반투명)
-    X.globalAlpha=.25*flicker;
-    const grd0=X.createLinearGradient(0,0,al.range,0);
-    grd0.addColorStop(0,'rgba(40,100,255,.6)');grd0.addColorStop(.3,'rgba(60,140,255,.4)');grd0.addColorStop(1,'rgba(40,100,255,0)');
-    X.fillStyle=grd0;X.fillRect(0,-w*.8,al.range,w*1.6);
-    // 중간층 (메인 빔)
-    X.globalAlpha=.55*flicker;
-    const grd=X.createLinearGradient(0,0,al.range,0);
-    grd.addColorStop(0,'rgba(80,160,255,.9)');grd.addColorStop(.4,'rgba(120,200,255,.7)');grd.addColorStop(1,'rgba(60,120,255,0)');
-    X.fillStyle=grd;X.fillRect(0,-w/2,al.range,w);
-    // 코어 (밝은 중심선)
-    X.globalAlpha=.9*flicker;
-    const cw=w*.25;
-    const grd2=X.createLinearGradient(0,0,al.range,0);
-    grd2.addColorStop(0,'rgba(220,240,255,1)');grd2.addColorStop(.3,'rgba(180,220,255,.9)');grd2.addColorStop(1,'rgba(120,180,255,0)');
-    X.fillStyle=grd2;X.fillRect(0,-cw/2,al.range,cw);
+    const cx=Math.cos(al.ang),cy=Math.sin(al.ang);
+    const ex=al.x+cx*al.range,ey=al.y+cy*al.range;
+    const flk=.9+Math.sin(t*.4)*.08+Math.sin(t*1.1)*.04;
+    X.save();X.globalCompositeOperation='lighter';
+    X.lineCap='round';
+    // 외곽 글로우 (넓은)
+    X.beginPath();X.moveTo(al.x,al.y);X.lineTo(ex,ey);
+    X.strokeStyle='rgba(40,120,255,.12)';X.lineWidth=al.w*1.8*flk;X.stroke();
+    // 메인 빔
+    X.beginPath();X.moveTo(al.x,al.y);X.lineTo(ex,ey);
+    X.strokeStyle='rgba(80,170,255,.35)';X.lineWidth=al.w*.7*flk;X.stroke();
+    // 코어 (밝은 선)
+    X.beginPath();X.moveTo(al.x,al.y);X.lineTo(ex,ey);
+    X.strokeStyle='rgba(200,235,255,.8)';X.lineWidth=al.w*.15*flk;X.stroke();
     // 발사점 플레어
-    X.globalAlpha=.7;
-    const _fr=20+Math.sin(t*.8)*5;
-    const fgrd=X.createRadialGradient(0,0,0,0,0,_fr);
-    fgrd.addColorStop(0,'rgba(200,230,255,.9)');fgrd.addColorStop(.5,'rgba(80,160,255,.4)');fgrd.addColorStop(1,'rgba(40,100,255,0)');
-    X.fillStyle=fgrd;X.fillRect(-_fr,-_fr,_fr*2,_fr*2);
-    X.globalCompositeOperation='source-over';
+    const fr=16+Math.sin(t*.7)*4;
+    X.globalAlpha=.6;
+    const fg=X.createRadialGradient(al.x,al.y,0,al.x,al.y,fr);
+    fg.addColorStop(0,'rgba(220,240,255,.9)');fg.addColorStop(.6,'rgba(80,160,255,.3)');fg.addColorStop(1,'rgba(40,100,255,0)');
+    X.fillStyle=fg;X.beginPath();X.arc(al.x,al.y,fr,0,Math.PI*2);X.fill();
+    // 끝점 스파크
+    if(Math.random()<.3){
+      const sx=ex+(Math.random()-.5)*20,sy=ey+(Math.random()-.5)*20;
+      X.globalAlpha=.5;X.fillStyle='#88ccff';X.beginPath();X.arc(sx,sy,2+Math.random()*3,0,Math.PI*2);X.fill();
+    }
+    X.globalCompositeOperation='source-over';X.globalAlpha=1;
     X.restore();
   }
   // ── 업화선 ──
