@@ -7794,11 +7794,11 @@ function _dispatchSkillSlot(slotIdx,keyCode){
         // 합체(dualScarecrow): 회수 시 폭발도 같이!
         if(_isFused('dualScarecrow')&&_vs2.absorbed>0){
           const _dsLv=_vs2.lv||1;const _dsAb=_vs2.absorbed;
-          const _dsBoomR=Math.min(600,80+_dsAb*8);
+          const _dsBoomR=Math.min(900,300+_dsAb*10);
           const _dsDmg=~~(meleeRef()*statStr()*.5*_dsAb+(_vs2.dmgPool||0)*1.5);
           const ne=shQuery(_vs2.x,_vs2.y,_dsBoomR);
           for(let i=0;i<ne.length;i++){const e=ne[i];if(!e.alive)continue;const d=dst(e.x,e.y,_vs2.x,_vs2.y);if(d>=_dsBoomR)continue;const ang=Math.atan2(e.y-_vs2.y,e.x-_vs2.x);const fo=Math.max(.3,1-d/_dsBoomR);hurtE(e,~~(_dsDmg*fo),ang,false,{kbMult:1.5,explode:true},EL.F);e.kb.x+=Math.cos(ang)*10*fo;e.kb.y+=Math.sin(ang)*10*fo;}
-          _addBoom(_vs2.x,_vs2.y,_dsBoomR*.6,25,'fire');playVFXAng('burn_death',_vs2.x,_vs2.y,Math.max(.3,_dsBoomR/300),3,0,false);
+          _addBoom(_vs2.x,_vs2.y,_dsBoomR*.6,25,'fire');playVFXAng('blue_vortex',_vs2.x,_vs2.y,Math.max(.8,_dsBoomR/250),2,0,false);
           addParts(_vs2.x,_vs2.y,'#ff6622',25);shake(Math.min(12,4+_dsAb*.3));SFX.detonate();
           addTxt(_vs2.x,_vs2.y-50,_T('합체 폭발! ')+_dsDmg+_T(' 뎀'),'#ffcc00',60);
         }
@@ -31080,7 +31080,7 @@ const SKILL_LIST=[
   {id:'blueShot',name:'푸른비',cat:'bow',fixed:true,emoji:'💎',desc:'[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)',descEn:'[Fixed: E, unlock Lv300] 50 homing blue shots fired sequentially (over 5s). MP 100(+1.5/Lv) cost. Tracks enemies. CD 5s. Per Lv range+30 (DMG uses _skMul)',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:300},
   {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: E, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.5/1.0/1.5초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',descEn:'[Hidden: E, unlock Lv700] Hold for 3-stage charge AoE explosion (0.5/1.0/1.5s). Range 600/1000/1400px. Stage 3 full charge auto-detonates. INT scale, no element',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700},
   {id:'voidScarecrow',name:'유령 허수아비',cat:'def',act:true,emoji:'👻',desc:'유령 허수아비를 소환하여 유도탄막 어그로를 끈다. 탄막을 흡수해 자원 축적 (기본 20개, Lv당+3). 1개당 HP/MP/ST 각 100. R키로 회수. 쿨 30초',descEn:'Summon phantom scarecrow to draw homing projectile aggro. Absorbs projectiles for resource buildup (base 20, +3/Lv). Per absorbed: HP/MP/ST +100 each. R key to retrieve. CD 30s',spCost:10,matCost:100,cd:1800,up:true,upSp:5,upMat:0},
-  {id:'explodeScarecrow',name:'폭발 허수아비',cat:'def',act:true,emoji:'💥',desc:'폭발 허수아비 설치. 탄막을 흡수하고 재입력 시 폭발! 흡수 수×150% 데미지, 범위 80+흡수×8. 최대흡수 15+Lv×3. 쿨 10초',descEn:'Place explosive scarecrow. Absorbs projectiles, re-press to detonate! DMG: absorbed×150%, range 80+absorbed×8. Max absorb 15+Lv×3. CD 10s',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
+  {id:'explodeScarecrow',name:'폭발 허수아비',cat:'def',act:true,emoji:'💥',desc:'폭발 허수아비 설치. 탄막을 흡수하고 재입력 시 폭발! 흡수 수×150% 데미지, 범위 300+흡수×10 (최대900). 최대흡수 1렙20~20렙60. 쿨 10초',descEn:'Place explosive scarecrow. Absorbs projectiles, re-press to detonate! DMG: absorbed×150%, range 300+absorbed×10 (max 900). Max absorb Lv1=20~Lv20=60. CD 10s',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
   {id:'ghostXbowTurret',name:'공성쇠뇌',cat:'bow',act:true,emoji:'🏹',desc:'[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거(무료). 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 쿨없음. Lv당 뎀+5% 공속+5% 사거리+5%',descEn:'[Select: 1~4, unlock Lv500] Deploy siege crossbow turret at current pos. Re-press to dismantle (free). While deployed: player crossbow disabled (turret fires only). DMG+50%, ATK SPD+50%, range+50%. ST 100. No CD. Per Lv DMG+5% ATK SPD+5% range+5%',spCost:10,matCost:120,up:true,upSp:5,upMat:0,reqLv:500}
 ];
 
@@ -32050,7 +32050,7 @@ function activateVoidScarecrow(){
 // ═══ 폭발 허수아비 — 설치 + 폭발 ═══
 function activateExplodeScarecrow(){
   const slv=P.skills.explodeScarecrow||1;
-  const maxAbsorb=15+(slv-1)*3+(slv>=10?3:0); // 기본15, Lv당+3, 10렙보너스+3 (=42)
+  const maxAbsorb=20+(slv-1)*2+~~(slv/10); // 기본20, Lv당+2, 10렙마다 보너스+1 (1렙=20, 10렙=39, 20렙=60)
   G._explodeScarecrow={x:P.x,y:P.y,maxAbsorb:maxAbsorb,absorbed:0,aggroOn:true,lv:slv,dmgPool:0};
   playSample('ghost_laugh',1.2,_r(1.3,.1));
   addTxt(P.x,P.y-30,_T('💥 폭발 허수아비!'),'#ff4422',40);
@@ -32060,8 +32060,8 @@ function _detonateExplodeScarecrow(){
   const es=G._explodeScarecrow;if(!es)return;
   const slv=es.lv||1;
   const absorbed=es.absorbed||0;
-  // 범위: 80 + 흡수×8, 최소 80, 최대 600
-  const boomR=Math.min(600,80+absorbed*8);
+  // 범위: 300 + 흡수×10, 최대 900 (60스텍=900)
+  const boomR=Math.min(900,300+absorbed*10);
   // 데미지: 흡수한 탄막 데미지 합산 × 1.5 + 기본 (meleeRef×STR×absorbed×0.5)
   const baseDmg=~~(meleeRef()*statStr()*.5*Math.max(1,absorbed));
   const poolDmg=~~((es.dmgPool||0)*1.5);
@@ -32079,7 +32079,7 @@ function _detonateExplodeScarecrow(){
   }
   // VFX: 폭발 이펙트
   _addBoom(es.x,es.y,boomR*.6,25,'fire');
-  playVFXAng('burn_death',es.x,es.y,Math.max(.3,boomR/300),3,0,false);
+  playVFXAng('blue_vortex',es.x,es.y,Math.max(.8,boomR/250),2,0,false);
   addParts(es.x,es.y,'#ff6622',25);addParts(es.x,es.y,'#ffcc44',15);
   shake(Math.min(12,4+absorbed*.3));
   SFX.detonate();
