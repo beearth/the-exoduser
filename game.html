@@ -39097,34 +39097,37 @@ function draw(){
       X.restore();
     }else{P._esAnim=null}
   }
-  // ── 마력광선 VFX (채널링 지속 — 라인 기반 빔) ──
+  // ── 마력광선 VFX (채널링 지속) ──
   if(P._alBeam){
     const al=P._alBeam;
     const t=al.t||0;
     const cx=Math.cos(al.ang),cy=Math.sin(al.ang);
     const ex=al.x+cx*al.range,ey=al.y+cy*al.range;
-    const flk=.9+Math.sin(t*.4)*.08+Math.sin(t*1.1)*.04;
-    X.save();X.globalCompositeOperation='lighter';
-    X.lineCap='round';
-    // 외곽 글로우 (넓은)
+    const flk=.9+Math.sin(t*.4)*.08+Math.sin(t*1.1)*.05;
+    X.save();X.lineCap='round';
+    X.globalCompositeOperation='lighter';
+    // 글로우 (얇은)
     X.beginPath();X.moveTo(al.x,al.y);X.lineTo(ex,ey);
-    X.strokeStyle='rgba(40,120,255,.12)';X.lineWidth=al.w*1.8*flk;X.stroke();
+    X.strokeStyle='rgba(60,140,255,.08)';X.lineWidth=28*flk;X.stroke();
     // 메인 빔
     X.beginPath();X.moveTo(al.x,al.y);X.lineTo(ex,ey);
-    X.strokeStyle='rgba(80,170,255,.35)';X.lineWidth=al.w*.7*flk;X.stroke();
-    // 코어 (밝은 선)
+    X.strokeStyle='rgba(100,180,255,.4)';X.lineWidth=8*flk;X.stroke();
+    // 코어
     X.beginPath();X.moveTo(al.x,al.y);X.lineTo(ex,ey);
-    X.strokeStyle='rgba(200,235,255,.8)';X.lineWidth=al.w*.15*flk;X.stroke();
+    X.strokeStyle='rgba(220,240,255,.85)';X.lineWidth=3*flk;X.stroke();
     // 발사점 플레어
-    const fr=16+Math.sin(t*.7)*4;
-    X.globalAlpha=.6;
+    X.globalAlpha=.5;
+    const fr=10+Math.sin(t*.7)*3;
     const fg=X.createRadialGradient(al.x,al.y,0,al.x,al.y,fr);
-    fg.addColorStop(0,'rgba(220,240,255,.9)');fg.addColorStop(.6,'rgba(80,160,255,.3)');fg.addColorStop(1,'rgba(40,100,255,0)');
+    fg.addColorStop(0,'rgba(220,240,255,.8)');fg.addColorStop(1,'rgba(60,140,255,0)');
     X.fillStyle=fg;X.beginPath();X.arc(al.x,al.y,fr,0,Math.PI*2);X.fill();
-    // 끝점 스파크
-    if(Math.random()<.3){
-      const sx=ex+(Math.random()-.5)*20,sy=ey+(Math.random()-.5)*20;
-      X.globalAlpha=.5;X.fillStyle='#88ccff';X.beginPath();X.arc(sx,sy,2+Math.random()*3,0,Math.PI*2);X.fill();
+    // 경로 파티클
+    if(Math.random()<.4){
+      const tp=.3+Math.random()*.7;
+      const px=al.x+cx*al.range*tp+(Math.random()-.5)*6;
+      const py=al.y+cy*al.range*tp+(Math.random()-.5)*6;
+      X.globalAlpha=.4+Math.random()*.3;X.fillStyle='#88ccff';
+      X.beginPath();X.arc(px,py,1+Math.random()*2,0,Math.PI*2);X.fill();
     }
     X.globalCompositeOperation='source-over';X.globalAlpha=1;
     X.restore();
