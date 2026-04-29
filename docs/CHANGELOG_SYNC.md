@@ -21280,3 +21280,16 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - index.html
 
+
+## 2026-04-29 13:30 (auto)
+- assets/cutscene/images/0.png
+- assets/cutscene/images/11.png
+- assets/cutscene/images/12.png
+- assets/cutscene/images/18.png
+- assets/cutscene/images/20.png
+- assets/cutscene/images/21.png
+- assets/cutscene/images/22.png
+- assets/cutscene/images/23.png
+- assets/cutscene/images/24.png
+- game.html
+
