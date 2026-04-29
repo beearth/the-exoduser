@@ -4962,6 +4962,7 @@ const _EN={
 '🔥 기동불꽃! ':'🔥 Chain Blaze! T',
 '단계 ×':' x',
 '⚡ 기동전폭! x':'⚡ Chain Burst! x',
+'🔥🔥 3중폭!':'🔥🔥 Blaze x3!','🔥🔥🔥 6중폭!':'🔥🔥🔥 Blaze x6!','🔥🔥🔥🔥 9중폭!':'🔥🔥🔥🔥 Blaze x9!',
 '🔥 기동불꽃 준비!':'🔥 Chain Blaze Ready!',
 '🔨 기동파괴 준비!':'🔨 Chain Crush Ready!',
 '⚡ 기동전폭 준비!':'⚡ Chain Burst Ready!',
@@ -4978,7 +4979,6 @@ const _EN={
 '💎 푸른비 OFF':'💎 Azure Rain OFF',
 '💎 푸른비 ON!':'💎 Azure Rain ON!',
 '🔥 지옥진!':'🔥 Inferno Array!',
-'🔥🔥 지옥진 3중폭!':'🔥🔥 Inferno x3!','🔥🔥🔥 지옥진 6중폭!':'🔥🔥🔥 Inferno x6!','🔥🔥🔥🔥 지옥진 9중폭!':'🔥🔥🔥🔥 Inferno x9!','최대 중폭!':'Max Inferno!',
 '🔥 업화선!':'🔥 Hellfire Beam!',
 '✦ 평화 충격파! ':'✦ Peace Shockwave! ',
 '⚡ 전류 방출!':'⚡ Current Release!',
@@ -5738,12 +5738,22 @@ function _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur){
   {const _ps=$('petSubtitle');if(_ps){const _isCrow=who==='crow';_ps.style.color=_isCrow?'#ccbbff':'#ffdd88';_ps.textContent=(_isCrow?'핵터: ':'디로이: ')+_T(txt);_ps.style.opacity='1'}}
   return true;
 }
-let _petGlobalCD=0; // 글로벌 쿨다운 (30초 — 연속 대사 방지)
+let _petGlobalCD=0; // 글로벌 쿨다운 (15초 — 연속 대사 방지)
 function _petSayCD(id,who,txt,durSec,cdSec,pairWho,pairTxt,pairDur){
   if(_petDlgCD[id]>0||_petBubble.t>0||_petGlobalCD>0)return false;
   const ok=_petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur);
-  if(ok){_petDlgCD[id]=~~(cdSec*60);_petGlobalCD=1800} // 30초 글로벌 쿨
+  if(ok){_petDlgCD[id]=~~(cdSec*60);_petGlobalCD=900} // 15초 글로벌 쿨
   return ok;
+}
+// 긴급 대사 — 모든 쿨 무시, 조건 충족 시 무조건 출력
+function _petSayUrgent(id,who,txt,durSec,cdSec,pairWho,pairTxt,pairDur){
+  if(_petBubble._uid===id&&_petBubble.t>0)return false; // 같은 긴급 대사 재생 중이면 스킵
+  // 현재 말풍선 강제 종료
+  _petBubble.t=0;_petBubble.pair=null;
+  _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur);
+  _petBubble._uid=id; // 현재 긴급 대사 id 기록
+  _petGlobalCD=600; // 긴급 후 10초 글로벌쿨 (일반 대사만 억제)
+  return true;
 }
 
 // 말풍선 업데이트 (updatePet에서 호출)
@@ -5776,11 +5786,16 @@ function _checkPetDialogue(){
   _updatePetBubble();
   const si=G.stage||0;
 
-  // ── 반응형 대사 (레벨 무관, 항상 작동) ──
-  if(P.hp<P.mhp*.3&&P.hp>0)_petSayCD('crisis_hp30','crow','피가 새고 있다. Shift. 빠져.',4,30,'cat','작살 던져! 끌려가면 무적이야!',4);
-  if(P.hp<P.mhp*.3&&P.hp>0)_petSayCD('danger_hp','crow','위험해! 쉬프트 사슬기동으로 피해!!',3,300);
-  if(P.s==='pStun')_petSayCD('stun_warn','cat','기절이야! Ctrl 눌러!',3,10,'crow',P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출!':'Ctrl 얼음보주로 탈출!',3);
-  if(G._bossRef&&G._bossRef.stunned>0)_petSayCD('boss_groggy','crow','무릎 꿇었다.',3,30,'cat','지금이야! 몰아쳐!!',3);
+  // ── 긴급 대사 (레벨 무관, 글로벌쿨 무시, 말풍선 끊고 즉시 출력) ──
+  if(P.hp<P.mhp*.3&&P.hp>0)_petSayUrgent('crisis_hp30','crow','피가 새고 있다. Shift. 빠져.',4,30,'cat','작살 던져! 끌려가면 무적이야!',4);
+  if(P.hp<P.mhp*.3&&P.hp>0)_petSayUrgent('danger_hp','crow','위험해! 쉬프트 사슬기동으로 피해!!',3,300);
+  if(P.s==='pStun'){
+    const _esc=[];_esc.push('Shift 작살');
+    if(P.skills.ghostWalk>0)_esc.push('Ctrl 유령걸음');
+    else if(P.skills.iceOrb>0)_esc.push('Ctrl 얼음보주');
+    _petSayUrgent('stun_warn','cat','기절이야! '+_esc.join(' / ')+' 으로 탈출!',4,10,'crow','빨리! 맞으면 끝이야!',3);
+  }
+  if(G._bossRef&&G._bossRef.stunned>0)_petSayUrgent('boss_groggy','crow','무릎 꿇었다.',3,30,'cat','지금이야! 몰아쳐!!',3);
 
   if(P.lv>500)return; // Lv500 이후 나머지 대사 비활성
 
@@ -5821,12 +5836,17 @@ function _checkPetDialogue(){
   if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야! 끌려가면서 무적이라고!',4,300);
   // SP 안내 (10 이상)
   if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트가 쌓였어! K 눌러서 스킬 배우자!',4,300);
-  // 자원 부족 (50% 이하 → 패링 안내, 30% 이하 → 회복의 영역 안내)
-  if(P.hp<P.mhp*.5||P.mp<P.mmp*.5||P.st<P.mst*.5)_petSayCD('resource_parry','cat','패링을 써야 자원을 흡수한다고!',3,300);
+  // 자원 경고 — HP/MP/ST 개별 감지
+  if(P.hp>0&&P.hp<P.mhp*.5&&P.hp>=P.mhp*.3)_petSayUrgent('warn_hp50','crow','체력이 반이다. 조심해.',3,60,'cat','물약 있으면 지금 마셔!',3);
+  if(P.mp<P.mmp*.5&&P.mp>=P.mmp*.3)_petSayCD('warn_mp50','cat','마나가 반밖에 안 남았어!',3,60,'crow','마법 아껴 써. 패링으로 채워.',3);
+  if(P.st<P.mst*.5&&P.st>=P.mst*.3)_petSayCD('warn_st50','crow','스태미나가 떨어진다. 무리하지 마.',3,60,'cat','ST 없으면 스킬 못 써! 잠깐 빠져!',3);
+  // 자원 심각 (30% 이하)
   if(P.hp<P.mhp*.3||P.mp<P.mmp*.3||P.st<P.mst*.3){
-    if(P.skills.holyDome>0)_petSayCD('resource_low','crow','F키 회복의 영역을 써봐. 자원이 차올라.',4,300);
-    else _petSayCD('resource_low','crow','빠져! 물약 마시고 안전한 곳에서 회복해.',4,300,'cat','자원 없으면 도망가는 게 답이야!',4);
+    if(P.skills.holyDome>0)_petSayUrgent('resource_low','crow','F키 회복의 영역을 써봐. 자원이 차올라.',4,60);
+    else _petSayUrgent('resource_low','crow','빠져! 물약 마시고 안전한 곳에서 회복해.',4,60,'cat','자원 없으면 도망가는 게 답이야!',4);
   }
+  // 패링 자원회수 안내 (범용)
+  if(P.hp<P.mhp*.5||P.mp<P.mmp*.5||P.st<P.mst*.5)_petSayCD('resource_parry','cat','패링을 써야 자원을 흡수한다고!',3,120);
   // 근접 적 경고 (300px 내 적 수 기반)
   {let _nearCnt=0;for(let _ni=0;_ni<ens.length;_ni++){if(ens[_ni].alive&&dst2(P.x,P.y,ens[_ni].x,ens[_ni].y)<90000)_nearCnt++}
   if(_nearCnt>=10){
@@ -5853,7 +5873,7 @@ function _checkPetDialogue(){
   // SP 있음
   if(P.lv>=5&&P.sp>0)_petSayCD('has_sp','cat','스킬 포인트 있어! K 눌러서 스킬 찍어봐!',5,30,'crow','L키로 스킬 슬롯에 넣어야 쓸 수 있어.',4);
   if((P.ap||0)>=3)_petSayCD('has_ap','crow','C키를 눌러. 패시브 포인트가 쌓여있다.',4,60,'cat','C키! 패시브 올리면 진짜 강해져!',4);
-  if(P.st<P.mst*.5&&P.lv<=100)_petSayCD('low_st','crow','스태미나가 부족하다. 무리하지 마.',4,30,'cat','ST 없으면 스킬 못 써! 잠깐 빠져!',4);
+  // low_st → warn_st50으로 통합됨
 
   // 아이템 많음
   if(INV.bag.length>=15)_petSayCD('bag_full','crow','...쓸 거 아니면 분해해.',4,30,'cat','아이템 넘쳐나네~ 우리가 주워줄게!',4);
@@ -7028,8 +7048,9 @@ _slashSheet.onload=()=>{_slashReady=true};
 // ── 회전참 회전 렌더용 스프라이트시트 (9프레임, 3x3) ──
 const _whirlSheet=new Image();
 let _whirlReady=false,_whirlFW=0,_whirlFH=0;
-_whirlSheet.src='sprites/whirl_slash/spritesheet_9f.webp';
-_whirlSheet.onload=()=>{_whirlFW=~~(_whirlSheet.width/3);_whirlFH=~~(_whirlSheet.height/3);_whirlReady=true};
+// 에셋 준비되면 아래 주석 해제
+// _whirlSheet.src='sprites/whirl_slash/spritesheet_9f.webp';
+// _whirlSheet.onload=()=>{_whirlFW=~~(_whirlSheet.width/3);_whirlFH=~~(_whirlSheet.height/3);_whirlReady=true};
 // ── 회전참 대검 스프라이트 ──
 const _wwBladeImg=new Image();let _wwBladeReady=false;
 _wwBladeImg.src='assets/vfx/whirl_blade_1.webp';
@@ -20971,11 +20992,23 @@ function update(){
         for(let j=0;j<6;j++){const _a=Math.PI*2*Math.random();
           poolPart(P.x,P.y,Math.cos(_a)*(2+Math.random()*3),Math.sin(_a)*(2+Math.random()*3)-2,'#ffaa00',2+Math.random()*2,12)}
         addParts(P.x,P.y,'#ff6600',8);addParts(P.x,P.y,'#ffcc00',5);
-        // 불바닥 생성 (2초)
+        // 불바닥 생성 — 3중폭: 기존 불바닥 위에 착지 시 확대 (3→6→9배, 지속 리셋)
         if(!G._fireZones)G._fireZones=[];
         const _afR=_stR*.6;
         const _afDmg=~~(_stDmg*0.08);
-        G._fireZones.push({type:'assaultFlame',x:P.x,y:P.y,r:_afR,dmg:_afDmg,el:EL.F,t:0,maxT:300,_tickCd:0});
+        let _afExist=null;
+        for(let _afi=0;_afi<G._fireZones.length;_afi++){const fz=G._fireZones[_afi];if(fz.type==='assaultFlame'&&(_afExist===null||fz._afStk>(_afExist._afStk||0)))_afExist=fz}
+        if(_afExist&&(_afExist._afStk||0)<3){
+          _afExist._afStk=(_afExist._afStk||0)+1;
+          const _afMul=[1,3,6,9][_afExist._afStk];
+          _afExist.r=~~(_afR*_afMul);
+          _afExist.dmg=~~(_afDmg*_afMul);
+          _afExist.t=0;_afExist.x=P.x;_afExist.y=P.y; // 위치+지속 리셋
+          const _afN=['','🔥🔥 3중폭!','🔥🔥🔥 6중폭!','🔥🔥🔥🔥 9중폭!'][_afExist._afStk];
+          addTxt(P.x,P.y-45,_T(_afN),'#ff2200',60);shake(10+_afExist._afStk*8);
+        }else if(!_afExist){
+          G._fireZones.push({type:'assaultFlame',x:P.x,y:P.y,r:_afR,dmg:_afDmg,el:EL.F,t:0,maxT:300,_tickCd:0,_afStk:0});
+        }
         _addSkProf('chainAssault');
         G.hitStop=0;G.slowMo=0;
         MB[0]=false;MBjust[0]=false;
@@ -21949,28 +21982,8 @@ function update(){
         const _faR=400+~~(400*(_faLv-1)*0.10); // 1렙400, ��렙~800 (2배 ���향)
         const _faDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('fireAura')*_fuseMul('fireAura')); // 통일공식: _skMul
         if(!G._fireZones)G._fireZones=[];
-        // ── 3중폭: 기존 지옥진 활성 시 재시전 → 불길 확대 (3x→6x→9x) ──
-        let _faExist=null;
-        for(let _fi=0;_fi<G._fireZones.length;_fi++){if(G._fireZones[_fi].type==='fireAura'&&G._fireZones[_fi].follow){_faExist=G._fireZones[_fi];break}}
-        if(_faExist&&(_faExist._faStk||0)<3){
-          _faExist._faStk=(_faExist._faStk||0)+1;
-          const _stkMul=[1,3,6,9][_faExist._faStk]; // 0=1x, 1=3x, 2=6x, 3=9x
-          _faExist.r=~~(_faR*_stkMul);
-          _faExist.dmg=~~(_faDmg*_stkMul);
-          _faExist.t=0; // 지속시간 리셋
-          P._faCd=720;
-          const _stkNames=['','🔥🔥 지옥진 3중폭!','🔥🔥🔥 지옥진 6중��!','🔥🔥🔥🔥 지옥진 9중���!'];
-          const _stkNamesEn=['','🔥🔥 Inferno x3!','🔥🔥🔥 Inferno x6!','🔥🔥🔥🔥 Inferno x9!'];
-          addTxt(P.x,P.y-25,_T(_stkNames[_faExist._faStk]),'#ff3300',60);
-          playSample('fireball',1,_r(0.6,.1));shake(6+_faExist._faStk*4);
-          const _pCnt=16+_faExist._faStk*8;
-          for(let _fp=0;_fp<_pCnt;_fp++){const _fa2=Math.PI*2*_fp/_pCnt;const _spd=4+_faExist._faStk*2;poolPart(P.x,P.y,Math.cos(_fa2)*_spd,Math.sin(_fa2)*_spd,'#ff4400',4+_faExist._faStk,12)}
-        }else if(!_faExist){
-          G._fireZones.push({type:'fireAura',x:P.x,y:P.y,r:_faR,dmg:_faDmg,el:EL.F,t:0,maxT:600,lv:_faLv,_tickCd:0,follow:true,_faFr:0,_faStk:0});
-          P._faCd=720;
-          addTxt(P.x,P.y-25,_T('🔥 지옥���!'),'#ff6600',50);
-          for(let _fp=0;_fp<16;_fp++){const _fa2=Math.PI*2*_fp/16;poolPart(P.x,P.y,Math.cos(_fa2)*5,Math.sin(_fa2)*5,'#ff6600',4,10)}
-        }else{showPH(_T('최대 중폭!'),'#ff4400')}
+        G._fireZones.push({type:'fireAura',x:P.x,y:P.y,r:_faR,dmg:_faDmg,el:EL.F,t:0,maxT:600,lv:_faLv,_tickCd:0,follow:true,_faFr:0});
+        P._faCd=720;
         playSample('fireball',.6,_r(0.8,.1));_addSkProf('fireAura');
         P.s='magicRecover';P.st2=15;
       } else if(_mcSk==='fireBeam'&&P.skills.fireBeam>=1){
@@ -44202,7 +44215,8 @@ const INTRO_CUTSCENE_LINES={
     {id:15,img:'19.png',t:49500,dur:3500,speaker:'DIROY',text:'그래서 악마들이 네 냄새를 맡고 몰려들 거야.',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
     {id:16,img:'23.png',t:53000,dur:5000,speaker:'DIROY',text:'여신이 너에게 무기를 내렸어. 챙겨.',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
     {id:17,img:'24.png',t:58000,dur:5500,speaker:'HECTOR',text:'여신이 보낸 투영이야. 전장의 영혼이지.\n쇠뇌에 깃들어서 너랑 같이 싸울 거야.',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:55,glow:true}},
-    {id:18,img:'15.png',t:63500,dur:5500,speaker:'DIROY',text:'그 머리띠도 차. 폭발한 악의가 너를\n미치게 하기 전에 정신을 잡아줄 거야.',cam:{zs:1,ze:1.25,px:30,py:20,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow',text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:18,img:'25.png',t:63500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
+    {id:'18b',img:'15.png',t:66000,dur:5500,speaker:'DIROY',text:'그 머리띠도 차. 폭발한 악의가 너를\n미치게 하기 전에 정신을 잡아줄 거야.',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
     {id:19,img:'10.png',t:69000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
     {id:20,img:'16.png',t:71500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
     {id:21,img:'16.png',t:73500,dur:3500,speaker:'HECTOR',text:'이 인간 또 기절했네. 얼마나 안 잔 거야?',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
@@ -44228,7 +44242,8 @@ const INTRO_CUTSCENE_LINES={
     {id:15,img:'19.png',t:49500,dur:3500,speaker:'DIROY',text:'So demons will catch your scent and swarm toward you.',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
     {id:16,img:'23.png',t:53000,dur:5000,speaker:'DIROY',text:'The goddess has bestowed weapons upon you. Take them.',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:45,shadow:true}},
     {id:17,img:'24.png',t:58000,dur:5500,speaker:'HECTOR',text:'A projection sent by the goddess. A soul from the battlefield.\nIt dwells in the crossbow and will fight alongside you.',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:45,glow:true}},
-    {id:18,img:'15.png',t:63500,dur:5500,speaker:'DIROY',text:'Wear that circlet too. It\'ll keep your mind intact\nbefore the erupted malice drives you insane.',cam:{zs:1,ze:1.25,px:30,py:20,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow',text_cfg:{reveal:'char',speed:45,shadow:true}},
+    {id:18,img:'25.png',t:63500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
+    {id:'18b',img:'15.png',t:66000,dur:5500,speaker:'DIROY',text:'Wear that circlet too. It\'ll keep your mind intact\nbefore the erupted malice drives you insane.',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
     {id:19,img:'10.png',t:69000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
     {id:20,img:'16.png',t:71500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
     {id:21,img:'16.png',t:73500,dur:3500,speaker:'HECTOR',text:'This guy passed out again. How long has he been awake?',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:45,shadow:true}},
@@ -44254,7 +44269,8 @@ const INTRO_CUTSCENE_LINES={
     {id:15,img:'19.png',t:49500,dur:3500,speaker:'DIROY',text:'だから悪魔どもがお前の匂いを嗅ぎつけて押し寄せてくる。',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
     {id:16,img:'23.png',t:53000,dur:5000,speaker:'DIROY',text:'女神がお前に武器を授けた。受け取れ。',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
     {id:17,img:'24.png',t:58000,dur:5500,speaker:'HECTOR',text:'女神が送った投影だ。戦場の魂さ。\n弩に宿ってお前と共に戦う。',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:55,glow:true}},
-    {id:18,img:'15.png',t:63500,dur:5500,speaker:'DIROY',text:'その頭飾りもつけろ。暴発した悪意に\n狂わされる前に正気を保ってくれるはずだ。',cam:{zs:1,ze:1.25,px:30,py:20,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow',text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:18,img:'25.png',t:63500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
+    {id:'18b',img:'15.png',t:66000,dur:5500,speaker:'DIROY',text:'その頭飾りもつけろ。暴発した悪意に\n狂わされる前に正気を保ってくれるはずだ。',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
     {id:19,img:'10.png',t:69000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
     {id:20,img:'16.png',t:71500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
     {id:21,img:'16.png',t:73500,dur:3500,speaker:'HECTOR',text:'こいつまた気絶したぞ。どれだけ寝てないんだ？',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
@@ -44280,7 +44296,8 @@ const INTRO_CUTSCENE_LINES={
     {id:15,img:'19.png',t:49500,dur:3500,speaker:'DIROY',text:'所以恶魔们会闻到你的气味蜂拥而来。',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
     {id:16,img:'23.png',t:53000,dur:5000,speaker:'DIROY',text:'女神赐予了你武器。拿着吧。',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
     {id:17,img:'24.png',t:58000,dur:5500,speaker:'HECTOR',text:'女神派来的投影。战场上的灵魂。\n寄宿在弩上，会与你并肩作战。',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:55,glow:true}},
-    {id:18,img:'15.png',t:63500,dur:5500,speaker:'DIROY',text:'那个头饰也戴上。在爆发的恶意\n把你逼疯之前，它能帮你保持清醒。',cam:{zs:1,ze:1.25,px:30,py:20,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow',text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:18,img:'25.png',t:63500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
+    {id:'18b',img:'15.png',t:66000,dur:5500,speaker:'DIROY',text:'那个头饰也戴上。在爆发的恶意\n把你逼疯之前，它能帮你保持清醒。',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
     {id:19,img:'10.png',t:69000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
     {id:20,img:'16.png',t:71500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
     {id:21,img:'16.png',t:73500,dur:3500,speaker:'HECTOR',text:'这家伙又晕过去了。多久没睡了？',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
@@ -44414,10 +44431,17 @@ function _renderIntroCutscene(){
   // 캔버스 동기화
   if(_cutC.width!==C.width||_cutC.height!==C.height){_cutC.width=C.width;_cutC.height=C.height}
   _cutC.style.display='block';
-  const cx=_cutX,cw=_cutC.width,ch=_cutC.height;
+  const cx=_cutX,_fullW=_cutC.width,_fullH=_cutC.height;
+  // 16:9 레터박스 — 와이드 화면에서 검은 띠
+  const _maxAR=16/9;
+  const _curAR=_fullW/_fullH;
+  let _lbX=0,_lbY=0,cw=_fullW,ch=_fullH;
+  if(_curAR>_maxAR){cw=~~(_fullH*_maxAR);_lbX=~~((_fullW-cw)/2)}
+  else if(_curAR<9/16){ch=~~(_fullW/(9/16));_lbY=~~((_fullH-ch)/2)}
 
-  // 검은 배경
-  cx.fillStyle='#000';cx.fillRect(0,0,cw,ch);
+  // 검은 배경 (전체 + 레터박스)
+  cx.fillStyle='#000';cx.fillRect(0,0,_fullW,_fullH);
+  cx.save();cx.beginPath();cx.rect(_lbX,_lbY,cw,ch);cx.clip();cx.translate(_lbX,_lbY);
 
   // SFX/Voice (라인 전환 시 1회)
   if(_cutsceneIdx!==_cutLineIdx){
@@ -44459,7 +44483,7 @@ function _renderIntroCutscene(){
       const cR=cw/ch;
       let dw,dh,dx,dy;
       if(imgR>cR){dh=ch;dw=ch*imgR;dx=(cw-dw)/2;dy=0}
-      else{dw=cw;dh=cw/imgR;dx=0;dy=(ch-dh)/2}
+      else{dw=cw;dh=cw/imgR;dx=0;dy=(ch-dh)*.1}
       cx.drawImage(img,dx,dy,dw,dh);
       cx.restore();
       // VFX 후처리
@@ -44528,6 +44552,7 @@ function _renderIntroCutscene(){
       cx.globalAlpha=1;
     }
   }
+  cx.restore(); // 레터박스 클리핑 해제
 }
 
 // ═══ 1랩 시작 인트로 연출 (HTML 오버레이 기반) ═══
