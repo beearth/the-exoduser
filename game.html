@@ -7863,9 +7863,10 @@ function _dispatchCtSkill(){
 }
 
 addEventListener('keydown',e=>{
-  // ESC → 컷씬 스킵
-  if(e.code==='Escape'&&!e.repeat&&_cutsceneState==='INTRO_CUTSCENE'){
-    e.preventDefault();G._cutsceneDone=true;_cutsceneState=null;_startIntro();return;
+  // 컷씬 진행 (Space/Enter/클릭) / ESC 스킵
+  if(!e.repeat&&_cutsceneState==='INTRO_CUTSCENE'){
+    if(e.code==='Escape'){e.preventDefault();_cutsceneEnd();return}
+    if(e.code==='Space'||e.code==='Enter'||e.code==='KeyZ'){e.preventDefault();_cutsceneAdvance();return}
   }
   // ESC → 옵션 토글 (최상위 — 모든 것보다 먼저)
   if(e.code==='Escape'&&!e.repeat){
@@ -16140,9 +16141,11 @@ const _TILE_GLOW_SRC=['13_glow_spores_256x256.png','14_glow_runic_streak_256x256
 const _TILE_OVL_SRC=['15_overlay_floor_noise_256x256.png','16_overlay_wall_grime_256x256.png'];
 const _TILE_FLOOR=[],_TILE_EDGE=[],_TILE_DECAL=[],_TILE_GLOW=[],_TILE_OVL=[];
 let _tileTexReady=false,_tileTexCnt=0,_tileTexTotal=0;
-function _loadTileTex(arr,srcs){for(const s of srcs){_tileTexTotal++;const img=new Image();img.onload=()=>{_tileTexCnt++;if(_tileTexCnt>=_tileTexTotal){_tileTexReady=true;console.log('[TILE-TEX] all '+_tileTexTotal+' loaded')}};img.onerror=()=>{_tileTexCnt++;console.warn('[TILE-TEX] fail:'+s)};img.src=_TILE_BASE+s;arr.push(img)}}
-_loadTileTex(_TILE_FLOOR,_TILE_FLOOR_SRC);_loadTileTex(_TILE_EDGE,_TILE_EDGE_SRC);
-_loadTileTex(_TILE_DECAL,_TILE_DECAL_SRC);_loadTileTex(_TILE_GLOW,_TILE_GLOW_SRC);_loadTileTex(_TILE_OVL,_TILE_OVL_SRC);
+function _loadTileTex(arr,srcs){for(const s of srcs){_tileTexTotal++;const img=new Image();img.onload=()=>{_tileTexCnt++;if(_tileTexCnt>=_tileTexTotal){_tileTexReady=true;console.log('[TILE-TEX] all '+_tileTexTotal+' loaded')}};img.onerror=()=>{_tileTexCnt++;if(_tileTexCnt>=_tileTexTotal)_tileTexReady=true};img.src=_TILE_BASE+s;arr.push(img)}}
+// insect_tileset_min_pack 에셋 미존재 — 에셋 추가 후 아래 주석 해제
+//_loadTileTex(_TILE_FLOOR,_TILE_FLOOR_SRC);_loadTileTex(_TILE_EDGE,_TILE_EDGE_SRC);
+//_loadTileTex(_TILE_DECAL,_TILE_DECAL_SRC);_loadTileTex(_TILE_GLOW,_TILE_GLOW_SRC);_loadTileTex(_TILE_OVL,_TILE_OVL_SRC);
+_tileTexReady=true;
 function _tileHash(x,y,s){let h=(x*374761393+y*668265263+s)^0x5bd1e995;h=Math.imul(h^(h>>>15),0x1b873593);return(h^(h>>>13))>>>0}
 // ══ 에디터 맵 텍스처 (스테이지별 PNG) ══
 const _mapTexImgs={};
@@ -44086,16 +44089,16 @@ const INTRO_CUTSCENE_LINES={
     {id:1,img:'6.png',t:0,dur:2500,speaker:null,text:'',sfx:'goddess_laugh'},
     {id:2,img:'4.png',t:2500,dur:1500,speaker:null,text:''},
     {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'니놈의 그 짜릿한 복수극은 감명깊게도 잘 봤다. 명작이더구나.'},
-    {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'네놈 그래, 니놈에게 기회를 주겠다. 선택의 여지는 없겠지.'},
+    {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'니놈에게 기회를 주겠다. 선택의 여지는 없겠지.'},
     {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'니놈에게 알량한 선의가 보인다. 보고 싶은가? 구해야 할 게 있지 않은가?'},
     {id:6,img:'7.png',t:17500,dur:1500,speaker:null,text:'',sfx:'wood_horse_drop'},
     {id:7,img:'8.png',t:19000,dur:2500,speaker:'GODDESS',text:'정신이 드나?'},
-    {id:8,img:'1.png',t:21500,dur:6500,speaker:'GODDESS',text:'그래, 이곳을 탈출하라. 친히 도와주마. 이제 귀찮다.\n디로이와 핵터가 너를 안내할 것이다. 또 보자, 망자여.'},
+    {id:8,img:'1.png',t:21500,dur:6500,speaker:'GODDESS',text:'그래, 이곳을 탈출하라. 친히 도와주마.\n디로이와 핵터가 너를 안내할 것이다. 또 보자, 망자여.'},
     {id:9,img:'9.png',t:28000,dur:2500,speaker:'DIROY',text:'놀랄 거 없어. 인사나 하지. 내가 디로이.'},
     {id:10,img:'11.png',t:30500,dur:3500,speaker:'HECTOR',text:'내가 핵터. 여신님의 가호로 생각하면 돼.\n우리도 이곳을 나가야 하거든.'},
     {id:11,img:'9.png',t:34000,dur:4000,speaker:'DIROY',text:'악마는 악의로 만들어진 존재야.\n본능적으로 선의를 공격하려 들어.'},
     {id:12,img:'18.png',t:38000,dur:4500,speaker:'HECTOR',text:'근데 너는 좀 특이해. 선의가 강해.\n그리고 악의는 일시적으로 폭발한 상태고.'},
-    {id:13,img:'19.png',t:42500,dur:3500,speaker:'DIROY',text:'그래서 악마들이 너 냄새를 맡고 몰려들 거야.'},
+    {id:13,img:'19.png',t:42500,dur:3500,speaker:'DIROY',text:'그래서 악마들이 네 냄새를 맡고 몰려들 거야.'},
     {id:14,img:'13.png',t:46000,dur:2000,speaker:null,text:'',sfx:'weapons_appear'},
     {id:15,img:'14.png',t:48000,dur:2500,speaker:null,text:'',sfx:'ghost_bond_hum'},
     {id:16,img:'15.png',t:50500,dur:2500,speaker:null,text:'',sfx:'crossbow_glow'},
@@ -44111,10 +44114,20 @@ const INTRO_CUTSCENE_LINES={
 let _cutsceneState=null; // 'INTRO_CUTSCENE' or null
 let _cutsceneStartMs=0;
 let _cutsceneIdx=-1;
+let _cutLineIdx=0; // 현재 라인 인덱스 (클릭 진행)
+let _cutLineStartMs=0; // 현재 라인 시작 시간
+let _cutWaitInput=false; // 입력 대기 중
 const _cutsceneImgCache={};
 
 function _playSfxSafe(key){try{if(typeof playSample==='function')playSample(key,.8,1)}catch(e){console.log('[CUTSCENE] sfx missing:',key)}}
 function _playVoiceSafe(key){try{if(typeof playSample==='function')playSample(key,1,1)}catch(e){console.log('[CUTSCENE] voice missing:',key)}}
+
+// 컷신 전용 오버레이 캔버스 (GPU 프록시 우회)
+const _cutC=document.createElement('canvas');
+_cutC.style.cssText='position:absolute;left:0;top:0;width:100%;height:100%;z-index:9999;pointer-events:auto;display:none;cursor:pointer';
+_cutC.addEventListener('click',()=>{if(_cutsceneState==='INTRO_CUTSCENE')_cutsceneAdvance()});
+document.body.appendChild(_cutC);
+const _cutX=_cutC.getContext('2d');
 
 function _getCutsceneImg(filename){
   if(!filename)return null;
@@ -44138,56 +44151,78 @@ function _startIntroCutscene(){
   _cutsceneState='INTRO_CUTSCENE';
   _cutsceneStartMs=performance.now();
   _cutsceneIdx=-1;
+  _cutLineIdx=0;
+  _cutLineStartMs=performance.now();
+  _cutWaitInput=false;
   G.on=false;
   // HUD 숨기기
   ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>{const el=$(id);if(el)el.classList.remove('on')});
   console.log('[CUTSCENE] Intro cutscene started');
 }
 
-function _renderIntroCutscene(){
+function _cutsceneAdvance(){
   if(_cutsceneState!=='INTRO_CUTSCENE')return;
-  const elapsedMs=performance.now()-_cutsceneStartMs;
+  const lns=_cutsceneGetLines();
+  const ln=lns[_cutLineIdx];
+  // 타이핑 중이면 전문 표시로 전환
+  if(ln&&ln.text&&ln.speaker&&!_cutWaitInput){_cutWaitInput=true;return}
+  // 다음 라인으로
+  _cutLineIdx++;
+  if(_cutLineIdx>=lns.length){_cutsceneEnd();return}
+  _cutLineStartMs=performance.now();
+  _cutWaitInput=false;
+  _cutsceneIdx=-1; // SFX 재트리거
+}
+function _cutsceneGetLines(){
   const lang=(typeof OPT!=='undefined'&&OPT.lang)?OPT.lang:'ko';
   const lines=INTRO_CUTSCENE_LINES[lang];
-  const lns=(lines&&lines.length>0)?lines:INTRO_CUTSCENE_LINES.ko;
+  return(lines&&lines.length>0)?lines:INTRO_CUTSCENE_LINES.ko;
+}
+function _cutsceneEnd(){
+  G._cutsceneDone=true;
+  _cutsceneState=null;
+  _cutC.style.display='none';
+  _startIntro();
+}
 
-  let activeIdx=-1;
-  for(let i=0;i<lns.length;i++){
-    const ln=lns[i];
-    if(ln.exit&&elapsedMs>=ln.t){
-      G._cutsceneDone=true;
-      _cutsceneState=null;
-      _startIntro();
-      return;
-    }
-    if(elapsedMs>=ln.t&&elapsedMs<ln.t+ln.dur){activeIdx=i;break}
+function _renderIntroCutscene(){
+  if(_cutsceneState!=='INTRO_CUTSCENE')return;
+  const lns=_cutsceneGetLines();
+  if(_cutLineIdx>=lns.length){_cutsceneEnd();return}
+  const ln=lns[_cutLineIdx];
+
+  // exit 라인
+  if(ln.exit){_cutsceneEnd();return}
+
+  const lineElapsed=performance.now()-_cutLineStartMs;
+
+  // 대사 없는 컷(sfx/이미지만) → dur 후 자동 진행
+  if(!ln.text||!ln.speaker){
+    if(lineElapsed>=ln.dur){_cutLineIdx++;_cutLineStartMs=performance.now();_cutsceneIdx=-1;return}
   }
 
-  const cx=X||C.getContext('2d');
-  const cw=C.width,ch=C.height;
+  // 오버레이 캔버스 크기 동기화
+  if(_cutC.width!==C.width||_cutC.height!==C.height){_cutC.width=C.width;_cutC.height=C.height}
+  _cutC.style.display='block';
+  const cx=_cutX;
+  const cw=_cutC.width,ch=_cutC.height;
 
   // 검은 배경
   cx.fillStyle='#000';cx.fillRect(0,0,cw,ch);
 
-  if(activeIdx===-1){return}
-  const ln=lns[activeIdx];
-  const lineElapsed=elapsedMs-ln.t;
-
   // SFX/Voice (라인 전환 시 1회)
-  if(_cutsceneIdx!==activeIdx){
+  if(_cutsceneIdx!==_cutLineIdx){
     if(ln.sfx)_playSfxSafe(ln.sfx);
     if(ln.speaker&&ln.text)_playVoiceSafe('voice_cut_'+String(ln.id).padStart(2,'0'));
-    _cutsceneIdx=activeIdx;
+    _cutsceneIdx=_cutLineIdx;
   }
 
-  // 이미지 렌더 (페이드 인 0.5s, 페이드 아웃 0.3s)
+  // 이미지 렌더 (페이드 인 0.5s)
   if(ln.img){
     const img=_getCutsceneImg(ln.img);
     if(img&&img.complete&&img.naturalWidth>0){
       const fadeIn=Math.min(1,lineElapsed/500);
-      const fadeOut=Math.min(1,Math.max(0,(ln.dur-lineElapsed)/300));
-      cx.globalAlpha=fadeIn*fadeOut;
-      // cover 방식
+      cx.globalAlpha=fadeIn;
       const imgR=img.naturalWidth/img.naturalHeight;
       const cR=cw/ch;
       let dw,dh,dx,dy;
@@ -44198,7 +44233,7 @@ function _renderIntroCutscene(){
     }
   }
 
-  // 자막 렌더
+  // 자막 렌더 (대사 있는 컷만)
   if(ln.text&&ln.speaker){
     const style=CUTSCENE_SPEAKER_STYLES[ln.speaker]||{color:'#fff',label:ln.speaker};
     const subH=ch*.22;
@@ -44217,7 +44252,7 @@ function _renderIntroCutscene(){
     cx.strokeStyle=style.color;cx.globalAlpha=.4;cx.lineWidth=1;
     cx.beginPath();cx.moveTo(nameX,nameY+Math.max(10,ch*.015));cx.lineTo(nameX+lineW,nameY+Math.max(10,ch*.015));cx.stroke();
     cx.globalAlpha=1;
-    // 본문 (한 글자씩 페이드 인)
+    // 본문 (한 글자씩 타이핑 or 전문 표시)
     const textX=nameX,textY=nameY+Math.max(22,ch*.035);
     const textLines=ln.text.split('\n');
     cx.font=Math.max(13,ch*.018)+'px "Noto Sans KR",sans-serif';
@@ -44225,7 +44260,8 @@ function _renderIntroCutscene(){
     cx.shadowColor='#000';cx.shadowBlur=4;cx.shadowOffsetX=1;cx.shadowOffsetY=1;
     const charsPerSec=20;
     const totalChars=ln.text.replace(/\n/g,'').length;
-    const visibleChars=Math.min(totalChars,~~(lineElapsed/1000*charsPerSec));
+    const showAll=_cutWaitInput;
+    const visibleChars=showAll?totalChars:Math.min(totalChars,~~(lineElapsed/1000*charsPerSec));
     let charCount=0;
     for(let li=0;li<textLines.length;li++){
       const tl=textLines[li];
@@ -44233,12 +44269,25 @@ function _renderIntroCutscene(){
       for(let ci=0;ci<tl.length;ci++){
         if(charCount<visibleChars){visText+=tl[ci];charCount++}else break;
       }
-      if(charCount>=visibleChars&&visText.length<tl.length){/* 이 줄 이후 미표시 */}
-      else{charCount+=0}
       cx.fillText(visText,textX,textY+li*Math.max(20,ch*.028));
       if(charCount>=visibleChars)break;
     }
     cx.shadowColor='transparent';cx.shadowBlur=0;cx.shadowOffsetX=0;cx.shadowOffsetY=0;
+    // 타이핑 완료 → 대기 상태 진입
+    if(!showAll&&visibleChars>=totalChars)_cutWaitInput=true;
+    // ▼ 깜빡이 표시 (입력 대기 중)
+    if(_cutWaitInput){
+      const blink=~~(performance.now()/500)%2;
+      if(blink){
+        cx.fillStyle='#fff';cx.globalAlpha=.6;
+        const triX=cw*.92,triY=ch-subH*.2;
+        cx.font=Math.max(12,ch*.016)+'px sans-serif';
+        cx.textAlign='center';
+        cx.fillText('\u25BC',triX,triY);
+        cx.textAlign='left';
+      }
+      cx.globalAlpha=1;
+    }
   }
 }
 
