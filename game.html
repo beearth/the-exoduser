@@ -10356,7 +10356,7 @@ const _ES_FRAMES=30,_ES_FW=546,_ES_FH=51;
 const _ES_DRAW_H=150;              // 마력연사 시각 두께(px)
 const _ES_HIT_HALF_W=(_ES_DRAW_H*.5); // 타격 반폭(px) — 시각과 판정 일치
 // ═══ 마력광선 텍스처 (1408×768, lighter 합성) ═══
-const _AL_IMG=new Image();_AL_IMG.src='assets/vfx/arc_laser/laser_sheet.png';
+const _AL_IMG=new Image();_AL_IMG.src='assets/vfx/arc_laser/laser_sheet.png?v=20260429';
 let _alImgReady=false;_AL_IMG.onload=()=>{_alImgReady=true};
 const _AL_DRAW_H=80; // 시각 두께(px) — 빔 높이
 // ═══ 마법 오브 투사체 (vfx_magic_orb.png 6열×5행=30프레임) ═══
@@ -39164,7 +39164,7 @@ function draw(){
       X.restore();
     }else{P._esAnim=null}
   }
-  // ── 마력광선 VFX (채널링 지속 — 4겹 라인 글로우 + 스프라이트) ──
+  // ── 마력광선 VFX (채널링 지속 — Grok 생성 스프라이트, lighter 합성) ──
   if(P._alBeam&&_alImgReady){
     const al=P._alBeam;
     const t=al.t||0;
@@ -39172,31 +39172,8 @@ function draw(){
     const drawH=_AL_DRAW_H*flk;
     X.save();
     X.translate(al.x,al.y);X.rotate(al.ang);
-    // 레이어1: 최외곽 글로우 (가장 두껍고 흐림)
-    X.globalAlpha=.25*flk;X.strokeStyle='#4a90ff';X.lineWidth=32;
-    X.shadowBlur=24;X.shadowColor='#4a90ff';
-    X.beginPath();X.moveTo(0,0);X.lineTo(al.range,0);X.stroke();
-    // 레이어2: 중간 글로우
-    X.globalAlpha=.5*flk;X.strokeStyle='#78b4ff';X.lineWidth=16;
-    X.shadowBlur=12;X.shadowColor='#78b4ff';
-    X.beginPath();X.moveTo(0,0);X.lineTo(al.range,0);X.stroke();
-    // 레이어3: 내부 빔
-    X.globalAlpha=.8*flk;X.strokeStyle='#b4dcff';X.lineWidth=7;
-    X.shadowBlur=6;X.shadowColor='#b4dcff';
-    X.beginPath();X.moveTo(0,0);X.lineTo(al.range,0);X.stroke();
-    // 레이어4: 코어 (가장 얇고 밝음)
-    X.globalAlpha=1;X.strokeStyle='#f0f5ff';X.lineWidth=2.5;
-    X.shadowBlur=3;X.shadowColor='#ffffff';
-    X.beginPath();X.moveTo(0,0);X.lineTo(al.range,0);X.stroke();
-    X.shadowBlur=0;
-    // 스프라이트 오버레이 (번개 디테일)
-    X.globalAlpha=.85*flk;
+    X.globalAlpha=.95*flk;
     X.drawImage(_AL_IMG,0,0,_AL_IMG.naturalWidth,_AL_IMG.naturalHeight,0,-drawH/2,al.range,drawH);
-    // 끝점 글로우
-    X.globalAlpha=.6*flk;X.fillStyle='#78b4ff';
-    X.beginPath();X.arc(al.range,0,14,0,Math.PI*2);X.fill();
-    X.globalAlpha=.3*flk;X.fillStyle='#4a90ff';
-    X.beginPath();X.arc(al.range,0,28,0,Math.PI*2);X.fill();
     X.globalAlpha=1;
     X.restore();
   }
@@ -44243,7 +44220,8 @@ const INTRO_CUTSCENE_LINES={
     {id:20,img:'16.png',t:71500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
     {id:21,img:'16.png',t:73500,dur:3500,speaker:'HECTOR',text:'이 인간 또 기절했네. 얼마나 안 잔 거야?',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
     {id:22,img:'16.png',t:77000,dur:4000,speaker:'DIROY',text:'복수만 생각하느라 며칠을 안 먹고 안 잔 모양이야.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:23,img:'16.png',t:81000,dur:2500,speaker:'HECTOR',text:'악의라도 먹여.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:'22b',img:'16.png',t:81000,dur:2500,speaker:'DIROY',text:'놔두면 잡아먹혀.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:23,img:'16.png',t:83500,dur:2500,speaker:'HECTOR',text:'악의라도 먹여서 깨워야해.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:60,shadow:true}},
     {id:24,img:'17.png',t:83500,dur:2500,speaker:'DIROY',text:'...',cam:{zs:1,ze:1.05,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:80,shadow:true}},
     {id:25,img:null,t:86000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
   ],en:[
