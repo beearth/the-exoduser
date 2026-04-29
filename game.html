@@ -44086,30 +44086,34 @@ const CUTSCENE_SPEAKER_STYLES={
   DIROY:{color:'#e8d4b8',label:'디로이'},
   HECTOR:{color:'#fb923c',label:'핵터'}
 };
+const _ease={linear:t=>t,in:t=>t*t,out:t=>1-(1-t)*(1-t),inout:t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2};
 const INTRO_CUTSCENE_LINES={
   ko:[
-    {id:1,img:'6.png',t:0,dur:2500,speaker:null,text:'',sfx:'goddess_laugh'},
-    {id:2,img:'4.png',t:2500,dur:1500,speaker:null,text:''},
-    {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'니놈의 그 짜릿한 복수극은 감명깊게도 잘 봤다. 명작이더구나.'},
-    {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'관람료는 내야겠지. 그래, 네놈에게 기회를 주겠다. 선택의 여지는 없겠지.'},
-    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'니놈에게 알량한 선의가 보인다. 보고 싶은가? 구해야 할 게 있지 않은가? 아직 살아있더구나.'},
-    {id:6,img:'7.png',t:17500,dur:1500,speaker:null,text:'',sfx:'wood_horse_drop'},
-    {id:7,img:'8.png',t:19000,dur:3500,speaker:'GODDESS',text:'정신이 드나? 그 나무말 하나에 정신이 번쩍 드는구나.'},
-    {id:8,img:'1.png',t:21500,dur:6500,speaker:'GODDESS',text:'그래, 이곳을 탈출하라. 내 친히 너를 도와주마.\n디로이와 핵터가 너를 안내할 것이다. 또 보자, 망자여.'},
-    {id:9,img:'9.png',t:28000,dur:2500,speaker:'DIROY',text:'놀랄 거 없어. 인사나 하지. 내가 디로이.'},
-    {id:10,img:'11.png',t:30500,dur:3500,speaker:'HECTOR',text:'내가 핵터. 여신님의 가호로 생각하면 돼.\n우리도 이곳을 나가야 하거든.'},
-    {id:11,img:'9.png',t:34000,dur:4000,speaker:'DIROY',text:'악마는 악의로 만들어진 존재야.\n본능적으로 선의를 공격하려 들어.'},
-    {id:12,img:'18.png',t:39000,dur:5500,speaker:'HECTOR',text:'근데 너는 좀 특이해. 선의가 강해.\n그리고 악의는 일시적으로 폭발한 상태고. 곧 사라질 거야, 그 폭발도.'},
-    {id:13,img:'19.png',t:42500,dur:3500,speaker:'DIROY',text:'그래서 악마들이 네 냄새를 맡고 몰려들 거야.'},
-    {id:14,img:'13.png',t:46000,dur:2000,speaker:null,text:'',sfx:'weapons_appear'},
-    {id:15,img:'14.png',t:48000,dur:2500,speaker:null,text:'',sfx:'ghost_bond_hum'},
-    {id:16,img:'15.png',t:50500,dur:2500,speaker:null,text:'',sfx:'crossbow_glow'},
-    {id:17,img:'10.png',t:55000,dur:2500,speaker:null,text:'',sfx:'armor_kneel'},
-    {id:18,img:'16.png',t:57500,dur:2000,speaker:null,text:'',sfx:'armor_collapse'},
-    {id:19,img:'16.png',t:59500,dur:3500,speaker:'HECTOR',text:'이 인간 또 기절했네. 얼마나 안 잔 거야?'},
-    {id:20,img:'16.png',t:63000,dur:4000,speaker:'DIROY',text:'복수만 생각하느라 며칠을 안 먹고 안 잔 모양이야.'},
-    {id:21,img:'16.png',t:67000,dur:2500,speaker:'HECTOR',text:'악의라도 먹여.'},
-    {id:22,img:null,t:67500,dur:1500,speaker:null,text:'',exit:true}
+    {id:1,img:'6.png',t:0,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,px:0,py:0,ease:'out'},vfx:{vig:.4,grain:.15,grade:'purple'},fade:{in:800,out:200,type:'cross'},sfx:'goddess_laugh'},
+    {id:2,img:'4.png',t:2500,dur:1500,speaker:null,text:'',cam:{zs:1.05,ze:1.15,px:0,py:0,ease:'out'},vfx:{vig:.35,chrom:.3,shake:1},fade:{type:'cross',in:300},sfx:'laugh_climax'},
+    {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'니놈의 그 짜릿한 복수극은 감명깊게도 잘 봤다. 명작이더구나.',cam:{zs:1,ze:1.05,px:5,py:0,ease:'linear'},vfx:{vig:.5,grain:.1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'관람료는 내야겠지. 그래, 네놈에게 기회를 주겠다. 선택의 여지는 없다.',cam:{zs:1.08,ze:1,px:0,py:0,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'니놈에게 알량한 선의가 보인다. 보고 싶은가? 구해야 할 게 있지 않은가? 아직 살아있더구나.',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:6,img:'7.png',t:17500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
+    {id:7,img:'20.png',t:19000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},
+    {id:8,img:'21.png',t:21500,dur:3000,speaker:'GODDESS',text:'정신이 드나? 그 나무말 하나에 정신이 번쩍 드는구나.',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:9,img:'22.png',t:24500,dur:2500,speaker:null,text:'',cam:{zs:1.05,ze:1,ease:'out'},vfx:{vig:.4,grain:.15},fade:{type:'cross',in:400},sfx:'reach_strain'},
+    {id:10,img:'1.png',t:27000,dur:6500,speaker:'GODDESS',text:'그래, 이곳을 탈출하라. 내 친히 너를 도와주마.\n디로이와 핵터가 너를 안내할 것이다. 또 보자, 망자여.',cam:{zs:1.1,ze:1,ease:'inout'},vfx:{vig:.5,grade:'purple'},fade:{type:'cross',in:500,out:600},text_cfg:{reveal:'char',speed:65,shadow:true}},
+    {id:11,img:'9.png',t:33500,dur:3000,speaker:'DIROY',text:'놀랄 거 없어. 인사나 하지. 내가 디로이.',cam:{zs:1,ze:1.08,ease:'out'},vfx:{vig:.4,glowEye:true},fade:{type:'black',in:500},text_cfg:{reveal:'char',speed:50,glow:true}},
+    {id:12,img:'11.png',t:36500,dur:3500,speaker:'HECTOR',text:'내가 핵터. 여신님의 가호로 생각하면 돼.\n우리도 이곳을 나가야 하거든.',cam:{zs:1,ze:1.05,px:-10,ease:'linear'},vfx:{vig:.3,flicker:.2},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:13,img:'17.png',t:40000,dur:4000,speaker:'DIROY',text:'악마는 악의로 만들어진 존재야.\n본능적으로 선의를 공격하려 들어.',cam:{zs:1.05,ze:1.1,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:14,img:'18.png',t:44000,dur:5500,speaker:'HECTOR',text:'근데 너는 좀 특이해. 선의가 강해.\n그리고 악의는 일시적으로 폭발한 상태고. 곧 사라질 거야, 그 폭발도.',cam:{zs:1,ze:1.15,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:15,img:'19.png',t:49500,dur:3500,speaker:'DIROY',text:'그래서 악마들이 네 냄새를 맡고 몰려들 거야.',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:16,img:'23.png',t:53000,dur:5000,speaker:'DIROY',text:'여신이 너에게 무기를 내렸어. 챙겨.',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:17,img:'24.png',t:58000,dur:5500,speaker:'HECTOR',text:'여신이 보낸 투영이야. 전장의 영혼이지.\n쇠뇌에 깃들어서 너랑 같이 싸울 거야.',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:55,glow:true}},
+    {id:18,img:'15.png',t:63500,dur:5500,speaker:'DIROY',text:'그 머리띠도 차. 폭발한 악의가 너를\n미치게 하기 전에 정신을 잡아줄 거야.',cam:{zs:1,ze:1.25,px:30,py:20,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow',text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:19,img:'10.png',t:69000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
+    {id:20,img:'16.png',t:71500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
+    {id:21,img:'16.png',t:73500,dur:3500,speaker:'HECTOR',text:'이 인간 또 기절했네. 얼마나 안 잔 거야?',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:22,img:'16.png',t:77000,dur:4000,speaker:'DIROY',text:'복수만 생각하느라 며칠을 안 먹고 안 잔 모양이야.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:23,img:'16.png',t:81000,dur:2500,speaker:'HECTOR',text:'악의라도 먹여.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:24,img:'17.png',t:83500,dur:2500,speaker:'DIROY',text:'...',cam:{zs:1,ze:1.05,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:80,shadow:true}},
+    {id:25,img:null,t:86000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
   ],en:[],ja:[],zh:[]
 };
 
@@ -44139,6 +44143,33 @@ function _getCutsceneImg(filename){
   _cutsceneImgCache[filename]=img;
   return img;
 }
+
+// ── VFX 헬퍼 ──
+function _cutVignette(cx,w,h,intensity){
+  if(!intensity)return;
+  const grd=cx.createRadialGradient(w/2,h/2,w*.2,w/2,h/2,w*.7);
+  grd.addColorStop(0,'rgba(0,0,0,0)');grd.addColorStop(1,'rgba(0,0,0,'+intensity+')');
+  cx.fillStyle=grd;cx.fillRect(0,0,w,h);
+}
+function _cutGrain(cx,w,h,intensity,t){
+  if(!intensity)return;
+  cx.save();cx.globalAlpha=intensity;cx.globalCompositeOperation='overlay';
+  for(let i=0;i<200;i++){
+    const x=((t*7+i*13)%w)|0,y=((t*11+i*17)%h)|0;
+    cx.fillStyle=(i%2)?'#000':'#fff';cx.fillRect(x,y,1,1);
+  }
+  cx.restore();
+}
+function _cutColorGrade(cx,w,h,type){
+  if(!type)return;
+  cx.save();cx.globalCompositeOperation='multiply';
+  if(type==='purple')cx.fillStyle='rgba(80,40,120,0.35)';
+  else if(type==='purple_blood')cx.fillStyle='rgba(100,30,60,0.40)';
+  else if(type==='blue')cx.fillStyle='rgba(40,60,120,0.35)';
+  else{cx.restore();return}
+  cx.fillRect(0,0,w,h);cx.restore();
+}
+function _cutShake(mag,t){return mag?{x:(Math.sin(t*0.047)*mag*2)|0,y:(Math.cos(t*0.053)*mag*2)|0}:{x:0,y:0}}
 
 const _forceCutscene=new URLSearchParams(location.search).get('cutscene')==='1';
 function _startIntroCutscene(){
@@ -44187,21 +44218,29 @@ function _renderIntroCutscene(){
   if(_cutLineIdx>=lns.length){_cutsceneEnd();return}
   const ln=lns[_cutLineIdx];
 
-  // exit 라인
-  if(ln.exit){_cutsceneEnd();return}
-
-  const lineElapsed=performance.now()-_cutLineStartMs;
-
-  // 대사 없는 컷(sfx/이미지만) → dur 후 자동 진행
-  if(!ln.text||!ln.speaker){
-    if(lineElapsed>=ln.dur){_cutLineIdx++;_cutLineStartMs=performance.now();_cutsceneIdx=-1;return}
+  // exit 라인 (페이드 아웃 처리)
+  if(ln.exit){
+    const lineElapsed=performance.now()-_cutLineStartMs;
+    const fo=ln.fade&&ln.fade.out?ln.fade.out:1500;
+    if(_cutC.width!==C.width||_cutC.height!==C.height){_cutC.width=C.width;_cutC.height=C.height}
+    _cutC.style.display='block';
+    _cutX.fillStyle='#000';_cutX.globalAlpha=Math.min(1,lineElapsed/fo);_cutX.fillRect(0,0,_cutC.width,_cutC.height);_cutX.globalAlpha=1;
+    if(lineElapsed>=fo){_cutsceneEnd()}
+    return;
   }
 
-  // 오버레이 캔버스 크기 동기화
+  const lineElapsed=performance.now()-_cutLineStartMs;
+  const now=performance.now();
+
+  // 대사 없는 컷 → dur 후 자동 진행
+  if(!ln.text||!ln.speaker){
+    if(lineElapsed>=ln.dur){_cutLineIdx++;_cutLineStartMs=now;_cutsceneIdx=-1;return}
+  }
+
+  // 캔버스 동기화
   if(_cutC.width!==C.width||_cutC.height!==C.height){_cutC.width=C.width;_cutC.height=C.height}
   _cutC.style.display='block';
-  const cx=_cutX;
-  const cw=_cutC.width,ch=_cutC.height;
+  const cx=_cutX,cw=_cutC.width,ch=_cutC.height;
 
   // 검은 배경
   cx.fillStyle='#000';cx.fillRect(0,0,cw,ch);
@@ -44213,25 +44252,53 @@ function _renderIntroCutscene(){
     _cutsceneIdx=_cutLineIdx;
   }
 
-  // 이미지 렌더 (페이드 인 0.5s)
+  // 페이드 opacity 계산
+  const fd=ln.fade||{};
+  const fi=fd.in||400,fo=fd.out||0;
+  let fadeAlpha=1;
+  if(lineElapsed<fi)fadeAlpha=lineElapsed/fi;
+  if(fo&&lineElapsed>ln.dur-fo)fadeAlpha=Math.min(fadeAlpha,(ln.dur-lineElapsed)/fo);
+  fadeAlpha=Math.max(0,Math.min(1,fadeAlpha));
+
+  // 이미지 렌더 + 카메라 워크 (Ken Burns)
   if(ln.img){
     const img=_getCutsceneImg(ln.img);
     if(img&&img.complete&&img.naturalWidth>0){
-      const fadeIn=Math.min(1,lineElapsed/500);
-      cx.globalAlpha=fadeIn;
+      cx.save();
+      cx.globalAlpha=fadeAlpha;
+      // 카메라 트랜스폼
+      const cam=ln.cam||{zs:1,ze:1};
+      const t=Math.min(1,lineElapsed/(ln.dur||1));
+      const ef=_ease[cam.ease||'linear']||_ease.linear;
+      const et=ef(t);
+      const zoom=cam.zs+(cam.ze-cam.zs)*et;
+      const panX=(cam.px||0)*et;
+      const panY=(cam.py||0)*et;
+      // shake
+      const vfx=ln.vfx||{};
+      const sk=_cutShake(vfx.shake||0,now);
+      cx.translate(cw/2+panX+sk.x,ch/2+panY+sk.y);
+      cx.scale(zoom,zoom);
+      cx.translate(-cw/2,-ch/2);
+      // cover 방식 draw
       const imgR=img.naturalWidth/img.naturalHeight;
       const cR=cw/ch;
       let dw,dh,dx,dy;
       if(imgR>cR){dh=ch;dw=ch*imgR;dx=(cw-dw)/2;dy=0}
       else{dw=cw;dh=cw/imgR;dx=0;dy=(ch-dh)/2}
       cx.drawImage(img,dx,dy,dw,dh);
-      cx.globalAlpha=1;
+      cx.restore();
+      // VFX 후처리
+      _cutColorGrade(cx,cw,ch,vfx.grade);
+      _cutVignette(cx,cw,ch,vfx.vig||0);
+      _cutGrain(cx,cw,ch,vfx.grain||0,now);
     }
   }
 
   // 자막 렌더 (대사 있는 컷만)
   if(ln.text&&ln.speaker){
     const style=CUTSCENE_SPEAKER_STYLES[ln.speaker]||{color:'#fff',label:ln.speaker};
+    const tc=ln.text_cfg||{};
     const subH=ch*.22;
     const subY=ch-subH;
     // 그라데이션 배경
@@ -44248,16 +44315,17 @@ function _renderIntroCutscene(){
     cx.strokeStyle=style.color;cx.globalAlpha=.4;cx.lineWidth=1;
     cx.beginPath();cx.moveTo(nameX,nameY+Math.max(10,ch*.015));cx.lineTo(nameX+lineW,nameY+Math.max(10,ch*.015));cx.stroke();
     cx.globalAlpha=1;
-    // 본문 (한 글자씩 타이핑 or 전문 표시)
+    // 본문 (text_cfg 기반 타이핑)
     const textX=nameX,textY=nameY+Math.max(22,ch*.035);
     const textLines=ln.text.split('\n');
+    const spd=tc.speed||50;
     cx.font=Math.max(13,ch*.018)+'px "Noto Sans KR",sans-serif';
     cx.fillStyle='#fff';
-    cx.shadowColor='#000';cx.shadowBlur=4;cx.shadowOffsetX=1;cx.shadowOffsetY=1;
-    const charsPerSec=20;
+    if(tc.shadow){cx.shadowColor='#000';cx.shadowBlur=4;cx.shadowOffsetX=1;cx.shadowOffsetY=1}
+    if(tc.glow){cx.shadowColor=style.color;cx.shadowBlur=8;cx.shadowOffsetX=0;cx.shadowOffsetY=0}
     const totalChars=ln.text.replace(/\n/g,'').length;
     const showAll=_cutWaitInput;
-    const visibleChars=showAll?totalChars:Math.min(totalChars,~~(lineElapsed/1000*charsPerSec));
+    const visibleChars=showAll?totalChars:Math.min(totalChars,~~(lineElapsed/spd));
     let charCount=0;
     for(let li=0;li<textLines.length;li++){
       const tl=textLines[li];
@@ -44269,17 +44337,16 @@ function _renderIntroCutscene(){
       if(charCount>=visibleChars)break;
     }
     cx.shadowColor='transparent';cx.shadowBlur=0;cx.shadowOffsetX=0;cx.shadowOffsetY=0;
-    // 타이핑 완료 → 대기 상태 진입
+    // 타이핑 완료 → 대기
     if(!showAll&&visibleChars>=totalChars)_cutWaitInput=true;
-    // ▼ 깜빡이 표시 (입력 대기 중)
+    // ▼ 깜빡이
     if(_cutWaitInput){
-      const blink=~~(performance.now()/500)%2;
+      const blink=~~(now/500)%2;
       if(blink){
         cx.fillStyle='#fff';cx.globalAlpha=.6;
-        const triX=cw*.92,triY=ch-subH*.2;
         cx.font=Math.max(12,ch*.016)+'px sans-serif';
         cx.textAlign='center';
-        cx.fillText('\u25BC',triX,triY);
+        cx.fillText('\u25BC',cw*.92,ch-subH*.2);
         cx.textAlign='left';
       }
       cx.globalAlpha=1;
