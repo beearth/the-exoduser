@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>VFX GIF Test</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#111;color:#eee;font:14px monospace;display:flex;flex-direction:column;align-items:center;padding:20px;gap:20px}
+h1{font-size:18px;color:#ff8844}
+.grid{display:flex;flex-wrap:wrap;gap:20px;justify-content:center}
+.card{background:#222;border:1px solid #444;border-radius:8px;padding:10px;text-align:center;cursor:pointer;transition:.2s}
+.card:hover{border-color:#ff8844;transform:scale(1.02)}
+.card.active{border-color:#44ff44;box-shadow:0 0 15px #44ff4455}
+.card img{max-width:300px;max-height:200px;display:block;margin:0 auto 8px}
+.card .name{color:#aaa;font-size:12px}
+.preview{background:#000;border:2px solid #555;border-radius:8px;padding:10px;margin-top:10px;text-align:center}
+.preview img{max-width:90vw;max-height:60vh}
+.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px}
+.controls button{background:#333;color:#eee;border:1px solid #666;padding:6px 14px;border-radius:4px;cursor:pointer;font:13px monospace}
+.controls button:hover{background:#555}
+.canvas-wrap{position:relative;width:800px;height:500px;background:#1a1a1a;border:2px solid #555;border-radius:8px;overflow:hidden}
+canvas{width:100%;height:100%}
+.info{color:#888;font-size:11px;margin-top:5px}
+</style></head><body>
+<h1>VFX GIF Preview — 게임 내 테스트</h1>
+<div class="grid" id="grid"></div>
+<div class="preview" id="preview" style="display:none">
+  <div class="canvas-wrap">
+    <canvas id="cv" width="800" height="500"></canvas>
+  </div>
+  <div class="controls">
+    <button onclick="setScale(.5)">0.5x</button>
+    <button onclick="setScale(1)">1x</button>
+    <button onclick="setScale(2)">2x</button>
+    <button onclick="setScale(3)">3x</button>
+    <button onclick="toggleBg()">배경 전환 (어두움/밝음)</button>
+    <button onclick="toggleBlend()">블렌드: <span id="blendLabel">normal</span></button>
+  </div>
+  <div class="info">클릭해서 위치 이동 | 마우스휠로 크기 조절</div>
+</div>
+<script>
+const assets=[
+  {name:'electric-discharge',file:'assets/vfx/test_electric.gif',desc:'전기 방출'},
+  {name:'toxic-wave',file:'assets/vfx/test_toxic_wave.gif',desc:'독성 웨이브'},
+  {name:'toxic-spray',file:'assets/vfx/test_toxic_spray.gif',desc:'독성 스프레이'},
+  {name:'tornado',file:'assets/vfx/test_tornado.gif',desc:'토네이도'},
+  {name:'drone-swarm',file:'assets/vfx/test_drone.gif',desc:'드론 스웜'}
+];
+const grid=document.getElementById('grid');
+const preview=document.getElementById('preview');
+const cv=document.getElementById('cv');
+const X=cv.getContext('2d');
+let cur=null,scale=1,px=400,py=250,bright=false,blend='source-over';
+const blends=['source-over','lighter','screen','multiply'];
+let blendIdx=0;
+
+assets.forEach((a,i)=>{
+  const d=document.createElement('div');d.className='card';
+  d.innerHTML=`<img src="${a.file}"><div class="name">${a.name} — ${a.desc}</div>`;
+  d.onclick=()=>{
+    document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
+    d.classList.add('active');
+    cur=new Image();cur.src=a.file;
+    preview.style.display='block';
+    px=400;py=250;scale=1;
+  };
+  grid.appendChild(d);
+});
+
+cv.addEventListener('click',e=>{const r=cv.getBoundingClientRect();px=~~((e.clientX-r.left)/r.width*800);py=~~((e.clientY-r.top)/r.height*500)});
+cv.addEventListener('wheel',e=>{e.preventDefault();scale=Math.max(.1,Math.min(8,scale+(e.deltaY>0?-.1:.1)))},{passive:false});
+
+function setScale(s){scale=s}
+function toggleBg(){bright=!bright}
+function toggleBlend(){blendIdx=(blendIdx+1)%blends.length;blend=blends[blendIdx];document.getElementById('blendLabel').textContent=blend}
+
+function draw(){
+  X.clearRect(0,0,800,500);
+  X.fillStyle=bright?'#888':'#111';X.fillRect(0,0,800,500);
+  // grid
+  X.strokeStyle=bright?'#999':'#222';X.lineWidth=1;
+  for(let x=0;x<800;x+=50){X.beginPath();X.moveTo(x,0);X.lineTo(x,500);X.stroke()}
+  for(let y=0;y<500;y+=50){X.beginPath();X.moveTo(0,y);X.lineTo(800,y);X.stroke()}
+  // crosshair
+  X.strokeStyle='#ff444444';X.beginPath();X.moveTo(px-20,py);X.lineTo(px+20,py);X.moveTo(px,py-20);X.lineTo(px,py+20);X.stroke();
+  if(cur&&cur.complete){
+    const w=cur.width*scale,h=cur.height*scale;
+    X.globalCompositeOperation=blend;
+    X.drawImage(cur,px-w/2,py-h/2,w,h);
+    X.globalCompositeOperation='source-over';
+  }
+  X.fillStyle='#888';X.font='12px monospace';
+  X.fillText(`scale: ${scale.toFixed(1)}x | pos: ${px},${py} | blend: ${blend}`,10,490);
+  requestAnimationFrame(draw);
+}
+draw();
+</script></body></html>
