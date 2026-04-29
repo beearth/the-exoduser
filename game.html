@@ -2924,7 +2924,7 @@ async function dbSave(){
       stats:{...STATS},
       passives:{...PASSIVES},grit:_grit,gritCostModeV2:1,
       qslots:QSLOTS,
-      game:{stage:G.stage,kills:G.kills,mats:0,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0},
+      game:{stage:G.stage,kills:G.kills,mats:0,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0,cutsceneDone:G._cutsceneDone||false},
       bagMax:BAG_MAX,
       hellCleared:G.hellCleared||[],
       storage:{}, /* 창고는 localStorage 공유 */
@@ -3072,6 +3072,7 @@ function dbRestore(d){
     G.mats=Math.max(0,_loadSharedMats());
     G._irisSz=d.game.irisSz||20;
     G._taRecords=d.game.taRecords||{};G.comboMax=d.game.comboMax||0;G.playTime=d.game.playTime||0;
+    G._cutsceneDone=d.game.cutsceneDone||false;
   }
   // Bag
   BAG_MAX=d.bagMax||300;
@@ -7864,7 +7865,7 @@ function _dispatchCtSkill(){
 addEventListener('keydown',e=>{
   // ESC → 컷씬 스킵
   if(e.code==='Escape'&&!e.repeat&&_cutsceneState==='INTRO_CUTSCENE'){
-    e.preventDefault();localStorage.setItem('hell_intro_cutscene_v1','1');_cutsceneState=null;_startIntro();return;
+    e.preventDefault();G._cutsceneDone=true;_cutsceneState=null;_startIntro();return;
   }
   // ESC → 옵션 토글 (최상위 — 모든 것보다 먼저)
   if(e.code==='Escape'&&!e.repeat){
@@ -43977,6 +43978,8 @@ async function startGameFromDB(){
   if(saved&&saved.player){
     dbRestore(saved);
   }else{
+    // 새 캐릭 → 컷신 플래그 리셋
+    G._cutsceneDone=false;
     // 새 캐릭: 난이도별 시작 스킬 (0/1/3/5/10단, 하나씩 제거)
     // 0: 4종 전부, 1: -대왕치기, 3: -신성한땅, 5: -가시덫, 10: -기검참(전부 제거)
     const _df=OPT.diff||0;
@@ -44058,9 +44061,9 @@ hideBootLoading();
       if(el){el.style.opacity='0';el.style.pointerEvents='none';}
       console.log('[INTRO CHECK] stage='+G.stage);
       if(G.stage===0){
-        // 신규 캐릭 첫 시작 → 인트로 연출
-        console.log('[INTRO] starting intro...');
-        _startIntro();r();
+        // 신규 캐릭 첫 시작 → 인트로 컷신 → 인트로 연출
+        console.log('[INTRO] starting intro cutscene...');
+        _startIntroCutscene();r();
       }else{
         G.on=true;P.iframes=300;
         if(G._bonfire)G._bonfire.t=300;
@@ -44123,13 +44126,21 @@ function _getCutsceneImg(filename){
 }
 
 function _startIntroCutscene(){
-  if(G.stage!==0||localStorage.getItem('hell_intro_cutscene_v1')==='1'){
+  console.log('[CUTSCENE] _startIntroCutscene called, stage='+G.stage+', flag='+localStorage.getItem('hell_intro_cutscene_v1'));
+  if(G.stage!==0){
+    console.log('[CUTSCENE] skipped: stage !== 0');
+    _startIntro();return;
+  }
+  if(G._cutsceneDone){
+    console.log('[CUTSCENE] skipped: already watched');
     _startIntro();return;
   }
   _cutsceneState='INTRO_CUTSCENE';
   _cutsceneStartMs=performance.now();
   _cutsceneIdx=-1;
   G.on=false;
+  // HUD 숨기기
+  ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>{const el=$(id);if(el)el.classList.remove('on')});
   console.log('[CUTSCENE] Intro cutscene started');
 }
 
@@ -44144,7 +44155,7 @@ function _renderIntroCutscene(){
   for(let i=0;i<lns.length;i++){
     const ln=lns[i];
     if(ln.exit&&elapsedMs>=ln.t){
-      localStorage.setItem('hell_intro_cutscene_v1','1');
+      G._cutsceneDone=true;
       _cutsceneState=null;
       _startIntro();
       return;
@@ -44324,6 +44335,7 @@ function _showIntroKeys(step){
 function _openIntroCurtain(){
   // 게임 켜기 (커튼 뒤에서 렌더링 시작)
   G.on=true;P.iframes=600;
+  ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>{const el=$(id);if(el)el.classList.add('on')});
   if(!G.cam)G.cam={x:P.x,y:P.y};
   // 정상 몬스터 리스폰 (tileRLE: 소환굴만)
   if(!G._isTileRLE){
@@ -44564,7 +44576,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         inv:{bag:INV.bag,equipped:INV.equipped},
         stats:{...STATS},passives:{...PASSIVES},grit:_grit,gritCostModeV2:1,
         qslots:QSLOTS,
-        game:{stage:G.stage,kills:G.kills,mats:0,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0},
+        game:{stage:G.stage,kills:G.kills,mats:0,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0,cutsceneDone:G._cutsceneDone||false},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:STORAGE||{},
         crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
         upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
@@ -44621,6 +44633,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
       }
       if(!_loaded){
         if(!IS_ELECTRON)console.log('[LOCAL] 세이브 없음, 새 게임 시작');
+        G._cutsceneDone=false;
         const _di=defaultItems();for(const it of _di)INV.equipped[it.slot]=it;
         const _se=[EL.F,EL.I,EL.D,EL.L],_sw=['dagger','hammer','axe','spear'];
         for(let bi=0;bi<4;bi++)INV.bag.push(mkItem('weapon',0,_se[bi],1,_sw[bi]));
@@ -44676,7 +44689,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     setTimeout(()=>dbSave(),3000);
     // 인트로 연출
     if(G.stage===0){
-      _startIntro();
+      _startIntroCutscene();
     }else{
       G.on=true;P.iframes=300;
       if(G._bonfire)G._bonfire.t=300;
@@ -44700,7 +44713,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         inv:{bag:INV.bag,equipped:INV.equipped},
         stats:{...STATS},passives:{...PASSIVES},grit:_grit,gritCostModeV2:1,
         qslots:QSLOTS,
-        game:{stage:G.stage,kills:G.kills,mats:0,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0},
+        game:{stage:G.stage,kills:G.kills,mats:0,irisSz:G._irisSz||20,taRecords:G._taRecords||{},comboMax:G.comboMax||0,playTime:G.playTime||0,cutsceneDone:G._cutsceneDone||false},
         bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:STORAGE||{},
         crystalBag:CRYSTAL_BAG,crystalDust:CRYSTAL_DUST,
         upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
@@ -44749,6 +44762,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
       }
       if(!_loaded){
         console.log('[WEB] 세이브 없음, 새 게임 시작');
+        G._cutsceneDone=false;
         const _di=defaultItems();for(const it of _di)INV.equipped[it.slot]=it;
         const _se=[EL.F,EL.I,EL.D,EL.L],_sw=['dagger','hammer','axe','spear'];
         for(let bi=0;bi<4;bi++)INV.bag.push(mkItem('weapon',0,_se[bi],1,_sw[bi]));
