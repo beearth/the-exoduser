@@ -7862,6 +7862,10 @@ function _dispatchCtSkill(){
 }
 
 addEventListener('keydown',e=>{
+  // ESC → 컷씬 스킵
+  if(e.code==='Escape'&&!e.repeat&&_cutsceneState==='INTRO_CUTSCENE'){
+    e.preventDefault();localStorage.setItem('hell_intro_cutscene_v1','1');_cutsceneState=null;_startIntro();return;
+  }
   // ESC → 옵션 토글 (최상위 — 모든 것보다 먼저)
   if(e.code==='Escape'&&!e.repeat){
     if(listeningBind){listeningBind=null;_listenAlt=false;renderSettings();e.preventDefault();return}
@@ -43903,6 +43907,8 @@ function loop(timestamp){
   if(_PERF_PROF.enabled)_PERF_PROF._aiAcc+=performance.now()-_aiT0;
   const _p1=performance.now();
   _now=_gameTime+_acc;
+  // 컷씬 렌더 (게임 루프와 별도)
+  if(_cutsceneState==='INTRO_CUTSCENE'){_renderIntroCutscene();const _p1b=performance.now();_prof.u=_prof.u*.9+(_p1-_p0)*.1;_prof.d=_prof.d*.9+(_p1b-_p1)*.1;_prof.t=_prof.t*.9+(_p1b-_p0)*.1;requestAnimationFrame(loop);return}
   if(G.on){
   // 렌더 보간: 물리틱 사이 부드러운 카메라/플레이어 위치
   const _rndT0=_PERF_PROF.enabled?performance.now():0;
@@ -44064,6 +44070,165 @@ hideBootLoading();
   });
   // 첫 시작 (스테이지 0, 기존 세이브) 시 튜토리얼 표시
   if(G.stage===0&&!G._intro)showTutorial();
+}
+
+// ═══ 인트로 컷씬 시스템 ═══
+const CUTSCENE_SPEAKER_STYLES={
+  GODDESS:{color:'#ff6b9d',label:'여신'},
+  DIROY:{color:'#e8d4b8',label:'디로이'},
+  HECTOR:{color:'#fb923c',label:'핵터'}
+};
+const INTRO_CUTSCENE_LINES={
+  ko:[
+    {id:1,img:'6.png',t:0,dur:2500,speaker:null,text:'',sfx:'goddess_laugh'},
+    {id:2,img:'4.png',t:2500,dur:1500,speaker:null,text:''},
+    {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'니놈의 그 짜릿한 복수극은 감명깊게도 잘 봤다. 명작이더구나.'},
+    {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'네놈 그래, 니놈에게 기회를 주겠다. 선택의 여지는 없겠지.'},
+    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'니놈에게 알량한 선의가 보인다. 보고 싶은가? 구해야 할 게 있지 않은가?'},
+    {id:6,img:'7.png',t:17500,dur:1500,speaker:null,text:'',sfx:'wood_horse_drop'},
+    {id:7,img:'8.png',t:19000,dur:2500,speaker:'GODDESS',text:'정신이 드나?'},
+    {id:8,img:'1.png',t:21500,dur:6500,speaker:'GODDESS',text:'그래, 이곳을 탈출하라. 친히 도와주마. 이제 귀찮다.\n디로이와 핵터가 너를 안내할 것이다. 또 보자, 망자여.'},
+    {id:9,img:'9.png',t:28000,dur:2500,speaker:'DIROY',text:'놀랄 거 없어. 인사나 하지. 내가 디로이.'},
+    {id:10,img:'11.png',t:30500,dur:3500,speaker:'HECTOR',text:'내가 핵터. 여신님의 가호로 생각하면 돼.\n우리도 이곳을 나가야 하거든.'},
+    {id:11,img:'9.png',t:34000,dur:4000,speaker:'DIROY',text:'악마는 악의로 만들어진 존재야.\n본능적으로 선의를 공격하려 들어.'},
+    {id:12,img:'18.png',t:38000,dur:4500,speaker:'HECTOR',text:'근데 너는 좀 특이해. 선의가 강해.\n그리고 악의는 일시적으로 폭발한 상태고.'},
+    {id:13,img:'19.png',t:42500,dur:3500,speaker:'DIROY',text:'그래서 악마들이 너 냄새를 맡고 몰려들 거야.'},
+    {id:14,img:'13.png',t:46000,dur:2000,speaker:null,text:'',sfx:'weapons_appear'},
+    {id:15,img:'14.png',t:48000,dur:2500,speaker:null,text:'',sfx:'ghost_bond_hum'},
+    {id:16,img:'15.png',t:50500,dur:2500,speaker:null,text:'',sfx:'crossbow_glow'},
+    {id:17,img:'16.png',t:53000,dur:2500,speaker:null,text:'',sfx:'armor_kneel'},
+    {id:18,img:'12.png',t:55500,dur:2000,speaker:null,text:'',sfx:'armor_collapse'},
+    {id:19,img:'12.png',t:57500,dur:3500,speaker:'HECTOR',text:'이 인간 또 기절했네. 얼마나 안 잔 거야?'},
+    {id:20,img:'12.png',t:61000,dur:4000,speaker:'DIROY',text:'복수만 생각하느라 며칠을 안 먹고 안 잔 모양이야.'},
+    {id:21,img:'12.png',t:65000,dur:2500,speaker:'HECTOR',text:'악의라도 먹여.'},
+    {id:22,img:null,t:67500,dur:1500,speaker:null,text:'',exit:true}
+  ],en:[],ja:[],zh:[]
+};
+
+let _cutsceneState=null; // 'INTRO_CUTSCENE' or null
+let _cutsceneStartMs=0;
+let _cutsceneIdx=-1;
+const _cutsceneImgCache={};
+
+function _playSfxSafe(key){try{if(typeof playSample==='function')playSample(key,.8,1)}catch(e){console.log('[CUTSCENE] sfx missing:',key)}}
+function _playVoiceSafe(key){try{if(typeof playSample==='function')playSample(key,1,1)}catch(e){console.log('[CUTSCENE] voice missing:',key)}}
+
+function _getCutsceneImg(filename){
+  if(!filename)return null;
+  if(_cutsceneImgCache[filename])return _cutsceneImgCache[filename];
+  const img=new Image();
+  img.src='assets/cutscene/images/'+filename;
+  _cutsceneImgCache[filename]=img;
+  return img;
+}
+
+function _startIntroCutscene(){
+  if(G.stage!==0||localStorage.getItem('hell_intro_cutscene_v1')==='1'){
+    _startIntro();return;
+  }
+  _cutsceneState='INTRO_CUTSCENE';
+  _cutsceneStartMs=performance.now();
+  _cutsceneIdx=-1;
+  G.on=false;
+  console.log('[CUTSCENE] Intro cutscene started');
+}
+
+function _renderIntroCutscene(){
+  if(_cutsceneState!=='INTRO_CUTSCENE')return;
+  const elapsedMs=performance.now()-_cutsceneStartMs;
+  const lang=(typeof OPT!=='undefined'&&OPT.lang)?OPT.lang:'ko';
+  const lines=INTRO_CUTSCENE_LINES[lang];
+  const lns=(lines&&lines.length>0)?lines:INTRO_CUTSCENE_LINES.ko;
+
+  let activeIdx=-1;
+  for(let i=0;i<lns.length;i++){
+    const ln=lns[i];
+    if(ln.exit&&elapsedMs>=ln.t){
+      localStorage.setItem('hell_intro_cutscene_v1','1');
+      _cutsceneState=null;
+      _startIntro();
+      return;
+    }
+    if(elapsedMs>=ln.t&&elapsedMs<ln.t+ln.dur){activeIdx=i;break}
+  }
+
+  const cx=X||C.getContext('2d');
+  const cw=C.width,ch=C.height;
+
+  // 검은 배경
+  cx.fillStyle='#000';cx.fillRect(0,0,cw,ch);
+
+  if(activeIdx===-1){return}
+  const ln=lns[activeIdx];
+  const lineElapsed=elapsedMs-ln.t;
+
+  // SFX/Voice (라인 전환 시 1회)
+  if(_cutsceneIdx!==activeIdx){
+    if(ln.sfx)_playSfxSafe(ln.sfx);
+    if(ln.speaker&&ln.text)_playVoiceSafe('voice_cut_'+String(ln.id).padStart(2,'0'));
+    _cutsceneIdx=activeIdx;
+  }
+
+  // 이미지 렌더 (페이드 인 0.5s, 페이드 아웃 0.3s)
+  if(ln.img){
+    const img=_getCutsceneImg(ln.img);
+    if(img&&img.complete&&img.naturalWidth>0){
+      const fadeIn=Math.min(1,lineElapsed/500);
+      const fadeOut=Math.min(1,Math.max(0,(ln.dur-lineElapsed)/300));
+      cx.globalAlpha=fadeIn*fadeOut;
+      // cover 방식
+      const imgR=img.naturalWidth/img.naturalHeight;
+      const cR=cw/ch;
+      let dw,dh,dx,dy;
+      if(imgR>cR){dh=ch;dw=ch*imgR;dx=(cw-dw)/2;dy=0}
+      else{dw=cw;dh=cw/imgR;dx=0;dy=(ch-dh)/2}
+      cx.drawImage(img,dx,dy,dw,dh);
+      cx.globalAlpha=1;
+    }
+  }
+
+  // 자막 렌더
+  if(ln.text&&ln.speaker){
+    const style=CUTSCENE_SPEAKER_STYLES[ln.speaker]||{color:'#fff',label:ln.speaker};
+    const subH=ch*.22;
+    const subY=ch-subH;
+    // 그라데이션 배경
+    const grd=cx.createLinearGradient(0,subY,0,ch);
+    grd.addColorStop(0,'rgba(0,0,0,0)');grd.addColorStop(.3,'rgba(0,0,0,.7)');grd.addColorStop(1,'rgba(0,0,0,.9)');
+    cx.fillStyle=grd;cx.fillRect(0,subY,cw,subH);
+    // 화자 이름
+    const nameX=cw*.08,nameY=subY+subH*.25;
+    cx.font='bold '+Math.max(14,ch*.022)+'px "Noto Sans KR",sans-serif';
+    cx.textAlign='left';cx.textBaseline='middle';
+    cx.fillStyle=style.color;cx.fillText(style.label,nameX,nameY);
+    // 구분선
+    const lineW=cx.measureText(style.label).width;
+    cx.strokeStyle=style.color;cx.globalAlpha=.4;cx.lineWidth=1;
+    cx.beginPath();cx.moveTo(nameX,nameY+Math.max(10,ch*.015));cx.lineTo(nameX+lineW,nameY+Math.max(10,ch*.015));cx.stroke();
+    cx.globalAlpha=1;
+    // 본문 (한 글자씩 페이드 인)
+    const textX=nameX,textY=nameY+Math.max(22,ch*.035);
+    const textLines=ln.text.split('\n');
+    cx.font=Math.max(13,ch*.018)+'px "Noto Sans KR",sans-serif';
+    cx.fillStyle='#fff';
+    cx.shadowColor='#000';cx.shadowBlur=4;cx.shadowOffsetX=1;cx.shadowOffsetY=1;
+    const charsPerSec=20;
+    const totalChars=ln.text.replace(/\n/g,'').length;
+    const visibleChars=Math.min(totalChars,~~(lineElapsed/1000*charsPerSec));
+    let charCount=0;
+    for(let li=0;li<textLines.length;li++){
+      const tl=textLines[li];
+      let visText='';
+      for(let ci=0;ci<tl.length;ci++){
+        if(charCount<visibleChars){visText+=tl[ci];charCount++}else break;
+      }
+      if(charCount>=visibleChars&&visText.length<tl.length){/* 이 줄 이후 미표시 */}
+      else{charCount+=0}
+      cx.fillText(visText,textX,textY+li*Math.max(20,ch*.028));
+      if(charCount>=visibleChars)break;
+    }
+    cx.shadowColor='transparent';cx.shadowBlur=0;cx.shadowOffsetX=0;cx.shadowOffsetY=0;
+  }
 }
 
 // ═══ 1랩 시작 인트로 연출 (HTML 오버레이 기반) ═══
@@ -44619,7 +44784,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     _dbReady=true;
     startAutoSave();
     setTimeout(()=>dbSave(),3000);
-    if(G.stage===0){_startIntro()}else{G.on=true;P.iframes=300;if(G._bonfire)G._bonfire.t=300}
+    if(G.stage===0){_startIntroCutscene()}else{G.on=true;P.iframes=300;if(G._bonfire)G._bonfire.t=300}
   })();
 }else{
   startGameFromDB();
