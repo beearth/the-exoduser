@@ -3303,6 +3303,8 @@ const BGM={
     hell5:['bgm/5장_지옥군단/Abyss Below.mp3','bgm/5장_지옥군단/hell5_thunder.mp3'],
     hell6:['bgm/6장_사도마굴/Kiln of Broken Crowns.mp3','bgm/6장_사도마굴/hell6_bone.mp3'],
     hell7:['bgm/7장_지옥성/Midnight Cathedral of Ash.mp3','bgm/7장_지옥성/Teeth in the Choir.mp3','bgm/7장_지옥성/hell7_chaos.mp3'],
+    cutscene_goddess:['bgm/cutscene/cutscene_goddess_1.mp3','bgm/cutscene/cutscene_goddess_2.mp3'],
+    cutscene_goddess_en:['bgm/cutscene/cutscene_goddess_en_1.mp3','bgm/cutscene/cutscene_goddess_en_2.mp3'],
     boss:['bgm/공통/boss.mp3'], finalboss:['bgm/공통/finalboss.mp3'],
     forge:['bgm/공통/forge.mp3','bgm/공통/복수의 대장간.mp3','bgm/공통/Anvil Ashes.mp3'],
     death:['bgm/공통/death.mp3','bgm/공통/지옥 추락 사망 징글.mp3'],
@@ -7913,6 +7915,7 @@ addEventListener('keydown',e=>{
   // F11 전체화면 토글
   if(e.code==='F11'){toggleFullscreen();return}
   if(e.code==='F10'){togglePanel('settings');e.preventDefault();return}
+  if(e.code==='F8'&&typeof tvfx==='function'){e.preventDefault();tvfx();return}
   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();console.log('[FOG TOGGLE] OPT.fog='+_nf+' OPT.bossFog='+_nf);showPH((_nf?(OPT.lang!=='ko'?'Fog ON':'안개 ON'):(OPT.lang!=='ko'?'Fog OFF':'안개 OFF')),_nf?'#8899cc':'#888888');return}
   K[e.code]=true;KH[e.code]=true;
   if(['Space','Tab','Escape','KeyE','KeyQ','KeyZ','KeyX','KeyC','KeyB','KeyN','KeyH','KeyJ','KeyK','KeyL','KeyR','KeyF','KeyG','KeyV','ControlLeft','ControlRight','ShiftLeft','ShiftRight','CapsLock'].includes(e.code))e.preventDefault();
@@ -10355,10 +10358,13 @@ let _esReady=false;_ES_IMG.onload=()=>{_esReady=true};
 const _ES_FRAMES=30,_ES_FW=546,_ES_FH=51;
 const _ES_DRAW_H=150;              // 마력연사 시각 두께(px)
 const _ES_HIT_HALF_W=(_ES_DRAW_H*.5); // 타격 반폭(px) — 시각과 판정 일치
-// ═══ 마력광선 텍스처 (1408×768, lighter 합성) ═══
-const _AL_IMG=new Image();_AL_IMG.src='assets/vfx/arc_laser/laser_sheet.png?v=20260429';
+// ═══ 마력광선 텍스처 (957×4000 스프라이트시트, 16프레임, lighter 합성) ═══
+const _AL_IMG=new Image();_AL_IMG.src='assets/vfx/arc_laser/laser_sheet.png?v=20260429e';
 let _alImgReady=false;_AL_IMG.onload=()=>{_alImgReady=true};
-const _AL_DRAW_H=200; // 시각 두께(px) — 빔 높이 (글로우 포함)
+const _AL_DRAW_H=200; // 시각 두께(px) — 빔 높이
+const _AL_FRAMES=16; // 총 프레임 수
+const _AL_FW=957; // 프레임 폭
+const _AL_FH=250; // 프레임 높이
 // ═══ 마법 오브 투사체 (vfx_magic_orb.png 6열×5행=30프레임) ═══
 const _MO_IMG=new Image();_MO_IMG.src='assets/vfx/vfx_magic_orb.png';
 let _moReady=false;_MO_IMG.onload=()=>{_moReady=true};
@@ -20999,14 +21005,15 @@ function update(){
         const _afR=_stR*.6;
         const _afDmg=~~(_stDmg*0.08);
         let _afExist=null;
-        for(let _afi=0;_afi<G._fireZones.length;_afi++){const fz=G._fireZones[_afi];if(fz.type==='assaultFlame'&&(_afExist===null||(fz._afStk||0)>(_afExist._afStk||0)))_afExist=fz}
+        for(let _afi=0;_afi<G._fireZones.length;_afi++){const fz=G._fireZones[_afi];if(fz.type!=='assaultFlame')continue;
+          const _d2=dst(P.x,P.y,fz.x,fz.y);if(_d2<=fz.r&&(_afExist===null||(fz._afStk||0)>(_afExist._afStk||0)))_afExist=fz} // 소환 범위 내 착지만 강화
         if(_afExist&&(_afExist._afStk||0)<3){
           _afExist._afStk=(_afExist._afStk||0)+1;
           const _afMul=[1,3,6,9][_afExist._afStk];
           _afExist.r=~~(_afExist._afBaseR*(1+_afExist._afStk*0.15)); // 범위: +15%씩 (×1.15→×1.30→×1.45)
           _afExist.dmg=_afExist._afBaseDmg*(1+_afExist._afStk); // 데미지: +1씩 (×1→×2→×3→×4)
           _afExist.maxT=300*_afMul; // 지속시간도 3배씩 (5초→15초→30초→45초)
-          _afExist.t=0;_afExist.x=P.x;_afExist.y=P.y;_afExist._fp=null;
+          _afExist.t=0;_afExist._fp=null; // 위치 고정, 지속시간+불꽃 리셋
           const _afN=['','🔥🔥 3중폭!','🔥🔥🔥 6중폭!','🔥🔥🔥🔥 9중폭!'][_afExist._afStk];
           addTxt(P.x,P.y-45,_T(_afN),'#ff2200',60);shake(10+_afExist._afStk*8);
         }else if(!_afExist){
@@ -39202,18 +39209,18 @@ function draw(){
       X.restore();
     }else{P._esAnim=null}
   }
-  // ── 마력광선 VFX (채널링 지속 — Grok 생성 스프라이트, lighter 합성) ──
-  if(P._alBeam&&!_alImgReady&&!P._alWarn){P._alWarn=true;console.warn('[AL-VFX] sprite NOT loaded')}
-  if(P._alBeam&&_alImgReady){if(!P._alLog){P._alLog=true;console.log('[AL-VFX] RENDER OK, img='+_AL_IMG.naturalWidth+'x'+_AL_IMG.naturalHeight+' drawH='+_AL_DRAW_H)}
+  // ── 마력광선 VFX (채널링 지속 — 16프레임 애니메이션) ──
+  if(P._alBeam&&_alImgReady){
     const al=P._alBeam;
     const t=al.t||0;
     const flk=.85+Math.sin(t*.4)*.1+Math.sin(t*1.1)*.05;
     const drawH=_AL_DRAW_H*flk;
+    const frame=~~(t/3)%_AL_FRAMES; // 3틱마다 프레임 전환 (60fps 기준 ~초당 20프레임)
     X.save();
     X.translate(al.x,al.y);X.rotate(al.ang);
-    X.globalAlpha=.95*flk;
-    X.drawImage(_AL_IMG,0,0,_AL_IMG.naturalWidth,_AL_IMG.naturalHeight,0,-drawH/2,al.range,drawH);
-    X.globalAlpha=1;
+    X.globalCompositeOperation='lighter';
+    X.globalAlpha=flk;
+    X.drawImage(_AL_IMG,0,frame*_AL_FH,_AL_FW,_AL_FH,0,-drawH/2,al.range,drawH);
     X.restore();
   }
   // ── 업화선 ──
@@ -39300,6 +39307,21 @@ function draw(){
   renderHitVFX(X);renderElecVFX(X);renderOldBurstVFX(X);renderDarkBurstVFX(X);renderLightningBurstVFX(X);
   renderCrescents(X);
   renderMmExpVFX(X);_renderIceOrbVfx(X);
+  // ═══ TVFX: GIF 테스트 렌더 ═══
+  if(window._tvfxActive&&window._tvfxActive.length){
+    for(let _ti=window._tvfxActive.length-1;_ti>=0;_ti--){
+      const v=window._tvfxActive[_ti];v.t++;
+      if(v.t>v.maxT){window._tvfxActive.splice(_ti,1);continue}
+      if(!v.img.complete)continue;
+      const fade=v.t>v.maxT-30?((v.maxT-v.t)/30):Math.min(1,v.t/10);
+      const w=v.img.width*v.sc,h=v.img.height*v.sc;
+      X.globalAlpha=fade*.9;
+      X.globalCompositeOperation=v.blend;
+      X.drawImage(v.img,v.x-w/2,v.y-h/2,w,h);
+      X.globalCompositeOperation='source-over';
+    }
+    X.globalAlpha=1;
+  }
   // ═══ Shift 게이지: 플레이어 머리 위 (홀드/비행/대시 중) ═══
   if(_dashHold||_harpActive||_dashActive){
     const _hgPct=_harpGauge/_HARP_GAUGE_MAX;
@@ -40440,19 +40462,7 @@ function drawP(){
                 fr:~~(Math.random()*4),spd:.8+Math.random()*1.5,sc:(.7+Math.random()*.8)*(1+_afS*.35)});
             }
           }
-          // 스택 3: 바닥 용암 글로우
-          if(_afS>=2){
-            X.globalAlpha=(.12+_afS*.04)*_fzFade;
-            X.fillStyle=_afS>=3?'#ff2200':'#ff4400';
-            X.beginPath();X.arc(fz.x,fz.y,fz.r*.9,0,Math.PI*2);X.fill();
-          }
-          // 스택 1+: 외곽 열기 링
-          if(_afS>=1){
-            X.globalAlpha=(.15+_afS*.05)*_fzFade;
-            X.strokeStyle=_afS>=3?'#ff0000':_afS>=2?'#ff3300':'#ff6600';
-            X.lineWidth=2+_afS;
-            X.beginPath();X.arc(fz.x,fz.y,fz.r*(.85+Math.sin(_now*.006)*.05),0,Math.PI*2);X.stroke();
-          }
+          // 바닥 글로우/외곽 링 제거 — 불꽃 스프라이트만으로 표현
           const _fFr=_now*.005;
           for(let _fi=0;_fi<fz._fp.length;_fi++){
             const fp=fz._fp[_fi];
@@ -44240,7 +44250,7 @@ const INTRO_CUTSCENE_LINES={
     {id:2,img:'4.png',t:2500,dur:1500,speaker:null,text:'',cam:{zs:1.05,ze:1.15,px:0,py:0,ease:'out'},vfx:{vig:.35,chrom:.3,shake:1},fade:{type:'cross',in:300},sfx:'laugh_climax'},
     {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'니놈의 그 짜릿한 복수극은 감명깊게도 잘 봤다. 명작이더구나.',cam:{zs:1,ze:1.05,px:5,py:0,ease:'linear'},vfx:{vig:.5,grain:.1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:60,shadow:true}},
     {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'관람료는 내야겠지. 그래, 네놈에게 기회를 주겠다. 선택의 여지는 없다.',cam:{zs:1.08,ze:1,px:0,py:0,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'니놈에게 알량한 선의가 보인다. 보고 싶은가? 구해야 할 게 있지 않은가? 아직 살아있더구나.',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'니놈에게 알량한 선의가 보인다. 보고 싶은가? 구해야 할 사람이 아직 있지 않은가? 아직 살아있더구나.',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:60,shadow:true}},
     {id:6,img:'7.png',t:17500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
     {id:7,img:'20.png',t:19000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},
     {id:8,img:'21.png',t:21500,dur:3000,speaker:'GODDESS',text:'그 목마를 보니 망자도 정신이 드는가보구나.',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
@@ -44251,8 +44261,8 @@ const INTRO_CUTSCENE_LINES={
     {id:13,img:'17.png',t:40000,dur:4000,speaker:'DIROY',text:'악마는 악의로 만들어진 존재야.\n본능적으로 선의를 공격하려 들어.',cam:{zs:1.05,ze:1.1,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
     {id:14,img:'18.png',t:44000,dur:5500,speaker:'HECTOR',text:'근데 너는 좀 특이해. 선의가 강해.\n그리고 악의는 일시적으로 폭발한 상태고. 하지만 곧 사라질 거야, 그 폭발도.',cam:{zs:1,ze:1.15,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
     {id:15,img:'19.png',t:49500,dur:3500,speaker:'DIROY',text:'그래서 악마들이 네 냄새를 맡고 몰려들 거야.',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
-    {id:16,img:'23.png',t:53000,dur:5000,speaker:'DIROY',text:'여신이 너에게 무기를 내렸어. 챙겨.',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:17,img:'24.png',t:58000,dur:5500,speaker:'HECTOR',text:'여신이 보낸 투영이야. 전장의 영혼이지.\n쇠뇌에 깃들어서 너랑 같이 싸울 거야.',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:55,glow:true}},
+    {id:16,img:'23.png',t:53000,dur:5000,speaker:'DIROY',text:'여신님이 네게 기물을 내리셨어. 챙겨.',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:17,img:'24.png',t:58000,dur:5500,speaker:'HECTOR',text:'여신님이 보내신 투영이야. 전장의 영혼이지.\n쇠뇌에 깃들어서 너랑 같이 싸울 거야.',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:55,glow:true}},
     {id:18,img:'25.png',t:63500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
     {id:'18b',img:'15.png',t:66000,dur:5500,speaker:'DIROY',text:'그 머리띠도 차. 폭발한 악의가 너를\n미치게 하기 전에 정신을 잡아줄 거야.',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
     {id:19,img:'10.png',t:69000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
@@ -44414,6 +44424,10 @@ function _startIntroCutscene(){
   G.on=false;
   // HUD 숨기기
   ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>{const el=$(id);if(el)el.classList.remove('on')});
+  // 컷신 BGM (한국어/외국어 분리)
+  const _cutLang=(typeof OPT!=='undefined'&&OPT.lang)?OPT.lang:'ko';
+  const _cutBgmKey=_cutLang==='ko'?'cutscene_goddess':'cutscene_goddess_en';
+  BGM.fadeOut(300);setTimeout(()=>BGM.play(_cutBgmKey,true),400);
   console.log('[CUTSCENE] Intro cutscene started');
 }
 
@@ -44439,6 +44453,7 @@ function _cutsceneEnd(){
   G._cutsceneDone=true;
   _cutsceneState=null;
   _cutC.style.display='none';
+  BGM.fadeOut(500);setTimeout(()=>BGM.play(BGM.stageKey(G.stage)),600);
   _startIntro();
 }
 
@@ -45569,6 +45584,26 @@ function _b3animate(){
 }
 _b3animate();
 console.log('[BOSS3D] Overlay initialized');
+</script>
+<script>
+// ═══ VFX GIF 테스트 (콘솔: tvfx(0~4), 또는 tvfx() 순차) ═══
+(function(){
+const _tGifs=['assets/vfx/test_electric.gif','assets/vfx/test_toxic_wave.gif','assets/vfx/test_toxic_spray.gif','assets/vfx/test_tornado.gif','assets/vfx/test_drone.gif'];
+const _tNames=['전기방출','독성웨이브','독성스프레이','토네이도','드론스웜'];
+const _tImgs=[];for(let i=0;i<5;i++){const im=new Image();im.src=_tGifs[i];_tImgs.push(im)}
+window._tvfxActive=[];
+let _tIdx=0;
+window.tvfx=function(idx,sc,dur){
+  if(idx===undefined){idx=_tIdx;_tIdx=(_tIdx+1)%5}
+  if(idx<0||idx>4)idx=0;
+  const s=sc||1,d=dur||300;
+  window._tvfxActive.push({img:_tImgs[idx],x:P.x,y:P.y,sc:s,t:0,maxT:d,blend:'lighter',name:_tNames[idx]});
+  console.log('[TVFX] '+_tNames[idx]+' sc='+s+' dur='+d+'f at P('+~~P.x+','+~~P.y+')');
+  if(typeof addTxt==='function')addTxt(P.x,P.y-40,'TEST: '+_tNames[idx],'#44ffaa',40);
+};
+window.tvfxClear=function(){window._tvfxActive.length=0;console.log('[TVFX] cleared')};
+console.log('[TVFX] Ready — tvfx(0~4, scale, frames) | tvfx() = 순차 | tvfxClear()');
+})();
 </script>
 </body>
 </html>
