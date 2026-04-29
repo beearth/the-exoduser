@@ -21270,3 +21270,13 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 ## 2026-04-29 11:30 (auto)
 - game.html
 
+
+## 2026-04-29 12:30 (auto)
+- assets/cutscene/images/13.png
+- assets/cutscene/images/14.png
+- assets/cutscene/images/15.png
+- assets/cutscene/images/ChatGPT Image 2026??4??25???�전 08_13_01.png
+- assets/cutscene/images/ChatGPT Image 2026??4??27???�전 12_53_57.png
+- game.html
+- index.html
+

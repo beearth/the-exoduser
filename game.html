@@ -33081,6 +33081,7 @@ function _drawSkillFuseLines(){
     svg.appendChild(_sDot);
   });
 }
+const _SKILL_ICON_SET=new Set(['blackStar','bladeDash','bladeShot','blueShot','boneStorm','boneWall','burstLoop','chainAssault','chainSlam','chainSlash','chargeBoost','darkPillar','demonRevive','detonate','elecRepent','elemMissile','energyShot','execution','fanShot','fireAura','fireball','fireBeam','ghostWalk','ghostXbowTurret','giantSlam','giantSlam2','guardian','hellRay','holyBlast','holyDome','holyPrison','iceOrb','iceStorm','kiSlash','lavaSummon','magicBlink','maliceHunt','maliceHunt2','maliceMortar','maliceStorm','maliceSwipe','needleShot','omniBeam','peaceShield','plagueBurst','shieldThrow','spikeTrap','voidScarecrow','weakMag','weakPhys','weakPj','weakRev','whirlwind']);
 function _renderSkillRow(sk,grid){
     // ═══ 흡수된 스킬은 스킬창에서 완전 제거 ═══
     if(_isAbsorbed(sk.id)) return;
@@ -33296,8 +33297,9 @@ function _renderSkillRow(sk,grid){
     // [고정: X] / [Fixed: X] → 컬러 배지로 치환
     _dispDesc=_dispDesc.replace(/\[(고정|Fixed):\s*([^\]]+)\]/g,'<span style="background:#1a3355;border:1px solid #4488cc;border-radius:3px;padding:1px 6px;color:#66ddff;font-size:.82rem;font-weight:700">$2</span>');
     const _isExpanded=_skExpandedId===sk.id;
-    // 스킬 아이콘 PNG (img/skillskin_upscaled/{id}.png) — onerror로 폴백
-    const _iconImg='<img src="img/skillskin_upscaled/'+sk.id+'.png" style="width:48px;height:48px;image-rendering:pixelated;display:block;margin:0 auto" onerror="this.style.display=\'none\';this.nextSibling&&(this.nextSibling.style.display=\'block\')"><div style="font-size:1.6rem;line-height:1;display:none;text-align:center">'+(sk.emoji||'⚡')+'</div>';
+    // 스킬 아이콘 PNG (img/skillskin_upscaled/{id}.png) — 없으면 이모지 폴백
+    const _hasIcon=_SKILL_ICON_SET.has(sk.id);
+    const _iconImg=_hasIcon?'<img src="img/skillskin_upscaled/'+sk.id+'.png" style="width:48px;height:48px;image-rendering:pixelated;display:block;margin:0 auto">':'<div style="font-size:1.6rem;line-height:48px;text-align:center">'+(sk.emoji||'⚡')+'</div>';
     if(_skCompact && !_isExpanded){
       // 아이콘 모드: PNG + 이름 + 레벨 (이름 명확하게 표시)
       // ── 합체 선택 모드: _skExpandedId(상세 펼친 스킬) 있을 때 합체 가능 스킬만 컬러, 나머지 페이드 ──
@@ -44080,7 +44082,7 @@ hideBootLoading();
 
 // ═══ 인트로 컷씬 시스템 ═══
 const CUTSCENE_SPEAKER_STYLES={
-  GODDESS:{color:'#ff6b9d',label:'여신'},
+  GODDESS:{color:'#c084fc',label:'네메시아'},
   DIROY:{color:'#e8d4b8',label:'디로이'},
   HECTOR:{color:'#fb923c',label:'핵터'}
 };
@@ -44089,24 +44091,24 @@ const INTRO_CUTSCENE_LINES={
     {id:1,img:'6.png',t:0,dur:2500,speaker:null,text:'',sfx:'goddess_laugh'},
     {id:2,img:'4.png',t:2500,dur:1500,speaker:null,text:''},
     {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'니놈의 그 짜릿한 복수극은 감명깊게도 잘 봤다. 명작이더구나.'},
-    {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'니놈에게 기회를 주겠다. 선택의 여지는 없겠지.'},
-    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'니놈에게 알량한 선의가 보인다. 보고 싶은가? 구해야 할 게 있지 않은가?'},
+    {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'관람료는 내야겠지. 그래, 네놈에게 기회를 주겠다. 선택의 여지는 없겠지.'},
+    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'니놈에게 알량한 선의가 보인다. 보고 싶은가? 구해야 할 게 있지 않은가? 아직 살아있더구나.'},
     {id:6,img:'7.png',t:17500,dur:1500,speaker:null,text:'',sfx:'wood_horse_drop'},
-    {id:7,img:'8.png',t:19000,dur:2500,speaker:'GODDESS',text:'정신이 드나?'},
-    {id:8,img:'1.png',t:21500,dur:6500,speaker:'GODDESS',text:'그래, 이곳을 탈출하라. 친히 도와주마.\n디로이와 핵터가 너를 안내할 것이다. 또 보자, 망자여.'},
+    {id:7,img:'8.png',t:19000,dur:3500,speaker:'GODDESS',text:'정신이 드나? 그 나무말 하나에 정신이 번쩍 드는구나.'},
+    {id:8,img:'1.png',t:21500,dur:6500,speaker:'GODDESS',text:'그래, 이곳을 탈출하라. 내 친히 너를 도와주마.\n디로이와 핵터가 너를 안내할 것이다. 또 보자, 망자여.'},
     {id:9,img:'9.png',t:28000,dur:2500,speaker:'DIROY',text:'놀랄 거 없어. 인사나 하지. 내가 디로이.'},
     {id:10,img:'11.png',t:30500,dur:3500,speaker:'HECTOR',text:'내가 핵터. 여신님의 가호로 생각하면 돼.\n우리도 이곳을 나가야 하거든.'},
     {id:11,img:'9.png',t:34000,dur:4000,speaker:'DIROY',text:'악마는 악의로 만들어진 존재야.\n본능적으로 선의를 공격하려 들어.'},
-    {id:12,img:'18.png',t:38000,dur:4500,speaker:'HECTOR',text:'근데 너는 좀 특이해. 선의가 강해.\n그리고 악의는 일시적으로 폭발한 상태고.'},
+    {id:12,img:'18.png',t:39000,dur:5500,speaker:'HECTOR',text:'근데 너는 좀 특이해. 선의가 강해.\n그리고 악의는 일시적으로 폭발한 상태고. 곧 사라질 거야, 그 폭발도.'},
     {id:13,img:'19.png',t:42500,dur:3500,speaker:'DIROY',text:'그래서 악마들이 네 냄새를 맡고 몰려들 거야.'},
     {id:14,img:'13.png',t:46000,dur:2000,speaker:null,text:'',sfx:'weapons_appear'},
     {id:15,img:'14.png',t:48000,dur:2500,speaker:null,text:'',sfx:'ghost_bond_hum'},
     {id:16,img:'15.png',t:50500,dur:2500,speaker:null,text:'',sfx:'crossbow_glow'},
-    {id:17,img:'16.png',t:53000,dur:2500,speaker:null,text:'',sfx:'armor_kneel'},
-    {id:18,img:'12.png',t:55500,dur:2000,speaker:null,text:'',sfx:'armor_collapse'},
-    {id:19,img:'12.png',t:57500,dur:3500,speaker:'HECTOR',text:'이 인간 또 기절했네. 얼마나 안 잔 거야?'},
-    {id:20,img:'12.png',t:61000,dur:4000,speaker:'DIROY',text:'복수만 생각하느라 며칠을 안 먹고 안 잔 모양이야.'},
-    {id:21,img:'12.png',t:65000,dur:2500,speaker:'HECTOR',text:'악의라도 먹여.'},
+    {id:17,img:'10.png',t:55000,dur:2500,speaker:null,text:'',sfx:'armor_kneel'},
+    {id:18,img:'16.png',t:57500,dur:2000,speaker:null,text:'',sfx:'armor_collapse'},
+    {id:19,img:'16.png',t:59500,dur:3500,speaker:'HECTOR',text:'이 인간 또 기절했네. 얼마나 안 잔 거야?'},
+    {id:20,img:'16.png',t:63000,dur:4000,speaker:'DIROY',text:'복수만 생각하느라 며칠을 안 먹고 안 잔 모양이야.'},
+    {id:21,img:'16.png',t:67000,dur:2500,speaker:'HECTOR',text:'악의라도 먹여.'},
     {id:22,img:null,t:67500,dur:1500,speaker:null,text:'',exit:true}
   ],en:[],ja:[],zh:[]
 };
@@ -44138,16 +44140,10 @@ function _getCutsceneImg(filename){
   return img;
 }
 
+const _forceCutscene=new URLSearchParams(location.search).get('cutscene')==='1';
 function _startIntroCutscene(){
-  console.log('[CUTSCENE] _startIntroCutscene called, stage='+G.stage+', flag='+localStorage.getItem('hell_intro_cutscene_v1'));
-  if(G.stage!==0){
-    console.log('[CUTSCENE] skipped: stage !== 0');
-    _startIntro();return;
-  }
-  if(G._cutsceneDone){
-    console.log('[CUTSCENE] skipped: already watched');
-    _startIntro();return;
-  }
+  if(!_forceCutscene&&G.stage!==0){_startIntro();return}
+  if(!_forceCutscene&&G._cutsceneDone){_startIntro();return}
   _cutsceneState='INTRO_CUTSCENE';
   _cutsceneStartMs=performance.now();
   _cutsceneIdx=-1;
