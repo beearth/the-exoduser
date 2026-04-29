@@ -571,37 +571,43 @@ applyStats();
 
 ---
 
-## STEP 6. spawnDrop(e) 통합 드롭 함수
+## STEP 6. 5등급 가중치 분포 드롭 시스템 (v2 — 2026-04-29 적용)
 
-**위치**: 기존 `function dropItem(idx){` 바로 위에 추가
+### 몹 분류 (monsterTier)
+| 분류 | 조건 | 드롭 확률 | 드롭 개수 |
+|------|------|-----------|-----------|
+| normal | 일반 몹 | 45% (×dropBonus) | 1 |
+| elite | e.elite > 0 | 100% | 1 |
+| miniboss | etype 90~99 (레어몹) | 100% | 2 |
+| stageBoss | e.ib (보스) | 100% | 3 |
+| chapterBoss | e.ib + 챕터 마지막 스테이지 | 100% | 5 (첫 드롭 레전드 보장) |
+
+### 등급별 가중치 분포
+| 분류 | Common | Uncommon | Rare | Epic | Legendary |
+|------|--------|----------|------|------|-----------|
+| normal | 65 | 22 | 9 | 3 | 1 |
+| elite | 25 | 35 | 25 | 12 | 3 |
+| miniboss | 10 | 25 | 30 | 25 | 10 |
+| stageBoss | 0 | 0 | 30 | 50 | 20 |
+| chapterBoss | 0 | 0 | 0 | 30 | 70 |
+
+### 등급 결정 방식
+가중치 합산 후 `Math.random() × total`로 균일 롤.
+기존 레벨 보정/엘리트 보정은 제거 — 몹 분류 자체가 보정 역할.
+
+### 픽업 방식 (v2)
+- **자원(악의/물약 등)**: 자동 흡수 (R키 불필요)
+- **장비/유물**: R키 수동 픽업 (화면 내 가장 가까운 1개)
+- **펫**: 자원만 자동 수거, 장비 자동 수거 차단
+
+### 빔 라이트
+매직(1) 이상 등급 아이템에 수직 빔 표시. RARITY_C 색상 사용.
+두께: 매직 2px, 레어 3px, 에픽 4px, 레전드 6px + 펄스.
 
 ```javascript
-// ─── 통합 드롭 생성 함수 ───
-// e: 몬스터 엔티티 (e.dropTier, e.etype, e._isRare 등 참조)
-// 호출: 기존 드롭 로직 전부 이 함수로 교체
-function spawnDrop(e){
-  // 1. 등급 결정
-  const _r1 = Math.random();
-  let _rar;
-  if(e.isHellBoss || (e.etype >= 80 && STG[G.stage] && STG[G.stage].isHellBoss)){
-    // 대보스: 전설 확정 1개 + 영웅 1개
-    _spawnOneItem(e, 4);
-    _spawnOneItem(e, 3);
-    return;
-  }
-  if(e.isBoss){
-    _rar = _r1<0.15?4 : _r1<0.45?3 : _r1<0.80?2 : 1;
-  } else if(e._isRare){
-    _rar = _r1<0.05?4 : _r1<0.25?3 : _r1<0.65?2 : 1;
-  } else {
-    _rar = _r1<0.01?4 : _r1<0.05?3 : _r1<0.15?2 : _r1<0.40?1 : 0;
-  }
+// (참고용 — 실제 코드는 game.html line ~20590)
+// 기존 spawnDrop() 제거됨. 인라인 가중치 드롭으로 교체.
 
-  // 2. 드롭 여부 결정 (일반몹: 40% 확률)
-  if(!e.isBoss && !e._isRare && Math.random() > 0.40) return;
-
-  _spawnOneItem(e, _rar);
-}
 
 function _spawnOneItem(e, rar){
   // 슬롯 결정 — 보스/레어는 무기 편향
