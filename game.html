@@ -10356,15 +10356,15 @@ const _FX_FRAMES=12,_FX_FW=300,_FX_FH=300;
 const _ES_IMG=new Image();_ES_IMG.src='assets/vfx/energy_shot/raw_sheet.png';
 let _esReady=false;_ES_IMG.onload=()=>{_esReady=true};
 const _ES_FRAMES=30,_ES_FW=546,_ES_FH=51;
-const _ES_DRAW_H=150;              // 마력연사 시각 두께(px)
+const _ES_DRAW_H=105;              // 마력연사 시각 두께(px) (30% 축소)
 const _ES_HIT_HALF_W=(_ES_DRAW_H*.5); // 타격 반폭(px) — 시각과 판정 일치
-// ═══ 마력광선 텍스처 (957×4000 스프라이트시트, 16프레임, lighter 합성) ═══
-const _AL_IMG=new Image();_AL_IMG.src='assets/vfx/arc_laser/laser_sheet.png?v=20260429e';
+// ═══ 마력광선 텍스처 (870×2720 스프라이트시트, 16프레임, lighter 합성) ═══
+const _AL_IMG=new Image();_AL_IMG.src='assets/vfx/arc_laser/laser_sheet.png?v=20260429g';
 let _alImgReady=false;_AL_IMG.onload=()=>{_alImgReady=true};
-const _AL_DRAW_H=200; // 시각 두께(px) — 빔 높이
+const _AL_DRAW_H=170; // 시각 두께(px) — 빔 높이
 const _AL_FRAMES=16; // 총 프레임 수
-const _AL_FW=957; // 프레임 폭
-const _AL_FH=250; // 프레임 높이
+const _AL_FW=870; // 프레임 폭
+const _AL_FH=170; // 프레임 높이
 // ═══ 마법 오브 투사체 (vfx_magic_orb.png 6열×5행=30프레임) ═══
 const _MO_IMG=new Image();_MO_IMG.src='assets/vfx/vfx_magic_orb.png';
 let _moReady=false;_MO_IMG.onload=()=>{_moReady=true};
@@ -10601,6 +10601,8 @@ registerVFX('dark_beam','assets/vfx/vfx_dark_beam.png',768,768,9,3);
 registerVFX('holy_burst','assets/vfx/vfx_holy_burst.png',768,768,9,3);
 registerVFX('void_black','assets/vfx/vfx_void_black.png',768,768,9,3);
 registerVFX('lava_erupt','assets/vfx/vfx_lava_erupt.png',768,768,9,3);
+registerVFX('fire_burst','assets/vfx/fire_burst_radial.webp',512,288,41,7);
+registerVFX('fire_bomb','assets/vfx/fire_bomb_burst.webp',480,222,55,8);
 registerVFX('ice_orb','assets/vfx/vfx_ice_orb.png',768,768,9,3);
 registerVFX('earthquake','assets/vfx/vfx_earthquake.png',512,512,9,3);
 registerVFX('blue_vortex','assets/vfx/vfx_dark_burst.png',192,192,5,4);
@@ -17762,7 +17764,8 @@ function _autoFireBowSkill(tx,ty){
   if(_effAbs==='normal'){_fireXbow(tx,ty);return}
   const a=Math.atan2(ty-P.y,tx-P.x);
   const _sS=P.s,_sSt2=P.st2,_sSt=P.st;
-  P.facing=a;P.atkArc=a;
+  const _svF=P.facing,_svA=P.atkArc; // 백업 — 자동쇠뇌가 플레이어 방향에 관여하면 안 됨
+  P.facing=a;P.atkArc=a; // 스킬 함수 내부에서 facing 참조하므로 임시 설정
   let fired=false;
   const _pBefore=pProjs.length; // 실제 투사체 생성 여부 확인용
   if(_effAbs==='bladeShot'&&P.skills.bladeShot&&(P._bltCd||0)<=0){activateBladeShot();fired=pProjs.length>_pBefore}
@@ -17777,14 +17780,14 @@ function _autoFireBowSkill(tx,ty){
     if(_gxFiring){_fireXbow(tx,ty)}
     else{
       const _skOnCd=(_effAbs==='bladeShot'&&(P._bltCd||0)>0)||(_effAbs==='blastShot'&&(P._bsCd2||0)>0)||(_effAbs==='needleShot'&&(P._ndCd||0)>0);
-      if(_skOnCd){P.s=_sS;P.st2=_sSt2;return}
+      if(_skOnCd){P.s=_sS;P.st2=_sSt2;P.facing=_svF;P.atkArc=_svA;return}
       _fireXbow(tx,ty)
     }
   }
   // 자동석궁 ST 소모: (기본1.5 + 레벨당1.5) × 패시브/어픽스 적용
   const _xbStCost=(1.5+(P.skills.fanShot||0)*1.5)*_stDisc('bow');
   P.st=Math.max(0,_sSt-_xbStCost);
-  P.s=_sS;P.st2=_sSt2;
+  P.s=_sS;P.st2=_sSt2;P.facing=_svF;P.atkArc=_svA;
 }
 function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];if(a.id==='sharpAtk'||a.id==='brutalAtk'||a.id==='ruinAtk')s+=a.value}return s}
 // 레벨 자동 성장: 비하인드 적용 (UI에 안 보임, 장비처럼 계산에만 반영)
@@ -30524,7 +30527,7 @@ function _detonateAssaultFlames(){
     _shBufI--;
     const _afS2=fz._afStk||0;
     shake(30+_afS2*15);G.chromaT=10+_afS2*5;G._flashT=8+_afS2*4;G._flashCol='#ff4400';
-    playVFXAng('lava_erupt',fz.x,fz.y-fz.r*.378,fz.r/384*1.5,8,0,true);
+    playVFXAng('fire_burst',fz.x,fz.y,fz.r/200*(1+_afS2*.3),4,0,true);
     addTxt(fz.x,fz.y-30,_T('💥 불꽃폭발! ')+_totalDmg,'#ff2200',60+_afS2*10);
     const _epC=16+_afS2*8;
     for(let _ep=0;_ep<_epC;_ep++){const _ea=Math.PI*2*_ep/_epC;const _ed=fz.r*.3+Math.random()*fz.r*.5;
@@ -39205,7 +39208,7 @@ function draw(){
       const _drawH=_ES_DRAW_H;
       X.save();X.translate(ea.x,ea.y);X.rotate(ea.ang);
       X.globalAlpha=alpha;
-      X.drawImage(_ES_IMG,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,0,-_drawH/2,ea.range,_drawH);
+      X.drawImage(_ES_IMG,ea.fr*_ES_FW,0,_ES_FW,_ES_FH,-40,-_drawH/2,ea.range,_drawH);
       X.restore();
     }else{P._esAnim=null}
   }
@@ -39220,7 +39223,10 @@ function draw(){
     X.translate(al.x,al.y);X.rotate(al.ang);
     X.globalCompositeOperation='lighter';
     X.globalAlpha=flk;
-    X.drawImage(_AL_IMG,0,frame*_AL_FH,_AL_FW,_AL_FH,0,-drawH/2,al.range,drawH);
+    // 원본 비율 유지: drawH 기준으로 drawW 계산
+    const drawW=drawH*(_AL_FW/_AL_FH);
+    // 캐릭터에 붙이기: -20px 오프셋
+    X.drawImage(_AL_IMG,0,frame*_AL_FH,_AL_FW,_AL_FH,-20,-drawH/2,drawW,drawH);
     X.restore();
   }
   // ── 업화선 ──
@@ -44250,7 +44256,7 @@ const INTRO_CUTSCENE_LINES={
     {id:2,img:'4.png',t:2500,dur:1500,speaker:null,text:'',cam:{zs:1.05,ze:1.15,px:0,py:0,ease:'out'},vfx:{vig:.35,chrom:.3,shake:1},fade:{type:'cross',in:300},sfx:'laugh_climax'},
     {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'니놈의 그 짜릿한 복수극은 감명깊게도 잘 봤다. 명작이더구나.',cam:{zs:1,ze:1.05,px:5,py:0,ease:'linear'},vfx:{vig:.5,grain:.1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:60,shadow:true}},
     {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'관람료는 내야겠지. 그래, 네놈에게 기회를 주겠다. 선택의 여지는 없다.',cam:{zs:1.08,ze:1,px:0,py:0,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'니놈에게 알량한 선의가 보인다. 보고 싶은가? 구해야 할 사람이 아직 있지 않은가? 아직 살아있더구나.',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'니놈에게 알량한 선의가 보인다. 구해야 할 사람이 아직 남아 있을텐데\n너를 아직도 기다리는것처럼 보이던데? 우리는 서로 시간이 많지 않다...',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:60,shadow:true}},
     {id:6,img:'7.png',t:17500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
     {id:7,img:'20.png',t:19000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},
     {id:8,img:'21.png',t:21500,dur:3000,speaker:'GODDESS',text:'그 목마를 보니 망자도 정신이 드는가보구나.',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},

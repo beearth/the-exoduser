@@ -21367,3 +21367,11 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - package.json
 - vfx_test.html
 
+
+## 2026-04-30 00:30 (auto)
+- assets/vfx/arc_laser/laser_sheet.png
+- assets/vfx/fire_bomb_burst.webp
+- assets/vfx/fire_burst_radial.webp
+- docs/5.1?�펙?�디?�인/VFX_구현가?�드.md
+- game.html
+
