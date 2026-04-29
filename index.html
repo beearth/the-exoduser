@@ -808,7 +808,7 @@ async function loadCharacters(){
     const div=document.createElement('div');div.className='char-item';
     div.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><canvas class="_chPort" width="${_vi.fw}" height="${_vi.fh}" style="width:40px;height:40px;image-rendering:pixelated;border:1px solid #443322;border-radius:4px;background:#111"></canvas><div><div class="char-name">${escHtml(ch.name)}</div><div class="char-info">Lv.${lv} | ${st}</div></div></div><div style="display:flex;gap:6px;align-items:center"><button class="char-del">${_TL('삭제')}</button></div>`;
     const _cv=div.querySelector('._chPort');
-    const _im=new Image();_im.src=_vi.folder+'/south.png';
+    const _im=new Image();_im.onerror=()=>{};_im.src=_vi.folder+'/south.png';
     _im.onload=()=>{_cv.getContext('2d').drawImage(_im,0,0,_vi.fw,_vi.fh,0,0,_vi.fw,_vi.fh)};
     div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;showCharGate(ch.id)});
     div.querySelector('.char-del').addEventListener('click',async e=>{
@@ -841,7 +841,7 @@ function openVisualSelect(name){
     // 프리뷰
     const cv=document.createElement('canvas');cv.width=ch.fw;cv.height=ch.fh;
     cv.style.cssText='width:64px;height:64px;image-rendering:pixelated;display:block;margin:0 auto 6px';
-    const im=new Image();im.src=ch.folder+'/south.png';
+    const im=new Image();im.onerror=()=>{};im.src=ch.folder+'/south.png';
     im.onload=()=>{cv.getContext('2d').drawImage(im,0,0,ch.fw,ch.fh,0,0,ch.fw,ch.fh)};
     card.appendChild(cv);
     // 이름
@@ -903,7 +903,7 @@ async function loadLocalCharacters(){
       const div=document.createElement('div');div.className='char-item';
       div.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><canvas class="_chPort" width="${_vi.fw}" height="${_vi.fh}" style="width:40px;height:40px;image-rendering:pixelated;border:1px solid #443322;border-radius:4px;background:#111"></canvas><div><div class="char-name">${escHtml(s.name)}</div><div class="char-info">Lv.${s.lv||1} | ${st}</div></div></div><div style="display:flex;gap:6px;align-items:center"><button class="char-del">${_TL('삭제')}</button></div>`;
       const _cv=div.querySelector('._chPort');
-      const _im=new Image();_im.src=_vi.folder+'/south.png';
+      const _im=new Image();_im.onerror=()=>{};_im.src=_vi.folder+'/south.png';
       _im.onload=()=>{_cv.getContext('2d').drawImage(_im,0,0,_vi.fw,_vi.fh,0,0,_vi.fw,_vi.fh)};
       div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;showCharGate(s.name)});
       div.querySelector('.char-del').addEventListener('click',async e=>{
