@@ -312,7 +312,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 
   <button class="skip-btn" id="skipBtn">SKIP ></button>
   <select id="cinLang" style="position:absolute;top:3vh;right:4vw;z-index:300;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
-    <option value="ko">한국어</option><option value="en">English</option>
+    <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
   </select>
 </div>
 
@@ -330,7 +330,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
     <div class="title"><h1>HELL</h1><p>EXODUSER</p></div>
     <div style="text-align:center;margin:-10px 0 10px">
       <select id="langSelect" style="background:#1a1008;border:1px solid #443322;color:#ccaa88;font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
-        <option value="ko">한국어</option><option value="en">English</option>
+        <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
       </select>
     </div>
     <div class="card">
@@ -395,6 +395,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="lobby_i18n.js"></script>
 <script>
 // 브라우저 줌 차단
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
@@ -436,12 +437,92 @@ const _LOBBY_EN={
   '서버 연결 실패: ':'Server connection failed: ',
   '데이터를 불러오는 중...':'Loading data...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Really delete this character?',
+  '캐릭터 이름 (2~8자)':'Character Name (2-8 chars)',
+  '새 캐릭터':'New Character',
+  '지옥으로 입장하는 중...':'Entering hell...',
 };
+const _LOBBY_ZH={
+  '지옥의 길':'地狱之路：EXODUSER','연결 중...':'连接中...','캐릭터를 선택하세요':'选择你的角色','당신은 누구인가':'汝乃何人',
+  'Google로 입장':'使用Google登录','캐릭터 선택':'角色选择','로그아웃':'退出登录',
+  '캐릭터가 없습니다. 새로 생성하세요.':'没有角色，请创建新角色。',
+  '새 캐릭터 생성':'创建新角色','캐릭터 이름 (2~8자)':'角色名（2~8字）',
+  '생성':'创建','외형 선택':'外观选择','캐릭터의 외형을 선택하세요':'请选择角色外观','취소':'取消',
+  '시작점':'起点','층':'层','장':'章','삭제':'删除',
+  '이름은 2~8자여야 합니다.':'名称必须为2~8个字符。',
+  '특수문자는 사용할 수 없습니다.':'不能使用特殊字符。',
+  '생성 중...':'创建中...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'已存在同名角色。',
+  '생성 실패: ':'创建失败：',
+  '로그인 실패: ':'登录失败：',
+  '캐릭터 불러오는 중...':'加载角色中...',
+  '불러오는 중...':'加载中...',
+  '오류: ':'错误：',
+  '삭제 실패: ':'删除失败：',
+  '알 수 없는 오류':'未知错误',
+  '서버 연결 실패: ':'服务器连接失败：',
+  '데이터를 불러오는 중...':'加载数据中...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':'  — 确定要删除该角色吗？',
+  '캐릭터 이름 (2~8자)':'角色名（2~8字）',
+  '새 캐릭터':'新角色',
+  '지옥으로 입장하는 중...':'正在进入地狱...',
+};
+const _LOBBY_JA={
+  '지옥의 길':'地獄の道：EXODUSER','연결 중...':'接続中...','캐릭터를 선택하세요':'キャラクターを選択','당신은 누구인가':'汝は何者か',
+  'Google로 입장':'Googleでログイン','캐릭터 선택':'キャラクター選択','로그아웃':'ログアウト',
+  '캐릭터가 없습니다. 새로 생성하세요.':'キャラクターがありません。新規作成してください。',
+  '새 캐릭터 생성':'新規キャラクター作成','캐릭터 이름 (2~8자)':'キャラクター名（2〜8文字）',
+  '생성':'作成','외형 선택':'外見選択','캐릭터의 외형을 선택하세요':'キャラクターの外見を選択','취소':'キャンセル',
+  '시작점':'スタート','층':'階','장':'章','삭제':'削除',
+  '이름은 2~8자여야 합니다.':'名前は2〜8文字である必要があります。',
+  '특수문자는 사용할 수 없습니다.':'特殊文字は使用できません。',
+  '생성 중...':'作成中...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'同じ名前のキャラクターが既に存在します。',
+  '생성 실패: ':'作成失敗：',
+  '로그인 실패: ':'ログイン失敗：',
+  '캐릭터 불러오는 중...':'キャラクター読み込み中...',
+  '불러오는 중...':'読み込み中...',
+  '오류: ':'エラー：',
+  '삭제 실패: ':'削除失敗：',
+  '알 수 없는 오류':'不明なエラー',
+  '서버 연결 실패: ':'サーバー接続失敗：',
+  '데이터를 불러오는 중...':'データ読み込み中...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':'  — 本当にこのキャラクターを削除しますか？',
+  '캐릭터 이름 (2~8자)':'キャラクター名（2〜8文字）',
+  '새 캐릭터':'新規キャラクター',
+  '지옥으로 입장하는 중...':'地獄へ入場中...',
+};
+const _LOBBY_ES={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Conectando...','캐릭터를 선택하세요':'Selecciona tu personaje','당신은 누구인가':'¿QUIÉN ERES?',
+  'Google로 입장':'Entrar con Google','캐릭터 선택':'Selección de personaje','로그아웃':'Cerrar sesión',
+  '캐릭터가 없습니다. 새로 생성하세요.':'No hay personajes. Crea uno nuevo.',
+  '새 캐릭터 생성':'Crear nuevo personaje','캐릭터 이름 (2~8자)':'Nombre (2-8 caracteres)',
+  '생성':'Crear','외형 선택':'Apariencia','캐릭터의 외형을 선택하세요':'Elige la apariencia','취소':'Cancelar',
+  '시작점':'Inicio','층':'P','장':'CAP','삭제':'Eliminar',
+  '이름은 2~8자여야 합니다.':'El nombre debe tener entre 2 y 8 caracteres.',
+  '특수문자는 사용할 수 없습니다.':'No se permiten caracteres especiales.',
+  '생성 중...':'Creando...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Ya existe un personaje con ese nombre.',
+  '생성 실패: ':'Error al crear: ',
+  '로그인 실패: ':'Error de inicio de sesión: ',
+  '캐릭터 불러오는 중...':'Cargando personajes...',
+  '불러오는 중...':'Cargando...',
+  '오류: ':'Error: ',
+  '삭제 실패: ':'Error al eliminar: ',
+  '알 수 없는 오류':'Error desconocido',
+  '서버 연결 실패: ':'Error de conexión al servidor: ',
+  '데이터를 불러오는 중...':'Cargando datos...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — ¿Realmente deseas eliminar este personaje?',
+  '캐릭터 이름 (2~8자)':'Nombre (2-8 caracteres)',
+  '새 캐릭터':'Nuevo personaje',
+  '지옥으로 입장하는 중...':'Entrando al infierno...',
+};
+const _LOBBY_TABLES=Object.assign({en:_LOBBY_EN,zh:_LOBBY_ZH,ja:_LOBBY_JA,es:_LOBBY_ES},typeof _LOBBY_I18N!=='undefined'?_LOBBY_I18N:{});
 function _lobbyLang(){return (localStorage.getItem('hellLang')||'ko')}
-function _TL(s){return _lobbyLang()==='en'&&_LOBBY_EN[s]||s}
+function _TL(s){const lang=_lobbyLang();if(lang==='ko')return s;const tbl=_LOBBY_TABLES[lang]||_LOBBY_EN;return tbl[s]||_LOBBY_EN[s]||s}
 function _applyLobbyLang(){
   const lang=_lobbyLang();
   document.getElementById('langSelect').value=lang;
+  const tbl=_LOBBY_TABLES[lang]||_LOBBY_EN;
   // 정적 텍스트 교체
   const m={
     'h1':['HELL','HELL'],
@@ -461,14 +542,16 @@ function _applyLobbyLang(){
   for(const[sel,pair]of Object.entries(m)){
     if(!pair)continue;
     const el=document.querySelector(sel);
-    if(el)el.textContent=lang==='en'?pair[1]:pair[0];
+    if(!el)continue;
+    if(lang==='ko')el.textContent=pair[0];
+    else{const k=pair[0];el.textContent=(tbl&&tbl[k])||_LOBBY_EN[k]||pair[1];}
   }
   // Google 버튼 (SVG 보존)
   const gb=document.getElementById('googleBtn');
-  if(gb){const svg=gb.querySelector('svg');const txt=lang==='en'?'Enter with Google':'Google로 입장';gb.innerHTML='';if(svg)gb.appendChild(svg);gb.appendChild(document.createTextNode(txt))}
+  if(gb){const svg=gb.querySelector('svg');const txt=_TL('Google로 입장');gb.innerHTML='';if(svg)gb.appendChild(svg);gb.appendChild(document.createTextNode(txt))}
   // placeholder
   const ci=document.getElementById('charName');
-  if(ci)ci.placeholder=lang==='en'?'Character Name (2-8 chars)':'캐릭터 이름 (2~8자)';
+  if(ci)ci.placeholder=_TL('캐릭터 이름 (2~8자)');
 }
 document.getElementById('langSelect').onchange=function(){
   localStorage.setItem('hellLang',this.value);
@@ -519,39 +602,39 @@ function stopIntroVoice(){
 // img: 이미지 인덱스 (0~8), -1=어둠, undefined=이전 유지
 // v: 음성 재생 시점 (초), 이 시점에 해당 라인이 시작됨
 const CIN_LINES=[
-  {v:0,   text:'',en:'',dur:3000,img:0},
-  {v:2.5, text:'전쟁에서 살아 돌아온 한 남자.',en:'A man who returned alive from war.',dur:3000,img:0},
-  {v:5.0, text:'',en:'',dur:3000},
-  {v:5.5, text:'하지만 집은 모두 불타 사라졌다.',en:'But his home had burned to nothing.',dur:3000,img:1},
-  {v:10.5,text:'',en:'',dur:3000},
-  {v:13.0,text:'이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.',en:'Killu, once a neighbor and friend, had crushed his family.',dur:3000,img:2},
-  {v:17.5,text:'',en:'',dur:3000},
-  {v:19.7,text:'아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,',en:'His wife was taken as a servant and suffered unspeakable horrors,',dur:3000},
-  {v:23.9,text:'끝내 못 이겨 스스로 목숨을 끊었다.',en:'until she could bear no more and took her own life.',dur:3000},
-  {v:27.0,text:'',en:'',dur:3000},
-  {v:28.6,text:'아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.',en:'His children were sold into slavery — their fate unknown.',dur:3000},
-  {v:33.0,text:'늙은 부모는 감옥에 갇혀 굶어 죽었다.',en:'His elderly parents were imprisoned and starved to death.',dur:3000},
-  {v:37.0,text:'',en:'',dur:3000,img:-1},
-  {v:38.8,text:'킬루 가문의 모두가 알고 있었다.',en:'Everyone in the Killu household knew.',dur:3000,img:11},
-  {v:43.3,text:'31명이 보고도 못 본 척했다.',en:'Thirty-one of them saw everything and looked away.',dur:3000},
-  {v:46.0,text:'',en:'',dur:3000,img:-1},
-  {v:47.9,text:'그날 밤, 킬루 가문을 모두 죽였다.',en:'That night, he killed every last one of them.',dur:3000,cls:'red',img:3},
-  {v:51.0,text:'',en:'',dur:3000},
-  {v:53.6,text:'칼로 킬루의 팔다리를 자르고',en:'He cut off Killu\'s limbs with a blade,',dur:3000,cls:'red',img:4},
-  {v:56.6,text:'불로 지혈까지 해주며',en:'cauterized the wounds with fire,',dur:3000,cls:'red'},
-  {v:59.2,text:'오래오래 살려두었다.',en:'and kept him alive for a long, long time.',dur:3000,cls:'red'},
-  {v:65.2,text:'"기억하라."',en:'"Remember."',dur:3000,cls:'red',img:12},
-  {v:68.2,text:'"그리고 지옥에서도 후회하라."',en:'"And regret it even in hell."',dur:3000,cls:'red'},
-  {v:73.6,text:'그리고 지옥에 떨어진다.',en:'And so he fell into hell.',dur:3000,img:5},
-  {v:76.0,text:'',en:'',dur:3000,img:-1,phase:2},
-  {v:78.9,text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',en:'"...This is but one tale among countless avengers."',dur:3000,cls:'dim',img:13},
-  {v:82.5,text:'',en:'',dur:3000},
-  {v:84.8,text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',en:'"Every day, new souls fall into hell\'s labyrinth."',dur:3000,cls:'dim',img:8},
-  {v:88.9,text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',en:'"Those consumed by rage, driven mad by injustice, those who lost love..."',dur:3000,cls:'dim',img:9},
-  {v:94.0,text:'',en:'',dur:3000,img:-1},
-  {v:94.8,text:'"너는 왜 지옥에 왔느냐?"',en:'"Why have you come to hell?"',dur:3000,cls:'gold',img:7},
-  {v:97.0,text:'',en:'',dur:3000},
-  {v:99.0,text:'"지옥을 탈출하라, 죄인이여."',en:'"Escape from hell, sinner."',dur:3000,cls:'gold',img:7,end:true},
+  {v:0,   text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:0},
+  {v:2.5, text:'전쟁에서 살아 돌아온 한 남자.',en:'A man who returned alive from war.',zh:'一个从战争中活着回来的男人。',ja:'戦争から生きて帰った一人の男。',es:'Un hombre que regresó vivo de la guerra.',dur:3000,img:0},
+  {v:5.0, text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:5.5, text:'하지만 집은 모두 불타 사라졌다.',en:'But his home had burned to nothing.',zh:'但家园已化为灰烬。',ja:'だが家はすべて焼け落ちていた。',es:'Pero su hogar había sido reducido a cenizas.',dur:3000,img:1},
+  {v:10.5,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:13.0,text:'이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.',en:'Killu, once a neighbor and friend, had crushed his family.',zh:'曾是邻居和朋友的基路，摧毁了他的家族。',ja:'隣人であり友人だったキルルが、彼の一族を踏みにじった。',es:'Killu, vecino y amigo, había aplastado a su familia.',dur:3000,img:2},
+  {v:17.5,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:19.7,text:'아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,',en:'His wife was taken as a servant and suffered unspeakable horrors,',zh:'妻子被掳为奴仆，受尽种种凌辱，',ja:'妻は召使いとして連れ去られ、あらゆる残虐を受け、',es:'Su esposa fue tomada como sirvienta y sufrió horrores indecibles,',dur:3000},
+  {v:23.9,text:'끝내 못 이겨 스스로 목숨을 끊었다.',en:'until she could bear no more and took her own life.',zh:'最终不堪忍受，自绝了生命。',ja:'ついに耐えきれず自ら命を絶った。',es:'hasta que no pudo más y se quitó la vida.',dur:3000},
+  {v:27.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:28.6,text:'아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.',en:'His children were sold into slavery — their fate unknown.',zh:'孩子们被卖为奴隶，下落不明。',ja:'子供たちは奴隷として売られ、行方すら分からない。',es:'Sus hijos fueron vendidos como esclavos — su destino, desconocido.',dur:3000},
+  {v:33.0,text:'늙은 부모는 감옥에 갇혀 굶어 죽었다.',en:'His elderly parents were imprisoned and starved to death.',zh:'年迈的父母被关进牢狱，活活饿死。',ja:'老いた両親は牢に閉じ込められ、餓死した。',es:'Sus ancianos padres fueron encarcelados y murieron de hambre.',dur:3000},
+  {v:37.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1},
+  {v:38.8,text:'킬루 가문의 모두가 알고 있었다.',en:'Everyone in the Killu household knew.',zh:'基路家族的所有人都知道。',ja:'キルル家の誰もが知っていた。',es:'Todos en la casa de Killu lo sabían.',dur:3000,img:11},
+  {v:43.3,text:'31명이 보고도 못 본 척했다.',en:'Thirty-one of them saw everything and looked away.',zh:'三十一人目睹一切，却视而不见。',ja:'三十一人が見て見ぬふりをした。',es:'Treinta y uno de ellos lo vieron todo y miraron hacia otro lado.',dur:3000},
+  {v:46.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1},
+  {v:47.9,text:'그날 밤, 킬루 가문을 모두 죽였다.',en:'That night, he killed every last one of them.',zh:'那天夜里，他杀光了基路全族。',ja:'その夜、キルル家の全員を殺した。',es:'Esa noche, los mató a todos.',dur:3000,cls:'red',img:3},
+  {v:51.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:53.6,text:'칼로 킬루의 팔다리를 자르고',en:'He cut off Killu\'s limbs with a blade,',zh:'用刀砍断了基路的四肢，',ja:'刃でキルルの手足を切り落とし、',es:'Le cortó las extremidades a Killu con una espada,',dur:3000,cls:'red',img:4},
+  {v:56.6,text:'불로 지혈까지 해주며',en:'cauterized the wounds with fire,',zh:'用火为他止住了血，',ja:'火で傷口を焼き止め、',es:'cauterizó las heridas con fuego,',dur:3000,cls:'red'},
+  {v:59.2,text:'오래오래 살려두었다.',en:'and kept him alive for a long, long time.',zh:'让他活了很久很久。',ja:'長い長い間、生かし続けた。',es:'y lo mantuvo vivo por mucho, mucho tiempo.',dur:3000,cls:'red'},
+  {v:65.2,text:'"기억하라."',en:'"Remember."',zh:'"记住。"',ja:'"覚えておけ。"',es:'"Recuerda."',dur:3000,cls:'red',img:12},
+  {v:68.2,text:'"그리고 지옥에서도 후회하라."',en:'"And regret it even in hell."',zh:'"在地狱里也要后悔。"',ja:'"そして地獄でも悔やめ。"',es:'"Y arrepiéntete incluso en el infierno."',dur:3000,cls:'red'},
+  {v:73.6,text:'그리고 지옥에 떨어진다.',en:'And so he fell into hell.',zh:'然后，他坠入了地狱。',ja:'そして地獄に落ちた。',es:'Y así cayó al infierno.',dur:3000,img:5},
+  {v:76.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1,phase:2},
+  {v:78.9,text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',en:'"...This is but one tale among countless avengers."',zh:'"……这不过是无数复仇者中一人的故事。"',ja:'"……これは数えきれない復讐者の中の、一つの物語に過ぎない。"',es:'"...Esta es solo una historia entre innumerables vengadores."',dur:3000,cls:'dim',img:13},
+  {v:82.5,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:84.8,text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',en:'"Every day, new souls fall into hell\'s labyrinth."',zh:'"每天都有新的灵魂坠入地狱的迷宫。"',ja:'"地獄の迷宮には毎日新たな魂が落ちてくる。"',es:'"Cada día, nuevas almas caen al laberinto del infierno."',dur:3000,cls:'dim',img:8},
+  {v:88.9,text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',en:'"Those consumed by rage, driven mad by injustice, those who lost love..."',zh:'"被愤怒填满的人、因冤屈而疯狂的人、失去爱的人……"',ja:'"怒りに満ちた者、理不尽に狂った者、愛を失った者……"',es:'"Los consumidos por la ira, enloquecidos por la injusticia, los que perdieron el amor..."',dur:3000,cls:'dim',img:9},
+  {v:94.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1},
+  {v:94.8,text:'"너는 왜 지옥에 왔느냐?"',en:'"Why have you come to hell?"',zh:'"你为什么来到地狱？"',ja:'"お前はなぜ地獄に来た？"',es:'"¿Por qué has venido al infierno?"',dur:3000,cls:'gold',img:7},
+  {v:97.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:99.0,text:'"지옥을 탈출하라, 죄인이여."',en:'"Escape from hell, sinner."',zh:'"逃出地狱吧，罪人。"',ja:'"地獄から脱出せよ、罪人よ。"',es:'"Escapa del infierno, pecador."',dur:3000,cls:'gold',img:7,end:true},
   {v:103,exit:true}
 ];
 
@@ -638,7 +721,8 @@ function playCinematic(){
     if(line.img!==undefined){if(line.img===-1)hideAll();else showImg(line.img);}
     
     textBox.innerHTML='';
-    const _cinTxt=_lobbyLang()==='en'?(line.en||line.text):line.text;
+    const _cLang=_lobbyLang();
+    const _cinTxt=_cLang==='ko'?line.text:(line[_cLang]||(typeof _CIN_I18N!=='undefined'&&_CIN_I18N[_cLang]&&_CIN_I18N[_cLang][idx])||line.en||line.text);
     if(_cinTxt){
       const el=document.createElement('div');
       el.className='cin-line'+(line.cls?' '+line.cls:'');
