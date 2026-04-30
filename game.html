@@ -5717,7 +5717,7 @@ function _diffName(i){return OPT.lang!=='ko'?DIFF_NAME_EN[i]:DIFF_NAME[i]}
 const DIFF_MUL=[1.0,1.12,1.25,1.40,1.58,1.78,2.00,2.25,2.52,2.82,3.15]; // 난이도 단계별 몬스터 HP/ATK 배율
 const DIFF_MOB=[1,1,1,1,1,1,1,1,1,1,1]; // 레거시 호환용 (전부 1)
 
-// ─── [S03e] PET_DIALOGUE — 펫 대사 (티키타카) ───
+// ─── [S03e] PET_DIALOGUE v6 — 펫 대사 172종 (티키타카) ───
 // 말풍선 상태: {who:'crow'|'cat', txt:'', t:0, mt:300, pair:null|{who,txt,mt}}
 const _petBubble={who:null,txt:'',t:0,mt:0,pair:null,pairFired:false};
 const _petDlgCD={}; // 대사 쿨다운 {id: remainFrames}
@@ -5725,8 +5725,35 @@ const _petDlgCD={}; // 대사 쿨다운 {id: remainFrames}
 const _petTut={start:false,atk3:false,atk7:false,charge:false,firstCharge:false,firstHit:false,hit2:false,parryHint:false,firstParry:false,redBean:false,rainbowBean:false,firstKill:false,
   keyK:false,keyC:false,keyG:false,keyF:false,keyZ:false,keyCT:false,keyL:false,keyV:false,keyESC:false,
   firstItem:false,potionCraft:false,firstDebris:false,firstChest:false,firstForge:false};
-// 누적 카운터 (세이브 불필요 — 런 내 일시)
+// v1 누적 카운터 (세이브 불필요 — 런 내 일시)
 let _petAtkCnt=0,_petHitCnt=0,_petParryCnt=0,_petKillCnt=0,_petChargeUsed=false,_petIdleT=0;
+// v4 변수 (보스/콤보/강화/환경)
+let _petLastBoss=null,_petBossAliveLast=false,_petLastEnemyCount=0;
+let _petStageCleared=false,_petDeathCount=0;
+const _petBossPhase={p2:false,p3:false,p4:false};
+let _petComboKills=0,_petKillsRecentT=0,_petKillsRecent=0;
+let _petEnhStreakFail=0;
+const _petStageEnv={};let _petStageEnvT=0,_petLastChapter=-1;
+let _petEnemyAvgAtk=0,_petEnemyAvgAtkT=0;
+// v5 변수 (엘리트/시너지/빌드/트로피/스피드런)
+let _petEliteFirst=false;
+let _petMinibossAppearedFor=null;
+const _petChapterCleared={};
+let _petSynergyFirst=false;
+let _petWindStack=0,_petWindStackLast=0;
+let _petPierceFirst=false;
+const _petBuildHinted={str:false,dex:false,int:false,lck:false};
+let _petTrophy_act1=false,_petTrophy_legendary=false,_petTrophy_fullExplore=false;
+const _petTrophy_noDeathRun={};
+let _petCurrentChapterDeaths=0;
+let _petStageStartT=0;const _petStageRecord={};
+// v6 변수 (펫토크/보스인트로/난이도/베테랑)
+let _petIdleTalkT=0;
+const _petBossIntroSeen={};
+const _petEnvFlags={chestFirst:false,breakWall:false,torchLit:false};
+let _petDiffLast=0;const _petDiffSeen={};
+// v5 패링 콤보 (연속 성공 카운트, 피격 시 리셋)
+let _petParryCombo=0;
 
 // 대사 발동 함수
 function _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur){
@@ -5787,211 +5814,285 @@ function _checkPetDialogue(){
   if(!G.on||!G.pets)return;
   _updatePetBubble();
   const si=G.stage||0;
+  const _ch=SI_TO_HELL[si]||0;
 
-  // ── 긴급 대사 (레벨 무관, 글로벌쿨 무시, 말풍선 끊고 즉시 출력) ──
-  if(P.hp<P.mhp*.3&&P.hp>0)_petSayUrgent('crisis_hp30','crow','피가 새고 있다. Shift. 빠져.',4,30,'cat','작살 던져! 끌려가면 무적이야!',4);
-  if(P.hp<P.mhp*.3&&P.hp>0)_petSayUrgent('danger_hp','crow','위험해! 쉬프트 사슬기동으로 피해!!',3,300);
+  // ══ [3] 긴급 대사 (urgent — 레벨 무관, 모든 쿨 무시) ══
+  // HP 50%
+  if(P.hp>0&&P.hp<P.mhp*.5&&P.hp>=P.mhp*.3)_petSayUrgent('warn_hp50','crow','…절반이다. 정신차려.',3,60,'cat','체력 반 남았어! 물약 마실 타이밍!',3);
+  // HP 30%
+  if(P.hp>0&&P.hp<P.mhp*.3&&P.hp>=P.mhp*.1)_petSayUrgent('crisis_hp30','crow','피가 새고 있다. Shift. 빠져.',4,20,'cat','작살 던져! 끌려가면 무적이야!',4);
+  // HP 10% (v4 신규)
+  if(P.hp>0&&P.hp<P.mhp*.1)_petSayUrgent('hp_critical','crow','…죽기 직전이다. 한 발만 더.',3,30,'cat','한 방이면 죽어! 도망쳐!!',3);
+  // HP 한방컷 (v4 — 적 평균ATK 캐싱)
+  if(G.frame%60===0){let _sa=0,_sc=0;for(let i=0;i<ens.length;i++){if(ens[i].alive&&dst2(P.x,P.y,ens[i].x,ens[i].y)<250000){_sa+=(ens[i].atk||0);_sc++}}_petEnemyAvgAtk=_sc>0?_sa/_sc:0}
+  if(P.hp>0&&_petEnemyAvgAtk>0&&P.hp<_petEnemyAvgAtk*1.2)_petSayUrgent('hp_oneshot','crow','…다음 한 방이 마지막이야.',3,20,'cat','한 대만 맞아도 죽어! 패링이든 회피든!!',3);
+  // 기절 — 탈출기 동적 목록
   if(P.s==='pStun'){
-    const _esc=[];_esc.push('Shift 작살');
+    const _esc=['Shift 작살'];
     if(P.skills.ghostWalk>0)_esc.push('Ctrl 유령걸음');
     else if(P.skills.iceOrb>0)_esc.push('Ctrl 얼음보주');
-    _petSayUrgent('stun_warn','cat','기절이야! '+_esc.join(' / ')+' 으로 탈출!',4,10,'crow','빨리! 맞으면 끝이야!',3);
+    _petSayUrgent('stun_warn','cat','기절! '+_esc.join(' / ')+' 으로 탈출!',4,8,'crow',P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출하라.':P.skills.iceOrb>0?'Ctrl 얼음보주로 탈출하라.':'스킬 없으면 방향키 연타뿐이야.',3);
   }
+  // MP 위기 (v4 — INT빌드)
+  if(P.mp<P.mmp*.2&&(P.aint||0)>Math.max(P.astr||0,P.adex||0))_petSayUrgent('mp_warn','crow','마력이 빈다. 평타 섞어.',3,60,'cat','MP 부족! 평타로 패면서 회복해!',3);
+  // ST 부족
+  if(P.st<P.mst*.5&&P.lv<=100)_petSayUrgent('low_st','crow','스태미나가 부족하다. 무리하지 마.',3,60,'cat','ST 없으면 스킬 못 써!',3);
+  // 보스 그로기
   if(G._bossRef&&G._bossRef.stunned>0)_petSayUrgent('boss_groggy','crow','무릎 꿇었다.',3,30,'cat','지금이야! 몰아쳐!!',3);
+  // 보스 grab/aoe 텔레그래프 (v4)
+  if(G._bossRef&&G._bossRef._curMove){
+    const _bmid=G._bossRef._curMove.id;
+    if(_bmid==='grab'&&G._bossRef._teleT>0)_petSayUrgent('boss_grab_warn','crow','그랩이다. 거리를 둬.',3,10,'cat','잡힌다! 옆으로 빠져!',3);
+    if((_bmid==='burst'||_bmid==='shock')&&G._bossRef._teleT>0)_petSayUrgent('boss_aoe_warn','crow','광역기다. 멀어져.',3,10,'cat','큰 거 온다! 도망쳐!',3);
+  }
 
   if(P.lv>500)return; // Lv500 이후 나머지 대사 비활성
 
-  // ── 튜토리얼 (Stage 0 전용, Lv200 이하) ──
+  // ══ [1] 튜토리얼 (Stage 0, Lv200 이하) — 15종 ══
   if(si===0&&P.lv<=200){
-    if(!_petTut.start){_petTut.start=true;_petSayCD('tut_start','crow','일어나. 여신이 널 여기 보낸 건 죽으라고가 아니야.',5,9999,'cat','...아직 살아있네. 좌클릭으로 저것들 쳐봐.',5);return}
-    if(!_petTut.atk3&&_petAtkCnt>=3&&_petAtkCnt<7){_petTut.atk3=true;_petSayCD('tut_atk3','crow','좋아, 감각이 있군. 계속 쳐!',5,9999,'cat','...치는 건 할 줄 아네. 피하는 건?',5);return}
+    if(!_petTut.start){_petTut.start=true;_petSayCD('tut_start','crow','일어나. 여신이 널 여기 보낸 건 죽으라고가 아니야.',5,9999,'cat','…아직 살아있네. 좌클릭으로 저것들 쳐봐.',5);return}
+    if(!_petTut.atk3&&_petAtkCnt>=3&&_petAtkCnt<7){_petTut.atk3=true;_petSayCD('tut_atk3','crow','좋아, 감각이 있군. 계속 쳐!',5,9999,'cat','…치는 건 할 줄 아네. 피하는 건?',5);return}
     if(!_petTut.atk7&&_petAtkCnt>=7&&!_petChargeUsed){_petTut.atk7=true;_petSayCD('tut_charge','crow','Shift를 눌러. 작살이다. 땅에 꽂아서 끌려가!',5,9999);return}
     if(!_petTut.firstCharge&&_petChargeUsed){_petTut.firstCharge=true;_petSayCD('tut_1stcharge','crow','작살로 끌려가는 중엔 무적이다. 위험할 때 쓰면 좋아.',5,9999,'cat','흥, 작살 못 맞추면 헛수고야.',5);return}
-    if(!_petTut.firstHit&&_petHitCnt>=1){_petTut.firstHit=true;_petSayCD('tut_1sthit','cat','...아파? 당연하지. 여긴 지옥이야.',5,9999);return}
+    if(!_petTut.firstHit&&_petHitCnt>=1){_petTut.firstHit=true;_petSayCD('tut_1sthit','cat','…아파? 당연하지. 여긴 지옥이야.',5,9999);return}
     if(!_petTut.hit2&&_petHitCnt>=2){_petTut.hit2=true;_petSayCD('tut_hit2','crow','Q를 눌러! 악의로 보호막을 만들 수 있다.',5,9999,'cat','보호막 없이 버틸 생각은 버려.',5);return}
     if(!_petTut.parryHint&&_petAtkCnt>=8&&_petParryCnt===0){_petTut.parryHint=true;_petSayCD('tut_parry','crow','우클릭이 패링이다. 적 공격이 닿기 직전에 눌러!',5,9999,'cat','못 하겠으면 때려. 안 죽으면 그만이야.',5);return}
-    if(!_petTut.firstParry&&_petParryCnt>=1){_petTut.firstParry=true;_petSayCD('tut_1stparry','crow','됐어! 감 잡았구나.',4,9999,'cat','...운이 좋았을 뿐이야. 아마.',5);return}
-    if(!_petTut.firstKill&&_petKillCnt>=1){_petTut.firstKill=true;_petSayCD('tut_1stkill','crow','하나 죽었군.',4,9999,'cat','...고기 냄새. 싫진 않네.',5);return}
-    if(!_petTut.bowIntro&&_petKillCnt>=3){_petTut.bowIntro=true;_petSayCD('tut_bow','crow','유령쇠뇌야. 인사해.',3,9999,'cat','...말은 못해.',4);return}
-    // 첫 아이템 습득 → TAB 안내
+    if(!_petTut.firstParry&&_petParryCnt>=1){_petTut.firstParry=true;_petSayCD('tut_1stparry','crow','됐어! 감 잡았구나.',4,9999,'cat','…운이 좋았을 뿐이야. 아마.',5);return}
+    if(!_petTut.firstKill&&_petKillCnt>=1){_petTut.firstKill=true;_petSayCD('tut_1stkill','crow','하나 죽었군.',4,9999,'cat','…고기 냄새. 싫진 않네.',5);return}
+    if(!_petTut.bowIntro&&_petKillCnt>=3){_petTut.bowIntro=true;_petSayCD('tut_bow','crow','유령쇠뇌야. 인사해.',3,9999,'cat','…말은 못해.',4);return}
     if(!_petTut.firstItem&&INV.bag.length>=1){_petTut.firstItem=true;_petSayCD('tut_firstItem','crow','TAB을 눌러. 가방을 열고 장비를 입어야 한다.',5,9999,'cat','주웠으면 껴야지! TAB!',4);return}
-    // Lv100 → G키 물약제작 안내
     if(!_petTut.potionCraft&&P.lv>=100){_petTut.potionCraft=true;_petSayCD('tut_potionCraft','crow','G. 대장간에서 물약도 제작할 수 있다.',5,9999,'cat','악의로 물약 만들어! G키야!',4);return}
   }
+  // 빨간/무지개 탄 튜토리얼
+  if(!_petTut.redBean){for(let i=0;i<projs.length;i++){if(projs[i].alive&&projs[i].parryable){_petTut.redBean=true;_petSayCD('tut_red','crow','빨간 탄을 무서워하지 마. 악의가 강하다.',5,9999,'cat','패링으로 돌려주고, Q 보호막도 써!',5);break}}}
+  if(!_petTut.rainbowBean){for(let i=0;i<projs.length;i++){if(projs[i].alive&&projs[i].rainbow){_petTut.rainbowBean=true;_petSayCD('tut_rainbow','crow','무지개빛은 패링 불가! 피해!',4,9999,'cat','예쁘다고 만지면 죽어.',4);break}}}
+  // 부활 몹 튜토리얼 — 호출처: ~22778줄 (기존)
 
-  // ── 빨간/무지개 탄 (프레임마다 체크하지 않기 위해 쿨다운 사용) ──
-  if(!_petTut.redBean){
-    for(let i=0;i<projs.length;i++){if(projs[i].alive&&projs[i].parryable){_petTut.redBean=true;_petSayCD('tut_red','crow','빨간 탄을 무서워하지 마. 악의가 강하다.',5,9999,'cat','패링으로 돌려주고, Q 보호막도 써! 악의를 잘 굴려!',5);break}}
-  }
-  if(!_petTut.rainbowBean){
-    for(let i=0;i<projs.length;i++){if(projs[i].alive&&projs[i].rainbow){_petTut.rainbowBean=true;_petSayCD('tut_rainbow','crow','무지개빛은 패링 불가! 피해!',4,9999,'cat','예쁘다고 만지면 죽어.',4);break}}
-  }
-
-  // ── 일반 대사 (반복, 쿨다운) ──
-
-  // 패링 가이드
-  if(_petParryCnt<3)_petSayCD('parry_low','crow','빨간 탄은 우클릭 패링. 무지개는 Q 패링.',4,30,'cat','나머지는 전부 우클릭 패링 가능해!',4);
-  else if(_petParryCnt<10)_petSayCD('parry_mid','crow','빨강=우클릭, 무지개=Q 패링. 나머진 다 쳐내.',4,30,'cat','무지개는 Q로 패링! 나머지는 전부 우클릭!',4);
-
-  // crisis_hp30, danger_hp, stun_warn, boss_groggy → 반응형 블록으로 이동됨
-  // 쉬프트 안내 (돌진 미사용 + 전투 중)
-  if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야! 끌려가면서 무적이라고!',4,300);
-  // SP 안내 (10 이상)
-  if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트가 쌓였어! K 눌러서 스킬 배우자!',4,300);
-  // 자원 경고 — HP/MP/ST 개별 감지
-  if(P.hp>0&&P.hp<P.mhp*.5&&P.hp>=P.mhp*.3)_petSayUrgent('warn_hp50','crow','체력이 반이다. 조심해.',3,60,'cat','물약 있으면 지금 마셔!',3);
-  if(P.mp<P.mmp*.5&&P.mp>=P.mmp*.3)_petSayCD('warn_mp50','cat','마나가 반밖에 안 남았어!',3,60,'crow','마법 아껴 써. 패링으로 채워.',3);
-  if(P.st<P.mst*.5&&P.st>=P.mst*.3)_petSayCD('warn_st50','crow','스태미나가 떨어진다. 무리하지 마.',3,60,'cat','ST 없으면 스킬 못 써! 잠깐 빠져!',3);
-  // 자원 심각 (30% 이하)
-  if(P.hp<P.mhp*.3||P.mp<P.mmp*.3||P.st<P.mst*.3){
-    if(P.skills.holyDome>0)_petSayUrgent('resource_low','crow','F키 회복의 영역을 써봐. 자원이 차올라.',4,60);
-    else _petSayUrgent('resource_low','crow','빠져! 물약 마시고 안전한 곳에서 회복해.',4,60,'cat','자원 없으면 도망가는 게 답이야!',4);
-  }
-  // 패링 자원회수 안내 (범용)
-  if(P.hp<P.mhp*.5||P.mp<P.mmp*.5||P.st<P.mst*.5)_petSayCD('resource_parry','cat','패링을 써야 자원을 흡수한다고!',3,120);
-  // 근접 적 경고 (300px 내 적 수 기반)
-  {let _nearCnt=0;for(let _ni=0;_ni<ens.length;_ni++){if(ens[_ni].alive&&dst2(P.x,P.y,ens[_ni].x,ens[_ni].y)<90000)_nearCnt++}
-  if(_nearCnt>=10){
-    if(P.skills.spikeTrap>0)_petSayCD('melee_trap','cat','스페이스! 가시덫으로 적 묶어버려!',4,300);
-    else _petSayCD('melee_trap','cat','근접이 너무 많아! 거리 벌려!',4,300,'crow','...둘러싸이면 끝이야. 빠져나와.',4);
-  }
-  if(_nearCnt>=20){
-    if(P.skills.giantSlam>0)_petSayCD('melee_slam','crow','1번 대왕치기로 쓸어버려!',4,300,'cat','그로기 터지면 데미지 1.5배!',3);
-    else _petSayCD('melee_slam','crow','회전참이나 광역기로 몰아! 한 놈씩 상대하면 죽어.',4,300,'cat','뭉쳐있을 때가 기회야!',3);
-  }
-  // eShield 힌트: 근처 적이 쉴드 보유 시
-  if(_nearCnt>=1){let _hasES=false;const _esNe=shQuery(P.x,P.y,300);for(let _i=0;_i<_esNe.length;_i++){if(_esNe[_i].alive&&_esNe[_i].eShield>0){_hasES=true;break}}
-  if(_hasES)_petSayCD('eshield_hint','cat','E로 마력공격을 해봐! 악의 쉴드를 해제할려면 마법 공격을 해야 해!',5,600,'crow','쉴드는 마법으로, HP는 물리로. 반대로 치면 데미지 안 들어간다.',5)}
-  }
-
-  // 보스 속성
-  if(G.bossAlive&&G._bossRef&&G._bossRef.el>0)_petSayCD('boss_elem','crow','속성을 읽어. 약점을 찌르면 두 배로 썩는다.',4,30,'cat','화염엔 빙결! 암전엔 암흑! 기억해!',4);
-
-  // 보스 그로기 → 반응형 블록으로 이동됨
-
-  // 적 빙결
-  for(let i=0;i<ens.length;i++){if(ens[i].alive&&ens[i].frozen>0){_petSayCD('enemy_ice','crow','...얼어붙은 놈은 오래 안 간다.',4,30,'cat','얼었어! 빙결 중 1.5배야!',4);break}}
-
-  // SP 있음
-  if(P.lv>=5&&P.sp>0)_petSayCD('has_sp','cat','스킬 포인트 있어! K 눌러서 스킬 찍어봐!',5,30,'crow','L키로 스킬 슬롯에 넣어야 쓸 수 있어.',4);
-  if((P.ap||0)>=3)_petSayCD('has_ap','crow','C키를 눌러. 패시브 포인트가 쌓여있다.',4,60,'cat','C키! 패시브 올리면 진짜 강해져!',4);
-  // low_st → warn_st50으로 통합됨
-
-  // 아이템 많음
-  if(INV.bag.length>=15)_petSayCD('bag_full','crow','...쓸 거 아니면 분해해.',4,30,'cat','아이템 넘쳐나네~ 우리가 주워줄게!',4);
-
-  // 악의 부족
-  if(G.mats<10)_petSayCD('low_mats','crow','악의가 바닥이다.',3,30,'cat','TAB 열어서 장비 분해해! 쓰레기도 악의가 돼!',5);
-
-  // 영웅급+ 미강화 + 악의 50+
-  if(G.mats>=50){let _unEnh=false;for(const sl in INV.equipped){const it=INV.equipped[sl];if(it&&it.rarity>=3&&(it.enhLv||0)===0){_unEnh=true;break}}
-    if(_unEnh)_petSayCD('enh_hint','cat','좋은 장비가 있네! G 눌러서 대장간 가봐!',5,30,'crow','...강화 안 하면 그냥 고철이야.',4);
-  }
-
-  // 보스방 근처 (게이트 아직 안 열림)
-  if(G.bossAlive&&G._bossCx&&G._bossCy){
-    const _bDist=Math.sqrt((P.x-G._bossCx*16)**2+(P.y-G._bossCy*16)**2);
-    if(_bDist<300)_petSayCD('near_boss','crow','...냄새가 짙다. 큰 놈이 있어.',4,30,'cat','준비됐어? 물약 확인하고!',4);
-  }
-
-  // 대기 중 적 없음
-  let _noEn=true;for(let i=0;i<ens.length;i++){if(ens[i].alive){_noEn=false;break}}
-  if(_noEn&&P.s==='idle')_petSayCD('idle_noE','crow','...멈추지 마. 여신은 기다리지 않는다.',4,30,'cat','앞으로 가자~ 나도 여기 오래 있기 싫어.',4);
-
-  // ── 키 안내 (1회성, 조건 트리거, Lv200 이하) ──
+  // ══ [2] 키 안내 튜토리얼 (Lv200 이하, 1회성) — 9종 ══
   if(P.lv<=200){
-  // K: 스킬 — 레벨 3+ & SP 있을 때
-  if(!_petTut.keyK&&P.lv>=3&&P.sp>0){_petTut.keyK=true;_petSayCD('tut_keyK','cat','K를 눌러봐! 스킬을 배울 수 있어!',5,9999,'crow','...힘을 골라라. 전부 가질 순 없다.',4)}
-  // C: 능력치 — 레벨 5+ & AP 있을 때
+  if(!_petTut.keyK&&P.lv>=3&&P.sp>0){_petTut.keyK=true;_petSayCD('tut_keyK','cat','K를 눌러봐! 스킬을 배울 수 있어!',5,9999,'crow','…힘을 골라라. 전부 가질 순 없다.',4)}
   if(!_petTut.keyC&&P.lv>=5&&(P.ap||0)>0){_petTut.keyC=true;_petSayCD('tut_keyC','cat','C 눌러서 능력치 찍어! 패시브도 있어~',5,9999,'crow','스탯을 올려. 살고 싶으면.',4)}
-  // G: 대장간 — 영웅급+ 장비 보유 & 악의 30+
-  if(!_petTut.keyG&&G.mats>=30){let _hasRare=false;for(const sl in INV.equipped){if(INV.equipped[sl]&&INV.equipped[sl].rarity>=3){_hasRare=true;break}}
-    if(_hasRare){_petTut.keyG=true;_petSayCD('tut_keyG','crow','G를 눌러. 대장간에서 장비를 강화할 수 있다.',5,9999,'cat','좋은 장비는 강화해야 진짜 힘을 발휘해!',4)}}
-  // F: 스킬슬롯5 — 스킬 2개 이상 습득
-  if(!_petTut.keyF){let _skCnt=0;for(const k in P.skills){if(P.skills[k]>0)_skCnt++}
-    if(_skCnt>=2){_petTut.keyF=true;_petSayCD('tut_keyF','cat','F키도 스킬 슬롯이야! 스킬 많으면 L로 배정해봐~',5,9999,'crow','...슬롯을 채워. 빈 손은 죽음이다.',4)}}
-  // Z: 필살기 — 궁극기 스킬 습득 시
-  if(!_petTut.keyZ&&ULT_SLOT&&ULT_SLOT.id){_petTut.keyZ=true;_petSayCD('tut_keyZ','crow','Z. 필살기다. 아껴 써라.',4,9999,'cat','Z 누르면 대박! 쿨타임 길어서 타이밍 봐야 해!',4)}
-  // CTRL: CT스킬 — ghostWalk 또는 iceOrb 습득 시
-  if(!_petTut.keyCT&&(P.skills.ghostWalk>0||P.skills.iceOrb>0)){_petTut.keyCT=true;_petSayCD('tut_keyCT','cat','L-CTRL로 유령걸음이나 얼음보주 쓸 수 있어!',5,9999,'crow','Ctrl. 위기에 쓸 카드가 하나 늘었군.',4)}
-  // L: 슬롯 배정 — 스킬 3개 이상
-  if(!_petTut.keyL){let _skCnt2=0;for(const k in P.skills){if(P.skills[k]>0)_skCnt2++}
-    if(_skCnt2>=3){_petTut.keyL=true;_petSayCD('tut_keyL','crow','L을 눌러. 스킬 슬롯을 정리해야 한다.',5,9999,'cat','스킬이 많아졌네~ L로 어디에 뭘 넣을지 골라!',4)}}
-  // V: 창고 — 가방 20개 이상
-  if(!_petTut.keyV&&INV.bag.length>=20){_petTut.keyV=true;_petSayCD('tut_keyV','cat','가방 터지겠다! V 눌러서 창고에 넣어둬!',5,9999,'crow','...버리기 아까운 건 창고에.',4)}
-  // ESC: 설정 — 레벨 10+
-  if(!_petTut.keyESC&&P.lv>=10){_petTut.keyESC=true;_petSayCD('tut_keyESC','cat','ESC로 설정 열 수 있어! 난이도 바꾸기, 자동물약 조절~',5,9999,'crow','...살아남은 것만으로도 대단하군. 설정을 확인해.',4)}
-  } // Lv200 이하 키 안내 닫기
+  if(!_petTut.keyG&&G.mats>=30){let _hr=false;for(const sl in INV.equipped){if(INV.equipped[sl]&&INV.equipped[sl].rarity>=3){_hr=true;break}}
+    if(_hr){_petTut.keyG=true;_petSayCD('tut_keyG','crow','G를 눌러. 대장간에서 장비를 강화할 수 있다.',5,9999,'cat','좋은 장비는 강화해야 진짜 힘을 발휘해!',4)}}
+  if(!_petTut.keyF){let _sc=0;for(const k in P.skills){if(P.skills[k]>0)_sc++}
+    if(_sc>=2){_petTut.keyF=true;_petSayCD('tut_keyF','cat','F키도 스킬 슬롯이야!',5,9999,'crow','…슬롯을 채워. 빈 손은 죽음이다.',4)}}
+  if(!_petTut.keyZ&&ULT_SLOT&&ULT_SLOT.id){_petTut.keyZ=true;_petSayCD('tut_keyZ','crow','Z. 필살기다. 아껴 써라.',4,9999,'cat','Z 누르면 대박! 쿨타임 길어!',4)}
+  if(!_petTut.keyCT&&(P.skills.ghostWalk>0||P.skills.iceOrb>0)){_petTut.keyCT=true;_petSayCD('tut_keyCT','cat','L-CTRL로 유령걸음/얼음보주!',5,9999,'crow','Ctrl. 위기에 쓸 카드가 하나 늘었군.',4)}
+  if(!_petTut.keyL){let _sc2=0;for(const k in P.skills){if(P.skills[k]>0)_sc2++}
+    if(_sc2>=3){_petTut.keyL=true;_petSayCD('tut_keyL','crow','L을 눌러. 스킬 슬롯을 정리해야 한다.',5,9999,'cat','L로 어디에 뭘 넣을지 골라!',4)}}
+  if(!_petTut.keyV&&INV.bag.length>=20){_petTut.keyV=true;_petSayCD('tut_keyV','cat','V 눌러서 창고에 넣어둬!',5,9999,'crow','…버리기 아까운 건 창고에.',4)}
+  if(!_petTut.keyESC&&P.lv>=10){_petTut.keyESC=true;_petSayCD('tut_keyESC','cat','ESC로 설정! 난이도/자동물약!',5,9999,'crow','…설정을 확인해.',4)}
+  }
 
-  // 가만있을 때 게임팁 (idle 시 30% 확률)
+  // ══ [4] 보스 패턴 + 전투 — 12종 ══
+  if(G.bossAlive&&G._bossRef&&G._bossRef.el>0)_petSayCD('boss_elem','crow','속성을 읽어. 약점을 찌르면 두 배로 썩는다.',4,30,'cat','화염엔 빙결! 암전엔 암흑!',4);
+  if(G._bossRef&&G._bossRef._curMove&&G._bossRef._curMove.id==='summon')_petSayCD('boss_summon','crow','잡몹이다. 먼저 정리해.',4,60,'cat','소환수 왔어! 먼저 처리해야 해!',4);
+  for(let i=0;i<ens.length;i++){if(ens[i].alive&&ens[i].frozen>0){_petSayCD('enemy_ice','crow','…얼어붙은 놈은 오래 안 간다.',4,60,'cat','얼었어! 빙결 중 1.5배야!',4);break}}
+  if(G.bossAlive&&G._bossCx&&G._bossCy){const _bD=Math.sqrt((P.x-G._bossCx*16)**2+(P.y-G._bossCy*16)**2);if(_bD<300)_petSayCD('near_boss','crow','…냄새가 짙다. 큰 놈이 있어.',4,30,'cat','준비됐어? 물약 확인하고!',4)}
+  if(G._bossRef&&G._bossRef.alive){let _hasES2=G._bossRef.eShield>0;if(_hasES2)_petSayCD('eshield_hint','crow','쉴드는 마법으로, HP는 물리로.',5,9999,'cat','E로 마력공격을 해봐!',4)}
+  {let _nc=0;for(let _ni=0;_ni<ens.length;_ni++){if(ens[_ni].alive&&dst2(P.x,P.y,ens[_ni].x,ens[_ni].y)<90000)_nc++}
+  if(_nc>=10){if(P.skills.spikeTrap>0)_petSayCD('melee_trap_yes','cat','스페이스! 가시덫으로 적 묶어!',4,300);else _petSayCD('melee_trap_no','cat','근접 너무 많아! 거리 벌려!',4,300,'crow','…둘러싸이면 끝이야.',4)}
+  if(_nc>=20){if(P.skills.giantSlam>0)_petSayCD('melee_slam_yes','crow','1번 대왕치기로 쓸어버려!',4,300,'cat','그로기 터지면 1.5배!',3);else _petSayCD('melee_slam_no','crow','회전참이나 광역기로 몰아!',4,300,'cat','뭉쳐있을 때가 기회야!',3)}
+  // eShield 비보스
+  if(_nc>=1){let _hES=false;const _esN=shQuery(P.x,P.y,300);for(let _i=0;_i<_esN.length;_i++){if(_esN[_i].alive&&!_esN[_i].ib&&_esN[_i].eShield>0){_hES=true;break}}
+  if(_hES)_petSayCD('eshield_hint','crow','쉴드는 마법으로, HP는 물리로.',5,9999,'cat','E로 마력공격을 해봐!',4)}
+  }
+
+  // ══ [5] 자원/힌트 — 12종 ══
+  if(P.hp<P.mhp*.3||P.mp<P.mmp*.3||P.st<P.mst*.3){
+    if(P.skills.holyDome>0)_petSayCD('resource_low_yes','crow','F키 회복의 영역을 써봐.',4,300);
+    else _petSayCD('resource_low_no','crow','빠져! 물약 마시고 회복해.',4,300,'cat','자원 없으면 도망가는 게 답이야!',4);
+  }
+  if(P.hp<P.mhp*.5||P.mp<P.mmp*.5||P.st<P.mst*.5)_petSayCD('resource_parry','cat','패링을 써야 자원을 흡수한다고!',3,300);
+  if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야!',4,300);
+  if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트 쌓였어! K 눌러!',4,300);
+  if(P.lv>=5&&P.sp>0)_petSayCD('has_sp','cat','스킬 포인트 있어! K!',5,180,'crow','L키로 스킬 슬롯에 넣어야 쓸 수 있어.',4);
+  if((P.ap||0)>=3)_petSayCD('has_ap','crow','C키. 패시브 포인트가 쌓여있다.',4,240,'cat','C키! 패시브 강해져!',4);
+  if(INV.bag.length>=15)_petSayCD('bag_full','crow','…쓸 거 아니면 분해해.',4,120,'cat','아이템 넘쳐! 우리가 주워줄게!',4);
+  if(G.mats<10)_petSayCD('low_mats','crow','악의가 바닥이다.',3,240,'cat','장비 분해해! 쓰레기도 악의!',5);
+  if(G.mats>=50){let _uE=false;for(const sl in INV.equipped){const it=INV.equipped[sl];if(it&&it.rarity>=3&&(it.enhLv||0)===0){_uE=true;break}}
+    if(_uE)_petSayCD('enh_hint','crow','…강화 안 하면 그냥 고철이야.',4,300,'cat','G 눌러서 대장간 가봐!',4)}
+
+  // ══ [6] 패링 교육 + 대기 — 3종 ══
+  if(_petParryCnt<3)_petSayCD('parry_low','crow','빨간 탄은 우클릭. 무지개는 Q.',4,90,'cat','나머진 전부 우클릭 패링 가능!',4);
+  else if(_petParryCnt<10)_petSayCD('parry_mid','crow','빨강=우클릭, 무지개=Q.',4,90,'cat','나머진 전부 우클릭!',4);
+  {let _nE=true;for(let i=0;i<ens.length;i++){if(ens[i].alive){_nE=false;break}}
+  if(_nE&&P.s==='idle')_petSayCD('idle_noE','crow','…멈추지 마. 여신은 기다리지 않는다.',4,60,'cat','앞으로 가자~',4)}
+
+  // ══ [7] Idle 대사 — 23종 ══
   if(P.s==='idle'){_petIdleT+=_dtSp;
-    if(_petIdleT>60*20){ // 20초
-      _petIdleT=0;
-      // 50% 재촉 대사, 50% 게임팁
+    if(_petIdleT>60*20){_petIdleT=0;
       if(Math.random()<.5){
-        const _nags=[
-          ['시간이 없어. 움직여.','멍하게 서있으면 안 돼!'],
-          ['...뭘 기다리는 거야?','가자가자! 몬스터가 기다려!'],
-          ['여기 오래 있으면 위험해.','움직여야 해! 가만있으면 둘러싸여!'],
-          ['쉬는 건 죽고 나서 해.','살아있을 때 쉬면 안 돼!'],
-          ['적이 몰려오고 있어. 빨리 움직여.','냄새 맡고 올 거야. 빨리!'],
-          ['...아직 살아있는 거 맞지?','혹시 잠든 거야...?'],
-        ];
-        const _ni=~~(Math.random()*_nags.length);
-        _petSayCD('idle_nag'+_ni,'crow',_nags[_ni][0],4,30,'cat',_nags[_ni][1],4);
+        const _nags=[['시간이 없어. 움직여.','멍하게 서있으면 안 돼!'],['…뭘 기다리는 거야?','가자가자! 몬스터가 기다려!'],['여기 오래 있으면 위험해.','가만있으면 둘러싸여!'],['쉬는 건 죽고 나서 해.','살아있을 때 쉬면 안 돼!'],['적이 몰려오고 있어.','냄새 맡고 올 거야. 빨리!'],['…아직 살아있는 거 맞지?','혹시 잠든 거야…?']];
+        const _ni=~~(Math.random()*_nags.length);_petSayCD('idle_nag'+_ni,'crow',_nags[_ni][0],4,30,'cat',_nags[_ni][1],4);
       }else if(Math.random()<.5){
-        const _tips=[
-          ['작살을 땅에 꽂으면 끌려간다.','Shift로 작살 던져봐!'],
-          ['패링 성공하면 ST가 회복된다. 공짜 자원이야.','패링 많이 하면 ST 걱정 없어~'],
-          ['장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.','TAB 열어서 안 쓰는 장비 분해해!'],
-          ['그로기 상태의 적에겐 1.5배 데미지가 들어간다.','무릎 꿇으면 전력으로 때려!'],
-          ['속성 상성이 있다. 화염은 빙결에 약하고, 암전은 암흑에 약하다.','무기 속성 바꿔가면서 싸워봐!'],
-          ['빙결된 적은 1.5배 데미지를 받는다.','얼리고 때리는 게 기본이야!'],
-          ['보스의 빨간 공격은 패링 가능. 보라빛은 회피만.','색깔 잘 봐! 빨강은 받아치고 무지개는 피해!'],
-          ['VIT를 올리면 최대 HP가 오른다. 죽기 싫으면 찍어.','STR은 근접, DEX는 활, INT는 마법! 골고루 말고 하나만!'],
-          ['E를 꾹 누르면 빔이 나간다. 짧게 누르면 투사체.','마법 쓸 때 MP 잘 봐! 빔은 연속으로 깎여!'],
-          ['핵터와 디로이가 아이템을 주워준다. 수거 범위 안이면.','우리한테 고마워해~ 안 주우면 썩잖아.'],
-          ['LCK를 올리면 레어 드롭률이 오른다.','운빨 게임이긴 하지~ LCK 올려봐!'],
-          ['G를 눌러. 대장간에서 장비를 강화할 수 있다.','강화하면 공격력이 쭉쭉 올라가! 악의만 있으면 돼!'],
-          ['강화 확률은 +1에서 99%. 높을수록 떨어진다.','실패하면 악의만 날아가~ 장비는 안 부서져!'],
-          ['대장간에서 장비 제작도 된다. 악의 30000개면 영웅급 이상.','랜덤이지만 좋은 거 나올 수도 있어!'],
-          ['쉴드는 마법으로, HP는 물리로 깎아야 제대로 먹힌다.','반대로 치면 50%만 들어가! 무기 바꿔가면서 싸워!'],
-          ['장비에 접두사, 접미사가 붙으면 특수 효과가 생긴다.','영웅급 이상 장비에만 붙어! 좋은 거 나오면 강화해!'],
-          ['강화는 장비를 바꿔도 자동 이전된다. 악의만 있으면.','더 좋은 장비 나오면 바로 장착해! 강화 수치 그대로 옮겨가!']
-        ];
-        const ti=~~(Math.random()*_tips.length);
-        _petSayCD('idle_tip'+ti,'crow',_tips[ti][0],5,30,'cat',_tips[ti][1],5);
+        const _tips=[['작살을 땅에 꽂으면 끌려간다.','Shift로 작살 던져봐!'],['패링 성공하면 ST가 회복된다.','패링 많이 하면 ST 걱정 없어~'],['장비 분해하면 악의를 얻는다.','TAB 열어서 안 쓰는 장비 분해!'],['그로기 적은 1.5배 데미지.','무릎 꿇으면 전력으로 때려!'],['화염은 빙결, 암전은 암흑에 약하다.','무기 속성 바꿔가며 싸워!'],['빙결 적은 1.5배 데미지.','얼리고 때리는 게 기본!'],['보스 빨강은 패링, 보라는 회피만.','빨강 받아치고 무지개는 피해!'],['VIT 올리면 최대 HP.','STR 근접, DEX 활, INT 마법!'],['E 길게 = 빔, 짧게 = 투사체.','MP 잘 봐! 빔은 연속으로 깎여!'],['펫이 아이템을 주워준다.','우리한테 고마워해~'],['LCK 올리면 레어 드롭률.','운빨 게임! LCK 올려봐!'],['G 누르면 대장간.','강화하면 공격력 쭉쭉!'],['강화 +1에서 99%. 높을수록 떨어져.','실패해도 장비 안 부서져!'],['대장간 제작도 가능. 악의 30000개+.','영웅급 이상 나올 수 있어!'],['쉴드는 마법, HP는 물리.','반대로 치면 50%만!'],['영웅급+ 장비에 접두/접미사.','좋은 거 나오면 강화!'],['강화는 장비 바꿔도 자동 이전.','더 좋은 거 나오면 바로 장착!']];
+        const ti=~~(Math.random()*_tips.length);_petSayCD('idle_tip'+ti,'crow',_tips[ti][0],5,30,'cat',_tips[ti][1],5);
       }
     }
-  }else{_petIdleT=0}
+    // v6 [22] 펫 간 토크 (idle 120초+, 적 0)
+    _petIdleTalkT+=_dtSp;
+    {let _anyE=false;for(let i=0;i<ens.length;i++){if(ens[i].alive){_anyE=true;break}}
+    if(!_anyE&&_petIdleTalkT>60*120){_petIdleTalkT=0;
+      const _pt=[['cat','핵터, 너 좀 친절하게 말할 줄 모르냐?',4,'crow','…친절은 살아남고 나서 따져.',4],['crow','…디로이. 너무 떠들면 적이 몰린다.',4,'cat','어머! 미안! 입 다물게!',4],['cat','핵터, 우리 주인 이번엔 진짜 강해진 것 같아.',4,'crow','…아직 멀었어. 지옥성까지 봐야 안다.',4],['crow','디로이. 또 길 잘못 알려줬지.',4,'cat','누가?! 나 아니야! 너지 너!',4],['cat','…핵터, 우린 죽으면 어디 가?',4,'crow','…질문이 너무 많아. 일단 살아.',4]];
+      const _pi=~~(Math.random()*_pt.length);_petSayCD('petTalk_'+_pi,_pt[_pi][0],_pt[_pi][1],_pt[_pi][2],600,_pt[_pi][3],_pt[_pi][4],_pt[_pi][5]);
+    }}
+  }else{_petIdleT=0;_petIdleTalkT=0}
 
-  // 챕터 대사 (챕터 진입 시 1회, 까마귀+고양이)
-  const _ch=SI_TO_HELL[si]||0;
+  // ══ [8] 챕터 진입 대사 — v6: 핵터 독백만 (7종) ══
   const _chDlg=[
-    // 0: 썩은 숲
-    ['crow','...나무가 썩어가고 있어. 여기는 지옥의 입구야.',5,'cat','냄새 지독해... 빨리 지나가자.',4],
-    // 1: 벌레굴
-    ['crow','조심해. 벌레굴이다. 벽이랑 바닥에서 기어나와.',5,'cat','으으... 벌레 싫어! 밟아버려!',4],
-    // 2: 얼음굴
-    ['crow','...공기가 얼어붙는다. 여기선 화염이 먹힌다.',5,'cat','추워... 빙결 조심해! 얼면 끝이야.',4],
-    // 3: 고통의 화염지대
-    ['crow','용암이다. 바닥을 밟으면 타 죽어.',5,'cat','뜨거워! 여기 왜 이렇게 빨개!',4],
-    // 4: 지옥의 군단
-    ['crow','...군단이다. 수가 많아. 광역기 없으면 밀려.',5,'cat','우글우글... 징그러워. 한꺼번에 쓸어!',4],
-    // 5: 사도의 마굴
-    ['crow','사도의 영역이야. 여기 놈들은 머리가 좋아.',5,'cat','패턴이 복잡해졌어... 집중해!',4],
-    // 6: 지옥성
-    ['crow','...끝이다. 지옥의 심장부. 살아 돌아가는 건 포기해라.',5,'cat','여기가 마지막이야... 각오해.',4]
+    ['crow','…따라오는 거 아니야. 같은 방향일 뿐이지.',5],
+    ['crow','공기가 달라졌어. 더 썩었군.',5],
+    ['crow','여기부터는 악마 영역이야. …맘대로 해.',5],
+    ['crow','…이 냄새. 살점이 썩는 냄새야.',5],
+    ['crow','여기 오래 있으면 미쳐. 나도, 너도.',5],
+    ['crow','이 길의 끝에 뭐가 있을까.',5],
+    ['crow','…여기가 끝이야. 돌아갈 길은 없어.',5]
   ];
-  if(_chDlg[_ch])_petSayCD('chapter_'+_ch,_chDlg[_ch][0],_chDlg[_ch][1],_chDlg[_ch][2],99999,_chDlg[_ch][3],_chDlg[_ch][4],_chDlg[_ch][5]);
+  if(_chDlg[_ch])_petSayCD('chapter_'+_ch,_chDlg[_ch][0],_chDlg[_ch][1],_chDlg[_ch][2],99999);
+
+  // ══ [9] 챕터 환경 멘트 (진입 30초 후, v4) — 7종 ══
+  if(!_petStageEnv[_ch]){_petStageEnvT+=_dtSp;
+    if(_petStageEnvT>60*30){_petStageEnv[_ch]=true;
+      const _envDlg=[['crow','…새 한 마리 안 우네. 죽은 숲이야.',4,'cat','나무들이 우릴 보고 있는 것 같아…',4],['crow','…발밑이 움직이고 있다.',4,'cat','으으! 뭔가 기어다녀! 빨리 가자!',4],['crow','입김이 얼어. 오래 있으면 못 나간다.',4,'cat','손가락 안 움직여… 빨리 끝내!',4],['crow','공기가 타. 숨도 데인다.',4,'cat','살이 익는 거 같아! 뜨거워!',4],['crow','…수가 끝이 없어. 길을 뚫어.',4,'cat','끝이 안 보여! 한꺼번에 쓸어!',4],['crow','…벽 너머에서 보고 있어.',4,'cat','누가 우릴 지켜보고 있어… 무서워.',4],['crow','여기서 죽어도 돌아갈 곳은 없어.',4,'cat','마지막이야… 끝까지 가자.',4]];
+      if(_envDlg[_ch])_petSayCD('env_ch'+_ch,_envDlg[_ch][0],_envDlg[_ch][1],_envDlg[_ch][2],99999,_envDlg[_ch][3],_envDlg[_ch][4],_envDlg[_ch][5]);
+    }
+  }
+  if(_petLastChapter!==-1&&_petLastChapter!==_ch){_petStageEnvT=0}
+  _petLastChapter=_ch;
+
+  // ══ [16] 보스/스테이지 진행 — 5종 ══
+  if(G._bossRef&&G._bossRef.alive){
+    const _bHpR=G._bossRef.hp/G._bossRef.mhp;
+    if(!_petBossPhase.p2&&_bHpR<.7){_petBossPhase.p2=true;_petSayCD('boss_p2','crow','패턴이 바뀐다. 거리를 둬.',4,9999,'cat','HP 70%! 조심해!',3)}
+    if(!_petBossPhase.p3&&_bHpR<.4){_petBossPhase.p3=true;_petSayCD('boss_p3','crow','미쳐가고 있어. 광폭화다.',4,9999,'cat','패턴이 빨라졌어!',3)}
+    if(!_petBossPhase.p4&&_bHpR<.15){_petBossPhase.p4=true;_petSayCD('boss_p4','cat','마지막이야! 끝장내!',4,9999,'crow','…빈틈을 노려.',3)}
+  }
+  // 보스 킬
+  if(_petBossAliveLast&&!G.bossAlive){_petSayCD('boss_kill','crow','…끝났다. 다음으로.',4,30,'cat','우리가 해냈어! 다음 챕터 가자!',4);_petBossPhase.p2=false;_petBossPhase.p3=false;_petBossPhase.p4=false}
+  _petBossAliveLast=G.bossAlive;
+  // 스테이지 클리어
+  {let _ac=0;for(let i=0;i<ens.length;i++){if(ens[i].alive)_ac++}
+  if(_petLastEnemyCount>=5&&_ac===0&&!G.bossAlive&&!_petStageCleared){_petStageCleared=true;_petSayCD('stage_clear','cat','다 잡았다! 포탈 어딨어?',4,60,'crow','길이 열렸다.',3)}
+  if(_ac>0)_petStageCleared=false;
+  _petLastEnemyCount=_ac}
+
+  // ══ [23] 보스 인트로 (v6, 챕터별 1회) — 7종 ══
+  if(G.bossAlive&&G._bossRef&&G._bossRef.alive&&!_petBossIntroSeen[_ch]){
+    _petBossIntroSeen[_ch]=true;
+    const _bi=[['crow','…첫 번째다. 부담 갖지 마. 죽어도 다시 와.',5,'cat','첫 보스! 우리 같이 잡자!',4],['crow','벌레의 왕이다. 꺼림칙하게 생겼군.',5,'cat','으으! 큰 벌레야! 진짜 끔찍해!',4],['crow','…빙결 마법을 쓴다. 화염 무기로 가.',5,'cat','얼음 보스! 화염 칼 꺼내!',4],['crow','화염의 군주야. 빙결 무기로 맞불 놔.',5,'cat','불 보스! 얼음 무기 꺼내라구!',4],['crow','군단의 우두머리다. 잡몹부터 정리해.',5,'cat','부하 먼저! 안 그럼 끝없이 나와!',4],['crow','…사도다. 패턴이 복잡해. 집중해.',5,'cat','사도 보스 진짜 강해! 정신 똑바로 차려!',4],['crow','…최종 보스. 여신도 더는 도와줄 수 없어.',5,'cat','마지막!! 우리 다 같이 끝내자!!',4]];
+    if(_bi[_ch])_petSayCD('boss_intro_ch'+_ch,_bi[_ch][0],_bi[_ch][1],_bi[_ch][2],99999,_bi[_ch][3],_bi[_ch][4],_bi[_ch][5]);
+  }
+
+  // ══ [13] 챕터 클리어 (v5) — 7종 ══
+  if(!G.bossAlive&&_petBossAliveLast===false&&!_petChapterCleared[_ch]){
+    // 보스 kill 대사 후 2초 뒤 체크
+  }
+
+  // ══ [15] 빌드별 차별화 (v5) — 6종 ══
+  if(P.lv>=50&&G.frame%300===0){
+    const _s=P.astr||0,_d=P.adex||0,_i2=P.aint||0,_l=P.alck||0,_v=P.avit||0;
+    if(!_petBuildHinted.str&&_s>_d*1.5&&_s>_i2*1.5)_petSayCD('build_str','crow','근육으로 만든 빌드군. 베고 부숴.',4,9999,'cat','STR 빌드! 회전참, 회오리, 광역기 추천!',4);
+    if(!_petBuildHinted.dex&&_d>_s*1.5&&_d>_i2*1.5)_petSayCD('build_dex','crow','활을 쥐었군. 거리를 둬.',4,9999,'cat','DEX 빌드! 거리에서 패고, 추적탄 좋아!',4);
+    if(!_petBuildHinted.int&&_i2>_s*1.5&&_i2>_d*1.5)_petSayCD('build_int','crow','마법사군. MP 관리부터 배워라.',4,9999,'cat','INT 빌드! 빔이랑 폭발 마법! MP 잘 봐!',4);
+    if(!_petBuildHinted.lck&&_l>=30)_petSayCD('build_lck_high','crow','운에 기댄 빌드군. …드롭은 좋겠어.',4,9999,'cat','LCK 높아! 레어 드롭률 미친 거 알지?',4);
+    if(_v<10&&P.lv>=50)_petSayCD('build_vit_low','crow','…VIT가 너무 낮아. 한 방에 죽는다.',4,600,'cat','VIT 좀 찍어! HP 너무 적어!',4);
+    // 골고루 경고
+    if(P.lv>=100){const _mx=Math.max(_s,_d,_i2),_mn=Math.min(_s,_d,_i2);if(_mx>0&&(_mx-_mn)/_mx<.2)_petSayCD('build_balanced_warn','crow','다 찍으면 다 약해진다. 하나만 골라.',4,600,'cat','골고루 안 돼! 하나로 밀어!',4)}
+    // 체크 후 플래그
+    if(_s>_d*1.5&&_s>_i2*1.5)_petBuildHinted.str=true;
+    if(_d>_s*1.5&&_d>_i2*1.5)_petBuildHinted.dex=true;
+    if(_i2>_s*1.5&&_i2>_d*1.5)_petBuildHinted.int=true;
+    if(_l>=30)_petBuildHinted.lck=true;
+  }
+
+  // ══ [27] 난이도 변경 (v6) — 5종 ══
+  {const _cd=OPT.diff||1;
+  if(_cd!==_petDiffLast){
+    if(_cd>=3&&!_petDiffSeen[3]){_petDiffSeen[3]=true;_petSayCD('diff_3','crow','…3단. 적이 강해져. 정신 차려.',4,9999,'cat','3단! 보상도 좋아지지만 죽기 쉬워!',4)}
+    if(_cd>=5&&!_petDiffSeen[5]){_petDiffSeen[5]=true;_petSayCD('diff_5','crow','5단이다. …너도 강해졌단 뜻이야.',4,9999,'cat','5단!! 진짜 게이머 인증!',4)}
+    if(_cd>=7&&!_petDiffSeen[7]){_petDiffSeen[7]=true;_petSayCD('diff_7','crow','…7단. 아직 살아있단 게 신기하군.',4,9999,'cat','7단!! 다른 사람들 이 정도 못 와!',4)}
+    if(_cd>=10&&!_petDiffSeen[10]){_petDiffSeen[10]=true;_petSayCD('diff_10','crow','10단. …너는 이제 인간이 아니야.',4,9999,'cat','10단 최고난이도! 너 진짜 광기야!',4)}
+    if(_cd===1&&_petDiffLast>1)_petSayCD('diff_back','crow','…일반으로 내려왔군. 가끔은 쉬어가야지.',4,600,'cat','일반 모드! 편하게 즐기자!',4);
+    _petDiffLast=_cd;
+  }}
+
+  // ══ [21] 스피드런 (v5) — _petStageStartT로 추적 ══
+  // 스테이지 진입 시 _petStageStartT = G.frame (외부에서 호출)
 }
 
-// 외부에서 호출: 공격/피격/패링/킬/돌진 시 카운터 증가
+// ═══ 외부 호출 콜백 ═══
 function _petOnAtk(){_petAtkCnt++}
-function _petOnHit(){_petHitCnt++}
-function _petOnParry(){_petParryCnt++}
-function _petOnKill(){_petKillCnt++}
+function _petOnHit(){_petHitCnt++;_petParryCombo=0}
+function _petOnParry(){_petParryCnt++;_petParryCombo++;
+  // [10] BL 패링 콤보 5연속
+  if(_petParryCombo>=5)_petSayCD('bl_combo5','crow','…이게 진짜 패링이야.',4,300,'cat','다섯 번 연속! 내가 본 인간 중 최고!',4);
+}
+function _petOnKill(){_petKillCnt++;_petComboKills++;_petKillsRecent++;_petKillsRecentT=G.frame;
+  // [17] 콤보 킬
+  if(_petComboKills===50)_petSayCD('combo_50','crow','…피가 묻기 시작했군.',4,600,'cat','50명! 학살자야!',4);
+  if(_petComboKills===100)_petSayCD('combo_100','crow','100. 너는 인간이 아니야.',4,600,'cat','100명?! 미쳤어!',4);
+  // HP 10% 이하 킬
+  if(P.hp>0&&P.hp<P.mhp*.1)_petSayCD('low_hp_kill','crow','…피 흘리며 베는군.',4,300,'cat','죽기 직전에 죽이다니! 멋져!',4);
+}
 function _petOnCharge(){_petChargeUsed=true}
+// [10] BL 빨간콩 패링 변환
+function _petOnRedParry(){_petSayCD('bl_first_red','crow','빨간콩이 푸르게 변했다. 그게 너의 무기야.',4,9999,'cat','봤지?! 빨강이 파랑 됐어! 호밍이야!',4)}
+// [10] BL 무지개콩 Q패링
+function _petOnRainbowParry(){_petSayCD('bl_first_rainbow','crow','무지개를 받아쳤군. 그건 진짜 어렵다.',4,9999,'cat','미친! 무지개 받았어! 천재야 천재!',4)}
+// [10] BL 오패링
+function _petOnOverParry(){_petSayCD('bl_overshoot','crow','…너무 빨라. 닿기 직전에 눌러.',4,60,'cat','오패링! 폭발 강하지만 맞고 죽으면 끝!',4)}
+// [10] BL parryBank 풀
+function _petOnBankFull(){_petSayCD('bl_bank_full','crow','악의가 가득 찼다. 풀어내.',4,180,'cat','패링뱅크 풀! 스킬 한 방 더 박아!',4)}
+// [11] CD 작살 적 적중
+function _petOnChainHitEnemy(){_petSayCD('cd_first_hit','crow','작살이 살을 뚫었어. 끌고 와.',4,9999,'cat','적을 끌어왔다?! 그것도 되는 거야?!',4)}
+// [11] CD Shift 풀차지
+function _petOnChainTier3(){_petSayCD('cd_tier3','crow','…풀차지군. 멀리 던져버려.',4,300,'cat','풀차지! 작살 진짜 멀리 날아가!',4)}
+// [11] CD 무적 중 보스 공격 회피
+function _petOnChainDodge(){_petSayCD('cd_invul_dodge','crow','…빈틈을 그대로 빠져나갔다.',4,240,'cat','위험했어! 사슬무적 없었으면 죽었어!',4)}
+// [12] 엘리트 첫 조우
+function _petOnEliteFirst(){if(!_petEliteFirst){_petEliteFirst=true;_petSayCD('elite_first','crow','…일반 잡몹이 아니야. 모디파이어 붙었군.',4,9999,'cat','엘리트야! 색깔 봐! 강해진 거야!',4)}}
+// [12] 엘리트 처치
+function _petOnEliteKill(){_petSayCD('elite_kill','crow','엘리트 하나 처리.',4,120,'cat','엘리트 잡았어! 좋은 거 떨어진다!',4)}
+// [12] 미니보스 등장
+function _petOnMinibossAppear(){_petSayCD('miniboss_appear','crow','…큰 놈이다. 일반 잡몹 정리부터.',4,600,'cat','미니보스! 광역기 아껴두자!',4)}
+// [12] 미니보스 처치
+function _petOnMinibossKill(){_petSayCD('miniboss_kill','crow','미니보스 처리. 다음 길로.',4,600,'cat','우리가 잡았어! 보상 챙겨!',4)}
+// [17] 멀티킬 (0.5초 내 5킬+) — updatePet에서 체크
+function _petCheckMultiKill(){if(_petKillsRecent>=5&&(G.frame-_petKillsRecentT)<30){_petSayCD('multi_kill','crow','한 번에 다섯. 깔끔해.',4,120,'cat','한 방에 다 쓸었어! 짱이야!',4);_petKillsRecent=0}}
+// [18] 강화 +100
+function _petOnEnh100(){_petSayCD('enh_plus100','crow','100강. 이제 뭔가 다르게 보이는군.',4,9999,'cat','+100 찍었어! 진짜 강해진 거 보여!',4)}
+// [18] 강화 5연속 실패
+function _petOnEnhFail(){_petEnhStreakFail++;if(_petEnhStreakFail>=5){_petEnhStreakFail=0;_petSayCD('enh_fail5','crow','…운이 없는 날이야.',4,600,'cat','5번 연속 실패?! 악의 아끼고 다음에!',4)}}
+function _petOnEnhSuccess(){_petEnhStreakFail=0}
+// [18] 첫 전설 드롭
+function _petOnFirstLegend(){_petSayCD('first_legend','crow','…전설이다. 이런 건 처음 본다.',4,9999,'cat','전설 떴어! 대박이야!',4)}
+// [19] 사망
+function _petOnDeath(){_petDeathCount++;_petCurrentChapterDeaths++;
+  if(_petDeathCount===1)_petSayCD('first_death','crow','…죽었다 살아났네. 여신은 너를 포기 안 했어.',5,9999,'cat','다음엔 죽지 마!',4);
+  if(_petDeathCount>=5)_petSayCD('death_repeat','cat','…또야? 패턴 좀 외워!',4,600);
+}
+// [13] 챕터 클리어 — 외부에서 호출
+function _petOnChapterClear(ch){
+  if(_petChapterCleared[ch])return;_petChapterCleared[ch]=true;
+  const _cc=[['crow','썩은 숲을 벗어났다. 다음은 더 깊은 곳이야.',5,'cat','첫 챕터 클리어! 우린 살아있어!',4],['crow','…벌레굴을 빠져나왔어. 발에 뭐 묻은 거 같다.',5,'cat','으으, 진짜 끔찍했어!',4],['crow','얼음을 깨고 나왔다. 다음은… 불이야.',5,'cat','손가락 다시 움직여!',4],['crow','화염을 통과했다. 절반 왔어.',5,'cat','살았어! ACT1 절반 클리어!',4],['crow','군단을 무너뜨렸어. …수가 줄긴 했군.',5,'cat','진짜 끝없었어! 한꺼번에 쓸었어!',4],['crow','사도들의 영역을 지났다. 마지막이 가까워.',5,'cat','거의 다 왔어! 마지막 한 장!',4],['crow','…지옥성을 무너뜨렸어. 끝이야.',5,'cat','우리가 해냈어! 진짜 끝났어!!',4]];
+  if(_cc[ch])_petSayCD('chapter_clear_'+ch,_cc[ch][0],_cc[ch][1],_cc[ch][2],9999,_cc[ch][3],_cc[ch][4],_cc[ch][5]);
+  // [20] 트로피: 사망 0 클리어
+  if(_petCurrentChapterDeaths===0)_petSayCD('trophy_no_death_run','crow','…한 번도 안 죽고. 그건 진짜 실력이야.',5,9999,'cat','안 죽고 깼어! 진짜 천재 맞네!',4);
+  _petCurrentChapterDeaths=0;
+  // ACT1 완주 (0~3 클리어)
+  if(!_petTrophy_act1&&_petChapterCleared[0]&&_petChapterCleared[1]&&_petChapterCleared[2]&&_petChapterCleared[3]){_petTrophy_act1=true;_petSayCD('trophy_act1_clear','crow','…ACT1을 끝냈다. 진짜 시작은 여기서부터야.',5,9999,'cat','ACT1 완주! 우리가 진짜 해냈어!',4)}
+  // 전보스 처치
+  if(!_petTrophy_fullExplore){let _all=true;for(let c=0;c<=6;c++){if(!_petChapterCleared[c])_all=false}if(_all){_petTrophy_fullExplore=true;_petSayCD('trophy_full_explore','crow','모든 보스를 무너뜨렸다. 너는 지옥의 일부야.',5,9999,'cat','전부 다 잡았어! 우리가 지옥의 왕이야!',4)}}
+}
+// [21] 스피드런
+function _petOnStageStart(){_petStageStartT=G.frame;_petComboKills=0}
+function _petOnStageClear(stageId){
+  const _elapsed=(G.frame-_petStageStartT)/60;
+  if(_elapsed<=30)_petSayCD('speed_stage_30s','crow','…30초. 너 진짜 미쳤구나.',4,600,'cat','30초!! 스피드런 가능해!',4);
+  else if(_elapsed<=60)_petSayCD('speed_stage_60s','crow','…빠르군. 효율적이야.',4,600,'cat','1분 안에 클리어! 빠르네!',4);
+  if(!_petStageRecord[stageId]||_elapsed<_petStageRecord[stageId]){_petStageRecord[stageId]=_elapsed;_petSayCD('speed_record','crow','신기록이다.',3,60,'cat','신기록!! 스트리머한테 보내!',3)}
+}
 
 // ═══════════════════════════════════════
 //  [S04] BOSS_DEF — Boss AI Patterns, Combos, Phases
@@ -8083,7 +8184,7 @@ addEventListener('mousedown',e=>{
 addEventListener('mouseup',e=>{MB[e.button]=false;if(e.button>=1)e.preventDefault()});
 addEventListener('auxclick',e=>{e.preventDefault();e.stopPropagation()});
 addEventListener('contextmenu',e=>e.preventDefault());
-addEventListener('wheel',e=>{e.preventDefault()},{passive:false});
+addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&(e.code==='Equal'||e.code==='Minus'||e.code==='NumpadAdd'||e.code==='NumpadSubtract'||e.code==='Digit0'))e.preventDefault()});
 
 function _chkAct(b){if(!b)return false;if(b.startsWith('mouse'))return!!MB[+b.slice(5)];return!!K[b]}
