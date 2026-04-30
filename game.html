@@ -7938,7 +7938,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
           const _dsDmg=~~(meleeRef()*statStr()*.5*_dsAb+(_vs2.dmgPool||0)*1.5);
           const ne=shQuery(_vs2.x,_vs2.y,_dsBoomR);
           for(let i=0;i<ne.length;i++){const e=ne[i];if(!e.alive)continue;const d=dst(e.x,e.y,_vs2.x,_vs2.y);if(d>=_dsBoomR)continue;const ang=Math.atan2(e.y-_vs2.y,e.x-_vs2.x);const fo=Math.max(.3,1-d/_dsBoomR);hurtE(e,~~(_dsDmg*fo),ang,false,{kbMult:1.5,explode:true},EL.F);e.kb.x+=Math.cos(ang)*10*fo;e.kb.y+=Math.sin(ang)*10*fo;}
-          _addBoom(_vs2.x,_vs2.y,_dsBoomR*.6,25,'fire');playVFXAng('burn_death',_vs2.x,_vs2.y,Math.max(.5,_dsBoomR/300),3,0,false);
+          _addBoom(_vs2.x,_vs2.y,_dsBoomR*.6,25,'fire');playVFXAng('explode_scarecrow',_vs2.x,_vs2.y,Math.max(.8,_dsBoomR/250),3,0,false);
           addParts(_vs2.x,_vs2.y,'#ff6622',25);shake(Math.min(12,4+_dsAb*.3));SFX.detonate();
           addTxt(_vs2.x,_vs2.y-50,_T('합체 폭발! ')+_dsDmg+_T(' 뎀'),'#ffcc00',60);
         }
@@ -10729,6 +10729,7 @@ registerVFX('ice_slash','assets/vfx/slash_impact_sheet.png',128,128,19,19);
 registerVFX('whirl_slash','assets/vfx/vfx_white_slash.png',192,192,20,5);
 registerVFX('parry_flash','assets/vfx/parry_impact_sheet.png',128,128,20,20);
 registerVFX('burn_death','img/vfx_burn_death.png',211,211,8,8);
+registerVFX('explode_scarecrow','img/vfx_explode_scarecrow/vfx_explode_scarecrow.png',256,256,9,3); // 폭발허수아비 전용 대형폭발 (3x3, 9프레임)
 
 // ═══ 빙결 틴트용 오프스크린 캔버스 (몬스터 실루엣 파란 틴트) ═══
 const _iceTintC=document.createElement('canvas');
@@ -22367,10 +22368,10 @@ function update(){
       // ═══ 전격이동 착지 — 전류장판 생성 ═══
       {const _sfLv=P.skills.bladeDash||1;
       const _sfR=300+(_sfLv-1)*20;
-      const _sfDmg=~~(magicRef()*(1+(_sfLv-1)*.20));
+      const _sfDmg=~~(magicRef()*statInt()*pMagicMul()*(1+(_sfLv-1)*.20));
       const _sfDR=Math.min(.50,.10+(_sfLv-1)*.05); // 1렙10%, 렙당+5%, 캡50%
       if(!G._fireZones)G._fireZones=[];
-      G._fireZones.push({x:P.x,y:P.y,r:_sfR,t:0,maxT:180,dmg:_sfDmg,el:EL.L,lv:_sfLv,type:'shockField',defRed:_sfDR});
+      G._fireZones.push({x:P.x,y:P.y,r:_sfR,t:0,maxT:600+(_sfLv-1)*30,dmg:_sfDmg,el:EL.L,lv:_sfLv,type:'shockField',defRed:_sfDR});
       addTxt(P.x,P.y-30,'⚡'+~~(_sfDR*100)+'% 방어↓','#44ddff',28)}
       // 홀딩스킬 복귀: 키 아직 눌려있으면 원래 상태로
       if(P._preBdState==='whirlwind'&&isHeld('weapon')&&P.st>=2){P.s='whirlwind';P._preBdState=null}
@@ -31274,7 +31275,7 @@ const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'ghostWalk',name:'뇌전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 15초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 15s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
-  {id:'bladeDash',name:'전격이동',cat:'move',desc:'[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 500유닛 순간이동, 무적(15프레임). MP(10+Lv×5). 1렙10충전, 렙당+1. 쿨 8초→Lv당-0.5초(최소3초). 착지 시 전류장판(3초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)',descEn:'[Mobility] Double-tap to activate. Escapes stagger/stun. 500-unit blink, invincible 15f. MP(10+Lv×5). Lv1=10 stocks, +1/Lv. CD 8s→-0.5s/Lv (min 3s). Landing shock field(3s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
+  {id:'bladeDash',name:'전격이동',cat:'move',desc:'[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 500유닛 순간이동, 무적(15프레임). MP(10+Lv×5). 1렙10충전, 렙당+1. 쿨 8초→Lv당-0.5초(최소3초). 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)',descEn:'[Mobility] Double-tap to activate. Escapes stagger/stun. 500-unit blink, invincible 15f. MP(10+Lv×5). Lv1=10 stocks, +1/Lv. CD 8s→-0.5s/Lv (min 3s). Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
   {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 10+Lv당2. Lv당 뎀+10% 거리+15px',descEn:'LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 10+2/Lv. Per Lv DMG+10% range+15px',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'fireball',name:'악의구',cat:'bow',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -32322,9 +32323,9 @@ function _detonateExplodeScarecrow(){
     hurtE(e,dmg,ang,false,{kbMult:1.5,explode:true},EL.F);
     e.kb.x+=Math.cos(ang)*10*falloff;e.kb.y+=Math.sin(ang)*10*falloff;
   }
-  // VFX: burn_death 스프라이트시트 + 폭발 이펙트
+  // VFX: 폭발허수아비 전용 대형폭발 임펙트 + 폭발 이펙트
   _addBoom(es.x,es.y,boomR*.6,25,'fire');
-  playVFXAng('burn_death',es.x,es.y,Math.max(.5,boomR/300),3,0,false);
+  playVFXAng('explode_scarecrow',es.x,es.y,Math.max(.8,boomR/250),3,0,false);
   addParts(es.x,es.y,'#ff6622',25);addParts(es.x,es.y,'#ffcc44',15);
   shake(Math.min(12,4+absorbed*.3));
   SFX.detonate();
@@ -40253,28 +40254,40 @@ function drawP(){
             X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);X.stroke()}
         }
       }else if(fz.type==='shockField'){
-        // ═══ 전격이동 전류장판 — 시안 전기장 + 미니 번개 ═══
-        X.globalAlpha=(.15+.05*Math.sin(_now*.01))*_fzFade;
-        if(!fz._grdCache||fz._grdR!==fz.r){const g=X.createRadialGradient(fz.x,fz.y,0,fz.x,fz.y,fz.r);g.addColorStop(0,'rgba(68,221,255,.4)');g.addColorStop(.5,'rgba(40,150,220,.2)');g.addColorStop(1,'rgba(20,80,140,0)');fz._grdCache=g;fz._grdR=fz.r}
-        X.fillStyle=fz._grdCache;X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.fill();
-        // 테두리 링 맥동
-        X.globalAlpha=(.25+.12*Math.sin(_now*.012))*_fzFade;
-        X.strokeStyle='#44ddff';X.lineWidth=1.5;X.beginPath();X.arc(fz.x,fz.y,fz.r*.95,0,Math.PI*2);X.stroke();
-        // 미니 번개
-        X.globalAlpha=1;const _sfF=~~(fz.t);
-        if(!fz._bolts||_sfF%3===0){
-          fz._bolts=[];const _bc=4+~~(Math.random()*4);
-          for(let _bi=0;_bi<_bc;_bi++){const pts=[];
-            const cx=fz.x+(Math.random()-.5)*fz.r*1.2,cy=fz.y+(Math.random()-.5)*fz.r*1.2;
-            const len=8+Math.random()*18,ang=Math.random()*Math.PI*2,segs=2+~~(Math.random()*2);
-            for(let s=0;s<=segs;s++){const t=s/segs;pts.push({x:cx+Math.cos(ang)*len*t+(Math.random()-.5)*5,y:cy+Math.sin(ang)*len*t+(Math.random()-.5)*4})}
-            fz._bolts.push({pts,w:.4+Math.random()*.8,a:.3+Math.random()*.4})}
+        // ═══ 전격이동 전류장판 — 은은한 전기 줄기 ═══
+        const _st=_now*.001;const _sfF=~~(fz.t);
+        // 방사형 전기 줄기 (중심→외곽, 줄기 5~7개)
+        if(!fz._arcs||_sfF%3===0){
+          fz._arcs=[];const _ac=5+~~(Math.random()*3);
+          for(let _ai=0;_ai<_ac;_ai++){
+            const ang=Math.random()*Math.PI*2;
+            const reach=.3+Math.random()*.6;
+            const pts=[{x:fz.x,y:fz.y}];
+            const segs=3+~~(Math.random()*2);
+            for(let s=1;s<=segs;s++){
+              const t=s/segs*reach;
+              pts.push({x:fz.x+Math.cos(ang)*fz.r*t+(Math.random()-.5)*fz.r*.08,
+                        y:fz.y+Math.sin(ang)*fz.r*t+(Math.random()-.5)*fz.r*.08});
+            }
+            fz._arcs.push({pts,w:.4+Math.random()*.8,a:.35+Math.random()*.3});
+          }
         }
-        for(let _bi=0;_bi<fz._bolts.length;_bi++){const b=fz._bolts[_bi];
-          X.strokeStyle='#44ddff';X.lineWidth=b.w;X.globalAlpha=b.a*_fzFade;
-          X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);X.stroke();
-          if(b.w>.8){X.strokeStyle='#ffffff';X.lineWidth=b.w+1;X.globalAlpha=b.a*.2*_fzFade;
-            X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);X.stroke()}
+        for(let _ai=0;_ai<fz._arcs.length;_ai++){const a=fz._arcs[_ai];
+          // 메인 줄기 (시안)
+          X.strokeStyle='#66bbdd';X.lineWidth=a.w;X.globalAlpha=a.a*_fzFade;
+          X.beginPath();X.moveTo(a.pts[0].x,a.pts[0].y);for(let p=1;p<a.pts.length;p++)X.lineTo(a.pts[p].x,a.pts[p].y);X.stroke();
+          // 코어 (밝은 선)
+          X.strokeStyle='#aaeeff';X.lineWidth=Math.max(.2,a.w-.3);X.globalAlpha=a.a*.55*_fzFade;
+          X.beginPath();X.moveTo(a.pts[0].x,a.pts[0].y);for(let p=1;p<a.pts.length;p++)X.lineTo(a.pts[p].x,a.pts[p].y);X.stroke();
+        }
+        // 스파크 포인트 (작고 은은하게)
+        for(let _si=0;_si<3;_si++){
+          const _sa=_st*1.5+_si*1.7;const _sd=Math.abs(Math.sin(_sa))*.6;
+          if(_sd<.3)continue;
+          const _sx=fz.x+Math.cos(_sa*3+_si)*fz.r*(.2+_sd*.5);
+          const _sy=fz.y+Math.sin(_sa*2.5+_si*2)*fz.r*(.2+_sd*.5);
+          X.globalAlpha=_sd*.15*_fzFade;
+          X.fillStyle='#88ccdd';X.beginPath();X.arc(_sx,_sy,1+_sd,0,Math.PI*2);X.fill();
         }
       }else if(fz.type==='darkPillar'){
         // ═══ 악의기둥 — 기둥 VFX만 (범위 가이드 없음) ═══
