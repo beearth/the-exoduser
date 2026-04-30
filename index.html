@@ -128,14 +128,14 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 }
 .lobby-left::before{
   content:'';position:absolute;inset:0;
-  background:url('img/cin_victory.png') center 30%/cover no-repeat;opacity:.18;filter:brightness(.35) saturate(.7);pointer-events:none
+  background:url('assets/lobby/lobby_bg_frost.webp') left center/cover no-repeat;opacity:.7;filter:brightness(.6) saturate(.9);pointer-events:none
 }
 .lobby-left::after{
   content:'';position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(ellipse at 50% 85%,rgba(255,60,10,.12),transparent 50%),
-    radial-gradient(ellipse at 50% 50%,transparent 30%,rgba(0,0,0,.7) 100%),
-    linear-gradient(0deg,rgba(0,0,0,.6) 0%,transparent 30%);
+    radial-gradient(ellipse at 50% 85%,rgba(255,60,10,.1),transparent 50%),
+    radial-gradient(ellipse at 50% 50%,transparent 40%,rgba(0,0,0,.5) 100%),
+    linear-gradient(0deg,rgba(0,0,0,.4) 0%,transparent 25%);
 }
 #lobbyParticles{position:absolute;inset:0;z-index:1;pointer-events:none}
 
@@ -151,7 +151,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   text-shadow:0 0 30px rgba(255,80,30,.6),0 2px 10px rgba(0,0,0,.8);
   letter-spacing:.15em;margin-top:24px
 }
-.char-display-empty{color:#554433;font-size:1.1rem;letter-spacing:.3em;text-transform:uppercase;opacity:.6}
+.char-display-empty{display:none}
 
 /* ── 우측: 정보 + 슬롯 ── */
 .lobby-right{
