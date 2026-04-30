@@ -1025,7 +1025,7 @@ $('createBtn').onclick=()=>{
   const name=$('charName').value.trim();
   if(name.length<2||name.length>8){setStatus(_TL('이름은 2~8자여야 합니다.'),true);return}
   if(/[<>"'&]/.test(name)){setStatus(_TL('특수문자는 사용할 수 없습니다.'),true);return}
-  setStatus('');$('createModal').classList.remove('show');doCreateChar(name,0);
+  setStatus('');openVisualSelect(name);
 };
 $('charName').addEventListener('keydown',e=>{if(e.key==='Enter')$('createBtn').click()});
 function setStatus(m,err){$('status').textContent=m;$('status').className=err?'status error':'status'}

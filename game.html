@@ -5829,9 +5829,10 @@ function _checkPetDialogue(){
   // 기절 — 탈출기 동적 목록
   if(P.s==='pStun'){
     const _esc=['Shift 작살'];
+    if(P.skills.bladeDash>0)_esc.push('더블탭 전격이동');
     if(P.skills.ghostWalk>0)_esc.push('Ctrl 유령걸음');
     else if(P.skills.iceOrb>0)_esc.push('Ctrl 얼음보주');
-    _petSayUrgent('stun_warn','cat','기절! '+_esc.join(' / ')+' 으로 탈출!',4,8,'crow',P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출하라.':P.skills.iceOrb>0?'Ctrl 얼음보주로 탈출하라.':'스킬 없으면 방향키 연타뿐이야.',3);
+    _petSayUrgent('stun_warn','cat','기절! '+_esc.join(' / ')+' 으로 탈출!',4,8,'crow',P.skills.bladeDash>0?'더블탭 전격이동으로 탈출하라.':P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출하라.':P.skills.iceOrb>0?'Ctrl 얼음보주로 탈출하라.':'스킬 없으면 방향키 연타뿐이야.',3);
   }
   // MP 위기 (v4 — INT빌드)
   if(P.mp<P.mmp*.2&&(P.aint||0)>Math.max(P.astr||0,P.adex||0))_petSayUrgent('mp_warn','crow','마력이 빈다. 평타 섞어.',3,60,'cat','MP 부족! 평타로 패면서 회복해!',3);
@@ -9636,7 +9637,7 @@ function recalcSt(){
   let bonus=0,_enhSt2=0;
   const _armorSet2=new Set(['shield','armor','gloves','pants','boots','cape']);
   for(const slot of SLOT_NAMES){const it=INV.equipped[slot];if(it){if(it.bonusSt)bonus+=it.bonusSt;if(it.enh>0&&_armorSet2.has(slot))_enhSt2+=it.enh*0.1}}
-  P.mst=~~(base+bonus+_eqAffix('maxSTFlat')+~~(P._crystalStats?P._crystalStats.st:0)+_enhSt2)+_gritStFlat();P.st=Math.min(P.st,P.mst); // 방어구 강화: 1강당 +0.1 ST
+  P.mst=~~(base+bonus+_eqAffix('maxSTFlat')+~~(P._crystalStats?P._crystalStats.st:0)+_enhSt2)+(P.skills.humanity||0)*100+_gritStFlat();P.st=Math.min(P.st,P.mst); // 방어구 강화: 1강당 +0.1 ST + 인간성: ST+100/Lv
 }
 
 function itemPower(it){
@@ -17206,14 +17207,14 @@ function applyStats(){
     for(let ci=0;ci<it.crystals.length;ci++){const c=it.crystals[ci];if(!c)continue;
       const v=crystalVal(c);const d=CRYSTAL_DEFS[c.id];if(d)_cr[d.stat]+=v}}
   P._crystalStats=_cr;
-  P.mhp=~~(P.mhp+~~_cr.hp)+_gritHpFlat();P.hp=Math.min(P.hp,P.mhp);
+  P.mhp=~~(P.mhp+~~_cr.hp)+(P.skills.humanity||0)*100+_gritHpFlat();P.hp=Math.min(P.hp,P.mhp); // 인간성: HP+100/Lv
   P.baseAtk+=~~_cr.atk;
   P.baseDef+=~~_cr.def+_eqAffix('defFlat')+~~(_gritTotal()*.5); // 결정 DEF + defFlat 어픽스 + 근성 0.5/lv
   P.speed*=(1+_cr.spd*0.01);
   P.hpR+=_cr.hpR/60;
   P.mpR+=_cr.mpR/60;
   P.stR+=_cr.stR/60;
-  P.mmp=~~(P.mmp+~~_cr.mp)+_gritMpFlat();P.mp=Math.min(P.mp,P.mmp);
+  P.mmp=~~(P.mmp+~~_cr.mp)+(P.skills.humanity||0)*100+_gritMpFlat();P.mp=Math.min(P.mp,P.mmp); // 인간성: MP+100/Lv
   // ═══ 마력그릇: MP +50/lv, MP회복 +1%/lv ═══
   const _vLv=PASSIVES.pVital||0;
   if(_vLv>0){P.mmp+=_vLv*50;P.mp=Math.min(P.mp,P.mmp);P.mpR*=(1+_vLv*0.01)}
@@ -17253,6 +17254,7 @@ function statDropBonus(){return 1+_eqLckTotal()*.0015+PASSIVES.pDrop*.08+_eqAffi
 function _passDmgSum(type){
   let s=0;
   s+=PASSIVES.pAtk*.15+(P._altAtk||0); // 맹공: +15%/lv
+  s+=(P.skills.humanity||0)*.05; // 인간성: 전체 데미지 +5%
   if(type==='melee')s+=(PASSIVES.pMelee||0)*.15; // 물리: +15%/lv (근접전용)
   if(type==='magic')s+=PASSIVES.pMagic*.15+_eqAffix('magicDmg')+_eqImplicit('_iMagDmg')*.01; // 마법: +15%/lv (마법전용)
   if(type==='bow'||type==='proj')s+=PASSIVES.pBow*.15; // 투사체: +15%/lv (석궁+마법투사체+스킬투사체)
@@ -22774,15 +22776,17 @@ function update(){
       }
     }break;
   case 'stagger':{
-    // 탈출기: Shift(작살), Q(얼음보주/뇌전걸음), Ctrl(유령걸음) → 경직 즉시 탈출
+    // 탈출기: Shift(작살), Q(얼음보주/뇌전걸음), Ctrl(유령걸음), 전격이동(더블탭) → 경직 즉시 탈출
     if(isJust('charge')){P.s='idle';P.st2=0;break}
     if(isJust('parry')){P.s='idle';P.st2=0;break}
     if(isJust('skill7')){P.s='idle';P.st2=0;break}
+    if(P._bdTrigger!=null&&P.skills.bladeDash>=1&&(P._bdStk==null||(P._bdStk||0)>0)&&P.mp>=(10+((P.skills.bladeDash||1)-1)*5)&&!(P._seaParalyzed>0)){P.st2=0;activateBladeDash(P._bdTrigger);P._bdTrigger=null;break}
     if(P.st2<=0)P.s='idle';break;}
   case 'pStun':{
-    // ═══ 기절: Shift/Ctrl 탈출기로 즉시 해제 ═══
+    // ═══ 기절: Shift/Ctrl/전격이동(더블탭) 탈출기로 즉시 해제 ═══
     if(isJust('charge')){P.s='idle';P.iframes=30;P.poise=4;P.poiseR=0;break}
     if(isJust('skill7')){P.s='idle';P.iframes=30;P.poise=4;P.poiseR=0;break}
+    if(P._bdTrigger!=null&&P.skills.bladeDash>=1&&(P._bdStk==null||(P._bdStk||0)>0)&&P.mp>=(10+((P.skills.bladeDash||1)-1)*5)&&!(P._seaParalyzed>0)){P.poise=4;P.poiseR=0;activateBladeDash(P._bdTrigger);P._bdTrigger=null;break}
     if(P.st2<=0){P.s='idle';P.iframes=60;P.poise=4;P.poiseR=0}
     break;}
   }
@@ -31058,7 +31062,8 @@ function die(){
   const _drLv=P.skills.demonRevive||0; // 악마화 부활 스킬 레벨
   const _natPow=Math.min(100,~~(P.lv*0.03)); // 자연부활력: 1렙당 0.03% (100렙=3%, 1000렙=30%)
   const _skPow=_drLv*2; // 스킬 Lv당 부활확률 +2%
-  const _demonPow=Math.min(100,_natPow+_skPow+_revPowBonus*100); // 자연 + 스킬 + 장비/영역
+  const _humLv=P.skills.humanity||0; // 인간성 패시브: 부활력 -10
+  const _demonPow=Math.min(100,Math.max(0,_natPow+_skPow+_revPowBonus*100-_humLv*10)); // 자연 + 스킬 + 장비/영역 - 인간성
   const _revCdFrames=~~(Math.max(6000,36000-_drLv*1800)*(1+_eqAffix('reviveCd'))); // 10분 - Lv당 30초 (최소 100초)
   P._fallenRevChance=_demonPow;
   P._fallenRevCdFrames=_revCdFrames;
@@ -31202,7 +31207,7 @@ const SKILL_REC_PATH=[
   {phase:'3. 역병 확장',phaseEn:'3. Plague Expand',skills:['plagueBurst'],fuse:'plagueFuse',desc:'폭독혈 추가 → 합체: 독혈 해방 (칼날+독)',descEn:'Plague Burst → Fuse: Plague Liberation (blade+poison)'},
   {phase:'4. 이동스킬 마스터',phaseEn:'4. Movement Master',skills:['chargeBoost','magicBlink'],fuse:'dimBreach',desc:'충돌+화염 → 합체: 사슬기동 (무적이동 핵심)',descEn:'Impact+Flame → Fuse: Chain Breach (invincible dash core)'},
   {phase:'5. 사슬 확장',phaseEn:'5. Chain Expand',skills:['chainAssault','chainSlash','chainSlam'],fuse:'dimThunder',desc:'사슬 체인 확장 → 기동:기습/기동:파쇄/기동:전폭',descEn:'Chain expansion → Assault/Slam/Thunder combos'},
-  {phase:'6. 💀 필살기 선택',phaseEn:'6. 💀 Ultimate Pick',skills:['holyBlast','blackStar','lavaSummon','execution','demonRevive'],fuse:null,pick:true,desc:'필살기 1개 선택! 신성폭발(넉백) / 블랙(흡인) / 용암(화상) / 처형(보스킬) / 악마화(부활)',descEn:'Pick 1 ultimate! Holy Blast(knockback) / Black Star(pull) / Lava(burn) / Execution(boss kill) / Demon Revive(revive)'},
+  {phase:'6. 💀 필살기 선택',phaseEn:'6. 💀 Ultimate Pick',skills:['holyBlast','blackStar','lavaSummon','execution'],fuse:null,pick:true,desc:'필살기 1개 선택! 신성폭발(넉백) / 블랙(흡인) / 용암(화상) / 처형(보스킬)',descEn:'Pick 1 ultimate! Holy Blast(knockback) / Black Star(pull) / Lava(burn) / Execution(boss kill)'},
   {phase:'7. 멸살+만화+원소+전격이동',phaseEn:'7. Beam+Barrage+Elem+Blink',skills:['omniBeam','fanShot','elemMissile','bladeDash'],fuse:'elemFuse',desc:'멸살광선+만화방창+원소추적탄+전격이동 → 합체: 추적빔',descEn:'Omni Beam+Barrage+Elem Missile+Blink → Fuse: Tracking Beam'},
   {phase:'8. 회전참+기폭+대왕',phaseEn:'8. Whirl+Det+Giant',skills:['whirlwind','detonate','giantSlam'],fuse:'slamStorm',desc:'회전참+기폭+대왕치기 → 합체: 지진폭풍',descEn:'Whirlwind+Detonate+Giant Slam → Fuse: Slam Storm'},
   {phase:'9. 방패 합체',phaseEn:'9. Shield Fuse',skills:['maliceSwipe','shieldThrow'],fuse:'shieldFuse',desc:'칼등치기 + 칼등날개 → 합체: 처내기 강화',descEn:'Blade Parry + Shield Wing → Fuse: Parry Enhanced'},
@@ -31222,14 +31227,14 @@ const SKILL_HIER=[
   {id:'spec',name:'⚙ 특수',nameEn:'⚙ Special',col:'#ff8800',cats:['tech','ult']},
 ];
 let _skHierTab='rec';
-const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,demonRevive:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1};
+const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,demonRevive:1,humanity:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1};
 function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.55) ${deg}deg,transparent ${deg}deg);pointer-events:none;z-index:1"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#ffee66;font-weight:900;text-shadow:0 0 4px #000,0 0 8px #000,0 1px 3px #000;z-index:2">${txt}</div>`:''}`}
 const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'ghostWalk',name:'뇌전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 15초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 15s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
-  {id:'bladeDash',name:'전격이동',cat:'move',noDmg:true,desc:'[이동기] 데미지 없음. 방향키 더블탭으로 발동. 500유닛 순간이동, 무적(15프레임). MP(10+Lv×5). 1렙5충전, 4렙마다+1(최대10). 쿨 8초→Lv당-0.5초(최소3초)',descEn:'[Mobility] No damage. Double-tap to activate. 500-unit blink, invincible 15f. MP(10+Lv×5). Lv1=5 stocks, +1 per 4Lv (max 10). CD 8s→-0.5s/Lv (min 3s)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
+  {id:'bladeDash',name:'전격이동',cat:'move',noDmg:true,desc:'[이동기] 데미지 없음. 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 500유닛 순간이동, 무적(15프레임). MP(10+Lv×5). 1렙5충전, 4렙마다+1(최대10). 쿨 8초→Lv당-0.5초(최소3초)',descEn:'[Mobility] No damage. Double-tap to activate. Escapes stagger/stun. 500-unit blink, invincible 15f. MP(10+Lv×5). Lv1=5 stocks, +1 per 4Lv (max 10). CD 8s→-0.5s/Lv (min 3s)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
   {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 10+Lv당2. Lv당 뎀+10% 거리+15px',descEn:'LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 10+2/Lv. Per Lv DMG+10% range+15px',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'fireball',name:'악의구',cat:'bow',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'whirlwind',name:'회전참',cat:'phys',desc:'무기 홀드 → 전진 회전 공격. 360도 광역, ST 지속소모. Lv당 범위+5 뎀+5%',descEn:'Hold weapon → forward spin attack. 360° AoE, continuous ST drain. Per Lv range+5 DMG+5%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -31247,7 +31252,8 @@ const SKILL_LIST=[
   {id:'blackStar',name:'블랙',cat:'ult',act:true,ult:true,noDmg:true,emoji:'⛧',desc:'검은 오망성 소환. 7초(+Lv당0.5초) 강력 흡인 (데미지 없음, 순수 유틸). 범위 1500+Lv×100px. 흡인력 기본5+Lv당0.5. (MP 30%, 쿨 120초)',descEn:'Summon black pentagram. 7s (+0.5s/Lv) strong pull (no DMG, pure utility). Range 1500+Lv×100px. Pull force base 5+0.5/Lv. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
   {id:'lavaSummon',name:'용암소환',cat:'ult',act:true,ult:true,emoji:'🌋',desc:'빨간 오망성 시전 → 범위 1500+Lv×100px 화염폭발+10초간 화상. 틱당 적 최대HP 1.75%(+Lv당+1.5%). 10초 20틱. 거리감쇠 30%. Lv당 초기뎀+10%. (MP 30%, 쿨 120초)',descEn:'Red pentagram cast → range 1500+Lv×100px fire explosion+10s burn. Per tick enemy maxHP 1.75%(+1.5%/Lv). 10s 20 ticks. 30% distance falloff. Per Lv initial DMG+10%. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
   {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스 전용. 보스 현재HP 20%(+2%/Lv) + 무기뎀×30(+21%/Lv, 20Lv=150배) + 보스HP 30% 순수뎀. 섬광 돌진 연출. HP/MP/ST 10% 소모. 쿨 5초',descEn:'X key: Groggy boss only. Boss current HP 20%(+2%/Lv) + weapon DMG×30(+21%/Lv, Lv20=150×) + boss HP 30% pure DMG. Flash dash. HP/MP/ST 10% cost. CD 5s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
-  {id:'demonRevive',name:'악마화 부활',cat:'ult',ult:true,noDmg:true,emoji:'☠',desc:'[패시브] 사망 시 부활력 기반 확률 부활. 1Lv: HP 50% 부활. Lv당 HP+5%, 쿨-30초, 부활확률+2%. 쿨 10분',descEn:'[Passive] Revive power-based chance revive on death. Lv1: revive at HP 50%. Per Lv HP+5%, CD-30s, revive chance+2%. CD 10min',spCost:15,matCost:150,up:true,upSp:10,upMat:0},
+  {id:'demonRevive',name:'악마화 부활',cat:'def',noDmg:true,emoji:'☠',desc:'[패시브] ���망 시 부활력 기반 확�� 부활. 1Lv: HP 50% 부활. Lv당 HP+5%, 쿨-30초, 부활확률+2%. 쿨 10분',descEn:'[Passive] Revive power-based chance revive on death. Lv1: revive at HP 50%. Per Lv HP+5%, CD-30s, revive chance+2%. CD 10min',spCost:15,matCost:150,up:true,upSp:10,upMat:0},
+  {id:'humanity',name:'���간성',cat:'def',noDmg:true,emoji:'🕊️',desc:'[패��브] 인간의 의지로 강해진다. 부활력 -10, 전체 데미지 +5%, HP/MP/ST +100',descEn:'[Passive] Empowered by human will. Revive power -10, All DMG +5%, HP/MP/ST +100',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   // [SKILL REMOVED 2026-04-10] bladeShot (붉은꽃) — 석궁 개편
   {id:'iceOrb',name:'얼음보주',cat:'bow',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',descEn:'Enter ice — invincible. Re-press to shatter → 48 ice blades fan spread (MP 40, CD 20s). Per Lv blades+2 DMG+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'needleShot',name:'만화방창 II',cat:'bow',act:true,emoji:'✨',desc:'[고정: T 자동] 초고속 바늘 연발. 1렙 2발, 5렙마다 +1발. 관통 없음. ST 8. 쿨 1.5초. Lv당 뎀+100%',descEn:'[Fixed: T auto] Ultra-fast needles burst. Lv1 2 shots, +1 per 5 levels. No pierce. ST 8. CD 1.5s',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
@@ -36637,7 +36643,7 @@ function renderStatSummary(){
     `<div style="${_sLn}">${_L('패리+','Parry+')}: <span style="color:${_afc('parryBonus','#44ff88')}">${_afp('parryBonus')}</span> | ${_L('체인','Chain')}: <span style="color:${_afc('chainTarget','#ffcc44')}">+${_af('chainTarget').toFixed(0)}</span> | ${_L('정화','Purify')}: <span style="color:${_afc('statusClean','#44ff88')}">${_af('statusClean').toFixed(0)}${_L('회','x')}</span></div>`+
     `<div style="${_sLn}">${_L('불굴','Unyielding')}: <span style="color:${_afc('lastStand','#ffdd44')}">${_af('lastStand').toFixed(0)}</span> | ${_L('부활','Revive')}: <span style="color:${_afc('reviveOnce','#44ff88')}">${_af('reviveOnce')?~~(_af('reviveOnce')*100)+'%':'0'}</span></div>`+
     `<div style="${_sLn}">✟ ${_L('신성력','Holy Power')}: <span style="color:${_afc('antiRevive','#ffdd88')}">${~~(_af('antiRevive')*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${(()=>{const _slN=_e?{weapon:'Wpn',shield:'Shield',armor:'Armor',helmet:'Crown',boots:'Boots',gloves:'Gloves',pants:'Pants',necklace:'Necklace',ring1:'Ring1',ring2:'Ring2',bracelet:'Bracelet',cape:'Cape',bow:'Bow'}:{weapon:'무기',shield:'견갑',armor:'갑옷',helmet:'왕관',boots:'부츠',gloves:'장갑',pants:'바지',necklace:'목걸이',ring1:'반지1',ring2:'반지2',bracelet:'팔찌',cape:'망토',bow:'활'};const _parts=[];let _sum=0;for(const s of SLOT_NAMES){const it=INV.equipped[s];if(!it||!it.affixes)continue;for(let ai=0;ai<it.affixes.length;ai++){const a=it.affixes[ai];if(a.id==='antiRevive'){const v=~~(a.value*100);_sum+=v;_parts.push((_slN[s]||s)+v+'%')}}}return _parts.length?_parts.join('+')+'='+_sum+'%':_L('없음','None')})()})</span></div>`+
-    `<div style="${_sLn}">☠ ${_L('악마력(부활력)','Demon Power(Revive)')}: <span style="color:#ff4444">${Math.min(100,~~(P.lv*0.03)+(P.skills.demonRevive||0)*2+~~((_af('revivePow')+_eqImplicit('_iRevPow')*.01)*100))}%</span> <span style="color:#887766;font-size:1.1rem">(${_L('자연','natural')}${~~(P.lv*0.03)}+${_L('스킬','skill')}${(P.skills.demonRevive||0)*2}+${_L('장비','gear')}${~~((_af('revivePow')+_eqImplicit('_iRevPow')*.01)*100)})</span></div>`+
+    `<div style="${_sLn}">☠ ${_L('악마력(부활력)','Demon Power(Revive)')}: <span style="color:#ff4444">${Math.max(0,Math.min(100,~~(P.lv*0.03)+(P.skills.demonRevive||0)*2+~~((_af('revivePow')+_eqImplicit('_iRevPow')*.01)*100)-(P.skills.humanity||0)*10))}%</span> <span style="color:#887766;font-size:1.1rem">(${_L('자연','natural')}${~~(P.lv*0.03)}+${_L('스킬','skill')}${(P.skills.demonRevive||0)*2}+${_L('장비','gear')}${~~((_af('revivePow')+_eqImplicit('_iRevPow')*.01)*100)}${(P.skills.humanity||0)>0?'-'+_L('인간성','Humanity')+(P.skills.humanity*10):''})</span></div>`+
     // ── 전투 통계 ──
     `<div style="${_sHd}">📈 ${_L('전투 통계','Combat Stats')}</div>`+
     `<div style="${_sLn}">${_L('처치','Kills')}: <span style="color:#ff6644">${G.kills||0}</span> | ${_L('악의','Malice')}: <span style="color:#cc66ff">${G.mats||0}</span> | ${_L('스테이지','Stage')}: <span style="color:#ffaa44">${(G.stage||0)+1}</span> | Lv: <span style="color:#ffcc44">${P.lv||1}</span></div>`;
