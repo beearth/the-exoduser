@@ -118,73 +118,185 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 /* ═══ Main Content — HELL LOBBY ═══ */
 .main-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;opacity:0;transition:opacity 1.2s ease .5s;overflow:hidden}
 .main-wrap.show{opacity:1}
+.main-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 80%,rgba(80,20,0,.4),transparent 70%);z-index:0}
+.main-wrap::after{content:'';position:absolute;inset:0;background:url('img/cin_victory.png') center/cover no-repeat;opacity:.08;filter:brightness(.4);pointer-events:none;z-index:0}
 
-/* ── 로비 CSS ── */
-.lobby{display:none;position:fixed;inset:0;z-index:10;flex-direction:row;background:#000}
-.lobby.show{display:flex}
+/* ── 좌측: 캐릭터 디스플레이 ── */
+.lobby-left{
+  position:relative;flex:0 0 55%;display:flex;align-items:center;justify-content:center;z-index:1;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 70%,rgba(60,15,0,.5),rgba(10,4,2,.98) 70%)
+}
+.lobby-left::before{
+  content:'';position:absolute;inset:0;
+  background:url('assets/lobby/lobby_bg_frost.webp') left center/cover no-repeat;opacity:.7;filter:brightness(.6) saturate(.9);pointer-events:none
+}
+.lobby-left::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 85%,rgba(255,60,10,.1),transparent 50%),
+    radial-gradient(ellipse at 50% 50%,transparent 40%,rgba(0,0,0,.5) 100%),
+    linear-gradient(0deg,rgba(0,0,0,.4) 0%,transparent 25%);
+}
+#lobbyParticles{position:absolute;inset:0;z-index:1;pointer-events:none}
 
-/* 좌측 영역 */
-.lobby-left{position:relative;flex:0 0 65%;height:100%;overflow:hidden;background:#000}
-.lobby-bg-img{position:absolute;inset:0;background-position:left center;background-size:cover;background-repeat:no-repeat;opacity:1;transition:opacity 400ms ease}
-.lobby-bg-img::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0) 50%,rgba(0,0,0,0.55) 90%,rgba(0,0,0,0.85) 100%);pointer-events:none}
-.char-disp-empty{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);color:rgba(220,110,80,0.78);font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,2.6vw,2.8rem);font-weight:300;letter-spacing:0.25em;text-shadow:0 0 28px rgba(196,68,68,0.35),0 0 60px rgba(0,0,0,0.7);white-space:nowrap;pointer-events:none;user-select:none;opacity:1;transition:opacity 500ms ease;z-index:2}
-.char-disp-empty.hidden{opacity:0}
+.char-display{position:relative;z-index:2;text-align:center;margin-top:-5%}
+.char-display-sprite{
+  width:280px;height:280px;image-rendering:pixelated;
+  filter:drop-shadow(0 0 40px rgba(255,80,30,.35)) drop-shadow(0 8px 30px rgba(0,0,0,.8));
+  animation:charFloat 4s ease-in-out infinite
+}
+@keyframes charFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.char-display-name{
+  font-family:'Cinzel Decorative',serif;font-size:2.2rem;color:#ffaa66;
+  text-shadow:0 0 30px rgba(255,80,30,.6),0 2px 10px rgba(0,0,0,.8);
+  letter-spacing:.15em;margin-top:24px
+}
+.char-display-empty{font-weight:300;letter-spacing:.25em;color:rgba(220,110,80,.78);text-shadow:0 0 28px rgba(196,68,68,.35);font-size:1.1rem}
 
-/* 우측 영역 */
-.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(20,8,5,0.92) 0%,rgba(8,4,2,0.96) 100%);padding:28px 28px 24px 28px;display:flex;flex-direction:column;backdrop-filter:blur(2px);border-left:2px solid;border-image:linear-gradient(180deg,#443322 0%,#c44444 50%,#443322 100%) 1}
+/* ── 우측: 정보 + 슬롯 ── */
+.lobby-right{
+  position:relative;flex:0 0 45%;display:flex;flex-direction:column;z-index:1;
+  background:linear-gradient(160deg,rgba(14,8,4,.97),rgba(20,12,6,.99));
+  border-left:1px solid rgba(255,80,30,.1);
+  box-shadow:-20px 0 60px rgba(0,0,0,.5)
+}
+.lobby-right::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,transparent,rgba(255,80,30,.25) 30%,rgba(255,80,30,.25) 70%,transparent);
+}
+.lobby-right-inner{flex:1;display:flex;flex-direction:column;padding:36px 32px 20px;overflow:hidden}
 
-/* 우측 헤더 */
-.lobby-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
-.lobby-header h1{font-family:'Cinzel Decorative',serif;color:#ff6633;font-size:1.8rem;letter-spacing:0.15em;text-shadow:0 0 20px rgba(255,80,30,0.4)}
-.lobby-mode{color:rgba(180,140,110,0.55);font-size:0.72rem;letter-spacing:0.3em;font-weight:700;margin-top:8px}
+/* 헤더 */
+.lobby-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid rgba(255,100,40,.1)}
+.lobby-logo{
+  font-family:'Cinzel Decorative',serif;font-size:1.6rem;color:#ff6633;
+  text-shadow:0 0 25px rgba(255,80,30,.5);letter-spacing:.15em
+}
+.lobby-header-right{display:flex;align-items:center;gap:12px}
+.user-info{font-size:.72rem;color:#665544;letter-spacing:.05em}
+.logout-btn{
+  padding:5px 14px;background:transparent;border:1px solid rgba(136,68,51,.4);
+  color:#884433;font-size:.7rem;font-family:'Noto Sans KR';cursor:pointer;
+  transition:all .3s;border-radius:2px;letter-spacing:.05em
+}
+.logout-btn:hover{border-color:#cc4433;color:#ff4433;background:rgba(204,68,51,.06)}
 
-/* 헤더 아래 장식 라인 */
-.lobby-divider{height:1px;width:100%;background:linear-gradient(90deg,transparent 0%,rgba(196,68,68,0.4) 50%,transparent 100%);margin-bottom:18px}
+/* 정보 패널 */
+.char-info-panel{
+  margin-bottom:20px;padding:20px;min-height:130px;
+  background:linear-gradient(135deg,rgba(0,0,0,.35),rgba(20,10,5,.4));
+  border:1px solid rgba(255,100,40,.06);border-radius:2px;
+  position:relative;overflow:hidden
+}
+.char-info-panel::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,80,30,.2),transparent)
+}
+.cip-name{
+  font-family:'Cinzel Decorative',serif;font-size:1.6rem;color:#ccaa77;
+  letter-spacing:.1em;margin-bottom:14px;
+  text-shadow:0 0 15px rgba(204,170,119,.15)
+}
+.cip-row{display:flex;gap:16px;margin-bottom:6px;align-items:baseline}
+.cip-label{
+  font-size:.7rem;color:#554433;min-width:80px;text-transform:uppercase;
+  letter-spacing:.12em;font-weight:600
+}
+.cip-value{font-size:.85rem;color:#bb9966;font-weight:500;letter-spacing:.03em}
+.cip-empty{color:#443322;font-size:.85rem;text-align:center;padding:35px 0;letter-spacing:.1em}
 
 /* 슬롯 리스트 */
-.char-list{flex:1;overflow-y:auto;overflow-x:hidden;padding-right:6px}
-.char-list::-webkit-scrollbar{width:4px}
-.char-list::-webkit-scrollbar-track{background:rgba(0,0,0,0.3)}
-.char-list::-webkit-scrollbar-thumb{background:rgba(196,68,68,0.3);border-radius:2px}
-.no-chars{color:rgba(180,140,110,0.5);text-align:center;padding:40px 20px;font-size:0.9rem;letter-spacing:0.1em}
-
-/* 슬롯 카드 */
-.char-item,.char-item-new{position:relative;display:flex;align-items:center;gap:14px;height:84px;padding:14px 18px 14px 24px;margin-bottom:10px;background:linear-gradient(135deg,rgba(28,16,12,0.7) 0%,rgba(18,10,6,0.85) 100%);border:1px solid rgba(120,60,40,0.18);border-radius:2px;cursor:pointer;transition:all 200ms ease;overflow:hidden}
-.char-item::before{content:'';position:absolute;left:0;top:20%;width:3px;height:60%;background:linear-gradient(180deg,transparent 0%,rgba(196,68,68,0.4) 50%,transparent 100%);opacity:0.6;transition:all 300ms ease}
-.char-item:hover{transform:translateY(-2px);border-color:rgba(196,68,68,0.35);box-shadow:0 4px 16px rgba(0,0,0,0.5),0 0 12px rgba(196,68,68,0.1)}
-.char-item:hover::before{opacity:1;height:80%;top:10%}
-.char-item.active{border-color:rgba(196,68,68,0.5);box-shadow:0 0 20px rgba(196,68,68,0.2),inset 0 0 24px rgba(196,68,68,0.05)}
-.char-item.active::before{width:4px;opacity:1;height:90%;top:5%;background:linear-gradient(180deg,rgba(196,68,68,0.2) 0%,rgba(255,100,80,0.95) 50%,rgba(196,68,68,0.2) 100%);box-shadow:0 0 8px rgba(196,68,68,0.6)}
-
-/* 새 캐릭터 카드 */
-.char-item-new{border:1px dashed rgba(120,60,40,0.4);background:rgba(18,10,6,0.4)}
-.char-item-new:hover{border-color:rgba(196,68,68,0.5);background:rgba(28,14,8,0.5);transform:translateY(-2px)}
-
-/* 썸네일 */
-.char-thumb{flex:0 0 56px;width:56px;height:56px;background:rgba(0,0,0,0.4);border:1px solid rgba(120,60,40,0.3);border-radius:2px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.char-thumb-empty{color:rgba(180,140,110,0.4);font-size:1.6rem;font-weight:300}
-
-/* 텍스트 영역 */
-.char-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
-.char-name{color:rgba(230,200,170,0.95);font-size:1.05rem;font-weight:600;letter-spacing:0.05em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.char-info{color:rgba(180,140,110,0.9);font-size:0.78rem;opacity:0.7;letter-spacing:0.06em}
-
-/* 삭제 버튼 */
-.char-del{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:24px;height:24px;background:transparent;border:1px solid rgba(120,60,40,0.4);color:rgba(180,100,80,0.6);font-size:0.85rem;cursor:pointer;border-radius:2px;opacity:0;transition:all 200ms;display:flex;align-items:center;justify-content:center}
-.char-item:hover .char-del{opacity:1}
-.char-del:hover{border-color:rgba(220,80,60,0.7);color:rgba(255,120,100,0.95);background:rgba(120,30,20,0.2)}
-
-/* 입장 버튼 */
-.lobby-footer{margin-top:14px;display:flex;flex-direction:column;gap:10px}
-.enter-game-btn{width:100%;height:56px;background:linear-gradient(135deg,rgba(120,40,30,0.4) 0%,rgba(80,20,15,0.6) 100%);border:1.5px solid rgba(196,68,68,0.4);color:rgba(255,200,170,0.95);font-family:'Noto Sans KR';font-size:1.1rem;font-weight:700;letter-spacing:0.3em;cursor:pointer;transition:all 300ms ease;text-shadow:0 0 12px rgba(0,0,0,0.8)}
-.enter-game-btn:hover:not(:disabled){border-color:rgba(255,100,80,0.8);color:rgba(255,230,200,1);background:linear-gradient(135deg,rgba(150,50,40,0.5) 0%,rgba(100,25,20,0.7) 100%);box-shadow:0 0 24px rgba(196,68,68,0.4),inset 0 0 16px rgba(196,68,68,0.1);transform:translateY(-1px)}
-.enter-game-btn:disabled{opacity:0.35;cursor:not-allowed;border-color:rgba(120,60,40,0.3);color:rgba(180,140,110,0.5)}
-
-/* 작은 화면 대응 */
-@media(max-width:1100px){
-  .lobby-left{flex:0 0 55%}
-  .lobby-right{flex:0 0 45%}
+.char-list{flex:1;overflow-y:auto;margin-bottom:16px;scrollbar-width:thin;scrollbar-color:rgba(68,34,17,.5) transparent}
+.char-list::-webkit-scrollbar{width:3px}
+.char-list::-webkit-scrollbar-thumb{background:rgba(68,34,17,.5);border-radius:2px}
+.char-list::-webkit-scrollbar-track{background:transparent}
+.char-item{
+  display:flex;align-items:center;gap:16px;padding:14px 18px;
+  background:linear-gradient(135deg,rgba(0,0,0,.2),rgba(20,10,5,.25));
+  border:1px solid rgba(255,255,255,.04);
+  margin-bottom:4px;cursor:pointer;transition:all .3s ease;
+  border-radius:2px;position:relative;overflow:hidden
 }
+.char-item::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:rgba(255,80,30,0);transition:background .3s
+}
+.char-item:hover{
+  border-color:rgba(136,102,68,.35);
+  background:linear-gradient(135deg,rgba(40,20,10,.3),rgba(30,15,8,.35));
+  transform:translateX(3px)
+}
+.char-item:hover::before{background:rgba(255,80,30,.5)}
+.char-item.active{
+  border-color:rgba(196,68,68,.4);
+  box-shadow:0 0 20px rgba(196,68,68,.15),inset 0 0 30px rgba(196,68,68,.03);
+  background:linear-gradient(135deg,rgba(80,20,10,.2),rgba(40,10,5,.25))
+}
+.char-item.active::before{background:#c44}
+.char-thumb{
+  width:52px;height:52px;background:rgba(0,0,0,.5);
+  border:1px solid rgba(255,100,40,.1);border-radius:2px;
+  image-rendering:pixelated;display:flex;align-items:center;
+  justify-content:center;overflow:hidden;flex-shrink:0;
+  box-shadow:inset 0 0 10px rgba(0,0,0,.4)
+}
+.char-thumb img{width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.char-thumb-empty{font-size:1.4rem;color:#553322}
+.char-text{flex:1;min-width:0}
+.char-name{font-weight:700;font-size:1rem;color:#ccaa77;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.03em}
+.char-info{font-size:.72rem;color:#887755;margin-top:3px;letter-spacing:.02em}
+.char-del{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  padding:6px 8px;background:none;border:none;color:#553322;
+  font-size:.9rem;cursor:pointer;opacity:0;transition:all .25s
+}
+.char-item:hover .char-del{opacity:.5}
+.char-del:hover{opacity:1!important;color:#ff4433;text-shadow:0 0 8px rgba(255,68,51,.3)}
+.no-chars{text-align:center;padding:40px;color:#443322;font-size:.85rem;letter-spacing:.1em}
+
+/* 새 캐릭터 슬롯 */
+.char-item-new{
+  display:flex;align-items:center;gap:16px;padding:14px 18px;
+  background:rgba(0,0,0,.08);
+  border:1px dashed rgba(255,100,40,.12);
+  margin-bottom:4px;cursor:pointer;transition:all .3s;border-radius:2px
+}
+.char-item-new:hover{
+  border-color:rgba(255,100,40,.35);
+  background:rgba(255,80,20,.03);
+  transform:translateX(3px)
+}
+.char-item-new .char-thumb{border-style:dashed;border-color:rgba(255,100,40,.15)}
+.char-item-new .char-name{color:#886644}
+
+/* 하단 바 */
+.lobby-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 0 4px;border-top:1px solid rgba(255,100,40,.08)
+}
+.enter-game-btn{
+  padding:14px 48px;
+  background:linear-gradient(135deg,rgba(255,80,30,.08),rgba(255,60,20,.12));
+  border:1px solid rgba(255,100,40,.5);color:#ffaa66;
+  font-family:'Noto Sans KR';font-size:1.05rem;font-weight:700;
+  cursor:pointer;letter-spacing:.2em;transition:all .4s;border-radius:2px;
+  position:relative;overflow:hidden;text-transform:uppercase
+}
+.enter-game-btn::before{
+  content:'';position:absolute;inset:-1px;border-radius:2px;
+  background:linear-gradient(135deg,rgba(255,80,30,.2),transparent,rgba(255,80,30,.2));
+  opacity:0;transition:opacity .4s
+}
+.enter-game-btn:hover{
+  border-color:#ff8844;color:#ffddaa;
+  background:linear-gradient(135deg,rgba(255,80,30,.15),rgba(255,60,20,.2));
+  box-shadow:0 0 40px rgba(255,80,20,.2),0 0 80px rgba(255,60,10,.1);
+  transform:translateY(-1px)
+}
+.enter-game-btn:hover::before{opacity:1}
+.enter-game-btn:disabled{opacity:.25;cursor:default;transform:none;box-shadow:none}
+.enter-game-btn:disabled::before{display:none}
+.lobby-version{font-size:.6rem;color:#332211;letter-spacing:.1em}
 
 /* ── 로그인 ── */
 .container{position:relative;z-index:1;width:480px;max-width:92vw}
@@ -214,6 +326,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,80,30,.15)
 }
 .google-btn svg{width:20px;height:20px}
+.lobby{display:none}
 
 /* ── 생성 모달 ── */
 .create-modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.9);align-items:center;justify-content:center;backdrop-filter:blur(4px)}
@@ -342,30 +455,49 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
           Google로 입장
         </button>
       </div>
-      <!-- lobby는 body 직속으로 이동 (아래 참조) -->
-    </div>
-  </div>
-</div>
-
-<!-- ═══ LOBBY (body 직속 — container 밖) ═══ -->
-<div class="lobby" id="lobby" style="display:none">
-  <!-- 좌측: 배경 + 안내 -->
-  <div class="lobby-left">
-    <div class="lobby-bg-img" id="lobbyBgImg"></div>
-    <div class="char-disp-empty" id="charDispEmpty">당신은 누구인가</div>
-  </div>
-  <!-- 우측: 슬롯 + 버튼 -->
-  <div class="lobby-right">
-    <div class="lobby-header">
-      <h1>HELL</h1>
-      <div class="lobby-mode">LOCAL MODE</div>
-    </div>
-    <div class="lobby-divider"></div>
-    <div class="char-list" id="charList">
-      <div class="no-chars">불러오는 중...</div>
-    </div>
-    <div class="lobby-footer">
-      <button class="enter-game-btn" id="enterGameBtn" disabled>입장</button>
+      <div class="lobby" id="lobby" style="display:none;position:fixed;inset:0;z-index:10">
+        <!-- 좌측: 캐릭터 디스플레이 -->
+        <div class="lobby-left">
+          <canvas id="lobbyParticles"></canvas>
+          <div class="char-display" id="charDisplay">
+            <div class="char-display-empty" id="charDispEmpty">당신은 누구인가</div>
+            <canvas id="charDispCanvas" width="200" height="200" style="display:none" class="char-display-sprite"></canvas>
+            <div class="char-display-name" id="charDispName"></div>
+          </div>
+        </div>
+        <!-- 우측: 정보 + 슬롯 -->
+        <div class="lobby-right">
+          <div class="lobby-right-inner">
+            <div class="lobby-header">
+              <div class="lobby-logo">HELL</div>
+              <div class="lobby-header-right">
+                <span class="user-info" id="userEmail"></span>
+                <button class="logout-btn" id="logoutBtn">로그아웃</button>
+              </div>
+            </div>
+            <!-- 정보 패널 -->
+            <div class="char-info-panel" id="charInfoPanel">
+              <div class="cip-empty" id="cipEmpty">슬롯을 선택하거나 새 캐릭터를 생성하세요</div>
+              <div id="cipContent" style="display:none">
+                <div class="cip-name" id="cipName"></div>
+                <div class="cip-row"><span class="cip-label">레벨</span><span class="cip-value" id="cipLv"></span></div>
+                <div class="cip-row"><span class="cip-label">진행</span><span class="cip-value" id="cipProgress"></span></div>
+                <div class="cip-row"><span class="cip-label">플레이타임</span><span class="cip-value" id="cipTime"></span></div>
+                <div class="cip-row"><span class="cip-label">처치수</span><span class="cip-value" id="cipKills"></span></div>
+              </div>
+            </div>
+            <!-- 슬롯 리스트 -->
+            <div class="char-list" id="charList">
+              <div class="no-chars">캐릭터가 없습니다.</div>
+            </div>
+            <!-- 하단 바 -->
+            <div class="lobby-bottom">
+              <span class="lobby-version">v0.9</span>
+              <button class="enter-game-btn" id="enterGameBtn" disabled>입장</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -400,7 +532,6 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 var _selectedSlot=null;
 var _localSlots=[];
-var _curBg=null;
 var _spriteOk={};// 캐릭터 스프라이트 존재 캐시
 function _tryLoadSprite(folder,fw,fh,canvas){
   if(_spriteOk[folder]===false)return;
@@ -678,8 +809,8 @@ function playCinematic(){
     $('loading').style.display='none';
     
     if(_testMode){
-      $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
-      if($('userEmail'))$('userEmail').textContent='LOCAL MODE';loadLocalCharacters();
+      $('loginSection').style.display='none';$('lobby').style.display='flex';
+      $('userEmail').textContent='LOCAL MODE';loadLocalCharacters();
     } else if(currentUser){
       showLobby();
     } else {
@@ -789,8 +920,8 @@ function skipToGate(){
   $('mainWrap').classList.add('show');
   $('loading').style.display='none';
   if(_testMode){
-    $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
-    if($('userEmail'))$('userEmail').textContent='LOCAL MODE';loadLocalCharacters();
+    $('loginSection').style.display='none';$('lobby').style.display='flex';
+    $('userEmail').textContent='LOCAL MODE';loadLocalCharacters();
   } else if(currentUser){
     showLobby();
   } else {
@@ -847,7 +978,7 @@ function hideLoading(){
   const gate = $('chapterGate');
   if(gate) {
     gate.style.opacity = '0';
-    gate.style.display = 'none';
+    setTimeout(() => { if(gate.style.opacity === '0') gate.style.display = 'none'; }, 500);
   }
   const loading = $('loading');
   if(loading) loading.style.display = 'none';
@@ -882,14 +1013,14 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
       }catch(e){$('createBtn').disabled=false;setStatus(_TL('생성 실패: ')+e.message,true)}
     };
     // 로그아웃 버튼 숨기기
-    if($('logoutBtn'))$('logoutBtn').style.display='none';
+    $('logoutBtn').style.display='none';
     if(_fromGame){
       // 게임에서 로비 복귀 → 인트로 스킵, 바로 로비
       _cinDone=true;startBGM();
       $('cinScene').style.display='none';clearInterval(_emberIv);
       $('mainWrap').classList.add('show');
-      $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
-      if($('userEmail'))$('userEmail').textContent='LOCAL MODE';
+      $('loginSection').style.display='none';$('lobby').style.display='flex';
+      $('userEmail').textContent='LOCAL MODE';
       await loadLocalCharacters();
       hideLoading();
     } else {
@@ -932,16 +1063,16 @@ $('googleBtn').onclick=async()=>{
   const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+'/'}});
   if(error){$('status').textContent=_TL('로그인 실패: ')+error.message;$('status').className='status error'}
 };
-if($('logoutBtn'))$('logoutBtn').onclick=async()=>{await sb.auth.signOut();currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='block';document.querySelector('.container').style.display=''};
+$('logoutBtn').onclick=async()=>{await sb.auth.signOut();currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='block'};
 
 async function showLobby(){
   showLoading(_TL('캐릭터 불러오는 중...'));
-  $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
-  if($('userEmail'))$('userEmail').textContent=currentUser.email||'';await loadCharacters();
+  $('loginSection').style.display='none';$('lobby').style.display='flex';
+  $('userEmail').textContent=currentUser.email||'';await loadCharacters();
   hideLoading();
 }
 async function loadCharacters(){
-  const cl=$('charList');if(!cl)return;cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
+  const cl=$('charList');cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
   const{data,error}=await sb.from('characters').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:true});
   if(error){cl.innerHTML='<div class="no-chars" style="color:#cc4433">'+_TL('오류: ')+error.message+'</div>';return}
   if(!data||data.length===0){cl.innerHTML='<div class="no-chars">'+_TL('캐릭터가 없습니다. 새로 생성하세요.')+'</div>';return}
@@ -1035,19 +1166,18 @@ function escHtml(s){const d=document.createElement('div');d.textContent=s;return
 // moved to top
 
 async function loadLocalCharacters(){
-  const cl=$('charList');if(cl)cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
+  const cl=$('charList');cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
   _selectedSlot=null;_updateCharDisplay();
   try{
     const res=await fetch('/api/slots');
     const j=await res.json();
     _localSlots=j.ok&&j.slots?j.slots:[];
     _renderSlotList();
-    _updateCharDisplay();
   }catch(e){cl.innerHTML='<div class="no-chars" style="color:#cc4433">'+_TL('서버 연결 실패: ')+e.message+'</div>'}
 }
 
 function _renderSlotList(){
-  const cl=$('charList');if(!cl)return;cl.innerHTML='';
+  const cl=$('charList');cl.innerHTML='';
   const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
   _localSlots.forEach(s=>{
     const stage=s.stage||0;
@@ -1080,35 +1210,32 @@ function _selectSlot(s){
 
 function _updateCharDisplay(s){
   const btn=$('enterGameBtn');
-  const empty=$('charDispEmpty');
-  const bg=$('lobbyBgImg');
   if(!s){
-    if(btn) btn.disabled=true;
-    if(empty) empty.classList.remove('hidden');
-    _swapLobbyBg(0);
-    return;
+    $('charDispEmpty').style.display='';$('charDispCanvas').style.display='none';$('charDispName').textContent='';
+    $('cipEmpty').style.display='';$('cipContent').style.display='none';
+    btn.disabled=true;return;
   }
-  if(btn) btn.disabled=false;
-  if(empty) empty.classList.add('hidden');
-  _swapLobbyBg(s.stage||0);
-}
-
-function _swapLobbyBg(stage){
-  const bg=$('lobbyBgImg');if(!bg)return;
-  const hell=Math.min(6,~~((stage||0)/10));
-  const key=hell===0?'frost':(hell===1?'flame':'abyss');
-  if(_curBg===key)return;
-  _curBg=key;
-  const url='assets/lobby/lobby_bg_'+key+'.webp';
-  bg.style.opacity='0';
-  setTimeout(()=>{
-    bg.style.backgroundImage="url('"+url+"')";
-    bg.style.opacity='1';
-  },200);
+  // 디스플레이
+  const _vi=CHAR_VISUALS[s.charIdx||0]||CHAR_VISUALS[0];
+  $('charDispEmpty').style.display='none';
+  const cv=$('charDispCanvas');cv.style.display='';cv.width=_vi.fw;cv.height=_vi.fh;
+  _tryLoadSprite(_vi.folder,_vi.fw,_vi.fh,cv);
+  $('charDispName').textContent=s.name;
+  // 정보 패널
+  $('cipEmpty').style.display='none';$('cipContent').style.display='';
+  $('cipName').textContent=s.name;
+  $('cipLv').textContent='Lv. '+(s.lv||1);
+  const stage=s.stage||0;const hell=Math.min(6,~~(stage/10));const floor=stage%10+1;
+  const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
+  $('cipProgress').textContent=stage===0?_TL('시작점'):(hell+1)+_TL('장')+' '+hn[hell]+' '+floor+_TL('층');
+  const pt=s.playTime||0;const ph=~~(pt/3600);const pm=~~((pt%3600)/60);
+  $('cipTime').textContent=ph+'h '+pm+'m';
+  $('cipKills').textContent=(s.kills||0)+_TL(' 처치');
+  btn.disabled=false;
 }
 
 // 입장 버튼
-if($('enterGameBtn'))$('enterGameBtn').addEventListener('click',()=>{if(_selectedSlot)showCharGate(_selectedSlot)});
+$('enterGameBtn').addEventListener('click',()=>{if(_selectedSlot)showCharGate(_selectedSlot)});
 // 생성 모달
 $('createCancelBtn').addEventListener('click',()=>{$('createModal').classList.remove('show')});
 
@@ -1118,55 +1245,6 @@ function showCharGate(charId){
   const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId;
   setTimeout(()=>{window.location.href=_tp},1200);
 }
-
-// ═══ 펫 말풍선 시스템 ═══
-(function(){
-  var ravenLines=["또 살아 돌아왔군","이번엔 얼마나 가나","끝이 보이지 않는다","탈출은 환상이다","누구를 부를 텐가","다시 떨어졌군"];
-  var catLines=["...일어났나","또 너냐","지치지도 않는군","문은 늘 그 자리에 있다","이 자에게 또 기회를"];
-  var _lastRaven=-1,_lastCat=-1,_bubbleActive=false,_bubbleTimer=null;
-  function pickLine(arr,lastIdx){
-    var idx;do{idx=~~(Math.random()*arr.length)}while(arr.length>1&&idx===lastIdx);return idx;
-  }
-  function showBubble(who){
-    if(_bubbleActive)return;
-    var isRaven=who==='raven';
-    var el=$(isRaven?'ravenBubble':'catBubble');
-    var sp=$(isRaven?'ravenText':'catText');
-    if(!el||!sp)return;
-    _bubbleActive=true;
-    var arr=isRaven?ravenLines:catLines;
-    var idx=pickLine(arr,isRaven?_lastRaven:_lastCat);
-    if(isRaven)_lastRaven=idx;else _lastCat=idx;
-    sp.textContent=arr[idx];
-    el.style.opacity='1';
-    if(_bubbleTimer)clearTimeout(_bubbleTimer);
-    _bubbleTimer=setTimeout(function(){
-      el.style.opacity='0';
-      setTimeout(function(){_bubbleActive=false},800);
-    },5000);
-  }
-  function autoTick(){
-    if(_bubbleActive)return;
-    showBubble(Math.random()<.5?'raven':'cat');
-  }
-  // 로비 진입 감지
-  var _intv=null;
-  var obs=new MutationObserver(function(){
-    var lb=$('lobby');
-    if(lb&&lb.style.display==='flex'&&!_intv){
-      setTimeout(function(){autoTick()},5000);
-      _intv=setInterval(function(){autoTick()},30000+~~(Math.random()*20000));
-    }
-    if(lb&&lb.style.display!=='flex'&&_intv){clearInterval(_intv);_intv=null}
-  });
-  var lb=$('lobby');if(lb)obs.observe(lb,{attributes:true,attributeFilter:['style']});
-  // 슬롯 호버 트리거
-  document.addEventListener('mouseover',function(e){
-    if(_bubbleActive)return;
-    var ci=e.target.closest&&e.target.closest('.char-item');
-    if(ci&&Math.random()<.3)showBubble(Math.random()<.5?'raven':'cat');
-  });
-})();
 
 // ═══ 로비 파티클 시스템 (불씨 + 안개) ═══
 (function(){
