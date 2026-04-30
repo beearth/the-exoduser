@@ -9626,7 +9626,8 @@ function pickupItem(item){
   if(!pos){INV.bag.pop();notify(_T('가방에 공간이 없습니다!'));return false}
   item._gx=pos.x;item._gy=pos.y;item._pickT=Date.now();
   SFX.pickup();notify(`${_rarName(item.rarity)} ${_T(item.name)} ${_T('획득!')}`);
-  if(item.rarity>=3)_petSayCD('item_pickup','crow','탭 장비창을 열어봐. 아이템을 주워왔어!',4,60,'cat','좋은 거 나왔다! TAB 열어서 확인해봐!',4);
+  if(item.rarity>=3)_petSayCD('item_pickup','crow','탭 장비창을 열어봐.',4,60,'cat','좋은 거 나왔다! TAB!',4);
+  if(item.rarity>=4&&typeof _petOnFirstLegend==='function')_petOnFirstLegend(); // 전설급 첫 드롭
   dbSaveForce();return true;
 }
 function recalcSt(){
@@ -31078,7 +31079,8 @@ function _fallenResolve(){
     SFX.levelup();playSample('voice_magic',1,_r(1,.1));
     addTxt(P.x,P.y-50,_T('악마화 부활!'),'#ff2200',120);
     addTxt(P.x,P.y-25,_T('부활력 ')+P._fallenRevChance+'%','#ff8844',50);
-    if(P.lv<=500)_petSayCD('revive_tip','cat','데미지가 부족하면 무기류 강화를 해야해!!',5,30,'crow','G키 대장간. 강화 안 하면 여기서 계속 죽어.',4);
+    if(P.lv<=500)_petSayCD('revive_tip','cat','데미지 부족하면 무기 강화!',5,30,'crow','G키 대장간. 강화 안 하면 계속 죽어.',4);
+    if(typeof _petOnDeath==='function')_petOnDeath();
     for(let k=0;k<30;k++){const a=Math.PI*2*k/30;poolPart(P.x,P.y,Math.cos(a)*8,Math.sin(a)*8,k%2===0?'#ff0000':'#ff8800',5,20)}
     return;
   }
@@ -35844,10 +35846,13 @@ d.innerHTML=`<div class="fg-in" style="color:${rc}">${label} <span style="color:
             const _ec2=enhColor(it.enh);
             addTxt(P.x,P.y-20,'+'+it.enh+(OPT.lang!=='ko'?' Enhanced!':' 강화!'),_ec2,60);
             for(let i=0;i<12;i++)poolPart(P.x+(Math.random()-.5)*30,P.y-10+(Math.random()-.5)*20,(Math.random()-.5)*4,-2-Math.random()*3,_ec2,2+Math.random()*3,15+~~(Math.random()*10));
+            if(typeof _petOnEnhSuccess==='function')_petOnEnhSuccess();
+            if(it.enh===100&&typeof _petOnEnh100==='function')_petOnEnh100();
           }else{
             SFX.hurt();
             addTxt(P.x,P.y-20,_T('강화 실패!'),'#ff4444',60);
             for(let i=0;i<6;i++)poolPart(P.x+(Math.random()-.5)*20,P.y-10+(Math.random()-.5)*15,(Math.random()-.5)*3,-1-Math.random()*2,'#ff4444',1.5+Math.random()*2,12+~~(Math.random()*8));
+            if(typeof _petOnEnhFail==='function')_petOnEnhFail();
           }
           renderForge();dbSaveNow();
         };

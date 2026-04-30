@@ -21396,3 +21396,14 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - game.html
 - index.html
 
+
+## 2026-04-30 11:30 (auto)
+- assets/lobby/lobby_bg_abyss.webp
+- assets/lobby/lobby_bg_flame.webp
+- assets/lobby/lobby_bg_frost.webp
+- docs/2_4 ?«ì‹œ?¤í…œ/2_4 ?«ì‹œ?¤í…œ.md
+- docs/2_4 ?«ì‹œ?¤í…œ/?€???¤í¬ë¦½íŠ¸.md
+- game.html
+- img/lobby_bg.png
+- index.html
+
