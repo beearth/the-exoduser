@@ -21504,3 +21504,9 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/vfx_explode_scarecrow/spritesheet.webp
 - img/vfx_explode_scarecrow/vfx_explode_scarecrow.png
 
+
+## 2026-05-01 08:30 (auto)
+- game.html
+- img/vfx_explode_scarecrow.png
+- index.html
+
