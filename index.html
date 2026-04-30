@@ -358,6 +358,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   <div class="lobby-right">
     <div class="lobby-header">
       <h1>HELL</h1>
+      <div style="font-family:'Cinzel Decorative',serif;font-size:.7rem;color:#886644;letter-spacing:6px;margin-top:-6px;text-align:center">EXODUSER</div>
       <div class="lobby-mode">LOCAL MODE</div>
     </div>
     <div class="lobby-divider"></div>
@@ -440,6 +441,7 @@ const _LOBBY_EN={
   '캐릭터 이름 (2~8자)':'Character Name (2-8 chars)',
   '새 캐릭터':'New Character',
   '지옥으로 입장하는 중...':'Entering hell...',
+  '건너뛰기':'SKIP',
 };
 const _LOBBY_ZH={
   '지옥의 길':'地狱之路：EXODUSER','연결 중...':'连接中...','캐릭터를 선택하세요':'选择你的角色','당신은 누구인가':'汝乃何人',
@@ -465,6 +467,7 @@ const _LOBBY_ZH={
   '캐릭터 이름 (2~8자)':'角色名（2~8字）',
   '새 캐릭터':'新角色',
   '지옥으로 입장하는 중...':'正在进入地狱...',
+  '건너뛰기':'跳过',
 };
 const _LOBBY_JA={
   '지옥의 길':'地獄の道：EXODUSER','연결 중...':'接続中...','캐릭터를 선택하세요':'キャラクターを選択','당신은 누구인가':'汝は何者か',
@@ -490,6 +493,7 @@ const _LOBBY_JA={
   '캐릭터 이름 (2~8자)':'キャラクター名（2〜8文字）',
   '새 캐릭터':'新規キャラクター',
   '지옥으로 입장하는 중...':'地獄へ入場中...',
+  '건너뛰기':'スキップ',
 };
 const _LOBBY_ES={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Conectando...','캐릭터를 선택하세요':'Selecciona tu personaje','당신은 누구인가':'¿QUIÉN ERES?',
@@ -515,6 +519,7 @@ const _LOBBY_ES={
   '캐릭터 이름 (2~8자)':'Nombre (2-8 caracteres)',
   '새 캐릭터':'Nuevo personaje',
   '지옥으로 입장하는 중...':'Entrando al infierno...',
+  '건너뛰기':'OMITIR',
 };
 const _LOBBY_TABLES=Object.assign({en:_LOBBY_EN,zh:_LOBBY_ZH,ja:_LOBBY_JA,es:_LOBBY_ES},typeof _LOBBY_I18N!=='undefined'?_LOBBY_I18N:{});
 function _lobbyLang(){return (localStorage.getItem('hellLang')||'ko')}
@@ -649,6 +654,7 @@ function _clearVidTimers(){
 function playCinematic(){
   const textBox=$('cinTextInner');
   const skipBtn=$('skipBtn');
+  skipBtn.textContent=_TL('건너뛰기')+' >';
   const vid=$('cinVideo');
   const cImgs=[1,2,3,4,5,6,7,8,9,10,11,12,13,14].map(i=>$('cinImg'+i));
   let _prevImg=-1;

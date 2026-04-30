@@ -21,7 +21,7 @@ zht:{
 '오류: ':'錯誤：','삭제 실패: ':'刪除失敗：','알 수 없는 오류':'未知錯誤',
 '서버 연결 실패: ':'伺服器連接失敗：','데이터를 불러오는 중...':'載入資料中...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — 確定要刪除該角色嗎？',
-'새 캐릭터':'新角色','지옥으로 입장하는 중...':'正在進入地獄...',
+'새 캐릭터':'新角色','지옥으로 입장하는 중...':'正在進入地獄...','건너뛰기':'跳過',
 },
 // ═══ Русский (Russian) ═══
 ru:{
@@ -40,7 +40,7 @@ ru:{
 '오류: ':'Ошибка: ','삭제 실패: ':'Ошибка удаления: ','알 수 없는 오류':'Неизвестная ошибка',
 '서버 연결 실패: ':'Ошибка подключения: ','데이터를 불러오는 중...':'Загрузка данных...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Удалить этого персонажа?',
-'새 캐릭터':'Новый персонаж','지옥으로 입장하는 중...':'Вход в ад...',
+'새 캐릭터':'Новый персонаж','지옥으로 입장하는 중...':'Вход в ад...','건너뛰기':'ПРОПУСТИТЬ',
 },
 // ═══ Deutsch (German) ═══
 de:{
@@ -59,7 +59,7 @@ de:{
 '오류: ':'Fehler: ','삭제 실패: ':'Löschen fehlgeschlagen: ','알 수 없는 오류':'Unbekannter Fehler',
 '서버 연결 실패: ':'Serververbindung fehlgeschlagen: ','데이터를 불러오는 중...':'Lade Daten...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Diesen Charakter wirklich löschen?',
-'새 캐릭터':'Neuer Charakter','지옥으로 입장하는 중...':'Betrete die Hölle...',
+'새 캐릭터':'Neuer Charakter','지옥으로 입장하는 중...':'Betrete die Hölle...','건너뛰기':'ÜBERSPRINGEN',
 },
 // ═══ Português do Brasil (Brazilian Portuguese) ═══
 ptbr:{
@@ -78,7 +78,7 @@ ptbr:{
 '오류: ':'Erro: ','삭제 실패: ':'Falha ao excluir: ','알 수 없는 오류':'Erro desconhecido',
 '서버 연결 실패: ':'Falha na conexão: ','데이터를 불러오는 중...':'Carregando dados...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Realmente deseja excluir este personagem?',
-'새 캐릭터':'Novo personagem','지옥으로 입장하는 중...':'Entrando no inferno...',
+'새 캐릭터':'Novo personagem','지옥으로 입장하는 중...':'Entrando no inferno...','건너뛰기':'PULAR',
 },
 // ═══ Français (French) ═══
 fr:{
@@ -97,7 +97,7 @@ fr:{
 '오류: ':'Erreur : ','삭제 실패: ':'Échec de suppression : ','알 수 없는 오류':'Erreur inconnue',
 '서버 연결 실패: ':'Échec de connexion au serveur : ','데이터를 불러오는 중...':'Chargement des données...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Voulez-vous vraiment supprimer ce personnage ?',
-'새 캐릭터':'Nouveau personnage','지옥으로 입장하는 중...':'Entrée en enfer...',
+'새 캐릭터':'Nouveau personnage','지옥으로 입장하는 중...':'Entrée en enfer...','건너뛰기':'PASSER',
 },
 // ═══ Polski (Polish) ═══
 pl:{
@@ -116,7 +116,7 @@ pl:{
 '오류: ':'Błąd: ','삭제 실패: ':'Błąd usuwania: ','알 수 없는 오류':'Nieznany błąd',
 '서버 연결 실패: ':'Błąd połączenia z serwerem: ','데이터를 불러오는 중...':'Ładowanie danych...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Naprawdę usunąć tę postać?',
-'새 캐릭터':'Nowa postać','지옥으로 입장하는 중...':'Wchodzenie do piekła...',
+'새 캐릭터':'Nowa postać','지옥으로 입장하는 중...':'Wchodzenie do piekła...','건너뛰기':'POMIŃ',
 },
 // ═══ Italiano (Italian) ═══
 it:{
@@ -135,7 +135,7 @@ it:{
 '오류: ':'Errore: ','삭제 실패: ':'Eliminazione fallita: ','알 수 없는 오류':'Errore sconosciuto',
 '서버 연결 실패: ':'Connessione al server fallita: ','데이터를 불러오는 중...':'Caricamento dati...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Vuoi davvero eliminare questo personaggio?',
-'새 캐릭터':'Nuovo personaggio','지옥으로 입장하는 중...':'Entrando all\'inferno...',
+'새 캐릭터':'Nuovo personaggio','지옥으로 입장하는 중...':'Entrando all\'inferno...','건너뛰기':'SALTA',
 },
 // ═══ Українська (Ukrainian) ═══
 uk:{
@@ -154,7 +154,7 @@ uk:{
 '오류: ':'Помилка: ','삭제 실패: ':'Помилка видалення: ','알 수 없는 오류':'Невідома помилка',
 '서버 연결 실패: ':'Помилка підключення: ','데이터를 불러오는 중...':'Завантаження даних...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Справді видалити цього персонажа?',
-'새 캐릭터':'Новий персонаж','지옥으로 입장하는 중...':'Вхід до пекла...',
+'새 캐릭터':'Новий персонаж','지옥으로 입장하는 중...':'Вхід до пекла...','건너뛰기':'ПРОПУСТИТИ',
 },
 // ═══ Türkçe (Turkish) ═══
 tr:{
@@ -173,7 +173,7 @@ tr:{
 '오류: ':'Hata: ','삭제 실패: ':'Silme başarısız: ','알 수 없는 오류':'Bilinmeyen hata',
 '서버 연결 실패: ':'Sunucu bağlantı hatası: ','데이터를 불러오는 중...':'Veri yükleniyor...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Bu karakteri silmek istediğine emin misin?',
-'새 캐릭터':'Yeni karakter','지옥으로 입장하는 중...':'Cehenneme giriş...',
+'새 캐릭터':'Yeni karakter','지옥으로 입장하는 중...':'Cehenneme giriş...','건너뛰기':'ATLA',
 },
 // ═══ Tiếng Việt (Vietnamese) ═══
 vi:{
@@ -192,7 +192,7 @@ vi:{
 '오류: ':'Lỗi: ','삭제 실패: ':'Xóa thất bại: ','알 수 없는 오류':'Lỗi không xác định',
 '서버 연결 실패: ':'Kết nối máy chủ thất bại: ','데이터를 불러오는 중...':'Đang tải dữ liệu...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Bạn có chắc muốn xóa nhân vật này?',
-'새 캐릭터':'Nhân vật mới','지옥으로 입장하는 중...':'Đang vào địa ngục...',
+'새 캐릭터':'Nhân vật mới','지옥으로 입장하는 중...':'Đang vào địa ngục...','건너뛰기':'BỎ QUA',
 },
 // ═══ ไทย (Thai) ═══
 th:{
@@ -211,7 +211,7 @@ th:{
 '오류: ':'ข้อผิดพลาด: ','삭제 실패: ':'ลบล้มเหลว: ','알 수 없는 오류':'ข้อผิดพลาดที่ไม่ทราบสาเหตุ',
 '서버 연결 실패: ':'เชื่อมต่อเซิร์ฟเวอร์ล้มเหลว: ','데이터를 불러오는 중...':'กำลังโหลดข้อมูล...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — ต้องการลบตัวละครนี้จริงหรือ?',
-'새 캐릭터':'ตัวละครใหม่','지옥으로 입장하는 중...':'กำลังเข้าสู่นรก...',
+'새 캐릭터':'ตัวละครใหม่','지옥으로 입장하는 중...':'กำลังเข้าสู่นรก...','건너뛰기':'ข้าม',
 },
 // ═══ Bahasa Indonesia (Indonesian) ═══
 id:{
@@ -230,7 +230,7 @@ id:{
 '오류: ':'Error: ','삭제 실패: ':'Gagal menghapus: ','알 수 없는 오류':'Error tidak diketahui',
 '서버 연결 실패: ':'Gagal terhubung ke server: ','데이터를 불러오는 중...':'Memuat data...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Yakin ingin menghapus karakter ini?',
-'새 캐릭터':'Karakter baru','지옥으로 입장하는 중...':'Memasuki neraka...',
+'새 캐릭터':'Karakter baru','지옥으로 입장하는 중...':'Memasuki neraka...','건너뛰기':'LEWATI',
 },
 // ═══ العربية (Arabic) ═══
 ar:{
@@ -249,7 +249,7 @@ ar:{
 '오류: ':'خطأ: ','삭제 실패: ':'فشل الحذف: ','알 수 없는 오류':'خطأ غير معروف',
 '서버 연결 실패: ':'فشل الاتصال بالخادم: ','데이터를 불러오는 중...':'جارٍ تحميل البيانات...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — هل تريد حقاً حذف هذه الشخصية؟',
-'새 캐릭터':'شخصية جديدة','지옥으로 입장하는 중...':'الدخول إلى الجحيم...',
+'새 캐릭터':'شخصية جديدة','지옥으로 입장하는 중...':'الدخول إلى الجحيم...','건너뛰기':'تخطي',
 },
 // ═══ Svenska (Swedish) ═══
 sv:{
@@ -268,7 +268,7 @@ sv:{
 '오류: ':'Fel: ','삭제 실패: ':'Radering misslyckades: ','알 수 없는 오류':'Okänt fel',
 '서버 연결 실패: ':'Serveranslutning misslyckades: ','데이터를 불러오는 중...':'Laddar data...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Vill du verkligen radera denna karaktär?',
-'새 캐릭터':'Ny karaktär','지옥으로 입장하는 중...':'Går in i helvetet...',
+'새 캐릭터':'Ny karaktär','지옥으로 입장하는 중...':'Går in i helvetet...','건너뛰기':'HOPPA ÖVER',
 },
 // ═══ Dansk (Danish) ═══
 da:{
@@ -287,7 +287,7 @@ da:{
 '오류: ':'Fejl: ','삭제 실패: ':'Sletning mislykkedes: ','알 수 없는 오류':'Ukendt fejl',
 '서버 연결 실패: ':'Serverforbindelse mislykkedes: ','데이터를 불러오는 중...':'Indlæser data...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Vil du virkelig slette denne karakter?',
-'새 캐릭터':'Ny karakter','지옥으로 입장하는 중...':'Træder ind i helvede...',
+'새 캐릭터':'Ny karakter','지옥으로 입장하는 중...':'Træder ind i helvede...','건너뛰기':'SPRING OVER',
 },
 // ═══ Norsk (Norwegian) ═══
 no:{
@@ -306,7 +306,7 @@ no:{
 '오류: ':'Feil: ','삭제 실패: ':'Sletting mislyktes: ','알 수 없는 오류':'Ukjent feil',
 '서버 연결 실패: ':'Servertilkobling mislyktes: ','데이터를 불러오는 중...':'Laster data...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Vil du virkelig slette denne karakteren?',
-'새 캐릭터':'Ny karakter','지옥으로 입장하는 중...':'Går inn i helvete...',
+'새 캐릭터':'Ny karakter','지옥으로 입장하는 중...':'Går inn i helvete...','건너뛰기':'HOPP OVER',
 },
 // ═══ Suomi (Finnish) ═══
 fi:{
@@ -325,7 +325,7 @@ fi:{
 '오류: ':'Virhe: ','삭제 실패: ':'Poisto epäonnistui: ','알 수 없는 오류':'Tuntematon virhe',
 '서버 연결 실패: ':'Palvelinyhteys epäonnistui: ','데이터를 불러오는 중...':'Ladataan tietoja...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Haluatko varmasti poistaa tämän hahmon?',
-'새 캐릭터':'Uusi hahmo','지옥으로 입장하는 중...':'Astutaan helvettiin...',
+'새 캐릭터':'Uusi hahmo','지옥으로 입장하는 중...':'Astutaan helvettiin...','건너뛰기':'OHITA',
 },
 // ═══ Čeština (Czech) ═══
 cs:{
@@ -344,7 +344,7 @@ cs:{
 '오류: ':'Chyba: ','삭제 실패: ':'Smazání selhalo: ','알 수 없는 오류':'Neznámá chyba',
 '서버 연결 실패: ':'Připojení k serveru selhalo: ','데이터를 불러오는 중...':'Načítání dat...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Opravdu chceš smazat tuto postavu?',
-'새 캐릭터':'Nová postava','지옥으로 입장하는 중...':'Vstup do pekla...',
+'새 캐릭터':'Nová postava','지옥으로 입장하는 중...':'Vstup do pekla...','건너뛰기':'PŘESKOČIT',
 },
 // ═══ Magyar (Hungarian) ═══
 hu:{
@@ -363,7 +363,7 @@ hu:{
 '오류: ':'Hiba: ','삭제 실패: ':'Törlés sikertelen: ','알 수 없는 오류':'Ismeretlen hiba',
 '서버 연결 실패: ':'Szerverkapcsolat sikertelen: ','데이터를 불러오는 중...':'Adatok betöltése...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Biztosan törölni akarod ezt a karaktert?',
-'새 캐릭터':'Új karakter','지옥으로 입장하는 중...':'Belépés a pokolba...',
+'새 캐릭터':'Új karakter','지옥으로 입장하는 중...':'Belépés a pokolba...','건너뛰기':'KIHAGYÁS',
 },
 // ═══ Română (Romanian) ═══
 ro:{
@@ -382,7 +382,7 @@ ro:{
 '오류: ':'Eroare: ','삭제 실패: ':'Ștergere eșuată: ','알 수 없는 오류':'Eroare necunoscută',
 '서버 연결 실패: ':'Conexiune la server eșuată: ','데이터를 불러오는 중...':'Se încarcă datele...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Sigur vrei să ștergi acest personaj?',
-'새 캐릭터':'Personaj nou','지옥으로 입장하는 중...':'Intrare în iad...',
+'새 캐릭터':'Personaj nou','지옥으로 입장하는 중...':'Intrare în iad...','건너뛰기':'SARI PESTE',
 },
 // ═══ Nederlands (Dutch) ═══
 nl:{
@@ -401,7 +401,7 @@ nl:{
 '오류: ':'Fout: ','삭제 실패: ':'Verwijderen mislukt: ','알 수 없는 오류':'Onbekende fout',
 '서버 연결 실패: ':'Serververbinding mislukt: ','데이터를 불러오는 중...':'Data laden...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Wil je dit karakter echt verwijderen?',
-'새 캐릭터':'Nieuw karakter','지옥으로 입장하는 중...':'Betreden van de hel...',
+'새 캐릭터':'Nieuw karakter','지옥으로 입장하는 중...':'Betreden van de hel...','건너뛰기':'OVERSLAAN',
 },
 // ═══ Ελληνικά (Greek) ═══
 el:{
@@ -420,7 +420,7 @@ el:{
 '오류: ':'Σφάλμα: ','삭제 실패: ':'Αποτυχία διαγραφής: ','알 수 없는 오류':'Άγνωστο σφάλμα',
 '서버 연결 실패: ':'Αποτυχία σύνδεσης με τον διακομιστή: ','데이터를 불러오는 중...':'Φόρτωση δεδομένων...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Θέλεις σίγουρα να διαγράψεις αυτόν τον χαρακτήρα;',
-'새 캐릭터':'Νέος χαρακτήρας','지옥으로 입장하는 중...':'Είσοδος στην κόλαση...',
+'새 캐릭터':'Νέος χαρακτήρας','지옥으로 입장하는 중...':'Είσοδος στην κόλαση...','건너뛰기':'ΠΑΡΑΛΕΙΨΗ',
 },
 // ═══ Български (Bulgarian) ═══
 bg:{
@@ -439,7 +439,7 @@ bg:{
 '오류: ':'Грешка: ','삭제 실패: ':'Грешка при изтриване: ','알 수 없는 오류':'Неизвестна грешка',
 '서버 연결 실패: ':'Грешка при свързване със сървъра: ','데이터를 불러오는 중...':'Зареждане на данни...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Наистина ли искаш да изтриеш този персонаж?',
-'새 캐릭터':'Нов персонаж','지옥으로 입장하는 중...':'Влизане в ада...',
+'새 캐릭터':'Нов персонаж','지옥으로 입장하는 중...':'Влизане в ада...','건너뛰기':'ПРОПУСНИ',
 },
 };
 

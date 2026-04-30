@@ -43,6 +43,11 @@ if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!==
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
 <script src="lang_es.js"></script>
+<script src="lang_zht.js"></script>
+<script src="lang_ru.js"></script>
+<script src="lang_de.js"></script>
+<script src="lang_ptbr.js"></script>
+<script src="lang_fr.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
@@ -2364,7 +2369,7 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">결정 자동강화</span><input type="range" id="optCrAutoEnh" min="-1" max="4" step="1" value="-1"><span class="set-range-val" id="optCrAutoEnhVal">사용 안 함</span></div>
           <div class="set-range-row"><span class="set-name">Language</span>
             <select id="optLang" style="flex:1;background:#1a1008;border:1px solid #443322;color:#ddc;font-family:'Noto Sans KR';font-size:.9rem;padding:4px 8px;border-radius:4px">
-              <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="ja">日本語</option><option value="es">Español</option>
+              <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="es">Español</option><option value="ru">Русский</option><option value="de">Deutsch</option><option value="ptbr">Português</option><option value="fr">Français</option>
             </select>
           </div>
           <div class="set-range-row"><span class="set-name">FPS 제한</span><input type="range" id="optFps" min="0" max="4" step="1" value="1"><span class="set-range-val" id="optFpsVal">60</span></div>
@@ -5404,9 +5409,9 @@ const _EN_BASE={'대검':'Greatsword','석궁':'Crossbow','연사석궁':'Repeat
 '허리띠':'Belt','벨트':'Belt','부적':'Talisman','목걸이':'Necklace','반지':'Ring',
 '망토':'Cape','팔찌':'Bracelet','귀걸이':'Earring'};
 // ═══ 다국어 번역 테이블 매핑 ═══
-const _LANG_TBL={en:_EN,zh:typeof _ZH!=='undefined'?_ZH:null,ja:typeof _JA!=='undefined'?_JA:null,es:typeof _ES!=='undefined'?_ES:null};
-const _LANG_PFX={en:_EN_PFX,zh:typeof _ZH_PFX!=='undefined'?_ZH_PFX:null,ja:typeof _JA_PFX!=='undefined'?_JA_PFX:null,es:typeof _ES_PFX!=='undefined'?_ES_PFX:null};
-const _LANG_BASE={en:_EN_BASE,zh:typeof _ZH_BASE!=='undefined'?_ZH_BASE:null,ja:typeof _JA_BASE!=='undefined'?_JA_BASE:null,es:typeof _ES_BASE!=='undefined'?_ES_BASE:null};
+const _LANG_TBL={en:_EN,zh:typeof _ZH!=='undefined'?_ZH:null,ja:typeof _JA!=='undefined'?_JA:null,es:typeof _ES!=='undefined'?_ES:null,zht:typeof _ZHT!=='undefined'?_ZHT:null,ru:typeof _RU!=='undefined'?_RU:null,de:typeof _DE!=='undefined'?_DE:null,ptbr:typeof _PTBR!=='undefined'?_PTBR:null,fr:typeof _FR!=='undefined'?_FR:null};
+const _LANG_PFX={en:_EN_PFX,zh:typeof _ZH_PFX!=='undefined'?_ZH_PFX:null,ja:typeof _JA_PFX!=='undefined'?_JA_PFX:null,es:typeof _ES_PFX!=='undefined'?_ES_PFX:null,zht:typeof _ZHT_PFX!=='undefined'?_ZHT_PFX:null,ru:typeof _RU_PFX!=='undefined'?_RU_PFX:null,de:typeof _DE_PFX!=='undefined'?_DE_PFX:null,ptbr:typeof _PTBR_PFX!=='undefined'?_PTBR_PFX:null,fr:typeof _FR_PFX!=='undefined'?_FR_PFX:null};
+const _LANG_BASE={en:_EN_BASE,zh:typeof _ZH_BASE!=='undefined'?_ZH_BASE:null,ja:typeof _JA_BASE!=='undefined'?_JA_BASE:null,es:typeof _ES_BASE!=='undefined'?_ES_BASE:null,zht:typeof _ZHT_BASE!=='undefined'?_ZHT_BASE:null,ru:typeof _RU_BASE!=='undefined'?_RU_BASE:null,de:typeof _DE_BASE!=='undefined'?_DE_BASE:null,ptbr:typeof _PTBR_BASE!=='undefined'?_PTBR_BASE:null,fr:typeof _FR_BASE!=='undefined'?_FR_BASE:null};
 function _T(s){
   if(OPT.lang==='ko')return s;
   const tbl=_LANG_TBL[OPT.lang];
@@ -5450,6 +5455,14 @@ const _plagueBoomSpr={img:null,ready:false,w:128,h:128,frames:6};
 (function(){const i=new Image();i.src='img/boom_plague.png';_plagueBoomSpr.img=i;i.onload=function(){_plagueBoomSpr.ready=true}})();
 // 사슬 수리검 작살 스프라이트
 const _chainShurikenImg=new Image();_chainShurikenImg.src='assets/vfx/chain_shuriken_2.webp';
+// ═══ [TP-SMOKE] 순간이동 연기 스프라이트 (출발/도착) ═══
+const _tpSmokeOut=new Image();_tpSmokeOut.src='img/vfx/teleport_out.png';
+const _tpSmokeIn=new Image();_tpSmokeIn.src='img/vfx/teleport_in.png';
+const _TP_SMOKE_MAX=10;const _tpSmokes=[];for(let i=0;i<_TP_SMOKE_MAX;i++)_tpSmokes.push({x:0,y:0,t:0,mt:0,sz:0,active:false,type:0,rot:0});
+function _addTpSmoke(x,y,sz,dur,type){
+  let b=null;for(let i=0;i<_TP_SMOKE_MAX;i++){if(!_tpSmokes[i].active){b=_tpSmokes[i];break}}
+  if(!b){let oi=0,ot=0;for(let i=0;i<_TP_SMOKE_MAX;i++){const r=_tpSmokes[i].t/_tpSmokes[i].mt;if(r>ot){ot=r;oi=i}}b=_tpSmokes[oi]}
+  b.x=x;b.y=y;b.sz=sz;b.t=0;b.mt=dur||20;b.active=true;b.type=type;b.rot=Math.random()*Math.PI*2}
 // ═══ [TP-IMPACT] 텔포 도착 임펙트 (2x2 4프레임) + 이동 번개 ═══
 const _tpImpSpr={img:null,ready:false,w:0,h:0,frames:4,cols:2};
 (function(){const i=new Image();i.src='img/tp_impact.png';i.onload=function(){
@@ -9217,18 +9230,18 @@ function mkItem(slot,tier,el,rarity,wtype){
   const _atkFloor=[0,.05,.15,.25,.40][rarity]||0; // 일반0%, 고급5%, 희귀15%, 영웅25%, 전설40%
   const _atkRoll=Math.max(1,~~(_atkMax*(_atkFloor+(1-_atkFloor)*Math.pow(Math.random(),2)))); // skew: 고뎀 극악, 최소1
   const base={
-    weapon:{atk:_atkRoll,spd:1,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
+    weapon:{atk:_atkRoll,spd:1,antiRevive:+(0.01+0.19*Math.pow(Math.random(),3)).toFixed(2)},
     // DEF/eDef 5티어 선형 통일: T0=10, T1=20, T2=30, T3=40, T4=50 (12슬롯 × 50 = 총 600 방어)
     // eDef는 전 속성 공통이라 절반 스케일 (T4=25, 총 최대 ~150)
     // 방어구 6파트: 물리DEF만, 20+tier*20 (T0=20~T4=100, 6세트 풀=600)
     // bonusHp/Shield/St/Mp 티어별 랜덤 범위(반감): T0=10~50, T1=60~100, T2=110~150, T3=160~200, T4=210~250
     // 방어구 6파트: bonusHp + bonusSt
-    shield:{def:20+tier*20,stagger:15+tier*8,shieldWt:10-tier,bonusHp:~~(tier*50+10+Math.random()*40),bonusSt:~~(tier*50+10+Math.random()*40),antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
+    shield:{def:20+tier*20,stagger:15+tier*8,shieldWt:10-tier,bonusHp:~~(tier*50+10+Math.random()*40),bonusSt:~~(tier*50+10+Math.random()*40),antiRevive:+(0.01+0.19*Math.pow(Math.random(),3)).toFixed(2)},
     boots:{def:20+tier*20,spd:tier*.08,bonusSt:~~(tier*50+10+Math.random()*40),chargeDist:14+tier*3,bonusHp:~~(tier*50+10+Math.random()*40)},
     armor:{def:20+tier*20,charge:8+tier*5,chargeDist:22+tier*4,chargeW:12+tier*5,chargeAoE:0,bonusSt:~~(tier*50+10+Math.random()*40),bonusHp:~~(tier*50+10+Math.random()*40)},
     // 무기 파트(helmet,weapon,bow): bonusHp/bonusShield/bonusSt/bonusMp 없음 — 공격 전용
     helmet:{atk:_atkRoll,beamDmg:1.5+tier*1.2,def:20+tier*20},
-    bow:{atk:_atkRoll,spd:1,antiRevive:+(tier*0.03+Math.random()*0.03).toFixed(2)},
+    bow:{atk:_atkRoll,spd:1,antiRevive:+(0.01+0.19*Math.pow(Math.random(),3)).toFixed(2)},
     gloves:{def:20+tier*20,spd:tier*.04,bonusHp:~~(tier*50+10+Math.random()*40),bonusSt:~~(tier*50+10+Math.random()*40)},
     pants:{def:20+tier*20,bonusSt:~~(tier*50+10+Math.random()*40),bonusHp:~~(tier*50+10+Math.random()*40)},
     cape:{def:20+tier*20,spd:tier*.03,bonusHp:~~(tier*50+10+Math.random()*40),bonusSt:~~(tier*50+10+Math.random()*40)},
@@ -10932,6 +10945,8 @@ function teleportE(e,nx,ny,col,n){if(!canMv(nx,ny,e.r))return false;
   for(let i=0;i<10;i++){const a=Math.PI*2*i/10,d2=r*2.5;poolPart(ox+Math.cos(a)*d2,oy+Math.sin(a)*d2,-Math.cos(a)*5,-Math.sin(a)*5,col,2+Math.random()*2,8)}
   poolPart(ox,oy,0,0,col,r*1.6,8,3,0,0);
   _addBlastLight(ox,oy,r*3,8,_cr,_cg,_cb);
+  // ── 출발지 연기 (퍼지며 사라짐) ──
+  _addTpSmoke(ox,oy,r*4,18,0);
   e.x=nx;e.y=ny;
   // ── 도착지: 충격파 폭발 ──
   const isBig=e.ib||r>=18; // 보스/대형
@@ -10951,6 +10966,8 @@ function teleportE(e,nx,ny,col,n){if(!canMv(nx,ny,e.r))return false;
   e._tpFlashT=12;e._tpFlashCol=col;
   // 6) 스프라이트 도착 임펙트 (불꽃 폭발)
   _addTpImpact(nx,ny,isBig?r*4:r*3,isBig?24:18,col);
+  // 6b) 도착지 연기 (응축되며 나타남)
+  _addTpSmoke(nx,ny,isBig?r*5:r*4,22,1);
   // 7) 출발→도착 번개 경로
   _addTpBolt(ox,oy,nx,ny,12,col);
   return true}
@@ -40868,6 +40885,29 @@ function drawP(){
     if(_lep<.6){X.globalAlpha=.4*(1-_lep/.6);X.fillStyle='#ff4400';X.beginPath();X.arc(le.x,le.y,_lSz*.3*(1-_lep),0,Math.PI*2);X.fill()}
     X.restore();
   }}
+  // ══ [TP-SMOKE] 순간이동 연기 스프라이트 렌더 ══
+  for(let _si=0;_si<_TP_SMOKE_MAX;_si++){const sm=_tpSmokes[_si];if(!sm.active)continue;
+    sm.t+=sp;if(sm.t>=sm.mt){sm.active=false;continue}
+    const _sp=sm.t/sm.mt;
+    const _sImg=sm.type===0?_tpSmokeOut:_tpSmokeIn;
+    if(!_sImg.complete||!_sImg.naturalWidth)continue;
+    X.save();X.globalCompositeOperation='lighter';
+    if(sm.type===0){
+      // 출발: 커지면서 투명해짐 + 회전
+      const _sc=1+_sp*1.8;const _sSz=sm.sz*_sc;
+      X.globalAlpha=Math.max(0,(1-_sp*_sp)*.85);
+      X.translate(sm.x,sm.y);X.rotate(sm.rot+_sp*1.5);
+      X.drawImage(_sImg,-_sSz/2,-_sSz/2,_sSz,_sSz);
+    }else{
+      // 도착: 크게 시작→축소되며 선명해졌다가 사라짐
+      const _sc=2.2-_sp*1.6;const _sSz=sm.sz*Math.max(.6,_sc);
+      const _al=_sp<.4?(_sp/.4):Math.max(0,1-(_sp-.4)/.6);
+      X.globalAlpha=_al*.9;
+      X.translate(sm.x,sm.y);X.rotate(sm.rot-_sp*1.2);
+      X.drawImage(_sImg,-_sSz/2,-_sSz/2,_sSz,_sSz);
+    }
+    X.restore();
+  }
   // ══ [TP-IMPACT] 텔포 도착 불꽃 스프라이트 렌더 ══
   if(_tpImpSpr.ready&&_tpImpSpr.w>0){for(let _ti=0;_ti<_TP_IMP_MAX;_ti++){const ti=_tpImps[_ti];if(!ti.active)continue;
     ti.t+=sp;if(ti.t>=ti.mt){ti.active=false;continue}
