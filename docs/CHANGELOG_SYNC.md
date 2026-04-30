@@ -21382,3 +21382,10 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - assets/vfx/fire_burst_radial.webp
 - game.html
 
+
+## 2026-04-30 09:30 (auto)
+- assets/cutscene/images/ChatGPT Image 2026??4??29???�후 12_46_44.png
+- assets/vfx/center_explode.webp
+- game.html
+- index.html
+
