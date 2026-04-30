@@ -115,43 +115,256 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 .ember{position:absolute;border-radius:50%;pointer-events:none;z-index:8}
 @keyframes rise{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-50vh) scale(0.2)}}
 
-/* ═══ Main Content ═══ */
-.main-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;opacity:0;transition:opacity 1.2s ease .5s}
+/* ═══ Main Content — HELL LOBBY ═══ */
+.main-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;opacity:0;transition:opacity 1.2s ease .5s;overflow:hidden}
 .main-wrap.show{opacity:1}
-.main-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% 120%,rgba(80,20,0,.3),transparent 70%)}
-.main-wrap::after{content:'';position:absolute;inset:0;background:url('img/cin_victory.png') center/cover no-repeat;opacity:.12;filter:brightness(.5);pointer-events:none}
-.container{position:relative;z-index:1;width:840px;max-width:92vw}
+.main-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 80%,rgba(80,20,0,.4),transparent 70%);z-index:0}
+.main-wrap::after{content:'';position:absolute;inset:0;background:url('img/cin_victory.png') center/cover no-repeat;opacity:.08;filter:brightness(.4);pointer-events:none;z-index:0}
+
+/* ── 좌측: 캐릭터 디스플레이 ── */
+.lobby-left{
+  position:relative;flex:0 0 55%;display:flex;align-items:center;justify-content:center;z-index:1;overflow:hidden;
+  background:radial-gradient(ellipse at 50% 70%,rgba(60,15,0,.5),rgba(10,4,2,.98) 70%)
+}
+.lobby-left::before{
+  content:'';position:absolute;inset:0;
+  background:url('img/cin_victory.png') center 30%/cover no-repeat;opacity:.18;filter:brightness(.35) saturate(.7);pointer-events:none
+}
+.lobby-left::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 50% 85%,rgba(255,60,10,.12),transparent 50%),
+    radial-gradient(ellipse at 50% 50%,transparent 30%,rgba(0,0,0,.7) 100%),
+    linear-gradient(0deg,rgba(0,0,0,.6) 0%,transparent 30%);
+}
+#lobbyParticles{position:absolute;inset:0;z-index:1;pointer-events:none}
+
+.char-display{position:relative;z-index:2;text-align:center;margin-top:-5%}
+.char-display-sprite{
+  width:280px;height:280px;image-rendering:pixelated;
+  filter:drop-shadow(0 0 40px rgba(255,80,30,.35)) drop-shadow(0 8px 30px rgba(0,0,0,.8));
+  animation:charFloat 4s ease-in-out infinite
+}
+@keyframes charFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.char-display-name{
+  font-family:'Cinzel Decorative',serif;font-size:2.2rem;color:#ffaa66;
+  text-shadow:0 0 30px rgba(255,80,30,.6),0 2px 10px rgba(0,0,0,.8);
+  letter-spacing:.15em;margin-top:24px
+}
+.char-display-empty{color:#554433;font-size:1.1rem;letter-spacing:.3em;text-transform:uppercase;opacity:.6}
+
+/* ── 우측: 정보 + 슬롯 ── */
+.lobby-right{
+  position:relative;flex:0 0 45%;display:flex;flex-direction:column;z-index:1;
+  background:linear-gradient(160deg,rgba(14,8,4,.97),rgba(20,12,6,.99));
+  border-left:1px solid rgba(255,80,30,.1);
+  box-shadow:-20px 0 60px rgba(0,0,0,.5)
+}
+.lobby-right::before{
+  content:'';position:absolute;top:0;left:0;bottom:0;width:1px;
+  background:linear-gradient(180deg,transparent,rgba(255,80,30,.25) 30%,rgba(255,80,30,.25) 70%,transparent);
+}
+.lobby-right-inner{flex:1;display:flex;flex-direction:column;padding:36px 32px 20px;overflow:hidden}
+
+/* 헤더 */
+.lobby-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid rgba(255,100,40,.1)}
+.lobby-logo{
+  font-family:'Cinzel Decorative',serif;font-size:1.6rem;color:#ff6633;
+  text-shadow:0 0 25px rgba(255,80,30,.5);letter-spacing:.15em
+}
+.lobby-header-right{display:flex;align-items:center;gap:12px}
+.user-info{font-size:.72rem;color:#665544;letter-spacing:.05em}
+.logout-btn{
+  padding:5px 14px;background:transparent;border:1px solid rgba(136,68,51,.4);
+  color:#884433;font-size:.7rem;font-family:'Noto Sans KR';cursor:pointer;
+  transition:all .3s;border-radius:2px;letter-spacing:.05em
+}
+.logout-btn:hover{border-color:#cc4433;color:#ff4433;background:rgba(204,68,51,.06)}
+
+/* 정보 패널 */
+.char-info-panel{
+  margin-bottom:20px;padding:20px;min-height:130px;
+  background:linear-gradient(135deg,rgba(0,0,0,.35),rgba(20,10,5,.4));
+  border:1px solid rgba(255,100,40,.06);border-radius:2px;
+  position:relative;overflow:hidden
+}
+.char-info-panel::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,80,30,.2),transparent)
+}
+.cip-name{
+  font-family:'Cinzel Decorative',serif;font-size:1.6rem;color:#ccaa77;
+  letter-spacing:.1em;margin-bottom:14px;
+  text-shadow:0 0 15px rgba(204,170,119,.15)
+}
+.cip-row{display:flex;gap:16px;margin-bottom:6px;align-items:baseline}
+.cip-label{
+  font-size:.7rem;color:#554433;min-width:80px;text-transform:uppercase;
+  letter-spacing:.12em;font-weight:600
+}
+.cip-value{font-size:.85rem;color:#bb9966;font-weight:500;letter-spacing:.03em}
+.cip-empty{color:#443322;font-size:.85rem;text-align:center;padding:35px 0;letter-spacing:.1em}
+
+/* 슬롯 리스트 */
+.char-list{flex:1;overflow-y:auto;margin-bottom:16px;scrollbar-width:thin;scrollbar-color:rgba(68,34,17,.5) transparent}
+.char-list::-webkit-scrollbar{width:3px}
+.char-list::-webkit-scrollbar-thumb{background:rgba(68,34,17,.5);border-radius:2px}
+.char-list::-webkit-scrollbar-track{background:transparent}
+.char-item{
+  display:flex;align-items:center;gap:16px;padding:14px 18px;
+  background:linear-gradient(135deg,rgba(0,0,0,.2),rgba(20,10,5,.25));
+  border:1px solid rgba(255,255,255,.04);
+  margin-bottom:4px;cursor:pointer;transition:all .3s ease;
+  border-radius:2px;position:relative;overflow:hidden
+}
+.char-item::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:2px;
+  background:rgba(255,80,30,0);transition:background .3s
+}
+.char-item:hover{
+  border-color:rgba(136,102,68,.35);
+  background:linear-gradient(135deg,rgba(40,20,10,.3),rgba(30,15,8,.35));
+  transform:translateX(3px)
+}
+.char-item:hover::before{background:rgba(255,80,30,.5)}
+.char-item.active{
+  border-color:rgba(196,68,68,.4);
+  box-shadow:0 0 20px rgba(196,68,68,.15),inset 0 0 30px rgba(196,68,68,.03);
+  background:linear-gradient(135deg,rgba(80,20,10,.2),rgba(40,10,5,.25))
+}
+.char-item.active::before{background:#c44}
+.char-thumb{
+  width:52px;height:52px;background:rgba(0,0,0,.5);
+  border:1px solid rgba(255,100,40,.1);border-radius:2px;
+  image-rendering:pixelated;display:flex;align-items:center;
+  justify-content:center;overflow:hidden;flex-shrink:0;
+  box-shadow:inset 0 0 10px rgba(0,0,0,.4)
+}
+.char-thumb img{width:100%;height:100%;object-fit:cover;image-rendering:pixelated}
+.char-thumb-empty{font-size:1.4rem;color:#553322}
+.char-text{flex:1;min-width:0}
+.char-name{font-weight:700;font-size:1rem;color:#ccaa77;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing:.03em}
+.char-info{font-size:.72rem;color:#887755;margin-top:3px;letter-spacing:.02em}
+.char-del{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  padding:6px 8px;background:none;border:none;color:#553322;
+  font-size:.9rem;cursor:pointer;opacity:0;transition:all .25s
+}
+.char-item:hover .char-del{opacity:.5}
+.char-del:hover{opacity:1!important;color:#ff4433;text-shadow:0 0 8px rgba(255,68,51,.3)}
+.no-chars{text-align:center;padding:40px;color:#443322;font-size:.85rem;letter-spacing:.1em}
+
+/* 새 캐릭터 슬롯 */
+.char-item-new{
+  display:flex;align-items:center;gap:16px;padding:14px 18px;
+  background:rgba(0,0,0,.08);
+  border:1px dashed rgba(255,100,40,.12);
+  margin-bottom:4px;cursor:pointer;transition:all .3s;border-radius:2px
+}
+.char-item-new:hover{
+  border-color:rgba(255,100,40,.35);
+  background:rgba(255,80,20,.03);
+  transform:translateX(3px)
+}
+.char-item-new .char-thumb{border-style:dashed;border-color:rgba(255,100,40,.15)}
+.char-item-new .char-name{color:#886644}
+
+/* 하단 바 */
+.lobby-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:16px 0 4px;border-top:1px solid rgba(255,100,40,.08)
+}
+.enter-game-btn{
+  padding:14px 48px;
+  background:linear-gradient(135deg,rgba(255,80,30,.08),rgba(255,60,20,.12));
+  border:1px solid rgba(255,100,40,.5);color:#ffaa66;
+  font-family:'Noto Sans KR';font-size:1.05rem;font-weight:700;
+  cursor:pointer;letter-spacing:.2em;transition:all .4s;border-radius:2px;
+  position:relative;overflow:hidden;text-transform:uppercase
+}
+.enter-game-btn::before{
+  content:'';position:absolute;inset:-1px;border-radius:2px;
+  background:linear-gradient(135deg,rgba(255,80,30,.2),transparent,rgba(255,80,30,.2));
+  opacity:0;transition:opacity .4s
+}
+.enter-game-btn:hover{
+  border-color:#ff8844;color:#ffddaa;
+  background:linear-gradient(135deg,rgba(255,80,30,.15),rgba(255,60,20,.2));
+  box-shadow:0 0 40px rgba(255,80,20,.2),0 0 80px rgba(255,60,10,.1);
+  transform:translateY(-1px)
+}
+.enter-game-btn:hover::before{opacity:1}
+.enter-game-btn:disabled{opacity:.25;cursor:default;transform:none;box-shadow:none}
+.enter-game-btn:disabled::before{display:none}
+.lobby-version{font-size:.6rem;color:#332211;letter-spacing:.1em}
+
+/* ── 로그인 ── */
+.container{position:relative;z-index:1;width:480px;max-width:92vw}
 .title{text-align:center;margin-bottom:32px}
-.title h1{font-family:'Cinzel Decorative',serif;font-size:3rem;color:#ff6633;text-shadow:0 0 30px rgba(255,80,30,.4);letter-spacing:.15em;margin-bottom:8px}
-.title p{font-size:1rem;color:#665544;letter-spacing:.3em}
-.card{background:linear-gradient(135deg,#1a0e08,#221510,#1a0e08);border:1px solid #443322;padding:40px 36px;position:relative;overflow:hidden}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#ff6633,transparent)}
+.title h1{
+  font-family:'Cinzel Decorative',serif;font-size:2.5rem;color:#ff6633;
+  text-shadow:0 0 30px rgba(255,80,30,.4),0 0 60px rgba(255,40,10,.15);
+  letter-spacing:.15em;margin-bottom:8px
+}
+.title p{font-size:.85rem;color:#665544;letter-spacing:.3em}
+.card{
+  background:linear-gradient(135deg,rgba(18,10,6,.95),rgba(26,14,8,.98));
+  border:1px solid #443322;padding:36px 30px;position:relative;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.5)
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#ff6633,transparent)}
 .login-section{text-align:center}
-.login-section h2{font-size:1.2rem;color:#aa7744;letter-spacing:.2em;margin-bottom:28px;font-weight:700}
-.google-btn{display:inline-flex;align-items:center;gap:12px;padding:16px 36px;background:rgba(255,255,255,.05);border:1px solid #554422;color:#ccaa77;font-family:'Noto Sans KR';font-size:1rem;font-weight:700;cursor:pointer;letter-spacing:.1em;transition:all .3s}
-.google-btn:hover{border-color:#ff8844;color:#ffcc88;background:rgba(255,100,50,.08);transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,80,30,.15)}
+.login-section h2{font-size:1.1rem;color:#aa7744;letter-spacing:.2em;margin-bottom:24px;font-weight:700}
+.google-btn{
+  display:inline-flex;align-items:center;gap:12px;padding:14px 32px;
+  background:rgba(255,255,255,.03);border:1px solid #554422;color:#ccaa77;
+  font-family:'Noto Sans KR';font-size:.95rem;font-weight:700;
+  cursor:pointer;letter-spacing:.1em;transition:all .4s
+}
+.google-btn:hover{
+  border-color:#ff8844;color:#ffcc88;background:rgba(255,100,50,.06);
+  transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,80,30,.15)
+}
 .google-btn svg{width:20px;height:20px}
 .lobby{display:none}
-.lobby-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid #332211}
-.lobby-header h2{font-size:1.2rem;color:#aa7744;letter-spacing:.15em;font-weight:700}
-.user-info{font-size:.8rem;color:#665544}
-.logout-btn{padding:6px 16px;background:none;border:1px solid #442222;color:#884433;font-size:.8rem;font-family:'Noto Sans KR';cursor:pointer;transition:all .2s}
-.logout-btn:hover{border-color:#cc4433;color:#ff4433}
-.char-list{margin-bottom:24px;max-height:400px;overflow-y:auto}
-.char-item{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:rgba(0,0,0,.3);border:1px solid #2a2211;margin-bottom:6px;cursor:pointer;transition:all .2s}
-.char-item:hover{border-color:#886644;background:rgba(255,100,0,.04)}
-.char-name{font-weight:700;font-size:1.1rem;color:#ccaa77}
-.char-info{font-size:.8rem;color:#887755}
-.char-del{padding:4px 14px;background:none;border:1px solid #442222;color:#884433;font-size:.7rem;font-family:'Noto Sans KR';cursor:pointer;transition:all .2s}
-.char-del:hover{border-color:#cc4433;color:#ff4433}
-.no-chars{text-align:center;padding:20px;color:#554433;font-size:.6rem}
-.create-section{border-top:1px solid #332211;padding-top:20px}
-.create-section h3{font-size:1rem;color:#886644;letter-spacing:.15em;margin-bottom:14px;font-weight:700}
-.create-row{display:flex;gap:6px}
-.name-input{flex:1;padding:8px 12px;background:rgba(0,0,0,.4);border:1px solid #443322;color:#ccaa77;font-family:'Noto Sans KR';font-size:.7rem;outline:none;transition:border-color .2s}
-.name-input:focus{border-color:#ff8844}
-.name-input::placeholder{color:#554433}
-.create-btn{padding:8px 18px;background:rgba(255,100,50,.08);border:1px solid #884422;color:#ff8844;font-family:'Noto Sans KR';font-size:.65rem;font-weight:700;cursor:pointer;letter-spacing:.1em;transition:all .2s}
+
+/* ── 생성 모달 ── */
+.create-modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.9);align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.create-modal.show{display:flex}
+.create-modal-inner{
+  background:linear-gradient(135deg,rgba(18,10,6,.98),rgba(24,14,8,.99));
+  border:1px solid rgba(255,100,40,.15);padding:48px 40px;width:440px;max-width:90vw;
+  border-radius:2px;text-align:center;position:relative;
+  box-shadow:0 30px 80px rgba(0,0,0,.6)
+}
+.create-modal-inner::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,80,30,.3),transparent)
+}
+.create-modal-inner h2{font-family:'Cinzel Decorative',serif;font-size:1.5rem;color:#ccaa77;margin-bottom:8px;letter-spacing:.1em}
+.create-modal-inner p{color:#887755;font-size:.8rem;margin-bottom:28px;letter-spacing:.05em}
+.name-input{
+  width:100%;padding:14px 18px;background:rgba(0,0,0,.4);
+  border:1px solid rgba(255,100,40,.12);color:#ccaa77;
+  font-family:'Noto Sans KR';font-size:1rem;outline:none;
+  transition:all .3s;box-sizing:border-box;border-radius:2px;margin-bottom:20px;
+  letter-spacing:.05em
+}
+.name-input:focus{border-color:rgba(255,136,68,.5);box-shadow:0 0 15px rgba(255,80,30,.1)}
+.name-input::placeholder{color:#443322}
+.create-modal-btns{display:flex;gap:12px;justify-content:center}
+.create-btn{
+  padding:12px 32px;background:rgba(255,100,50,.08);border:1px solid rgba(136,68,34,.6);
+  color:#ff8844;font-family:'Noto Sans KR';font-size:.9rem;font-weight:700;
+  cursor:pointer;letter-spacing:.12em;transition:all .3s;border-radius:2px
+}
+.create-btn:hover{background:rgba(255,100,50,.15);border-color:#ff8844;box-shadow:0 0 20px rgba(255,80,20,.15);color:#ffcc88}
+.create-cancel-btn{
+  padding:12px 32px;background:none;border:1px solid rgba(68,34,34,.5);
+  color:#884433;font-family:'Noto Sans KR';font-size:.9rem;
+  cursor:pointer;transition:all .3s;border-radius:2px;letter-spacing:.08em
+}
+.create-cancel-btn:hover{border-color:#cc4433;color:#ff4433;background:rgba(204,68,51,.04)}
 .create-btn:hover{border-color:#ff8844;background:rgba(255,100,50,.15);color:#ffcc88}
 .create-btn:disabled{opacity:.3;cursor:default}
 .status{text-align:center;padding:8px;font-size:.5rem;color:#886644;min-height:24px}
@@ -242,13 +455,64 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
           Google로 입장
         </button>
       </div>
-      <div class="lobby" id="lobby">
-        <div class="lobby-header"><h2>캐릭터 선택</h2><div><span class="user-info" id="userEmail"></span><button class="logout-btn" id="logoutBtn">로그아웃</button></div></div>
-        <div class="char-list" id="charList"><div class="no-chars">캐릭터가 없습니다. 새로 생성하세요.</div></div>
-        <div class="create-section"><h3>새 캐릭터 생성</h3><div class="create-row"><input class="name-input" id="charName" placeholder="캐릭터 이름 (2~8자)" maxlength="8"><button class="create-btn" id="createBtn">생성</button></div></div>
-        <div class="status" id="status"></div>
+      <div class="lobby" id="lobby" style="display:none;position:fixed;inset:0;z-index:10">
+        <!-- 좌측: 캐릭터 디스플레이 -->
+        <div class="lobby-left">
+          <canvas id="lobbyParticles"></canvas>
+          <div class="char-display" id="charDisplay">
+            <div class="char-display-empty" id="charDispEmpty">캐릭터를 선택하세요</div>
+            <canvas id="charDispCanvas" width="200" height="200" style="display:none" class="char-display-sprite"></canvas>
+            <div class="char-display-name" id="charDispName"></div>
+          </div>
+        </div>
+        <!-- 우측: 정보 + 슬롯 -->
+        <div class="lobby-right">
+          <div class="lobby-right-inner">
+            <div class="lobby-header">
+              <div class="lobby-logo">HELL</div>
+              <div class="lobby-header-right">
+                <span class="user-info" id="userEmail"></span>
+                <button class="logout-btn" id="logoutBtn">로그아웃</button>
+              </div>
+            </div>
+            <!-- 정보 패널 -->
+            <div class="char-info-panel" id="charInfoPanel">
+              <div class="cip-empty" id="cipEmpty">슬롯을 선택하거나 새 캐릭터를 생성하세요</div>
+              <div id="cipContent" style="display:none">
+                <div class="cip-name" id="cipName"></div>
+                <div class="cip-row"><span class="cip-label">레벨</span><span class="cip-value" id="cipLv"></span></div>
+                <div class="cip-row"><span class="cip-label">진행</span><span class="cip-value" id="cipProgress"></span></div>
+                <div class="cip-row"><span class="cip-label">플레이타임</span><span class="cip-value" id="cipTime"></span></div>
+                <div class="cip-row"><span class="cip-label">처치수</span><span class="cip-value" id="cipKills"></span></div>
+              </div>
+            </div>
+            <!-- 슬롯 리스트 -->
+            <div class="char-list" id="charList">
+              <div class="no-chars">캐릭터가 없습니다.</div>
+            </div>
+            <!-- 하단 바 -->
+            <div class="lobby-bottom">
+              <span class="lobby-version">v0.9</span>
+              <button class="enter-game-btn" id="enterGameBtn" disabled>입장</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- 생성 모달 -->
+<div class="create-modal" id="createModal">
+  <div class="create-modal-inner">
+    <h2>새 캐릭터 생성</h2>
+    <p>지옥에 보낼 캐릭터의 이름을 지어주세요</p>
+    <input class="name-input" id="charName" placeholder="이름 (2~8자)" maxlength="8">
+    <div class="create-modal-btns">
+      <button class="create-cancel-btn" id="createCancelBtn">취소</button>
+      <button class="create-btn" id="createBtn">생성</button>
+    </div>
+    <div class="status" id="status"></div>
   </div>
 </div>
 
@@ -264,6 +528,19 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+// 브라우저 줌 차단
+addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
+var _selectedSlot=null;
+var _localSlots=[];
+var _spriteOk={};// 캐릭터 스프라이트 존재 캐시
+function _tryLoadSprite(folder,fw,fh,canvas){
+  if(_spriteOk[folder]===false)return;
+  const im=new Image();
+  im.onerror=()=>{_spriteOk[folder]=false};
+  im.onload=()=>{_spriteOk[folder]=true;canvas.getContext('2d').drawImage(im,0,0,fw,fh,0,0,fw,fh)};
+  im.src=folder+'/south.png';
+}
+addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&(e.code==='Equal'||e.code==='Minus'||e.code==='NumpadAdd'||e.code==='NumpadSubtract'||e.code==='Digit0'))e.preventDefault()});
 const SUPABASE_URL='https://tevlznuhjqcnzgewlswx.supabase.co';
 const SUPABASE_KEY='sb_publishable_chAwadci1zVQNEKPC__s_w_7K3Oz_WP';
 const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
@@ -531,7 +808,7 @@ function playCinematic(){
     $('loading').style.display='none';
     
     if(_testMode){
-      $('loginSection').style.display='none';$('lobby').style.display='block';
+      $('loginSection').style.display='none';$('lobby').style.display='flex';
       $('userEmail').textContent='LOCAL MODE';loadLocalCharacters();
     } else if(currentUser){
       showLobby();
@@ -642,7 +919,7 @@ function skipToGate(){
   $('mainWrap').classList.add('show');
   $('loading').style.display='none';
   if(_testMode){
-    $('loginSection').style.display='none';$('lobby').style.display='block';
+    $('loginSection').style.display='none';$('lobby').style.display='flex';
     $('userEmail').textContent='LOCAL MODE';loadLocalCharacters();
   } else if(currentUser){
     showLobby();
@@ -741,7 +1018,7 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
       _cinDone=true;startBGM();
       $('cinScene').style.display='none';clearInterval(_emberIv);
       $('mainWrap').classList.add('show');
-      $('loginSection').style.display='none';$('lobby').style.display='block';
+      $('loginSection').style.display='none';$('lobby').style.display='flex';
       $('userEmail').textContent='LOCAL MODE';
       await loadLocalCharacters();
       hideLoading();
@@ -789,7 +1066,7 @@ $('logoutBtn').onclick=async()=>{await sb.auth.signOut();currentUser=null;$('lob
 
 async function showLobby(){
   showLoading(_TL('캐릭터 불러오는 중...'));
-  $('loginSection').style.display='none';$('lobby').style.display='block';
+  $('loginSection').style.display='none';$('lobby').style.display='flex';
   $('userEmail').textContent=currentUser.email||'';await loadCharacters();
   hideLoading();
 }
@@ -808,8 +1085,7 @@ async function loadCharacters(){
     const div=document.createElement('div');div.className='char-item';
     div.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><canvas class="_chPort" width="${_vi.fw}" height="${_vi.fh}" style="width:40px;height:40px;image-rendering:pixelated;border:1px solid #443322;border-radius:4px;background:#111"></canvas><div><div class="char-name">${escHtml(ch.name)}</div><div class="char-info">Lv.${lv} | ${st}</div></div></div><div style="display:flex;gap:6px;align-items:center"><button class="char-del">${_TL('삭제')}</button></div>`;
     const _cv=div.querySelector('._chPort');
-    const _im=new Image();_im.onerror=()=>{};_im.src=_vi.folder+'/south.png';
-    _im.onload=()=>{_cv.getContext('2d').drawImage(_im,0,0,_vi.fw,_vi.fh,0,0,_vi.fw,_vi.fh)};
+    _tryLoadSprite(_vi.folder,_vi.fw,_vi.fh,_cv);
     div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;showCharGate(ch.id)});
     div.querySelector('.char-del').addEventListener('click',async e=>{
       e.stopPropagation();if(!confirm(ch.name+_TL(' 캐릭터를 정말 삭제하시겠습니까?')))return;
@@ -841,8 +1117,7 @@ function openVisualSelect(name){
     // 프리뷰
     const cv=document.createElement('canvas');cv.width=ch.fw;cv.height=ch.fh;
     cv.style.cssText='width:64px;height:64px;image-rendering:pixelated;display:block;margin:0 auto 6px';
-    const im=new Image();im.onerror=()=>{};im.src=ch.folder+'/south.png';
-    im.onload=()=>{cv.getContext('2d').drawImage(im,0,0,ch.fw,ch.fh,0,0,ch.fw,ch.fh)};
+    _tryLoadSprite(ch.folder,ch.fw,ch.fh,cv);
     card.appendChild(cv);
     // 이름
     const nm=document.createElement('div');nm.textContent=ch.name;
@@ -886,49 +1161,170 @@ $('charName').addEventListener('keydown',e=>{if(e.key==='Enter')$('createBtn').c
 function setStatus(m,err){$('status').textContent=m;$('status').className=err?'status error':'status'}
 function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
 
-// ═══ 로컬 캐릭터 목록 (서버 saves/ 폴더) ═══
+// ═══ 로컬 캐릭터 목록 (서버 saves/ 폴더) — 3분할 UI ═══
+// moved to top
+
 async function loadLocalCharacters(){
   const cl=$('charList');cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
+  _selectedSlot=null;_updateCharDisplay();
   try{
     const res=await fetch('/api/slots');
     const j=await res.json();
-    if(!j.ok||!j.slots||j.slots.length===0){cl.innerHTML='<div class="no-chars">'+_TL('캐릭터가 없습니다. 새로 생성하세요.')+'</div>';return}
-    cl.innerHTML='';
-    const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
-    j.slots.forEach(s=>{
-      const stage=s.stage||0;
-      const hell=Math.min(6,~~(stage/10));const floor=stage%10+1;
-      const st=stage===0?'시작점':(hell+1)+'장 '+hn[hell]+' '+floor+'층';
-      const _vi=CHAR_VISUALS[s.charIdx||0]||CHAR_VISUALS[0];
-      const div=document.createElement('div');div.className='char-item';
-      div.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><canvas class="_chPort" width="${_vi.fw}" height="${_vi.fh}" style="width:40px;height:40px;image-rendering:pixelated;border:1px solid #443322;border-radius:4px;background:#111"></canvas><div><div class="char-name">${escHtml(s.name)}</div><div class="char-info">Lv.${s.lv||1} | ${st}</div></div></div><div style="display:flex;gap:6px;align-items:center"><button class="char-del">${_TL('삭제')}</button></div>`;
-      const _cv=div.querySelector('._chPort');
-      const _im=new Image();_im.onerror=()=>{};_im.src=_vi.folder+'/south.png';
-      _im.onload=()=>{_cv.getContext('2d').drawImage(_im,0,0,_vi.fw,_vi.fh,0,0,_vi.fw,_vi.fh)};
-      div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;showCharGate(s.name)});
-      div.querySelector('.char-del').addEventListener('click',async e=>{
-        e.stopPropagation();if(!confirm(s.name+_TL(' 캐릭터를 정말 삭제하시겠습니까?')))return;
-        try{
-          await fetch('/api/save/'+encodeURIComponent(s.name),{method:'DELETE'});
-          await loadLocalCharacters();
-        }catch(de){setStatus(_TL('삭제 실패: ')+de.message,true)}
-      });
-      cl.appendChild(div);
-    });
+    _localSlots=j.ok&&j.slots?j.slots:[];
+    _renderSlotList();
   }catch(e){cl.innerHTML='<div class="no-chars" style="color:#cc4433">'+_TL('서버 연결 실패: ')+e.message+'</div>'}
 }
 
-// ═══ 캐릭터 선택 → 문 열림 → 입장 ═══
-function showCharGate(charId){
-  showLoading('지옥으로 입장하는 중...');
-
-  const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId;
-  
-  // 로딩 이미지가 바뀐 것을 브라우저가 인식하고 표시할 충분한 시간을 줌
-  setTimeout(() => {
-    window.location.href=_tp;
-  }, 1200);
+function _renderSlotList(){
+  const cl=$('charList');cl.innerHTML='';
+  const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
+  _localSlots.forEach(s=>{
+    const stage=s.stage||0;
+    const hell=Math.min(6,~~(stage/10));const floor=stage%10+1;
+    const st=stage===0?_TL('시작점'):(hell+1)+_TL('장')+' '+hn[hell]+' '+floor+_TL('층');
+    const _vi=CHAR_VISUALS[s.charIdx||0]||CHAR_VISUALS[0];
+    const div=document.createElement('div');div.className='char-item'+(_selectedSlot===s.name?' active':'');
+    div.innerHTML=`<div class="char-thumb"><canvas class="_chPort" width="${_vi.fw}" height="${_vi.fh}" style="width:100%;height:100%;image-rendering:pixelated"></canvas></div><div class="char-text"><div class="char-name">${escHtml(s.name)}</div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+    const _cv=div.querySelector('._chPort');
+    _tryLoadSprite(_vi.folder,_vi.fw,_vi.fh,_cv);
+    div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;_selectSlot(s)});
+    div.querySelector('.char-del').addEventListener('click',async e=>{
+      e.stopPropagation();if(!confirm(s.name+_TL(' 캐릭터를 정말 삭제하시겠습니까?')))return;
+      try{await fetch('/api/save/'+encodeURIComponent(s.name),{method:'DELETE'});await loadLocalCharacters()}catch(de){setStatus(_TL('삭제 실패: ')+de.message,true)}
+    });
+    cl.appendChild(div);
+  });
+  // + 새 캐릭터 슬롯
+  const newDiv=document.createElement('div');newDiv.className='char-item-new';
+  newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">+</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+_TL('새 캐릭터')+'</div></div>';
+  newDiv.addEventListener('click',()=>{$('createModal').classList.add('show');$('charName').value='';$('charName').focus()});
+  cl.appendChild(newDiv);
 }
+
+function _selectSlot(s){
+  _selectedSlot=s.name;
+  _renderSlotList();
+  _updateCharDisplay(s);
+}
+
+function _updateCharDisplay(s){
+  const btn=$('enterGameBtn');
+  if(!s){
+    $('charDispEmpty').style.display='';$('charDispCanvas').style.display='none';$('charDispName').textContent='';
+    $('cipEmpty').style.display='';$('cipContent').style.display='none';
+    btn.disabled=true;return;
+  }
+  // 디스플레이
+  const _vi=CHAR_VISUALS[s.charIdx||0]||CHAR_VISUALS[0];
+  $('charDispEmpty').style.display='none';
+  const cv=$('charDispCanvas');cv.style.display='';cv.width=_vi.fw;cv.height=_vi.fh;
+  _tryLoadSprite(_vi.folder,_vi.fw,_vi.fh,cv);
+  $('charDispName').textContent=s.name;
+  // 정보 패널
+  $('cipEmpty').style.display='none';$('cipContent').style.display='';
+  $('cipName').textContent=s.name;
+  $('cipLv').textContent='Lv. '+(s.lv||1);
+  const stage=s.stage||0;const hell=Math.min(6,~~(stage/10));const floor=stage%10+1;
+  const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
+  $('cipProgress').textContent=stage===0?_TL('시작점'):(hell+1)+_TL('장')+' '+hn[hell]+' '+floor+_TL('층');
+  const pt=s.playTime||0;const ph=~~(pt/3600);const pm=~~((pt%3600)/60);
+  $('cipTime').textContent=ph+'h '+pm+'m';
+  $('cipKills').textContent=(s.kills||0)+_TL(' 처치');
+  btn.disabled=false;
+}
+
+// 입장 버튼
+$('enterGameBtn').addEventListener('click',()=>{if(_selectedSlot)showCharGate(_selectedSlot)});
+// 생성 모달
+$('createCancelBtn').addEventListener('click',()=>{$('createModal').classList.remove('show')});
+
+// ═══ 캐릭터 선택 → 입장 ═══
+function showCharGate(charId){
+  showLoading(_TL('지옥으로 입장하는 중...'));
+  const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId;
+  setTimeout(()=>{window.location.href=_tp},1200);
+}
+
+// ═══ 로비 파티클 시스템 (불씨 + 안개) ═══
+(function(){
+  const cv=document.getElementById('lobbyParticles');
+  if(!cv)return;
+  const cx=cv.getContext('2d');
+  const embers=[];const mist=[];
+  const MAX_EMBERS=40;const MAX_MIST=6;
+  function resize(){cv.width=cv.parentElement.offsetWidth;cv.height=cv.parentElement.offsetHeight}
+  resize();window.addEventListener('resize',resize);
+  // 불씨 초기화
+  for(let i=0;i<MAX_EMBERS;i++){
+    embers.push({
+      x:Math.random()*2000,y:Math.random()*1200,
+      vx:(Math.random()-.5)*.3,vy:-(Math.random()*.8+.2),
+      sz:Math.random()*2.5+.5,
+      life:Math.random(),decay:Math.random()*.003+.001,
+      hue:Math.random()*.3 // 0=red, .15=orange, .3=yellow
+    });
+  }
+  // 안개 초기화
+  for(let i=0;i<MAX_MIST;i++){
+    mist.push({
+      x:Math.random()*2000,y:cv.height*(0.5+Math.random()*.5),
+      r:150+Math.random()*200,
+      vx:(Math.random()-.5)*.15,
+      alpha:Math.random()*.04+.01,
+      phase:Math.random()*6.28
+    });
+  }
+  function loop(){
+    if(!cv.parentElement||cv.parentElement.offsetWidth===0){requestAnimationFrame(loop);return}
+    const w=cv.width,h=cv.height;
+    cx.clearRect(0,0,w,h);
+    const t=performance.now()*.001;
+    // 안개
+    for(let i=0;i<mist.length;i++){
+      const m=mist[i];
+      m.x+=m.vx;
+      if(m.x<-m.r)m.x=w+m.r;
+      if(m.x>w+m.r)m.x=-m.r;
+      const pulse=Math.sin(t*.3+m.phase)*.015;
+      const grd=cx.createRadialGradient(m.x,m.y,0,m.x,m.y,m.r);
+      grd.addColorStop(0,'rgba(60,25,10,'+(m.alpha+pulse)+')');
+      grd.addColorStop(1,'rgba(30,10,5,0)');
+      cx.fillStyle=grd;cx.fillRect(m.x-m.r,m.y-m.r,m.r*2,m.r*2);
+    }
+    // 불씨
+    for(let i=0;i<embers.length;i++){
+      const e=embers[i];
+      e.x+=e.vx+Math.sin(t*2+i)*.2;
+      e.y+=e.vy;
+      e.life-=e.decay;
+      if(e.life<=0||e.y<-20){
+        e.x=Math.random()*w;e.y=h+10;
+        e.life=1;e.sz=Math.random()*2.5+.5;
+        e.vy=-(Math.random()*.8+.2);
+        e.hue=Math.random()*.3;
+      }
+      const a=e.life*.7;
+      const r=~~(255-e.hue*80);const g=~~(80+e.hue*120);const b=~~(10+e.hue*20);
+      cx.globalAlpha=a;
+      cx.fillStyle='rgb('+r+','+g+','+b+')';
+      cx.beginPath();cx.arc(e.x,e.y,e.sz,0,6.28);cx.fill();
+      // 글로우
+      if(e.sz>1.5){
+        cx.globalAlpha=a*.25;
+        cx.beginPath();cx.arc(e.x,e.y,e.sz*3,0,6.28);cx.fill();
+      }
+    }
+    cx.globalAlpha=1;
+    requestAnimationFrame(loop);
+  }
+  // lobby가 보일 때만 시작
+  const obs=new MutationObserver(()=>{
+    if(cv.parentElement&&cv.parentElement.parentElement&&cv.parentElement.parentElement.style.display==='flex'){resize();loop();obs.disconnect()}
+  });
+  obs.observe(document.getElementById('lobby'),{attributes:true,attributeFilter:['style']});
+  // 즉시 시작 시도
+  if(document.getElementById('lobby').style.display==='flex'){resize();loop()}
+})();
 </script>
 </body>
 </html>
