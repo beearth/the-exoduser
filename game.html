@@ -8083,7 +8083,8 @@ addEventListener('mousedown',e=>{
 addEventListener('mouseup',e=>{MB[e.button]=false;if(e.button>=1)e.preventDefault()});
 addEventListener('auxclick',e=>{e.preventDefault();e.stopPropagation()});
 addEventListener('contextmenu',e=>e.preventDefault());
-addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();return}if(G.on&&!G.paused){e.preventDefault()}},{passive:false});
+addEventListener('wheel',e=>{e.preventDefault()},{passive:false});
+addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&(e.code==='Equal'||e.code==='Minus'||e.code==='NumpadAdd'||e.code==='NumpadSubtract'||e.code==='Digit0'))e.preventDefault()});
 
 function _chkAct(b){if(!b)return false;if(b.startsWith('mouse'))return!!MB[+b.slice(5)];return!!K[b]}
 function _chkJust(b){if(!b)return false;if(b.startsWith('mouse')){const n=+b.slice(5);if(MBjust[n]){MBjust[n]=false;return true}return false}if(K[b]){K[b]=false;return true}return false}
