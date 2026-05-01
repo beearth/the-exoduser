@@ -22,7 +22,7 @@ if (!fs.existsSync(SAVE_DIR)) fs.mkdirSync(SAVE_DIR, { recursive: true });
 const MIME = {
   '.html':'text/html; charset=utf-8','.js':'application/javascript','.css':'text/css',
   '.json':'application/json','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg',
-  '.gif':'image/gif','.svg':'image/svg+xml','.ico':'image/x-icon',
+  '.gif':'image/gif','.webp':'image/webp','.svg':'image/svg+xml','.ico':'image/x-icon',
   '.wav':'audio/wav','.mp3':'audio/mpeg','.ogg':'audio/ogg',
   '.mp4':'video/mp4','.webm':'video/webm','.glb':'model/gltf-binary','.gltf':'model/gltf+json',
 };
