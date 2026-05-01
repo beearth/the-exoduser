@@ -316,7 +316,8 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   <!-- 클릭/탭 영역 (부분 스킵) -->
   <div class="cin-overlay" style="position:absolute;inset:0;z-index:15;cursor:pointer"></div>
 
-  <button class="skip-btn" id="skipBtn">SKIP ></button>
+  <button class="skip-btn" id="skipBtn" style="display:none">SKIP ></button>
+  <canvas id="cinHoldGauge" style="position:absolute;bottom:30px;right:30px;width:120px;height:100px;z-index:300;pointer-events:none"></canvas>
   <select id="cinLang" style="position:absolute;top:3vh;right:4vw;z-index:300;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
     <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
   </select>
@@ -451,6 +452,9 @@ const _LOBBY_EN={
   '새 캐릭터':'New Character',
   '지옥으로 입장하는 중...':'Entering hell...',
   '건너뛰기':'SKIP',
+  '광과민성 발작 경고':'PHOTOSENSITIVE SEIZURE WARNING',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'This game contains intense violence and disturbing imagery.<br>Rated 18+. May trigger photosensitive seizures.<br>Player discretion advised.',
+  '아무 키나 눌러 계속':'Press any key to continue',
 };
 const _LOBBY_ZH={
   '지옥의 길':'地狱之路：EXODUSER','연결 중...':'连接中...','캐릭터를 선택하세요':'选择你的角色','당신은 누구인가':'汝乃何人',
@@ -477,6 +481,9 @@ const _LOBBY_ZH={
   '새 캐릭터':'新角色',
   '지옥으로 입장하는 중...':'正在进入地狱...',
   '건너뛰기':'跳过',
+  '광과민성 발작 경고':'光敏性癫痫警告',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'本游戏包含强烈暴力和令人不安的画面。<br>仅限18岁以上。可能引发光敏性癫痫发作。<br>请谨慎游玩。',
+  '아무 키나 눌러 계속':'按任意键继续',
 };
 const _LOBBY_JA={
   '지옥의 길':'地獄の道：EXODUSER','연결 중...':'接続中...','캐릭터를 선택하세요':'キャラクターを選択','당신은 누구인가':'汝は何者か',
@@ -503,6 +510,9 @@ const _LOBBY_JA={
   '새 캐릭터':'新規キャラクター',
   '지옥으로 입장하는 중...':'地獄へ入場中...',
   '건너뛰기':'スキップ',
+  '광과민성 발작 경고':'光過敏性発作の警告',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'本ゲームには激しい暴力表現や不快な映像が含まれます。<br>18歳以上推奨。光過敏性発作を引き起こす可能性があります。<br>ご注意ください。',
+  '아무 키나 눌러 계속':'何かキーを押して続行',
 };
 const _LOBBY_ES={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Conectando...','캐릭터를 선택하세요':'Selecciona tu personaje','당신은 누구인가':'¿QUIÉN ERES?',
@@ -529,9 +539,20 @@ const _LOBBY_ES={
   '새 캐릭터':'Nuevo personaje',
   '지옥으로 입장하는 중...':'Entrando al infierno...',
   '건너뛰기':'OMITIR',
+  '광과민성 발작 경고':'ADVERTENCIA DE CONVULSIONES FOTOSENSIBLES',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Este juego contiene violencia intensa e imágenes perturbadoras.<br>Clasificado para mayores de 18 años. Puede provocar convulsiones fotosensibles.<br>Se recomienda discreción.',
+  '아무 키나 눌러 계속':'Presione cualquier tecla para continuar',
 };
 const _LOBBY_TABLES=Object.assign({en:_LOBBY_EN,zh:_LOBBY_ZH,ja:_LOBBY_JA,es:_LOBBY_ES},typeof _LOBBY_I18N!=='undefined'?_LOBBY_I18N:{});
-function _lobbyLang(){return (localStorage.getItem('hellLang')||'ko')}
+// ═══ 다국어 4단계 폴백 체인 ═══
+const _I18N_SUPPORTED=['ko','en','zh','ja','es','fr','de','ru','pt','it','vi','th','id','tr','pl','cs','hu','bg','el','fi','sv','da','no','nl','ro','uk','ar','zht'];
+const _STEAM_LANG_MAP={koreana:'ko',english:'en',schinese:'zh',tchinese:'zht',japanese:'ja',spanish:'es',french:'fr',german:'de',russian:'ru',portuguese:'pt',italian:'it',vietnamese:'vi',thai:'th',indonesian:'id',turkish:'tr',polish:'pl',czech:'cs',hungarian:'hu',bulgarian:'bg',greek:'el',finnish:'fi',swedish:'sv',danish:'da',norwegian:'no',dutch:'nl',romanian:'ro',ukrainian:'uk',arabic:'ar'};
+function getUserSelectedLanguage(){const s=localStorage.getItem('hellLang');return(s&&_I18N_SUPPORTED.includes(s))?s:null}
+function detectSteamLanguage(){try{if(typeof window!=='undefined'&&window.steamworks){const sl=window.steamworks.localplayer.getCurrentGameLanguage();const m=_STEAM_LANG_MAP[sl];if(m){console.log('[I18N] Steam: '+sl+' -> '+m);return m}}if(typeof process!=='undefined'&&process.env&&process.env.STEAM_LANGUAGE){const m=_STEAM_LANG_MAP[process.env.STEAM_LANGUAGE];if(m)return m}}catch(e){/* 브라우저 silent */}return null}
+function detectBrowserLanguage(){const ls=navigator.languages||[navigator.language]||['en'];for(const l of ls){const c=l.toLowerCase().split('-')[0];if(_I18N_SUPPORTED.includes(c)){console.log('[I18N] Browser: '+l+' -> '+c);return c}}return null}
+function getCurrentLanguage(){const p=new URLSearchParams(location.search);const dbg=p.get('lang');if(dbg&&_I18N_SUPPORTED.includes(dbg)){console.log('[I18N] Debug override: '+dbg);return dbg}const u=getUserSelectedLanguage();if(u){console.log('[I18N] User selected: '+u);return u}const s=detectSteamLanguage();if(s)return s;const b=detectBrowserLanguage();if(b)return b;console.log('[I18N] Fallback: en');return'en'}
+function setUserLanguage(code){if(!_I18N_SUPPORTED.includes(code)){console.warn('[I18N] Unsupported: '+code);return false}localStorage.setItem('hellLang',code);console.log('[I18N] Saved: '+code);const cl=document.getElementById('cinLang');if(cl)cl.value=code;const ls=document.getElementById('langSelect');if(ls)ls.value=code;_applyLobbyLang();return true}
+function _lobbyLang(){return getCurrentLanguage()}
 function _TL(s){const lang=_lobbyLang();if(lang==='ko')return s;const tbl=_LOBBY_TABLES[lang]||_LOBBY_EN;return tbl[s]||_LOBBY_EN[s]||s}
 function _applyLobbyLang(){
   const lang=_lobbyLang();
@@ -567,19 +588,10 @@ function _applyLobbyLang(){
   const ci=document.getElementById('charName');
   if(ci)ci.placeholder=_TL('캐릭터 이름 (2~8자)');
 }
-document.getElementById('langSelect').onchange=function(){
-  localStorage.setItem('hellLang',this.value);
-  document.getElementById('cinLang').value=this.value;
-  _applyLobbyLang();
-};
-document.getElementById('cinLang').onchange=function(){
-  localStorage.setItem('hellLang',this.value);
-  document.getElementById('langSelect').value=this.value;
-  _applyLobbyLang();
-};
-// 페이지 로드 시 적용
-_applyLobbyLang();
-document.getElementById('cinLang').value=_lobbyLang();
+document.getElementById('langSelect').onchange=function(){setUserLanguage(this.value)};
+document.getElementById('cinLang').onchange=function(){setUserLanguage(this.value)};
+// 페이지 로드 시 4단계 폴백으로 초기 언어 결정 + UI 적용
+(function(){const lang=getCurrentLanguage();document.getElementById('cinLang').value=lang;document.getElementById('langSelect').value=lang;if(!localStorage.getItem('hellLang'))localStorage.setItem('hellLang',lang);_applyLobbyLang()})();
 
 const lobbyBGM=new Audio('bgm/공통/lobby.mp3');
 lobbyBGM.preload='auto';lobbyBGM.loop=true;lobbyBGM.volume=0.65;
@@ -867,7 +879,62 @@ function playCinematic(){
     originalFinish();
   };
 
-  let _cinSkipLock=true; 
+  let _cinSkipLock=true;
+
+  // ── 홀드 스킵 게이지 (시네마틱용) ──
+  const _hgCv=$('cinHoldGauge');
+  if(_hgCv){
+    _hgCv.width=120*devicePixelRatio;_hgCv.height=100*devicePixelRatio;
+    const _hgX=_hgCv.getContext('2d');_hgX.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+    let _cinHoldKey=false,_cinHoldProg=0,_cinHoldActive=false;
+    const _CIN_HOLD_DUR=5000;
+    console.log('[CINEMATIC] Hold skip initialized, duration: '+_CIN_HOLD_DUR+'ms');
+    document.addEventListener('keydown',function _chk(e){
+      if(_cinDone){document.removeEventListener('keydown',_chk);return}
+      if(e.code==='Escape'||e.code==='Space'){_cinHoldKey=true;if(!_cinHoldActive){_cinHoldActive=true;console.log('[CINEMATIC] Hold started')}}
+    });
+    document.addEventListener('keyup',function _chu(e){
+      if(_cinDone){document.removeEventListener('keyup',_chu);return}
+      if(e.code==='Escape'||e.code==='Space'){
+        if(_cinHoldActive)console.log('[CINEMATIC] Hold released at progress: '+(_cinHoldProg*100).toFixed(0)+'%');
+        _cinHoldKey=false;_cinHoldActive=false;_cinHoldProg=0;
+      }
+    });
+    let _hgPrev=performance.now();
+    function _hgLoop(){
+      if(_cinDone){_hgX.clearRect(0,0,120,100);return}
+      const now=performance.now(),dt=Math.min(50,now-_hgPrev);_hgPrev=now;
+      if(_cinHoldKey)_cinHoldProg=Math.min(1,_cinHoldProg+dt/_CIN_HOLD_DUR);
+      _hgX.clearRect(0,0,120,100);
+      const gx=60,gy=40,r=34,th=3;
+      const a=_cinHoldKey?1:0.5;
+      // 트랙
+      _hgX.globalAlpha=a*0.5;_hgX.strokeStyle='#444';_hgX.lineWidth=th;
+      _hgX.beginPath();_hgX.arc(gx,gy,r,0,Math.PI*2);_hgX.stroke();
+      // 진행
+      if(_cinHoldProg>0){
+        _hgX.globalAlpha=a;_hgX.strokeStyle='#E8E0D0';_hgX.lineWidth=th;
+        if(_cinHoldProg>0.9){_hgX.shadowBlur=4+Math.sin(now*0.01)*2;_hgX.shadowColor='#E8E0D0'}
+        _hgX.beginPath();_hgX.arc(gx,gy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*_cinHoldProg);_hgX.stroke();
+        _hgX.shadowBlur=0;
+      }
+      // 중앙
+      _hgX.globalAlpha=a*0.8;_hgX.font='12px sans-serif';_hgX.fillStyle='#888';
+      _hgX.textAlign='center';_hgX.textBaseline='middle';_hgX.fillText('ESC',gx,gy);
+      // 라벨
+      _hgX.globalAlpha=a*0.6;_hgX.font='10px sans-serif';_hgX.fillStyle='#666';
+      _hgX.fillText('HOLD TO SKIP',gx,gy+r+16);
+      _hgX.globalAlpha=1;
+      if(_cinHoldProg>=1){
+        console.log('[CINEMATIC] Skip completed by hold');
+        _hgX.globalAlpha=0.3;_hgX.fillStyle='#fff';_hgX.fillRect(0,0,120,100);
+        setTimeout(skipToGate,100);return;
+      }
+      requestAnimationFrame(_hgLoop);
+    }
+    // 1초 후 게이지 표시
+    setTimeout(()=>{_hgCv.style.opacity='1';_hgLoop()},1000);
+  }
 }
 
 function skipToGate(){
@@ -896,7 +963,8 @@ function skipToGate(){
     $('loginSection').style.display='block';
   }
 }
-$('skipBtn').onclick=skipToGate;
+// skipBtn 비활성 — 홀드 게이지로 대체
+// $('skipBtn').onclick=skipToGate;
 
 // ═══ Embers ═══
 let _emberIv=setInterval(()=>{
@@ -1349,62 +1417,198 @@ function showCharGate(charId){
 })();
 </script>
 <script>
-// ═══ 스플래시 시퀀스 ═══
+// ═══ 스플래시 시퀀스 (SCREEN 1: 경고문, SCREEN 2: FDG 로고, SCREEN 3: 타이틀) ═══
 (function(){
   const overlay=document.getElementById('splashOverlay');
   const content=document.getElementById('splashContent');
-  if(!overlay||!content)return;
-  const screens=[
-    // SCREEN 1: 경고문
-    `<div style="font:700 36px serif;color:#888;letter-spacing:.15em;margin-bottom:12px">PHOTOSENSITIVE SEIZURE WARNING</div>
-     <div style="font:700 24px 'Noto Sans KR',sans-serif;color:#888;margin-bottom:30px">광과민성 발작 경고</div>
-     <div style="font:18px serif;color:#666;line-height:1.6">This game contains intense violence and disturbing imagery.<br>Rated 18+. May trigger photosensitive seizures.<br>Player discretion advised.</div>
-     <div style="font:18px 'Noto Sans KR',sans-serif;color:#666;line-height:1.6;margin-top:20px">본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.</div>
-     <div id="splashBlink" style="font:14px sans-serif;color:#444;margin-top:40px">Press any key to continue / 아무 키나 눌러 계속</div>`,
-    // SCREEN 2: FDG 로고
-    `<div style="font:700 64px serif;color:#aaa;letter-spacing:.2em">FDG</div>
-     <div style="font:18px sans-serif;color:#555;margin-top:12px">STUDIO</div>`,
-    // SCREEN 3: 게임 타이틀
-    `<div style="font:700 72px serif;color:#cc4400;letter-spacing:.1em">EXODUSER</div>
-     <div style="font:24px 'Noto Sans KR',sans-serif;color:#888;margin-top:12px">지옥의 길</div>`
-  ];
-  let idx=0,timer=null,blinkId=null;
-  function show(){
-    if(idx>=screens.length){end();return}
-    content.innerHTML=screens[idx];
-    content.style.opacity='0';
-    setTimeout(()=>{content.style.opacity='1'},30);
-    // 깜빡임 (경고문만)
-    if(idx===0){
-      let t=0;blinkId=setInterval(()=>{
-        const el=document.getElementById('splashBlink');
-        if(el)el.style.opacity=(Math.sin(t++*0.15)*0.5+0.5).toFixed(2);
-      },50);
+  const cv=document.getElementById('splashCanvas');
+  if(!overlay||!content||!cv)return;
+  const cx=cv.getContext('2d');
+  function resizeCanvas(){cv.width=cv.offsetWidth*devicePixelRatio;cv.height=cv.offsetHeight*devicePixelRatio;cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+  resizeCanvas();window.addEventListener('resize',resizeCanvas);
+
+  // ── 상태 ──
+  let phase=0; // 0=경고문, 1=FDG, 2=타이틀
+  let t0=0,rafId=null,done=false;
+
+  // ── SCREEN 1: 경고문 (HTML 기반, 4초) ──
+  const _warnTitle=_TL('광과민성 발작 경고');
+  const _warnBody=_TL('본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.');
+  const _warnCont=_TL('아무 키나 눌러 계속');
+  const warnHTML=
+    `<div style="font:700 36px 'Cinzel Decorative',serif;color:#888;letter-spacing:.15em;margin-bottom:30px">${_warnTitle}</div>
+     <div style="font:18px sans-serif;color:#666;line-height:1.6">${_warnBody}</div>
+     <div id="splashBlink" style="font:14px sans-serif;color:#444;margin-top:40px">${_warnCont}</div>`;
+
+  // ── SCREEN 3: 타이틀 (캔버스, 4초 자동, 즉시 스킵) ──
+
+  // ── SCREEN 2: FDG → FOR DEAR GAMERS (캔버스 애니메이션, 5.5초) ──
+  const FDG_DUR=5500;
+  const FDG_P1=1000,FDG_P2=2500,FDG_P3=3000,FDG_P5=5000;
+  function playSplashFDGChime(){/* 사운드 자산 준비 시 채움 */}
+  function _easeOutQuart(t){return 1-Math.pow(1-t,4)}
+  function renderFDG(elapsed){
+    const w=cv.offsetWidth,h=cv.offsetHeight;
+    cx.clearRect(0,0,w,h);
+    cx.fillStyle='#000';cx.fillRect(0,0,w,h);
+    const midX=w/2,midY=h*0.45;
+    const ms=elapsed; // ms 단위
+    const s=ms/1000;
+
+    // Phase 1 페이드인 (0~0.5초) + Phase 5 페이드아웃 (5~5.5초)
+    const fadeIn=ms<500?ms/500:1;
+    const fadeOut=ms>FDG_P5?Math.max(0,1-(ms-FDG_P5)/500):1;
+    const masterAlpha=fadeIn*fadeOut;
+
+    cx.save();
+    cx.globalAlpha=masterAlpha;
+    cx.font="400 96px 'Cinzel Decorative','Cinzel',Georgia,serif";
+    cx.fillStyle='#E8E0D0';
+    cx.textAlign='left';cx.textBaseline='middle';
+
+    // Phase 2 분리 진행도 (1~2.5초)
+    const splitT=ms<FDG_P1?0:ms<FDG_P2?_easeOutQuart((ms-FDG_P1)/(FDG_P2-FDG_P1)):1;
+
+    // 최종 문자열 "FOR DEAR GAMERS" 각 단어 폭 측정
+    const mFOR=cx.measureText('FOR').width,mDEAR=cx.measureText('DEAR').width,mGAMERS=cx.measureText('GAMERS').width;
+    const mF=cx.measureText('F').width,mD=cx.measureText('D').width,mG=cx.measureText('G').width;
+    const wordGap=cx.measureText(' ').width*1.5; // 단어 간 공백
+    const initGap=96*0.05; // Phase 1 초기 자간
+
+    // Phase 1: FDG 모여있는 기본 위치 (정중앙)
+    const initTotalW=mF+mD+mG+initGap*2;
+    const baseFx=midX-initTotalW/2;
+    const baseDx=baseFx+mF+initGap;
+    const baseGx=baseDx+mD+initGap;
+
+    // Phase 2: 분리 후 최종 위치 ("FOR DEAR GAMERS" 정중앙 배치)
+    const finalTotalW=mFOR+wordGap+mDEAR+wordGap+mGAMERS;
+    const endFx=midX-finalTotalW/2; // F 시작
+    const endDx=endFx+mFOR+wordGap; // D 시작 (FOR + gap 뒤)
+    const endGx=endDx+mDEAR+wordGap; // G 시작 (DEAR + gap 뒤)
+
+    // 보간: 초기 → 최종
+    const finalF=baseFx+(endFx-baseFx)*splitT;
+    const finalD=baseDx+(endDx-baseDx)*splitT;
+    const finalG=baseGx+(endGx-baseGx)*splitT;
+
+    // F, D, G 그리기
+    cx.fillText('F',finalF,midY);
+    cx.fillText('D',finalD,midY);
+    cx.fillText('G',finalG,midY);
+
+    // Phase 2: 채움 글자 페이드인 (1~2.5초)
+    if(ms>=FDG_P1&&ms<FDG_P1+17){console.log('[SPLASH] FDG phase 2 (split) started')}
+    if(ms>=FDG_P1){
+      const fillAlpha=splitT;
+      cx.globalAlpha=masterAlpha*fillAlpha;
+      cx.fillText('OR',finalF+mF,midY); // F 뒤에 OR
+      cx.fillText('EAR',finalD+mD,midY); // D 뒤에 EAR
+      cx.fillText('AMERS',finalG+mG,midY); // G 뒤에 AMERS
     }
-    timer=setTimeout(()=>{next()},4000);
-    console.log('[SPLASH] screen '+(idx+1)+' shown');
+
+    // Phase 3: 한국어 부제 (2.5~3초)
+    if(ms>=FDG_P2&&ms<FDG_P2+17){console.log('[SPLASH] FDG phase 3 (korean) started')}
+    if(ms>=FDG_P2){
+      const korT=Math.min(1,(ms-FDG_P2)/500);
+      cx.globalAlpha=masterAlpha*korT;
+      cx.font="300 32px 'Noto Sans KR',sans-serif";
+      cx.fillStyle='#B8B0A0';
+      cx.textAlign='center';
+      cx.fillText('친 애 하 는  게 이 머 를  위 하 여',midX,h*0.58);
+    }
+
+    cx.restore();
   }
-  function next(){
-    clearTimeout(timer);clearInterval(blinkId);
+
+  // ── 시퀀스 제어 ──
+  let blinkId=null;
+  function startPhase(){
+    content.innerHTML='';content.style.opacity='0';
+    cx.clearRect(0,0,cv.offsetWidth,cv.offsetHeight);
+    if(phase===0){
+      // 경고문 (HTML)
+      content.innerHTML=warnHTML;
+      setTimeout(()=>{content.style.opacity='1'},30);
+      let bt=0;blinkId=setInterval(()=>{
+        const el=document.getElementById('splashBlink');
+        if(el)el.style.opacity=(Math.sin(bt++*0.15)*0.5+0.5).toFixed(2);
+      },50);
+      t0=performance.now();
+      console.log('[SPLASH] WARNING screen shown');
+    } else if(phase===1){
+      // FDG (캔버스)
+      t0=performance.now();
+      console.log('[SPLASH] FDG screen shown');
+      playSplashFDGChime();
+      function fdgLoop(){
+        if(done||phase!==1)return;
+        const el=performance.now()-t0;
+        renderFDG(el);
+        if(el>=FDG_DUR){nextPhase();return}
+        rafId=requestAnimationFrame(fdgLoop);
+      }
+      fdgLoop();return; // 타이머 안 씀
+    } else if(phase===2){
+      // 타이틀 (캔버스, 4초 자동 진행, 즉시 스킵 가능)
+      t0=performance.now();
+      console.log('[SPLASH] TITLE screen shown');
+      let _titlePrevTs=performance.now();
+      function titleLoop(){
+        if(done||phase!==2)return;
+        const now=performance.now();
+        const elapsed=now-t0;
+        const w=cv.offsetWidth,h=cv.offsetHeight;
+        cx.clearRect(0,0,w,h);cx.fillStyle='#000';cx.fillRect(0,0,w,h);
+        const fadeIn=Math.min(1,elapsed/1000);
+        const fadeOut=elapsed>3500?Math.max(0,1-(elapsed-3500)/500):1;
+        cx.save();cx.globalAlpha=fadeIn*fadeOut;cx.textAlign='center';cx.textBaseline='middle';
+        cx.font="700 72px 'Cinzel Decorative','Cinzel',Georgia,serif";
+        cx.fillStyle='#cc4400';cx.fillText('EXODUSER',w/2,h*0.42);
+        cx.font="24px 'Noto Sans KR',sans-serif";cx.fillStyle='#888';
+        cx.fillText(_TL('지옥의 길'),w/2,h*0.42+50);
+        cx.restore();
+        if(elapsed>=4000){nextPhase();return}
+        rafId=requestAnimationFrame(titleLoop);
+      }
+      titleLoop();return;
+    }
+    // HTML 기반 화면 (phase 0만) 4초 후 자동 진행
+    setTimeout(()=>{if(!done&&phase===0)nextPhase()},4000);
+  }
+
+  function nextPhase(){
+    clearInterval(blinkId);cancelAnimationFrame(rafId);
     content.style.opacity='0';
-    setTimeout(()=>{idx++;show()},500);
+    cx.clearRect(0,0,cv.offsetWidth,cv.offsetHeight);
+    cx.fillStyle='#000';cx.fillRect(0,0,cv.offsetWidth,cv.offsetHeight);
+    setTimeout(()=>{
+      phase++;
+      if(phase>2){endSplash();return}
+      startPhase();
+    },500);
   }
-  function end(){
-    clearTimeout(timer);clearInterval(blinkId);
+
+  function endSplash(){
+    done=true;clearInterval(blinkId);cancelAnimationFrame(rafId);
     overlay.style.opacity='0';
     setTimeout(()=>{overlay.style.display='none'},500);
     console.log('[SPLASH] sequence ended');
   }
+
   function skip(){
-    console.log('[SPLASH] screen '+(idx+1)+' skipped');
-    next();
+    if(done)return;
+    console.log('[SPLASH] screen '+(phase+1)+' skipped');
+    nextPhase();
   }
+
   overlay.addEventListener('click',skip);
-  document.addEventListener('keydown',function _spKey(e){
-    if(!overlay||overlay.style.display==='none')return;
-    if(idx<screens.length){e.preventDefault();skip()}
+  document.addEventListener('keydown',function(e){
+    if(done||overlay.style.display==='none')return;
+    e.preventDefault();skip();
   });
-  show();
+
+  startPhase();
 })();
 </script>
 </body>

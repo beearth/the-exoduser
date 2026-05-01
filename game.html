@@ -23962,14 +23962,7 @@ function update(){
       X.fillStyle='#aaddff';X.beginPath();X.arc(sx-2,sy-2,2,0,Math.PI*2);X.fill();X.globalAlpha=1;
     }
   }
-  for(let _wai=0;_wai<worldItems.length;_wai++){const it=worldItems[_wai];if(it.picked||it.type==='forge'||it.type==='item'||it.type==='chest'||it.type==='hp'||it.type==='o2bubble')continue;
-    if(dst(P.x,P.y,it.x,it.y)<36){
-      if(it.type==='mat'){const mv=~~((it.matVal||1)*(1+_eqAffix('goldBonus'))*_maliceMul());it.picked=true;G.mats+=mv;}
-      else if(it.type==='potion'){
-        const pt=POT[it.potType];
-        if(pt && addPotion(it.potType,it.potCount||1)){it.picked=true;addTxt(it.x,it.y,pt.name+' +'+(it.potCount||1),pt.col,40)}
-      }
-    }}
+  // 악의/물약 자동수거 제거됨 — R키로만 수거
 
   checkRooms();
   // ═══ 소환굴 업데이트 (근접 트리거: 600px 이내 접근 시 발동→스폰→소멸) ═══
@@ -43354,7 +43347,7 @@ function drawP(){
   const _s7Bl0=_s7Active?(_PERF_PROF._glBlend||0):0;
   // ══ Player projectiles — 트레일 + 글로우 + 본체 ══
   // 트레일 (OPT.trail)
-  const _PP_DRAW_MAX=_hiFPS?40:60;
+  const _PP_DRAW_MAX=9999; // 렌더 캡 제거
   if(OPT.trail){let _trDrw=0;for(let _ppi=0;_ppi<pProjs.length;_ppi++){const p=pProjs[_ppi];
     if(p.x<_vl-20||p.x>_vr+20||p.y<_vt-20||p.y>_vb+20)continue;
     if(++_trDrw>_PP_DRAW_MAX)break;
