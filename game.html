@@ -5920,11 +5920,14 @@ function _checkPetDialogue(){
   }
 
   // ══ [5] 자원/힌트 — 12종 ══
+  if(P.hp<P.mhp*.5||P.mp<P.mmp*.5||P.st<P.mst*.5){
+    if(P.skills.holyDome>0&&(P._hdCd||0)<=0)_petSayCD('resource_half_dome','cat','F 눌러! 회복의 영역 깔아!',4,120,'crow','자원이 반이다. F키로 회복해.',4);
+    else _petSayCD('resource_parry','cat','패링을 써야 자원을 흡수한다고!',3,300);
+  }
   if(P.hp<P.mhp*.3||P.mp<P.mmp*.3||P.st<P.mst*.3){
     if(P.skills.holyDome>0)_petSayCD('resource_low_yes','crow','F키 회복의 영역을 써봐.',4,300);
     else _petSayCD('resource_low_no','crow','빠져! 물약 마시고 회복해.',4,300,'cat','자원 없으면 도망가는 게 답이야!',4);
   }
-  if(P.hp<P.mhp*.5||P.mp<P.mmp*.5||P.st<P.mst*.5)_petSayCD('resource_parry','cat','패링을 써야 자원을 흡수한다고!',3,300);
   if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야!',4,300);
   if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트 쌓였어! K 눌러!',4,300);
   if(P.lv>=5&&P.sp>0)_petSayCD('has_sp','cat','스킬 포인트 있어! K!',5,180,'crow','L키로 스킬 슬롯에 넣어야 쓸 수 있어.',4);
@@ -10491,7 +10494,7 @@ const _FB_FRAMES=20,_FB_FW=803,_FB_FH=453;
 // ═══ 업화선 폭발 스프라이트시트 (30프레임, 300x300) ═══
 const _FX_IMG=new Image();_FX_IMG.src='assets/vfx/fire_explode/fire_explode_spritesheet.png';
 let _fxReady=false;_FX_IMG.onload=()=>{_fxReady=true};
-const _FX_FRAMES=12,_FX_FW=300,_FX_FH=300;
+const _FX_FRAMES=9,_FX_COLS=3,_FX_FW=256,_FX_FH=256;
 // ═══ 마력연사 스프라이트시트 (30f, 500x47, 원본 그대로 + lighter 합성) ═══
 const _ES_IMG=new Image();_ES_IMG.src='assets/vfx/energy_shot/raw_sheet.png';
 let _esReady=false;_ES_IMG.onload=()=>{_esReady=true};
@@ -39634,7 +39637,8 @@ function draw(){
       const scale=1+prog*.3;
       const sz=f.sz*scale;
       {X.globalAlpha=alpha; // 스킬 VFX — budget 무시
-      X.drawImage(_FX_IMG,f.f*_FX_FW,0,_FX_FW,_FX_FH,f.x-sz/2,f.y-sz/2,sz,sz);}
+      const _fxCol=f.f%_FX_COLS,_fxRow=~~(f.f/_FX_COLS);
+      X.drawImage(_FX_IMG,_fxCol*_FX_FW,_fxRow*_FX_FH,_FX_FW,_FX_FH,f.x-sz/2,f.y-sz/2,sz,sz);}
       _fxAnims[_fxW++]=f;
     }
     _fxAnims.length=_fxW;
@@ -44851,20 +44855,20 @@ const INTRO_CUTSCENE_LINES={
   ko:[
     {id:1,img:'6.png',t:0,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,px:0,py:0,ease:'out'},vfx:{vig:.4,grain:.15,grade:'purple'},fade:{in:800,out:200,type:'cross'},sfx:'goddess_laugh'},
     {id:2,img:'4.png',t:2500,dur:1500,speaker:null,text:'',cam:{zs:1.05,ze:1.15,px:0,py:0,ease:'out'},vfx:{vig:.35,chrom:.3,shake:1},fade:{type:'cross',in:300},sfx:'laugh_climax'},
-    {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'니놈의 그 짜릿한 복수극은 감명깊게도 잘 봤다. 명작이더구나.',cam:{zs:1,ze:1.05,px:5,py:0,ease:'linear'},vfx:{vig:.5,grain:.1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:60,shadow:true}},
-    {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'관람료는 내야겠지. 그래, 네놈에게 기회를 주겠다. 선택의 여지는 없다.',cam:{zs:1.08,ze:1,px:0,py:0,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'니놈에게 알량한 선의가 보인다. 구해야 할 사람이 아직 남아 있을텐데\n너를 아직도 기다리는것처럼 보이던데? 우리는 서로 시간이 많지 않다...',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'네놈의 그 짜릿한 복수극, 잘도 봤다. 명작이더구나.',cam:{zs:1,ze:1.05,px:5,py:0,ease:'linear'},vfx:{vig:.5,grain:.1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'관람료는 내야겠지. 그래, 네놈에게 기회를 주마. 선택의 여지는 없다.',cam:{zs:1.08,ze:1,px:0,py:0,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'네놈에게 알량한 선의가 보이는구나. 구해야 할 자가 아직 남아 있을 텐데.\n아직도 너를 기다리고 있는 것 같던데? 서로 시간이 많지 않다...',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:60,shadow:true}},
     {id:6,img:'7.png',t:17500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
     {id:7,img:'20.png',t:19000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},
-    {id:8,img:'21.png',t:21500,dur:3000,speaker:'GODDESS',text:'그 아이들 목마를 보니 망자도 정신이 드는가보구나.',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:8,img:'21.png',t:21500,dur:3000,speaker:'GODDESS',text:'그 아이의 목마를 보니 망자도 정신이 드는가 보구나.',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
     {id:9,img:'22.png',t:24500,dur:2500,speaker:null,text:'',cam:{zs:1.05,ze:1,ease:'out'},vfx:{vig:.4,grain:.15},fade:{type:'cross',in:400},sfx:'reach_strain'},
     {id:10,img:'1.png',t:27000,dur:6500,speaker:'GODDESS',text:'그래, 이곳을 탈출하라. 내 친히 너를 도와주마.\n디로이와 핵터가 너를 안내할 것이다. 또 보자, 망자여.',cam:{zs:1.1,ze:1,ease:'inout'},vfx:{vig:.5,grade:'purple'},fade:{type:'cross',in:500,out:600},text_cfg:{reveal:'char',speed:65,shadow:true}},
     {id:11,img:'9.png',t:33500,dur:3000,speaker:'DIROY',text:'놀랄 거 없어. 인사나 하지. 내가 디로이.',cam:{zs:1,ze:1.08,ease:'out'},vfx:{vig:.4,glowEye:true},fade:{type:'black',in:500},text_cfg:{reveal:'char',speed:50,glow:true}},
     {id:12,img:'11.png',t:36500,dur:3500,speaker:'HECTOR',text:'내가 핵터. 여신님의 가호로 생각하면 돼.\n우리도 이곳을 나가야 하거든.',cam:{zs:1,ze:1.05,px:-10,ease:'linear'},vfx:{vig:.3,flicker:.2},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
     {id:13,img:'17.png',t:40000,dur:4000,speaker:'DIROY',text:'악마는 악의로 만들어진 존재야.\n본능적으로 선의를 공격하려 들어.',cam:{zs:1.05,ze:1.1,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:14,img:'18.png',t:44000,dur:5500,speaker:'HECTOR',text:'근데 너는 좀 특이해. 선의가 강해.\n그리고 악의는 일시적으로 폭발한 상태고. 하지만 곧 사라질 거야, 그 폭발도.',cam:{zs:1,ze:1.15,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:14,img:'18.png',t:44000,dur:5500,speaker:'HECTOR',text:'근데 너는 좀 특이해. 선의가 강하거든.\n악의는 일시적으로 폭발한 상태고. 곧 사라질 거야, 그 폭발도.',cam:{zs:1,ze:1.15,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
     {id:15,img:'19.png',t:49500,dur:3500,speaker:'DIROY',text:'그래서 악마들이 네 냄새를 맡고 몰려들 거야.',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
-    {id:16,img:'23.png',t:53000,dur:5000,speaker:'DIROY',text:'여신님이 네게 기물을 내리셨어. 챙겨.',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:16,img:'23.png',t:53000,dur:5000,speaker:'DIROY',text:'여신님이 네게 무구를 내리셨어. 챙겨.',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
     {id:17,img:'24.png',t:58000,dur:5500,speaker:'HECTOR',text:'여신님이 보내신 투영이야. 전장의 영혼이지.\n쇠뇌에 깃들어서 너랑 같이 싸울 거야.',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:55,glow:true}},
     {id:18,img:'25.png',t:63500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
     {id:'18b',img:'15.png',t:66000,dur:5500,speaker:'DIROY',text:'그 악의띠도 차. 폭발한 악의가 너를\n미치게 하기 전에 정신을 잡아줄 거야.',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
@@ -44873,7 +44877,7 @@ const INTRO_CUTSCENE_LINES={
     {id:21,img:'16.png',t:73500,dur:3500,speaker:'HECTOR',text:'이 인간 또 기절했네. 얼마나 안 잔 거야?',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
     {id:22,img:'16.png',t:77000,dur:4000,speaker:'DIROY',text:'복수만 생각하느라 며칠을 안 먹고 안 잔 모양이야.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
     {id:'22b',img:'16.png',t:81000,dur:2500,speaker:'DIROY',text:'놔두면 잡아먹혀.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:23,img:'16.png',t:83500,dur:2500,speaker:'HECTOR',text:'악의라도 먹여서 깨워야해.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:23,img:'16.png',t:83500,dur:2500,speaker:'HECTOR',text:'악의라도 먹여서 깨워야 해.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:60,shadow:true}},
     {id:24,img:'17.png',t:83500,dur:2500,speaker:'DIROY',text:'...',cam:{zs:1,ze:1.05,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:80,shadow:true}},
     {id:25,img:null,t:86000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
   ],en:[
