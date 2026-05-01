@@ -21521,3 +21521,36 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/vfx_explode_scarecrow/nuke_1.webp
 - img/vfx_explode_scarecrow/nuke_2.webp
 
+
+## 2026-05-01 10:30 (auto)
+- assets/vfx/shock_field_candidates/field_0.png
+- assets/vfx/shock_field_candidates/field_1.png
+- assets/vfx/shock_field_candidates/field_2.png
+- assets/vfx/shock_field_candidates/field_3.png
+- assets/vfx/shock_field_candidates/ref_frame_001.png
+- assets/vfx/shock_field_candidates/ref_frame_002.png
+- assets/vfx/shock_field_candidates/ref_frame_003.png
+- assets/vfx/shock_field_candidates/ref_frame_004.png
+- assets/vfx/shock_field_candidates/ref_frame_005.png
+- assets/vfx/shock_field_candidates/ref_frame_006.png
+- assets/vfx/shock_field_candidates/ref_frame_007.png
+- assets/vfx/shock_field_candidates/ref_frame_008.png
+- assets/vfx/shock_field_candidates/ref_frame_009.png
+- assets/vfx/shock_field_candidates/ref_frame_010.png
+- assets/vfx/shock_field_candidates/ref_frame_011.png
+- assets/vfx/shock_field_candidates/ref_frame_012.png
+- assets/vfx/shock_field_candidates/ref_frame_013.png
+- assets/vfx/shock_field_candidates/ref_frame_014.png
+- assets/vfx/shock_field_candidates/ref_frame_015.png
+- assets/vfx/shock_field_candidates/ref_frame_016.png
+- assets/vfx/shock_field_candidates/ref_frame_017.png
+- assets/vfx/shock_field_candidates/thunder_0.png
+- assets/vfx/shock_field_candidates/thunder_1.png
+- assets/vfx/shock_field_candidates/thunder_2.png
+- assets/vfx/shock_field_candidates/thunder_3.png
+- assets/vfx/vfx_explode_scarecrow.webp
+- game.html
+- img/vfx_explode_scarecrow.png
+- img/vfx_explode_scarecrow/dark_preview.mp4
+- img/vfx_explode_scarecrow/dark_spritesheet.webp
+

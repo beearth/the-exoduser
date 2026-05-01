@@ -7938,7 +7938,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
           const _dsDmg=~~(meleeRef()*statStr()*.5*_dsAb+(_vs2.dmgPool||0)*1.5);
           const ne=shQuery(_vs2.x,_vs2.y,_dsBoomR);
           for(let i=0;i<ne.length;i++){const e=ne[i];if(!e.alive)continue;const d=dst(e.x,e.y,_vs2.x,_vs2.y);if(d>=_dsBoomR)continue;const ang=Math.atan2(e.y-_vs2.y,e.x-_vs2.x);const fo=Math.max(.3,1-d/_dsBoomR);hurtE(e,~~(_dsDmg*fo),ang,false,{kbMult:1.5,explode:true},EL.F);e.kb.x+=Math.cos(ang)*10*fo;e.kb.y+=Math.sin(ang)*10*fo;}
-          _addBoom(_vs2.x,_vs2.y,_dsBoomR*.6,25,'fire');playVFXAng('explode_scarecrow',_vs2.x,_vs2.y,Math.max(.8,_dsBoomR/250),3,0,false);
+          playVFXAng('explode_scarecrow',_vs2.x,_vs2.y,Math.max(.8,_dsBoomR/250),3,0,false);
           addParts(_vs2.x,_vs2.y,'#ff6622',25);shake(Math.min(12,4+_dsAb*.3));SFX.detonate();
           addTxt(_vs2.x,_vs2.y-50,_T('합체 폭발! ')+_dsDmg+_T(' 뎀'),'#ffcc00',60);
         }
@@ -10729,7 +10729,7 @@ registerVFX('ice_slash','assets/vfx/slash_impact_sheet.png',128,128,19,19);
 registerVFX('whirl_slash','assets/vfx/vfx_white_slash.png',192,192,20,5);
 registerVFX('parry_flash','assets/vfx/parry_impact_sheet.png',128,128,20,20);
 registerVFX('burn_death','img/vfx_burn_death.png',211,211,8,8);
-registerVFX('explode_scarecrow','img/vfx_explode_scarecrow.png',256,256,9,3); // 폭발허수아비 전용 대형폭발 (3x3, 9프레임)
+registerVFX('explode_scarecrow','assets/vfx/vfx_explode_scarecrow.webp',256,256,9,3); // 폭발허수아비 전용 대형폭발 (3x3, 9프레임)
 
 // ═══ 빙결 틴트용 오프스크린 캔버스 (몬스터 실루엣 파란 틴트) ═══
 const _iceTintC=document.createElement('canvas');
@@ -32324,7 +32324,7 @@ function _detonateExplodeScarecrow(){
     e.kb.x+=Math.cos(ang)*10*falloff;e.kb.y+=Math.sin(ang)*10*falloff;
   }
   // VFX: 폭발허수아비 전용 대형폭발 임펙트
-  playVFXAng('explode_scarecrow',es.x,es.y,Math.max(.8,boomR/250),3,0,false);
+  playVFXAng('explode_scarecrow',es.x,es.y,Math.max(1,boomR/128),6,0,false);
   addParts(es.x,es.y,'#ff6622',25);addParts(es.x,es.y,'#ffcc44',15);
   shake(Math.min(12,4+absorbed*.3));
   SFX.detonate();
@@ -40253,107 +40253,110 @@ function drawP(){
             X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);X.stroke()}
         }
       }else if(fz.type==='shockField'){
-        // ═══ 전격이동 전류장판 — 분기형 번개 (POE2 스타일) ═══
+        // ═══ 전격이동 전류장판 — 넓은 기둥형 번개 + 바닥 발광 ═══
         const _st=_now*.001;const _sfF=~~(fz.t);const _prevComp=X.globalCompositeOperation;
         X.globalCompositeOperation='lighter';
-        // 분기형 번개 생성 (매 2프레임 갱신)
-        if(!fz._bolts||_sfF%2===0){
-          fz._bolts=[];
-          const _bc=6+~~(Math.random()*4); // 메인 줄기 6~9개
-          for(let _bi=0;_bi<_bc;_bi++){
-            const ang=Math.random()*Math.PI*2;
-            const reach=(.4+Math.random()*.55)*fz.r;
-            const segs=4+~~(Math.random()*3);
-            const pts=[];let cx=fz.x,cy=fz.y;
-            pts.push({x:cx,y:cy});
-            for(let s=1;s<=segs;s++){
-              const t=s/segs;
-              cx=fz.x+Math.cos(ang)*reach*t+(Math.random()-.5)*fz.r*.15;
-              cy=fz.y+Math.sin(ang)*reach*t+(Math.random()-.5)*fz.r*.15;
-              pts.push({x:cx,y:cy});
-            }
-            const branches=[];
-            // 분기 1~3개 (중간 지점에서 갈라짐)
-            const bCnt=1+~~(Math.random()*3);
-            for(let br=0;br<bCnt;br++){
-              const si=1+~~(Math.random()*(pts.length-2));
-              const bp=pts[si];
-              const bAng=ang+(Math.random()-.5)*1.5;
-              const bLen=reach*(.15+Math.random()*.25);
-              const bSegs=2+~~(Math.random()*2);
-              const bPts=[{x:bp.x,y:bp.y}];
-              for(let bs=1;bs<=bSegs;bs++){
-                const bt=bs/bSegs;
-                bPts.push({x:bp.x+Math.cos(bAng)*bLen*bt+(Math.random()-.5)*fz.r*.06,
-                           y:bp.y+Math.sin(bAng)*bLen*bt+(Math.random()-.5)*fz.r*.06});
-              }
-              branches.push(bPts);
-            }
-            fz._bolts.push({pts,branches,w:.6+Math.random()*1.2});
+        // ── 1) 바닥 발광 (은은한 파란 빛 번짐) ──
+        X.globalAlpha=(.06+.03*Math.sin(_st*5))*_fzFade;
+        const _bgG=X.createRadialGradient(fz.x,fz.y,0,fz.x,fz.y,fz.r);
+        _bgG.addColorStop(0,'rgba(80,140,255,.25)');_bgG.addColorStop(.5,'rgba(40,80,200,.08)');_bgG.addColorStop(1,'rgba(10,20,60,0)');
+        X.fillStyle=_bgG;X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.fill();
+        // ── 2) 바닥 전기 줄기 (얇은 분기형, 은은) ──
+        if(!fz._arcs||_sfF%3===0){
+          fz._arcs=[];const _ac=5+~~(Math.random()*3);
+          for(let _ai=0;_ai<_ac;_ai++){
+            const ang=Math.random()*Math.PI*2;const reach=(.3+Math.random()*.6)*fz.r;
+            const pts=[{x:fz.x,y:fz.y}];const segs=3+~~(Math.random()*2);
+            for(let s=1;s<=segs;s++){const t=s/segs;
+              pts.push({x:fz.x+Math.cos(ang)*reach*t+(Math.random()-.5)*fz.r*.1,y:fz.y+Math.sin(ang)*reach*t+(Math.random()-.5)*fz.r*.1})}
+            fz._arcs.push({pts,w:.3+Math.random()*.6});
           }
         }
-        // 렌더링 — 3레이어: 글로우(넓고 어둡게) → 메인(파랑) → 코어(밝게)
-        for(let _bi=0;_bi<fz._bolts.length;_bi++){const b=fz._bolts[_bi];
-          const _drawPath=function(p){X.beginPath();X.moveTo(p[0].x,p[0].y);for(let i=1;i<p.length;i++)X.lineTo(p[i].x,p[i].y);X.stroke()};
-          // 글로우 (두껍고 반투명)
-          X.strokeStyle='#3344aa';X.lineWidth=b.w+4;X.globalAlpha=.08*_fzFade;
-          _drawPath(b.pts);
-          for(let br=0;br<b.branches.length;br++){X.lineWidth=b.w+2;_drawPath(b.branches[br])}
-          // 메인 (파랑-보라)
-          X.strokeStyle='#5566ee';X.lineWidth=b.w;X.globalAlpha=.35*_fzFade;
-          _drawPath(b.pts);
-          for(let br=0;br<b.branches.length;br++){X.lineWidth=b.w*.7;_drawPath(b.branches[br])}
-          // 코어 (밝은 흰-파랑)
-          X.strokeStyle='#aabbff';X.lineWidth=Math.max(.3,b.w-.4);X.globalAlpha=.45*_fzFade;
-          _drawPath(b.pts);
-          for(let br=0;br<b.branches.length;br++){X.lineWidth=Math.max(.2,b.w*.5);X.globalAlpha=.3*_fzFade;_drawPath(b.branches[br])}
+        for(let _ai=0;_ai<fz._arcs.length;_ai++){const a=fz._arcs[_ai];
+          X.strokeStyle='#4466cc';X.lineWidth=a.w+1;X.globalAlpha=.12*_fzFade;
+          X.beginPath();X.moveTo(a.pts[0].x,a.pts[0].y);for(let p=1;p<a.pts.length;p++)X.lineTo(a.pts[p].x,a.pts[p].y);X.stroke();
+          X.strokeStyle='#88aaff';X.lineWidth=a.w;X.globalAlpha=.25*_fzFade;
+          X.beginPath();X.moveTo(a.pts[0].x,a.pts[0].y);for(let p=1;p<a.pts.length;p++)X.lineTo(a.pts[p].x,a.pts[p].y);X.stroke();
         }
-        // 수직 천둥 — 랜덤 위치에 하늘→바닥 낙뢰
+        // ── 3) 수직 번개 기둥 (영상 참고: 넓고 불규칙, 흰코어+파란글로우) ──
         if(!fz._thunder)fz._thunder=[];
-        // 일정 간격으로 새 천둥 생성 (약 0.4초마다)
-        if(!fz._thNext)fz._thNext=~~(Math.random()*12);
+        if(!fz._thNext)fz._thNext=~~(Math.random()*10);
         if(_sfF>=fz._thNext){
-          fz._thNext=_sfF+18+~~(Math.random()*15); // 다음 천둥 18~32프레임 후
-          const tx=fz.x+(Math.random()-.5)*fz.r*1.6;
-          const ty=fz.y+(Math.random()-.5)*fz.r*1.6;
-          const topY=ty-250-Math.random()*150; // 위에서 시작
-          const segs=5+~~(Math.random()*4);
-          const pts=[{x:tx+(Math.random()-.5)*30,y:topY}];
-          for(let s=1;s<=segs;s++){
-            const t=s/segs;
-            pts.push({x:tx+(Math.random()-.5)*25*(1-t*.5),y:topY+(ty-topY)*t});
+          fz._thNext=_sfF+20+~~(Math.random()*20);
+          const tx=fz.x+(Math.random()-.5)*fz.r*1.4;
+          const ty=fz.y+(Math.random()-.5)*fz.r*1.4;
+          const topY=ty-300-Math.random()*200;
+          // 메인 기둥 — 넓고 물결치는 형태
+          const segs=6+~~(Math.random()*4);const pts=[];
+          const baseW=8+Math.random()*12; // 기둥 너비 8~20px
+          for(let s=0;s<=segs;s++){
+            const t=s/segs;const y=topY+(ty-topY)*t;
+            const wobble=(Math.random()-.5)*30*(1-t*.3);
+            const w=baseW*(0.3+t*0.7+Math.random()*.3); // 위는 좁고 아래는 넓게
+            pts.push({x:tx+wobble,y:y,w:w});
           }
-          // 분기 1~2개
-          const br=[];const bCnt=1+~~(Math.random()*2);
+          // 분기 2~4개
+          const br=[];const bCnt=2+~~(Math.random()*3);
           for(let b=0;b<bCnt;b++){
             const si=1+~~(Math.random()*(pts.length-2));
             const sp=pts[si];const bPts=[{x:sp.x,y:sp.y}];
-            const bLen=40+Math.random()*60;const bAng=-Math.PI/2+(Math.random()-.5)*1.2;
-            for(let bs=1;bs<=2;bs++){bPts.push({x:sp.x+Math.cos(bAng)*bLen*(bs/2)+(Math.random()-.5)*12,y:sp.y+Math.sin(bAng)*bLen*(bs/2)+(Math.random()-.5)*8})}
+            const bAng=(Math.random()>.5?1:-1)*(0.5+Math.random()*1.2);
+            const bLen=50+Math.random()*80;
+            for(let bs=1;bs<=3;bs++){const bt=bs/3;
+              bPts.push({x:sp.x+Math.cos(-Math.PI/2+bAng)*bLen*bt+(Math.random()-.5)*15,
+                         y:sp.y+Math.sin(-Math.PI/2+bAng)*bLen*bt+(Math.random()-.5)*10})}
             br.push(bPts);
           }
-          fz._thunder.push({pts,br,life:8,w:1+Math.random()*1.5}); // 8프레임 지속
+          fz._thunder.push({pts,br,life:12,maxLife:12,baseW});
         }
-        // 천둥 렌더링
+        // 번개 기둥 렌더링
         for(let ti=fz._thunder.length-1;ti>=0;ti--){
           const th=fz._thunder[ti];th.life--;
           if(th.life<=0){fz._thunder.splice(ti,1);continue}
-          const ta=th.life/8;
-          const _drawTh=function(p){X.beginPath();X.moveTo(p[0].x,p[0].y);for(let i=1;i<p.length;i++)X.lineTo(p[i].x,p[i].y);X.stroke()};
-          // 글로우
-          X.strokeStyle='#4455cc';X.lineWidth=th.w+6;X.globalAlpha=ta*.1*_fzFade;
-          _drawTh(th.pts);
-          // 메인
-          X.strokeStyle='#6677ee';X.lineWidth=th.w+1;X.globalAlpha=ta*.5*_fzFade;
-          _drawTh(th.pts);for(let b=0;b<th.br.length;b++){X.lineWidth=th.w;_drawTh(th.br[b])}
-          // 코어
-          X.strokeStyle='#ccddff';X.lineWidth=th.w;X.globalAlpha=ta*.7*_fzFade;
-          _drawTh(th.pts);for(let b=0;b<th.br.length;b++){X.lineWidth=th.w*.6;X.globalAlpha=ta*.4*_fzFade;_drawTh(th.br[b])}
-          // 착지점 플래시
-          if(th.life>5){const lp=th.pts[th.pts.length-1];
-            X.globalAlpha=ta*.3*_fzFade;X.fillStyle='#8899ff';
-            X.beginPath();X.arc(lp.x,lp.y,8+Math.random()*4,0,Math.PI*2);X.fill()}
+          const ta=th.life/th.maxLife;
+          const flash=th.life>th.maxLife-3?1.5:1; // 처음 3프레임 밝게
+          // 기둥 — 각 세그먼트를 너비가 있는 형태로
+          for(let layer=0;layer<3;layer++){
+            const wMul=layer===0?2.5:layer===1?1.2:0.5;
+            const col=layer===0?'#2244aa':layer===1?'#5588ee':'#ddeeff';
+            const alp=layer===0?.08:layer===1?.25:.4;
+            X.strokeStyle=col;X.globalAlpha=alp*ta*flash*_fzFade;X.lineCap='round';
+            // 메인 기둥
+            X.beginPath();X.moveTo(th.pts[0].x,th.pts[0].y);
+            for(let p=1;p<th.pts.length;p++){
+              X.lineWidth=th.pts[p].w*wMul;
+              X.lineTo(th.pts[p].x,th.pts[p].y)}
+            X.stroke();
+            // 분기
+            for(let b=0;b<th.br.length;b++){
+              X.lineWidth=(th.baseW*.4)*wMul;X.globalAlpha=alp*ta*.6*flash*_fzFade;
+              X.beginPath();X.moveTo(th.br[b][0].x,th.br[b][0].y);
+              for(let p=1;p<th.br[b].length;p++)X.lineTo(th.br[b][p].x,th.br[b][p].y);
+              X.stroke();
+            }
+          }
+          // 착지 임팩트 — 넓은 발광 + 파편
+          const lp=th.pts[th.pts.length-1];
+          if(th.life>th.maxLife-5){
+            const impA=ta*flash;
+            // 넓은 글로우
+            X.globalAlpha=impA*.15*_fzFade;
+            const ig=X.createRadialGradient(lp.x,lp.y,0,lp.x,lp.y,60);
+            ig.addColorStop(0,'rgba(200,220,255,.6)');ig.addColorStop(.4,'rgba(80,120,255,.2)');ig.addColorStop(1,'rgba(20,40,120,0)');
+            X.fillStyle=ig;X.beginPath();X.arc(lp.x,lp.y,60,0,Math.PI*2);X.fill();
+            // 밝은 코어 플래시
+            X.globalAlpha=impA*.3*_fzFade;X.fillStyle='#ffffff';
+            X.beginPath();X.arc(lp.x,lp.y,6+Math.random()*4,0,Math.PI*2);X.fill();
+            // 바닥 스플래시 (방사형 파편)
+            X.strokeStyle='#88bbff';X.lineWidth=1.5;X.globalAlpha=impA*.2*_fzFade;
+            for(let si=0;si<6;si++){
+              const sa=Math.PI*2*si/6+(Math.random()-.5)*.5;
+              const sl=15+Math.random()*25;
+              X.beginPath();X.moveTo(lp.x,lp.y);X.lineTo(lp.x+Math.cos(sa)*sl,lp.y+Math.sin(sa)*sl);X.stroke();
+            }
+          }
         }
+        X.lineCap='butt';
         X.globalCompositeOperation=_prevComp;
       }else if(fz.type==='darkPillar'){
         // ═══ 악의기둥 — 기둥 VFX만 (범위 가이드 없음) ═══
