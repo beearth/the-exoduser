@@ -37533,9 +37533,8 @@ function draw(){
   }
   const _tWI=performance.now();
   if(_fc2d){var _dMobj=_PERF_PROF._delta(_snapMobj);_PERF_PROF._mobj_di=_dMobj.di}
-  // World items (화면 내만 렌더, 캡 30)
-  var _wiDrawn=0;
-  for(let _wii=0;_wii<worldItems.length;_wii++){const it=worldItems[_wii];if(it.picked)continue;var _sx=it.x-G.cam.x,_sy=it.y-G.cam.y;var _pad=40;if(_sx<-C.width/2-_pad||_sx>C.width/2+_pad||_sy<-C.height/2-_pad||_sy>C.height/2+_pad)continue;if(++_wiDrawn>30)break;const b=Math.sin(_now/300+it.x)*3;X.textAlign='center';
+  // World items (화면 내만 렌더)
+  for(let _wii=0;_wii<worldItems.length;_wii++){const it=worldItems[_wii];if(it.picked)continue;var _sx=it.x-G.cam.x,_sy=it.y-G.cam.y;var _pad=40;if(_sx<-C.width/2-_pad||_sx>C.width/2+_pad||_sy<-C.height/2-_pad||_sy>C.height/2+_pad)continue;const b=Math.sin(_now/300+it.x)*3;X.textAlign='center';
     if(it.type==='forge'){X.font='28px sans-serif';X.fillText('⚒️',it.x,it.y+b);X.font='14px "Noto Sans KR"';X.fillStyle='#ff8844';X.fillText('['+keyName(BINDS.forge)+']',it.x,it.y+b+20)}
     else if(it.type==='hp'){X.font='22px sans-serif';X.fillText('❤️',it.x,it.y+b);
       if(dst(P.x,P.y,it.x,it.y)<60){X.font='11px "Noto Sans KR"';X.fillStyle='#33ff33';X.fillText('['+keyName(BINDS.interact)+']',it.x,it.y+b+18)}}
