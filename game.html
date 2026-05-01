@@ -21353,9 +21353,11 @@ function update(){
       }
     }
     // ── 전류강화 흡인: 매 프레임, 블랙급 ──
+    // 1단계: 각 창의 강화 아크 연결 수 계산
+    const _tsIceLinks=new Uint8Array(G._thunderStakes.length);
     for(let _ti=0;_ti<G._thunderStakes.length;_ti++){for(let _tj=_ti+1;_tj<G._thunderStakes.length;_tj++){
       const _ta=G._thunderStakes[_ti],_tb=G._thunderStakes[_tj];
-      const _td=dst(_ta.x,_ta.y,_tb.x,_tb.y);if(_td>1000)continue;
+      if(dst(_ta.x,_ta.y,_tb.x,_tb.y)>1000)continue;
       let _inIce=false;
       if(G._fireZones){for(let _fzi=0;_fzi<G._fireZones.length;_fzi++){
         const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm'&&fz.type!=='holyDome')continue;
@@ -21364,14 +21366,32 @@ function update(){
         _lt=_lt<0?0:_lt>1?1:_lt;
         if(dst(fz.x,fz.y,_ta.x+_lt*_ldx,_ta.y+_lt*_ldy)<fz.r){_inIce=true;break}
       }}
-      if(!_inIce)continue;
+      if(_inIce){_tsIceLinks[_ti]++;_tsIceLinks[_tj]++}
+    }}
+    // 2단계: 강화 아크 쌍별 흡인 (연결 수 = max(양쪽) → 범위 결정)
+    for(let _ti=0;_ti<G._thunderStakes.length;_ti++){for(let _tj=_ti+1;_tj<G._thunderStakes.length;_tj++){
+      if(!_tsIceLinks[_ti]&&!_tsIceLinks[_tj])continue;
+      const _ta=G._thunderStakes[_ti],_tb=G._thunderStakes[_tj];
+      if(dst(_ta.x,_ta.y,_tb.x,_tb.y)>1000)continue;
+      const _links=Math.max(_tsIceLinks[_ti],_tsIceLinks[_tj]);
+      const _pullR=700+(_links-1)*300; // 1연결=700, 2=1000, 3=1300, ...
       const _pmx=(_ta.x+_tb.x)/2,_pmy=(_ta.y+_tb.y)/2;
-      const _tsLvPull=Math.max(_ta.lv||1,_tb.lv||1);
-      const _pullR=700+(_tsLvPull-1)*30;
       const _pullNe=shQuery(_pmx,_pmy,_pullR);
+      const _adx=_tb.x-_ta.x,_ady=_tb.y-_ta.y,_al2=_adx*_adx+_ady*_ady;
       for(let _pk=0;_pk<_pullNe.length;_pk++){const e=_pullNe[_pk];if(!e.alive)continue;
-        const _pd=dst(e.x,e.y,_pmx,_pmy);if(_pd<30)continue;
-        const _pullAng=Math.atan2(_pmy-e.y,_pmx-e.x);
+        // 아크 선분 위 최근접점으로 끌어당김
+        let _at=_al2>0?((e.x-_ta.x)*_adx+(e.y-_ta.y)*_ady)/_al2:0;
+        _at=_at<0?0:_at>1?1:_at;
+        const _cpx=_ta.x+_at*_adx,_cpy=_ta.y+_at*_ady;
+        const _pd=dst(e.x,e.y,_cpx,_cpy);if(_pd<30)continue;
+        if(_pd>_pullR)continue;
+        // 아크 근접(35px 이내): 감전 틱 데미지 (매 프레임)
+        if(_pd<35+e.r){
+          const _sDmg=~~((_ta.dmg+_tb.dmg)*0.05);
+          const _sAng=Math.atan2(e.y-_cpy,e.x-_cpx);
+          hurtE(e,_sDmg,_sAng,false,{dot:true,noKb:true},EL.L);
+        }
+        const _pullAng=Math.atan2(_cpy-e.y,_cpx-e.x);
         const _pullSpd=5*(1-_pd/_pullR*0.3);
         const _nx=e.x+Math.cos(_pullAng)*_pullSpd,_ny=e.y+Math.sin(_pullAng)*_pullSpd;
         if(!isW(_nx,_ny,true)){e.x=_nx;e.y=_ny}
