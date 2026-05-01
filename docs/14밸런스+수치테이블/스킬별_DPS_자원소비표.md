@@ -108,7 +108,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | blueShot | 푸른비 | MP | **100+1.5×Lv** (110~115) | **300f (5초)** | INT × magicRef × pMagicMul × _skMul('blueShot') (b=4.0, g=1.6) | 50발 순차유도, Lv300 해금 |
 | burstLoop | 버스트루프 | 없음 | 0 | 없음 | INT × (mul+(Lv-1)) mul=1/3/5 | 홀드 차지, 범위 500/700/900px (합체600/800/1000), Lv700, Lv당 뎀+1 |
 | hellRay | 참회 | MP | **100/충전** | **600f (10초)/충전** | INT × (5+(Lv-1)) | 에너지 쐐기, 회전+뎀, Lv당 뎀+1 |
-| thunderStake | 뇌전창 | MP | **50/개** | **스택 5개 (12초/충전, Lv10→6)** | INT × magicRef × pMagicMul × _skMul('thunderStake') (b=5, g=2) | 전기창 설치, 600px 이내 쌍끼리 전기 아크→경로 적 틱뎀 (×0.15/20f), 감전, 10초+0.5초/Lv |
+| thunderStake | 뇌전창 | MP | **50/개** | **스택 5개 (12초/충전, Lv10→6)** | INT × magicRef × pMagicMul × _skMul('thunderStake') (b=5, g=2) | 전기창 설치, 1000px 이내 쌍끼리 전기 아크→경로 적 틱뎀 (×0.15/20f), 감전, 10초+0.5초/Lv |
 
 ---
 
