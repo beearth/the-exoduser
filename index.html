@@ -264,6 +264,12 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 </head>
 <body>
 
+<!-- ═══ Splash Sequence (경고문 → 로고 → 타이틀) ═══ -->
+<div id="splashOverlay" style="position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;opacity:1;transition:opacity 0.5s">
+  <canvas id="splashCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+  <div id="splashContent" style="text-align:center;opacity:0;transition:opacity 0.5s;position:relative;z-index:2"></div>
+</div>
+
 <!-- ═══ Cinematic Scene ═══ -->
 <div class="cin-scene" id="cinScene">
   <div class="cin-lb cin-lb-t"></div>
@@ -1340,6 +1346,65 @@ function showCharGate(charId){
   obs.observe(document.getElementById('lobby'),{attributes:true,attributeFilter:['style']});
   // 즉시 시작 시도
   if(document.getElementById('lobby').style.display==='flex'){resize();loop()}
+})();
+</script>
+<script>
+// ═══ 스플래시 시퀀스 ═══
+(function(){
+  const overlay=document.getElementById('splashOverlay');
+  const content=document.getElementById('splashContent');
+  if(!overlay||!content)return;
+  const screens=[
+    // SCREEN 1: 경고문
+    `<div style="font:700 36px serif;color:#888;letter-spacing:.15em;margin-bottom:12px">PHOTOSENSITIVE SEIZURE WARNING</div>
+     <div style="font:700 24px 'Noto Sans KR',sans-serif;color:#888;margin-bottom:30px">광과민성 발작 경고</div>
+     <div style="font:18px serif;color:#666;line-height:1.6">This game contains intense violence and disturbing imagery.<br>Rated 18+. May trigger photosensitive seizures.<br>Player discretion advised.</div>
+     <div style="font:18px 'Noto Sans KR',sans-serif;color:#666;line-height:1.6;margin-top:20px">본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.</div>
+     <div id="splashBlink" style="font:14px sans-serif;color:#444;margin-top:40px">Press any key to continue / 아무 키나 눌러 계속</div>`,
+    // SCREEN 2: FDG 로고
+    `<div style="font:700 64px serif;color:#aaa;letter-spacing:.2em">FDG</div>
+     <div style="font:18px sans-serif;color:#555;margin-top:12px">STUDIO</div>`,
+    // SCREEN 3: 게임 타이틀
+    `<div style="font:700 72px serif;color:#cc4400;letter-spacing:.1em">EXODUSER</div>
+     <div style="font:24px 'Noto Sans KR',sans-serif;color:#888;margin-top:12px">지옥의 길</div>`
+  ];
+  let idx=0,timer=null,blinkId=null;
+  function show(){
+    if(idx>=screens.length){end();return}
+    content.innerHTML=screens[idx];
+    content.style.opacity='0';
+    setTimeout(()=>{content.style.opacity='1'},30);
+    // 깜빡임 (경고문만)
+    if(idx===0){
+      let t=0;blinkId=setInterval(()=>{
+        const el=document.getElementById('splashBlink');
+        if(el)el.style.opacity=(Math.sin(t++*0.15)*0.5+0.5).toFixed(2);
+      },50);
+    }
+    timer=setTimeout(()=>{next()},4000);
+    console.log('[SPLASH] screen '+(idx+1)+' shown');
+  }
+  function next(){
+    clearTimeout(timer);clearInterval(blinkId);
+    content.style.opacity='0';
+    setTimeout(()=>{idx++;show()},500);
+  }
+  function end(){
+    clearTimeout(timer);clearInterval(blinkId);
+    overlay.style.opacity='0';
+    setTimeout(()=>{overlay.style.display='none'},500);
+    console.log('[SPLASH] sequence ended');
+  }
+  function skip(){
+    console.log('[SPLASH] screen '+(idx+1)+' skipped');
+    next();
+  }
+  overlay.addEventListener('click',skip);
+  document.addEventListener('keydown',function _spKey(e){
+    if(!overlay||overlay.style.display==='none')return;
+    if(idx<screens.length){e.preventDefault();skip()}
+  });
+  show();
 })();
 </script>
 </body>

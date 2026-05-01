@@ -7983,18 +7983,11 @@ function _dispatchSkillSlot(slotIdx,keyCode){
             P.hp=Math.min(P.mhp,P.hp+_vs.resHP);P.mp=Math.min(P.mmp,P.mp+_vs.resMP);P.st=Math.min(P.mst,P.st+_vs.resST);
             addTxt(P.x,P.y-40,_T('회수 HP+')+_vs.resHP+' MP+'+_vs.resMP+' ST+'+_vs.resST,'#66ffaa',50);
           }
-          // 유령총 합체: 흡수량 기반 폭발
+          // 공성유령 철거 폭발: 통일 공식 (기본500, 10스택당+500, 최대2000)
           if(_vs.absorbed>0){
-            const _sgBoomR=150+_vs.absorbed*8;
+            const _sgBoomR=Math.min(2000,500+~~(_vs.absorbed/10)*500);
             const _sgBoomDmg=~~(bowRef()*statDex()*pBowMul()*(_vs.absorbed*0.5));
-            const _sgBoomNe=shQuery(_vs.x,_vs.y,_sgBoomR+20);
-            for(let _sbi=0;_sbi<_sgBoomNe.length;_sbi++){const _sbe=_sgBoomNe[_sbi];if(!_sbe.alive)continue;
-              if(dst(_vs.x,_vs.y,_sbe.x,_sbe.y)<_sgBoomR+_sbe.r){
-                const _sba=Math.atan2(_sbe.y-_vs.y,_sbe.x-_vs.x);
-                hurtE(_sbe,_sgBoomDmg,_sba,true,{explode:true},EL.D);
-                _sbe.kb.x+=Math.cos(_sba)*6;_sbe.kb.y+=Math.sin(_sba)*6;
-              }}
-            _spawnFxAnim(_vs.x,_vs.y,Math.max(100,_sgBoomR/2));
+            _fireExsBoom(_vs.x,_vs.y,_sgBoomR,_sgBoomDmg,_vs.absorbed);
             addTxt(_vs.x,_vs.y-30,_T('💥 유령총 폭발!'),'#ff6622',60);
             addParts(_vs.x,_vs.y,'#ff6622',20);addParts(_vs.x,_vs.y,'#ffcc44',12);
             shake(Math.min(15,5+_vs.absorbed*.4));SFX.detonate();
@@ -23634,9 +23627,7 @@ function update(){
     if(_gxTgt2)_gxTurret.ang=Math.atan2(_gxTgt2.y-_gxTurret.y,_gxTgt2.x-_gxTurret.x);
   }
   // Player arrows (bow) — 최대 60발 제한
-  {const _ppCap=P._blueBarrage?150:80;if(pProjs.length>_ppCap){
-    // 석궁/스킬 투사체 우선 보존 — blueShot만 컬링
-    let _ppW=0;for(let _ri=0;_ri<pProjs.length;_ri++){const _rp=pProjs[_ri];if(_rp.blueShot&&_ppW>=_ppCap){_recyclePProj(_rp)}else{pProjs[_ppW++]=_rp}}pProjs.length=_ppW;}}
+  // pProjs 캡 제거됨 — 투사체 무제한
   {let w=0;for(let i=0;i<pProjs.length;i++){
     const p=pProjs[i];
     // 트레일 업데이트
@@ -32481,13 +32472,14 @@ function activateExplodeScarecrow(){
 function _detonateExplodeScarecrow(){
   const es=G._explodeScarecrow;if(!es)return;
   if(es.exploding)return; // 이미 부풀기 중
+  console.log('[DET] absorbed='+es.absorbed+' maxAbsorb='+es.maxAbsorb+' lv='+es.lv);
   // 1초(60프레임) 부풀기 후 폭발
   es.exploding=60;es.aggroOn=false;
   addTxt(es.x,es.y-35,_T('임계...!'),'#ff6644',50);
   SFX.scarecrowCharge();
 }
 function _doExplodeScarecrowBoom(){
-  const es=G._explodeScarecrow;if(!es)return;
+  const es=G._explodeScarecrow;if(!es){console.log('[BOOM-FAIL] es=null');return;}
   const slv=es.lv||1;
   const absorbed=es.absorbed||0;
   const _esX=es.x,_esY=es.y;
@@ -32515,6 +32507,7 @@ function _doExplodeScarecrowBoom(){
   P._exsCd=~~(600*(1+_eqAffix('cooldownRed'))); // 10초 쿨
 }
 function _fireExsBoom(bx,by,boomR,boom,absorbed){
+  console.log('[BOOM] boomR='+boomR+' boom='+boom+' absorbed='+absorbed);
   const ne=shQuery(bx,by,boomR);
   for(let i=0;i<ne.length;i++){
     const e=ne[i];if(!e.alive)continue;
@@ -32524,7 +32517,7 @@ function _fireExsBoom(bx,by,boomR,boom,absorbed){
     hurtE(e,~~(boom*falloff),ang,false,{kbMult:1.5,explode:true},EL.F);
     e.kb.x+=Math.cos(ang)*10*falloff;e.kb.y+=Math.sin(ang)*10*falloff;
   }
-  playVFXAng('explode_scarecrow',bx,by,Math.max(2,boomR/128),12,0,true);
+  playVFXAng('explode_scarecrow',bx,by,Math.min(8,Math.max(2,boomR/128)),12,0,true);
   if(!G._gSlamWave)G._gSlamWave=[];
   G._gSlamWave.push({x:bx,y:by,r:40,maxR:boomR,t:0,maxT:40,col:'#ff6622'});
   if(boomR>500)G._gSlamWave.push({x:bx,y:by,r:60,maxR:boomR*.7,t:0,maxT:30,col:'#ffcc44'});
@@ -39636,12 +39629,13 @@ function draw(){
       f.t++;if(f.t>=8){f.t=0;f.f++}
       if(f.f>=_FX_FRAMES)continue;
       const prog=f.f/_FX_FRAMES;
-      const alpha=prog<.1?prog/.1:prog>.5?1-(prog-.5)/.5:1;
-      const scale=1+prog*.3;
+      const alpha=prog>.7?1-(prog-.7)/.3:1;
+      const scale=1+prog*.5;
       const sz=f.sz*scale;
-      {X.globalAlpha=alpha; // 스킬 VFX — budget 무시
+      X.globalAlpha=alpha;
       const _fxCol=f.f%_FX_COLS,_fxRow=~~(f.f/_FX_COLS);
-      X.drawImage(_FX_IMG,_fxCol*_FX_FW,_fxRow*_FX_FH,_FX_FW,_FX_FH,f.x-sz/2,f.y-sz/2,sz,sz);}
+      X.drawImage(_FX_IMG,_fxCol*_FX_FW,_fxRow*_FX_FH,_FX_FW,_FX_FH,f.x-sz/2,f.y-sz/2,sz,sz);
+      X.globalAlpha=1;
       _fxAnims[_fxW++]=f;
     }
     _fxAnims.length=_fxW;
