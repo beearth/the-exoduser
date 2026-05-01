@@ -5171,7 +5171,7 @@ const _EN={
 '장비 ':'Gear ',
 '💫 진동!':'💫 Tremor!','❄ 무적!':'❄ Invincible!',
 '\u{1F47B} 유령!':'\u{1F47B} Ghost!',
-'집중 해제!':'Focus Cancel!',
+'집중 해제!':'Focus Cancel!','집중!':'Focus!',
 '🕊️ 평화보호 ':'🕊️ Aegis ',
 '🛡 보호막 ':'🛡 Shield ',
 '🌀 회전보호막 ':'🌀 Spin Shield ',
@@ -7922,6 +7922,13 @@ function _dispatchSkillSlot(slotIdx,keyCode){
     // quakeStride 삭제됨
     case 'spikeTrap':
       if(G.mats>=_malCost(10)&&(P._gcCd||0)<=0){activateSpikeTrap();_skOk=true}else if(G.mats<_malCost(10))showPH(_T('악의 부족! (')+_malCost(10)+')','#ff4444');break;
+    case 'thunderStake':
+      if(P._tsAiming){P._tsAiming=false;showPH(_T('취소'),'#888');break}
+      {const _tsMax=(P.skills.thunderStake>=10)?6:5;
+      if(P._tsStk==null)P._tsStk=_tsMax;
+      if((P._tsStk||0)<=0){showPH(_T('충전 중...'),'#ff8844');break}
+      if(P.mp<50){showPH(_T('MP 부족! (50)'),'#4488ff');break}
+      P._tsAiming=true;_skOk=true}break;
     case 'voidScarecrow':
       if(G._voidScarecrow){
         // 재입력 → 회수 (자원 흡수 + 소멸)
@@ -22371,7 +22378,18 @@ function update(){
       const _sfDmg=~~(magicRef()*statInt()*pMagicMul()*(1+(_sfLv-1)*.20));
       const _sfDR=Math.min(.50,.10+(_sfLv-1)*.05); // 1렙10%, 렙당+5%, 캡50%
       if(!G._fireZones)G._fireZones=[];
-      G._fireZones.push({x:P.x,y:P.y,r:_sfR,t:0,maxT:600+(_sfLv-1)*30,dmg:_sfDmg,el:EL.L,lv:_sfLv,type:'shockField',defRed:_sfDR});
+      // 착지 번개 기둥 생성 (1회) — 화면 상단→착지점, 큰 지그재그+다분기
+      const _thPts=[];const _thTopY=G.cam.y-C.height/2-50;
+      const _thSegs=8+~~(Math.random()*5);const _thBW=14+Math.random()*10; // 두꺼운 기둥
+      for(let s=0;s<=_thSegs;s++){const t=s/_thSegs;
+        _thPts.push({x:P.x+(Math.random()-.5)*80*(1-t*.4),y:_thTopY+(P.y-_thTopY)*t,w:_thBW*(.2+t*.8+Math.random()*.3)})} // 큰 wobble
+      const _thBr=[];for(let b=0;b<3+~~(Math.random()*3);b++){ // 분기 3~5개
+        const si=1+~~(Math.random()*(_thPts.length-2));const sp=_thPts[si];const bPts=[{x:sp.x,y:sp.y}];
+        const bAng=(Math.random()>.5?1:-1)*(.4+Math.random()*1.4);const bLen=60+Math.random()*120;
+        for(let bs=1;bs<=3;bs++){const bt=bs/3;bPts.push({x:sp.x+Math.cos(-Math.PI/2+bAng)*bLen*bt+(Math.random()-.5)*25,y:sp.y+Math.sin(-Math.PI/2+bAng)*bLen*bt+(Math.random()-.5)*15})}
+        _thBr.push(bPts)}
+      G._fireZones.push({x:P.x,y:P.y,r:_sfR,t:0,maxT:600+(_sfLv-1)*30,dmg:_sfDmg,el:EL.L,lv:_sfLv,type:'shockField',defRed:_sfDR,
+        _thunder:[{pts:_thPts,br:_thBr,life:18,maxLife:18,baseW:_thBW}]});
       addTxt(P.x,P.y-30,'⚡'+~~(_sfDR*100)+'% 방어↓','#44ddff',28)}
       // 홀딩스킬 복귀: 키 아직 눌려있으면 원래 상태로
       if(P._preBdState==='whirlwind'&&isHeld('weapon')&&P.st>=2){P.s='whirlwind';P._preBdState=null}
@@ -23311,7 +23329,7 @@ function update(){
         hurtP(_bkD,{dtype:'magic',src:'무지개폭발'});
         // 무지개탄 포이즈 데미지 (2칸 소모)
         {P.poise=Math.max(0,(P.poise||4)-2);P.poiseR=0;
-        if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(480*(1-Math.min(.3,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}
+        if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(480*(1-Math.min(.3,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}}
         // 넉백 + 피격플래시
         {const _bkA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bkA)*7;P.kb.y+=Math.sin(_bkA)*7}
         P.iframes=Math.max(P.iframes,15);
@@ -28821,10 +28839,11 @@ function updateE(e,sp){
           e.stunned=60;hurtE(e,_pd2,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd2;doParry(e.atk,e.x,e.y);_poiseHit(e,20)}
         else{
           hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
-          P.s='pStun';P.st2=300; // 5초 풀스턴
+          if(_isFocusState()){addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}
+          else{P.s='pStun';P.st2=300; // 5초 풀스턴
           SFX.groggy();addTxt(P.x,P.y-22,_T('💫 기절! 5초'),'#ffaa00',60);
           G.hitStop=~~(8*OPT.hitStop/100);if(G.slowMo<=0)G.slowMo=15;
-          for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}
+          for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
         }
       }
       e.s='bossRec';e.st2=35;
@@ -30796,6 +30815,8 @@ function _logDmg(raw,final,src){
   _dmgLog.push({raw:~~raw,final:~~final,src:label,t:~~(G.gt||0),hp:~~P.hp});
   if(_dmgLog.length>_DMG_LOG_MAX)_dmgLog.shift();
 }
+// ─── 집중 스킬 기절/경직 면역 판정 ───
+function _isFocusState(){return P.s==='sBlock'||P.s==='peaceShield'||P.s==='whirlwind'||P.s==='beam'||P.s==='burstLoop'||P.s==='charge'||P.s==='bowDraw'||P.s==='rainLightning'}
 // ─── [S16j] HURT_P — 플레이어 피격 (방어/포이즈) ───
 function hurtP(dmg,opts){
   if(P.s==='fallen'||P.s==='dead')return; // 쓰러짐/사망 중 무적
@@ -30942,17 +30963,11 @@ function hurtP(dmg,opts){
     P.iframes=0;
   }else{
     const _isProj=opts&&opts.projHit;
-    P.iframes=0;if(P.s!=='charge'&&P.s!=='pStun'&&P.s!=='whirlwind'){
+    P.iframes=0;if(!_isFocusState()&&P.s!=='pStun'){
       // ═══ 포이즈 감소 → 기절 (4칸 시스템) ═══ 탄막 1칸, 근접 1칸
       P.poise=Math.max(0,(P.poise||4)-1);P.poiseR=0;
       if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(480*(1-Math.min(.3,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
       else{P.s='stagger';P.st2=6}
-    }
-    // 회전 중: 경직 면역, 포이즈 감소 절반
-    if(P.s==='whirlwind'){
-      // 회전참 중: 포이즈 감소 절반 (2발에 1칸)
-      P._wwPoiseAcc=(P._wwPoiseAcc||0)+0.5;if(P._wwPoiseAcc>=1){P.poise=Math.max(0,(P.poise||4)-1);P._wwPoiseAcc=0}P.poiseR=0;
-      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(480*(1-Math.min(.3,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
     }
     if(a>0)addTxt(P.x,P.y-10,'-'+a,'#ff3333',28);
     // ═══ 데미지 비례 넉백: dmg/mhp 비율로 밀림 (최소1, 최대12) ═══
@@ -31328,7 +31343,8 @@ const SKILL_LIST=[
   {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: E, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.5/1.0/1.5초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',descEn:'[Hidden: E, unlock Lv700] Hold for 3-stage charge AoE explosion (0.5/1.0/1.5s). Range 600/1000/1400px. Stage 3 full charge auto-detonates. INT scale, no element',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700},
   {id:'voidScarecrow',name:'유령 허수아비',cat:'def',act:true,emoji:'👻',desc:'유령 허수아비를 소환하여 유도탄막 어그로를 끈다. 탄막을 흡수해 자원 축적 (기본 20개, Lv당+3). 1개당 HP/MP/ST 각 100. R키로 회수. 쿨 30초',descEn:'Summon phantom scarecrow to draw homing projectile aggro. Absorbs projectiles for resource buildup (base 20, +3/Lv). Per absorbed: HP/MP/ST +100 each. R key to retrieve. CD 30s',spCost:10,matCost:100,cd:1800,up:true,upSp:5,upMat:0},
   {id:'explodeScarecrow',name:'폭발 허수아비',cat:'def',act:true,emoji:'💥',desc:'폭발 허수아비 설치. 탄막을 흡수하고 재입력 시 폭발! 1스택당 (INT마법뎀+탄막뎀)×10 마법데미지. 범위 600+흡수×20 (최대1800). 최대흡수 1렙20~20렙60. 쿨 10초',descEn:'Place explosive scarecrow. Absorbs projectiles, re-press to detonate! Per stack: (INT magic DMG + proj DMG)×10. Range 600+absorbed×20 (max 1800). Max absorb Lv1=20~Lv20=60. CD 10s',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
-  {id:'ghostXbowTurret',name:'공성쇠뇌',cat:'bow',act:true,emoji:'🏹',desc:'[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거(무료). 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 쿨없음. Lv당 뎀+5% 공속+5% 사거리+5%',descEn:'[Select: 1~4, unlock Lv500] Deploy siege crossbow turret at current pos. Re-press to dismantle (free). While deployed: player crossbow disabled (turret fires only). DMG+50%, ATK SPD+50%, range+50%. ST 100. No CD. Per Lv DMG+5% ATK SPD+5% range+5%',spCost:10,matCost:120,up:true,upSp:5,upMat:0,reqLv:500}
+  {id:'ghostXbowTurret',name:'공성쇠뇌',cat:'bow',act:true,emoji:'🏹',desc:'[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거(무료). 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 쿨없음. Lv당 뎀+5% 공속+5% 사거리+5%',descEn:'[Select: 1~4, unlock Lv500] Deploy siege crossbow turret at current pos. Re-press to dismantle (free). While deployed: player crossbow disabled (turret fires only). DMG+50%, ATK SPD+50%, range+50%. ST 100. No CD. Per Lv DMG+5% ATK SPD+5% range+5%',spCost:10,matCost:120,up:true,upSp:5,upMat:0,reqLv:500},
+  {id:'thunderStake',name:'뇌전창',cat:'magic',act:true,emoji:'⚡',desc:'[선택: 1~4번] 마우스 조준 → 전기창을 땅에 꽂는다. 5스택(12초/1충전, Lv10→6스택). 창끼리 600px 이내면 전류 아크 발생, 경로 위 적에게 감전 틱 데미지. MP 50. 지속 10초(+0.5초/Lv). Lv당 아크뎀+10%',descEn:'[Select: 1~4] Mouse aim → plant electric spear on ground. 5 stocks (12s/charge, Lv10→6). Spears within 600px create lightning arcs dealing shock tick DMG to enemies on path. MP 50. Duration 10s (+0.5s/Lv). Per Lv arc DMG+10%',spCost:10,matCost:100,up:true,upSp:5,upMat:0}
 ];
 
 // ═══ 스킬 슬롯 시스템 ═══
@@ -31589,6 +31605,8 @@ const _SK_MUL={
   elemMissile:{b:1.0,g:0.4},
   // ── 석궁 ──
   blastShot:{b:0.5,g:0.2},
+  // ── 설치형 (뇌전창) ──
+  thunderStake:{b:5,g:2},  // 창 자체 뎀, 아크는 ×0.3 틱
 };
 // 레벨 복리 보너스 삭제됨 — 스킬 배율은 순수 (b + (lv-1)*g*0.5) 만 사용
 function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];if(!t)return 1;return t.b+(lv-1)*t.g*0.5}
@@ -32324,7 +32342,7 @@ function _detonateExplodeScarecrow(){
     e.kb.x+=Math.cos(ang)*10*falloff;e.kb.y+=Math.sin(ang)*10*falloff;
   }
   // VFX: 폭발허수아비 전용 대형폭발 임펙트
-  playVFXAng('explode_scarecrow',es.x,es.y,Math.max(1,boomR/128),6,0,false);
+  playVFXAng('explode_scarecrow',es.x,es.y,Math.max(2,boomR/64),6,0,false);
   addParts(es.x,es.y,'#ff6622',25);addParts(es.x,es.y,'#ffcc44',15);
   shake(Math.min(12,4+absorbed*.3));
   SFX.detonate();
@@ -40254,14 +40272,8 @@ function drawP(){
         }
       }else if(fz.type==='shockField'){
         // ═══ 전격이동 전류장판 — 넓은 기둥형 번개 + 바닥 발광 ═══
-        const _st=_now*.001;const _sfF=~~(fz.t);const _prevComp=X.globalCompositeOperation;
-        X.globalCompositeOperation='lighter';
-        // ── 1) 바닥 발광 (은은한 파란 빛 번짐) ──
-        X.globalAlpha=(.06+.03*Math.sin(_st*5))*_fzFade;
-        const _bgG=X.createRadialGradient(fz.x,fz.y,0,fz.x,fz.y,fz.r);
-        _bgG.addColorStop(0,'rgba(80,140,255,.25)');_bgG.addColorStop(.5,'rgba(40,80,200,.08)');_bgG.addColorStop(1,'rgba(10,20,60,0)');
-        X.fillStyle=_bgG;X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.fill();
-        // ── 2) 바닥 전기 줄기 (얇은 분기형, 은은) ──
+        const _st=_now*.001;const _sfF=~~(fz.t);
+        // ── 바닥 전기 줄기 (얇은 분기형, 은은) ──
         if(!fz._arcs||_sfF%3===0){
           fz._arcs=[];const _ac=5+~~(Math.random()*3);
           for(let _ai=0;_ai<_ac;_ai++){
@@ -40278,86 +40290,45 @@ function drawP(){
           X.strokeStyle='#88aaff';X.lineWidth=a.w;X.globalAlpha=.25*_fzFade;
           X.beginPath();X.moveTo(a.pts[0].x,a.pts[0].y);for(let p=1;p<a.pts.length;p++)X.lineTo(a.pts[p].x,a.pts[p].y);X.stroke();
         }
-        // ── 3) 수직 번개 기둥 (영상 참고: 넓고 불규칙, 흰코어+파란글로우) ──
+        // ── 3) 착지 번개 기둥 렌더링 (착지 시 1회 생성됨) ──
         if(!fz._thunder)fz._thunder=[];
-        if(!fz._thNext)fz._thNext=~~(Math.random()*10);
-        if(_sfF>=fz._thNext){
-          fz._thNext=_sfF+20+~~(Math.random()*20);
-          const tx=fz.x+(Math.random()-.5)*fz.r*1.4;
-          const ty=fz.y+(Math.random()-.5)*fz.r*1.4;
-          const topY=ty-300-Math.random()*200;
-          // 메인 기둥 — 넓고 물결치는 형태
-          const segs=6+~~(Math.random()*4);const pts=[];
-          const baseW=8+Math.random()*12; // 기둥 너비 8~20px
-          for(let s=0;s<=segs;s++){
-            const t=s/segs;const y=topY+(ty-topY)*t;
-            const wobble=(Math.random()-.5)*30*(1-t*.3);
-            const w=baseW*(0.3+t*0.7+Math.random()*.3); // 위는 좁고 아래는 넓게
-            pts.push({x:tx+wobble,y:y,w:w});
-          }
-          // 분기 2~4개
-          const br=[];const bCnt=2+~~(Math.random()*3);
-          for(let b=0;b<bCnt;b++){
-            const si=1+~~(Math.random()*(pts.length-2));
-            const sp=pts[si];const bPts=[{x:sp.x,y:sp.y}];
-            const bAng=(Math.random()>.5?1:-1)*(0.5+Math.random()*1.2);
-            const bLen=50+Math.random()*80;
-            for(let bs=1;bs<=3;bs++){const bt=bs/3;
-              bPts.push({x:sp.x+Math.cos(-Math.PI/2+bAng)*bLen*bt+(Math.random()-.5)*15,
-                         y:sp.y+Math.sin(-Math.PI/2+bAng)*bLen*bt+(Math.random()-.5)*10})}
-            br.push(bPts);
-          }
-          fz._thunder.push({pts,br,life:12,maxLife:12,baseW});
-        }
-        // 번개 기둥 렌더링
         for(let ti=fz._thunder.length-1;ti>=0;ti--){
           const th=fz._thunder[ti];th.life--;
           if(th.life<=0){fz._thunder.splice(ti,1);continue}
           const ta=th.life/th.maxLife;
-          const flash=th.life>th.maxLife-3?1.5:1; // 처음 3프레임 밝게
-          // 기둥 — 각 세그먼트를 너비가 있는 형태로
-          for(let layer=0;layer<3;layer++){
-            const wMul=layer===0?2.5:layer===1?1.2:0.5;
-            const col=layer===0?'#2244aa':layer===1?'#5588ee':'#ddeeff';
-            const alp=layer===0?.08:layer===1?.25:.4;
-            X.strokeStyle=col;X.globalAlpha=alp*ta*flash*_fzFade;X.lineCap='round';
-            // 메인 기둥
+          const flash=th.life>th.maxLife-4?2:1; // 처음 4프레임 밝게
+          X.lineCap='round';
+          // 기둥 4레이어: 넓은보라글로우→보라→파랑메인→흰코어
+          const _layers=[{wMul:4,col:'#221155',alp:.06},{wMul:2.5,col:'#4433aa',alp:.12},{wMul:1.3,col:'#6677ee',alp:.35},{wMul:.5,col:'#eeeeff',alp:.55}];
+          for(let li=0;li<4;li++){const L=_layers[li];
+            X.strokeStyle=L.col;X.globalAlpha=L.alp*ta*flash*_fzFade;
             X.beginPath();X.moveTo(th.pts[0].x,th.pts[0].y);
-            for(let p=1;p<th.pts.length;p++){
-              X.lineWidth=th.pts[p].w*wMul;
-              X.lineTo(th.pts[p].x,th.pts[p].y)}
+            for(let p=1;p<th.pts.length;p++){X.lineWidth=th.pts[p].w*L.wMul;X.lineTo(th.pts[p].x,th.pts[p].y)}
             X.stroke();
-            // 분기
             for(let b=0;b<th.br.length;b++){
-              X.lineWidth=(th.baseW*.4)*wMul;X.globalAlpha=alp*ta*.6*flash*_fzFade;
+              X.lineWidth=(th.baseW*.5)*L.wMul;X.globalAlpha=L.alp*ta*.5*flash*_fzFade;
               X.beginPath();X.moveTo(th.br[b][0].x,th.br[b][0].y);
-              for(let p=1;p<th.br[b].length;p++)X.lineTo(th.br[b][p].x,th.br[b][p].y);
-              X.stroke();
+              for(let p=1;p<th.br[b].length;p++)X.lineTo(th.br[b][p].x,th.br[b][p].y);X.stroke();
             }
           }
-          // 착지 임팩트 — 넓은 발광 + 파편
+          // 착지 임팩트 — 큰 발광 + 플래시 + 파편
           const lp=th.pts[th.pts.length-1];
-          if(th.life>th.maxLife-5){
+          if(th.life>th.maxLife-6){
             const impA=ta*flash;
-            // 넓은 글로우
-            X.globalAlpha=impA*.15*_fzFade;
-            const ig=X.createRadialGradient(lp.x,lp.y,0,lp.x,lp.y,60);
-            ig.addColorStop(0,'rgba(200,220,255,.6)');ig.addColorStop(.4,'rgba(80,120,255,.2)');ig.addColorStop(1,'rgba(20,40,120,0)');
-            X.fillStyle=ig;X.beginPath();X.arc(lp.x,lp.y,60,0,Math.PI*2);X.fill();
-            // 밝은 코어 플래시
-            X.globalAlpha=impA*.3*_fzFade;X.fillStyle='#ffffff';
-            X.beginPath();X.arc(lp.x,lp.y,6+Math.random()*4,0,Math.PI*2);X.fill();
-            // 바닥 스플래시 (방사형 파편)
-            X.strokeStyle='#88bbff';X.lineWidth=1.5;X.globalAlpha=impA*.2*_fzFade;
-            for(let si=0;si<6;si++){
-              const sa=Math.PI*2*si/6+(Math.random()-.5)*.5;
-              const sl=15+Math.random()*25;
+            X.globalAlpha=impA*.2*_fzFade;
+            const ig=X.createRadialGradient(lp.x,lp.y,0,lp.x,lp.y,90);
+            ig.addColorStop(0,'rgba(200,210,255,.7)');ig.addColorStop(.3,'rgba(100,120,255,.3)');ig.addColorStop(1,'rgba(30,30,100,0)');
+            X.fillStyle=ig;X.beginPath();X.arc(lp.x,lp.y,90,0,Math.PI*2);X.fill();
+            X.globalAlpha=impA*.5*_fzFade;X.fillStyle='#ffffff';
+            X.beginPath();X.arc(lp.x,lp.y,10+Math.random()*6,0,Math.PI*2);X.fill();
+            X.strokeStyle='#99aaff';X.lineWidth=2;X.globalAlpha=impA*.25*_fzFade;
+            for(let si=0;si<8;si++){
+              const sa=Math.PI*2*si/8+(Math.random()-.5)*.4;const sl=25+Math.random()*40;
               X.beginPath();X.moveTo(lp.x,lp.y);X.lineTo(lp.x+Math.cos(sa)*sl,lp.y+Math.sin(sa)*sl);X.stroke();
             }
           }
         }
         X.lineCap='butt';
-        X.globalCompositeOperation=_prevComp;
       }else if(fz.type==='darkPillar'){
         // ═══ 악의기둥 — 기둥 VFX만 (범위 가이드 없음) ═══
         const _dpt=_now*.001;
