@@ -21811,3 +21811,11 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - lang_zh.js
 - lang_zht.js
 
+
+## 2026-05-02 19:30 (auto)
+- game.html
+- lang_es.js
+- lang_ja.js
+- lang_zh.js
+- lang_zht.js
+
