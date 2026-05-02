@@ -84,6 +84,15 @@ path: '/v1/images/generations'
 - shadowBlur: 16 → 8 → 4 → 2
 - lineWidth: 28 → 14 → 6 → 2
 
+## 보라색 버스트 (teleport_burst) VFX
+
+| 항목 | 내용 |
+|------|------|
+| 에셋 | `assets/vfx/teleport_burst.png` (576×64, 9프레임 9×1) |
+| 등록 | `registerVFX('teleport_burst', ..., 64, 64, 9, 9)` |
+| 사용처 | `teleportE()` 도착지 + `activateTimeWarp()` 시간왜곡 발동 |
+| 스케일 | 텔레포트: `isBig?r/8:r/12`, 시간왜곡: 고정 4 |
+
 ## 순간이동 연기 (TP-SMOKE) VFX
 
 ### 개요

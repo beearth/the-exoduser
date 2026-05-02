@@ -4568,7 +4568,7 @@ const BIND_NAMES_EN={
   irisToggle:'Ghost Flame On/Off',
   bladeToggle:'Bladewing Auto On/Off',
 };
-function _bindName(key){return OPT.lang!=='ko'?(BIND_NAMES_EN[key]||key):(BIND_NAMES[key]||key);}
+function _bindName(key){if(OPT.lang==='ko')return BIND_NAMES[key]||key;const ko=BIND_NAMES[key]||key;const t=_T(ko);return t!==ko?t:(BIND_NAMES_EN[key]||key);}
 function keyName(code){
   if(!code)return OPT.lang!=='ko'?'None':'없음';
   if(code==='mouse0')return OPT.lang!=='ko'?'LMB':'좌클릭';
@@ -4746,7 +4746,7 @@ const _EN={
 '게임 설정':'Game Settings','화면 흔들림':'Screen Shake','파티클 양':'Particle Amount',
 '효과음 볼륨':'SFX Volume','음악 볼륨':'Music Volume','난이도':'Difficulty',
 '자동 물약':'Auto Potion','최소 줍기 등급':'Min Pickup Grade','최소 줍기 티어':'Min Pickup Tier',
-'FPS 제한':'FPS Limit','해상도 스케일':'Resolution Scale','펫 자동수거':'Pet Auto-Collect',
+'FPS 제한':'FPS Limit','해상도':'Resolution','해상도 스케일':'Resolution Scale','펫 자동수거':'Pet Auto-Collect',
 '화면 설정':'Display Settings','화면 모드':'Display Mode','보스 AI 디버그':'Boss AI Debug',
 '유령불꽃 크기':'Ghost Flame Size','화면 명암':'Brightness','유령 글로우':'Ghost Glow',
 '기동:칼날개 AUTO':'Bladewing AUTO',
@@ -5462,6 +5462,11 @@ const _EN={
 '이동스킬 (클릭 전환)':'Move Skill (click to switch)','마법스킬 (클릭 전환)':'Magic Skill (click to switch)',
 '영역스킬 (클릭 전환)':'Area Skill (click to switch)','피보호막 (클릭 전환)':'Blood Shield (click to switch)',
 'CT스킬 (클릭 전환)':'CT Skill (click to switch)','[C] 능력치':'[C] Stats',
+// --- Key binding action names (BIND_NAMES) ---
+'위로 이동':'Move Up','아래로 이동':'Move Down','왼쪽 이동':'Move Left','오른쪽 이동':'Move Right',
+'칼등 처내기 (탭=처내기, 홀드=연사)':'Blade Parry (tap=parry, hold=rapid)',
+'영역 스킬':'Area Skill','작살 이동':'Harpoon Dash',
+'유령불꽃 켜기/끄기':'Ghost Flame On/Off','기동칼날개 자동 켜기/끄기':'Bladewing Auto On/Off',
 // --- Help overlay descriptions ---
 '무기 공격':'Weapon Attack','칼등 처내기 (투사체 반사, 홀드 연사)':'Blade Parry (reflect, hold for rapid)',
 '연속 처내기':'Continuous Parry','영역 스킬 (폭풍소환 등)':'Area Skill (Vortex Summon etc)',
@@ -32955,6 +32960,7 @@ function activateTimeWarp(){
   SFX.pickup();
   addTxt(P.x,P.y-30,_T('⏳ 시간왜곡!'),'#8888ff',60);
   addParts(P.x,P.y,'#8888ff',20);addParts(P.x,P.y,'#aaccff',15);
+  playVFXAng('teleport_burst',P.x,P.y,4,4,0,true); // 보라색 시간왜곡 버스트 임팩트
 }
 // ═══ 진동보행 삭제됨 ═══
 function activateGhostWalk(){
