@@ -21722,3 +21722,24 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - lang_tr.js
 - lang_vi.js
 
+
+## 2026-05-02 12:30 (auto)
+- lang/bg.js
+- lang/cs.js
+- lang/da.js
+- lang/ja.js
+- lang/nl.js
+- lang/no.js
+- lang/pl.js
+- lang/sv.js
+- lang/uk.js
+- lang/zht.js
+- lang_bg.js
+- lang_cs.js
+- lang_da.js
+- lang_nl.js
+- lang_no.js
+- lang_pl.js
+- lang_sv.js
+- lang_uk.js
+
