@@ -1395,6 +1395,19 @@ const _HU={
 '신기록이다.':'Új rekord.',
 '탭 장비창을 열어봐.':'Nyisd meg a felszerelés ablakot TAB-bal.',
 '데미지 부족하면 무기 강화!':'Nincs elég sebzés? Fejleszd a fegyvert!',
+// --- Loading screen ---
+'불러오는 중...':'Betöltés...',
+'로딩중...':'Betöltés...',
+'맵과 몬스터 불러오는 중...':'Térkép és szörnyek betöltése...',
+'기본 데이터 준비 중...':'Alap adatok előkészítése...',
+'저장 데이터 불러오는 중...':'Mentett adatok betöltése...',
+'몬스터 스킨 로딩...':'Szörny skinek betöltése...',
+'맵과 몬스터 생성 중...':'Térkép és szörnyek generálása...',
+'맵 에셋 로딩...':'Térkép erőforrások betöltése...',
+'맵 환경 준비 중...':'Térkép környezet előkészítése...',
+'주변 청크 준비 중...':'Közeli chunkok előkészítése...',
+'맵 캐시 생성 중...':'Térképgyorsítótár felépítése...',
+'미니맵 빌드 중...':'Minimap felépítése...',
 };
 const _HU_PFX={
 '녹슨':'Rozsdás','강철':'Acél','흑요석':'Obszidián','미스릴':'Mithril','심판의':'Ítélet','천벌의':'Isteni Harag','파멸의':'Pusztítás','불꽃':'Láng','화염':'Pokoltűz','염화':'Pokoltűz','지옥불':'Pokollángja','지옥화':'Pokollángja','지옥':'Pokollángja','멸화의':'Megsemmisítő','냉기':'Fagy','빙결':'Jég','빙하':'Gleccser','서리의':'Dér','서리':'Dér','영겁빙':'Örökkévaló Jég','그림자':'Árnyék','암흑':'Sötét','심연':'Mélységi','나락의':'Alvilági','나락':'Alvilági','무간의':'Ürességi','전기':'Szikra','낙뢰':'Mennydörgés','암전':'Villám','뇌신의':'Viharisteni','뇌신':'Viharisteni','만뢰의':'Ezernyi Villám','축복':'Áldott','성광':'Szentfény','신성':'Szent','천사의':'Angyali','신벌의':'Isteni Ítélet','낡은':'Elnyűtt','천':'Vászon','가죽':'Bőr','강철사':'Acélszövés','은':'Ezüst','은사':'Ezüstfonál','화염의':'Pokoltűz','빙결의':'Jég','암흑의':'Sötét','암전의':'Villám'};

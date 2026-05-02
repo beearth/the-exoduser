@@ -1027,6 +1027,19 @@ const _NO={
 '신기록이다.':'Ny rekord.',
 '탭 장비창을 열어봐.':'Åpne utstyrsvinduet med TAB.',
 '데미지 부족하면 무기 강화!':'Ikke nok skade? Forbedre våpenet ditt!',
+// --- Loading screen ---
+'불러오는 중...':'Laster...',
+'로딩중...':'Laster...',
+'맵과 몬스터 불러오는 중...':'Laster kart og monstre...',
+'기본 데이터 준비 중...':'Forbereder grunndata...',
+'저장 데이터 불러오는 중...':'Laster lagrede data...',
+'몬스터 스킨 로딩...':'Laster monsterskins...',
+'맵과 몬스터 생성 중...':'Genererer kart og monstre...',
+'맵 에셋 로딩...':'Laster kartressurser...',
+'맵 환경 준비 중...':'Forbereder kartmiljøet...',
+'주변 청크 준비 중...':'Forbereder nærliggende chunks...',
+'맵 캐시 생성 중...':'Bygger kartsøk...',
+'미니맵 빌드 중...':'Bygger minimap...',
 };
 const _NO_PFX={
 '녹슨':'Rustet','강철':'Stål','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Dom','천벌의':'Guddommelig Vrede','파멸의':'Ødeleggelse',

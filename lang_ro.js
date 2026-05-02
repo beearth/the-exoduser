@@ -1395,6 +1395,19 @@ const _RO={
 '신기록이다.':'Record nou.',
 '탭 장비창을 열어봐.':'Deschide fereastra de echipament cu TAB.',
 '데미지 부족하면 무기 강화!':'Nu suficient damage? Îmbunătățește arma!',
+// --- Loading screen ---
+'불러오는 중...':'Se încarcă...',
+'로딩중...':'Încărcare...',
+'맵과 몬스터 불러오는 중...':'Se încarcă harta și monștrii...',
+'기본 데이터 준비 중...':'Se pregătesc datele de bază...',
+'저장 데이터 불러오는 중...':'Se încarcă datele salvate...',
+'몬스터 스킨 로딩...':'Se încarcă skin-urile monștrilor...',
+'맵과 몬스터 생성 중...':'Se generează harta și monștrii...',
+'맵 에셋 로딩...':'Se încarcă resursele hărții...',
+'맵 환경 준비 중...':'Se pregătește mediul hărții...',
+'주변 청크 준비 중...':'Se pregătesc chunk-urile apropiate...',
+'맵 캐시 생성 중...':'Se construiește cache-ul hărții...',
+'미니맵 빌드 중...':'Se construiește minimapa...',
 };
 const _RO_PFX={
 '녹슨':'Ruginit','강철':'Oțel','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Judecată','천벌의':'Mânie Divină','파멸의':'Distrugere','불꽃':'Flacără','화염':'Infern','염화':'Foc Infernal','지옥불':'Flacără Infernală','지옥화':'Flacără Infernală','지옥':'Flacără Infernală','멸화의':'Anihilant','냉기':'Ger','빙결':'Înghețat','빙하':'Glaciar','서리의':'Chiciură','서리':'Chiciură','영겁빙':'Gheață Eternă','그림자':'Umbră','암흑':'Întuneric','심연':'Abisal','나락의':'Submundan','나락':'Submundan','무간의':'Vid','전기':'Scânteie','낙뢰':'Tunet','암전':'Fulger','뇌신의':'Zeul Tunetului','뇌신':'Zeul Tunetului','만뢰의':'O Mie de Tunete','축복':'Binecuvântat','성광':'Lumină Sacră','신성':'Sacru','천사의':'Angelic','신벌의':'Judecată Divină','낡은':'Uzat','천':'Pânză','가죽':'Piele','강철사':'Țesătură Oțel','은':'Argint','은사':'Fir de Argint','화염의':'Infern','빙결의':'Înghețat','암흑의':'Întuneric','암전의':'Fulger'

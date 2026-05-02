@@ -1239,11 +1239,11 @@ function playCinematic(){
     }
 
     // 목소리 시작 체크
-    if(!_cinDone && introVoice.paused && !introVoice.played.length) {
+    if(!_cinDone && introVoice.paused && window._introVoiceUnlocked && !window._introVoiceStarted) {
       const triggerTime = VOICE_DELAY < 0 ? 0 : VOICE_DELAY;
       if(curSceneTime >= triggerTime) {
         if(VOICE_DELAY < 0) introVoice.currentTime = Math.abs(VOICE_DELAY);
-        introVoice.play().catch(()=>{});
+        introVoice.play().then(()=>{window._introVoiceStarted=true}).catch(()=>{});
       }
     }
 
@@ -1353,8 +1353,8 @@ function playCinematic(){
     vid.volume=0.6;
     startBGM();
     vid.play().catch(()=>{});
-    // 사용자 제스처 컨텍스트에서 introVoice 언락 (자동재생 정책 우회)
-    introVoice.play().then(()=>{introVoice.pause();introVoice.currentTime=0}).catch(()=>{});
+    // 사용자 제스처 컨텍스트에서 오디오 언락
+    window._introVoiceUnlocked=true;
     
     // 비디오 시작 시 스킵 버튼 즉시 표시
     skipBtn.classList.add('show');

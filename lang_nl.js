@@ -1024,6 +1024,19 @@ const _NL={
 '신기록이다.':'Nieuw record.',
 '탭 장비창을 열어봐.':'Open het uitrustingsvenster met TAB.',
 '데미지 부족하면 무기 강화!':'Niet genoeg schade? Versterk je wapen!',
+// --- Loading screen ---
+'불러오는 중...':'Laden...',
+'로딩중...':'Laden...',
+'맵과 몬스터 불러오는 중...':'Kaart en monsters laden...',
+'기본 데이터 준비 중...':'Basisgegevens voorbereiden...',
+'저장 데이터 불러오는 중...':'Opgeslagen gegevens laden...',
+'몬스터 스킨 로딩...':'Monsterskins laden...',
+'맵과 몬스터 생성 중...':'Kaart en monsters genereren...',
+'맵 에셋 로딩...':'Kaartbronnen laden...',
+'맵 환경 준비 중...':'Kaartomgeving voorbereiden...',
+'주변 청크 준비 중...':'Nabije chunks voorbereiden...',
+'맵 캐시 생성 중...':'Kaartcache bouwen...',
+'미니맵 빌드 중...':'Minimap bouwen...',
 };
 const _NL_PFX={
 '녹슨':'Roestig','강철':'Staal','흑요석':'Obsidiaan','미스릴':'Mithril','심판의':'Oordeel','천벌의':'Goddelijke Toorn','파멸의':'Vernieling',

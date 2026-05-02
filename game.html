@@ -5473,6 +5473,18 @@ const _EN={
 '작살 발사':'Harpoon Launch','마법 (탭=투사체, 홀드=빔)':'Magic (tap=projectile, hold=beam)',
 '데빌포스 흡수':'Devilforce Absorb','물약 / 스킬슬롯':'Potions / Skill Slots',
 '스킬슬롯 5 / 필살기 / CT스킬':'Slot 5 / Ultimate / CT Skill','스킬 슬롯 배정':'Skill Slot Assign',
+// --- Loading screen ---
+'불러오는 중...':'Loading...','로딩중...':'Loading...',
+'맵과 몬스터 불러오는 중...':'Loading map and monsters...',
+'기본 데이터 준비 중...':'Preparing basic data...',
+'저장 데이터 불러오는 중...':'Loading save data...',
+'몬스터 스킨 로딩...':'Loading monster skins...',
+'맵과 몬스터 생성 중...':'Generating map and monsters...',
+'맵 에셋 로딩...':'Loading map assets...',
+'맵 환경 준비 중...':'Preparing map environment...',
+'주변 청크 준비 중...':'Preparing nearby chunks...',
+'맵 캐시 생성 중...':'Building map cache...',
+'미니맵 빌드 중...':'Building minimap...',
 // --- Death / Level-up / Intro screen ---
 '빛이 꺼졌다':'The Light Fades','누군가는 너를 기다리고 있다':'Someone waits for you',
 '다시 일어서라':'Rise Again','로비로 돌아가기':'Return to Lobby','☠ 사망 리플레이':'☠ Death Replay',
@@ -31670,7 +31682,7 @@ const SKILL_LIST=[
   {id:'blueShot',name:'푸른비',cat:'bow',fixed:true,emoji:'💎',desc:'[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)',descEn:'[Fixed: E, unlock Lv300] 50 homing blue shots fired sequentially (over 5s). MP 100(+1.5/Lv) cost. Tracks enemies. CD 5s. Per Lv range+30 (DMG uses _skMul)',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:300},
   {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: E, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.5/1.0/1.5초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',descEn:'[Hidden: E, unlock Lv700] Hold for 3-stage charge AoE explosion (0.5/1.0/1.5s). Range 600/1000/1400px. Stage 3 full charge auto-detonates. INT scale, no element',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700},
   {id:'voidScarecrow',name:'유령 허수아비',cat:'def',act:true,emoji:'👻',desc:'유령 허수아비를 소환하여 유도탄막 어그로를 끈다. 탄막을 흡수해 자원 축적 (기본 20개, Lv당+3). 1개당 HP/MP/ST 각 100. R키로 회수. 쿨 30초',descEn:'Summon phantom scarecrow to draw homing projectile aggro. Absorbs projectiles for resource buildup (base 20, +3/Lv). Per absorbed: HP/MP/ST +100 each. R key to retrieve. CD 30s',spCost:10,matCost:100,cd:1800,up:true,upSp:5,upMat:0},
-  {id:'explodeScarecrow',name:'폭발 허수아비',cat:'def',act:true,emoji:'💥',desc:'폭발 허수아비 설치. 탄막을 흡수하고 재입력 시 폭발! 1스택당 (INT마법뎀+탄막뎀)×10 마법데미지. 범위 600+흡수×20 (최대1800). 최대흡수 1렙20~20렙60. 쿨 10초',descEn:'Place explosive scarecrow. Absorbs projectiles, re-press to detonate! Per stack: (INT magic DMG + proj DMG)×10. Range 600+absorbed×20 (max 1800). Max absorb Lv1=20~Lv20=60. CD 10s',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
+  {id:'explodeScarecrow',name:'폭발 허수아비',cat:'def',act:true,emoji:'💥',desc:'폭발 허수아비 설치. 탄막을 흡수하고 재입력 시 폭발! 1스택당 (INT마법뎀+탄막뎀)×10 마법데미지. 범위 250+흡수×25 (최대1000). 최대흡수 1렙20~20렙60. 쿨 10초',descEn:'Place explosive scarecrow. Absorbs projectiles, re-press to detonate! Per stack: (INT magic DMG + proj DMG)×10. Range 250+absorbed×25 (max 1000). Max absorb Lv1=20~Lv20=60. CD 10s',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
   {id:'ghostXbowTurret',name:'공성쇠뇌',cat:'bow',act:true,emoji:'🏹',desc:'[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거(무료). 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 쿨없음. Lv당 뎀+5% 공속+5% 사거리+5%',descEn:'[Select: 1~4, unlock Lv500] Deploy siege crossbow turret at current pos. Re-press to dismantle (free). While deployed: player crossbow disabled (turret fires only). DMG+50%, ATK SPD+50%, range+50%. ST 100. No CD. Per Lv DMG+5% ATK SPD+5% range+5%',spCost:10,matCost:120,up:true,upSp:5,upMat:0,reqLv:500},
   {id:'timeWarp',name:'시간왜곡',cat:'def',act:true,emoji:'⏳',desc:'[Ctrl, Lv500 해금] 발동 시 3초 전 상태로 되돌린다. 위치/HP/MP/ST 완전 복원. Lv당 되감기+0.105초 (1렙 3초, 20렙 5초). MP 50(+5/Lv, 20렙150). 쿨 45초',descEn:'[Ctrl, unlock Lv500] Rewind to state from 3s ago. Restores position/HP/MP/ST. Per Lv rewind+0.105s (Lv1=3s, Lv20=5s). MP 50(+5/Lv, Lv20=150). CD 45s',spCost:15,matCost:150,cd:2700,up:true,upSp:5,upMat:0,reqLv:500},
   {id:'thunderStake',name:'뇌전창',cat:'magic',act:true,emoji:'⚡',desc:'[선택: 1~4번] 마우스 조준 → 전기창을 땅에 꽂는다. 5스택(12초/1충전, Lv10→6스택). 창끼리 600px 이내면 전류 아크 발생, 경로 위 적에게 감전 틱 데미지. MP 50. 지속 10초(+0.5초/Lv). Lv당 아크뎀+10%',descEn:'[Select: 1~4] Mouse aim → plant electric spear on ground. 5 stocks (12s/charge, Lv10→6). Spears within 600px create lightning arcs dealing shock tick DMG to enemies on path. MP 50. Duration 10s (+0.5s/Lv). Per Lv arc DMG+10%',spCost:10,matCost:100,up:true,upSp:5,upMat:0}
@@ -32669,7 +32681,7 @@ function _doExplodeScarecrowBoom(){
   const _esX=es.x,_esY=es.y;
   // 연쇄 폭발 횟수: 10스택당 1회 (1~10=1회, 11~20=2회, 21~30=3회)
   const _chainCount=Math.max(1,~~(absorbed/10));
-  const baseBoomR=Math.min(2000,500+~~(absorbed/10)*500); // 기본500, 10스택당+500, 최대2000
+  const baseBoomR=Math.min(1000,250+~~(absorbed/10)*250); // 기본250, 10스택당+250, 최대1000 (반감)
   const magicBase=~~(magicRef()*statInt()*pMagicMul());
   const boomMul=Math.min(200,50+~~(absorbed/10)*50); // 기본50배, 10스택당+50배, 최대200배
   const baseBoom=(magicBase+(es.dmgPool||0))*boomMul;
@@ -32691,18 +32703,24 @@ function _doExplodeScarecrowBoom(){
   P._exsCd=~~(600*(1+_eqAffix('cooldownRed'))); // 10초 쿨
 }
 function _fireExsBoom(bx,by,boomR,boom,absorbed){
-  console.log('[BOOM] boomR='+boomR+' boom='+boom+' absorbed='+absorbed);
+  console.log('[BOOM] boomR='+boomR+' boom='+boom+' absorbed='+absorbed+' pos='+~~bx+','+~~by);
   const ne=shQuery(bx,by,boomR);
+  console.log('[BOOM] shQuery found='+ne.length+' alive='+ne.filter(e=>e.alive).length);
+  let _hitCnt=0;
   for(let i=0;i<ne.length;i++){
     const e=ne[i];if(!e.alive)continue;
-    const d=dst(e.x,e.y,bx,by);if(d>=boomR)continue;
+    const d=dst(e.x,e.y,bx,by);if(d>=boomR){console.log('[BOOM] skip dist='+~~d+' >= boomR='+boomR);continue;}
     const ang=Math.atan2(e.y-by,e.x-bx);
     const falloff=Math.max(.3,1-d/boomR);
-    hurtE(e,~~(boom*falloff),ang,false,{kbMult:1.5,explode:true},EL.F);
+    const _dmgFinal=~~(boom*falloff);
+    console.log('[BOOM] HIT e.hp='+~~e.hp+'/'+~~e.mhp+' dmg='+_dmgFinal+' dist='+~~d);
+    hurtE(e,_dmgFinal,ang,false,{kbMult:1.5,explode:true,magic:true},EL.F);
     e.kb.x+=Math.cos(ang)*10*falloff;e.kb.y+=Math.sin(ang)*10*falloff;
+    _hitCnt++;
   }
-  _spawnFxAnim(bx,by,boomR*2.5); // 업화선 폭발 애니 (fire_explode_spritesheet)
-  playVFXAng('center_explode',bx,by,boomR/200,3,0,true);
+  console.log('[BOOM] total hits='+_hitCnt);
+  _spawnFxAnim(bx,by,boomR*1.5); // 업화선 폭발 애니 (범위 맞춤)
+  playVFXAng('center_explode',bx,by,boomR/300,3,0,true);
   if(!G._gSlamWave)G._gSlamWave=[];
   G._gSlamWave.push({x:bx,y:by,r:40,maxR:boomR,t:0,maxT:40,col:'#ff6622'});
   if(boomR>500)G._gSlamWave.push({x:bx,y:by,r:60,maxR:boomR*.7,t:0,maxT:30,col:'#ffcc44'});
@@ -44906,13 +44924,13 @@ function loop(timestamp){
 
 // ═══ DB-aware startup ═══
 async function startGameFromDB(){
-  showBootLoading(OPT.lang!=='ko'?'Loading map and monsters...':'맵과 몬스터 불러오는 중...');
+  showBootLoading(_T('맵과 몬스터 불러오는 중...'));
   // 1) 인증 체크 — 세션/캐릭터 없으면 로비로 리다이렉트
   let session=null;try{const r=await sb.auth.getSession();session=r?.data?.session}catch(e){}
   if(!session||!_charId){window.location.href='/?lobby=1';return}
 
   // 2) 기본 초기화 (mkP, 기본 아이템 등)
-  setBootLoading(25,'기본 데이터 준비 중...');
+  setBootLoading(25,_T('기본 데이터 준비 중...'));
   P=mkP();
   INV.bag=[];INV.equipped={weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,necklace:null,ring1:null,ring2:null,cape:null};INV.selected=null;
   QSLOTS=[{type:'hp',count:1},{type:null,count:0},{type:null,count:0},{type:null,count:0}];
@@ -44926,7 +44944,7 @@ async function startGameFromDB(){
   // forge gauge removed (CRAFT_COST system)
 
   // 3) DB에서 캐릭터 데이터 로드
-  setBootLoading(55,'저장 데이터 불러오는 중...');
+  setBootLoading(55,_T('저장 데이터 불러오는 중...'));
   const saved=await dbLoad();
   if(saved&&saved.player){
     dbRestore(saved);
@@ -44958,9 +44976,9 @@ async function startGameFromDB(){
   }
 
   // 4) 스탯 적용 후 스테이지 시작 — 몬스터 아틀라스 대기
-  setBootLoading(75,'몬스터 스킨 로딩...');
+  setBootLoading(75,_T('몬스터 스킨 로딩...'));
   if(!_mobAtlas.ready)await new Promise(r=>{const _ci=setInterval(()=>{if(_mobAtlas.ready){clearInterval(_ci);r()}},50);setTimeout(()=>{clearInterval(_ci);r()},5000)});
-  setBootLoading(80,'맵과 몬스터 생성 중...');
+  setBootLoading(80,_T('맵과 몬스터 생성 중...'));
   applyStats();
   if(_stageTestReq>=0)G.stage=_stageTestReq;
   ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.add('on'));
@@ -44968,7 +44986,7 @@ async function startGameFromDB(){
   _bootMapBuildDefer=1;
   initStage(G.stage);
   _bootMapBuildDefer=0;
-  setBootLoading(85,'맵 에셋 로딩...');
+  setBootLoading(85,_T('맵 에셋 로딩...'));
   await _waitObjSprites(8000);
   // 바닥/벽 텍스처 로드 대기 (gt_soil, gt_void_wall, skull_wall)
   await new Promise(r=>{
@@ -44984,18 +45002,18 @@ async function startGameFromDB(){
   });
   // 에셋 로드 중 예약된 맵 캐시 리프레시를 먼저 비우고, 무거운 환경/청크 준비는 게임 루프에서 분산 처리
   await new Promise(r=>setTimeout(r,0));
-  setBootLoading(88,'맵 환경 준비 중...');
+  setBootLoading(88,_T('맵 환경 준비 중...'));
   _tickBgInit(4);
   if(_streamMap&&_streamBuildQCount>0){
-    setBootLoading(92,'주변 청크 준비 중...');
+    setBootLoading(92,_T('주변 청크 준비 중...'));
     _tickStreamChunkBuild(6,4);
     await new Promise(r=>setTimeout(r,0));
   }
   if(_bootMapBuildPromise){
-    setBootLoading(97,'맵 캐시 생성 중...');
+    setBootLoading(97,_T('맵 캐시 생성 중...'));
     await _bootMapBuildPromise;
   }
-  setBootLoading(99,'미니맵 빌드 중...');
+  setBootLoading(99,_T('미니맵 빌드 중...'));
   await new Promise(r=>setTimeout(r,0)); // UI 갱신
   _dbReady=true;
   // 아틀라스 텍스처 워밍업 (첫 전투 drawImage 스파이크 제거)
@@ -45659,7 +45677,7 @@ function showBootLoading(msg){
   const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg');
   if(!el||!bar||!name) return;
   _bootLoadShownAt=Date.now();
-  name.textContent=msg||(OPT.lang!=='ko'?'Loading...':'불러오는 중...');
+  name.textContent=msg||_T('불러오는 중...');
   if(img){
     const idx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[idx];
@@ -45782,8 +45800,8 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   };
 
   // 초기화 (게임 시작 전 세이브 먼저 로드)
-  showBootLoading(OPT.lang!=='ko'?'Loading map and monsters...':'맵과 몬스터 불러오는 중...');
-  setBootLoading(25,'기본 데이터 준비 중...');
+  showBootLoading(_T('맵과 몬스터 불러오는 중...'));
+  setBootLoading(25,_T('기본 데이터 준비 중...'));
   P=mkP();
   INV.bag=[];INV.equipped={weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,necklace:null,ring1:null,ring2:null,cape:null};INV.selected=null;
   QSLOTS=[{type:'hp',count:1},{type:null,count:0},{type:null,count:0},{type:null,count:0}];
@@ -45844,9 +45862,9 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
       if(!SKILL_SLOTS[0])SKILL_SLOTS[0]='spikeTrap';
     }
     // 로드 완료 후 게임 시작 — 몬스터 아틀라스 대기
-    setBootLoading(75,'몬스터 스킨 로딩...');
+    setBootLoading(75,_T('몬스터 스킨 로딩...'));
     if(!_mobAtlas.ready)await new Promise(r=>{const _ci=setInterval(()=>{if(_mobAtlas.ready){clearInterval(_ci);r()}},50);setTimeout(()=>{clearInterval(_ci);r()},5000)});
-    setBootLoading(80,'맵과 몬스터 생성 중...');
+    setBootLoading(80,_T('맵과 몬스터 생성 중...'));
   applyStats();
     if(_stageTestReq>=0)G.stage=_stageTestReq;
     ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.add('on'));
@@ -45854,11 +45872,11 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     _bootMapBuildDefer=1;
     initStage(G.stage);
     _bootMapBuildDefer=0;
-    setBootLoading(90,'맵 에셋 로딩...');
+    setBootLoading(90,_T('맵 에셋 로딩...'));
     await _waitObjSprites(8000);
     await new Promise(r=>setTimeout(r,0));
     if(_bootMapBuildPromise){
-      setBootLoading(97,'맵 캐시 생성 중...');
+      setBootLoading(97,_T('맵 캐시 생성 중...'));
       await _bootMapBuildPromise;
     }
     BGM.play(BGM.stageKey(G.stage));
@@ -45915,8 +45933,8 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     }catch(e){console.warn('[WEB] Save failed:',e)}
     finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
   };
-  showBootLoading(OPT.lang!=='ko'?'Loading map and monsters...':'맵과 몬스터 불러오는 중...');
-  setBootLoading(25,'기본 데이터 준비 중...');
+  showBootLoading(_T('맵과 몬스터 불러오는 중...'));
+  setBootLoading(25,_T('기본 데이터 준비 중...'));
   P=mkP();
   INV.bag=[];INV.equipped={weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,necklace:null,ring1:null,ring2:null,cape:null};INV.selected=null;
   QSLOTS=[{type:'hp',count:1},{type:null,count:0},{type:null,count:0},{type:null,count:0}];
@@ -45958,9 +45976,9 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         }
       }
     }catch(e){console.error('[WEB] Load failed:',e)}
-    setBootLoading(75,'몬스터 스킨 로딩...');
+    setBootLoading(75,_T('몬스터 스킨 로딩...'));
     if(!_mobAtlas.ready)await new Promise(r=>{const _ci=setInterval(()=>{if(_mobAtlas.ready){clearInterval(_ci);r()}},50);setTimeout(()=>{clearInterval(_ci);r()},5000)});
-    setBootLoading(80,'맵과 몬스터 생성 중...');
+    setBootLoading(80,_T('맵과 몬스터 생성 중...'));
     applyStats();
     if(_stageTestReq>=0)G.stage=_stageTestReq;
     ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.add('on'));
@@ -45969,7 +45987,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     initStage(G.stage);
     _bootMapBuildDefer=0;
     if(_bootMapBuildPromise){
-      setBootLoading(97,'맵 캐시 생성 중...');
+      setBootLoading(97,_T('맵 캐시 생성 중...'));
       await _bootMapBuildPromise;
     }
     BGM.play(BGM.stageKey(G.stage));
@@ -46115,7 +46133,7 @@ function _btBuildUI(){
     🎯 BOSS TESTBED <span style="font-size:11px;color:#887766">si=${_btSi}</span>
     <span id="_btMinBtn" style="float:right;cursor:pointer;color:#aa8866">─</span></div>`;
   // ── 보스 정보 ──
-  panel.innerHTML+=`<div id="_btInfo" style="margin-bottom:8px;padding:6px;background:rgba(0,0,0,.3);border-radius:4px;font-size:11px;line-height:1.5">로딩중...</div>`;
+  panel.innerHTML+=`<div id="_btInfo" style="margin-bottom:8px;padding:6px;background:rgba(0,0,0,.3);border-radius:4px;font-size:11px;line-height:1.5">${_T('로딩중...')}</div>`;
   // ── 컨트롤 ──
   panel.innerHTML+=`<div style="margin-bottom:8px;display:flex;gap:4px;flex-wrap:wrap">
     <button class="_btBtn" onclick="_btGodToggle()" id="_btGodBtn" style="background:#224422;color:#44ff44">🛡 GOD ON</button>

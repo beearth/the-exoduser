@@ -974,6 +974,19 @@ const _PL={
 '신기록이다.':'Nowy rekord.',
 '탭 장비창을 열어봐.':'Otwórz okno ekwipunku przez TAB.',
 '데미지 부족하면 무기 강화!':'Za mało obrażeń? Ulepsz broń!',
+// --- Loading screen ---
+'불러오는 중...':'Wczytywanie...',
+'로딩중...':'Ładowanie...',
+'맵과 몬스터 불러오는 중...':'Wczytywanie mapy i potworów...',
+'기본 데이터 준비 중...':'Przygotowanie podstawowych danych...',
+'저장 데이터 불러오는 중...':'Wczytywanie danych zapisu...',
+'몬스터 스킨 로딩...':'Ładowanie skinów potworów...',
+'맵과 몬스터 생성 중...':'Generowanie mapy i potworów...',
+'맵 에셋 로딩...':'Ładowanie zasobów mapy...',
+'맵 환경 준비 중...':'Przygotowanie środowiska mapy...',
+'주변 청크 준비 중...':'Przygotowanie pobliskich chunków...',
+'맵 캐시 생성 중...':'Budowanie pamięci podręcznej mapy...',
+'미니맵 빌드 중...':'Budowanie minimapy...',
 };
 const _PL_PFX={
 '녹슨':'Zardzewiały','강철':'Stalowy','흑요석':'Obsydianowy','미스릴':'Mithrylowy','심판의':'Sądu','천벌의':'Boskiego Gniewu','파멸의':'Zagłady',

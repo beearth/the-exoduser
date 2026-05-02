@@ -801,6 +801,19 @@ const _CS={
 '신기록이다.':'Nový rekord.',
 '탭 장비창을 열어봐.':'Otevři okno výbavy stisknutím TAB.',
 '데미지 부족하면 무기 강화!':'Málo poškození? Posil svou zbraň!',
+// --- Loading screen ---
+'불러오는 중...':'Načítání...',
+'로딩중...':'Načítání...',
+'맵과 몬스터 불러오는 중...':'Načítání mapy a příšer...',
+'기본 데이터 준비 중...':'Příprava základních dat...',
+'저장 데이터 불러오는 중...':'Načítání uložených dat...',
+'몬스터 스킨 로딩...':'Načítání skinů příšer...',
+'맵과 몬스터 생성 중...':'Generování mapy a příšer...',
+'맵 에셋 로딩...':'Načítání zdrojů mapy...',
+'맵 환경 준비 중...':'Příprava prostředí mapy...',
+'주변 청크 준비 중...':'Příprava okolních chunků...',
+'맵 캐시 생성 중...':'Tvorba mezipaměti mapy...',
+'미니맵 빌드 중...':'Tvorba minimapy...',
 };
 const _CS_PFX={
 '녹슨':'Rezavý','강철':'Ocelový','흑요석':'Obsidiánový','미스릴':'Mithrilový','심판의':'Soudný','천벌의':'Boží trest','파멸의':'Ničivý',

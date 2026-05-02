@@ -1400,6 +1400,19 @@ const _IT={
 '신기록이다.':'Nuovo record.',
 '탭 장비창을 열어봐.':'Apri la finestra equipaggiamento con TAB.',
 '데미지 부족하면 무기 강화!':'Danno insufficiente? Potenzia l\'arma!',
+// --- Loading screen ---
+'불러오는 중...':'Caricamento...',
+'로딩중...':'Caricamento...',
+'맵과 몬스터 불러오는 중...':'Caricamento mappa e mostri...',
+'기본 데이터 준비 중...':'Preparazione dati di base...',
+'저장 데이터 불러오는 중...':'Caricamento dati salvati...',
+'몬스터 스킨 로딩...':'Caricamento skin dei mostri...',
+'맵과 몬스터 생성 중...':'Generazione mappa e mostri...',
+'맵 에셋 로딩...':'Caricamento risorse mappa...',
+'맵 환경 준비 중...':'Preparazione ambiente mappa...',
+'주변 청크 준비 중...':'Preparazione chunk vicini...',
+'맵 캐시 생성 중...':'Costruzione cache mappa...',
+'미니맵 빌드 중...':'Costruzione minimappa...',
 };
 const _IT_PFX={
 '녹슨':'Arrugginito','강철':'Acciaio','흑요석':'Ossidiana','미스릴':'Mithril','심판의':'Giudizio','천벌의':'Ira Divina','파멸의':'Distruzione','불꽃':'Fiamma','화염':'Inferno','염화':'Fuoco Infernale','지옥불':'Fiamma Infernale','지옥화':'Fiamma Infernale','지옥':'Fiamma Infernale','멸화의':'Annientante','냉기':'Gelo','빙결':'Congelato','빙하':'Glaciale','서리의':'Brina','서리':'Brina','영겁빙':'Ghiaccio Eterno','그림자':'Ombra','암흑':'Oscuro','심연':'Abissale','나락의':'Infero','나락':'Infero','무간의':'Vuoto','전기':'Scintilla','낙뢰':'Tuono','암전':'Fulmine','뇌신의':'Dio Tuono','뇌신':'Dio Tuono','만뢰의':'Mille Tuoni','축복':'Benedetto','성광':'Luce Sacra','신성':'Sacro','천사의':'Angelico','신벌의':'Giudizio Divino','낡은':'Logoro','천':'Tela','가죽':'Pelle','강철사':'Trama Acciaio','은':'Argento','은사':'Filo d\'Argento','화염의':'Inferno','빙결의':'Congelato','암흑의':'Oscuro','암전의':'Fulmine'
