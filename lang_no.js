@@ -913,7 +913,12 @@ const _NO={
 '작살 발사':'Skyte harpun','마법 (탭=투사체, 홀드=빔)':'Magi (trykk=prosjektil, hold=stråle)',
 '데빌포스 흡수':'Absorbere djevelkraft','물약 / 스킬슬롯':'Drikker / Ferdighetsslots',
 '스킬슬롯 5 / 필살기 / CT스킬':'Slot 5 / Ultimat / CT-ferdighet','스킬 슬롯 배정':'Slottildeling',
-};
+'공성쇠뇌':'Beleirigsarmbue',
+'만화광선':'Lysstråle',
+'공성쇠뇌 철거 → 이동식':'Beleirigsarmbue demontert → bærbar',
+'🏹 공성쇠뇌 설치!':'🏹 Beleirigsarmbue Plassert!',
+'뜨거워! 여기 왜 이렇게 빨개!':'Så varmt! Hvorfor er alt så rødt her!',
+'유령쇠뇌야. 인사해.':'Det er den spøkelsesarmbrøsten. Si hei.'};
 const _NO_PFX={
 '녹슨':'Rustet','강철':'Stål','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Dom','천벌의':'Guddommelig Vrede','파멸의':'Ødeleggelse',
 '불꽃':'Flamme','화염':'Inferno','염화':'Helvetesild','지옥불':'Helvetesglød','지옥화':'Helvetesglød','지옥':'Helvetesglød','멸화의':'Utryddende',

@@ -913,6 +913,9 @@ const _SV={
 '작살 발사':'Skjuta harpun','마법 (탭=투사체, 홀드=빔)':'Magi (tryck=projektil, håll=stråle)',
 '데빌포스 흡수':'Absorbera djävulskraft','물약 / 스킬슬롯':'Drycker / Färdighetsplatser',
 '스킬슬롯 5 / 필살기 / CT스킬':'Plats 5 / Ultimat / CT-färdighet','스킬 슬롯 배정':'Platstilldelning',
+'진혼의':'Helgande',
+'만화광선':'Luminescensstråle',
+'🏹 공성쇠뇌 설치!':'🏹 Belägringsarmborst Placerad!',
 };
 const _SV_PFX={
 '녹슨':'Rostig','강철':'Stål','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Domen','천벌의':'Gudomlig Vrede','파멸의':'Förstörelse',

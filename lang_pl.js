@@ -862,6 +862,9 @@ const _PL={
 '작살 발사':'Strzał harpunem','마법 (탭=투사체, 홀드=빔)':'Magia (tap=pocisk, trzymaj=promień)',
 '데빌포스 흡수':'Wchłoń Siłę Diabła','물약 / 스킬슬롯':'Mikstury / Sloty umiejętności',
 '스킬슬롯 5 / 필살기 / CT스킬':'Slot 5 / Ulti / Umiej. CT','스킬 슬롯 배정':'Przypisanie slotu',
+'무릎 꿇으면 전력으로 때려!':'Kiedy klękają, bij z całej siły!',
+'무릎 꿇었다.':'Klęka.',
+'주웠으면 껴야지! TAB!':'Podniosłeś? Załóż! TAB!',
 };
 const _PL_PFX={
 '녹슨':'Zardzewiały','강철':'Stalowy','흑요석':'Obsydianowy','미스릴':'Mithrylowy','심판의':'Sądu','천벌의':'Boskiego Gniewu','파멸의':'Zagłady',

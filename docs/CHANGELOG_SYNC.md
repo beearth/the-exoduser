@@ -21788,3 +21788,26 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - index.html
 - lang_ar.js
 
+
+## 2026-05-02 15:30 (auto)
+- assets/vfx/scarecrow_boom.png
+- assets/vfx/teleport_burst.png
+- docs/2_2 무기+???�성?�스??2_2 무기+???�성?�스??md
+- docs/5.1?�펙?�디?�인/VFX_구현가?�드.md
+- game.html
+- lang_bg.js
+- lang_da.js
+- lang_de.js
+- lang_es.js
+- lang_fr.js
+- lang_ja.js
+- lang_nl.js
+- lang_no.js
+- lang_pl.js
+- lang_ptbr.js
+- lang_ru.js
+- lang_sv.js
+- lang_uk.js
+- lang_zh.js
+- lang_zht.js
+

@@ -914,6 +914,8 @@ const _NL={
 '작살 발사':'Harpoen schieten','마법 (탭=투사체, 홀드=빔)':'Magie (tik=projectiel, houd=straal)',
 '데빌포스 흡수':'Duivelskracht absorberen','물약 / 스킬슬롯':'Drankjes / Vaardigheidsslots',
 '스킬슬롯 5 / 필살기 / CT스킬':'Slot 5 / Ultiem / CT-vaardigheid','스킬 슬롯 배정':'Slottoewijzing',
+'만화광선':'Luminescentiebundel',
+'무릎 꿇으면 전력으로 때려!':'Als ze knielen, sla met alles!',
 };
 const _NL_PFX={
 '녹슨':'Roestig','강철':'Staal','흑요석':'Obsidiaan','미스릴':'Mithril','심판의':'Oordeel','천벌의':'Goddelijke Toorn','파멸의':'Vernieling',

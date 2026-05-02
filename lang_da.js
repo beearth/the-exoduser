@@ -913,7 +913,12 @@ const _DA={
 '작살 발사':'Skyde harpun','마법 (탭=투사체, 홀드=빔)':'Magi (tryk=projektil, hold=stråle)',
 '데빌포스 흡수':'Absorbere djævelkraft','물약 / 스킬슬롯':'Trylledrikke / Færdighedsslots',
 '스킬슬롯 5 / 필살기 / CT스킬':'Slot 5 / Ultimat / CT-færdighed','스킬 슬롯 배정':'Slottildeling',
-};
+'공성쇠뇌':'Beleijringsarmbrøst',
+'만화광선':'Lysstråle',
+'공성쇠뇌 철거 → 이동식':'Beleijringsarmbrøst demonteret → bærbar',
+'❄ 빙결흡인!':'❄ Frostvirvel!',
+'🏹 공성쇠뇌 설치!':'🏹 Beleijringsarmbrøst Placeret!',
+'예쁘다고 만지면 죽어.':'Rør ved dem fordi de er smukke? Du vil dø.'};
 const _DA_PFX={
 '녹슨':'Rustet','강철':'Stål','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Dom','천벌의':'Guddommelig Vrede','파멸의':'Ødelæggelse',
 '불꽃':'Flamme','화염':'Inferno','염화':'Helvedesild','지옥불':'Helvedesglød','지옥화':'Helvedesglød','지옥':'Helvedesglød','멸화의':'Udslettende',
