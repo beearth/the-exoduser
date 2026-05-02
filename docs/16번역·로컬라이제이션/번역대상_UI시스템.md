@@ -1,7 +1,12 @@
 # UI/시스템 번역 대상 리스트
 
 > _EN 테이블 전체 항목을 카테고리별로 넘버링 정리
-> 현재 EN 번역 완료 ~700항목 | ZH/JA/ES 전체 미착수
+> **2026-05-02 Phase 28 현재**: _EN ~950항목 | 26개 lang 파일 Phase 28 전파 완료
+>
+> **Phase 28 주요 수정**:
+> - `OPT.lang==='en'` → `OPT.lang!=='ko'` 전수 수정 (game.html 12곳): K 스킬창 추천항목/탭, C 스탯/패시브창, 사망화면, 장비슬롯 등 비한국어 언어에서 한국어로 표시되던 문제 해결
+> - `_skN()` / `_skD()` 함수도 동일 수정: 스킬 이름/설명 비한국어 영어 표시 적용
+> - 근본 원인: `nameEn`/`descEn` 필드를 가진 SKILL_HIER, SKILL_REC_PATH, STAT_DEF, PASSIVE_DEF 등의 데이터 구조가 모두 `OPT.lang==='en'`으로 이진 스위칭 → `!=='ko'`로 변경으로 비한국어 전체 영어 표시
 
 ---
 
@@ -47,6 +52,20 @@
 | 36 | 장비명 조합 (기본형) | 20 | 5291~5295 | _EN_BASE |
 
 ---
+
+## K 스킬창 / C 스탯창 번역 방식 (Phase 28 확정)
+
+K 스킬창(skill panel)과 C 스탯창(stat panel)은 `_T()` 테이블을 사용하지 않고 데이터 구조의 `nameEn`/`descEn` 필드를 직접 사용한다.
+
+| 데이터 구조 | 적용 위치 | 번역 방식 |
+|---|---|---|
+| `SKILL_HIER[]` | K창 탭 (⭐추천, ⚔공격 등 4개) | `OPT.lang!=='ko' ? h.nameEn : h.name` |
+| `SKILL_REC_PATH[]` | K창 추천 빌드 패스 (phase/desc) | `OPT.lang!=='ko' ? ph.phaseEn : ph.phase` |
+| `STAT_DEF[]` | C창 스탯 이름/설명 (STR/DEX/INT/LCK) | `OPT.lang!=='ko' ? sd.nameEn : sd.name` |
+| `PASSIVE_DEF[]` | C창 패시브 이름/설명 (맹공~악마성 20개) | `OPT.lang!=='ko' ? p.nameEn : p.name` |
+| `SKILL_LIST[]` | 스킬 이름/설명 (전체) | `_skN(info)` → `OPT.lang!=='ko' ? nameEn : name` |
+
+**비고**: JA/ZH/ES 등 비한국어 언어는 모두 영어(`nameEn`/`descEn`)로 표시됨. 언어별 완전 번역은 미래 작업 (각 데이터 구조에 `nameJa` 등 필드 추가 필요).
 
 ## 다국어 번역 작업 순서 (우선순위)
 
