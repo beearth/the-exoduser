@@ -5419,55 +5419,6 @@ const _EN={
 '패턴이 복잡해졌어... 집중해!':'Patterns got complex... Focus!',
 '...끝이다. 지옥의 심장부. 살아 돌아가는 건 포기해라.':'...This is it. The heart of hell. Abandon hope of return.',
 '여기가 마지막이야... 각오해.':'This is the end... Brace yourself.',
-// --- Settings Panel (UI — Phase 26) ---
-'석궁 자동발사 (T)':'Auto Crossbow (T)',
-'버스트루프 당기기 (H)':'Burst Loop Pull (H)',
-'결정 자동합성':'Crystal Auto-Fuse',
-'결정 자동강화':'Crystal Auto-Enhance',
-'✓ 설정 자동 저장':'✓ Settings auto-saved',
-'세팅 프리셋 저장/불러오기':'Save/Load setting presets',
-'세팅1 저장':'Save Preset 1','세팅1':'Preset 1',
-'세팅2 저장':'Save Preset 2','세팅2':'Preset 2',
-'재진단':'Re-detect',
-'게임 리셋 (처음부터)':'Reset Game (from start)',
-'캐릭터 선택 (로비)':'Character Select (Lobby)',
-'닫기 [ESC]':'Close [ESC]','닫기 [G]':'Close [G]','닫기 [V]':'Close [V]','닫기 [C]':'Close [C]',
-'전체화면 (F11)':'Fullscreen (F11)',
-'정말 모든 진행을 초기화하시겠습니까?':'Really reset all progress?',
-'검출 중...':'Detecting...',
-'마우스 커서':'Mouse Cursor','그래픽 품질':'Graphics Quality','하드웨어 진단':'Hardware Diagnostics',
-'BGM 선택':'BGM Select',
-'자동 (스테이지별)':'Auto (per stage)','전체 랜덤':'All Random','로비':'Lobby',
-'1장 랜덤':'CH1 Random','2장 랜덤':'CH2 Random','3장 랜덤':'CH3 Random',
-'4장 랜덤':'CH4 Random','5장 랜덤':'CH5 Random','6장 랜덤':'CH6 Random','7장 랜덤':'CH7 Random',
-'보스':'Boss','최종보스':'Final Boss',
-'대장간 랜덤':'Forge Random','사망 랜덤':'Death Random','승리 랜덤':'Victory Random',
-'지옥 추락 사망 징글':'Death Jingle','탈출 성공':'Escape Victory',
-'── 1장 - 썩은 숲 ──':'── CH1 - Rotten Forest ──',
-'── 2장 - 벌레굴 ──':'── CH2 - Worm Nest ──',
-'── 3장 - 얼음굴 ──':'── CH3 - Ice Cavern ──',
-'── 4장 - 화염지대 ──':'── CH4 - Infernal Wastes ──',
-'── 5장 - 지옥군단 ──':'── CH5 - Hell Legion ──',
-'── 6장 - 사도마굴 ──':'── CH6 - Apostle Den ──',
-'── 7장 - 지옥성 ──':'── CH7 - Hell Citadel ──',
-'── 공통 ──':'── Common ──',
-'⌨ 조작법':'⌨ Controls','클릭하면 닫힘':'Click to close',
-// --- Panel labels ---
-'전투력':'CP','가방':'Bag','결정':'Crystal',
-'↕ 정렬':'↕ Sort','쓰레기 전체선택':'Select All Junk','쓰레기 전부 분해':'Salvage All Junk',
-'창고':'Storage','스탯 포인트':'Stat Points','능력치 요약':'Stat Summary','올 리셋':'Reset All',
-'대장간':'Forge','스킬':'Skills','능력치':'Stats',
-// --- Slot title tooltips ---
-'좌클스킬 (클릭 전환)':'LMB Skill (click to switch)','우클스킬 (클릭 전환)':'RMB Skill (click to switch)',
-'이동스킬 (클릭 전환)':'Move Skill (click to switch)','마법스킬 (클릭 전환)':'Magic Skill (click to switch)',
-'영역스킬 (클릭 전환)':'Area Skill (click to switch)','피보호막 (클릭 전환)':'Blood Shield (click to switch)',
-'CT스킬 (클릭 전환)':'CT Skill (click to switch)','[C] 능력치':'[C] Stats',
-// --- Help overlay descriptions ---
-'무기 공격':'Weapon Attack','칼등 처내기 (투사체 반사, 홀드 연사)':'Blade Parry (reflect, hold for rapid)',
-'연속 처내기':'Continuous Parry','영역 스킬 (폭풍소환 등)':'Area Skill (Vortex Summon etc)',
-'작살 발사':'Harpoon Launch','마법 (탭=투사체, 홀드=빔)':'Magic (tap=projectile, hold=beam)',
-'데빌포스 흡수':'Devilforce Absorb','물약 / 스킬슬롯':'Potions / Skill Slots',
-'스킬슬롯 5 / 필살기 / CT스킬':'Slot 5 / Ultimate / CT Skill','스킬 슬롯 배정':'Skill Slot Assign',
 };
 // --- 장비명 조합 번역 (접두사 + 기본형) ---
 const _EN_PFX={'녹슨':'Rusty','강철':'Steel','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Judgment','천벌의':'Divine Wrath','파멸의':'Destruction',
@@ -23045,7 +22996,7 @@ function update(){
   if(G._gcT>20){G._gcT=0;
     // 시체 미생성 사망 fallback — GC 시점에만 (매 프레임→20프레임 주기)
     for(let i=0;i<ens.length;i++){if(!ens[i].alive&&!ens[i]._corpseSpawned&&!ens[i]._isDecoy&&ens[i].mhp>0){_addCorpse(ens[i],Math.atan2(ens[i].y-P.y,ens[i].x-P.x),4)}}
-    let w=0,_deadCnt=0;for(let i=0;i<ens.length;i++){if(ens[i].alive){ens[w++]=ens[i]}else if(ens[i]._reviveTimer>0&&_deadCnt<20){ens[w++]=ens[i];_deadCnt++}}ens.length=w;
+    let w=0,_deadCnt=0;for(let i=0;i<ens.length;i++){if(ens[i].alive){ens[w++]=ens[i]}else if(ens[i]._reviveTimer>0&&_deadCnt<50){ens[w++]=ens[i];_deadCnt++}}ens.length=w;
     // worldItems picked 정리
     let ww=0;for(let i=0;i<worldItems.length;i++){if(!worldItems[i].picked)worldItems[ww++]=worldItems[i]}worldItems.length=ww;
     // G.txts: 링 버퍼 풀이므로 compaction 불필요 (축소 시 재할당 유발)
@@ -23107,15 +23058,7 @@ function update(){
       const _ed2=dst2(P.x,P.y,e.x,e.y);
       // 뷰포트 컬링: 카메라 화면+300px 밖이면 AI 스킵 (보스/피격/근접 제외, hp/상태는 위에서 처리)
       const _eInView=e.ib||e.hurt>0||(_ed2<900)||(e.x>G.cam.x-C.width/2-300&&e.x<G.cam.x+C.width/2+300&&e.y>G.cam.y-C.height/2-300&&e.y<G.cam.y+C.height/2+300);
-      if(!_eInView){
-        // ═══ 리시 텔레포트: 플레이어에서 2500px+ 벗어난 적 → 근처로 강제 이동 (Night Swarm UpdateEnemyPoses 패턴) ═══
-        if(!e.ib&&!e.stunned&&!e._frozen&&e._alerted&&_ed2>6250000){
-          // 화면 밖 스폰 링(800~1200px)에서 랜덤 위치 선택
-          const _lshAng=Math.PI*2*Math.random(),_lshD=800+Math.random()*400;
-          const _lshX=P.x+Math.cos(_lshAng)*_lshD,_lshY=P.y+Math.sin(_lshAng)*_lshD;
-          if(canMv(_lshX,_lshY,e.r)){e.x=_lshX;e.y=_lshY;e.kb.x=0;e.kb.y=0;e.facing=Math.atan2(P.y-e.y,P.x-e.x);e._stuckT=0}
-        }
-        if(e._alerted&&(G._eTierFrame&7)===0){const _erOff=ETYPE_RANGE[e.etype]||600;if(_erOff<=400||dst(P.x,P.y,e.x,e.y)>_erOff*.85)_ffMoveE(e,sp*4,0.5)}continue}
+      if(!_eInView){if(e._alerted&&(G._eTierFrame&7)===0){const _erOff=ETYPE_RANGE[e.etype]||600;if(_erOff<=400||dst(P.x,P.y,e.x,e.y)>_erOff*.85)_ffMoveE(e,sp*4,0.5)}continue}
       // ═══ 4단계 AI 티어링 (보스=항상 T1) ═══
       // T1: 매프레임     | 보스, 피격중, <150px
       // T2: 2프레임마다   | <350px
@@ -24084,11 +24027,7 @@ function update(){
       ens[ens.length]=ne;
       h._spawned++;
     }
-    // ═══ 스폰 간격 커브 (Night Swarm AnimationCurve 패턴) ═══
-    // progress 0→1: 초반 빠르게(0.6×) → 중반 느리게(1.4×) → 후반 몰아치기(0.3×)
-    {const _prog=h._spawned/h._spawnTotal;
-    const _curve=_prog<.3?(0.6+_prog*2.67):_prog<.7?(1.4-(_prog-.3)*1.5):(0.8-(_prog-.7)*1.67);
-    h._spawnCD=Math.max(1,~~((h._spawnInterval||5)*Math.max(.2,_curve)));}
+    h._spawnCD=Math.max(1,h._spawnInterval||5); // 순차 간격
     // 전부 소환 완료 → 이펙트 + 제거
     if(h._spawned>=h._spawnTotal){
       addParts(h.x,h.y,SPAWN_HOLE.col,15);
@@ -34655,6 +34594,7 @@ $('optBgm').oninput=function(){OPT.bgmVol=+this.value;$('optBgmVal').textContent
 $('optBgmTrack').onchange=function(){OPT.bgmTrack=this.value;if(this.value==='auto'){BGM.play(BGM.stageKey(G.stage))}else if(this.value==='allRandom'){BGM.playTrack(BGM._pickAllRandom())}else if(this.value.startsWith('t:')){BGM.playTrack(this.value.slice(2))}else{BGM.play(this.value,true)}saveSettings()};
 $('optLang').onchange=function(){OPT.lang=this.value;_applyLang();saveSettings()};
 function _applyLang(){try{
+  const _e=OPT.lang==='en';
   // HUD slot labels
   const _hl={skSlotLMB:'근접',skSlotRMB:'견갑',skSlot0:'작살',qsE:'마법',qsT:'석궁',qsQ:'보막',skSlotCT:'유령',qsK:'스킬',qsG:'대장',qsTAB:'인벤',qsESC:'설정'};
   for(const[id,ko]of Object.entries(_hl)){const el=$(id);if(el){const spans=el.querySelectorAll('span');if(spans.length>=2)spans[spans.length-1].textContent=_T(ko)}}
@@ -34662,96 +34602,93 @@ function _applyLang(){try{
   const _ph={'ptitle-inv':'인벤토리','ptitle-forge':'복수의 대장간','ptitle-passive':'패시브 스킬','ptitle-combat':'전투 스킬'};
   for(const[id,ko]of Object.entries(_ph)){const el=$(id);if(el)el.textContent=_T(ko)}
   // Settings panel title
-  const _st=$('settings');if(_st){const pt=_st.querySelector('.ptitle');if(pt)pt.textContent=_T('설정')}
-  // Settings section labels (set-name spans) — _T() covers all 28 languages
-  _st?.querySelectorAll('.set-name').forEach(el=>{const ko=el.dataset.ko||(el.textContent.trim());if(!el.dataset.ko)el.dataset.ko=ko;el.textContent=_T(ko)});
+  const _st=$('settings');if(_st){const pt=_st.querySelector('.ptitle');if(pt)pt.textContent=_e?'Settings':'설정'}
+  // Settings section labels (set-name spans)
+  const _sn=[['화면 흔들림','Screen Shake'],['파티클 양','Particle Amount'],['효과음 볼륨','SFX Volume'],['음악 볼륨','Music Volume'],['BGM 선택','BGM Select'],['난이도','Difficulty'],['자동 물약','Auto Potion'],['최소 줍기 등급','Min Pickup Grade'],['최소 줍기 티어','Min Pickup Tier'],['FPS 제한','FPS Limit'],['해상도 스케일','Resolution Scale'],['펫 자동수거','Pet Auto-Collect'],['유령불꽃 크기','Ghost Flame Size'],['화면 명암','Brightness'],['유령 글로우','Ghost Glow'],['기동:칼날개 AUTO','Bladewing AUTO'],['보스 AI 디버그','Boss AI Debug'],['화면 모드','Display Mode'],['해상도','Resolution'],['커서 크기','Cursor Size'],['블룸 효과','Bloom'],['잔상 트레일','Trail'],['슬래시 이펙트','Slash FX'],['후처리 효과','Post-processing'],['사망 이펙트','Death FX'],['동적 조명','Dynamic Lighting'],['횃불 조명 (어둠)','Torch (Darkness)'],['앰비언트 파티클','Ambient Particles'],['안개 효과','Fog'],['필름 그레인','Film Grain'],['캐릭터 외곽선','Character Outline']];
+  const _snMap={};_sn.forEach(([k,e])=>{_snMap[k]=e});
+  _st?.querySelectorAll('.set-name').forEach(el=>{const ko=el.dataset.ko||(el.textContent.trim());if(!el.dataset.ko)el.dataset.ko=ko;el.textContent=_e?(_snMap[ko]||ko):ko});
   // Settings section headers
-  _st?.querySelectorAll('.set-label').forEach(el=>{const ko=el.dataset.ko||(el.textContent.trim());if(!el.dataset.ko)el.dataset.ko=ko;el.textContent=_T(ko)});
+  const _sh=[['조작 키 설정 (클릭하여 변경)','Key Bindings (Click to Change)'],['게임 설정','Game Settings'],['화면 설정','Display Settings'],['캐릭터 선택','Character Select'],['마우스 커서','Mouse Cursor'],['그래픽 품질','Graphics Quality'],['하드웨어 진단','Hardware Diagnostics']];
+  const _shMap={};_sh.forEach(([k,e])=>{_shMap[k]=e});
+  _st?.querySelectorAll('.set-label').forEach(el=>{const ko=el.dataset.ko||(el.textContent.trim());if(!el.dataset.ko)el.dataset.ko=ko;el.textContent=_e?(_shMap[ko]||ko):ko});
   // BGM select options
-  const _bgmOpt=$('optBgmTrack');if(_bgmOpt){
-    Array.from(_bgmOpt.options).forEach(o=>{const ko=o.dataset.ko||(o.textContent);if(!o.dataset.ko)o.dataset.ko=ko;const tr=_T(ko);o.textContent=tr!==ko?tr:ko});
-    Array.from(_bgmOpt.querySelectorAll('optgroup')).forEach(g=>{const ko=g.dataset.ko||g.label;if(!g.dataset.ko)g.dataset.ko=ko;const tr=_T(ko);g.label=tr!==ko?tr:ko});
-  }
+  const _bgmOpt=$('optBgmTrack');if(_bgmOpt){const _bo=[['자동 (스테이지별)','Auto (per stage)'],['로비','Lobby'],['1장 랜덤','CH1 Random'],['2장 랜덤','CH2 Random'],['3장 랜덤','CH3 Random'],['4장 랜덤','CH4 Random'],['5장 랜덤','CH5 Random'],['6장 랜덤','CH6 Random'],['7장 랜덤','CH7 Random'],['보스','Boss'],['최종보스','Final Boss'],['대장간 랜덤','Forge Random'],['사망 랜덤','Death Random'],['승리 랜덤','Victory Random'],['복수의 대장간','Forge of Vengeance'],['지옥 추락 사망 징글','Death Jingle'],['탈출 성공','Escape Victory']];const _boMap={};_bo.forEach(([k,e])=>{_boMap[k]=e});Array.from(_bgmOpt.options).forEach(o=>{const ko=o.dataset.ko||(o.textContent);if(!o.dataset.ko)o.dataset.ko=ko;o.textContent=_e?(_boMap[ko]||ko):ko});Array.from(_bgmOpt.querySelectorAll('optgroup')).forEach(g=>{const _gm={'── 1장 - 썩은 숲 ──':'── CH1 - Rotten Forest ──','── 2장 - 벌레굴 ──':'── CH2 - Worm Nest ──','── 3장 - 얼음굴 ──':'── CH3 - Ice Cavern ──','── 4장 - 화염지대 ──':'── CH4 - Infernal Wastes ──','── 5장 - 지옥군단 ──':'── CH5 - Hell Legion ──','── 6장 - 사도마굴 ──':'── CH6 - Apostle Den ──','── 7장 - 지옥성 ──':'── CH7 - Hell Citadel ──','── 공통 ──':'── Common ──'};const ko=g.dataset.ko||g.label;if(!g.dataset.ko)g.dataset.ko=ko;g.label=_e?(_gm[ko]||ko):ko})}
   // Display mode options
-  const _dm=$('optDispMode');if(_dm){Array.from(_dm.options).forEach(o=>{const ko=o.dataset.ko||(o.textContent);if(!o.dataset.ko)o.dataset.ko=ko;const tr=_T(ko);o.textContent=tr!==ko?tr:ko})}
+  const _dm=$('optDispMode');if(_dm){const _dmo=[['창 모드','Windowed'],['보더리스','Borderless'],['전체화면','Fullscreen']];const _dmoMap={};_dmo.forEach(([k,e])=>{_dmoMap[k]=e});Array.from(_dm.options).forEach(o=>{const ko=o.dataset.ko||(o.textContent);if(!o.dataset.ko)o.dataset.ko=ko;o.textContent=_e?(_dmoMap[ko]||ko):ko})}
   // Buttons
-  const _btns={saveP1:'세팅1 저장',loadP1:'세팅1',saveP2:'세팅2 저장',loadP2:'세팅2',btnRedetect:'재진단',resetBtn:'게임 리셋 (처음부터)',toLobbyBtn2:'캐릭터 선택 (로비)',setClose:'닫기 [ESC]',resetYes:'확인',resetNo:'취소'};
-  for(const[id,ko]of Object.entries(_btns)){const el=$(id);if(el)el.textContent=_T(ko)}
+  const _btns={saveP1:['세팅1 저장','Save Preset 1'],loadP1:['세팅1','Preset 1'],saveP2:['세팅2 저장','Save Preset 2'],loadP2:['세팅2','Preset 2'],btnRedetect:['재진단','Re-detect'],resetBtn:['게임 리셋 (처음부터)','Reset Game (from start)'],toLobbyBtn2:['캐릭터 선택 (로비)','Character Select (Lobby)'],setClose:['닫기 [ESC]','Close [ESC]'],resetYes:['확인','Confirm'],resetNo:['취소','Cancel']};
+  for(const[id,[ko,en]]of Object.entries(_btns)){const el=$(id);if(el)el.textContent=_e?en:ko}
   // Fullscreen button (no id, onclick)
-  _st?.querySelectorAll('button').forEach(b=>{if(b.onclick&&b.textContent.includes('화면')&&b.textContent.includes('11'))b.textContent=_T('전체화면 (F11)')});
+  _st?.querySelectorAll('button').forEach(b=>{if(b.onclick&&b.textContent.includes('전체화면'))b.textContent=_e?'Fullscreen (F11)':'전체화면 (F11)'});
   // Auto-save text, preset text
   _st?.querySelectorAll('div').forEach(d=>{
     if(d.children.length>2)return;
-    if(d.textContent.trim()==='✓ 설정 자동 저장'||d.dataset.ko==='✓ 설정 자동 저장'){d.dataset.ko='✓ 설정 자동 저장';d.textContent=_T('✓ 설정 자동 저장')}
-    if(d.textContent.trim()==='세팅 프리셋 저장/불러오기'||d.dataset.ko==='세팅 프리셋 저장/불러오기'){d.dataset.ko='세팅 프리셋 저장/불러오기';d.textContent=_T('세팅 프리셋 저장/불러오기')}
-    if(d.id==='resetConfirm'){const _rcd=d.querySelector('div');if(_rcd)_rcd.textContent=_T('정말 모든 진행을 초기화하시겠습니까?')}
+    if(d.textContent.trim()==='✓ 설정 자동 저장'||d.dataset.ko==='✓ 설정 자동 저장'){d.dataset.ko='✓ 설정 자동 저장';d.textContent=_e?'✓ Settings auto-saved':'✓ 설정 자동 저장'}
+    if(d.textContent.trim()==='세팅 프리셋 저장/불러오기'||d.dataset.ko==='세팅 프리셋 저장/불러오기'){d.dataset.ko='세팅 프리셋 저장/불러오기';d.textContent=_e?'Save/Load setting presets':'세팅 프리셋 저장/불러오기'}
+    if(d.id==='resetConfirm'){const _rcd=d.querySelector('div');if(_rcd)_rcd.textContent=_e?'Really reset all progress?':'정말 모든 진행을 초기화하시겠습니까?'}
   });
   // HW diag labels
-  const _dg=$('diagGpu');if(_dg&&_dg.textContent.includes('검출'))_dg.textContent=_T('검출 중...');
-  const _df=$('diagBenchFps');if(_df&&_df.textContent.includes('측정'))_df.textContent=_T('측정 중...');
-  // Poise / Posture labels
+  const _dg=$('diagGpu');if(_dg&&_dg.textContent.includes('검출'))_dg.textContent=_e?'Detecting...':'검출 중...';
+  const _df=$('diagBenchFps');if(_df&&_df.textContent.includes('측정'))_df.textContent=_e?'Measuring...':'측정 중...';
+  // Poise label
   const _pl=$('bossPoiseLbl');if(_pl)_pl.textContent=_T('포이즈');
-  const _psl=$('bossPostureLbl');if(_psl)_psl.textContent=_T('체간');
+  const _psl=$('bossPostureLbl');if(_psl)_psl.textContent=_e?'Posture':'체간';
   // Help overlay
   const _ho=$('helpOverlay');if(_ho){
-    _ho.querySelector('div[style*="ffcc66"]').textContent=_T('⌨ 조작법');
+    _ho.querySelector('div[style*="ffcc66"]').textContent=_e?'⌨ Controls':'⌨ 조작법';
     const _hDivs=_ho.querySelectorAll('div');
-    const _hMap=[['WASD','이동'],['좌클릭','무기 공격'],['우클릭 탭','칼등 처내기 (투사체 반사, 홀드 연사)'],['우클릭 홀드','연속 처내기'],['SPACE','영역 스킬 (폭풍소환 등)'],['SHIFT','작살 발사'],['E','마법 (탭=투사체, 홀드=빔)'],['Q','데빌포스 흡수'],['R','아이템 줍기'],['1~4','물약 / 스킬슬롯'],['F / Z / L-CTRL','스킬슬롯 5 / 필살기 / CT스킬'],['L','스킬 슬롯 배정'],['K','스킬'],['C','능력치'],['TAB','인벤토리'],['G','대장간'],['V','창고'],['ESC','설정']];
-    _hDivs.forEach(d=>{const b=d.querySelector('b');if(b){const k=b.textContent;const m=_hMap.find(h=>h[0]===k);if(m){const t=d.innerHTML;const afterB=t.indexOf('</b>');if(afterB>=0)d.innerHTML=t.slice(0,afterB+4)+' — '+_T(m[1])}}});
-    const _lastD=_ho.querySelector('div[style*="color:#666"]');if(_lastD)_lastD.textContent=_T('클릭하면 닫힘');
+    const _hMap=[['WASD','이동','Move'],['좌클릭','무기 공격','Weapon Attack'],['우클릭 탭','칼등 처내기 (투사체 반사, 홀드 연사)','Blade Parry (reflect, hold for rapid)'],['우클릭 홀드','연속 처내기','Continuous Parry'],['SPACE','영역 스킬 (폭풍소환 등)','Area Skill (Vortex Summon etc)'],['SHIFT','작살 발사','Harpoon Launch'],['E','마법 (탭=투사체, 홀드=빔)','Magic (tap=projectile, hold=beam)'],['Q','데빌포스 흡수','Devilforce Absorb'],['R','아이템 줍기','Pick Up Item'],['1~4','물약 / 스킬슬롯','Potions / Skill Slots'],['F / Z / L-CTRL','스킬슬롯 5 / 필살기 / CT스킬','Slot 5 / Ultimate / CT Skill'],['L','스킬 슬롯 배정','Skill Slot Assign'],['K','스킬','Skills'],['C','능력치','Stats'],['TAB','인벤토리','Inventory'],['G','대장간','Forge'],['V','창고','Storage'],['ESC','설정','Settings']];
+    _hDivs.forEach(d=>{const b=d.querySelector('b');if(b){const k=b.textContent;const m=_hMap.find(h=>h[0]===k);if(m){const t=d.innerHTML;const afterB=t.indexOf('</b>');if(afterB>=0)d.innerHTML=t.slice(0,afterB+4)+' — '+(_e?m[2]:m[1])}}});
+    const _lastD=_ho.querySelector('div[style*="color:#666"]');if(_lastD)_lastD.textContent=_e?'Click to close':'클릭하면 닫힘';
   }
   // Slot title attributes
-  const _titles={skSlotLMB:'좌클스킬 (클릭 전환)',skSlotRMB:'우클스킬 (클릭 전환)',skSlot0:'이동스킬 (클릭 전환)',qsE:'마법스킬 (클릭 전환)',skSlot1:'영역스킬 (클릭 전환)',qsQ:'피보호막 (클릭 전환)',skSlotCT:'CT스킬 (클릭 전환)',spCnt:'[C] 능력치'};
-  for(const[id,ko]of Object.entries(_titles)){const el=$(id);if(el)el.title=_T(ko)}
-  // Inventory panel
+  const _titles={skSlotLMB:['좌클스킬 (클릭 전환)','LMB Skill (click to switch)'],skSlotRMB:['우클스킬 (클릭 전환)','RMB Skill (click to switch)'],skSlot0:['이동스킬 (클릭 전환)','Move Skill (click to switch)'],qsE:['마법스킬 (클릭 전환)','Magic Skill (click to switch)'],skSlot1:['영역스킬 (클릭 전환)','Area Skill (click to switch)'],qsQ:['피보호막 (클릭 전환)','Blood Shield (click to switch)'],skSlotCT:['CT스킬 (클릭 전환)','CT Skill (click to switch)'],spCnt:['[C] 능력치','[C] Stats']};
+  // Inventory / Forge / Stats / Skill panel labels
   const _invP=$('invPanel');if(_invP){
-    const _pt=_invP.querySelector('.ptitle');if(_pt)_pt.textContent=_T('인벤토리');
-    const _cpLbl=_invP.querySelector('#combatPower>span:first-child');if(_cpLbl)_cpLbl.textContent=_T('전투력');
-    const _crBtn=_invP.querySelector('#combatPower')?.nextElementSibling;if(_crBtn&&(_crBtn.textContent.includes('결정')||_crBtn.dataset.ko==='결정')){_crBtn.dataset.ko='결정';_crBtn.textContent=_T('결정')}
-    const _eqLbl=_invP.querySelector('.inv-equip>div');if(_eqLbl&&(_eqLbl.textContent.includes('장착')||_eqLbl.dataset.ko==='장착 중')){_eqLbl.dataset.ko='장착 중';_eqLbl.textContent=_T('장착 중')}
-    const _stTgl=_invP.querySelector('.inv-storage-toggle>span');if(_stTgl&&(_stTgl.textContent.includes('지옥창고')||_stTgl.dataset.ko==='지옥창고')){_stTgl.dataset.ko='지옥창고';_stTgl.textContent=_T('지옥창고')}
-    const _bagLbl=_invP.querySelector('#invCenter>div>div');if(_bagLbl){const _bc=_bagLbl.querySelector('#invCount'),_bm=_bagLbl.querySelector('#invMax');if(_bc&&_bm){const _cv=_bc.textContent,_mv=_bm.textContent;_bagLbl.innerHTML=_T('가방')+' (<span id="invCount">'+_cv+'</span>/<span id="invMax">'+_mv+'</span>)'}}
-    const _sortB=$('invSortBtn');if(_sortB)_sortB.textContent=_T('↕ 정렬');
-    const _jSelB=$('invJunkSelBtn');if(_jSelB)_jSelB.textContent=_T('쓰레기 전체선택');
-    const _jBtn=$('invJunkBtn');if(_jBtn)_jBtn.textContent=_T('쓰레기 전부 분해');
+const _pt=_invP.querySelector('.ptitle');if(_pt)_pt.textContent=_e?'Inventory':'인벤토리';
+    const _cpLbl=_invP.querySelector('#combatPower>span:first-child');if(_cpLbl)_cpLbl.textContent=_e?'CP':'전투력';
+    const _crBtn=_invP.querySelector('#combatPower')?.nextElementSibling;if(_crBtn&&(_crBtn.textContent.includes('결정')||_crBtn.dataset.ko==='결정')){_crBtn.dataset.ko='결정';_crBtn.textContent=_e?'Crystal':'결정'}
+    const _eqLbl=_invP.querySelector('.inv-equip>div');if(_eqLbl&&(_eqLbl.textContent.includes('장착')||_eqLbl.dataset.ko==='장착 중')){_eqLbl.dataset.ko='장착 중';_eqLbl.textContent=_e?'Equipped':'장착 중'}
+    const _stTgl=_invP.querySelector('.inv-storage-toggle>span');if(_stTgl&&(_stTgl.textContent.includes('지옥창고')||_stTgl.dataset.ko==='지옥창고')){_stTgl.dataset.ko='지옥창고';_stTgl.textContent=_e?'Hell Storage':'지옥창고'}
+    const _bagLbl=_invP.querySelector('#invCenter>div>div');if(_bagLbl){const _bc=_bagLbl.querySelector('#invCount'),_bm=_bagLbl.querySelector('#invMax');if(_bc&&_bm){const _cv=_bc.textContent,_mv=_bm.textContent;_bagLbl.innerHTML=_e?'Bag (<span id="invCount">'+_cv+'</span>/<span id="invMax">'+_mv+'</span>)':'가방 (<span id="invCount">'+_cv+'</span>/<span id="invMax">'+_mv+'</span>)'}}
+    const _sortB=$('invSortBtn');if(_sortB)_sortB.textContent=_e?'↕ Sort':'↕ 정렬';
+const _jSelB=$('invJunkSelBtn');if(_jSelB)_jSelB.textContent=_e?'Select All Junk':'쓰레기 전체선택';
+const _jBtn=$('invJunkBtn');if(_jBtn)_jBtn.textContent=_e?'Salvage All Junk':'쓰레기 전부 분해';
   }
-  // Forge panel
   const _fgP=$('forge');if(_fgP){
-    const _pt2=_fgP.querySelector('.ptitle');if(_pt2)_pt2.textContent=_T('복수의 대장간');
-    const _cb=$('fgCraftBtn');if(_cb)_cb.textContent=_T('제작');
-    const _fc=$('fgClose');if(_fc)_fc.textContent=_T('닫기 [G]');
+const _pt2=_fgP.querySelector('.ptitle');if(_pt2)_pt2.textContent=_e?'Forge of Vengeance':'복수의 대장간';
+const _cb=$('fgCraftBtn');if(_cb)_cb.textContent=_e?'Craft':'제작';
+    const _fc=$('fgClose');if(_fc)_fc.textContent=_e?'Close [G]':'닫기 [G]';
   }
-  // Storage panel
   const _stpP=$('storagePanel');if(_stpP){
-    const _pt3=_stpP.querySelector('.ptitle');if(_pt3)_pt3.textContent=_T('창고');
-    const _sc=$('storageClose');if(_sc)_sc.textContent=_T('닫기 [V]');
+const _pt3=_stpP.querySelector('.ptitle');if(_pt3)_pt3.textContent=_e?'Storage':'창고';
+    const _sc=$('storageClose');if(_sc)_sc.textContent=_e?'Close [V]':'닫기 [V]';
   }
-  // Stat panel
   const _spP=$('statPanel');if(_spP){
-    const _pt4=_spP.querySelector('.ptitle');if(_pt4)_pt4.textContent=_T('능력치');
-    const _spLbl=_spP.querySelector('#statLeft div[style*="ffcc44"]');if(_spLbl)_spLbl.textContent=_T('스탯 포인트');
-    const _smBtn=$('smToggleBtn');if(_smBtn){const _ar=_smBtn.textContent.includes('▲')?'▲':'▼';_smBtn.textContent=_T('능력치 요약')+' '+_ar}
-    const _psLbl=_spP.querySelector('#statRight div[style*="cc77ff"]');if(_psLbl)_psLbl.textContent=_T('패시브 스킬');
-    const _srb=$('statResetBtn');if(_srb)_srb.textContent=_T('올 리셋');
-    const _scc=$('statClose');if(_scc)_scc.textContent=_T('닫기 [C]');
+const _pt4=_spP.querySelector('.ptitle');if(_pt4)_pt4.textContent=_e?'Stats':'능력치';
+const _spLbl=_spP.querySelector('#statLeft div[style*="ffcc44"]');if(_spLbl)_spLbl.textContent=_e?'Stat Points':'스탯 포인트';
+    const _smBtn=$('smToggleBtn');if(_smBtn){const _ar=_smBtn.textContent.includes('▲')?'▲':'▼';_smBtn.textContent=_e?'Stat Summary '+_ar:'능력치 요약 '+_ar}
+const _psLbl=_spP.querySelector('#statRight div[style*="cc77ff"]');if(_psLbl)_psLbl.textContent=_e?'Passive Skills':'패시브 스킬';
+const _srb=$('statResetBtn');if(_srb)_srb.textContent=_e?'Reset All':'올 리셋';
+    const _scc=$('statClose');if(_scc)_scc.textContent=_e?'Close [C]':'닫기 [C]';
   }
-  // Skill panel
   const _skP=$('skillPanel');if(_skP){
-    const _pt5=_skP.querySelector('.ptitle');if(_pt5)_pt5.textContent=_T('전투 스킬');
-    const _skc=_skP.querySelector('.pclose');if(_skc)_skc.textContent=_T('닫기 [ESC]');
+    const _pt5=_skP.querySelector('.ptitle');if(_pt5)_pt5.textContent=_e?'Combat Skills':'전투 스킬';
+    const _skc=_skP.querySelector('.pclose');if(_skc)_skc.textContent=_e?'Close [ESC]':'닫기 [ESC]';
   }
+  for(const[id,[ko,en]]of Object.entries(_titles)){const el=$(id);if(el)el.title=_e?en:ko}
   // Death screen
-  const _dt=$('deathTitle');if(_dt)_dt.textContent=_T('빛이 꺼졌다');
-  const _ds=$('deathSub');if(_ds)_ds.textContent=_T('누군가는 너를 기다리고 있다');
-  const _rb=$('retryBtn');if(_rb)_rb.textContent=_T('다시 일어서라');
-  const _tlb=$('toLobbyBtn');if(_tlb)_tlb.textContent=_T('로비로 돌아가기');
-  const _drl=$('drLabel');if(_drl)_drl.textContent=_T('☠ 사망 리플레이');
+  const _dt=$('deathTitle');if(_dt)_dt.textContent=_e?'The light faded':'빛이 꺼졌다';
+  const _ds=$('deathSub');if(_ds)_ds.textContent=_e?'Someone is waiting for you':'누군가는 너를 기다리고 있다';
+  const _rb=$('retryBtn');if(_rb)_rb.textContent=_e?'Rise Again':'다시 일어서라';
+  const _tlb=$('toLobbyBtn');if(_tlb)_tlb.textContent=_e?'Return to Lobby':'로비로 돌아가기';
+  const _drl=$('drLabel');if(_drl)_drl.textContent=_e?'☠ Death Replay':'☠ 사망 리플레이';
   // Level-up screen
-  const _lus=$('lvUpSub');if(_lus)_lus.textContent=_T('지옥의 시련을 견뎌냈다');
-  const _luc=$('lvUpClose');if(_luc)_luc.textContent=_T('계속 전투');
+  const _lus=$('lvUpSub');if(_lus)_lus.textContent=_e?'You endured the trials of hell':'지옥의 시련을 견뎌냈다';
+  const _luc=$('lvUpClose');if(_luc)_luc.textContent=_e?'Continue Battle':'계속 전투';
   // Intro difficulty select
-  const _idt=$('introDiffTitle');if(_idt)_idt.textContent=_T('난이도를 선택하라');
-  const _idh=$('introDiffHint');if(_idh)_idh.textContent=_T('나중에 설정(ESC)에서 변경 가능');
+  const _idt=$('introDiffTitle');if(_idt)_idt.textContent=_e?'Choose Your Difficulty':'난이도를 선택하라';
+  const _idh=$('introDiffHint');if(_idh)_idh.textContent=_e?'Can be changed later in Settings (ESC)':'나중에 설정(ESC)에서 변경 가능';
   // Refresh dynamic slots
   try{updateMagicSlot();updateLMBSlot();updateQSlot();_updateUltSlot();_renderPresetBtns()}catch(_e2){}
 }catch(_applyErr){console.warn('[_applyLang]',_applyErr)}}

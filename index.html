@@ -260,6 +260,22 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 .loading .spinner{display:inline-block;width:28px;height:28px;border:2px solid #332211;border-top-color:#ff6633;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading p{margin-top:10px;font-size:.6rem;color:#886644}
+/* ── FDG SCREEN 2 (늑대 엠블럼 시네마틱) ── */
+.fdg-screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000;gap:40px;z-index:9999;opacity:0;transition:opacity .5s}
+.fdg-screen.active{opacity:1}
+.fdg-screen.fadeout{opacity:0}
+/* 0.5~1.5s 늑대 페이드인 */
+.fdg-wolf-emblem{width:380px;max-width:25vh;height:auto;opacity:0;transform:scale(.85);transition:opacity 1s ease-out .5s,transform 1s ease-out .5s}
+.fdg-screen.active .fdg-wolf-emblem{opacity:1;transform:scale(1)}
+/* 1.5~2.5s FOR DEAR GAMERS 페이드인 + 자간 좁아짐 */
+.fdg-title{font:400 clamp(48px,5vw,96px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#E8E0D0;letter-spacing:.15em;text-align:center;opacity:0;transform:translateY(12px);transition:opacity 1s ease-out 1.5s,transform 1s ease-out 1.5s,letter-spacing 1.2s ease-out 1.5s}
+.fdg-screen.active .fdg-title{opacity:1;transform:translateY(0);letter-spacing:.05em}
+/* 2.5~3.0s PRESENTS 페이드인 */
+.fdg-presents{font:400 clamp(12px,1.25vw,24px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#888;letter-spacing:.5em;text-align:center;opacity:0;transition:opacity .5s ease-out 2.5s}
+.fdg-screen.active .fdg-presents{opacity:1}
+/* 3.0~3.5s 부제 페이드인 */
+.fdg-subtitle{font:300 clamp(18px,2vw,32px) 'Noto Sans KR',sans-serif;color:#B8B0A0;letter-spacing:.15em;text-align:center;opacity:0;transition:opacity .5s ease-out 3s}
+.fdg-screen.active .fdg-subtitle{opacity:1}
 </style>
 </head>
 <body>
@@ -268,6 +284,13 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 <div id="splashOverlay" style="position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;opacity:1;transition:opacity 0.5s">
   <canvas id="splashCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
   <div id="splashContent" style="text-align:center;opacity:0;transition:opacity 0.5s;position:relative;z-index:2"></div>
+</div>
+<!-- FDG SCREEN 2: 늑대 엠블럼 -->
+<div id="fdgScreen" class="fdg-screen" style="display:none">
+  <img class="fdg-wolf-emblem" src="img/fdg_wolf/fdg_wolf_emblem.png" alt="FDG Wolf Emblem">
+  <div class="fdg-title">FOR DEAR GAMERS</div>
+  <div class="fdg-presents">PRESENTS</div>
+  <div class="fdg-subtitle" id="fdgSubtitle"></div>
 </div>
 
 <!-- ═══ Cinematic Scene ═══ -->
@@ -451,6 +474,7 @@ const _LOBBY_EN={
   '캐릭터 이름 (2~8자)':'Character Name (2-8 chars)',
   '새 캐릭터':'New Character',
   '지옥으로 입장하는 중...':'Entering hell...',
+  '친애하는 게이머를 위하여':'For Dear Gamers',
   '건너뛰기':'SKIP',
   '광과민성 발작 경고':'PHOTOSENSITIVE SEIZURE WARNING',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'This game contains intense violence and disturbing imagery.<br>Rated 18+. May trigger photosensitive seizures.<br>Player discretion advised.',
@@ -480,6 +504,7 @@ const _LOBBY_ZH={
   '캐릭터 이름 (2~8자)':'角色名（2~8字）',
   '새 캐릭터':'新角色',
   '지옥으로 입장하는 중...':'正在进入地狱...',
+  '친애하는 게이머를 위하여':'致亲爱的玩家们',
   '건너뛰기':'跳过',
   '광과민성 발작 경고':'光敏性癫痫警告',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'本游戏包含强烈暴力和令人不安的画面。<br>仅限18岁以上。可能引发光敏性癫痫发作。<br>请谨慎游玩。',
@@ -509,6 +534,7 @@ const _LOBBY_JA={
   '캐릭터 이름 (2~8자)':'キャラクター名（2〜8文字）',
   '새 캐릭터':'新規キャラクター',
   '지옥으로 입장하는 중...':'地獄へ入場中...',
+  '친애하는 게이머를 위하여':'親愛なるゲーマーへ',
   '건너뛰기':'スキップ',
   '광과민성 발작 경고':'光過敏性発作の警告',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'本ゲームには激しい暴力表現や不快な映像が含まれます。<br>18歳以上推奨。光過敏性発作を引き起こす可能性があります。<br>ご注意ください。',
@@ -538,6 +564,7 @@ const _LOBBY_ES={
   '캐릭터 이름 (2~8자)':'Nombre (2-8 caracteres)',
   '새 캐릭터':'Nuevo personaje',
   '지옥으로 입장하는 중...':'Entrando al infierno...',
+  '친애하는 게이머를 위하여':'Para Queridos Jugadores',
   '건너뛰기':'OMITIR',
   '광과민성 발작 경고':'ADVERTENCIA DE CONVULSIONES FOTOSENSIBLES',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Este juego contiene violencia intensa e imágenes perturbadoras.<br>Clasificado para mayores de 18 años. Puede provocar convulsiones fotosensibles.<br>Se recomienda discreción.',
@@ -560,6 +587,7 @@ const _LOBBY_FR={
   '서버 연결 실패: ':'Échec de connexion au serveur : ','데이터를 불러오는 중...':'Chargement des données...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Voulez-vous vraiment supprimer ce personnage ?',
   '새 캐릭터':'Nouveau personnage','지옥으로 입장하는 중...':'Entrée en enfer...',
+  '친애하는 게이머를 위하여':'Pour Chers Joueurs',
   '건너뛰기':'PASSER','광과민성 발작 경고':'AVERTISSEMENT : CRISES PHOTOSENSIBLES',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Ce jeu contient de la violence intense et des images perturbantes.<br>Réservé aux 18 ans et plus. Peut provoquer des crises photosensibles.<br>Discrétion conseillée.',
   '아무 키나 눌러 계속':'Appuyez sur une touche pour continuer',
@@ -581,6 +609,7 @@ const _LOBBY_IT={
   '서버 연결 실패: ':'Connessione al server fallita: ','데이터를 불러오는 중...':'Caricamento dati...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Vuoi davvero eliminare questo personaggio?',
   '새 캐릭터':'Nuovo personaggio','지옥으로 입장하는 중...':'Entrando all\'inferno...',
+  '친애하는 게이머를 위하여':'Per Cari Giocatori',
   '건너뛰기':'SALTA','광과민성 발작 경고':'AVVISO: CRISI FOTOSENSIBILI',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Questo gioco contiene violenza intensa e immagini disturbanti.<br>Vietato ai minori di 18 anni. Può provocare crisi fotosensibili.<br>Si consiglia discrezione.',
   '아무 키나 눌러 계속':'Premi un tasto per continuare',
@@ -602,6 +631,7 @@ const _LOBBY_PTBR={
   '서버 연결 실패: ':'Falha na conexão com o servidor: ','데이터를 불러오는 중...':'Carregando dados...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Realmente deseja excluir este personagem?',
   '새 캐릭터':'Novo personagem','지옥으로 입장하는 중...':'Entrando no inferno...',
+  '친애하는 게이머를 위하여':'Para Queridos Jogadores',
   '건너뛰기':'PULAR','광과민성 발작 경고':'AVISO DE CONVULSÕES FOTOSSENSÍVEIS',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Este jogo contém violência intensa e imagens perturbadoras.<br>Classificação 18+. Pode provocar convulsões fotossensíveis.<br>Recomenda-se discrição.',
   '아무 키나 눌러 계속':'Pressione qualquer tecla para continuar',
@@ -623,6 +653,7 @@ const _LOBBY_RO={
   '서버 연결 실패: ':'Eroare de conexiune la server: ','데이터를 불러오는 중...':'Se încarcă datele...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Sigur vrei să ștergi acest personaj?',
   '새 캐릭터':'Personaj nou','지옥으로 입장하는 중...':'Se intră în infern...',
+  '친애하는 게이머를 위하여':'Pentru Dragi Jucători',
   '건너뛰기':'SARI','광과민성 발작 경고':'AVERTISMENT: CONVULSII FOTOSENSIBILE',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Acest joc conține violență intensă și imagini deranjante.<br>Clasificat 18+. Poate provoca convulsii fotosensibile.<br>Se recomandă discreție.',
   '아무 키나 눌러 계속':'Apasă orice tastă pentru a continua',
@@ -644,6 +675,7 @@ const _LOBBY_DE={
   '서버 연결 실패: ':'Serververbindung fehlgeschlagen: ','데이터를 불러오는 중...':'Daten werden geladen...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Diesen Charakter wirklich löschen?',
   '새 캐릭터':'Neuer Charakter','지옥으로 입장하는 중...':'Betreten der Hölle...',
+  '친애하는 게이머를 위하여':'Für Liebe Gamer',
   '건너뛰기':'ÜBERSPRINGEN','광과민성 발작 경고':'WARNUNG: PHOTOSENSIBLE ANFÄLLE',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Dieses Spiel enthält intensive Gewalt und verstörende Bilder.<br>Ab 18 Jahren. Kann photosensible Anfälle auslösen.<br>Eigenverantwortung wird empfohlen.',
   '아무 키나 눌러 계속':'Beliebige Taste drücken zum Fortfahren',
@@ -665,6 +697,7 @@ const _LOBBY_NL={
   '서버 연결 실패: ':'Serververbinding mislukt: ','데이터를 불러오는 중...':'Gegevens laden...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Wil je dit karakter echt verwijderen?',
   '새 캐릭터':'Nieuw karakter','지옥으로 입장하는 중...':'De hel betreden...',
+  '친애하는 게이머를 위하여':'Voor Lieve Gamers',
   '건너뛰기':'OVERSLAAN','광과민성 발작 경고':'WAARSCHUWING: FOTOSENSITIEVE AANVALLEN',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Dit spel bevat intens geweld en verontrustende beelden.<br>18+ classificatie. Kan fotosensitieve aanvallen veroorzaken.<br>Discretie wordt geadviseerd.',
   '아무 키나 눌러 계속':'Druk op een toets om door te gaan',
@@ -686,6 +719,7 @@ const _LOBBY_SV={
   '서버 연결 실패: ':'Serveranslutning misslyckades: ','데이터를 불러오는 중...':'Laddar data...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Vill du verkligen radera denna karaktär?',
   '새 캐릭터':'Ny karaktär','지옥으로 입장하는 중...':'Går in i helvetet...',
+  '친애하는 게이머를 위하여':'För Kära Spelare',
   '건너뛰기':'HOPPA ÖVER','광과민성 발작 경고':'VARNING: LJUSKÄNSLIGA ANFALL',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Detta spel innehåller intensivt våld och störande bilder.<br>18+ klassificering. Kan utlösa ljuskänsliga anfall.<br>Eget ansvar rekommenderas.',
   '아무 키나 눌러 계속':'Tryck valfri tangent för att fortsätta',
@@ -707,6 +741,7 @@ const _LOBBY_DA={
   '서버 연결 실패: ':'Serverforbindelse mislykkedes: ','데이터를 불러오는 중...':'Indlæser data...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Vil du virkelig slette denne karakter?',
   '새 캐릭터':'Ny karakter','지옥으로 입장하는 중...':'Træder ind i helvede...',
+  '친애하는 게이머를 위하여':'Til Kære Spillere',
   '건너뛰기':'SPRING OVER','광과민성 발작 경고':'ADVARSEL: LYSFØLSOMME ANFALD',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Dette spil indeholder intens vold og forstyrrende billeder.<br>18+ klassificering. Kan udløse lysfølsomme anfald.<br>Eget ansvar anbefales.',
   '아무 키나 눌러 계속':'Tryk en vilkårlig tast for at fortsætte',
@@ -728,6 +763,7 @@ const _LOBBY_NO={
   '서버 연결 실패: ':'Serverforbindelse mislyktes: ','데이터를 불러오는 중...':'Laster data...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Vil du virkelig slette denne karakteren?',
   '새 캐릭터':'Ny karakter','지옥으로 입장하는 중...':'Går inn i helvete...',
+  '친애하는 게이머를 위하여':'Til Kjære Spillere',
   '건너뛰기':'HOPP OVER','광과민성 발작 경고':'ADVARSEL: LYSFØLSOMME ANFALL',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Dette spillet inneholder intens vold og forstyrrende bilder.<br>18+ klassifisering. Kan utløse lysfølsomme anfall.<br>Eget ansvar anbefales.',
   '아무 키나 눌러 계속':'Trykk en vilkårlig tast for å fortsette',
@@ -749,6 +785,7 @@ const _LOBBY_RU={
   '서버 연결 실패: ':'Ошибка подключения к серверу: ','데이터를 불러오는 중...':'Загрузка данных...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Вы действительно хотите удалить этого персонажа?',
   '새 캐릭터':'Новый персонаж','지옥으로 입장하는 중...':'Вход в ад...',
+  '친애하는 게이머를 위하여':'Дорогим Геймерам',
   '건너뛰기':'ПРОПУСТИТЬ','광과민성 발작 경고':'ПРЕДУПРЕЖДЕНИЕ: ФОТОСЕНСИТИВНАЯ ЭПИЛЕПСИЯ',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Эта игра содержит сцены насилия и шокирующие образы.<br>Только для лиц старше 18 лет. Может вызвать фотосенситивные приступы.<br>Рекомендуется осторожность.',
   '아무 키나 눌러 계속':'Нажмите любую клавишу для продолжения',
@@ -770,6 +807,7 @@ const _LOBBY_UK={
   '서버 연결 실패: ':'Помилка підключення до сервера: ','데이터를 불러오는 중...':'Завантаження даних...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Ви дійсно хочете видалити цього персонажа?',
   '새 캐릭터':'Новий персонаж','지옥으로 입장하는 중...':'Вхід до пекла...',
+  '친애하는 게이머를 위하여':'Дорогим Геймерам',
   '건너뛰기':'ПРОПУСТИТИ','광과민성 발작 경고':'ПОПЕРЕДЖЕННЯ: ФОТОСЕНСИТИВНА ЕПІЛЕПСІЯ',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Ця гра містить сцени насильства та шокуючі образи.<br>Тільки для осіб старше 18 років. Може викликати фотосенситивні напади.<br>Рекомендується обережність.',
   '아무 키나 눌러 계속':'Натисніть будь-яку клавішу для продовження',
@@ -791,6 +829,7 @@ const _LOBBY_PL={
   '서버 연결 실패: ':'Błąd połączenia z serwerem: ','데이터를 불러오는 중...':'Ładowanie danych...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Czy na pewno chcesz usunąć tę postać?',
   '새 캐릭터':'Nowa postać','지옥으로 입장하는 중...':'Wchodzenie do piekła...',
+  '친애하는 게이머를 위하여':'Dla Drogich Graczy',
   '건너뛰기':'POMIŃ','광과민성 발작 경고':'OSTRZEŻENIE: NAPADY FOTOSENSYTYWNE',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Ta gra zawiera intensywną przemoc i niepokojące obrazy.<br>Kategoria 18+. Może wywołać napady fotosensytywne.<br>Zalecana ostrożność.',
   '아무 키나 눌러 계속':'Naciśnij dowolny klawisz, aby kontynuować',
@@ -812,6 +851,7 @@ const _LOBBY_CS={
   '서버 연결 실패: ':'Chyba připojení k serveru: ','데이터를 불러오는 중...':'Načítání dat...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Opravdu chceš smazat tuto postavu?',
   '새 캐릭터':'Nová postava','지옥으로 입장하는 중...':'Vstupuji do pekla...',
+  '친애하는 게이머를 위하여':'Pro Drahé Hráče',
   '건너뛰기':'PŘESKOČIT','광과민성 발작 경고':'VAROVÁNÍ: FOTOSENZITIVNÍ ZÁCHVATY',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Tato hra obsahuje intenzivní násilí a znepokojivé obrazy.<br>Od 18 let. Může vyvolat fotosenzitivní záchvaty.<br>Doporučuje se opatrnost.',
   '아무 키나 눌러 계속':'Stiskni libovolnou klávesu pro pokračování',
@@ -833,6 +873,7 @@ const _LOBBY_HU={
   '서버 연결 실패: ':'Szerver csatlakozási hiba: ','데이터를 불러오는 중...':'Adatok betöltése...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Biztosan törölni akarod ezt a karaktert?',
   '새 캐릭터':'Új karakter','지옥으로 입장하는 중...':'Belépés a pokolba...',
+  '친애하는 게이머를 위하여':'Kedves Játékosoknak',
   '건너뛰기':'KIHAGYÁS','광과민성 발작 경고':'FIGYELMEZTETÉS: FÉNYÉRZÉKENY ROHAMOK',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Ez a játék intenzív erőszakot és zavaró képeket tartalmaz.<br>18+ besorolás. Fényérzékeny rohamokat válthat ki.<br>Óvatosság ajánlott.',
   '아무 키나 눌러 계속':'Nyomj meg egy gombot a folytatáshoz',
@@ -854,6 +895,7 @@ const _LOBBY_BG={
   '서버 연결 실패: ':'Грешка при свързване със сървъра: ','데이터를 불러오는 중...':'Зареждане на данни...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Наистина ли искате да изтриете този персонаж?',
   '새 캐릭터':'Нов персонаж','지옥으로 입장하는 중...':'Влизане в ада...',
+  '친애하는 게이머를 위하여':'За Скъпи Геймъри',
   '건너뛰기':'ПРОПУСНИ','광과민성 발작 경고':'ПРЕДУПРЕЖДЕНИЕ: ФОТОСЕНСИТИВНА ЕПИЛЕПСИЯ',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Тази игра съдържа интензивно насилие и обезпокоителни образи.<br>Само за лица над 18 години. Може да предизвика фотосенситивни пристъпи.<br>Препоръчва се внимание.',
   '아무 키나 눌러 계속':'Натиснете произволен клавиш за продължаване',
@@ -875,6 +917,7 @@ const _LOBBY_EL={
   '서버 연결 실패: ':'Αποτυχία σύνδεσης με τον διακομιστή: ','데이터를 불러오는 중...':'Φόρτωση δεδομένων...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Θέλεις πραγματικά να διαγράψεις αυτόν τον χαρακτήρα;',
   '새 캐릭터':'Νέος χαρακτήρας','지옥으로 입장하는 중...':'Είσοδος στην κόλαση...',
+  '친애하는 게이머를 위하여':'Για Αγαπητούς Gamers',
   '건너뛰기':'ΠΑΡΑΛΕΙΨΗ','광과민성 발작 경고':'ΠΡΟΕΙΔΟΠΟΙΗΣΗ: ΦΩΤΟΕΥΑΙΣΘΗΤΕΣ ΚΡΙΣΕΙΣ',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Αυτό το παιχνίδι περιέχει έντονη βία και ανησυχητικές εικόνες.<br>Κατάλληλο για 18+. Μπορεί να προκαλέσει φωτοευαίσθητες κρίσεις.<br>Συνιστάται προσοχή.',
   '아무 키나 눌러 계속':'Πατήστε οποιοδήποτε πλήκτρο για συνέχεια',
@@ -896,6 +939,7 @@ const _LOBBY_FI={
   '서버 연결 실패: ':'Palvelinyhteys epäonnistui: ','데이터를 불러오는 중...':'Ladataan tietoja...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Haluatko todella poistaa tämän hahmon?',
   '새 캐릭터':'Uusi hahmo','지옥으로 입장하는 중...':'Astutaan helvettiin...',
+  '친애하는 게이머를 위하여':'Rakkaille Pelaajille',
   '건너뛰기':'OHITA','광과민성 발작 경고':'VAROITUS: VALOHERKKÄ EPILEPSIA',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Tämä peli sisältää voimakasta väkivaltaa ja häiritseviä kuvia.<br>K-18. Voi laukaista valoherkkyyskohtauksia.<br>Varovaisuutta suositellaan.',
   '아무 키나 눌러 계속':'Paina mitä tahansa näppäintä jatkaaksesi',
@@ -917,6 +961,7 @@ const _LOBBY_TR={
   '서버 연결 실패: ':'Sunucu bağlantı hatası: ','데이터를 불러오는 중...':'Veriler yükleniyor...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Bu karakteri gerçekten silmek istiyor musun?',
   '새 캐릭터':'Yeni karakter','지옥으로 입장하는 중...':'Cehenneme giriliyor...',
+  '친애하는 게이머를 위하여':'Sevgili Oyuncular İçin',
   '건너뛰기':'ATLA','광과민성 발작 경고':'UYARI: FOTOSENSİTİF NÖBETLER',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Bu oyun yoğun şiddet ve rahatsız edici görüntüler içerir.<br>18+ sınıflandırma. Fotosensitif nöbetleri tetikleyebilir.<br>Dikkatli olunması önerilir.',
   '아무 키나 눌러 계속':'Devam etmek için herhangi bir tuşa basın',
@@ -938,6 +983,7 @@ const _LOBBY_AR={
   '서버 연결 실패: ':'فشل الاتصال بالخادم: ','데이터를 불러오는 중...':'جارٍ تحميل البيانات...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — هل تريد حقاً حذف هذه الشخصية؟',
   '새 캐릭터':'شخصية جديدة','지옥으로 입장하는 중...':'الدخول إلى الجحيم...',
+  '친애하는 게이머를 위하여':'لأعزائنا اللاعبين',
   '건너뛰기':'تخطي','광과민성 발작 경고':'تحذير: نوبات حساسية الضوء',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'تحتوي هذه اللعبة على عنف شديد وصور مزعجة.<br>للأعمار 18+ فقط. قد تسبب نوبات حساسية الضوء.<br>يُنصح بالحذر.',
   '아무 키나 눌러 계속':'اضغط أي مفتاح للمتابعة',
@@ -959,6 +1005,7 @@ const _LOBBY_VI={
   '서버 연결 실패: ':'Kết nối máy chủ thất bại: ','데이터를 불러오는 중...':'Đang tải dữ liệu...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Bạn có chắc muốn xóa nhân vật này?',
   '새 캐릭터':'Nhân vật mới','지옥으로 입장하는 중...':'Đang vào địa ngục...',
+  '친애하는 게이머를 위하여':'Dành Cho Những Game Thủ Thân Yêu',
   '건너뛰기':'BỎ QUA','광과민성 발작 경고':'CẢNH BÁO: ĐỘNG KINH NHẠY SÁNG',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Trò chơi này chứa bạo lực mạnh và hình ảnh gây sốc.<br>Dành cho người từ 18 tuổi trở lên. Có thể gây động kinh nhạy sáng.<br>Khuyến cáo thận trọng.',
   '아무 키나 눌러 계속':'Nhấn phím bất kỳ để tiếp tục',
@@ -980,6 +1027,7 @@ const _LOBBY_TH={
   '서버 연결 실패: ':'เชื่อมต่อเซิร์ฟเวอร์ล้มเหลว: ','데이터를 불러오는 중...':'กำลังโหลดข้อมูล...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — คุณแน่ใจว่าต้องการลบตัวละครนี้?',
   '새 캐릭터':'ตัวละครใหม่','지옥으로 입장하는 중...':'กำลังเข้าสู่นรก...',
+  '친애하는 게이머를 위하여':'สำหรับเกมเมอร์ที่รัก',
   '건너뛰기':'ข้าม','광과민성 발작 경고':'คำเตือน: อาการชักจากแสงกระพริบ',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'เกมนี้มีเนื้อหาความรุนแรงและภาพที่น่าตกใจ<br>สำหรับผู้ที่มีอายุ 18 ปีขึ้นไป อาจทำให้เกิดอาการชักจากแสงกระพริบ<br>โปรดใช้วิจารณญาณ',
   '아무 키나 눌러 계속':'กดปุ่มใดก็ได้เพื่อดำเนินการต่อ',
@@ -1001,6 +1049,7 @@ const _LOBBY_ID={
   '서버 연결 실패: ':'Gagal terhubung ke server: ','데이터를 불러오는 중...':'Memuat data...',
   ' 캐릭터를 정말 삭제하시겠습니까?':' — Yakin ingin menghapus karakter ini?',
   '새 캐릭터':'Karakter baru','지옥으로 입장하는 중...':'Memasuki neraka...',
+  '친애하는 게이머를 위하여':'Untuk Para Gamer Tercinta',
   '건너뛰기':'LEWATI','광과민성 발작 경고':'PERINGATAN: KEJANG FOTOSENSITIF',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Game ini mengandung kekerasan intens dan gambar yang mengganggu.<br>Untuk usia 18+. Dapat memicu kejang fotosensitif.<br>Disarankan untuk berhati-hati.',
   '아무 키나 눌러 계속':'Tekan tombol apa saja untuk melanjutkan',
@@ -1022,6 +1071,7 @@ const _LOBBY_ZHT={
   '서버 연결 실패: ':'伺服器連線失敗：','데이터를 불러오는 중...':'載入資料中...',
   ' 캐릭터를 정말 삭제하시겠습니까?':'  — 確定要刪除該角色嗎？',
   '새 캐릭터':'新角色','지옥으로 입장하는 중...':'正在進入地獄...',
+  '친애하는 게이머를 위하여':'致親愛的玩家們',
   '건너뛰기':'跳過','광과민성 발작 경고':'光敏性癲癇警告',
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'本遊戲包含強烈暴力和令人不安的畫面。<br>僅限18歲以上。可能引發光敏性癲癇發作。<br>請謹慎遊玩。',
   '아무 키나 눌러 계속':'按任意鍵繼續',
@@ -1911,7 +1961,7 @@ function showCharGate(charId){
   resizeCanvas();window.addEventListener('resize',resizeCanvas);
 
   // ── 상태 ──
-  let phase=1; // 0=경고문(제거), 1=FDG, 2=타이틀(제거)
+  let phase=1; // 0=경고문(제거), 1=FDG, 2=타이틀
   let t0=0,rafId=null,done=false;
 
   // ── SCREEN 1: 경고문 (HTML 기반, 4초) ──
@@ -1925,83 +1975,27 @@ function showCharGate(charId){
 
   // ── SCREEN 3: 타이틀 (캔버스, 4초 자동, 즉시 스킵) ──
 
-  // ── SCREEN 2: FDG → FOR DEAR GAMERS (캔버스 애니메이션, 5.5초) ──
+  // ── SCREEN 2: FDG → 늑대 엠블럼 + FOR DEAR GAMERS (HTML/CSS, 5.5초) ──
   const FDG_DUR=5500;
-  const FDG_P1=1000,FDG_P2=2500,FDG_P3=3000,FDG_P5=5000;
-  function playSplashFDGChime(){/* 사운드 자산 준비 시 채움 */}
-  function _easeOutQuart(t){return 1-Math.pow(1-t,4)}
-  function renderFDG(elapsed){
-    const w=cv.offsetWidth,h=cv.offsetHeight;
-    cx.clearRect(0,0,w,h);
-    cx.fillStyle='#000';cx.fillRect(0,0,w,h);
-    const midX=w/2,midY=h*0.45;
-    const ms=elapsed; // ms 단위
-    const s=ms/1000;
-
-    // Phase 1 페이드인 (0~0.5초) + Phase 5 페이드아웃 (5~5.5초)
-    const fadeIn=ms<500?ms/500:1;
-    const fadeOut=ms>FDG_P5?Math.max(0,1-(ms-FDG_P5)/500):1;
-    const masterAlpha=fadeIn*fadeOut;
-
-    cx.save();
-    cx.globalAlpha=masterAlpha;
-    cx.font="400 96px 'Cinzel Decorative','Cinzel',Georgia,serif";
-    cx.fillStyle='#E8E0D0';
-    cx.textAlign='left';cx.textBaseline='middle';
-
-    // Phase 2 분리 진행도 (1~2.5초)
-    const splitT=ms<FDG_P1?0:ms<FDG_P2?_easeOutQuart((ms-FDG_P1)/(FDG_P2-FDG_P1)):1;
-
-    // 최종 문자열 "FOR DEAR GAMERS" 각 단어 폭 측정
-    const mFOR=cx.measureText('FOR').width,mDEAR=cx.measureText('DEAR').width,mGAMERS=cx.measureText('GAMERS').width;
-    const mF=cx.measureText('F').width,mD=cx.measureText('D').width,mG=cx.measureText('G').width;
-    const wordGap=cx.measureText(' ').width*1.5; // 단어 간 공백
-    const initGap=96*0.05; // Phase 1 초기 자간
-
-    // Phase 1: FDG 모여있는 기본 위치 (정중앙)
-    const initTotalW=mF+mD+mG+initGap*2;
-    const baseFx=midX-initTotalW/2;
-    const baseDx=baseFx+mF+initGap;
-    const baseGx=baseDx+mD+initGap;
-
-    // Phase 2: 분리 후 최종 위치 ("FOR DEAR GAMERS" 정중앙 배치)
-    const finalTotalW=mFOR+wordGap+mDEAR+wordGap+mGAMERS;
-    const endFx=midX-finalTotalW/2; // F 시작
-    const endDx=endFx+mFOR+wordGap; // D 시작 (FOR + gap 뒤)
-    const endGx=endDx+mDEAR+wordGap; // G 시작 (DEAR + gap 뒤)
-
-    // 보간: 초기 → 최종
-    const finalF=baseFx+(endFx-baseFx)*splitT;
-    const finalD=baseDx+(endDx-baseDx)*splitT;
-    const finalG=baseGx+(endGx-baseGx)*splitT;
-
-    // F, D, G 그리기
-    cx.fillText('F',finalF,midY);
-    cx.fillText('D',finalD,midY);
-    cx.fillText('G',finalG,midY);
-
-    // Phase 2: 채움 글자 페이드인 (1~2.5초)
-    if(ms>=FDG_P1&&ms<FDG_P1+17){console.log('[SPLASH] FDG phase 2 (split) started')}
-    if(ms>=FDG_P1){
-      const fillAlpha=splitT;
-      cx.globalAlpha=masterAlpha*fillAlpha;
-      cx.fillText('OR',finalF+mF,midY); // F 뒤에 OR
-      cx.fillText('EAR',finalD+mD,midY); // D 뒤에 EAR
-      cx.fillText('AMERS',finalG+mG,midY); // G 뒤에 AMERS
-    }
-
-    // Phase 3: 한국어 부제 (2.5~3초)
-    if(ms>=FDG_P2&&ms<FDG_P2+17){console.log('[SPLASH] FDG phase 3 (korean) started')}
-    if(ms>=FDG_P2){
-      const korT=Math.min(1,(ms-FDG_P2)/500);
-      cx.globalAlpha=masterAlpha*korT;
-      cx.font="300 32px 'Noto Sans KR',sans-serif";
-      cx.fillStyle='#B8B0A0';
-      cx.textAlign='center';
-      cx.fillText('친 애 하 는  게 이 머 를  위 하 여',midX,h*0.58);
-    }
-
-    cx.restore();
+  const fdgEl=document.getElementById('fdgScreen');
+  const fdgSub=document.getElementById('fdgSubtitle');
+  function showFDGScreen(){
+    fdgSub.textContent=_TL('친애하는 게이머를 위하여');
+    fdgEl.style.display='';
+    console.log('[SPLASH] FDG screen with wolf emblem loaded');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{fdgEl.classList.add('active')}));
+    fdgTimerId=setTimeout(()=>{
+      if(done||phase!==1)return;
+      fdgEl.classList.add('fadeout');
+      console.log('[SPLASH] FDG screen completed');
+      setTimeout(()=>{if(!done&&phase===1)nextPhase()},500);
+    },5000);
+  }
+  let fdgTimerId=null;
+  function hideFDGScreen(){
+    clearTimeout(fdgTimerId);
+    fdgEl.classList.remove('active');
+    fdgEl.style.display='none';
   }
 
   // ── 시퀀스 제어 ──
@@ -2020,18 +2014,9 @@ function showCharGate(charId){
       t0=performance.now();
       console.log('[SPLASH] WARNING screen shown');
     } else if(phase===1){
-      // FDG (캔버스)
-      t0=performance.now();
-      console.log('[SPLASH] FDG screen shown');
-      playSplashFDGChime();
-      function fdgLoop(){
-        if(done||phase!==1)return;
-        const el=performance.now()-t0;
-        renderFDG(el);
-        if(el>=FDG_DUR){nextPhase();return}
-        rafId=requestAnimationFrame(fdgLoop);
-      }
-      fdgLoop();return; // 타이머 안 씀
+      // FDG (HTML 늑대 엠블럼)
+      showFDGScreen();
+      return;
     } else if(phase===2){
       // 타이틀 (캔버스, 4초 자동 진행, 즉시 스킵 가능)
       t0=performance.now();
@@ -2062,6 +2047,7 @@ function showCharGate(charId){
 
   function nextPhase(){
     clearInterval(blinkId);cancelAnimationFrame(rafId);
+    hideFDGScreen();
     content.style.opacity='0';
     cx.clearRect(0,0,cv.offsetWidth,cv.offsetHeight);
     cx.fillStyle='#000';cx.fillRect(0,0,cv.offsetWidth,cv.offsetHeight);
@@ -2074,6 +2060,7 @@ function showCharGate(charId){
 
   function endSplash(){
     done=true;clearInterval(blinkId);cancelAnimationFrame(rafId);
+    hideFDGScreen();
     overlay.style.opacity='0';
     setTimeout(()=>{overlay.style.display='none'},500);
     console.log('[SPLASH] sequence ended');
@@ -2081,13 +2068,15 @@ function showCharGate(charId){
 
   function skip(){
     if(done)return;
-    console.log('[SPLASH] screen '+(phase+1)+' skipped');
+    if(phase===1)console.log('[SPLASH] FDG screen skipped');
+    else console.log('[SPLASH] screen '+(phase+1)+' skipped');
     nextPhase();
   }
 
   overlay.addEventListener('click',skip);
+  fdgEl.addEventListener('click',skip);
   document.addEventListener('keydown',function(e){
-    if(done||overlay.style.display==='none')return;
+    if(done||(overlay.style.display==='none'&&fdgEl.style.display==='none'))return;
     e.preventDefault();skip();
   });
 
