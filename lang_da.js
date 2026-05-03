@@ -1114,6 +1114,26 @@ const _DA={
 '난이도를 선택하라':'Vælg sværhedsgrad',
 '☠ 부활력 고갈!':'☠ Genoplivning Opbrugt!',
 '⏳⚡ 시간걸음!':'⏳⚡ Tidsskridt!',
+
+'블룸 효과':'Bloom-effekt',
+'잔상 트레일':'Efterbilledspor',
+'슬래시 이펙트':'Slash-effekt',
+'후처리 효과':'Efterbehandling',
+'사망 이펙트':'Dødseffekt',
+'동적 조명':'Dynamisk belysning',
+'횃불 조명 (어둠)':'Fakkelbelysning (mørke)',
+'앰비언트 파티클':'Miljøpartikler',
+'안개 효과':'Tågeeffekt',
+'필름 그레인':'Filmkorn',
+'캐릭터 외곽선':'Karakteromrids',
+'리롤':'Kast igen',
+'물약':'Eliksir',
+'으로 탈출!':'for at flygte!',
+'Shift 작살':'Shift Harpun',
+'더블탭 전격이동':'Dobbelttryk — Lynnedstyr',
+'Ctrl 유령걸음':'Ctrl Spøgelsegang',
+'Ctrl 얼음보주':'Ctrl Iskugle',
+'🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭':'🔴Ild→Is 2× | 🔵Is→Ild 2× | ⚪Fys=Neutral | Dræb dæmoner for ondskabssjæle',
 };
 
 _DA_PFX={

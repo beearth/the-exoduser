@@ -5438,6 +5438,16 @@ const _EN={
 '정말 모든 진행을 초기화하시겠습니까?':'Really reset all progress?',
 '검출 중...':'Detecting...',
 '마우스 커서':'Mouse Cursor','그래픽 품질':'Graphics Quality','하드웨어 진단':'Hardware Diagnostics',
+'🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭':'🔴Fire→Ice 2x | 🔵Ice→Fire 2x | ⚪Phys=Neutral | Kill demons for malice souls',
+'블룸 효과':'Bloom Effect','잔상 트레일':'Afterimage Trail','슬래시 이펙트':'Slash Effect',
+'후처리 효과':'Post-Process Effect','사망 이펙트':'Death Effect','동적 조명':'Dynamic Lighting',
+'횃불 조명 (어둠)':'Torch Lighting (Dark)','앰비언트 파티클':'Ambient Particles','안개 효과':'Fog Effect',
+'필름 그레인':'Film Grain','캐릭터 외곽선':'Character Outline',
+'리롤':'Reroll','물약':'Potion',
+'기절!':'Stunned!','으로 탈출!':'to escape!','Shift 작살':'Shift Harpoon',
+'더블탭 전격이동':'Double-tap Dash','Ctrl 유령걸음':'Ctrl Ghost Walk','Ctrl 얼음보주':'Ctrl Ice Orb',
+'Ctrl 유령걸음으로 탈출하라.':'Ctrl — escape with Ghost Walk.','더블탭 전격이동으로 탈출하라.':'Double-tap dash to escape.',
+'Ctrl 얼음보주로 탈출하라.':'Ctrl — escape with Ice Orb.','스킬 없으면 방향키 연타뿐이야.':'No escape skill — just mash the directional keys.',
 'BGM 선택':'BGM Select',
 '자동 (스테이지별)':'Auto (per stage)','전체 랜덤':'All Random','로비':'Lobby',
 '1장 랜덤':'CH1 Random','2장 랜덤':'CH2 Random','3장 랜덤':'CH3 Random',
@@ -6110,7 +6120,7 @@ function _checkPetDialogue(){
     if(P.skills.bladeDash>0)_esc.push('더블탭 전격이동');
     if(P.skills.ghostWalk>0)_esc.push('Ctrl 유령걸음');
     else if(P.skills.iceOrb>0)_esc.push('Ctrl 얼음보주');
-    _petSayUrgent('stun_warn','cat','기절! '+_esc.join(' / ')+' 으로 탈출!',4,8,'crow',P.skills.bladeDash>0?'더블탭 전격이동으로 탈출하라.':P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출하라.':P.skills.iceOrb>0?'Ctrl 얼음보주로 탈출하라.':'스킬 없으면 방향키 연타뿐이야.',3);
+    _petSayUrgent('stun_warn','cat',_T('기절!')+' '+_esc.map(e=>_T(e)).join(' / ')+' '+_T('으로 탈출!'),4,8,'crow',P.skills.bladeDash>0?'더블탭 전격이동으로 탈출하라.':P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출하라.':P.skills.iceOrb>0?'Ctrl 얼음보주로 탈출하라.':'스킬 없으면 방향키 연타뿐이야.',3);
   }
   // MP 위기 (v4 — INT빌드)
   if(P.mp<P.mmp*.2&&(P.aint||0)>Math.max(P.astr||0,P.adex||0))_petSayUrgent('mp_warn','crow','마력이 빈다. 평타 섞어.',3,60,'cat','MP 부족! 평타로 패면서 회복해!',3);
@@ -36368,7 +36378,7 @@ function renderForge(){
   _ensureForgeAtlasLoad();
   BGM.play('forge');
 $('forgeMats').textContent=`${_T('악의')}: ${G.mats}`;
-$('forgeLore').textContent=OPT.lang!=='ko'?'🔴Fire→Ice 2x | 🔵Ice→Fire 2x | ⚪Phys=Neutral | Kill demons for malice souls':'🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭';
+$('forgeLore').textContent=_T('🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭');
   const tabs=$('fgTabs');tabs.innerHTML='';
   tabs.classList.add('atlas-v1-ready','atlas-v2-ready');
   const _fgTabMeta={
@@ -36400,7 +36410,7 @@ $('forgeLore').textContent=OPT.lang!=='ko'?'🔴Fire→Ice 2x | 🔵Ice→Fire 2
   ['upgrade','potion','salvage','reroll','crystal','craft','weapon','bow','armor','shield','helmet','pants','gloves','boots','belt','necklace','ring','cape','bracelet','headband'].forEach((k)=>{
     if(_EQUIPMENT_TABS.has(k))return;
     const _m=_fgTabMeta[k];
-    const _txt=OPT.lang!=='ko'?_m.en:_m.ko;
+    const _txt=_T(_m.ko);
     const d=document.createElement('div');
     d.className='fg-tab'+(G.forgeTab===k?' act':'');
     const _hasV4=['upgrade','potion','salvage','reroll','crystal','craft'].indexOf(k)>=0;
@@ -37470,13 +37480,31 @@ function draw(){
     const _pI=_portalImgs[SI_TO_HELL[G.stage]||0];const _portalOk=_pI&&_pI.complete&&_pI.naturalWidth>0;
     if(!(_portalOk&&G.bossAlive&&!G._bossArena)){X.fillStyle=stg.f;X.fillRect(px,py,T,T)}
     if(G.bossAlive&&!G._bossArena){
+      // ── 입구 전용 애니메이션: 붉은/주황 불꽃 펄스 ──
+      const _ep=Math.sin(_now/400+ei*1.2)*.5+.5; // 0~1 펄스
+      const _ep2=Math.sin(_now/200+ei*0.7)*.3+.7;
+      X.fillStyle='rgba(60,15,5,.85)';X.fillRect(px,py,T,T);
+      // 용암 균열 라인
+      X.strokeStyle='rgba(255,'+(~~(120+80*_ep))+',0,'+(0.4+0.3*_ep)+')';X.lineWidth=2;
+      X.beginPath();X.moveTo(px+2,py+T/2+Math.sin(_now/300+ei)*3);X.lineTo(px+T-2,py+T/2-Math.sin(_now/250+ei)*3);X.stroke();
+      // 가장자리 불꽃 글로우
+      const _grd=X.createRadialGradient(px+T/2,py+T/2,0,px+T/2,py+T/2,T*.7);
+      _grd.addColorStop(0,'rgba(255,80,20,'+(0.15+0.1*_ep)+')');
+      _grd.addColorStop(.6,'rgba(200,40,10,'+(0.08+0.06*_ep)+')');
+      _grd.addColorStop(1,'rgba(0,0,0,0)');
+      X.fillStyle=_grd;X.fillRect(px-4,py-4,T+8,T+8);
+      // 불씨 파티클 (간헐적)
+      if(Math.sin(_now/150+ei*3)>.6){
+        X.fillStyle='rgba(255,'+(~~(180*_ep2))+',30,'+(0.5+0.3*_ep)+')';
+        X.beginPath();X.arc(px+T*(.2+.6*_ep),py+T*(.3+.4*_ep2),1.5+_ep,0,Math.PI*2);X.fill();
+      }
       // 보스방 진입 텍스트 (가운데 타일만)
       if(ei===~~(G.exits.length/2)){
         const _dg=dst(P.x,P.y,(ex.x+.5)*T,(ex.y+.5)*T);
         if(_dg<T*5){
           X.globalAlpha=Math.min(.9,(1-_dg/(T*5))*.7+Math.sin(_now/300)*.15);
           X.font='bold 11px "Noto Sans KR"';X.textAlign='center';X.textBaseline='bottom';
-          X.fillStyle='#ddaa55';
+          X.fillStyle='#ff8844';
           X.fillText('▼ '+_T('보스방')+' ▼',px+T/2,py-4);X.globalAlpha=1;
         }
       }

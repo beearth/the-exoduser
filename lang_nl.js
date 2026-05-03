@@ -1111,6 +1111,26 @@ const _NL={
 '난이도를 선택하라':'Kies moeilijkheidsgraad',
 '☠ 부활력 고갈!':'☠ Heropleving Uitgeput!',
 '⏳⚡ 시간걸음!':'⏳⚡ Tijdstap!',
+
+'블룸 효과':'Bloom-effect',
+'잔상 트레일':'Nabeeldspoor',
+'슬래시 이펙트':'Slash-effect',
+'후처리 효과':'Nabewerking',
+'사망 이펙트':'Doodseffect',
+'동적 조명':'Dynamische verlichting',
+'횃불 조명 (어둠)':'Fakkelverlichting (donker)',
+'앰비언트 파티클':'Omgevingsdeeltjes',
+'안개 효과':'Misteffect',
+'필름 그레인':'Filmkorrel',
+'캐릭터 외곽선':'Karakteromtrek',
+'리롤':'Opnieuw gooien',
+'물약':'Drankje',
+'으로 탈출!':'om te ontsnappen!',
+'Shift 작살':'Shift Harpoen',
+'더블탭 전격이동':'Dubbeltik — Bliksemdash',
+'Ctrl 유령걸음':'Ctrl Geestenstap',
+'Ctrl 얼음보주':'Ctrl Ijsbol',
+'🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭':'🔴Vuur→Ijs 2× | 🔵Ijs→Vuur 2× | ⚪Fys=Neutraal | Dood demonen voor kwaadaardige zielen',
 };
 
 _NL_PFX={

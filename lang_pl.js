@@ -1060,6 +1060,26 @@ const _PL={
 '── 공통 ──':'── Common ──',
 '☠ 부활력 고갈!':'☠ Wskrzeszenie Wyczerpane!',
 '⏳⚡ 시간걸음!':'⏳⚡ Krok Czasu!',
+
+'블룸 효과':'Efekt Bloom',
+'잔상 트레일':'Ślad powidoku',
+'슬래시 이펙트':'Efekt cięcia',
+'후처리 효과':'Post-processing',
+'사망 이펙트':'Efekt śmierci',
+'동적 조명':'Dynamiczne oświetlenie',
+'횃불 조명 (어둠)':'Światło pochodni (ciemność)',
+'앰비언트 파티클':'Cząstki otoczenia',
+'안개 효과':'Efekt mgły',
+'필름 그레인':'Ziarno filmowe',
+'캐릭터 외곽선':'Kontur postaci',
+'리롤':'Przerzut',
+'물약':'Mikstura',
+'으로 탈출!':'żeby uciec!',
+'Shift 작살':'Shift Harpun',
+'더블탭 전격이동':'Podwójne dotknięcie — Błyskawiczny skok',
+'Ctrl 유령걸음':'Ctrl Krok ducha',
+'Ctrl 얼음보주':'Ctrl Kula lodu',
+'🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭':'🔴Ogień→Lód 2× | 🔵Lód→Ogień 2× | ⚪Fiz=Neutralny | Zabijaj demony za dusze złości',
 };
 
 _PL_PFX={

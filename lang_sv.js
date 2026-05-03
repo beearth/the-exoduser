@@ -1111,6 +1111,26 @@ const _SV={
 '난이도를 선택하라':'Välj svårighetsgrad',
 '☠ 부활력 고갈!':'☠ Återupplivning Slut!',
 '⏳⚡ 시간걸음!':'⏳⚡ Tidssteg!',
+
+'블룸 효과':'Bloom-effekt',
+'잔상 트레일':'Eftersläpningsspår',
+'슬래시 이펙트':'Slash-effekt',
+'후처리 효과':'Efterbehandling',
+'사망 이펙트':'Dödseffekt',
+'동적 조명':'Dynamisk belysning',
+'횃불 조명 (어둠)':'Fackelljus (mörker)',
+'앰비언트 파티클':'Miljöpartiklar',
+'안개 효과':'Dimmaeffekt',
+'필름 그레인':'Filmkorn',
+'캐릭터 외곽선':'Karaktärskontур',
+'리롤':'Kasta om',
+'물약':'Trolldryck',
+'으로 탈출!':'för att fly!',
+'Shift 작살':'Shift Harpun',
+'더블탭 전격이동':'Dubbeltryck — Blixtdash',
+'Ctrl 유령걸음':'Ctrl Spöksteg',
+'Ctrl 얼음보주':'Ctrl Isklot',
+'🔴화염→빙결 2배 | 🔵빙결→화염 2배 | ⚪물리=중립 | 악마 처치 시 악의 영혼 드롭':'🔴Eld→Is 2× | 🔵Is→Eld 2× | ⚪Fys=Neutral | Döda demoner för illviljesjälar',
 };
 
 _SV_PFX={
