@@ -1476,7 +1476,15 @@ const _TR={
 '한 대만 맞아도 죽어! 패링이든 회피든!!':'Bir vuruş = ölüm! Parry ya da dodge!!',
 '한 방이면 죽어! 도망쳐!!':'Tek atış öldürür! Kaç!!',
 '화염엔 빙결! 암전엔 암흑!':'Ateş → buz! Boşluk → gölge!',
+'👻 유령!':'👻 Hayalet!',
+'🦴 해골무덤!':'🦴 Kemik Mezarı!',
+'── 2장 - 벌레굴 ──':'── CH2 - Worm Nest ──',
+'── 4장 - 화염지대 ──':'── CH4 - Infernal Wastes ──',
+'── 6장 - 사도마굴 ──':'── CH6 - Apostle Den ──',
+'── 공통 ──':'── Common ──',
+'☠ 부활력 고갈!':'☠ Diriliş Tükendi!',
 };
+
 
 const _TR_PFX={'녹슨':'Paslı','강철':'Çelik','흑요석':'Obsidyen','미스릴':'Mithril','심판의':'Yargının','천벌의':'İlahi Gazabın','파멸의':'Yıkımın','불꽃':'Alev','화염':'Cehennem Ateşi','염화':'Cehennem Ateşi','지옥불':'Cehennem Alevi','지옥화':'Cehennem Alevi','지옥':'Cehennem Alevi','멸화의':'İmha Eden','냉기':'Ayaz','빙결':'Donmuş','빙하':'Buzul','서리의':'Kırağının','서리':'Kırağının','영겁빙':'Ebedi Buz','그림자':'Gölge','암흑':'Karanlık','심연':'Uçurum','나락의':'Cehennemin','나락':'Cehennemin','무간의':'Boşluğun','전기':'Kıvılcım','낙뢰':'Yıldırım','암전':'Şimşek','뇌신의':'Fırtına Tanrısının','뇌신':'Fırtına Tanrısının','만뢰의':'Bin Yıldırımın','축복':'Mübarek','성광':'Kutsal Işık','신성':'Kutsal','천사의':'Melek','신벌의':'İlahi Yargının','낡은':'Eski','천':'Kumaş','가죽':'Deri','강철사':'Çelik Örgü','은':'Gümüş','은사':'Gümüş İplik','화염의':'Cehennem Ateşi','빙결의':'Donmuş','암흑의':'Karanlık','암전의':'Şimşek'};
 const _TR_BASE={'대검':'Büyük Kılıç','석궁':'Tatar Yayı','연사석궁':'Tekrarlı Yay','마력석궁':'Büyülü Tatar Yayı','견갑':'Kalkan','대견갑':'Büyük Kalkan','전투화':'Savaş Botu','갑옷':'Zırh','갑주':'Ağır Zırh','왕관':'Taç','장갑':'Eldiven','건틀릿':'Zırhlı Eldiven','바지':'Pantolon','각반':'Dizlik','허리띠':'Kemer','벨트':'Kemer','부적':'Tılsım','목걸이':'Kolye','반지':'Yüzük','망토':'Pelerin','팔찌':'Bilezik','귀걸이':'Küpe'};

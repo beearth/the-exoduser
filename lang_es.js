@@ -1108,7 +1108,12 @@ const _ES={
 '한 대만 맞아도 죽어! 패링이든 회피든!!':'¡Un golpe y mueres! ¡Para o esquiva!!',
 '한 방이면 죽어! 도망쳐!!':'¡Un golpe mata! ¡Corre!!',
 '화염엔 빙결! 암전엔 암흑!':'¡Fuego → escarcha! ¡Vacío → sombra!',
+'👻 유령총!':'👻 Pistola Fantasma!',
+'💥 폭발 허수아비!':'💥 Espantapájaros Explosivo!',
+' 뎀':' DMG',
+'기절! ':'¡Aturdido! ',
 };
+
 const _ES_PFX={'녹슨':'Oxidada','강철':'Acero','흑요석':'Obsidiana','미스릴':'Mithril','심판의':'Juicio','천벌의':'Castigo Divino','파멸의':'Destrucción',
 '불꽃':'Llama','화염':'Inferno','염화':'Fuego Infernal','지옥불':'Llama Infernal','지옥화':'Llama Infernal','지옥':'Llama Infernal','멸화의':'Aniquilador',
 '냉기':'Escarcha','빙결':'Hielo','빙하':'Glacial','서리의':'Escarcha','서리':'Escarcha','영겁빙':'Hielo Eterno',

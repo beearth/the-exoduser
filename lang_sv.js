@@ -1104,6 +1104,12 @@ const _SV={
 '한 대만 맞아도 죽어! 패링이든 회피든!!':'Ett träff = död! Parra eller undvik!!',
 '한 방이면 죽어! 도망쳐!!':'Ett skott dödar! Spring!!',
 '화염엔 빙결! 암전엔 암흑!':'Eld → is! Tomhet → skugga!',
+'── 2장 - 벌레굴 ──':'── CH2 - Worm Nest ──',
+'── 4장 - 화염지대 ──':'── CH4 - Infernal Wastes ──',
+'── 6장 - 사도마굴 ──':'── CH6 - Apostle Den ──',
+'── 공통 ──':'── Common ──',
+'난이도를 선택하라':'Välj svårighetsgrad',
+'☠ 부활력 고갈!':'☠ Återupplivning Slut!',
 };
 
 _SV_PFX={

@@ -1054,6 +1054,11 @@ const _PL={
 '한 대만 맞아도 죽어! 패링이든 회피든!!':'Jeden hit = śmierć! Paruj lub unikaj!!',
 '한 방이면 죽어! 도망쳐!!':'Jeden strzał zabija! Uciekaj!!',
 '화염엔 빙결! 암전엔 암흑!':'Ogień → mróz! Pustka → cień!',
+'── 2장 - 벌레굴 ──':'── CH2 - Worm Nest ──',
+'── 4장 - 화염지대 ──':'── CH4 - Infernal Wastes ──',
+'── 6장 - 사도마굴 ──':'── CH6 - Apostle Den ──',
+'── 공통 ──':'── Common ──',
+'☠ 부활력 고갈!':'☠ Wskrzeszenie Wyczerpane!',
 };
 
 _PL_PFX={

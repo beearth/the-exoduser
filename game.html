@@ -2422,7 +2422,7 @@ canvas{display:block;position:fixed;inset:0}
 
         <div class="set-section" style="margin-top:20px;border-top:1px solid #443322;padding-top:15px">
           <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">마우스 커서</div>
-          <div id="cursorGrid" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center"></div>
+          <div id="cursorGrid" style="display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:#664422 transparent"></div>
           <div class="set-range-row" style="margin-top:10px"><span class="set-name">커서 크기</span><input type="range" id="optCursorSize" min="30" max="100" step="5" style="flex:1;accent-color:#ccaa77"><span id="cursorSizeVal" style="min-width:36px;text-align:right;color:#ccaa77;font-size:.9rem">50%</span></div>
         </div>
 
@@ -30141,6 +30141,7 @@ function checkRooms(){
 function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(!e||!e.alive)return;
   if(e.hp<=0)return; // 2026-04-17 이미 죽은 적 이중 처리 방지 (alive 플래그 지연 케이스)
+  _shBufI++; // ═══ shQuery 버퍼 보호: 내부 shQuery 호출이 호출자의 결과를 오염시키지 않도록 ═══
   _petOnAtk();
   const isDot=opts&&opts.dot;
   // 부활 무적 (캡 180, 피격마다 감소)
@@ -31093,7 +31094,7 @@ function _detonateAssaultFlames(){
     const _totalDmg=fz.dmg*Math.max(1,_ticks);
     const _detR=fz.r*1.2;
     const _detNe=shQuery(fz.x,fz.y,_detR+20);
-    _shBufI++; // shQuery 결과 보호 (hurtE 내부 shQuery 오염 방지)
+    // _shBufI++ 제거됨 — hurtE 진입 시 자동 보호 (2026-05-03)
     for(let _si=0;_si<_detNe.length;_si++){const e=_detNe[_si];if(!e.alive)continue;
       const d=dst(fz.x,fz.y,e.x,e.y);if(d>_detR+e.r)continue;
       const ang=Math.atan2(e.y-fz.y,e.x-fz.x);
@@ -31730,8 +31731,8 @@ const SKILL_LIST=[
   {id:'holyDome',name:'회복의 영역',cat:'tech',act:true,noDmg:true,emoji:'🛡',desc:'현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초',descEn:'Place holy domain at current pos (12s duration). On ground: HP/MP/ST +10/s regen + 2x recovery + 2x CD speed. CD 30s. Per Lv range+20 duration+0.5s',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
   {id:'holyPrison',name:'구속의 영역',cat:'tech',act:true,noDmg:true,emoji:'✟',desc:'범위 내 몬스터 부활력 -15%~30%(Lv1=15%, Lv10=30%). Lv1 범위400, Lv10 범위697. Lv당 범위+33. 쿨 30초. 지속 10초',descEn:'Monsters in range: revive power -15%~30%(Lv1=15%, Lv10=30%). Lv1 range 400, Lv10 range 697. Per Lv range+33. CD 30s. Duration 10s',spCost:10,matCost:80,cd:1800,up:true,upSp:5,upMat:0},
   {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,noDmg:true,emoji:'❄',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 3초 지속. MP 40. Lv당 범위+22 축적+10%',descEn:'Mouse-aim placement. 2 stocks (15s/charge, Lv10→3 stocks). Freeze resist -50% in range, rapid freeze gauge buildup. 3s duration. MP 40. Per Lv range+22 buildup+10%',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
-  {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 회전기폭과 합체→지진폭풍!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Whirlwind Detonate → Earthquake Storm!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:480},
-  {id:'giantSlam2',name:'대왕치기 2',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 악의기둥과 합체→기둥강타!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Dark Pillar → Pillar Slam!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:480},
+  {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 회전기폭과 합체→지진폭풍!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Whirlwind Detonate → Earthquake Storm!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:600},
+  {id:'giantSlam2',name:'대왕치기 2',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 악의기둥과 합체→기둥강타!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Dark Pillar → Pillar Slam!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:600},
   // quakeStride 삭제됨
   {id:'chainAssault',name:'기동불꽃',cat:'move',desc:'사슬기동 중 E → 즉시 착지하며 화염폭발. 범위200~350 INT 스케일 화염 마법데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). MP 소모. Lv당 범위+16 뎀+12%',descEn:'During chain dash E → instant land with fire explosion. Range 200~350 INT scale fire magic DMG+knockback. DMG scales with travel distance (max x4.0). MP cost. Per Lv range+16 DMG+12%',spCost:10,matCost:0,up:true,upSp:5,upMat:0},
   {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 우클릭 → 땅 내려찍기. 범위200~350 데미지x8 그로기x6. 이동거리 비례 최대x6. 일반몹 즉시 기절(5초), 보스 체간 대량 삭감. Lv당 범위+16 데미지+15% 그로기+15%',descEn:'During chain dash RMB → ground slam. Range 200~350 DMG x8 groggy x6. Distance scale max x6. Instant stun mobs (5s), massive boss posture break. Per Lv range+16 DMG+15% groggy+15%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -31780,7 +31781,7 @@ const SKILL_SLOT_DEFS={
           ghostXbowTurret:{name:'공성쇠뇌',nameEn:'Siege Ballista',emoji:'🏹',desc:'선택스킬: 터렛 설치/철거 (Lv500, ST100, 쿨없음)',descEn:'Select skill: Deploy/remove turret (Lv500, ST100, no cd)'},
           }},
   tech:{name:'영역 스킬',nameEn:'Area Skill',key:'tech',skills:['giantSlam','spikeTrap'],
-    info:{giantSlam:{name:'대왕치기',nameEn:'Giant Slam',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨8초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 8s)'},
+    info:{giantSlam:{name:'대왕치기',nameEn:'Giant Slam',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨10초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 10s)'},
           spikeTrap:{name:'가시덫',nameEn:'Spike Trap',emoji:'🌿',desc:'Space: 가시덫 설치 (악의10, 쿨10초)',descEn:'Space: Place spike trap (malice 10, cd 10s)'}}},
   lmb:{name:'좌클 스킬',nameEn:'LMB Skill',key:'lmb',skills:['kiSlash','whirlwind'],
     info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클: 3단 콤보 검기 (ST 10+Lv당2)',descEn:'LMB: 3-hit combo ki blade (ST 10+2/Lv)'},
@@ -32926,7 +32927,7 @@ function activateGiantSlam(srcId){
   _addSkProf(srcId);
   if(G.mats<_malCost(20)){showPH(_T('악의 부족!'),'#ff4444');return}
   useStPct('giantSlam');G.mats-=_malCost(20);
-  const _gslBase=(srcId==='giantSlam2'&&_isFused('pillarSlam'))?420:(srcId==='giantSlam2'&&_isFused('infernoSlam'))?420:Math.max(60,480-(slv-1)*18);
+  const _gslBase=(srcId==='giantSlam2'&&_isFused('pillarSlam'))?420:(srcId==='giantSlam2'&&_isFused('infernoSlam'))?420:Math.max(60,600-(slv-1)*12);
   P._gslCd=~~(_gslBase*(1+_eqAffix('cooldownRed')));
   P._gslDir=P.facing;P._gslLv=slv;
   P.s='gSlamWindup';P.st2=10;
@@ -34007,8 +34008,8 @@ function _renderSkillRow(sk,grid){
           :'합체 Lv.'+slv+' | 창뎀+'+(slv-1)*10+'% 아크뎀+'+(slv-1)*10+'% 지속+'+(slv-1)*0.5+'초';
       }else{
         upLabel=_e
-          ?(sk.id==='chargeBoost'?'3Charge Range\u00d7'+(2+(slv-1)*.05).toFixed(2)+' DMG\u00d7'+(1.5+(slv-1)*.25).toFixed(1)+' Speed+'+(slv-1)*2+' Blast+'+((slv-1)*2.5+12):sk.id==='detonate'?'Ratio '+(15+(slv-1)*5)+'% Range '+(150+(slv-1)*10):sk.id==='magicBlink'?'BlastDMG \u00d7'+(1+(slv-1)*.15).toFixed(2)+' Range '+(130+(slv-1)*10)+' (INT)':(sk.id==='giantSlam'||sk.id==='giantSlam2')?'DMG+'+(slv-1)*10+'% Range'+(500+(slv-1)*15)+' CD'+(8-(slv-1)*0.3).toFixed(1)+'s':sk.id==='fanShot'?'DMG +'+bonusPct+'% Rapid+1':'DMG +'+bonusPct+'%')
-          :(sk.id==='chargeBoost'?'3충전 거리×'+(2+(slv-1)*.05).toFixed(2)+' 뎀×'+(1.5+(slv-1)*.25).toFixed(1)+' 속도+'+(slv-1)*2+' 폭+'+((slv-1)*2.5+12):sk.id==='detonate'?'비율 '+(15+(slv-1)*5)+'% 범위 '+(150+(slv-1)*10):sk.id==='magicBlink'?'폭발뎀 ×'+(1+(slv-1)*.15).toFixed(2)+' 범위 '+(130+(slv-1)*10)+' (INT)':(sk.id==='giantSlam'||sk.id==='giantSlam2')?'뎀+'+(slv-1)*10+'% 범위'+(500+(slv-1)*15)+' 쿨'+(8-(slv-1)*0.3).toFixed(1)+'초':sk.id==='fanShot'?'뎀 +'+bonusPct+'% 연사+1':'뎀 +'+bonusPct+'%');
+          ?(sk.id==='chargeBoost'?'3Charge Range\u00d7'+(2+(slv-1)*.05).toFixed(2)+' DMG\u00d7'+(1.5+(slv-1)*.25).toFixed(1)+' Speed+'+(slv-1)*2+' Blast+'+((slv-1)*2.5+12):sk.id==='detonate'?'Ratio '+(15+(slv-1)*5)+'% Range '+(150+(slv-1)*10):sk.id==='magicBlink'?'BlastDMG \u00d7'+(1+(slv-1)*.15).toFixed(2)+' Range '+(130+(slv-1)*10)+' (INT)':(sk.id==='giantSlam'||sk.id==='giantSlam2')?'DMG+'+(slv-1)*10+'% Range'+(500+(slv-1)*15)+' CD'+(10-(slv-1)*0.2).toFixed(1)+'s':sk.id==='fanShot'?'DMG +'+bonusPct+'% Rapid+1':'DMG +'+bonusPct+'%')
+          :(sk.id==='chargeBoost'?'3충전 거리×'+(2+(slv-1)*.05).toFixed(2)+' 뎀×'+(1.5+(slv-1)*.25).toFixed(1)+' 속도+'+(slv-1)*2+' 폭+'+((slv-1)*2.5+12):sk.id==='detonate'?'비율 '+(15+(slv-1)*5)+'% 범위 '+(150+(slv-1)*10):sk.id==='magicBlink'?'폭발뎀 ×'+(1+(slv-1)*.15).toFixed(2)+' 범위 '+(130+(slv-1)*10)+' (INT)':(sk.id==='giantSlam'||sk.id==='giantSlam2')?'뎀+'+(slv-1)*10+'% 범위'+(500+(slv-1)*15)+' 쿨'+(10-(slv-1)*0.2).toFixed(1)+'초':sk.id==='fanShot'?'뎀 +'+bonusPct+'% 연사+1':'뎀 +'+bonusPct+'%');
       }
       const _isMax=slv>=_skMaxLv;
       const _isLocked=slv>=_skLvLock&&!_isMax;
@@ -34707,11 +34708,16 @@ function renderSettings(){
     _CURSORS.forEach((cur,ci)=>{
       const sel=ci===(OPT.cursor||0);
       const card=document.createElement('div');
-      card.style.cssText='width:72px;height:80px;border-radius:6px;cursor:pointer;text-align:center;border:2px solid '+(sel?'#ffcc00':'#443322')+';background:'+(sel?'rgba(80,60,20,.6)':'rgba(20,20,30,.6)')+';display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .2s';
+      card.style.cssText='width:72px;min-width:72px;height:80px;border-radius:6px;cursor:pointer;text-align:center;border:2px solid '+(sel?'#ffcc00':'#443322')+';background:'+(sel?'rgba(80,60,20,.6)':'rgba(20,20,30,.6)')+';display:flex;flex-direction:column;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0';
       card.onmouseenter=()=>{if(!sel)card.style.borderColor='#886633'};
       card.onmouseleave=()=>{if(!sel)card.style.borderColor='#443322'};
-      // 프리뷰 캔버스
-      if(cur.draw){
+      // 프리뷰 (이미지 우선, 없으면 canvas, 없으면 이모지)
+      if(cur.img){
+        const im=document.createElement('img');im.src=cur.img;
+        im.style.cssText='width:48px;height:48px;object-fit:contain;image-rendering:pixelated';
+        im.onerror=()=>{im.style.display='none';if(cur.draw){const cv=document.createElement('canvas');cv.width=48;cv.height=48;cv.style.cssText='width:48px;height:48px;image-rendering:pixelated';cur.draw(cv.getContext('2d'),48);card.insertBefore(cv,nm)}};
+        card.appendChild(im);
+      }else if(cur.draw){
         const cv=document.createElement('canvas');cv.width=48;cv.height=48;
         cv.style.cssText='width:48px;height:48px;image-rendering:pixelated';
         cur.draw(cv.getContext('2d'),48);card.appendChild(cv);
@@ -35047,7 +35053,7 @@ $('optGrain').onchange=function(){OPT.grain=this.checked;_renderPresetBtns();sav
 if($('optOutline'))$('optOutline').onchange=function(){OPT.outline=this.checked;saveSettings()};
 // ── 커스텀 마우스 커서 ──
 const _CURSORS=[
-  {name:'기본',nameEn:'Default',draw:null,hx:0,hy:0},
+  {name:'기본',nameEn:'Default',draw:null,img:null,hx:0,hy:0},
   {name:'악마손',nameEn:'Demon Hand',draw:function(c,s){
     c.save();
     // 손바닥 (검붉은 피부)
@@ -35306,18 +35312,41 @@ const _CURSORS=[
     c.restore();
   }}
 ];
+// 이미지 커서 경로 (img/cursors/ 폴더에 파일 있으면 canvas 대신 이미지 사용)
+_CURSORS[1].img='img/cursors/cursor_demon_hand.png';
+_CURSORS[2].img='img/cursors/cursor_angel_hand.png';
+_CURSORS[3].img='img/cursors/cursor_hell_sword.png';
+_CURSORS[4].img='img/cursors/cursor_skull_hand.png';
+_CURSORS[5].img='img/cursors/cursor_flame_hand.png';
+_CURSORS[6].img='img/cursors/cursor_crosshair.png';
+// 이미지 프리로드
+_CURSORS.forEach(cur=>{if(cur.img){const _i=new Image();_i.src=cur.img;cur._imgEl=_i}});
 let _cursorCache=[];
 function _buildCursor(idx){
   const sz=OPT.cursorSize||50;
   const key=idx+'_'+sz;
   if(_cursorCache[key])return _cursorCache[key];
   if(idx===0){_cursorCache[key]='default';return 'default'}
+  const cur=_CURSORS[idx];
+  // 이미지 파일 있고 로드 완료면 이미지 사용
+  if(cur._imgEl&&cur._imgEl.complete&&cur._imgEl.naturalWidth>0){
+    const s=cur._imgEl.naturalWidth;const out=Math.max(16,Math.min(128,Math.round(s*sz/100)));
+    const cv2=document.createElement('canvas');cv2.width=out;cv2.height=out;
+    const x2=cv2.getContext('2d');x2.drawImage(cur._imgEl,0,0,out,out);
+    const isCenter=idx===3||idx===6;
+    const hx=isCenter?Math.round(out/2):Math.round(out*13/56);
+    const hy=isCenter?(idx===6?Math.round(out/2):1):0;
+    _cursorCache[key]='url('+cv2.toDataURL()+') '+hx+' '+hy+', auto';
+    return _cursorCache[key];
+  }
+  // 폴백: canvas draw
   const s=56;const cv=document.createElement('canvas');cv.width=s;cv.height=s;
   const x=cv.getContext('2d');
   const isHand=idx!==3&&idx!==6;
-  if(isHand){x.save();x.translate(0,8);_CURSORS[idx].draw(x,s-8);x.restore()}
-  else{_CURSORS[idx].draw(x,s)}
-  // OPT.cursorSize% 로 축소
+  if(cur.draw){
+    if(isHand){x.save();x.translate(0,8);cur.draw(x,s-8);x.restore()}
+    else{cur.draw(x,s)}
+  }
   const out=Math.round(s*sz/100);
   const cv2=document.createElement('canvas');cv2.width=out;cv2.height=out;
   const x2=cv2.getContext('2d');x2.drawImage(cv,0,0,out,out);

@@ -1083,7 +1083,10 @@ const _FR={
 '한 대만 맞아도 죽어! 패링이든 회피든!!':'Un coup et vous mourez ! Parez ou esquivez !!',
 '한 방이면 죽어! 도망쳐!!':'Un coup tue ! Fuyez !!',
 '화염엔 빙결! 암전엔 암흑!':'Feu → givre ! Vide → ombre !',
+'👻 유령총!':'👻 Pistolet Fantôme!',
+'기절! ':'Étourdi! ',
 };
+
 const _FR_PFX={'녹슨':'Rouillé','강철':'Acier','흑요석':'Obsidienne','미스릴':'Mithril','심판의':'du Jugement','천벌의':'du Châtiment Divin','파멸의':'de Destruction',
 '불꽃':'Flamme','화염':'Infernal','염화':'Feu Infernal','지옥불':'Brasier Infernal','지옥화':'Brasier Infernal','지옥':'Brasier Infernal','멸화의':'d\'Annihilation',
 '냉기':'Givre','빙결':'Gelé','빙하':'Glaciaire','서리의':'de Frimas','서리':'Frimas','영겁빙':'Glace Éternelle',

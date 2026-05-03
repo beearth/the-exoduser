@@ -1086,7 +1086,11 @@ const _PTBR={
 '한 대만 맞아도 죽어! 패링이든 회피든!!':'Um golpe e você morre! Apare ou esquive!!',
 '한 방이면 죽어! 도망쳐!!':'Um golpe mata! Corra!!',
 '화염엔 빙결! 암전엔 암흑!':'Fogo → gelo! Vazio → sombra!',
+'👻 유령총!':'👻 Pistola Fantasma!',
+'기절! ':'Atordoado! ',
+'…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'…ACT1 concluído. O verdadeiro começo começa aqui.',
 };
+
 const _PTBR_PFX={'녹슨':'Enferrujado','강철':'Aço','흑요석':'Obsidiana','미스릴':'Mithril','심판의':'do Julgamento','천벌의':'da Ira Divina','파멸의':'da Destruição',
 '불꽃':'Chama','화염':'Inferno','염화':'Fogo Infernal','지옥불':'Chama Infernal','지옥화':'Chama Infernal','지옥':'Chama Infernal','멸화의':'Aniquilante',
 '냉기':'Gélido','빙결':'Congelado','빙하':'Glacial','서리의':'da Geada','서리':'Geada','영겁빙':'Gelo Eterno',

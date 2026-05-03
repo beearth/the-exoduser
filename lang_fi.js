@@ -1475,7 +1475,16 @@ const _FI={
 '한 대만 맞아도 죽어! 패링이든 회피든!!':'Yksi osuma = kuolema! Paree tai väistä!!',
 '한 방이면 죽어! 도망쳐!!':'Yksi laukaus tappaa! Juokse!!',
 '화염엔 빙결! 암전엔 암흑!':'Tuli → pakkanen! Tyhjyys → varjo!',
+'👻 유령!':'👻 Haamu!',
+'🦴 해골무덤!':'🦴 Luuhautu!',
+'── 2장 - 벌레굴 ──':'── CH2 - Worm Nest ──',
+'── 4장 - 화염지대 ──':'── CH4 - Infernal Wastes ──',
+'── 6장 - 사도마굴 ──':'── CH6 - Apostle Den ──',
+'── 공통 ──':'── Common ──',
+'난이도를 선택하라':'Valitse vaikeustaso',
+'☠ 부활력 고갈!':'☠ Herääminen Käytetty!',
 };
+
 
 const _FI_PFX={'녹슨':'Ruosteinen','강철':'Teräksinen','흑요석':'Obsidiaani','미스릴':'Mithriili','심판의':'Tuomion','천벌의':'Jumalan Vihan','파멸의':'Tuhon','불꽃':'Liekin','화염':'Helvetintuli','염화':'Helvetintuli','지옥불':'Helvetinliekki','지옥화':'Helvetinliekki','지옥':'Helvetinliekki','멸화의':'Tuhoava','냉기':'Pakkanen','빙결':'Jäätynyt','빙하':'Jäätikön','서리의':'Huurteen','서리':'Huurteen','영겁빙':'Ikijään','그림자':'Varjon','암흑':'Pimeä','심연':'Syvyyden','나락의':'Tuonelan','나락':'Tuonelan','무간의':'Tyhjyyden','전기':'Kipinän','낙뢰':'Ukkosen','암전':'Salaman','뇌신의':'Ukkosjumalan','뇌신':'Ukkosjumalan','만뢰의':'Tuhansien Salamoiden','축복':'Siunattu','성광':'Pyhä Valo','신성':'Pyhä','천사의':'Enkelien','신벌의':'Jumalan Tuomion','낡은':'Kulunut','천':'Kangas','가죽':'Nahka','강철사':'Teräslanka','은':'Hopea','은사':'Hopealanka','화염의':'Helvetintuli','빙결의':'Jäätynyt','암흑의':'Pimeä','암전의':'Salaman'};
 const _FI_BASE={'대검':'Suuri Miekka','석궁':'Varsijousi','연사석궁':'Sarjajousi','마력석궁':'Taikajousi','견갑':'Kilpi','대견갑':'Iso Kilpi','전투화':'Taistelukengät','갑옷':'Haarniska','갑주':'Panssari','왕관':'Kruunu','장갑':'Käsineet','건틀릿':'Rautakäsineet','바지':'Housut','각반':'Säärystimet','허리띠':'Vyö','벨트':'Vyö','부적':'Talismaani','목걸이':'Kaulakoru','반지':'Sormus','망토':'Viitta','팔찌':'Rannekoru','귀걸이':'Korvakoru'};

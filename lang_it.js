@@ -1480,7 +1480,11 @@ const _IT={
 '한 대만 맞아도 죽어! 패링이든 회피든!!':'Un colpo e muori! Para o schiva!!',
 '한 방이면 죽어! 도망쳐!!':'Un colpo uccide! Scappa!!',
 '화염엔 빙결! 암전엔 암흑!':'Fuoco → gelo! Vuoto → ombra!',
+'👻 유령!':'👻 Fantasma!',
+'🦴 해골무덤!':'🦴 Tomba di Ossa!',
+'☠ 부활력 고갈!':'☠ Resurrezione Esaurita!',
 };
+
 const _IT_PFX={
 '녹슨':'Arrugginito','강철':'Acciaio','흑요석':'Ossidiana','미스릴':'Mithril','심판의':'Giudizio','천벌의':'Ira Divina','파멸의':'Distruzione','불꽃':'Fiamma','화염':'Inferno','염화':'Fuoco Infernale','지옥불':'Fiamma Infernale','지옥화':'Fiamma Infernale','지옥':'Fiamma Infernale','멸화의':'Annientante','냉기':'Gelo','빙결':'Congelato','빙하':'Glaciale','서리의':'Brina','서리':'Brina','영겁빙':'Ghiaccio Eterno','그림자':'Ombra','암흑':'Oscuro','심연':'Abissale','나락의':'Infero','나락':'Infero','무간의':'Vuoto','전기':'Scintilla','낙뢰':'Tuono','암전':'Fulmine','뇌신의':'Dio Tuono','뇌신':'Dio Tuono','만뢰의':'Mille Tuoni','축복':'Benedetto','성광':'Luce Sacra','신성':'Sacro','천사의':'Angelico','신벌의':'Giudizio Divino','낡은':'Logoro','천':'Tela','가죽':'Pelle','강철사':'Trama Acciaio','은':'Argento','은사':'Filo d\'Argento','화염의':'Inferno','빙결의':'Congelato','암흑의':'Oscuro','암전의':'Fulmine'
 };

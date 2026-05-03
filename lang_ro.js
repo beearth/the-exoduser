@@ -1475,7 +1475,16 @@ const _RO={
 '한 대만 맞아도 죽어! 패링이든 회피든!!':'O lovitură = moarte! Parry sau evită!!',
 '한 방이면 죽어! 도망쳐!!':'Un foc omoară! Fugi!!',
 '화염엔 빙결! 암전엔 암흑!':'Foc → gheață! Gol → umbră!',
+'👻 유령!':'👻 Fantomă!',
+'🦴 해골무덤!':'🦴 Mormânt de Oase!',
+'── 2장 - 벌레굴 ──':'── CH2 - Worm Nest ──',
+'── 4장 - 화염지대 ──':'── CH4 - Infernal Wastes ──',
+'── 6장 - 사도마굴 ──':'── CH6 - Apostle Den ──',
+'── 공통 ──':'── Common ──',
+'난이도를 선택하라':'Alege dificultatea',
+'☠ 부활력 고갈!':'☠ Revenire Epuizată!',
 };
+
 
 const _RO_PFX={
 '녹슨':'Ruginit','강철':'Oțel','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Judecată','천벌의':'Mânie Divină','파멸의':'Distrugere','불꽃':'Flacără','화염':'Infern','염화':'Foc Infernal','지옥불':'Flacără Infernală','지옥화':'Flacără Infernală','지옥':'Flacără Infernală','멸화의':'Anihilant','냉기':'Ger','빙결':'Înghețat','빙하':'Glaciar','서리의':'Chiciură','서리':'Chiciură','영겁빙':'Gheață Eternă','그림자':'Umbră','암흑':'Întuneric','심연':'Abisal','나락의':'Submundan','나락':'Submundan','무간의':'Vid','전기':'Scânteie','낙뢰':'Tunet','암전':'Fulger','뇌신의':'Zeul Tunetului','뇌신':'Zeul Tunetului','만뢰의':'O Mie de Tunete','축복':'Binecuvântat','성광':'Lumină Sacră','신성':'Sacru','천사의':'Angelic','신벌의':'Judecată Divină','낡은':'Uzat','천':'Pânză','가죽':'Piele','강철사':'Țesătură Oțel','은':'Argint','은사':'Fir de Argint','화염의':'Infern','빙결의':'Înghețat','암흑의':'Întuneric','암전의':'Fulger'
