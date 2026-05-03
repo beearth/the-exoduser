@@ -5054,7 +5054,7 @@ const _EN={
 '❄☄ 빙결폭발!':'❄☄ Freeze Blast!',
 '☄️ 흡인!':'☄️ Vortex!',
 '☄️ 대폭발!':'☄️ Mega Blast!',
-'❄ 얼음보주!':'❄ Ice Orb!','⏳ 시간왜곡!':'⏳ Time Warp!','쿨다운!':'Cooldown!',
+'❄ 얼음보주!':'❄ Ice Orb!','⏳ 시간왜곡!':'⏳ Time Warp!','⏳⚡ 시간걸음!':'⏳⚡ Time Step!','쿨다운!':'Cooldown!',
 '❄ 파쇄!':'❄ Shatter!',
 '☄️💥 대폭발!':'☄️💥 Mega Blast!',
 '반사!':'Reflect!',
@@ -31833,6 +31833,7 @@ const _FUSE_GEM_GROUPS={
   siegeGhost: {color:'#6688cc',color2:'#aa66dd',tier:'clear',minLv:1,star:3,skills:['ghostXbowTurret','voidScarecrow']}, // 공성쇠뇌(2★) + 유령허수아비(2★ via dual) = 3성 (2+2)
   dualScarecrow:{color:'#aa66dd',color2:'#ff4422',tier:'clear',minLv:1,star:2,skills:['voidScarecrow','explodeScarecrow']}, // 유령허수아비 + 폭발허수아비 = 2성 (1+1)
   thunderGhost:{color:'#44ddff',color2:'#8899bb',tier:'clear',minLv:1,star:2,skills:['bladeDash','thunderStake']}, // 전격이동(모체) + 뇌전창
+  timeStep:{color:'#8888ff',color2:'#44ddff',tier:'clear',minLv:500,star:2,skills:['timeWarp','ghostWalk']}, // 시간왜곡(1성) + 뇌전걸음(1성) = 시간걸음 2성
 };
 // 하위호환: 기존 _FUSE_GEMS 색상맵 자동 생성
 const _FUSE_GEMS={},_FUSE_GEMS2={};
@@ -31959,6 +31960,7 @@ const _FUSE_PAIRS={
   siegeGhost:['ghostXbowTurret','voidScarecrow'],
   dualScarecrow:['voidScarecrow','explodeScarecrow'],
   thunderGhost:['bladeDash','thunderStake'],
+  timeStep:['timeWarp','ghostWalk'],
 };
 function _getFuseKey(skId){for(const[k,v]of Object.entries(_FUSE_PAIRS)){if(v.includes(skId)){if(_isFused(k))continue;if(k==='sixFuse'&&_isFused('elemFuse'))continue;if(k==='elemFuse'&&(_isFused('stormBeam')||_isFused('stormBurst')))continue;if(k==='whirlDet'&&_isFused('slamStorm'))continue;if(k==='slamStorm'&&(_isFused('stormBeam')||_isFused('stormBurst')))continue;if(k==='stormBeam'&&_isFused('stormBurst'))continue;if(k==='dimBreach'&&(_isFused('dimSlam')||_isFused('dimThunder')||_isFused('dimRush')))continue;if(k==='dimSlam'&&(_isFused('dimThunder')||_isFused('dimRush')))continue;if(k==='dimThunder'&&_isFused('dimRush'))continue;if(k==='dimRush'&&_isFused('dimBlast'))continue;if(k==='elecRepent'&&!_isFused('boneStorm'))continue;if(k==='boneStorm'&&_isFused('elecRepent'))continue;if(k==='holyFuse'&&(_isFused('holyIce')||_isFused('holyWeak1')||_isFused('holyWeak2')||_isFused('holyWeak3')||_isFused('holyWeak4')))continue;if(k==='holyIce'&&(_isFused('holyWeak1')||_isFused('holyWeak2')||_isFused('holyWeak3')||_isFused('holyWeak4')))continue;if(k==='holyWeak1'&&(_isFused('holyWeak2')||_isFused('holyWeak3')||_isFused('holyWeak4')))continue;if(k==='holyWeak2'&&(_isFused('holyWeak3')||_isFused('holyWeak4')))continue;if(k==='holyWeak3'&&_isFused('holyWeak4'))continue;return k}}return null}
 function _isFused(key){return!!(P._fused&&P._fused[key])}
@@ -32133,15 +32135,15 @@ function _isAbsorbed(skId){
   }
   return false;
 }
-const _FUSE_NAMES={dimBreach:'기동:기습',dimSlam:'기동:파쇄',dimThunder:'기동:전폭',dimRush:'기동:칼날개',dimBlast:'기동:섬멸',whirlDet:'회전기폭',slamStorm:'지진폭풍',stormBeam:'암전나선',stormBurst:'암전폭류',bladeFuse:'악의 해방',iceMortar:'얼음소용돌이',sixFuse:'만화광선',elemFuse:'추적암전',boneStorm:'해골번개',elecRepent:'참회 귀환',shieldFuse:'날개치기',plagueFuse:'독혈해방',holyFuse:'결계의 영역',holyIce:'물의 영역',holyWeak1:'파쇄의 영역',holyWeak2:'침식의 영역',holyWeak3:'관통의 영역',holyWeak4:'권능의 영역',pillarSpike:'기둥가시',pillarSlam:'기둥강타',infernoSlam:'지옥강타',siegeGhost:'유령총',dualScarecrow:'쌍둥이허수아비',thunderGhost:'전격의창'};
-const _FUSE_NAMES_EN={dimBreach:'Maneuver:Ambush',dimSlam:'Maneuver:Shatter',dimThunder:'Maneuver:Thunder',dimRush:'Maneuver:Bladewing',dimBlast:'Maneuver:Annihilate',whirlDet:'Whirl-Det',slamStorm:'Quake Storm',stormBeam:'Lightning Helix',stormBurst:'Lightning Burst',bladeFuse:'Malice Liberation',iceMortar:'Ice Vortex',sixFuse:'Luminescence',elemFuse:'Tracking Lightning',boneStorm:'Bone Lightning',elecRepent:'Repentance Return',shieldFuse:'Wing Strike',plagueFuse:'Plague Liberation',holyFuse:'Ward Domain',holyIce:'Water Domain',holyWeak1:'Shatter Domain',holyWeak2:'Corrode Domain',holyWeak3:'Pierce Domain',holyWeak4:'Sovereign Domain',pillarSpike:'Pillar Spike',pillarSlam:'Pillar Slam',infernoSlam:'Inferno Slam',siegeGhost:'Ghost Gun',dualScarecrow:'Twin Scarecrow',thunderGhost:'Thunder Spear'};
+const _FUSE_NAMES={dimBreach:'기동:기습',dimSlam:'기동:파쇄',dimThunder:'기동:전폭',dimRush:'기동:칼날개',dimBlast:'기동:섬멸',whirlDet:'회전기폭',slamStorm:'지진폭풍',stormBeam:'암전나선',stormBurst:'암전폭류',bladeFuse:'악의 해방',iceMortar:'얼음소용돌이',sixFuse:'만화광선',elemFuse:'추적암전',boneStorm:'해골번개',elecRepent:'참회 귀환',shieldFuse:'날개치기',plagueFuse:'독혈해방',holyFuse:'결계의 영역',holyIce:'물의 영역',holyWeak1:'파쇄의 영역',holyWeak2:'침식의 영역',holyWeak3:'관통의 영역',holyWeak4:'권능의 영역',pillarSpike:'기둥가시',pillarSlam:'기둥강타',infernoSlam:'지옥강타',siegeGhost:'유령총',dualScarecrow:'쌍둥이허수아비',thunderGhost:'전격의창',timeStep:'시간걸음'};
+const _FUSE_NAMES_EN={dimBreach:'Maneuver:Ambush',dimSlam:'Maneuver:Shatter',dimThunder:'Maneuver:Thunder',dimRush:'Maneuver:Bladewing',dimBlast:'Maneuver:Annihilate',whirlDet:'Whirl-Det',slamStorm:'Quake Storm',stormBeam:'Lightning Helix',stormBurst:'Lightning Burst',bladeFuse:'Malice Liberation',iceMortar:'Ice Vortex',sixFuse:'Luminescence',elemFuse:'Tracking Lightning',boneStorm:'Bone Lightning',elecRepent:'Repentance Return',shieldFuse:'Wing Strike',plagueFuse:'Plague Liberation',holyFuse:'Ward Domain',holyIce:'Water Domain',holyWeak1:'Shatter Domain',holyWeak2:'Corrode Domain',holyWeak3:'Pierce Domain',holyWeak4:'Sovereign Domain',pillarSpike:'Pillar Spike',pillarSlam:'Pillar Slam',infernoSlam:'Inferno Slam',siegeGhost:'Ghost Gun',dualScarecrow:'Twin Scarecrow',thunderGhost:'Thunder Spear',timeStep:'Time Step'};
 function _fuseName(key){return OPT.lang!=='ko'?(_FUSE_NAMES_EN[key]||key):(_FUSE_NAMES[key]||key)}
 // ═══ 리셋 후 활성 스킬 변수 동기화 ═══
 function _syncActiveSkAfterReset(resetIds){
   const s=new Set(resetIds);
   // 합체 호스트 스킬 (흡수 대상이지만 activeXSk로 사용 가능)
   const _fHosts=new Set();
-  {const _fhM={elemFuse:'omniBeam',sixFuse:'omniBeam',stormBeam:'whirlwind',stormBurst:'whirlwind',whirlDet:'whirlwind',slamStorm:'whirlwind',dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',bladeFuse:'maliceHunt',plagueFuse:'maliceHunt',iceMortar:'maliceMortar',boneStorm:'maliceStorm',elecRepent:'maliceStorm',shieldFuse:'maliceSwipe',holyFuse:'holyDome',holyIce:'holyDome',holyWeak1:'holyDome',holyWeak2:'holyDome',holyWeak3:'holyDome',holyWeak4:'holyDome',pillarSpike:'darkPillar',pillarSlam:'giantSlam2',infernoSlam:'giantSlam2',siegeGhost:'ghostXbowTurret',thunderGhost:'bladeDash'};
+  {const _fhM={elemFuse:'omniBeam',sixFuse:'omniBeam',stormBeam:'whirlwind',stormBurst:'whirlwind',whirlDet:'whirlwind',slamStorm:'whirlwind',dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',bladeFuse:'maliceHunt',plagueFuse:'maliceHunt',iceMortar:'maliceMortar',boneStorm:'maliceStorm',elecRepent:'maliceStorm',shieldFuse:'maliceSwipe',holyFuse:'holyDome',holyIce:'holyDome',holyWeak1:'holyDome',holyWeak2:'holyDome',holyWeak3:'holyDome',holyWeak4:'holyDome',pillarSpike:'darkPillar',pillarSlam:'giantSlam2',infernoSlam:'giantSlam2',siegeGhost:'ghostXbowTurret',thunderGhost:'bladeDash',timeStep:'timeWarp'};
   for(const[fk,h]of Object.entries(_fhM)){if(P._fused&&P._fused[fk])_fHosts.add(h)}}
   // 검증: 리셋 대상이 아니거나 합체 호스트이면 유효
   const _skOk=(sk,slotKey)=>{if(!sk)return false;if(s.has(sk)&&!_fHosts.has(sk))return false;if(P.skills[sk]>=1)return true;
@@ -33048,9 +33050,15 @@ function activateTimeWarp(){
   P.iframes=60; // 1초 무적
   G._flashT=8;G._flashCol='#8888ff';G.shake=6;G.slowMo=15;
   SFX.pickup();
-  addTxt(P.x,P.y-30,_T('⏳ 시간왜곡!'),'#8888ff',60);
   addParts(P.x,P.y,'#8888ff',20);addParts(P.x,P.y,'#aaccff',15);
   playVFXAng('teleport_burst',P.x,P.y,4,4,0,true); // 보라색 시간왜곡 버스트 임팩트
+  // ═══ 시간걸음 합체: 시간왜곡 후 뇌전걸음 자동 발동 ═══
+  if(_isFused('timeStep')&&P.skills.ghostWalk>=1&&(P._gwCd||0)<=0){
+    addTxt(P.x,P.y-30,_T('⏳⚡ 시간걸음!'),'#66aaff',60);
+    activateGhostWalk();
+  } else {
+    addTxt(P.x,P.y-30,_T('⏳ 시간왜곡!'),'#8888ff',60);
+  }
 }
 // ═══ 진동보행 삭제됨 ═══
 function activateGhostWalk(){
@@ -33328,7 +33336,7 @@ function openSkSlotPop(tab){
     {key:'magic',label:'E',color:'#8866cc',fused:_isFused('stormBurst')?true:_isFused('stormBeam')?true:_isFused('elemFuse')?true:P.skills.fanShot>=1&&P.skills.omniBeam>=1&&_isFused('sixFuse'),fuseName:_isFused('stormBurst')?'💫 →좌클 통합':_isFused('stormBeam')?'⚡ →좌클 통합':_isFused('elemFuse')?'🎯 추적암전':'☆ 만화광선'},
     {key:'bow',label:'T자동',color:'#cc8844'},
     {key:'q',label:'Q',color:'#55aa77',fused:false,fuseName:''},
-    {key:'ct',label:'CT',color:'#77bbdd',fused:false,fuseName:''}
+    {key:'ct',label:'CT',color:'#77bbdd',fused:_isFused('timeStep'),fuseName:_isFused('timeStep')?'⏳⚡ 시간걸음':''}
   ];
   const tabRow=document.createElement('div');
   tabRow.style.cssText='display:flex;gap:2px;margin-bottom:6px;border-bottom:1px solid rgba(180,170,155,.35);padding-bottom:4px';
