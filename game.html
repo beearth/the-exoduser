@@ -18862,18 +18862,31 @@ function genGauntlet(fi){
   // ── 벽면 울퉁불퉁 (Cellular Automata 2회) ──
   _tCaveSmooth(map,mw,mh,2);
 
-  // ── 넓은 구간에 자연 기둥/바위 배치 ──
+  // ── 넓은 구간에 자연 기둥/바위 배치 (좁은 통로 보호) ──
   for(let y=6;y<mh-6;y+=3)for(let x=6;x<mw-6;x+=3){
     if(map[y][x]!==0)continue;
-    // 주변 3x3 전부 바닥인 넓은 구간만
+    // 주변 4타일 전부 바닥이어야 배치 (좁은 통로 방지)
     let allFloor=true;
-    for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){if(map[y+dy]&&map[y+dy][x+dx]!==0){allFloor=false;break}}
+    for(let dy=-4;dy<=4&&allFloor;dy++)for(let dx=-4;dx<=4;dx++){if(!map[y+dy]||map[y+dy][x+dx]!==0){allFloor=false;break}}
     if(!allFloor)continue;
-    // 5% 확률로 1~2타일 기둥
-    if(Math.random()<.05){
+    // 3% 확률로 1~2타일 기둥
+    if(Math.random()<.03){
       map[y][x]=1;
       if(Math.random()<.5&&x+1<mw-1)map[y][x+1]=1;
       if(Math.random()<.3&&y+1<mh-1)map[y+1][x]=1;
+    }
+  }
+
+  // ── 게이트·통로 보호: caveSmooth/기둥 이후 반경 강제 바닥 확보 (300px≈7타일) ──
+  if(_gateTiles.length>0){
+    for(let gi=0;gi<_gateTiles.length;gi++){
+      const gx=_gateTiles[gi].x,gy=_gateTiles[gi].y;
+      for(let dy=-7;dy<=7;dy++)for(let dx=-7;dx<=7;dx++){
+        const tx=gx+dx,ty=gy+dy;
+        if(tx>=1&&tx<mw-1&&ty>=1&&ty<mh-1&&map[ty][tx]===1){
+          if(dx*dx+dy*dy<=49)map[ty][tx]=0; // 반경 7타일 원형
+        }
+      }
     }
   }
 
