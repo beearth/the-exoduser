@@ -109,6 +109,8 @@ const _ID={
 '악의 사냥':'Buru Kebencian',
 '폭풍소환':'Panggil Pusaran',
 '해골무덤':'Makam Tulang',
+'\u{1F47B} 유령!':'\u{1F47B} Hantu!',
+'\u{1F9B4} 해골무덤!':'\u{1F9B4} Makam Tulang!',
 '신성폭발':'Ledakan Suci',
 '블랙':'Bintang Hitam',
 '용암소환':'Panggil Lava',

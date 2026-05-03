@@ -109,6 +109,8 @@ const _TR={
 '악의 사냥':'Kötülük Avı',
 '폭풍소환':'Girdap Çağırma',
 '해골무덤':'Kemik Mezar',
+'\u{1F47B} 유령!':'\u{1F47B} Hayalet!',
+'\u{1F9B4} 해골무덤!':'\u{1F9B4} Kemik Mezar!',
 '신성폭발':'Kutsal Patlama',
 '블랙':'Kara Yıldız',
 '용암소환':'Lav Çağırma',

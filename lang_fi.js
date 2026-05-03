@@ -109,6 +109,8 @@ const _FI={
 '악의 사냥':'Ilkeyden Metsästys',
 '폭풍소환':'Pyörrekutsuminen',
 '해골무덤':'Luuhauta',
+'\u{1F47B} 유령!':'\u{1F47B} Haamu!',
+'\u{1F9B4} 해골무덤!':'\u{1F9B4} Luuhauta!',
 '신성폭발':'Pyhä Räjähdys',
 '블랙':'Musta Tähti',
 '용암소환':'Laavakutsuminen',

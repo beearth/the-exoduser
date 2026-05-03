@@ -109,6 +109,8 @@ const _VI={
 '악의 사냥':'Săn Ác Ý',
 '폭풍소환':'Triệu Hồi Xoáy',
 '해골무덤':'Mộ Xương',
+'\u{1F47B} 유령!':'\u{1F47B} Ma!',
+'\u{1F9B4} 해골무덤!':'\u{1F9B4} Mộ Xương!',
 '신성폭발':'Nổ Thánh',
 '블랙':'Hắc Tinh',
 '용암소환':'Triệu Hồi Dung Nham',

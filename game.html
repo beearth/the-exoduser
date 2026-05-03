@@ -31706,7 +31706,7 @@ function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<di
 const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'magicBlink',name:'사슬기동:화염',cat:'move',desc:'INT 스케일. 이동 경로에 화염길 생성(3초 DOT). 통과 적 화상. MP 소모. 합체 시 착지 폭발',descEn:'INT scale. Fire trail on dash path (3s DOT). Burns passed enemies. MP cost. Fuse: landing explosion',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'ghostWalk',name:'뇌전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 15초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 15s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
+  {id:'ghostWalk',name:'뇌전걸음',cat:'def',act:true,emoji:'⚡',desc:'5초간 유령화 — 무적+이동. 통과한 적/탄막 수만큼 종료 시 암전 폭발(+10%/회) + 전기줄기 방사(3회 체인). 카운트 캡=Lv×5(최대50). 쿨 20초. Lv당 뎀+15% 범위+10',descEn:'5s ghost form — invincible+move. Blackout explosion on end (+10%/enemy passed) + lightning arc (3 chains). Count cap=Lv×5 (max 50). CD 20s. Per Lv DMG+15% range+10',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'bladeDash',name:'전격이동',cat:'move',desc:'[이동기] 방향키 더블탭으로 발동. 경직/기절 중에도 탈출 가능. 500유닛 순간이동, 무적(15프레임). MP(10+Lv×5). 1렙10충전, 렙당+1. 쿨 8초→Lv당-0.5초(최소3초). 착지 시 전류장판(10초+Lv×0.5초): INT 틱뎀 + 방어력↓(1렙10%, 렙당+5%, 캡50%)',descEn:'[Mobility] Double-tap to activate. Escapes stagger/stun. 500-unit blink, invincible 15f. MP(10+Lv×5). Lv1=10 stocks, +1/Lv. CD 8s→-0.5s/Lv (min 3s). Landing shock field(10s+Lv×0.5s): INT tick DMG + DEF↓(Lv1=10%, +5%/Lv, cap 50%)',spCost:10,matCost:60,up:true,upSp:6,upMat:0},
   {id:'kiSlash',name:'기검참',cat:'phys',desc:'좌클 스킬: 기본공격에 3단 콤보 초승달 검기 추가. ST 10+Lv당2. Lv당 뎀+10% 거리+15px',descEn:'LMB skill: adds 3-hit crescent ki blade combo to basic attack. ST 10+2/Lv. Per Lv DMG+10% range+15px',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
   {id:'fireball',name:'악의구',cat:'bow',desc:'[기본: E] 어둠 마법 오브 발사. 범위폭발. 넉백 0.5%. Lv당 크기+50% (뎀은 _skMul 계수 적용)',descEn:'[Default: E] Dark magic orb fired. AoE explosion. Knockback 0.5%. Per Lv size+50% (DMG uses _skMul)',spCost:10,matCost:0,up:true,upSp:5,upMat:0,default:true},
@@ -33051,7 +33051,7 @@ function activateTimeWarp(){
   // 상태 복원
   P.x=snap.x;P.y=snap.y;P.hp=snap.hp;P.mp=Math.min(P.mp,snap.mp);P.st=snap.st;P.shield=snap.shield;
   // 쿨다운 시작
-  P._twCd=_isFused('timeStep')?900:(P.skills.timeWarp>=1?(SKILL_LIST.find(s=>s.id==='timeWarp').cd||2700):2700); // 시간걸음 합체: 15초(뇌전걸음과 동일)
+  P._twCd=_isFused('timeStep')?1200:(P.skills.timeWarp>=1?(SKILL_LIST.find(s=>s.id==='timeWarp').cd||2700):2700); // 시간걸음 합체: 20초(걸음 시리즈 통일)
   // 버퍼 리셋 (연속 사용 방지)
   _twFilled=0;_twIdx=0;
   // VFX + 피드백
@@ -33074,7 +33074,7 @@ function activateGhostWalk(){
   P._gwActive=true;P._gwT=0;P._gwMax=Math.min(300,120+~~((_gwLv-1)*18));P._gwCount=0;P._gwHitSet=new Set();
   P._gwPath=[{x:P.x,y:P.y}]; // 경로 기록 시작
   P._gwMarkedEns=[]; // 통과한 적 참조 목록
-  P._gwCd=900; // 15초 쿨 (발동 즉시 시작)
+  P._gwCd=1200; // 20초 쿨 (발동 즉시 시작)
   P._gwPrevS=P.s;P.s='ghostWalk';
   P.poise=4; // 탈출기 poise 풀회복
   // 회피 → 그로기 탈출

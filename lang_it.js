@@ -109,6 +109,8 @@ const _IT={
 '악의 사냥':'Caccia Malizia',
 '폭풍소환':'Evocazione Vortice',
 '해골무덤':'Tomba d\'Ossa',
+'\u{1F47B} 유령!':'\u{1F47B} Fantasma!',
+'\u{1F9B4} 해골무덤!':'\u{1F9B4} Tomba d\'Ossa!',
 '신성폭발':'Esplosione Sacra',
 '블랙':'Stella Nera',
 '용암소환':'Evocazione Lava',

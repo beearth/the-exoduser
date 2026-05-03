@@ -109,6 +109,8 @@ const _HU={
 '악의 사냥':'Rosszindulat Vadászat',
 '폭풍소환':'Örvény Idézés',
 '해골무덤':'Csont Sírbolt',
+'\u{1F47B} 유령!':'\u{1F47B} Szellem!',
+'\u{1F9B4} 해골무덤!':'\u{1F9B4} Csont Sírbolt!',
 '신성폭발':'Szent Robbanás',
 '블랙':'Fekete Csillag',
 '용암소환':'Láva Idézés',

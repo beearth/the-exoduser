@@ -109,6 +109,8 @@ const _RO={
 '악의 사냥':'Vânătoare de Malicie',
 '폭풍소환':'Invocare Vortex',
 '해골무덤':'Mormânt de Oase',
+'\u{1F47B} 유령!':'\u{1F47B} Fantomă!',
+'\u{1F9B4} 해골무덤!':'\u{1F9B4} Mormânt de Oase!',
 '신성폭발':'Explozie Sacră',
 '블랙':'Stea Neagră',
 '용암소환':'Invocare Lavă',
