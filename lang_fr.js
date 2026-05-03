@@ -1085,6 +1085,7 @@ const _FR={
 '화염엔 빙결! 암전엔 암흑!':'Feu → givre ! Vide → ombre !',
 '👻 유령총!':'👻 Pistolet Fantôme!',
 '기절! ':'Étourdi! ',
+'⏳⚡ 시간걸음!':'⏳⚡ Pas dans le Temps!',
 };
 
 const _FR_PFX={'녹슨':'Rouillé','강철':'Acier','흑요석':'Obsidienne','미스릴':'Mithril','심판의':'du Jugement','천벌의':'du Châtiment Divin','파멸의':'de Destruction',

@@ -1483,6 +1483,7 @@ const _TR={
 '── 6장 - 사도마굴 ──':'── CH6 - Apostle Den ──',
 '── 공통 ──':'── Common ──',
 '☠ 부활력 고갈!':'☠ Diriliş Tükendi!',
+'⏳⚡ 시간걸음!':'⏳⚡ Zaman Adımı!',
 };
 
 

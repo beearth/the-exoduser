@@ -1483,6 +1483,7 @@ const _HU={
 '── 공통 ──':'── Common ──',
 '난이도를 선택하라':'Válassz nehézséget',
 '☠ 부활력 고갈!':'☠ Feltámadás Kimerült!',
+'⏳⚡ 시간걸음!':'⏳⚡ Időlépés!',
 };
 
 

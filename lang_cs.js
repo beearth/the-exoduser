@@ -1012,6 +1012,7 @@ const _CS={
 '── 공통 ──':'── Common ──',
 '난이도를 선택하라':'Vyberte obtížnost',
 '☠ 부활력 고갈!':'☠ Oživení Vyčerpáno!',
+'⏳⚡ 시간걸음!':'⏳⚡ Časový Krok!',
 };
 
 const _CS_PFX={

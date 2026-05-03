@@ -1089,6 +1089,7 @@ const _PTBR={
 '👻 유령총!':'👻 Pistola Fantasma!',
 '기절! ':'Atordoado! ',
 '…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'…ACT1 concluído. O verdadeiro começo começa aqui.',
+'⏳⚡ 시간걸음!':'⏳⚡ Passo Temporal!',
 };
 
 const _PTBR_PFX={'녹슨':'Enferrujado','강철':'Aço','흑요석':'Obsidiana','미스릴':'Mithril','심판의':'do Julgamento','천벌의':'da Ira Divina','파멸의':'da Destruição',

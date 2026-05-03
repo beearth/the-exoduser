@@ -1069,6 +1069,7 @@ const _DE={
 '슬롯':'Slot',
 '필살기':'Ultimativer Skill',
 '연사 해제':'Schnellfeuer AUS',
+'⏳⚡ 시간걸음!':'⏳⚡ Zeitschritt!',
 };
 
 const _DE_PFX={'녹슨':'Rostig','강철':'Stahl','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Richter-','천벌의':'Göttlicher Zorn','파멸의':'Vernichtung',

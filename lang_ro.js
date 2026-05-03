@@ -1483,6 +1483,7 @@ const _RO={
 '── 공통 ──':'── Common ──',
 '난이도를 선택하라':'Alege dificultatea',
 '☠ 부활력 고갈!':'☠ Revenire Epuizată!',
+'⏳⚡ 시간걸음!':'⏳⚡ Pas în Timp!',
 };
 
 

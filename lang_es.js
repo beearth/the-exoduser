@@ -1112,6 +1112,7 @@ const _ES={
 '💥 폭발 허수아비!':'💥 Espantapájaros Explosivo!',
 ' 뎀':' DMG',
 '기절! ':'¡Aturdido! ',
+'⏳⚡ 시간걸음!':'⏳⚡ Paso Temporal!',
 };
 
 const _ES_PFX={'녹슨':'Oxidada','강철':'Acero','흑요석':'Obsidiana','미스릴':'Mithril','심판의':'Juicio','천벌의':'Castigo Divino','파멸의':'Destrucción',

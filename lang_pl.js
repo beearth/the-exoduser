@@ -1059,6 +1059,7 @@ const _PL={
 '── 6장 - 사도마굴 ──':'── CH6 - Apostle Den ──',
 '── 공통 ──':'── Common ──',
 '☠ 부활력 고갈!':'☠ Wskrzeszenie Wyczerpane!',
+'⏳⚡ 시간걸음!':'⏳⚡ Krok Czasu!',
 };
 
 _PL_PFX={
@@ -1070,6 +1071,15 @@ _PL_PFX={
 '축복':'Błogosławiony','성광':'Świętoluministy','신성':'Sakralny','천사의':'Anielski','신벌의':'Bosko-sądowy',
 '낡은':'Zużyty','천':'Tkaninowy','가죽':'Skórzany','강철사':'Stalowotkaniny','은':'Srebrny','은사':'Srebrnoniciowy','화염의':'Piekielny','빙결의':'Zamrożony','암흑의':'Ciemny','암전의':'Błyskawicowy'
 };
+const _PL_PFX={
+'녹슨':'Zardzewiały','강철':'Stalowy','흑요석':'Obsydianowy','미스릴':'Mithrylowy','심판의':'Sądu','천벌의':'Boskiego Gniewu','파멸의':'Zgubny',
+'불꽃':'Płomienny','화염':'Ogień','염화':'Ogniowy','지옥불':'Piekłoogień','지옥화':'Piekłoogień','지옥':'Piekło','멸화의':'Unicestwiający',
+'냉기':'Mroźny','빙결':'Lód','빙하':'Lodowcowy','서리의':'Szronowy','서리':'Szronowy','영겁빙':'Wiecznie Lodowy',
+'그림자':'Cienisty','암흑':'Ciemność','심연':'Otchłanny','나락의':'Podziemny','나락':'Podziemny','무간의':'Próżniowy',
+'전기':'Iskrowy','낙뢰':'Grzmot','암전':'Błyskawica','뇌신의':'Boga Burzy','뇌신':'Boga Burzy','만뢰의':'Tysiącgromowy',
+'축복':'Błogosławiony','성광':'Świętoluministy','신성':'Święty','천사의':'Anielski','신벌의':'Bosko-sądowy',
+'낡은':'Zużyty','천':'Tkaninowy','가죽':'Skórzany','강철사':'Stalowotkaniny','은':'Srebrny','은사':'Srebrnoniciowy',
+'화염의':'Piekielny','빙결의':'Zamrożony','암흑의':'Przeklęty','암전의':'Błyskawicowy'};
 const _PL_BASE={
 '대검':'Dwuręcznik','석궁':'Kusza','연사석궁':'Repetier','마력석궁':'Arkanowa Kusza',
 '견갑':'Tarcza','대견갑':'Wielka Tarcza','전투화':'Buty Bojowe','갑옷':'Zbroja','갑주':'Zbroja',

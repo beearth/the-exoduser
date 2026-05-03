@@ -1110,6 +1110,7 @@ const _NL={
 '── 공통 ──':'── Common ──',
 '난이도를 선택하라':'Kies moeilijkheidsgraad',
 '☠ 부활력 고갈!':'☠ Heropleving Uitgeput!',
+'⏳⚡ 시간걸음!':'⏳⚡ Tijdstap!',
 };
 
 _NL_PFX={
@@ -1121,6 +1122,15 @@ _NL_PFX={
 '축복':'Gezegend','성광':'Heilig Licht','신성':'Sacraal','천사의':'Engelachtig','신벌의':'Goddelijk Oordeel',
 '낡은':'Versleten','천':'Stof','가죽':'Leer','강철사':'Staalgeweven','은':'Zilver','은사':'Zilverdraad','화염의':'Inferno','빙결의':'Bevroren','암흑의':'Donker','암전의':'Bliksem'
 };
+const _NL_PFX={
+'녹슨':'Roestig','강철':'Staal','흑요석':'Obsidiaan','미스릴':'Mithril','심판의':'Oordeel','천벌의':'Goddelijke Toorn','파멸의':'Verderfelijk',
+'불꽃':'Vlam','화염':'Vuur','염화':'Hellevuur','지옥불':'Helgloed','지옥화':'Helgloed','지옥':'Hel','멸화의':'Vernietigend',
+'냉기':'Vorst','빙결':'Ijs','빙하':'Glaciaal','서리의':'Rijp','서리':'Rijp','영겁빙':'Eeuwig Ijs',
+'그림자':'Schaduw','암흑':'Donker','심연':'Afgrond','나락의':'Nether','나락':'Nether','무간의':'Leegte',
+'전기':'Vonk','낙뢰':'Donder','암전':'Bliksem','뇌신의':'Stormgod','뇌신':'Stormgod','만뢰의':'Duizend Donder',
+'축복':'Gezegend','성광':'Heilig Licht','신성':'Heilig','천사의':'Engelachtig','신벌의':'Goddelijk Oordeel',
+'낡은':'Versleten','천':'Stof','가죽':'Leer','강철사':'Staalgeweven','은':'Zilver','은사':'Zilverdraad',
+'화염의':'Inferno','빙결의':'Bevroren','암흑의':'Vervloekt','암전의':'Bliksem'};
 const _NL_BASE={
 '대검':'Grootzwaard','석궁':'Armborst','연사석궁':'Repeteerarmborst','마력석궁':'Magische Armborst',
 '견갑':'Schild','대견갑':'Groot Schild','전투화':'Gevechtslaars','갑옷':'Pantser','갑주':'Pantser',

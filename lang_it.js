@@ -1483,6 +1483,7 @@ const _IT={
 '👻 유령!':'👻 Fantasma!',
 '🦴 해골무덤!':'🦴 Tomba di Ossa!',
 '☠ 부활력 고갈!':'☠ Resurrezione Esaurita!',
+'⏳⚡ 시간걸음!':'⏳⚡ Passo Temporale!',
 };
 
 const _IT_PFX={

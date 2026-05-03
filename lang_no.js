@@ -1113,6 +1113,7 @@ const _NO={
 '── 공통 ──':'── Common ──',
 '난이도를 선택하라':'Velg vanskelighetsgrad',
 '☠ 부활력 고갈!':'☠ Gjenopplivning Oppbrukt!',
+'⏳⚡ 시간걸음!':'⏳⚡ Tidssteg!',
 };
 
 const _NO_PFX={

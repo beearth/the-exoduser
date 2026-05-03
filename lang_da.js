@@ -1113,6 +1113,7 @@ const _DA={
 '── 공통 ──':'── Common ──',
 '난이도를 선택하라':'Vælg sværhedsgrad',
 '☠ 부활력 고갈!':'☠ Genoplivning Opbrugt!',
+'⏳⚡ 시간걸음!':'⏳⚡ Tidsskridt!',
 };
 
 _DA_PFX={
@@ -1124,6 +1125,15 @@ _DA_PFX={
 '축복':'Velsignet','성광':'Helligt Lys','신성':'Sakral','천사의':'Englelignende','신벌의':'Guddommelig Dom',
 '낡은':'Slidt','천':'Stof','가죽':'Læder','강철사':'Stålvævet','은':'Sølv','은사':'Sølvtråd','화염의':'Inferno','빙결의':'Fastfrosset','암흑의':'Mørke','암전의':'Lyn'
 };
+const _DA_PFX={
+'녹슨':'Rustet','강철':'Stål','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Dom','천벌의':'Guddommelig Vrede','파멸의':'Fordærvelig',
+'불꽃':'Flamme','화염':'Ild','염화':'Helvedesild','지옥불':'Helvedesglød','지옥화':'Helvedesglød','지옥':'Helvede','멸화의':'Udslettende',
+'냉기':'Frost','빙결':'Is','빙하':'Glacial','서리의':'Rim','서리':'Rim','영겁빙':'Evigt Is',
+'그림자':'Skygge','암흑':'Mørke','심연':'Afgrund','나락의':'Nether','나락':'Nether','무간의':'Tomrum',
+'전기':'Gnist','낙뢰':'Torden','암전':'Lyn','뇌신의':'Stormguden','뇌신':'Stormguden','만뢰의':'Tusind Tordener',
+'축복':'Velsignet','성광':'Helligt Lys','신성':'Hellig','천사의':'Englelignende','신벌의':'Guddommelig Dom',
+'낡은':'Slidt','천':'Stof','가죽':'Læder','강철사':'Stålvævet','은':'Sølv','은사':'Sølvtråd',
+'화염의':'Inferno','빙결의':'Fastfrosset','암흑의':'Forbandet','암전의':'Lyn'};
 const _DA_BASE={
 '대검':'Tohandssværd','석궁':'Armbryst','연사석궁':'Repeaterarmbryst','마력석궁':'Magisk Armbryst',
 '견갑':'Skjold','대견갑':'Stort Skjold','전투화':'Kampstøvler','갑옷':'Rustning','갑주':'Rustning',

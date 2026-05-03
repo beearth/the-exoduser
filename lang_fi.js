@@ -1483,6 +1483,7 @@ const _FI={
 '── 공통 ──':'── Common ──',
 '난이도를 선택하라':'Valitse vaikeustaso',
 '☠ 부활력 고갈!':'☠ Herääminen Käytetty!',
+'⏳⚡ 시간걸음!':'⏳⚡ Aikaaskel!',
 };
 
 

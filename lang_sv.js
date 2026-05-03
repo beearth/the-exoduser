@@ -1110,6 +1110,7 @@ const _SV={
 '── 공통 ──':'── Common ──',
 '난이도를 선택하라':'Välj svårighetsgrad',
 '☠ 부활력 고갈!':'☠ Återupplivning Slut!',
+'⏳⚡ 시간걸음!':'⏳⚡ Tidssteg!',
 };
 
 _SV_PFX={
@@ -1121,6 +1122,15 @@ _SV_PFX={
 '축복':'Välsignad','성광':'Heligt Ljus','신성':'Sakral','천사의':'Änglalik','신벌의':'Gudomlig Dom',
 '낡은':'Sliten','천':'Tyg','가죽':'Läder','강철사':'Stålvävd','은':'Silver','은사':'Silvertråd','화염의':'Inferno','빙결의':'Fryst','암흑의':'Mörker','암전의':'Blixt'
 };
+const _SV_PFX={
+'녹슨':'Rostig','강철':'Stål','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Domen','천벌의':'Gudomlig Vrede','파멸의':'Fördärvlig',
+'불꽃':'Flamma','화염':'Eld','염화':'Helveteseld','지옥불':'Helvetesglöd','지옥화':'Helvetesglöd','지옥':'Helvete','멸화의':'Utrotande',
+'냉기':'Frost','빙결':'Is','빙하':'Glacial','서리의':'Rim','서리':'Rim','영겁빙':'Evigt Is',
+'그림자':'Skugga','암흑':'Mörker','심연':'Avgrund','나락의':'Nether','나락':'Nether','무간의':'Tomrum',
+'전기':'Gnista','낙뢰':'Åska','암전':'Blixt','뇌신의':'Stormguden','뇌신':'Stormguden','만뢰의':'Tusen Åskor',
+'축복':'Välsignad','성광':'Heligt Ljus','신성':'Helig','천사의':'Änglalik','신벌의':'Gudomlig Dom',
+'낡은':'Sliten','천':'Tyg','가죽':'Läder','강철사':'Stålvävd','은':'Silver','은사':'Silvertråd',
+'화염의':'Inferno','빙결의':'Fryst','암흑의':'Förbannad','암전의':'Blixt'};
 const _SV_BASE={
 '대검':'Tvåhandssvärd','석궁':'Armborst','연사석궁':'Repeterarmborst','마력석궁':'Magiskt Armborst',
 '견갑':'Sköld','대견갑':'Stor Sköld','전투화':'Stridsstövlar','갑옷':'Rustning','갑주':'Rustning',
