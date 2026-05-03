@@ -16278,8 +16278,8 @@ function initMapObjects(){
           if(bossRoom&&px/T>=bossRoom.x-3&&px/T<=bossRoom.x+bossRoom.w+3&&py/T>=bossRoom.y-3&&py/T<=bossRoom.y+bossRoom.h+3){pool.splice(fi,1);continue}
           // 소환굴 근처 200px 이내 배치 금지
           {let _shNear=false;for(let _si=0;_si<G.spawnHoles.length;_si++){if(dst(px,py,G.spawnHoles[_si].x,G.spawnHoles[_si].y)<200){_shNear=true;break}}if(_shNear){pool.splice(fi,1);continue}}
-          // 복도(좁은 통로) 배치 금지: 주변 6타일 범위에 바닥이 충분해야 함
-          {let _flCnt=0;for(let dy=-6;dy<=6;dy++)for(let dx=-6;dx<=6;dx++){const tx=f.x+dx,ty=f.y+dy;if(tx>=0&&ty>=0&&tx<G.mw&&ty<G.mh&&map[ty][tx]===0)_flCnt++}if(_flCnt<120){pool.splice(fi,1);continue}}
+          // 복도(좁은 통로) 배치 금지: 주변 8타일 범위에 바닥이 충분해야 함
+          {let _flCnt=0;for(let dy=-8;dy<=8;dy++)for(let dx=-8;dx<=8;dx++){const tx=f.x+dx,ty=f.y+dy;if(tx>=0&&ty>=0&&tx<G.mw&&ty<G.mh&&map[ty][tx]===0)_flCnt++}if(_flCnt<220){pool.splice(fi,1);continue}}
           // 같은 타입 근거리 중복 방지 (800px 내 동일 타입 금지)
           let pick;
           for(let _try=0;_try<5;_try++){
