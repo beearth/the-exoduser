@@ -5221,7 +5221,7 @@ const _EN={
 '⚡ 전격이동!':'⚡ Flash Step!',
 '기둥가시로 흡수됨':'Absorbed by pillar thorn',
 '🌿 가시덫!':'🌿 Spike Trap!',
-'👻 유령총!':'👻 Ghost Gun!','💥 유령총 폭발!':'💥 Ghost Gun Blast!',
+'👻 공성허수아비!':'👻 Siege Scarecrow!','💥 공성허수아비 폭발!':'💥 Siege Scarecrow Blast!',
 '⚡ 전격의창!':'⚡ Thunder Spear!',
 '🏹 공성쇠뇌 설치!':'🏹 Siege Crossbow Placed!',
 '👻 유령 허수아비!':'👻 Phantom Decoy!',
@@ -5669,6 +5669,120 @@ const _EN={
 // --- Pet dialogue: item/forge ---
 '탭 장비창을 열어봐.':'Open the equipment window with TAB.',
 '데미지 부족하면 무기 강화!':'Not enough damage? Enhance your weapon!',
+  '미구현':'N/A',
+  '스탯 총량':'Stat Totals',
+  '장비':'gear',
+  '공속':'AtkSpd',
+  '크리':'Crit',
+  '크리뎀':'CritDmg',
+  '근성':'Grit',
+  '종합 지표':'Overview',
+  '근접 DPS':'Melee DPS',
+  '공격력×공속×크리':'ATK×Spd×Crit',
+  '활 DPS':'Bow DPS',
+  '마법 DPS':'Magic DPS',
+  '유효 HP (EHP)':'Effective HP (EHP)',
+  '쉴드':'Shield',
+  '장비 파워':'Gear Power',
+  '근접 공격력':'Melee ATK',
+  '기본':'base',
+  '무기':'wpn',
+  '패시브':'passive',
+  '활 공격력':'Bow ATK',
+  '정밀':'Prec',
+  '마법 공격력':'Magic ATK',
+  '왕관':'crown',
+  '마력':'Arcane',
+  '공격속도':'Atk Speed',
+  '크리티컬':'Critical',
+  '데미지':'dmg',
+  '확률':'Rate',
+  '어픽스':'affix',
+  '레거시':'legacy',
+  '추가뎀':'bonus',
+  '패링 카운터뎀':'Parry Counter DMG',
+  '우클공속':'RMB Spd',
+  '무지개탄DR':'Rainbow DR',
+  '포이즈파괴':'Poise Break',
+  '방어관통':'Armor Pen',
+  '관통력':'Pierce',
+  '속성':'Elements',
+  '무기속성':'Wpn Elem',
+  '독':'Poison',
+  '초':'s',
+  '암흑저주':'Dark Curse',
+  '원소집중':'Elem Focus',
+  '원소전환':'Elem Convert',
+  '방어':'Defense',
+  '물리방어':'Phys DEF',
+  '감소':'red',
+  '캡':'cap',
+  '장갑':'gloves',
+  '바지':'pants',
+  '속성방어':'Elem DEF',
+  '목걸이':'necklace',
+  '반지1':'ring1',
+  '반지2':'ring2',
+  '반사':'Reflect',
+  '가시':'Thorns',
+  '배리어':'Barrier',
+  '보호막 흡수':'Shield Absorb',
+  '속성 저항':'Elem Resist',
+  'CC저항':'CC Resist',
+  '생존':'Survival',
+  '장비HP':'Gear HP',
+  '임플':'Impl',
+  '에너지쉴드':'Energy Shield',
+  '리젠':'Regen',
+  '스태미나':'Stamina',
+  '성장':'Growth',
+  'MP%어픽스':'MP% Affix',
+  '이동속도':'Move Speed',
+  '한방캡':'One-shot Cap',
+  '최대HP의33%':'33% Max HP',
+  '비용/효율':'Cost/Eff',
+  '근접ST':'Melee ST',
+  '활ST':'Bow ST',
+  '마법MP':'Magic MP',
+  '작살사거리':'Harpoon Range',
+  '기동게이지':'Drive Gauge',
+  '쿨감':'CDR',
+  '쇠뇌뎀':'Xbow DMG',
+  '쇠뇌공속':'Xbow Spd',
+  '기타':'Misc',
+  '물약쿨':'Potion CD',
+  '회복+':'Recovery+',
+  '드롭':'Drop',
+  '경험치+':'XP+',
+  '골드+':'Gold+',
+  '기동:칼날개':'Drive:Blade',
+  '기동:전폭':'Drive:Strike',
+  '기동:기습':'Drive:Ambush',
+  '충전스킬':'Charge Skill',
+  '사슬게이지':'Chain Gauge',
+  '특수 효과':'Special Effects',
+  '처치뎀+':'Kill DMG+',
+  '위기뎀+':'Crisis DMG+',
+  '피격반격':'Hit Counter',
+  '풍요(적HP≥70%뎀+)':'Plenty(EHP≥70%+)',
+  '약자포식(적HP≤30%뎀+)':'Predator(EHP≤30%+)',
+  '패링폭발':'Parry Burst',
+  '체간파괴+':'Poise Break+',
+  '콤보뎀+':'Combo DMG+',
+  '작살뎀+':'Harpoon DMG+',
+  '스킬뎀+':'Skill DMG+',
+  '패리+':'Parry+',
+  '체인':'Chain',
+  '정화':'Purge',
+  '회':'×',
+  '불굴':'Tenacity',
+  '신성력':'Holy Power',
+  '악마력(부활력)':'Demon Force',
+  '자연':'Nature',
+  '악마성':'Demonhood',
+  '인간성':'Humanity',
+  '전투 통계':'Combat Stats',
+  '스테이지':'Stage',
 };
 // --- 장비명 조합 번역 (접두사 + 기본형) ---
 const _EN_PFX={'녹슨':'Rusty','강철':'Steel','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Judgment','천벌의':'Divine Wrath','파멸의':'Destruction',
@@ -8256,7 +8370,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
             const _sgBoomR=Math.min(2000,500+~~(_vs.absorbed/10)*500);
             const _sgBoomDmg=~~(bowRef()*statDex()*pBowMul()*(_vs.absorbed*0.5));
             _fireExsBoom(_vs.x,_vs.y,_sgBoomR,_sgBoomDmg,_vs.absorbed,_vs.absorbed/_vs.maxAbsorb);
-            addTxt(_vs.x,_vs.y-30,_T('💥 유령총 폭발!'),'#ff6622',60);
+            addTxt(_vs.x,_vs.y-30,_T('💥 공성허수아비 폭발!'),'#ff6622',60);
             addParts(_vs.x,_vs.y,'#ff6622',20);addParts(_vs.x,_vs.y,'#ffcc44',12);
             shake(Math.min(15,5+_vs.absorbed*.4));SFX.detonate();
           }else{
@@ -24097,7 +24211,7 @@ function update(){
         if(!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p.lightning){G.hitStop=~~(_HS.proj*OPT.hitStop/100);}
         const hitCol=ELP[p.el];if(!p.bladeShard&&!p.maliceHunt&&!p.iceBlade){const pCount=p.lightning?2:~~(Math.max(3,Math.min(dmg/3,10))*OPT.parts/100);
         for(let k=0;k<pCount;k++){poolPart(e.x+(Math.random()-.5)*6,e.y+(Math.random()-.5)*6,Math.cos(ang+Math.PI)*(1+Math.random()*2)+(Math.random()-.5),Math.sin(ang+Math.PI)*(1+Math.random()*2)+(Math.random()-.5),hitCol,2+Math.random()*3,8+Math.random()*8)}}
-        // ── 유령총 합체: 터렛 투사체 명중 시 AoE 폭발 ──
+        // ── 공성허수아비 합체: 터렛 투사체 명중 시 AoE 폭발 ──
         if(p._fromTurret&&_isFused('siegeGhost')){
           const _sgR=80;const _sgNe=shQuery(p.x,p.y,_sgR+20);
           for(let _sgi=0;_sgi<_sgNe.length;_sgi++){const _sge=_sgNe[_sgi];if(!_sge.alive||_sge===e)continue;
@@ -31780,9 +31894,9 @@ const SKILL_LIST=[
   {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (1렙 반경200, 10렙398). 슬로우 70%(+2%/Lv, 최대90%)+출혈. INT×magicRef×3(+10%/Lv). 악의 10, 쿨 10초. Lv당 범위+22',descEn:'[Fixed: Space] Place spike trap at current pos (Lv1 radius 200, Lv10 398). Slow 70%(+2%/Lv, max 90%)+bleed. INT×magicRef×3(+10%/Lv). Malice 10, CD 10s. Per Lv range+22',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},
   {id:'blueShot',name:'푸른비',cat:'bow',fixed:true,emoji:'💎',desc:'[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)',descEn:'[Fixed: E, unlock Lv300] 50 homing blue shots fired sequentially (over 5s). MP 100(+1.5/Lv) cost. Tracks enemies. CD 5s. Per Lv range+30 (DMG uses _skMul)',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:300},
   {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: E, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.5/1.0/1.5초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',descEn:'[Hidden: E, unlock Lv700] Hold for 3-stage charge AoE explosion (0.5/1.0/1.5s). Range 600/1000/1400px. Stage 3 full charge auto-detonates. INT scale, no element',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700},
-  {id:'voidScarecrow',name:'유령 허수아비',cat:'def',act:true,emoji:'👻',desc:'유령 허수아비를 소환하여 유도탄막 어그로를 끈다. 탄막을 흡수해 자원 축적 (기본 20개, Lv당+3). 1개당 HP/MP/ST 각 100. R키로 회수. 쿨 30초',descEn:'Summon phantom scarecrow to draw homing projectile aggro. Absorbs projectiles for resource buildup (base 20, +3/Lv). Per absorbed: HP/MP/ST +100 each. R key to retrieve. CD 30s',spCost:10,matCost:100,cd:1800,up:true,upSp:5,upMat:0},
+  {id:'voidScarecrow',name:'유령 허수아비',cat:'def',act:true,emoji:'👻',desc:'유령 허수아비를 소환하여 유도탄막 어그로를 끈다. 탄막을 흡수해 자원 축적 (기본 20개, Lv당+3). 1개당 HP/MP/ST 각 100. R키로 회수. 쿨 10초',descEn:'Summon phantom scarecrow to draw homing projectile aggro. Absorbs projectiles for resource buildup (base 20, +3/Lv). Per absorbed: HP/MP/ST +100 each. R key to retrieve. CD 10s',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
   {id:'explodeScarecrow',name:'폭발 허수아비',cat:'def',act:true,emoji:'💥',desc:'폭발 허수아비 설치. 탄막을 흡수하고 재입력 시 폭발! 1스택당 (INT마법뎀+탄막뎀)×10 마법데미지. 범위 250+흡수×25 (최대1000). 최대흡수 1렙20~20렙60. 쿨 10초',descEn:'Place explosive scarecrow. Absorbs projectiles, re-press to detonate! Per stack: (INT magic DMG + proj DMG)×10. Range 250+absorbed×25 (max 1000). Max absorb Lv1=20~Lv20=60. CD 10s',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
-  {id:'ghostXbowTurret',name:'공성쇠뇌',cat:'bow',act:true,emoji:'🏹',desc:'[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거(무료). 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 쿨없음. Lv당 뎀+5% 공속+5% 사거리+5%',descEn:'[Select: 1~4, unlock Lv500] Deploy siege crossbow turret at current pos. Re-press to dismantle (free). While deployed: player crossbow disabled (turret fires only). DMG+50%, ATK SPD+50%, range+50%. ST 100. No CD. Per Lv DMG+5% ATK SPD+5% range+5%',spCost:10,matCost:120,up:true,upSp:5,upMat:0,reqLv:500},
+  {id:'ghostXbowTurret',name:'공성쇠뇌',cat:'bow',act:true,emoji:'🏹',desc:'[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거. 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 쿨 10초. Lv당 뎀+5% 공속+5% 사거리+5%',descEn:'[Select: 1~4, unlock Lv500] Deploy siege crossbow turret at current pos. Re-press to dismantle. While deployed: player crossbow disabled (turret fires only). DMG+50%, ATK SPD+50%, range+50%. ST 100. CD 10s. Per Lv DMG+5% ATK SPD+5% range+5%',spCost:10,matCost:120,cd:600,up:true,upSp:5,upMat:0,reqLv:500},
   {id:'timeWarp',name:'시간왜곡',cat:'def',act:true,emoji:'⏳',desc:'[Ctrl, Lv500 해금] 발동 시 3초 전 상태로 되돌린다. 위치/HP/MP/ST 완전 복원. Lv당 되감기+0.105초 (1렙 3초, 20렙 5초). MP 50(+5/Lv, 20렙150). 쿨 45초',descEn:'[Ctrl, unlock Lv500] Rewind to state from 3s ago. Restores position/HP/MP/ST. Per Lv rewind+0.105s (Lv1=3s, Lv20=5s). MP 50(+5/Lv, Lv20=150). CD 45s',spCost:15,matCost:150,cd:2700,up:true,upSp:5,upMat:0,reqLv:500},
   {id:'thunderStake',name:'뇌전창',cat:'magic',act:true,emoji:'⚡',desc:'[선택: 1~4번] 마우스 조준 → 전기창을 땅에 꽂는다. 5스택(12초/1충전, Lv10→6스택). 창끼리 600px 이내면 전류 아크 발생, 경로 위 적에게 감전 틱 데미지. MP 50. 지속 10초(+0.5초/Lv). Lv당 아크뎀+10%',descEn:'[Select: 1~4] Mouse aim → plant electric spear on ground. 5 stocks (12s/charge, Lv10→6). Spears within 600px create lightning arcs dealing shock tick DMG to enemies on path. MP 50. Duration 10s (+0.5s/Lv). Per Lv arc DMG+10%',spCost:10,matCost:100,up:true,upSp:5,upMat:0}
 ];
@@ -32166,8 +32280,8 @@ function _isAbsorbed(skId){
   }
   return false;
 }
-const _FUSE_NAMES={dimBreach:'기동:기습',dimSlam:'기동:파쇄',dimThunder:'기동:전폭',dimRush:'기동:칼날개',dimBlast:'기동:섬멸',whirlDet:'회전기폭',slamStorm:'지진폭풍',stormBeam:'암전나선',stormBurst:'암전폭류',bladeFuse:'악의 해방',iceMortar:'얼음소용돌이',sixFuse:'만화광선',elemFuse:'추적암전',boneStorm:'해골번개',elecRepent:'참회 귀환',shieldFuse:'날개치기',plagueFuse:'독혈해방',holyFuse:'결계의 영역',holyIce:'물의 영역',holyWeak1:'파쇄의 영역',holyWeak2:'침식의 영역',holyWeak3:'관통의 영역',holyWeak4:'권능의 영역',pillarSpike:'기둥가시',pillarSlam:'기둥강타',infernoSlam:'지옥강타',siegeGhost:'유령총',dualScarecrow:'쌍둥이허수아비',thunderGhost:'전격의창',timeStep:'시간걸음'};
-const _FUSE_NAMES_EN={dimBreach:'Maneuver:Ambush',dimSlam:'Maneuver:Shatter',dimThunder:'Maneuver:Thunder',dimRush:'Maneuver:Bladewing',dimBlast:'Maneuver:Annihilate',whirlDet:'Whirl-Det',slamStorm:'Quake Storm',stormBeam:'Lightning Helix',stormBurst:'Lightning Burst',bladeFuse:'Malice Liberation',iceMortar:'Ice Vortex',sixFuse:'Luminescence',elemFuse:'Tracking Lightning',boneStorm:'Bone Lightning',elecRepent:'Repentance Return',shieldFuse:'Wing Strike',plagueFuse:'Plague Liberation',holyFuse:'Ward Domain',holyIce:'Water Domain',holyWeak1:'Shatter Domain',holyWeak2:'Corrode Domain',holyWeak3:'Pierce Domain',holyWeak4:'Sovereign Domain',pillarSpike:'Pillar Spike',pillarSlam:'Pillar Slam',infernoSlam:'Inferno Slam',siegeGhost:'Ghost Gun',dualScarecrow:'Twin Scarecrow',thunderGhost:'Thunder Spear',timeStep:'Time Step'};
+const _FUSE_NAMES={dimBreach:'기동:기습',dimSlam:'기동:파쇄',dimThunder:'기동:전폭',dimRush:'기동:칼날개',dimBlast:'기동:섬멸',whirlDet:'회전기폭',slamStorm:'지진폭풍',stormBeam:'암전나선',stormBurst:'암전폭류',bladeFuse:'악의 해방',iceMortar:'얼음소용돌이',sixFuse:'만화광선',elemFuse:'추적암전',boneStorm:'해골번개',elecRepent:'참회 귀환',shieldFuse:'날개치기',plagueFuse:'독혈해방',holyFuse:'결계의 영역',holyIce:'물의 영역',holyWeak1:'파쇄의 영역',holyWeak2:'침식의 영역',holyWeak3:'관통의 영역',holyWeak4:'권능의 영역',pillarSpike:'기둥가시',pillarSlam:'기둥강타',infernoSlam:'지옥강타',siegeGhost:'공성허수아비',dualScarecrow:'쌍둥이허수아비',thunderGhost:'전격의창',timeStep:'시간걸음'};
+const _FUSE_NAMES_EN={dimBreach:'Maneuver:Ambush',dimSlam:'Maneuver:Shatter',dimThunder:'Maneuver:Thunder',dimRush:'Maneuver:Bladewing',dimBlast:'Maneuver:Annihilate',whirlDet:'Whirl-Det',slamStorm:'Quake Storm',stormBeam:'Lightning Helix',stormBurst:'Lightning Burst',bladeFuse:'Malice Liberation',iceMortar:'Ice Vortex',sixFuse:'Luminescence',elemFuse:'Tracking Lightning',boneStorm:'Bone Lightning',elecRepent:'Repentance Return',shieldFuse:'Wing Strike',plagueFuse:'Plague Liberation',holyFuse:'Ward Domain',holyIce:'Water Domain',holyWeak1:'Shatter Domain',holyWeak2:'Corrode Domain',holyWeak3:'Pierce Domain',holyWeak4:'Sovereign Domain',pillarSpike:'Pillar Spike',pillarSlam:'Pillar Slam',infernoSlam:'Inferno Slam',siegeGhost:'Siege Scarecrow',dualScarecrow:'Twin Scarecrow',thunderGhost:'Thunder Spear',timeStep:'Time Step'};
 function _fuseName(key){return OPT.lang!=='ko'?(_FUSE_NAMES_EN[key]||key):(_FUSE_NAMES[key]||key)}
 // ═══ 리셋 후 활성 스킬 변수 동기화 ═══
 function _syncActiveSkAfterReset(resetIds){
@@ -32730,7 +32844,7 @@ function activateGhostXbowTurret(){
     const _sgLv=P.skills.voidScarecrow||1;
     const _sgMax=20+(_sgLv-1)*3+(_sgLv>=10?3:0);
     G._voidScarecrow={x:P.x+30,y:P.y,maxAbsorb:_sgMax,absorbed:0,resHP:0,resMP:0,resST:0,aggroOn:true,lv:_sgLv,siegeGhost:true};
-    addTxt(P.x,P.y-40,_T('👻 유령총!'),'#aa88dd',40);
+    addTxt(P.x,P.y-40,_T('👻 공성허수아비!'),'#aa88dd',40);
     addParts(P.x,P.y,'#aa88dd',8);
   } else {
     addTxt(P.x,P.y-20,_T('🏹 공성쇠뇌 설치!'),'#88aadd',40);
@@ -37203,7 +37317,7 @@ function renderStatSummary(){
   const _lb2=_lvB();
   const _tStr=STATS.str+_lb2+_eqStat('Str'),_tDex=STATS.dex+_lb2+_eqStat('Dex'),_tInt=STATS.int+_lb2+_eqStat('Int'),_tLck=STATS.lck+_lb2;
   const _e=OPT.lang!=='ko';
-  const _L=(ko,en)=>_e?en:ko;
+  const _L=(ko,en)=>{if(OPT.lang==='ko')return ko;const _lt=_T(ko);return _lt===ko?en:_lt};
   sm.innerHTML=
     `<div style="${_sHd}">💠 ${_L('스탯 총량','Stat Totals')}</div>`+
     `<div style="${_sLn}">STR: <span style="color:#ff9944">${_tStr}</span> <span style="color:#887766;font-size:1.1rem">(SP${STATS.str}+Lv${_lb2}+${_L('장비','gear')}${_eqStat('Str')})</span></div>`+
@@ -37477,27 +37591,25 @@ function draw(){
   for(let ei=0;ei<G.exits.length;ei++){
     const ex=G.exits[ei];const px=ex.x*T,py=ex.y*T;
     if(ex.x<s1||ex.x>=e1||ex.y<s2||ex.y>=e2)continue;
-    const _pI=_portalImgs[SI_TO_HELL[G.stage]||0];const _portalOk=_pI&&_pI.complete&&_pI.naturalWidth>0;
-    if(!(_portalOk&&G.bossAlive&&!G._bossArena)){X.fillStyle=stg.f;X.fillRect(px,py,T,T)}
     if(G.bossAlive&&!G._bossArena){
-      // ── 입구 전용 애니메이션: 붉은/주황 불꽃 펄스 ──
-      const _ep=Math.sin(_now/400+ei*1.2)*.5+.5; // 0~1 펄스
-      const _ep2=Math.sin(_now/200+ei*0.7)*.3+.7;
-      X.fillStyle='rgba(60,15,5,.85)';X.fillRect(px,py,T,T);
-      // 용암 균열 라인
-      X.strokeStyle='rgba(255,'+(~~(120+80*_ep))+',0,'+(0.4+0.3*_ep)+')';X.lineWidth=2;
-      X.beginPath();X.moveTo(px+2,py+T/2+Math.sin(_now/300+ei)*3);X.lineTo(px+T-2,py+T/2-Math.sin(_now/250+ei)*3);X.stroke();
-      // 가장자리 불꽃 글로우
-      const _grd=X.createRadialGradient(px+T/2,py+T/2,0,px+T/2,py+T/2,T*.7);
-      _grd.addColorStop(0,'rgba(255,80,20,'+(0.15+0.1*_ep)+')');
-      _grd.addColorStop(.6,'rgba(200,40,10,'+(0.08+0.06*_ep)+')');
+      // ── 입구 포탈: 빨간/주황 소용돌이 (바닥색 대신) ──
+      X.fillStyle='#0a0000';X.fillRect(px,py,T,T);
+      X.save();X.translate(px+T/2,py+T/2);
+      const _ep=Math.sin(_now/400+ei*1.2)*.5+.5;
+      // 소용돌이 원
+      X.rotate(_now/1500+ei);
+      X.globalAlpha=.6+.2*_ep;
+      X.strokeStyle='#cc3300';X.lineWidth=2.5;
+      X.beginPath();X.arc(0,0,T*.35+2*_ep,0,Math.PI*1.4);X.stroke();
+      X.strokeStyle='#ff6600';X.lineWidth=1.5;
+      X.beginPath();X.arc(0,0,T*.25+_ep,-_now/800,Math.PI*1.2-_now/800);X.stroke();
+      // 중심 글로우
+      const _grd=X.createRadialGradient(0,0,0,0,0,T*.4);
+      _grd.addColorStop(0,'rgba(255,60,10,.35)');
+      _grd.addColorStop(.5,'rgba(200,30,5,.15)');
       _grd.addColorStop(1,'rgba(0,0,0,0)');
-      X.fillStyle=_grd;X.fillRect(px-4,py-4,T+8,T+8);
-      // 불씨 파티클 (간헐적)
-      if(Math.sin(_now/150+ei*3)>.6){
-        X.fillStyle='rgba(255,'+(~~(180*_ep2))+',30,'+(0.5+0.3*_ep)+')';
-        X.beginPath();X.arc(px+T*(.2+.6*_ep),py+T*(.3+.4*_ep2),1.5+_ep,0,Math.PI*2);X.fill();
-      }
+      X.fillStyle=_grd;X.fillRect(-T/2,-T/2,T,T);
+      X.restore();
       // 보스방 진입 텍스트 (가운데 타일만)
       if(ei===~~(G.exits.length/2)){
         const _dg=dst(P.x,P.y,(ex.x+.5)*T,(ex.y+.5)*T);
