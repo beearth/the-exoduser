@@ -22098,3 +22098,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 ## 2026-05-03 17:30 (auto)
 - game.html
 
+
+## 2026-05-03 18:30 (auto)
+- img/cursors/cursor_hell_sword1.png
+
