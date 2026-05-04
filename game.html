@@ -4726,6 +4726,7 @@ const _EN={
 '전투 스킬':'Combat Skills','캐릭터 선택':'Character Select',
 // --- Elements ---
 '물리':'Physical','화염':'Fire','빙결':'Ice','암흑':'Dark','암전':'Lightning','신성':'Holy','대지':'Earth',
+'속성':'Element','암묵':'Implicit',
 // --- Passives ---
 '힘':'Strength','민첩':'Dexterity','지능':'Intelligence','행운':'Luck',
 '맹공':'Onslaught','철벽':'Fortitude','돌파':'Breakthrough','반격':'Retaliation',
@@ -4936,6 +4937,10 @@ const _EN={
 '회전기폭!':'Whirl Detonate!','해제기폭!':'Release Detonate!','지진기폭!':'Quake Detonate!',
 '혼돈의 왕관':'Crown of Chaos',
 '전지전능의 왕관':'Crown of Omnipotence',
+'낡은 악마의 팔찌':'Worn Demon Bracelet',
+'흑요석 악마의 팔찌':'Obsidian Demon Bracelet',
+'미스릴 악마의 팔찌':'Mithril Demon Bracelet',
+'낡은 생명의 팔찌':'Worn Life Bracelet',
 '악마의 팔찌':'Demon Bracelet',
 '생명의 팔찌':'Life Bracelet',
 // --- wave direction names (full addTxt strings) ---
@@ -5491,7 +5496,7 @@ const _EN={
 '약탈의':'Plunder',
 '경험의':'Experience',
 '골드의':'Gold',
-'포션强化의':'Potion Boost',
+'포션강화의':'Potion Boost',
 '사슬의':'Chain',
 '진혼의':'Requiem',
 '윤회의':'Rebirth',
@@ -5541,31 +5546,31 @@ const _EN={
 '원거리방어의':'Ranged DR',
 '처치생명의':'Kill HP',
 '처치수호의':'Kill Shield',
-'화염强化의':'Fire Amp',
+'화염강화의':'Fire Amp',
 '화염관통의':'Fire Pierce',
 '발화의':'Ignition',
 '화염폭발의':'Fire Burst',
 '맹화의':'Blaze',
 '화염의힘':'Fire Power',
-'빙결强化의':'Ice Amp',
+'빙결강화의':'Ice Amp',
 '빙결관통의':'Ice Pierce',
 '동결의':'Freeze',
 '빙결폭발의':'Ice Burst',
 '영빙의':'Permafrost',
 '빙결의힘':'Ice Power',
-'뇌전强化의':'Thunder Amp',
+'뇌전강화의':'Thunder Amp',
 '뇌전관통의':'Thunder Pierce',
 '감전의':'Shock',
 '뇌전폭발의':'Thunder Burst',
 '낙뢰의':'Thunderbolt',
 '뇌전의힘':'Thunder Power',
-'암흑强化의':'Dark Amp',
+'암흑강화의':'Dark Amp',
 '암흑관통의':'Dark Pierce',
 '침식의':'Erosion',
 '암흑폭발의':'Dark Burst',
 '심연의':'Abyss',
 '암흑의힘':'Dark Power',
-'맹독强化의':'Venom Amp',
+'맹독강화의':'Venom Amp',
 '독관통의':'Poison Pierce',
 '중독의':'Poisoning',
 '독폭발의':'Poison Burst',
@@ -5602,7 +5607,7 @@ const _EN={
 '회심치유의':'Crit Heal',
 '회심영력의':'Crit Mana',
 '회심수호의':'Crit Shield',
-'피격强化의':'Hit Boost',
+'피격강화의':'Hit Boost',
 '반격가시의':'Counter Thorns',
 '빙결파동의':'Ice Nova',
 '암흑보호의':'Dark Shield',
@@ -5612,26 +5617,26 @@ const _EN={
 '패링폭파의':'Parry Shatter',
 '블록치유의':'Block Heal',
 '블록영력의':'Block Mana',
-'회전참强化':'Spin Slash Boost',
-'옴니빔强化':'Omni Beam Boost',
-'화구强化':'Fireball Boost',
-'미사일强化':'Missile Boost',
-'청탄强化':'Blue Shot Boost',
-'폭렬탄强化':'Burst Shot Boost',
-'지옥광선强化':'Hellray Boost',
-'악의폭풍强化':'Malice Storm Boost',
-'연쇄참强化':'Chain Slash Boost',
-'거인강타强化':'Giant Slam Boost',
-'유령보행强化':'Ghost Walk Boost',
-'악의박격强化':'Malice Mortar Boost',
-'화염오라强化':'Fire Aura Boost',
-'빙구强化':'Ice Orb Boost',
-'화염빔强化':'Fire Beam Boost',
-'악의사냥强化':'Malice Hunt Boost',
-'암흑기둥强化':'Dark Pillar Boost',
-'역병强化':'Plague Boost',
-'가시오라强化':'Thorn Aura Boost',
-'연쇄돌격强化':'Chain Assault Boost',
+'회전참강화':'Spin Slash Boost',
+'옴니빔강화':'Omni Beam Boost',
+'화구강화':'Fireball Boost',
+'미사일강화':'Missile Boost',
+'청탄강화':'Blue Shot Boost',
+'폭렬탄강화':'Burst Shot Boost',
+'지옥광선강화':'Hellray Boost',
+'악의폭풍강화':'Malice Storm Boost',
+'연쇄참강화':'Chain Slash Boost',
+'거인강타강화':'Giant Slam Boost',
+'유령보행강화':'Ghost Walk Boost',
+'악의박격강화':'Malice Mortar Boost',
+'화염오라강화':'Fire Aura Boost',
+'빙구강화':'Ice Orb Boost',
+'화염빔강화':'Fire Beam Boost',
+'악의사냥강화':'Malice Hunt Boost',
+'암흑기둥강화':'Dark Pillar Boost',
+'역병강화':'Plague Boost',
+'가시오라강화':'Thorn Aura Boost',
+'연쇄돌격강화':'Chain Assault Boost',
 '회피의':'Evasion',
 '회피쿨감의':'Dodge CD Red',
 '수호력의':'Shield Power',
@@ -5721,14 +5726,14 @@ const _EN={
 '신선처치의':'Fresh Kill',
 '경직연장의':'Stagger Extension',
 '빙결연장의':'Freeze Extension',
-'둔화强化의':'Slow Amp',
+'둔화강화의':'Slow Amp',
 '독중첩의':'Poison Stack',
 '출혈중첩의':'Bleed Stack',
-'발화强化의':'Ignite Amp',
-'동상强化의':'Frostbite Amp',
-'감전强化의':'Shock Amp',
+'발화강화의':'Ignite Amp',
+'동상강화의':'Frostbite Amp',
+'감전강화의':'Shock Amp',
 '사선회심의':'Low HP Crit',
-'갑옷强化의':'Armor Boost',
+'갑옷강화의':'Armor Boost',
 '블록흡수의':'Block Absorb',
 '방패타격의':'Shield Bash',
 '방패경직의':'Shield Stagger',
@@ -6599,7 +6604,7 @@ const _EN_BASE={'대검':'Greatsword','석궁':'Crossbow','연사석궁':'Repeat
 '견갑':'Shield','대견갑':'Great Shield','전투화':'Combat Boots','갑옷':'Armor','갑주':'Armor',
 '왕관':'Crown','장갑':'Gloves','건틀릿':'Gauntlets','바지':'Pants','각반':'Leggings',
 '허리띠':'Belt','벨트':'Belt','부적':'Talisman','목걸이':'Necklace','반지':'Ring',
-'망토':'Cape','팔찌':'Bracelet','귀걸이':'Earring'};
+'망토':'Cape','팔찌':'Bracelet','귀걸이':'Earring','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet'};
 // ═══ 다국어 번역 테이블 매핑 ═══
 const _LANG_TBL=(function(){const t={en:_EN};const codes=['zh','ja','es','zht','ru','de','ptbr','fr','pl','it','uk','tr','vi','th','id','ar','sv','da','no','fi','cs','hu','ro','nl','el','bg'];const names=['_ZH','_JA','_ES','_ZHT','_RU','_DE','_PTBR','_FR','_PL','_IT','_UK','_TR','_VI','_TH','_ID','_AR','_SV','_DA','_NO','_FI','_CS','_HU','_RO','_NL','_EL','_BG'];for(let i=0;i<codes.length;i++){try{t[codes[i]]=eval(names[i])}catch(e){t[codes[i]]=null}}return t})();
 const _LANG_PFX=(function(){const t={en:_EN_PFX};const codes=['zh','ja','es','zht','ru','de','ptbr','fr','pl','it','uk','tr','vi','th','id','ar','sv','da','no','fi','cs','hu','ro','nl','el','bg'];const names=['_ZH_PFX','_JA_PFX','_ES_PFX','_ZHT_PFX','_RU_PFX','_DE_PFX','_PTBR_PFX','_FR_PFX','_PL_PFX','_IT_PFX','_UK_PFX','_TR_PFX','_VI_PFX','_TH_PFX','_ID_PFX','_AR_PFX','_SV_PFX','_DA_PFX','_NO_PFX','_FI_PFX','_CS_PFX','_HU_PFX','_RO_PFX','_NL_PFX','_EL_PFX','_BG_PFX'];for(let i=0;i<codes.length;i++){try{t[codes[i]]=eval(names[i])}catch(e){t[codes[i]]=null}}return t})();
@@ -9995,7 +10000,7 @@ const AFFIX_NAMES_KO={
   stCostRed:'절약의',
   fireDmgPct:'화염강화의',firePen:'화염관통의',fireOnHit:'발화의',fireBurst:'화염폭발의',fireDuration:'맹화의',fireDmgBns:'화염의힘',
   iceDmgPct:'빙결강화의',icePen:'빙결관통의',iceOnHit:'동결의',iceBurst:'빙결폭발의',iceDuration:'영빙의',iceDmgBns:'빙결의힘',
-  lightDmgPct:'뇌전강화의',lightPen:'뇌전관통의',lightOnHit:'감전의',lightBurst:'뇌전폭발의',lightDuration:'낙뇌의',lightDmgBns:'뇌전의힘',
+  lightDmgPct:'뇌전강화의',lightPen:'뇌전관통의',lightOnHit:'감전의',lightBurst:'뇌전폭발의',lightDuration:'낙뢰의',lightDmgBns:'뇌전의힘',
   darkDmgPct:'암흑강화의',darkPen:'암흑관통의',darkOnHit:'침식의',darkBurst:'암흑폭발의',darkDuration:'심연의',darkDmgBns:'암흑의힘',
   poisonDmgPct:'맹독강화의',poisonPen:'독관통의',poisonOnHit:'중독의',poisonBurst:'독폭발의',poisonDuration:'맹독지속의',poisonDmgBns:'독의힘',
   meleeDmgPct:'격투의',rangedDmgPct:'원사의',spellDmgPct:'주술의',beamDmgPct:'광선의',dotDmgPct:'침식의',projDmgPct:'탄도의',aoeRadiusPct:'확산의',
@@ -36880,9 +36885,9 @@ function _invBuildCompare(item,curEq){
       }
     }
   }catch(_e){}
-  if(item.slot==='helmet'&&item.elements&&curEq.elements){const newEls=item.elements,oldEls=curEq.elements;const allEls=new Set([...newEls.map(e=>e.el),...oldEls.map(e=>e.el)]);for(const el of allEls){const nv=(newEls.find(e=>e.el===el)||{}).dmg||0;const ov=(oldEls.find(e=>e.el===el)||{}).dmg||0;const diff=nv-ov;if(diff!==0){const c=diff>0?'#44cc44':'#cc4444';diffs+=`<div style="color:${c};font-size:.85rem">${ELE[el]} ${ELN[el]}: ${diff>0?'+':''}${diff}</div>`}}}
+  if(item.slot==='helmet'&&item.elements&&curEq.elements){const newEls=item.elements,oldEls=curEq.elements;const allEls=new Set([...newEls.map(e=>e.el),...oldEls.map(e=>e.el)]);for(const el of allEls){const nv=(newEls.find(e=>e.el===el)||{}).dmg||0;const ov=(oldEls.find(e=>e.el===el)||{}).dmg||0;const diff=nv-ov;if(diff!==0){const c=diff>0?'#44cc44':'#cc4444';diffs+=`<div style="color:${c};font-size:.85rem">${ELE[el]} ${_T(ELN[el])}: ${diff>0?'+':''}${diff}</div>`}}}
   // 속성 비교
-  if((item.el||0)!==(curEq.el||0)){diffs+=`<div style="font-size:.85rem;color:#aaa">속성: <span style="color:${ELC[curEq.el]||'#aaa'}">${ELN[curEq.el]||'물리'}</span> → <span style="color:${ELC[item.el]||'#aaa'}">${ELN[item.el]||'물리'}</span></div>`}
+  if((item.el||0)!==(curEq.el||0)){diffs+=`<div style="font-size:.85rem;color:#aaa">${_T('속성')}: <span style="color:${ELC[curEq.el]||'#aaa'}">${_T(ELN[curEq.el]||'물리')}</span> → <span style="color:${ELC[item.el]||'#aaa'}">${_T(ELN[item.el]||'물리')}</span></div>`}
   // 어픽스 비교
   {const _nAf={},_oAf={};
   if(item.affixes)for(const a of item.affixes)_nAf[a.id]=(_nAf[a.id]||0)+a.value;
@@ -36901,7 +36906,7 @@ function _invBuildCompare(item,curEq){
     diffs+=`<div style="font-size:.82rem;color:#44cc44">+ ${_T(item._implicitKo).replace('X',item._implicitVal||'')}</div>`;
   }else if(item._implicitVal!==undefined&&curEq._implicitVal!==undefined&&item._implicitVal!==curEq._implicitVal){
     const _iDiff=item._implicitVal-curEq._implicitVal;const _ic=_iDiff>0?'#44cc44':'#cc4444';
-    diffs+=`<div style="color:${_ic};font-size:.82rem">암묵: ${_iDiff>0?'+':''}${_iDiff}</div>`;
+    diffs+=`<div style="color:${_ic};font-size:.82rem">${_T('암묵')}: ${_iDiff>0?'+':''}${_iDiff}</div>`;
   }
   const _fromE=curEq.enh||0;
   const _xc=_fromE>0?xferCost(_fromE):0;

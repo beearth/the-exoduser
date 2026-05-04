@@ -1970,6 +1970,11 @@ const _PTBR={
 '처치 시 데빌포스 5% 회복':'Kill: restore 5% DevilForce',
 'HP 50% 이하 시 전 스킬 쿨다운 -30%':'Below 50% HP: all skill CD -30%',
 '물약 사용 시 5초간 피해 +15%':'Using Potion: DMG +15% for 5s',
+'암묵':'Implicit',
+'낡은 악마의 팔찌':'Worn Demon Bracelet',
+'흑요석 악마의 팔찌':'Obsidian Demon Bracelet',
+'미스릴 악마의 팔찌':'Mithril Demon Bracelet',
+'낡은 생명의 팔찌':'Worn Life Bracelet',
 '스테이지':'Fase',
 '💪 힘 (STR)':'💪 STR',
 '🏹 민첩 (DEX)':'🏹 DEX',
@@ -2045,4 +2050,4 @@ const _PTBR_BASE={'대검':'Espadão','석궁':'Besta','연사석궁':'Repetidor
 '견갑':'Guarda','대견갑':'Grande Escudo','전투화':'Botas de Combate','갑옷':'Armadura','갑주':'Armadura',
 '왕관':'coroa','장갑':'luvas','건틀릿':'Manoplas','바지':'calça','각반':'Caneleiras',
 '허리띠':'Cinto','벨트':'Cinto','부적':'Talismã','목걸이':'colar','반지':'Anel',
-'망토':'Capa','팔찌':'Bracelete','귀걸이':'Brinco'};
+'망토':'Capa','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Bracelete','귀걸이':'Brinco'};

@@ -1950,6 +1950,11 @@ const _DE={
 '처치 시 데빌포스 5% 회복':'Kill: restore 5% DevilForce',
 'HP 50% 이하 시 전 스킬 쿨다운 -30%':'Below 50% HP: all skill CD -30%',
 '물약 사용 시 5초간 피해 +15%':'Using Potion: DMG +15% for 5s',
+'암묵':'Implicit',
+'낡은 악마의 팔찌':'Worn Demon Bracelet',
+'흑요석 악마의 팔찌':'Obsidian Demon Bracelet',
+'미스릴 악마의 팔찌':'Mithril Demon Bracelet',
+'낡은 생명의 팔찌':'Worn Life Bracelet',
 '스테이지':'Stufe',
 '💪 힘 (STR)':'💪 STR',
 '🏹 민첩 (DEX)':'🏹 DEX',
@@ -2025,4 +2030,4 @@ const _DE_BASE={'대검':'Großschwert','석궁':'Armbrust','연사석궁':'Schn
 '견갑':'Schulterplatte','대견갑':'Große Schulterplatte','전투화':'Kampfstiefel','갑옷':'Rüstung','갑주':'Panzerung',
 '왕관':'Krone','장갑':'Handschuhe','건틀릿':'Panzerhandschuhe','바지':'Hose','각반':'Beinschienen',
 '허리띠':'Gürtel','벨트':'Gürtel','부적':'Talisman','목걸이':'Halskette','반지':'Ring',
-'망토':'Umhang','팔찌':'Armreif','귀걸이':'Ohrring'};
+'망토':'Umhang','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Armreif','귀걸이':'Ohrring'};

@@ -1893,6 +1893,11 @@ const _CS={
 '처치 시 데빌포스 5% 회복':'Kill: restore 5% DevilForce',
 'HP 50% 이하 시 전 스킬 쿨다운 -30%':'Below 50% HP: all skill CD -30%',
 '물약 사용 시 5초간 피해 +15%':'Using Potion: DMG +15% for 5s',
+'암묵':'Implicit',
+'낡은 악마의 팔찌':'Worn Demon Bracelet',
+'흑요석 악마의 팔찌':'Obsidian Demon Bracelet',
+'미스릴 악마의 팔찌':'Mithril Demon Bracelet',
+'낡은 생명의 팔찌':'Worn Life Bracelet',
 '스테이지':'Fáze',
 '💪 힘 (STR)':'💪 STR',
 '🏹 민첩 (DEX)':'🏹 DEX',
@@ -1970,5 +1975,5 @@ const _CS_BASE={
 '견갑':'Nárameník','대견갑':'Velký nárameník','전투화':'Bojové boty','갑옷':'Brnění','갑주':'Plátová zbroj',
 '왕관':'Koruna','장갑':'Rukavice','건틀릿':'Plátové rukavice','바지':'Kalhoty','각반':'Holenní chrániče',
 '허리띠':'Opasek','벨트':'Pás','부적':'Talisman','목걸이':'Náhrdelník','반지':'Prsten',
-'망토':'Plášť','팔찌':'Náramek','귀걸이':'Náušnice'};
+'망토':'Plášť','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Náramek','귀걸이':'Náušnice'};
 
