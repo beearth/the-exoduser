@@ -5796,6 +5796,17 @@ const _EN={
   '인간성':'Humanity',
   '전투 통계':'Combat Stats',
   '스테이지':'Stage',
+'⚡ 이동스킬':'⚡ Movement',
+'⚔️ 물리':'⚔️ Physical',
+'🛡️ 방어':'🛡️ Defense',
+'🔮 마법':'🔮 Magic',
+'🏹 석궁/투사체':'🏹 Crossbow/Projectile',
+'⚙️ 영역':'⚙️ Domain',
+'💀 필살기':'💀 Ultimate',
+'⭐ 추천':'⭐ Recommend',
+'⚔ 공격':'⚔ Attack',
+'🛡 방어':'🛡 Defense',
+'⚙ 특수':'⚙ Special',
 };
 // --- 장비명 조합 번역 (접두사 + 기본형) ---
 const _EN_PFX={'녹슨':'Rusty','강철':'Steel','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Judgment','천벌의':'Divine Wrath','파멸의':'Destruction',
@@ -6708,7 +6719,7 @@ let _actx=null,_actxResumed=false;
 let _actxWatchdog=null;
 function actx(){
   if(!_actx){
-    _actx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'playback',sampleRate:44100});
+    _actx=new (window.AudioContext||window.webkitAudioContext)(IS_MOBILE?{latencyHint:'interactive'}:{latencyHint:'playback',sampleRate:44100});
     // 워치독: 500ms마다 suspended 감지 즉시 복구
     if(_actxWatchdog)clearInterval(_actxWatchdog);
     _actxWatchdog=setInterval(()=>{
@@ -6962,8 +6973,20 @@ async function _loadAudioBuffers(){
   // AudioContext가 유저 제스처 후 활성화될 때까지 대기
   if(!_actx||_actx.state==='suspended'){await new Promise(r=>{const id=setInterval(()=>{if(_actx&&_actx.state==='running'){clearInterval(id);r()}},200);setTimeout(()=>{clearInterval(id);r()},10000)})}
   try{const c=actx();
-  for(const[key,url]of Object.entries(_sampleFiles)){
-    try{const r=await fetch(url);if(!r.ok){console.warn('[SFX] fetch fail:',key,r.status);continue}const ab=await r.arrayBuffer();_audioBuffers[key]=await c.decodeAudioData(ab)}catch(e){console.warn('[SFX] load fail:',key,e.message)}
+  const entries=Object.entries(_sampleFiles);
+  if(IS_MOBILE){
+    // 모바일: 3개씩 배치 + 프레임 양보 (메인스레드 블로킹 방지)
+    for(let i=0;i<entries.length;i+=3){
+      const batch=entries.slice(i,i+3);
+      await Promise.all(batch.map(async([key,url])=>{
+        try{const r=await fetch(url);if(!r.ok)return;const ab=await r.arrayBuffer();_audioBuffers[key]=await c.decodeAudioData(ab)}catch(e){}
+      }));
+      await new Promise(r=>setTimeout(r,0)); // 프레임 양보
+    }
+  }else{
+    for(const[key,url]of entries){
+      try{const r=await fetch(url);if(!r.ok){console.warn('[SFX] fetch fail:',key,r.status);continue}const ab=await r.arrayBuffer();_audioBuffers[key]=await c.decodeAudioData(ab)}catch(e){console.warn('[SFX] load fail:',key,e.message)}
+    }
   }}catch(e){}
 }
 // ── SFX_MAP: 프로시저럴/파일 라우팅 (DAY 10) ──
@@ -7650,15 +7673,15 @@ _archerRaw.onload=()=>{
 };
 let _sfxFrameT=0;const _sfxFrameCnt={};
 let _activeNodeCnt=0;
-const _MAX_ACTIVE_NODES=48;
-const _SFX_MAX=2; // 프레임당 카테고리별 최대
+const _MAX_ACTIVE_NODES=IS_MOBILE?16:48;
+const _SFX_MAX=IS_MOBILE?1:2; // 프레임당 카테고리별 최대
 const _sfxQueue=[];        // {key,vol,rate,pri} 대기열
-const _SFX_PER_FRAME=6;    // 프레임당 최대 처리 수
+const _SFX_PER_FRAME=IS_MOBILE?3:6;    // 프레임당 최대 처리 수
 // ── 사운드 우선순위 ──
 const _SFX_PRI={SKILL:10,VOICE:9,DEATH:4,HIT:2,PROJ:1,AMB:0};
 const _activeNodes=[];      // {src,gain,pri,key,_dn} 재생 중 노드 추적
-const _MAX_PROJ_NODES=5;    // PROJ(탄막히트) 동시 최대 5개
-const _MAX_HIT_NODES=3;     // HIT 동시 최대 3개
+const _MAX_PROJ_NODES=IS_MOBILE?2:5;    // PROJ(탄막히트) 동시 최대
+const _MAX_HIT_NODES=IS_MOBILE?2:3;     // HIT 동시 최대
 function _sfxPri(key){
   if(key.startsWith('player_dead'))return _SFX_PRI.VOICE; // 플레이어 사망=최우선급
   if(key.startsWith('voice_')||key==='male_grunt')return _SFX_PRI.VOICE;
@@ -7699,7 +7722,7 @@ function _playSampleNow(key,vol,rate,startTime,pan){
   _activeNodeCnt++;
   const _nd={src,gain,pri,key,_dn:null,_st:performance.now()};
   let _d=false;
-  function _dn(){if(_d)return;_d=true;_activeNodeCnt=Math.max(0,_activeNodeCnt-1);const idx=_activeNodes.indexOf(_nd);if(idx>=0)_activeNodes.splice(idx,1);try{src.disconnect();gain.disconnect()}catch(e){}}
+  function _dn(){if(_d)return;_d=true;_activeNodeCnt=Math.max(0,_activeNodeCnt-1);const idx=_activeNodes.indexOf(_nd);if(idx>=0){_activeNodes[idx]=_activeNodes[_activeNodes.length-1];_activeNodes.pop()}try{src.disconnect();gain.disconnect()}catch(e){}}
   _nd._dn=_dn;_activeNodes.push(_nd);
   if(pan&&Math.abs(pan)>0.05){
     const _panner=c.createStereoPanner();
