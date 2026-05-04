@@ -16995,7 +16995,7 @@ function _tickBuildMapCache(){
     if(_bmcHasSoil){
       const si=_GROUND_TILES['gt_soil'];
       c.save();c.beginPath();
-      for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){const v=map[ty][tx];if(v===0||v===4||v===5)c.rect(tx*T,ty*T,T,T)}
+      for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){const v=map[ty][tx];if(v===0||v===2||v===4||v===5||v===6)c.rect(tx*T,ty*T,T,T)}
       c.clip();c.imageSmoothingEnabled=false;
       for(let py=0;py<mh*T;py+=256)for(let px=0;px<mw*T;px+=256)c.drawImage(si,px,py,256,256);
       c.restore();
@@ -17009,11 +17009,10 @@ function _tickBuildMapCache(){
     for(let ty=_bmcRow;ty<rowEnd;ty++){
       for(let tx=0;tx<mw;tx++){
         const v=map[ty][tx];
-        if(v===2){c.fillStyle='#0a0000';c.fillRect(tx*T,ty*T,T,T)}
+        if(v===2||v===6){c.fillStyle=th.f;c.fillRect(tx*T,ty*T,T,T)}
         else if((v===0||v===4||v===5)&&!_bmcHasSoil){c.fillStyle=th.f;c.fillRect(tx*T,ty*T,T,T)}
         else if(v===1&&!_bmcHasVoid&&!_bmcHasSkull){c.fillStyle='#000000';c.fillRect(tx*T,ty*T,T,T)}
         else if(v===3){c.fillStyle='#000000';c.fillRect(tx*T,ty*T,T,T)}
-        else if(v===6){c.fillStyle='#8833cc';c.fillRect(tx*T,ty*T,T,T)}
       }
       // 기둥/경계 (이 행의 벽 타일)
       if(ty>=1&&ty<mh-1){
@@ -17122,7 +17121,7 @@ function buildMapCache(){
       const spPx=gtDef.spacingPx==='native'?src.naturalWidth:gtDef.spacingPx;
       c.save();c.beginPath();
       for(let ty2=0;ty2<mh;ty2++)for(let tx2=0;tx2<mw;tx2++){
-        if(map[ty2][tx2]===0)c.rect(tx2*T,ty2*T,T,T);
+        const _tv=map[ty2][tx2];if(_tv===0||_tv===2||_tv===4||_tv===5||_tv===6)c.rect(tx2*T,ty2*T,T,T);
       }
       c.clip();
       c.imageSmoothingEnabled=false;
@@ -17153,7 +17152,7 @@ function buildMapCache(){
     // 에디터 텍스처(T=8 기준)를 게임 해상도(T=40)로 스케일업, 바닥 타일에만 클립
     c.save();c.beginPath();
     for(let ty2=0;ty2<mh;ty2++)for(let tx2=0;tx2<mw;tx2++){
-      if(map[ty2][tx2]===0)c.rect(tx2*T,ty2*T,T,T);
+      const _tv2=map[ty2][tx2];if(_tv2===0||_tv2===2||_tv2===4||_tv2===5||_tv2===6)c.rect(tx2*T,ty2*T,T,T);
     }
     c.clip();
     c.imageSmoothingEnabled=false;
@@ -17649,7 +17648,7 @@ function _buildStreamChunk(cx,cy){
   }
   if(_hasSoil){
     c.save();c.beginPath();
-    for(let ty=ty0;ty<ty1;ty++)for(let tx=tx0;tx<tx1;tx++){const _v=map[ty][tx];if(_v===0||_v===4||_v===5)c.rect((tx-tx0)*T,(ty-ty0)*T,T,T)}
+    for(let ty=ty0;ty<ty1;ty++)for(let tx=tx0;tx<tx1;tx++){const _v=map[ty][tx];if(_v===0||_v===2||_v===4||_v===5||_v===6)c.rect((tx-tx0)*T,(ty-ty0)*T,T,T)}
     c.clip();
     for(let py=Math.floor(_wy0/_tileSz)*_tileSz;py<_wy0+_wh;py+=_tileSz)for(let px=Math.floor(_wx0/_tileSz)*_tileSz;px<_wx0+_ww;px+=_tileSz){
       c.drawImage(_soilImg,px-_wx0,py-_wy0,_tileSz,_tileSz);
@@ -17659,11 +17658,10 @@ function _buildStreamChunk(cx,cy){
   for(let ty=ty0;ty<ty1;ty++)for(let tx=tx0;tx<tx1;tx++){
     const v=map[ty]?map[ty][tx]:1;
     const lx=(tx-tx0)*T,ly=(ty-ty0)*T;
-    if(v===2){c.fillStyle='#0a0000';c.fillRect(lx,ly,T,T)}
+    if(v===2||v===6){c.fillStyle=_th.f;c.fillRect(lx,ly,T,T)}
     else if((v===0||v===4||v===5)&&!_hasSoil){c.fillStyle=_th.f;c.fillRect(lx,ly,T,T)}
     else if(v===1&&!_hasVoidWall&&!(hell===0&&_skullWallPat)){c.fillStyle='#000000';c.fillRect(lx,ly,T,T)}
     else if(v===3){c.fillStyle='#000000';c.fillRect(lx,ly,T,T)}
-    else if(v===6){c.fillStyle='#8833cc';c.fillRect(lx,ly,T,T)}
   }
   if(hell===0&&_wallEdgeImg&&_wallEdgeImg.complete&&_wallEdgeImg.naturalWidth>0){
     const _weAR=_wallEdgeImg.naturalHeight/_wallEdgeImg.naturalWidth,_weW=T*3,_weH=~~(_weW*_weAR);
@@ -37738,6 +37736,7 @@ function draw(){
   }
   if(G._portals&&G.map){
     for(const _zp of G._portals){
+      const _zpx=_zp.x,_zpy=_zp.y;
       // 중앙에 구역 포탈 (붉은/주황 소용돌이)
       const _pcx=(_zpx+.5)*T,_pcy=(_zpy+.5)*T;
       if(_zpx>=s1&&_zpx<e1&&_zpy>=s2&&_zpy<e2){
