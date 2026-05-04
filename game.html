@@ -36376,7 +36376,7 @@ function _invCardFields(it){
     const _iv=it._implicitVal;
     const _dispV=(_iv<1&&_iv>0)?(~~(_iv))+'':_iv;
     stats+='<div style="color:#aaddff;font-size:.8rem;border-bottom:1px solid #334;padding-bottom:4px;margin-bottom:4px">';
-    stats+='<span style="color:#7799bb">\u25C6 </span>'+it._implicitKo.replace('X',_dispV)+'</div>';
+    stats+='<span style="color:#7799bb">\u25C6 </span>'+_T(it._implicitKo).replace('X',_dispV)+'</div>';
   }
   // 어픽스 표시
   if(it.affixes&&it.affixes.length){
@@ -36391,8 +36391,8 @@ function _invCardFields(it){
   // 전설 특수 효과 표시
   if(it.legendarySpecial){
     stats+='<div style="margin-top:6px;padding:4px 6px;background:rgba(255,170,0,.12);border:1px solid #ffaa00;border-radius:3px">';
-    stats+='<div style="color:#ffaa00;font-size:.75rem;font-weight:700;margin-bottom:2px">\u25C8 \uC804\uC124 \uD2B9\uC218</div>';
-    stats+='<div style="color:#ffdd88;font-size:.8rem">'+it.legendarySpecial.ko+'</div></div>';
+    stats+='<div style="color:#ffaa00;font-size:.75rem;font-weight:700;margin-bottom:2px">\u25C8 '+_T('전설 특수')+'</div>';
+    stats+='<div style="color:#ffdd88;font-size:.8rem">'+_T(it.legendarySpecial.ko)+'</div></div>';
   }
   // ═══ 결정 슬롯 표시 ═══
   if(it.socketCount>0){
@@ -36472,8 +36472,8 @@ function _invBuildCompare(item,curEq){
   }
   // 임플리싯 비교
   if(item._implicitKo&&curEq._implicitKo&&item._implicitKo!==curEq._implicitKo){
-    diffs+=`<div style="font-size:.82rem;color:#cc4444">- ${curEq._implicitKo.replace('X',curEq._implicitVal||'')}</div>`;
-    diffs+=`<div style="font-size:.82rem;color:#44cc44">+ ${item._implicitKo.replace('X',item._implicitVal||'')}</div>`;
+    diffs+=`<div style="font-size:.82rem;color:#cc4444">- ${_T(curEq._implicitKo).replace('X',curEq._implicitVal||'')}</div>`;
+    diffs+=`<div style="font-size:.82rem;color:#44cc44">+ ${_T(item._implicitKo).replace('X',item._implicitVal||'')}</div>`;
   }else if(item._implicitVal!==undefined&&curEq._implicitVal!==undefined&&item._implicitVal!==curEq._implicitVal){
     const _iDiff=item._implicitVal-curEq._implicitVal;const _ic=_iDiff>0?'#44cc44':'#cc4444';
     diffs+=`<div style="color:${_ic};font-size:.82rem">암묵: ${_iDiff>0?'+':''}${_iDiff}</div>`;
@@ -38091,14 +38091,17 @@ function draw(){
   if(!G._bossArena&&G.exits.length>0&&G.bossGate&&G.bossGate.length>0&&G.bossAlive){
     const _exMinY=G._gateY!=null?G._gateY:Math.min(...G.exits.map(e=>e.y));
     const _treeCx=(G._bossCx+.5)*T;
-    const _treeCy=(_exMinY+.5)*T-1000;
+    const _treeCy=(_exMinY+.5)*T;
     const _gtI=_bossGateImgs[SI_TO_HELL[G.stage]];
     if(_gtI&&(_gtI.naturalWidth||_gtI.width)){
       const _gtW=600,_gtH=~~(600*(_gtI.naturalHeight||_gtI.height)/(_gtI.naturalWidth||_gtI.width));
       X.drawImage(_gtI,_treeCx-_gtW/2,_treeCy-_gtH/2,_gtW,_gtH);
     }
-    const _exitY=G.exits.length>0?Math.min(...G.exits.map(e=>(e.y+.5)*T))-1000:_treeCy+100;
-    _drawPortal(X,_treeCx,_exitY,250,_now,SI_TO_HELL[G.stage]);
+    // 포탈을 나무 입구(동굴 입) 위치에 렌더 — 나무 중심에서 위쪽
+    const _gtI2=_bossGateImgs[SI_TO_HELL[G.stage]];
+    const _gtH2=_gtI2&&(_gtI2.naturalWidth||_gtI2.width)?~~(600*(_gtI2.naturalHeight||_gtI2.height)/(_gtI2.naturalWidth||_gtI2.width)):300;
+    const _portalY=_treeCy-_gtH2*.15;
+    _drawPortal(X,_treeCx,_portalY,250,_now,SI_TO_HELL[G.stage]);
   }
   // tile=3 대문 장식은 맵 캐시에서 처리됨 (출구 타일이 진입 역할)
   // [GLOW-ORI] 발광 오브젝트 렌더링 — 비활성화
