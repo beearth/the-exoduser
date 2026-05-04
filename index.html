@@ -277,7 +277,9 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 .fdg-title .suffix{transition:opacity .5s ease-out}
 /* PRESENTS + 부제 (JS 타이머 제어) */
 .fdg-presents{font:400 clamp(12px,1.25vw,24px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#888;letter-spacing:.5em;text-align:center;opacity:0;transition:opacity .5s ease-out}
-.fdg-subtitle{font:300 clamp(18px,2vw,32px) 'Noto Sans KR',sans-serif;color:#B8B0A0;letter-spacing:.15em;text-align:center;opacity:0;transition:opacity .5s ease-out}
+.fdg-subtitle{font:300 clamp(18px,2vw,32px) 'Noto Sans KR',sans-serif;color:#B8B0A0;letter-spacing:.15em;text-align:center;opacity:1}
+.fdg-subtitle .fdg-char{display:inline-block;opacity:0;filter:blur(12px);transition:opacity .4s ease-out, filter .5s ease-out}
+.fdg-subtitle .fdg-char.on{opacity:1;filter:blur(0)}
 </style>
 </head>
 <body>
@@ -2016,7 +2018,11 @@ function showCharGate(charId){
   const suffix=fdgTitle.querySelector('.suffix');
   let fdgSteps=[];
   function showFDGScreen(){
-    fdgSub.textContent=_TL('친애하는 게이머를 위하여');
+    // 부제: 한 글자씩 블러→선명 타이핑
+    const _subText=_TL('친애하는 게이머를 위하여');
+    fdgSub.innerHTML='';
+    for(let _ci=0;_ci<_subText.length;_ci++){const _sp=document.createElement('span');_sp.className='fdg-char';_sp.textContent=_subText[_ci]===' '?'\u00A0':_subText[_ci];fdgSub.appendChild(_sp)}
+    const _subChars=fdgSub.querySelectorAll('.fdg-char');
     fdgEl.style.display='';
     console.log('[SPLASH] FDG screen with wolf emblem loaded');
     requestAnimationFrame(()=>requestAnimationFrame(()=>{fdgEl.classList.add('active')}));
@@ -2032,9 +2038,9 @@ function showCharGate(charId){
     s(()=>{accents[2].style.opacity='1';prefixes[2].style.opacity='1';prefixes[2].style.transform='translateX(0)'},2730);
     // Phase 3: S 등장
     s(()=>{suffix.style.opacity='1'},3250);
-    // Phase 4: PRESENTS + 부제
+    // Phase 4: PRESENTS + 부제 한 글자씩 블러→선명
     s(()=>{document.getElementById('fdgPresents').style.opacity='1'},3900);
-    s(()=>{fdgSub.style.opacity='1'},4550);
+    for(let _ci=0;_ci<_subChars.length;_ci++){s(()=>{_subChars[_ci].classList.add('on')},4550+_ci*80)}
     fdgTimerId=setTimeout(()=>{
       if(done||phase!==1)return;
       fdgEl.classList.add('fadeout');

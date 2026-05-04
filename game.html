@@ -2440,6 +2440,7 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optFog" checked style="width:16px;height:16px;accent-color:#8899aa"><span class="set-name">안개 효과</span></label></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optGrain" checked style="width:16px;height:16px;accent-color:#aa9977"><span class="set-name">필름 그레인</span></label></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optOutline" checked style="width:16px;height:16px;accent-color:#aa9977"><span class="set-name">캐릭터 외곽선</span></label></div>
+          <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optShowFps" style="width:16px;height:16px;accent-color:#88ff88"><span class="set-name">프레임 표시 (FPS)</span></label></div>
         </div>
 
         <div class="set-section" style="margin-top:20px;border-top:1px solid #443322;padding-top:15px">
@@ -4601,7 +4602,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -5455,7 +5456,7 @@ const _EN={
 '블룸 효과':'Bloom Effect','잔상 트레일':'Afterimage Trail','슬래시 이펙트':'Slash Effect',
 '후처리 효과':'Post-Process Effect','사망 이펙트':'Death Effect','동적 조명':'Dynamic Lighting',
 '횃불 조명 (어둠)':'Torch Lighting (Dark)','앰비언트 파티클':'Ambient Particles','안개 효과':'Fog Effect',
-'필름 그레인':'Film Grain','캐릭터 외곽선':'Character Outline',
+'필름 그레인':'Film Grain','캐릭터 외곽선':'Character Outline','프레임 표시 (FPS)':'Show FPS',
 '리롤':'Reroll','물약':'Potion',
 '기절!':'Stunned!','으로 탈출!':'to escape!','Shift 작살':'Shift Harpoon',
 '더블탭 전격이동':'Double-tap Dash','Ctrl 유령걸음':'Ctrl Ghost Walk','Ctrl 얼음보주':'Ctrl Ice Orb',
@@ -17070,8 +17071,8 @@ function buildMapCache(){
   _lastCamChunkX=-1;_lastCamChunkY=-1;_activeChunkLen=0;
   _staticObjCvs=null;_staticObjDirty=true;_staticObjCamX=-9999;_staticObjCamY=-9999;
   _spawnHoleActiveLen=0;_spawnHoleCamChunkX=-1;_spawnHoleCamChunkY=-1;
-  // 같은 스테이지 재빌드 시 스트리밍 청크 보존 (gt_soil onload 등)
-  if(_mapStage!==G.stage||!_streamMap){_streamChunks={};_streamChunkCnt=0;_streamVpCvs=null;_streamVpCtx=null;_streamVpBmp=null}
+  // 스트리밍 청크 항상 리셋 (타일 렌더 변경 반영)
+  _streamChunks={};_streamChunkCnt=0;_streamVpCvs=null;_streamVpCtx=null;_streamVpBmp=null;
   _streamEvictFrame=0;_streamVpDirty=true;_streamLastCamTx=-1;_streamLastCamTy=-1;_streamVpWorldX=1e9;_streamVpWorldY=1e9;_streamVpW=0;_streamVpH=0;
   _streamBuildQHead=0;_streamBuildQTail=0;_streamBuildQCount=0;
   const hell=SI_TO_HELL[G.stage];
@@ -35351,6 +35352,7 @@ $('optAmbPart').onchange=function(){OPT.ambPart=this.checked;_renderPresetBtns()
 $('optFog').onchange=function(){OPT.fog=this.checked;_renderPresetBtns();saveSettings()};
 $('optGrain').onchange=function(){OPT.grain=this.checked;_renderPresetBtns();saveSettings()};
 if($('optOutline'))$('optOutline').onchange=function(){OPT.outline=this.checked;saveSettings()};
+if($('optShowFps'))$('optShowFps').onchange=function(){OPT.showFps=this.checked;saveSettings()};
 // ── 커스텀 마우스 커서 ──
 const _CURSORS=[
   {name:'기본',nameEn:'Default',draw:null,img:null,hx:0,hy:0},
@@ -35847,6 +35849,7 @@ function syncSettingsUI(){
   if($('optTorch'))$('optTorch').checked=!!OPT.torch;
   if($('optAmbPart'))$('optAmbPart').checked=!!OPT.ambPart;
   if($('optFog'))$('optFog').checked=!!OPT.fog;
+  if($('optShowFps'))$('optShowFps').checked=!!OPT.showFps;
   if($('optGrain'))$('optGrain').checked=!!OPT.grain;
   if($('optOutline'))$('optOutline').checked=OPT.outline!==false;
 }
@@ -37728,12 +37731,7 @@ function draw(){
     }
   }
   // [FLOOR-EYE] 비활성화 — MAP_OBJS 에셋으로 대체됨
-  // ── 존 포탈(tile=6) 실시간 렌더: 모든 tile=6을 바닥색으로 덮고 포탈 애니메이션 ──
-  if(G.map){
-    for(let _pty=s2;_pty<e2;_pty++)for(let _ptx=s1;_ptx<e1;_ptx++){
-      if(G.map[_pty]&&G.map[_pty][_ptx]===6){X.fillStyle=stg.f;X.fillRect(_ptx*T,_pty*T,T,T)}
-    }
-  }
+  // tile=2,6은 맵 캐시에서 바닥 텍스처로 처리됨 (실시간 덮기 불필요)
   if(G._portals&&G.map){
     for(const _zp of G._portals){
       const _zpx=_zp.x,_zpy=_zp.y;
@@ -37766,11 +37764,10 @@ function draw(){
       }
     }
   }
-  // ── 출구 타일(tile=2) 실시간 렌더 ──
+  // ── 출구 타일(tile=2) 실시간 렌더 ── (맵 캐시에서 이미 바닥 텍스처 깔림, 덮어쓰기 안 함)
   for(let ei=0;ei<G.exits.length;ei++){
     const ex=G.exits[ei];const px=ex.x*T,py=ex.y*T;
     if(ex.x<s1||ex.x>=e1||ex.y<s2||ex.y>=e2)continue;
-    X.fillStyle=stg.f;X.fillRect(px,py,T,T);
     if(G.bossAlive&&!G._bossArena){
       // ── 입구 포탈: 빨간 소용돌이 ──
       // 중앙 타일에만 큰 포탈 렌더
@@ -37803,8 +37800,7 @@ function draw(){
         }
       }
     }else if(!G.bossAlive){
-      // 보스 사망 후 출구 (포탈 애니) — 모든 출구 타일 바닥 덮고 중앙에 포탈
-      X.fillStyle=stg.f;X.fillRect(px,py,T,T);
+      // 보스 사망 후 출구 (포탈 애니) — 캐시 바닥 위에 포탈만 그림
       if(ei===~~(G.exits.length/2)){
         const _exCx=G.exits.reduce((s,e)=>s+e.x,0)/G.exits.length;
         const _exCy=G.exits.reduce((s,e)=>s+e.y,0)/G.exits.length;
@@ -45083,17 +45079,20 @@ function _fpsUpdate(){
 }
 function _fpsDraw(){
   if(!X)return;
-  X.save();X.setTransform(1,0,0,1,0,0);
-  X.font='bold 11px monospace';X.textAlign='right';X.textBaseline='middle';
-  const _fy=C.height/2;
-  X.globalAlpha=.25;
-  const col=_fpsCur>=50?'#88ff88':_fpsCur>=30?'#ffcc44':'#ff6644';
-  X.fillStyle=col;X.fillText('FPS '+_fpsCur,C.width-10,_fy);
-  X.fillStyle='#999';X.fillText('E:'+ens.length+' P:'+_partCnt+' pj:'+projs.length,C.width-10,_fy+13);
-  const _uCol=_prof.u>14?'#ff6644':_prof.u>8?'#ffcc44':'#88ff88';
-  X.fillStyle=_uCol;X.fillText('U:'+_prof.u.toFixed(1)+'ms D:'+_prof.d.toFixed(1)+'ms',C.width-10,_fy+26);
-  X.globalAlpha=1;
-  X.restore();_txtTick++;_txtEvict();
+  if(OPT.showFps){
+    X.save();X.setTransform(1,0,0,1,0,0);
+    X.font='bold 11px monospace';X.textAlign='right';X.textBaseline='middle';
+    const _fy=C.height/2;
+    X.globalAlpha=.25;
+    const col=_fpsCur>=50?'#88ff88':_fpsCur>=30?'#ffcc44':'#ff6644';
+    X.fillStyle=col;X.fillText('FPS '+_fpsCur,C.width-10,_fy);
+    X.fillStyle='#999';X.fillText('E:'+ens.length+' P:'+_partCnt+' pj:'+projs.length,C.width-10,_fy+13);
+    const _uCol=_prof.u>14?'#ff6644':_prof.u>8?'#ffcc44':'#88ff88';
+    X.fillStyle=_uCol;X.fillText('U:'+_prof.u.toFixed(1)+'ms D:'+_prof.d.toFixed(1)+'ms',C.width-10,_fy+26);
+    X.globalAlpha=1;
+    X.restore();
+  }
+  _txtTick++;_txtEvict();
   _bossDbgDraw();
 }
 // ═══ BOSS AI DEBUG OVERLAY ═══
