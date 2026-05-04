@@ -1680,6 +1680,10 @@ const _IT={
 '⚙ 특수':'⚙ Special',
   '👻 공성허수아비!':'👻 Siege Scarecrow!',
   '💥 공성허수아비 폭발!':'💥 Siege Scarecrow Blast!',
+  '\u{1F47B} 유령총!':'\u{1F47B} Pistola Fantasma!',
+  '👻 공성유령!':'👻 Fantasma d\'Assedio!',
+  '기절!  ':'Stordito!  ',
+  '✟ 신성한 결계!':'✟ Barriera Sacra!',
 };
 
 const _IT_PFX={

@@ -1680,6 +1680,10 @@ const _ID={
 '⚙ 특수':'⚙ Special',
   '👻 공성허수아비!':'👻 Siege Scarecrow!',
   '💥 공성허수아비 폭발!':'💥 Siege Scarecrow Blast!',
+  '\u{1F47B} 유령총!':'\u{1F47B} Pistol Hantu!',
+  '👻 공성유령!':'👻 Hantu Pengepungan!',
+  '기절!  ':'Terkejut!  ',
+  '✟ 신성한 결계!':'✟ Penghalang Suci!',
 };
 
 

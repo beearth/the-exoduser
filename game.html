@@ -5844,6 +5844,57 @@ const _EN={
 '15. 신성+빙결':'15. Holy+Ice',
 '16. 암흑+가시+대왕2':'16. Dark+Spike+Slam2',
 '17. 사슬 최종':'17. Chain Final',
+'사슬기동:충돌':'Chain Drive: Impact',
+'사슬기동:화염':'Chain Drive: Flame',
+'뇌전걸음':'Ghost Walk',
+'전격이동':'Lightning Dash',
+'기검참':'Ki Slash',
+'악의구':'Malice Orb',
+'회전참':'Whirlwind Slash',
+'기폭팔':'Detonate',
+'칼등 처내기':'Blade Parry',
+'만화방창':'Barrage',
+'멸살광선':'Omni Beam',
+'원소추적탄':'Elem Seeker',
+'악의 보호자':'Malice Guardian',
+'악의 사냥':'Malice Hunt',
+'폭풍소환':'Malice Mortar',
+'해골무덤':'Bone Wall',
+'신성폭발':'Holy Blast',
+'블랙':'Black Star',
+'용암소환':'Lava Summon',
+'처형':'Execution',
+'얼음보주':'Ice Orb',
+'만화방창 II':'Barrage II',
+'마력광선':'Arc Laser',
+'업화선':'Karma Beam',
+'지옥진':'Inferno Field',
+'폭독칼날':'Plague Blade',
+'악의폭풍':'Malice Storm',
+'악의기둥':'Dark Pillar',
+'회복의 영역':'Holy Dome',
+'구속의 영역':'Holy Prison',
+'아이스스톰':'Ice Storm',
+'대왕치기':'Giant Slam',
+'대왕치기 2':'Giant Slam 2',
+'기동불꽃':'Chain Assault',
+'기동파괴':'Chain Slam',
+'기동칼날개':'Chain Slash',
+'평화의보호':'Peace Shield',
+'참회':'Repentance',
+'칼등날개':'Shield Wing',
+'파쇄의 영역':'Shatter Domain',
+'침식의 영역':'Corrosion Domain',
+'관통의 영역':'Pierce Domain',
+'부활의 영역':'Revival Domain',
+'가시덫':'Spike Trap',
+'푸른비':'Blue Rain',
+'버스트루프':'Burst Loop',
+'유령 허수아비':'Void Scarecrow',
+'폭발 허수아비':'Explode Scarecrow',
+'공성쇠뇌':'Siege Crossbow',
+'시간왜곡':'Time Warp',
+'뇌전창':'Thunder Stake',
 '⚡ 이동스킬':'⚡ Movement',
 '⚔️ 물리':'⚔️ Physical',
 '🛡️ 방어':'🛡️ Defense',
@@ -8467,7 +8518,8 @@ function _dispatchSkillSlot(slotIdx,keyCode){
         }
         showPH(_T('공성쇠뇌 철거 → 이동식'),'#66aadd');playSample('bow_release',.4,_r(1.2,.1));
         addTxt(P.x,P.y-20,_T('이동식 복귀'),'#66ccff',30);_skOk=true;
-      } else if(P.st>=GXBOW_ST){_xbowEquipped=true;activateGhostXbowTurret();_skOk=true}
+      } else if((P._gxCd||0)>0){showPH(_T('쿨다운!')+' '+((P._gxCd/60)|0)+'s','#888');break}
+      else if(P.st>=GXBOW_ST){_xbowEquipped=true;activateGhostXbowTurret();P._gxCd=~~(600*(1+_eqAffix('cooldownRed')));_skOk=true}
       else showPH(_T('ST 부족! (100)'),'#ff4444');break;
     case 'shieldThrow': showPH(_T('우클릭(칼등치기)에 합체됨'),'#66aadd');break;
     case 'blastShot': showPH(_T('T(석궁자동)에 세팅하세요'),'#ff6633');break;
@@ -18067,7 +18119,7 @@ function updateQS(){
           const _esAb=G._explodeScarecrow.absorbed,_esMx=G._explodeScarecrow.maxAbsorb;
           _cdPct=1-_esAb/_esMx;_cdSec=_esAb+'/'+_esMx;
         }else{
-          const _skCdMap={maliceMortar:P._mmCd||0,holyBlast:P._hbCd||0,bladeShot:P._bltCd||0,lavaSummon:P._lvCd||0,iceOrb:P._ioCd||0,ghostWalk:P._gwCd||0,bladeDash:P._bdCd||0,plagueBurst:P._pbCd||0,shieldThrow:P._stCd||0,blastShot:P._bsCd2||0,giantSlam:P._gslCd||0,holyDome:P._hdCd||0,spikeTrap:P._gcCd||0,needleShot:P._ndCd||0,holyPrison:P._hpCd||0,execution:P._execCd||0,peaceShield:P._psCd||0,blueShot:P._blueCd||0,blackStar:P._bsCd||0,weakPhys:P._wpCd||0,weakMag:P._wmCd||0,weakPj:P._wjCd||0,weakRev:P._wrCd||0,giantSlam2:P._gslCd||0,darkPillar:P._dpCd||0,ghostXbowTurret:0,voidScarecrow:P._vsCd||0,explodeScarecrow:P._exsCd||0,timeWarp:P._twCd||0};
+          const _skCdMap={maliceMortar:P._mmCd||0,holyBlast:P._hbCd||0,bladeShot:P._bltCd||0,lavaSummon:P._lvCd||0,iceOrb:P._ioCd||0,ghostWalk:P._gwCd||0,bladeDash:P._bdCd||0,plagueBurst:P._pbCd||0,shieldThrow:P._stCd||0,blastShot:P._bsCd2||0,giantSlam:P._gslCd||0,holyDome:P._hdCd||0,spikeTrap:P._gcCd||0,needleShot:P._ndCd||0,holyPrison:P._hpCd||0,execution:P._execCd||0,peaceShield:P._psCd||0,blueShot:P._blueCd||0,blackStar:P._bsCd||0,weakPhys:P._wpCd||0,weakMag:P._wmCd||0,weakPj:P._wjCd||0,weakRev:P._wrCd||0,giantSlam2:P._gslCd||0,darkPillar:P._dpCd||0,ghostXbowTurret:P._gxCd||0,voidScarecrow:P._vsCd||0,explodeScarecrow:P._exsCd||0,timeWarp:P._twCd||0};
           const _cn=_skCdMap[_ssid]||0;const _cm=_ssk.cd||0;
           _skOnCd=_cn>0;_cdPct=(_skOnCd&&_cm>0)?Math.min(_cn/_cm,1):0;_cdSec=(_cn/60).toFixed(1)+'s';
         }
@@ -18174,7 +18226,7 @@ function _updateActionKeys(){
   if(elBow){const _spSk=SKILL_SLOTS[4];
     const _techAim=P._mmAiming;
     // 모든 Space 슬롯 스킬 쿨다운 맵
-    const _spCdMap={maliceMortar:P._mmCd||0,maliceStorm:P._msCd||0,maliceHunt:P._mhCd||0,giantSlam:P._gslCd||0,giantSlam2:P._gslCd||0,darkPillar:P._dpCd||0,spikeTrap:P._gcCd||0,chainSlam:P._csCd||0,chainAssault:P._caCd||0,holyBlast:P._hbCd||0,blastShot:P._bsCd2||0,needleShot:P._ndCd||0,holyDome:P._hdCd||0,peaceShield:P._psCd||0,ghostXbowTurret:0,voidScarecrow:P._vsCd||0,execution:P._execCd||0,fireAura:P._faCd||0,fireBeam:P._fbCd||0,shieldThrow:P._stCd||0,ghostWalk:P._gwCd||0,plagueBurst:P._pbCd||0,blueShot:P._blueCd||0,iceOrb:P._ioCd||0,bladeDash:P._bdCd||0,explodeScarecrow:P._exsCd||0,timeWarp:P._twCd||0};
+    const _spCdMap={maliceMortar:P._mmCd||0,maliceStorm:P._msCd||0,maliceHunt:P._mhCd||0,giantSlam:P._gslCd||0,giantSlam2:P._gslCd||0,darkPillar:P._dpCd||0,spikeTrap:P._gcCd||0,chainSlam:P._csCd||0,chainAssault:P._caCd||0,holyBlast:P._hbCd||0,blastShot:P._bsCd2||0,needleShot:P._ndCd||0,holyDome:P._hdCd||0,peaceShield:P._psCd||0,ghostXbowTurret:P._gxCd||0,voidScarecrow:P._vsCd||0,execution:P._execCd||0,fireAura:P._faCd||0,fireBeam:P._fbCd||0,shieldThrow:P._stCd||0,ghostWalk:P._gwCd||0,plagueBurst:P._pbCd||0,blueShot:P._blueCd||0,iceOrb:P._ioCd||0,bladeDash:P._bdCd||0,explodeScarecrow:P._exsCd||0,timeWarp:P._twCd||0};
     const _spCdNow=_spCdMap[_spSk]||0;
     const _spOnCd=_spCdNow>0;
     // 스택형 스킬 처리
@@ -24751,6 +24803,7 @@ function update(){
   if(G._fireZones){for(let _hi=0;_hi<G._fireZones.length;_hi++){const _h=G._fireZones[_hi];if(_h.type==='holyDome'&&dst(P.x,P.y,_h.x,_h.y)<_h.r){_hdCdBonus=sp;break}}}
   // ═══ 유령 허수아비 — 쿨다운 ═══
   if(P._vsCd>0)P._vsCd-=sp+_hdCdBonus;
+  if(P._gxCd>0)P._gxCd-=sp+_hdCdBonus;
   // ═══ 유령 허수아비 — 탄막 흡수 로직 ═══
   if(G._voidScarecrow&&G._voidScarecrow.aggroOn){
     const _vs=G._voidScarecrow;
@@ -37676,12 +37729,16 @@ function draw(){
   }
   // [FLOOR-EYE] 비활성화 — MAP_OBJS 에셋으로 대체됨
   // 출구 타일만 실시간 렌더 (펄스 애니메이션)
-  if(G.exits.length>0&&_gameFrame%300===0)console.log('[EXIT-DBG] exits='+G.exits.length+' bossAlive='+G.bossAlive+' arena='+G._bossArena+' ex0=('+G.exits[0].x+','+G.exits[0].y+') view='+s1+'-'+e1+'/'+s2+'-'+e2);
+  // 디버그: 뷰포트 내 tile=2인 모든 타일을 빨간색으로 (G.exits 무관)
+  if(G.map){for(let _dty=s2;_dty<e2;_dty++)for(let _dtx=s1;_dtx<e1;_dtx++){
+    if(G.map[_dty]&&G.map[_dty][_dtx]===2){X.fillStyle='#ff0000';X.fillRect(_dtx*T,_dty*T,T,T)}
+  }}
+  if(G.exits.length>0&&_gameFrame%300===0)console.log('[EXIT-DBG] exits='+G.exits.length+' bossAlive='+G.bossAlive+' arena='+G._bossArena+' ex0=('+G.exits[0].x+','+G.exits[0].y+')');
   for(let ei=0;ei<G.exits.length;ei++){
     const ex=G.exits[ei];const px=ex.x*T,py=ex.y*T;
     if(ex.x<s1||ex.x>=e1||ex.y<s2||ex.y>=e2)continue;
-    // 모든 출구 타일을 검정으로 먼저 덮기 (캐시 바닥색 제거)
-    X.fillStyle='#f00';X.fillRect(px,py,T,T); // 디버그: 빨간색으로 확인
+    // 출구 타일 노란 테두리
+    X.strokeStyle='#ff0';X.lineWidth=3;X.strokeRect(px,py,T,T);
     if(G.bossAlive&&!G._bossArena){
       // ── 입구 포탈: 빨간 소용돌이 ──
       // 중앙 타일에만 큰 포탈 렌더
@@ -45434,7 +45491,7 @@ const INTRO_CUTSCENE_LINES={
     {id:2,img:'4.png',t:2500,dur:1500,speaker:null,text:'',cam:{zs:1.05,ze:1.15,px:0,py:0,ease:'out'},vfx:{vig:.35,chrom:.3,shake:1},fade:{type:'cross',in:300},sfx:'laugh_climax'},
     {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'네놈의 그 짜릿한 복수극, 잘도 봤다. 명작이더구나.',cam:{zs:1,ze:1.05,px:5,py:0,ease:'linear'},vfx:{vig:.5,grain:.1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:60,shadow:true}},
     {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'관람료는 내야겠지. 그래, 네놈에게 기회를 주마. 선택의 여지는 없다.',cam:{zs:1.08,ze:1,px:0,py:0,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'네놈에게 알량한 선의가 보이는구나. 구해야 할 자가 아직 남아 있을 텐데.\n아직도 너를 기다리고 있는 것 같던데? 서로 시간이 많지 않다...',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'네놈에게 알량한 선의가 보이는구나. 구해야 할 사람이 아직 남아 있을 텐데.\n아직도 너를 기다리고 있는 것 같던데? 서로 시간이 많지 않다...',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:60,shadow:true}},
     {id:6,img:'7.png',t:17500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
     {id:7,img:'20.png',t:19000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},
     {id:8,img:'21.png',t:21500,dur:3000,speaker:'GODDESS',text:'그 아이의 목마를 보니 망자도 정신이 드는가 보구나.',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
