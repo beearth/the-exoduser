@@ -5712,7 +5712,7 @@ const _EN={
 '리롤':'Reroll','물약':'Potion',
 '기절!':'Stunned!','으로 탈출!':'to escape!','Shift 작살':'Shift Harpoon',
 '더블탭 전격이동':'Double-tap Dash','Ctrl 유령걸음':'Ctrl Ghost Walk','Ctrl 얼음보주':'Ctrl Ice Orb',
-'Ctrl 유령걸음으로 탈출하라.':'Ctrl — escape with Ghost Walk.','더블탭 전격이동으로 탈출하라.':'Double-tap dash to escape.',
+'Ctrl 유령걸음으로 탈출하라.':'Ctrl — escape with Ghost Walk.','더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Double-tap or Shift+Dir! Dash to escape!',
 'Ctrl 얼음보주로 탈출하라.':'Ctrl — escape with Ice Orb.','스킬 없으면 방향키 연타뿐이야.':'No escape skill — just mash the directional keys.',
 'BGM 선택':'BGM Select',
 '자동 (스테이지별)':'Auto (per stage)','전체 랜덤':'All Random','로비':'Lobby',
@@ -5808,7 +5808,7 @@ const _EN={
 '나머진 전부 우클릭!':'Everything else — right click!',
 '다섯 번 연속! 내가 본 인간 중 최고!':'Five in a row! Best human I\'ve ever seen!',
 '다음엔 죽지 마!':'Don\'t die next time!',
-'더블탭 전격이동으로 탈출하라.':'Double-tap dash to escape.',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Double-tap or Shift+Dir! Dash to escape!',
 '소환수 왔어! 먼저 처리해야 해!':'Summons incoming! Clear them first!',
 '스킬 없으면 방향키 연타뿐이야.':'No skill? Just spam the arrow keys.',
 '신기록!! 스트리머한테 보내!':'New record!! Send it to a streamer!',
@@ -6615,7 +6615,7 @@ function _checkPetDialogue(){
     if(P.skills.bladeDash>0)_esc.push('더블탭 전격이동');
     if(P.skills.ghostWalk>0)_esc.push('Ctrl 유령걸음');
     else if(P.skills.iceOrb>0)_esc.push('Ctrl 얼음보주');
-    _petSayUrgent('stun_warn','cat',_T('기절!')+' '+_esc.map(e=>_T(e)).join(' / ')+' '+_T('으로 탈출!'),4,8,'crow',P.skills.bladeDash>0?'더블탭 전격이동으로 탈출하라.':P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출하라.':P.skills.iceOrb>0?'Ctrl 얼음보주로 탈출하라.':'스킬 없으면 방향키 연타뿐이야.',3);
+    _petSayUrgent('stun_warn','cat',_T('기절!')+' '+_esc.map(e=>_T(e)).join(' / ')+' '+_T('으로 탈출!'),4,8,'crow',P.skills.bladeDash>0?'더블탭 or Shift+방향키! 전격이동으로 탈출해!':P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출하라.':P.skills.iceOrb>0?'Ctrl 얼음보주로 탈출하라.':'스킬 없으면 방향키 연타뿐이야.',3);
   }
   // MP 위기 (v4 — INT빌드)
   if(P.mp<P.mmp*.2&&(P.aint||0)>Math.max(P.astr||0,P.adex||0))_petSayUrgent('mp_warn','crow','마력이 빈다. 평타 섞어.',3,60,'cat','MP 부족! 평타로 패면서 회복해!',3);
@@ -16788,9 +16788,9 @@ function initMapObjects(){
     const _normalDeco=_baseDeco.filter(d=>!d.large&&!d.scatter);
     let _lgPlaced=0;
     if(_largeDeco.length>0){
-      const _lgBase=Math.min(30,Math.max(3,~~(_dcFloors.length/200)));
+      const _lgBase=Math.min(15,Math.max(2,~~(_dcFloors.length/400)));
       const _lgMax=_lgBase;
-      const _lgMinDist=600; // 대형 충돌체 간격 600px (길 막힘 방지)
+      const _lgMinDist=900; // 대형 충돌체 간격 900px (길 막힘 방지)
       // 벽 인접 바닥(사이드) vs 중앙 분리 — 사이드 80% 먼저
       const _lgSide=[],_lgCenter=[];
       for(let fi=0;fi<_dcFloors.length;fi++){
@@ -16821,6 +16821,12 @@ function initMapObjects(){
           if(_gridNear(px,py,_lgMinDist,160)){ok=false}
           if(!ok){pool.splice(fi,1);continue}
           if(bossRoom&&px/T>=bossRoom.x-3&&px/T<=bossRoom.x+bossRoom.w+3&&py/T>=bossRoom.y-3&&py/T<=bossRoom.y+bossRoom.h+3){pool.splice(fi,1);continue}
+          // 출구/게이트/포탈 근처 400px 이내 대형 오브젝트 배치 금지
+          {let _exNear=false;
+            if(G.exits){for(let _ei=0;_ei<G.exits.length;_ei++){if(dst(px,py,G.exits[_ei].x*T+T/2,G.exits[_ei].y*T+T/2)<400){_exNear=true;break}}}
+            if(!_exNear&&G._portals){for(const _pp of G._portals){if(dst(px,py,(_pp.x+.5)*T,(_pp.y+.5)*T)<400){_exNear=true;break}}}
+            if(!_exNear&&G.bossGate){for(let _gi=0;_gi<G.bossGate.length;_gi++){if(dst(px,py,(G.bossGate[_gi].x+.5)*T,(G.bossGate[_gi].y+.5)*T)<400){_exNear=true;break}}}
+            if(_exNear){pool.splice(fi,1);continue}}
           // 소환굴 근처 200px 이내 배치 금지
           {let _shNear=false;for(let _si=0;_si<G.spawnHoles.length;_si++){if(dst(px,py,G.spawnHoles[_si].x,G.spawnHoles[_si].y)<200){_shNear=true;break}}if(_shNear){pool.splice(fi,1);continue}}
           // 복도(좁은 통로) 배치 금지: 주변 8타일 범위에 바닥이 충분해야 함
@@ -16846,7 +16852,7 @@ function initMapObjects(){
     if(hell===0){
       const _uniObjs=['m_cage_gate','m_sword_pile','m_hang_cage','m_skull_altar','m_obelisk','m_flesh_ball','m_penta_circle','m_flesh_maw','m_skull_totem','m_bone_arch','m_eye_tree','m_throne'];
       const _uniSeed=_tseed(G.stage*71+13,hell*53+7);
-      const _uniMinDist=500;
+      const _uniMinDist=800;
       // 벽에서 4타일 이상 떨어진 중앙 바닥만 수집
       const _uniCenter=[];
       for(let fi=0;fi<_dcFloors.length;fi++){
@@ -16868,6 +16874,12 @@ function initMapObjects(){
           if(_gridNear(px,py,_uniMinDist)){ok=false}
           if(!ok)continue;
           if(bossRoom&&px/T>=bossRoom.x-3&&px/T<=bossRoom.x+bossRoom.w+3&&py/T>=bossRoom.y-3&&py/T<=bossRoom.y+bossRoom.h+3)continue;
+          // 출구/게이트/포탈 근처 400px 이내 배치 금지
+          {let _exN2=false;
+            if(G.exits){for(let _ei2=0;_ei2<G.exits.length;_ei2++){if(dst(px,py,G.exits[_ei2].x*T+T/2,G.exits[_ei2].y*T+T/2)<400){_exN2=true;break}}}
+            if(!_exN2&&G._portals){for(const _pp2 of G._portals){if(dst(px,py,(_pp2.x+.5)*T,(_pp2.y+.5)*T)<400){_exN2=true;break}}}
+            if(!_exN2&&G.bossGate){for(let _gi2=0;_gi2<G.bossGate.length;_gi2++){if(dst(px,py,(G.bossGate[_gi2].x+.5)*T,(G.bossGate[_gi2].y+.5)*T)<400){_exN2=true;break}}}
+            if(_exN2)continue}
           MAP_OBJS.push({type:_uniObjs[ui],x:px,y:py,hell});
           _uniCenter.splice(fi,1);_uDone=true;_uniPlaced++;
         }
@@ -24639,7 +24651,8 @@ function update(){
         if(!p.bladeShard&&!p.maliceHunt&&!p.iceBlade){if(mult>=2){addTxt(e.x,e.y-18,_T('약점!'),ELC[p.el],38);e.stunned+=35}
         else if(mult<=.5)addTxt(e.x,e.y-18,_T('저항!'),'#666',30);}
         if(!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p.lightning&&!p._fromTurret){G.hitStop=~~(_HS.proj*OPT.hitStop/100);}
-        if(!p._fromTurret){const hitCol=ELP[p.el];if(!p.bladeShard&&!p.maliceHunt&&!p.iceBlade){const pCount=p.lightning?2:~~(Math.max(3,Math.min(dmg/3,10))*OPT.parts/100);
+        const hitCol=ELP[p.el];
+        if(!p._fromTurret){if(!p.bladeShard&&!p.maliceHunt&&!p.iceBlade){const pCount=p.lightning?2:~~(Math.max(3,Math.min(dmg/3,10))*OPT.parts/100);
         for(let k=0;k<pCount;k++){poolPart(e.x+(Math.random()-.5)*6,e.y+(Math.random()-.5)*6,Math.cos(ang+Math.PI)*(1+Math.random()*2)+(Math.random()-.5),Math.sin(ang+Math.PI)*(1+Math.random()*2)+(Math.random()-.5),hitCol,2+Math.random()*3,8+Math.random()*8)}}}
         // ── 공성유령 합체: 터렛 투사체 명중 시 AoE 폭발 ──
         if(p._fromTurret&&_isFused('siegeGhost')){
@@ -38018,7 +38031,7 @@ function draw(){
       const _pcx=(_zpx+.5)*T,_pcy=(_zpy+.5)*T;
       if(_zpx>=s1&&_zpx<e1&&_zpy>=s2&&_zpy<e2){
         if(!_zonePortalImg)_buildZonePortalImg();
-        _drawPortal(X,_pcx,_pcy,T*3,_now,SI_TO_HELL[G.stage],true);
+        _drawPortal(X,_pcx,_pcy,T*6,_now,SI_TO_HELL[G.stage],true);
         // 접근 시 텍스트
         const _dg=dst(P.x,P.y,_pcx,_pcy);
         if(_dg<T*5){
@@ -38078,13 +38091,13 @@ function draw(){
   if(!G._bossArena&&G.exits.length>0&&G.bossGate&&G.bossGate.length>0&&G.bossAlive){
     const _exMinY=G._gateY!=null?G._gateY:Math.min(...G.exits.map(e=>e.y));
     const _treeCx=(G._bossCx+.5)*T;
-    const _treeCy=(_exMinY+.5)*T;
+    const _treeCy=(_exMinY+.5)*T-1000;
     const _gtI=_bossGateImgs[SI_TO_HELL[G.stage]];
     if(_gtI&&(_gtI.naturalWidth||_gtI.width)){
       const _gtW=600,_gtH=~~(600*(_gtI.naturalHeight||_gtI.height)/(_gtI.naturalWidth||_gtI.width));
       X.drawImage(_gtI,_treeCx-_gtW/2,_treeCy-_gtH/2,_gtW,_gtH);
     }
-    const _exitY=G.exits.length>0?Math.min(...G.exits.map(e=>(e.y+.5)*T)):_treeCy+100;
+    const _exitY=G.exits.length>0?Math.min(...G.exits.map(e=>(e.y+.5)*T))-1000:_treeCy+100;
     _drawPortal(X,_treeCx,_exitY,250,_now,SI_TO_HELL[G.stage]);
   }
   // tile=3 대문 장식은 맵 캐시에서 처리됨 (출구 타일이 진입 역할)
