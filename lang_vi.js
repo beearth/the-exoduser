@@ -2445,4 +2445,9 @@ const _VI={
 
 
 const _VI_PFX={'녹슨':'Gỉ Sét','강철':'Thép','흑요석':'Hắc Diện','미스릴':'Mithril','심판의':'Phán Xét','천벌의':'Thiên Phạt','파멸의':'Hủy Diệt','불꽃':'Lửa','화염':'Hỏa Ngục','염화':'Lửa Địa Ngục','지옥불':'Lửa Địa Ngục','지옥화':'Lửa Địa Ngục','지옥':'Lửa Địa Ngục','멸화의':'Diệt Vong','냉기':'Sương Giá','빙결':'Băng Kết','빙하':'Băng Hà','서리의':'Sương Muối','서리':'Sương Muối','영겁빙':'Băng Vĩnh Cửu','그림자':'Bóng Tối','암흑':'Hắc Ám','심연':'Vực Thẳm','나락의':'Địa Phủ','나락':'Địa Phủ','무간의':'Hư Không','전기':'Tia Lửa','낙뢰':'Sấm Sét','암전':'Lôi Điện','뇌신의':'Lôi Thần','뇌신':'Lôi Thần','만뢰의':'Vạn Lôi','축복':'Chúc Phúc','성광':'Thánh Quang','신성':'Thần Thánh','천사의':'Thiên Thần','신벌의':'Thần Phạt','낡은':'Cũ','천':'Vải','가죽':'Da','강철사':'Thép Dệt','은':'Bạc','은사':'Chỉ Bạc','화염의':'Hỏa Ngục','빙결의':'Băng Kết','암흑의':'Hắc Ám','암전의':'Lôi Điện'};
-const _VI_BASE={'대검':'Đại Kiếm','석궁':'Nỏ','연사석궁':'Nỏ Liên Thanh','마력석궁':'Nỏ Ma Lực','견갑':'Vai Giáp','대견갑':'Đại Vai Giáp','전투화':'Giày Chiến Đấu','갑옷':'Giáp','갑주':'Giáp','왕관':'Vương Miện','장갑':'Găng Tay','건틀릿':'Bao Tay Sắt','바지':'Quần','각반':'Xà Cạp','허리띠':'Thắt Lưng','벨트':'Thắt Lưng','부적':'Bùa Hộ Mệnh','목걸이':'Vòng Cổ','반지':'Nhẫn','망토':'Áo Choàng','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Vòng Tay','귀걸이':'Bông Tai'};
+const _VI_BASE={'대검':'Đại Kiếm','석궁':'Nỏ','연사석궁':'Nỏ Liên Thanh','마력석궁':'Nỏ Ma Lực','견갑':'Vai Giáp','대견갑':'Đại Vai Giáp','전투화':'Giày Chiến Đấu','갑옷':'Giáp','갑주':'Giáp','왕관':'Vương Miện','장갑':'Găng Tay','건틀릿':'Bao Tay Sắt','바지':'Quần','각반':'Xà Cạp','허리띠':'Thắt Lưng','벨트':'Thắt Lưng','부적':'Bùa Hộ Mệnh','목걸이':'Vòng Cổ','반지':'Nhẫn','망토':'Áo Choàng','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Vòng Tay','귀걸이':'Bông Tai'  '⚡ 연격!':'⚡ Rapid Strike!',
+  '⚔ 난타!':'⚔ Barrage!',
+  '💥 강타!':'💥 Slam!',
+  '🌀 휘두르기!':'🌀 Sweep!',
+  '방어↓':'DEF↓',
+};

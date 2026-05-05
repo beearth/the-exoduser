@@ -4681,6 +4681,9 @@ const _EN={
 // --- Status Effects ---
 '빙결!':'Frozen!','화상!':'Burning!','독!':'Poison!','감전!':'Shocked!',
 '기절!':'Stunned!','봉인됨!':'Sealed!','관통!':'Pierce!',
+// --- CAT-90: Boss Move texts ---
+'⚡ 연격!':'⚡ Rapid Strike!','⚔ 난타!':'⚔ Barrage!','💥 강타!':'💥 Slam!','🌀 휘두르기!':'🌀 Sweep!',
+'방어↓':'DEF↓',
 // --- Skill Names ---
 '기검참':'Ki Slash','악의구':'Malice Orb','회전참':'Whirlwind','기폭팔':'Detonate',
 '칼등 처내기':'Blade Parry','만화방창':'Needle Barrage','멸살광선':'Annihilation Beam',
@@ -7018,7 +7021,7 @@ function _updatePetBubble(){
       _petBubble.mt=_petBubble.pair.mt;_petBubble.t=_petBubble.pair.mt;
       _petBubble.pair=null;
       // 자막 갱신 (페어 대사)
-      {const _ps=$('petSubtitle');if(_ps){const _isCrow=_petBubble.who==='crow';_ps.style.color=_isCrow?'#ccbbff':'#ffdd88';_ps.textContent=(_isCrow?'핵터: ':'디로이: ')+_petBubble.txt;_ps.style.opacity='1'}}
+      {const _ps=$('petSubtitle');if(_ps){const _isCrow=_petBubble.who==='crow';_ps.style.color=_isCrow?'#ccbbff':'#ffdd88';_ps.textContent=(_isCrow?_L('핵터','Hecter')+': ':_L('디로이','Deroy')+': ')+_petBubble.txt;_ps.style.opacity='1'}}
     }
     // 자막 페이드아웃 (마지막 0.5초)
     if(_petBubble.t>0&&_petBubble.t<30){const _ps=$('petSubtitle');if(_ps)_ps.style.opacity=(_petBubble.t/30).toFixed(2)}
@@ -20945,7 +20948,7 @@ function _enterBossArena(){
     poolPart(P.x+Math.cos(a)*10,P.y+Math.sin(a)*10,Math.cos(a)*v,Math.sin(a)*v,_sCol,1.5+Math.random()*2,15+Math.random()*10)}
   G.shake=8*OPT.shake/100;
   SFX.groggy();const _bsf=_bossSfx(si);if(_bsf)playSample(_bsf.howl,.6,_r(_bsf.howlP,.15));else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.6,_r(.8,.15)); // 보스 포효
-  addTxt(P.x,P.y-50,'\u26A0 \uBD09\uC778\uB428!',_sCol,70);
+  addTxt(P.x,P.y-50,'\u26A0 '+_T('봉인됨!'),_sCol,70);
 }
 
 // ═══════════════════════════════════════
@@ -23754,7 +23757,7 @@ function update(){
         _thBr.push(bPts)}
       G._fireZones.push({x:P.x,y:P.y,r:_sfR,t:0,maxT:600+(_sfLv-1)*30,dmg:_sfDmg,el:EL.L,lv:_sfLv,type:'shockField',defRed:_sfDR,
         _thunder:[{pts:_thPts,br:_thBr,life:18,maxLife:18,baseW:_thBW}]});
-      addTxt(P.x,P.y-30,'⚡'+~~(_sfDR*100)+'% 방어↓','#44ddff',28)}
+      addTxt(P.x,P.y-30,'⚡'+~~(_sfDR*100)+'% '+_L('방어↓','DEF↓'),'#44ddff',28)}
       // ── 전격의창 합체: 2번째 전격이동 착지 시 뇌전창 자동 설치 ──
       if(_isFused('thunderGhost')&&P.skills.thunderStake>=1){
         P._tgCnt=(P._tgCnt||0)+1;
@@ -27175,10 +27178,10 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
     case'spin':e.s='bossSpinWind';e.st2=tele||35;e._spinAng=0;addTxt(e.x,e.y-30,_T('🌀 회전참!'),'#ff6644',45);SFX.swing();break;
     case'mine':e.s='bossMineWind';e.st2=tele||30;addTxt(e.x,e.y-30,_T('💣 지뢰!'),'#ffcc00',40);SFX.magic(0);break;
     case'vortex':e.s='bossVortexWind';e.st2=tele||30;addTxt(e.x,e.y-30,_T('🌀 흡인!'),'#6644ff',45);SFX.magic(3);break;
-    case'multiDash':e.s='bossMultiDashWind';e.st2=tele||20;e._dashCnt=4+~~(phase*1.5);e._dashIdx=0;addTxt(e.x,e.y-30,'\u26a1 \uc5f0\uaca9!','#ff4488',45);break;
-    case'slashCombo':e.s='bossSlashWind';e.st2=tele||20;e._slashCnt=3+~~(phase*1.5);e._slashIdx=0;e._weaponAng=0;addTxt(e.x,e.y-30,'\u2694 \ub09c\ud0c0!','#ff8844',45);break;
-    case'slam':e.s='bossSlamWind';e.st2=tele||35;e._weaponAng=-1.2;addTxt(e.x,e.y-30,'\ud83d\udca5 \uac15\ud0c0!','#ff4400',50);break;
-    case'sweep':e.s='bossSweepWind';e.st2=tele||25;e._weaponAng=-.8;e._sweepDir=Math.random()>.5?1:-1;addTxt(e.x,e.y-30,'\ud83c\udf00 \ud69c\ub450\ub974\uae30!','#ffaa00',40);break;
+    case'multiDash':e.s='bossMultiDashWind';e.st2=tele||20;e._dashCnt=4+~~(phase*1.5);e._dashIdx=0;addTxt(e.x,e.y-30,_T('⚡ 연격!'),'#ff4488',45);break;
+    case'slashCombo':e.s='bossSlashWind';e.st2=tele||20;e._slashCnt=3+~~(phase*1.5);e._slashIdx=0;e._weaponAng=0;addTxt(e.x,e.y-30,_T('⚔ 난타!'),'#ff8844',45);break;
+    case'slam':e.s='bossSlamWind';e.st2=tele||35;e._weaponAng=-1.2;addTxt(e.x,e.y-30,_T('💥 강타!'),'#ff4400',50);break;
+    case'sweep':e.s='bossSweepWind';e.st2=tele||25;e._weaponAng=-.8;e._sweepDir=Math.random()>.5?1:-1;addTxt(e.x,e.y-30,_T('🌀 휘두르기!'),'#ffaa00',40);break;
     case'teleStrike':{
       // 준비 → 순간이동 → 공중 낙하공격
       const _tAng=Math.atan2(P.y-e.y,P.x-e.x)+Math.PI+((Math.random()-.5)*.4);

@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HELL: EXODUSER</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
+<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
+<script>
+(() => {
+  const v = '20260414-hotfix2-' + Date.now();
+  const iconIco = '/favicon.ico?v=' + v;
+  const iconPng = '/img/icon-256.png?v=' + v;
+  const applyFavicon = () => {
+    document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]').forEach((n) => n.remove());
+    const specs = [
+      { rel: 'icon', type: 'image/x-icon', href: iconIco },
+      { rel: 'shortcut icon', type: 'image/x-icon', href: iconIco },
+      { rel: 'icon', type: 'image/png', href: iconPng },
+      { rel: 'apple-touch-icon', type: 'image/png', href: iconPng },
+    ];
+    specs.forEach((s) => {
+      const link = document.createElement('link');
+      link.rel = s.rel;
+      link.type = s.type;
+      link.href = s.href;
+      document.head.appendChild(link);
+    });
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyFavicon, { once: true });
+  else applyFavicon();
+})();
+</script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Cinzel+Decorative:wght@700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden}
+
+/* ═══ Cinematic Scene ═══ */
+.cin-scene{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center}
+
+/* 레터박스 */
+.cin-lb{position:absolute;left:0;right:0;background:#000;z-index:30;pointer-events:none}
+.cin-lb-t{top:0;height:10vh}
+.cin-lb-b{bottom:0;height:10vh}
+
+/* 문 이미지 (시네마틱 배경) */
+.cin-gate{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
+.cin-gate img{width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(5%)}
+.cin-gate.show{opacity:1}
+.cin-gate.zoom{transform:scale(1.6);transition:transform 0s}
+.cin-gate.zoom-out{transform:scale(1);transition:transform 6s cubic-bezier(0.15,0.5,0.3,1)}
+
+/* 비네팅 */
+.cin-vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 20%,rgba(0,0,0,.85) 100%);z-index:2;pointer-events:none}
+
+/* 텍스트 오버레이 */
+.cin-text{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;z-index:10;pointer-events:none}
+.cin-text-inner{max-width:900px;padding:0 30px 12vh;text-align:center}
+.cin-line{color:#e8d4b8;font-size:2rem;line-height:2;letter-spacing:.1em;opacity:0;transition:opacity 1.2s ease;margin-bottom:8px;text-shadow:0 0 20px rgba(0,0,0,.9),0 0 40px rgba(0,0,0,.7);white-space:nowrap}
+.cin-line.show{opacity:1}
+.cin-line.fade{opacity:0;transition:opacity 1s ease}
+.cin-line.red{color:#ff4422;font-weight:900;font-size:3.2rem;letter-spacing:.15em;text-shadow:0 0 30px rgba(255,50,0,.8),0 0 60px rgba(255,30,0,.5),0 0 100px rgba(255,0,0,.3)}
+.cin-line.gold{color:#ffcc55;font-size:3.6rem;font-weight:900;letter-spacing:.25em;text-shadow:0 0 40px rgba(255,180,30,.8),0 0 80px rgba(255,150,20,.4),0 0 120px rgba(255,120,0,.2)}
+.cin-line.dim{color:#ddc8a0;font-size:2.2rem;font-style:italic;font-weight:700;text-shadow:0 0 15px rgba(0,0,0,1),0 0 30px rgba(0,0,0,.9),0 0 60px rgba(0,0,0,.7),2px 2px 4px #000}
+.cin-char{display:inline-block;opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease}
+.cin-char.on{opacity:1;transform:translateY(0)}
+
+/* 프롤로그 이미지 */
+.cin-img{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 1.5s ease;pointer-events:none}
+.cin-img.show{opacity:1}
+.cin-img img{width:100vw;height:100vh;object-fit:cover;object-position:center 40%;filter:brightness(.6) contrast(1.1);mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%)}
+/* head crop fix for specific story stills */
+#cinImg1 img,#cinImg3 img{object-position:center 20% !important}
+/* 네메시아: 얼굴 보이게 상단 정렬 + 마스크 위로 확장 */
+#cinImg8 img{object-position:center top !important;mask-image:radial-gradient(ellipse 90% 100% at 50% 55%,#000 55%,transparent 100%) !important;-webkit-mask-image:radial-gradient(ellipse 90% 100% at 50% 55%,#000 55%,transparent 100%) !important}
+
+/* 문 열림 씬 */
+.cin-door-scene{position:absolute;inset:0;perspective:1800px;opacity:0;transition:opacity 1.5s ease;z-index:5}
+.cin-door-scene.show{opacity:1}
+.cin-door{position:absolute;inset:0;background-image:url('img/hellgate.png');background-size:cover;background-position:center 40%;transform:scale(1.15) translateX(5%);transition:transform 2.5s cubic-bezier(0.4,0,0.1,1);will-change:transform}
+.cin-door-l{clip-path:polygon(0 0,calc(40% + 1px) 0,calc(40% + 1px) 100%,0 100%);transform-origin:left center}
+.cin-door-r{clip-path:polygon(calc(40% - 1px) 0,100% 0,100% 100%,calc(40% - 1px) 100%);transform-origin:right center}
+.cin-door-scene.open .cin-door-l{transform:scale(1.15) translateX(5%) rotateY(-105deg)}
+.cin-door-scene.open .cin-door-r{transform:scale(1.15) translateX(5%) rotateY(105deg)}
+
+/* 문 중앙 빛줄기 */
+.cin-glow{position:absolute;top:5%;left:50%;width:3px;height:90%;transform:translateX(-50%);background:linear-gradient(180deg,transparent,rgba(255,100,20,.5),rgba(255,60,10,.7),rgba(255,100,20,.5),transparent);z-index:6;pointer-events:none;opacity:0;filter:blur(4px);transition:opacity 1.5s}
+.cin-glow.show{opacity:1}
+
+/* 입장 UI */
+.cin-ui{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;pointer-events:none;transition:opacity 1.5s}
+.cin-ui.show{opacity:1;pointer-events:all}
+
+.cin-lore{max-width:640px;margin-bottom:40px;padding:0 20px}
+.cin-lore p{color:#aa8866;font-size:.95rem;line-height:2;letter-spacing:.06em;margin-bottom:8px;text-shadow:0 0 15px rgba(0,0,0,.8)}
+.cin-lore p.lore-dim{color:#776655;font-size:.85rem;font-style:italic}
+.cin-lore p.lore-gold{color:#ffcc55;font-size:1.1rem;font-weight:700;margin-top:20px;text-shadow:0 0 25px rgba(255,180,30,.5)}
+
+.cin-nemesia-bg{position:absolute;inset:0;background:url('img/cin_nemesia_hd.png') center top/cover no-repeat;opacity:.15;filter:brightness(.6);pointer-events:none}
+
+.cin-prompt{color:#ff8844;font-size:.85rem;letter-spacing:.5em;margin-bottom:18px;text-shadow:0 0 30px rgba(255,80,30,.8);animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+
+.enter-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 40px;background:rgba(10,4,2,.92);border:1px solid rgba(255,100,40,.5);color:#ffaa66;font-family:'Noto Sans KR';font-size:.9rem;font-weight:700;cursor:pointer;letter-spacing:.15em;transition:all .4s;backdrop-filter:blur(4px)}
+.enter-btn:hover{border-color:#ff8844;color:#ffddaa;background:rgba(255,80,20,.15);box-shadow:0 0 50px rgba(255,80,20,.3);transform:translateY(-2px)}
+.enter-btn svg{width:22px;height:22px}
+
+/* 스킵 */
+.skip-btn{position:absolute;bottom:4vh;right:4vw;z-index:300;padding:12px 32px;background:rgba(0,0,0,0.8);border:2px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);font-family:'Noto Sans KR';font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.3s;opacity:0;pointer-events:none;border-radius:4px;letter-spacing:0.1em}
+.skip-btn.show{opacity:1;pointer-events:all}
+.skip-btn:hover{color:#fff;border-color:rgba(255,255,255,0.6);background:rgba(50,0,0,0.9);box-shadow:0 0 20px rgba(0,0,0,0.5)}
+
+/* 불씨 */
+.ember{position:absolute;border-radius:50%;pointer-events:none;z-index:8}
+@keyframes rise{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-50vh) scale(0.2)}}
+
+/* ═══ Main Content — HELL LOBBY ═══ */
+.main-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;opacity:0;transition:opacity 1.2s ease .5s;overflow:hidden}
+.main-wrap.show{opacity:1}
+
+/* ── 로비 CSS ── */
+.lobby{display:none;position:fixed;inset:0;z-index:10;flex-direction:row;background:#000}
+.lobby.show{display:flex}
+
+/* 좌측 영역 */
+.lobby-left{position:relative;flex:0 0 65%;height:100%;overflow:hidden;background:#000}
+.lobby-bg-img{position:absolute;inset:0;background-position:left center;background-size:cover;background-repeat:no-repeat;opacity:1;transition:opacity 400ms ease}
+.lobby-bg-img::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0) 50%,rgba(0,0,0,0.55) 90%,rgba(0,0,0,0.85) 100%);pointer-events:none}
+.char-disp-empty{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);color:rgba(220,110,80,0.78);font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,2.6vw,2.8rem);font-weight:300;letter-spacing:0.25em;text-shadow:0 0 28px rgba(196,68,68,0.35),0 0 60px rgba(0,0,0,0.7);white-space:nowrap;pointer-events:none;user-select:none;opacity:1;transition:opacity 500ms ease;z-index:2}
+.char-disp-empty.hidden{opacity:0}
+
+/* 우측 영역 */
+.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(20,8,5,0.92) 0%,rgba(8,4,2,0.96) 100%);padding:28px 28px 24px 28px;display:flex;flex-direction:column;backdrop-filter:blur(2px);border-left:2px solid;border-image:linear-gradient(180deg,#443322 0%,#c44444 50%,#443322 100%) 1}
+
+/* 우측 헤더 */
+.lobby-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
+.lobby-header h1{font-family:'Cinzel Decorative',serif;color:#ff6633;font-size:1.8rem;letter-spacing:0.15em;text-shadow:0 0 20px rgba(255,80,30,0.4)}
+.lobby-mode{color:rgba(180,140,110,0.55);font-size:0.72rem;letter-spacing:0.3em;font-weight:700;margin-top:8px}
+
+/* 헤더 아래 장식 라인 */
+.lobby-divider{height:1px;width:100%;background:linear-gradient(90deg,transparent 0%,rgba(196,68,68,0.4) 50%,transparent 100%);margin-bottom:18px}
+
+/* 슬롯 리스트 */
+.char-list{flex:1;overflow-y:auto;overflow-x:hidden;padding-right:6px}
+.char-list::-webkit-scrollbar{width:4px}
+.char-list::-webkit-scrollbar-track{background:rgba(0,0,0,0.3)}
+.char-list::-webkit-scrollbar-thumb{background:rgba(196,68,68,0.3);border-radius:2px}
+.no-chars{color:rgba(180,140,110,0.5);text-align:center;padding:40px 20px;font-size:0.9rem;letter-spacing:0.1em}
+
+/* 슬롯 카드 */
+.char-item,.char-item-new{position:relative;display:flex;align-items:center;gap:14px;height:84px;padding:14px 18px 14px 24px;margin-bottom:10px;background:linear-gradient(135deg,rgba(28,16,12,0.7) 0%,rgba(18,10,6,0.85) 100%);border:1px solid rgba(120,60,40,0.18);border-radius:2px;cursor:pointer;transition:all 200ms ease;overflow:hidden}
+.char-item::before{content:'';position:absolute;left:0;top:20%;width:3px;height:60%;background:linear-gradient(180deg,transparent 0%,rgba(196,68,68,0.4) 50%,transparent 100%);opacity:0.6;transition:all 300ms ease}
+.char-item:hover{transform:translateY(-2px);border-color:rgba(196,68,68,0.35);box-shadow:0 4px 16px rgba(0,0,0,0.5),0 0 12px rgba(196,68,68,0.1)}
+.char-item:hover::before{opacity:1;height:80%;top:10%}
+.char-item.active{border-color:rgba(196,68,68,0.5);box-shadow:0 0 20px rgba(196,68,68,0.2),inset 0 0 24px rgba(196,68,68,0.05)}
+.char-item.active::before{width:4px;opacity:1;height:90%;top:5%;background:linear-gradient(180deg,rgba(196,68,68,0.2) 0%,rgba(255,100,80,0.95) 50%,rgba(196,68,68,0.2) 100%);box-shadow:0 0 8px rgba(196,68,68,0.6)}
+
+/* 새 캐릭터 카드 */
+.char-item-new{border:1px dashed rgba(120,60,40,0.4);background:rgba(18,10,6,0.4)}
+.char-item-new:hover{border-color:rgba(196,68,68,0.5);background:rgba(28,14,8,0.5);transform:translateY(-2px)}
+
+/* 썸네일 */
+.char-thumb{flex:0 0 56px;width:56px;height:56px;background:rgba(0,0,0,0.4);border:1px solid rgba(120,60,40,0.3);border-radius:2px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.char-thumb-empty{color:rgba(180,140,110,0.4);font-size:1.6rem;font-weight:300}
+
+/* 텍스트 영역 */
+.char-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.char-name{color:rgba(230,200,170,0.95);font-size:1.05rem;font-weight:600;letter-spacing:0.05em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.char-info{color:rgba(180,140,110,0.9);font-size:0.78rem;opacity:0.7;letter-spacing:0.06em}
+
+/* 삭제 버튼 */
+.char-del{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:24px;height:24px;background:transparent;border:1px solid rgba(120,60,40,0.4);color:rgba(180,100,80,0.6);font-size:0.85rem;cursor:pointer;border-radius:2px;opacity:0;transition:all 200ms;display:flex;align-items:center;justify-content:center}
+.char-item:hover .char-del{opacity:1}
+.char-del:hover{border-color:rgba(220,80,60,0.7);color:rgba(255,120,100,0.95);background:rgba(120,30,20,0.2)}
+
+/* 입장 버튼 */
+.lobby-footer{margin-top:14px;display:flex;flex-direction:column;gap:10px}
+.enter-game-btn{width:100%;height:56px;background:linear-gradient(135deg,rgba(120,40,30,0.4) 0%,rgba(80,20,15,0.6) 100%);border:1.5px solid rgba(196,68,68,0.4);color:rgba(255,200,170,0.95);font-family:'Noto Sans KR';font-size:1.1rem;font-weight:700;letter-spacing:0.3em;cursor:pointer;transition:all 300ms ease;text-shadow:0 0 12px rgba(0,0,0,0.8)}
+.enter-game-btn:hover:not(:disabled){border-color:rgba(255,100,80,0.8);color:rgba(255,230,200,1);background:linear-gradient(135deg,rgba(150,50,40,0.5) 0%,rgba(100,25,20,0.7) 100%);box-shadow:0 0 24px rgba(196,68,68,0.4),inset 0 0 16px rgba(196,68,68,0.1);transform:translateY(-1px)}
+.enter-game-btn:disabled{opacity:0.35;cursor:not-allowed;border-color:rgba(120,60,40,0.3);color:rgba(180,140,110,0.5)}
+
+/* 작은 화면 대응 */
+@media(max-width:1100px){
+  .lobby-left{flex:0 0 55%}
+  .lobby-right{flex:0 0 45%}
+}
+
+/* ── 로그인 ── */
+.container{position:relative;z-index:1;width:480px;max-width:92vw}
+.title{text-align:center;margin-bottom:32px}
+.title h1{
+  font-family:'Cinzel Decorative',serif;font-size:2.5rem;color:#ff6633;
+  text-shadow:0 0 30px rgba(255,80,30,.4),0 0 60px rgba(255,40,10,.15);
+  letter-spacing:.15em;margin-bottom:8px
+}
+.title p{font-size:.85rem;color:#665544;letter-spacing:.3em}
+.card{
+  background:linear-gradient(135deg,rgba(18,10,6,.95),rgba(26,14,8,.98));
+  border:1px solid #443322;padding:36px 30px;position:relative;overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.5)
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#ff6633,transparent)}
+.login-section{text-align:center}
+.login-section h2{font-size:1.1rem;color:#aa7744;letter-spacing:.2em;margin-bottom:24px;font-weight:700}
+.google-btn{
+  display:inline-flex;align-items:center;gap:12px;padding:14px 32px;
+  background:rgba(255,255,255,.03);border:1px solid #554422;color:#ccaa77;
+  font-family:'Noto Sans KR';font-size:.95rem;font-weight:700;
+  cursor:pointer;letter-spacing:.1em;transition:all .4s
+}
+.google-btn:hover{
+  border-color:#ff8844;color:#ffcc88;background:rgba(255,100,50,.06);
+  transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,80,30,.15)
+}
+.google-btn svg{width:20px;height:20px}
+
+/* ── 생성 모달 ── */
+.create-modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.9);align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.create-modal.show{display:flex}
+.create-modal-inner{
+  background:linear-gradient(135deg,rgba(18,10,6,.98),rgba(24,14,8,.99));
+  border:1px solid rgba(255,100,40,.15);padding:48px 40px;width:440px;max-width:90vw;
+  border-radius:2px;text-align:center;position:relative;
+  box-shadow:0 30px 80px rgba(0,0,0,.6)
+}
+.create-modal-inner::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,80,30,.3),transparent)
+}
+.create-modal-inner h2{font-family:'Cinzel Decorative',serif;font-size:1.5rem;color:#ccaa77;margin-bottom:8px;letter-spacing:.1em}
+.create-modal-inner p{color:#887755;font-size:.8rem;margin-bottom:28px;letter-spacing:.05em}
+.name-input{
+  width:100%;padding:14px 18px;background:rgba(0,0,0,.4);
+  border:1px solid rgba(255,100,40,.12);color:#ccaa77;
+  font-family:'Noto Sans KR';font-size:1rem;outline:none;
+  transition:all .3s;box-sizing:border-box;border-radius:2px;margin-bottom:20px;
+  letter-spacing:.05em
+}
+.name-input:focus{border-color:rgba(255,136,68,.5);box-shadow:0 0 15px rgba(255,80,30,.1)}
+.name-input::placeholder{color:#443322}
+.create-modal-btns{display:flex;gap:12px;justify-content:center}
+.create-btn{
+  padding:12px 32px;background:rgba(255,100,50,.08);border:1px solid rgba(136,68,34,.6);
+  color:#ff8844;font-family:'Noto Sans KR';font-size:.9rem;font-weight:700;
+  cursor:pointer;letter-spacing:.12em;transition:all .3s;border-radius:2px
+}
+.create-btn:hover{background:rgba(255,100,50,.15);border-color:#ff8844;box-shadow:0 0 20px rgba(255,80,20,.15);color:#ffcc88}
+.create-cancel-btn{
+  padding:12px 32px;background:none;border:1px solid rgba(68,34,34,.5);
+  color:#884433;font-family:'Noto Sans KR';font-size:.9rem;
+  cursor:pointer;transition:all .3s;border-radius:2px;letter-spacing:.08em
+}
+.create-cancel-btn:hover{border-color:#cc4433;color:#ff4433;background:rgba(204,68,51,.04)}
+.create-btn:hover{border-color:#ff8844;background:rgba(255,100,50,.15);color:#ffcc88}
+.create-btn:disabled{opacity:.3;cursor:default}
+.status{text-align:center;padding:8px;font-size:.5rem;color:#886644;min-height:24px}
+.status.error{color:#cc4433}
+.loading{display:none;text-align:center;padding:40px}
+.loading .spinner{display:inline-block;width:28px;height:28px;border:2px solid #332211;border-top-color:#ff6633;border-radius:50%;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{margin-top:10px;font-size:.6rem;color:#886644}
+/* ── FDG SCREEN 2 (늑대 엠블럼 시네마틱) ── */
+.fdg-screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000;gap:40px;z-index:9999;opacity:0;transition:opacity .5s}
+.fdg-screen.active{opacity:1}
+.fdg-screen.fadeout{opacity:0}
+/* 0.5~1.5s 늑대 페이드인 */
+.fdg-wolf-emblem{width:380px;max-width:25vh;height:auto;opacity:0;transform:scale(.85);transition:opacity 1s ease-out .5s,transform 1s ease-out .5s}
+.fdg-screen.active .fdg-wolf-emblem{opacity:1;transform:scale(1)}
+/* FDG R-앵커 시네마틱 */
+.fdg-title{display:flex;gap:.5em;justify-content:center;font:400 clamp(48px,5vw,96px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#E8E0D0;letter-spacing:.05em;opacity:0;transition:opacity .3s ease-out}
+.fdg-title .word{display:inline-flex}
+.fdg-title .anchor,.fdg-title .prefix,.fdg-title .suffix,.fdg-title .accent{opacity:0}
+.fdg-title .accent{color:#C9A961;transition:opacity .5s ease-out}
+.fdg-title .anchor{transition:opacity .65s ease-out}
+.fdg-title .prefix{transition:opacity 1s ease-out,transform 1s ease-out;transform:translateX(-20px)}
+.fdg-title .suffix{transition:opacity .5s ease-out}
+/* PRESENTS + 부제 (JS 타이머 제어) */
+.fdg-presents{font:400 clamp(12px,1.25vw,24px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#888;letter-spacing:.5em;text-align:center;opacity:0;transition:opacity .5s ease-out}
+.fdg-subtitle{font:300 clamp(18px,2vw,32px) 'Noto Sans KR',sans-serif;color:#B8B0A0;letter-spacing:.15em;text-align:center;opacity:1}
+.fdg-subtitle .fdg-char{display:inline-block;opacity:0;filter:blur(12px);transition:opacity .4s ease-out, filter .5s ease-out}
+.fdg-subtitle .fdg-char.on{opacity:1;filter:blur(0)}
+.fdg-prompt{font:400 clamp(14px,1.5vw,22px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#666;letter-spacing:.35em;text-align:center;opacity:0}
+.fdg-prompt.on{animation:fdg-blink 1.2s ease-in-out infinite alternate}
+@keyframes fdg-blink{from{opacity:0}to{opacity:.5}}
+</style>
+</head>
+<body>
+
+<!-- ═══ Splash Sequence (경고문 → 로고 → 타이틀) ═══ -->
+<div id="splashOverlay" style="position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;opacity:1;transition:opacity 0.5s">
+  <canvas id="splashCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+  <div id="splashContent" style="text-align:center;opacity:0;transition:opacity 0.5s;position:relative;z-index:2"></div>
+</div>
+<!-- FDG SCREEN 2: 늑대 엠블럼 -->
+<div id="fdgScreen" class="fdg-screen" style="display:none">
+  <img class="fdg-wolf-emblem" src="img/fdg_wolf/fdg_wolf_emblem.png" alt="FDG Wolf Emblem">
+  <div class="fdg-title" id="fdgTitle"><span class="word w-for"><span class="accent">F</span><span class="prefix">O</span><span class="anchor">R</span></span><span class="word w-dear"><span class="accent">D</span><span class="prefix">EA</span><span class="anchor">R</span></span><span class="word w-gamers"><span class="accent">G</span><span class="prefix">AME</span><span class="anchor">R</span><span class="suffix">S</span></span></div>
+  <div class="fdg-presents" id="fdgPresents">PRESENTS</div>
+  <div class="fdg-subtitle" id="fdgSubtitle"></div>
+  <div class="fdg-prompt" id="fdgPrompt"></div>
+</div>
+
+<!-- ═══ Cinematic Scene ═══ -->
+<div class="cin-scene" id="cinScene">
+  <div class="cin-lb cin-lb-t"></div>
+  <div class="cin-lb cin-lb-b"></div>
+
+  <!-- 인트로 비디오 (THE EXODUSER) -->
+  <video id="cinVideo" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:20;opacity:1;transition:opacity 1.5s ease;pointer-events:none">
+    <source src="video/intro.mp4" type="video/mp4">
+  </video>
+  <!-- 클릭 안내 -->
+  <div id="cinClickPrompt" style="position:absolute;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(0,0,0,0.1)">
+    <div style="pointer-events:none;display:flex;flex-direction:column;align-items:center;transform:translateX(23%)">
+      <div style="color:#ffbb77;font-size:1.5rem;font-weight:900;letter-spacing:.4em;margin-right:-.4em;opacity:.9;text-shadow:0 0 10px #000, 0 0 20px rgba(255,80,0,0.8);animation:pulse 2s ease-in-out infinite">CLICK TO HELL</div>
+    </div>
+  </div>
+
+  <!-- 문 배경 (줌 인/아웃) -->
+  <div class="cin-gate zoom" id="cinGate">
+    <img src="img/hellgate.png" alt="">
+    <div class="cin-vig"></div>
+  </div>
+
+  <!-- 프롤로그 이미지 (장면별 9장) -->
+  <div class="cin-img" id="cinImg1"><img src="img/cin_war.png" alt=""></div>
+  <div class="cin-img" id="cinImg2"><img src="img/cin_ruins.png" alt=""></div>
+  <div class="cin-img" id="cinImg3"><img src="img/cin_throne.png" alt=""></div>
+  <div class="cin-img" id="cinImg4"><img src="img/cin_bloodbath.png" alt=""></div>
+  <div class="cin-img" id="cinImg5"><img src="img/cin_torture.png" alt=""></div>
+  <div class="cin-img" id="cinImg6"><img src="img/cin_fallhell_custom.png" alt=""></div>
+  <div class="cin-img" id="cinImg7"><img src="img/cin_dungeon.png" alt=""></div>
+  <div class="cin-img" id="cinImg8"><img src="img/cin_nemesia_hd.png" alt=""></div>
+  <div class="cin-img" id="cinImg9"><img src="img/cin_demonbattle.png" alt=""></div>
+  <div class="cin-img" id="cinImg10"><img src="img/cin_demonfight.png" alt=""></div>
+  <div class="cin-img" id="cinImg11"><img src="img/cin_victory.png" alt=""></div>
+  <div class="cin-img" id="cinImg12"><img src="img/cin_bystanders.png" alt=""></div>
+  <div class="cin-img" id="cinImg13"><img src="img/cin_remember.png" alt=""></div>
+  <div class="cin-img" id="cinImg14"><img src="img/emg1.png" alt=""></div>
+
+  <!-- 프롤로그 텍스트 -->
+  <div class="cin-text" id="cinText">
+    <div class="cin-text-inner" id="cinTextInner"></div>
+  </div>
+
+  <!-- 클릭/탭 영역 (부분 스킵) -->
+  <div class="cin-overlay" style="position:absolute;inset:0;z-index:15;cursor:pointer"></div>
+
+  <button class="skip-btn" id="skipBtn" style="display:none">SKIP ></button>
+  <canvas id="cinHoldGauge" style="position:absolute;bottom:30px;right:30px;width:120px;height:100px;z-index:300;pointer-events:none"></canvas>
+  <select id="cinLang" style="position:absolute;top:3vh;right:4vw;z-index:300;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
+    <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
+  </select>
+</div>
+
+<!-- ═══ 챕터 입장 문 열림 (동영상) ═══ -->
+<div id="chapterGate" style="position:fixed;inset:0;z-index:200;display:none;background:#000;overflow:hidden">
+  <img id="chGateImg" src="img/lording/rd1.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(5%);z-index:20;background:#000">
+  <div class="cin-lb cin-lb-t"></div>
+  <div class="cin-lb cin-lb-b"></div>
+  <div class="cin-vig" style="z-index:21"></div>
+</div>
+
+<!-- ═══ Main Content ═══ -->
+<div class="main-wrap" id="mainWrap">
+  <div class="container">
+    <div class="title"><h1>HELL</h1><p>EXODUSER</p></div>
+    <div style="text-align:center;margin:-10px 0 10px">
+      <select id="langSelect" style="background:#1a1008;border:1px solid #443322;color:#ccaa88;font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
+        <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
+      </select>
+    </div>
+    <div class="card">
+      <div class="loading" id="loading"><div class="spinner"></div><p>연결 중...</p></div>
+      <div class="login-section" id="loginSection" style="display:none">
+        <h2>캐릭터를 선택하세요</h2>
+        <button class="google-btn" id="googleBtn">
+          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Google로 입장
+        </button>
+      </div>
+      <!-- lobby는 body 직속으로 이동 (아래 참조) -->
+    </div>
+  </div>
+</div>
+
+<!-- ═══ LOBBY (body 직속 — container 밖) ═══ -->
+<div class="lobby" id="lobby" style="display:none">
+  <!-- 좌측: 배경 + 안내 -->
+  <div class="lobby-left">
+    <div class="lobby-bg-img" id="lobbyBgImg"></div>
+    <canvas id="lobbyParticles" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5"></canvas>
+    <div class="char-disp-empty" id="charDispEmpty">당신은 누구인가</div>
+  </div>
+  <!-- 우측: 슬롯 + 버튼 -->
+  <div class="lobby-right">
+    <div class="lobby-header">
+      <div style="display:flex;flex-direction:column;align-items:flex-start">
+        <h1 style="margin:0;line-height:1">HELL</h1>
+        <div style="font-family:'Cinzel Decorative',serif;font-size:.85rem;color:#aa8855;letter-spacing:5px;margin-top:2px;padding-left:2px">EXODUSER</div>
+      </div>
+      <div class="lobby-mode">LOCAL MODE</div>
+    </div>
+    <div class="lobby-divider"></div>
+    <div class="char-list" id="charList">
+      <div class="no-chars">불러오는 중...</div>
+    </div>
+    <div class="lobby-footer">
+      <button class="enter-game-btn" id="enterGameBtn" disabled>입장</button>
+    </div>
+  </div>
+</div>
+
+<!-- 생성 모달 -->
+<div class="create-modal" id="createModal">
+  <div class="create-modal-inner">
+    <h2>새 캐릭터 생성</h2>
+    <p>지옥에 보낼 캐릭터의 이름을 지어주세요</p>
+    <input class="name-input" id="charName" placeholder="이름 (2~8자)" maxlength="8">
+    <div class="create-modal-btns">
+      <button class="create-cancel-btn" id="createCancelBtn">취소</button>
+      <button class="create-btn" id="createBtn">생성</button>
+    </div>
+    <div class="status" id="status"></div>
+  </div>
+</div>
+
+<!-- ═══ 캐릭터 외형 선택 팝업 ═══ -->
+<div id="charVisualPop" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.85);align-items:center;justify-content:center">
+  <div style="background:#1a1410;border:2px solid #554422;border-radius:12px;padding:30px;max-width:720px;width:90%;text-align:center">
+    <h2 style="color:#ccaa77;font-family:'Cinzel Decorative',serif;margin-bottom:6px">외형 선택</h2>
+    <p style="color:#887755;font-size:.85rem;margin-bottom:20px">캐릭터의 외형을 선택하세요</p>
+    <div id="visualGrid" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:20px"></div>
+    <button id="visualCancelBtn" style="padding:8px 24px;background:transparent;border:1px solid #553322;color:#886644;font-family:'Noto Sans KR';font-size:.9rem;cursor:pointer;border-radius:6px">취소</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="lobby_i18n.js"></script>
+<script>
+// 브라우저 줌 차단
+addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
+var _selectedSlot=null;
+var _localSlots=[];
+var _curBg=null;
+var _spriteOk={};// 캐릭터 스프라이트 존재 캐시
+function _tryLoadSprite(folder,fw,fh,canvas){
+  if(_spriteOk[folder]===false)return;
+  const im=new Image();
+  im.onerror=()=>{_spriteOk[folder]=false};
+  im.onload=()=>{_spriteOk[folder]=true;canvas.getContext('2d').drawImage(im,0,0,fw,fh,0,0,fw,fh)};
+  im.src=folder+'/south.png';
+}
+addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&(e.code==='Equal'||e.code==='Minus'||e.code==='NumpadAdd'||e.code==='NumpadSubtract'||e.code==='Digit0'))e.preventDefault()});
+const SUPABASE_URL='https://tevlznuhjqcnzgewlswx.supabase.co';
+const SUPABASE_KEY='sb_publishable_chAwadci1zVQNEKPC__s_w_7K3Oz_WP';
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+// ═══ [LANG] 로비 다국어 ═══
+const _LOBBY_EN={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Connecting...','캐릭터를 선택하세요':'Select your character','당신은 누구인가':'WHO ART THOU',
+  'Google로 입장':'Enter with Google','캐릭터 선택':'Character Select','로그아웃':'Logout',
+  '캐릭터가 없습니다. 새로 생성하세요.':'No characters. Create a new one.',
+  '새 캐릭터 생성':'Create New Character','캐릭터 이름 (2~8자)':'Character Name (2-8 chars)',
+  '생성':'Create','외형 선택':'Appearance','캐릭터의 외형을 선택하세요':'Choose your appearance','취소':'Cancel',
+  '시작점':'Start','층':'F','장':'CH','삭제':'Delete',
+  '이름은 2~8자여야 합니다.':'Name must be 2-8 characters.',
+  '특수문자는 사용할 수 없습니다.':'Special characters cannot be used.',
+  '생성 중...':'Creating...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'A character with that name already exists.',
+  '생성 실패: ':'Creation failed: ',
+  '로그인 실패: ':'Login failed: ',
+  '캐릭터 불러오는 중...':'Loading characters...',
+  '불러오는 중...':'Loading...',
+  '오류: ':'Error: ',
+  '삭제 실패: ':'Deletion failed: ',
+  '알 수 없는 오류':'Unknown error',
+  '서버 연결 실패: ':'Server connection failed: ',
+  '데이터를 불러오는 중...':'Loading data...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Really delete this character?',
+  '캐릭터 이름 (2~8자)':'Character Name (2-8 chars)',
+  '새 캐릭터':'New Character',
+  '지옥으로 입장하는 중...':'Entering hell...',
+  '친애하는 게이머 여러분께 바칩니다':'Dedicated to all you dear gamers',
+  '건너뛰기':'SKIP',
+  '광과민성 발작 경고':'PHOTOSENSITIVE SEIZURE WARNING',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'This game contains intense violence and disturbing imagery.<br>Rated 18+. May trigger photosensitive seizures.<br>Player discretion advised.',
+  '아무 키나 눌러 계속':'Press any key to continue',
+  '입장':'Enter',
+};
+const _LOBBY_ZH={
+  '지옥의 길':'地狱之路：EXODUSER','연결 중...':'连接中...','캐릭터를 선택하세요':'选择你的角色','당신은 누구인가':'汝乃何人',
+  'Google로 입장':'使用Google登录','캐릭터 선택':'角色选择','로그아웃':'退出登录',
+  '캐릭터가 없습니다. 새로 생성하세요.':'没有角色，请创建新角色。',
+  '새 캐릭터 생성':'创建新角色','캐릭터 이름 (2~8자)':'角色名（2~8字）',
+  '생성':'创建','외형 선택':'外观选择','캐릭터의 외형을 선택하세요':'请选择角色外观','취소':'取消',
+  '시작점':'起点','층':'层','장':'章','삭제':'删除',
+  '이름은 2~8자여야 합니다.':'名称必须为2~8个字符。',
+  '특수문자는 사용할 수 없습니다.':'不能使用特殊字符。',
+  '생성 중...':'创建中...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'已存在同名角色。',
+  '생성 실패: ':'创建失败：',
+  '로그인 실패: ':'登录失败：',
+  '캐릭터 불러오는 중...':'加载角色中...',
+  '불러오는 중...':'加载中...',
+  '오류: ':'错误：',
+  '삭제 실패: ':'删除失败：',
+  '알 수 없는 오류':'未知错误',
+  '서버 연결 실패: ':'服务器连接失败：',
+  '데이터를 불러오는 중...':'加载数据中...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':'  — 确定要删除该角色吗？',
+  '캐릭터 이름 (2~8자)':'角色名（2~8字）',
+  '새 캐릭터':'新角色',
+  '지옥으로 입장하는 중...':'正在进入地狱...',
+  '친애하는 게이머 여러분께 바칩니다':'献给各位亲爱的玩家',
+  '건너뛰기':'跳过',
+  '광과민성 발작 경고':'光敏性癫痫警告',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'本游戏包含强烈暴力和令人不安的画面。<br>仅限18岁以上。可能引发光敏性癫痫发作。<br>请谨慎游玩。',
+  '아무 키나 눌러 계속':'按任意键继续',
+  '입장':'进入',
+};
+const _LOBBY_JA={
+  '지옥의 길':'地獄の道：EXODUSER','연결 중...':'接続中...','캐릭터를 선택하세요':'キャラクターを選択','당신은 누구인가':'汝は何者か',
+  'Google로 입장':'Googleでログイン','캐릭터 선택':'キャラクター選択','로그아웃':'ログアウト',
+  '캐릭터가 없습니다. 새로 생성하세요.':'キャラクターがありません。新規作成してください。',
+  '새 캐릭터 생성':'新規キャラクター作成','캐릭터 이름 (2~8자)':'キャラクター名（2〜8文字）',
+  '생성':'作成','외형 선택':'外見選択','캐릭터의 외형을 선택하세요':'キャラクターの外見を選択','취소':'キャンセル',
+  '시작점':'スタート','층':'階','장':'章','삭제':'削除',
+  '이름은 2~8자여야 합니다.':'名前は2〜8文字である必要があります。',
+  '특수문자는 사용할 수 없습니다.':'特殊文字は使用できません。',
+  '생성 중...':'作成中...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'同じ名前のキャラクターが既に存在します。',
+  '생성 실패: ':'作成失敗：',
+  '로그인 실패: ':'ログイン失敗：',
+  '캐릭터 불러오는 중...':'キャラクター読み込み中...',
+  '불러오는 중...':'読み込み中...',
+  '오류: ':'エラー：',
+  '삭제 실패: ':'削除失敗：',
+  '알 수 없는 오류':'不明なエラー',
+  '서버 연결 실패: ':'サーバー接続失敗：',
+  '데이터를 불러오는 중...':'データ読み込み中...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':'  — 本当にこのキャラクターを削除しますか？',
+  '캐릭터 이름 (2~8자)':'キャラクター名（2〜8文字）',
+  '새 캐릭터':'新規キャラクター',
+  '지옥으로 입장하는 중...':'地獄へ入場中...',
+  '친애하는 게이머 여러분께 바칩니다':'親愛なるゲーマーの皆様へ捧ぐ',
+  '건너뛰기':'スキップ',
+  '광과민성 발작 경고':'光過敏性発作の警告',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'本ゲームには激しい暴力表現や不快な映像が含まれます。<br>18歳以上推奨。光過敏性発作を引き起こす可能性があります。<br>ご注意ください。',
+  '아무 키나 눌러 계속':'何かキーを押して続行',
+  '입장':'進む',
+};
+const _LOBBY_ES={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Conectando...','캐릭터를 선택하세요':'Selecciona tu personaje','당신은 누구인가':'¿QUIÉN ERES?',
+  'Google로 입장':'Entrar con Google','캐릭터 선택':'Selección de personaje','로그아웃':'Cerrar sesión',
+  '캐릭터가 없습니다. 새로 생성하세요.':'No hay personajes. Crea uno nuevo.',
+  '새 캐릭터 생성':'Crear nuevo personaje','캐릭터 이름 (2~8자)':'Nombre (2-8 caracteres)',
+  '생성':'Crear','외형 선택':'Apariencia','캐릭터의 외형을 선택하세요':'Elige la apariencia','취소':'Cancelar',
+  '시작점':'Inicio','층':'P','장':'CAP','삭제':'Eliminar',
+  '이름은 2~8자여야 합니다.':'El nombre debe tener entre 2 y 8 caracteres.',
+  '특수문자는 사용할 수 없습니다.':'No se permiten caracteres especiales.',
+  '생성 중...':'Creando...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Ya existe un personaje con ese nombre.',
+  '생성 실패: ':'Error al crear: ',
+  '로그인 실패: ':'Error de inicio de sesión: ',
+  '캐릭터 불러오는 중...':'Cargando personajes...',
+  '불러오는 중...':'Cargando...',
+  '오류: ':'Error: ',
+  '삭제 실패: ':'Error al eliminar: ',
+  '알 수 없는 오류':'Error desconocido',
+  '서버 연결 실패: ':'Error de conexión al servidor: ',
+  '데이터를 불러오는 중...':'Cargando datos...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — ¿Realmente deseas eliminar este personaje?',
+  '캐릭터 이름 (2~8자)':'Nombre (2-8 caracteres)',
+  '새 캐릭터':'Nuevo personaje',
+  '지옥으로 입장하는 중...':'Entrando al infierno...',
+  '친애하는 게이머 여러분께 바칩니다':'Dedicado a todos vosotros, queridos jugadores',
+  '건너뛰기':'OMITIR',
+  '광과민성 발작 경고':'ADVERTENCIA DE CONVULSIONES FOTOSENSIBLES',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Este juego contiene violencia intensa e imágenes perturbadoras.<br>Clasificado para mayores de 18 años. Puede provocar convulsiones fotosensibles.<br>Se recomienda discreción.',
+  '아무 키나 눌러 계속':'Presione cualquier tecla para continuar',
+  '입장':'Entrar',
+};
+const _LOBBY_FR={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Connexion...','캐릭터를 선택하세요':'Sélectionnez votre personnage','당신은 누구인가':'QUI ES-TU ?',
+  'Google로 입장':'Entrer avec Google','캐릭터 선택':'Sélection du personnage','로그아웃':'Déconnexion',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Aucun personnage. Créez-en un nouveau.',
+  '새 캐릭터 생성':'Créer un personnage','캐릭터 이름 (2~8자)':'Nom (2-8 caractères)',
+  '생성':'Créer','외형 선택':'Apparence','캐릭터의 외형을 선택하세요':'Choisissez votre apparence','취소':'Annuler',
+  '시작점':'Départ','층':'É','장':'CH','삭제':'Supprimer',
+  '이름은 2~8자여야 합니다.':'Le nom doit contenir entre 2 et 8 caractères.',
+  '특수문자는 사용할 수 없습니다.':'Les caractères spéciaux ne sont pas autorisés.',
+  '생성 중...':'Création...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Un personnage avec ce nom existe déjà.',
+  '생성 실패: ':'Échec de la création : ','로그인 실패: ':'Échec de la connexion : ',
+  '캐릭터 불러오는 중...':'Chargement des personnages...','불러오는 중...':'Chargement...',
+  '오류: ':'Erreur : ','삭제 실패: ':'Échec de la suppression : ','알 수 없는 오류':'Erreur inconnue',
+  '서버 연결 실패: ':'Échec de connexion au serveur : ','데이터를 불러오는 중...':'Chargement des données...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Voulez-vous vraiment supprimer ce personnage ?',
+  '새 캐릭터':'Nouveau personnage','지옥으로 입장하는 중...':'Entrée en enfer...',
+  '친애하는 게이머 여러분께 바칩니다':'Dédié à vous tous, chers joueurs',
+  '건너뛰기':'PASSER','광과민성 발작 경고':'AVERTISSEMENT : CRISES PHOTOSENSIBLES',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Ce jeu contient de la violence intense et des images perturbantes.<br>Réservé aux 18 ans et plus. Peut provoquer des crises photosensibles.<br>Discrétion conseillée.',
+  '아무 키나 눌러 계속':'Appuyez sur une touche pour continuer',
+  '입장':'Entrer',
+};
+const _LOBBY_IT={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Connessione...','캐릭터를 선택하세요':'Seleziona il tuo personaggio','당신은 누구인가':'CHI SEI TU?',
+  'Google로 입장':'Accedi con Google','캐릭터 선택':'Selezione personaggio','로그아웃':'Disconnetti',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Nessun personaggio. Creane uno nuovo.',
+  '새 캐릭터 생성':'Crea nuovo personaggio','캐릭터 이름 (2~8자)':'Nome (2-8 caratteri)',
+  '생성':'Crea','외형 선택':'Aspetto','캐릭터의 외형을 선택하세요':'Scegli il tuo aspetto','취소':'Annulla',
+  '시작점':'Inizio','층':'P','장':'CAP','삭제':'Elimina',
+  '이름은 2~8자여야 합니다.':'Il nome deve essere di 2-8 caratteri.',
+  '특수문자는 사용할 수 없습니다.':'I caratteri speciali non sono consentiti.',
+  '생성 중...':'Creazione...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Esiste già un personaggio con questo nome.',
+  '생성 실패: ':'Creazione fallita: ','로그인 실패: ':'Accesso fallito: ',
+  '캐릭터 불러오는 중...':'Caricamento personaggi...','불러오는 중...':'Caricamento...',
+  '오류: ':'Errore: ','삭제 실패: ':'Eliminazione fallita: ','알 수 없는 오류':'Errore sconosciuto',
+  '서버 연결 실패: ':'Connessione al server fallita: ','데이터를 불러오는 중...':'Caricamento dati...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Vuoi davvero eliminare questo personaggio?',
+  '새 캐릭터':'Nuovo personaggio','지옥으로 입장하는 중...':'Entrando all\'inferno...',
+  '친애하는 게이머 여러분께 바칩니다':'Dedicato a tutti voi, cari giocatori',
+  '건너뛰기':'SALTA','광과민성 발작 경고':'AVVISO: CRISI FOTOSENSIBILI',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Questo gioco contiene violenza intensa e immagini disturbanti.<br>Vietato ai minori di 18 anni. Può provocare crisi fotosensibili.<br>Si consiglia discrezione.',
+  '아무 키나 눌러 계속':'Premi un tasto per continuare',
+  '입장':'Entra',
+};
+const _LOBBY_PTBR={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Conectando...','캐릭터를 선택하세요':'Selecione seu personagem','당신은 누구인가':'QUEM ÉS TU?',
+  'Google로 입장':'Entrar com Google','캐릭터 선택':'Seleção de personagem','로그아웃':'Sair',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Nenhum personagem. Crie um novo.',
+  '새 캐릭터 생성':'Criar novo personagem','캐릭터 이름 (2~8자)':'Nome (2-8 caracteres)',
+  '생성':'Criar','외형 선택':'Aparência','캐릭터의 외형을 선택하세요':'Escolha sua aparência','취소':'Cancelar',
+  '시작점':'Início','층':'A','장':'CAP','삭제':'Excluir',
+  '이름은 2~8자여야 합니다.':'O nome deve ter entre 2 e 8 caracteres.',
+  '특수문자는 사용할 수 없습니다.':'Caracteres especiais não são permitidos.',
+  '생성 중...':'Criando...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Já existe um personagem com esse nome.',
+  '생성 실패: ':'Falha ao criar: ','로그인 실패: ':'Falha no login: ',
+  '캐릭터 불러오는 중...':'Carregando personagens...','불러오는 중...':'Carregando...',
+  '오류: ':'Erro: ','삭제 실패: ':'Falha ao excluir: ','알 수 없는 오류':'Erro desconhecido',
+  '서버 연결 실패: ':'Falha na conexão com o servidor: ','데이터를 불러오는 중...':'Carregando dados...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Realmente deseja excluir este personagem?',
+  '새 캐릭터':'Novo personagem','지옥으로 입장하는 중...':'Entrando no inferno...',
+  '친애하는 게이머 여러분께 바칩니다':'Dedicado a todos vocês, queridos jogadores',
+  '건너뛰기':'PULAR','광과민성 발작 경고':'AVISO DE CONVULSÕES FOTOSSENSÍVEIS',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Este jogo contém violência intensa e imagens perturbadoras.<br>Classificação 18+. Pode provocar convulsões fotossensíveis.<br>Recomenda-se discrição.',
+  '아무 키나 눌러 계속':'Pressione qualquer tecla para continuar',
+  '입장':'Entrar',
+};
+const _LOBBY_RO={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Se conectează...','캐릭터를 선택하세요':'Selectează-ți personajul','당신은 누구인가':'CINE EȘTI TU?',
+  'Google로 입장':'Intră cu Google','캐릭터 선택':'Selectare personaj','로그아웃':'Deconectare',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Niciun personaj. Creează unul nou.',
+  '새 캐릭터 생성':'Creează personaj nou','캐릭터 이름 (2~8자)':'Nume (2-8 caractere)',
+  '생성':'Creează','외형 선택':'Aspect','캐릭터의 외형을 선택하세요':'Alege aspectul','취소':'Anulează',
+  '시작점':'Start','층':'E','장':'CAP','삭제':'Șterge',
+  '이름은 2~8자여야 합니다.':'Numele trebuie să aibă între 2 și 8 caractere.',
+  '특수문자는 사용할 수 없습니다.':'Caracterele speciale nu sunt permise.',
+  '생성 중...':'Se creează...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Există deja un personaj cu acest nume.',
+  '생성 실패: ':'Eroare la creare: ','로그인 실패: ':'Eroare la autentificare: ',
+  '캐릭터 불러오는 중...':'Se încarcă personajele...','불러오는 중...':'Se încarcă...',
+  '오류: ':'Eroare: ','삭제 실패: ':'Eroare la ștergere: ','알 수 없는 오류':'Eroare necunoscută',
+  '서버 연결 실패: ':'Eroare de conexiune la server: ','데이터를 불러오는 중...':'Se încarcă datele...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Sigur vrei să ștergi acest personaj?',
+  '새 캐릭터':'Personaj nou','지옥으로 입장하는 중...':'Se intră în infern...',
+  '친애하는 게이머 여러분께 바칩니다':'Dedicat vouă tuturor, dragi jucători',
+  '건너뛰기':'SARI','광과민성 발작 경고':'AVERTISMENT: CONVULSII FOTOSENSIBILE',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Acest joc conține violență intensă și imagini deranjante.<br>Clasificat 18+. Poate provoca convulsii fotosensibile.<br>Se recomandă discreție.',
+  '아무 키나 눌러 계속':'Apasă orice tastă pentru a continua',
+  '입장':'Intră',
+};
+const _LOBBY_DE={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Verbindung...','캐릭터를 선택하세요':'Wähle deinen Charakter','당신은 누구인가':'WER BIST DU?',
+  'Google로 입장':'Mit Google anmelden','캐릭터 선택':'Charakterauswahl','로그아웃':'Abmelden',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Keine Charaktere. Erstelle einen neuen.',
+  '새 캐릭터 생성':'Neuen Charakter erstellen','캐릭터 이름 (2~8자)':'Name (2-8 Zeichen)',
+  '생성':'Erstellen','외형 선택':'Aussehen','캐릭터의 외형을 선택하세요':'Wähle dein Aussehen','취소':'Abbrechen',
+  '시작점':'Start','층':'E','장':'KAP','삭제':'Löschen',
+  '이름은 2~8자여야 합니다.':'Der Name muss 2-8 Zeichen lang sein.',
+  '특수문자는 사용할 수 없습니다.':'Sonderzeichen sind nicht erlaubt.',
+  '생성 중...':'Wird erstellt...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Ein Charakter mit diesem Namen existiert bereits.',
+  '생성 실패: ':'Erstellung fehlgeschlagen: ','로그인 실패: ':'Anmeldung fehlgeschlagen: ',
+  '캐릭터 불러오는 중...':'Charaktere werden geladen...','불러오는 중...':'Laden...',
+  '오류: ':'Fehler: ','삭제 실패: ':'Löschen fehlgeschlagen: ','알 수 없는 오류':'Unbekannter Fehler',
+  '서버 연결 실패: ':'Serververbindung fehlgeschlagen: ','데이터를 불러오는 중...':'Daten werden geladen...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Diesen Charakter wirklich löschen?',
+  '새 캐릭터':'Neuer Charakter','지옥으로 입장하는 중...':'Betreten der Hölle...',
+  '친애하는 게이머 여러분께 바칩니다':'Gewidmet euch allen, liebe Spieler',
+  '건너뛰기':'ÜBERSPRINGEN','광과민성 발작 경고':'WARNUNG: PHOTOSENSIBLE ANFÄLLE',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Dieses Spiel enthält intensive Gewalt und verstörende Bilder.<br>Ab 18 Jahren. Kann photosensible Anfälle auslösen.<br>Eigenverantwortung wird empfohlen.',
+  '아무 키나 눌러 계속':'Beliebige Taste drücken zum Fortfahren',
+  '입장':'Eintreten',
+};
+const _LOBBY_NL={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Verbinden...','캐릭터를 선택하세요':'Selecteer je karakter','당신은 누구인가':'WIE ZIJT GIJ?',
+  'Google로 입장':'Inloggen met Google','캐릭터 선택':'Karakterselectie','로그아웃':'Uitloggen',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Geen karakters. Maak een nieuw karakter aan.',
+  '새 캐릭터 생성':'Nieuw karakter aanmaken','캐릭터 이름 (2~8자)':'Naam (2-8 tekens)',
+  '생성':'Aanmaken','외형 선택':'Uiterlijk','캐릭터의 외형을 선택하세요':'Kies je uiterlijk','취소':'Annuleren',
+  '시작점':'Start','층':'V','장':'H','삭제':'Verwijderen',
+  '이름은 2~8자여야 합니다.':'De naam moet 2-8 tekens lang zijn.',
+  '특수문자는 사용할 수 없습니다.':'Speciale tekens zijn niet toegestaan.',
+  '생성 중...':'Aanmaken...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Er bestaat al een karakter met deze naam.',
+  '생성 실패: ':'Aanmaken mislukt: ','로그인 실패: ':'Inloggen mislukt: ',
+  '캐릭터 불러오는 중...':'Karakters laden...','불러오는 중...':'Laden...',
+  '오류: ':'Fout: ','삭제 실패: ':'Verwijderen mislukt: ','알 수 없는 오류':'Onbekende fout',
+  '서버 연결 실패: ':'Serververbinding mislukt: ','데이터를 불러오는 중...':'Gegevens laden...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Wil je dit karakter echt verwijderen?',
+  '새 캐릭터':'Nieuw karakter','지옥으로 입장하는 중...':'De hel betreden...',
+  '친애하는 게이머 여러분께 바칩니다':'Opgedragen aan jullie allemaal, dierbare gamers',
+  '건너뛰기':'OVERSLAAN','광과민성 발작 경고':'WAARSCHUWING: FOTOSENSITIEVE AANVALLEN',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Dit spel bevat intens geweld en verontrustende beelden.<br>18+ classificatie. Kan fotosensitieve aanvallen veroorzaken.<br>Discretie wordt geadviseerd.',
+  '아무 키나 눌러 계속':'Druk op een toets om door te gaan',
+  '입장':'Betreden',
+};
+const _LOBBY_SV={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Ansluter...','캐릭터를 선택하세요':'Välj din karaktär','당신은 누구인가':'VEM ÄR DU?',
+  'Google로 입장':'Logga in med Google','캐릭터 선택':'Karaktärsval','로그아웃':'Logga ut',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Inga karaktärer. Skapa en ny.',
+  '새 캐릭터 생성':'Skapa ny karaktär','캐릭터 이름 (2~8자)':'Namn (2-8 tecken)',
+  '생성':'Skapa','외형 선택':'Utseende','캐릭터의 외형을 선택하세요':'Välj ditt utseende','취소':'Avbryt',
+  '시작점':'Start','층':'V','장':'KAP','삭제':'Radera',
+  '이름은 2~8자여야 합니다.':'Namnet måste vara 2-8 tecken.',
+  '특수문자는 사용할 수 없습니다.':'Specialtecken är inte tillåtna.',
+  '생성 중...':'Skapar...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'En karaktär med det namnet finns redan.',
+  '생성 실패: ':'Skapande misslyckades: ','로그인 실패: ':'Inloggning misslyckades: ',
+  '캐릭터 불러오는 중...':'Laddar karaktärer...','불러오는 중...':'Laddar...',
+  '오류: ':'Fel: ','삭제 실패: ':'Radering misslyckades: ','알 수 없는 오류':'Okänt fel',
+  '서버 연결 실패: ':'Serveranslutning misslyckades: ','데이터를 불러오는 중...':'Laddar data...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Vill du verkligen radera denna karaktär?',
+  '새 캐릭터':'Ny karaktär','지옥으로 입장하는 중...':'Går in i helvetet...',
+  '친애하는 게이머 여러분께 바칩니다':'Tillägnad er alla, kära spelare',
+  '건너뛰기':'HOPPA ÖVER','광과민성 발작 경고':'VARNING: LJUSKÄNSLIGA ANFALL',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Detta spel innehåller intensivt våld och störande bilder.<br>18+ klassificering. Kan utlösa ljuskänsliga anfall.<br>Eget ansvar rekommenderas.',
+  '아무 키나 눌러 계속':'Tryck valfri tangent för att fortsätta',
+  '입장':'Gå in',
+};
+const _LOBBY_DA={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Forbinder...','캐릭터를 선택하세요':'Vælg din karakter','당신은 누구인가':'HVEM ER DU?',
+  'Google로 입장':'Log ind med Google','캐릭터 선택':'Karaktervalg','로그아웃':'Log ud',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Ingen karakterer. Opret en ny.',
+  '새 캐릭터 생성':'Opret ny karakter','캐릭터 이름 (2~8자)':'Navn (2-8 tegn)',
+  '생성':'Opret','외형 선택':'Udseende','캐릭터의 외형을 선택하세요':'Vælg dit udseende','취소':'Annuller',
+  '시작점':'Start','층':'E','장':'KAP','삭제':'Slet',
+  '이름은 2~8자여야 합니다.':'Navnet skal være 2-8 tegn.',
+  '특수문자는 사용할 수 없습니다.':'Specialtegn er ikke tilladt.',
+  '생성 중...':'Opretter...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'En karakter med det navn findes allerede.',
+  '생성 실패: ':'Oprettelse mislykkedes: ','로그인 실패: ':'Login mislykkedes: ',
+  '캐릭터 불러오는 중...':'Indlæser karakterer...','불러오는 중...':'Indlæser...',
+  '오류: ':'Fejl: ','삭제 실패: ':'Sletning mislykkedes: ','알 수 없는 오류':'Ukendt fejl',
+  '서버 연결 실패: ':'Serverforbindelse mislykkedes: ','데이터를 불러오는 중...':'Indlæser data...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Vil du virkelig slette denne karakter?',
+  '새 캐릭터':'Ny karakter','지옥으로 입장하는 중...':'Træder ind i helvede...',
+  '친애하는 게이머 여러분께 바칩니다':'Dedikeret til jer alle, kære spillere',
+  '건너뛰기':'SPRING OVER','광과민성 발작 경고':'ADVARSEL: LYSFØLSOMME ANFALD',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Dette spil indeholder intens vold og forstyrrende billeder.<br>18+ klassificering. Kan udløse lysfølsomme anfald.<br>Eget ansvar anbefales.',
+  '아무 키나 눌러 계속':'Tryk en vilkårlig tast for at fortsætte',
+  '입장':'Gå ind',
+};
+const _LOBBY_NO={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Kobler til...','캐릭터를 선택하세요':'Velg din karakter','당신은 누구인가':'HVEM ER DU?',
+  'Google로 입장':'Logg inn med Google','캐릭터 선택':'Karaktervalg','로그아웃':'Logg ut',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Ingen karakterer. Opprett en ny.',
+  '새 캐릭터 생성':'Opprett ny karakter','캐릭터 이름 (2~8자)':'Navn (2-8 tegn)',
+  '생성':'Opprett','외형 선택':'Utseende','캐릭터의 외형을 선택하세요':'Velg ditt utseende','취소':'Avbryt',
+  '시작점':'Start','층':'E','장':'KAP','삭제':'Slett',
+  '이름은 2~8자여야 합니다.':'Navnet må være 2-8 tegn.',
+  '특수문자는 사용할 수 없습니다.':'Spesialtegn er ikke tillatt.',
+  '생성 중...':'Oppretter...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'En karakter med det navnet finnes allerede.',
+  '생성 실패: ':'Oppretting mislyktes: ','로그인 실패: ':'Innlogging mislyktes: ',
+  '캐릭터 불러오는 중...':'Laster karakterer...','불러오는 중...':'Laster...',
+  '오류: ':'Feil: ','삭제 실패: ':'Sletting mislyktes: ','알 수 없는 오류':'Ukjent feil',
+  '서버 연결 실패: ':'Serverforbindelse mislyktes: ','데이터를 불러오는 중...':'Laster data...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Vil du virkelig slette denne karakteren?',
+  '새 캐릭터':'Ny karakter','지옥으로 입장하는 중...':'Går inn i helvete...',
+  '친애하는 게이머 여러분께 바칩니다':'Tilegnet dere alle, kjære spillere',
+  '건너뛰기':'HOPP OVER','광과민성 발작 경고':'ADVARSEL: LYSFØLSOMME ANFALL',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Dette spillet inneholder intens vold og forstyrrende bilder.<br>18+ klassifisering. Kan utløse lysfølsomme anfall.<br>Eget ansvar anbefales.',
+  '아무 키나 눌러 계속':'Trykk en vilkårlig tast for å fortsette',
+  '입장':'Gå inn',
+};
+const _LOBBY_RU={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Подключение...','캐릭터를 선택하세요':'Выберите персонажа','당신은 누구인가':'КТО ТЫ ЕСТЬ?',
+  'Google로 입장':'Войти через Google','캐릭터 선택':'Выбор персонажа','로그아웃':'Выйти',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Нет персонажей. Создайте нового.',
+  '새 캐릭터 생성':'Создать персонажа','캐릭터 이름 (2~8자)':'Имя (2-8 символов)',
+  '생성':'Создать','외형 선택':'Внешность','캐릭터의 외형을 선택하세요':'Выберите внешность','취소':'Отмена',
+  '시작점':'Старт','층':'Э','장':'ГЛ','삭제':'Удалить',
+  '이름은 2~8자여야 합니다.':'Имя должно быть от 2 до 8 символов.',
+  '특수문자는 사용할 수 없습니다.':'Специальные символы запрещены.',
+  '생성 중...':'Создание...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Персонаж с таким именем уже существует.',
+  '생성 실패: ':'Ошибка создания: ','로그인 실패: ':'Ошибка входа: ',
+  '캐릭터 불러오는 중...':'Загрузка персонажей...','불러오는 중...':'Загрузка...',
+  '오류: ':'Ошибка: ','삭제 실패: ':'Ошибка удаления: ','알 수 없는 오류':'Неизвестная ошибка',
+  '서버 연결 실패: ':'Ошибка подключения к серверу: ','데이터를 불러오는 중...':'Загрузка данных...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Вы действительно хотите удалить этого персонажа?',
+  '새 캐릭터':'Новый персонаж','지옥으로 입장하는 중...':'Вход в ад...',
+  '친애하는 게이머 여러분께 바칩니다':'Посвящается всем вам, дорогие игроки',
+  '건너뛰기':'ПРОПУСТИТЬ','광과민성 발작 경고':'ПРЕДУПРЕЖДЕНИЕ: ФОТОСЕНСИТИВНАЯ ЭПИЛЕПСИЯ',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Эта игра содержит сцены насилия и шокирующие образы.<br>Только для лиц старше 18 лет. Может вызвать фотосенситивные приступы.<br>Рекомендуется осторожность.',
+  '아무 키나 눌러 계속':'Нажмите любую клавишу для продолжения',
+  '입장':'Войти',
+};
+const _LOBBY_UK={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Підключення...','캐릭터를 선택하세요':'Оберіть персонажа','당신은 누구인가':'ХТО ТИ Є?',
+  'Google로 입장':'Увійти через Google','캐릭터 선택':'Вибір персонажа','로그아웃':'Вийти',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Немає персонажів. Створіть нового.',
+  '새 캐릭터 생성':'Створити персонажа','캐릭터 이름 (2~8자)':'Ім\'я (2-8 символів)',
+  '생성':'Створити','외형 선택':'Зовнішність','캐릭터의 외형을 선택하세요':'Оберіть зовнішність','취소':'Скасувати',
+  '시작점':'Старт','층':'П','장':'РОЗ','삭제':'Видалити',
+  '이름은 2~8자여야 합니다.':'Ім\'я має бути від 2 до 8 символів.',
+  '특수문자는 사용할 수 없습니다.':'Спеціальні символи заборонені.',
+  '생성 중...':'Створення...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Персонаж з таким ім\'ям вже існує.',
+  '생성 실패: ':'Помилка створення: ','로그인 실패: ':'Помилка входу: ',
+  '캐릭터 불러오는 중...':'Завантаження персонажів...','불러오는 중...':'Завантаження...',
+  '오류: ':'Помилка: ','삭제 실패: ':'Помилка видалення: ','알 수 없는 오류':'Невідома помилка',
+  '서버 연결 실패: ':'Помилка підключення до сервера: ','데이터를 불러오는 중...':'Завантаження даних...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Ви дійсно хочете видалити цього персонажа?',
+  '새 캐릭터':'Новий персонаж','지옥으로 입장하는 중...':'Вхід до пекла...',
+  '친애하는 게이머 여러분께 바칩니다':'Присвячується всім вам, дорогі гравці',
+  '건너뛰기':'ПРОПУСТИТИ','광과민성 발작 경고':'ПОПЕРЕДЖЕННЯ: ФОТОСЕНСИТИВНА ЕПІЛЕПСІЯ',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Ця гра містить сцени насильства та шокуючі образи.<br>Тільки для осіб старше 18 років. Може викликати фотосенситивні напади.<br>Рекомендується обережність.',
+  '아무 키나 눌러 계속':'Натисніть будь-яку клавішу для продовження',
+  '입장':'Увійти',
+};
+const _LOBBY_PL={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Łączenie...','캐릭터를 선택하세요':'Wybierz swoją postać','당신은 누구인가':'KIM JESTEŚ?',
+  'Google로 입장':'Zaloguj przez Google','캐릭터 선택':'Wybór postaci','로그아웃':'Wyloguj',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Brak postaci. Utwórz nową.',
+  '새 캐릭터 생성':'Utwórz nową postać','캐릭터 이름 (2~8자)':'Nazwa (2-8 znaków)',
+  '생성':'Utwórz','외형 선택':'Wygląd','캐릭터의 외형을 선택하세요':'Wybierz wygląd','취소':'Anuluj',
+  '시작점':'Start','층':'P','장':'ROZ','삭제':'Usuń',
+  '이름은 2~8자여야 합니다.':'Nazwa musi mieć od 2 do 8 znaków.',
+  '특수문자는 사용할 수 없습니다.':'Znaki specjalne nie są dozwolone.',
+  '생성 중...':'Tworzenie...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Postać o tej nazwie już istnieje.',
+  '생성 실패: ':'Błąd tworzenia: ','로그인 실패: ':'Błąd logowania: ',
+  '캐릭터 불러오는 중...':'Ładowanie postaci...','불러오는 중...':'Ładowanie...',
+  '오류: ':'Błąd: ','삭제 실패: ':'Błąd usuwania: ','알 수 없는 오류':'Nieznany błąd',
+  '서버 연결 실패: ':'Błąd połączenia z serwerem: ','데이터를 불러오는 중...':'Ładowanie danych...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Czy na pewno chcesz usunąć tę postać?',
+  '새 캐릭터':'Nowa postać','지옥으로 입장하는 중...':'Wchodzenie do piekła...',
+  '친애하는 게이머 여러분께 바칩니다':'Dedykowane wszystkim wam, drodzy gracze',
+  '건너뛰기':'POMIŃ','광과민성 발작 경고':'OSTRZEŻENIE: NAPADY FOTOSENSYTYWNE',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Ta gra zawiera intensywną przemoc i niepokojące obrazy.<br>Kategoria 18+. Może wywołać napady fotosensytywne.<br>Zalecana ostrożność.',
+  '아무 키나 눌러 계속':'Naciśnij dowolny klawisz, aby kontynuować',
+  '입장':'Wejdź',
+};
+const _LOBBY_CS={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Připojování...','캐릭터를 선택하세요':'Vyber si postavu','당신은 누구인가':'KDO JSI?',
+  'Google로 입장':'Přihlásit přes Google','캐릭터 선택':'Výběr postavy','로그아웃':'Odhlásit',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Žádné postavy. Vytvoř novou.',
+  '새 캐릭터 생성':'Vytvořit novou postavu','캐릭터 이름 (2~8자)':'Jméno (2-8 znaků)',
+  '생성':'Vytvořit','외형 선택':'Vzhled','캐릭터의 외형을 선택하세요':'Vyber si vzhled','취소':'Zrušit',
+  '시작점':'Start','층':'P','장':'KAP','삭제':'Smazat',
+  '이름은 2~8자여야 합니다.':'Jméno musí mít 2-8 znaků.',
+  '특수문자는 사용할 수 없습니다.':'Speciální znaky nejsou povoleny.',
+  '생성 중...':'Vytváření...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Postava s tímto jménem již existuje.',
+  '생성 실패: ':'Chyba při vytváření: ','로그인 실패: ':'Chyba přihlášení: ',
+  '캐릭터 불러오는 중...':'Načítání postav...','불러오는 중...':'Načítání...',
+  '오류: ':'Chyba: ','삭제 실패: ':'Chyba při mazání: ','알 수 없는 오류':'Neznámá chyba',
+  '서버 연결 실패: ':'Chyba připojení k serveru: ','데이터를 불러오는 중...':'Načítání dat...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Opravdu chceš smazat tuto postavu?',
+  '새 캐릭터':'Nová postava','지옥으로 입장하는 중...':'Vstupuji do pekla...',
+  '친애하는 게이머 여러분께 바칩니다':'Věnováno vám všem, drazí hráči',
+  '건너뛰기':'PŘESKOČIT','광과민성 발작 경고':'VAROVÁNÍ: FOTOSENZITIVNÍ ZÁCHVATY',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Tato hra obsahuje intenzivní násilí a znepokojivé obrazy.<br>Od 18 let. Může vyvolat fotosenzitivní záchvaty.<br>Doporučuje se opatrnost.',
+  '아무 키나 눌러 계속':'Stiskni libovolnou klávesu pro pokračování',
+  '입장':'Vstoupit',
+};
+const _LOBBY_HU={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Csatlakozás...','캐릭터를 선택하세요':'Válaszd ki a karaktered','당신은 누구인가':'KI VAGY TE?',
+  'Google로 입장':'Belépés Google-lal','캐릭터 선택':'Karakterválasztás','로그아웃':'Kijelentkezés',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Nincs karakter. Hozz létre egy újat.',
+  '새 캐릭터 생성':'Új karakter létrehozása','캐릭터 이름 (2~8자)':'Név (2-8 karakter)',
+  '생성':'Létrehozás','외형 선택':'Megjelenés','캐릭터의 외형을 선택하세요':'Válaszd ki a megjelenést','취소':'Mégse',
+  '시작점':'Start','층':'E','장':'FEJ','삭제':'Törlés',
+  '이름은 2~8자여야 합니다.':'A név 2-8 karakter hosszú legyen.',
+  '특수문자는 사용할 수 없습니다.':'Speciális karakterek nem engedélyezettek.',
+  '생성 중...':'Létrehozás...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Már létezik ilyen nevű karakter.',
+  '생성 실패: ':'Létrehozási hiba: ','로그인 실패: ':'Bejelentkezési hiba: ',
+  '캐릭터 불러오는 중...':'Karakterek betöltése...','불러오는 중...':'Betöltés...',
+  '오류: ':'Hiba: ','삭제 실패: ':'Törlési hiba: ','알 수 없는 오류':'Ismeretlen hiba',
+  '서버 연결 실패: ':'Szerver csatlakozási hiba: ','데이터를 불러오는 중...':'Adatok betöltése...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Biztosan törölni akarod ezt a karaktert?',
+  '새 캐릭터':'Új karakter','지옥으로 입장하는 중...':'Belépés a pokolba...',
+  '친애하는 게이머 여러분께 바칩니다':'Mindannyiótoknak ajánlva, drága játékosok',
+  '건너뛰기':'KIHAGYÁS','광과민성 발작 경고':'FIGYELMEZTETÉS: FÉNYÉRZÉKENY ROHAMOK',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Ez a játék intenzív erőszakot és zavaró képeket tartalmaz.<br>18+ besorolás. Fényérzékeny rohamokat válthat ki.<br>Óvatosság ajánlott.',
+  '아무 키나 눌러 계속':'Nyomj meg egy gombot a folytatáshoz',
+  '입장':'Belépés',
+};
+const _LOBBY_BG={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Свързване...','캐릭터를 선택하세요':'Изберете персонаж','당신은 누구인가':'КОЙ СИ ТИ?',
+  'Google로 입장':'Вход с Google','캐릭터 선택':'Избор на персонаж','로그아웃':'Изход',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Няма персонажи. Създайте нов.',
+  '새 캐릭터 생성':'Създай нов персонаж','캐릭터 이름 (2~8자)':'Име (2-8 символа)',
+  '생성':'Създай','외형 선택':'Външност','캐릭터의 외형을 선택하세요':'Изберете външност','취소':'Отказ',
+  '시작점':'Старт','층':'Е','장':'ГЛ','삭제':'Изтрий',
+  '이름은 2~8자여야 합니다.':'Името трябва да е 2-8 символа.',
+  '특수문자는 사용할 수 없습니다.':'Специалните символи не са позволени.',
+  '생성 중...':'Създаване...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Персонаж с това име вече съществува.',
+  '생성 실패: ':'Грешка при създаване: ','로그인 실패: ':'Грешка при вход: ',
+  '캐릭터 불러오는 중...':'Зареждане на персонажи...','불러오는 중...':'Зареждане...',
+  '오류: ':'Грешка: ','삭제 실패: ':'Грешка при изтриване: ','알 수 없는 오류':'Неизвестна грешка',
+  '서버 연결 실패: ':'Грешка при свързване със сървъра: ','데이터를 불러오는 중...':'Зареждане на данни...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Наистина ли искате да изтриете този персонаж?',
+  '새 캐릭터':'Нов персонаж','지옥으로 입장하는 중...':'Влизане в ада...',
+  '친애하는 게이머 여러분께 바칩니다':'Посветено на всички вас, скъпи геймъри',
+  '건너뛰기':'ПРОПУСНИ','광과민성 발작 경고':'ПРЕДУПРЕЖДЕНИЕ: ФОТОСЕНСИТИВНА ЕПИЛЕПСИЯ',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Тази игра съдържа интензивно насилие и обезпокоителни образи.<br>Само за лица над 18 години. Може да предизвика фотосенситивни пристъпи.<br>Препоръчва се внимание.',
+  '아무 키나 눌러 계속':'Натиснете произволен клавиш за продължаване',
+  '입장':'Влезте',
+};
+const _LOBBY_EL={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Σύνδεση...','캐릭터를 선택하세요':'Επίλεξε τον χαρακτήρα σου','당신은 누구인가':'ΠΟΙΟΣ ΕΙΣΑΙ;',
+  'Google로 입장':'Είσοδος με Google','캐릭터 선택':'Επιλογή χαρακτήρα','로그아웃':'Αποσύνδεση',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Δεν υπάρχουν χαρακτήρες. Δημιούργησε έναν νέο.',
+  '새 캐릭터 생성':'Δημιουργία νέου χαρακτήρα','캐릭터 이름 (2~8자)':'Όνομα (2-8 χαρακτήρες)',
+  '생성':'Δημιουργία','외형 선택':'Εμφάνιση','캐릭터의 외형을 선택하세요':'Επίλεξε εμφάνιση','취소':'Ακύρωση',
+  '시작점':'Εκκίνηση','층':'Ο','장':'ΚΕΦ','삭제':'Διαγραφή',
+  '이름은 2~8자여야 합니다.':'Το όνομα πρέπει να είναι 2-8 χαρακτήρες.',
+  '특수문자는 사용할 수 없습니다.':'Δεν επιτρέπονται ειδικοί χαρακτήρες.',
+  '생성 중...':'Δημιουργία...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Υπάρχει ήδη χαρακτήρας με αυτό το όνομα.',
+  '생성 실패: ':'Αποτυχία δημιουργίας: ','로그인 실패: ':'Αποτυχία σύνδεσης: ',
+  '캐릭터 불러오는 중...':'Φόρτωση χαρακτήρων...','불러오는 중...':'Φόρτωση...',
+  '오류: ':'Σφάλμα: ','삭제 실패: ':'Αποτυχία διαγραφής: ','알 수 없는 오류':'Άγνωστο σφάλμα',
+  '서버 연결 실패: ':'Αποτυχία σύνδεσης με τον διακομιστή: ','데이터를 불러오는 중...':'Φόρτωση δεδομένων...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Θέλεις πραγματικά να διαγράψεις αυτόν τον χαρακτήρα;',
+  '새 캐릭터':'Νέος χαρακτήρας','지옥으로 입장하는 중...':'Είσοδος στην κόλαση...',
+  '친애하는 게이머 여러분께 바칩니다':'Αφιερωμένο σε όλους εσάς, αγαπητοί παίκτες',
+  '건너뛰기':'ΠΑΡΑΛΕΙΨΗ','광과민성 발작 경고':'ΠΡΟΕΙΔΟΠΟΙΗΣΗ: ΦΩΤΟΕΥΑΙΣΘΗΤΕΣ ΚΡΙΣΕΙΣ',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Αυτό το παιχνίδι περιέχει έντονη βία και ανησυχητικές εικόνες.<br>Κατάλληλο για 18+. Μπορεί να προκαλέσει φωτοευαίσθητες κρίσεις.<br>Συνιστάται προσοχή.',
+  '아무 키나 눌러 계속':'Πατήστε οποιοδήποτε πλήκτρο για συνέχεια',
+  '입장':'Εισαγωγή',
+};
+const _LOBBY_FI={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Yhdistetään...','캐릭터를 선택하세요':'Valitse hahmosi','당신은 누구인가':'KUKA SINÄ OLET?',
+  'Google로 입장':'Kirjaudu Googlella','캐릭터 선택':'Hahmon valinta','로그아웃':'Kirjaudu ulos',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Ei hahmoja. Luo uusi.',
+  '새 캐릭터 생성':'Luo uusi hahmo','캐릭터 이름 (2~8자)':'Nimi (2-8 merkkiä)',
+  '생성':'Luo','외형 선택':'Ulkonäkö','캐릭터의 외형을 선택하세요':'Valitse ulkonäkö','취소':'Peruuta',
+  '시작점':'Aloitus','층':'K','장':'L','삭제':'Poista',
+  '이름은 2~8자여야 합니다.':'Nimen on oltava 2-8 merkkiä.',
+  '특수문자는 사용할 수 없습니다.':'Erikoismerkit eivät ole sallittuja.',
+  '생성 중...':'Luodaan...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Samanniminen hahmo on jo olemassa.',
+  '생성 실패: ':'Luonti epäonnistui: ','로그인 실패: ':'Kirjautuminen epäonnistui: ',
+  '캐릭터 불러오는 중...':'Ladataan hahmoja...','불러오는 중...':'Ladataan...',
+  '오류: ':'Virhe: ','삭제 실패: ':'Poisto epäonnistui: ','알 수 없는 오류':'Tuntematon virhe',
+  '서버 연결 실패: ':'Palvelinyhteys epäonnistui: ','데이터를 불러오는 중...':'Ladataan tietoja...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Haluatko todella poistaa tämän hahmon?',
+  '새 캐릭터':'Uusi hahmo','지옥으로 입장하는 중...':'Astutaan helvettiin...',
+  '친애하는 게이머 여러분께 바칩니다':'Omistettu teille kaikille, rakkaat pelaajat',
+  '건너뛰기':'OHITA','광과민성 발작 경고':'VAROITUS: VALOHERKKÄ EPILEPSIA',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Tämä peli sisältää voimakasta väkivaltaa ja häiritseviä kuvia.<br>K-18. Voi laukaista valoherkkyyskohtauksia.<br>Varovaisuutta suositellaan.',
+  '아무 키나 눌러 계속':'Paina mitä tahansa näppäintä jatkaaksesi',
+  '입장':'Siirry',
+};
+const _LOBBY_TR={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Bağlanıyor...','캐릭터를 선택하세요':'Karakterini seç','당신은 누구인가':'SEN KİMSİN?',
+  'Google로 입장':'Google ile giriş','캐릭터 선택':'Karakter seçimi','로그아웃':'Çıkış yap',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Karakter yok. Yeni bir tane oluştur.',
+  '새 캐릭터 생성':'Yeni karakter oluştur','캐릭터 이름 (2~8자)':'İsim (2-8 karakter)',
+  '생성':'Oluştur','외형 선택':'Görünüm','캐릭터의 외형을 선택하세요':'Görünümünü seç','취소':'İptal',
+  '시작점':'Başlangıç','층':'K','장':'BL','삭제':'Sil',
+  '이름은 2~8자여야 합니다.':'İsim 2-8 karakter olmalıdır.',
+  '특수문자는 사용할 수 없습니다.':'Özel karakterler kullanılamaz.',
+  '생성 중...':'Oluşturuluyor...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Bu isimde bir karakter zaten mevcut.',
+  '생성 실패: ':'Oluşturma hatası: ','로그인 실패: ':'Giriş hatası: ',
+  '캐릭터 불러오는 중...':'Karakterler yükleniyor...','불러오는 중...':'Yükleniyor...',
+  '오류: ':'Hata: ','삭제 실패: ':'Silme hatası: ','알 수 없는 오류':'Bilinmeyen hata',
+  '서버 연결 실패: ':'Sunucu bağlantı hatası: ','데이터를 불러오는 중...':'Veriler yükleniyor...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Bu karakteri gerçekten silmek istiyor musun?',
+  '새 캐릭터':'Yeni karakter','지옥으로 입장하는 중...':'Cehenneme giriliyor...',
+  '친애하는 게이머 여러분께 바칩니다':'Hepinize ithafen, sevgili oyuncular',
+  '건너뛰기':'ATLA','광과민성 발작 경고':'UYARI: FOTOSENSİTİF NÖBETLER',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Bu oyun yoğun şiddet ve rahatsız edici görüntüler içerir.<br>18+ sınıflandırma. Fotosensitif nöbetleri tetikleyebilir.<br>Dikkatli olunması önerilir.',
+  '아무 키나 눌러 계속':'Devam etmek için herhangi bir tuşa basın',
+  '입장':'Gir',
+};
+const _LOBBY_AR={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'جارٍ الاتصال...','캐릭터를 선택하세요':'اختر شخصيتك','당신은 누구인가':'مَنْ أَنْتَ؟',
+  'Google로 입장':'الدخول عبر Google','캐릭터 선택':'اختيار الشخصية','로그아웃':'تسجيل الخروج',
+  '캐릭터가 없습니다. 새로 생성하세요.':'لا توجد شخصيات. أنشئ واحدة جديدة.',
+  '새 캐릭터 생성':'إنشاء شخصية جديدة','캐릭터 이름 (2~8자)':'الاسم (2-8 أحرف)',
+  '생성':'إنشاء','외형 선택':'المظهر','캐릭터의 외형을 선택하세요':'اختر المظهر','취소':'إلغاء',
+  '시작점':'البداية','층':'ط','장':'ف','삭제':'حذف',
+  '이름은 2~8자여야 합니다.':'يجب أن يكون الاسم من 2 إلى 8 أحرف.',
+  '특수문자는 사용할 수 없습니다.':'الأحرف الخاصة غير مسموح بها.',
+  '생성 중...':'جارٍ الإنشاء...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'توجد شخصية بهذا الاسم بالفعل.',
+  '생성 실패: ':'فشل الإنشاء: ','로그인 실패: ':'فشل تسجيل الدخول: ',
+  '캐릭터 불러오는 중...':'جارٍ تحميل الشخصيات...','불러오는 중...':'جارٍ التحميل...',
+  '오류: ':'خطأ: ','삭제 실패: ':'فشل الحذف: ','알 수 없는 오류':'خطأ غير معروف',
+  '서버 연결 실패: ':'فشل الاتصال بالخادم: ','데이터를 불러오는 중...':'جارٍ تحميل البيانات...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — هل تريد حقاً حذف هذه الشخصية؟',
+  '새 캐릭터':'شخصية جديدة','지옥으로 입장하는 중...':'الدخول إلى الجحيم...',
+  '친애하는 게이머 여러분께 바칩니다':'إهداء إلى جميعكم، أعزاءنا اللاعبين',
+  '건너뛰기':'تخطي','광과민성 발작 경고':'تحذير: نوبات حساسية الضوء',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'تحتوي هذه اللعبة على عنف شديد وصور مزعجة.<br>للأعمار 18+ فقط. قد تسبب نوبات حساسية الضوء.<br>يُنصح بالحذر.',
+  '아무 키나 눌러 계속':'اضغط أي مفتاح للمتابعة',
+  '입장':'دخول',
+};
+const _LOBBY_VI={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Đang kết nối...','캐릭터를 선택하세요':'Chọn nhân vật của bạn','당신은 누구인가':'NGƯƠI LÀ AI?',
+  'Google로 입장':'Đăng nhập bằng Google','캐릭터 선택':'Chọn nhân vật','로그아웃':'Đăng xuất',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Không có nhân vật. Hãy tạo mới.',
+  '새 캐릭터 생성':'Tạo nhân vật mới','캐릭터 이름 (2~8자)':'Tên (2-8 ký tự)',
+  '생성':'Tạo','외형 선택':'Ngoại hình','캐릭터의 외형을 선택하세요':'Chọn ngoại hình','취소':'Hủy',
+  '시작점':'Khởi đầu','층':'T','장':'CH','삭제':'Xóa',
+  '이름은 2~8자여야 합니다.':'Tên phải từ 2 đến 8 ký tự.',
+  '특수문자는 사용할 수 없습니다.':'Không được dùng ký tự đặc biệt.',
+  '생성 중...':'Đang tạo...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Đã tồn tại nhân vật cùng tên.',
+  '생성 실패: ':'Tạo thất bại: ','로그인 실패: ':'Đăng nhập thất bại: ',
+  '캐릭터 불러오는 중...':'Đang tải nhân vật...','불러오는 중...':'Đang tải...',
+  '오류: ':'Lỗi: ','삭제 실패: ':'Xóa thất bại: ','알 수 없는 오류':'Lỗi không xác định',
+  '서버 연결 실패: ':'Kết nối máy chủ thất bại: ','데이터를 불러오는 중...':'Đang tải dữ liệu...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Bạn có chắc muốn xóa nhân vật này?',
+  '새 캐릭터':'Nhân vật mới','지옥으로 입장하는 중...':'Đang vào địa ngục...',
+  '친애하는 게이머 여러분께 바칩니다':'Dành tặng tất cả các bạn, những game thủ thân yêu',
+  '건너뛰기':'BỎ QUA','광과민성 발작 경고':'CẢNH BÁO: ĐỘNG KINH NHẠY SÁNG',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Trò chơi này chứa bạo lực mạnh và hình ảnh gây sốc.<br>Dành cho người từ 18 tuổi trở lên. Có thể gây động kinh nhạy sáng.<br>Khuyến cáo thận trọng.',
+  '아무 키나 눌러 계속':'Nhấn phím bất kỳ để tiếp tục',
+  '입장':'Vào',
+};
+const _LOBBY_TH={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'กำลังเชื่อมต่อ...','캐릭터를 선택하세요':'เลือกตัวละครของคุณ','당신은 누구인가':'เจ้าเป็นผู้ใด?',
+  'Google로 입장':'เข้าสู่ระบบด้วย Google','캐릭터 선택':'เลือกตัวละคร','로그아웃':'ออกจากระบบ',
+  '캐릭터가 없습니다. 새로 생성하세요.':'ไม่มีตัวละคร สร้างตัวใหม่เลย',
+  '새 캐릭터 생성':'สร้างตัวละครใหม่','캐릭터 이름 (2~8자)':'ชื่อ (2-8 ตัวอักษร)',
+  '생성':'สร้าง','외형 선택':'รูปลักษณ์','캐릭터의 외형을 선택하세요':'เลือกรูปลักษณ์','취소':'ยกเลิก',
+  '시작점':'จุดเริ่มต้น','층':'ชั้น','장':'บท','삭제':'ลบ',
+  '이름은 2~8자여야 합니다.':'ชื่อต้องมี 2-8 ตัวอักษร',
+  '특수문자는 사용할 수 없습니다.':'ไม่อนุญาตให้ใช้อักขระพิเศษ',
+  '생성 중...':'กำลังสร้าง...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'มีตัวละครชื่อนี้อยู่แล้ว',
+  '생성 실패: ':'สร้างล้มเหลว: ','로그인 실패: ':'เข้าสู่ระบบล้มเหลว: ',
+  '캐릭터 불러오는 중...':'กำลังโหลดตัวละคร...','불러오는 중...':'กำลังโหลด...',
+  '오류: ':'ข้อผิดพลาด: ','삭제 실패: ':'ลบล้มเหลว: ','알 수 없는 오류':'ข้อผิดพลาดที่ไม่ทราบสาเหตุ',
+  '서버 연결 실패: ':'เชื่อมต่อเซิร์ฟเวอร์ล้มเหลว: ','데이터를 불러오는 중...':'กำลังโหลดข้อมูล...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — คุณแน่ใจว่าต้องการลบตัวละครนี้?',
+  '새 캐릭터':'ตัวละครใหม่','지옥으로 입장하는 중...':'กำลังเข้าสู่นรก...',
+  '친애하는 게이머 여러분께 바칩니다':'อุทิศให้แด่ทุกท่าน เกมเมอร์ที่รัก',
+  '건너뛰기':'ข้าม','광과민성 발작 경고':'คำเตือน: อาการชักจากแสงกระพริบ',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'เกมนี้มีเนื้อหาความรุนแรงและภาพที่น่าตกใจ<br>สำหรับผู้ที่มีอายุ 18 ปีขึ้นไป อาจทำให้เกิดอาการชักจากแสงกระพริบ<br>โปรดใช้วิจารณญาณ',
+  '아무 키나 눌러 계속':'กดปุ่มใดก็ได้เพื่อดำเนินการต่อ',
+  '입장':'เข้า',
+};
+const _LOBBY_ID={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'Menghubungkan...','캐릭터를 선택하세요':'Pilih karaktermu','당신은 누구인가':'SIAPAKAH ENGKAU?',
+  'Google로 입장':'Masuk dengan Google','캐릭터 선택':'Pilih karakter','로그아웃':'Keluar',
+  '캐릭터가 없습니다. 새로 생성하세요.':'Tidak ada karakter. Buat yang baru.',
+  '새 캐릭터 생성':'Buat karakter baru','캐릭터 이름 (2~8자)':'Nama (2-8 karakter)',
+  '생성':'Buat','외형 선택':'Penampilan','캐릭터의 외형을 선택하세요':'Pilih penampilan','취소':'Batal',
+  '시작점':'Mulai','층':'Lt','장':'Bab','삭제':'Hapus',
+  '이름은 2~8자여야 합니다.':'Nama harus 2-8 karakter.',
+  '특수문자는 사용할 수 없습니다.':'Karakter khusus tidak diperbolehkan.',
+  '생성 중...':'Membuat...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'Karakter dengan nama tersebut sudah ada.',
+  '생성 실패: ':'Gagal membuat: ','로그인 실패: ':'Gagal masuk: ',
+  '캐릭터 불러오는 중...':'Memuat karakter...','불러오는 중...':'Memuat...',
+  '오류: ':'Kesalahan: ','삭제 실패: ':'Gagal menghapus: ','알 수 없는 오류':'Kesalahan tidak diketahui',
+  '서버 연결 실패: ':'Gagal terhubung ke server: ','데이터를 불러오는 중...':'Memuat data...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':' — Yakin ingin menghapus karakter ini?',
+  '새 캐릭터':'Karakter baru','지옥으로 입장하는 중...':'Memasuki neraka...',
+  '친애하는 게이머 여러분께 바칩니다':'Didedikasikan untuk kalian semua, para gamer terkasih',
+  '건너뛰기':'LEWATI','광과민성 발작 경고':'PERINGATAN: KEJANG FOTOSENSITIF',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Game ini mengandung kekerasan intens dan gambar yang mengganggu.<br>Untuk usia 18+. Dapat memicu kejang fotosensitif.<br>Disarankan untuk berhati-hati.',
+  '아무 키나 눌러 계속':'Tekan tombol apa saja untuk melanjutkan',
+  '입장':'Masuk',
+};
+const _LOBBY_ZHT={
+  '지옥의 길':'HELL: EXODUSER','연결 중...':'連線中...','캐릭터를 선택하세요':'選擇你的角色','당신은 누구인가':'汝乃何人',
+  'Google로 입장':'使用Google登入','캐릭터 선택':'角色選擇','로그아웃':'登出',
+  '캐릭터가 없습니다. 새로 생성하세요.':'沒有角色，請建立新角色。',
+  '새 캐릭터 생성':'建立新角色','캐릭터 이름 (2~8자)':'角色名（2~8字）',
+  '생성':'建立','외형 선택':'外觀選擇','캐릭터의 외형을 선택하세요':'請選擇角色外觀','취소':'取消',
+  '시작점':'起點','층':'層','장':'章','삭제':'刪除',
+  '이름은 2~8자여야 합니다.':'名稱必須為2~8個字元。',
+  '특수문자는 사용할 수 없습니다.':'不能使用特殊字元。',
+  '생성 중...':'建立中...',
+  '이미 같은 이름의 캐릭터가 있습니다.':'已存在同名角色。',
+  '생성 실패: ':'建立失敗：','로그인 실패: ':'登入失敗：',
+  '캐릭터 불러오는 중...':'載入角色中...','불러오는 중...':'載入中...',
+  '오류: ':'錯誤：','삭제 실패: ':'刪除失敗：','알 수 없는 오류':'未知錯誤',
+  '서버 연결 실패: ':'伺服器連線失敗：','데이터를 불러오는 중...':'載入資料中...',
+  ' 캐릭터를 정말 삭제하시겠습니까?':'  — 確定要刪除該角色嗎？',
+  '새 캐릭터':'新角色','지옥으로 입장하는 중...':'正在進入地獄...',
+  '친애하는 게이머 여러분께 바칩니다':'獻給各位親愛的玩家',
+  '건너뛰기':'跳過','광과민성 발작 경고':'光敏性癲癇警告',
+  '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'本遊戲包含強烈暴力和令人不安的畫面。<br>僅限18歲以上。可能引發光敏性癲癇發作。<br>請謹慎遊玩。',
+  '아무 키나 눌러 계속':'按任意鍵繼續',
+  '입장':'進入',
+};
+const _LOBBY_SK={'친애하는 게이머 여러분께 바칩니다':'Venované vám všetkým, drahí hráči'};
+const _LOBBY_HR={'친애하는 게이머 여러분께 바칩니다':'Posvećeno svima vama, dragi igrači'};
+const _LOBBY_TABLES=Object.assign({en:_LOBBY_EN,zh:_LOBBY_ZH,ja:_LOBBY_JA,es:_LOBBY_ES,fr:_LOBBY_FR,it:_LOBBY_IT,pt:_LOBBY_PTBR,ro:_LOBBY_RO,de:_LOBBY_DE,nl:_LOBBY_NL,sv:_LOBBY_SV,da:_LOBBY_DA,no:_LOBBY_NO,ru:_LOBBY_RU,uk:_LOBBY_UK,pl:_LOBBY_PL,cs:_LOBBY_CS,hu:_LOBBY_HU,bg:_LOBBY_BG,el:_LOBBY_EL,fi:_LOBBY_FI,tr:_LOBBY_TR,ar:_LOBBY_AR,vi:_LOBBY_VI,th:_LOBBY_TH,id:_LOBBY_ID,zht:_LOBBY_ZHT,sk:_LOBBY_SK,hr:_LOBBY_HR},typeof _LOBBY_I18N!=='undefined'?_LOBBY_I18N:{});
+// ═══ 다국어 4단계 폴백 체인 ═══
+const _I18N_SUPPORTED=['ko','en','zh','ja','es','fr','de','ru','pt','it','vi','th','id','tr','pl','cs','hu','bg','el','fi','sv','da','no','nl','ro','uk','ar','zht'];
+const _STEAM_LANG_MAP={koreana:'ko',english:'en',schinese:'zh',tchinese:'zht',japanese:'ja',spanish:'es',french:'fr',german:'de',russian:'ru',portuguese:'pt',italian:'it',vietnamese:'vi',thai:'th',indonesian:'id',turkish:'tr',polish:'pl',czech:'cs',hungarian:'hu',bulgarian:'bg',greek:'el',finnish:'fi',swedish:'sv',danish:'da',norwegian:'no',dutch:'nl',romanian:'ro',ukrainian:'uk',arabic:'ar'};
+function getUserSelectedLanguage(){const s=localStorage.getItem('hellLang');return(s&&_I18N_SUPPORTED.includes(s))?s:null}
+function detectSteamLanguage(){try{if(typeof window!=='undefined'&&window.steamworks){const sl=window.steamworks.localplayer.getCurrentGameLanguage();const m=_STEAM_LANG_MAP[sl];if(m){console.log('[I18N] Steam: '+sl+' -> '+m);return m}}if(typeof process!=='undefined'&&process.env&&process.env.STEAM_LANGUAGE){const m=_STEAM_LANG_MAP[process.env.STEAM_LANGUAGE];if(m)return m}}catch(e){/* 브라우저 silent */}return null}
+function detectBrowserLanguage(){const ls=navigator.languages||[navigator.language]||['en'];for(const l of ls){const c=l.toLowerCase().split('-')[0];if(_I18N_SUPPORTED.includes(c)){console.log('[I18N] Browser: '+l+' -> '+c);return c}}return null}
+function getCurrentLanguage(){const p=new URLSearchParams(location.search);const dbg=p.get('lang');if(dbg&&_I18N_SUPPORTED.includes(dbg)){console.log('[I18N] Debug override: '+dbg);return dbg}const u=getUserSelectedLanguage();if(u){console.log('[I18N] User selected: '+u);return u}const s=detectSteamLanguage();if(s)return s;const b=detectBrowserLanguage();if(b)return b;console.log('[I18N] Fallback: en');return'en'}
+function setUserLanguage(code){if(!_I18N_SUPPORTED.includes(code)){console.warn('[I18N] Unsupported: '+code);return false}localStorage.setItem('hellLang',code);console.log('[I18N] Saved: '+code);const cl=document.getElementById('cinLang');if(cl)cl.value=code;const ls=document.getElementById('langSelect');if(ls)ls.value=code;_applyLobbyLang();return true}
+function _lobbyLang(){return getCurrentLanguage()}
+function _TL(s){const lang=_lobbyLang();if(lang==='ko')return s;const tbl=_LOBBY_TABLES[lang]||_LOBBY_EN;return tbl[s]||_LOBBY_EN[s]||s}
+function _applyLobbyLang(){
+  const lang=_lobbyLang();
+  document.getElementById('langSelect').value=lang;
+  const tbl=_LOBBY_TABLES[lang]||_LOBBY_EN;
+  // 정적 텍스트 교체
+  const m={
+    'h1':['HELL','HELL'],
+    '.loading p':['연결 중...','Connecting...'],
+    '#loginSection h2':['캐릭터를 선택하세요','Select your character'],
+    '#googleBtn':null, // 특수 처리
+    '.lobby-header h2':['캐릭터 선택','Character Select'],
+    '#logoutBtn':['로그아웃','Logout'],
+    '#charDispEmpty':['당신은 누구인가','WHO ART THOU'],
+    '.no-chars':['캐릭터가 없습니다. 새로 생성하세요.','No characters. Create a new one.'],
+    '.create-section h3':['새 캐릭터 생성','Create New Character'],
+    '#createBtn':['생성','Create'],
+    '#charVisualPop h2':['외형 선택','Appearance'],
+    '#charVisualPop p':['캐릭터의 외형을 선택하세요','Choose your appearance'],
+    '#visualCancelBtn':['취소','Cancel'],
+    '#enterGameBtn':['입장','Enter'],
+  };
+  for(const[sel,pair]of Object.entries(m)){
+    if(!pair)continue;
+    const el=document.querySelector(sel);
+    if(!el)continue;
+    if(lang==='ko')el.textContent=pair[0];
+    else{const k=pair[0];el.textContent=(tbl&&tbl[k])||_LOBBY_EN[k]||pair[1];}
+  }
+  // Google 버튼 (SVG 보존)
+  const gb=document.getElementById('googleBtn');
+  if(gb){const svg=gb.querySelector('svg');const txt=_TL('Google로 입장');gb.innerHTML='';if(svg)gb.appendChild(svg);gb.appendChild(document.createTextNode(txt))}
+  // placeholder
+  const ci=document.getElementById('charName');
+  if(ci)ci.placeholder=_TL('캐릭터 이름 (2~8자)');
+}
+document.getElementById('langSelect').onchange=function(){setUserLanguage(this.value)};
+document.getElementById('cinLang').onchange=function(){setUserLanguage(this.value)};
+// 페이지 로드 시 4단계 폴백으로 초기 언어 결정 + UI 적용
+(function(){const lang=getCurrentLanguage();document.getElementById('cinLang').value=lang;document.getElementById('langSelect').value=lang;if(!localStorage.getItem('hellLang'))localStorage.setItem('hellLang',lang);_applyLobbyLang()})();
+
+const lobbyBGM=new Audio('bgm/공통/lobby.mp3');
+lobbyBGM.preload='auto';lobbyBGM.loop=true;lobbyBGM.volume=0.65;
+const introVoice=new Audio('bgm/공통/intro_voice.mp3');
+introVoice.preload='auto';introVoice.volume=0.7;
+introVoice.playbackRate=0.95;
+let bgmStarted=false;
+function _tryBGM(){
+  if(bgmStarted)return;
+  lobbyBGM.play().then(()=>{bgmStarted=true;_rmBGMListeners()}).catch(()=>{});
+}
+function _rmBGMListeners(){['click','keydown','pointerdown','touchstart','mousemove','scroll','wheel'].forEach(e=>document.removeEventListener(e,_tryBGM))}
+// 페이지 로드 시 바로 시도 + 실패하면 아무 인터랙션에 자동 재생
+function startBGM(){
+  _tryBGM();
+  if(!bgmStarted){['click','keydown','pointerdown','touchstart','mousemove','scroll','wheel'].forEach(e=>document.addEventListener(e,_tryBGM,{passive:true}))}
+}
+
+const $=id=>document.getElementById(id);
+let currentUser=null;
+let gateOpened=false;
+let _cinDone=false;
+function stopMediaVideo(v){
+  if(!v)return;
+  try{v.pause()}catch(e){}
+  try{v.currentTime=0}catch(e){}
+  try{v.muted=true;v.volume=0}catch(e){}
+}
+function stopIntroVoice(){
+  try{introVoice.pause();introVoice.currentTime=0;}catch(e){}
+}
+
+// ═══ Prologue Script (풀버전) ═══
+// img: 이미지 인덱스 (0~8), -1=어둠, undefined=이전 유지
+// v: 음성 재생 시점 (초), 이 시점에 해당 라인이 시작됨
+const CIN_LINES=[
+  {v:0,   text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:0},
+  {v:2.5, text:'전쟁에서 살아 돌아온 한 남자.',en:'A man who returned alive from war.',zh:'一个从战争中活着回来的男人。',ja:'戦争から生きて帰った一人の男。',es:'Un hombre que regresó vivo de la guerra.',dur:3000,img:0},
+  {v:5.0, text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:5.5, text:'하지만 집은 모두 불타 사라졌다.',en:'But his home had burned to nothing.',zh:'但家园已化为灰烬。',ja:'だが家はすべて焼け落ちていた。',es:'Pero su hogar había sido reducido a cenizas.',dur:3000,img:1},
+  {v:10.5,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:13.0,text:'이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.',en:'Killu, once a neighbor and friend, had crushed his family.',zh:'曾是邻居和朋友的基路，摧毁了他的家族。',ja:'隣人であり友人だったキルルが、彼の一族を踏みにじった。',es:'Killu, vecino y amigo, había aplastado a su familia.',dur:3000,img:2},
+  {v:17.5,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:19.7,text:'아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,',en:'His wife was taken as a servant and suffered unspeakable horrors,',zh:'妻子被掳为奴仆，受尽种种凌辱，',ja:'妻は召使いとして連れ去られ、あらゆる残虐を受け、',es:'Su esposa fue tomada como sirvienta y sufrió horrores indecibles,',dur:3000},
+  {v:23.9,text:'끝내 못 이겨 스스로 목숨을 끊었다.',en:'until she could bear no more and took her own life.',zh:'最终不堪忍受，自绝了生命。',ja:'ついに耐えきれず自ら命を絶った。',es:'hasta que no pudo más y se quitó la vida.',dur:3000},
+  {v:27.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:28.6,text:'아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.',en:'His children were sold into slavery — their fate unknown.',zh:'孩子们被卖为奴隶，下落不明。',ja:'子供たちは奴隷として売られ、行方すら分からない。',es:'Sus hijos fueron vendidos como esclavos — su destino, desconocido.',dur:3000},
+  {v:33.0,text:'늙은 부모는 감옥에 갇혀 굶어 죽었다.',en:'His elderly parents were imprisoned and starved to death.',zh:'年迈的父母被关进牢狱，活活饿死。',ja:'老いた両親は牢に閉じ込められ、餓死した。',es:'Sus ancianos padres fueron encarcelados y murieron de hambre.',dur:3000},
+  {v:37.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1},
+  {v:38.8,text:'킬루 가문의 모두가 알고 있었다.',en:'Everyone in the Killu household knew.',zh:'基路家族的所有人都知道。',ja:'キルル家の誰もが知っていた。',es:'Todos en la casa de Killu lo sabían.',dur:3000,img:11},
+  {v:43.3,text:'31명이 보고도 못 본 척했다.',en:'Thirty-one of them saw everything and looked away.',zh:'三十一人目睹一切，却视而不见。',ja:'三十一人が見て見ぬふりをした。',es:'Treinta y uno de ellos lo vieron todo y miraron hacia otro lado.',dur:3000},
+  {v:46.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1},
+  {v:47.9,text:'그날 밤, 킬루 가문을 모두 죽였다.',en:'That night, he killed every last one of them.',zh:'那天夜里，他杀光了基路全族。',ja:'その夜、キルル家の全員を殺した。',es:'Esa noche, los mató a todos.',dur:3000,cls:'red',img:3},
+  {v:51.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:53.6,text:'칼로 킬루의 팔다리를 자르고',en:'He cut off Killu\'s limbs with a blade,',zh:'用刀砍断了基路的四肢，',ja:'刃でキルルの手足を切り落とし、',es:'Le cortó las extremidades a Killu con una espada,',dur:3000,cls:'red',img:4},
+  {v:56.6,text:'불로 지혈까지 해주며',en:'cauterized the wounds with fire,',zh:'用火为他止住了血，',ja:'火で傷口を焼き止め、',es:'cauterizó las heridas con fuego,',dur:3000,cls:'red'},
+  {v:59.2,text:'오래오래 살려두었다.',en:'and kept him alive for a long, long time.',zh:'让他活了很久很久。',ja:'長い長い間、生かし続けた。',es:'y lo mantuvo vivo por mucho, mucho tiempo.',dur:3000,cls:'red'},
+  {v:65.2,text:'"기억하라."',en:'"Remember."',zh:'"记住。"',ja:'"覚えておけ。"',es:'"Recuerda."',dur:3000,cls:'red',img:12},
+  {v:68.2,text:'"그리고 지옥에서도 후회하라."',en:'"And regret it even in hell."',zh:'"在地狱里也要后悔。"',ja:'"そして地獄でも悔やめ。"',es:'"Y arrepiéntete incluso en el infierno."',dur:3000,cls:'red'},
+  {v:73.6,text:'그리고 지옥에 떨어진다.',en:'And so he fell into hell.',zh:'然后，他坠入了地狱。',ja:'そして地獄に落ちた。',es:'Y así cayó al infierno.',dur:3000,img:5},
+  {v:76.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1,phase:2},
+  {v:78.9,text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',en:'"...This is but one tale among countless avengers."',zh:'"……这不过是无数复仇者中一人的故事。"',ja:'"……これは数えきれない復讐者の中の、一つの物語に過ぎない。"',es:'"...Esta es solo una historia entre innumerables vengadores."',dur:3000,cls:'dim',img:13},
+  {v:82.5,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:84.8,text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',en:'"Every day, new souls fall into hell\'s labyrinth."',zh:'"每天都有新的灵魂坠入地狱的迷宫。"',ja:'"地獄の迷宮には毎日新たな魂が落ちてくる。"',es:'"Cada día, nuevas almas caen al laberinto del infierno."',dur:3000,cls:'dim',img:8},
+  {v:88.9,text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',en:'"Those consumed by rage, driven mad by injustice, those who lost love..."',zh:'"被愤怒填满的人、因冤屈而疯狂的人、失去爱的人……"',ja:'"怒りに満ちた者、理不尽に狂った者、愛を失った者……"',es:'"Los consumidos por la ira, enloquecidos por la injusticia, los que perdieron el amor..."',dur:3000,cls:'dim',img:9},
+  {v:94.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1},
+  {v:94.8,text:'"너는 왜 지옥에 왔느냐?"',en:'"Why have you come to hell?"',zh:'"你为什么来到地狱？"',ja:'"お前はなぜ地獄に来た？"',es:'"¿Por qué has venido al infierno?"',dur:3000,cls:'gold',img:7},
+  {v:97.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:99.0,text:'"지옥을 탈출하라, 죄인이여."',en:'"Escape from hell, sinner."',zh:'"逃出地狱吧，罪人。"',ja:'"地獄から脱出せよ、罪人よ。"',es:'"Escapa del infierno, pecador."',dur:3000,cls:'gold',img:7,end:true},
+  {v:103,exit:true}
+];
+
+// ═══ Cinematic Sequence ═══
+// 클릭/탭으로 다음 줄 넘기기 (자동 진행 + 부분 스킵)
+let _cinIdx=0,_cinTimer=null,_cinReady=false;
+let _vidFadeTimer=null,_vidStartTimer=null;
+function _clearVidTimers(){
+  if(_vidFadeTimer){clearTimeout(_vidFadeTimer);_vidFadeTimer=null;}
+  if(_vidStartTimer){clearTimeout(_vidStartTimer);_vidStartTimer=null;}
+}
+function playCinematic(){
+  const textBox=$('cinTextInner');
+  const skipBtn=$('skipBtn');
+  skipBtn.textContent=_TL('건너뛰기')+' >';
+  const vid=$('cinVideo');
+  const cImgs=[1,2,3,4,5,6,7,8,9,10,11,12,13,14].map(i=>$('cinImg'+i));
+  let _prevImg=-1;
+  const showImg=(idx)=>{
+    if(idx===_prevImg)return;
+    // 새 이미지를 위에 올려서 페이드인 (z-index로 겹침)
+    cImgs.forEach((el,i)=>{
+      if(i===idx){el.style.zIndex=4;el.classList.add('show');}
+      else if(i===_prevImg){el.style.zIndex=3;setTimeout(()=>el.classList.remove('show'),800);}
+      else{el.classList.remove('show');el.style.zIndex=3;}
+    });
+    _prevImg=idx;
+  };
+  const hideAll=()=>{cImgs.forEach(el=>{el.classList.remove('show');el.style.zIndex=3});_prevImg=-1;};
+
+  let _sceneStartTime = 0;
+  const VOICE_DELAY = -0.3; // 음성을 앞당기기 위해 음수값 사용 (무음 건너뛰기)
+
+  // 통합 동기화 엔진
+  const updateVoiceSync = (force = false) => {
+    if(_cinDone) return;
+
+    let curSceneTime = (Date.now() - _sceneStartTime) / 1000;
+    if(introVoice && !introVoice.paused) {
+      curSceneTime = introVoice.currentTime + VOICE_DELAY;
+    }
+
+    // 목소리 시작 체크
+    if(!_cinDone && introVoice.paused && window._introVoiceUnlocked && !window._introVoiceStarted) {
+      const triggerTime = VOICE_DELAY < 0 ? 0 : VOICE_DELAY;
+      if(curSceneTime >= triggerTime) {
+        if(VOICE_DELAY < 0) introVoice.currentTime = Math.abs(VOICE_DELAY);
+        introVoice.play().then(()=>{window._introVoiceStarted=true}).catch(()=>{});
+      }
+    }
+
+    // 자막 인덱스 찾기 및 종료 체크
+    let targetIdx = 0;
+    for(let i = 0; i < CIN_LINES.length; i++) {
+      if(curSceneTime >= CIN_LINES[i].v) {
+        if(CIN_LINES[i].exit) {
+          if(!_cinDone) finishCin();
+          return;
+        }
+        targetIdx = i;
+      } else {
+        break;
+      }
+    }
+
+    if(targetIdx !== _cinIdx || force) {
+      showLine(targetIdx, true);
+    }
+
+    if(!_cinDone) requestAnimationFrame(() => updateVoiceSync());
+  };
+
+  function showLine(idx, fromSync = false){
+    if(_cinDone)return;
+    if(idx===0 && !fromSync){
+      _sceneStartTime = Date.now();
+      requestAnimationFrame(() => updateVoiceSync());
+    }
+    if(idx>=CIN_LINES.length){ if(!_cinDone) finishCin(); return; }
+    _cinIdx=idx;
+    const line=CIN_LINES[idx];
+
+    // 텍스트가 있는 첫 대사가 나오면 스킵 해금
+    if(line&&(line.text||line.en)&&_cinSkipLock){_cinSkipLock=false;}
+    if(line.img!==undefined){if(line.img===-1)hideAll();else showImg(line.img);}
+    
+    textBox.innerHTML='';
+    const _cLang=_lobbyLang();
+    const _cinTxt=_cLang==='ko'?line.text:(line[_cLang]||(typeof _CIN_I18N!=='undefined'&&_CIN_I18N[_cLang]&&_CIN_I18N[_cLang][idx])||line.en||line.text);
+    if(_cinTxt){
+      const el=document.createElement('div');
+      el.className='cin-line'+(line.cls?' '+line.cls:'');
+      const chars=_cinTxt.split('');
+      chars.forEach(c=>{
+        const sp=document.createElement('span');
+        sp.className='cin-char';
+        sp.textContent=c===' '?'\u00A0':c;
+        el.appendChild(sp);
+      });
+      textBox.appendChild(el);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        el.classList.add('show');
+        const spans=el.querySelectorAll('.cin-char');
+        spans.forEach((s,i)=>setTimeout(()=>s.classList.add('on'),i*40));
+      }));
+    }
+    clearTimeout(_cinTimer);
+  }
+
+  function finishCin(){
+    if(_cinDone) return;
+    _cinDone=true;
+    clearTimeout(_cinTimer);
+    _clearVidTimers();
+    stopIntroVoice();
+    
+    // UI 정리: 모든 시네마틱 관련 요소를 확실히 숨김
+    $('cinScene').style.display='none';
+    $('cinVideo').style.opacity='0';
+    $('skipBtn').classList.remove('show');
+    
+    clearInterval(_emberIv);
+    
+    // 메인 화면 표시
+    $('mainWrap').classList.add('show');
+    $('loading').style.display='none';
+    
+    if(_testMode){
+      $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
+      if($('userEmail'))$('userEmail').textContent='LOCAL MODE';loadLocalCharacters();
+    } else if(currentUser){
+      showLobby();
+    } else {
+      $('loginSection').style.display='block';
+    }
+  }
+
+  // 인트로 비디오: 첫 프레임(문 닫힘)에서 멈춤, 클릭 시 재생
+  vid.style.opacity='1';
+  vid.currentTime=0;
+  // 첫 프레임 로드 후 pause
+  vid.addEventListener('loadeddata',()=>{vid.pause()},{once:true});
+  vid.load();
+
+  // 스킵 버튼 즉시 표시
+  skipBtn.classList.add('show');
+
+  const prompt=$('cinClickPrompt');
+  let _vidStarted=false;
+  function onVidClick(){
+    if(_vidStarted||_cinDone)return;
+    _vidStarted=true;
+    prompt.style.display='none';
+    vid.muted=false; // 영상 자체 사운드(문 열림) 재생
+    vid.volume=0.6;
+    startBGM();
+    vid.play().catch(()=>{});
+    // 사용자 제스처 컨텍스트에서 오디오 언락
+    window._introVoiceUnlocked=true;
+    
+    // 비디오 시작 시 스킵 버튼 즉시 표시
+    skipBtn.classList.add('show');
+
+    // 비디오 페이드아웃 → 프롤로그 시작
+    const videoEnd=8500;
+    vid.onended=()=>{vid.style.opacity='0'};
+    _vidFadeTimer=setTimeout(()=>{if(_cinDone)return;vid.style.opacity='0'},videoEnd-1500);
+    _vidStartTimer=setTimeout(()=>{
+      if(_cinDone)return;
+      _cinReady=true;
+      showLine(0);
+    },videoEnd);
+  }
+  
+  // [보정] 클릭 안내가 확실히 작동하도록 다시 연결
+  if(prompt){
+    prompt.style.display = 'flex';
+    prompt.onclick = onVidClick;
+  }
+
+  // ─── 부분 스킵 (클릭 시 다음 대사 + 음성 점프) ───
+  function onSubSkip(){
+    if(_cinDone || !_cinReady) return;
+    const nextIdx = _cinIdx + 1;
+    if(nextIdx >= CIN_LINES.length) { finishCin(); return; }
+    
+    const nextLine = CIN_LINES[nextIdx];
+    if(nextLine.v !== undefined) {
+      const targetAudioTime = nextLine.v - VOICE_DELAY;
+      if(targetAudioTime >= 0 && targetAudioTime <= introVoice.duration) {
+        introVoice.currentTime = targetAudioTime;
+        if(introVoice.paused) introVoice.play().catch(()=>{});
+      }
+    }
+    showLine(nextIdx, true);
+  }
+
+  // 이벤트 리스너 다시 연결
+  const overlay = document.querySelector('.cin-overlay');
+  if(overlay) {
+    overlay.onclick = onSubSkip;
+    overlay.ontouchend = (e) => { e.preventDefault(); onSubSkip(); };
+  }
+  
+  const keyHandler = (e) => {
+    if(!_cinDone && (e.code==='Space'||e.code==='Enter')) {
+      e.preventDefault(); onSubSkip();
+    }
+  };
+  document.addEventListener('keydown', keyHandler);
+  
+  // 종료 시 키 핸들러 제거를 위해 finishCin 수정에 활용
+  const originalFinish = finishCin;
+  finishCin = () => {
+    document.removeEventListener('keydown', keyHandler);
+    originalFinish();
+  };
+
+  let _cinSkipLock=true;
+
+  // ── 홀드 스킵 게이지 (시네마틱용) ──
+  const _hgCv=$('cinHoldGauge');
+  if(_hgCv){
+    _hgCv.width=120*devicePixelRatio;_hgCv.height=100*devicePixelRatio;
+    const _hgX=_hgCv.getContext('2d');_hgX.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+    let _cinHoldKey=false,_cinHoldProg=0,_cinHoldActive=false;
+    const _CIN_HOLD_DUR=5000;
+    console.log('[CINEMATIC] Hold skip initialized, duration: '+_CIN_HOLD_DUR+'ms');
+    document.addEventListener('keydown',function _chk(e){
+      if(_cinDone){document.removeEventListener('keydown',_chk);return}
+      if(e.code==='Escape'||e.code==='Space'){_cinHoldKey=true;if(!_cinHoldActive){_cinHoldActive=true;console.log('[CINEMATIC] Hold started')}}
+    });
+    document.addEventListener('keyup',function _chu(e){
+      if(_cinDone){document.removeEventListener('keyup',_chu);return}
+      if(e.code==='Escape'||e.code==='Space'){
+        if(_cinHoldActive)console.log('[CINEMATIC] Hold released at progress: '+(_cinHoldProg*100).toFixed(0)+'%');
+        _cinHoldKey=false;_cinHoldActive=false;_cinHoldProg=0;
+      }
+    });
+    let _hgPrev=performance.now();
+    function _hgLoop(){
+      if(_cinDone){_hgX.clearRect(0,0,120,100);return}
+      const now=performance.now(),dt=Math.min(50,now-_hgPrev);_hgPrev=now;
+      if(_cinHoldKey)_cinHoldProg=Math.min(1,_cinHoldProg+dt/_CIN_HOLD_DUR);
+      _hgX.clearRect(0,0,120,100);
+      const gx=60,gy=40,r=34,th=3;
+      const a=_cinHoldKey?1:0.5;
+      // 트랙
+      _hgX.globalAlpha=a*0.5;_hgX.strokeStyle='#444';_hgX.lineWidth=th;
+      _hgX.beginPath();_hgX.arc(gx,gy,r,0,Math.PI*2);_hgX.stroke();
+      // 진행
+      if(_cinHoldProg>0){
+        _hgX.globalAlpha=a;_hgX.strokeStyle='#E8E0D0';_hgX.lineWidth=th;
+        if(_cinHoldProg>0.9){_hgX.shadowBlur=4+Math.sin(now*0.01)*2;_hgX.shadowColor='#E8E0D0'}
+        _hgX.beginPath();_hgX.arc(gx,gy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*_cinHoldProg);_hgX.stroke();
+        _hgX.shadowBlur=0;
+      }
+      // 중앙
+      _hgX.globalAlpha=a*0.8;_hgX.font='12px sans-serif';_hgX.fillStyle='#888';
+      _hgX.textAlign='center';_hgX.textBaseline='middle';_hgX.fillText('ESC',gx,gy);
+      // 라벨
+      _hgX.globalAlpha=a*0.6;_hgX.font='10px sans-serif';_hgX.fillStyle='#666';
+      _hgX.fillText('HOLD TO SKIP',gx,gy+r+16);
+      _hgX.globalAlpha=1;
+      if(_cinHoldProg>=1){
+        console.log('[CINEMATIC] Skip completed by hold');
+        _hgX.globalAlpha=0.3;_hgX.fillStyle='#fff';_hgX.fillRect(0,0,120,100);
+        setTimeout(skipToGate,100);return;
+      }
+      requestAnimationFrame(_hgLoop);
+    }
+    // 1초 후 게이지 표시
+    setTimeout(()=>{_hgCv.style.opacity='1';_hgLoop()},1000);
+  }
+}
+
+function skipToGate(){
+  _cinDone=true;
+  clearTimeout(_cinTimer);
+  _clearVidTimers();
+  stopIntroVoice();
+  startBGM();
+  stopMediaVideo($('cinVideo'));
+  $('cinVideo').style.opacity='0';
+  if($('cinClickPrompt'))$('cinClickPrompt').style.display='none';
+  [1,2,3,4,5,6,7,8,9,10,11,12,13,14].forEach(i=>{const e=$('cinImg'+i);if(e)e.classList.remove('show')});
+  $('cinTextInner').innerHTML='';
+  $('skipBtn').classList.remove('show');
+  // 시네마틱 끝 → 로비 또는 로그인
+  $('cinScene').style.display='none';
+  clearInterval(_emberIv);
+  $('mainWrap').classList.add('show');
+  $('loading').style.display='none';
+  if(_testMode){
+    $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
+    if($('userEmail'))$('userEmail').textContent='LOCAL MODE';loadLocalCharacters();
+  } else if(currentUser){
+    showLobby();
+  } else {
+    $('loginSection').style.display='block';
+  }
+}
+// skipBtn 비활성 — 홀드 게이지로 대체
+// $('skipBtn').onclick=skipToGate;
+
+// ═══ Embers ═══
+let _emberIv=setInterval(()=>{
+  const scene=$('cinScene');
+  if(!scene||scene.style.display==='none')return;
+  const e=document.createElement('div');
+  e.className='ember';
+  e.style.left=(20+Math.random()*60)+'vw';
+  e.style.bottom='-5px';
+  const sz=2+Math.random()*3;
+  e.style.width=sz+'px';e.style.height=sz+'px';
+  const hue=10+Math.random()*25;
+  e.style.background=`hsl(${hue},100%,${50+Math.random()*30}%)`;
+  e.style.boxShadow=`0 0 ${3+Math.random()*6}px hsl(${hue},100%,50%)`;
+  e.style.animation=`rise ${3+Math.random()*4}s ease-out forwards`;
+  scene.appendChild(e);
+  setTimeout(()=>e.remove(),7000);
+},150);
+
+// ═══ 로딩 화면 시스템 (전체 화면 이미지) ═══
+function pickRandomLoadingImage(){
+  const totalImages = 15;
+  const randIdx = Math.floor(Math.random() * totalImages) + 1;
+  const ext = (randIdx === 11) ? 'jpg' : 'png';
+  return `img/lording/rd${randIdx}.${ext}`;
+}
+
+function showLoading(msg){
+  const gate = $('chapterGate');
+  const gateImg = $('chGateImg');
+  if(gate && gateImg) {
+    gateImg.src = pickRandomLoadingImage();
+    gate.style.display = 'block';
+    gate.style.opacity = '1';
+  }
+  const loading = $('loading');
+  if(loading) {
+    loading.style.display = 'block';
+    if(msg) {
+      const p = loading.querySelector('p');
+      if(p) p.textContent = msg;
+    }
+  }
+}
+
+function hideLoading(){
+  const gate = $('chapterGate');
+  if(gate) {
+    gate.style.opacity = '0';
+    gate.style.display = 'none';
+  }
+  const loading = $('loading');
+  if(loading) loading.style.display = 'none';
+}
+
+// ═══ Init ═══
+const _qp=new URLSearchParams(window.location.search);
+const _fromGame=_qp.get('lobby')==='1';
+const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
+(async()=>{
+  // 시작 시 로딩 표시
+  showLoading(_TL('데이터를 불러오는 중...'));
+
+  // ── 로컬 테스트 모드: 로그인 없이 로컬 폴더 세이브 ──
+  if(_testMode){
+    // 생성 버튼 → 로컬 저장
+    $('createBtn').onclick=async()=>{
+      const name=$('charName').value.trim();
+      if(name.length<2||name.length>8){setStatus(_TL('이름은 2~8자여야 합니다.'),true);return}
+      if(/[<>"'&\/\\]/.test(name)){setStatus(_TL('특수문자는 사용할 수 없습니다.'),true);return}
+      $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
+      try{
+        // 이미 같은 이름 존재하는지 체크
+        const chk=await fetch('/api/load/'+encodeURIComponent(name));
+        if(chk.ok){const j=await chk.json();if(j.ok){$('createBtn').disabled=false;setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);return}}
+        // 새 캐릭터 파일 생성
+        const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{name:name,ts:Date.now()}})});
+        const j=await res.json();
+        $('createBtn').disabled=false;
+        if(!j.ok){setStatus(_TL('생성 실패: ')+(j.error||'unknown'),true);return}
+        $('charName').value='';setStatus('');await loadLocalCharacters();
+      }catch(e){$('createBtn').disabled=false;setStatus(_TL('생성 실패: ')+e.message,true)}
+    };
+    // 로그아웃 버튼 숨기기
+    if($('logoutBtn'))$('logoutBtn').style.display='none';
+    if(_fromGame){
+      // 게임에서 로비 복귀 → 인트로 스킵, 바로 로비
+      _cinDone=true;startBGM();
+      $('cinScene').style.display='none';clearInterval(_emberIv);
+      $('mainWrap').classList.add('show');
+      $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
+      if($('userEmail'))$('userEmail').textContent='LOCAL MODE';
+      await loadLocalCharacters();
+      hideLoading();
+    } else {
+      // 새로고침/첫 접속 → 배포와 동일하게 인트로 재생
+      hideLoading();
+      playCinematic();
+    }
+    return;
+  }
+  const{data:{session}}=await sb.auth.getSession();
+  if(session) currentUser=session.user;
+  if(_fromGame){
+    // 게임에서 로비 복귀 → 시네마틱 스킵, 바로 로비
+    _cinDone=true;startBGM();
+    $('cinScene').style.display='none';
+    clearInterval(_emberIv);
+    $('mainWrap').classList.add('show');
+    if(session){await showLobby()}else{$('loginSection').style.display='block'}
+    hideLoading();
+  }else if(session){
+    // OAuth 리다이렉트 복귀 (로그인 완료 상태) → 인트로 스킵
+    _cinDone=true;startBGM();
+    $('cinScene').style.display='none';clearInterval(_emberIv);
+    $('mainWrap').classList.add('show');
+    await showLobby();
+    hideLoading();
+  }else{
+    // 첫 접속 / 새로고침 (비로그인) → 인트로 재생
+    hideLoading();
+    playCinematic();
+  }
+
+  sb.auth.onAuthStateChange((event,session)=>{
+    if(event==='SIGNED_IN'&&session){currentUser=session.user;showLobby()}
+    else if(event==='SIGNED_OUT'){currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='block'}
+  });
+})();
+
+$('googleBtn').onclick=async()=>{
+  const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+'/'}});
+  if(error){$('status').textContent=_TL('로그인 실패: ')+error.message;$('status').className='status error'}
+};
+if($('logoutBtn'))$('logoutBtn').onclick=async()=>{await sb.auth.signOut();currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='block';document.querySelector('.container').style.display=''};
+
+async function showLobby(){
+  showLoading(_TL('캐릭터 불러오는 중...'));
+  $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
+  if($('userEmail'))$('userEmail').textContent=currentUser.email||'';await loadCharacters();
+  hideLoading();
+}
+async function loadCharacters(){
+  const cl=$('charList');if(!cl)return;cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
+  const{data,error}=await sb.from('characters').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:true});
+  if(error){cl.innerHTML='<div class="no-chars" style="color:#cc4433">'+_TL('오류: ')+error.message+'</div>';return}
+  if(!data||data.length===0){cl.innerHTML='<div class="no-chars">'+_TL('캐릭터가 없습니다. 새로 생성하세요.')+'</div>';return}
+  cl.innerHTML='';
+  data.forEach(ch=>{
+    const d=ch.data||{};const lv=d.player?d.player.lv||1:1;const stage=d.game?d.game.stage||0:0;
+    const hell=Math.min(6,~~(stage/10));const floor=stage%10+1;
+    const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
+    const st=stage===0?'시작점':(hell+1)+'장 '+hn[hell]+' '+floor+'층';
+    const _vi=CHAR_VISUALS[d.charIdx||0]||CHAR_VISUALS[0];
+    const div=document.createElement('div');div.className='char-item';
+    div.innerHTML=`<div style="display:flex;align-items:center;gap:10px"><canvas class="_chPort" width="${_vi.fw}" height="${_vi.fh}" style="width:40px;height:40px;image-rendering:pixelated;border:1px solid #443322;border-radius:4px;background:#111"></canvas><div><div class="char-name">${escHtml(ch.name)}</div><div class="char-info">Lv.${lv} | ${st}</div></div></div><div style="display:flex;gap:6px;align-items:center"><button class="char-del">${_TL('삭제')}</button></div>`;
+    const _cv=div.querySelector('._chPort');
+    _tryLoadSprite(_vi.folder,_vi.fw,_vi.fh,_cv);
+    div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;showCharGate(ch.id)});
+    div.querySelector('.char-del').addEventListener('click',async e=>{
+      e.stopPropagation();if(!confirm(ch.name+_TL(' 캐릭터를 정말 삭제하시겠습니까?')))return;
+      const{error:de}=await sb.from('characters').delete().eq('id',ch.id);
+      if(de){setStatus(_TL('삭제 실패: ')+de.message,true);return}await loadCharacters();
+    });
+    cl.appendChild(div);
+  });
+}
+// ── 캐릭터 외형 목록 (game.html CHAR_LIST와 동기화) ──
+const CHAR_VISUALS=[
+  {id:'hell_slayer',name:'지옥 학살자',desc:'거츠 스타일. 특대검+석궁+망토',folder:'img/exoduser_warrior',fw:64,fh:64},
+  {id:'greatsword_hero',name:'대검 영웅',desc:'풀갑옷 기사. 특대검+빨간 망토',folder:'img/exoduser_warrior',fw:64,fh:64},
+  {id:'colossal_knight',name:'거대검 기사',desc:'검은 갑옷. 초대형 특대검',folder:'img/exoduser_warrior',fw:64,fh:64},
+  {id:'greatsword_knight',name:'대검 기사',desc:'표준 기사. 대검+갑옷',folder:'img/exoduser_warrior',fw:64,fh:64},
+  {id:'exoduser_warrior',name:'엑소듀서 전사',desc:'다크 판타지 전사. 거대검+검은 갑옷',folder:'img/exoduser_warrior',fw:64,fh:64},
+];
+let _pendingCharName=null;
+
+function openVisualSelect(name){
+  _pendingCharName=name;
+  const pop=$('charVisualPop');pop.style.display='flex';
+  const grid=$('visualGrid');grid.innerHTML='';
+  CHAR_VISUALS.forEach((ch,ci)=>{
+    const card=document.createElement('div');
+    card.style.cssText='width:120px;padding:10px;border-radius:8px;cursor:pointer;text-align:center;border:2px solid #443322;background:rgba(20,20,30,.8);transition:all .2s';
+    card.onmouseenter=()=>{card.style.borderColor='#886633';card.style.background='rgba(40,30,20,.9)'};
+    card.onmouseleave=()=>{card.style.borderColor='#443322';card.style.background='rgba(20,20,30,.8)'};
+    // 프리뷰
+    const cv=document.createElement('canvas');cv.width=ch.fw;cv.height=ch.fh;
+    cv.style.cssText='width:64px;height:64px;image-rendering:pixelated;display:block;margin:0 auto 6px';
+    _tryLoadSprite(ch.folder,ch.fw,ch.fh,cv);
+    card.appendChild(cv);
+    // 이름
+    const nm=document.createElement('div');nm.textContent=ch.name;
+    nm.style.cssText='color:#cccccc;font-size:.8rem;font-weight:bold;margin-bottom:3px';
+    card.appendChild(nm);
+    // 설명
+    const ds=document.createElement('div');ds.textContent=ch.desc;
+    ds.style.cssText='color:#888888;font-size:.65rem;line-height:1.3';
+    card.appendChild(ds);
+    card.onclick=()=>{pop.style.display='none';doCreateChar(_pendingCharName,ci)};
+    grid.appendChild(card);
+  });
+}
+$('visualCancelBtn').onclick=()=>{$('charVisualPop').style.display='none';$('createBtn').disabled=false};
+
+async function doCreateChar(name,visualIdx){
+  $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
+  if(_testMode){
+    try{
+      const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{ts:Date.now(),charIdx:visualIdx}})});
+      const j=await res.json();
+      $('createBtn').disabled=false;
+      if(!j.ok){setStatus(_TL('생성 실패: ')+(j.error||_TL('알 수 없는 오류')),true);return}
+      $('charName').value='';setStatus('');await loadLocalCharacters();
+    }catch(e){$('createBtn').disabled=false;setStatus(_TL('생성 실패: ')+e.message,true)}
+    return;
+  }
+  const{error}=await sb.from('characters').insert({user_id:currentUser.id,name:name,data:{charIdx:visualIdx}});
+  $('createBtn').disabled=false;
+  if(error){if(error.code==='23505')setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);else setStatus(_TL('생성 실패: ')+error.message,true);return}
+  $('charName').value='';setStatus('');await loadCharacters();
+}
+
+$('createBtn').onclick=()=>{
+  const name=$('charName').value.trim();
+  if(name.length<2||name.length>8){setStatus(_TL('이름은 2~8자여야 합니다.'),true);return}
+  if(/[<>"'&]/.test(name)){setStatus(_TL('특수문자는 사용할 수 없습니다.'),true);return}
+  setStatus('');$('createModal').classList.remove('show');doCreateChar(name,0);
+};
+$('charName').addEventListener('keydown',e=>{if(e.key==='Enter')$('createBtn').click()});
+function setStatus(m,err){$('status').textContent=m;$('status').className=err?'status error':'status'}
+function escHtml(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+
+// ═══ 로컬 캐릭터 목록 (서버 saves/ 폴더) — 3분할 UI ═══
+// moved to top
+
+async function loadLocalCharacters(){
+  const cl=$('charList');if(cl)cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
+  _selectedSlot=null;_updateCharDisplay();
+  try{
+    const res=await fetch('/api/slots');
+    const j=await res.json();
+    _localSlots=j.ok&&j.slots?j.slots:[];
+    _renderSlotList();
+    _updateCharDisplay();
+  }catch(e){cl.innerHTML='<div class="no-chars" style="color:#cc4433">'+_TL('서버 연결 실패: ')+e.message+'</div>'}
+}
+
+function _renderSlotList(){
+  const cl=$('charList');if(!cl)return;cl.innerHTML='';
+  const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
+  _localSlots.forEach(s=>{
+    const stage=s.stage||0;
+    const hell=Math.min(6,~~(stage/10));const floor=stage%10+1;
+    const st=stage===0?_TL('시작점'):(hell+1)+_TL('장')+' '+hn[hell]+' '+floor+_TL('층');
+    const _vi=CHAR_VISUALS[s.charIdx||0]||CHAR_VISUALS[0];
+    const div=document.createElement('div');div.className='char-item'+(_selectedSlot===s.name?' active':'');
+    div.innerHTML=`<div class="char-thumb"><canvas class="_chPort" width="${_vi.fw}" height="${_vi.fh}" style="width:100%;height:100%;image-rendering:pixelated"></canvas></div><div class="char-text"><div class="char-name">${escHtml(s.name)}</div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+    const _cv=div.querySelector('._chPort');
+    _tryLoadSprite(_vi.folder,_vi.fw,_vi.fh,_cv);
+    div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;_selectSlot(s)});
+    div.querySelector('.char-del').addEventListener('click',async e=>{
+      e.stopPropagation();if(!confirm(s.name+_TL(' 캐릭터를 정말 삭제하시겠습니까?')))return;
+      try{await fetch('/api/save/'+encodeURIComponent(s.name),{method:'DELETE'});await loadLocalCharacters()}catch(de){setStatus(_TL('삭제 실패: ')+de.message,true)}
+    });
+    cl.appendChild(div);
+  });
+  // + 새 캐릭터 슬롯
+  const newDiv=document.createElement('div');newDiv.className='char-item-new';
+  newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">+</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+_TL('새 캐릭터')+'</div></div>';
+  newDiv.addEventListener('click',()=>{$('createModal').classList.add('show');$('charName').value='';$('charName').focus()});
+  cl.appendChild(newDiv);
+}
+
+function _selectSlot(s){
+  _selectedSlot=s.name;
+  _renderSlotList();
+  _updateCharDisplay(s);
+}
+
+function _updateCharDisplay(s){
+  const btn=$('enterGameBtn');
+  const empty=$('charDispEmpty');
+  const bg=$('lobbyBgImg');
+  if(!s){
+    if(btn) btn.disabled=true;
+    if(empty) empty.classList.remove('hidden');
+    _swapLobbyBg(0);
+    return;
+  }
+  if(btn) btn.disabled=false;
+  if(empty) empty.classList.add('hidden');
+  _swapLobbyBg(s.stage||0);
+}
+
+function _swapLobbyBg(stage){
+  const bg=$('lobbyBgImg');if(!bg)return;
+  const hell=Math.min(6,~~((stage||0)/10));
+  const key=hell===0?'frost':(hell===1?'flame':'abyss');
+  if(_curBg===key)return;
+  _curBg=key;
+  const url='assets/lobby/lobby_bg_'+key+'.webp';
+  bg.style.opacity='0';
+  setTimeout(()=>{
+    bg.style.backgroundImage="url('"+url+"')";
+    bg.style.opacity='1';
+  },200);
+}
+
+// 입장 버튼
+if($('enterGameBtn'))$('enterGameBtn').addEventListener('click',()=>{if(_selectedSlot)showCharGate(_selectedSlot)});
+// 생성 모달
+$('createCancelBtn').addEventListener('click',()=>{$('createModal').classList.remove('show')});
+
+// ═══ 캐릭터 선택 → 입장 ═══
+function showCharGate(charId){
+  showLoading(_TL('지옥으로 입장하는 중...'));
+  const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId;
+  setTimeout(()=>{window.location.href=_tp},1200);
+}
+
+// ═══ 펫 말풍선 시스템 ═══
+(function(){
+  var ravenLines=["또 살아 돌아왔군","이번엔 얼마나 가나","끝이 보이지 않는다","탈출은 환상이다","누구를 부를 텐가","다시 떨어졌군"];
+  var catLines=["...일어났나","또 너냐","지치지도 않는군","문은 늘 그 자리에 있다","이 자에게 또 기회를"];
+  var _lastRaven=-1,_lastCat=-1,_bubbleActive=false,_bubbleTimer=null;
+  function pickLine(arr,lastIdx){
+    var idx;do{idx=~~(Math.random()*arr.length)}while(arr.length>1&&idx===lastIdx);return idx;
+  }
+  function showBubble(who){
+    if(_bubbleActive)return;
+    var isRaven=who==='raven';
+    var el=$(isRaven?'ravenBubble':'catBubble');
+    var sp=$(isRaven?'ravenText':'catText');
+    if(!el||!sp)return;
+    _bubbleActive=true;
+    var arr=isRaven?ravenLines:catLines;
+    var idx=pickLine(arr,isRaven?_lastRaven:_lastCat);
+    if(isRaven)_lastRaven=idx;else _lastCat=idx;
+    sp.textContent=arr[idx];
+    el.style.opacity='1';
+    if(_bubbleTimer)clearTimeout(_bubbleTimer);
+    _bubbleTimer=setTimeout(function(){
+      el.style.opacity='0';
+      setTimeout(function(){_bubbleActive=false},800);
+    },5000);
+  }
+  function autoTick(){
+    if(_bubbleActive)return;
+    showBubble(Math.random()<.5?'raven':'cat');
+  }
+  // 로비 진입 감지
+  var _intv=null;
+  var obs=new MutationObserver(function(){
+    var lb=$('lobby');
+    if(lb&&lb.style.display==='flex'&&!_intv){
+      setTimeout(function(){autoTick()},5000);
+      _intv=setInterval(function(){autoTick()},30000+~~(Math.random()*20000));
+    }
+    if(lb&&lb.style.display!=='flex'&&_intv){clearInterval(_intv);_intv=null}
+  });
+  var lb=$('lobby');if(lb)obs.observe(lb,{attributes:true,attributeFilter:['style']});
+  // 슬롯 호버 트리거
+  document.addEventListener('mouseover',function(e){
+    if(_bubbleActive)return;
+    var ci=e.target.closest&&e.target.closest('.char-item');
+    if(ci&&Math.random()<.3)showBubble(Math.random()<.5?'raven':'cat');
+  });
+})();
+
+// ═══ 로비 파티클 시스템 (불씨 + 안개) ═══
+(function(){
+  const cv=document.getElementById('lobbyParticles');
+  if(!cv)return;
+  const cx=cv.getContext('2d');
+  const embers=[];const mist=[];
+  const MAX_EMBERS=40;const MAX_MIST=6;
+  function resize(){cv.width=cv.parentElement.offsetWidth;cv.height=cv.parentElement.offsetHeight}
+  resize();window.addEventListener('resize',resize);
+  // 불씨 초기화
+  for(let i=0;i<MAX_EMBERS;i++){
+    embers.push({
+      x:Math.random()*2000,y:Math.random()*1200,
+      vx:(Math.random()-.5)*.3,vy:-(Math.random()*.8+.2),
+      sz:Math.random()*2.5+.5,
+      life:Math.random(),decay:Math.random()*.003+.001,
+      hue:Math.random()*.3 // 0=red, .15=orange, .3=yellow
+    });
+  }
+  // 안개 초기화
+  for(let i=0;i<MAX_MIST;i++){
+    mist.push({
+      x:Math.random()*2000,y:cv.height*(0.5+Math.random()*.5),
+      r:150+Math.random()*200,
+      vx:(Math.random()-.5)*.15,
+      alpha:Math.random()*.04+.01,
+      phase:Math.random()*6.28
+    });
+  }
+  function loop(){
+    if(!cv.parentElement||cv.parentElement.offsetWidth===0){requestAnimationFrame(loop);return}
+    const w=cv.width,h=cv.height;
+    cx.clearRect(0,0,w,h);
+    const t=performance.now()*.001;
+    // 안개
+    for(let i=0;i<mist.length;i++){
+      const m=mist[i];
+      m.x+=m.vx;
+      if(m.x<-m.r)m.x=w+m.r;
+      if(m.x>w+m.r)m.x=-m.r;
+      const pulse=Math.sin(t*.3+m.phase)*.015;
+      const grd=cx.createRadialGradient(m.x,m.y,0,m.x,m.y,m.r);
+      grd.addColorStop(0,'rgba(60,25,10,'+(m.alpha+pulse)+')');
+      grd.addColorStop(1,'rgba(30,10,5,0)');
+      cx.fillStyle=grd;cx.fillRect(m.x-m.r,m.y-m.r,m.r*2,m.r*2);
+    }
+    // 불씨
+    for(let i=0;i<embers.length;i++){
+      const e=embers[i];
+      e.x+=e.vx+Math.sin(t*2+i)*.2;
+      e.y+=e.vy;
+      e.life-=e.decay;
+      if(e.life<=0||e.y<-20){
+        e.x=Math.random()*w;e.y=h+10;
+        e.life=1;e.sz=Math.random()*2.5+.5;
+        e.vy=-(Math.random()*.8+.2);
+        e.hue=Math.random()*.3;
+      }
+      const a=e.life*.7;
+      const r=~~(255-e.hue*80);const g=~~(80+e.hue*120);const b=~~(10+e.hue*20);
+      cx.globalAlpha=a;
+      cx.fillStyle='rgb('+r+','+g+','+b+')';
+      cx.beginPath();cx.arc(e.x,e.y,e.sz,0,6.28);cx.fill();
+      // 글로우
+      if(e.sz>1.5){
+        cx.globalAlpha=a*.25;
+        cx.beginPath();cx.arc(e.x,e.y,e.sz*3,0,6.28);cx.fill();
+      }
+    }
+    cx.globalAlpha=1;
+    requestAnimationFrame(loop);
+  }
+  // lobby가 보일 때만 시작
+  const obs=new MutationObserver(()=>{
+    if(cv.parentElement&&cv.parentElement.parentElement&&cv.parentElement.parentElement.style.display==='flex'){resize();loop();obs.disconnect()}
+  });
+  obs.observe(document.getElementById('lobby'),{attributes:true,attributeFilter:['style']});
+  // 즉시 시작 시도
+  if(document.getElementById('lobby').style.display==='flex'){resize();loop()}
+})();
+</script>
+<script>
+// ═══ 스플래시 시퀀스 (SCREEN 1: 경고문, SCREEN 2: FDG 로고, SCREEN 3: 타이틀) ═══
+(function(){
+  const overlay=document.getElementById('splashOverlay');
+  const content=document.getElementById('splashContent');
+  const cv=document.getElementById('splashCanvas');
+  if(!overlay||!content||!cv)return;
+  const cx=cv.getContext('2d');
+  function resizeCanvas(){cv.width=cv.offsetWidth*devicePixelRatio;cv.height=cv.offsetHeight*devicePixelRatio;cx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0)}
+  resizeCanvas();window.addEventListener('resize',resizeCanvas);
+
+  // ── 상태 ──
+  let phase=1; // 0=경고문(제거), 1=FDG, 2=타이틀
+  let t0=0,rafId=null,done=false;
+
+  // ── SCREEN 1: 경고문 (HTML 기반, 4초) ──
+  const _warnTitle=_TL('광과민성 발작 경고');
+  const _warnBody=_TL('본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.');
+  const _warnCont=_TL('아무 키나 눌러 계속');
+  const warnHTML=
+    `<div style="font:700 36px 'Cinzel Decorative',serif;color:#888;letter-spacing:.15em;margin-bottom:30px">${_warnTitle}</div>
+     <div style="font:18px sans-serif;color:#666;line-height:1.6">${_warnBody}</div>
+     <div id="splashBlink" style="font:14px sans-serif;color:#444;margin-top:40px">${_warnCont}</div>`;
+
+  // ── SCREEN 3: 타이틀 (캔버스, 4초 자동, 즉시 스킵) ──
+
+  // ── SCREEN 2: FDG → 늑대 엠블럼 + FOR DEAR GAMERS (HTML/CSS, 5.5초) ──
+  const FDG_DUR=5500;
+  const fdgEl=document.getElementById('fdgScreen');
+  const fdgSub=document.getElementById('fdgSubtitle');
+  const fdgTitle=document.getElementById('fdgTitle');
+  const anchors=fdgTitle.querySelectorAll('.anchor');
+  const accents=fdgTitle.querySelectorAll('.accent');
+  const prefixes=fdgTitle.querySelectorAll('.prefix');
+  const suffix=fdgTitle.querySelector('.suffix');
+  let fdgSteps=[];
+  function showFDGScreen(){
+    // 부제: 한 글자씩 블러→선명 타이핑
+    const _subText=_TL('친애하는 게이머 여러분께 바칩니다');
+    fdgSub.innerHTML='';
+    for(let _ci=0;_ci<_subText.length;_ci++){const _sp=document.createElement('span');_sp.className='fdg-char';_sp.textContent=_subText[_ci]===' '?'\u00A0':_subText[_ci];fdgSub.appendChild(_sp)}
+    const _subChars=fdgSub.querySelectorAll('.fdg-char');
+    fdgEl.style.display='';
+    console.log('[SPLASH] FDG screen with wolf emblem loaded');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{fdgEl.classList.add('active')}));
+    const s=function(fn,ms){const t=setTimeout(fn,ms);fdgSteps.push(t)};
+    // Phase 1: 타이틀 영역 표시 + R R R 등장
+    s(()=>{fdgTitle.style.opacity='1'},650);
+    s(()=>{anchors[0].style.opacity='1'},910);
+    s(()=>{anchors[1].style.opacity='1'},1170);
+    s(()=>{anchors[2].style.opacity='1'},1430);
+    // Phase 2: accent(F,D,G) + prefix 슬라이드인
+    s(()=>{accents[0].style.opacity='1';prefixes[0].style.opacity='1';prefixes[0].style.transform='translateX(0)'},1950);
+    s(()=>{accents[1].style.opacity='1';prefixes[1].style.opacity='1';prefixes[1].style.transform='translateX(0)'},2340);
+    s(()=>{accents[2].style.opacity='1';prefixes[2].style.opacity='1';prefixes[2].style.transform='translateX(0)'},2730);
+    // Phase 3: S 등장
+    s(()=>{suffix.style.opacity='1'},3250);
+    // Phase 4: PRESENTS + 부제 한 글자씩 블러→선명
+    s(()=>{document.getElementById('fdgPresents').style.opacity='1'},3900);
+    for(let _ci=0;_ci<_subChars.length;_ci++){s(()=>{_subChars[_ci].classList.add('on')},4550+_ci*80)}
+    // 마지막 글자 후 프롬프트 표시 — 자동 타이머 없음, 유저 입력 대기
+    const _promptMs=4550+(_subChars.length-1)*80+400;
+    s(()=>{const _pr=document.getElementById('fdgPrompt');if(_pr){_pr.textContent=_TL('아무 키나 눌러 계속');_pr.classList.add('on')}},_promptMs);
+  }
+  let fdgTimerId=null;
+  function hideFDGScreen(){
+    clearTimeout(fdgTimerId);
+    fdgSteps.forEach(clearTimeout);fdgSteps=[];
+    fdgEl.classList.remove('active','fadeout');
+    fdgEl.style.display='none';
+  }
+
+  // ── 시퀀스 제어 ──
+  let blinkId=null;
+  function startPhase(){
+    content.innerHTML='';content.style.opacity='0';
+    cx.clearRect(0,0,cv.offsetWidth,cv.offsetHeight);
+    if(phase===0){
+      // 경고문 (HTML)
+      content.innerHTML=warnHTML;
+      setTimeout(()=>{content.style.opacity='1'},30);
+      let bt=0;blinkId=setInterval(()=>{
+        const el=document.getElementById('splashBlink');
+        if(el)el.style.opacity=(Math.sin(bt++*0.15)*0.5+0.5).toFixed(2);
+      },50);
+      t0=performance.now();
+      console.log('[SPLASH] WARNING screen shown');
+    } else if(phase===1){
+      // FDG (HTML 늑대 엠블럼)
+      showFDGScreen();
+      return;
+    } else if(phase===2){
+      // 타이틀 (캔버스, 4초 자동 진행, 즉시 스킵 가능)
+      t0=performance.now();
+      console.log('[SPLASH] TITLE screen shown');
+      let _titlePrevTs=performance.now();
+      function titleLoop(){
+        if(done||phase!==2)return;
+        const now=performance.now();
+        const elapsed=now-t0;
+        const w=cv.offsetWidth,h=cv.offsetHeight;
+        cx.clearRect(0,0,w,h);cx.fillStyle='#000';cx.fillRect(0,0,w,h);
+        const fadeIn=Math.min(1,elapsed/1000);
+        const fadeOut=elapsed>3500?Math.max(0,1-(elapsed-3500)/500):1;
+        cx.save();cx.globalAlpha=fadeIn*fadeOut;cx.textAlign='center';cx.textBaseline='middle';
+        cx.font="700 72px 'Cinzel Decorative','Cinzel',Georgia,serif";
+        cx.fillStyle='#cc4400';cx.fillText('EXODUSER',w/2,h*0.42);
+        cx.font="24px 'Noto Sans KR',sans-serif";cx.fillStyle='#888';
+        cx.fillText(_TL('지옥의 길'),w/2,h*0.42+50);
+        cx.restore();
+        if(elapsed>=4000){nextPhase();return}
+        rafId=requestAnimationFrame(titleLoop);
+      }
+      titleLoop();return;
+    }
+    // HTML 기반 화면 (phase 0만) 4초 후 자동 진행
+    setTimeout(()=>{if(!done&&phase===0)nextPhase()},4000);
+  }
+
+  function nextPhase(){
+    clearInterval(blinkId);cancelAnimationFrame(rafId);
+    hideFDGScreen();
+    content.style.opacity='0';
+    cx.clearRect(0,0,cv.offsetWidth,cv.offsetHeight);
+    cx.fillStyle='#000';cx.fillRect(0,0,cv.offsetWidth,cv.offsetHeight);
+    phase++;
+    if(phase>=2){endSplash();return}
+    setTimeout(()=>{startPhase()},300);
+  }
+
+  function endSplash(){
+    done=true;clearInterval(blinkId);cancelAnimationFrame(rafId);
+    hideFDGScreen();
+    overlay.style.opacity='0';
+    overlay.style.pointerEvents='none';
+    setTimeout(()=>{overlay.style.display='none'},500);
+    console.log('[SPLASH] sequence ended');
+  }
+
+  function skip(){
+    if(done)return;
+    if(phase===1)console.log('[SPLASH] FDG screen skipped');
+    else console.log('[SPLASH] screen '+(phase+1)+' skipped');
+    nextPhase();
+  }
+
+  overlay.addEventListener('click',skip);
+  fdgEl.addEventListener('click',skip);
+  document.addEventListener('keydown',function splashKey(e){
+    if(done){document.removeEventListener('keydown',splashKey);return}
+    if(overlay.style.display==='none'&&fdgEl.style.display==='none')return;
+    e.preventDefault();skip();
+  });
+
+  startPhase();
+})();
+</script>
+</body>
+</html>

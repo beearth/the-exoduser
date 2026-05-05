@@ -2449,4 +2449,9 @@ const _ID={
 
 
 const _ID_PFX={'녹슨':'Berkarat','강철':'Baja','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Penghakiman','천벌의':'Murka Ilahi','파멸의':'Kehancuran','불꽃':'Api','화염':'Neraka Api','염화':'Api Neraka','지옥불':'Kobaran Neraka','지옥화':'Kobaran Neraka','지옥':'Kobaran Neraka','멸화의':'Pemusnah','냉기':'Es','빙결':'Beku','빙하':'Glasial','서리의':'Embun Beku','서리':'Embun Beku','영겁빙':'Es Abadi','그림자':'Bayangan','암흑':'Kegelapan','심연':'Jurang','나락의':'Alam Bawah','나락':'Alam Bawah','무간의':'Kehampaan','전기':'Percik','낙뢰':'Guntur','암전':'Petir','뇌신의':'Dewa Badai','뇌신':'Dewa Badai','만뢰의':'Seribu Petir','축복':'Terberkati','성광':'Cahaya Suci','신성':'Sakral','천사의':'Malaikat','신벌의':'Hukuman Ilahi','낡은':'Usang','천':'Kain','가죽':'Kulit','강철사':'Rajut Baja','은':'Perak','은사':'Benang Perak','화염의':'Neraka Api','빙결의':'Beku','암흑의':'Kegelapan','암전의':'Petir'};
-const _ID_BASE={'대검':'Pedang Besar','석궁':'Panah Silang','연사석궁':'Panah Tembak','마력석궁':'Panah Sihir','견갑':'Pelindung Bahu','대견갑':'Pelindung Bahu Besar','전투화':'Sepatu Tempur','갑옷':'Baju Besi','갑주':'Baju Besi','왕관':'Mahkota','장갑':'Sarung Tangan','건틀릿':'Sarung Besi','바지':'Celana','각반':'Pelindung Kaki','허리띠':'Ikat Pinggang','벨트':'Ikat Pinggang','부적':'Jimat','목걸이':'Kalung','반지':'Cincin','망토':'Jubah','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Gelang','귀걸이':'Anting'};
+const _ID_BASE={'대검':'Pedang Besar','석궁':'Panah Silang','연사석궁':'Panah Tembak','마력석궁':'Panah Sihir','견갑':'Pelindung Bahu','대견갑':'Pelindung Bahu Besar','전투화':'Sepatu Tempur','갑옷':'Baju Besi','갑주':'Baju Besi','왕관':'Mahkota','장갑':'Sarung Tangan','건틀릿':'Sarung Besi','바지':'Celana','각반':'Pelindung Kaki','허리띠':'Ikat Pinggang','벨트':'Ikat Pinggang','부적':'Jimat','목걸이':'Kalung','반지':'Cincin','망토':'Jubah','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Gelang','귀걸이':'Anting'  '⚡ 연격!':'⚡ Rapid Strike!',
+  '⚔ 난타!':'⚔ Barrage!',
+  '💥 강타!':'💥 Slam!',
+  '🌀 휘두르기!':'🌀 Sweep!',
+  '방어↓':'DEF↓',
+};

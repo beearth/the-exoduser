@@ -2054,4 +2054,9 @@ const _FR_BASE={'대검':'Espadon','석궁':'Arbalète','연사석궁':'Répéte
 '견갑':'Garde','대견갑':'Grande Garde','전투화':'Bottes de Combat','갑옷':'Armure','갑주':'Armure',
 '왕관':'Couronne','장갑':'Gants','건틀릿':'Gantelets','바지':'Pantalon','각반':'Jambières',
 '허리띠':'Ceinture','벨트':'Ceinture','부적':'Talisman','목걸이':'Collier','반지':'Anneau',
-'망토':'Cape','팔찌':'Bracelet','귀걸이':'Boucle d\'Oreille'};
+'망토':'Cape','팔찌':'Bracelet','귀걸이':'Boucle d\'Oreille'  '⚡ 연격!':'⚡ Rapid Strike!',
+  '⚔ 난타!':'⚔ Barrage!',
+  '💥 강타!':'💥 Slam!',
+  '🌀 휘두르기!':'🌀 Sweep!',
+  '방어↓':'DEF↓',
+};

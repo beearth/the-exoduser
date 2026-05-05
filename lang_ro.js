@@ -2449,4 +2449,9 @@ const _RO_PFX={
 };
 const _RO_BASE={
 '대검':'Spadă','석궁':'Arbaletă','연사석궁':'Arbaletă Repetitivă','마력석궁':'Arbaletă Arcană','견갑':'Scut','대견갑':'Scut Mare','전투화':'Cizme Luptă','갑옷':'Armură','갑주':'Armură','왕관':'Coroană','장갑':'Mănuși','건틀릿':'Mănuși Blindate','바지':'Pantaloni','각반':'Jambiere','허리띠':'Centură','벨트':'Centură','부적':'Talisman','목걸이':'Colier','반지':'Inel','망토':'Mantie','팔찌':'Brățară','귀걸이':'Cercel'
+  '⚡ 연격!':'⚡ Rapid Strike!',
+  '⚔ 난타!':'⚔ Barrage!',
+  '💥 강타!':'💥 Slam!',
+  '🌀 휘두르기!':'🌀 Sweep!',
+  '방어↓':'DEF↓',
 };

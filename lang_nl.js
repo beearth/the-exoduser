@@ -2084,4 +2084,9 @@ const _NL_BASE={
 '왕관':'Kroon','장갑':'Handschoenen','건틀릿':'Pantserwanten','바지':'Broek','각반':'Beenbescherming',
 '허리띠':'Riem','벨트':'Riem','부적':'Talisman','목걸이':'Ketting','반지':'Ring',
 '망토':'Mantel','팔찌':'Armband','귀걸이':'Oorbel'
+  '⚡ 연격!':'⚡ Rapid Strike!',
+  '⚔ 난타!':'⚔ Barrage!',
+  '💥 강타!':'💥 Slam!',
+  '🌀 휘두르기!':'🌀 Sweep!',
+  '방어↓':'DEF↓',
 };

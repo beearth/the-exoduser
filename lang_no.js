@@ -2086,4 +2086,9 @@ const _NO_BASE={
 '왕관':'Krone','장갑':'Hansker','건틀릿':'Panservotter','바지':'Bukser','각반':'Benbeskyttelse',
 '허리띠':'Belte','벨트':'Belte','부적':'Talisman','목걸이':'Halskjede','반지':'Ring',
 '망토':'Kappe','팔찌':'Armbånd','귀걸이':'Øredobb'
+  '⚡ 연격!':'⚡ Rapid Strike!',
+  '⚔ 난타!':'⚔ Barrage!',
+  '💥 강타!':'💥 Slam!',
+  '🌀 휘두르기!':'🌀 Sweep!',
+  '방어↓':'DEF↓',
 };

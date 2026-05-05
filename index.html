@@ -294,6 +294,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 </div>
 <!-- FDG SCREEN 2: 늑대 엠블럼 -->
 <div id="fdgScreen" class="fdg-screen" style="display:none">
+  <canvas id="fdgSparkCanvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:10"></canvas>
   <img class="fdg-wolf-emblem" src="img/fdg_wolf/fdg_wolf_emblem.png" alt="FDG Wolf Emblem">
   <div class="fdg-title" id="fdgTitle"><span class="word w-for"><span class="accent">F</span><span class="prefix">O</span><span class="anchor">R</span></span><span class="word w-dear"><span class="accent">D</span><span class="prefix">EA</span><span class="anchor">R</span></span><span class="word w-gamers"><span class="accent">G</span><span class="prefix">AME</span><span class="anchor">R</span><span class="suffix">S</span></span></div>
   <div class="fdg-presents" id="fdgPresents">PRESENTS</div>
@@ -2031,7 +2032,7 @@ function showCharGate(charId){
     const _subChars=fdgSub.querySelectorAll('.fdg-char');
     fdgEl.style.display='';
     console.log('[SPLASH] FDG screen with wolf emblem loaded');
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{fdgEl.classList.add('active')}));
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{fdgEl.classList.add('active');_fdgSparkInit()}));
     const s=function(fn,ms){const t=setTimeout(fn,ms);fdgSteps.push(t)};
     // Phase 1: 타이틀 영역 표시 + R R R 등장
     s(()=>{fdgTitle.style.opacity='1'},650);
@@ -2046,7 +2047,7 @@ function showCharGate(charId){
     s(()=>{suffix.style.opacity='1'},3250);
     // Phase 4: PRESENTS + 부제 한 글자씩 블러→선명
     s(()=>{document.getElementById('fdgPresents').style.opacity='1'},3900);
-    for(let _ci=0;_ci<_subChars.length;_ci++){s(()=>{_subChars[_ci].classList.add('on')},4550+_ci*80)}
+    for(let _ci=0;_ci<_subChars.length;_ci++){s(()=>{_subChars[_ci].classList.add('on');_fdgSparkAt(_subChars[_ci])},4550+_ci*80)}
     // 마지막 글자 후 프롬프트 표시 — 자동 타이머 없음, 유저 입력 대기
     const _promptMs=4550+(_subChars.length-1)*80+400;
     s(()=>{const _pr=document.getElementById('fdgPrompt');if(_pr){_pr.textContent=_TL('아무 키나 눌러 계속');_pr.classList.add('on')}},_promptMs);
@@ -2057,6 +2058,80 @@ function showCharGate(charId){
     fdgSteps.forEach(clearTimeout);fdgSteps=[];
     fdgEl.classList.remove('active','fadeout');
     fdgEl.style.display='none';
+    _fdgSparkStop();
+  }
+
+  // ── 구름 안개 파티클 ─────────────────────────────────────────
+  // 방사형 그라디언트 퍼프가 팽창·소멸하며 글자가 안개처럼 피어나는 효과
+  let _sparkParts=[],_sparkRaf=null,_sparkCv=null,_sparkCx=null,_sparkT=0;
+  function _fdgSparkInit(){
+    _sparkCv=document.getElementById('fdgSparkCanvas');
+    if(!_sparkCv)return;
+    _sparkCv.width=_sparkCv.offsetWidth||window.innerWidth;
+    _sparkCv.height=_sparkCv.offsetHeight||window.innerHeight;
+    _sparkCx=_sparkCv.getContext('2d');
+    _sparkParts=[];
+    if(!_sparkRaf)_fdgSparkLoop();
+  }
+  function _fdgSparkAt(el){
+    if(!_sparkCx||!_sparkCv)_fdgSparkInit();
+    if(!el||!_sparkCv)return;
+    const r=el.getBoundingClientRect();
+    const cr=_sparkCv.getBoundingClientRect();
+    const bx=(r.left+r.right)/2-cr.left;
+    const by=(r.top+r.bottom)/2-cr.top;
+    // 3~5개의 팽창 퍼프 — 크기가 늘어나면서 투명해지는 안개
+    const count=3+(Math.random()*3|0);
+    for(let i=0;i<count;i++){
+      const ox=(Math.random()-.5)*r.width*1.3;
+      const oy=(Math.random()-.5)*r.height*1.0;
+      _sparkParts.push({
+        x:bx+ox, y:by+oy,
+        vx:(Math.random()-.5)*.10,
+        vy:-0.12-Math.random()*.18,
+        sz:5+Math.random()*8,              // 초기 반지름
+        expandRate:0.8+Math.random()*1.2,  // 팽창 속도 (px/frame)
+        maxSz:30+Math.random()*40,         // 최대 반지름
+        life:1, decay:0.010+Math.random()*.008,
+        warm:Math.random()>.4              // true=금빛, false=은청빛
+      });
+    }
+  }
+  function _fdgSparkLoop(){
+    if(!_sparkCx||!_sparkCv){_sparkRaf=null;return}
+    _sparkT++;
+    _sparkCv.width=_sparkCv.offsetWidth||window.innerWidth;
+    _sparkCv.height=_sparkCv.offsetHeight||window.innerHeight;
+    _sparkCx.clearRect(0,0,_sparkCv.width,_sparkCv.height);
+    for(let i=0;i<_sparkParts.length;i++){
+      const p=_sparkParts[i];
+      p.x+=p.vx;
+      p.y+=p.vy;
+      if(p.sz<p.maxSz) p.sz+=p.expandRate;
+      p.life-=p.decay;
+      if(p.life<=0)continue;
+      const alpha=p.life*p.life*.5;    // 제곱 감쇠 — 퍼질수록 빠르게 투명
+      const grd=_sparkCx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.sz);
+      if(p.warm){
+        grd.addColorStop(0,  `rgba(255,242,185,${alpha})`);
+        grd.addColorStop(0.45,`rgba(218,182,90,${alpha*.55})`);
+        grd.addColorStop(1,  'rgba(255,200,80,0)');
+      } else {
+        grd.addColorStop(0,  `rgba(225,238,255,${alpha})`);
+        grd.addColorStop(0.45,`rgba(175,208,255,${alpha*.55})`);
+        grd.addColorStop(1,  'rgba(200,220,255,0)');
+      }
+      _sparkCx.beginPath();
+      _sparkCx.arc(p.x,p.y,p.sz,0,Math.PI*2);
+      _sparkCx.fillStyle=grd;
+      _sparkCx.fill();
+    }
+    _sparkParts=_sparkParts.filter(p=>p.life>0);
+    _sparkRaf=requestAnimationFrame(_fdgSparkLoop);
+  }
+  function _fdgSparkStop(){
+    if(_sparkRaf){cancelAnimationFrame(_sparkRaf);_sparkRaf=null}
+    _sparkParts=[];_sparkCx=null;
   }
 
   // ── 시퀀스 제어 ──
