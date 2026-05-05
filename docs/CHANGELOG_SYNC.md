@@ -22560,3 +22560,15 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _autosave/game_20260505_222346.html
 - game.html
 
+
+## 2026-05-06 08:30 (auto)
+- Electron/game.html
+- _autosave/game_20260506_081014.html
+- _autosave/game_20260506_081023.html
+- _autosave/game_20260506_081026.html
+- _autosave/game_20260506_081244.html
+- _autosave/game_20260506_081248.html
+- docs/4.1맵디?�인+?�정/EXODUSER_MAP_BIBLE_v3 (1).md
+- game.html
+- game.html.bak
+

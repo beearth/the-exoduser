@@ -14337,10 +14337,10 @@ function genGauntlet(fi){
   const _arenaIdx=(actIndex||0)%4;
   const _wt=3;
   let _bW,_bH;
-  if(_arenaIdx===0){_bW=26;_bH=26}
-  else if(_arenaIdx===1){_bW=30;_bH=20}
-  else if(_arenaIdx===2){_bW=26;_bH=26}
-  else{_bW=28;_bH=22}
+  if(_arenaIdx===0){_bW=52;_bH=52}
+  else if(_arenaIdx===1){_bW=60;_bH=40}
+  else if(_arenaIdx===2){_bW=52;_bH=52}
+  else{_bW=56;_bH=44}
   const _bFullW=_bW+_wt*2,_bFullH=_bH+_wt*2;
   const _bTop=Math.max(2,curY-_bFullH);
   _bBot=_bTop+_bFullH;
@@ -14575,7 +14575,7 @@ function genSnake(si,forceSeed){
   else if(_sSeeds[si]===undefined)_sSeeds[si]=si*7919+1;
   const rng=mkRng(_sSeeds[si]);
   const sc=1+si*0.016;
-  const bW=Math.max(20,~~(7*sc)),arW=Math.max(9,~~(11*sc)),arH=Math.max(6,~~(7*sc)),boW=Math.max(12,~~(15*sc));
+  const bW=Math.max(20,~~(7*sc)),arW=Math.max(9,~~(11*sc)),arH=Math.max(6,~~(7*sc)),boW=Math.max(24,~~(30*sc));
   const seg=Math.min(8,3+floor);
   const bPad=bW+3,useH=mh-bPad,sH=~~(useH/(seg+2));
   const xMin=arW+2,xMax=mw-arW-2,xM=~~(mw/2);
@@ -14618,7 +14618,7 @@ function genHoriz(si,forceSeed){
   else if(_sSeeds[si]===undefined)_sSeeds[si]=si*7919+1;
   const rng=mkRng(_sSeeds[si]);
   const sc=1+si*0.014;
-  const bW=Math.max(20,~~(6*sc)),arW=Math.max(8,~~(9*sc)),arH=Math.max(5,~~(6*sc)),boW=Math.max(11,~~(13*sc));
+  const bW=Math.max(20,~~(6*sc)),arW=Math.max(8,~~(9*sc)),arH=Math.max(5,~~(6*sc)),boW=Math.max(22,~~(26*sc));
   const seg=Math.min(8,3+floor);
   const lPad=bW+3,rPad=boW+2,useW=mw-lPad-rPad,sW=~~(useW/(seg+2));
   const yMin=arH+2,yMax=mh-arH-2,yM=~~(mh/2);

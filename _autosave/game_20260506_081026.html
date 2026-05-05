@@ -20113,7 +20113,7 @@ function genHoriz(si,forceSeed){
   else if(_sSeeds[si]===undefined)_sSeeds[si]=si*7919+1;
   const rng=mkRng(_sSeeds[si]);
   const sc=1+si*0.014;
-  const bW=Math.max(20,~~(6*sc)),arW=Math.max(8,~~(9*sc)),arH=Math.max(5,~~(6*sc)),boW=Math.max(22,~~(26*sc));
+  const bW=Math.max(20,~~(6*sc)),arW=Math.max(8,~~(9*sc)),arH=Math.max(5,~~(6*sc)),boW=Math.max(11,~~(13*sc));
   const seg=Math.min(8,3+floor);
   const lPad=bW+3,rPad=boW+2,useW=mw-lPad-rPad,sW=~~(useW/(seg+2));
   const yMin=arH+2,yMax=mh-arH-2,yM=~~(mh/2);
