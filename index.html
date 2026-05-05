@@ -1725,6 +1725,8 @@ async function showLobby(){
   showLoading(_TL('캐릭터 불러오는 중...'));
   $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
   if($('userEmail'))$('userEmail').textContent=currentUser.email||'';await loadCharacters();
+  // 3D 안개 배경 초기화
+  if(typeof initFog3D==='function'){const _ll=document.querySelector('.lobby-left');if(_ll)initFog3D(_ll)}
   hideLoading();
 }
 async function loadCharacters(){
@@ -2197,5 +2199,6 @@ function showCharGate(charId){
   startPhase();
 })();
 </script>
+<script src="js/fog3d.js"></script>
 </body>
 </html>
