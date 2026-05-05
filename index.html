@@ -32,7 +32,7 @@
 })();
 </script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Cinzel+Decorative:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500&family=Noto+Serif+KR:wght@400;500&family=Noto+Serif+JP:wght@400;500&family=Noto+Serif+SC:wght@400;500&family=Noto+Serif+TC:wght@400;500&family=Noto+Naskh+Arabic:wght@400;500&family=Noto+Serif+Thai:wght@400;500&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden}
@@ -262,20 +262,49 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 @keyframes spin{to{transform:rotate(360deg)}}
 .loading p{margin-top:10px;font-size:.6rem;color:#886644}
 /* ── FDG SCREEN 2 (늑대 엠블럼 시네마틱) ── */
-.fdg-screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000;gap:40px;z-index:9999;opacity:0;transition:opacity .5s}
+.fdg-screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000;gap:clamp(18px,3vh,36px);z-index:9999;opacity:0;transition:opacity .5s}
 .fdg-screen.active{opacity:1}
 .fdg-screen.fadeout{opacity:0}
-/* 0.5~1.5s 늑대 페이드인 */
-.fdg-wolf-emblem{width:380px;max-width:25vh;height:auto;opacity:0;transform:scale(.85);transition:opacity 1s ease-out .5s,transform 1s ease-out .5s}
-.fdg-screen.active .fdg-wolf-emblem{opacity:1;transform:scale(1)}
-/* FDG R-앵커 시네마틱 */
-.fdg-title{display:flex;gap:.5em;justify-content:center;font:400 clamp(48px,5vw,96px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#E8E0D0;letter-spacing:.05em;opacity:0;transition:opacity .3s ease-out}
-.fdg-title .word{display:inline-flex}
-.fdg-title .anchor,.fdg-title .prefix,.fdg-title .suffix,.fdg-title .accent{opacity:0}
-.fdg-title .accent{color:#C9A961;transition:opacity .5s ease-out}
-.fdg-title .anchor{transition:opacity .65s ease-out}
-.fdg-title .prefix{transition:opacity 1s ease-out,transform 1s ease-out;transform:translateX(-20px)}
-.fdg-title .suffix{transition:opacity .5s ease-out}
+/* 늑대 + 눈 glow */
+.fdg-wolf-wrap{position:relative;width:clamp(80px,min(22vw,18vh),290px);flex-shrink:0}
+.fdg-wolf-emblem{width:100%;height:auto;opacity:0;transition:opacity 1.4s ease-out;display:block}
+.fdg-screen.active .fdg-wolf-emblem{opacity:.92}
+.fdg-eye-glow{
+  position:absolute;top:56%;
+  width:16%;height:12%;
+  background:radial-gradient(ellipse at center,rgba(220,30,8,.8) 0%,transparent 70%);
+  opacity:0;pointer-events:none;
+  animation:fdg-eye-pulse 1.4s ease-in-out infinite;
+  transform:translateY(-50%);
+}
+.fdg-eye-glow.left{left:33.5%}
+.fdg-eye-glow.right{left:50.5%}
+.fdg-screen.active .fdg-eye-glow{opacity:1;animation-delay:1.5s}
+@keyframes fdg-eye-pulse{0%,100%{opacity:.10}50%{opacity:.55}}
+/* FDG v2 타이틀 */
+.fdg-title{
+  display:flex;justify-content:center;align-items:baseline;
+  gap:.18em;
+  font:700 clamp(16px,min(6vw,8vh),96px) 'Cinzel Decorative','Cinzel',Georgia,serif;
+  letter-spacing:0;white-space:nowrap;
+  transition:gap .8s cubic-bezier(.22,1,.36,1),letter-spacing .8s cubic-bezier(.22,1,.36,1);
+}
+.fdg-title.expand{gap:.6em;letter-spacing:.2em}
+.fdg-title .w{display:inline-flex;align-items:baseline}
+.fdg-title .a{
+  color:#C9A961;opacity:0;
+  transform:translateY(13px) scale(.87);
+  transition:opacity .5s ease-out,transform .65s cubic-bezier(.22,1,.36,1);
+}
+.fdg-title .a.on{opacity:1;transform:translateY(0) scale(1)}
+.fdg-title .x{
+  display:inline-block;max-width:0;overflow:hidden;white-space:nowrap;
+  vertical-align:bottom;color:#E8E0D0;
+  padding:.1em 0 .4em 0;
+  transition:max-width .8s cubic-bezier(.22,1,.36,1);
+}
+.fdg-title .x.on{max-width:9em}
+.fdg-title .x::after{content:'';display:inline-block;width:.5em}
 /* PRESENTS + 부제 (JS 타이머 제어) */
 .fdg-presents{font:400 clamp(12px,1.25vw,24px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#888;letter-spacing:.5em;text-align:center;opacity:0;transition:opacity .5s ease-out}
 .fdg-subtitle{
@@ -304,8 +333,16 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 </div>
 <!-- FDG SCREEN 2: 늑대 엠블럼 -->
 <div id="fdgScreen" class="fdg-screen" style="display:none">
-  <img class="fdg-wolf-emblem" src="img/fdg_wolf/fdg_wolf_emblem.png" alt="FDG Wolf Emblem">
-  <div class="fdg-title" id="fdgTitle"><span class="word w-for"><span class="accent">F</span><span class="prefix">O</span><span class="anchor">R</span></span><span class="word w-dear"><span class="accent">D</span><span class="prefix">EA</span><span class="anchor">R</span></span><span class="word w-gamers"><span class="accent">G</span><span class="prefix">AME</span><span class="anchor">R</span><span class="suffix">S</span></span></div>
+  <div class="fdg-wolf-wrap">
+    <img class="fdg-wolf-emblem" src="img/fdg_wolf/fdg_wolf_emblem.png" alt="FDG Wolf Emblem">
+    <div class="fdg-eye-glow left"></div>
+    <div class="fdg-eye-glow right"></div>
+  </div>
+  <div class="fdg-title" id="fdgTitle">
+    <span class="w"><span class="a" id="fdgAF">F</span><span class="x" id="fdgXOR">OR</span></span>
+    <span class="w"><span class="a" id="fdgAD">D</span><span class="x" id="fdgXEAR">EAR</span></span>
+    <span class="w"><span class="a" id="fdgAG">G</span><span class="x" id="fdgXAMERS">AMERS</span></span>
+  </div>
   <div class="fdg-presents" id="fdgPresents">PRESENTS</div>
   <div class="fdg-subtitle" id="fdgSubtitle"></div>
   <div class="fdg-prompt" id="fdgPrompt"></div>
@@ -2030,10 +2067,6 @@ function showCharGate(charId){
   const fdgEl=document.getElementById('fdgScreen');
   const fdgSub=document.getElementById('fdgSubtitle');
   const fdgTitle=document.getElementById('fdgTitle');
-  const anchors=fdgTitle.querySelectorAll('.anchor');
-  const accents=fdgTitle.querySelectorAll('.accent');
-  const prefixes=fdgTitle.querySelectorAll('.prefix');
-  const suffix=fdgTitle.querySelector('.suffix');
   let fdgSteps=[];
   function showFDGScreen(){
     // html lang 속성 동기화 (CSS :lang() 폰트 매칭용)
@@ -2047,22 +2080,23 @@ function showCharGate(charId){
     console.log('[SPLASH] FDG screen with wolf emblem loaded');
     requestAnimationFrame(()=>requestAnimationFrame(()=>{fdgEl.classList.add('active')}));
     const s=function(fn,ms){const t=setTimeout(fn,ms);fdgSteps.push(t)};
-    // Phase 1: 타이틀 영역 표시 + R R R 등장
-    s(()=>{fdgTitle.style.opacity='1'},650);
-    s(()=>{anchors[0].style.opacity='1'},910);
-    s(()=>{anchors[1].style.opacity='1'},1170);
-    s(()=>{anchors[2].style.opacity='1'},1430);
-    // Phase 2: accent(F,D,G) + prefix 슬라이드인
-    s(()=>{accents[0].style.opacity='1';prefixes[0].style.opacity='1';prefixes[0].style.transform='translateX(0)'},1950);
-    s(()=>{accents[1].style.opacity='1';prefixes[1].style.opacity='1';prefixes[1].style.transform='translateX(0)'},2340);
-    s(()=>{accents[2].style.opacity='1';prefixes[2].style.opacity='1';prefixes[2].style.transform='translateX(0)'},2730);
-    // Phase 3: S 등장
-    s(()=>{suffix.style.opacity='1'},3250);
-    // Phase 4: PRESENTS + 부제 한 글자씩 블러→선명
-    s(()=>{document.getElementById('fdgPresents').style.opacity='1'},3900);
-    for(let _ci=0;_ci<_subChars.length;_ci++){s(()=>{_subChars[_ci].classList.add('on')},4550+_ci*80)}
-    // 마지막 글자 후 프롬프트 표시 — 자동 타이머 없음, 유저 입력 대기
-    const _promptMs=4550+(_subChars.length-1)*80+400;
+    // v2: F D G 등장
+    s(()=>document.getElementById('fdgAF').classList.add('on'), 1200);
+    s(()=>document.getElementById('fdgAD').classList.add('on'), 1400);
+    s(()=>document.getElementById('fdgAG').classList.add('on'), 1580);
+    // v2: 양옆 확장
+    s(()=>{
+      fdgTitle.classList.add('expand');
+      document.getElementById('fdgXOR').classList.add('on');
+      document.getElementById('fdgXEAR').classList.add('on');
+      document.getElementById('fdgXAMERS').classList.add('on');
+    }, 2300);
+    // PRESENTS
+    s(()=>{document.getElementById('fdgPresents').style.opacity='1'},3200);
+    // 부제
+    for(let _ci=0;_ci<_subChars.length;_ci++){s(()=>{_subChars[_ci].classList.add('on')},3800+_ci*80)}
+    // 프롬프트
+    const _promptMs=3800+(_subChars.length-1)*80+400;
     s(()=>{const _pr=document.getElementById('fdgPrompt');if(_pr){_pr.textContent=_TL('아무 키나 눌러 계속');_pr.classList.add('on')}},_promptMs);
   }
   let fdgTimerId=null;
@@ -2071,6 +2105,11 @@ function showCharGate(charId){
     fdgSteps.forEach(clearTimeout);fdgSteps=[];
     fdgEl.classList.remove('active','fadeout');
     fdgEl.style.display='none';
+    // v2 리셋
+    ['fdgAF','fdgAD','fdgAG','fdgXOR','fdgXEAR','fdgXAMERS'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('on')});
+    const _ft=document.getElementById('fdgTitle');if(_ft)_ft.classList.remove('expand');
+    const _pr=document.getElementById('fdgPrompt');if(_pr)_pr.classList.remove('on');
+    const _fs=document.getElementById('fdgSubtitle');if(_fs)_fs.innerHTML='';
   }
 
   // ── 시퀀스 제어 ──
