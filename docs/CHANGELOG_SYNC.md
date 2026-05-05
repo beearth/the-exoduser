@@ -22533,3 +22533,15 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - index.html
 - js/fog3d.js
 
+
+## 2026-05-05 21:30 (auto)
+- _autosave/game_20260505_210015.html
+- _autosave/game_20260505_210108.html
+- _autosave/game_20260505_210228.html
+- _autosave/game_20260505_210245.html
+- _autosave/game_20260505_211318.html
+- _autosave/game_20260505_211329.html
+- _autosave/game_20260505_211510.html
+- game.html
+- index.html
+

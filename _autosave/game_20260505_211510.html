@@ -41505,32 +41505,6 @@ function draw(){
     }
     X.globalAlpha=1;X.restore();
   }
-  // ── [DEPTH-FOG] 깊이 안개 — 플레이어 중심 원형 시야 제한, 글로우 걷힘 ──
-  if(OPT.fog){
-    const _dfHell2=SI_TO_HELL[G.stage||0];
-    // 캐시: 스테이지/화면 변경 시만 재생성
-    if(!G._depthFogCache||G._depthFogStage!==G.stage||G._depthFogW!==C.width||G._depthFogH!==C.height){
-      const _dfCvs=document.createElement('canvas');_dfCvs.width=C.width;_dfCvs.height=C.height;
-      const _dfX=_dfCvs.getContext('2d');
-      const _dfCols=[[15,30,12],[12,20,8],[30,8,5],[18,8,25],[25,20,5],[20,18,12],[12,5,22]];
-      const dc=_dfCols[_dfHell2]||[15,15,15];
-      const cx=C.width/2,cy=C.height/2;
-      const innerR=Math.min(C.width,C.height)*0.18; // 글로우 안쪽 (투명)
-      const outerR=Math.min(C.width,C.height)*0.55; // 안개 완전 불투명
-      const g=_dfX.createRadialGradient(cx,cy,innerR,cx,cy,outerR);
-      g.addColorStop(0,'rgba('+dc[0]+','+dc[1]+','+dc[2]+',0)');
-      g.addColorStop(0.3,'rgba('+dc[0]+','+dc[1]+','+dc[2]+',0.15)');
-      g.addColorStop(0.6,'rgba('+dc[0]+','+dc[1]+','+dc[2]+',0.45)');
-      g.addColorStop(0.85,'rgba('+dc[0]+','+dc[1]+','+dc[2]+',0.75)');
-      g.addColorStop(1,'rgba('+dc[0]+','+dc[1]+','+dc[2]+',0.92)');
-      _dfX.fillStyle=g;_dfX.fillRect(0,0,C.width,C.height);
-      G._depthFogCache=_dfCvs;G._depthFogStage=G.stage;G._depthFogW=C.width;G._depthFogH=C.height;
-    }
-    X.save();X.setTransform(1,0,0,1,0,0);
-    X.globalAlpha=0.85+Math.sin(_now*0.0003)*0.1; // 미세 숨쉬기
-    X.drawImage(G._depthFogCache,0,0);
-    X.globalAlpha=1;X.restore();
-  }
   // ── 동적 환경광 오버레이 (매 프레임 — 교대 렌더 제거, 깜빡임 방지) ──
   {const _elHell=SI_TO_HELL[G.stage||0];
   const _elCol=_ENV_LIGHT[_elHell];

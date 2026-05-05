@@ -273,13 +273,13 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   position:absolute;top:56%;
   width:16%;height:12%;
   background:radial-gradient(ellipse at center,rgba(220,30,8,.8) 0%,transparent 70%);
-  opacity:0;pointer-events:none;
-  animation:fdg-eye-pulse 1.4s ease-in-out infinite;
+  pointer-events:none;
+  animation:fdg-eye-pulse 1.4s ease-in-out 1.8s infinite;
+  animation-fill-mode:backwards;
   transform:translateY(-50%);
 }
 .fdg-eye-glow.left{left:33.5%}
 .fdg-eye-glow.right{left:50.5%}
-.fdg-screen.active .fdg-eye-glow{opacity:1;animation-delay:1.5s}
 @keyframes fdg-eye-pulse{0%,100%{opacity:.10}50%{opacity:.55}}
 /* FDG v2 타이틀 */
 .fdg-title{
@@ -1725,8 +1725,6 @@ async function showLobby(){
   showLoading(_TL('캐릭터 불러오는 중...'));
   $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
   if($('userEmail'))$('userEmail').textContent=currentUser.email||'';await loadCharacters();
-  // 3D 안개 배경 초기화
-  if(typeof initFog3D==='function'){const _ll=document.querySelector('.lobby-left');if(_ll)initFog3D(_ll)}
   hideLoading();
 }
 async function loadCharacters(){
@@ -2199,6 +2197,5 @@ function showCharGate(charId){
   startPhase();
 })();
 </script>
-<script src="js/fog3d.js"></script>
 </body>
 </html>
