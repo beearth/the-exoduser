@@ -280,6 +280,9 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 .fdg-subtitle{font:300 clamp(18px,2vw,32px) 'Noto Sans KR',sans-serif;color:#B8B0A0;letter-spacing:.15em;text-align:center;opacity:1}
 .fdg-subtitle .fdg-char{display:inline-block;opacity:0;filter:blur(12px);transition:opacity .4s ease-out, filter .5s ease-out}
 .fdg-subtitle .fdg-char.on{opacity:1;filter:blur(0)}
+.fdg-prompt{font:400 clamp(14px,1.5vw,22px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#666;letter-spacing:.35em;text-align:center;opacity:0}
+.fdg-prompt.on{animation:fdg-blink 1.2s ease-in-out infinite alternate}
+@keyframes fdg-blink{from{opacity:0}to{opacity:.5}}
 </style>
 </head>
 <body>
@@ -295,6 +298,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   <div class="fdg-title" id="fdgTitle"><span class="word w-for"><span class="accent">F</span><span class="prefix">O</span><span class="anchor">R</span></span><span class="word w-dear"><span class="accent">D</span><span class="prefix">EA</span><span class="anchor">R</span></span><span class="word w-gamers"><span class="accent">G</span><span class="prefix">AME</span><span class="anchor">R</span><span class="suffix">S</span></span></div>
   <div class="fdg-presents" id="fdgPresents">PRESENTS</div>
   <div class="fdg-subtitle" id="fdgSubtitle"></div>
+  <div class="fdg-prompt" id="fdgPrompt"></div>
 </div>
 
 <!-- ═══ Cinematic Scene ═══ -->
@@ -2043,12 +2047,9 @@ function showCharGate(charId){
     // Phase 4: PRESENTS + 부제 한 글자씩 블러→선명
     s(()=>{document.getElementById('fdgPresents').style.opacity='1'},3900);
     for(let _ci=0;_ci<_subChars.length;_ci++){s(()=>{_subChars[_ci].classList.add('on')},4550+_ci*80)}
-    fdgTimerId=setTimeout(()=>{
-      if(done||phase!==1)return;
-      fdgEl.classList.add('fadeout');
-      console.log('[SPLASH] FDG screen completed');
-      setTimeout(()=>{if(!done&&phase===1)nextPhase()},650);
-    },6500);
+    // 마지막 글자 후 프롬프트 표시 — 자동 타이머 없음, 유저 입력 대기
+    const _promptMs=4550+(_subChars.length-1)*80+400;
+    s(()=>{const _pr=document.getElementById('fdgPrompt');if(_pr){_pr.textContent=_TL('아무 키나 눌러 계속');_pr.classList.add('on')}},_promptMs);
   }
   let fdgTimerId=null;
   function hideFDGScreen(){
