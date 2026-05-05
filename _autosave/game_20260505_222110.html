@@ -2146,7 +2146,6 @@ canvas{display:block;position:fixed;inset:0}
 </head>
 <body>
 <canvas id="c"></canvas>
-<canvas id="fogOverlay" style="position:fixed;inset:0;pointer-events:none;z-index:0"></canvas>
 <canvas id="burstCvs" style="position:fixed;inset:0;pointer-events:none;z-index:1"></canvas>
 <canvas id="ct" style="position:fixed;inset:0;pointer-events:none;z-index:2"></canvas>
 <div id="mmLvl" style="position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 4px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 4px);z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;text-align:center;width:340px;transform-origin:top right;transform:scale(var(--ui-scale));display:flex;flex-direction:column;align-items:center">
@@ -6774,6 +6773,43 @@ function _getSmogStamp(r,g,b){
   grd.addColorStop(1,'rgba('+r+','+g+','+b+',0)');
   cx.fillStyle=grd;cx.fillRect(0,0,sz,sz);
   _smogStamps[key]=c;return c;
+}
+// ═══ [DRIFT-FOG] 흐르는 대기 안개 — 프로시저럴 텍스처 스크롤 ═══
+const _DFOG_LAYERS=3;
+const _dfogCvs=[];const _dfogOff=[0,0,0]; // 각 레이어 x오프셋
+const _dfogSpd=[0.2,0.12,0.06]; // px/frame 속도 (앞→뒤)
+const _dfogAlpha=[0.35,0.25,0.18]; // 투명도 (진하게)
+const _dfogY=[0.45,0.2,0.0]; // 화면 전체 커버
+const _dfogH=[0.55,0.7,0.9]; // 높이 크게
+let _dfogW=0,_dfogHell=-1;
+// 색상: 지옥별 [r,g,b]
+const _DFOG_COLS=[[60,90,50],[30,45,15],[50,15,8],[35,15,45],[45,35,8],[35,30,25],[20,8,40]];
+function _bakeDriftFog(w,hell){
+  _dfogW=w;_dfogHell=hell;
+  const col=_DFOG_COLS[hell]||[40,40,40];
+  for(let li=0;li<_DFOG_LAYERS;li++){
+    const tw=w*2,th=200; // 2배 폭 (타일링)
+    const c=document.createElement('canvas');c.width=tw;c.height=th;
+    const x=c.getContext('2d');
+    // 프로시저럴 연기: 랜덤 타원 그라디언트 블롭
+    const blobs=15+li*6;
+    const rng=(s)=>{s=Math.sin(s*43758.5453+li*7.1)*43758.5453;return s-Math.floor(s)};
+    for(let i=0;i<blobs;i++){
+      const bx=rng(i*3.1)*tw;
+      const by=th*0.1+rng(i*7.3)*th*0.8;
+      const brx=100+rng(i*11.7)*tw*0.4;
+      const bry=40+rng(i*13.1)*th*0.5;
+      const ba=0.3+rng(i*17.9)*0.4;
+      x.save();x.translate(bx,by);x.scale(1,bry/brx);
+      const g=x.createRadialGradient(0,0,0,0,0,brx);
+      g.addColorStop(0,'rgba('+col[0]+','+col[1]+','+col[2]+','+ba+')');
+      g.addColorStop(0.5,'rgba('+col[0]+','+col[1]+','+col[2]+','+(ba*0.4)+')');
+      g.addColorStop(1,'rgba(0,0,0,0)');
+      x.fillStyle=g;x.fillRect(-brx,-brx,brx*2,brx*2);
+      x.restore();
+    }
+    _dfogCvs[li]=c;_dfogOff[li]=0;
+  }
 }
 // ── 보스 다리 안개 스탬프 (프리렌더 노이즈 텍스처, 4장 프레임) ──
 const _bossLegFogFrames={};
@@ -41449,6 +41485,112 @@ function draw(){
     X.drawImage(_fogBotCvs,0,0);
     X.globalAlpha=_fogPulse*.6;
     X.drawImage(_fogTopCvs,0,0);
+    X.globalAlpha=1;X.restore();
+  }
+  // ── [DRIFT-FOG] 흐르는 대기 안개 렌더 ──
+  if(OPT.fog&&_hwTier!=='C'){
+    const _dfHell=SI_TO_HELL[G.stage||0];
+    if(!_dfogCvs[0]||_dfogW!==C.width||_dfogHell!==_dfHell)_bakeDriftFog(C.width,_dfHell);
+    X.save();X.setTransform(1,0,0,1,0,0);
+    for(let _dli=0;_dli<_DFOG_LAYERS;_dli++){
+      const dc=_dfogCvs[_dli];if(!dc)continue;
+      _dfogOff[_dli]+=_dfogSpd[_dli]*_dtSp;
+      if(_dfogOff[_dli]>=C.width)_dfogOff[_dli]-=C.width;
+      const ox=-_dfogOff[_dli];
+      const dy=C.height*_dfogY[_dli]+Math.sin(_now*0.0005+_dli*2)*8;
+      const dh=C.height*_dfogH[_dli];
+      X.globalAlpha=_dfogAlpha[_dli];
+      X.drawImage(dc,ox,dy,C.width,dh);
+      X.drawImage(dc,ox+C.width,dy,C.width,dh); // 타일링 이음
+    }
+    X.globalAlpha=1;X.restore();
+  }
+  // ── [DEPTH-FOG] 깊이 안개 — 구름 실시간 이동 + 플레이어 글로우 걷힘 ──
+  if(OPT.fog){
+    const _dfHell2=SI_TO_HELL[G.stage||0];
+    // 1) 구름 텍스처 bake (스테이지 변경 시만)
+    if(!G._cloudTex||G._cloudHell!==_dfHell2){
+      const cw=1024,ch=512;
+      const cc=document.createElement('canvas');cc.width=cw;cc.height=ch;
+      const cx2=cc.getContext('2d');
+      const _cfCols=[[25,50,20],[20,35,12],[50,15,8],[30,12,40],[40,30,8],[30,25,18],[18,8,35]];
+      const dc=_cfCols[_dfHell2]||[20,20,20];
+      cx2.fillStyle='rgba('+dc[0]+','+dc[1]+','+dc[2]+',0.85)';cx2.fillRect(0,0,cw,ch);
+      const rng=(s)=>{s=Math.sin(s*43758.5453)*43758.5453;return s-Math.floor(s)};
+      for(let i=0;i<30;i++){
+        const bx=rng(i*3.1)*cw,by=rng(i*7.3)*ch;
+        const br=80+rng(i*11.7)*cw*0.25;
+        const ba=0.4+rng(i*17.9)*0.5;
+        const g2=cx2.createRadialGradient(bx,by,0,bx,by,br);
+        g2.addColorStop(0,'rgba('+(dc[0]+30)+','+(dc[1]+25)+','+(dc[2]+15)+','+ba+')');
+        g2.addColorStop(0.5,'rgba('+dc[0]+','+dc[1]+','+dc[2]+','+(ba*0.4)+')');
+        g2.addColorStop(1,'rgba(0,0,0,0)');
+        cx2.fillStyle=g2;cx2.fillRect(0,0,cw,ch);
+      }
+      // 어두운 구름 블롭 추가
+      for(let i=0;i<15;i++){
+        const bx=rng(i*5.7+99)*cw,by=rng(i*9.1+77)*ch;
+        const br=60+rng(i*13.3+33)*cw*0.2;
+        const g3=cx2.createRadialGradient(bx,by,0,bx,by,br);
+        g3.addColorStop(0,'rgba(0,0,0,0.5)');g3.addColorStop(1,'rgba(0,0,0,0)');
+        cx2.fillStyle=g3;cx2.fillRect(0,0,cw,ch);
+      }
+      G._cloudTex=cc;G._cloudHell=_dfHell2;G._cloudOx=0;G._cloudOy=0;
+      // 글로우 마스크 (플레이어 중심 투명 원)
+      const mc=document.createElement('canvas');mc.width=C.width;mc.height=C.height;
+      const mx=mc.getContext('2d');
+      mx.fillStyle='#000';mx.fillRect(0,0,C.width,C.height);
+      const innerR=Math.min(C.width,C.height)*0.12;
+      const outerR=Math.min(C.width,C.height)*0.35;
+      const gm=mx.createRadialGradient(C.width/2,C.height/2,innerR,C.width/2,C.height/2,outerR);
+      gm.addColorStop(0,'rgba(0,0,0,1)');gm.addColorStop(0.5,'rgba(0,0,0,0.5)');gm.addColorStop(1,'rgba(0,0,0,0)');
+      mx.globalCompositeOperation='destination-out';
+      mx.fillStyle=gm;mx.fillRect(0,0,C.width,C.height);
+      mx.globalCompositeOperation='source-over';
+      G._glowMask=mc;G._glowMaskW=C.width;G._glowMaskH=C.height;
+    }
+    // 마스크 리사이즈 체크
+    if(G._glowMaskW!==C.width||G._glowMaskH!==C.height){
+      const mc=document.createElement('canvas');mc.width=C.width;mc.height=C.height;
+      const mx=mc.getContext('2d');
+      mx.fillStyle='#000';mx.fillRect(0,0,C.width,C.height);
+      const innerR=Math.min(C.width,C.height)*0.12;
+      const outerR=Math.min(C.width,C.height)*0.35;
+      const gm=mx.createRadialGradient(C.width/2,C.height/2,innerR,C.width/2,C.height/2,outerR);
+      gm.addColorStop(0,'rgba(0,0,0,1)');gm.addColorStop(0.5,'rgba(0,0,0,0.5)');gm.addColorStop(1,'rgba(0,0,0,0)');
+      mx.globalCompositeOperation='destination-out';
+      mx.fillStyle=gm;mx.fillRect(0,0,C.width,C.height);
+      mx.globalCompositeOperation='source-over';
+      G._glowMask=mc;G._glowMaskW=C.width;G._glowMaskH=C.height;
+    }
+    // 2) 구름 스크롤 (게임 월드 좌표 기반 + 바람 이동)
+    G._cloudOx+=0.3*_dtSp; // 바람 속도
+    G._cloudOy+=0.08*_dtSp;
+    // 3) 오프스크린에 구름+마스크 합성
+    if(!G._fogCompCvs||G._fogCompCvs.width!==C.width){
+      G._fogCompCvs=document.createElement('canvas');G._fogCompCvs.width=C.width;G._fogCompCvs.height=C.height;
+      G._fogCompX=G._fogCompCvs.getContext('2d');
+    }
+    const fc=G._fogCompX;
+    fc.clearRect(0,0,C.width,C.height);
+    // 구름 패턴 스크롤 (createPattern — 이음새 없는 타일링)
+    if(!G._cloudPat||G._cloudPatHell!==_dfHell2){
+      G._cloudPat=fc.createPattern(G._cloudTex,'repeat');G._cloudPatHell=_dfHell2;
+    }
+    const sox=G._cloudOx+G.cam.x*0.15, soy=G._cloudOy+G.cam.y*0.1;
+    fc.save();
+    fc.translate(-sox,-soy);
+    fc.fillStyle=G._cloudPat;
+    fc.fillRect(sox,soy,C.width,C.height);
+    fc.restore();
+    // 글로우 마스크 적용 (플레이어 중심 투명)
+    fc.globalCompositeOperation='destination-in';
+    fc.drawImage(G._glowMask,0,0);
+    fc.globalCompositeOperation='source-over';
+    // 메인 캔버스에 합성
+    X.save();X.setTransform(1,0,0,1,0,0);
+    X.globalAlpha=0.88+Math.sin(_now*0.0004)*0.08;
+    X.drawImage(G._fogCompCvs,0,0);
     X.globalAlpha=1;X.restore();
   }
   // ── 동적 환경광 오버레이 (매 프레임 — 교대 렌더 제거, 깜빡임 방지) ──

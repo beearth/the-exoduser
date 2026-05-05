@@ -2146,6 +2146,7 @@ canvas{display:block;position:fixed;inset:0}
 </head>
 <body>
 <canvas id="c"></canvas>
+<canvas id="fogGL" style="position:fixed;inset:0;pointer-events:none;z-index:0"></canvas>
 <canvas id="burstCvs" style="position:fixed;inset:0;pointer-events:none;z-index:1"></canvas>
 <canvas id="ct" style="position:fixed;inset:0;pointer-events:none;z-index:2"></canvas>
 <div id="mmLvl" style="position:fixed;top:calc(var(--ui-inset-top) + env(safe-area-inset-top, 0px) + 4px);right:calc(var(--ui-inset-right) + env(safe-area-inset-right, 0px) + 4px);z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;text-align:center;width:340px;transform-origin:top right;transform:scale(var(--ui-scale));display:flex;flex-direction:column;align-items:center">
@@ -6773,6 +6774,43 @@ function _getSmogStamp(r,g,b){
   grd.addColorStop(1,'rgba('+r+','+g+','+b+',0)');
   cx.fillStyle=grd;cx.fillRect(0,0,sz,sz);
   _smogStamps[key]=c;return c;
+}
+// ═══ [DRIFT-FOG] 흐르는 대기 안개 — 프로시저럴 텍스처 스크롤 ═══
+const _DFOG_LAYERS=3;
+const _dfogCvs=[];const _dfogOff=[0,0,0]; // 각 레이어 x오프셋
+const _dfogSpd=[0.2,0.12,0.06]; // px/frame 속도 (앞→뒤)
+const _dfogAlpha=[0.35,0.25,0.18]; // 투명도 (진하게)
+const _dfogY=[0.45,0.2,0.0]; // 화면 전체 커버
+const _dfogH=[0.55,0.7,0.9]; // 높이 크게
+let _dfogW=0,_dfogHell=-1;
+// 색상: 지옥별 [r,g,b]
+const _DFOG_COLS=[[60,90,50],[30,45,15],[50,15,8],[35,15,45],[45,35,8],[35,30,25],[20,8,40]];
+function _bakeDriftFog(w,hell){
+  _dfogW=w;_dfogHell=hell;
+  const col=_DFOG_COLS[hell]||[40,40,40];
+  for(let li=0;li<_DFOG_LAYERS;li++){
+    const tw=w*2,th=200; // 2배 폭 (타일링)
+    const c=document.createElement('canvas');c.width=tw;c.height=th;
+    const x=c.getContext('2d');
+    // 프로시저럴 연기: 랜덤 타원 그라디언트 블롭
+    const blobs=15+li*6;
+    const rng=(s)=>{s=Math.sin(s*43758.5453+li*7.1)*43758.5453;return s-Math.floor(s)};
+    for(let i=0;i<blobs;i++){
+      const bx=rng(i*3.1)*tw;
+      const by=th*0.1+rng(i*7.3)*th*0.8;
+      const brx=100+rng(i*11.7)*tw*0.4;
+      const bry=40+rng(i*13.1)*th*0.5;
+      const ba=0.3+rng(i*17.9)*0.4;
+      x.save();x.translate(bx,by);x.scale(1,bry/brx);
+      const g=x.createRadialGradient(0,0,0,0,0,brx);
+      g.addColorStop(0,'rgba('+col[0]+','+col[1]+','+col[2]+','+ba+')');
+      g.addColorStop(0.5,'rgba('+col[0]+','+col[1]+','+col[2]+','+(ba*0.4)+')');
+      g.addColorStop(1,'rgba(0,0,0,0)');
+      x.fillStyle=g;x.fillRect(-brx,-brx,brx*2,brx*2);
+      x.restore();
+    }
+    _dfogCvs[li]=c;_dfogOff[li]=0;
+  }
 }
 // ── 보스 다리 안개 스탬프 (프리렌더 노이즈 텍스처, 4장 프레임) ──
 const _bossLegFogFrames={};
@@ -41450,6 +41488,9 @@ function draw(){
     X.drawImage(_fogTopCvs,0,0);
     X.globalAlpha=1;X.restore();
   }
+  // ── [THREE-FOG] Three.js 안개 렌더 (별도 캔버스) ──
+  if(OPT.fog&&typeof _fogGLRender==='function')_fogGLRender();
+  // (Canvas2D depth-fog 제거됨 — Three.js fogGL로 대체)
   // ── 동적 환경광 오버레이 (매 프레임 — 교대 렌더 제거, 깜빡임 방지) ──
   {const _elHell=SI_TO_HELL[G.stage||0];
   const _elCol=_ENV_LIGHT[_elHell];
