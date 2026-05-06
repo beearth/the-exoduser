@@ -8176,6 +8176,7 @@ const _USE_EXT_ATLAS=false;
 // ── Atlas B External (외부 보스 아틀라스) ──
 // ── 대형보스 8방향 아틀라스 ──
 let _largeBossAtlasReady=false,_largeBossAtlasImg=null,_largeBossAtlasData=null;
+window._btScaleMul=1; // 테스트베드 보스 시각 스케일 배율 (런타임 조절)
 (function _loadLargeBossAtlas(){
   const img=new Image();img.src='assets/sprites/boss/boss_large_atlas.png?v=1';
   img.onload=()=>{fetch('assets/sprites/boss/boss_large_atlas.json?v=1').then(r=>r.json()).then(d=>{
@@ -15551,6 +15552,7 @@ function _facingToDir4(f){
 const _PI4=Math.PI/4;
 function _drawBossWalk(X,e,now,sa,tdY){
   const si=G.stage||0;
+  const _largeMul=(e._isLargeBoss?5:1)*_btScaleMul;
   // ── 방향별 아틀라스 (우선) ──
   const da=_bossDirAtlas[si];
   if(da&&da.ready){
@@ -15561,7 +15563,7 @@ function _drawBossWalk(X,e,now,sa,tdY){
     const col=off.s+fi;
     const dirRow=_facingToDir4(e.facing);
     const sx=col*cc,sy=dirRow*cc;
-    const sc=e.r*2/cc*6.0;
+    const sc=e.r*2/cc*6.0*_largeMul;
     const dw=cc*sc,dh=cc*sc;
     X.save();X.translate(e.x,e.y+(tdY||0));
     X.globalAlpha=sa;X.imageSmoothingEnabled=false;
@@ -15578,7 +15580,7 @@ function _drawBossWalk(X,e,now,sa,tdY){
   const fi=~~(now/200)%off.n;
   const col=off.s+fi;
   const sx=col*_BWA_CELL,sy=si*_BWA_CELL;
-  const sc=e.r*2/_BWA_CELL*1.2;
+  const sc=e.r*2/_BWA_CELL*1.2*_largeMul;
   const dw=_BWA_CELL*sc,dh=_BWA_CELL*sc;
   X.save();X.translate(e.x,e.y+(tdY||0));
   if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);
@@ -21042,6 +21044,7 @@ function _enterBossArena(){
   P.s='idle';P.iframes=90;P._hurtCd=0;P.kb={x:0,y:0};
   G.cam.x=P.x;G.cam.y=P.y;
   ens.push(mkEn((arena.bossX+.5)*T,(arena.bossY+.5)*T,si,0,true,STG[si].be,0));
+  if(si===0){const _lb=ens[ens.length-1];if(_lb&&_lb.isBoss){_lb._isLargeBoss=true;}}
   G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;if(!G._killedBosses)G._killedBosses=[];
   G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0},iris:{x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:G._irisSz||20,_feedT:0}};
   buildMapCache();
@@ -40024,6 +40027,8 @@ function draw(){
           }
         }
       }
+      // ── 대형 보스 아틀라스 (8방향 블랜더 렌더) ──
+      if(!_bDrew&&e._isLargeBoss){_bDrew=_drawLargeBoss(X,e,sa,_tdY)}
       // ── 방향별 보스 아틀라스 (스테이지별 개별 파일) ──
       if(!_bDrew){_bDrew=_drawBossWalk(X,e,_now,sa,_tdY)}
       // ── 내부 보스 아틀라스 (폴백) ──
@@ -47436,6 +47441,31 @@ function _btBuildUI(){
       +otherMoves.map(m=>`<button class="_btBtn _btMv" onclick="_btForcePattern('${m.id}')" style="opacity:.5;border-left:3px solid #555">${m.id}</button>`).join('')
       +`</div></details>`;
   }
+  // ── 스테이지 전환 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px">STAGE 전환:</span>
+    <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:4px">
+      ${Array.from({length:Math.min(TOTAL_STAGES,20)},(_,i)=>`<button class="_btBtn _btPh" onclick="location.href='?bosstest=${i}'" style="width:34px;${i===_btSi?'background:#443322;border-color:#ffaa44;color:#ffcc66':''}">${i}</button>`).join('')}
+    </div>
+    ${TOTAL_STAGES>20?`<div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:3px">${Array.from({length:TOTAL_STAGES-20},(_,i)=>`<button class="_btBtn _btPh" onclick="location.href='?bosstest=${i+20}'" style="width:34px;${(i+20)===_btSi?'background:#443322;border-color:#ffaa44;color:#ffcc66':''}">${i+20}</button>`).join('')}</div>`:''}
+  </div>`;
+  // ── 스케일 슬라이더 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px">보스 시각 스케일: <span id="_btScaleVal">×1.0</span></span>
+    <input type="range" id="_btScaleSlider" min="0.2" max="8" step="0.1" value="1"
+      style="width:100%;margin-top:4px;accent-color:#ffaa44"
+      oninput="_btScaleMul=+this.value;document.getElementById('_btScaleVal').textContent='×'+this.value">
+    <div style="display:flex;gap:3px;margin-top:4px">
+      ${[0.5,1,2,3,5,8].map(v=>`<button class="_btBtn" onclick="_btScaleMul=${v};document.getElementById('_btScaleSlider').value=${v};document.getElementById('_btScaleVal').textContent='×${v}'" style="flex:1">×${v}</button>`).join('')}
+    </div>
+  </div>`;
+  // ── 슬로모션 + 기타 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px;display:flex;gap:4px;flex-wrap:wrap">
+    <button class="_btBtn" id="_btSloBtn" onclick="_btSlowToggle()" style="background:#223344;color:#66aaff">🐢 슬로모션</button>
+    <button class="_btBtn" onclick="_btBoss&&(_btBoss.elite=(_btBoss.elite||0)+1)" title="엘리트 등급 올리기">⭐ 엘리트+</button>
+    <button class="_btBtn" onclick="_btBoss&&(_btBoss.elite=0)">🔄 엘리트 리셋</button>
+    <button class="_btBtn" onclick="P.x=_btBoss.x;P.y=_btBoss.y-80" title="보스 앞으로 순간이동">📍 텔레포트</button>
+  </div>`;
   // ── 전체 패턴 연속 재생 ──
   panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:4px">
     <button class="_btBtn" onclick="_btPlayAll()" id="_btPlayAllBtn" style="width:100%;background:#332244;color:#aa88ff">▶ 전체 패턴 순차 재생</button>
@@ -47500,6 +47530,21 @@ function _btPlayNext(){
   setTimeout(_btPlayNext,Math.max(wait,1500));
 }
 
+// ── 슬로모션 ──
+let _btSlow=false,_btOrigRAF=null;
+window._btSlowToggle=function(){
+  _btSlow=!_btSlow;
+  const btn=document.getElementById('_btSloBtn');
+  if(btn){btn.textContent=_btSlow?'🐢 슬로 ON':'🐢 슬로모션';btn.style.background=_btSlow?'#224433':'#223344';btn.style.color=_btSlow?'#44ffaa':'#66aaff'}
+  if(_btSlow){
+    // requestAnimationFrame을 패치해서 2프레임에 1번만 실행
+    let _skip=false;
+    window._btRAFOrig=window.requestAnimationFrame;
+    window.requestAnimationFrame=function(cb){return window._btRAFOrig(function(t){if(_skip){_skip=false;window.requestAnimationFrame(cb)}else{_skip=true;cb(t)}})};
+  } else {
+    if(window._btRAFOrig)window.requestAnimationFrame=window._btRAFOrig;
+  }
+};
 // ── GOD모드 유지 (매 프레임) ──
 const _btOrigLoop=window.requestAnimationFrame;
 (function _btGodLoop(){requestAnimationFrame(()=>{if(_btGod&&P){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield}if(P&&P.hp<=0){P.hp=P.mhp;P.s='idle'}_btGodLoop()})})();

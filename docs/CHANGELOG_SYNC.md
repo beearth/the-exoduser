@@ -22664,3 +22664,24 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - docs/8.1보스?�자?�바?�블/BOSS_00_FOREST_NORMAL_EYE_SENTINEL.md
 - game.html
 
+
+## 2026-05-06 19:30 (auto)
+- _autosave/game_20260506_183056.html
+- _autosave/game_20260506_183100.html
+- _autosave/game_20260506_183122.html
+- _autosave/game_20260506_183133.html
+- _autosave/game_20260506_183146.html
+- _autosave/game_20260506_183440.html
+- _autosave/game_20260506_183708.html
+- _autosave/game_20260506_184002.html
+- _autosave/game_20260506_185810.html
+- boss_assets/eye_sentinel/3d_model.bin
+- boss_assets/eye_sentinel/3d_snap_back.png
+- boss_assets/eye_sentinel/3d_snap_front.png
+- boss_assets/eye_sentinel/3d_snap_side1.png
+- boss_assets/eye_sentinel/3d_snap_side2.png
+- boss_assets/eye_sentinel/v1_original.webp
+- boss_assets/eye_sentinel/v2_original.webp
+- docs/8.1보스?�자?�바?�블/BOSS_00_FOREST_NORMAL_EYE_SENTINEL.md
+- game.html
+
