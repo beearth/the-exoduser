@@ -22572,3 +22572,11 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - game.html
 - game.html.bak
 
+
+## 2026-05-06 09:30 (auto)
+- _autosave/game_20260506_083521.html
+- _autosave/game_20260506_083724.html
+- docs/1?„ì²´ê·¸ëž˜?½ì„¸??ë§??”ë©´?¨ê³¼_?„ìˆ˜ì¡°ì‚¬.md
+- game.html
+- three.min.js
+
