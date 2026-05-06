@@ -7297,8 +7297,8 @@ function _checkPetDialogue(){
     // 보스 kill 대사 후 2초 뒤 체크
   }
 
-  // ══ [15] 빌드별 차별화 (v5) — 6종 ══
-  if(P.lv>=50&&G.frame%300===0){
+  // ══ [15] 빌드별 차별화 (v5) — 6종 (보스전 중 차단) ══
+  if(!G.bossAlive&&P.lv>=50&&G.frame%300===0){
     const _s=P.astr||0,_d=P.adex||0,_i2=P.aint||0,_l=P.alck||0,_v=P.avit||0;
     if(!_petBuildHinted.str&&_s>_d*1.5&&_s>_i2*1.5)_petSayCD('build_str','crow','근육으로 만든 빌드군. 베고 부숴.',4,9999,'cat','STR 빌드! 회전참, 회오리, 광역기 추천!',4);
     if(!_petBuildHinted.dex&&_d>_s*1.5&&_d>_i2*1.5)_petSayCD('build_dex','crow','활을 쥐었군. 거리를 둬.',4,9999,'cat','DEX 빌드! 거리에서 패고, 추적탄 좋아!',4);
@@ -8177,7 +8177,8 @@ const _USE_EXT_ATLAS=false;
 // ── Atlas B External (외부 보스 아틀라스) ──
 // ── 대형보스 8방향 아틀라스 ──
 let _largeBossAtlasReady=false,_largeBossAtlasImg=null,_largeBossAtlasData=null;
-window._btScaleMul=1; // 테스트베드 보스 시각 스케일 배율 (런타임 조절)
+window._btScaleMul=3.0; // 보스 시각 스케일 배율
+window._btRotX=0; // 보스 3D X축 회전 (rad, 실시간 조절)
 (function _loadLargeBossAtlas(){
   const img=new Image();img.src='assets/sprites/boss/boss_large_atlas.png?v=1';
   img.onload=()=>{fetch('assets/sprites/boss/boss_large_atlas.json?v=1').then(r=>r.json()).then(d=>{
@@ -47342,7 +47343,7 @@ _btWait(()=>{
   setTimeout(()=>{
     _btBoss=ens.find(e=>e.ib);
     if(_btBoss){_btBoss._btFrozen=true;_btBoss._origSpd=_btBoss.speed;_btBoss.bossPatT=99999;_btUpdateInfo()}
-    window._btScaleMul=5;
+    window._btScaleMul=5.0;
     _btBuildUI();
   },500);
 },2000);
@@ -47466,6 +47467,16 @@ function _btBuildUI(){
       oninput="_btScaleMul=+this.value;document.getElementById('_btScaleVal').textContent='×'+this.value">
     <div style="display:flex;gap:3px;margin-top:4px">
       ${[0.5,1,2,3,5,8].map(v=>`<button class="_btBtn" onclick="_btScaleMul=${v};document.getElementById('_btScaleSlider').value=${v};document.getElementById('_btScaleVal').textContent='×${v}'" style="flex:1">×${v}</button>`).join('')}
+    </div>
+  </div>`;
+  // ── 각도 슬라이더 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px">보스 각도 (X rot): <span id="_btRotVal">0.00</span>rad</span>
+    <input type="range" id="_btRotSlider" min="-1.57" max="1.57" step="0.01" value="0"
+      style="width:100%;margin-top:4px;accent-color:#88aaff"
+      oninput="window._btRotX=+this.value;document.getElementById('_btRotVal').textContent=(+this.value).toFixed(2)">
+    <div style="display:flex;gap:3px;margin-top:4px">
+      ${[-0.8,-0.5,-0.28,0,0.28,0.5,0.8].map(v=>`<button class="_btBtn" onclick="window._btRotX=${v};document.getElementById('_btRotSlider').value=${v};document.getElementById('_btRotVal').textContent='${v.toFixed(2)}'" style="flex:1;font-size:10px">${v}</button>`).join('')}
     </div>
   </div>`;
   // ── 슬로모션 + 기타 ──
@@ -47711,16 +47722,18 @@ function _b3animate(){
   if(cssX<-200||cssX>W+200||cssY<-200||cssY>H+200){_b3pivot.visible=false;_b3r.render(_b3s,_b3cam);return}
 
   _b3pivot.position.x=cssX-W/2;
-  _b3pivot.position.y=-(cssY-H/2)-100;
   _b3pivot.position.z=0;
 
   // 스케일
   const bossRcss=bE.r/scale;
   const tgtH=bossRcss*2.0*(window._btScaleMul||1);
-  if(_b3size.y>0)_b3pivot.scale.setScalar(Math.max(0.1,tgtH/_b3size.y));
+  const _b3sc=_b3size.y>0?Math.max(0.1,tgtH/_b3size.y):1;
+  _b3pivot.scale.setScalar(_b3sc);
+  // Y: boss CSS Y = 발 위치 → 모델 피벗(중앙)을 절반 높이만큼 위로 올려 땅속 박힘 방지
+  _b3pivot.position.y=-(cssY-H/2)+tgtH*0.5;
 
-  // facing
-  _b3pivot.rotation.set(0,-bE.facing+Math.PI/2,0);
+  // facing (X rotation: window._btRotX 으로 실시간 조절)
+  _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);
   _b3pivot.visible=true;
 
   // 보스 상태 → 3D 애니 전환

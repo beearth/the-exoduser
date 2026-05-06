@@ -7226,8 +7226,9 @@ function _checkPetDialogue(){
   {let _nE=true;for(let i=0;i<ens.length;i++){if(ens[i].alive){_nE=false;break}}
   if(_nE&&P.s==='idle')_petSayCD('idle_noE','crow','…멈추지 마. 여신은 기다리지 않는다.',4,60,'cat','앞으로 가자~',4)}
 
-  // ══ [7] Idle 대사 — 23종 ══
-  if(P.s==='idle'){_petIdleT+=_dtSp;
+  // ══ [7] Idle 대사 — 23종 (보스전 중 차단) ══
+  if(G.bossAlive){_petIdleT=0;_petIdleTalkT=0}
+  else if(P.s==='idle'){_petIdleT+=_dtSp;
     if(_petIdleT>60*20){_petIdleT=0;
       if(Math.random()<.5){
         const _nags=[['시간이 없어. 움직여.','멍하게 서있으면 안 돼!'],['…뭘 기다리는 거야?','가자가자! 몬스터가 기다려!'],['여기 오래 있으면 위험해.','가만있으면 둘러싸여!'],['쉬는 건 죽고 나서 해.','살아있을 때 쉬면 안 돼!'],['적이 몰려오고 있어.','냄새 맡고 올 거야. 빨리!'],['…아직 살아있는 거 맞지?','혹시 잠든 거야…?']];
@@ -7246,8 +7247,8 @@ function _checkPetDialogue(){
     }}
   }else{_petIdleT=0;_petIdleTalkT=0}
 
-  // ══ [8] 챕터 진입 대사 — v6: 핵터 독백만 (7종) ══
-  const _chDlg=[
+  // ══ [8] 챕터 진입 대사 — v6: 핵터 독백만 (7종, 보스전 중 차단) ══
+  if(!G.bossAlive){const _chDlg=[
     ['crow','…따라오는 거 아니야. 같은 방향일 뿐이지.',5],
     ['crow','공기가 달라졌어. 더 썩었군.',5],
     ['crow','여기부터는 악마 영역이야. …맘대로 해.',5],
@@ -7256,11 +7257,11 @@ function _checkPetDialogue(){
     ['crow','이 길의 끝에 뭐가 있을까.',5],
     ['crow','…여기가 끝이야. 돌아갈 길은 없어.',5]
   ];
-  if(_chDlg[_ch])_petSayCD('chapter_'+_ch,_chDlg[_ch][0],_chDlg[_ch][1],_chDlg[_ch][2],99999);
+  if(_chDlg[_ch])_petSayCD('chapter_'+_ch,_chDlg[_ch][0],_chDlg[_ch][1],_chDlg[_ch][2],99999);}
 
-  // ══ [9] 챕터 환경 멘트 (진입 30초 후, v4) — 7종 ══
+  // ══ [9] 챕터 환경 멘트 (진입 30초 후, v4) — 7종 (보스전 중 차단) ══
   if(!_petStageEnv[_ch]){_petStageEnvT+=_dtSp;
-    if(_petStageEnvT>60*30){_petStageEnv[_ch]=true;
+    if(!G.bossAlive&&_petStageEnvT>60*30){_petStageEnv[_ch]=true;
       const _envDlg=[['crow','…새 한 마리 안 우네. 죽은 숲이야.',4,'cat','나무들이 우릴 보고 있는 것 같아…',4],['crow','…발밑이 움직이고 있다.',4,'cat','으으! 뭔가 기어다녀! 빨리 가자!',4],['crow','입김이 얼어. 오래 있으면 못 나간다.',4,'cat','손가락 안 움직여… 빨리 끝내!',4],['crow','공기가 타. 숨도 데인다.',4,'cat','살이 익는 거 같아! 뜨거워!',4],['crow','…수가 끝이 없어. 길을 뚫어.',4,'cat','끝이 안 보여! 한꺼번에 쓸어!',4],['crow','…벽 너머에서 보고 있어.',4,'cat','누가 우릴 지켜보고 있어… 무서워.',4],['crow','여기서 죽어도 돌아갈 곳은 없어.',4,'cat','마지막이야… 끝까지 가자.',4]];
       if(_envDlg[_ch])_petSayCD('env_ch'+_ch,_envDlg[_ch][0],_envDlg[_ch][1],_envDlg[_ch][2],99999,_envDlg[_ch][3],_envDlg[_ch][4],_envDlg[_ch][5]);
     }
@@ -7296,8 +7297,8 @@ function _checkPetDialogue(){
     // 보스 kill 대사 후 2초 뒤 체크
   }
 
-  // ══ [15] 빌드별 차별화 (v5) — 6종 ══
-  if(P.lv>=50&&G.frame%300===0){
+  // ══ [15] 빌드별 차별화 (v5) — 6종 (보스전 중 차단) ══
+  if(!G.bossAlive&&P.lv>=50&&G.frame%300===0){
     const _s=P.astr||0,_d=P.adex||0,_i2=P.aint||0,_l=P.alck||0,_v=P.avit||0;
     if(!_petBuildHinted.str&&_s>_d*1.5&&_s>_i2*1.5)_petSayCD('build_str','crow','근육으로 만든 빌드군. 베고 부숴.',4,9999,'cat','STR 빌드! 회전참, 회오리, 광역기 추천!',4);
     if(!_petBuildHinted.dex&&_d>_s*1.5&&_d>_i2*1.5)_petSayCD('build_dex','crow','활을 쥐었군. 거리를 둬.',4,9999,'cat','DEX 빌드! 거리에서 패고, 추적탄 좋아!',4);
@@ -8176,7 +8177,9 @@ const _USE_EXT_ATLAS=false;
 // ── Atlas B External (외부 보스 아틀라스) ──
 // ── 대형보스 8방향 아틀라스 ──
 let _largeBossAtlasReady=false,_largeBossAtlasImg=null,_largeBossAtlasData=null;
-window._btScaleMul=1; // 테스트베드 보스 시각 스케일 배율 (런타임 조절)
+window._btScaleMul=3.0; // 보스 시각 스케일 배율
+window._btRotX=0; // 보스 3D X축 회전 (rad, 실시간 조절)
+window._btOffsetY=0; // 보스 3D Y 오프셋 (px, 양수=위로, 실시간 조절)
 (function _loadLargeBossAtlas(){
   const img=new Image();img.src='assets/sprites/boss/boss_large_atlas.png?v=1';
   img.onload=()=>{fetch('assets/sprites/boss/boss_large_atlas.json?v=1').then(r=>r.json()).then(d=>{
@@ -47341,7 +47344,7 @@ _btWait(()=>{
   setTimeout(()=>{
     _btBoss=ens.find(e=>e.ib);
     if(_btBoss){_btBoss._btFrozen=true;_btBoss._origSpd=_btBoss.speed;_btBoss.bossPatT=99999;_btUpdateInfo()}
-    window._btScaleMul=5;
+    window._btScaleMul=5.0;
     _btBuildUI();
   },500);
 },2000);
@@ -47465,6 +47468,16 @@ function _btBuildUI(){
       oninput="_btScaleMul=+this.value;document.getElementById('_btScaleVal').textContent='×'+this.value">
     <div style="display:flex;gap:3px;margin-top:4px">
       ${[0.5,1,2,3,5,8].map(v=>`<button class="_btBtn" onclick="_btScaleMul=${v};document.getElementById('_btScaleSlider').value=${v};document.getElementById('_btScaleVal').textContent='×${v}'" style="flex:1">×${v}</button>`).join('')}
+    </div>
+  </div>`;
+  // ── 각도 슬라이더 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px">보스 각도 (X rot): <span id="_btRotVal">0.00</span>rad</span>
+    <input type="range" id="_btRotSlider" min="-1.57" max="1.57" step="0.01" value="0"
+      style="width:100%;margin-top:4px;accent-color:#88aaff"
+      oninput="window._btRotX=+this.value;document.getElementById('_btRotVal').textContent=(+this.value).toFixed(2)">
+    <div style="display:flex;gap:3px;margin-top:4px">
+      ${[-0.8,-0.5,-0.28,0,0.28,0.5,0.8].map(v=>`<button class="_btBtn" onclick="window._btRotX=${v};document.getElementById('_btRotSlider').value=${v};document.getElementById('_btRotVal').textContent='${v.toFixed(2)}'" style="flex:1;font-size:10px">${v}</button>`).join('')}
     </div>
   </div>`;
   // ── 슬로모션 + 기타 ──
@@ -47710,16 +47723,19 @@ function _b3animate(){
   if(cssX<-200||cssX>W+200||cssY<-200||cssY>H+200){_b3pivot.visible=false;_b3r.render(_b3s,_b3cam);return}
 
   _b3pivot.position.x=cssX-W/2;
-  _b3pivot.position.y=-(cssY-H/2)-100;
   _b3pivot.position.z=0;
 
   // 스케일
   const bossRcss=bE.r/scale;
-  const tgtH=bossRcss*2.0;
-  if(_b3size.y>0)_b3pivot.scale.setScalar(Math.max(0.1,tgtH/_b3size.y));
+  const tgtH=bossRcss*2.0*(window._btScaleMul||1);
+  const _b3sc=_b3size.y>0?Math.max(0.1,tgtH/_b3size.y):1;
+  _b3pivot.scale.setScalar(_b3sc);
+  // Y: boss CSS Y = 발 위치 → 모델 피벗(중앙)을 절반 높이만큼 위로 올려 땅속 박힘 방지
+  // window._btOffsetY 로 실시간 추가 오프셋 조절 가능
+  _b3pivot.position.y=-(cssY-H/2)+tgtH*0.5+(window._btOffsetY||0);
 
-  // facing
-  _b3pivot.rotation.set(0,-bE.facing+Math.PI/2,0);
+  // facing (X rotation: window._btRotX 으로 실시간 조절)
+  _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);
   _b3pivot.visible=true;
 
   // 보스 상태 → 3D 애니 전환
