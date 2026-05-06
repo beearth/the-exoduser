@@ -22617,3 +22617,19 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - lang_zh.js
 - lang_zht.js
 
+
+## 2026-05-06 11:30 (auto)
+- _autosave/game_20260506_105102.html
+- _autosave/game_20260506_105618.html
+- _autosave/game_20260506_105853.html
+- docs/2_1 ?�킬관�??�체?�스???�원/추천빌드_SKILL_REC_PATH.md
+- game.html
+- lang_da.js
+- lang_it.js
+- lang_nl.js
+- lang_no.js
+- lang_pl.js
+- lang_ro.js
+- lang_sv.js
+- lang_uk.js
+

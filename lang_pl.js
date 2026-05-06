@@ -2032,7 +2032,7 @@ const _PL_BASE={
 '견갑':'Tarcza','대견갑':'Wielka Tarcza','전투화':'Buty Bojowe','갑옷':'Zbroja','갑주':'Zbroja',
 '왕관':'Korona','장갑':'Rękawice','건틀릿':'Rękawice Pancerne','바지':'Spodnie','각반':'Nagolenniki',
 '허리띠':'Pas','벨트':'Pas','부적':'Talizman','목걸이':'Naszyjnik','반지':'Pierścień',
-'망토':'Peleryna','팔찌':'Bransoletka','귀걸이':'Kolczyk'
+'망토':'Peleryna','팔찌':'Bransoletka','귀걸이':'Kolczyk',
   '⚡ 연격!':'⚡ Rapid Strike!',
   '⚔ 난타!':'⚔ Barrage!',
   '💥 강타!':'💥 Slam!',

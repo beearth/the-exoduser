@@ -2086,7 +2086,7 @@ const _DA_BASE={
 '견갑':'Skjold','대견갑':'Stort Skjold','전투화':'Kampstøvler','갑옷':'Rustning','갑주':'Rustning',
 '왕관':'Krone','장갑':'Handsker','건틀릿':'Panserhandsker','바지':'Bukser','각반':'Benbeskyttelse',
 '허리띠':'Bælte','벨트':'Bælte','부적':'Talisman','목걸이':'Halskæde','반지':'Ring',
-'망토':'Kappe','팔찌':'Armbånd','귀걸이':'Øreringe'
+'망토':'Kappe','팔찌':'Armbånd','귀걸이':'Øreringe',
   '⚡ 연격!':'⚡ Rapid Strike!',
   '⚔ 난타!':'⚔ Barrage!',
   '💥 강타!':'💥 Slam!',

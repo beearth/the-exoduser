@@ -2451,7 +2451,7 @@ const _IT_PFX={
 '녹슨':'Arrugginito','강철':'Acciaio','흑요석':'Ossidiana','미스릴':'Mithril','심판의':'Giudizio','천벌의':'Ira Divina','파멸의':'Distruzione','불꽃':'Fiamma','화염':'Inferno','염화':'Fuoco Infernale','지옥불':'Fiamma Infernale','지옥화':'Fiamma Infernale','지옥':'Fiamma Infernale','멸화의':'Annientante','냉기':'Gelo','빙결':'Congelato','빙하':'Glaciale','서리의':'Brina','서리':'Brina','영겁빙':'Ghiaccio Eterno','그림자':'Ombra','암흑':'Oscuro','심연':'Abissale','나락의':'Infero','나락':'Infero','무간의':'Vuoto','전기':'Scintilla','낙뢰':'Tuono','암전':'Fulmine','뇌신의':'Dio Tuono','뇌신':'Dio Tuono','만뢰의':'Mille Tuoni','축복':'Benedetto','성광':'Luce Sacra','신성':'Sacro','천사의':'Angelico','신벌의':'Giudizio Divino','낡은':'Logoro','천':'Tela','가죽':'Pelle','강철사':'Trama Acciaio','은':'Argento','은사':'Filo d\'Argento','화염의':'Inferno','빙결의':'Congelato','암흑의':'Oscuro','암전의':'Fulmine'
 };
 const _IT_BASE={
-'대검':'Spadone','석궁':'Balestra','연사석궁':'Balestra Ripetizione','마력석궁':'Balestra Arcana','견갑':'Scudo','대견갑':'Grande Scudo','전투화':'Stivali Combattimento','갑옷':'Armatura','갑주':'Armatura','왕관':'Corona','장갑':'Guanti','건틀릿':'Guanti Corazzati','바지':'Pantaloni','각반':'Schinieri','허리띠':'Cintura','벨트':'Cintura','부적':'Talismano','목걸이':'Collana','반지':'Anello','망토':'Mantello','팔찌':'Bracciale','귀걸이':'Orecchino'
+'대검':'Spadone','석궁':'Balestra','연사석궁':'Balestra Ripetizione','마력석궁':'Balestra Arcana','견갑':'Scudo','대견갑':'Grande Scudo','전투화':'Stivali Combattimento','갑옷':'Armatura','갑주':'Armatura','왕관':'Corona','장갑':'Guanti','건틀릿':'Guanti Corazzati','바지':'Pantaloni','각반':'Schinieri','허리띠':'Cintura','벨트':'Cintura','부적':'Talismano','목걸이':'Collana','반지':'Anello','망토':'Mantello','팔찌':'Bracciale','귀걸이':'Orecchino',
   '⚡ 연격!':'⚡ Rapid Strike!',
   '⚔ 난타!':'⚔ Barrage!',
   '💥 강타!':'💥 Slam!',

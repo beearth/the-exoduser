@@ -2083,7 +2083,7 @@ const _SV_BASE={
 '견갑':'Sköld','대견갑':'Stor Sköld','전투화':'Stridsstövlar','갑옷':'Rustning','갑주':'Rustning',
 '왕관':'Krona','장갑':'Handskar','건틀릿':'Pansarhandskar','바지':'Byxor','각반':'Benskydd',
 '허리띠':'Bälte','벨트':'Bälte','부적':'Talisman','목걸이':'Halsband','반지':'Ring',
-'망토':'Kappa','팔찌':'Armband','귀걸이':'Örhänge'
+'망토':'Kappa','팔찌':'Armband','귀걸이':'Örhänge',
   '⚡ 연격!':'⚡ Rapid Strike!',
   '⚔ 난타!':'⚔ Barrage!',
   '💥 강타!':'💥 Slam!',
