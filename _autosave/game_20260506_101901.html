@@ -39,6 +39,7 @@ if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!==
   document.head.appendChild(_sbS);
 }
 </script>
+<script src="three.min.js"></script>
 <script src="maps_data.js"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
@@ -3913,12 +3914,12 @@ function _flushVfxGL(){
 }
 function _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX){
   _dbgEnsGL=0;_ensGLCount=0;
-  for(let _egi=0;_egi<ens.length;_egi++)ens[_egi]._ensGLMode=0;
+  for(let _egi=0;_egi<ens.length;_egi++)if(ens[_egi])ens[_egi]._ensGLMode=0;
   if(!_useGL||!GL||!_ensGLProg||!_atlasEReady||!_atlasE)return 0;
   const _t0=performance.now();
   let _eRCnt2=0;
   for(let _eri2=0;_eri2<ens.length;_eri2++){const e=ens[_eri2];
-    if(!e.alive)continue;
+    if(!e||!e.alive)continue;
     if(e.x<_vl||e.x>_vr||e.y<_vt||e.y>_vb)continue;
     _eRCnt2++;
     if(e.ib||e._isGhoul||e._isSlime||e._mobCh)continue;
@@ -6776,87 +6777,82 @@ function _getSmogStamp(r,g,b){
   _smogStamps[key]=c;return c;
 }
 // ═══ [THREE-FOG] Three.js 실시간 안개 시스템 ═══
-// 별도 WebGL 캔버스(fogGL)에 렌더, 메인 게임 캔버스 위에 오버레이
-let _fogGL=null,_fogGLR=null,_fogGLS=null,_fogGLC=null,_fogGLMeshes=[],_fogGLTime=0,_fogGLHell=-1;
+// fogGL 캔버스에 Three.js WebGLRenderer로 FBM 노이즈 움직이는 안개 렌더
+let _fogGLR=false,_fogGLTime=0;
+let _fogThree=null; // {renderer,scene,camera,mat}
 const _FOG_COLORS=[[0.10,0.18,0.08],[0.08,0.14,0.05],[0.20,0.06,0.03],[0.12,0.05,0.16],[0.16,0.12,0.03],[0.12,0.10,0.07],[0.07,0.03,0.14]];
 function _fogGLInit(){
   if(_fogGLR)return;
   const cv=document.getElementById('fogGL');if(!cv)return;
+  if(typeof THREE==='undefined'){console.warn('[THREE-FOG] Three.js 미로드');return;}
   try{
-    const gl=cv.getContext('webgl2',{alpha:true,premultipliedAlpha:false,antialias:false});
-    if(!gl)return;
-    // 미니 Three.js 대신 raw WebGL2 — 경량
-    _fogGL=gl;
+    const W=window.innerWidth,H=window.innerHeight;
+    cv.width=W;cv.height=H;
+    const renderer=new THREE.WebGLRenderer({canvas:cv,alpha:true,premultipliedAlpha:false,antialias:false});
+    renderer.setSize(W,H,false);
+    renderer.setClearColor(0x000000,0);
+    const scene=new THREE.Scene();
+    const camera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
+    const geo=new THREE.PlaneGeometry(2,2);
+    const mat=new THREE.ShaderMaterial({
+      transparent:true,
+      depthTest:false,
+      uniforms:{
+        uTime:{value:0},
+        uCol:{value:new THREE.Vector3(0.10,0.18,0.08)},
+        uRes:{value:new THREE.Vector2(W,H)}
+      },
+      vertexShader:`varying vec2 vUv;void main(){vUv=uv;gl_Position=vec4(position,1.0);}`,
+      fragmentShader:`
+        precision mediump float;
+        varying vec2 vUv;
+        uniform float uTime;
+        uniform vec3 uCol;
+        uniform vec2 uRes;
+        float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+        float noise(vec2 p){
+          vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
+          return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);
+        }
+        float fbm(vec2 p){float v=0.0,a=0.5;for(int i=0;i<5;i++){v+=a*noise(p);p*=2.0;a*=0.5;}return v;}
+        void main(){
+          vec2 uv=vUv;
+          float ar=uRes.x/uRes.y;
+          // 3레이어 FBM — 각기 다른 방향·속도로 흐름
+          float f1=fbm(vec2(uv.x*ar*3.0+uTime*0.06,uv.y*3.0+uTime*0.02));
+          float f2=fbm(vec2(uv.x*ar*2.0-uTime*0.04,uv.y*2.0+sin(uTime*0.1)*0.3));
+          float f3=fbm(vec2(uv.x*ar*5.0+uTime*0.08,uv.y*4.0-uTime*0.03));
+          float fog=f1*0.5+f2*0.35+f3*0.15;
+          fog=smoothstep(0.15,0.85,fog);
+          // 플레이어 중심(화면 중앙) 투명 처리
+          float d=length((uv-vec2(0.5))*vec2(ar,1.0));
+          fog*=smoothstep(0.12,0.45,d);
+          float alpha=fog*0.82;
+          gl_FragColor=vec4(uCol*fog*0.8,alpha);
+        }
+      `
+    });
+    scene.add(new THREE.Mesh(geo,mat));
+    _fogThree={renderer,scene,camera,mat};
     _fogGLR=true;
-    cv.width=window.innerWidth;cv.height=window.innerHeight;
-    gl.viewport(0,0,cv.width,cv.height);
-    // 셰이더
-    const vs=`#version 300 es
-    in vec2 a_pos;out vec2 vUv;
-    void main(){vUv=a_pos*0.5+0.5;gl_Position=vec4(a_pos,0,1);}`;
-    const fs=`#version 300 es
-    precision mediump float;
-    in vec2 vUv;out vec4 oC;
-    uniform float uTime;
-    uniform vec3 uCol;
-    uniform vec2 uRes;
-    // simplex-style noise
-    float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
-    float noise(vec2 p){
-      vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);
-      return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);
-    }
-    float fbm(vec2 p){float v=0.0,a=0.5;for(int i=0;i<5;i++){v+=a*noise(p);p*=2.0;a*=0.5;}return v;}
-    void main(){
-      vec2 uv=vUv;
-      float ar=uRes.x/uRes.y;
-      // 3개 레이어 (다른 속도/스케일)
-      float f1=fbm(vec2(uv.x*ar*3.0+uTime*0.06,uv.y*3.0+uTime*0.02));
-      float f2=fbm(vec2(uv.x*ar*2.0-uTime*0.04,uv.y*2.0+sin(uTime*0.1)*0.3));
-      float f3=fbm(vec2(uv.x*ar*5.0+uTime*0.08,uv.y*4.0-uTime*0.03));
-      float fog=f1*0.5+f2*0.35+f3*0.15;
-      fog=smoothstep(0.15,0.85,fog);
-      // 플레이어 중심 글로우 (화면 중앙 = 투명)
-      vec2 center=vec2(0.5,0.5);
-      float d=length((uv-center)*vec2(ar,1.0));
-      float glow=smoothstep(0.12,0.45,d); // 안쪽 투명 → 바깥 불투명
-      fog*=glow;
-      // 색상 + 투명도
-      float alpha=fog*0.82;
-      oC=vec4(uCol*fog*0.8,alpha);
-    }`;
-    function _cs(src,t){const s=gl.createShader(t);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){console.warn('[FOG-GL]',gl.getShaderInfoLog(s));return null}return s}
-    const vsh=_cs(vs,gl.VERTEX_SHADER),fsh=_cs(fs,gl.FRAGMENT_SHADER);
-    if(!vsh||!fsh){_fogGLR=null;return}
-    const pg=gl.createProgram();gl.attachShader(pg,vsh);gl.attachShader(pg,fsh);gl.linkProgram(pg);
-    if(!gl.getProgramParameter(pg,gl.LINK_STATUS)){_fogGLR=null;return}
-    // 풀스크린 쿼드
-    const buf=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buf);
-    gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,1,1]),gl.STATIC_DRAW);
-    const loc=gl.getAttribLocation(pg,'a_pos');
-    const vao=gl.createVertexArray();gl.bindVertexArray(vao);
-    gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
-    gl.bindVertexArray(null);
-    _fogGLS={pg,vao,uTime:gl.getUniformLocation(pg,'uTime'),uCol:gl.getUniformLocation(pg,'uCol'),uRes:gl.getUniformLocation(pg,'uRes')};
-    // 리사이즈
-    window.addEventListener('resize',()=>{if(!_fogGL)return;cv.width=window.innerWidth;cv.height=window.innerHeight;_fogGL.viewport(0,0,cv.width,cv.height)});
-  }catch(e){console.warn('[FOG-GL] init fail',e);_fogGLR=null}
+    window.addEventListener('resize',()=>{
+      const nw=window.innerWidth,nh=window.innerHeight;
+      cv.width=nw;cv.height=nh;
+      renderer.setSize(nw,nh,false);
+      mat.uniforms.uRes.value.set(nw,nh);
+    });
+    console.log('[THREE-FOG] 초기화 완료');
+  }catch(e){console.warn('[THREE-FOG] init fail',e);_fogGLR=false;}
 }
 function _fogGLRender(){
-  if(!_fogGLR||!_fogGL||!_fogGLS)return;
-  const gl=_fogGL,s=_fogGLS,cv=document.getElementById('fogGL');
-  if(!cv||cv.width!==window.innerWidth){if(cv){cv.width=window.innerWidth;cv.height=window.innerHeight;gl.viewport(0,0,cv.width,cv.height)}}
-  _fogGLTime+=0.016; // ~60fps 기준 dt
+  if(!_fogGLR||!_fogThree)return;
+  _fogGLTime+=0.016;
   const hell=SI_TO_HELL[G.stage||0];
   const col=_FOG_COLORS[hell]||[0.1,0.1,0.1];
-  gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
-  gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);
-  gl.useProgram(s.pg);gl.bindVertexArray(s.vao);
-  gl.uniform1f(s.uTime,_fogGLTime);
-  gl.uniform3f(s.uCol,col[0],col[1],col[2]);
-  gl.uniform2f(s.uRes,cv.width,cv.height);
-  gl.drawArrays(gl.TRIANGLE_STRIP,0,4);
-  gl.bindVertexArray(null);
+  const u=_fogThree.mat.uniforms;
+  u.uTime.value=_fogGLTime;
+  u.uCol.value.set(col[0],col[1],col[2]);
+  _fogThree.renderer.render(_fogThree.scene,_fogThree.camera);
 }
 // 초기화: 게임 시작 시 호출
 setTimeout(_fogGLInit,500);
@@ -20214,7 +20210,7 @@ function generateGridMap(hell,forceSeed){
   while(queue.length){const[r,cl]=queue.shift();for(const[nr,nc]of(adj[`${r}_${cl}`]||[])){const k=`${nr}_${nc}`;if(dist[k]===undefined){dist[k]=dist[`${r}_${cl}`]+1;queue.push([nr,nc])}}}
   let bestDist=-1,bestR=0,bestC=0;
   for(let r=0;r<ROWS;r++)for(let cl=0;cl<COLS;cl++){const k=`${r}_${cl}`;const d=dist[k]??0;const corner=(r===0||r===ROWS-1?1:0)+(cl===0||cl===COLS-1?1:0);const score=d*10+corner;if(score>bestDist&&cells[r][cl].type==='combat'){bestDist=score;bestR=r;bestC=cl}}
-  cells[bestR][bestC].type='boss';cells[bestR][bestC].id='b';cells[bestR][bestC].shape='circle';}
+  cells[bestR][bestC].type='boss';cells[bestR][bestC].id='b';cells[bestR][bestC].shape='circle';cells[bestR][bestC].rx=Math.min(cells[bestR][bestC].rx*2,Math.min(cells[bestR][bestC].cx,mw-cells[bestR][bestC].cx)-2);cells[bestR][bestC].ry=Math.min(cells[bestR][bestC].ry*2,Math.min(cells[bestR][bestC].cy,mh-cells[bestR][bestC].cy)-2);}
   const rooms=[];
   for(let row=0;row<ROWS;row++)for(let col=0;col<COLS;col++){const c=cells[row][col];const rd={id:c.id,type:c.type,cx:c.cx,cy:c.cy,shape:c.shape,rx:c.rx,ry:c.ry};if(c.spawns)rd.spawns=c.spawns;if(c.shape==='cross'){rd.armW=Math.round(c.rx*0.55);rd.armH=Math.round(c.ry*0.5)}if(c.type==='boss'){const po=Math.round(c.rx*0.5);rd.pillars=[{dx:-po,dy:-Math.round(c.ry*0.5),w:3,h:3},{dx:po,dy:-Math.round(c.ry*0.5),w:3,h:3},{dx:-po,dy:Math.round(c.ry*0.5),w:3,h:3},{dx:po,dy:Math.round(c.ry*0.5),w:3,h:3}]}rooms.push(rd)}
   const features=[],corridorSpawns=[];
@@ -20940,7 +20936,7 @@ function genFromTemplate(tmpl,si){
 function genBossArena(si){
   const _BOSS_ARENA_TYPE=[0,1,2,3,4,0,1];
   const at=_BOSS_ARENA_TYPE[SI_TO_HELL[si]||0];
-  const mw=64,mh=54;
+  const mw=128,mh=108;
   const map=[];
   for(let y=0;y<mh;y++){map[y]=[];for(let x=0;x<mw;x++)map[y][x]=1}
   const cx=~~(mw/2),cy=~~(mh/2);
@@ -21627,19 +21623,19 @@ function spawnRoomEns(ri){
       if(Math.random()<.005&&!G._deathSpawned){etype=99;G._deathSpawned=true} // 죽음 0.5% (스테이지 1회)
       else if(Math.random()<rareChance){etype=90+~~(Math.random()*9)} // 90~98 중 랜덤
     }
-    ens.push(mkEn(ex,ey,si,etype,ib,el,ri));
+    {const _ne=mkEn(ex,ey,si,etype,ib,el,ri);if(_ne)ens.push(_ne);}
     // 33:소형요마 — 5~8마리 그룹 스폰
     if(etype===33){
       const _grpCnt=4+~~(Math.random()*4); // 추가 4~7마리 (본체 포함 5~8)
       for(let _gi=0;_gi<_grpCnt;_gi++){
         const _gx=ex+(Math.random()-.5)*50,_gy=ey+(Math.random()-.5)*50;
-        ens.push(mkEn(_gx,_gy,si,33,false,el,ri));
+        const _gne=mkEn(_gx,_gy,si,33,false,el,ri);if(_gne)ens.push(_gne);
       }
     }
     // 97:쌍둥이 — 반드시 2마리 스폰
     if(etype===97){
       const _twOx=ex+(Math.random()-.5)*30,_twOy=ey+(Math.random()-.5)*30;
-      ens.push(mkEn(_twOx,_twOy,si,97,false,el,ri));
+      const _twne=mkEn(_twOx,_twOy,si,97,false,el,ri);if(_twne)ens.push(_twne);
     }
     // 64:익사자 떼 — 8~12마리 그룹 스폰
     if(etype===64){
@@ -21672,7 +21668,7 @@ function spawnTileRLEEns(si){
     const rareChance=hell>=6?.10:.05;
     if(Math.random()<.005&&!G._deathSpawned){etype=99;G._deathSpawned=true}
     else if(Math.random()<rareChance){etype=90+~~(Math.random()*9)}
-    ens.push(mkEn(ex,ey,si,etype,false,rollEl(si),-1));
+    {const _ne=mkEn(ex,ey,si,etype,false,rollEl(si),-1);if(_ne)ens.push(_ne);}
     placed++;
   }
   console.log('[SPAWN] placed='+placed+'/'+cnt+' tries='+tries);
@@ -21693,7 +21689,7 @@ function spawnCorridorEns(si){
     for(let _bi=0;_bi<_bgCnt;_bi++){
       const _bx=(G._bossCx+.5+(Math.random()-.5)*12)*T;
       const _by=(G._gateY+8+Math.random()*22)*T;
-      ens.push(mkEn(_bx,_by,si,rollEtype(si),false,rollEl(si),-1));
+      {const _ne=mkEn(_bx,_by,si,rollEtype(si),false,rollEl(si),-1);if(_ne)ens.push(_ne);}
     }
   }
   // 복도 밀도 스폰 — 캡 없음, 3타일마다 1그룹
@@ -21708,7 +21704,7 @@ function spawnCorridorEns(si){
     const cnt=2+~~(Math.random()*3); // 2~4마리
     for(let i=0;i<cnt;i++){
       const ex=(tile.tx+.2+Math.random()*.6)*T,ey=(tile.ty+.2+Math.random()*.6)*T;
-      ens.push(mkEn(ex,ey,si,rollEtype(si),false,rollEl(si),-1));
+      {const _ne=mkEn(ex,ey,si,rollEtype(si),false,rollEl(si),-1);if(_ne)ens.push(_ne);}
     }
   }
 }
@@ -21765,7 +21761,7 @@ function initStage(si){
         const _fx=(_tx+.5)*T,_fy=(_ty+.5)*T;
         const _fd2=(_fx-P.x)*(_fx-P.x)+(_fy-P.y)*(_fy-P.y);
         if(_fd2>_safeR2&&canMv(_fx,_fy,8)){
-          ens.push(mkEn(_fx,_fy,_si,rollEtype(_si),false,rollEl(_si),-1));
+          {const _ne=mkEn(_fx,_fy,_si,rollEtype(_si),false,rollEl(_si),-1);if(_ne){ens.push(_ne);}}
           _placed++;
         }
       }
@@ -46066,7 +46062,7 @@ function _perfReport(){
   _PERF_PROF.drawCalls=0;
 }
 function _perfFrameTick(){
-  let _alive=0;for(let _ai=0;_ai<ens.length;_ai++)if(ens[_ai].alive)_alive++;
+  let _alive=0;for(let _ai=0;_ai<ens.length;_ai++)if(ens[_ai]&&ens[_ai].alive)_alive++;
   const _shouldOn=_alive>300;
   if(_shouldOn&&!_PERF_PROF.enabled){_PERF_PROF.enabled=true;_perfHookGL()}
   else if(!_shouldOn&&_PERF_PROF.enabled){_PERF_PROF.enabled=false;_PERF_PROF.ai.length=0;_PERF_PROF.coll.length=0;_PERF_PROF.render.length=0;_PERF_PROF.dom.length=0;_PERF_PROF.drawCalls=0}

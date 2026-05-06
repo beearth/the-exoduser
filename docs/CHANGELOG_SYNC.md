@@ -22580,3 +22580,40 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - three.min.js
 
+
+## 2026-05-06 10:30 (auto)
+- Electron/game.html
+- _autosave/game_20260506_101600.html
+- _autosave/game_20260506_101759.html
+- _autosave/game_20260506_101804.html
+- _autosave/game_20260506_101819.html
+- _autosave/game_20260506_101826.html
+- _autosave/game_20260506_101832.html
+- _autosave/game_20260506_101839.html
+- _autosave/game_20260506_101845.html
+- _autosave/game_20260506_101901.html
+- _autosave/game_20260506_101906.html
+- _autosave/game_20260506_102108.html
+- _autosave/game_20260506_102649.html
+- docs/2_1 ?�킬관�??�체?�스???�원/추천빌드_SKILL_REC_PATH.md
+- docs/4.1맵디?�인+?�정/EXODUSER_MAP_BIBLE_v3 (1).md
+- game.html
+- lang_ar.js
+- lang_bg.js
+- lang_cs.js
+- lang_de.js
+- lang_el.js
+- lang_es.js
+- lang_fi.js
+- lang_fr.js
+- lang_hu.js
+- lang_id.js
+- lang_ja.js
+- lang_ptbr.js
+- lang_ru.js
+- lang_th.js
+- lang_tr.js
+- lang_vi.js
+- lang_zh.js
+- lang_zht.js
+
