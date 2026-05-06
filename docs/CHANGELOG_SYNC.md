@@ -22697,3 +22697,15 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - boss_assets/eye_sentinel/v2_remake.webp
 - game.html
 
+
+## 2026-05-06 21:30 (auto)
+- _autosave/game_20260506_203520.html
+- _autosave/game_20260506_203708.html
+- _autosave/game_20260506_203716.html
+- _autosave/game_20260506_203738.html
+- _autosave/game_20260506_203746.html
+- _autosave/game_20260506_203935.html
+- docs/2_4 ?«ì‹œ?¤í…œ/2_4 ?«ì‹œ?¤í…œ.md
+- docs/8.1ë³´ìŠ¤?”ì?¸ë°”?´ë¸”/BOSS_BATTLE_SETTINGS.md
+- game.html
+

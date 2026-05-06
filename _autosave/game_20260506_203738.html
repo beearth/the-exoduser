@@ -7226,8 +7226,9 @@ function _checkPetDialogue(){
   {let _nE=true;for(let i=0;i<ens.length;i++){if(ens[i].alive){_nE=false;break}}
   if(_nE&&P.s==='idle')_petSayCD('idle_noE','crow','…멈추지 마. 여신은 기다리지 않는다.',4,60,'cat','앞으로 가자~',4)}
 
-  // ══ [7] Idle 대사 — 23종 ══
-  if(P.s==='idle'){_petIdleT+=_dtSp;
+  // ══ [7] Idle 대사 — 23종 (보스전 중 차단) ══
+  if(G.bossAlive){_petIdleT=0;_petIdleTalkT=0}
+  else if(P.s==='idle'){_petIdleT+=_dtSp;
     if(_petIdleT>60*20){_petIdleT=0;
       if(Math.random()<.5){
         const _nags=[['시간이 없어. 움직여.','멍하게 서있으면 안 돼!'],['…뭘 기다리는 거야?','가자가자! 몬스터가 기다려!'],['여기 오래 있으면 위험해.','가만있으면 둘러싸여!'],['쉬는 건 죽고 나서 해.','살아있을 때 쉬면 안 돼!'],['적이 몰려오고 있어.','냄새 맡고 올 거야. 빨리!'],['…아직 살아있는 거 맞지?','혹시 잠든 거야…?']];
@@ -7246,8 +7247,8 @@ function _checkPetDialogue(){
     }}
   }else{_petIdleT=0;_petIdleTalkT=0}
 
-  // ══ [8] 챕터 진입 대사 — v6: 핵터 독백만 (7종) ══
-  const _chDlg=[
+  // ══ [8] 챕터 진입 대사 — v6: 핵터 독백만 (7종, 보스전 중 차단) ══
+  if(!G.bossAlive){const _chDlg=[
     ['crow','…따라오는 거 아니야. 같은 방향일 뿐이지.',5],
     ['crow','공기가 달라졌어. 더 썩었군.',5],
     ['crow','여기부터는 악마 영역이야. …맘대로 해.',5],
@@ -15552,7 +15553,7 @@ function _facingToDir4(f){
 const _PI4=Math.PI/4;
 function _drawBossWalk(X,e,now,sa,tdY){
   const si=G.stage||0;
-  const _largeMul=(e._isLargeBoss?5:1)*_btScaleMul;
+  const _largeMul=window._btScaleMul||1;
   // ── 방향별 아틀라스 (우선) ──
   const da=_bossDirAtlas[si];
   if(da&&da.ready){
@@ -21044,7 +21045,7 @@ function _enterBossArena(){
   P.s='idle';P.iframes=90;P._hurtCd=0;P.kb={x:0,y:0};
   G.cam.x=P.x;G.cam.y=P.y;
   ens.push(mkEn((arena.bossX+.5)*T,(arena.bossY+.5)*T,si,0,true,STG[si].be,0));
-  if(si===0){const _lb=ens[ens.length-1];if(_lb&&_lb.isBoss){_lb._isLargeBoss=true;}}
+  if(si===0){const _lb=ens[ens.length-1];if(_lb&&_lb.ib){_lb._isLargeBoss=true;}}
   G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;if(!G._killedBosses)G._killedBosses=[];
   G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0},iris:{x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:G._irisSz||20,_feedT:0}};
   buildMapCache();
@@ -24405,7 +24406,7 @@ function update(){
       if(e._hitStun>0)e._hitStun-=sp;
       if(e._stunImmune>0)e._stunImmune-=sp;
       if(e._pImmune>0)e._pImmune-=sp;
-      if(e.stunned<=0&&e._maxStunned)e._maxStunned=0;
+      if(e.stunned<=0&&e._maxStunned){e._maxStunned=0;if(e.ib){_poiseReset(e);e._pImmune=Math.max(e._pImmune||0,300);e.s='idle';e.st2=30;e._teleDropY=0;}}
       const _eox=e.x,_eoy=e.y;
       if(e.reviveIframes>0)e.reviveIframes=Math.max(0,e.reviveIframes-sp);
       const _ed2=dst2(P.x,P.y,e.x,e.y);
@@ -25538,10 +25539,11 @@ function update(){
       _poiL.textContent=_L('그로기! ','Groggy! ')+(bE.stunned/60).toFixed(1)+'s';_poiL.style.color='#ffaa00';
       $('bossPoiseF').parentElement.style.borderColor='#ff6600';
     } else if(bE._pImmune>0){
-      // 면역 상태: 비어있음
-      _poiF.style.width='0%';_poiF.style.background='linear-gradient(90deg,#555,#888)';
-      _poiL.textContent=_L('면역 ','Immune ')+(bE._pImmune/60).toFixed(0)+'s';_poiL.style.color='#8888ff';
-      $('bossPoiseF').parentElement.style.borderColor='#444488';
+      // 면역 상태: 충전 중 (300프레임 = 5초 기준으로 차오름)
+      const _imPct=Math.min(100,Math.max(0,(1-bE._pImmune/300)*100));
+      _poiF.style.width=_imPct+'%';_poiF.style.background='linear-gradient(90deg,#4455cc,#8899ff)';
+      _poiL.textContent=_L('충전 중 ','Charging ')+(bE._pImmune/60).toFixed(1)+'s';_poiL.style.color='#8899ff';
+      $('bossPoiseF').parentElement.style.borderColor='#4455cc';
     } else {
       // 평상시: 포이즈(그로기) 게이지 — 남은 poise 비율
       const _poisePct=bE.maxPoise>0?Math.max(0,Math.min(100,bE.poise/bE.maxPoise*100)):100;
@@ -40000,7 +40002,9 @@ function draw(){
         X.beginPath();X.ellipse(e.x,e.y,_shR,_shR*.4,0,0,Math.PI*2);X.fill();X.globalAlpha=1;
       }
       let _bDrew=false;
-      if(!e._bDrawLog){e._bDrawLog=true;console.log('[BOSS_DRAW] extB:',_atlasExtBReady,'walkA:',_bossWalkAtlas.ready,'intB:',_atlasBReady,'stage:',G.stage)}
+      const _bScMul=window._btScaleMul||1;
+      if(_bScMul!==1){X.save();X.translate(e.x,e.y);X.scale(_bScMul,_bScMul);X.translate(-e.x,-e.y)}
+      if(!e._bDrawLog){e._bDrawLog=true;console.log('[BOSS_DRAW] extB:',_atlasExtBReady,'walkA:',_bossWalkAtlas.ready,'intB:',_atlasBReady,'stage:',G.stage,'scale:',_bScMul)}
       // ── 외부 보스 아틀라스 렌더링 (atlas_bosses.png, 최우선) ──
       if(!_bDrew&&_atlasExtBReady){
         const bKey='boss_'+G.stage;
@@ -40012,7 +40016,8 @@ function draw(){
             const fi=~~(_now/250)%frames.length,f=frames[fi];
             const palIdx=_getPalIdx(e.el!=null?e.el:0);
             const src=_getExtBCanvas(palIdx);
-            const sc=e.r*2/f.w;
+            const _eLargeMul=(window._btScaleMul||1);
+            const sc=e.r*2/f.w*_eLargeMul;
             X.save();X.translate(e.x,e.y+_tdY);
             if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);
             X.globalAlpha=sa;
@@ -40037,8 +40042,9 @@ function draw(){
         const _bFr=_getBossFrame(e,_now);
         const buv=_atlasBUV[_bPal]&&_atlasBUV[_bPal][_bFr];
         if(buv){
+          const _bLM=(window._btScaleMul||1);
           X.save();X.translate(e.x,e.y+_tdY);X.rotate(e.facing);X.globalAlpha=sa;
-          const _bSc=e.r/22;
+          const _bSc=e.r/22*_bLM;
           const _dw=buv.sw*_bSc,_dh=buv.sh*_bSc;
           X.drawImage(_atlasB,buv.sx,buv.sy,buv.sw,buv.sh,-_dw/2,-_dh/2,_dw,_dh);
           X.restore();_bDrew=true;
@@ -40049,14 +40055,16 @@ function draw(){
         const _aFr=~~(_now/250)%_AFRAMES;
         const uv=_atlasUV[10]&&_atlasUV[10][_aEl]&&_atlasUV[10][_aEl][_aFr];
         if(uv){
+          const _bLM=(window._btScaleMul||1);
           X.save();X.translate(e.x,e.y+_tdY);X.rotate(e.facing);X.globalAlpha=sa;
-          const _bSc=e.r/22;
+          const _bSc=e.r/22*_bLM;
           const _dw=uv.sw*_bSc,_dh=uv.sh*_bSc;
           X.drawImage(_atlas,uv.sx,uv.sy,uv.sw,uv.sh,-_dw/2,-_dh/2,_dw,_dh);
           X.restore();_bDrew=true;
         }
       }
       if(!_bDrew){X.save();X.translate(0,_tdY);drawBossBody(X,e,_now,sa);X.restore()}
+      if(_bScMul!==1)X.restore();
       // ── 보스 다리 안개 (노이즈 텍스처 프레임 애니메이션) ──
       if(e.alive){
         const _bfHell=SI_TO_HELL[G.stage];
@@ -47332,8 +47340,9 @@ _btWait(()=>{
   // ── 3) 보스 참조 + 마네킹 모드 기본 ──
   _btPaused=true;
   setTimeout(()=>{
-    _btBoss=ens.find(e=>e.isBoss);
+    _btBoss=ens.find(e=>e.ib);
     if(_btBoss){_btBoss._btFrozen=true;_btBoss._origSpd=_btBoss.speed;_btBoss.bossPatT=99999;_btUpdateInfo()}
+    window._btScaleMul=5;
     _btBuildUI();
   },500);
 },2000);
@@ -47451,8 +47460,8 @@ function _btBuildUI(){
   </div>`;
   // ── 스케일 슬라이더 ──
   panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
-    <span style="color:#aa8866;font-size:11px">보스 시각 스케일: <span id="_btScaleVal">×1.0</span></span>
-    <input type="range" id="_btScaleSlider" min="0.2" max="8" step="0.1" value="1"
+    <span style="color:#aa8866;font-size:11px">보스 시각 스케일: <span id="_btScaleVal">×5</span></span>
+    <input type="range" id="_btScaleSlider" min="0.2" max="8" step="0.1" value="5"
       style="width:100%;margin-top:4px;accent-color:#ffaa44"
       oninput="_btScaleMul=+this.value;document.getElementById('_btScaleVal').textContent='×'+this.value">
     <div style="display:flex;gap:3px;margin-top:4px">
@@ -47707,7 +47716,7 @@ function _b3animate(){
 
   // 스케일
   const bossRcss=bE.r/scale;
-  const tgtH=bossRcss*2.0;
+  const tgtH=bossRcss*2.0*(window._btScaleMul||1);
   if(_b3size.y>0)_b3pivot.scale.setScalar(Math.max(0.1,tgtH/_b3size.y));
 
   // facing
