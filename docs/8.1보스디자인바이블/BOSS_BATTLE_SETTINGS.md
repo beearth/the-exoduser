@@ -144,10 +144,14 @@ if(e.stunned<=0 && e._maxStunned){
 | 캔버스 | `<canvas id="boss3dCvs">` |
 | z-index | `50` (2D 게임 캔버스 위) |
 | 렌더러 | `THREE.WebGLRenderer` (alpha:true) |
-| 2D 보스 숨김 방법 | `bE._spawnT = 999` (2D 드로우 블록됨) |
+| 2D 보스 숨김 방법 | `window._b3Active=true` + `bE._spawnT=999` 이중 보호 — 3D 활성 시 2D 렌더 완전 차단 |
 | 메쉬 컬링 | `THREE.DoubleSide` — 이동 중 facing 회전 시 텍스처 소실 방지 |
 
 ### 위치/스케일 계산 (`_b3animate`)
+
+**바닥 클리핑 평면** (`_b3clipFloor`): 보스 중심+반지름(`bE.y+bE.r`) = 실제 발바닥 위치를 Three.js Y로 변환, 그 아래는 렌더 차단 → 팔/다리 땅속 함몰 방지
+
+### 위치/스케일 계산 상세
 
 ```javascript
 // 보스의 게임 좌표 → CSS 픽셀
@@ -207,9 +211,10 @@ http://localhost:3333/game.html?bosstest=0
 
 | 변수 | 기본값 | 역할 |
 |---|---|---|
-| `window._btScaleMul` | `3.0` (전역 + 테스트베드 기본값) | Three.js + 2D 캔버스 보스 시각 배율 |
-| `window._btRotX` | `0` (rad) | 보스 3D X축 회전 — 테스트베드 슬라이더로 실시간 조절 (-1.57~+1.57) |
-| `window._btOffsetY` | `0` (px) | 보스 3D Y 추가 오프셋 — 양수=위로, 음수=아래로. 발이 맵에 박힐 때 조절 |
+| `window._btScaleMul` | `2.26` (전역), 테스트베드에서 `5.0` 설정 | Three.js + 2D 캔버스 보스 시각 배율 |
+| `window._btRotX` | `0.28` (rad ≈ 16°) | 보스 3D X축 회전 — 모델 세움 효과 |
+| `window._btOffsetY` | `50` (px) | 보스 3D Y 추가 오프셋 — 양수=위로 |
+| `window._b3Active` | `true/false` | 3D 오버레이 활성 여부 — true면 2D 보스 렌더 완전 차단 |
 | `_btBoss` | `ens.find(e=>e.ib)` | 테스트베드 보스 참조 |
 | `_btGod` | `true` | 플레이어 무적 |
 | `_btPaused` | `false` | 게임 루프 일시정지 |

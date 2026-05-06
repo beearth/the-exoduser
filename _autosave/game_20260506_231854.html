@@ -8178,6 +8178,7 @@ const _USE_EXT_ATLAS=false;
 // ── 대형보스 8방향 아틀라스 ──
 let _largeBossAtlasReady=false,_largeBossAtlasImg=null,_largeBossAtlasData=null;
 window._btScaleMul=3.0; // 보스 시각 스케일 배율
+window._b3Active=false; // 3D 보스 오버레이 활성 여부 (true면 2D 보스 렌더 차단)
 window._btRotX=0; // 보스 3D X축 회전 (rad, 실시간 조절)
 window._btOffsetY=0; // 보스 3D Y 오프셋 (px, 양수=위로, 실시간 조절)
 (function _loadLargeBossAtlas(){
@@ -39985,6 +39986,8 @@ function draw(){
     // ═══ 적 바디 렌더링 (신규 아틀라스 → 레거시 아틀라스 → 절차적 폴백) ═══
     let _usedSpr=false;
     if(e.ib){
+      // 3D 오버레이 활성 시 2D 보스 렌더 완전 차단
+      if(window._b3Active){X.globalAlpha=1;continue;}
       // ── 보스 오라 글로우 제거됨 ──
       if(false&&e.alive&&sa>0.1){
         const _bAuraRgb=['200,200,200','255,100,30','80,180,255','120,0,180','255,255,80','255,255,255'][e.el!=null?e.el:0]||'200,200,200';
@@ -47592,6 +47595,9 @@ const _b3cvs=document.getElementById('boss3dCvs');
 const _b3r=new THREE.WebGLRenderer({canvas:_b3cvs,alpha:true,antialias:false});
 _b3r.setPixelRatio(Math.min(window.devicePixelRatio,2));
 _b3r.setClearColor(0x000000,0);
+const _b3clipFloor=new THREE.Plane(new THREE.Vector3(0,1,0),0);
+_b3r.clippingPlanes=[_b3clipFloor];
+_b3r.localClippingEnabled=true;
 _b3r.outputColorSpace=THREE.SRGBColorSpace;
 
 const _b3s=new THREE.Scene();
@@ -47664,7 +47670,7 @@ _b3loader.load(_B3_ANIMS.idle.src,(gltf)=>{
   const box2=new THREE.Box3().setFromObject(_b3model);
   const center=box2.getCenter(new THREE.Vector3());
   _b3model.position.sub(center);
-  _b3model.traverse(c=>{if(c.isMesh){c.castShadow=true;_b3meshes.push(c);_b3origMats.push(c.material)}});
+  _b3model.traverse(c=>{if(c.isMesh){c.castShadow=true;_b3meshes.push(c);_b3origMats.push(c.material);if(c.material)c.material.side=THREE.DoubleSide;}});
   _b3pivot=new THREE.Group();_b3pivot.add(_b3model);_b3pivot.visible=false;
   _b3s.add(_b3pivot);
   _b3size=new THREE.Box3().setFromObject(_b3pivot).getSize(new THREE.Vector3());
@@ -47707,15 +47713,15 @@ function _b3animate(){
 
   // 게임 상태 읽기 (같은 윈도우)
   if(typeof G==='undefined'||typeof P==='undefined'||!P||!G.on){_b3pivot.visible=false;_b3r.render(_b3s,_b3cam);return}
-  const bE=G._bossRef;
+  const bE=findBoss();
   if(!bE||!bE.alive||!G._bossArena){
     _b3pivot.visible=false;
-    // 보스 사망/퇴장 시 2D 가시성 복원
-    if(bE&&bE._spawnT>=999)bE._spawnT=0;
+    window._b3Active=false;
     _b3r.render(_b3s,_b3cam);return;
   }
 
-  // 2D 보스 숨김
+  // 2D 보스 완전 차단 (플래그 + _spawnT 이중 보호)
+  window._b3Active=true;
   bE._spawnT=999;
 
   // 좌표 변환: 게임 캔버스 물리좌표 → CSS 좌표 → Three.js 월드
@@ -47739,7 +47745,12 @@ function _b3animate(){
   _b3pivot.scale.setScalar(_b3sc);
   // Y: boss CSS Y = 발 위치 → 모델 피벗(중앙)을 절반 높이만큼 위로 올려 땅속 박힘 방지
   // window._btOffsetY 로 실시간 추가 오프셋 조절 가능
-  _b3pivot.position.y=-(cssY-H/2)+tgtH*0.5+(window._btOffsetY||0);
+  // 실제 바닥 = 보스 중심 + 반지름 (entity bottom)
+  const _b3floorCssY=physY/scale+bossRcss;
+  const _b3floorY=-((_b3floorCssY)-H/2);
+  _b3pivot.position.y=_b3floorY+tgtH*0.5+(window._btOffsetY||0);
+  // 바닥 아래 클리핑 (팔/다리 땅속 함몰 방지)
+  _b3clipFloor.constant=-_b3floorY;
 
   // facing (X rotation: window._btRotX 으로 실시간 조절)
   _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);

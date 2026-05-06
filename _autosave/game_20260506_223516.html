@@ -47470,7 +47470,7 @@ function _btBuildUI(){
       ${[0.5,1,2,3,5,8].map(v=>`<button class="_btBtn" onclick="_btScaleMul=${v};document.getElementById('_btScaleSlider').value=${v};document.getElementById('_btScaleVal').textContent='×${v}'" style="flex:1">×${v}</button>`).join('')}
     </div>
   </div>`;
-  // ── 각도 슬라이더 ──
+  // ── 각도 + Y오프셋 슬라이더 ──
   panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
     <span style="color:#aa8866;font-size:11px">보스 각도 (X rot): <span id="_btRotVal">0.00</span>rad</span>
     <input type="range" id="_btRotSlider" min="-1.57" max="1.57" step="0.01" value="0"
@@ -47478,6 +47478,13 @@ function _btBuildUI(){
       oninput="window._btRotX=+this.value;document.getElementById('_btRotVal').textContent=(+this.value).toFixed(2)">
     <div style="display:flex;gap:3px;margin-top:4px">
       ${[-0.8,-0.5,-0.28,0,0.28,0.5,0.8].map(v=>`<button class="_btBtn" onclick="window._btRotX=${v};document.getElementById('_btRotSlider').value=${v};document.getElementById('_btRotVal').textContent='${v.toFixed(2)}'" style="flex:1;font-size:10px">${v}</button>`).join('')}
+    </div>
+    <span style="color:#aa8866;font-size:11px;margin-top:8px;display:block">Y 오프셋 (↑위 ↓아래): <span id="_btOffVal">0</span>px</span>
+    <input type="range" id="_btOffSlider" min="-300" max="300" step="1" value="0"
+      style="width:100%;margin-top:4px;accent-color:#88ffaa"
+      oninput="window._btOffsetY=+this.value;document.getElementById('_btOffVal').textContent=this.value">
+    <div style="display:flex;gap:3px;margin-top:4px">
+      ${[-200,-100,-50,0,50,100,200].map(v=>`<button class="_btBtn" onclick="window._btOffsetY=${v};document.getElementById('_btOffSlider').value=${v};document.getElementById('_btOffVal').textContent='${v}'" style="flex:1;font-size:10px">${v}</button>`).join('')}
     </div>
   </div>`;
   // ── 슬로모션 + 기타 ──
@@ -47585,6 +47592,10 @@ const _b3cvs=document.getElementById('boss3dCvs');
 const _b3r=new THREE.WebGLRenderer({canvas:_b3cvs,alpha:true,antialias:false});
 _b3r.setPixelRatio(Math.min(window.devicePixelRatio,2));
 _b3r.setClearColor(0x000000,0);
+// 땅속 함몰 방지 — 발 위치 아래 클리핑
+const _b3clipFloor=new THREE.Plane(new THREE.Vector3(0,1,0),0);
+_b3r.clippingPlanes=[_b3clipFloor];
+_b3r.localClippingEnabled=true;
 _b3r.outputColorSpace=THREE.SRGBColorSpace;
 
 const _b3s=new THREE.Scene();
@@ -47657,7 +47668,7 @@ _b3loader.load(_B3_ANIMS.idle.src,(gltf)=>{
   const box2=new THREE.Box3().setFromObject(_b3model);
   const center=box2.getCenter(new THREE.Vector3());
   _b3model.position.sub(center);
-  _b3model.traverse(c=>{if(c.isMesh){c.castShadow=true;_b3meshes.push(c);_b3origMats.push(c.material)}});
+  _b3model.traverse(c=>{if(c.isMesh){c.castShadow=true;_b3meshes.push(c);_b3origMats.push(c.material);if(c.material)c.material.side=THREE.DoubleSide;}});
   _b3pivot=new THREE.Group();_b3pivot.add(_b3model);_b3pivot.visible=false;
   _b3s.add(_b3pivot);
   _b3size=new THREE.Box3().setFromObject(_b3pivot).getSize(new THREE.Vector3());
