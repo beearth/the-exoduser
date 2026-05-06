@@ -8174,6 +8174,34 @@ const _USE_EXT_ATLAS=false;
   }).catch(()=>{});};img.onerror=()=>{};
 })();
 // ── Atlas B External (외부 보스 아틀라스) ──
+// ── 대형보스 8방향 아틀라스 ──
+let _largeBossAtlasReady=false,_largeBossAtlasImg=null,_largeBossAtlasData=null;
+(function _loadLargeBossAtlas(){
+  const img=new Image();img.src='assets/sprites/boss/boss_large_atlas.png?v=1';
+  img.onload=()=>{fetch('assets/sprites/boss/boss_large_atlas.json?v=1').then(r=>r.json()).then(d=>{
+    _largeBossAtlasImg=img;_largeBossAtlasData=d;_largeBossAtlasReady=true;
+    console.log('[LARGE_BOSS] 8방향 아틀라스 로드 완료');
+  }).catch(e=>console.warn('[LARGE_BOSS] JSON 로드 실패',e))};
+  img.onerror=e=>console.warn('[LARGE_BOSS] PNG 로드 실패',e);
+})();
+function _drawLargeBoss(X,e,sa,tdY){
+  if(!_largeBossAtlasReady||!_largeBossAtlasImg)return false;
+  const d=_largeBossAtlasData;
+  // facing 각도 → 8방향 인덱스 (0=right, 1=back_right, ..., 6=front, 7=front_right)
+  let a=e.facing; // 0=right(+X), PI=left(-X), -PI/2=up, PI/2=down
+  // 게임 Y축: 아래가 +, facing이 0이면 오른쪽
+  // 8방향 매핑: right=0, back_right=PI/4, back=-PI/2~-PI, etc.
+  // 단순화: atan2 → 45도 단위 버킷
+  let idx = Math.round(((a + Math.PI) / (2*Math.PI)) * 8) % 8;
+  // dir_order: ['right','back_right','back','back_left','left','front_left','front','front_right']
+  const f=d.frames[idx];
+  if(!f)return false;
+  const sc=(e.r*2)/f.w;
+  X.save();X.translate(e.x,e.y+(tdY||0));X.globalAlpha=sa;
+  X.drawImage(_largeBossAtlasImg,f.x,f.y,f.w,f.h,-f.w*sc/2,-f.h*sc/2,f.w*sc,f.h*sc);
+  X.restore();
+  return true;
+}
 let _atlasExtBReady=false,_atlasExtB_img=null,_atlasExtB_frames=null;
 (function _loadAtlasExtB(){
   if(!_USE_EXT_ATLAS)return;
@@ -21014,6 +21042,7 @@ function _enterBossArena(){
   P.s='idle';P.iframes=90;P._hurtCd=0;P.kb={x:0,y:0};
   G.cam.x=P.x;G.cam.y=P.y;
   ens.push(mkEn((arena.bossX+.5)*T,(arena.bossY+.5)*T,si,0,true,STG[si].be,0));
+  if(si===0){const _lb=ens[ens.length-1];if(_lb&&_lb.isBoss){_lb._isLargeBoss=true;}}
   G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;if(!G._killedBosses)G._killedBosses=[];
   G.pets={crow:{x:P.x,y:P.y-20,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:0},cat:{x:P.x,y:P.y+10,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:~~(Math.random()*100)},xbow:{x:P.x-30,y:P.y-28,tx:P.x,ty:P.y,s:'follow',_tRef:null,_fetchT:0,t:25,_atkCd:0,_ang:0},iris:{x:P.x+20,y:P.y-34,tx:P.x,ty:P.y,s:'follow',t:50,sz:G._irisSz||20,_feedT:0}};
   buildMapCache();
@@ -28569,7 +28598,7 @@ function updateE(e,sp){
       const _spCnt=2+~~(Math.random()*2);
       for(let _si=0;_si<_spCnt;_si++){
         const _sx=e.x+(Math.random()-.5)*40,_sy=e.y+(Math.random()-.5)*40;
-        ens.push(mkEn(_sx,_sy,G.stage,33,false,e.el||EL.P,e._ri));
+        {const _ne=mkEn(_sx,_sy,G.stage,33,false,e.el||EL.P,e._ri);if(_ne)ens.push(_ne);}
       }
       addTxt(e.x,e.y-20,_T('산란!'),'#774433',30);addParts(e.x,e.y,'#dd6644',8);
     }
@@ -28809,7 +28838,7 @@ function updateE(e,sp){
       const _spCnt=2+~~(Math.random()*2);
       for(let _si=0;_si<_spCnt;_si++){
         const _sx=e.x+(Math.random()-.5)*60,_sy=e.y+(Math.random()-.5)*60;
-        ens.push(mkEn(_sx,_sy,G.stage,40,false,e.el||EL.D,e._ri));
+        {const _ne=mkEn(_sx,_sy,G.stage,40,false,e.el||EL.D,e._ri);if(_ne)ens.push(_ne);}
       }
       addTxt(e.x,e.y-25,_T('소환!'),'#aa1100',35);addParts(e.x,e.y,'#ff4400',10);
     }
@@ -32747,23 +32776,21 @@ const SKILL_CATS=[
 ];
 // ═══ 추천 빌드 순서 (고정) ═══
 const SKILL_REC_PATH=[
-  {phase:'1. 악의폭풍',phaseEn:'1. Malice Storm',skills:['maliceStorm'],fuse:null,desc:'핵심 광역기 — 먼저 배워서 정리력 확보',descEn:'Core AoE — learn first for mob clearing'},
-  {phase:'2. 칼날 계열',phaseEn:'2. Blade Skills',skills:['maliceHunt','guardian'],fuse:'bladeFuse',desc:'악의 사냥 + 보호자 → 합체: 칼날 해방',descEn:'Malice Hunt + Guardian → Fuse: Blade Liberation'},
-  {phase:'3. 역병 확장',phaseEn:'3. Plague Expand',skills:['plagueBurst'],fuse:'plagueFuse',desc:'폭독혈 추가 → 합체: 독혈 해방 (칼날+독)',descEn:'Plague Burst → Fuse: Plague Liberation (blade+poison)'},
-  {phase:'4. 이동스킬 마스터',phaseEn:'4. Movement Master',skills:['chargeBoost','magicBlink'],fuse:'dimBreach',desc:'충돌+화염 → 합체: 사슬기동 (무적이동 핵심)',descEn:'Impact+Flame → Fuse: Chain Breach (invincible dash core)'},
-  {phase:'5. 사슬 확장',phaseEn:'5. Chain Expand',skills:['chainAssault','chainSlam'],fuse:'dimThunder',desc:'사슬 체인 확장 → 기동:파쇄/기동:전폭',descEn:'Chain expansion → Slam/Thunder combos'},
-  {phase:'6. 💀 필살기 선택',phaseEn:'6. 💀 Ultimate Pick',skills:['holyBlast','blackStar','lavaSummon','execution'],fuse:null,pick:true,desc:'필살기 1개 선택! 신성폭발(넉백) / 블랙(흡인) / 용암(화상) / 처형(보스킬)',descEn:'Pick 1 ultimate! Holy Blast(knockback) / Black Star(pull) / Lava(burn) / Execution(boss kill)'},
-  {phase:'7. 멸살+만화+원소+전격이동',phaseEn:'7. Beam+Barrage+Elem+Blink',skills:['omniBeam','fanShot','elemMissile','bladeDash'],fuse:'elemFuse',desc:'멸살광선+만화방창+원소추적탄+전격이동 → 합체: 추적빔',descEn:'Omni Beam+Barrage+Elem Missile+Blink → Fuse: Tracking Beam'},
-  {phase:'8. 회전참+기폭+대왕',phaseEn:'8. Whirl+Det+Giant',skills:['whirlwind','detonate','giantSlam'],fuse:'slamStorm',desc:'회전참+기폭+대왕치기 → 합체: 지진폭풍',descEn:'Whirlwind+Detonate+Giant Slam → Fuse: Slam Storm'},
-  {phase:'9. 방패 합체',phaseEn:'9. Shield Fuse',skills:['maliceSwipe','shieldThrow'],fuse:'shieldFuse',desc:'칼등치기 + 칼등날개 → 합체: 처내기 강화',descEn:'Blade Parry + Shield Wing → Fuse: Parry Enhanced'},
-  {phase:'10. 해골무덤+악의폭풍',phaseEn:'10. Bone Wall+Malice Storm',skills:['boneWall','maliceStorm'],fuse:'boneStorm',desc:'해골무덤 + 악의폭풍 → 합체: 해골번개',descEn:'Bone Wall + Malice Storm → Fuse: Bone Lightning'},
-  {phase:'11. 폭풍소환+얼음보주',phaseEn:'11. Storm+Ice Orb',skills:['maliceMortar','iceOrb'],fuse:'iceMortar',desc:'폭풍소환 + 얼음보주 → 합체: 얼음폭풍',descEn:'Malice Mortar + Ice Orb → Fuse: Ice Mortar'},
-  {phase:'12. 뇌전걸음',phaseEn:'12. Ghost Walk',skills:['ghostWalk'],fuse:null,desc:'유령화 이동 + 전기 폭발',descEn:'Ghost phase movement + electric burst'},
-  {phase:'13. 신성 영역',phaseEn:'13. Holy Domain',skills:['holyDome','holyPrison'],fuse:'holyFuse',desc:'회복 + 구속 → 합체: 결계의 영역',descEn:'Recovery + Prison → Fuse: Ward Domain'},
-  {phase:'14. 6단합체: 폭풍빔',phaseEn:'14. 6-Fuse: Storm Beam',skills:[],fuse:'stormBeam',desc:'지진폭풍+추적암전 → 6단합체: 폭풍빔',descEn:'Slam Storm → 6-Fuse: Storm Beam'},
-  {phase:'15. 신성+빙결',phaseEn:'15. Holy+Ice',skills:['iceStorm'],fuse:'holyIce',desc:'아이스스톰 추가 → 합체: 신성빙결',descEn:'Ice Storm → Fuse: Holy Ice'},
-  {phase:'16. 암흑+가시+대왕2',phaseEn:'16. Dark+Spike+Slam2',skills:['darkPillar','spikeTrap','giantSlam2'],fuse:'pillarSpike',desc:'암흑기둥 + 가시덫 → 합체: 기둥가시. 대왕치기2는 기둥강타/지옥강타용',descEn:'Dark Pillar + Spike Trap → Fuse: Pillar Spike. Giant Slam 2 for Pillar Slam/Inferno Slam'},
-  {phase:'17. 사슬 최종',phaseEn:'17. Chain Final',skills:['chainSlash'],fuse:'dimRush',desc:'기동칼날개 추가 → 5단합체: 기동:칼날개',descEn:'Chain Bladewing → 5-Fuse: Maneuver:Bladewing'},
+  {phase:'1. 전격이동',phaseEn:'1. Flash Step',skills:['bladeDash'],fuse:null,desc:'이동 핵심기 — 더블탭 순간이동, 기절 탈출 가능. 초반 생존력 핵심',descEn:'Core mobility — double-tap blink, escapes stagger/stun. Essential early survivability'},
+  {phase:'2. 악의폭풍',phaseEn:'2. Malice Storm',skills:['maliceStorm'],fuse:null,desc:'핵심 광역기 — 먼저 배워서 정리력 확보',descEn:'Core AoE — learn first for mob clearing'},
+  {phase:'3. 칼날+역병',phaseEn:'3. Blade+Plague',skills:['maliceHunt','guardian','plagueBurst'],fuse:'bladeFuse',desc:'악의 사냥 + 보호자 + 폭독칼날 → 합체: 칼날 해방 / 독혈 해방',descEn:'Malice Hunt + Guardian + Plague Burst → Fuse: Blade Liberation / Plague Liberation'},
+  {phase:'4. 이동+사슬',phaseEn:'4. Movement+Chain',skills:['chargeBoost','magicBlink','chainAssault','chainSlam'],fuse:'dimBreach',desc:'충돌+화염+사슬 확장 → 합체: 사슬기동 / 기동:전폭',descEn:'Impact+Flame+Chain Expand → Fuse: Chain Breach / Maneuver:Thunder'},
+  {phase:'5. 💀 필살기 선택',phaseEn:'5. 💀 Ultimate Pick',skills:['holyBlast','blackStar','lavaSummon','execution'],fuse:null,pick:true,desc:'필살기 1개 선택! 신성폭발(넉백) / 블랙(흡인) / 용암(화상) / 처형(보스킬)',descEn:'Pick 1 ultimate! Holy Blast(knockback) / Black Star(pull) / Lava(burn) / Execution(boss kill)'},
+  {phase:'6. 멸살+만화+원소',phaseEn:'6. Beam+Barrage+Elem',skills:['omniBeam','fanShot','elemMissile'],fuse:'elemFuse',desc:'멸살광선+만화방창+원소추적탄 → 합체: 추적빔',descEn:'Omni Beam+Barrage+Elem Missile → Fuse: Tracking Beam'},
+  {phase:'7. 회전참+기폭+대왕',phaseEn:'7. Whirl+Det+Giant',skills:['whirlwind','detonate','giantSlam'],fuse:'slamStorm',desc:'회전참+기폭+대왕치기 → 합체: 지진폭풍',descEn:'Whirlwind+Detonate+Giant Slam → Fuse: Slam Storm'},
+  {phase:'8. 방패 합체',phaseEn:'8. Shield Fuse',skills:['maliceSwipe','shieldThrow'],fuse:'shieldFuse',desc:'칼등치기 + 칼등날개 → 합체: 처내기 강화',descEn:'Blade Parry + Shield Wing → Fuse: Parry Enhanced'},
+  {phase:'9. 해골무덤+악의폭풍',phaseEn:'9. Bone Wall+Malice Storm',skills:['boneWall','maliceStorm'],fuse:'boneStorm',desc:'해골무덤 + 악의폭풍 → 합체: 해골번개',descEn:'Bone Wall + Malice Storm → Fuse: Bone Lightning'},
+  {phase:'10. 폭풍소환+얼음보주+뇌전걸음',phaseEn:'10. Storm+Ice+GhostWalk',skills:['maliceMortar','iceOrb','ghostWalk'],fuse:'iceMortar',desc:'폭풍소환 + 얼음보주 + 뇌전걸음 → 합체: 얼음폭풍',descEn:'Malice Mortar + Ice Orb + Ghost Walk → Fuse: Ice Mortar'},
+  {phase:'11. 신성 영역',phaseEn:'11. Holy Domain',skills:['holyDome','holyPrison'],fuse:'holyFuse',desc:'회복 + 구속 → 합체: 결계의 영역',descEn:'Recovery + Prison → Fuse: Ward Domain'},
+  {phase:'12. 6단합체: 폭풍빔',phaseEn:'12. 6-Fuse: Storm Beam',skills:[],fuse:'stormBeam',desc:'지진폭풍+추적암전 → 6단합체: 폭풍빔',descEn:'Slam Storm → 6-Fuse: Storm Beam'},
+  {phase:'13. 신성+빙결',phaseEn:'13. Holy+Ice',skills:['iceStorm'],fuse:'holyIce',desc:'아이스스톰 추가 → 합체: 신성빙결',descEn:'Ice Storm → Fuse: Holy Ice'},
+  {phase:'14. 암흑+가시+대왕2',phaseEn:'14. Dark+Spike+Slam2',skills:['darkPillar','spikeTrap','giantSlam2'],fuse:'pillarSpike',desc:'암흑기둥 + 가시덫 → 합체: 기둥가시. 대왕치기2는 기둥강타/지옥강타용',descEn:'Dark Pillar + Spike Trap → Fuse: Pillar Spike. Giant Slam 2 for Pillar Slam/Inferno Slam'},
+  {phase:'15. 사슬 최종',phaseEn:'15. Chain Final',skills:['chainSlash'],fuse:'dimRush',desc:'기동칼날개 추가 → 5단합체: 기동:칼날개',descEn:'Chain Bladewing → 5-Fuse: Maneuver:Bladewing'},
 ];
 const SKILL_HIER=[
   {id:'rec',name:'⭐ 추천',nameEn:'⭐ Recommend',col:'#ffcc44',cats:null},
@@ -39998,6 +40025,8 @@ function draw(){
           }
         }
       }
+      // ── 대형 보스 아틀라스 (8방향 블랜더 렌더) ──
+      if(!_bDrew&&e._isLargeBoss){_bDrew=_drawLargeBoss(X,e,sa,_tdY)}
       // ── 방향별 보스 아틀라스 (스테이지별 개별 파일) ──
       if(!_bDrew){_bDrew=_drawBossWalk(X,e,_now,sa,_tdY)}
       // ── 내부 보스 아틀라스 (폴백) ──
@@ -47660,26 +47689,6 @@ function _b3animate(){
 }
 _b3animate();
 console.log('[BOSS3D] Overlay initialized');
-</script>
-<script>
-// ═══ VFX GIF 테스트 (콘솔: tvfx(0~4), 또는 tvfx() 순차) ═══
-(function(){
-const _tGifs=['assets/vfx/test_electric.gif','assets/vfx/test_toxic_wave.gif','assets/vfx/test_toxic_spray.gif','assets/vfx/test_tornado.gif','assets/vfx/test_drone.gif'];
-const _tNames=['전기방출','독성웨이브','독성스프레이','토네이도','드론스웜'];
-const _tImgs=[];for(let i=0;i<5;i++){const im=new Image();im.src=_tGifs[i];_tImgs.push(im)}
-window._tvfxActive=[];
-let _tIdx=0;
-window.tvfx=function(idx,sc,dur){
-  if(idx===undefined){idx=_tIdx;_tIdx=(_tIdx+1)%5}
-  if(idx<0||idx>4)idx=0;
-  const s=sc||1,d=dur||300;
-  window._tvfxActive.push({img:_tImgs[idx],x:P.x,y:P.y,sc:s,t:0,maxT:d,blend:'lighter',name:_tNames[idx]});
-  console.log('[TVFX] '+_tNames[idx]+' sc='+s+' dur='+d+'f at P('+~~P.x+','+~~P.y+')');
-  if(typeof addTxt==='function')addTxt(P.x,P.y-40,'TEST: '+_tNames[idx],'#44ffaa',40);
-};
-window.tvfxClear=function(){window._tvfxActive.length=0;console.log('[TVFX] cleared')};
-console.log('[TVFX] Ready — tvfx(0~4, scale, frames) | tvfx() = 순차 | tvfxClear()');
-})();
 </script>
 </body>
 </html>

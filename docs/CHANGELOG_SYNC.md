@@ -22640,3 +22640,27 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - server.cjs
 
+
+## 2026-05-06 18:30 (auto)
+- .mcp.json
+- _autosave/game_20260506_174049.html
+- _autosave/game_20260506_174306.html
+- _autosave/game_20260506_174327.html
+- _autosave/game_20260506_182937.html
+- _autosave/game_20260506_182953.html
+- _tmp_ss.png
+- assets/sprites/boss/boss_back.png
+- assets/sprites/boss/boss_back_left.png
+- assets/sprites/boss/boss_back_right.png
+- assets/sprites/boss/boss_front.png
+- assets/sprites/boss/boss_front_left.png
+- assets/sprites/boss/boss_front_right.png
+- assets/sprites/boss/boss_large_atlas.json
+- assets/sprites/boss/boss_large_atlas.png
+- assets/sprites/boss/boss_large_front.png
+- assets/sprites/boss/boss_left.png
+- assets/sprites/boss/boss_right.png
+- assets/sprites/boss/boss_spritesheet_8dir.png
+- docs/8.1보스?�자?�바?�블/BOSS_00_FOREST_NORMAL_EYE_SENTINEL.md
+- game.html
+

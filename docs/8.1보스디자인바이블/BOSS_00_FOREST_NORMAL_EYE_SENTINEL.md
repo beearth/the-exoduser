@@ -714,6 +714,17 @@ v1.1 (2026-04-25) 부활 시스템 전면 재작성
   - 펫 학습 대사 5종 추가 (D1~D5)
   - 전략 도구 3종 명시 (T1~T3)
 
+v1.3 (2026-05-05) 대형 보스 8방향 블랜더 렌더 스프라이트 등록
+  - 블랜더 MCP로 700px 대형 보스 스프라이트 생성
+  - 8방향 렌더 아틀라스: assets/sprites/boss/boss_large_atlas.png (2048×256, 프레임당 256×256)
+  - 아틀라스 JSON: assets/sprites/boss/boss_large_atlas.json
+    * frames 배열 8개: dir_order = [right, back_right, back, back_left, left, front_left, front, front_right]
+    * idx = Math.round(((facing + π) / 2π) × 8) % 8
+  - si=0 보스 전용 _isLargeBoss=true 플래그 (r=175, 렌더 350px)
+  - 렌더 우선순위: _drawLargeBoss → _drawBossWalk → _atlasB (폴백)
+  - 코드 위치: _enterBossArena 내 si===0 체크, 렌더 파이프라인 ~line 40028
+  - 스케일 공식: sc = (e.r × 2) / f.w = 350 / 256 ≈ 1.37 (화면 ~350px)
+
 v1.2 (2026-04-25) 부활력 포인트 시스템 코드 구현 + 동기화
   - 부활력 포인트 시스템 코드 구현 완료 (mkEn에 _revPts/_maxRevPts 추가)
     * 초기값: 150 + round(si × 4.412), si 0=150, si 34=300
