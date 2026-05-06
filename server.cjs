@@ -213,17 +213,23 @@ const server = http.createServer(async (req, res) => {
         const start = parseInt(parts[0], 10) || 0;
         const end = Math.min(parts[1] ? parseInt(parts[1], 10) : stat.size - 1, stat.size - 1);
         if (start >= stat.size || start > end) {
-          res.writeHead(416, { 'Content-Range': `bytes */${stat.size}` });
+          res.writeHead(416, { 'Content-Range': `bytes */${stat.size}`, 'Access-Control-Allow-Origin': '*' });
           return res.end();
         }
         const chunksize = (end - start) + 1;
         const file = fs.createReadStream(filePath, { start, end });
-        file.on('error', (err) => { console.error('[Stream] Range error:', err.message); if (!res.headersSent) res.writeHead(500); res.end(); });
+        file.on('error', (err) => {
+          if (err.code === 'EPIPE' || err.code === 'ECONNRESET') return;
+          console.error('[Stream] Range error:', err.message);
+          if (!res.headersSent) { res.writeHead(500); res.end(); }
+        });
+        res.on('close', () => file.destroy());
         res.writeHead(206, {
           'Content-Range': `bytes ${start}-${end}/${stat.size}`,
           'Accept-Ranges': 'bytes',
           'Content-Length': chunksize,
           'Content-Type': mime,
+          'Access-Control-Allow-Origin': '*',
         });
         return file.pipe(res);
       } else {
@@ -235,7 +241,12 @@ const server = http.createServer(async (req, res) => {
           'Expires': '0'
         });
         const file200 = fs.createReadStream(filePath);
-        file200.on('error', (err) => { console.error('[Stream] Read error:', err.message); if (!res.headersSent) res.writeHead(500); res.end(); });
+        file200.on('error', (err) => {
+          if (err.code === 'EPIPE' || err.code === 'ECONNRESET') return;
+          console.error('[Stream] Read error:', err.message);
+          if (!res.headersSent) { res.writeHead(500); res.end(); }
+        });
+        res.on('close', () => file200.destroy());
         return file200.pipe(res);
       }
     }
