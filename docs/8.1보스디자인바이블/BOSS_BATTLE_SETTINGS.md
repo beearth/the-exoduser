@@ -211,9 +211,10 @@ http://localhost:3333/game.html?bosstest=0
 
 | 변수 | 기본값 | 역할 |
 |---|---|---|
-| `window._btScaleMul` | `2.26` (전역), 테스트베드에서 `5.0` 설정 | Three.js + 2D 캔버스 보스 시각 배율 |
-| `window._btRotX` | `0.28` (rad ≈ 16°) | 보스 3D X축 회전 — 모델 세움 효과 |
-| `window._btOffsetY` | `50` (px) | 보스 3D Y 추가 오프셋 — 양수=위로 |
+| `window._btScaleMul` | `3.7` (전역), 테스트베드에서 `5.0` 설정 | Three.js + 2D 캔버스 보스 시각 배율 |
+| `window._btRotX` | `0.0` (rad) | 보스 3D X축 회전 |
+| `window._btOffsetY` | `-50` (px) | 보스 3D Y 오프셋 (음수=아래로) |
+| `_b3clipFloor` | `Plane(0,1,0)`, constant=`cssY+bossRcss-H/2` | 발바닥(center+radius) 아래 클리핑 — 상체 안 잘림, z-index 5000으로 2D 맵 위에 항상 표시 |
 | `window._b3Active` | `true/false` | 3D 오버레이 활성 여부 — true면 2D 보스 렌더 완전 차단 |
 | `_btBoss` | `ens.find(e=>e.ib)` | 테스트베드 보스 참조 |
 | `_btGod` | `true` | 플레이어 무적 |
