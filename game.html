@@ -22450,7 +22450,7 @@ function update(){
         const _csR=450+(_csLv-1)*~~(225/9); // 1렙450, 10렙675
         // 사슬기동 티어 3단계 매핑: 1티어(탭)=×30, 2티어(0.1초)=×60, 3티어(0.2초)=×100 (업화선급)
         const _csTier=Math.max(1,Math.min(3,_harpTier||1));
-        const _csDistMul=_csTier===3?100:_csTier===2?60:30;
+        const _csDistMul=_csTier===3?64:_csTier===2?38:19;
         const _csDmg=~~(meleeRef()*_skMul('chainSlam')*statStr()*pAtkMul()*_csDistMul*_fuseMul('chainSlam'));
         const _csEl=wp().el||0;
         G._noHitStopT=40;
@@ -32238,11 +32238,13 @@ function _detonateBlast(label,elSrc){
   const _wdFused=_isFused('whirlDet');
   _addSkProf('detonate');
   const _detLv=P.skills.detonate||1;
-  const _detMul=2.0+_detLv*0.08+(_wdFused?_detLv*0.06:0);
   const _chgBars=Math.min(3,1+~~((P.parryT||0)/60));
-  // 최소 데미지: 플레이어 공격력 기반 (차지 단계 × 레벨 스케일)
-  const _detBase=~~(magicRef()*statInt()*_chgBars*3.33);
-  const boom=~~(Math.max(_detBase,~~((P.parryBank||0)*_detMul*_chgBars))*_fuseMul('detonate')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1));
+  const _detTierMul=_chgBars===3?64:_chgBars===2?38:19;
+  // 기본 데미지: 근접 ATK 기반 티어 × _skMul (chainSlam과 동급)
+  const _detBase=~~(meleeRef()*statStr()*pAtkMul()*_skMul('detonate')*_detTierMul);
+  // 패링 보너스 (가산)
+  const _detParry=~~((P.parryBank||0)*_skMul('detonate')*_chgBars);
+  const boom=~~((_detBase+_detParry)*_fuseMul('detonate')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1));
   // 회전기폭: 최소 범위 = 현재 회전참 범위
   const _wwBaseRDet=_wdFused?((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+((P.skills.whirlwind||1)-1)*11:0;
   const _wwGrowDet=_wdFused?Math.min(1,(P.wwAng||0)/63)+Math.min(1,(P.parryBank||0)/500):0;
@@ -32257,7 +32259,7 @@ function _detonateBlast(label,elSrc){
     SFX.slash();SFX.detonate();
   }
   if(Math.random()<.4)playSample('voice_explode',.8,_r(1,.1));
-  if(!(G._noHitStopT>0)){G.shake=(14+_chgBars*4)*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25+_chgBars*5;G.hitStop=Math.max(G.hitStop,~~((10+_chgBars*3)*OPT.hitStop/100))}  addTxt(P.x,P.y-30,_T(label||'기폭팔')+(_chgBars>=2?' ×'+_chgBars:'')+' '+boom,'#ff2200',70);
+  if(!(G._noHitStopT>0)){G.shake=(14+_chgBars*4)*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25+_chgBars*5;G.hitStop=Math.max(G.hitStop,~~((10+_chgBars*3)*OPT.hitStop/100))}  addTxt(P.x,P.y-30,_T(label||'기폭팔')+' '+_chgBars+'단계 ×'+_detTierMul+' '+boom,'#ff2200',70);
   const _isSlamDet=(label==='지진기폭!');
   if(!_isSlamDet){
     _addDetVfx(P.x,P.y,boomR,30+_chgBars*5,_chgBars);
@@ -33122,6 +33124,7 @@ const _SK_MUL={
   kiSlash:{b:1.0,g:0.42},     // 3단콤보(1.5/1.5/5.0), 4.1히트/초, DPS ~31×/초 (Lv10)
   // ── 이동콤보 (조건부, 거리 보너스 별도) ──
   chainSlam:{b:6,g:2.4},      // ×거리(1~3.5), 최대 ATK×60 (Lv10), 진입비용 보상
+  detonate:{b:6,g:2.4},       // 티어×19/38/64, chainSlam과 동급 (2026-05-06)
   chainAssault:{b:7,g:2.8},   // ×거리(1~3), 최대 ATK×55 (Lv10), 진입비용 보상
   chainSlash:{b:1.5,g:0.6},   // 다단/타, 15히트/초, 대시0.5초=31× (Lv10), 출혈50%
   magicBlink:{b:3.0,g:1.2}, // 착지폭발 — 1.0→3.0 상향
@@ -47743,10 +47746,15 @@ function _b3animate(){
   const _b3floorY=-((physY/scale+bossRcss)-H/2);
   _b3pivot.position.y=_b3floorY+tgtH*0.5+(window._btOffsetY||0);
   // 클리핑: 발바닥(center+radius) 아래 차단 — 상체 안 잘림
-  _b3clipFloor.constant=cssY+bossRcss-H/2;
+  _b3clipFloor.constant=cssY+bossRcss*2-H/2;
 
   // facing (X rotation: window._btRotX 으로 실시간 조절)
   _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);
+  // 바닥 클램핑: 회전 후 월드 바운딩박스 bottom이 floorY 아래면 위로 강제 올림
+  _b3pivot.updateMatrixWorld(true);
+  if(!window._b3wBox)window._b3wBox=new THREE.Box3();
+  window._b3wBox.setFromObject(_b3pivot);
+  if(window._b3wBox.min.y<_b3floorY){_b3pivot.position.y+=_b3floorY-window._b3wBox.min.y;}
   _b3pivot.visible=true;
 
   // 보스 상태 → 3D 애니 전환
