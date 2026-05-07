@@ -149,7 +149,7 @@ if(e.stunned<=0 && e._maxStunned){
 
 ### 위치/스케일 계산 (`_b3animate`)
 
-**바닥 클리핑 평면** (`_b3clipFloor`): `cssY + bossRcss - H/2` = 발바닥(center+radius) 위치를 기준으로 그 아래를 클리핑. 상체는 절대 잘리지 않음.
+**바닥 클리핑 평면** (`_b3clipFloor`): `cssY + bossRcss - H/2` = 발바닥(center+radius) 위치 기준, 그 아래 클리핑.
 
 > **주의**: `_btOffsetY` 기본값 `0` = 모델 하단이 바닥에 정렬. 음수 시 다리가 땅속으로 들어가며 클립 플레인으로 차단됨. `tgtH = bossRcss*2*_btScaleMul`이 scale에 따라 달라지므로 절대 px 음수값이 `tgtH/2`보다 크면 머리까지 함몰됨. Box3 클램핑은 SkinnedMesh 바인드포즈 오류로 제거됨.
 
@@ -216,7 +216,7 @@ http://localhost:3333/game.html?bosstest=0
 | `window._btScaleMul` | `3.7` (전역), 테스트베드에서 `5.0` 설정 | Three.js + 2D 캔버스 보스 시각 배율 |
 | `window._btRotX` | `0.0` (rad) | 보스 3D X축 회전 |
 | `window._btOffsetY` | `0` (px) | 보스 3D Y 오프셋 (양수=위로) — **0이 바닥 정렬 기준**. 음수 시 tgtH 대비 offset이 크면 머리까지 땅속 함몰 |
-| `_b3clipFloor` | `Plane(0,1,0)`, constant=`cssY+bossRcss-H/2` | 발바닥(center+radius) 아래 클리핑 — z-index 5000으로 2D 맵 위에 항상 표시 |
+| `_b3clipFloor` | `Plane(0,1,0)`, constant=`cssY+bossRcss-H/2` | 발바닥 아래 클리핑 |
 | `window._b3Active` | `true/false` | 3D 오버레이 활성 여부 — true면 2D 보스 렌더 완전 차단 |
 | `_btBoss` | `ens.find(e=>e.ib)` | 테스트베드 보스 참조 |
 | `_btGod` | `true` | 플레이어 무적 |

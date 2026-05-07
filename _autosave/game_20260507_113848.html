@@ -8180,7 +8180,7 @@ let _largeBossAtlasReady=false,_largeBossAtlasImg=null,_largeBossAtlasData=null;
 window._btScaleMul=3.7; // 보스 시각 스케일 배율
 window._b3Active=false; // 3D 보스 오버레이 활성 여부 (true면 2D 보스 렌더 차단)
 window._btRotX=0.0; // 보스 3D X축 회전 (rad)
-window._btOffsetY=0; // 보스 3D Y 오프셋 (px, 양수=위로) — 0=바닥 정렬, 음수=땅속
+window._btOffsetY=-50; // 보스 3D Y 오프셋 (px, 양수=위로)
 (function _loadLargeBossAtlas(){
   const img=new Image();img.src='assets/sprites/boss/boss_large_atlas.png?v=1';
   img.onload=()=>{fetch('assets/sprites/boss/boss_large_atlas.json?v=1').then(r=>r.json()).then(d=>{
@@ -32298,15 +32298,11 @@ function _detonateBlast(label,elSrc){
   P.parryBank=0;P.parryT=0;
 }
 // ═══ 지진폭풍: 기폭 대신 대왕치기 실행 ═══
-function _slamStormBlast(isManual){
+function _slamStormBlast(){
   const _ssLv=P.skills.giantSlam||1;const _ssR=200+(_ssLv-1)*22; // 200→400 (만렙10)
   const _ssStunR=_ssR; // 스턴 범위 = 데미지 범위와 동일
-  // 수동 Q기폭: detonate 티어(×19/38/64) — 기동:파괴 1티어급 / 자동: giantSlam 기본공식
-  const _ssChgBars=Math.min(3,1+~~((P.parryT||0)/60));
-  const _ssDetTier=_ssChgBars===3?64:_ssChgBars===2?38:19;
-  const _baseDmg=isManual
-    ?~~(meleeRef()*statStr()*pAtkMul()*_skMul('detonate')*_ssDetTier)
-    :~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam'));
+  // 기동:파괴 1티어 고정 (×19) — auto/수동 동일, fuseMul이 합체 등급 반영
+  const _baseDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('detonate')*19);
   const _bankBonus=~~((P.parryBank||0)*1.75);
   const _ssDmg=~~((_baseDmg+_bankBonus)*_fuseMul('giantSlam')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1));
   G._noHitStopT=60;
@@ -34073,7 +34069,7 @@ function activateGiantSlam(srcId){
   // 지진폭풍: 대왕치기 시 자동 기폭팔 발동
   if(_isFused('slamStorm')&&P.skills.detonate>=1){
     P.parryBank=Math.max(P.parryBank||0,200);P.parryT=Math.max(P.parryT||0,120);
-    _detonateBlast('지진기폭!',_gs1El);
+    _slamStormBlast(); // 지진기폭 — _detonateBlast 강제 tier3 버그 방지, 일관된 ×19 공식
   }
   // 기둥강타: 대왕치기2 시 악의기둥 자동 발동 (9기둥 + pillarSpike 가시덫 포함)
   if(srcId==='giantSlam2'&&_isFused('pillarSlam')&&P.skills.darkPillar>=1){
@@ -47597,9 +47593,6 @@ const _b3cvs=document.getElementById('boss3dCvs');
 const _b3r=new THREE.WebGLRenderer({canvas:_b3cvs,alpha:true,antialias:false});
 _b3r.setPixelRatio(Math.min(window.devicePixelRatio,2));
 _b3r.setClearColor(0x000000,0);
-const _b3clipFloor=new THREE.Plane(new THREE.Vector3(0,1,0),0);
-_b3r.clippingPlanes=[_b3clipFloor];
-_b3r.localClippingEnabled=true;
 _b3r.outputColorSpace=THREE.SRGBColorSpace;
 
 const _b3s=new THREE.Scene();
@@ -47749,8 +47742,6 @@ function _b3animate(){
   // Y: 보스 발 위치 기준 (중심+반지름), 모델 중앙을 올려 배치
   const _b3floorY=-((physY/scale+bossRcss)-H/2);
   _b3pivot.position.y=_b3floorY+tgtH*0.5+(window._btOffsetY||0);
-  // 클리핑: 발바닥(center+radius) 아래 차단 — 상체 안 잘림
-  _b3clipFloor.constant=cssY+bossRcss-H/2;
 
   // facing (X rotation: window._btRotX 으로 실시간 조절)
   _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);

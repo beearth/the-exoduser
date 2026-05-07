@@ -8180,7 +8180,7 @@ let _largeBossAtlasReady=false,_largeBossAtlasImg=null,_largeBossAtlasData=null;
 window._btScaleMul=3.7; // 보스 시각 스케일 배율
 window._b3Active=false; // 3D 보스 오버레이 활성 여부 (true면 2D 보스 렌더 차단)
 window._btRotX=0.0; // 보스 3D X축 회전 (rad)
-window._btOffsetY=0; // 보스 3D Y 오프셋 (px, 양수=위로) — 0=바닥 정렬, 음수=땅속
+window._btOffsetY=-50; // 보스 3D Y 오프셋 (px, 양수=위로)
 (function _loadLargeBossAtlas(){
   const img=new Image();img.src='assets/sprites/boss/boss_large_atlas.png?v=1';
   img.onload=()=>{fetch('assets/sprites/boss/boss_large_atlas.json?v=1').then(r=>r.json()).then(d=>{
@@ -22530,7 +22530,7 @@ function update(){
         // 불바닥 생성 — 3중폭: 기존 불바닥 위에 착지 시 확대 (3→6→9배, 지속 리셋)
         if(!G._fireZones)G._fireZones=[];
         const _afR=_stR*.6;
-        const _afDmg=~~(_stDmg*0.08);
+        const _afDmg=~~(_stDmg*0.16); // 도트 복구: 직접타격 반감 보상 (0.08×b:7=0.16×b:3.5 동일)
         let _afExist=null;
         for(let _afi=0;_afi<G._fireZones.length;_afi++){const fz=G._fireZones[_afi];if(fz.type!=='assaultFlame')continue;
           const _d2=dst(P.x,P.y,fz.x,fz.y);if(_d2<=fz.r&&(_afExist===null||(fz._afStk||0)>(_afExist._afStk||0)))_afExist=fz} // 소환 범위 내 착지만 강화
@@ -23316,7 +23316,7 @@ function update(){
     // 합성 회전기폭: Q로 수동 기폭
     if(_wwFused&&!_qIsIceOrb()&&isJust('parry')){
       if((P.parryT||0)>=_ssCD){
-        if(_isFused('slamStorm')){_slamStormBlast(true)}
+        if(_isFused('slamStorm')){_slamStormBlast()}
         else{_detonateBlast('회전기폭!',EL.P)}
       }
       else addTxt(P.x,P.y-30,_T('충전 중...'),'#ff8844',30);
@@ -32208,7 +32208,7 @@ function _detonateAssaultFlames(){
     const fz=G._fireZones[_di];if(fz.type!=='assaultFlame')continue;
     _detAny=true;
     const _remT=fz.maxT-fz.t;const _ticks=~~(_remT/20);
-    const _totalDmg=fz.dmg*Math.max(1,_ticks);
+    const _totalDmg=fz.dmg*Math.max(1,Math.min(_ticks,15)); // 폭발 캡 15틱(5초분) — 3중폭 누적 과다 방지
     const _detR=fz.r*1.2;
     const _detNe=shQuery(fz.x,fz.y,_detR+20);
     // _shBufI++ 제거됨 — hurtE 진입 시 자동 보호 (2026-05-03)
@@ -32298,15 +32298,11 @@ function _detonateBlast(label,elSrc){
   P.parryBank=0;P.parryT=0;
 }
 // ═══ 지진폭풍: 기폭 대신 대왕치기 실행 ═══
-function _slamStormBlast(isManual){
+function _slamStormBlast(){
   const _ssLv=P.skills.giantSlam||1;const _ssR=200+(_ssLv-1)*22; // 200→400 (만렙10)
   const _ssStunR=_ssR; // 스턴 범위 = 데미지 범위와 동일
-  // 수동 Q기폭: detonate 티어(×19/38/64) — 기동:파괴 1티어급 / 자동: giantSlam 기본공식
-  const _ssChgBars=Math.min(3,1+~~((P.parryT||0)/60));
-  const _ssDetTier=_ssChgBars===3?64:_ssChgBars===2?38:19;
-  const _baseDmg=isManual
-    ?~~(meleeRef()*statStr()*pAtkMul()*_skMul('detonate')*_ssDetTier)
-    :~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam'));
+  // 기동:파괴 1티어 고정 (×19) — auto/수동 동일, fuseMul이 합체 등급 반영
+  const _baseDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('detonate')*19);
   const _bankBonus=~~((P.parryBank||0)*1.75);
   const _ssDmg=~~((_baseDmg+_bankBonus)*_fuseMul('giantSlam')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1));
   G._noHitStopT=60;
@@ -33129,8 +33125,8 @@ const _SK_MUL={
   // ── 이동콤보 (조건부, 거리 보너스 별도) ──
   chainSlam:{b:6,g:2.4},      // ×거리(1~3.5), 최대 ATK×60 (Lv10), 진입비용 보상
   detonate:{b:6,g:2.4},       // 티어×19/38/64, chainSlam과 동급 (2026-05-06)
-  chainAssault:{b:7,g:2.8},   // ×거리(1~3), 최대 ATK×55 (Lv10), 진입비용 보상
-  chainSlash:{b:1.5,g:0.6},   // 다단/타, 15히트/초, 대시0.5초=31× (Lv10), 출혈50%
+  chainAssault:{b:3.5,g:1.4}, // 2배 너프 (2026-05-07), 직접타격+도트 동시 반감
+  chainSlash:{b:3.0,g:1.2},   // 2배 버프 (2026-05-07), 15히트/초×3.0=45×/s DPS ≈ 기동:파괴 1티어급, 출혈50%
   magicBlink:{b:3.0,g:1.2}, // 착지폭발 — 1.0→3.0 상향
   // ── 궁극기 ──
   hellRay:{b:5,g:2},
@@ -34073,7 +34069,7 @@ function activateGiantSlam(srcId){
   // 지진폭풍: 대왕치기 시 자동 기폭팔 발동
   if(_isFused('slamStorm')&&P.skills.detonate>=1){
     P.parryBank=Math.max(P.parryBank||0,200);P.parryT=Math.max(P.parryT||0,120);
-    _detonateBlast('지진기폭!',_gs1El);
+    _slamStormBlast(); // 지진기폭 — _detonateBlast 강제 tier3 버그 방지, 일관된 ×19 공식
   }
   // 기둥강타: 대왕치기2 시 악의기둥 자동 발동 (9기둥 + pillarSpike 가시덫 포함)
   if(srcId==='giantSlam2'&&_isFused('pillarSlam')&&P.skills.darkPillar>=1){
@@ -47683,6 +47679,7 @@ _b3loader.load(_B3_ANIMS.idle.src,(gltf)=>{
     const act=_b3mixer.clipAction(clip);_b3actions.idle=act;act.play();
   }
   _b3ready=true;
+  window._b3dbg={size:_b3size,pivot:_b3pivot,sc:()=>_b3sc,floorY:()=>window._b3lastFloorY};
   console.log('[BOSS3D] Model loaded',_b3size.x.toFixed(1)+'x'+_b3size.y.toFixed(1)+'x'+_b3size.z.toFixed(1));
   // 나머지 4개 애니 로드
   for(const st of ['walk','aggro','run','hit']){
@@ -47748,8 +47745,8 @@ function _b3animate(){
   // Y: boss CSS Y = 발 위치 → 모델 피벗(중앙)을 절반 높이만큼 위로 올려 땅속 박힘 방지
   // Y: 보스 발 위치 기준 (중심+반지름), 모델 중앙을 올려 배치
   const _b3floorY=-((physY/scale+bossRcss)-H/2);
+  window._b3lastFloorY=_b3floorY;
   _b3pivot.position.y=_b3floorY+tgtH*0.5+(window._btOffsetY||0);
-  // 클리핑: 발바닥(center+radius) 아래 차단 — 상체 안 잘림
   _b3clipFloor.constant=cssY+bossRcss-H/2;
 
   // facing (X rotation: window._btRotX 으로 실시간 조절)
