@@ -47776,11 +47776,9 @@ function _b3animate(){
   // Y: boss CSS Y = 발 위치 → 모델 피벗(중앙)을 절반 높이만큼 위로 올려 땅속 박힘 방지
   // Y: 보스 발 위치 기준 (중심+반지름), 모델 중앙을 올려 배치
   const _b3floorY=-((physY/scale+bossRcss)-H/2);
-  const _b3yOff=(window._btOffsetY||0);
-  const _footY=_b3floorY+_b3yOff;
-  window._b3lastFloorY=_footY;
-  _b3pivot.position.y=_footY+tgtH*0.5;
-  _b3clipFloor.constant=(cssY+bossRcss-H/2)-_b3yOff;
+  window._b3lastFloorY=_b3floorY;
+  _b3pivot.position.y=_b3floorY+tgtH*0.5+(window._btOffsetY||0);
+  _b3clipFloor.constant=cssY+bossRcss-H/2;
 
   // facing (X rotation: window._btRotX 으로 실시간 조절)
   _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);

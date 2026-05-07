@@ -149,9 +149,11 @@ if(e.stunned<=0 && e._maxStunned){
 
 ### 위치/스케일 계산 (`_b3animate`)
 
-**바닥 클리핑 평면** (`_b3clipFloor`): `cssY + bossRcss - H/2` = 발바닥(center+radius) 위치 기준, 그 아래 클리핑.
+**바닥 클리핑 평면** (`_b3clipFloor`): `(cssY + bossRcss - H/2) - _b3yOff` = 발바닥 위치에서 `_btOffsetY` 오프셋을 반영한 위치 기준, 그 아래 클리핑.
 
-> **주의**: `_btOffsetY` 기본값 `0` = 모델 하단이 바닥에 정렬. 음수 시 다리가 땅속으로 들어가며 클립 플레인으로 차단됨. `tgtH = bossRcss*2*_btScaleMul`이 scale에 따라 달라지므로 절대 px 음수값이 `tgtH/2`보다 크면 머리까지 함몰됨. Box3 클램핑은 SkinnedMesh 바인드포즈 오류로 제거됨.
+> **수정 (2026-05-07)**: `_btOffsetY`가 피벗 Y에만 반영되고 클리핑 평면에 미반영돼 50px 어긋나던 버그 수정. 이제 `_footY = _b3floorY + _b3yOff`, `_b3clipFloor.constant = (cssY+bossRcss-H/2) - _b3yOff`로 피벗과 클리핑이 항상 동기화.
+>
+> `_btOffsetY` 기본값 `-50` = 모델을 발바닥 기준 50px 아래로 내림. 클리핑 평면도 동일하게 이동하여 발 아래가 잘리지 않음.
 
 ### 위치/스케일 계산 상세
 
@@ -160,17 +162,25 @@ if(e.stunned<=0 && e._maxStunned){
 cssX = bE.x/scale - camX + innerWidth/2
 cssY = bE.y/scale - camY + innerHeight/2
 
-// Three.js 좌표 (X: 좌우, Y: 상하 반전)
+// 발 위치 (Three.js Y: 위가 양수, physY 기반)
+_b3floorY = -((physY/scale + bossRcss) - H/2)
+_b3yOff   = window._btOffsetY || 0          // Y 오프셋 (기본 -50)
+_footY    = _b3floorY + _b3yOff             // 오프셋 적용된 발 위치
+
+// Three.js 좌표
 _b3pivot.position.x = cssX - W/2
-_b3pivot.position.y = -(cssY - H/2) + tgtH * 0.5   // 발 위치 기준, 모델 중앙 올림
+_b3pivot.position.y = _footY + tgtH * 0.5  // 발 위치 기준, 모델 중앙 올림
+
+// 바닥 클리핑 (발바닥 = _footY 기준, 오프셋 동기화)
+_b3clipFloor.constant = (cssY + bossRcss - H/2) - _b3yOff
 
 // 스케일
 tgtH = (bE.r / scale) * 2.0 * (window._btScaleMul || 1)
 _b3sc = Math.max(0.1, tgtH / _b3size.y)
 _b3pivot.scale.setScalar(_b3sc)
 
-// 회전 (X: -0.28rad ≈ -16° 세움, Y: 방향 facing)
-_b3pivot.rotation.set(-0.28, -bE.facing + Math.PI/2, 0)
+// 회전 (X: _btRotX, Y: 방향 facing)
+_b3pivot.rotation.set(window._btRotX || 0, -bE.facing + Math.PI/2, 0)
 ```
 
 ### Y 위치 공식 변경 이력
@@ -179,6 +189,7 @@ _b3pivot.rotation.set(-0.28, -bE.facing + Math.PI/2, 0)
 |---|---|---|
 | 초기 | `-(cssY-H/2) - 100` | 5x 스케일 시 모델이 땅속에 박힘 |
 | v1.4 (2026-05-06) | `-(cssY-H/2) + tgtH*0.5` | 발 위치 기준으로 모델 중앙 올림 → 해결 |
+| v1.5 (2026-05-07) | `_footY + tgtH*0.5` (`_footY=_b3floorY+_b3yOff`) | `_btOffsetY`를 클리핑 평면에도 반영 — 피벗/클리핑 50px 어긋남 수정 |
 
 ### X 회전 이력
 
@@ -215,8 +226,8 @@ http://localhost:3333/game.html?bosstest=0
 |---|---|---|
 | `window._btScaleMul` | `3.7` (전역), 테스트베드에서 `5.0` 설정 | Three.js + 2D 캔버스 보스 시각 배율 |
 | `window._btRotX` | `0.0` (rad) | 보스 3D X축 회전 |
-| `window._btOffsetY` | `0` (px) | 보스 3D Y 오프셋 (양수=위로) — **0이 바닥 정렬 기준**. 음수 시 tgtH 대비 offset이 크면 머리까지 땅속 함몰 |
-| `_b3clipFloor` | `Plane(0,1,0)`, constant=`cssY+bossRcss-H/2` | 발바닥 아래 클리핑 |
+| `window._btOffsetY` | `-50` (px) | 보스 3D Y 오프셋 — 피벗 Y와 클리핑 평면 모두에 동기 반영. 양수=위로 이동+클리핑도 위로 |
+| `_b3clipFloor` | `Plane(0,1,0)`, constant=`(cssY+bossRcss-H/2)-_b3yOff` | 발바닥 아래 클리핑 — `_btOffsetY` 오프셋 반영 (2026-05-07 수정) |
 | `window._b3Active` | `true/false` | 3D 오버레이 활성 여부 — true면 2D 보스 렌더 완전 차단 |
 | `_btBoss` | `ens.find(e=>e.ib)` | 테스트베드 보스 참조 |
 | `_btGod` | `true` | 플레이어 무적 |
