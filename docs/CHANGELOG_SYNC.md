@@ -22828,3 +22828,9 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - game.html.bak_20260507_b3clip
 
+
+## 2026-05-07 21:30 (auto)
+- _autosave/game_20260507_203630.html
+- docs/14밸런???�치?�이�??�시브효과표.md
+- game.html
+
