@@ -23322,11 +23322,7 @@ function update(){
       else addTxt(P.x,P.y-30,_T('충전 중...'),'#ff8844',30);
     }
     if(!isAct('weapon')||P.st<=0||(_wwFused&&P.hp<=P.mhp*.05)){
-      // 스킬 합성: 회전참+기폭팔 → 종료 시 폭발 (총 회전 2초 이상이면 발동)
-      if(_wwFused&&(P._wwDetTimer||0)>=_ssCD){
-        if(_isFused('slamStorm')){_slamStormBlast()}
-        else{_detonateBlast('회전기폭!',EL.P)}
-      }
+      // 종료 시 추가 기폭 제거 — 회전 중 자동기폭(parryT 주기)으로 통일
       if(P._eStormActive){P._eStormActive=false;playSample('electric_storm_tail',.4,_r(1,.1))} // 종료 여운 0.5초
       P.s='wRecover';P.st2=18;P.wwAng=0;P._wwDetTimer=0;P._wwHitTimer=0;P.parryT=0;P.parryBank=0;P._sbTgts=null;P._sbPtsCnt=null;P._sbHitF=0;P._sbTgtT=0;P._wwTrN=0}
     break;
@@ -23660,8 +23656,7 @@ function update(){
       P._bdTrigger=null;
     }
     if(!isAct('parry')||P.mp<=0){
-      // 기폭팔: 보호막 해제 시 축적 데미지 폭발 + 해제 패링 윈도우 (2초 이상만)
-      if(P.skills.detonate&&(P.parryT||0)>=120)_detonateBlast('기폭팔!',wp().el||0);
+      // 해제 기폭 제거 — 자동기폭(parryT 2초 주기)으로 통일, 중복 폭발 없음
       P._sbProfDone=false;P.s='idle';P._sbParryT=12; // 해제 시 패링 윈도우 12틱
       G._sbBurst={x:P.x,y:P.y,r:P.r+5,maxR:P.skills.detonate>=1?150+((P.skills.detonate||1)-1)*15:90,spd:8,det:P.skills.detonate>=1};
       playSample('shield_end',.7,_r(1,.1));_stopShieldLoop();
@@ -27945,6 +27940,7 @@ function doParry(_inDmg,_px,_py,_forceQ){if(_px===undefined)_px=P.x;if(_py===und
   P.st=Math.min(P.mst,P.st+_prBase);
   P.mp=Math.min(P.mmp,P.mp+_prBase);
   _harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+10);
+  addTxt(P.x,P.y-76,'⚡기동+10','#44ccff',35);
   G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
@@ -33126,7 +33122,7 @@ const _SK_MUL={
   // ── 이동콤보 (조건부, 거리 보너스 별도) ──
   chainSlam:{b:6,g:2.4},      // ×거리(1~3.5), 최대 ATK×60 (Lv10), 진입비용 보상
   detonate:{b:6,g:2.4},       // 티어×19/38/64, chainSlam과 동급 (2026-05-06)
-  chainAssault:{b:3.5,g:1.4}, // 2배 너프 (2026-05-07), 직접타격+도트 동시 반감
+  chainAssault:{b:2.45,g:0.98}, // -30% (2026-05-07, 구 b:3.5→2.45)
   chainSlash:{b:3.0,g:1.2},   // 2배 버프 (2026-05-07), 15히트/초×3.0=45×/s DPS ≈ 기동:파괴 1티어급, 출혈50%
   magicBlink:{b:3.0,g:1.2}, // 착지폭발 — 1.0→3.0 상향
   // ── 궁극기 ──

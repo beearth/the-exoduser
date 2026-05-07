@@ -22530,7 +22530,7 @@ function update(){
         // 불바닥 생성 — 3중폭: 기존 불바닥 위에 착지 시 확대 (3→6→9배, 지속 리셋)
         if(!G._fireZones)G._fireZones=[];
         const _afR=_stR*.6;
-        const _afDmg=~~(_stDmg*0.08);
+        const _afDmg=~~(_stDmg*0.08); // 구 계수 유지 — 3중폭 45초 누적 폭발 감안
         let _afExist=null;
         for(let _afi=0;_afi<G._fireZones.length;_afi++){const fz=G._fireZones[_afi];if(fz.type!=='assaultFlame')continue;
           const _d2=dst(P.x,P.y,fz.x,fz.y);if(_d2<=fz.r&&(_afExist===null||(fz._afStk||0)>(_afExist._afStk||0)))_afExist=fz} // 소환 범위 내 착지만 강화
@@ -27944,6 +27944,7 @@ function doParry(_inDmg,_px,_py,_forceQ){if(_px===undefined)_px=P.x;if(_py===und
   P.hp=Math.min(P.mhp,P.hp+_prBase);
   P.st=Math.min(P.mst,P.st+_prBase);
   P.mp=Math.min(P.mmp,P.mp+_prBase);
+  _harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+10);
   G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
@@ -32208,7 +32209,7 @@ function _detonateAssaultFlames(){
     const fz=G._fireZones[_di];if(fz.type!=='assaultFlame')continue;
     _detAny=true;
     const _remT=fz.maxT-fz.t;const _ticks=~~(_remT/20);
-    const _totalDmg=fz.dmg*Math.max(1,_ticks);
+    const _totalDmg=fz.dmg*Math.max(1,_ticks); // 3중폭 45초 누적 폭발 — 의도된 설계
     const _detR=fz.r*1.2;
     const _detNe=shQuery(fz.x,fz.y,_detR+20);
     // _shBufI++ 제거됨 — hurtE 진입 시 자동 보호 (2026-05-03)
@@ -33125,8 +33126,8 @@ const _SK_MUL={
   // ── 이동콤보 (조건부, 거리 보너스 별도) ──
   chainSlam:{b:6,g:2.4},      // ×거리(1~3.5), 최대 ATK×60 (Lv10), 진입비용 보상
   detonate:{b:6,g:2.4},       // 티어×19/38/64, chainSlam과 동급 (2026-05-06)
-  chainAssault:{b:7,g:2.8},   // ×거리(1~3), 최대 ATK×55 (Lv10), 진입비용 보상
-  chainSlash:{b:1.5,g:0.6},   // 다단/타, 15히트/초, 대시0.5초=31× (Lv10), 출혈50%
+  chainAssault:{b:3.5,g:1.4}, // 2배 너프 (2026-05-07), 직접타격+도트 동시 반감
+  chainSlash:{b:3.0,g:1.2},   // 2배 버프 (2026-05-07), 15히트/초×3.0=45×/s DPS ≈ 기동:파괴 1티어급, 출혈50%
   magicBlink:{b:3.0,g:1.2}, // 착지폭발 — 1.0→3.0 상향
   // ── 궁극기 ──
   hellRay:{b:5,g:2},
@@ -47679,6 +47680,7 @@ _b3loader.load(_B3_ANIMS.idle.src,(gltf)=>{
     const act=_b3mixer.clipAction(clip);_b3actions.idle=act;act.play();
   }
   _b3ready=true;
+  window._b3dbg={size:_b3size,pivot:_b3pivot,sc:()=>_b3sc,floorY:()=>window._b3lastFloorY};
   console.log('[BOSS3D] Model loaded',_b3size.x.toFixed(1)+'x'+_b3size.y.toFixed(1)+'x'+_b3size.z.toFixed(1));
   // 나머지 4개 애니 로드
   for(const st of ['walk','aggro','run','hit']){
@@ -47744,6 +47746,7 @@ function _b3animate(){
   // Y: boss CSS Y = 발 위치 → 모델 피벗(중앙)을 절반 높이만큼 위로 올려 땅속 박힘 방지
   // Y: 보스 발 위치 기준 (중심+반지름), 모델 중앙을 올려 배치
   const _b3floorY=-((physY/scale+bossRcss)-H/2);
+  window._b3lastFloorY=_b3floorY;
   _b3pivot.position.y=_b3floorY+tgtH*0.5+(window._btOffsetY||0);
   _b3clipFloor.constant=cssY+bossRcss-H/2;
 
