@@ -32301,8 +32301,7 @@ function _detonateBlast(label,elSrc){
 function _slamStormBlast(){
   const _ssLv=P.skills.giantSlam||1;const _ssR=200+(_ssLv-1)*22; // 200→400 (만렙10)
   const _ssStunR=_ssR; // 스턴 범위 = 데미지 범위와 동일
-  // 기동:파괴 1티어 고정 (×19) — auto/수동 동일, fuseMul이 합체 등급 반영
-  const _baseDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('detonate')*19);
+  const _baseDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')); // 통일공식: _skMul (slamStorm)
   const _bankBonus=~~((P.parryBank||0)*1.75);
   const _ssDmg=~~((_baseDmg+_bankBonus)*_fuseMul('giantSlam')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1));
   G._noHitStopT=60;
@@ -33101,7 +33100,7 @@ function _fuseStar(skId){
 // final ≈ meleeRef × _skMul × levelBonus × 특수보정
 const _SK_MUL={
   // ── 단발 폭딜 (장쿨, 단일/광역) ──
-  giantSlam:{b:6,g:2.4},    // 단발 ×19 고정 = 기동:파괴 1티어급 (2026-05-07)
+  giantSlam:{b:5,g:2},      // 2배 너프 (2026-05-07), 8초쿨 단일강타
   maliceMortar:{b:7,g:2.8}, // ATK×7, 11초쿨, 광역
   iceOrb:{b:6,g:2.4},       // ATK×6, 10초쿨, 광역+CC
   maliceStorm:{b:12,g:4.8}, // ATK×12, 20초쿨, 장쿨
@@ -34054,7 +34053,7 @@ function activateGiantSlam(srcId){
   // 즉시 히트 (hitStop/slowMo 억제)
   G._noHitStopT=60;
   const _gs1R=500+(slv-1)*15;
-  const _gs1Dmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')*19); // 단발 1티어 고정 ×19 = 기동:파괴 1티어급
+  const _gs1Dmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')); // 통일공식: _skMul
   const _gs1El=wp().el||0;
   _gSlamHit(P.facing,_gs1R,Math.PI,_gs1Dmg,_gs1El,0,1.0);
   G.hitStop=0;G.slowMo=0;

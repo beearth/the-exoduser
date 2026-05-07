@@ -8180,7 +8180,7 @@ let _largeBossAtlasReady=false,_largeBossAtlasImg=null,_largeBossAtlasData=null;
 window._btScaleMul=3.7; // 보스 시각 스케일 배율
 window._b3Active=false; // 3D 보스 오버레이 활성 여부 (true면 2D 보스 렌더 차단)
 window._btRotX=0.0; // 보스 3D X축 회전 (rad)
-window._btOffsetY=-50; // 보스 3D Y 오프셋 (px, 양수=위로)
+window._btOffsetY=0; // 보스 3D Y 오프셋 (px, 양수=위로) — 0=바닥 정렬, 음수=땅속
 (function _loadLargeBossAtlas(){
   const img=new Image();img.src='assets/sprites/boss/boss_large_atlas.png?v=1';
   img.onload=()=>{fetch('assets/sprites/boss/boss_large_atlas.json?v=1').then(r=>r.json()).then(d=>{
@@ -23316,7 +23316,7 @@ function update(){
     // 합성 회전기폭: Q로 수동 기폭
     if(_wwFused&&!_qIsIceOrb()&&isJust('parry')){
       if((P.parryT||0)>=_ssCD){
-        if(_isFused('slamStorm')){_slamStormBlast()}
+        if(_isFused('slamStorm')){_slamStormBlast(true)}
         else{_detonateBlast('회전기폭!',EL.P)}
       }
       else addTxt(P.x,P.y-30,_T('충전 중...'),'#ff8844',30);
@@ -32240,10 +32240,10 @@ function _detonateBlast(label,elSrc){
   const _detLv=P.skills.detonate||1;
   const _chgBars=Math.min(3,1+~~((P.parryT||0)/60));
   const _detTierMul=_chgBars===3?64:_chgBars===2?38:19;
-  // 기본 데미지: 근접 ATK 기반 티어 × _skMul (chainSlam과 동급)
+  // 기본 데미지: 단발 스킬 — 기동:파괴 동급 (×19/38/64)
   const _detBase=~~(meleeRef()*statStr()*pAtkMul()*_skMul('detonate')*_detTierMul);
   // 패링 보너스 (가산)
-  const _detParry=~~((P.parryBank||0)*_skMul('detonate')*_chgBars);
+  const _detParry=~~((P.parryBank||0)*_chgBars*4);
   const boom=~~((_detBase+_detParry)*_fuseMul('detonate')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1));
   // 회전기폭: 최소 범위 = 현재 회전참 범위
   const _wwBaseRDet=_wdFused?((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+((P.skills.whirlwind||1)-1)*11:0;
@@ -32301,8 +32301,8 @@ function _detonateBlast(label,elSrc){
 function _slamStormBlast(){
   const _ssLv=P.skills.giantSlam||1;const _ssR=200+(_ssLv-1)*22; // 200→400 (만렙10)
   const _ssStunR=_ssR; // 스턴 범위 = 데미지 범위와 동일
-  // 대왕치기 데미지 × 0.7 + parryBank 축적분 × 0.7
-  const _baseDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')); // 통일공식: _skMul (slamStorm)
+  // 기동:파괴 1티어 고정 (×19) — auto/수동 동일, fuseMul이 합체 등급 반영
+  const _baseDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('detonate')*19);
   const _bankBonus=~~((P.parryBank||0)*1.75);
   const _ssDmg=~~((_baseDmg+_bankBonus)*_fuseMul('giantSlam')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1));
   G._noHitStopT=60;
@@ -33101,7 +33101,7 @@ function _fuseStar(skId){
 // final ≈ meleeRef × _skMul × levelBonus × 특수보정
 const _SK_MUL={
   // ── 단발 폭딜 (장쿨, 단일/광역) ──
-  giantSlam:{b:10,g:4},     // ATK×5 (×0.5감소), 8초쿨, 단일강타
+  giantSlam:{b:6,g:2.4},    // 단발 ×19 고정 = 기동:파괴 1티어급 (2026-05-07)
   maliceMortar:{b:7,g:2.8}, // ATK×7, 11초쿨, 광역
   iceOrb:{b:6,g:2.4},       // ATK×6, 10초쿨, 광역+CC
   maliceStorm:{b:12,g:4.8}, // ATK×12, 20초쿨, 장쿨
@@ -34054,7 +34054,7 @@ function activateGiantSlam(srcId){
   // 즉시 히트 (hitStop/slowMo 억제)
   G._noHitStopT=60;
   const _gs1R=500+(slv-1)*15;
-  const _gs1Dmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')); // 통일공식: _skMul
+  const _gs1Dmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')*19); // 단발 1티어 고정 ×19 = 기동:파괴 1티어급
   const _gs1El=wp().el||0;
   _gSlamHit(P.facing,_gs1R,Math.PI,_gs1Dmg,_gs1El,0,1.0);
   G.hitStop=0;G.slowMo=0;
@@ -47746,7 +47746,7 @@ function _b3animate(){
   const _b3floorY=-((physY/scale+bossRcss)-H/2);
   _b3pivot.position.y=_b3floorY+tgtH*0.5+(window._btOffsetY||0);
   // 클리핑: 발바닥(center+radius) 아래 차단 — 상체 안 잘림
-  _b3clipFloor.constant=cssY+bossRcss*2-H/2;
+  _b3clipFloor.constant=cssY+bossRcss-H/2;
 
   // facing (X rotation: window._btRotX 으로 실시간 조절)
   _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);

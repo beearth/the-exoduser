@@ -8177,10 +8177,10 @@ const _USE_EXT_ATLAS=false;
 // ── Atlas B External (외부 보스 아틀라스) ──
 // ── 대형보스 8방향 아틀라스 ──
 let _largeBossAtlasReady=false,_largeBossAtlasImg=null,_largeBossAtlasData=null;
-window._btScaleMul=3.0; // 보스 시각 스케일 배율
+window._btScaleMul=3.7; // 보스 시각 스케일 배율
 window._b3Active=false; // 3D 보스 오버레이 활성 여부 (true면 2D 보스 렌더 차단)
-window._btRotX=0; // 보스 3D X축 회전 (rad, 실시간 조절)
-window._btOffsetY=0; // 보스 3D Y 오프셋 (px, 양수=위로, 실시간 조절)
+window._btRotX=0.0; // 보스 3D X축 회전 (rad)
+window._btOffsetY=0; // 보스 3D Y 오프셋 (px, 양수=위로) — 0=바닥 정렬, 음수=땅속
 (function _loadLargeBossAtlas(){
   const img=new Image();img.src='assets/sprites/boss/boss_large_atlas.png?v=1';
   img.onload=()=>{fetch('assets/sprites/boss/boss_large_atlas.json?v=1').then(r=>r.json()).then(d=>{
@@ -19566,7 +19566,7 @@ function mkP(){
     activeRMBSk:'shieldBlock',
     activeQSk:'parry',
     activeCtSk:'ghostWalk',
-    skills:{kiSlash:1,fireball:1},_fused:{},maskOn:true};
+    skills:{kiSlash:1,fireball:1,bladeDash:1},_fused:{},maskOn:true};
 }
 
 // ═══════════════════════════════════════
@@ -22450,7 +22450,7 @@ function update(){
         const _csR=450+(_csLv-1)*~~(225/9); // 1렙450, 10렙675
         // 사슬기동 티어 3단계 매핑: 1티어(탭)=×30, 2티어(0.1초)=×60, 3티어(0.2초)=×100 (업화선급)
         const _csTier=Math.max(1,Math.min(3,_harpTier||1));
-        const _csDistMul=_csTier===3?100:_csTier===2?60:30;
+        const _csDistMul=_csTier===3?64:_csTier===2?38:19;
         const _csDmg=~~(meleeRef()*_skMul('chainSlam')*statStr()*pAtkMul()*_csDistMul*_fuseMul('chainSlam'));
         const _csEl=wp().el||0;
         G._noHitStopT=40;
@@ -32238,11 +32238,13 @@ function _detonateBlast(label,elSrc){
   const _wdFused=_isFused('whirlDet');
   _addSkProf('detonate');
   const _detLv=P.skills.detonate||1;
-  const _detMul=2.0+_detLv*0.08+(_wdFused?_detLv*0.06:0);
   const _chgBars=Math.min(3,1+~~((P.parryT||0)/60));
-  // 최소 데미지: 플레이어 공격력 기반 (차지 단계 × 레벨 스케일)
-  const _detBase=~~(magicRef()*statInt()*_chgBars*3.33);
-  const boom=~~(Math.max(_detBase,~~((P.parryBank||0)*_detMul*_chgBars))*_fuseMul('detonate')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1));
+  const _detTierMul=_chgBars===3?64:_chgBars===2?38:19;
+  // 기본 데미지: 근접 ATK 기반 티어 × _skMul (chainSlam과 동급)
+  const _detBase=~~(meleeRef()*statStr()*pAtkMul()*_skMul('detonate')*_detTierMul);
+  // 패링 보너스 (가산)
+  const _detParry=~~((P.parryBank||0)*_skMul('detonate')*_chgBars);
+  const boom=~~((_detBase+_detParry)*_fuseMul('detonate')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1));
   // 회전기폭: 최소 범위 = 현재 회전참 범위
   const _wwBaseRDet=_wdFused?((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+((P.skills.whirlwind||1)-1)*11:0;
   const _wwGrowDet=_wdFused?Math.min(1,(P.wwAng||0)/63)+Math.min(1,(P.parryBank||0)/500):0;
@@ -32257,7 +32259,7 @@ function _detonateBlast(label,elSrc){
     SFX.slash();SFX.detonate();
   }
   if(Math.random()<.4)playSample('voice_explode',.8,_r(1,.1));
-  if(!(G._noHitStopT>0)){G.shake=(14+_chgBars*4)*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25+_chgBars*5;G.hitStop=Math.max(G.hitStop,~~((10+_chgBars*3)*OPT.hitStop/100))}  addTxt(P.x,P.y-30,_T(label||'기폭팔')+(_chgBars>=2?' ×'+_chgBars:'')+' '+boom,'#ff2200',70);
+  if(!(G._noHitStopT>0)){G.shake=(14+_chgBars*4)*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25+_chgBars*5;G.hitStop=Math.max(G.hitStop,~~((10+_chgBars*3)*OPT.hitStop/100))}  addTxt(P.x,P.y-30,_T(label||'기폭팔')+' '+_chgBars+'단계 ×'+_detTierMul+' '+boom,'#ff2200',70);
   const _isSlamDet=(label==='지진기폭!');
   if(!_isSlamDet){
     _addDetVfx(P.x,P.y,boomR,30+_chgBars*5,_chgBars);
@@ -32299,8 +32301,12 @@ function _detonateBlast(label,elSrc){
 function _slamStormBlast(){
   const _ssLv=P.skills.giantSlam||1;const _ssR=200+(_ssLv-1)*22; // 200→400 (만렙10)
   const _ssStunR=_ssR; // 스턴 범위 = 데미지 범위와 동일
-  // 대왕치기 데미지 × 0.7 + parryBank 축적분 × 0.7
-  const _baseDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')); // 통일공식: _skMul (slamStorm)
+  // 기폭팔 합체(whirlDet) 시: detonate _skMul × 티어(×19/38/64) → chainSlam과 동급
+  const _ssChgBars=Math.min(3,1+~~((P.parryT||0)/60));
+  const _ssDetTier=_isFused('whirlDet')?(_ssChgBars===3?64:_ssChgBars===2?38:19):1;
+  const _baseDmg=_isFused('whirlDet')
+    ?~~(meleeRef()*statStr()*pAtkMul()*_skMul('detonate')*_ssDetTier)
+    :~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam'));
   const _bankBonus=~~((P.parryBank||0)*1.75);
   const _ssDmg=~~((_baseDmg+_bankBonus)*_fuseMul('giantSlam')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1));
   G._noHitStopT=60;
@@ -32783,21 +32789,20 @@ const SKILL_CATS=[
 ];
 // ═══ 추천 빌드 순서 (고정) ═══
 const SKILL_REC_PATH=[
-  {phase:'1. 전격이동',phaseEn:'1. Flash Step',skills:['bladeDash'],fuse:null,desc:'이동 핵심기 — 더블탭 순간이동, 기절 탈출 가능. 초반 생존력 핵심',descEn:'Core mobility — double-tap blink, escapes stagger/stun. Essential early survivability'},
-  {phase:'2. 악의폭풍',phaseEn:'2. Malice Storm',skills:['maliceStorm'],fuse:null,desc:'핵심 광역기 — 먼저 배워서 정리력 확보',descEn:'Core AoE — learn first for mob clearing'},
-  {phase:'3. 칼날+역병',phaseEn:'3. Blade+Plague',skills:['maliceHunt','guardian','plagueBurst'],fuse:'bladeFuse',desc:'악의 사냥 + 보호자 + 폭독칼날 → 합체: 칼날 해방 / 독혈 해방',descEn:'Malice Hunt + Guardian + Plague Burst → Fuse: Blade Liberation / Plague Liberation'},
-  {phase:'4. 이동+사슬',phaseEn:'4. Movement+Chain',skills:['chargeBoost','magicBlink','chainAssault','chainSlam'],fuse:'dimBreach',desc:'충돌+화염+사슬 확장 → 합체: 사슬기동 / 기동:전폭',descEn:'Impact+Flame+Chain Expand → Fuse: Chain Breach / Maneuver:Thunder'},
-  {phase:'5. 💀 필살기 선택',phaseEn:'5. 💀 Ultimate Pick',skills:['holyBlast','blackStar','lavaSummon','execution'],fuse:null,pick:true,desc:'필살기 1개 선택! 신성폭발(넉백) / 블랙(흡인) / 용암(화상) / 처형(보스킬)',descEn:'Pick 1 ultimate! Holy Blast(knockback) / Black Star(pull) / Lava(burn) / Execution(boss kill)'},
-  {phase:'6. 멸살+만화+원소',phaseEn:'6. Beam+Barrage+Elem',skills:['omniBeam','fanShot','elemMissile'],fuse:'elemFuse',desc:'멸살광선+만화방창+원소추적탄 → 합체: 추적빔',descEn:'Omni Beam+Barrage+Elem Missile → Fuse: Tracking Beam'},
-  {phase:'7. 회전참+기폭+대왕',phaseEn:'7. Whirl+Det+Giant',skills:['whirlwind','detonate','giantSlam'],fuse:'slamStorm',desc:'회전참+기폭+대왕치기 → 합체: 지진폭풍',descEn:'Whirlwind+Detonate+Giant Slam → Fuse: Slam Storm'},
-  {phase:'8. 방패 합체',phaseEn:'8. Shield Fuse',skills:['maliceSwipe','shieldThrow'],fuse:'shieldFuse',desc:'칼등치기 + 칼등날개 → 합체: 처내기 강화',descEn:'Blade Parry + Shield Wing → Fuse: Parry Enhanced'},
-  {phase:'9. 해골무덤+악의폭풍',phaseEn:'9. Bone Wall+Malice Storm',skills:['boneWall','maliceStorm'],fuse:'boneStorm',desc:'해골무덤 + 악의폭풍 → 합체: 해골번개',descEn:'Bone Wall + Malice Storm → Fuse: Bone Lightning'},
-  {phase:'10. 폭풍소환+얼음보주+뇌전걸음',phaseEn:'10. Storm+Ice+GhostWalk',skills:['maliceMortar','iceOrb','ghostWalk'],fuse:'iceMortar',desc:'폭풍소환 + 얼음보주 + 뇌전걸음 → 합체: 얼음폭풍',descEn:'Malice Mortar + Ice Orb + Ghost Walk → Fuse: Ice Mortar'},
-  {phase:'11. 신성 영역',phaseEn:'11. Holy Domain',skills:['holyDome','holyPrison'],fuse:'holyFuse',desc:'회복 + 구속 → 합체: 결계의 영역',descEn:'Recovery + Prison → Fuse: Ward Domain'},
-  {phase:'12. 6단합체: 폭풍빔',phaseEn:'12. 6-Fuse: Storm Beam',skills:[],fuse:'stormBeam',desc:'지진폭풍+추적암전 → 6단합체: 폭풍빔',descEn:'Slam Storm → 6-Fuse: Storm Beam'},
-  {phase:'13. 신성+빙결',phaseEn:'13. Holy+Ice',skills:['iceStorm'],fuse:'holyIce',desc:'아이스스톰 추가 → 합체: 신성빙결',descEn:'Ice Storm → Fuse: Holy Ice'},
-  {phase:'14. 암흑+가시+대왕2',phaseEn:'14. Dark+Spike+Slam2',skills:['darkPillar','spikeTrap','giantSlam2'],fuse:'pillarSpike',desc:'암흑기둥 + 가시덫 → 합체: 기둥가시. 대왕치기2는 기둥강타/지옥강타용',descEn:'Dark Pillar + Spike Trap → Fuse: Pillar Spike. Giant Slam 2 for Pillar Slam/Inferno Slam'},
-  {phase:'15. 사슬 최종',phaseEn:'15. Chain Final',skills:['chainSlash'],fuse:'dimRush',desc:'기동칼날개 추가 → 5단합체: 기동:칼날개',descEn:'Chain Bladewing → 5-Fuse: Maneuver:Bladewing'},
+  {phase:'1. 악의폭풍',phaseEn:'1. Malice Storm',skills:['maliceStorm'],fuse:null,desc:'핵심 광역기 — 먼저 배워서 정리력 확보',descEn:'Core AoE — learn first for mob clearing'},
+  {phase:'2. 칼날+역병',phaseEn:'2. Blade+Plague',skills:['maliceHunt','guardian','plagueBurst'],fuse:'bladeFuse',desc:'악의 사냥 + 보호자 + 폭독칼날 → 합체: 칼날 해방 / 독혈 해방',descEn:'Malice Hunt + Guardian + Plague Burst → Fuse: Blade Liberation / Plague Liberation'},
+  {phase:'3. 이동+사슬',phaseEn:'3. Movement+Chain',skills:['chargeBoost','magicBlink','chainAssault','chainSlam'],fuse:'dimBreach',desc:'충돌+화염+사슬 확장 → 합체: 사슬기동 / 기동:전폭',descEn:'Impact+Flame+Chain Expand → Fuse: Chain Breach / Maneuver:Thunder'},
+  {phase:'4. 💀 필살기 선택',phaseEn:'4. 💀 Ultimate Pick',skills:['holyBlast','blackStar','lavaSummon','execution'],fuse:null,pick:true,desc:'필살기 1개 선택! 신성폭발(넉백) / 블랙(흡인) / 용암(화상) / 처형(보스킬)',descEn:'Pick 1 ultimate! Holy Blast(knockback) / Black Star(pull) / Lava(burn) / Execution(boss kill)'},
+  {phase:'5. 멸살+만화+원소',phaseEn:'5. Beam+Barrage+Elem',skills:['omniBeam','fanShot','elemMissile'],fuse:'elemFuse',desc:'멸살광선+만화방창+원소추적탄 → 합체: 추적빔',descEn:'Omni Beam+Barrage+Elem Missile → Fuse: Tracking Beam'},
+  {phase:'6. 회전참+기폭+대왕',phaseEn:'6. Whirl+Det+Giant',skills:['whirlwind','detonate','giantSlam'],fuse:'slamStorm',desc:'회전참+기폭+대왕치기 → 합체: 지진폭풍',descEn:'Whirlwind+Detonate+Giant Slam → Fuse: Slam Storm'},
+  {phase:'7. 방패 합체',phaseEn:'7. Shield Fuse',skills:['maliceSwipe','shieldThrow'],fuse:'shieldFuse',desc:'칼등치기 + 칼등날개 → 합체: 처내기 강화',descEn:'Blade Parry + Shield Wing → Fuse: Parry Enhanced'},
+  {phase:'8. 해골무덤+악의폭풍',phaseEn:'8. Bone Wall+Malice Storm',skills:['boneWall','maliceStorm'],fuse:'boneStorm',desc:'해골무덤 + 악의폭풍 → 합체: 해골번개',descEn:'Bone Wall + Malice Storm → Fuse: Bone Lightning'},
+  {phase:'9. 폭풍소환+얼음보주+뇌전걸음',phaseEn:'9. Storm+Ice+GhostWalk',skills:['maliceMortar','iceOrb','ghostWalk'],fuse:'iceMortar',desc:'폭풍소환 + 얼음보주 + 뇌전걸음 → 합체: 얼음폭풍',descEn:'Malice Mortar + Ice Orb + Ghost Walk → Fuse: Ice Mortar'},
+  {phase:'10. 신성 영역',phaseEn:'10. Holy Domain',skills:['holyDome','holyPrison'],fuse:'holyFuse',desc:'회복 + 구속 → 합체: 결계의 영역',descEn:'Recovery + Prison → Fuse: Ward Domain'},
+  {phase:'11. 6단합체: 폭풍빔',phaseEn:'11. 6-Fuse: Storm Beam',skills:['whirlwind','detonate','giantSlam','fanShot','omniBeam','elemMissile'],fuse:'stormBeam',desc:'지진폭풍+추적암전 → 6단합체: 폭풍빔',descEn:'Slam Storm → 6-Fuse: Storm Beam'},
+  {phase:'12. 신성+빙결',phaseEn:'12. Holy+Ice',skills:['iceStorm'],fuse:'holyIce',desc:'아이스스톰 추가 → 합체: 신성빙결',descEn:'Ice Storm → Fuse: Holy Ice'},
+  {phase:'13. 암흑+가시+대왕2',phaseEn:'13. Dark+Spike+Slam2',skills:['darkPillar','spikeTrap','giantSlam2'],fuse:'pillarSpike',desc:'암흑기둥 + 가시덫 → 합체: 기둥가시. 대왕치기2는 기둥강타/지옥강타용',descEn:'Dark Pillar + Spike Trap → Fuse: Pillar Spike. Giant Slam 2 for Pillar Slam/Inferno Slam'},
+  {phase:'14. 사슬 최종',phaseEn:'14. Chain Final',skills:['chainSlash'],fuse:'dimRush',desc:'기동칼날개 추가 → 5단합체: 기동:칼날개',descEn:'Chain Bladewing → 5-Fuse: Maneuver:Bladewing'},
 ];
 const SKILL_HIER=[
   {id:'rec',name:'⭐ 추천',nameEn:'⭐ Recommend',col:'#ffcc44',cats:null},
@@ -33123,6 +33128,7 @@ const _SK_MUL={
   kiSlash:{b:1.0,g:0.42},     // 3단콤보(1.5/1.5/5.0), 4.1히트/초, DPS ~31×/초 (Lv10)
   // ── 이동콤보 (조건부, 거리 보너스 별도) ──
   chainSlam:{b:6,g:2.4},      // ×거리(1~3.5), 최대 ATK×60 (Lv10), 진입비용 보상
+  detonate:{b:6,g:2.4},       // 티어×19/38/64, chainSlam과 동급 (2026-05-06)
   chainAssault:{b:7,g:2.8},   // ×거리(1~3), 최대 ATK×55 (Lv10), 진입비용 보상
   chainSlash:{b:1.5,g:0.6},   // 다단/타, 15히트/초, 대시0.5초=31× (Lv10), 출혈50%
   magicBlink:{b:3.0,g:1.2}, // 착지폭발 — 1.0→3.0 상향
@@ -46347,111 +46353,107 @@ const INTRO_CUTSCENE_LINES={
     {id:1,img:'6.png',t:0,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,px:0,py:0,ease:'out'},vfx:{vig:.4,grain:.15,grade:'purple'},fade:{in:800,out:200,type:'cross'},sfx:'goddess_laugh'},
     {id:2,img:'4.png',t:2500,dur:1500,speaker:null,text:'',cam:{zs:1.05,ze:1.15,px:0,py:0,ease:'out'},vfx:{vig:.35,chrom:.3,shake:1},fade:{type:'cross',in:300},sfx:'laugh_climax'},
     {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'네놈의 그 짜릿한 복수극, 잘도 봤다. 명작이더구나.',cam:{zs:1,ze:1.05,px:5,py:0,ease:'linear'},vfx:{vig:.5,grain:.1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:60,shadow:true}},
-    {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'관람료는 내야겠지. 그래, 네놈에게 기회를 주마. 선택의 여지는 없다.',cam:{zs:1.08,ze:1,px:0,py:0,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'네놈에게 알량한 선의가 보이는구나. 구해야 할 사람이 아직 남아 있을 텐데.\n아직도 너를 기다리고 있는 것 같던데? 서로 시간이 많지 않다...',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:60,shadow:true}},
-    {id:6,img:'7.png',t:17500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
-    {id:7,img:'20.png',t:19000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},
-    {id:8,img:'21.png',t:21500,dur:3000,speaker:'GODDESS',text:'그 아이의 목마를 보니 망자도 정신이 드는가 보구나.',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:9,img:'22.png',t:24500,dur:2500,speaker:null,text:'',cam:{zs:1.05,ze:1,ease:'out'},vfx:{vig:.4,grain:.15},fade:{type:'cross',in:400},sfx:'reach_strain'},
-    {id:10,img:'1.png',t:27000,dur:6500,speaker:'GODDESS',text:'그래, 이곳을 탈출하라. 내 친히 너를 도와주마.\n디로이와 핵터가 너를 안내할 것이다. 또 보자, 망자여.',cam:{zs:1.1,ze:1,ease:'inout'},vfx:{vig:.5,grade:'purple'},fade:{type:'cross',in:500,out:600},text_cfg:{reveal:'char',speed:65,shadow:true}},
-    {id:11,img:'9.png',t:33500,dur:3000,speaker:'DIROY',text:'놀랄 거 없어. 인사나 하지. 내가 디로이.',cam:{zs:1,ze:1.08,ease:'out'},vfx:{vig:.4,glowEye:true},fade:{type:'black',in:500},text_cfg:{reveal:'char',speed:50,glow:true}},
-    {id:12,img:'11.png',t:36500,dur:3500,speaker:'HECTOR',text:'내가 핵터. 여신님의 가호로 생각하면 돼.\n우리도 이곳을 나가야 하거든.',cam:{zs:1,ze:1.05,px:-10,ease:'linear'},vfx:{vig:.3,flicker:.2},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
-    {id:13,img:'17.png',t:40000,dur:4000,speaker:'DIROY',text:'악마는 악의로 만들어진 존재야.\n본능적으로 선의를 공격하려 들어.',cam:{zs:1.05,ze:1.1,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:14,img:'18.png',t:44000,dur:5500,speaker:'HECTOR',text:'근데 너는 좀 특이해. 선의가 강하거든.\n악의는 일시적으로 폭발한 상태고. 곧 사라질 거야, 그 폭발도.',cam:{zs:1,ze:1.15,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
-    {id:15,img:'19.png',t:49500,dur:3500,speaker:'DIROY',text:'그래서 악마들이 네 냄새를 맡고 몰려들 거야.',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
-    {id:16,img:'23.png',t:53000,dur:5000,speaker:'DIROY',text:'여신님이 네게 무구를 내리셨어. 챙겨.',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:17,img:'24.png',t:58000,dur:5500,speaker:'HECTOR',text:'여신님이 보내신 투영이야. 전장의 영혼이지.\n쇠뇌에 깃들어서 너랑 같이 싸울 거야.',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:55,glow:true}},
-    {id:18,img:'25.png',t:63500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
-    {id:'18b',img:'15.png',t:66000,dur:5500,speaker:'DIROY',text:'그 악의띠도 차. 폭발한 악의가 너를\n미치게 하기 전에 정신을 잡아줄 거야.',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:19,img:'10.png',t:69000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
-    {id:20,img:'16.png',t:71500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
-    {id:21,img:'16.png',t:73500,dur:3500,speaker:'HECTOR',text:'이 인간 또 기절했네. 얼마나 안 잔 거야?',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:22,img:'16.png',t:77000,dur:4000,speaker:'DIROY',text:'복수만 생각하느라 며칠을 안 먹고 안 잔 모양이야.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:'22b',img:'16.png',t:81000,dur:2500,speaker:'DIROY',text:'놔두면 잡아먹혀.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:23,img:'16.png',t:83500,dur:2500,speaker:'HECTOR',text:'악의라도 먹여서 깨워야 해.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:60,shadow:true}},
-    {id:24,img:'17.png',t:83500,dur:2500,speaker:'DIROY',text:'...',cam:{zs:1,ze:1.05,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:80,shadow:true}},
-    {id:25,img:null,t:86000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
+    {id:5,img:'3.png',t:8500,dur:5000,speaker:'GODDESS',text:'네놈에게 알량한 선의가 보이는구나. 구해야 할 사람이 아직 남아 있을 텐데.\n아직도 너를 기다리고 있는 것 같던데? 서로 시간이 많지 않다...',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:6,img:'7.png',t:13500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
+    {id:7,img:'20.png',t:15000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},
+    {id:8,img:'21.png',t:17500,dur:3000,speaker:'GODDESS',text:'그 아이의 목마를 보니 망자도 정신이 드는가 보구나.',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:9,img:'22.png',t:20500,dur:2500,speaker:null,text:'',cam:{zs:1.05,ze:1,ease:'out'},vfx:{vig:.4,grain:.15},fade:{type:'cross',in:400},sfx:'reach_strain'},
+    {id:10,img:'1.png',t:23000,dur:6500,speaker:'GODDESS',text:'그래, 이곳을 탈출하라. 내 친히 너를 도와주마.\n디로이와 핵터가 너를 안내할 것이다. 또 보자, 망자여.',cam:{zs:1.1,ze:1,ease:'inout'},vfx:{vig:.5,grade:'purple'},fade:{type:'cross',in:500,out:600},text_cfg:{reveal:'char',speed:65,shadow:true}},
+    {id:11,img:'9.png',t:29500,dur:3000,speaker:'DIROY',text:'놀랄 거 없어. 인사나 하지. 내가 디로이.',cam:{zs:1,ze:1.08,ease:'out'},vfx:{vig:.4,glowEye:true},fade:{type:'black',in:500},text_cfg:{reveal:'char',speed:50,glow:true}},
+    {id:12,img:'11.png',t:32500,dur:3500,speaker:'HECTOR',text:'내가 핵터. 여신님의 가호로 생각하면 돼.\n우리도 이곳을 나가야 하거든.',cam:{zs:1,ze:1.05,px:-10,ease:'linear'},vfx:{vig:.3,flicker:.2},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:13,img:'17.png',t:36000,dur:4000,speaker:'DIROY',text:'악마는 악의로 만들어진 존재야.\n본능적으로 선의를 공격하려 들어.',cam:{zs:1.05,ze:1.1,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:14,img:'18.png',t:40000,dur:5500,speaker:'HECTOR',text:'근데 너는 좀 특이해. 선의가 강하거든.\n악의는 일시적으로 폭발한 상태고. 곧 사라질 거야, 그 폭발도.',cam:{zs:1,ze:1.15,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:15,img:'19.png',t:45500,dur:3500,speaker:'DIROY',text:'그래서 악마들이 네 냄새를 맡고 몰려들 거야.',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:16,img:'23.png',t:49000,dur:5000,speaker:'DIROY',text:'여신님이 네게 무구를 내리셨어. 챙겨.',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:17,img:'24.png',t:54000,dur:5500,speaker:'HECTOR',text:'여신님이 보내신 투영이야. 전장의 영혼이지.\n쇠뇌에 깃들어서 너랑 같이 싸울 거야.',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:55,glow:true}},
+    {id:18,img:'25.png',t:59500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
+    {id:'18b',img:'15.png',t:62000,dur:5500,speaker:'DIROY',text:'그 악의띠도 차. 폭발한 악의가 너를\n미치게 하기 전에 정신을 잡아줄 거야.',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:19,img:'10.png',t:65000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
+    {id:20,img:'16.png',t:67500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
+    {id:21,img:'16.png',t:69500,dur:3500,speaker:'HECTOR',text:'이 인간 또 기절했네. 얼마나 안 잔 거야?',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:22,img:'16.png',t:73000,dur:4000,speaker:'DIROY',text:'복수만 생각하느라 며칠을 안 먹고 안 잔 모양이야.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:'22b',img:'16.png',t:77000,dur:2500,speaker:'DIROY',text:'놔두면 잡아먹혀.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:23,img:'16.png',t:79500,dur:2500,speaker:'HECTOR',text:'악의라도 먹여서 깨워야 해.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:24,img:'17.png',t:79500,dur:2500,speaker:'DIROY',text:'...',cam:{zs:1,ze:1.05,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:80,shadow:true}},
+    {id:25,img:null,t:82000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
   ],en:[
     {id:1,img:'6.png',t:0,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,px:0,py:0,ease:'out'},vfx:{vig:.4,grain:.15,grade:'purple'},fade:{in:800,out:200,type:'cross'},sfx:'goddess_laugh'},
     {id:2,img:'4.png',t:2500,dur:1500,speaker:null,text:'',cam:{zs:1.05,ze:1.15,px:0,py:0,ease:'out'},vfx:{vig:.35,chrom:.3,shake:1},fade:{type:'cross',in:300},sfx:'laugh_climax'},
     {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'Your thrilling revenge play was quite the spectacle. A masterpiece, truly.',cam:{zs:1,ze:1.05,px:5,py:0,ease:'linear'},vfx:{vig:.5,grain:.1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
-    {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'Admission isn\'t free. I\'ll grant you a chance. You have no choice in the matter.',cam:{zs:1.08,ze:1,px:0,py:0,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
-    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'I see a pitiful goodness in you. Want to see them? Don\'t you have someone to save? Still alive, are they.',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:45,shadow:true}},
-    {id:6,img:'7.png',t:17500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
-    {id:7,img:'20.png',t:19000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},
-    {id:8,img:'21.png',t:21500,dur:3000,speaker:'GODDESS',text:'That rocking horse snapped you right awake, did it.',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
-    {id:9,img:'22.png',t:24500,dur:2500,speaker:null,text:'',cam:{zs:1.05,ze:1,ease:'out'},vfx:{vig:.4,grain:.15},fade:{type:'cross',in:400},sfx:'reach_strain'},
-    {id:10,img:'1.png',t:27000,dur:6500,speaker:'GODDESS',text:'Very well. Escape this place. I\'ll personally see to it.\nDiroy and Hector will guide you. Until next time, dead one.',cam:{zs:1.1,ze:1,ease:'inout'},vfx:{vig:.5,grade:'purple'},fade:{type:'cross',in:500,out:600},text_cfg:{reveal:'char',speed:50,shadow:true}},
-    {id:11,img:'9.png',t:33500,dur:3000,speaker:'DIROY',text:'Don\'t be alarmed. Let me introduce myself. I\'m Diroy.',cam:{zs:1,ze:1.08,ease:'out'},vfx:{vig:.4,glowEye:true},fade:{type:'black',in:500},text_cfg:{reveal:'char',speed:45,glow:true}},
-    {id:12,img:'11.png',t:36500,dur:3500,speaker:'HECTOR',text:'I\'m Hector. Think of us as a blessing from the goddess.\nWe need to get out of here too.',cam:{zs:1,ze:1.05,px:-10,ease:'linear'},vfx:{vig:.3,flicker:.2},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
-    {id:13,img:'17.png',t:40000,dur:4000,speaker:'DIROY',text:'Demons are creatures born of malice.\nThey instinctively attack anything with goodness.',cam:{zs:1.05,ze:1.1,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
-    {id:14,img:'18.png',t:44000,dur:5500,speaker:'HECTOR',text:'But you\'re special. Your goodness is strong.\nAnd your malice has temporarily erupted. It\'ll fade soon enough.',cam:{zs:1,ze:1.15,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
-    {id:15,img:'19.png',t:49500,dur:3500,speaker:'DIROY',text:'So demons will catch your scent and swarm toward you.',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
-    {id:16,img:'23.png',t:53000,dur:5000,speaker:'DIROY',text:'The goddess has bestowed weapons upon you. Take them.',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:45,shadow:true}},
-    {id:17,img:'24.png',t:58000,dur:5500,speaker:'HECTOR',text:'A projection sent by the goddess. A soul from the battlefield.\nIt dwells in the crossbow and will fight alongside you.',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:45,glow:true}},
-    {id:18,img:'25.png',t:63500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
-    {id:'18b',img:'15.png',t:66000,dur:5500,speaker:'DIROY',text:'Wear that circlet too. It\'ll keep your mind intact\nbefore the erupted malice drives you insane.',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
-    {id:19,img:'10.png',t:69000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
-    {id:20,img:'16.png',t:71500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
-    {id:21,img:'16.png',t:73500,dur:3500,speaker:'HECTOR',text:'This guy passed out again. How long has he been awake?',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:45,shadow:true}},
-    {id:22,img:'16.png',t:77000,dur:4000,speaker:'DIROY',text:'Must\'ve gone days without food or sleep, consumed by revenge.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:45,shadow:true}},
-    {id:23,img:'16.png',t:81000,dur:2500,speaker:'HECTOR',text:'Just feed him some malice.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:45,shadow:true}},
-    {id:24,img:'17.png',t:83500,dur:2500,speaker:'DIROY',text:'...',cam:{zs:1,ze:1.05,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:80,shadow:true}},
-    {id:25,img:null,t:86000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
+    {id:5,img:'3.png',t:8500,dur:5000,speaker:'GODDESS',text:'I see a pitiful goodness in you. Want to see them? Don\'t you have someone to save? Still alive, are they.',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:45,shadow:true}},
+    {id:6,img:'7.png',t:13500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
+    {id:7,img:'20.png',t:15000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},
+    {id:8,img:'21.png',t:17500,dur:3000,speaker:'GODDESS',text:'That rocking horse snapped you right awake, did it.',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
+    {id:9,img:'22.png',t:20500,dur:2500,speaker:null,text:'',cam:{zs:1.05,ze:1,ease:'out'},vfx:{vig:.4,grain:.15},fade:{type:'cross',in:400},sfx:'reach_strain'},
+    {id:10,img:'1.png',t:23000,dur:6500,speaker:'GODDESS',text:'Very well. Escape this place. I\'ll personally see to it.\nDiroy and Hector will guide you. Until next time, dead one.',cam:{zs:1.1,ze:1,ease:'inout'},vfx:{vig:.5,grade:'purple'},fade:{type:'cross',in:500,out:600},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:11,img:'9.png',t:29500,dur:3000,speaker:'DIROY',text:'Don\'t be alarmed. Let me introduce myself. I\'m Diroy.',cam:{zs:1,ze:1.08,ease:'out'},vfx:{vig:.4,glowEye:true},fade:{type:'black',in:500},text_cfg:{reveal:'char',speed:45,glow:true}},
+    {id:12,img:'11.png',t:32500,dur:3500,speaker:'HECTOR',text:'I\'m Hector. Think of us as a blessing from the goddess.\nWe need to get out of here too.',cam:{zs:1,ze:1.05,px:-10,ease:'linear'},vfx:{vig:.3,flicker:.2},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
+    {id:13,img:'17.png',t:36000,dur:4000,speaker:'DIROY',text:'Demons are creatures born of malice.\nThey instinctively attack anything with goodness.',cam:{zs:1.05,ze:1.1,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
+    {id:14,img:'18.png',t:40000,dur:5500,speaker:'HECTOR',text:'But you\'re special. Your goodness is strong.\nAnd your malice has temporarily erupted. It\'ll fade soon enough.',cam:{zs:1,ze:1.15,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
+    {id:15,img:'19.png',t:45500,dur:3500,speaker:'DIROY',text:'So demons will catch your scent and swarm toward you.',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
+    {id:16,img:'23.png',t:49000,dur:5000,speaker:'DIROY',text:'The goddess has bestowed weapons upon you. Take them.',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:45,shadow:true}},
+    {id:17,img:'24.png',t:54000,dur:5500,speaker:'HECTOR',text:'A projection sent by the goddess. A soul from the battlefield.\nIt dwells in the crossbow and will fight alongside you.',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:45,glow:true}},
+    {id:18,img:'25.png',t:59500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
+    {id:'18b',img:'15.png',t:62000,dur:5500,speaker:'DIROY',text:'Wear that circlet too. It\'ll keep your mind intact\nbefore the erupted malice drives you insane.',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:45,shadow:true}},
+    {id:19,img:'10.png',t:65000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
+    {id:20,img:'16.png',t:67500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
+    {id:21,img:'16.png',t:69500,dur:3500,speaker:'HECTOR',text:'This guy passed out again. How long has he been awake?',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:45,shadow:true}},
+    {id:22,img:'16.png',t:73000,dur:4000,speaker:'DIROY',text:'Must\'ve gone days without food or sleep, consumed by revenge.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:45,shadow:true}},
+    {id:23,img:'16.png',t:77000,dur:2500,speaker:'HECTOR',text:'Just feed him some malice.',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:45,shadow:true}},
+    {id:24,img:'17.png',t:79500,dur:2500,speaker:'DIROY',text:'...',cam:{zs:1,ze:1.05,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:80,shadow:true}},
+    {id:25,img:null,t:82000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
   ],ja:[
     {id:1,img:'6.png',t:0,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,px:0,py:0,ease:'out'},vfx:{vig:.4,grain:.15,grade:'purple'},fade:{in:800,out:200,type:'cross'},sfx:'goddess_laugh'},
     {id:2,img:'4.png',t:2500,dur:1500,speaker:null,text:'',cam:{zs:1.05,ze:1.15,px:0,py:0,ease:'out'},vfx:{vig:.35,chrom:.3,shake:1},fade:{type:'cross',in:300},sfx:'laugh_climax'},
     {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'お前のあのスリリングな復讐劇、実に見事だった。傑作だよ。',cam:{zs:1,ze:1.05,px:5,py:0,ease:'linear'},vfx:{vig:.5,grain:.1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'観覧料は払ってもらおうか。お前にチャンスをやろう。選択の余地はない。',cam:{zs:1.08,ze:1,px:0,py:0,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'お前にはちっぽけな善意が見える。会いたいのか？救うべき者がいるのではないか？まだ生きているようだな。',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:6,img:'7.png',t:17500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
-    {id:7,img:'20.png',t:19000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},
-    {id:8,img:'21.png',t:21500,dur:3000,speaker:'GODDESS',text:'あの木馬を見て目が覚めたか、亡者よ。',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:9,img:'22.png',t:24500,dur:2500,speaker:null,text:'',cam:{zs:1.05,ze:1,ease:'out'},vfx:{vig:.4,grain:.15},fade:{type:'cross',in:400},sfx:'reach_strain'},
-    {id:10,img:'1.png',t:27000,dur:6500,speaker:'GODDESS',text:'よかろう、ここから脱出しろ。私自ら手を貸してやる。\nディロイとヘクターがお前を導くだろう。また会おう、亡者よ。',cam:{zs:1.1,ze:1,ease:'inout'},vfx:{vig:.5,grade:'purple'},fade:{type:'cross',in:500,out:600},text_cfg:{reveal:'char',speed:60,shadow:true}},
-    {id:11,img:'9.png',t:33500,dur:3000,speaker:'DIROY',text:'驚くな。挨拶しよう。俺はディロイだ。',cam:{zs:1,ze:1.08,ease:'out'},vfx:{vig:.4,glowEye:true},fade:{type:'black',in:500},text_cfg:{reveal:'char',speed:50,glow:true}},
-    {id:12,img:'11.png',t:36500,dur:3500,speaker:'HECTOR',text:'俺はヘクター。女神様の加護と思えばいい。\n俺たちもここを出なきゃならないんだ。',cam:{zs:1,ze:1.05,px:-10,ease:'linear'},vfx:{vig:.3,flicker:.2},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
-    {id:13,img:'17.png',t:40000,dur:4000,speaker:'DIROY',text:'悪魔は悪意から生まれた存在だ。\n本能的に善意を攻撃しようとする。',cam:{zs:1.05,ze:1.1,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:14,img:'18.png',t:44000,dur:5500,speaker:'HECTOR',text:'でもお前はちょっと特別だ。善意が強い。\nそして悪意は一時的に暴発した状態だ。すぐに消えるさ、その暴発も。',cam:{zs:1,ze:1.15,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
-    {id:15,img:'19.png',t:49500,dur:3500,speaker:'DIROY',text:'だから悪魔どもがお前の匂いを嗅ぎつけて押し寄せてくる。',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
-    {id:16,img:'23.png',t:53000,dur:5000,speaker:'DIROY',text:'女神がお前に武器を授けた。受け取れ。',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:17,img:'24.png',t:58000,dur:5500,speaker:'HECTOR',text:'女神が送った投影だ。戦場の魂さ。\n弩に宿ってお前と共に戦う。',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:55,glow:true}},
-    {id:18,img:'25.png',t:63500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
-    {id:'18b',img:'15.png',t:66000,dur:5500,speaker:'DIROY',text:'その頭飾りもつけろ。暴発した悪意に\n狂わされる前に正気を保ってくれるはずだ。',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:19,img:'10.png',t:69000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
-    {id:20,img:'16.png',t:71500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
-    {id:21,img:'16.png',t:73500,dur:3500,speaker:'HECTOR',text:'こいつまた気絶したぞ。どれだけ寝てないんだ？',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:22,img:'16.png',t:77000,dur:4000,speaker:'DIROY',text:'復讐のことだけ考えて何日も飯も食わず寝てもいなかったようだ。',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:23,img:'16.png',t:81000,dur:2500,speaker:'HECTOR',text:'悪意でも食わせろ。',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:24,img:'17.png',t:83500,dur:2500,speaker:'DIROY',text:'...',cam:{zs:1,ze:1.05,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:80,shadow:true}},
-    {id:25,img:null,t:86000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
+    {id:5,img:'3.png',t:8500,dur:5000,speaker:'GODDESS',text:'お前にはちっぽけな善意が見える。会いたいのか？救うべき者がいるのではないか？まだ生きているようだな。',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:6,img:'7.png',t:13500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
+    {id:7,img:'20.png',t:15000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},
+    {id:8,img:'21.png',t:17500,dur:3000,speaker:'GODDESS',text:'あの木馬を見て目が覚めたか、亡者よ。',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:9,img:'22.png',t:20500,dur:2500,speaker:null,text:'',cam:{zs:1.05,ze:1,ease:'out'},vfx:{vig:.4,grain:.15},fade:{type:'cross',in:400},sfx:'reach_strain'},
+    {id:10,img:'1.png',t:23000,dur:6500,speaker:'GODDESS',text:'よかろう、ここから脱出しろ。私自ら手を貸してやる。\nディロイとヘクターがお前を導くだろう。また会おう、亡者よ。',cam:{zs:1.1,ze:1,ease:'inout'},vfx:{vig:.5,grade:'purple'},fade:{type:'cross',in:500,out:600},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:11,img:'9.png',t:29500,dur:3000,speaker:'DIROY',text:'驚くな。挨拶しよう。俺はディロイだ。',cam:{zs:1,ze:1.08,ease:'out'},vfx:{vig:.4,glowEye:true},fade:{type:'black',in:500},text_cfg:{reveal:'char',speed:50,glow:true}},
+    {id:12,img:'11.png',t:32500,dur:3500,speaker:'HECTOR',text:'俺はヘクター。女神様の加護と思えばいい。\n俺たちもここを出なきゃならないんだ。',cam:{zs:1,ze:1.05,px:-10,ease:'linear'},vfx:{vig:.3,flicker:.2},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:13,img:'17.png',t:36000,dur:4000,speaker:'DIROY',text:'悪魔は悪意から生まれた存在だ。\n本能的に善意を攻撃しようとする。',cam:{zs:1.05,ze:1.1,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:14,img:'18.png',t:40000,dur:5500,speaker:'HECTOR',text:'でもお前はちょっと特別だ。善意が強い。\nそして悪意は一時的に暴発した状態だ。すぐに消えるさ、その暴発も。',cam:{zs:1,ze:1.15,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:15,img:'19.png',t:45500,dur:3500,speaker:'DIROY',text:'だから悪魔どもがお前の匂いを嗅ぎつけて押し寄せてくる。',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:16,img:'23.png',t:49000,dur:5000,speaker:'DIROY',text:'女神がお前に武器を授けた。受け取れ。',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:17,img:'24.png',t:54000,dur:5500,speaker:'HECTOR',text:'女神が送った投影だ。戦場の魂さ。\n弩に宿ってお前と共に戦う。',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:55,glow:true}},
+    {id:18,img:'25.png',t:59500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
+    {id:'18b',img:'15.png',t:62000,dur:5500,speaker:'DIROY',text:'その頭飾りもつけろ。暴発した悪意に\n狂わされる前に正気を保ってくれるはずだ。',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:19,img:'10.png',t:65000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
+    {id:20,img:'16.png',t:67500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
+    {id:21,img:'16.png',t:69500,dur:3500,speaker:'HECTOR',text:'こいつまた気絶したぞ。どれだけ寝てないんだ？',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:22,img:'16.png',t:73000,dur:4000,speaker:'DIROY',text:'復讐のことだけ考えて何日も飯も食わず寝てもいなかったようだ。',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:23,img:'16.png',t:77000,dur:2500,speaker:'HECTOR',text:'悪意でも食わせろ。',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:24,img:'17.png',t:79500,dur:2500,speaker:'DIROY',text:'...',cam:{zs:1,ze:1.05,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:80,shadow:true}},
+    {id:25,img:null,t:82000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
   ],zh:[
     {id:1,img:'6.png',t:0,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,px:0,py:0,ease:'out'},vfx:{vig:.4,grain:.15,grade:'purple'},fade:{in:800,out:200,type:'cross'},sfx:'goddess_laugh'},
     {id:2,img:'4.png',t:2500,dur:1500,speaker:null,text:'',cam:{zs:1.05,ze:1.15,px:0,py:0,ease:'out'},vfx:{vig:.35,chrom:.3,shake:1},fade:{type:'cross',in:300},sfx:'laugh_climax'},
     {id:3,img:'5.png',t:4000,dur:4500,speaker:'GODDESS',text:'你那场痛快的复仇戏，我可是看得津津有味。真是杰作啊。',cam:{zs:1,ze:1.05,px:5,py:0,ease:'linear'},vfx:{vig:.5,grain:.1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:4,img:'2.png',t:8500,dur:4000,speaker:'GODDESS',text:'观赏费总得付吧。好吧，给你个机会。你没有选择的余地。',cam:{zs:1.08,ze:1,px:0,py:0,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:5,img:'3.png',t:12500,dur:5000,speaker:'GODDESS',text:'我看到你身上有微薄的善意。想见他们吗？你不是还有要救的人吗？还活着呢。',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:6,img:'7.png',t:17500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
-    {id:7,img:'20.png',t:19000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},
-    {id:8,img:'21.png',t:21500,dur:3000,speaker:'GODDESS',text:'看到那木马就清醒了吗，亡者。',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:9,img:'22.png',t:24500,dur:2500,speaker:null,text:'',cam:{zs:1.05,ze:1,ease:'out'},vfx:{vig:.4,grain:.15},fade:{type:'cross',in:400},sfx:'reach_strain'},
-    {id:10,img:'1.png',t:27000,dur:6500,speaker:'GODDESS',text:'好吧，从这里逃出去。我亲自帮你。\n迪罗伊和赫克特会引导你。后会有期，亡者。',cam:{zs:1.1,ze:1,ease:'inout'},vfx:{vig:.5,grade:'purple'},fade:{type:'cross',in:500,out:600},text_cfg:{reveal:'char',speed:60,shadow:true}},
-    {id:11,img:'9.png',t:33500,dur:3000,speaker:'DIROY',text:'别惊慌。先打个招呼吧。我是迪罗伊。',cam:{zs:1,ze:1.08,ease:'out'},vfx:{vig:.4,glowEye:true},fade:{type:'black',in:500},text_cfg:{reveal:'char',speed:50,glow:true}},
-    {id:12,img:'11.png',t:36500,dur:3500,speaker:'HECTOR',text:'我是赫克特。就当是女神的恩赐吧。\n我们也得离开这里。',cam:{zs:1,ze:1.05,px:-10,ease:'linear'},vfx:{vig:.3,flicker:.2},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
-    {id:13,img:'17.png',t:40000,dur:4000,speaker:'DIROY',text:'恶魔是由恶意诞生的存在。\n它们本能地会攻击一切善意。',cam:{zs:1.05,ze:1.1,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:14,img:'18.png',t:44000,dur:5500,speaker:'HECTOR',text:'但你有点特别。你的善意很强。\n而你的恶意正处于暂时爆发状态。很快就会消退的。',cam:{zs:1,ze:1.15,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
-    {id:15,img:'19.png',t:49500,dur:3500,speaker:'DIROY',text:'所以恶魔们会闻到你的气味蜂拥而来。',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
-    {id:16,img:'23.png',t:53000,dur:5000,speaker:'DIROY',text:'女神赐予了你武器。拿着吧。',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:17,img:'24.png',t:58000,dur:5500,speaker:'HECTOR',text:'女神派来的投影。战场上的灵魂。\n寄宿在弩上，会与你并肩作战。',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:55,glow:true}},
-    {id:18,img:'25.png',t:63500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
-    {id:'18b',img:'15.png',t:66000,dur:5500,speaker:'DIROY',text:'那个头饰也戴上。在爆发的恶意\n把你逼疯之前，它能帮你保持清醒。',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:19,img:'10.png',t:69000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
-    {id:20,img:'16.png',t:71500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
-    {id:21,img:'16.png',t:73500,dur:3500,speaker:'HECTOR',text:'这家伙又晕过去了。多久没睡了？',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:22,img:'16.png',t:77000,dur:4000,speaker:'DIROY',text:'光想着复仇，好几天没吃没睡的样子。',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:23,img:'16.png',t:81000,dur:2500,speaker:'HECTOR',text:'喂他点恶意吧。',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
-    {id:24,img:'17.png',t:83500,dur:2500,speaker:'DIROY',text:'...',cam:{zs:1,ze:1.05,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:80,shadow:true}},
-    {id:25,img:null,t:86000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
+    {id:5,img:'3.png',t:8500,dur:5000,speaker:'GODDESS',text:'我看到你身上有微薄的善意。想见他们吗？你不是还有要救的人吗？还活着呢。',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:6,img:'7.png',t:13500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
+    {id:7,img:'20.png',t:15000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},
+    {id:8,img:'21.png',t:17500,dur:3000,speaker:'GODDESS',text:'看到那木马就清醒了吗，亡者。',cam:{zs:1,ze:1.1,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:9,img:'22.png',t:20500,dur:2500,speaker:null,text:'',cam:{zs:1.05,ze:1,ease:'out'},vfx:{vig:.4,grain:.15},fade:{type:'cross',in:400},sfx:'reach_strain'},
+    {id:10,img:'1.png',t:23000,dur:6500,speaker:'GODDESS',text:'好吧，从这里逃出去。我亲自帮你。\n迪罗伊和赫克特会引导你。后会有期，亡者。',cam:{zs:1.1,ze:1,ease:'inout'},vfx:{vig:.5,grade:'purple'},fade:{type:'cross',in:500,out:600},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:11,img:'9.png',t:29500,dur:3000,speaker:'DIROY',text:'别惊慌。先打个招呼吧。我是迪罗伊。',cam:{zs:1,ze:1.08,ease:'out'},vfx:{vig:.4,glowEye:true},fade:{type:'black',in:500},text_cfg:{reveal:'char',speed:50,glow:true}},
+    {id:12,img:'11.png',t:32500,dur:3500,speaker:'HECTOR',text:'我是赫克特。就当是女神的恩赐吧。\n我们也得离开这里。',cam:{zs:1,ze:1.05,px:-10,ease:'linear'},vfx:{vig:.3,flicker:.2},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:13,img:'17.png',t:36000,dur:4000,speaker:'DIROY',text:'恶魔是由恶意诞生的存在。\n它们本能地会攻击一切善意。',cam:{zs:1.05,ze:1.1,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:14,img:'18.png',t:40000,dur:5500,speaker:'HECTOR',text:'但你有点特别。你的善意很强。\n而你的恶意正处于暂时爆发状态。很快就会消退的。',cam:{zs:1,ze:1.15,ease:'out'},vfx:{vig:.4},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:15,img:'19.png',t:45500,dur:3500,speaker:'DIROY',text:'所以恶魔们会闻到你的气味蜂拥而来。',cam:{zs:1.1,ze:1,ease:'in'},vfx:{vig:.6,shake:1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:50,shadow:true}},
+    {id:16,img:'23.png',t:49000,dur:5000,speaker:'DIROY',text:'女神赐予了你武器。拿着吧。',cam:{zs:1.2,ze:1,px:0,py:0,ease:'out'},vfx:{vig:.4,sparkHL:true,glowEye:true},fade:{type:'cross',in:500},sfx:'weapons_appear',text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:17,img:'24.png',t:54000,dur:5500,speaker:'HECTOR',text:'女神派来的投影。战场上的灵魂。\n寄宿在弩上，会与你并肩作战。',cam:{zs:1.15,ze:1,px:-15,py:0,ease:'out'},vfx:{glowPulse:'blue',chrom:.3,particle:true},fade:{type:'cross',in:500},sfx:'ghost_bond_hum',text_cfg:{reveal:'char',speed:55,glow:true}},
+    {id:18,img:'25.png',t:59500,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,ease:'out'},vfx:{glowPulse:'blue',chrom:.3},fade:{type:'cross',in:500},sfx:'crossbow_glow'},
+    {id:'18b',img:'15.png',t:62000,dur:5500,speaker:'DIROY',text:'那个头饰也戴上。在爆发的恶意\n把你逼疯之前，它能帮你保持清醒。',cam:{zs:1.1,ze:1.3,px:40,py:30,ease:'inout'},vfx:{glowPulse:'blue',particle:true,chrom:.3},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:19,img:'10.png',t:65000,dur:2500,speaker:null,text:'',cam:{zs:1.08,ze:1,py:5,ease:'in'},vfx:{vig:.4},fade:{type:'cross',in:400},sfx:'armor_kneel'},
+    {id:20,img:'16.png',t:67500,dur:2000,speaker:null,text:'',cam:{zs:1,ze:1.05,ease:'linear'},vfx:{vig:.7},fade:{type:'cross',in:300},sfx:'armor_collapse'},
+    {id:21,img:'16.png',t:69500,dur:3500,speaker:'HECTOR',text:'这家伙又晕过去了。多久没睡了？',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:22,img:'16.png',t:73000,dur:4000,speaker:'DIROY',text:'光想着复仇，好几天没吃没睡的样子。',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:23,img:'16.png',t:77000,dur:2500,speaker:'HECTOR',text:'喂他点恶意吧。',cam:{zs:1,ze:1},vfx:{vig:.6},fade:{type:'cut'},text_cfg:{reveal:'char',speed:55,shadow:true}},
+    {id:24,img:'17.png',t:79500,dur:2500,speaker:'DIROY',text:'...',cam:{zs:1,ze:1.05,ease:'out'},vfx:{vig:.5},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:80,shadow:true}},
+    {id:25,img:null,t:82000,dur:1500,speaker:null,text:'',exit:true,fade:{out:1500,type:'black'}}
   ]
 };
 
@@ -47583,7 +47585,7 @@ const _btOrigLoop=window.requestAnimationFrame;
 })();
 </script>
 <!-- ═══ 3D 보스 오버레이 ═══ -->
-<canvas id="boss3dCvs" style="position:fixed;inset:0;pointer-events:none;z-index:50"></canvas>
+<canvas id="boss3dCvs" style="position:fixed;inset:0;pointer-events:none;z-index:5000"></canvas>
 <script type="importmap">
 {"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
 </script>
@@ -47595,6 +47597,9 @@ const _b3cvs=document.getElementById('boss3dCvs');
 const _b3r=new THREE.WebGLRenderer({canvas:_b3cvs,alpha:true,antialias:false});
 _b3r.setPixelRatio(Math.min(window.devicePixelRatio,2));
 _b3r.setClearColor(0x000000,0);
+const _b3clipFloor=new THREE.Plane(new THREE.Vector3(0,1,0),0);
+_b3r.clippingPlanes=[_b3clipFloor];
+_b3r.localClippingEnabled=true;
 _b3r.outputColorSpace=THREE.SRGBColorSpace;
 
 const _b3s=new THREE.Scene();
@@ -47744,6 +47749,8 @@ function _b3animate(){
   // Y: 보스 발 위치 기준 (중심+반지름), 모델 중앙을 올려 배치
   const _b3floorY=-((physY/scale+bossRcss)-H/2);
   _b3pivot.position.y=_b3floorY+tgtH*0.5+(window._btOffsetY||0);
+  // 클리핑: 발바닥(center+radius) 아래 차단 — 상체 안 잘림
+  _b3clipFloor.constant=cssY+bossRcss-H/2;
 
   // facing (X rotation: window._btRotX 으로 실시간 조절)
   _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);
