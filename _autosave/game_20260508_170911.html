@@ -4696,7 +4696,7 @@ const _EN={
 '만화방창 II':'Needle Barrage II','마력연사':'Arcane Barrage','마력광선':'Arc Laser','업화선':'Hellfire Beam',
 '지옥진':'Inferno Array','폭독칼날':'Plague Blade','악의폭풍':'Malice Storm',
 '악의기둥':'Dark Pillar','회복의 영역':'Sacred Domain','구속의 영역':'Binding Domain',
-'아이스스톰':'Ice Storm','대왕치기':'Giant Slam','대왕치기 2':'Giant Slam II','독침':'Venom Needle','🐍 독침!':'🐍 Venom Needle!',
+'아이스스톰':'Ice Storm','대왕치기':'Giant Slam','대왕치기 2':'Giant Slam II','독사':'Venom Snake','🐍 독사!':'🐍 Venom Snake!',
 '기동불꽃':'Chain Blaze','기동파괴':'Chain Crush','기동칼날개':'Chain Bladewing',
 '평화의보호':'Aegis of Peace','참회':'Repentance','칼등날개':'Shield Wing',
 '폭산탄':'Blast Shot','파쇄의 영역':'Shatter Domain','침식의 영역':'Corrosion Domain',
@@ -12374,7 +12374,7 @@ function _beanRoll(el,col,sz,spd,dmgMult,e){
       if(_dr<.06)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:1.0,gbBean:true};
       if(_dr<.08)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:1.0};
       return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:1.0}}
-    if(e._beanCnt%4!==0)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:1.5,blackBean:true};
+    if(e._beanCnt%2!==0)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:1.5,blackBean:true};
     return{el:el,col:'#cc1100',sz:1.5,spd:spd*2.0,dmgM:1.2,redBean:true,homing:true}}
   const r=Math.random();
   if(r<.60)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:1.5,blackBean:true};
@@ -25173,7 +25173,7 @@ function update(){
           if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*_bladeBleed;
         }
         if(p.venomBlade){
-          // 독침: 직타 무시, 독 DOT 위주 — bowRef×DEX 풀뎀 축적
+          // 독사: 직타 무시, 독 DOT 위주 — bowRef×DEX 풀뎀 축적
           e.poison=1;
           e.poisonT=Math.max(e.poisonT||0,600); // 10초 지속
           e.poisonStk=(e.poisonStk||0)+1;
@@ -25608,7 +25608,7 @@ function update(){
   let _qsAnyCD=false;
   for(let i=0;i<4;i++){if(qsCooldown[i]>0){qsCooldown[i]-=sp;_qsAnyCD=true;if(qsCooldown[i]<=0){qsCooldown[i]=0;updateQS()}}}
   const _msMax2=(P.skills.maliceStorm>=10)?3:2,_isMax2=(P.skills.iceStorm>=10)?3:2,_bwMax2=(P.skills.boneWall>=10)?3:2;
-  const _anySkCd=((P._mhCd>0)||(P._msCd>0)||(P._isStk!=null&&P._isStk<_isMax2)||(P._bwStk!=null&&P._bwStk<_bwMax2)||(P.chargeStocks<P.maxChargeStocks&&P.chargeCd>0)||P._mmCd>0||P._hbCd>0||P._ebCd>0||P._bltCd>0||P._bsCd>0||P._blueCd>0||P._gwCd>0||P._pbCd>0||P._ioCd>0||P._dpCd>0||P._stCd>0||P._lvCd>0||P._bdCd>0||P._gslCd>0||P._hdCd>0||P._bnsCd>0||P._wpCd>0||P._wmCd>0||P._wjCd>0||P._wrCd>0||P._twCd>0);
+  const _anySkCd=((P._mhCd>0)||(P._msCd>0)||(P._isStk!=null&&P._isStk<_isMax2)||(P._bwStk!=null&&P._bwStk<_bwMax2)||(P.chargeStocks<P.maxChargeStocks&&P.chargeCd>0)||P._mmCd>0||P._hbCd>0||P._ebCd>0||P._bltCd>0||P._bsCd>0||P._blueCd>0||P._gwCd>0||P._pbCd>0||P._ioCd>0||P._dpCd>0||P._stCd>0||P._lvCd>0||P._bdCd>0||P._gslCd>0||P._hdCd>0||P._bnsCd>0||P._wpCd>0||P._wmCd>0||P._wjCd>0||P._wrCd>0||P._twCd>0||P._vbCd>0);
   if((_qsAnyCD||_anySkCd)&&~~(_now)%3===0)updateQS(); // 쿨다운 중 실시간 표시 갱신
   if(~~(_now)%6===0)_updateActionKeys(); // E/SH/F 슬롯 상태 갱신
   // Auto-potion: HP가 물약 회복량 이상 빠지면 자동 섭취
@@ -27824,8 +27824,8 @@ function _bossPhaseCheck(e,sp){
   {
     const _bCnt=8+_bp*4;
     for(let bi=0;bi<_bCnt;bi++){const ba=Math.PI*2*bi/_bCnt;
-      const _iR1=Math.random();const _isBK1=_iR1<.5;const _isRB1=_iR1>=.5;
-      spawnProj({x:e.x,y:e.y,vx:Math.cos(ba)*(_isBK1?4.4:3+Math.random()),vy:Math.sin(ba)*(_isBK1?4.4:3+Math.random()),dmg:~~(e.atk*(_isBK1?1.5:_isRB1?1.5:.6)),el:_isBK1?EL.P:e.el,friendly:false,life:_isBK1?400:350,ml:_isBK1?400:350,col:_isBK1?'#00aa00':_isRB1?'#cc1100':e.col,sz:_isBK1?2.0:_isRB1?1.8:1.2,redBean:_isRB1||undefined,blackBean:_isBK1||undefined,homing:_isRB1||undefined})}
+      const _isRB1=bi%2===0;const _rnbH=(bi*360/_bCnt)|0;const _rnbC=_isRB1?'#cc1100':('hsl('+_rnbH+',100%,60%)');
+      spawnProj({x:e.x,y:e.y,vx:Math.cos(ba)*(3+Math.random()),vy:Math.sin(ba)*(3+Math.random()),dmg:~~(e.atk*(_isRB1?1.5:1.2)),el:e.el,friendly:false,life:380,ml:380,col:_rnbC,sz:_isRB1?1.8:1.5,redBean:_isRB1||undefined,homing:_isRB1||undefined})}
   }
   // 8) 시각/사운드 연출
   const _phCol=_bp>=3?'#ff0000':_bp>=2?'#cc2200':'#ff8800';
@@ -29989,7 +29989,7 @@ function updateE(e,sp){
   // ── 광역 발사: 전 방향 투사체 ──
   case'bossBurstWind':
     if(e.st2<=0){
-      const cnt=~~((6+Math.min(G.stage,6))*(1+(e._bossPhase-1)*.12)); // 최대 ~14발
+      const cnt=~~(Math.max(10,(6+Math.min(G.stage,6)))*(1+(e._bossPhase-1)*.12)); // 최소 10발, 최대 ~16발
       for(let i=0;i<cnt;i++){const a=Math.PI*2*i/cnt;
         const _iR2=Math.random();const _isBKB=_iR2<.5;const _isRB=_iR2>=.5;
         spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*(_isBKB?4.4:_isRB?4.0:3.2),vy:Math.sin(a)*(_isBKB?4.4:_isRB?4.0:3.2),dmg:~~(e.atk*(_isBKB?1.5:_isRB?2.5:1.2)),el:_isBKB?EL.P:e.el,friendly:false,life:400,ml:400,col:_isBKB?'#00aa00':_isRB?'#cc1100':e.col,sz:_isBKB?2.0:_isRB?1.8:1.2,redBean:_isRB||undefined,blackBean:_isBKB||undefined,homing:_isRB||undefined})}
@@ -31761,7 +31761,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         if(e.deaths>=2){
           const _bCnt=8+e.deaths*4;
           for(let bi=0;bi<_bCnt;bi++){const ba=Math.PI*2*bi/_bCnt;
-            eProjAt(e,ba,3,.6,e.el,400,e.col,2.5)}
+            const _isRBr=bi%2===0;const _rnbHr=(bi*360/_bCnt)|0;const _rnbCr=_isRBr?'#cc1100':('hsl('+_rnbHr+',100%,60%)');
+            const _rm=_eMouthXY(e,ba);spawnProj({x:_rm.x,y:_rm.y,vx:Math.cos(ba)*3,vy:Math.sin(ba)*3,dmg:~~(e.atk*(_isRBr?.8:.6)),el:e.el,friendly:false,life:600,ml:600,col:_rnbCr,sz:_isRBr?2.0:1.8,redBean:_isRBr||undefined,homing:_isRBr||undefined})}
           addTxt(e.x,e.y-65,_T('💀 분노 폭발!'),'#ff0000',50);
         }
         // ── 10% 동반부활: 이전에 처치한 보스 중 랜덤 1마리 스폰 ──
@@ -32904,7 +32905,7 @@ const SKILL_HIER=[
   {id:'spec',name:'⚙ 특수',nameEn:'⚙ Special',col:'#ff8800',cats:['tech','ult']},
 ];
 let _skHierTab='rec';
-const SKILL_ICONS={ghostWalk:1,maliceHunt:1,venomBlade:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1};
+const SKILL_ICONS={ghostWalk:1,maliceHunt:1,venomBlade:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1,thunderStake:1,timeWarp:1,explodeScarecrow:1,arcLaser:1};
 function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.55) ${deg}deg,transparent ${deg}deg);pointer-events:none;z-index:1"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#ffee66;font-weight:900;text-shadow:0 0 4px #000,0 0 8px #000,0 1px 3px #000;z-index:2">${txt}</div>`:''}`}
 const SKILL_LIST=[
@@ -32923,7 +32924,7 @@ const SKILL_LIST=[
 
   {id:'guardian',name:'악의 보호자',cat:'def',noDmg:true,desc:'3초마다 악의 구체 생성(1렙 2개). 몸에 밀착하여 적 투사체를 자동 방어(파괴). 레벨당 구체+1',descEn:'Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceHunt',name:'악의 사냥',cat:'bow',act:true,emoji:'⚔',desc:'유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초',descEn:'1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
-  {id:'venomBlade',name:'독침',cat:'bow',act:true,emoji:'🐍',desc:'유도 독침 1발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 500+Lv×20. 독 10초. 쿨 15초. Lv당 뎀+20%',descEn:'1 homing venom needle (ST 40). DEX+bow base. Minimal direct DMG, Poison DOT main. Pierce 500+Lv×20. Poison 10s. CD 15s. Per Lv DMG+20%',spCost:10,matCost:0,cd:900,up:true,upSp:5,upMat:0},
+  {id:'venomBlade',name:'독사',cat:'bow',act:true,emoji:'🐍',desc:'유도 독사 1발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 900+Lv×20+석궁관통×300+pPierce×30. 독 10초. 쿨 15초. Lv당 뎀+20%',descEn:'1 homing venom snake (ST 40). DEX+bow base. Minimal direct DMG, Poison DOT main. Pierce 900+Lv×20+bowPierce×300+pPierce×30. Poison 10s. CD 15s. Per Lv DMG+20%',spCost:10,matCost:0,cd:900,up:true,upSp:5,upMat:0},
   {id:'maliceMortar',name:'폭풍소환',cat:'magic',act:true,emoji:'🌪️',desc:'어둠 소용돌이 소환 (마우스 조준 설치, MP 소모, 쿨 11초, INT 스케일링, 1렙 200범위 +30/렙, 5초 지속, 적 흡인)',descEn:'Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 200 +30/Lv, 5s duration, pulls enemies)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초',descEn:'Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발. 범위 1500+Lv×100px. 범위 끝까지 넉백(주 성능). 거리감쇠 50%. 스턴 2초. Lv당 뎀+10%. (MP 30%, 쿨 120초)',descEn:'Pentagram cast → holy light pillar mega-explosion. Range 1500+Lv×100px. Full-range knockback (main feature). 50% distance falloff. Stun 2s. Per Lv DMG+10%. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
@@ -33764,7 +33765,7 @@ function activateMaliceHunt(){
   }
 }
 
-// ═══ 독침 발동 (DEX+석궁 기반 독 DOT 추적칼날) ═══
+// ═══ 독사 발동 (DEX+석궁 기반 독 DOT 추적칼날) ═══
 function activateVenomBlade(){
   const _vbLv=P.skills.venomBlade||1;
   const _vbStCost=40;
@@ -33772,7 +33773,8 @@ function activateVenomBlade(){
   P.st=Math.max(0,P.st-_vbStCost);
   const _vbDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('venomBlade')*_fuseMul('venomBlade'));
   const _vbRange=2000+(_vbLv-1)*100;
-  const _vbPierce=500+(_vbLv-1)*20;
+  const _vbPierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30);
+  const _vbPierce=800+(_vbLv-1)*20+_vbPierceBonus+100;
   const _mdx=Math.cos(P.atkArc),_mdy=Math.sin(P.atkArc);
   {const _pp=_getPProj();
     _pp.x=P.x+_mdx*16;_pp.y=P.y+_mdy*16;
@@ -33780,12 +33782,12 @@ function activateVenomBlade(){
     _pp.dmg=1; // 직타 최소 — 독 DOT 위주
     _pp.el=EL.D;_pp.maxDist=_vbRange;_pp.dist=0;
     _pp.r=8;_pp.stagger=0;_pp.kb=0;_pp.magic=true;
-    _pp.venomBlade=true;_pp.mhBlade=true; // mhBlade 재사용 → 추적 유도
+    _pp.venomBlade=true; // 마우스 방향 직선 발사
     _pp._venomPool=_vbDmg;
-    _pp._pierced=0;_pp._mhMaxPierce=_vbPierce;
+    _pp._pierced=0;_pp._pierceRate=_vbPierce;
     _pp._hitSet=new Set();_pp._maxBounce=10;
     pProjs[pProjs.length]=_pp;}
-  SFX.magic(EL.D);addTxt(P.x,P.y-25,_T('🐍 독침!'),'#44dd44',35);
+  SFX.magic(EL.D);addTxt(P.x,P.y-25,_T('🐍 독사!'),'#44dd44',35);
 }
 
 // ═══ 폭풍소환 발사 (키홀드 거리 → 기원 투척 → 착지 시 소용돌이 전개) ═══
@@ -45187,7 +45189,7 @@ function drawP(){
         X.globalAlpha=fa;X.fillStyle='#ccffff';
         X.beginPath();X.moveTo(p.r+2,0);X.lineTo(0,-p.r*.35);X.lineTo(-p.r,0);X.lineTo(0,p.r*.35);X.closePath();X.fill();
         if(Math.random()>.6)poolPart(p.x+(Math.random()-.5)*8,p.y+(Math.random()-.5)*8,(Math.random()-.5),(Math.random()-.5),'#aaeeff',1+Math.random()*2,8+Math.random()*6);
-      }else if(p.venomBlade){// ── VENOM NEEDLE: 독침 — 녹색 독 바늘 ──
+      }else if(p.venomBlade){// ── VENOM SNAKE: 독사 — 녹색 독 바늘 ──
         X.rotate(ang);
         const _vPulse=.85+Math.sin(_now/60+p.x*.2)*.15;
         X.globalAlpha=fa*.9*_vPulse;X.fillStyle='#22cc44';

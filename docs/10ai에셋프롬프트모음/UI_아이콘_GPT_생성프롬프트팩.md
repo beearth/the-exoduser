@@ -137,3 +137,62 @@ Secondary color: [보조색]
 - 실사용 크기(32/48px)에서 윤곽이 무너지면 대비를 올리고 디테일을 줄여 재생성
 - 세트 내 광원 방향과 외곽선 두께 통일
 - 같은 카테고리(스탯/패널/속성)는 동일 재질감 유지
+
+---
+
+## 스킬 아이콘 생성 규칙 (skillskin_upscaled/)
+
+### 파일 규격
+- 저장 위치: `img/skillskin_upscaled/{skillId}.png`
+- 사이즈: 자유 (게임에서 48×48 리사이즈해서 표시)
+- 배경: **검정(#000000)** — 투명 배경 아님 (기존 아이콘 전부 검정)
+- 포맷: PNG (webp 다운→ffmpeg으로 변환)
+
+### 스타일 기준 (기존 아이콘 참고)
+- 다크 판타지 렌더드 아트 (픽셀아트 아님)
+- 배경 완전 검정, 중앙 피사체 + 드라마틱 광원 효과
+- 속성별 메인 컬러:
+  - 물리(P): 붉은 오렌지/피 (maliceHunt, chainSlash)
+  - 화염(F): 주황/적 (fireball, fireAura)
+  - 빙결(I): 청/하늘 (iceStorm, iceOrb)
+  - 암흑(D): 보라/흑 (darkPillar, maliceStorm)
+  - 암전(L): 보라+초록 or 청백 번개 (venomBlade, thunderStake)
+  - 신성(H): 금/흰 (holyDome, holyBlast)
+  - 대지(E): 갈색/황토
+- 단일 주제(피사체 1개), 배경 없음, 텍스트 없음
+
+### ludo-ai 생성 파라미터
+```
+image_type: "icon"
+art_style: "Any style"
+aspect_ratio: "ar_3_4"  (or ar_1_1)
+augment_prompt: false
+```
+
+### 베이스 프롬프트 템플릿
+```text
+Dark fantasy skill icon. [피사체 설명], [효과/광원 설명].
+[색상 키워드], black background, dramatic glow, cinematic dark RPG art style, centered composition.
+```
+
+### 완료된 스킬 아이콘 목록 (2026-05-08 기준)
+
+| skillId | 한글명 | 색상 테마 | 생성일 |
+|---|---|---|---|
+| venomBlade | 독침 | 보라+초록 | 2026-05-08 |
+| thunderStake | 뇌전창 | 청+황금 번개 | 2026-05-08 |
+| timeWarp | 시간왜곡 | 보라+금 | 2026-05-08 |
+| explodeScarecrow | 폭발허수아비 | 주황 폭발 | 2026-05-08 |
+| arcLaser | 아크레이저 | 청록 레이저 | 2026-05-08 |
+| (이하 기존) | — | — | 이전 |
+
+### SKILL_ICONS 등록 규칙
+스킬 아이콘 PNG를 추가한 후 game.html의 `SKILL_ICONS` 객체에 반드시 등록:
+```js
+// 자체 이미지 사용
+SKILL_ICONS = { ..., mySkill: 1, ... }
+
+// 다른 스킬 이미지 재사용
+SKILL_ICONS = { ..., mySkill: 'otherSkill', ... }
+```
+등록 없으면 이모지 폴백으로 표시됨.
