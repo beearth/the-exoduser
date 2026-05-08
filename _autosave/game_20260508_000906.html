@@ -18664,7 +18664,7 @@ function _passDmgSum(type){
   if(type==='xbow')s+=(PASSIVES.pXbow||0)*.05; // 자동쇠뇌: +5%/lv
   if(type==='dot')s+=(PASSIVES.pDot||0)*.15; // 침식: +15%/lv
   // 풍요: hurtE 내부에서 적HP≥70% 판정으로 이동됨
-  return 1+s;
+  return (1+s)*0.7; // 전체 데미지 ×0.7 (30% 너프)
 }
 // 약자포식 보너스: 적 HP≤30% 시 합연산 추가 (hitEnemy에서 적용)
 function _predBonus(e){return e&&e.hp<=e.mhp*.3?(PASSIVES.pPred||0)*.20:0}
@@ -22358,7 +22358,7 @@ function update(){
       if(_harpSk==='magicBlink'||_harpSk==='dimBreach'){
         // INT: 화염 데미지 + 화상 (사슬기동:화염 테마 통일)
         const _blLv=P.skills.magicBlink||1;
-        const _ltnDmg=~~(((ar().charge||10)+P.baseAtk)*(1+_blLv*0.15)*statInt());
+        const _ltnDmg=~~(((ar().charge||10)+P.baseAtk)*(1+_blLv*0.15)*statInt()*0.5); // 직타 ×0.5 너프
         hurtE(e,_ltnDmg,_hAng,false,{poiseHit:true,poiseMult:1.5},EL.F);
         e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);
         addTxt(e.x,e.y-18,_T('🔥 화염관통!'),'#ff6600',30);
@@ -22414,7 +22414,7 @@ function update(){
     if((_harpSk==='magicBlink'||_harpSk==='dimBreach')&&~~(_dashLeft)%3===0){
       if(!G._fireZones)G._fireZones=[];
       const _ltnLv=P.skills.magicBlink||1;
-      const _ltnDmg=~~(magicRef()*_skMul('magicBlink')*statInt()*pMagicMul()); // 통일공식: _skMul (DOT)
+      const _ltnDmg=~~(magicRef()*_skMul('magicBlink')*statInt()*pMagicMul()*0.5); // 통일공식: _skMul (DOT) / ×0.5 너프
       G._fireZones.push({type:'fireTrail',x:P.x,y:P.y,r:40+_ltnLv*3,dmg:_ltnDmg,el:EL.F,t:0,maxT:720,lv:_ltnLv});
       if(Math.random()>.5)poolPart(P.x+(Math.random()-.5)*10,P.y+(Math.random()-.5)*10,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ff6600',2+Math.random()*2,8);
     }
@@ -24458,9 +24458,16 @@ function update(){
             e.hp=~~(e.mhp*.5);e.eShield=~~(e.mhp*.5);e.eShieldMax=e.mhp;e.s='recover';e.st2=60;e.stunned=0;e.kb={x:0,y:0};
             e.reviveIframes=180;e._bossRevJudged=false; // 리셋 → 다음 사망 시 3초 카운트다운 재발동
             G.bossAlive=true;G._bossRef=e;
+            // 남은 부활력 비율로 크기 축소 (origR 기준, 최소 40%)
+            if(!e._origR)e._origR=e.r;
+            const _rvScale=Math.max(0.40,(e._revPts||0)/Math.max(1,e._maxRevPts||150));
+            const _vfxR=e.r; // VFX는 이전 크기 기준
+            e.r=Math.max(10,~~(e._origR*_rvScale));
+            const _shrinkPct=~~((1-_rvScale)*100);
             addTxt(e.x,e.y-50,_T('☠ 지옥에서 귀환!'),'#ff4400',100);
             addTxt(e.x,e.y-30,_L('부활 성공! 부활력 ','Revive! Power ')+e._revPts+'/'+e._maxRevPts,'#ff8844',60);
-            _bossReviveGrandVFX(e);
+            if(_shrinkPct>0)addTxt(e.x,e.y-70,'▼ '+_shrinkPct+'%','#aaffcc',55);
+            _bossReviveGrandVFX(e,_vfxR);
             {const _br=_bossSfx(G.stage);playSample(_br?_br.howl:'boss_howl',.8,_r(_br?_br.howlP:.9,.1));}
           }else{
             // 부활 실패 → 완전 사망 (G.bossAlive는 true 유지 — 30프레임 체크에서 게이트 열기)
@@ -30888,34 +30895,31 @@ function _updateGhostIris(){
 //   opts.vfxSize: void_black 스프라이트 크기(기본80)
 const _reviveBursts=[];
 // ═══ 보스 부활 대연출 VFX ═══
-function _bossReviveGrandVFX(e){
-  const x=e.x,y=e.y,r=e.r||28;
-  // 1) 암흑 핏빛 플래시
-  G._flashT=12;G._flashCol='#1a0000';
-  // 2) 3중 충격파 파티클 링 (적→주황→황금)
+function _bossReviveGrandVFX(e,vfxR){
+  const x=e.x,y=e.y,r=vfxR||e.r||28;
+  // 1) 밝은 백색 플래시 (어두운 배경에서 최대 가시성)
+  G._flashT=14;G._flashCol='#ffffff';
+  // 2) 3중 충격파 파티클 링 — 밝고 큰 파티클
   for(let ring=0;ring<3;ring++){
-    const n=14+ring*8,spd=8+ring*4,rr=r*(1.5+ring*2.5);
-    const col2=ring===0?'#ff2200':ring===1?'#ff8800':'#ffdd44';
+    const n=16+ring*10,spd=10+ring*5,rr=r*(2+ring*3);
+    const col2=ring===0?'#ff3300':ring===1?'#ff9900':'#ffffff';
     for(let i=0;i<n;i++){const a=Math.PI*2*i/n;
-      poolPart(x+Math.cos(a)*rr*.15,y+Math.sin(a)*rr*.15,Math.cos(a)*spd,Math.sin(a)*spd,col2,4+ring*2,16+ring*6)}
+      poolPart(x+Math.cos(a)*r*.3,y+Math.sin(a)*r*.3,Math.cos(a)*spd,Math.sin(a)*spd,col2,5+ring*2,20+ring*8)}
   }
-  // 3) 블래스트 라이트 다층 (혈적→주황→황금)
-  _addBlastLight(x,y,r*12,24,255,0,0);
-  _addBlastLight(x,y,r*7,18,255,60,0);
-  _addBlastLight(x,y,r*4,12,255,180,60);
+  // 3) 블래스트 라이트 다층 (밝은 주황→적→백)
+  _addBlastLight(x,y,r*14,28,255,80,0);
+  _addBlastLight(x,y,r*9,20,255,30,0);
+  _addBlastLight(x,y,r*5,14,255,220,100);
   // 4) 텔레포트 스모크 + 임팩트 2중
   _addTpSmoke(x,y,r*8,40,0);
-  _addTpImpact(x,y,r*7,30,'#cc0000');
-  _addTpImpact(x,y,r*4,20,'#ff8800');
-  // 5) void_black 버스트 3중 (크기/속도 달리해 파동 효과)
-  _reviveBursts.push({x,y,frame:0,t:0,spd:3,size:r*9,col:'#ff0000',alpha:1});
-  _reviveBursts.push({x,y,frame:0,t:0,spd:4,size:r*6,col:'#ff6600',alpha:.9});
-  _reviveBursts.push({x,y,frame:0,t:0,spd:5,size:r*4,col:'#ffdd00',alpha:.75});
-  // 6) 히트스톱 + 슬로우모 (강한 시간 왜곡)
-  G.hitStop=Math.max(G.hitStop,~~(20*OPT.hitStop/100)||20);
-  G.slowMo=Math.max(G.slowMo,100);
-  // 7) 강한 진동
-  shake(28);
+  _addTpImpact(x,y,r*8,32,'#ff4400');
+  _addTpImpact(x,y,r*5,22,'#ffcc00');
+  // 5) 슬로우모 + 히트스톱 (void_black 이전에 설정, multiply가 어두운 배경에선 비효율적이므로 스킵)
+  G.hitStop=Math.max(G.hitStop,16);
+  G.slowMo=Math.max(G.slowMo,90);
+  // 6) 강한 진동 + 크로마 왜곡
+  shake(30);
+  if(G.chromaT!==undefined)G.chromaT=Math.max(G.chromaT||0,18);
 }
 function _reviveVFX(x,y,col,label,opts){
   opts=opts||{};
@@ -31664,6 +31668,13 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         e.atk=~~(e.atk*(_isH7?2:1.5));
         e.speed=Math.min(e.speed*1.25,_isH7?2.0:1.6);
         e.bossPatCd=Math.max(_isH7?20:60,e.bossPatCd-30);
+        // ── 남은 부활력 비율로 크기 축소 ──
+        if(!e._origR)e._origR=e.r;
+        const _rvScale=Math.max(0.40,(e._revPts||0)/Math.max(1,e._maxRevPts||150));
+        const _vfxR1=e.r; // VFX는 줄기 전 크기 기준
+        e.r=Math.max(10,~~(e._origR*_rvScale));
+        const _shrinkPct1=~~((1-_rvScale)*100);
+        if(_shrinkPct1>0)addTxt(e.x,e.y-85,'▼ '+_shrinkPct1+'%','#aaffcc',55);
         // ── 부활 순간이동: 플레이어 뒤로 텔레포트 + 블링크 VFX ──
         const _rvOx=e.x,_rvOy=e.y,_rvR=e.r||20;
         for(let i=0;i<14;i++){const a=Math.PI*2*i/14,sp=4+Math.random()*5;poolPart(_rvOx+Math.cos(a)*_rvR*.6,_rvOy+Math.sin(a)*_rvR*.6,Math.cos(a)*sp,Math.sin(a)*sp,'#aa00ff',3+Math.random()*2,12)}
@@ -31711,8 +31722,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         const _revCol=_isH7?'#ff0044':'#ff2244';
         addTxt(e.x,e.y-35,_revTxt,_revCol,70);
         addTxt(e.x,e.y-20,'HP '+e.mhp,_isH7?'#ff4488':'#ff6666',50);
-        SFX.groggy();if(!(G._noHitStopT>0)){G.shake=(_isH7?28:20)*OPT.shake/100;G.hitStop=_isH7?25:18;G.slowMo=_isH7?65:45;}
-        for(let k=0;k<(_isH7?30:20);k++){const a=Math.PI*2*k/(_isH7?30:20);poolPart(e.x,e.y,Math.cos(a)*(_isH7?8:6),Math.sin(a)*(_isH7?8:6),_revCol,4+Math.random()*3,15+Math.random()*10)}
+        _bossReviveGrandVFX(e,_vfxR1);
         return; // 죽지 않음
       }
     }
@@ -47621,8 +47631,8 @@ const _b3r=new THREE.WebGLRenderer({canvas:_b3cvs,alpha:true,antialias:false});
 _b3r.setPixelRatio(Math.min(window.devicePixelRatio,2));
 _b3r.setClearColor(0x000000,0);
 const _b3clipFloor=new THREE.Plane(new THREE.Vector3(0,1,0),0);
-_b3r.clippingPlanes=[_b3clipFloor];
-_b3r.localClippingEnabled=true;
+_b3r.clippingPlanes=[];
+_b3r.localClippingEnabled=false;
 _b3r.outputColorSpace=THREE.SRGBColorSpace;
 
 const _b3s=new THREE.Scene();
@@ -47633,7 +47643,7 @@ _b3s.add(new THREE.DirectionalLight(0xffcc88,1.0).translateX(100).translateY(200
 _b3s.add(new THREE.AmbientLight(0x887799,0.6));
 const _b3rim=new THREE.DirectionalLight(0x4444aa,0.3);_b3rim.position.set(-100,50,-200);_b3s.add(_b3rim);
 
-let _b3pivot=null,_b3model=null,_b3mixer=null,_b3ready=false,_b3size=new THREE.Vector3();
+let _b3pivot=null,_b3anchor=null,_b3model=null,_b3mixer=null,_b3ready=false,_b3size=new THREE.Vector3();
 let _b3meshes=[],_b3origMats=[];
 const _b3flash=new THREE.MeshBasicMaterial({color:0xffffff});
 let _b3flashT=0,_b3prevHP=-1,_b3hitT=0;
@@ -47694,10 +47704,14 @@ _b3loader.load(_B3_ANIMS.idle.src,(gltf)=>{
   _b3model.scale.setScalar(2.2/(sz.y||1));
   const box2=new THREE.Box3().setFromObject(_b3model);
   const center=box2.getCenter(new THREE.Vector3());
+  const _modelSz=box2.getSize(new THREE.Vector3());
   _b3model.position.sub(center);
+  _b3model.position.y+=_modelSz.y*0.5;
   _b3model.traverse(c=>{if(c.isMesh){c.castShadow=true;_b3meshes.push(c);_b3origMats.push(c.material);if(c.material)c.material.side=THREE.DoubleSide;}});
-  _b3pivot=new THREE.Group();_b3pivot.add(_b3model);_b3pivot.visible=false;
-  _b3s.add(_b3pivot);
+  _b3pivot=new THREE.Group();_b3pivot.add(_b3model);
+  _b3anchor=new THREE.Group();_b3anchor.add(_b3pivot);
+  _b3anchor.visible=false;
+  _b3s.add(_b3anchor);
   _b3size=new THREE.Box3().setFromObject(_b3pivot).getSize(new THREE.Vector3());
   _b3mixer=new THREE.AnimationMixer(_b3model);
   // idle 클립 등록+재생
@@ -47738,7 +47752,7 @@ function _b3animate(){
   if(_b3mixer)_b3mixer.update(dt);
 
   // 게임 상태 읽기 (같은 윈도우)
-  if(typeof G==='undefined'||typeof P==='undefined'||!P||!G.on){_b3pivot.visible=false;_b3r.render(_b3s,_b3cam);return}
+  if(typeof G==='undefined'||typeof P==='undefined'||!P||!G.on){_b3anchor.visible=false;_b3r.render(_b3s,_b3cam);return}
   const bE=findBoss();
   if(!bE||!bE.alive||!G._bossArena){
     _b3pivot.visible=false;
@@ -47761,7 +47775,7 @@ function _b3animate(){
 
   if(cssX<-200||cssX>W+200||cssY<-200||cssY>H+200){_b3pivot.visible=false;_b3r.render(_b3s,_b3cam);return}
 
-  _b3pivot.position.x=cssX-W/2;
+  _b3anchor.position.x=cssX-W/2;
   _b3pivot.position.z=0;
 
   // 스케일
@@ -47772,9 +47786,13 @@ function _b3animate(){
   // Y: boss CSS Y = 발 위치 → 모델 피벗(중앙)을 절반 높이만큼 위로 올려 땅속 박힘 방지
   // Y: 보스 발 위치 기준 (중심+반지름), 모델 중앙을 올려 배치
   const _b3floorY=-((physY/scale+bossRcss)-H/2);
-  window._b3lastFloorY=_b3floorY;
-  _b3pivot.position.y=_b3floorY+tgtH*0.5+(window._btOffsetY||0);
-  _b3clipFloor.constant=cssY+bossRcss-H/2;
+  const _b3yOff=(window._btOffsetY||0);
+  const _footY=_b3floorY+_b3yOff;
+  window._b3lastFloorY=_footY;
+  _b3anchor.position.y=_footY;
+  window._b3footScreenX=cssX;
+  window._b3footScreenY=cssY+bossRcss;
+  // _b3clipFloor.constant deprecated (clipping disabled)
 
   // facing (X rotation: window._btRotX 으로 실시간 조절)
   _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);

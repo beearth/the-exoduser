@@ -47796,7 +47796,7 @@ function _b3animate(){
 
   // facing (X rotation: window._btRotX 으로 실시간 조절)
   _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);
-  _b3anchor.visible=true;
+  _b3pivot.visible=true;
 
   // 보스 상태 → 3D 애니 전환
   const _b3ns=_b3mapState(bE.s,bE.stunned>0);

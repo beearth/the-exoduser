@@ -149,11 +149,23 @@ if(e.stunned<=0 && e._maxStunned){
 
 ### 위치/스케일 계산 (`_b3animate`)
 
-**바닥 클리핑 평면** (`_b3clipFloor`): `(cssY + bossRcss - H/2) - _b3yOff` = 발바닥 위치에서 `_btOffsetY` 오프셋을 반영한 위치 기준, 그 아래 클리핑.
-
-> **수정 (2026-05-07)**: `_btOffsetY`가 피벗 Y에만 반영되고 클리핑 평면에 미반영돼 50px 어긋나던 버그 수정. 이제 `_footY = _b3floorY + _b3yOff`, `_b3clipFloor.constant = (cssY+bossRcss-H/2) - _b3yOff`로 피벗과 클리핑이 항상 동기화.
+> **수정 (2026-05-07 v1.5)**: `_btOffsetY`가 피벗 Y에만 반영되고 클리핑 평면에 미반영돼 50px 어긋나던 버그 수정. `_footY = _b3floorY + _b3yOff`로 피벗과 클리핑 동기화.
 >
-> `_btOffsetY` 기본값 `-50` = 모델을 발바닥 기준 50px 아래로 내림. 클리핑 평면도 동일하게 이동하여 발 아래가 잘리지 않음.
+> **수정 (2026-05-07 v1.6)**: 클리핑 평면(`_b3clipFloor`) 완전 제거. 발좌표 `window._b3footScreenX/Y` 전역 노출.
+>
+> **수정 (2026-05-08 v1.7)**: xRot 발 기준 회전 구조 변경. `_b3anchor` 그룹 추가 — anchor=발 위치, pivot=회전만. 모델 origin을 bounding box 중심→발 하단으로 이동 (`_b3model.position.y += _modelSz.y * 0.5`).
+
+### 씬 그래프 구조 (v1.7~)
+
+```
+_b3s (Scene)
+  └─ _b3anchor (Group) ← position.x/y만 (발 위치 = _footY)
+       └─ _b3pivot (Group) ← rotation.set(xRot, facing, 0) + scale + 스턴 흔들림
+            └─ _b3model (gltf.scene) ← position.y = +_modelSz.y*0.5 (발→중앙 오프셋)
+```
+
+- 이전 구조: `_b3pivot`이 위치·회전 동시 담당 → xRot 시 허리 기준 회전으로 머리가 땅에 박힘
+- 신규 구조: anchor(위치) / pivot(회전) 분리 → xRot이 발 기준으로 회전
 
 ### 위치/스케일 계산 상세
 
@@ -164,23 +176,27 @@ cssY = bE.y/scale - camY + innerHeight/2
 
 // 발 위치 (Three.js Y: 위가 양수, physY 기반)
 _b3floorY = -((physY/scale + bossRcss) - H/2)
-_b3yOff   = window._btOffsetY || 0          // Y 오프셋 (기본 -50)
-_footY    = _b3floorY + _b3yOff             // 오프셋 적용된 발 위치
+_b3yOff   = window._btOffsetY || 0
+_footY    = _b3floorY + _b3yOff
 
-// Three.js 좌표
-_b3pivot.position.x = cssX - W/2
-_b3pivot.position.y = _footY + tgtH * 0.5  // 발 위치 기준, 모델 중앙 올림
+// anchor = 발 위치
+_b3anchor.position.x = cssX - W/2
+_b3anchor.position.y = _footY          // tgtH*0.5 불필요 — 모델 origin이 발 기준
 
-// 바닥 클리핑 (발바닥 = _footY 기준, 오프셋 동기화)
-_b3clipFloor.constant = (cssY + bossRcss - H/2) - _b3yOff
+// 발좌표 전역 노출 (blob shadow 등 외부 활용)
+window._b3footScreenX = cssX
+window._b3footScreenY = cssY + bossRcss
 
-// 스케일
+// 스케일 (pivot에 적용)
 tgtH = (bE.r / scale) * 2.0 * (window._btScaleMul || 1)
 _b3sc = Math.max(0.1, tgtH / _b3size.y)
 _b3pivot.scale.setScalar(_b3sc)
 
-// 회전 (X: _btRotX, Y: 방향 facing)
+// 회전 (pivot에 적용 — 발 기준)
 _b3pivot.rotation.set(window._btRotX || 0, -bE.facing + Math.PI/2, 0)
+
+// 스턴 흔들림 (pivot 로컬 오프셋)
+if(bE.stunned>0){ _b3pivot.position.x+=sin(...); _b3pivot.position.y+=cos(...) }
 ```
 
 ### Y 위치 공식 변경 이력
@@ -190,6 +206,8 @@ _b3pivot.rotation.set(window._btRotX || 0, -bE.facing + Math.PI/2, 0)
 | 초기 | `-(cssY-H/2) - 100` | 5x 스케일 시 모델이 땅속에 박힘 |
 | v1.4 (2026-05-06) | `-(cssY-H/2) + tgtH*0.5` | 발 위치 기준으로 모델 중앙 올림 → 해결 |
 | v1.5 (2026-05-07) | `_footY + tgtH*0.5` (`_footY=_b3floorY+_b3yOff`) | `_btOffsetY`를 클리핑 평면에도 반영 — 피벗/클리핑 50px 어긋남 수정 |
+| v1.6 (2026-05-07) | 동일 (`_footY + tgtH*0.5`) | 클리핑 평면 완전 제거 — `clippingPlanes=[]`, 발좌표 `window._b3footScreenX/Y` 전역 노출 |
+| v1.7 (2026-05-08) | `_b3anchor.position.y = _footY` (tgtH*0.5 제거) | anchor/pivot 분리 — 발 기준 xRot 회전. 모델 origin 발 하단으로 이동 |
 
 ### X 회전 이력
 
@@ -226,8 +244,10 @@ http://localhost:3333/game.html?bosstest=0
 |---|---|---|
 | `window._btScaleMul` | `3.7` (전역), 테스트베드에서 `5.0` 설정 | Three.js + 2D 캔버스 보스 시각 배율 |
 | `window._btRotX` | `0.0` (rad) | 보스 3D X축 회전 |
-| `window._btOffsetY` | `-50` (px) | 보스 3D Y 오프셋 — 피벗 Y와 클리핑 평면 모두에 동기 반영. 양수=위로 이동+클리핑도 위로 |
-| `_b3clipFloor` | `Plane(0,1,0)`, constant=`(cssY+bossRcss-H/2)-_b3yOff` | 발바닥 아래 클리핑 — `_btOffsetY` 오프셋 반영 (2026-05-07 수정) |
+| `window._btOffsetY` | `-50` (px) | 보스 3D Y 오프셋 — 피벗 Y에 반영. 양수=위로 이동 |
+| `window._b3footScreenX` | `cssX` | 보스 발 스크린 X 좌표 (blob shadow 등 외부 활용) |
+| `window._b3footScreenY` | `cssY + bossRcss` | 보스 발 스크린 Y 좌표 (blob shadow 등 외부 활용) |
+| ~~`_b3clipFloor`~~ | ~~`Plane(0,1,0)`~~ | **제거됨 (v1.6)** — `clippingPlanes=[]`, 클리핑 비활성화 |
 | `window._b3Active` | `true/false` | 3D 오버레이 활성 여부 — true면 2D 보스 렌더 완전 차단 |
 | `_btBoss` | `ens.find(e=>e.ib)` | 테스트베드 보스 참조 |
 | `_btGod` | `true` | 플레이어 무적 |

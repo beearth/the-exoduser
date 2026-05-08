@@ -22358,7 +22358,7 @@ function update(){
       if(_harpSk==='magicBlink'||_harpSk==='dimBreach'){
         // INT: 화염 데미지 + 화상 (사슬기동:화염 테마 통일)
         const _blLv=P.skills.magicBlink||1;
-        const _ltnDmg=~~(((ar().charge||10)+P.baseAtk)*(1+_blLv*0.15)*statInt());
+        const _ltnDmg=~~(((ar().charge||10)+P.baseAtk)*(1+_blLv*0.15)*statInt()*0.5); // 직타 ×0.5 너프
         hurtE(e,_ltnDmg,_hAng,false,{poiseHit:true,poiseMult:1.5},EL.F);
         e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);
         addTxt(e.x,e.y-18,_T('🔥 화염관통!'),'#ff6600',30);
@@ -22414,7 +22414,7 @@ function update(){
     if((_harpSk==='magicBlink'||_harpSk==='dimBreach')&&~~(_dashLeft)%3===0){
       if(!G._fireZones)G._fireZones=[];
       const _ltnLv=P.skills.magicBlink||1;
-      const _ltnDmg=~~(magicRef()*_skMul('magicBlink')*statInt()*pMagicMul()); // 통일공식: _skMul (DOT)
+      const _ltnDmg=~~(magicRef()*_skMul('magicBlink')*statInt()*pMagicMul()*0.5); // 통일공식: _skMul (DOT) / ×0.5 너프
       G._fireZones.push({type:'fireTrail',x:P.x,y:P.y,r:40+_ltnLv*3,dmg:_ltnDmg,el:EL.F,t:0,maxT:720,lv:_ltnLv});
       if(Math.random()>.5)poolPart(P.x+(Math.random()-.5)*10,P.y+(Math.random()-.5)*10,(Math.random()-.5)*3,(Math.random()-.5)*3,'#ff6600',2+Math.random()*2,8);
     }
@@ -31668,6 +31668,13 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         e.atk=~~(e.atk*(_isH7?2:1.5));
         e.speed=Math.min(e.speed*1.25,_isH7?2.0:1.6);
         e.bossPatCd=Math.max(_isH7?20:60,e.bossPatCd-30);
+        // ── 남은 부활력 비율로 크기 축소 ──
+        if(!e._origR)e._origR=e.r;
+        const _rvScale=Math.max(0.40,(e._revPts||0)/Math.max(1,e._maxRevPts||150));
+        const _vfxR1=e.r; // VFX는 줄기 전 크기 기준
+        e.r=Math.max(10,~~(e._origR*_rvScale));
+        const _shrinkPct1=~~((1-_rvScale)*100);
+        if(_shrinkPct1>0)addTxt(e.x,e.y-85,'▼ '+_shrinkPct1+'%','#aaffcc',55);
         // ── 부활 순간이동: 플레이어 뒤로 텔레포트 + 블링크 VFX ──
         const _rvOx=e.x,_rvOy=e.y,_rvR=e.r||20;
         for(let i=0;i<14;i++){const a=Math.PI*2*i/14,sp=4+Math.random()*5;poolPart(_rvOx+Math.cos(a)*_rvR*.6,_rvOy+Math.sin(a)*_rvR*.6,Math.cos(a)*sp,Math.sin(a)*sp,'#aa00ff',3+Math.random()*2,12)}
@@ -31715,8 +31722,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         const _revCol=_isH7?'#ff0044':'#ff2244';
         addTxt(e.x,e.y-35,_revTxt,_revCol,70);
         addTxt(e.x,e.y-20,'HP '+e.mhp,_isH7?'#ff4488':'#ff6666',50);
-        SFX.groggy();if(!(G._noHitStopT>0)){G.shake=(_isH7?28:20)*OPT.shake/100;G.hitStop=_isH7?25:18;G.slowMo=_isH7?65:45;}
-        for(let k=0;k<(_isH7?30:20);k++){const a=Math.PI*2*k/(_isH7?30:20);poolPart(e.x,e.y,Math.cos(a)*(_isH7?8:6),Math.sin(a)*(_isH7?8:6),_revCol,4+Math.random()*3,15+Math.random()*10)}
+        _bossReviveGrandVFX(e,_vfxR1);
         return; // 죽지 않음
       }
     }
@@ -47625,8 +47631,8 @@ const _b3r=new THREE.WebGLRenderer({canvas:_b3cvs,alpha:true,antialias:false});
 _b3r.setPixelRatio(Math.min(window.devicePixelRatio,2));
 _b3r.setClearColor(0x000000,0);
 const _b3clipFloor=new THREE.Plane(new THREE.Vector3(0,1,0),0);
-_b3r.clippingPlanes=[_b3clipFloor];
-_b3r.localClippingEnabled=true;
+_b3r.clippingPlanes=[];
+_b3r.localClippingEnabled=false;
 _b3r.outputColorSpace=THREE.SRGBColorSpace;
 
 const _b3s=new THREE.Scene();
@@ -47780,7 +47786,9 @@ function _b3animate(){
   const _footY=_b3floorY+_b3yOff;
   window._b3lastFloorY=_footY;
   _b3pivot.position.y=_footY+tgtH*0.5;
-  _b3clipFloor.constant=(cssY+bossRcss-H/2)-_b3yOff;
+  window._b3footScreenX=cssX;
+  window._b3footScreenY=cssY+bossRcss;
+  // _b3clipFloor.constant deprecated (clipping disabled)
 
   // facing (X rotation: window._btRotX 으로 실시간 조절)
   _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);

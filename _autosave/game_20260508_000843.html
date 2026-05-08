@@ -47708,10 +47708,8 @@ _b3loader.load(_B3_ANIMS.idle.src,(gltf)=>{
   _b3model.position.sub(center);
   _b3model.position.y+=_modelSz.y*0.5;
   _b3model.traverse(c=>{if(c.isMesh){c.castShadow=true;_b3meshes.push(c);_b3origMats.push(c.material);if(c.material)c.material.side=THREE.DoubleSide;}});
-  _b3pivot=new THREE.Group();_b3pivot.add(_b3model);
-  _b3anchor=new THREE.Group();_b3anchor.add(_b3pivot);
-  _b3anchor.visible=false;
-  _b3s.add(_b3anchor);
+  _b3pivot=new THREE.Group();_b3pivot.add(_b3model);_b3pivot.visible=false;
+  _b3s.add(_b3pivot);
   _b3size=new THREE.Box3().setFromObject(_b3pivot).getSize(new THREE.Vector3());
   _b3mixer=new THREE.AnimationMixer(_b3model);
   // idle 클립 등록+재생
@@ -47752,10 +47750,10 @@ function _b3animate(){
   if(_b3mixer)_b3mixer.update(dt);
 
   // 게임 상태 읽기 (같은 윈도우)
-  if(typeof G==='undefined'||typeof P==='undefined'||!P||!G.on){_b3anchor.visible=false;_b3r.render(_b3s,_b3cam);return}
+  if(typeof G==='undefined'||typeof P==='undefined'||!P||!G.on){_b3pivot.visible=false;_b3r.render(_b3s,_b3cam);return}
   const bE=findBoss();
   if(!bE||!bE.alive||!G._bossArena){
-    _b3anchor.visible=false;
+    _b3pivot.visible=false;
     window._b3Active=false;
     _b3r.render(_b3s,_b3cam);return;
   }
@@ -47773,9 +47771,9 @@ function _b3animate(){
   const cssX=physX/scale,cssY=physY/scale;
   const W=innerWidth,H=innerHeight;
 
-  if(cssX<-200||cssX>W+200||cssY<-200||cssY>H+200){_b3anchor.visible=false;_b3r.render(_b3s,_b3cam);return}
+  if(cssX<-200||cssX>W+200||cssY<-200||cssY>H+200){_b3pivot.visible=false;_b3r.render(_b3s,_b3cam);return}
 
-  _b3anchor.position.x=cssX-W/2;
+  _b3pivot.position.x=cssX-W/2;
   _b3pivot.position.z=0;
 
   // 스케일
@@ -47789,14 +47787,14 @@ function _b3animate(){
   const _b3yOff=(window._btOffsetY||0);
   const _footY=_b3floorY+_b3yOff;
   window._b3lastFloorY=_footY;
-  _b3anchor.position.y=_footY;
+  _b3pivot.position.y=_footY+tgtH*0.5;
   window._b3footScreenX=cssX;
   window._b3footScreenY=cssY+bossRcss;
   // _b3clipFloor.constant deprecated (clipping disabled)
 
   // facing (X rotation: window._btRotX 으로 실시간 조절)
   _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);
-  _b3anchor.visible=true;
+  _b3pivot.visible=true;
 
   // 보스 상태 → 3D 애니 전환
   const _b3ns=_b3mapState(bE.s,bE.stunned>0);
