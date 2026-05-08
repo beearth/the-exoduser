@@ -1,33 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<title>Chest3D v4 Preview</title>
-<style>
-body{margin:0;background:#0a0a12;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;font-family:sans-serif;color:#aaa;}
-#chest3dCvs{display:block;border-radius:6px;}
-p{margin:6px;font-size:12px;opacity:0.5;}
-button{margin:4px;padding:8px 20px;background:#1a1a2e;color:#ddd;border:1px solid #334;border-radius:4px;cursor:pointer;font-size:13px;}
-button:hover{background:#2a2a4e;}
-</style>
-</head>
-<body>
-<canvas id="chest3dCvs"></canvas>
-<p>GOW v4 — dark wood + Vegvisir rune + particles</p>
-<div>
-  <button onclick="window._chest3d&&window._chest3d.show(0,0)">Show</button>
-  <button onclick="window._chest3d&&window._chest3d.open()">Open</button>
-  <button onclick="window._chest3d&&window._chest3d.hide()">Hide</button>
-</div>
-<script src="three.min.js"></script>
-<script>
-var G={on:true,cam:{x:0,y:0}};
-var _dpr=devicePixelRatio;
-var OPT={resScale:100};
-function shake(){}
-</script>
-<script>
-(function(){
+<!DOCTYPE html><html><head><meta charset="utf-8"><title>Chest3D Preview</title><style>body{margin:0;background:#0a0a12;display:flex;align-items:center;justify-content:center;height:100vh;}#chest3dCvs{display:block;}</style></head><body><canvas id="chest3dCvs"></canvas><script src="three.min.js"></script><script>var G={on:true,cam:{x:0,y:0}};var _dpr=devicePixelRatio;var OPT={resScale:100};function shake(){}</script><script>(function(){
 'use strict';
 const CVS=document.getElementById('chest3dCvs');
 if(!CVS||typeof THREE==='undefined')return;
@@ -38,48 +9,48 @@ R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio,2));
 CVS.style.width=CVS.style.height=SZ+'px';
 R.setClearColor(0,0);R.outputColorSpace=THREE.SRGBColorSpace;
 R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
-R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.9;
+R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.15;
 
 const SC=new THREE.Scene();
-SC.fog=new THREE.FogExp2(0x000008,0.22);
+SC.fog=new THREE.FogExp2(0x000008,0.18);
 
-// 카메라 — 정면 45도 위에서 내려다보는 D4 스타일
-const CAM=new THREE.PerspectiveCamera(42,1,0.01,50);
-CAM.position.set(0,2.0,2.6);CAM.lookAt(0,0.5,0);
+// 카메라 — 적당히 물러남, 상자 전체가 보이게
+const CAM=new THREE.PerspectiveCamera(38,1,0.01,50);
+CAM.position.set(0,2.1,4.2);CAM.lookAt(0,0.45,0);
 
-// Environment cube map
+// Environment map — 중성색(반사용)
 const cubeRT=new THREE.WebGLCubeRenderTarget(128,{generateMipmaps:true,minFilter:THREE.LinearMipmapLinearFilter});
 const cubeCam=new THREE.CubeCamera(0.1,50,cubeRT);
 const envS=new THREE.Scene();
-envS.add(new THREE.HemisphereLight(0xff9944,0x0a0820,4));
-const eD1=new THREE.DirectionalLight(0xffcc88,8);eD1.position.set(2,3,1);envS.add(eD1);
-const eD2=new THREE.DirectionalLight(0x3366dd,3.5);eD2.position.set(-2,1,-2);envS.add(eD2);
+envS.add(new THREE.HemisphereLight(0xddddff,0x222200,1.2));
+const eD1=new THREE.DirectionalLight(0xffffff,4.0);eD1.position.set(2,3,1);envS.add(eD1);
+const eD2=new THREE.DirectionalLight(0x4466bb,2.5);eD2.position.set(-2,1,-2);envS.add(eD2);
 cubeCam.update(R,envS);
 SC.environment=cubeRT.texture;
 
-// 조명
-const keyL=new THREE.DirectionalLight(0xffd088,4.0);
+// 씬 조명
+const keyL=new THREE.DirectionalLight(0xffffff,1.5);
 keyL.position.set(1.5,8,3);keyL.castShadow=true;
 keyL.shadow.mapSize.set(1024,1024);
 keyL.shadow.camera.near=0.1;keyL.shadow.camera.far=22;
 keyL.shadow.camera.left=keyL.shadow.camera.bottom=-3.5;
 keyL.shadow.camera.right=keyL.shadow.camera.top=3.5;
 keyL.shadow.bias=-0.0005;SC.add(keyL);
-const rimL=new THREE.DirectionalLight(0x1133cc,3.0);rimL.position.set(-1.5,2,-3);SC.add(rimL);
-const topL=new THREE.DirectionalLight(0xffffff,1.2);topL.position.set(0,5,0);SC.add(topL);
-SC.add(new THREE.HemisphereLight(0x0d0806,0x020308,0.5));
+const rimL=new THREE.DirectionalLight(0x2244cc,2.5);rimL.position.set(-1.5,2,-3);SC.add(rimL);
+const topL=new THREE.DirectionalLight(0xfff8f0,0.3);topL.position.set(0,5,0);SC.add(topL);
+SC.add(new THREE.HemisphereLight(0x0a0805,0x010208,0.4));
 const iL1=new THREE.PointLight(0xff9922,0,5);iL1.position.set(0,1.0,0.3);SC.add(iL1);
 const iL2=new THREE.PointLight(0xffd070,0,10);iL2.position.set(0,4,0);SC.add(iL2);
 const iL3=new THREE.PointLight(0xffcc33,0,4);iL3.position.set(0,0.6,-0.2);SC.add(iL3);
 const runeL=new THREE.PointLight(0x2266ff,0.5,2.2);runeL.position.set(0,0.5,1.0);SC.add(runeL);
 
-// ===== 재질 =====
+// ===== 재질 — 어두운 목재, envMapIntensity 낮게 =====
 const woodC=[0x0e0602,0x120804,0x0c0501,0x100703];
-const mWood=woodC.map(c=>new THREE.MeshStandardMaterial({color:c,roughness:0.93,metalness:0.0,envMapIntensity:0.03}));
+const mWood=woodC.map(c=>new THREE.MeshStandardMaterial({color:c,roughness:0.96,metalness:0.0,envMapIntensity:0.0}));
 const mIron=new THREE.MeshStandardMaterial({color:0x100e0a,roughness:0.12,metalness:0.99,envMapIntensity:2.2});
-const mGold=new THREE.MeshStandardMaterial({color:0xd4a010,roughness:0.04,metalness:1.0,emissive:new THREE.Color(0x6a3800),emissiveIntensity:1.2,envMapIntensity:3.0});
-const mGoldBright=new THREE.MeshStandardMaterial({color:0xffcc20,roughness:0.02,metalness:1.0,emissive:new THREE.Color(0xaa5500),emissiveIntensity:2.2,envMapIntensity:3.5});
-const mRuneBg=new THREE.MeshStandardMaterial({color:0x010008,roughness:0.7,metalness:0.15,envMapIntensity:0.2});
+const mGold=new THREE.MeshStandardMaterial({color:0xc89500,roughness:0.05,metalness:1.0,emissive:new THREE.Color(0x5a3200),emissiveIntensity:1.0,envMapIntensity:2.8});
+const mGoldBright=new THREE.MeshStandardMaterial({color:0xffcc20,roughness:0.02,metalness:1.0,emissive:new THREE.Color(0x8a4800),emissiveIntensity:1.8,envMapIntensity:3.2});
+const mRuneBg=new THREE.MeshStandardMaterial({color:0x010008,roughness:0.7,metalness:0.15,envMapIntensity:0.1});
 const mInside=new THREE.MeshStandardMaterial({color:0x050200,roughness:1.0,metalness:0.0});
 const mGlow=new THREE.MeshBasicMaterial({color:0xff8800,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false});
 
@@ -110,19 +81,18 @@ for(let i=0;i<6;i++){const a=i*Math.PI/3,a2=a+Math.PI/3;rc.beginPath();rc.moveTo
   rc.lineWidth=3.5;rc.beginPath();rc.moveTo(p[0],p[1]-12);rc.lineTo(p[0]-9,p[1]+7);rc.lineTo(p[0]+9,p[1]+7);rc.closePath();rc.stroke();
 });
 const runeTex=new THREE.CanvasTexture(runeC);
-const mRuneGlow=new THREE.MeshStandardMaterial({
-  color:0x000020,roughness:0.3,metalness:0,
-  emissive:new THREE.Color(0x0d55ff),emissiveIntensity:14.0,
-  emissiveMap:runeTex,map:runeTex,alphaMap:runeTex,
-  transparent:true,depthWrite:false
+// MeshBasicMaterial: 토맵핑 무관, 순수 파란 glow
+const mRuneGlow=new THREE.MeshBasicMaterial({
+  map:runeTex,color:new THREE.Color(0x4488ff),
+  transparent:true,alphaMap:runeTex,
+  blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide
 });
+let _runeOpacity=1.0;
 
 // ===== 지오메트리 =====
-const ROOT=new THREE.Group();SC.add(ROOT);
-// 정면을 카메라 방향으로 고정 (회전 없음)
-ROOT.rotation.y=0;
+const ROOT=new THREE.Group();SC.add(ROOT);ROOT.rotation.y=-0.22;
 
-// 본체 판재
+// 본체 판재 4개
 const pH=0.25;
 for(let i=0;i<4;i++){
   const m=new THREE.Mesh(new THREE.BoxGeometry(2.1,pH-0.018,1.35),mWood[i]);
@@ -135,14 +105,13 @@ ins.position.set(0,0.52,0);ROOT.add(ins);
 const glowMesh=new THREE.Mesh(new THREE.PlaneGeometry(1.6,1.0),mGlow);
 glowMesh.position.set(0,0.97,0);glowMesh.rotation.x=-Math.PI/2;ROOT.add(glowMesh);
 
-// LID — 뒤 힌지 기준 회전
+// LID
 const LID=new THREE.Group();LID.position.set(0,1.0,-0.675);ROOT.add(LID);
 const lidBase=new THREE.Mesh(new THREE.BoxGeometry(2.12,0.38,1.37),mWood[0]);
 lidBase.position.set(0,0.19,0.685);lidBase.castShadow=true;LID.add(lidBase);
 const archG=new THREE.CylinderGeometry(0.18,0.18,2.10,24,1,true,0,Math.PI);
 const archM=new THREE.Mesh(archG,mWood[2]);
 archM.rotation.z=-Math.PI/2;archM.position.set(0,0.36,0.685);archM.castShadow=true;LID.add(archM);
-// 뚜껑 금 테두리
 const lidFE=new THREE.Mesh(new THREE.BoxGeometry(2.14,0.42,0.06),mGold);lidFE.position.set(0,0.19,1.38);LID.add(lidFE);
 const lidMold=new THREE.Mesh(new THREE.BoxGeometry(2.14,0.08,1.39),mGold);lidMold.position.set(0,0.39,0.685);LID.add(lidMold);
 const archTop=new THREE.Mesh(new THREE.CylinderGeometry(0.028,0.028,2.12,12),mGoldBright);
@@ -165,13 +134,8 @@ archTop.rotation.z=Math.PI/2;archTop.position.set(0,0.53,0.685);LID.add(archTop)
 // 앞면 룬 패널
 const fFrm=new THREE.Mesh(new THREE.BoxGeometry(1.6,0.72,0.048),mIron);fFrm.position.set(0,0.5,0.68);ROOT.add(fFrm);
 const rBg=new THREE.Mesh(new THREE.BoxGeometry(1.12,0.60,0.038),mRuneBg);rBg.position.set(0,0.5,0.69);ROOT.add(rBg);
-// 금 테두리
-[
-  [0,0.808,0.705,1.20,0.032,0.025],
-  [0,0.192,0.705,1.20,0.032,0.025],
-  [-0.576,0.5,0.705,0.032,0.64,0.025],
-  [0.576,0.5,0.705,0.032,0.64,0.025],
-].forEach(d=>{
+[[0,0.808,0.705,1.20,0.032,0.025],[0,0.192,0.705,1.20,0.032,0.025],
+ [-0.576,0.5,0.705,0.032,0.64,0.025],[0.576,0.5,0.705,0.032,0.64,0.025]].forEach(d=>{
   const bx=new THREE.Mesh(new THREE.BoxGeometry(d[3],d[4],d[5]),mGoldBright);
   bx.position.set(d[0],d[1],d[2]);ROOT.add(bx);
 });
@@ -179,7 +143,6 @@ const rBg=new THREE.Mesh(new THREE.BoxGeometry(1.12,0.60,0.038),mRuneBg);rBg.pos
   const gj=new THREE.Mesh(new THREE.SphereGeometry(0.040,12,10),mGoldBright);
   gj.position.set(p[0],p[1],0.714);ROOT.add(gj);
 });
-// 메인 룬 (크게)
 const rGfx=new THREE.Mesh(new THREE.PlaneGeometry(0.95,0.52),mRuneGlow);
 rGfx.position.set(0,0.5,0.715);ROOT.add(rGfx);
 
@@ -204,11 +167,10 @@ lKey.position.set(0,0.86,0.712);lKey.rotation.x=Math.PI/2;ROOT.add(lKey);
   tm.position.set(hx,0.58,0);tm.rotation.y=(i===0?1:-1)*Math.PI/2;ROOT.add(tm);
 });
 
-// 그림자 바닥
 const flr=new THREE.Mesh(new THREE.PlaneGeometry(8,8),new THREE.MeshStandardMaterial({color:0,transparent:true,opacity:0,roughness:1}));
 flr.rotation.x=-Math.PI/2;flr.position.y=-0.005;flr.receiveShadow=true;SC.add(flr);
 
-// ===== 룬 파티클 =====
+// 파티클
 const parts=[];
 for(let i=0;i<24;i++){
   const pm=new THREE.MeshBasicMaterial({
@@ -217,20 +179,17 @@ for(let i=0;i<24;i++){
   });
   const p=new THREE.Mesh(new THREE.PlaneGeometry(1,1),pm);
   const sz=0.05+Math.random()*0.08;p.scale.setScalar(sz);
-  p.userData={
-    angle:Math.random()*Math.PI*2,r:0.65+Math.random()*1.0,
+  p.userData={angle:Math.random()*Math.PI*2,r:0.65+Math.random()*1.0,
     yOff:Math.random()*1.2,ySpd:0.12+Math.random()*0.22,
-    aSpd:(0.22+Math.random()*0.30)*(Math.random()<0.5?1:-1),
-    phase:Math.random()*Math.PI*2
-  };
+    aSpd:(0.22+Math.random()*0.30)*(Math.random()<0.5?1:-1),phase:Math.random()*Math.PI*2};
   p.visible=false;SC.add(p);parts.push(p);
 }
 
-// ===== 상태 기계 =====
+// 상태 기계
 let _st='hidden',_timer=0,_lidAng=0,_wx=0,_wy=0;
 function _reset(){
-  LID.rotation.x=0;ROOT.position.set(0,0,0);ROOT.rotation.z=0;ROOT.rotation.y=0;
-  mRuneGlow.emissiveIntensity=14.0;mGoldBright.emissiveIntensity=2.2;mGold.emissiveIntensity=1.2;
+  LID.rotation.x=0;ROOT.position.set(0,0,0);ROOT.rotation.set(0,0,0);
+  mRuneGlow.opacity=1.0;_runeOpacity=1.0;mGoldBright.emissiveIntensity=1.8;mGold.emissiveIntensity=1.0;
   mGlow.opacity=0;iL1.intensity=0;iL2.intensity=0;iL3.intensity=0;
   parts.forEach(p=>{p.visible=false;p.material.opacity=0;});
 }
@@ -259,41 +218,35 @@ function tick(){
   if(_st==='hidden')return;
   const dt=Math.min(CLK.getDelta(),0.05);_timer+=dt;
   updatePos();
-
-  // 파티클
   parts.forEach((p,i)=>{
     const u=p.userData;
     if(_st==='idle'||_st==='rattling'){
-      p.visible=true;
-      u.angle+=dt*u.aSpd;
+      p.visible=true;u.angle+=dt*u.aSpd;
       const y0=0.05+((u.yOff+_timer*u.ySpd)%1.3);
       p.position.set(Math.cos(u.angle)*u.r,y0,Math.sin(u.angle)*u.r*0.4-0.05);
       p.lookAt(CAM.position);
       p.material.opacity=(_st==='rattling'?0.85:0.45)+Math.sin(_timer*1.8+u.phase)*0.18;
     }else if(_st==='opening'&&_timer<0.6){
-      p.visible=true;
-      p.material.opacity=Math.max(0,(0.6-_timer)*1.6);
+      p.visible=true;p.material.opacity=Math.max(0,(0.6-_timer)*1.6);
     }else{p.visible=false;}
   });
 
   if(_st==='idle'){
-    // 회전 없음 — 정면 고정, 살짝 bob
     ROOT.position.y=Math.sin(_timer*1.4)*0.028;
-    ROOT.rotation.y=Math.sin(_timer*0.5)*0.04; // 아주 미세한 좌우 흔들림
-    mRuneGlow.emissiveIntensity=14.0+Math.sin(_timer*2.6)*4.0;
-    mGoldBright.emissiveIntensity=2.2+Math.sin(_timer*1.9)*0.9;
-    mGold.emissiveIntensity=1.2+Math.sin(_timer*1.5)*0.35;
+    ROOT.rotation.y=-0.22+Math.sin(_timer*0.5)*0.04;
+    _runeOpacity=0.85+Math.sin(_timer*2.6)*0.15;mRuneGlow.opacity=_runeOpacity;
+    mGoldBright.emissiveIntensity=1.8+Math.sin(_timer*1.9)*0.7;
+    mGold.emissiveIntensity=1.0+Math.sin(_timer*1.5)*0.3;
     runeL.intensity=0.5+Math.sin(_timer*2.6)*0.28;
   }else if(_st==='rattling'){
     const rp=Math.min(1,_timer*2.2);
     ROOT.position.x=Math.sin(_timer*46)*0.045*rp;
     ROOT.position.y=Math.abs(Math.sin(_timer*42))*0.028*rp;
-    ROOT.rotation.z=Math.sin(_timer*44)*0.026*rp;
-    ROOT.rotation.y=0;
+    ROOT.rotation.z=Math.sin(_timer*44)*0.026*rp;ROOT.rotation.y=0;
     const lk=Math.min(1,_timer*1.8);
     iL1.intensity=lk*2.0;iL3.intensity=lk*1.0;
-    mGoldBright.emissiveIntensity=2.2+lk*5.5;mGold.emissiveIntensity=1.2+lk*3.5;
-    mGlow.opacity=lk*0.32;mRuneGlow.emissiveIntensity=14.0+lk*12.0;
+    mGoldBright.emissiveIntensity=1.8+lk*5.5;mGold.emissiveIntensity=1.0+lk*3.5;
+    mGlow.opacity=lk*0.32;mRuneGlow.opacity=0.85+lk*0.15;
     runeL.intensity=0.5+lk*2.0;
     if(_timer>.6){_st='opening';_timer=0;if(typeof shake==='function')shake(16);}
   }else if(_st==='opening'){
@@ -303,21 +256,20 @@ function tick(){
     const bst=Math.min(1,_timer/.4),fad=_timer>.55?1-Math.min(1,(_timer-.55)/.95):1;
     iL1.intensity=bst*fad*18;iL2.intensity=bst*fad*9;iL3.intensity=bst*fad*7;
     mGlow.opacity=bst*fad*1.3;
-    mRuneGlow.emissiveIntensity=14.0+bst*14.0*fad;
-    mGoldBright.emissiveIntensity=2.2+bst*8.0*fad;
-    mGold.emissiveIntensity=1.2+bst*7.0*fad;
+    mRuneGlow.opacity=0.9;
+    mGoldBright.emissiveIntensity=1.8+bst*8.0*fad;
+    mGold.emissiveIntensity=1.0+bst*7.0*fad;
     runeL.intensity=0.5+bst*3.0*fad;
     if(_timer>=1.55){_st='open';_timer=0;LID.rotation.x=-Math.PI*.85;}
   }else if(_st==='open'){
-    ROOT.position.y=Math.sin(_timer*1.0)*0.015; // 열린 후 미세 bob
-    ROOT.rotation.y=0;
+    ROOT.position.y=Math.sin(_timer*1.0)*0.015;ROOT.rotation.y=-0.22;
     iL1.intensity=Math.max(0,6.0-_timer*2.0);
     iL2.intensity=Math.max(0,3.0-_timer*1.3);
     iL3.intensity=Math.max(0,3.5-_timer*1.6);
     mGlow.opacity=Math.max(0,.65-_timer*.28);
-    mRuneGlow.emissiveIntensity=14.0+Math.sin(_timer*2.2)*3.0;
-    mGoldBright.emissiveIntensity=2.2+Math.sin(_timer*1.6)*0.7;
-    mGold.emissiveIntensity=1.2+Math.sin(_timer*1.3)*0.3;
+    mRuneGlow.opacity=0.85+Math.sin(_timer*2.2)*0.15;
+    mGoldBright.emissiveIntensity=1.8+Math.sin(_timer*1.6)*0.6;
+    mGold.emissiveIntensity=1.0+Math.sin(_timer*1.3)*0.3;
     runeL.intensity=Math.max(0,0.5-_timer*0.12);
     if(_timer>5.5){_st='hidden';CVS.style.display='none';}
   }
@@ -326,9 +278,6 @@ function tick(){
 tick();
 console.log('[CHEST3D] GOW v4 dark-wood+particles');
 })();
-window.addEventListener('load',function(){
-  setTimeout(function(){if(window._chest3d)window._chest3d.show(0,0);},100);
-});
-</script>
-</body>
-</html>
+
+window.addEventListener("load",function(){setTimeout(function(){if(window._chest3d)window._chest3d.show(0,0);},100);});
+</script></body></html>
