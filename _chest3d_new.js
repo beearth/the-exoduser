@@ -1,9 +1,9 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><title>Chest3D v5 Preview</title><style>body{margin:0;background:#080810;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;gap:12px;}#chest3dCvs{display:block;}div{display:flex;gap:8px;}button{padding:6px 14px;background:#1a1a2e;color:#ccc;border:1px solid #333;border-radius:4px;cursor:pointer;font-size:13px;}button:hover{background:#2a2a4e;}</style></head><body><canvas id="chest3dCvs"></canvas><div><button onclick="window._chest3d&&window._chest3d.show(0,0)">Show</button><button onclick="window._chest3d&&window._chest3d.open()">Open</button><button onclick="window._chest3d&&window._chest3d.hide()">Hide</button></div><script src="three.min.js"></script><script>var G={on:true,cam:{x:0,y:0}};var _dpr=devicePixelRatio;var OPT={resScale:100};function shake(){}</script><script>(function(){
+(function(){
 'use strict';
 const CVS=document.getElementById('chest3dCvs');
 if(!CVS||typeof THREE==='undefined')return;
 
-const SZ=320;
+const SZ=120;
 const R=new THREE.WebGLRenderer({canvas:CVS,alpha:true,antialias:true,powerPreference:'high-performance'});
 R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio,2));
 CVS.style.width=CVS.style.height=SZ+'px';
@@ -45,11 +45,11 @@ const iL2=new THREE.PointLight(0xff6600,0,8);iL2.position.set(0,3,0);SC.add(iL2)
 // 룬 주변광 (크림슨)
 const runeL=new THREE.PointLight(0xcc1100,1.2,2.5);runeL.position.set(0,0.42,0.85);SC.add(runeL);
 
-// ===== 재질 — 다크 철/석재 =====
-const mStone=new THREE.MeshStandardMaterial({color:0x252b32,roughness:0.78,metalness:0.10,envMapIntensity:0.5});
-const mIron=new THREE.MeshStandardMaterial({color:0x1c2028,roughness:0.08,metalness:0.99,envMapIntensity:3.5});
-const mPewter=new THREE.MeshStandardMaterial({color:0x353e48,roughness:0.22,metalness:0.92,envMapIntensity:2.5});
-const mAccent=new THREE.MeshStandardMaterial({color:0x2e3840,roughness:0.28,metalness:0.88,envMapIntensity:2.0,emissive:new THREE.Color(0x0a1018),emissiveIntensity:0.8});
+// ===== 재질 — 고딕 에이지드 철/석재 (은색 금지) =====
+const mStone=new THREE.MeshStandardMaterial({color:0x1a1c1e,roughness:0.94,metalness:0.0,envMapIntensity:0.1});
+const mIron=new THREE.MeshStandardMaterial({color:0x191614,roughness:0.75,metalness:0.40,envMapIntensity:0.6});
+const mPewter=new THREE.MeshStandardMaterial({color:0x252220,roughness:0.65,metalness:0.50,envMapIntensity:0.7});
+const mAccent=new THREE.MeshStandardMaterial({color:0x1e1a10,roughness:0.80,metalness:0.30,envMapIntensity:0.4,emissive:new THREE.Color(0x080402),emissiveIntensity:0.5});
 const mInside=new THREE.MeshStandardMaterial({color:0x0a0200,roughness:1.0,metalness:0.0});
 const mGlow=new THREE.MeshBasicMaterial({color:0xff2200,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false});
 
@@ -304,5 +304,3 @@ function tick(){
 tick();
 console.log('[CHEST3D] GOW v5 gothic-iron');
 })();
-window.addEventListener("load",function(){setTimeout(function(){if(window._chest3d)window._chest3d.show(0,0);},100);});
-</script></body></html>

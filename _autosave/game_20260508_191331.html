@@ -11945,7 +11945,7 @@ if(_impSpr.complete&&_impSpr.naturalWidth)_psReady=true;
 const _PS_COLS=9,_PS_ROWS=1,_PS_FRAMES=9;
 const _PS_CW=128,_PS_CH=128;
 // ═══ 전기 히트 VFX (vfx_holy_burst.png 3열×3행=9프레임, 투명PNG) ═══
-const _EB_IMG=new Image();_EB_IMG.src='assets/vfx/boss/vfx_holy_burst.png';
+const _EB_IMG=new Image();_EB_IMG.src='assets/vfx/vfx_holy_burst.png';
 let _ebReady=false;_EB_IMG.onload=()=>{_ebReady=true};
 const _EB_COLS=3,_EB_ROWS=3,_EB_FRAMES=9,_EB_CW=768,_EB_CH=768;
 const _EB_MAX=16;
@@ -34309,7 +34309,7 @@ function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
     const ang=Math.atan2(e.y-P.y,e.x-P.x);
     const mult=elMul(el,e.el);const fd=~~(dmg*mult);
     // 데미지 범위 안이면 데미지 적용
-    if(d<=range+e.r){hurtE(e,~~(fd*0.5),ang,false,{kbMult:kbM||0,noPoise:true},el);e.kb.x+=Math.cos(ang)*8;e.kb.y+=Math.sin(ang)*8} // 데미지 50% 감소
+    if(d<=range+e.r){hurtE(e,~~(fd*0.5),ang,false,{kbMult:kbM||0,noPoise:true,explode:true},el);e.kb.x+=Math.cos(ang)*8;e.kb.y+=Math.sin(ang)*8} // 데미지 50% 감소
     if(!e.alive)continue; // 데미지로 죽었으면 스턴 스킵
     // 포이즈 적용 (통합 함수)
     if(e.ib){
