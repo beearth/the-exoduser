@@ -32485,10 +32485,6 @@ function _slamStormBlast(){
   for(let j=0;j<12;j++){const _a=Math.PI*2*j/12;const _d=60+Math.random()*(_ssR-60);
     poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*6,Math.sin(_a)*6,'#ff4400',3+Math.random()*3,10+Math.random()*5)}
   addTxt(P.x,P.y-50,_isFused('stormBeam')?_T('⚡ 암전나선!'):_T('🌋 지진폭풍!'),_isFused('stormBeam')?'#ff6600':'#ff4400',70);
-  // 용암분출 이펙트: 중심 + 범위 내 랜덤 3곳
-  _addLavaErupt(P.x,P.y,_ssR,55);
-  for(let _li=0;_li<7;_li++){const _la=Math.PI*2*_li/7+Math.random()*.5;const _ld=60+Math.random()*(_ssR*.6);
-    _addLavaErupt(P.x+Math.cos(_la)*_ld,P.y+Math.sin(_la)*_ld,_ssR*.6,42+~~(Math.random()*18))}
   // 암전나선 번개 버스트 VFX — 삭제 (렉 유발, 시인성 없음)
   SFX.shout();SFX.slam();
   G.shake=28*OPT.shake/100;

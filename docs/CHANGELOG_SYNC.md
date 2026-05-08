@@ -23145,3 +23145,37 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - chest_preview.html
 - game.html
 
+
+## 2026-05-08 21:30 (auto)
+- _autosave/game_20260508_203605.html
+- assets/vfx/boss/boss_cageTrap.webp
+- assets/vfx/boss/boss_chainLights.webp
+- assets/vfx/boss/boss_crossWipe.webp
+- assets/vfx/boss/boss_darkZone.webp
+- assets/vfx/boss/boss_donutSlam.webp
+- assets/vfx/boss/boss_doppelganger.webp
+- assets/vfx/boss/boss_fanWave.webp
+- assets/vfx/boss/boss_fireRain.webp
+- assets/vfx/boss/boss_fissure.webp
+- assets/vfx/boss/boss_gSlamWave.webp
+- assets/vfx/boss/boss_gravityWell.webp
+- assets/vfx/boss/boss_gwLightning.webp
+- assets/vfx/boss/boss_gwPillar.webp
+- assets/vfx/boss/boss_judgeCut.webp
+- assets/vfx/boss/boss_lavaPools.webp
+- assets/vfx/boss/boss_mirrorClone.webp
+- assets/vfx/boss/boss_orbWeave.webp
+- assets/vfx/boss/boss_phantomSwords.webp
+- assets/vfx/boss/boss_pillars.webp
+- assets/vfx/boss/boss_poisonPool.webp
+- assets/vfx/boss/boss_radialLaser.webp
+- assets/vfx/boss/boss_rewindMark.webp
+- assets/vfx/boss/boss_safeCorner.webp
+- assets/vfx/boss/boss_seekerMines.webp
+- assets/vfx/boss/boss_shockGrid.webp
+- assets/vfx/boss/boss_soulAnchor.webp
+- assets/vfx/boss/boss_tidalWipe.webp
+- assets/vfx/boss/boss_tideWave.webp
+- assets/vfx/boss/boss_wallPush.webp
+- game.html
+
