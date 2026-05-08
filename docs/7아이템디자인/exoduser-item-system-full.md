@@ -83,7 +83,7 @@ const IMPLICIT_TABLE = {
   ring2:    {ko:'원소 저항 +X%',   stat:'_iElemRes',  val:[8,15]},
   necklace: {ko:'최대 HP +X%',     stat:'_iMaxHPPct', val:[5,12]},
   cape:     {ko:'회피 쿨다운 -X%', stat:'_iDashCd',   val:[5,12]},
-  belt:     {ko:'스태미나 회복 +X%',stat:'_iStRegen', val:[5,12]},
+  belt:     {ko:'물약 쿨다운 -X%',  stat:'_iBeltPot', val:[3,8]},
 };
 
 // ─── 어픽스 풀 (PREFIX=0, SUFFIX=1) ───
@@ -105,13 +105,13 @@ const AFFIX_POOL = [
   {id:'critChance',type:0, ko:'광폭의',  stat:'_aCrit',      tiers:[0.06,0.10,0.16],unit:'pct', slots:['wpn','rng'], group:'crit',    weight:90},
   {id:'critDmg',   type:0, ko:'처형의',  stat:'_aCritDmg',   tiers:[0.25,0.40,0.65],unit:'pct', slots:['wpn'],       group:'critdmg', weight:65},
   {id:'staggerBns',type:0, ko:'파쇄의',  stat:'_aStagger',   tiers:[8,14,22],   unit:'val', slots:['wpn'],          group:'stagger',  weight:70},
-  {id:'chainHit',  type:0, ko:'연쇄의',  stat:'_aChain',     tiers:[1,2,3],     unit:'val', slots:['wpn'],          group:'chain',    weight:60},
+  {id:'chainTarget',type:0, ko:'연쇄의', stat:'_aChain',     tiers:[1,1,2,3,4], unit:'cnt', slots:['xbow'],         group:'chain',    weight:60},
   {id:'killSlayer',type:0, ko:'학살의',  stat:'_aKillDmg',   tiers:[0.15,0.25,0.40],unit:'pct', slots:['wpn'],      group:'kill',     weight:75},
   {id:'critExpl',  type:0, ko:'폭발의',  stat:'_aCritExpl',  tiers:[0.30,0.60,1.00],unit:'pct', slots:['wpn'],      group:'critexpl', weight:55},
 
   // ── PREFIX: 전투 스타일 ──
   {id:'atkSpeed',  type:0, ko:'쾌속의',  stat:'_aAtkSpd',    tiers:[0.06,0.10,0.16],unit:'pct', slots:['wpn','glv'],group:'aspd',     weight:85},
-  {id:'parryBns',  type:0, ko:'패리의',  stat:'_aParry',     tiers:[0.20,0.35,0.55],unit:'pct', slots:['wpn','clk'],group:'parry',    weight:65},
+  {id:'parryBonus',type:0, ko:'패리의',  stat:'_aParry',     tiers:[.12,.20,.35,.55,.75],unit:'pct',slots:['wpn'],  group:'parry',    weight:65},
   {id:'comboBoost',type:0, ko:'콤보의',  stat:'_aCombo',     tiers:[0.20,0.35,0.55],unit:'pct', slots:['wpn'],       group:'combo',    weight:60},
   {id:'dashBoost', type:0, ko:'돌진의',  stat:'_aDash',      tiers:[0.25,0.40,0.65],unit:'pct', slots:['wpn','bts'], group:'dash',    weight:55},
   {id:'skillBoost',type:0, ko:'궁극의',  stat:'_aSkill',     tiers:[0.15,0.25,0.40],unit:'pct', slots:['wpn'],       group:'skill',   weight:65},

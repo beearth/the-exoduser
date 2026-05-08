@@ -7761,6 +7761,7 @@ const _sampleFiles={
   monster_hurt:'sfx/monster/monster_hurt.mp3', // 보스 고통 — hurtE 보스 15%
   boss_hit:'sfx/monster/boss_hit.mp3',         // 보스 피격
   boss_howl:'sfx/monster/boss_howl.mp3',       // 보스 포효 — 아레나 진입
+  boss_revive:'sfx/monster/boss_revive.mp3',  // 보스 부활 전용 SFX
   blue_hit:'sfx/skillsound/blue_hit.mp3',     // 타격음 (가끔만)
   boss_howl1:'sfx/monster/boss_howl1.mp3',
   // death/ — 몬스터 사망 (etype별 매핑: _deathSfxKey)
@@ -7774,6 +7775,7 @@ const _sampleFiles={
   death_heavy:'sfx/death/death_heavy_thud.mp3',   // 중량 사망
   death_heavy3:'sfx/death/death_heavy3.mp3',      // 중량 사망 변형
   death_boss:'sfx/death/death_boss_roar.mp3',     // 보스 사망 연출
+  boss_final_death:'sfx/boss_final_death.mp3',   // 보스 완전 사망 전용 SFX
   player_dead1:'sfx/death/player_dead1.mp3',      // 플레이어 사망1
   player_dead2:'sfx/death/player_dead2.mp3',      // 플레이어 사망2
   player_dead3:'sfx/death/player_dead3.mp3',      // 플레이어 사망3
@@ -10525,13 +10527,13 @@ const EQ_POS=[
 // ═══ WEAPON TYPES ═══
 // wtype: {name, emoji, atkMul, stCost, spdMul, arcW, range, stagger, kb}
 const WTYPES={
-  sword:  {name:'대검', emoji:'⚔️', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
-  dagger: {name:'대검', emoji:'⚔️', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
-  hammer: {name:'대검', emoji:'⚔️', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
-  mace:   {name:'대검', emoji:'⚔️', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
-  club:   {name:'대검', emoji:'⚔️', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
-  axe:    {name:'대검', emoji:'⚔️', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
-  spear:  {name:'대검', emoji:'⚔️', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
+  sword:  {name:'검',   emoji:'⚔️', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
+  dagger: {name:'단검', emoji:'🗡️', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
+  hammer: {name:'해머', emoji:'🔨', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
+  mace:   {name:'메이스',emoji:'⚔️', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
+  club:   {name:'곤봉', emoji:'⚔️', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
+  axe:    {name:'도끼', emoji:'🪓', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
+  spear:  {name:'창',   emoji:'⚔️', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
 };
 const WTYPE_KEYS=Object.keys(WTYPES);
 
@@ -22497,9 +22499,9 @@ function update(){
         P._chainAssaultReady=false;
         const _stLv=P.skills.chainAssault||1;
         const _stR=450+(_stLv-1)*~~(225/9); // 1렙450, 10렙675
-        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×30, 2티어(0.1초)=×60, 3티어(0.2초)=×100 (업화선급)
+        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×1, 2티어(0.1초)=×3, 3티어(0.2초)=×5 — (2026-05-08, 구 ×30/60/100)
         const _stTier=Math.max(1,Math.min(3,_harpTier||1));
-        const _stDistMul=_stTier===3?100:_stTier===2?60:30;
+        const _stDistMul=_stTier===3?5:_stTier===2?3:1;
         const _stDmg=~~(magicRef()*_skMul('chainAssault')*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 통일공식: _skMul
         const _stEl=EL.F;
         G._noHitStopT=40;
@@ -22530,7 +22532,7 @@ function update(){
         // 불바닥 생성 — 3중폭: 기존 불바닥 위에 착지 시 확대 (3→6→9배, 지속 리셋)
         if(!G._fireZones)G._fireZones=[];
         const _afR=_stR*.6;
-        const _afDmg=~~(_stDmg*0.08); // 구 계수 유지 — 3중폭 45초 누적 폭발 감안
+        const _afDmg=~~(_stDmg*0.04); // -50% (2026-05-08, 직접 DOT 과다 — 3중폭 누적 감안)
         let _afExist=null;
         for(let _afi=0;_afi<G._fireZones.length;_afi++){const fz=G._fireZones[_afi];if(fz.type!=='assaultFlame')continue;
           const _d2=dst(P.x,P.y,fz.x,fz.y);if(_d2<=fz.r&&(_afExist===null||(fz._afStk||0)>(_afExist._afStk||0)))_afExist=fz} // 소환 범위 내 착지만 강화
@@ -22538,7 +22540,7 @@ function update(){
           _afExist._afStk=(_afExist._afStk||0)+1;
           const _afMul=[1,3,6,9][_afExist._afStk];
           _afExist.r=~~(_afExist._afBaseR*(1+_afExist._afStk*0.15)); // 범위: +15%씩 (×1.15→×1.30→×1.45)
-          _afExist.dmg=_afExist._afBaseDmg*(1+_afExist._afStk); // 데미지: +1씩 (×1→×2→×3→×4)
+          _afExist.dmg=_afExist._afBaseDmg*(1+_afExist._afStk*0.5); // 데미지: +0.5씩 (×1.5→×2→×2.5) — 2중폭 뻥튀기 완화 (2026-05-08)
           _afExist.maxT=300*_afMul; // 지속시간도 3배씩 (5초→15초→30초→45초)
           _afExist.t=0;_afExist._fp=null; // 위치 고정, 지속시간+불꽃 리셋
           const _afN=['','🔥🔥 3중폭!','🔥🔥🔥 6중폭!','🔥🔥🔥🔥 9중폭!'][_afExist._afStk];
@@ -24400,6 +24402,8 @@ function update(){
       }}
       // ── 타이머 감소 (컬링/짝홀 상관없이 항상 실행) ──
       if(e._spawnT>0)e._spawnT--;
+      // ── 보스 재소환 VFX 지연 (포탈 열린 후 grand VFX 발동) ──
+      if(e._bossReviveVFXPending>0){e._bossReviveVFXPending-=sp;if(e._bossReviveVFXPending<=0){e._bossReviveVFXPending=0;_bossReviveGrandVFX(e,e._origR||e.r);}}
       if(e.stunned>0)e.stunned-=sp;
       if(e._hitStun>0)e._hitStun-=sp;
       if(e._stunImmune>0)e._stunImmune-=sp;
@@ -24467,8 +24471,11 @@ function update(){
             addTxt(e.x,e.y-50,_T('☠ 지옥에서 귀환!'),'#ff4400',100);
             addTxt(e.x,e.y-30,_L('부활 성공! 부활력 ','Revive! Power ')+e._revPts+'/'+e._maxRevPts,'#ff8844',60);
             if(_shrinkPct>0)addTxt(e.x,e.y-70,'▼ '+_shrinkPct+'%','#aaffcc',55);
-            _bossReviveGrandVFX(e,_vfxR);
-            {const _br=_bossSfx(G.stage);playSample(_br?_br.howl:'boss_howl',.8,_r(_br?_br.howlP:.9,.1));}
+            // void 포탈 재소환 연출 + 보스 숨김 → 40f 후 grand VFX
+            const _portalSc2=(_vfxR*7)/768;
+            playVFXAng('void_black',e.x,e.y,_portalSc2,5,0,true);
+            e._spawnT=55;e._bossReviveVFXPending=40;
+            playSample('boss_revive',1.0,_r(1.0,.08)); // 보스 부활 전용 SFX
           }else{
             // 부활 실패 → 완전 사망 (G.bossAlive는 true 유지 — 30프레임 체크에서 게이트 열기)
             e._bossRevived=false;e._reviveTimer=0;
@@ -24476,7 +24483,7 @@ function update(){
             addTxt(e._reviveX,e._reviveY-30,((e._revPts||0)<=0?_T('부활력 고갈!'):_T('부활 실패...')),((e._revPts||0)<=0?'#ff4444':'#888888'),60);
             // G.bossAlive는 삭제 — 30프레임 체크(125611)에서 _bossLive=false 감지 후 처리
             shake(8);G._flashT=4;G._flashCol='#ffffff';
-            {const _bf=_bossSfx(G.stage);playSample(_bf?_bf.die:'death_boss',1,_bf?_bf.dieP:1);}
+            playSample('boss_final_death',1.0,_r(1.0,.05)); // 보스 완전 사망 전용 SFX
           }
         }else if(e._reviveAsGhoul){
           // ── 일반몹: 구울로 변환 (50%) ──
@@ -25442,7 +25449,11 @@ function update(){
   let targetX=P.x+G._camLkX,targetY=P.y+G._camLkY;
   if(G._bossRef&&G._bossRef.alive){targetX=(P.x+G._bossRef.x)*.5+G._camLkX*.3;targetY=(P.y+G._bossRef.y)*.5+G._camLkY*.3}
   G.cam.x+=(targetX-G.cam.x)*camSpd;G.cam.y+=(targetY-G.cam.y)*camSpd;
-  G.cam.x=~~G.cam.x;G.cam.y=~~G.cam.y;}
+  G.cam.x=~~G.cam.x;G.cam.y=~~G.cam.y;
+  // 보스 아레나 줌아웃 (보스 생존 시 0.80x, 일반 1.0x)
+  const _czTgt=(G._bossRef&&G._bossRef.alive)?0.80:1.0;
+  if(!G._camZoom)G._camZoom=1.0;
+  G._camZoom+=(_czTgt-G._camZoom)*(1-Math.pow(0.94,_dtSp));}
   // 카메라 클램핑
   const _mwPx=G.mw*T,_mhPx=G.mh*T;
   if(_mwPx<=C.width){G.cam.x=_mwPx/2}else{G.cam.x=Math.max(C.width/2,Math.min(_mwPx-C.width/2,G.cam.x))}
@@ -27803,7 +27814,15 @@ function _bossPhaseCheck(e,sp){
   addTxt(e.x,e.y-50,_T(ph.label),_phCol,70);
   _reviveVFX(e.x,e.y,'#ffdd44','⚡부활! HP +30%',{partN:16,partSpd:5,shake:10,vfxSize:140,flash:3});
   G.hitStop=~~((_HS.bossPhase+_bp*3)*OPT.hitStop/100);
-  G.slowMo=40+_bp*10;
+  G.slowMo=Math.max(G.slowMo,60+_bp*15);
+  shake(14+_bp*4);
+  // 포효 SFX
+  SFX.groggy();
+  const _pbsf=_bossSfx(G.stage);
+  setTimeout(()=>{
+    if(_pbsf)playSample(_pbsf.howl,.8,_r(_pbsf.howlP,.12));
+    else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.8,_r(.85,.12));
+  },120);
 }
 // ═══ 보스 idle 이동: 패턴 사이 능동적 이동 ═══
 function _bossIdleMove(e,d,sp){
@@ -31675,19 +31694,24 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         e.r=Math.max(10,~~(e._origR*_rvScale));
         const _shrinkPct1=~~((1-_rvScale)*100);
         if(_shrinkPct1>0)addTxt(e.x,e.y-85,'▼ '+_shrinkPct1+'%','#aaffcc',55);
-        // ── 부활 순간이동: 플레이어 뒤로 텔레포트 + 블링크 VFX ──
+        // ── 부활 순간이동: 플레이어 뒤로 텔레포트 + 재소환 포탈 연출 ──
         const _rvOx=e.x,_rvOy=e.y,_rvR=e.r||20;
-        for(let i=0;i<14;i++){const a=Math.PI*2*i/14,sp=4+Math.random()*5;poolPart(_rvOx+Math.cos(a)*_rvR*.6,_rvOy+Math.sin(a)*_rvR*.6,Math.cos(a)*sp,Math.sin(a)*sp,'#aa00ff',3+Math.random()*2,12)}
-        poolPart(_rvOx,_rvOy,0,0,'#aa00ff',_rvR*2,10,3,0,0);_addBlastLight(_rvOx,_rvOy,_rvR*3,12,170,0,255);
+        // 구 위치: void 포탈 열림 (보스가 빨려 들어감)
+        const _portalSc=(_vfxR1*7)/768;
+        playVFXAng('void_black',_rvOx,_rvOy,_portalSc,5,0,true);
+        _addBlastLight(_rvOx,_rvOy,_rvR*3,12,170,0,255);
         const _tpAng=P.facing+Math.PI+((Math.random()-.5)*.8);
         const _tpDist=80+e.deaths*20;
         const _tpX=P.x+Math.cos(_tpAng)*_tpDist,_tpY=P.y+Math.sin(_tpAng)*_tpDist;
         if(canMv(_tpX,_tpY,e.r)){e.x=_tpX;e.y=_tpY}
         else{const _sp=safePt(P.x+Math.cos(_tpAng)*50,P.y+Math.sin(_tpAng)*50,e.r);if(_sp){e.x=_sp.x;e.y=_sp.y}}
-        for(let i=0;i<14;i++){const a=Math.PI*2*i/14,d2=_rvR*2.5;poolPart(e.x+Math.cos(a)*d2,e.y+Math.sin(a)*d2,-Math.cos(a)*4,-Math.sin(a)*4,'#cc00ff',3+Math.random()*2,12)}
-        poolPart(e.x,e.y,0,0,'#ffffff',_rvR*1.5,8,3,0,0);_addBlastLight(e.x,e.y,_rvR*4,14,204,0,255);
-        e._tpFlashT=8;_addTpSmoke(_rvOx,_rvOy,_rvR*4,18,0);_addTpSmoke(e.x,e.y,_rvR*5,22,1);_addTpImpact(e.x,e.y,_rvR*4,24,'#aa00ff');_addTpBolt(_rvOx,_rvOy,e.x,e.y,14,'#aa00ff');
+        // 새 위치: void 포탈 열림 (보스 재소환)
+        playVFXAng('void_black',e.x,e.y,_portalSc,5,0,true);
+        _addTpBolt(_rvOx,_rvOy,e.x,e.y,14,'#aa00ff');
         addTxt(e.x,e.y-50,_T('⚡순간이동!'),'#aa00ff',40);
+        // 보스 숨김: 포탈 열리는 동안 투명 → 40f 후 grand VFX + 페이드인
+        e._spawnT=55;e._bossReviveVFXPending=40;
+        playSample('boss_revive',1.0,_r(1.0,.08)); // 보스 부활 전용 SFX
         // ── 부활 충격파: 주변 밀어내기 + 데미지 ──
         const _waveR=100+e.deaths*30;
         const _waveDmg=~~(e.atk*(.5+e.deaths*.15));
@@ -31722,7 +31746,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         const _revCol=_isH7?'#ff0044':'#ff2244';
         addTxt(e.x,e.y-35,_revTxt,_revCol,70);
         addTxt(e.x,e.y-20,'HP '+e.mhp,_isH7?'#ff4488':'#ff6666',50);
-        _bossReviveGrandVFX(e,_vfxR1);
+        // grand VFX는 _bossReviveVFXPending(40f)이 소진될 때 자동 발동
         return; // 죽지 않음
       }
     }
@@ -38442,16 +38466,18 @@ function draw(){
   // ── 프레임당 1회 사전 계산: 반복 Math.sin/cos 캐싱 ──
   const _sn100=Math.sin(_now*.01),_sn150=Math.sin(_now/150),_sn200=Math.sin(_now/200),_sn250=Math.sin(_now/250),_sn300=Math.sin(_now/300);
   X.clearRect(0,0,C.width,C.height);
-  {const _bgFills=['#080e06','#0e1008','#0c1620','#180a0c','#18140c','#0c0a18','#060410'];
-  X.fillStyle=_bgFills[SI_TO_HELL[G.stage||0]]||'#000';X.fillRect(0,0,C.width,C.height);}
+  X.fillStyle='#000';X.fillRect(0,0,C.width,C.height); // 항상 순수 검정으로 먼저 채움
   const stg=STG[G.stage];
   let sx=0,sy=0;if(G.shake>0&&!_EDITOR_MODE){sx=(Math.random()-.5)*G.shake*2;sy=(Math.random()-.5)*G.shake*2}
   const _ez=(_EDITOR_MODE&&G._edZoom)?G._edZoom:1;
+  const _cz=(!_EDITOR_MODE)?(G._camZoom||1):1; // 보스 줌아웃
+  const _tzoom=_ez*_cz;
+  const _vpMul=1/Math.max(0.3,_tzoom); // 줌아웃 시 뷰포트 범위 확장 배수
   X.save();
-  if(_ez!==1){X.translate(C.width/2,C.height/2);X.scale(_ez,_ez);X.translate(-C.width/2,-C.height/2)}
+  if(_tzoom!==1){X.translate(C.width/2,C.height/2);X.scale(_tzoom,_tzoom);X.translate(-C.width/2,-C.height/2)}
   X.translate(Math.round(C.width/2-G.cam.x+sx),Math.round(C.height/2-G.cam.y+sy));
-  const s1=Math.max(0,~~((G.cam.x-C.width/2)/T)-1),e1=Math.min(G.mw,Math.ceil((G.cam.x+C.width/2)/T)+1);
-  const s2=Math.max(0,~~((G.cam.y-C.height/2)/T)-1),e2=Math.min(G.mh,Math.ceil((G.cam.y+C.height/2)/T)+1);
+  const s1=Math.max(0,~~((G.cam.x-C.width/2*_vpMul)/T)-1),e1=Math.min(G.mw,Math.ceil((G.cam.x+C.width/2*_vpMul)/T)+1);
+  const s2=Math.max(0,~~((G.cam.y-C.height/2*_vpMul)/T)-1),e2=Math.min(G.mh,Math.ceil((G.cam.y+C.height/2*_vpMul)/T)+1);
   // ── 패럴랙스 배경 레이어 ──
   const _tPara=performance.now();
   var _snapPara=_fc2d?_PERF_PROF._snap():null;
@@ -38465,19 +38491,19 @@ function draw(){
     if(_bw<1||_bh<1)continue;
     X.globalAlpha=_bl.opacity;
     if(_bl.parallax===0){
-      // parallax=0: 뷰포트 범위만 타일링
-      const _vpL=G.cam.x-C.width/2,_vpT2=G.cam.y-C.height/2;
-      const _vpR=G.cam.x+C.width/2,_vpB=G.cam.y+C.height/2;
+      // parallax=0: 뷰포트 범위만 타일링 (_vpMul로 줌아웃 확장)
+      const _vpL=G.cam.x-C.width/2*_vpMul,_vpT2=G.cam.y-C.height/2*_vpMul;
+      const _vpR=G.cam.x+C.width/2*_vpMul,_vpB=G.cam.y+C.height/2*_vpMul;
       const _sx=(~~(_vpL/_bw))*_bw,_sy=(~~(_vpT2/_bh))*_bh;
       for(let _by=_sy;_by<_vpB+_bh;_by+=_bh)
         for(let _bx=_sx;_bx<_vpR+_bw;_bx+=_bw)
           X.drawImage(_bSrc,_bx,_by);
     } else {
-      // parallax>0: 오프셋+뷰포트 범위만
+      // parallax>0: 오프셋+뷰포트 범위만 (_vpMul로 줌아웃 확장)
       const _px=(G.cam.x*_bl.parallax)|0,_py=(G.cam.y*_bl.parallax)|0;
       const _ox=-((((_px%_bw)+_bw)%_bw)|0),_oy=-((((_py%_bh)+_bh)%_bh)|0);
-      const _vpL=G.cam.x-C.width/2-_bw,_vpT2=G.cam.y-C.height/2-_bh;
-      const _vpR=G.cam.x+C.width/2+_bw,_vpB=G.cam.y+C.height/2+_bh;
+      const _vpL=G.cam.x-C.width/2*_vpMul-_bw,_vpT2=G.cam.y-C.height/2*_vpMul-_bh;
+      const _vpR=G.cam.x+C.width/2*_vpMul+_bw,_vpB=G.cam.y+C.height/2*_vpMul+_bh;
       for(let _by=_oy-_bh;_by<_vpB;_by+=_bh){
         if(_by+_bh<_vpT2)continue;
         for(let _bx=_ox-_bw;_bx<_vpR;_bx+=_bw){
@@ -38488,6 +38514,13 @@ function draw(){
     }
     X.globalAlpha=1;
   }}}
+  // ── 맵 외부 영역 검정 오버레이 (패럴랙스 초록빛 차단) ──
+  {const _mwPx2=G.mw*T,_mhPx2=G.mh*T,_mPad=1200;
+  X.fillStyle='#000';
+  X.fillRect(-_mPad,-_mPad,_mPad,_mhPx2+_mPad*2);         // 왼쪽
+  X.fillRect(_mwPx2,-_mPad,_mPad,_mhPx2+_mPad*2);          // 오른쪽
+  X.fillRect(0,-_mPad,_mwPx2,_mPad);                        // 위
+  X.fillRect(0,_mhPx2,_mwPx2,_mPad);}                       // 아래
   // ── 반딧불이 파티클 (가벼운 버전 — arc/gradient 없이 fillRect만) ──
   {if(!_oriInited)_oriInitParticles();
   const _fvl=G.cam.x-C.width/2,_fvt=G.cam.y-C.height/2,_fvr=G.cam.x+C.width/2,_fvb=G.cam.y+C.height/2;
@@ -47796,7 +47829,7 @@ function _b3animate(){
 
   // facing (X rotation: window._btRotX 으로 실시간 조절)
   _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);
-  _b3pivot.visible=true;
+  _b3anchor.visible=true;
 
   // 보스 상태 → 3D 애니 전환
   const _b3ns=_b3mapState(bE.s,bE.stunned>0);

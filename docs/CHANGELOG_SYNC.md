@@ -22883,3 +22883,25 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - game.html
 - game.html.bak_20260508_phasecine
 
+
+## 2026-05-08 11:30 (auto)
+- _autosave/game_20260508_103425.html
+- _autosave/game_20260508_103555.html
+- _autosave/game_20260508_103842.html
+- _autosave/game_20260508_103904.html
+- _autosave/game_20260508_104037.html
+- _autosave/game_20260508_110658.html
+- _autosave/game_20260508_110859.html
+- _autosave/game_20260508_111142.html
+- _autosave/game_20260508_111145.html
+- _autosave/game_20260508_111447.html
+- _autosave/game_20260508_112041.html
+- _autosave/game_20260508_112414.html
+- assets/vfx/boss_revive_boom.png
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤??md
+- docs/2_5 ë¶€???ë„ˆì§€?´ë“œ?œìŠ¤??2_5 ë¶€???ë„ˆì§€?´ë“œ?œìŠ¤??md
+- docs/7?„ì´?œë””?ì¸/exoduser-item-system-full.md
+- game.html
+- sfx/boss_final_death.mp3
+- sfx/monster/boss_revive.mp3
+
