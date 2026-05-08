@@ -4696,7 +4696,7 @@ const _EN={
 '만화방창 II':'Needle Barrage II','마력연사':'Arcane Barrage','마력광선':'Arc Laser','업화선':'Hellfire Beam',
 '지옥진':'Inferno Array','폭독칼날':'Plague Blade','악의폭풍':'Malice Storm',
 '악의기둥':'Dark Pillar','회복의 영역':'Sacred Domain','구속의 영역':'Binding Domain',
-'아이스스톰':'Ice Storm','대왕치기':'Giant Slam','대왕치기 2':'Giant Slam II','독침':'Venom Needle','🐍 독침!':'🐍 Venom Needle!',
+'아이스스톰':'Ice Storm','대왕치기':'Giant Slam','대왕치기 2':'Giant Slam II','독사':'Venom Snake','🐍 독사!':'🐍 Venom Snake!',
 '기동불꽃':'Chain Blaze','기동파괴':'Chain Crush','기동칼날개':'Chain Bladewing',
 '평화의보호':'Aegis of Peace','참회':'Repentance','칼등날개':'Shield Wing',
 '폭산탄':'Blast Shot','파쇄의 영역':'Shatter Domain','침식의 영역':'Corrosion Domain',
@@ -25122,7 +25122,7 @@ function update(){
     let hit=false;
     const _neP=shQuery(p.x,p.y,p.r+20);
     for(let _ni=0;_ni<_neP.length;_ni++){const e=_neP[_ni];if(!e.alive)continue;
-      if(p._hitSet&&p._hitSet.has(e)&&!p.plagueBlade)continue; // 관통한 적 스킵 (폭독혈은 같은 적 재히트 허용)
+      if(p._hitSet&&p._hitSet.has(e)&&!p.plagueBlade&&!p.venomBlade)continue; // 관통한 적 스킵 (폭독혈/독사는 같은 적 재히트 허용)
       if(dst(p.x,p.y,e.x,e.y)<e.r+p.r){
         // ── 폭독혈: hurtE 호출 전에 전염+관통 처리 ──
         if(p.plagueBlade){
@@ -25173,14 +25173,23 @@ function update(){
           if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*_bladeBleed;
         }
         if(p.venomBlade){
-          // 독침: 직타 무시, 독 DOT 위주 — bowRef×DEX 풀뎀 축적
+          // 독사: 재히트 쿨 8프레임, 관통력 소모: 새 적 -10, 같은 적 재히트 -20
+          if(p._reHitT>0){p._reHitT-=sp;hit=false;continue}
+          p._reHitT=8;
+          if(!p._hitSet)p._hitSet=new Set();
+          const _vbRehit=p._hitSet.has(e);
+          if(!_vbRehit)p._hitSet.add(e);
+          p._pierceRate=Math.max(0,(p._pierceRate||0)-(_vbRehit?20:10));
           e.poison=1;
           e.poisonT=Math.max(e.poisonT||0,600); // 10초 지속
           e.poisonStk=(e.poisonStk||0)+1;
           if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*(p._venomPool||0);
+          playSampleAt('chain_fly',.3,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang);
+          if(p._pierceRate>0){hit=false;continue}
+          hit=true;break;
         }
         if(!_isTurretProj||_ftV>0.01){
-          if(p.bladeShard||p.maliceHunt||p.iceBlade||p.venomBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
+          if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
           else if(p.blueBean){if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.1*_ftV,_r(1,.15));P._bbHitCd=4}}
           else if(p.arcMissile){}
           else if(p.magic)playSampleAt('bullet_hit',.15*_ftV,_r(1,.15),e.x,e.y);
@@ -27358,13 +27367,14 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       addTxt(e.x,e.y-45,_T('⚠ 돌진!'),'#ffaa00',40);break;
     }
     case'elemBall':{
-      // 속성 덩어리 3연발 (상/중/하) — 빠르고 유도
+      // 속성 덩어리 부채꼴 10발 — 빠르고 유도
       e.facing=Math.atan2(P.y-e.y,P.x-e.x);
       const _ebSpd=6;const _ebR=16;
       const _ebDmg=~~(e.atk*3);
-      const _ebOff=[-.25,0,.25]; // 상/중/하 각도 오프셋
-      for(let bi=0;bi<3;bi++){
-        const _ba=e.facing+_ebOff[bi];
+      const _ebCnt=10+~~(e._bossPhase*1.5); // 페이즈 0→10발, 4→16발
+      const _ebFanW=Math.PI*.55; // 99도 부채꼴
+      for(let bi=0;bi<_ebCnt;bi++){
+        const _ba=e.facing-_ebFanW/2+_ebFanW*bi/(_ebCnt-1);
         spawnProj({x:e.x+Math.cos(_ba)*30,y:e.y+Math.sin(_ba)*30,
           vx:Math.cos(_ba)*_ebSpd,vy:Math.sin(_ba)*_ebSpd,
           dmg:_ebDmg,el:e.el,friendly:false,life:400,ml:400,
@@ -27382,11 +27392,11 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       e.facing=Math.atan2(P.y-e.y,P.x-e.x);
       const _swSpd=4.5;const _swDmg=~~(e.atk*2.5);
       const _swPh=e._bossPhase||0;
-      // 페이즈에 따라 1~3발
-      const _swCnt=_swPh>=3?3:_swPh>=1?2:1;
-      const _swOff=_swCnt===3?[-.3,0,.3]:_swCnt===2?[-.15,.15]:[0];
+      // 페이즈에 따라 5~12발
+      const _swCnt=_swPh>=3?12:_swPh>=2?10:_swPh>=1?7:5;
+      const _swFanW=Math.PI*(.4+_swPh*.05); // 72~90도 부채꼴
       for(let si=0;si<_swCnt;si++){
-        const _sa=e.facing+_swOff[si];
+        const _sa=e.facing-_swFanW/2+_swFanW*si/(_swCnt-1);
         spawnProj({x:e.x+Math.cos(_sa)*28,y:e.y+Math.sin(_sa)*28,
           vx:Math.cos(_sa)*_swSpd,vy:Math.sin(_sa)*_swSpd,
           dmg:_swDmg,el:e.el,friendly:false,life:300,ml:300,
@@ -29989,7 +29999,7 @@ function updateE(e,sp){
   // ── 광역 발사: 전 방향 투사체 ──
   case'bossBurstWind':
     if(e.st2<=0){
-      const cnt=~~((6+Math.min(G.stage,6))*(1+(e._bossPhase-1)*.12)); // 최대 ~14발
+      const cnt=~~(Math.max(10,(6+Math.min(G.stage,6)))*(1+(e._bossPhase-1)*.12)); // 최소 10발, 최대 ~16발
       for(let i=0;i<cnt;i++){const a=Math.PI*2*i/cnt;
         const _iR2=Math.random();const _isBKB=_iR2<.5;const _isRB=_iR2>=.5;
         spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*(_isBKB?4.4:_isRB?4.0:3.2),vy:Math.sin(a)*(_isBKB?4.4:_isRB?4.0:3.2),dmg:~~(e.atk*(_isBKB?1.5:_isRB?2.5:1.2)),el:_isBKB?EL.P:e.el,friendly:false,life:400,ml:400,col:_isBKB?'#00aa00':_isRB?'#cc1100':e.col,sz:_isBKB?2.0:_isRB?1.8:1.2,redBean:_isRB||undefined,blackBean:_isBKB||undefined,homing:_isRB||undefined})}
@@ -30073,7 +30083,7 @@ function updateE(e,sp){
   // ── 부채꼴 발사: 전방 확산 ──
   case'bossFanWind':
     if(e.st2<=0){
-      const fanW=Math.PI*(.7+e._bossPhase*.06);const cnt=~~((4+Math.min(G.stage,5))*(1+(e._bossPhase-1)*.12)); // 최대 ~10발
+      const fanW=Math.PI*(.7+e._bossPhase*.06);const cnt=~~(Math.max(10,(4+Math.min(G.stage,5)))*(1+(e._bossPhase-1)*.12)); // 최소 10발, 최대 ~15발
       for(let i=0;i<cnt;i++){const a=e.facing-fanW/2+fanW*i/(cnt-1);
         const _iR3=Math.random();const _isBKF=_iR3<.5;const _isRF=_iR3>=.5;
         spawnProj({x:e.x,y:e.y,vx:Math.cos(a)*(_isBKF?4.4:_isRF?4.4:3.8),vy:Math.sin(a)*(_isBKF?4.4:_isRF?4.4:3.8),dmg:~~(e.atk*(_isBKF?1.5:_isRF?2.8:1.3)),el:_isBKF?EL.P:e.el,friendly:false,life:400,ml:400,col:_isBKF?'#00aa00':_isRF?'#cc1100':e.col,sz:_isBKF?2.0:_isRF?1.8:1.2,redBean:_isRF||undefined,blackBean:_isBKF||undefined,homing:_isRF||undefined})}
@@ -32924,7 +32934,7 @@ const SKILL_LIST=[
 
   {id:'guardian',name:'악의 보호자',cat:'def',noDmg:true,desc:'3초마다 악의 구체 생성(1렙 2개). 몸에 밀착하여 적 투사체를 자동 방어(파괴). 레벨당 구체+1',descEn:'Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceHunt',name:'악의 사냥',cat:'bow',act:true,emoji:'⚔',desc:'유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초',descEn:'1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
-  {id:'venomBlade',name:'독침',cat:'bow',act:true,emoji:'🐍',desc:'유도 독침 1발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 500+Lv×20. 독 10초. 쿨 15초. Lv당 뎀+20%',descEn:'1 homing venom needle (ST 40). DEX+bow base. Minimal direct DMG, Poison DOT main. Pierce 500+Lv×20. Poison 10s. CD 15s. Per Lv DMG+20%',spCost:10,matCost:0,cd:900,up:true,upSp:5,upMat:0},
+  {id:'venomBlade',name:'독사',cat:'bow',act:true,emoji:'🐍',desc:'유도 독사 1발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 900+Lv×20+석궁관통×300+pPierce×30. 독 10초. 쿨 15초. Lv당 뎀+20%',descEn:'1 homing venom snake (ST 40). DEX+bow base. Minimal direct DMG, Poison DOT main. Pierce 900+Lv×20+bowPierce×300+pPierce×30. Poison 10s. CD 15s. Per Lv DMG+20%',spCost:10,matCost:0,cd:900,up:true,upSp:5,upMat:0},
   {id:'maliceMortar',name:'폭풍소환',cat:'magic',act:true,emoji:'🌪️',desc:'어둠 소용돌이 소환 (마우스 조준 설치, MP 소모, 쿨 11초, INT 스케일링, 1렙 200범위 +30/렙, 5초 지속, 적 흡인)',descEn:'Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 200 +30/Lv, 5s duration, pulls enemies)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초',descEn:'Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발. 범위 1500+Lv×100px. 범위 끝까지 넉백(주 성능). 거리감쇠 50%. 스턴 2초. Lv당 뎀+10%. (MP 30%, 쿨 120초)',descEn:'Pentagram cast → holy light pillar mega-explosion. Range 1500+Lv×100px. Full-range knockback (main feature). 50% distance falloff. Stun 2s. Per Lv DMG+10%. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
@@ -33765,7 +33775,7 @@ function activateMaliceHunt(){
   }
 }
 
-// ═══ 독침 발동 (DEX+석궁 기반 독 DOT 추적칼날) ═══
+// ═══ 독사 발동 (DEX+석궁 기반 독 DOT 추적칼날) ═══
 function activateVenomBlade(){
   const _vbLv=P.skills.venomBlade||1;
   const _vbStCost=40;
@@ -33782,12 +33792,12 @@ function activateVenomBlade(){
     _pp.dmg=1; // 직타 최소 — 독 DOT 위주
     _pp.el=EL.D;_pp.maxDist=_vbRange;_pp.dist=0;
     _pp.r=8;_pp.stagger=0;_pp.kb=0;_pp.magic=true;
-    _pp.venomBlade=true;_pp.mhBlade=true; // mhBlade 재사용 → 추적 유도
+    _pp.venomBlade=true; // 마우스 방향 직선 발사
     _pp._venomPool=_vbDmg;
-    _pp._pierced=0;_pp._mhMaxPierce=_vbPierce;
+    _pp._pierced=0;_pp._pierceRate=_vbPierce;
     _pp._hitSet=new Set();_pp._maxBounce=10;
     pProjs[pProjs.length]=_pp;}
-  SFX.magic(EL.D);addTxt(P.x,P.y-25,_T('🐍 독침!'),'#44dd44',35);
+  SFX.magic(EL.D);addTxt(P.x,P.y-25,_T('🐍 독사!'),'#44dd44',35);
 }
 
 // ═══ 폭풍소환 발사 (키홀드 거리 → 기원 투척 → 착지 시 소용돌이 전개) ═══
@@ -45189,7 +45199,7 @@ function drawP(){
         X.globalAlpha=fa;X.fillStyle='#ccffff';
         X.beginPath();X.moveTo(p.r+2,0);X.lineTo(0,-p.r*.35);X.lineTo(-p.r,0);X.lineTo(0,p.r*.35);X.closePath();X.fill();
         if(Math.random()>.6)poolPart(p.x+(Math.random()-.5)*8,p.y+(Math.random()-.5)*8,(Math.random()-.5),(Math.random()-.5),'#aaeeff',1+Math.random()*2,8+Math.random()*6);
-      }else if(p.venomBlade){// ── VENOM NEEDLE: 독침 — 녹색 독 바늘 ──
+      }else if(p.venomBlade){// ── VENOM SNAKE: 독사 — 녹색 독 바늘 ──
         X.rotate(ang);
         const _vPulse=.85+Math.sin(_now/60+p.x*.2)*.15;
         X.globalAlpha=fa*.9*_vPulse;X.fillStyle='#22cc44';

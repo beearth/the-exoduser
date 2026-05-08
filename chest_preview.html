@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Chest3D Preview</title>
+<style>
+body{margin:0;background:#111;display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;font-family:sans-serif;color:#ccc;}
+#chest3dCvs{border:1px solid #333;border-radius:4px;}
+p{margin:8px;font-size:13px;opacity:0.7;}
+button{margin:4px;padding:8px 18px;background:#333;color:#fff;border:1px solid #555;border-radius:4px;cursor:pointer;font-size:13px;}
+button:hover{background:#555;}
+</style>
+</head>
+<body>
+<canvas id="chest3dCvs"></canvas>
+<p>Chest3D GOW v3 — standalone preview</p>
+<div>
+  <button onclick="window._chest3d&&window._chest3d.show(0,0)">Show</button>
+  <button onclick="window._chest3d&&window._chest3d.open()">Open</button>
+  <button onclick="window._chest3d&&window._chest3d.hide()">Hide</button>
+</div>
+<script src="three.min.js"></script>
+<script>
+// mock globals
+var G={on:true,cam:{x:0,y:0}};
+var _dpr=devicePixelRatio;
+var OPT={resScale:100};
+function shake(){}
+</script>
+<script>
+(function(){
+'use strict';
+const CVS=document.getElementById('chest3dCvs');
+if(!CVS||typeof THREE==='undefined')return;
+
+const SZ=420;
+const R=new THREE.WebGLRenderer({canvas:CVS,alpha:true,antialias:true,powerPreference:'high-performance'});
+R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio,2));
+CVS.style.width=CVS.style.height=SZ+'px';
+R.setClearColor(0,0);R.outputColorSpace=THREE.SRGBColorSpace;
+R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
+R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.6;
+
+const SC=new THREE.Scene();
+const CAM=new THREE.PerspectiveCamera(38,1,0.01,100);
+CAM.position.set(0.28,1.9,3.2);CAM.lookAt(0,0.44,0);
+
+// Environment map for metal reflections
+const cubeRT=new THREE.WebGLCubeRenderTarget(128,{generateMipmaps:true,minFilter:THREE.LinearMipmapLinearFilter});
+const cubeCamera=new THREE.CubeCamera(0.1,50,cubeRT);
+const envS=new THREE.Scene();
+envS.add(new THREE.HemisphereLight(0xff9944,0x0a0820,4));
+const eD1=new THREE.DirectionalLight(0xffcc88,7);eD1.position.set(2,3,1);envS.add(eD1);
+const eD2=new THREE.DirectionalLight(0x3366dd,3);eD2.position.set(-2,1,-2);envS.add(eD2);
+cubeCamera.update(R,envS);
+SC.environment=cubeRT.texture;
+
+// Lights
+const keyL=new THREE.DirectionalLight(0xffd055,3.8);
+keyL.position.set(3.5,8,5);keyL.castShadow=true;
+keyL.shadow.mapSize.set(1024,1024);
+keyL.shadow.camera.near=0.1;keyL.shadow.camera.far=30;
+keyL.shadow.camera.left=keyL.shadow.camera.bottom=-4;
+keyL.shadow.camera.right=keyL.shadow.camera.top=4;
+keyL.shadow.bias=-0.0004;SC.add(keyL);
+const rimL=new THREE.DirectionalLight(0x2255ff,2.2);rimL.position.set(-1.5,3,-5);SC.add(rimL);
+const filL=new THREE.DirectionalLight(0xff9944,0.7);filL.position.set(-3,0.4,2);SC.add(filL);
+SC.add(new THREE.HemisphereLight(0x180c04,0x030408,0.75));
+const iL1=new THREE.PointLight(0xff8822,0,6);iL1.position.set(0,0.9,0.22);SC.add(iL1);
+const iL2=new THREE.PointLight(0xffffff,0,12);iL2.position.set(0,3.5,0);SC.add(iL2);
+const iL3=new THREE.PointLight(0xffcc44,0,4);iL3.position.set(0,0.65,-0.18);SC.add(iL3);
+
+// Materials - NO canvas textures for body/iron/gold
+const mIron=new THREE.MeshStandardMaterial({color:0x16110e,roughness:0.16,metalness:0.98,envMapIntensity:1.6});
+const mGold=new THREE.MeshStandardMaterial({color:0xcc9500,roughness:0.05,metalness:1.0,emissive:new THREE.Color(0x3e2000),emissiveIntensity:0.8,envMapIntensity:2.5});
+const mLock=new THREE.MeshStandardMaterial({color:0xeebb00,roughness:0.03,metalness:1.0,emissive:new THREE.Color(0x5a3400),emissiveIntensity:1.6,envMapIntensity:3.0});
+const mRuneBg=new THREE.MeshStandardMaterial({color:0x060410,roughness:0.5,metalness:0.3,envMapIntensity:0.4});
+const mInside=new THREE.MeshStandardMaterial({color:0x020100,roughness:1.0,metalness:0.0});
+const mGlow=new THREE.MeshBasicMaterial({color:0xff9922,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false});
+
+// Wood planks: 4 alternating shades
+const plankColors=[0x1c0a02,0x221005,0x190902,0x200e04];
+const mPlanks=plankColors.map(c=>new THREE.MeshStandardMaterial({color:c,roughness:0.91,metalness:0.0,envMapIntensity:0.04}));
+
+// Rune glow: clean Algiz shape on 128px canvas, blue emissive
+const runeC=document.createElement('canvas');runeC.width=runeC.height=128;
+const rctx=runeC.getContext('2d');
+rctx.fillStyle='#000000';rctx.fillRect(0,0,128,128);
+rctx.strokeStyle='#ffffff';rctx.lineCap='round';rctx.lineJoin='round';
+rctx.lineWidth=3;rctx.strokeRect(6,6,116,116);
+rctx.lineWidth=1.5;rctx.strokeRect(10,10,108,108);
+rctx.lineWidth=7;
+[[64,14,64,114],[64,58,36,34],[64,58,92,34],[36,34,18,16],[92,34,110,16]].forEach(s=>{
+  rctx.beginPath();rctx.moveTo(s[0],s[1]);rctx.lineTo(s[2],s[3]);rctx.stroke();
+});
+rctx.lineWidth=3;
+[[18,18],[110,18],[18,110],[110,110]].forEach(p=>{
+  rctx.beginPath();rctx.moveTo(p[0]-7,p[1]);rctx.lineTo(p[0]+7,p[1]);
+  rctx.moveTo(p[0],p[1]-7);rctx.lineTo(p[0],p[1]+7);rctx.stroke();
+});
+const runeTex=new THREE.CanvasTexture(runeC);
+const mRuneGlow=new THREE.MeshStandardMaterial({
+  color:0x000010,roughness:0.3,metalness:0.0,
+  emissive:new THREE.Color(0x1166ff),emissiveIntensity:9.0,
+  emissiveMap:runeTex,map:runeTex,alphaMap:runeTex,
+  transparent:true,depthWrite:false
+});
+
+// Chest geometry
+const ROOT=new THREE.Group();SC.add(ROOT);
+
+// Body: 4 horizontal plank strips
+const plankH=0.22;
+for(let pi=0;pi<4;pi++){
+  const plk=new THREE.Mesh(new THREE.BoxGeometry(1.9,plankH-0.016,1.2),mPlanks[pi]);
+  plk.position.y=pi*plankH+plankH/2;
+  plk.castShadow=true;plk.receiveShadow=true;ROOT.add(plk);
+}
+
+// Inside cavity
+const ins=new THREE.Mesh(new THREE.BoxGeometry(1.6,0.72,0.98),mInside);
+ins.position.set(0,0.49,0);ROOT.add(ins);
+const glowMesh=new THREE.Mesh(new THREE.PlaneGeometry(1.5,0.9),mGlow);
+glowMesh.position.set(0,0.878,0);glowMesh.rotation.x=-Math.PI/2;ROOT.add(glowMesh);
+
+// LID group (pivot at hinge = back top of body)
+const LID=new THREE.Group();LID.position.set(0,0.88,-0.6);ROOT.add(LID);
+const lidBase=new THREE.Mesh(new THREE.BoxGeometry(1.92,0.34,1.22),mPlanks[0]);
+lidBase.position.set(0,0.17,0.61);lidBase.castShadow=true;LID.add(lidBase);
+// Arch
+const archG=new THREE.CylinderGeometry(0.14,0.14,1.94,22,1,true,0,Math.PI);
+const archMesh=new THREE.Mesh(archG,mPlanks[2]);
+archMesh.rotation.z=-Math.PI/2;archMesh.position.set(0,0.31,0.61);archMesh.castShadow=true;LID.add(archMesh);
+// Gold lid trim
+const lidMold=new THREE.Mesh(new THREE.BoxGeometry(1.94,0.07,1.24),mGold);lidMold.position.set(0,0.355,0.61);LID.add(lidMold);
+const lidFE=new THREE.Mesh(new THREE.BoxGeometry(1.94,0.38,0.055),mGold);lidFE.position.set(0,0.17,1.235);LID.add(lidFE);
+const archRidge=new THREE.Mesh(new THREE.CylinderGeometry(0.024,0.024,1.96,12),mGold);
+archRidge.rotation.z=Math.PI/2;archRidge.position.set(0,0.44,0.61);LID.add(archRidge);
+// Lid iron bands
+[0.055,0.27].forEach(by=>{
+  const bm=new THREE.Mesh(new THREE.BoxGeometry(1.94,0.062,1.24),mIron);bm.position.set(0,by,0.61);LID.add(bm);
+  const st=new THREE.Mesh(new THREE.BoxGeometry(1.96,0.02,1.26),mGold);st.position.set(0,by+0.038,0.61);LID.add(st);
+});
+
+// Body iron bands + gold rivets
+[0.15,0.44,0.73].forEach(by=>{
+  const bnd=new THREE.Mesh(new THREE.BoxGeometry(1.94,0.062,1.24),mIron);bnd.position.set(0,by,0);ROOT.add(bnd);
+  const st=new THREE.Mesh(new THREE.BoxGeometry(1.96,0.02,1.26),mGold);st.position.set(0,by+0.038,0);ROOT.add(st);
+  [-0.88,0,0.88].forEach(bx=>[-0.56,0,0.56].forEach(bz=>{
+    const rv=new THREE.Mesh(new THREE.SphereGeometry(0.044,10,8),mGold);
+    rv.position.set(bx,by+0.04,bz);ROOT.add(rv);
+  }));
+});
+
+// Front decorative plate
+const fFrm=new THREE.Mesh(new THREE.BoxGeometry(1.48,0.66,0.045),mIron);fFrm.position.set(0,0.44,0.623);ROOT.add(fFrm);
+const rBg=new THREE.Mesh(new THREE.BoxGeometry(0.74,0.46,0.038),mRuneBg);rBg.position.set(0,0.44,0.634);ROOT.add(rBg);
+// Gold border
+const rbT=new THREE.Mesh(new THREE.BoxGeometry(0.80,0.028,0.022),mGold);rbT.position.set(0,0.672,0.647);ROOT.add(rbT);
+const rbB=new THREE.Mesh(new THREE.BoxGeometry(0.80,0.028,0.022),mGold);rbB.position.set(0,0.208,0.647);ROOT.add(rbB);
+const rbL=new THREE.Mesh(new THREE.BoxGeometry(0.028,0.50,0.022),mGold);rbL.position.set(-0.384,0.44,0.647);ROOT.add(rbL);
+const rbR=new THREE.Mesh(new THREE.BoxGeometry(0.028,0.50,0.022),mGold);rbR.position.set(0.384,0.44,0.647);ROOT.add(rbR);
+[[-0.37,0.66],[0.37,0.66],[-0.37,0.22],[0.37,0.22]].forEach(p=>{
+  const gj=new THREE.Mesh(new THREE.SphereGeometry(0.032,10,8),mLock);
+  gj.position.set(p[0],p[1],0.652);ROOT.add(gj);
+});
+// Rune glow plane
+const rGfx=new THREE.Mesh(new THREE.PlaneGeometry(0.62,0.38),mRuneGlow);
+rGfx.position.set(0,0.44,0.657);ROOT.add(rGfx);
+
+// Lock
+const lBk=new THREE.Mesh(new THREE.BoxGeometry(0.32,0.42,0.07),mIron);lBk.position.set(0,0.82,0.624);ROOT.add(lBk);
+const lHs=new THREE.Mesh(new THREE.BoxGeometry(0.20,0.16,0.11),mGold);lHs.position.set(0,0.78,0.638);ROOT.add(lHs);
+const lArc=new THREE.Mesh(new THREE.TorusGeometry(0.078,0.026,14,28,Math.PI),mGold);
+lArc.position.set(0,0.888,0.638);lArc.rotation.z=Math.PI;ROOT.add(lArc);
+const lKey=new THREE.Mesh(new THREE.CylinderGeometry(0.032,0.032,0.12,14),mLock);
+lKey.position.set(0,0.768,0.652);lKey.rotation.x=Math.PI/2;ROOT.add(lKey);
+
+// Corner posts
+[[-0.93,0.6],[0.93,0.6],[-0.93,-0.6],[0.93,-0.6]].forEach(co=>{
+  const cl=new THREE.Mesh(new THREE.BoxGeometry(0.06,0.9,0.06),mIron);cl.position.set(co[0],0.45,co[1]);ROOT.add(cl);
+  [0.12,0.44,0.76].forEach(cy=>{
+    const cb=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.14,0.1),mGold);cb.position.set(co[0],cy,co[1]);ROOT.add(cb);
+  });
+});
+
+// Shadow floor
+const flr=new THREE.Mesh(new THREE.PlaneGeometry(6,6),new THREE.MeshStandardMaterial({color:0,transparent:true,opacity:0,roughness:1}));
+flr.rotation.x=-Math.PI/2;flr.position.y=-0.005;flr.receiveShadow=true;SC.add(flr);
+
+// State machine
+let _st='hidden',_timer=0,_lidAng=0,_rotY=-0.32,_wx=0,_wy=0;
+function _reset(){
+  LID.rotation.x=0;ROOT.rotation.y=_rotY;ROOT.position.set(0,0,0);ROOT.rotation.z=0;
+  mRuneGlow.emissiveIntensity=9.0;mLock.emissiveIntensity=1.6;mGold.emissiveIntensity=0.8;
+  mGlow.opacity=0;iL1.intensity=0;iL2.intensity=0;iL3.intensity=0;
+}
+window._chest3d={
+  show(wx,wy){_wx=wx;_wy=wy;_st='idle';_timer=0;_lidAng=0;_rotY=-0.32;_reset();CVS.style.display='block';},
+  open(){if(_st==='idle'||_st==='rattling'){_st='rattling';_timer=0;}},
+  hide(){_st='hidden';CVS.style.display='none';},
+  get active(){return _st!=='hidden';}
+};
+
+function updatePos(){
+  const c=document.getElementById('c');
+  if(!c||typeof G==='undefined'||!G.on)return;
+  const sc=(typeof _dpr!=='undefined'?_dpr:devicePixelRatio)*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
+  const cssX=(c.width/2+(_wx-G.cam.x))/sc;
+  const cssY=(c.height/2+(_wy-G.cam.y))/sc;
+  if(cssX<-450||cssX>innerWidth+450||cssY<-500||cssY>innerHeight+450){CVS.style.opacity='0';return;}
+  CVS.style.opacity='1';
+  CVS.style.left=(cssX-SZ/2)+'px';
+  CVS.style.top=(cssY-SZ*.84)+'px';
+}
+
+const CLK=new THREE.Clock();
+function tick(){
+  requestAnimationFrame(tick);
+  if(_st==='hidden')return;
+  const dt=Math.min(CLK.getDelta(),0.05);_timer+=dt;
+  updatePos();
+  if(_st==='idle'){
+    ROOT.position.y=Math.sin(_timer*1.55)*0.025;
+    _rotY+=dt*0.18;ROOT.rotation.y=_rotY;
+    mRuneGlow.emissiveIntensity=9.0+Math.sin(_timer*2.9)*2.8;
+    mLock.emissiveIntensity=1.4+Math.sin(_timer*2.3+1)*0.7;
+    mGold.emissiveIntensity=0.8+Math.sin(_timer*1.7)*0.2;
+  }else if(_st==='rattling'){
+    const rp=Math.min(1,_timer*2.3);
+    ROOT.position.x=Math.sin(_timer*44)*0.042*rp;
+    ROOT.position.y=Math.abs(Math.sin(_timer*40))*0.026*rp;
+    ROOT.rotation.z=Math.sin(_timer*42)*0.025*rp;
+    const lk=Math.min(1,_timer*2.0);
+    iL1.intensity=lk*1.2;iL3.intensity=lk*0.6;
+    mLock.emissiveIntensity=1.6+lk*4.5;mGold.emissiveIntensity=0.8+lk*2.2;
+    mGlow.opacity=lk*0.22;mRuneGlow.emissiveIntensity=9.0+lk*7.0;
+    if(_timer>.55){_st='opening';_timer=0;if(typeof shake==='function')shake(14);}
+  }else if(_st==='opening'){
+    const t=Math.min(1,_timer/1.2),ease=1-(1-t)*(1-t)*(1-t);
+    _lidAng=-Math.PI*.82*ease;LID.rotation.x=_lidAng;
+    ROOT.position.x=0;ROOT.rotation.z=0;
+    _rotY+=dt*.12;ROOT.rotation.y=_rotY;
+    const bst=Math.min(1,_timer/.5),fad=_timer>.65?1-Math.min(1,(_timer-.65)/.85):1;
+    iL1.intensity=bst*fad*12;iL2.intensity=bst*fad*6;iL3.intensity=bst*fad*5;
+    mGlow.opacity=bst*fad*1.0;
+    mRuneGlow.emissiveIntensity=9.0+bst*9.0*fad;
+    mLock.emissiveIntensity=5.0*bst*fad+0.8;mGold.emissiveIntensity=0.8+bst*4.5*fad;
+    if(_timer>=1.45){_st='open';_timer=0;LID.rotation.x=-Math.PI*.82;}
+  }else if(_st==='open'){
+    _rotY+=dt*.17;ROOT.rotation.y=_rotY;
+    iL1.intensity=Math.max(0,4.5-_timer*1.6);
+    iL2.intensity=Math.max(0,2.2-_timer*1.1);
+    iL3.intensity=Math.max(0,2.5-_timer*1.4);
+    mGlow.opacity=Math.max(0,.5-_timer*.22);
+    mRuneGlow.emissiveIntensity=9.0+Math.sin(_timer*2.4)*2.2;
+    mLock.emissiveIntensity=1.2;mGold.emissiveIntensity=.8+Math.sin(_timer*1.5)*.2;
+    if(_timer>5.0){_st='hidden';CVS.style.display='none';}
+  }
+  R.render(SC,CAM);
+}
+tick();
+console.log('[CHEST3D] GOW v3 geometry');
+})();
+// Auto-show on load
+window.addEventListener('load',function(){
+  if(window._chest3d) window._chest3d.show(0,0);
+});
+// Override updatePos for standalone (center canvas)
+</script>
+<script>
+// Fix canvas position for standalone
+var _origShow=window._chest3d&&window._chest3d.show.bind(window._chest3d);
+if(window._chest3d){
+  var cvs=document.getElementById('chest3dCvs');
+  cvs.style.position='static';
+  cvs.style.display='block';
+  // rewrite show to not reposition
+  var _origTick=null;
+}
+</script>
+</body>
+</html>
