@@ -23179,3 +23179,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - assets/vfx/boss/boss_wallPush.webp
 - game.html
 
+
+## 2026-05-08 22:30 (auto)
+- game.html
+
