@@ -12113,7 +12113,7 @@ registerVFX('whirl_slash','assets/vfx/vfx_white_slash.png',192,192,20,5);
 registerVFX('parry_flash','assets/vfx/parry_impact_sheet.png',128,128,20,20);
 registerVFX('burn_death','img/vfx_burn_death.png',211,211,8,8);
 registerVFX('explode_scarecrow','assets/vfx/scarecrow_boom.png',64,64,9,9); // 폭발허수아비 전용 대형폭발 (9x1, 9프레임, 불속성)
-registerVFX('boss_revive_boom','assets/vfx/boss_revive_boom.png',64,64,24,8); // 보스 부활 폭발 (8x3, 24프레임)
+registerVFX('boss_revive_boom','assets/vfx/boss/boss_revive_boom.png',64,64,24,8); // 보스 부활 폭발 (8x3, 24프레임)
 registerVFX('teleport_burst','assets/vfx/teleport_burst.png',64,64,9,9); // 순간이동 보라색 폭발 (9x1, 9프레임)
 
 // ═══ 빙결 틴트용 오프스크린 캔버스 (몬스터 실루엣 파란 틴트) ═══
@@ -22711,10 +22711,10 @@ function update(){
           const _arcDmg=~~((_ta.dmg+_tb.dmg)*0.15);
           const _mx=(_ta.x+_tb.x)/2,_my=(_ta.y+_tb.y)/2;
           const _ne=shQuery(_mx,_my,_td/2+40);
-          // 전류강화: 아크 선분이 iceStorm/holyDome 존과 교차하면 데미지×2
+          // 전류강화: 아크 선분이 iceStorm 존과 교차하면 데미지×2 (물→전기 반응, 2026-05-08 holyDome 제외)
           let _arcInIce=false;
           if(G._fireZones){for(let _fzi=0;_fzi<G._fireZones.length;_fzi++){
-            const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm'&&fz.type!=='holyDome')continue;
+            const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm')continue;
             const _ldx=_tb.x-_ta.x,_ldy=_tb.y-_ta.y,_ll2=_ldx*_ldx+_ldy*_ldy;
             let _lt=_ll2>0?((fz.x-_ta.x)*_ldx+(fz.y-_ta.y)*_ldy)/_ll2:0;
             _lt=_lt<0?0:_lt>1?1:_lt;
@@ -22741,7 +22741,7 @@ function update(){
       if(dst(_ta.x,_ta.y,_tb.x,_tb.y)>1000)continue;
       let _inIce=false;
       if(G._fireZones){for(let _fzi=0;_fzi<G._fireZones.length;_fzi++){
-        const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm'&&fz.type!=='holyDome')continue;
+        const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm')continue; // 물→전기 반응: iceStorm만 (2026-05-08)
         const _ldx=_tb.x-_ta.x,_ldy=_tb.y-_ta.y,_ll2=_ldx*_ldx+_ldy*_ldy;
         let _lt=_ll2>0?((fz.x-_ta.x)*_ldx+(fz.y-_ta.y)*_ldy)/_ll2:0;
         _lt=_lt<0?0:_lt>1?1:_lt;
@@ -24476,7 +24476,8 @@ function update(){
             if(_shrinkPct>0)addTxt(e.x,e.y-70,'▼ '+_shrinkPct+'%','#aaffcc',55);
             // void 포탈 재소환 연출 + 보스 숨김 → 40f 후 grand VFX
             const _portalSc2=(_vfxR*7)/64;
-            playVFXAng('boss_revive_boom',e.x,e.y,_portalSc2,3,0,true);
+            playVFXAng('boss_revive_boom',e.x,e.y,_portalSc2,5,0,true);
+            e._tpWarnT=0;e._tpWarnX=0;e._tpWarnY=0; // 부활 중 텔레포트 AI 발동 차단
             e._spawnT=55;e._bossReviveVFXPending=40;
             playSample('boss_revive',1.0,_r(1.0,.08)); // 보스 부활 전용 SFX
           }else{
@@ -30932,8 +30933,7 @@ function _bossReviveGrandVFX(e,vfxR){
   _addBlastLight(x,y,r*14,28,255,80,0);
   _addBlastLight(x,y,r*9,20,255,30,0);
   _addBlastLight(x,y,r*5,14,255,220,100);
-  // 4) 텔레포트 스모크 + 임팩트 2중
-  _addTpSmoke(x,y,r*8,40,0);
+  // 4) 임팩트 2중
   _addTpImpact(x,y,r*8,32,'#ff4400');
   _addTpImpact(x,y,r*5,22,'#ffcc00');
   // 5) 슬로우모 + 히트스톱 (void_black 이전에 설정, multiply가 어두운 배경에선 비효율적이므로 스킵)
@@ -31718,7 +31718,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         const _rvOx=e.x,_rvOy=e.y,_rvR=e.r||20;
         // 구 위치: void 포탈 열림 (보스가 빨려 들어감)
         const _portalSc=(_vfxR1*7)/64;
-        playVFXAng('boss_revive_boom',_rvOx,_rvOy,_portalSc,3,0,true);
+        playVFXAng('boss_revive_boom',_rvOx,_rvOy,_portalSc,5,0,true);
         _addBlastLight(_rvOx,_rvOy,_rvR*3,12,255,80,0);
         const _tpAng=P.facing+Math.PI+((Math.random()-.5)*.8);
         const _tpDist=80+e.deaths*20;
@@ -31726,10 +31726,11 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         if(canMv(_tpX,_tpY,e.r)){e.x=_tpX;e.y=_tpY}
         else{const _sp=safePt(P.x+Math.cos(_tpAng)*50,P.y+Math.sin(_tpAng)*50,e.r);if(_sp){e.x=_sp.x;e.y=_sp.y}}
         // 새 위치: 불꽃 포탈 열림 (보스 재소환)
-        playVFXAng('boss_revive_boom',e.x,e.y,_portalSc,3,0,true);
+        playVFXAng('boss_revive_boom',e.x,e.y,_portalSc,5,0,true);
         _addTpBolt(_rvOx,_rvOy,e.x,e.y,14,'#ff6600');
         addTxt(e.x,e.y-50,_T('🔥부활!'),'#ff4400',40);
         // 보스 숨김: 포탈 열리는 동안 투명 → 40f 후 grand VFX + 페이드인
+        e._tpWarnT=0;e._tpWarnX=0;e._tpWarnY=0; // 부활 중 텔레포트 AI 발동 차단
         e._spawnT=55;e._bossReviveVFXPending=40;
         playSample('boss_revive',1.0,_r(1.0,.08)); // 보스 부활 전용 SFX
         // ── 부활 충격파: 주변 밀어내기 + 데미지 ──
@@ -42042,10 +42043,10 @@ function drawP(){
         const _taF=(_ta.t/_ta.maxT>.8?1-(_ta.t/_ta.maxT-.8)/.2:1);
         const _tbF=(_tb.t/_tb.maxT>.8?1-(_tb.t/_tb.maxT-.8)/.2:1);
         const _arcFade=Math.min(_taF,_tbF);
-        // 전류강화 판정: 아크 선분이 iceStorm/holyDome 존과 교차하는지
+        // 전류강화 판정: 아크 선분이 iceStorm 존과 교차하는지 (물→전기 반응, 2026-05-08 holyDome 제외)
         let _arcBoosted=false;
         if(G._fireZones){for(let _fzi=0;_fzi<G._fireZones.length;_fzi++){
-          const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm'&&fz.type!=='holyDome')continue;
+          const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm')continue;
           const _ldx=_tb.x-_ta.x,_ldy=_tb.y-_ta.y,_ll2=_ldx*_ldx+_ldy*_ldy;
           let _lt=_ll2>0?((fz.x-_ta.x)*_ldx+(fz.y-_ta.y)*_ldy)/_ll2:0;
           _lt=_lt<0?0:_lt>1?1:_lt;

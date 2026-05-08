@@ -12113,6 +12113,7 @@ registerVFX('whirl_slash','assets/vfx/vfx_white_slash.png',192,192,20,5);
 registerVFX('parry_flash','assets/vfx/parry_impact_sheet.png',128,128,20,20);
 registerVFX('burn_death','img/vfx_burn_death.png',211,211,8,8);
 registerVFX('explode_scarecrow','assets/vfx/scarecrow_boom.png',64,64,9,9); // 폭발허수아비 전용 대형폭발 (9x1, 9프레임, 불속성)
+registerVFX('boss_revive_boom','assets/vfx/boss/boss_revive_boom.png',64,64,24,8); // 보스 부활 폭발 (8x3, 24프레임)
 registerVFX('teleport_burst','assets/vfx/teleport_burst.png',64,64,9,9); // 순간이동 보라색 폭발 (9x1, 9프레임)
 
 // ═══ 빙결 틴트용 오프스크린 캔버스 (몬스터 실루엣 파란 틴트) ═══
@@ -22358,9 +22359,10 @@ function update(){
       _harpHits.push(e);
       const _hAng=Math.atan2(e.y-P.y,e.x-P.x);
       if(_harpSk==='magicBlink'||_harpSk==='dimBreach'){
-        // INT: 화염 데미지 + 화상 (사슬기동:화염 테마 통일)
-        const _blLv=P.skills.magicBlink||1;
-        const _ltnDmg=~~(((ar().charge||10)+P.baseAtk)*(1+_blLv*0.15)*statInt()*0.5); // 직타 ×0.5 너프
+        // INT: 화염 데미지 + 화상 — 마법데미지 공식+티어 (2026-05-08)
+        const _blTier=Math.max(1,Math.min(3,_harpTier||1));
+        const _blTMul=_blTier===3?50:_blTier===2?30:15;
+        const _ltnDmg=~~(magicRef()*_skMul('magicBlink')*statInt()*pMagicMul()*_blTMul*_fuseMul('magicBlink'));
         hurtE(e,_ltnDmg,_hAng,false,{poiseHit:true,poiseMult:1.5},EL.F);
         e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);
         addTxt(e.x,e.y-18,_T('🔥 화염관통!'),'#ff6600',30);
@@ -22450,9 +22452,9 @@ function update(){
         P._chainSlamReady=false;
         const _csLv=P.skills.chainSlam||1;
         const _csR=450+(_csLv-1)*~~(225/9); // 1렙450, 10렙675
-        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×30, 2티어(0.1초)=×60, 3티어(0.2초)=×100 (업화선급)
+        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×10, 2티어(0.1초)=×25, 3티어(0.2초)=×40 — (2026-05-08, 구 ×19/38/64)
         const _csTier=Math.max(1,Math.min(3,_harpTier||1));
-        const _csDistMul=_csTier===3?64:_csTier===2?38:19;
+        const _csDistMul=_csTier===3?40:_csTier===2?25:10;
         const _csDmg=~~(meleeRef()*_skMul('chainSlam')*statStr()*pAtkMul()*_csDistMul*_fuseMul('chainSlam'));
         const _csEl=wp().el||0;
         G._noHitStopT=40;
@@ -22499,9 +22501,9 @@ function update(){
         P._chainAssaultReady=false;
         const _stLv=P.skills.chainAssault||1;
         const _stR=450+(_stLv-1)*~~(225/9); // 1렙450, 10렙675
-        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×1, 2티어(0.1초)=×3, 3티어(0.2초)=×5 — (2026-05-08, 구 ×30/60/100)
+        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×15, 2티어(0.1초)=×30, 3티어(0.2초)=×50 — (2026-05-08, 구 ×30/60/100 절반)
         const _stTier=Math.max(1,Math.min(3,_harpTier||1));
-        const _stDistMul=_stTier===3?5:_stTier===2?3:1;
+        const _stDistMul=_stTier===3?50:_stTier===2?30:15;
         const _stDmg=~~(magicRef()*_skMul('chainAssault')*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 통일공식: _skMul
         const _stEl=EL.F;
         G._noHitStopT=40;
@@ -23032,6 +23034,7 @@ function update(){
   switch(P.s){
   case 'fallen':{
     P.st2-=sp;
+    G.slowMo=Math.max(G.slowMo,2); // 쓰러짐 동안 슬로모 유지
     if(Math.random()>.7){poolPart(P.x+(Math.random()-.5)*20,P.y+(Math.random()-.5)*10,(Math.random()-.5)*1,-0.5-Math.random(),'#880000',2+Math.random()*2,15+Math.random()*10)}
     if(P.st2<=0)_fallenResolve();
     break;}
@@ -24472,8 +24475,9 @@ function update(){
             addTxt(e.x,e.y-30,_L('부활 성공! 부활력 ','Revive! Power ')+e._revPts+'/'+e._maxRevPts,'#ff8844',60);
             if(_shrinkPct>0)addTxt(e.x,e.y-70,'▼ '+_shrinkPct+'%','#aaffcc',55);
             // void 포탈 재소환 연출 + 보스 숨김 → 40f 후 grand VFX
-            const _portalSc2=(_vfxR*7)/768;
-            playVFXAng('void_black',e.x,e.y,_portalSc2,5,0,true);
+            const _portalSc2=(_vfxR*7)/64;
+            playVFXAng('boss_revive_boom',e.x,e.y,_portalSc2,5,0,true);
+            e._tpWarnT=0;e._tpWarnX=0;e._tpWarnY=0; // 부활 중 텔레포트 AI 발동 차단
             e._spawnT=55;e._bossReviveVFXPending=40;
             playSample('boss_revive',1.0,_r(1.0,.08)); // 보스 부활 전용 SFX
           }else{
@@ -31148,7 +31152,24 @@ function checkRooms(){
       if(G._bossLoadT>=130){G._bossLoadPhase=3;G._bossLoadT=0}
     }else if(G._bossLoadPhase===3){// 페이드 인
       G._bossLoadFade=Math.max(0,1-G._bossLoadT/50);
-      if(G._bossLoadFade<=0){G._bossLoadPhase=0;G._bossLoadT=0;G._bossLoadFade=0}
+      if(G._bossLoadFade<=0){G._bossLoadPhase=4;G._bossLoadT=0;G._bossLoadFade=0}
+    }else if(G._bossLoadPhase===4){// 보스 입장 연출 (100f)
+      if(G._bossLoadT<2){
+        const _bE=findBoss();
+        if(_bE){
+          _bE.stunned=90;_bE.reviveIframes=110; // 1.5초 무적+경직
+          shake(28);G._flashT=10;G._flashCol='#ff4400';G._chromaT=12;G.slowMo=Math.max(G.slowMo,60);
+          // 입장 파티클 링
+          for(let _bi=0;_bi<32;_bi++){const _ba=Math.PI*2*_bi/32,_br=_bE.r*2.5;
+            poolPart(_bE.x+Math.cos(_ba)*_br,_bE.y+Math.sin(_ba)*_br,Math.cos(_ba)*6,Math.sin(_ba)*6,_bE.col||'#ff4400',4+Math.random()*3,30+Math.random()*20)}
+          _addBlastLight(_bE.x,_bE.y,_bE.r*12,30,255,80,0);
+          _addBlastLight(_bE.x,_bE.y,_bE.r*6,20,255,200,0);
+          // 포효 SFX
+          const _bsf=_bossSfx(G.stage);
+          playSample(_bsf?_bsf.howl:'boss_howl',1.0,_r(_bsf?_bsf.howlP:.9,.1));
+        }
+      }
+      if(G._bossLoadT>=100){G._bossLoadPhase=0;G._bossLoadT=0;G._bossLoadFade=0}
     }
   }
   // (tile=3 근접 진입 삭제 — 출구 타일이 보스방 문 역할)
@@ -31697,20 +31718,22 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         // ── 부활 순간이동: 플레이어 뒤로 텔레포트 + 재소환 포탈 연출 ──
         const _rvOx=e.x,_rvOy=e.y,_rvR=e.r||20;
         // 구 위치: void 포탈 열림 (보스가 빨려 들어감)
-        const _portalSc=(_vfxR1*7)/768;
-        playVFXAng('void_black',_rvOx,_rvOy,_portalSc,5,0,true);
-        _addBlastLight(_rvOx,_rvOy,_rvR*3,12,170,0,255);
+        const _portalSc=(_vfxR1*7)/64;
+        playVFXAng('boss_revive_boom',_rvOx,_rvOy,_portalSc,5,0,true);
+        _addBlastLight(_rvOx,_rvOy,_rvR*3,12,255,80,0);
         const _tpAng=P.facing+Math.PI+((Math.random()-.5)*.8);
         const _tpDist=80+e.deaths*20;
         const _tpX=P.x+Math.cos(_tpAng)*_tpDist,_tpY=P.y+Math.sin(_tpAng)*_tpDist;
         if(canMv(_tpX,_tpY,e.r)){e.x=_tpX;e.y=_tpY}
         else{const _sp=safePt(P.x+Math.cos(_tpAng)*50,P.y+Math.sin(_tpAng)*50,e.r);if(_sp){e.x=_sp.x;e.y=_sp.y}}
-        // 새 위치: void 포탈 열림 (보스 재소환)
-        playVFXAng('void_black',e.x,e.y,_portalSc,5,0,true);
-        _addTpBolt(_rvOx,_rvOy,e.x,e.y,14,'#aa00ff');
-        addTxt(e.x,e.y-50,_T('⚡순간이동!'),'#aa00ff',40);
+        // 새 위치: 불꽃 포탈 열림 (보스 재소환)
+        playVFXAng('boss_revive_boom',e.x,e.y,_portalSc,5,0,true);
+        _addTpBolt(_rvOx,_rvOy,e.x,e.y,14,'#ff6600');
+        addTxt(e.x,e.y-50,_T('🔥부활!'),'#ff4400',40);
         // 보스 숨김: 포탈 열리는 동안 투명 → 40f 후 grand VFX + 페이드인
+        e._tpWarnT=0;e._tpWarnX=0;e._tpWarnY=0; // 부활 중 텔레포트 AI 발동 차단
         e._spawnT=55;e._bossReviveVFXPending=40;
+        playSample('boss_revive',1.0,_r(1.0,.08)); // 보스 부활 전용 SFX
         // ── 부활 충격파: 주변 밀어내기 + 데미지 ──
         const _waveR=100+e.deaths*30;
         const _waveDmg=~~(e.atk*(.5+e.deaths*.15));
@@ -44480,7 +44503,7 @@ function drawP(){
     for(let _bi=0;_bi<6;_bi++){const _ba=Math.PI*2/6*_bi+_bdT*.01;let _bx=_px+Math.cos(_ba)*_bdR*0.5,_by=_py+Math.sin(_ba)*_bdR*0.5;X.beginPath();X.moveTo(_bx,_by);for(let _bs=0;_bs<3;_bs++){const _bext=_bdR*(0.3+_bs*0.35);const _bjit=(Math.random()-.5)*10;_bx=_px+Math.cos(_ba)*_bext+Math.cos(_ba+Math.PI/2)*_bjit;_by=_py+Math.sin(_ba)*_bext+Math.sin(_ba+Math.PI/2)*_bjit;X.lineTo(_bx,_by);}X.stroke();}
     X.globalAlpha=.9;X.fillStyle='#ffffff';X.beginPath();X.arc(_px,_py,_bdR*.35,0,Math.PI*2);X.fill();
     X.globalAlpha=.5;X.fillStyle='#ccf0ff';X.beginPath();X.arc(_px,_py,_bdR*.5,0,Math.PI*2);X.fill();
-    if(Math.random()>.4){const _spa=Math.random()*Math.PI*2;poolPart(_px+Math.cos(_spa)*_bdR,_py+Math.sin(_spa)*_bdR,Math.cos(_spa)*3+(Math.random()-.5)*2,Math.sin(_spa)*3+(Math.random()-.5)*2,Math.random()>.5?'#44ddff':'#ffee44',2+Math.random()*3,8+Math.random()*6)}
+    if(Math.random()>.4){const _spa=Math.random()*Math.PI*2;poolPart(_px+Math.cos(_spa)*_bdR,_py+Math.sin(_spa)*_bdR,Math.cos(_spa)*3+(Math.random()-.5)*2,Math.sin(_spa)*3+(Math.random()-.5)*2,'#44ddff',2+Math.random()*3,8+Math.random()*6)}
     X.globalAlpha=fl?.3:1;
   // ══ 레인라이트닝: 전기 구체 + 잔상 ══
   }else if(P.s==='rainLightning'&&!isDead){
@@ -44752,22 +44775,40 @@ function drawP(){
   if(P.s==='fallen'){
     const _fSec=Math.ceil(Math.max(0,P.st2)/60);
     const _fProg=P.st2/300; // 1→0
-    // 어두운 비네팅
-    X.save();X.globalAlpha=.3*(1-_fProg);X.fillStyle='#000';
-    X.fillRect(G.cam.x-C.width/2,G.cam.y-C.height/2,C.width,C.height);X.restore();
-    // 카운트다운 숫자
-    X.save();X.globalAlpha=.6+Math.sin(_now*.01)*.2;
-    X.fillStyle=_fSec<=1?'#ff2222':_fSec<=2?'#ff8844':'#ffcc44';
-    X.font='bold 48px monospace';X.textAlign='center';X.textBaseline='middle';
-    X.fillText(_fSec,P.x,P.y-45);
-    // 부활 게이지 바
-    const _barW=60,_barH=6,_barX=P.x-_barW/2,_barY=P.y-25;
-    X.globalAlpha=.5;X.fillStyle='#331111';X.fillRect(_barX,_barY,_barW,_barH);
-    X.fillStyle=_fSec<=1?'#ff2222':'#ff6644';X.fillRect(_barX,_barY,_barW*(1-_fProg),_barH);
-    // 텍스트
-    X.globalAlpha=.7;X.fillStyle='#ffccaa';X.font='bold 12px monospace';
+    const _fDead=1-_fProg; // 0→1 (사망 경과)
+    const _fpulse=0.5+Math.sin(_now*.008)*0.5;
+    X.save();X.setTransform(1,0,0,1,0,0);
+    // 1. 전체화면 암혈 오버레이 (시간 지날수록 강해짐)
+    X.globalAlpha=0.25+_fDead*0.35;X.fillStyle='#110000';X.fillRect(0,0,C.width,C.height);
+    // 2. 방사형 비네팅
+    if(!G._fallenVg||G._fallenVgW!==C.width){
+      G._fallenVg=X.createRadialGradient(C.width/2,C.height/2,C.width*.05,C.width/2,C.height/2,C.width*.65);
+      G._fallenVg.addColorStop(0,'rgba(0,0,0,0)');G._fallenVg.addColorStop(.5,'rgba(60,0,0,.2)');G._fallenVg.addColorStop(1,'rgba(120,0,0,.9)');G._fallenVgW=C.width;
+    }
+    X.globalAlpha=0.4+_fDead*0.45+_fpulse*.08;X.fillStyle=G._fallenVg;X.fillRect(0,0,C.width,C.height);
+    // 3. 혈흔 맥박 틴트
+    X.globalAlpha=(0.04+_fDead*0.1)*_fpulse;X.fillStyle='#aa0000';X.fillRect(0,0,C.width,C.height);
+    // 4. 중앙 패널 UI
+    const _fcx=C.width/2,_fcy=C.height*0.42;
+    const _panW=280,_panH=88;
+    X.globalAlpha=0.65;X.fillStyle='rgba(0,0,0,.75)';X.fillRect(_fcx-_panW/2,_fcy-_panH/2-8,_panW,_panH);
+    X.strokeStyle='rgba(180,30,30,.75)';X.lineWidth=1.5;X.strokeRect(_fcx-_panW/2,_fcy-_panH/2-8,_panW,_panH);
+    // 부활력 텍스트 (상단)
+    X.globalAlpha=0.85;X.fillStyle='#ffccaa';X.font='bold 14px monospace';X.textAlign='center';X.textBaseline='middle';
     const _revTxt=P._fallenCanRevive?('부활력 '+P._fallenRevChance+'%'):'부활 불가';
-    X.fillText(_revTxt,P.x,P.y-60);
+    X.fillText(_revTxt,_fcx,_fcy-28);
+    // 카운트다운 숫자 (중앙 크게)
+    X.globalAlpha=0.9+_fpulse*.1;
+    X.fillStyle=_fSec<=1?'#ff3333':_fSec<=2?'#ff7744':'#ffcc44';
+    X.font='bold 52px monospace';X.fillText(_fSec+'s',_fcx,_fcy+4);
+    // 하단 상태 텍스트
+    X.globalAlpha=0.5+_fpulse*.2;X.fillStyle='#cc8866';X.font='12px monospace';
+    X.fillText(_T('쓰러짐...'),_fcx,_fcy+36);
+    // 5. 화면 하단 게이지 바
+    const _bw=Math.min(300,C.width*0.38),_bh=8,_bx=_fcx-_bw/2,_by=C.height*0.85;
+    X.globalAlpha=0.7;X.fillStyle='#220000';X.fillRect(_bx,_by,_bw,_bh);
+    X.fillStyle=_fSec<=1?'#ff2222':'#ff6644';X.fillRect(_bx,_by,_bw*_fProg,_bh);
+    X.strokeStyle='rgba(255,100,50,.4)';X.lineWidth=1;X.strokeRect(_bx,_by,_bw,_bh);
     X.restore();
   }
 

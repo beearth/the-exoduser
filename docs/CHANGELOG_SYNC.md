@@ -22905,3 +22905,17 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - sfx/boss_final_death.mp3
 - sfx/monster/boss_revive.mp3
 
+
+## 2026-05-08 12:30 (auto)
+- _autosave/game_20260508_113824.html
+- _autosave/game_20260508_114049.html
+- _autosave/game_20260508_114056.html
+- _autosave/game_20260508_115343.html
+- _autosave/game_20260508_115551.html
+- _autosave/game_20260508_115559.html
+- _autosave/game_20260508_115611.html
+- assets/vfx/boss/boss_revive_boom.png
+- docs/2_2 무기+???�성?�스??2_2 무기+???�성?�스??md
+- docs/2_5 부???�너지?�드?�스??2_5 부???�너지?�드?�스??md
+- game.html
+
