@@ -9203,6 +9203,9 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       if((P._mhCd||0)>0){break}
       if(G.mats>=_malCost(30)){activateMaliceHunt();P._mhCd=Math.max(600,~~(900*(1+_eqAffix('cooldownRed'))));_skOk=true}
       else showPH(_T('악의 부족! (')+_malCost(30)+')','#ff4444');break;
+    case 'venomBlade':
+      if((P._vbCd||0)>0){showPH(_T('쿨다운 중...'),'#44dd44');break}
+      {activateVenomBlade();P._vbCd=Math.max(600,~~(900*(1+_eqAffix('cooldownRed'))));_skOk=true}break;
     case 'maliceStorm':
       if(P._msAiming){P._msAiming=false;showPH(_T('취소'),'#888');break}
       {const _msBsFused2=_isFused('boneStorm')||_isFused('elecRepent');
@@ -11310,6 +11313,7 @@ function _resetPProj(p){
   p.magic=p.arcMissile=false;p._arcLock=0;p._maxBounce=0;
   p.fireball=false;p.fireBeamProj=false;p.energyShot=false;p.explR=0;p.explDmg=0;
   p.lightning=p.maliceHunt=p.mhBlade=p.mhFused=p.mhPlague=false;p._mhMaxPierce=0;
+  p.venomBlade=false;p._venomPool=0;
   p.plagueBlade=p.plagueHoming=false;p._plagueLv=p._plagueHit=p._plagueMax=0;
   p.bladeOrb=false;p._orbAng=p._orbEmitT=p._orbSlv=p._orbDmg=0;
   p.bladeShard=p.iceBlade=false;p._iceAng=p._iceT=0;
@@ -22711,10 +22715,10 @@ function update(){
           const _arcDmg=~~((_ta.dmg+_tb.dmg)*0.15);
           const _mx=(_ta.x+_tb.x)/2,_my=(_ta.y+_tb.y)/2;
           const _ne=shQuery(_mx,_my,_td/2+40);
-          // 전류강화: 아크 선분이 iceStorm/holyDome 존과 교차하면 데미지×2
+          // 전류강화: 아크 선분이 iceStorm 존과 교차하면 데미지×2 (물→전기 반응, 2026-05-08 holyDome 제외)
           let _arcInIce=false;
           if(G._fireZones){for(let _fzi=0;_fzi<G._fireZones.length;_fzi++){
-            const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm'&&fz.type!=='holyDome')continue;
+            const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm')continue;
             const _ldx=_tb.x-_ta.x,_ldy=_tb.y-_ta.y,_ll2=_ldx*_ldx+_ldy*_ldy;
             let _lt=_ll2>0?((fz.x-_ta.x)*_ldx+(fz.y-_ta.y)*_ldy)/_ll2:0;
             _lt=_lt<0?0:_lt>1?1:_lt;
@@ -22741,7 +22745,7 @@ function update(){
       if(dst(_ta.x,_ta.y,_tb.x,_tb.y)>1000)continue;
       let _inIce=false;
       if(G._fireZones){for(let _fzi=0;_fzi<G._fireZones.length;_fzi++){
-        const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm'&&fz.type!=='holyDome')continue;
+        const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm')continue; // 물→전기 반응: iceStorm만 (2026-05-08)
         const _ldx=_tb.x-_ta.x,_ldy=_tb.y-_ta.y,_ll2=_ldx*_ldx+_ldy*_ldy;
         let _lt=_ll2>0?((fz.x-_ta.x)*_ldx+(fz.y-_ta.y)*_ldy)/_ll2:0;
         _lt=_lt<0?0:_lt>1?1:_lt;
@@ -22934,7 +22938,7 @@ function update(){
     for(let _wii2=0;_wii2<worldItems.length;_wii2++){const it=worldItems[_wii2];
       if(it.type!=='chest'||it.picked||it.opened)continue;
       if(dst(P.x,P.y,it.x,it.y)<60){
-        it.opened=true;
+        it.opened=true;if(window._chest3d)window._chest3d.open();
         SFX.victory();G.shake=8*OPT.shake/100;
         addTxt(it.x,it.y-20,_T('보물상자 개봉!'),'#ffcc00',60);
         addParts(it.x,it.y,'#ffcc00',16);addParts(it.x,it.y,'#ffaa00',10);
@@ -24476,7 +24480,8 @@ function update(){
             if(_shrinkPct>0)addTxt(e.x,e.y-70,'▼ '+_shrinkPct+'%','#aaffcc',55);
             // void 포탈 재소환 연출 + 보스 숨김 → 40f 후 grand VFX
             const _portalSc2=(_vfxR*7)/64;
-            playVFXAng('boss_revive_boom',e.x,e.y,_portalSc2,3,0,true);
+            playVFXAng('boss_revive_boom',e.x,e.y,_portalSc2,5,0,true);
+            e._tpWarnT=0;e._tpWarnX=0;e._tpWarnY=0; // 부활 중 텔레포트 AI 발동 차단
             e._spawnT=55;e._bossReviveVFXPending=40;
             playSample('boss_revive',1.0,_r(1.0,.08)); // 보스 부활 전용 SFX
           }else{
@@ -25165,8 +25170,15 @@ function update(){
           e.bleedStk=(e.bleedStk||0)+1; // 무한 중첩
           if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*_bladeBleed;
         }
+        if(p.venomBlade){
+          // 독침: 직타 무시, 독 DOT 위주 — bowRef×DEX 풀뎀 축적
+          e.poison=1;
+          e.poisonT=Math.max(e.poisonT||0,600); // 10초 지속
+          e.poisonStk=(e.poisonStk||0)+1;
+          if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*(p._venomPool||0);
+        }
         if(!_isTurretProj||_ftV>0.01){
-          if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
+          if(p.bladeShard||p.maliceHunt||p.iceBlade||p.venomBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
           else if(p.blueBean){if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.1*_ftV,_r(1,.15));P._bbHitCd=4}}
           else if(p.arcMissile){}
           else if(p.magic)playSampleAt('bullet_hit',.15*_ftV,_r(1,.15),e.x,e.y);
@@ -26001,6 +26013,7 @@ function update(){
   }
   // ═══ 악의사냥 — 쿨다운 (5초) ═══
   if(P._mhCd>0)P._mhCd-=sp;
+  if(P._vbCd>0)P._vbCd-=sp;
   // ═══ 참회 — 쿨10초, 참회하는해골(boneStorm합체)시 1/5/10렙 1/2/3차지 ═══
   if(P.skills.hellRay>=1&&_isFused('stormBeam')){
     const _hrLv2=P.skills.hellRay||1;
@@ -26167,8 +26180,8 @@ function update(){
       if(_isBlocked){showPH(_T('이미 빙풍 지역!'),'#88ccff')}
       else{
         P.mp=Math.max(0,P.mp-40);
-        G._fireZones.push({x:_iswx,y:_iswy,r:_isR,t:0,maxT:120+_isLv*18,
-          dmg:0,el:EL.I,lv:_isLv,type:'iceStorm'});
+        G._fireZones.push({x:_iswx,y:_iswy,r:_isR,t:0,maxT:600,
+          dmg:0,el:EL.I,lv:_isLv,type:'iceStorm'}); // 10초 고정 (2026-05-08, 구 120+lv*18)
         SFX.magic(EL.I);
         playSample('ice_storm',.7,1);
         addTxt(_iswx,_iswy-20,_T('❄아이스스톰!'),'#88ddff',30);
@@ -30932,8 +30945,7 @@ function _bossReviveGrandVFX(e,vfxR){
   _addBlastLight(x,y,r*14,28,255,80,0);
   _addBlastLight(x,y,r*9,20,255,30,0);
   _addBlastLight(x,y,r*5,14,255,220,100);
-  // 4) 텔레포트 스모크 + 임팩트 2중
-  _addTpSmoke(x,y,r*8,40,0);
+  // 4) 임팩트 2중
   _addTpImpact(x,y,r*8,32,'#ff4400');
   _addTpImpact(x,y,r*5,22,'#ffcc00');
   // 5) 슬로우모 + 히트스톱 (void_black 이전에 설정, multiply가 어두운 배경에선 비효율적이므로 스킵)
@@ -31191,6 +31203,7 @@ function checkRooms(){
       SFX.victory();G.shake=10*OPT.shake/100;
       const cx=(bossRoom.cx+.5)*T,cy=(bossRoom.cy+.5)*T;
       worldItems.push({x:cx,y:cy,type:'chest',picked:false,opened:false});
+      if(window._chest3d)window._chest3d.show(cx,cy);
       addTxt(cx,cy-30,_T('보물상자 출현!'),'#ffcc00',80);
       addParts(cx,cy,'#ffcc00',12);
       // 보스 아레나 출구 생성 (벽에 문 뚫기)
@@ -31718,7 +31731,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         const _rvOx=e.x,_rvOy=e.y,_rvR=e.r||20;
         // 구 위치: void 포탈 열림 (보스가 빨려 들어감)
         const _portalSc=(_vfxR1*7)/64;
-        playVFXAng('boss_revive_boom',_rvOx,_rvOy,_portalSc,3,0,true);
+        playVFXAng('boss_revive_boom',_rvOx,_rvOy,_portalSc,5,0,true);
         _addBlastLight(_rvOx,_rvOy,_rvR*3,12,255,80,0);
         const _tpAng=P.facing+Math.PI+((Math.random()-.5)*.8);
         const _tpDist=80+e.deaths*20;
@@ -31726,10 +31739,11 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         if(canMv(_tpX,_tpY,e.r)){e.x=_tpX;e.y=_tpY}
         else{const _sp=safePt(P.x+Math.cos(_tpAng)*50,P.y+Math.sin(_tpAng)*50,e.r);if(_sp){e.x=_sp.x;e.y=_sp.y}}
         // 새 위치: 불꽃 포탈 열림 (보스 재소환)
-        playVFXAng('boss_revive_boom',e.x,e.y,_portalSc,3,0,true);
+        playVFXAng('boss_revive_boom',e.x,e.y,_portalSc,5,0,true);
         _addTpBolt(_rvOx,_rvOy,e.x,e.y,14,'#ff6600');
         addTxt(e.x,e.y-50,_T('🔥부활!'),'#ff4400',40);
         // 보스 숨김: 포탈 열리는 동안 투명 → 40f 후 grand VFX + 페이드인
+        e._tpWarnT=0;e._tpWarnX=0;e._tpWarnY=0; // 부활 중 텔레포트 AI 발동 차단
         e._spawnT=55;e._bossReviveVFXPending=40;
         playSample('boss_revive',1.0,_r(1.0,.08)); // 보스 부활 전용 SFX
         // ── 부활 충격파: 주변 밀어내기 + 데미지 ──
@@ -32888,7 +32902,7 @@ const SKILL_HIER=[
   {id:'spec',name:'⚙ 특수',nameEn:'⚙ Special',col:'#ff8800',cats:['tech','ult']},
 ];
 let _skHierTab='rec';
-const SKILL_ICONS={ghostWalk:1,maliceHunt:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1};
+const SKILL_ICONS={ghostWalk:1,maliceHunt:1,venomBlade:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1};
 function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.55) ${deg}deg,transparent ${deg}deg);pointer-events:none;z-index:1"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#ffee66;font-weight:900;text-shadow:0 0 4px #000,0 0 8px #000,0 1px 3px #000;z-index:2">${txt}</div>`:''}`}
 const SKILL_LIST=[
@@ -32907,6 +32921,7 @@ const SKILL_LIST=[
 
   {id:'guardian',name:'악의 보호자',cat:'def',noDmg:true,desc:'3초마다 악의 구체 생성(1렙 2개). 몸에 밀착하여 적 투사체를 자동 방어(파괴). 레벨당 구체+1',descEn:'Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceHunt',name:'악의 사냥',cat:'bow',act:true,emoji:'⚔',desc:'유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초',descEn:'1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
+  {id:'venomBlade',name:'독침',cat:'bow',act:true,emoji:'🐍',desc:'유도 독침 1발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 500+Lv×20. 독 10초. 쿨 15초. Lv당 뎀+20%',descEn:'1 homing venom needle (ST 40). DEX+bow base. Minimal direct DMG, Poison DOT main. Pierce 500+Lv×20. Poison 10s. CD 15s. Per Lv DMG+20%',spCost:10,matCost:0,cd:900,up:true,upSp:5,upMat:0},
   {id:'maliceMortar',name:'폭풍소환',cat:'magic',act:true,emoji:'🌪️',desc:'어둠 소용돌이 소환 (마우스 조준 설치, MP 소모, 쿨 11초, INT 스케일링, 1렙 200범위 +30/렙, 5초 지속, 적 흡인)',descEn:'Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 200 +30/Lv, 5s duration, pulls enemies)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초',descEn:'Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발. 범위 1500+Lv×100px. 범위 끝까지 넉백(주 성능). 거리감쇠 50%. 스턴 2초. Lv당 뎀+10%. (MP 30%, 쿨 120초)',descEn:'Pentagram cast → holy light pillar mega-explosion. Range 1500+Lv×100px. Full-range knockback (main feature). 50% distance falloff. Stun 2s. Per Lv DMG+10%. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
@@ -32926,7 +32941,7 @@ const SKILL_LIST=[
   {id:'darkPillar',name:'악의기둥',cat:'magic',act:true,emoji:'🏛️',desc:'현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 대왕치기와 합체→기둥강타. 쿨 15초',descEn:'9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Giant Slam → Pillar Strike. CD 15s',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
   {id:'holyDome',name:'회복의 영역',cat:'tech',act:true,noDmg:true,emoji:'🛡',desc:'현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초',descEn:'Place holy domain at current pos (12s duration). On ground: HP/MP/ST +10/s regen + 2x recovery + 2x CD speed. CD 30s. Per Lv range+20 duration+0.5s',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
   {id:'holyPrison',name:'구속의 영역',cat:'tech',act:true,noDmg:true,emoji:'✟',desc:'범위 내 몬스터 부활력 -15%~30%(Lv1=15%, Lv10=30%). Lv1 범위400, Lv10 범위697. Lv당 범위+33. 쿨 30초. 지속 10초',descEn:'Monsters in range: revive power -15%~30%(Lv1=15%, Lv10=30%). Lv1 range 400, Lv10 range 697. Per Lv range+33. CD 30s. Duration 10s',spCost:10,matCost:80,cd:1800,up:true,upSp:5,upMat:0},
-  {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,noDmg:true,emoji:'❄',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 3초 지속. MP 40. Lv당 범위+22 축적+10%',descEn:'Mouse-aim placement. 2 stocks (15s/charge, Lv10→3 stocks). Freeze resist -50% in range, rapid freeze gauge buildup. 3s duration. MP 40. Per Lv range+22 buildup+10%',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
+  {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,noDmg:true,emoji:'❄',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 10초 지속. MP 40. Lv당 범위+22 축적+10%',descEn:'Mouse-aim placement. 2 stocks (15s/charge, Lv10→3 stocks). Freeze resist -50% in range, rapid freeze gauge buildup. 10s duration. MP 40. Per Lv range+22 buildup+10%',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
   {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 회전기폭과 합체→지진폭풍!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Whirlwind Detonate → Earthquake Storm!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:600},
   {id:'giantSlam2',name:'대왕치기 2',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 악의기둥과 합체→기둥강타!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Dark Pillar → Pillar Slam!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:600},
   // quakeStride 삭제됨
@@ -33201,6 +33216,7 @@ const _SK_MUL={
   whirlwind:{b:2.5,g:1.05},   // 평균 4히트/초 → DPS 1000% (Lv1), 5000% (Lv20)
   omniBeam:{b:0.5,g:0.2},  // 단독 멸살광선 상향 — 15틱/초 총합 7.5→10.4 (Lv10)
   maliceHunt:{b:1.0,g:0.4},   // 8발/초, 2026-04-14 데미지 2배
+  venomBlade:{b:3.0,g:1.2},  // DEX+석궁 기반, 독 DOT 위주
   // ── 기본공격 ──
   kiSlash:{b:1.0,g:0.42},     // 3단콤보(1.5/1.5/5.0), 4.1히트/초, DPS ~31×/초 (Lv10)
   // ── 이동콤보 (조건부, 거리 보너스 별도) ──
@@ -33744,6 +33760,30 @@ function activateMaliceHunt(){
     {const _pp=_getPProj();_pp.x=P.x+_mdx*16;_pp.y=P.y+_mdy*16;_pp.vx=_mdx*18;_pp.vy=_mdy*18;_pp.dmg=_mhDmg;_pp.el=EL.P;_pp.maxDist=_mhRange;_pp.dist=0;_pp.r=10;_pp.stagger=8;_pp.kb=0;_pp.magic=true;_pp.maliceHunt=true;_pp.mhBlade=true;_pp._pierced=0;_pp._mhMaxPierce=_mhPierce;_pp._hitSet=new Set();_pp._maxBounce=10;pProjs[pProjs.length]=_pp;}
     SFX.slash();playSample(Math.random()<.5?'voice_dark_skill':'voice_bladefuse',.8,_r(1,.08));addTxt(P.x,P.y-25,_T('⚔ 악의사냥!'),'#ffffff',35);
   }
+}
+
+// ═══ 독침 발동 (DEX+석궁 기반 독 DOT 추적칼날) ═══
+function activateVenomBlade(){
+  const _vbLv=P.skills.venomBlade||1;
+  const _vbStCost=40;
+  if(P.st<_vbStCost){showPH(_T('ST 부족!'),'#ff4444');return}
+  P.st=Math.max(0,P.st-_vbStCost);
+  const _vbDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('venomBlade')*_fuseMul('venomBlade'));
+  const _vbRange=2000+(_vbLv-1)*100;
+  const _vbPierce=500+(_vbLv-1)*20;
+  const _mdx=Math.cos(P.atkArc),_mdy=Math.sin(P.atkArc);
+  {const _pp=_getPProj();
+    _pp.x=P.x+_mdx*16;_pp.y=P.y+_mdy*16;
+    _pp.vx=_mdx*18;_pp.vy=_mdy*18;
+    _pp.dmg=1; // 직타 최소 — 독 DOT 위주
+    _pp.el=EL.D;_pp.maxDist=_vbRange;_pp.dist=0;
+    _pp.r=8;_pp.stagger=0;_pp.kb=0;_pp.magic=true;
+    _pp.venomBlade=true;_pp.mhBlade=true; // mhBlade 재사용 → 추적 유도
+    _pp._venomPool=_vbDmg;
+    _pp._pierced=0;_pp._mhMaxPierce=_vbPierce;
+    _pp._hitSet=new Set();_pp._maxBounce=10;
+    pProjs[pProjs.length]=_pp;}
+  SFX.magic(EL.D);addTxt(P.x,P.y-25,_T('🐍 독침!'),'#44dd44',35);
 }
 
 // ═══ 폭풍소환 발사 (키홀드 거리 → 기원 투척 → 착지 시 소용돌이 전개) ═══
@@ -39240,18 +39280,17 @@ function draw(){
     }
     else if(it.type==='chest'){
       const glow=.5+Math.sin(_now/350)*.4;
-      if(it.opened){
+      if(window._chest3d?.active){
+        // 3D overlay 처리 중 — 상호작용 힌트만 2D에 표시
+        if(!it.opened){X.globalAlpha=1;X.font='13px "Noto Sans KR"';X.fillStyle='#ffcc44';X.fillText('['+keyName(BINDS.interact)+'] '+_T('열기'),it.x,it.y+b+28);}
+      }else if(it.opened){
         X.globalAlpha=.4;X.font='32px sans-serif';X.fillText('📭',it.x,it.y+b);X.globalAlpha=1;
       }else{
-        // 닫힌 상자 — 박스 형태 + 금장 + 잠금
+        // 닫힌 상자 — 박스 형태 + 금장 + 잠금 (3D 없을 때 폴백)
         X.globalAlpha=glow*.15;X.fillStyle='#ffaa00';X.beginPath();X.arc(it.x,it.y,35,0,Math.PI*2);X.fill();
-        // 상자 몸체
         X.globalAlpha=glow*.8;X.fillStyle='#8B6914';X.fillRect(it.x-14,it.y+b-8,28,18);
-        // 뚜껑
         X.fillStyle='#A67C00';X.fillRect(it.x-16,it.y+b-12,32,6);
-        // 금장 띠
         X.fillStyle='#FFD700';X.fillRect(it.x-1,it.y+b-12,2,18);
-        // 자물쇠
         X.globalAlpha=glow;X.fillStyle='#FFD700';X.beginPath();X.arc(it.x,it.y+b-1,3,0,Math.PI*2);X.fill();
         X.fillStyle='#333';X.beginPath();X.arc(it.x,it.y+b-1,1.5,0,Math.PI*2);X.fill();
         X.globalAlpha=1;
@@ -42042,10 +42081,10 @@ function drawP(){
         const _taF=(_ta.t/_ta.maxT>.8?1-(_ta.t/_ta.maxT-.8)/.2:1);
         const _tbF=(_tb.t/_tb.maxT>.8?1-(_tb.t/_tb.maxT-.8)/.2:1);
         const _arcFade=Math.min(_taF,_tbF);
-        // 전류강화 판정: 아크 선분이 iceStorm/holyDome 존과 교차하는지
+        // 전류강화 판정: 아크 선분이 iceStorm 존과 교차하는지 (물→전기 반응, 2026-05-08 holyDome 제외)
         let _arcBoosted=false;
         if(G._fireZones){for(let _fzi=0;_fzi<G._fireZones.length;_fzi++){
-          const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm'&&fz.type!=='holyDome')continue;
+          const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm')continue;
           const _ldx=_tb.x-_ta.x,_ldy=_tb.y-_ta.y,_ll2=_ldx*_ldx+_ldy*_ldy;
           let _lt=_ll2>0?((fz.x-_ta.x)*_ldx+(fz.y-_ta.y)*_ldy)/_ll2:0;
           _lt=_lt<0?0:_lt>1?1:_lt;
@@ -47690,6 +47729,7 @@ const _btOrigLoop=window.requestAnimationFrame;
 </script>
 <!-- ═══ 3D 보스 오버레이 ═══ -->
 <canvas id="boss3dCvs" style="position:fixed;inset:0;pointer-events:none;z-index:5000"></canvas>
+<canvas id="chest3dCvs" style="position:fixed;pointer-events:none;z-index:4998;display:none"></canvas>
 <script type="importmap">
 {"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
 </script>
@@ -47886,6 +47926,203 @@ function _b3animate(){
 }
 _b3animate();
 console.log('[BOSS3D] Overlay initialized');
+</script>
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CHEST 3D — 갓오브워 스타일 보물상자  v1.0
+// ═══════════════════════════════════════════════════════════════
+(function(){
+'use strict';
+const CVS=document.getElementById('chest3dCvs');
+if(!CVS||typeof THREE==='undefined')return;
+const SZ=280;
+const R=new THREE.WebGLRenderer({canvas:CVS,alpha:true,antialias:true});
+R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio,2));
+CVS.style.width=CVS.style.height=SZ+'px';
+R.setClearColor(0,0);R.outputColorSpace=THREE.SRGBColorSpace;
+R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
+R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.4;
+
+const SC=new THREE.Scene();
+const CAM=new THREE.PerspectiveCamera(44,1,0.01,100);
+CAM.position.set(0.25,1.55,2.7);CAM.lookAt(0,0.35,0);
+
+// ─── 조명 ────────────────────────────────────────
+// 주 황금빛 (GOW 스타일)
+const dL=new THREE.DirectionalLight(0xffcc88,2.8);
+dL.position.set(2.5,5,3);dL.castShadow=true;
+dL.shadow.mapSize.set(512,512);dL.shadow.camera.near=0.1;dL.shadow.camera.far=20;
+dL.shadow.camera.left=dL.shadow.camera.bottom=-3;
+dL.shadow.camera.right=dL.shadow.camera.top=3;SC.add(dL);
+// 파란 림라이트
+const rL=new THREE.DirectionalLight(0x2244cc,0.9);rL.position.set(-2.5,0.5,-1.5);SC.add(rL);
+SC.add(new THREE.AmbientLight(0x0f0804,0.8));
+// 내부 발광 (opening 시 켜짐)
+const iL1=new THREE.PointLight(0xff8822,0,4);iL1.position.set(0,0.7,0.15);SC.add(iL1);
+const iL2=new THREE.PointLight(0xffffff,0,6);iL2.position.set(0,2.0,0);SC.add(iL2);
+
+// ─── 재질 ────────────────────────────────────────
+const mWood=new THREE.MeshStandardMaterial({color:0x2a1204,roughness:0.9,metalness:0.02});
+const mIron=new THREE.MeshStandardMaterial({color:0x2e2618,roughness:0.4,metalness:0.95});
+const mGold=new THREE.MeshStandardMaterial({color:0xb8870a,roughness:0.15,metalness:1.0,emissive:new THREE.Color(0x3a2200),emissiveIntensity:0.6});
+const mLock=new THREE.MeshStandardMaterial({color:0xddaa10,roughness:0.1,metalness:1.0,emissive:new THREE.Color(0x4a2a00),emissiveIntensity:1.2});
+const mRune=new THREE.MeshStandardMaterial({color:0x050510,roughness:0.5,metalness:0.1,emissive:new THREE.Color(0x1a40ee),emissiveIntensity:2.5});
+const mInside=new THREE.MeshStandardMaterial({color:0x080402,roughness:1.0,metalness:0.0});
+const mGlow=new THREE.MeshBasicMaterial({color:0xff9922,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false});
+
+// ─── 상자 구조 ────────────────────────────────────
+const ROOT=new THREE.Group();SC.add(ROOT);
+
+// 몸통
+const bdy=new THREE.Mesh(new THREE.BoxGeometry(1.6,0.75,1.0),mWood);
+bdy.position.y=0.375;bdy.castShadow=bdy.receiveShadow=true;ROOT.add(bdy);
+// 내부 어두운 공간
+const ins=new THREE.Mesh(new THREE.BoxGeometry(1.35,0.62,0.82),mInside);
+ins.position.set(0,0.42,0);ROOT.add(ins);
+// 내부 발광 플레인 (열릴 때)
+const glowMesh=new THREE.Mesh(new THREE.PlaneGeometry(1.2,0.65),mGlow);
+glowMesh.position.set(0,0.748,0);glowMesh.rotation.x=-Math.PI/2;ROOT.add(glowMesh);
+
+// 뚜껑 피벗 (힌지: 뒷면 상단 모서리)
+const LID=new THREE.Group();LID.position.set(0,0.75,-0.5);ROOT.add(LID);
+const lidM=new THREE.Mesh(new THREE.BoxGeometry(1.64,0.30,1.04),mWood);
+lidM.position.set(0,0.15,0.52);lidM.castShadow=true;LID.add(lidM);
+// 뚜껑 상단 금장 몰딩
+const lidTop=new THREE.Mesh(new THREE.BoxGeometry(1.66,0.06,1.06),mGold);
+lidTop.position.set(0,0.27,0.52);LID.add(lidTop);
+
+// 철제 밴드 3줄 + 금 리벳
+[0.12,0.375,0.63].forEach(function(by){
+  var bnd=new THREE.Mesh(new THREE.BoxGeometry(1.64,0.052,1.04),mIron);
+  bnd.position.set(0,by,0);ROOT.add(bnd);
+  [-0.77,0.77].forEach(function(bx){[-0.47,0,0.47].forEach(function(bz){
+    var rv=new THREE.Mesh(new THREE.SphereGeometry(0.036,8,6),mGold);
+    rv.position.set(bx,by+0.025,bz);ROOT.add(rv);
+  });});
+});
+// 뚜껑 밴드 2줄
+[0.05,0.22].forEach(function(by){
+  var bm=new THREE.Mesh(new THREE.BoxGeometry(1.66,0.052,1.06),mIron);
+  bm.position.set(0,by,0.52);LID.add(bm);
+});
+
+// ─── 앞면 룬 석판 (Norse 스타일) ─────────────────
+var rPlt=new THREE.Mesh(new THREE.BoxGeometry(0.72,0.38,0.038),mIron);
+rPlt.position.set(0,0.38,0.521);ROOT.add(rPlt);
+// 수직 룬 기둥 3개
+[-0.22,0,0.22].forEach(function(rx,i){
+  var rn=new THREE.Mesh(new THREE.BoxGeometry(i===1?0.15:0.10,0.26,0.05),mRune);
+  rn.position.set(rx,0.38,0.535);ROOT.add(rn);
+});
+// 수평 연결 2줄
+var rH1=new THREE.Mesh(new THREE.BoxGeometry(0.60,0.038,0.05),mRune);
+rH1.position.set(0,0.42,0.535);ROOT.add(rH1);
+var rH2=new THREE.Mesh(new THREE.BoxGeometry(0.60,0.038,0.05),mRune);
+rH2.position.set(0,0.30,0.535);ROOT.add(rH2);
+
+// ─── 자물쇠 ──────────────────────────────────────
+var lBk=new THREE.Mesh(new THREE.BoxGeometry(0.2,0.25,0.04),mIron);
+lBk.position.set(0,0.73,0.523);ROOT.add(lBk);
+var lHs=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.1,0.06),mGold);
+lHs.position.set(0,0.695,0.534);ROOT.add(lHs);
+var lArc=new THREE.Mesh(new THREE.TorusGeometry(0.044,0.016,8,16,Math.PI),mGold);
+lArc.position.set(0,0.748,0.534);lArc.rotation.z=Math.PI;ROOT.add(lArc);
+var lKey=new THREE.Mesh(new THREE.CylinderGeometry(0.022,0.022,0.07,8),mLock);
+lKey.position.set(0,0.685,0.54);lKey.rotation.x=Math.PI/2;ROOT.add(lKey);
+
+// ─── 바닥 (그림자 받이) ──────────────────────────
+var flr=new THREE.Mesh(new THREE.PlaneGeometry(4,4),
+  new THREE.MeshStandardMaterial({color:0,transparent:true,opacity:0,roughness:1}));
+flr.rotation.x=-Math.PI/2;flr.position.y=-0.005;flr.receiveShadow=true;SC.add(flr);
+
+// ─── 상태 기계 ────────────────────────────────────
+var _st='hidden',_timer=0,_lidAng=0,_rotY=-0.25,_wx=0,_wy=0;
+
+window._chest3d={
+  show:function(wx,wy){
+    _wx=wx;_wy=wy;_st='idle';_timer=0;_lidAng=0;_rotY=-0.25;
+    LID.rotation.x=0;ROOT.rotation.y=_rotY;ROOT.position.set(0,0,0);
+    mRune.emissiveIntensity=2.5;mLock.emissiveIntensity=1.2;mGlow.opacity=0;
+    iL1.intensity=0;iL2.intensity=0;CVS.style.display='block';
+  },
+  open:function(){if(_st==='idle'||_st==='rattling'){_st='rattling';_timer=0;}},
+  hide:function(){_st='hidden';CVS.style.display='none';},
+  get active(){return _st!=='hidden';}
+};
+
+// ─── 캔버스 위치 동기화 ───────────────────────────
+function updatePos(){
+  var c=document.getElementById('c');
+  if(!c||typeof G==='undefined'||!G.on)return;
+  var sc=(typeof _dpr!=='undefined'?_dpr:devicePixelRatio)*
+         ((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
+  var cssX=(c.width/2+(_wx-G.cam.x))/sc;
+  var cssY=(c.height/2+(_wy-G.cam.y))/sc;
+  if(cssX<-300||cssX>innerWidth+300||cssY<-400||cssY>innerHeight+300){CVS.style.opacity='0';return;}
+  CVS.style.opacity='1';
+  CVS.style.left=(cssX-SZ/2)+'px';
+  CVS.style.top=(cssY-SZ*0.82)+'px';
+}
+
+// ─── 렌더 루프 ────────────────────────────────────
+var CLK=new THREE.Clock();
+function tick(){
+  requestAnimationFrame(tick);
+  if(_st==='hidden')return;
+  var dt=Math.min(CLK.getDelta(),0.05);
+  _timer+=dt;
+  updatePos();
+
+  if(_st==='idle'){
+    // 둥실 부유 + 느린 자전
+    ROOT.position.y=Math.sin(_timer*1.6)*0.022;
+    _rotY+=dt*0.22;ROOT.rotation.y=_rotY;
+    // 룬 맥동
+    mRune.emissiveIntensity=2.2+Math.sin(_timer*3.2)*0.6;
+    mLock.emissiveIntensity=1.0+Math.sin(_timer*2.6+1)*0.5;
+
+  }else if(_st==='rattling'){
+    // 덜컹거림 (강도 점증)
+    var rp=Math.min(1,_timer*2.5);
+    ROOT.position.x=Math.sin(_timer*42)*0.03*rp;
+    ROOT.position.y=Math.abs(Math.sin(_timer*38))*0.018*rp;
+    ROOT.rotation.z=Math.sin(_timer*40)*0.018*rp;
+    // 뚜껑 틈새 빛 누출
+    var lk=Math.min(1,_timer*2.2);
+    iL1.intensity=lk*0.8;mLock.emissiveIntensity=1.2+lk*2.0;mGlow.opacity=lk*0.15;
+    if(_timer>0.55){_st='opening';_timer=0;if(typeof shake==='function')shake(10);}
+
+  }else if(_st==='opening'){
+    // 뚜껑 열림 — ease-out cubic
+    var t=Math.min(1,_timer/1.1);
+    _lidAng=-Math.PI*0.80*(1-(1-t)*(1-t)*(1-t));
+    LID.rotation.x=_lidAng;
+    ROOT.position.x=0;ROOT.rotation.z=0;
+    _rotY+=dt*0.15;ROOT.rotation.y=_rotY;
+    // 내부 빛 폭발
+    var bst=Math.min(1,_timer/0.45);
+    var fad=_timer>0.55?1-Math.min(1,(_timer-0.55)/0.7):1;
+    iL1.intensity=bst*fad*8.0;iL2.intensity=bst*fad*4.0;
+    mGlow.opacity=bst*fad*0.7;
+    mRune.emissiveIntensity=2.5+bst*3.0*fad;
+    mLock.emissiveIntensity=3.0*bst*fad+0.5;
+    if(_timer>=1.3){_st='open';_timer=0;LID.rotation.x=-Math.PI*0.80;}
+
+  }else if(_st==='open'){
+    // 열린 상태 유지 → 4.5초 후 자동 숨김
+    _rotY+=dt*0.18;ROOT.rotation.y=_rotY;
+    iL1.intensity=Math.max(0,3.0-_timer*1.2);
+    iL2.intensity=Math.max(0,1.5-_timer*0.9);
+    mGlow.opacity=Math.max(0,0.4-_timer*0.2);
+    mRune.emissiveIntensity=2.0+Math.sin(_timer*2.5)*0.4;
+    mLock.emissiveIntensity=0.5;
+    if(_timer>4.5){_st='hidden';CVS.style.display='none';}
+  }
+  R.render(SC,CAM);
+}
+tick();
+console.log('[CHEST3D] GOW chest initialized');
+})();
 </script>
 </body>
 </html>

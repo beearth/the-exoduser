@@ -12374,7 +12374,7 @@ function _beanRoll(el,col,sz,spd,dmgMult,e){
       if(_dr<.06)return{el:EL.I,col:'#22cc66',sz:1.6,spd:spd*1.1,dmgM:1.0,gbBean:true};
       if(_dr<.08)return{el:el,col:col||'#ffaa00',sz:sz||1.2,spd:spd*1.2,dmgM:1.0};
       return{el:EL.D,col:'#aa44ff',sz:1.4,spd:spd*.8,dmgM:1.0}}
-    if(e._beanCnt%2!==0)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:1.5,blackBean:true};
+    if(e._beanCnt%4!==0)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:1.5,blackBean:true};
     return{el:el,col:'#cc1100',sz:1.5,spd:spd*2.0,dmgM:1.2,redBean:true,homing:true}}
   const r=Math.random();
   if(r<.60)return{el:EL.P,col:'#00aa00',sz:2.0,spd:4.4,dmgM:1.5,blackBean:true};
@@ -25608,7 +25608,7 @@ function update(){
   let _qsAnyCD=false;
   for(let i=0;i<4;i++){if(qsCooldown[i]>0){qsCooldown[i]-=sp;_qsAnyCD=true;if(qsCooldown[i]<=0){qsCooldown[i]=0;updateQS()}}}
   const _msMax2=(P.skills.maliceStorm>=10)?3:2,_isMax2=(P.skills.iceStorm>=10)?3:2,_bwMax2=(P.skills.boneWall>=10)?3:2;
-  const _anySkCd=((P._mhCd>0)||(P._msCd>0)||(P._isStk!=null&&P._isStk<_isMax2)||(P._bwStk!=null&&P._bwStk<_bwMax2)||(P.chargeStocks<P.maxChargeStocks&&P.chargeCd>0)||P._mmCd>0||P._hbCd>0||P._ebCd>0||P._bltCd>0||P._bsCd>0||P._blueCd>0||P._gwCd>0||P._pbCd>0||P._ioCd>0||P._dpCd>0||P._stCd>0||P._lvCd>0||P._bdCd>0||P._gslCd>0||P._hdCd>0||P._bnsCd>0||P._wpCd>0||P._wmCd>0||P._wjCd>0||P._wrCd>0||P._twCd>0||P._vbCd>0);
+  const _anySkCd=((P._mhCd>0)||(P._msCd>0)||(P._isStk!=null&&P._isStk<_isMax2)||(P._bwStk!=null&&P._bwStk<_bwMax2)||(P.chargeStocks<P.maxChargeStocks&&P.chargeCd>0)||P._mmCd>0||P._hbCd>0||P._ebCd>0||P._bltCd>0||P._bsCd>0||P._blueCd>0||P._gwCd>0||P._pbCd>0||P._ioCd>0||P._dpCd>0||P._stCd>0||P._lvCd>0||P._bdCd>0||P._gslCd>0||P._hdCd>0||P._bnsCd>0||P._wpCd>0||P._wmCd>0||P._wjCd>0||P._wrCd>0||P._twCd>0);
   if((_qsAnyCD||_anySkCd)&&~~(_now)%3===0)updateQS(); // 쿨다운 중 실시간 표시 갱신
   if(~~(_now)%6===0)_updateActionKeys(); // E/SH/F 슬롯 상태 갱신
   // Auto-potion: HP가 물약 회복량 이상 빠지면 자동 섭취
@@ -47951,7 +47951,7 @@ console.log('[BOSS3D] Overlay initialized');
 </script>
 <script>
 // ═══════════════════════════════════════════════════════════════
-// CHEST 3D — 갓오브워 스타일 보물상자  v2.0
+// CHEST 3D — 갓오브워 스타일 보물상자  v1.0
 // ═══════════════════════════════════════════════════════════════
 (function(){
 'use strict';
