@@ -12119,6 +12119,36 @@ registerVFX('burn_death','img/vfx_burn_death.png',211,211,8,8);
 registerVFX('explode_scarecrow','assets/vfx/scarecrow_boom.png',64,64,9,9); // 폭발허수아비 전용 대형폭발 (9x1, 9프레임, 불속성)
 registerVFX('boss_revive_boom','assets/vfx/boss/boss_revive_boom.png',64,64,24,8); // 보스 부활 폭발 (8x3, 24프레임)
 registerVFX('teleport_burst','assets/vfx/teleport_burst.png',64,64,9,9); // 순간이동 보라색 폭발 (9x1, 9프레임)
+// ─── 보스 스킬 VFX 스프라이트 (LUDO AI 생성, 256×256×16f 4열) ───
+registerVFX('boss_judgeCut','assets/vfx/boss/boss_judgeCut.webp',256,256,16,4);
+registerVFX('boss_phantomSwords','assets/vfx/boss/boss_phantomSwords.webp',256,256,16,4);
+registerVFX('boss_seekerMines','assets/vfx/boss/boss_seekerMines.webp',256,256,16,4);
+registerVFX('boss_shockGrid','assets/vfx/boss/boss_shockGrid.webp',256,256,16,4);
+registerVFX('boss_donutSlam','assets/vfx/boss/boss_donutSlam.webp',256,256,16,4);
+registerVFX('boss_crossWipe','assets/vfx/boss/boss_crossWipe.webp',256,256,16,4);
+registerVFX('boss_lavaPools','assets/vfx/boss/boss_lavaPools.webp',256,256,16,4);
+registerVFX('boss_fireRain','assets/vfx/boss/boss_fireRain.webp',256,256,16,4);
+registerVFX('boss_fanWave','assets/vfx/boss/boss_fanWave.webp',256,256,16,4);
+registerVFX('boss_radialLaser','assets/vfx/boss/boss_radialLaser.webp',256,256,16,4);
+registerVFX('boss_pillars','assets/vfx/boss/boss_pillars.webp',256,256,16,4);
+registerVFX('boss_darkZone','assets/vfx/boss/boss_darkZone.webp',256,256,16,4);
+registerVFX('boss_tideWave','assets/vfx/boss/boss_tideWave.webp',256,256,16,4);
+registerVFX('boss_rewindMark','assets/vfx/boss/boss_rewindMark.webp',256,256,16,4);
+registerVFX('boss_gravityWell','assets/vfx/boss/boss_gravityWell.webp',256,256,16,4);
+registerVFX('boss_wallPush','assets/vfx/boss/boss_wallPush.webp',256,256,16,4);
+registerVFX('boss_chainLights','assets/vfx/boss/boss_chainLights.webp',256,256,16,4);
+registerVFX('boss_orbWeave','assets/vfx/boss/boss_orbWeave.webp',256,256,16,4);
+registerVFX('boss_soulAnchor','assets/vfx/boss/boss_soulAnchor.webp',256,256,16,4);
+registerVFX('boss_mirrorClone','assets/vfx/boss/boss_mirrorClone.webp',256,256,16,4);
+registerVFX('boss_fissure','assets/vfx/boss/boss_fissure.webp',256,256,16,4);
+registerVFX('boss_safeCorner','assets/vfx/boss/boss_safeCorner.webp',256,256,16,4);
+registerVFX('boss_tidalWipe','assets/vfx/boss/boss_tidalWipe.webp',256,256,16,4);
+registerVFX('boss_poisonPool','assets/vfx/boss/boss_poisonPool.webp',256,256,16,4);
+registerVFX('boss_cageTrap','assets/vfx/boss/boss_cageTrap.webp',256,256,16,4);
+registerVFX('boss_doppelganger','assets/vfx/boss/boss_doppelganger.webp',256,256,16,4);
+registerVFX('boss_gSlamWave','assets/vfx/boss/boss_gSlamWave.webp',256,256,16,4);
+registerVFX('boss_gwPillar','assets/vfx/boss/boss_gwPillar.webp',256,256,16,4);
+registerVFX('boss_gwLightning','assets/vfx/boss/boss_gwLightning.webp',256,256,16,4);
 
 // ═══ 빙결 틴트용 오프스크린 캔버스 (몬스터 실루엣 파란 틴트) ═══
 const _iceTintC=document.createElement('canvas');
@@ -25035,12 +25065,14 @@ function update(){
     const spd=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
     // 반사 쿨 감소
     if(p._bounceCool>0)p._bounceCool-=sp;
+    // 독사 재히트 쿨 감소 (프레임당 1회)
+    if(p.venomBlade&&(p._reHitT||0)>0)p._reHitT=Math.max(0,p._reHitT-sp);
     // ── 유도: 일반 매 2프레임, ebHoming 매 6프레임 ──
     if(!(p._bounceCool>0)&&!p.explosive&&!p.bladeOrb&&!p.iceBlade&&!p.burstBolt&&!p.fireball&&!p.normalBow&&!(p._arcLock&&p.dist<p._arcLock)&&spd>0&&(G._gcT+i)%(p.ebHoming?6:2)===0){
       let bestE=null,bestD=p.plagueHoming?300:p.mhBlade?300:p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.magic?250:200;
       const _neH=shQuery(p.x,p.y,bestD);
       for(let h=0;h<_neH.length;h++){const e=_neH[h];if(!e.alive)continue;
-        if(p._hitSet&&p._hitSet.has(e)){if(p.plagueHoming||p.mhBlade){let _anyAlive=false;for(let _pi=0;_pi<_neH.length;_pi++){if(_neH[_pi].alive&&!p._hitSet.has(_neH[_pi])){_anyAlive=true;break}}if(!_anyAlive)p._hitSet.clear();}continue;}
+        if(p._hitSet&&p._hitSet.has(e)&&!p.venomBlade){if(p.plagueHoming||p.mhBlade){let _anyAlive=false;for(let _pi=0;_pi<_neH.length;_pi++){if(_neH[_pi].alive&&!p._hitSet.has(_neH[_pi])){_anyAlive=true;break}}if(!_anyAlive)p._hitSet.clear();}continue;}
         const d=dst(p.x,p.y,e.x,e.y);if(d<bestD){bestD=d;bestE=e}}
       if(bestE){
         const ta=Math.atan2(bestE.y-p.y,bestE.x-p.x);
@@ -25125,6 +25157,22 @@ function update(){
       if(p._hitSet&&p._hitSet.has(e)&&!p.plagueBlade&&!p.venomBlade)continue; // 관통한 적 스킵 (폭독혈/독사는 같은 적 재히트 허용)
       if(dst(p.x,p.y,e.x,e.y)<e.r+p.r){
         // ── 폭독혈: hurtE 호출 전에 전염+관통 처리 ──
+        // ── 독사: hurtE 호출 전에 재히트/관통/독 처리 ──
+        if(p.venomBlade){
+          if((p._reHitT||0)>0){hit=false;continue} // 쿨타임 중: hurtE 포함 완전 스킵
+          p._reHitT=8;
+          if(!p._hitSet)p._hitSet=new Set();
+          const _vbRehit=p._hitSet.has(e);
+          if(!_vbRehit)p._hitSet.add(e);
+          p._pierceRate=Math.max(0,(p._pierceRate||0)-(_vbRehit?20:10));
+          const _vbAng=Math.atan2(e.y-p.y,e.x-p.x);
+          hurtE(e,~~(elMul(p.el,e.el)),_vbAng,false,p,p.el);
+          e.poison=1;e.poisonT=Math.max(e.poisonT||0,600);e.poisonStk=(e.poisonStk||0)+1;
+          if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*(p._venomPool||0);
+          playSampleAt('chain_fly',.3,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,_vbAng);
+          if(p._pierceRate>0){hit=false;continue}
+          hit=true;break;
+        }
         if(p.plagueBlade){
           // 같은 적 재히트: 쿨타임 체크 (연속 히트 방지)
           if(p._hitSet&&p._hitSet.has(e)){if(!p._reHitT)p._reHitT=0;if(p._reHitT>0)continue;p._reHitT=8}
@@ -25171,22 +25219,6 @@ function update(){
           e.bleedT=Math.max(e.bleedT||0,900); // 15초(60fps)
           e.bleedStk=(e.bleedStk||0)+1; // 무한 중첩
           if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*_bladeBleed;
-        }
-        if(p.venomBlade){
-          // 독사: 재히트 쿨 8프레임, 관통력 소모: 새 적 -10, 같은 적 재히트 -20
-          if(p._reHitT>0){p._reHitT-=sp;hit=false;continue}
-          p._reHitT=8;
-          if(!p._hitSet)p._hitSet=new Set();
-          const _vbRehit=p._hitSet.has(e);
-          if(!_vbRehit)p._hitSet.add(e);
-          p._pierceRate=Math.max(0,(p._pierceRate||0)-(_vbRehit?20:10));
-          e.poison=1;
-          e.poisonT=Math.max(e.poisonT||0,600); // 10초 지속
-          e.poisonStk=(e.poisonStk||0)+1;
-          if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*(p._venomPool||0);
-          playSampleAt('chain_fly',.3,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang);
-          if(p._pierceRate>0){hit=false;continue}
-          hit=true;break;
         }
         if(!_isTurretProj||_ftV>0.01){
           if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
@@ -47970,170 +48002,210 @@ console.log('[BOSS3D] Overlay initialized');
 const CVS=document.getElementById('chest3dCvs');
 if(!CVS||typeof THREE==='undefined')return;
 
-const SZ=420;
+const SZ=500;
 const R=new THREE.WebGLRenderer({canvas:CVS,alpha:true,antialias:true,powerPreference:'high-performance'});
 R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio,2));
 CVS.style.width=CVS.style.height=SZ+'px';
 R.setClearColor(0,0);R.outputColorSpace=THREE.SRGBColorSpace;
 R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
-R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.6;
+R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.9;
 
 const SC=new THREE.Scene();
-const CAM=new THREE.PerspectiveCamera(38,1,0.01,100);
-CAM.position.set(0.28,1.9,3.2);CAM.lookAt(0,0.44,0);
+SC.fog=new THREE.FogExp2(0x000008,0.22);
 
-// Environment map for metal reflections
+// 카메라 — 정면 45도 위에서 내려다보는 D4 스타일
+const CAM=new THREE.PerspectiveCamera(42,1,0.01,50);
+CAM.position.set(0,2.0,2.6);CAM.lookAt(0,0.5,0);
+
+// Environment cube map
 const cubeRT=new THREE.WebGLCubeRenderTarget(128,{generateMipmaps:true,minFilter:THREE.LinearMipmapLinearFilter});
-const cubeCamera=new THREE.CubeCamera(0.1,50,cubeRT);
+const cubeCam=new THREE.CubeCamera(0.1,50,cubeRT);
 const envS=new THREE.Scene();
 envS.add(new THREE.HemisphereLight(0xff9944,0x0a0820,4));
-const eD1=new THREE.DirectionalLight(0xffcc88,7);eD1.position.set(2,3,1);envS.add(eD1);
-const eD2=new THREE.DirectionalLight(0x3366dd,3);eD2.position.set(-2,1,-2);envS.add(eD2);
-cubeCamera.update(R,envS);
+const eD1=new THREE.DirectionalLight(0xffcc88,8);eD1.position.set(2,3,1);envS.add(eD1);
+const eD2=new THREE.DirectionalLight(0x3366dd,3.5);eD2.position.set(-2,1,-2);envS.add(eD2);
+cubeCam.update(R,envS);
 SC.environment=cubeRT.texture;
 
-// Lights
-const keyL=new THREE.DirectionalLight(0xffd055,3.8);
-keyL.position.set(3.5,8,5);keyL.castShadow=true;
+// 조명
+const keyL=new THREE.DirectionalLight(0xffd088,4.0);
+keyL.position.set(1.5,8,3);keyL.castShadow=true;
 keyL.shadow.mapSize.set(1024,1024);
-keyL.shadow.camera.near=0.1;keyL.shadow.camera.far=30;
-keyL.shadow.camera.left=keyL.shadow.camera.bottom=-4;
-keyL.shadow.camera.right=keyL.shadow.camera.top=4;
-keyL.shadow.bias=-0.0004;SC.add(keyL);
-const rimL=new THREE.DirectionalLight(0x2255ff,2.2);rimL.position.set(-1.5,3,-5);SC.add(rimL);
-const filL=new THREE.DirectionalLight(0xff9944,0.7);filL.position.set(-3,0.4,2);SC.add(filL);
-SC.add(new THREE.HemisphereLight(0x180c04,0x030408,0.75));
-const iL1=new THREE.PointLight(0xff8822,0,6);iL1.position.set(0,0.9,0.22);SC.add(iL1);
-const iL2=new THREE.PointLight(0xffffff,0,12);iL2.position.set(0,3.5,0);SC.add(iL2);
-const iL3=new THREE.PointLight(0xffcc44,0,4);iL3.position.set(0,0.65,-0.18);SC.add(iL3);
+keyL.shadow.camera.near=0.1;keyL.shadow.camera.far=22;
+keyL.shadow.camera.left=keyL.shadow.camera.bottom=-3.5;
+keyL.shadow.camera.right=keyL.shadow.camera.top=3.5;
+keyL.shadow.bias=-0.0005;SC.add(keyL);
+const rimL=new THREE.DirectionalLight(0x1133cc,3.0);rimL.position.set(-1.5,2,-3);SC.add(rimL);
+const topL=new THREE.DirectionalLight(0xffffff,1.2);topL.position.set(0,5,0);SC.add(topL);
+SC.add(new THREE.HemisphereLight(0x0d0806,0x020308,0.5));
+const iL1=new THREE.PointLight(0xff9922,0,5);iL1.position.set(0,1.0,0.3);SC.add(iL1);
+const iL2=new THREE.PointLight(0xffd070,0,10);iL2.position.set(0,4,0);SC.add(iL2);
+const iL3=new THREE.PointLight(0xffcc33,0,4);iL3.position.set(0,0.6,-0.2);SC.add(iL3);
+const runeL=new THREE.PointLight(0x2266ff,0.5,2.2);runeL.position.set(0,0.5,1.0);SC.add(runeL);
 
-// Materials - NO canvas textures for body/iron/gold
-const mIron=new THREE.MeshStandardMaterial({color:0x16110e,roughness:0.16,metalness:0.98,envMapIntensity:1.6});
-const mGold=new THREE.MeshStandardMaterial({color:0xcc9500,roughness:0.05,metalness:1.0,emissive:new THREE.Color(0x3e2000),emissiveIntensity:0.8,envMapIntensity:2.5});
-const mLock=new THREE.MeshStandardMaterial({color:0xeebb00,roughness:0.03,metalness:1.0,emissive:new THREE.Color(0x5a3400),emissiveIntensity:1.6,envMapIntensity:3.0});
-const mRuneBg=new THREE.MeshStandardMaterial({color:0x060410,roughness:0.5,metalness:0.3,envMapIntensity:0.4});
-const mInside=new THREE.MeshStandardMaterial({color:0x020100,roughness:1.0,metalness:0.0});
-const mGlow=new THREE.MeshBasicMaterial({color:0xff9922,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false});
+// ===== 재질 =====
+const woodC=[0x0e0602,0x120804,0x0c0501,0x100703];
+const mWood=woodC.map(c=>new THREE.MeshStandardMaterial({color:c,roughness:0.93,metalness:0.0,envMapIntensity:0.03}));
+const mIron=new THREE.MeshStandardMaterial({color:0x100e0a,roughness:0.12,metalness:0.99,envMapIntensity:2.2});
+const mGold=new THREE.MeshStandardMaterial({color:0xd4a010,roughness:0.04,metalness:1.0,emissive:new THREE.Color(0x6a3800),emissiveIntensity:1.2,envMapIntensity:3.0});
+const mGoldBright=new THREE.MeshStandardMaterial({color:0xffcc20,roughness:0.02,metalness:1.0,emissive:new THREE.Color(0xaa5500),emissiveIntensity:2.2,envMapIntensity:3.5});
+const mRuneBg=new THREE.MeshStandardMaterial({color:0x010008,roughness:0.7,metalness:0.15,envMapIntensity:0.2});
+const mInside=new THREE.MeshStandardMaterial({color:0x050200,roughness:1.0,metalness:0.0});
+const mGlow=new THREE.MeshBasicMaterial({color:0xff8800,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false});
 
-// Wood planks: 4 alternating shades
-const plankColors=[0x1c0a02,0x221005,0x190902,0x200e04];
-const mPlanks=plankColors.map(c=>new THREE.MeshStandardMaterial({color:c,roughness:0.91,metalness:0.0,envMapIntensity:0.04}));
-
-// Rune glow: clean Algiz shape on 128px canvas, blue emissive
-const runeC=document.createElement('canvas');runeC.width=runeC.height=128;
-const rctx=runeC.getContext('2d');
-rctx.fillStyle='#000000';rctx.fillRect(0,0,128,128);
-rctx.strokeStyle='#ffffff';rctx.lineCap='round';rctx.lineJoin='round';
-rctx.lineWidth=3;rctx.strokeRect(6,6,116,116);
-rctx.lineWidth=1.5;rctx.strokeRect(10,10,108,108);
-rctx.lineWidth=7;
-[[64,14,64,114],[64,58,36,34],[64,58,92,34],[36,34,18,16],[92,34,110,16]].forEach(s=>{
-  rctx.beginPath();rctx.moveTo(s[0],s[1]);rctx.lineTo(s[2],s[3]);rctx.stroke();
-});
-rctx.lineWidth=3;
-[[18,18],[110,18],[18,110],[110,110]].forEach(p=>{
-  rctx.beginPath();rctx.moveTo(p[0]-7,p[1]);rctx.lineTo(p[0]+7,p[1]);
-  rctx.moveTo(p[0],p[1]-7);rctx.lineTo(p[0],p[1]+7);rctx.stroke();
+// Vegvisir 룬 256px
+const runeC=document.createElement('canvas');runeC.width=runeC.height=256;
+const rc=runeC.getContext('2d');
+rc.fillStyle='#000';rc.fillRect(0,0,256,256);
+rc.strokeStyle='#fff';rc.lineCap='round';rc.lineJoin='round';
+rc.lineWidth=4.5;rc.beginPath();rc.arc(128,128,120,0,Math.PI*2);rc.stroke();
+rc.lineWidth=2;rc.beginPath();rc.arc(128,128,112,0,Math.PI*2);rc.stroke();
+rc.lineWidth=3;rc.beginPath();rc.arc(128,128,68,0,Math.PI*2);rc.stroke();
+rc.lineWidth=2;rc.beginPath();rc.arc(128,128,28,0,Math.PI*2);rc.stroke();
+rc.lineWidth=5.5;
+for(let i=0;i<8;i++){
+  const a=i*Math.PI/4-Math.PI/2;
+  rc.beginPath();rc.moveTo(128+Math.cos(a)*30,128+Math.sin(a)*30);
+  rc.lineTo(128+Math.cos(a)*110,128+Math.sin(a)*110);rc.stroke();
+  const bx=128+Math.cos(a)*82,by=128+Math.sin(a)*82;
+  const px=Math.cos(a+Math.PI/2)*11,py=Math.sin(a+Math.PI/2)*11;
+  rc.lineWidth=3;
+  rc.beginPath();rc.moveTo(bx-px,by-py);rc.lineTo(bx+px,by+py);rc.stroke();
+  if(i%2===0){rc.beginPath();rc.moveTo(bx,by);rc.lineTo(bx+Math.cos(a)*14,by+Math.sin(a)*14);rc.stroke();}
+  rc.lineWidth=5.5;
+}
+rc.lineWidth=3.5;
+for(let i=0;i<6;i++){const a=i*Math.PI/3,a2=a+Math.PI/3;rc.beginPath();rc.moveTo(128+Math.cos(a)*24,128+Math.sin(a)*24);rc.lineTo(128+Math.cos(a2)*24,128+Math.sin(a2)*24);rc.stroke();}
+[[18,18],[238,18],[18,238],[238,238]].forEach(p=>{
+  rc.lineWidth=3.5;rc.beginPath();rc.moveTo(p[0],p[1]-12);rc.lineTo(p[0]-9,p[1]+7);rc.lineTo(p[0]+9,p[1]+7);rc.closePath();rc.stroke();
 });
 const runeTex=new THREE.CanvasTexture(runeC);
 const mRuneGlow=new THREE.MeshStandardMaterial({
-  color:0x000010,roughness:0.3,metalness:0.0,
-  emissive:new THREE.Color(0x1166ff),emissiveIntensity:9.0,
+  color:0x000020,roughness:0.3,metalness:0,
+  emissive:new THREE.Color(0x0d55ff),emissiveIntensity:14.0,
   emissiveMap:runeTex,map:runeTex,alphaMap:runeTex,
   transparent:true,depthWrite:false
 });
 
-// Chest geometry
+// ===== 지오메트리 =====
 const ROOT=new THREE.Group();SC.add(ROOT);
+// 정면을 카메라 방향으로 고정 (회전 없음)
+ROOT.rotation.y=0;
 
-// Body: 4 horizontal plank strips
-const plankH=0.22;
-for(let pi=0;pi<4;pi++){
-  const plk=new THREE.Mesh(new THREE.BoxGeometry(1.9,plankH-0.016,1.2),mPlanks[pi]);
-  plk.position.y=pi*plankH+plankH/2;
-  plk.castShadow=true;plk.receiveShadow=true;ROOT.add(plk);
+// 본체 판재
+const pH=0.25;
+for(let i=0;i<4;i++){
+  const m=new THREE.Mesh(new THREE.BoxGeometry(2.1,pH-0.018,1.35),mWood[i]);
+  m.position.y=i*pH+pH/2;m.castShadow=true;m.receiveShadow=true;ROOT.add(m);
 }
 
-// Inside cavity
-const ins=new THREE.Mesh(new THREE.BoxGeometry(1.6,0.72,0.98),mInside);
-ins.position.set(0,0.49,0);ROOT.add(ins);
-const glowMesh=new THREE.Mesh(new THREE.PlaneGeometry(1.5,0.9),mGlow);
-glowMesh.position.set(0,0.878,0);glowMesh.rotation.x=-Math.PI/2;ROOT.add(glowMesh);
+// 내부
+const ins=new THREE.Mesh(new THREE.BoxGeometry(1.7,0.8,1.1),mInside);
+ins.position.set(0,0.52,0);ROOT.add(ins);
+const glowMesh=new THREE.Mesh(new THREE.PlaneGeometry(1.6,1.0),mGlow);
+glowMesh.position.set(0,0.97,0);glowMesh.rotation.x=-Math.PI/2;ROOT.add(glowMesh);
 
-// LID group (pivot at hinge = back top of body)
-const LID=new THREE.Group();LID.position.set(0,0.88,-0.6);ROOT.add(LID);
-const lidBase=new THREE.Mesh(new THREE.BoxGeometry(1.92,0.34,1.22),mPlanks[0]);
-lidBase.position.set(0,0.17,0.61);lidBase.castShadow=true;LID.add(lidBase);
-// Arch
-const archG=new THREE.CylinderGeometry(0.14,0.14,1.94,22,1,true,0,Math.PI);
-const archMesh=new THREE.Mesh(archG,mPlanks[2]);
-archMesh.rotation.z=-Math.PI/2;archMesh.position.set(0,0.31,0.61);archMesh.castShadow=true;LID.add(archMesh);
-// Gold lid trim
-const lidMold=new THREE.Mesh(new THREE.BoxGeometry(1.94,0.07,1.24),mGold);lidMold.position.set(0,0.355,0.61);LID.add(lidMold);
-const lidFE=new THREE.Mesh(new THREE.BoxGeometry(1.94,0.38,0.055),mGold);lidFE.position.set(0,0.17,1.235);LID.add(lidFE);
-const archRidge=new THREE.Mesh(new THREE.CylinderGeometry(0.024,0.024,1.96,12),mGold);
-archRidge.rotation.z=Math.PI/2;archRidge.position.set(0,0.44,0.61);LID.add(archRidge);
-// Lid iron bands
-[0.055,0.27].forEach(by=>{
-  const bm=new THREE.Mesh(new THREE.BoxGeometry(1.94,0.062,1.24),mIron);bm.position.set(0,by,0.61);LID.add(bm);
-  const st=new THREE.Mesh(new THREE.BoxGeometry(1.96,0.02,1.26),mGold);st.position.set(0,by+0.038,0.61);LID.add(st);
+// LID — 뒤 힌지 기준 회전
+const LID=new THREE.Group();LID.position.set(0,1.0,-0.675);ROOT.add(LID);
+const lidBase=new THREE.Mesh(new THREE.BoxGeometry(2.12,0.38,1.37),mWood[0]);
+lidBase.position.set(0,0.19,0.685);lidBase.castShadow=true;LID.add(lidBase);
+const archG=new THREE.CylinderGeometry(0.18,0.18,2.10,24,1,true,0,Math.PI);
+const archM=new THREE.Mesh(archG,mWood[2]);
+archM.rotation.z=-Math.PI/2;archM.position.set(0,0.36,0.685);archM.castShadow=true;LID.add(archM);
+// 뚜껑 금 테두리
+const lidFE=new THREE.Mesh(new THREE.BoxGeometry(2.14,0.42,0.06),mGold);lidFE.position.set(0,0.19,1.38);LID.add(lidFE);
+const lidMold=new THREE.Mesh(new THREE.BoxGeometry(2.14,0.08,1.39),mGold);lidMold.position.set(0,0.39,0.685);LID.add(lidMold);
+const archTop=new THREE.Mesh(new THREE.CylinderGeometry(0.028,0.028,2.12,12),mGoldBright);
+archTop.rotation.z=Math.PI/2;archTop.position.set(0,0.53,0.685);LID.add(archTop);
+[0.06,0.28].forEach(by=>{
+  const b=new THREE.Mesh(new THREE.BoxGeometry(2.12,0.068,1.37),mIron);b.position.set(0,by,0.685);LID.add(b);
+  const s=new THREE.Mesh(new THREE.BoxGeometry(2.14,0.022,1.39),mGold);s.position.set(0,by+0.042,0.685);LID.add(s);
 });
 
-// Body iron bands + gold rivets
-[0.15,0.44,0.73].forEach(by=>{
-  const bnd=new THREE.Mesh(new THREE.BoxGeometry(1.94,0.062,1.24),mIron);bnd.position.set(0,by,0);ROOT.add(bnd);
-  const st=new THREE.Mesh(new THREE.BoxGeometry(1.96,0.02,1.26),mGold);st.position.set(0,by+0.038,0);ROOT.add(st);
-  [-0.88,0,0.88].forEach(bx=>[-0.56,0,0.56].forEach(bz=>{
-    const rv=new THREE.Mesh(new THREE.SphereGeometry(0.044,10,8),mGold);
-    rv.position.set(bx,by+0.04,bz);ROOT.add(rv);
+// 본체 철 밴드 + 리벳
+[0.16,0.50,0.84].forEach(by=>{
+  const b=new THREE.Mesh(new THREE.BoxGeometry(2.13,0.068,1.37),mIron);b.position.set(0,by,0);ROOT.add(b);
+  const s=new THREE.Mesh(new THREE.BoxGeometry(2.15,0.022,1.39),mGold);s.position.set(0,by+0.04,0);ROOT.add(s);
+  [-0.95,0,0.95].forEach(bx=>[-0.62,0,0.62].forEach(bz=>{
+    const rv=new THREE.Mesh(new THREE.SphereGeometry(0.048,10,8),mGold);
+    rv.position.set(bx,by+0.042,bz);ROOT.add(rv);
   }));
 });
 
-// Front decorative plate
-const fFrm=new THREE.Mesh(new THREE.BoxGeometry(1.48,0.66,0.045),mIron);fFrm.position.set(0,0.44,0.623);ROOT.add(fFrm);
-const rBg=new THREE.Mesh(new THREE.BoxGeometry(0.74,0.46,0.038),mRuneBg);rBg.position.set(0,0.44,0.634);ROOT.add(rBg);
-// Gold border
-const rbT=new THREE.Mesh(new THREE.BoxGeometry(0.80,0.028,0.022),mGold);rbT.position.set(0,0.672,0.647);ROOT.add(rbT);
-const rbB=new THREE.Mesh(new THREE.BoxGeometry(0.80,0.028,0.022),mGold);rbB.position.set(0,0.208,0.647);ROOT.add(rbB);
-const rbL=new THREE.Mesh(new THREE.BoxGeometry(0.028,0.50,0.022),mGold);rbL.position.set(-0.384,0.44,0.647);ROOT.add(rbL);
-const rbR=new THREE.Mesh(new THREE.BoxGeometry(0.028,0.50,0.022),mGold);rbR.position.set(0.384,0.44,0.647);ROOT.add(rbR);
-[[-0.37,0.66],[0.37,0.66],[-0.37,0.22],[0.37,0.22]].forEach(p=>{
-  const gj=new THREE.Mesh(new THREE.SphereGeometry(0.032,10,8),mLock);
-  gj.position.set(p[0],p[1],0.652);ROOT.add(gj);
+// 앞면 룬 패널
+const fFrm=new THREE.Mesh(new THREE.BoxGeometry(1.6,0.72,0.048),mIron);fFrm.position.set(0,0.5,0.68);ROOT.add(fFrm);
+const rBg=new THREE.Mesh(new THREE.BoxGeometry(1.12,0.60,0.038),mRuneBg);rBg.position.set(0,0.5,0.69);ROOT.add(rBg);
+// 금 테두리
+[
+  [0,0.808,0.705,1.20,0.032,0.025],
+  [0,0.192,0.705,1.20,0.032,0.025],
+  [-0.576,0.5,0.705,0.032,0.64,0.025],
+  [0.576,0.5,0.705,0.032,0.64,0.025],
+].forEach(d=>{
+  const bx=new THREE.Mesh(new THREE.BoxGeometry(d[3],d[4],d[5]),mGoldBright);
+  bx.position.set(d[0],d[1],d[2]);ROOT.add(bx);
 });
-// Rune glow plane
-const rGfx=new THREE.Mesh(new THREE.PlaneGeometry(0.62,0.38),mRuneGlow);
-rGfx.position.set(0,0.44,0.657);ROOT.add(rGfx);
+[[-0.563,0.800],[0.563,0.800],[-0.563,0.200],[0.563,0.200]].forEach(p=>{
+  const gj=new THREE.Mesh(new THREE.SphereGeometry(0.040,12,10),mGoldBright);
+  gj.position.set(p[0],p[1],0.714);ROOT.add(gj);
+});
+// 메인 룬 (크게)
+const rGfx=new THREE.Mesh(new THREE.PlaneGeometry(0.95,0.52),mRuneGlow);
+rGfx.position.set(0,0.5,0.715);ROOT.add(rGfx);
 
-// Lock
-const lBk=new THREE.Mesh(new THREE.BoxGeometry(0.32,0.42,0.07),mIron);lBk.position.set(0,0.82,0.624);ROOT.add(lBk);
-const lHs=new THREE.Mesh(new THREE.BoxGeometry(0.20,0.16,0.11),mGold);lHs.position.set(0,0.78,0.638);ROOT.add(lHs);
-const lArc=new THREE.Mesh(new THREE.TorusGeometry(0.078,0.026,14,28,Math.PI),mGold);
-lArc.position.set(0,0.888,0.638);lArc.rotation.z=Math.PI;ROOT.add(lArc);
-const lKey=new THREE.Mesh(new THREE.CylinderGeometry(0.032,0.032,0.12,14),mLock);
-lKey.position.set(0,0.768,0.652);lKey.rotation.x=Math.PI/2;ROOT.add(lKey);
+// 자물쇠
+const lBk=new THREE.Mesh(new THREE.BoxGeometry(0.36,0.48,0.075),mIron);lBk.position.set(0,0.94,0.672);ROOT.add(lBk);
+const lHs=new THREE.Mesh(new THREE.BoxGeometry(0.22,0.18,0.12),mGold);lHs.position.set(0,0.88,0.692);ROOT.add(lHs);
+const lArc=new THREE.Mesh(new THREE.TorusGeometry(0.088,0.030,14,30,Math.PI),mGoldBright);
+lArc.position.set(0,1.00,0.692);lArc.rotation.z=Math.PI;ROOT.add(lArc);
+const lKey=new THREE.Mesh(new THREE.CylinderGeometry(0.036,0.036,0.13,14),mGoldBright);
+lKey.position.set(0,0.86,0.712);lKey.rotation.x=Math.PI/2;ROOT.add(lKey);
 
-// Corner posts
-[[-0.93,0.6],[0.93,0.6],[-0.93,-0.6],[0.93,-0.6]].forEach(co=>{
-  const cl=new THREE.Mesh(new THREE.BoxGeometry(0.06,0.9,0.06),mIron);cl.position.set(co[0],0.45,co[1]);ROOT.add(cl);
-  [0.12,0.44,0.76].forEach(cy=>{
-    const cb=new THREE.Mesh(new THREE.BoxGeometry(0.1,0.14,0.1),mGold);cb.position.set(co[0],cy,co[1]);ROOT.add(cb);
+// 코너 기둥
+[[-1.03,0.665],[1.03,0.665],[-1.03,-0.665],[1.03,-0.665]].forEach(co=>{
+  const cl=new THREE.Mesh(new THREE.BoxGeometry(0.07,1.03,0.07),mIron);cl.position.set(co[0],0.515,co[1]);ROOT.add(cl);
+  [0.14,0.50,0.86].forEach(cy=>{
+    const cb=new THREE.Mesh(new THREE.BoxGeometry(0.12,0.16,0.12),mGold);cb.position.set(co[0],cy,co[1]);ROOT.add(cb);
   });
 });
+[-1.12,1.12].forEach((hx,i)=>{
+  const tg=new THREE.TorusGeometry(0.12,0.025,8,22,Math.PI);
+  const tm=new THREE.Mesh(tg,mIron);
+  tm.position.set(hx,0.58,0);tm.rotation.y=(i===0?1:-1)*Math.PI/2;ROOT.add(tm);
+});
 
-// Shadow floor
-const flr=new THREE.Mesh(new THREE.PlaneGeometry(6,6),new THREE.MeshStandardMaterial({color:0,transparent:true,opacity:0,roughness:1}));
+// 그림자 바닥
+const flr=new THREE.Mesh(new THREE.PlaneGeometry(8,8),new THREE.MeshStandardMaterial({color:0,transparent:true,opacity:0,roughness:1}));
 flr.rotation.x=-Math.PI/2;flr.position.y=-0.005;flr.receiveShadow=true;SC.add(flr);
 
-// State machine
-let _st='hidden',_timer=0,_lidAng=0,_rotY=-0.32,_wx=0,_wy=0;
+// ===== 룬 파티클 =====
+const parts=[];
+for(let i=0;i<24;i++){
+  const pm=new THREE.MeshBasicMaterial({
+    color:new THREE.Color().setHSL(0.60+Math.random()*0.10,1.0,0.65+Math.random()*0.2),
+    transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide
+  });
+  const p=new THREE.Mesh(new THREE.PlaneGeometry(1,1),pm);
+  const sz=0.05+Math.random()*0.08;p.scale.setScalar(sz);
+  p.userData={
+    angle:Math.random()*Math.PI*2,r:0.65+Math.random()*1.0,
+    yOff:Math.random()*1.2,ySpd:0.12+Math.random()*0.22,
+    aSpd:(0.22+Math.random()*0.30)*(Math.random()<0.5?1:-1),
+    phase:Math.random()*Math.PI*2
+  };
+  p.visible=false;SC.add(p);parts.push(p);
+}
+
+// ===== 상태 기계 =====
+let _st='hidden',_timer=0,_lidAng=0,_wx=0,_wy=0;
 function _reset(){
-  LID.rotation.x=0;ROOT.rotation.y=_rotY;ROOT.position.set(0,0,0);ROOT.rotation.z=0;
-  mRuneGlow.emissiveIntensity=9.0;mLock.emissiveIntensity=1.6;mGold.emissiveIntensity=0.8;
+  LID.rotation.x=0;ROOT.position.set(0,0,0);ROOT.rotation.z=0;ROOT.rotation.y=0;
+  mRuneGlow.emissiveIntensity=14.0;mGoldBright.emissiveIntensity=2.2;mGold.emissiveIntensity=1.2;
   mGlow.opacity=0;iL1.intensity=0;iL2.intensity=0;iL3.intensity=0;
+  parts.forEach(p=>{p.visible=false;p.material.opacity=0;});
 }
 window._chest3d={
-  show(wx,wy){_wx=wx;_wy=wy;_st='idle';_timer=0;_lidAng=0;_rotY=-0.32;_reset();CVS.style.display='block';},
+  show(wx,wy){_wx=wx;_wy=wy;_st='idle';_timer=0;_lidAng=0;_reset();CVS.style.display='block';},
   open(){if(_st==='idle'||_st==='rattling'){_st='rattling';_timer=0;}},
   hide(){_st='hidden';CVS.style.display='none';},
   get active(){return _st!=='hidden';}
@@ -48145,10 +48217,10 @@ function updatePos(){
   const sc=(typeof _dpr!=='undefined'?_dpr:devicePixelRatio)*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
   const cssX=(c.width/2+(_wx-G.cam.x))/sc;
   const cssY=(c.height/2+(_wy-G.cam.y))/sc;
-  if(cssX<-450||cssX>innerWidth+450||cssY<-500||cssY>innerHeight+450){CVS.style.opacity='0';return;}
+  if(cssX<-500||cssX>innerWidth+500||cssY<-550||cssY>innerHeight+500){CVS.style.opacity='0';return;}
   CVS.style.opacity='1';
   CVS.style.left=(cssX-SZ/2)+'px';
-  CVS.style.top=(cssY-SZ*.84)+'px';
+  CVS.style.top=(cssY-SZ*.82)+'px';
 }
 
 const CLK=new THREE.Clock();
@@ -48157,48 +48229,74 @@ function tick(){
   if(_st==='hidden')return;
   const dt=Math.min(CLK.getDelta(),0.05);_timer+=dt;
   updatePos();
+
+  // 파티클
+  parts.forEach((p,i)=>{
+    const u=p.userData;
+    if(_st==='idle'||_st==='rattling'){
+      p.visible=true;
+      u.angle+=dt*u.aSpd;
+      const y0=0.05+((u.yOff+_timer*u.ySpd)%1.3);
+      p.position.set(Math.cos(u.angle)*u.r,y0,Math.sin(u.angle)*u.r*0.4-0.05);
+      p.lookAt(CAM.position);
+      p.material.opacity=(_st==='rattling'?0.85:0.45)+Math.sin(_timer*1.8+u.phase)*0.18;
+    }else if(_st==='opening'&&_timer<0.6){
+      p.visible=true;
+      p.material.opacity=Math.max(0,(0.6-_timer)*1.6);
+    }else{p.visible=false;}
+  });
+
   if(_st==='idle'){
-    ROOT.position.y=Math.sin(_timer*1.55)*0.025;
-    _rotY+=dt*0.18;ROOT.rotation.y=_rotY;
-    mRuneGlow.emissiveIntensity=9.0+Math.sin(_timer*2.9)*2.8;
-    mLock.emissiveIntensity=1.4+Math.sin(_timer*2.3+1)*0.7;
-    mGold.emissiveIntensity=0.8+Math.sin(_timer*1.7)*0.2;
+    // 회전 없음 — 정면 고정, 살짝 bob
+    ROOT.position.y=Math.sin(_timer*1.4)*0.028;
+    ROOT.rotation.y=Math.sin(_timer*0.5)*0.04; // 아주 미세한 좌우 흔들림
+    mRuneGlow.emissiveIntensity=14.0+Math.sin(_timer*2.6)*4.0;
+    mGoldBright.emissiveIntensity=2.2+Math.sin(_timer*1.9)*0.9;
+    mGold.emissiveIntensity=1.2+Math.sin(_timer*1.5)*0.35;
+    runeL.intensity=0.5+Math.sin(_timer*2.6)*0.28;
   }else if(_st==='rattling'){
-    const rp=Math.min(1,_timer*2.3);
-    ROOT.position.x=Math.sin(_timer*44)*0.042*rp;
-    ROOT.position.y=Math.abs(Math.sin(_timer*40))*0.026*rp;
-    ROOT.rotation.z=Math.sin(_timer*42)*0.025*rp;
-    const lk=Math.min(1,_timer*2.0);
-    iL1.intensity=lk*1.2;iL3.intensity=lk*0.6;
-    mLock.emissiveIntensity=1.6+lk*4.5;mGold.emissiveIntensity=0.8+lk*2.2;
-    mGlow.opacity=lk*0.22;mRuneGlow.emissiveIntensity=9.0+lk*7.0;
-    if(_timer>.55){_st='opening';_timer=0;if(typeof shake==='function')shake(14);}
+    const rp=Math.min(1,_timer*2.2);
+    ROOT.position.x=Math.sin(_timer*46)*0.045*rp;
+    ROOT.position.y=Math.abs(Math.sin(_timer*42))*0.028*rp;
+    ROOT.rotation.z=Math.sin(_timer*44)*0.026*rp;
+    ROOT.rotation.y=0;
+    const lk=Math.min(1,_timer*1.8);
+    iL1.intensity=lk*2.0;iL3.intensity=lk*1.0;
+    mGoldBright.emissiveIntensity=2.2+lk*5.5;mGold.emissiveIntensity=1.2+lk*3.5;
+    mGlow.opacity=lk*0.32;mRuneGlow.emissiveIntensity=14.0+lk*12.0;
+    runeL.intensity=0.5+lk*2.0;
+    if(_timer>.6){_st='opening';_timer=0;if(typeof shake==='function')shake(16);}
   }else if(_st==='opening'){
     const t=Math.min(1,_timer/1.2),ease=1-(1-t)*(1-t)*(1-t);
-    _lidAng=-Math.PI*.82*ease;LID.rotation.x=_lidAng;
-    ROOT.position.x=0;ROOT.rotation.z=0;
-    _rotY+=dt*.12;ROOT.rotation.y=_rotY;
-    const bst=Math.min(1,_timer/.5),fad=_timer>.65?1-Math.min(1,(_timer-.65)/.85):1;
-    iL1.intensity=bst*fad*12;iL2.intensity=bst*fad*6;iL3.intensity=bst*fad*5;
-    mGlow.opacity=bst*fad*1.0;
-    mRuneGlow.emissiveIntensity=9.0+bst*9.0*fad;
-    mLock.emissiveIntensity=5.0*bst*fad+0.8;mGold.emissiveIntensity=0.8+bst*4.5*fad;
-    if(_timer>=1.45){_st='open';_timer=0;LID.rotation.x=-Math.PI*.82;}
+    _lidAng=-Math.PI*.85*ease;LID.rotation.x=_lidAng;
+    ROOT.position.x=0;ROOT.rotation.z=0;ROOT.rotation.y=0;
+    const bst=Math.min(1,_timer/.4),fad=_timer>.55?1-Math.min(1,(_timer-.55)/.95):1;
+    iL1.intensity=bst*fad*18;iL2.intensity=bst*fad*9;iL3.intensity=bst*fad*7;
+    mGlow.opacity=bst*fad*1.3;
+    mRuneGlow.emissiveIntensity=14.0+bst*14.0*fad;
+    mGoldBright.emissiveIntensity=2.2+bst*8.0*fad;
+    mGold.emissiveIntensity=1.2+bst*7.0*fad;
+    runeL.intensity=0.5+bst*3.0*fad;
+    if(_timer>=1.55){_st='open';_timer=0;LID.rotation.x=-Math.PI*.85;}
   }else if(_st==='open'){
-    _rotY+=dt*.17;ROOT.rotation.y=_rotY;
-    iL1.intensity=Math.max(0,4.5-_timer*1.6);
-    iL2.intensity=Math.max(0,2.2-_timer*1.1);
-    iL3.intensity=Math.max(0,2.5-_timer*1.4);
-    mGlow.opacity=Math.max(0,.5-_timer*.22);
-    mRuneGlow.emissiveIntensity=9.0+Math.sin(_timer*2.4)*2.2;
-    mLock.emissiveIntensity=1.2;mGold.emissiveIntensity=.8+Math.sin(_timer*1.5)*.2;
-    if(_timer>5.0){_st='hidden';CVS.style.display='none';}
+    ROOT.position.y=Math.sin(_timer*1.0)*0.015; // 열린 후 미세 bob
+    ROOT.rotation.y=0;
+    iL1.intensity=Math.max(0,6.0-_timer*2.0);
+    iL2.intensity=Math.max(0,3.0-_timer*1.3);
+    iL3.intensity=Math.max(0,3.5-_timer*1.6);
+    mGlow.opacity=Math.max(0,.65-_timer*.28);
+    mRuneGlow.emissiveIntensity=14.0+Math.sin(_timer*2.2)*3.0;
+    mGoldBright.emissiveIntensity=2.2+Math.sin(_timer*1.6)*0.7;
+    mGold.emissiveIntensity=1.2+Math.sin(_timer*1.3)*0.3;
+    runeL.intensity=Math.max(0,0.5-_timer*0.12);
+    if(_timer>5.5){_st='hidden';CVS.style.display='none';}
   }
   R.render(SC,CAM);
 }
 tick();
-console.log('[CHEST3D] GOW v3 geometry');
+console.log('[CHEST3D] GOW v4 dark-wood+particles');
 })();
+
 
 </script>
 </body>
