@@ -22864,3 +22864,22 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - game.html.bak_20260507_b3footanchor
 - game.html.bak_20260507_b3unclip
 
+
+## 2026-05-08 10:30 (auto)
+- _autosave/game_20260508_093755.html
+- _autosave/game_20260508_093801.html
+- _autosave/game_20260508_100447.html
+- _autosave/game_20260508_100820.html
+- _autosave/game_20260508_100831.html
+- _autosave/game_20260508_101458.html
+- _autosave/game_20260508_101518.html
+- _autosave/game_20260508_101524.html
+- _autosave/game_20260508_101534.html
+- _autosave/game_20260508_101610.html
+- _autosave/game_20260508_102113.html
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤??md
+- docs/2_5 ë¶€???ë„ˆì§€?´ë“œ?œìŠ¤??2_5 ë¶€???ë„ˆì§€?´ë“œ?œìŠ¤??md
+- docs/8.1ë³´ìŠ¤?”ì?¸ë°”?´ë¸”/BOSS_BATTLE_SETTINGS.md
+- game.html
+- game.html.bak_20260508_phasecine
+

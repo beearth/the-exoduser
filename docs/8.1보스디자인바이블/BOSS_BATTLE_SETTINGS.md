@@ -114,7 +114,54 @@ if(e.stunned<=0 && e._maxStunned){
 
 ---
 
-## 5. 보스 무브셋 (`_BOSS_MOVESET`)
+## 5. 페이즈 전환 시스템 (`_bossPhaseCheck`)
+
+### HP 임계값 / BOSS_PHASES 테이블
+
+| 페이즈 | HP 범위 | spdM | teleM | cdM | label |
+|---|---|---|---|---|---|
+| 0 | 80~100% | 1.15 | 0.75 | 0.50 | PHASE 1 |
+| 1 | 60~80% | 1.25 | 0.65 | 0.40 | ⚠ PHASE 2 |
+| 2 | 40~60% | 1.40 | 0.50 | 0.35 | ⚠ PHASE 3 |
+| 3 | 20~40% | 1.55 | 0.40 | 0.25 | 🔥 PHASE 4 |
+| 4 | 0~20%  | 1.75 | 0.25 | 0.15 | 💀 광폭화! |
+
+### 전환 로직 (`_bossPhaseCheck` 호출 위치: 매 프레임 보스 업데이트)
+
+전환 조건: `hpR <= 임계값 && _bp > e._bossPhase`
+
+### 전환 시 처리 순서
+
+| 순서 | 내용 |
+|---|---|
+| 1 | HP 회복 — 페이즈 상한까지 (`e.mhp × ph.hp[1]`) |
+| 2 | 무적 3초 (`reviveIframes = 180`) |
+| 3 | 스탯 강화 — atk×1.3, speed×1.15, maxPoise×1.2 |
+| 4 | 상태 초기화 — stunned=0, s='recover', 콤보/딜레이 리셋 |
+| 5 | 텔레포트 — 플레이어 등 뒤 (거리 `80+_bp*25`) + 파티클 VFX |
+| 6 | 충격파 — 반경 `100+_bp*30`, 데미지 `atk*(0.4+_bp*0.1)` |
+| 7 | 분노 탄막 방사 — `8+_bp*4`발 (빨콩+검콩 믹스) |
+| 8 | 연출 — 텍스트, `_reviveVFX()`, HitStop, SlowMo, **셰이크, 포효** |
+
+### 연출 수치 (8번 — 2026-05-08 업데이트)
+
+```javascript
+G.hitStop = ~~((_HS.bossPhase + _bp*3) * OPT.hitStop/100)
+G.slowMo  = Math.max(G.slowMo, 60 + _bp*15)  // 페이즈별 75~120f
+shake(14 + _bp*4)                              // 페이즈별 18~30
+// 포효: 즉시 SFX.groggy() + 120ms 딜레이 후 _bossSfx().howl
+```
+
+| 페이즈 | slowMo(f) | shake |
+|---|---|---|
+| 1→2 | 75 | 18 |
+| 2→3 | 90 | 22 |
+| 3→4 | 105 | 26 |
+| 4→광폭 | 120 | 30 |
+
+---
+
+## 6. 보스 무브셋 (`_BOSS_MOVESET`)
 
 스테이지(si) → 허용 기술 Set. `null` = 전체 49종 사용.
 
@@ -265,7 +312,58 @@ http://localhost:3333/game.html?bosstest=0
 
 ---
 
-## 8. 보스 플래그 일람
+## 8. 카메라 시스템 (보스 아레나)
+
+### 보스 아레나 카메라 동작
+
+| 동작 | 평상시 | 보스 아레나 |
+|---|---|---|
+| 추적 대상 | 플레이어 (`P.x/y + look-ahead`) | 플레이어+보스 중간점 (`.5+.5` 믹스) |
+| 룩어헤드 반영 | 100% (`G._camLkX/Y`) | 30%만 반영 |
+| 줌 (`G._camZoom`) | `1.0` | `0.80` (줌아웃) |
+
+### 카메라 코드 (`game.html` — 업데이트 루프)
+
+```javascript
+// look-ahead
+const _lkX=(P.vx||0)*25, _lkY=(P.vy||0)*25;
+G._camLkX += (_lkX - G._camLkX) * _lkSmooth;
+G._camLkY += (_lkY - G._camLkY) * _lkSmooth;
+
+// 추적 타겟
+let targetX = P.x + G._camLkX, targetY = P.y + G._camLkY;
+if(G._bossRef && G._bossRef.alive){
+  targetX = (P.x + G._bossRef.x) * .5 + G._camLkX * .3;
+  targetY = (P.y + G._bossRef.y) * .5 + G._camLkY * .3;
+}
+G.cam.x += (targetX - G.cam.x) * camSpd;
+G.cam.y += (targetY - G.cam.y) * camSpd;
+
+// 줌아웃
+const _czTgt = (G._bossRef && G._bossRef.alive) ? 0.80 : 1.0;
+if(!G._camZoom) G._camZoom = 1.0;
+G._camZoom += (_czTgt - G._camZoom) * (1 - Math.pow(0.94, _dtSp));
+```
+
+### 렌더 적용 (`draw()`)
+
+```javascript
+const _cz = (!_EDITOR_MODE) ? (G._camZoom || 1) : 1; // 보스 줌아웃
+const _tzoom = _ez * _cz;
+if(_tzoom !== 1){
+  X.translate(C.width/2, C.height/2);
+  X.scale(_tzoom, _tzoom);
+  X.translate(-C.width/2, -C.height/2);
+}
+X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.y + sy));
+```
+
+- 줌은 화면 중앙 기준으로 적용 → 카메라 타겟(플레이어+보스 중간점)이 항상 화면 중심에 유지
+- 에디터 모드(`_EDITOR_MODE`)에서는 `_cz=1` 고정, 에디터 줌(`_ez`)만 사용
+
+---
+
+## 9. 보스 플래그 일람
 
 | 플래그 | 타입 | 설명 |
 |---|---|---|

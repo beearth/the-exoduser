@@ -25442,7 +25442,11 @@ function update(){
   let targetX=P.x+G._camLkX,targetY=P.y+G._camLkY;
   if(G._bossRef&&G._bossRef.alive){targetX=(P.x+G._bossRef.x)*.5+G._camLkX*.3;targetY=(P.y+G._bossRef.y)*.5+G._camLkY*.3}
   G.cam.x+=(targetX-G.cam.x)*camSpd;G.cam.y+=(targetY-G.cam.y)*camSpd;
-  G.cam.x=~~G.cam.x;G.cam.y=~~G.cam.y;}
+  G.cam.x=~~G.cam.x;G.cam.y=~~G.cam.y;
+  // 보스 아레나 줌아웃 (보스 생존 시 0.80x, 일반 1.0x)
+  const _czTgt=(G._bossRef&&G._bossRef.alive)?0.80:1.0;
+  if(!G._camZoom)G._camZoom=1.0;
+  G._camZoom+=(_czTgt-G._camZoom)*(1-Math.pow(0.94,_dtSp));}
   // 카메라 클램핑
   const _mwPx=G.mw*T,_mhPx=G.mh*T;
   if(_mwPx<=C.width){G.cam.x=_mwPx/2}else{G.cam.x=Math.max(C.width/2,Math.min(_mwPx-C.width/2,G.cam.x))}
@@ -27803,7 +27807,15 @@ function _bossPhaseCheck(e,sp){
   addTxt(e.x,e.y-50,_T(ph.label),_phCol,70);
   _reviveVFX(e.x,e.y,'#ffdd44','⚡부활! HP +30%',{partN:16,partSpd:5,shake:10,vfxSize:140,flash:3});
   G.hitStop=~~((_HS.bossPhase+_bp*3)*OPT.hitStop/100);
-  G.slowMo=40+_bp*10;
+  G.slowMo=Math.max(G.slowMo,60+_bp*15);
+  shake(14+_bp*4);
+  // 포효 SFX
+  SFX.groggy();
+  const _pbsf=_bossSfx(G.stage);
+  setTimeout(()=>{
+    if(_pbsf)playSample(_pbsf.howl,.8,_r(_pbsf.howlP,.12));
+    else playSample(Math.random()<.5?'boss_howl':'boss_howl1',.8,_r(.85,.12));
+  },120);
 }
 // ═══ 보스 idle 이동: 패턴 사이 능동적 이동 ═══
 function _bossIdleMove(e,d,sp){
@@ -38442,16 +38454,18 @@ function draw(){
   // ── 프레임당 1회 사전 계산: 반복 Math.sin/cos 캐싱 ──
   const _sn100=Math.sin(_now*.01),_sn150=Math.sin(_now/150),_sn200=Math.sin(_now/200),_sn250=Math.sin(_now/250),_sn300=Math.sin(_now/300);
   X.clearRect(0,0,C.width,C.height);
-  {const _bgFills=['#080e06','#0e1008','#0c1620','#180a0c','#18140c','#0c0a18','#060410'];
-  X.fillStyle=_bgFills[SI_TO_HELL[G.stage||0]]||'#000';X.fillRect(0,0,C.width,C.height);}
+  X.fillStyle='#000';X.fillRect(0,0,C.width,C.height); // 항상 순수 검정으로 먼저 채움
   const stg=STG[G.stage];
   let sx=0,sy=0;if(G.shake>0&&!_EDITOR_MODE){sx=(Math.random()-.5)*G.shake*2;sy=(Math.random()-.5)*G.shake*2}
   const _ez=(_EDITOR_MODE&&G._edZoom)?G._edZoom:1;
+  const _cz=(!_EDITOR_MODE)?(G._camZoom||1):1; // 보스 줌아웃
+  const _tzoom=_ez*_cz;
+  const _vpMul=1/Math.max(0.3,_tzoom); // 줌아웃 시 뷰포트 범위 확장 배수
   X.save();
-  if(_ez!==1){X.translate(C.width/2,C.height/2);X.scale(_ez,_ez);X.translate(-C.width/2,-C.height/2)}
+  if(_tzoom!==1){X.translate(C.width/2,C.height/2);X.scale(_tzoom,_tzoom);X.translate(-C.width/2,-C.height/2)}
   X.translate(Math.round(C.width/2-G.cam.x+sx),Math.round(C.height/2-G.cam.y+sy));
-  const s1=Math.max(0,~~((G.cam.x-C.width/2)/T)-1),e1=Math.min(G.mw,Math.ceil((G.cam.x+C.width/2)/T)+1);
-  const s2=Math.max(0,~~((G.cam.y-C.height/2)/T)-1),e2=Math.min(G.mh,Math.ceil((G.cam.y+C.height/2)/T)+1);
+  const s1=Math.max(0,~~((G.cam.x-C.width/2*_vpMul)/T)-1),e1=Math.min(G.mw,Math.ceil((G.cam.x+C.width/2*_vpMul)/T)+1);
+  const s2=Math.max(0,~~((G.cam.y-C.height/2*_vpMul)/T)-1),e2=Math.min(G.mh,Math.ceil((G.cam.y+C.height/2*_vpMul)/T)+1);
   // ── 패럴랙스 배경 레이어 ──
   const _tPara=performance.now();
   var _snapPara=_fc2d?_PERF_PROF._snap():null;
@@ -47643,7 +47657,7 @@ _b3s.add(new THREE.DirectionalLight(0xffcc88,1.0).translateX(100).translateY(200
 _b3s.add(new THREE.AmbientLight(0x887799,0.6));
 const _b3rim=new THREE.DirectionalLight(0x4444aa,0.3);_b3rim.position.set(-100,50,-200);_b3s.add(_b3rim);
 
-let _b3pivot=null,_b3model=null,_b3mixer=null,_b3ready=false,_b3size=new THREE.Vector3();
+let _b3pivot=null,_b3anchor=null,_b3model=null,_b3mixer=null,_b3ready=false,_b3size=new THREE.Vector3();
 let _b3meshes=[],_b3origMats=[];
 const _b3flash=new THREE.MeshBasicMaterial({color:0xffffff});
 let _b3flashT=0,_b3prevHP=-1,_b3hitT=0;
@@ -47704,10 +47718,14 @@ _b3loader.load(_B3_ANIMS.idle.src,(gltf)=>{
   _b3model.scale.setScalar(2.2/(sz.y||1));
   const box2=new THREE.Box3().setFromObject(_b3model);
   const center=box2.getCenter(new THREE.Vector3());
+  const _modelSz=box2.getSize(new THREE.Vector3());
   _b3model.position.sub(center);
+  _b3model.position.y+=_modelSz.y*0.5;
   _b3model.traverse(c=>{if(c.isMesh){c.castShadow=true;_b3meshes.push(c);_b3origMats.push(c.material);if(c.material)c.material.side=THREE.DoubleSide;}});
-  _b3pivot=new THREE.Group();_b3pivot.add(_b3model);_b3pivot.visible=false;
-  _b3s.add(_b3pivot);
+  _b3pivot=new THREE.Group();_b3pivot.add(_b3model);
+  _b3anchor=new THREE.Group();_b3anchor.add(_b3pivot);
+  _b3anchor.visible=false;
+  _b3s.add(_b3anchor);
   _b3size=new THREE.Box3().setFromObject(_b3pivot).getSize(new THREE.Vector3());
   _b3mixer=new THREE.AnimationMixer(_b3model);
   // idle 클립 등록+재생
@@ -47748,10 +47766,10 @@ function _b3animate(){
   if(_b3mixer)_b3mixer.update(dt);
 
   // 게임 상태 읽기 (같은 윈도우)
-  if(typeof G==='undefined'||typeof P==='undefined'||!P||!G.on){_b3pivot.visible=false;_b3r.render(_b3s,_b3cam);return}
+  if(typeof G==='undefined'||typeof P==='undefined'||!P||!G.on){_b3anchor.visible=false;_b3r.render(_b3s,_b3cam);return}
   const bE=findBoss();
   if(!bE||!bE.alive||!G._bossArena){
-    _b3pivot.visible=false;
+    _b3anchor.visible=false;
     window._b3Active=false;
     _b3r.render(_b3s,_b3cam);return;
   }
@@ -47769,9 +47787,9 @@ function _b3animate(){
   const cssX=physX/scale,cssY=physY/scale;
   const W=innerWidth,H=innerHeight;
 
-  if(cssX<-200||cssX>W+200||cssY<-200||cssY>H+200){_b3pivot.visible=false;_b3r.render(_b3s,_b3cam);return}
+  if(cssX<-200||cssX>W+200||cssY<-200||cssY>H+200){_b3anchor.visible=false;_b3r.render(_b3s,_b3cam);return}
 
-  _b3pivot.position.x=cssX-W/2;
+  _b3anchor.position.x=cssX-W/2;
   _b3pivot.position.z=0;
 
   // 스케일
@@ -47785,12 +47803,14 @@ function _b3animate(){
   const _b3yOff=(window._btOffsetY||0);
   const _footY=_b3floorY+_b3yOff;
   window._b3lastFloorY=_footY;
-  _b3pivot.position.y=_footY+tgtH*0.5;
-  _b3clipFloor.constant=(cssY+bossRcss-H/2)-_b3yOff;
+  _b3anchor.position.y=_footY;
+  window._b3footScreenX=cssX;
+  window._b3footScreenY=cssY+bossRcss;
+  // _b3clipFloor.constant deprecated (clipping disabled)
 
   // facing (X rotation: window._btRotX 으로 실시간 조절)
   _b3pivot.rotation.set(window._btRotX||0,-bE.facing+Math.PI/2,0);
-  _b3pivot.visible=true;
+  _b3anchor.visible=true;
 
   // 보스 상태 → 3D 애니 전환
   const _b3ns=_b3mapState(bE.s,bE.stunned>0);
