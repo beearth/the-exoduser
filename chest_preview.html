@@ -3,7 +3,7 @@
 const CVS=document.getElementById('chest3dCvs');
 if(!CVS||typeof THREE==='undefined')return;
 
-const SZ=500;
+const SZ=250;
 const R=new THREE.WebGLRenderer({canvas:CVS,alpha:true,antialias:true,powerPreference:'high-performance'});
 R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio,2));
 CVS.style.width=CVS.style.height=SZ+'px';
@@ -278,6 +278,5 @@ function tick(){
 tick();
 console.log('[CHEST3D] GOW v4 dark-wood+particles');
 })();
-
 window.addEventListener("load",function(){setTimeout(function(){if(window._chest3d)window._chest3d.show(0,0);},100);});
 </script></body></html>

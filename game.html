@@ -25079,7 +25079,7 @@ function update(){
         const ta=Math.atan2(bestE.y-p.y,bestE.x-p.x);
         const ca=Math.atan2(p.vy,p.vx);
         let da=ta-ca;while(da>Math.PI)da-=Math.PI*2;while(da<-Math.PI)da+=Math.PI*2;
-        const _turnSpd=p.plagueHoming?1.5:p.mhBlade?1.5:p.blueBean?0.08:p.arcMissile?Math.min(0.9,0.15+p.dist/60*.12):p.omniHoming?0.55:p.chainMax?0.7:p.magic?0.35:0.25;
+        const _turnSpd=p.venomBlade?3.0:p.plagueHoming?1.5:p.mhBlade?1.5:p.blueBean?0.08:p.arcMissile?Math.min(0.9,0.15+p.dist/60*.12):p.omniHoming?0.55:p.chainMax?0.7:p.magic?0.35:0.25;
         const turn=Math.min(Math.abs(da),_turnSpd*_dtSp)*Math.sign(da);
         p.vx=Math.cos(ca+turn)*spd;p.vy=Math.sin(ca+turn)*spd;
       }
@@ -33848,10 +33848,14 @@ function activateVenomBlade(){
   const _vbRange=2000+(_vbLv-1)*100;
   const _vbPierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30);
   const _vbPierce=800+(_vbLv-1)*20+_vbPierceBonus; // 악의사냥과 동일 공식
-  const _vbShotCnt=Math.min(6,1+_vbLv); // 악의사냥 동일: 1렙=2발, 2렙=3발, …5렙+=6발
+  const _vbShotCnt=Math.min(6,1+_vbLv); // 1렙=2발, 2렙=3발, …5렙+=6발
   const _vbHalf=(_vbShotCnt-1)/2;
+  // 초기 방향: 마우스 위치 직접 계산 (P.atkArc 무시)
+  const _vbSx=P.x-G.cam.x+C.width/2,_vbSy=P.y-G.cam.y+C.height/2;
+  const _vbBaseAng=Math.atan2(mouse.y-_vbSy,mouse.x-_vbSx);
+  P.atkArc=_vbBaseAng;P.facing=_vbBaseAng;
   for(let _vi=0;_vi<_vbShotCnt;_vi++){
-    const _vbAng0=P.atkArc+(_vi-_vbHalf)*0.08;
+    const _vbAng0=_vbBaseAng+(_vi-_vbHalf)*0.12;
     const _vbDx=Math.cos(_vbAng0),_vbDy=Math.sin(_vbAng0);
     const _pp=_getPProj();
     _pp.x=P.x+_vbDx*16;_pp.y=P.y+_vbDy*16;
@@ -48036,7 +48040,7 @@ console.log('[BOSS3D] Overlay initialized');
 const CVS=document.getElementById('chest3dCvs');
 if(!CVS||typeof THREE==='undefined')return;
 
-const SZ=500;
+const SZ=250;
 const R=new THREE.WebGLRenderer({canvas:CVS,alpha:true,antialias:true,powerPreference:'high-performance'});
 R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio,2));
 CVS.style.width=CVS.style.height=SZ+'px';
