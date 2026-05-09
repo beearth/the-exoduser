@@ -23203,3 +23203,38 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _autosave/game_20260509_092602.html
 - game.html
 
+
+## 2026-05-09 10:30 (auto)
+- GLTFLoader.js
+- _autosave/game_20260509_095005.html
+- _autosave/game_20260509_095006.html
+- _autosave/game_20260509_095825.html
+- _autosave/game_20260509_095932.html
+- _autosave/game_20260509_100023.html
+- _autosave/game_20260509_100043.html
+- _autosave/game_20260509_100200.html
+- _autosave/game_20260509_100210.html
+- _autosave/game_20260509_100250.html
+- _autosave/game_20260509_101111.html
+- _autosave/game_20260509_102008.html
+- _autosave/game_20260509_102019.html
+- _chest_meshy_1.png
+- _chest_meshy_2.png
+- _chest_meshy_a.png
+- _chest_meshy_b.png
+- _chest_refined_1.png
+- _chest_refined_2.png
+- _chest_refined_3.png
+- assets/3d/dark_gothic_medieval_treasure_chest__iro_019e0a30.glb
+- assets/3d/dark_gothic_medieval_treasure_chest__iro_019e0a38.glb
+- bgm/공통/Coronam Ferro V2.mp3
+- bgm/공통/Coronam Ferro.mp3
+- bgm/공통/Just One More Hill V4.mp3
+- bgm/공통/Just One More Hill V5.mp3
+- bgm/공통/?�메?�아 강림V5.mp3
+- bgm/공통/?�메?�아??강림 V3.mp3
+- bgm/공통/?�메?�아??강림.mp3
+- chest_preview.html
+- game.html
+- meshy_generate.cjs
+

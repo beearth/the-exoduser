@@ -2372,6 +2372,13 @@ canvas{display:block;position:fixed;inset:0}
                 <option value="t:bgm/공통/forge.mp3">forge</option>
                 <option value="t:bgm/공통/복수의 대장간.mp3">복수의 대장간</option>
                 <option value="t:bgm/공통/Anvil Ashes.mp3">Anvil Ashes</option>
+                <option value="t:bgm/공통/Just One More Hill V4.mp3">Just One More Hill V4</option>
+                <option value="t:bgm/공통/Just One More Hill V5.mp3">Just One More Hill V5</option>
+                <option value="t:bgm/공통/네메시아 강림V5.mp3">네메시아 강림 V5</option>
+                <option value="t:bgm/공통/네메시아의 강림 V3.mp3">네메시아의 강림 V3</option>
+                <option value="t:bgm/공통/네메시아의 강림.mp3">네메시아의 강림</option>
+                <option value="t:bgm/공통/Coronam Ferro.mp3">Coronam Ferro</option>
+                <option value="t:bgm/공통/Coronam Ferro V2.mp3">Coronam Ferro V2</option>
                 <option value="death">사망 랜덤</option>
                 <option value="t:bgm/공통/death.mp3">death</option>
                 <option value="t:bgm/공통/지옥 추락 사망 징글.mp3">지옥 추락 사망 징글</option>
@@ -3349,6 +3356,7 @@ const BGM={
     cutscene_goddess:['bgm/cutscene/cutscene_goddess_1.mp3','bgm/cutscene/cutscene_goddess_2.mp3'],
     cutscene_goddess_en:['bgm/cutscene/cutscene_goddess_en_1.mp3','bgm/cutscene/cutscene_goddess_en_2.mp3'],
     boss:['bgm/공통/boss.mp3'], finalboss:['bgm/공통/finalboss.mp3'],
+    gameplay:['bgm/공통/Just One More Hill V4.mp3','bgm/공통/Just One More Hill V5.mp3','bgm/공통/네메시아 강림V5.mp3','bgm/공통/네메시아의 강림 V3.mp3','bgm/공통/네메시아의 강림.mp3','bgm/공통/Coronam Ferro.mp3','bgm/공통/Coronam Ferro V2.mp3'],
     forge:['bgm/공통/forge.mp3','bgm/공통/복수의 대장간.mp3','bgm/공통/Anvil Ashes.mp3'],
     death:['bgm/공통/death.mp3','bgm/공통/지옥 추락 사망 징글.mp3'],
     victory:['bgm/공통/victory.mp3','bgm/공통/탈출 성공.mp3']
@@ -3367,7 +3375,7 @@ const BGM={
     return pick;
   },
   _pickAllRandom(){
-    const keys=['hell1','hell2','hell3','hell4','hell5','hell6','hell7'];
+    const keys=['hell1','hell2','hell3','hell4','hell5','hell6','hell7','gameplay'];
     let all=[];for(let i=0;i<keys.length;i++){const a=this.tracks[keys[i]];if(a)for(let j=0;j<a.length;j++)all.push(a[j])}
     if(!all.length)return null;
     let pick;
@@ -26779,7 +26787,7 @@ function update(){
   // ═══ 거울분신 업데이트 ═══
   if(G._mirrorClones&&G._mirrorClones.length>0){let _mcW=0;for(let mi=0;mi<G._mirrorClones.length;mi++){const mc=G._mirrorClones[mi];mc.t+=sp;mc.attackT-=sp;if(mc.t>=mc.delay&&mc.attackT<=0){mc.attackT=mc.attackCd;mc.facing=Math.atan2(P.y-mc.y,P.x-mc.x);if(dst(P.x,P.y,mc.x,mc.y)<mc.r+P.r+40&&P.iframes<=0){if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*2*pParryDmg());P.parryBank=(P.parryBank||0)+_pd;doParry(mc.atk,mc.x,mc.y);if(mc.src){mc.src.poise-=10;mc.src.poiseR=0}}else if(P.s!=='charge'){hurtP(~~(mc.atk*elMul(mc.el,ar().el)))}}addParts(mc.x,mc.y,mc.col||'#aa66ff',4)}const _mTgt={x:mc.src?mc.src.x+(Math.sin(mc.t*.05)*40):mc.x,y:mc.src?mc.src.y+(Math.cos(mc.t*.05)*40):mc.y};mc.x+=((_mTgt.x+(mi%2===0?50:-50))-mc.x)*.05*sp;mc.y+=((_mTgt.y+(mi%2===0?30:-30))-mc.y)*.05*sp;if(mc.t<mc.maxT)G._mirrorClones[_mcW++]=mc}G._mirrorClones.length=_mcW}
   // ═══ 균열 업데이트 ═══
-  if(G._fissures&&G._fissures.length>0){let _fsW=0;for(let fi=0;fi<G._fissures.length;fi++){const fs2=G._fissures[fi];fs2.t+=sp;fs2.len=Math.min(fs2.maxLen,fs2.len+fs2.spd*sp);const _fhx=fs2.x+Math.cos(fs2.ang)*fs2.len,_fhy=fs2.y+Math.sin(fs2.ang)*fs2.len;if(!fs2.exploded&&fs2.len>=fs2.maxLen){fs2.exploded=true;SFX.detonate();shake(12);if(dst(P.x,P.y,_fhx,_fhy)<fs2.explR&&P.iframes<=0&&P.s!=='charge'){hurtP(~~(fs2.dmg*elMul(fs2.el,ar().el)));const ka=Math.atan2(P.y-_fhy,P.x-_fhx);P.kb.x+=Math.cos(ka)*10;P.kb.y+=Math.sin(ka)*10}for(let k=0;k<10;k++){const a=Math.PI*2*k/10;poolPart(_fhx,_fhy,Math.cos(a)*5,Math.sin(a)*5,ELC[fs2.el]||'#ff4400',3,10)}}if(fs2.t<fs2.maxT)G._fissures[_fsW++]=fs2}G._fissures.length=_fsW}
+  if(G._fissures&&G._fissures.length>0){let _fsW=0;for(let fi=0;fi<G._fissures.length;fi++){const fs2=G._fissures[fi];fs2.t+=sp;let _fhx=fs2.x+Math.cos(fs2.ang)*fs2.len,_fhy=fs2.y+Math.sin(fs2.ang)*fs2.len;const _toP=Math.atan2(P.y-_fhy,P.x-_fhx);_fhx+=Math.cos(_toP)*fs2.spd*sp;_fhy+=Math.sin(_toP)*fs2.spd*sp;fs2.ang=Math.atan2(_fhy-fs2.y,_fhx-fs2.x);fs2.len=Math.min(fs2.maxLen,dst(fs2.x,fs2.y,_fhx,_fhy));_fhx=fs2.x+Math.cos(fs2.ang)*fs2.len;_fhy=fs2.y+Math.sin(fs2.ang)*fs2.len;if(!fs2.exploded&&fs2.len>=fs2.maxLen){fs2.exploded=true;SFX.detonate();shake(12);if(dst(P.x,P.y,_fhx,_fhy)<fs2.explR&&P.iframes<=0&&P.s!=='charge'){hurtP(~~(fs2.dmg*elMul(fs2.el,ar().el)));const ka=Math.atan2(P.y-_fhy,P.x-_fhx);P.kb.x+=Math.cos(ka)*10;P.kb.y+=Math.sin(ka)*10}for(let k=0;k<10;k++){const a=Math.PI*2*k/10;poolPart(_fhx,_fhy,Math.cos(a)*5,Math.sin(a)*5,ELC[fs2.el]||'#ff4400',3,10)}}if(fs2.t<fs2.maxT)G._fissures[_fsW++]=fs2}G._fissures.length=_fsW}
   // ═══ 조류파 업데이트 ═══
   if(G._tideWaves&&G._tideWaves.length>0){let _twW=0;for(let ti=0;ti<G._tideWaves.length;ti++){const tw=G._tideWaves[ti];tw.t+=sp;tw.r=Math.min(tw.maxR,tw.r+tw.spd*sp);tw.hitT-=sp;if(tw.hitT<=0){tw.hitT=10;const _pd2=dst(P.x,P.y,tw.x,tw.y);if(Math.abs(_pd2-tw.r)<tw.w&&P.iframes<=0&&P.s!=='charge'){const _pAng=Math.atan2(P.y-tw.y,P.x-tw.x);let _gd=_pAng-tw.gapAng;while(_gd>Math.PI)_gd-=Math.PI*2;while(_gd<-Math.PI)_gd+=Math.PI*2;if(Math.abs(_gd)>tw.gapSize){if(isPWin()){P.parryBank=(P.parryBank||0)+~~(tw.dmg*.5);doParry(tw.dmg,P.x,P.y)}else{hurtP(~~(tw.dmg*elMul(tw.el,ar().el)))}}}}if(tw.t<tw.maxT)G._tideWaves[_twW++]=tw}G._tideWaves.length=_twW}
   // ═══ 추적지뢰 업데이트 ═══
@@ -27399,7 +27407,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
     case'chaseAoe':{
       // 추적 장판 10발 시작 — 보스는 즉시 다음 행동 가능
       if(!G._chaseAoes)G._chaseAoes=[];
-      G._chaseAoes.push({src:e,cnt:0,maxCnt:10,t:0,interval:60,r:90,delay:90,dmg:~~(e.atk*2),el:e.el});
+      G._chaseAoes.push({src:e,cnt:0,maxCnt:10,t:0,interval:60,r:450,delay:90,dmg:~~(e.atk*2),el:e.el});
       addTxt(e.x,e.y-30,_T('🔴 추적 장판!'),'#ff2200',55);SFX.magic(0);
       // 보스는 바로 돌진이나 다른 공격으로 전환
       e.s='bossChargeWind';e.st2=~~(40*BOSS_PHASES[phase].teleM)+(extraDelay||0)||40;
@@ -27574,8 +27582,9 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       for(let fi=0;fi<_gfN;fi++){
         const _fOff=(fi-(_gfN-1)/2)*.3;
         const _fAng=e.facing+_fOff;
-        G._fissures.push({x:e.x,y:e.y,ang:_fAng,spd:35,len:0,maxLen:2500,
-          t:0,maxT:140,w:140,dmg:~~(e.atk*2),el:e.el,exploded:false,explR:750});
+        const _fMaxLen=~~(Math.max((G.mw||50),(G.mh||42))*T*.45);
+        G._fissures.push({x:e.x,y:e.y,ang:_fAng,spd:20,len:0,maxLen:_fMaxLen,
+          t:0,maxT:140,w:140,dmg:~~(e.atk*2),el:e.el,exploded:false,explR:Math.min(750,_fMaxLen*.3)});
           {const _vl=G._fissures[G._fissures.length-1];}
       }
       SFX.detonate();shake(10);
@@ -27669,7 +27678,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       for(let k=0;k<4;k++){const frac=(k+1)/4;
         _clPts.push({x:e.x+Math.cos(_clA0)*_clD*frac+(Math.random()-.5)*60,
           y:e.y+Math.sin(_clA0)*_clD*frac+(Math.random()-.5)*60,hit:false});}
-      G._chainLights.push({pts:_clPts,t:0,maxT:50,r:35,dmg:~~(e.atk*1.1),el:4,src:e,idx:0,jumpT:0});
+      G._chainLights.push({pts:_clPts,t:0,maxT:50,r:175,dmg:~~(e.atk*1.1),el:4,src:e,idx:0,jumpT:0});
       if(_clPts.length>0)
       addTxt(e.x,e.y-30,_T('⚡ 연쇄번개!'),'#ffee00',55);SFX.magic(4);
       e.s='recover';e.st2=25;break;
@@ -30150,17 +30159,17 @@ function updateE(e,sp){
       e.s='recover';e.st2=45}break;
   // ── 보스 돌진: 빠른 대쉬 ──
   case'bossChargeWind':
-    if(e.st2<=0){e.s='bossCharge';e.st2=25;e.echDx=Math.cos(e.facing);e.echDy=Math.sin(e.facing);
+    if(e.st2<=0){e.s='bossCharge';e.st2=50;e.echDx=Math.cos(e.facing);e.echDy=Math.sin(e.facing);
       SFX.charge();addParts(e.x,e.y,e.col,8)}break;
   case'bossCharge':{
-    const spd=7*sp;const nx=e.x+e.echDx*spd,ny=e.y+e.echDy*spd;
+    const spd=35*sp;const nx=e.x+e.echDx*spd,ny=e.y+e.echDy*spd;
     if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}
     else if(canMv(e.x+e.echDx*spd,e.y,e.r)){e.x+=e.echDx*spd}
     else if(canMv(e.x,e.y+e.echDy*spd,e.r)){e.y+=e.echDy*spd}
     else{
       // 양축 모두 막힘 → Wall slam shockwave
-      e.shockR=0;e.shockMax=80;e.s='bossShock';e.st2=20;
-      G.shake=12*OPT.shake/100;SFX.groggy();break}
+      e.shockR=0;e.shockMax=400;e.s='bossShock';e.st2=20;
+      G.shake=20*OPT.shake/100;SFX.groggy();break}
     if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+8&&P.iframes<=0){
       if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*5*pParryDmg());
         if(P.skills.detonate){P.parryBank=(P.parryBank||0)+_pd;e.stunned=60;addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35)}
@@ -30179,14 +30188,14 @@ function updateE(e,sp){
     // 벽 충돌 방지: lerp 위치가 유효할 때만 이동
     if(canMv(_jx,_jy,e.r)){e.x=_jx;e.y=_jy}
     if(e.st2<=0){// Landing impact
-      e.shockR=0;e.shockMax=160+G.stage*10;
+      e.shockR=0;e.shockMax=800+G.stage*50;
       e.s='bossShock';e.st2=25;
-      G.shake=15*OPT.shake/100;SFX.groggy();G._flashT=3;G._flashCol='#ffaa00';
+      G.shake=25*OPT.shake/100;SFX.groggy();G._flashT=5;G._flashCol='#ffaa00';
       deathFX(e.x,e.y,e.r,e.col,false,false,e.etype); // 착지 충격파 이펙트 (스파크 링)
       // Landing damage to nearby player
-      if(dst(P.x,P.y,e.x,e.y)<60&&P.iframes<=0&&P.s!=='charge'){
+      if(dst(P.x,P.y,e.x,e.y)<300&&P.iframes<=0&&P.s!=='charge'){
         hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
-        const ang=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ang)*10;P.kb.y+=Math.sin(ang)*10}
+        const ang=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ang)*15;P.kb.y+=Math.sin(ang)*15}
     }break}
   // ── 레이저: 조준선 → 빔 발사 + 스윕 ──
   case'bossLaserWind':{
@@ -30722,10 +30731,10 @@ function updateE(e,sp){
   // ═══ 위험찌르기 — 장거리 찌르기, 패링시 체간 3배 ═══
   case'bossPerilWind':{
     e.facing=Math.atan2(P.y-e.y,P.x-e.x);
-    if(e.st2<=0){e.s='bossPerilThrust';e.st2=8;SFX.slash();
+    if(e.st2<=0){e.s='bossPerilThrust';e.st2=30;SFX.slash();
       e.echDx=Math.cos(e.facing);e.echDy=Math.sin(e.facing)}break}
   case'bossPerilThrust':{
-    const _ptSpd=12*sp;
+    const _ptSpd=50*sp;
     const nx=e.x+e.echDx*_ptSpd,ny=e.y+e.echDy*_ptSpd;
     if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}else{e.s='recover';e.st2=40;break}
     if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+12&&P.iframes<=0){
@@ -34291,7 +34300,6 @@ function activateGiantSlam(srcId){
 // earthBreaker / earthSlam 전체 함수 삭제됨
 // 대왕치기 히트 (원형 진동파 — 큰 포이즈 피해, 보스 체간 40%)
 function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
-  SFX.slam();
   const _sR=stunRange||range; // 스턴 범위 (없으면 데미지 범위와 동일)
   dmg=~~(dmg*pAtkMul())+(P._atkBon||0);P._atkBon=0;
   // 깊이 버퍼 — hurtE 내부 shQuery 오염 방지 (.slice/수동복사 제거)
@@ -39623,6 +39631,20 @@ function draw(){
       X.globalAlpha=.15*(1-_atkP);X.strokeStyle=ELC[e.el]||e.col;X.lineWidth=2;
       X.beginPath();X.arc(e.x,e.y,e.r+5+_atkP*20,0,Math.PI*2);X.stroke();
       X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossChargeWind'){
+      const _cwP=1-e.st2/55;const _cwLen=Math.max(C.width,C.height)*1.5;
+      const _cwW2=50+_cwP*40;const _cwPerp=e.facing+Math.PI/2;
+      X.globalAlpha=_cwP*.15;X.fillStyle='#ffaa00';
+      X.beginPath();
+      X.moveTo(e.x+Math.cos(_cwPerp)*_cwW2,e.y+Math.sin(_cwPerp)*_cwW2);
+      X.lineTo(e.x+Math.cos(e.facing)*_cwLen+Math.cos(_cwPerp)*_cwW2,e.y+Math.sin(e.facing)*_cwLen+Math.sin(_cwPerp)*_cwW2);
+      X.lineTo(e.x+Math.cos(e.facing)*_cwLen-Math.cos(_cwPerp)*_cwW2,e.y+Math.sin(e.facing)*_cwLen-Math.sin(_cwPerp)*_cwW2);
+      X.lineTo(e.x-Math.cos(_cwPerp)*_cwW2,e.y-Math.sin(_cwPerp)*_cwW2);
+      X.closePath();X.fill();
+      X.globalAlpha=_cwP*.5;X.strokeStyle='#ffaa00';X.lineWidth=3;X.setLineDash([10,6]);
+      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.facing)*_cwLen,e.y+Math.sin(e.facing)*_cwLen);X.stroke();X.setLineDash([]);
+      X.globalAlpha=_cwP*(.6+Math.sin(_now*.02)*.3);X.fillStyle='#ffaa00';X.font='bold 22px sans-serif';X.textAlign='center';
+      X.fillText('⚠',e.x,e.y-e.r-20);X.globalAlpha=sa}
     if(e.s==='eCharge'||e.s==='bossCharge'){X.globalAlpha=.4;X.fillStyle=e.col;for(let ci=1;ci<=3;ci++){X.globalAlpha=.15/ci;X.beginPath();X.arc(e.x-(e.echDx||0)*8*ci,e.y-(e.echDy||0)*8*ci,e.r,0,Math.PI*2);X.fill()}
       // 보스 돌진: 바닥 먼지 파티클
       if(e.ib&&Math.random()>.5){const _da=e.facing+Math.PI+(Math.random()-.5)*.8;
@@ -40064,6 +40086,14 @@ function draw(){
     // ── 지연참 홀드 이펙트 ──
     if(e.ib&&e.s==='bossDelaySlashHold'){
       const _dsP=1-e.st2/(e._dsMaxT||60);
+      const _dsLen=300+_dsP*200; // 참격 범위 경고
+      // 부채꼴 경고 영역
+      const _dsArcW=.8; // 참격 호 폭
+      X.globalAlpha=_dsP*.2;X.fillStyle='#ff0000';
+      X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_dsLen,e.facing-_dsArcW/2,e.facing+_dsArcW/2);X.closePath();X.fill();
+      // 경고 호
+      X.globalAlpha=_dsP*.6;X.strokeStyle='#ff2200';X.lineWidth=3+_dsP*4;X.setLineDash([10,6]);
+      X.beginPath();X.arc(e.x,e.y,_dsLen,e.facing-_dsArcW/2,e.facing+_dsArcW/2);X.stroke();X.setLineDash([]);
       // 긴장선 (무기 떨림)
       const _trem=Math.sin(_now*.03+e.x)*3*(1+_dsP);
       X.globalAlpha=.5+_dsP*.4;X.strokeStyle='#ff2200';X.lineWidth=3+_dsP*3;X.lineCap='round';
@@ -40085,12 +40115,23 @@ function draw(){
     // ── 위험찌르기 이펙트 ──
     if(e.ib&&e.s==='bossPerilWind'){
       const _ppP=1-e.st2/25;
+      const _ptLen=Math.max(C.width,C.height)*1.5; // 맵 끝까지
+      // 경고 영역 — 돌진 경로 전체 표시
+      X.globalAlpha=_ppP*.15;X.fillStyle='#ff0000';
+      const _ptW=40+_ppP*30; // 경로 폭
+      const _ptPerp=e.facing+Math.PI/2;
+      X.beginPath();
+      X.moveTo(e.x+Math.cos(_ptPerp)*_ptW,e.y+Math.sin(_ptPerp)*_ptW);
+      X.lineTo(e.x+Math.cos(e.facing)*_ptLen+Math.cos(_ptPerp)*_ptW,e.y+Math.sin(e.facing)*_ptLen+Math.sin(_ptPerp)*_ptW);
+      X.lineTo(e.x+Math.cos(e.facing)*_ptLen-Math.cos(_ptPerp)*_ptW,e.y+Math.sin(e.facing)*_ptLen-Math.sin(_ptPerp)*_ptW);
+      X.lineTo(e.x-Math.cos(_ptPerp)*_ptW,e.y-Math.sin(_ptPerp)*_ptW);
+      X.closePath();X.fill();
+      // 중앙선
+      X.globalAlpha=_ppP*.6;X.strokeStyle='#ff0000';X.lineWidth=3+_ppP*4;X.setLineDash([12,8]);
+      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.facing)*_ptLen,e.y+Math.sin(e.facing)*_ptLen);X.stroke();X.setLineDash([]);
       // 빨간 위험 마크
-      X.globalAlpha=_ppP*(.6+Math.sin(_now*.02)*.3);X.fillStyle='#ff0000';X.font='bold 16px sans-serif';X.textAlign='center';
-      X.fillText('⚠',e.x,e.y-e.r-20);
-      // 방향 선
-      X.globalAlpha=_ppP*.5;X.strokeStyle='#ff0000';X.lineWidth=2+_ppP*3;X.setLineDash([6,4]);
-      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.facing)*200,e.y+Math.sin(e.facing)*200);X.stroke();X.setLineDash([]);
+      X.globalAlpha=_ppP*(.7+Math.sin(_now*.02)*.3);X.fillStyle='#ff0000';X.font='bold 24px sans-serif';X.textAlign='center';
+      X.fillText('⚠ !',e.x,e.y-e.r-25);
       X.globalAlpha=sa}
     if(e.ib&&e.s==='bossPerilThrust'){
       // 찌르기 궤적
