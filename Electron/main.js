@@ -21,20 +21,27 @@ try {
 // dev vs production 경로 분기
 const IS_PACKAGED = app.isPackaged;
 
+// GPU 캐시 경로 설정 (권한 에러 방지)
+const GPU_CACHE_DIR = path.join(app.getPath('userData'), 'gpu-cache');
+if (!fs.existsSync(GPU_CACHE_DIR)) fs.mkdirSync(GPU_CACHE_DIR, { recursive: true });
+app.commandLine.appendSwitch('disk-cache-dir', GPU_CACHE_DIR);
+app.commandLine.appendSwitch('gpu-disk-cache-dir', GPU_CACHE_DIR);
 // GPU 하드웨어 가속 강제 (RX 9070 XT 등 최신 GPU)
+app.commandLine.appendSwitch('no-sandbox');
 app.commandLine.appendSwitch('ignore-gpu-blocklist');
+app.commandLine.appendSwitch('disable-gpu-sandbox');
 app.commandLine.appendSwitch('enable-gpu');
 app.commandLine.appendSwitch('enable-webgl');
 app.commandLine.appendSwitch('enable-accelerated-2d-canvas');
 app.commandLine.appendSwitch('enable-gpu-rasterization');
 app.commandLine.appendSwitch('enable-gpu-compositing');
 app.commandLine.appendSwitch('enable-zero-copy');
+app.commandLine.appendSwitch('use-angle', 'd3d11');
+app.commandLine.appendSwitch('use-gl', 'angle');
 app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,CanvasOopRasterization,RawDraw');
 // V-Sync + 프레임 리밋 완전 해제 (200fps+ 확보)
 app.commandLine.appendSwitch('disable-frame-rate-limit');
 app.commandLine.appendSwitch('disable-gpu-vsync');
-// 렌더 간격 제한 해제
-app.commandLine.appendSwitch('max-gum-fps', '0');
 // DPI 스케일링 강제 1x — Windows 배율(125%,150%) 무시
 app.commandLine.appendSwitch('force-device-scale-factor', '1');
 if (process.platform === 'win32') app.setAppUserModelId('hell.exoduser');
