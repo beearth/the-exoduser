@@ -7580,14 +7580,14 @@ _BOSS_MOVESET[18]=new Set([..._ch4Base,'swordWave','pillars','burstCounter','wal
 _BOSS_MOVESET[19]=new Set([..._ch4Base,'swordWave','pillars','burstCounter','wallPush','gravityWell']);
 _BOSS_MOVESET[20]=new Set([..._ch4Base,'swordWave','pillars','burstCounter','wallPush','gravityWell','chainLightning'])}
 // ── 5장 군단 (si 21~25): 전쟁의 잔해 ~ 군단 지휘관 ──
-{const _ch5Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','fanWave','laser','tideWave','groundFissure','seekerMines','shieldBash2','cageTrap','teleStrike','delaySlash','perilThrust','meteor','radialLaser','spiralBullet','poisonTrail','swordWave','judgeCut','phantomSwords','pillars','burstCounter','crescendoCombo','chainLightning','wallPush','gravityWell','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','safeCorner','tidalWipe'];
+{const _ch5Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','fanWave','laser','tideWave','groundFissure','seekerMines','shieldBash2','cageTrap','teleStrike','delaySlash','perilThrust','meteor','radialLaser','spiralBullet','poisonTrail','swordWave','judgeCut','phantomSwords','pillars','burstCounter','crescendoCombo','chainLightning','wallPush','gravityWell','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','safeCorner','tidalWipe','rapidMissile'];
 _BOSS_MOVESET[21]=new Set(_ch5Base);
 _BOSS_MOVESET[22]=new Set([..._ch5Base,'mirrorGuard']);
 _BOSS_MOVESET[23]=new Set([..._ch5Base,'mirrorGuard','rewindStrike']);
 _BOSS_MOVESET[24]=new Set([..._ch5Base,'mirrorGuard','rewindStrike','orbWeave']);
 _BOSS_MOVESET[25]=new Set([..._ch5Base,'mirrorGuard','rewindStrike','orbWeave','mirrorClone'])}
 // ── 6장 사도의 마굴 (si 26~31): 살점의 수호자 ~ 대사도 ──
-{const _ch6Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','fanWave','laser','tideWave','groundFissure','seekerMines','shieldBash2','cageTrap','teleStrike','delaySlash','perilThrust','meteor','radialLaser','spiralBullet','poisonTrail','swordWave','judgeCut','phantomSwords','pillars','burstCounter','crescendoCombo','chainLightning','wallPush','gravityWell','mirrorGuard','rewindStrike','orbWeave','mirrorClone','darkZone','soulAnchor','doppelganger','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','safeCorner','tidalWipe'];
+{const _ch6Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','fanWave','laser','tideWave','groundFissure','seekerMines','shieldBash2','cageTrap','teleStrike','delaySlash','perilThrust','meteor','radialLaser','spiralBullet','poisonTrail','swordWave','judgeCut','phantomSwords','pillars','burstCounter','crescendoCombo','chainLightning','wallPush','gravityWell','mirrorGuard','rewindStrike','orbWeave','mirrorClone','darkZone','soulAnchor','doppelganger','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','safeCorner','tidalWipe','rapidMissile'];
 _BOSS_MOVESET[26]=new Set(_ch6Base);
 _BOSS_MOVESET[27]=new Set([..._ch6Base]);
 _BOSS_MOVESET[28]=new Set([..._ch6Base,'itemSteal']);
@@ -31444,6 +31444,7 @@ function checkRooms(){
 function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(!e||!e.alive)return;
   if(e.hp<=0)return; // 2026-04-17 이미 죽은 적 이중 처리 방지 (alive 플래그 지연 케이스)
+  if(window._btDmgLog)window._btDmgLog.push({t:_now,src:'player',dmg:dmg});
   _shBufI++; // ═══ shQuery 버퍼 보호: 내부 shQuery 호출이 호출자의 결과를 오염시키지 않도록 ═══
   _petOnAtk();
   const isDot=opts&&opts.dot;
@@ -32542,6 +32543,7 @@ function _logDmg(raw,final,src){
 function _isFocusState(){return P.s==='sBlock'||P.s==='peaceShield'||P.s==='whirlwind'||P.s==='beam'||P.s==='burstLoop'||P.s==='charge'||P.s==='bowDraw'||P.s==='rainLightning'}
 // ─── [S16j] HURT_P — 플레이어 피격 (방어/포이즈) ───
 function hurtP(dmg,opts){
+  if(window._btDmgLog)window._btDmgLog.push({t:_now,src:'boss',dmg:dmg});
   if(P.s==='fallen'||P.s==='dead')return; // 쓰러짐/사망 중 무적
   // 보스 로딩/스테이지 전환 중 무적
   if(G._bossLoadPhase>0)return;
@@ -46034,6 +46036,23 @@ function drawP(){
     // S7-SKIP, S7-WARN 제거됨 — FRAME-C2D로 대체 (2026-04-17)
   }
   X.globalAlpha=1;
+  // ── 테스트베드: 히트박스 시각화 ──
+  if(window._btShowHitbox){
+    X.save();X.lineWidth=1;X.globalAlpha=0.5;
+    // 보스/적: 녹색
+    X.strokeStyle='#00ff00';
+    for(let _hi=0;_hi<ens.length;_hi++){const _he=ens[_hi];if(!_he||!_he.alive)continue;X.beginPath();X.arc(_he.x,_he.y,_he.r,0,6.2832);X.stroke()}
+    // 플레이어: 파란색
+    if(P&&P.hp>0){X.strokeStyle='#4488ff';X.beginPath();X.arc(P.x,P.y,P.r,0,6.2832);X.stroke()}
+    // 투사체: 빨간색
+    X.strokeStyle='#ff2222';
+    for(let _hi=0;_hi<projs.length;_hi++){const _hp=projs[_hi];if(!_hp)continue;const _hr=_hp.r||_hp.sz||4;X.beginPath();X.arc(_hp.x,_hp.y,_hr,0,6.2832);X.stroke()}
+    // 장판: 노란색
+    X.strokeStyle='#ffcc00';
+    const _hzArrays=[G._lavaPools,G._fireRains,G._judgeCuts,G._pillars,G._gravityWells,G._darkZones,G._poisonPools,G._fissures,G._shockGrids,G._donutSlams,G._cageTraps,G._chaseAoes];
+    for(let _ai=0;_ai<_hzArrays.length;_ai++){const _arr=_hzArrays[_ai];if(!_arr)continue;for(let _hi=0;_hi<_arr.length;_hi++){const _hz=_arr[_hi];if(!_hz)continue;const _hr=_hz.r||_hz.radius||_hz.sz||30;X.beginPath();X.arc(_hz.x,_hz.y,_hr,0,6.2832);X.stroke()}}
+    X.globalAlpha=1;X.restore();
+  }
 }
 
 // 미니맵 캐싱: 타일+정적마커 캐시 + 분산 빌드
@@ -46499,7 +46518,13 @@ function loop(timestamp){
   let frameTime=timestamp-_prevTs;_prevTs=timestamp;
   if(frameTime>50)frameTime=50; // 50ms 클램프 — 스파이크 프레임에서 물리/VFX 폭주 방지
   if(frameTime<0)frameTime=0;
-  _acc+=frameTime;
+  // ── 테스트베드: 가변 속도 배율 ──
+  if(window._btSpeedMul!==undefined)frameTime*=window._btSpeedMul;
+  // ── 테스트베드: 프레임 정지 모드 ──
+  if(window._btFramePause){
+    if(window._btFrameStep){window._btFrameStep=false;_acc=PHYS_STEP}// 1틱만 허용
+    else{_acc=0}
+  }else{_acc+=frameTime}
   // 적응형 catch-up: update가 가벼우면(8ms 이하) 5틱까지, 무거우면 3틱 (모바일 최대 2틱)
   const _accCap=IS_MOBILE?PHYS_STEP*2:(_prof.u<=8?PHYS_STEP*5:PHYS_STEP*3);
   if(_acc>_accCap)_acc=_accCap;
@@ -47849,6 +47874,74 @@ function _btBuildUI(){
     <button class="_btBtn" onclick="_btBoss&&(_btBoss.elite=0)">🔄 엘리트 리셋</button>
     <button class="_btBtn" onclick="P.x=_btBoss.x;P.y=_btBoss.y-80" title="보스 앞으로 순간이동">📍 텔레포트</button>
   </div>`;
+  // ── 보스 스탯 커스텀 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px;font-weight:700">⚙ 보스 스탯 커스텀</span>
+    <div style="margin-top:4px">
+      <span style="color:#aa8866;font-size:10px">ATK 배율: <span id="_btAtkVal">×1.0</span></span>
+      <input type="range" min="0.1" max="20" step="0.1" value="1" style="width:100%;accent-color:#ff6644"
+        oninput="if(_btBoss){_btBoss.atk=_btBoss._origAtk*(+this.value)};document.getElementById('_btAtkVal').textContent='×'+this.value">
+    </div>
+    <div style="margin-top:4px">
+      <span style="color:#aa8866;font-size:10px">SPD 배율: <span id="_btSpdVal">×1.0</span></span>
+      <input type="range" min="0.1" max="10" step="0.1" value="1" style="width:100%;accent-color:#44aaff"
+        oninput="if(_btBoss){_btBoss.speed=_btBoss._origSpd*(+this.value)};document.getElementById('_btSpdVal').textContent='×'+this.value">
+    </div>
+    <div style="margin-top:4px">
+      <span style="color:#aa8866;font-size:10px">보스 크기(r): <span id="_btRVal">${_btBoss?_btBoss.r:'?'}</span></span>
+      <input type="range" min="5" max="200" step="1" value="${_btBoss?_btBoss.r:30}" style="width:100%;accent-color:#44ff88"
+        oninput="if(_btBoss){_btBoss.r=+this.value};document.getElementById('_btRVal').textContent=this.value">
+    </div>
+    <div style="display:flex;gap:3px;margin-top:4px">
+      <button class="_btBtn" onclick="if(_btBoss){_btBoss._origAtk=_btBoss.atk}" style="flex:1">ATK 현재값 저장</button>
+      <button class="_btBtn" onclick="if(_btBoss){P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst}" style="flex:1">플레이어 풀회복</button>
+    </div>
+  </div>`;
+  // ── 사운드 갤러리 ──
+  const _sfxList=['slash','swing','charge','magic','groggy','detonate','block','deflect','beamStop'];
+  const _sfxMagicN=[0,1,2,3,4];
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px;font-weight:700">🔊 사운드 테스트</span>
+    <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:4px">
+      ${_sfxList.map(s=>`<button class="_btBtn" onclick="SFX.${s}?SFX.${s}():null" style="border-left:3px solid #4488ff">${s}</button>`).join('')}
+      ${_sfxMagicN.map(n=>`<button class="_btBtn" onclick="SFX.magic(${n})" style="border-left:3px solid #aa44ff">magic(${n})</button>`).join('')}
+    </div>
+  </div>`;
+  // ── 이펙트 테스트 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px;font-weight:700">💥 이펙트 테스트</span>
+    <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:4px">
+      <button class="_btBtn" onclick="shake(30)" style="border-left:3px solid #ff4444">shake(30)</button>
+      <button class="_btBtn" onclick="G._flashT=10;G._flashCol='#ffffff'" style="border-left:3px solid #ffffff">flash 백</button>
+      <button class="_btBtn" onclick="G._flashT=10;G._flashCol='#ff0000'" style="border-left:3px solid #ff0000">flash 적</button>
+      <button class="_btBtn" onclick="G.chromaT=30" style="border-left:3px solid #ff44ff">chroma</button>
+      <button class="_btBtn" onclick="G.hitStop=30" style="border-left:3px solid #ffcc00">hitStop</button>
+      <button class="_btBtn" onclick="G.slowMo=120" style="border-left:3px solid #44ccff">slowMo</button>
+      <button class="_btBtn" onclick="if(_btBoss)deathFX(_btBoss.x,_btBoss.y,_btBoss.r,_btBoss.col,false,false,_btBoss.etype)" style="border-left:3px solid #ff8844">deathFX</button>
+      <button class="_btBtn" onclick="addParts(P.x,P.y,'#ff4444',30)" style="border-left:3px solid #ff4444">파티클 30</button>
+      <button class="_btBtn" onclick="for(let i=0;i<20;i++){const a=Math.PI*2*i/20;poolPart(P.x,P.y,Math.cos(a)*8,Math.sin(a)*8,'#ffcc44',4,15)}" style="border-left:3px solid #ffcc44">링 파티클</button>
+    </div>
+  </div>`;
+  // ── 스킬명 화면 오버레이 ──
+  const _btSkillOverlay=document.createElement('div');
+  _btSkillOverlay.id='_btSkillName';
+  _btSkillOverlay.style.cssText='position:fixed;top:15%;left:50%;transform:translateX(-50%);font:bold 48px "Noto Sans KR",sans-serif;color:#ffcc44;text-shadow:0 0 20px #ff8800,0 0 40px #ff4400,2px 2px 0 #000;z-index:99998;pointer-events:none;opacity:0;transition:opacity .2s';
+  document.body.appendChild(_btSkillOverlay);
+  // 패턴 실행 시 스킬명 표시 — _btForcePattern 래핑
+  const _origForce=_btForcePattern;
+  _btForcePattern=function(id){
+    const overlay=document.getElementById('_btSkillName');
+    if(overlay){
+      const mv=BOSS_MOVES.find(m=>m.id===id);
+      const tags=mv?mv.tags.join(' | '):'';
+      overlay.innerHTML=`<div>${id}</div><div style="font-size:16px;color:#aa8866;margin-top:4px">${tags}</div>`;
+      overlay.style.opacity='1';
+      clearTimeout(overlay._fadeT);
+      overlay._fadeT=setTimeout(()=>overlay.style.opacity='0',2000);
+    }
+    _origForce(id);
+  };
+  window._btForcePattern=_btForcePattern;
   // ── 전체 패턴 연속 재생 ──
   panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:4px">
     <button class="_btBtn" onclick="_btPlayAll()" id="_btPlayAllBtn" style="width:100%;background:#332244;color:#aa88ff">▶ 전체 패턴 순차 재생</button>

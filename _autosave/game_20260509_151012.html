@@ -7470,6 +7470,7 @@ const BOSS_MOVES=[
   {id:'safeCorner',idx:53,tele:60,rec:60,canFeint:false,canDelay:0, range:[0,999],phase:[2,3,4],combo:['charge','lavaPools','fireRain'],tags:['zone','aoe','wipe'],cd:360},
   {id:'crossWipe',idx:54,tele:50,rec:50,canFeint:false,canDelay:0, range:[0,999],phase:[1,2,3,4],combo:['charge','shockGrid','fan'],tags:['zone','aoe','sustained'],cd:280},
   {id:'tidalWipe',idx:55,tele:60,rec:50,canFeint:false,canDelay:0, range:[0,999],phase:[2,3,4],combo:['charge','wallPush','fireRain'],tags:['zone','aoe','cc'],cd:320},
+  {id:'rapidMissile',idx:56,tele:30,rec:40,canFeint:false,canDelay:0, range:[250,999],phase:[0,1,2,3,4],combo:['charge','fan','burst'],tags:['ranged','multi-hit','gap-punish'],cd:100},
 ];
 const BOSS_COMBOS=[
   {seq:['charge','spin','burst'],        phase:[0,1,2,3,4]},
@@ -7551,12 +7552,12 @@ const BOSS_PHASES={
 // null = 전체 49종 사용 (기본), Set = 해당 기술만 사용
 const _BOSS_MOVESET=[];
 // ── 1장 썩은 숲 (si 0~3): 숲의 감시자 / 독버섯 거인 / 사냥꾼 / 기생수 ──
-_BOSS_MOVESET[0]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','lavaPools']);
-_BOSS_MOVESET[1]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','lavaPools']);
-_BOSS_MOVESET[2]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','cageTrap','lavaPools']);
-_BOSS_MOVESET[3]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','cageTrap','seekerMines','lavaPools']);
+_BOSS_MOVESET[0]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','lavaPools','rapidMissile']);
+_BOSS_MOVESET[1]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','lavaPools','rapidMissile']);
+_BOSS_MOVESET[2]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','cageTrap','lavaPools','rapidMissile']);
+_BOSS_MOVESET[3]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','cageTrap','seekerMines','lavaPools','rapidMissile']);
 // ── 2장 벌레굴 (si 4~9): 벌레 수호자 ~ 여왕 구더기 ──
-{const _ch2Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','poisonTrail','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','cageTrap','groundFissure','tideWave','lavaPools','fireRain','shockGrid','donutSlam','crossWipe'];
+{const _ch2Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','poisonTrail','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','cageTrap','groundFissure','tideWave','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','rapidMissile'];
 _BOSS_MOVESET[4]=new Set(_ch2Base);
 _BOSS_MOVESET[5]=new Set([..._ch2Base,'seekerMines']);
 _BOSS_MOVESET[6]=new Set([..._ch2Base,'seekerMines','fanWave']);
@@ -7564,13 +7565,13 @@ _BOSS_MOVESET[7]=new Set([..._ch2Base,'seekerMines','fanWave','wallPush']);
 _BOSS_MOVESET[8]=new Set([..._ch2Base,'seekerMines','fanWave','wallPush','shieldBash2']);
 _BOSS_MOVESET[9]=new Set([..._ch2Base,'seekerMines','fanWave','wallPush','shieldBash2','spiralBullet'])}
 // ── 3장 얼음굴 (si 10~13): 얼음 망령 ~ 봉인 괴물 ──
-{const _ch3Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','fanWave','laser','tideWave','groundFissure','seekerMines','shieldBash2','cageTrap','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','safeCorner','tidalWipe'];
+{const _ch3Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','fanWave','laser','tideWave','groundFissure','seekerMines','shieldBash2','cageTrap','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','safeCorner','tidalWipe','rapidMissile'];
 _BOSS_MOVESET[10]=new Set(_ch3Base);
 _BOSS_MOVESET[11]=new Set([..._ch3Base,'teleStrike','delaySlash']);
 _BOSS_MOVESET[12]=new Set([..._ch3Base,'teleStrike','delaySlash','perilThrust','spiralBullet']);
 _BOSS_MOVESET[13]=new Set([..._ch3Base,'teleStrike','delaySlash','perilThrust','spiralBullet','gravityWell'])}
 // ── 4장 화염지대 (si 14~20): 화염 악마 ~ 화염 감옥지기 ──
-{const _ch4Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','fanWave','laser','tideWave','groundFissure','seekerMines','shieldBash2','cageTrap','teleStrike','delaySlash','perilThrust','meteor','radialLaser','spiralBullet','poisonTrail','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','safeCorner','tidalWipe'];
+{const _ch4Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','fanWave','laser','tideWave','groundFissure','seekerMines','shieldBash2','cageTrap','teleStrike','delaySlash','perilThrust','meteor','radialLaser','spiralBullet','poisonTrail','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','safeCorner','tidalWipe','rapidMissile'];
 _BOSS_MOVESET[14]=new Set(_ch4Base);
 _BOSS_MOVESET[15]=new Set([..._ch4Base,'swordWave']);
 _BOSS_MOVESET[16]=new Set([..._ch4Base,'swordWave','pillars']);
@@ -7579,14 +7580,14 @@ _BOSS_MOVESET[18]=new Set([..._ch4Base,'swordWave','pillars','burstCounter','wal
 _BOSS_MOVESET[19]=new Set([..._ch4Base,'swordWave','pillars','burstCounter','wallPush','gravityWell']);
 _BOSS_MOVESET[20]=new Set([..._ch4Base,'swordWave','pillars','burstCounter','wallPush','gravityWell','chainLightning'])}
 // ── 5장 군단 (si 21~25): 전쟁의 잔해 ~ 군단 지휘관 ──
-{const _ch5Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','fanWave','laser','tideWave','groundFissure','seekerMines','shieldBash2','cageTrap','teleStrike','delaySlash','perilThrust','meteor','radialLaser','spiralBullet','poisonTrail','swordWave','judgeCut','phantomSwords','pillars','burstCounter','crescendoCombo','chainLightning','wallPush','gravityWell','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','safeCorner','tidalWipe'];
+{const _ch5Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','fanWave','laser','tideWave','groundFissure','seekerMines','shieldBash2','cageTrap','teleStrike','delaySlash','perilThrust','meteor','radialLaser','spiralBullet','poisonTrail','swordWave','judgeCut','phantomSwords','pillars','burstCounter','crescendoCombo','chainLightning','wallPush','gravityWell','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','safeCorner','tidalWipe','rapidMissile'];
 _BOSS_MOVESET[21]=new Set(_ch5Base);
 _BOSS_MOVESET[22]=new Set([..._ch5Base,'mirrorGuard']);
 _BOSS_MOVESET[23]=new Set([..._ch5Base,'mirrorGuard','rewindStrike']);
 _BOSS_MOVESET[24]=new Set([..._ch5Base,'mirrorGuard','rewindStrike','orbWeave']);
 _BOSS_MOVESET[25]=new Set([..._ch5Base,'mirrorGuard','rewindStrike','orbWeave','mirrorClone'])}
 // ── 6장 사도의 마굴 (si 26~31): 살점의 수호자 ~ 대사도 ──
-{const _ch6Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','fanWave','laser','tideWave','groundFissure','seekerMines','shieldBash2','cageTrap','teleStrike','delaySlash','perilThrust','meteor','radialLaser','spiralBullet','poisonTrail','swordWave','judgeCut','phantomSwords','pillars','burstCounter','crescendoCombo','chainLightning','wallPush','gravityWell','mirrorGuard','rewindStrike','orbWeave','mirrorClone','darkZone','soulAnchor','doppelganger','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','safeCorner','tidalWipe'];
+{const _ch6Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','fanWave','laser','tideWave','groundFissure','seekerMines','shieldBash2','cageTrap','teleStrike','delaySlash','perilThrust','meteor','radialLaser','spiralBullet','poisonTrail','swordWave','judgeCut','phantomSwords','pillars','burstCounter','crescendoCombo','chainLightning','wallPush','gravityWell','mirrorGuard','rewindStrike','orbWeave','mirrorClone','darkZone','soulAnchor','doppelganger','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','safeCorner','tidalWipe','rapidMissile'];
 _BOSS_MOVESET[26]=new Set(_ch6Base);
 _BOSS_MOVESET[27]=new Set([..._ch6Base]);
 _BOSS_MOVESET[28]=new Set([..._ch6Base,'itemSteal']);
@@ -27852,6 +27853,26 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       SFX.magic(2);shake(10);
       e.s='recover';e.st2=50;break;
     }
+    case'rapidMissile':{
+      // 고속 미사일 — 원거리 징벌, 패링 가능
+      e.facing=Math.atan2(P.y-e.y,P.x-e.x);
+      const _rmPh=e._bossPhase||0;
+      const _rmN=3+Math.min(_rmPh,3); // 3~6발
+      for(let mi=0;mi<_rmN;mi++){
+        const _mOff=(mi-(_rmN-1)/2)*.15; // 약간 퍼짐
+        const _mAng=e.facing+_mOff;
+        const _mSpd=14+_rmPh*2; // 매우 빠름
+        spawnProj({x:e.x+Math.cos(_mAng)*e.r,y:e.y+Math.sin(_mAng)*e.r,
+          vx:Math.cos(_mAng)*_mSpd,vy:Math.sin(_mAng)*_mSpd,
+          dmg:~~(e.atk*2),el:e.el,friendly:false,life:300,ml:300,
+          col:'#ff4444',sz:3,homing:true, // 약한 유도
+          _missileTrail:true}); // 미사일 트레일 플래그
+      }
+      SFX.charge();shake(8);
+      addTxt(e.x,e.y-30,_T('🚀 미사일!'),'#ff2200',55);
+      addParts(e.x,e.y,'#ff4444',12);
+      e.s='recover';e.st2=30;break;
+    }
   }
 }
 // ── 보스 페이즈 체크: 매 프레임 호출 (idle 아니어도 전환) ──
@@ -30225,7 +30246,7 @@ function updateE(e,sp){
     const proj=dx*lx+dy*ly; // 레이저 축 투영
     if(proj>0&&proj<_laserActLen){
       const perp=Math.abs(dx*ly-dy*lx); // 수직 거리
-      if(perp<P.r+10&&P.iframes<=0){
+      if(perp<P.r+80&&P.iframes<=0){
         if(isPWin()){P.parryBank=(P.parryBank||0)+~~(e.atk*1.6);doParry(e.atk,e.x,e.y);_poiseHit(e,20);addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',50)}
         else if(P.s!=='charge'){hurtP(~~(P.mhp*.01),{dtype:'magic'});
           playSample(['fire_death','fire_death2','fire_death3'][Math.random()*3|0],.5,_r(1.2,.15));
@@ -31423,6 +31444,7 @@ function checkRooms(){
 function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(!e||!e.alive)return;
   if(e.hp<=0)return; // 2026-04-17 이미 죽은 적 이중 처리 방지 (alive 플래그 지연 케이스)
+  if(window._btDmgLog)window._btDmgLog.push({t:_now,src:'player',dmg:dmg});
   _shBufI++; // ═══ shQuery 버퍼 보호: 내부 shQuery 호출이 호출자의 결과를 오염시키지 않도록 ═══
   _petOnAtk();
   const isDot=opts&&opts.dot;
@@ -32521,6 +32543,7 @@ function _logDmg(raw,final,src){
 function _isFocusState(){return P.s==='sBlock'||P.s==='peaceShield'||P.s==='whirlwind'||P.s==='beam'||P.s==='burstLoop'||P.s==='charge'||P.s==='bowDraw'||P.s==='rainLightning'}
 // ─── [S16j] HURT_P — 플레이어 피격 (방어/포이즈) ───
 function hurtP(dmg,opts){
+  if(window._btDmgLog)window._btDmgLog.push({t:_now,src:'boss',dmg:dmg});
   if(P.s==='fallen'||P.s==='dead')return; // 쓰러짐/사망 중 무적
   // 보스 로딩/스테이지 전환 중 무적
   if(G._bossLoadPhase>0)return;
@@ -39632,6 +39655,58 @@ function draw(){
       X.globalAlpha=.15*(1-_atkP);X.strokeStyle=ELC[e.el]||e.col;X.lineWidth=2;
       X.beginPath();X.arc(e.x,e.y,e.r+5+_atkP*20,0,Math.PI*2);X.stroke();
       X.globalAlpha=sa}
+    // ── 보스 근접 와인드업 경고 표시 ──
+    if(e.ib&&e.s==='bossSlamWind'){
+      const _swP=1-e.st2/30;const _swR=1000+(G.stage||0)*30+((e._bossPhase||0))*80;
+      X.globalAlpha=_swP*.12;X.fillStyle='#ff4400';X.beginPath();X.arc(e.x,e.y,_swR*_swP,0,Math.PI*2);X.fill();
+      X.globalAlpha=_swP*.4;X.strokeStyle='#ff4400';X.lineWidth=3;X.setLineDash([8,6]);
+      X.beginPath();X.arc(e.x,e.y,_swR,0,Math.PI*2);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossSlashWind'){
+      const _slP=1-e.st2/15;const _slR=e.r+(P.r||8)+300;
+      X.globalAlpha=_slP*.15;X.fillStyle='#ff8844';
+      X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_slR,e.facing-1.2,e.facing+1.2);X.closePath();X.fill();
+      X.globalAlpha=_slP*.5;X.strokeStyle='#ff8844';X.lineWidth=2;X.setLineDash([6,4]);
+      X.beginPath();X.arc(e.x,e.y,_slR,e.facing-1.2,e.facing+1.2);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossSweepWind'){
+      const _swP2=1-e.st2/20;const _swR2=e.r+(P.r||8)+400;
+      X.globalAlpha=_swP2*.15;X.fillStyle='#ffaa00';
+      X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_swR2,e.facing-1.7,e.facing+1.7);X.closePath();X.fill();
+      X.globalAlpha=_swP2*.5;X.strokeStyle='#ffaa00';X.lineWidth=2;X.setLineDash([6,4]);
+      X.beginPath();X.arc(e.x,e.y,_swR2,e.facing-1.7,e.facing+1.7);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossSpinWind'){
+      const _spP=1-e.st2/25;const _spR=500+(G.stage||0)*15;
+      X.globalAlpha=_spP*.12;X.fillStyle='#ff6644';X.beginPath();X.arc(e.x,e.y,_spR*_spP,0,Math.PI*2);X.fill();
+      X.globalAlpha=_spP*.4;X.strokeStyle='#ff6644';X.lineWidth=3;X.setLineDash([8,6]);
+      X.beginPath();X.arc(e.x,e.y,_spR,0,Math.PI*2);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossGrabWind'){
+      const _grP=1-e.st2/40;const _grR=e.r+(P.r||8)+200;
+      X.globalAlpha=_grP*.2;X.fillStyle='#cc00ff';
+      X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_grR,e.facing-.8,e.facing+.8);X.closePath();X.fill();
+      X.globalAlpha=_grP*.6;X.strokeStyle='#cc00ff';X.lineWidth=2;X.setLineDash([6,4]);
+      X.beginPath();X.arc(e.x,e.y,_grR,e.facing-.8,e.facing+.8);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossShockWind'){
+      const _shP=1-e.st2/30;const _shR=1000+(G.stage||0)*50;
+      X.globalAlpha=_shP*.1;X.fillStyle='#44ccff';X.beginPath();X.arc(e.x,e.y,_shR*_shP,0,Math.PI*2);X.fill();
+      X.globalAlpha=_shP*.4;X.strokeStyle='#44ccff';X.lineWidth=3;X.setLineDash([8,6]);
+      X.beginPath();X.arc(e.x,e.y,_shR,0,Math.PI*2);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossLaserWind'){
+      const _lwP=1-e.st2/40;const _lwLen=Math.max(C.width,C.height)*1.5;
+      const _lwW=30+_lwP*50; // 폭 점점 커짐
+      const _lwPerp=e.laserAng+Math.PI/2;
+      // 조준선 영역
+      X.globalAlpha=_lwP*.1;X.fillStyle='#ff2200';
+      X.beginPath();
+      X.moveTo(e.x+Math.cos(_lwPerp)*_lwW,e.y+Math.sin(_lwPerp)*_lwW);
+      X.lineTo(e.x+Math.cos(e.laserAng)*_lwLen+Math.cos(_lwPerp)*_lwW,e.y+Math.sin(e.laserAng)*_lwLen+Math.sin(_lwPerp)*_lwW);
+      X.lineTo(e.x+Math.cos(e.laserAng)*_lwLen-Math.cos(_lwPerp)*_lwW,e.y+Math.sin(e.laserAng)*_lwLen-Math.sin(_lwPerp)*_lwW);
+      X.lineTo(e.x-Math.cos(_lwPerp)*_lwW,e.y-Math.sin(_lwPerp)*_lwW);
+      X.closePath();X.fill();
+      // 중앙 조준선
+      X.globalAlpha=_lwP*(.4+Math.sin(_now*.03)*.2);X.strokeStyle='#ff2200';X.lineWidth=2+_lwP*3;X.setLineDash([12,8]);
+      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.laserAng)*_lwLen,e.y+Math.sin(e.laserAng)*_lwLen);X.stroke();X.setLineDash([]);
+      // 경고 마크
+      X.globalAlpha=_lwP*(.7+Math.sin(_now*.02)*.3);X.fillStyle='#ff2200';X.font='bold 22px sans-serif';X.textAlign='center';
+      X.fillText('⚠ LASER',e.x,e.y-e.r-25);X.globalAlpha=sa}
     if(e.ib&&e.s==='bossChargeWind'){
       const _cwP=1-e.st2/55;const _cwLen=Math.max(C.width,C.height)*1.5;
       const _cwW2=50+_cwP*40;const _cwPerp=e.facing+Math.PI/2;
@@ -42384,16 +42459,10 @@ function drawP(){
               for(let p=1;p<th.br[b].length;p++)X.lineTo(th.br[b][p].x,th.br[b][p].y);X.stroke();
             }
           }
-          // 착지 임팩트 — 큰 발광 + 플래시 + 파편
+          // 착지 임팩트 — 파편
           const lp=th.pts[th.pts.length-1];
           if(th.life>th.maxLife-6){
             const impA=ta*flash;
-            X.globalAlpha=impA*.2*_fzFade;
-            const ig=X.createRadialGradient(lp.x,lp.y,0,lp.x,lp.y,90);
-            ig.addColorStop(0,'rgba(200,210,255,.7)');ig.addColorStop(.3,'rgba(100,120,255,.3)');ig.addColorStop(1,'rgba(30,30,100,0)');
-            X.fillStyle=ig;X.beginPath();X.arc(lp.x,lp.y,90,0,Math.PI*2);X.fill();
-            X.globalAlpha=impA*.5*_fzFade;X.fillStyle='#ffffff';
-            X.beginPath();X.arc(lp.x,lp.y,10+Math.random()*6,0,Math.PI*2);X.fill();
             X.strokeStyle='#99aaff';X.lineWidth=2;X.globalAlpha=impA*.25*_fzFade;
             for(let si=0;si<8;si++){
               const sa=Math.PI*2*si/8+(Math.random()-.5)*.4;const sl=25+Math.random()*40;
@@ -46432,7 +46501,13 @@ function loop(timestamp){
   let frameTime=timestamp-_prevTs;_prevTs=timestamp;
   if(frameTime>50)frameTime=50; // 50ms 클램프 — 스파이크 프레임에서 물리/VFX 폭주 방지
   if(frameTime<0)frameTime=0;
-  _acc+=frameTime;
+  // ── 테스트베드: 가변 속도 배율 ──
+  if(window._btSpeedMul!==undefined)frameTime*=window._btSpeedMul;
+  // ── 테스트베드: 프레임 정지 모드 ──
+  if(window._btFramePause){
+    if(window._btFrameStep){window._btFrameStep=false;_acc=PHYS_STEP}// 1틱만 허용
+    else{_acc=0}
+  }else{_acc+=frameTime}
   // 적응형 catch-up: update가 가벼우면(8ms 이하) 5틱까지, 무거우면 3틱 (모바일 최대 2틱)
   const _accCap=IS_MOBILE?PHYS_STEP*2:(_prof.u<=8?PHYS_STEP*5:PHYS_STEP*3);
   if(_acc>_accCap)_acc=_accCap;
@@ -47782,6 +47857,74 @@ function _btBuildUI(){
     <button class="_btBtn" onclick="_btBoss&&(_btBoss.elite=0)">🔄 엘리트 리셋</button>
     <button class="_btBtn" onclick="P.x=_btBoss.x;P.y=_btBoss.y-80" title="보스 앞으로 순간이동">📍 텔레포트</button>
   </div>`;
+  // ── 보스 스탯 커스텀 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px;font-weight:700">⚙ 보스 스탯 커스텀</span>
+    <div style="margin-top:4px">
+      <span style="color:#aa8866;font-size:10px">ATK 배율: <span id="_btAtkVal">×1.0</span></span>
+      <input type="range" min="0.1" max="20" step="0.1" value="1" style="width:100%;accent-color:#ff6644"
+        oninput="if(_btBoss){_btBoss.atk=_btBoss._origAtk*(+this.value)};document.getElementById('_btAtkVal').textContent='×'+this.value">
+    </div>
+    <div style="margin-top:4px">
+      <span style="color:#aa8866;font-size:10px">SPD 배율: <span id="_btSpdVal">×1.0</span></span>
+      <input type="range" min="0.1" max="10" step="0.1" value="1" style="width:100%;accent-color:#44aaff"
+        oninput="if(_btBoss){_btBoss.speed=_btBoss._origSpd*(+this.value)};document.getElementById('_btSpdVal').textContent='×'+this.value">
+    </div>
+    <div style="margin-top:4px">
+      <span style="color:#aa8866;font-size:10px">보스 크기(r): <span id="_btRVal">${_btBoss?_btBoss.r:'?'}</span></span>
+      <input type="range" min="5" max="200" step="1" value="${_btBoss?_btBoss.r:30}" style="width:100%;accent-color:#44ff88"
+        oninput="if(_btBoss){_btBoss.r=+this.value};document.getElementById('_btRVal').textContent=this.value">
+    </div>
+    <div style="display:flex;gap:3px;margin-top:4px">
+      <button class="_btBtn" onclick="if(_btBoss){_btBoss._origAtk=_btBoss.atk}" style="flex:1">ATK 현재값 저장</button>
+      <button class="_btBtn" onclick="if(_btBoss){P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst}" style="flex:1">플레이어 풀회복</button>
+    </div>
+  </div>`;
+  // ── 사운드 갤러리 ──
+  const _sfxList=['slash','swing','charge','magic','groggy','detonate','block','deflect','beamStop'];
+  const _sfxMagicN=[0,1,2,3,4];
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px;font-weight:700">🔊 사운드 테스트</span>
+    <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:4px">
+      ${_sfxList.map(s=>`<button class="_btBtn" onclick="SFX.${s}?SFX.${s}():null" style="border-left:3px solid #4488ff">${s}</button>`).join('')}
+      ${_sfxMagicN.map(n=>`<button class="_btBtn" onclick="SFX.magic(${n})" style="border-left:3px solid #aa44ff">magic(${n})</button>`).join('')}
+    </div>
+  </div>`;
+  // ── 이펙트 테스트 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px;font-weight:700">💥 이펙트 테스트</span>
+    <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:4px">
+      <button class="_btBtn" onclick="shake(30)" style="border-left:3px solid #ff4444">shake(30)</button>
+      <button class="_btBtn" onclick="G._flashT=10;G._flashCol='#ffffff'" style="border-left:3px solid #ffffff">flash 백</button>
+      <button class="_btBtn" onclick="G._flashT=10;G._flashCol='#ff0000'" style="border-left:3px solid #ff0000">flash 적</button>
+      <button class="_btBtn" onclick="G.chromaT=30" style="border-left:3px solid #ff44ff">chroma</button>
+      <button class="_btBtn" onclick="G.hitStop=30" style="border-left:3px solid #ffcc00">hitStop</button>
+      <button class="_btBtn" onclick="G.slowMo=120" style="border-left:3px solid #44ccff">slowMo</button>
+      <button class="_btBtn" onclick="if(_btBoss)deathFX(_btBoss.x,_btBoss.y,_btBoss.r,_btBoss.col,false,false,_btBoss.etype)" style="border-left:3px solid #ff8844">deathFX</button>
+      <button class="_btBtn" onclick="addParts(P.x,P.y,'#ff4444',30)" style="border-left:3px solid #ff4444">파티클 30</button>
+      <button class="_btBtn" onclick="for(let i=0;i<20;i++){const a=Math.PI*2*i/20;poolPart(P.x,P.y,Math.cos(a)*8,Math.sin(a)*8,'#ffcc44',4,15)}" style="border-left:3px solid #ffcc44">링 파티클</button>
+    </div>
+  </div>`;
+  // ── 스킬명 화면 오버레이 ──
+  const _btSkillOverlay=document.createElement('div');
+  _btSkillOverlay.id='_btSkillName';
+  _btSkillOverlay.style.cssText='position:fixed;top:15%;left:50%;transform:translateX(-50%);font:bold 48px "Noto Sans KR",sans-serif;color:#ffcc44;text-shadow:0 0 20px #ff8800,0 0 40px #ff4400,2px 2px 0 #000;z-index:99998;pointer-events:none;opacity:0;transition:opacity .2s';
+  document.body.appendChild(_btSkillOverlay);
+  // 패턴 실행 시 스킬명 표시 — _btForcePattern 래핑
+  const _origForce=_btForcePattern;
+  _btForcePattern=function(id){
+    const overlay=document.getElementById('_btSkillName');
+    if(overlay){
+      const mv=BOSS_MOVES.find(m=>m.id===id);
+      const tags=mv?mv.tags.join(' | '):'';
+      overlay.innerHTML=`<div>${id}</div><div style="font-size:16px;color:#aa8866;margin-top:4px">${tags}</div>`;
+      overlay.style.opacity='1';
+      clearTimeout(overlay._fadeT);
+      overlay._fadeT=setTimeout(()=>overlay.style.opacity='0',2000);
+    }
+    _origForce(id);
+  };
+  window._btForcePattern=_btForcePattern;
   // ── 전체 패턴 연속 재생 ──
   panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:4px">
     <button class="_btBtn" onclick="_btPlayAll()" id="_btPlayAllBtn" style="width:100%;background:#332244;color:#aa88ff">▶ 전체 패턴 순차 재생</button>
