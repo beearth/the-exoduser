@@ -35,10 +35,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500&family=Noto+Serif+KR:wght@400;500&family=Noto+Serif+JP:wght@400;500&family=Noto+Serif+SC:wght@400;500&family=Noto+Serif+TC:wght@400;500&family=Noto+Naskh+Arabic:wght@400;500&family=Noto+Serif+Thai:wght@400;500&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden}
+body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden;cursor:url(img/cursors/cursor_death_scythe.png) 13 0,auto}
 
 /* ═══ Cinematic Scene ═══ */
-.cin-scene{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center}
+.cin-scene{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;cursor:url(img/cursors/cursor_death_scythe.png) 13 0,auto}
+.cin-scene *{cursor:url(img/cursors/cursor_death_scythe.png) 13 0,auto}
 
 /* 레터박스 */
 .cin-lb{position:absolute;left:0;right:0;background:#000;z-index:30;pointer-events:none}
@@ -358,7 +359,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
     <source src="video/intro.mp4" type="video/mp4">
   </video>
   <!-- 클릭 안내 -->
-  <div id="cinClickPrompt" style="position:absolute;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(0,0,0,0.1)">
+  <div id="cinClickPrompt" style="position:absolute;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.1)">
     <div style="pointer-events:none;display:flex;flex-direction:column;align-items:center;transform:translateX(23%)">
       <div style="color:#ffbb77;font-size:1.5rem;font-weight:900;letter-spacing:.4em;margin-right:-.4em;opacity:.9;text-shadow:0 0 10px #000, 0 0 20px rgba(255,80,0,0.8);animation:pulse 2s ease-in-out infinite">CLICK TO HELL</div>
     </div>
@@ -392,7 +393,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   </div>
 
   <!-- 클릭/탭 영역 (부분 스킵) -->
-  <div class="cin-overlay" style="position:absolute;inset:0;z-index:15;cursor:pointer"></div>
+  <div class="cin-overlay" style="position:absolute;inset:0;z-index:15"></div>
 
   <button class="skip-btn" id="skipBtn" style="display:none">SKIP ></button>
   <canvas id="cinHoldGauge" style="position:absolute;bottom:30px;right:30px;width:120px;height:100px;z-index:300;pointer-events:none"></canvas>
@@ -1882,11 +1883,11 @@ function _updateCharDisplay(s){
 
 function _swapLobbyBg(stage){
   const bg=$('lobbyBgImg');if(!bg)return;
-  const hell=Math.min(6,~~((stage||0)/10));
-  const key=hell===0?'frost':(hell===1?'flame':'abyss');
-  if(_curBg===key)return;
-  _curBg=key;
-  const url='assets/lobby/lobby_bg_'+key+'.webp';
+  const _bgs=[{k:'frost',e:'.png'},{k:'flame',e:'.png'},{k:'abyss',e:'.webp'}];
+  const pick=_bgs[~~(Math.random()*_bgs.length)];
+  if(_curBg===pick.k)return;
+  _curBg=pick.k;
+  const url='assets/lobby/lobby_bg_'+pick.k+pick.e;
   bg.style.opacity='0';
   setTimeout(()=>{
     bg.style.backgroundImage="url('"+url+"')";
