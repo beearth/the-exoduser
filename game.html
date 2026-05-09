@@ -9572,12 +9572,12 @@ const GP_BINDS={
   // Xbox 컨트롤러 매핑
   // 페이스 버튼
   0:'weapon',       // A → 좌클릭 (무기 공격)
-  1:'shield',       // B → 우클릭 (칼등 처내기)
+  1:'bow',          // B → Space (영역 스킬)
   2:'beam',         // X → E (마법)
   3:'parry',        // Y → Q (패링)
   // 범퍼
   4:'charge',       // LB → Shift (작살이동)
-  5:'bow',          // RB → Space (영역 스킬)
+  5:'shield',       // RB → 우클릭 (칼등 처내기)
   // 메뉴
   8:'inventory',    // Back — 인벤토리
   9:'settings',     // Start — 설정
@@ -9593,6 +9593,8 @@ const GP_DEAD=0.25; // 스틱 데드존
 let _gpad=null,_gpBtns={},_gpBtnsJust={},_gpBtnsPrev={},_gpAxes=[0,0,0,0];
 let _gpConnected=false; // 패드 하드웨어 연결됨
 let _gpActive=false;    // 패드 모드 활성 (실제 입력 감지 시 true, 키마 입력 시 false)
+// 로비에서 선택한 입력 모드 복원
+if(localStorage.getItem('inputMode')==='pad'){_gpActive=true;document.body.style.cursor='none'}
 addEventListener('gamepadconnected',e=>{_gpConnected=true;console.log('[GAMEPAD] 연결:',e.gamepad.id)});
 addEventListener('gamepaddisconnected',e=>{_gpConnected=false;_gpActive=false;_gpad=null;try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
 // 키보드/마우스 입력 → 패드모드 해제 + 패드 주입 키 정리

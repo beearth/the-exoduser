@@ -1,42 +1,49 @@
-﻿const http = require('http');
+const http = require('http');
 const fs = require('fs');
-// THE EXODUSER ??Electron Wrapper
-// GPU 釉붾줉由ъ뒪???고쉶 + WebGPU 媛뺤젣 ?쒖꽦??
+// THE EXODUSER — Electron Wrapper
+// GPU 블랙리스트 무시 + WebGPU 강제 활성화
 const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron');
 const path = require('path');
 
-// ?먥븧???⑦궎吏?媛먯? ??dev vs production 寃쎈줈 ?먥븧??
+// ═══ Steamworks 연동 (승인 후 steamworks.js 설치 시 활성화) ═══
+let steamworks = null;
+try {
+  steamworks = require('steamworks.js');
+  if (steamworks) {
+    const client = steamworks.init(/* APP_ID: steam_appid.txt 참조 */);
+    if (client) console.log('[STEAM] Steamworks 초기화 성공, user:', client.localplayer.getSteamId().steamId64);
+  }
+} catch (e) {
+  // steamworks.js 미설치 시 무시 (개발 모드)
+  console.log('[STEAM] Steamworks 미연동 (개발 모드)');
+}
+
+// dev vs production 경로 분기
 const IS_PACKAGED = app.isPackaged;
 
-// ?먥븧??GPU ?뚮옒洹???釉뚮씪?곗? 臾몄젣 ?꾩쟾 ?닿껐 ?먥븧??
-// Chrome/Electron GPU 釉붾줉由ъ뒪??臾댁떆 (RX 9070 XT 媛숈? ?좉퇋 GPU 吏??
+// GPU 하드웨어 가속 강제 (RX 9070 XT 등 최신 GPU)
 app.commandLine.appendSwitch('ignore-gpu-blocklist');
-// WebGPU 媛뺤젣 ?쒖꽦??
-app.commandLine.appendSwitch('enable-unsafe-webgpu');
-// ?섎뱶?⑥뼱 媛??媛뺤젣
-app.commandLine.appendSwitch('enable-gpu-rasterization');
-app.commandLine.appendSwitch('enable-zero-copy');
-app.commandLine.appendSwitch('enable-hardware-overlays', 'single-fullscreen');
-app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,CanvasOopRasterization');
+app.commandLine.appendSwitch('enable-gpu');
 app.commandLine.appendSwitch('enable-webgl');
 app.commandLine.appendSwitch('enable-accelerated-2d-canvas');
-// ANGLE 諛깆뿏?????쒖뒪??湲곕낯媛??ъ슜
-app.commandLine.appendSwitch('use-angle', 'd3d11');
-app.commandLine.appendSwitch('use-gl', 'angle');
-app.commandLine.appendSwitch('disable-software-rasterizer');
-// GPU ?뚮뱶諛뺤뒪 鍮꾪솢?깊솕 (Windows DirectX 珥덇린??臾몄젣 諛⑹?)
-app.commandLine.appendSwitch('disable-gpu-sandbox');
-// V-Sync 鍮꾪솢?깊솕 (144fps+ ?덉슜)
+app.commandLine.appendSwitch('enable-gpu-rasterization');
+app.commandLine.appendSwitch('enable-gpu-compositing');
+app.commandLine.appendSwitch('enable-zero-copy');
+app.commandLine.appendSwitch('enable-features', 'VaapiVideoDecoder,CanvasOopRasterization,RawDraw');
+// V-Sync + 프레임 리밋 완전 해제 (200fps+ 확보)
 app.commandLine.appendSwitch('disable-frame-rate-limit');
-// DPI ?ㅼ??쇰쭅 媛뺤젣 1x ??Windows 諛곗쑉(125%,150%) 臾댁떆, 1CSS px = 1臾쇰━ px
+app.commandLine.appendSwitch('disable-gpu-vsync');
+// 렌더 간격 제한 해제
+app.commandLine.appendSwitch('max-gum-fps', '0');
+// DPI 스케일링 강제 1x — Windows 배율(125%,150%) 무시
 app.commandLine.appendSwitch('force-device-scale-factor', '1');
 if (process.platform === 'win32') app.setAppUserModelId('hell.exoduser');
 
-// ?먥븧???댁옣 HTTP ?쒕쾭 (?몄씠釉?濡쒕뱶 API + ?뺤쟻 ?뚯씪) ?먥븧??
+// 내장 HTTP 서버 (세이브 로드 API + 정적 파일)
 const PORT = 3333;
 const ROOT = IS_PACKAGED
   ? path.join(process.resourcesPath, 'game')
-  : path.join(__dirname, '..'); // dev: ?꾨줈?앺듃 猷⑦듃, prod: resources/game
+  : path.join(__dirname, '..'); // dev: 프로젝트 루트, prod: resources/game
 const FAVICON_ICO_PATH = path.join(ROOT, 'favicon.ico');
 const FAVICON_PNG_PATH = path.join(ROOT, 'img', 'icon-256.png');
 const APP_ICON_PATH = fs.existsSync(path.join(__dirname, 'icon.ico'))
@@ -44,7 +51,7 @@ const APP_ICON_PATH = fs.existsSync(path.join(__dirname, 'icon.ico'))
   : (fs.existsSync(FAVICON_ICO_PATH) ? FAVICON_ICO_PATH : (fs.existsSync(FAVICON_PNG_PATH) ? FAVICON_PNG_PATH : undefined));
 const SAVE_DIR = IS_PACKAGED
   ? path.join(app.getPath('userData'), 'saves')
-  : path.join(ROOT, 'saves'); // prod: ?ъ슜???곗씠???대뜑 (?곌린 媛??
+  : path.join(ROOT, 'saves'); // prod: 사용자 데이터 폴더 (앱 외부)
 if (!fs.existsSync(SAVE_DIR)) fs.mkdirSync(SAVE_DIR, { recursive: true });
 
 function loadDotEnv() {
@@ -140,9 +147,9 @@ const server = http.createServer(async (req, res) => {
   }
 
   try {
-    // ?먥븧??API ?붾뱶?ъ씤???먥븧??
+    // ═══ API 엔드포인트 ═══
 
-    // GET /api/slots ???몄씠釉??щ’ 紐⑸줉
+    // GET /api/slots — 세이브 슬롯 목록
     if (pathname === '/api/slots' && req.method === 'GET') {
       const files = fs.readdirSync(SAVE_DIR).filter(f => f.endsWith('.json'));
       const slots = files.map(f => {
@@ -160,7 +167,7 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(res, 200, { ok: true, slots });
     }
 
-    // POST /api/save ??寃뚯엫 ???
+    // POST /api/save — 게임 저장
     if (pathname === '/api/save' && req.method === 'POST') {
       const body = await readBody(req);
       const slot = sanitizeSlot(body.slot || 'default');
@@ -170,7 +177,7 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(res, 200, { ok: true, slot });
     }
 
-    // GET /api/pixellab/status - ?쎌깘?????ㅼ젙 ?곹깭 ?뺤씤
+    // GET /api/pixellab/status — 픽셀랩 설정 상태 확인
     if (pathname === '/api/pixellab/status' && req.method === 'GET') {
       return sendJSON(res, 200, {
         ok: true,
@@ -179,7 +186,7 @@ const server = http.createServer(async (req, res) => {
       });
     }
 
-    // POST /api/pixellab/proxy - 픽샐랩 API 프록시
+    // POST /api/pixellab/proxy — 픽셀랩 API 프록시
     if (pathname === '/api/pixellab/proxy' && req.method === 'POST') {
       const body = await readBody(req);
       try {
@@ -203,7 +210,7 @@ const server = http.createServer(async (req, res) => {
       }
     }
 
-    // GET /api/load/:slot ??寃뚯엫 濡쒕뱶
+    // GET /api/load/:slot — 게임 로드
     if (pathname.startsWith('/api/load/') && req.method === 'GET') {
       const slot = sanitizeSlot(decodeURIComponent(pathname.slice(10)));
       const fp = path.join(SAVE_DIR, slot + '.json');
@@ -212,7 +219,7 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(res, 200, { ok: true, data });
     }
 
-    // DELETE /api/save/:slot ???몄씠釉???젣
+    // DELETE /api/save/:slot — 세이브 삭제
     if (pathname.startsWith('/api/save/') && req.method === 'DELETE') {
       const slot = sanitizeSlot(decodeURIComponent(pathname.slice(10)));
       const fp = path.join(SAVE_DIR, slot + '.json');
@@ -220,7 +227,7 @@ const server = http.createServer(async (req, res) => {
       return sendJSON(res, 200, { ok: true });
     }
 
-    // ?먥븧???뺤쟻 ?뚯씪 ?쒕튃 ?먥븧??
+    // 정적 파일 서빙
     let filePath;
     if (pathname === '/') filePath = path.join(ROOT, 'index.html');
     else if (pathname === '/game' || pathname === '/game.html') filePath = path.join(ROOT, 'game.html');
@@ -268,13 +275,13 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-// ?먥븧??Electron ?덈룄???먥븧??
+// Electron 윈도우 생성
 let mainWindow;
 
 function createWindow() {
   const { screen } = require('electron');
   const primary = screen.getPrimaryDisplay();
-  const { width: sw, height: sh } = primary.size; // ?ㅼ젣 ?댁긽??(workArea ?꾨땶 ?꾩껜)
+  const { width: sw, height: sh } = primary.size; // 실제 해상도 (workArea 아닌 전체)
   mainWindow = new BrowserWindow({
     width: Math.min(sw, 1280),
     height: Math.min(sh, 720),
@@ -285,36 +292,34 @@ function createWindow() {
     icon: APP_ICON_PATH,
     backgroundColor: '#000000',
     autoHideMenuBar: true,
-    frame: false, // ??댄?諛??쒓굅 (??ㅽ겕由?寃뚯엫)
+    frame: false, // 타이틀바 제거 (풀스크린 게임)
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
       preload: path.join(__dirname, 'preload.js'),
-      // 寃뚯엫 ?깅뒫??
-      backgroundThrottling: false,  // 諛깃렇?쇱슫???꾨젅???쒗븳 ?댁젣
+      backgroundThrottling: false,  // 백그라운드 프레임 제한 해제
       webgl: true,
-      experimentalFeatures: true,   // WebGPU ?쒖꽦??
+      experimentalFeatures: true,   // WebGPU 활성화
     }
   });
   if (APP_ICON_PATH && typeof mainWindow.setIcon === 'function') {
     try { mainWindow.setIcon(APP_ICON_PATH); } catch (_) {}
   }
 
-  // ?댁옣 ?쒕쾭?먯꽌 ?명듃濡쒕????쒖옉
+  // 내장 서버에서 일렉트론 시작
   mainWindow.loadURL(`http://localhost:${PORT}/`);
 
-  // 硫붾돱諛??④린湲?
+  // 메뉴바 숨기기
   mainWindow.setMenuBarVisibility(false);
 
-  // ?먥븧???ㅻ낫????ESC??寃뚯엫???꾨떖, F12??DevTools ?먥븧??
+  // F12: DevTools 토글
   mainWindow.webContents.on('before-input-event', (event, input) => {
     if (input.key === 'F12') mainWindow.webContents.toggleDevTools();
   });
-  // ESC濡??꾩껜?붾㈃???由щ뒗 寃?諛⑹?: ?꾩껜?붾㈃ ?댁젣 ??利됱떆 蹂듦뎄
   mainWindow.on('closed', () => { mainWindow = null; });
 }
 
-// ?먥븧??IPC ???붾㈃ 紐⑤뱶 ?꾪솚 ?먥븧??
+// IPC: 화면 모드 전환
 ipcMain.on('set-fullscreen', (e, mode) => {
   if (!mainWindow) return;
   if (mode === 'fullscreen') {
@@ -341,7 +346,7 @@ ipcMain.handle('get-display-mode', () => {
   return 'windowed';
 });
 
-// ?먥븧??IPC ???댁긽??蹂寃??먥븧??
+// IPC: 해상도 변경
 const RES_LIST = [
   [1280, 720],  [1366, 768],  [1600, 900],  [1920, 1080],
   [2560, 1080], [2560, 1440], [3440, 1440], [3840, 1600],
@@ -357,13 +362,13 @@ ipcMain.handle('get-resolutions', () => {
 
 ipcMain.on('set-resolution', (e, w, h) => {
   if (!mainWindow) return;
-  // ?꾩껜?붾㈃?대㈃ 臾댁떆
+  // 전체화면이면 무시
   if (mainWindow.isFullScreen() || mainWindow.isSimpleFullScreen()) return;
   mainWindow.setSize(w, h);
   mainWindow.center();
 });
 
-// ?먥븧?????쒖옉 ???쒕쾭 ???덈룄???쒖꽌 ?먥븧??
+// 앱 시작: 서버 → 윈도우 순서
 app.whenReady().then(() => {
   try {
     const st = app.getGPUFeatureStatus();
@@ -378,18 +383,18 @@ app.whenReady().then(() => {
   }
 
   server.listen(PORT, () => {
-    console.log(`[Server] http://localhost:${PORT} (Electron ?댁옣)`);
-    // GPU ?꾨줈?몄뒪 珥덇린???湲?(100ms)
+    console.log(`[Server] http://localhost:${PORT} (Electron 내장)`);
+    // GPU 프로세스 초기화 대기 (100ms)
     setTimeout(createWindow, 100);
   });
 
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
-      // ?대? ?쒕쾭媛 ?ㅽ뻾 以?(node server.js) ??洹몃깷 ?덈룄?곕쭔 ?앹꽦
-      console.log(`[Server] ?ы듃 ${PORT} ?ъ슜 以????몃? ?쒕쾭 ?ъ슜`);
+      // 이미 서버가 실행 중 (node server.cjs) → 그냥 윈도우만 생성
+      console.log(`[Server] 포트 ${PORT} 사용 중 → 기존 서버 사용`);
       setTimeout(createWindow, 100);
     } else {
-      console.error('[Server] ?쒕쾭 ?쒖옉 ?ㅽ뙣:', err);
+      console.error('[Server] 서버 시작 실패:', err);
     }
   });
 });
@@ -401,4 +406,3 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
-
