@@ -9707,25 +9707,38 @@ function _pollGamepad(){
   if(sr!==!!_gpBtnsPrev['sR']){K['KeyD']=sr;}_gpBtnsPrev['sR']=sr;
 }
 
-// ═══ 게임패드 UI 네비게이션 (사망/레벨업/클리어 등 오버레이 버튼) ═══
-let _gpUIIdx=0,_gpUIPrev={u:false,d:false,a:false};
+// ═══ 게임패드 UI 네비게이션 (범용 — 보이는 오버레이의 버튼 자동 수집) ═══
+let _gpUIIdx=0,_gpUIPrev={u:false,d:false,a:false},_gpUIBtns=[];
 function _gpUINav(){
   if(!_gpActive||!_gpad)return;
-  // 현재 보이는 오버레이의 클릭 가능 버튼 수집
-  const _screens=[
-    {id:'death',btns:['retryBtn','toLobbyBtn']},
-    {id:'lvUpScreen',btns:['lvUpClose'],check:el=>el.style.opacity==='1'},
-    {id:'stageClear',btns:['nextBtn'],check:el=>el.style.opacity==='1'},
-  ];
+  // 화면에 보이는 모든 오버레이(fixed/absolute, z-index>=10)에서 클릭 가능한 버튼 수집
+  const _overlays=document.querySelectorAll('div[style*="position:fixed"],div[style*="position: fixed"],.on,div[id]');
   let _btns=[];
-  for(const s of _screens){
-    const el=$(s.id);if(!el)continue;
-    const vis=s.check?s.check(el):el.classList.contains('on');
-    if(!vis)continue;
-    for(const bid of s.btns){const b=$(bid);if(b&&b.offsetParent!==null)_btns.push(b)}
-    break;
+  for(let i=0;i<_overlays.length;i++){
+    const ov=_overlays[i];
+    if(!ov.offsetParent&&ov.style.opacity!=='1'&&!ov.classList.contains('on'))continue;
+    const cs=getComputedStyle(ov);
+    if(cs.display==='none'||cs.visibility==='hidden')continue;
+    if(cs.pointerEvents==='none'&&cs.opacity==='0')continue;
+    const zi=parseInt(cs.zIndex)||0;
+    if(zi<10&&!ov.classList.contains('on'))continue;
+    // 이 오버레이 안의 button, [onclick], .retry 수집
+    const _cands=ov.querySelectorAll('button,[onclick],.retry,.diff-btn');
+    for(let j=0;j<_cands.length;j++){
+      const b=_cands[j];
+      if(b.offsetParent===null&&b.style.display==='none')continue;
+      const bcs=getComputedStyle(b);
+      if(bcs.display==='none'||bcs.visibility==='hidden'||bcs.pointerEvents==='none')continue;
+      if(!_btns.includes(b))_btns.push(b);
+    }
   }
-  if(!_btns.length){_gpUIIdx=0;return}
+  // 이전 프레임 버튼 목록과 다르면 인덱스 리셋
+  if(_btns.length!==_gpUIBtns.length||(_btns.length>0&&_btns[0]!==_gpUIBtns[0])){_gpUIIdx=0;_gpUIBtns=_btns}
+  if(!_btns.length){
+    // 아웃라인 정리
+    if(_gpUIBtns.length){for(let i=0;i<_gpUIBtns.length;i++){_gpUIBtns[i].style.outline='';_gpUIBtns[i].style.outlineOffset='';}_gpUIBtns=[]}
+    return;
+  }
   if(_gpUIIdx>=_btns.length)_gpUIIdx=0;
   // D-pad 위(12)/아래(13) 또는 좌스틱
   const u=!!_gpBtns[12]||_gpAxes[1]<-0.5;
@@ -9740,7 +9753,7 @@ function _gpUINav(){
     else{_btns[i].style.outline='';_btns[i].style.outlineOffset=''}
   }
   // A버튼 확인
-  if(a&&!_gpUIPrev.a){_btns[_gpUIIdx].click()}
+  if(a&&!_gpUIPrev.a&&_btns[_gpUIIdx]){_btns[_gpUIIdx].click()}
   _gpUIPrev.a=a;
 }
 
