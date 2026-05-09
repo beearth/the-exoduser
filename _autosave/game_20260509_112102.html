@@ -7470,6 +7470,7 @@ const BOSS_MOVES=[
   {id:'safeCorner',idx:53,tele:60,rec:60,canFeint:false,canDelay:0, range:[0,999],phase:[2,3,4],combo:['charge','lavaPools','fireRain'],tags:['zone','aoe','wipe'],cd:360},
   {id:'crossWipe',idx:54,tele:50,rec:50,canFeint:false,canDelay:0, range:[0,999],phase:[1,2,3,4],combo:['charge','shockGrid','fan'],tags:['zone','aoe','sustained'],cd:280},
   {id:'tidalWipe',idx:55,tele:60,rec:50,canFeint:false,canDelay:0, range:[0,999],phase:[2,3,4],combo:['charge','wallPush','fireRain'],tags:['zone','aoe','cc'],cd:320},
+  {id:'rapidMissile',idx:56,tele:30,rec:40,canFeint:false,canDelay:0, range:[250,999],phase:[0,1,2,3,4],combo:['charge','fan','burst'],tags:['ranged','multi-hit','gap-punish'],cd:100},
 ];
 const BOSS_COMBOS=[
   {seq:['charge','spin','burst'],        phase:[0,1,2,3,4]},
@@ -7551,12 +7552,12 @@ const BOSS_PHASES={
 // null = 전체 49종 사용 (기본), Set = 해당 기술만 사용
 const _BOSS_MOVESET=[];
 // ── 1장 썩은 숲 (si 0~3): 숲의 감시자 / 독버섯 거인 / 사냥꾼 / 기생수 ──
-_BOSS_MOVESET[0]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','lavaPools']);
-_BOSS_MOVESET[1]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','lavaPools']);
-_BOSS_MOVESET[2]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','cageTrap','lavaPools']);
-_BOSS_MOVESET[3]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','cageTrap','seekerMines','lavaPools']);
+_BOSS_MOVESET[0]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','lavaPools','rapidMissile']);
+_BOSS_MOVESET[1]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','lavaPools','rapidMissile']);
+_BOSS_MOVESET[2]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','cageTrap','lavaPools','rapidMissile']);
+_BOSS_MOVESET[3]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','cageTrap','seekerMines','lavaPools','rapidMissile']);
 // ── 2장 벌레굴 (si 4~9): 벌레 수호자 ~ 여왕 구더기 ──
-{const _ch2Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','poisonTrail','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','cageTrap','groundFissure','tideWave','lavaPools','fireRain','shockGrid','donutSlam','crossWipe'];
+{const _ch2Base=['slashCombo','slam','sweep','charge','jump','burst','shock','fan','spin','grab','multiDash','poisonTrail','summon','mine','vortex','chaseAoe','elemBall','beanStorm','beanRain','cageTrap','groundFissure','tideWave','lavaPools','fireRain','shockGrid','donutSlam','crossWipe','rapidMissile'];
 _BOSS_MOVESET[4]=new Set(_ch2Base);
 _BOSS_MOVESET[5]=new Set([..._ch2Base,'seekerMines']);
 _BOSS_MOVESET[6]=new Set([..._ch2Base,'seekerMines','fanWave']);
@@ -26787,7 +26788,7 @@ function update(){
   // ═══ 거울분신 업데이트 ═══
   if(G._mirrorClones&&G._mirrorClones.length>0){let _mcW=0;for(let mi=0;mi<G._mirrorClones.length;mi++){const mc=G._mirrorClones[mi];mc.t+=sp;mc.attackT-=sp;if(mc.t>=mc.delay&&mc.attackT<=0){mc.attackT=mc.attackCd;mc.facing=Math.atan2(P.y-mc.y,P.x-mc.x);if(dst(P.x,P.y,mc.x,mc.y)<mc.r+P.r+40&&P.iframes<=0){if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*2*pParryDmg());P.parryBank=(P.parryBank||0)+_pd;doParry(mc.atk,mc.x,mc.y);if(mc.src){mc.src.poise-=10;mc.src.poiseR=0}}else if(P.s!=='charge'){hurtP(~~(mc.atk*elMul(mc.el,ar().el)))}}addParts(mc.x,mc.y,mc.col||'#aa66ff',4)}const _mTgt={x:mc.src?mc.src.x+(Math.sin(mc.t*.05)*40):mc.x,y:mc.src?mc.src.y+(Math.cos(mc.t*.05)*40):mc.y};mc.x+=((_mTgt.x+(mi%2===0?50:-50))-mc.x)*.05*sp;mc.y+=((_mTgt.y+(mi%2===0?30:-30))-mc.y)*.05*sp;if(mc.t<mc.maxT)G._mirrorClones[_mcW++]=mc}G._mirrorClones.length=_mcW}
   // ═══ 균열 업데이트 ═══
-  if(G._fissures&&G._fissures.length>0){let _fsW=0;for(let fi=0;fi<G._fissures.length;fi++){const fs2=G._fissures[fi];fs2.t+=sp;fs2.len=Math.min(fs2.maxLen,fs2.len+fs2.spd*sp);const _fhx=fs2.x+Math.cos(fs2.ang)*fs2.len,_fhy=fs2.y+Math.sin(fs2.ang)*fs2.len;if(!fs2.exploded&&fs2.len>=fs2.maxLen){fs2.exploded=true;SFX.detonate();shake(12);if(dst(P.x,P.y,_fhx,_fhy)<fs2.explR&&P.iframes<=0&&P.s!=='charge'){hurtP(~~(fs2.dmg*elMul(fs2.el,ar().el)));const ka=Math.atan2(P.y-_fhy,P.x-_fhx);P.kb.x+=Math.cos(ka)*10;P.kb.y+=Math.sin(ka)*10}for(let k=0;k<10;k++){const a=Math.PI*2*k/10;poolPart(_fhx,_fhy,Math.cos(a)*5,Math.sin(a)*5,ELC[fs2.el]||'#ff4400',3,10)}}if(fs2.t<fs2.maxT)G._fissures[_fsW++]=fs2}G._fissures.length=_fsW}
+  if(G._fissures&&G._fissures.length>0){let _fsW=0;for(let fi=0;fi<G._fissures.length;fi++){const fs2=G._fissures[fi];fs2.t+=sp;let _fhx=fs2.x+Math.cos(fs2.ang)*fs2.len,_fhy=fs2.y+Math.sin(fs2.ang)*fs2.len;const _toP=Math.atan2(P.y-_fhy,P.x-_fhx);_fhx+=Math.cos(_toP)*fs2.spd*sp;_fhy+=Math.sin(_toP)*fs2.spd*sp;fs2.ang=Math.atan2(_fhy-fs2.y,_fhx-fs2.x);fs2.len=Math.min(fs2.maxLen,dst(fs2.x,fs2.y,_fhx,_fhy));_fhx=fs2.x+Math.cos(fs2.ang)*fs2.len;_fhy=fs2.y+Math.sin(fs2.ang)*fs2.len;if(!fs2.exploded&&fs2.len>=fs2.maxLen){fs2.exploded=true;SFX.detonate();shake(12);if(dst(P.x,P.y,_fhx,_fhy)<fs2.explR&&P.iframes<=0&&P.s!=='charge'){hurtP(~~(fs2.dmg*elMul(fs2.el,ar().el)));const ka=Math.atan2(P.y-_fhy,P.x-_fhx);P.kb.x+=Math.cos(ka)*10;P.kb.y+=Math.sin(ka)*10}for(let k=0;k<10;k++){const a=Math.PI*2*k/10;poolPart(_fhx,_fhy,Math.cos(a)*5,Math.sin(a)*5,ELC[fs2.el]||'#ff4400',3,10)}}if(fs2.t<fs2.maxT)G._fissures[_fsW++]=fs2}G._fissures.length=_fsW}
   // ═══ 조류파 업데이트 ═══
   if(G._tideWaves&&G._tideWaves.length>0){let _twW=0;for(let ti=0;ti<G._tideWaves.length;ti++){const tw=G._tideWaves[ti];tw.t+=sp;tw.r=Math.min(tw.maxR,tw.r+tw.spd*sp);tw.hitT-=sp;if(tw.hitT<=0){tw.hitT=10;const _pd2=dst(P.x,P.y,tw.x,tw.y);if(Math.abs(_pd2-tw.r)<tw.w&&P.iframes<=0&&P.s!=='charge'){const _pAng=Math.atan2(P.y-tw.y,P.x-tw.x);let _gd=_pAng-tw.gapAng;while(_gd>Math.PI)_gd-=Math.PI*2;while(_gd<-Math.PI)_gd+=Math.PI*2;if(Math.abs(_gd)>tw.gapSize){if(isPWin()){P.parryBank=(P.parryBank||0)+~~(tw.dmg*.5);doParry(tw.dmg,P.x,P.y)}else{hurtP(~~(tw.dmg*elMul(tw.el,ar().el)))}}}}if(tw.t<tw.maxT)G._tideWaves[_twW++]=tw}G._tideWaves.length=_twW}
   // ═══ 추적지뢰 업데이트 ═══
@@ -27851,6 +27852,26 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       addTxt(e.x,e.y-30,'🌊 '+_dirNames[_twDir]+' '+_T('파도!'),'#4488ff',70);
       SFX.magic(2);shake(10);
       e.s='recover';e.st2=50;break;
+    }
+    case'rapidMissile':{
+      // 고속 미사일 — 원거리 징벌, 패링 가능
+      e.facing=Math.atan2(P.y-e.y,P.x-e.x);
+      const _rmPh=e._bossPhase||0;
+      const _rmN=3+Math.min(_rmPh,3); // 3~6발
+      for(let mi=0;mi<_rmN;mi++){
+        const _mOff=(mi-(_rmN-1)/2)*.15; // 약간 퍼짐
+        const _mAng=e.facing+_mOff;
+        const _mSpd=14+_rmPh*2; // 매우 빠름
+        spawnProj({x:e.x+Math.cos(_mAng)*e.r,y:e.y+Math.sin(_mAng)*e.r,
+          vx:Math.cos(_mAng)*_mSpd,vy:Math.sin(_mAng)*_mSpd,
+          dmg:~~(e.atk*2),el:e.el,friendly:false,life:300,ml:300,
+          col:'#ff4444',sz:3,homing:true, // 약한 유도
+          _missileTrail:true}); // 미사일 트레일 플래그
+      }
+      SFX.charge();shake(8);
+      addTxt(e.x,e.y-30,_T('🚀 미사일!'),'#ff2200',55);
+      addParts(e.x,e.y,'#ff4444',12);
+      e.s='recover';e.st2=30;break;
     }
   }
 }
@@ -30159,18 +30180,19 @@ function updateE(e,sp){
       e.s='recover';e.st2=45}break;
   // ── 보스 돌진: 빠른 대쉬 ──
   case'bossChargeWind':
-    if(e.st2<=0){e.s='bossCharge';e.st2=25;e.echDx=Math.cos(e.facing);e.echDy=Math.sin(e.facing);
+    e.facing=Math.atan2(P.y-e.y,P.x-e.x); // 와인드업 중 플레이어 추적
+    if(e.st2<=0){e.s='bossCharge';e.st2=50;e.echDx=Math.cos(e.facing);e.echDy=Math.sin(e.facing);
       SFX.charge();addParts(e.x,e.y,e.col,8)}break;
   case'bossCharge':{
-    const spd=7*sp;const nx=e.x+e.echDx*spd,ny=e.y+e.echDy*spd;
+    const spd=35*sp;const nx=e.x+e.echDx*spd,ny=e.y+e.echDy*spd;
     if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}
     else if(canMv(e.x+e.echDx*spd,e.y,e.r)){e.x+=e.echDx*spd}
     else if(canMv(e.x,e.y+e.echDy*spd,e.r)){e.y+=e.echDy*spd}
     else{
       // 양축 모두 막힘 → Wall slam shockwave
-      e.shockR=0;e.shockMax=80;e.s='bossShock';e.st2=20;
-      G.shake=12*OPT.shake/100;SFX.groggy();break}
-    if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+8&&P.iframes<=0){
+      e.shockR=0;e.shockMax=800;e.s='bossShock';e.st2=20;
+      G.shake=25*OPT.shake/100;SFX.groggy();break}
+    if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+80&&P.iframes<=0){
       if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*5*pParryDmg());
         if(P.skills.detonate){P.parryBank=(P.parryBank||0)+_pd;e.stunned=60;addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',35)}
         else{e.stunned=90;e.kb.x=Math.cos(e.facing+Math.PI)*18;e.kb.y=Math.sin(e.facing+Math.PI)*18;hurtE(e,_pd,e.facing+Math.PI);P.parryBank=(P.parryBank||0)+_pd}
@@ -30188,14 +30210,14 @@ function updateE(e,sp){
     // 벽 충돌 방지: lerp 위치가 유효할 때만 이동
     if(canMv(_jx,_jy,e.r)){e.x=_jx;e.y=_jy}
     if(e.st2<=0){// Landing impact
-      e.shockR=0;e.shockMax=160+G.stage*10;
+      e.shockR=0;e.shockMax=800+G.stage*50;
       e.s='bossShock';e.st2=25;
-      G.shake=15*OPT.shake/100;SFX.groggy();G._flashT=3;G._flashCol='#ffaa00';
+      G.shake=25*OPT.shake/100;SFX.groggy();G._flashT=5;G._flashCol='#ffaa00';
       deathFX(e.x,e.y,e.r,e.col,false,false,e.etype); // 착지 충격파 이펙트 (스파크 링)
       // Landing damage to nearby player
-      if(dst(P.x,P.y,e.x,e.y)<60&&P.iframes<=0&&P.s!=='charge'){
+      if(dst(P.x,P.y,e.x,e.y)<300&&P.iframes<=0&&P.s!=='charge'){
         hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
-        const ang=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ang)*10;P.kb.y+=Math.sin(ang)*10}
+        const ang=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ang)*15;P.kb.y+=Math.sin(ang)*15}
     }break}
   // ── 레이저: 조준선 → 빔 발사 + 스윕 ──
   case'bossLaserWind':{
@@ -30203,7 +30225,7 @@ function updateE(e,sp){
     const toP=Math.atan2(P.y-e.y,P.x-e.x);
     let diff=toP-e.laserAng;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
     e.laserAng+=diff*0.04*sp; // 느린 추적
-    if(e.st2<=0){e.s='bossLaser';e.st2=45;e.laserLen=280+G.stage*15;SFX.charge()}break}
+    if(e.st2<=0){e.s='bossLaser';e.st2=80;e.laserLen=1400+G.stage*60;SFX.charge()}break}
   case'bossLaser':{
     // 스윕: 발사 중 천천히 회전
     const toP2=Math.atan2(P.y-e.y,P.x-e.x);
@@ -30224,7 +30246,7 @@ function updateE(e,sp){
     const proj=dx*lx+dy*ly; // 레이저 축 투영
     if(proj>0&&proj<_laserActLen){
       const perp=Math.abs(dx*ly-dy*lx); // 수직 거리
-      if(perp<P.r+10&&P.iframes<=0){
+      if(perp<P.r+80&&P.iframes<=0){
         if(isPWin()){P.parryBank=(P.parryBank||0)+~~(e.atk*1.6);doParry(e.atk,e.x,e.y);_poiseHit(e,20);addTxt(P.x,P.y-25,_T('⚡패링!'),'#ffdd00',50)}
         else if(P.s!=='charge'){hurtP(~~(P.mhp*.01),{dtype:'magic'});
           playSample(['fire_death','fire_death2','fire_death3'][Math.random()*3|0],.5,_r(1.2,.15));
@@ -30239,7 +30261,7 @@ function updateE(e,sp){
     if(e.st2<=0){e.s='recover';e.st2=60;SFX.beamStop()}break}
   // ── 충격파: 확장 링 ──
   case'bossShockWind':
-    if(e.st2<=0){e.shockR=0;e.shockMax=180+G.stage*12;e.s='bossShock';e.st2=30;
+    if(e.st2<=0){e.shockR=0;e.shockMax=1000+G.stage*50;e.s='bossShock';e.st2=30;
       SFX.groggy();G.shake=10*OPT.shake/100;addParts(e.x,e.y,e.col,18)}break;
   case'bossShock':{
     const expandSpd=4.5*sp;e.shockR+=expandSpd;
@@ -30335,7 +30357,7 @@ function updateE(e,sp){
     if(Math.random()>.6)poolPart(e.x+Math.cos(_ga)*e.r,e.y+Math.sin(_ga)*e.r,(Math.random()-.5)*2,-1.5,'#ff2266',3,10);
     if(e.st2<=0){
       // 잡기 판정
-      if(dst(P.x,P.y,e.x,e.y)<e.r+P.r+20&&P.iframes<=0&&P.s!=='charge'){
+      if(dst(P.x,P.y,e.x,e.y)<e.r+P.r+200&&P.iframes<=0&&P.s!=='charge'){
         // 잡기는 보라색 = 패링 불가! 무조건 잡힘
         e.s='bossGrab';e.st2=60;
         addTxt(P.x,P.y-25,_T('⚠ 잡혔다!'),'#cc00ff',50);G.shake=10*OPT.shake/100;
@@ -30363,7 +30385,7 @@ function updateE(e,sp){
     if(e.st2<=0){e.s='bossSpin';e.st2=50;e._spinAng=0;SFX.charge()}break}
   case'bossSpin':{
     e._spinAng+=.35*sp; // 빠른 회전
-    const _spR=50+G.stage*3; // 범위
+    const _spR=500+G.stage*15; // 범위
     // 회전 중 검기 투사체 방출 (8프레임마다)
     if(e.st2%8<sp){
       const sa=e._spinAng;
@@ -30548,7 +30570,7 @@ function updateE(e,sp){
     const _sMx=Math.cos(e.facing)*2.5*sp,_sMy=Math.sin(e.facing)*2.5*sp;
     if(canMv(e.x+_sMx,e.y+_sMy,e.r)){e.x+=_sMx;e.y+=_sMy}
     // 부채꼴 히트 판정 (전방 +-70도)
-    if(_swProg>.3&&_swProg<.7&&dst(P.x,P.y,e.x,e.y)<e.r+P.r+35&&P.iframes<=0){
+    if(_swProg>.3&&_swProg<.7&&dst(P.x,P.y,e.x,e.y)<e.r+P.r+300&&P.iframes<=0){
       const _toP=Math.atan2(P.y-e.y,P.x-e.x);
       const _aDiff=Math.abs(((_toP-e.facing)%(Math.PI*2)+(Math.PI*3))%(Math.PI*2)-Math.PI);
       if(_aDiff<1.2){
@@ -30586,7 +30608,7 @@ function updateE(e,sp){
     if(e.st2<=0){
       // 착지 충격파
       e._weaponAng=0;
-      const _slamR=70+G.stage*4+(e._bossPhase||0)*10;
+      const _slamR=1000+G.stage*30+(e._bossPhase||0)*80;
       const _slamD=dst(P.x,P.y,e.x,e.y);
       if(_slamD<_slamR&&P.iframes<=0){
         if(isPWin()){const _pd=~~(((P.baseAtk+(wp().atk||0)+enhMulAtk(wp().enh||0)))*4*pParryDmg());
@@ -30614,7 +30636,7 @@ function updateE(e,sp){
     const _dir=(e._sweepDir||1);
     e._weaponAng=_dir*(-1.2+_swProg2*2.8); // 넓은 호: -1.2 -> +1.6
     // 넓은 부채꼴 히트 (전방 +-100도)
-    const _swR=e.r+P.r+45;
+    const _swR=e.r+P.r+400;
     if(_swProg2>.15&&_swProg2<.85&&dst(P.x,P.y,e.x,e.y)<_swR&&P.iframes<=0){
       const _toP2=Math.atan2(P.y-e.y,P.x-e.x);
       const _aDiff2=Math.abs(((_toP2-e.facing)%(Math.PI*2)+(Math.PI*3))%(Math.PI*2)-Math.PI);
@@ -30731,10 +30753,10 @@ function updateE(e,sp){
   // ═══ 위험찌르기 — 장거리 찌르기, 패링시 체간 3배 ═══
   case'bossPerilWind':{
     e.facing=Math.atan2(P.y-e.y,P.x-e.x);
-    if(e.st2<=0){e.s='bossPerilThrust';e.st2=8;SFX.slash();
+    if(e.st2<=0){e.s='bossPerilThrust';e.st2=30;SFX.slash();
       e.echDx=Math.cos(e.facing);e.echDy=Math.sin(e.facing)}break}
   case'bossPerilThrust':{
-    const _ptSpd=12*sp;
+    const _ptSpd=50*sp;
     const nx=e.x+e.echDx*_ptSpd,ny=e.y+e.echDy*_ptSpd;
     if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}else{e.s='recover';e.st2=40;break}
     if(dst(P.x,P.y,e.x,e.y)<P.r+e.r+12&&P.iframes<=0){
@@ -34300,7 +34322,6 @@ function activateGiantSlam(srcId){
 // earthBreaker / earthSlam 전체 함수 삭제됨
 // 대왕치기 히트 (원형 진동파 — 큰 포이즈 피해, 보스 체간 40%)
 function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
-  SFX.slam();
   const _sR=stunRange||range; // 스턴 범위 (없으면 데미지 범위와 동일)
   dmg=~~(dmg*pAtkMul())+(P._atkBon||0);P._atkBon=0;
   // 깊이 버퍼 — hurtE 내부 shQuery 오염 방지 (.slice/수동복사 제거)
@@ -39632,6 +39653,72 @@ function draw(){
       X.globalAlpha=.15*(1-_atkP);X.strokeStyle=ELC[e.el]||e.col;X.lineWidth=2;
       X.beginPath();X.arc(e.x,e.y,e.r+5+_atkP*20,0,Math.PI*2);X.stroke();
       X.globalAlpha=sa}
+    // ── 보스 근접 와인드업 경고 표시 ──
+    if(e.ib&&e.s==='bossSlamWind'){
+      const _swP=1-e.st2/30;const _swR=1000+(G.stage||0)*30+((e._bossPhase||0))*80;
+      X.globalAlpha=_swP*.12;X.fillStyle='#ff4400';X.beginPath();X.arc(e.x,e.y,_swR*_swP,0,Math.PI*2);X.fill();
+      X.globalAlpha=_swP*.4;X.strokeStyle='#ff4400';X.lineWidth=3;X.setLineDash([8,6]);
+      X.beginPath();X.arc(e.x,e.y,_swR,0,Math.PI*2);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossSlashWind'){
+      const _slP=1-e.st2/15;const _slR=e.r+(P.r||8)+300;
+      X.globalAlpha=_slP*.15;X.fillStyle='#ff8844';
+      X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_slR,e.facing-1.2,e.facing+1.2);X.closePath();X.fill();
+      X.globalAlpha=_slP*.5;X.strokeStyle='#ff8844';X.lineWidth=2;X.setLineDash([6,4]);
+      X.beginPath();X.arc(e.x,e.y,_slR,e.facing-1.2,e.facing+1.2);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossSweepWind'){
+      const _swP2=1-e.st2/20;const _swR2=e.r+(P.r||8)+400;
+      X.globalAlpha=_swP2*.15;X.fillStyle='#ffaa00';
+      X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_swR2,e.facing-1.7,e.facing+1.7);X.closePath();X.fill();
+      X.globalAlpha=_swP2*.5;X.strokeStyle='#ffaa00';X.lineWidth=2;X.setLineDash([6,4]);
+      X.beginPath();X.arc(e.x,e.y,_swR2,e.facing-1.7,e.facing+1.7);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossSpinWind'){
+      const _spP=1-e.st2/25;const _spR=500+(G.stage||0)*15;
+      X.globalAlpha=_spP*.12;X.fillStyle='#ff6644';X.beginPath();X.arc(e.x,e.y,_spR*_spP,0,Math.PI*2);X.fill();
+      X.globalAlpha=_spP*.4;X.strokeStyle='#ff6644';X.lineWidth=3;X.setLineDash([8,6]);
+      X.beginPath();X.arc(e.x,e.y,_spR,0,Math.PI*2);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossGrabWind'){
+      const _grP=1-e.st2/40;const _grR=e.r+(P.r||8)+200;
+      X.globalAlpha=_grP*.2;X.fillStyle='#cc00ff';
+      X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_grR,e.facing-.8,e.facing+.8);X.closePath();X.fill();
+      X.globalAlpha=_grP*.6;X.strokeStyle='#cc00ff';X.lineWidth=2;X.setLineDash([6,4]);
+      X.beginPath();X.arc(e.x,e.y,_grR,e.facing-.8,e.facing+.8);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossShockWind'){
+      const _shP=1-e.st2/30;const _shR=1000+(G.stage||0)*50;
+      X.globalAlpha=_shP*.1;X.fillStyle='#44ccff';X.beginPath();X.arc(e.x,e.y,_shR*_shP,0,Math.PI*2);X.fill();
+      X.globalAlpha=_shP*.4;X.strokeStyle='#44ccff';X.lineWidth=3;X.setLineDash([8,6]);
+      X.beginPath();X.arc(e.x,e.y,_shR,0,Math.PI*2);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossLaserWind'){
+      const _lwP=1-e.st2/40;const _lwLen=Math.max(C.width,C.height)*1.5;
+      const _lwW=30+_lwP*50; // 폭 점점 커짐
+      const _lwPerp=e.laserAng+Math.PI/2;
+      // 조준선 영역
+      X.globalAlpha=_lwP*.1;X.fillStyle='#ff2200';
+      X.beginPath();
+      X.moveTo(e.x+Math.cos(_lwPerp)*_lwW,e.y+Math.sin(_lwPerp)*_lwW);
+      X.lineTo(e.x+Math.cos(e.laserAng)*_lwLen+Math.cos(_lwPerp)*_lwW,e.y+Math.sin(e.laserAng)*_lwLen+Math.sin(_lwPerp)*_lwW);
+      X.lineTo(e.x+Math.cos(e.laserAng)*_lwLen-Math.cos(_lwPerp)*_lwW,e.y+Math.sin(e.laserAng)*_lwLen-Math.sin(_lwPerp)*_lwW);
+      X.lineTo(e.x-Math.cos(_lwPerp)*_lwW,e.y-Math.sin(_lwPerp)*_lwW);
+      X.closePath();X.fill();
+      // 중앙 조준선
+      X.globalAlpha=_lwP*(.4+Math.sin(_now*.03)*.2);X.strokeStyle='#ff2200';X.lineWidth=2+_lwP*3;X.setLineDash([12,8]);
+      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.laserAng)*_lwLen,e.y+Math.sin(e.laserAng)*_lwLen);X.stroke();X.setLineDash([]);
+      // 경고 마크
+      X.globalAlpha=_lwP*(.7+Math.sin(_now*.02)*.3);X.fillStyle='#ff2200';X.font='bold 22px sans-serif';X.textAlign='center';
+      X.fillText('⚠ LASER',e.x,e.y-e.r-25);X.globalAlpha=sa}
+    if(e.ib&&e.s==='bossChargeWind'){
+      const _cwP=1-e.st2/55;const _cwLen=Math.max(C.width,C.height)*1.5;
+      const _cwW2=50+_cwP*40;const _cwPerp=e.facing+Math.PI/2;
+      X.globalAlpha=_cwP*.15;X.fillStyle='#ffaa00';
+      X.beginPath();
+      X.moveTo(e.x+Math.cos(_cwPerp)*_cwW2,e.y+Math.sin(_cwPerp)*_cwW2);
+      X.lineTo(e.x+Math.cos(e.facing)*_cwLen+Math.cos(_cwPerp)*_cwW2,e.y+Math.sin(e.facing)*_cwLen+Math.sin(_cwPerp)*_cwW2);
+      X.lineTo(e.x+Math.cos(e.facing)*_cwLen-Math.cos(_cwPerp)*_cwW2,e.y+Math.sin(e.facing)*_cwLen-Math.sin(_cwPerp)*_cwW2);
+      X.lineTo(e.x-Math.cos(_cwPerp)*_cwW2,e.y-Math.sin(_cwPerp)*_cwW2);
+      X.closePath();X.fill();
+      X.globalAlpha=_cwP*.5;X.strokeStyle='#ffaa00';X.lineWidth=3;X.setLineDash([10,6]);
+      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.facing)*_cwLen,e.y+Math.sin(e.facing)*_cwLen);X.stroke();X.setLineDash([]);
+      X.globalAlpha=_cwP*(.6+Math.sin(_now*.02)*.3);X.fillStyle='#ffaa00';X.font='bold 22px sans-serif';X.textAlign='center';
+      X.fillText('⚠',e.x,e.y-e.r-20);X.globalAlpha=sa}
     if(e.s==='eCharge'||e.s==='bossCharge'){X.globalAlpha=.4;X.fillStyle=e.col;for(let ci=1;ci<=3;ci++){X.globalAlpha=.15/ci;X.beginPath();X.arc(e.x-(e.echDx||0)*8*ci,e.y-(e.echDy||0)*8*ci,e.r,0,Math.PI*2);X.fill()}
       // 보스 돌진: 바닥 먼지 파티클
       if(e.ib&&Math.random()>.5){const _da=e.facing+Math.PI+(Math.random()-.5)*.8;
@@ -40073,6 +40160,14 @@ function draw(){
     // ── 지연참 홀드 이펙트 ──
     if(e.ib&&e.s==='bossDelaySlashHold'){
       const _dsP=1-e.st2/(e._dsMaxT||60);
+      const _dsLen=300+_dsP*200; // 참격 범위 경고
+      // 부채꼴 경고 영역
+      const _dsArcW=.8; // 참격 호 폭
+      X.globalAlpha=_dsP*.2;X.fillStyle='#ff0000';
+      X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_dsLen,e.facing-_dsArcW/2,e.facing+_dsArcW/2);X.closePath();X.fill();
+      // 경고 호
+      X.globalAlpha=_dsP*.6;X.strokeStyle='#ff2200';X.lineWidth=3+_dsP*4;X.setLineDash([10,6]);
+      X.beginPath();X.arc(e.x,e.y,_dsLen,e.facing-_dsArcW/2,e.facing+_dsArcW/2);X.stroke();X.setLineDash([]);
       // 긴장선 (무기 떨림)
       const _trem=Math.sin(_now*.03+e.x)*3*(1+_dsP);
       X.globalAlpha=.5+_dsP*.4;X.strokeStyle='#ff2200';X.lineWidth=3+_dsP*3;X.lineCap='round';
@@ -40094,12 +40189,23 @@ function draw(){
     // ── 위험찌르기 이펙트 ──
     if(e.ib&&e.s==='bossPerilWind'){
       const _ppP=1-e.st2/25;
+      const _ptLen=Math.max(C.width,C.height)*1.5; // 맵 끝까지
+      // 경고 영역 — 돌진 경로 전체 표시
+      X.globalAlpha=_ppP*.15;X.fillStyle='#ff0000';
+      const _ptW=40+_ppP*30; // 경로 폭
+      const _ptPerp=e.facing+Math.PI/2;
+      X.beginPath();
+      X.moveTo(e.x+Math.cos(_ptPerp)*_ptW,e.y+Math.sin(_ptPerp)*_ptW);
+      X.lineTo(e.x+Math.cos(e.facing)*_ptLen+Math.cos(_ptPerp)*_ptW,e.y+Math.sin(e.facing)*_ptLen+Math.sin(_ptPerp)*_ptW);
+      X.lineTo(e.x+Math.cos(e.facing)*_ptLen-Math.cos(_ptPerp)*_ptW,e.y+Math.sin(e.facing)*_ptLen-Math.sin(_ptPerp)*_ptW);
+      X.lineTo(e.x-Math.cos(_ptPerp)*_ptW,e.y-Math.sin(_ptPerp)*_ptW);
+      X.closePath();X.fill();
+      // 중앙선
+      X.globalAlpha=_ppP*.6;X.strokeStyle='#ff0000';X.lineWidth=3+_ppP*4;X.setLineDash([12,8]);
+      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.facing)*_ptLen,e.y+Math.sin(e.facing)*_ptLen);X.stroke();X.setLineDash([]);
       // 빨간 위험 마크
-      X.globalAlpha=_ppP*(.6+Math.sin(_now*.02)*.3);X.fillStyle='#ff0000';X.font='bold 16px sans-serif';X.textAlign='center';
-      X.fillText('⚠',e.x,e.y-e.r-20);
-      // 방향 선
-      X.globalAlpha=_ppP*.5;X.strokeStyle='#ff0000';X.lineWidth=2+_ppP*3;X.setLineDash([6,4]);
-      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.facing)*200,e.y+Math.sin(e.facing)*200);X.stroke();X.setLineDash([]);
+      X.globalAlpha=_ppP*(.7+Math.sin(_now*.02)*.3);X.fillStyle='#ff0000';X.font='bold 24px sans-serif';X.textAlign='center';
+      X.fillText('⚠ !',e.x,e.y-e.r-25);
       X.globalAlpha=sa}
     if(e.ib&&e.s==='bossPerilThrust'){
       // 찌르기 궤적
@@ -42351,16 +42457,10 @@ function drawP(){
               for(let p=1;p<th.br[b].length;p++)X.lineTo(th.br[b][p].x,th.br[b][p].y);X.stroke();
             }
           }
-          // 착지 임팩트 — 큰 발광 + 플래시 + 파편
+          // 착지 임팩트 — 파편
           const lp=th.pts[th.pts.length-1];
           if(th.life>th.maxLife-6){
             const impA=ta*flash;
-            X.globalAlpha=impA*.2*_fzFade;
-            const ig=X.createRadialGradient(lp.x,lp.y,0,lp.x,lp.y,90);
-            ig.addColorStop(0,'rgba(200,210,255,.7)');ig.addColorStop(.3,'rgba(100,120,255,.3)');ig.addColorStop(1,'rgba(30,30,100,0)');
-            X.fillStyle=ig;X.beginPath();X.arc(lp.x,lp.y,90,0,Math.PI*2);X.fill();
-            X.globalAlpha=impA*.5*_fzFade;X.fillStyle='#ffffff';
-            X.beginPath();X.arc(lp.x,lp.y,10+Math.random()*6,0,Math.PI*2);X.fill();
             X.strokeStyle='#99aaff';X.lineWidth=2;X.globalAlpha=impA*.25*_fzFade;
             for(let si=0;si<8;si++){
               const sa=Math.PI*2*si/8+(Math.random()-.5)*.4;const sl=25+Math.random()*40;
@@ -48034,196 +48134,76 @@ function _b3animate(){
 _b3animate();
 console.log('[BOSS3D] Overlay initialized');
 </script>
-<script>
-// ═══════════════════════════════════════════════════════════════
-// CHEST 3D — 갓오브워 스타일 보물상자  v2.0
-// ═══════════════════════════════════════════════════════════════
+<script type="module">
+// CHEST 3D — Meshy GLB v8.0
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 (function(){
 'use strict';
 const CVS=document.getElementById('chest3dCvs');
-if(!CVS||typeof THREE==='undefined')return;
+if(!CVS)return;
 
-const SZ=120;
+const SZ=140;
 const R=new THREE.WebGLRenderer({canvas:CVS,alpha:true,antialias:true,powerPreference:'high-performance'});
 R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio,2));
 CVS.style.width=CVS.style.height=SZ+'px';
 R.setClearColor(0,0);R.outputColorSpace=THREE.SRGBColorSpace;
 R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
-R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.4;
+R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.5;
 
 const SC=new THREE.Scene();
-SC.fog=new THREE.FogExp2(0x010000,0.15);
+const CAM=new THREE.PerspectiveCamera(40,1,0.01,30);
+CAM.position.set(0.3,1.8,3.4);CAM.lookAt(0,0.5,0);
 
-const CAM=new THREE.PerspectiveCamera(38,1,0.01,30);
-CAM.position.set(0.4,2.0,3.6);CAM.lookAt(0,0.55,0);
-
-// env
-const cubeRT=new THREE.WebGLCubeRenderTarget(64,{generateMipmaps:true,minFilter:THREE.LinearMipmapLinearFilter});
+// 환경맵
+const cubeRT=new THREE.WebGLCubeRenderTarget(128,{generateMipmaps:true,minFilter:THREE.LinearMipmapLinearFilter});
 const cubeCam=new THREE.CubeCamera(0.1,30,cubeRT);
 const envS=new THREE.Scene();
-envS.add(new THREE.HemisphereLight(0x3a0a02,0x0e0200,2.0));
-const eD1=new THREE.DirectionalLight(0x7a3010,3.5);eD1.position.set(1,3,2);envS.add(eD1);
+envS.add(new THREE.HemisphereLight(0x4a3020,0x101018,3.0));
+const eD1=new THREE.DirectionalLight(0xffffff,5);eD1.position.set(2,4,2);envS.add(eD1);
+const eD2=new THREE.DirectionalLight(0x3344aa,2);eD2.position.set(-3,-1,-3);envS.add(eD2);
 cubeCam.update(R,envS);SC.environment=cubeRT.texture;
 
-// 조명
-const keyL=new THREE.DirectionalLight(0xc07840,2.8);
-keyL.position.set(-1.5,6,3);keyL.castShadow=true;
+// 3점 조명
+const keyL=new THREE.DirectionalLight(0xffe0c0,3.0);
+keyL.position.set(3,5,4);keyL.castShadow=true;
 keyL.shadow.mapSize.set(512,512);
 keyL.shadow.camera.near=0.1;keyL.shadow.camera.far=18;
 keyL.shadow.camera.left=keyL.shadow.camera.bottom=-2.5;
 keyL.shadow.camera.right=keyL.shadow.camera.top=2.5;
 keyL.shadow.bias=-0.001;SC.add(keyL);
-const sideL=new THREE.DirectionalLight(0x80300a,2.0);sideL.position.set(2.5,2,-2);SC.add(sideL);
-SC.add(new THREE.HemisphereLight(0x180302,0x040100,0.6));
-const iL1=new THREE.PointLight(0xff3300,0,4);iL1.position.set(0,1.1,0.3);SC.add(iL1);
+const fillL=new THREE.DirectionalLight(0x8090b0,1.2);fillL.position.set(-3,2,-2);SC.add(fillL);
+const rimL=new THREE.DirectionalLight(0xff6020,2.0);rimL.position.set(1,1,-4);SC.add(rimL);
+SC.add(new THREE.HemisphereLight(0x1a1008,0x060202,0.8));
+const iL1=new THREE.PointLight(0xff4400,0,5);iL1.position.set(0,1.2,0.2);SC.add(iL1);
 const iL2=new THREE.PointLight(0xff6600,0,8);iL2.position.set(0,3,0);SC.add(iL2);
-
-// 재질
-const mWood=new THREE.MeshStandardMaterial({color:0x1e0e06,roughness:0.92,metalness:0.0,envMapIntensity:0.15});
-const mWoodDk=new THREE.MeshStandardMaterial({color:0x130904,roughness:0.95,metalness:0.0,envMapIntensity:0.1});
-const mIron=new THREE.MeshStandardMaterial({color:0x1a1210,roughness:0.62,metalness:0.55,envMapIntensity:1.2});
-const mStone=new THREE.MeshStandardMaterial({color:0x1c1612,roughness:0.94,metalness:0.0,envMapIntensity:0.1});
-const mGlow=new THREE.MeshBasicMaterial({color:0xff4400,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false});
 
 const ROOT=new THREE.Group();SC.add(ROOT);ROOT.rotation.y=-0.18;
 
-// === 돌 받침대 ===
-const slab=new THREE.Mesh(new THREE.BoxGeometry(2.20,0.18,1.50),mStone);
-slab.position.set(0,0.09,0);slab.receiveShadow=true;ROOT.add(slab);
-// 받침대 앞 계단 디테일
-const step=new THREE.Mesh(new THREE.BoxGeometry(2.10,0.08,0.20),mStone);
-step.position.set(0,0.04,0.75);ROOT.add(step);
-// 받침대 모서리 석재 볼
-[[-1.05,0.20,0.70],[1.05,0.20,0.70],[-1.05,0.20,-0.70],[1.05,0.20,-0.70]].forEach(cp=>{
-  const c=new THREE.Mesh(new THREE.SphereGeometry(0.10,8,7),mStone);
-  c.position.set(cp[0],cp[1],cp[2]);ROOT.add(c);
+// GLB 로드
+new GLTFLoader().load('assets/3d/dark_gothic_medieval_treasure_chest__iro_019e0a38.glb',function(gltf){
+  const mdl=gltf.scene;
+  mdl.traverse(function(ch){if(ch.isMesh){ch.castShadow=true;ch.receiveShadow=true;}});
+  const box=new THREE.Box3().setFromObject(mdl);
+  const sz=box.getSize(new THREE.Vector3());
+  const ctr=box.getCenter(new THREE.Vector3());
+  const s=1.8/Math.max(sz.x,sz.y,sz.z);
+  mdl.scale.setScalar(s);
+  mdl.position.sub(ctr.multiplyScalar(s));
+  mdl.position.y+=sz.y*s*0.5;
+  ROOT.add(mdl);
 });
-
-// === 본체 (나무 + 철 밴드) ===
-// 나무 판재 4단
-const slotH=0.22;
-for(let i=0;i<4;i++){
-  const pl=new THREE.Mesh(new THREE.BoxGeometry(1.90,slotH-0.015,1.30),i%2===0?mWood:mWoodDk);
-  pl.position.set(0,0.22+i*slotH+slotH/2,0);pl.castShadow=true;pl.receiveShadow=true;ROOT.add(pl);
-}
-
-// 내부 (열릴 때 보임)
-const ins=new THREE.Mesh(new THREE.BoxGeometry(1.55,0.72,1.02),new THREE.MeshStandardMaterial({color:0x060100,roughness:1,metalness:0}));
-ins.position.set(0,0.62,0);ROOT.add(ins);
-const glowFloor=new THREE.Mesh(new THREE.PlaneGeometry(1.4,0.95),mGlow);
-glowFloor.position.set(0,1.11,0);glowFloor.rotation.x=-Math.PI/2;ROOT.add(glowFloor);
-
-// 수평 철 밴드 3줄
-[0.30,0.54,0.78].forEach(by=>{
-  const b=new THREE.Mesh(new THREE.BoxGeometry(1.92,0.072,1.32),mIron);
-  b.position.set(0,by,0);ROOT.add(b);
-  // 밴드 상단 하이라이트선
-  const hi=new THREE.Mesh(new THREE.BoxGeometry(1.94,0.016,1.34),new THREE.MeshStandardMaterial({color:0x3a2a1e,roughness:0.4,metalness:0.7,envMapIntensity:1.5}));
-  hi.position.set(0,by+0.042,0);ROOT.add(hi);
-});
-// 수직 철 기둥 (앞면)
-[-0.75,0,0.75].forEach(bx=>{
-  const vb=new THREE.Mesh(new THREE.BoxGeometry(0.068,0.90,0.055),mIron);
-  vb.position.set(bx,0.62,0.665);ROOT.add(vb);
-});
-
-// 코너 철 기둥 (두꺼운)
-[[-0.93,0.64],[0.93,0.64],[-0.93,-0.64],[0.93,-0.64]].forEach(co=>{
-  const col=new THREE.Mesh(new THREE.BoxGeometry(0.11,0.94,0.11),mIron);
-  col.position.set(co[0],0.65,co[1]);ROOT.add(col);
-  // 기둥 상단 캡
-  const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.04,10),mIron);
-  cap.position.set(co[0],1.12,co[1]);ROOT.add(cap);
-});
-
-// 앞면 자물쇠 판
-const lkPlate=new THREE.Mesh(new THREE.BoxGeometry(0.44,0.52,0.055),mIron);
-lkPlate.position.set(0,0.62,0.678);ROOT.add(lkPlate);
-// 자물쇠 몸체 (육각형처럼)
-const lkBody=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.10,0.10,6),mIron);
-lkBody.position.set(0,0.68,0.698);lkBody.rotation.x=Math.PI/2;ROOT.add(lkBody);
-// 자물쇠 고리
-const lkArc=new THREE.Mesh(new THREE.TorusGeometry(0.065,0.022,8,18,Math.PI),mIron);
-lkArc.position.set(0,0.76,0.698);lkArc.rotation.z=Math.PI;ROOT.add(lkArc);
-// 자물쇠 키홀
-const kh=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,0.035,10),new THREE.MeshStandardMaterial({color:0x040100,roughness:1,metalness:0}));
-kh.position.set(0,0.62,0.710);kh.rotation.x=Math.PI/2;ROOT.add(kh);
-// 자물쇠 양옆 링 핸들
-[-0.52,0.52].forEach(rx=>{
-  const rh=new THREE.Mesh(new THREE.TorusGeometry(0.065,0.018,8,18),mIron);
-  rh.position.set(rx,0.62,0.680);ROOT.add(rh);
-});
-
-// 리벳
-const rvG=new THREE.SphereGeometry(0.030,8,6);
-[-0.88,0.88].forEach(bx=>[0.30,0.54,0.78].forEach(by=>{
-  [-0.59,0.59].forEach(bz=>{
-    const rv=new THREE.Mesh(rvG,mIron);rv.position.set(bx,by+0.040,bz);ROOT.add(rv);
-  });
-  const rvf=new THREE.Mesh(rvG,mIron);rvf.position.set(bx,by+0.040,0.67);ROOT.add(rvf);
-}));
-
-// === 뚜껑 (아치형 배럴 lid) ===
-const LID=new THREE.Group();LID.position.set(0,1.12,-0.65);ROOT.add(LID);
-
-// 뚜껑 기본 플랫
-const lidBase=new THREE.Mesh(new THREE.BoxGeometry(1.92,0.12,1.32),mWood);
-lidBase.position.set(0,0.06,0.66);lidBase.castShadow=true;LID.add(lidBase);
-
-// 아치형 배럴 곡면 (반원 실린더)
-const archG=new THREE.CylinderGeometry(0.26,0.26,1.90,20,1,true,0,Math.PI);
-const archM=new THREE.Mesh(archG,mWoodDk);
-archM.rotation.z=-Math.PI/2;archM.position.set(0,0.20,0.66);archM.castShadow=true;LID.add(archM);
-
-// 뚜껑 상단 철 밴드 2줄
-[0.12,0.32].forEach(by=>{
-  const b=new THREE.Mesh(new THREE.BoxGeometry(1.92,0.060,1.32),mIron);
-  b.position.set(0,by,0.66);LID.add(b);
-  const arc2=new THREE.Mesh(new THREE.CylinderGeometry(0.27,0.27,1.92,20,1,true,0,Math.PI),mIron);
-  arc2.rotation.z=-Math.PI/2;arc2.position.set(0,by+0.015,0.66);LID.add(arc2);
-});
-// 뚜껑 능선 파이프
-const lidRidge=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,1.92,10),mIron);
-lidRidge.rotation.z=Math.PI/2;lidRidge.position.set(0,0.46,0.66);LID.add(lidRidge);
-
-// 뚜껑 앞 테두리
-const lidFront=new THREE.Mesh(new THREE.BoxGeometry(1.94,0.50,0.06),mIron);
-lidFront.position.set(0,0.22,1.35);LID.add(lidFront);
-
-// 뚜껑 코너 볼 장식
-[[-0.95,0.66],[0.95,0.66],[-0.95,0],[0.95,0]].forEach(co=>{
-  const cb=new THREE.Mesh(new THREE.SphereGeometry(0.07,10,8),mIron);
-  cb.position.set(co[0],0.10,co[1]);LID.add(cb);
-});
-
-// 힌지
-[-0.60,0.60].forEach(hx=>{
-  const hg=new THREE.Mesh(new THREE.CylinderGeometry(0.038,0.038,0.20,10),mIron);
-  hg.rotation.z=Math.PI/2;hg.position.set(hx,0.06,-0.01);LID.add(hg);
-  const hb=new THREE.Mesh(new THREE.CylinderGeometry(0.038,0.038,0.20,10),mIron);
-  hb.rotation.z=Math.PI/2;hb.position.set(hx,0.08,-0.65);ROOT.add(hb);
-});
-
-// 뚜껑 뿔 장식 (고딕)
-[[-0.60,0.66],[0,0.66],[0.60,0.66]].forEach((hp,i)=>{
-  const horn=new THREE.Mesh(new THREE.ConeGeometry(0.045,0.22+i*0.04,8),mIron);
-  horn.position.set(hp[0],0.56+i*0.04,hp[1]);LID.add(horn);
-});
-
-// 그림자 바닥
-const flr=new THREE.Mesh(new THREE.PlaneGeometry(6,6),new THREE.MeshStandardMaterial({color:0,transparent:true,opacity:0,roughness:1}));
-flr.rotation.x=-Math.PI/2;flr.position.y=-0.005;flr.receiveShadow=true;SC.add(flr);
 
 // 파티클
 const parts=[];
 for(let i=0;i<14;i++){
   const pm=new THREE.MeshBasicMaterial({
-    color:new THREE.Color().setHSL(0.03+Math.random()*0.05,1.0,0.55+Math.random()*0.2),
+    color:new THREE.Color().setHSL(0.04+Math.random()*0.05,1.0,0.55+Math.random()*0.2),
     transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide
   });
   const p=new THREE.Mesh(new THREE.PlaneGeometry(1,1),pm);
-  const sz=0.04+Math.random()*0.06;p.scale.setScalar(sz);
-  p.userData={angle:Math.random()*Math.PI*2,r:0.45+Math.random()*0.75,
+  p.scale.setScalar(0.04+Math.random()*0.06);
+  p.userData={angle:Math.random()*Math.PI*2,r:0.4+Math.random()*0.7,
     yOff:Math.random()*1.1,ySpd:0.10+Math.random()*0.20,
     aSpd:(0.18+Math.random()*0.26)*(Math.random()<0.5?1:-1),phase:Math.random()*Math.PI*2};
   p.visible=false;SC.add(p);parts.push(p);
@@ -48231,14 +48211,14 @@ for(let i=0;i<14;i++){
 
 let _st='hidden',_timer=0,_wx=0,_wy=0;
 function _reset(){
-  LID.rotation.x=0;ROOT.position.set(0,0,0);ROOT.rotation.set(0,-0.18,0);
-  iL1.intensity=0;iL2.intensity=0;mGlow.opacity=0;
-  parts.forEach(p=>{p.visible=false;p.material.opacity=0;});
+  ROOT.position.set(0,0,0);ROOT.rotation.set(0,-0.18,0);
+  iL1.intensity=0;iL2.intensity=0;
+  parts.forEach(function(p){p.visible=false;p.material.opacity=0;});
 }
 window._chest3d={
-  show(wx,wy){_wx=wx;_wy=wy;_st='idle';_timer=0;_reset();CVS.style.display='block';},
-  open(){if(_st==='idle'||_st==='rattling'){_st='rattling';_timer=0;}},
-  hide(){_st='hidden';CVS.style.display='none';},
+  show:function(wx,wy){_wx=wx;_wy=wy;_st='idle';_timer=0;_reset();CVS.style.display='block';},
+  open:function(){if(_st==='idle'||_st==='rattling'){_st='rattling';_timer=0;}},
+  hide:function(){_st='hidden';CVS.style.display='none';},
   get active(){return _st!=='hidden';}
 };
 
@@ -48251,7 +48231,7 @@ function updatePos(){
   if(cssX<-200||cssX>innerWidth+200||cssY<-200||cssY>innerHeight+200){CVS.style.opacity='0';return;}
   CVS.style.opacity='1';
   CVS.style.left=(cssX-SZ/2)+'px';
-  CVS.style.top=(cssY-SZ*.82)+'px';
+  CVS.style.top=(cssY-SZ*.85)+'px';
 }
 
 const CLK=new THREE.Clock();
@@ -48260,7 +48240,7 @@ function tick(){
   if(_st==='hidden')return;
   const dt=Math.min(CLK.getDelta(),0.05);_timer+=dt;
   updatePos();
-  parts.forEach(p=>{
+  parts.forEach(function(p){
     const u=p.userData;
     if(_st==='idle'||_st==='rattling'){
       p.visible=true;u.angle+=dt*u.aSpd;
@@ -48272,7 +48252,6 @@ function tick(){
       p.visible=true;p.material.opacity=Math.max(0,(0.5-_timer)*1.8);
     }else{p.visible=false;}
   });
-
   if(_st==='idle'){
     ROOT.position.y=Math.sin(_timer*1.3)*0.022;
     ROOT.rotation.y=-0.18+Math.sin(_timer*0.44)*0.035;
@@ -48281,34 +48260,22 @@ function tick(){
     ROOT.position.x=Math.sin(_timer*48)*0.040*rp;
     ROOT.position.y=Math.abs(Math.sin(_timer*43))*0.022*rp;
     ROOT.rotation.z=Math.sin(_timer*45)*0.020*rp;ROOT.rotation.y=-0.18;
-    iL1.intensity=Math.min(1,_timer*2)*1.2;
+    iL1.intensity=Math.min(1,_timer*2)*1.5;
     if(_timer>.50){_st='opening';_timer=0;if(typeof shake==='function')shake(14);}
   }else if(_st==='opening'){
-    const t=Math.min(1,_timer/1.0),ease=1-(1-t)*(1-t)*(1-t);
-    LID.rotation.x=-Math.PI*.82*ease;
     ROOT.position.x=0;ROOT.rotation.z=0;ROOT.rotation.y=-0.18;
-    const bst=Math.min(1,_timer/.35),fad=_timer>.5?1-Math.min(1,(_timer-.5)/1.0):1;
-    iL1.intensity=bst*fad*12;iL2.intensity=bst*fad*6;
-    mGlow.opacity=bst*fad*0.9;
-    if(_timer>=1.35){_st='open';_timer=0;LID.rotation.x=-Math.PI*.82;}
-  }else if(_st==='open'){
-    ROOT.position.y=Math.sin(_timer*0.9)*0.012;ROOT.rotation.y=-0.18;
-    iL1.intensity=Math.max(0,4.5-_timer*1.6);
-    iL2.intensity=Math.max(0,2.2-_timer*1.1);
-    mGlow.opacity=Math.max(0,.50-_timer*.22);
-    if(_timer>5.2){_st='hidden';CVS.style.display='none';}
+    // 빛 폭발
+    const bst=Math.min(1,_timer/.25);
+    iL1.intensity=bst*20;iL2.intensity=bst*12;
+    // 화이트아웃 (모델 밝아짐)
+    ROOT.scale.setScalar(1+bst*0.15);
+    if(_timer>=0.6){_st='hidden';CVS.style.display='none';ROOT.scale.setScalar(1);}
   }
   R.render(SC,CAM);
 }
 tick();
-console.log('[CHEST3D] GOW v7 barrel-chest');
+console.log('[CHEST3D] v8 Meshy GLB');
 })();
-
-
-
-
-
-
 </script>
 </body>
 </html>

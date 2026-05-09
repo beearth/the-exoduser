@@ -23238,3 +23238,20 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - meshy_generate.cjs
 
+
+## 2026-05-09 11:30 (auto)
+- _autosave/game_20260509_111554.html
+- _autosave/game_20260509_111843.html
+- _autosave/game_20260509_111903.html
+- _autosave/game_20260509_111926.html
+- _autosave/game_20260509_112003.html
+- _autosave/game_20260509_112029.html
+- _autosave/game_20260509_112046.html
+- _autosave/game_20260509_112100.html
+- _autosave/game_20260509_112102.html
+- _autosave/game_20260509_112106.html
+- _autosave/game_20260509_112110.html
+- _autosave/game_20260509_112114.html
+- _chest_meshy_thumb.png
+- game.html
+
