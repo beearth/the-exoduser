@@ -9567,12 +9567,82 @@ addEventListener('contextmenu',e=>e.preventDefault());
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&(e.code==='Equal'||e.code==='Minus'||e.code==='NumpadAdd'||e.code==='NumpadSubtract'||e.code==='Digit0'))e.preventDefault()});
 
+// ═══ GAMEPAD ═══
+const GP_BINDS={
+  // Xbox 표준 레이아웃 (Standard Gamepad)
+  // 버튼 → 액션
+  0:'interact',     // A — 상호작용
+  1:'charge',       // B — 작살이동
+  2:'weapon',       // X — 무기 공격
+  3:'bow',          // Y — 영역 스킬
+  4:'parry',        // LB — 패링
+  5:'beam',         // RB — 마법
+  8:'inventory',    // Back/Select — 인벤토리
+  9:'settings',     // Start — 설정
+  10:'skillCycle',  // L3 — 스킬 슬롯
+  12:'up',13:'down',14:'left',15:'right' // D-pad
+};
+// RT(7)→shield, LT(6)→forge 는 아날로그 트리거
+const GP_DEAD=0.25; // 스틱 데드존
+let _gp=null,_gpBtns={},_gpBtnsJust={},_gpBtnsPrev={},_gpAxes=[0,0,0,0];
+let _gpConnected=false;
+addEventListener('gamepadconnected',e=>{_gpConnected=true;console.log('[GAMEPAD] 연결:',e.gamepad.id)});
+addEventListener('gamepaddisconnected',e=>{_gpConnected=false;_gp=null;console.log('[GAMEPAD] 해제')});
+
+function _pollGamepad(){
+  if(!_gpConnected)return;
+  const gps=navigator.getGamepads();
+  _gp=null;
+  for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){_gp=gps[i];break}}
+  if(!_gp)return;
+  // 버튼 상태
+  for(let i=0;i<_gp.buttons.length;i++){
+    const pressed=_gp.buttons[i].pressed||_gp.buttons[i].value>0.5;
+    _gpBtnsJust[i]=pressed&&!_gpBtnsPrev[i];
+    _gpBtns[i]=pressed;
+    _gpBtnsPrev[i]=pressed;
+  }
+  // 축 (좌스틱)
+  _gpAxes[0]=Math.abs(_gp.axes[0])<GP_DEAD?0:_gp.axes[0];
+  _gpAxes[1]=Math.abs(_gp.axes[1])<GP_DEAD?0:_gp.axes[1];
+  // 축 (우스틱)
+  if(_gp.axes.length>=4){
+    _gpAxes[2]=Math.abs(_gp.axes[2])<GP_DEAD?0:_gp.axes[2];
+    _gpAxes[3]=Math.abs(_gp.axes[3])<GP_DEAD?0:_gp.axes[3];
+  }
+  // 좌스틱 → 이동 키 시뮬레이션
+  K['_gpUp']=_gpAxes[1]<-GP_DEAD;K['_gpDown']=_gpAxes[1]>GP_DEAD;
+  K['_gpLeft']=_gpAxes[0]<-GP_DEAD;K['_gpRight']=_gpAxes[0]>GP_DEAD;
+  // RT(7)→shield, LT(6)→forge (아날로그 트리거)
+  _gpBtns[6]=_gp.buttons[6]&&_gp.buttons[6].value>0.3;
+  _gpBtns[7]=_gp.buttons[7]&&_gp.buttons[7].value>0.3;
+}
+
+function _gpAct(action){
+  for(const bi in GP_BINDS){if(GP_BINDS[bi]===action&&_gpBtns[bi])return true}
+  // 트리거
+  if(action==='shield'&&_gpBtns[7])return true;
+  if(action==='forge'&&_gpBtns[6])return true;
+  // 좌스틱 이동
+  if(action==='up'&&K['_gpUp'])return true;
+  if(action==='down'&&K['_gpDown'])return true;
+  if(action==='left'&&K['_gpLeft'])return true;
+  if(action==='right'&&K['_gpRight'])return true;
+  return false;
+}
+function _gpJust(action){
+  for(const bi in GP_BINDS){if(GP_BINDS[bi]===action&&_gpBtnsJust[bi]){_gpBtnsJust[bi]=false;return true}}
+  if(action==='shield'&&_gpBtnsJust[7]){_gpBtnsJust[7]=false;return true}
+  if(action==='forge'&&_gpBtnsJust[6]){_gpBtnsJust[6]=false;return true}
+  return false;
+}
+
 function _chkAct(b){if(!b)return false;if(b.startsWith('mouse'))return!!MB[+b.slice(5)];return!!K[b]}
 function _chkJust(b){if(!b)return false;if(b.startsWith('mouse')){const n=+b.slice(5);if(MBjust[n]){MBjust[n]=false;return true}return false}if(K[b]){K[b]=false;return true}return false}
-function isAct(action){return _chkAct(BINDS[action])||_chkAct(BINDS2[action])}
-function isJust(action){return _chkJust(BINDS[action])||_chkJust(BINDS2[action])}
+function isAct(action){return _chkAct(BINDS[action])||_chkAct(BINDS2[action])||_gpAct(action)}
+function isJust(action){return _chkJust(BINDS[action])||_chkJust(BINDS2[action])||_gpJust(action)}
 function _chkHeld(b){if(!b)return false;if(b.startsWith('mouse'))return!!MB[+b.slice(5)];return!!KH[b]}
-function isHeld(action){return _chkHeld(BINDS[action])||_chkHeld(BINDS2[action])}
+function isHeld(action){return _chkHeld(BINDS[action])||_chkHeld(BINDS2[action])||_gpAct(action)}
 // Q키 얼음보주 모드: 선택스킬로 이동됨 (Q는 항상 패링)
 function _qIsIceOrb(){return false}
 function _qIsPeaceShield(){return P.skills.peaceShield>=1&&(P.activeQSk==='peaceShield'||_isFused('stormBeam'))}
@@ -46505,7 +46575,7 @@ function loop(timestamp){
     const _elapsed=timestamp-_lastLoopTs;
     if(_elapsed<_fpsCapInterval-1){requestAnimationFrame(loop);return}
   }
-  _lastLoopTs=timestamp;_sfxFrameReset();_partSpawnCnt=0;_aoeHitCnt=0;
+  _lastLoopTs=timestamp;_sfxFrameReset();_partSpawnCnt=0;_aoeHitCnt=0;_pollGamepad();
   if(!_prevTs)_prevTs=timestamp;
   if(!_loopRunning){_loopRunning=true}
   _perfFrames++;

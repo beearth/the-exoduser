@@ -9567,12 +9567,82 @@ addEventListener('contextmenu',e=>e.preventDefault());
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&(e.code==='Equal'||e.code==='Minus'||e.code==='NumpadAdd'||e.code==='NumpadSubtract'||e.code==='Digit0'))e.preventDefault()});
 
+// ═══ GAMEPAD ═══
+const GP_BINDS={
+  // Xbox 표준 레이아웃 (Standard Gamepad)
+  // 버튼 → 액션
+  0:'interact',     // A — 상호작용
+  1:'charge',       // B — 작살이동
+  2:'weapon',       // X — 무기 공격
+  3:'bow',          // Y — 영역 스킬
+  4:'parry',        // LB — 패링
+  5:'beam',         // RB — 마법
+  8:'inventory',    // Back/Select — 인벤토리
+  9:'settings',     // Start — 설정
+  10:'skillCycle',  // L3 — 스킬 슬롯
+  12:'up',13:'down',14:'left',15:'right' // D-pad
+};
+// RT(7)→shield, LT(6)→forge 는 아날로그 트리거
+const GP_DEAD=0.25; // 스틱 데드존
+let _gp=null,_gpBtns={},_gpBtnsJust={},_gpBtnsPrev={},_gpAxes=[0,0,0,0];
+let _gpConnected=false;
+addEventListener('gamepadconnected',e=>{_gpConnected=true;console.log('[GAMEPAD] 연결:',e.gamepad.id)});
+addEventListener('gamepaddisconnected',e=>{_gpConnected=false;_gp=null;console.log('[GAMEPAD] 해제')});
+
+function _pollGamepad(){
+  if(!_gpConnected)return;
+  const gps=navigator.getGamepads();
+  _gp=null;
+  for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){_gp=gps[i];break}}
+  if(!_gp)return;
+  // 버튼 상태
+  for(let i=0;i<_gp.buttons.length;i++){
+    const pressed=_gp.buttons[i].pressed||_gp.buttons[i].value>0.5;
+    _gpBtnsJust[i]=pressed&&!_gpBtnsPrev[i];
+    _gpBtns[i]=pressed;
+    _gpBtnsPrev[i]=pressed;
+  }
+  // 축 (좌스틱)
+  _gpAxes[0]=Math.abs(_gp.axes[0])<GP_DEAD?0:_gp.axes[0];
+  _gpAxes[1]=Math.abs(_gp.axes[1])<GP_DEAD?0:_gp.axes[1];
+  // 축 (우스틱)
+  if(_gp.axes.length>=4){
+    _gpAxes[2]=Math.abs(_gp.axes[2])<GP_DEAD?0:_gp.axes[2];
+    _gpAxes[3]=Math.abs(_gp.axes[3])<GP_DEAD?0:_gp.axes[3];
+  }
+  // 좌스틱 → 이동 키 시뮬레이션
+  K['_gpUp']=_gpAxes[1]<-GP_DEAD;K['_gpDown']=_gpAxes[1]>GP_DEAD;
+  K['_gpLeft']=_gpAxes[0]<-GP_DEAD;K['_gpRight']=_gpAxes[0]>GP_DEAD;
+  // RT(7)→shield, LT(6)→forge (아날로그 트리거)
+  _gpBtns[6]=_gp.buttons[6]&&_gp.buttons[6].value>0.3;
+  _gpBtns[7]=_gp.buttons[7]&&_gp.buttons[7].value>0.3;
+}
+
+function _gpAct(action){
+  for(const bi in GP_BINDS){if(GP_BINDS[bi]===action&&_gpBtns[bi])return true}
+  // 트리거
+  if(action==='shield'&&_gpBtns[7])return true;
+  if(action==='forge'&&_gpBtns[6])return true;
+  // 좌스틱 이동
+  if(action==='up'&&K['_gpUp'])return true;
+  if(action==='down'&&K['_gpDown'])return true;
+  if(action==='left'&&K['_gpLeft'])return true;
+  if(action==='right'&&K['_gpRight'])return true;
+  return false;
+}
+function _gpJust(action){
+  for(const bi in GP_BINDS){if(GP_BINDS[bi]===action&&_gpBtnsJust[bi]){_gpBtnsJust[bi]=false;return true}}
+  if(action==='shield'&&_gpBtnsJust[7]){_gpBtnsJust[7]=false;return true}
+  if(action==='forge'&&_gpBtnsJust[6]){_gpBtnsJust[6]=false;return true}
+  return false;
+}
+
 function _chkAct(b){if(!b)return false;if(b.startsWith('mouse'))return!!MB[+b.slice(5)];return!!K[b]}
 function _chkJust(b){if(!b)return false;if(b.startsWith('mouse')){const n=+b.slice(5);if(MBjust[n]){MBjust[n]=false;return true}return false}if(K[b]){K[b]=false;return true}return false}
-function isAct(action){return _chkAct(BINDS[action])||_chkAct(BINDS2[action])}
-function isJust(action){return _chkJust(BINDS[action])||_chkJust(BINDS2[action])}
+function isAct(action){return _chkAct(BINDS[action])||_chkAct(BINDS2[action])||_gpAct(action)}
+function isJust(action){return _chkJust(BINDS[action])||_chkJust(BINDS2[action])||_gpJust(action)}
 function _chkHeld(b){if(!b)return false;if(b.startsWith('mouse'))return!!MB[+b.slice(5)];return!!KH[b]}
-function isHeld(action){return _chkHeld(BINDS[action])||_chkHeld(BINDS2[action])}
+function isHeld(action){return _chkHeld(BINDS[action])||_chkHeld(BINDS2[action])||_gpAct(action)}
 // Q키 얼음보주 모드: 선택스킬로 이동됨 (Q는 항상 패링)
 function _qIsIceOrb(){return false}
 function _qIsPeaceShield(){return P.skills.peaceShield>=1&&(P.activeQSk==='peaceShield'||_isFused('stormBeam'))}
@@ -32543,6 +32613,7 @@ function _logDmg(raw,final,src){
 function _isFocusState(){return P.s==='sBlock'||P.s==='peaceShield'||P.s==='whirlwind'||P.s==='beam'||P.s==='burstLoop'||P.s==='charge'||P.s==='bowDraw'||P.s==='rainLightning'}
 // ─── [S16j] HURT_P — 플레이어 피격 (방어/포이즈) ───
 function hurtP(dmg,opts){
+  if(window._btDmgLog)window._btDmgLog.push({t:_now,src:'boss',dmg:dmg});
   if(P.s==='fallen'||P.s==='dead')return; // 쓰러짐/사망 중 무적
   // 보스 로딩/스테이지 전환 중 무적
   if(G._bossLoadPhase>0)return;
@@ -41553,7 +41624,7 @@ function draw(){
     X.fillStyle=_hgCol;X.fillRect(_hgBX,_hgBY,_hgBW*_hgPct,_hgBH);
     X.globalAlpha=1;
   }
-  {const _t0=performance.now();if(_FLOAT_TEXT_ENABLED){X.font='bold 22px sans-serif';X.textAlign='center';for(let _ti=0;_ti<G.txts.length;_ti++){const t=G.txts[_ti];if(t.life<=0)continue;if(t.x<_vl||t.x>_vr||t.y<_vt||t.y>_vb)continue;var _blk=false;var _isN2=t.t.length>0&&t.t.length<16;if(_isN2){_blk=true;for(var _ni2=0;_ni2<t.t.length;_ni2++){var _cc2=t.t.charCodeAt(_ni2);if(!((_cc2>=48&&_cc2<=57)||_cc2===45||_cc2===43)){_blk=false;break}}}if(!_blk){for(var _bi=0;_bi<_FLOAT_TEXT_BLACKLIST.length;_bi++){if(t.t.indexOf(_FLOAT_TEXT_BLACKLIST[_bi])!==-1){_blk=true;break}}}if(_blk)continue;const _ta=t.life/t.ml;X.globalAlpha=_ta*.9;X.fillStyle='#000000';X.fillText(t.t,t.x+1,t.y+1);X.fillText(t.t,t.x-1,t.y+1);X.globalAlpha=_ta;X.fillStyle=t.c;X.fillText(t.t,t.x,t.y)}X.globalAlpha=1}if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
+  {const _t0=performance.now();if(_FLOAT_TEXT_ENABLED){X.font='bold 22px sans-serif';X.textAlign='center';for(let _ti=0;_ti<G.txts.length;_ti++){const t=G.txts[_ti];if(t.life<=0)continue;if(t.x<_vl||t.x>_vr||t.y<_vt||t.y>_vb)continue;var _blk=false;var _isN2=t.t.length>0&&t.t.length<16;if(_isN2){_blk=true;for(var _ni2=0;_ni2<t.t.length;_ni2++){var _cc2=t.t.charCodeAt(_ni2);if(!((_cc2>=48&&_cc2<=57)||_cc2===45||_cc2===43)){_blk=false;break}}}if(!_blk&&!window._btActive){for(var _bi=0;_bi<_FLOAT_TEXT_BLACKLIST.length;_bi++){if(t.t.indexOf(_FLOAT_TEXT_BLACKLIST[_bi])!==-1){_blk=true;break}}}if(_blk&&!window._btActive)continue;const _ta=t.life/t.ml;X.globalAlpha=_ta*.9;X.fillStyle='#000000';X.fillText(t.t,t.x+1,t.y+1);X.fillText(t.t,t.x-1,t.y+1);X.globalAlpha=_ta;X.fillStyle=t.c;X.fillText(t.t,t.x,t.y)}X.globalAlpha=1}if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
   X.restore();
   const _dd4=performance.now();
   if(_fc2d){var _dPart=_PERF_PROF._delta(_snapPart);_PERF_PROF._part_di=_dPart.di;_PERF_PROF._part_st=_dPart.st;_PERF_PROF._part_fr=_dPart.fr;_PERF_PROF._part_ga=_dPart.ga;var _snapPost=_PERF_PROF._snap()}
@@ -46035,6 +46106,23 @@ function drawP(){
     // S7-SKIP, S7-WARN 제거됨 — FRAME-C2D로 대체 (2026-04-17)
   }
   X.globalAlpha=1;
+  // ── 테스트베드: 히트박스 시각화 ──
+  if(window._btShowHitbox){
+    X.save();X.lineWidth=1;X.globalAlpha=0.5;
+    // 보스/적: 녹색
+    X.strokeStyle='#00ff00';
+    for(let _hi=0;_hi<ens.length;_hi++){const _he=ens[_hi];if(!_he||!_he.alive)continue;X.beginPath();X.arc(_he.x,_he.y,_he.r,0,6.2832);X.stroke()}
+    // 플레이어: 파란색
+    if(P&&P.hp>0){X.strokeStyle='#4488ff';X.beginPath();X.arc(P.x,P.y,P.r,0,6.2832);X.stroke()}
+    // 투사체: 빨간색
+    X.strokeStyle='#ff2222';
+    for(let _hi=0;_hi<projs.length;_hi++){const _hp=projs[_hi];if(!_hp)continue;const _hr=_hp.r||_hp.sz||4;X.beginPath();X.arc(_hp.x,_hp.y,_hr,0,6.2832);X.stroke()}
+    // 장판: 노란색
+    X.strokeStyle='#ffcc00';
+    const _hzArrays=[G._lavaPools,G._fireRains,G._judgeCuts,G._pillars,G._gravityWells,G._darkZones,G._poisonPools,G._fissures,G._shockGrids,G._donutSlams,G._cageTraps,G._chaseAoes];
+    for(let _ai=0;_ai<_hzArrays.length;_ai++){const _arr=_hzArrays[_ai];if(!_arr)continue;for(let _hi=0;_hi<_arr.length;_hi++){const _hz=_arr[_hi];if(!_hz)continue;const _hr=_hz.r||_hz.radius||_hz.sz||30;X.beginPath();X.arc(_hz.x,_hz.y,_hr,0,6.2832);X.stroke()}}
+    X.globalAlpha=1;X.restore();
+  }
 }
 
 // 미니맵 캐싱: 타일+정적마커 캐시 + 분산 빌드
@@ -47671,6 +47759,9 @@ const _btParam=new URLSearchParams(location.search).get('bosstest');
 if(_btParam===null)return;
 const _btSi=Math.max(0,Math.min(TOTAL_STAGES-1,~~(+_btParam||0)));
 let _btGod=true,_btBoss=null,_btPaused=false;
+_FLOAT_TEXT_ENABLED=true; // 테스트베드: 모든 플로팅 텍스트 표시
+TXTS_MAX=120; // 테스트베드: 텍스트 풀 확장
+window._btActive=true; // 테스트베드 활성 플래그 (렌더 핫패스용 캐시)
 
 function _btWait(fn,ms){setTimeout(()=>{if(!G||!P||!G.on)return _btWait(fn,ms);fn()},ms)}
 
@@ -47814,6 +47905,11 @@ function _btBuildUI(){
       +otherMoves.map(m=>`<button class="_btBtn _btMv" onclick="_btForcePattern('${m.id}')" style="opacity:.5;border-left:3px solid #555">${m.id}</button>`).join('')
       +`</div></details>`;
   }
+  // ── 패턴 파라미터 편집 ──
+  panel.innerHTML+=`<details id="_btPatEditWrap" style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <summary style="color:#aa8866;font-size:11px;cursor:pointer;font-weight:700">🔧 패턴 파라미터 편집</summary>
+    <div id="_btPatEditBody" style="margin-top:4px;font-size:10px;color:#aa9977">패턴 버튼을 클릭하면 여기에 편집 폼이 표시됩니다.</div>
+  </details>`;
   // ── 스테이지 전환 ──
   panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
     <span style="color:#aa8866;font-size:11px">STAGE 전환:</span>
@@ -47849,12 +47945,28 @@ function _btBuildUI(){
       ${[-200,-100,-50,0,50,100,200].map(v=>`<button class="_btBtn" onclick="window._btOffsetY=${v};document.getElementById('_btOffSlider').value=${v};document.getElementById('_btOffVal').textContent='${v}'" style="flex:1;font-size:10px">${v}</button>`).join('')}
     </div>
   </div>`;
-  // ── 슬로모션 + 기타 ──
-  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px;display:flex;gap:4px;flex-wrap:wrap">
-    <button class="_btBtn" id="_btSloBtn" onclick="_btSlowToggle()" style="background:#223344;color:#66aaff">🐢 슬로모션</button>
-    <button class="_btBtn" onclick="_btBoss&&(_btBoss.elite=(_btBoss.elite||0)+1)" title="엘리트 등급 올리기">⭐ 엘리트+</button>
-    <button class="_btBtn" onclick="_btBoss&&(_btBoss.elite=0)">🔄 엘리트 리셋</button>
-    <button class="_btBtn" onclick="P.x=_btBoss.x;P.y=_btBoss.y-80" title="보스 앞으로 순간이동">📍 텔레포트</button>
+  // ── 프레임 스텝 + 속도 제어 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px;font-weight:700">⏱ 프레임/속도 제어</span>
+    <div style="display:flex;gap:4px;flex-wrap:wrap;margin-top:4px">
+      <button class="_btBtn" id="_btFramePauseBtn" onclick="_btFramePauseToggle()">⏸ PAUSE</button>
+      <button class="_btBtn" onclick="_btFrameStepOnce()" title="정지 상태에서 1틱 진행 (Space)">⏭ STEP</button>
+      <button class="_btBtn" id="_btHitboxBtn" onclick="_btHitboxToggle()">📦 히트박스</button>
+      <button class="_btBtn" onclick="_btBoss&&(_btBoss.elite=(_btBoss.elite||0)+1)" title="엘리트 등급 올리기">⭐ 엘리트+</button>
+      <button class="_btBtn" onclick="_btBoss&&(_btBoss.elite=0)">🔄 엘리트 리셋</button>
+      <button class="_btBtn" onclick="P.x=_btBoss.x;P.y=_btBoss.y-80" title="보스 앞으로 순간이동">📍 텔레포트</button>
+    </div>
+    <div style="margin-top:6px">
+      <span style="color:#aa8866;font-size:11px">속도: <span id="_btSpeedVal">1.0x</span></span>
+      <input type="range" id="_btSpeedSlider" min="0.1" max="3.0" step="0.1" value="1.0"
+        style="width:100%;margin-top:2px;accent-color:#66aaff"
+        oninput="_btSetSpeed(+this.value)">
+      <div style="display:flex;gap:3px;margin-top:3px">
+        ${[0.1,0.25,0.5,1,2].map(v=>`<button class="_btBtn" onclick="_btSetSpeed(${v})" style="flex:1">${v}x</button>`).join('')}
+      </div>
+    </div>
+    <div id="_btDpsText" style="margin-top:6px;padding:4px;background:rgba(0,0,0,.3);border-radius:4px;font-size:11px;color:#88ff88;font-family:monospace">Player DPS: 0 | Boss DPS: 0</div>
+    <div style="margin-top:3px;color:#665544;font-size:9px">P=AI정지 G=GOD R=리셋 F=프레임정지 Space=스텝 []=속도±0.1</div>
   </div>`;
   // ── 보스 스탯 커스텀 ──
   panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
@@ -47904,12 +48016,110 @@ function _btBuildUI(){
       <button class="_btBtn" onclick="for(let i=0;i<20;i++){const a=Math.PI*2*i/20;poolPart(P.x,P.y,Math.cos(a)*8,Math.sin(a)*8,'#ffcc44',4,15)}" style="border-left:3px solid #ffcc44">링 파티클</button>
     </div>
   </div>`;
+  // ── 플레이어 스탯 커스텀 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px;font-weight:700">🧑 플레이어 커스텀</span>
+    <div style="margin-top:4px">
+      <span style="color:#aa8866;font-size:10px">레벨: <span id="_btLvVal">${P?P.lv:1}</span></span>
+      <input type="range" min="1" max="1000" step="1" value="${P?P.lv:1}" style="width:100%;accent-color:#44ff44"
+        oninput="P.lv=+this.value;document.getElementById('_btLvVal').textContent=this.value">
+      <div style="display:flex;gap:3px;margin-top:3px">
+        ${[1,10,50,100,300,500,1000].map(v=>`<button class="_btBtn" onclick="P.lv=${v};document.getElementById('_btLvVal').textContent='${v}'" style="flex:1">${v}</button>`).join('')}
+      </div>
+    </div>
+    <div style="margin-top:4px">
+      <span style="color:#aa8866;font-size:10px">ATK 배율: <span id="_btPAtkVal">×1.0</span></span>
+      <input type="range" min="0.1" max="50" step="0.1" value="1" style="width:100%;accent-color:#ff8844"
+        oninput="P.baseAtk=~~(10*(+this.value));document.getElementById('_btPAtkVal').textContent='×'+this.value">
+    </div>
+    <div style="display:flex;gap:3px;margin-top:4px;flex-wrap:wrap">
+      <button class="_btBtn" onclick="P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;P.shield=P.maxShield||100" style="border-left:3px solid #44ff44">풀 회복</button>
+      <button class="_btBtn" onclick="P.hp=1" style="border-left:3px solid #ff4444">HP=1</button>
+      <button class="_btBtn" onclick="P.iframes=9999" style="border-left:3px solid #4444ff">무적 ON</button>
+      <button class="_btBtn" onclick="P.iframes=0" style="border-left:3px solid #884444">무적 OFF</button>
+      <button class="_btBtn" onclick="P.x=(G.mw||50)*T/2;P.y=(G.mh||42)*T/2" style="border-left:3px solid #88ff88">맵 중앙</button>
+    </div>
+  </div>`;
+  // ── 보스 상태이상 제어 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px;font-weight:700">🔥 보스 상태이상</span>
+    <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:4px">
+      <button class="_btBtn" onclick="if(_btBoss){_btBoss.burnT=300;_btBoss.burnStk=5}" style="border-left:3px solid #ff4400">🔥 화상 5중</button>
+      <button class="_btBtn" onclick="if(_btBoss){_btBoss.poisonT=300;_btBoss.poisonStk=5}" style="border-left:3px solid #44cc00">🟢 중독 5중</button>
+      <button class="_btBtn" onclick="if(_btBoss){_btBoss.bleedT=300;_btBoss.bleedStk=5}" style="border-left:3px solid #cc0000">🩸 출혈 5중</button>
+      <button class="_btBtn" onclick="if(_btBoss){_btBoss.frozenT=120}" style="border-left:3px solid #44ccff">❄ 빙결</button>
+      <button class="_btBtn" onclick="if(_btBoss){_btBoss.shockT=120}" style="border-left:3px solid #ffee00">⚡ 감전</button>
+      <button class="_btBtn" onclick="if(_btBoss){_btBoss.stunned=120}" style="border-left:3px solid #ffaa00">💫 기절 2초</button>
+      <button class="_btBtn" onclick="if(_btBoss){_btBoss.burnT=0;_btBoss.poisonT=0;_btBoss.bleedT=0;_btBoss.frozenT=0;_btBoss.shockT=0;_btBoss.stunned=0}" style="border-left:3px solid #888">전부 해제</button>
+    </div>
+  </div>`;
+  // ── 포이즈/체간 제어 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px;font-weight:700">💢 포이즈/체간</span>
+    <div style="display:flex;gap:3px;flex-wrap:wrap;margin-top:4px">
+      <button class="_btBtn" onclick="if(_btBoss){_btBoss.poise=_btBoss.maxPoise}" style="border-left:3px solid #ffcc44">포이즈 풀</button>
+      <button class="_btBtn" onclick="if(_btBoss){_btBoss.poise=~~(_btBoss.maxPoise*.5)}" style="border-left:3px solid #ffaa00">포이즈 50%</button>
+      <button class="_btBtn" onclick="if(_btBoss){_btBoss.poise=1}" style="border-left:3px solid #ff4444">포이즈 1</button>
+      <button class="_btBtn" onclick="if(_btBoss){_btBoss.poise=0;_btBoss.stunned=180;addTxt(_btBoss.x,_btBoss.y-30,'💥 체간 붕괴!','#ffcc00',60)}" style="border-left:3px solid #ff0000">강제 그로기</button>
+    </div>
+  </div>`;
+  // ── 데미지 로그 (스크롤) ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px;font-weight:700">📜 데미지 로그</span>
+    <button class="_btBtn" onclick="document.getElementById('_btDmgLogBox').textContent='';window._btDmgLogArr=[]" style="float:right;font-size:9px">클리어</button>
+    <div id="_btDmgLogBox" style="margin-top:4px;max-height:120px;overflow-y:auto;background:rgba(0,0,0,.4);border-radius:4px;padding:4px;font-size:10px;font-family:monospace;color:#aaa;line-height:1.4"></div>
+  </div>`;
+  // 데미지 로그 훅 — 기존 DPS 미터와 연동
+  window._btDmgLogArr=[];
+  const _origHurtELog=window._btDmgLog;
+  setInterval(()=>{
+    if(!window._btDmgLog||!window._btDmgLog.length)return;
+    const box=document.getElementById('_btDmgLogBox');
+    if(!box)return;
+    const recent=window._btDmgLog;
+    const lastIdx=window._btDmgLogLastIdx||0;
+    for(let i=lastIdx;i<recent.length;i++){
+      const e=recent[i];
+      const line=document.createElement('div');
+      line.style.color=e.src==='player'?'#88ff88':'#ff8888';
+      line.textContent=(e.src==='player'?'→ 보스에게 ':'← 보스가 ')+e.dmg+' dmg';
+      box.appendChild(line);
+      if(box.children.length>100)box.removeChild(box.firstChild);
+    }
+    window._btDmgLogLastIdx=recent.length;
+    box.scrollTop=box.scrollHeight;
+  },200);
+  // ── 콤보 뷰어 ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <details><summary style="color:#aa8866;font-size:11px;font-weight:700;cursor:pointer">🔗 콤보 시퀀스 (${BOSS_COMBOS.length}종)</summary>
+    <div style="max-height:150px;overflow-y:auto;margin-top:4px">
+      ${BOSS_COMBOS.map((c,i)=>`<div style="margin:2px 0;padding:3px;background:rgba(0,0,0,.3);border-radius:3px;font-size:10px;cursor:pointer" onclick="${c.seq.map(s=>`_btForcePattern('${s}')`).join(';')}" title="클릭=순차 실행"><span style="color:#666">#${i}</span> <span style="color:#ffaa44">${c.seq.join(' → ')}</span> <span style="color:#555">ph${c.phase.join(',')}</span></div>`).join('')}
+    </div></details>
+  </div>`;
+  // ── 보스 상태 모니터 (실시간) ──
+  panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
+    <span style="color:#aa8866;font-size:11px;font-weight:700">📊 보스 상태 모니터</span>
+    <div id="_btStateLog" style="margin-top:4px;padding:4px;background:rgba(0,0,0,.4);border-radius:4px;font-size:10px;font-family:monospace;color:#ccbb99;line-height:1.3"></div>
+  </div>`;
+  setInterval(()=>{
+    const el=document.getElementById('_btStateLog');
+    if(!el||!_btBoss)return;
+    const e=_btBoss;
+    el.innerHTML=''
+      +'<div>state: <b style="color:#ffcc44">'+e.s+'</b> st2: '+~~e.st2+'</div>'
+      +'<div>facing: '+(e.facing||0).toFixed(2)+' spd: '+e.speed.toFixed(1)+'</div>'
+      +'<div>poise: <span style="color:'+(e.poise<=0?'#ff4444':'#44ff44')+'">'+~~(e.poise||0)+'</span>/'+~~(e.maxPoise||0)+' stun: '+~~(e.stunned||0)+'</div>'
+      +'<div>burn: '+~~(e.burnT||0)+' poison: '+~~(e.poisonT||0)+' bleed: '+~~(e.bleedT||0)+'</div>'
+      +'<div>frozen: '+~~(e.frozenT||0)+' shock: '+~~(e.shockT||0)+' elite: '+(e.elite||0)+'</div>'
+      +'<div>pos: '+~~e.x+','+~~e.y+' r: '+~~e.r+' alive: '+e.alive+'</div>'
+      +'<div>dist→P: '+~~dst(P.x,P.y,e.x,e.y)+'</div>';
+  },100);
   // ── 스킬명 화면 오버레이 ──
   const _btSkillOverlay=document.createElement('div');
   _btSkillOverlay.id='_btSkillName';
   _btSkillOverlay.style.cssText='position:fixed;top:15%;left:50%;transform:translateX(-50%);font:bold 48px "Noto Sans KR",sans-serif;color:#ffcc44;text-shadow:0 0 20px #ff8800,0 0 40px #ff4400,2px 2px 0 #000;z-index:99998;pointer-events:none;opacity:0;transition:opacity .2s';
   document.body.appendChild(_btSkillOverlay);
-  // 패턴 실행 시 스킬명 표시 — _btForcePattern 래핑
+  // 패턴 실행 시 스킬명 표시 + 편집 폼 — _btForcePattern 래핑
   const _origForce=_btForcePattern;
   _btForcePattern=function(id){
     const overlay=document.getElementById('_btSkillName');
@@ -47920,10 +48130,53 @@ function _btBuildUI(){
       overlay.style.opacity='1';
       clearTimeout(overlay._fadeT);
       overlay._fadeT=setTimeout(()=>overlay.style.opacity='0',2000);
+      // ── 패턴 편집 폼 생성 ──
+      if(mv){
+        const body=document.getElementById('_btPatEditBody');
+        if(body){
+          const fields=[
+            {key:'tele',label:'tele',val:mv.tele},
+            {key:'rec',label:'rec',val:mv.rec},
+            {key:'cd',label:'cd',val:mv.cd},
+            {key:'range0',label:'range[0]',val:mv.range?mv.range[0]:0},
+            {key:'range1',label:'range[1]',val:mv.range?mv.range[1]:999}
+          ];
+          let html='<div style="font-weight:700;color:#ffaa44;margin-bottom:4px">'+id+'</div>';
+          html+='<div style="display:grid;grid-template-columns:auto 1fr;gap:2px 6px;align-items:center">';
+          for(let fi=0;fi<fields.length;fi++){
+            const f=fields[fi];
+            html+='<span style="color:#aa9977">'+f.label+':</span>';
+            html+='<input type="number" data-bt-field="'+f.key+'" data-bt-mid="'+id+'" value="'+f.val+'" style="width:60px;background:#111;color:#eeddcc;border:1px solid #443322;border-radius:3px;padding:2px 4px;font-size:10px">';
+          }
+          html+='</div>';
+          body.innerHTML=html;
+          // input change 이벤트: BOSS_MOVES에 즉시 반영
+          const inputs=body.querySelectorAll('input[data-bt-field]');
+          for(let ii=0;ii<inputs.length;ii++){
+            inputs[ii].addEventListener('input',function(){
+              const mid=this.getAttribute('data-bt-mid');
+              const fld=this.getAttribute('data-bt-field');
+              const val=+this.value;
+              const m=BOSS_MOVES.find(function(x){return x.id===mid});
+              if(!m)return;
+              if(fld==='tele')m.tele=val;
+              else if(fld==='rec')m.rec=val;
+              else if(fld==='cd')m.cd=val;
+              else if(fld==='range0'){if(!m.range)m.range=[0,999];m.range[0]=val}
+              else if(fld==='range1'){if(!m.range)m.range=[0,999];m.range[1]=val}
+            });
+          }
+          // 편집 영역 열기
+          const wrap=document.getElementById('_btPatEditWrap');
+          if(wrap)wrap.open=true;
+        }
+      }
     }
     _origForce(id);
   };
   window._btForcePattern=_btForcePattern;
+  // ── DPS 미터 시작 ──
+  _btStartDps();
   // ── 전체 패턴 연속 재생 ──
   panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:4px">
     <button class="_btBtn" onclick="_btPlayAll()" id="_btPlayAllBtn" style="width:100%;background:#332244;color:#aa88ff">▶ 전체 패턴 순차 재생</button>
@@ -47988,23 +48241,67 @@ function _btPlayNext(){
   setTimeout(_btPlayNext,Math.max(wait,1500));
 }
 
-// ── 슬로모션 ──
-let _btSlow=false,_btOrigRAF=null;
-window._btSlowToggle=function(){
-  _btSlow=!_btSlow;
-  const btn=document.getElementById('_btSloBtn');
-  if(btn){btn.textContent=_btSlow?'🐢 슬로 ON':'🐢 슬로모션';btn.style.background=_btSlow?'#224433':'#223344';btn.style.color=_btSlow?'#44ffaa':'#66aaff'}
-  if(_btSlow){
-    // requestAnimationFrame을 패치해서 2프레임에 1번만 실행
-    let _skip=false;
-    window._btRAFOrig=window.requestAnimationFrame;
-    window.requestAnimationFrame=function(cb){return window._btRAFOrig(function(t){if(_skip){_skip=false;window.requestAnimationFrame(cb)}else{_skip=true;cb(t)}})};
-  } else {
-    if(window._btRAFOrig)window.requestAnimationFrame=window._btRAFOrig;
-  }
+// ── 가변 속도 슬로모션 (0.1x~3x) ──
+window._btSpeedMul=1.0;
+window._btSetSpeed=function(v){
+  window._btSpeedMul=Math.max(0.1,Math.min(3.0,Math.round(v*10)/10));
+  const sl=document.getElementById('_btSpeedSlider');if(sl)sl.value=window._btSpeedMul;
+  const lb=document.getElementById('_btSpeedVal');if(lb)lb.textContent=window._btSpeedMul.toFixed(1)+'x';
 };
+// ── 프레임 스텝 모드 ──
+window._btFramePause=false;
+window._btFrameStep=false;
+window._btFramePauseToggle=function(){
+  window._btFramePause=!window._btFramePause;
+  const btn=document.getElementById('_btFramePauseBtn');
+  if(btn){btn.textContent=window._btFramePause?'▶ RESUME':'⏸ PAUSE';btn.style.background=window._btFramePause?'#224433':'#1a1410'}
+};
+window._btFrameStepOnce=function(){
+  if(window._btFramePause)window._btFrameStep=true;
+};
+// ── 히트박스 시각화 ──
+window._btShowHitbox=false;
+window._btHitboxToggle=function(){
+  window._btShowHitbox=!window._btShowHitbox;
+  const btn=document.getElementById('_btHitboxBtn');
+  if(btn){btn.textContent=window._btShowHitbox?'📦 히트박스 ON':'📦 히트박스';btn.style.background=window._btShowHitbox?'#224433':'#1a1410'}
+};
+// ── DPS 미터 ──
+window._btDmgLog=[];
+let _btDmgLogHead=0; // 인덱스 기반 관리 (shift 금지)
+let _btDpsInterval=null;
+function _btStartDps(){
+  if(_btDpsInterval)return;
+  _btDpsInterval=setInterval(function(){
+    const log=window._btDmgLog;if(!log)return;
+    // 오래된 항목 정리 (600개 초과 시 인덱스 리셋)
+    if(log.length>600){const keep=log.length-600;log.splice(0,keep);_btDmgLogHead=0}
+    const now=_now||0;const window3s=now-3000;
+    let pDmg=0,bDmg=0;
+    for(let i=log.length-1;i>=0;i--){
+      if(log[i].t<window3s)break;
+      if(log[i].src==='player')pDmg+=log[i].dmg;
+      else bDmg+=log[i].dmg;
+    }
+    const pDps=~~(pDmg/3),bDps=~~(bDmg/3);
+    const el=document.getElementById('_btDpsText');
+    if(el)el.textContent='Player DPS: '+pDps+' | Boss DPS: '+bDps;
+  },200);
+}
+// ── 키보드 단축키 ──
+document.addEventListener('keydown',function(ev){
+  if(!document.querySelector('#_btPanel'))return; // 테스트베드 모드만
+  if(ev.target.tagName==='INPUT'||ev.target.tagName==='TEXTAREA'||ev.target.tagName==='SELECT')return;
+  const k=ev.key;
+  if(k==='p'||k==='P'){window._btPauseToggle();ev.preventDefault()}
+  else if(k==='g'||k==='G'){window._btGodToggle();ev.preventDefault()}
+  else if(k==='r'||k==='R'){window._btResetBoss();ev.preventDefault()}
+  else if(k===' '){if(window._btFramePause){window._btFrameStepOnce();ev.preventDefault()}}
+  else if(k==='f'||k==='F'){window._btFramePauseToggle();ev.preventDefault()}
+  else if(k==='['){window._btSetSpeed((window._btSpeedMul||1)-0.1);ev.preventDefault()}
+  else if(k===']'){window._btSetSpeed((window._btSpeedMul||1)+0.1);ev.preventDefault()}
+});
 // ── GOD모드 유지 (매 프레임) ──
-const _btOrigLoop=window.requestAnimationFrame;
 (function _btGodLoop(){requestAnimationFrame(()=>{if(_btGod&&P){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield}if(P&&P.hp<=0){P.hp=P.mhp;P.s='idle'}_btGodLoop()})})();
 
 })();
