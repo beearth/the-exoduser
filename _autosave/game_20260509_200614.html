@@ -9595,10 +9595,10 @@ let _gpad=null,_gpBtns={},_gpBtnsJust={},_gpBtnsPrev={},_gpAxes=[0,0,0,0];
 let _gpConnected=false; // 패드 하드웨어 연결됨
 let _gpActive=false;    // 패드 모드 활성 (실제 입력 감지 시 true, 키마 입력 시 false)
 addEventListener('gamepadconnected',e=>{_gpConnected=true;console.log('[GAMEPAD] 연결:',e.gamepad.id)});
-addEventListener('gamepaddisconnected',e=>{_gpConnected=false;_gpActive=false;_gpad=null;document.body.style.cursor='';console.log('[GAMEPAD] 해제')});
+addEventListener('gamepaddisconnected',e=>{_gpConnected=false;_gpActive=false;_gpad=null;try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
 // 키보드/마우스 입력 → 패드모드 해제 + 패드 주입 키 정리
-addEventListener('mousemove',e=>{if(_gpActive&&(Math.abs(e.movementX)+Math.abs(e.movementY)>3)){_gpActive=false;document.body.style.cursor='';_gpClearAll();}},{passive:true});
-addEventListener('keydown',e=>{if(_gpActive&&!e._fromGp){_gpActive=false;document.body.style.cursor='';_gpClearAll();}},{passive:true});
+addEventListener('mousemove',e=>{if(_gpActive&&(Math.abs(e.movementX)+Math.abs(e.movementY)>3)){_gpActive=false;try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
+addEventListener('keydown',e=>{if(_gpActive&&!e._fromGp){_gpActive=false;try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
 
 // 게임패드 자동 에임: 가장 가까운 적 방향으로 facing 보정
 function _gpAutoAim(range){
@@ -9627,7 +9627,7 @@ function _gpClearAll(){
   // 패드→키마 전환 시 패드가 주입한 키 전부 해제
   for(const bi in _GP_KEY){const kc=_GP_KEY[bi];if(_gpBtnsPrev['k'+bi]){_gpInjectKey(kc,false);_gpBtnsPrev['k'+bi]=false;}}
   if(_gpBtnsPrev['kLT']){K['KeyF']=false;_gpBtnsPrev['kLT']=false;}
-  if(_gpBtnsPrev['kRT']){K['KeyZ']=false;_gpBtnsPrev['kRT']=false;}
+  if(_gpBtnsPrev['kRT']){K['KeyQ']=false;_gpBtnsPrev['kRT']=false;}
   for(let si=0;si<4;si++){if(_gpBtnsPrev['rs'+si]){K['Digit'+(si+1)]=false;_gpBtnsPrev['rs'+si]=false;}}
   if(_gpBtnsPrev['sU']){K['KeyW']=false;_gpBtnsPrev['sU']=false;}
   if(_gpBtnsPrev['sD']){K['KeyS']=false;_gpBtnsPrev['sD']=false;}
@@ -9657,7 +9657,7 @@ function _pollGamepad(){
   if(_gpAxes[0]||_gpAxes[1]||_gpAxes[2]||_gpAxes[3])_anyInput=true;
 
   // ── 2단계: 입력 감지 → 패드모드 활성화 ──
-  if(_anyInput&&!_gpActive){_gpActive=true;document.body.style.cursor='none';}
+  if(_anyInput&&!_gpActive){_gpActive=true;document.body.style.cursor='none';C.style.cursor='none';}
 
   // ── 3단계: 패드모드 아니면 K[]/MB[] 절대 안 건드림 ──
   if(!_gpActive)return;
@@ -9673,13 +9673,13 @@ function _pollGamepad(){
     _gpBtnsPrev['k'+idx]=pressed;
   }
 
-  // LT→F, RT→Z (아날로그 트리거)
+  // LT→F(스킬5), RT→Q(패링) (아날로그 트리거)
   const lt=_gpad.buttons[6]&&_gpad.buttons[6].value>0.3;
   const rt=_gpad.buttons[7]&&_gpad.buttons[7].value>0.3;
   if(lt&&!_gpBtnsPrev['kLT'])_gpInjectKey('KeyF',true);
   if(!lt&&_gpBtnsPrev['kLT'])_gpInjectKey('KeyF',false);
-  if(rt&&!_gpBtnsPrev['kRT'])_gpInjectKey('KeyZ',true);
-  if(!rt&&_gpBtnsPrev['kRT'])_gpInjectKey('KeyZ',false);
+  if(rt&&!_gpBtnsPrev['kRT'])_gpInjectKey('KeyQ',true);
+  if(!rt&&_gpBtnsPrev['kRT'])_gpInjectKey('KeyQ',false);
   _gpBtnsPrev['kLT']=lt;_gpBtnsPrev['kRT']=rt;
 
   // 우스틱 → 1234 스킬슬롯
@@ -9695,8 +9695,8 @@ function _pollGamepad(){
   }
   for(let si=0;si<4;si++){
     const sk='Digit'+(si+1),on=_rsSlot===si;
-    if(on&&!_gpBtnsPrev['rs'+si]){K[sk]=true;document.dispatchEvent(new KeyboardEvent('keydown',{code:sk,key:''+(si+1),bubbles:true}));}
-    if(!on&&_gpBtnsPrev['rs'+si]){K[sk]=false;document.dispatchEvent(new KeyboardEvent('keyup',{code:sk,key:''+(si+1),bubbles:true}));}
+    if(on&&!_gpBtnsPrev['rs'+si]){K[sk]=true;const _e1=new KeyboardEvent('keydown',{code:sk,key:''+(si+1),bubbles:true});_e1._fromGp=true;document.dispatchEvent(_e1);}
+    if(!on&&_gpBtnsPrev['rs'+si]){K[sk]=false;const _e2=new KeyboardEvent('keyup',{code:sk,key:''+(si+1),bubbles:true});_e2._fromGp=true;document.dispatchEvent(_e2);}
     _gpBtnsPrev['rs'+si]=on;
   }
 
@@ -19679,7 +19679,15 @@ function _execMagicE(){
   // 1) 선택된 스킬의 전용 핸들러가 있으면 우선 실행
   const handler=_MAGIC_E_HANDLERS[_amsk];
   if(handler&&handler())return;
-  // 2) 폴백: 악의구 (기본 E스킬)
+  // 2) 폴백: 악의구 (기본 E스킬) — 에임보조: 가까운 적 방향 보정
+  if(_gpActive)_gpAutoAim(400);
+  {let _aaR=400,_aaE=null,_aaD=_aaR;
+  for(let i=0;i<ens.length;i++){const e=ens[i];if(!e||!e.alive||e.hp<=0)continue;const d=Math.sqrt((e.x-P.x)*(e.x-P.x)+(e.y-P.y)*(e.y-P.y));if(d<_aaD){_aaD=d;_aaE=e;}}
+  if(_aaE){const _ta=Math.atan2(_aaE.y-P.y,_aaE.x-P.x);
+    // 현재 에임과 타겟 각도 차이가 90도 이내면 보정
+    let _da=_ta-P.facing;while(_da>Math.PI)_da-=Math.PI*2;while(_da<-Math.PI)_da+=Math.PI*2;
+    if(Math.abs(_da)<Math.PI/2){P.facing=_ta;P.atkArc=_ta;}
+  }}
   P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2;
 }
 
@@ -25226,8 +25234,8 @@ function update(){
     // 독사 재히트 쿨 감소 (프레임당 1회)
     if(p.venomBlade&&(p._reHitT||0)>0)p._reHitT=Math.max(0,p._reHitT-sp);
     // ── 유도: 일반 매 2프레임, ebHoming 매 6프레임 ──
-    if(!(p._bounceCool>0)&&!p.explosive&&!p.bladeOrb&&!p.iceBlade&&!p.burstBolt&&!p.fireball&&!p.normalBow&&!(p._arcLock&&p.dist<p._arcLock)&&spd>0&&(G._gcT+i)%(p.ebHoming?6:2)===0){
-      let bestE=null,bestD=p.plagueHoming?300:p.mhBlade?300:p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.magic?250:200;
+    if(!(p._bounceCool>0)&&!p.explosive&&!p.bladeOrb&&!p.iceBlade&&!p.burstBolt&&!p.normalBow&&!(p._arcLock&&p.dist<p._arcLock)&&spd>0&&(G._gcT+i)%(p.ebHoming?6:p.fireball?4:2)===0){
+      let bestE=null,bestD=p.plagueHoming?300:p.mhBlade?300:p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.fireball?280:p.magic?250:200;
       const _neH=shQuery(p.x,p.y,bestD);
       for(let h=0;h<_neH.length;h++){const e=_neH[h];if(!e.alive)continue;
         if(p._hitSet&&p._hitSet.has(e)&&!p.venomBlade){if(p.plagueHoming||p.mhBlade){let _anyAlive=false;for(let _pi=0;_pi<_neH.length;_pi++){if(_neH[_pi].alive&&!p._hitSet.has(_neH[_pi])){_anyAlive=true;break}}if(!_anyAlive)p._hitSet.clear();}continue;}
@@ -25236,7 +25244,7 @@ function update(){
         const ta=Math.atan2(bestE.y-p.y,bestE.x-p.x);
         const ca=Math.atan2(p.vy,p.vx);
         let da=ta-ca;while(da>Math.PI)da-=Math.PI*2;while(da<-Math.PI)da+=Math.PI*2;
-        const _turnSpd=p.venomBlade?3.0:p.plagueHoming?1.5:p.mhBlade?1.5:p.blueBean?0.08:p.arcMissile?Math.min(0.9,0.15+p.dist/60*.12):p.omniHoming?0.55:p.chainMax?0.7:p.magic?0.35:0.25;
+        const _turnSpd=p.venomBlade?3.0:p.plagueHoming?1.5:p.mhBlade?1.5:p.blueBean?0.08:p.arcMissile?Math.min(0.9,0.15+p.dist/60*.12):p.fireball?0.35:p.omniHoming?0.55:p.chainMax?0.7:p.magic?0.35:0.25;
         const turn=Math.min(Math.abs(da),_turnSpd*_dtSp)*Math.sign(da);
         p.vx=Math.cos(ca+turn)*spd;p.vy=Math.sin(ca+turn)*spd;
       }
@@ -46654,7 +46662,7 @@ function loop(timestamp){
     const _elapsed=timestamp-_lastLoopTs;
     if(_elapsed<_fpsCapInterval-1){requestAnimationFrame(loop);return}
   }
-  _lastLoopTs=timestamp;_sfxFrameReset();_partSpawnCnt=0;_aoeHitCnt=0;_pollGamepad();
+  _lastLoopTs=timestamp;_sfxFrameReset();_partSpawnCnt=0;_aoeHitCnt=0;try{_pollGamepad()}catch(e){console.error('[GAMEPAD] poll error:',e)}
   if(!_prevTs)_prevTs=timestamp;
   if(!_loopRunning){_loopRunning=true}
   _perfFrames++;
