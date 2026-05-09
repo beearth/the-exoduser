@@ -167,7 +167,7 @@ shake(14 + _bp*4)                              // 페이즈별 18~30
 
 | si | 챕터 | 보스명 | 특이 기술 추가 |
 |---|---|---|---|
-| 0 | 1장 썩은 숲 | 숲의 감시자 | 기본 18종 (no summon) |
+| 0 | 1장 썩은 숲 | 흑요염 파괴자 | 기본 18종 (no summon), `lavaPools`, `charge`, `slam` 중심 |
 | 1 | 1장 | 독버섯 거인 | + `summon, mine` |
 | 2 | 1장 | 사냥꾼 | + `cageTrap` |
 | 3 | 1장 | 기생수 | + `seekerMines` |
@@ -372,7 +372,7 @@ X.translate(Math.round(C.width/2 - G.cam.x + sx), Math.round(C.height/2 - G.cam.
 | 플래그 | 타입 | 설명 |
 |---|---|---|
 | `e.ib` | bool | 보스 여부 (isBoss 약자) — 핵심 식별자 |
-| `e._isLargeBoss` | bool | si===0 (숲의 감시자)만 true |
+| `e._isLargeBoss` | bool | si===0 (흑요염 파괴자)만 true |
 | `e._pImmune` | int | 포이즈 면역 남은 프레임 (300 = 5초) |
 | `e.poise` | float | 현재 포이즈 |
 | `e.maxPoise` | float | 포이즈 최대값 |

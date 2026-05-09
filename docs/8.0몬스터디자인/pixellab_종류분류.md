@@ -120,7 +120,7 @@
 ## 5. 숲/자연 (Forest/Nature) — 감시자/사냥꾼
 | 이름 | ID | 크기 |
 |------|-----|------|
-| si0 숲의 감시자 | cff5daa1 | 64px |
+| si0 흑요염 파괴자 | stage1_codex_lava_warbringer | concept PNG + 2.5D |
 | Forest Guardian | c1704a51 | 64px |
 | si2 숲의 사냥꾼 | 58aa13c3 | 64px |
 | si1 독버섯 거인 | a0a4e68c | 64px |
@@ -415,4 +415,3 @@
 | mob_96 | b48a82fd | 48px |
 | mob_98 | 25887ebe | 48px |
 | mob_99 | 3a6dfaca | 48px |
-

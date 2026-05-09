@@ -6,7 +6,7 @@
 | # | 이름 | ID | 방향 | 크기 | 애니 타입 | 애니 방향세트 |
 |---|------|-----|------|------|-----------|----------------|
 | 001 | Skeleton Warrior | ac12e1f1-66fd-45ef-bad9-2e2111fc6de2 | 8dir | 48px | 5 | 26 |
-| 002 | si0 숲의 감시자 | cff5daa1-c871-49ce-9c32-432738a75677 | 4dir | 64px | 8 | 25 |
+| 002 | si0 흑요염 파괴자 | stage1_codex_lava_warbringer | concept PNG + 2.5D | 1 source | 7 상태 | 1 |
 | 003 | etype85 절망기사 | 70758076-0cdf-4ef6-8492-0e5d47bf0c78 | 4dir | 48px | 6 | 24 |
 | 004 | Hell Lord | ae6c7740-cb0c-46d2-a9fd-9ce43349c62e | 4dir | 128px | 6 | 24 |
 | 005 | Parasite Mother | 162874ce-f514-4077-95a2-376510aa4a90 | 4dir | 64px | 6 | 24 |

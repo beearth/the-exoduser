@@ -9528,8 +9528,7 @@ addEventListener('keyup',e=>{
       if(G._pStats)G._pStats._dC++;
       const _hSk=P.activeChargeSk||'charge';
       const _isDB=isDimBreach();
-      const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;
-      const _hDir=Math.atan2(mouse.y-sy,mouse.x-sx);
+      const _hDir=_gpActive?P.facing:(()=>{const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;return Math.atan2(mouse.y-sy,mouse.x-sx)})();
       const _tier=_dashTier;
       _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=_tier;_dashPhase=1;
       _harpSk=_isDB?'dimBreach':_hSk;_harpHits=[];
@@ -9573,12 +9572,12 @@ const GP_BINDS={
   // Xbox 컨트롤러 매핑
   // 페이스 버튼
   0:'weapon',       // A → 좌클릭 (무기 공격)
-  1:'shield',       // B → 우클릭 (칼등 처내기)
+  1:'bow',          // B → Space (영역 스킬)
   2:'beam',         // X → E (마법)
   3:'parry',        // Y → Q (패링)
   // 범퍼
   4:'charge',       // LB → Shift (작살이동)
-  5:'bow',          // RB → Space (영역 스킬)
+  5:'shield',       // RB → 우클릭 (칼등 처내기)
   // 메뉴
   8:'inventory',    // Back — 인벤토리
   9:'settings',     // Start — 설정
@@ -9594,6 +9593,8 @@ const GP_DEAD=0.25; // 스틱 데드존
 let _gpad=null,_gpBtns={},_gpBtnsJust={},_gpBtnsPrev={},_gpAxes=[0,0,0,0];
 let _gpConnected=false; // 패드 하드웨어 연결됨
 let _gpActive=false;    // 패드 모드 활성 (실제 입력 감지 시 true, 키마 입력 시 false)
+// 로비에서 선택한 입력 모드 복원
+if(localStorage.getItem('inputMode')==='pad'){_gpActive=true;document.body.style.cursor='none'}
 addEventListener('gamepadconnected',e=>{_gpConnected=true;console.log('[GAMEPAD] 연결:',e.gamepad.id)});
 addEventListener('gamepaddisconnected',e=>{_gpConnected=false;_gpActive=false;_gpad=null;try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
 // 키보드/마우스 입력 → 패드모드 해제 + 패드 주입 키 정리
@@ -9706,6 +9707,56 @@ function _pollGamepad(){
   if(sd!==!!_gpBtnsPrev['sD']){K['KeyS']=sd;}_gpBtnsPrev['sD']=sd;
   if(sl!==!!_gpBtnsPrev['sL']){K['KeyA']=sl;}_gpBtnsPrev['sL']=sl;
   if(sr!==!!_gpBtnsPrev['sR']){K['KeyD']=sr;}_gpBtnsPrev['sR']=sr;
+}
+
+// ═══ 게임패드 UI 네비게이션 (범용 — 보이는 오버레이의 버튼 자동 수집) ═══
+let _gpUIIdx=0,_gpUIPrev={u:false,d:false,a:false},_gpUIBtns=[];
+function _gpUINav(){
+  if(!_gpActive||!_gpad)return;
+  // 화면에 보이는 모든 오버레이(fixed/absolute, z-index>=10)에서 클릭 가능한 버튼 수집
+  const _overlays=document.querySelectorAll('div[style*="position:fixed"],div[style*="position: fixed"],.on,div[id]');
+  let _btns=[];
+  for(let i=0;i<_overlays.length;i++){
+    const ov=_overlays[i];
+    if(!ov.offsetParent&&ov.style.opacity!=='1'&&!ov.classList.contains('on'))continue;
+    const cs=getComputedStyle(ov);
+    if(cs.display==='none'||cs.visibility==='hidden')continue;
+    if(cs.pointerEvents==='none'&&cs.opacity==='0')continue;
+    const zi=parseInt(cs.zIndex)||0;
+    if(zi<10&&!ov.classList.contains('on'))continue;
+    // 이 오버레이 안의 button, [onclick], .retry 수집
+    const _cands=ov.querySelectorAll('button,[onclick],.retry,.diff-btn');
+    for(let j=0;j<_cands.length;j++){
+      const b=_cands[j];
+      if(b.offsetParent===null&&b.style.display==='none')continue;
+      const bcs=getComputedStyle(b);
+      if(bcs.display==='none'||bcs.visibility==='hidden'||bcs.pointerEvents==='none')continue;
+      if(!_btns.includes(b))_btns.push(b);
+    }
+  }
+  // 이전 프레임 버튼 목록과 다르면 인덱스 리셋
+  if(_btns.length!==_gpUIBtns.length||(_btns.length>0&&_btns[0]!==_gpUIBtns[0])){_gpUIIdx=0;_gpUIBtns=_btns}
+  if(!_btns.length){
+    // 아웃라인 정리
+    if(_gpUIBtns.length){for(let i=0;i<_gpUIBtns.length;i++){_gpUIBtns[i].style.outline='';_gpUIBtns[i].style.outlineOffset='';}_gpUIBtns=[]}
+    return;
+  }
+  if(_gpUIIdx>=_btns.length)_gpUIIdx=0;
+  // D-pad 위(12)/아래(13) 또는 좌스틱
+  const u=!!_gpBtns[12]||_gpAxes[1]<-0.5;
+  const d=!!_gpBtns[13]||_gpAxes[1]>0.5;
+  const a=!!_gpBtns[0]; // A버튼
+  if(u&&!_gpUIPrev.u){_gpUIIdx=(_gpUIIdx-1+_btns.length)%_btns.length}
+  if(d&&!_gpUIPrev.d){_gpUIIdx=(_gpUIIdx+1)%_btns.length}
+  _gpUIPrev.u=u;_gpUIPrev.d=d;
+  // 포커스 비주얼
+  for(let i=0;i<_btns.length;i++){
+    if(i===_gpUIIdx){_btns[i].style.outline='2px solid #ffcc00';_btns[i].style.outlineOffset='3px'}
+    else{_btns[i].style.outline='';_btns[i].style.outlineOffset=''}
+  }
+  // A버튼 확인
+  if(a&&!_gpUIPrev.a&&_btns[_gpUIIdx]){_btns[_gpUIIdx].click()}
+  _gpUIPrev.a=a;
 }
 
 function _chkAct(b){if(!b)return false;if(b.startsWith('mouse'))return!!MB[+b.slice(5)];return!!K[b]}
@@ -22461,8 +22512,7 @@ function update(){
         if(G._pStats)G._pStats._dC++;
         const _afSk=P.activeChargeSk||'charge';
         const _afDB=isDimBreach();
-        const _afSx=P.x-G.cam.x+C.width/2,_afSy=P.y-G.cam.y+C.height/2;
-        const _afDir=Math.atan2(mouse.y-_afSy,mouse.x-_afSx);
+        const _afDir=_gpActive?P.facing:(()=>{const _s=P.x-G.cam.x+C.width/2,_t=P.y-G.cam.y+C.height/2;return Math.atan2(mouse.y-_t,mouse.x-_s)})();
         _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=3;_dashPhase=1;
         _harpSk=_afDB?'dimBreach':_afSk;_harpHits=[];
         P._chainSlamReady=false;P._chainAssaultReady=false;P._chainSkDelay=3;
@@ -22479,8 +22529,7 @@ function update(){
     }
     // ── 조준선 벽 감지 → 자동 발사 (도우미) ──
     if(_dashTier>=1&&!_harpActive&&!_dashActive){
-      const _awSx=P.x-G.cam.x+C.width/2,_awSy=P.y-G.cam.y+C.height/2;
-      const _awDir=Math.atan2(mouse.y-_awSy,mouse.x-_awSx);
+      const _awDir=_gpActive?P.facing:(()=>{const _s=P.x-G.cam.x+C.width/2,_t=P.y-G.cam.y+C.height/2;return Math.atan2(mouse.y-_t,mouse.x-_s)})();
       const _awCos=Math.cos(_awDir),_awSin=Math.sin(_awDir);
       const _awMax=_harpDistTier(_dashTier);
       let _awWall=false;
@@ -22805,8 +22854,7 @@ function update(){
           if(G._pStats)G._pStats._dC++;
           const _rhSk=P.activeChargeSk||'charge';
           const _rhDB=isDimBreach();
-          const _rhSx=P.x-G.cam.x+C.width/2,_rhSy=P.y-G.cam.y+C.height/2;
-          const _rhDir=Math.atan2(mouse.y-_rhSy,mouse.x-_rhSx);
+          const _rhDir=_gpActive?P.facing:(()=>{const _s=P.x-G.cam.x+C.width/2,_t=P.y-G.cam.y+C.height/2;return Math.atan2(mouse.y-_t,mouse.x-_s)})();
           _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=3;_dashPhase=1;
           _harpSk=_rhDB?'dimBreach':_rhSk;_harpHits=[];
           P._chainSlamReady=false;P._chainAssaultReady=false;P._chainSkDelay=3;
@@ -46662,7 +46710,7 @@ function loop(timestamp){
     const _elapsed=timestamp-_lastLoopTs;
     if(_elapsed<_fpsCapInterval-1){requestAnimationFrame(loop);return}
   }
-  _lastLoopTs=timestamp;_sfxFrameReset();_partSpawnCnt=0;_aoeHitCnt=0;try{_pollGamepad()}catch(e){console.error('[GAMEPAD] poll error:',e)}
+  _lastLoopTs=timestamp;_sfxFrameReset();_partSpawnCnt=0;_aoeHitCnt=0;try{_pollGamepad();_gpUINav()}catch(e){console.error('[GAMEPAD] poll error:',e)}
   if(!_prevTs)_prevTs=timestamp;
   if(!_loopRunning){_loopRunning=true}
   _perfFrames++;

@@ -35,11 +35,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500&family=Noto+Serif+KR:wght@400;500&family=Noto+Serif+JP:wght@400;500&family=Noto+Serif+SC:wght@400;500&family=Noto+Serif+TC:wght@400;500&family=Noto+Naskh+Arabic:wght@400;500&family=Noto+Serif+Thai:wght@400;500&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden;cursor:url(img/cursors/cursor_death_scythe.png) 13 0,auto}
+body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
 
 /* ═══ Cinematic Scene ═══ */
-.cin-scene{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;cursor:url(img/cursors/cursor_death_scythe.png) 13 0,auto}
-.cin-scene *{cursor:url(img/cursors/cursor_death_scythe.png) 13 0,auto}
+.cin-scene{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
+.cin-scene *{cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
 
 /* 레터박스 */
 .cin-lb{position:absolute;left:0;right:0;background:#000;z-index:30;pointer-events:none}
@@ -332,26 +332,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
   <canvas id="splashCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
   <div id="splashContent" style="text-align:center;opacity:0;transition:opacity 0.5s;position:relative;z-index:2"></div>
 </div>
-<!-- ═══ 입력 모드 선택 (스팀 스타일) ═══ -->
-<div id="inputModeScreen" style="position:fixed;inset:0;z-index:10000;background:#000;display:none;align-items:center;justify-content:center;flex-direction:column;gap:40px;opacity:0;transition:opacity .8s ease-in">
-  <div style="text-align:center">
-    <div style="font:700 clamp(18px,3vw,36px) 'Cinzel Decorative',serif;color:#C9A961;letter-spacing:.15em;margin-bottom:8px">THE EXODUSER</div>
-    <div style="font:400 clamp(12px,1.5vw,18px) 'Noto Sans KR',sans-serif;color:#886644;letter-spacing:.3em" id="inputModeLabel">입력 방식을 선택하세요</div>
-  </div>
-  <div style="display:flex;gap:clamp(20px,4vw,60px);align-items:stretch">
-    <button id="inputModeKbm" style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:clamp(20px,3vw,40px) clamp(30px,5vw,60px);background:rgba(255,255,255,.03);border:2px solid #443322;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all .3s;border-radius:8px;min-width:180px" onmouseover="this.style.borderColor='#C9A961';this.style.background='rgba(201,169,97,.08)'" onmouseout="this.style.borderColor='#443322';this.style.background='rgba(255,255,255,.03)'">
-      <div style="font-size:clamp(36px,5vw,56px)">🖱️</div>
-      <div style="font-size:clamp(14px,1.5vw,18px);font-weight:700;letter-spacing:.1em" id="inputKbmLabel">키보드 + 마우스</div>
-      <div style="font-size:clamp(10px,1vw,13px);color:#665544;letter-spacing:.05em" id="inputKbmSub">WASD / 마우스 에임</div>
-    </button>
-    <button id="inputModePad" style="display:flex;flex-direction:column;align-items:center;gap:16px;padding:clamp(20px,3vw,40px) clamp(30px,5vw,60px);background:rgba(255,255,255,.03);border:2px solid #443322;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;cursor:pointer;transition:all .3s;border-radius:8px;min-width:180px" onmouseover="this.style.borderColor='#C9A961';this.style.background='rgba(201,169,97,.08)'" onmouseout="this.style.borderColor='#443322';this.style.background='rgba(255,255,255,.03)'">
-      <div style="font-size:clamp(36px,5vw,56px)">🎮</div>
-      <div style="font-size:clamp(14px,1.5vw,18px);font-weight:700;letter-spacing:.1em" id="inputPadLabel">게임패드</div>
-      <div style="font-size:clamp(10px,1vw,13px);color:#665544;letter-spacing:.05em" id="inputPadSub">스틱 이동 / 오토에임</div>
-    </button>
-  </div>
-  <div style="font-size:clamp(10px,1vw,13px);color:#554433;letter-spacing:.15em" id="inputModeHint">설정에서 언제든 변경 가능</div>
-</div>
+<!-- 입력 모드: 선택 화면 제거, 자동 감지+실시간 전환 -->
 
 <!-- FDG SCREEN 2: 늑대 엠블럼 -->
 <div id="fdgScreen" class="fdg-screen" style="display:none">
@@ -1482,6 +1463,11 @@ function playCinematic(){
     prompt.style.display = 'flex';
     prompt.onclick = onVidClick;
   }
+  // 게임패드: A/B/X/Y 로 CLICK TO HELL 넘기기
+  _GP.on('clickToHell', (gp, just) => {
+    if(_vidStarted||_cinDone) { _GP.off('clickToHell'); return false; }
+    return just[0]||just[1]||just[2]||just[3];
+  }, onVidClick);
 
   // ─── 부분 스킵 (클릭 시 다음 대사 + 음성 점프) ───
   function onSubSkip(){
@@ -1513,11 +1499,19 @@ function playCinematic(){
     }
   };
   document.addEventListener('keydown', keyHandler);
-  
+
+  // 게임패드: A/X/Y로 대사 스킵
+  _GP.on('cinSub', (gp, just) => {
+    if(_cinDone) { _GP.off('cinSub'); return false; }
+    if(!_cinReady) return false;
+    return just[0]||just[2]||just[3];
+  }, onSubSkip);
+
   // 종료 시 키 핸들러 제거를 위해 finishCin 수정에 활용
   const originalFinish = finishCin;
   finishCin = () => {
     document.removeEventListener('keydown', keyHandler);
+    _cinDone=true; // 게임패드 폴링도 정지
     originalFinish();
   };
 
@@ -1529,6 +1523,7 @@ function playCinematic(){
     _hgCv.width=120*devicePixelRatio;_hgCv.height=100*devicePixelRatio;
     const _hgX=_hgCv.getContext('2d');_hgX.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
     let _cinHoldKey=false,_cinHoldProg=0,_cinHoldActive=false;
+    let _cinGpHold=false; // 게임패드 홀드 상태
     const _CIN_HOLD_DUR=5000;
     console.log('[CINEMATIC] Hold skip initialized, duration: '+_CIN_HOLD_DUR+'ms');
     document.addEventListener('keydown',function _chk(e){
@@ -1542,6 +1537,14 @@ function playCinematic(){
         _cinHoldKey=false;_cinHoldActive=false;_cinHoldProg=0;
       }
     });
+    // 게임패드: Start(9) 또는 B(1) 홀드로 스킵
+    _GP.on('cinHold', (gp, just) => {
+      if(_cinDone) { _GP.off('cinHold'); return false; }
+      const holding = (gp.buttons[9]&&gp.buttons[9].pressed)||(gp.buttons[1]&&gp.buttons[1].pressed);
+      if(holding&&!_cinGpHold){_cinGpHold=true;_cinHoldKey=true;if(!_cinHoldActive){_cinHoldActive=true;console.log('[CINEMATIC] Gamepad hold started')}}
+      if(!holding&&_cinGpHold){_cinGpHold=false;_cinHoldKey=false;_cinHoldActive=false;_cinHoldProg=0;console.log('[CINEMATIC] Gamepad hold released')}
+      return false; // 액션은 홀드 게이지 로직에서 처리
+    }, ()=>{});
     let _hgPrev=performance.now();
     function _hgLoop(){
       if(_cinDone){_hgX.clearRect(0,0,120,100);return}
@@ -1562,7 +1565,8 @@ function playCinematic(){
       }
       // 중앙
       _hgX.globalAlpha=a*0.8;_hgX.font='12px sans-serif';_hgX.fillStyle='#888';
-      _hgX.textAlign='center';_hgX.textBaseline='middle';_hgX.fillText('ESC',gx,gy);
+      _hgX.textAlign='center';_hgX.textBaseline='middle';
+      _hgX.fillText(_cinGpHold?'Ⓑ':'ESC',gx,gy);
       // 라벨
       _hgX.globalAlpha=a*0.6;_hgX.font='10px sans-serif';_hgX.fillStyle='#666';
       _hgX.fillText('HOLD TO SKIP',gx,gy+r+16);
@@ -1921,6 +1925,36 @@ if($('enterGameBtn'))$('enterGameBtn').addEventListener('click',()=>{if(_selecte
 // 생성 모달
 $('createCancelBtn').addEventListener('click',()=>{$('createModal').classList.remove('show')});
 
+// ── 로비 게임패드 네비게이션 ──
+let _lobbyGpIdx = 0;
+_GP.on('lobbyNav', (gp, just) => {
+  const lobby = $('lobby');
+  if(!lobby || lobby.style.display !== 'flex') return false;
+  const items = lobby.querySelectorAll('.char-item, .char-item-new');
+  if(!items.length) return false;
+
+  // D-pad 위(12)/아래(13) 또는 좌스틱
+  if(just[12] || (_GP.axes[1] < -0.5 && !_GP.prev._lobbyUp)) { _lobbyGpIdx = Math.max(0, _lobbyGpIdx - 1); }
+  if(just[13] || (_GP.axes[1] > 0.5 && !_GP.prev._lobbyDown)) { _lobbyGpIdx = Math.min(items.length - 1, _lobbyGpIdx + 1); }
+  _GP.prev._lobbyUp = _GP.axes[1] < -0.5;
+  _GP.prev._lobbyDown = _GP.axes[1] > 0.5;
+
+  // 포커스 표시 + 클릭
+  items.forEach((el, i) => {
+    if(i === _lobbyGpIdx) { el.style.outline = '2px solid #C9A961'; el.style.outlineOffset = '-2px'; }
+    else { el.style.outline = ''; el.style.outlineOffset = ''; }
+  });
+  // A(0) = 선택/입장
+  if(just[0]) { items[_lobbyGpIdx].click(); return true; }
+  // B(1) = 삭제 (char-item만)
+  if(just[1]) {
+    const del = items[_lobbyGpIdx].querySelector('.char-del');
+    if(del) del.click();
+    return true;
+  }
+  return false;
+}, () => {});
+
 // ═══ 캐릭터 선택 → 입장 ═══
 function showCharGate(charId){
   showLoading(_TL('지옥으로 입장하는 중...'));
@@ -2006,15 +2040,19 @@ function showCharGate(charId){
       phase:Math.random()*6.28
     });
   }
-  function loop(){
+  let _prevT=0;
+  function loop(now){
     if(!cv.parentElement||cv.parentElement.offsetWidth===0){requestAnimationFrame(loop);return}
+    if(!_prevT)_prevT=now;
+    const rawDt=now-_prevT;_prevT=now;
+    const dt=Math.min(rawDt,50)/16.667; // 60fps 기준 정규화, 최대 50ms 캡
     const w=cv.width,h=cv.height;
     cx.clearRect(0,0,w,h);
-    const t=performance.now()*.001;
+    const t=now*.001;
     // 안개
     for(let i=0;i<mist.length;i++){
       const m=mist[i];
-      m.x+=m.vx;
+      m.x+=m.vx*dt;
       if(m.x<-m.r)m.x=w+m.r;
       if(m.x>w+m.r)m.x=-m.r;
       const pulse=Math.sin(t*.3+m.phase)*.015;
@@ -2026,9 +2064,9 @@ function showCharGate(charId){
     // 불씨
     for(let i=0;i<embers.length;i++){
       const e=embers[i];
-      e.x+=e.vx+Math.sin(t*2+i)*.2;
-      e.y+=e.vy;
-      e.life-=e.decay;
+      e.x+=(e.vx+Math.sin(t*2+i)*.2)*dt;
+      e.y+=e.vy*dt;
+      e.life-=e.decay*dt;
       if(e.life<=0||e.y<-20){
         e.x=Math.random()*w;e.y=h+10;
         e.life=1;e.sz=Math.random()*2.5+.5;
@@ -2056,6 +2094,80 @@ function showCharGate(charId){
   obs.observe(document.getElementById('lobby'),{attributes:true,attributeFilter:['style']});
   // 즉시 시작 시도
   if(document.getElementById('lobby').style.display==='flex'){resize();loop()}
+})();
+</script>
+<script>
+// ═══ 글로벌 게임패드 매니저 (전 화면 공통) ═══
+const _GP = {
+  connected: false,
+  active: false, // 패드 모드
+  prev: {}, // 이전 프레임 버튼 상태
+  axes: [0,0,0,0],
+  DEAD: 0.25,
+  // 콜백 등록: { id, test:(gp,just)=>bool, action:()=>void }
+  _handlers: [],
+  on(id, test, action) { this._handlers.push({id, test, action}) },
+  off(id) { this._handlers = this._handlers.filter(h => h.id !== id) },
+};
+addEventListener('gamepadconnected', e => {
+  _GP.connected = true;
+  console.log('[GP] 연결:', e.gamepad.id);
+});
+addEventListener('gamepaddisconnected', e => {
+  _GP.connected = false; _GP.active = false;
+  console.log('[GP] 해제');
+});
+// 마우스/키보드 → KBM 복귀
+addEventListener('mousemove', e => {
+  if(_GP.active && (Math.abs(e.movementX)+Math.abs(e.movementY) > 3)) {
+    _GP.active = false; localStorage.setItem('inputMode','kbm');
+    document.body.style.cursor = '';
+  }
+}, {passive:true});
+addEventListener('keydown', e => {
+  if(_GP.active && !e._fromGp) {
+    _GP.active = false; localStorage.setItem('inputMode','kbm');
+    document.body.style.cursor = '';
+  }
+}, {passive:true});
+
+(function _gpGlobalPoll() {
+  requestAnimationFrame(_gpGlobalPoll);
+  const gps = navigator.getGamepads();
+  let gp = null;
+  for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){gp=gps[i];break}}
+  if(!gp) return;
+
+  // 버튼 상태 + just pressed 계산
+  const just = {};
+  let anyInput = false;
+  for(let i=0;i<gp.buttons.length;i++){
+    const p = gp.buttons[i].pressed || gp.buttons[i].value > 0.5;
+    if(p) anyInput = true;
+    just[i] = p && !_GP.prev[i];
+    _GP.prev[i] = p;
+  }
+  // 스틱
+  _GP.axes[0] = Math.abs(gp.axes[0]||0) < _GP.DEAD ? 0 : gp.axes[0];
+  _GP.axes[1] = Math.abs(gp.axes[1]||0) < _GP.DEAD ? 0 : gp.axes[1];
+  if(gp.axes.length >= 4){
+    _GP.axes[2] = Math.abs(gp.axes[2]||0) < _GP.DEAD ? 0 : gp.axes[2];
+    _GP.axes[3] = Math.abs(gp.axes[3]||0) < _GP.DEAD ? 0 : gp.axes[3];
+  }
+  if(_GP.axes[0]||_GP.axes[1]||_GP.axes[2]||_GP.axes[3]) anyInput = true;
+
+  // 패드 입력 감지 → 모드 전환
+  if(anyInput && !_GP.active) {
+    _GP.active = true;
+    localStorage.setItem('inputMode','pad');
+    document.body.style.cursor = 'none';
+  }
+
+  // 등록된 핸들러 실행
+  for(let i=0;i<_GP._handlers.length;i++){
+    const h = _GP._handlers[i];
+    try { if(h.test(gp, just)) h.action(); } catch(e){}
+  }
 })();
 </script>
 <script>
@@ -2216,92 +2328,29 @@ function showCharGate(charId){
     e.preventDefault();skip();
   });
 
+  // 게임패드: 로고 화면부터 아무 버튼으로 스킵
+  _GP.on('splash', (gp, just) => {
+    if(done) { _GP.off('splash'); return false; }
+    // 아무 버튼 just pressed
+    for(let i=0;i<gp.buttons.length;i++) if(just[i]) return true;
+    return false;
+  }, skip);
+
   startPhase();
 })();
 
-// ═══ 입력 모드 선택 시스템 ═══
-let _inputMode = localStorage.getItem('inputMode') || null; // 'kbm' | 'pad' | null
-let _inputModeChosen = !!_inputMode;
+// ═══ 입력 모드 자동 감지 시스템 (선택 화면 없음, 실시간 전환) ═══
+let _inputMode = localStorage.getItem('inputMode') || 'kbm';
+let _inputModeChosen = true; // 항상 true — 선택 화면 스킵
 
 function _showInputModeScreen(){
-  // 이미 선택한 적 있으면 스킵
-  if(_inputModeChosen){
-    _applyInputMode(_inputMode);
-    return;
-  }
-  const scr=document.getElementById('inputModeScreen');
-  scr.style.display='flex';
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{scr.style.opacity='1'}));
-  // 다국어
-  const _l=_lobbyLang();
-  const _t={
-    ko:{label:'입력 방식을 선택하세요',kbm:'키보드 + 마우스',kbmSub:'WASD / 마우스 에임',pad:'게임패드',padSub:'스틱 이동 / 오토에임',hint:'설정에서 언제든 변경 가능'},
-    en:{label:'Select Input Method',kbm:'Keyboard + Mouse',kbmSub:'WASD / Mouse Aim',pad:'Gamepad',padSub:'Stick Move / Auto-Aim',hint:'Can be changed anytime in Settings'},
-    ja:{label:'入力方式を選択してください',kbm:'キーボード + マウス',kbmSub:'WASD / マウスエイム',pad:'ゲームパッド',padSub:'スティック移動 / オートエイム',hint:'設定でいつでも変更可能'},
-    zh:{label:'选择输入方式',kbm:'键盘 + 鼠标',kbmSub:'WASD / 鼠标瞄准',pad:'手柄',padSub:'摇杆移动 / 自动瞄准',hint:'可在设置中随时更改'},
-  };
-  const t=_t[_l]||_t.en;
-  const $=id=>document.getElementById(id);
-  $('inputModeLabel').textContent=t.label;
-  $('inputKbmLabel').textContent=t.kbm;
-  $('inputKbmSub').textContent=t.kbmSub;
-  $('inputPadLabel').textContent=t.pad;
-  $('inputPadSub').textContent=t.padSub;
-  $('inputModeHint').textContent=t.hint;
-
-  $('inputModeKbm').onclick=()=>{_selectInputMode('kbm')};
-  $('inputModePad').onclick=()=>{_selectInputMode('pad')};
-
-  // 게임패드 자동 감지: 패드 입력 시 자동으로 패드 버튼 포커스 + A버튼 선택
-  let _imGpIdx=0,_imGpPrev={u:false,d:false,a:false};
-  const _imBtns=[$('inputModeKbm'),$('inputModePad')];
-  function _imGpPoll(){
-    if(_inputModeChosen)return;
-    const gps=navigator.getGamepads();
-    let gp=null;
-    for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){gp=gps[i];break}}
-    if(gp){
-      // 패드 감지되면 자동으로 패드 쪽 포커스
-      const anyBtn=Array.from(gp.buttons).some(b=>b.pressed);
-      const anyAxis=Math.abs(gp.axes[0]||0)>0.3||Math.abs(gp.axes[1]||0)>0.3;
-      if(anyBtn||anyAxis){
-        _imGpIdx=1; // 패드 버튼으로 이동
-      }
-      const u=gp.buttons[12]&&gp.buttons[12].pressed||gp.buttons[14]&&gp.buttons[14].pressed;
-      const d=gp.buttons[13]&&gp.buttons[13].pressed||gp.buttons[15]&&gp.buttons[15].pressed;
-      const a=gp.buttons[0]&&gp.buttons[0].pressed;
-      if((u&&!_imGpPrev.u)||(d&&!_imGpPrev.d)){_imGpIdx=(_imGpIdx+1)%2}
-      _imGpPrev.u=u;_imGpPrev.d=d;
-      for(let i=0;i<2;i++){
-        if(i===_imGpIdx){_imBtns[i].style.borderColor='#C9A961';_imBtns[i].style.background='rgba(201,169,97,.08)'}
-        else{_imBtns[i].style.borderColor='#443322';_imBtns[i].style.background='rgba(255,255,255,.03)'}
-      }
-      if(a&&!_imGpPrev.a){_imBtns[_imGpIdx].click()}
-      _imGpPrev.a=a;
-    }
-    requestAnimationFrame(_imGpPoll);
-  }
-  _imGpPoll();
-}
-
-function _selectInputMode(mode){
-  _inputMode=mode;
-  _inputModeChosen=true;
-  localStorage.setItem('inputMode',mode);
-  _applyInputMode(mode);
-  const scr=document.getElementById('inputModeScreen');
-  scr.style.opacity='0';
-  setTimeout(()=>{scr.style.display='none';scr.style.opacity='1'},400);
-  console.log('[INPUT] mode selected:',mode);
+  // 선택 화면 없이 바로 진행, game.html에서 자동 전환
+  _applyInputMode(_inputMode);
 }
 
 function _applyInputMode(mode){
-  // game.html에서 참조할 수 있도록 전역 변수 설정
   window._preferredInputMode=mode;
-  // 패드 모드면 커서 숨기기
-  if(mode==='pad'){
-    document.body.style.cursor='none';
-  }
+  // 글로벌 _GP 매니저가 패드/KBM 전환 + 커서 자동 관리
 }
 </script>
 </body>

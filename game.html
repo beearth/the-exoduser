@@ -100,7 +100,7 @@ if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!==
   --ui-inset-bottom:10px
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;overflow:hidden;font-family:var(--font);user-select:none;cursor:url(img/cursors/cursor_death_scythe.png) 13 0,auto}
+body{background:#000;overflow:hidden;font-family:var(--font);user-select:none;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
 canvas{display:block;position:fixed;inset:0}
 
 /* ══ HUD: Orbs of Fate ══ */
@@ -4618,7 +4618,7 @@ rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 // ═══ [LANG] 다국어 번역 시스템 ═══
 const _EN={
 // --- Stage / Boss ---
-'썩은 숲':'Rotten Forest','숲의 감시자':'Forest Warden','독버섯 거인':'Toxic Mushroom Giant','숲의 사냥꾼':'Forest Hunter','숲의 기생수':'Parasitic Beast',
+'썩은 숲':'Rotten Forest','흑요염 파괴자':'Obsidian Flame Destroyer','숲의 감시자':'Forest Warden','독버섯 거인':'Toxic Mushroom Giant','숲의 사냥꾼':'Forest Hunter','숲의 기생수':'Parasitic Beast',
 '1장 — 썩은 숲':'CH1 — Rotten Forest','2장 — 벌레굴':'CH2 — Worm Nest','3장 — 얼음굴':'CH3 — Ice Cavern',
 '4장 — 고통의 화염지대':'CH4 — Infernal Wastes','5장 — 지옥의 군단':'CH5 — Hell Legion','6장 — 사도의 마굴':'CH6 — Apostle\'s Den','7장 — 지옥성':'CH7 — Hell Citadel',
 '탈출!':'Escaped!','처치':'Kills','경험치':'EXP','최대콤보':'Max Combo',
@@ -7551,7 +7551,7 @@ const BOSS_PHASES={
 // ═══ 보스별 무브셋 (스테이지→허용 기술 Set) ═══
 // null = 전체 49종 사용 (기본), Set = 해당 기술만 사용
 const _BOSS_MOVESET=[];
-// ── 1장 썩은 숲 (si 0~3): 숲의 감시자 / 독버섯 거인 / 사냥꾼 / 기생수 ──
+// ── 1장 썩은 숲 (si 0~3): 흑요염 파괴자 / 독버섯 거인 / 사냥꾼 / 기생수 ──
 _BOSS_MOVESET[0]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','lavaPools','rapidMissile']);
 _BOSS_MOVESET[1]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','lavaPools','rapidMissile']);
 _BOSS_MOVESET[2]=new Set(['slashCombo','slam','sweep','charge','jump','burst','shock','fan','groundFissure','poisonTrail','spin','grab','multiDash','tideWave','chaseAoe','elemBall','beanStorm','summon','mine','cageTrap','lavaPools','rapidMissile']);
@@ -8186,6 +8186,46 @@ const _USE_EXT_ATLAS=false;
   }).catch(()=>{});};img.onerror=()=>{};
 })();
 // ── Atlas B External (외부 보스 아틀라스) ──
+const STAGE1_CODEX_BOSS_SKIN='assets/sprites/boss/stage1_codex_lava_warbringer.png';
+let _stage1CodexBossImg=null,_stage1CodexBossReady=false;
+const STAGE1_CODEX_BOSS_MOTION={
+  idle:{sx:1,sy:1,y:-6,rot:0,glow:.25},
+  walk:{sx:1.03,sy:.98,y:-10,rot:.03,glow:.3},
+  windup:{sx:1.08,sy:.94,y:-18,rot:-.08,glow:.45},
+  slash:{sx:1.14,sy:.9,y:-8,rot:.1,glow:.6},
+  slam:{sx:1.18,sy:.86,y:12,rot:.06,glow:.75},
+  hit:{sx:.96,sy:1.04,y:-4,rot:-.12,glow:.5},
+  death:{sx:1.05,sy:.75,y:28,rot:.18,glow:.85}
+};
+(function _loadStage1CodexBoss(){
+  const img=new Image();img.src=STAGE1_CODEX_BOSS_SKIN+'?v=20260509';
+  img.onload=()=>{_stage1CodexBossImg=img;_stage1CodexBossReady=true;console.log('[STAGE1_BOSS] Codex skin loaded')};
+  img.onerror=e=>console.warn('[STAGE1_BOSS] Codex skin load fail',e);
+})();
+function _stage1CodexBossMotionKey(e){
+  const s=e.s||'';
+  if(e.hp<=0||s==='eDeath')return 'death';
+  if(e.stunned>0||s==='eHit'||s==='eKB'||s==='eStagger')return 'hit';
+  if(s.indexOf('Slam')>=0||s==='bossJump'||s.indexOf('Meteor')>=0)return 'slam';
+  if(s.indexOf('Slash')>=0||s.indexOf('Sweep')>=0||s.indexOf('Spin')>=0||s.indexOf('Charge')>=0||s.indexOf('Dash')>=0)return 'slash';
+  if(s.indexOf('Wind')>=0||s.indexOf('Aim')>=0||s.indexOf('Hold')>=0||s==='eWindup')return 'windup';
+  if(s==='eWalk'||s==='eChase'||s==='eApproach'||s==='bossRec')return 'walk';
+  return 'idle';
+}
+function _drawStage1CodexBoss(X,e,sa,tdY){
+  if(!_stage1CodexBossReady||!_stage1CodexBossImg)return false;
+  const img=_stage1CodexBossImg,m=STAGE1_CODEX_BOSS_MOTION[_stage1CodexBossMotionKey(e)]||STAGE1_CODEX_BOSS_MOTION.idle;
+  const t=G.stageTime||0,pulse=Math.sin(t*.12)*.025,shake=e.stunned>0?Math.sin(t*.9)*3:0;
+  const dw=e.r*6.1*(m.sx+pulse),dh=e.r*9.2*(m.sy-pulse*.5);
+  const glowA=sa*(m.glow+Math.max(0,Math.sin(t*.16))*.12);
+  X.save();X.translate(e.x+shake,e.y+(tdY||0)+m.y);if(Math.abs(e.facing)>Math.PI/2)X.scale(-1,1);X.rotate(m.rot);
+  X.globalAlpha=glowA;X.fillStyle='rgba(255,70,20,.45)';X.beginPath();X.ellipse(0,-dh*.28,dw*.42,dh*.36,0,0,Math.PI*2);X.fill();
+  X.globalAlpha=sa;X.beginPath();X.ellipse(0,-dh*.25,dw*.46,dh*.49,0,0,Math.PI*2);X.clip();
+  X.drawImage(img,0,0,img.naturalWidth,img.naturalHeight,-dw/2,-dh*.74,dw,dh);
+  X.globalCompositeOperation='screen';X.globalAlpha=glowA*.65;X.fillStyle='rgba(255,80,18,.35)';X.fillRect(-dw/2,-dh*.74,dw,dh);
+  X.restore();
+  return true;
+}
 // ── 대형보스 8방향 아틀라스 ──
 let _largeBossAtlasReady=false,_largeBossAtlasImg=null,_largeBossAtlasData=null;
 window._btScaleMul=3.7; // 보스 시각 스케일 배율
@@ -9593,13 +9633,18 @@ const GP_DEAD=0.25; // 스틱 데드존
 let _gpad=null,_gpBtns={},_gpBtnsJust={},_gpBtnsPrev={},_gpAxes=[0,0,0,0];
 let _gpConnected=false; // 패드 하드웨어 연결됨
 let _gpActive=false;    // 패드 모드 활성 (실제 입력 감지 시 true, 키마 입력 시 false)
-// 로비에서 선택한 입력 모드 복원
+// 자동 감지: localStorage 힌트로 초기값 설정, 이후 실시간 전환
 if(localStorage.getItem('inputMode')==='pad'){_gpActive=true;document.body.style.cursor='none'}
-addEventListener('gamepadconnected',e=>{_gpConnected=true;console.log('[GAMEPAD] 연결:',e.gamepad.id)});
-addEventListener('gamepaddisconnected',e=>{_gpConnected=false;_gpActive=false;_gpad=null;try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
+addEventListener('gamepadconnected',e=>{
+  _gpConnected=true;
+  console.log('[GAMEPAD] 연결:',e.gamepad.id);
+  // 패드 연결 즉시 모드 전환 (자동 감지)
+  if(!_gpActive){_gpActive=true;document.body.style.cursor='none';if(typeof C!=='undefined'&&C)C.style.cursor='none';localStorage.setItem('inputMode','pad')}
+});
+addEventListener('gamepaddisconnected',e=>{_gpConnected=false;_gpActive=false;_gpad=null;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
 // 키보드/마우스 입력 → 패드모드 해제 + 패드 주입 키 정리
-addEventListener('mousemove',e=>{if(_gpActive&&(Math.abs(e.movementX)+Math.abs(e.movementY)>3)){_gpActive=false;try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
-addEventListener('keydown',e=>{if(_gpActive&&!e._fromGp){_gpActive=false;try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
+addEventListener('mousemove',e=>{if(_gpActive&&(Math.abs(e.movementX)+Math.abs(e.movementY)>3)){_gpActive=false;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
+addEventListener('keydown',e=>{if(_gpActive&&!e._fromGp){_gpActive=false;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
 
 // 게임패드 자동 에임: 가장 가까운 적 방향으로 facing 보정
 function _gpAutoAim(range){
@@ -11345,7 +11390,7 @@ const HELL_THEMES=[
   [{n:'HELL CASTLE',kr:'지옥성',w:'#1c1038',f:'#060410',ac:'#cc88ff',be:EL.D}],
 ];
 const HELL_BOSSES=[
-  ['숲의 감시자','독버섯 거인','숲의 사냥꾼','숲의 기생수'],
+  ['흑요염 파괴자','독버섯 거인','숲의 사냥꾼','숲의 기생수'],
   ['벌레 수호자','점액 괴수','기생충 모체','거대 알주머니','살벽의 군주','여왕 구더기'],
   ['얼음 망령','서리의 기사','얼어붙은 감시자','얼음 속 봉인 괴물'],
   ['화염 악마','불기둥 수호자','용암의 심장','화염 전사','화염 쌍두','불벌레 군주','화염 감옥지기'],
@@ -11363,7 +11408,7 @@ for(const ch of CHAPTER_STAGES){
       n:th.n, kr:th.kr+' '+(f+1)+'구역',
       w:th.w, f:th.f, ac:th.ac,
       bn:HELL_BOSSES[ch.hell][Math.min(f,HELL_BOSSES[ch.hell].length-1)],
-      be:th.be,
+      be:(ch.hell===0&&f===0)?EL.F:th.be,
       monLv, hell:ch.hell, hellFloor:f,
       isHellBoss:isLast, chapter:ch.hell
     });
@@ -16598,7 +16643,7 @@ const _DEATH_VARIANTS={
 function _pickDeathVar(base){const a=_DEATH_VARIANTS[base];return a?a[Math.random()*a.length|0]:base}
 // ── 보스 사운드 프로필 (si별) ──
 const _BOSS_SFX={
-  0:{howl:'boss_howl', howlP:.7,  die:'death_boss',dieP:.7,  hit:'boss_hit',hitP:.7,  hurt:'monster_hurt',hurtP:.7},  // 숲의 감시자 — 묵직/낮음
+  0:{howl:'boss_howl', howlP:.7,  die:'death_boss',dieP:.7,  hit:'boss_hit',hitP:.7,  hurt:'monster_hurt',hurtP:.7},  // 흑요염 파괴자 — 묵직/낮음
   1:{howl:'boss_howl', howlP:1.3, die:'death_boss',dieP:1.2, hit:'boss_hit',hitP:1.3, hurt:'monster_hurt',hurtP:1.2}, // 독버섯 거인 — 끈적/높음
   2:{howl:'boss_howl1',howlP:1.1, die:'death_boss',dieP:1.0, hit:'boss_hit',hitP:1.1, hurt:'monster_hurt',hurtP:1.1}, // 숲의 사냥꾼 — 날카로움
   3:{howl:'boss_howl', howlP:.55, die:'death_boss',dieP:.55, hit:'boss_hit',hitP:.6,  hurt:'monster_hurt',hurtP:.55}  // 숲의 기생수 — 거대/공포
@@ -40541,6 +40586,7 @@ function draw(){
       const _bScMul=window._btScaleMul||1;
       if(_bScMul!==1){X.save();X.translate(e.x,e.y);X.scale(_bScMul,_bScMul);X.translate(-e.x,-e.y)}
       if(!e._bDrawLog){e._bDrawLog=true;console.log('[BOSS_DRAW] extB:',_atlasExtBReady,'walkA:',_bossWalkAtlas.ready,'intB:',_atlasBReady,'stage:',G.stage,'scale:',_bScMul)}
+      if(!_bDrew&&G.stage===0){_bDrew=_drawStage1CodexBoss(X,e,sa,_tdY)}
       // ── 외부 보스 아틀라스 렌더링 (atlas_bosses.png, 최우선) ──
       if(!_bDrew&&_atlasExtBReady){
         const bKey='boss_'+G.stage;
