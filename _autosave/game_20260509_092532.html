@@ -8431,7 +8431,7 @@ const _decorImgs={};
 const _wallTreeImgs={};
 // ── 1-2 해골 벽 타일 (단일) ──
 const _skullWallImg=new Image();_skullWallImg.src='assets/map/ch2/skull_wall_tile.png';
-const _holySigilV=new Image();_holySigilV.src='img/skills/holy_sigil_v.png';
+
 const _wallEdgeImg=new Image();_wallEdgeImg.src='assets/map/ch2/wall_edge_tile.png';
 let _skullWallPat=null;
 function _buildSkullWallPat(){
@@ -11876,7 +11876,7 @@ const _MO_IMG=new Image();_MO_IMG.src='assets/vfx/vfx_magic_orb.png';
 let _moReady=false;_MO_IMG.onload=()=>{_moReady=true};
 const _MO_COLS=6,_MO_ROWS=5,_MO_FRAMES=30,_MO_CW=240,_MO_CH=240;
 // ═══ 어둠 폭발 임팩트 (vfx_dark_burst.png 5열×4행=20프레임) ═══
-const _DB_IMG=new Image();_DB_IMG.src='assets/vfx/vfx_dark_burst.png';
+const _DB_IMG=new Image();_DB_IMG.src='assets/vfx/boss/vfx_dark_burst.png';
 let _dkbReady=false;_DB_IMG.onload=()=>{_dkbReady=true};
 const _DB_COLS=5,_DB_ROWS=4,_DB_FRAMES=20,_DB_CW=192,_DB_CH=192;
 const _DB_MAX=12;
@@ -22516,7 +22516,6 @@ function update(){
         playVFXAng('earthquake',P.x,P.y-_csR*0.255,_csR/256,7,0,true); // 대지충격 VFX (~1초)
         if(!G._gSlamWave)G._gSlamWave=[];
         G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_csR,t:0,maxT:24,col:'#ffcc00'});
-      playVFXAng('boss_gSlamWave',P.x,P.y,1.0,3,0,false);
         for(let j=0;j<12;j++){const _a=Math.PI*2*j/12;const _d=20+Math.random()*(_csR*.35);
           poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*4,Math.sin(_a)*4,'#ffcc00',3+Math.random()*3,12)}
         addParts(P.x,P.y,'#ffee00',6);addParts(P.x,P.y,'#ffffff',4);
@@ -26380,7 +26379,7 @@ function update(){
       SFX.detonate();
       addTxt(P.x,P.y-35,_T('⚡ 레인라이트닝! x')+P._gwCount,'#44ddff',55);
       G._gwLightning={pts:P._rlRev,ptsBack:_gwPts.slice(),t:0,maxT:60,stk:P._gwCount,w:P._rlW};
-      if(P._rlRev&&P._rlRev.length>0){const _gp=P._rlRev[0];playVFXAng('boss_gwLightning',_gp.x,_gp.y,1.0,3,0,false);}
+      if(P._rlRev&&P._rlRev.length>0){const _gp=P._rlRev[0];}
       P._gwActive=false;P._gwT=0;P._gwCount=0;P._gwHitSet=null;P._gwPath=null;P._gwMarkedEns=null;
       P.iframes=Math.max(P.iframes,120);
     }
@@ -27461,8 +27460,8 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         const _jAng=e.facing+Math.PI/2;
         G._judgeCuts.push({x:P.x+Math.cos(_jAng)*_jOff+(Math.random()-.5)*30,
           y:P.y+Math.sin(_jAng)*_jOff+(Math.random()-.5)*30,
-          t:0,delay:24+ji*8,maxT:54+ji*8,r:75,dmg:~~(e.atk*2.5),el:e.el,hit:false,src:e});
-        {const _vl=G._judgeCuts[G._judgeCuts.length-1];playVFXAng('boss_judgeCut',_vl.x,_vl.y,.6,3,0,false);}
+          t:0,delay:24+ji*8,maxT:54+ji*8,r:375,dmg:~~(e.atk*2.5),el:e.el,hit:false,src:e});
+        {const _vl=G._judgeCuts[G._judgeCuts.length-1];}
       }
       addTxt(e.x,e.y-30,_T('⚔ 재단참!'),'#cc00cc',50);SFX.slash();
       addParts(e.x,e.y,'#cc44ff',10);
@@ -27506,8 +27505,8 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         const _px=_plCx+(Math.random()-.5)*(_plW2*.65);
         const _py=_plCy+(Math.random()-.5)*(_plH2*.65);
         G._pillars.push({x:_px,y:_py,
-          t:0,delay:40+~~(Math.random()*20),maxT:240,r:55+Math.random()*20,dmg:~~(e.atk*1.5),el:e.el,hit:false});
-        {const _vl=G._pillars[G._pillars.length-1];playVFXAng('boss_pillars',_vl.x,_vl.y,.4,3,0,false);}
+          t:0,delay:40+~~(Math.random()*20),maxT:240,r:275+Math.random()*100,dmg:~~(e.atk*1.5),el:e.el,hit:false});
+        {const _vl=G._pillars[G._pillars.length-1];}
       }
       SFX.detonate();shake(15);
       addTxt(e.x,e.y-30,_T('🔥🔥 지옥기둥!'),ELC[e.el]||'#ff4400',70);
@@ -27545,7 +27544,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       const _dzDist=dst(P.x,P.y,e.x,e.y)*.5;
       if(!G._darkZones)G._darkZones=[];
       G._darkZones.push({x:e.x+Math.cos(_dzAng)*_dzDist,y:e.y+Math.sin(_dzAng)*_dzDist,
-        t:0,maxT:240,r:250}); // 4초
+        t:0,maxT:240,r:1250}); // 4초
       addTxt(e.x,e.y-30,_T('🌑 암흑!'),'#440066',55);SFX.magic(3);
       e.s='recover';e.st2=30;break;
     }
@@ -27560,7 +27559,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         G._mirrorClones.push({x:e.x+Math.cos(_ma)*_mOff,y:e.y+Math.sin(_ma)*_mOff,
           src:e,t:0,maxT:180,delay:18,facing:e.facing,col:e.col,r:e.r*.8,
           atk:~~(e.atk*.5),el:e.el,attackT:0,attackCd:40,s:'idle'});
-        {const _vl=G._mirrorClones[G._mirrorClones.length-1];playVFXAng('boss_mirrorClone',_vl.x,_vl.y,.8,3,0,false);}
+        {const _vl=G._mirrorClones[G._mirrorClones.length-1];}
       }
       addTxt(e.x,e.y-30,_T('👥 분신!'),'#8844ff',55);SFX.magic(3);
       addParts(e.x,e.y,'#aa66ff',12);
@@ -27577,7 +27576,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         const _fAng=e.facing+_fOff;
         G._fissures.push({x:e.x,y:e.y,ang:_fAng,spd:7,len:0,maxLen:500,
           t:0,maxT:140,w:28,dmg:~~(e.atk*2),el:e.el,exploded:false,explR:150});
-          {const _vl=G._fissures[G._fissures.length-1];playVFXAng('boss_fissure',_vl.x,_vl.y,.5,3,_vl.ang,false);}
+          {const _vl=G._fissures[G._fissures.length-1];}
       }
       SFX.detonate();shake(10);
       addTxt(e.x,e.y-30,_T('🌋 균열!'),ELC[e.el]||'#ff4400',50);
@@ -27593,7 +27592,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         G._tideWaves.push({x:e.x,y:e.y,r:20+ti*8,maxR:350,spd:3,
           t:0,maxT:120,gapAng:_gapAng,gapSize:.8,w:12,
           dmg:~~(e.atk*1.5),el:e.el,hitT:0});
-        {const _vl=G._tideWaves[G._tideWaves.length-1];playVFXAng('boss_tideWave',_vl.x,_vl.y,.5,3,0,false);}
+        {const _vl=G._tideWaves[G._tideWaves.length-1];}
       }
       SFX.magic(0);addTxt(e.x,e.y-30,_T('🌊 파동!'),ELC[e.el]||'#4488ff',50);
       e.s='recover';e.st2=35;break;
@@ -27607,8 +27606,8 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         const _mA=e.facing+Math.PI*2*mi/_smN;
         G._seekerMines.push({x:e.x+Math.cos(_mA)*20,y:e.y+Math.sin(_mA)*20,
           vx:Math.cos(_mA)*1,vy:Math.sin(_mA)*1,spd:1,
-          t:0,armT:60,maxT:360,r:12,dmg:~~(e.atk*2),el:e.el,hp:1});
-        {const _vl=G._seekerMines[G._seekerMines.length-1];playVFXAng('boss_seekerMines',_vl.x,_vl.y,.15,3,0,false);}
+          t:0,armT:60,maxT:360,r:60,dmg:~~(e.atk*2),el:e.el,hp:1});
+        {const _vl=G._seekerMines[G._seekerMines.length-1];}
       }
       SFX.charge();addTxt(e.x,e.y-30,_T('💣 추적지뢰!'),'#ffaa00',50);
       e.s='recover';e.st2=25;break;
@@ -27620,8 +27619,8 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       const _rwN=_rwPh>=3?3:_rwPh>=1?2:1;
       for(let ri=0;ri<_rwN;ri++){
         G._rewindMarks.push({x:P.x+(Math.random()-.5)*ri*40,y:P.y+(Math.random()-.5)*ri*40,
-          t:0,delay:120,r:70,dmg:~~(e.atk*2.5),el:e.el,src:e,hit:false});
-          {const _vl=G._rewindMarks[G._rewindMarks.length-1];playVFXAng('boss_rewindMark',_vl.x,_vl.y,.55,3,0,false);}
+          t:0,delay:120,r:350,dmg:~~(e.atk*2.5),el:e.el,src:e,hit:false});
+          {const _vl=G._rewindMarks[G._rewindMarks.length-1];}
       }
       addTxt(e.x,e.y-30,_T('⏪ 되감기!'),'#00ccff',55);SFX.magic(2);
       e.s='recover';e.st2=35;break;
@@ -27633,7 +27632,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       if(!G._gravityWells)G._gravityWells=[];
       G._gravityWells.push({x:e.x+Math.cos(_gwAng2)*_gwDist2,y:e.y+Math.sin(_gwAng2)*_gwDist2,
         t:0,maxT:180,r:180,pull:1.8});
-      {const _vl=G._gravityWells[G._gravityWells.length-1];playVFXAng('boss_gravityWell',_vl.x,_vl.y,1.2,2,0,false);} // 3초
+      {const _vl=G._gravityWells[G._gravityWells.length-1];} // 3초
       addTxt(e.x,e.y-30,_T('🌀 중력장!'),'#6644ff',55);SFX.magic(3);
       e.s='recover';e.st2=25;break;
     }
@@ -27643,7 +27642,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       const _wpA=Math.atan2(P.y-e.y,P.x-e.x);
       G._wallPushes.push({x:e.x,y:e.y,ang:_wpA,t:0,maxT:60,dist:0,maxDist:400,w:260,spd:7,
         dmg:~~(e.atk*1.2),el:e.el,src:e,hit:false});
-      {const _vl=G._wallPushes[G._wallPushes.length-1];playVFXAng('boss_wallPush',_vl.x,_vl.y,1.5,3,_vl.ang,false);}
+      {const _vl=G._wallPushes[G._wallPushes.length-1];}
       addTxt(e.x,e.y-30,_T('🔨 벽밀기!'),'#ff8844',55);SFX.block();
       e.s='recover';e.st2=30;break;
     }
@@ -27659,7 +27658,6 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       if(!G._cageTraps)G._cageTraps=[];
       G._cageTraps.push({x:P.x,y:P.y,t:0,warnT:40,maxT:210,r:110,
         dmg:~~(e.atk*.8),el:e.el,src:e,hitT:0});
-      playVFXAng('boss_cageTrap',P.x,P.y,.8,3,0,false);
       addTxt(e.x,e.y-30,_T('⛓ 감옥!'),'#886644',55);SFX.magic(2);
       e.s='recover';e.st2=25;break;
     }
@@ -27672,7 +27670,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         _clPts.push({x:e.x+Math.cos(_clA0)*_clD*frac+(Math.random()-.5)*60,
           y:e.y+Math.sin(_clA0)*_clD*frac+(Math.random()-.5)*60,hit:false});}
       G._chainLights.push({pts:_clPts,t:0,maxT:50,r:35,dmg:~~(e.atk*1.1),el:4,src:e,idx:0,jumpT:0});
-      if(_clPts.length>0)playVFXAng('boss_chainLights',_clPts[0].x,_clPts[0].y,1.0,3,0,false);
+      if(_clPts.length>0)
       addTxt(e.x,e.y-30,_T('⚡ 연쇄번개!'),'#ffee00',55);SFX.magic(4);
       e.s='recover';e.st2=25;break;
     }
@@ -27683,7 +27681,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       for(let k=0;k<_owN;k++){
         G._orbWeaves.push({src:e,ang:Math.PI*2*k/_owN,r:120+Math.random()*30,
           t:0,maxT:300,spd:.04,orbR:10,dmg:~~(e.atk*.7),el:e.el});
-          {const _vl=G._orbWeaves[G._orbWeaves.length-1];playVFXAng('boss_orbWeave',e.x,e.y,.2,3,_vl.ang,false);}}
+          {const _vl=G._orbWeaves[G._orbWeaves.length-1];}}
       addTxt(e.x,e.y-30,_T('🔮 궤도탄!'),'#ff44ff',55);SFX.magic(3);
       e.s='recover';e.st2=35;break;
     }
@@ -27704,7 +27702,6 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       if(!G._soulAnchors)G._soulAnchors=[];
       G._soulAnchors.push({x:P.x,y:P.y,t:0,maxT:180,r:90,slowF:.35,
         dmg:~~(e.atk*.4),el:3,src:e,tickT:0});
-      playVFXAng('boss_soulAnchor',P.x,P.y,.7,2,0,false);
       addTxt(e.x,e.y-30,_T('⚓ 속박!'),'#8800aa',55);SFX.magic(3);
       e.s='recover';e.st2=25;break;
     }
@@ -27715,7 +27712,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       G._doppelgangers.push({x:e.x+Math.cos(_dgA)*80,y:e.y+Math.sin(_dgA)*80,
         hp:~~(e.maxHp*.12),atk:~~(e.atk*.5),r:e.r*.8,t:0,maxT:360,
         s:'chase',st2:40,ang:0,src:e,el:e.el,vx:0,vy:0,atkCD:0,spd:2.5});
-      {const _vl=G._doppelgangers[G._doppelgangers.length-1];playVFXAng('boss_doppelganger',_vl.x,_vl.y,.3,3,0,false);}
+      {const _vl=G._doppelgangers[G._doppelgangers.length-1];}
       addTxt(e.x,e.y-30,_T('👤 분신!'),'#666688',55);SFX.magic(2);
       e.s='recover';e.st2=30;break;
     }
@@ -27746,8 +27743,8 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         for(let si2=0;si2<_safes.length;si2++){if(dst(_lx,_ly,_safes[si2].x,_safes[si2].y)<180){_isSafe=true;break}}
         if(_isSafe)continue;
         G._lavaPools.push({x:_lx,y:_ly,
-          t:0,warnT:90,maxT:420,r:120+Math.random()*60,dmg:~~(e.atk*1.2),el:e.el,tickT:0});
-        {const _vl=G._lavaPools[G._lavaPools.length-1];playVFXAng('boss_lavaPools',_vl.x,_vl.y,.8,2,0,false);}
+          t:0,warnT:90,maxT:420,r:600+Math.random()*300,dmg:~~(e.atk*1.2),el:e.el,tickT:0});
+        {const _vl=G._lavaPools[G._lavaPools.length-1];}
       }
       addTxt(e.x,e.y-30,_T('🔥🔥 용암 지대!'),ELC[e.el]||'#ff4400',70);SFX.detonate();shake(15);
       e.s='recover';e.st2=35;break;
@@ -27762,8 +27759,8 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       for(let fi=0;fi<_frN;fi++){
         G._fireRains.push({x:_frCx+(Math.random()-.5)*(_frW*.7),
           y:_frCy+(Math.random()-.5)*(_frH*.7),
-          t:0,delay:30+fi*6,r:80+Math.random()*40,dmg:~~(e.atk*1.5),el:e.el,hit:false});
-        {const _vl=G._fireRains[G._fireRains.length-1];playVFXAng('boss_fireRain',_vl.x,_vl.y,.4,3,0,false);}
+          t:0,delay:30+fi*6,r:400+Math.random()*200,dmg:~~(e.atk*1.5),el:e.el,hit:false});
+        {const _vl=G._fireRains[G._fireRains.length-1];}
       }
       addTxt(e.x,e.y-30,_T('🌧🌧 화염 폭격!'),'#ff6600',70);SFX.magic(0);shake(10);
       e.s='recover';e.st2=40;break;
@@ -27777,8 +27774,8 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       for(let si2=0;si2<_sgArms;si2++){
         const _sgA=Math.PI*2*si2/_sgArms;
         G._shockGrids.push({x:e.x,y:e.y,ang:_sgA,t:0,warnT:60,maxT:210,
-          len:_sgLen,w:50+_sgPh*5,dmg:~~(e.atk*1.8),el:e.el,tickT:0});
-          {const _vl=G._shockGrids[G._shockGrids.length-1];playVFXAng('boss_shockGrid',_vl.x,_vl.y,_vl.len/256,3,_vl.ang,false);}
+          len:_sgLen,w:250+_sgPh*25,dmg:~~(e.atk*1.8),el:e.el,tickT:0});
+          {const _vl=G._shockGrids[G._shockGrids.length-1];}
       }
       addTxt(e.x,e.y-30,_T('⚡⚡ 전격 장막!'),'#44ccff',70);SFX.charge();shake(12);
       e.s='recover';e.st2=35;break;
@@ -27791,7 +27788,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       const _dsOuter=~~(Math.max((G.mw||50),(G.mh||42))*T*.5); // 맵 전체
       G._donutSlams.push({x:e.x,y:e.y,innerR:_dsInner,outerR:_dsOuter,
         t:0,warnT:90,maxT:120,dmg:~~(e.atk*2.5),el:e.el,hit:false});
-      {const _vl=G._donutSlams[G._donutSlams.length-1];playVFXAng('boss_donutSlam',_vl.x,_vl.y,_vl.outerR/128,2,0,false);}
+      {const _vl=G._donutSlams[G._donutSlams.length-1];}
       addTxt(e.x,e.y-30,_T('💀 내 곁으로!'),'#ff0044',80);SFX.charge();shake(8);
       e.s='recover';e.st2=50;break;
     }
@@ -27805,9 +27802,9 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       const _scSafeX=_scCx+(_scQ%2===0?-1:1)*(_scW*.22);
       const _scSafeY=_scCy+(_scQ<2?-1:1)*(_scH*.22);
       G._safeCorners.push({cx:_scCx,cy:_scCy,fullR:_scW*.5,
-        safeX:_scSafeX,safeY:_scSafeY,safeR:130,
+        safeX:_scSafeX,safeY:_scSafeY,safeR:650,
         t:0,warnT:120,maxT:150,dmg:~~(e.atk*3),el:e.el,hit:false});
-      {const _vl=G._safeCorners[G._safeCorners.length-1];playVFXAng('boss_safeCorner',_vl.cx,_vl.cy,2.0,2,0,false);}
+      {const _vl=G._safeCorners[G._safeCorners.length-1];}
       addTxt(_scSafeX,_scSafeY-30,_T('⭕ 안전!'),'#44ff44',100);
       addTxt(e.x,e.y-30,_T('💀💀 전멸 폭발!'),'#ff0000',80);SFX.magic(0);shake(10);
       e.s='recover';e.st2=60;break;
@@ -27817,12 +27814,12 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       if(!G._crossWipes)G._crossWipes=[];
       const _cwPh=e._bossPhase||0;
       const _cwLen=~~(Math.max((G.mw||50),(G.mh||42))*T*.55);
-      const _cwW=70+_cwPh*10;
+      const _cwW=350+_cwPh*50;
       G._crossWipes.push({x:e.x,y:e.y,len:_cwLen,w:_cwW,
         t:0,maxT:300,rotSpd:0,phase:0,warnT:60,
         dmg:~~(e.atk*2),el:e.el,tickT:0,
         waves:2+~~(_cwPh/2)});
-      {const _vl=G._crossWipes[G._crossWipes.length-1];playVFXAng('boss_crossWipe',_vl.x,_vl.y,2.0,2,_vl.ang,false);} // 2~4파
+      {const _vl=G._crossWipes[G._crossWipes.length-1];} // 2~4파
       addTxt(e.x,e.y-30,_T('⚡ 쐐기 소멸!'),'#ff44ff',70);SFX.charge();shake(8);
       e.s='recover';e.st2=45;break;
     }
@@ -27838,9 +27835,9 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       G._tidalWipes.push({x:_twStartX,y:_twStartY,ang:_twAng,
         t:0,warnT:80,maxT:180,spd:12+_twPh2*2,
         w:_twDir%2===0?_twW2:_twH2, // 벽 폭 = 맵 전체
-        thick:60+_twPh2*10,dist:0,
+        thick:300+_twPh2*50,dist:0,
         dmg:~~(e.atk*2.5),el:e.el,hit:false});
-      {const _vl=G._tidalWipes[G._tidalWipes.length-1];playVFXAng('boss_tidalWipe',_vl.x,_vl.y,1.5,2,_vl.ang,false);}
+      {const _vl=G._tidalWipes[G._tidalWipes.length-1];}
       const _dirNames=[_L('위→아래','Top→Bottom'),_L('오른→왼','Right→Left'),_L('아래→위','Bottom→Top'),_L('왼→오른','Left→Right')];
       addTxt(e.x,e.y-30,'🌊 '+_dirNames[_twDir]+' '+_T('파도!'),'#4488ff',70);
       SFX.magic(2);shake(10);
@@ -30788,7 +30785,7 @@ function updateE(e,sp){
     if(e._ptT>=8){e._ptT-=8;
       if(!G._poisonPools)G._poisonPools=[];
       G._poisonPools.push({x:e.x,y:e.y,t:0,maxT:240,r:35,dmg:~~(e.atk*.3),el:e.el,tickT:0});
-      playVFXAng('boss_poisonPool',e.x,e.y,.3,2,0,false);}
+      }
     if(e.st2<=0){e.s='recover';e.st2=25}break}
   // ═══ 방패돌진 — 와인드업 → 돌진 ═══
   case'bossSBashWind':{
@@ -32381,8 +32378,8 @@ function _detonateAssaultFlames(){
     const _remT=fz.maxT-fz.t;const _ticks=~~(_remT/20);
     const _totalDmg=fz.dmg*Math.max(1,_ticks); // 3중폭 45초 누적 폭발 — 의도된 설계
     const _detR=fz.r*1.2;
+    _shBufI++;
     const _detNe=shQuery(fz.x,fz.y,_detR+20);
-    // _shBufI++ 제거됨 — hurtE 진입 시 자동 보호 (2026-05-03)
     for(let _si=0;_si<_detNe.length;_si++){const e=_detNe[_si];if(!e.alive)continue;
       const d=dst(fz.x,fz.y,e.x,e.y);if(d>_detR+e.r)continue;
       const ang=Math.atan2(e.y-fz.y,e.x-fz.x);
@@ -32485,10 +32482,6 @@ function _slamStormBlast(){
   for(let j=0;j<12;j++){const _a=Math.PI*2*j/12;const _d=60+Math.random()*(_ssR-60);
     poolPart(P.x+Math.cos(_a)*_d,P.y+Math.sin(_a)*_d,Math.cos(_a)*6,Math.sin(_a)*6,'#ff4400',3+Math.random()*3,10+Math.random()*5)}
   addTxt(P.x,P.y-50,_isFused('stormBeam')?_T('⚡ 암전나선!'):_T('🌋 지진폭풍!'),_isFused('stormBeam')?'#ff6600':'#ff4400',70);
-  // 용암분출 이펙트: 중심 + 범위 내 랜덤 3곳
-  _addLavaErupt(P.x,P.y,_ssR,55);
-  for(let _li=0;_li<7;_li++){const _la=Math.PI*2*_li/7+Math.random()*.5;const _ld=60+Math.random()*(_ssR*.6);
-    _addLavaErupt(P.x+Math.cos(_la)*_ld,P.y+Math.sin(_la)*_ld,_ssR*.6,42+~~(Math.random()*18))}
   // 암전나선 번개 버스트 VFX — 삭제 (렉 유발, 시인성 없음)
   SFX.shout();SFX.slam();
   G.shake=28*OPT.shake/100;
@@ -34298,7 +34291,7 @@ function activateGiantSlam(srcId){
 // earthBreaker / earthSlam 전체 함수 삭제됨
 // 대왕치기 히트 (원형 진동파 — 큰 포이즈 피해, 보스 체간 40%)
 function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
-  SFX.detonate();
+  SFX.slam();
   const _sR=stunRange||range; // 스턴 범위 (없으면 데미지 범위와 동일)
   dmg=~~(dmg*pAtkMul())+(P._atkBon||0);P._atkBon=0;
   // 깊이 버퍼 — hurtE 내부 shQuery 오염 방지 (.slice/수동복사 제거)
@@ -34310,7 +34303,7 @@ function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
     const ang=Math.atan2(e.y-P.y,e.x-P.x);
     const mult=elMul(el,e.el);const fd=~~(dmg*mult);
     // 데미지 범위 안이면 데미지 적용
-    if(d<=range+e.r){hurtE(e,~~(fd*0.5),ang,false,{kbMult:kbM||0,noPoise:true},el);e.kb.x+=Math.cos(ang)*8;e.kb.y+=Math.sin(ang)*8} // 데미지 50% 감소
+    if(d<=range+e.r){hurtE(e,~~(fd*0.5),ang,false,{kbMult:kbM||0,noPoise:true,noImpact:true},el);e.kb.x+=Math.cos(ang)*8;e.kb.y+=Math.sin(ang)*8} // 데미지 50% 감소, 임팩트 VFX는 고유 파티클로 대체
     if(!e.alive)continue; // 데미지로 죽었으면 스턴 스킵
     // 포이즈 적용 (통합 함수)
     if(e.ib){
@@ -48047,175 +48040,190 @@ R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio,2));
 CVS.style.width=CVS.style.height=SZ+'px';
 R.setClearColor(0,0);R.outputColorSpace=THREE.SRGBColorSpace;
 R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
-R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.5;
+R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.4;
 
 const SC=new THREE.Scene();
-SC.fog=new THREE.FogExp2(0x020000,0.18);
+SC.fog=new THREE.FogExp2(0x010000,0.15);
 
-const CAM=new THREE.PerspectiveCamera(44,1,0.01,30);
-CAM.position.set(0,2.1,4.2);CAM.lookAt(0,0.65,0);
+const CAM=new THREE.PerspectiveCamera(38,1,0.01,30);
+CAM.position.set(0.4,2.0,3.6);CAM.lookAt(0,0.55,0);
 
-// 환경맵 — 지옥 느낌 (붉은 따뜻한)
+// env
 const cubeRT=new THREE.WebGLCubeRenderTarget(64,{generateMipmaps:true,minFilter:THREE.LinearMipmapLinearFilter});
 const cubeCam=new THREE.CubeCamera(0.1,30,cubeRT);
 const envS=new THREE.Scene();
-envS.add(new THREE.HemisphereLight(0x4d1005,0x100200,2.5));
-const eD1=new THREE.DirectionalLight(0x9b3315,4.0);eD1.position.set(1,3,2);envS.add(eD1);
-const eD2=new THREE.DirectionalLight(0x1a0003,2.0);eD2.position.set(-2,-1,-2);envS.add(eD2);
+envS.add(new THREE.HemisphereLight(0x3a0a02,0x0e0200,2.0));
+const eD1=new THREE.DirectionalLight(0x7a3010,3.5);eD1.position.set(1,3,2);envS.add(eD1);
 cubeCam.update(R,envS);SC.environment=cubeRT.texture;
 
 // 조명
-const keyL=new THREE.DirectionalLight(0xcc7744,3.0);
-keyL.position.set(-1,5,3.5);keyL.castShadow=true;
+const keyL=new THREE.DirectionalLight(0xc07840,2.8);
+keyL.position.set(-1.5,6,3);keyL.castShadow=true;
 keyL.shadow.mapSize.set(512,512);
-keyL.shadow.camera.near=0.1;keyL.shadow.camera.far=20;
-keyL.shadow.camera.left=keyL.shadow.camera.bottom=-3;
-keyL.shadow.camera.right=keyL.shadow.camera.top=3;
+keyL.shadow.camera.near=0.1;keyL.shadow.camera.far=18;
+keyL.shadow.camera.left=keyL.shadow.camera.bottom=-2.5;
+keyL.shadow.camera.right=keyL.shadow.camera.top=2.5;
 keyL.shadow.bias=-0.001;SC.add(keyL);
-const rimL=new THREE.DirectionalLight(0xaa0011,3.0);rimL.position.set(2,0.5,-3);SC.add(rimL);
-SC.add(new THREE.HemisphereLight(0x1c0402,0x060100,0.8));
-const iL1=new THREE.PointLight(0xff2200,0.9,3.5);iL1.position.set(0,0.65,0);SC.add(iL1);
-const iL2=new THREE.PointLight(0xff5500,0,8);iL2.position.set(0,2.5,0);SC.add(iL2);
+const sideL=new THREE.DirectionalLight(0x80300a,2.0);sideL.position.set(2.5,2,-2);SC.add(sideL);
+SC.add(new THREE.HemisphereLight(0x180302,0x040100,0.6));
+const iL1=new THREE.PointLight(0xff3300,0,4);iL1.position.set(0,1.1,0.3);SC.add(iL1);
+const iL2=new THREE.PointLight(0xff6600,0,8);iL2.position.set(0,3,0);SC.add(iL2);
 
-// ===== 재질 — 어두운 뼈/석재 (금속 아님) =====
-const mBone=new THREE.MeshStandardMaterial({color:0x2e1208,roughness:0.88,metalness:0.04,envMapIntensity:0.3});
-const mDark=new THREE.MeshStandardMaterial({color:0x180602,roughness:0.96,metalness:0.01,envMapIntensity:0.1});
-const mCrim=new THREE.MeshStandardMaterial({color:0x621808,roughness:0.68,metalness:0.06,envMapIntensity:0.4,emissive:new THREE.Color(0x1e0400),emissiveIntensity:1.2});
-const mGlowR=new THREE.MeshBasicMaterial({color:0xff2200,transparent:true,opacity:0.75,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide});
-const mGlowO=new THREE.MeshBasicMaterial({color:0xff6600,transparent:true,opacity:0.5,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide});
+// 재질
+const mWood=new THREE.MeshStandardMaterial({color:0x1e0e06,roughness:0.92,metalness:0.0,envMapIntensity:0.15});
+const mWoodDk=new THREE.MeshStandardMaterial({color:0x130904,roughness:0.95,metalness:0.0,envMapIntensity:0.1});
+const mIron=new THREE.MeshStandardMaterial({color:0x1a1210,roughness:0.62,metalness:0.55,envMapIntensity:1.2});
+const mStone=new THREE.MeshStandardMaterial({color:0x1c1612,roughness:0.94,metalness:0.0,envMapIntensity:0.1});
+const mGlow=new THREE.MeshBasicMaterial({color:0xff4400,transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false});
 
-const ROOT=new THREE.Group();SC.add(ROOT);ROOT.rotation.y=-0.12;
+const ROOT=new THREE.Group();SC.add(ROOT);ROOT.rotation.y=-0.18;
 
-// === 바닥 플랫폼 (암석) ===
-const base=new THREE.Mesh(new THREE.CylinderGeometry(1.35,1.58,0.24,7),mDark);
-base.position.y=0.12;base.castShadow=true;base.receiveShadow=true;ROOT.add(base);
-
-// 바닥 암석 덩어리
-const rG=new THREE.SphereGeometry(1,6,5);
-[[-0.85,0.22,0.65],[-1.05,0.18,-0.25],[-0.65,0.22,-0.88],
- [0.85,0.22,0.65],[1.05,0.18,-0.25],[0.65,0.22,-0.88],[0,0.22,1.15]].forEach(rp=>{
-  const r=new THREE.Mesh(rG,mDark);
-  r.position.set(rp[0],rp[1],rp[2]);
-  r.scale.set(0.18+Math.random()*0.09,0.11+Math.random()*0.05,0.16+Math.random()*0.09);
-  ROOT.add(r);
+// === 돌 받침대 ===
+const slab=new THREE.Mesh(new THREE.BoxGeometry(2.20,0.18,1.50),mStone);
+slab.position.set(0,0.09,0);slab.receiveShadow=true;ROOT.add(slab);
+// 받침대 앞 계단 디테일
+const step=new THREE.Mesh(new THREE.BoxGeometry(2.10,0.08,0.20),mStone);
+step.position.set(0,0.04,0.75);ROOT.add(step);
+// 받침대 모서리 석재 볼
+[[-1.05,0.20,0.70],[1.05,0.20,0.70],[-1.05,0.20,-0.70],[1.05,0.20,-0.70]].forEach(cp=>{
+  const c=new THREE.Mesh(new THREE.SphereGeometry(0.10,8,7),mStone);
+  c.position.set(cp[0],cp[1],cp[2]);ROOT.add(c);
 });
 
-// 해골 장식 (4곳)
-[[-0.72,0.28,0.58],[0.72,0.28,0.58],[-0.78,0.28,-0.48],[0.78,0.28,-0.48]].forEach(sp=>{
-  const skull=new THREE.Mesh(new THREE.SphereGeometry(0.17,8,7),mBone);
-  skull.position.set(sp[0],sp[1],sp[2]);skull.scale.y=0.80;ROOT.add(skull);
-  [-0.068,0.068].forEach(ex=>{
-    const eye=new THREE.Mesh(new THREE.SphereGeometry(0.048,7,5),mDark);
-    eye.position.set(sp[0]+ex,sp[1]+0.02,sp[2]+0.12);ROOT.add(eye);
-  });
-});
-
-// === 본체 하단 볼 ===
-const bowl=new THREE.Mesh(new THREE.CylinderGeometry(0.78,1.05,0.42,8),mBone);
-bowl.position.y=0.45;bowl.castShadow=true;ROOT.add(bowl);
-
-// 볼 테두리 갈비뼈 밴드
-[0.28,0.40,0.55].forEach(by=>{
-  const rib=new THREE.Mesh(new THREE.TorusGeometry(0.92,0.036,7,22),mCrim);
-  rib.rotation.x=Math.PI/2;rib.position.y=by;ROOT.add(rib);
-});
-
-// === 중앙 척추 배럴 (빛남) ===
-const BARREL=new THREE.Group();BARREL.position.y=0.42;ROOT.add(BARREL);
-const bRads=[0.26,0.28,0.29,0.28,0.26,0.23];
-for(let i=0;i<6;i++){
-  const ring=new THREE.Mesh(new THREE.TorusGeometry(bRads[i],0.053,8,20),mBone);
-  ring.rotation.x=Math.PI/2;ring.position.y=i*0.13;BARREL.add(ring);
-  if(i<5){
-    const fill=new THREE.Mesh(new THREE.TorusGeometry(bRads[i]*0.68,0.020,6,16),mCrim);
-    fill.rotation.x=Math.PI/2;fill.position.y=i*0.13+0.065;BARREL.add(fill);
-  }
-}
-// 내부 빛나는 실린더
-const glowCyl=new THREE.Mesh(new THREE.CylinderGeometry(0.19,0.19,0.80,14),mGlowR);
-glowCyl.position.y=0.38;BARREL.add(glowCyl);
-// 중앙 빛 평면
-const glowPlane=new THREE.Mesh(new THREE.PlaneGeometry(0.42,0.82),mGlowO);
-glowPlane.position.set(0,0.75,0);ROOT.add(glowPlane);
-
-// === 날개 (좌우 뼈 날개) ===
-function makeWing(side){ // side: -1=left, +1=right
-  const W=new THREE.Group();
-  // 메인 뼈 판
-  const main=new THREE.Mesh(new THREE.BoxGeometry(0.88,0.15,0.32),mBone);
-  main.position.set(side*0.44,0,0);
-  main.rotation.z=side*(Math.PI/12);
-  main.rotation.y=side*(-Math.PI/14);
-  main.castShadow=true;W.add(main);
-  // 갈비뼈 능선
-  [0.20,0.52,0.80].forEach(t=>{
-    const ridge=new THREE.Mesh(new THREE.BoxGeometry(0.058,0.20,0.30),mCrim);
-    ridge.position.set(side*t*0.82,0.03,0);W.add(ridge);
-  });
-  // 2번째 뼈
-  const sec=new THREE.Mesh(new THREE.BoxGeometry(0.68,0.10,0.22),mBone);
-  sec.position.set(side*0.90,-0.06,0.04);
-  sec.rotation.z=side*(Math.PI/7);
-  sec.rotation.y=side*(-Math.PI/10);
-  sec.castShadow=true;W.add(sec);
-  // 3번째 (끝)
-  const tip=new THREE.Mesh(new THREE.BoxGeometry(0.46,0.07,0.14),mBone);
-  tip.position.set(side*1.20,-0.18,0.06);
-  tip.rotation.z=side*(Math.PI/4.5);
-  W.add(tip);
-  // 뾰족한 끝 (갈고리)
-  const hook=new THREE.Mesh(new THREE.ConeGeometry(0.055,0.26,8),mDark);
-  hook.position.set(side*1.42,-0.32,0.08);
-  hook.rotation.z=side*(Math.PI/2.8);
-  W.add(hook);
-  // 날개 위쪽 작은 돌기들
-  [0.3,0.7].forEach((t,i)=>{
-    const spine=new THREE.Mesh(new THREE.ConeGeometry(0.038,0.18+i*0.06,6),mDark);
-    spine.position.set(side*t*0.82,0.12+i*0.04,-0.02);
-    W.add(spine);
-  });
-  return W;
+// === 본체 (나무 + 철 밴드) ===
+// 나무 판재 4단
+const slotH=0.22;
+for(let i=0;i<4;i++){
+  const pl=new THREE.Mesh(new THREE.BoxGeometry(1.90,slotH-0.015,1.30),i%2===0?mWood:mWoodDk);
+  pl.position.set(0,0.22+i*slotH+slotH/2,0);pl.castShadow=true;pl.receiveShadow=true;ROOT.add(pl);
 }
 
-const leftWing=makeWing(-1);leftWing.position.set(-0.78,0.78,0.02);ROOT.add(leftWing);
-const rightWing=makeWing(1);rightWing.position.set(0.78,0.78,0.02);ROOT.add(rightWing);
+// 내부 (열릴 때 보임)
+const ins=new THREE.Mesh(new THREE.BoxGeometry(1.55,0.72,1.02),new THREE.MeshStandardMaterial({color:0x060100,roughness:1,metalness:0}));
+ins.position.set(0,0.62,0);ROOT.add(ins);
+const glowFloor=new THREE.Mesh(new THREE.PlaneGeometry(1.4,0.95),mGlow);
+glowFloor.position.set(0,1.11,0);glowFloor.rotation.x=-Math.PI/2;ROOT.add(glowFloor);
 
-// 상단 중앙 가시 (척추 최상단)
-const topSpire=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.095,0.48,8),mDark);
-topSpire.position.set(0,1.26,0);ROOT.add(topSpire);
-const spireOrb=new THREE.Mesh(new THREE.SphereGeometry(0.07,8,6),mCrim);
-spireOrb.position.set(0,1.52,0);ROOT.add(spireOrb);
-// orb glow
-const orbGlow=new THREE.Mesh(new THREE.SphereGeometry(0.10,8,6),mGlowO);
-orbGlow.position.set(0,1.52,0);ROOT.add(orbGlow);
+// 수평 철 밴드 3줄
+[0.30,0.54,0.78].forEach(by=>{
+  const b=new THREE.Mesh(new THREE.BoxGeometry(1.92,0.072,1.32),mIron);
+  b.position.set(0,by,0);ROOT.add(b);
+  // 밴드 상단 하이라이트선
+  const hi=new THREE.Mesh(new THREE.BoxGeometry(1.94,0.016,1.34),new THREE.MeshStandardMaterial({color:0x3a2a1e,roughness:0.4,metalness:0.7,envMapIntensity:1.5}));
+  hi.position.set(0,by+0.042,0);ROOT.add(hi);
+});
+// 수직 철 기둥 (앞면)
+[-0.75,0,0.75].forEach(bx=>{
+  const vb=new THREE.Mesh(new THREE.BoxGeometry(0.068,0.90,0.055),mIron);
+  vb.position.set(bx,0.62,0.665);ROOT.add(vb);
+});
 
-// 바닥
+// 코너 철 기둥 (두꺼운)
+[[-0.93,0.64],[0.93,0.64],[-0.93,-0.64],[0.93,-0.64]].forEach(co=>{
+  const col=new THREE.Mesh(new THREE.BoxGeometry(0.11,0.94,0.11),mIron);
+  col.position.set(co[0],0.65,co[1]);ROOT.add(col);
+  // 기둥 상단 캡
+  const cap=new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,0.04,10),mIron);
+  cap.position.set(co[0],1.12,co[1]);ROOT.add(cap);
+});
+
+// 앞면 자물쇠 판
+const lkPlate=new THREE.Mesh(new THREE.BoxGeometry(0.44,0.52,0.055),mIron);
+lkPlate.position.set(0,0.62,0.678);ROOT.add(lkPlate);
+// 자물쇠 몸체 (육각형처럼)
+const lkBody=new THREE.Mesh(new THREE.CylinderGeometry(0.10,0.10,0.10,6),mIron);
+lkBody.position.set(0,0.68,0.698);lkBody.rotation.x=Math.PI/2;ROOT.add(lkBody);
+// 자물쇠 고리
+const lkArc=new THREE.Mesh(new THREE.TorusGeometry(0.065,0.022,8,18,Math.PI),mIron);
+lkArc.position.set(0,0.76,0.698);lkArc.rotation.z=Math.PI;ROOT.add(lkArc);
+// 자물쇠 키홀
+const kh=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,0.035,10),new THREE.MeshStandardMaterial({color:0x040100,roughness:1,metalness:0}));
+kh.position.set(0,0.62,0.710);kh.rotation.x=Math.PI/2;ROOT.add(kh);
+// 자물쇠 양옆 링 핸들
+[-0.52,0.52].forEach(rx=>{
+  const rh=new THREE.Mesh(new THREE.TorusGeometry(0.065,0.018,8,18),mIron);
+  rh.position.set(rx,0.62,0.680);ROOT.add(rh);
+});
+
+// 리벳
+const rvG=new THREE.SphereGeometry(0.030,8,6);
+[-0.88,0.88].forEach(bx=>[0.30,0.54,0.78].forEach(by=>{
+  [-0.59,0.59].forEach(bz=>{
+    const rv=new THREE.Mesh(rvG,mIron);rv.position.set(bx,by+0.040,bz);ROOT.add(rv);
+  });
+  const rvf=new THREE.Mesh(rvG,mIron);rvf.position.set(bx,by+0.040,0.67);ROOT.add(rvf);
+}));
+
+// === 뚜껑 (아치형 배럴 lid) ===
+const LID=new THREE.Group();LID.position.set(0,1.12,-0.65);ROOT.add(LID);
+
+// 뚜껑 기본 플랫
+const lidBase=new THREE.Mesh(new THREE.BoxGeometry(1.92,0.12,1.32),mWood);
+lidBase.position.set(0,0.06,0.66);lidBase.castShadow=true;LID.add(lidBase);
+
+// 아치형 배럴 곡면 (반원 실린더)
+const archG=new THREE.CylinderGeometry(0.26,0.26,1.90,20,1,true,0,Math.PI);
+const archM=new THREE.Mesh(archG,mWoodDk);
+archM.rotation.z=-Math.PI/2;archM.position.set(0,0.20,0.66);archM.castShadow=true;LID.add(archM);
+
+// 뚜껑 상단 철 밴드 2줄
+[0.12,0.32].forEach(by=>{
+  const b=new THREE.Mesh(new THREE.BoxGeometry(1.92,0.060,1.32),mIron);
+  b.position.set(0,by,0.66);LID.add(b);
+  const arc2=new THREE.Mesh(new THREE.CylinderGeometry(0.27,0.27,1.92,20,1,true,0,Math.PI),mIron);
+  arc2.rotation.z=-Math.PI/2;arc2.position.set(0,by+0.015,0.66);LID.add(arc2);
+});
+// 뚜껑 능선 파이프
+const lidRidge=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,1.92,10),mIron);
+lidRidge.rotation.z=Math.PI/2;lidRidge.position.set(0,0.46,0.66);LID.add(lidRidge);
+
+// 뚜껑 앞 테두리
+const lidFront=new THREE.Mesh(new THREE.BoxGeometry(1.94,0.50,0.06),mIron);
+lidFront.position.set(0,0.22,1.35);LID.add(lidFront);
+
+// 뚜껑 코너 볼 장식
+[[-0.95,0.66],[0.95,0.66],[-0.95,0],[0.95,0]].forEach(co=>{
+  const cb=new THREE.Mesh(new THREE.SphereGeometry(0.07,10,8),mIron);
+  cb.position.set(co[0],0.10,co[1]);LID.add(cb);
+});
+
+// 힌지
+[-0.60,0.60].forEach(hx=>{
+  const hg=new THREE.Mesh(new THREE.CylinderGeometry(0.038,0.038,0.20,10),mIron);
+  hg.rotation.z=Math.PI/2;hg.position.set(hx,0.06,-0.01);LID.add(hg);
+  const hb=new THREE.Mesh(new THREE.CylinderGeometry(0.038,0.038,0.20,10),mIron);
+  hb.rotation.z=Math.PI/2;hb.position.set(hx,0.08,-0.65);ROOT.add(hb);
+});
+
+// 뚜껑 뿔 장식 (고딕)
+[[-0.60,0.66],[0,0.66],[0.60,0.66]].forEach((hp,i)=>{
+  const horn=new THREE.Mesh(new THREE.ConeGeometry(0.045,0.22+i*0.04,8),mIron);
+  horn.position.set(hp[0],0.56+i*0.04,hp[1]);LID.add(horn);
+});
+
+// 그림자 바닥
 const flr=new THREE.Mesh(new THREE.PlaneGeometry(6,6),new THREE.MeshStandardMaterial({color:0,transparent:true,opacity:0,roughness:1}));
 flr.rotation.x=-Math.PI/2;flr.position.y=-0.005;flr.receiveShadow=true;SC.add(flr);
 
-// 파티클 (불씨/핏방울)
+// 파티클
 const parts=[];
-for(let i=0;i<18;i++){
-  const hue=Math.random()<0.7?0.02+Math.random()*0.04:0.06+Math.random()*0.03;
+for(let i=0;i<14;i++){
   const pm=new THREE.MeshBasicMaterial({
-    color:new THREE.Color().setHSL(hue,1.0,0.5+Math.random()*0.25),
+    color:new THREE.Color().setHSL(0.03+Math.random()*0.05,1.0,0.55+Math.random()*0.2),
     transparent:true,opacity:0,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide
   });
   const p=new THREE.Mesh(new THREE.PlaneGeometry(1,1),pm);
-  const sz=0.04+Math.random()*0.07;p.scale.setScalar(sz);
-  p.userData={angle:Math.random()*Math.PI*2,r:0.4+Math.random()*0.85,
-    yOff:Math.random()*1.3,ySpd:0.11+Math.random()*0.22,
-    aSpd:(0.18+Math.random()*0.28)*(Math.random()<0.5?1:-1),phase:Math.random()*Math.PI*2};
+  const sz=0.04+Math.random()*0.06;p.scale.setScalar(sz);
+  p.userData={angle:Math.random()*Math.PI*2,r:0.45+Math.random()*0.75,
+    yOff:Math.random()*1.1,ySpd:0.10+Math.random()*0.20,
+    aSpd:(0.18+Math.random()*0.26)*(Math.random()<0.5?1:-1),phase:Math.random()*Math.PI*2};
   p.visible=false;SC.add(p);parts.push(p);
 }
 
-// 상태
 let _st='hidden',_timer=0,_wx=0,_wy=0;
 function _reset(){
-  ROOT.position.set(0,0,0);ROOT.rotation.set(0,-0.12,0);
-  leftWing.rotation.set(0,0,0);rightWing.rotation.set(0,0,0);
-  iL1.intensity=0.9;iL2.intensity=0;
-  glowCyl.material.opacity=0.75;glowPlane.material.opacity=0.5;orbGlow.material.opacity=0.5;
+  LID.rotation.x=0;ROOT.position.set(0,0,0);ROOT.rotation.set(0,-0.18,0);
+  iL1.intensity=0;iL2.intensity=0;mGlow.opacity=0;
   parts.forEach(p=>{p.visible=false;p.material.opacity=0;});
 }
 window._chest3d={
@@ -48234,7 +48242,7 @@ function updatePos(){
   if(cssX<-200||cssX>innerWidth+200||cssY<-200||cssY>innerHeight+200){CVS.style.opacity='0';return;}
   CVS.style.opacity='1';
   CVS.style.left=(cssX-SZ/2)+'px';
-  CVS.style.top=(cssY-SZ*.88)+'px';
+  CVS.style.top=(cssY-SZ*.82)+'px';
 }
 
 const CLK=new THREE.Clock();
@@ -48243,69 +48251,48 @@ function tick(){
   if(_st==='hidden')return;
   const dt=Math.min(CLK.getDelta(),0.05);_timer+=dt;
   updatePos();
-
   parts.forEach(p=>{
     const u=p.userData;
     if(_st==='idle'||_st==='rattling'){
       p.visible=true;u.angle+=dt*u.aSpd;
-      const y0=0.1+((u.yOff+_timer*u.ySpd)%1.5);
-      p.position.set(Math.cos(u.angle)*u.r,y0,Math.sin(u.angle)*u.r*0.5);
+      const y0=0.05+((u.yOff+_timer*u.ySpd)%1.2);
+      p.position.set(Math.cos(u.angle)*u.r,y0,Math.sin(u.angle)*u.r*0.45);
       p.lookAt(CAM.position);
-      p.material.opacity=(_st==='rattling'?0.80:0.38)+Math.sin(_timer*1.9+u.phase)*0.15;
-    }else if(_st==='opening'&&_timer<0.6){
-      p.visible=true;p.material.opacity=Math.max(0,(0.6-_timer)*1.6);
+      p.material.opacity=(_st==='rattling'?0.75:0.35)+Math.sin(_timer*1.8+u.phase)*0.14;
+    }else if(_st==='opening'&&_timer<0.5){
+      p.visible=true;p.material.opacity=Math.max(0,(0.5-_timer)*1.8);
     }else{p.visible=false;}
   });
 
   if(_st==='idle'){
-    ROOT.position.y=Math.sin(_timer*1.25)*0.030;
-    ROOT.rotation.y=-0.12+Math.sin(_timer*0.42)*0.04;
-    const pulse=Math.sin(_timer*2.3)*0.28;
-    iL1.intensity=0.9+pulse*0.5;
-    glowCyl.material.opacity=0.72+pulse*0.22;
-    glowPlane.material.opacity=0.48+pulse*0.18;
-    orbGlow.material.opacity=0.45+pulse*0.25;
-    // 날개 미세 호흡
-    leftWing.rotation.z=Math.sin(_timer*0.9)*0.05;
-    rightWing.rotation.z=-Math.sin(_timer*0.9)*0.05;
+    ROOT.position.y=Math.sin(_timer*1.3)*0.022;
+    ROOT.rotation.y=-0.18+Math.sin(_timer*0.44)*0.035;
   }else if(_st==='rattling'){
-    const rp=Math.min(1,_timer*2.5);
-    ROOT.position.x=Math.sin(_timer*48)*0.042*rp;
-    ROOT.position.y=Math.abs(Math.sin(_timer*44))*0.026*rp;
-    ROOT.rotation.z=Math.sin(_timer*46)*0.022*rp;
-    const ws=Math.min(1,_timer*1.8);
-    leftWing.rotation.z=-ws*0.28;rightWing.rotation.z=ws*0.28;
-    iL1.intensity=0.9+ws*3.0;
-    glowCyl.material.opacity=0.75+ws*0.25;
-    orbGlow.material.opacity=0.5+ws*0.5;
-    if(_timer>.48){_st='opening';_timer=0;if(typeof shake==='function')shake(16);}
+    const rp=Math.min(1,_timer*2.4);
+    ROOT.position.x=Math.sin(_timer*48)*0.040*rp;
+    ROOT.position.y=Math.abs(Math.sin(_timer*43))*0.022*rp;
+    ROOT.rotation.z=Math.sin(_timer*45)*0.020*rp;ROOT.rotation.y=-0.18;
+    iL1.intensity=Math.min(1,_timer*2)*1.2;
+    if(_timer>.50){_st='opening';_timer=0;if(typeof shake==='function')shake(14);}
   }else if(_st==='opening'){
     const t=Math.min(1,_timer/1.0),ease=1-(1-t)*(1-t)*(1-t);
-    leftWing.rotation.z=-ease*0.72;rightWing.rotation.z=ease*0.72;
-    leftWing.rotation.y=-ease*0.22;rightWing.rotation.y=ease*0.22;
-    ROOT.position.x=0;ROOT.rotation.z=0;ROOT.rotation.y=-0.12;
-    const bst=Math.min(1,_timer/.38),fad=_timer>.5?1-Math.min(1,(_timer-.5)/.85):1;
-    iL1.intensity=0.9+bst*fad*14;iL2.intensity=bst*fad*9;
-    glowCyl.material.opacity=0.75+bst*fad*0.9;
-    glowPlane.material.opacity=0.5+bst*fad*1.4;
-    orbGlow.material.opacity=0.5+bst*fad*1.2;
-    if(_timer>=1.3){_st='open';_timer=0;}
+    LID.rotation.x=-Math.PI*.82*ease;
+    ROOT.position.x=0;ROOT.rotation.z=0;ROOT.rotation.y=-0.18;
+    const bst=Math.min(1,_timer/.35),fad=_timer>.5?1-Math.min(1,(_timer-.5)/1.0):1;
+    iL1.intensity=bst*fad*12;iL2.intensity=bst*fad*6;
+    mGlow.opacity=bst*fad*0.9;
+    if(_timer>=1.35){_st='open';_timer=0;LID.rotation.x=-Math.PI*.82;}
   }else if(_st==='open'){
-    ROOT.position.y=Math.sin(_timer*0.85)*0.018;ROOT.rotation.y=-0.12;
-    const spread=0.72+Math.sin(_timer*0.7)*0.04;
-    leftWing.rotation.z=-spread;rightWing.rotation.z=spread;
-    leftWing.rotation.y=-0.22;rightWing.rotation.y=0.22;
-    iL1.intensity=Math.max(0.9,5.0-_timer*1.6);
-    iL2.intensity=Math.max(0,4.0-_timer*1.3);
-    glowCyl.material.opacity=Math.max(0.65,1.1-_timer*0.2);
-    glowPlane.material.opacity=Math.max(0.4,1.0-_timer*0.22);
-    orbGlow.material.opacity=Math.max(0.4,0.9-_timer*0.18);
+    ROOT.position.y=Math.sin(_timer*0.9)*0.012;ROOT.rotation.y=-0.18;
+    iL1.intensity=Math.max(0,4.5-_timer*1.6);
+    iL2.intensity=Math.max(0,2.2-_timer*1.1);
+    mGlow.opacity=Math.max(0,.50-_timer*.22);
     if(_timer>5.2){_st='hidden';CVS.style.display='none';}
   }
   R.render(SC,CAM);
 }
 tick();
-console.log('[CHEST3D] GOW v6 demonic-d4');
+console.log('[CHEST3D] GOW v7 barrel-chest');
 })();
 
 

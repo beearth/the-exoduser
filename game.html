@@ -27460,7 +27460,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         const _jAng=e.facing+Math.PI/2;
         G._judgeCuts.push({x:P.x+Math.cos(_jAng)*_jOff+(Math.random()-.5)*30,
           y:P.y+Math.sin(_jAng)*_jOff+(Math.random()-.5)*30,
-          t:0,delay:24+ji*8,maxT:54+ji*8,r:75,dmg:~~(e.atk*2.5),el:e.el,hit:false,src:e});
+          t:0,delay:24+ji*8,maxT:54+ji*8,r:375,dmg:~~(e.atk*2.5),el:e.el,hit:false,src:e});
         {const _vl=G._judgeCuts[G._judgeCuts.length-1];}
       }
       addTxt(e.x,e.y-30,_T('⚔ 재단참!'),'#cc00cc',50);SFX.slash();
@@ -27505,7 +27505,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         const _px=_plCx+(Math.random()-.5)*(_plW2*.65);
         const _py=_plCy+(Math.random()-.5)*(_plH2*.65);
         G._pillars.push({x:_px,y:_py,
-          t:0,delay:40+~~(Math.random()*20),maxT:240,r:55+Math.random()*20,dmg:~~(e.atk*1.5),el:e.el,hit:false});
+          t:0,delay:40+~~(Math.random()*20),maxT:240,r:275+Math.random()*100,dmg:~~(e.atk*1.5),el:e.el,hit:false});
         {const _vl=G._pillars[G._pillars.length-1];}
       }
       SFX.detonate();shake(15);
@@ -27544,7 +27544,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       const _dzDist=dst(P.x,P.y,e.x,e.y)*.5;
       if(!G._darkZones)G._darkZones=[];
       G._darkZones.push({x:e.x+Math.cos(_dzAng)*_dzDist,y:e.y+Math.sin(_dzAng)*_dzDist,
-        t:0,maxT:240,r:250}); // 4초
+        t:0,maxT:240,r:1250}); // 4초
       addTxt(e.x,e.y-30,_T('🌑 암흑!'),'#440066',55);SFX.magic(3);
       e.s='recover';e.st2=30;break;
     }
@@ -27574,8 +27574,8 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       for(let fi=0;fi<_gfN;fi++){
         const _fOff=(fi-(_gfN-1)/2)*.3;
         const _fAng=e.facing+_fOff;
-        G._fissures.push({x:e.x,y:e.y,ang:_fAng,spd:7,len:0,maxLen:500,
-          t:0,maxT:140,w:28,dmg:~~(e.atk*2),el:e.el,exploded:false,explR:150});
+        G._fissures.push({x:e.x,y:e.y,ang:_fAng,spd:35,len:0,maxLen:2500,
+          t:0,maxT:140,w:140,dmg:~~(e.atk*2),el:e.el,exploded:false,explR:750});
           {const _vl=G._fissures[G._fissures.length-1];}
       }
       SFX.detonate();shake(10);
@@ -27589,8 +27589,8 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       if(!G._tideWaves)G._tideWaves=[];
       for(let ti=0;ti<_twN;ti++){
         const _gapAng=Math.random()*Math.PI*2; // 빈 각도
-        G._tideWaves.push({x:e.x,y:e.y,r:20+ti*8,maxR:350,spd:3,
-          t:0,maxT:120,gapAng:_gapAng,gapSize:.8,w:12,
+        G._tideWaves.push({x:e.x,y:e.y,r:20+ti*8,maxR:1750,spd:15,
+          t:0,maxT:120,gapAng:_gapAng,gapSize:.8,w:60,
           dmg:~~(e.atk*1.5),el:e.el,hitT:0});
         {const _vl=G._tideWaves[G._tideWaves.length-1];}
       }
@@ -27606,7 +27606,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         const _mA=e.facing+Math.PI*2*mi/_smN;
         G._seekerMines.push({x:e.x+Math.cos(_mA)*20,y:e.y+Math.sin(_mA)*20,
           vx:Math.cos(_mA)*1,vy:Math.sin(_mA)*1,spd:1,
-          t:0,armT:60,maxT:360,r:12,dmg:~~(e.atk*2),el:e.el,hp:1});
+          t:0,armT:60,maxT:360,r:60,dmg:~~(e.atk*2),el:e.el,hp:1});
         {const _vl=G._seekerMines[G._seekerMines.length-1];}
       }
       SFX.charge();addTxt(e.x,e.y-30,_T('💣 추적지뢰!'),'#ffaa00',50);
@@ -27619,7 +27619,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       const _rwN=_rwPh>=3?3:_rwPh>=1?2:1;
       for(let ri=0;ri<_rwN;ri++){
         G._rewindMarks.push({x:P.x+(Math.random()-.5)*ri*40,y:P.y+(Math.random()-.5)*ri*40,
-          t:0,delay:120,r:70,dmg:~~(e.atk*2.5),el:e.el,src:e,hit:false});
+          t:0,delay:120,r:350,dmg:~~(e.atk*2.5),el:e.el,src:e,hit:false});
           {const _vl=G._rewindMarks[G._rewindMarks.length-1];}
       }
       addTxt(e.x,e.y-30,_T('⏪ 되감기!'),'#00ccff',55);SFX.magic(2);
@@ -27631,7 +27631,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       const _gwDist2=dst(P.x,P.y,e.x,e.y)*.4;
       if(!G._gravityWells)G._gravityWells=[];
       G._gravityWells.push({x:e.x+Math.cos(_gwAng2)*_gwDist2,y:e.y+Math.sin(_gwAng2)*_gwDist2,
-        t:0,maxT:180,r:180,pull:1.8});
+        t:0,maxT:180,r:900,pull:9});
       {const _vl=G._gravityWells[G._gravityWells.length-1];} // 3초
       addTxt(e.x,e.y-30,_T('🌀 중력장!'),'#6644ff',55);SFX.magic(3);
       e.s='recover';e.st2=25;break;
@@ -27640,7 +27640,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       // 벽밀기 — 플레이어를 밀어내는 충격파 벽
       if(!G._wallPushes)G._wallPushes=[];
       const _wpA=Math.atan2(P.y-e.y,P.x-e.x);
-      G._wallPushes.push({x:e.x,y:e.y,ang:_wpA,t:0,maxT:60,dist:0,maxDist:400,w:260,spd:7,
+      G._wallPushes.push({x:e.x,y:e.y,ang:_wpA,t:0,maxT:60,dist:0,maxDist:2000,w:1300,spd:35,
         dmg:~~(e.atk*1.2),el:e.el,src:e,hit:false});
       {const _vl=G._wallPushes[G._wallPushes.length-1];}
       addTxt(e.x,e.y-30,_T('🔨 벽밀기!'),'#ff8844',55);SFX.block();
@@ -27743,7 +27743,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
         for(let si2=0;si2<_safes.length;si2++){if(dst(_lx,_ly,_safes[si2].x,_safes[si2].y)<180){_isSafe=true;break}}
         if(_isSafe)continue;
         G._lavaPools.push({x:_lx,y:_ly,
-          t:0,warnT:90,maxT:420,r:120+Math.random()*60,dmg:~~(e.atk*1.2),el:e.el,tickT:0});
+          t:0,warnT:90,maxT:420,r:600+Math.random()*300,dmg:~~(e.atk*1.2),el:e.el,tickT:0});
         {const _vl=G._lavaPools[G._lavaPools.length-1];}
       }
       addTxt(e.x,e.y-30,_T('🔥🔥 용암 지대!'),ELC[e.el]||'#ff4400',70);SFX.detonate();shake(15);
@@ -27759,7 +27759,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       for(let fi=0;fi<_frN;fi++){
         G._fireRains.push({x:_frCx+(Math.random()-.5)*(_frW*.7),
           y:_frCy+(Math.random()-.5)*(_frH*.7),
-          t:0,delay:30+fi*6,r:80+Math.random()*40,dmg:~~(e.atk*1.5),el:e.el,hit:false});
+          t:0,delay:30+fi*6,r:400+Math.random()*200,dmg:~~(e.atk*1.5),el:e.el,hit:false});
         {const _vl=G._fireRains[G._fireRains.length-1];}
       }
       addTxt(e.x,e.y-30,_T('🌧🌧 화염 폭격!'),'#ff6600',70);SFX.magic(0);shake(10);
@@ -27774,7 +27774,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       for(let si2=0;si2<_sgArms;si2++){
         const _sgA=Math.PI*2*si2/_sgArms;
         G._shockGrids.push({x:e.x,y:e.y,ang:_sgA,t:0,warnT:60,maxT:210,
-          len:_sgLen,w:50+_sgPh*5,dmg:~~(e.atk*1.8),el:e.el,tickT:0});
+          len:_sgLen,w:250+_sgPh*25,dmg:~~(e.atk*1.8),el:e.el,tickT:0});
           {const _vl=G._shockGrids[G._shockGrids.length-1];}
       }
       addTxt(e.x,e.y-30,_T('⚡⚡ 전격 장막!'),'#44ccff',70);SFX.charge();shake(12);
@@ -27802,7 +27802,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       const _scSafeX=_scCx+(_scQ%2===0?-1:1)*(_scW*.22);
       const _scSafeY=_scCy+(_scQ<2?-1:1)*(_scH*.22);
       G._safeCorners.push({cx:_scCx,cy:_scCy,fullR:_scW*.5,
-        safeX:_scSafeX,safeY:_scSafeY,safeR:130,
+        safeX:_scSafeX,safeY:_scSafeY,safeR:650,
         t:0,warnT:120,maxT:150,dmg:~~(e.atk*3),el:e.el,hit:false});
       {const _vl=G._safeCorners[G._safeCorners.length-1];}
       addTxt(_scSafeX,_scSafeY-30,_T('⭕ 안전!'),'#44ff44',100);
@@ -27814,7 +27814,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       if(!G._crossWipes)G._crossWipes=[];
       const _cwPh=e._bossPhase||0;
       const _cwLen=~~(Math.max((G.mw||50),(G.mh||42))*T*.55);
-      const _cwW=70+_cwPh*10;
+      const _cwW=350+_cwPh*50;
       G._crossWipes.push({x:e.x,y:e.y,len:_cwLen,w:_cwW,
         t:0,maxT:300,rotSpd:0,phase:0,warnT:60,
         dmg:~~(e.atk*2),el:e.el,tickT:0,
@@ -27835,7 +27835,7 @@ function _bossStartPattern(e,mv,d,phase,extraDelay){
       G._tidalWipes.push({x:_twStartX,y:_twStartY,ang:_twAng,
         t:0,warnT:80,maxT:180,spd:12+_twPh2*2,
         w:_twDir%2===0?_twW2:_twH2, // 벽 폭 = 맵 전체
-        thick:60+_twPh2*10,dist:0,
+        thick:300+_twPh2*50,dist:0,
         dmg:~~(e.atk*2.5),el:e.el,hit:false});
       {const _vl=G._tidalWipes[G._tidalWipes.length-1];}
       const _dirNames=[_L('위→아래','Top→Bottom'),_L('오른→왼','Right→Left'),_L('아래→위','Bottom→Top'),_L('왼→오른','Left→Right')];
@@ -30784,7 +30784,7 @@ function updateE(e,sp){
     e._ptT=(e._ptT||0)+sp;
     if(e._ptT>=8){e._ptT-=8;
       if(!G._poisonPools)G._poisonPools=[];
-      G._poisonPools.push({x:e.x,y:e.y,t:0,maxT:240,r:35,dmg:~~(e.atk*.3),el:e.el,tickT:0});
+      G._poisonPools.push({x:e.x,y:e.y,t:0,maxT:240,r:175,dmg:~~(e.atk*.3),el:e.el,tickT:0});
       }
     if(e.st2<=0){e.s='recover';e.st2=25}break}
   // ═══ 방패돌진 — 와인드업 → 돌진 ═══
