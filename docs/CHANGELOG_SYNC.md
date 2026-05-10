@@ -23392,3 +23392,20 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - index.html
 - test/stage1CodexBoss.test.js
 
+
+## 2026-05-10 09:30 (auto)
+- _autosave/game_20260510_092659.html
+- _autosave/game_20260510_092708.html
+- _autosave/game_20260510_092837.html
+- docs/최종기획??generate_images.mjs
+- docs/최종기획??images/01_keyart.png
+- docs/최종기획??images/02_protagonist.png
+- docs/최종기획??images/03_goddess.png
+- docs/최종기획??images/04_monsters.png
+- docs/최종기획??images/05_world.png
+- docs/최종기획??images/06_bullet_parry.png
+- docs/최종기획??images/07_chain_drive.png
+- docs/최종기획??images/08_boss.png
+- game.html
+- index.html
+

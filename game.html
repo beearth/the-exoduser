@@ -47420,6 +47420,27 @@ function _showIntroDiff(){
     wrap.appendChild(btn);
   }
   el.style.opacity='1';el.style.pointerEvents='all';
+  // 게임패드: D-pad/스틱으로 난이도 선택, A로 확정
+  let _diffGpIdx=0,_diffGpPrevU=false,_diffGpPrevD=false,_diffGpPrevA=false;
+  function _diffGpPoll(){
+    if(el.style.opacity==='0')return;
+    const gps=navigator.getGamepads();let gp=null;
+    for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){gp=gps[i];break}}
+    if(!gp){requestAnimationFrame(_diffGpPoll);return}
+    const btns=wrap.querySelectorAll('div');
+    if(!btns.length){requestAnimationFrame(_diffGpPoll);return}
+    const u=(gp.buttons[12]&&gp.buttons[12].pressed)||(gp.axes[1]<-0.5);
+    const d=(gp.buttons[13]&&gp.buttons[13].pressed)||(gp.axes[1]>0.5);
+    const a=gp.buttons[0]&&gp.buttons[0].pressed;
+    if(u&&!_diffGpPrevU)_diffGpIdx=Math.max(0,_diffGpIdx-1);
+    if(d&&!_diffGpPrevD)_diffGpIdx=Math.min(btns.length-1,_diffGpIdx+1);
+    _diffGpPrevU=u;_diffGpPrevD=d;
+    btns.forEach((b,i)=>{b.style.outline=i===_diffGpIdx?'2px solid #C9A961':'';b.style.outlineOffset='-2px'});
+    if(a&&!_diffGpPrevA)btns[_diffGpIdx].click();
+    _diffGpPrevA=a;
+    requestAnimationFrame(_diffGpPoll);
+  }
+  _diffGpPoll();
 }
 // ── 키 안내 3단계 ──
 const _INTRO_KEY_STEPS=[
@@ -47444,7 +47465,23 @@ function _showIntroKeys(step){
       setTimeout(()=>_openIntroCurtain(),400);
     }
   }
-  setTimeout(()=>{el.addEventListener('click',next,{once:true});document.addEventListener('keydown',next,{once:true})},400);
+  setTimeout(()=>{
+    el.addEventListener('click',next,{once:true});
+    document.addEventListener('keydown',next,{once:true});
+    // 게임패드: A/B/X/Y 아무거나 → 다음
+    let _ikGpDone=false,_ikGpPrev=false;
+    function _ikGpPoll(){
+      if(_ikGpDone)return;
+      const gps=navigator.getGamepads();let gp=null;
+      for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){gp=gps[i];break}}
+      if(!gp){requestAnimationFrame(_ikGpPoll);return}
+      const a=(gp.buttons[0]&&gp.buttons[0].pressed)||(gp.buttons[1]&&gp.buttons[1].pressed)||(gp.buttons[2]&&gp.buttons[2].pressed)||(gp.buttons[3]&&gp.buttons[3].pressed);
+      if(a&&!_ikGpPrev){_ikGpDone=true;next();return}
+      _ikGpPrev=a;
+      requestAnimationFrame(_ikGpPoll);
+    }
+    _ikGpPoll();
+  },400);
 }
 // ── 커튼 상하 열림 + 5마리 스폰 ──
 function _openIntroCurtain(){

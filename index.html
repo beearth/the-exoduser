@@ -489,6 +489,70 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="lobby_i18n.js"></script>
 <script>
+// ═══ 글로벌 게임패드 매니저 (전 화면 공통) ═══
+const _GP = {
+  connected: false,
+  active: false,
+  prev: {},
+  axes: [0,0,0,0],
+  DEAD: 0.25,
+  _handlers: [],
+  on(id, test, action) { this._handlers.push({id, test, action}) },
+  off(id) { this._handlers = this._handlers.filter(h => h.id !== id) },
+};
+addEventListener('gamepadconnected', e => {
+  _GP.connected = true;
+  console.log('[GP] 연결:', e.gamepad.id);
+});
+addEventListener('gamepaddisconnected', e => {
+  _GP.connected = false; _GP.active = false;
+  console.log('[GP] 해제');
+});
+addEventListener('mousemove', e => {
+  if(_GP.active && (Math.abs(e.movementX)+Math.abs(e.movementY) > 3)) {
+    _GP.active = false; localStorage.setItem('inputMode','kbm');
+    document.body.style.cursor = '';
+  }
+}, {passive:true});
+addEventListener('keydown', e => {
+  if(_GP.active && !e._fromGp) {
+    _GP.active = false; localStorage.setItem('inputMode','kbm');
+    document.body.style.cursor = '';
+  }
+}, {passive:true});
+(function _gpGlobalPoll() {
+  requestAnimationFrame(_gpGlobalPoll);
+  const gps = navigator.getGamepads();
+  let gp = null;
+  for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){gp=gps[i];break}}
+  if(!gp) return;
+  const just = {};
+  let anyInput = false;
+  for(let i=0;i<gp.buttons.length;i++){
+    const p = gp.buttons[i].pressed || gp.buttons[i].value > 0.5;
+    if(p) anyInput = true;
+    just[i] = p && !_GP.prev[i];
+    _GP.prev[i] = p;
+  }
+  _GP.axes[0] = Math.abs(gp.axes[0]||0) < _GP.DEAD ? 0 : gp.axes[0];
+  _GP.axes[1] = Math.abs(gp.axes[1]||0) < _GP.DEAD ? 0 : gp.axes[1];
+  if(gp.axes.length >= 4){
+    _GP.axes[2] = Math.abs(gp.axes[2]||0) < _GP.DEAD ? 0 : gp.axes[2];
+    _GP.axes[3] = Math.abs(gp.axes[3]||0) < _GP.DEAD ? 0 : gp.axes[3];
+  }
+  if(_GP.axes[0]||_GP.axes[1]||_GP.axes[2]||_GP.axes[3]) anyInput = true;
+  if(anyInput && !_GP.active) {
+    _GP.active = true;
+    localStorage.setItem('inputMode','pad');
+    document.body.style.cursor = 'none';
+  }
+  for(let i=0;i<_GP._handlers.length;i++){
+    const h = _GP._handlers[i];
+    try { if(h.test(gp, just)) h.action(); } catch(e){}
+  }
+})();
+</script>
+<script>
 // 브라우저 줌 차단
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 var _selectedSlot=null;
@@ -1434,6 +1498,7 @@ function playCinematic(){
   const prompt=$('cinClickPrompt');
   let _vidStarted=false;
   function onVidClick(){
+    console.log('[CIN] onVidClick called, _vidStarted=',_vidStarted,'_cinDone=',_cinDone);
     if(_vidStarted||_cinDone)return;
     _vidStarted=true;
     prompt.style.display='none';
@@ -1466,7 +1531,8 @@ function playCinematic(){
   // 게임패드: A/B/X/Y 로 CLICK TO HELL 넘기기
   _GP.on('clickToHell', (gp, just) => {
     if(_vidStarted||_cinDone) { _GP.off('clickToHell'); return false; }
-    return just[0]||just[1]||just[2]||just[3];
+    if(just[0]||just[1]||just[2]||just[3]){console.log('[GP] clickToHell triggered');return true;}
+    return false;
   }, onVidClick);
 
   // ─── 부분 스킵 (클릭 시 다음 대사 + 음성 점프) ───
@@ -1930,6 +1996,32 @@ let _lobbyGpIdx = 0;
 _GP.on('lobbyNav', (gp, just) => {
   const lobby = $('lobby');
   if(!lobby || lobby.style.display !== 'flex') return false;
+
+  // 생성 모달이 열려있으면 모달 조작
+  const modal = $('createModal');
+  if(modal && modal.classList.contains('show')) {
+    if(just[0]) { $('createBtn').click(); return true; } // A = 생성
+    if(just[1]) { $('createCancelBtn').click(); return true; } // B = 취소
+    return false;
+  }
+
+  // 비주얼 선택 팝업
+  const vpop = $('charVisualPop');
+  if(vpop && vpop.style.display !== 'none' && vpop.style.display !== '') {
+    const cards = vpop.querySelectorAll('[data-vi]');
+    if(cards.length) {
+      if(!_GP.prev._viIdx) _GP.prev._viIdx = 0;
+      if(just[14] || (_GP.axes[0] < -0.5 && !_GP.prev._viL)) _GP.prev._viIdx = Math.max(0, _GP.prev._viIdx - 1);
+      if(just[15] || (_GP.axes[0] > 0.5 && !_GP.prev._viR)) _GP.prev._viIdx = Math.min(cards.length - 1, _GP.prev._viIdx + 1);
+      _GP.prev._viL = _GP.axes[0] < -0.5;
+      _GP.prev._viR = _GP.axes[0] > 0.5;
+      cards.forEach((c, i) => { c.style.outline = i === _GP.prev._viIdx ? '2px solid #C9A961' : ''; });
+      if(just[0]) { cards[_GP.prev._viIdx].click(); return true; } // A = 선택
+      if(just[1]) { $('visualCancelBtn').click(); return true; } // B = 취소
+    }
+    return false;
+  }
+
   const items = lobby.querySelectorAll('.char-item, .char-item-new');
   if(!items.length) return false;
 
@@ -1939,17 +2031,28 @@ _GP.on('lobbyNav', (gp, just) => {
   _GP.prev._lobbyUp = _GP.axes[1] < -0.5;
   _GP.prev._lobbyDown = _GP.axes[1] > 0.5;
 
-  // 포커스 표시 + 클릭
+  // 포커스 하이라이트
   items.forEach((el, i) => {
     if(i === _lobbyGpIdx) { el.style.outline = '2px solid #C9A961'; el.style.outlineOffset = '-2px'; }
     else { el.style.outline = ''; el.style.outlineOffset = ''; }
   });
-  // A(0) = 선택/입장
-  if(just[0]) { items[_lobbyGpIdx].click(); return true; }
-  // B(1) = 삭제 (char-item만)
-  if(just[1]) {
-    const del = items[_lobbyGpIdx].querySelector('.char-del');
-    if(del) del.click();
+
+  // A(0) = 선택한 캐릭터면 입장, 아니면 선택
+  if(just[0]) {
+    const target = items[_lobbyGpIdx];
+    if(target.classList.contains('char-item-new')) {
+      target.click(); // 새 캐릭터 생성 모달
+    } else if(target.classList.contains('active') && _selectedSlot) {
+      $('enterGameBtn').click(); // 이미 선택된 캐릭터 → 입장
+    } else {
+      target.click(); // 캐릭터 선택
+    }
+    return true;
+  }
+  // Y(3) = 새 캐릭터 생성 (바로가기)
+  if(just[3]) {
+    const newItem = lobby.querySelector('.char-item-new');
+    if(newItem) newItem.click();
     return true;
   }
   return false;
@@ -2094,80 +2197,6 @@ function showCharGate(charId){
   obs.observe(document.getElementById('lobby'),{attributes:true,attributeFilter:['style']});
   // 즉시 시작 시도
   if(document.getElementById('lobby').style.display==='flex'){resize();loop()}
-})();
-</script>
-<script>
-// ═══ 글로벌 게임패드 매니저 (전 화면 공통) ═══
-const _GP = {
-  connected: false,
-  active: false, // 패드 모드
-  prev: {}, // 이전 프레임 버튼 상태
-  axes: [0,0,0,0],
-  DEAD: 0.25,
-  // 콜백 등록: { id, test:(gp,just)=>bool, action:()=>void }
-  _handlers: [],
-  on(id, test, action) { this._handlers.push({id, test, action}) },
-  off(id) { this._handlers = this._handlers.filter(h => h.id !== id) },
-};
-addEventListener('gamepadconnected', e => {
-  _GP.connected = true;
-  console.log('[GP] 연결:', e.gamepad.id);
-});
-addEventListener('gamepaddisconnected', e => {
-  _GP.connected = false; _GP.active = false;
-  console.log('[GP] 해제');
-});
-// 마우스/키보드 → KBM 복귀
-addEventListener('mousemove', e => {
-  if(_GP.active && (Math.abs(e.movementX)+Math.abs(e.movementY) > 3)) {
-    _GP.active = false; localStorage.setItem('inputMode','kbm');
-    document.body.style.cursor = '';
-  }
-}, {passive:true});
-addEventListener('keydown', e => {
-  if(_GP.active && !e._fromGp) {
-    _GP.active = false; localStorage.setItem('inputMode','kbm');
-    document.body.style.cursor = '';
-  }
-}, {passive:true});
-
-(function _gpGlobalPoll() {
-  requestAnimationFrame(_gpGlobalPoll);
-  const gps = navigator.getGamepads();
-  let gp = null;
-  for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){gp=gps[i];break}}
-  if(!gp) return;
-
-  // 버튼 상태 + just pressed 계산
-  const just = {};
-  let anyInput = false;
-  for(let i=0;i<gp.buttons.length;i++){
-    const p = gp.buttons[i].pressed || gp.buttons[i].value > 0.5;
-    if(p) anyInput = true;
-    just[i] = p && !_GP.prev[i];
-    _GP.prev[i] = p;
-  }
-  // 스틱
-  _GP.axes[0] = Math.abs(gp.axes[0]||0) < _GP.DEAD ? 0 : gp.axes[0];
-  _GP.axes[1] = Math.abs(gp.axes[1]||0) < _GP.DEAD ? 0 : gp.axes[1];
-  if(gp.axes.length >= 4){
-    _GP.axes[2] = Math.abs(gp.axes[2]||0) < _GP.DEAD ? 0 : gp.axes[2];
-    _GP.axes[3] = Math.abs(gp.axes[3]||0) < _GP.DEAD ? 0 : gp.axes[3];
-  }
-  if(_GP.axes[0]||_GP.axes[1]||_GP.axes[2]||_GP.axes[3]) anyInput = true;
-
-  // 패드 입력 감지 → 모드 전환
-  if(anyInput && !_GP.active) {
-    _GP.active = true;
-    localStorage.setItem('inputMode','pad');
-    document.body.style.cursor = 'none';
-  }
-
-  // 등록된 핸들러 실행
-  for(let i=0;i<_GP._handlers.length;i++){
-    const h = _GP._handlers[i];
-    try { if(h.test(gp, just)) h.action(); } catch(e){}
-  }
 })();
 </script>
 <script>
