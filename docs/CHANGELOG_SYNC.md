@@ -23460,3 +23460,33 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - game.html
 - index.html
 
+
+## 2026-05-10 11:30 (auto)
+- _autosave/game_20260510_110451.html
+- _autosave/game_20260510_110456.html
+- _autosave/game_20260510_110510.html
+- _autosave/game_20260510_110639.html
+- _autosave/game_20260510_111042.html
+- _autosave/game_20260510_111525.html
+- _autosave/game_20260510_112045.html
+- _autosave/game_20260510_112534.html
+- _autosave/game_20260510_112548.html
+- _autosave/game_20260510_112631.html
+- _autosave/game_20260510_112641.html
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤??md
+- docs/2_2 ë¬´ê¸°+???ì„±?œìŠ¤??2_2 ë¬´ê¸°+???ì„±?œìŠ¤??md
+- docs/3.3 ?¤ë°”?¸ë”©+?¤ì •/ê²Œì„?¨ë“œ_ë²¤ì¹˜ë§ˆí‚¹_?˜ë“ ë§??”ì•„ë¸”ë¡œ4.md
+- game.html
+- img/lording/02_protagonist.png
+- img/lording/03_goddess.png
+- img/lording/04_monsters.png
+- img/lording/06_bullet_parry.png
+- img/lording/07_chain_drive.png
+- img/lording/08_boss.png
+- img/lording/ChatGPT Image 2026??4??25???¤ì „ 08_13_01.png
+- img/lording/etype84_lightning.png
+- img/lording/ig_0dd5f8cf89d2f2740169ff34be60e88191beb6f7fbe2e1f961.png
+- img/lording/lobby_bg_abyss.webp
+- img/lording/lobby_bg_flame.png
+- img/lording/lobby_bg_frost.png
+
