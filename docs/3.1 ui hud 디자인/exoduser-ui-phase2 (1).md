@@ -438,7 +438,7 @@ function showStageTransition(callback) {
 | weakPj | P._wjCd | 관통의 영역 |
 | weakRev | P._wrCd | 역전의 영역 |
 | voidScarecrow | P._vsCd | 허수아비 |
-| ghostXbowTurret | P._gxCd | 공성쇠뇌 (쿨 10초) |
+| ghostXbowTurret | P._gxCd | 공성쇠뇌 (쿨 20초 고정) |
 
 ### 별도 처리 스킬 (스택/충전 방식)
 - maliceHunt: P._mhCd (단독 분기)

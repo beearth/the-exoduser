@@ -313,7 +313,7 @@ canvas{display:block;position:fixed;inset:0}
 /* ══ IN-GAME CONFIRM MODAL ══ */
 #gcModal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.72);backdrop-filter:blur(3px)}
 #gcModal.on{display:flex}
-#gcModal .gc-box{min-width:320px;max-width:480px;padding:24px 28px;border-radius:14px;border:1px solid #4b2a1d;background:radial-gradient(600px 300px at 50% -40px,rgba(110,45,22,.28),transparent 60%),linear-gradient(180deg,rgba(22,10,8,.97),rgba(15,6,6,.98));box-shadow:0 24px 80px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,146,88,.08);animation:gcFadeIn .15s ease-out}
+#gcModal .gc-box{min-width:400px;max-width:600px;padding:28px 40px;border-radius:14px;border:1px solid #4b2a1d;background:radial-gradient(600px 300px at 50% -40px,rgba(110,45,22,.28),transparent 60%),linear-gradient(180deg,rgba(22,10,8,.97),rgba(15,6,6,.98));box-shadow:0 24px 80px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,146,88,.08);animation:gcFadeIn .15s ease-out}
 @keyframes gcFadeIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
 #gcModal .gc-msg{font-family:var(--font-display);font-size:1.05rem;color:var(--ui-bone);text-align:center;line-height:1.7;white-space:pre-line;margin-bottom:20px;text-shadow:0 1px 4px rgba(0,0,0,.8)}
 #gcModal .gc-btns{display:flex;gap:12px;justify-content:center}
@@ -2177,7 +2177,6 @@ canvas{display:block;position:fixed;inset:0}
     <div style="display:flex;justify-content:center;gap:16px;width:100%">
       <div class="st-b" style="text-align:center;flex:1"><div style="color:#886655;font-size:0.5rem;letter-spacing:.1em">KILL</div><div id="killCnt" style="color:#cc4433;font-size:0.75rem;text-shadow:1px 1px 2px #000">0</div></div>
       <div class="st-b" style="text-align:center;flex:1"><div style="color:#886655;font-size:0.5rem;letter-spacing:.1em" id="matLbl">악의</div><div id="matCnt" style="color:#cc88ff;font-size:0.75rem;text-shadow:1px 1px 2px #000">0</div></div>
-      <div class="st-b" style="text-align:center;flex:1"><div style="color:#886655;font-size:0.5rem;letter-spacing:.1em">COMBO</div><div id="comboRecord" style="color:#ff8800;font-size:0.75rem;text-shadow:1px 1px 2px #000">0</div></div>
     </div>
   </div>
 </div>
@@ -2266,6 +2265,7 @@ canvas{display:block;position:fixed;inset:0}
   <div id="cpHud" style="color: #ffaa44; text-shadow: 0 0 5px rgba(255,170,68,0.3);">⚡ 0 CP</div>
   <span style="color: #665544; margin: 0 10px;">|</span>
   <div id="comboHud" style="color:#ff6600;text-shadow:0 0 8px rgba(255,100,0,.5);display:none">COMBO 0</div>
+  <div id="comboRecord" style="color:#ff8800;font-size:0.8rem;text-shadow:0 0 6px rgba(255,100,0,.4);display:none">0</div>
   <div id="comboTimerHud" style="color:#ff8844;font-size:0.8rem;display:none">⏱ 20.0s</div>
   <div id="dpsHud" style="color:#ff4466;font-size:1.4rem;font-weight:900;text-shadow:0 0 12px rgba(255,50,80,.7),0 0 4px #000;display:none;letter-spacing:.05em">DPS 0</div>
   <span style="color: #665544; margin: 0 10px;">|</span>
@@ -9380,7 +9380,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
         showPH(_T('공성쇠뇌 철거 → 이동식'),'#66aadd');playSample('bow_release',.4,_r(1.2,.1));
         addTxt(P.x,P.y-20,_T('이동식 복귀'),'#66ccff',30);_skOk=true;
       } else if((P._gxCd||0)>0){showPH(_T('쿨다운!')+' '+((P._gxCd/60)|0)+'s','#888');break}
-      else if(P.st>=GXBOW_ST){_xbowEquipped=true;activateGhostXbowTurret();P._gxCd=~~(600*(1+_eqAffix('cooldownRed')));_skOk=true}
+      else if(P.st>=GXBOW_ST){_xbowEquipped=true;activateGhostXbowTurret();P._gxCd=1200;_skOk=true}
       else showPH(_T('ST 부족! (100)'),'#ff4444');break;
     case 'shieldThrow': showPH(_T('우클릭(칼등치기)에 합체됨'),'#66aadd');break;
     case 'blastShot': showPH(_T('T(석궁자동)에 세팅하세요'),'#ff6633');break;
@@ -12808,12 +12808,20 @@ const ETYPE_COLS=['#ee5544','#88cc44','#ff8822','#66dd66','#8888aa','#ff5500','#
 function shake(n){G.shake=Math.max(G.shake,n*OPT.shake/100);_gpVibrate(n)}
 // ── 게임패드 진동 ──
 function _gpVibrate(intensity,durMs){
-  if(!_gpad||!_gpad.vibrationActuator)return;
-  const t=Math.min(intensity/30,1); // shake 강도 0~30 → 0~1 (30이상=최대, 더 민감)
-  const dur=durMs||Math.max(80,Math.min(800,intensity*12)); // 강도 비례 지속시간 (더 길게)
-  const weak=Math.min(1,t*0.7);  // 고주파(약한 모터)
-  const strong=Math.min(1,t);     // 저주파(강한 모터)
-  _gpad.vibrationActuator.playEffect('dual-rumble',{duration:dur,strongMagnitude:strong,weakMagnitude:weak}).catch(()=>{});
+  if(!_gpad||(OPT.vibration===false))return;
+  const t=Math.min(intensity/30,1);
+  const dur=durMs||Math.max(80,Math.min(800,intensity*12));
+  const weak=Math.min(1,t*0.7);
+  const strong=Math.min(1,t);
+  // dual-rumble (Chrome/Edge standard)
+  if(_gpad.vibrationActuator){
+    _gpad.vibrationActuator.playEffect('dual-rumble',{duration:dur,startDelay:0,strongMagnitude:strong,weakMagnitude:weak}).catch(()=>{});
+    return;
+  }
+  // hapticActuators 폴백 (Firefox/일부 브라우저)
+  if(_gpad.hapticActuators&&_gpad.hapticActuators.length>0){
+    _gpad.hapticActuators[0].pulse(strong,dur).catch(()=>{});
+  }
 }
 // ── 히트 플래시 (순간 백플래시) ──
 let _hitFlash={a:0,col:'#ffffff'};
@@ -22985,7 +22993,7 @@ function update(){
       _harpLandT=30; // 착지 애니메이션 항상 재생 (30프레임≈0.5초)
       // ── 착지 효과 ──
       if(_harpTier>=3)playSample('chain_land2',.7,_r(1,.1));else playSample('chain_land',1,_r(1,.1));
-      if(!isDimBreach()||_slamLand){shake(_harpTier>=3?30:_harpTier>=2?20:10);addParts(P.x,P.y,'#ffaa44',8);addTxt(P.x,P.y-20,_T('💥 착지!'),'#ffaa00',30)}
+      if(!isDimBreach()||_slamLand){shake(_harpTier>=3?30:_harpTier>=2?20:10);_gpVibrate(_harpTier>=3?25:_harpTier>=2?15:6,_harpTier>=3?250:_harpTier>=2?150:80);addParts(P.x,P.y,'#ffaa44',8);addTxt(P.x,P.y-20,_T('💥 착지!'),'#ffaa00',30)}
       playVFXAng('land_fire',P.x,P.y+P.r,0.35,2,0,true); // 착지 화염 VFX — 발 바로 아래
       // ── 블링크 스킬 세팅: 착지점에 암전길 ──
       if(_harpSk==='charge'&&P.activeChargeSk==='magicBlink'){
@@ -23020,7 +23028,7 @@ function update(){
         playSample('heavy_hit',1,_r(.8,.1));
         const _csTierCol=_csTier>=3?'#ff2200':_csTier>=2?'#ffaa00':'#ffcc44';
         addTxt(P.x,P.y-30,_T('⚡ 기동파괴! ')+_csTier+'단계 ×'+_csDistMul,_csTierCol,_csTier>=3?55:45);
-        shake(60);G.chromaT=15;
+        shake(_csTier>=3?70:_csTier>=2?40:18);_gpVibrate(_csTier>=3?60:_csTier>=2?30:12,_csTier>=3?500:_csTier>=2?250:120);G.chromaT=_csTier>=3?18:_csTier>=2?12:6;
         playVFXAng('earthquake',P.x,P.y-_csR*0.255,_csR/256,7,0,true); // 대지충격 VFX (~1초)
         if(!G._gSlamWave)G._gSlamWave=[];
         G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_csR,t:0,maxT:24,col:'#ffcc00'});
@@ -23066,7 +23074,7 @@ function update(){
         playSample('chain_assault_fire',.8,_r(1,.1));{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}
         const _stTierCol=_stTier>=3?'#ff0000':_stTier>=2?'#ff4400':'#ff8800';
         addTxt(P.x,P.y-30,_T('🔥 기동불꽃! ')+_stTier+'단계 ×'+_stDistMul,_stTierCol,_stTier>=3?55:45);
-        shake(50);G.chromaT=12;G._flashT=10;G._flashCol='#ff4400';
+        shake(_stTier>=3?60:_stTier>=2?35:15);_gpVibrate(_stTier>=3?50:_stTier>=2?25:10,_stTier>=3?400:_stTier>=2?200:100);G.chromaT=_stTier>=3?16:_stTier>=2?10:6;G._flashT=_stTier>=3?14:_stTier>=2?8:4;G._flashCol='#ff4400';
         // 용암분출 VFX (스프라이트시트)
         playVFXAng('lava_erupt',P.x,P.y-_stR*0.378,_stR/384,6.7,0,true);
         // 화염 파티클
@@ -23131,7 +23139,7 @@ function update(){
         }
         playSample('heavy_hit',1,_r(.7,.1));{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}
         addTxt(P.x,P.y-35,_T('⚡ 기동전폭! x')+_cbDistMul.toFixed(1),_cbDistMul>=4?'#ff4400':_cbDistMul>=2?'#ffaa00':'#ffcc44',50);
-        shake(70);G.chromaT=20;G._flashT=12;G._flashCol='#ffaa00';
+        {const _bTier=Math.max(1,Math.min(3,_harpTier||1));shake(_bTier>=3?80:_bTier>=2?45:20);_gpVibrate(_bTier>=3?70:_bTier>=2?35:14,_bTier>=3?600:_bTier>=2?300:150);G.chromaT=_bTier>=3?24:_bTier>=2?14:8;G._flashT=_bTier>=3?16:_bTier>=2?10:5;G._flashCol='#ffaa00'}
         // 지면 갈라짐 VFX
         if(!G._gSlamWave)G._gSlamWave=[];
         G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_cbAoeR,t:0,maxT:24,col:'#ffaa44'});
@@ -34528,7 +34536,7 @@ function activateGhostXbowTurret(){
 function activateVoidScarecrow(){
   const slv=P.skills.voidScarecrow||1;
   const maxAbsorb=20+(slv-1)*3+(slv>=10?3:0); // 기본20, Lv당+3, 10렙 보너스+3 (=50)
-  P._vsCd=~~(1200*(1+_eqAffix('cooldownRed'))); // 설치 시 20초 쿨 즉시 시작
+  P._vsCd=1200; // 설치 시 20초 쿨 고정
   // 기존 허수아비가 있으면 재배치 (자원 유지)
   if(!G._voidScarecrow){
     G._voidScarecrow={x:P.x,y:P.y,maxAbsorb:maxAbsorb,absorbed:0,resHP:0,resMP:0,resST:0,aggroOn:true,lv:slv};
@@ -34589,7 +34597,7 @@ function _doExplodeScarecrowBoom(){
   if(absorbed>0)addTxt(_esX,_esY-40,_T('폭발! ×')+_chainCount,'#ffcc00',60);
   else addTxt(_esX,_esY-40,_T('불발...'),'#ff8844',40);
   G._explodeScarecrow=null;
-  P._exsCd=~~(600*(1+_eqAffix('cooldownRed'))); // 10초 쿨
+  P._exsCd=1200; // 20초 쿨 고정
 }
 function _fireExsBoom(bx,by,boomR,boom,absorbed,absRatio){
   const _ar=absRatio||0;
@@ -46701,7 +46709,7 @@ function updateHUD(slow){
   const rtype=room?room.type:'';const rtName=rtype==='boss'?_L('보스광장','Boss Arena'):rtype==='forge'?_T('대장간'):rtype==='start'?_L('시작점','Start'):_L('광장','Plaza');
   $('roomLbl').textContent=`${rtName} — `+_L('적','Enemies')+` ${_hudAlive}`+(G.bossAlive?'':_L(' | 출구 개방',' | Exit Open'));
   $('killCnt').textContent=G.kills;$('matCnt').textContent=G.mats;$('matCnt').style.color=G.mats>=3?'#cc66ff':'#665544';if($('matLbl'))$('matLbl').textContent=_L('악의','MALICE');
-  $('comboRecord').textContent=G.combo>0?G.combo+' (MAX:'+G.comboMax+')':G.comboMax>0?'MAX:'+G.comboMax:'0';$('comboRecord').style.color=G.combo>=10?'#ff4400':G.combo>=2?'#ff8800':'#886644';
+  {const _cr=$('comboRecord');if(_cr){if(G.comboMax>0){_cr.style.display='';_cr.textContent='MAX COMBO '+G.comboMax;_cr.style.color=G.comboMax>=100?'#ff2200':G.comboMax>=50?'#ff6600':'#ff8800'}else{_cr.style.display='none'}}}
   $('lvLbl').textContent=P.lv;$('spCnt').textContent=`SP ${P.sp}${P.ap?' | AP '+P.ap:''}`;$('cpHud').textContent=`${STG[G.stage].hell+1}-${STG[G.stage].hellFloor+1} CP ${calcCP().total}`;
   if(_charName)$('charNameHud').textContent=_charName;
   // 콤보 HUD
