@@ -9641,7 +9641,7 @@ function _gpAutoAim(range){
 // 버튼→키코드 맵 (상수)
 const _GP_KEY={
   0:'mouse0',1:'Space',2:'KeyE',3:'ControlLeft',
-  4:'KeyF',5:'mouse2',8:'Tab',9:'Escape',
+  4:'ShiftLeft',5:'mouse2',8:'Tab',9:'Escape',
   10:'KeyR',11:'KeyC',12:'KeyK',13:'KeyG',14:'KeyC',15:'KeyV'
 };
 function _gpInjectKey(kc,pressed){
@@ -9794,23 +9794,24 @@ function _pollGamepad(){
   }
 
   // ── 4단계: 버튼 → 키 주입 ──
-  // LB(4) = 모디파이어(홀드+ABXY=1234) / 탭(단독 뗄 때)=KeyF
-  const _lbHeld=!!_gpBtns[4];
-  const _lbWasHeld=!!_gpBtnsPrev['kLB_held'];
-  const _LB_COMBO={0:'Digit1',1:'Digit2',2:'Digit3',3:'Digit4'};
+  // LT(6) = 모디파이어(홀드+ABXY=1234) / 탭(단독 뗄 때)=KeyF
+  const _ltVal=_gpad.buttons[6]&&_gpad.buttons[6].value||0;
+  const _ltHeld=_ltVal>0.7;
+  const _ltWasHeld=!!_gpBtnsPrev['kLT_held'];
+  const _LT_COMBO={0:'Digit1',1:'Digit2',2:'Digit3',3:'Digit4'};
 
-  // LB 모디파이어 사용 여부 추적 (누르는 동안 ABXY가 눌렸으면 true)
-  if(_lbHeld&&!_lbWasHeld)_gpBtnsPrev['kLB_mod']=false; // LB 새로 눌림 → 리셋
-  let _lbUsedAsModifier=!!_gpBtnsPrev['kLB_mod'];
+  // LT 모디파이어 사용 여부 추적
+  if(_ltHeld&&!_ltWasHeld)_gpBtnsPrev['kLT_mod']=false;
+  let _ltUsedAsModifier=!!_gpBtnsPrev['kLT_mod'];
 
-  if(_lbHeld){
-    for(const bi in _LB_COMBO){
+  if(_ltHeld){
+    for(const bi in _LT_COMBO){
       const idx=+bi;
-      const comboKey=_LB_COMBO[bi];
+      const comboKey=_LT_COMBO[bi];
       const pressed=!!_gpBtns[idx];
-      const prevKey='kLB'+idx;
+      const prevKey='kLT'+idx;
       if(pressed&&!_gpBtnsPrev[prevKey]){
-        _gpInjectKey(comboKey,true);_lbUsedAsModifier=true;_gpBtnsPrev['kLB_mod']=true;
+        _gpInjectKey(comboKey,true);_ltUsedAsModifier=true;_gpBtnsPrev['kLT_mod']=true;
       }
       if(!pressed&&_gpBtnsPrev[prevKey]){
         _gpInjectKey(comboKey,false);
@@ -9818,31 +9819,38 @@ function _pollGamepad(){
       _gpBtnsPrev[prevKey]=pressed;
     }
   } else {
-    // LB 뗐을 때
-    for(const bi in _LB_COMBO){
-      const prevKey='kLB'+(+bi);
-      if(_gpBtnsPrev[prevKey]){_gpInjectKey(_LB_COMBO[bi],false);_gpBtnsPrev[prevKey]=false}
+    // LT 뗐을 때
+    for(const bi in _LT_COMBO){
+      const prevKey='kLT'+(+bi);
+      if(_gpBtnsPrev[prevKey]){_gpInjectKey(_LT_COMBO[bi],false);_gpBtnsPrev[prevKey]=false}
     }
-    // LB 뗐을 때: 모디파이어로 안 쓰였으면 → KeyF 탭 발동
-    if(_lbWasHeld&&!_gpBtnsPrev['kLB_mod']){
+    // LT 뗐을 때: 모디파이어로 안 쓰였으면 → KeyF 탭 발동
+    if(_ltWasHeld&&!_gpBtnsPrev['kLT_mod']){
       _gpInjectKey('KeyF',true);
-      setTimeout(()=>_gpInjectKey('KeyF',false),100); // 100ms 탭
+      setTimeout(()=>_gpInjectKey('KeyF',false),100);
     }
   }
-  _gpBtnsPrev['kLB_held']=_lbHeld;
+  _gpBtnsPrev['kLT_held']=_ltHeld;
 
-  // 나머지 버튼 주입 (LB, LB 콤보 ABXY는 별도 처리)
-  const _gpModFirst=[5,0,1,2,3,8,9,10,11,12,13,14,15]; // 4(LB) 제외
+  // 조준 모드 판정 (범위지정 스킬 활성 시)
+  const _isAimMode=P&&(P._mmAiming||P._bwAiming||P._tsAiming||P._msAiming||P._isAiming);
+
+  // 나머지 버튼 주입 (LT 콤보 ABXY는 별도 처리)
+  const _gpModFirst=[4,5,0,1,2,3,8,9,10,11,12,13,14,15];
   for(let _mi=0;_mi<_gpModFirst.length;_mi++){
     const idx=_gpModFirst[_mi];
     const kc=_GP_KEY[idx];
     if(!kc)continue;
-    // LB 홀드 중 ABXY(0~3)는 콤보로 처리했으므로 원래 키 주입 차단
-    if(_lbHeld&&idx>=0&&idx<=3){
+    // 조준 모드 중 A(0)/B(1)는 발동/취소로 사용 → 원래 키 주입 차단
+    if(_isAimMode&&(idx===0||idx===1)){
       if(_gpBtnsPrev['k'+idx])_gpInjectKey(kc,false);
       _gpBtnsPrev['k'+idx]=false;
       continue;
     }
+    // LT 홀드 중 ABXY(0~3)는 콤보로 처리했으므로 원래 키 주입 차단
+    if(_ltHeld&&idx>=0&&idx<=3){
+      if(_gpBtnsPrev['k'+idx])_gpInjectKey(kc,false);
+      _gpBtnsPrev['k'+idx]=false;
       continue;
     }
     const pressed=!!_gpBtns[idx];
@@ -9859,43 +9867,59 @@ function _pollGamepad(){
     _gpBtnsPrev['k'+idx]=pressed;
   }
 
-  // LT→ShiftLeft(돌진), RT→Q(패링), LT+RT→Z(필살기)
-  const lt=_gpad.buttons[6]&&_gpad.buttons[6].value>0.7; // 트리거 임계값 높임 (오발 방지)
+  // RT→Q(패링), LT+RT→Z(필살기) — LT는 모디파이어(4단계에서 처리)
   const rt=_gpad.buttons[7]&&_gpad.buttons[7].value>0.7;
-  const ltrt=lt&&rt; // 동시 입력 = 필살기
+  const ltrt=_ltHeld&&rt; // 동시 입력 = 필살기
   if(ltrt&&!_gpBtnsPrev['kLTRT']){
     _gpInjectKey('KeyZ',true);
-    if(_gpBtnsPrev['kLT']){_gpInjectKey('ShiftLeft',false);_gpBtnsPrev['kLT']=false}
     if(_gpBtnsPrev['kRT']){_gpInjectKey('KeyQ',false);_gpBtnsPrev['kRT']=false}
   }
   if(!ltrt&&_gpBtnsPrev['kLTRT']){_gpInjectKey('KeyZ',false)}
   _gpBtnsPrev['kLTRT']=ltrt;
-  // 개별 트리거 (LT+RT 동시가 아닐 때만)
+  // RT 개별 (LT+RT 동시가 아닐 때만)
   if(!ltrt){
-    if(lt&&!_gpBtnsPrev['kLT'])_gpInjectKey('ShiftLeft',true);
-    if(!lt&&_gpBtnsPrev['kLT'])_gpInjectKey('ShiftLeft',false);
     if(rt&&!_gpBtnsPrev['kRT'])_gpInjectKey('KeyQ',true);
     if(!rt&&_gpBtnsPrev['kRT'])_gpInjectKey('KeyQ',false);
   }
-  _gpBtnsPrev['kLT']=lt&&!ltrt;_gpBtnsPrev['kRT']=rt&&!ltrt;
+  _gpBtnsPrev['kRT']=rt&&!ltrt;
 
-  // 우스틱 → 스킬 조준 (커서 위치 제어)
-  const rx=_gpAxes[2],ry=_gpAxes[3];
-  const rMag=Math.sqrt(rx*rx+ry*ry);
-  if(rMag>0.15){
-    // 조준 모드면 사거리 1000px, 일반 시 300px
-    const _isAimMode=P._mmAiming||P._bwAiming||P._tsAiming||P._msAiming||P._isAiming;
-    const _maxR=_isAimMode?1000:300;
-    const _aimDist=_maxR*Math.min(1,rMag);
-    const sx=P.x-G.cam.x+C.width/2, sy=P.y-G.cam.y+C.height/2;
-    mouse.x=sx+(rx/rMag)*_aimDist;
-    mouse.y=sy+(ry/rMag)*_aimDist;
-    P.facing=Math.atan2(ry,rx);
+  // 조준 모드: 좌/우스틱 둘 다 조준 커서, A→발동 / 비조준: 우스틱→커서
+  if(_isAimMode){
+    const ax=_gpAxes[0],ay=_gpAxes[1];
+    const rx=_gpAxes[2],ry=_gpAxes[3];
+    const lMag=Math.sqrt(ax*ax+ay*ay);
+    const rMag=Math.sqrt(rx*rx+ry*ry);
+    // 더 많이 기울인 스틱 우선
+    const useR=rMag>lMag;
+    const sx2=useR?rx:ax, sy2=useR?ry:ay, mag=useR?rMag:lMag;
+    if(mag>0.15){
+      const _aimDist=1000*Math.min(1,mag);
+      const scx=P.x-G.cam.x+C.width/2, scy=P.y-G.cam.y+C.height/2;
+      mouse.x=scx+(sx2/mag)*_aimDist;
+      mouse.y=scy+(sy2/mag)*_aimDist;
+      P.facing=Math.atan2(sy2,sx2);
+    }
     G._gpAiming=true;
-  }else{G._gpAiming=false}
+    // A버튼(0)으로 발동 (좌클릭 주입)
+    if(_gpBtns[0]&&!_gpBtnsPrev[0])MBjust[0]=true;
+    // B버튼(1)으로 취소 (우클릭 주입)
+    if(_gpBtns[1]&&!_gpBtnsPrev[1])MBjust[2]=true;
+  }else{
+    // 비조준: 우스틱→커서
+    const rx=_gpAxes[2],ry=_gpAxes[3];
+    const rMag=Math.sqrt(rx*rx+ry*ry);
+    if(rMag>0.15){
+      const _aimDist=300*Math.min(1,rMag);
+      const sx=P.x-G.cam.x+C.width/2, sy=P.y-G.cam.y+C.height/2;
+      mouse.x=sx+(rx/rMag)*_aimDist;
+      mouse.y=sy+(ry/rMag)*_aimDist;
+      P.facing=Math.atan2(ry,rx);
+      G._gpAiming=true;
+    }else{G._gpAiming=false}
+  }
 
-  // 좌스틱 → WASD (keydown 이벤트도 dispatch → 더블탭/칼날이동 감지)
-  const su=_gpAxes[1]<-GP_DEAD,sd=_gpAxes[1]>GP_DEAD,sl=_gpAxes[0]<-GP_DEAD,sr=_gpAxes[0]>GP_DEAD;
+  // 좌스틱 → WASD (조준 모드가 아닐 때만 이동)
+  const su=!_isAimMode&&_gpAxes[1]<-GP_DEAD,sd=!_isAimMode&&_gpAxes[1]>GP_DEAD,sl=!_isAimMode&&_gpAxes[0]<-GP_DEAD,sr=!_isAimMode&&_gpAxes[0]>GP_DEAD;
   const _stickMap=[['sU','KeyW',su],['sD','KeyS',sd],['sL','KeyA',sl],['sR','KeyD',sr]];
   for(let _si=0;_si<4;_si++){
     const[pk,kc,on]=_stickMap[_si];

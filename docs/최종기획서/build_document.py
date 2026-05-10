@@ -10,7 +10,8 @@ import os
 
 IMG_DIR = r'G:\hell\docs\최종기획서\images'
 GAME_IMG = r'G:\hell\img'
-OUT_PATH = r'C:\Users\심도진\Desktop\HELL_EXODUSER_최종기획서_v4.1.docx'
+SS_DIR = r'c:\Users\심도진\Pictures\Screenshots'
+OUT_PATH = r'C:\Users\심도진\Desktop\HELL_EXODUSER_최종기획서_v4.1b.docx'
 
 doc = Document()
 
@@ -56,6 +57,7 @@ def add_img(path, width=Inches(6)):
 
 def img_game(name): return os.path.join(GAME_IMG, name)
 def img_new(name): return os.path.join(IMG_DIR, name)
+def img_ss(name): return os.path.join(SS_DIR, name)
 
 def add_table_simple(headers, rows):
     table = doc.add_table(rows=1 + len(rows), cols=len(headers))
@@ -85,18 +87,17 @@ def add_separator():
     run.font.size = Pt(8)
 
 # ════════════════════════════════════════
-# 표지 — cin_fallhell_custom (기존)
+# 표지 — FDG 로고 + EXODUSER 포스터
 # ════════════════════════════════════════
 doc.add_paragraph()
-add_img(img_game('cin_fallhell_custom.png'), Inches(6))
+add_img(img_ss('스크린샷 2026-05-10 163644.png'), Inches(5))
 doc.add_paragraph()
-add_para('HELL : EXODUSER', bold=True, size=28, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x8B, 0x00, 0x00))
-add_para('지옥 : 탈주자', bold=True, size=18, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x4A, 0x00, 0x00))
+add_img(img_game('etype84_lightning.png'), Inches(4.5))
 doc.add_paragraph()
 add_para('GAME DESIGN DOCUMENT v4.1', size=12, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x66, 0x66, 0x66))
 add_para('Dark Fantasy Hack & Slash ARPG  |  Solo Indie + AI-First  |  PC / Steam', size=10, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x66, 0x66, 0x66))
 doc.add_paragraph()
-add_para('FDG (ForDearGamers)  |  contact@voisun.com', size=10, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x99, 0x99, 0x99))
+add_para('FDG (ForDearGamers)', size=10, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x99, 0x99, 0x99))
 add_para('2026', size=10, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x99, 0x99, 0x99))
 doc.add_page_break()
 
@@ -135,8 +136,8 @@ add_para('ELEVATOR PITCH', bold=True, size=12, color=(0x8B, 0x00, 0x00))
 add_para('복수를 끝낸 남자가 지옥에 떨어진다. 색으로 구분되는 탄막을 정확한 키로 받아치고, 사슬을 던져 벽에 박고 무적으로 끌려가며, 왕창 달려드는 괴물을 쓸어죽이는 2D 탑다운 ARPG.', size=11)
 doc.add_paragraph()
 
-# 핵심 이미지 — cin_victory (학살씬 = HELLSWARM 느낌)
-add_img(img_game('cin_victory.png'), Inches(5.5))
+# 실제 게임플레이 스크린샷
+add_img(img_ss('스크린샷 2026-05-10 162633.png'), Inches(5.5))
 doc.add_paragraph()
 
 add_table_simple(
@@ -308,7 +309,8 @@ doc.add_page_break()
 # ════════════════════════════════════════
 add_heading_styled('06. 액션 정체성 / PILLAR 1 — Bullet Language', 1)
 add_para('색을 잘못 읽으면, 방어가 곧 자폭이 된다.', bold=True, size=12, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x8B, 0x00, 0x00))
-add_img(img_new('06_bullet_parry.png'), Inches(5.5))
+# 실제 패링 스크린샷
+add_img(img_ss('스크린샷 2026-05-10 163420.png'), Inches(5.5))
 doc.add_paragraph()
 add_table_simple(
     ['탄막 종류', '정답 키', '정답 효과', '오답 키', '오답 효과'],
@@ -349,6 +351,9 @@ doc.add_page_break()
 # ════════════════════════════════════════
 add_heading_styled('08. 스킬 & 합체 시스템', 1)
 add_para('22 액티브 + 11 패시브 + 21 합체 + 3분기 = 100+ 빌드 경로', bold=True, size=11, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x8B, 0x00, 0x00))
+doc.add_paragraph()
+# 실제 스킬 UI 스크린샷
+add_img(img_ss('스크린샷 2026-05-10 163456.png'), Inches(5))
 doc.add_paragraph()
 add_para('합체 쇼케이스', bold=True, size=11)
 add_table_simple(
@@ -411,6 +416,10 @@ doc.add_paragraph()
 add_para('세트 아이템 — 7 세트 (장별 고유)', bold=True, size=11)
 add_para('뇌신의 권능 / 부패의 살갗 / 업화의 갑주 / 심연의 눈 / 서리의 맹세 / 백골의 왕관 / 혼돈의 파편')
 add_para('2셋 / 4셋 / 6셋 보너스 구조 + 룬 소켓 1~3개 + 전설 특수 효과', size=9, color=(0x99, 0x99, 0x99))
+doc.add_paragraph()
+# 실제 인벤토리 UI 스크린샷
+add_para('인벤토리 UI', bold=True, size=11, color=(0x8B, 0x00, 0x00))
+add_img(img_ss('스크린샷 2026-05-10 163514.png'), Inches(5.5))
 doc.add_page_break()
 
 # ════════════════════════════════════════
@@ -588,10 +597,8 @@ doc.add_page_break()
 # 마지막 페이지
 # ════════════════════════════════════════
 doc.add_paragraph()
+add_img(img_game('etype84_lightning.png'), Inches(4))
 doc.add_paragraph()
-add_img(img_game('cin_massacre_a.png'), Inches(5))
-doc.add_paragraph()
-add_para('HELL : EXODUSER', bold=True, size=24, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x8B, 0x00, 0x00))
 add_para('아름다운 지옥 위에서 기괴한 괴물을 쓸어죽이는 게임', size=14, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x4A, 0x00, 0x00))
 doc.add_paragraph()
 add_para('BULLET LANGUAGE  /  CHAIN DRIVE  /  HELLSWARM', bold=True, size=12, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x8B, 0x00, 0x00))
@@ -600,8 +607,8 @@ add_para('복수를 끝낸 남자가 지옥에 떨어진다.', size=12, align=WD
 add_para('그리고 더 깊은 이야기가 시작된다.', size=12, align=WD_ALIGN_PARAGRAPH.CENTER)
 doc.add_paragraph()
 doc.add_paragraph()
-add_para('contact@voisun.com', size=11, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x99, 0x99, 0x99))
-add_para('FDG (ForDearGamers)  |  SOLO INDIE + AI-FIRST', size=10, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x99, 0x99, 0x99))
+add_img(img_ss('스크린샷 2026-05-10 163644.png'), Inches(4))
+doc.add_paragraph()
 add_para('GAME DESIGN DOCUMENT v4.1  |  2026', size=10, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x99, 0x99, 0x99))
 
 doc.save(OUT_PATH)

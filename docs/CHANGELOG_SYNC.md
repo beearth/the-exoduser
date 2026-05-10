@@ -23520,3 +23520,18 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - docs/최종기획??build_document.py
 - game.html
 
+
+## 2026-05-10 17:30 (auto)
+- _autosave/game_20260510_163341.html
+- _autosave/game_20260510_163352.html
+- _autosave/game_20260510_163848.html
+- _autosave/game_20260510_163919.html
+- _autosave/game_20260510_163940.html
+- _autosave/game_20260510_163955.html
+- _autosave/game_20260510_164003.html
+- _autosave/game_20260510_164046.html
+- _autosave/game_20260510_164813.html
+- _autosave/game_20260510_165252.html
+- docs/최종기획??build_document.py
+- game.html
+

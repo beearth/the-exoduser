@@ -9365,8 +9365,9 @@ function _dispatchCtSkill(){
     // 합체 흡수 스킬 → 호스트로 자동 전환
     if(sid==='ghostWalk'&&_isFused('timeStep')&&P.skills.timeWarp>=1){P.activeCtSk='timeWarp';return _dispatchCtSkill()}
     showPH(_T('합체 스킬로 통합됨'),'#aa8844');P.activeCtSk='ghostWalk';return true}
-  if(P._gwActive&&sid!=='ghostWalk')return false;
-  if(P._ioActive&&sid!=='iceOrb'){showPH(_T('얼음보주 안에선 사용 불가!'),'#88ddff');return true}
+  // 유령걸음/얼음보주 활성 중 → 재입력으로 즉시 캔슬 (어떤 CT스킬이든)
+  if(P._gwActive){_finishGhostWalk();return true}
+  if(P._ioActive){activateIceShatter();return true}
   let _skOk=false;
   switch(sid){
     case 'ghostWalk':
@@ -9493,7 +9494,6 @@ addEventListener('keydown',e=>{
   }
   // Ctrl키 고정스킬 (유령걸음/얼음보주)
   if(e.code==='ControlLeft'&&G.on&&!G.paused&&P.activeCtSk){
-    console.log('[CTRL] repeat='+e.repeat+' fromGp='+!!e._fromGp+' ioActive='+P._ioActive+' gwActive='+P._gwActive+' activeCtSk='+P.activeCtSk);
     if(!e.repeat){
       if(_dispatchCtSkill()){K['ControlLeft']=false;if(e._fromGp)_gpBtnsPrev['k3']=false;e.preventDefault();return}
     }
@@ -9641,7 +9641,7 @@ function _gpAutoAim(range){
 // 버튼→키코드 맵 (상수)
 const _GP_KEY={
   0:'mouse0',1:'Space',2:'KeyE',3:'ControlLeft',
-  4:'KeyF',5:'mouse2',8:'Tab',9:'Escape',
+  4:'ShiftLeft',5:'mouse2',8:'Tab',9:'Escape',
   10:'KeyR',11:'KeyC',12:'KeyK',13:'KeyG',14:'KeyC',15:'KeyV'
 };
 function _gpInjectKey(kc,pressed){
@@ -9773,8 +9773,10 @@ function _pollGamepad(){
   // ── 3.5단계: UI 패널/오버레이 열려있으면 게임 입력 차단 + UI 네비게이션 ──
   const _gpOpenPanel=document.querySelector('.panel.on');
   const _gpOverlay=(()=>{
-    for(const id of['introDiff','introKeys','deathScreen']){
-      const el=$(id);if(el&&el.style.opacity==='1'&&el.style.pointerEvents==='all')return el;
+    for(const id of['introDiff','introKeys','death','lvUpScreen','tutorial','stageClear']){
+      const el=$(id);if(!el)continue;
+      if(el.classList.contains('on'))return el;
+      if(el.style.opacity==='1'&&el.style.pointerEvents==='all')return el;
     }
     return null;
   })();
@@ -9792,21 +9794,24 @@ function _pollGamepad(){
   }
 
   // ── 4단계: 버튼 → 키 주입 ──
-  // LB(4) = 모디파이어: LB+A=1, LB+B=2, LB+X=3, LB+Y=4
-  const _lbHeld=!!_gpBtns[4];
-  const _LB_COMBO={0:'Digit1',1:'Digit2',2:'Digit3',3:'Digit4'};
+  // LT(6) = 모디파이어(홀드+ABXY=1234) / 탭(단독 뗄 때)=KeyF
+  const _ltVal=_gpad.buttons[6]&&_gpad.buttons[6].value||0;
+  const _ltHeld=_ltVal>0.7;
+  const _ltWasHeld=!!_gpBtnsPrev['kLT_held'];
+  const _LT_COMBO={0:'Digit1',1:'Digit2',2:'Digit3',3:'Digit4'};
 
-  // LB 단독 = ShiftLeft (돌진), LB+ABXY = 스킬슬롯 1234
-  // LB가 눌린 상태에서 ABXY가 눌리면 → 스킬슬롯으로 전환, 원래 키 차단
-  let _lbUsedAsModifier=false;
-  if(_lbHeld){
-    for(const bi in _LB_COMBO){
+  // LT 모디파이어 사용 여부 추적
+  if(_ltHeld&&!_ltWasHeld)_gpBtnsPrev['kLT_mod']=false;
+  let _ltUsedAsModifier=!!_gpBtnsPrev['kLT_mod'];
+
+  if(_ltHeld){
+    for(const bi in _LT_COMBO){
       const idx=+bi;
-      const comboKey=_LB_COMBO[bi];
+      const comboKey=_LT_COMBO[bi];
       const pressed=!!_gpBtns[idx];
-      const prevKey='kLB'+idx;
+      const prevKey='kLT'+idx;
       if(pressed&&!_gpBtnsPrev[prevKey]){
-        _gpInjectKey(comboKey,true);_lbUsedAsModifier=true;
+        _gpInjectKey(comboKey,true);_ltUsedAsModifier=true;_gpBtnsPrev['kLT_mod']=true;
       }
       if(!pressed&&_gpBtnsPrev[prevKey]){
         _gpInjectKey(comboKey,false);
@@ -9814,30 +9819,38 @@ function _pollGamepad(){
       _gpBtnsPrev[prevKey]=pressed;
     }
   } else {
-    // LB 뗐을 때 콤보 키 해제
-    for(const bi in _LB_COMBO){
-      const prevKey='kLB'+(+bi);
-      if(_gpBtnsPrev[prevKey]){_gpInjectKey(_LB_COMBO[bi],false);_gpBtnsPrev[prevKey]=false}
+    // LT 뗐을 때
+    for(const bi in _LT_COMBO){
+      const prevKey='kLT'+(+bi);
+      if(_gpBtnsPrev[prevKey]){_gpInjectKey(_LT_COMBO[bi],false);_gpBtnsPrev[prevKey]=false}
+    }
+    // LT 뗐을 때: 모디파이어로 안 쓰였으면 → KeyF 탭 발동
+    if(_ltWasHeld&&!_gpBtnsPrev['kLT_mod']){
+      _gpInjectKey('KeyF',true);
+      setTimeout(()=>_gpInjectKey('KeyF',false),100);
     }
   }
+  _gpBtnsPrev['kLT_held']=_ltHeld;
 
-  // 나머지 버튼 주입 (LB 콤보로 쓰인 ABXY는 건너뜀)
-  const _gpModFirst=[4,5,0,1,2,3,8,9,10,11,12,13,14,15];
+  // 조준 모드 판정 (범위지정 스킬 활성 시)
+  const _isAimMode=P&&(P._mmAiming||P._bwAiming||P._tsAiming||P._msAiming||P._isAiming);
+
+  // 나머지 버튼 주입 (LB, LB 콤보 ABXY는 별도 처리)
+  const _gpModFirst=[5,0,1,2,3,8,9,10,11,12,13,14,15]; // 4(LB) 제외
   for(let _mi=0;_mi<_gpModFirst.length;_mi++){
     const idx=_gpModFirst[_mi];
     const kc=_GP_KEY[idx];
     if(!kc)continue;
-    // LB 홀드 중 ABXY(0~3)는 콤보로 처리했으므로 원래 키 주입 차단
-    if(_lbHeld&&idx>=0&&idx<=3){
-      // 원래 키가 눌려있었으면 해제
+    // 조준 모드 중 A(0)/B(1)는 발동/취소로 사용 → 원래 키 주입 차단
+    if(_isAimMode&&(idx===0||idx===1)){
       if(_gpBtnsPrev['k'+idx])_gpInjectKey(kc,false);
       _gpBtnsPrev['k'+idx]=false;
       continue;
     }
-    // LB(4) 자체: 모디파이어로 쓰였으면 KeyF 주입 차단
-    if(idx===4&&_lbUsedAsModifier){
-      if(_gpBtnsPrev['k4'])_gpInjectKey('KeyF',false);
-      _gpBtnsPrev['k4']=false;
+    // LB 홀드 중 ABXY(0~3)는 콤보로 처리했으므로 원래 키 주입 차단
+    if(_lbHeld&&idx>=0&&idx<=3){
+      if(_gpBtnsPrev['k'+idx])_gpInjectKey(kc,false);
+      _gpBtnsPrev['k'+idx]=false;
       continue;
     }
     const pressed=!!_gpBtns[idx];
@@ -9874,21 +9887,39 @@ function _pollGamepad(){
   }
   _gpBtnsPrev['kLT']=lt&&!ltrt;_gpBtnsPrev['kRT']=rt&&!ltrt;
 
-  // 우스틱 → 스킬 조준 (커서 위치 제어)
-  const rx=_gpAxes[2],ry=_gpAxes[3];
-  const rMag=Math.sqrt(rx*rx+ry*ry);
-  if(rMag>0.15){
-    // 플레이어 화면좌표 기준으로 우스틱 방향에 커서 배치 (거리=스틱 세기×300)
-    const _aimDist=300*Math.min(1,rMag);
-    const sx=P.x-G.cam.x+C.width/2, sy=P.y-G.cam.y+C.height/2;
-    mouse.x=sx+(rx/rMag)*_aimDist;
-    mouse.y=sy+(ry/rMag)*_aimDist;
-    P.facing=Math.atan2(ry,rx);
+  // 조준 모드: 좌스틱→조준 커서, A→발동 / 비조준: 우스틱→커서
+  if(_isAimMode){
+    // 좌스틱으로 조준
+    const ax=_gpAxes[0],ay=_gpAxes[1];
+    const aMag=Math.sqrt(ax*ax+ay*ay);
+    if(aMag>0.15){
+      const _aimDist=1000*Math.min(1,aMag);
+      const sx=P.x-G.cam.x+C.width/2, sy=P.y-G.cam.y+C.height/2;
+      mouse.x=sx+(ax/aMag)*_aimDist;
+      mouse.y=sy+(ay/aMag)*_aimDist;
+      P.facing=Math.atan2(ay,ax);
+    }
     G._gpAiming=true;
-  }else{G._gpAiming=false}
+    // A버튼(0)으로 발동 (좌클릭 주입)
+    if(_gpBtns[0]&&!_gpBtnsPrev[0])MBjust[0]=true;
+    // B버튼(1)으로 취소 (우클릭 주입)
+    if(_gpBtns[1]&&!_gpBtnsPrev[1])MBjust[2]=true;
+  }else{
+    // 비조준: 우스틱→커서
+    const rx=_gpAxes[2],ry=_gpAxes[3];
+    const rMag=Math.sqrt(rx*rx+ry*ry);
+    if(rMag>0.15){
+      const _aimDist=300*Math.min(1,rMag);
+      const sx=P.x-G.cam.x+C.width/2, sy=P.y-G.cam.y+C.height/2;
+      mouse.x=sx+(rx/rMag)*_aimDist;
+      mouse.y=sy+(ry/rMag)*_aimDist;
+      P.facing=Math.atan2(ry,rx);
+      G._gpAiming=true;
+    }else{G._gpAiming=false}
+  }
 
-  // 좌스틱 → WASD (keydown 이벤트도 dispatch → 더블탭/칼날이동 감지)
-  const su=_gpAxes[1]<-GP_DEAD,sd=_gpAxes[1]>GP_DEAD,sl=_gpAxes[0]<-GP_DEAD,sr=_gpAxes[0]>GP_DEAD;
+  // 좌스틱 → WASD (조준 모드가 아닐 때만 이동)
+  const su=!_isAimMode&&_gpAxes[1]<-GP_DEAD,sd=!_isAimMode&&_gpAxes[1]>GP_DEAD,sl=!_isAimMode&&_gpAxes[0]<-GP_DEAD,sr=!_isAimMode&&_gpAxes[0]>GP_DEAD;
   const _stickMap=[['sU','KeyW',su],['sD','KeyS',sd],['sL','KeyA',sl],['sR','KeyD',sr]];
   for(let _si=0;_si<4;_si++){
     const[pk,kc,on]=_stickMap[_si];
@@ -33161,7 +33192,12 @@ function _drPlay(onDone){
   // 인트로: 1.5초 암전 + 라벨만 표시, 이후 재생 시작 + 스킵 허용
   $('drTime').textContent='';$('drBarFill').style.width='0%';
   cx.fillStyle='#000';cx.fillRect(0,0,w,h);
-  setTimeout(()=>{canSkip=true;el.addEventListener('click',finish);tick()},1500);
+  setTimeout(()=>{canSkip=true;el.addEventListener('click',finish);
+    // 게임패드: 아무 버튼으로 스킵
+    let _drGpDone=false;
+    function _drGpPoll(){if(done||_drGpDone)return;const gps=navigator.getGamepads();for(let i=0;i<gps.length;i++){const gp=gps[i];if(!gp||!gp.connected)continue;for(let j=0;j<4;j++){if(gp.buttons[j]&&gp.buttons[j].pressed){_drGpDone=true;finish();return}}}requestAnimationFrame(_drGpPoll)}
+    _drGpPoll();
+    tick()},1500);
   function tick(){
     if(done)return;
     if(fi>=total){
