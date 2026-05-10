@@ -310,6 +310,18 @@ canvas{display:block;position:fixed;inset:0}
 .ptitle{font-family:var(--font-display);font-size:calc(var(--fs-xl) + .15rem);color:var(--ui-bone);letter-spacing:.08em;text-align:center;margin-bottom:14px;text-shadow:0 2px 0 rgba(33,12,10,.9),0 0 18px rgba(255,115,64,.3)}
 .pclose{display:block;margin:14px auto 0;padding:10px 26px;background:linear-gradient(180deg,rgba(60,22,18,.86),rgba(20,10,11,.94));border:1px solid rgba(173,84,54,.86);border-radius:999px;color:#efc79d;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,214,172,.08),0 10px 24px rgba(0,0,0,.28);transition:all .16s}
 .pclose:hover{border-color:#ff9966;color:#fff0d4;box-shadow:0 0 18px rgba(255,108,58,.24),inset 0 0 0 1px rgba(255,231,195,.14)}
+/* ══ IN-GAME CONFIRM MODAL ══ */
+#gcModal{position:fixed;inset:0;z-index:99999;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.72);backdrop-filter:blur(3px)}
+#gcModal.on{display:flex}
+#gcModal .gc-box{min-width:320px;max-width:480px;padding:24px 28px;border-radius:14px;border:1px solid #4b2a1d;background:radial-gradient(600px 300px at 50% -40px,rgba(110,45,22,.28),transparent 60%),linear-gradient(180deg,rgba(22,10,8,.97),rgba(15,6,6,.98));box-shadow:0 24px 80px rgba(0,0,0,.7),inset 0 0 0 1px rgba(255,146,88,.08);animation:gcFadeIn .15s ease-out}
+@keyframes gcFadeIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+#gcModal .gc-msg{font-family:var(--font-display);font-size:1.05rem;color:var(--ui-bone);text-align:center;line-height:1.7;white-space:pre-line;margin-bottom:20px;text-shadow:0 1px 4px rgba(0,0,0,.8)}
+#gcModal .gc-btns{display:flex;gap:12px;justify-content:center}
+#gcModal .gc-btn{padding:10px 32px;border-radius:999px;font-size:1rem;font-weight:700;cursor:pointer;transition:all .16s;border:1px solid rgba(173,84,54,.86);box-shadow:inset 0 0 0 1px rgba(255,214,172,.08),0 10px 24px rgba(0,0,0,.28)}
+#gcModal .gc-ok{background:linear-gradient(180deg,rgba(140,50,20,.9),rgba(60,18,12,.95));color:#ffd4a0}
+#gcModal .gc-ok:hover{border-color:#ff9966;color:#fff0d4;box-shadow:0 0 18px rgba(255,108,58,.3)}
+#gcModal .gc-cancel{background:linear-gradient(180deg,rgba(40,20,18,.86),rgba(20,10,11,.94));color:#b08060}
+#gcModal .gc-cancel:hover{border-color:#886644;color:#ddb88a}
 /* ══ SKILL PANEL (main scene matched) ══ */
 #skillPanel{
   background:radial-gradient(ellipse at center,rgba(18,8,6,.72) 0%,rgba(6,2,2,.9) 58%,rgba(0,0,0,.96) 100%);
@@ -2146,6 +2158,7 @@ canvas{display:block;position:fixed;inset:0}
 </style>
 </head>
 <body>
+<div id="gcModal"><div class="gc-box"><div class="gc-msg" id="gcMsg"></div><div class="gc-btns"><button class="gc-btn gc-ok" id="gcOk"></button><button class="gc-btn gc-cancel" id="gcCancel"></button></div></div></div>
 <canvas id="c"></canvas>
 <canvas id="fogGL" style="position:fixed;inset:0;pointer-events:none;z-index:0"></canvas>
 <canvas id="burstCvs" style="position:fixed;inset:0;pointer-events:none;z-index:1"></canvas>
@@ -2879,6 +2892,26 @@ canvas{display:block;position:fixed;inset:0}
 // │ [S21] SYSTEM ·········· FPS Counter, Game Loop, Boot                │
 // │                                                                     │
 // └─────────────────────────────────────────────────────────────────────┘
+
+// ═══════════════════════════════════════
+//  [S00] IN-GAME CONFIRM MODAL
+// ═══════════════════════════════════════
+const _gcEl=document.getElementById('gcModal');
+const _gcMsg=document.getElementById('gcMsg');
+const _gcOk=document.getElementById('gcOk');
+const _gcCancel=document.getElementById('gcCancel');
+let _gcResolve=null;
+function gameConfirm(msg,okTxt,cancelTxt){
+  _gcMsg.textContent=msg;
+  _gcOk.textContent=okTxt||'\ud655\uc778';
+  _gcCancel.textContent=cancelTxt||'\ucde8\uc18c';
+  _gcEl.classList.add('on');
+  return new Promise(function(res){
+    _gcResolve=res;
+    _gcOk.onclick=function(){_gcEl.classList.remove('on');_gcResolve=null;res(true)};
+    _gcCancel.onclick=function(){_gcEl.classList.remove('on');_gcResolve=null;res(false)};
+  });
+}
 
 // ═══════════════════════════════════════
 //  [S01] INIT — Electron, Supabase, Save/Load, BGM
@@ -9308,7 +9341,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
           _fireExsBoom(_vs2.x,_vs2.y,_dsBoomR,_dsDmg,_dsAb,_dsAb/_vs2.maxAbsorb);
           addTxt(_vs2.x,_vs2.y-50,_T('합체 폭발! ')+_dsDmg+_T(' 뎀'),'#ffcc00',60);
         }
-        G._voidScarecrow=null;P._vsCd=~~(600*(1+_eqAffix('cooldownRed'))); // 회수 후 10초 쿨
+        G._voidScarecrow=null; // 회수 시 쿨 없음
         _skOk=true;
       } else if((P._vsCd||0)<=0){activateVoidScarecrow();_skOk=true}
       else showPH(_T('쿨다운 중...'),'#ff8844');break;
@@ -9342,7 +9375,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
           }else{
             addParts(P.x,P.y,'#bb88ee',8);SFX.scarecrowRecall();
           }
-          G._voidScarecrow=null;P._vsCd=~~(600*(1+_eqAffix('cooldownRed'))); // 허수아비 10초 쿨 유지
+          G._voidScarecrow=null; // 회수 시 쿨 없음
         }
         showPH(_T('공성쇠뇌 철거 → 이동식'),'#66aadd');playSample('bow_release',.4,_r(1.2,.1));
         addTxt(P.x,P.y-20,_T('이동식 복귀'),'#66ccff',30);_skOk=true;
@@ -9641,7 +9674,7 @@ function _gpAutoAim(range){
 // 버튼→키코드 맵 (상수)
 const _GP_KEY={
   0:'mouse0',1:'Space',2:'KeyE',3:'ControlLeft',
-  4:'KeyF',5:'mouse2',8:'Tab',9:'Escape',
+  4:'ShiftLeft',5:'mouse2',8:'Tab',9:'Escape',
   10:'KeyR',11:'KeyC',12:'KeyK',13:'KeyG',14:'KeyC',15:'KeyV'
 };
 function _gpInjectKey(kc,pressed){
@@ -9794,23 +9827,32 @@ function _pollGamepad(){
   }
 
   // ── 4단계: 버튼 → 키 주입 ──
-  // LB(4) = 모디파이어(홀드+ABXY=1234) / 탭(단독 뗄 때)=KeyF
-  const _lbHeld=!!_gpBtns[4];
-  const _lbWasHeld=!!_gpBtnsPrev['kLB_held'];
-  const _LB_COMBO={0:'Digit1',1:'Digit2',2:'Digit3',3:'Digit4'};
+  // 조준 모드 판정 — LT 콤보보다 먼저 (조준 중 재발동 차단)
+  const _isAimMode=P&&(P._mmAiming||P._bwAiming||P._tsAiming||P._msAiming||P._isAiming);
 
-  // LB 모디파이어 사용 여부 추적 (누르는 동안 ABXY가 눌렸으면 true)
-  if(_lbHeld&&!_lbWasHeld)_gpBtnsPrev['kLB_mod']=false; // LB 새로 눌림 → 리셋
-  let _lbUsedAsModifier=!!_gpBtnsPrev['kLB_mod'];
+  // LT(6) = 모디파이어(홀드+ABXY=1234) / 탭(단독 뗄 때)=KeyF
+  const _ltVal=_gpad.buttons[6]&&_gpad.buttons[6].value||0;
+  const _ltHeld=_ltVal>0.7;
+  const _ltWasHeld=!!_gpBtnsPrev['kLT_held'];
+  const _LT_COMBO={0:'Digit1',1:'Digit2',2:'Digit3',3:'Digit4'};
 
-  if(_lbHeld){
-    for(const bi in _LB_COMBO){
+  // LT 모디파이어 사용 여부 추적
+  if(_ltHeld&&!_ltWasHeld)_gpBtnsPrev['kLT_mod']=false;
+  let _ltUsedAsModifier=!!_gpBtnsPrev['kLT_mod'];
+
+  if(_ltHeld){
+    for(const bi in _LT_COMBO){
       const idx=+bi;
-      const comboKey=_LB_COMBO[bi];
+      const comboKey=_LT_COMBO[bi];
       const pressed=!!_gpBtns[idx];
-      const prevKey='kLB'+idx;
+      const prevKey='kLT'+idx;
+      if(_isAimMode){
+        // 조준 중 같은 버튼 다시 누름 → 취소 (우클릭)
+        if(pressed&&!_gpBtnsPrev[prevKey])MBjust[2]=true;
+        _gpBtnsPrev[prevKey]=pressed;continue;
+      }
       if(pressed&&!_gpBtnsPrev[prevKey]){
-        _gpInjectKey(comboKey,true);_lbUsedAsModifier=true;_gpBtnsPrev['kLB_mod']=true;
+        _gpInjectKey(comboKey,true);_ltUsedAsModifier=true;_gpBtnsPrev['kLT_mod']=true;
       }
       if(!pressed&&_gpBtnsPrev[prevKey]){
         _gpInjectKey(comboKey,false);
@@ -9818,33 +9860,30 @@ function _pollGamepad(){
       _gpBtnsPrev[prevKey]=pressed;
     }
   } else {
-    // LB 뗐을 때
-    for(const bi in _LB_COMBO){
-      const prevKey='kLB'+(+bi);
-      if(_gpBtnsPrev[prevKey]){_gpInjectKey(_LB_COMBO[bi],false);_gpBtnsPrev[prevKey]=false}
+    // LT 뗐을 때
+    for(const bi in _LT_COMBO){
+      const prevKey='kLT'+(+bi);
+      if(_gpBtnsPrev[prevKey]){_gpInjectKey(_LT_COMBO[bi],false);_gpBtnsPrev[prevKey]=false}
     }
-    // LB 뗐을 때: 모디파이어로 안 쓰였으면 → KeyF 탭 발동
-    if(_lbWasHeld&&!_gpBtnsPrev['kLB_mod']){
+    if(_ltWasHeld&&_isAimMode){
+      // 조준 중 LT 떼기 → 발사 (좌클릭)
+      MBjust[0]=true;
+    } else if(_ltWasHeld&&!_gpBtnsPrev['kLT_mod']){
+      // 모디파이어 안 쓰였으면 → KeyF 탭
       _gpInjectKey('KeyF',true);
-      setTimeout(()=>_gpInjectKey('KeyF',false),100); // 100ms 탭
+      setTimeout(()=>_gpInjectKey('KeyF',false),100);
     }
   }
-  _gpBtnsPrev['kLB_held']=_lbHeld;
+  _gpBtnsPrev['kLT_held']=_ltHeld;
 
-  // 나머지 버튼 주입 (LB, LB 콤보 ABXY는 별도 처리)
-  const _gpModFirst=[5,0,1,2,3,8,9,10,11,12,13,14,15]; // 4(LB) 제외
+  // 나머지 버튼 주입
+  const _gpModFirst=[4,5,0,1,2,3,8,9,10,11,12,13,14,15];
   for(let _mi=0;_mi<_gpModFirst.length;_mi++){
     const idx=_gpModFirst[_mi];
     const kc=_GP_KEY[idx];
     if(!kc)continue;
-    // 조준 모드 중 A(0)/B(1)는 발동/취소로 사용 → 원래 키 주입 차단
-    if(_isAimMode&&(idx===0||idx===1)){
-      if(_gpBtnsPrev['k'+idx])_gpInjectKey(kc,false);
-      _gpBtnsPrev['k'+idx]=false;
-      continue;
-    }
-    // LB 홀드 중 ABXY(0~3)는 콤보로 처리했으므로 원래 키 주입 차단
-    if(_lbHeld&&idx>=0&&idx<=3){
+    // LT 홀드 중 ABXY(0~3)는 콤보로 처리 → 원래 키 차단
+    if(_ltHeld&&idx>=0&&idx<=3){
       if(_gpBtnsPrev['k'+idx])_gpInjectKey(kc,false);
       _gpBtnsPrev['k'+idx]=false;
       continue;
@@ -9852,7 +9891,6 @@ function _pollGamepad(){
     const pressed=!!_gpBtns[idx];
     const wasPrev=!!_gpBtnsPrev['k'+idx];
     if(pressed&&!wasPrev){
-      // 패드 직접 캔슬: 유령걸음/얼음보주 활성 중 Ctrl 버튼 → 즉시 종료
       if(idx===3&&G.on&&!G.paused){
         if(P._gwActive){_finishGhostWalk();_gpBtnsPrev['k'+idx]=pressed;continue}
         if(P._ioActive){activateIceShatter();_gpBtnsPrev['k'+idx]=pressed;continue}
@@ -9863,46 +9901,37 @@ function _pollGamepad(){
     _gpBtnsPrev['k'+idx]=pressed;
   }
 
-  // LT→ShiftLeft(돌진), RT→Q(패링), LT+RT→Z(필살기)
-  const lt=_gpad.buttons[6]&&_gpad.buttons[6].value>0.7; // 트리거 임계값 높임 (오발 방지)
+  // RT→Q(패링), LT+RT→Z(필살기)
   const rt=_gpad.buttons[7]&&_gpad.buttons[7].value>0.7;
-  const ltrt=lt&&rt; // 동시 입력 = 필살기
+  const ltrt=_ltHeld&&rt;
   if(ltrt&&!_gpBtnsPrev['kLTRT']){
     _gpInjectKey('KeyZ',true);
-    if(_gpBtnsPrev['kLT']){_gpInjectKey('ShiftLeft',false);_gpBtnsPrev['kLT']=false}
     if(_gpBtnsPrev['kRT']){_gpInjectKey('KeyQ',false);_gpBtnsPrev['kRT']=false}
   }
   if(!ltrt&&_gpBtnsPrev['kLTRT']){_gpInjectKey('KeyZ',false)}
   _gpBtnsPrev['kLTRT']=ltrt;
-  // 개별 트리거 (LT+RT 동시가 아닐 때만)
   if(!ltrt){
-    if(lt&&!_gpBtnsPrev['kLT'])_gpInjectKey('ShiftLeft',true);
-    if(!lt&&_gpBtnsPrev['kLT'])_gpInjectKey('ShiftLeft',false);
     if(rt&&!_gpBtnsPrev['kRT'])_gpInjectKey('KeyQ',true);
     if(!rt&&_gpBtnsPrev['kRT'])_gpInjectKey('KeyQ',false);
   }
-  _gpBtnsPrev['kLT']=lt&&!ltrt;_gpBtnsPrev['kRT']=rt&&!ltrt;
+  _gpBtnsPrev['kRT']=rt&&!ltrt;
 
-  // 조준 모드 판정
-  const _isAimMode=P&&(P._mmAiming||P._bwAiming||P._tsAiming||P._msAiming||P._isAiming);
-
-  // 조준 모드: 좌스틱→조준 커서, A→발동 / 비조준: 우스틱→커서
+  // 조준 모드: 좌/우스틱 둘 다 조준 커서 / 비조준: 우스틱→커서
   if(_isAimMode){
-    // 좌스틱으로 조준
     const ax=_gpAxes[0],ay=_gpAxes[1];
-    const aMag=Math.sqrt(ax*ax+ay*ay);
-    if(aMag>0.15){
-      const _aimDist=1000*Math.min(1,aMag);
-      const sx=P.x-G.cam.x+C.width/2, sy=P.y-G.cam.y+C.height/2;
-      mouse.x=sx+(ax/aMag)*_aimDist;
-      mouse.y=sy+(ay/aMag)*_aimDist;
-      P.facing=Math.atan2(ay,ax);
+    const rx=_gpAxes[2],ry=_gpAxes[3];
+    const lMag=Math.sqrt(ax*ax+ay*ay);
+    const rMag=Math.sqrt(rx*rx+ry*ry);
+    const useR=rMag>lMag;
+    const sx2=useR?rx:ax, sy2=useR?ry:ay, mag=useR?rMag:lMag;
+    if(mag>0.15){
+      const _aimDist=1000*Math.min(1,mag);
+      const scx=P.x-G.cam.x+C.width/2, scy=P.y-G.cam.y+C.height/2;
+      mouse.x=scx+(sx2/mag)*_aimDist;
+      mouse.y=scy+(sy2/mag)*_aimDist;
+      P.facing=Math.atan2(sy2,sx2);
     }
     G._gpAiming=true;
-    // A버튼(0)으로 발동 (좌클릭 주입)
-    if(_gpBtns[0]&&!_gpBtnsPrev[0])MBjust[0]=true;
-    // B버튼(1)으로 취소 (우클릭 주입)
-    if(_gpBtns[1]&&!_gpBtnsPrev[1])MBjust[2]=true;
   }else{
     // 비조준: 우스틱→커서
     const rx=_gpAxes[2],ry=_gpAxes[3];
@@ -12774,9 +12803,9 @@ function shake(n){G.shake=Math.max(G.shake,n*OPT.shake/100);_gpVibrate(n)}
 // ── 게임패드 진동 ──
 function _gpVibrate(intensity,durMs){
   if(!_gpad||!_gpad.vibrationActuator)return;
-  const t=Math.min(intensity/60,1); // shake 강도 0~60 → 0~1 정규화
-  const dur=durMs||Math.max(50,Math.min(500,intensity*8)); // 강도 비례 지속시간
-  const weak=Math.min(1,t*0.6);  // 고주파(약한 모터)
+  const t=Math.min(intensity/30,1); // shake 강도 0~30 → 0~1 (30이상=최대, 더 민감)
+  const dur=durMs||Math.max(80,Math.min(800,intensity*12)); // 강도 비례 지속시간 (더 길게)
+  const weak=Math.min(1,t*0.7);  // 고주파(약한 모터)
   const strong=Math.min(1,t);     // 저주파(강한 모터)
   _gpad.vibrationActuator.playEffect('dual-rumble',{duration:dur,strongMagnitude:strong,weakMagnitude:weak}).catch(()=>{});
 }
@@ -26245,7 +26274,7 @@ function update(){
       }
       addExp(1000);addTxt(P.x,P.y-50,'+1000 XP','#ffcc44',50);
       addParts(P.x,P.y,'#bb88ee',10);SFX.scarecrowRecall();
-      G._voidScarecrow=null;P._vsCd=~~(600*(1+_eqAffix('cooldownRed')));
+      G._voidScarecrow=null; // 자동회수 시 쿨 없음
     }
   }
   // ═══ 푸른비 — 쿨다운 ═══
@@ -34493,7 +34522,7 @@ function activateGhostXbowTurret(){
 function activateVoidScarecrow(){
   const slv=P.skills.voidScarecrow||1;
   const maxAbsorb=20+(slv-1)*3+(slv>=10?3:0); // 기본20, Lv당+3, 10렙 보너스+3 (=50)
-  // 설치 시 쿨 없음 — 회수 시 10초 쿨 시작
+  P._vsCd=~~(1200*(1+_eqAffix('cooldownRed'))); // 설치 시 20초 쿨 즉시 시작
   // 기존 허수아비가 있으면 재배치 (자원 유지)
   if(!G._voidScarecrow){
     G._voidScarecrow={x:P.x,y:P.y,maxAbsorb:maxAbsorb,absorbed:0,resHP:0,resMP:0,resST:0,aggroOn:true,lv:slv};
@@ -36173,7 +36202,7 @@ function _renderSkillRow(sk,grid){
       _rstBtn.style.cssText='margin-top:4px;padding:3px 8px;color:#ff6666;font-size:.75rem;cursor:pointer;opacity:.5;text-align:right;transition:opacity .2s';
       _rstBtn.onmouseenter=()=>{_rstBtn.style.opacity='1'};
       _rstBtn.onmouseleave=()=>{_rstBtn.style.opacity='.5'};
-      _rstBtn.onclick=(ev)=>{
+      _rstBtn.onclick=async(ev)=>{
         ev.stopPropagation();
         {
           // ═══ 범용 리셋: 합체 그룹 자동 탐색 ═══
@@ -36213,7 +36242,7 @@ function _renderSkillRow(sk,grid){
               for(let _fl=1;_fl<_fuseLv;_fl++)_totalSp+=_fuseUpSpCost(_fl,_gemCnt); // 합체 강화 비용
             }
             const _fuseNm=_fuseName(_rstKey);
-            if(!confirm(_fuseNm+_L(' 합체 해제\n'+_names.join('+')+' 모두 리셋\n⭐ SP +'+_totalSp+' 환불',' unfuse\n'+_names.join('+')+' all reset\n⭐ SP +'+_totalSp+' refund')))return;
+            if(!await gameConfirm(_fuseNm+_L(' 합체 해제\n'+_names.join('+')+' 모두 리셋\n⭐ SP +'+_totalSp+' 환불',' unfuse\n'+_names.join('+')+' all reset\n⭐ SP +'+_totalSp+' refund')))return;
             for(const sid of _rstSkills){P.skills[sid]=0;for(let j=0;j<SKILL_SLOTS.length;j++){if(SKILL_SLOTS[j]===sid)SKILL_SLOTS[j]=null}if(ULT_SLOT===sid)ULT_SLOT=null}
             P.sp+=_totalSp;
             // 환불에 포함된 합체들만 해제
