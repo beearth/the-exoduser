@@ -2202,6 +2202,8 @@ canvas{display:block;position:fixed;inset:0}
     <div class="qs" id="skSlot1"></div>
   </div>
   <div style="display:none"><div class="qs" id="qsK"></div><div class="qs" id="qsG"></div><div class="qs" id="qsTAB"></div><div class="qs" id="qsESC"></div></div>
+  <!-- 동적 키 라벨 (패드/KBM 자동 전환) -->
+  <div id="skBarKeyRow" style="position:absolute;top:120px;left:0;width:100%;height:18px;display:flex;pointer-events:none;z-index:5"></div>
 </div>
 
 <div id="hud">
@@ -4636,6 +4638,21 @@ const BIND_NAMES_EN={
 function _bindName(key){if(OPT.lang==='ko')return BIND_NAMES[key]||key;const ko=BIND_NAMES[key]||key;const t=_T(ko);return t!==ko?t:(BIND_NAMES_EN[key]||key);}
 function keyName(code){
   if(!code)return _L('없음','None');
+  // 패드 모드: 키코드→패드 버튼 이름 변환
+  if(typeof _gpActive!=='undefined'&&_gpActive){
+    const gp={
+      'mouse0':'Ⓐ','Space':'Ⓑ','KeyE':'Ⓧ','ControlLeft':'Ⓨ',
+      'ShiftLeft':'LB','mouse2':'RB',
+      'KeyF':'LT','KeyQ':'RT',
+      'Tab':'Select','Escape':'Start',
+      'KeyR':'L3','KeyC':'R3',
+      'KeyK':'D↑','KeyG':'D↓','KeyV':'D→',
+      'KeyZ':'LT+RT',
+      'Digit1':'LT+Ⓐ','Digit2':'LT+Ⓑ','Digit3':'LT+Ⓧ','Digit4':'LT+Ⓨ',
+      'KeyW':'L↑','KeyS':'L↓','KeyA':'L←','KeyD':'L→',
+    };
+    if(gp[code])return gp[code];
+  }
   if(code==='mouse0')return _L('좌클릭','LMB');
   if(code==='mouse1')return _L('휠클릭','MMB');
   if(code==='mouse2')return _L('우클릭','RMB');
@@ -9252,12 +9269,12 @@ function _dispatchSkillSlot(slotIdx,keyCode){
     case 'maliceMortar':
       if(G._mmBomb&&G._mmBomb.phase==='throw'){G._mmBomb.t=G._mmBomb.maxT;break}
       if(P._mmAiming){P._mmAiming=false;P._mmCharging=false;showPH(_T('취소'),'#888');break}
-      if(P.mp>=mpCost('mortar')&&(P._mmCd||0)<=0){P._mmAiming=true;P._mmAimKey=keyCode;P._mmDist=150;P._mmCharging=false;_skOk=true}
+      if(P.mp>=mpCost('mortar')&&(P._mmCd||0)<=0){if(_gpActive){mouse.x=P.x-G.cam.x+C.width/2;mouse.y=P.y-G.cam.y+C.height/2}P._mmAiming=true;P._mmAimKey=keyCode;P._mmDist=150;P._mmCharging=false;_skOk=true}
       else if(P.mp<mpCost('mortar'))showPH(_T('MP 부족!'),'#4488ff');break;
     case 'boneWall':
       if(P._bwAiming){P._bwAiming=false;showPH(_T('취소'),'#888');break}
       if((P._bwStk||0)<=0){showPH(_T('충전 중...'),'#ff8844');break}
-      if(G.mats>=_malCost(12)){P._bwAiming=true;_skOk=true}
+      if(G.mats>=_malCost(12)){if(_gpActive){mouse.x=P.x-G.cam.x+C.width/2;mouse.y=P.y-G.cam.y+C.height/2}P._bwAiming=true;_skOk=true}
       else showPH(_T('악의 부족! (')+_malCost(12)+')','#ff4444');break;
     case 'maliceHunt':
       if((P._mhCd||0)>0){break}
@@ -9271,7 +9288,9 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       {const _msBsFused2=_isFused('boneStorm')||_isFused('elecRepent');
       if(_msBsFused2){if((P._bnsCd||0)>0){showPH(_T('쿨다운 중...'),'#ff8844');break}}
       else{if((P._msCd||0)>0){showPH(_T('쿨다운 중...'),'#ff8844');break}}}
-      P._msAiming=true;_skOk=true;break;
+      if(_gpActive){mouse.x=P.x-G.cam.x+C.width/2;mouse.y=P.y-G.cam.y+C.height/2}
+      P._msAiming=true;
+      _skOk=true;break;
     case 'darkPillar':
       if((P._dpCd||0)>0){showPH(_T('쿨다운 중...'),'#ff8844');break}
       {activateDarkPillar();_skOk=true}break;
@@ -9279,7 +9298,9 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       if(P._isAiming){P._isAiming=false;showPH(_T('취소'),'#888');break}
       if((P._isStk||0)<=0){showPH(_T('충전 중...'),'#ff8844');break}
       if(P.mp<40){showPH(_T('MP 부족! (40)'),'#4488ff');break}
-      P._isAiming=true;_skOk=true;break;
+      if(_gpActive){mouse.x=P.x-G.cam.x+C.width/2;mouse.y=P.y-G.cam.y+C.height/2}
+      P._isAiming=true;
+      _skOk=true;break;
     case 'holyBlast':
       if(P.mp>=P.mmp*0.3&&(P._hbCd||0)<=0&&!P._hbCasting){P._hbCasting=true;P._hbT=0;P._hbX=P.x;P._hbY=P.y;P.mp-=P.mmp*0.3;addTxt(P.x,P.y-30,_T('✟ 시전...'),'#ffd700',30);ultMute();playVoiceDirect('voice_ult',1,1);_skOk=true}
       else if(P.mp<P.mmp*0.3)showPH(_T('MP 부족!'),'#4488ff');break;
@@ -9323,7 +9344,9 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       if(P._tsStk==null)P._tsStk=_tsMax;
       if((P._tsStk||0)<=0){showPH(_T('충전 중...'),'#ff8844');break}
       if(P.mp<50){showPH(_T('MP 부족! (50)'),'#4488ff');break}
-      P._tsAiming=true;_skOk=true}break;
+      if(_gpActive){mouse.x=P.x-G.cam.x+C.width/2;mouse.y=P.y-G.cam.y+C.height/2}
+      P._tsAiming=true;
+      _skOk=true}break;
     case 'voidScarecrow':
       if(G._voidScarecrow){
         // 재입력 → 회수 (자원 흡수 + 소멸)
@@ -9380,7 +9403,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
         showPH(_T('공성쇠뇌 철거 → 이동식'),'#66aadd');playSample('bow_release',.4,_r(1.2,.1));
         addTxt(P.x,P.y-20,_T('이동식 복귀'),'#66ccff',30);_skOk=true;
       } else if((P._gxCd||0)>0){showPH(_T('쿨다운!')+' '+((P._gxCd/60)|0)+'s','#888');break}
-      else if(P.st>=GXBOW_ST){_xbowEquipped=true;activateGhostXbowTurret();P._gxCd=~~(600*(1+_eqAffix('cooldownRed')));_skOk=true}
+      else if(P.st>=GXBOW_ST){_xbowEquipped=true;activateGhostXbowTurret();P._gxCd=1200;_skOk=true}
       else showPH(_T('ST 부족! (100)'),'#ff4444');break;
     case 'shieldThrow': showPH(_T('우클릭(칼등치기)에 합체됨'),'#66aadd');break;
     case 'blastShot': showPH(_T('T(석궁자동)에 세팅하세요'),'#ff6633');break;
@@ -9828,13 +9851,13 @@ function _pollGamepad(){
 
   // ── 4단계: 버튼 → 키 주입 ──
   // 조준 모드 판정 — LT 콤보보다 먼저 (조준 중 재발동 차단)
-  const _isAimMode=P&&(P._mmAiming||P._bwAiming||P._tsAiming||P._msAiming||P._isAiming);
+  const _isAimMode=P&&(P._mmAiming||P._bwAiming||P._tsAiming||P._msAiming||P._isAiming||P._hrAiming);
 
   // LT(6) = 모디파이어(홀드+ABXY=1234) / 탭(단독 뗄 때)=KeyF
   const _ltVal=_gpad.buttons[6]&&_gpad.buttons[6].value||0;
   const _ltHeld=_ltVal>0.7;
   const _ltWasHeld=!!_gpBtnsPrev['kLT_held'];
-  const _LT_COMBO={0:'Digit1',1:'Digit2',2:'Digit3',3:'Digit4'};
+  const _LT_COMBO={0:'Digit1',1:'Digit2',3:'Digit3',2:'Digit4'}; // A=1,B=2,Y=3,X=4
 
   // LT 모디파이어 사용 여부 추적
   if(_ltHeld&&!_ltWasHeld)_gpBtnsPrev['kLT_mod']=false;
@@ -9847,8 +9870,8 @@ function _pollGamepad(){
       const pressed=!!_gpBtns[idx];
       const prevKey='kLT'+idx;
       if(_isAimMode){
-        // 조준 중 같은 버튼 다시 누름 → 취소 (우클릭)
-        if(pressed&&!_gpBtnsPrev[prevKey])MBjust[2]=true;
+        // 조준 중 버튼 릴리즈 → 발사
+        if(!pressed&&_gpBtnsPrev[prevKey]){MBjust[0]=true;G._gpAimDistReset=true}
         _gpBtnsPrev[prevKey]=pressed;continue;
       }
       if(pressed&&!_gpBtnsPrev[prevKey]){
@@ -9866,8 +9889,8 @@ function _pollGamepad(){
       if(_gpBtnsPrev[prevKey]){_gpInjectKey(_LT_COMBO[bi],false);_gpBtnsPrev[prevKey]=false}
     }
     if(_ltWasHeld&&_isAimMode){
-      // 조준 중 LT 떼기 → 발사 (좌클릭)
-      MBjust[0]=true;
+      // 조준 중 LT 떼기 → 발사 (좌클릭) + 거리 리셋
+      MBjust[0]=true;G._gpAimDistReset=true;
     } else if(_ltWasHeld&&!_gpBtnsPrev['kLT_mod']){
       // 모디파이어 안 쓰였으면 → KeyF 탭
       _gpInjectKey('KeyF',true);
@@ -9918,25 +9941,32 @@ function _pollGamepad(){
   }
   _gpBtnsPrev['kRT']=rt&&!ltrt;
 
-  // 조준 모드: 좌/우스틱 둘 다 조준 커서 (8방향 스냅) / 비조준: 우스틱→커서
+  // 조준 모드: 포격식 (LT+버튼 홀드→거리증가, 스틱→방향, 릴리즈→발사)
   if(_isAimMode){
+    // 스틱 방향 감지
     const ax=_gpAxes[0],ay=_gpAxes[1];
     const rx=_gpAxes[2],ry=_gpAxes[3];
     const lMag=Math.sqrt(ax*ax+ay*ay);
     const rMag=Math.sqrt(rx*rx+ry*ry);
     const useR=rMag>lMag;
-    let sx2=useR?rx:ax, sy2=useR?ry:ay, mag=useR?rMag:lMag;
+    const sx2=useR?rx:ax, sy2=useR?ry:ay, mag=useR?rMag:lMag;
     if(mag>0.15){
-      // 8방향 스냅: 45도 단위로 고정
       const _ang=Math.atan2(sy2,sx2);
       const _snap=Math.round(_ang/(Math.PI/4))*(Math.PI/4);
-      sx2=Math.cos(_snap);sy2=Math.sin(_snap);
-      const _aimDist=1000*Math.min(1,mag);
-      const scx=P.x-G.cam.x+C.width/2, scy=P.y-G.cam.y+C.height/2;
-      mouse.x=scx+sx2*_aimDist;
-      mouse.y=scy+sy2*_aimDist;
       P.facing=_snap;
     }
+    // 포격 거리: LT+버튼 홀드 중 자동 증가 (0→1000)
+    if(!G._gpAimDist)G._gpAimDist=0;
+    // 지연 리셋: 발사 프레임에서는 좌표 유지, 다음 프레임에 리셋
+    if(G._gpAimDistReset===2){G._gpAimDist=0;G._gpAimDistReset=0}
+    if(G._gpAimDistReset===true)G._gpAimDistReset=2;
+    // LT+ABXY 중 하나라도 눌려있으면 거리 증가
+    const _anyAimBtn=(_ltHeld&&(_gpBtns[0]||_gpBtns[1]||_gpBtns[2]||_gpBtns[3]));
+    if(_anyAimBtn){G._gpAimDist=Math.min((G._gpAimDist||0)+18,1000)}
+    // 마우스 좌표를 플레이어+facing 방향×거리로 세팅
+    const scx=P.x-G.cam.x+C.width/2, scy=P.y-G.cam.y+C.height/2;
+    mouse.x=scx+Math.cos(P.facing)*(G._gpAimDist||0);
+    mouse.y=scy+Math.sin(P.facing)*(G._gpAimDist||0);
     G._gpAiming=true;
   }else{
     // 비조준: 우스틱→커서
@@ -12805,15 +12835,28 @@ const ETYPE_COLS=['#ee5544','#88cc44','#ff8822','#66dd66','#8888aa','#ff5500','#
   '#223344','#334455','#5566aa','#445533','#2a3a4a','#556644','#885566','#446655','#112233','#0a1122',
   '#aa3300','#cc4400','#ee5500','#dd6600','#332211','#ee4400','#555544','#881100','#993300','#660000'];
 // ─── [S08c] HELPERS — 충격/임팩트/유틸리티 함수 ───
-function shake(n){G.shake=Math.max(G.shake,n*OPT.shake/100);_gpVibrate(n)}
+function shake(n){G.shake=Math.max(G.shake,n*OPT.shake/100);if(n>=10)_gpVibrate(n)}
 // ── 게임패드 진동 ──
+let _gpVibLastT=0;
 function _gpVibrate(intensity,durMs){
-  if(!_gpad||!_gpad.vibrationActuator)return;
-  const t=Math.min(intensity/30,1); // shake 강도 0~30 → 0~1 (30이상=최대, 더 민감)
-  const dur=durMs||Math.max(80,Math.min(800,intensity*12)); // 강도 비례 지속시간 (더 길게)
-  const weak=Math.min(1,t*0.7);  // 고주파(약한 모터)
-  const strong=Math.min(1,t);     // 저주파(강한 모터)
-  _gpad.vibrationActuator.playEffect('dual-rumble',{duration:dur,strongMagnitude:strong,weakMagnitude:weak}).catch(()=>{});
+  if(!_gpad||(OPT.vibration===false))return;
+  // 쿨다운: 60ms 미만 간격 진동 무시 (지속공격 도배 방지)
+  const now=performance.now();
+  if(!durMs&&now-_gpVibLastT<60)return;
+  _gpVibLastT=now;
+  const t=Math.min(intensity/30,1);
+  const dur=durMs||Math.max(80,Math.min(800,intensity*12));
+  const weak=Math.min(1,t*0.7);
+  const strong=Math.min(1,t);
+  // dual-rumble (Chrome/Edge standard)
+  if(_gpad.vibrationActuator){
+    _gpad.vibrationActuator.playEffect('dual-rumble',{duration:dur,startDelay:0,strongMagnitude:strong,weakMagnitude:weak}).catch(()=>{});
+    return;
+  }
+  // hapticActuators 폴백 (Firefox/일부 브라우저)
+  if(_gpad.hapticActuators&&_gpad.hapticActuators.length>0){
+    _gpad.hapticActuators[0].pulse(strong,dur).catch(()=>{});
+  }
 }
 // ── 히트 플래시 (순간 백플래시) ──
 let _hitFlash={a:0,col:'#ffffff'};
@@ -22985,7 +23028,7 @@ function update(){
       _harpLandT=30; // 착지 애니메이션 항상 재생 (30프레임≈0.5초)
       // ── 착지 효과 ──
       if(_harpTier>=3)playSample('chain_land2',.7,_r(1,.1));else playSample('chain_land',1,_r(1,.1));
-      if(!isDimBreach()||_slamLand){shake(_harpTier>=3?30:_harpTier>=2?20:10);addParts(P.x,P.y,'#ffaa44',8);addTxt(P.x,P.y-20,_T('💥 착지!'),'#ffaa00',30)}
+      if(!isDimBreach()||_slamLand){shake(_harpTier>=3?30:_harpTier>=2?20:10);_gpVibrate(_harpTier>=3?25:_harpTier>=2?15:6,_harpTier>=3?250:_harpTier>=2?150:80);addParts(P.x,P.y,'#ffaa44',8);addTxt(P.x,P.y-20,_T('💥 착지!'),'#ffaa00',30)}
       playVFXAng('land_fire',P.x,P.y+P.r,0.35,2,0,true); // 착지 화염 VFX — 발 바로 아래
       // ── 블링크 스킬 세팅: 착지점에 암전길 ──
       if(_harpSk==='charge'&&P.activeChargeSk==='magicBlink'){
@@ -23020,7 +23063,7 @@ function update(){
         playSample('heavy_hit',1,_r(.8,.1));
         const _csTierCol=_csTier>=3?'#ff2200':_csTier>=2?'#ffaa00':'#ffcc44';
         addTxt(P.x,P.y-30,_T('⚡ 기동파괴! ')+_csTier+'단계 ×'+_csDistMul,_csTierCol,_csTier>=3?55:45);
-        shake(60);G.chromaT=15;
+        shake(_csTier>=3?70:_csTier>=2?40:18);_gpVibrate(_csTier>=3?60:_csTier>=2?30:12,_csTier>=3?500:_csTier>=2?250:120);G.chromaT=_csTier>=3?18:_csTier>=2?12:6;
         playVFXAng('earthquake',P.x,P.y-_csR*0.255,_csR/256,7,0,true); // 대지충격 VFX (~1초)
         if(!G._gSlamWave)G._gSlamWave=[];
         G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_csR,t:0,maxT:24,col:'#ffcc00'});
@@ -23045,9 +23088,9 @@ function update(){
         P._chainAssaultReady=false;
         const _stLv=P.skills.chainAssault||1;
         const _stR=450+(_stLv-1)*~~(225/9); // 1렙450, 10렙675
-        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×15, 2티어(0.1초)=×30, 3티어(0.2초)=×50 — (2026-05-08, 구 ×30/60/100 절반)
+        // 사슬기동 티어 3단계 매핑: 1티어(탭)=×30, 2티어(0.1초)=×60, 3티어(0.2초)=×100
         const _stTier=Math.max(1,Math.min(3,_harpTier||1));
-        const _stDistMul=_stTier===3?50:_stTier===2?30:15;
+        const _stDistMul=_stTier===3?100:_stTier===2?60:30;
         const _stDmg=~~(magicRef()*_skMul('chainAssault')*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 통일공식: _skMul
         const _stEl=EL.F;
         G._noHitStopT=40;
@@ -23066,7 +23109,7 @@ function update(){
         playSample('chain_assault_fire',.8,_r(1,.1));{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}
         const _stTierCol=_stTier>=3?'#ff0000':_stTier>=2?'#ff4400':'#ff8800';
         addTxt(P.x,P.y-30,_T('🔥 기동불꽃! ')+_stTier+'단계 ×'+_stDistMul,_stTierCol,_stTier>=3?55:45);
-        shake(50);G.chromaT=12;G._flashT=10;G._flashCol='#ff4400';
+        shake(_stTier>=3?60:_stTier>=2?35:15);_gpVibrate(_stTier>=3?50:_stTier>=2?25:10,_stTier>=3?400:_stTier>=2?200:100);G.chromaT=_stTier>=3?16:_stTier>=2?10:6;G._flashT=_stTier>=3?14:_stTier>=2?8:4;G._flashCol='#ff4400';
         // 용암분출 VFX (스프라이트시트)
         playVFXAng('lava_erupt',P.x,P.y-_stR*0.378,_stR/384,6.7,0,true);
         // 화염 파티클
@@ -23078,7 +23121,7 @@ function update(){
         // 불바닥 생성 — 3중폭: 기존 불바닥 위에 착지 시 확대 (3→6→9배, 지속 리셋)
         if(!G._fireZones)G._fireZones=[];
         const _afR=_stR*.6;
-        const _afDmg=~~(_stDmg*0.04); // -50% (2026-05-08, 직접 DOT 과다 — 3중폭 누적 감안)
+        const _afDmg=~~(_stDmg*0.12); // 착지뎀 12% DOT
         let _afExist=null;
         for(let _afi=0;_afi<G._fireZones.length;_afi++){const fz=G._fireZones[_afi];if(fz.type!=='assaultFlame')continue;
           const _d2=dst(P.x,P.y,fz.x,fz.y);if(_d2<=fz.r&&(_afExist===null||(fz._afStk||0)>(_afExist._afStk||0)))_afExist=fz} // 소환 범위 내 착지만 강화
@@ -23131,7 +23174,7 @@ function update(){
         }
         playSample('heavy_hit',1,_r(.7,.1));{const _ve=['voice_grunt','male_grunt'];playSample(_ve[~~(Math.random()*2)],1,_r(1,.15))}
         addTxt(P.x,P.y-35,_T('⚡ 기동전폭! x')+_cbDistMul.toFixed(1),_cbDistMul>=4?'#ff4400':_cbDistMul>=2?'#ffaa00':'#ffcc44',50);
-        shake(70);G.chromaT=20;G._flashT=12;G._flashCol='#ffaa00';
+        {const _bTier=Math.max(1,Math.min(3,_harpTier||1));shake(_bTier>=3?80:_bTier>=2?45:20);_gpVibrate(_bTier>=3?70:_bTier>=2?35:14,_bTier>=3?600:_bTier>=2?300:150);G.chromaT=_bTier>=3?24:_bTier>=2?14:8;G._flashT=_bTier>=3?16:_bTier>=2?10:5;G._flashCol='#ffaa00'}
         // 지면 갈라짐 VFX
         if(!G._gSlamWave)G._gSlamWave=[];
         G._gSlamWave.push({x:P.x,y:P.y,r:30,maxR:_cbAoeR,t:0,maxT:24,col:'#ffaa44'});
@@ -23658,7 +23701,7 @@ function update(){
     else if(_isFused('stormBeam')&&isJust('beam')&&P.skills.hellRay>=1&&!_isFused('elecRepent')&&(P.activeMagicSk||'fireball')==='hellRay'){
       if(P._hrAiming){P._hrAiming=false;showPH(_T('취소'),'#888')}
       else if((P._hrStk||0)<=0){showPH(_T('충전 중...'),'#ffd700')}
-      else if(P.mp>=100){P._hrAiming=true}
+      else if(P.mp>=100){if(_gpActive){mouse.x=P.x-G.cam.x+C.width/2;mouse.y=P.y-G.cam.y+C.height/2}P._hrAiming=true}
       else showPH(_T('MP 부족!'),'#4488ff');
     }
     else if(isHeld('beam')&&(P.mp>=mpCost('magic'))){_execMagicE()}
@@ -34589,7 +34632,7 @@ function _doExplodeScarecrowBoom(){
   if(absorbed>0)addTxt(_esX,_esY-40,_T('폭발! ×')+_chainCount,'#ffcc00',60);
   else addTxt(_esX,_esY-40,_T('불발...'),'#ff8844',40);
   G._explodeScarecrow=null;
-  P._exsCd=~~(600*(1+_eqAffix('cooldownRed'))); // 10초 쿨
+  P._exsCd=1200; // 20초 쿨 고정
 }
 function _fireExsBoom(bx,by,boomR,boom,absorbed,absRatio){
   const _ar=absRatio||0;
@@ -42782,9 +42825,9 @@ function drawP(){
         }}
         // 메인 번개 라인 (지그재그)
         for(let _ln=0;_ln<2;_ln++){
-          X.globalAlpha=((_arcBoosted?.5:.35)-.1*_ln)*_arcFade;
+          X.globalAlpha=((_arcBoosted?.8:.6)-.15*_ln)*_arcFade;
           X.strokeStyle=_arcBoosted?(_ln===0?'#ff6644':'#ffaa88'):(_ln===0?'#44ddff':'#aaeeff');
-          X.lineWidth=_arcBoosted?(_ln===0?4:2):(_ln===0?3:1);
+          X.lineWidth=_arcBoosted?(_ln===0?6:3):(_ln===0?5:2);
           X.beginPath();X.moveTo(_ta.x,_ta.y-20);
           const _segs=8;
           const _sdx=(_tb.x-_ta.x)/_segs,_sdy=((_tb.y-20)-(_ta.y-20))/_segs;
@@ -46701,7 +46744,7 @@ function updateHUD(slow){
   const rtype=room?room.type:'';const rtName=rtype==='boss'?_L('보스광장','Boss Arena'):rtype==='forge'?_T('대장간'):rtype==='start'?_L('시작점','Start'):_L('광장','Plaza');
   $('roomLbl').textContent=`${rtName} — `+_L('적','Enemies')+` ${_hudAlive}`+(G.bossAlive?'':_L(' | 출구 개방',' | Exit Open'));
   $('killCnt').textContent=G.kills;$('matCnt').textContent=G.mats;$('matCnt').style.color=G.mats>=3?'#cc66ff':'#665544';if($('matLbl'))$('matLbl').textContent=_L('악의','MALICE');
-  $('comboRecord').textContent=G.combo>0?G.combo+' (MAX:'+G.comboMax+')':G.comboMax>0?'MAX:'+G.comboMax:'0';$('comboRecord').style.color=G.combo>=10?'#ff4400':G.combo>=2?'#ff8800':'#886644';
+  {const _cr=$('comboRecord');if(_cr){if(G.comboMax>0){_cr.style.display='';_cr.textContent='MAX COMBO '+G.comboMax;_cr.style.color=G.comboMax>=100?'#ff2200':G.comboMax>=50?'#ff6600':'#ff8800'}else{_cr.style.display='none'}}}
   $('lvLbl').textContent=P.lv;$('spCnt').textContent=`SP ${P.sp}${P.ap?' | AP '+P.ap:''}`;$('cpHud').textContent=`${STG[G.stage].hell+1}-${STG[G.stage].hellFloor+1} CP ${calcCP().total}`;
   if(_charName)$('charNameHud').textContent=_charName;
   // 콤보 HUD

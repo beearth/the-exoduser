@@ -23574,3 +23574,19 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - docs/3.1 ui hud ?”ì??exoduser-ui-phase2 (1).md
 - game.html
 
+
+## 2026-05-10 23:30 (auto)
+- _autosave/game_20260510_225421.html
+- _autosave/game_20260510_230235.html
+- _autosave/game_20260510_230245.html
+- _autosave/game_20260510_230310.html
+- _autosave/game_20260510_231946.html
+- _autosave/game_20260510_231952.html
+- _autosave/game_20260510_232010.html
+- _autosave/game_20260510_232119.html
+- _autosave/game_20260510_232406.html
+- _autosave/game_20260510_232453.html
+- _autosave/game_20260510_232648.html
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤??md
+- game.html
+
