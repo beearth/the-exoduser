@@ -9259,7 +9259,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
     case 'bladeShot':
       if(P.st>=stCost('bladeShot')){activateBladeShot();_skOk=true}else showPH(_T('ST 부족!'),'#ff4444');break;
     case 'ghostWalk':
-      if((P._gwCd||0)<=0&&!P._gwActive){activateGhostWalk();_skOk=true}else if(P._gwActive){P._gwT=P._gwMax}break;
+      if((P._gwCd||0)<=0&&!P._gwActive){activateGhostWalk();_skOk=true}else if(P._gwActive){P._gwT=P._gwMax+1;_skOk=true}break;
     case 'plagueBurst':
       if(G.mats>=_malCost(15)&&(P._pbCd||0)<=0){activatePlagueBurst();_skOk=true}else if(G.mats<_malCost(15))showPH(_T('악의 부족! (')+_malCost(15)+')','#ff4444');break;
     case 'weakRev':
@@ -9368,11 +9368,12 @@ function _dispatchCtSkill(){
   if(P._gwActive&&sid!=='ghostWalk')return false;
   if(P._ioActive&&sid!=='iceOrb'){showPH(_T('얼음보주 안에선 사용 불가!'),'#88ddff');return true}
   let _skOk=false;
+  console.log('[CT_SKILL] sid='+sid+' gwActive='+P._gwActive+' ioActive='+P._ioActive+' gwCd='+(P._gwCd||0)+' ioCd='+(P._ioCd||0));
   switch(sid){
     case 'ghostWalk':
-      if((P._gwCd||0)<=0&&!P._gwActive){activateGhostWalk();_skOk=true}else if(P._gwActive){P._gwT=P._gwMax}break;
+      if((P._gwCd||0)<=0&&!P._gwActive){activateGhostWalk();_skOk=true}else if(P._gwActive){P._gwT=P._gwMax+1;console.log('[GW] 즉시종료');_skOk=true}break;
     case 'iceOrb':
-      if(P._ioActive){activateIceShatter();_skOk=true;break}
+      if(P._ioActive){console.log('[IO] 즉시폭파');activateIceShatter();_skOk=true;break}
       if(P.mp>=mpCost('iceOrb')&&(P._ioCd||0)<=0){activateIceOrb();_skOk=true;break}
       if(P.mp<mpCost('iceOrb'))showPH(_T('MP 부족!'),'#4488ff');break;
     case 'timeWarp':
@@ -9468,7 +9469,7 @@ addEventListener('keydown',e=>{
     e.preventDefault();
   }}
   // Space키: 얼음보주 진입 중 → 즉시 산산조각
-  if(e.code==='Space'&&G.on&&!G.paused&&P._ioActive&&P.s!=='fallen'&&P.s!=='dead'&&(K['ShiftLeft']||K['ShiftRight'])){
+  if(e.code==='Space'&&G.on&&!G.paused&&P._ioActive&&P.s!=='fallen'&&P.s!=='dead'){
     activateIceShatter();K['Space']=false;return;
   }
   // Space키: 얼음소용돌이 보주 활성화 중 → 플레이어 진입
@@ -9492,8 +9493,11 @@ addEventListener('keydown',e=>{
     if(_dispatchSkillSlot(5,'KeyF')){K['KeyF']=false;return}
   }
   // Ctrl키 고정스킬 (유령걸음/얼음보주)
-  if(e.code==='ControlLeft'&&G.on&&!G.paused&&P.activeCtSk&&!e.repeat){
-    if(_dispatchCtSkill()){K['ControlLeft']=false;e.preventDefault();return}
+  if(e.code==='ControlLeft'&&G.on&&!G.paused&&P.activeCtSk){
+    console.log('[CTRL] repeat='+e.repeat+' fromGp='+!!e._fromGp+' ioActive='+P._ioActive+' gwActive='+P._gwActive+' activeCtSk='+P.activeCtSk);
+    if(!e.repeat){
+      if(_dispatchCtSkill()){K['ControlLeft']=false;if(e._fromGp)_gpBtnsPrev['k3']=false;e.preventDefault();return}
+    }
   }
   // Z키: 필살기 슬롯
   if(e.code==='KeyZ'&&G.on&&!G.paused&&ULT_SLOT&&!P._gwActive&&!e.repeat){
@@ -9744,9 +9748,9 @@ function _pollGamepad(){
     return;
   }
   // UI 닫힌 후 outline 잔류 제거
-  if(_gpUIIdx>0||_gpInvRow>0||_gpInvCol>0){
+  if(_gpUIIdx>0||_gpInvIdx>0||_gpInvEqIdx>0){
     document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}});
-    _gpUIIdx=0;_gpInvRow=0;_gpInvCol=0;_gpInvMode='bag';
+    _gpUIIdx=0;_gpInvIdx=0;_gpInvEqIdx=0;_gpInvMode='bag';
   }
 
   // ── 4단계: 버튼 → 키 주입 ──
@@ -9946,8 +9950,7 @@ function _qIsPeaceShield(){return P.skills.peaceShield>=1&&(P.activeQSk==='peace
 function _enterPeaceShield(){P.s='peaceShield';P._psShieldR=100;P._psHoldT=0;P._sbParryT=20;P.parryT=0;P.parryBank=0;playSample('shield_activate',.6,_r(.8,.1));_startShieldLoop();_addSkProf('peaceShield')}
 function _qDispatchIceOrb(){
   if(!_qIsIceOrb())return false;
-  if(P._ioActive&&(K['ShiftLeft']||K['ShiftRight'])){activateIceShatter();return true}
-  if(P._ioActive){showPH(_T('Shift+키로 폭파'),'#88ddff');return true}
+  if(P._ioActive){activateIceShatter();return true}
   if(P.mp>=mpCost('iceOrb')&&(P._ioCd||0)<=0){activateIceOrb();return true}
   if(P.mp<mpCost('iceOrb'))showPH(_T('MP 부족!'),'#4488ff');
   return true;
@@ -12685,7 +12688,16 @@ const ETYPE_COLS=['#ee5544','#88cc44','#ff8822','#66dd66','#8888aa','#ff5500','#
   '#223344','#334455','#5566aa','#445533','#2a3a4a','#556644','#885566','#446655','#112233','#0a1122',
   '#aa3300','#cc4400','#ee5500','#dd6600','#332211','#ee4400','#555544','#881100','#993300','#660000'];
 // ─── [S08c] HELPERS — 충격/임팩트/유틸리티 함수 ───
-function shake(n){G.shake=Math.max(G.shake,n*OPT.shake/100)}
+function shake(n){G.shake=Math.max(G.shake,n*OPT.shake/100);_gpVibrate(n)}
+// ── 게임패드 진동 ──
+function _gpVibrate(intensity,durMs){
+  if(!_gpad||!_gpad.vibrationActuator)return;
+  const t=Math.min(intensity/60,1); // shake 강도 0~60 → 0~1 정규화
+  const dur=durMs||Math.max(50,Math.min(500,intensity*8)); // 강도 비례 지속시간
+  const weak=Math.min(1,t*0.6);  // 고주파(약한 모터)
+  const strong=Math.min(1,t);     // 저주파(강한 모터)
+  _gpad.vibrationActuator.playEffect('dual-rumble',{duration:dur,strongMagnitude:strong,weakMagnitude:weak}).catch(()=>{});
+}
 // ── 히트 플래시 (순간 백플래시) ──
 let _hitFlash={a:0,col:'#ffffff'};
 function doHitFlash(col,strength){_hitFlash.a=Math.min(.5,(_hitFlash.a||0)+strength*.5);_hitFlash.col=col||'#ffffff'}
@@ -34813,6 +34825,11 @@ function activateHolyDome(){
     const _hpSlv=P.skills.holyPrison||1;
     const _hpR=_hdR; // 회복의 영역과 동일 범위
     G._fireZones.push({x:P.x,y:P.y,r:_hpR,t:0,maxT:_hdDur,type:'holyPrison',lv:_hpSlv});
+  }
+  // 합체: 물의 영역(holyIce) 이상 — iceStorm 존 동시 설치 (뇌전창 전류강화 반응용)
+  if(_isFused('holyIce')){
+    const _isLv=P.skills.iceStorm||1;
+    G._fireZones.push({x:P.x,y:P.y,r:_hdR,t:0,maxT:_hdDur,type:'iceStorm',lv:_isLv});
   }
   SFX.pickup();playSample(Math.random()<.5?'voice_holyDome':'voice_holyDome2',1,1);
   const _hdNm=_isFused('holyWeak4')?'✟ 권능의 영역!':_isFused('holyWeak3')?'✟ 관통의 영역!':_isFused('holyWeak2')?'✟ 침식의 영역!':_isFused('holyWeak1')?'✟ 파쇄의 영역!':_isFused('holyIce')?'✟ 물의 영역!':_isHF?'✟ 결계의 영역!':'🛡 회복의 영역!';

@@ -9259,7 +9259,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
     case 'bladeShot':
       if(P.st>=stCost('bladeShot')){activateBladeShot();_skOk=true}else showPH(_T('ST 부족!'),'#ff4444');break;
     case 'ghostWalk':
-      if((P._gwCd||0)<=0&&!P._gwActive){activateGhostWalk();_skOk=true}else if(P._gwActive){P._gwT=P._gwMax}break;
+      if((P._gwCd||0)<=0&&!P._gwActive){activateGhostWalk();_skOk=true}else if(P._gwActive){P._gwT=P._gwMax+1;_skOk=true}break;
     case 'plagueBurst':
       if(G.mats>=_malCost(15)&&(P._pbCd||0)<=0){activatePlagueBurst();_skOk=true}else if(G.mats<_malCost(15))showPH(_T('악의 부족! (')+_malCost(15)+')','#ff4444');break;
     case 'weakRev':
@@ -9858,10 +9858,17 @@ function _pollGamepad(){
 let _gpInvIdx=0,_gpInvEqIdx=0,_gpInvMode='bag'; // bag | eq | st
 function _gpInvNav(){
   if(!_gpad)return;
-  const u=(_gpad.buttons[12]&&_gpad.buttons[12].pressed)||_gpAxes[1]<-0.5;
-  const d=(_gpad.buttons[13]&&_gpad.buttons[13].pressed)||_gpAxes[1]>0.5;
-  const l=(_gpad.buttons[14]&&_gpad.buttons[14].pressed)||_gpAxes[0]<-0.5;
-  const r=(_gpad.buttons[15]&&_gpad.buttons[15].pressed)||_gpAxes[0]>0.5;
+  // UI 네비게이션: D-pad OR 좌스틱 (중복 방지 — 둘 중 하나만 감지)
+  const _dU=_gpad.buttons[12]&&_gpad.buttons[12].pressed;
+  const _dD=_gpad.buttons[13]&&_gpad.buttons[13].pressed;
+  const _dL=_gpad.buttons[14]&&_gpad.buttons[14].pressed;
+  const _dR=_gpad.buttons[15]&&_gpad.buttons[15].pressed;
+  const _sU=_gpAxes[1]<-0.5,_sD=_gpAxes[1]>0.5,_sL=_gpAxes[0]<-0.5,_sR=_gpAxes[0]>0.5;
+  // D-pad 우선, D-pad 안 눌렸을 때만 스틱
+  const u=_dU||(!_dU&&!_dD&&_sU);
+  const d=_dD||(!_dU&&!_dD&&_sD);
+  const l=_dL||(!_dL&&!_dR&&_sL);
+  const r=_dR||(!_dL&&!_dR&&_sR);
   const a=_gpad.buttons[0]&&_gpad.buttons[0].pressed;
   const b=_gpad.buttons[1]&&_gpad.buttons[1].pressed;
   const x=_gpad.buttons[2]&&_gpad.buttons[2].pressed;

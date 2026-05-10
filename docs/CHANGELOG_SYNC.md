@@ -23490,3 +23490,18 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/lording/lobby_bg_flame.png
 - img/lording/lobby_bg_frost.png
 
+
+## 2026-05-10 12:30 (auto)
+- _autosave/game_20260510_113925.html
+- _autosave/game_20260510_113935.html
+- _autosave/game_20260510_114042.html
+- _autosave/game_20260510_114122.html
+- _autosave/game_20260510_114158.html
+- _autosave/game_20260510_114210.html
+- _autosave/game_20260510_114218.html
+- _autosave/game_20260510_114230.html
+- _autosave/game_20260510_114240.html
+- _autosave/game_20260510_114245.html
+- _autosave/game_20260510_114254.html
+- game.html
+
