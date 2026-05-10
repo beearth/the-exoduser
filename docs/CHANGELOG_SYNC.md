@@ -23409,3 +23409,54 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - index.html
 
+
+## 2026-05-10 10:30 (auto)
+- _autosave/game_20260510_101822.html
+- _autosave/game_20260510_101827.html
+- _autosave/game_20260510_101833.html
+- _autosave/game_20260510_101837.html
+- _autosave/game_20260510_101930.html
+- _autosave/game_20260510_101946.html
+- _autosave/game_20260510_102010.html
+- _autosave/game_20260510_102303.html
+- _autosave/game_20260510_102412.html
+- _autosave/game_20260510_102536.html
+- _autosave/game_20260510_102835.html
+- docs/14밸런???�치?�이�?14밸런???�치?�이�?md
+- docs/최종기획??HELL_EXODUSER_최종기획??v4.0.docx
+- docs/최종기획??build_document.py
+- docs/최종기획??images/0.png
+- docs/최종기획??images/1.png
+- docs/최종기획??images/10.png
+- docs/최종기획??images/11.png
+- docs/최종기획??images/12.png
+- docs/최종기획??images/13.png
+- docs/최종기획??images/14.png
+- docs/최종기획??images/15.png
+- docs/최종기획??images/16.png
+- docs/최종기획??images/17.png
+- docs/최종기획??images/18.png
+- docs/최종기획??images/19.png
+- docs/최종기획??images/2.png
+- docs/최종기획??images/20.png
+- docs/최종기획??images/21.png
+- docs/최종기획??images/22.png
+- docs/최종기획??images/23.png
+- docs/최종기획??images/24.png
+- docs/최종기획??images/25.png
+- docs/최종기획??images/3.png
+- docs/최종기획??images/4.png
+- docs/최종기획??images/5.png
+- docs/최종기획??images/6.png
+- docs/최종기획??images/7.png
+- docs/최종기획??images/8.png
+- docs/최종기획??images/9.png
+- docs/최종기획??images/ChatGPT Image 2026??4??25???�전 08_13_01.png
+- docs/최종기획??images/etype84_lightning.png
+- docs/최종기획??images/ig_0dd5f8cf89d2f2740169ff34be60e88191beb6f7fbe2e1f961.png
+- docs/최종기획??images/lobby_bg_abyss.webp
+- docs/최종기획??images/lobby_bg_flame.png
+- docs/최종기획??images/lobby_bg_frost.png
+- game.html
+- index.html
+

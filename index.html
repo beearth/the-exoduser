@@ -1577,7 +1577,6 @@ function playCinematic(){
   const originalFinish = finishCin;
   finishCin = () => {
     document.removeEventListener('keydown', keyHandler);
-    _cinDone=true; // 게임패드 폴링도 정지
     originalFinish();
   };
 
@@ -2192,11 +2191,11 @@ function showCharGate(charId){
   }
   // lobby가 보일 때만 시작
   const obs=new MutationObserver(()=>{
-    if(cv.parentElement&&cv.parentElement.parentElement&&cv.parentElement.parentElement.style.display==='flex'){resize();loop();obs.disconnect()}
+    if(cv.parentElement&&cv.parentElement.parentElement&&cv.parentElement.parentElement.style.display==='flex'){resize();requestAnimationFrame(loop);obs.disconnect()}
   });
   obs.observe(document.getElementById('lobby'),{attributes:true,attributeFilter:['style']});
   // 즉시 시작 시도
-  if(document.getElementById('lobby').style.display==='flex'){resize();loop()}
+  if(document.getElementById('lobby').style.display==='flex'){resize();requestAnimationFrame(loop)}
 })();
 </script>
 <script>
