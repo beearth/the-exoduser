@@ -10,7 +10,7 @@ import os
 
 IMG_DIR = r'G:\hell\docs\최종기획서\images'
 GAME_IMG = r'G:\hell\img'
-OUT_PATH = r'G:\hell\docs\최종기획서\HELL_EXODUSER_최종기획서_v4.0.docx'
+OUT_PATH = r'C:\Users\심도진\Desktop\HELL_EXODUSER_최종기획서_v4.1.docx'
 
 doc = Document()
 
@@ -93,7 +93,7 @@ doc.add_paragraph()
 add_para('HELL : EXODUSER', bold=True, size=28, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x8B, 0x00, 0x00))
 add_para('지옥 : 탈주자', bold=True, size=18, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x4A, 0x00, 0x00))
 doc.add_paragraph()
-add_para('GAME DESIGN DOCUMENT v4.0', size=12, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x66, 0x66, 0x66))
+add_para('GAME DESIGN DOCUMENT v4.1', size=12, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x66, 0x66, 0x66))
 add_para('Dark Fantasy Hack & Slash ARPG  |  Solo Indie + AI-First  |  PC / Steam', size=10, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x66, 0x66, 0x66))
 doc.add_paragraph()
 add_para('FDG (ForDearGamers)  |  contact@voisun.com', size=10, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x99, 0x99, 0x99))
@@ -602,7 +602,7 @@ doc.add_paragraph()
 doc.add_paragraph()
 add_para('contact@voisun.com', size=11, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x99, 0x99, 0x99))
 add_para('FDG (ForDearGamers)  |  SOLO INDIE + AI-FIRST', size=10, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x99, 0x99, 0x99))
-add_para('GAME DESIGN DOCUMENT v4.0  |  2026', size=10, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x99, 0x99, 0x99))
+add_para('GAME DESIGN DOCUMENT v4.1  |  2026', size=10, align=WD_ALIGN_PARAGRAPH.CENTER, color=(0x99, 0x99, 0x99))
 
 doc.save(OUT_PATH)
 print(f'Saved: {OUT_PATH}')

@@ -23505,3 +23505,18 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _autosave/game_20260510_114254.html
 - game.html
 
+
+## 2026-05-10 16:30 (auto)
+- _autosave/game_20260510_160606.html
+- _autosave/game_20260510_160638.html
+- _autosave/game_20260510_160727.html
+- _autosave/game_20260510_160814.html
+- _autosave/game_20260510_161936.html
+- _autosave/game_20260510_162347.html
+- _autosave/game_20260510_162829.html
+- _autosave/game_20260510_162939.html
+- docs/3.3 ?�바?�딩+?�정/3.3 ?�바?�딩+?�정.md
+- docs/최종기획??HELL_EXODUSER_최종기획??v4.1.docx
+- docs/최종기획??build_document.py
+- game.html
+
