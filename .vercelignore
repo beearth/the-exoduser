@@ -6,3 +6,12 @@ out/
 NUL
 _test_*
 *.pyc
+_autosave/
+game_backup_*.html
+game_current.html
+game_test.html
+game_demo.html
+game_rollback_*.html
+game_1630.html
+index_backup_*.html
+docs/
