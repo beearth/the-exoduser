@@ -2772,7 +2772,7 @@ canvas{display:block;position:fixed;inset:0}
   <div id="ndBtns" style="display:flex;flex-direction:column;gap:8px;align-items:center"></div>
 </div>
 <div id="stageTransition" style="position:absolute;inset:0;z-index:38;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.80);opacity:0;pointer-events:none;transition:opacity .3s">
-  <img id="stRndImg" alt="transition" style="position:absolute;inset:0;width:100vw;height:100vh;object-fit:cover;object-position:center 20%;filter:saturate(1.1) brightness(1.05);">
+  <img id="stRndImg" alt="transition" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center center;filter:saturate(1.1) brightness(1.05);">
   <div style="position:absolute;bottom:5vh;left:0;right:0;pointer-events:none;font-size:1rem;text-align:center">
     <div id="stNextName" style="color:#fff;font-size:2vw;font-weight:700;letter-spacing:.3em;margin-bottom:8px;text-shadow:0 0 15px rgba(0,0,0,.85)"></div>
     <div id="stFloorInfo" style="color:#ccaa77;font-size:1.2vw;letter-spacing:.15em;margin-bottom:12px;text-shadow:0 0 10px rgba(0,0,0,.8)"></div>
@@ -9694,12 +9694,17 @@ function _gpAutoAim(range){
   if(best){P.facing=Math.atan2(best.y-P.y,best.x-P.x);P.atkArc=P.facing;}
 }
 
-// 버튼→키코드 맵 (상수)
-const _GP_KEY={
+// 버튼→키코드 맵 (커스텀 가능)
+const _GP_KEY_DEFAULT={
   0:'mouse0',1:'Space',2:'KeyE',3:'ControlLeft',
   4:'ShiftLeft',5:'mouse2',8:'KeyL',9:'Escape',
   10:'KeyR',11:'KeyC',12:'KeyK',13:'KeyG',14:'KeyC',15:'KeyV'
 };
+let _GP_KEY=Object.assign({},_GP_KEY_DEFAULT);
+// 저장된 패드 매핑 로드
+try{const _s=localStorage.getItem('gpKeyMap');if(_s){const _m=JSON.parse(_s);for(const k in _m)_GP_KEY[+k]=_m[k]}}catch(e){}
+function _saveGpKeyMap(){try{localStorage.setItem('gpKeyMap',JSON.stringify(_GP_KEY))}catch(e){}}
+function _resetGpKeyMap(){_GP_KEY=Object.assign({},_GP_KEY_DEFAULT);_saveGpKeyMap()}
 function _gpInjectKey(kc,pressed){
   if(kc.startsWith('mouse')){const mn=+kc.slice(5);MB[mn]=pressed;if(pressed)MBjust[mn]=true;}
   else{K[kc]=pressed;const ev=new KeyboardEvent(pressed?'keydown':'keyup',{code:kc,key:kc,bubbles:true});ev._fromGp=true;document.dispatchEvent(ev);}
@@ -24985,6 +24990,8 @@ function update(){
   // ═══ 플레이어 포이즈 자동회복 제거됨 — 탈출기(작살/유령걸음)로만 회복 ═══
   // 그로기 시스템 제거됨 — 포이즈 0 = 즉시 스턴
   // 죽은 적 정리 (매 20프레임 — 누적 방지)
+  // null 엔트리 즉시 제거 (크래시 방지)
+  {let _nw=0;for(let i=0;i<ens.length;i++){if(ens[i])ens[_nw++]=ens[i]}if(_nw<ens.length)ens.length=_nw}
   if(G._gcT===undefined)G._gcT=0;G._gcT++;
   // 생존 적 수 카운트 (소환굴 스폰캡 기준)
   {let _ac=0;for(let i=0;i<ens.length;i++)if(ens[i].alive)_ac++;G._aliveEns=_ac}
@@ -24992,8 +24999,8 @@ function update(){
   if(ens.length>900){console.warn('[ENS-CAP] ens='+ens.length+' alive='+G._aliveEns+' → 800으로 컬링');let _sorted=[];for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive){if(e._reviveTimer>0)_sorted.push(e);continue}_sorted.push(e)}_sorted.sort((a,b)=>(a.ib?0:1)-(b.ib?0:1)||dst2(P.x,P.y,a.x,a.y)-dst2(P.x,P.y,b.x,b.y));if(_sorted.length>800){for(let _ci=800;_ci<_sorted.length;_ci++){if(_sorted[_ci].alive&&!_sorted[_ci].ib){G.kills++;G._stageKills=(G._stageKills||0)+1}}_sorted.length=800}ens.length=0;for(let i=0;i<_sorted.length;i++)ens[i]=_sorted[i];ens.length=_sorted.length;_shDirty=true}
   if(G._gcT>20){G._gcT=0;
     // 시체 미생성 사망 fallback — GC 시점에만 (매 프레임→20프레임 주기)
-    for(let i=0;i<ens.length;i++){if(!ens[i].alive&&!ens[i]._corpseSpawned&&!ens[i]._isDecoy&&ens[i].mhp>0){_addCorpse(ens[i],Math.atan2(ens[i].y-P.y,ens[i].x-P.x),4)}}
-    let w=0,_deadCnt=0;for(let i=0;i<ens.length;i++){if(ens[i].alive){ens[w++]=ens[i]}else if(ens[i]._reviveTimer>0&&_deadCnt<20){ens[w++]=ens[i];_deadCnt++}}ens.length=w;
+    for(let i=0;i<ens.length;i++){if(!ens[i])continue;if(!ens[i].alive&&!ens[i]._corpseSpawned&&!ens[i]._isDecoy&&ens[i].mhp>0){_addCorpse(ens[i],Math.atan2(ens[i].y-P.y,ens[i].x-P.x),4)}}
+    let w=0,_deadCnt=0;for(let i=0;i<ens.length;i++){if(!ens[i])continue;if(ens[i].alive){ens[w++]=ens[i]}else if(ens[i]._reviveTimer>0&&_deadCnt<20){ens[w++]=ens[i];_deadCnt++}}ens.length=w;
     // worldItems picked 정리
     let ww=0;for(let i=0;i<worldItems.length;i++){if(!worldItems[i].picked)worldItems[ww++]=worldItems[i]}worldItems.length=ww;
     // G.txts: 링 버퍼 풀이므로 compaction 불필요 (축소 시 재할당 유발)
@@ -31567,7 +31574,7 @@ function _updateGhostIris(){
   const _iNeedSearch=!pet._tgt||!pet._tgt.alive||pet._tgtT%10===0;
   if(_iNeedSearch){
     let _iMinD=800,_iTgt=null; // 탐색 반경 800
-    for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive)continue;
+    for(let i=0;i<ens.length;i++){const e=ens[i];if(!e||!e.alive)continue;
       const d=dst(P.x,P.y,e.x,e.y);if(d<_iMinD){_iMinD=d;_iTgt=e}}
     pet._tgt=_iTgt;
   }
@@ -36751,6 +36758,48 @@ function renderSettings(){
   };
   resetBtn.onclick=(e)=>{e.stopPropagation();_resetBinds()};
   list.appendChild(resetBtn);
+
+  // ═══ 패드 키바인딩 섹션 ═══
+  const gpTitle=document.createElement('div');
+  gpTitle.style.cssText='text-align:center;font-size:1.1rem;margin:20px 0 10px;color:#ccaa77;letter-spacing:.1em;border-top:1px solid #443322;padding-top:12px';
+  gpTitle.textContent=_T('🎮 게임패드 버튼 설정');
+  list.appendChild(gpTitle);
+
+  const _gpBtnNames={0:'A',1:'B',2:'X',3:'Y',4:'LB',5:'RB',8:'Select',9:'Start',10:'L3',11:'R3',12:'D↑',13:'D↓',14:'D←',15:'D→'};
+  const _gpActNames={0:_T('공격'),1:_T('대왕치기'),2:_T('마법'),3:_T('Ctrl스킬'),4:_T('돌진/작살'),5:_T('패링/방패'),8:_T('인벤토리'),9:_T('설정'),10:_T('줍기'),11:_T('능력치'),12:_T('스킬창'),13:_T('대장간'),14:_T('능력치'),15:_T('창고')};
+
+  for(const bi in _GP_KEY){
+    const idx=+bi;
+    const row=document.createElement('div');row.className='set-row';
+    row.innerHTML='<span class="set-name" style="min-width:80px">'+(_gpBtnNames[idx]||'B'+idx)+'</span><span style="color:#887766;font-size:.85rem;min-width:60px">'+(_gpActNames[idx]||'')+'</span>';
+    const keyBtn=document.createElement('div');
+    keyBtn.className='set-key';
+    keyBtn.textContent=keyName(_GP_KEY[idx]);
+    keyBtn.onclick=(function(i){return function(e){
+      e.stopPropagation();
+      keyBtn.className='set-key listening';keyBtn.textContent=_T('⟨ 키 입력... ⟩');
+      const _h=function(ev){ev.preventDefault();ev.stopPropagation();document.removeEventListener('keydown',_h);document.removeEventListener('mousedown',_mh);
+        if(ev.code==='Escape'){renderSettings();return}
+        _GP_KEY[i]=ev.code;_saveGpKeyMap();renderSettings()};
+      const _mh=function(ev){ev.preventDefault();ev.stopPropagation();document.removeEventListener('keydown',_h);document.removeEventListener('mousedown',_mh);
+        _GP_KEY[i]='mouse'+ev.button;_saveGpKeyMap();renderSettings()};
+      document.addEventListener('keydown',_h);document.addEventListener('mousedown',_mh);
+    }})(idx);
+    row.appendChild(keyBtn);
+    list.appendChild(row);
+  }
+
+  const gpResetBtn=document.createElement('div');
+  gpResetBtn.style.cssText='text-align:center;margin-top:8px;padding:6px;background:rgba(100,0,0,.15);border:1px solid #553333;color:#ff6666;cursor:pointer;font-size:.85rem;font-weight:700';
+  gpResetBtn.textContent=_T('패드 키 초기화');
+  gpResetBtn.onclick=(e)=>{e.stopPropagation();_resetGpKeyMap();notify(_T('패드 키 초기화 완료'));renderSettings()};
+  list.appendChild(gpResetBtn);
+
+  const gpNote=document.createElement('div');
+  gpNote.style.cssText='text-align:center;margin-top:8px;font-size:.7rem;color:#665544;line-height:1.6';
+  gpNote.innerHTML='LT = '+_T('모디파이어')+' (LT+ABXY → '+_T('스킬')+'1~4)<br>LT+RT = '+_T('필살기');
+  list.appendChild(gpNote);
+
   // F5키로도 리셋 가능 (마우스 클릭 불가 상황 대비)
   window._bindResetHandler=function(e){if(e.code==='F5'&&$('settings')&&$('settings').classList.contains('on')){e.preventDefault();_resetBinds()}};
   document.removeEventListener('keydown',window._bindResetHandler);
@@ -47885,7 +47934,7 @@ $('retryBtn').onclick=async()=>{
 
 // ═══ 스테이지 전환 로딩 ═══
 const _STAGE_TRANSITION_RD=[];
-for(let i=1;i<=15;i++){
+for(let i=1;i<=16;i++){
   const ext = (i===11)?'jpg':'png';
   _STAGE_TRANSITION_RD.push(`img/lording/rd${i}.${ext}`);
 }
@@ -48309,7 +48358,8 @@ if(location.search.includes('slotdebug')){
 const _btParam=new URLSearchParams(location.search).get('bosstest');
 if(_btParam===null)return;
 const _btSi=Math.max(0,Math.min(TOTAL_STAGES-1,~~(+_btParam||0)));
-let _btGod=true,_btBoss=null,_btPaused=false;
+window._btGod=true;window._btBoss=null;window._btPaused=false;
+var _btGod=window._btGod,_btBoss=window._btBoss,_btPaused=window._btPaused;
 _FLOAT_TEXT_ENABLED=true; // 테스트베드: 모든 플로팅 텍스트 표시
 TXTS_MAX=120; // 테스트베드: 텍스트 풀 확장
 window._btActive=true; // 테스트베드 활성 플래그 (렌더 핫패스용 캐시)

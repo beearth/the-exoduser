@@ -23611,3 +23611,15 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - img/lording/etype84_lightning.png
 - img/lording/rd16.png
 
+
+## 2026-05-11 09:30 (auto)
+- _autosave/game_20260511_004936.html
+- _autosave/game_20260511_004948.html
+- _autosave/game_20260511_005010.html
+- _autosave/game_20260511_005016.html
+- _autosave/game_20260511_005029.html
+- _autosave/game_20260511_005034.html
+- docs/10ai?ì…‹?„ë¡¬?„íŠ¸ëª¨ìŒ/ê²Œì„?¨ë“œ_ê°€?´ë“œ_?´ë?ì§€_?„ë¡¬?„íŠ¸.md
+- game.html
+- img/lording/ChatGPT Image 2026??5??11???¤ì „ 12_39_12.png
+
