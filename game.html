@@ -10128,6 +10128,9 @@ function _qDispatchIceOrb(){
 //  [S07] ITEMS — Elements, Affixes, Equipment
 // ═══════════════════════════════════════
 const EL={P:0,F:1,I:2,D:3,L:4,H:5,E:6};
+// 원소 저항 테이블: ETYPE_ERES[etype] = [P,F,I,D,L,H,E] (0=저항없음, 0.5=50%감소, 1.0=면역)
+// 각 원소는 자기 저항값만 체크 — 불뎀은 불저항만, 어둠방어 100%여도 불뎀은 100% 들어감
+const ETYPE_ERES=(()=>{const t=[];for(let i=0;i<120;i++)t[i]=[0,0,0,0,0,0,0];return t})();
 const _BEAN_RAINBOW=['#ff2244','#ff8800','#ffee00','#00ff66','#00ccff','#8855ff','#ff44cc'];
 const ELC=['#bbbbbb','#ff5522','#3388ff','#9933cc','#ffee00','#ff88cc','#88aa44'];
 // ═══ 탄막 스프라이트 로드 ═══
@@ -19139,10 +19142,10 @@ let STATS={str:0,dex:0,int:0,vit:0,lck:0};
 const STAT_MAX={str:500,dex:500,int:500,vit:500,lck:500};
 // ═══ 패시브 스킬 (5레벨마다 AP 1개) ═══
 const PASSIVE_DEF=[
-  {key:'pAtk',   name:'⚔️ 맹공',nameEn:'⚔️ Onslaught',desc:'근접뎀 +15%, ST비용 -4%/lv (최대-40%)',descEn:'Melee DMG +15%, ST cost -4%/lv (max -40%)',max:10,icon:'⚔️',col:'#ff6644'},
+  {key:'pAtk',   name:'⚔️ 맹공',nameEn:'⚔️ Onslaught',desc:'근접뎀 +10%, ST비용 -4%/lv (최대-40%)',descEn:'Melee DMG +10%, ST cost -4%/lv (max -40%)',max:10,icon:'⚔️',col:'#ff6644'},
   {key:'pCharge',name:'🔱 돌파',nameEn:'🔱 Breakthrough',    desc:'작살 사거리 +2%/lv, 기동게이지 회복 +3%/lv',descEn:'Harpoon range +2%/lv, Mobility gauge recovery +3%/lv',max:10, icon:'🔱',col:'#ff8800'},
   {key:'pParry', name:'⚡ 반격',nameEn:'⚡ Retaliation',desc:'카운터뎀 +50%/lv, 우클릭 공속 +10%/lv, 무지개탄 피해감소 +10%/lv (최대50%)',descEn:'Counter DMG +50%/lv, RMB ATK speed +10%/lv, Rainbow shot DMG reduction +10%/lv (max 50%)',max:10,icon:'⚡',col:'#ffdd00'},
-  {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +15%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +15%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
+  {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +10%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +10%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
   {key:'pBow',   name:'🎯 정밀사격',nameEn:'🎯 Precision',desc:'투사체뎀 +15%, 공속 +10%, 사거리 +8%, ST비용 -4%/lv',descEn:'Projectile DMG +15%, ATK speed +10%, Range +8%, ST cost -4%/lv',max:10, icon:'🎯',col:'#44ddaa'},
   {key:'pGuard', name:'🛡 수호신',nameEn:'🛡 Aegis',  desc:'보호막 흡수 +2%/lv (기본70→최대90%), 보호막 중 HP리젠 +0.1%/lv',descEn:'Shield absorb +2%/lv (base 70 to max 90%), HP regen during shield +0.1%/lv',max:10, icon:'🛡',col:'#55bbff'},
   {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv',max:10, icon:'💚',col:'#33cc66'},
@@ -19261,10 +19264,10 @@ function statDropBonus(){return 1+_eqLckTotal()*.0015+PASSIVES.pDrop*.08+_eqAffi
 // 기존 곱연산(pAtk×pMelee×pAbund×pPred=45×) → 합연산(1+all=7.5×)으로 전환
 function _passDmgSum(type){
   let s=0;
-  s+=PASSIVES.pAtk*.15+(P._altAtk||0); // 맹공: +15%/lv
+  s+=PASSIVES.pAtk*.10+(P._altAtk||0); // 맹공: +10%/lv (너프 2026-05-11)
   s+=(PASSIVES.pHuman||0)*.05; // 인간성: 전체 데미지 +5%
   if(type==='melee')s+=(PASSIVES.pMelee||0)*.15; // 물리: +15%/lv (근접전용)
-  if(type==='magic')s+=PASSIVES.pMagic*.15+_eqAffix('magicDmg')+_eqImplicit('_iMagDmg')*.01; // 마법: +15%/lv (마법전용)
+  if(type==='magic')s+=PASSIVES.pMagic*.10+_eqAffix('magicDmg')+_eqImplicit('_iMagDmg')*.01; // 마력폭주: +10%/lv (너프 2026-05-11)
   if(type==='bow'||type==='proj')s+=PASSIVES.pBow*.15; // 투사체: +15%/lv (석궁+마법투사체+스킬투사체)
   if(type==='xbow')s+=(PASSIVES.pXbow||0)*.05; // 자동쇠뇌: +5%/lv
   if(type==='dot')s+=(PASSIVES.pDot||0)*.15; // 침식: +15%/lv
@@ -22053,6 +22056,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     _revPts:ib?(150+Math.round(si*4.412)):0,_maxRevPts:ib?(150+Math.round(si*4.412)):0,
     shieldAng:etype===6?Math.random()*Math.PI*2:0,
     eShield:~~(hp*.30),eShieldMax:~~(hp*.30),eShieldRegenT:0,
+    eRes:ETYPE_ERES[etype]||[0,0,0,0,0,0,0],
     _firstShot:!ib, // 보스 제외, 첫 교전 시 빨간콩 1발
     bleed:0,bleedT:0,bleedStk:0,_bleedPool:0,poison:0,poisonT:0,poisonStk:0,_poisonPool:0,burnT:0,burnStk:0,_burnPool:0, // D4식 DOT: 히트뎀% 풀 축적
     shieldBashCd:etype===6?(120+Math.random()*60):9999,
@@ -32076,8 +32080,15 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     let shDiff=(ang+Math.PI)-e.shieldAng;while(shDiff>Math.PI)shDiff-=Math.PI*2;while(shDiff<-Math.PI)shDiff+=Math.PI*2;
     if(Math.abs(shDiff)<Math.PI/3){dmg=~~(dmg*0.3);addTxt(e.x,e.y-15,'🛡','#8888ff',20);if(!noSound)SFX.block()}
   }
-  // 에너지쉴드 차감 (HP 페널티 없음 — HP는 그대로 전액 피해)
-  if(e.eShield>0&&!isDot){e.eShield=Math.max(0,e.eShield-dmg)}
+  // 에너지쉴드: 쉴드 살아있는 동안 HP=0, 소진 후 HP 타격
+  // 물리: 쉴드 50%씩 소모 (100쉴드→4방 필요) / 쉴드없으면 HP 100%
+  // 마법: 쉴드 100%씩 소모 (100쉴드→2방 필요) / 쉴드없으면 HP 50%
+  if(!isDot){
+    if(atkEl===0){if(e.eShield>0){e.eShield=Math.max(0,e.eShield-~~(dmg*0.5));dmg=0}}
+    else{if(e.eShield>0){e.eShield=Math.max(0,e.eShield-dmg);dmg=0}else{dmg=~~(dmg*0.5)}}
+  }
+  // 원소 저항: 자기 원소 저항값만 적용, 타 원소 무관
+  if(e.eRes&&e.eRes[atkEl]>0)dmg=~~(dmg*(1-e.eRes[atkEl]));
   // ═══ 63:갑각 괴물 — 집게 방어 중 70% 감소 ═══
   if(e.etype===63&&e._crabGuard&&!isDot){dmg=~~(dmg*.3);addTxt(e.x,e.y-15,_T('방어!'),'#445533',20)}
   // ═══ 74:흑요석 기사 — 방어 중 80% 감소 ═══
@@ -33869,7 +33880,7 @@ function _fuseStar(skId){
 // final ≈ meleeRef × _skMul × levelBonus × 특수보정
 const _SK_MUL={
   // ── 단발 폭딜 (장쿨, 단일/광역) ──
-  giantSlam:{b:14,g:5.6},   // Lv1=14×, Lv10=39.2× (2026-05-11)
+  giantSlam:{b:25,g:10.0},  // Lv1=25×, Lv10=70× (2026-05-11)
   maliceMortar:{b:7,g:2.8}, // ATK×7, 11초쿨, 광역
   iceOrb:{b:6,g:2.4},       // ATK×6, 10초쿨, 광역+CC
   maliceStorm:{b:12,g:4.8}, // ATK×12, 20초쿨, 장쿨
@@ -46571,11 +46582,11 @@ function drawP(){
       if(_catImg&&_catImg.complete&&_catImg.naturalWidth){
         if(_flip){X.save();X.translate(px,py-_petSz/2);X.scale(-1,1);X.drawImage(_catImg,-_petSz/2,0,_petSz,_petSz);X.restore()}
         else{X.drawImage(_catImg,px-_petSz/2,py-_petSz/2,_petSz,_petSz)}
-        // 고양이 눈 글로우 (노란색)
+        // 고양이 눈 글로우 (보라색)
         var _catEG=.4+.3*Math.sin(_pet.t*.06);
-        X.globalAlpha=_catEG*.3;X.fillStyle='#ffcc00';X.beginPath();X.arc(px-3,py-4,4,0,Math.PI*2);X.fill();
+        X.globalAlpha=_catEG*.3;X.fillStyle='#aa44ff';X.beginPath();X.arc(px-3,py-4,4,0,Math.PI*2);X.fill();
         X.beginPath();X.arc(px+3,py-4,4,0,Math.PI*2);X.fill();
-        X.globalAlpha=_catEG;X.fillStyle='#ffee44';X.beginPath();X.arc(px-3,py-4,1.5,0,Math.PI*2);X.fill();
+        X.globalAlpha=_catEG;X.fillStyle='#cc88ff';X.beginPath();X.arc(px-3,py-4,1.5,0,Math.PI*2);X.fill();
         X.beginPath();X.arc(px+3,py-4,1.5,0,Math.PI*2);X.fill();
         X.globalAlpha=1;
       }else{

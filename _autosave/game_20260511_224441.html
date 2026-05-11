@@ -10128,6 +10128,9 @@ function _qDispatchIceOrb(){
 //  [S07] ITEMS — Elements, Affixes, Equipment
 // ═══════════════════════════════════════
 const EL={P:0,F:1,I:2,D:3,L:4,H:5,E:6};
+// 원소 저항 테이블: ETYPE_ERES[etype] = [P,F,I,D,L,H,E] (0=저항없음, 0.5=50%감소, 1.0=면역)
+// 각 원소는 자기 저항값만 체크 — 불뎀은 불저항만, 어둠방어 100%여도 불뎀은 100% 들어감
+const ETYPE_ERES=(()=>{const t=[];for(let i=0;i<120;i++)t[i]=[0,0,0,0,0,0,0];return t})();
 const _BEAN_RAINBOW=['#ff2244','#ff8800','#ffee00','#00ff66','#00ccff','#8855ff','#ff44cc'];
 const ELC=['#bbbbbb','#ff5522','#3388ff','#9933cc','#ffee00','#ff88cc','#88aa44'];
 // ═══ 탄막 스프라이트 로드 ═══
@@ -23742,8 +23745,8 @@ function update(){
         _cresStep=(_cresStep%3)+1;_cresComboT=120;_cresCd=_cresStep===3?20:12;
         _playKiSlashComboSfx(_cresStep);
         const _ksLv=P.skills.kiSlash||1,_ksDistMul=(_ksLv-1)*15;
-        // 1타/2타 150%, 3타 500%, _skMul 통일 스케일링
-        spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*(_cresStep===1?1.0:_cresStep===2?3.0:7.0)*statStr()*pAtkMul()*_skMul('kiSlash')),0,_cresStep,_ksDistMul);
+        // 7/7/7 균등 콤보 (2026-05-11)
+        spawnCrescent(P.x,P.y,P.facing,~~(meleeRef()*7.0*statStr()*pAtkMul()*_skMul('kiSlash')),0,_cresStep,_ksDistMul);
         addTxt(P.x,P.y-40,_cresStep+_L('타',' Hit'),_cresStep===3?'#ff4444':'#ffcc00',20);
       }else SFX.slash();
     }
@@ -32076,8 +32079,11 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     let shDiff=(ang+Math.PI)-e.shieldAng;while(shDiff>Math.PI)shDiff-=Math.PI*2;while(shDiff<-Math.PI)shDiff+=Math.PI*2;
     if(Math.abs(shDiff)<Math.PI/3){dmg=~~(dmg*0.3);addTxt(e.x,e.y-15,'🛡','#8888ff',20);if(!noSound)SFX.block()}
   }
-  // 에너지쉴드 차감 (HP 페널티 없음 — HP는 그대로 전액 피해)
-  if(e.eShield>0&&!isDot){e.eShield=Math.max(0,e.eShield-dmg)}
+  // 에너지쉴드: 물리→HP 100%+쉴드 50%, 마법→HP 50%+쉴드 100% (동시 적용)
+  if(!isDot&&e.eShieldMax>0){
+    if(atkEl===0){if(e.eShield>0)e.eShield=Math.max(0,e.eShield-~~(dmg*0.5))}
+    else{if(e.eShield>0)e.eShield=Math.max(0,e.eShield-dmg);dmg=~~(dmg*0.5)}
+  }
   // ═══ 63:갑각 괴물 — 집게 방어 중 70% 감소 ═══
   if(e.etype===63&&e._crabGuard&&!isDot){dmg=~~(dmg*.3);addTxt(e.x,e.y-15,_T('방어!'),'#445533',20)}
   // ═══ 74:흑요석 기사 — 방어 중 80% 감소 ═══
@@ -33869,7 +33875,7 @@ function _fuseStar(skId){
 // final ≈ meleeRef × _skMul × levelBonus × 특수보정
 const _SK_MUL={
   // ── 단발 폭딜 (장쿨, 단일/광역) ──
-  giantSlam:{b:11,g:4.4},   // Lv1=11×, Lv10=30.8× (2026-05-11 상향)
+  giantSlam:{b:25,g:10.0},  // Lv1=25×, Lv10=70× (2026-05-11)
   maliceMortar:{b:7,g:2.8}, // ATK×7, 11초쿨, 광역
   iceOrb:{b:6,g:2.4},       // ATK×6, 10초쿨, 광역+CC
   maliceStorm:{b:12,g:4.8}, // ATK×12, 20초쿨, 장쿨
@@ -46571,11 +46577,11 @@ function drawP(){
       if(_catImg&&_catImg.complete&&_catImg.naturalWidth){
         if(_flip){X.save();X.translate(px,py-_petSz/2);X.scale(-1,1);X.drawImage(_catImg,-_petSz/2,0,_petSz,_petSz);X.restore()}
         else{X.drawImage(_catImg,px-_petSz/2,py-_petSz/2,_petSz,_petSz)}
-        // 고양이 눈 글로우 (노란색)
+        // 고양이 눈 글로우 (보라색)
         var _catEG=.4+.3*Math.sin(_pet.t*.06);
-        X.globalAlpha=_catEG*.3;X.fillStyle='#ffcc00';X.beginPath();X.arc(px-3,py-4,4,0,Math.PI*2);X.fill();
+        X.globalAlpha=_catEG*.3;X.fillStyle='#aa44ff';X.beginPath();X.arc(px-3,py-4,4,0,Math.PI*2);X.fill();
         X.beginPath();X.arc(px+3,py-4,4,0,Math.PI*2);X.fill();
-        X.globalAlpha=_catEG;X.fillStyle='#ffee44';X.beginPath();X.arc(px-3,py-4,1.5,0,Math.PI*2);X.fill();
+        X.globalAlpha=_catEG;X.fillStyle='#cc88ff';X.beginPath();X.arc(px-3,py-4,1.5,0,Math.PI*2);X.fill();
         X.beginPath();X.arc(px+3,py-4,1.5,0,Math.PI*2);X.fill();
         X.globalAlpha=1;
       }else{
@@ -48063,7 +48069,7 @@ window.addEventListener('beforeunload',()=>{
 // ═══ 부트 로딩 — 에셋 프리로드 + 팁 텍스트 ═══
 const _LOAD_TIPS_KO=[
   '💡 Shift로 작살 돌진! 적을 관통하며 무적',
-  '💡 Q 패링 성공 시 HP/ST/MP/기동게이지 회복',
+  '💡 Q로 보호막 발동 — 기본 흡수율 70%, 패링 성공 시 HP/ST/MP/기동게이지 회복',
   '💡 속성 약점을 찌르면 데미지 2배!',
   '💡 ESC로 설정 — 난이도, 자동물약 조절',
   '💡 대왕치기로 기절 회복 + 포이즈를 깎아 그로기 유발!',
@@ -48075,25 +48081,27 @@ const _LOAD_TIPS_KO=[
   '💡 보스의 패턴을 읽고 패링 타이밍을 잡아라',
   '💡 인벤토리(TAB)에서 장비를 비교하고 장착',
   '💡 대장간에서 장비를 강화하고 분해하세요',
-  '💡 펫이 아이템을 자동으로 주워줍니다',
-  '💡 물약은 설정한 HP% 이하에서 자동 사용'
+  '💡 R키를 누르면 펫이 아이템을 자동으로 주워줍니다',
+  '💡 물약은 설정한 HP% 이하에서 자동 사용',
+  '💡 집중 스킬(홀드)은 시전 중 기절 면역!'
 ];
 const _LOAD_TIPS_EN=[
   '💡 Shift to dash! Pierce enemies, invincible',
-  '💡 Parry with Q to recover HP/ST/MP',
+  '💡 Q for Shield — 70% absorb, parry to recover HP/ST/MP/Charge',
   '💡 Hit elemental weaknesses for 2x damage!',
   '💡 ESC for settings — difficulty, auto-potions',
-  '💡 Giant Slam breaks poise for groggy!',
-  '💡 Groggy state = 1.5x damage',
-  '💡 Parry red bullets to reflect them!',
+  '💡 Giant Slam: stun recovery + poise break for groggy!',
+  '💡 Groggy state = 1.5x base damage',
+  '💡 Parry bullets to reflect them!',
   '💡 Ctrl Ice Orb — invincible! Re-press to shatter',
   '💡 Fuse skills to create powerful combos',
   '💡 Elite monsters have special abilities',
   '💡 Read boss patterns, time your parries',
   '💡 TAB for inventory — compare and equip gear',
   '💡 Upgrade and dismantle gear at the forge',
-  '💡 Your pet auto-collects items for you',
-  '💡 Potions auto-use when HP falls below set %'
+  '💡 Press R — your pet auto-collects items for you',
+  '💡 Potions auto-use when HP falls below set %',
+  '💡 Hold skills grant stun immunity while channeling!'
 ];
 let _loadTipIdx=0,_loadTipIv=null;
 function _startLoadTips(){
