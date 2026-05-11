@@ -23623,3 +23623,31 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - img/lording/ChatGPT Image 2026??5??11???�전 12_39_12.png
 
+
+## 2026-05-11 10:30 (auto)
+- _autosave/game_20260511_095108.html
+- _autosave/game_20260511_095119.html
+- _autosave/game_20260511_095200.html
+- _autosave/game_20260511_095212.html
+- _autosave/game_20260511_100257.html
+- _autosave/game_20260511_100723.html
+- _autosave/game_20260511_101329.html
+- _autosave/game_20260511_101419.html
+- _autosave/game_20260511_101423.html
+- _autosave/game_20260511_101612.html
+- _autosave/game_20260511_102737.html
+- docs/2_2 무기+???�성?�스??2_2 무기+???�성?�스??md
+- game.html
+- img/guide/combat_1.webp
+- img/guide/combat_2.webp
+- img/guide/modifier_1.webp
+- img/guide/modifier_2.webp
+- img/guide/ui_1.webp
+- img/guide/ui_2.webp
+- img/lording/2.png
+- img/lording/rd1.png
+- img/lording/rd16.png
+- img/lording/rd17.png
+- img/lording/rd18.png
+- img/lording/rd6.webp
+
