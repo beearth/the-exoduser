@@ -23370,7 +23370,9 @@ function update(){
         }}
       }
     }
-    // ── 전류강화 흡인: 매 프레임, 블랙급 ──
+    // ── 전류강화 흡인: 3프레임 1회 (성능) ──
+    G._tsPullF=(G._tsPullF||0)+1;
+    if(G._tsPullF>=3){G._tsPullF=0;
     // 1단계: 각 창의 강화 아크 연결 수 계산
     const _tsIceLinks=new Uint8Array(G._thunderStakes.length);
     for(let _ti=0;_ti<G._thunderStakes.length;_ti++){for(let _tj=_ti+1;_tj<G._thunderStakes.length;_tj++){
@@ -23378,7 +23380,7 @@ function update(){
       if(dst(_ta.x,_ta.y,_tb.x,_tb.y)>1000)continue;
       let _inIce=false;
       if(G._fireZones){for(let _fzi=0;_fzi<G._fireZones.length;_fzi++){
-        const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm')continue; // 물→전기 반응: iceStorm만 (2026-05-08)
+        const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm')continue;
         const _ldx=_tb.x-_ta.x,_ldy=_tb.y-_ta.y,_ll2=_ldx*_ldx+_ldy*_ldy;
         let _lt=_ll2>0?((fz.x-_ta.x)*_ldx+(fz.y-_ta.y)*_ldy)/_ll2:0;
         _lt=_lt<0?0:_lt>1?1:_lt;
@@ -23392,29 +23394,30 @@ function update(){
       const _ta=G._thunderStakes[_ti],_tb=G._thunderStakes[_tj];
       if(dst(_ta.x,_ta.y,_tb.x,_tb.y)>1000)continue;
       const _links=Math.max(_tsIceLinks[_ti],_tsIceLinks[_tj]);
-      const _pullR=350+(_links-1)*150; // 1연결=350, 2=500, 3=650, ...
+      const _pullR=Math.min(1500,350+(_links-1)*150); // 최대1500
       const _pmx=(_ta.x+_tb.x)/2,_pmy=(_ta.y+_tb.y)/2;
       const _pullNe=shQuery(_pmx,_pmy,_pullR);
       const _adx=_tb.x-_ta.x,_ady=_tb.y-_ta.y,_al2=_adx*_adx+_ady*_ady;
-      for(let _pk=0;_pk<_pullNe.length;_pk++){const e=_pullNe[_pk];if(!e.alive)continue;
-        // 아크 선분 위 최근접점으로 끌어당김
+      // 몬스터 처리 최대 40개 캡
+      const _pullMax=Math.min(_pullNe.length,40);
+      for(let _pk=0;_pk<_pullMax;_pk++){const e=_pullNe[_pk];if(!e.alive)continue;
         let _at=_al2>0?((e.x-_ta.x)*_adx+(e.y-_ta.y)*_ady)/_al2:0;
         _at=_at<0?0:_at>1?1:_at;
         const _cpx=_ta.x+_at*_adx,_cpy=_ta.y+_at*_ady;
-        const _pd=dst(e.x,e.y,_cpx,_cpy);if(_pd<30)continue;
-        if(_pd>_pullR)continue;
-        // 아크 근접(35px 이내): 감전 틱 데미지 (매 프레임)
+        const _pdx=e.x-_cpx,_pdy=e.y-_cpy;
+        const _pd=Math.sqrt(_pdx*_pdx+_pdy*_pdy);if(_pd<30||_pd>_pullR)continue;
+        // 감전 틱 데미지 (3프레임치 합산×3 → 동일 DPS)
         if(_pd<35+e.r){
-          const _sDmg=~~((_ta.dmg+_tb.dmg)*0.05);
-          const _sAng=Math.atan2(e.y-_cpy,e.x-_cpx);
-          hurtE(e,_sDmg,_sAng,false,{dot:true,noKb:true},EL.L);
+          const _sDmg=~~((_ta.dmg+_tb.dmg)*0.15);
+          hurtE(e,_sDmg,Math.atan2(_pdy,_pdx),false,{dot:true,noKb:true},EL.L);
         }
-        const _pullAng=Math.atan2(_cpy-e.y,_cpx-e.x);
-        const _pullSpd=5*(1-_pd/_pullR*0.3);
-        const _nx=e.x+Math.cos(_pullAng)*_pullSpd,_ny=e.y+Math.sin(_pullAng)*_pullSpd;
+        // 3프레임치 이동량 한번에 적용
+        const _inv=1/_pd;const _pullSpd=15*(1-_pd/_pullR*0.3);
+        const _nx=e.x+(-_pdx*_inv)*_pullSpd,_ny=e.y+(-_pdy*_inv)*_pullSpd;
         if(!isW(_nx,_ny,true)){e.x=_nx;e.y=_ny}
       }
     }}
+    }
   }
   // slowMo 완전 비활성
   G.slowMo=0;
@@ -42997,13 +43000,13 @@ function drawP(){
     X.restore();
   }
   _dpS1=performance.now(); // S1=조준인디+해골무덤 끝
-  // ══ 불장판 렌더 (적 뒤로 투과) ══
+  // ══ 불장판 렌더 (투명도 60%로 적 가시성 확보) ══
   if(G._fireZones&&G._fireZones.length>0){
-    X.save();X.globalCompositeOperation='destination-over';
+    const _fzAlphaMul=0.3; // 장판 전체 투명도 계수
     for(let _fzi=0;_fzi<G._fireZones.length;_fzi++){
       const fz=G._fireZones[_fzi];
       const _fzProg=fz.t/fz.maxT;
-      const _fzFade=_fzProg>.8?1-(_fzProg-.8)/.2:1;
+      const _fzFade=(_fzProg>.8?1-(_fzProg-.8)/.2:1)*_fzAlphaMul;
       if(fz.type==='dim'){
         // 차원 장판 — 보라+초록+빨강 (독+출혈+암흑)
         X.globalAlpha=.15*_fzFade;
@@ -43056,54 +43059,47 @@ function drawP(){
         }
       }else if(fz.type==='shockField'){
         // ═══ 전격이동 전류장판 — 넓은 기둥형 번개 + 바닥 발광 ═══
-        const _st=_now*.001;const _sfF=~~(fz.t);
-        // ── 바닥 전기 줄기 (얇은 분기형, 은은) ──
-        if(!fz._arcs||_sfF%3===0){
-          fz._arcs=[];const _ac=5+~~(Math.random()*3);
+        const _sfF=~~(fz.t);
+        // ── 바닥 전기 줄기 (얇은 분기형, 은은) ── 매 8프레임 갱신으로 GC 절감
+        if(!fz._arcs||_sfF%8===0){
+          fz._arcs=[];const _ac=3+~~(Math.random()*2);
           for(let _ai=0;_ai<_ac;_ai++){
             const ang=Math.random()*Math.PI*2;const reach=(.3+Math.random()*.6)*fz.r;
             const pts=[{x:fz.x,y:fz.y}];const segs=3+~~(Math.random()*2);
             for(let s=1;s<=segs;s++){const t=s/segs;
               pts.push({x:fz.x+Math.cos(ang)*reach*t+(Math.random()-.5)*fz.r*.1,y:fz.y+Math.sin(ang)*reach*t+(Math.random()-.5)*fz.r*.1})}
-            fz._arcs.push({pts,w:.3+Math.random()*.6});
+            fz._arcs.push({pts,w:.4+Math.random()*.5});
           }
         }
+        // 아크: 1레이어만 렌더 (2→1 stroke 감소)
+        X.strokeStyle='#6688dd';X.globalAlpha=.14*_fzFade;
         for(let _ai=0;_ai<fz._arcs.length;_ai++){const a=fz._arcs[_ai];
-          X.strokeStyle='#4466cc';X.lineWidth=a.w+1;X.globalAlpha=.12*_fzFade;
-          X.beginPath();X.moveTo(a.pts[0].x,a.pts[0].y);for(let p=1;p<a.pts.length;p++)X.lineTo(a.pts[p].x,a.pts[p].y);X.stroke();
-          X.strokeStyle='#88aaff';X.lineWidth=a.w;X.globalAlpha=.25*_fzFade;
+          X.lineWidth=a.w;
           X.beginPath();X.moveTo(a.pts[0].x,a.pts[0].y);for(let p=1;p<a.pts.length;p++)X.lineTo(a.pts[p].x,a.pts[p].y);X.stroke();
         }
-        // ── 3) 착지 번개 기둥 렌더링 (착지 시 1회 생성됨) ──
+        // ── 착지 번개 기둥 렌더링 (착지 시 1회 생성됨) ──
         if(!fz._thunder)fz._thunder=[];
-        for(let ti=fz._thunder.length-1;ti>=0;ti--){
+        {let _tw=0;for(let ti=0;ti<fz._thunder.length;ti++){
           const th=fz._thunder[ti];th.life--;
-          if(th.life<=0){fz._thunder.splice(ti,1);continue}
+          if(th.life<=0)continue;fz._thunder[_tw++]=th}fz._thunder.length=_tw}
+        for(let ti=0;ti<fz._thunder.length;ti++){
+          const th=fz._thunder[ti];
           const ta=th.life/th.maxLife;
-          const flash=th.life>th.maxLife-4?2:1; // 처음 4프레임 밝게
+          const flash=th.life>th.maxLife-4?2:1;
           X.lineCap='round';
-          // 기둥 4레이어: 넓은보라글로우→보라→파랑메인→흰코어
-          const _layers=[{wMul:4,col:'#221155',alp:.06},{wMul:2.5,col:'#4433aa',alp:.12},{wMul:1.3,col:'#6677ee',alp:.35},{wMul:.5,col:'#eeeeff',alp:.55}];
-          for(let li=0;li<4;li++){const L=_layers[li];
-            X.strokeStyle=L.col;X.globalAlpha=L.alp*ta*flash*_fzFade;
+          // 기둥 2레이어: 파랑메인→흰코어 (4→2레이어로 절반 감소)
+          const _lA={wMul:1.3,col:'#6677ee',alp:.35};const _lB={wMul:.5,col:'#eeeeff',alp:.55};
+          for(let li=0;li<2;li++){const L=li===0?_lA:_lB;
+            X.strokeStyle=L.col;X.lineWidth=th.baseW*L.wMul;X.globalAlpha=L.alp*ta*flash*_fzFade;
             X.beginPath();X.moveTo(th.pts[0].x,th.pts[0].y);
-            for(let p=1;p<th.pts.length;p++){X.lineWidth=th.pts[p].w*L.wMul;X.lineTo(th.pts[p].x,th.pts[p].y)}
+            for(let p=1;p<th.pts.length;p++)X.lineTo(th.pts[p].x,th.pts[p].y);
             X.stroke();
-            for(let b=0;b<th.br.length;b++){
-              X.lineWidth=(th.baseW*.5)*L.wMul;X.globalAlpha=L.alp*ta*.5*flash*_fzFade;
-              X.beginPath();X.moveTo(th.br[b][0].x,th.br[b][0].y);
-              for(let p=1;p<th.br[b].length;p++)X.lineTo(th.br[b][p].x,th.br[b][p].y);X.stroke();
-            }
           }
-          // 착지 임팩트 — 파편
-          const lp=th.pts[th.pts.length-1];
-          if(th.life>th.maxLife-6){
-            const impA=ta*flash;
-            X.strokeStyle='#99aaff';X.lineWidth=2;X.globalAlpha=impA*.25*_fzFade;
-            for(let si=0;si<8;si++){
-              const sa=Math.PI*2*si/8+(Math.random()-.5)*.4;const sl=25+Math.random()*40;
-              X.beginPath();X.moveTo(lp.x,lp.y);X.lineTo(lp.x+Math.cos(sa)*sl,lp.y+Math.sin(sa)*sl);X.stroke();
-            }
+          // 분기: 코어 레이어만 (4→1세트)
+          X.lineWidth=th.baseW*.5;X.globalAlpha=_lB.alp*ta*.5*flash*_fzFade;X.strokeStyle=_lB.col;
+          for(let b=0;b<th.br.length;b++){
+            X.beginPath();X.moveTo(th.br[b][0].x,th.br[b][0].y);
+            for(let p=1;p<th.br[b].length;p++)X.lineTo(th.br[b][p].x,th.br[b][p].y);X.stroke();
           }
         }
         X.lineCap='butt';
@@ -43520,7 +43516,6 @@ function drawP(){
       }
     }
     X.globalAlpha=1;
-    X.restore(); // destination-over 복원
   }
   _dpS2=performance.now(); // S2=fireZone(5종장판) 끝
   // ══ 유령 허수아비 — 렌더 ══
@@ -47936,10 +47931,6 @@ $('retryBtn').onclick=async()=>{
 
 // ═══ 스테이지 전환 로딩 ═══
 const _STAGE_TRANSITION_RD=[];
-for(let i=1;i<=16;i++){
-  const ext = (i===11)?'jpg':'png';
-  _STAGE_TRANSITION_RD.push(`img/lording/rd${i}.${ext}`);
-}
 let _lastTransitionRd=-1;
 let _bootLoadShownAt=0,_bootLoadKilled=false;
 function _pickTransitionRd(){
@@ -47949,8 +47940,19 @@ function _pickTransitionRd(){
   _lastTransitionRd=n;
   return n;
 }
-(function _preloadTransitionRd(){
-  for(const src of _STAGE_TRANSITION_RD){ const im=new Image(); im.src=src; }
+// 자동 스캔: rd1, rd2, ... 순서대로 로드 시도 (확장자 순차 시도, 실패 시 중단)
+(function _scanTransitionRd(){
+  const _exts=['png','jpg','webp'];
+  let _i=1;
+  function _tryExt(ei){
+    if(ei>=_exts.length){console.log('[LOADING] rd 스캔 완료: '+_STAGE_TRANSITION_RD.length+'장');return}
+    const src='img/lording/rd'+_i+'.'+_exts[ei];
+    const im=new Image();
+    im.onload=function(){_STAGE_TRANSITION_RD.push(src);_i++;_tryExt(0)};
+    im.onerror=function(){_tryExt(ei+1)};
+    im.src=src;
+  }
+  _tryExt(0);
 })();
 function showStageTransition(callback){
   const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg'),info=$('stFloorInfo');
@@ -47963,7 +47965,7 @@ function showStageTransition(callback){
     const depth=SI_TO_FLOOR[nextStg]+1; const ch=CHAPTER_STAGES[hell];
     info.textContent=(OPT.lang==='ko'?stg.kr:_L(stg.kr,stg.n)+' Zone '+depth)+' | Lv.'+stg.monLv+' | '+depth+'/'+ch.stages;
   }
-  if(img){
+  if(img&&_STAGE_TRANSITION_RD.length>0){
     const idx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[idx];
   }
