@@ -83,4 +83,4 @@ hurtE 함수 진입 직후 `_shBufI++`를 추가하여, hurtE 내부의 모든 s
 
 ## eShield 관련 주의
 
-> **부분 복원 (2026-05-11)**: etype 6 (철갑 사도)에 한해 eShield 복원. `eShield = HP×35%` 초기값, 피격 시 차감. HP 페널티 없음 — HP는 항상 전액 피해. 나머지 etype은 eShield=0 유지.
+> **전 몬스터 복원 (2026-05-11)**: 모든 몬스터 eShield 복원. `eShield = HP×30%` 초기값, 피격(비DOT) 시 차감. HP 페널티 없음 — HP는 항상 전액 피해. etype 조건 없음.

@@ -54,9 +54,9 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 (Lv1→Lv10) | 쿨다운 | 데미지 공식 | DPS 비고 |
 |---|---|---|---|---|---|---|
-| kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→48** | 없음 | meleeRef × 콤보(1.5/1.5/5.0) × statStr × pAtkMul × **_skMul(b:1.0,g:0.42)** | **Lv1 DPS ~11×/초, Lv10 ~32×/초 (3타 범위120 붉은색, _skMul 통일 스케일링)** |
+| kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→48** | 없음 | meleeRef × **7.0(균등)** × statStr × pAtkMul × **_skMul(b:2.0,g:0.84)** | **Lv1: 타당 14×, 풀콤보=42×. Lv10: 타당=~40×, 풀콤보=~121× (7/7/7 균등, 2026-05-11)** |
 | whirlwind | 회전참 | ST(틱) | **30+(Lv-1)×5 ST/초** (Lv1=30, Lv10=75, Lv20=125) | 없음 (홀드) | meleeRef × statStr × pAtkMul × _skMul × _fuseMul | 360도 광역, Lv당 범위+5 뎀+5% |
-| giantSlam | 대왕치기 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 600-(Lv-1)×12)f = **10초→8초** | STR × meleeRef × 2 × **0.5** | 보스: maxPoise×25% 고정(3~4방 그로기), 일반몹: 뎀×22.5배 |
+| giantSlam | 대왕치기 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 600-(Lv-1)×12)f = **10초→8초** | meleeRef × statStr × pAtkMul × **_skMul(b:14,g:5.6)** | **Lv1=14×, Lv10=39.2×**. 보스: maxPoise×25% 고정(3~4방 그로기) (2026-05-11) |
 | giantSlam2 | 대왕치기 2 | ST + 악의20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
 
 ---

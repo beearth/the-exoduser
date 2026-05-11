@@ -1,5 +1,15 @@
 # CLAUDE.md — 지옥의 길 (Hell Road)
 
+## 배포 전 필수 (절대 규칙)
+
+**Vercel 배포 전 반드시 커밋+푸시 확인:**
+```
+git add -A && git status && git push origin main
+```
+- 배포 요청 시 **자동으로 위 명령 실행** — 수동 확인 필수
+- working tree clean + push 완료 확인 후에만 배포 진행
+- 안 하면 구버전이 배포됨
+
 ## 서버
 
 ```
