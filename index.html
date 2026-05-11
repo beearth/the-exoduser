@@ -450,7 +450,7 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
         <h1 style="margin:0;line-height:1">HELL</h1>
         <div style="font-family:'Cinzel Decorative',serif;font-size:.85rem;color:#aa8855;letter-spacing:5px;margin-top:2px;padding-left:2px">EXODUSER</div>
       </div>
-      <div class="lobby-mode">LOCAL MODE</div>
+      <div class="lobby-mode" id="lobbyMode"></div>
     </div>
     <div class="lobby-divider"></div>
     <div class="char-list" id="charList">
@@ -1477,7 +1477,7 @@ function playCinematic(){
     
     if(_testMode){
       $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
-      if($('userEmail'))$('userEmail').textContent='LOCAL MODE';loadLocalCharacters();
+      if($('userEmail'))$('userEmail').textContent='LOCAL MODE';if($('lobbyMode'))$('lobbyMode').textContent='LOCAL MODE';loadLocalCharacters();
     } else if(currentUser){
       showLobby();
     } else {
@@ -1667,7 +1667,7 @@ function skipToGate(){
   $('loading').style.display='none';
   if(_testMode){
     $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
-    if($('userEmail'))$('userEmail').textContent='LOCAL MODE';loadLocalCharacters();
+    if($('userEmail'))$('userEmail').textContent='LOCAL MODE';if($('lobbyMode'))$('lobbyMode').textContent='LOCAL MODE';loadLocalCharacters();
   } else if(currentUser){
     showLobby();
   } else {
@@ -1767,7 +1767,7 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
       $('cinScene').style.display='none';clearInterval(_emberIv);
       $('mainWrap').classList.add('show');
       $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
-      if($('userEmail'))$('userEmail').textContent='LOCAL MODE';
+      if($('userEmail'))$('userEmail').textContent='LOCAL MODE';if($('lobbyMode'))$('lobbyMode').textContent='LOCAL MODE';
       await loadLocalCharacters();
       hideLoading();
     } else {
@@ -1815,7 +1815,9 @@ if($('logoutBtn'))$('logoutBtn').onclick=async()=>{await sb.auth.signOut();curre
 async function showLobby(){
   showLoading(_TL('캐릭터 불러오는 중...'));
   $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
-  if($('userEmail'))$('userEmail').textContent=currentUser.email||'';await loadCharacters();
+  if($('userEmail'))$('userEmail').textContent=currentUser.email||'';
+  const _lm=$('lobbyMode');if(_lm){_lm.innerHTML='<span style="font-size:.7rem;color:#aa8855">'+((currentUser&&currentUser.email)||'')+'</span> <span style="cursor:pointer;color:#886644;font-size:.65rem" id="lobbyLogout">LOGOUT</span>';const _lo=$('lobbyLogout');if(_lo)_lo.onclick=()=>{sb.auth.signOut()}}
+  await loadCharacters();
   hideLoading();
 }
 async function loadCharacters(){
