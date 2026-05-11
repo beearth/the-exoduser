@@ -7,11 +7,26 @@ NUL
 _test_*
 *.pyc
 _autosave/
+saves/
 game_backup_*.html
 game_current.html
 game_test.html
 game_demo.html
 game_rollback_*.html
 game_1630.html
+game_backup_*.html
 index_backup_*.html
 docs/
+
+# BGM: 5~7장 제외 (데모: 1~4장만)
+bgm/5장_지옥군단/
+bgm/6장_사도마굴/
+bgm/7장_지옥성/
+
+# 이미지: 불필요 에셋 제외
+img/ui_refs/
+img/skillskin_upscaled/
+img/skillskinXX/
+img/vfx_candidates/
+img/grok_gen/
+img/ChatGPT*
