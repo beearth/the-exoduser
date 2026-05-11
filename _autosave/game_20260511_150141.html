@@ -36562,10 +36562,11 @@ function _loadSharedMats(){try{const v=localStorage.getItem(_SHARED_MATS_KEY);if
 function _saveSharedMats(v){try{const n=Math.max(0,Math.min(Math.floor(+v||0),Number.MAX_SAFE_INTEGER));localStorage.setItem(_SHARED_MATS_KEY,String(n));_saveSharedMatsToServer(n)}catch(e){}}
 // ═══ 악의 서버 동기화 ═══
 let _matsSyncTimer=0,_matsSyncLast=0,_matsSyncDirty=false,_matsPrev=0;
-function _saveSharedMatsToServer(n){try{fetch('/api/mats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mats:n})}).catch(()=>{})}catch(e){}}
+const _isLocalServer=location.hostname==='localhost'||location.hostname==='127.0.0.1'||location.protocol==='file:';
+function _saveSharedMatsToServer(n){if(!_isLocalServer)return;try{fetch('/api/mats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mats:n})}).catch(()=>{})}catch(e){}}
 // 디바운스 동기화: mats 변경 시 호출, 3초 이내 중복 방지
 function _matsDirty(){_matsSyncDirty=true;const now=Date.now();if(now-_matsSyncLast>=3000){_matsSyncLast=now;_matsSyncDirty=false;_saveSharedMats(G.mats||0)}else if(!_matsSyncTimer){_matsSyncTimer=setTimeout(()=>{_matsSyncTimer=0;if(_matsSyncDirty){_matsSyncLast=Date.now();_matsSyncDirty=false;_saveSharedMats(G.mats||0)}},3000-(now-_matsSyncLast))}}
-async function _loadSharedMatsFromServer(){try{const r=await fetch('/api/mats');if(r.ok){const j=await r.json();if(j.ok&&isFinite(j.mats)&&j.mats>=0){const n=Math.min(j.mats,Number.MAX_SAFE_INTEGER);localStorage.setItem(_SHARED_MATS_KEY,String(n));return n}}return _loadSharedMats()}catch(e){return _loadSharedMats()}}
+async function _loadSharedMatsFromServer(){if(!_isLocalServer)return _loadSharedMats();try{const r=await fetch('/api/mats');if(r.ok){const j=await r.json();if(j.ok&&isFinite(j.mats)&&j.mats>=0){const n=Math.min(j.mats,Number.MAX_SAFE_INTEGER);localStorage.setItem(_SHARED_MATS_KEY,String(n));return n}}return _loadSharedMats()}catch(e){return _loadSharedMats()}}
 function _getStore(){
   // 계정 공유 창고: localStorage에서 로드, STORAGE[0]은 참조만 유지
   if(!STORAGE[0]||!STORAGE._synced){
@@ -47940,22 +47941,10 @@ function _pickTransitionRd(){
   _lastTransitionRd=n;
   return n;
 }
-// 자동 스캔: rd1, rd2, ... 순서대로 로드 시도, 실패 시 중단
-(function _scanTransitionRd(){
-  const _exts=['png','jpg','webp'];
-  let _i=1;
-  function _try(){
-    let _fail=0;
-    for(let _ei=0;_ei<_exts.length;_ei++){
-      const src='img/lording/rd'+_i+'.'+_exts[_ei];
-      const im=new Image();
-      im.onload=function(){_STAGE_TRANSITION_RD.push(src);_i++;_try()};
-      im.onerror=function(){_fail++;if(_fail>=_exts.length)console.log('[LOADING] rd 스캔 완료: '+_STAGE_TRANSITION_RD.length+'장')};
-      im.src=src;
-    }
-  }
-  _try();
-})();
+// rd1~19 하드코딩 (확장자 매핑)
+const _RD_EXT={6:'webp',11:'jpg'};
+for(let i=1;i<=18;i++)_STAGE_TRANSITION_RD.push('img/lording/rd'+i+'.'+(_RD_EXT[i]||'png'));
+(function(){for(const src of _STAGE_TRANSITION_RD){const im=new Image();im.src=src}})();
 function showStageTransition(callback){
   const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg'),info=$('stFloorInfo');
   const nextStg=G.stage+1;
@@ -47967,7 +47956,7 @@ function showStageTransition(callback){
     const depth=SI_TO_FLOOR[nextStg]+1; const ch=CHAPTER_STAGES[hell];
     info.textContent=(OPT.lang==='ko'?stg.kr:_L(stg.kr,stg.n)+' Zone '+depth)+' | Lv.'+stg.monLv+' | '+depth+'/'+ch.stages;
   }
-  if(img){
+  if(img&&_STAGE_TRANSITION_RD.length>0){
     const idx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[idx];
   }
@@ -47986,7 +47975,7 @@ function showBootLoading(msg){
   if(!el||!bar||!name) return;
   _bootLoadShownAt=Date.now();
   name.textContent=msg||_T('불러오는 중...');
-  if(img){
+  if(img&&_STAGE_TRANSITION_RD.length>0){
     const idx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[idx];
   }

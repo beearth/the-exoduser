@@ -47940,20 +47940,10 @@ function _pickTransitionRd(){
   _lastTransitionRd=n;
   return n;
 }
-// 자동 스캔: rd1, rd2, ... 순서대로 로드 시도 (확장자 순차 시도, 실패 시 중단)
-(function _scanTransitionRd(){
-  const _exts=['png','jpg','webp'];
-  let _i=1;
-  function _tryExt(ei){
-    if(ei>=_exts.length){console.log('[LOADING] rd 스캔 완료: '+_STAGE_TRANSITION_RD.length+'장');return}
-    const src='img/lording/rd'+_i+'.'+_exts[ei];
-    const im=new Image();
-    im.onload=function(){_STAGE_TRANSITION_RD.push(src);_i++;_tryExt(0)};
-    im.onerror=function(){_tryExt(ei+1)};
-    im.src=src;
-  }
-  _tryExt(0);
-})();
+// rd1~19 하드코딩 (확장자 매핑)
+const _RD_EXT={6:'webp',11:'jpg'};
+for(let i=1;i<=18;i++)_STAGE_TRANSITION_RD.push('img/lording/rd'+i+'.'+(_RD_EXT[i]||'png'));
+(function(){for(const src of _STAGE_TRANSITION_RD){const im=new Image();im.src=src}})();
 function showStageTransition(callback){
   const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg'),info=$('stFloorInfo');
   const nextStg=G.stage+1;
@@ -47965,7 +47955,7 @@ function showStageTransition(callback){
     const depth=SI_TO_FLOOR[nextStg]+1; const ch=CHAPTER_STAGES[hell];
     info.textContent=(OPT.lang==='ko'?stg.kr:_L(stg.kr,stg.n)+' Zone '+depth)+' | Lv.'+stg.monLv+' | '+depth+'/'+ch.stages;
   }
-  if(img){
+  if(img&&_STAGE_TRANSITION_RD.length>0){
     const idx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[idx];
   }
@@ -47984,7 +47974,7 @@ function showBootLoading(msg){
   if(!el||!bar||!name) return;
   _bootLoadShownAt=Date.now();
   name.textContent=msg||_T('불러오는 중...');
-  if(img){
+  if(img&&_STAGE_TRANSITION_RD.length>0){
     const idx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[idx];
   }

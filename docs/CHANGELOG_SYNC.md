@@ -23660,3 +23660,17 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _autosave/game_20260511_111907.html
 - game.html
 
+
+## 2026-05-11 15:30 (auto)
+- _autosave/game_20260511_145508.html
+- _autosave/game_20260511_145515.html
+- _autosave/game_20260511_150141.html
+- _autosave/game_20260511_151251.html
+- _autosave/game_20260511_151302.html
+- _autosave/game_20260511_152453.html
+- _autosave/game_20260511_152528.html
+- _autosave/game_20260511_152536.html
+- docs/12?�포먼스·최적??shQuery_버퍼?�염_가?�드.md
+- docs/14밸런???�치?�이�?14밸런???�치?�이�?md
+- game.html
+

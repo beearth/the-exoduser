@@ -2779,7 +2779,7 @@ canvas{display:block;position:fixed;inset:0}
     <div style="width:240px;height:4px;background:rgba(255,255,255,.25);border-radius:4px;overflow:hidden;margin:0 auto 6px">
       <div id="stLoadBar" style="height:100%;background:var(--c-accent);width:0%;transition:width .2s"></div>
     </div>
-    <div style="color:#888;font-size:.85rem;letter-spacing:.15em">지옥으로 내려가는 중...</div>
+    <div id="stLoadTip" style="color:#888;font-size:.85rem;letter-spacing:.15em">지옥으로 내려가는 중...</div>
   </div>
 </div>
 <div class="ph" id="ph"></div>
@@ -22054,7 +22054,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     shockR:0,shockMax:0,laserAng:0,laserLen:0,deaths:0,reviveIframes:0,meteors:[],
     _revPts:ib?(150+Math.round(si*4.412)):0,_maxRevPts:ib?(150+Math.round(si*4.412)):0,
     shieldAng:etype===6?Math.random()*Math.PI*2:0,
-    eShield:0,eShieldMax:0,eShieldRegenT:0,
+    eShield:etype===6?~~(hp*.35):0,eShieldMax:etype===6?~~(hp*.35):0,eShieldRegenT:0,
     _firstShot:!ib, // 보스 제외, 첫 교전 시 빨간콩 1발
     bleed:0,bleedT:0,bleedStk:0,_bleedPool:0,poison:0,poisonT:0,poisonStk:0,_poisonPool:0,burnT:0,burnStk:0,_burnPool:0, // D4식 DOT: 히트뎀% 풀 축적
     shieldBashCd:etype===6?(120+Math.random()*60):9999,
@@ -23370,7 +23370,9 @@ function update(){
         }}
       }
     }
-    // ── 전류강화 흡인: 매 프레임, 블랙급 ──
+    // ── 전류강화 흡인: 3프레임 1회 (성능) ──
+    G._tsPullF=(G._tsPullF||0)+1;
+    if(G._tsPullF>=3){G._tsPullF=0;
     // 1단계: 각 창의 강화 아크 연결 수 계산
     const _tsIceLinks=new Uint8Array(G._thunderStakes.length);
     for(let _ti=0;_ti<G._thunderStakes.length;_ti++){for(let _tj=_ti+1;_tj<G._thunderStakes.length;_tj++){
@@ -23378,7 +23380,7 @@ function update(){
       if(dst(_ta.x,_ta.y,_tb.x,_tb.y)>1000)continue;
       let _inIce=false;
       if(G._fireZones){for(let _fzi=0;_fzi<G._fireZones.length;_fzi++){
-        const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm')continue; // 물→전기 반응: iceStorm만 (2026-05-08)
+        const fz=G._fireZones[_fzi];if(fz.type!=='iceStorm')continue;
         const _ldx=_tb.x-_ta.x,_ldy=_tb.y-_ta.y,_ll2=_ldx*_ldx+_ldy*_ldy;
         let _lt=_ll2>0?((fz.x-_ta.x)*_ldx+(fz.y-_ta.y)*_ldy)/_ll2:0;
         _lt=_lt<0?0:_lt>1?1:_lt;
@@ -23392,29 +23394,30 @@ function update(){
       const _ta=G._thunderStakes[_ti],_tb=G._thunderStakes[_tj];
       if(dst(_ta.x,_ta.y,_tb.x,_tb.y)>1000)continue;
       const _links=Math.max(_tsIceLinks[_ti],_tsIceLinks[_tj]);
-      const _pullR=Math.min(1500,350+(_links-1)*150); // 1연결=350, 2=500, 3=650, ..., 최대1500
+      const _pullR=Math.min(1500,350+(_links-1)*150); // 최대1500
       const _pmx=(_ta.x+_tb.x)/2,_pmy=(_ta.y+_tb.y)/2;
       const _pullNe=shQuery(_pmx,_pmy,_pullR);
       const _adx=_tb.x-_ta.x,_ady=_tb.y-_ta.y,_al2=_adx*_adx+_ady*_ady;
-      for(let _pk=0;_pk<_pullNe.length;_pk++){const e=_pullNe[_pk];if(!e.alive)continue;
-        // 아크 선분 위 최근접점으로 끌어당김
+      // 몬스터 처리 최대 40개 캡
+      const _pullMax=Math.min(_pullNe.length,40);
+      for(let _pk=0;_pk<_pullMax;_pk++){const e=_pullNe[_pk];if(!e.alive)continue;
         let _at=_al2>0?((e.x-_ta.x)*_adx+(e.y-_ta.y)*_ady)/_al2:0;
         _at=_at<0?0:_at>1?1:_at;
         const _cpx=_ta.x+_at*_adx,_cpy=_ta.y+_at*_ady;
-        const _pd=dst(e.x,e.y,_cpx,_cpy);if(_pd<30)continue;
-        if(_pd>_pullR)continue;
-        // 아크 근접(35px 이내): 감전 틱 데미지 (매 프레임)
+        const _pdx=e.x-_cpx,_pdy=e.y-_cpy;
+        const _pd=Math.sqrt(_pdx*_pdx+_pdy*_pdy);if(_pd<30||_pd>_pullR)continue;
+        // 감전 틱 데미지 (3프레임치 합산×3 → 동일 DPS)
         if(_pd<35+e.r){
-          const _sDmg=~~((_ta.dmg+_tb.dmg)*0.05);
-          const _sAng=Math.atan2(e.y-_cpy,e.x-_cpx);
-          hurtE(e,_sDmg,_sAng,false,{dot:true,noKb:true},EL.L);
+          const _sDmg=~~((_ta.dmg+_tb.dmg)*0.15);
+          hurtE(e,_sDmg,Math.atan2(_pdy,_pdx),false,{dot:true,noKb:true},EL.L);
         }
-        const _pullAng=Math.atan2(_cpy-e.y,_cpx-e.x);
-        const _pullSpd=5*(1-_pd/_pullR*0.3);
-        const _nx=e.x+Math.cos(_pullAng)*_pullSpd,_ny=e.y+Math.sin(_pullAng)*_pullSpd;
+        // 3프레임치 이동량 한번에 적용
+        const _inv=1/_pd;const _pullSpd=15*(1-_pd/_pullR*0.3);
+        const _nx=e.x+(-_pdx*_inv)*_pullSpd,_ny=e.y+(-_pdy*_inv)*_pullSpd;
         if(!isW(_nx,_ny,true)){e.x=_nx;e.y=_ny}
       }
     }}
+    }
   }
   // slowMo 완전 비활성
   G.slowMo=0;
@@ -32070,11 +32073,13 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(opts&&opts.bleed){e.bleed=1;e.bleedT=Math.max(e.bleedT||0,300);e.bleedStk=Math.min(10,(e.bleedStk||0)+1);if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*dmg*0.10} // 출혈: 10%, 5초
     if(opts&&opts.poison){e.poison=1;e.poisonT=Math.max(e.poisonT||0,300);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*dmg*0.10} // 중독: 10%, 5초
   }
-  // ═══ 물리 방패 방어 — Type 6만 (정면 70% 감소) ═══
+  // ═══ 방패돌격병 Type 6 — 방패 방어 + 에너지쉴드 차감 ═══
   if(e.etype===6&&ang!==undefined){
     let shDiff=(ang+Math.PI)-e.shieldAng;while(shDiff>Math.PI)shDiff-=Math.PI*2;while(shDiff<-Math.PI)shDiff+=Math.PI*2;
     if(Math.abs(shDiff)<Math.PI/3){dmg=~~(dmg*0.3);addTxt(e.x,e.y-15,'🛡','#8888ff',20);if(!noSound)SFX.block()}
   }
+  // 에너지쉴드 차감 (HP 페널티 없음 — HP는 그대로 전액 피해)
+  if(e.etype===6&&e.eShield>0&&!isDot){e.eShield=Math.max(0,e.eShield-dmg)}
   // ═══ 63:갑각 괴물 — 집게 방어 중 70% 감소 ═══
   if(e.etype===63&&e._crabGuard&&!isDot){dmg=~~(dmg*.3);addTxt(e.x,e.y-15,_T('방어!'),'#445533',20)}
   // ═══ 74:흑요석 기사 — 방어 중 80% 감소 ═══
@@ -36559,10 +36564,11 @@ function _loadSharedMats(){try{const v=localStorage.getItem(_SHARED_MATS_KEY);if
 function _saveSharedMats(v){try{const n=Math.max(0,Math.min(Math.floor(+v||0),Number.MAX_SAFE_INTEGER));localStorage.setItem(_SHARED_MATS_KEY,String(n));_saveSharedMatsToServer(n)}catch(e){}}
 // ═══ 악의 서버 동기화 ═══
 let _matsSyncTimer=0,_matsSyncLast=0,_matsSyncDirty=false,_matsPrev=0;
-function _saveSharedMatsToServer(n){try{fetch('/api/mats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mats:n})}).catch(()=>{})}catch(e){}}
+const _isLocalServer=location.hostname==='localhost'||location.hostname==='127.0.0.1'||location.protocol==='file:';
+function _saveSharedMatsToServer(n){if(!_isLocalServer)return;try{fetch('/api/mats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mats:n})}).catch(()=>{})}catch(e){}}
 // 디바운스 동기화: mats 변경 시 호출, 3초 이내 중복 방지
 function _matsDirty(){_matsSyncDirty=true;const now=Date.now();if(now-_matsSyncLast>=3000){_matsSyncLast=now;_matsSyncDirty=false;_saveSharedMats(G.mats||0)}else if(!_matsSyncTimer){_matsSyncTimer=setTimeout(()=>{_matsSyncTimer=0;if(_matsSyncDirty){_matsSyncLast=Date.now();_matsSyncDirty=false;_saveSharedMats(G.mats||0)}},3000-(now-_matsSyncLast))}}
-async function _loadSharedMatsFromServer(){try{const r=await fetch('/api/mats');if(r.ok){const j=await r.json();if(j.ok&&isFinite(j.mats)&&j.mats>=0){const n=Math.min(j.mats,Number.MAX_SAFE_INTEGER);localStorage.setItem(_SHARED_MATS_KEY,String(n));return n}}return _loadSharedMats()}catch(e){return _loadSharedMats()}}
+async function _loadSharedMatsFromServer(){if(!_isLocalServer)return _loadSharedMats();try{const r=await fetch('/api/mats');if(r.ok){const j=await r.json();if(j.ok&&isFinite(j.mats)&&j.mats>=0){const n=Math.min(j.mats,Number.MAX_SAFE_INTEGER);localStorage.setItem(_SHARED_MATS_KEY,String(n));return n}}return _loadSharedMats()}catch(e){return _loadSharedMats()}}
 function _getStore(){
   // 계정 공유 창고: localStorage에서 로드, STORAGE[0]은 참조만 유지
   if(!STORAGE[0]||!STORAGE._synced){
@@ -47937,22 +47943,10 @@ function _pickTransitionRd(){
   _lastTransitionRd=n;
   return n;
 }
-// 자동 스캔: rd1, rd2, ... 순서대로 로드 시도, 실패 시 중단
-(function _scanTransitionRd(){
-  const _exts=['png','jpg','webp'];
-  let _i=1;
-  function _try(){
-    let _fail=0;
-    for(let _ei=0;_ei<_exts.length;_ei++){
-      const src='img/lording/rd'+_i+'.'+_exts[_ei];
-      const im=new Image();
-      im.onload=function(){_STAGE_TRANSITION_RD.push(src);_i++;_try()};
-      im.onerror=function(){_fail++;if(_fail>=_exts.length)console.log('[LOADING] rd 스캔 완료: '+_STAGE_TRANSITION_RD.length+'장')};
-      im.src=src;
-    }
-  }
-  _try();
-})();
+// rd1~19 하드코딩 (확장자 매핑)
+const _RD_EXT={6:'webp',11:'jpg'};
+for(let i=1;i<=18;i++)_STAGE_TRANSITION_RD.push('img/lording/rd'+i+'.'+(_RD_EXT[i]||'png'));
+// 프리로드 제거 — 스테이지 전환 시 lazy load (배포 초기 로딩 최적화)
 function showStageTransition(callback){
   const el=$('stageTransition'),bar=$('stLoadBar'),name=$('stNextName'),img=$('stRndImg'),info=$('stFloorInfo');
   const nextStg=G.stage+1;
@@ -47964,7 +47958,7 @@ function showStageTransition(callback){
     const depth=SI_TO_FLOOR[nextStg]+1; const ch=CHAPTER_STAGES[hell];
     info.textContent=(OPT.lang==='ko'?stg.kr:_L(stg.kr,stg.n)+' Zone '+depth)+' | Lv.'+stg.monLv+' | '+depth+'/'+ch.stages;
   }
-  if(img){
+  if(img&&_STAGE_TRANSITION_RD.length>0){
     const idx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[idx];
   }
@@ -47983,7 +47977,7 @@ function showBootLoading(msg){
   if(!el||!bar||!name) return;
   _bootLoadShownAt=Date.now();
   name.textContent=msg||_T('불러오는 중...');
-  if(img){
+  if(img&&_STAGE_TRANSITION_RD.length>0){
     const idx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[idx];
   }
