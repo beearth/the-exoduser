@@ -47883,18 +47883,6 @@ function _cutsceneEnd(){
   if(_DEMO_MODE&&_demoLobbyPending){_demoLobbyPending=false;setTimeout(_showDemoLobby,400);}
   else{_startIntro();}
 }
-function _demoBoot_showSplash(){
-  const sp=document.getElementById('splash');if(!sp)return;
-  sp.classList.add('on');
-  const vid=document.getElementById('spVid');if(vid){vid.currentTime=0;vid.play().catch(()=>{});}
-  function _onSpClick(){
-    sp.classList.remove('on');
-    if(vid){vid.pause();vid.currentTime=0;}
-    sp.removeEventListener('click',_onSpClick);
-    _demoLobbyPending=true;G._cutsceneDone=false;_startIntroCutscene();
-  }
-  sp.addEventListener('click',_onSpClick);
-}
 function _showDemoLobby(){
   const el=document.getElementById('demoLobby');if(!el)return;
   el.style.opacity='1';el.style.pointerEvents='all';
@@ -47908,16 +47896,7 @@ function _showDemoLobby(){
   };
   document.getElementById('demoLobbyReplay').onclick=()=>{
     el.style.opacity='0';el.style.pointerEvents='none';
-    const sp=document.getElementById('splash');if(!sp)return;
-    sp.classList.add('on');
-    const vid=document.getElementById('spVid');if(vid){vid.currentTime=0;vid.play().catch(()=>{});}
-    function _onRpl(){
-      sp.classList.remove('on');
-      if(vid){vid.pause();vid.currentTime=0;}
-      sp.removeEventListener('click',_onRpl);
-      _demoLobbyPending=true;G._cutsceneDone=false;_startIntroCutscene();
-    }
-    sp.addEventListener('click',_onRpl);
+    _demoLobbyPending=true;G._cutsceneDone=false;_startIntroCutscene();
   };
 }
 
@@ -48646,7 +48625,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     setTimeout(()=>dbSave(),3000);
     // 인트로 연출
     if(_DEMO_MODE&&G.stage===0){
-      _demoBoot_showSplash();
+      _demoLobbyPending=true;_startIntroCutscene();
     }else if(G.stage===0){
       _startIntroCutscene();
     }else{

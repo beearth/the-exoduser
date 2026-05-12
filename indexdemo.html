@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>EXODUSER: HELL LORD — Demo</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500&family=Noto+Serif+KR:wght@400;500&family=Noto+Serif+JP:wght@400;500&family=Noto+Serif+SC:wght@400;500&family=Noto+Serif+TC:wght@400;500&family=Noto+Naskh+Arabic:wght@400;500&family=Noto+Serif+Thai:wght@400;500&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
+
+/* ── FDG SCREEN ── */
+.fdg-screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000;gap:clamp(18px,3vh,36px);z-index:9999;opacity:0;transition:opacity .5s}
+.fdg-screen.active{opacity:1}
+.fdg-wolf-wrap{position:relative;width:clamp(80px,min(22vw,18vh),290px);flex-shrink:0}
+.fdg-wolf-emblem{width:100%;height:auto;opacity:0;transition:opacity 1.4s ease-out;display:block}
+.fdg-screen.active .fdg-wolf-emblem{opacity:.92}
+.fdg-eye-glow{position:absolute;top:56%;width:16%;height:12%;background:radial-gradient(ellipse at center,rgba(220,30,8,.8) 0%,transparent 70%);pointer-events:none;animation:fdg-eye-pulse 1.4s ease-in-out 1.8s infinite;animation-fill-mode:backwards;transform:translateY(-50%)}
+.fdg-eye-glow.left{left:33.5%}
+.fdg-eye-glow.right{left:50.5%}
+@keyframes fdg-eye-pulse{0%,100%{opacity:.10}50%{opacity:.55}}
+.fdg-title{display:flex;justify-content:center;align-items:baseline;gap:.18em;font:700 clamp(16px,min(6vw,8vh),96px) 'Cinzel Decorative','Cinzel',Georgia,serif;letter-spacing:0;white-space:nowrap;transition:gap .8s cubic-bezier(.22,1,.36,1),letter-spacing .8s cubic-bezier(.22,1,.36,1)}
+.fdg-title.expand{gap:.6em;letter-spacing:.2em}
+.fdg-title .w{display:inline-flex;align-items:baseline}
+.fdg-title .a{color:#C9A961;opacity:0;transform:translateY(13px) scale(.87);transition:opacity .5s ease-out,transform .65s cubic-bezier(.22,1,.36,1)}
+.fdg-title .a.on{opacity:1;transform:translateY(0) scale(1)}
+.fdg-title .x{display:inline-block;max-width:0;overflow:hidden;white-space:nowrap;vertical-align:bottom;color:#E8E0D0;padding:.1em 0 .4em 0;transition:max-width .8s cubic-bezier(.22,1,.36,1)}
+.fdg-title .x.on{max-width:9em}
+.fdg-title .x::after{content:'';display:inline-block;width:.5em}
+.fdg-presents{font:400 clamp(12px,1.25vw,24px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#888;letter-spacing:.5em;text-align:center;opacity:0;transition:opacity .5s ease-out}
+.fdg-subtitle{font:400 clamp(15px,1.7vw,26px) 'Noto Serif KR','Noto Serif JP','Noto Serif SC','Noto Serif TC','Noto Naskh Arabic','Noto Serif Thai','Noto Serif',serif;color:#C9A961;letter-spacing:.20em;text-align:center;opacity:1;line-height:1.4}
+:lang(ja) .fdg-subtitle{font-family:'Noto Serif JP',serif;letter-spacing:.15em}
+:lang(zh-Hans) .fdg-subtitle{font-family:'Noto Serif SC',serif;letter-spacing:.12em}
+:lang(zh-Hant) .fdg-subtitle{font-family:'Noto Serif TC',serif;letter-spacing:.12em}
+:lang(ar) .fdg-subtitle{font-family:'Noto Naskh Arabic',serif;letter-spacing:.05em;direction:rtl}
+:lang(th) .fdg-subtitle{font-family:'Noto Serif Thai',serif;letter-spacing:.08em}
+.fdg-subtitle .fdg-char{display:inline-block;opacity:0;filter:blur(12px);transition:opacity .4s ease-out,filter .5s ease-out}
+.fdg-subtitle .fdg-char.on{opacity:1;filter:blur(0)}
+.fdg-prompt{font:400 clamp(14px,1.5vw,22px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#666;letter-spacing:.35em;text-align:center;opacity:0}
+.fdg-prompt.on{animation:fdg-blink 1.2s ease-in-out infinite alternate}
+@keyframes fdg-blink{from{opacity:0}to{opacity:.5}}
+
+/* ── MAIN UI ── */
+#mainWrap{opacity:0;transition:opacity .8s;pointer-events:none;display:flex;align-items:center;justify-content:center;min-height:100vh}
+#mainWrap.show{opacity:1;pointer-events:all}
+.title{text-align:center;margin-bottom:24px}
+.title h1{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,8vw,5rem);color:#cc4422;text-shadow:0 0 60px rgba(200,60,0,.4),0 0 120px rgba(180,40,0,.2);letter-spacing:.15em}
+.title p{font-family:'Cinzel Decorative',serif;font-size:clamp(.9rem,2.5vw,1.4rem);color:#886644;letter-spacing:.5em;margin-top:4px}
+.card{background:rgba(10,4,2,.85);border:1px solid rgba(150,80,40,.3);border-radius:2px;padding:32px 40px;max-width:380px;width:90vw;text-align:center;backdrop-filter:blur(8px)}
+.card h2{font-size:.9rem;color:#554433;letter-spacing:.3em;margin-bottom:24px;font-weight:400}
+.start-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 40px;background:rgba(10,4,2,.92);border:1px solid rgba(255,100,40,.5);color:#ffaa66;font-family:'Noto Sans KR',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;letter-spacing:.15em;transition:all .3s;width:100%;margin-bottom:16px}
+.start-btn:hover{background:rgba(80,20,5,.9);border-color:rgba(255,120,50,.8);color:#ffcc88;box-shadow:0 0 20px rgba(200,80,0,.3)}
+.demo-badge{font-size:.7rem;color:#443322;letter-spacing:.2em}
+</style>
+</head>
+<body>
+
+<!-- FDG LOGO SCREEN -->
+<div id="fdgScreen" class="fdg-screen" style="display:none">
+  <div class="fdg-wolf-wrap">
+    <img class="fdg-wolf-emblem" src="img/fdg_wolf/fdg_wolf_emblem.png" alt="FDG Wolf Emblem">
+    <div class="fdg-eye-glow left"></div>
+    <div class="fdg-eye-glow right"></div>
+  </div>
+  <div class="fdg-title" id="fdgTitle">
+    <span class="w"><span class="a" id="fdgAF">F</span><span class="x" id="fdgXOR">OR</span></span>
+    <span class="w"><span class="a" id="fdgAD">D</span><span class="x" id="fdgXEAR">EAR</span></span>
+    <span class="w"><span class="a" id="fdgAG">G</span><span class="x" id="fdgXAMERS">AMERS</span></span>
+  </div>
+  <div class="fdg-presents" id="fdgPresents">PRESENTS</div>
+  <div class="fdg-subtitle" id="fdgSubtitle"></div>
+  <div class="fdg-prompt" id="fdgPrompt"></div>
+</div>
+
+<!-- MAIN UI -->
+<div id="mainWrap">
+  <div style="text-align:center;width:100%">
+    <div class="title"><h1>HELL</h1><p>EXODUSER</p></div>
+    <div style="margin:-12px 0 20px">
+      <select id="langSelect" style="background:#1a1008;border:1px solid #443322;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
+        <option value="ko">한국어</option><option value="en">English</option>
+        <option value="zh">中文简体</option><option value="zht">繁體中文</option>
+        <option value="ja">日本語</option><option value="vi">Tiếng Việt</option>
+        <option value="th">ไทย</option><option value="id">Bahasa Indonesia</option>
+        <option value="es">Español</option><option value="fr">Français</option>
+        <option value="it">Italiano</option><option value="ptbr">Português</option>
+        <option value="ro">Română</option><option value="de">Deutsch</option>
+        <option value="nl">Nederlands</option><option value="sv">Svenska</option>
+        <option value="da">Dansk</option><option value="no">Norsk</option>
+        <option value="ru">Русский</option><option value="uk">Українська</option>
+        <option value="pl">Polski</option><option value="cs">Čeština</option>
+        <option value="hu">Magyar</option><option value="bg">Български</option>
+        <option value="el">Ελληνικά</option><option value="fi">Suomi</option>
+        <option value="tr">Türkçe</option><option value="ar">العربية</option>
+      </select>
+    </div>
+    <div class="card" style="margin:0 auto">
+      <h2 id="demoTitle">DEMO BUILD</h2>
+      <button class="start-btn" id="startBtn">▶ 게임 시작</button>
+      <div class="demo-badge" id="demoBadge">v0.1-demo</div>
+    </div>
+  </div>
+</div>
+
+<script src="lobby_i18n.js"></script>
+<script>
+// ═══ 번역 테이블 (index.html과 동일한 키 — FDG 스플래시용) ═══
+const _LOBBY_EN={'친애하는 게이머 여러분께 바칩니다':'Dedicated to all you dear gamers','아무 키나 눌러 계속':'Press any key to continue'};
+const _LOBBY_ZH={'친애하는 게이머 여러분께 바칩니다':'献给各位亲爱的玩家','아무 키나 눌러 계속':'按任意键继续'};
+const _LOBBY_JA={'친애하는 게이머 여러분께 바칩니다':'親愛なるゲーマーの皆様へ捧ぐ','아무 키나 눌러 계속':'何かキーを押して続行'};
+const _LOBBY_ES={'친애하는 게이머 여러분께 바칩니다':'Dedicado a todos vosotros, queridos jugadores','아무 키나 눌러 계속':'Presiona cualquier tecla para continuar'};
+const _LOBBY_ZHT={'친애하는 게이머 여러분께 바칩니다':'獻給各位親愛的玩家','아무 키나 눌러 계속':'按任意鍵繼續'};
+const _LOBBY_TABLES=Object.assign(
+  {en:_LOBBY_EN,zh:_LOBBY_ZH,ja:_LOBBY_JA,es:_LOBBY_ES,zht:_LOBBY_ZHT},
+  typeof _LOBBY_I18N!=='undefined'?_LOBBY_I18N:{}
+);
+// 데모 전용 신규 문자열
+const _DEMO_STR={
+  '게임 시작':{en:'Start Game',zh:'开始游戏',zht:'開始遊戲',ja:'ゲームを始める',es:'Iniciar juego',fr:'Lancer le jeu',de:'Spiel starten',ru:'Начать игру',ptbr:'Iniciar jogo',it:'Inizia il gioco',vi:'Bắt đầu',th:'เริ่มเกม',id:'Mulai',tr:'Başlat',pl:'Graj',cs:'Hrát',hu:'Játék',bg:'Игра',el:'Παιχνίδι',fi:'Pelaa',sv:'Spela',da:'Spil',no:'Spill',nl:'Spelen',ro:'Joacă',uk:'Грати',ar:'ابدأ'},
+};
+
+const _HTML_LANG_MAP={ko:'ko',ja:'ja',zh:'zh-Hans',zht:'zh-Hant',ar:'ar',th:'th',vi:'vi',id:'id',tr:'tr',el:'el',ru:'ru',uk:'uk',bg:'bg',pl:'pl',cs:'cs',hu:'hu',ro:'ro',de:'de',nl:'nl',sv:'sv',da:'da',no:'no',fi:'fi',fr:'fr',it:'it',es:'es',ptbr:'pt',en:'en'};
+
+function _lobbyLang(){return localStorage.getItem('hellLang')||'ko'}
+function _TL(s){
+  const lang=_lobbyLang();
+  if(lang==='ko')return s;
+  const tbl=_LOBBY_TABLES[lang]||_LOBBY_EN;
+  return tbl[s]||_LOBBY_EN[s]||s;
+}
+function _DL(s){
+  const lang=_lobbyLang();
+  if(lang==='ko')return s;
+  const tbl=_DEMO_STR[s];
+  return(tbl&&tbl[lang])||_LOBBY_EN[s]||(tbl&&tbl.en)||s;
+}
+
+// ═══ UI 언어 적용 ═══
+function _applyLang(){
+  const lang=_lobbyLang();
+  document.getElementById('langSelect').value=lang;
+  document.documentElement.lang=_HTML_LANG_MAP[lang]||lang;
+  document.getElementById('startBtn').textContent='▶ '+_DL('게임 시작');
+}
+document.getElementById('langSelect').addEventListener('change',e=>{
+  localStorage.setItem('hellLang',e.target.value);
+  _applyLang();
+});
+
+// 저장된 언어 초기화
+(()=>{const s=localStorage.getItem('hellLang');if(s)document.getElementById('langSelect').value=s;})();
+_applyLang();
+
+// ═══ FDG 스플래시 시퀀스 ═══
+(function(){
+  const fdgEl=document.getElementById('fdgScreen');
+  const fdgSub=document.getElementById('fdgSubtitle');
+  const fdgTitleEl=document.getElementById('fdgTitle');
+  let fdgSteps=[],done=false;
+
+  function showFDGScreen(){
+    document.documentElement.lang=_HTML_LANG_MAP[_lobbyLang()]||'ko';
+    const _subText=_TL('친애하는 게이머 여러분께 바칩니다');
+    fdgSub.innerHTML='';
+    for(let i=0;i<_subText.length;i++){
+      const sp=document.createElement('span');sp.className='fdg-char';
+      sp.textContent=_subText[i]===' '?'\u00A0':_subText[i];
+      fdgSub.appendChild(sp);
+    }
+    const chars=fdgSub.querySelectorAll('.fdg-char');
+    fdgEl.style.display='';
+    requestAnimationFrame(()=>requestAnimationFrame(()=>fdgEl.classList.add('active')));
+    const s=(fn,ms)=>fdgSteps.push(setTimeout(fn,ms));
+    s(()=>document.getElementById('fdgAF').classList.add('on'),1200);
+    s(()=>document.getElementById('fdgAD').classList.add('on'),1400);
+    s(()=>document.getElementById('fdgAG').classList.add('on'),1580);
+    s(()=>{
+      fdgTitleEl.classList.add('expand');
+      ['fdgXOR','fdgXEAR','fdgXAMERS'].forEach(id=>document.getElementById(id).classList.add('on'));
+    },2300);
+    s(()=>{document.getElementById('fdgPresents').style.opacity='1'},3200);
+    chars.forEach((_,i)=>s(()=>chars[i].classList.add('on'),3800+i*80));
+    s(()=>{
+      const pr=document.getElementById('fdgPrompt');
+      if(pr){pr.textContent=_TL('아무 키나 눌러 계속');pr.classList.add('on');}
+    },3800+(chars.length-1)*80+400);
+  }
+
+  function hideFDGScreen(){
+    fdgSteps.forEach(clearTimeout);fdgSteps=[];
+    fdgEl.classList.remove('active');fdgEl.style.display='none';
+    ['fdgAF','fdgAD','fdgAG','fdgXOR','fdgXEAR','fdgXAMERS'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('on')});
+    fdgTitleEl.classList.remove('expand');
+    document.getElementById('fdgPrompt').classList.remove('on');
+    fdgSub.innerHTML='';
+  }
+
+  function endSplash(){
+    if(done)return;done=true;
+    hideFDGScreen();
+    document.getElementById('mainWrap').classList.add('show');
+  }
+
+  fdgEl.addEventListener('click',()=>{if(!done)endSplash()});
+  document.addEventListener('keydown',function onKey(e){
+    if(done){document.removeEventListener('keydown',onKey);return}
+    e.preventDefault();endSplash();
+  });
+
+  showFDGScreen();
+})();
+
+// ═══ 게임 시작 버튼 ═══
+document.getElementById('startBtn').onclick=()=>{
+  localStorage.setItem('hellLang',document.getElementById('langSelect').value);
+  window.location.href='gamedemo.html';
+};
+</script>
+</body>
+</html>
