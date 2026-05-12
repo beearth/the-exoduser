@@ -1989,5 +1989,9 @@ const _CS_BASE={
   '💥 강타!':'💥 Slam!',
   '🌀 휘두르기!':'🌀 Sweep!',
   '방어↓':'DEF↓',
+// --- Demo End Screen ---
+'데모 종료':'Konec Dema',
+'여기까지 데모입니다. 정식 출시를 기대해주세요!':'To je konec dema. Těšíme se na plné vydání!',
+'STEAM 위시리스트로 응원해 주세요!':'Podpořte nás přidáním hry do seznamu přání na Steamu!',
+'STEAM 위시리스트':'Seznam přání Steam',
 };
-

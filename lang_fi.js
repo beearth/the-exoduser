@@ -2451,4 +2451,9 @@ const _FI_BASE={'대검':'Suuri Miekka','석궁':'Varsijousi','연사석궁':'Sa
   '💥 강타!':'💥 Slam!',
   '🌀 휘두르기!':'🌀 Sweep!',
   '방어↓':'DEF↓',
+// --- Demo End Screen ---
+'데모 종료':'Demon Loppu',
+'여기까지 데모입니다. 정식 출시를 기대해주세요!':'Tämä on demon loppu. Odotamme innolla täyttä julkaisua!',
+'STEAM 위시리스트로 응원해 주세요!':'Tue meitä lisäämällä peli Steam-toivelistaasi!',
+'STEAM 위시리스트':'Steam-toivelista',
 };

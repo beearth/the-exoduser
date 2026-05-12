@@ -2185,7 +2185,6 @@ canvas{display:block;position:fixed;inset:0}
 <div id="petSubtitle" style="position:fixed;bottom:140px;left:50%;transform:translateX(-50%);color:#ffdd88;font-size:1.1rem;font-weight:700;font-family:'Malgun Gothic',sans-serif;text-align:center;pointer-events:none;z-index:999;text-shadow:0 0 6px rgba(0,0,0,.9),0 0 12px rgba(0,0,0,.7);opacity:0;transition:opacity .3s;white-space:nowrap"></div>
 <div id="skBarTip"></div>
 <div id="skBar">
-  <div id="skKeyBar" style="position:absolute;top:56px;left:0;width:100%;height:14px;pointer-events:none;z-index:6;display:none"></div>
   <div id="poiseBarWrap" style="display:none"><div id="poiseBarFill"></div></div>
   <div class="qs-row" id="qsRow">
     <div class="qs" id="qs0"><span class="qs-cnt"></span></div>
@@ -2203,6 +2202,8 @@ canvas{display:block;position:fixed;inset:0}
     <div class="qs" id="skSlot1"></div>
   </div>
   <div style="display:none"><div class="qs" id="qsK"></div><div class="qs" id="qsG"></div><div class="qs" id="qsTAB"></div><div class="qs" id="qsESC"></div></div>
+  <!-- 동적 키 라벨 (패드/KBM 자동 전환) -->
+  <div id="skBarKeyRow" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5"></div>
 </div>
 
 <div id="hud">
@@ -6670,11 +6671,6 @@ const _EN={
 '⚙ 특수':'⚙ Special',
 // --- Phase 35: 펫 이름 ---
 '핵터':'Hecter','디로이':'Deroy',
-// --- Demo End Screen ---
-'데모 종료':'End of Demo',
-'여기까지 데모입니다.':'This is the end of the demo.',
-'정식 출시를 기대해주세요!':'Wishlist on Steam to support the full release!',
-'STEAM 위시리스트 ★':'★ Wishlist on Steam',
 };
 // --- 장비명 조합 번역 (접두사 + 기본형) ---
 const _EN_PFX={'녹슨':'Rusty','강철':'Steel','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Judgment','천벌의':'Divine Wrath','파멸의':'Destruction',
@@ -8576,8 +8572,16 @@ const _P_ANIM_MAP={idle:'idle',wWindup:'atk1',wSwing:'atk2',wRecover:'atk3',whir
 const _DIR8=['e','se','s','sw','w','nw','n','ne'];
 function _facingDir8(a){return _DIR8[((Math.round(a/(Math.PI/4))%8)+8)%8];}
 // ── Player sprites ──
-// (삭제됨: warrior.png 로드 — 파일 미존재, _genSpriteOK가 true면 미사용)
-let _playerReady=false,_pS=null,_actReady=false,_aS=null;
+const _playerImg=new Image();_playerImg.src='img/warrior.png?v=2';let _playerReady=false;
+let _pS=null;
+_playerImg.onload=()=>{if(_genSpriteOK)return;if(!_safeDraw(_playerImg))return;const h=256,s=h/_playerImg.naturalHeight;
+  const c=document.createElement('canvas');c.width=~~(_playerImg.naturalWidth*s);c.height=h;
+  c.getContext('2d').drawImage(_playerImg,0,0,c.width,c.height);_pS=c;_playerReady=true;};
+const _playerActImg=new Image();_playerActImg.src='img/warrior.png';let _actReady=false;
+let _aS=null;
+_playerActImg.onload=()=>{if(_genSpriteOK)return;if(!_safeDraw(_playerActImg))return;const h=256,s=h/_playerActImg.naturalHeight;
+  const c=document.createElement('canvas');c.width=~~(_playerActImg.naturalWidth*s);c.height=h;
+  c.getContext('2d').drawImage(_playerActImg,0,0,c.width,c.height);_aS=c;_actReady=true;};
 // (삭제됨: _slashSheet, _whirlSheet — 파일 미존재, 미사용)
 // ── 회전참 대검 스프라이트 ──
 const _wwBladeImg=new Image();let _wwBladeReady=false;
@@ -10045,18 +10049,18 @@ function _pollGamepad(){
     _gpBtnsPrev['k'+idx]=pressed;
   }
 
-  // RT→Z(필살기), LT+RT→X(처형)
+  // RT→X(처형), LT+RT→Z(필살기)
   const rt=_gpad.buttons[7]&&_gpad.buttons[7].value>0.7;
   const ltrt=_ltHeld&&rt;
   if(ltrt&&!_gpBtnsPrev['kLTRT']){
-    _gpInjectKey('KeyX',true);
-    if(_gpBtnsPrev['kRT']){_gpInjectKey('KeyZ',false);_gpBtnsPrev['kRT']=false}
+    _gpInjectKey('KeyZ',true);
+    if(_gpBtnsPrev['kRT']){_gpInjectKey('KeyX',false);_gpBtnsPrev['kRT']=false}
   }
-  if(!ltrt&&_gpBtnsPrev['kLTRT']){_gpInjectKey('KeyX',false)}
+  if(!ltrt&&_gpBtnsPrev['kLTRT']){_gpInjectKey('KeyZ',false)}
   _gpBtnsPrev['kLTRT']=ltrt;
   if(!ltrt){
-    if(rt&&!_gpBtnsPrev['kRT'])_gpInjectKey('KeyZ',true);
-    if(!rt&&_gpBtnsPrev['kRT'])_gpInjectKey('KeyZ',false);
+    if(rt&&!_gpBtnsPrev['kRT'])_gpInjectKey('KeyX',true);
+    if(!rt&&_gpBtnsPrev['kRT'])_gpInjectKey('KeyX',false);
   }
   _gpBtnsPrev['kRT']=rt&&!ltrt;
 
@@ -12770,7 +12774,7 @@ registerVFX('blue_vortex','assets/vfx/boss/vfx_dark_burst.png',192,192,5,4);
 registerVFX('ice_slash','assets/vfx/slash_impact_sheet.png',128,128,19,19);
 registerVFX('whirl_slash','assets/vfx/boss/vfx_white_slash.png',192,192,20,5);
 registerVFX('parry_flash','assets/vfx/parry_impact_sheet.png',128,128,20,20);
-// (삭제됨: vfx_burn_death — 파일 미존재)
+registerVFX('burn_death','img/vfx_burn_death.png',211,211,8,8);
 registerVFX('explode_scarecrow','assets/vfx/scarecrow_boom.png',64,64,9,9); // 폭발허수아비 전용 대형폭발 (9x1, 9프레임, 불속성)
 registerVFX('boss_revive_boom','assets/vfx/boss/boss_revive_boom.png',64,64,24,8); // 보스 부활 폭발 (8x3, 24프레임)
 registerVFX('teleport_burst','assets/vfx/teleport_burst.png',64,64,9,9); // 순간이동 보라색 폭발 (9x1, 9프레임)
@@ -19844,25 +19848,52 @@ function _updateActionKeys(){
   // ── 스킬바 키 라벨 동적 갱신 (패드/KBM 자동 전환) ──
   _updateSkBarKeyLabels();
 }
-let _skBarKeyMode=''; // 이전 모드 캐시
-const _SK_SLOTS=[
-  {l:128,p:'LT+A'},{l:173,p:'LT+B'},{l:217,p:'LT+Y'},{l:261,p:'LT+X'},
-  {l:303,p:'LT'},{l:347,p:'LT+RT'},{l:392,p:'A'},{l:436,p:'RB'},
-  {l:479,p:'LB'},{l:522,p:'X'},{l:566,p:'RT'},{l:610,p:'Y'},{l:654,p:'B'}
-];
+let _skBarKeyMode=''; // 이전 모드 캐시 (불필요한 DOM 갱신 방지)
 function _updateSkBarKeyLabels(){
-  const isPad=typeof _gpActive!=='undefined'&&_gpActive;
-  const mode=isPad?'pad':'kbm';
+  const mode=typeof _gpActive!=='undefined'&&_gpActive?'pad':'kbm';
   if(mode===_skBarKeyMode)return;
   _skBarKeyMode=mode;
-  const row=$('skKeyBar');if(!row)return;
-  if(!isPad){row.style.display='none';return;}
-  let html='';
-  for(const s of _SK_SLOTS){
-    html+=`<div style="position:absolute;left:${s.l}px;width:37px;text-align:center;font-size:.42rem;color:#c8aa80;font-weight:700;pointer-events:none;text-shadow:0 1px 2px #000,0 0 4px #000;line-height:14px">${s.p}</div>`;
+  // 슬롯 위치 갱신 필요 — 매 모드 전환 시 재계산
+  const row=$('skBarKeyRow');if(!row)return;
+  // KBM 라벨
+  const kbmMap=[
+    {id:'qs0',left:128,key:'Digit1'},{id:'qs1',left:173,key:'Digit2'},
+    {id:'qs2',left:217,key:'Digit3'},{id:'qs3',left:261,key:'Digit4'},
+    {id:'qs5',left:303,key:'KeyF'},{id:'ultSlot',left:347,key:'KeyZ'},
+    {id:'skSlotLMB',left:392,key:'mouse0'},{id:'skSlotRMB',left:436,key:'mouse2'},
+    {id:'skSlot0',left:479,key:'ShiftLeft'},{id:'qsE',left:522,key:'KeyE'},
+    {id:'qsQ',left:566,key:'KeyQ'},{id:'skSlotCT',left:610,key:'ControlLeft'},
+    {id:'skSlot1',left:654,key:'Space'},
+  ];
+  // 패드 라벨 (A/B/X/Y/LB/RB/RT/LT 기준)
+  const padMap=[
+    {id:'qs0',left:128,label:'LT+A'},{id:'qs1',left:173,label:'LT+B'},
+    {id:'qs2',left:217,label:'LT+Y'},{id:'qs3',left:261,label:'LT+X'},
+    {id:'qs5',left:303,label:'LT'},{id:'ultSlot',left:347,label:'LT+RT'},
+    {id:'skSlotLMB',left:392,label:'A'},{id:'skSlotRMB',left:436,label:'RB'},
+    {id:'skSlot0',left:479,label:'LB'},{id:'qsE',left:522,label:'X'},
+    {id:'qsQ',left:566,label:'RT'},{id:'skSlotCT',left:610,label:'Y'},
+    {id:'skSlot1',left:654,label:'B'},
+  ];
+  const map=mode==='pad'?padMap:kbmMap;
+  row.innerHTML='';
+  const _rowRect=row.parentElement?row.parentElement.getBoundingClientRect():null;
+  for(let i=0;i<map.length;i++){
+    const m=map[i];
+    const slotEl=;
+    const lbl=document.createElement('div');
+    // 슬롯 실제 위치 기준으로 라벨 위치 결정
+    if(slotEl&&_rowRect){
+      const sr=slotEl.getBoundingClientRect();
+      const relLeft=sr.left-_rowRect.left+sr.width/2-18;
+      const relTop=sr.bottom-_rowRect.top+1;
+      lbl.style.cssText='position:absolute;left:'+relLeft+'px;top:'+relTop+'px;width:37px;text-align:center;font-size:.5rem;color:#887766;font-weight:700;pointer-events:none;text-shadow:0 0 4px #000';
+    }else{
+      lbl.style.cssText='position:absolute;left:'+m.left+'px;width:37px;text-align:center;font-size:.5rem;color:#887766;font-weight:700;pointer-events:none;text-shadow:0 0 4px #000';
+    }
+    lbl.textContent=m.label||keyName(m.key);
+    row.appendChild(lbl);
   }
-  row.innerHTML=html;
-  row.style.display='block';
 }
 // 퀵슬롯 클릭 이벤트: 좌클릭=자동 토글, 우클릭=스왑
 for(let i=0;i<4;i++){

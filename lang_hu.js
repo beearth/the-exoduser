@@ -2453,4 +2453,9 @@ const _HU_BASE={
   '💥 강타!':'💥 Slam!',
   '🌀 휘두르기!':'🌀 Sweep!',
   '방어↓':'DEF↓',
+// --- Demo End Screen ---
+'데모 종료':'Demo Vége',
+'여기까지 데모입니다. 정식 출시를 기대해주세요!':'Ez a demo vége. Várjuk a teljes megjelenést!',
+'STEAM 위시리스트로 응원해 주세요!':'Támogass minket azzal, hogy Steam kívánságlistádra teszed!',
+'STEAM 위시리스트':'Steam kívánságlista',
 };

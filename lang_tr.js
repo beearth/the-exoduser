@@ -2451,4 +2451,9 @@ const _TR_BASE={'대검':'Büyük Kılıç','석궁':'Tatar Yayı','연사석궁
   '💥 강타!':'💥 Slam!',
   '🌀 휘두르기!':'🌀 Sweep!',
   '방어↓':'DEF↓',
+// --- Demo End Screen ---
+'데모 종료':'Demo Sonu',
+'여기까지 데모입니다. 정식 출시를 기대해주세요!':'Demo burada bitiyor. Tam sürüm için heyecanla bekliyoruz!',
+'STEAM 위시리스트로 응원해 주세요!':'Steam istek listenize ekleyerek bizi destekleyin!',
+'STEAM 위시리스트':'Steam İstek Listesi',
 };

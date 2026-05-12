@@ -2451,4 +2451,9 @@ const _VI_BASE={'대검':'Đại Kiếm','석궁':'Nỏ','연사석궁':'Nỏ Li
   '💥 강타!':'💥 Slam!',
   '🌀 휘두르기!':'🌀 Sweep!',
   '방어↓':'DEF↓',
+// --- Demo End Screen ---
+'데모 종료':'Kết Thúc Demo',
+'여기까지 데모입니다. 정식 출시를 기대해주세요!':'Đây là phần kết của bản demo. Mong chờ bản phát hành đầy đủ!',
+'STEAM 위시리스트로 응원해 주세요!':'Hãy thêm vào danh sách yêu thích trên Steam để ủng hộ chúng tôi!',
+'STEAM 위시리스트':'Danh sách yêu thích Steam',
 };

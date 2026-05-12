@@ -2092,4 +2092,9 @@ const _DA_BASE={
   '💥 강타!':'💥 Slam!',
   '🌀 휘두르기!':'🌀 Sweep!',
   '방어↓':'DEF↓',
+// --- Demo End Screen ---
+'데모 종료':'Slut på Demo',
+'여기까지 데모입니다. 정식 출시를 기대해주세요!':'Dette er slutningen på demoen. Vi glæder os til den fulde udgivelse!',
+'STEAM 위시리스트로 응원해 주세요!':'Støt os ved at tilføje spillet til din ønskeliste på Steam!',
+'STEAM 위시리스트':'Steam-ønskeliste',
 };

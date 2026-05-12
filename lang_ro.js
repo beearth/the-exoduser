@@ -2454,4 +2454,9 @@ const _RO_BASE={
   '💥 강타!':'💥 Slam!',
   '🌀 휘두르기!':'🌀 Sweep!',
   '방어↓':'DEF↓',
+// --- Demo End Screen ---
+'데모 종료':'Sfârşitul Demo-ului',
+'여기까지 데모입니다. 정식 출시를 기대해주세요!':'Acesta este sfârșitul demo-ului. Abia așteptăm lansarea completă!',
+'STEAM 위시리스트로 응원해 주세요!':'Susține-ne adăugând jocul pe lista de dorințe Steam!',
+'STEAM 위시리스트':'Lista de dorințe Steam',
 };

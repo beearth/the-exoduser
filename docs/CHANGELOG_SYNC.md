@@ -23774,3 +23774,50 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - docs/3.3 ?¤ë°”?¸ë”©+?¤ì •/ê²Œì„?¨ë“œ_ë§¤í•‘??md
 - game.html
 
+
+## 2026-05-12 22:30 (auto)
+- _autosave/game_20260512_213759.html
+- _autosave/game_20260512_213817.html
+- _autosave/game_20260512_213820.html
+- _autosave/game_20260512_213825.html
+- _autosave/game_20260512_213835.html
+- _autosave/game_20260512_213849.html
+- _autosave/game_20260512_215110.html
+- _autosave/game_20260512_215118.html
+- _autosave/game_20260512_220528.html
+- _autosave/game_20260512_221030.html
+- _autosave/game_20260512_221038.html
+- add_demo_translations.js
+- docs/13ì¶œì‹œÂ·ë§ˆì???13ì¶œì‹œÂ·ë§ˆì???md
+- docs/3.1 ui hud ?”ì??exoduser-ui-phase2 (1).md
+- docs/3.3 ?¤ë°”?¸ë”©+?¤ì •/3.3 ?¤ë°”?¸ë”©+?¤ì •.md
+- docs/3.3 ?¤ë°”?¸ë”©+?¤ì •/ê²Œì„?¨ë“œ_ë§¤í•‘??md
+- game.html
+- lang_ar.js
+- lang_bg.js
+- lang_cs.js
+- lang_da.js
+- lang_de.js
+- lang_el.js
+- lang_es.js
+- lang_fi.js
+- lang_fr.js
+- lang_hu.js
+- lang_id.js
+- lang_it.js
+- lang_ja.js
+- lang_nl.js
+- lang_no.js
+- lang_pl.js
+- lang_ptbr.js
+- lang_ro.js
+- lang_ru.js
+- lang_sv.js
+- lang_th.js
+- lang_tr.js
+- lang_uk.js
+- lang_vi.js
+- lang_zh.js
+- lang_zht.js
+- tmp_block.js
+

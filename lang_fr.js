@@ -2060,4 +2060,9 @@ const _FR_BASE={'대검':'Espadon','석궁':'Arbalète','연사석궁':'Répéte
   '💥 강타!':'💥 Slam!',
   '🌀 휘두르기!':'🌀 Sweep!',
   '방어↓':'DEF↓',
+// --- Demo End Screen ---
+'데모 종료':'Fin de la Démo',
+'여기까지 데모입니다. 정식 출시를 기대해주세요!':'C\'est la fin de la démo. Vivement la sortie complète !',
+'STEAM 위시리스트로 응원해 주세요!':'Soutenez-nous en ajoutant le jeu à votre liste de souhaits Steam !',
+'STEAM 위시리스트':'Liste de souhaits Steam',
 };

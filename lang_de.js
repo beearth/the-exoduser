@@ -2044,4 +2044,9 @@ const _DE_BASE={'대검':'Großschwert','석궁':'Armbrust','연사석궁':'Schn
   '💥 강타!':'💥 Slam!',
   '🌀 휘두르기!':'🌀 Sweep!',
   '방어↓':'DEF↓',
+// --- Demo End Screen ---
+'데모 종료':'Ende der Demo',
+'여기까지 데모입니다. 정식 출시를 기대해주세요!':'Dies ist das Ende der Demo. Wir freuen uns auf den vollständigen Release!',
+'STEAM 위시리스트로 응원해 주세요!':'Unterstütze uns, indem du es auf Steam in deine Wunschliste aufnimmst!',
+'STEAM 위시리스트':'Steam-Wunschliste',
 };

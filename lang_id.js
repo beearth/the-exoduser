@@ -2455,4 +2455,9 @@ const _ID_BASE={'대검':'Pedang Besar','석궁':'Panah Silang','연사석궁':'
   '💥 강타!':'💥 Slam!',
   '🌀 휘두르기!':'🌀 Sweep!',
   '방어↓':'DEF↓',
+// --- Demo End Screen ---
+'데모 종료':'Akhir Demo',
+'여기까지 데모입니다. 정식 출시를 기대해주세요!':'Ini adalah akhir dari demo. Nantikan rilis penuhnya!',
+'STEAM 위시리스트로 응원해 주세요!':'Dukung kami dengan menambahkan ke daftar keinginan Steam!',
+'STEAM 위시리스트':'Daftar Keinginan Steam',
 };

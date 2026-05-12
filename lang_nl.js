@@ -2089,4 +2089,9 @@ const _NL_BASE={
   '💥 강타!':'💥 Slam!',
   '🌀 휘두르기!':'🌀 Sweep!',
   '방어↓':'DEF↓',
+// --- Demo End Screen ---
+'데모 종료':'Einde van de Demo',
+'여기까지 데모입니다. 정식 출시를 기대해주세요!':'Dit is het einde van de demo. We kijken uit naar de volledige release!',
+'STEAM 위시리스트로 응원해 주세요!':'Steun ons door het spel aan je Steam-verlanglijst toe te voegen!',
+'STEAM 위시리스트':'Steam-verlanglijst',
 };

@@ -2457,4 +2457,9 @@ const _IT_BASE={
   '💥 강타!':'💥 Slam!',
   '🌀 휘두르기!':'🌀 Sweep!',
   '방어↓':'DEF↓',
+// --- Demo End Screen ---
+'데모 종료':'Fine della Demo',
+'여기까지 데모입니다. 정식 출시를 기대해주세요!':'Questa è la fine della demo. Non vediamo l\'ora del lancio completo!',
+'STEAM 위시리스트로 응원해 주세요!':'Supportaci aggiungendolo alla lista dei desideri di Steam!',
+'STEAM 위시리스트':'Lista dei desideri Steam',
 };
