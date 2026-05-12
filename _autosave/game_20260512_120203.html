@@ -9698,11 +9698,12 @@ function _gpAutoAim(range){
 const _GP_KEY_DEFAULT={
   0:'mouse0',1:'Space',2:'KeyE',3:'ControlLeft',
   4:'ShiftLeft',5:'mouse2',8:'KeyL',9:'Escape',
-  10:'KeyR',11:'KeyC',12:'KeyK',13:'KeyG',14:'KeyC',15:'KeyV'
+  10:'KeyR',11:'KeyC'
+  // 12~15(D-pad)는 패널 토글 직접 처리 — 키 주입 없음
 };
 let _GP_KEY=Object.assign({},_GP_KEY_DEFAULT);
 // 저장된 패드 매핑 로드
-try{const _s=localStorage.getItem('gpKeyMap');if(_s){const _m=JSON.parse(_s);for(const k in _m)_GP_KEY[+k]=_m[k]}}catch(e){}
+try{const _s=localStorage.getItem('gpKeyMap');if(_s){const _m=JSON.parse(_s);for(const k in _m){const _ki=+k;if(_ki>=12&&_ki<=15)continue;_GP_KEY[_ki]=_m[k]}}}catch(e){}
 function _saveGpKeyMap(){try{localStorage.setItem('gpKeyMap',JSON.stringify(_GP_KEY))}catch(e){}}
 function _resetGpKeyMap(){_GP_KEY=Object.assign({},_GP_KEY_DEFAULT);_saveGpKeyMap()}
 function _gpInjectKey(kc,pressed){
@@ -9723,8 +9724,20 @@ function _gpClearAll(){
 
 // ═══ 범용 UI 게임패드 네비게이션 (엘든링/디아4 스타일) ═══
 let _gpUIIdx=0;
-let _gpUIPrev={u:false,d:false,l:false,r:false,a:false,b:false,x:false,y:false,lb:false,rb:false};
-let _gpDpadCloseCooldown=0,_gpWasPanel=false;
+let _gpUIPrev={a:false,b:false,x:false,y:false,lb:false,rb:false,rsU:false,rsD:false,rsL:false,rsR:false,b8:false,b9:false};
+let _gpUIRepeatDir=null,_gpUIRepeatTs=0;
+const _GP_UI_DELAY=380,_GP_UI_INTERVAL=110;
+// 섹션 타입 분류 (단락 이동용)
+const _gpSectType=el=>{
+  if(el.closest('.stat-row'))return'stat';
+  if(el.closest('.passive-row'))return'passive';
+  if(el.closest('.sk-opt'))return'sk';
+  if(el.closest('.up-row'))return'up';
+  if(el.closest('.fg-tab'))return'tab';
+  if(el.closest('.fg-i'))return'fgi';
+  if(el.closest('.set-key'))return'setkey';
+  return el.tagName+'_'+([...el.classList][0]||'');
+};
 function _gpUINav(panel){
   if(!_gpad||!panel)return;
   // 패널 내 포커스 가능 요소 수집
@@ -9739,46 +9752,72 @@ function _gpUINav(panel){
   if(!items.length)return;
   if(_gpUIIdx>=items.length)_gpUIIdx=0;
 
-  // D-pad OR 스틱 (중복 방지)
-  const _dU=_gpad.buttons[12]&&_gpad.buttons[12].pressed;
-  const _dD=_gpad.buttons[13]&&_gpad.buttons[13].pressed;
-  const _dL=_gpad.buttons[14]&&_gpad.buttons[14].pressed;
-  const _dR=_gpad.buttons[15]&&_gpad.buttons[15].pressed;
+  // D-pad(버튼12-15) + axes[6/7](일부 패드 D-pad) + 좌스틱 → 한 칸 이동
+  const _dU=(_gpad.buttons[12]&&_gpad.buttons[12].pressed)||_gpAxes[7]<-0.5;
+  const _dD=(_gpad.buttons[13]&&_gpad.buttons[13].pressed)||_gpAxes[7]>0.5;
+  const _dL=(_gpad.buttons[14]&&_gpad.buttons[14].pressed)||_gpAxes[6]<-0.5;
+  const _dR=(_gpad.buttons[15]&&_gpad.buttons[15].pressed)||_gpAxes[6]>0.5;
   const u=_dU||(!_dU&&!_dD&&_gpAxes[1]<-0.5);
   const d=_dD||(!_dU&&!_dD&&_gpAxes[1]>0.5);
   const l=_dL||(!_dL&&!_dR&&_gpAxes[0]<-0.5);
   const r=_dR||(!_dL&&!_dR&&_gpAxes[0]>0.5);
+  // 우측 스틱 → 단락(섹션) 이동
+  const rsU=_gpAxes[3]<-0.5,rsD=_gpAxes[3]>0.5,rsL=_gpAxes[2]<-0.5,rsR=_gpAxes[2]>0.5;
   const a=_gpad.buttons[0]&&_gpad.buttons[0].pressed;
   const b=_gpad.buttons[1]&&_gpad.buttons[1].pressed;
   const lb=_gpad.buttons[4]&&_gpad.buttons[4].pressed;
   const rb=_gpad.buttons[5]&&_gpad.buttons[5].pressed;
 
-  // 이동
-  if(u&&!_gpUIPrev.u)_gpUIIdx=Math.max(0,_gpUIIdx-1);
-  if(d&&!_gpUIPrev.d)_gpUIIdx=Math.min(items.length-1,_gpUIIdx+1);
-  if(l&&!_gpUIPrev.l)_gpUIIdx=Math.max(0,_gpUIIdx-1);
-  if(r&&!_gpUIPrev.r)_gpUIIdx=Math.min(items.length-1,_gpUIIdx+1);
+  // 좌스틱/D-pad: 한 칸 이동 — repeat 타이머
+  const _nowDir=u?'u':d?'d':l?'l':r?'r':null;
+  const _nowTs=performance.now();
+  let _didMove=false;
+  if(_nowDir){
+    if(_nowDir!==_gpUIRepeatDir){
+      _gpUIRepeatDir=_nowDir;_gpUIRepeatTs=_nowTs+_GP_UI_DELAY;
+      if(_nowDir==='u'||_nowDir==='l')_gpUIIdx=Math.max(0,_gpUIIdx-1);
+      else _gpUIIdx=Math.min(items.length-1,_gpUIIdx+1);
+      _didMove=true;
+    } else if(_nowTs>=_gpUIRepeatTs){
+      _gpUIRepeatTs=_nowTs+_GP_UI_INTERVAL;
+      if(_nowDir==='u'||_nowDir==='l')_gpUIIdx=Math.max(0,_gpUIIdx-1);
+      else _gpUIIdx=Math.min(items.length-1,_gpUIIdx+1);
+      _didMove=true;
+    }
+  } else {
+    _gpUIRepeatDir=null;
+  }
 
   // range 슬라이더 좌우 조절
   const cur=items[_gpUIIdx];
-  if(cur&&cur.tagName==='INPUT'&&cur.type==='range'){
+  if(_didMove&&cur&&cur.tagName==='INPUT'&&cur.type==='range'){
     const stp=+(cur.step)||1;
-    if(l&&!_gpUIPrev.l){cur.value=Math.max(+cur.min,+cur.value-stp);cur.dispatchEvent(new Event('input'))}
-    if(r&&!_gpUIPrev.r){cur.value=Math.min(+cur.max,+cur.value+stp);cur.dispatchEvent(new Event('input'))}
+    if(_nowDir==='l'){cur.value=Math.max(+cur.min,+cur.value-stp);cur.dispatchEvent(new Event('input'))}
+    if(_nowDir==='r'){cur.value=Math.min(+cur.max,+cur.value+stp);cur.dispatchEvent(new Event('input'))}
   }
 
   // LB/RB: 탭 전환
   if((lb&&!_gpUIPrev.lb)||(rb&&!_gpUIPrev.rb)){
-    const tabs=panel.querySelectorAll('.fg-tab');
-    if(tabs.length>1){
-      let ti=-1;tabs.forEach((t,i)=>{if(t.classList.contains('active'))ti=i});
-      if(rb&&!_gpUIPrev.rb)ti=Math.min(tabs.length-1,ti+1);
-      if(lb&&!_gpUIPrev.lb)ti=Math.max(0,ti-1);
-      if(tabs[ti])tabs[ti].click();
+    if(panel.id==='skillPanel'&&typeof SKILL_HIER!=='undefined'){
+      // 스킬패널 전용: SKILL_HIER 순환
+      let _ci=SKILL_HIER.findIndex(h=>h.id===_skHierTab);if(_ci<0)_ci=0;
+      if(rb&&!_gpUIPrev.rb)_ci=Math.min(SKILL_HIER.length-1,_ci+1);
+      if(lb&&!_gpUIPrev.lb)_ci=Math.max(0,_ci-1);
+      _skHierTab=SKILL_HIER[_ci].id;
+      if(typeof renderSkillPanel==='function')renderSkillPanel();
+    } else {
+      // 그 외 패널: .fg-tab.act 기준 전환
+      const tabs=panel.querySelectorAll('.fg-tab');
+      if(tabs.length>1){
+        let ti=-1;tabs.forEach((t,i)=>{if(t.classList.contains('act'))ti=i});
+        if(ti<0)ti=0;
+        if(rb&&!_gpUIPrev.rb)ti=Math.min(tabs.length-1,ti+1);
+        if(lb&&!_gpUIPrev.lb)ti=Math.max(0,ti-1);
+        if(tabs[ti])tabs[ti].click();
+      }
     }
   }
 
-  _gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;
   _gpUIPrev.lb=lb;_gpUIPrev.rb=rb;
 
   // 하이라이트
@@ -9792,10 +9831,11 @@ function _gpUINav(panel){
     }
   }
 
-  // A = 클릭
-  if(a&&!_gpUIPrev.a&&cur)cur.click();
-  // B = 닫기 (skSlotPop 열려있으면 먼저 닫기)
-  if(b&&!_gpUIPrev.b){
+  // A = 클릭 (사용 후 k0 선점 — 패널 닫힌 뒤 mouse0 입력 차단)
+  if(a&&!_gpUIPrev.a&&cur){cur.click();_gpBtnsPrev['k0']=true;}
+  // B / Start = 닫기 (skSlotPop 열려있으면 먼저 닫기)
+  const _start=!!(_gpad.buttons[9]&&_gpad.buttons[9].pressed);
+  if((b&&!_gpUIPrev.b)||(_start&&!_gpUIPrev.start)){
     const slotPop=$('skSlotPop');
     if(slotPop&&slotPop.style.display==='flex'){slotPop.style.display='none'}
     else{
@@ -9803,7 +9843,10 @@ function _gpUINav(panel){
       if(cls)cls.click();
       else if(typeof closeAllPanels==='function')closeAllPanels();
     }
+    if(b&&!_gpUIPrev.b)_gpBtnsPrev['k1']=true;
+    if(_start)_gpBtnsPrev['k9']=true; // Start 닫기 사용됨 — Escape 차단
   }
+  _gpUIPrev.start=_start;
   // Y = 스킬 패널: 선택 스킬 슬롯 배정 / 인벤: 장비 해제
   const y=_gpad.buttons[3]&&_gpad.buttons[3].pressed;
   if(y&&!_gpUIPrev.y&&cur){
@@ -9820,6 +9863,45 @@ function _gpUINav(panel){
   }
 
   _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.y=y;
+
+  // ── 우측 스틱: 단락(섹션) 이동 ──
+  // 상/하: 이전/다음 타입 그룹 첫 항목으로 점프
+  // 좌: 현재 섹션 맨 처음  우: 현재 섹션 맨 끝
+  const _c=items[_gpUIIdx];
+  const _ct=_c?_gpSectType(_c):'';
+  if(rsD&&!_gpUIPrev.rsD){
+    // 다음 섹션 첫 항목
+    let ni=_gpUIIdx;
+    for(let i=_gpUIIdx+1;i<items.length;i++){if(_gpSectType(items[i])!==_ct){ni=i;break;}}
+    _gpUIIdx=ni;
+  }
+  if(rsU&&!_gpUIPrev.rsU){
+    // 이전 섹션 첫 항목
+    let ni=_gpUIIdx,pt='';
+    for(let i=_gpUIIdx-1;i>=0;i--){const t=_gpSectType(items[i]);if(t!==_ct){pt=t;ni=i;break;}}
+    if(pt){while(ni>0&&_gpSectType(items[ni-1])===pt)ni--;}
+    _gpUIIdx=ni;
+  }
+  if(rsL&&!_gpUIPrev.rsL){
+    // 현재 섹션 맨 처음
+    let ni=_gpUIIdx;
+    while(ni>0&&_gpSectType(items[ni-1])===_ct)ni--;
+    _gpUIIdx=ni;
+  }
+  if(rsR&&!_gpUIPrev.rsR){
+    // 현재 섹션 맨 끝
+    let ni=_gpUIIdx;
+    while(ni<items.length-1&&_gpSectType(items[ni+1])===_ct)ni++;
+    _gpUIIdx=ni;
+  }
+  _gpUIPrev.rsU=rsU;_gpUIPrev.rsD=rsD;_gpUIPrev.rsL=rsL;_gpUIPrev.rsR=rsR;
+
+  // 버튼 8(Back) = 전체 첫 항목  버튼 9(Start) = 전체 마지막 항목
+  const b8=!!(_gpad.buttons[8]&&_gpad.buttons[8].pressed);
+  const b9=!!(_gpad.buttons[9]&&_gpad.buttons[9].pressed);
+  if(b8&&!_gpUIPrev.b8)_gpUIIdx=0;
+  if(b9&&!_gpUIPrev.b9)_gpUIIdx=items.length-1;
+  _gpUIPrev.b8=b8;_gpUIPrev.b9=b9;
 }
 
 function _pollGamepad(){
@@ -9842,6 +9924,11 @@ function _pollGamepad(){
     _gpAxes[2]=Math.abs(_gpad.axes[2])<GP_DEAD?0:_gpad.axes[2];
     _gpAxes[3]=Math.abs(_gpad.axes[3])<GP_DEAD?0:_gpad.axes[3];
   }
+  // D-pad를 axes[6/7]로 전달하는 패드 (Firefox 표준, 일부 컨트롤러)
+  if(_gpad.axes.length>=8){
+    _gpAxes[6]=Math.abs(_gpad.axes[6])<0.5?0:_gpad.axes[6];
+    _gpAxes[7]=Math.abs(_gpad.axes[7])<0.5?0:_gpad.axes[7];
+  }
   if(_gpAxes[0]||_gpAxes[1]||_gpAxes[2]||_gpAxes[3])_anyInput=true;
 
   // ── 2단계: 입력 감지 → 패드모드 활성화 ──
@@ -9850,7 +9937,24 @@ function _pollGamepad(){
   // ── 3단계: 패드모드 아니면 K[]/MB[] 절대 안 건드림 ──
   if(!_gpActive)return;
 
+  // ── D-pad 패널 토글 (키 주입 없이 직접 처리 — 열기/닫기 전용) ──
+  {const _DP=[[12,'skillPanel','toggle'],[13,'forge','forge'],[14,'statPanel','toggle'],[15,'invPanel','storage']];
+  for(const[bi,pid,act] of _DP){
+    const _on=!!(_gpad.buttons[bi]&&_gpad.buttons[bi].pressed);
+    if(_on&&!_gpBtnsPrev['_dpg'+bi]){
+      const _cur=document.querySelector('.panel.on');
+      if(_cur){if(_cur.id===pid)closeAllPanels();}
+      else if(G&&G.on){
+        if(act==='toggle')togglePanel(pid);
+        else if(act==='forge'){if(G.forgeOpen){closePanel('forge');G.forgeOpen=false}else openPanel('forge')}
+        else if(act==='storage'){_storageViewFloor=G.stage;togglePanel('invPanel')}
+      }
+    }
+    _gpBtnsPrev['_dpg'+bi]=_on;
+  }}
+
   // ── 3.5단계: UI 패널/오버레이 열려있으면 게임 입력 차단 + UI 네비게이션 ──
+  if(_gcEl&&_gcEl.classList.contains("on")){_gpClearAll();_gpUINav(_gcEl);return;}
   const _gpOpenPanel=document.querySelector('.panel.on');
   const _gpOverlay=(()=>{
     for(const id of['introDiff','introKeys','death','lvUpScreen','tutorial','stageClear']){
@@ -9862,24 +9966,10 @@ function _pollGamepad(){
   })();
   if(_gpOpenPanel||_gpOverlay){
     _gpClearAll();
-    if(!_gpWasPanel)_gpDpadCloseCooldown=20;
-    _gpWasPanel=true;
-    // D-pad 토글 닫기: 연 버튼 한 번 더 누르면 닫기 (20프레임 쿨다운으로 즉시닫힘 방지)
-    const _DP_CLOSE=[[12,'skillPanel'],[13,'forge'],[14,'statPanel'],[15,'invPanel']];
-    for(const[bi,pid] of _DP_CLOSE){
-      const _on=!!(_gpad.buttons[bi]&&_gpad.buttons[bi].pressed);
-      if(!_gpDpadCloseCooldown&&_on&&!_gpBtnsPrev['_dp'+bi]&&_gpOpenPanel&&_gpOpenPanel.id===pid){
-        closeAllPanels();_gpBtnsPrev['_dp'+bi]=true;_gpWasPanel=false;return;
-      }
-      _gpBtnsPrev['_dp'+bi]=_on;
-    }
-    if(_gpDpadCloseCooldown>0)_gpDpadCloseCooldown--;
-    // 인벤토리는 전용 그리드 네비게이션
     if(_gpOpenPanel&&_gpOpenPanel.id==='invPanel'){_gpInvNav()}
     else{_gpUINav(_gpOpenPanel||_gpOverlay)}
     return;
   }
-  _gpWasPanel=false;
   // UI 닫힌 후 outline 잔류 제거
   if(_gpUIIdx>0||_gpInvIdx>0||_gpInvEqIdx>0){
     document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}});
@@ -9937,7 +10027,7 @@ function _pollGamepad(){
   _gpBtnsPrev['kLT_held']=_ltHeld;
 
   // 나머지 버튼 주입
-  const _gpModFirst=[4,5,0,1,2,3,8,9,10,11,12,13,14,15];
+  const _gpModFirst=[4,5,0,1,2,3,8,9,10,11]; // D-pad(12~15) 제외
   for(let _mi=0;_mi<_gpModFirst.length;_mi++){
     const idx=_gpModFirst[_mi];
     const kc=_GP_KEY[idx];
@@ -10033,24 +10123,22 @@ function _pollGamepad(){
 let _gpInvIdx=0,_gpInvEqIdx=0,_gpInvMode='bag'; // bag | eq | st
 function _gpInvNav(){
   if(!_gpad)return;
-  // UI 네비게이션: D-pad OR 좌스틱 (중복 방지 — 둘 중 하나만 감지)
-  const _dU=_gpad.buttons[12]&&_gpad.buttons[12].pressed;
-  const _dD=_gpad.buttons[13]&&_gpad.buttons[13].pressed;
-  const _dL=_gpad.buttons[14]&&_gpad.buttons[14].pressed;
-  const _dR=_gpad.buttons[15]&&_gpad.buttons[15].pressed;
-  const _sU=_gpAxes[1]<-0.5,_sD=_gpAxes[1]>0.5,_sL=_gpAxes[0]<-0.5,_sR=_gpAxes[0]>0.5;
-  // D-pad 우선, D-pad 안 눌렸을 때만 스틱
-  const u=_dU||(!_dU&&!_dD&&_sU);
-  const d=_dD||(!_dU&&!_dD&&_sD);
-  const l=_dL||(!_dL&&!_dR&&_sL);
-  const r=_dR||(!_dL&&!_dR&&_sR);
+  // D-pad(버튼12-15) + axes[6/7] + 좌스틱 → 그리드 이동 / 우스틱 → 스크롤 전용
+  const _idU=(_gpad.buttons[12]&&_gpad.buttons[12].pressed)||_gpAxes[7]<-0.5;
+  const _idD=(_gpad.buttons[13]&&_gpad.buttons[13].pressed)||_gpAxes[7]>0.5;
+  const _idL=(_gpad.buttons[14]&&_gpad.buttons[14].pressed)||_gpAxes[6]<-0.5;
+  const _idR=(_gpad.buttons[15]&&_gpad.buttons[15].pressed)||_gpAxes[6]>0.5;
+  const u=_idU||(!_idU&&!_idD&&_gpAxes[1]<-0.5);
+  const d=_idD||(!_idU&&!_idD&&_gpAxes[1]>0.5);
+  const l=_idL||(!_idL&&!_idR&&_gpAxes[0]<-0.5);
+  const r=_idR||(!_idL&&!_idR&&_gpAxes[0]>0.5);
   const a=_gpad.buttons[0]&&_gpad.buttons[0].pressed;
   const b=_gpad.buttons[1]&&_gpad.buttons[1].pressed;
   const x=_gpad.buttons[2]&&_gpad.buttons[2].pressed;
   const y=_gpad.buttons[3]&&_gpad.buttons[3].pressed;
   const lb=_gpad.buttons[4]&&_gpad.buttons[4].pressed;
   const rb=_gpad.buttons[5]&&_gpad.buttons[5].pressed;
-  const rsY=_gpad.axes.length>=4?_gpad.axes[3]:0;
+  const rsY=_gpad.axes.length>=4?_gpad.axes[3]:0; // 우스틱 상하 → 스크롤
 
   // LB/RB: 영역 순환 (장비 ↔ 가방 ↔ 창고)
   const modes=['eq','bag','st'];
@@ -28671,8 +28759,8 @@ function doParry(_inDmg,_px,_py,_forceQ){if(_px===undefined)_px=P.x;if(_py===und
   P.iframes=Math.max(P.iframes,18);
   // 패링 성공 → 그로기 해제 + 포이즈 복원
   // 그로기 제거됨 — 포이즈 0 = 즉시 스턴
-  if(P.skills.detonate&&P.parryT!==undefined&&P.parryT>0){G.shake=6*OPT.shake/100} // 기폭 충전 중: hitStop/slowMo 없이 흔들림만
-  else{G.hitStop=~~(_HS.parry*OPT.hitStop/100);G.slowMo=25;G.shake=14*OPT.shake/100}
+  if(P.skills.detonate&&P.parryT!==undefined&&P.parryT>0){G.shake=6*OPT.shake/100;_gpVibrate(20,120)} // 기폭 충전 중: hitStop/slowMo 없이 흔들림만
+  else{G.hitStop=~~(_HS.parry*OPT.hitStop/100);G.slowMo=25;G.shake=14*OPT.shake/100;_gpVibrate(_isQ?50:30,_isQ?300:200)}
   // ═══ 패링 보상: 우클릭 30, Q 50 (parryBonus 어픽스 적용) ═══
   const _isQParry=_isQ;
   const _pbMul=1+_eqAffix('parryBonus');
@@ -33055,6 +33143,7 @@ function _detonateBlast(label,elSrc){
     _addDetVfx(P.x,P.y,boomR,30+_chgBars*5,_chgBars);
     _addBlastLight(P.x,P.y,boomR*1.2,18+_chgBars*4,255,160,60);
     playVFXAng('center_explode',P.x,P.y,boomR/200*(1+_chgBars*.2),3,0,true);
+    playVFXAng('boss_gSlamWave',P.x,P.y,boomR/257.5,2+_chgBars,0,true);
     for(let _bi=0;_bi<12+_chgBars*3;_bi++){
       const _ba=Math.PI*2*_bi/(12+_chgBars*3);
       poolPart(P.x,P.y,Math.cos(_ba)*(5+Math.random()*7),Math.sin(_ba)*(5+Math.random()*7),_bi%2?'#ff6622':'#ffcc44',2+Math.random()*3,10+Math.random()*8);

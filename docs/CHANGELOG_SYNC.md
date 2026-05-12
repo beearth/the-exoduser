@@ -23732,3 +23732,19 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - docs/3.3 ?�바?�딩+?�정/게임?�드_매핑??md
 - game.html
 
+
+## 2026-05-12 16:30 (auto)
+- _autosave/game_20260512_113543.html
+- _autosave/game_20260512_113639.html
+- _autosave/game_20260512_114057.html
+- _autosave/game_20260512_114141.html
+- _autosave/game_20260512_115651.html
+- _autosave/game_20260512_115720.html
+- _autosave/game_20260512_115741.html
+- _autosave/game_20260512_115819.html
+- _autosave/game_20260512_120117.html
+- _autosave/game_20260512_120203.html
+- _autosave/game_20260512_120422.html
+- docs/3.3 ?�바?�딩+?�정/게임?�드_매핑??md
+- game.html
+
