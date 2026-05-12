@@ -9665,7 +9665,7 @@ const GP_BINDS={
   15:'storage'      // D-pad → — 창고 (V)
 };
 const GP_DEAD=0.25; // 스틱 데드존
-let _gpad=null,_gpBtns={},_gpBtnsJust={},_gpBtnsPrev={},_gpAxes=[0,0,0,0];
+let _gpad=null,_gpBtns={},_gpBtnsJust={},_gpBtnsPrev={},_gpAxes=[0,0,0,0,0,0,0,0];
 let _gpConnected=false; // 패드 하드웨어 연결됨
 let _gpActive=false;    // 패드 모드 활성 (실제 입력 감지 시 true, 키마 입력 시 false)
 // 자동 감지: localStorage 힌트로 초기값 설정, 이후 실시간 전환
@@ -9723,7 +9723,10 @@ function _gpClearAll(){
 
 // ═══ 범용 UI 게임패드 네비게이션 (엘든링/디아4 스타일) ═══
 let _gpUIIdx=0;
-let _gpUIPrev={u:false,d:false,l:false,r:false,a:false,b:false,x:false,y:false,lb:false,rb:false};
+let _gpUIPrev={a:false,b:false,x:false,y:false,lb:false,rb:false};
+let _gpUIRepeatDir=null,_gpUIRepeatTs=0;
+const _GP_UI_DELAY=380,_GP_UI_INTERVAL=110;
+let _gpDpadCloseCooldown=0,_gpWasPanel=false;
 function _gpUINav(panel){
   if(!_gpad||!panel)return;
   // 패널 내 포커스 가능 요소 수집
@@ -9738,15 +9741,11 @@ function _gpUINav(panel){
   if(!items.length)return;
   if(_gpUIIdx>=items.length)_gpUIIdx=0;
 
-  // D-pad OR 스틱 (중복 방지)
-  const _dU=_gpad.buttons[12]&&_gpad.buttons[12].pressed;
-  const _dD=_gpad.buttons[13]&&_gpad.buttons[13].pressed;
-  const _dL=_gpad.buttons[14]&&_gpad.buttons[14].pressed;
-  const _dR=_gpad.buttons[15]&&_gpad.buttons[15].pressed;
-  const u=_dU||(!_dU&&!_dD&&_gpAxes[1]<-0.5);
-  const d=_dD||(!_dU&&!_dD&&_gpAxes[1]>0.5);
-  const l=_dL||(!_dL&&!_dR&&_gpAxes[0]<-0.5);
-  const r=_dR||(!_dL&&!_dR&&_gpAxes[0]>0.5);
+  // 이동은 스틱만 (D-pad는 패널 토글 전용)
+  const u=_gpAxes[1]<-0.5;
+  const d=_gpAxes[1]>0.5;
+  const l=_gpAxes[0]<-0.5;
+  const r=_gpAxes[0]>0.5;
   const a=_gpad.buttons[0]&&_gpad.buttons[0].pressed;
   const b=_gpad.buttons[1]&&_gpad.buttons[1].pressed;
   const lb=_gpad.buttons[4]&&_gpad.buttons[4].pressed;
@@ -9841,6 +9840,11 @@ function _pollGamepad(){
     _gpAxes[2]=Math.abs(_gpad.axes[2])<GP_DEAD?0:_gpad.axes[2];
     _gpAxes[3]=Math.abs(_gpad.axes[3])<GP_DEAD?0:_gpad.axes[3];
   }
+  // D-pad를 axes[6/7]로 전달하는 패드 (Firefox 표준, 일부 컨트롤러)
+  if(_gpad.axes.length>=8){
+    _gpAxes[6]=Math.abs(_gpad.axes[6])<0.5?0:_gpad.axes[6];
+    _gpAxes[7]=Math.abs(_gpad.axes[7])<0.5?0:_gpad.axes[7];
+  }
   if(_gpAxes[0]||_gpAxes[1]||_gpAxes[2]||_gpAxes[3])_anyInput=true;
 
   // ── 2단계: 입력 감지 → 패드모드 활성화 ──
@@ -9850,6 +9854,8 @@ function _pollGamepad(){
   if(!_gpActive)return;
 
   // ── 3.5단계: UI 패널/오버레이 열려있으면 게임 입력 차단 + UI 네비게이션 ──
+  // gcModal (확인 다이얼로그) 최우선 — .panel 클래스 없어서 별도 체크
+  if(_gcEl&&_gcEl.classList.contains("on")){_gpClearAll();_gpUINav(_gcEl);return;}
   const _gpOpenPanel=document.querySelector('.panel.on');
   const _gpOverlay=(()=>{
     for(const id of['introDiff','introKeys','death','lvUpScreen','tutorial','stageClear']){
@@ -9861,11 +9867,24 @@ function _pollGamepad(){
   })();
   if(_gpOpenPanel||_gpOverlay){
     _gpClearAll();
+    if(!_gpWasPanel)_gpDpadCloseCooldown=20;
+    _gpWasPanel=true;
+    // D-pad 토글 닫기: 연 버튼 한 번 더 누르면 닫기 (20프레임 쿨다운으로 즉시닫힘 방지)
+    const _DP_CLOSE=[[12,'skillPanel'],[13,'forge'],[14,'statPanel'],[15,'invPanel']];
+    for(const[bi,pid] of _DP_CLOSE){
+      const _on=!!(_gpad.buttons[bi]&&_gpad.buttons[bi].pressed);
+      if(!_gpDpadCloseCooldown&&_on&&!_gpBtnsPrev['_dp'+bi]&&_gpOpenPanel&&_gpOpenPanel.id===pid){
+        closeAllPanels();_gpBtnsPrev['_dp'+bi]=true;_gpWasPanel=false;return;
+      }
+      _gpBtnsPrev['_dp'+bi]=_on;
+    }
+    if(_gpDpadCloseCooldown>0)_gpDpadCloseCooldown--;
     // 인벤토리는 전용 그리드 네비게이션
     if(_gpOpenPanel&&_gpOpenPanel.id==='invPanel'){_gpInvNav()}
     else{_gpUINav(_gpOpenPanel||_gpOverlay)}
     return;
   }
+  _gpWasPanel=false;
   // UI 닫힌 후 outline 잔류 제거
   if(_gpUIIdx>0||_gpInvIdx>0||_gpInvEqIdx>0){
     document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}});
@@ -19142,10 +19161,10 @@ let STATS={str:0,dex:0,int:0,vit:0,lck:0};
 const STAT_MAX={str:500,dex:500,int:500,vit:500,lck:500};
 // ═══ 패시브 스킬 (5레벨마다 AP 1개) ═══
 const PASSIVE_DEF=[
-  {key:'pAtk',   name:'⚔️ 맹공',nameEn:'⚔️ Onslaught',desc:'근접뎀 +15%, ST비용 -4%/lv (최대-40%)',descEn:'Melee DMG +15%, ST cost -4%/lv (max -40%)',max:10,icon:'⚔️',col:'#ff6644'},
+  {key:'pAtk',   name:'⚔️ 맹공',nameEn:'⚔️ Onslaught',desc:'근접뎀 +10%, ST비용 -4%/lv (최대-40%)',descEn:'Melee DMG +10%, ST cost -4%/lv (max -40%)',max:10,icon:'⚔️',col:'#ff6644'},
   {key:'pCharge',name:'🔱 돌파',nameEn:'🔱 Breakthrough',    desc:'작살 사거리 +2%/lv, 기동게이지 회복 +3%/lv',descEn:'Harpoon range +2%/lv, Mobility gauge recovery +3%/lv',max:10, icon:'🔱',col:'#ff8800'},
   {key:'pParry', name:'⚡ 반격',nameEn:'⚡ Retaliation',desc:'카운터뎀 +50%/lv, 우클릭 공속 +10%/lv, 무지개탄 피해감소 +10%/lv (최대50%)',descEn:'Counter DMG +50%/lv, RMB ATK speed +10%/lv, Rainbow shot DMG reduction +10%/lv (max 50%)',max:10,icon:'⚡',col:'#ffdd00'},
-  {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +15%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +15%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
+  {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +10%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +10%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
   {key:'pBow',   name:'🎯 정밀사격',nameEn:'🎯 Precision',desc:'투사체뎀 +15%, 공속 +10%, 사거리 +8%, ST비용 -4%/lv',descEn:'Projectile DMG +15%, ATK speed +10%, Range +8%, ST cost -4%/lv',max:10, icon:'🎯',col:'#44ddaa'},
   {key:'pGuard', name:'🛡 수호신',nameEn:'🛡 Aegis',  desc:'보호막 흡수 +2%/lv (기본70→최대90%), 보호막 중 HP리젠 +0.1%/lv',descEn:'Shield absorb +2%/lv (base 70 to max 90%), HP regen during shield +0.1%/lv',max:10, icon:'🛡',col:'#55bbff'},
   {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv',max:10, icon:'💚',col:'#33cc66'},
@@ -19264,10 +19283,10 @@ function statDropBonus(){return 1+_eqLckTotal()*.0015+PASSIVES.pDrop*.08+_eqAffi
 // 기존 곱연산(pAtk×pMelee×pAbund×pPred=45×) → 합연산(1+all=7.5×)으로 전환
 function _passDmgSum(type){
   let s=0;
-  s+=PASSIVES.pAtk*.15+(P._altAtk||0); // 맹공: +15%/lv
+  s+=PASSIVES.pAtk*.10+(P._altAtk||0); // 맹공: +10%/lv (너프 2026-05-11)
   s+=(PASSIVES.pHuman||0)*.05; // 인간성: 전체 데미지 +5%
   if(type==='melee')s+=(PASSIVES.pMelee||0)*.15; // 물리: +15%/lv (근접전용)
-  if(type==='magic')s+=PASSIVES.pMagic*.15+_eqAffix('magicDmg')+_eqImplicit('_iMagDmg')*.01; // 마법: +15%/lv (마법전용)
+  if(type==='magic')s+=PASSIVES.pMagic*.10+_eqAffix('magicDmg')+_eqImplicit('_iMagDmg')*.01; // 마력폭주: +10%/lv (너프 2026-05-11)
   if(type==='bow'||type==='proj')s+=PASSIVES.pBow*.15; // 투사체: +15%/lv (석궁+마법투사체+스킬투사체)
   if(type==='xbow')s+=(PASSIVES.pXbow||0)*.05; // 자동쇠뇌: +5%/lv
   if(type==='dot')s+=(PASSIVES.pDot||0)*.15; // 침식: +15%/lv
@@ -32080,10 +32099,12 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     let shDiff=(ang+Math.PI)-e.shieldAng;while(shDiff>Math.PI)shDiff-=Math.PI*2;while(shDiff<-Math.PI)shDiff+=Math.PI*2;
     if(Math.abs(shDiff)<Math.PI/3){dmg=~~(dmg*0.3);addTxt(e.x,e.y-15,'🛡','#8888ff',20);if(!noSound)SFX.block()}
   }
-  // 에너지쉴드: 물리→HP 100%+쉴드 50%, 마법→HP 50%+쉴드 100% (동시 적용)
-  if(!isDot&&e.eShieldMax>0){
-    if(atkEl===0){if(e.eShield>0)e.eShield=Math.max(0,e.eShield-~~(dmg*0.5))}
-    else{if(e.eShield>0)e.eShield=Math.max(0,e.eShield-dmg);dmg=~~(dmg*0.5)}
+  // 에너지쉴드: 쉴드 살아있는 동안 HP=0, 소진 후 HP 타격
+  // 물리: 쉴드 50%씩 소모 (100쉴드→4방 필요) / 쉴드없으면 HP 100%
+  // 마법: 쉴드 100%씩 소모 (100쉴드→2방 필요) / 쉴드없으면 HP 50%
+  if(!isDot){
+    if(atkEl===0){if(e.eShield>0){e.eShield=Math.max(0,e.eShield-~~(dmg*0.5));dmg=0}}
+    else{if(e.eShield>0){e.eShield=Math.max(0,e.eShield-dmg);dmg=0}else{dmg=~~(dmg*0.5)}}
   }
   // 원소 저항: 자기 원소 저항값만 적용, 타 원소 무관
   if(e.eRes&&e.eRes[atkEl]>0)dmg=~~(dmg*(1-e.eRes[atkEl]));
