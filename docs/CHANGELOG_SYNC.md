@@ -23821,3 +23821,27 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - lang_zht.js
 - tmp_block.js
 
+
+## 2026-05-12 23:30 (auto)
+- _autosave/game_20260512_223045.html
+- _autosave/game_20260512_223108.html
+- _autosave/game_20260512_223115.html
+- _autosave/game_20260512_223414.html
+- _autosave/game_20260512_223429.html
+- _autosave/game_20260512_223816.html
+- _autosave/game_20260512_223831.html
+- _autosave/game_20260512_223838.html
+- _autosave/game_20260512_223850.html
+- _autosave/game_20260512_224746.html
+- _autosave/game_20260512_224757.html
+- _tmp_check.js
+- assets/3d/Meshy_AI_1_biped_Animation_Alert_withSkin.glb
+- assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb
+- assets/3d/Meshy_AI_1_biped_Animation_Running_withSkin.glb
+- assets/3d/Meshy_AI_1_biped_Animation_Unsteady_Walk_withSkin.glb
+- assets/3d/Meshy_AI_1_biped_Animation_Walking_withSkin.glb
+- assets/3d/boss_01.glb
+- docs/13출시·마�???13출시·마�???md
+- game.html
+- gamedemo.html
+
