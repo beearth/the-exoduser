@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -9731,7 +9731,7 @@ let _gpUIIdx=0;
 let _gpUIPrev={a:false,b:false,x:false,y:false,lb:false,rb:false,b8:false,b9:false};
 let _gpUIRepeatDir=null,_gpUIRepeatTs=0;
 const _GP_UI_DELAY=380,_GP_UI_INTERVAL=110;
-// 섹션 타입 분류 (단락 이동용)
+// 섹션 타입 분류
 const _gpSectType=el=>{
   if(el.closest('.stat-row'))return'stat';
   if(el.closest('.passive-row'))return'passive';
@@ -9740,8 +9740,32 @@ const _gpSectType=el=>{
   if(el.closest('.fg-tab'))return'tab';
   if(el.closest('.fg-i'))return'fgi';
   if(el.closest('.set-key'))return'setkey';
+  if(el.closest('[data-sk-id]'))return'sknode';
   return el.tagName+'_'+([...el.classList][0]||'');
 };
+// 한 스텝 이동: 상/하=±1칸, 좌/우=섹션 점프 (range슬라이더는 값 조절)
+function _gpUIStep(dir,items){
+  const cur=items[_gpUIIdx];
+  if(dir==='u'){_gpUIIdx=Math.max(0,_gpUIIdx-1);return}
+  if(dir==='d'){_gpUIIdx=Math.min(items.length-1,_gpUIIdx+1);return}
+  // range 슬라이더: 좌우 = 값 조절
+  if(cur&&cur.tagName==='INPUT'&&cur.type==='range'){
+    const stp=+(cur.step)||1;
+    if(dir==='l'){cur.value=Math.max(+cur.min,+cur.value-stp);cur.dispatchEvent(new Event('input'))}
+    else{cur.value=Math.min(+cur.max,+cur.value+stp);cur.dispatchEvent(new Event('input'))}
+    return;
+  }
+  // 그 외: 좌우 = 섹션 점프
+  const ct=cur?_gpSectType(cur):'';
+  if(dir==='r'){
+    for(let i=_gpUIIdx+1;i<items.length;i++){if(_gpSectType(items[i])!==ct){_gpUIIdx=i;return;}}
+  } else {
+    let ni=_gpUIIdx,pt='';
+    for(let i=_gpUIIdx-1;i>=0;i--){const t=_gpSectType(items[i]);if(t!==ct){pt=t;ni=i;break;}}
+    if(pt){while(ni>0&&_gpSectType(items[ni-1])===pt)ni--;}
+    _gpUIIdx=ni;
+  }
+}
 function _gpUINav(panel){
   if(!_gpad||!panel)return;
   // 패널 내 포커스 가능 요소 수집
@@ -9779,26 +9803,16 @@ function _gpUINav(panel){
   if(_nowDir){
     if(_nowDir!==_gpUIRepeatDir){
       _gpUIRepeatDir=_nowDir;_gpUIRepeatTs=_nowTs+_GP_UI_DELAY;
-      if(_nowDir==='u'||_nowDir==='l')_gpUIIdx=Math.max(0,_gpUIIdx-1);
-      else _gpUIIdx=Math.min(items.length-1,_gpUIIdx+1);
-      _didMove=true;
+      _gpUIStep(_nowDir,items);_didMove=true;
     } else if(_nowTs>=_gpUIRepeatTs){
       _gpUIRepeatTs=_nowTs+_GP_UI_INTERVAL;
-      if(_nowDir==='u'||_nowDir==='l')_gpUIIdx=Math.max(0,_gpUIIdx-1);
-      else _gpUIIdx=Math.min(items.length-1,_gpUIIdx+1);
-      _didMove=true;
+      _gpUIStep(_nowDir,items);_didMove=true;
     }
   } else {
     _gpUIRepeatDir=null;
   }
 
-  // range 슬라이더 좌우 조절
   const cur=items[_gpUIIdx];
-  if(_didMove&&cur&&cur.tagName==='INPUT'&&cur.type==='range'){
-    const stp=+(cur.step)||1;
-    if(_nowDir==='l'){cur.value=Math.max(+cur.min,+cur.value-stp);cur.dispatchEvent(new Event('input'))}
-    if(_nowDir==='r'){cur.value=Math.min(+cur.max,+cur.value+stp);cur.dispatchEvent(new Event('input'))}
-  }
 
   // LB/RB: 탭 전환
   if((lb&&!_gpUIPrev.lb)||(rb&&!_gpUIPrev.rb)){
@@ -10118,7 +10132,7 @@ function _pollGamepad(){
 }
 
 // ═══ 인벤토리 게임패드 (디아4 스타일 — 아이템 순차 + 즉시 상세) ═══
-let _gpInvIdx=0,_gpInvEqIdx=0,_gpInvMode='bag'; // bag | eq | st
+let _gpInvIdx=0,_gpInvEqIdx=0,_gpInvMode='bag',_gpInvBotIdx=-1; // bag | eq | st
 function _gpInvNav(){
   if(!_gpad)return;
   // D-pad(버튼12-15) + axes[6/7] + 좌스틱 → 그리드 이동 / 우스틱 → 스크롤 전용
@@ -10138,10 +10152,25 @@ function _gpInvNav(){
   const rb=_gpad.buttons[5]&&_gpad.buttons[5].pressed;
   const rsY=_gpad.axes.length>=4?_gpad.axes[3]:0; // 우스틱 상하 → 스크롤
 
-  // LB/RB: 영역 순환 (장비 ↔ 가방 ↔ 창고)
+  // X: 영역 순환 (장비 ↔ 가방 ↔ 창고)
   const modes=['eq','bag','st'];
-  if(rb&&!_gpUIPrev.rb){const ci=modes.indexOf(_gpInvMode);_gpInvMode=modes[(ci+1)%3];_gpInvIdx=0;_gpInvEqIdx=0}
-  if(lb&&!_gpUIPrev.lb){const ci=modes.indexOf(_gpInvMode);_gpInvMode=modes[(ci-1+3)%3];_gpInvIdx=0;_gpInvEqIdx=0}
+  if(x&&!_gpUIPrev.x){const ci=modes.indexOf(_gpInvMode);_gpInvMode=modes[(ci+1)%3];_gpInvIdx=0;_gpInvEqIdx=0;_gpInvBotIdx=-1}
+
+  // LB/RB: 인벤 하단 버튼 순환 (전체쓰레기/분해/선택분해 등)
+  if((lb&&!_gpUIPrev.lb)||(rb&&!_gpUIPrev.rb)){
+    const _botIds=['invJunkSelBtn','invJunkBtn','invSalvageBtn'];
+    const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
+    if(_bots.length){
+      if(_gpInvBotIdx<0)_gpInvBotIdx=rb?0:_bots.length-1;
+      else if(rb&&!_gpUIPrev.rb)_gpInvBotIdx=Math.min(_bots.length-1,_gpInvBotIdx+1);
+      else if(lb&&!_gpUIPrev.lb)_gpInvBotIdx=Math.max(0,_gpInvBotIdx-1);
+      const p=$('invPanel');if(p)p.querySelectorAll('[id^="inv"]').forEach(el=>{if(el.tagName==='BUTTON'){el.style.outline='';el.style.outlineOffset=''}});
+      _bots[_gpInvBotIdx].style.outline='2px solid #C9A961';_bots[_gpInvBotIdx].style.outlineOffset='-1px';
+      _bots[_gpInvBotIdx].scrollIntoView({block:'nearest'});
+    }
+  }
+  // 방향키 누르면 하단 버튼 포커스 해제
+  if(u||d||l||r)_gpInvBotIdx=-1;
   _gpUIPrev.lb=lb;_gpUIPrev.rb=rb;
 
   // outline 정리
@@ -10150,14 +10179,11 @@ function _gpInvNav(){
   if(_gpInvMode==='bag'){
     const bagLen=typeof INV!=='undefined'?INV.bag.length:0;
     if(!bagLen){_gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;_gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.x=x;_gpUIPrev.y=y;if(b&&!_gpUIPrev.b)closeAllPanels();return}
-    const COLS=typeof INV_COLS!=='undefined'?INV_COLS:12;
-    let row=Math.floor(_gpInvIdx/COLS),col=_gpInvIdx%COLS;
     let moved=false;
-    if(u&&!_gpUIPrev.u){row=Math.max(0,row-1);moved=true}
-    if(d&&!_gpUIPrev.d){row++;moved=true}
-    if(l&&!_gpUIPrev.l){col=Math.max(0,col-1);moved=true}
-    if(r&&!_gpUIPrev.r){col=Math.min(COLS-1,col+1);moved=true}
-    _gpInvIdx=Math.min(bagLen-1,Math.max(0,row*COLS+col));
+    if(u&&!_gpUIPrev.u){_gpInvIdx=Math.max(0,_gpInvIdx-1);moved=true}
+    if(d&&!_gpUIPrev.d){_gpInvIdx=Math.min(bagLen-1,_gpInvIdx+1);moved=true}
+    if(l&&!_gpUIPrev.l){_gpInvIdx=Math.max(0,_gpInvIdx-1);moved=true}
+    if(r&&!_gpUIPrev.r){_gpInvIdx=Math.min(bagLen-1,_gpInvIdx+1);moved=true}
     _clr();
     const grid=$('invGrid');
     if(grid){
@@ -10200,6 +10226,12 @@ function _gpInvNav(){
     _clr();
     stItems[_gpInvIdx].style.outline='2px solid #C9A961';stItems[_gpInvIdx].style.outlineOffset='-1px';
     if(a&&!_gpUIPrev.a)stItems[_gpInvIdx].click();
+  }
+  // 하단 버튼 포커스 중 A = 클릭
+  if(a&&!_gpUIPrev.a&&_gpInvBotIdx>=0){
+    const _botIds=['invJunkSelBtn','invJunkBtn','invSalvageBtn'];
+    const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
+    if(_bots[_gpInvBotIdx])_bots[_gpInvBotIdx].click();
   }
   if(b&&!_gpUIPrev.b){if(typeof closeAllPanels==='function')closeAllPanels()}
   _gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;
@@ -11774,7 +11806,7 @@ const CHAPTER_STAGES=[
 ];
 const TOTAL_STAGES=35;
 // ── 데모 잠금 ──────────────────────────────────────────
-const _DEMO_MODE=true;
+const _DEMO_MODE=false;
 const _DEMO_LV_CAP=500;
 const _DEMO_LAST_STAGE=3; // ACT1(hell:0) 마지막 스테이지 인덱스
 const _DEMO_FUSE_ALLOWED=new Set(['dimBreach','dimSlam','sixFuse','elemFuse','whirlDet','slamStorm','bladeFuse','plagueFuse','boneStorm','elecRepent','shieldFuse','holyFuse','holyIce','iceMortar','pillarSpike','pillarSlam','infernoSlam','thunderGhost','dualScarecrow','siegeGhost']);
@@ -19847,10 +19879,23 @@ function _updateActionKeys(){
   _updateSkBarKeyLabels();
 }
 let _skBarKeyMode=''; // 이전 모드 캐시
+// kc=KBM키코드, pd=패드실제버튼 (_GP_KEY_DEFAULT + _pollGamepad 기준)
+// A=btn0,B=btn1,X=btn2,Y=btn3,LB=btn4,RB=btn5,LT=btn6,RT=btn7
+// LT+ABXY → Digit1~4, RS(우스틱) → KeyE
 const _SK_SLOTS=[
-  {l:128,p:'LT+A'},{l:173,p:'LT+B'},{l:217,p:'LT+Y'},{l:261,p:'LT+X'},
-  {l:303,p:'LT'},{l:347,p:'LT+RT'},{l:392,p:'A'},{l:436,p:'RB'},
-  {l:479,p:'LB'},{l:522,p:'X'},{l:566,p:'RT'},{l:610,p:'Y'},{l:654,p:'B'}
+  {l:128,kc:'Digit1',   pd:'LT+A'},
+  {l:173,kc:'Digit2',   pd:'LT+B'},
+  {l:217,kc:'Digit3',   pd:'LT+Y'},
+  {l:261,kc:'Digit4',   pd:'LT+X'},
+  {l:303,kc:'KeyF',     pd:'LT'},
+  {l:347,kc:'KeyZ',     pd:'RT'},
+  {l:392,kc:'mouse0',   pd:'A'},
+  {l:436,kc:'mouse2',   pd:'X'},
+  {l:479,kc:'ShiftLeft',pd:'LB'},
+  {l:522,kc:'KeyE',     pd:'RS'},
+  {l:566,kc:'KeyQ',     pd:'Y'},
+  {l:610,kc:'ControlLeft',pd:'RB'},
+  {l:654,kc:'Space',    pd:'B'},
 ];
 function _updateSkBarKeyLabels(){
   const isPad=typeof _gpActive!=='undefined'&&_gpActive;
@@ -19861,7 +19906,8 @@ function _updateSkBarKeyLabels(){
   if(!isPad){row.style.display='none';return;}
   let html='';
   for(const s of _SK_SLOTS){
-    html+=`<div style="position:absolute;left:${s.l}px;width:37px;text-align:center;font-size:.42rem;color:#c8aa80;font-weight:700;pointer-events:none;text-shadow:0 1px 2px #000,0 0 4px #000;line-height:14px">${s.p}</div>`;
+    const lbl=s.pd;
+    html+=`<div style="position:absolute;left:${s.l}px;width:37px;text-align:center;font-size:.42rem;color:#c8aa80;font-weight:700;pointer-events:none;text-shadow:0 1px 2px #000,0 0 4px #000;line-height:14px">${lbl}</div>`;
   }
   row.innerHTML=html;
   row.style.display='block';
@@ -33597,7 +33643,7 @@ function _fallenResolve(){
     $('death').classList.add('on');
   });
 }
-function nextStage(){SFX.beamStop();$('stageClear').style.opacity='0';$('stageClear').style.pointerEvents='none';G.stageCleared=false;G.on=false;ens=[];G.rooms=[];G.exits=[];G.bossAlive=true;_ensWarmDone=false;G._zones=null;G._curZone=0;G._zoneState={};G._portals=null;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;const _curHell=SI_TO_HELL[G.stage];const _ch=CHAPTER_STAGES[_curHell];if(_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&_curHell===0){const _de=$('demoEnd');if(_de)_de.style.display='flex';G.on=false;return}if(G.stage===_ch.startSi+_ch.stages-1&&_curHell<6){G.stage=CHAPTER_STAGES[_curHell+1].startSi}else{G.stage++}if(G.stage>=TOTAL_STAGES){doWin();return}initStage(G.stage);G.on=true;BGM.play(BGM.stageKey(G.stage))}
+function nextStage(){SFX.beamStop();$('stageClear').style.opacity='0';$('stageClear').style.pointerEvents='none';G.stageCleared=false;G.on=false;ens=[];G.rooms=[];G.exits=[];G.bossAlive=true;_ensWarmDone=false;G._zones=null;G._curZone=0;G._zoneState={};G._portals=null;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;const _curHell=SI_TO_HELL[G.stage];const _ch=CHAPTER_STAGES[_curHell];if(_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&_curHell===0){const _de=$('demoEnd');if(_de){_de.style.display='flex';const _dt=$('demoEndTitle');if(_dt)_dt.textContent=_T('데모 종료');const _dm=$('demoEndMsg');if(_dm)_dm.textContent=_T('여기까지 데모입니다. 정식 출시를 기대해주세요!');const _ds=$('demoEndSupport');if(_ds)_ds.textContent=_T('STEAM 위시리스트로 응원해 주세요!');const _dw=$('demoEndWishlist');if(_dw)_dw.textContent=_T('STEAM 위시리스트');const _dl=$('demoEndLobby');if(_dl)_dl.textContent=_T('로비로 돌아가기');}G.on=false;return}if(G.stage===_ch.startSi+_ch.stages-1&&_curHell<6){G.stage=CHAPTER_STAGES[_curHell+1].startSi}else{G.stage++}if(G.stage>=TOTAL_STAGES){doWin();return}initStage(G.stage);G.on=true;BGM.play(BGM.stageKey(G.stage))}
 function doWin(){
   SFX.beamStop();G.on=false;
   BGM.fadeOut(800);setTimeout(()=>BGM.play('victory'),1000);
@@ -36901,7 +36947,7 @@ function renderSettings(){
   list.appendChild(gpTitle);
 
   const _gpBtnNames={0:'A',1:'B',2:'X',3:'Y',4:'LB',5:'RB',8:'Select',9:'Start',10:'L3',11:'R3',12:'D↑',13:'D↓',14:'D←',15:'D→'};
-  const _gpActNames={0:_T('공격'),1:_T('대왕치기'),2:_T('마법'),3:_T('Ctrl스킬'),4:_T('돌진/작살'),5:_T('패링/방패'),8:_T('인벤토리'),9:_T('설정'),10:_T('줍기'),11:_T('능력치'),12:_T('스킬창'),13:_T('대장간'),14:_T('능력치'),15:_T('창고')};
+  const _gpActNames={0:_T('무기 공격'),1:_T('B슬롯 스킬'),2:_T('우클릭 스킬'),3:_T('패링'),4:_T('돌진/작살'),5:_T('Ctrl 스킬'),8:_T('인벤토리'),9:_T('설정'),10:_T('줍기'),11:_T('마법'),12:_T('스킬창'),13:_T('대장간'),14:_T('능력치'),15:_T('창고')};
 
   for(const bi in _GP_KEY){
     const idx=+bi;
@@ -36931,8 +36977,35 @@ function renderSettings(){
   list.appendChild(gpResetBtn);
 
   const gpNote=document.createElement('div');
-  gpNote.style.cssText='text-align:center;margin-top:8px;font-size:.7rem;color:#665544;line-height:1.6';
-  gpNote.innerHTML='LT = '+_T('모디파이어')+' (LT+ABXY → '+_T('스킬')+'1~4)<br>LT+RT = '+_T('필살기');
+  gpNote.style.cssText='margin-top:14px;padding:10px;background:rgba(0,0,0,.35);border:1px solid #443322;border-radius:6px;font-size:.72rem;color:#998877;line-height:1.8';
+  const _gR=(btn,act)=>`<div style="display:flex;"><span style="color:#ccaa66;font-weight:700;min-width:100px">${btn}</span><span>${act}</span></div>`;
+  gpNote.innerHTML=
+    '<div style="color:#ccaa77;font-weight:700;margin-bottom:6px;font-size:.8rem;letter-spacing:.08em">🎮 전체 조작 가이드</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px">'+
+    _gR('A','무기 공격 (좌클릭)')+
+    _gR('B','B슬롯 스킬 (Space)')+
+    _gR('X','우클릭 스킬 (RMB)')+
+    _gR('Y','패링 (Q)')+
+    _gR('LB','돌진/작살 (Shift)')+
+    _gR('RB','Ctrl 스킬')+
+    _gR('RT','필살기 (Z)')+
+    _gR('LT (탭)','F 슬롯 스킬')+
+    _gR('LT+A','스킬 슬롯 1')+
+    _gR('LT+B','스킬 슬롯 2')+
+    _gR('LT+Y','스킬 슬롯 3')+
+    _gR('LT+X','스킬 슬롯 4')+
+    _gR('LT+RT','처형 (X)')+
+    _gR('RS 기울임','방향 + 마법 자동발동 (E)')+
+    _gR('R3 클릭','마법 (E)')+
+    _gR('L3 클릭','줍기 (R)')+
+    _gR('D↑','스킬창')+
+    _gR('D↓','대장간')+
+    _gR('D←','능력치')+
+    _gR('D→','창고')+
+    _gR('Select','인벤토리')+
+    _gR('Start','설정')+
+    _gR('좌스틱','이동 (WASD)')+
+    '</div>';
   list.appendChild(gpNote);
 
   // F5키로도 리셋 가능 (마우스 클릭 불가 상황 대비)
@@ -47356,6 +47429,104 @@ function loop(timestamp){
   _perfFrameTick();
   requestAnimationFrame(loop);
 }
+// ═══ DEMO TEST 자동 캐릭터 로드 (_DEMO_MODE=true 전용) ═══
+async function _startDemoTest(){
+  showBootLoading('DEMO TEST 로딩...');
+  setBootLoading(20,'캐릭터 초기화...');
+  // 기본 초기화
+  P=mkP();
+  INV.bag=[];
+  INV.equipped={weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,belt:null,necklace:null,ring1:null,ring2:null,cape:null,bracelet:null,headband:null};
+  INV.selected=null;
+  QSLOTS=[{type:'hp',count:5},{type:null,count:0},{type:null,count:0},{type:null,count:0}];
+  qsCooldown=[0,0,0,0];autoPotCd=0;
+  UPGRADES={hp:0,atk:0,def:0,mp:0,st:0,spd:0};
+  POT_LV={hp:0};
+  STATS={str:0,dex:0,int:0,vit:0,lck:0};
+  PASSIVE_DEF.forEach(pd=>PASSIVES[pd.key]=0);
+  BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
+  G.on=false;G.stage=_DEMO_LAST_STAGE;G.kills=0;G.mats=999999;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
+  _charName='DEMO TEST';_charIdx=0;
+  G._cutsceneDone=true;
+  // Lv500
+  P.lv=_DEMO_LV_CAP;P.exp=0;P.maxExp=_calcMaxExp(_DEMO_LV_CAP);P.sp=0;P.ap=0;P.isDemoTest=true;
+  // ACT1 스킬 전체 Lv5
+  const _dSk=['kiSlash','fireball','bladeDash','chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam',
+    'fanShot','omniBeam','elemMissile','whirlwind','detonate','giantSlam','giantSlam2',
+    'maliceHunt','guardian','plagueBurst','maliceStorm','boneWall','hellRay',
+    'maliceSwipe','shieldThrow','holyDome','holyPrison','iceStorm',
+    'maliceMortar','iceOrb','darkPillar','spikeTrap',
+    'fireAura','thunderStake','voidScarecrow','explodeScarecrow','ghostXbowTurret',
+    'needleShot','arcLaser','fireBeam'];
+  for(const _sk of _dSk)P.skills[_sk]=5;
+  // _DEMO_FUSE_ALLOWED 20개 합체 해금
+  P._fused={};for(const _fk of _DEMO_FUSE_ALLOWED)P._fused[_fk]=true;
+  // 스킬슬롯 배치
+  SKILL_SLOTS[0]='spikeTrap';SKILL_SLOTS[1]='whirlwind';SKILL_SLOTS[2]='holyDome';
+  SKILL_SLOTS[3]='fireball';SKILL_SLOTS[4]='giantSlam';SKILL_SLOTS[5]='darkPillar';
+  ULT_SLOT='kiSlash';
+  P.activeCtSk='iceOrb';P.activeMagicSk='fireball';P.activeBowSk='normal';
+  // 5등급 전설 장비 (tier=4, rarity=4)
+  const _dtSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
+  const _dtWt={weapon:'sword',bow:'crossbow'};
+  for(const _sl of _dtSlots)INV.equipped[_sl]=mkItem(_sl,4,EL.P,4,_dtWt[_sl]);
+  // 재화
+  G.mats=999999;
+  // 몬스터 아틀라스 대기
+  setBootLoading(50,'몬스터 스킨 로딩...');
+  if(!_mobAtlas.ready)await new Promise(r=>{const _ci=setInterval(()=>{if(_mobAtlas.ready){clearInterval(_ci);r()}},50);setTimeout(()=>{clearInterval(_ci);r()},5000)});
+  setBootLoading(75,'맵과 몬스터 생성 중...');
+  applyStats();
+  P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;
+  ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.add('on'));
+  updateQS();updateSkSlot();
+  _bootMapBuildDefer=1;
+  initStage(G.stage);
+  _bootMapBuildDefer=0;
+  setBootLoading(85,'맵 에셋 로딩...');
+  await _waitObjSprites(8000);
+  await new Promise(r=>{
+    const _chk=()=>{
+      const _s=_GROUND_TILES['gt_soil'],_v=_GROUND_TILES['gt_void_wall'];
+      const _sOk=_s&&_s.complete&&_s.naturalWidth>0;
+      const _vOk=_v&&_v.complete&&_v.naturalWidth>0;
+      const _skOk=_skullWallImg&&_skullWallImg.complete&&_skullWallImg.naturalWidth>0;
+      if((_sOk||!_s)&&(_vOk||!_v)&&(_skOk||!_skullWallImg)){_buildSkullWallPat();r();return}
+      setTimeout(_chk,50);
+    };_chk();
+    setTimeout(r,5000);
+  });
+  await new Promise(r=>setTimeout(r,0));
+  setBootLoading(88,'맵 환경 준비 중...');
+  _tickBgInit(4);
+  if(_streamMap&&_streamBuildQCount>0){
+    setBootLoading(92,'주변 청크 준비 중...');
+    _tickStreamChunkBuild(6,4);
+    await new Promise(r=>setTimeout(r,0));
+  }
+  if(_bootMapBuildPromise){
+    setBootLoading(97,'맵 캐시 생성 중...');
+    await _bootMapBuildPromise;
+  }
+  setBootLoading(99,'미니맵 빌드 중...');
+  await new Promise(r=>setTimeout(r,0));
+  _dbReady=true;
+  _ensWarmDone=false;_wqLen=0;_wqIdx=0;_warmupEnsAtlas();
+  BGM.play(BGM.stageKey(G.stage));
+  setBootLoading(100,'완료');
+  hideBootLoading();
+  await new Promise(r=>{
+    const _el=$('stageTransition');
+    const _elapsed=Date.now()-_bootLoadShownAt;
+    const _wait=Math.max(0,5000-_elapsed)+400;
+    setTimeout(()=>{
+      if(_el){_el.style.opacity='0';_el.style.pointerEvents='none';}
+      G.on=true;P.iframes=300;
+      if(G._bonfire)G._bonfire.t=300;
+      r();
+    },_wait);
+  });
+}
 // ═══ DB-aware startup ═══
 async function startGameFromDB(){
   showBootLoading(_T('맵과 몬스터 불러오는 중...'));
@@ -48169,6 +48340,11 @@ $('nextBtn').onclick=()=>{
   _showNextDiffPop();
 };
 
+// ═══ Steam 위시리스트 ═══
+function openWishlist(){
+  // TODO: 스팀 앱 등록 후 'https://store.steampowered.com/app/[APPID]/EXODUSER/' 로 교체
+  window.open('https://store.steampowered.com/','_blank');
+}
 // ═══ 로비 복귀 버튼 ═══
 async function goToLobby(){
   try{
@@ -49137,11 +49313,11 @@ let _b3actions={},_b3state='idle';
 
 // 5개 애니메이션 매핑
 const _B3_ANIMS={
-  idle:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Alert_withSkin.glb'},
-  walk:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Walking_withSkin.glb'},
-  aggro:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
-  run:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Running_withSkin.glb'},
-  hit:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Unsteady_Walk_withSkin.glb'}
+  idle:{src:'assets/3d/Meshy_AI_1_biped_Animation_Alert_withSkin.glb'},
+  walk:{src:'assets/3d/Meshy_AI_1_biped_Animation_Walking_withSkin.glb'},
+  aggro:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
+  run:{src:'assets/3d/Meshy_AI_1_biped_Animation_Running_withSkin.glb'},
+  hit:{src:'assets/3d/Meshy_AI_1_biped_Animation_Unsteady_Walk_withSkin.glb'}
 };
 
 // 보스 상태 → 3D 애니메이션 매핑

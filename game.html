@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
@@ -11806,7 +11806,7 @@ const CHAPTER_STAGES=[
 ];
 const TOTAL_STAGES=35;
 // ── 데모 잠금 ──────────────────────────────────────────
-const _DEMO_MODE=true;
+const _DEMO_MODE=false;
 const _DEMO_LV_CAP=500;
 const _DEMO_LAST_STAGE=3; // ACT1(hell:0) 마지막 스테이지 인덱스
 const _DEMO_FUSE_ALLOWED=new Set(['dimBreach','dimSlam','sixFuse','elemFuse','whirlDet','slamStorm','bladeFuse','plagueFuse','boneStorm','elecRepent','shieldFuse','holyFuse','holyIce','iceMortar','pillarSpike','pillarSlam','infernoSlam','thunderGhost','dualScarecrow','siegeGhost']);
@@ -36947,7 +36947,7 @@ function renderSettings(){
   list.appendChild(gpTitle);
 
   const _gpBtnNames={0:'A',1:'B',2:'X',3:'Y',4:'LB',5:'RB',8:'Select',9:'Start',10:'L3',11:'R3',12:'D↑',13:'D↓',14:'D←',15:'D→'};
-  const _gpActNames={0:_T('공격'),1:_T('대왕치기'),2:_T('마법'),3:_T('Ctrl스킬'),4:_T('돌진/작살'),5:_T('패링/방패'),8:_T('인벤토리'),9:_T('설정'),10:_T('줍기'),11:_T('능력치'),12:_T('스킬창'),13:_T('대장간'),14:_T('능력치'),15:_T('창고')};
+  const _gpActNames={0:_T('무기 공격'),1:_T('B슬롯 스킬'),2:_T('우클릭 스킬'),3:_T('패링'),4:_T('돌진/작살'),5:_T('Ctrl 스킬'),8:_T('인벤토리'),9:_T('설정'),10:_T('줍기'),11:_T('마법'),12:_T('스킬창'),13:_T('대장간'),14:_T('능력치'),15:_T('창고')};
 
   for(const bi in _GP_KEY){
     const idx=+bi;
@@ -36977,8 +36977,35 @@ function renderSettings(){
   list.appendChild(gpResetBtn);
 
   const gpNote=document.createElement('div');
-  gpNote.style.cssText='text-align:center;margin-top:8px;font-size:.7rem;color:#665544;line-height:1.6';
-  gpNote.innerHTML='LT = '+_T('모디파이어')+' (LT+ABXY → '+_T('스킬')+'1~4)<br>LT+RT = '+_T('필살기');
+  gpNote.style.cssText='margin-top:14px;padding:10px;background:rgba(0,0,0,.35);border:1px solid #443322;border-radius:6px;font-size:.72rem;color:#998877;line-height:1.8';
+  const _gR=(btn,act)=>`<div style="display:flex;"><span style="color:#ccaa66;font-weight:700;min-width:100px">${btn}</span><span>${act}</span></div>`;
+  gpNote.innerHTML=
+    '<div style="color:#ccaa77;font-weight:700;margin-bottom:6px;font-size:.8rem;letter-spacing:.08em">🎮 전체 조작 가이드</div>'+
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:0 16px">'+
+    _gR('A','무기 공격 (좌클릭)')+
+    _gR('B','B슬롯 스킬 (Space)')+
+    _gR('X','우클릭 스킬 (RMB)')+
+    _gR('Y','패링 (Q)')+
+    _gR('LB','돌진/작살 (Shift)')+
+    _gR('RB','Ctrl 스킬')+
+    _gR('RT','필살기 (Z)')+
+    _gR('LT (탭)','F 슬롯 스킬')+
+    _gR('LT+A','스킬 슬롯 1')+
+    _gR('LT+B','스킬 슬롯 2')+
+    _gR('LT+Y','스킬 슬롯 3')+
+    _gR('LT+X','스킬 슬롯 4')+
+    _gR('LT+RT','처형 (X)')+
+    _gR('RS 기울임','방향 + 마법 자동발동 (E)')+
+    _gR('R3 클릭','마법 (E)')+
+    _gR('L3 클릭','줍기 (R)')+
+    _gR('D↑','스킬창')+
+    _gR('D↓','대장간')+
+    _gR('D←','능력치')+
+    _gR('D→','창고')+
+    _gR('Select','인벤토리')+
+    _gR('Start','설정')+
+    _gR('좌스틱','이동 (WASD)')+
+    '</div>';
   list.appendChild(gpNote);
 
   // F5키로도 리셋 가능 (마우스 클릭 불가 상황 대비)
@@ -47500,6 +47527,96 @@ async function _startDemoTest(){
     },_wait);
   });
 }
+// ═══ 테스트 캐릭터 (localhost ?testchar=1 전용) ═══
+async function _startTestChar(){
+  showBootLoading('TEST CHAR 로딩...');
+  setBootLoading(20,'캐릭터 초기화...');
+  P=mkP();
+  INV.bag=[];
+  INV.equipped={weapon:null,shield:null,boots:null,armor:null,helmet:null,bow:null,gloves:null,pants:null,belt:null,necklace:null,ring1:null,ring2:null,cape:null,bracelet:null,headband:null};
+  INV.selected=null;
+  QSLOTS=[{type:'hp',count:5},{type:null,count:0},{type:null,count:0},{type:null,count:0}];
+  qsCooldown=[0,0,0,0];autoPotCd=0;
+  UPGRADES={hp:0,atk:0,def:0,mp:0,st:0,spd:0};
+  POT_LV={hp:0};
+  STATS={str:0,dex:0,int:0,vit:0,lck:0};
+  PASSIVE_DEF.forEach(pd=>PASSIVES[pd.key]=0);
+  BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
+  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=999999;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
+  _charName='TEST';_charIdx=0;
+  G._cutsceneDone=true;
+  // Lv500
+  P.lv=500;P.exp=0;P.maxExp=_calcMaxExp(500);P.sp=0;P.ap=200;
+  // 전 스킬 Lv5
+  const _tSk=['chargeBoost','magicBlink','ghostWalk','bladeDash','kiSlash','fireball','whirlwind','detonate',
+    'maliceSwipe','fanShot','omniBeam','elemMissile','guardian','maliceHunt','venomBlade',
+    'maliceMortar','boneWall','holyBlast','blackStar','lavaSummon','execution',
+    'iceOrb','needleShot','arcLaser','fireBeam','fireAura','plagueBurst','maliceStorm',
+    'darkPillar','holyDome','holyPrison','iceStorm','giantSlam','giantSlam2',
+    'chainAssault','chainSlam','chainSlash','peaceShield','hellRay','shieldThrow',
+    'weakPhys','weakMag','weakPj','weakRev','spikeTrap','blueShot','burstLoop',
+    'voidScarecrow','explodeScarecrow','ghostXbowTurret','timeWarp','thunderStake'];
+  for(const _sk of _tSk)P.skills[_sk]=5;
+  // 전 합체 해금
+  P._fused={};
+  const _tFu=['dimBreach','dimSlam','dimThunder','dimRush','dimBlast',
+    'whirlDet','slamStorm','stormBeam','stormBurst',
+    'bladeFuse','iceMortar','sixFuse','elemFuse',
+    'boneStorm','elecRepent','shieldFuse','plagueFuse',
+    'holyFuse','holyIce','holyWeak1','holyWeak2','holyWeak3','holyWeak4',
+    'pillarSpike','pillarSlam','infernoSlam','siegeGhost','dualScarecrow','thunderGhost','timeStep'];
+  for(const _fk of _tFu)P._fused[_fk]=true;
+  // 숙련도 전 카테고리 풀
+  P._catProf={move:9999,phys:9999,bow:9999,magic:9999,tech:9999,def:9999,ult:9999};
+  P._skProf={};for(const _sk of _tSk)P._skProf[_sk]=9999;
+  // 스킬슬롯 6칸 전부 배치
+  SKILL_SLOTS[0]='spikeTrap';SKILL_SLOTS[1]='whirlwind';SKILL_SLOTS[2]='holyDome';
+  SKILL_SLOTS[3]='thunderStake';SKILL_SLOTS[4]='giantSlam';SKILL_SLOTS[5]='darkPillar';
+  ULT_SLOT='kiSlash';
+  P.activeCtSk='timeWarp';P.activeMagicSk='fireball';P.activeBowSk='needleShot';
+  P.activeLMBSk='whirlwind';P.activeRMBSk='maliceSwipe';P.activeQSk='detonate';
+  P.activeChargeSk='magicBlink';
+  // 장비: 전 슬롯 Tier4 전설
+  const _tSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
+  const _tWt={weapon:'sword',bow:'crossbow'};
+  for(const _sl of _tSlots)INV.equipped[_sl]=mkItem(_sl,4,EL.P,4,_tWt[_sl]);
+  G.mats=999999;
+  setBootLoading(50,'몬스터 스킨 로딩...');
+  if(!_mobAtlas.ready)await new Promise(r=>{const _ci=setInterval(()=>{if(_mobAtlas.ready){clearInterval(_ci);r()}},50);setTimeout(()=>{clearInterval(_ci);r()},5000)});
+  setBootLoading(75,'맵과 몬스터 생성 중...');
+  applyStats();
+  // ST 1000 강제, AP 200
+  P.mst=Math.max(P.mst,1000);P.st=P.mst;P.ap=200;
+  P.hp=P.mhp;P.mp=P.mmp;
+  ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>$(id).classList.add('on'));
+  updateQS();updateSkSlot();
+  _bootMapBuildDefer=1;
+  initStage(G.stage);
+  _bootMapBuildDefer=0;
+  setBootLoading(85,'맵 에셋 로딩...');
+  await _waitObjSprites(8000);
+  await new Promise(r=>{
+    const _chk=()=>{const _s=_GROUND_TILES['gt_soil'],_v=_GROUND_TILES['gt_void_wall'];if((_s&&_s.complete&&_s.naturalWidth>0||!_s)&&(_v&&_v.complete&&_v.naturalWidth>0||!_v)){_buildSkullWallPat();r();return}setTimeout(_chk,50)};_chk();setTimeout(r,5000);
+  });
+  await new Promise(r=>setTimeout(r,0));
+  setBootLoading(88,'맵 환경 준비 중...');
+  _tickBgInit(4);
+  if(_streamMap&&_streamBuildQCount>0){setBootLoading(92,'주변 청크 준비 중...');_tickStreamChunkBuild(6,4);await new Promise(r=>setTimeout(r,0));}
+  if(_bootMapBuildPromise){setBootLoading(97,'맵 캐시 생성 중...');await _bootMapBuildPromise;}
+  setBootLoading(99,'미니맵 빌드 중...');
+  await new Promise(r=>setTimeout(r,0));
+  _dbReady=true;
+  _ensWarmDone=false;_wqLen=0;_wqIdx=0;_warmupEnsAtlas();
+  BGM.play(BGM.stageKey(G.stage));
+  setBootLoading(100,'완료');
+  hideBootLoading();
+  await new Promise(r=>{
+    const _el=$('stageTransition');
+    const _elapsed=Date.now()-_bootLoadShownAt;
+    const _wait=Math.max(0,3000-_elapsed)+200;
+    setTimeout(()=>{if(_el){_el.style.opacity='0';_el.style.pointerEvents='none';}G.on=true;P.iframes=120;r();},_wait);
+  });
+}
 // ═══ DB-aware startup ═══
 async function startGameFromDB(){
   showBootLoading(_T('맵과 몬스터 불러오는 중...'));
@@ -48494,6 +48611,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
   G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=_loadSharedMats()||1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
   (async()=>{
+    if(new URLSearchParams(window.location.search).get('testchar')==='1'){await _startTestChar();return;}
     let _loaded=false;
     try{
       const res=await fetch('/api/load/'+encodeURIComponent(_SLOT));
@@ -49286,11 +49404,11 @@ let _b3actions={},_b3state='idle';
 
 // 5개 애니메이션 매핑
 const _B3_ANIMS={
-  idle:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Alert_withSkin.glb'},
-  walk:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Walking_withSkin.glb'},
-  aggro:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
-  run:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Running_withSkin.glb'},
-  hit:{src:'/boss_3d_poc/assets/Meshy_AI_1_biped_Animation_Unsteady_Walk_withSkin.glb'}
+  idle:{src:'assets/3d/Meshy_AI_1_biped_Animation_Alert_withSkin.glb'},
+  walk:{src:'assets/3d/Meshy_AI_1_biped_Animation_Walking_withSkin.glb'},
+  aggro:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
+  run:{src:'assets/3d/Meshy_AI_1_biped_Animation_Running_withSkin.glb'},
+  hit:{src:'assets/3d/Meshy_AI_1_biped_Animation_Unsteady_Walk_withSkin.glb'}
 };
 
 // 보스 상태 → 3D 애니메이션 매핑
