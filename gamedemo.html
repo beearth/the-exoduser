@@ -2663,13 +2663,14 @@ canvas{display:block;position:fixed;inset:0}
 <div class="sp-n" id="spN"></div><div class="sp-k" id="spK"></div>
 <div id="spStart" style="margin-top:18px;font-size:clamp(.6rem,1.2vw,.9rem);color:#886644;letter-spacing:.2em;animation:spBlink 1.2s ease-in-out infinite">— 클릭하여 시작 —</div>
 </div></div>
-<div id="demoLobby" style="position:fixed;inset:0;z-index:34;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(0,0,0,.92);opacity:0;pointer-events:none;transition:opacity .5s;font-family:'Noto Serif KR',serif">
-  <div style="color:#cc4422;font-size:clamp(1rem,3vw,2rem);letter-spacing:.4em;text-shadow:0 0 40px rgba(200,50,0,.6);margin-bottom:8px">EXODUSER</div>
-  <div style="color:#886644;font-size:clamp(.6rem,1.4vw,.95rem);letter-spacing:.3em;margin-bottom:48px">HELL LORD — DEMO</div>
-  <div style="display:flex;flex-direction:column;gap:16px;width:clamp(220px,28vw,340px)">
-    <button id="demoLobbyNew" style="padding:14px 24px;background:rgba(60,20,10,.8);border:1px solid #993322;color:#ffaa66;font-size:clamp(.7rem,1.3vw,.9rem);letter-spacing:.15em;cursor:pointer;transition:background .2s;font-family:inherit" onmouseover="this.style.background='rgba(120,40,10,.9)'" onmouseout="this.style.background='rgba(60,20,10,.8)'">신규 캐릭터 시작</button>
-    <button id="demoLobbyTest" style="padding:14px 24px;background:rgba(20,20,60,.8);border:1px solid #334499;color:#aabbff;font-size:clamp(.7rem,1.3vw,.9rem);letter-spacing:.15em;cursor:pointer;transition:background .2s;font-family:inherit" onmouseover="this.style.background='rgba(40,40,120,.9)'" onmouseout="this.style.background='rgba(20,20,60,.8)'">⚡ DEMO TEST (Lv500)</button>
-    <button id="demoLobbyReplay" style="padding:10px 24px;background:rgba(20,20,20,.6);border:1px solid #554433;color:#886644;font-size:clamp(.6rem,1.1vw,.8rem);letter-spacing:.15em;cursor:pointer;transition:background .2s;font-family:inherit" onmouseover="this.style.background='rgba(40,30,20,.8)'" onmouseout="this.style.background='rgba(20,20,20,.6)'">↩ 인트로 다시 보기</button>
+<div id="demoLobby" style="position:fixed;inset:0;z-index:34;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;background:#000 url('img/demo_title.png') center center/cover no-repeat;opacity:0;pointer-events:none;transition:opacity .6s;font-family:'Noto Serif KR',serif">
+  <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.1) 0%,rgba(0,0,0,.2) 50%,rgba(0,0,0,.85) 100%);pointer-events:none"></div>
+  <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;padding-bottom:8vh;width:100%">
+    <div style="display:flex;flex-direction:column;gap:14px;width:clamp(240px,24vw,360px)">
+      <button id="demoLobbyNew" style="padding:14px 24px;background:rgba(60,20,10,.85);border:1px solid #993322;color:#ffaa66;font-size:clamp(.7rem,1.2vw,.9rem);letter-spacing:.15em;cursor:pointer;transition:all .2s;font-family:inherit;backdrop-filter:blur(4px)" onmouseover="this.style.background='rgba(140,40,10,.95)';this.style.borderColor='#cc4422'" onmouseout="this.style.background='rgba(60,20,10,.85)';this.style.borderColor='#993322'">신규 캐릭터 시작</button>
+      <button id="demoLobbyTest" style="padding:14px 24px;background:rgba(10,20,60,.85);border:1px solid #334499;color:#aabbff;font-size:clamp(.7rem,1.2vw,.9rem);letter-spacing:.15em;cursor:pointer;transition:all .2s;font-family:inherit;backdrop-filter:blur(4px)" onmouseover="this.style.background='rgba(20,40,140,.95)';this.style.borderColor='#5566cc'" onmouseout="this.style.background='rgba(10,20,60,.85)';this.style.borderColor='#334499'">⚡ DEMO TEST (Lv500)</button>
+      <button id="demoLobbyReplay" style="padding:10px 24px;background:rgba(10,10,10,.6);border:1px solid #443322;color:#776655;font-size:clamp(.6rem,1vw,.8rem);letter-spacing:.15em;cursor:pointer;transition:all .2s;font-family:inherit;backdrop-filter:blur(4px)" onmouseover="this.style.color='#aa8866';this.style.borderColor='#665544'" onmouseout="this.style.color='#776655';this.style.borderColor='#443322'">↩ 인트로 다시 보기</button>
+    </div>
   </div>
 </div>
 <div id="deathReplay"><canvas id="drCvs"></canvas><div id="drLabel">☠ 사망 리플레이</div><div id="drTime"></div><div id="drBar"><div id="drBarFill"></div></div></div>
