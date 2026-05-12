@@ -53,9 +53,116 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
 .start-btn{display:flex;align-items:center;justify-content:center;gap:10px;padding:14px 40px;background:rgba(10,4,2,.92);border:1px solid rgba(255,100,40,.5);color:#ffaa66;font-family:'Noto Sans KR',sans-serif;font-size:.9rem;font-weight:700;cursor:pointer;letter-spacing:.15em;transition:all .3s;width:100%;margin-bottom:16px}
 .start-btn:hover{background:rgba(80,20,5,.9);border-color:rgba(255,120,50,.8);color:#ffcc88;box-shadow:0 0 20px rgba(200,80,0,.3)}
 .demo-badge{font-size:.7rem;color:#443322;letter-spacing:.2em}
+
+/* ═══ Cinematic Scene ═══ */
+.cin-scene{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
+.cin-scene *{cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
+.cin-lb{position:absolute;left:0;right:0;background:#000;z-index:30;pointer-events:none}
+.cin-lb-t{top:0;height:10vh}
+.cin-lb-b{bottom:0;height:10vh}
+.cin-gate{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
+.cin-gate img{width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(5%)}
+.cin-gate.show{opacity:1}
+.cin-gate.zoom{transform:scale(1.6);transition:transform 0s}
+.cin-gate.zoom-out{transform:scale(1);transition:transform 6s cubic-bezier(0.15,0.5,0.3,1)}
+.cin-vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 20%,rgba(0,0,0,.85) 100%);z-index:2;pointer-events:none}
+.cin-text{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;z-index:10;pointer-events:none}
+.cin-text-inner{max-width:900px;padding:0 30px 12vh;text-align:center}
+.cin-line{color:#e8d4b8;font-size:2rem;line-height:2;letter-spacing:.1em;opacity:0;transition:opacity 1.2s ease;margin-bottom:8px;text-shadow:0 0 20px rgba(0,0,0,.9),0 0 40px rgba(0,0,0,.7);white-space:nowrap}
+.cin-line.show{opacity:1}
+.cin-line.fade{opacity:0;transition:opacity 1s ease}
+.cin-line.red{color:#ff4422;font-weight:900;font-size:3.2rem;letter-spacing:.15em;text-shadow:0 0 30px rgba(255,50,0,.8),0 0 60px rgba(255,30,0,.5),0 0 100px rgba(255,0,0,.3)}
+.cin-line.gold{color:#ffcc55;font-size:3.6rem;font-weight:900;letter-spacing:.25em;text-shadow:0 0 40px rgba(255,180,30,.8),0 0 80px rgba(255,150,20,.4),0 0 120px rgba(255,120,0,.2)}
+.cin-line.dim{color:#ddc8a0;font-size:2.2rem;font-style:italic;font-weight:700;text-shadow:0 0 15px rgba(0,0,0,1),0 0 30px rgba(0,0,0,.9),0 0 60px rgba(0,0,0,.7),2px 2px 4px #000}
+.cin-char{display:inline-block;opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease}
+.cin-char.on{opacity:1;transform:translateY(0)}
+.cin-img{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 1.5s ease;pointer-events:none}
+.cin-img.show{opacity:1}
+.cin-img img{width:100vw;height:100vh;object-fit:cover;object-position:center 40%;filter:brightness(.6) contrast(1.1);mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%)}
+#cinImg1 img,#cinImg3 img{object-position:center 20% !important}
+#cinImg8 img{object-position:center top !important;mask-image:radial-gradient(ellipse 90% 100% at 50% 55%,#000 55%,transparent 100%) !important;-webkit-mask-image:radial-gradient(ellipse 90% 100% at 50% 55%,#000 55%,transparent 100%) !important}
+.cin-door-scene{position:absolute;inset:0;perspective:1800px;opacity:0;transition:opacity 1.5s ease;z-index:5}
+.cin-door-scene.show{opacity:1}
+.cin-door{position:absolute;inset:0;background-image:url('img/hellgate.png');background-size:cover;background-position:center 40%;transform:scale(1.15) translateX(5%);transition:transform 2.5s cubic-bezier(0.4,0,0.1,1);will-change:transform}
+.cin-door-l{clip-path:polygon(0 0,calc(40% + 1px) 0,calc(40% + 1px) 100%,0 100%);transform-origin:left center}
+.cin-door-r{clip-path:polygon(calc(40% - 1px) 0,100% 0,100% 100%,calc(40% - 1px) 100%);transform-origin:right center}
+.cin-door-scene.open .cin-door-l{transform:scale(1.15) translateX(5%) rotateY(-105deg)}
+.cin-door-scene.open .cin-door-r{transform:scale(1.15) translateX(5%) rotateY(105deg)}
+.cin-glow{position:absolute;top:5%;left:50%;width:3px;height:90%;transform:translateX(-50%);background:linear-gradient(180deg,transparent,rgba(255,100,20,.5),rgba(255,60,10,.7),rgba(255,100,20,.5),transparent);z-index:6;pointer-events:none;opacity:0;filter:blur(4px);transition:opacity 1.5s}
+.cin-glow.show{opacity:1}
+.cin-ui{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;pointer-events:none;transition:opacity 1.5s}
+.cin-ui.show{opacity:1;pointer-events:all}
+.cin-lore{max-width:640px;margin-bottom:40px;padding:0 20px}
+.cin-lore p{color:#aa8866;font-size:.95rem;line-height:2;letter-spacing:.06em;margin-bottom:8px;text-shadow:0 0 15px rgba(0,0,0,.8)}
+.cin-lore p.lore-dim{color:#776655;font-size:.85rem;font-style:italic}
+.cin-lore p.lore-gold{color:#ffcc55;font-size:1.1rem;font-weight:700;margin-top:20px;text-shadow:0 0 25px rgba(255,180,30,.5)}
+.cin-nemesia-bg{position:absolute;inset:0;background:url('img/cin_nemesia_hd.png') center top/cover no-repeat;opacity:.15;filter:brightness(.6);pointer-events:none}
+.cin-prompt{color:#ff8844;font-size:.85rem;letter-spacing:.5em;margin-bottom:18px;text-shadow:0 0 30px rgba(255,80,30,.8);animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
+.enter-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 40px;background:rgba(10,4,2,.92);border:1px solid rgba(255,100,40,.5);color:#ffaa66;font-family:'Noto Sans KR';font-size:.9rem;font-weight:700;cursor:pointer;letter-spacing:.15em;transition:all .4s;backdrop-filter:blur(4px)}
+.enter-btn:hover{border-color:#ff8844;color:#ffddaa;background:rgba(255,80,20,.15);box-shadow:0 0 50px rgba(255,80,20,.3);transform:translateY(-2px)}
+.enter-btn svg{width:22px;height:22px}
+.skip-btn{position:absolute;bottom:4vh;right:4vw;z-index:300;padding:12px 32px;background:rgba(0,0,0,0.8);border:2px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);font-family:'Noto Sans KR';font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.3s;opacity:0;pointer-events:none;border-radius:4px;letter-spacing:0.1em}
+.skip-btn.show{opacity:1;pointer-events:all}
+.skip-btn:hover{color:#fff;border-color:rgba(255,255,255,0.6);background:rgba(50,0,0,0.9);box-shadow:0 0 20px rgba(0,0,0,0.5)}
+.ember{position:absolute;border-radius:50%;pointer-events:none;z-index:8}
+@keyframes rise{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-50vh) scale(0.2)}}
 </style>
 </head>
 <body>
+
+<!-- ═══ Cinematic Scene ═══ -->
+<div class="cin-scene" id="cinScene" style="display:none">
+  <div class="cin-lb cin-lb-t"></div>
+  <div class="cin-lb cin-lb-b"></div>
+
+  <!-- 인트로 비디오 (THE EXODUSER) -->
+  <video id="cinVideo" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:20;opacity:1;transition:opacity 1.5s ease;pointer-events:none">
+    <source src="video/intro.mp4" type="video/mp4">
+  </video>
+  <!-- 클릭 안내 -->
+  <div id="cinClickPrompt" style="position:absolute;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.1)">
+    <div style="pointer-events:none;display:flex;flex-direction:column;align-items:center;transform:translateX(23%)">
+      <div style="color:#ffbb77;font-size:1.5rem;font-weight:900;letter-spacing:.4em;margin-right:-.4em;opacity:.9;text-shadow:0 0 10px #000, 0 0 20px rgba(255,80,0,0.8);animation:pulse 2s ease-in-out infinite">CLICK TO HELL</div>
+    </div>
+  </div>
+
+  <!-- 문 배경 (줌 인/아웃) -->
+  <div class="cin-gate zoom" id="cinGate">
+    <img src="img/hellgate.png" alt="">
+    <div class="cin-vig"></div>
+  </div>
+
+  <!-- 프롤로그 이미지 (장면별) -->
+  <div class="cin-img" id="cinImg1"><img src="img/cin_war.png" alt=""></div>
+  <div class="cin-img" id="cinImg2"><img src="img/cin_ruins.png" alt=""></div>
+  <div class="cin-img" id="cinImg3"><img src="img/cin_throne.png" alt=""></div>
+  <div class="cin-img" id="cinImg4"><img src="img/cin_bloodbath.png" alt=""></div>
+  <div class="cin-img" id="cinImg5"><img src="img/cin_torture.png" alt=""></div>
+  <div class="cin-img" id="cinImg6"><img src="img/cin_fallhell_custom.png" alt=""></div>
+  <div class="cin-img" id="cinImg7"><img src="img/cin_dungeon.png" alt=""></div>
+  <div class="cin-img" id="cinImg8"><img src="img/cin_nemesia_hd.png" alt=""></div>
+  <div class="cin-img" id="cinImg9"><img src="img/cin_demonbattle.png" alt=""></div>
+  <div class="cin-img" id="cinImg10"><img src="img/cin_demonfight.png" alt=""></div>
+  <div class="cin-img" id="cinImg11"><img src="img/cin_victory.png" alt=""></div>
+  <div class="cin-img" id="cinImg12"><img src="img/cin_bystanders.png" alt=""></div>
+  <div class="cin-img" id="cinImg13"><img src="img/cin_remember.png" alt=""></div>
+  <div class="cin-img" id="cinImg14"><img src="img/emg1.png" alt=""></div>
+
+  <!-- 프롤로그 텍스트 -->
+  <div class="cin-text" id="cinText">
+    <div class="cin-text-inner" id="cinTextInner"></div>
+  </div>
+
+  <!-- 클릭/탭 영역 (부분 스킵) -->
+  <div class="cin-overlay" style="position:absolute;inset:0;z-index:15"></div>
+
+  <button class="skip-btn" id="skipBtn" style="display:none">SKIP ></button>
+  <canvas id="cinHoldGauge" style="position:absolute;bottom:30px;right:30px;width:120px;height:100px;z-index:300;pointer-events:none"></canvas>
+  <select id="cinLang" style="position:absolute;top:3vh;right:4vw;z-index:300;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
+    <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
+  </select>
+</div>
 
 <!-- FDG LOGO SCREEN -->
 <div id="fdgScreen" class="fdg-screen" style="display:none">
@@ -200,7 +307,8 @@ _applyLang();
   function endSplash(){
     if(done)return;done=true;
     hideFDGScreen();
-    document.getElementById('mainWrap').classList.add('show');
+    // mainWrap 표시 대신 시네마틱 시작
+    playCinematic();
   }
 
   fdgEl.addEventListener('click',()=>{if(!done)endSplash()});
@@ -212,10 +320,342 @@ _applyLang();
   showFDGScreen();
 })();
 
-// ═══ 게임 시작 버튼 ═══
-document.getElementById('startBtn').onclick=()=>{
+// ═══ BGM / 오디오 ═══
+const lobbyBGM=new Audio('bgm/공통/lobby.mp3');
+lobbyBGM.preload='auto';lobbyBGM.loop=true;lobbyBGM.volume=0.65;
+const introVoice=new Audio('bgm/공통/intro_voice.mp3');
+introVoice.preload='auto';introVoice.volume=0.7;
+introVoice.playbackRate=0.95;
+let bgmStarted=false;
+function _tryBGM(){
+  if(bgmStarted)return;
+  lobbyBGM.play().then(()=>{bgmStarted=true;_rmBGMListeners()}).catch(()=>{});
+}
+function _rmBGMListeners(){['click','keydown','pointerdown','touchstart','mousemove','scroll','wheel'].forEach(e=>document.removeEventListener(e,_tryBGM))}
+function startBGM(){
+  _tryBGM();
+  if(!bgmStarted){['click','keydown','pointerdown','touchstart','mousemove','scroll','wheel'].forEach(e=>document.addEventListener(e,_tryBGM,{passive:true}))}
+}
+const $=id=>document.getElementById(id);
+let _cinDone=false;
+function stopMediaVideo(v){
+  if(!v)return;
+  try{v.pause()}catch(e){}
+  try{v.currentTime=0}catch(e){}
+  try{v.muted=true;v.volume=0}catch(e){}
+}
+function stopIntroVoice(){
+  try{introVoice.pause();introVoice.currentTime=0;}catch(e){}
+}
+
+// ═══ Prologue Script ═══
+const CIN_LINES=[
+  {v:0,   text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:0},
+  {v:2.5, text:'전쟁에서 살아 돌아온 한 남자.',en:'A man who returned alive from war.',zh:'一个从战争中活着回来的男人。',ja:'戦争から生きて帰った一人の男。',es:'Un hombre que regresó vivo de la guerra.',dur:3000,img:0},
+  {v:5.0, text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:5.5, text:'하지만 집은 모두 불타 사라졌다.',en:'But his home had burned to nothing.',zh:'但家园已化为灰烬。',ja:'だが家はすべて焼け落ちていた。',es:'Pero su hogar había sido reducido a cenizas.',dur:3000,img:1},
+  {v:10.5,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:13.0,text:'이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.',en:'Killu, once a neighbor and friend, had crushed his family.',zh:'曾是邻居和朋友的基路，摧毁了他的家族。',ja:'隣人であり友人だったキルルが、彼の一族を踏みにじった。',es:'Killu, vecino y amigo, había aplastado a su familia.',dur:3000,img:2},
+  {v:17.5,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:19.7,text:'아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,',en:'His wife was taken as a servant and suffered unspeakable horrors,',zh:'妻子被掳为奴仆，受尽种种凌辱，',ja:'妻は召使いとして連れ去られ、あらゆる残虐を受け、',es:'Su esposa fue tomada como sirvienta y sufrió horrores indecibles,',dur:3000},
+  {v:23.9,text:'끝내 못 이겨 스스로 목숨을 끊었다.',en:'until she could bear no more and took her own life.',zh:'最终不堪忍受，自绝了生命。',ja:'ついに耐えきれず自ら命を絶った。',es:'hasta que no pudo más y se quitó la vida.',dur:3000},
+  {v:27.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:28.6,text:'아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.',en:'His children were sold into slavery — their fate unknown.',zh:'孩子们被卖为奴隶，下落不明。',ja:'子供たちは奴隷として売られ、行方すら分からない。',es:'Sus hijos fueron vendidos como esclavos — su destino, desconocido.',dur:3000},
+  {v:33.0,text:'늙은 부모는 감옥에 갇혀 굶어 죽었다.',en:'His elderly parents were imprisoned and starved to death.',zh:'年迈的父母被关进牢狱，活活饿死。',ja:'老いた両親は牢に閉じ込められ、餓死した。',es:'Sus ancianos padres fueron encarcelados y murieron de hambre.',dur:3000},
+  {v:37.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1},
+  {v:38.8,text:'킬루 가문의 모두가 알고 있었다.',en:'Everyone in the Killu household knew.',zh:'基路家族的所有人都知道。',ja:'キルル家の誰もが知っていた。',es:'Todos en la casa de Killu lo sabían.',dur:3000,img:11},
+  {v:43.3,text:'31명이 보고도 못 본 척했다.',en:'Thirty-one of them saw everything and looked away.',zh:'三十一人目睹一切，却视而不见。',ja:'三十一人が見て見ぬふりをした。',es:'Treinta y uno de ellos lo vieron todo y miraron hacia otro lado.',dur:3000},
+  {v:46.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1},
+  {v:47.9,text:'그날 밤, 킬루 가문을 모두 죽였다.',en:'That night, he killed every last one of them.',zh:'那天夜里，他杀光了基路全族。',ja:'その夜、キルル家の全員を殺した。',es:'Esa noche, los mató a todos.',dur:3000,cls:'red',img:3},
+  {v:51.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:53.6,text:'칼로 킬루의 팔다리를 자르고',en:'He cut off Killu\'s limbs with a blade,',zh:'用刀砍断了基路的四肢，',ja:'刃でキルルの手足を切り落とし、',es:'Le cortó las extremidades a Killu con una espada,',dur:3000,cls:'red',img:4},
+  {v:56.6,text:'불로 지혈까지 해주며',en:'cauterized the wounds with fire,',zh:'用火为他止住了血，',ja:'火で傷口を焼き止め、',es:'cauterizó las heridas con fuego,',dur:3000,cls:'red'},
+  {v:59.2,text:'오래오래 살려두었다.',en:'and kept him alive for a long, long time.',zh:'让他活了很久很久。',ja:'長い長い間、生かし続けた。',es:'y lo mantuvo vivo por mucho, mucho tiempo.',dur:3000,cls:'red'},
+  {v:65.2,text:'"기억하라."',en:'"Remember."',zh:'"记住。"',ja:'"覚えておけ。"',es:'"Recuerda."',dur:3000,cls:'red',img:12},
+  {v:68.2,text:'"그리고 지옥에서도 후회하라."',en:'"And regret it even in hell."',zh:'"在地狱里也要后悔。"',ja:'"そして地獄でも悔やめ。"',es:'"Y arrepiéntete incluso en el infierno."',dur:3000,cls:'red'},
+  {v:73.6,text:'그리고 지옥에 떨어진다.',en:'And so he fell into hell.',zh:'然后，他坠入了地狱。',ja:'そして地獄に落ちた。',es:'Y así cayó al infierno.',dur:3000,img:5},
+  {v:76.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1,phase:2},
+  {v:78.9,text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',en:'"...This is but one tale among countless avengers."',zh:'"……这不过是无数复仇者中一人的故事。"',ja:'"……これは数えきれない復讐者の中の、一つの物語に過ぎない。"',es:'"...Esta es solo una historia entre innumerables vengadores."',dur:3000,cls:'dim',img:13},
+  {v:82.5,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:84.8,text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',en:'"Every day, new souls fall into hell\'s labyrinth."',zh:'"每天都有新的灵魂坠入地狱的迷宫。"',ja:'"地獄の迷宮には毎日新たな魂が落ちてくる。"',es:'"Cada día, nuevas almas caen al laberinto del infierno."',dur:3000,cls:'dim',img:8},
+  {v:88.9,text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',en:'"Those consumed by rage, driven mad by injustice, those who lost love..."',zh:'"被愤怒填满的人、因冤屈而疯狂的人、失去爱的人……"',ja:'"怒りに満ちた者、理不尽に狂った者、愛を失った者……"',es:'"Los consumidos por la ira, enloquecidos por la injusticia, los que perdieron el amor..."',dur:3000,cls:'dim',img:9},
+  {v:94.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1},
+  {v:94.8,text:'"너는 왜 지옥에 왔느냐?"',en:'"Why have you come to hell?"',zh:'"你为什么来到地狱？"',ja:'"お前はなぜ地獄に来た？"',es:'"¿Por qué has venido al infierno?"',dur:3000,cls:'gold',img:7},
+  {v:97.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:99.0,text:'"지옥을 탈출하라, 죄인이여."',en:'"Escape from hell, sinner."',zh:'"逃出地狱吧，罪人。"',ja:'"地獄から脱出せよ、罪人よ。"',es:'"Escapa del infierno, pecador."',dur:3000,cls:'gold',img:7,end:true},
+  {v:103,exit:true}
+];
+
+// ═══ Cinematic Sequence ═══
+let _cinIdx=0,_cinTimer=null,_cinReady=false;
+let _vidFadeTimer=null,_vidStartTimer=null;
+function _clearVidTimers(){
+  if(_vidFadeTimer){clearTimeout(_vidFadeTimer);_vidFadeTimer=null;}
+  if(_vidStartTimer){clearTimeout(_vidStartTimer);_vidStartTimer=null;}
+}
+function playCinematic(){
+  // cinScene 표시, mainWrap 숨김
+  document.getElementById('cinScene').style.display='';
+  document.getElementById('mainWrap').classList.remove('show');
+
+  _cinDone=false;_cinIdx=0;_cinReady=false;
+  // cinLang 언어 동기화
+  const cinLangEl=document.getElementById('cinLang');
+  if(cinLangEl)cinLangEl.value=_lobbyLang();
+
+  const textBox=$('cinTextInner');
+  const skipBtn=$('skipBtn');
+  skipBtn.textContent=_TL('건너뛰기')+' >';
+  const vid=$('cinVideo');
+  const cImgs=[1,2,3,4,5,6,7,8,9,10,11,12,13,14].map(i=>$('cinImg'+i));
+  let _prevImg=-1;
+  const showImg=(idx)=>{
+    if(idx===_prevImg)return;
+    cImgs.forEach((el,i)=>{
+      if(i===idx){el.style.zIndex=4;el.classList.add('show');}
+      else if(i===_prevImg){el.style.zIndex=3;setTimeout(()=>el.classList.remove('show'),800);}
+      else{el.classList.remove('show');el.style.zIndex=3;}
+    });
+    _prevImg=idx;
+  };
+  const hideAll=()=>{cImgs.forEach(el=>{el.classList.remove('show');el.style.zIndex=3});_prevImg=-1;};
+
+  let _sceneStartTime=0;
+  const VOICE_DELAY=-0.3;
+
+  const updateVoiceSync=(force=false)=>{
+    if(_cinDone)return;
+    let curSceneTime=(Date.now()-_sceneStartTime)/1000;
+    if(introVoice&&!introVoice.paused){
+      curSceneTime=introVoice.currentTime+VOICE_DELAY;
+    }
+    if(!_cinDone&&introVoice.paused&&window._introVoiceUnlocked&&!window._introVoiceStarted){
+      const triggerTime=VOICE_DELAY<0?0:VOICE_DELAY;
+      if(curSceneTime>=triggerTime){
+        if(VOICE_DELAY<0)introVoice.currentTime=Math.abs(VOICE_DELAY);
+        introVoice.play().then(()=>{window._introVoiceStarted=true}).catch(()=>{});
+      }
+    }
+    let targetIdx=0;
+    for(let i=0;i<CIN_LINES.length;i++){
+      if(curSceneTime>=CIN_LINES[i].v){
+        if(CIN_LINES[i].exit){if(!_cinDone)finishCin();return;}
+        targetIdx=i;
+      }else{break;}
+    }
+    if(targetIdx!==_cinIdx||force){showLine(targetIdx,true);}
+    if(!_cinDone)requestAnimationFrame(()=>updateVoiceSync());
+  };
+
+  function showLine(idx,fromSync=false){
+    if(_cinDone)return;
+    if(idx===0&&!fromSync){_sceneStartTime=Date.now();requestAnimationFrame(()=>updateVoiceSync());}
+    if(idx>=CIN_LINES.length){if(!_cinDone)finishCin();return;}
+    _cinIdx=idx;
+    const line=CIN_LINES[idx];
+    if(line&&(line.text||line.en)&&_cinSkipLock){_cinSkipLock=false;}
+    if(line.img!==undefined){if(line.img===-1)hideAll();else showImg(line.img);}
+    textBox.innerHTML='';
+    const _cLang=_lobbyLang();
+    const _cinTxt=_cLang==='ko'?line.text:(line[_cLang]||line.en||line.text);
+    if(_cinTxt){
+      const el=document.createElement('div');
+      el.className='cin-line'+(line.cls?' '+line.cls:'');
+      const chars=_cinTxt.split('');
+      chars.forEach(c=>{
+        const sp=document.createElement('span');
+        sp.className='cin-char';
+        sp.textContent=c===' '?'\u00A0':c;
+        el.appendChild(sp);
+      });
+      textBox.appendChild(el);
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        el.classList.add('show');
+        const spans=el.querySelectorAll('.cin-char');
+        spans.forEach((s,i)=>setTimeout(()=>s.classList.add('on'),i*40));
+      }));
+    }
+    clearTimeout(_cinTimer);
+  }
+
+  function finishCin(){
+    if(_cinDone)return;
+    _cinDone=true;
+    clearTimeout(_cinTimer);
+    _clearVidTimers();
+    stopIntroVoice();
+    document.getElementById('cinScene').style.display='none';
+    document.getElementById('cinVideo').style.opacity='0';
+    document.getElementById('skipBtn').classList.remove('show');
+    clearInterval(_emberIv);
+    // 언어 저장 후 gamedemo.html로 이동
+    localStorage.setItem('hellLang',document.getElementById('langSelect').value);
+    window.location.href='gamedemo.html';
+  }
+
+  // 인트로 비디오 초기화
+  vid.style.opacity='1';
+  vid.currentTime=0;
+  vid.addEventListener('loadeddata',()=>{vid.pause()},{once:true});
+  vid.load();
+
+  skipBtn.classList.add('show');
+
+  const prompt=$('cinClickPrompt');
+  let _vidStarted=false;
+  function onVidClick(){
+    if(_vidStarted||_cinDone)return;
+    _vidStarted=true;
+    prompt.style.display='none';
+    vid.muted=false;
+    vid.volume=0.6;
+    startBGM();
+    vid.play().catch(()=>{});
+    window._introVoiceUnlocked=true;
+    skipBtn.classList.add('show');
+    const videoEnd=8500;
+    vid.onended=()=>{vid.style.opacity='0'};
+    _vidFadeTimer=setTimeout(()=>{if(_cinDone)return;vid.style.opacity='0'},videoEnd-1500);
+    _vidStartTimer=setTimeout(()=>{
+      if(_cinDone)return;
+      _cinReady=true;
+      showLine(0);
+    },videoEnd);
+  }
+
+  if(prompt){
+    prompt.style.display='flex';
+    prompt.onclick=onVidClick;
+  }
+
+  // 부분 스킵 (클릭 시 다음 대사 + 음성 점프)
+  function onSubSkip(){
+    if(_cinDone||!_cinReady)return;
+    const nextIdx=_cinIdx+1;
+    if(nextIdx>=CIN_LINES.length){finishCin();return;}
+    const nextLine=CIN_LINES[nextIdx];
+    if(nextLine.v!==undefined){
+      const targetAudioTime=nextLine.v-VOICE_DELAY;
+      if(targetAudioTime>=0&&targetAudioTime<=introVoice.duration){
+        introVoice.currentTime=targetAudioTime;
+        if(introVoice.paused)introVoice.play().catch(()=>{});
+      }
+    }
+    showLine(nextIdx,true);
+  }
+
+  const overlay=document.querySelector('.cin-overlay');
+  if(overlay){
+    overlay.onclick=onSubSkip;
+    overlay.ontouchend=(e)=>{e.preventDefault();onSubSkip();};
+  }
+
+  const keyHandler=(e)=>{
+    if(!_cinDone&&(e.code==='Space'||e.code==='Enter')){e.preventDefault();onSubSkip();}
+  };
+  document.addEventListener('keydown',keyHandler);
+
+  const originalFinish=finishCin;
+  finishCin=()=>{document.removeEventListener('keydown',keyHandler);originalFinish();};
+
+  let _cinSkipLock=true;
+
+  // 홀드 스킵 게이지
+  const _hgCv=$('cinHoldGauge');
+  if(_hgCv){
+    _hgCv.width=120*devicePixelRatio;_hgCv.height=100*devicePixelRatio;
+    const _hgX=_hgCv.getContext('2d');_hgX.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+    let _cinHoldKey=false,_cinHoldProg=0,_cinHoldActive=false;
+    const _CIN_HOLD_DUR=5000;
+    document.addEventListener('keydown',function _chk(e){
+      if(_cinDone){document.removeEventListener('keydown',_chk);return}
+      if(e.code==='Escape'||e.code==='Space'){_cinHoldKey=true;if(!_cinHoldActive){_cinHoldActive=true;}}
+    });
+    document.addEventListener('keyup',function _chu(e){
+      if(_cinDone){document.removeEventListener('keyup',_chu);return}
+      if(e.code==='Escape'||e.code==='Space'){_cinHoldKey=false;_cinHoldActive=false;_cinHoldProg=0;}
+    });
+    let _hgPrev=performance.now();
+    function _hgLoop(){
+      if(_cinDone){_hgX.clearRect(0,0,120,100);return}
+      const now=performance.now(),dt=Math.min(50,now-_hgPrev);_hgPrev=now;
+      if(_cinHoldKey)_cinHoldProg=Math.min(1,_cinHoldProg+dt/_CIN_HOLD_DUR);
+      _hgX.clearRect(0,0,120,100);
+      const gx=60,gy=40,r=34,th=3;
+      const a=_cinHoldKey?1:0.5;
+      _hgX.globalAlpha=a*0.5;_hgX.strokeStyle='#444';_hgX.lineWidth=th;
+      _hgX.beginPath();_hgX.arc(gx,gy,r,0,Math.PI*2);_hgX.stroke();
+      if(_cinHoldProg>0){
+        _hgX.globalAlpha=a;_hgX.strokeStyle='#E8E0D0';_hgX.lineWidth=th;
+        if(_cinHoldProg>0.9){_hgX.shadowBlur=4+Math.sin(now*0.01)*2;_hgX.shadowColor='#E8E0D0'}
+        _hgX.beginPath();_hgX.arc(gx,gy,r,-Math.PI/2,-Math.PI/2+Math.PI*2*_cinHoldProg);_hgX.stroke();
+        _hgX.shadowBlur=0;
+      }
+      _hgX.globalAlpha=a*0.8;_hgX.font='12px sans-serif';_hgX.fillStyle='#888';
+      _hgX.textAlign='center';_hgX.textBaseline='middle';
+      _hgX.fillText('ESC',gx,gy);
+      _hgX.globalAlpha=a*0.6;_hgX.font='10px sans-serif';_hgX.fillStyle='#666';
+      _hgX.fillText('HOLD TO SKIP',gx,gy+r+16);
+      _hgX.globalAlpha=1;
+      if(_cinHoldProg>=1){
+        _hgX.globalAlpha=0.3;_hgX.fillStyle='#fff';_hgX.fillRect(0,0,120,100);
+        setTimeout(skipToGate,100);return;
+      }
+      requestAnimationFrame(_hgLoop);
+    }
+    setTimeout(()=>{_hgCv.style.opacity='1';_hgLoop()},1000);
+  }
+}
+
+function skipToGate(){
+  _cinDone=true;
+  clearTimeout(_cinTimer);
+  _clearVidTimers();
+  stopIntroVoice();
+  startBGM();
+  stopMediaVideo($('cinVideo'));
+  $('cinVideo').style.opacity='0';
+  if($('cinClickPrompt'))$('cinClickPrompt').style.display='none';
+  [1,2,3,4,5,6,7,8,9,10,11,12,13,14].forEach(i=>{const e=$('cinImg'+i);if(e)e.classList.remove('show')});
+  $('cinTextInner').innerHTML='';
+  $('skipBtn').classList.remove('show');
+  $('cinScene').style.display='none';
+  clearInterval(_emberIv);
+  // 언어 저장 후 gamedemo.html로 이동
   localStorage.setItem('hellLang',document.getElementById('langSelect').value);
   window.location.href='gamedemo.html';
+}
+
+// ═══ Embers ═══
+let _emberIv=setInterval(()=>{
+  const scene=$('cinScene');
+  if(!scene||scene.style.display==='none')return;
+  const e=document.createElement('div');
+  e.className='ember';
+  e.style.left=(20+Math.random()*60)+'vw';
+  e.style.bottom='-5px';
+  const sz=2+Math.random()*3;
+  e.style.width=sz+'px';e.style.height=sz+'px';
+  const hue=10+Math.random()*25;
+  e.style.background=`hsl(${hue},100%,${50+Math.random()*30}%)`;
+  e.style.boxShadow=`0 0 ${3+Math.random()*6}px hsl(${hue},100%,50%)`;
+  e.style.animation=`rise ${3+Math.random()*4}s ease-out forwards`;
+  scene.appendChild(e);
+  setTimeout(()=>e.remove(),7000);
+},150);
+
+// cinLang 변경 시 langSelect와 동기화
+document.getElementById('cinLang').addEventListener('change',e=>{
+  localStorage.setItem('hellLang',e.target.value);
+  document.getElementById('langSelect').value=e.target.value;
+  _applyLang();
+});
+
+// ═══ 게임 시작 버튼 ═══
+document.getElementById('startBtn').onclick=()=>{
+  // 버튼 클릭 → 시네마틱 → gamedemo.html
+  document.getElementById('mainWrap').classList.remove('show');
+  playCinematic();
 };
 </script>
 </body>
