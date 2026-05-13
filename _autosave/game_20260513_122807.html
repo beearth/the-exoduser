@@ -306,7 +306,7 @@ canvas{display:block;position:fixed;inset:0}
 /* ══ PANELS (shared) ══ */
 .panel{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.88);opacity:0;pointer-events:none;transition:opacity .25s}
 .panel.on{opacity:1;pointer-events:all}
-.pbox{position:relative;background:linear-gradient(180deg,rgba(22,10,11,.985),rgba(10,6,7,.992));border:1px solid rgba(120,48,34,.78);border-radius:18px;padding:var(--panel-pad);overflow-y:auto;box-shadow:0 26px 70px rgba(0,0,0,.58),inset 0 0 0 1px rgba(255,150,104,.08),inset 0 24px 40px rgba(255,82,46,.04)}
+.pbox{position:relative;background:linear-gradient(180deg,rgba(22,10,11,.985),rgba(10,6,7,.992));border:1px solid rgba(120,48,34,.78);border-radius:18px;padding:var(--panel-pad);overflow-y:auto;max-height:90vh;box-sizing:border-box;box-shadow:0 26px 70px rgba(0,0,0,.58),inset 0 0 0 1px rgba(255,150,104,.08),inset 0 24px 40px rgba(255,82,46,.04)}
 .ptitle{font-family:var(--font-display);font-size:calc(var(--fs-xl) + .15rem);color:var(--ui-bone);letter-spacing:.08em;text-align:center;margin-bottom:14px;text-shadow:0 2px 0 rgba(33,12,10,.9),0 0 18px rgba(255,115,64,.3)}
 .pclose{display:block;margin:14px auto 0;padding:10px 26px;background:linear-gradient(180deg,rgba(60,22,18,.86),rgba(20,10,11,.94));border:1px solid rgba(173,84,54,.86);border-radius:999px;color:#efc79d;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,214,172,.08),0 10px 24px rgba(0,0,0,.28);transition:all .16s}
 .pclose:hover{border-color:#ff9966;color:#fff0d4;box-shadow:0 0 18px rgba(255,108,58,.24),inset 0 0 0 1px rgba(255,231,195,.14)}
@@ -9508,8 +9508,8 @@ addEventListener('keydown',e=>{
         if(P._bdLastDir===_bdDir&&_now-P._bdLastT<250){P._bdTrigger=_bdDir;P._bdLastDir=-1;P._bdLastT=0}
         else{P._bdLastDir=_bdDir;P._bdLastT=_now}}
     }
-    // 스페이스 눌렀을 때 방향키 이미 눌려있으면 (스킬슬롯 배정 시 스킬 우선)
-    if(e.code==='Space'){
+    // 스페이스 눌렀을 때 방향키 이미 눌려있으면 (사슬기동 중 제외 — 기동불꽃 입력 보호)
+    if(e.code==='Space'&&!(_harpActive||_dashActive)){
       for(const[code,dir]of Object.entries(_bdDirs)){if(KH[code]){P._bdTrigger=dir;K['Space']=false;return}}
     }
   }
@@ -9521,6 +9521,7 @@ addEventListener('keydown',e=>{
       if(_jfIt){
         if(e.code==='Space'){e.preventDefault();_jfIt.junk=!_jfIt.junk;if(_jfIt.junk)_jfIt.fav=false;renderInv();_invRenderDetail(_jfIdx,'bag');return}
         if(e.code==='KeyF'){_jfIt.fav=!_jfIt.fav;if(_jfIt.fav)_jfIt.junk=false;renderInv();_invRenderDetail(_jfIdx,'bag');return}
+        if(e.code==='KeyX'){e.preventDefault();const _xg=$('invGrid');if(_xg){const _xi=_xg.querySelectorAll('.inv-item');if(_xi[_jfIdx])_xi[_jfIdx].dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true}))}return}
       }
     }
   }
@@ -9704,7 +9705,7 @@ function _gpAutoAim(range){
 // 버튼→키코드 맵 (커스텀 가능)
 const _GP_KEY_DEFAULT={
   0:'mouse0',1:'Space',2:'mouse2',3:'KeyQ',
-  4:'ShiftLeft',5:'ControlLeft',8:'KeyL',9:'Escape',
+  4:'ShiftLeft',5:'ControlLeft',9:'Escape',
   10:'KeyR',11:'KeyE'
   // 12~15(D-pad)는 패널 토글 직접 처리 — 키 주입 없음
 };
@@ -9735,7 +9736,7 @@ let _gpUIPrev={a:false,b:false,x:false,y:false,lb:false,rb:false,b8:false,b9:fal
 let _gpUIRepeatDir=null,_gpUIRepeatTs=0;
 const _GP_UI_DELAY=380,_GP_UI_INTERVAL=110;
 // ── 가상 커서 (좌스틱 마우스) ──
-const _gpVC={x:window.innerWidth/2,y:window.innerHeight/2,vis:false,el:null,spd:12};
+const _gpVC={x:window.innerWidth/2,y:window.innerHeight/2,vis:false,el:null,spd:6};
 function _gpVCInit(){
   if(_gpVC.el)return;
   const d=document.createElement('div');d.id='_gpVCursor';
@@ -9760,6 +9761,9 @@ function _gpVCUpdate(){
   }
 }
 function _gpVCHide(){if(_gpVC.el){_gpVC.el.style.display='none';}_gpVC.vis=false;}
+// ── 우스틱 스크롤 캐시 (getComputedStyle 매 프레임 호출 방지) ──
+let _gpScEl=null; // 캐시된 스크롤 대상
+const _gpFindScroll=el=>{let n=el;while(n){try{const ov=getComputedStyle(n).overflowY;if(n.scrollHeight>n.clientHeight+5&&['auto','scroll','overlay'].includes(ov))return n;}catch(e){}n=n.parentElement;}return null;};
 // 섹션 타입 분류
 const _gpSectType=el=>{
   if(el.closest('.stat-row'))return'stat';
@@ -9942,21 +9946,15 @@ function _gpUINav(panel){
 
   _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.y=y;
 
-  // ── 우측 스틱: 패널 스크롤 (휠 역할) ──
+  // ── 우측 스틱: 패널 스크롤 (캐시 방식 — getComputedStyle 매 프레임 차단) ──
   if(Math.abs(rsYVal)>0.15||Math.abs(rsXVal)>0.15){
-    let scrollEl=null;
-    const _findScroll=el=>{let n=el?el.parentElement:null;while(n){if(n.scrollHeight>n.clientHeight+5&&['auto','scroll','overlay'].includes(getComputedStyle(n).overflowY)){return n;}n=n.parentElement;}return null;};
-    if(_gpVC.vis){
-      // 커서 모드: 커서 아래 요소부터 스크롤 가능 컨테이너 탐색
-      const _ce=document.elementFromPoint(_gpVC.x,_gpVC.y);
-      scrollEl=_findScroll(_ce);
-    } else {
-      const _fc=items[_gpUIIdx];
-      scrollEl=_findScroll(_fc);
+    if(!_gpScEl){
+      if(_gpVC.vis){_gpScEl=_gpFindScroll(document.elementFromPoint(_gpVC.x,_gpVC.y));}
+      else{_gpScEl=_gpFindScroll(items[_gpUIIdx]);}
+      if(!_gpScEl&&panel.scrollHeight>panel.clientHeight+5)_gpScEl=panel;
     }
-    if(!scrollEl&&panel.scrollHeight>panel.clientHeight+5)scrollEl=panel;
-    if(scrollEl){scrollEl.scrollTop+=rsYVal*16;if(Math.abs(rsXVal)>0.15)scrollEl.scrollLeft+=rsXVal*16;}
-  }
+    if(_gpScEl){_gpScEl.scrollTop+=rsYVal*18;if(Math.abs(rsXVal)>0.15)_gpScEl.scrollLeft+=rsXVal*18;}
+  } else {_gpScEl=null;}
 
   // 버튼 8(Back) = 전체 첫 항목  버튼 9(Start) = 전체 마지막 항목
   const b8=!!(_gpad.buttons[8]&&_gpad.buttons[8].pressed);
@@ -9999,14 +9997,13 @@ function _pollGamepad(){
   // ── 3단계: 패드모드 아니면 K[]/MB[] 절대 안 건드림 ──
   if(!_gpActive)return;
 
-  // ── D-pad 패널 토글 (키 주입 없이 직접 처리 — 열기/닫기 전용) ──
+  // ── D-pad 패널 토글 (패널 닫혀있을 때만 — 열려있으면 네비게이션 전용) ──
   {const _DP=[[12,'skillPanel','toggle'],[13,'forge','forge'],[14,'statPanel','toggle'],[15,'invPanel','storage']];
+  const _anyPanelOpen=!!document.querySelector('.panel.on');
   for(const[bi,pid,act] of _DP){
     const _on=!!(_gpad.buttons[bi]&&_gpad.buttons[bi].pressed);
-    if(_on&&!_gpBtnsPrev['_dpg'+bi]){
-      const _cur=document.querySelector('.panel.on');
-      if(_cur){if(_cur.id===pid)closeAllPanels();}
-      else if(G&&G.on){
+    if(_on&&!_gpBtnsPrev['_dpg'+bi]&&!_anyPanelOpen){
+      if(G&&G.on){
         if(act==='toggle')togglePanel(pid);
         else if(act==='forge'){if(G.forgeOpen){closePanel('forge');G.forgeOpen=false}else openPanel('forge')}
         else if(act==='storage'){_storageViewFloor=G.stage;togglePanel('invPanel')}
@@ -10014,6 +10011,11 @@ function _pollGamepad(){
     }
     _gpBtnsPrev['_dpg'+bi]=_on;
   }}
+
+  // ── Start(b9) → 설정창 열기 (패널 없을 때만, 3.5단계 이전 — 오버레이에 막히지 않게) ──
+  {const _sn=!!(_gpad.buttons[9]&&_gpad.buttons[9].pressed);
+  if(_sn&&!_gpBtnsPrev['_noUI9']&&!document.querySelector('.panel.on')&&!(_gcEl&&_gcEl.classList.contains('on')))openPanel('settings');
+  _gpBtnsPrev['_noUI9']=_sn;}
 
   // ── 3.5단계: UI 패널/오버레이 열려있으면 게임 입력 차단 + UI 네비게이션 ──
   if(_gcEl&&_gcEl.classList.contains("on")){_gpClearAll();_gpVCUpdate();_gpUINav(_gcEl);return;}
@@ -10029,6 +10031,18 @@ function _pollGamepad(){
   if(_gpOpenPanel||_gpOverlay){
     _gpClearAll();
     _gpVCUpdate(); // 좌스틱 → 가상 커서
+    // Back(b8) → 뒤로가기 (서브팝업 → 패널 순 닫기)
+    const _backNow=!!(_gpad.buttons[8]&&_gpad.buttons[8].pressed);
+    if(_backNow&&!_gpBtnsPrev['_back8']){
+      _gpBtnsPrev['_back8']=true;
+      const _gc=$('gcModal');const _sk=$('skSlotPop');const _cr=$('crBagPop');
+      if(_gc&&_gc.classList.contains('on')){const _cb=$('gcCancel');if(_cb)_cb.click();}
+      else if(_cr&&_cr.style.display==='flex'){closeCrystalPicker();}
+      else if(_sk&&_sk.style.display==='flex'){_sk.style.display='none';}
+      else{closeAllPanels();}
+      return;
+    }
+    _gpBtnsPrev['_back8']=_backNow;
     if(_gpOpenPanel&&_gpOpenPanel.id==='invPanel'){_gpInvNav()}
     else{_gpUINav(_gpOpenPanel||_gpOverlay)}
     return;
@@ -10246,16 +10260,23 @@ function _gpInvNav(){
       }
       if(moved&&typeof _invRenderDetail==='function'){INV.selected=_gpInvIdx;_invRenderDetail(_gpInvIdx,'bag')}
       if(Math.abs(rsY)>0.5)grid.scrollTop+=rsY*8;
-      // A = 즉시 장착 (디아4 스타일)
-      if(a&&!_gpUIPrev.a&&items[_gpInvIdx]){const ev=new MouseEvent('contextmenu',{bubbles:true});items[_gpInvIdx].dispatchEvent(ev)}
+      // A = 즉시 장착: #invActionBtns 안의 .id-btn.equip 클릭 (contextmenu는 전역 차단됨)
+      if(a&&!_gpUIPrev.a&&!_gpVC.vis&&items[_gpInvIdx]){
+        if(moved||!$('invActionBtns')||!$('invActionBtns').querySelector('.id-btn.equip')){
+          // 상세 패널 갱신
+          if(typeof _invRenderDetail==='function'){INV.selected=_gpInvIdx;_invRenderDetail(_gpInvIdx,'bag')}
+        }
+        const _eqBtn=$('invActionBtns')?$('invActionBtns').querySelector('.id-btn.equip'):null;
+        if(_eqBtn)_eqBtn.click();
+      }
       // X = 쓰레기 마킹
       if(x&&!_gpUIPrev.x&&_gpInvIdx<bagLen){const it=INV.bag[_gpInvIdx];if(it){it.junk=!it.junk;if(it.junk)it.fav=false;renderInv();if(typeof _invRenderDetail==='function')_invRenderDetail(_gpInvIdx,'bag')}}
-      // Y = 상세 고정
-      if(y&&!_gpUIPrev.y){INV.selected=_gpInvIdx;renderInv();if(typeof _invRenderDetail==='function')_invRenderDetail(_gpInvIdx,'bag')}
+      // Y = 장착(우클릭)
+      if(y&&!_gpUIPrev.y){const _yg=$("invGrid");if(_yg){const _yi=_yg.querySelectorAll(".inv-item");if(_yi[_gpInvIdx])_yi[_gpInvIdx].dispatchEvent(new MouseEvent("contextmenu",{bubbles:true,cancelable:true}))}}
     }
   } else if(_gpInvMode==='eq'){
     const eqSlots=$('invEqGrid')?Array.from($('invEqGrid').querySelectorAll('.inv-eq-slot')):[];
-    if(!eqSlots.length){_gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;_gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.y=y;if(b&&!_gpUIPrev.b)closeAllPanels();return}
+    if(!eqSlots.length){_gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;_gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.y=y;return}
     let moved=false;
     if(u&&!_gpUIPrev.u){_gpInvEqIdx=Math.max(0,_gpInvEqIdx-1);moved=true}
     if(d&&!_gpUIPrev.d){_gpInvEqIdx=Math.min(eqSlots.length-1,_gpInvEqIdx+1);moved=true}
@@ -10268,7 +10289,7 @@ function _gpInvNav(){
     if(y&&!_gpUIPrev.y){const ev=new MouseEvent('contextmenu',{bubbles:true});eqSlots[_gpInvEqIdx].dispatchEvent(ev)}
   } else {
     const stItems=$('invStGrid')?Array.from($('invStGrid').querySelectorAll('.inv-cell')):[];
-    if(!stItems.length){_gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;_gpUIPrev.a=a;_gpUIPrev.b=b;if(b&&!_gpUIPrev.b)closeAllPanels();return}
+    if(!stItems.length){_gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;_gpUIPrev.a=a;_gpUIPrev.b=b;return}
     const C=4;let sR=Math.floor(_gpInvIdx/C),sC=_gpInvIdx%C;
     if(u&&!_gpUIPrev.u)sR=Math.max(0,sR-1);
     if(d&&!_gpUIPrev.d)sR++;
@@ -10284,7 +10305,7 @@ function _gpInvNav(){
     const _vcEl=document.elementFromPoint(_gpVC.x,_gpVC.y);
     if(_vcEl&&_vcEl.id!=='_gpVCursor'){_vcEl.click();}
     _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.x=x;_gpUIPrev.y=y;
-    if(b&&!_gpUIPrev.b){if(typeof closeAllPanels==='function')closeAllPanels()}
+    // B버튼 패널닫기 제거 — 전용 닫기버튼 사용
     _gpUIPrev.lb=lb;_gpUIPrev.rb=rb;return;
   }
   // 하단 버튼 포커스 중 A = 클릭
@@ -10293,7 +10314,35 @@ function _gpInvNav(){
     const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
     if(_bots[_gpInvBotIdx])_bots[_gpInvBotIdx].click();
   }
-  if(b&&!_gpUIPrev.b){if(typeof closeAllPanels==='function')closeAllPanels()}
+  // ── 우스틱: 스크롤 (캐시 방식) ──
+  const _rsYFull=_gpad.axes.length>=4?_gpad.axes[3]:0;
+  const _rsXFull=_gpad.axes.length>=3?_gpad.axes[2]:0;
+  if(Math.abs(_rsYFull)>0.15||Math.abs(_rsXFull)>0.15){
+    if(!_gpScEl){
+      // 영역별 명시적 스크롤 타겟 (bounding rect 기반)
+      const _ir=$('invRight'),_ig=$('invGrid'),_il=$('invLeft');
+      if(_gpVC.vis&&_ir&&_ig&&_il){
+        const _irR=_ir.getBoundingClientRect();
+        const _igR=_ig.getBoundingClientRect();
+        const _ilR=_il.getBoundingClientRect();
+        if(_gpVC.x>=_irR.left&&_gpVC.x<=_irR.right&&_gpVC.y>=_irR.top&&_gpVC.y<=_irR.bottom){
+          _gpScEl=_ir.scrollHeight>_ir.clientHeight+5?_ir:null; // 아이템 상세
+        } else if(_gpVC.x>=_igR.left&&_gpVC.x<=_igR.right&&_gpVC.y>=_igR.top&&_gpVC.y<=_igR.bottom){
+          _gpScEl=_ig.scrollHeight>_ig.clientHeight+5?_ig:null; // 가방 그리드
+        } else if(_gpVC.x>=_ilR.left&&_gpVC.x<=_ilR.right&&_gpVC.y>=_ilR.top&&_gpVC.y<=_ilR.bottom){
+          _gpScEl=_il.scrollHeight>_il.clientHeight+5?_il:null; // 장착/창고 좌측
+        }
+      }
+      if(!_gpScEl&&_gpVC.vis){_gpScEl=_gpFindScroll(document.elementFromPoint(_gpVC.x,_gpVC.y));}
+      const _invP=$('invPanel');
+      if(!_gpScEl&&_invP){_gpScEl=_gpFindScroll(_invP.querySelector('#invRight'))||_gpFindScroll(_invP);}
+      // ── 진단 로그 (F12 콘솔에서 확인) ──
+      if(_gpScEl)console.log('[SCROLL]',_gpScEl.id||_gpScEl.className,'scrollH='+_gpScEl.scrollHeight,'clientH='+_gpScEl.clientHeight,'max='+((_gpScEl.scrollHeight-_gpScEl.clientHeight)|0)+'px');
+      else console.log('[SCROLL] 타겟없음');
+    }
+    if(_gpScEl){_gpScEl.scrollTop+=_rsYFull*18;if(Math.abs(_rsXFull)>0.15)_gpScEl.scrollLeft+=_rsXFull*18;}
+  } else {_gpScEl=null;}
+  // B버튼 패널닫기 제거 — 전용 닫기버튼 사용
   _gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;
   _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.x=x;_gpUIPrev.y=y;
 }
