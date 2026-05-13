@@ -47493,13 +47493,13 @@ async function _startDemoTest(){
   SKILL_SLOTS[4]='giantSlam2';      // 대왕치기2 — Space키
   SKILL_SLOTS[5]='holyDome';        // 영역스킬(holyFuse) — F키
   ULT_SLOT='kiSlash';
-  P.activeCtSk='ghostWalk';P.activeMagicSk='fireball';P.activeBowSk='normal'; // Ctrl=뇌전걸음
+  P.activeCtSk='ghostWalk';P.activeMagicSk='hellRay';P.activeBowSk='normal'; // Ctrl=뇌전걸음, E=마력광선
   // 5등급 전설 장비 (tier=4, rarity=4)
   const _dtSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
   const _dtWt={weapon:'sword',bow:'crossbow'};
   for(const _sl of _dtSlots)INV.equipped[_sl]=mkItem(_sl,4,EL.P,4,_dtWt[_sl]);
-  // 재화
-  G.mats=999999;
+  // 재화 (악의 100억)
+  G.mats=10000000000;
   // 몬스터 아틀라스 대기
   setBootLoading(50,'몬스터 스킨 로딩...');
   if(!_mobAtlas.ready)await new Promise(r=>{const _ci=setInterval(()=>{if(_mobAtlas.ready){clearInterval(_ci);r()}},50);setTimeout(()=>{clearInterval(_ci);r()},5000)});
