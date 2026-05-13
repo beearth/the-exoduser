@@ -215,7 +215,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <script src="lobby_i18n.js"></script>
 <script>
 // ═══ 로비 배경: 트랜지션 이미지 중 랜덤 1장 ═══
-(function(){const n=~~(Math.random()*19)+1;const img=new Image();img.onload=function(){document.body.style.backgroundImage='linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url(img/lording/'+n+'.png)'};img.src='img/lording/'+n+'.png'})();
+(function(){const n=~~(Math.random()*19)+1;const _base='https://raw.githubusercontent.com/beearth/the-exoduser/main/img/lording/';const img=new Image();img.onload=function(){document.body.style.backgroundImage='linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('+_base+n+'.png)'};img.src=_base+n+'.png'})();
 // ═══ 번역 테이블 (index.html과 동일한 키 — FDG 스플래시용) ═══
 const _LOBBY_EN={'친애하는 게이머 여러분께 바칩니다':'Dedicated to all you dear gamers','아무 키나 눌러 계속':'Press any key to continue'};
 const _LOBBY_ZH={'친애하는 게이머 여러분께 바칩니다':'献给各位亲爱的玩家','아무 키나 눌러 계속':'按任意键继续'};
