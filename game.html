@@ -2517,7 +2517,7 @@ canvas{display:block;position:fixed;inset:0}
 
 <!-- INVENTORY PANEL -->
 <div class="panel" id="invPanel">
-  <div class="pbox" style="display:flex;flex-direction:column;overflow-y:auto;box-sizing:border-box;">
+  <div class="pbox" style="display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;height:90vh;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-shrink:0;">
       <div class="ptitle" style="font-size:1.3rem;margin:0;">인벤토리</div>
       <div style="display:flex;align-items:center;gap:10px">
@@ -2526,7 +2526,7 @@ canvas{display:block;position:fixed;inset:0}
           <span id="cpVal" style="color:#ffcc44;font-size:1rem;font-weight:900;text-shadow:0 0 8px rgba(255,200,0,.3)">0</span>
           <span id="cpBreak" style="color:#776655;font-size:.75rem"></span>
         </div>
-        <div onclick="_crBagOpen=true;_crPickCb=null;_crBagSel=-1;renderCrystalBag()" style="padding:2px 8px;cursor:pointer;border:1px solid #553388;color:#bb88ff;font-size:.8rem;font-weight:700;background:rgba(100,0,200,.08);border-radius:3px" onmouseover="this.style.borderColor='#bb88ff';this.style.background='rgba(100,0,200,.15)'" onmouseout="this.style.borderColor='#553388';this.style.background='rgba(100,0,200,.08)'">결정</div>
+        <div onclick="_crBagOpen=true;_crPickCb=null;_crBagSel=-1;_gpCrIdx=0;renderCrystalBag()" style="padding:2px 8px;cursor:pointer;border:1px solid #553388;color:#bb88ff;font-size:.8rem;font-weight:700;background:rgba(100,0,200,.08);border-radius:3px" onmouseover="this.style.borderColor='#bb88ff';this.style.background='rgba(100,0,200,.15)'" onmouseout="this.style.borderColor='#553388';this.style.background='rgba(100,0,200,.08)'">결정</div>
         <div id="invResBar" style="padding:2px 10px;font-size:.8rem;color:#887766;background:rgba(0,0,0,.3);border:1px solid #443322;border-radius:3px;white-space:nowrap"></div>
         <div id="invClose" style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #554433;color:#aa8866;font-size:1.2rem;font-weight:900;background:rgba(0,0,0,.3)" onmouseover="this.style.color='#ff6633';this.style.borderColor='#ff6633'" onmouseout="this.style.color='#aa8866';this.style.borderColor='#554433'">✕</div>
       </div>
@@ -9513,15 +9513,15 @@ addEventListener('keydown',e=>{
       for(const[code,dir]of Object.entries(_bdDirs)){if(KH[code]){P._bdTrigger=dir;K['Space']=false;return}}
     }
   }
-  // ── 인벤토리 열린 상태: Space=쓰레기 토글, F=중요잠금 토글 ──
+  // ── 인벤토리 열린 상태: Space/X=쓰레기 토글, F=중요잠금 토글, Y=장착 ──
   if($('invPanel').classList.contains('on')){
     const _jfIdx=_invHover>=0?_invHover:(typeof INV.selected==='number'?INV.selected:-1);
     if(_jfIdx>=0){
       const _jfIt=INV.bag[_jfIdx];
       if(_jfIt){
-        if(e.code==='Space'){e.preventDefault();_jfIt.junk=!_jfIt.junk;if(_jfIt.junk)_jfIt.fav=false;renderInv();_invRenderDetail(_jfIdx,'bag');return}
+        if(e.code==='Space'||e.code==='KeyX'){e.preventDefault();_jfIt.junk=!_jfIt.junk;if(_jfIt.junk)_jfIt.fav=false;renderInv();_invRenderDetail(_jfIdx,'bag');return}
         if(e.code==='KeyF'){_jfIt.fav=!_jfIt.fav;if(_jfIt.fav)_jfIt.junk=false;renderInv();_invRenderDetail(_jfIdx,'bag');return}
-        if(e.code==='KeyX'){e.preventDefault();const _xg=$('invGrid');if(_xg){const _xi=_xg.querySelectorAll('.inv-item');if(_xi[_jfIdx])_xi[_jfIdx].dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true}))}return}
+        if(e.code==='KeyY'){e.preventDefault();const _xg=$('invGrid');if(_xg){const _xi=_xg.querySelectorAll('.inv-item');if(_xi[_jfIdx])_xi[_jfIdx].dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true}))}return}
       }
     }
   }
@@ -9736,7 +9736,7 @@ let _gpUIPrev={a:false,b:false,x:false,y:false,lb:false,rb:false,b8:false,b9:fal
 let _gpUIRepeatDir=null,_gpUIRepeatTs=0;
 const _GP_UI_DELAY=380,_GP_UI_INTERVAL=110;
 // ── 가상 커서 (좌스틱 마우스) ──
-const _gpVC={x:window.innerWidth/2,y:window.innerHeight/2,vis:false,el:null,spd:6};
+const _gpVC={x:window.innerWidth/2,y:window.innerHeight/2,vis:false,el:null,spd:6};let _gpVCPrevHoverEl=null;
 function _gpVCInit(){
   if(_gpVC.el)return;
   const d=document.createElement('div');d.id='_gpVCursor';
@@ -9946,14 +9946,12 @@ function _gpUINav(panel){
 
   _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.y=y;
 
-  // ── 우측 스틱: 패널 스크롤 (캐시 방식 — getComputedStyle 매 프레임 차단) ──
+  // ── 우측 스틱: 패널 스크롤 (WheelEvent — 마우스 휠과 동일) ──
   if(Math.abs(rsYVal)>0.15||Math.abs(rsXVal)>0.15){
-    if(!_gpScEl){
-      if(_gpVC.vis){_gpScEl=_gpFindScroll(document.elementFromPoint(_gpVC.x,_gpVC.y));}
-      else{_gpScEl=_gpFindScroll(items[_gpUIIdx]);}
-      if(!_gpScEl&&panel.scrollHeight>panel.clientHeight+5)_gpScEl=panel;
-    }
-    if(_gpScEl){_gpScEl.scrollTop+=rsYVal*18;if(Math.abs(rsXVal)>0.15)_gpScEl.scrollLeft+=rsXVal*18;}
+    const _wx=_gpVC.vis?_gpVC.x:(cur?cur.getBoundingClientRect().left+cur.offsetWidth/2:window.innerWidth/2);
+    const _wy=_gpVC.vis?_gpVC.y:(cur?cur.getBoundingClientRect().top+cur.offsetHeight/2:window.innerHeight/2);
+    const _wt=document.elementFromPoint(_wx,_wy)||panel;
+    if(_wt)_wt.dispatchEvent(new WheelEvent('wheel',{deltaY:rsYVal*120,deltaX:rsXVal*120,deltaMode:0,bubbles:true,cancelable:true,clientX:_wx,clientY:_wy}));
   } else {_gpScEl=null;}
 
   // 버튼 8(Back) = 전체 첫 항목  버튼 9(Start) = 전체 마지막 항목
@@ -10043,6 +10041,9 @@ function _pollGamepad(){
       return;
     }
     _gpBtnsPrev['_back8']=_backNow;
+    // crBagPop 열려있으면 결정 주머니 전용 nav 우선
+    const _crPop=$('crBagPop');
+    if(_crPop&&_crPop.style.display==='flex'){_gpCrBagNav();return;}
     if(_gpOpenPanel&&_gpOpenPanel.id==='invPanel'){_gpInvNav()}
     else{_gpUINav(_gpOpenPanel||_gpOverlay)}
     return;
@@ -10199,6 +10200,31 @@ function _pollGamepad(){
   }
 }
 
+// ═══ 결정 주머니 게임패드 nav ═══
+let _gpCrIdx=0;
+function _gpCrBagNav(){
+  if(!_gpad)return;
+  const pop=$('crBagPop');if(!pop||pop.style.display!=='flex')return;
+  const listEl=pop.querySelector('div[style*="overflow-y:auto"]');
+  const rows=listEl?listEl.querySelectorAll('div[onclick]'):[];
+  const len=rows.length;
+  const u=(_gpad.buttons[12]&&_gpad.buttons[12].pressed)||_gpAxes[7]<-0.5;
+  const d=(_gpad.buttons[13]&&_gpad.buttons[13].pressed)||_gpAxes[7]>0.5;
+  const a=_gpad.buttons[0]&&_gpad.buttons[0].pressed;
+  const rsY=_gpad.axes.length>=4?_gpad.axes[3]:0;
+  // D-pad 이동
+  if(u&&!_gpUIPrev.u&&len>0){_gpCrIdx=Math.max(0,_gpCrIdx-1);}
+  if(d&&!_gpUIPrev.d&&len>0){_gpCrIdx=Math.min(len-1,_gpCrIdx+1);}
+  // 하이라이트
+  rows.forEach((r,i)=>{r.style.outline=i===_gpCrIdx?'2px solid #C9A961':'';r.style.outlineOffset='-1px'});
+  if(rows[_gpCrIdx]&&(u&&!_gpUIPrev.u||d&&!_gpUIPrev.d))rows[_gpCrIdx].scrollIntoView({block:'nearest'});
+  // A = 선택 클릭
+  if(a&&!_gpUIPrev.a&&rows[_gpCrIdx])rows[_gpCrIdx].click();
+  // 우스틱 스크롤
+  if(listEl&&Math.abs(rsY)>0.15)listEl.scrollTop+=rsY*18;
+  _gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.a=a;
+}
+
 // ═══ 인벤토리 게임패드 (디아4 스타일 — 아이템 순차 + 즉시 상세) ═══
 let _gpInvIdx=0,_gpInvEqIdx=0,_gpInvMode='bag',_gpInvBotIdx=-1; // bag | eq | st
 function _gpInvNav(){
@@ -10258,21 +10284,20 @@ function _gpInvNav(){
         items[_gpInvIdx].style.outline='2px solid #C9A961';items[_gpInvIdx].style.outlineOffset='-1px';
         items[_gpInvIdx].scrollIntoView({block:'nearest'});
       }
-      if(moved&&typeof _invRenderDetail==='function'){INV.selected=_gpInvIdx;_invRenderDetail(_gpInvIdx,'bag')}
+      if(moved&&typeof _invRenderDetail==='function'){const _wasEq=typeof INV.selected==='string';INV.selected=_gpInvIdx;if(_wasEq&&typeof renderInv==='function')renderInv();else _invRenderDetail(_gpInvIdx,'bag')}
       if(Math.abs(rsY)>0.15)grid.scrollTop+=rsY*18;
-      // A = 즉시 장착: #invActionBtns 안의 .id-btn.equip 클릭 (contextmenu는 전역 차단됨)
+      // A = 선택(비교창에 상세 표시)
       if(a&&!_gpUIPrev.a&&!_gpVC.vis&&items[_gpInvIdx]){
-        if(moved||!$('invActionBtns')||!$('invActionBtns').querySelector('.id-btn.equip')){
-          // 상세 패널 갱신
-          if(typeof _invRenderDetail==='function'){INV.selected=_gpInvIdx;_invRenderDetail(_gpInvIdx,'bag')}
-        }
-        const _eqBtn=$('invActionBtns')?$('invActionBtns').querySelector('.id-btn.equip'):null;
-        if(_eqBtn)_eqBtn.click();
+        INV.selected=_gpInvIdx;
+        if(typeof renderInv==='function')renderInv();
+        if(typeof _invRenderDetail==='function')_invRenderDetail(_gpInvIdx,'bag');
       }
+      // B = 장착(우클릭)
+      if(b&&!_gpUIPrev.b){const _bEl=_gpVC.vis?document.elementFromPoint(_gpVC.x,_gpVC.y):null;const _bt=_bEl&&(_bEl.classList.contains("inv-item")?_bEl:_bEl.closest?.(".inv-item"));if(_bt){_bt.dispatchEvent(new MouseEvent("contextmenu",{bubbles:true,cancelable:true}))}else if(!_gpVC.vis){const _bg=$("invGrid");if(_bg){const _bi=_bg.querySelectorAll(".inv-item");if(_bi[_gpInvIdx])_bi[_gpInvIdx].dispatchEvent(new MouseEvent("contextmenu",{bubbles:true,cancelable:true}))}}}
       // X = 쓰레기 마킹
       if(x&&!_gpUIPrev.x&&_gpInvIdx<bagLen){const it=INV.bag[_gpInvIdx];if(it){it.junk=!it.junk;if(it.junk)it.fav=false;renderInv();if(typeof _invRenderDetail==='function')_invRenderDetail(_gpInvIdx,'bag')}}
-      // Y = 장착(우클릭)
-      if(y&&!_gpUIPrev.y){const _yg=$("invGrid");if(_yg){const _yi=_yg.querySelectorAll(".inv-item");if(_yi[_gpInvIdx])_yi[_gpInvIdx].dispatchEvent(new MouseEvent("contextmenu",{bubbles:true,cancelable:true}))}}
+      // Y = 아이템 락(즐겨찾기 토글)
+      if(y&&!_gpUIPrev.y&&_gpInvIdx<bagLen){const it=INV.bag[_gpInvIdx];if(it){it.fav=!it.fav;if(it.fav)it.junk=false;renderInv();if(typeof _invRenderDetail==='function')_invRenderDetail(_gpInvIdx,'bag')}}
     }
   } else if(_gpInvMode==='eq'){
     const eqSlots=$('invEqGrid')?Array.from($('invEqGrid').querySelectorAll('.inv-eq-slot')):[];
@@ -10314,38 +10339,17 @@ function _gpInvNav(){
     const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
     if(_bots[_gpInvBotIdx])_bots[_gpInvBotIdx].click();
   }
-  // ── 우스틱: 스크롤 (캐시 방식) ──
+  // ── 우스틱: 스크롤 (WheelEvent — 마우스 휠과 동일) ──
   const _rsYFull=_gpad.axes.length>=4?_gpad.axes[3]:0;
   const _rsXFull=_gpad.axes.length>=3?_gpad.axes[2]:0;
   if(Math.abs(_rsYFull)>0.15||Math.abs(_rsXFull)>0.15){
-    if(!_gpScEl){
-      // 영역별 명시적 스크롤 타겟 (bounding rect 기반)
-      const _ir=$('invRight'),_ig=$('invGrid'),_il=$('invLeft');
-      if(_gpVC.vis&&_ir&&_ig&&_il){
-        const _irR=_ir.getBoundingClientRect();
-        const _igR=_ig.getBoundingClientRect();
-        const _ilR=_il.getBoundingClientRect();
-        if(_gpVC.x>=_irR.left&&_gpVC.x<=_irR.right&&_gpVC.y>=_irR.top&&_gpVC.y<=_irR.bottom){
-          _gpScEl=_ir.scrollHeight>_ir.clientHeight+5?_ir:null; // 아이템 상세
-        } else if(_gpVC.x>=_igR.left&&_gpVC.x<=_igR.right&&_gpVC.y>=_igR.top&&_gpVC.y<=_igR.bottom){
-          _gpScEl=_ig.scrollHeight>_ig.clientHeight+5?_ig:null; // 가방 그리드
-        } else if(_gpVC.x>=_ilR.left&&_gpVC.x<=_ilR.right&&_gpVC.y>=_ilR.top&&_gpVC.y<=_ilR.bottom){
-          _gpScEl=_il.scrollHeight>_il.clientHeight+5?_il:null; // 장착/창고 좌측
-        }
-      }
-      if(!_gpScEl&&_gpVC.vis){_gpScEl=_gpFindScroll(document.elementFromPoint(_gpVC.x,_gpVC.y));}
-      const _invP=$('invPanel');
-      // 커서 없을 때 모드별 기본 스크롤 대상
-      if(!_gpScEl&&!_gpVC.vis){
-        if(_gpInvMode==='bag'){const _ig=$('invGrid');if(_ig&&_ig.scrollHeight>_ig.clientHeight+5)_gpScEl=_ig;}
-        else if(_gpInvMode==='st'){const _sg=$('invStGrid');if(_sg&&_sg.scrollHeight>_sg.clientHeight+5)_gpScEl=_sg;
-          else{const _il=$('invLeft');if(_il&&_il.scrollHeight>_il.clientHeight+5)_gpScEl=_il;}}
-        else{const _ir=$('invRight');if(_ir&&_ir.scrollHeight>_ir.clientHeight+5)_gpScEl=_ir;}
-      }
-      if(!_gpScEl&&_invP){_gpScEl=_gpFindScroll(_invP.querySelector('#invRight'))||_gpFindScroll(_invP);}
-    }
-    if(_gpScEl){_gpScEl.scrollTop+=_rsYFull*18;if(Math.abs(_rsXFull)>0.15)_gpScEl.scrollLeft+=_rsXFull*18;}
+    const _iwx=_gpVC.vis?_gpVC.x:window.innerWidth/2;
+    const _iwy=_gpVC.vis?_gpVC.y:window.innerHeight/2;
+    const _iwt=document.elementFromPoint(_iwx,_iwy)||$('invPanel');
+    if(_iwt)_iwt.dispatchEvent(new WheelEvent('wheel',{deltaY:_rsYFull*120,deltaX:_rsXFull*120,deltaMode:0,bubbles:true,cancelable:true,clientX:_iwx,clientY:_iwy}));
   } else {_gpScEl=null;}
+  // 가상 커서 호버 → inv-item mouseover 자동 발생
+  if(_gpVC.vis){const _vhEl=document.elementFromPoint(_gpVC.x,_gpVC.y);const _vhIt=(_vhEl&&_vhEl.id!=="_gpVCursor")?_vhEl:null;if(_vhIt!==_gpVCPrevHoverEl){if(_gpVCPrevHoverEl)_gpVCPrevHoverEl.dispatchEvent(new MouseEvent("mouseleave",{bubbles:true,clientX:_gpVC.x,clientY:_gpVC.y}));if(_vhIt)_vhIt.dispatchEvent(new MouseEvent("mouseover",{bubbles:true,clientX:_gpVC.x,clientY:_gpVC.y}));_gpVCPrevHoverEl=_vhIt;}}else if(_gpVCPrevHoverEl){_gpVCPrevHoverEl.dispatchEvent(new MouseEvent("mouseleave",{bubbles:true}));_gpVCPrevHoverEl=null;}
   // B버튼 패널닫기 제거 — 전용 닫기버튼 사용
   _gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;
   _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.x=x;_gpUIPrev.y=y;

@@ -23957,3 +23957,11 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - img/lording/rd1.png
 
+
+## 2026-05-13 13:30 (auto)
+- _autosave/game_20260513_123527.html
+- _autosave/game_20260513_123548.html
+- _autosave/game_20260513_123606.html
+- _autosave/game_20260513_124014.html
+- game.html
+
