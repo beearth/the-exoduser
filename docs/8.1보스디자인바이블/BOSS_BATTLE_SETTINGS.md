@@ -293,9 +293,9 @@ http://localhost:3333/game.html?bosstest=0
 
 | 변수 | 기본값 | 역할 |
 |---|---|---|
-| `window._btScaleMul` | `3.7` (전역), 테스트베드에서 `5.0` 설정 | Three.js + 2D 캔버스 보스 시각 배율 |
+| `window._btScaleMul` | `4.0` (전역), 테스트베드에서 `5.0` 설정 | Three.js + 2D 캔버스 보스 시각 배율 |
 | `window._btRotX` | `0.0` (rad) | 보스 3D X축 회전 |
-| `window._btOffsetY` | `-50` (px) | 보스 3D Y 오프셋 — 피벗 Y에 반영. 양수=위로 이동 |
+| `window._btOffsetY` | `-200` (px) | 보스 Y 오프셋 — 2D 캔버스 스케일 피벗 Y + Three.js 피벗 Y에 반영. 양수=위로 이동 |
 | `window._b3footScreenX` | `cssX` | 보스 발 스크린 X 좌표 (blob shadow 등 외부 활용) |
 | `window._b3footScreenY` | `cssY + bossRcss` | 보스 발 스크린 Y 좌표 (blob shadow 등 외부 활용) |
 | ~~`_b3clipFloor`~~ | ~~`Plane(0,1,0)`~~ | **제거됨 (v1.6)** — `clippingPlanes=[]`, 클리핑 비활성화 |
@@ -312,7 +312,7 @@ http://localhost:3333/game.html?bosstest=0
 | Three.js 3D 모델 (`_b3animate`) | `tgtH *= _btScaleMul` → `_b3pivot.scale` |
 | 2D 캔버스 (`_drawBossWalk`) | `_largeMul = _btScaleMul` |
 | 2D 캔버스 (ext atlas, int atlas) | `_eLargeMul / _bLM = _btScaleMul` |
-| 2D 캔버스 렌더 래퍼 | `X.scale(_bScMul, _bScMul)` (컨텍스트 전체 스케일) |
+| 2D 캔버스 렌더 래퍼 | `X.translate(e.x, e.y+_bYOff); X.scale(_bScMul, _bScMul)` — `_btOffsetY`도 피벗 Y에 반영 (2026-05-13) |
 
 ---
 

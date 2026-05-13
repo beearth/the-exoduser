@@ -8296,10 +8296,10 @@ function _drawStage1CodexBoss(X,e,sa,tdY){
   return true;
 }
 // ── 대형보스 글로벌 설정 ──
-window._btScaleMul=3.7; // 보스 시각 스케일 배율
+window._btScaleMul=4.0; // 보스 시각 스케일 배율
 window._b3Active=false; // 3D 보스 오버레이 활성 여부 (true면 2D 보스 렌더 차단)
 window._btRotX=0.0; // 보스 3D X축 회전 (rad)
-window._btOffsetY=-50; // 보스 3D Y 오프셋 (px, 양수=위로)
+window._btOffsetY=-200; // 보스 3D Y 오프셋 (px, 양수=위로)
 function _drawLargeBoss(){return false;}
 let _atlasExtBReady=false,_atlasExtB_img=null,_atlasExtB_frames=null;
 (function _loadAtlasExtB(){
@@ -41295,7 +41295,8 @@ function draw(){
       }
       let _bDrew=false;
       const _bScMul=window._btScaleMul||1;
-      if(_bScMul!==1){X.save();X.translate(e.x,e.y);X.scale(_bScMul,_bScMul);X.translate(-e.x,-e.y)}
+      const _bYOff=window._btOffsetY||0;
+      if(_bScMul!==1||_bYOff!==0){X.save();X.translate(e.x,e.y+_bYOff);X.scale(_bScMul,_bScMul);X.translate(-e.x,-e.y)}
       if(!e._bDrawLog){e._bDrawLog=true;console.log('[BOSS_DRAW] extB:',_atlasExtBReady,'walkA:',_bossWalkAtlas.ready,'intB:',_atlasBReady,'stage:',G.stage,'scale:',_bScMul)}
       if(!_bDrew&&G.stage===0){_bDrew=_drawStage1CodexBoss(X,e,sa,_tdY)}
       // ── 외부 보스 아틀라스 렌더링 (atlas_bosses.png, 최우선) ──
@@ -41357,7 +41358,7 @@ function draw(){
         }
       }
       if(!_bDrew){X.save();X.translate(0,_tdY);drawBossBody(X,e,_now,sa);X.restore()}
-      if(_bScMul!==1)X.restore();
+      if(_bScMul!==1||_bYOff!==0)X.restore();
       // ── 보스 다리 안개 (노이즈 텍스처 프레임 애니메이션) ──
       if(e.alive){
         const _bfHell=SI_TO_HELL[G.stage];
