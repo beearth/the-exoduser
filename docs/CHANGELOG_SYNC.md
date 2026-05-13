@@ -23924,3 +23924,20 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - img/lording/66.png
 - img/lording/EXO.png
 
+
+## 2026-05-13 11:30 (auto)
+- _autosave/game_20260513_111413.html
+- _autosave/game_20260513_111424.html
+- _autosave/game_20260513_111439.html
+- _autosave/game_20260513_111714.html
+- _autosave/game_20260513_112249.html
+- _autosave/game_20260513_112302.html
+- _autosave/game_20260513_112308.html
+- _autosave/game_20260513_112312.html
+- _autosave/game_20260513_112316.html
+- _autosave/game_20260513_112559.html
+- _autosave/game_20260513_112806.html
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤??md
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- game.html
+

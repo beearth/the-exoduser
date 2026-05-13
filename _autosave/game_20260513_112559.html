@@ -9547,8 +9547,8 @@ addEventListener('keydown',e=>{
     G._mmBomb=null;
     K['Space']=false;return;
   }
-  // Space키 스킬슬롯 (SKILL_SLOTS[4]) — e.repeat 무시 (aim 홀드 시 dispatch 재호출로 취소되는 버그 방지)
-  if(e.code==='Space'&&G.on&&!G.paused&&SKILL_SLOTS[4]&&!e.repeat){
+  // Space키 스킬슬롯 (SKILL_SLOTS[4]) — 사슬기동 중 차단, e.repeat 무시
+  if(e.code==='Space'&&G.on&&!G.paused&&SKILL_SLOTS[4]&&!e.repeat&&!(_harpActive||_dashActive)){
     if(_dispatchSkillSlot(4,'Space')){K['Space']=false;return}
   }
   // F키 스킬슬롯 (SKILL_SLOTS[5])
@@ -9734,6 +9734,32 @@ let _gpUIIdx=0;
 let _gpUIPrev={a:false,b:false,x:false,y:false,lb:false,rb:false,b8:false,b9:false};
 let _gpUIRepeatDir=null,_gpUIRepeatTs=0;
 const _GP_UI_DELAY=380,_GP_UI_INTERVAL=110;
+// ── 가상 커서 (좌스틱 마우스) ──
+const _gpVC={x:window.innerWidth/2,y:window.innerHeight/2,vis:false,el:null,spd:12};
+function _gpVCInit(){
+  if(_gpVC.el)return;
+  const d=document.createElement('div');d.id='_gpVCursor';
+  d.style.cssText='position:fixed;top:0;left:0;pointer-events:none;z-index:2147483647;display:none;will-change:transform';
+  d.innerHTML='<svg width="22" height="26" viewBox="0 0 22 26" style="filter:drop-shadow(0 1px 3px #000);pointer-events:none"><path d="M3 2L3 22L8 16.5L11.5 23L14 21.8L10.5 15L18 15Z" fill="#fff" stroke="#222" stroke-width="1.2" stroke-linejoin="round"/></svg>';
+  document.body.appendChild(d);_gpVC.el=d;
+}
+function _gpVCUpdate(){
+  if(!_gpVC.el)_gpVCInit();
+  const ax=_gpAxes[0]||0,ay=_gpAxes[1]||0;
+  const dead=0.12;
+  if(Math.abs(ax)>dead||Math.abs(ay)>dead){
+    const mag=Math.sqrt(ax*ax+ay*ay);
+    const s=_gpVC.spd*(0.5+mag*0.5);
+    _gpVC.x=Math.max(0,Math.min(window.innerWidth-2,_gpVC.x+(Math.abs(ax)>dead?ax*s:0)));
+    _gpVC.y=Math.max(0,Math.min(window.innerHeight-2,_gpVC.y+(Math.abs(ay)>dead?ay*s:0)));
+    _gpVC.vis=true;
+  }
+  if(_gpVC.el){
+    _gpVC.el.style.transform='translate('+_gpVC.x+'px,'+_gpVC.y+'px)';
+    _gpVC.el.style.display=_gpVC.vis?'block':'none';
+  }
+}
+function _gpVCHide(){if(_gpVC.el){_gpVC.el.style.display='none';}_gpVC.vis=false;}
 // 섹션 타입 분류
 const _gpSectType=el=>{
   if(el.closest('.stat-row'))return'stat';
@@ -9744,6 +9770,13 @@ const _gpSectType=el=>{
   if(el.closest('.fg-i'))return'fgi';
   if(el.closest('.set-key'))return'setkey';
   if(el.closest('[data-sk-id]'))return'sknode';
+  if(el.closest('#invFilters'))return'invfilter';
+  if(el.closest('#invEqGrid'))return'inveq';
+  if(el.closest('#invCrystalRow'))return'invcr';
+  if(el.closest('#invGrid'))return'invbag';
+  if(el.closest('#invStGrid'))return'invst';
+  if(el.closest('#invStBagSection'))return'invdep';
+  if(el.closest('#invActionBtns')||el.closest('#invCompareArea'))return'invact';
   // 설정 패널: .set-section 단위로 LB/RB 섹션 점프
   const _sec=el.closest('.set-section');
   if(_sec){const _secs=[...document.querySelectorAll('.set-section')];return'setsec'+_secs.indexOf(_sec);}
@@ -9774,8 +9807,11 @@ function _gpUIStep(dir,items){
 }
 function _gpUINav(panel){
   if(!_gpad||!panel)return;
+  // skSlotPop 열려있으면 그걸 패널로 전환 (skillPanel 밖에 있어서 querySelectorAll 미탐지)
+  const _spop=$('skSlotPop');
+  if(_spop&&_spop.style.display==='flex')panel=_spop;
   // 패널 내 포커스 가능 요소 수집
-  const SEL='button:not([disabled]),.pclose,[onclick],.sk-opt:not(.locked),.up-row:not(.dis),.stat-btn:not(.dis),.passive-row:not(.dis),.fg-i:not(.dis),.fg-tab,.set-key,.id-btn,.retry,input[type="range"],input[type="checkbox"],select,[data-sk-id]';
+  const SEL='button:not([disabled]),.pclose,[onclick],.sk-opt:not(.locked),.up-row:not(.dis),.stat-btn:not(.dis),.passive-row:not(.dis),.fg-i:not(.dis),.fg-tab,.set-key,.id-btn,.retry,input[type="range"],input[type="checkbox"],select,[data-sk-id],.inv-filter-btn,.inv-eq-item,.inv-item,.inv-cr-item,.inv-cell,.inv-dep-item,.inv-exp-btn,.sk-pop-tab';
   const items=[];
   const all=panel.querySelectorAll(SEL);
   for(let i=0;i<all.length;i++){
@@ -9786,15 +9822,13 @@ function _gpUINav(panel){
   if(!items.length)return;
   if(_gpUIIdx>=items.length)_gpUIIdx=0;
 
-  // D-pad(버튼12-15) + axes[6/7](일부 패드 D-pad) + 좌스틱 → 한 칸 이동
+  // D-pad(버튼12-15) + axes[6/7](일부 패드 D-pad) → 한 칸 이동 (좌스틱은 가상커서 전용)
   const _dU=(_gpad.buttons[12]&&_gpad.buttons[12].pressed)||_gpAxes[7]<-0.5;
   const _dD=(_gpad.buttons[13]&&_gpad.buttons[13].pressed)||_gpAxes[7]>0.5;
   const _dL=(_gpad.buttons[14]&&_gpad.buttons[14].pressed)||_gpAxes[6]<-0.5;
   const _dR=(_gpad.buttons[15]&&_gpad.buttons[15].pressed)||_gpAxes[6]>0.5;
-  const u=_dU||(!_dU&&!_dD&&_gpAxes[1]<-0.5);
-  const d=_dD||(!_dU&&!_dD&&_gpAxes[1]>0.5);
-  const l=_dL||(!_dL&&!_dR&&_gpAxes[0]<-0.5);
-  const r=_dR||(!_dL&&!_dR&&_gpAxes[0]>0.5);
+  const u=_dU,d=_dD,l=_dL,r=_dR;
+  if(u||d||l||r)_gpVCHide(); // D-pad 누르면 커서 숨기고 선택 모드
   // 우측 스틱 → 스크롤 (휠 역할)
   const rsYVal=_gpAxes[3],rsXVal=_gpAxes[2];
   const a=_gpad.buttons[0]&&_gpad.buttons[0].pressed;
@@ -9870,23 +9904,21 @@ function _gpUINav(panel){
     }
   }
 
-  // A = 클릭 (사용 후 k0 선점 — 패널 닫힌 뒤 mouse0 입력 차단)
-  if(a&&!_gpUIPrev.a&&cur){cur.click();_gpBtnsPrev['k0']=true;}
-  // B / Start = 닫기 (skSlotPop 열려있으면 먼저 닫기)
+  // A = 커서 위치 클릭 우선, 없으면 포커스 요소 클릭
+  if(a&&!_gpUIPrev.a){
+    if(_gpVC.vis){
+      const _vcEl=document.elementFromPoint(_gpVC.x,_gpVC.y);
+      if(_vcEl&&_vcEl.id!=='_gpVCursor'){_vcEl.click();_gpBtnsPrev['k0']=true;}
+    } else if(cur){cur.click();_gpBtnsPrev['k0']=true;}
+  }
+  // skSlotPop B = 팝업만 닫기 (패널 자체 닫기는 전용 닫기버튼으로)
   const _start=!!(_gpad.buttons[9]&&_gpad.buttons[9].pressed);
-  if((b&&!_gpUIPrev.b)||(_start&&!_gpUIPrev.start)){
+  if((b&&!_gpUIPrev.b)){
     const slotPop=$('skSlotPop');
-    if(slotPop&&slotPop.style.display==='flex'){slotPop.style.display='none'}
-    else{
-      const cls=panel.querySelector('.pclose');
-      if(cls)cls.click();
-      else if(typeof closeAllPanels==='function')closeAllPanels();
-    }
-    if(b&&!_gpUIPrev.b)_gpBtnsPrev['k1']=true;
-    if(_start)_gpBtnsPrev['k9']=true; // Start 닫기 사용됨 — Escape 차단
+    if(slotPop&&slotPop.style.display==='flex'){slotPop.style.display='none';_gpBtnsPrev['k1']=true;}
   }
   _gpUIPrev.start=_start;
-  // Y = 스킬 패널: 선택 스킬 슬롯 배정 / 인벤: 장비 해제
+  // Y = 스킬 패널: 선택 스킬 슬롯 배정 / 인벤: 장착·해제·꺼내기
   const y=_gpad.buttons[3]&&_gpad.buttons[3].pressed;
   if(y&&!_gpUIPrev.y&&cur){
     // 스킬 패널에서 .sk-opt 위에 있으면 → 순환 배정
@@ -9899,6 +9931,13 @@ function _gpUINav(panel){
         }
       }
     }
+    // 인벤토리 패널: Y = 우클릭 (장착/해제/꺼내기)
+    if(panel.id==='invPanel'){
+      if(cur.classList.contains('inv-item')||cur.classList.contains('inv-eq-item')||cur.classList.contains('inv-cell')){
+        cur.dispatchEvent(new MouseEvent('contextmenu',{bubbles:true,cancelable:true,button:2}));
+        _gpBtnsPrev['k3']=true;
+      }
+    }
   }
 
   _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.y=y;
@@ -9906,10 +9945,17 @@ function _gpUINav(panel){
   // ── 우측 스틱: 패널 스크롤 (휠 역할) ──
   if(Math.abs(rsYVal)>0.15||Math.abs(rsXVal)>0.15){
     let scrollEl=null;
-    const _fc=items[_gpUIIdx];
-    if(_fc){let n=_fc.parentElement;while(n&&n!==panel){if(n.scrollHeight>n.clientHeight+5){scrollEl=n;break;}n=n.parentElement;}}
+    const _findScroll=el=>{let n=el?el.parentElement:null;while(n){if(n.scrollHeight>n.clientHeight+5&&['auto','scroll','overlay'].includes(getComputedStyle(n).overflowY)){return n;}n=n.parentElement;}return null;};
+    if(_gpVC.vis){
+      // 커서 모드: 커서 아래 요소부터 스크롤 가능 컨테이너 탐색
+      const _ce=document.elementFromPoint(_gpVC.x,_gpVC.y);
+      scrollEl=_findScroll(_ce);
+    } else {
+      const _fc=items[_gpUIIdx];
+      scrollEl=_findScroll(_fc);
+    }
     if(!scrollEl&&panel.scrollHeight>panel.clientHeight+5)scrollEl=panel;
-    if(scrollEl){scrollEl.scrollTop+=rsYVal*14;if(Math.abs(rsXVal)>0.15)scrollEl.scrollLeft+=rsXVal*14;}
+    if(scrollEl){scrollEl.scrollTop+=rsYVal*16;if(Math.abs(rsXVal)>0.15)scrollEl.scrollLeft+=rsXVal*16;}
   }
 
   // 버튼 8(Back) = 전체 첫 항목  버튼 9(Start) = 전체 마지막 항목
@@ -9970,7 +10016,7 @@ function _pollGamepad(){
   }}
 
   // ── 3.5단계: UI 패널/오버레이 열려있으면 게임 입력 차단 + UI 네비게이션 ──
-  if(_gcEl&&_gcEl.classList.contains("on")){_gpClearAll();_gpUINav(_gcEl);return;}
+  if(_gcEl&&_gcEl.classList.contains("on")){_gpClearAll();_gpVCUpdate();_gpUINav(_gcEl);return;}
   const _gpOpenPanel=document.querySelector('.panel.on');
   const _gpOverlay=(()=>{
     for(const id of['introDiff','introKeys','death','lvUpScreen','tutorial','stageClear']){
@@ -9982,10 +10028,12 @@ function _pollGamepad(){
   })();
   if(_gpOpenPanel||_gpOverlay){
     _gpClearAll();
+    _gpVCUpdate(); // 좌스틱 → 가상 커서
     if(_gpOpenPanel&&_gpOpenPanel.id==='invPanel'){_gpInvNav()}
     else{_gpUINav(_gpOpenPanel||_gpOverlay)}
     return;
   }
+  _gpVCHide(); // 패널 닫히면 커서 숨김
   // UI 닫힌 후 outline 잔류 제거
   if(_gpUIIdx>0||_gpInvIdx>0||_gpInvEqIdx>0){
     document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}});
@@ -10146,10 +10194,8 @@ function _gpInvNav(){
   const _idD=(_gpad.buttons[13]&&_gpad.buttons[13].pressed)||_gpAxes[7]>0.5;
   const _idL=(_gpad.buttons[14]&&_gpad.buttons[14].pressed)||_gpAxes[6]<-0.5;
   const _idR=(_gpad.buttons[15]&&_gpad.buttons[15].pressed)||_gpAxes[6]>0.5;
-  const u=_idU||(!_idU&&!_idD&&_gpAxes[1]<-0.5);
-  const d=_idD||(!_idU&&!_idD&&_gpAxes[1]>0.5);
-  const l=_idL||(!_idL&&!_idR&&_gpAxes[0]<-0.5);
-  const r=_idR||(!_idL&&!_idR&&_gpAxes[0]>0.5);
+  const u=_idU,d=_idD,l=_idL,r=_idR;
+  if(u||d||l||r)_gpVCHide(); // D-pad 누르면 커서 숨기고 선택 모드
   const a=_gpad.buttons[0]&&_gpad.buttons[0].pressed;
   const b=_gpad.buttons[1]&&_gpad.buttons[1].pressed;
   const x=_gpad.buttons[2]&&_gpad.buttons[2].pressed;
@@ -10184,7 +10230,7 @@ function _gpInvNav(){
 
   if(_gpInvMode==='bag'){
     const bagLen=typeof INV!=='undefined'?INV.bag.length:0;
-    if(!bagLen){_gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;_gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.x=x;_gpUIPrev.y=y;if(b&&!_gpUIPrev.b)closeAllPanels();return}
+    if(!bagLen){_gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;_gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.x=x;_gpUIPrev.y=y;return}
     let moved=false;
     if(u&&!_gpUIPrev.u){_gpInvIdx=Math.max(0,_gpInvIdx-1);moved=true}
     if(d&&!_gpUIPrev.d){_gpInvIdx=Math.min(bagLen-1,_gpInvIdx+1);moved=true}
@@ -10209,7 +10255,7 @@ function _gpInvNav(){
     }
   } else if(_gpInvMode==='eq'){
     const eqSlots=$('invEqGrid')?Array.from($('invEqGrid').querySelectorAll('.inv-eq-slot')):[];
-    if(!eqSlots.length){_gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;_gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.y=y;if(b&&!_gpUIPrev.b)closeAllPanels();return}
+    if(!eqSlots.length){_gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;_gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.y=y;return}
     let moved=false;
     if(u&&!_gpUIPrev.u){_gpInvEqIdx=Math.max(0,_gpInvEqIdx-1);moved=true}
     if(d&&!_gpUIPrev.d){_gpInvEqIdx=Math.min(eqSlots.length-1,_gpInvEqIdx+1);moved=true}
@@ -10222,7 +10268,7 @@ function _gpInvNav(){
     if(y&&!_gpUIPrev.y){const ev=new MouseEvent('contextmenu',{bubbles:true});eqSlots[_gpInvEqIdx].dispatchEvent(ev)}
   } else {
     const stItems=$('invStGrid')?Array.from($('invStGrid').querySelectorAll('.inv-cell')):[];
-    if(!stItems.length){_gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;_gpUIPrev.a=a;_gpUIPrev.b=b;if(b&&!_gpUIPrev.b)closeAllPanels();return}
+    if(!stItems.length){_gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;_gpUIPrev.a=a;_gpUIPrev.b=b;return}
     const C=4;let sR=Math.floor(_gpInvIdx/C),sC=_gpInvIdx%C;
     if(u&&!_gpUIPrev.u)sR=Math.max(0,sR-1);
     if(d&&!_gpUIPrev.d)sR++;
@@ -10233,13 +10279,21 @@ function _gpInvNav(){
     stItems[_gpInvIdx].style.outline='2px solid #C9A961';stItems[_gpInvIdx].style.outlineOffset='-1px';
     if(a&&!_gpUIPrev.a)stItems[_gpInvIdx].click();
   }
+  // 커서 모드: A = 커서 위치 클릭 (커서 가시 시 우선)
+  if(a&&!_gpUIPrev.a&&_gpVC.vis){
+    const _vcEl=document.elementFromPoint(_gpVC.x,_gpVC.y);
+    if(_vcEl&&_vcEl.id!=='_gpVCursor'){_vcEl.click();}
+    _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.x=x;_gpUIPrev.y=y;
+    // B버튼 패널닫기 제거 — 전용 닫기버튼 사용
+    _gpUIPrev.lb=lb;_gpUIPrev.rb=rb;return;
+  }
   // 하단 버튼 포커스 중 A = 클릭
   if(a&&!_gpUIPrev.a&&_gpInvBotIdx>=0){
     const _botIds=['invJunkSelBtn','invJunkBtn','invSalvageBtn'];
     const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
     if(_bots[_gpInvBotIdx])_bots[_gpInvBotIdx].click();
   }
-  if(b&&!_gpUIPrev.b){if(typeof closeAllPanels==='function')closeAllPanels()}
+  // B버튼 패널닫기 제거 — 전용 닫기버튼 사용
   _gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;
   _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.x=x;_gpUIPrev.y=y;
 }
@@ -23126,8 +23180,8 @@ function update(){
     // 꽂힘 → 플레이어 끌어당기기 시작
     if(_harpHit&&!_dashActive){
       _dashActive=true;_dashIframe=_HARP_IFRAME[_harpTier];_dashPhase=2;P.poise=4; // 탈출기 poise 풀회복
-      // 기동칼날개 자동 활성화 (U키 AUTO ON + 4성 dimRush 합체 시)
-      if(OPT.bladeAuto&&_isFused('dimRush')&&(P.skills.chainSlash||0)>=1&&!P._chainSlashActive){const _csAC=15+(P.skills.chainSlash||1)*2;if(P.st>=_csAC){P.st-=_csAC;P._chainSlashActive=true;P._chainSlashHits=[];P._chainSlashTick=0;_addSkProf('chainSlash');SFX.slash();addTxt(P.x,P.y-25,_T('⚔ 기동칼날개!'),'#ff4466',35)}}
+      // 기동칼날개 자동 활성화 (사슬기동 시작 시 스킬 보유 시 무조건)
+      if((P.skills.chainSlash||0)>=1&&!P._chainSlashActive){const _csAC=15+(P.skills.chainSlash||1)*2;if(P.st>=_csAC){P.st-=_csAC;P._chainSlashActive=true;P._chainSlashHits=[];P._chainSlashTick=0;_addSkProf('chainSlash');SFX.slash();addTxt(P.x,P.y-25,_T('⚔ 기동칼날개!'),'#ff4466',35)}}
       const _hd=dst(P.x,P.y,_harpX,_harpY);
       const _dur=_HARP_PULL_DUR[_harpTier];
       _dashLeft=_dur;
@@ -23422,37 +23476,28 @@ function update(){
   }
   // ── 기동칼날개: 사슬기동 중 좌클릭 → 이동 중 광역 칼날 (dimBlast 미발동 시) ──
   // NOTE: dimBlast(Shift+좌클릭)가 아래에서 먼저 체크됨. dimBlast 조건 불충족 시 칼날개 발동
-  // ── 기동불꽃: 사슬기동 중 E키 → 화염폭발 착지 ──
-  if((P._chainSkDelay||0)<=0&&(_harpActive||_dashActive)&&(P.skills.chainAssault||0)>=1&&isJust('beam')&&!P._chainAssaultReady&&!P._chainSlamReady&&!P._chainBlastReady){
+  // ── 기동불꽃: 사슬기동 중 E키 또는 Space → 화염폭발 착지 ──
+  if((P._chainSkDelay||0)<=0&&(_harpActive||_dashActive)&&(P.skills.chainAssault||0)>=1&&(isJust('beam')||isJust('bow'))&&!P._chainAssaultReady&&!P._chainSlamReady&&!P._chainBlastReady){
     const _caCost=20+(P.skills.chainAssault||1)*2;
     if(P.mp<_caCost){addTxt(P.x,P.y-25,_T('MP 부족!'),'#4444ff',30)}
     else{P.mp-=_caCost;P._chainAssaultReady=true;P._csStunOX=_harpX||P.x;P._csStunOY=_harpY||P.y;
     addTxt(P.x,P.y-25,_T('🔥 기동불꽃 준비!'),'#ff6600',30)}
   }
-  // ── 기동파괴: 사슬기동 중(비행+이동) 우클릭 → 포이즈 특화 착지 ──
-  if((P._chainSkDelay||0)<=0&&(_harpActive||_dashActive)&&(P.skills.chainSlam||0)>=1&&isJust('shield')&&!P._chainSlamReady&&!P._chainAssaultReady&&!P._chainBlastReady){
+  // ── 기동파괴: 사슬기동 중(비행+이동) 우클릭 또는 좌클릭 → 포이즈 특화 착지 ──
+  if((P._chainSkDelay||0)<=0&&(_harpActive||_dashActive)&&(P.skills.chainSlam||0)>=1&&(isJust('shield')||isJust('weapon'))&&!P._chainSlamReady&&!P._chainAssaultReady&&!P._chainBlastReady){
     const _csCost=20+(P.skills.chainSlam||1)*2;
     if(P.st<_csCost){addTxt(P.x,P.y-25,_T('ST 부족!'),'#ff4444',30)}
     else{P.st-=_csCost;P._chainSlamReady=true;P._csSlamOX=_harpX||P.x;P._csSlamOY=_harpY||P.y;
     addTxt(P.x,P.y-25,_T('🔨 기동파괴 준비!'),'#ff8844',30)}
   }
-  // ── 기동전폭 / 기동칼날개: 사슬기동 중 좌클릭 분기 ──
+  // ── 기동전폭: 사슬기동 중 좌클릭 (5성 dimBlast) ──
   if((P._chainSkDelay||0)<=0&&(_harpActive||_dashActive)&&MBjust[0]){
     if(_isFused('dimBlast')&&P.skills.giantSlam>=1&&isAct('charge')&&!P._chainBlastReady&&!P._chainAssaultReady&&!P._chainSlamReady){
-      // 기동전폭: Shift+좌클릭 (5성 dimBlast)
       MBjust[0]=false;
       const _cbCost=30+(P.skills.giantSlam||1)*3;
       if(P.st<_cbCost||G.mats<_malCost(20)){addTxt(P.x,P.y-25,(P.st<_cbCost?'ST':_L('악의','Malice'))+_L(' 부족!',' needed!'),'#ff4444',30)}
       else{P.st-=_cbCost;G.mats-=_malCost(20);P._chainBlastReady=true;P._csBlastOX=_harpX||P.x;P._csBlastOY=_harpY||P.y;
       addTxt(P.x,P.y-25,_T('⚡ 기동전폭 준비!'),'#ffaa00',35);shake(4)}
-    }else if(_isFused('dimRush')&&(P.skills.chainSlash||0)>=1&&!P._chainSlashActive){
-      // 기동칼날개: 좌클릭 (4성 dimRush)
-      MBjust[0]=false;
-      const _cssCost=15+(P.skills.chainSlash||1)*2;
-      if(P.st<_cssCost){addTxt(P.x,P.y-25,_T('ST 부족!'),'#ff4444',30)}
-      else{P.st-=_cssCost;P._chainSlashActive=true;P._chainSlashHits=[];P._chainSlashTick=0;
-      _addSkProf('chainSlash');
-      addTxt(P.x,P.y-25,_T('⚔ 기동칼날개!'),'#ff4466',35);SFX.slash()}
     }
   }
   if(P._chainSlamReady&&!_dashActive&&!_harpActive)P._chainSlamReady=false; // 대시 끝나면 플래그 리셋
@@ -35467,6 +35512,7 @@ function openSkSlotPop(tab){
   tabs.forEach(t=>{
     const tb=document.createElement('div');
     const sel=_skPopTab===t.key;
+    tb.className='sk-pop-tab';
     tb.style.cssText='flex:1;text-align:center;padding:3px 2px;cursor:pointer;font-size:.65rem;font-weight:700;border-radius:3px 3px 0 0;white-space:nowrap;'+(sel?'background:rgba(220,200,160,.18);color:'+t.color+';border:1px solid '+t.color+';border-bottom:none':'color:rgba(180,170,155,.5);border:1px solid transparent');
     tb.textContent=t.label;
     tb.onclick=(ev)=>{ev.stopPropagation();if(t.isSlot){pop.style.display='none';_openSkillSlotPop(t.slotIdx);return}_skPopTab=t.key;openSkSlotPop(t.key)};
@@ -36818,7 +36864,7 @@ function renderInvStorage(){
   const bagList=document.createElement('div');bagList.style.cssText='max-height:100px;overflow-y:auto';
   if(INV.bag.length===0){const e=document.createElement('div');e.style.cssText='color:#555;font-size:1rem;padding:3px';e.textContent=_T('비어있음');bagList.appendChild(e)}
   INV.bag.forEach((it,idx)=>{
-    const d=document.createElement('div');d.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:2px 3px;font-size:1rem;cursor:pointer;border-bottom:1px solid #1a0e00;transition:background .1s';
+    const d=document.createElement('div');d.className='inv-dep-item';d.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:2px 3px;font-size:1rem;cursor:pointer;border-bottom:1px solid #1a0e00;transition:background .1s';
     d.onmouseenter=()=>d.style.background='rgba(136,170,102,.08)';d.onmouseleave=()=>d.style.background='';
     d.innerHTML=`<span style="color:${RARITY_C[it.rarity]};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px">${it.emoji} ${_T(it.name)}</span><span style="color:#88cc66;font-size:1rem;flex-shrink:0;margin-left:4px">${_T('보관')}</span>`;
     d.onclick=()=>{if(store.length>=STORAGE_MAX){notify(_T('창고가 가득 찼습니다!'));return}store.push(it);INV.bag.splice(idx,1);SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow()};
@@ -38164,7 +38210,7 @@ function renderInv(){
   SLOT_NAMES.forEach((slot,i)=>{
     const item=INV.equipped[slot];
     const pos=EQ_POS[i];
-    const div=document.createElement('div');div.className='inv-eq-slot';
+    const div=document.createElement('div');div.className='inv-eq-slot'+(item?' inv-eq-item':'');
     div.style.left=pos[0]+'px';div.style.top=pos[1]+'px';
     const isEqSel=item&&INV.selected==='eq:'+slot;
     div.innerHTML=item?`<span style="color:${RARITY_C[item.rarity]}">${item.emoji||SLOT_EMOJI[i]}</span><span class="ieq-label">${_slotName(i)}</span>`:`<span style="font-size:1.2rem;opacity:.4">${SLOT_EMOJI[i]}</span><span class="ieq-label">${_slotName(i)}</span>`;
@@ -38197,6 +38243,7 @@ function renderInv(){
   const mkF=(label,key,val,col)=>{
     const b=document.createElement('span');
     const act=invFilter[key]===val;
+    b.className='inv-filter-btn';
     b.style.cssText=`display:inline-block;padding:1px 6px;font-size:.95rem;font-family:'Noto Sans KR';cursor:pointer;border:1px solid ${act?col:'#332211'};background:${act?col+'22':'rgba(0,0,0,.2)'};color:${act?col:'#776655'};margin:0 2px 2px 0;transition:all .15s`;
     b.textContent=label;
     b.onclick=()=>{invFilter[key]=act?null:val;renderInv()};
@@ -38217,6 +38264,7 @@ function renderInv(){
     const cost=_malCost(~~(BAG_MAX/6));
     const ok=G.mats>=cost;
     const eb=document.createElement('span');
+    eb.className=ok?'inv-exp-btn':'';
     eb.style.cssText=`font-size:.95rem;padding:1px 6px;cursor:${ok?'pointer':'default'};border:1px solid ${ok?'#44aa44':'#333'};color:${ok?'#66dd44':'#555'};background:${ok?'rgba(68,170,68,.1)':'rgba(0,0,0,.2)'};font-family:'Noto Sans KR'`;
     eb.textContent=_L(`+6칸 (👿${cost})`,`+6 slots (👿${cost})`);
     if(ok)eb.onclick=()=>{G.mats-=cost;BAG_MAX+=6;renderInv();dbSaveNow()};
@@ -38260,6 +38308,7 @@ function renderInv(){
     for(let _bi=0;_bi<CRYSTAL_BAG.length;_bi++){const cr=CRYSTAL_BAG[_bi];const cd=CRYSTAL_DEFS[cr.id],cs=CRYSTAL_STAR[cr.star];
       const _b=document.createElement('div');
       const _isSel=_selectedCrystal===_bi;
+      _b.className='inv-cr-item';
       _b.style.cssText='width:28px;height:28px;display:flex;align-items:center;justify-content:center;border:1px solid '+(_isSel?'#ffaa33':cs.color+'66')+';background:'+(_isSel?'rgba(255,170,50,.25)':'rgba(0,0,0,.3)')+';border-radius:2px;cursor:pointer;font-size:.85rem;position:relative';
       _b.title=_crStarN(cs)+' '+_crDefN(cd)+(cr.enh>0?' +'+cr.enh:'')+' (+'+(_crValFmt(crystalVal(cr)))+(cd.pct?'%':'')+')\n'+_crDescTxt(cd)+(cd.slots?'\n'+_crSlotsStr(cd):'');
       _b.innerHTML=cd.emoji+'<span style="position:absolute;top:-2px;left:0;font-size:.45rem;color:'+cs.color+'">'+(cr.star+1)+'★</span>'+(cr.enh>0?'<span style="position:absolute;bottom:-1px;right:0;font-size:.5rem;color:#ffcc00">+'+cr.enh+'</span>':'');
@@ -39250,6 +39299,7 @@ function renderStatPanel(){
     const mkBtn=(n,txt,col)=>{
       const can=n>0?(P.sp>=n&&v+n<=_sMax):(v+Math.abs(n)>=0 && v+n>=0);
       const b=document.createElement('div');
+      b.className=can?'stat-btn':'stat-btn dis';
       b.style.cssText=`width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid ${col};color:${col};font-size:1.4rem;cursor:${can?'pointer':'not-allowed'};display:flex;align-items:center;justify-content:center;opacity:${can?1:.3};border-radius:4px`;
       b.textContent=txt;
       if(can)b.onclick=()=>{ STATS[sd.key]+=n; if(n>0)P.sp-=n; else P.sp+=Math.abs(n); SFX.pickup(); applyStats(); renderStatPanel(); };
@@ -39276,6 +39326,7 @@ function renderStatPanel(){
     const _gBtnsDiv=document.createElement('div');_gBtnsDiv.className='stat-btns';_gBtnsDiv.style.cssText='display:flex;gap:6px;margin-left:12px';
     const _mkGritBtn=(txt,col,enabled,fn)=>{
       const b=document.createElement('div');
+      b.className=enabled?'stat-btn':'stat-btn dis';
       b.style.cssText=`width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid ${col};color:${col};font-size:1.4rem;cursor:${enabled?'pointer':'not-allowed'};display:flex;align-items:center;justify-content:center;opacity:${enabled?1:.3};border-radius:4px`;
       b.textContent=txt;
       if(enabled)b.onclick=fn;
