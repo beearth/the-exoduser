@@ -13183,7 +13183,7 @@ function _poiseHit(e, amt, label){
 function _poiseReset(e){
   if(!e) return;
 
-  e.poise = e.maxPoise;
+  e.poise = e.maxPoise; // 그로기 후 100% 회복
   e.poiseR = 0;
 }
 function teleportE(e,nx,ny,col,n){if(!canMv(nx,ny,e.r))return false;
@@ -28741,7 +28741,7 @@ function _bossPhaseCheck(e,sp){
   // 3) 스탯 강화
   e.atk=~~(e.atk*1.3);
   e.speed=Math.min(e.speed*1.15,1.8+_bp*.1);
-  e.maxPoise=~~(e.maxPoise*1.2);e.poise=e.maxPoise;
+  e.maxPoise=~~(e.maxPoise*1.2); // 페이즈 전환: maxPoise 버프만, 현재 포이즈 유지 (회복 없음)
   e.bossPatCd=Math.max(20,~~(e.bossPatCd*(.9-_bp*.05)));
   // 4) 상태 초기화
   e.stunned=0;e.s='recover';e.st2=45;e.bossPatT=10;
@@ -32657,9 +32657,9 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         // 풀피 부활 (HP 변동 없음)
         e.hp=e.mhp;e.eShield=0;e.eShieldMax=0;
         e._bossPhase=0; // 풀피 부활 → 페이즈 리셋
-        e.alive=true;e.s='recover';e.st2=90;e.stunned=0;e.poise=e.maxPoise;
+        e.alive=true;e.s='recover';e.st2=90;e.stunned=0;
         e._comboSeq=null;e._comboIdx=0;e._feinting=false;e._delaying=0; // 부활 시 콤보/페인트 클리어
-        e.maxPoise=~~(e.maxPoise*1.5); e.poise=e.maxPoise; // 포이즈도 강화
+        e.maxPoise=~~(e.maxPoise*1.5); e.poise=~~(e.maxPoise*0.25); // 부활: maxPoise 강화, 현재 포이즈는 25%만
         e.reviveIframes=180; // 부활 무적 3초
         e.atk=~~(e.atk*(_isH7?2:1.5));
         e.speed=Math.min(e.speed*1.25,_isH7?2.0:1.6);
@@ -47577,15 +47577,23 @@ async function _startDemoTest(){
     'maliceSwipe','shieldThrow','holyDome','holyPrison','iceStorm',
     'maliceMortar','iceOrb','darkPillar','spikeTrap',
     'fireAura','thunderStake','voidScarecrow','explodeScarecrow','ghostXbowTurret',
-    'needleShot','arcLaser','fireBeam'];
-  for(const _sk of _dSk)P.skills[_sk]=5;
-  // _DEMO_FUSE_ALLOWED 20개 합체 해금
-  P._fused={};for(const _fk of _DEMO_FUSE_ALLOWED)P._fused[_fk]=true;
-  // 스킬슬롯 배치
-  SKILL_SLOTS[0]='spikeTrap';SKILL_SLOTS[1]='whirlwind';SKILL_SLOTS[2]='holyDome';
-  SKILL_SLOTS[3]='fireball';SKILL_SLOTS[4]='giantSlam';SKILL_SLOTS[5]='darkPillar';
+    'needleShot','arcLaser','fireBeam','ghostWalk','timeWarp','burstLoop',
+    'weakPhys','weakMag','weakPj','weakRev'];
+  for(const _sk of _dSk)P.skills[_sk]=10; // 500랩 마스터
+  // 모든 합체 해금 (데모 테스트 전용)
+  const _allFuse=Object.keys(_FUSE_NAMES);
+  _allFuse.forEach(k=>_DEMO_FUSE_ALLOWED.add(k));
+  P._fused={};_allFuse.forEach(k=>P._fused[k]=true);
+  // 스킬슬롯 배치 — 합체 호스트 기준
+  // 1:참회귀환(elecRepent) 2:얼음소용돌이(iceMortar) 3:공성쇠뇌(siegeGhost) 4:독혈해방(plagueFuse) 5:대왕치기 F:결계의영역(holyFuse)
+  SKILL_SLOTS[0]='maliceStorm';     // 참회귀환 host
+  SKILL_SLOTS[1]='maliceMortar';    // 얼음소용돌이 host
+  SKILL_SLOTS[2]='ghostXbowTurret'; // 공성쇠뇌/siegeGhost host
+  SKILL_SLOTS[3]='maliceHunt';      // 독혈해방 host
+  SKILL_SLOTS[4]='giantSlam2';      // 대왕치기2 — Space키
+  SKILL_SLOTS[5]='holyDome';        // 영역스킬(holyFuse) host — F키
   ULT_SLOT='kiSlash';
-  P.activeCtSk='iceOrb';P.activeMagicSk='fireball';P.activeBowSk='normal';
+  P.activeCtSk='ghostWalk';P.activeMagicSk='fireball';P.activeBowSk='normal'; // Ctrl=뇌전걸음
   // 5등급 전설 장비 (tier=4, rarity=4)
   const _dtSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
   const _dtWt={weapon:'sword',bow:'crossbow'};
@@ -49103,8 +49111,8 @@ function _btBuildUI(){
   </div>`;
   // ── 스케일 슬라이더 ──
   panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
-    <span style="color:#aa8866;font-size:11px">보스 시각 스케일: <span id="_btScaleVal">×5</span></span>
-    <input type="range" id="_btScaleSlider" min="0.2" max="8" step="0.1" value="5"
+    <span style="color:#aa8866;font-size:11px">보스 시각 스케일: <span id="_btScaleVal">×4</span></span>
+    <input type="range" id="_btScaleSlider" min="0.2" max="8" step="0.1" value="4"
       style="width:100%;margin-top:4px;accent-color:#ffaa44"
       oninput="_btScaleMul=+this.value;document.getElementById('_btScaleVal').textContent='×'+this.value">
     <div style="display:flex;gap:3px;margin-top:4px">
@@ -49120,8 +49128,8 @@ function _btBuildUI(){
     <div style="display:flex;gap:3px;margin-top:4px">
       ${[-0.8,-0.5,-0.28,0,0.28,0.5,0.8].map(v=>`<button class="_btBtn" onclick="window._btRotX=${v};document.getElementById('_btRotSlider').value=${v};document.getElementById('_btRotVal').textContent='${v.toFixed(2)}'" style="flex:1;font-size:10px">${v}</button>`).join('')}
     </div>
-    <span style="color:#aa8866;font-size:11px;margin-top:8px;display:block">Y 오프셋 (↑위 ↓아래): <span id="_btOffVal">0</span>px</span>
-    <input type="range" id="_btOffSlider" min="-300" max="300" step="1" value="0"
+    <span style="color:#aa8866;font-size:11px;margin-top:8px;display:block">Y 오프셋 (↑위 ↓아래): <span id="_btOffVal">-200</span>px</span>
+    <input type="range" id="_btOffSlider" min="-300" max="300" step="1" value="-200"
       style="width:100%;margin-top:4px;accent-color:#88ffaa"
       oninput="window._btOffsetY=+this.value;document.getElementById('_btOffVal').textContent=this.value">
     <div style="display:flex;gap:3px;margin-top:4px">

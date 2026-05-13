@@ -34152,6 +34152,7 @@ function _addFuseProfTick(key){_addCardProfTick((_FUSE_PAIRS[key]||[])[0]);}
 function _fuseReqProf(key){return _CATPROF_REQ} // 600초(10분)
 function _canFuse(key){
   if(!_FUSE_PAIRS[key])return false;
+  if(P&&P.isDemoTest)return !_isFused(key); // 데모 테스트: 조건 없이 합체 가능
   if(_DEMO_MODE&&!_DEMO_FUSE_ALLOWED.has(key))return false;
   if(key==='dimBreach'&&_isFused('dimBreach'))return false;
   if(key==='dimSlam'&&!_isFused('dimBreach'))return false;
@@ -47460,7 +47461,7 @@ async function _startDemoTest(){
   _charName='DEMO TEST';_charIdx=0;
   G._cutsceneDone=true;
   // Lv500
-  P.lv=_DEMO_LV_CAP;P.exp=0;P.maxExp=_calcMaxExp(_DEMO_LV_CAP);P.sp=100;P.ap=0;P.isDemoTest=true;
+  P.lv=_DEMO_LV_CAP;P.exp=0;P.maxExp=_calcMaxExp(_DEMO_LV_CAP);P.sp=1000;P.ap=200;P.isDemoTest=true;
   // ACT1 스킬 전체 Lv5
   const _dSk=['kiSlash','fireball','bladeDash','chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam',
     'fanShot','omniBeam','elemMissile','whirlwind','detonate','giantSlam','giantSlam2',
@@ -47468,10 +47469,13 @@ async function _startDemoTest(){
     'maliceSwipe','shieldThrow','holyDome','holyPrison','iceStorm',
     'maliceMortar','iceOrb','darkPillar','spikeTrap',
     'fireAura','thunderStake','voidScarecrow','explodeScarecrow','ghostXbowTurret',
-    'needleShot','arcLaser','fireBeam','ghostWalk'];
+    'needleShot','arcLaser','fireBeam','ghostWalk','timeWarp','burstLoop',
+    'weakPhys','weakMag','weakPj','weakRev'];
   for(const _sk of _dSk)P.skills[_sk]=10; // 500랩 마스터
-  // _DEMO_FUSE_ALLOWED 20개 합체 해금
-  P._fused={};for(const _fk of _DEMO_FUSE_ALLOWED)P._fused[_fk]=true;
+  // 모든 합체 해금 (데모 테스트 전용)
+  const _allFuse=Object.keys(_FUSE_NAMES);
+  _allFuse.forEach(k=>_DEMO_FUSE_ALLOWED.add(k));
+  P._fused={};_allFuse.forEach(k=>P._fused[k]=true);
   // 스킬슬롯 배치 — 합체 호스트 기준
   SKILL_SLOTS[0]='maliceStorm';     // 참회귀환(elecRepent)
   SKILL_SLOTS[1]='maliceMortar';    // 얼음소용돌이(iceMortar)
