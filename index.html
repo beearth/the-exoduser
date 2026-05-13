@@ -35,7 +35,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500&family=Noto+Serif+KR:wght@400;500&family=Noto+Serif+JP:wght@400;500&family=Noto+Serif+SC:wght@400;500&family=Noto+Serif+TC:wght@400;500&family=Noto+Naskh+Arabic:wght@400;500&family=Noto+Serif+Thai:wght@400;500&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
+body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
 
 /* ═══ Cinematic Scene ═══ */
 .cin-scene{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
@@ -553,6 +553,8 @@ addEventListener('keydown', e => {
 })();
 </script>
 <script>
+// ═══ 로비 배경: 트랜지션 이미지 중 랜덤 1장 ═══
+(function(){const n=~~(Math.random()*19)+1;const img=new Image();img.onload=function(){document.body.style.backgroundImage='linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url(img/lording/'+n+'.png)'};img.src='img/lording/'+n+'.png'})();
 // 브라우저 줌 차단
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 var _selectedSlot=null;
@@ -1824,9 +1826,9 @@ async function loadCharacters(){
   const cl=$('charList');if(!cl)return;cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
   const{data,error}=await sb.from('characters').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:true});
   if(error){cl.innerHTML='<div class="no-chars" style="color:#cc4433">'+_TL('오류: ')+error.message+'</div>';return}
-  if(!data||data.length===0){cl.innerHTML='<div class="no-chars">'+_TL('캐릭터가 없습니다. 새로 생성하세요.')+'</div>';return}
   cl.innerHTML='';
-  data.forEach(ch=>{
+  if(!data||data.length===0){cl.innerHTML='<div class="no-chars">'+_TL('캐릭터가 없습니다. 새로 생성하세요.')+'</div>';}
+  else data.forEach(ch=>{
     const d=ch.data||{};const lv=d.player?d.player.lv||1:1;const stage=d.game?d.game.stage||0:0;
     const hell=Math.min(6,~~(stage/10));const floor=stage%10+1;
     const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
@@ -1844,6 +1846,11 @@ async function loadCharacters(){
     });
     cl.appendChild(div);
   });
+  // + 새 캐릭터 슬롯
+  const newDiv=document.createElement('div');newDiv.className='char-item-new';
+  newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">+</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+_TL('새 캐릭터')+'</div></div>';
+  newDiv.addEventListener('click',()=>{$('createModal').classList.add('show');$('charName').value='';$('charName').focus()});
+  cl.appendChild(newDiv);
 }
 // ── 캐릭터 외형 목록 (game.html CHAR_LIST와 동기화) ──
 const CHAR_VISUALS=[
