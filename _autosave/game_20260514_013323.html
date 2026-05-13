@@ -25975,7 +25975,7 @@ function update(){
     if(p.venomBlade&&(p._reHitT||0)>0)p._reHitT=Math.max(0,p._reHitT-sp);
     // ── 유도: 일반 매 2프레임, ebHoming 매 6프레임 ──
     if(!(p._bounceCool>0)&&!p.explosive&&!p.bladeOrb&&!p.iceBlade&&!p.burstBolt&&!p.normalBow&&!(p._arcLock&&p.dist<p._arcLock)&&spd>0&&(G._gcT+i)%(p.ebHoming?6:p.fireball?4:2)===0){
-      let bestE=null,bestD=p.plagueHoming?300:p.mhBlade?300:p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.fireball?280:p.magic?250:200;
+      let bestE=null,bestD=p.plagueHoming?(p._pierced===0?1000:300):p.mhBlade?(p._pierced===0?1000:300):p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.fireball?280:p.magic?250:200;
       const _neH=shQuery(p.x,p.y,bestD);
       for(let h=0;h<_neH.length;h++){const e=_neH[h];if(!e.alive)continue;
         if(p._hitSet&&p._hitSet.has(e)&&!p.venomBlade){if(p.plagueHoming||p.mhBlade){let _anyAlive=false;for(let _pi=0;_pi<_neH.length;_pi++){if(_neH[_pi].alive&&!p._hitSet.has(_neH[_pi])){_anyAlive=true;break}}if(!_anyAlive)p._hitSet.clear();}continue;}
@@ -37192,7 +37192,48 @@ $('optParts').oninput=function(){OPT.parts=+this.value;$('optPartsVal').textCont
 $('optSfx').oninput=function(){OPT.sfxVol=+this.value;$('optSfxVal').textContent=this.value+'%';if(_mbus)_mbus.gain.value=sfxVol();saveSettings()};
 $('optBgm').oninput=function(){OPT.bgmVol=+this.value;$('optBgmVal').textContent=this.value+'%';BGM.setVol(this.value/100);saveSettings()};
 $('optBgmTrack').onchange=function(){OPT.bgmTrack=this.value;if(this.value==='auto'){BGM.play(BGM.stageKey(G.stage))}else if(this.value==='allRandom'){BGM.playTrack(BGM._pickAllRandom())}else if(this.value.startsWith('t:')){BGM.playTrack(this.value.slice(2))}else{BGM.play(this.value,true)}saveSettings()};
-$('optLang').onchange=function(){OPT.lang=this.value;_applyLang();try{renderSettings()}catch(_e){}saveSettings()};
+// ── 언어 커스텀 드롭다운 (overflow:hidden 컨테이너 우회용) ──
+const _LANG_OPTS=[
+  {v:'ko',t:'한국어'},{v:'en',t:'English'},{v:'zh',t:'中文简体'},{v:'zht',t:'繁體中文'},
+  {v:'ja',t:'日本語'},{v:'es',t:'Español'},{v:'ru',t:'Русский'},{v:'de',t:'Deutsch'},
+  {v:'ptbr',t:'Português'},{v:'fr',t:'Français'},{v:'pl',t:'Polski'},{v:'it',t:'Italiano'},
+  {v:'uk',t:'Українська'},{v:'tr',t:'Türkçe'},{v:'vi',t:'Tiếng Việt'},{v:'th',t:'ไทย'},
+  {v:'id',t:'Bahasa Indonesia'},{v:'ar',t:'العربية'},{v:'sv',t:'Svenska'},{v:'da',t:'Dansk'},
+  {v:'no',t:'Norsk'},{v:'fi',t:'Suomi'},{v:'cs',t:'Čeština'},{v:'hu',t:'Magyar'},
+  {v:'ro',t:'Română'},{v:'nl',t:'Nederlands'},{v:'el',t:'Ελληνικά'},{v:'bg',t:'Български'}
+];
+(function(){
+  const _dd=document.createElement('div');
+  _dd.id='optLangDD';
+  _dd.style.cssText='position:fixed;background:#1a1008;border:1px solid #665533;color:#ddc;border-radius:6px;overflow-y:auto;max-height:220px;z-index:999999;display:none;box-shadow:0 6px 20px rgba(0,0,0,.7);font-family:\'Noto Sans KR\',sans-serif;font-size:.9rem';
+  _LANG_OPTS.forEach(o=>{
+    const it=document.createElement('div');
+    it.style.cssText='padding:6px 12px;cursor:pointer';
+    it.textContent=o.t; it.dataset.v=o.v;
+    it.onmouseenter=()=>it.style.background='#332211';
+    it.onmouseleave=()=>it.style.background='';
+    it.onmousedown=(e)=>{e.preventDefault();e.stopPropagation();
+      $('optLang').value=o.v;
+      const lbl=$('optLangLabel');if(lbl)lbl.textContent=o.t;
+      _dd.style.display='none';
+      OPT.lang=o.v;_applyLang();try{renderSettings()}catch(_e){}saveSettings();
+    };
+    _dd.appendChild(it);
+  });
+  document.body.appendChild(_dd);
+  window._langDDClose=()=>{_dd.style.display='none'};
+  window._langDDToggle=(e)=>{
+    e.stopPropagation();
+    if(_dd.style.display!=='none'){_dd.style.display='none';return;}
+    const btn=$('optLangBtn');if(!btn)return;
+    const r=btn.getBoundingClientRect();
+    _dd.style.left=r.left+'px';
+    _dd.style.top=(r.bottom+2)+'px';
+    _dd.style.width=r.width+'px';
+    _dd.style.display='block';
+  };
+  document.addEventListener('mousedown',()=>_dd.style.display='none');
+})();
 function _applyLang(){try{
   // HUD slot labels
   const _hl={skSlotLMB:'근접',skSlotRMB:'견갑',skSlot0:'작살',qsE:'마법',qsT:'석궁',qsQ:'보막',skSlotCT:'유령',qsK:'스킬',qsG:'대장',qsTAB:'인벤',qsESC:'설정'};
@@ -37831,7 +37872,7 @@ function syncSettingsUI(){
   if($('optSfx')){ $('optSfx').value=OPT.sfxVol; $('optSfxVal').textContent=OPT.sfxVol+'%'; }
   if($('optBgm')){ $('optBgm').value=OPT.bgmVol||30; $('optBgmVal').textContent=(OPT.bgmVol||30)+'%'; }
   if($('optBgmTrack'))$('optBgmTrack').value=OPT.bgmTrack||'auto';
-  if($('optLang')){$('optLang').value=OPT.lang||'ko';_applyLang()}
+  if($('optLang')){const _lv=OPT.lang||'ko';$('optLang').value=_lv;const _lo=typeof _LANG_OPTS!=='undefined'&&_LANG_OPTS.find(o=>o.v===_lv);const _ll=$('optLangLabel');if(_ll&&_lo)_ll.textContent=_lo.t;_applyLang()}
   if($('optDiff')){ 
     $('optDiff').value=OPT.diff;$('optDiff').max=10;
     $('optDiffVal').textContent=_diffName(OPT.diff)||_T('일반');

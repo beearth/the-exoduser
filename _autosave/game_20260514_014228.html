@@ -2299,7 +2299,7 @@ canvas{display:block;position:fixed;inset:0}
 
 <!-- SETTINGS PANEL -->
 <div class="panel" id="settings">
-  <div class="pbox window-frame-bg" style="display:flex;flex-direction:column;overflow:hidden;">
+  <div class="pbox window-frame-bg" style="display:flex;flex-direction:column;overflow:clip;">
     <div class="ptitle" style="font-size:2.2rem;margin-bottom:20px;">설정</div>
     <div class="frame-inner-panel frame-inner-panel-split" style="display:flex;gap:30px;flex:1;overflow-y:auto;padding-right:10px;">
       <!-- 왼쪽 컨테이너: 키 설정 -->
@@ -20328,7 +20328,7 @@ function _tickArcLaser(sp){
       const dx=e.x-P.x,dy=e.y-P.y;
       const proj=dx*cx+dy*cy;if(proj<0||proj>_alRange)continue;
       const perp=Math.abs(dx*cy-dy*cx);if(perp>_halfW+e.r)continue;
-      hurtE(e,~~(_alDmg*elMul(EL.L,e.el)),Math.atan2(dy,dx),false,{kbMult:0.1,noPoise:true},EL.L);
+      hurtE(e,~~(_alDmg*elMul(EL.L,e.el)),Math.atan2(dy,dx),false,{kbMult:0.1,noPoise:true,noStun:true},EL.L);
       e._elecT=Math.max(e._elecT||0,30);
       if(Math.random()<.15)addParts(e.x,e.y,'#4488ff',2);
     }
@@ -25976,7 +25976,7 @@ function update(){
     if(p.venomBlade&&(p._reHitT||0)>0)p._reHitT=Math.max(0,p._reHitT-sp);
     // ── 유도: 일반 매 2프레임, ebHoming 매 6프레임 ──
     if(!(p._bounceCool>0)&&!p.explosive&&!p.bladeOrb&&!p.iceBlade&&!p.burstBolt&&!p.normalBow&&!(p._arcLock&&p.dist<p._arcLock)&&spd>0&&(G._gcT+i)%(p.ebHoming?6:p.fireball?4:2)===0){
-      let bestE=null,bestD=p.plagueHoming?300:p.mhBlade?300:p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.fireball?280:p.magic?250:200;
+      let bestE=null,bestD=p.plagueHoming?(p._pierced===0?1000:500):p.mhBlade?(p._pierced===0?1000:500):p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.fireball?280:p.magic?250:200;
       const _neH=shQuery(p.x,p.y,bestD);
       for(let h=0;h<_neH.length;h++){const e=_neH[h];if(!e.alive)continue;
         if(p._hitSet&&p._hitSet.has(e)&&!p.venomBlade){if(p.plagueHoming||p.mhBlade){let _anyAlive=false;for(let _pi=0;_pi<_neH.length;_pi++){if(_neH[_pi].alive&&!p._hitSet.has(_neH[_pi])){_anyAlive=true;break}}if(!_anyAlive)p._hitSet.clear();}continue;}
@@ -32409,7 +32409,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(atkEl===EL.L&&!isDot){
     e._shockT=Math.max(e._shockT||0,300); // 5초
     e._shockStk=Math.min(10,(e._shockStk||0)+1);
-    if(!e.ib&&e._shockStk>=3&&!e.stunned){e.stunned=Math.max(e.stunned||0,18);addTxt(e.x,e.y-25,'⚡','#44ddff',15)} // 3스택 이상: 0.3초 마비
+    if(!e.ib&&e._shockStk>=3&&!e.stunned&&!(opts&&opts.noStun)){e.stunned=Math.max(e.stunned||0,18);addTxt(e.x,e.y-25,'⚡','#44ddff',15)} // 3스택 이상: 0.3초 마비
   }
   // ═══ 어픽스: darkCurse 효과 — 저주 상태 적 뎀 25% 증가 ═══
   if(e._cursed>0)dmg=~~(dmg*1.25);
@@ -47677,6 +47677,8 @@ async function _startDemoTest(){
         if(_d5.game?.stage!==undefined)G.stage=_d5.game.stage;
         if(_d5.game?.mats!==undefined)G.mats=_d5.game.mats;
         if(_d5.hellCleared)G.hellCleared=_d5.hellCleared;
+        // AP 최솟값 보정 (구버전 세이브 대응)
+        if(P.ap<100)P.ap=100;
         console.log('[DEMO500] 세이브 불러옴 — Stage '+G.stage);
       }
     }

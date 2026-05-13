@@ -24082,3 +24082,17 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - gamedemo.html
 - insert_cat92.py
 
+
+## 2026-05-14 02:30 (auto)
+- _autosave/game_20260514_013311.html
+- _autosave/game_20260514_013323.html
+- _autosave/game_20260514_014154.html
+- _autosave/game_20260514_014218.html
+- _autosave/game_20260514_014224.html
+- _autosave/game_20260514_014228.html
+- _autosave/game_20260514_014259.html
+- _autosave/game_20260514_014305.html
+- _autosave/game_20260514_014321.html
+- _autosave/game_20260514_014331.html
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤??md
+

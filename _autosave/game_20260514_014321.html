@@ -2299,8 +2299,13 @@ canvas{display:block;position:fixed;inset:0}
 
 <!-- SETTINGS PANEL -->
 <div class="panel" id="settings">
-  <div class="pbox window-frame-bg" style="display:flex;flex-direction:column;overflow:clip;">
-    <div class="ptitle" style="font-size:2.2rem;margin-bottom:20px;">설정</div>
+  <div class="pbox window-frame-bg" style="display:flex;flex-direction:column;overflow:visible;">
+    <div class="ptitle" style="font-size:2.2rem;margin-bottom:12px;">설정</div>
+    <div class="set-range-row" style="margin-bottom:10px;"><span class="set-name">Language</span>
+      <select id="optLang" style="flex:1;background:#1a1008;border:1px solid #443322;color:#ddc;font-family:'Noto Sans KR';font-size:.9rem;padding:4px 8px;border-radius:4px">
+        <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="es">Español</option><option value="ru">Русский</option><option value="de">Deutsch</option><option value="ptbr">Português</option><option value="fr">Français</option><option value="pl">Polski</option><option value="it">Italiano</option><option value="uk">Українська</option><option value="tr">Türkçe</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ar">العربية</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="fi">Suomi</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="ro">Română</option><option value="nl">Nederlands</option><option value="el">Ελληνικά</option><option value="bg">Български</option>
+      </select>
+    </div>
     <div class="frame-inner-panel frame-inner-panel-split" style="display:flex;gap:30px;flex:1;overflow-y:auto;padding-right:10px;">
       <!-- 왼쪽 컨테이너: 키 설정 -->
       <div style="flex:1;min-width:350px;">
@@ -2392,11 +2397,6 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">최소 줍기 티어</span><input type="range" id="optMinLv" min="0" max="7" value="0"><span class="set-range-val" id="optMinLvVal">사용 안 함</span></div>
           <div class="set-range-row"><span class="set-name">결정 자동합성</span><input type="range" id="optCrAutoFuse" min="-1" max="3" step="1" value="-1"><span class="set-range-val" id="optCrAutoFuseVal">사용 안 함</span></div>
           <div class="set-range-row"><span class="set-name">결정 자동강화</span><input type="range" id="optCrAutoEnh" min="-1" max="4" step="1" value="-1"><span class="set-range-val" id="optCrAutoEnhVal">사용 안 함</span></div>
-          <div class="set-range-row"><span class="set-name">Language</span>
-            <select id="optLang" style="flex:1;background:#1a1008;border:1px solid #443322;color:#ddc;font-family:'Noto Sans KR';font-size:.9rem;padding:4px 8px;border-radius:4px">
-              <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="es">Español</option><option value="ru">Русский</option><option value="de">Deutsch</option><option value="ptbr">Português</option><option value="fr">Français</option><option value="pl">Polski</option><option value="it">Italiano</option><option value="uk">Українська</option><option value="tr">Türkçe</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ar">العربية</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="fi">Suomi</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="ro">Română</option><option value="nl">Nederlands</option><option value="el">Ελληνικά</option><option value="bg">Български</option>
-            </select>
-          </div>
           <div class="set-range-row"><span class="set-name">FPS 제한</span><input type="range" id="optFps" min="0" max="4" step="1" value="1"><span class="set-range-val" id="optFpsVal">60</span></div>
           <div class="set-range-row"><span class="set-name">해상도 스케일</span><input type="range" id="optResScale" min="50" max="100" step="10" value="100"><span class="set-range-val" id="optResScaleVal">100%</span></div>
 
@@ -25976,7 +25976,7 @@ function update(){
     if(p.venomBlade&&(p._reHitT||0)>0)p._reHitT=Math.max(0,p._reHitT-sp);
     // ── 유도: 일반 매 2프레임, ebHoming 매 6프레임 ──
     if(!(p._bounceCool>0)&&!p.explosive&&!p.bladeOrb&&!p.iceBlade&&!p.burstBolt&&!p.normalBow&&!(p._arcLock&&p.dist<p._arcLock)&&spd>0&&(G._gcT+i)%(p.ebHoming?6:p.fireball?4:2)===0){
-      let bestE=null,bestD=p.plagueHoming?300:p.mhBlade?300:p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.fireball?280:p.magic?250:200;
+      let bestE=null,bestD=p.plagueHoming?(p._pierced===0?1000:500):p.mhBlade?(p._pierced===0?1000:500):p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.fireball?280:p.magic?250:200;
       const _neH=shQuery(p.x,p.y,bestD);
       for(let h=0;h<_neH.length;h++){const e=_neH[h];if(!e.alive)continue;
         if(p._hitSet&&p._hitSet.has(e)&&!p.venomBlade){if(p.plagueHoming||p.mhBlade){let _anyAlive=false;for(let _pi=0;_pi<_neH.length;_pi++){if(_neH[_pi].alive&&!p._hitSet.has(_neH[_pi])){_anyAlive=true;break}}if(!_anyAlive)p._hitSet.clear();}continue;}
