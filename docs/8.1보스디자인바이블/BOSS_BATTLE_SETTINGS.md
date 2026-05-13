@@ -284,7 +284,7 @@ http://localhost:3333/game.html?bosstest=0
 | 기능 | 설명 |
 |---|---|
 | 보스 동결 (`_btFrozen`) | 보스 AI 정지 (`bossPatT=99999`) |
-| 스케일 슬라이더 | `window._btScaleMul` 조절 (기본 5x) |
+| 스케일 슬라이더 | `window._btScaleMul` 조절 (기본 4.0×, 본게임 동기화) |
 | 슬로우 모션 | `_btSlowToggle()` — RAF를 격 프레임 처리로 50% 속도 |
 | 갓 모드 | 플레이어 무적 + 스킬 프로필 MAX |
 | 보스 재소환 | `_enterBossArena()` 재호출 후 500ms 대기로 `_btBoss` 갱신 |
