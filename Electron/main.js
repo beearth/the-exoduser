@@ -356,6 +356,10 @@ ipcMain.handle('get-resolutions', () => {
   return { list: RES_LIST.filter(r => r[0] <= sw && r[1] <= sh), current: cur, workArea: [sw, sh] };
 });
 
+ipcMain.on('quit-app', () => {
+  app.quit();
+});
+
 ipcMain.on('set-resolution', (e, w, h) => {
   if (!mainWindow) return;
   // 전체화면이면 무시

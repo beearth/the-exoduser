@@ -23853,3 +23853,54 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - game.html
 - gamedemo.html
 
+
+## 2026-05-13 09:30 (auto)
+- Electron/main.js
+- Electron/preload.js
+- _autosave/game_20260513_091542.html
+- _autosave/game_20260513_092817.html
+- _autosave/game_20260513_092837.html
+- game.html
+- img/lording/1.png
+- img/lording/10.png
+- img/lording/11.png
+- img/lording/12.png
+- img/lording/13.png
+- img/lording/14.png
+- img/lording/15.png
+- img/lording/16.png
+- img/lording/17.png
+- img/lording/18.png
+- img/lording/19.png
+- img/lording/2.png
+- img/lording/2026??5??12???¤í›„ 08_50_41.png
+- img/lording/3.png
+- img/lording/4.png
+- img/lording/5.png
+- img/lording/6.png
+- img/lording/7.png
+- img/lording/8.png
+- img/lording/9.png
+- img/lording/ACT2.png
+- img/lording/ACT2BOSS.png
+- img/lording/ACT2BOSS_1270x635.png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 09_42_24.png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 09_47_20.png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 09_48_33.png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 09_48_39.png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 09_54_30.png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 09_57_40.png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 10_00_29.png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 10_08_11.png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 10_11_31.png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 10_17_34.png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 10_38_24.png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 10_39_41 (2).png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 11_34_10.png
+- img/lording/ChatGPT Image 2026??5??12???¤ì „ 11_34_20.png
+- img/lording/EXO'.png
+- img/lording/MAIN.png
+- img/lording/ROGO.png
+- img/lording/V2.png
+- img/lording/?©ì???png
+
