@@ -654,8 +654,13 @@ canvas{display:block;position:fixed;inset:0}
 
 <!-- SETTINGS PANEL -->
 <div class="panel" id="settings">
-  <div class="pbox" style="width:85vw;max-width:1000px;display:flex;flex-direction:column;max-height:90vh;overflow:hidden;padding:25px 35px;">
-    <div class="ptitle" style="font-size:2.2rem;margin-bottom:20px;">⚙ 설정</div>
+  <div class="pbox" style="width:85vw;max-width:1000px;display:flex;flex-direction:column;max-height:90vh;overflow:visible;padding:25px 35px;">
+    <div class="ptitle" style="font-size:2.2rem;margin-bottom:12px;">⚙ 설정</div>
+    <div class="set-range-row" style="margin-bottom:10px;"><span class="set-name">Language</span>
+      <select id="optLang" style="flex:1;background:#1a1008;border:1px solid #443322;color:#ddc;font-family:'Noto Sans KR';font-size:.9rem;padding:4px 8px;border-radius:4px">
+        <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="es">Español</option><option value="ru">Русский</option><option value="de">Deutsch</option><option value="ptbr">Português</option><option value="fr">Français</option><option value="pl">Polski</option><option value="it">Italiano</option><option value="uk">Українська</option><option value="tr">Türkçe</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="ar">العربية</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="fi">Suomi</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="ro">Română</option><option value="nl">Nederlands</option><option value="el">Ελληνικά</option><option value="bg">Български</option>
+      </select>
+    </div>
     <div style="display:flex;gap:30px;flex:1;overflow-y:auto;padding-right:10px;">
       <!-- 왼쪽 컨테이너: 키 설정 -->
       <div style="flex:1;min-width:350px;">
@@ -695,11 +700,6 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">자동 물약</span><input type="range" id="optAutoPot" min="30" max="95" step="5" value="99"><span class="set-range-val" id="optAutoPotVal">HP 99% 이하</span></div>
           <div class="set-range-row"><span class="set-name">최소 줍기 등급</span><input type="range" id="optMinRar" min="0" max="4" value="0"><span class="set-range-val" id="optMinRarVal">일반 이상</span></div>
           <div class="set-range-row"><span class="set-name">최소 줍기 티어</span><input type="range" id="optMinLv" min="0" max="7" value="0"><span class="set-range-val" id="optMinLvVal">사용 안 함</span></div>
-          <div class="set-range-row"><span class="set-name">Language</span>
-            <select id="optLang" style="flex:1;background:#1a1008;border:1px solid #443322;color:#ddc;font-family:'Noto Sans KR';font-size:.9rem;padding:4px 8px;border-radius:4px">
-              <option value="ko">한국어</option><option value="en">English</option>
-            </select>
-          </div>
           <div class="set-range-row"><span class="set-name">FPS 제한</span><input type="range" id="optFps" min="0" max="4" step="1" value="1"><span class="set-range-val" id="optFpsVal">60</span></div>
           <div class="set-range-row"><span class="set-name">해상도 스케일</span><input type="range" id="optResScale" min="50" max="100" step="10" value="100"><span class="set-range-val" id="optResScaleVal">100%</span></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optPetAuto" checked style="width:16px;height:16px;accent-color:#66cc88"><span class="set-name">펫 자동수거</span></label></div>
