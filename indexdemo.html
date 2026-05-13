@@ -205,8 +205,9 @@ body{background:#000;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-hei
     </div>
     <div class="card" style="margin:0 auto">
       <h2 id="demoTitle">DEMO BUILD</h2>
-      <button class="start-btn" id="startBtn">▶ 게임 시작</button>
-      <div class="demo-badge" id="demoBadge">v0.1-demo</div>
+      <button class="start-btn" id="startBtn">▶ 처음부터 (Lv.1)</button>
+      <button class="start-btn" id="startBtn500" style="border-color:rgba(255,200,60,.5);color:#ffdd88">▶ 500랩 체험</button>
+      <div class="demo-badge" id="demoBadge">v0.1-demo · ACT 1~4</div>
     </div>
   </div>
 </div>
@@ -225,7 +226,8 @@ const _LOBBY_TABLES=Object.assign(
 );
 // 데모 전용 신규 문자열
 const _DEMO_STR={
-  '게임 시작':{en:'Start Game',zh:'开始游戏',zht:'開始遊戲',ja:'ゲームを始める',es:'Iniciar juego',fr:'Lancer le jeu',de:'Spiel starten',ru:'Начать игру',ptbr:'Iniciar jogo',it:'Inizia il gioco',vi:'Bắt đầu',th:'เริ่มเกม',id:'Mulai',tr:'Başlat',pl:'Graj',cs:'Hrát',hu:'Játék',bg:'Игра',el:'Παιχνίδι',fi:'Pelaa',sv:'Spela',da:'Spil',no:'Spill',nl:'Spelen',ro:'Joacă',uk:'Грати',ar:'ابدأ'},
+  '처음부터 (Lv.1)':{en:'From Start (Lv.1)',zh:'从头开始 (Lv.1)',zht:'從頭開始 (Lv.1)',ja:'最初から (Lv.1)',es:'Desde el inicio (Lv.1)',fr:'Depuis le début (Lv.1)',de:'Von vorne (Lv.1)',ru:'С начала (Lv.1)',ptbr:'Do início (Lv.1)',it:'Dall\'inizio (Lv.1)',vi:'Từ đầu (Lv.1)',th:'เริ่มต้น (Lv.1)',id:'Dari awal (Lv.1)',tr:'Baştan (Lv.1)',pl:'Od początku (Lv.1)',cs:'Od začátku (Lv.1)',hu:'Az elejétől (Lv.1)',bg:'От началото (Lv.1)',el:'Από την αρχή (Lv.1)',fi:'Alusta (Lv.1)',sv:'Från början (Lv.1)',da:'Fra begyndelsen (Lv.1)',no:'Fra starten (Lv.1)',nl:'Vanaf het begin (Lv.1)',ro:'De la început (Lv.1)',uk:'Спочатку (Lv.1)',ar:'من البداية (Lv.1)'},
+  '500랩 체험':{en:'Lv.500 Experience',zh:'Lv.500 体验',zht:'Lv.500 體驗',ja:'Lv.500 体験',es:'Experiencia Lv.500',fr:'Expérience Lv.500',de:'Lv.500 Erfahrung',ru:'Опыт Lv.500',ptbr:'Experiência Lv.500',it:'Esperienza Lv.500',vi:'Trải nghiệm Lv.500',th:'ทดลอง Lv.500',id:'Pengalaman Lv.500',tr:'Lv.500 Deneyimi',pl:'Doświadczenie Lv.500',cs:'Zážitek Lv.500',hu:'Lv.500 Élmény',bg:'Опит Lv.500',el:'Εμπειρία Lv.500',fi:'Lv.500 Kokemus',sv:'Lv.500 Upplevelse',da:'Lv.500 Oplevelse',no:'Lv.500 Opplevelse',nl:'Lv.500 Ervaring',ro:'Experiență Lv.500',uk:'Досвід Lv.500',ar:'تجربة Lv.500'},
 };
 
 const _HTML_LANG_MAP={ko:'ko',ja:'ja',zh:'zh-Hans',zht:'zh-Hant',ar:'ar',th:'th',vi:'vi',id:'id',tr:'tr',el:'el',ru:'ru',uk:'uk',bg:'bg',pl:'pl',cs:'cs',hu:'hu',ro:'ro',de:'de',nl:'nl',sv:'sv',da:'da',no:'no',fi:'fi',fr:'fr',it:'it',es:'es',ptbr:'pt',en:'en'};
@@ -249,7 +251,8 @@ function _applyLang(){
   const lang=_lobbyLang();
   document.getElementById('langSelect').value=lang;
   document.documentElement.lang=_HTML_LANG_MAP[lang]||lang;
-  document.getElementById('startBtn').textContent='▶ '+_DL('게임 시작');
+  document.getElementById('startBtn').textContent='▶ '+_DL('처음부터 (Lv.1)');
+  document.getElementById('startBtn500').textContent='▶ '+_DL('500랩 체험');
 }
 document.getElementById('langSelect').addEventListener('change',e=>{
   localStorage.setItem('hellLang',e.target.value);
@@ -653,9 +656,16 @@ document.getElementById('cinLang').addEventListener('change',e=>{
 
 // ═══ 게임 시작 버튼 ═══
 document.getElementById('startBtn').onclick=()=>{
-  // 버튼 클릭 → 시네마틱 → gamedemo.html
+  // 1랩: 시네마틱 → gamedemo.html (localStorage 플래그 없음 → _startDemoNew)
+  localStorage.removeItem('_dLv500');
   document.getElementById('mainWrap').classList.remove('show');
   playCinematic();
+};
+document.getElementById('startBtn500').onclick=()=>{
+  // 500랩: 플래그 설정 → 바로 gamedemo.html (_startDemoTest)
+  localStorage.setItem('_dLv500','1');
+  localStorage.setItem('hellLang',document.getElementById('langSelect').value);
+  window.location.href='gamedemo.html';
 };
 </script>
 </body>

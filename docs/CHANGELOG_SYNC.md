@@ -24015,3 +24015,23 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - img/lording/rd15.png
 - img/lording/rd16.png
 
+
+## 2026-05-13 21:30 (auto)
+- _autosave/game_20260513_203150.html
+- _autosave/game_20260513_203418.html
+- _autosave/game_20260513_203924.html
+- _autosave/game_20260513_204158.html
+- _autosave/game_20260513_204744.html
+- _autosave/game_20260513_204751.html
+- _autosave/game_20260513_212036.html
+- _autosave/game_20260513_212040.html
+- _autosave/game_20260513_212248.html
+- _autosave/game_20260513_212759.html
+- _autosave/game_20260513_212806.html
+- deploy-demo.bat
+- docs/13ì¶œì‹œÂ·ë§ˆì???13ì¶œì‹œÂ·ë§ˆì???md
+- docs/14ë°¸ëŸ°???˜ì¹˜?Œì´ë¸??¤í‚¬ë³?DPS_?ì›?Œë¹„??md
+- docs/2_5 ë¶€???ë„ˆì§€?´ë“œ?œìŠ¤??2_5 ë¶€???ë„ˆì§€?´ë“œ?œìŠ¤??md
+- game.html
+- indexdemo.html
+

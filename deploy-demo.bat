@@ -1,6 +1,6 @@
 @echo off
 echo [1/3] gamedemo.html 생성 (game.html + DEMO_MODE=true)...
-powershell -Command "(Get-Content 'game.html' -Raw) -replace 'const _DEMO_MODE=false;', 'const _DEMO_MODE=true;' | Set-Content 'gamedemo.html' -NoNewline"
+powershell -Command "[System.IO.File]::WriteAllText('gamedemo.html', ([System.IO.File]::ReadAllText('game.html', [System.Text.Encoding]::UTF8) -replace 'const _DEMO_MODE=false;', 'const _DEMO_MODE=true;'), [System.Text.Encoding]::UTF8)"
 
 echo [2/3] hell-build 동기화 중...
 cp game.html ../hell-build/game.html
