@@ -75,7 +75,7 @@
 | 함수 | 역할 |
 |---|---|
 | `_doPoise(e, amt, stunT, label)` | 포이즈 데미지 적용 |
-| `_poiseReset(e)` | 그로기 종료 후 포이즈 **55%** 회복 (2026-05-13, 기존 100%) |
+| `_poiseReset(e)` | 그로기 종료 후 포이즈 100% 회복 |
 
 ### 포이즈 데미지 흐름
 
@@ -97,7 +97,7 @@ _doPoise(e, amt) 호출
 if(e.stunned<=0 && e._maxStunned){
   e._maxStunned=0;
   if(e.ib){
-    _poiseReset(e);           // poise = maxPoise * 0.55 (55%만 회복)
+    _poiseReset(e);           // poise = maxPoise (100% 회복)
     e._pImmune = Math.max(e._pImmune||0, 300); // 면역 300f 보장
     e.s='idle'; e.st2=30; e._teleDropY=0;
   }
@@ -136,7 +136,7 @@ if(e.stunned<=0 && e._maxStunned){
 |---|---|
 | 1 | HP 회복 — 페이즈 상한까지 (`e.mhp × ph.hp[1]`) |
 | 2 | 무적 3초 (`reviveIframes = 180`) |
-| 3 | 스탯 강화 — atk×1.3, speed×1.15, maxPoise×1.2 / 현재 포이즈는 max의 40%로 캡 (기존 100% 회복) |
+| 3 | 스탯 강화 — atk×1.3, speed×1.15, maxPoise×1.2 / 현재 포이즈 그대로 유지 (회복 없음, 2026-05-13) |
 | 4 | 상태 초기화 — stunned=0, s='recover', 콤보/딜레이 리셋 |
 | 5 | 텔레포트 — 플레이어 등 뒤 (거리 `80+_bp*25`) + 파티클 VFX |
 | 6 | 충격파 — 반경 `100+_bp*30`, 데미지 `atk*(0.4+_bp*0.1)` |
