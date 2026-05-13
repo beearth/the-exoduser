@@ -9744,6 +9744,9 @@ const _gpSectType=el=>{
   if(el.closest('.fg-i'))return'fgi';
   if(el.closest('.set-key'))return'setkey';
   if(el.closest('[data-sk-id]'))return'sknode';
+  // 설정 패널: .set-section 단위로 LB/RB 섹션 점프
+  const _sec=el.closest('.set-section');
+  if(_sec){const _secs=[...document.querySelectorAll('.set-section')];return'setsec'+_secs.indexOf(_sec);}
   return el.tagName+'_'+([...el.classList][0]||'');
 };
 // 한 스텝 이동: 상/하=±1칸, 좌/우=섹션 점프 (range슬라이더는 값 조절)
@@ -9772,7 +9775,7 @@ function _gpUIStep(dir,items){
 function _gpUINav(panel){
   if(!_gpad||!panel)return;
   // 패널 내 포커스 가능 요소 수집
-  const SEL='button:not([disabled]),.pclose,[onclick],.sk-opt:not(.locked),.up-row:not(.dis),.stat-btn:not(.dis),.passive-row:not(.dis),.fg-i:not(.dis),.fg-tab,.set-key,.id-btn,.retry,input[type="range"],[data-sk-id]';
+  const SEL='button:not([disabled]),.pclose,[onclick],.sk-opt:not(.locked),.up-row:not(.dis),.stat-btn:not(.dis),.passive-row:not(.dis),.fg-i:not(.dis),.fg-tab,.set-key,.id-btn,.retry,input[type="range"],input[type="checkbox"],select,[data-sk-id]';
   const items=[];
   const all=panel.querySelectorAll(SEL);
   for(let i=0;i<all.length;i++){
@@ -39247,6 +39250,7 @@ function renderStatPanel(){
     const mkBtn=(n,txt,col)=>{
       const can=n>0?(P.sp>=n&&v+n<=_sMax):(v+Math.abs(n)>=0 && v+n>=0);
       const b=document.createElement('div');
+      b.className=can?'stat-btn':'stat-btn dis';
       b.style.cssText=`width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid ${col};color:${col};font-size:1.4rem;cursor:${can?'pointer':'not-allowed'};display:flex;align-items:center;justify-content:center;opacity:${can?1:.3};border-radius:4px`;
       b.textContent=txt;
       if(can)b.onclick=()=>{ STATS[sd.key]+=n; if(n>0)P.sp-=n; else P.sp+=Math.abs(n); SFX.pickup(); applyStats(); renderStatPanel(); };
@@ -48333,7 +48337,7 @@ $('retryBtn').onclick=async()=>{
 // ═══ 스테이지 전환 로딩 ═══
 const _STAGE_TRANSITION_RD=[];
 let _lastTransitionRd=-1;
-let _bootLoadShownAt=0,_bootLoadKilled=false;
+let _bootLoadShownAt=0,_bootLoadKilled=false,_bootRdPicked=false;
 function _pickTransitionRd(){
   if(_STAGE_TRANSITION_RD.length<=1) return 0;
   let n=~~(Math.random()*_STAGE_TRANSITION_RD.length);
@@ -48374,9 +48378,10 @@ function showBootLoading(msg){
   if(!el||!bar||!name) return;
   _bootLoadShownAt=Date.now();
   name.textContent=msg||_T('불러오는 중...');
-  if(img&&_STAGE_TRANSITION_RD.length>0){
-    const idx=_pickTransitionRd();
-    img.src=_STAGE_TRANSITION_RD[idx];
+  // 세션 당 한 장만 — 이미 골랐으면 교체 금지
+  if(!_bootRdPicked&&img&&_STAGE_TRANSITION_RD.length>0){
+    img.src=_STAGE_TRANSITION_RD[_pickTransitionRd()];
+    _bootRdPicked=true;
   }
   bar.style.width='8%';
   el.style.opacity='1';
