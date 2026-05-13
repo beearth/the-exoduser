@@ -20288,15 +20288,8 @@ function _execMagicE(){
   // 1) 선택된 스킬의 전용 핸들러가 있으면 우선 실행
   const handler=_MAGIC_E_HANDLERS[_amsk];
   if(handler&&handler())return;
-  // 2) 폴백: 악의구 (기본 E스킬) — 에임보조: 가까운 적 방향 보정
+  // 2) 폴백: 악의구 (기본 E스킬)
   if(_gpActive)_gpAutoAim(400);
-  {let _aaR=500,_aaE=null,_aaD=_aaR;
-  for(let i=0;i<ens.length;i++){const e=ens[i];if(!e||!e.alive||e.hp<=0)continue;const d=Math.sqrt((e.x-P.x)*(e.x-P.x)+(e.y-P.y)*(e.y-P.y));if(d<_aaD){_aaD=d;_aaE=e;}}
-  if(_aaE){const _ta=Math.atan2(_aaE.y-P.y,_aaE.x-P.x);
-    // 현재 에임과 타겟 각도 차이가 90도 이내면 보정
-    let _da=_ta-P.facing;while(_da>Math.PI)_da-=Math.PI*2;while(_da<-Math.PI)_da+=Math.PI*2;
-    if(Math.abs(_da)<Math.PI/2){P.facing=_ta;P.atkArc=_ta;}
-  }}
   P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2;
 }
 
@@ -35444,7 +35437,7 @@ function fireHellfireBeam(){
   {const _pp=_getPProj();_pp.x=P.x+_fbDx*20;_pp.y=P.y+_fbDy*20;
   _pp.vx=_fbDx*14;_pp.vy=_fbDy*14;_pp.dmg=_fbDmg;_pp.el=EL.F; // 탄속 2배 (7 -> 14)
   _pp.maxDist=_fbRange;_pp.dist=0;_pp.r=16;_pp.stagger=0;_pp.kb=0;
-  _pp.magic=true;_pp.fireBeamProj=true;_pp.fireball=true;_pp.explR=~~((100+_fbLv*8)*2);_pp.explDmg=~~(_fbDmg*.6);_pp.homing=true;
+  _pp.magic=true;_pp.fireBeamProj=true;_pp.fireball=true;_pp.explR=~~((100+_fbLv*8)*2);_pp.explDmg=~~(_fbDmg*.6);
   _pp.pierce=1;_pp.pierceMax=_chargePierce;_pp._pierceCount=0;
   pProjs[pProjs.length]=_pp;}
   P._fbCd=~~(60/pMagicSpd());

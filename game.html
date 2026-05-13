@@ -3434,9 +3434,30 @@ const BGM={
     do{pick=all[Math.random()*all.length|0]}while(all.length>1&&pick===this._lastSrc);
     return pick;
   },
+  _isActKey(k){return/^hell[1-7]$/.test(k)},
+  // 장 BGM 미재생 트랙에서 1곡 선택 — 모두 소진 시 null 반환
+  _pickActFirst(key){
+    const arr=this.tracks[key];if(!arr||!arr.length)return null;
+    if(!this._playedSets[key])this._playedSets[key]=new Set();
+    const ps=this._playedSets[key];
+    const up=arr.filter(s=>!ps.has(s));
+    if(!up.length){this._actDone[key]=true;return null;}
+    let pick;do{pick=up[Math.random()*up.length|0]}while(up.length>1&&pick===this._lastSrc);
+    ps.add(pick);if(ps.size>=arr.length)this._actDone[key]=true;
+    return pick;
+  },
+  // 장 소진 후: 장 BGM + gameplay 합산 랜덤
+  _pickMixed(key){
+    const all=[...(this.tracks[key]||[]),...(this.tracks.gameplay||[])];
+    if(!all.length)return null;
+    let pick;do{pick=all[Math.random()*all.length|0]}while(all.length>1&&pick===this._lastSrc);
+    return pick;
+  },
   _pending:null,
   _bound:false,
   _pendingExtra:[],
+  _playedSets:{}, // {actKey: Set<src>} — 장별 재생 완료 트랙
+  _actDone:{},    // {actKey: bool} — 장 BGM 전곡 소진 여부
   _onInteract(){
     if(BGM._pending&&BGM._cur){
       BGM._cur.play().then(()=>{
@@ -3448,17 +3469,19 @@ const BGM={
     while(BGM._pendingExtra.length){const a=BGM._pendingExtra.shift();a.play().catch(()=>{})}
   },
   _onEnded(){
-    const key=BGM._curKey;
-    if(!key)return;
-    const src=OPT.bgmTrack==='allRandom'?BGM._pickAllRandom():BGM._pickRandom(key);
+    const key=BGM._curKey;if(!key)return;
+    let src=null;
+    if(BGM._isActKey(key)&&OPT.bgmTrack==='auto'){
+      // 장 BGM 미소진: 미재생 트랙 중 선택 / 소진 후: 장+공용 혼합
+      src=BGM._actDone[key]?BGM._pickMixed(key):BGM._pickActFirst(key);
+      if(!src)src=BGM._pickMixed(key); // pickActFirst가 null(막 소진) → 즉시 혼합
+    }else if(OPT.bgmTrack==='allRandom'){src=BGM._pickAllRandom();}
+    else{src=BGM._pickRandom(key);}
     if(!src)return;
     BGM._lastSrc=src;
     const a=BGM._getAudio(src);
-    a.volume=BGM._vol;
-    a.currentTime=0;
-    a.onended=BGM._onEnded;
-    a.play().catch(()=>{});
-    BGM._cur=a;
+    a.volume=BGM._vol;a.currentTime=0;a.onended=BGM._onEnded;
+    a.play().catch(()=>{});BGM._cur=a;
   },
   playTrack(src){
     // 개별 트랙 직접 재생 (드롭다운 t: 접두사)
@@ -3477,17 +3500,24 @@ const BGM={
     this._cur=a;
   },
   play(key,force){
-    if(!force&&OPT.bgmTrack&&OPT.bgmTrack.startsWith('t:'))return; // 개별 트랙 선택 중 자동 전환 차단
+    if(!force&&OPT.bgmTrack&&OPT.bgmTrack.startsWith('t:'))return;
     if(!force&&OPT.bgmTrack!=='auto'&&OPT.bgmTrack!=='allRandom'&&key!=='death'&&key!=='victory'&&key!=='forge'&&key!==OPT.bgmTrack)return;
     this.stop();
     this._curKey=key;
-    const src=OPT.bgmTrack==='allRandom'&&key!=='death'&&key!=='victory'&&key!=='forge'?this._pickAllRandom():this._pickRandom(key);
+    let src=null;
+    if(this._isActKey(key)&&OPT.bgmTrack==='auto'){
+      // 장 진입마다 played set 초기화 → 장 BGM 먼저
+      this._playedSets[key]=new Set();this._actDone[key]=false;
+      src=this._pickActFirst(key);if(!src)src=this._pickMixed(key);
+    }else if(OPT.bgmTrack==='allRandom'&&key!=='death'&&key!=='victory'&&key!=='forge'){
+      src=this._pickAllRandom();
+    }else{
+      src=this._pickRandom(key);
+    }
     if(!src)return;
     this._lastSrc=src;
     const a=this._getAudio(src);
-    a.volume=this._vol;
-    a.currentTime=0;
-    a.loop=false;
+    a.volume=this._vol;a.currentTime=0;a.loop=false;
     a.onended=(key==='death'||key==='victory')?null:this._onEnded;
     a.play().catch(()=>{
       this._pending=key;
@@ -20392,15 +20422,8 @@ function _execMagicE(){
   // 1) 선택된 스킬의 전용 핸들러가 있으면 우선 실행
   const handler=_MAGIC_E_HANDLERS[_amsk];
   if(handler&&handler())return;
-  // 2) 폴백: 악의구 (기본 E스킬) — 에임보조: 가까운 적 방향 보정
+  // 2) 폴백: 악의구 (기본 E스킬)
   if(_gpActive)_gpAutoAim(400);
-  {let _aaR=500,_aaE=null,_aaD=_aaR;
-  for(let i=0;i<ens.length;i++){const e=ens[i];if(!e||!e.alive||e.hp<=0)continue;const d=Math.sqrt((e.x-P.x)*(e.x-P.x)+(e.y-P.y)*(e.y-P.y));if(d<_aaD){_aaD=d;_aaE=e;}}
-  if(_aaE){const _ta=Math.atan2(_aaE.y-P.y,_aaE.x-P.x);
-    // 현재 에임과 타겟 각도 차이가 90도 이내면 보정
-    let _da=_ta-P.facing;while(_da>Math.PI)_da-=Math.PI*2;while(_da<-Math.PI)_da+=Math.PI*2;
-    if(Math.abs(_da)<Math.PI/2){P.facing=_ta;P.atkArc=_ta;}
-  }}
   P.s='magicCast';P.st2=~~(14/pMagicSpd());P.atkArc=P.facing;P._mpBon=useMp('magic')*2;
 }
 
@@ -35541,7 +35564,7 @@ function fireHellfireBeam(){
   {const _pp=_getPProj();_pp.x=P.x+_fbDx*20;_pp.y=P.y+_fbDy*20;
   _pp.vx=_fbDx*14;_pp.vy=_fbDy*14;_pp.dmg=_fbDmg;_pp.el=EL.F; // 탄속 2배 (7 -> 14)
   _pp.maxDist=_fbRange;_pp.dist=0;_pp.r=16;_pp.stagger=0;_pp.kb=0;
-  _pp.magic=true;_pp.fireBeamProj=true;_pp.fireball=true;_pp.explR=~~((100+_fbLv*8)*2);_pp.explDmg=~~(_fbDmg*.6);_pp.homing=true;
+  _pp.magic=true;_pp.fireBeamProj=true;_pp.fireball=true;_pp.explR=~~((100+_fbLv*8)*2);_pp.explDmg=~~(_fbDmg*.6);
   _pp.pierce=1;_pp.pierceMax=_chargePierce;_pp._pierceCount=0;
   pProjs[pProjs.length]=_pp;}
   P._fbCd=~~(60/pMagicSpd());
