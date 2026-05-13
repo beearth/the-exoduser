@@ -27050,7 +27050,7 @@ function update(){
             P.mp=Math.max(0,P.mp-_bsMpCost);
             // 합체: 해골번개 — boneWall 링 + 암흑 DOT
             const _bsLv=P.skills.boneWall||1;
-            const _bsRingR=~~((200+(_bsLv-1)*22)/3); // 악의폭풍의 1/3
+            const _bsRingR=~~((200+(_bsLv-1)*22)/2); // 악의폭풍의 1/2
             const _erF=_isFused('elecRepent');
             const _hrLv=_erF?(P.skills.hellRay||1):0;
             const _syncDur=600; // 10초 고정 (악의폭풍과 동일)
@@ -34808,7 +34808,7 @@ function fireBoneWall(tx,ty){
   const slv=P.skills.boneWall||1;
   P._bwStk--;const _bwMx2=(P.skills.boneWall>=10)?3:2;if(P._bwStk<_bwMx2&&!P._bwRech)P._bwRech=1500;
   _addSkProf('boneWall');
-  const ringR=~~((200+(slv-1)*22)/3); // 악의폭풍의 1/3 (lv1≈67, lv10≈133, lv20≈206)
+  const ringR=~~((200+(slv-1)*22)/2); // 악의폭풍의 1/2 (lv1≈100, lv10≈199, lv20≈309)
   const duration=Math.min(1800,180+(slv-1)*12);
   const riseDmg=~~(meleeRef()*statStr()*pAtkMul()*8*(1+(slv-1)*0.15));
   if(!G._boneWalls)G._boneWalls=[];
@@ -43091,7 +43091,7 @@ function drawP(){
     const _msLv=P.skills.maliceStorm||1;
     const _msBF=_isFused('boneStorm')||_isFused('elecRepent');
     const _bwLv=P.skills.boneWall||1;
-    const _msAimR=_msBF?(~~((200+(_bwLv-1)*22)/3)):(200+(_msLv-1)*22);
+    const _msAimR=_msBF?(~~((200+(_bwLv-1)*22)/2)):(200+(_msLv-1)*22);
     let _msTx=mouse.x-C.width/2+G.cam.x;
     let _msTy=mouse.y-C.height/2+G.cam.y;
     const _msDst3=dst(P.x,P.y,_msTx,_msTy);if(_msDst3>1000){const _msA3=Math.atan2(_msTy-P.y,_msTx-P.x);_msTx=P.x+Math.cos(_msA3)*1000;_msTy=P.y+Math.sin(_msA3)*1000}
@@ -43173,7 +43173,7 @@ function drawP(){
     const bwSlv=P.skills.boneWall||1;
     let bwTx=mouse.x-C.width/2+G.cam.x,bwTy=mouse.y-C.height/2+G.cam.y;
     const _bwD2=dst(P.x,P.y,bwTx,bwTy);if(_bwD2>1000){const _bwA2=Math.atan2(bwTy-P.y,bwTx-P.x);bwTx=P.x+Math.cos(_bwA2)*1000;bwTy=P.y+Math.sin(_bwA2)*1000}
-    const bwR=~~((200+(bwSlv-1)*22)/3); // 악의폭풍의 1/3 (lv1≈67, lv10≈133, lv20≈206)
+    const bwR=~~((200+(bwSlv-1)*22)/2); // 악의폭풍의 1/2 (lv1≈100, lv10≈199, lv20≈309)
     const _bwt=_now*.06;
     X.save();
     // 원형 범위

@@ -3434,9 +3434,30 @@ const BGM={
     do{pick=all[Math.random()*all.length|0]}while(all.length>1&&pick===this._lastSrc);
     return pick;
   },
+  _isActKey(k){return/^hell[1-7]$/.test(k)},
+  // 장 BGM 미재생 트랙에서 1곡 선택 — 모두 소진 시 null 반환
+  _pickActFirst(key){
+    const arr=this.tracks[key];if(!arr||!arr.length)return null;
+    if(!this._playedSets[key])this._playedSets[key]=new Set();
+    const ps=this._playedSets[key];
+    const up=arr.filter(s=>!ps.has(s));
+    if(!up.length){this._actDone[key]=true;return null;}
+    let pick;do{pick=up[Math.random()*up.length|0]}while(up.length>1&&pick===this._lastSrc);
+    ps.add(pick);if(ps.size>=arr.length)this._actDone[key]=true;
+    return pick;
+  },
+  // 장 소진 후: 장 BGM + gameplay 합산 랜덤
+  _pickMixed(key){
+    const all=[...(this.tracks[key]||[]),...(this.tracks.gameplay||[])];
+    if(!all.length)return null;
+    let pick;do{pick=all[Math.random()*all.length|0]}while(all.length>1&&pick===this._lastSrc);
+    return pick;
+  },
   _pending:null,
   _bound:false,
   _pendingExtra:[],
+  _playedSets:{}, // {actKey: Set<src>} — 장별 재생 완료 트랙
+  _actDone:{},    // {actKey: bool} — 장 BGM 전곡 소진 여부
   _onInteract(){
     if(BGM._pending&&BGM._cur){
       BGM._cur.play().then(()=>{
@@ -3448,17 +3469,19 @@ const BGM={
     while(BGM._pendingExtra.length){const a=BGM._pendingExtra.shift();a.play().catch(()=>{})}
   },
   _onEnded(){
-    const key=BGM._curKey;
-    if(!key)return;
-    const src=OPT.bgmTrack==='allRandom'?BGM._pickAllRandom():BGM._pickRandom(key);
+    const key=BGM._curKey;if(!key)return;
+    let src=null;
+    if(BGM._isActKey(key)&&OPT.bgmTrack==='auto'){
+      // 장 BGM 미소진: 미재생 트랙 중 선택 / 소진 후: 장+공용 혼합
+      src=BGM._actDone[key]?BGM._pickMixed(key):BGM._pickActFirst(key);
+      if(!src)src=BGM._pickMixed(key); // pickActFirst가 null(막 소진) → 즉시 혼합
+    }else if(OPT.bgmTrack==='allRandom'){src=BGM._pickAllRandom();}
+    else{src=BGM._pickRandom(key);}
     if(!src)return;
     BGM._lastSrc=src;
     const a=BGM._getAudio(src);
-    a.volume=BGM._vol;
-    a.currentTime=0;
-    a.onended=BGM._onEnded;
-    a.play().catch(()=>{});
-    BGM._cur=a;
+    a.volume=BGM._vol;a.currentTime=0;a.onended=BGM._onEnded;
+    a.play().catch(()=>{});BGM._cur=a;
   },
   playTrack(src){
     // 개별 트랙 직접 재생 (드롭다운 t: 접두사)
@@ -3477,17 +3500,24 @@ const BGM={
     this._cur=a;
   },
   play(key,force){
-    if(!force&&OPT.bgmTrack&&OPT.bgmTrack.startsWith('t:'))return; // 개별 트랙 선택 중 자동 전환 차단
+    if(!force&&OPT.bgmTrack&&OPT.bgmTrack.startsWith('t:'))return;
     if(!force&&OPT.bgmTrack!=='auto'&&OPT.bgmTrack!=='allRandom'&&key!=='death'&&key!=='victory'&&key!=='forge'&&key!==OPT.bgmTrack)return;
     this.stop();
     this._curKey=key;
-    const src=OPT.bgmTrack==='allRandom'&&key!=='death'&&key!=='victory'&&key!=='forge'?this._pickAllRandom():this._pickRandom(key);
+    let src=null;
+    if(this._isActKey(key)&&OPT.bgmTrack==='auto'){
+      // 장 진입마다 played set 초기화 → 장 BGM 먼저
+      this._playedSets[key]=new Set();this._actDone[key]=false;
+      src=this._pickActFirst(key);if(!src)src=this._pickMixed(key);
+    }else if(OPT.bgmTrack==='allRandom'&&key!=='death'&&key!=='victory'&&key!=='forge'){
+      src=this._pickAllRandom();
+    }else{
+      src=this._pickRandom(key);
+    }
     if(!src)return;
     this._lastSrc=src;
     const a=this._getAudio(src);
-    a.volume=this._vol;
-    a.currentTime=0;
-    a.loop=false;
+    a.volume=this._vol;a.currentTime=0;a.loop=false;
     a.onended=(key==='death'||key==='victory')?null:this._onEnded;
     a.play().catch(()=>{
       this._pending=key;
@@ -26958,7 +26988,7 @@ function update(){
     else if(MBjust[0]){
       MBjust[0]=false;
       const _hrLv=P.skills.hellRay||1;
-      const _hrR=~~((200+(_hrLv-1)*22)/3); // 악의폭풍의 1/3 (lv1≈67, lv10≈133, lv20≈206)
+      const _hrR=200+(_hrLv-1)*22; // 악의폭풍과 동일 크기
       const _hrElec=_isFused('elecRepent'); // 참회 귀환 합체
       const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*pBeamMul()*_skMul('hellRay')*(_hrElec?1.2:1)*_fuseMul('hellRay')); // 통일공식: _skMul + 빔 장비 배율
       P.mp-=100;P._hrStk--;const _hrMx3=_hrElec?(_hrLv>=10?3:_hrLv>=5?2:1):1;if(P._hrStk<_hrMx3&&!P._hrRech)P._hrRech=600;
@@ -27027,7 +27057,7 @@ function update(){
             P.mp=Math.max(0,P.mp-_bsMpCost);
             // 합체: 해골번개 — boneWall 링 + 암흑 DOT
             const _bsLv=P.skills.boneWall||1;
-            const _bsRingR=~~(200+(_bsLv-1)*22);
+            const _bsRingR=~~((200+(_bsLv-1)*22)/3); // 악의폭풍의 1/3
             const _erF=_isFused('elecRepent');
             const _hrLv=_erF?(P.skills.hellRay||1):0;
             const _syncDur=600; // 10초 고정 (악의폭풍과 동일)
@@ -27041,7 +27071,7 @@ function update(){
             // elecRepent: 참회(hellRay)도 같은 포인트에 동시 설치
             if(_erF&&P.skills.hellRay>=1){
               const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*pBeamMul()*_skMul('hellRay')*1.2); // 통일공식: _skMul + 빔 장비 배율 (합체)
-              G._fireZones.push({x:_mswx,y:_mswy,r:~~((200+(_hrLv-1)*22)/3),t:0,maxT:_syncDur,
+              G._fireZones.push({x:_mswx,y:_mswy,r:200+(_hrLv-1)*22,t:0,maxT:_syncDur,
                 dmg:_hrDmg,el:EL.L,lv:_hrLv,type:'hellRay',ang:0,elec:true});
               SFX.magic(EL.L);playSample('repentance',.7,_r(1,.08));
               addTxt(_mswx,_mswy-20,_T('⚡🦴 참회 귀환!'),'#ffee44',50);
@@ -34785,7 +34815,7 @@ function fireBoneWall(tx,ty){
   const slv=P.skills.boneWall||1;
   P._bwStk--;const _bwMx2=(P.skills.boneWall>=10)?3:2;if(P._bwStk<_bwMx2&&!P._bwRech)P._bwRech=1500;
   _addSkProf('boneWall');
-  const ringR=~~(500+(slv-1)*200/19); // 1렙500, 20렙700
+  const ringR=~~((200+(slv-1)*22)/3); // 악의폭풍의 1/3 (lv1≈67, lv10≈133, lv20≈206)
   const duration=Math.min(1800,180+(slv-1)*12);
   const riseDmg=~~(meleeRef()*statStr()*pAtkMul()*8*(1+(slv-1)*0.15));
   if(!G._boneWalls)G._boneWalls=[];
@@ -34906,6 +34936,7 @@ function activateGhostXbowTurret(){
     const _sgLv=P.skills.voidScarecrow||1;
     const _sgMax=20+(_sgLv-1)*3+(_sgLv>=10?3:0);
     G._voidScarecrow={x:P.x+30,y:P.y,maxAbsorb:_sgMax,absorbed:0,resHP:0,resMP:0,resST:0,aggroOn:true,lv:_sgLv,siegeGhost:true};
+    playSample('ghost_laugh',1.4,_r(1,.1));
     addTxt(P.x,P.y-40,_T('👻 공성유령!'),'#aa88dd',40);
     addParts(P.x,P.y,'#aa88dd',8);
   } else {
@@ -35540,7 +35571,7 @@ function fireHellfireBeam(){
   {const _pp=_getPProj();_pp.x=P.x+_fbDx*20;_pp.y=P.y+_fbDy*20;
   _pp.vx=_fbDx*14;_pp.vy=_fbDy*14;_pp.dmg=_fbDmg;_pp.el=EL.F; // 탄속 2배 (7 -> 14)
   _pp.maxDist=_fbRange;_pp.dist=0;_pp.r=16;_pp.stagger=0;_pp.kb=0;
-  _pp.magic=true;_pp.fireBeamProj=true;_pp.fireball=true;_pp.explR=~~((100+_fbLv*8)*2);_pp.explDmg=~~(_fbDmg*.6);_pp.homing=true;
+  _pp.magic=true;_pp.fireBeamProj=true;_pp.fireball=true;_pp.explR=~~((100+_fbLv*8)*2);_pp.explDmg=~~(_fbDmg*.6);
   _pp.pierce=1;_pp.pierceMax=_chargePierce;_pp._pierceCount=0;
   pProjs[pProjs.length]=_pp;}
   P._fbCd=~~(60/pMagicSpd());
@@ -43011,7 +43042,7 @@ function drawP(){
   _dpS0=performance.now(); // S0=charge/recover 끝
   // ══ 참회 조준 인디케이터 ══
   if(P._hrAiming){
-    const _hrLv=P.skills.hellRay||1;const _hrAimR=~~((200+(_hrLv-1)*22)/3); // 악의폭풍의 1/3
+    const _hrLv=P.skills.hellRay||1;const _hrAimR=200+(_hrLv-1)*22; // 악의폭풍과 동일 크기
     let _hrTx=mouse.x-C.width/2+G.cam.x,_hrTy=mouse.y-C.height/2+G.cam.y;
     {const _hrD2=dst(P.x,P.y,_hrTx,_hrTy);if(_hrD2>1000){const _hrA2=Math.atan2(_hrTy-P.y,_hrTx-P.x);_hrTx=P.x+Math.cos(_hrA2)*1000;_hrTy=P.y+Math.sin(_hrA2)*1000}}
     const _hrt2=_now*.005;
@@ -43067,7 +43098,7 @@ function drawP(){
     const _msLv=P.skills.maliceStorm||1;
     const _msBF=_isFused('boneStorm')||_isFused('elecRepent');
     const _bwLv=P.skills.boneWall||1;
-    const _msAimR=_msBF?(200+(_bwLv-1)*22):(200+(_msLv-1)*22);
+    const _msAimR=_msBF?(~~((200+(_bwLv-1)*22)/3)):(200+(_msLv-1)*22);
     let _msTx=mouse.x-C.width/2+G.cam.x;
     let _msTy=mouse.y-C.height/2+G.cam.y;
     const _msDst3=dst(P.x,P.y,_msTx,_msTy);if(_msDst3>1000){const _msA3=Math.atan2(_msTy-P.y,_msTx-P.x);_msTx=P.x+Math.cos(_msA3)*1000;_msTy=P.y+Math.sin(_msA3)*1000}
@@ -43149,7 +43180,7 @@ function drawP(){
     const bwSlv=P.skills.boneWall||1;
     let bwTx=mouse.x-C.width/2+G.cam.x,bwTy=mouse.y-C.height/2+G.cam.y;
     const _bwD2=dst(P.x,P.y,bwTx,bwTy);if(_bwD2>1000){const _bwA2=Math.atan2(bwTy-P.y,bwTx-P.x);bwTx=P.x+Math.cos(_bwA2)*1000;bwTy=P.y+Math.sin(_bwA2)*1000}
-    const bwR=~~(500+(bwSlv-1)*200/19); // 1렙500, 20렙700
+    const bwR=~~((200+(bwSlv-1)*22)/3); // 악의폭풍의 1/3 (lv1≈67, lv10≈133, lv20≈206)
     const _bwt=_now*.06;
     X.save();
     // 원형 범위
@@ -47599,7 +47630,7 @@ async function _startDemoTest(){
   SKILL_SLOTS[4]='giantSlam2';      // 대왕치기2 — Space키
   SKILL_SLOTS[5]='holyDome';        // 영역스킬(holyFuse) host — F키
   ULT_SLOT='kiSlash';
-  P.activeCtSk='ghostWalk';P.activeMagicSk='arcLaser';P.activeBowSk='normal'; // Ctrl=뇌전걸음, E=마력광선(arcLaser)
+  P.activeCtSk='ghostWalk';P.activeMagicSk='arcLaser';P.activeBowSk='normal';P.activeChargeSk='charge';P.activeQSk='peaceShield';P.activeLMBSk='whirlwind'; // Ctrl=뇌전걸음, E=마력광선, Shift=기동강화전폭(dimBlast), Q=평화의보호, LMB=암전폭류(stormBurst)
   // 5등급 전설 장비 (tier=4, rarity=4)
   const _dtSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
   const _dtWt={weapon:'sword',bow:'crossbow'};

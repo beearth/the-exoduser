@@ -3437,6 +3437,8 @@ const BGM={
   _pending:null,
   _bound:false,
   _pendingExtra:[],
+  _playedSets:{}, // {actKey: Set<src>} — 장별 재생 완료 트랙
+  _actDone:{},    // {actKey: bool} — 장 BGM 전곡 소진 여부
   _onInteract(){
     if(BGM._pending&&BGM._cur){
       BGM._cur.play().then(()=>{
@@ -26958,7 +26960,7 @@ function update(){
     else if(MBjust[0]){
       MBjust[0]=false;
       const _hrLv=P.skills.hellRay||1;
-      const _hrR=~~((200+(_hrLv-1)*22)/3); // 악의폭풍의 1/3 (lv1≈67, lv10≈133, lv20≈206)
+      const _hrR=200+(_hrLv-1)*22; // 악의폭풍과 동일 크기
       const _hrElec=_isFused('elecRepent'); // 참회 귀환 합체
       const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*pBeamMul()*_skMul('hellRay')*(_hrElec?1.2:1)*_fuseMul('hellRay')); // 통일공식: _skMul + 빔 장비 배율
       P.mp-=100;P._hrStk--;const _hrMx3=_hrElec?(_hrLv>=10?3:_hrLv>=5?2:1):1;if(P._hrStk<_hrMx3&&!P._hrRech)P._hrRech=600;
@@ -27027,7 +27029,7 @@ function update(){
             P.mp=Math.max(0,P.mp-_bsMpCost);
             // 합체: 해골번개 — boneWall 링 + 암흑 DOT
             const _bsLv=P.skills.boneWall||1;
-            const _bsRingR=~~(200+(_bsLv-1)*22);
+            const _bsRingR=~~((200+(_bsLv-1)*22)/3); // 악의폭풍의 1/3
             const _erF=_isFused('elecRepent');
             const _hrLv=_erF?(P.skills.hellRay||1):0;
             const _syncDur=600; // 10초 고정 (악의폭풍과 동일)
@@ -27041,7 +27043,7 @@ function update(){
             // elecRepent: 참회(hellRay)도 같은 포인트에 동시 설치
             if(_erF&&P.skills.hellRay>=1){
               const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*pBeamMul()*_skMul('hellRay')*1.2); // 통일공식: _skMul + 빔 장비 배율 (합체)
-              G._fireZones.push({x:_mswx,y:_mswy,r:~~((200+(_hrLv-1)*22)/3),t:0,maxT:_syncDur,
+              G._fireZones.push({x:_mswx,y:_mswy,r:200+(_hrLv-1)*22,t:0,maxT:_syncDur,
                 dmg:_hrDmg,el:EL.L,lv:_hrLv,type:'hellRay',ang:0,elec:true});
               SFX.magic(EL.L);playSample('repentance',.7,_r(1,.08));
               addTxt(_mswx,_mswy-20,_T('⚡🦴 참회 귀환!'),'#ffee44',50);
@@ -34906,6 +34908,7 @@ function activateGhostXbowTurret(){
     const _sgLv=P.skills.voidScarecrow||1;
     const _sgMax=20+(_sgLv-1)*3+(_sgLv>=10?3:0);
     G._voidScarecrow={x:P.x+30,y:P.y,maxAbsorb:_sgMax,absorbed:0,resHP:0,resMP:0,resST:0,aggroOn:true,lv:_sgLv,siegeGhost:true};
+    playSample('ghost_laugh',1.4,_r(1,.1));
     addTxt(P.x,P.y-40,_T('👻 공성유령!'),'#aa88dd',40);
     addParts(P.x,P.y,'#aa88dd',8);
   } else {
@@ -43011,7 +43014,7 @@ function drawP(){
   _dpS0=performance.now(); // S0=charge/recover 끝
   // ══ 참회 조준 인디케이터 ══
   if(P._hrAiming){
-    const _hrLv=P.skills.hellRay||1;const _hrAimR=~~((200+(_hrLv-1)*22)/3); // 악의폭풍의 1/3
+    const _hrLv=P.skills.hellRay||1;const _hrAimR=200+(_hrLv-1)*22; // 악의폭풍과 동일 크기
     let _hrTx=mouse.x-C.width/2+G.cam.x,_hrTy=mouse.y-C.height/2+G.cam.y;
     {const _hrD2=dst(P.x,P.y,_hrTx,_hrTy);if(_hrD2>1000){const _hrA2=Math.atan2(_hrTy-P.y,_hrTx-P.x);_hrTx=P.x+Math.cos(_hrA2)*1000;_hrTy=P.y+Math.sin(_hrA2)*1000}}
     const _hrt2=_now*.005;
@@ -47599,7 +47602,7 @@ async function _startDemoTest(){
   SKILL_SLOTS[4]='giantSlam2';      // 대왕치기2 — Space키
   SKILL_SLOTS[5]='holyDome';        // 영역스킬(holyFuse) host — F키
   ULT_SLOT='kiSlash';
-  P.activeCtSk='ghostWalk';P.activeMagicSk='arcLaser';P.activeBowSk='normal';P.activeChargeSk='charge';P.activeQSk='peaceShield'; // Ctrl=뇌전걸음, E=마력광선, Shift=기동강화전폭(dimBlast), Q=평화의보호
+  P.activeCtSk='ghostWalk';P.activeMagicSk='arcLaser';P.activeBowSk='normal';P.activeChargeSk='charge';P.activeQSk='peaceShield';P.activeLMBSk='whirlwind'; // Ctrl=뇌전걸음, E=마력광선, Shift=기동강화전폭(dimBlast), Q=평화의보호, LMB=암전폭류(stormBurst)
   // 5등급 전설 장비 (tier=4, rarity=4)
   const _dtSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
   const _dtWt={weapon:'sword',bow:'crossbow'};
