@@ -25265,8 +25265,8 @@ function update(){
     let w=0,_deadCnt=0;for(let i=0;i<ens.length;i++){if(!ens[i])continue;if(ens[i].alive){ens[w++]=ens[i]}else if(ens[i]._reviveTimer>0&&_deadCnt<20){ens[w++]=ens[i];_deadCnt++}}ens.length=w;
     // worldItems picked 정리
     let ww=0;for(let i=0;i<worldItems.length;i++){if(!worldItems[i].picked)worldItems[ww++]=worldItems[i]}worldItems.length=ww;
-    // 아이템 상한 200개 — 초과 시 오래된 것부터 제거 (렉 방지)
-    if(worldItems.length>200)worldItems.splice(0,worldItems.length-200);
+    // 아이템 상한 100개 — 초과 시 하급(낮은 rarity)부터 제거 (렉 방지)
+    if(worldItems.length>100){worldItems.sort((a,b)=>(a.item?a.item.rarity||0:99)-(b.item?b.item.rarity||0:99));worldItems.splice(0,worldItems.length-100);}
     // G.txts: 링 버퍼 풀이므로 compaction 불필요 (축소 시 재할당 유발)
   }
   // 공간 해싱 리빌드 (2프레임 주기)
