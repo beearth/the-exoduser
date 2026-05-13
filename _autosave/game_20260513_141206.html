@@ -32657,9 +32657,9 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         // 풀피 부활 (HP 변동 없음)
         e.hp=e.mhp;e.eShield=0;e.eShieldMax=0;
         e._bossPhase=0; // 풀피 부활 → 페이즈 리셋
-        e.alive=true;e.s='recover';e.st2=90;e.stunned=0;
+        e.alive=true;e.s='recover';e.st2=90;e.stunned=0;e.poise=e.maxPoise;
         e._comboSeq=null;e._comboIdx=0;e._feinting=false;e._delaying=0; // 부활 시 콤보/페인트 클리어
-        e.maxPoise=~~(e.maxPoise*1.5); e.poise=~~(e.maxPoise*0.25); // 부활: maxPoise 강화, 현재 포이즈는 25%만
+        e.maxPoise=~~(e.maxPoise*1.5); e.poise=e.maxPoise; // 포이즈도 강화
         e.reviveIframes=180; // 부활 무적 3초
         e.atk=~~(e.atk*(_isH7?2:1.5));
         e.speed=Math.min(e.speed*1.25,_isH7?2.0:1.6);
@@ -47577,20 +47577,15 @@ async function _startDemoTest(){
     'maliceSwipe','shieldThrow','holyDome','holyPrison','iceStorm',
     'maliceMortar','iceOrb','darkPillar','spikeTrap',
     'fireAura','thunderStake','voidScarecrow','explodeScarecrow','ghostXbowTurret',
-    'needleShot','arcLaser','fireBeam','ghostWalk'];
-  for(const _sk of _dSk)P.skills[_sk]=10; // 500랩 마스터
+    'needleShot','arcLaser','fireBeam'];
+  for(const _sk of _dSk)P.skills[_sk]=5;
   // _DEMO_FUSE_ALLOWED 20개 합체 해금
   P._fused={};for(const _fk of _DEMO_FUSE_ALLOWED)P._fused[_fk]=true;
-  // 스킬슬롯 배치 — 합체 호스트 기준
-  // 1:참회귀환(elecRepent) 2:얼음소용돌이(iceMortar) 3:공성쇠뇌(siegeGhost) 4:독혈해방(plagueFuse) 5:대왕치기 F:결계의영역(holyFuse)
-  SKILL_SLOTS[0]='maliceStorm';     // 참회귀환 host
-  SKILL_SLOTS[1]='maliceMortar';    // 얼음소용돌이 host
-  SKILL_SLOTS[2]='ghostXbowTurret'; // 공성쇠뇌/siegeGhost host
-  SKILL_SLOTS[3]='maliceHunt';      // 독혈해방 host
-  SKILL_SLOTS[4]='giantSlam2';      // 대왕치기2 — Space키
-  SKILL_SLOTS[5]='holyDome';        // 영역스킬(holyFuse) host — F키
+  // 스킬슬롯 배치
+  SKILL_SLOTS[0]='spikeTrap';SKILL_SLOTS[1]='whirlwind';SKILL_SLOTS[2]='holyDome';
+  SKILL_SLOTS[3]='fireball';SKILL_SLOTS[4]='giantSlam';SKILL_SLOTS[5]='darkPillar';
   ULT_SLOT='kiSlash';
-  P.activeCtSk='ghostWalk';P.activeMagicSk='fireball';P.activeBowSk='normal'; // Ctrl=뇌전걸음
+  P.activeCtSk='iceOrb';P.activeMagicSk='fireball';P.activeBowSk='normal';
   // 5등급 전설 장비 (tier=4, rarity=4)
   const _dtSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
   const _dtWt={weapon:'sword',bow:'crossbow'};

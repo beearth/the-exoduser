@@ -47468,15 +47468,19 @@ async function _startDemoTest(){
     'maliceSwipe','shieldThrow','holyDome','holyPrison','iceStorm',
     'maliceMortar','iceOrb','darkPillar','spikeTrap',
     'fireAura','thunderStake','voidScarecrow','explodeScarecrow','ghostXbowTurret',
-    'needleShot','arcLaser','fireBeam'];
-  for(const _sk of _dSk)P.skills[_sk]=5;
+    'needleShot','arcLaser','fireBeam','ghostWalk'];
+  for(const _sk of _dSk)P.skills[_sk]=10; // 500랩 마스터
   // _DEMO_FUSE_ALLOWED 20개 합체 해금
   P._fused={};for(const _fk of _DEMO_FUSE_ALLOWED)P._fused[_fk]=true;
-  // 스킬슬롯 배치
-  SKILL_SLOTS[0]='spikeTrap';SKILL_SLOTS[1]='whirlwind';SKILL_SLOTS[2]='holyDome';
-  SKILL_SLOTS[3]='fireball';SKILL_SLOTS[4]='giantSlam';SKILL_SLOTS[5]='darkPillar';
+  // 스킬슬롯 배치 — 합체 호스트 기준
+  SKILL_SLOTS[0]='maliceStorm';     // 참회귀환(elecRepent)
+  SKILL_SLOTS[1]='maliceMortar';    // 얼음소용돌이(iceMortar)
+  SKILL_SLOTS[2]='ghostXbowTurret'; // 공성쇠뇌(siegeGhost)
+  SKILL_SLOTS[3]='maliceHunt';      // 독혈해방(plagueFuse)
+  SKILL_SLOTS[4]='giantSlam2';      // 대왕치기2 — Space키
+  SKILL_SLOTS[5]='holyDome';        // 영역스킬(holyFuse) — F키
   ULT_SLOT='kiSlash';
-  P.activeCtSk='iceOrb';P.activeMagicSk='fireball';P.activeBowSk='normal';
+  P.activeCtSk='ghostWalk';P.activeMagicSk='fireball';P.activeBowSk='normal'; // Ctrl=뇌전걸음
   // 5등급 전설 장비 (tier=4, rarity=4)
   const _dtSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
   const _dtWt={weapon:'sword',bow:'crossbow'};

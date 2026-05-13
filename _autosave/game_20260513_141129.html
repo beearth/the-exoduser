@@ -2517,7 +2517,7 @@ canvas{display:block;position:fixed;inset:0}
 
 <!-- INVENTORY PANEL -->
 <div class="panel" id="invPanel">
-  <div class="pbox" style="display:flex;flex-direction:column;overflow-y:auto;box-sizing:border-box;">
+  <div class="pbox" style="display:flex;flex-direction:column;overflow:hidden;box-sizing:border-box;height:90vh;">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-shrink:0;">
       <div class="ptitle" style="font-size:1.3rem;margin:0;">인벤토리</div>
       <div style="display:flex;align-items:center;gap:10px">
@@ -2526,7 +2526,7 @@ canvas{display:block;position:fixed;inset:0}
           <span id="cpVal" style="color:#ffcc44;font-size:1rem;font-weight:900;text-shadow:0 0 8px rgba(255,200,0,.3)">0</span>
           <span id="cpBreak" style="color:#776655;font-size:.75rem"></span>
         </div>
-        <div onclick="_crBagOpen=true;_crPickCb=null;_crBagSel=-1;renderCrystalBag()" style="padding:2px 8px;cursor:pointer;border:1px solid #553388;color:#bb88ff;font-size:.8rem;font-weight:700;background:rgba(100,0,200,.08);border-radius:3px" onmouseover="this.style.borderColor='#bb88ff';this.style.background='rgba(100,0,200,.15)'" onmouseout="this.style.borderColor='#553388';this.style.background='rgba(100,0,200,.08)'">결정</div>
+        <div onclick="_crBagOpen=true;_crPickCb=null;_crBagSel=-1;_gpCrIdx=0;renderCrystalBag()" style="padding:2px 8px;cursor:pointer;border:1px solid #553388;color:#bb88ff;font-size:.8rem;font-weight:700;background:rgba(100,0,200,.08);border-radius:3px" onmouseover="this.style.borderColor='#bb88ff';this.style.background='rgba(100,0,200,.15)'" onmouseout="this.style.borderColor='#553388';this.style.background='rgba(100,0,200,.08)'">결정</div>
         <div id="invResBar" style="padding:2px 10px;font-size:.8rem;color:#887766;background:rgba(0,0,0,.3);border:1px solid #443322;border-radius:3px;white-space:nowrap"></div>
         <div id="invClose" style="width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid #554433;color:#aa8866;font-size:1.2rem;font-weight:900;background:rgba(0,0,0,.3)" onmouseover="this.style.color='#ff6633';this.style.borderColor='#ff6633'" onmouseout="this.style.color='#aa8866';this.style.borderColor='#554433'">✕</div>
       </div>
@@ -8296,10 +8296,10 @@ function _drawStage1CodexBoss(X,e,sa,tdY){
   return true;
 }
 // ── 대형보스 글로벌 설정 ──
-window._btScaleMul=3.7; // 보스 시각 스케일 배율
+window._btScaleMul=4.0; // 보스 시각 스케일 배율
 window._b3Active=false; // 3D 보스 오버레이 활성 여부 (true면 2D 보스 렌더 차단)
 window._btRotX=0.0; // 보스 3D X축 회전 (rad)
-window._btOffsetY=-50; // 보스 3D Y 오프셋 (px, 양수=위로)
+window._btOffsetY=-200; // 보스 3D Y 오프셋 (px, 양수=위로)
 function _drawLargeBoss(){return false;}
 let _atlasExtBReady=false,_atlasExtB_img=null,_atlasExtB_frames=null;
 (function _loadAtlasExtB(){
@@ -9736,7 +9736,7 @@ let _gpUIPrev={a:false,b:false,x:false,y:false,lb:false,rb:false,b8:false,b9:fal
 let _gpUIRepeatDir=null,_gpUIRepeatTs=0;
 const _GP_UI_DELAY=380,_GP_UI_INTERVAL=110;
 // ── 가상 커서 (좌스틱 마우스) ──
-const _gpVC={x:window.innerWidth/2,y:window.innerHeight/2,vis:false,el:null,spd:6};
+const _gpVC={x:window.innerWidth/2,y:window.innerHeight/2,vis:false,el:null,spd:6};let _gpVCPrevHoverEl=null;
 function _gpVCInit(){
   if(_gpVC.el)return;
   const d=document.createElement('div');d.id='_gpVCursor';
@@ -9946,14 +9946,12 @@ function _gpUINav(panel){
 
   _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.y=y;
 
-  // ── 우측 스틱: 패널 스크롤 (캐시 방식 — getComputedStyle 매 프레임 차단) ──
+  // ── 우측 스틱: 패널 스크롤 (WheelEvent — 마우스 휠과 동일) ──
   if(Math.abs(rsYVal)>0.15||Math.abs(rsXVal)>0.15){
-    if(!_gpScEl){
-      if(_gpVC.vis){_gpScEl=_gpFindScroll(document.elementFromPoint(_gpVC.x,_gpVC.y));}
-      else{_gpScEl=_gpFindScroll(items[_gpUIIdx]);}
-      if(!_gpScEl&&panel.scrollHeight>panel.clientHeight+5)_gpScEl=panel;
-    }
-    if(_gpScEl){_gpScEl.scrollTop+=rsYVal*18;if(Math.abs(rsXVal)>0.15)_gpScEl.scrollLeft+=rsXVal*18;}
+    const _wx=_gpVC.vis?_gpVC.x:(cur?cur.getBoundingClientRect().left+cur.offsetWidth/2:window.innerWidth/2);
+    const _wy=_gpVC.vis?_gpVC.y:(cur?cur.getBoundingClientRect().top+cur.offsetHeight/2:window.innerHeight/2);
+    const _wt=document.elementFromPoint(_wx,_wy)||panel;
+    if(_wt)_wt.dispatchEvent(new WheelEvent('wheel',{deltaY:rsYVal*120,deltaX:rsXVal*120,deltaMode:0,bubbles:true,cancelable:true,clientX:_wx,clientY:_wy}));
   } else {_gpScEl=null;}
 
   // 버튼 8(Back) = 전체 첫 항목  버튼 9(Start) = 전체 마지막 항목
@@ -10202,6 +10200,31 @@ function _pollGamepad(){
   }
 }
 
+// ═══ 결정 주머니 게임패드 nav ═══
+let _gpCrIdx=0;
+function _gpCrBagNav(){
+  if(!_gpad)return;
+  const pop=$('crBagPop');if(!pop||pop.style.display!=='flex')return;
+  const listEl=pop.querySelector('div[style*="overflow-y:auto"]');
+  const rows=listEl?listEl.querySelectorAll('div[onclick]'):[];
+  const len=rows.length;
+  const u=(_gpad.buttons[12]&&_gpad.buttons[12].pressed)||_gpAxes[7]<-0.5;
+  const d=(_gpad.buttons[13]&&_gpad.buttons[13].pressed)||_gpAxes[7]>0.5;
+  const a=_gpad.buttons[0]&&_gpad.buttons[0].pressed;
+  const rsY=_gpad.axes.length>=4?_gpad.axes[3]:0;
+  // D-pad 이동
+  if(u&&!_gpUIPrev.u&&len>0){_gpCrIdx=Math.max(0,_gpCrIdx-1);}
+  if(d&&!_gpUIPrev.d&&len>0){_gpCrIdx=Math.min(len-1,_gpCrIdx+1);}
+  // 하이라이트
+  rows.forEach((r,i)=>{r.style.outline=i===_gpCrIdx?'2px solid #C9A961':'';r.style.outlineOffset='-1px'});
+  if(rows[_gpCrIdx]&&(u&&!_gpUIPrev.u||d&&!_gpUIPrev.d))rows[_gpCrIdx].scrollIntoView({block:'nearest'});
+  // A = 선택 클릭
+  if(a&&!_gpUIPrev.a&&rows[_gpCrIdx])rows[_gpCrIdx].click();
+  // 우스틱 스크롤
+  if(listEl&&Math.abs(rsY)>0.15)listEl.scrollTop+=rsY*18;
+  _gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.a=a;
+}
+
 // ═══ 인벤토리 게임패드 (디아4 스타일 — 아이템 순차 + 즉시 상세) ═══
 let _gpInvIdx=0,_gpInvEqIdx=0,_gpInvMode='bag',_gpInvBotIdx=-1; // bag | eq | st
 function _gpInvNav(){
@@ -10261,21 +10284,20 @@ function _gpInvNav(){
         items[_gpInvIdx].style.outline='2px solid #C9A961';items[_gpInvIdx].style.outlineOffset='-1px';
         items[_gpInvIdx].scrollIntoView({block:'nearest'});
       }
-      if(moved&&typeof _invRenderDetail==='function'){INV.selected=_gpInvIdx;_invRenderDetail(_gpInvIdx,'bag')}
+      if(moved&&typeof _invRenderDetail==='function'){const _wasEq=typeof INV.selected==='string';INV.selected=_gpInvIdx;if(_wasEq&&typeof renderInv==='function')renderInv();else _invRenderDetail(_gpInvIdx,'bag')}
       if(Math.abs(rsY)>0.15)grid.scrollTop+=rsY*18;
-      // A = 즉시 장착: #invActionBtns 안의 .id-btn.equip 클릭 (contextmenu는 전역 차단됨)
+      // A = 선택(비교창에 상세 표시)
       if(a&&!_gpUIPrev.a&&!_gpVC.vis&&items[_gpInvIdx]){
-        if(moved||!$('invActionBtns')||!$('invActionBtns').querySelector('.id-btn.equip')){
-          // 상세 패널 갱신
-          if(typeof _invRenderDetail==='function'){INV.selected=_gpInvIdx;_invRenderDetail(_gpInvIdx,'bag')}
-        }
-        const _eqBtn=$('invActionBtns')?$('invActionBtns').querySelector('.id-btn.equip'):null;
-        if(_eqBtn)_eqBtn.click();
+        INV.selected=_gpInvIdx;
+        if(typeof renderInv==='function')renderInv();
+        if(typeof _invRenderDetail==='function')_invRenderDetail(_gpInvIdx,'bag');
       }
+      // B = 장착(우클릭)
+      if(b&&!_gpUIPrev.b){const _bEl=_gpVC.vis?document.elementFromPoint(_gpVC.x,_gpVC.y):null;const _bt=_bEl&&(_bEl.classList.contains("inv-item")?_bEl:_bEl.closest?.(".inv-item"));if(_bt){_bt.dispatchEvent(new MouseEvent("contextmenu",{bubbles:true,cancelable:true}))}else if(!_gpVC.vis){const _bg=$("invGrid");if(_bg){const _bi=_bg.querySelectorAll(".inv-item");if(_bi[_gpInvIdx])_bi[_gpInvIdx].dispatchEvent(new MouseEvent("contextmenu",{bubbles:true,cancelable:true}))}}}
       // X = 쓰레기 마킹
       if(x&&!_gpUIPrev.x&&_gpInvIdx<bagLen){const it=INV.bag[_gpInvIdx];if(it){it.junk=!it.junk;if(it.junk)it.fav=false;renderInv();if(typeof _invRenderDetail==='function')_invRenderDetail(_gpInvIdx,'bag')}}
-      // Y = 장착(우클릭)
-      if(y&&!_gpUIPrev.y){const _yg=$("invGrid");if(_yg){const _yi=_yg.querySelectorAll(".inv-item");if(_yi[_gpInvIdx])_yi[_gpInvIdx].dispatchEvent(new MouseEvent("contextmenu",{bubbles:true,cancelable:true}))}}
+      // Y = 아이템 락(즐겨찾기 토글)
+      if(y&&!_gpUIPrev.y&&_gpInvIdx<bagLen){const it=INV.bag[_gpInvIdx];if(it){it.fav=!it.fav;if(it.fav)it.junk=false;renderInv();if(typeof _invRenderDetail==='function')_invRenderDetail(_gpInvIdx,'bag')}}
     }
   } else if(_gpInvMode==='eq'){
     const eqSlots=$('invEqGrid')?Array.from($('invEqGrid').querySelectorAll('.inv-eq-slot')):[];
@@ -10317,38 +10339,17 @@ function _gpInvNav(){
     const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
     if(_bots[_gpInvBotIdx])_bots[_gpInvBotIdx].click();
   }
-  // ── 우스틱: 스크롤 (캐시 방식) ──
+  // ── 우스틱: 스크롤 (WheelEvent — 마우스 휠과 동일) ──
   const _rsYFull=_gpad.axes.length>=4?_gpad.axes[3]:0;
   const _rsXFull=_gpad.axes.length>=3?_gpad.axes[2]:0;
   if(Math.abs(_rsYFull)>0.15||Math.abs(_rsXFull)>0.15){
-    if(!_gpScEl){
-      // 영역별 명시적 스크롤 타겟 (bounding rect 기반)
-      const _ir=$('invRight'),_ig=$('invGrid'),_il=$('invLeft');
-      if(_gpVC.vis&&_ir&&_ig&&_il){
-        const _irR=_ir.getBoundingClientRect();
-        const _igR=_ig.getBoundingClientRect();
-        const _ilR=_il.getBoundingClientRect();
-        if(_gpVC.x>=_irR.left&&_gpVC.x<=_irR.right&&_gpVC.y>=_irR.top&&_gpVC.y<=_irR.bottom){
-          _gpScEl=_ir.scrollHeight>_ir.clientHeight+5?_ir:null; // 아이템 상세
-        } else if(_gpVC.x>=_igR.left&&_gpVC.x<=_igR.right&&_gpVC.y>=_igR.top&&_gpVC.y<=_igR.bottom){
-          _gpScEl=_ig.scrollHeight>_ig.clientHeight+5?_ig:null; // 가방 그리드
-        } else if(_gpVC.x>=_ilR.left&&_gpVC.x<=_ilR.right&&_gpVC.y>=_ilR.top&&_gpVC.y<=_ilR.bottom){
-          _gpScEl=_il.scrollHeight>_il.clientHeight+5?_il:null; // 장착/창고 좌측
-        }
-      }
-      if(!_gpScEl&&_gpVC.vis){_gpScEl=_gpFindScroll(document.elementFromPoint(_gpVC.x,_gpVC.y));}
-      const _invP=$('invPanel');
-      // 커서 없을 때 모드별 기본 스크롤 대상
-      if(!_gpScEl&&!_gpVC.vis){
-        if(_gpInvMode==='bag'){const _ig=$('invGrid');if(_ig&&_ig.scrollHeight>_ig.clientHeight+5)_gpScEl=_ig;}
-        else if(_gpInvMode==='st'){const _sg=$('invStGrid');if(_sg&&_sg.scrollHeight>_sg.clientHeight+5)_gpScEl=_sg;
-          else{const _il=$('invLeft');if(_il&&_il.scrollHeight>_il.clientHeight+5)_gpScEl=_il;}}
-        else{const _ir=$('invRight');if(_ir&&_ir.scrollHeight>_ir.clientHeight+5)_gpScEl=_ir;}
-      }
-      if(!_gpScEl&&_invP){_gpScEl=_gpFindScroll(_invP.querySelector('#invRight'))||_gpFindScroll(_invP);}
-    }
-    if(_gpScEl){_gpScEl.scrollTop+=_rsYFull*18;if(Math.abs(_rsXFull)>0.15)_gpScEl.scrollLeft+=_rsXFull*18;}
+    const _iwx=_gpVC.vis?_gpVC.x:window.innerWidth/2;
+    const _iwy=_gpVC.vis?_gpVC.y:window.innerHeight/2;
+    const _iwt=document.elementFromPoint(_iwx,_iwy)||$('invPanel');
+    if(_iwt)_iwt.dispatchEvent(new WheelEvent('wheel',{deltaY:_rsYFull*120,deltaX:_rsXFull*120,deltaMode:0,bubbles:true,cancelable:true,clientX:_iwx,clientY:_iwy}));
   } else {_gpScEl=null;}
+  // 가상 커서 호버 → inv-item mouseover 자동 발생
+  if(_gpVC.vis){const _vhEl=document.elementFromPoint(_gpVC.x,_gpVC.y);const _vhIt=(_vhEl&&_vhEl.id!=="_gpVCursor")?_vhEl:null;if(_vhIt!==_gpVCPrevHoverEl){if(_gpVCPrevHoverEl)_gpVCPrevHoverEl.dispatchEvent(new MouseEvent("mouseleave",{bubbles:true,clientX:_gpVC.x,clientY:_gpVC.y}));if(_vhIt)_vhIt.dispatchEvent(new MouseEvent("mouseover",{bubbles:true,clientX:_gpVC.x,clientY:_gpVC.y}));_gpVCPrevHoverEl=_vhIt;}}else if(_gpVCPrevHoverEl){_gpVCPrevHoverEl.dispatchEvent(new MouseEvent("mouseleave",{bubbles:true}));_gpVCPrevHoverEl=null;}
   // B버튼 패널닫기 제거 — 전용 닫기버튼 사용
   _gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;
   _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.x=x;_gpUIPrev.y=y;
@@ -13182,7 +13183,7 @@ function _poiseHit(e, amt, label){
 function _poiseReset(e){
   if(!e) return;
 
-  e.poise = e.maxPoise;
+  e.poise = ~~(e.maxPoise * 0.55); // 그로기 후 55% 회복 (기존 100%)
   e.poiseR = 0;
 }
 function teleportE(e,nx,ny,col,n){if(!canMv(nx,ny,e.r))return false;
@@ -28740,7 +28741,7 @@ function _bossPhaseCheck(e,sp){
   // 3) 스탯 강화
   e.atk=~~(e.atk*1.3);
   e.speed=Math.min(e.speed*1.15,1.8+_bp*.1);
-  e.maxPoise=~~(e.maxPoise*1.2);e.poise=e.maxPoise;
+  e.maxPoise=~~(e.maxPoise*1.2);e.poise=Math.min(e.poise,~~(e.maxPoise*0.4)); // 페이즈 전환: maxPoise 버프만, 현재 포이즈는 40%로 캡
   e.bossPatCd=Math.max(20,~~(e.bossPatCd*(.9-_bp*.05)));
   // 4) 상태 초기화
   e.stunned=0;e.s='recover';e.st2=45;e.bossPatT=10;
@@ -41294,7 +41295,8 @@ function draw(){
       }
       let _bDrew=false;
       const _bScMul=window._btScaleMul||1;
-      if(_bScMul!==1){X.save();X.translate(e.x,e.y);X.scale(_bScMul,_bScMul);X.translate(-e.x,-e.y)}
+      const _bYOff=window._btOffsetY||0;
+      if(_bScMul!==1||_bYOff!==0){X.save();X.translate(e.x,e.y+_bYOff);X.scale(_bScMul,_bScMul);X.translate(-e.x,-e.y)}
       if(!e._bDrawLog){e._bDrawLog=true;console.log('[BOSS_DRAW] extB:',_atlasExtBReady,'walkA:',_bossWalkAtlas.ready,'intB:',_atlasBReady,'stage:',G.stage,'scale:',_bScMul)}
       if(!_bDrew&&G.stage===0){_bDrew=_drawStage1CodexBoss(X,e,sa,_tdY)}
       // ── 외부 보스 아틀라스 렌더링 (atlas_bosses.png, 최우선) ──
@@ -41356,7 +41358,7 @@ function draw(){
         }
       }
       if(!_bDrew){X.save();X.translate(0,_tdY);drawBossBody(X,e,_now,sa);X.restore()}
-      if(_bScMul!==1)X.restore();
+      if(_bScMul!==1||_bYOff!==0)X.restore();
       // ── 보스 다리 안개 (노이즈 텍스처 프레임 애니메이션) ──
       if(e.alive){
         const _bfHell=SI_TO_HELL[G.stage];
@@ -48978,7 +48980,7 @@ _btWait(()=>{
   setTimeout(()=>{
     window._btBoss=ens.find(e=>e.ib);
     if(window._btBoss){window._btBoss._origSpd=window._btBoss.speed;_btUpdateInfo()}
-    window._btScaleMul=5.0;
+    // _btScaleMul / _btOffsetY는 전역 기본값(4.0 / -200) 그대로 사용
     _btBuildUI();
   },500);
 },2000);
@@ -49101,8 +49103,8 @@ function _btBuildUI(){
   </div>`;
   // ── 스케일 슬라이더 ──
   panel.innerHTML+=`<div style="border-top:1px solid #332211;padding-top:6px;margin-bottom:8px">
-    <span style="color:#aa8866;font-size:11px">보스 시각 스케일: <span id="_btScaleVal">×5</span></span>
-    <input type="range" id="_btScaleSlider" min="0.2" max="8" step="0.1" value="5"
+    <span style="color:#aa8866;font-size:11px">보스 시각 스케일: <span id="_btScaleVal">×4</span></span>
+    <input type="range" id="_btScaleSlider" min="0.2" max="8" step="0.1" value="4"
       style="width:100%;margin-top:4px;accent-color:#ffaa44"
       oninput="_btScaleMul=+this.value;document.getElementById('_btScaleVal').textContent='×'+this.value">
     <div style="display:flex;gap:3px;margin-top:4px">
@@ -49118,8 +49120,8 @@ function _btBuildUI(){
     <div style="display:flex;gap:3px;margin-top:4px">
       ${[-0.8,-0.5,-0.28,0,0.28,0.5,0.8].map(v=>`<button class="_btBtn" onclick="window._btRotX=${v};document.getElementById('_btRotSlider').value=${v};document.getElementById('_btRotVal').textContent='${v.toFixed(2)}'" style="flex:1;font-size:10px">${v}</button>`).join('')}
     </div>
-    <span style="color:#aa8866;font-size:11px;margin-top:8px;display:block">Y 오프셋 (↑위 ↓아래): <span id="_btOffVal">0</span>px</span>
-    <input type="range" id="_btOffSlider" min="-300" max="300" step="1" value="0"
+    <span style="color:#aa8866;font-size:11px;margin-top:8px;display:block">Y 오프셋 (↑위 ↓아래): <span id="_btOffVal">-200</span>px</span>
+    <input type="range" id="_btOffSlider" min="-300" max="300" step="1" value="-200"
       style="width:100%;margin-top:4px;accent-color:#88ffaa"
       oninput="window._btOffsetY=+this.value;document.getElementById('_btOffVal').textContent=this.value">
     <div style="display:flex;gap:3px;margin-top:4px">
