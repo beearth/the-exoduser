@@ -2504,7 +2504,7 @@ canvas{display:block;position:fixed;inset:0}
             <button id="resetNo" style="padding:6px 20px;background:rgba(0,0,0,.3);border:1px solid #443322;color:#aa8866;font-size:1rem;cursor:pointer">취소</button>
           </div>
         </div>
-        <div id="quitSection" class="set-section" style="margin-top:15px;border-top:1px solid #550000;padding-top:15px;display:none">
+        <div id="quitSection" class="set-section" style="margin-top:15px;border-top:1px solid #550000;padding-top:15px">
           <button id="quitBtn" style="display:block;width:100%;padding:10px;background:rgba(80,0,0,.35);border:1px solid #880000;color:#ff4444;font-family:'Noto Sans KR';font-weight:900;font-size:1.1rem;cursor:pointer;letter-spacing:.15em;transition:all .3s">게임 종료</button>
         </div>
       </div>
@@ -25265,6 +25265,8 @@ function update(){
     let w=0,_deadCnt=0;for(let i=0;i<ens.length;i++){if(!ens[i])continue;if(ens[i].alive){ens[w++]=ens[i]}else if(ens[i]._reviveTimer>0&&_deadCnt<20){ens[w++]=ens[i];_deadCnt++}}ens.length=w;
     // worldItems picked 정리
     let ww=0;for(let i=0;i<worldItems.length;i++){if(!worldItems[i].picked)worldItems[ww++]=worldItems[i]}worldItems.length=ww;
+    // 아이템 상한 50개 — 초과 시 하급(낮은 rarity)부터 제거 (렉 방지)
+    if(worldItems.length>50){worldItems.sort((a,b)=>(a.item?a.item.rarity||0:99)-(b.item?b.item.rarity||0:99));worldItems.splice(0,worldItems.length-50);}
     // G.txts: 링 버퍼 풀이므로 compaction 불필요 (축소 시 재할당 유발)
   }
   // 공간 해싱 리빌드 (2프레임 주기)
@@ -26956,7 +26958,7 @@ function update(){
     else if(MBjust[0]){
       MBjust[0]=false;
       const _hrLv=P.skills.hellRay||1;
-      const _hrR=200+(_hrLv-1)*22; // 1렙250 +22/렙, 10렙448
+      const _hrR=~~((200+(_hrLv-1)*22)/3); // 악의폭풍의 1/3 (lv1≈67, lv10≈133, lv20≈206)
       const _hrElec=_isFused('elecRepent'); // 참회 귀환 합체
       const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*pBeamMul()*_skMul('hellRay')*(_hrElec?1.2:1)*_fuseMul('hellRay')); // 통일공식: _skMul + 빔 장비 배율
       P.mp-=100;P._hrStk--;const _hrMx3=_hrElec?(_hrLv>=10?3:_hrLv>=5?2:1):1;if(P._hrStk<_hrMx3&&!P._hrRech)P._hrRech=600;
@@ -27039,7 +27041,7 @@ function update(){
             // elecRepent: 참회(hellRay)도 같은 포인트에 동시 설치
             if(_erF&&P.skills.hellRay>=1){
               const _hrDmg=~~(magicRef()*statInt()*pMagicMul()*pBeamMul()*_skMul('hellRay')*1.2); // 통일공식: _skMul + 빔 장비 배율 (합체)
-              G._fireZones.push({x:_mswx,y:_mswy,r:200+(_hrLv-1)*22,t:0,maxT:_syncDur,
+              G._fireZones.push({x:_mswx,y:_mswy,r:~~(500+(_hrLv-1)*200/19),t:0,maxT:_syncDur,
                 dmg:_hrDmg,el:EL.L,lv:_hrLv,type:'hellRay',ang:0,elec:true});
               SFX.magic(EL.L);playSample('repentance',.7,_r(1,.08));
               addTxt(_mswx,_mswy-20,_T('⚡🦴 참회 귀환!'),'#ffee44',50);
@@ -33907,7 +33909,7 @@ const SKILL_LIST=[
   // earthBreaker 삭제됨
   {id:'chainSlash',name:'기동칼날개',cat:'move',fixed:true,hidden:true,emoji:'⚔',desc:'[히든: 5성 dimRush 합체] 사슬기동 중 좌클릭 → 이동 중 전방 광역 베기+출혈. STR 스케일 물리데미지. 다단히트. Lv당 뎀+12% 범위+15',descEn:'[Hidden: 5-star dimRush fuse] During chain dash LMB → forward AoE slash+bleed while moving. STR scale physical DMG. Multi-hit. Per Lv DMG+12% range+15',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'peaceShield',name:'평화의보호',cat:'def',fixed:true,hidden:true,noDmg:true,emoji:'🕊️',desc:'[히든: 암전나선 합체] Q 홀드 시 보호막이 점점 커지며 HP 초당 10% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모',descEn:'[Hidden: Dark Spiral fuse] Q hold: shield grows over time + HP 10%/s regen. DMG reduction scales with shield size. MP cost',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
-  {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'⚡',desc:'[히든: 암전나선 합체] E로 조준, 클릭 설치. 에너지 쐐기를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. Lv당 거리+50',descEn:'[Hidden: Dark Spiral fuse] E to aim, click to place. Energy wedge planted on ground — rotates+DMG. MP 100. 1 charge CD 10s. 5s+0.5s/Lv duration. Per Lv range+50',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
+  {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'⚡',desc:'[히든: 암전나선 합체] E로 조준, 클릭 설치. 에너지 쐐기를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. 범위 200+(Lv-1)×22',descEn:'[Hidden: Dark Spiral fuse] E to aim, click to place. Energy wedge planted on ground — rotates+DMG. MP 100. 1 charge CD 10s. 5s+0.5s/Lv duration. Range 200+(Lv-1)×22',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'칼등날개',cat:'def',fixed:true,emoji:'🔨',desc:'[고정: 칼등치기 합체] 보유 시 칼등치기에 전방 충격파 자동 발동. 제자리 처내기. 쿨 5초. Lv당 뎀+12% 범위+20',descEn:'[Fixed: Blade Parry fuse] When owned, swipe auto-triggers forward shockwave. Stationary swipe. CD 5s. Per Lv DMG+12% range+20',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
   // [SKILL REMOVED 2026-04-10] blastShot (폭산탄) — 석궁 개편
   {id:'weakPhys',name:'파쇄의 영역',cat:'tech',act:true,noDmg:true,emoji:'⚔',desc:'현재 위치에 파쇄 영역 설치 (10초). 범위 내 적 물리방어력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place shatter domain at current pos (10s). Enemy phys DEF -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
@@ -34783,7 +34785,7 @@ function fireBoneWall(tx,ty){
   const slv=P.skills.boneWall||1;
   P._bwStk--;const _bwMx2=(P.skills.boneWall>=10)?3:2;if(P._bwStk<_bwMx2&&!P._bwRech)P._bwRech=1500;
   _addSkProf('boneWall');
-  const ringR=~~(200+(slv-1)*22);
+  const ringR=~~(500+(slv-1)*200/19); // 1렙500, 20렙700
   const duration=Math.min(1800,180+(slv-1)*12);
   const riseDmg=~~(meleeRef()*statStr()*pAtkMul()*8*(1+(slv-1)*0.15));
   if(!G._boneWalls)G._boneWalls=[];
@@ -37895,11 +37897,13 @@ try{
 try{_applyCursor()}catch(e){}
 if($('resetBtn'))$('resetBtn').onclick=()=>{$('resetConfirm').style.display='block'};
 if($('resetNo'))$('resetNo').onclick=()=>{$('resetConfirm').style.display='none'};
-// 게임 종료 버튼 — Electron 전용
-if(IS_ELECTRON&&window.electronAPI?.quitApp){
-  const _qs=$('quitSection');if(_qs)_qs.style.display='';
-  const _qb=$('quitBtn');if(_qb)_qb.onclick=()=>window.electronAPI.quitApp();
-}
+// 게임 종료 버튼 — 모든 환경 표시
+{const _qs=$('quitSection');if(_qs)_qs.style.display='';
+const _qb=$('quitBtn');if(_qb)_qb.onclick=()=>{
+  if(IS_NW){window.nw.App.quit();}
+  else if(IS_ELECTRON&&window.electronAPI?.quitApp){window.electronAPI.quitApp();}
+  else{window.close();}
+};}
 if($('resetYes'))$('resetYes').onclick=async()=>{
   $('resetConfirm').style.display='none';
   const _isLocalReset=location.hostname==='localhost'||location.hostname==='127.0.0.1';
@@ -43007,7 +43011,7 @@ function drawP(){
   _dpS0=performance.now(); // S0=charge/recover 끝
   // ══ 참회 조준 인디케이터 ══
   if(P._hrAiming){
-    const _hrLv=P.skills.hellRay||1;const _hrAimR=500+(_hrLv-1)*50;
+    const _hrLv=P.skills.hellRay||1;const _hrAimR=~~((200+(_hrLv-1)*22)/3); // 악의폭풍의 1/3
     let _hrTx=mouse.x-C.width/2+G.cam.x,_hrTy=mouse.y-C.height/2+G.cam.y;
     {const _hrD2=dst(P.x,P.y,_hrTx,_hrTy);if(_hrD2>1000){const _hrA2=Math.atan2(_hrTy-P.y,_hrTx-P.x);_hrTx=P.x+Math.cos(_hrA2)*1000;_hrTy=P.y+Math.sin(_hrA2)*1000}}
     const _hrt2=_now*.005;
@@ -43145,7 +43149,7 @@ function drawP(){
     const bwSlv=P.skills.boneWall||1;
     let bwTx=mouse.x-C.width/2+G.cam.x,bwTy=mouse.y-C.height/2+G.cam.y;
     const _bwD2=dst(P.x,P.y,bwTx,bwTy);if(_bwD2>1000){const _bwA2=Math.atan2(bwTy-P.y,bwTx-P.x);bwTx=P.x+Math.cos(_bwA2)*1000;bwTy=P.y+Math.sin(_bwA2)*1000}
-    const bwR=~~(200+bwSlv*20);
+    const bwR=~~(500+(bwSlv-1)*200/19); // 1렙500, 20렙700
     const _bwt=_now*.06;
     X.save();
     // 원형 범위
@@ -47571,7 +47575,7 @@ async function _startDemoTest(){
   _charName='DEMO TEST';_charIdx=0;
   G._cutsceneDone=true;
   // Lv500
-  P.lv=_DEMO_LV_CAP;P.exp=0;P.maxExp=_calcMaxExp(_DEMO_LV_CAP);P.sp=0;P.ap=0;P.isDemoTest=true;
+  P.lv=_DEMO_LV_CAP;P.exp=0;P.maxExp=_calcMaxExp(_DEMO_LV_CAP);P.sp=0;P.ap=0;P.isDemoTest=true;G.mats=10000000000;
   // ACT1 스킬 전체 Lv5
   const _dSk=['kiSlash','fireball','bladeDash','chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam',
     'fanShot','omniBeam','elemMissile','whirlwind','detonate','giantSlam','giantSlam2',
@@ -47595,13 +47599,13 @@ async function _startDemoTest(){
   SKILL_SLOTS[4]='giantSlam2';      // 대왕치기2 — Space키
   SKILL_SLOTS[5]='holyDome';        // 영역스킬(holyFuse) host — F키
   ULT_SLOT='kiSlash';
-  P.activeCtSk='ghostWalk';P.activeMagicSk='fireball';P.activeBowSk='normal'; // Ctrl=뇌전걸음
+  P.activeCtSk='ghostWalk';P.activeMagicSk='arcLaser';P.activeBowSk='normal'; // Ctrl=뇌전걸음, E=마력광선(arcLaser)
   // 5등급 전설 장비 (tier=4, rarity=4)
   const _dtSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
   const _dtWt={weapon:'sword',bow:'crossbow'};
   for(const _sl of _dtSlots)INV.equipped[_sl]=mkItem(_sl,4,EL.P,4,_dtWt[_sl]);
-  // 재화
-  G.mats=999999;
+  // 재화 (악의 100억)
+  G.mats=10000000000;
   // 몬스터 아틀라스 대기
   setBootLoading(50,'몬스터 스킨 로딩...');
   if(!_mobAtlas.ready)await new Promise(r=>{const _ci=setInterval(()=>{if(_mobAtlas.ready){clearInterval(_ci);r()}},50);setTimeout(()=>{clearInterval(_ci);r()},5000)});

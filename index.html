@@ -1802,7 +1802,7 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
 
   sb.auth.onAuthStateChange((event,session)=>{
     if(event==='SIGNED_IN'&&session){currentUser=session.user;showLobby()}
-    else if(event==='SIGNED_OUT'){currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='block'}
+    else if(event==='SIGNED_OUT'){currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='block';const _c=document.querySelector('.container');if(_c)_c.style.display=''}
   });
 })();
 
