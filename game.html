@@ -2504,7 +2504,7 @@ canvas{display:block;position:fixed;inset:0}
             <button id="resetNo" style="padding:6px 20px;background:rgba(0,0,0,.3);border:1px solid #443322;color:#aa8866;font-size:1rem;cursor:pointer">취소</button>
           </div>
         </div>
-        <div id="quitSection" class="set-section" style="margin-top:15px;border-top:1px solid #550000;padding-top:15px;display:none">
+        <div id="quitSection" class="set-section" style="margin-top:15px;border-top:1px solid #550000;padding-top:15px">
           <button id="quitBtn" style="display:block;width:100%;padding:10px;background:rgba(80,0,0,.35);border:1px solid #880000;color:#ff4444;font-family:'Noto Sans KR';font-weight:900;font-size:1.1rem;cursor:pointer;letter-spacing:.15em;transition:all .3s">게임 종료</button>
         </div>
       </div>
@@ -2930,6 +2930,7 @@ function gameConfirm(msg,okTxt,cancelTxt){
 // ═══════════════════════════════════════
 // ─── [S01a] ELECTRON — Electron 감지 ───
 const IS_ELECTRON=!!(window.process&&window.process.type)||navigator.userAgent.includes('Electron');
+const IS_NW=!!(window.nw&&window.nw.App);
 // ─── 모바일 감지 ───
 const IS_MOBILE=(function(){
   if(IS_ELECTRON)return false;
@@ -37894,11 +37895,13 @@ try{
 try{_applyCursor()}catch(e){}
 if($('resetBtn'))$('resetBtn').onclick=()=>{$('resetConfirm').style.display='block'};
 if($('resetNo'))$('resetNo').onclick=()=>{$('resetConfirm').style.display='none'};
-// 게임 종료 버튼 — Electron 전용
-if(IS_ELECTRON&&window.electronAPI?.quitApp){
-  const _qs=$('quitSection');if(_qs)_qs.style.display='';
-  const _qb=$('quitBtn');if(_qb)_qb.onclick=()=>window.electronAPI.quitApp();
-}
+// 게임 종료 버튼 — 모든 환경 표시
+{const _qs=$('quitSection');if(_qs)_qs.style.display='';
+const _qb=$('quitBtn');if(_qb)_qb.onclick=()=>{
+  if(IS_NW){window.nw.App.quit();}
+  else if(IS_ELECTRON&&window.electronAPI?.quitApp){window.electronAPI.quitApp();}
+  else{window.close();}
+};}
 if($('resetYes'))$('resetYes').onclick=async()=>{
   $('resetConfirm').style.display='none';
   const _isLocalReset=location.hostname==='localhost'||location.hostname==='127.0.0.1';
