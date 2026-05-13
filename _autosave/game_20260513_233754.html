@@ -22350,9 +22350,9 @@ function mkEn(x,y,si,etype,ib,el,room){
     _feinting:false,_delaying:0,
     _dbgScores:null,
     shockR:0,shockMax:0,laserAng:0,laserLen:0,deaths:0,reviveIframes:0,meteors:[],
-    _revPts:ib?(300+Math.round(si*8.824)):0,_maxRevPts:ib?(300+Math.round(si*8.824)):0,
+    _revPts:ib?(200+Math.round(si*5.882)):0,_maxRevPts:ib?(200+Math.round(si*5.882)):0,
     shieldAng:etype===6?Math.random()*Math.PI*2:0,
-    eShield:hp,eShieldMax:hp,eShieldRegenT:0,
+    eShield:_hp,eShieldMax:_hp,eShieldRegenT:0, // 레벨스케일 HP와 동일 (기존 base hp 버그 수정)
     eRes:ETYPE_ERES[etype]||[0,0,0,0,0,0,0],
     _firstShot:!ib, // 보스 제외, 첫 교전 시 빨간콩 1발
     bleed:0,bleedT:0,bleedStk:0,_bleedPool:0,poison:0,poisonT:0,poisonStk:0,_poisonPool:0,burnT:0,burnStk:0,_burnPool:0, // D4식 DOT: 히트뎀% 풀 축적
@@ -32378,14 +32378,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     let shDiff=(ang+Math.PI)-e.shieldAng;while(shDiff>Math.PI)shDiff-=Math.PI*2;while(shDiff<-Math.PI)shDiff+=Math.PI*2;
     if(Math.abs(shDiff)<Math.PI/3){dmg=~~(dmg*0.3);addTxt(e.x,e.y-15,'🛡','#8888ff',20);if(!noSound)SFX.block()}
   }
-  // 에너지쉴드: 쉴드 살아있는 동안 HP=0, 소진 후 HP 타격
-  // 물리: 쉴드 50%씩 소모 (100쉴드→4방 필요) / 쉴드없으면 HP 100%
-  // 마법: 쉴드 100%씩 소모 (100쉴드→2방 필요) / 쉴드없으면 HP 50%
-  let _shBlocked=false;
-  if(!isDot){
-    if(atkEl===0){if(e.eShield>0){e.eShield=Math.max(0,e.eShield-~~(dmg*0.5));dmg=0;_shBlocked=true;}}
-    else{if(e.eShield>0){e.eShield=Math.max(0,e.eShield-dmg);dmg=0;_shBlocked=true;}else{dmg=~~(dmg*0.5)}}
-  }
+  let _shBlocked=false; // 에너지쉴드 블록 플래그 (최종 배율 확정 후 아래에서 체크)
   // 원소 저항: 자기 원소 저항값만 적용, 타 원소 무관
   if(e.eRes&&e.eRes[atkEl]>0)dmg=~~(dmg*(1-e.eRes[atkEl]));
   // ═══ 63:갑각 괴물 — 집게 방어 중 70% 감소 ═══
@@ -32526,7 +32519,14 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(e._frozen>0&&!isDot){dmg=~~(dmg*1.5)}
   // 한방 데미지 캡: 삭제 (제한 없음)
 
-  // ═══ 데미지 → HP 직행 (이원 방어 삭제) ═══
+  // ═══ 에너지쉴드: 모든 배율 확정 후 흡수 (HP와 동일 내구성) ═══
+  if(!isDot&&e.eShieldMax>0&&e.eShield>0){
+    const _shAbs=Math.min(e.eShield,dmg);
+    e.eShield=Math.max(0,e.eShield-dmg);
+    dmg=Math.max(0,dmg-_shAbs);
+    if(dmg===0)_shBlocked=true;
+  }
+  // ═══ 데미지 → HP 직행 ═══
   if(dmg > 0) {
     if(G._sStats){G._sStats.dmgDealt+=dmg;if(dmg>G._sStats.maxHit)G._sStats.maxHit=dmg}
     // ═══ 5초 롤링 최고 데미지 트래커 ═══
@@ -32676,7 +32676,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       if(e._revPts<0)e._revPts=0;
       // ── 확률 판정 ──
       let _doRevive=false;
-      const _revBase=1.50+G.stage*0.05; // 150%+스테이지당5%
+      const _revBase=2.00+G.stage*0.05; // 200%+스테이지당5% (보장 부활 8회↑)
       const _revCh=Math.max(0,_revBase-(e.deaths-1)*0.15-_bSuppress);
       // 포인트 남아있고 확률도 통과해야 부활
       if(e._revPts>0&&Math.random()<_revCh)_doRevive=true;
@@ -33518,50 +33518,40 @@ function hurtP(dmg,opts){
   // 한방 데미지 캡: 최대 HP의 30% + 캡 발동 시 1초 무적
   const _hitCap=~~(P.mhp*.33);
   if(a>_hitCap){a=_hitCap;P.iframes=Math.max(P.iframes,60);addTxt(P.x,P.y-35,_T('💥한방캡!'),'#ff8800',40)}
-  // ═══ 에너지쉴드 — 추가 HP바 (pDR/eDR 동일 적용) ═══
-  // 쉴드: HP와 동일한 방어력으로 데미지 흡수 (쉴드=추가 HP)
-  // 물리→쉴드: pDR 적용 / 마법→쉴드: eDR 적용 (HP와 동률)
-  // 쉴드 있는 한 HP 절대 안 깎임 (_shFullBlock)
-  let _shFullBlock=false;
-  if(P.mshield>0&&P.shield>0){
-    let shDmg;
-    if(isEnergy){
-      shDmg=Math.max(1,~~(a*(1-eDR))); // 마법: eDR 적용 (HP와 동일)
-    }else{
-      shDmg=Math.max(1,~~(a*(1-pDR))); // 물리: pDR 적용 (HP와 동일)
-    }
-    P.shieldRegenT=180;
-    if(shDmg>=P.shield){
-      const overflow=shDmg-P.shield;P.shield=0;
-      addTxt(P.x,P.y-30,_T('⚡쉴드 파괴!'),'#4488ff',50);
-      for(let k=0;k<10;k++){const sa=Math.PI*2*k/10;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#4488ff',3+Math.random()*2,15+Math.random()*8)}
-      // 오버플로우 → HP (동일 DR 이미 적용됨)
-      a=Math.min(overflow,~~(P.mhp*.5));
-    }else{
-      P.shield-=shDmg;
-      addTxt(P.x,P.y-25,'🔷-'+shDmg,'#4488ff',20);
-      a=0;_shFullBlock=true; // 쉴드가 완전히 막음 — _minDmg도 HP 차단
-    }
-  }else{
-    // 쉴드 없음 → HP 직접 (동일 DR 적용)
-    if(isEnergy){a=Math.max(1,~~(a*(1-eDR)))}
-    else{a=Math.max(1,~~(a*(1-pDR)))}
-  }
+  // ═══ 방어력 적용 (HP/쉴드 공통) ═══
+  if(isEnergy){a=Math.max(1,~~(a*(1-eDR)))}
+  else{a=Math.max(1,~~(a*(1-pDR)))}
   // ═══ 어픽스: barrier (배리어) — 고정 데미지 감소 ═══
   const _barV=~~(_eqAffix('barrier'));if(_barV>0){a=Math.max(0,a-_barV)}
   // ═══ 조건부 방어 어픽스 (합연산 DR) ═══
+  const _isDot=opts&&opts.dot;
   {let _cDR=0;
     if(P.hp>=P.mhp*.7)_cDR+=_eqAffix('healthyDef')/((_eqAffix('healthyDef')||0)+2500); // healthyDef: 플랫→DR변환
     if(P.hp<=P.mhp*.3)_cDR+=_eqAffix('injuredDR');
-    if(opts&&opts.dot)_cDR+=_eqAffix('dotDR');
+    if(_isDot)_cDR+=_eqAffix('dotDR');
     if(opts&&opts.src&&opts.src.ib)_cDR+=_eqAffix('bossDR');
     if(opts&&opts.src){const _sd=Math.abs(P.x-(opts.src.x||0))+Math.abs(P.y-(opts.src.y||0));
       if(_sd<=120)_cDR+=_eqAffix('closeDR');if(_sd>300)_cDR+=_eqAffix('farDR')}
     if(_cDR>0)a=Math.max(0,~~(a*(1-Math.min(.50,_cDR))))} // DR캡 50%
-  const _isDot=opts&&opts.dot;
-  // 최소 데미지: 최대HP의 0.5% (순수뎀, 방어/쉴드 무시)
+  // 최소 데미지: 최대HP의 0.5% (순수뎀, 방어 무시)
   const _minDmg=Math.max(1,~~(P.mhp*0.005));
-  if(a<_minDmg&&!_shFullBlock)a=_minDmg; // 쉴드가 완전히 막은 경우 0 유지
+  if(a<_minDmg)a=_minDmg;
+  // ═══ 에너지쉴드 — 추가 HP바 (색만 다름, 모든 DR 적용 후 처리) ═══
+  // 모든 방어 계산 완료 후 쉴드 먼저 흡수 → 오버플로우만 HP로
+  let _shFullBlock=false;
+  if(P.mshield>0&&P.shield>0){
+    P.shieldRegenT=180;
+    if(a>=P.shield){
+      const overflow=a-P.shield;P.shield=0;
+      addTxt(P.x,P.y-30,_T('⚡쉴드 파괴!'),'#4488ff',50);
+      for(let k=0;k<10;k++){const sa=Math.PI*2*k/10;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#4488ff',3+Math.random()*2,15+Math.random()*8)}
+      a=overflow; // 오버플로우→HP (HP와 동일한 내구성)
+    }else{
+      P.shield-=a;
+      addTxt(P.x,P.y-25,'🔷-'+a,'#4488ff',20);
+      a=0;_shFullBlock=true; // 쉴드 완전 흡수 — HP 차단
+    }
+  }
   const _dlSrc=(opts&&opts.src)||(_isDot?_L('도트','DoT'):_L('투사체','Projectile'));
   _logDmg(dmg,a,_dlSrc);
   if(G._sStats)G._sStats.dmgTaken+=a;
@@ -40537,10 +40527,8 @@ function draw(){
       X.globalAlpha=1;
       // HP바 (공통)
       {const bw=e.r*2+6,bx=e.x-bw/2;let by=e.y-e.r-14;
-      if(e.hp<e.mhp){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle=gt.col;X.fillRect(bx,by,bw*(e.hp/e.mhp),4);by-=5}
-      if(e.eShield>0&&e.eShieldMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),3);by-=4}
-      if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
-      if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*Math.max(0,Math.min(1,e.poise/e.maxPoise)),3)}}
+      if(e.hp<e.mhp||e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle=gt.col;X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),4)}by-=5}
+      if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}}
       continue;
     }
     // ── 슬라임 괴물 전용 렌더 ──
@@ -40585,11 +40573,8 @@ function draw(){
       // 에너지 바
       X.globalAlpha=1;
       {const bw=e.r*2+6,bx=e.x-bw/2;let by=e.y-e.r-14;
-      if(e.hp<e.mhp){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc00cc';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);by-=5}
-
-      if(e.eShield>0&&e.eShieldMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),3);by-=4}
-      if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
-      if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*Math.max(0,Math.min(1,e.poise/e.maxPoise)),3)}}
+      if(e.hp<e.mhp||e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc00cc';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),4)}by-=5}
+      if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}}
       continue;
     }
     if(_eLite){
@@ -40620,11 +40605,8 @@ function draw(){
         }
       }
       {const bw=_er*2+6,bx=e.x-bw/2;let by=e.y-_er-16;
-      if(e.hp<e.mhp){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);by-=5}
-
-      if(e.eShield>0&&e.eShieldMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),3);by-=4}
+      if(e.hp<e.mhp||e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),4)}by-=5}
       if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
-      if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*Math.max(0,Math.min(1,e.poise/e.maxPoise)),3)}
       }continue;}
     const isStunned=e.stunned>0;
     const isReviving=e.reviveIframes>0;
@@ -41732,17 +41714,13 @@ function draw(){
           const _sr=_sp%2===0?3.5:1.5;X.lineTo(_sx+Math.cos(_a2)*_sr,_sy+Math.sin(_a2)*_sr)}
         X.closePath();X.fill()}
       X.globalAlpha=sa}
-    // ═══ 에너지 바 (HP → 쉴드 → 그로기 → 포이즈) ═══
+    // ═══ 에너지 바 (HP+쉴드 오버레이 → 그로기 → 프리즌) ═══
     {const bw=e.r*2+6,bx=e.x-bw/2;let by=e.y-e.r-16;
-    // 1) HP바 (빨강 4px)
-    if(e.hp<e.mhp){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);by-=5}
-    // 2) 쉴드바 (파랑 3px)
-    if(e.eShield>0&&e.eShieldMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),3);by-=4}
-    // 3) 그로기바 (주황 3px, 스턴 중일 때만)
+    // 1) HP바 + 쉴드 오버레이 (쉴드=파랑이 빨강HP 위에 덮임, 보스바와 동일 구조)
+    if(e.hp<e.mhp||e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),4)}by-=5}
+    // 2) 그로기바 (주황 3px, 스턴 중일 때만)
     if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
-    // 4) 포이즈바 (노랑 3px, 유한 포이즈만)
-    if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*Math.max(0,Math.min(1,e.poise/e.maxPoise)),3);by-=4}
-    // 5) 프리즌바 (하늘 3px, 게이지 축적 중이거나 프리즌 중)
+    // 3) 프리즌바 (하늘 3px)
     if(e._frozen>0){const _frMax=e.ib?90:180;X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44ddff';X.fillRect(bx,by,bw*(e._frozen/_frMax),3);by-=4}
     else if(e._freezeGauge>0&&e._freezeMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#88ccee';X.fillRect(bx,by,bw*(e._freezeGauge/e._freezeMax),3);by-=4}
     }
@@ -47608,7 +47586,7 @@ async function _startDemoTest(){
   _charName='DEMO TEST';_charIdx=0;
   G._cutsceneDone=true;
   // Lv500
-  P.lv=_DEMO_LV_CAP;P.exp=0;P.maxExp=_calcMaxExp(_DEMO_LV_CAP);P.sp=1500;P.ap=250;P.isDemoTest=true;G.mats=10000000000;
+  P.lv=_DEMO_LV_CAP;P.exp=0;P.maxExp=_calcMaxExp(_DEMO_LV_CAP);P.sp=200;P.ap=100;P.isDemoTest=true;G.mats=10000000000;
   // ACT1 스킬 전체 Lv5
   const _dSk=['kiSlash','fireball','bladeDash','chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam',
     'fanShot','omniBeam','elemMissile','whirlwind','detonate','giantSlam','giantSlam2',
@@ -47634,6 +47612,10 @@ async function _startDemoTest(){
   SKILL_SLOTS[5]='holyDome';        // 영역스킬(holyFuse) host — F키
   ULT_SLOT='blackStar'; // Z=블랙
   P.activeCtSk='ghostWalk';P.activeMagicSk='arcLaser';P.activeBowSk='normal';P.activeChargeSk='charge';P.activeQSk='peaceShield';P.activeLMBSk='whirlwind'; // Ctrl=뇌전걸음, E=마력광선, Shift=기동강화전폭(dimBlast), Q=평화의보호, LMB=암전폭류(stormBurst)
+  // 공격 패시브 9레벨
+  ['pAtk','pParry','pMagic','pBow','pCrit','pPierce','pXbow','pMelee','pCombo','pAbund','pPred','pDot','pHunter'].forEach(k=>{if(k in PASSIVES)PASSIVES[k]=9;});
+  // 스탯 5종 300씩
+  STATS.str=300;STATS.dex=300;STATS.int=300;STATS.vit=300;STATS.lck=300;
   // 5등급 전설 장비 (tier=4, rarity=4)
   const _dtSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
   const _dtWt={weapon:'sword',bow:'crossbow'};
@@ -47677,7 +47659,7 @@ async function _startDemoTest(){
       const _d5=JSON.parse(_r5);
       if(_d5&&_d5.player){
         // 세이브에서 SP/AP/패시브/스킬슬롯/ULT만 복원 (스킬·장비·합체는 초기값 유지)
-        P.sp=_d5.player.sp||1500;P.ap=_d5.player.ap||250;
+        P.sp=_d5.player.sp||200;P.ap=_d5.player.ap||100;
         P.hp=_d5.player.hp||P.mhp;P.mhp=_d5.player.mhp||P.mhp;
         P.mp=_d5.player.mp||P.mmp;P.mmp=_d5.player.mmp||P.mmp;
         P.st=_d5.player.st||P.mst;P.mst=_d5.player.mst||P.mst;
