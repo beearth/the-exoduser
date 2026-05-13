@@ -24056,3 +24056,14 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - gamedemo.html
 
+
+## 2026-05-13 23:30 (auto)
+- _autosave/game_20260513_223858.html
+- _autosave/game_20260513_223910.html
+- _autosave/game_20260513_225409.html
+- _autosave/game_20260513_231157.html
+- _autosave/game_20260513_231207.html
+- _autosave/game_20260513_231216.html
+- _autosave/game_20260513_231236.html
+- docs/2_5 부???�너지?�드?�스??2_5 부???�너지?�드?�스??md
+

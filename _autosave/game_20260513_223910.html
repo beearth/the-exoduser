@@ -22350,7 +22350,7 @@ function mkEn(x,y,si,etype,ib,el,room){
     _feinting:false,_delaying:0,
     _dbgScores:null,
     shockR:0,shockMax:0,laserAng:0,laserLen:0,deaths:0,reviveIframes:0,meteors:[],
-    _revPts:ib?(150+Math.round(si*4.412)):0,_maxRevPts:ib?(150+Math.round(si*4.412)):0,
+    _revPts:ib?(200+Math.round(si*5.882)):0,_maxRevPts:ib?(200+Math.round(si*5.882)):0,
     shieldAng:etype===6?Math.random()*Math.PI*2:0,
     eShield:hp,eShieldMax:hp,eShieldRegenT:0,
     eRes:ETYPE_ERES[etype]||[0,0,0,0,0,0,0],
@@ -32676,7 +32676,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       if(e._revPts<0)e._revPts=0;
       // ── 확률 판정 ──
       let _doRevive=false;
-      const _revBase=1.50+G.stage*0.05; // 150%+스테이지당5%
+      const _revBase=2.00+G.stage*0.05; // 200%+스테이지당5% (보장 부활 8회↑)
       const _revCh=Math.max(0,_revBase-(e.deaths-1)*0.15-_bSuppress);
       // 포인트 남아있고 확률도 통과해야 부활
       if(e._revPts>0&&Math.random()<_revCh)_doRevive=true;
@@ -33518,52 +33518,40 @@ function hurtP(dmg,opts){
   // 한방 데미지 캡: 최대 HP의 30% + 캡 발동 시 1초 무적
   const _hitCap=~~(P.mhp*.33);
   if(a>_hitCap){a=_hitCap;P.iframes=Math.max(P.iframes,60);addTxt(P.x,P.y-35,_T('💥한방캡!'),'#ff8800',40)}
-  // ═══ 물리/에너지 이원 방어 시스템 (docs 2_5 기준) ═══
-  // 물리→쉴드10%/HP100%, 마법→쉴드100%/HP10% (기본 90% 패널티)
-  // pPhysPen: +5%/lv → 물리→쉴드 10%→60% (미구현, 기본 10% 고정)
-  // pMagPen:  +5%/lv → 마법→HP  10%→60% (미구현, 기본 10% 고정)
-  let _shFullBlock=false;
-  if(P.mshield>0&&P.shield>0){
-    let shDmg;
-    if(isEnergy){
-      shDmg=a; // 마법: 쉴드에 100% 적용
-    }else{
-      shDmg=Math.max(1,~~(a*0.10)); // 물리: 쉴드에 10%만 적용 (기본값)
-    }
-    P.shieldRegenT=180;
-    if(shDmg>=P.shield){
-      const overflow=shDmg-P.shield;P.shield=0;
-      addTxt(P.x,P.y-30,_T('⚡쉴드 파괴!'),'#4488ff',50);
-      for(let k=0;k<10;k++){const sa=Math.PI*2*k/10;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#4488ff',3+Math.random()*2,15+Math.random()*8)}
-      // 오버플로우 → HP
-      if(isEnergy){a=Math.max(0,~~(overflow*0.10))}// 마법 오버플로우→HP: 10%
-      else{a=overflow}// 물리 오버플로우→HP: 그대로 (이미 10%값)
-      a=Math.min(a,~~(P.mhp*.5));
-    }else{
-      P.shield-=shDmg;
-      addTxt(P.x,P.y-25,'🔷-'+shDmg,'#4488ff',20);
-      a=0;_shFullBlock=true; // 쉴드가 완전히 막음 — _minDmg도 HP 차단
-    }
-  }else{
-    // 쉴드 없음 → HP 직접
-    if(isEnergy){a=Math.max(1,~~(a*0.10))}// 마법→HP: 10% (기본값, pMagPen 미구현)
-    // 물리→HP: 100%, a 그대로
-  }
+  // ═══ 방어력 적용 (HP/쉴드 공통) ═══
+  if(isEnergy){a=Math.max(1,~~(a*(1-eDR)))}
+  else{a=Math.max(1,~~(a*(1-pDR)))}
   // ═══ 어픽스: barrier (배리어) — 고정 데미지 감소 ═══
   const _barV=~~(_eqAffix('barrier'));if(_barV>0){a=Math.max(0,a-_barV)}
   // ═══ 조건부 방어 어픽스 (합연산 DR) ═══
+  const _isDot=opts&&opts.dot;
   {let _cDR=0;
     if(P.hp>=P.mhp*.7)_cDR+=_eqAffix('healthyDef')/((_eqAffix('healthyDef')||0)+2500); // healthyDef: 플랫→DR변환
     if(P.hp<=P.mhp*.3)_cDR+=_eqAffix('injuredDR');
-    if(opts&&opts.dot)_cDR+=_eqAffix('dotDR');
+    if(_isDot)_cDR+=_eqAffix('dotDR');
     if(opts&&opts.src&&opts.src.ib)_cDR+=_eqAffix('bossDR');
     if(opts&&opts.src){const _sd=Math.abs(P.x-(opts.src.x||0))+Math.abs(P.y-(opts.src.y||0));
       if(_sd<=120)_cDR+=_eqAffix('closeDR');if(_sd>300)_cDR+=_eqAffix('farDR')}
     if(_cDR>0)a=Math.max(0,~~(a*(1-Math.min(.50,_cDR))))} // DR캡 50%
-  const _isDot=opts&&opts.dot;
-  // 최소 데미지: 최대HP의 0.5% (순수뎀, 방어/쉴드 무시)
+  // 최소 데미지: 최대HP의 0.5% (순수뎀, 방어 무시)
   const _minDmg=Math.max(1,~~(P.mhp*0.005));
-  if(a<_minDmg&&!_shFullBlock)a=_minDmg; // 쉴드가 완전히 막은 경우 0 유지
+  if(a<_minDmg)a=_minDmg;
+  // ═══ 에너지쉴드 — 추가 HP바 (색만 다름, 모든 DR 적용 후 처리) ═══
+  // 모든 방어 계산 완료 후 쉴드 먼저 흡수 → 오버플로우만 HP로
+  let _shFullBlock=false;
+  if(P.mshield>0&&P.shield>0){
+    P.shieldRegenT=180;
+    if(a>=P.shield){
+      const overflow=a-P.shield;P.shield=0;
+      addTxt(P.x,P.y-30,_T('⚡쉴드 파괴!'),'#4488ff',50);
+      for(let k=0;k<10;k++){const sa=Math.PI*2*k/10;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#4488ff',3+Math.random()*2,15+Math.random()*8)}
+      a=overflow; // 오버플로우→HP (HP와 동일한 내구성)
+    }else{
+      P.shield-=a;
+      addTxt(P.x,P.y-25,'🔷-'+a,'#4488ff',20);
+      a=0;_shFullBlock=true; // 쉴드 완전 흡수 — HP 차단
+    }
+  }
   const _dlSrc=(opts&&opts.src)||(_isDot?_L('도트','DoT'):_L('투사체','Projectile'));
   _logDmg(dmg,a,_dlSrc);
   if(G._sStats)G._sStats.dmgTaken+=a;
@@ -47642,6 +47630,65 @@ async function _startDemoTest(){
   for(const _sl of _dtSlots)INV.equipped[_sl]=mkItem(_sl,4,EL.P,4,_dtWt[_sl]);
   // 재화 (악의 100억)
   G.mats=10000000000;
+  // localStorage 저장 함수 (500랩 전용 슬롯)
+  const _D5K='hellsave_demo500';
+  dbSave=async function(){
+    if(!P)return;
+    try{
+      const sd={
+        ts:Date.now(),
+        player:{lv:P.lv,exp:P.exp,maxExp:P.maxExp,sp:P.sp,ap:P.ap||0,
+          baseAtk:P.baseAtk,baseDef:P.baseDef,mpR:P.mpR,stR:P.stR,
+          hp:P.hp,mhp:P.mhp,mp:P.mp,mmp:P.mmp,st:P.st,mst:P.mst,speed:P.speed,
+          shield:P.shield,mshield:P.mshield,maskOn:P.maskOn},
+        inv:{bag:INV.bag,equipped:INV.equipped},
+        stats:{...STATS},passives:{...PASSIVES},
+        qslots:QSLOTS,
+        game:{stage:G.stage,kills:G.kills,mats:G.mats,cutsceneDone:true},
+        bagMax:BAG_MAX,hellCleared:G.hellCleared||[],storage:STORAGE||{},
+        upgrades:{...UPGRADES},potLv:{...POT_LV},skills:{...P.skills},
+        fused:P._fused||{},skProf:P._skProf||{},
+        activeChargeSk:P.activeChargeSk||'charge',
+        activeBowSk:P.activeBowSk||'normal',
+        activeMagicSk:P.activeMagicSk||'arcLaser',
+        activeLMBSk:P.activeLMBSk||'whirlwind',
+        activeRMBSk:P.activeRMBSk||'shieldBlock',
+        activeQSk:P.activeQSk||'peaceShield',
+        activeCtSk:P.activeCtSk||'ghostWalk',
+        skillSlots:[...SKILL_SLOTS],ultSlot:ULT_SLOT,charIdx:_charIdx
+      };
+      localStorage.setItem(_D5K,JSON.stringify(sd));
+    }catch(e){console.warn('[DEMO500] Save failed:',e)}
+  };
+  // 기존 500랩 세이브 불러오기 (SP/AP/패시브/슬롯 복원)
+  try{
+    const _r5=localStorage.getItem(_D5K);
+    if(_r5){
+      const _d5=JSON.parse(_r5);
+      if(_d5&&_d5.player){
+        // 세이브에서 SP/AP/패시브/스킬슬롯/ULT만 복원 (스킬·장비·합체는 초기값 유지)
+        P.sp=_d5.player.sp||1500;P.ap=_d5.player.ap||250;
+        P.hp=_d5.player.hp||P.mhp;P.mhp=_d5.player.mhp||P.mhp;
+        P.mp=_d5.player.mp||P.mmp;P.mmp=_d5.player.mmp||P.mmp;
+        P.st=_d5.player.st||P.mst;P.mst=_d5.player.mst||P.mst;
+        if(_d5.passives){for(const k in _d5.passives)PASSIVES[k]=_d5.passives[k]||0}
+        if(_d5.stats){for(const k in _d5.stats)STATS[k]=_d5.stats[k]||0}
+        if(_d5.skillSlots&&_d5.skillSlots.length)_d5.skillSlots.forEach((s,i)=>{SKILL_SLOTS[i]=s});
+        if(_d5.ultSlot)ULT_SLOT=_d5.ultSlot;
+        if(_d5.activeCtSk)P.activeCtSk=_d5.activeCtSk;
+        if(_d5.activeMagicSk)P.activeMagicSk=_d5.activeMagicSk;
+        if(_d5.activeBowSk)P.activeBowSk=_d5.activeBowSk;
+        if(_d5.activeChargeSk)P.activeChargeSk=_d5.activeChargeSk;
+        if(_d5.activeQSk)P.activeQSk=_d5.activeQSk;
+        if(_d5.activeLMBSk)P.activeLMBSk=_d5.activeLMBSk;
+        if(_d5.upgrades){for(const k in _d5.upgrades)UPGRADES[k]=_d5.upgrades[k]||0}
+        if(_d5.game?.stage!==undefined)G.stage=_d5.game.stage;
+        if(_d5.game?.mats!==undefined)G.mats=_d5.game.mats;
+        if(_d5.hellCleared)G.hellCleared=_d5.hellCleared;
+        console.log('[DEMO500] 세이브 불러옴 — Stage '+G.stage);
+      }
+    }
+  }catch(e){console.warn('[DEMO500] Load failed:',e)}
   // 몬스터 아틀라스 대기
   setBootLoading(50,'몬스터 스킨 로딩...');
   if(!_mobAtlas.ready)await new Promise(r=>{const _ci=setInterval(()=>{if(_mobAtlas.ready){clearInterval(_ci);r()}},50);setTimeout(()=>{clearInterval(_ci);r()},5000)});
@@ -47681,6 +47728,7 @@ async function _startDemoTest(){
   setBootLoading(99,'미니맵 빌드 중...');
   await new Promise(r=>setTimeout(r,0));
   _dbReady=true;
+  startAutoSave();setTimeout(()=>dbSave(),3000);
   _ensWarmDone=false;_wqLen=0;_wqIdx=0;_warmupEnsAtlas();
   BGM.play(BGM.stageKey(G.stage));
   setBootLoading(100,'완료');
@@ -48709,7 +48757,7 @@ async function goToLobby(){
   try{
     // 사망 상태면 HP 복구 후 저장 (죽은 채로 저장 방지)
     if(P&&P.hp<=0){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle'}
-    if(_dbReady&&!_DEMO_MODE)await dbSave();
+    if(_dbReady)await dbSave();
   }catch(e){console.error('[goToLobby] save error:',e)}
   window.location.href=_DEMO_MODE?'indexdemo.html':'/?lobby=1';
 }
