@@ -27844,8 +27844,7 @@ function update(){
       // ═══ 폭풍소환 소용돌이: 적 흡인 + DOT ═══
       if(fz.type==='vortex'||fz.type==='iceVortex'){
         const _vtLv=fz.lv||1;
-        let _vtPullBase=0.78+_vtLv*0.104;
-        if(_vtLv>=10)_vtPullBase*=1.2;
+        const _vtPullBase=0.78*(1+_vtLv*0.025); // lv1=+2.5%, lv20=+50%
         // 매 프레임 흡인 (중심에 가까울수록 강하게)
         const _vtNe=shQuery(fz.x,fz.y,fz.r+30);
         for(let _vi=0;_vi<_vtNe.length;_vi++){
@@ -47616,7 +47615,8 @@ async function _startDemoTest(){
     'maliceMortar','iceOrb','darkPillar','spikeTrap',
     'fireAura','thunderStake','voidScarecrow','explodeScarecrow','ghostXbowTurret',
     'needleShot','arcLaser','fireBeam','ghostWalk','timeWarp','burstLoop',
-    'weakPhys','weakMag','weakPj','weakRev'];
+    'weakPhys','weakMag','weakPj','weakRev',
+    'blackStar','execution'];
   for(const _sk of _dSk)P.skills[_sk]=10; // 500랩 마스터
   // 모든 합체 해금 (데모 테스트 전용)
   const _allFuse=Object.keys(_FUSE_NAMES);
@@ -47630,7 +47630,7 @@ async function _startDemoTest(){
   SKILL_SLOTS[3]='maliceHunt';      // 독혈해방 host
   SKILL_SLOTS[4]='giantSlam2';      // 대왕치기2 — Space키
   SKILL_SLOTS[5]='holyDome';        // 영역스킬(holyFuse) host — F키
-  ULT_SLOT='kiSlash';
+  ULT_SLOT='blackStar'; // Z=블랙
   P.activeCtSk='ghostWalk';P.activeMagicSk='arcLaser';P.activeBowSk='normal';P.activeChargeSk='charge';P.activeQSk='peaceShield';P.activeLMBSk='whirlwind'; // Ctrl=뇌전걸음, E=마력광선, Shift=기동강화전폭(dimBlast), Q=평화의보호, LMB=암전폭류(stormBurst)
   // 5등급 전설 장비 (tier=4, rarity=4)
   const _dtSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
