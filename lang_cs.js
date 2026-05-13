@@ -1994,4 +1994,14 @@ const _CS_BASE={
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'To je konec dema. Těšíme se na plné vydání!',
 'STEAM 위시리스트로 응원해 주세요!':'Podpořte nás přidáním hry do seznamu přání na Steamu!',
 'STEAM 위시리스트':'Seznam přání Steam',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Ničitel Obsidiánových Plamenů',
+'독사':'Jedovatý had',
+'🐍 독사!':'🐍 Jedovatý had!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Dvojité klepnutí nebo Shift+Směr! Dash k útěku!',
+'👻 공성유령!':'👻 Obléhací přízrak!',
+'💥 공성유령 폭발!':'💥 Výbuch obléhacího přízraku!',
+'프레임 표시 (FPS)':'Zobrazit FPS',
+'여기까지 데모입니다...':'Demo končí zde...',
 };

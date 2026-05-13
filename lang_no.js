@@ -2096,4 +2096,14 @@ const _NO_BASE={
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'Dette er slutten på demoen. Vi ser frem til den fulle lanseringen!',
 'STEAM 위시리스트로 응원해 주세요!':'Støtt oss ved å legge til spillet på ønskelisten din på Steam!',
 'STEAM 위시리스트':'Steam-ønskeliste',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Obsidianflammens Ødelegger',
+'독사':'Giftslange',
+'🐍 독사!':'🐍 Giftslange!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Dobbelttrykk eller Shift+Retning! Dash for å flykte!',
+'👻 공성유령!':'👻 Beleiriingsånd!',
+'💥 공성유령 폭발!':'💥 Beleiriingsåndeksplosjon!',
+'프레임 표시 (FPS)':'Vis FPS',
+'여기까지 데모입니다...':'Demoen slutter her...',
 };

@@ -2456,4 +2456,14 @@ const _TR_BASE={'대검':'Büyük Kılıç','석궁':'Tatar Yayı','연사석궁
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'Demo burada bitiyor. Tam sürüm için heyecanla bekliyoruz!',
 'STEAM 위시리스트로 응원해 주세요!':'Steam istek listenize ekleyerek bizi destekleyin!',
 'STEAM 위시리스트':'Steam İstek Listesi',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Obsidyen Alev Yok Edicisi',
+'독사':'Zehirli Yılan',
+'🐍 독사!':'🐍 Zehirli Yılan!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Çift Dokunuş veya Shift+Yön! Kaçmak için Dash!',
+'👻 공성유령!':'👻 Kuşatma Hayaleti!',
+'💥 공성유령 폭발!':'💥 Kuşatma Hayaleti Patlaması!',
+'프레임 표시 (FPS)':'FPS Göster',
+'여기까지 데모입니다...':'Demo burada bitiyor...',
 };

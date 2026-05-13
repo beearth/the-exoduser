@@ -2462,4 +2462,13 @@ const _IT_BASE={
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'Questa è la fine della demo. Non vediamo l\'ora del lancio completo!',
 'STEAM 위시리스트로 응원해 주세요!':'Supportaci aggiungendolo alla lista dei desideri di Steam!',
 'STEAM 위시리스트':'Lista dei desideri Steam',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Distruttore della Fiamma d\'Ossidiana',
+'독사':'Serpente velenoso',
+'🐍 독사!':'🐍 Serpente velenoso!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Doppio tocco o Shift+Direzione! Scatta per scappare!',
+'💥 공성유령 폭발!':'💥 Esplosione del fantasma assediante!',
+'프레임 표시 (FPS)':'Mostra FPS',
+'여기까지 데모입니다...':'Questa è la fine della demo...',
 };

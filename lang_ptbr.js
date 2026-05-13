@@ -2069,4 +2069,13 @@ const _PTBR_BASE={'대검':'Espadão','석궁':'Besta','연사석궁':'Repetidor
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'Este é o fim da demo. Aguardamos o lançamento completo!',
 'STEAM 위시리스트로 응원해 주세요!':'Apoie-nos adicionando à lista de desejos da Steam!',
 'STEAM 위시리스트':'Lista de Desejos Steam',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Destruidor das Chamas de Obsidiana',
+'독사':'Cobra Venenosa',
+'🐍 독사!':'🐍 Cobra Venenosa!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Toque duplo ou Shift+Direção! Avance para escapar!',
+'💥 공성유령 폭발!':'💥 Explosão do Fantasma Sitiador!',
+'프레임 표시 (FPS)':'Mostrar FPS',
+'여기까지 데모입니다...':'Aqui termina o demo...',
 };

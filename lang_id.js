@@ -2460,4 +2460,13 @@ const _ID_BASE={'대검':'Pedang Besar','석궁':'Panah Silang','연사석궁':'
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'Ini adalah akhir dari demo. Nantikan rilis penuhnya!',
 'STEAM 위시리스트로 응원해 주세요!':'Dukung kami dengan menambahkan ke daftar keinginan Steam!',
 'STEAM 위시리스트':'Daftar Keinginan Steam',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Penghancur Api Obsidian',
+'독사':'Ular Berbisa',
+'🐍 독사!':'🐍 Ular Berbisa!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Ketuk dua kali atau Shift+Arah! Dash untuk kabur!',
+'💥 공성유령 폭발!':'💥 Ledakan Hantu Pengepung!',
+'프레임 표시 (FPS)':'Tampilkan FPS',
+'여기까지 데모입니다...':'Demo berakhir di sini...',
 };

@@ -2092,4 +2092,13 @@ const _ES_BASE={'대검':'Espadón','석궁':'Ballesta','연사석궁':'Repetido
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'Este es el final de la demo. ¡Esperamos el lanzamiento completo!',
 'STEAM 위시리스트로 응원해 주세요!':'¡Apóyanos añadiéndolo a tu lista de deseos en Steam!',
 'STEAM 위시리스트':'Lista de deseos Steam',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Destructor de Llamas de Obsidiana',
+'독사':'Serpiente venenosa',
+'🐍 독사!':'🐍 ¡Serpiente venenosa!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'¡Doble toque o Shift+Dirección! ¡Dash para escapar!',
+'💥 공성유령 폭발!':'💥 ¡Explosión del Fantasma Asediador!',
+'프레임 표시 (FPS)':'Mostrar FPS',
+'여기까지 데모입니다...':'Aquí termina el demo...',
 };

@@ -2094,4 +2094,14 @@ const _SV_BASE={
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'Det här är slutet på demon. Vi ser fram emot den fullständiga lanseringen!',
 'STEAM 위시리스트로 응원해 주세요!':'Stöd oss genom att lägga till spelet på din önskelista på Steam!',
 'STEAM 위시리스트':'Önskelista Steam',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Obsidianlågeförstöraren',
+'독사':'Giftorm',
+'🐍 독사!':'🐍 Giftorm!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Dubbeltryck eller Shift+Riktning! Dash för att fly!',
+'👻 공성유령!':'👻 Belägringsande!',
+'💥 공성유령 폭발!':'💥 Belägringsandeexplosion!',
+'프레임 표시 (FPS)':'Visa FPS',
+'여기까지 데모입니다...':'Demon slutar här...',
 };

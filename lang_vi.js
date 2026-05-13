@@ -2456,4 +2456,14 @@ const _VI_BASE={'대검':'Đại Kiếm','석궁':'Nỏ','연사석궁':'Nỏ Li
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'Đây là phần kết của bản demo. Mong chờ bản phát hành đầy đủ!',
 'STEAM 위시리스트로 응원해 주세요!':'Hãy thêm vào danh sách yêu thích trên Steam để ủng hộ chúng tôi!',
 'STEAM 위시리스트':'Danh sách yêu thích Steam',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Kẻ Hủy Diệt Ngọn Lửa Đen',
+'독사':'Rắn độc',
+'🐍 독사!':'🐍 Rắn độc!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Nhấn đúp hoặc Shift+Hướng! Lao để thoát!',
+'👻 공성유령!':'👻 Bóng Ma Vây Hãm!',
+'💥 공성유령 폭발!':'💥 Vụ Nổ Bóng Ma Vây Hãm!',
+'프레임 표시 (FPS)':'Hiển thị FPS',
+'여기까지 데모입니다...':'Demo kết thúc tại đây...',
 };

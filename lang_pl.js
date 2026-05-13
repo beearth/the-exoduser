@@ -2043,4 +2043,14 @@ const _PL_BASE={
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'To koniec dema. Czekamy na pełne wydanie!',
 'STEAM 위시리스트로 응원해 주세요!':'Wesprzyj nas, dodając grę do listy życzeń Steam!',
 'STEAM 위시리스트':'Lista życzeń Steam',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Niszczyciel Czarnego Płomienia',
+'독사':'Jadowity wąż',
+'🐍 독사!':'🐍 Jadowity wąż!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Podwójne stuknięcie lub Shift+Kierunek! Dash by uciec!',
+'👻 공성유령!':'👻 Upiór Oblężniczy!',
+'💥 공성유령 폭발!':'💥 Eksplozja Upiora Oblężniczego!',
+'프레임 표시 (FPS)':'Pokaż FPS',
+'여기까지 데모입니다...':'To koniec dema...',
 };

@@ -2459,4 +2459,14 @@ const _RO_BASE={
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'Acesta este sfârșitul demo-ului. Abia așteptăm lansarea completă!',
 'STEAM 위시리스트로 응원해 주세요!':'Susține-ne adăugând jocul pe lista de dorințe Steam!',
 'STEAM 위시리스트':'Lista de dorințe Steam',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Distrugătorul Flăcărilor de Obsidian',
+'독사':'Șarpe veninos',
+'🐍 독사!':'🐍 Șarpe veninos!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Dublu tap sau Shift+Direcție! Dash să scapi!',
+'👻 공성유령!':'👻 Fantoma Asediului!',
+'💥 공성유령 폭발!':'💥 Explozia Fantomei Asediului!',
+'프레임 표시 (FPS)':'Arată FPS',
+'여기까지 데모입니다...':'Demo-ul se termină aici...',
 };

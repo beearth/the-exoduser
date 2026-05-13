@@ -2458,4 +2458,14 @@ const _HU_BASE={
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'Ez a demo vége. Várjuk a teljes megjelenést!',
 'STEAM 위시리스트로 응원해 주세요!':'Támogass minket azzal, hogy Steam kívánságlistádra teszed!',
 'STEAM 위시리스트':'Steam kívánságlista',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Obszidián Láng Pusztítója',
+'독사':'Mérges kígyó',
+'🐍 독사!':'🐍 Mérges kígyó!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Dupla érintés vagy Shift+Irány! Dash a meneküléshez!',
+'👻 공성유령!':'👻 Ostromkísértet!',
+'💥 공성유령 폭발!':'💥 Ostromkísértet robbanás!',
+'프레임 표시 (FPS)':'FPS megjelenítése',
+'여기까지 데모입니다...':'A demo itt ér véget...',
 };

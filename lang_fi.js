@@ -2456,4 +2456,14 @@ const _FI_BASE={'대검':'Suuri Miekka','석궁':'Varsijousi','연사석궁':'Sa
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'Tämä on demon loppu. Odotamme innolla täyttä julkaisua!',
 'STEAM 위시리스트로 응원해 주세요!':'Tue meitä lisäämällä peli Steam-toivelistaasi!',
 'STEAM 위시리스트':'Steam-toivelista',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Obsidiaanitulen Tuhoaja',
+'독사':'Myrkkykyy',
+'🐍 독사!':'🐍 Myrkkykyy!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Kaksoisnapautus tai Shift+Suunta! Liuku paetaksesi!',
+'👻 공성유령!':'👻 Piirityshaamu!',
+'💥 공성유령 폭발!':'💥 Piirityshaamu räjähtää!',
+'프레임 표시 (FPS)':'Näytä FPS',
+'여기까지 데모입니다...':'Demo loppuu tähän...',
 };

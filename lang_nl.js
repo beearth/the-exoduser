@@ -2094,4 +2094,14 @@ const _NL_BASE={
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'Dit is het einde van de demo. We kijken uit naar de volledige release!',
 'STEAM 위시리스트로 응원해 주세요!':'Steun ons door het spel aan je Steam-verlanglijst toe te voegen!',
 'STEAM 위시리스트':'Steam-verlanglijst',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Verwoester van het Obsidiaan Vuur',
+'독사':'Gifslang',
+'🐍 독사!':'🐍 Gifslang!',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Dubbeltik of Shift+Richting! Dash om te ontsnappen!',
+'👻 공성유령!':'👻 Belegerings-geest!',
+'💥 공성유령 폭발!':'💥 Belegerings-geest explosie!',
+'프레임 표시 (FPS)':'Toon FPS',
+'여기까지 데모입니다...':'De demo eindigt hier...',
 };

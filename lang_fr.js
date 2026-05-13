@@ -2065,4 +2065,13 @@ const _FR_BASE={'대검':'Espadon','석궁':'Arbalète','연사석궁':'Répéte
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'C\'est la fin de la démo. Vivement la sortie complète !',
 'STEAM 위시리스트로 응원해 주세요!':'Soutenez-nous en ajoutant le jeu à votre liste de souhaits Steam !',
 'STEAM 위시리스트':'Liste de souhaits Steam',
+
+// --- CAT-92 sync ---
+'흑요염 파괴자':'Destructeur des Flammes d\'Obsidienne',
+'독사':'Serpent venimeux',
+'🐍 독사!':'🐍 Serpent venimeux !',
+'더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Double pression ou Shift+Direction ! Dash pour fuir !',
+'💥 공성유령 폭발!':'💥 Explosion du Fantôme Assiégeant !',
+'프레임 표시 (FPS)':'Afficher FPS',
+'여기까지 데모입니다...':'Voici la fin de la démo...',
 };
