@@ -18,12 +18,32 @@ game_backup_*.html
 index_backup_*.html
 docs/
 
-# BGM: 5~7장 제외 (데모: 1~4장만)
+# BGM: 2~7장 제외 (데모: 1장만)
+bgm/2장_벌레굴/
+bgm/3장_얼음굴/
+bgm/4장_화염지대/
 bgm/5장_지옥군단/
 bgm/6장_사도마굴/
 bgm/7장_지옥성/
+
+# BGM: 공통 폴더 미사용 파일
+bgm/공통/Crown of Ash and Iron.mp3
+bgm/공통/exoduser.mp3
+bgm/공통/intro.mp3
 
 # 이미지: 불필요 에셋 제외
 img/vfx_candidates/
 img/grok_gen/
 img/ChatGPT*
+
+# img/lording: rd1~rd18만 사용, 나머지(참고용 스크래치) 제외 (~186MB)
+img/lording/[0-9].png
+img/lording/[0-9][0-9].png
+img/lording/ACT2*
+img/lording/EXO.png
+img/lording/MAIN.png
+img/lording/ROGO.png
+img/lording/etype*
+img/lording/ig_*
+img/lording/ChatGPT*
+img/lording/2026년*

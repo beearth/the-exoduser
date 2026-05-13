@@ -32380,9 +32380,10 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   // 에너지쉴드: 쉴드 살아있는 동안 HP=0, 소진 후 HP 타격
   // 물리: 쉴드 50%씩 소모 (100쉴드→4방 필요) / 쉴드없으면 HP 100%
   // 마법: 쉴드 100%씩 소모 (100쉴드→2방 필요) / 쉴드없으면 HP 50%
+  let _shBlocked=false;
   if(!isDot){
-    if(atkEl===0){if(e.eShield>0){e.eShield=Math.max(0,e.eShield-~~(dmg*0.5));dmg=0}}
-    else{if(e.eShield>0){e.eShield=Math.max(0,e.eShield-dmg);dmg=0}else{dmg=~~(dmg*0.5)}}
+    if(atkEl===0){if(e.eShield>0){e.eShield=Math.max(0,e.eShield-~~(dmg*0.5));dmg=0;_shBlocked=true;}}
+    else{if(e.eShield>0){e.eShield=Math.max(0,e.eShield-dmg);dmg=0;_shBlocked=true;}else{dmg=~~(dmg*0.5)}}
   }
   // 원소 저항: 자기 원소 저항값만 적용, 타 원소 무관
   if(e.eRes&&e.eRes[atkEl]>0)dmg=~~(dmg*(1-e.eRes[atkEl]));
@@ -32471,7 +32472,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(!e.ib&&(!e.mods||e.mods.length===0))_cAx+=_eqAffix('mobSlayer');
     if(_cAx>0)dmg=~~(dmg*(1+_cAx))}
   // 최소 데미지 1 보장 (DR 중첩으로 0뎀 방지)
-  if(dmg<1)dmg=1;
+  if(dmg<1&&!_shBlocked)dmg=1; // 쉴드가 막은 경우 0 유지 — HP 차단
   // 넉백/그로기 전용 배율
   const kbM = (opts && opts.kbMult !== undefined) ? opts.kbMult : 1.0;
   const psM = (opts && opts.poiseMult !== undefined) ? opts.poiseMult : 1.0;

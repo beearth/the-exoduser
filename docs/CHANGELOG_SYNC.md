@@ -24002,3 +24002,16 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _autosave/game_20260513_181305.html
 - _autosave/game_20260513_181721.html
 
+
+## 2026-05-13 20:30 (auto)
+- .vercelignore
+- _autosave/game_20260513_200919.html
+- _autosave/game_20260513_200928.html
+- deploy-demo.bat
+- docs/13출시·마�???13출시·마�???md
+- docs/2_5 부???�너지?�드?�스??2_5 부???�너지?�드?�스??md
+- game.html
+- gamedemo.html
+- img/lording/rd15.png
+- img/lording/rd16.png
+
