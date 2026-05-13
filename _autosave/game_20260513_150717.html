@@ -2504,7 +2504,7 @@ canvas{display:block;position:fixed;inset:0}
             <button id="resetNo" style="padding:6px 20px;background:rgba(0,0,0,.3);border:1px solid #443322;color:#aa8866;font-size:1rem;cursor:pointer">취소</button>
           </div>
         </div>
-        <div id="quitSection" class="set-section" style="margin-top:15px;border-top:1px solid #550000;padding-top:15px;display:none">
+        <div id="quitSection" class="set-section" style="margin-top:15px;border-top:1px solid #550000;padding-top:15px">
           <button id="quitBtn" style="display:block;width:100%;padding:10px;background:rgba(80,0,0,.35);border:1px solid #880000;color:#ff4444;font-family:'Noto Sans KR';font-weight:900;font-size:1.1rem;cursor:pointer;letter-spacing:.15em;transition:all .3s">게임 종료</button>
         </div>
       </div>
@@ -2930,6 +2930,7 @@ function gameConfirm(msg,okTxt,cancelTxt){
 // ═══════════════════════════════════════
 // ─── [S01a] ELECTRON — Electron 감지 ───
 const IS_ELECTRON=!!(window.process&&window.process.type)||navigator.userAgent.includes('Electron');
+const IS_NW=!!(window.nw&&window.nw.App);
 // ─── 모바일 감지 ───
 const IS_MOBILE=(function(){
   if(IS_ELECTRON)return false;
@@ -34249,6 +34250,7 @@ function _addFuseProfTick(key){_addCardProfTick((_FUSE_PAIRS[key]||[])[0]);}
 function _fuseReqProf(key){return _CATPROF_REQ} // 600초(10분)
 function _canFuse(key){
   if(!_FUSE_PAIRS[key])return false;
+  if(P&&P.isDemoTest)return !_isFused(key); // 데모 테스트: 조건 없이 합체 가능
   if(_DEMO_MODE&&!_DEMO_FUSE_ALLOWED.has(key))return false;
   if(key==='dimBreach'&&_isFused('dimBreach'))return false;
   if(key==='dimSlam'&&!_isFused('dimBreach'))return false;
@@ -36266,7 +36268,7 @@ function _renderSkillRow(sk,grid){
     // 헤더/설명 구성
     const _gemCol=_fuseGem(sk.id);
     // 스킬 성급 별 표시 (★만, 보석 제거)
-    const _skStar=Math.max(_skInnateStar(sk.id),_fuseStar(sk.id));
+    const _skStar=(P&&P.isDemoTest)?_skInnateStar(sk.id):Math.max(_skInnateStar(sk.id),_fuseStar(sk.id));
     const _starTxt=_skStar>=1?'<span style="color:#ffcc00;font-size:.75rem;margin-right:3px">'+'★'.repeat(Math.min(_skStar,6))+'</span>':'';
     const _FUSE_NAME_EN={stormBeam:'Lightning Helix [6-Fuse]',dimBlast:'Chain: Full Burst [6-Fuse]',dimRush:'Chain: Bladewing [5-Fuse]',dimThunder:'Chain: Thunder [4-Fuse]',dimSlam:'Chain: Enhanced [3-Fuse]',dimBreach:'Chain: Enhanced [Fuse]',iceMortar:'Ice Vortex [Fuse]',elemFuse:'Tracking Lightning [3-Fuse]',slamStorm:'Quake Storm [3-Fuse]',sixFuse:'Lightning [Fuse]',bladeFuse:'Malice Liberation [Fuse]',whirlDet:'Whirl-Det [Synth]',boneStorm:'Bone Lightning [Fuse]',elecRepent:'Repentance Return [Fuse]',shieldFuse:'Wing Strike [Fuse]',plagueFuse:'Plague Liberation [Fuse]',pillarSlam:'Pillar Strike [Fuse]',pillarSpike:'Pillar Thorn [Fuse]',holyIce:'Water Domain [3-Fuse]',holyFuse:'Ward Domain [Fuse]',holyWeak1:'Shatter Domain [4-Fuse]',holyWeak2:'Corrode Domain [5-Fuse]',holyWeak3:'Pierce Domain [6-Fuse]',holyWeak4:'Sovereign Domain [7-Fuse]',dualScarecrow:'Twin Scarecrow [Fuse]',thunderGhost:'Thunder Spear [Fuse]',timeStep:'Time Step [Fuse]'};
     const _fuseNameKey=_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isIceFuse?'iceMortar':_isElemFuse?'elemFuse':_isSlamStorm?'slamStorm':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isSynth?'whirlDet':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isPillarSlam?'pillarSlam':_isPillarSpike?'pillarSpike':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':_isDualScarecrow?'dualScarecrow':_isThunderGhost?'thunderGhost':_isTimeStep?'timeStep':null;
@@ -37893,11 +37895,13 @@ try{
 try{_applyCursor()}catch(e){}
 if($('resetBtn'))$('resetBtn').onclick=()=>{$('resetConfirm').style.display='block'};
 if($('resetNo'))$('resetNo').onclick=()=>{$('resetConfirm').style.display='none'};
-// 게임 종료 버튼 — Electron 전용
-if(IS_ELECTRON&&window.electronAPI?.quitApp){
-  const _qs=$('quitSection');if(_qs)_qs.style.display='';
-  const _qb=$('quitBtn');if(_qb)_qb.onclick=()=>window.electronAPI.quitApp();
-}
+// 게임 종료 버튼 — 모든 환경 표시
+{const _qs=$('quitSection');if(_qs)_qs.style.display='';
+const _qb=$('quitBtn');if(_qb)_qb.onclick=()=>{
+  if(IS_NW){window.nw.App.quit();}
+  else if(IS_ELECTRON&&window.electronAPI?.quitApp){window.electronAPI.quitApp();}
+  else{window.close();}
+};}
 if($('resetYes'))$('resetYes').onclick=async()=>{
   $('resetConfirm').style.display='none';
   const _isLocalReset=location.hostname==='localhost'||location.hostname==='127.0.0.1';
@@ -47569,7 +47573,7 @@ async function _startDemoTest(){
   _charName='DEMO TEST';_charIdx=0;
   G._cutsceneDone=true;
   // Lv500
-  P.lv=_DEMO_LV_CAP;P.exp=0;P.maxExp=_calcMaxExp(_DEMO_LV_CAP);P.sp=0;P.ap=0;P.isDemoTest=true;
+  P.lv=_DEMO_LV_CAP;P.exp=0;P.maxExp=_calcMaxExp(_DEMO_LV_CAP);P.sp=0;P.ap=0;P.isDemoTest=true;G.mats=10000000000;
   // ACT1 스킬 전체 Lv5
   const _dSk=['kiSlash','fireball','bladeDash','chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam',
     'fanShot','omniBeam','elemMissile','whirlwind','detonate','giantSlam','giantSlam2',
@@ -47577,20 +47581,23 @@ async function _startDemoTest(){
     'maliceSwipe','shieldThrow','holyDome','holyPrison','iceStorm',
     'maliceMortar','iceOrb','darkPillar','spikeTrap',
     'fireAura','thunderStake','voidScarecrow','explodeScarecrow','ghostXbowTurret',
-    'needleShot','arcLaser','fireBeam'];
-  for(const _sk of _dSk)P.skills[_sk]=5;
-  // _DEMO_FUSE_ALLOWED 20개 합체 해금
-  P._fused={};for(const _fk of _DEMO_FUSE_ALLOWED)P._fused[_fk]=true;
+    'needleShot','arcLaser','fireBeam','ghostWalk','timeWarp','burstLoop',
+    'weakPhys','weakMag','weakPj','weakRev'];
+  for(const _sk of _dSk)P.skills[_sk]=10; // 500랩 마스터
+  // 모든 합체 해금 (데모 테스트 전용)
+  const _allFuse=Object.keys(_FUSE_NAMES);
+  _allFuse.forEach(k=>_DEMO_FUSE_ALLOWED.add(k));
+  P._fused={};_allFuse.forEach(k=>P._fused[k]=true);
   // 스킬슬롯 배치 — 합체 호스트 기준
   // 1:참회귀환(elecRepent) 2:얼음소용돌이(iceMortar) 3:공성쇠뇌(siegeGhost) 4:독혈해방(plagueFuse) 5:대왕치기 F:결계의영역(holyFuse)
   SKILL_SLOTS[0]='maliceStorm';     // 참회귀환 host
   SKILL_SLOTS[1]='maliceMortar';    // 얼음소용돌이 host
   SKILL_SLOTS[2]='ghostXbowTurret'; // 공성쇠뇌/siegeGhost host
   SKILL_SLOTS[3]='maliceHunt';      // 독혈해방 host
-  SKILL_SLOTS[4]='giantSlam';
+  SKILL_SLOTS[4]='giantSlam2';      // 대왕치기2 — Space키
   SKILL_SLOTS[5]='holyDome';        // 영역스킬(holyFuse) host — F키
   ULT_SLOT='kiSlash';
-  P.activeCtSk='ghostWalk';P.activeMagicSk='fireball';P.activeBowSk='normal';
+  P.activeCtSk='ghostWalk';P.activeMagicSk='fireball';P.activeBowSk='normal'; // Ctrl=뇌전걸음
   // 5등급 전설 장비 (tier=4, rarity=4)
   const _dtSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
   const _dtWt={weapon:'sword',bow:'crossbow'};
@@ -48958,8 +48965,10 @@ _btWait(()=>{
   G.stage=_btSi;
   P.hp=P.mhp=9999;P.st=P.mst=9999;P.mp=P.mmp=9999;
   P.shield=P.mshield=500;P.str=300;P.dex=100;P.int=5000;P.luk=50;
-  P.atk=500;P.def=200;P.spd=3;P.r=14;P.sp=1000;
+  P.atk=500;P.def=200;P.spd=3;P.r=14;P.sp=9999;P.ap=9999;
   P.mpR=9999; // MP리젠 극대화
+  // 테스트베드: 패시브 상한 20, AP/SP 무제한
+  PASSIVE_DEF.forEach(p=>{p.max=20});
   // 숙련도 전부 만땅 (합체 해금 제한 해제)
   P._catProf={};for(const sk of SKILL_LIST)if(sk.cat)P._catProf[sk.cat]=9999;
   P._skProf={};for(const sk of SKILL_LIST)P._skProf[sk.id]=9999;

@@ -13183,7 +13183,7 @@ function _poiseHit(e, amt, label){
 function _poiseReset(e){
   if(!e) return;
 
-  e.poise = e.maxPoise;
+  e.poise = e.maxPoise; // 그로기 후 100% 회복
   e.poiseR = 0;
 }
 function teleportE(e,nx,ny,col,n){if(!canMv(nx,ny,e.r))return false;
@@ -28741,7 +28741,7 @@ function _bossPhaseCheck(e,sp){
   // 3) 스탯 강화
   e.atk=~~(e.atk*1.3);
   e.speed=Math.min(e.speed*1.15,1.8+_bp*.1);
-  e.maxPoise=~~(e.maxPoise*1.2);e.poise=e.maxPoise;
+  e.maxPoise=~~(e.maxPoise*1.2); // 페이즈 전환: maxPoise 버프만, 현재 포이즈 유지 (회복 없음)
   e.bossPatCd=Math.max(20,~~(e.bossPatCd*(.9-_bp*.05)));
   // 4) 상태 초기화
   e.stunned=0;e.s='recover';e.st2=45;e.bossPatT=10;
@@ -32657,9 +32657,9 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         // 풀피 부활 (HP 변동 없음)
         e.hp=e.mhp;e.eShield=0;e.eShieldMax=0;
         e._bossPhase=0; // 풀피 부활 → 페이즈 리셋
-        e.alive=true;e.s='recover';e.st2=90;e.stunned=0;e.poise=e.maxPoise;
+        e.alive=true;e.s='recover';e.st2=90;e.stunned=0;
         e._comboSeq=null;e._comboIdx=0;e._feinting=false;e._delaying=0; // 부활 시 콤보/페인트 클리어
-        e.maxPoise=~~(e.maxPoise*1.5); e.poise=e.maxPoise; // 포이즈도 강화
+        e.maxPoise=~~(e.maxPoise*1.5); e.poise=~~(e.maxPoise*0.25); // 부활: maxPoise 강화, 현재 포이즈는 25%만
         e.reviveIframes=180; // 부활 무적 3초
         e.atk=~~(e.atk*(_isH7?2:1.5));
         e.speed=Math.min(e.speed*1.25,_isH7?2.0:1.6);
@@ -34249,6 +34249,7 @@ function _addFuseProfTick(key){_addCardProfTick((_FUSE_PAIRS[key]||[])[0]);}
 function _fuseReqProf(key){return _CATPROF_REQ} // 600초(10분)
 function _canFuse(key){
   if(!_FUSE_PAIRS[key])return false;
+  if(P&&P.isDemoTest)return !_isFused(key); // 데모 테스트: 조건 없이 합체 가능
   if(_DEMO_MODE&&!_DEMO_FUSE_ALLOWED.has(key))return false;
   if(key==='dimBreach'&&_isFused('dimBreach'))return false;
   if(key==='dimSlam'&&!_isFused('dimBreach'))return false;
@@ -36266,7 +36267,7 @@ function _renderSkillRow(sk,grid){
     // 헤더/설명 구성
     const _gemCol=_fuseGem(sk.id);
     // 스킬 성급 별 표시 (★만, 보석 제거)
-    const _skStar=Math.max(_skInnateStar(sk.id),_fuseStar(sk.id));
+    const _skStar=(P&&P.isDemoTest)?_skInnateStar(sk.id):Math.max(_skInnateStar(sk.id),_fuseStar(sk.id));
     const _starTxt=_skStar>=1?'<span style="color:#ffcc00;font-size:.75rem;margin-right:3px">'+'★'.repeat(Math.min(_skStar,6))+'</span>':'';
     const _FUSE_NAME_EN={stormBeam:'Lightning Helix [6-Fuse]',dimBlast:'Chain: Full Burst [6-Fuse]',dimRush:'Chain: Bladewing [5-Fuse]',dimThunder:'Chain: Thunder [4-Fuse]',dimSlam:'Chain: Enhanced [3-Fuse]',dimBreach:'Chain: Enhanced [Fuse]',iceMortar:'Ice Vortex [Fuse]',elemFuse:'Tracking Lightning [3-Fuse]',slamStorm:'Quake Storm [3-Fuse]',sixFuse:'Lightning [Fuse]',bladeFuse:'Malice Liberation [Fuse]',whirlDet:'Whirl-Det [Synth]',boneStorm:'Bone Lightning [Fuse]',elecRepent:'Repentance Return [Fuse]',shieldFuse:'Wing Strike [Fuse]',plagueFuse:'Plague Liberation [Fuse]',pillarSlam:'Pillar Strike [Fuse]',pillarSpike:'Pillar Thorn [Fuse]',holyIce:'Water Domain [3-Fuse]',holyFuse:'Ward Domain [Fuse]',holyWeak1:'Shatter Domain [4-Fuse]',holyWeak2:'Corrode Domain [5-Fuse]',holyWeak3:'Pierce Domain [6-Fuse]',holyWeak4:'Sovereign Domain [7-Fuse]',dualScarecrow:'Twin Scarecrow [Fuse]',thunderGhost:'Thunder Spear [Fuse]',timeStep:'Time Step [Fuse]'};
     const _fuseNameKey=_isStormBeam?'stormBeam':_isDimBlast?'dimBlast':_isDimRush?'dimRush':_isDimThunder?'dimThunder':_isDimSlam?'dimSlam':_isDimFuse?'dimBreach':_isIceFuse?'iceMortar':_isElemFuse?'elemFuse':_isSlamStorm?'slamStorm':_isSixFuse?'sixFuse':_isBladeFuse?'bladeFuse':_isSynth?'whirlDet':_isBoneStorm?'boneStorm':_isElecRepent?'elecRepent':_isShieldFuse?'shieldFuse':_isPlagueFuse?'plagueFuse':_isPillarSlam?'pillarSlam':_isPillarSpike?'pillarSpike':_isHolyW4?'holyWeak4':_isHolyW3?'holyWeak3':_isHolyW2?'holyWeak2':_isHolyW1?'holyWeak1':_isHolyIce?'holyIce':_isHolyFuse?'holyFuse':_isDualScarecrow?'dualScarecrow':_isThunderGhost?'thunderGhost':_isTimeStep?'timeStep':null;
@@ -47577,15 +47578,23 @@ async function _startDemoTest(){
     'maliceSwipe','shieldThrow','holyDome','holyPrison','iceStorm',
     'maliceMortar','iceOrb','darkPillar','spikeTrap',
     'fireAura','thunderStake','voidScarecrow','explodeScarecrow','ghostXbowTurret',
-    'needleShot','arcLaser','fireBeam'];
-  for(const _sk of _dSk)P.skills[_sk]=5;
-  // _DEMO_FUSE_ALLOWED 20개 합체 해금
-  P._fused={};for(const _fk of _DEMO_FUSE_ALLOWED)P._fused[_fk]=true;
-  // 스킬슬롯 배치
-  SKILL_SLOTS[0]='spikeTrap';SKILL_SLOTS[1]='whirlwind';SKILL_SLOTS[2]='holyDome';
-  SKILL_SLOTS[3]='fireball';SKILL_SLOTS[4]='giantSlam';SKILL_SLOTS[5]='darkPillar';
+    'needleShot','arcLaser','fireBeam','ghostWalk','timeWarp','burstLoop',
+    'weakPhys','weakMag','weakPj','weakRev'];
+  for(const _sk of _dSk)P.skills[_sk]=10; // 500랩 마스터
+  // 모든 합체 해금 (데모 테스트 전용)
+  const _allFuse=Object.keys(_FUSE_NAMES);
+  _allFuse.forEach(k=>_DEMO_FUSE_ALLOWED.add(k));
+  P._fused={};_allFuse.forEach(k=>P._fused[k]=true);
+  // 스킬슬롯 배치 — 합체 호스트 기준
+  // 1:참회귀환(elecRepent) 2:얼음소용돌이(iceMortar) 3:공성쇠뇌(siegeGhost) 4:독혈해방(plagueFuse) 5:대왕치기 F:결계의영역(holyFuse)
+  SKILL_SLOTS[0]='maliceStorm';     // 참회귀환 host
+  SKILL_SLOTS[1]='maliceMortar';    // 얼음소용돌이 host
+  SKILL_SLOTS[2]='ghostXbowTurret'; // 공성쇠뇌/siegeGhost host
+  SKILL_SLOTS[3]='maliceHunt';      // 독혈해방 host
+  SKILL_SLOTS[4]='giantSlam2';      // 대왕치기2 — Space키
+  SKILL_SLOTS[5]='holyDome';        // 영역스킬(holyFuse) host — F키
   ULT_SLOT='kiSlash';
-  P.activeCtSk='iceOrb';P.activeMagicSk='fireball';P.activeBowSk='normal';
+  P.activeCtSk='ghostWalk';P.activeMagicSk='fireball';P.activeBowSk='normal'; // Ctrl=뇌전걸음
   // 5등급 전설 장비 (tier=4, rarity=4)
   const _dtSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
   const _dtWt={weapon:'sword',bow:'crossbow'};
@@ -48953,8 +48962,10 @@ _btWait(()=>{
   G.stage=_btSi;
   P.hp=P.mhp=9999;P.st=P.mst=9999;P.mp=P.mmp=9999;
   P.shield=P.mshield=500;P.str=300;P.dex=100;P.int=5000;P.luk=50;
-  P.atk=500;P.def=200;P.spd=3;P.r=14;P.sp=1000;
+  P.atk=500;P.def=200;P.spd=3;P.r=14;P.sp=9999;P.ap=9999;
   P.mpR=9999; // MP리젠 극대화
+  // 테스트베드: 패시브 상한 20, AP/SP 무제한
+  PASSIVE_DEF.forEach(p=>{p.max=20});
   // 숙련도 전부 만땅 (합체 해금 제한 해제)
   P._catProf={};for(const sk of SKILL_LIST)if(sk.cat)P._catProf[sk.cat]=9999;
   P._skProf={};for(const sk of SKILL_LIST)P._skProf[sk.id]=9999;
