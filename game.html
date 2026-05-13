@@ -13183,7 +13183,7 @@ function _poiseHit(e, amt, label){
 function _poiseReset(e){
   if(!e) return;
 
-  e.poise = e.maxPoise;
+  e.poise = ~~(e.maxPoise * 0.55); // 그로기 후 55% 회복 (기존 100%)
   e.poiseR = 0;
 }
 function teleportE(e,nx,ny,col,n){if(!canMv(nx,ny,e.r))return false;
@@ -28741,7 +28741,7 @@ function _bossPhaseCheck(e,sp){
   // 3) 스탯 강화
   e.atk=~~(e.atk*1.3);
   e.speed=Math.min(e.speed*1.15,1.8+_bp*.1);
-  e.maxPoise=~~(e.maxPoise*1.2);e.poise=e.maxPoise;
+  e.maxPoise=~~(e.maxPoise*1.2);e.poise=Math.min(e.poise,~~(e.maxPoise*0.4)); // 페이즈 전환: maxPoise 버프만, 현재 포이즈는 40%로 캡
   e.bossPatCd=Math.max(20,~~(e.bossPatCd*(.9-_bp*.05)));
   // 4) 상태 초기화
   e.stunned=0;e.s='recover';e.st2=45;e.bossPatT=10;
