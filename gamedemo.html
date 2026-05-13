@@ -11963,7 +11963,7 @@ const CHAPTER_STAGES=[
 ];
 const TOTAL_STAGES=35;
 // ── 데모 잠금 ──────────────────────────────────────────
-const _DEMO_MODE=true;
+const _DEMO_MODE=false;
 const _DEMO_LV_CAP=500;
 const _DEMO_LAST_STAGE=3; // ACT1(hell:0) 마지막 스테이지 인덱스
 const _DEMO_FUSE_ALLOWED=new Set(['dimBreach','dimSlam','sixFuse','elemFuse','whirlDet','slamStorm','bladeFuse','plagueFuse','boneStorm','elecRepent','shieldFuse','holyFuse','holyIce','iceMortar','pillarSpike','pillarSlam','infernoSlam','thunderGhost','dualScarecrow','siegeGhost']);
@@ -20328,7 +20328,7 @@ function _tickArcLaser(sp){
       const dx=e.x-P.x,dy=e.y-P.y;
       const proj=dx*cx+dy*cy;if(proj<0||proj>_alRange)continue;
       const perp=Math.abs(dx*cy-dy*cx);if(perp>_halfW+e.r)continue;
-      hurtE(e,~~(_alDmg*elMul(EL.L,e.el)),Math.atan2(dy,dx),false,{kbMult:0.1,noPoise:true},EL.L);
+      hurtE(e,~~(_alDmg*elMul(EL.L,e.el)),Math.atan2(dy,dx),false,{kbMult:0.1,noPoise:true,noStun:true},EL.L);
       e._elecT=Math.max(e._elecT||0,30);
       if(Math.random()<.15)addParts(e.x,e.y,'#4488ff',2);
     }
@@ -32409,7 +32409,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(atkEl===EL.L&&!isDot){
     e._shockT=Math.max(e._shockT||0,300); // 5초
     e._shockStk=Math.min(10,(e._shockStk||0)+1);
-    if(!e.ib&&e._shockStk>=3&&!e.stunned){e.stunned=Math.max(e.stunned||0,18);addTxt(e.x,e.y-25,'⚡','#44ddff',15)} // 3스택 이상: 0.3초 마비
+    if(!e.ib&&e._shockStk>=3&&!e.stunned&&!(opts&&opts.noStun)){e.stunned=Math.max(e.stunned||0,18);addTxt(e.x,e.y-25,'⚡','#44ddff',15)} // 3스택 이상: 0.3초 마비
   }
   // ═══ 어픽스: darkCurse 효과 — 저주 상태 적 뎀 25% 증가 ═══
   if(e._cursed>0)dmg=~~(dmg*1.25);
