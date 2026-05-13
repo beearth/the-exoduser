@@ -2299,7 +2299,7 @@ canvas{display:block;position:fixed;inset:0}
 
 <!-- SETTINGS PANEL -->
 <div class="panel" id="settings">
-  <div class="pbox window-frame-bg" style="display:flex;flex-direction:column;overflow:hidden;">
+  <div class="pbox window-frame-bg" style="display:flex;flex-direction:column;overflow:clip;">
     <div class="ptitle" style="font-size:2.2rem;margin-bottom:20px;">설정</div>
     <div class="frame-inner-panel frame-inner-panel-split" style="display:flex;gap:30px;flex:1;overflow-y:auto;padding-right:10px;">
       <!-- 왼쪽 컨테이너: 키 설정 -->
@@ -20328,7 +20328,7 @@ function _tickArcLaser(sp){
       const dx=e.x-P.x,dy=e.y-P.y;
       const proj=dx*cx+dy*cy;if(proj<0||proj>_alRange)continue;
       const perp=Math.abs(dx*cy-dy*cx);if(perp>_halfW+e.r)continue;
-      hurtE(e,~~(_alDmg*elMul(EL.L,e.el)),Math.atan2(dy,dx),false,{kbMult:0.1,noPoise:true},EL.L);
+      hurtE(e,~~(_alDmg*elMul(EL.L,e.el)),Math.atan2(dy,dx),false,{kbMult:0.1,noPoise:true,noStun:true},EL.L);
       e._elecT=Math.max(e._elecT||0,30);
       if(Math.random()<.15)addParts(e.x,e.y,'#4488ff',2);
     }
@@ -32378,15 +32378,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     let shDiff=(ang+Math.PI)-e.shieldAng;while(shDiff>Math.PI)shDiff-=Math.PI*2;while(shDiff<-Math.PI)shDiff+=Math.PI*2;
     if(Math.abs(shDiff)<Math.PI/3){dmg=~~(dmg*0.3);addTxt(e.x,e.y-15,'🛡','#8888ff',20);if(!noSound)SFX.block()}
   }
-  // 에너지쉴드: 쉴드=추가 HP바 (색만 다름, 동일 내구성)
-  // 쉴드 먼저 흡수 → 오버플로우만 HP로 (물리/마법 구분 없음)
-  let _shBlocked=false;
-  if(!isDot&&e.eShieldMax>0&&e.eShield>0){
-    const _shAbs=Math.min(e.eShield,dmg);
-    e.eShield=Math.max(0,e.eShield-dmg);
-    dmg=Math.max(0,dmg-_shAbs);
-    if(dmg===0)_shBlocked=true;
-  }
+  let _shBlocked=false; // 에너지쉴드 블록 플래그 (최종 배율 확정 후 아래에서 체크)
   // 원소 저항: 자기 원소 저항값만 적용, 타 원소 무관
   if(e.eRes&&e.eRes[atkEl]>0)dmg=~~(dmg*(1-e.eRes[atkEl]));
   // ═══ 63:갑각 괴물 — 집게 방어 중 70% 감소 ═══
@@ -32417,7 +32409,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(atkEl===EL.L&&!isDot){
     e._shockT=Math.max(e._shockT||0,300); // 5초
     e._shockStk=Math.min(10,(e._shockStk||0)+1);
-    if(!e.ib&&e._shockStk>=3&&!e.stunned){e.stunned=Math.max(e.stunned||0,18);addTxt(e.x,e.y-25,'⚡','#44ddff',15)} // 3스택 이상: 0.3초 마비
+    if(!e.ib&&e._shockStk>=3&&!e.stunned&&!(opts&&opts.noStun)){e.stunned=Math.max(e.stunned||0,18);addTxt(e.x,e.y-25,'⚡','#44ddff',15)} // 3스택 이상: 0.3초 마비
   }
   // ═══ 어픽스: darkCurse 효과 — 저주 상태 적 뎀 25% 증가 ═══
   if(e._cursed>0)dmg=~~(dmg*1.25);
@@ -32527,7 +32519,14 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(e._frozen>0&&!isDot){dmg=~~(dmg*1.5)}
   // 한방 데미지 캡: 삭제 (제한 없음)
 
-  // ═══ 데미지 → HP 직행 (이원 방어 삭제) ═══
+  // ═══ 에너지쉴드: 모든 배율 확정 후 흡수 (HP와 동일 내구성) ═══
+  if(!isDot&&e.eShieldMax>0&&e.eShield>0){
+    const _shAbs=Math.min(e.eShield,dmg);
+    e.eShield=Math.max(0,e.eShield-dmg);
+    dmg=Math.max(0,dmg-_shAbs);
+    if(dmg===0)_shBlocked=true;
+  }
+  // ═══ 데미지 → HP 직행 ═══
   if(dmg > 0) {
     if(G._sStats){G._sStats.dmgDealt+=dmg;if(dmg>G._sStats.maxHit)G._sStats.maxHit=dmg}
     // ═══ 5초 롤링 최고 데미지 트래커 ═══
@@ -40528,10 +40527,8 @@ function draw(){
       X.globalAlpha=1;
       // HP바 (공통)
       {const bw=e.r*2+6,bx=e.x-bw/2;let by=e.y-e.r-14;
-      if(e.hp<e.mhp){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle=gt.col;X.fillRect(bx,by,bw*(e.hp/e.mhp),4);by-=5}
-      if(e.eShield>0&&e.eShieldMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),3);by-=4}
-      if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
-      if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*Math.max(0,Math.min(1,e.poise/e.maxPoise)),3)}}
+      if(e.hp<e.mhp||e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle=gt.col;X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),4)}by-=5}
+      if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}}
       continue;
     }
     // ── 슬라임 괴물 전용 렌더 ──
@@ -40576,11 +40573,8 @@ function draw(){
       // 에너지 바
       X.globalAlpha=1;
       {const bw=e.r*2+6,bx=e.x-bw/2;let by=e.y-e.r-14;
-      if(e.hp<e.mhp){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc00cc';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);by-=5}
-
-      if(e.eShield>0&&e.eShieldMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),3);by-=4}
-      if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
-      if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*Math.max(0,Math.min(1,e.poise/e.maxPoise)),3)}}
+      if(e.hp<e.mhp||e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc00cc';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),4)}by-=5}
+      if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}}
       continue;
     }
     if(_eLite){
@@ -40611,11 +40605,8 @@ function draw(){
         }
       }
       {const bw=_er*2+6,bx=e.x-bw/2;let by=e.y-_er-16;
-      if(e.hp<e.mhp){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);by-=5}
-
-      if(e.eShield>0&&e.eShieldMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),3);by-=4}
+      if(e.hp<e.mhp||e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),4)}by-=5}
       if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
-      if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*Math.max(0,Math.min(1,e.poise/e.maxPoise)),3)}
       }continue;}
     const isStunned=e.stunned>0;
     const isReviving=e.reviveIframes>0;
@@ -41723,17 +41714,13 @@ function draw(){
           const _sr=_sp%2===0?3.5:1.5;X.lineTo(_sx+Math.cos(_a2)*_sr,_sy+Math.sin(_a2)*_sr)}
         X.closePath();X.fill()}
       X.globalAlpha=sa}
-    // ═══ 에너지 바 (HP → 쉴드 → 그로기 → 포이즈) ═══
+    // ═══ 에너지 바 (HP+쉴드 오버레이 → 그로기 → 프리즌) ═══
     {const bw=e.r*2+6,bx=e.x-bw/2;let by=e.y-e.r-16;
-    // 1) HP바 (빨강 4px)
-    if(e.hp<e.mhp){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);by-=5}
-    // 2) 쉴드바 (파랑 3px)
-    if(e.eShield>0&&e.eShieldMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),3);by-=4}
-    // 3) 그로기바 (주황 3px, 스턴 중일 때만)
+    // 1) HP바 + 쉴드 오버레이 (쉴드=파랑이 빨강HP 위에 덮임, 보스바와 동일 구조)
+    if(e.hp<e.mhp||e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*(e.eShield/e.eShieldMax),4)}by-=5}
+    // 2) 그로기바 (주황 3px, 스턴 중일 때만)
     if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
-    // 4) 포이즈바 (노랑 3px, 유한 포이즈만)
-    if(e.maxPoise<Infinity&&e.maxPoise>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ffdd44';X.fillRect(bx,by,bw*Math.max(0,Math.min(1,e.poise/e.maxPoise)),3);by-=4}
-    // 5) 프리즌바 (하늘 3px, 게이지 축적 중이거나 프리즌 중)
+    // 3) 프리즌바 (하늘 3px)
     if(e._frozen>0){const _frMax=e.ib?90:180;X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#44ddff';X.fillRect(bx,by,bw*(e._frozen/_frMax),3);by-=4}
     else if(e._freezeGauge>0&&e._freezeMax>0){X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#88ccee';X.fillRect(bx,by,bw*(e._freezeGauge/e._freezeMax),3);by-=4}
     }
@@ -47599,7 +47586,7 @@ async function _startDemoTest(){
   _charName='DEMO TEST';_charIdx=0;
   G._cutsceneDone=true;
   // Lv500
-  P.lv=_DEMO_LV_CAP;P.exp=0;P.maxExp=_calcMaxExp(_DEMO_LV_CAP);P.sp=1500;P.ap=250;P.isDemoTest=true;G.mats=10000000000;
+  P.lv=_DEMO_LV_CAP;P.exp=0;P.maxExp=_calcMaxExp(_DEMO_LV_CAP);P.sp=200;P.ap=100;P.isDemoTest=true;G.mats=10000000000;
   // ACT1 스킬 전체 Lv5
   const _dSk=['kiSlash','fireball','bladeDash','chargeBoost','magicBlink','chainAssault','chainSlash','chainSlam',
     'fanShot','omniBeam','elemMissile','whirlwind','detonate','giantSlam','giantSlam2',
@@ -47625,6 +47612,10 @@ async function _startDemoTest(){
   SKILL_SLOTS[5]='holyDome';        // 영역스킬(holyFuse) host — F키
   ULT_SLOT='blackStar'; // Z=블랙
   P.activeCtSk='ghostWalk';P.activeMagicSk='arcLaser';P.activeBowSk='normal';P.activeChargeSk='charge';P.activeQSk='peaceShield';P.activeLMBSk='whirlwind'; // Ctrl=뇌전걸음, E=마력광선, Shift=기동강화전폭(dimBlast), Q=평화의보호, LMB=암전폭류(stormBurst)
+  // 공격 패시브 9레벨
+  ['pAtk','pParry','pMagic','pBow','pCrit','pPierce','pXbow','pMelee','pCombo','pAbund','pPred','pDot','pHunter'].forEach(k=>{if(k in PASSIVES)PASSIVES[k]=9;});
+  // 스탯 5종 300씩
+  STATS.str=300;STATS.dex=300;STATS.int=300;STATS.vit=300;STATS.lck=300;
   // 5등급 전설 장비 (tier=4, rarity=4)
   const _dtSlots=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
   const _dtWt={weapon:'sword',bow:'crossbow'};
@@ -47668,7 +47659,7 @@ async function _startDemoTest(){
       const _d5=JSON.parse(_r5);
       if(_d5&&_d5.player){
         // 세이브에서 SP/AP/패시브/스킬슬롯/ULT만 복원 (스킬·장비·합체는 초기값 유지)
-        P.sp=_d5.player.sp||1500;P.ap=_d5.player.ap||250;
+        P.sp=_d5.player.sp||200;P.ap=_d5.player.ap||100;
         P.hp=_d5.player.hp||P.mhp;P.mhp=_d5.player.mhp||P.mhp;
         P.mp=_d5.player.mp||P.mmp;P.mmp=_d5.player.mmp||P.mmp;
         P.st=_d5.player.st||P.mst;P.mst=_d5.player.mst||P.mst;
@@ -47686,6 +47677,8 @@ async function _startDemoTest(){
         if(_d5.game?.stage!==undefined)G.stage=_d5.game.stage;
         if(_d5.game?.mats!==undefined)G.mats=_d5.game.mats;
         if(_d5.hellCleared)G.hellCleared=_d5.hellCleared;
+        // AP 최솟값 보정 (구버전 세이브 대응)
+        if(P.ap<100)P.ap=100;
         console.log('[DEMO500] 세이브 불러옴 — Stage '+G.stage);
       }
     }

@@ -2299,7 +2299,7 @@ canvas{display:block;position:fixed;inset:0}
 
 <!-- SETTINGS PANEL -->
 <div class="panel" id="settings">
-  <div class="pbox window-frame-bg" style="display:flex;flex-direction:column;overflow:hidden;">
+  <div class="pbox window-frame-bg" style="display:flex;flex-direction:column;overflow:clip;">
     <div class="ptitle" style="font-size:2.2rem;margin-bottom:20px;">설정</div>
     <div class="frame-inner-panel frame-inner-panel-split" style="display:flex;gap:30px;flex:1;overflow-y:auto;padding-right:10px;">
       <!-- 왼쪽 컨테이너: 키 설정 -->
@@ -11963,7 +11963,7 @@ const CHAPTER_STAGES=[
 ];
 const TOTAL_STAGES=35;
 // ── 데모 잠금 ──────────────────────────────────────────
-const _DEMO_MODE=false;
+const _DEMO_MODE=true;
 const _DEMO_LV_CAP=500;
 const _DEMO_LAST_STAGE=3; // ACT1(hell:0) 마지막 스테이지 인덱스
 const _DEMO_FUSE_ALLOWED=new Set(['dimBreach','dimSlam','sixFuse','elemFuse','whirlDet','slamStorm','bladeFuse','plagueFuse','boneStorm','elecRepent','shieldFuse','holyFuse','holyIce','iceMortar','pillarSpike','pillarSlam','infernoSlam','thunderGhost','dualScarecrow','siegeGhost']);
@@ -47677,6 +47677,8 @@ async function _startDemoTest(){
         if(_d5.game?.stage!==undefined)G.stage=_d5.game.stage;
         if(_d5.game?.mats!==undefined)G.mats=_d5.game.mats;
         if(_d5.hellCleared)G.hellCleared=_d5.hellCleared;
+        // AP 최솟값 보정 (구버전 세이브 대응)
+        if(P.ap<100)P.ap=100;
         console.log('[DEMO500] 세이브 불러옴 — Stage '+G.stage);
       }
     }
