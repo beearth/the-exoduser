@@ -36,9 +36,12 @@ img/vfx_candidates/
 img/grok_gen/
 img/ChatGPT*
 
-# img/lording: rd1~rd18만 사용, 나머지(참고용 스크래치) 제외 (~186MB)
-img/lording/[0-9].png
-img/lording/[0-9][0-9].png
+# img/lording: 1.png~19.png(트랜지션용) + rd*.* 유지, 나머지 스크래치 제외
+img/lording/20.png
+img/lording/22.png
+img/lording/23.png
+img/lording/55.png
+img/lording/66.png
 img/lording/ACT2*
 img/lording/EXO.png
 img/lording/MAIN.png
