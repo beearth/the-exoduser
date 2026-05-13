@@ -34809,6 +34809,7 @@ function activateGhostXbowTurret(){
     const _sgLv=P.skills.voidScarecrow||1;
     const _sgMax=20+(_sgLv-1)*3+(_sgLv>=10?3:0);
     G._voidScarecrow={x:P.x+30,y:P.y,maxAbsorb:_sgMax,absorbed:0,resHP:0,resMP:0,resST:0,aggroOn:true,lv:_sgLv,siegeGhost:true};
+    playSample('ghost_laugh',1.4,_r(1,.1));
     addTxt(P.x,P.y-40,_T('👻 공성유령!'),'#aa88dd',40);
     addParts(P.x,P.y,'#aa88dd',8);
   } else {
