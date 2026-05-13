@@ -32657,9 +32657,9 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         // 풀피 부활 (HP 변동 없음)
         e.hp=e.mhp;e.eShield=0;e.eShieldMax=0;
         e._bossPhase=0; // 풀피 부활 → 페이즈 리셋
-        e.alive=true;e.s='recover';e.st2=90;e.stunned=0;e.poise=e.maxPoise;
+        e.alive=true;e.s='recover';e.st2=90;e.stunned=0;
         e._comboSeq=null;e._comboIdx=0;e._feinting=false;e._delaying=0; // 부활 시 콤보/페인트 클리어
-        e.maxPoise=~~(e.maxPoise*1.5); e.poise=e.maxPoise; // 포이즈도 강화
+        e.maxPoise=~~(e.maxPoise*1.5); e.poise=~~(e.maxPoise*0.25); // 부활: maxPoise 강화, 현재 포이즈는 25%만
         e.reviveIframes=180; // 부활 무적 3초
         e.atk=~~(e.atk*(_isH7?2:1.5));
         e.speed=Math.min(e.speed*1.25,_isH7?2.0:1.6);
