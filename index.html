@@ -1986,7 +1986,8 @@ function _swapLobbyBg(stage){
   const pick=_bgs[~~(Math.random()*_bgs.length)];
   if(_curBg===pick.k)return;
   _curBg=pick.k;
-  const url='assets/lobby/lobby_bg_'+pick.k+pick.e;
+  const _rawBase='https://raw.githubusercontent.com/beearth/the-exoduser/main/assets/lobby/';
+  const url=_rawBase+'lobby_bg_'+pick.k+pick.e;
   bg.style.opacity='0';
   setTimeout(()=>{
     bg.style.backgroundImage="url('"+url+"')";
