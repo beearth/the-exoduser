@@ -2075,10 +2075,11 @@ _GP.on('lobbyNav', (gp, just) => {
 // ═══ 캐릭터 선택 → 입장 ═══
 function showCharGate(charId){
   showLoading(_TL('지옥으로 입장하는 중...'));
-  // 게임 로딩 배경 이미지 19개 미리 캐시 (game.html과 동일 경로)
-  for(let i=1;i<=19;i++){const _pi=new Image();_pi.src='img/lording/'+i+'.png';}
+  // 로딩 배경 이미지 1장만 미리 캐시 후 인덱스를 game.html에 전달
+  const _rdIdx=~~(Math.random()*19)+1;
+  const _preImg=new Image();_preImg.src='img/lording/'+_rdIdx+'.png';
   const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId;
-  setTimeout(()=>{window.location.href=_tp},1200);
+  setTimeout(()=>{window.location.href=_tp+'&rd='+_rdIdx},1200);
 }
 
 // ═══ 펫 말풍선 시스템 ═══

@@ -48679,7 +48679,10 @@ function showBootLoading(msg){
   name.textContent=msg||_T('불러오는 중...');
   // 세션 당 한 장만 — 이미 골랐으면 교체 금지
   if(!_bootRdPicked&&img&&_STAGE_TRANSITION_RD.length>0){
-    img.src=_STAGE_TRANSITION_RD[_pickTransitionRd()];
+    // index.html에서 프리로드한 인덱스가 있으면 동일 이미지 사용 (캐시 히트)
+    const _rdParam=new URLSearchParams(location.search).get('rd');
+    const _rdIdx=_rdParam?Math.max(1,Math.min(19,+_rdParam))-1:_pickTransitionRd();
+    img.src=_STAGE_TRANSITION_RD[_rdIdx];
     _bootRdPicked=true;
   }
   bar.style.width='8%';
