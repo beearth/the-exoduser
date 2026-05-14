@@ -1844,6 +1844,8 @@ async function loadCharacters(){
     });
     cl.appendChild(div);
   });
+  // 로비 진입 시 첫 캐릭터 자동 배경 표시
+  if(data&&data.length>0){const _d0=data[0].data||{};_updateCharDisplay({name:data[0].name,stage:_d0.game?_d0.game.stage||0:0})}else{_swapLobbyBg(0);}
   // + 새 캐릭터 슬롯
   const newDiv=document.createElement('div');newDiv.className='char-item-new';
   newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">+</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+_TL('새 캐릭터')+'</div></div>';
