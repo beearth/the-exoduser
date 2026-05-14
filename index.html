@@ -2075,6 +2075,8 @@ _GP.on('lobbyNav', (gp, just) => {
 // ═══ 캐릭터 선택 → 입장 ═══
 function showCharGate(charId){
   showLoading(_TL('지옥으로 입장하는 중...'));
+  // 게임 로딩 배경 이미지 19개 미리 캐시 (game.html과 동일 경로)
+  for(let i=1;i<=19;i++){const _pi=new Image();_pi.src='img/lording/'+i+'.png';}
   const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId;
   setTimeout(()=>{window.location.href=_tp},1200);
 }
