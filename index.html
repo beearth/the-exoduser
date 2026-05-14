@@ -1707,21 +1707,23 @@ function pickRandomLoadingImage(){
 }
 
 function showLoading(msg){
-  const gate = $('chapterGate');
-  const gateImg = $('chGateImg');
-  if(gate && gateImg) {
-    gateImg.src = pickRandomLoadingImage();
-    gate.style.display = 'block';
-    gate.style.opacity = '1';
-  }
   const loading = $('loading');
   if(loading) {
     loading.style.display = 'block';
-    if(msg) {
-      const p = loading.querySelector('p');
-      if(p) p.textContent = msg;
-    }
+    if(msg) { const p = loading.querySelector('p'); if(p) p.textContent = msg; }
   }
+  const gate = $('chapterGate');
+  const gateImg = $('chGateImg');
+  if(!gate || !gateImg) return;
+  // 이미지 완전히 로드된 후 게이트 표시 (반쪽 렌더 방지)
+  gateImg.style.opacity = '0';
+  gate.style.display = 'block';
+  gate.style.opacity = '1';
+  const _url = pickRandomLoadingImage();
+  const _tmp = new Image();
+  _tmp.onload = () => { gateImg.src = _url; gateImg.style.opacity = '1'; };
+  _tmp.onerror = () => { gateImg.src = _url; gateImg.style.opacity = '1'; }; // 실패해도 일단 표시
+  _tmp.src = _url;
 }
 
 function hideLoading(){
