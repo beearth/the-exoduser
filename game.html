@@ -39388,7 +39388,7 @@ function renderStatPanel(){
       b.className=can?'stat-btn':'stat-btn dis';
       b.style.cssText=`width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid ${col};color:${col};font-size:1.4rem;cursor:${can?'pointer':'not-allowed'};display:flex;align-items:center;justify-content:center;opacity:${can?1:.3};border-radius:4px`;
       b.textContent=txt;
-      if(can)b.onclick=()=>{ STATS[sd.key]+=n; if(n>0)P.sp-=n; else P.sp+=Math.abs(n); SFX.pickup(); applyStats(); renderStatPanel(); };
+      if(can)b.onclick=()=>{ STATS[sd.key]+=n; if(n>0)P.sp-=n; else P.sp+=Math.abs(n); SFX.pickup(); applyStats(); renderStatPanel(); dbSaveNow(); };
       return b;
     };
     btnsDiv.appendChild(mkBtn(-10,'-10','#cc7777'));
