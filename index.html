@@ -1793,9 +1793,12 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
     if(session){await showLobby()}else{$('loginSection').style.display='block'}
     hideLoading();
   }else if(session){
-    // 로그인 상태도 항상 인트로 재생 (finishCin에서 currentUser 있으면 showLobby 호출)
+    // OAuth 리다이렉트 복귀 (로그인 완료) → 인트로 스킵, 바로 로비
+    _cinDone=true;startBGM();
+    $('cinScene').style.display='none';clearInterval(_emberIv);
+    $('mainWrap').classList.add('show');
+    await showLobby();
     hideLoading();
-    playCinematic();
   }else{
     // 첫 접속 / 새로고침 (비로그인) → 인트로 재생
     hideLoading();

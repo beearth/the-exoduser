@@ -24100,3 +24100,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 ## 2026-05-14 10:30 (auto)
 - gamedemo.html
 
+
+## 2026-05-14 11:30 (auto)
+- index.html
+
