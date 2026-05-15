@@ -11833,17 +11833,6 @@ function dropItem(idx){
   dbSaveNow();
 }
 function pickupItem(item){
-  // 빈 슬롯 자동 장착: 반지는 ring1→ring2 순으로 빈 슬롯 확인
-  const _autoSlot=item.slot==='ring1'||item.slot==='ring2'
-    ?(!INV.equipped.ring1?'ring1':!INV.equipped.ring2?'ring2':null)
-    :(!INV.equipped[item.slot]?item.slot:null);
-  if(_autoSlot){
-    INV.equipped[_autoSlot]=item;item.slot=_autoSlot;
-    SFX.pickup();notify(`${_rarName(item.rarity)} ${_T(item.name)} ${_T('획득!')} ⚡ ${_T('자동 장착!')}`);
-    if(item.rarity>=3)_petSayCD('item_pickup','crow','탭 장비창을 열어봐.',4,60,'cat','좋은 거 나왔다! TAB!',4);
-    if(item.rarity>=4&&typeof _petOnFirstLegend==='function')_petOnFirstLegend();
-    recalcSt();applyStats();dbSaveForce();return true;
-  }
   const[w,h]=_itemSz(item);
   // 먼저 빈 공간 검사 (push 전에)
   INV.bag.push(item);
@@ -39399,7 +39388,7 @@ function renderStatPanel(){
       b.className=can?'stat-btn':'stat-btn dis';
       b.style.cssText=`width:48px;height:48px;background:rgba(0,0,0,.4);border:2px solid ${col};color:${col};font-size:1.4rem;cursor:${can?'pointer':'not-allowed'};display:flex;align-items:center;justify-content:center;opacity:${can?1:.3};border-radius:4px`;
       b.textContent=txt;
-      if(can)b.onclick=()=>{ STATS[sd.key]+=n; if(n>0)P.sp-=n; else P.sp+=Math.abs(n); SFX.pickup(); applyStats(); renderStatPanel(); dbSaveNow(); };
+      if(can)b.onclick=()=>{ STATS[sd.key]+=n; if(n>0)P.sp-=n; else P.sp+=Math.abs(n); SFX.pickup(); applyStats(); renderStatPanel(); };
       return b;
     };
     btnsDiv.appendChild(mkBtn(-10,'-10','#cc7777'));
@@ -48690,10 +48679,7 @@ function showBootLoading(msg){
   name.textContent=msg||_T('불러오는 중...');
   // 세션 당 한 장만 — 이미 골랐으면 교체 금지
   if(!_bootRdPicked&&img&&_STAGE_TRANSITION_RD.length>0){
-    // index.html에서 프리로드한 인덱스가 있으면 동일 이미지 사용 (캐시 히트)
-    const _rdParam=new URLSearchParams(location.search).get('rd');
-    const _rdIdx=_rdParam?Math.max(1,Math.min(19,+_rdParam))-1:_pickTransitionRd();
-    img.src=_STAGE_TRANSITION_RD[_rdIdx];
+    img.src=_STAGE_TRANSITION_RD[_pickTransitionRd()];
     _bootRdPicked=true;
   }
   bar.style.width='8%';
