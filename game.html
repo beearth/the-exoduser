@@ -35179,7 +35179,7 @@ function activateGiantSlam(srcId){
   // 즉시 히트 (hitStop/slowMo 억제)
   G._noHitStopT=60;
   const _gs1R=500+(slv-1)*15;
-  const _gs1Dmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')*19); // 단발 1티어 고정 ×19 = 기동:파괴 1티어급
+  const _gs1Dmg=~~(meleeRef()*7.0*statStr()*pAtkMul()*_skMul('kiSlash')*3); // 기검참 한방×3 고정 (Lv1=42×)
   const _gs1El=wp().el||0;
   _gSlamHit(P.facing,_gs1R,Math.PI,_gs1Dmg,_gs1El,0,1.0);
   G.hitStop=0;G.slowMo=0;
