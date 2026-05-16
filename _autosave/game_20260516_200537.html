@@ -43411,7 +43411,7 @@ function drawP(){
             X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);X.stroke()}
         }
       }else if(fz.type==='shockField'){
-        // ═══ 전격이동 전류장판 — 넓은 기둥형 번개 + 바닥 발광 ═══
+        // ═══ 전격이동 전류장판 — 바닥 전기 아크만 (원 없음) ═══
         const _sfF=~~(fz.t);
         // ── 바닥 전기 줄기 (얇은 분기형, 은은) ── 매 8프레임 갱신으로 GC 절감
         if(!fz._arcs||_sfF%8===0){

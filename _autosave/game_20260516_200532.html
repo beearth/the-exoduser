@@ -43412,6 +43412,12 @@ function drawP(){
         }
       }else if(fz.type==='shockField'){
         // ═══ 전격이동 전류장판 — 넓은 기둥형 번개 + 바닥 발광 ═══
+        // 바닥 그라디언트 fill (가시성)
+        if(!fz._grd_sf||fz._grdR_sf!==fz.r){const _g=X.createRadialGradient(fz.x,fz.y,0,fz.x,fz.y,fz.r);_g.addColorStop(0,'rgba(80,120,255,.45)');_g.addColorStop(.6,'rgba(40,80,200,.2)');_g.addColorStop(1,'rgba(20,40,180,0)');fz._grd_sf=_g;fz._grdR_sf=fz.r;}
+        X.globalAlpha=_fzFade;X.fillStyle=fz._grd_sf;X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.fill();
+        // 경계 링
+        X.strokeStyle='#88aaff';X.lineWidth=1.5;X.globalAlpha=(.3+.15*Math.sin(_now*.015))*_fzFade;
+        X.beginPath();X.arc(fz.x,fz.y,fz.r*.97,0,Math.PI*2);X.stroke();
         const _sfF=~~(fz.t);
         // ── 바닥 전기 줄기 (얇은 분기형, 은은) ── 매 8프레임 갱신으로 GC 절감
         if(!fz._arcs||_sfF%8===0){

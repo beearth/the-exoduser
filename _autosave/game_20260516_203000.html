@@ -24809,7 +24809,7 @@ function update(){
       // ═══ 전격이동 착지 — 전류장판 생성 ═══
       {const _sfLv=P.skills.bladeDash||1;
       const _sfR=300+(_sfLv-1)*20;
-      const _sfDmg=~~(magicRef()*statInt()*pMagicMul()*(1+(_sfLv-1)*.20));
+      const _sfDmg=~~(magicRef()*statInt()*pMagicMul()*(0.3+(_sfLv-1)*.06));
       const _sfDR=Math.min(.50,.10+(_sfLv-1)*.05); // 1렙10%, 렙당+5%, 캡50%
       if(!G._fireZones)G._fireZones=[];
       // 착지 번개 기둥 생성 (1회) — 화면 상단→착지점, 큰 지그재그+다분기
@@ -27013,7 +27013,7 @@ function update(){
         // 전기 소용돌이 동시 생성 — storm DOT 장판
         const _msLv=P.skills.maliceStorm||1;
         const _msR=~~(_hrR*0.8);
-        const _msDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('maliceStorm')*_fuseMul('maliceStorm'));
+        const _msDmg=~~(magicRef()*statInt()*pMagicMul()*(5+(_msLv-1))*_fuseMul('maliceStorm'));
         G._fireZones.push({x:_hrwx,y:_hrwy,r:_msR,t:0,maxT:_hrDur,
           dmg:_msDmg,el:EL.L,lv:_msLv,type:'storm'});
       }
@@ -27061,7 +27061,7 @@ function update(){
       }
       if(_msBlocked){showPH(_T('이미 폭풍 지역!'),'#cc88ff')}
       else{
-        const _msDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('maliceStorm')*_fuseMul('maliceStorm'));
+        const _msDmg=~~(magicRef()*statInt()*pMagicMul()*(5+(_msLv-1))*_fuseMul('maliceStorm'));
         let _castSuccess=false;
         if(_msBF){
           const _bsMpCost=50;
@@ -28022,8 +28022,8 @@ function update(){
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.L);
             e.shockT=Math.max(e.shockT||0,60);
           }else if(fz.type==='shockField'){
-            // 전격이동 전류장판: 번개 틱뎀 + 전류 방어력 감소
-            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.L);
+            // 전격이동 전류장판: 번개 틱뎀 + 전류 방어력 감소 (마법기반 — 에너지쉴드 적용)
+            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.L);
             e._shockDR=Math.max(e._shockDR||0,fz.defRed||.10); // 방어력 감소 디버프
             e._shockDRT=60; // 장판 밖으로 나가도 1초 유지
           }else if(fz.type==='spikeTrap'){
@@ -32531,7 +32531,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   // 한방 데미지 캡: 삭제 (제한 없음)
 
   // ═══ 에너지쉴드: 모든 배율 확정 후 흡수 (HP와 동일 내구성) ═══
-  if(!isDot&&e.eShieldMax>0&&e.eShield>0){
+  // DOT은 기본 제외. shieldHit:true 플래그 시 DOT도 쉴드 적용 (shockField 등 마법 장판)
+  if((!isDot||(opts&&opts.shieldHit))&&e.eShieldMax>0&&e.eShield>0){
     const _shAbs=Math.min(e.eShield,dmg);
     e.eShield=Math.max(0,e.eShield-dmg);
     dmg=Math.max(0,dmg-_shAbs);
@@ -34916,7 +34917,7 @@ function activateSpikeTrap(){
   G.mats-=_malCost(10);P._gcCd=~~(600*(1+_eqAffix('cooldownRed')));
   const lv=P.skills.spikeTrap||1;
   const r=300+(lv-1)*22;
-  const dmg=~~(magicRef()*statInt()*pMagicMul()*(3+(lv-1))); // INT 스케일, flat +1/Lv (슬로우+출혈 유틸 감안)
+  const dmg=~~(magicRef()*statInt()*pMagicMul()*(2+(lv-1)*.5)); // INT 스케일, +0.5/Lv (슬로우+출혈 유틸 감안, 2026-05-16 감소)
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:r,t:0,maxT:600,dmg:dmg,el:EL.P,lv:lv,type:'spikeTrap'});
   // 설치 즉발 데미지 제거됨 — DOT만 (슬로우+출혈 유틸 스킬)
@@ -43411,7 +43412,7 @@ function drawP(){
             X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);X.stroke()}
         }
       }else if(fz.type==='shockField'){
-        // ═══ 전격이동 전류장판 — 넓은 기둥형 번개 + 바닥 발광 ═══
+        // ═══ 전격이동 전류장판 — 바닥 전기 아크만 (원 없음) ═══
         const _sfF=~~(fz.t);
         // ── 바닥 전기 줄기 (얇은 분기형, 은은) ── 매 8프레임 갱신으로 GC 절감
         if(!fz._arcs||_sfF%8===0){

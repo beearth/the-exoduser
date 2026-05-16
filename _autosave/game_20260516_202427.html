@@ -11833,6 +11833,17 @@ function dropItem(idx){
   dbSaveNow();
 }
 function pickupItem(item){
+  // 빈 슬롯 자동 장착: 반지는 ring1→ring2 순으로 빈 슬롯 확인
+  const _autoSlot=item.slot==='ring1'||item.slot==='ring2'
+    ?(!INV.equipped.ring1?'ring1':!INV.equipped.ring2?'ring2':null)
+    :(!INV.equipped[item.slot]?item.slot:null);
+  if(_autoSlot){
+    INV.equipped[_autoSlot]=item;item.slot=_autoSlot;
+    SFX.pickup();notify(`${_rarName(item.rarity)} ${_T(item.name)} ${_T('획득!')} ⚡ ${_T('자동 장착!')}`);
+    if(item.rarity>=3)_petSayCD('item_pickup','crow','탭 장비창을 열어봐.',4,60,'cat','좋은 거 나왔다! TAB!',4);
+    if(item.rarity>=4&&typeof _petOnFirstLegend==='function')_petOnFirstLegend();
+    recalcSt();applyStats();dbSaveForce();return true;
+  }
   const[w,h]=_itemSz(item);
   // 먼저 빈 공간 검사 (push 전에)
   INV.bag.push(item);
@@ -24798,7 +24809,7 @@ function update(){
       // ═══ 전격이동 착지 — 전류장판 생성 ═══
       {const _sfLv=P.skills.bladeDash||1;
       const _sfR=300+(_sfLv-1)*20;
-      const _sfDmg=~~(magicRef()*statInt()*pMagicMul()*(1+(_sfLv-1)*.20));
+      const _sfDmg=~~(magicRef()*statInt()*pMagicMul()*(0.3+(_sfLv-1)*.06));
       const _sfDR=Math.min(.50,.10+(_sfLv-1)*.05); // 1렙10%, 렙당+5%, 캡50%
       if(!G._fireZones)G._fireZones=[];
       // 착지 번개 기둥 생성 (1회) — 화면 상단→착지점, 큰 지그재그+다분기
@@ -43400,7 +43411,7 @@ function drawP(){
             X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);X.stroke()}
         }
       }else if(fz.type==='shockField'){
-        // ═══ 전격이동 전류장판 — 넓은 기둥형 번개 + 바닥 발광 ═══
+        // ═══ 전격이동 전류장판 — 바닥 전기 아크만 (원 없음) ═══
         const _sfF=~~(fz.t);
         // ── 바닥 전기 줄기 (얇은 분기형, 은은) ── 매 8프레임 갱신으로 GC 절감
         if(!fz._arcs||_sfF%8===0){

@@ -85,7 +85,8 @@ cd G:\hell && node server.cjs
 - 모든 DR(기본DR + barrier + 조건부DR) 적용 후 쉴드→HP 순서로 분배
 - 쉴드가 남아있는 한 HP는 절대 안 깎임
 - 쉴드 일부 격파 시 오버플로우만 HP로 (추가 패널티 없음)
-- DOT 제외. 플레이어/몬스터 공통 (eShieldMax>0 조건).
+- DOT 제외. 단, `shieldHit:true` 플래그가 있으면 DOT도 쉴드 적용 (shockField 전류장판 등 마법 장판).
+- 플레이어/몬스터 공통 (eShieldMax>0 조건).
 
 ### 기검참 (kiSlash) 콤보
 - 7/7/7 균등 콤보 (`×7.0` 고정), _skMul(b:2.0) 곱해서 타당 실제 14×
