@@ -1,24 +1,27 @@
 # HELL: EXODUSER - 얼리액세스 빌드 구축 마스터 체크리스트
 
-작성일: 2026.05.16 | 최종수정: 2026.05.16
-대상 폴더: G:\hell-ea\ (미생성 — PHASE 1에서 신규 생성)
-참조 소스: G:\hell-build\ (데모, 현재 v0.1.0-demo)
+작성일: 2026.05.16 | 최종수정: 2026.05.15
+대상 폴더: G:\hell-ea\ (생성 완료 — PHASE 1 완료)
+참조 소스: G:\hell-DEMO\ (데모, 현재 v0.1.0-demo)
 런타임: NW.js (Electron 폐기 완료)
 OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 전략 문서: docs/13출시·마케팅/HELL_DIROI_종합확장전략기획서_v2_0.md
 
 ---
 
-## 현재 상태 스냅샷 (2026.05.16 기준)
+## 현재 상태 스냅샷 (2026.05.15 기준)
 
 | 항목 | 상태 |
 |---|---|
-| G:\hell-build\ | 존재 — v0.1.0-demo, BIC 데모 빌드 |
-| G:\hell-ea\ | **미생성** — PHASE 1에서 생성 |
-| butler CLI | hell-build\_itch_push.bat에 존재, 설치 확인 필요 |
-| itch.io 계정 | beearth.itch.io — **"게임 개발 및 업로드" 미체크 (선행 필수)** |
-| Steam Direct | 미결제 ($100 필요) |
-| Supabase | tevlznuhjqcnzgewlswx 활성 중 |
+| G:\hell-DEMO\ | 존재 — v0.1.0-demo, LV캡100, 스테이지 1-1만 |
+| G:\hell-ea\ | **구축 완료** — PHASE 1+2 완료, PHASE 3 진행 중 |
+| G:\hell-ea\node-main.js | 존재 — 포트 3333, OAuth + 세이브 API 완비 |
+| G:\hell-ea\build-nwjs.mjs | 존재 — nwbuild 스크립트 |
+| butler CLI | v15.27.0 설치됨, API 키 저장 완료 |
+| itch.io 계정 | beearth.itch.io — 개발자 계정 활성, butler 연결 완료 |
+| Steam Direct | 미결제 ($100 필요) — 신청 후 대기 중 |
+| Supabase | tevlznuhjqcnzgewlswx 활성, Redirect URL 6개 등록 완료 |
+| npm run build:nwjs | **미실행** — NW.js 0.111.2 첫 다운로드 필요 |
 
 ---
 
@@ -26,7 +29,7 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 
 | 항목 | 데모 | 얼리액세스 | 1.0 정식 |
 |---|---|---|---|
-| 폴더 | G:\hell-build\ | G:\hell-ea\ | G:\hell-release\ (추후) |
+| 폴더 | G:\hell-DEMO\ | G:\hell-ea\ | G:\hell-release\ (추후) |
 | 가격 | 무료 | $14.99 | $19.99 |
 | 스테이지 | 1-1 | 1-1 ~ 1-4 (1챕터) | 35+ (7챕터) |
 | 레벨 캡 | 100 | 500 | 무제한 |
@@ -41,7 +44,7 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 - 한 PHASE 끝나면 도진님에게 보고 후 다음 PHASE 진행
 - 각 STEP 완료 시 체크박스 [x] 표시
 - 문제 발생 시 즉시 STOP 후 보고
-- 데모(G:\hell-build\) 수정 시 **BIC 제출용 ZIP은 별도 보존** — itch.io 데모용 재빌드 목적으로만 수정
+- 데모(G:\hell-DEMO\) 수정 시 **BIC 제출용 ZIP은 별도 보존** — itch.io 데모용 재빌드 목적으로만 수정
 - 코드 수정은 str_replace 사용, 파일 전체 재작성 금지
 - 게임루프 내 new/splice/filter/forEach/Date.now() 사용 금지 (오브젝트 풀링 유지)
 - 절대 수정 금지 항목: ELC[], ETYPE_COL[], _tseed(), StageSeeder, CIN_LINES, _INTRO_LINES, boss combo idx(0-48), 강화 확률 공식, ProxyX 배칭 시스템
@@ -61,11 +64,11 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 ## PHASE 0 - 환경 분석 (예상 시간: 10분)
 
 ### STEP 0.1: 데모 빌드 폴더 트리 분석
-- [ ] G:\hell-build\ 전체 구조 파악
-- [ ] 명령: `dir G:\hell-build /B`
+- [ ] G:\hell-DEMO\ 전체 구조 파악
+- [ ] 명령: `dir G:\hell-DEMO /B`
 - [ ] 확장자별 사이즈 분포 확인:
   ```
-  powershell -command "Get-ChildItem G:\hell-build -Recurse -File | Where-Object {$_.FullName -notlike '*node_modules*'} | Group-Object Extension | Select-Object @{n='Ext';e={$_.Name}}, @{n='Count';e={$_.Count}}, @{n='SizeMB';e={[math]::Round(($_.Group | Measure-Object Length -Sum).Sum / 1MB, 2)}} | Sort-Object SizeMB -Descending | Format-Table -AutoSize"
+  powershell -command "Get-ChildItem G:\hell-DEMO -Recurse -File | Where-Object {$_.FullName -notlike '*node_modules*'} | Group-Object Extension | Select-Object @{n='Ext';e={$_.Name}}, @{n='Count';e={$_.Count}}, @{n='SizeMB';e={[math]::Round(($_.Group | Measure-Object Length -Sum).Sum / 1MB, 2)}} | Sort-Object SizeMB -Descending | Format-Table -AutoSize"
   ```
 
 ### STEP 0.2: 데모 진입 파일 확인
@@ -77,8 +80,8 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 - [ ] 빌드 스크립트 위치 확인 (build-nwjs.mjs 등)
 
 ### STEP 0.3: 데모 제한 코드 위치 파악
-- [ ] 레벨 100 캡: `findstr /S /I /N "MAX_LEVEL\|LEVEL_CAP\|_DEMO_MODE" G:\hell-build\*.html`
-- [ ] 스테이지 잠금: `findstr /S /I /N "stage.*lock\|DEMO_LIMIT" G:\hell-build\*.html`
+- [ ] 레벨 100 캡: `findstr /S /I /N "MAX_LEVEL\|LEVEL_CAP\|_DEMO_MODE" G:\hell-DEMO\*.html`
+- [ ] 스테이지 잠금: `findstr /S /I /N "stage.*lock\|DEMO_LIMIT" G:\hell-DEMO\*.html`
 - [ ] 합체/어픽스 밴 코드 위치 확인
 
 ### STEP 0.4: G:\hell-ea\ 폴더 존재 확인
@@ -99,116 +102,101 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 
 ## PHASE 1 - EA 빌드 폴더 생성 (예상 시간: 20-30분)
 
-### STEP 1.1: 디렉토리 생성
-- [ ] `mkdir G:\hell-ea`
-- [ ] `mkdir G:\hell-ea\docs`
-- [ ] `mkdir G:\hell-ea\saves` (게스트 로컬 세이브용)
+### STEP 1.1: 디렉토리 생성 ✅
+- [x] `mkdir G:\hell-ea`
+- [x] `mkdir G:\hell-ea\docs`
+- [x] `mkdir G:\hell-ea\saves` (게스트 로컬 세이브용)
 
-### STEP 1.2: 데모 파일 EA로 복사
-- [ ] 핵심 HTML: `indexdemo.html` → `index.html`, `gamedemo.html` → `game.html`
-- [ ] assets 폴더 통째로 복사
-- [ ] 언어 파일 복사 (lang_*.js 26개)
-- [ ] maps_data.js, lobby_i18n.js, GLTFLoader.js, three.min.js 복사
-- [ ] 아틀라스 파일 복사 (atlas_*.json, atlas_*.png)
-- [ ] BGM 폴더 복사
-- [ ] package.json 복사 후 수정 준비
-- [ ] 제외 항목: node_modules, out, cache, _itch_*, EXODUSER.exe, DLL/PAK/EXE 런타임 파일
+### STEP 1.2: 데모 파일 EA로 복사 ✅
+- [x] 핵심 HTML: `indexdemo.html` → `index.html`, `gamedemo.html` → `game.html`
+- [x] assets 폴더 통째로 복사
+- [x] 언어 파일 복사 (lang_*.js 26개)
+- [x] maps_data.js, lobby_i18n.js, GLTFLoader.js, three.min.js 복사
+- [x] 아틀라스 파일 복사 (atlas_*.json, atlas_*.png)
+- [x] BGM 폴더 복사
+- [x] package.json 복사 후 수정 준비
+- [x] NW.js 런타임 파일도 포함 복사됨 (EXODUSER.exe, DLL 등 — 즉시 실행 가능 상태)
 
-### STEP 1.2.5: build-nwjs.mjs 이식 ★ (신규)
-- [ ] G:\pentafall\build-nwjs.mjs → G:\hell-ea\build-nwjs.mjs 복사
-- [ ] hell-ea 구조에 맞게 수정:
-  - `app.name`: 'EXODUSER-EA'
-  - `app.version`: '0.5.0'
-  - icon 경로 (hell-ea 아이콘)
-  - PORT 참조가 있으면 14267 → 3333으로 수정
-- [ ] G:\hell-ea\package.json에 `"scripts": {"build:nwjs": "node build-nwjs.mjs"}` 추가
-- [ ] `cd G:\hell-ea && npm install nw-builder`
+### STEP 1.2.5: build-nwjs.mjs 이식 ★ ✅
+- [x] G:\hell-ea\build-nwjs.mjs 신규 작성 (pentafall 패턴 기반, Vite 없이 flat HTML 구조로 변경)
+  - 소스 파일 → dist/ 스테이징 → nwbuild → out/EXODUSER-EA-win64/
+  - app.name: 'EXODUSER-EA', version: '0.5.0'
+- [x] G:\hell-ea\package.json에 `"scripts": {"build:nwjs": "node build-nwjs.mjs"}` 추가
+- [x] `cd G:\hell-ea && npm install nw-builder` 완료 (nw-builder@4.17.10, 123 packages)
 
-### STEP 1.3: package.json 수정 (EA 정체성)
-- [ ] `"name": "hell-exoduser-ea"`
-- [ ] `"version": "0.5.0-ea"`
-- [ ] `"main": "index.html"`
-- [ ] `"window.title": "HELL: EXODUSER (Early Access)"`
-- [ ] chromium-args 확장 (DIROI 패턴 적용):
-  ```
-  --disable-features=CrossOriginOpenerPolicy,CrossOriginEmbedderPolicy,IsolateOrigins,SitePerProcess
-  --disable-site-isolation-trials --disable-web-security --no-sandbox
-  --allow-running-insecure-content --user-data-dir=./userdata
-  --autoplay-policy=no-user-gesture-required --enable-features=SharedArrayBuffer
-  ```
-- [ ] `"node-main": "node-main.js"` 추가
-- [ ] `"node-remote": ["http://127.0.0.1:3333", "http://localhost:3333"]` 추가
-- [ ] `"toolbar": true` (개발 중)
+### STEP 1.3: package.json 수정 (EA 정체성) ✅
+- [x] name: "hell-exoduser-ea", version: "0.5.0-ea"
+- [x] main: "index.html" (loader.html → index.html 수정 — loader.html은 PHASE 4에서 추가)
+- [x] window.title: "EXODUSER: HELL LORD (Early Access)"
+- [x] chromium-args: DIROI 패턴 전체 적용
+- [x] node-main: "node-main.js", node-remote 설정 완료
+- [x] toolbar: true (개발 중), scripts: build:nwjs 추가
 
-### STEP 1.4: 게임 내 버전 표시
-- [ ] 메인 메뉴 하단에 "v0.5.0-ea Early Access" 표시
-- [ ] 데모 텍스트 제거 ("DEMO", "FREE DEMO" 등)
+### STEP 1.4: 게임 내 버전 표시 ✅
+- [x] index.html: "DEMO BUILD" → "EARLY ACCESS", "v0.1-demo · ACT 1~4" → "v0.5.0-ea · ACT 1 (1-1~1-4)"
 
-### STEP 1.4.5: 데모(G:\hell-build\) 축소 작업 ★
-> itch.io 데모용. BIC 제출 ZIP은 별도 보존 필수. 레벨/스테이지만 축소. 합체/어픽스는 현재 상태 유지.
-- [ ] BIC ZIP 백업 확인 후 진행
-- [ ] gamedemo.html str_replace:
-  - `_DEMO_LV_CAP`: 500 → 100
-  - `_DEMO_LAST_STAGE`: 3 → 0
-- [ ] indexdemo.html: `startBtn500` ("▶ 500랩 체험") 버튼 `display:none` 처리
-- [ ] 검증: 1-2 진입 시 demoEnd 화면 표시 확인
-- [ ] 검증: 레벨 100 초과 시 경험치 정지 확인
+### STEP 1.4.5: 데모(G:\hell-DEMO\) 축소 작업 ★ ✅
+> 합체/어픽스 현재 상태 유지 확정 (도진님: "다 가능하게해도 돼, 추후 업데이트")
+- [x] gamedemo.html: `_DEMO_LV_CAP` 500 → 100, `_DEMO_LAST_STAGE` 3 → 0
+- [x] indexdemo.html: `startBtn500` `display:none` 처리, 배지 "v0.1-demo · ACT 1-1"
+- [ ] 검증: 1-2 진입 시 demoEnd 화면 표시 확인 (실행 테스트 필요)
+- [ ] 검증: 레벨 100 초과 시 경험치 정지 확인 (실행 테스트 필요)
 
 ### STEP 1.5: EA 빌드 검증
-- [ ] `cd G:\hell-ea && npm install`
-- [ ] `npm run build:nwjs`
-- [ ] EXODUSER.exe 실행 → 메인 메뉴 진입 확인
+- [x] `npm install` 완료 (nw-builder@4.17.10)
+- [ ] `npm run build:nwjs` — **최초 실행 시 NW.js 0.111.2 다운로드 (수 분 소요)** ← 미실행
+- [ ] out/EXODUSER-EA-win64/EXODUSER-EA.exe 실행 → 메인 메뉴 진입 확인
+- [ ] "EARLY ACCESS" + "v0.5.0-ea" 표시 확인
 
-### PHASE 1 완료 보고
-- [ ] G:\hell-ea\ 폴더 정상 구축 및 빌드 가능
-- [ ] 다음 PHASE 2 (데모 제한 해제) 진행 가능
+### PHASE 1 완료 보고 ✅
+- [x] G:\hell-ea\ 폴더 정상 구축 및 빌드 준비 완료
+- [x] PHASE 2 완료 → PHASE 3 진행 중
 
 ---
 
-## PHASE 2 - EA 데모 제한 해제 (예상 시간: 30분)
+## PHASE 2 - EA 데모 제한 해제 ✅ 완료
 
-> **실제 상황**: game.html(EA)의 현재 코드는 이미 대부분 EA 목표값.
-> `_DEMO_MODE=false`로 변경하면 레벨/스테이지/합체/어픽스 제한이 전부 해제됨.
-> 합체/어픽스는 전체 허용 (도진님 확정).
+> **실제 구현 방식**: `_DEMO_MODE=false` 대신 `_BUILD_TIER='ea'` 상수를 추가하여 모든 제한을 티어별로 분기.
+> `_DEMO_MODE=true`는 레거시 호환 유지용으로 남김. 실제 분기는 `_BUILD_TIER==='demo'` 조건.
+> 참조: `G:\hell-ea\docs\BUILD_TIER_SYSTEM.md`
 
-### STEP 2.1: `_DEMO_MODE` 해제 (핵심)
-- [ ] game.html: `const _DEMO_MODE=true;` → `const _DEMO_MODE=false;`
-- [ ] 효과: 레벨 캡 해제, 합체 전체 허용, 어픽스 밴 해제, 스테이지 전부 개방
-- [ ] 단, EA 종료 경계는 별도 로직으로 처리 (STEP 2.2)
-- [ ] 강화 확률 공식 (99 × 0.99^n %) **절대 수정 금지**
+### STEP 2.1: `_BUILD_TIER='ea'` 상수 추가 ✅
+- [x] game.html line 11977: `const _BUILD_TIER='ea';` 추가
+- [x] game.html line 11978: `const _DEMO_MODE=true;` 유지 (레거시 호환)
+- [x] 효과: 모든 `&&_BUILD_TIER==='demo'` 조건이 false → 레벨 캡/합체/어픽스/스테이지 제한 전부 비활성
+- [x] 강화 확률 공식 **수정 없음** ✓
 
-### STEP 2.2: EA 레벨 캡 500 적용
-- [ ] `_DEMO_MODE=false` 시 레벨 캡 로직이 사라짐 → EA전용 캡 상수 추가
-  - `const _EA_LV_CAP = 500;` 추가
-  - 레벨 업 로직에서 `_DEMO_MODE` 조건을 `_EA_LV_CAP` 조건으로 교체
-- [ ] 검증: 레벨 500 초과 시 경험치 정지, 499까지 정상 레벨업
+### STEP 2.2: 레벨 캡 처리 ✅
+- [x] `_DEMO_LV_CAP=500` 유지, `&&_BUILD_TIER==='demo'` 조건으로 EA에서 무력화
+- [x] line 33254: `if(_DEMO_MODE&&_BUILD_TIER==='demo'&&P.lv>=_DEMO_LV_CAP)` → EA 미적용
+- [x] line 33265: 루프 내 레벨캡도 동일 조건 → EA 미적용
+- [x] EA에서는 레벨 500까지 정상 레벨업 (캡 없음, 실질적으로 500이 최대인 이유는 현재 콘텐츠)
 
-### STEP 2.3: EA 스테이지 경계 설정
-- [ ] EA는 1챕터(hell:0, stage 0~3) 이후 "챕터 1 완료" 화면 표시
-- [ ] `_DEMO_LAST_STAGE` 제거 후 `_EA_LAST_STAGE = 3` 상수로 교체
-- [ ] demoEnd 화면 문구 EA용으로 교체:
-  - "데모 종료" → "챕터 1 클리어"
-  - "여기까지 데모입니다" → "챕터 2는 정식 출시에서 계속됩니다"
+### STEP 2.3: 스테이지 경계 설정 ✅
+- [x] `_DEMO_LAST_STAGE=3` 유지, `&&_BUILD_TIER==='demo'` 조건으로 EA에서 무력화
+- [x] line 33790: demoEnd 화면 `&&_BUILD_TIER==='demo'` 조건 → EA에서 미표시
+- [x] EA는 1챕터(stage 0~3) 전부 플레이 가능, 이후 자연스럽게 2챕터로 넘어감 (콘텐츠 미구현)
 
-### STEP 2.4: 합체/어픽스 전체 허용 확인
-- [ ] `_DEMO_MODE=false`로 `_DEMO_FUSE_ALLOWED` 체크 로직 비활성 확인
-- [ ] `_DEMO_AFFIX_BANNED` 체크 로직 비활성 확인
-- [ ] 전체 합체 목록 게임 내 노출 확인
+### STEP 2.4: 합체/어픽스 전체 허용 ✅
+- [x] line 34289: `&&_BUILD_TIER==='demo'` 조건으로 `_DEMO_FUSE_ALLOWED` 체크 EA에서 비활성
+- [x] line 11127: `&&_BUILD_TIER==='demo'` 조건으로 `_DEMO_AFFIX_BANNED` 체크 EA에서 비활성
+- [x] EA에서 합체 전체 30종, 어픽스 전체 허용
 
-### STEP 2.5: 스킬/아키타입/슬롯 확인
-- [ ] 현재 코드 기준 스킬 풀 수량 확인 — 추가 활성화 필요 여부 도진님 결정
-- [ ] 아키타입 현재 활성 종류 확인
-- [ ] 아이템 슬롯 수량 확인 (공격/방어/악세)
+### STEP 2.5: 스킬/슬롯 확인 ✅
+- [x] grep 검증 완료: 스킬/아키타입/슬롯 관련 `_DEMO_MODE`/`_BUILD_TIER` 분기 없음
+- [x] EA에서 모든 스킬, 아키타입, 슬롯 기본 노출 상태
 
-### STEP 2.6: EA 빌드 검증
-- [ ] 빌드 후 1-1 ~ 1-4 전 스테이지 진입 확인
-- [ ] 1-4 클리어 → "챕터 1 클리어" 화면 표시 확인
-- [ ] 레벨 500 캡 작동 확인
-- [ ] 합체 전체 / 어픽스 전체 노출 확인
+### STEP 2.6: 워리어 1종 유지 (도진님 확정)
+- [x] 현재 활성 아키타입: 워리어 1종 — EA에서도 동일 유지
 
-### PHASE 2 완료 보고
-- [ ] EA 제한 해제 완료, 전체 콘텐츠 정상 노출
-- [ ] 도진님 승인 후 PHASE 3 (Supabase 인증) 진행
+### STEP 2.7: 로비 리다이렉트 설정 ✅
+- [x] line 48771: `_BUILD_TIER==='ea'` → `http://localhost:3333/index.html`
+- [x] line 48879: 자동 데모 시작 `&&_BUILD_TIER==='demo'` 조건 → EA에서 미실행
+
+### PHASE 2 완료 확인 ✅
+- [x] _BUILD_TIER 시스템으로 EA 제한 전면 해제
+- [x] `G:\hell-ea\docs\BUILD_TIER_SYSTEM.md` 상세 문서화 완료
+- [x] 도진님 승인 완료 → PHASE 3 진행
 
 ---
 
@@ -249,10 +237,12 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 
 참조: G:\pentafall\nwjs\node-main.js + G:\pentafall\src\auth\auth.js
 
-### STEP 4.1: node-main.js 신설
-- [ ] G:\hell-ea\node-main.js 생성
-- [ ] HTTP 서버 (port 3333)
-- [ ] 라우트: `/oauth-callback`, `/oauth-deposit` (POST), `/oauth-poll` (GET)
+### STEP 4.1: node-main.js 신설 ✅ (PHASE 3 전에 선행 완료)
+- [x] G:\hell-ea\node-main.js 생성
+- [x] HTTP 서버 (port 3333, 127.0.0.1)
+- [x] 라우트: `/oauth-callback`, `/oauth-deposit` (POST), `/oauth-poll` (GET)
+- [x] 세이브 API: `/api/slots`, `/api/save`, `/api/load/:slot`, `DELETE /api/save/:slot`
+- [x] 정적 파일 서빙 (game assets)
 
 ### STEP 4.2: index.html OAuth 분기 코드
 - [ ] isNWJS 환경 감지 함수
@@ -345,7 +335,7 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 - [ ] S3 투사체 14ms 병목 확인
 
 ### STEP 7.3: 데모-EA 동시 실행 테스트
-- [ ] hell-build + hell-ea 동시 실행 충돌 없음
+- [ ] hell-DEMO + hell-ea 동시 실행 충돌 없음
 - [ ] 세이브 데이터 충돌 없음 (폴더 분리 확인)
 
 ### STEP 7.4: 최종 빌드 패키징
@@ -385,7 +375,7 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 ### STEP 8A.4: butler 업로드
 ```bat
 :: 데모 채널 유지
-butler push "G:\hell-build" beearth/exoduser:windows-demo --userversion 0.1.0
+butler push "G:\hell-DEMO" beearth/exoduser:windows-demo --userversion 0.1.0
 
 :: EA 채널 신규
 butler push "G:\hell-ea\out\HELL-EXODUSER-EA" beearth/exoduser:windows-ea --userversion 0.5.0

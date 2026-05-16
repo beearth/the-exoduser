@@ -97,7 +97,8 @@ cd G:\hell && node server.cjs
 |------|------|
 | `game.html` | 현재 게임 코드 (메인) |
 | `index.html` | 로비/시네마틱/캐릭터 선택 |
-| `G:\hell-build\` | NW.js 데스크톱 빌드 (Steam 배포) |
+| `G:\hell-DEMO\` | NW.js 데모 빌드 (itch.io 무료 배포) |
+| `G:\hell-ea\` | NW.js EA 빌드 (itch.io + Steam EA) |
 
 ## 작업 규칙
 
