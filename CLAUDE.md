@@ -97,8 +97,7 @@ cd G:\hell && node server.cjs
 |------|------|
 | `game.html` | 현재 게임 코드 (메인) |
 | `index.html` | 로비/시네마틱/캐릭터 선택 |
-| `Electron/main.js` | Electron 메인 프로세스 |
-| `Electron/preload.js` | Electron preload (IPC 브릿지) |
+| `G:\hell-build\` | NW.js 데스크톱 빌드 (Steam 배포) |
 
 ## 작업 규칙
 
