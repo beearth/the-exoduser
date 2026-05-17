@@ -257,7 +257,7 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 
 ### PHASE 3 완료 보고 ✅
 - [x] 로그인 UI 정상 표시, 게스트 모드 진입 가능
-- [x] 버그 수정: `createBtn.onclick` → `doCreateChar(name,0)` 직접 호출 → `openVisualSelect(name)` 로 수정 (외형 선택 팝업 활성화)
+- [x] 외형 선택 팝업: 스프라이트 에셋 미준비 상태 → `createBtn.onclick`은 `doCreateChar(name,0)` 직접 호출 유지 (외형 선택은 에셋 준비 후 연결)
 - [x] PHASE 4 진행 가능
 
 ---
