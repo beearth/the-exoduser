@@ -24167,3 +24167,14 @@ mpR = 0.05 + s.int√ó0.005                                        [NO P.lv√ó0.001
 ## 2026-05-17 11:30 (auto)
 - index.html
 
+
+## 2026-05-17 14:30 (auto)
+- _autosave/game_20260517_142210.html
+- _autosave/game_20260517_142214.html
+- _autosave/game_20260517_142222.html
+- _autosave/game_20260517_142229.html
+- _autosave/game_20260517_142242.html
+- _autosave/game_20260517_142313.html
+- docs/0ÎßàÏä§?∞Ìîå??HELL_EA_BUILD_CHECKLIST.md
+- docs/15 ?∏Ïù¥Î∏??∞Ïù¥?∞Íµ¨Ï°?15 ?∏Ïù¥Î∏??∞Ïù¥?∞Íµ¨Ï°?md
+

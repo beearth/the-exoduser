@@ -142,6 +142,13 @@ OAuth 참조 패턴: G:\pentafall\ (DIROI 완성 빌드)
 - [ ] 검증: 1-2 진입 시 demoEnd 화면 표시 확인 (실행 테스트 필요)
 - [ ] 검증: 레벨 100 초과 시 경험치 정지 확인 (실행 테스트 필요)
 
+### STEP 1.4.6: 데모 풀 로비 + 3슬롯 세이브 ✅
+- [x] indexdemo.html: 버튼 카드 → 풀 캐릭터 로비 (슬롯 3개, 생성/삭제/선택)
+- [x] 저장 키: `hellsave_demo_0~2` (localStorage, 3슬롯 확정)
+- [x] gamedemo.html: `?slot=N&new=1&name=...&cidx=N` URL 파라미터 지원, `name` 필드 세이브에 추가
+- [x] 구버전 `hellsave_demo` → `hellsave_demo_0` 자동 마이그레이션 (0번 슬롯 없을 때만, IIFE 1회 실행)
+- [x] docs/15 세이브+데이터구조 갱신
+
 ### STEP 1.5: EA 빌드 검증
 - [x] `npm install` 완료 (nw-builder@4.17.10)
 - [ ] `npm run build:nwjs` — **최초 실행 시 NW.js 0.111.2 다운로드 (수 분 소요)** ← 미실행
