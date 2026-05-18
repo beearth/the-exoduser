@@ -2059,9 +2059,7 @@ function _renderSlotList(){
       const st=stage===0?_TL('시작점'):(hell+1)+_TL('장')+' '+hn[hell]+' '+floor+_TL('층');
       const _vi=CHAR_VISUALS[s.charIdx||0]||CHAR_VISUALS[0];
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===s.name?' active':'');
-      div.innerHTML=`<div class="char-thumb"><canvas class="_chPort" width="${_vi.fw}" height="${_vi.fh}" style="width:100%;height:100%;image-rendering:pixelated"></canvas></div><div class="char-text"><div class="char-name">${escHtml(s.name)}</div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
-      const _cv=div.querySelector('._chPort');
-      _tryLoadSprite(_vi.folder,_vi.fw,_vi.fh,_cv);
+      div.innerHTML=`<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(s.name)}</div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
       div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;_selectSlot(s)});
       div.querySelector('.char-del').addEventListener('click',async e=>{
         e.stopPropagation();if(!confirm(s.name+_TL(' 캐릭터를 정말 삭제하시겠습니까?')))return;
@@ -2151,13 +2149,46 @@ function _swapLobbyBg(stage){
   const v=$('lobbyVersionTxt');if(v)v.textContent=_LOBBY_VER_LABEL[_LOBBY_BUILD]||'';
 })();
 
-// ── 입장 버튼 클릭 사운드 ──
+// ── 입장 버튼 사운드 ──
 const _enterSFX=new Audio('assets/lobby/lobby_enter_sfx.mp3');
 _enterSFX.preload='auto';_enterSFX.volume=0.85;
 function playEnterSFX(){try{_enterSFX.currentTime=0;_enterSFX.play();}catch(e){}}
+// 호버 사운드 — 파일 기반 Web Audio 루프
+let _hoverCtx=null,_hoverBuf=null,_hoverSrc=null,_hoverGain=null;
+fetch('assets/lobby/11_loop.wav').then(r=>r.arrayBuffer()).then(ab=>{
+  _hoverCtx=new(window.AudioContext||window.webkitAudioContext)();
+  return _hoverCtx.decodeAudioData(ab);
+}).then(buf=>{_hoverBuf=buf;}).catch(()=>{});
+function _startHover(){
+  if(!_hoverBuf||!_hoverCtx)return;
+  try{
+    _stopHover();
+    _hoverSrc=_hoverCtx.createBufferSource();
+    _hoverSrc.buffer=_hoverBuf;_hoverSrc.loop=true;
+    _hoverGain=_hoverCtx.createGain();
+    _hoverGain.gain.setValueAtTime(0,_hoverCtx.currentTime);
+    _hoverGain.gain.linearRampToValueAtTime(0.7,_hoverCtx.currentTime+0.1);
+    _hoverSrc.connect(_hoverGain);_hoverGain.connect(_hoverCtx.destination);
+    _hoverSrc.start(0);
+  }catch(e){}
+}
+function _stopHover(){
+  if(_hoverSrc&&_hoverGain&&_hoverCtx){
+    try{
+      _hoverGain.gain.setValueAtTime(_hoverGain.gain.value,_hoverCtx.currentTime);
+      _hoverGain.gain.linearRampToValueAtTime(0,_hoverCtx.currentTime+0.08);
+      setTimeout(()=>{try{_hoverSrc.stop();}catch(e){}},100);
+    }catch(e){}
+  }
+  _hoverSrc=null;_hoverGain=null;
+}
 
 // 입장 버튼
-if($('enterGameBtn'))$('enterGameBtn').addEventListener('click',()=>{playEnterSFX();if(_selectedSlot)showCharGate(_selectedSlot)});
+if($('enterGameBtn')){
+  $('enterGameBtn').addEventListener('mouseenter',()=>{try{_startHover();}catch(e){}});
+  $('enterGameBtn').addEventListener('mouseleave',()=>{try{_stopHover();}catch(e){}});
+  $('enterGameBtn').addEventListener('click',()=>{playEnterSFX();if(_selectedSlot)showCharGate(_selectedSlot)});
+}
 // 생성 모달
 $('createCancelBtn').addEventListener('click',()=>{$('createModal').classList.remove('show')});
 

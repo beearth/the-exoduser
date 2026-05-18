@@ -9486,6 +9486,21 @@ function _dispatchCtSkill(){
   return true;
 }
 
+document.addEventListener('keydown',(e)=>{
+ if(e.key==='F2'){
+  e.preventDefault();
+  const cv=document.querySelector('canvas');
+  if(!cv)return;
+  const url=cv.toDataURL('image/png');
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='shot_'+Date.now()+'.png';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+ }
+},true);
+
 addEventListener('keydown',e=>{
   // 컷씬 진행 (Enter/Z=다음, Space 홀드=스킵, ESC=즉시 스킵)
   if(typeof _cutsceneState!=='undefined'&&_cutsceneState==='INTRO_CUTSCENE'){

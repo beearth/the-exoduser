@@ -24272,3 +24272,17 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - assets/lobby/lobby_enter_sfx.mp3
 - index.html
 
+
+## 2026-05-18 23:30 (auto)
+- _autosave/game_20260518_230444.html
+- assets/lobby/11.mp3
+- assets/lobby/11_loop.wav
+- assets/lobby/lobby_enter_sfx.mp3
+- assets/lobby/lobby_portrait.png
+- assets/sfx/door_open.mp3
+- docs/16번역·로컬?�이?�이??번역?�???�체목록.md
+- game.html
+- game.html.bak_screenshot_hotkey
+- index.html
+- video/intro_audio_full.mp3
+
