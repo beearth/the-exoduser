@@ -182,6 +182,13 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .enter-game-btn:hover:not(:disabled){border-color:rgba(255,100,80,0.8);color:rgba(255,230,200,1);background:linear-gradient(135deg,rgba(150,50,40,0.5) 0%,rgba(100,25,20,0.7) 100%);box-shadow:0 0 24px rgba(196,68,68,0.4),inset 0 0 16px rgba(196,68,68,0.1);transform:translateY(-1px)}
 .enter-game-btn:disabled{opacity:0.35;cursor:not-allowed;border-color:rgba(120,60,40,0.3);color:rgba(180,140,110,0.5)}
 
+/* Steam 찜하기 */
+.ll-steam-area{text-align:center;pointer-events:all;margin-top:auto;padding-top:20px}
+.ll-steam-hint{color:rgba(175,145,105,.42);font-size:.72rem;letter-spacing:.18em;margin-bottom:12px}
+.ll-steam-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 28px;background:rgba(14,28,62,.5);border:1.5px solid rgba(85,135,215,.22);color:rgba(125,170,250,.78);font-family:'Noto Sans KR',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.07em;text-decoration:none;transition:all .3s;border-radius:2px}
+.ll-steam-btn:hover{background:rgba(24,48,108,.65);border-color:rgba(100,160,255,.42);color:rgba(175,210,255,.92);box-shadow:0 0 22px rgba(65,115,210,.22);transform:translateY(-2px)}
+.ll-version-txt{margin-top:9px;color:rgba(125,100,70,.32);font-size:.64rem;letter-spacing:.28em}
+
 /* 작은 화면 대응 */
 @media(max-width:1100px){
   .lobby-left{flex:0 0 55%}
@@ -458,6 +465,13 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     </div>
     <div class="lobby-footer">
       <button class="enter-game-btn" id="enterGameBtn" disabled>입장</button>
+    </div>
+    <div class="ll-steam-area">
+      <div class="ll-steam-hint">정식 출시 소식을 받아보세요</div>
+      <a class="ll-steam-btn" id="steamWishBtn" href="#">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M11.979 0C5.678 0 .511 4.86.022 11.037l6.432 2.658c.545-.371 1.203-.59 1.912-.59.063 0 .125.004.188.006l2.861-4.142V8.91c0-2.495 2.028-4.524 4.524-4.524 2.494 0 4.524 2.029 4.524 4.524s-2.03 4.525-4.524 4.525h-.105l-4.076 2.911c0 .052.004.105.004.159 0 1.875-1.515 3.396-3.384 3.396-1.635 0-3.016-1.173-3.331-2.718L.436 15.27C1.862 20.307 6.486 24 11.979 24c6.627 0 11.999-5.373 11.999-12S18.605 0 11.979 0zM7.54 18.21l-1.473-.61c.262.543.714.999 1.314 1.25 1.297.539 2.793-.076 3.332-1.375.263-.63.264-1.319.005-1.949s-.75-1.121-1.377-1.383c-.624-.26-1.29-.249-1.878-.03l1.523.63c.956.4 1.409 1.5 1.009 2.455-.397.957-1.497 1.41-2.454 1.012H7.54zm11.415-9.303c0-1.662-1.353-3.015-3.015-3.015-1.663 0-3.015 1.353-3.015 3.015 0 1.663 1.353 3.015 3.015 3.015 1.663 0 3.015-1.352 3.015-3.015zm-5.273-.005c0-1.252 1.013-2.266 2.265-2.266 1.252 0 2.265 1.014 2.265 2.266 0 1.252-1.013 2.265-2.265 2.265-1.252 0-2.265-1.013-2.265-2.265z"/></svg>
+        Steam 찜하기
+      </a>
     </div>
   </div>
 </div>
@@ -2383,6 +2397,17 @@ function showCharGate(charId){
   }, skip);
 
   startPhase();
+})();
+
+// ═══ Steam 찜하기 버튼 ═══
+(function(){
+  const btn=document.getElementById('steamWishBtn');
+  if(!btn)return;
+  const STEAM_URL='https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/';
+  btn.addEventListener('click',e=>{
+    e.preventDefault();
+    window.open(STEAM_URL,'_blank');
+  });
 })();
 
 // ═══ 입력 모드 자동 감지 시스템 (선택 화면 없음, 실시간 전환) ═══
