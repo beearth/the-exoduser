@@ -133,7 +133,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .char-disp-empty.hidden{opacity:0}
 
 /* 우측 영역 */
-.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(20,8,5,0.92) 0%,rgba(8,4,2,0.96) 100%);padding:28px 28px 24px 28px;display:flex;flex-direction:column;backdrop-filter:blur(2px);border-left:2px solid;border-image:linear-gradient(180deg,#443322 0%,#c44444 50%,#443322 100%) 1}
+.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(20,8,5,0.92) 0%,rgba(8,4,2,0.96) 100%);padding:20px 24px 16px 24px;display:flex;flex-direction:column;backdrop-filter:blur(2px);border-left:2px solid;border-image:linear-gradient(180deg,#443322 0%,#c44444 50%,#443322 100%) 1}
 
 /* 우측 헤더 */
 .lobby-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
@@ -143,27 +143,37 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 /* 헤더 아래 장식 라인 */
 .lobby-divider{height:1px;width:100%;background:linear-gradient(90deg,transparent 0%,rgba(196,68,68,0.4) 50%,transparent 100%);margin-bottom:18px}
 
-/* 슬롯 리스트 — 5개 고정, 스크롤 없음 */
-.char-list{flex:0 0 auto;overflow:visible}
+/* 슬롯 리스트 — 2캐릭+1생성 고정, 휠 스크롤 */
+.char-list{flex:0 0 auto;overflow:visible;position:relative}
+/* 캐릭터 뷰포트 (2슬롯 높이 고정, 클립) */
+.char-scroll-vp{overflow:hidden;position:relative;height:178px;/* 84×2 + gap 10 */}
+.char-scroll-track{display:flex;flex-direction:column;gap:10px;transition:transform .25s cubic-bezier(.4,0,.2,1)}
+/* 휠 내비 화살표 */
+.char-scroll-nav{display:flex;justify-content:center;gap:8px;margin:4px 0 6px;opacity:0;transition:opacity .2s;pointer-events:none}
+.char-list:hover .char-scroll-nav{opacity:1}
+.char-scroll-nav.visible{opacity:1!important}
+.char-nav-btn{background:none;border:none;color:rgba(196,68,68,.6);font-size:.95rem;cursor:pointer;padding:0 8px;line-height:1;pointer-events:all;transition:color .15s}
+.char-nav-btn:hover{color:rgba(255,120,90,1)}
+.char-nav-btn:disabled{opacity:.2;cursor:default}
 
 /* 5슬롯 아래 디자인 영역 */
-.lobby-mid-area{flex:1;display:flex;flex-direction:column;padding:10px 0 0;overflow:hidden;min-height:0}
-/* 배너 프레임 */
-.lma-banner{position:relative;width:100%;flex:0 0 auto}
-.lma-banner img.lma-banner-bg{width:100%;height:auto;display:block;mix-blend-mode:screen}
-/* 텍스트+버튼 오버레이 */
-.lma-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:8% 12% 20%}
-.lma-title{font-family:'Cinzel Decorative',serif;font-size:clamp(.9rem,2.2vw,1.4rem);color:#e8c87a;letter-spacing:.08em;text-align:center;text-shadow:0 0 20px rgba(220,160,50,.5);line-height:1.2;margin-bottom:4%}
-.lma-sub{font-size:clamp(.55rem,1.1vw,.75rem);color:#c8985a;letter-spacing:.22em;text-align:center;text-shadow:0 0 12px rgba(180,100,30,.4);margin-bottom:5%}
-.lma-desc{font-size:clamp(.5rem,.9vw,.65rem);color:rgba(200,160,100,.65);letter-spacing:.06em;text-align:center;line-height:1.7;margin-bottom:6%}
+.lobby-mid-area{flex:1;display:flex;flex-direction:column;padding:6px 0 0;justify-content:flex-start;min-height:0}
+/* 배너 프레임 — 이미지 자연 비율(3:2), 클리핑 없음 */
+.lma-banner{flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+.lma-banner-inner{position:relative;width:100%;overflow:hidden}
+.lma-banner-inner>img{width:100%;height:auto;display:block;mix-blend-mode:screen}
+/* 텍스트 오버레이 */
+.lma-text-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8% 10% 28%;text-align:center;pointer-events:none}
+.lma-main-txt{font-family:'Noto Sans KR',sans-serif;font-size:clamp(.88rem,2vw,1.3rem);font-weight:700;color:#e8c87a;line-height:1.55;letter-spacing:.04em;text-shadow:0 0 18px rgba(200,140,40,.6),0 2px 6px rgba(0,0,0,.8)}
+.lma-sub-txt{margin-top:5%;font-size:clamp(.68rem,1.3vw,.9rem);color:rgba(210,170,100,.7);letter-spacing:.1em;text-shadow:0 1px 4px rgba(0,0,0,.9)}
 /* Steam 버튼 */
-.lma-steam-btn{position:absolute;bottom:10%;left:50%;transform:translateX(-50%);width:58%;cursor:pointer;background:transparent;border:none;padding:0;display:block;transition:filter .25s}
+.lma-steam-btn{position:absolute;bottom:11%;left:50%;transform:translateX(-50%);width:58%;cursor:pointer;background:transparent;border:none;padding:0;display:block;transition:filter .25s}
 .lma-steam-btn img{width:100%;display:block}
-.lma-steam-btn:hover img{filter:brightness(1.25) drop-shadow(0 0 10px rgba(220,140,60,.8))}
+.lma-steam-btn:hover{filter:brightness(1.2) drop-shadow(0 0 14px rgba(80,160,255,.7))}
 .no-chars{color:rgba(180,140,110,0.5);text-align:center;padding:40px 20px;font-size:0.9rem;letter-spacing:0.1em}
 
 /* 슬롯 카드 */
-.char-item,.char-item-new{position:relative;display:flex;align-items:center;gap:14px;height:84px;padding:14px 18px 14px 24px;margin-bottom:10px;background:linear-gradient(135deg,rgba(28,16,12,0.7) 0%,rgba(18,10,6,0.85) 100%);border:1px solid rgba(120,60,40,0.18);border-radius:2px;cursor:pointer;transition:all 200ms ease;overflow:hidden}
+.char-item,.char-item-new{position:relative;display:flex;align-items:center;gap:14px;height:84px;padding:14px 18px 14px 24px;margin-bottom:0;background:linear-gradient(135deg,rgba(28,16,12,0.7) 0%,rgba(18,10,6,0.85) 100%);border:1px solid rgba(120,60,40,0.18);border-radius:2px;cursor:pointer;transition:all 200ms ease;overflow:hidden}
 .char-item::before{content:'';position:absolute;left:0;top:20%;width:3px;height:60%;background:linear-gradient(180deg,transparent 0%,rgba(196,68,68,0.4) 50%,transparent 100%);opacity:0.6;transition:all 300ms ease}
 .char-item:hover{transform:translateY(-2px);border-color:rgba(196,68,68,0.35);box-shadow:0 4px 16px rgba(0,0,0,0.5),0 0 12px rgba(196,68,68,0.1)}
 .char-item:hover::before{opacity:1;height:80%;top:10%}
@@ -189,10 +199,21 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .char-del:hover{border-color:rgba(220,80,60,0.7);color:rgba(255,120,100,0.95);background:rgba(120,30,20,0.2)}
 
 /* 입장 버튼 */
-.lobby-footer{margin-top:14px;display:flex;flex-direction:column;gap:10px}
-.enter-game-btn{width:100%;height:56px;background:linear-gradient(135deg,rgba(120,40,30,0.4) 0%,rgba(80,20,15,0.6) 100%);border:1.5px solid rgba(196,68,68,0.4);color:rgba(255,200,170,0.95);font-family:'Noto Sans KR';font-size:1.1rem;font-weight:700;letter-spacing:0.3em;cursor:pointer;transition:all 300ms ease;text-shadow:0 0 12px rgba(0,0,0,0.8)}
-.enter-game-btn:hover:not(:disabled){border-color:rgba(255,100,80,0.8);color:rgba(255,230,200,1);background:linear-gradient(135deg,rgba(150,50,40,0.5) 0%,rgba(100,25,20,0.7) 100%);box-shadow:0 0 24px rgba(196,68,68,0.4),inset 0 0 16px rgba(196,68,68,0.1);transform:translateY(-1px)}
-.enter-game-btn:disabled{opacity:0.35;cursor:not-allowed;border-color:rgba(120,60,40,0.3);color:rgba(180,140,110,0.5)}
+.lobby-footer{margin-top:6px;display:flex;flex-direction:column;gap:6px}
+.enter-game-btn{
+  width:100%;
+  height:70px;
+  background:url('assets/lobby/lobby_enter_btn.png') center center/auto 100% no-repeat;
+  border:none;color:transparent;font-size:0;
+  cursor:pointer;
+  transition:filter .3s ease, transform .25s ease;
+}
+.enter-game-btn:hover:not(:disabled){
+  filter:drop-shadow(0 0 14px rgba(255,120,40,.9)) drop-shadow(0 0 32px rgba(255,60,10,.6)) brightness(1.2);
+  transform:translateY(-2px) scale(1.03);
+}
+.enter-game-btn:active:not(:disabled){transform:translateY(0) scale(.99);filter:brightness(1.05)}
+.enter-game-btn:disabled{opacity:0.3;cursor:not-allowed;filter:grayscale(.6)}
 
 /* Steam 찜하기 */
 .ll-steam-area{text-align:center;pointer-events:all;margin-top:auto;padding-top:20px}
@@ -475,15 +496,25 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     <div class="char-list" id="charList">
       <div class="no-chars">불러오는 중...</div>
     </div>
-    <!-- 5슬롯 아래 배너 영역 -->
+    <!-- 슬롯 아래 공백 -->
+    <div style="height:8px;flex-shrink:0"></div>
+    <!-- 3슬롯 아래 배너 영역 -->
     <div class="lobby-mid-area" id="lobbyMidArea">
       <div class="lma-banner">
-        <img src="assets/lobby/lobby_banner_2.png" alt="" draggable="false">
-        <button class="lma-steam-btn" onclick="openWishlist()" title="Steam 위시리스트 추가"><img src="assets/lobby/lobby_banner_btn.png" alt="Steam 위시리스트 추가" draggable="false"></button>
+        <div class="lma-banner-inner">
+          <img src="assets/lobby/lobby_banner_bg.png" alt="" draggable="false">
+          <div class="lma-text-overlay">
+            <div class="lma-main-txt">여러분의 Steam 찜 하나가<br>EXODUSER: HELL LORD의<br>다음 여정을 만듭니다</div>
+            <div class="lma-sub-txt">공식 출시 소식을 가장 먼저 받아보세요</div>
+          </div>
+          <button class="lma-steam-btn" onclick="openWishlist()">
+            <img src="assets/lobby/lobby_banner_btn.png" alt="Add to Steam Wishlist" draggable="false">
+          </button>
+        </div>
       </div>
     </div>
     <div class="lobby-footer">
-      <button class="enter-game-btn" id="enterGameBtn" disabled>입장</button>
+      <button class="enter-game-btn" id="enterGameBtn" disabled></button>
     </div>
     <div class="ll-version-txt" id="lobbyVersionTxt" style="text-align:right;padding:4px 0 2px"></div>
   </div>
@@ -640,6 +671,9 @@ const _LOBBY_EN={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'This game contains intense violence and disturbing imagery.<br>Rated 18+. May trigger photosensitive seizures.<br>Player discretion advised.',
   '아무 키나 눌러 계속':'Press any key to continue',
   '입장':'Enter',
+  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Your Steam wishlist support\nshapes the next chapter of\nEXODUSER: HELL LORD',
+  '공식 출시 소식을 가장 먼저 받아보세요':'Be the first to know when we launch',
+  'STEAM 위시리스트 추가':'ADD TO STEAM WISHLIST',
 };
 const _LOBBY_ZH={
   '지옥의 길':'地狱之路：EXODUSER','연결 중...':'连接中...','캐릭터를 선택하세요':'选择你的角色','당신은 누구인가':'汝乃何人',
@@ -671,6 +705,9 @@ const _LOBBY_ZH={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'本游戏包含强烈暴力和令人不安的画面。<br>仅限18岁以上。可能引发光敏性癫痫发作。<br>请谨慎游玩。',
   '아무 키나 눌러 계속':'按任意键继续',
   '입장':'进入',
+  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'您在Steam的一个愿望单\n将塑造EXODUSER: HELL LORD\n的下一段旅程',
+  '공식 출시 소식을 가장 먼저 받아보세요':'率先获得官方上市通知',
+  'STEAM 위시리스트 추가':'加入STEAM愿望单',
 };
 const _LOBBY_JA={
   '지옥의 길':'地獄の道：EXODUSER','연결 중...':'接続中...','캐릭터를 선택하세요':'キャラクターを選択','당신은 누구인가':'汝は何者か',
@@ -702,6 +739,9 @@ const _LOBBY_JA={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'本ゲームには激しい暴力表現や不快な映像が含まれます。<br>18歳以上推奨。光過敏性発作を引き起こす可能性があります。<br>ご注意ください。',
   '아무 키나 눌러 계속':'何かキーを押して続行',
   '입장':'進む',
+  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'SteamウィッシュリストへのあなたのサポートがEXODUSER: HELL LORDの\n次の章を形作ります',
+  '공식 출시 소식을 가장 먼저 받아보세요':'リリース情報をいち早くお届けします',
+  'STEAM 위시리스트 추가':'STEAMウィッシュリストに追加',
 };
 const _LOBBY_ES={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Conectando...','캐릭터를 선택하세요':'Selecciona tu personaje','당신은 누구인가':'¿QUIÉN ERES?',
@@ -733,6 +773,9 @@ const _LOBBY_ES={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Este juego contiene violencia intensa e imágenes perturbadoras.<br>Clasificado para mayores de 18 años. Puede provocar convulsiones fotosensibles.<br>Se recomienda discreción.',
   '아무 키나 눌러 계속':'Presione cualquier tecla para continuar',
   '입장':'Entrar',
+  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Tu apoyo en la lista de deseos de Steam\ndará forma al próximo capítulo de\nEXODUSER: HELL LORD',
+  '공식 출시 소식을 가장 먼저 받아보세요':'Sé el primero en saber cuándo lanzamos',
+  'STEAM 위시리스트 추가':'AÑADIR A LA LISTA DE DESEOS DE STEAM',
 };
 const _LOBBY_FR={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Connexion...','캐릭터를 선택하세요':'Sélectionnez votre personnage','당신은 누구인가':'QUI ES-TU ?',
@@ -1312,6 +1355,11 @@ function _applyLobbyLang(){
   // placeholder
   const ci=document.getElementById('charName');
   if(ci)ci.placeholder=_TL('캐릭터 이름 (2~8자)');
+  // 배너 텍스트 (lobby mid-area)
+  const mainTxt=document.querySelector('.lma-main-txt');
+  if(mainTxt)mainTxt.innerHTML=_TL('여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다').replace(/\n/g,'<br>');
+  const subTxt=document.querySelector('.lma-sub-txt');
+  if(subTxt)subTxt.textContent=_TL('공식 출시 소식을 가장 먼저 받아보세요');
 }
 document.getElementById('langSelect').onchange=function(){setUserLanguage(this.value)};
 document.getElementById('cinLang').onchange=function(){setUserLanguage(this.value)};
@@ -1974,14 +2022,38 @@ async function loadLocalCharacters(){
   }catch(e){cl.innerHTML='<div class="no-chars" style="color:#cc4433">'+_TL('서버 연결 실패: ')+e.message+'</div>'}
 }
 
+// 슬롯 스크롤 상태
+let _slotScrollIdx=0; // 캐릭터 뷰포트 상단 인덱스
+
 function _renderSlotList(){
   const cl=$('charList');if(!cl)return;cl.innerHTML='';
-  const MAX_SLOTS=5;
+  const MAX_CHARS=5; // 최대 생성 가능 캐릭터 수
+  const VIEW=2;      // 한번에 보이는 캐릭터 슬롯 수
   const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
-  for(let i=0;i<MAX_SLOTS;i++){
-    const s=_localSlots[i];
+  const chars=_localSlots||[];
+  const total=chars.length;
+  const canScroll=total>VIEW;
+
+  // 스크롤 인덱스 범위 고정
+  _slotScrollIdx=Math.max(0,Math.min(_slotScrollIdx,Math.max(0,total-VIEW)));
+
+  // ── 위 화살표 (스크롤 가능할 때만) ──
+  if(canScroll){
+    const navUp=document.createElement('div');
+    navUp.className='char-scroll-nav visible';
+    navUp.innerHTML=`<button class="char-nav-btn" id="charNavUp" ${_slotScrollIdx===0?'disabled':''}>▲</button><span style="font-size:.65rem;color:rgba(180,120,80,.5);letter-spacing:.1em">${(_slotScrollIdx+1)+'-'+Math.min(_slotScrollIdx+VIEW,total)+' / '+total}</span><button class="char-nav-btn" id="charNavDn" ${_slotScrollIdx>=total-VIEW?'disabled':''}>▼</button>`;
+    cl.appendChild(navUp);
+  }
+
+  // ── 캐릭터 뷰포트 ──
+  const vp=document.createElement('div');vp.className='char-scroll-vp';
+  const track=document.createElement('div');track.className='char-scroll-track';
+
+  const viewSlots=[];
+  for(let vi=0;vi<VIEW;vi++){
+    const ci=_slotScrollIdx+vi;
+    const s=chars[ci];
     if(s){
-      // 기존 캐릭터 슬롯
       const stage=s.stage||0;
       const hell=Math.min(6,~~(stage/10));const floor=stage%10+1;
       const st=stage===0?_TL('시작점'):(hell+1)+_TL('장')+' '+hn[hell]+' '+floor+_TL('층');
@@ -1993,21 +2065,47 @@ function _renderSlotList(){
       div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;_selectSlot(s)});
       div.querySelector('.char-del').addEventListener('click',async e=>{
         e.stopPropagation();if(!confirm(s.name+_TL(' 캐릭터를 정말 삭제하시겠습니까?')))return;
-        try{await fetch('/api/save/'+encodeURIComponent(s.name),{method:'DELETE'});await loadLocalCharacters()}catch(de){setStatus(_TL('삭제 실패: ')+de.message,true)}
+        try{await fetch('/api/save/'+encodeURIComponent(s.name),{method:'DELETE'});_slotScrollIdx=Math.max(0,_slotScrollIdx-1);await loadLocalCharacters()}catch(de){setStatus(_TL('삭제 실패: ')+de.message,true)}
       });
-      cl.appendChild(div);
+      track.appendChild(div);
     }else{
-      // 빈 슬롯 (새 캐릭터)
-      const newDiv=document.createElement('div');newDiv.className='char-item-new';
-      const canCreate=_localSlots.length<MAX_SLOTS;
-      newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">'+(canCreate?'+':'')+'</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+(canCreate?_TL('새 캐릭터'):'—')+'</div></div>';
-      if(canCreate){
-        newDiv.addEventListener('click',()=>{$('createModal').classList.add('show');$('charName').value='';$('charName').focus()});
-      }else{
-        newDiv.style.opacity='.25';newDiv.style.cursor='default';newDiv.style.pointerEvents='none';
-      }
-      cl.appendChild(newDiv);
+      // 빈 자리 (캐릭터 없는 슬롯)
+      const empty=document.createElement('div');empty.className='char-item';
+      empty.style.cssText='opacity:.18;pointer-events:none;border-style:dashed';
+      empty.innerHTML='<div class="char-thumb"><span class="char-thumb-empty" style="opacity:.4">—</span></div><div class="char-text"><div class="char-name" style="color:#554433">—</div></div>';
+      track.appendChild(empty);
     }
+  }
+  vp.appendChild(track);
+  cl.appendChild(vp);
+
+  // ── 고정: 새 캐릭터 생성 칸 ──
+  const newDiv=document.createElement('div');newDiv.className='char-item-new';newDiv.style.marginTop='10px';
+  const canCreate=total<MAX_CHARS;
+  newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">'+(canCreate?'+':'✕')+'</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+(canCreate?_TL('새 캐릭터'):_TL('슬롯 가득참'))+'</div>'+(canCreate?'':'<div class="char-info">최대 '+MAX_CHARS+'개</div>')+'</div>';
+  if(canCreate){
+    newDiv.addEventListener('click',()=>{$('createModal').classList.add('show');$('charName').value='';$('charName').focus()});
+  }else{
+    newDiv.style.opacity='.35';newDiv.style.cursor='default';newDiv.style.pointerEvents='none';
+  }
+  cl.appendChild(newDiv);
+
+  // ── 이벤트: 화살표 버튼 ──
+  const btnUp=cl.querySelector('#charNavUp');
+  const btnDn=cl.querySelector('#charNavDn');
+  if(btnUp) btnUp.addEventListener('click',()=>{_slotScrollIdx=Math.max(0,_slotScrollIdx-1);_renderSlotList()});
+  if(btnDn) btnDn.addEventListener('click',()=>{_slotScrollIdx=Math.min(total-VIEW,_slotScrollIdx+1);_renderSlotList()});
+
+  // ── 이벤트: 휠 스크롤 ──
+  if(!cl._wheelBound){
+    cl._wheelBound=true;
+    cl.addEventListener('wheel',e=>{
+      if(!canScroll&&(chars.length<=VIEW))return;
+      e.preventDefault();
+      if(e.deltaY>0) _slotScrollIdx=Math.min(Math.max(0,chars.length-VIEW),_slotScrollIdx+1);
+      else            _slotScrollIdx=Math.max(0,_slotScrollIdx-1);
+      _renderSlotList();
+    },{passive:false});
   }
 }
 

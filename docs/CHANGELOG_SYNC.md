@@ -24223,3 +24223,11 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - assets/lobby/lobby_banner_btn.png
 - index.html
 
+
+## 2026-05-18 18:30 (auto)
+- assets/lobby/lobby_banner_btn.png
+- assets/lobby/lobby_enter_btn.png
+- img/enter_btn.png
+- index.html
+- lobby_i18n.js
+
