@@ -133,7 +133,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .char-disp-empty.hidden{opacity:0}
 
 /* 우측 영역 */
-.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(20,8,5,0.92) 0%,rgba(8,4,2,0.96) 100%);padding:20px 24px 16px 24px;display:flex;flex-direction:column;backdrop-filter:blur(2px);border-left:2px solid;border-image:linear-gradient(180deg,#443322 0%,#c44444 50%,#443322 100%) 1}
+.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(8,3,18,0.65) 0%,rgba(4,2,12,0.72) 100%),url('assets/lobby/lobby_bg_new.png') center/cover no-repeat;padding:20px 24px 16px 24px;display:flex;flex-direction:column;border-left:2px solid;border-image:linear-gradient(180deg,#3a1a55 0%,#c44444 50%,#3a1a55 100%) 1}
 
 /* 우측 헤더 */
 .lobby-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
@@ -157,17 +157,15 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .char-nav-btn:disabled{opacity:.2;cursor:default}
 
 /* 5슬롯 아래 디자인 영역 */
-.lobby-mid-area{flex:1;display:flex;flex-direction:column;padding:6px 0 0;justify-content:flex-start;min-height:0}
-/* 배너 프레임 — padding-bottom 비율 트릭: 일반=3:2, 와이드=240px 상한 */
-.lma-banner{flex:0 0 auto;width:100%}
-.lma-banner-inner{position:relative;width:100%;height:0;padding-bottom:min(66.67%,240px);overflow:hidden}
-.lma-banner-inner>img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:center 30%;mix-blend-mode:screen}
-/* 텍스트+Steam 오버레이 — flex 한 덩어리 */
-.lma-text-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8% 10% 8%;text-align:center;pointer-events:none;gap:0}
+.lobby-mid-area{flex:1;display:flex;flex-direction:column;padding:6px 0 0;justify-content:flex-start;min-height:0;overflow:hidden}
+/* 배너 */
+.lma-banner{flex:0 0 auto;width:100%;pointer-events:none}
+.lma-banner-inner{width:100%;max-height:260px;overflow:hidden;background:rgba(10,4,22,0.72);border:1px solid rgba(120,60,200,0.45);border-radius:4px;padding:14px 10%;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.lma-text-overlay{display:contents}
+.lma-txt-group{display:flex;flex-direction:column;align-items:center;gap:5px}
 .lma-main-txt{font-family:'Noto Sans KR',sans-serif;font-size:clamp(.88rem,2vw,1.25rem);font-weight:700;color:#e8c87a;line-height:1.45;letter-spacing:.04em;text-shadow:0 0 18px rgba(200,140,40,.6),0 2px 6px rgba(0,0,0,.8)}
-.lma-sub-txt{margin-top:5%;font-size:clamp(.68rem,1.3vw,.88rem);color:rgba(210,170,100,.7);letter-spacing:.1em;text-shadow:0 1px 4px rgba(0,0,0,.9)}
-/* Steam 버튼 — flex 자식으로 텍스트 바로 아래 */
-.lma-steam-btn{position:relative;margin:6% auto 0;width:62%;pointer-events:all;cursor:pointer;background:transparent;border:none;padding:0;display:block;transition:filter .25s}
+.lma-sub-txt{font-size:clamp(.68rem,1.3vw,.88rem);color:rgba(210,170,100,.7);letter-spacing:.1em;text-shadow:0 1px 4px rgba(0,0,0,.9)}
+.lma-steam-btn{width:62%;pointer-events:auto;cursor:pointer;background:transparent;border:none;padding:0;display:block;transition:filter .25s}
 .lma-steam-btn img{width:100%;display:block}
 .lma-steam-btn:hover{filter:brightness(1.2) drop-shadow(0 0 14px rgba(80,160,255,.7))}
 .no-chars{color:rgba(180,140,110,0.5);text-align:center;padding:40px 20px;font-size:0.9rem;letter-spacing:0.1em}
@@ -502,10 +500,11 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     <div class="lobby-mid-area" id="lobbyMidArea">
       <div class="lma-banner">
         <div class="lma-banner-inner">
-          <img src="assets/lobby/lobby_banner_bg.png" alt="" draggable="false">
           <div class="lma-text-overlay">
-            <div class="lma-main-txt">여러분의 Steam 찜 하나가<br>EXODUSER: HELL LORD의<br>다음 여정을 만듭니다</div>
-            <div class="lma-sub-txt">공식 출시 소식을 가장 먼저 받아보세요</div>
+            <div class="lma-txt-group">
+              <div class="lma-main-txt">여러분의 Steam 찜 하나가<br>EXODUSER: HELL LORD의<br>다음 여정을 만듭니다</div>
+              <div class="lma-sub-txt">공식 출시 소식을 가장 먼저 받아보세요</div>
+            </div>
             <button class="lma-steam-btn" onclick="openWishlist()">
               <img src="assets/lobby/lobby_banner_btn.png" alt="Add to Steam Wishlist" draggable="false">
             </button>

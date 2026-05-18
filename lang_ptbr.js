@@ -2078,4 +2078,12 @@ const _PTBR_BASE={'대검':'Espadão','석궁':'Besta','연사석궁':'Repetidor
 '💥 공성유령 폭발!':'💥 Explosão do Fantasma Sitiador!',
 '프레임 표시 (FPS)':'Mostrar FPS',
 '여기까지 데모입니다...':'Aqui termina o demo...',
+'투구 착용':'Capacete equipado',
+'투구 해제':'Capacete removido',
+'혼돈의 투구':'Elmo do Caos',
+'전지전능의 투구':'Elmo da Onipotência',
+'까마귀와 고양이가 아이템을 주워준다. 수거 범위 안이면.':'O corvo e o gato coletam itens. Se estiver no alcance.',
+'💥 폭발 허수아비!':'💥 Espantalho Explosivo!',
+' 뎀 ':' DAN ',
+'투구':'Elmo',
 };
