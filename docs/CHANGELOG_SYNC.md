@@ -24204,3 +24204,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - img/lording/library_hero_3840x1240.jpg
 
+
+## 2026-05-18 09:30 (auto)
+- _autosave/game_20260518_013414.html
+
