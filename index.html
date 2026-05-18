@@ -158,16 +158,16 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 
 /* 5슬롯 아래 디자인 영역 */
 .lobby-mid-area{flex:1;display:flex;flex-direction:column;padding:6px 0 0;justify-content:flex-start;min-height:0}
-/* 배너 프레임 — 이미지 자연 비율(3:2), 클리핑 없음 */
-.lma-banner{flex:0 0 auto;display:flex;align-items:center;justify-content:center}
-.lma-banner-inner{position:relative;width:100%;overflow:hidden}
-.lma-banner-inner>img{width:100%;height:auto;display:block;mix-blend-mode:screen}
-/* 텍스트 오버레이 */
-.lma-text-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8% 10% 28%;text-align:center;pointer-events:none}
-.lma-main-txt{font-family:'Noto Sans KR',sans-serif;font-size:clamp(.88rem,2vw,1.3rem);font-weight:700;color:#e8c87a;line-height:1.55;letter-spacing:.04em;text-shadow:0 0 18px rgba(200,140,40,.6),0 2px 6px rgba(0,0,0,.8)}
-.lma-sub-txt{margin-top:5%;font-size:clamp(.68rem,1.3vw,.9rem);color:rgba(210,170,100,.7);letter-spacing:.1em;text-shadow:0 1px 4px rgba(0,0,0,.9)}
-/* Steam 버튼 */
-.lma-steam-btn{position:absolute;bottom:11%;left:50%;transform:translateX(-50%);width:58%;cursor:pointer;background:transparent;border:none;padding:0;display:block;transition:filter .25s}
+/* 배너 프레임 — padding-bottom 비율 트릭: 일반=3:2, 와이드=240px 상한 */
+.lma-banner{flex:0 0 auto;width:100%}
+.lma-banner-inner{position:relative;width:100%;height:0;padding-bottom:min(66.67%,240px);overflow:hidden}
+.lma-banner-inner>img{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;object-position:center 30%;mix-blend-mode:screen}
+/* 텍스트+Steam 오버레이 — flex 한 덩어리 */
+.lma-text-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:8% 10% 8%;text-align:center;pointer-events:none;gap:0}
+.lma-main-txt{font-family:'Noto Sans KR',sans-serif;font-size:clamp(.88rem,2vw,1.25rem);font-weight:700;color:#e8c87a;line-height:1.45;letter-spacing:.04em;text-shadow:0 0 18px rgba(200,140,40,.6),0 2px 6px rgba(0,0,0,.8)}
+.lma-sub-txt{margin-top:5%;font-size:clamp(.68rem,1.3vw,.88rem);color:rgba(210,170,100,.7);letter-spacing:.1em;text-shadow:0 1px 4px rgba(0,0,0,.9)}
+/* Steam 버튼 — flex 자식으로 텍스트 바로 아래 */
+.lma-steam-btn{position:relative;margin:6% auto 0;width:62%;pointer-events:all;cursor:pointer;background:transparent;border:none;padding:0;display:block;transition:filter .25s}
 .lma-steam-btn img{width:100%;display:block}
 .lma-steam-btn:hover{filter:brightness(1.2) drop-shadow(0 0 14px rgba(80,160,255,.7))}
 .no-chars{color:rgba(180,140,110,0.5);text-align:center;padding:40px 20px;font-size:0.9rem;letter-spacing:0.1em}
@@ -202,7 +202,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .lobby-footer{margin-top:6px;display:flex;flex-direction:column;gap:6px}
 .enter-game-btn{
   width:100%;
-  height:70px;
+  height:176px;
   background:url('assets/lobby/lobby_enter_btn.png') center center/auto 100% no-repeat;
   border:none;color:transparent;font-size:0;
   cursor:pointer;
@@ -506,10 +506,10 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
           <div class="lma-text-overlay">
             <div class="lma-main-txt">여러분의 Steam 찜 하나가<br>EXODUSER: HELL LORD의<br>다음 여정을 만듭니다</div>
             <div class="lma-sub-txt">공식 출시 소식을 가장 먼저 받아보세요</div>
+            <button class="lma-steam-btn" onclick="openWishlist()">
+              <img src="assets/lobby/lobby_banner_btn.png" alt="Add to Steam Wishlist" draggable="false">
+            </button>
           </div>
-          <button class="lma-steam-btn" onclick="openWishlist()">
-            <img src="assets/lobby/lobby_banner_btn.png" alt="Add to Steam Wishlist" draggable="false">
-          </button>
         </div>
       </div>
     </div>
@@ -2151,8 +2151,52 @@ function _swapLobbyBg(stage){
   const v=$('lobbyVersionTxt');if(v)v.textContent=_LOBBY_VER_LABEL[_LOBBY_BUILD]||'';
 })();
 
+// ── 입장 버튼 클릭 사운드 (Web Audio — 엘든링 스타일 무거운 타격음) ──
+function playEnterSFX(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const now=ctx.currentTime;
+    // 1) 저음 임팩트 thud (50–80Hz 사인파 급감쇄)
+    const thud=ctx.createOscillator();
+    const thudG=ctx.createGain();
+    thud.type='sine';thud.frequency.setValueAtTime(80,now);thud.frequency.exponentialRampToValueAtTime(30,now+0.18);
+    thudG.gain.setValueAtTime(1.1,now);thudG.gain.exponentialRampToValueAtTime(0.001,now+0.35);
+    thud.connect(thudG);thudG.connect(ctx.destination);
+    thud.start(now);thud.stop(now+0.35);
+    // 2) 중역 충격음 (120–60Hz 사각파, 짧게)
+    const mid=ctx.createOscillator();
+    const midG=ctx.createGain();
+    mid.type='square';mid.frequency.setValueAtTime(120,now);mid.frequency.exponentialRampToValueAtTime(55,now+0.12);
+    midG.gain.setValueAtTime(0.25,now);midG.gain.exponentialRampToValueAtTime(0.001,now+0.18);
+    mid.connect(midG);midG.connect(ctx.destination);
+    mid.start(now);mid.stop(now+0.18);
+    // 3) 금속 클릭 트랜지언트 (고역 노이즈 버스트 + 1200Hz 톤)
+    const bufLen=ctx.sampleRate*0.08;
+    const buf=ctx.createBuffer(1,bufLen,ctx.sampleRate);
+    const data=buf.getChannelData(0);
+    for(let i=0;i<bufLen;i++)data[i]=(Math.random()*2-1)*(1-i/bufLen);
+    const noise=ctx.createBufferSource();
+    noise.buffer=buf;
+    const bpf=ctx.createBiquadFilter();
+    bpf.type='bandpass';bpf.frequency.value=2200;bpf.Q.value=1.5;
+    const noiseG=ctx.createGain();
+    noiseG.gain.setValueAtTime(0.18,now+0.01);noiseG.gain.exponentialRampToValueAtTime(0.001,now+0.08);
+    noise.connect(bpf);bpf.connect(noiseG);noiseG.connect(ctx.destination);
+    noise.start(now+0.01);
+    // 4) 짧은 공명 링 (엘든링 메뉴음 특유 금속 잔향)
+    const ring=ctx.createOscillator();
+    const ringG=ctx.createGain();
+    ring.type='sine';ring.frequency.setValueAtTime(420,now+0.02);ring.frequency.exponentialRampToValueAtTime(280,now+0.25);
+    ringG.gain.setValueAtTime(0.09,now+0.02);ringG.gain.exponentialRampToValueAtTime(0.001,now+0.5);
+    ring.connect(ringG);ringG.connect(ctx.destination);
+    ring.start(now+0.02);ring.stop(now+0.5);
+    // cleanup
+    setTimeout(()=>ctx.close(),600);
+  }catch(e){}
+}
+
 // 입장 버튼
-if($('enterGameBtn'))$('enterGameBtn').addEventListener('click',()=>{if(_selectedSlot)showCharGate(_selectedSlot)});
+if($('enterGameBtn'))$('enterGameBtn').addEventListener('click',()=>{playEnterSFX();if(_selectedSlot)showCharGate(_selectedSlot)});
 // 생성 모달
 $('createCancelBtn').addEventListener('click',()=>{$('createModal').classList.remove('show')});
 
@@ -2543,7 +2587,7 @@ function showCharGate(charId){
   const STEAM_URL='https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/';
   btn.addEventListener('click',e=>{e.preventDefault();window.open(STEAM_URL,'_blank');});
 })();
-function openWishlist(){window.open('https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/','_blank');}
+function openWishlist(){playEnterSFX();window.open('https://store.steampowered.com/app/4749590/EXODUSER_HELL_LORD/','_blank');}
 
 // ═══ 입력 모드 자동 감지 시스템 (선택 화면 없음, 실시간 전환) ═══
 let _inputMode = localStorage.getItem('inputMode') || 'kbm';
