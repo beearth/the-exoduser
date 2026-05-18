@@ -24267,3 +24267,8 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 ## 2026-05-18 21:30 (auto)
 - index.html
 
+
+## 2026-05-18 22:30 (auto)
+- assets/lobby/lobby_enter_sfx.mp3
+- index.html
+

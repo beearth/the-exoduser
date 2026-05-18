@@ -126,7 +126,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .lobby.show{display:flex}
 
 /* 좌측 영역 */
-.lobby-left{position:relative;flex:0 0 65%;height:100%;overflow:hidden;background:#000}
+.lobby-left{position:relative;flex:1;height:100%;overflow:hidden;background:#000}
 .lobby-bg-img{position:absolute;inset:0;background-position:left center;background-size:cover;background-repeat:no-repeat;opacity:1;transition:opacity 400ms ease}
 .lobby-bg-img::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0) 50%,rgba(0,0,0,0.55) 90%,rgba(0,0,0,0.85) 100%);pointer-events:none}
 .char-disp-empty{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);color:rgba(220,110,80,0.78);font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,2.6vw,2.8rem);font-weight:300;letter-spacing:0.25em;text-shadow:0 0 28px rgba(196,68,68,0.35),0 0 60px rgba(0,0,0,0.7);white-space:nowrap;pointer-events:none;user-select:none;opacity:1;transition:opacity 500ms ease;z-index:2}
@@ -204,10 +204,11 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   background:url('assets/lobby/lobby_enter_btn.png') center center/auto 100% no-repeat;
   border:none;color:transparent;font-size:0;
   cursor:pointer;
+  filter:drop-shadow(0 0 10px rgba(150,60,255,0.55)) drop-shadow(0 0 24px rgba(110,30,200,0.35));
   transition:filter .3s ease, transform .25s ease;
 }
 .enter-game-btn:hover:not(:disabled){
-  filter:drop-shadow(0 0 14px rgba(255,120,40,.9)) drop-shadow(0 0 32px rgba(255,60,10,.6)) brightness(1.2);
+  filter:drop-shadow(0 0 18px rgba(180,80,255,1)) drop-shadow(0 0 44px rgba(140,40,220,0.75)) brightness(1.25);
   transform:translateY(-2px) scale(1.03);
 }
 .enter-game-btn:active:not(:disabled){transform:translateY(0) scale(.99);filter:brightness(1.05)}
@@ -222,7 +223,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 
 /* 작은 화면 대응 */
 @media(max-width:1100px){
-  .lobby-left{flex:0 0 55%}
+  .lobby-left{flex:1}
   .lobby-right{flex:0 0 45%}
 }
 
@@ -2150,49 +2151,10 @@ function _swapLobbyBg(stage){
   const v=$('lobbyVersionTxt');if(v)v.textContent=_LOBBY_VER_LABEL[_LOBBY_BUILD]||'';
 })();
 
-// ── 입장 버튼 클릭 사운드 (Web Audio — 엘든링 스타일 무거운 타격음) ──
-function playEnterSFX(){
-  try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const now=ctx.currentTime;
-    // 1) 저음 임팩트 thud (50–80Hz 사인파 급감쇄)
-    const thud=ctx.createOscillator();
-    const thudG=ctx.createGain();
-    thud.type='sine';thud.frequency.setValueAtTime(80,now);thud.frequency.exponentialRampToValueAtTime(30,now+0.18);
-    thudG.gain.setValueAtTime(1.1,now);thudG.gain.exponentialRampToValueAtTime(0.001,now+0.35);
-    thud.connect(thudG);thudG.connect(ctx.destination);
-    thud.start(now);thud.stop(now+0.35);
-    // 2) 중역 충격음 (120–60Hz 사각파, 짧게)
-    const mid=ctx.createOscillator();
-    const midG=ctx.createGain();
-    mid.type='square';mid.frequency.setValueAtTime(120,now);mid.frequency.exponentialRampToValueAtTime(55,now+0.12);
-    midG.gain.setValueAtTime(0.25,now);midG.gain.exponentialRampToValueAtTime(0.001,now+0.18);
-    mid.connect(midG);midG.connect(ctx.destination);
-    mid.start(now);mid.stop(now+0.18);
-    // 3) 금속 클릭 트랜지언트 (고역 노이즈 버스트 + 1200Hz 톤)
-    const bufLen=ctx.sampleRate*0.08;
-    const buf=ctx.createBuffer(1,bufLen,ctx.sampleRate);
-    const data=buf.getChannelData(0);
-    for(let i=0;i<bufLen;i++)data[i]=(Math.random()*2-1)*(1-i/bufLen);
-    const noise=ctx.createBufferSource();
-    noise.buffer=buf;
-    const bpf=ctx.createBiquadFilter();
-    bpf.type='bandpass';bpf.frequency.value=2200;bpf.Q.value=1.5;
-    const noiseG=ctx.createGain();
-    noiseG.gain.setValueAtTime(0.18,now+0.01);noiseG.gain.exponentialRampToValueAtTime(0.001,now+0.08);
-    noise.connect(bpf);bpf.connect(noiseG);noiseG.connect(ctx.destination);
-    noise.start(now+0.01);
-    // 4) 짧은 공명 링 (엘든링 메뉴음 특유 금속 잔향)
-    const ring=ctx.createOscillator();
-    const ringG=ctx.createGain();
-    ring.type='sine';ring.frequency.setValueAtTime(420,now+0.02);ring.frequency.exponentialRampToValueAtTime(280,now+0.25);
-    ringG.gain.setValueAtTime(0.09,now+0.02);ringG.gain.exponentialRampToValueAtTime(0.001,now+0.5);
-    ring.connect(ringG);ringG.connect(ctx.destination);
-    ring.start(now+0.02);ring.stop(now+0.5);
-    // cleanup
-    setTimeout(()=>ctx.close(),600);
-  }catch(e){}
-}
+// ── 입장 버튼 클릭 사운드 ──
+const _enterSFX=new Audio('assets/lobby/lobby_enter_sfx.mp3');
+_enterSFX.preload='auto';_enterSFX.volume=0.85;
+function playEnterSFX(){try{_enterSFX.currentTime=0;_enterSFX.play();}catch(e){}}
 
 // 입장 버튼
 if($('enterGameBtn'))$('enterGameBtn').addEventListener('click',()=>{playEnterSFX();if(_selectedSlot)showCharGate(_selectedSlot)});
