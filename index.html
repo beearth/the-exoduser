@@ -1630,6 +1630,7 @@ function playCinematic(){
     $('mainWrap').classList.add('show');
     $('loading').style.display='none';
     
+    localStorage.setItem('_cinSeen','1');
     if(_testMode){
       $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
       if($('userEmail'))$('userEmail').textContent='LOCAL MODE';if($('lobbyMode'))$('lobbyMode').textContent='LOCAL MODE';loadLocalCharacters();
@@ -1820,6 +1821,7 @@ function skipToGate(){
   clearInterval(_emberIv);
   $('mainWrap').classList.add('show');
   $('loading').style.display='none';
+  localStorage.setItem('_cinSeen','1');
   if(_testMode){
     $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
     if($('userEmail'))$('userEmail').textContent='LOCAL MODE';if($('lobbyMode'))$('lobbyMode').textContent='LOCAL MODE';loadLocalCharacters();
@@ -1928,8 +1930,15 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
       if($('userEmail'))$('userEmail').textContent='LOCAL MODE';if($('lobbyMode'))$('lobbyMode').textContent='LOCAL MODE';
       await loadLocalCharacters();
       hideLoading();
+    } else if(localStorage.getItem('_cinSeen')){
+      _cinDone=true;startBGM();
+      $('cinScene').style.display='none';clearInterval(_emberIv);
+      $('mainWrap').classList.add('show');
+      $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl2=$('cinLang');if(_cl2)_cl2.style.display='none';
+      if($('userEmail'))$('userEmail').textContent='LOCAL MODE';if($('lobbyMode'))$('lobbyMode').textContent='LOCAL MODE';
+      await loadLocalCharacters();hideLoading();
     } else {
-      // 새로고침/첫 접속 → 배포와 동일하게 인트로 재생
+      // 처음 → 인트로 재생
       hideLoading();
       playCinematic();
     }
@@ -1946,20 +1955,40 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
     if(session){await showLobby()}else{$('loginSection').style.display='block'}
     hideLoading();
   }else if(session){
-    // OAuth 리다이렉트 복귀 (로그인 완료) → 인트로 스킵, 바로 로비
+    // 로그인 상태 → 시네마틱 본 적 있으면 스킵, 처음이면 재생
+    if(localStorage.getItem('_cinSeen')){
+      _cinDone=true;startBGM();
+      $('cinScene').style.display='none';clearInterval(_emberIv);
+      $('mainWrap').classList.add('show');
+      await showLobby();
+      hideLoading();
+    }else{
+      hideLoading();
+      playCinematic();
+    }
+  }else{
+    // 비로그인 → 로그인창 먼저
     _cinDone=true;startBGM();
     $('cinScene').style.display='none';clearInterval(_emberIv);
     $('mainWrap').classList.add('show');
-    await showLobby();
+    $('loginSection').style.display='block';
     hideLoading();
-  }else{
-    // 첫 접속 / 새로고침 (비로그인) → 인트로 재생
-    hideLoading();
-    playCinematic();
   }
 
   sb.auth.onAuthStateChange((event,session)=>{
-    if(event==='SIGNED_IN'&&session){currentUser=session.user;showLobby()}
+    if(event==='SIGNED_IN'&&session){
+      currentUser=session.user;
+      $('loginSection').style.display='none';
+      if(localStorage.getItem('_cinSeen')){
+        showLobby();
+      }else{
+        // 처음 로그인 → 시네마틱 재생
+        $('mainWrap').classList.remove('show');
+        $('cinScene').style.display='';
+        _cinDone=false;
+        playCinematic();
+      }
+    }
     else if(event==='SIGNED_OUT'){currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='block';const _c=document.querySelector('.container');if(_c)_c.style.display=''}
   });
 })();
