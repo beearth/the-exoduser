@@ -2489,7 +2489,7 @@ canvas{display:block;position:fixed;inset:0}
           </div>
         </div>
         <div id="quitSection" class="set-section" style="margin-top:15px;border-top:1px solid #550000;padding-top:15px">
-          <button id="quitBtn" style="display:block;width:100%;padding:10px;background:rgba(80,0,0,.35);border:1px solid #880000;color:#ff4444;font-family:'Noto Sans KR';font-weight:900;font-size:1.1rem;cursor:pointer;letter-spacing:.15em;transition:all .3s">게임 종료</button>
+          <button id="quitBtn" style="display:block;width:100%;padding:10px;background:rgba(80,0,0,.35);border:1px solid #880000;color:#ff4444;font-family:'Noto Sans KR';font-weight:900;font-size:1.1rem;cursor:pointer;letter-spacing:.15em;transition:all .3s">게임 종료</button><!-- _applyLang translates -->
         </div>
       </div>
     </div>
@@ -6387,6 +6387,14 @@ const _EN={
 '조작법':'Controls','살아남으려면 익혀라':'Master this to survive',
 '전투':'Combat','이동 / 상호작용':'Move / Interact','메뉴':'Menu','시스템':'System',
 '아무 키를 눌러 시작':'Press any key to start',
+// --- Phase 33: Auto-enhance / Skill / Tutorial ---
+'목표 달성!':'Goal Achieved!','악의 고갈':'Malice Depleted','시도':'Attempts','소비':'Spent','목표':'Goal','미달':'Not reached',
+'악의를 더 모아 재시도하세요':'Gather more Malice and try again',
+'습득':'Learn','레벨업':'Lv Up','⚡기동+10':'⚡Dash+10','게임 종료':'Quit Game',
+'영역스킬':'Area Skill','석궁자동':'Auto Xbow',
+'데빌포스 흡수 (HP→에너지)':'Devil Force Absorb (HP→Energy)',
+'스킬슬롯 5':'Skill Slot 5','CT스킬 (유령걸음/얼음보주)':'CT Skill (Ghost Step/Ice Orb)',
+'스킬 (전투스킬 습득)':'Skills (Combat Skills)','대장간 (제작)':'Forge (Craft)',
 // --- UI ---
 '일괄합성':'Bulk Fuse','일괄강화+합성':'Bulk Enhance+Fuse','자원 부족!':'Resources Low!',' 뎀':' DMG',
 // --- Game effects / combat messages ---
@@ -19743,12 +19751,12 @@ function _doAiEnhance(){
     if(res.ok){
       const col=enhColor(res.to);
       rDiv.innerHTML='<div style="border:1px solid #44aa44;background:rgba(0,80,0,.2);padding:10px;border-radius:4px">'+
-        '<div style="color:#44ff88;font-weight:700;font-size:1rem">목표 달성!</div>'+
+        '<div style="color:#44ff88;font-weight:700;font-size:1rem">'+_T('목표 달성!')+'</div>'+
         '<div style="font-size:.85rem;color:#aaffaa;margin-top:4px">'+
         '<span style="color:'+enhColor(res.from)+'">+'+res.from+'</span> → '+
         '<span style="color:'+col+';font-weight:700">+'+res.to+'</span>'+
-        ' | 시도 '+res.tries.toLocaleString()+'회'+
-        ' | 소비 <span style="color:#ffaa44">'+res.used.toLocaleString()+'악의</span>'+
+        ' | '+_T('시도')+' '+res.tries.toLocaleString()+_T('회')+
+        ' | '+_T('소비')+' <span style="color:#ffaa44">'+res.used.toLocaleString()+_T('악의')+'</span>'+
         '</div></div>';
       SFX.forge();
       shake(8);
@@ -19757,15 +19765,15 @@ function _doAiEnhance(){
     }else{
       const col=enhColor(res.to);
       rDiv.innerHTML='<div style="border:1px solid #aa4444;background:rgba(80,0,0,.2);padding:10px;border-radius:4px">'+
-        '<div style="color:#ff6644;font-weight:700;font-size:1rem">악의 고갈</div>'+
+        '<div style="color:#ff6644;font-weight:700;font-size:1rem">'+_T('악의 고갈')+'</div>'+
         '<div style="font-size:.85rem;color:#ffaaaa;margin-top:4px">'+
         '<span style="color:'+enhColor(res.from)+'">+'+res.from+'</span> → '+
         '<span style="color:'+col+'">+'+res.to+'</span>'+
-        ' (목표 <span style="color:#cc4444">+'+res.target+'</span> 미달)'+
-        ' | 시도 '+res.tries.toLocaleString()+'회'+
-        ' | 소비 <span style="color:#ffaa44">'+res.used.toLocaleString()+'악의</span>'+
+        ' ('+_T('목표')+' <span style="color:#cc4444">+'+res.target+'</span> '+_T('미달')+')'+
+        ' | '+_T('시도')+' '+res.tries.toLocaleString()+_T('회')+
+        ' | '+_T('소비')+' <span style="color:#ffaa44">'+res.used.toLocaleString()+_T('악의')+'</span>'+
         '</div>'+
-        '<div style="font-size:.78rem;color:#664444;margin-top:6px">악의를 더 모아 재시도하세요</div>'+
+        '<div style="font-size:.78rem;color:#664444;margin-top:6px">'+_T('악의를 더 모아 재시도하세요')+'</div>'+
         '</div>';
       SFX.hurt();
       addTxt(P.x,P.y-25,_T('악의 소진...'),'#cc4444',70);
@@ -29013,7 +29021,7 @@ function doParry(_inDmg,_px,_py,_forceQ){if(_px===undefined)_px=P.x;if(_py===und
   P.st=Math.min(P.mst,P.st+_prBase);
   P.mp=Math.min(P.mmp,P.mp+_prBase);
   _harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+10);
-  addTxt(P.x,P.y-76,'⚡기동+10','#44ccff',35);
+  addTxt(P.x,P.y-76,_T('⚡기동+10'),'#44ccff',35);
   G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
@@ -36507,7 +36515,7 @@ function _renderSkillRow(sk,grid){
       if(canLearn||canUp){
         const _bPlus=document.createElement('div');
         _bPlus.style.cssText='flex:1;padding:6px 10px;background:rgba(60,40,15,0.6);border:1px solid #aa8833;border-radius:4px;color:#ffcc66;font-size:.85rem;text-align:center;cursor:pointer;font-weight:700';
-        _bPlus.textContent=canLearn?((OPT.lang!=='ko')?'+ Learn (⭐'+sk.spCost+' 👿'+_malCost(sk.matCost||0)+')':'+ 습득 (⭐'+sk.spCost+' 👿'+_malCost(sk.matCost||0)+')'):((OPT.lang!=='ko')?'+ Lv Up (⭐'+_singleUpSp+')':'+ 레벨업 (⭐'+_singleUpSp+')');
+        _bPlus.textContent=canLearn?('+ '+_T('습득')+' (⭐'+sk.spCost+' 👿'+_malCost(sk.matCost||0)+')'):('+ '+_T('레벨업')+' (⭐'+_singleUpSp+')');
         _bPlus.onmouseenter=()=>{_bPlus.style.background='rgba(80,55,20,0.7)'};
         _bPlus.onmouseleave=()=>{_bPlus.style.background='rgba(60,40,15,0.6)'};
         _bPlus.onclick=(ev)=>{ev.stopPropagation();_skClick()};
@@ -37262,7 +37270,7 @@ function _applyLang(){try{
   // Display mode options
   const _dm=$('optDispMode');if(_dm){Array.from(_dm.options).forEach(o=>{const ko=o.dataset.ko||(o.textContent);if(!o.dataset.ko)o.dataset.ko=ko;const tr=_T(ko);o.textContent=tr!==ko?tr:ko})}
   // Buttons
-  const _btns={saveP1:'세팅1 저장',loadP1:'세팅1',saveP2:'세팅2 저장',loadP2:'세팅2',btnRedetect:'재진단',resetBtn:'게임 리셋 (처음부터)',toLobbyBtn2:'캐릭터 선택 (로비)',setClose:'닫기 [ESC]',resetYes:'확인',resetNo:'취소',diagTierLabel:'성능 등급:',diagBenchLabel:'벤치 FPS:'};
+  const _btns={saveP1:'세팅1 저장',loadP1:'세팅1',saveP2:'세팅2 저장',loadP2:'세팅2',btnRedetect:'재진단',resetBtn:'게임 리셋 (처음부터)',toLobbyBtn2:'캐릭터 선택 (로비)',setClose:'닫기 [ESC]',resetYes:'확인',resetNo:'취소',diagTierLabel:'성능 등급:',diagBenchLabel:'벤치 FPS:',quitBtn:'게임 종료'};
   for(const[id,ko]of Object.entries(_btns)){const el=$(id);if(el)el.textContent=_T(ko)}
   // Fullscreen button (no id, onclick)
   _st?.querySelectorAll('button').forEach(b=>{if(b.onclick&&b.textContent.includes('화면')&&b.textContent.includes('11'))b.textContent=_T('전체화면 (F11)')});
@@ -37346,6 +37354,14 @@ function _applyLang(){try{
     const _tuH=_tu.querySelector('div[style*="1.6rem"]');if(_tuH&&(_tuH.textContent.trim()==='조작법'||_tuH.dataset.ko==='조작법')){_tuH.dataset.ko='조작법';_tuH.textContent=_T('조작법')}
     const _tuSub=_tu.querySelector('div[style*=".9rem"][style*="665544"]');if(_tuSub&&(_tuSub.textContent.trim()==='살아남으려면 익혀라'||_tuSub.dataset.ko==='살아남으려면 익혀라')){_tuSub.dataset.ko='살아남으려면 익혀라';_tuSub.textContent=_T('살아남으려면 익혀라')}
     const _tuFt=_tu.querySelector('div[style*="554433"]');if(_tuFt&&(_tuFt.textContent.trim()==='아무 키를 눌러 시작'||_tuFt.dataset.ko==='아무 키를 눌러 시작')){_tuFt.dataset.ko='아무 키를 눌러 시작';_tuFt.textContent=_T('아무 키를 눌러 시작')}
+    // Tutorial key descriptions
+    const _tkMap={'좌클릭':'좌클릭','우클릭 탭':'우클릭 탭','우클릭 홀드':'우클릭 홀드','SHIFT':'SHIFT','SPACE':'SPACE','E':'E','Q':'Q','W A S D':'W A S D','R':'R','1~4':'1~4','F':'F','Z':'Z','L-CTRL':'L-CTRL','K':'K','C':'C','TAB':'TAB','G':'G','V':'V','L':'L','ESC':'ESC','F11':'F11'};
+    const _tkDesc={'무기 공격':'무기 공격','칼등 처내기':'칼등 처내기','연속 처내기':'연속 처내기','작살 발사':'작살 발사','영역스킬':'영역스킬','석궁자동':'석궁자동','마법 (탭=투사체, 홀드=빔)':'마법 (탭=투사체, 홀드=빔)','데빌포스 흡수 (HP→에너지)':'데빌포스 흡수 (HP→에너지)','이동':'이동','아이템 줍기':'아이템 줍기','물약 / 스킬슬롯':'물약 / 스킬슬롯','스킬슬롯 5':'스킬슬롯 5','필살기':'필살기','CT스킬 (유령걸음/얼음보주)':'CT스킬 (유령걸음/얼음보주)','스킬 (전투스킬 습득)':'스킬 (전투스킬 습득)','능력치 (스탯/패시브)':'능력치 (스탯/패시브)','인벤토리':'인벤토리','대장간 (제작)':'대장간 (제작)','창고':'창고','스킬 슬롯 배정':'스킬 슬롯 배정','설정':'설정','전체화면':'전체화면'};
+    _tu.querySelectorAll('div[style*="margin-bottom"]').forEach(d=>{
+      const tkey=d.querySelector('.tkey');if(!tkey)return;
+      if(!d.dataset.ko){const txt=d.textContent;const kIdx=txt.indexOf(tkey.textContent);if(kIdx>=0){d.dataset.ko=txt.slice(kIdx+tkey.textContent.length).trim()}}
+      if(d.dataset.ko){const tkeys=d.querySelectorAll('.tkey');let html='';tkeys.forEach((tk,i)=>{if(i>0)html+=' / ';html+='<span class="tkey">'+tk.textContent+'</span> '});const parts=d.dataset.ko.split(' / ');html+=parts.map(p=>_T(p.trim())).join(' / ');d.innerHTML=html}
+    });
   }
   // Refresh dynamic slots
   try{updateMagicSlot();updateLMBSlot();updateQSlot();_updateUltSlot();_renderPresetBtns()}catch(_e2){}
@@ -38769,7 +38785,7 @@ rHdr.textContent=_L('리롤 — 접두/접미 재설정 | 악의 '+REROLL_COST,'
         let info=`<span style="color:${rc};font-weight:700">${it.emoji||SLOT_EMOJI[i]} ${itemDispName(it)}${it.enh?' <span style="color:'+enhColor(it.enh)+'">+'+it.enh+'</span>':''}</span>`;
         const afxHtml=it.affixes&&it.affixes.length?it.affixes.map(af=>'<span style="color:'+(AFFIX_POOL.find(a=>a.id===af.id&&a.type===0)?'#66ddff':'#ffcc44')+';font-size:.75rem">['+_T(AFFIX_NAMES_KO[af.id]||af.id)+' '+_affixValStr(af)+']</span>').join(' '):'';
         if(afxHtml)info+=' '+afxHtml;
-        else if(canReroll)info+=` <span style="color:#554433;font-size:.75rem">어픽스 없음</span>`;
+        else if(canReroll)info+=` <span style="color:#554433;font-size:.75rem">${_T('어픽스 없음')}</span>`;
         d.innerHTML=info;
       }else{
         d.innerHTML=`<span style="color:#443322">${SLOT_EMOJI[i]} ${_slotName(i)} — ${_T('비어있음')}</span>`;
