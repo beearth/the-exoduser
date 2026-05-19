@@ -10,6 +10,24 @@ git add -A && git status && git push origin main
 - working tree clean + push 완료 확인 후에만 배포 진행
 - 안 하면 구버전이 배포됨
 
+**DEMO/EA 동기화 (배포 시 반드시 함께):**
+```bash
+# game.html 동기화
+cp G:/hell/game.html G:/hell-DEMO/game.html
+cp G:/hell/game.html G:/hell-DEMO/gamedemo.html
+sed -i 's/_DEMO_MODE=false/_DEMO_MODE=true/' G:/hell-DEMO/gamedemo.html
+cp G:/hell/game.html G:/hell-ea/game.html
+# index.html 동기화
+cp G:/hell/index.html G:/hell-ea/index.html
+cp G:/hell/index.html G:/hell-DEMO/indexdemo.html
+cp G:/hell/index.html G:/hell-DEMO/index.html
+# lang/data 파일 동기화
+for f in lang_*.js lobby_i18n.js maps_data.js; do cp "G:/hell/$f" "G:/hell-DEMO/$f" && cp "G:/hell/$f" "G:/hell-ea/$f"; done
+```
+- game.html, index.html, lang_*.js 중 **하나라도 수정하면** 위 명령 전부 실행
+- DEMO의 메인은 `indexdemo.html` — `index.html`만 복사하면 반영 안 됨
+- `gamedemo.html`은 `_DEMO_MODE=true`로 변경 필수
+
 ## 서버
 
 ```

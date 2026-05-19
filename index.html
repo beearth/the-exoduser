@@ -2360,10 +2360,22 @@ if($('enterGameBtn')){
 $('createCancelBtn').addEventListener('click',()=>{$('createModal').classList.remove('show')});
 
 // ── 로그인 게임패드 네비게이션 ──
+let _loginGpIdx = 0;
 _GP.on('loginNav', (gp, just) => {
   const ls = $('loginSection');
   if(!ls || ls.style.display === 'none' || ls.style.display === '') return false;
-  if(just[0]) { const gb=$('googleBtn'); if(gb) gb.click(); return true; }
+  const btns = [].filter.call(ls.querySelectorAll('.google-btn'), b => b.style.display !== 'none');
+  if(!btns.length) return false;
+  if(_loginGpIdx >= btns.length) _loginGpIdx = 0;
+  // D-pad 위(12)/아래(13) + 좌스틱
+  if(just[12] || (_GP.axes[1] < -0.5 && !_GP.prev._loginUp)) _loginGpIdx = Math.max(0, _loginGpIdx - 1);
+  if(just[13] || (_GP.axes[1] > 0.5 && !_GP.prev._loginDown)) _loginGpIdx = Math.min(btns.length - 1, _loginGpIdx + 1);
+  _GP.prev._loginUp = _GP.axes[1] < -0.5;
+  _GP.prev._loginDown = _GP.axes[1] > 0.5;
+  // 하이라이트
+  btns.forEach((b, i) => { b.style.outline = i === _loginGpIdx ? '2px solid #C9A961' : ''; b.style.outlineOffset = '-2px'; });
+  // A = 선택
+  if(just[0]) { btns[_loginGpIdx].click(); return true; }
   return false;
 }, () => {});
 
