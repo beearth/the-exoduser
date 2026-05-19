@@ -2119,4 +2119,6 @@ const _NL_BASE={
 '투구':'Helm',
 '악마팔찌':'Demonenarmband',
 '생명팔찌':'Levensarmband',
+'👻 유령!':'👻 Geest!',
+'🦴 해골무덤!':'🦴 Botgraf!',
 };

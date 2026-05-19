@@ -2101,4 +2101,6 @@ const _ES_BASE={'대검':'Espadón','석궁':'Ballesta','연사석궁':'Repetido
 '💥 공성유령 폭발!':'💥 ¡Explosión del Fantasma Asediador!',
 '프레임 표시 (FPS)':'Mostrar FPS',
 '여기까지 데모입니다...':'Aquí termina el demo...',
+'👻 유령!':'👻 ¡Fantasma!',
+'🦴 해골무덤!':'🦴 ¡Tumba de Huesos!',
 };

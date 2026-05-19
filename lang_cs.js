@@ -2017,4 +2017,6 @@ const _CS_BASE={
 ' 뎀 ':' ZRN ',
 '기절!  ':'Omráčen!  ',
 '투구':'Helma',
+'👻 유령!':'👻 Duch!',
+'🦴 해골무덤!':'🦴 Kostní hrob!',
 };

@@ -2086,4 +2086,6 @@ const _PTBR_BASE={'대검':'Espadão','석궁':'Besta','연사석궁':'Repetidor
 '💥 폭발 허수아비!':'💥 Espantalho Explosivo!',
 ' 뎀 ':' DAN ',
 '투구':'Elmo',
+'👻 유령!':'👻 Fantasma!',
+'🦴 해골무덤!':'🦴 Túmulo de Ossos!',
 };

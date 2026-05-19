@@ -2122,4 +2122,6 @@ const _DA_BASE={
 '투구':'Hjelm',
 '악마팔찌':'Dæmonarmbband',
 '생명팔찌':'Livsarmbband',
+'👻 유령!':'👻 Spøgelse!',
+'🦴 해골무덤!':'🦴 Knokkelgrav!',
 };

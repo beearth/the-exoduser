@@ -2086,4 +2086,6 @@ const _FR_BASE={'대검':'Espadon','석궁':'Arbalète','연사석궁':'Répéte
 '투구':'Casque',
 '악마팔찌':'Bracelet du Démon',
 '생명팔찌':'Bracelet de Vie',
+'👻 유령!':'👻 Fantôme!',
+'🦴 해골무덤!':'🦴 Tombeau d\'Os!',
 };

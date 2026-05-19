@@ -2121,4 +2121,6 @@ const _NO_BASE={
 '투구':'Hjelm',
 '악마팔찌':'Demonarmbband',
 '생명팔찌':'Livsarmbband',
+'👻 유령!':'👻 Spøkelse!',
+'🦴 해골무덤!':'🦴 Beinhaug!',
 };

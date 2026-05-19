@@ -2068,4 +2068,6 @@ const _DE_BASE={'대검':'Großschwert','석궁':'Armbrust','연사석궁':'Schn
 '💥 폭발 허수아비!':'💥 Explosionsvogelscheuche!',
 ' 뎀 ':' SCH ',
 '투구':'Helm',
+'👻 유령!':'👻 Geist!',
+'🦴 해골무덤!':'🦴 Knochengrab!',
 };

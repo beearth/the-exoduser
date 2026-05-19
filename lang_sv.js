@@ -2119,4 +2119,6 @@ const _SV_BASE={
 '투구':'Hjälm',
 '악마팔찌':'Demonarmbband',
 '생명팔찌':'Livsarmbband',
+'👻 유령!':'👻 Spöke!',
+'🦴 해골무덤!':'🦴 Bengrav!',
 };

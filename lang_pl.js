@@ -2068,4 +2068,6 @@ const _PL_BASE={
 '투구':'Hełm',
 '악마팔찌':'Bransoleta Demona',
 '생명팔찌':'Bransoleta Życia',
+'👻 유령!':'👻 Duch!',
+'🦴 해골무덤!':'🦴 Kostny Grób!',
 };
