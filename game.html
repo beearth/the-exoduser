@@ -9818,6 +9818,7 @@ function _gpVCHide(){if(_gpVC.el){_gpVC.el.style.display='none';}_gpVC.vis=false
 // ── 우스틱 스크롤 캐시 (getComputedStyle 매 프레임 호출 방지) ──
 let _gpScEl=null; // 캐시된 스크롤 대상
 const _gpFindScroll=el=>{let n=el;while(n){try{const ov=getComputedStyle(n).overflowY;if(n.scrollHeight>n.clientHeight+5&&['auto','scroll','overlay'].includes(ov))return n;}catch(e){}n=n.parentElement;}return null;};
+const _gpFindScrollDown=el=>{if(!el)return null;try{const ov=getComputedStyle(el).overflowY;if(el.scrollHeight>el.clientHeight+5&&['auto','scroll','overlay'].includes(ov))return el;}catch(e){}const ch=el.children;for(let i=0;i<ch.length;i++){const r=_gpFindScrollDown(ch[i]);if(r)return r;}return null;};
 // 섹션 타입 분류
 const _gpSectType=el=>{
   if(el.closest('.stat-row'))return'stat';
@@ -10006,7 +10007,7 @@ function _gpUINav(panel){
     const _wx=_gpVC.vis?_gpVC.x:(cur?cur.getBoundingClientRect().left+cur.offsetWidth/2:window.innerWidth/2);
     const _wy=_gpVC.vis?_gpVC.y:(cur?cur.getBoundingClientRect().top+cur.offsetHeight/2:window.innerHeight/2);
     const _wt=document.elementFromPoint(_wx,_wy)||panel;
-    const _sc=_gpFindScroll(_wt)||_gpFindScroll(panel);
+    const _sc=_gpFindScroll(_wt)||_gpFindScroll(panel)||_gpFindScrollDown(panel);
     if(_sc){
       if(Math.abs(rsYVal)>0.15)_sc.scrollTop+=rsYVal*18;
       if(Math.abs(rsXVal)>0.15)_sc.scrollLeft+=rsXVal*18;
@@ -10053,6 +10054,16 @@ function _pollGamepad(){
 
   // ── 3단계: 패드모드 아니면 K[]/MB[] 절대 안 건드림 ──
   if(!_gpActive)return;
+
+  // ── 3a단계: 컷씬 진행 중이면 A=advance, B=skip홀드, Start=즉시스킵 ──
+  if(typeof _cutsceneState!=='undefined'&&_cutsceneState==='INTRO_CUTSCENE'){
+    const _cA=!!_gpBtns[0],_cB=!!_gpBtns[1],_cSt=!!_gpBtns[9];
+    if(_cA&&!_gpBtnsPrev['_cutA'])_cutsceneAdvance();
+    if(_cB)_cutSkipHolding=true; else if(_gpBtnsPrev['_cutB'])_cutSkipHolding=false;
+    if(_cSt&&!_gpBtnsPrev['_cutSt'])_cutsceneEnd();
+    _gpBtnsPrev['_cutA']=_cA;_gpBtnsPrev['_cutB']=_cB;_gpBtnsPrev['_cutSt']=_cSt;
+    return;
+  }
 
   // ── D-pad 패널 토글 (패널 닫혀있을 때만 — 열려있으면 네비게이션 전용) ──
   {const _DP=[[12,'skillPanel','toggle'],[13,'forge','forge'],[14,'statPanel','toggle'],[15,'invPanel','storage']];
@@ -10405,7 +10416,7 @@ function _gpInvNav(){
     const _iwx=_gpVC.vis?_gpVC.x:window.innerWidth/2;
     const _iwy=_gpVC.vis?_gpVC.y:window.innerHeight/2;
     const _iwt=document.elementFromPoint(_iwx,_iwy)||$('invPanel');
-    const _sc=_gpFindScroll(_iwt)||_gpFindScroll($('invPanel'));
+    const _sc=_gpFindScroll(_iwt)||_gpFindScroll($('invPanel'))||_gpFindScrollDown($('invPanel'));
     if(_sc){
       if(Math.abs(_rsYFull)>0.15)_sc.scrollTop+=_rsYFull*18;
       if(Math.abs(_rsXFull)>0.15)_sc.scrollLeft+=_rsXFull*18;
