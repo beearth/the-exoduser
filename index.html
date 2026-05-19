@@ -133,7 +133,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .char-disp-empty.hidden{opacity:0}
 
 /* 우측 영역 */
-.lobby-right{position:relative;flex:0 0 35%;height:100%;overflow:hidden;background:linear-gradient(180deg,rgba(8,3,18,0.42) 0%,rgba(4,2,12,0.48) 100%),url('assets/lobby/lobby_bg_new.png') center/cover no-repeat;padding:20px 24px 16px 24px;display:flex;flex-direction:column;border-left:2px solid;border-image:linear-gradient(180deg,#3a1a55 0%,#c44444 50%,#3a1a55 100%) 1}
+.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(8,3,18,0.42) 0%,rgba(4,2,12,0.48) 100%),url('assets/lobby/lobby_bg_new.png') center/cover no-repeat;padding:20px 24px 16px 24px;display:flex;flex-direction:column;border-left:2px solid;border-image:linear-gradient(180deg,#3a1a55 0%,#c44444 50%,#3a1a55 100%) 1}
 
 /* 우측 헤더 */
 .lobby-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
@@ -157,7 +157,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .char-nav-btn:disabled{opacity:.2;cursor:default}
 
 /* 5슬롯 아래 디자인 영역 */
-.lobby-mid-area{flex:1;display:flex;flex-direction:column;padding:6px 0 0;justify-content:flex-start;min-height:0;overflow:hidden}
+.lobby-mid-area{flex:1;display:flex;flex-direction:column;padding:6px 0 0;justify-content:flex-start;min-height:120px;overflow:hidden}
 /* 배너 */
 .lma-banner{flex:0 0 auto;width:100%;pointer-events:none}
 .lma-banner-inner{width:100%;padding:14px 10%;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
@@ -197,16 +197,17 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .char-del:hover{border-color:rgba(220,80,60,0.7);color:rgba(255,120,100,0.95);background:rgba(120,30,20,0.2)}
 
 /* 입장 버튼 */
-.lobby-footer{margin-top:auto;padding-bottom:8px;display:flex;flex-direction:column;gap:6px;flex-shrink:0}
+.lobby-footer{margin-top:auto;padding-bottom:8px;display:flex;flex-direction:column;gap:6px}
 .enter-game-btn{
   width:100%;
-  height:min(352px,38vh);
-  background:url('assets/lobby/lobby_enter_btn.png') center center/auto 100% no-repeat;
-  border:none;color:transparent;font-size:0;
+  background:transparent;
+  border:none;padding:0;
   cursor:pointer;
   filter:drop-shadow(0 0 10px rgba(150,60,255,0.55)) drop-shadow(0 0 24px rgba(110,30,200,0.35));
   transition:filter .3s ease, transform .25s ease;
+  display:block;
 }
+.enter-game-btn img{width:100%;height:auto;max-height:500px;display:block}
 .enter-game-btn:hover:not(:disabled){
   filter:drop-shadow(0 0 18px rgba(180,80,255,1)) drop-shadow(0 0 44px rgba(140,40,220,0.75)) brightness(1.25);
   transform:translateY(-2px) scale(1.03);
@@ -514,7 +515,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
       </div>
     </div>
     <div class="lobby-footer">
-      <button class="enter-game-btn" id="enterGameBtn" disabled></button>
+      <button class="enter-game-btn" id="enterGameBtn" disabled><img src="assets/lobby/lobby_enter_btn.png" draggable="false" alt=""></button>
     </div>
     <div class="ll-version-txt" id="lobbyVersionTxt" style="text-align:right;padding:4px 0 2px"></div>
   </div>
@@ -1409,7 +1410,6 @@ function _applyLobbyLang(){
     '#charVisualPop h2':['외형 선택','Appearance'],
     '#charVisualPop p':['캐릭터의 외형을 선택하세요','Choose your appearance'],
     '#visualCancelBtn':['취소','Cancel'],
-    '#enterGameBtn':['입장','Enter'],
   };
   for(const[sel,pair]of Object.entries(m)){
     if(!pair)continue;
