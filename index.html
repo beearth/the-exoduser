@@ -2262,6 +2262,14 @@ if($('enterGameBtn')){
 // 생성 모달
 $('createCancelBtn').addEventListener('click',()=>{$('createModal').classList.remove('show')});
 
+// ── 로그인 게임패드 네비게이션 ──
+_GP.on('loginNav', (gp, just) => {
+  const ls = $('loginSection');
+  if(!ls || ls.style.display === 'none' || ls.style.display === '') return false;
+  if(just[0]) { const gb=$('googleBtn'); if(gb) gb.click(); return true; }
+  return false;
+}, () => {});
+
 // ── 로비 게임패드 네비게이션 ──
 let _lobbyGpIdx = 0;
 _GP.on('lobbyNav', (gp, just) => {
