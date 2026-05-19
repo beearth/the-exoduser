@@ -100,7 +100,7 @@ if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!==
   --ui-inset-bottom:10px
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;overflow:hidden;font-family:var(--font);user-select:none;cursor:url(img/cursors/cursor_magic_staff_2x.png) 0 0,auto}
+body{background:#000;overflow:hidden;font-family:var(--font);user-select:none;cursor:url(img/cursors/cursor_dark_css.png) 0 0,auto}
 canvas{display:block;position:fixed;inset:0}
 
 /* ══ HUD: Orbs of Fate ══ */
@@ -4716,7 +4716,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:12,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -37421,284 +37421,9 @@ if($('optOutline'))$('optOutline').onchange=function(){OPT.outline=this.checked;
 if($('optShowFps'))$('optShowFps').onchange=function(){OPT.showFps=this.checked;saveSettings()};
 // ── 커스텀 마우스 커서 ──
 const _CURSORS=[
-  {name:'기본',nameEn:'Default',draw:null,img:null,hx:0,hy:0},
-  {name:'악마손',nameEn:'Demon Hand',draw:function(c,s){
-    c.save();
-    // 손바닥 (검붉은 피부)
-    c.fillStyle='#551122';c.beginPath();
-    c.moveTo(14,s-2);c.quadraticCurveTo(6,s-6,5,s-14);c.quadraticCurveTo(4,s-20,8,s-22);
-    c.lineTo(12,s-22);c.quadraticCurveTo(16,s-18,18,s-14);
-    c.quadraticCurveTo(22,s-18,24,s-22);c.lineTo(26,s-22);
-    c.quadraticCurveTo(30,s-14,28,s-6);c.quadraticCurveTo(26,s-2,20,s-1);c.closePath();c.fill();
-    // 손바닥 하이라이트
-    c.fillStyle='rgba(255,50,50,.15)';c.beginPath();c.ellipse(16,s-12,6,5,0,0,Math.PI*2);c.fill();
-    // 검지 (위로 뻗음 — 포인터)
-    c.fillStyle='#661133';c.beginPath();
-    c.moveTo(13,s-22);c.quadraticCurveTo(12,s-30,11,s-36);c.quadraticCurveTo(10.5,s-40,12,s-42);
-    c.lineTo(15,s-42);c.quadraticCurveTo(16.5,s-40,16,s-36);c.quadraticCurveTo(15,s-30,14.5,s-22);c.closePath();c.fill();
-    // 검지 마디선
-    c.strokeStyle='#440015';c.lineWidth=.7;
-    c.beginPath();c.moveTo(12,s-28);c.lineTo(15,s-28);c.stroke();
-    c.beginPath();c.moveTo(11.5,s-34);c.lineTo(15.5,s-34);c.stroke();
-    // 악마 손톱 (길고 날카롭게)
-    c.fillStyle='#ff1133';c.beginPath();
-    c.moveTo(11,s-42);c.quadraticCurveTo(13,s-50,13.5,s-48);
-    c.lineTo(15,s-42);c.closePath();c.fill();
-    // 손톱 광택
-    c.fillStyle='rgba(255,150,150,.4)';c.beginPath();c.moveTo(12,s-44);c.lineTo(13,s-47);c.lineTo(14,s-44);c.closePath();c.fill();
-    // 중지 (살짝 구부림)
-    c.fillStyle='#551028';c.beginPath();
-    c.moveTo(17,s-22);c.quadraticCurveTo(19,s-28,20,s-30);c.quadraticCurveTo(21,s-32,20,s-33);
-    c.lineTo(18,s-33);c.quadraticCurveTo(17,s-32,16.5,s-30);c.quadraticCurveTo(15.5,s-28,15,s-22);c.closePath();c.fill();
-    c.fillStyle='#cc1133';c.beginPath();c.moveTo(18,s-33);c.lineTo(19,s-36);c.lineTo(20,s-33);c.closePath();c.fill();
-    // 약지+소지 (구부린 상태)
-    c.fillStyle='#4e0e22';c.beginPath();
-    c.moveTo(21,s-22);c.quadraticCurveTo(23,s-26,24,s-27);c.quadraticCurveTo(25,s-28,24,s-26);
-    c.quadraticCurveTo(23,s-22,21,s-20);c.closePath();c.fill();
-    c.beginPath();
-    c.moveTo(24,s-20);c.quadraticCurveTo(26,s-24,27,s-24);c.quadraticCurveTo(28,s-24,27,s-22);
-    c.quadraticCurveTo(26,s-18,24,s-17);c.closePath();c.fill();
-    // 엄지 (왼쪽 구부림)
-    c.fillStyle='#5a1030';c.beginPath();
-    c.moveTo(7,s-18);c.quadraticCurveTo(3,s-20,2,s-24);c.quadraticCurveTo(1,s-26,3,s-26);
-    c.lineTo(5,s-25);c.quadraticCurveTo(6,s-22,8,s-18);c.closePath();c.fill();
-    c.fillStyle='#cc1133';c.beginPath();c.moveTo(2,s-26);c.lineTo(2.5,s-29);c.lineTo(4,s-26);c.closePath();c.fill();
-    // 테두리 (전체 검지)
-    c.strokeStyle='#ff3355';c.lineWidth=.6;c.beginPath();
-    c.moveTo(13,s-22);c.quadraticCurveTo(12,s-30,11,s-36);c.quadraticCurveTo(10.5,s-40,12,s-42);
-    c.lineTo(15,s-42);c.quadraticCurveTo(16.5,s-40,16,s-36);c.quadraticCurveTo(15,s-30,14.5,s-22);c.stroke();
-    // 눈 장식 (손등)
-    c.fillStyle='#ff0033';c.beginPath();c.ellipse(16,s-16,2.5,1.5,.2,0,Math.PI*2);c.fill();
-    c.fillStyle='#220000';c.beginPath();c.ellipse(16,s-16,1,.8,.2,0,Math.PI*2);c.fill();
-    c.restore();
-  }},
-  {name:'천사손',nameEn:'Angel Hand',draw:function(c,s){
-    c.save();
-    // 후광 (손 뒤)
-    c.fillStyle='rgba(180,210,255,.12)';c.beginPath();c.ellipse(16,s-18,14,12,0,0,Math.PI*2);c.fill();
-    // 손바닥 (순백 피부)
-    c.fillStyle='#f0eef8';c.beginPath();
-    c.moveTo(14,s-2);c.quadraticCurveTo(6,s-6,5,s-14);c.quadraticCurveTo(4,s-20,8,s-22);
-    c.lineTo(12,s-22);c.quadraticCurveTo(16,s-18,18,s-14);
-    c.quadraticCurveTo(22,s-18,24,s-22);c.lineTo(26,s-22);
-    c.quadraticCurveTo(30,s-14,28,s-6);c.quadraticCurveTo(26,s-2,20,s-1);c.closePath();c.fill();
-    // 손바닥 핑크빛
-    c.fillStyle='rgba(220,180,200,.2)';c.beginPath();c.ellipse(16,s-10,5,4,0,0,Math.PI*2);c.fill();
-    // 검지 (위로 뻗음)
-    c.fillStyle='#eeedf6';c.beginPath();
-    c.moveTo(13,s-22);c.quadraticCurveTo(12,s-30,11.5,s-36);c.quadraticCurveTo(11,s-40,12.5,s-42);
-    c.lineTo(14.5,s-42);c.quadraticCurveTo(16,s-40,15.5,s-36);c.quadraticCurveTo(15,s-30,14.5,s-22);c.closePath();c.fill();
-    // 검지 마디 (부드럽게)
-    c.strokeStyle='rgba(180,170,200,.3)';c.lineWidth=.5;
-    c.beginPath();c.moveTo(12.2,s-28);c.lineTo(15,s-28);c.stroke();
-    c.beginPath();c.moveTo(11.8,s-34);c.lineTo(15.3,s-34);c.stroke();
-    // 손톱 (둥글고 깨끗)
-    c.fillStyle='#ddd8ee';c.beginPath();
-    c.moveTo(12,s-42);c.quadraticCurveTo(13.5,s-45,15,s-42);c.closePath();c.fill();
-    // 손톱 광택
-    c.fillStyle='rgba(255,255,255,.6)';c.beginPath();c.arc(13.5,s-43,1,0,Math.PI*2);c.fill();
-    // 중지 (구부림)
-    c.fillStyle='#e8e6f0';c.beginPath();
-    c.moveTo(17,s-22);c.quadraticCurveTo(19,s-28,20,s-30);c.quadraticCurveTo(21,s-32,20,s-33);
-    c.lineTo(18,s-33);c.quadraticCurveTo(17,s-32,16.5,s-30);c.quadraticCurveTo(15.5,s-28,15,s-22);c.closePath();c.fill();
-    // 약지+소지
-    c.fillStyle='#e2e0ec';c.beginPath();
-    c.moveTo(21,s-22);c.quadraticCurveTo(23,s-26,24,s-27);c.quadraticCurveTo(25,s-27,24,s-25);
-    c.quadraticCurveTo(23,s-22,21,s-20);c.closePath();c.fill();
-    c.beginPath();
-    c.moveTo(24,s-20);c.quadraticCurveTo(26,s-24,27,s-24);c.quadraticCurveTo(28,s-24,27,s-22);
-    c.quadraticCurveTo(26,s-18,24,s-17);c.closePath();c.fill();
-    // 엄지
-    c.fillStyle='#eae8f2';c.beginPath();
-    c.moveTo(7,s-18);c.quadraticCurveTo(3,s-20,2,s-24);c.quadraticCurveTo(1,s-26,3,s-26);
-    c.lineTo(5,s-25);c.quadraticCurveTo(6,s-22,8,s-18);c.closePath();c.fill();
-    // 검지 테두리 (은빛)
-    c.strokeStyle='rgba(160,170,220,.4)';c.lineWidth=.5;c.beginPath();
-    c.moveTo(13,s-22);c.quadraticCurveTo(12,s-30,11.5,s-36);c.quadraticCurveTo(11,s-40,12.5,s-42);
-    c.lineTo(14.5,s-42);c.quadraticCurveTo(16,s-40,15.5,s-36);c.quadraticCurveTo(15,s-30,14.5,s-22);c.stroke();
-    // 검지 끝 빛
-    c.fillStyle='rgba(200,220,255,.7)';c.beginPath();c.arc(13.5,s-44,2.5,0,Math.PI*2);c.fill();
-    c.fillStyle='rgba(255,255,255,.5)';c.beginPath();c.arc(13.5,s-44,1.5,0,Math.PI*2);c.fill();
-    // 날개 장식 (손등 좌우)
-    c.strokeStyle='rgba(180,200,255,.5)';c.lineWidth=.8;
-    c.beginPath();c.moveTo(8,s-16);c.quadraticCurveTo(2,s-20,0,s-16);c.stroke();
-    c.beginPath();c.moveTo(8,s-18);c.quadraticCurveTo(1,s-24,0,s-20);c.stroke();
-    c.beginPath();c.moveTo(24,s-16);c.quadraticCurveTo(30,s-20,32,s-16);c.stroke();
-    c.beginPath();c.moveTo(24,s-18);c.quadraticCurveTo(31,s-24,32,s-20);c.stroke();
-    c.restore();
-  }},
-  {name:'지옥검',nameEn:'Hell Sword',draw:function(c,s){
-    c.save();
-    const cx=s/2,bTop=1,bBot=s*.6,gTop=bBot+1,gBot=gTop+s*.12,hTop=gBot,hBot=hTop+s*.2;
-    // 칼날 그림자
-    c.fillStyle='rgba(0,0,0,.3)';c.beginPath();
-    c.moveTo(cx,bTop+1);c.lineTo(cx+4,bBot+1);c.lineTo(cx,bBot+4);c.lineTo(cx-4,bBot+1);c.closePath();c.fill();
-    // 칼날 본체 (어두운 강철)
-    c.fillStyle='#8888aa';c.beginPath();
-    c.moveTo(cx,bTop);c.lineTo(cx+3,bBot);c.lineTo(cx,bBot+3);c.lineTo(cx-3,bBot);c.closePath();c.fill();
-    // 칼날 밝은면 (왼쪽)
-    c.fillStyle='#aaaacc';c.beginPath();
-    c.moveTo(cx,bTop);c.lineTo(cx,bBot+3);c.lineTo(cx-3,bBot);c.closePath();c.fill();
-    // 칼날 중앙 혈조
-    c.strokeStyle='#cc2200';c.lineWidth=.8;c.beginPath();c.moveTo(cx,bTop+6);c.lineTo(cx,bBot-2);c.stroke();
-    // 가드 (붉은 악마 양식)
-    c.fillStyle='#aa2200';c.beginPath();
-    c.moveTo(cx-7,gTop+1);c.quadraticCurveTo(cx-8,gTop-2,cx-6,gTop);
-    c.lineTo(cx+6,gTop);c.quadraticCurveTo(cx+8,gTop-2,cx+7,gTop+1);
-    c.lineTo(cx+6,gTop+3);c.lineTo(cx-6,gTop+3);c.closePath();c.fill();
-    // 가드 보석
-    c.fillStyle='#ff4422';c.beginPath();c.arc(cx,gTop+1.5,1.5,0,Math.PI*2);c.fill();
-    c.fillStyle='#ffaa66';c.beginPath();c.arc(cx-.5,gTop+1,0.6,0,Math.PI*2);c.fill();
-    // 그립 (감은 가죽)
-    c.fillStyle='#3a1800';
-    for(let i=0;i<4;i++){const y=gTop+4+i*3;c.fillRect(cx-2,y,4,2)}
-    c.fillStyle='#2a1000';
-    for(let i=0;i<4;i++){const y=gTop+5+i*3;c.fillRect(cx-2,y,4,1)}
-    // 폼멜
-    const py=gTop+17;
-    c.fillStyle='#881100';c.beginPath();c.arc(cx,py,3,0,Math.PI*2);c.fill();
-    c.fillStyle='#ff3300';c.beginPath();c.arc(cx,py,1.5,0,Math.PI*2);c.fill();
-    // 칼날 테두리
-    c.strokeStyle='#666688';c.lineWidth=.5;c.beginPath();
-    c.moveTo(cx,bTop);c.lineTo(cx+3,bBot);c.lineTo(cx,bBot+3);c.lineTo(cx-3,bBot);c.closePath();c.stroke();
-    // 칼날 끝 하이라이트
-    c.fillStyle='rgba(255,255,255,.4)';c.beginPath();c.moveTo(cx,bTop);c.lineTo(cx+1,bTop+5);c.lineTo(cx,bTop+8);c.closePath();c.fill();
-    c.restore();
-  }},
-  {name:'해골손',nameEn:'Skull Hand',draw:function(c,s){
-    c.save();
-    // 손바닥 (뼈)
-    c.fillStyle='#d4c8a0';c.beginPath();
-    c.moveTo(13,s-2);c.quadraticCurveTo(5,s-6,5,s-14);c.quadraticCurveTo(5,s-20,9,s-22);
-    c.lineTo(12,s-22);c.lineTo(20,s-22);c.lineTo(24,s-22);
-    c.quadraticCurveTo(28,s-20,28,s-14);c.quadraticCurveTo(28,s-6,20,s-2);c.closePath();c.fill();
-    // 손바닥 어두운 부분 (관절 느낌)
-    c.fillStyle='rgba(100,80,40,.2)';c.beginPath();c.ellipse(16,s-12,5,4,0,0,Math.PI*2);c.fill();
-    // 검지 뼈
-    c.fillStyle='#d8cca4';
-    c.fillRect(12,s-42,3,20);
-    // 검지 관절구
-    c.fillStyle='#e0d4a8';
-    c.beginPath();c.arc(13.5,s-42,2.5,0,Math.PI*2);c.fill();
-    c.beginPath();c.arc(13.5,s-34,2.2,0,Math.PI*2);c.fill();
-    c.beginPath();c.arc(13.5,s-28,2.2,0,Math.PI*2);c.fill();
-    c.beginPath();c.arc(13.5,s-22,2.5,0,Math.PI*2);c.fill();
-    // 검지 테두리
-    c.strokeStyle='#8a7a50';c.lineWidth=.6;c.strokeRect(12,s-42,3,20);
-    c.beginPath();c.arc(13.5,s-42,2.5,0,Math.PI*2);c.stroke();
-    c.beginPath();c.arc(13.5,s-34,2.2,0,Math.PI*2);c.stroke();
-    c.beginPath();c.arc(13.5,s-28,2.2,0,Math.PI*2);c.stroke();
-    // 뾰족 손톱
-    c.fillStyle='#bbb090';c.beginPath();c.moveTo(12,s-42);c.lineTo(13.5,s-47);c.lineTo(15,s-42);c.closePath();c.fill();
-    c.strokeStyle='#8a7a50';c.lineWidth=.5;c.beginPath();c.moveTo(12,s-42);c.lineTo(13.5,s-47);c.lineTo(15,s-42);c.stroke();
-    // 중지 뼈 (구부림)
-    c.fillStyle='#cec2a0';
-    c.save();c.translate(19,s-22);c.rotate(-.15);c.fillRect(-1.5,0,3,-10);
-    c.fillStyle='#d8cca4';c.beginPath();c.arc(0,0,2.2,0,Math.PI*2);c.fill();
-    c.beginPath();c.arc(0,-5,1.8,0,Math.PI*2);c.fill();
-    c.beginPath();c.arc(0,-10,1.8,0,Math.PI*2);c.fill();c.restore();
-    // 약지+소지 (접힘)
-    c.fillStyle='#c4b898';
-    c.save();c.translate(23,s-21);c.rotate(-.3);c.fillRect(-1,-7,2.5,7);
-    c.fillStyle='#d0c4a0';c.beginPath();c.arc(0.25,-7,1.8,0,Math.PI*2);c.fill();c.restore();
-    c.save();c.translate(26,s-19);c.rotate(-.5);c.fillRect(-1,-5,2,5);
-    c.fillStyle='#d0c4a0';c.beginPath();c.arc(0,-5,1.5,0,Math.PI*2);c.fill();c.restore();
-    // 엄지 뼈
-    c.fillStyle='#cec2a0';
-    c.save();c.translate(8,s-19);c.rotate(.4);c.fillRect(-1,-8,2.5,8);
-    c.fillStyle='#d8cca4';c.beginPath();c.arc(0.25,-8,2,0,Math.PI*2);c.fill();
-    c.beginPath();c.arc(0.25,0,2,0,Math.PI*2);c.fill();c.restore();
-    // 손바닥 테두리
-    c.strokeStyle='#8a7a50';c.lineWidth=.5;c.beginPath();
-    c.moveTo(13,s-2);c.quadraticCurveTo(5,s-6,5,s-14);c.quadraticCurveTo(5,s-20,9,s-22);
-    c.lineTo(24,s-22);c.quadraticCurveTo(28,s-20,28,s-14);c.quadraticCurveTo(28,s-6,20,s-2);c.stroke();
-    c.restore();
-  }},
-  {name:'화염손',nameEn:'Flame Hand',draw:function(c,s){
-    c.save();
-    // 손바닥 (검은 그을음)
-    c.fillStyle='#2a1508';c.beginPath();
-    c.moveTo(14,s-2);c.quadraticCurveTo(6,s-6,5,s-14);c.quadraticCurveTo(4,s-20,8,s-22);
-    c.lineTo(12,s-22);c.quadraticCurveTo(16,s-18,18,s-14);
-    c.quadraticCurveTo(22,s-18,24,s-22);c.lineTo(26,s-22);
-    c.quadraticCurveTo(30,s-14,28,s-6);c.quadraticCurveTo(26,s-2,20,s-1);c.closePath();c.fill();
-    // 용암 균열
-    c.strokeStyle='#ff4400';c.lineWidth=.8;
-    c.beginPath();c.moveTo(12,s-8);c.lineTo(15,s-14);c.lineTo(18,s-10);c.lineTo(21,s-16);c.stroke();
-    c.strokeStyle='#ffaa00';c.lineWidth=.4;
-    c.beginPath();c.moveTo(12,s-8);c.lineTo(15,s-14);c.lineTo(18,s-10);c.stroke();
-    // 검지 (위로)
-    c.fillStyle='#1e1005';c.beginPath();
-    c.moveTo(13,s-22);c.quadraticCurveTo(12,s-30,11.5,s-36);c.quadraticCurveTo(11,s-40,12.5,s-42);
-    c.lineTo(14.5,s-42);c.quadraticCurveTo(16,s-40,15.5,s-36);c.quadraticCurveTo(15,s-30,14.5,s-22);c.closePath();c.fill();
-    // 검지 용암 줄
-    c.strokeStyle='#ff6600';c.lineWidth=.5;c.beginPath();c.moveTo(13.5,s-24);c.lineTo(13.5,s-40);c.stroke();
-    // 불꽃 (검지 끝)
-    c.fillStyle='#ff4400';c.beginPath();c.moveTo(13.5,s-42);
-    c.quadraticCurveTo(17,s-46,14,s-50);c.quadraticCurveTo(13,s-47,10,s-46);
-    c.quadraticCurveTo(13,s-44,13.5,s-42);c.fill();
-    c.fillStyle='#ffaa00';c.beginPath();c.moveTo(13.5,s-42);
-    c.quadraticCurveTo(15,s-45,13.5,s-48);c.quadraticCurveTo(12,s-45,13.5,s-42);c.fill();
-    c.fillStyle='#ffee66';c.beginPath();c.ellipse(13.5,s-44,1.2,2,0,0,Math.PI*2);c.fill();
-    // 나머지 손가락 (구부림+불꽃)
-    c.fillStyle='#1e1005';c.beginPath();
-    c.moveTo(17,s-22);c.quadraticCurveTo(19,s-28,20,s-30);c.lineTo(18,s-30);c.quadraticCurveTo(16,s-28,15,s-22);c.closePath();c.fill();
-    c.fillStyle='#ff6600';c.beginPath();c.arc(19,s-31,2,0,Math.PI*2);c.fill();
-    c.fillStyle='#ffcc00';c.beginPath();c.arc(19,s-31,1,0,Math.PI*2);c.fill();
-    // 약지+소지
-    c.fillStyle='#1a0e04';c.beginPath();
-    c.moveTo(21,s-22);c.quadraticCurveTo(23,s-26,24,s-26);c.quadraticCurveTo(24,s-24,22,s-20);c.closePath();c.fill();
-    c.beginPath();c.moveTo(24,s-19);c.quadraticCurveTo(26,s-23,27,s-22);c.quadraticCurveTo(27,s-20,25,s-17);c.closePath();c.fill();
-    // 엄지
-    c.fillStyle='#1e1005';c.beginPath();
-    c.moveTo(7,s-18);c.quadraticCurveTo(3,s-20,2,s-24);c.lineTo(4,s-24);c.quadraticCurveTo(5,s-21,8,s-18);c.closePath();c.fill();
-    // 테두리
-    c.strokeStyle='#ff4400';c.lineWidth=.4;c.beginPath();
-    c.moveTo(13,s-22);c.quadraticCurveTo(12,s-30,11.5,s-36);c.quadraticCurveTo(11,s-40,12.5,s-42);
-    c.lineTo(14.5,s-42);c.quadraticCurveTo(16,s-40,15.5,s-36);c.quadraticCurveTo(15,s-30,14.5,s-22);c.stroke();
-    c.restore();
-  }},
-  {name:'십자조준',nameEn:'Crosshair',draw:function(c,s){
-    c.save();const cx=s/2,cy=s/2;
-    // 외곽 링
-    c.strokeStyle='rgba(255,50,50,.35)';c.lineWidth=1.5;c.beginPath();c.arc(cx,cy,s*.36,0,Math.PI*2);c.stroke();
-    // 십자선 (가운데 간격)
-    c.strokeStyle='#dd3333';c.lineWidth=1.8;
-    c.beginPath();c.moveTo(cx,cy-s*.36);c.lineTo(cx,cy-5);c.stroke();
-    c.beginPath();c.moveTo(cx,cy+5);c.lineTo(cx,cy+s*.36);c.stroke();
-    c.beginPath();c.moveTo(cx-s*.36,cy);c.lineTo(cx-5,cy);c.stroke();
-    c.beginPath();c.moveTo(cx+5,cy);c.lineTo(cx+s*.36,cy);c.stroke();
-    // 대각선 짧은 눈금
-    c.strokeStyle='rgba(255,80,80,.3)';c.lineWidth=1;
-    const _da=Math.PI/4;
-    for(let i=0;i<4;i++){const a=_da+i*Math.PI/2;
-      c.beginPath();c.moveTo(cx+Math.cos(a)*s*.22,cy+Math.sin(a)*s*.22);
-      c.lineTo(cx+Math.cos(a)*s*.3,cy+Math.sin(a)*s*.3);c.stroke();}
-    // 중심 점
-    c.fillStyle='#ff4444';c.beginPath();c.arc(cx,cy,2,0,Math.PI*2);c.fill();
-    c.fillStyle='#ffaaaa';c.beginPath();c.arc(cx,cy,1,0,Math.PI*2);c.fill();
-    c.restore();
-  }}
-  ,{name:'뼈화살',nameEn:'Bone Arrow',draw:null}
-  ,{name:'용발톱',nameEn:'Dragon Claw',draw:null}
-  ,{name:'사신낫',nameEn:'Death Scythe',draw:null}
-  ,{name:'악마눈',nameEn:'Demon Eye',draw:null}
-  ,{name:'얼음단검',nameEn:'Ice Dagger',draw:null}
-  ,{name:'마법지팡이',nameEn:'Magic Staff',draw:null}
+  {name:'다크커서',nameEn:'Dark Cursor',draw:null}
 ];
-// 이미지 커서 경로 (img/cursors/ 폴더에 파일 있으면 canvas 대신 이미지 사용)
-_CURSORS[1].img='img/cursors/cursor_demon_hand.png';
-_CURSORS[2].img='img/cursors/cursor_angel_hand.png';
-_CURSORS[3].img='img/cursors/cursor_hell_sword.png';
-_CURSORS[4].img='img/cursors/cursor_skull_hand.png';
-_CURSORS[5].img='img/cursors/cursor_flame_hand.png';
-_CURSORS[6].img='img/cursors/cursor_crosshair.png';
-_CURSORS[7].img='img/cursors/cursor_bone_arrow.png';
-_CURSORS[8].img='img/cursors/cursor_dragon_claw.png';
-_CURSORS[9].img='img/cursors/cursor_death_scythe.png';
-_CURSORS[10].img='img/cursors/cursor_demon_eye.png';
-_CURSORS[11].img='img/cursors/cursor_ice_dagger.png';
-_CURSORS[12].img='img/cursors/cursor_magic_staff_2x.png';
+_CURSORS[0].img='img/cursors/cursor_dark_2x.png';
 // 이미지 프리로드
 _CURSORS.forEach(cur=>{if(cur.img){const _i=new Image();_i.src=cur.img;cur._imgEl=_i;_i.onload=()=>{_cursorCache=[];try{_applyCursor()}catch(e){}}}});
 let _cursorCache=[];
@@ -37710,12 +37435,12 @@ function _buildCursor(idx){
   const cur=_CURSORS[idx];
   // 이미지 파일 있고 로드 완료면 이미지 사용
   if(cur._imgEl&&cur._imgEl.complete&&cur._imgEl.naturalWidth>0){
-    const s=cur._imgEl.naturalWidth;const out=Math.max(16,Math.min(256,Math.round(32*sz/100)));
+    const s=cur._imgEl.naturalWidth;const out=Math.max(16,Math.min(256,Math.round(64*sz/100)));
     const cv2=document.createElement('canvas');cv2.width=out;cv2.height=out;
     const x2=cv2.getContext('2d');x2.drawImage(cur._imgEl,0,0,out,out);
-    const isCenter=idx===3||idx===6;
+    const isCenter=idx===2;
     const hx=isCenter?Math.round(out/2):Math.round(out*13/56);
-    const hy=isCenter?(idx===6?Math.round(out/2):1):0;
+    const hy=isCenter?1:0;
     _cursorCache[key]='url('+cv2.toDataURL()+') '+hx+' '+hy+', auto';
     return _cursorCache[key];
   }
@@ -37743,7 +37468,7 @@ function _buildCursor(idx){
   _cursorCache[key]='url('+cv2.toDataURL()+') '+hx+' '+hy+', auto';
   return _cursorCache[key];
 }
-function _applyCursor(){C.style.cursor=_buildCursor(OPT.cursor??12);document.body.style.cursor=_buildCursor(OPT.cursor??12)}
+function _applyCursor(){C.style.cursor=_buildCursor(OPT.cursor??6);document.body.style.cursor=_buildCursor(OPT.cursor??6)}
 // ── Electron 화면 설정 (해상도 + 화면모드) ──
 if(IS_ELECTRON&&window.electronAPI){
   $('optScreenSection').style.display='';
@@ -37927,8 +37652,8 @@ try{
     if(data.binds){for(const k in data.binds){if(k in BINDS)BINDS[k]=data.binds[k]}}
     if(data.binds2){for(const k in data.binds2){if(k in BINDS2||k in BINDS)BINDS2[k]=data.binds2[k]}}
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
-    // 2026-05-19 마이그레이션: 기본 커서 마법지팡이 강제
-    OPT.cursor=12;
+    // 2026-05-19 마이그레이션: 기본 커서 다크커서 강제
+    OPT.cursor=0;
     // 2026-04-17 마이그레이션: 사용자 UI 배율(uiScale/uiScaleAuto) 기능 완전 제거 — 기존 저장값 삭제
     if('uiScale' in OPT)delete OPT.uiScale;
     if('uiScaleAuto' in OPT)delete OPT.uiScaleAuto;

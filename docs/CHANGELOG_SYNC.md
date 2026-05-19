@@ -24417,3 +24417,30 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - lang_zh.js
 - lang_zht.js
 
+
+## 2026-05-19 20:30 (auto)
+- _autosave/game_20260519_194913.html
+- _autosave/game_20260519_195006.html
+- _autosave/game_20260519_195011.html
+- _autosave/game_20260519_195012.html
+- _autosave/game_20260519_195014.html
+- _autosave/game_20260519_195024.html
+- _autosave/game_20260519_195028.html
+- _autosave/game_20260519_201002.html
+- _autosave/game_20260519_201013.html
+- _autosave/game_20260519_201033.html
+- _autosave/game_20260519_201616.html
+- game.html
+- img/cursors/ChatGPT Image 2026??5??19???�후 07_37_56.png
+- img/cursors/cursor_dark_2x.png
+- img/cursors/cursor_dark_css.png
+- img/cursors/cursor_dark_hover_2x.png
+- img/cursors/cursor_dark_hover_css.png
+- img/cursors/cursor_dark_hover_original.png
+- img/cursors/cursor_dark_original.png
+- img/cursors/cursor_purple_hover_2x.png
+- img/cursors/cursor_purple_hover_css.png
+- img/cursors/cursor_purple_normal_2x.png
+- img/cursors/cursor_purple_normal_css.png
+- index.html
+
