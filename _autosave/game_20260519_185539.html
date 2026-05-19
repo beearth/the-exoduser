@@ -4716,7 +4716,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:9,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:12,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -37698,9 +37698,9 @@ _CURSORS[8].img='img/cursors/cursor_dragon_claw.png';
 _CURSORS[9].img='img/cursors/cursor_death_scythe.png';
 _CURSORS[10].img='img/cursors/cursor_demon_eye.png';
 _CURSORS[11].img='img/cursors/cursor_ice_dagger.png';
-_CURSORS[12].img='img/cursors/cursor_magic_staff.png';
+_CURSORS[12].img='img/cursors/cursor_magic_staff_2x.png';
 // 이미지 프리로드
-_CURSORS.forEach(cur=>{if(cur.img){const _i=new Image();_i.src=cur.img;cur._imgEl=_i}});
+_CURSORS.forEach(cur=>{if(cur.img){const _i=new Image();_i.src=cur.img;cur._imgEl=_i;_i.onload=()=>{_cursorCache=[];try{_applyCursor()}catch(e){}}}});
 let _cursorCache=[];
 function _buildCursor(idx){
   const sz=OPT.cursorSize||50;
@@ -37743,7 +37743,7 @@ function _buildCursor(idx){
   _cursorCache[key]='url('+cv2.toDataURL()+') '+hx+' '+hy+', auto';
   return _cursorCache[key];
 }
-function _applyCursor(){C.style.cursor=_buildCursor(OPT.cursor??9);document.body.style.cursor=_buildCursor(OPT.cursor??9)}
+function _applyCursor(){C.style.cursor=_buildCursor(OPT.cursor??12);document.body.style.cursor=_buildCursor(OPT.cursor??12)}
 // ── Electron 화면 설정 (해상도 + 화면모드) ──
 if(IS_ELECTRON&&window.electronAPI){
   $('optScreenSection').style.display='';
@@ -37927,6 +37927,8 @@ try{
     if(data.binds){for(const k in data.binds){if(k in BINDS)BINDS[k]=data.binds[k]}}
     if(data.binds2){for(const k in data.binds2){if(k in BINDS2||k in BINDS)BINDS2[k]=data.binds2[k]}}
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
+    // 2026-05-19 마이그레이션: 기본 커서 마법지팡이 강제
+    OPT.cursor=12;
     // 2026-04-17 마이그레이션: 사용자 UI 배율(uiScale/uiScaleAuto) 기능 완전 제거 — 기존 저장값 삭제
     if('uiScale' in OPT)delete OPT.uiScale;
     if('uiScaleAuto' in OPT)delete OPT.uiScaleAuto;

@@ -100,7 +100,7 @@ if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!==
   --ui-inset-bottom:10px
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;overflow:hidden;font-family:var(--font);user-select:none;cursor:url(img/cursors/cursor_ice_dagger_2x.png) 0 0,auto}
+body{background:#000;overflow:hidden;font-family:var(--font);user-select:none;cursor:url(img/cursors/cursor_magic_staff_css.png) 0 0,auto}
 canvas{display:block;position:fixed;inset:0}
 
 /* ══ HUD: Orbs of Fate ══ */
@@ -4716,7 +4716,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:11,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:12,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -37422,19 +37422,20 @@ if($('optShowFps'))$('optShowFps').onchange=function(){OPT.showFps=this.checked;
 // ── 커스텀 마우스 커서 ──
 const _CURSORS=[
   {name:'기본',nameEn:'Default',draw:null,img:null,hx:0,hy:0},
-  {name:'악마손',nameEn:'Demon Hand',draw:function(c,s){
-    c.save();
-    // 손바닥 (검붉은 피부)
-    c.fillStyle='#551122';c.beginPath();
-    c.moveTo(14,s-2);c.quadraticCurveTo(6,s-6,5,s-14);c.quadraticCurveTo(4,s-20,8,s-22);
-    c.lineTo(12,s-22);c.quadraticCurveTo(16,s-18,18,s-14);
-    c.quadraticCurveTo(22,s-18,24,s-22);c.lineTo(26,s-22);
-    c.quadraticCurveTo(30,s-14,28,s-6);c.quadraticCurveTo(26,s-2,20,s-1);c.closePath();c.fill();
-    // 손바닥 하이라이트
-    c.fillStyle='rgba(255,50,50,.15)';c.beginPath();c.ellipse(16,s-12,6,5,0,0,Math.PI*2);c.fill();
-    // 검지 (위로 뻗음 — 포인터)
-    c.fillStyle='#661133';c.beginPath();
-    c.moveTo(13,s-22);c.quadraticCurveTo(12,s-30,11,s-36);c.quadraticCurveTo(10.5,s-40,12,s-42);
+  {name:'악마손',nameEn:'Demon Hand',draw:null},
+  {name:'지옥검',nameEn:'Hell Sword',draw:null},
+  {name:'해골손',nameEn:'Skull Hand',draw:null},
+  {name:'얼음단검',nameEn:'Ice Dagger',draw:null},
+  {name:'마법지팡이',nameEn:'Magic Staff',draw:null}
+];
+// 이미지 커서 경로
+_CURSORS[1].img='img/cursors/cursor_demon_hand.png';
+_CURSORS[2].img='img/cursors/cursor_hell_sword1.png';
+_CURSORS[3].img='img/cursors/cursor_skull_hand.png';
+_CURSORS[4].img='img/cursors/cursor_ice_dagger.png';
+_CURSORS[5].img='img/cursors/cursor_magic_staff_2x.png';
+/* _CURSORS_OLD_REMOVED_ — 구 canvas draw 커서 삭제됨 (2026-05-19)
+  {name:'악마손',draw:function(c,s){c.save();c.fillStyle='#551122';c.beginPath();c.moveTo(14,s-2);c.quadraticCurveTo(6,s-6,5,s-14);c.quadraticCurveTo(4,s-20,8,s-22);
     c.lineTo(15,s-42);c.quadraticCurveTo(16.5,s-40,16,s-36);c.quadraticCurveTo(15,s-30,14.5,s-22);c.closePath();c.fill();
     // 검지 마디선
     c.strokeStyle='#440015';c.lineWidth=.7;
@@ -37698,9 +37699,9 @@ _CURSORS[8].img='img/cursors/cursor_dragon_claw.png';
 _CURSORS[9].img='img/cursors/cursor_death_scythe.png';
 _CURSORS[10].img='img/cursors/cursor_demon_eye.png';
 _CURSORS[11].img='img/cursors/cursor_ice_dagger.png';
-_CURSORS[12].img='img/cursors/cursor_magic_staff.png';
+_CURSORS[12].img='img/cursors/cursor_magic_staff_2x.png';
 // 이미지 프리로드
-_CURSORS.forEach(cur=>{if(cur.img){const _i=new Image();_i.src=cur.img;cur._imgEl=_i}});
+_CURSORS.forEach(cur=>{if(cur.img){const _i=new Image();_i.src=cur.img;cur._imgEl=_i;_i.onload=()=>{_cursorCache=[];try{_applyCursor()}catch(e){}}}});
 let _cursorCache=[];
 function _buildCursor(idx){
   const sz=OPT.cursorSize||50;
@@ -37710,7 +37711,7 @@ function _buildCursor(idx){
   const cur=_CURSORS[idx];
   // 이미지 파일 있고 로드 완료면 이미지 사용
   if(cur._imgEl&&cur._imgEl.complete&&cur._imgEl.naturalWidth>0){
-    const s=cur._imgEl.naturalWidth;const out=Math.max(16,Math.min(256,Math.round(s*sz/100)));
+    const s=cur._imgEl.naturalWidth;const out=Math.max(16,Math.min(256,Math.round(64*sz/100)));
     const cv2=document.createElement('canvas');cv2.width=out;cv2.height=out;
     const x2=cv2.getContext('2d');x2.drawImage(cur._imgEl,0,0,out,out);
     const isCenter=idx===3||idx===6;
@@ -37743,7 +37744,7 @@ function _buildCursor(idx){
   _cursorCache[key]='url('+cv2.toDataURL()+') '+hx+' '+hy+', auto';
   return _cursorCache[key];
 }
-function _applyCursor(){C.style.cursor=_buildCursor(OPT.cursor??11);document.body.style.cursor=_buildCursor(OPT.cursor??11)}
+function _applyCursor(){C.style.cursor=_buildCursor(OPT.cursor??12);document.body.style.cursor=_buildCursor(OPT.cursor??12)}
 // ── Electron 화면 설정 (해상도 + 화면모드) ──
 if(IS_ELECTRON&&window.electronAPI){
   $('optScreenSection').style.display='';
@@ -37927,8 +37928,8 @@ try{
     if(data.binds){for(const k in data.binds){if(k in BINDS)BINDS[k]=data.binds[k]}}
     if(data.binds2){for(const k in data.binds2){if(k in BINDS2||k in BINDS)BINDS2[k]=data.binds2[k]}}
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
-    // 2026-05-19 마이그레이션: 기본 커서 사신낫→얼음단검
-    if(OPT.cursor===9)OPT.cursor=11;
+    // 2026-05-19 마이그레이션: 기본 커서 마법지팡이 강제
+    OPT.cursor=12;
     // 2026-04-17 마이그레이션: 사용자 UI 배율(uiScale/uiScaleAuto) 기능 완전 제거 — 기존 저장값 삭제
     if('uiScale' in OPT)delete OPT.uiScale;
     if('uiScaleAuto' in OPT)delete OPT.uiScaleAuto;
