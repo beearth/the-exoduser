@@ -1825,19 +1825,12 @@ let _emberIv=setInterval(()=>{
 },150);
 
 // ═══ 로딩 화면 시스템 (전체 화면 이미지) ═══
-// 실제 존재하는 rd 파일 목록 (rd3 없음, rd6=webp, rd11=jpg)
-const _RD_IMGS=[
-  'rd1.png','rd2.png','rd4.png','rd5.png','rd6.webp',
-  'rd7.png','rd8.png','rd9.png','rd10.png','rd11.jpg',
-  'rd12.png','rd13.png','rd14.png','rd15.png','rd16.png','rd17.png'
-];
 function pickRandomLoadingImage(){
-  return 'img/lording/'+_RD_IMGS[~~(Math.random()*_RD_IMGS.length)];
-}
-
-// 로비 진입 시 로딩 이미지 프리로드 (5장 이상 → 전체 16장)
-function _preloadLoadingImgs(){
-  _RD_IMGS.forEach(f=>{const i=new Image();i.src='img/lording/'+f;});
+  const _base='img/lording/';
+  const totalImages = 15;
+  const randIdx = Math.floor(Math.random() * totalImages) + 1;
+  const ext = (randIdx === 6) ? 'webp' : (randIdx === 11) ? 'jpg' : 'png';
+  return `${_base}rd${randIdx}.${ext}`;
 }
 
 function showLoading(msg){
@@ -1912,7 +1905,6 @@ async function _goLobby(){
     await showLobby();
   }
   hideLoading();
-  _preloadLoadingImgs(); // 로딩 이미지 16장 백그라운드 캐시
 }
 
 // ═══ Init ═══
