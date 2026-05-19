@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HELL: EXODUSER</title>
-<link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
-<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
-<script>
+
 (() => {
   const v = '20260414-hotfix2-' + Date.now();
   const iconIco = '/favicon.ico?v=' + v;
@@ -30,523 +22,10 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', applyFavicon, { once: true });
   else applyFavicon();
 })();
-</script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500&family=Noto+Serif+KR:wght@400;500&family=Noto+Serif+JP:wght@400;500&family=Noto+Serif+SC:wght@400;500&family=Noto+Serif+TC:wght@400;500&family=Noto+Naskh+Arabic:wght@400;500&family=Noto+Serif+Thai:wght@400;500&display=swap');
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
 
-/* ═══ Cinematic Scene ═══ */
-.cin-scene{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
-.cin-scene *{cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
 
-/* 레터박스 */
-.cin-lb{position:absolute;left:0;right:0;background:#000;z-index:30;pointer-events:none}
-.cin-lb-t{top:0;height:10vh}
-.cin-lb-b{bottom:0;height:10vh}
 
-/* 문 이미지 (시네마틱 배경) */
-.cin-gate{position:absolute;inset:0;opacity:0;transition:opacity 2s ease}
-.cin-gate img{width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(5%)}
-.cin-gate.show{opacity:1}
-.cin-gate.zoom{transform:scale(1.6);transition:transform 0s}
-.cin-gate.zoom-out{transform:scale(1);transition:transform 6s cubic-bezier(0.15,0.5,0.3,1)}
 
-/* 비네팅 */
-.cin-vig{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 20%,rgba(0,0,0,.85) 100%);z-index:2;pointer-events:none}
-
-/* 텍스트 오버레이 */
-.cin-text{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;z-index:10;pointer-events:none}
-.cin-text-inner{max-width:900px;padding:0 30px 12vh;text-align:center}
-.cin-line{color:#e8d4b8;font-size:2rem;line-height:2;letter-spacing:.1em;opacity:0;transition:opacity 1.2s ease;margin-bottom:8px;text-shadow:0 0 20px rgba(0,0,0,.9),0 0 40px rgba(0,0,0,.7);white-space:nowrap}
-.cin-line.show{opacity:1}
-.cin-line.fade{opacity:0;transition:opacity 1s ease}
-.cin-line.red{color:#ff4422;font-weight:900;font-size:3.2rem;letter-spacing:.15em;text-shadow:0 0 30px rgba(255,50,0,.8),0 0 60px rgba(255,30,0,.5),0 0 100px rgba(255,0,0,.3)}
-.cin-line.gold{color:#ffcc55;font-size:3.6rem;font-weight:900;letter-spacing:.25em;text-shadow:0 0 40px rgba(255,180,30,.8),0 0 80px rgba(255,150,20,.4),0 0 120px rgba(255,120,0,.2)}
-.cin-line.dim{color:#ddc8a0;font-size:2.2rem;font-style:italic;font-weight:700;text-shadow:0 0 15px rgba(0,0,0,1),0 0 30px rgba(0,0,0,.9),0 0 60px rgba(0,0,0,.7),2px 2px 4px #000}
-.cin-char{display:inline-block;opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease}
-.cin-char.on{opacity:1;transform:translateY(0)}
-
-/* 프롤로그 이미지 */
-.cin-img{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 1.5s ease;pointer-events:none}
-.cin-img.show{opacity:1}
-.cin-img img{width:100vw;height:100vh;object-fit:cover;object-position:center 40%;filter:brightness(.6) contrast(1.1);mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%);-webkit-mask-image:radial-gradient(ellipse 90% 85% at center,#000 55%,transparent 100%)}
-/* head crop fix for specific story stills */
-#cinImg1 img,#cinImg3 img{object-position:center 20% !important}
-/* 네메시아: 얼굴 보이게 상단 정렬 + 마스크 위로 확장 */
-#cinImg8 img{object-position:center top !important;mask-image:radial-gradient(ellipse 90% 100% at 50% 55%,#000 55%,transparent 100%) !important;-webkit-mask-image:radial-gradient(ellipse 90% 100% at 50% 55%,#000 55%,transparent 100%) !important}
-
-/* 문 열림 씬 */
-.cin-door-scene{position:absolute;inset:0;perspective:1800px;opacity:0;transition:opacity 1.5s ease;z-index:5}
-.cin-door-scene.show{opacity:1}
-.cin-door{position:absolute;inset:0;background-image:url('img/hellgate.png');background-size:cover;background-position:center 40%;transform:scale(1.15) translateX(5%);transition:transform 2.5s cubic-bezier(0.4,0,0.1,1);will-change:transform}
-.cin-door-l{clip-path:polygon(0 0,calc(40% + 1px) 0,calc(40% + 1px) 100%,0 100%);transform-origin:left center}
-.cin-door-r{clip-path:polygon(calc(40% - 1px) 0,100% 0,100% 100%,calc(40% - 1px) 100%);transform-origin:right center}
-.cin-door-scene.open .cin-door-l{transform:scale(1.15) translateX(5%) rotateY(-105deg)}
-.cin-door-scene.open .cin-door-r{transform:scale(1.15) translateX(5%) rotateY(105deg)}
-
-/* 문 중앙 빛줄기 */
-.cin-glow{position:absolute;top:5%;left:50%;width:3px;height:90%;transform:translateX(-50%);background:linear-gradient(180deg,transparent,rgba(255,100,20,.5),rgba(255,60,10,.7),rgba(255,100,20,.5),transparent);z-index:6;pointer-events:none;opacity:0;filter:blur(4px);transition:opacity 1.5s}
-.cin-glow.show{opacity:1}
-
-/* 입장 UI */
-.cin-ui{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;pointer-events:none;transition:opacity 1.5s}
-.cin-ui.show{opacity:1;pointer-events:all}
-
-.cin-lore{max-width:640px;margin-bottom:40px;padding:0 20px}
-.cin-lore p{color:#aa8866;font-size:.95rem;line-height:2;letter-spacing:.06em;margin-bottom:8px;text-shadow:0 0 15px rgba(0,0,0,.8)}
-.cin-lore p.lore-dim{color:#776655;font-size:.85rem;font-style:italic}
-.cin-lore p.lore-gold{color:#ffcc55;font-size:1.1rem;font-weight:700;margin-top:20px;text-shadow:0 0 25px rgba(255,180,30,.5)}
-
-.cin-nemesia-bg{position:absolute;inset:0;background:url('img/cin_nemesia_hd.png') center top/cover no-repeat;opacity:.15;filter:brightness(.6);pointer-events:none}
-
-.cin-prompt{color:#ff8844;font-size:.85rem;letter-spacing:.5em;margin-bottom:18px;text-shadow:0 0 30px rgba(255,80,30,.8);animation:pulse 2.5s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
-
-.enter-btn{display:inline-flex;align-items:center;gap:10px;padding:14px 40px;background:rgba(10,4,2,.92);border:1px solid rgba(255,100,40,.5);color:#ffaa66;font-family:'Noto Sans KR';font-size:.9rem;font-weight:700;cursor:pointer;letter-spacing:.15em;transition:all .4s;backdrop-filter:blur(4px)}
-.enter-btn:hover{border-color:#ff8844;color:#ffddaa;background:rgba(255,80,20,.15);box-shadow:0 0 50px rgba(255,80,20,.3);transform:translateY(-2px)}
-.enter-btn svg{width:22px;height:22px}
-
-/* 스킵 */
-.skip-btn{position:absolute;bottom:4vh;right:4vw;z-index:300;padding:12px 32px;background:rgba(0,0,0,0.8);border:2px solid rgba(255,255,255,0.2);color:rgba(255,255,255,0.8);font-family:'Noto Sans KR';font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.3s;opacity:0;pointer-events:none;border-radius:4px;letter-spacing:0.1em}
-.skip-btn.show{opacity:1;pointer-events:all}
-.skip-btn:hover{color:#fff;border-color:rgba(255,255,255,0.6);background:rgba(50,0,0,0.9);box-shadow:0 0 20px rgba(0,0,0,0.5)}
-
-/* 불씨 */
-.ember{position:absolute;border-radius:50%;pointer-events:none;z-index:8}
-@keyframes rise{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-50vh) scale(0.2)}}
-
-/* ═══ Main Content — HELL LOBBY ═══ */
-.main-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;opacity:0;transition:opacity 1.2s ease .5s;overflow:hidden}
-.main-wrap.show{opacity:1}
-
-/* ── 로비 CSS ── */
-.lobby{display:none;position:fixed;inset:0;z-index:10;flex-direction:row;background:#000}
-.lobby.show{display:flex}
-
-/* 좌측 영역 */
-.lobby-left{position:relative;flex:1;height:100%;overflow:hidden;background:#000}
-.lobby-bg-img{position:absolute;inset:0;background-position:left center;background-size:cover;background-repeat:no-repeat;opacity:1;transition:opacity 400ms ease}
-.lobby-bg-img::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0) 50%,rgba(0,0,0,0.55) 90%,rgba(0,0,0,0.85) 100%);pointer-events:none}
-.char-disp-empty{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);color:rgba(220,110,80,0.78);font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,2.6vw,2.8rem);font-weight:300;letter-spacing:0.25em;text-shadow:0 0 28px rgba(196,68,68,0.35),0 0 60px rgba(0,0,0,0.7);white-space:nowrap;pointer-events:none;user-select:none;opacity:1;transition:opacity 500ms ease;z-index:2}
-.char-disp-empty.hidden{opacity:0}
-
-/* 우측 영역 */
-.lobby-right{position:relative;flex:0 0 35%;height:100%;background:linear-gradient(180deg,rgba(8,3,18,0.42) 0%,rgba(4,2,12,0.48) 100%),url('assets/lobby/lobby_bg_new.png') center/cover no-repeat;padding:20px 24px 16px 24px;display:flex;flex-direction:column;border-left:2px solid;border-image:linear-gradient(180deg,#3a1a55 0%,#c44444 50%,#3a1a55 100%) 1}
-
-/* 우측 헤더 */
-.lobby-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px}
-.lobby-header h1{font-family:'Cinzel Decorative',serif;color:#ff6633;font-size:1.8rem;letter-spacing:0.15em;text-shadow:0 0 20px rgba(255,80,30,0.4)}
-.lobby-mode{color:rgba(180,140,110,0.55);font-size:0.72rem;letter-spacing:0.3em;font-weight:700;margin-top:8px}
-
-/* 헤더 아래 장식 라인 */
-.lobby-divider{height:1px;width:100%;background:linear-gradient(90deg,transparent 0%,rgba(196,68,68,0.4) 50%,transparent 100%);margin-bottom:18px}
-
-/* 슬롯 리스트 — 2캐릭+1생성 고정, 휠 스크롤 */
-.char-list{flex:0 0 auto;overflow:visible;position:relative}
-/* 캐릭터 뷰포트 (2슬롯 높이 고정, 클립) */
-.char-scroll-vp{overflow:hidden;position:relative;height:178px;/* 84×2 + gap 10 */}
-.char-scroll-track{display:flex;flex-direction:column;gap:10px;transition:transform .25s cubic-bezier(.4,0,.2,1)}
-/* 휠 내비 화살표 */
-.char-scroll-nav{display:flex;justify-content:center;gap:8px;margin:4px 0 6px;opacity:0;transition:opacity .2s;pointer-events:none}
-.char-list:hover .char-scroll-nav{opacity:1}
-.char-scroll-nav.visible{opacity:1!important}
-.char-nav-btn{background:none;border:none;color:rgba(196,68,68,.6);font-size:.95rem;cursor:pointer;padding:0 8px;line-height:1;pointer-events:all;transition:color .15s}
-.char-nav-btn:hover{color:rgba(255,120,90,1)}
-.char-nav-btn:disabled{opacity:.2;cursor:default}
-
-/* 5슬롯 아래 디자인 영역 */
-.lobby-mid-area{flex:1;display:flex;flex-direction:column;padding:6px 0 0;justify-content:flex-start;min-height:0;overflow:hidden}
-/* 배너 */
-.lma-banner{flex:0 0 auto;width:100%;pointer-events:none}
-.lma-banner-inner{width:100%;padding:14px 10%;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
-.lma-text-overlay{display:contents}
-.lma-txt-group{display:flex;flex-direction:column;align-items:center;gap:5px}
-.lma-main-txt{font-family:'Noto Sans KR',sans-serif;font-size:clamp(.88rem,2vw,1.25rem);font-weight:700;color:#e8c87a;line-height:1.45;letter-spacing:.04em;text-shadow:0 0 18px rgba(200,140,40,.6),0 2px 6px rgba(0,0,0,.8)}
-.lma-sub-txt{font-size:clamp(.68rem,1.3vw,.88rem);color:rgba(210,170,100,.7);letter-spacing:.1em;text-shadow:0 1px 4px rgba(0,0,0,.9)}
-.lma-steam-btn{width:62%;pointer-events:auto;cursor:pointer;background:transparent;border:none;padding:0;display:block;transition:filter .25s}
-.lma-steam-btn img{width:100%;display:block}
-.lma-steam-btn:hover{filter:brightness(1.2) drop-shadow(0 0 14px rgba(80,160,255,.7))}
-.no-chars{color:rgba(180,140,110,0.5);text-align:center;padding:40px 20px;font-size:0.9rem;letter-spacing:0.1em}
-
-/* 슬롯 카드 */
-.char-item,.char-item-new{position:relative;display:flex;align-items:center;gap:14px;height:84px;padding:14px 18px 14px 24px;margin-bottom:0;background:linear-gradient(135deg,rgba(28,16,12,0.7) 0%,rgba(18,10,6,0.85) 100%);border:1px solid rgba(120,60,40,0.18);border-radius:2px;cursor:pointer;transition:all 200ms ease;overflow:hidden}
-.char-item::before{content:'';position:absolute;left:0;top:20%;width:3px;height:60%;background:linear-gradient(180deg,transparent 0%,rgba(196,68,68,0.4) 50%,transparent 100%);opacity:0.6;transition:all 300ms ease}
-.char-item:hover{transform:translateY(-2px);border-color:rgba(196,68,68,0.35);box-shadow:0 4px 16px rgba(0,0,0,0.5),0 0 12px rgba(196,68,68,0.1)}
-.char-item:hover::before{opacity:1;height:80%;top:10%}
-.char-item.active{border-color:rgba(196,68,68,0.5);box-shadow:0 0 20px rgba(196,68,68,0.2),inset 0 0 24px rgba(196,68,68,0.05)}
-.char-item.active::before{width:4px;opacity:1;height:90%;top:5%;background:linear-gradient(180deg,rgba(196,68,68,0.2) 0%,rgba(255,100,80,0.95) 50%,rgba(196,68,68,0.2) 100%);box-shadow:0 0 8px rgba(196,68,68,0.6)}
-
-/* 새 캐릭터 카드 */
-.char-item-new{border:1px dashed rgba(120,60,40,0.4);background:rgba(18,10,6,0.4)}
-.char-item-new:hover{border-color:rgba(196,68,68,0.5);background:rgba(28,14,8,0.5);transform:translateY(-2px)}
-
-/* 썸네일 */
-.char-thumb{flex:0 0 56px;width:56px;height:56px;background:rgba(0,0,0,0.4);border:1px solid rgba(120,60,40,0.3);border-radius:2px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.char-thumb-empty{color:rgba(180,140,110,0.4);font-size:1.6rem;font-weight:300}
-
-/* 텍스트 영역 */
-.char-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
-.char-name{color:rgba(230,200,170,0.95);font-size:1.05rem;font-weight:600;letter-spacing:0.05em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.char-info{color:rgba(180,140,110,0.9);font-size:0.78rem;opacity:0.7;letter-spacing:0.06em}
-
-/* 삭제 버튼 */
-.char-del{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:24px;height:24px;background:transparent;border:1px solid rgba(120,60,40,0.4);color:rgba(180,100,80,0.6);font-size:0.85rem;cursor:pointer;border-radius:2px;opacity:0;transition:all 200ms;display:flex;align-items:center;justify-content:center}
-.char-item:hover .char-del{opacity:1}
-.char-del:hover{border-color:rgba(220,80,60,0.7);color:rgba(255,120,100,0.95);background:rgba(120,30,20,0.2)}
-
-/* 입장 버튼 */
-.lobby-footer{margin-top:auto;padding-bottom:8px;display:flex;flex-direction:column;gap:6px}
-.enter-game-btn{
-  width:100%;
-  height:352px;
-  background:url('assets/lobby/lobby_enter_btn.png') center center/auto 100% no-repeat;
-  border:none;color:transparent;font-size:0;
-  cursor:pointer;
-  filter:drop-shadow(0 0 10px rgba(150,60,255,0.55)) drop-shadow(0 0 24px rgba(110,30,200,0.35));
-  transition:filter .3s ease, transform .25s ease;
-}
-.enter-game-btn:hover:not(:disabled){
-  filter:drop-shadow(0 0 18px rgba(180,80,255,1)) drop-shadow(0 0 44px rgba(140,40,220,0.75)) brightness(1.25);
-  transform:translateY(-2px) scale(1.03);
-}
-.enter-game-btn:active:not(:disabled){transform:translateY(0) scale(.99);filter:brightness(1.05)}
-.enter-game-btn:disabled{opacity:0.3;cursor:not-allowed;filter:grayscale(.6)}
-
-/* Steam 찜하기 */
-.ll-steam-area{text-align:center;pointer-events:all;margin-top:auto;padding-top:20px}
-.ll-steam-hint{color:rgba(175,145,105,.42);font-size:.72rem;letter-spacing:.18em;margin-bottom:12px}
-.ll-steam-btn{display:inline-flex;align-items:center;gap:10px;padding:12px 28px;background:rgba(14,28,62,.5);border:1.5px solid rgba(85,135,215,.22);color:rgba(125,170,250,.78);font-family:'Noto Sans KR',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;letter-spacing:.07em;text-decoration:none;transition:all .3s;border-radius:2px}
-.ll-steam-btn:hover{background:rgba(24,48,108,.65);border-color:rgba(100,160,255,.42);color:rgba(175,210,255,.92);box-shadow:0 0 22px rgba(65,115,210,.22);transform:translateY(-2px)}
-.ll-version-txt{margin-top:9px;color:rgba(125,100,70,.32);font-size:.64rem;letter-spacing:.28em}
-
-/* 작은 화면 대응 */
-@media(max-width:1100px){
-  .lobby-left{flex:1}
-  .lobby-right{flex:0 0 45%}
-}
-
-/* ── 로그인 ── */
-.container{position:relative;z-index:1;width:480px;max-width:92vw}
-.title{text-align:center;margin-bottom:32px}
-.title h1{
-  font-family:'Cinzel Decorative',serif;font-size:2.5rem;color:#ff6633;
-  text-shadow:0 0 30px rgba(255,80,30,.4),0 0 60px rgba(255,40,10,.15);
-  letter-spacing:.15em;margin-bottom:8px
-}
-.title p{font-size:.85rem;color:#665544;letter-spacing:.3em}
-.card{
-  background:linear-gradient(135deg,rgba(18,10,6,.95),rgba(26,14,8,.98));
-  border:1px solid #443322;padding:36px 30px;position:relative;overflow:hidden;
-  box-shadow:0 20px 60px rgba(0,0,0,.5)
-}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#ff6633,transparent)}
-.login-section{text-align:center}
-.login-section h2{font-size:1.1rem;color:#aa7744;letter-spacing:.2em;margin-bottom:24px;font-weight:700}
-.google-btn{
-  display:inline-flex;align-items:center;gap:12px;padding:14px 32px;
-  background:rgba(255,255,255,.03);border:1px solid #554422;color:#ccaa77;
-  font-family:'Noto Sans KR';font-size:.95rem;font-weight:700;
-  cursor:pointer;letter-spacing:.1em;transition:all .4s
-}
-.google-btn:hover{
-  border-color:#ff8844;color:#ffcc88;background:rgba(255,100,50,.06);
-  transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,80,30,.15)
-}
-.google-btn svg{width:20px;height:20px}
-
-/* ── 생성 모달 ── */
-.create-modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.9);align-items:center;justify-content:center;backdrop-filter:blur(4px)}
-.create-modal.show{display:flex}
-.create-modal-inner{
-  background:linear-gradient(135deg,rgba(18,10,6,.98),rgba(24,14,8,.99));
-  border:1px solid rgba(255,100,40,.15);padding:48px 40px;width:440px;max-width:90vw;
-  border-radius:2px;text-align:center;position:relative;
-  box-shadow:0 30px 80px rgba(0,0,0,.6)
-}
-.create-modal-inner::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:1px;
-  background:linear-gradient(90deg,transparent,rgba(255,80,30,.3),transparent)
-}
-.create-modal-inner h2{font-family:'Cinzel Decorative',serif;font-size:1.5rem;color:#ccaa77;margin-bottom:8px;letter-spacing:.1em}
-.create-modal-inner p{color:#887755;font-size:.8rem;margin-bottom:28px;letter-spacing:.05em}
-.name-input{
-  width:100%;padding:14px 18px;background:rgba(0,0,0,.4);
-  border:1px solid rgba(255,100,40,.12);color:#ccaa77;
-  font-family:'Noto Sans KR';font-size:1rem;outline:none;
-  transition:all .3s;box-sizing:border-box;border-radius:2px;margin-bottom:20px;
-  letter-spacing:.05em
-}
-.name-input:focus{border-color:rgba(255,136,68,.5);box-shadow:0 0 15px rgba(255,80,30,.1)}
-.name-input::placeholder{color:#443322}
-.create-modal-btns{display:flex;gap:12px;justify-content:center}
-.create-btn{
-  padding:12px 32px;background:rgba(255,100,50,.08);border:1px solid rgba(136,68,34,.6);
-  color:#ff8844;font-family:'Noto Sans KR';font-size:.9rem;font-weight:700;
-  cursor:pointer;letter-spacing:.12em;transition:all .3s;border-radius:2px
-}
-.create-btn:hover{background:rgba(255,100,50,.15);border-color:#ff8844;box-shadow:0 0 20px rgba(255,80,20,.15);color:#ffcc88}
-.create-cancel-btn{
-  padding:12px 32px;background:none;border:1px solid rgba(68,34,34,.5);
-  color:#884433;font-family:'Noto Sans KR';font-size:.9rem;
-  cursor:pointer;transition:all .3s;border-radius:2px;letter-spacing:.08em
-}
-.create-cancel-btn:hover{border-color:#cc4433;color:#ff4433;background:rgba(204,68,51,.04)}
-.create-btn:hover{border-color:#ff8844;background:rgba(255,100,50,.15);color:#ffcc88}
-.create-btn:disabled{opacity:.3;cursor:default}
-.status{text-align:center;padding:8px;font-size:.5rem;color:#886644;min-height:24px}
-.status.error{color:#cc4433}
-.loading{display:none;text-align:center;padding:40px}
-.loading .spinner{display:inline-block;width:28px;height:28px;border:2px solid #332211;border-top-color:#ff6633;border-radius:50%;animation:spin .8s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loading p{margin-top:10px;font-size:.6rem;color:#886644}
-/* ── FDG SCREEN 2 (늑대 엠블럼 시네마틱) ── */
-.fdg-screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#000;gap:clamp(18px,3vh,36px);z-index:9999;opacity:0;transition:opacity .5s}
-.fdg-screen.active{opacity:1}
-.fdg-screen.fadeout{opacity:0}
-/* 늑대 + 눈 glow */
-.fdg-wolf-wrap{position:relative;width:clamp(80px,min(22vw,18vh),290px);flex-shrink:0}
-.fdg-wolf-emblem{width:100%;height:auto;opacity:0;transition:opacity 1.4s ease-out;display:block}
-.fdg-screen.active .fdg-wolf-emblem{opacity:.92}
-.fdg-eye-glow{
-  position:absolute;top:56%;
-  width:16%;height:12%;
-  background:radial-gradient(ellipse at center,rgba(220,30,8,.8) 0%,transparent 70%);
-  pointer-events:none;
-  animation:fdg-eye-pulse 1.4s ease-in-out 1.8s infinite;
-  animation-fill-mode:backwards;
-  transform:translateY(-50%);
-}
-.fdg-eye-glow.left{left:33.5%}
-.fdg-eye-glow.right{left:50.5%}
-@keyframes fdg-eye-pulse{0%,100%{opacity:.10}50%{opacity:.55}}
-/* FDG v2 타이틀 */
-.fdg-title{
-  display:flex;justify-content:center;align-items:baseline;
-  gap:.18em;
-  font:700 clamp(16px,min(6vw,8vh),96px) 'Cinzel Decorative','Cinzel',Georgia,serif;
-  letter-spacing:0;white-space:nowrap;
-  transition:gap .8s cubic-bezier(.22,1,.36,1),letter-spacing .8s cubic-bezier(.22,1,.36,1);
-}
-.fdg-title.expand{gap:.6em;letter-spacing:.2em}
-.fdg-title .w{display:inline-flex;align-items:baseline}
-.fdg-title .a{
-  color:#C9A961;opacity:0;
-  transform:translateY(13px) scale(.87);
-  transition:opacity .5s ease-out,transform .65s cubic-bezier(.22,1,.36,1);
-}
-.fdg-title .a.on{opacity:1;transform:translateY(0) scale(1)}
-.fdg-title .x{
-  display:inline-block;max-width:0;overflow:hidden;white-space:nowrap;
-  vertical-align:bottom;color:#E8E0D0;
-  padding:.1em 0 .4em 0;
-  transition:max-width .8s cubic-bezier(.22,1,.36,1);
-}
-.fdg-title .x.on{max-width:9em}
-.fdg-title .x::after{content:'';display:inline-block;width:.5em}
-/* PRESENTS + 부제 (JS 타이머 제어) */
-.fdg-presents{font:400 clamp(12px,1.25vw,24px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#888;letter-spacing:.5em;text-align:center;opacity:0;transition:opacity .5s ease-out}
-.fdg-subtitle{
-  font:400 clamp(15px,1.7vw,26px) 'Noto Serif KR','Noto Serif JP','Noto Serif SC','Noto Serif TC','Noto Naskh Arabic','Noto Serif Thai','Noto Serif',serif;
-  color:#C9A961;letter-spacing:.20em;text-align:center;opacity:1;line-height:1.4
-}
-/* 언어별 명시 폰트 — :lang() 매칭용 (html[lang] 동적 설정) */
-:lang(ja)  .fdg-subtitle{font-family:'Noto Serif JP',serif;letter-spacing:.15em}
-:lang(zh-Hans) .fdg-subtitle{font-family:'Noto Serif SC',serif;letter-spacing:.12em}
-:lang(zh-Hant) .fdg-subtitle{font-family:'Noto Serif TC',serif;letter-spacing:.12em}
-:lang(ar)  .fdg-subtitle{font-family:'Noto Naskh Arabic',serif;letter-spacing:.05em;direction:rtl}
-:lang(th)  .fdg-subtitle{font-family:'Noto Serif Thai',serif;letter-spacing:.08em}
-.fdg-subtitle .fdg-char{display:inline-block;opacity:0;filter:blur(12px);transition:opacity .4s ease-out, filter .5s ease-out}
-.fdg-subtitle .fdg-char.on{opacity:1;filter:blur(0)}
-.fdg-prompt{font:400 clamp(14px,1.5vw,22px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#666;letter-spacing:.35em;text-align:center;opacity:0}
-.fdg-prompt.on{animation:fdg-blink 1.2s ease-in-out infinite alternate}
-@keyframes fdg-blink{from{opacity:0}to{opacity:.5}}
-</style>
-</head>
-<body>
-
-<!-- ═══ Splash Sequence (경고문 → 로고 → 타이틀) ═══ -->
-<div id="splashOverlay" style="position:fixed;inset:0;z-index:9999;background:#000;display:flex;align-items:center;justify-content:center;flex-direction:column;cursor:pointer;opacity:1;transition:opacity 0.5s">
-  <canvas id="splashCanvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
-  <div id="splashContent" style="text-align:center;opacity:0;transition:opacity 0.5s;position:relative;z-index:2"></div>
-</div>
-<!-- 입력 모드: 선택 화면 제거, 자동 감지+실시간 전환 -->
-
-<!-- FDG SCREEN 2: 늑대 엠블럼 -->
-<div id="fdgScreen" class="fdg-screen" style="display:none">
-  <div class="fdg-wolf-wrap">
-    <img class="fdg-wolf-emblem" src="img/fdg_wolf/fdg_wolf_emblem.png" alt="FDG Wolf Emblem">
-    <div class="fdg-eye-glow left"></div>
-    <div class="fdg-eye-glow right"></div>
-  </div>
-  <div class="fdg-title" id="fdgTitle">
-    <span class="w"><span class="a" id="fdgAF">F</span><span class="x" id="fdgXOR">OR</span></span>
-    <span class="w"><span class="a" id="fdgAD">D</span><span class="x" id="fdgXEAR">EAR</span></span>
-    <span class="w"><span class="a" id="fdgAG">G</span><span class="x" id="fdgXAMERS">AMERS</span></span>
-  </div>
-  <div class="fdg-presents" id="fdgPresents">PRESENTS</div>
-  <div class="fdg-subtitle" id="fdgSubtitle"></div>
-  <div class="fdg-prompt" id="fdgPrompt"></div>
-</div>
-
-<!-- ═══ Cinematic Scene ═══ -->
-<div class="cin-scene" id="cinScene">
-  <div class="cin-lb cin-lb-t"></div>
-  <div class="cin-lb cin-lb-b"></div>
-
-  <!-- 인트로 비디오 (THE EXODUSER) -->
-  <video id="cinVideo" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:20;opacity:1;transition:opacity 1.5s ease;pointer-events:none">
-    <source src="https://raw.githubusercontent.com/beearth/the-exoduser/main/video/intro.mp4" type="video/mp4">
-  </video>
-  <!-- 클릭 안내 -->
-  <div id="cinClickPrompt" style="position:absolute;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.1)">
-    <div style="pointer-events:none;display:flex;flex-direction:column;align-items:center;transform:translateX(23%)">
-      <div style="color:#ffbb77;font-size:1.5rem;font-weight:900;letter-spacing:.4em;margin-right:-.4em;opacity:.9;text-shadow:0 0 10px #000, 0 0 20px rgba(255,80,0,0.8);animation:pulse 2s ease-in-out infinite">CLICK TO HELL</div>
-    </div>
-  </div>
-
-  <!-- 문 배경 (줌 인/아웃) -->
-  <div class="cin-gate zoom" id="cinGate">
-    <img src="img/hellgate.png" alt="">
-    <div class="cin-vig"></div>
-  </div>
-
-  <!-- 프롤로그 이미지 (장면별 9장) -->
-  <div class="cin-img" id="cinImg1"><img src="img/cin_war.png" alt=""></div>
-  <div class="cin-img" id="cinImg2"><img src="img/cin_ruins.png" alt=""></div>
-  <div class="cin-img" id="cinImg3"><img src="img/cin_throne.png" alt=""></div>
-  <div class="cin-img" id="cinImg4"><img src="img/cin_bloodbath.png" alt=""></div>
-  <div class="cin-img" id="cinImg5"><img src="img/cin_torture.png" alt=""></div>
-  <div class="cin-img" id="cinImg6"><img src="img/cin_fallhell_custom.png" alt=""></div>
-  <div class="cin-img" id="cinImg7"><img src="img/cin_dungeon.png" alt=""></div>
-  <div class="cin-img" id="cinImg8"><img src="img/cin_nemesia_hd.png" alt=""></div>
-  <div class="cin-img" id="cinImg9"><img src="img/cin_demonbattle.png" alt=""></div>
-  <div class="cin-img" id="cinImg10"><img src="img/cin_demonfight.png" alt=""></div>
-  <div class="cin-img" id="cinImg11"><img src="img/cin_victory.png" alt=""></div>
-  <div class="cin-img" id="cinImg12"><img src="img/cin_bystanders.png" alt=""></div>
-  <div class="cin-img" id="cinImg13"><img src="img/cin_remember.png" alt=""></div>
-  <div class="cin-img" id="cinImg14"><img src="img/emg1.png" alt=""></div>
-
-  <!-- 프롤로그 텍스트 -->
-  <div class="cin-text" id="cinText">
-    <div class="cin-text-inner" id="cinTextInner"></div>
-  </div>
-
-  <!-- 클릭/탭 영역 (부분 스킵) -->
-  <div class="cin-overlay" style="position:absolute;inset:0;z-index:15"></div>
-
-  <button class="skip-btn" id="skipBtn" style="display:none">SKIP ></button>
-  <canvas id="cinHoldGauge" style="position:absolute;bottom:30px;right:30px;width:120px;height:100px;z-index:300;pointer-events:none"></canvas>
-  <select id="cinLang" style="position:absolute;top:3vh;right:4vw;z-index:300;background:rgba(0,0,0,.7);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.7);font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
-    <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
-  </select>
-</div>
-
-<!-- ═══ 챕터 입장 문 열림 (동영상) ═══ -->
-<div id="chapterGate" style="position:fixed;inset:0;z-index:200;display:none;background:#000;overflow:hidden">
-  <img id="chGateImg" src="https://raw.githubusercontent.com/beearth/the-exoduser/main/img/lording/rd1.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 40%;transform:scale(1.15) translateX(5%);z-index:20;background:#000">
-  <div class="cin-lb cin-lb-t"></div>
-  <div class="cin-lb cin-lb-b"></div>
-  <div class="cin-vig" style="z-index:21"></div>
-</div>
-
-<!-- ═══ Main Content ═══ -->
-<div class="main-wrap" id="mainWrap">
-  <div class="container">
-    <div class="title"><h1>HELL</h1><p>EXODUSER</p></div>
-    <div style="text-align:center;margin:-10px 0 10px">
-      <select id="langSelect" style="background:#1a1008;border:1px solid #443322;color:#ccaa88;font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
-        <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
-      </select>
-    </div>
-    <div class="card">
-      <div class="loading" id="loading"><div class="spinner"></div><p>연결 중...</p></div>
-      <div class="login-section" id="loginSection" style="display:none">
-        <h2>캐릭터를 선택하세요</h2>
-        <button class="google-btn" id="googleBtn">
-          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-          Google로 입장
-        </button>
-      </div>
-      <!-- lobby는 body 직속으로 이동 (아래 참조) -->
-    </div>
-  </div>
-</div>
-
-<!-- ═══ LOBBY (body 직속 — container 밖) ═══ -->
-<div class="lobby" id="lobby" style="display:none">
-  <!-- 좌측: 배경 + 안내 -->
-  <div class="lobby-left">
-    <div class="lobby-bg-img" id="lobbyBgImg"></div>
-    <canvas id="lobbyParticles" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5"></canvas>
-    <div class="char-disp-empty" id="charDispEmpty">당신은 누구인가</div>
-  </div>
-  <!-- 우측: 슬롯 + 버튼 -->
-  <div class="lobby-right">
-    <div class="lobby-header">
-      <div style="display:flex;flex-direction:column;align-items:flex-start">
-        <h1 style="margin:0;line-height:1">HELL</h1>
-        <div style="font-family:'Cinzel Decorative',serif;font-size:.85rem;color:#aa8855;letter-spacing:5px;margin-top:2px;padding-left:2px">EXODUSER</div>
-      </div>
-      <div class="lobby-mode" id="lobbyMode"></div>
-    </div>
-    <div class="lobby-divider"></div>
-    <div class="char-list" id="charList">
-      <div class="no-chars">불러오는 중...</div>
-    </div>
-    <!-- 슬롯 아래 공백 -->
-    <div style="height:8px;flex-shrink:0"></div>
-    <!-- 3슬롯 아래 배너 영역 -->
-    <div class="lobby-mid-area" id="lobbyMidArea">
-      <div class="lma-banner">
-        <div class="lma-banner-inner">
-          <div class="lma-text-overlay">
-            <div class="lma-txt-group">
-              <div class="lma-main-txt">여러분의 Steam 찜 하나가<br>EXODUSER: HELL LORD의<br>다음 여정을 만듭니다</div>
-              <div class="lma-sub-txt">공식 출시 소식을 가장 먼저 받아보세요</div>
-            </div>
-            <button class="lma-steam-btn" onclick="openWishlist()">
-              <img src="assets/lobby/lobby_banner_btn.png" alt="Add to Steam Wishlist" draggable="false">
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="lobby-footer">
-      <button class="enter-game-btn" id="enterGameBtn" disabled></button>
-    </div>
-    <div class="ll-version-txt" id="lobbyVersionTxt" style="text-align:right;padding:4px 0 2px"></div>
-  </div>
-</div>
-
-<!-- 생성 모달 -->
-<div class="create-modal" id="createModal">
-  <div class="create-modal-inner">
-    <h2>새 캐릭터 생성</h2>
-    <p>지옥에 보낼 캐릭터의 이름을 지어주세요</p>
-    <input class="name-input" id="charName" placeholder="이름 (2~8자)" maxlength="8">
-    <div class="create-modal-btns">
-      <button class="create-cancel-btn" id="createCancelBtn">취소</button>
-      <button class="create-btn" id="createBtn">생성</button>
-    </div>
-    <div class="status" id="status"></div>
-  </div>
-</div>
-
-<!-- ═══ 캐릭터 외형 선택 팝업 ═══ -->
-<div id="charVisualPop" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.85);align-items:center;justify-content:center">
-  <div style="background:#1a1410;border:2px solid #554422;border-radius:12px;padding:30px;max-width:720px;width:90%;text-align:center">
-    <h2 style="color:#ccaa77;font-family:'Cinzel Decorative',serif;margin-bottom:6px">외형 선택</h2>
-    <p style="color:#887755;font-size:.85rem;margin-bottom:20px">캐릭터의 외형을 선택하세요</p>
-    <div id="visualGrid" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:20px"></div>
-    <button id="visualCancelBtn" style="padding:8px 24px;background:transparent;border:1px solid #553322;color:#886644;font-family:'Noto Sans KR';font-size:.9rem;cursor:pointer;border-radius:6px">취소</button>
-  </div>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
-<script src="lobby_i18n.js"></script>
-<script>
 // ═══ 글로벌 게임패드 매니저 (전 화면 공통) ═══
 const _GP = {
   connected: false,
@@ -609,8 +88,8 @@ addEventListener('keydown', e => {
     try { if(h.test(gp, just)) h.action(); } catch(e){}
   }
 })();
-</script>
-<script>
+
+
 // ═══ 로비 배경: 트랜지션 이미지 중 랜덤 1장 ═══
 (function(){const n=~~(Math.random()*19)+1;const _base='https://raw.githubusercontent.com/beearth/the-exoduser/main/img/lording/';const img=new Image();img.onload=function(){document.body.style.backgroundImage='linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('+_base+n+'.png)'};img.src=_base+n+'.png'})();
 // 브라우저 줌 차단
@@ -799,9 +278,6 @@ const _LOBBY_FR={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Ce jeu contient de la violence intense et des images perturbantes.<br>Réservé aux 18 ans et plus. Peut provoquer des crises photosensibles.<br>Discrétion conseillée.',
   '아무 키나 눌러 계속':'Appuyez sur une touche pour continuer',
   '입장':'Entrer',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Votre ajout à la liste de souhaits Steam\nfaçonne le prochain chapitre de\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Soyez le premier informé du lancement officiel',
-  'STEAM 위시리스트 추가':'AJOUTER À LA LISTE DE SOUHAITS STEAM',
 };
 const _LOBBY_IT={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Connessione...','캐릭터를 선택하세요':'Seleziona il tuo personaggio','당신은 누구인가':'CHI SEI TU?',
@@ -825,9 +301,6 @@ const _LOBBY_IT={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Questo gioco contiene violenza intensa e immagini disturbanti.<br>Vietato ai minori di 18 anni. Può provocare crisi fotosensibili.<br>Si consiglia discrezione.',
   '아무 키나 눌러 계속':'Premi un tasto per continuare',
   '입장':'Entra',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Il tuo supporto nella lista dei desideri Steam\ndà forma al prossimo capitolo di\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Sii il primo a sapere del lancio ufficiale',
-  'STEAM 위시리스트 추가':'AGGIUNGI ALLA LISTA DEI DESIDERI STEAM',
 };
 const _LOBBY_PTBR={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Conectando...','캐릭터를 선택하세요':'Selecione seu personagem','당신은 누구인가':'QUEM ÉS TU?',
@@ -851,9 +324,6 @@ const _LOBBY_PTBR={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Este jogo contém violência intensa e imagens perturbadoras.<br>Classificação 18+. Pode provocar convulsões fotossensíveis.<br>Recomenda-se discrição.',
   '아무 키나 눌러 계속':'Pressione qualquer tecla para continuar',
   '입장':'Entrar',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Seu apoio na lista de desejos Steam\nmolda o próximo capítulo de\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Seja o primeiro a saber do lançamento',
-  'STEAM 위시리스트 추가':'ADICIONAR À LISTA DE DESEJOS STEAM',
 };
 const _LOBBY_RO={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Se conectează...','캐릭터를 선택하세요':'Selectează-ți personajul','당신은 누구인가':'CINE EȘTI TU?',
@@ -877,9 +347,6 @@ const _LOBBY_RO={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Acest joc conține violență intensă și imagini deranjante.<br>Clasificat 18+. Poate provoca convulsii fotosensibile.<br>Se recomandă discreție.',
   '아무 키나 눌러 계속':'Apasă orice tastă pentru a continua',
   '입장':'Intră',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Sprijinul tău pe lista de dorințe Steam\nmodelează următorul capitol al\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Fii primul care află când lansăm',
-  'STEAM 위시리스트 추가':'ADAUGĂ PE LISTA DE DORINȚE STEAM',
 };
 const _LOBBY_DE={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Verbindung...','캐릭터를 선택하세요':'Wähle deinen Charakter','당신은 누구인가':'WER BIST DU?',
@@ -903,9 +370,6 @@ const _LOBBY_DE={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Dieses Spiel enthält intensive Gewalt und verstörende Bilder.<br>Ab 18 Jahren. Kann photosensible Anfälle auslösen.<br>Eigenverantwortung wird empfohlen.',
   '아무 키나 눌러 계속':'Beliebige Taste drücken zum Fortfahren',
   '입장':'Eintreten',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Deine Steam-Wunschliste-Unterstützung\ngestaltet das nächste Kapitel von\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Sei der Erste, der vom offiziellen Launch erfährt',
-  'STEAM 위시리스트 추가':'ZUR STEAM-WUNSCHLISTE HINZUFÜGEN',
 };
 const _LOBBY_NL={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Verbinden...','캐릭터를 선택하세요':'Selecteer je karakter','당신은 누구인가':'WIE ZIJT GIJ?',
@@ -929,9 +393,6 @@ const _LOBBY_NL={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Dit spel bevat intens geweld en verontrustende beelden.<br>18+ classificatie. Kan fotosensitieve aanvallen veroorzaken.<br>Discretie wordt geadviseerd.',
   '아무 키나 눌러 계속':'Druk op een toets om door te gaan',
   '입장':'Betreden',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Jouw Steam-verlanglijst-steun\nvormt het volgende hoofdstuk van\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Wees de eerste die weet wanneer we lanceren',
-  'STEAM 위시리스트 추가':'TOEVOEGEN AAN STEAM-VERLANGLIJST',
 };
 const _LOBBY_SV={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Ansluter...','캐릭터를 선택하세요':'Välj din karaktär','당신은 누구인가':'VEM ÄR DU?',
@@ -955,9 +416,6 @@ const _LOBBY_SV={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Detta spel innehåller intensivt våld och störande bilder.<br>18+ klassificering. Kan utlösa ljuskänsliga anfall.<br>Eget ansvar rekommenderas.',
   '아무 키나 눌러 계속':'Tryck valfri tangent för att fortsätta',
   '입장':'Gå in',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Ditt stöd på Steam önskelista\nformar nästa kapitel av\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Bli den första att veta när vi lanserar',
-  'STEAM 위시리스트 추가':'LÄGG TILL PÅ STEAM ÖNSKELISTA',
 };
 const _LOBBY_DA={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Forbinder...','캐릭터를 선택하세요':'Vælg din karakter','당신은 누구인가':'HVEM ER DU?',
@@ -981,9 +439,6 @@ const _LOBBY_DA={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Dette spil indeholder intens vold og forstyrrende billeder.<br>18+ klassificering. Kan udløse lysfølsomme anfald.<br>Eget ansvar anbefales.',
   '아무 키나 눌러 계속':'Tryk en vilkårlig tast for at fortsætte',
   '입장':'Gå ind',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Din Steam-ønskeliste-støtte\nformer det næste kapitel af\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Vær den første til at vide, hvornår vi lancerer',
-  'STEAM 위시리스트 추가':'TILFØJ TIL STEAM-ØNSKELISTE',
 };
 const _LOBBY_NO={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Kobler til...','캐릭터를 선택하세요':'Velg din karakter','당신은 누구인가':'HVEM ER DU?',
@@ -1007,9 +462,6 @@ const _LOBBY_NO={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Dette spillet inneholder intens vold og forstyrrende bilder.<br>18+ klassifisering. Kan utløse lysfølsomme anfall.<br>Eget ansvar anbefales.',
   '아무 키나 눌러 계속':'Trykk en vilkårlig tast for å fortsette',
   '입장':'Gå inn',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Din støtte på Steam ønskeliste\nformer neste kapittel av\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Vær den første til å vite når vi lanserer',
-  'STEAM 위시리스트 추가':'LEGG TIL PÅ STEAM ØNSKELISTE',
 };
 const _LOBBY_RU={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Подключение...','캐릭터를 선택하세요':'Выберите персонажа','당신은 누구인가':'КТО ТЫ ЕСТЬ?',
@@ -1033,9 +485,6 @@ const _LOBBY_RU={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Эта игра содержит сцены насилия и шокирующие образы.<br>Только для лиц старше 18 лет. Может вызвать фотосенситивные приступы.<br>Рекомендуется осторожность.',
   '아무 키나 눌러 계속':'Нажмите любую клавишу для продолжения',
   '입장':'Войти',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Ваша поддержка через список желаний Steam\nформирует следующую главу\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Узнайте об официальном выходе первыми',
-  'STEAM 위시리스트 추가':'ДОБАВИТЬ В СПИСОК ЖЕЛАНИЙ STEAM',
 };
 const _LOBBY_UK={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Підключення...','캐릭터를 선택하세요':'Оберіть персонажа','당신은 누구인가':'ХТО ТИ Є?',
@@ -1059,9 +508,6 @@ const _LOBBY_UK={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Ця гра містить сцени насильства та шокуючі образи.<br>Тільки для осіб старше 18 років. Може викликати фотосенситивні напади.<br>Рекомендується обережність.',
   '아무 키나 눌러 계속':'Натисніть будь-яку клавішу для продовження',
   '입장':'Увійти',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Ваша підтримка через список бажань Steam\nформує наступний розділ\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Дізнайтеся про офіційний вихід першими',
-  'STEAM 위시리스트 추가':'ДОДАТИ ДО СПИСКУ БАЖАНЬ STEAM',
 };
 const _LOBBY_PL={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Łączenie...','캐릭터를 선택하세요':'Wybierz swoją postać','당신은 누구인가':'KIM JESTEŚ?',
@@ -1085,9 +531,6 @@ const _LOBBY_PL={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Ta gra zawiera intensywną przemoc i niepokojące obrazy.<br>Kategoria 18+. Może wywołać napady fotosensytywne.<br>Zalecana ostrożność.',
   '아무 키나 눌러 계속':'Naciśnij dowolny klawisz, aby kontynuować',
   '입장':'Wejdź',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Twoje wsparcie na liście życzeń Steam\nkształtuje następny rozdział\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Bądź pierwszym, który dowie się o premierze',
-  'STEAM 위시리스트 추가':'DODAJ DO LISTY ŻYCZEŃ STEAM',
 };
 const _LOBBY_CS={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Připojování...','캐릭터를 선택하세요':'Vyber si postavu','당신은 누구인가':'KDO JSI?',
@@ -1111,9 +554,6 @@ const _LOBBY_CS={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Tato hra obsahuje intenzivní násilí a znepokojivé obrazy.<br>Od 18 let. Může vyvolat fotosenzitivní záchvaty.<br>Doporučuje se opatrnost.',
   '아무 키나 눌러 계속':'Stiskni libovolnou klávesu pro pokračování',
   '입장':'Vstoupit',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Tvoje podpora přes Steam seznam přání\nformuje další kapitolu\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Buď první, kdo se dozví o officiálním launchi',
-  'STEAM 위시리스트 추가':'PŘIDAT NA SEZNAM PŘÁNÍ STEAM',
 };
 const _LOBBY_HU={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Csatlakozás...','캐릭터를 선택하세요':'Válaszd ki a karaktered','당신은 누구인가':'KI VAGY TE?',
@@ -1137,9 +577,6 @@ const _LOBBY_HU={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Ez a játék intenzív erőszakot és zavaró képeket tartalmaz.<br>18+ besorolás. Fényérzékeny rohamokat válthat ki.<br>Óvatosság ajánlott.',
   '아무 키나 눌러 계속':'Nyomj meg egy gombot a folytatáshoz',
   '입장':'Belépés',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'A Steam kívánságlistán való támogatásod\nformálja a következő fejezetet:\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Légy az első, aki értesül a megjelenésről',
-  'STEAM 위시리스트 추가':'HOZZÁADÁS A STEAM KÍVÁNSÁGLISTÁHOZ',
 };
 const _LOBBY_BG={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Свързване...','캐릭터를 선택하세요':'Изберете персонаж','당신은 누구인가':'КОЙ СИ ТИ?',
@@ -1163,9 +600,6 @@ const _LOBBY_BG={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Тази игра съдържа интензивно насилие и обезпокоителни образи.<br>Само за лица над 18 години. Може да предизвика фотосенситивни пристъпи.<br>Препоръчва се внимание.',
   '아무 키나 눌러 계속':'Натиснете произволен клавиш за продължаване',
   '입장':'Влезте',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Вашата подкрепа в списъка с желания Steam\nформира следващата глава на\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Бъдете първите, които разберат за излизането',
-  'STEAM 위시리스트 추가':'ДОБАВЯНЕ В СПИСЪКА С ЖЕЛАНИЯ STEAM',
 };
 const _LOBBY_EL={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Σύνδεση...','캐릭터를 선택하세요':'Επίλεξε τον χαρακτήρα σου','당신은 누구인가':'ΠΟΙΟΣ ΕΙΣΑΙ;',
@@ -1189,9 +623,6 @@ const _LOBBY_EL={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Αυτό το παιχνίδι περιέχει έντονη βία και ανησυχητικές εικόνες.<br>Κατάλληλο για 18+. Μπορεί να προκαλέσει φωτοευαίσθητες κρίσεις.<br>Συνιστάται προσοχή.',
   '아무 키나 눌러 계속':'Πατήστε οποιοδήποτε πλήκτρο για συνέχεια',
   '입장':'Εισαγωγή',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Η υποστήριξή σου στη λίστα επιθυμιών Steam\nδιαμορφώνει το επόμενο κεφάλαιο του\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Μάθε πρώτος για την επίσημη κυκλοφορία',
-  'STEAM 위시리스트 추가':'ΠΡΟΣΘΗΚΗ ΣΤΗ ΛΙΣΤΑ ΕΠΙΘΥΜΙΩΝ STEAM',
 };
 const _LOBBY_FI={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Yhdistetään...','캐릭터를 선택하세요':'Valitse hahmosi','당신은 누구인가':'KUKA SINÄ OLET?',
@@ -1215,9 +646,6 @@ const _LOBBY_FI={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Tämä peli sisältää voimakasta väkivaltaa ja häiritseviä kuvia.<br>K-18. Voi laukaista valoherkkyyskohtauksia.<br>Varovaisuutta suositellaan.',
   '아무 키나 눌러 계속':'Paina mitä tahansa näppäintä jatkaaksesi',
   '입장':'Siirry',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Steam-toivelistasi tuki\nmuokkaa seuraavaa lukua:\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Ole ensimmäinen, joka saa tietää julkaisusta',
-  'STEAM 위시리스트 추가':'LISÄÄ STEAM-TOIVELISTALLE',
 };
 const _LOBBY_TR={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Bağlanıyor...','캐릭터를 선택하세요':'Karakterini seç','당신은 누구인가':'SEN KİMSİN?',
@@ -1241,9 +669,6 @@ const _LOBBY_TR={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Bu oyun yoğun şiddet ve rahatsız edici görüntüler içerir.<br>18+ sınıflandırma. Fotosensitif nöbetleri tetikleyebilir.<br>Dikkatli olunması önerilir.',
   '아무 키나 눌러 계속':'Devam etmek için herhangi bir tuşa basın',
   '입장':'Gir',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Steam istek listenizdeki desteğiniz\nEXODUSER: HELL LORD\'un\nsonraki bölümünü şekillendiriyor',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Resmi çıkışı ilk öğrenen siz olun',
-  'STEAM 위시리스트 추가':'STEAM İSTEK LİSTESİNE EKLE',
 };
 const _LOBBY_AR={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'جارٍ الاتصال...','캐릭터를 선택하세요':'اختر شخصيتك','당신은 누구인가':'مَنْ أَنْتَ؟',
@@ -1267,9 +692,6 @@ const _LOBBY_AR={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'تحتوي هذه اللعبة على عنف شديد وصور مزعجة.<br>للأعمار 18+ فقط. قد تسبب نوبات حساسية الضوء.<br>يُنصح بالحذر.',
   '아무 키나 눌러 계속':'اضغط أي مفتاح للمتابعة',
   '입장':'دخول',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'دعمكم في قائمة الرغبات على Steam\nيشكّل الفصل القادم من\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'كونوا أول من يعلم بالإطلاق الرسمي',
-  'STEAM 위시리스트 추가':'أضف إلى قائمة الرغبات على STEAM',
 };
 const _LOBBY_VI={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Đang kết nối...','캐릭터를 선택하세요':'Chọn nhân vật của bạn','당신은 누구인가':'NGƯƠI LÀ AI?',
@@ -1293,9 +715,6 @@ const _LOBBY_VI={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Trò chơi này chứa bạo lực mạnh và hình ảnh gây sốc.<br>Dành cho người từ 18 tuổi trở lên. Có thể gây động kinh nhạy sáng.<br>Khuyến cáo thận trọng.',
   '아무 키나 눌러 계속':'Nhấn phím bất kỳ để tiếp tục',
   '입장':'Vào',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Sự ủng hộ của bạn trên danh sách yêu thích Steam\nsẽ định hình chương tiếp theo của\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Là người đầu tiên biết khi chúng tôi ra mắt',
-  'STEAM 위시리스트 추가':'THÊM VÀO DANH SÁCH YÊU THÍCH STEAM',
 };
 const _LOBBY_TH={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'กำลังเชื่อมต่อ...','캐릭터를 선택하세요':'เลือกตัวละครของคุณ','당신은 누구인가':'เจ้าเป็นผู้ใด?',
@@ -1319,9 +738,6 @@ const _LOBBY_TH={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'เกมนี้มีเนื้อหาความรุนแรงและภาพที่น่าตกใจ<br>สำหรับผู้ที่มีอายุ 18 ปีขึ้นไป อาจทำให้เกิดอาการชักจากแสงกระพริบ<br>โปรดใช้วิจารณญาณ',
   '아무 키나 눌러 계속':'กดปุ่มใดก็ได้เพื่อดำเนินการต่อ',
   '입장':'เข้า',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'การสนับสนุนของคุณใน Steam Wishlist\nกำหนดรูปร่างบทถัดไปของ\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'เป็นคนแรกที่รู้เมื่อเราเปิดตัว',
-  'STEAM 위시리스트 추가':'เพิ่มใน STEAM WISHLIST',
 };
 const _LOBBY_ID={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Menghubungkan...','캐릭터를 선택하세요':'Pilih karaktermu','당신은 누구인가':'SIAPAKAH ENGKAU?',
@@ -1345,9 +761,6 @@ const _LOBBY_ID={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'Game ini mengandung kekerasan intens dan gambar yang mengganggu.<br>Untuk usia 18+. Dapat memicu kejang fotosensitif.<br>Disarankan untuk berhati-hati.',
   '아무 키나 눌러 계속':'Tekan tombol apa saja untuk melanjutkan',
   '입장':'Masuk',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Dukunganmu di daftar keinginan Steam\nmembentuk babak berikutnya dari\nEXODUSER: HELL LORD',
-  '공식 출시 소식을 가장 먼저 받아보세요':'Jadilah yang pertama mengetahui saat kami meluncur',
-  'STEAM 위시리스트 추가':'TAMBAHKAN KE DAFTAR KEINGINAN STEAM',
 };
 const _LOBBY_ZHT={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'連線中...','캐릭터를 선택하세요':'選擇你的角色','당신은 누구인가':'汝乃何人',
@@ -1371,9 +784,6 @@ const _LOBBY_ZHT={
   '본 게임은 18세 이상 이용가입니다.<br>폭력적이고 잔혹한 묘사가 포함되어 있습니다.<br>강한 명암 대비와 점멸 효과로 인해 광과민성 발작이<br>유발될 수 있으니 주의하시기 바랍니다.':'本遊戲包含強烈暴力和令人不安的畫面。<br>僅限18歲以上。可能引發光敏性癲癇發作。<br>請謹慎遊玩。',
   '아무 키나 눌러 계속':'按任意鍵繼續',
   '입장':'進入',
-  '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'您在Steam願望清單的支持\n將塑造\nEXODUSER: HELL LORD的下一章',
-  '공식 출시 소식을 가장 먼저 받아보세요':'搶先獲得官方發布消息',
-  'STEAM 위시리스트 추가':'加入STEAM願望清單',
 };
 const _LOBBY_SK={'친애하는 게이머 여러분께 바칩니다':'Venované vám všetkým, drahí hráči'};
 const _LOBBY_HR={'친애하는 게이머 여러분께 바칩니다':'Posvećeno svima vama, dragi igrači'};
@@ -1470,38 +880,38 @@ function stopIntroVoice(){
 // img: 이미지 인덱스 (0~8), -1=어둠, undefined=이전 유지
 // v: 음성 재생 시점 (초), 이 시점에 해당 라인이 시작됨
 const CIN_LINES=[
-  {v:0,   text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000,img:0},
-  {v:2.5, text:'전쟁에서 살아 돌아온 한 남자.',en:'A man who returned alive from war.',zh:'一个从战争中活着回来的男人。',ja:'戦争から生きて帰った一人の男。',es:'Un hombre que regresó vivo de la guerra.',fr:'Un homme revenu vivant de la guerre.',it:'Un uomo tornato vivo dalla guerra.',ptbr:'Um homem que voltou vivo da guerra.',ro:'Un om care s-a întors viu din război.',de:'Ein Mann, der lebend vom Krieg zurückkehrte.',nl:'Een man die levend terugkeerde van de oorlog.',sv:'En man som återvände levande från kriget.',da:'En mand, der vendte levende hjem fra krigen.',no:'En mann som vendte levende tilbake fra krigen.',ru:'Мужчина, вернувшийся живым с войны.',uk:'Чоловік, який повернувся живим з війни.',pl:'Mężczyzna, który wrócił żywy z wojny.',cs:'Muž, který se vrátil živý z války.',hu:'Egy férfi, aki élve tért vissza a háborúból.',bg:'Мъж, завърнал се жив от войната.',el:'Ένας άνδρας που επέστρεψε ζωντανός από τον πόλεμο.',fi:'Mies, joka palasi elossa sodasta.',tr:'Savaştan sağ dönen bir adam.',ar:'رجلٌ عاد حياً من الحرب.',vi:'Một người đàn ông trở về sống sót từ chiến tranh.',th:'ชายผู้รอดชีวิตกลับมาจากสงคราม',id:'Seorang pria yang kembali hidup dari perang.',zht:'一個從戰場活著回來的男人。',dur:3000,img:0},
-  {v:5.0, text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000},
-  {v:5.5, text:'하지만 집은 모두 불타 사라졌다.',en:'But his home had burned to nothing.',zh:'但家园已化为灰烬。',ja:'だが家はすべて焼け落ちていた。',es:'Pero su hogar había sido reducido a cenizas.',fr:'Mais sa maison avait brûlé jusqu'au néant.',it:'Ma la sua casa era bruciata fino al nulla.',ptbr:'Mas sua casa havia queimado até o nada.',ro:'Dar casa lui arsese până la nimic.',de:'Doch sein Heim war zu Asche verbrannt.',nl:'Maar zijn thuis was tot niets verbrand.',sv:'Men hans hem hade brunnit till intet.',da:'Men hans hjem var brændt til intet.',no:'Men hjemmet hans hadde brent ned til ingenting.',ru:'Но его дом сгорел дотла.',uk:'Але його дім згорів дотла.',pl:'Ale jego dom spalił się doszczętnie.',cs:'Ale jeho domov shořel do tla.',hu:'De otthona hamuvá égett.',bg:'Но домът му беше изгорял до пепел.',el:'Αλλά το σπίτι του είχε καεί ολοσχερώς.',fi:'Mutta hänen kotinsa oli palanut tuhkaksi.',tr:'Ama evi yanıp kül olmuştu.',ar:'لكن منزله كان قد احترق حتى الرماد.',vi:'Nhưng ngôi nhà của anh đã bị thiêu rụi hoàn toàn.',th:'แต่บ้านของเขาถูกเผาจนวอดวาย',id:'Tetapi rumahnya telah terbakar habis.',zht:'但家園已化為灰燼。',dur:3000,img:1},
-  {v:10.5,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000},
+  {v:0,   text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:0},
+  {v:2.5, text:'전쟁에서 살아 돌아온 한 남자.',en:'A man who returned alive from war.',zh:'一个从战争中活着回来的男人。',ja:'戦争から生きて帰った一人の男。',es:'Un hombre que regresó vivo de la guerra.',dur:3000,img:0},
+  {v:5.0, text:'',en:'',zh:'',ja:'',es:'',dur:3000},
+  {v:5.5, text:'하지만 집은 모두 불타 사라졌다.',en:'But his home had burned to nothing.',zh:'但家园已化为灰烬。',ja:'だが家はすべて焼け落ちていた。',es:'Pero su hogar había sido reducido a cenizas.',dur:3000,img:1},
+  {v:10.5,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
   {v:13.0,text:'이웃이자 친구였던 킬루가 그의 가문을 짓밟았다.',en:'Killu, once a neighbor and friend, had crushed his family.',zh:'曾是邻居和朋友的基路，摧毁了他的家族。',ja:'隣人であり友人だったキルルが、彼の一族を踏みにじった。',es:'Killu, vecino y amigo, había aplastado a su familia.',dur:3000,img:2},
-  {v:17.5,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000},
+  {v:17.5,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
   {v:19.7,text:'아내는 몸종으로 끌려가 온갖 몹쓸 짓을 당했고,',en:'His wife was taken as a servant and suffered unspeakable horrors,',zh:'妻子被掳为奴仆，受尽种种凌辱，',ja:'妻は召使いとして連れ去られ、あらゆる残虐を受け、',es:'Su esposa fue tomada como sirvienta y sufrió horrores indecibles,',dur:3000},
   {v:23.9,text:'끝내 못 이겨 스스로 목숨을 끊었다.',en:'until she could bear no more and took her own life.',zh:'最终不堪忍受，自绝了生命。',ja:'ついに耐えきれず自ら命を絶った。',es:'hasta que no pudo más y se quitó la vida.',dur:3000},
-  {v:27.0,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000},
+  {v:27.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
   {v:28.6,text:'아이들은 노예로 팔려가 어디에 있는지조차 알 수 없다.',en:'His children were sold into slavery — their fate unknown.',zh:'孩子们被卖为奴隶，下落不明。',ja:'子供たちは奴隷として売られ、行方すら分からない。',es:'Sus hijos fueron vendidos como esclavos — su destino, desconocido.',dur:3000},
   {v:33.0,text:'늙은 부모는 감옥에 갇혀 굶어 죽었다.',en:'His elderly parents were imprisoned and starved to death.',zh:'年迈的父母被关进牢狱，活活饿死。',ja:'老いた両親は牢に閉じ込められ、餓死した。',es:'Sus ancianos padres fueron encarcelados y murieron de hambre.',dur:3000},
-  {v:37.0,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000,img:-1},
+  {v:37.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1},
   {v:38.8,text:'킬루 가문의 모두가 알고 있었다.',en:'Everyone in the Killu household knew.',zh:'基路家族的所有人都知道。',ja:'キルル家の誰もが知っていた。',es:'Todos en la casa de Killu lo sabían.',dur:3000,img:11},
   {v:43.3,text:'31명이 보고도 못 본 척했다.',en:'Thirty-one of them saw everything and looked away.',zh:'三十一人目睹一切，却视而不见。',ja:'三十一人が見て見ぬふりをした。',es:'Treinta y uno de ellos lo vieron todo y miraron hacia otro lado.',dur:3000},
-  {v:46.0,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000,img:-1},
+  {v:46.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1},
   {v:47.9,text:'그날 밤, 킬루 가문을 모두 죽였다.',en:'That night, he killed every last one of them.',zh:'那天夜里，他杀光了基路全族。',ja:'その夜、キルル家の全員を殺した。',es:'Esa noche, los mató a todos.',dur:3000,cls:'red',img:3},
-  {v:51.0,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000},
+  {v:51.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
   {v:53.6,text:'칼로 킬루의 팔다리를 자르고',en:'He cut off Killu\'s limbs with a blade,',zh:'用刀砍断了基路的四肢，',ja:'刃でキルルの手足を切り落とし、',es:'Le cortó las extremidades a Killu con una espada,',dur:3000,cls:'red',img:4},
   {v:56.6,text:'불로 지혈까지 해주며',en:'cauterized the wounds with fire,',zh:'用火为他止住了血，',ja:'火で傷口を焼き止め、',es:'cauterizó las heridas con fuego,',dur:3000,cls:'red'},
   {v:59.2,text:'오래오래 살려두었다.',en:'and kept him alive for a long, long time.',zh:'让他活了很久很久。',ja:'長い長い間、生かし続けた。',es:'y lo mantuvo vivo por mucho, mucho tiempo.',dur:3000,cls:'red'},
   {v:65.2,text:'"기억하라."',en:'"Remember."',zh:'"记住。"',ja:'"覚えておけ。"',es:'"Recuerda."',dur:3000,cls:'red',img:12},
   {v:68.2,text:'"그리고 지옥에서도 후회하라."',en:'"And regret it even in hell."',zh:'"在地狱里也要后悔。"',ja:'"そして地獄でも悔やめ。"',es:'"Y arrepiéntete incluso en el infierno."',dur:3000,cls:'red'},
   {v:73.6,text:'그리고 지옥에 떨어진다.',en:'And so he fell into hell.',zh:'然后，他坠入了地狱。',ja:'そして地獄に落ちた。',es:'Y así cayó al infierno.',dur:3000,img:5},
-  {v:76.0,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000,img:-1,phase:2},
+  {v:76.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1,phase:2},
   {v:78.9,text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',en:'"...This is but one tale among countless avengers."',zh:'"……这不过是无数复仇者中一人的故事。"',ja:'"……これは数えきれない復讐者の中の、一つの物語に過ぎない。"',es:'"...Esta es solo una historia entre innumerables vengadores."',dur:3000,cls:'dim',img:13},
-  {v:82.5,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000},
+  {v:82.5,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
   {v:84.8,text:'"지옥의 미로에는 매일 새로운 영혼이 떨어진다."',en:'"Every day, new souls fall into hell\'s labyrinth."',zh:'"每天都有新的灵魂坠入地狱的迷宫。"',ja:'"地獄の迷宮には毎日新たな魂が落ちてくる。"',es:'"Cada día, nuevas almas caen al laberinto del infierno."',dur:3000,cls:'dim',img:8},
   {v:88.9,text:'"분노로 가득 찬 자, 억울함에 미친 자, 사랑을 잃은 자..."',en:'"Those consumed by rage, driven mad by injustice, those who lost love..."',zh:'"被愤怒填满的人、因冤屈而疯狂的人、失去爱的人……"',ja:'"怒りに満ちた者、理不尽に狂った者、愛を失った者……"',es:'"Los consumidos por la ira, enloquecidos por la injusticia, los que perdieron el amor..."',dur:3000,cls:'dim',img:9},
-  {v:94.0,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000,img:-1},
+  {v:94.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000,img:-1},
   {v:94.8,text:'"너는 왜 지옥에 왔느냐?"',en:'"Why have you come to hell?"',zh:'"你为什么来到地狱？"',ja:'"お前はなぜ地獄に来た？"',es:'"¿Por qué has venido al infierno?"',dur:3000,cls:'gold',img:7},
-  {v:97.0,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000},
+  {v:97.0,text:'',en:'',zh:'',ja:'',es:'',dur:3000},
   {v:99.0,text:'"지옥을 탈출하라, 죄인이여."',en:'"Escape from hell, sinner."',zh:'"逃出地狱吧，罪人。"',ja:'"地獄から脱出せよ、罪人よ。"',es:'"Escapa del infierno, pecador."',dur:3000,cls:'gold',img:7,end:true},
   {v:103,exit:true}
 ];
@@ -2471,8 +1881,8 @@ function showCharGate(charId){
   // 즉시 시작 시도
   if(document.getElementById('lobby').style.display==='flex'){resize();requestAnimationFrame(loop)}
 })();
-</script>
-<script>
+
+
 // ═══ 스플래시 시퀀스 (SCREEN 1: 경고문, SCREEN 2: FDG 로고, SCREEN 3: 타이틀) ═══
 (function(){
   const overlay=document.getElementById('splashOverlay');
@@ -2663,6 +2073,3 @@ function _applyInputMode(mode){
   window._preferredInputMode=mode;
   // 글로벌 _GP 매니저가 패드/KBM 전환 + 커서 자동 관리
 }
-</script>
-</body>
-</html>
