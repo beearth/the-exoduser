@@ -548,6 +548,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     <h2>새 캐릭터 생성</h2>
     <p>지옥에 보낼 캐릭터의 이름을 지어주세요</p>
     <input class="name-input" id="charName" placeholder="이름 (2~8자)" maxlength="8">
+    <div id="vkbWrap" style="display:none;margin:10px 0 6px"></div>
     <div class="create-modal-btns">
       <button class="create-cancel-btn" id="createCancelBtn">취소</button>
       <button class="create-btn" id="createBtn">생성</button>
@@ -701,6 +702,16 @@ const _LOBBY_EN={
   '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Your Steam wishlist support\nshapes the next chapter of\nEXODUSER: HELL LORD',
   '공식 출시 소식을 가장 먼저 받아보세요':'Be the first to know when we launch',
   'STEAM 위시리스트 추가':'ADD TO STEAM WISHLIST',
+  '슬롯 가득참':'Slots Full','최대':'Max','개':'slots',
+  '오프라인 모드':'Offline Mode',
+  '지옥에 보낼 캐릭터의 이름을 지어주세요':'Name the character you will send to hell',
+  '또 살아 돌아왔군':'Back from the dead again','이번엔 얼마나 가나':'How far this time',
+  '끝이 보이지 않는다':'No end in sight','탈출은 환상이다':'Escape is an illusion',
+  '누구를 부를 텐가':'Who will you call','다시 떨어졌군':'Fell again',
+  '...일어났나':'...Awake?','또 너냐':'You again?','지치지도 않는군':'Never tire, do you',
+  '문은 늘 그 자리에 있다':'The door is always there','이 자에게 또 기회를':'Another chance for this one',
+  '얼음지옥':'Ice Hell','독충지옥':'Venom Hell','화염지옥':'Fire Hell',
+  '심연지옥':'Abyss Hell','뇌전지옥':'Thunder Hell','백골지옥':'Bone Hell','혼돈지옥':'Chaos Hell',
 };
 const _LOBBY_ZH={
   '지옥의 길':'地狱之路：EXODUSER','연결 중...':'连接中...','캐릭터를 선택하세요':'选择你的角色','당신은 누구인가':'汝乃何人',
@@ -735,7 +746,30 @@ const _LOBBY_ZH={
   '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'您在Steam的一个愿望单\n将塑造EXODUSER: HELL LORD\n的下一段旅程',
   '공식 출시 소식을 가장 먼저 받아보세요':'率先获得官方上市通知',
   'STEAM 위시리스트 추가':'加入STEAM愿望单',
-};
+
+'슬롯 가득참':'槽位已满',
+'최대':'最多',
+'개':'个',
+'오프라인 모드':'离线模式',
+'지옥에 보낼 캐릭터의 이름을 지어주세요':'请为你要送入地狱的角色取名',
+'또 살아 돌아왔군':'又活着回来了',
+'이번엔 얼마나 가나':'这次能走多远',
+'끝이 보이지 않는다':'看不到尽头',
+'탈출은 환상이다':'逃脱只是幻想',
+'누구를 부를 텐가':'你要叫谁',
+'다시 떨어졌군':'又掉下去了',
+'...일어났나':'...醒了?',
+'또 너냐':'又是你',
+'지치지도 않는군':'不知道累吗',
+'문은 늘 그 자리에 있다':'门一直在那里',
+'이 자에게 또 기회를':'再给这个人一次机会',
+'얼음지옥':'冰狱',
+'독충지옥':'毒虫狱',
+'화염지옥':'火焰狱',
+'심연지옥':'深渊狱',
+'뇌전지옥':'雷电狱',
+'백골지옥':'白骨狱',
+'혼돈지옥':'混沌狱',};
 const _LOBBY_JA={
   '지옥의 길':'地獄の道：EXODUSER','연결 중...':'接続中...','캐릭터를 선택하세요':'キャラクターを選択','당신은 누구인가':'汝は何者か',
   'Google로 입장':'Googleでログイン','캐릭터 선택':'キャラクター選択','로그아웃':'ログアウト',
@@ -769,7 +803,30 @@ const _LOBBY_JA={
   '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'SteamウィッシュリストへのあなたのサポートがEXODUSER: HELL LORDの\n次の章を形作ります',
   '공식 출시 소식을 가장 먼저 받아보세요':'リリース情報をいち早くお届けします',
   'STEAM 위시리스트 추가':'STEAMウィッシュリストに追加',
-};
+
+'슬롯 가득참':'スロット満杯',
+'최대':'最大',
+'개':'個',
+'오프라인 모드':'オフラインモード',
+'지옥에 보낼 캐릭터의 이름을 지어주세요':'地獄に送るキャラクターの名前を付けてください',
+'또 살아 돌아왔군':'また生きて戻ったか',
+'이번엔 얼마나 가나':'今度はどこまで行ける',
+'끝이 보이지 않는다':'終わりが見えない',
+'탈출은 환상이다':'脱出は幻想だ',
+'누구를 부를 텐가':'誰を呼ぶ気だ',
+'다시 떨어졌군':'また落ちたか',
+'...일어났나':'...起きた?',
+'또 너냐':'また君か',
+'지치지도 않는군':'疲れ知らずだな',
+'문은 늘 그 자리에 있다':'扉はいつもそこにある',
+'이 자에게 또 기회를':'こいつにまたチャンスを',
+'얼음지옥':'氷獄',
+'독충지옥':'毒虫獄',
+'화염지옥':'火炎獄',
+'심연지옥':'深淵獄',
+'뇌전지옥':'雷電獄',
+'백골지옥':'白骨獄',
+'혼돈지옥':'混沌獄',};
 const _LOBBY_ES={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Conectando...','캐릭터를 선택하세요':'Selecciona tu personaje','당신은 누구인가':'¿QUIÉN ERES?',
   'Google로 입장':'Entrar con Google','캐릭터 선택':'Selección de personaje','로그아웃':'Cerrar sesión',
@@ -803,7 +860,30 @@ const _LOBBY_ES={
   '여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Tu apoyo en la lista de deseos de Steam\ndará forma al próximo capítulo de\nEXODUSER: HELL LORD',
   '공식 출시 소식을 가장 먼저 받아보세요':'Sé el primero en saber cuándo lanzamos',
   'STEAM 위시리스트 추가':'AÑADIR A LA LISTA DE DESEOS DE STEAM',
-};
+
+'슬롯 가득참':'Ranuras llenas',
+'최대':'Máx',
+'개':'slots',
+'오프라인 모드':'Modo offline',
+'지옥에 보낼 캐릭터의 이름을 지어주세요':'Nombra al personaje que enviarás al infierno',
+'또 살아 돌아왔군':'De vuelta de la muerte',
+'이번엔 얼마나 가나':'¿Hasta dónde esta vez?',
+'끝이 보이지 않는다':'No se ve el final',
+'탈출은 환상이다':'Escapar es una ilusión',
+'누구를 부를 텐가':'¿A quién llamarás?',
+'다시 떨어졌군':'Caíste otra vez',
+'...일어났나':'...¿Despierto?',
+'또 너냐':'¿Otra vez tú?',
+'지치지도 않는군':'Incansable',
+'문은 늘 그 자리에 있다':'La puerta siempre está ahí',
+'이 자에게 또 기회를':'Otra oportunidad para este',
+'얼음지옥':'Infierno Hielo',
+'독충지옥':'Infierno Veneno',
+'화염지옥':'Infierno Fuego',
+'심연지옥':'Infierno Abismo',
+'뇌전지옥':'Infierno Trueno',
+'백골지옥':'Infierno Huesos',
+'혼돈지옥':'Infierno Caos',};
 const _LOBBY_FR={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Connexion...','캐릭터를 선택하세요':'Sélectionnez votre personnage','당신은 누구인가':'QUI ES-TU ?',
   'Google로 입장':'Entrer avec Google','캐릭터 선택':'Sélection du personnage','로그아웃':'Déconnexion',
@@ -1450,6 +1530,9 @@ function _applyLobbyLang(){
   // placeholder
   const ci=document.getElementById('charName');
   if(ci)ci.placeholder=_TL('캐릭터 이름 (2~8자)');
+  // 오프라인/이름모달
+  const ob=document.getElementById('offlineBtn');if(ob){const svg=ob.querySelector('svg');const txt=' '+_TL('오프라인 모드');ob.innerHTML='';if(svg)ob.appendChild(svg);ob.appendChild(document.createTextNode(txt))}
+  const np=document.querySelector('#charNameModal p, #charNamePop p');if(np)np.textContent=_TL('지옥에 보낼 캐릭터의 이름을 지어주세요');
   // 배너 텍스트 (lobby mid-area)
   const mainTxt=document.querySelector('.lma-main-txt');
   if(mainTxt)mainTxt.innerHTML=_TL('여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다').replace(/\n/g,'<br>');
@@ -2046,8 +2129,8 @@ async function loadCharacters(){
   else data.forEach(ch=>{
     const d=ch.data||{};const lv=d.player?d.player.lv||1:1;const stage=d.game?d.game.stage||0:0;
     const hell=Math.min(6,~~(stage/10));const floor=stage%10+1;
-    const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
-    const st=stage===0?'시작점':(hell+1)+'장 '+hn[hell]+' '+floor+'층';
+    const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'].map(s=>_TL(s));
+    const st=stage===0?_TL('시작점'):(hell+1)+_TL('장')+' '+hn[hell]+' '+floor+_TL('층');
     const _vi=CHAR_VISUALS[d.charIdx||0]||CHAR_VISUALS[0];
     const div=document.createElement('div');div.className='char-item';
     div.innerHTML=`<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=2" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(ch.name)}</div><div class="char-info">Lv.${lv} | ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
@@ -2231,7 +2314,7 @@ function _renderSlotList(){
   // ── 고정: 새 캐릭터 생성 칸 ──
   const newDiv=document.createElement('div');newDiv.className='char-item-new';newDiv.style.marginTop='10px';
   const canCreate=total<MAX_CHARS;
-  newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">'+(canCreate?'+':'✕')+'</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+(canCreate?_TL('새 캐릭터'):_TL('슬롯 가득참'))+'</div>'+(canCreate?'':'<div class="char-info">최대 '+MAX_CHARS+'개</div>')+'</div>';
+  newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">'+(canCreate?'+':'✕')+'</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+(canCreate?_TL('새 캐릭터'):_TL('슬롯 가득참'))+'</div>'+(canCreate?'':'<div class="char-info">'+_TL('최대')+' '+MAX_CHARS+_TL('개')+'</div>')+'</div>';
   if(canCreate){
     newDiv.addEventListener('click',()=>{$('createModal').classList.add('show');$('charName').value='';$('charName').focus()});
   }else{
@@ -2359,6 +2442,51 @@ if($('enterGameBtn')){
 // 생성 모달
 $('createCancelBtn').addEventListener('click',()=>{$('createModal').classList.remove('show')});
 
+// ── 가상 키보드 (게임패드용) ──
+const _VKB_ROWS=[
+  ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ'],
+  ['ㅋ','ㅌ','ㅍ','ㅎ','ㅏ','ㅓ','ㅗ','ㅜ','ㅡ','ㅣ'],
+  ['ㅐ','ㅔ','ㄲ','ㄸ','ㅃ','ㅆ','ㅉ','ㅑ','ㅕ','ㅛ'],
+  ['A','B','C','D','E','F','G','H','I','J'],
+  ['K','L','M','N','O','P','Q','R','S','T'],
+  ['U','V','W','X','Y','Z','1','2','3','4'],
+  ['⌫','␣','OK']
+];
+let _vkbRow=0,_vkbCol=0,_vkbActive=false;
+function _vkbShow(){
+  const w=$('vkbWrap');if(!w)return;
+  _vkbActive=true;_vkbRow=0;_vkbCol=0;
+  let h='';
+  _VKB_ROWS.forEach((row,ri)=>{
+    h+='<div style="display:flex;justify-content:center;gap:3px;margin:2px 0">';
+    row.forEach((k,ci)=>{
+      const wide=k==='⌫'||k==='␣'||k==='OK';
+      h+='<span data-vr="'+ri+'" data-vc="'+ci+'" style="display:inline-flex;align-items:center;justify-content:center;'+(wide?'width:60px':'width:28px')+';height:28px;background:rgba(40,30,20,.8);border:1px solid #443322;color:#ccaa77;font-size:.75rem;cursor:pointer;border-radius:3px;user-select:none" onclick="_vkbInput(\''+k.replace("'","\\'")+'\')">'+k+'</span>';
+    });
+    h+='</div>';
+  });
+  w.style.display='block';w.innerHTML=h;
+  _vkbHighlight();
+}
+function _vkbHide(){const w=$('vkbWrap');if(w){w.style.display='none';w.innerHTML='';}_vkbActive=false;}
+function _vkbHighlight(){
+  const w=$('vkbWrap');if(!w)return;
+  w.querySelectorAll('span[data-vr]').forEach(s=>{
+    const r=+s.dataset.vr,c=+s.dataset.vc;
+    s.style.borderColor=(r===_vkbRow&&c===_vkbCol)?'#ffcc00':'#443322';
+    s.style.color=(r===_vkbRow&&c===_vkbCol)?'#ffcc00':'#ccaa77';
+    s.style.background=(r===_vkbRow&&c===_vkbCol)?'rgba(80,60,20,.8)':'rgba(40,30,20,.8)';
+  });
+}
+function _vkbInput(k){
+  const inp=$('charName');if(!inp)return;
+  if(k==='⌫'){inp.value=inp.value.slice(0,-1);}
+  else if(k==='␣'){if(inp.value.length<8)inp.value+=' ';}
+  else if(k==='OK'){$('createBtn').click();}
+  else{if(inp.value.length<8)inp.value+=k;}
+  inp.dispatchEvent(new Event('input'));
+}
+
 // ── 로그인 게임패드 네비게이션 ──
 let _loginGpIdx = 0;
 _GP.on('loginNav', (gp, just) => {
@@ -2385,13 +2513,25 @@ _GP.on('lobbyNav', (gp, just) => {
   const lobby = $('lobby');
   if(!lobby || lobby.style.display !== 'flex') return false;
 
-  // 생성 모달이 열려있으면 모달 조작
+  // 생성 모달이 열려있으면 가상 키보드 조작
   const modal = $('createModal');
   if(modal && modal.classList.contains('show')) {
-    if(just[0]) { $('createBtn').click(); return true; } // A = 생성
-    if(just[1]) { $('createCancelBtn').click(); return true; } // B = 취소
+    if(!_vkbActive) _vkbShow();
+    // D-pad / 좌스틱 네비게이션
+    const maxCol=_VKB_ROWS[_vkbRow].length-1;
+    if(just[12]||(_GP.axes[1]<-0.5&&!_GP.prev._vkU)){_vkbRow=Math.max(0,_vkbRow-1);_vkbCol=Math.min(_vkbCol,_VKB_ROWS[_vkbRow].length-1);_vkbHighlight();}
+    if(just[13]||(_GP.axes[1]>0.5&&!_GP.prev._vkD)){_vkbRow=Math.min(_VKB_ROWS.length-1,_vkbRow+1);_vkbCol=Math.min(_vkbCol,_VKB_ROWS[_vkbRow].length-1);_vkbHighlight();}
+    if(just[14]||(_GP.axes[0]<-0.5&&!_GP.prev._vkL)){_vkbCol=Math.max(0,_vkbCol-1);_vkbHighlight();}
+    if(just[15]||(_GP.axes[0]>0.5&&!_GP.prev._vkR)){_vkbCol=Math.min(maxCol,_vkbCol+1);_vkbHighlight();}
+    _GP.prev._vkU=_GP.axes[1]<-0.5;_GP.prev._vkD=_GP.axes[1]>0.5;
+    _GP.prev._vkL=_GP.axes[0]<-0.5;_GP.prev._vkR=_GP.axes[0]>0.5;
+    if(just[0]){_vkbInput(_VKB_ROWS[_vkbRow][_vkbCol]);return true;} // A = 입력
+    if(just[1]){_vkbHide();$('createCancelBtn').click();return true;} // B = 취소
+    if(just[2]){_vkbInput('⌫');return true;} // X = 백스페이스
+    if(just[3]){_vkbInput('OK');return true;} // Y = 생성(OK)
     return false;
   }
+  if(_vkbActive) _vkbHide();
 
   // 비주얼 선택 팝업
   const vpop = $('charVisualPop');
@@ -2458,8 +2598,8 @@ function showCharGate(charId){
 
 // ═══ 펫 말풍선 시스템 ═══
 (function(){
-  var ravenLines=["또 살아 돌아왔군","이번엔 얼마나 가나","끝이 보이지 않는다","탈출은 환상이다","누구를 부를 텐가","다시 떨어졌군"];
-  var catLines=["...일어났나","또 너냐","지치지도 않는군","문은 늘 그 자리에 있다","이 자에게 또 기회를"];
+  var ravenLines=["또 살아 돌아왔군","이번엔 얼마나 가나","끝이 보이지 않는다","탈출은 환상이다","누구를 부를 텐가","다시 떨어졌군"].map(s=>_TL(s));
+  var catLines=["...일어났나","또 너냐","지치지도 않는군","문은 늘 그 자리에 있다","이 자에게 또 기회를"].map(s=>_TL(s));
   var _lastRaven=-1,_lastCat=-1,_bubbleActive=false,_bubbleTimer=null;
   function pickLine(arr,lastIdx){
     var idx;do{idx=~~(Math.random()*arr.length)}while(arr.length>1&&idx===lastIdx);return idx;
