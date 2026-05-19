@@ -10001,13 +10001,17 @@ function _gpUINav(panel){
 
   _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.y=y;
 
-  // ── 우측 스틱: 패널 스크롤 (WheelEvent — 마우스 휠과 동일) ──
+  // ── 우측 스틱: 패널 스크롤 (scrollTop 직접 조작) ──
   if(Math.abs(rsYVal)>0.15||Math.abs(rsXVal)>0.15){
     const _wx=_gpVC.vis?_gpVC.x:(cur?cur.getBoundingClientRect().left+cur.offsetWidth/2:window.innerWidth/2);
     const _wy=_gpVC.vis?_gpVC.y:(cur?cur.getBoundingClientRect().top+cur.offsetHeight/2:window.innerHeight/2);
     const _wt=document.elementFromPoint(_wx,_wy)||panel;
-    if(_wt)_wt.dispatchEvent(new WheelEvent('wheel',{deltaY:rsYVal*120,deltaX:rsXVal*120,deltaMode:0,bubbles:true,cancelable:true,clientX:_wx,clientY:_wy}));
-  } else {_gpScEl=null;}
+    const _sc=_gpFindScroll(_wt)||_gpFindScroll(panel);
+    if(_sc){
+      if(Math.abs(rsYVal)>0.15)_sc.scrollTop+=rsYVal*18;
+      if(Math.abs(rsXVal)>0.15)_sc.scrollLeft+=rsXVal*18;
+    }
+  }
 
   // 버튼 8(Back) = 전체 첫 항목  버튼 9(Start) = 전체 마지막 항목
   const b8=!!(_gpad.buttons[8]&&_gpad.buttons[8].pressed);
@@ -10394,15 +10398,19 @@ function _gpInvNav(){
     const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
     if(_bots[_gpInvBotIdx])_bots[_gpInvBotIdx].click();
   }
-  // ── 우스틱: 스크롤 (WheelEvent — 마우스 휠과 동일) ──
+  // ── 우스틱: 스크롤 (scrollTop 직접 조작) ──
   const _rsYFull=_gpad.axes.length>=4?_gpad.axes[3]:0;
   const _rsXFull=_gpad.axes.length>=3?_gpad.axes[2]:0;
   if(Math.abs(_rsYFull)>0.15||Math.abs(_rsXFull)>0.15){
     const _iwx=_gpVC.vis?_gpVC.x:window.innerWidth/2;
     const _iwy=_gpVC.vis?_gpVC.y:window.innerHeight/2;
     const _iwt=document.elementFromPoint(_iwx,_iwy)||$('invPanel');
-    if(_iwt)_iwt.dispatchEvent(new WheelEvent('wheel',{deltaY:_rsYFull*120,deltaX:_rsXFull*120,deltaMode:0,bubbles:true,cancelable:true,clientX:_iwx,clientY:_iwy}));
-  } else {_gpScEl=null;}
+    const _sc=_gpFindScroll(_iwt)||_gpFindScroll($('invPanel'));
+    if(_sc){
+      if(Math.abs(_rsYFull)>0.15)_sc.scrollTop+=_rsYFull*18;
+      if(Math.abs(_rsXFull)>0.15)_sc.scrollLeft+=_rsXFull*18;
+    }
+  }
   // 가상 커서 호버 → inv-item mouseover 자동 발생
   if(_gpVC.vis){const _vhEl=document.elementFromPoint(_gpVC.x,_gpVC.y);const _vhIt=(_vhEl&&_vhEl.id!=="_gpVCursor")?_vhEl:null;if(_vhIt!==_gpVCPrevHoverEl){if(_gpVCPrevHoverEl)_gpVCPrevHoverEl.dispatchEvent(new MouseEvent("mouseleave",{bubbles:true,clientX:_gpVC.x,clientY:_gpVC.y}));if(_vhIt)_vhIt.dispatchEvent(new MouseEvent("mouseover",{bubbles:true,clientX:_gpVC.x,clientY:_gpVC.y}));_gpVCPrevHoverEl=_vhIt;}}else if(_gpVCPrevHoverEl){_gpVCPrevHoverEl.dispatchEvent(new MouseEvent("mouseleave",{bubbles:true}));_gpVCPrevHoverEl=null;}
   // B버튼 패널닫기 제거 — 전용 닫기버튼 사용

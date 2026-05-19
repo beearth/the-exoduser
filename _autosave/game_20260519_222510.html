@@ -4716,7 +4716,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:6,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -10001,13 +10001,17 @@ function _gpUINav(panel){
 
   _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.y=y;
 
-  // ── 우측 스틱: 패널 스크롤 (WheelEvent — 마우스 휠과 동일) ──
+  // ── 우측 스틱: 패널 스크롤 (scrollTop 직접 조작) ──
   if(Math.abs(rsYVal)>0.15||Math.abs(rsXVal)>0.15){
     const _wx=_gpVC.vis?_gpVC.x:(cur?cur.getBoundingClientRect().left+cur.offsetWidth/2:window.innerWidth/2);
     const _wy=_gpVC.vis?_gpVC.y:(cur?cur.getBoundingClientRect().top+cur.offsetHeight/2:window.innerHeight/2);
     const _wt=document.elementFromPoint(_wx,_wy)||panel;
-    if(_wt)_wt.dispatchEvent(new WheelEvent('wheel',{deltaY:rsYVal*120,deltaX:rsXVal*120,deltaMode:0,bubbles:true,cancelable:true,clientX:_wx,clientY:_wy}));
-  } else {_gpScEl=null;}
+    const _sc=_gpFindScroll(_wt)||_gpFindScroll(panel);
+    if(_sc){
+      if(Math.abs(rsYVal)>0.15)_sc.scrollTop+=rsYVal*18;
+      if(Math.abs(rsXVal)>0.15)_sc.scrollLeft+=rsXVal*18;
+    }
+  }
 
   // 버튼 8(Back) = 전체 첫 항목  버튼 9(Start) = 전체 마지막 항목
   const b8=!!(_gpad.buttons[8]&&_gpad.buttons[8].pressed);
@@ -37421,36 +37425,31 @@ if($('optOutline'))$('optOutline').onchange=function(){OPT.outline=this.checked;
 if($('optShowFps'))$('optShowFps').onchange=function(){OPT.showFps=this.checked;saveSettings()};
 // ── 커스텀 마우스 커서 ──
 const _CURSORS=[
-  {name:'기본',nameEn:'Default',draw:null,img:null,hx:0,hy:0},
-  {name:'악마손',nameEn:'Demon Hand',draw:null},
-  {name:'지옥검',nameEn:'Hell Sword',draw:null},
-  {name:'해골손',nameEn:'Skull Hand',draw:null},
-  {name:'얼음단검',nameEn:'Ice Dagger',draw:null},
-  {name:'마법지팡이',nameEn:'Magic Staff',draw:null},
-  {name:'다크커서',nameEn:'Dark Cursor',draw:null}
+  {name:'다크 레드',nameEn:'Dark Red',draw:null},
+  {name:'다크 퍼플',nameEn:'Dark Purple',draw:null}
 ];
-// 이미지 커서 경로
-_CURSORS[1].img='img/cursors/cursor_demon_hand.png';
-_CURSORS[2].img='img/cursors/cursor_hell_sword1.png';
-_CURSORS[3].img='img/cursors/cursor_skull_hand.png';
-_CURSORS[4].img='img/cursors/cursor_ice_dagger.png';
-_CURSORS[5].img='img/cursors/cursor_magic_staff_2x.png';
-_CURSORS[6].img='img/cursors/cursor_dark_2x.png';
+_CURSORS[0].img='img/cursors/cursor_dark_2x.png';
+_CURSORS[0].hoverImg='img/cursors/cursor_dark_hover_2x.png';
+_CURSORS[1].img='img/cursors/cursor_purple_normal_2x.png';
+_CURSORS[1].hoverImg='img/cursors/cursor_purple_hover_2x.png';
 // 이미지 프리로드
-_CURSORS.forEach(cur=>{if(cur.img){const _i=new Image();_i.src=cur.img;cur._imgEl=_i;_i.onload=()=>{_cursorCache=[];try{_applyCursor()}catch(e){}}}});
+_CURSORS.forEach(cur=>{
+  if(cur.img){const _i=new Image();_i.src=cur.img;cur._imgEl=_i;_i.onload=()=>{_cursorCache=[];try{_applyCursor()}catch(e){}}}
+  if(cur.hoverImg){const _h=new Image();_h.src=cur.hoverImg;cur._hoverEl=_h;_h.onload=()=>{_cursorCache=[];}}
+});
 let _cursorCache=[];
 function _buildCursor(idx){
   const sz=OPT.cursorSize||50;
   const key=idx+'_'+sz;
   if(_cursorCache[key])return _cursorCache[key];
-  if(idx===0){_cursorCache[key]='default';return 'default'}
   const cur=_CURSORS[idx];
+  if(!cur){_cursorCache[key]='default';return 'default'}
   // 이미지 파일 있고 로드 완료면 이미지 사용
   if(cur._imgEl&&cur._imgEl.complete&&cur._imgEl.naturalWidth>0){
     const s=cur._imgEl.naturalWidth;const out=Math.max(16,Math.min(256,Math.round(64*sz/100)));
     const cv2=document.createElement('canvas');cv2.width=out;cv2.height=out;
     const x2=cv2.getContext('2d');x2.drawImage(cur._imgEl,0,0,out,out);
-    const isCenter=idx===2;
+    const isCenter=false;
     const hx=isCenter?Math.round(out/2):Math.round(out*13/56);
     const hy=isCenter?1:0;
     _cursorCache[key]='url('+cv2.toDataURL()+') '+hx+' '+hy+', auto';
@@ -37480,7 +37479,27 @@ function _buildCursor(idx){
   _cursorCache[key]='url('+cv2.toDataURL()+') '+hx+' '+hy+', auto';
   return _cursorCache[key];
 }
-function _applyCursor(){C.style.cursor=_buildCursor(OPT.cursor??5);document.body.style.cursor=_buildCursor(OPT.cursor??5)}
+function _buildHoverCursor(idx){
+  const sz=OPT.cursorSize||50;const key='h_'+idx+'_'+sz;
+  if(_cursorCache[key])return _cursorCache[key];
+  const cur=_CURSORS[idx];
+  if(!cur||!cur._hoverEl||!cur._hoverEl.complete||!cur._hoverEl.naturalWidth)return _buildCursor(idx);
+  const out=Math.max(16,Math.min(256,Math.round(64*sz/100)));
+  const cv2=document.createElement('canvas');cv2.width=out;cv2.height=out;
+  cv2.getContext('2d').drawImage(cur._hoverEl,0,0,out,out);
+  const hx=Math.round(out*13/56);
+  _cursorCache[key]='url('+cv2.toDataURL()+') '+hx+' 0, auto';
+  return _cursorCache[key];
+}
+let _hoverStyleEl=null;
+function _applyCursor(){
+  const nc=_buildCursor(OPT.cursor??0);
+  C.style.cursor=nc;document.body.style.cursor=nc;
+  // hover cursor for pointer elements
+  const hc=_buildHoverCursor(OPT.cursor??0);
+  if(!_hoverStyleEl){_hoverStyleEl=document.createElement('style');document.head.appendChild(_hoverStyleEl)}
+  _hoverStyleEl.textContent='[style*="cursor:pointer"],[style*="cursor: pointer"],button:not(:disabled),a,.char-item,.char-item-new,.enter-btn,[onclick]{cursor:'+hc+' !important}';
+}
 // ── Electron 화면 설정 (해상도 + 화면모드) ──
 if(IS_ELECTRON&&window.electronAPI){
   $('optScreenSection').style.display='';
@@ -37664,8 +37683,8 @@ try{
     if(data.binds){for(const k in data.binds){if(k in BINDS)BINDS[k]=data.binds[k]}}
     if(data.binds2){for(const k in data.binds2){if(k in BINDS2||k in BINDS)BINDS2[k]=data.binds2[k]}}
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
-    // 2026-05-19 마이그레이션: 기본 커서 마법지팡이 강제
-    OPT.cursor=6;
+    // 2026-05-19 마이그레이션: 기본 커서 다크커서 강제
+    OPT.cursor=0;
     // 2026-04-17 마이그레이션: 사용자 UI 배율(uiScale/uiScaleAuto) 기능 완전 제거 — 기존 저장값 삭제
     if('uiScale' in OPT)delete OPT.uiScale;
     if('uiScaleAuto' in OPT)delete OPT.uiScaleAuto;
