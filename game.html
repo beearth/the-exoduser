@@ -9878,12 +9878,14 @@ function _gpUINav(panel){
   const _spop=$('skSlotPop');
   if(_spop&&_spop.style.display==='flex')panel=_spop;
   // 패널 내 포커스 가능 요소 수집
-  const SEL='button:not([disabled]),.pclose,[onclick],.sk-opt:not(.locked),.up-row:not(.dis),.stat-btn:not(.dis),.passive-row:not(.dis),.fg-i:not(.dis),.fg-tab,.set-key,.id-btn,.retry,input[type="range"],input[type="checkbox"],select,[data-sk-id],.inv-filter-btn,.inv-eq-item,.inv-item,.inv-cr-item,.inv-cell,.inv-dep-item,.inv-exp-btn,.sk-pop-tab';
+  const SEL='button:not([disabled]),.pclose,[onclick],.sk-opt:not(.locked),.up-row:not(.dis),.stat-btn:not(.dis),.passive-row:not(.dis),.fg-i:not(.dis),.fg-tab,.set-key,.id-btn,.retry,input[type="range"],input[type="checkbox"],select,[data-sk-id],.inv-filter-btn,.inv-eq-item,.inv-eq-slot,.inv-item,.inv-cr-item,.inv-cell,.inv-dep-item,.inv-exp-btn,.sk-pop-tab,.gc-btn,.inv-storage-toggle,.cmp-close,label[style*="cursor:pointer"],a[href],[style*="cursor:pointer"]';
   const items=[];
   const all=panel.querySelectorAll(SEL);
   for(let i=0;i<all.length;i++){
     const el=all[i];
     if(el.offsetParent===null)continue;
+    // [data-sk-id] 자식 중복 방지: 스킬카드 안의 자식은 카드 자체만 잡음
+    if(!el.dataset.skId&&el.closest('[data-sk-id]'))continue;
     items.push(el);
   }
   if(!items.length)return;
@@ -9977,7 +9979,20 @@ function _gpUINav(panel){
     if(_gpVC.vis){
       const _vcEl=document.elementFromPoint(_gpVC.x,_gpVC.y);
       if(_vcEl&&_vcEl.id!=='_gpVCursor'){_vcEl.click();_gpBtnsPrev['k0']=true;}
-    } else if(cur){cur.click();_gpBtnsPrev['k0']=true;}
+    } else if(cur){
+      // 스킬카드 expanded: A → (+) 습득/강화 버튼 우선 클릭
+      if(cur.dataset&&cur.dataset.skId){
+        const _plusBtn=cur.querySelector('[style*="cursor:pointer"][style*="border:1px solid #aa8833"]');
+        if(_plusBtn){_plusBtn.click();_gpBtnsPrev['k0']=true;}
+        else{cur.click();_gpBtnsPrev['k0']=true;}
+      } else {cur.click();_gpBtnsPrev['k0']=true;}
+    }
+  }
+  // X = 스킬카드 expanded: (-) 레벨다운/취소 버튼
+  const x=_gpad.buttons[2]&&_gpad.buttons[2].pressed;
+  if(x&&!_gpUIPrev.x&&cur&&cur.dataset&&cur.dataset.skId&&panel.id==='skillPanel'){
+    const _minBtn=cur.querySelector('[style*="cursor:pointer"][style*="border:1px solid #cc4444"]');
+    if(_minBtn){_minBtn.click();_gpBtnsPrev['k2']=true;}
   }
   // skSlotPop B = 팝업만 닫기 (패널 자체 닫기는 전용 닫기버튼으로)
   const _start=!!(_gpad.buttons[9]&&_gpad.buttons[9].pressed);
@@ -10097,7 +10112,7 @@ function _pollGamepad(){
   if(_gcEl&&_gcEl.classList.contains("on")){_gpClearAll();_gpVCUpdate();_gpUINav(_gcEl);return;}
   const _gpOpenPanel=document.querySelector('.panel.on');
   const _gpOverlay=(()=>{
-    for(const id of['introDiff','introKeys','death','lvUpScreen','tutorial','stageClear']){
+    for(const id of['introDiff','introKeys','death','lvUpScreen','tutorial','stageClear','victory','stageTransition']){
       const el=$(id);if(!el)continue;
       if(el.classList.contains('on'))return el;
       if(el.style.opacity==='1'&&el.style.pointerEvents==='all')return el;
@@ -24021,6 +24036,32 @@ function update(){
       else if(it.type==='potion'){const pt=POT[it.potType];if(pt&&addPotion(it.potType,it.potCount||1)){it.picked=true;_rCnt++}}
     }}
   }
+  // ── R키(L3) 홀드: 아이템 연속줍기 (150ms 간격) ──
+  if(!isJust('interact')&&isHeld('interact')){
+    if(!P._pickHoldT)P._pickHoldT=0;
+    P._pickHoldT+=sp;
+    if(P._pickHoldT>=9){P._pickHoldT=0;
+      // 장비
+      let _hBi=-1,_hBd=1e9;
+      for(let _wi=0;_wi<worldItems.length;_wi++){const it=worldItems[_wi];if(it.type!=='item'||it.picked)continue;
+        const _sx=it.x-G.cam.x,_sy=it.y-G.cam.y;if(_sx<-C.width/2-40||_sx>C.width/2+40||_sy<-C.height/2-40||_sy>C.height/2+40)continue;
+        const d=dst(P.x,P.y,it.x,it.y);if(d<_hBd){_hBd=d;_hBi=_wi}
+      }
+      if(_hBi>=0){const wi=worldItems[_hBi];
+        if(pickupItem(wi.item)){wi.picked=true;SFX.pickup();addParts(wi.x,wi.y,RARITY_C[wi.item.rarity]||'#aaa',6);if(deathDrop&&deathDrop.item===wi.item)deathDrop=null}
+      }
+      // 악의+물약
+      {let _rCnt=0;
+      for(let _ri=0;_ri<worldItems.length&&_rCnt<20;_ri++){const it=worldItems[_ri];
+        if(it.picked)continue;
+        if(it.type!=='mat'&&it.type!=='potion')continue;
+        const _sx=it.x-G.cam.x,_sy=it.y-G.cam.y;
+        if(_sx<-C.width/2-40||_sx>C.width/2+40||_sy<-C.height/2-40||_sy>C.height/2+40)continue;
+        if(it.type==='mat'){const mv=~~((it.matVal||1)*(1+_eqAffix('goldBonus'))*_maliceMul());it.picked=true;G.mats+=mv;_rCnt++}
+        else if(it.type==='potion'){const pt=POT[it.potType];if(pt&&addPotion(it.potType,it.potCount||1)){it.picked=true;_rCnt++}}
+      }}
+    }
+  } else {P._pickHoldT=0;}
 
   if(P.s!=='sBlock'&&(P._sbCd||0)>0)P._sbCd-=sp; // 보호막 쿨다운 (해제 후 1.5초)
   // ── HP≤0 안전장치: idle 상태에서 죽은 캐릭터가 움직이는 버그 방지 ──
