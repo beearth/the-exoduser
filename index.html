@@ -10,7 +10,7 @@
 (() => {
   const v = '20260414-hotfix2-' + Date.now();
   const iconIco = '/favicon.ico?v=' + v;
-  const iconPng = 'https://raw.githubusercontent.com/beearth/the-exoduser/main/img/icon-256.png?v=' + v;
+  const iconPng = 'img/icon-256.png?v=' + v;
   const applyFavicon = () => {
     document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"], link[rel="apple-touch-icon"]').forEach((n) => n.remove());
     const specs = [
@@ -398,7 +398,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 
   <!-- 인트로 비디오 (THE EXODUSER) -->
   <video id="cinVideo" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:20;opacity:1;transition:opacity 1.5s ease;pointer-events:none">
-    <source src="https://raw.githubusercontent.com/beearth/the-exoduser/main/video/intro.mp4" type="video/mp4">
+    <source src="video/intro.mp4" type="video/mp4">
   </video>
   <!-- 클릭 안내 -->
   <div id="cinClickPrompt" style="position:absolute;inset:0;z-index:999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.1)">
@@ -613,7 +613,7 @@ addEventListener('keydown', e => {
 </script>
 <script>
 // ═══ 로비 배경: 트랜지션 이미지 중 랜덤 1장 ═══
-(function(){const n=~~(Math.random()*19)+1;const _base='https://raw.githubusercontent.com/beearth/the-exoduser/main/img/lording/';const img=new Image();img.onload=function(){document.body.style.backgroundImage='linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('+_base+n+'.png)'};img.src=_base+n+'.png'})();
+(function(){const n=~~(Math.random()*19)+1;const _base='img/lording/';const img=new Image();img.onload=function(){document.body.style.backgroundImage='linear-gradient(rgba(0,0,0,.55),rgba(0,0,0,.55)),url('+_base+n+'.png)'};img.src=_base+n+'.png'})();
 // 브라우저 줌 차단
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 // ── 빌드 버전 (demo.html → 'demo', ea.html → 'ea') ──
@@ -1435,9 +1435,9 @@ document.getElementById('cinLang').onchange=function(){setUserLanguage(this.valu
 // 페이지 로드 시 4단계 폴백으로 초기 언어 결정 + UI 적용
 (function(){const lang=getCurrentLanguage();document.getElementById('cinLang').value=lang;document.getElementById('langSelect').value=lang;if(!localStorage.getItem('hellLang'))localStorage.setItem('hellLang',lang);_applyLobbyLang()})();
 
-const lobbyBGM=new Audio('https://raw.githubusercontent.com/beearth/the-exoduser/main/bgm/%EA%B3%B5%ED%86%B5/lobby.mp3');
+const lobbyBGM=new Audio('bgm/공통/lobby.mp3');
 lobbyBGM.preload='auto';lobbyBGM.loop=true;lobbyBGM.volume=0.65;
-const introVoice=new Audio('https://raw.githubusercontent.com/beearth/the-exoduser/main/bgm/%EA%B3%B5%ED%86%B5/intro_voice.mp3');
+const introVoice=new Audio('bgm/공통/intro_voice.mp3');
 introVoice.preload='auto';introVoice.volume=0.7;
 introVoice.playbackRate=0.95;
 let bgmStarted=false;
@@ -2204,7 +2204,7 @@ function _swapLobbyBg(stage){
   const pick=_bgs[~~(Math.random()*_bgs.length)];
   if(_curBg===pick.k)return;
   _curBg=pick.k;
-  const _rawBase='https://raw.githubusercontent.com/beearth/the-exoduser/main/assets/lobby/';
+  const _rawBase='assets/lobby/';
   const url=_rawBase+'lobby_bg_'+pick.k+pick.e;
   bg.style.opacity='0';
   setTimeout(()=>{
