@@ -9887,8 +9887,9 @@ function _gpUINav(panel){
   const _dR=(_gpad.buttons[15]&&_gpad.buttons[15].pressed)||_gpAxes[6]>0.5;
   const u=_dU,d=_dD,l=_dL,r=_dR;
   if(u||d||l||r)_gpVCHide(); // D-pad 누르면 커서 숨기고 선택 모드
-  // 우측 스틱 → 스크롤 (휠 역할)
-  const rsYVal=_gpAxes[3],rsXVal=_gpAxes[2];
+  // 우측 스틱 → 스크롤 (휠 역할) — 원시값 사용 (데드존 없이 0.15 임계)
+  const rsYVal=_gpad.axes.length>=4?_gpad.axes[3]:0;
+  const rsXVal=_gpad.axes.length>=3?_gpad.axes[2]:0;
   const a=_gpad.buttons[0]&&_gpad.buttons[0].pressed;
   const b=_gpad.buttons[1]&&_gpad.buttons[1].pressed;
   const lb=_gpad.buttons[4]&&_gpad.buttons[4].pressed;

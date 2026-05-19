@@ -2673,7 +2673,13 @@ function showCharGate(charId){
     return false;
   }, skip);
 
-  startPhase();
+  // 재방문(시네마틱 본 적 있음) 또는 게임 복귀 → splash 전체 스킵
+  const _splashQp=new URLSearchParams(window.location.search);
+  if(localStorage.getItem('_cinSeen')||_splashQp.get('lobby')==='1'){
+    endSplash();
+  }else{
+    startPhase();
+  }
 })();
 
 // ═══ Steam 찜하기 버튼 ═══
