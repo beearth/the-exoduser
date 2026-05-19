@@ -54,9 +54,9 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 (Lv1→Lv10) | 쿨다운 | 데미지 공식 | DPS 비고 |
 |---|---|---|---|---|---|---|
-| kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→48** | 없음 | meleeRef × **7.0(균등)** × statStr × pAtkMul × **_skMul(b:2.0,g:0.84)** | **Lv1: 타당 14×, 풀콤보=42×. Lv10: 타당=~40×, 풀콤보=~121× (7/7/7 균등, 2026-05-11)** |
+| kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→48** | 없음 | meleeRef × **7.0(균등)** × statStr × pAtkMul × **_skMul(b:2.0,g:1.68)** | **Lv1: 타당 14×. Lv10: 타당=~54×. Lv20: 타당=~126× (7/7/7 균등, g 2배 상향 2026-05-19)** |
 | whirlwind | 회전참 | ST(틱) | **30+(Lv-1)×5 ST/초** (Lv1=30, Lv10=75, Lv20=125) | 없음 (홀드) | meleeRef × statStr × pAtkMul × _skMul × _fuseMul | 360도 광역, Lv당 범위+5 뎀+5% |
-| giantSlam | 대왕치기 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 600-(Lv-1)×12)f = **10초→8초** | meleeRef × statStr × pAtkMul × **_skMul(b:25,g:10.0) × 4** | **Lv1=100×, Lv10=280×**. 보스: maxPoise×25% 고정(3~4방 그로기) (2026-05-17) |
+| giantSlam | 대왕치기 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 600-(Lv-1)×12)f = **10초→8초** | meleeRef × statStr × pAtkMul × **_skMul(b:25,g:20.0) × 4** | **Lv1=100×, Lv10=460×, Lv20=860×** (g 2배 상향 2026-05-19). 보스: maxPoise×25% 고정(3~4방 그로기) (2026-05-17) |
 | giantSlam2 | 대왕치기 2 | ST + 악의20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
 
 ---
@@ -95,21 +95,21 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 | 쿨다운 | 데미지 공식 | DPS 비고 |
 |---|---|---|---|---|---|---|
-| fireball | 악의구 | MP | 50×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('fireball') (b=5.0, g=2.0) | 기본 E, 범위폭발+넉백, Lv당 크기+50% (업화선 기준 상향) |
+| fireball | 악의구 | MP | 50×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('fireball') (b=5.0, g=4.0) | 기본 E, 범위폭발+넉백, Lv당 크기+50%. **Lv1=5×, Lv10=23×, Lv20=43× (g 2배 상향 2026-05-19)** |
 | omniBeam | 멸살광선 | MP(틱) | 멸살:**10**(1+(Lv-1)×0.18)/초, 만화광선:**15**, 추적암전:**30** | 과부하 **300f (5초)** | INT × magicRef × pBeamMul × _skMul × drainBonus | tickMul=4(전체×2), 단독 멸살 ×3 집중보너스, 합체는 줄기별 풀뎀. 1적 DPS: 멸살 최강 (2026-04-21) |
-| elemMissile | 원소추적탄 | MP | ~250×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('elemMissile') (b=1.0, g=0.4) | 6원소 유도, 곡선궤적, 사거리+20/Lv |
+| elemMissile | 원소추적탄 | MP | ~250×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('elemMissile') (b=1.5, g=1.2) | 6원소 유도, 곡선궤적, 사거리+20/Lv. **Lv1=1.5×, Lv10=6.9×, Lv20=12.9× (b 1.0→1.5, g 2배 상향 2026-05-19)** |
 | ~~energyShot~~ | ~~마력연사~~ | — | — | — | — | **삭제됨 (2026-05-01)** |
-| arcLaser | 마력광선 | MP | **8+Lv/초 (채널링)** | 없음 (E홀드) | INT × magicRef × pMagicMul × _skMul('arcLaser') (b=8.0, g=3.36) ÷15틱/초 | 직선 관통 레이저 채널링, 폭160+(Lv×10), 사거리1200+Lv×80, 감전(shock 스택 축적), 4f마다 판정. noStun:true (연사 영구스턴 방지) |
+| arcLaser | 마력광선 | MP | **8+Lv/초 (채널링)** | 없음 (E홀드) | INT × magicRef × pMagicMul × _skMul('arcLaser') (b=8.0, g=6.72) ÷15틱/초 | 직선 관통 레이저 채널링, 폭160+(Lv×10), 사거리1200+Lv×80, 감전(shock 스택 축적), 4f마다 판정. noStun:true. **Lv1=8×, Lv10=38.2×, Lv20=71.8× (g 2배 상향 2026-05-19)** |
 | fireBeam | 업화선 | MP | 10/발 | DEX 스케일 | INT × (5+(Lv-1)) | 100%관통+유도+화상, 사거리+50/Lv, Lv당 뎀+1 |
 | fireAura | 지옥진 | MP | **100** 고정 | **720f (12초)** | INT × (6+(Lv-1)) /틱 | 10초간 용암기둥, 범위+10%/Lv 뎀+1/Lv |
 | maliceMortar | 폭풍소환 | MP | 250×DPS (마법할인, key=mortar) | **660f (11초)** | INT 스케일 | 6.5초간 소용돌이, 범위 400+(Lv-1)×18 (1렙400, 20렙742), **흡인력 2.0+Lv×0.1** — lv1=2.1, lv20=4.0, 랩당 +0.1 선형 (2026-05-13 수정), 마우스 조준 클릭 설치 (사거리 1000px) (2026-04-21 범위×2) |
 | plagueBurst | 폭독칼날 | 악의 | **15** 고정 | **900f (15초, 최소10초)** | STR 스케일 | 관통률 **800+(Lv-1)×20 + bowPierce×300 + pPierce×30 +100**, **적중뎀 10% 출혈(무한중첩)**, 전염+처형, 사거리 **2000+(Lv-1)×100** |
 | maliceStorm | 악의폭풍 | MP | 90 추정 | **1200f (20초)** | INT × magicRef × pMagicMul × **(5+(Lv-1))** /틱 × _fuseMul | 10초 암전나선(33틱), 범위 200+(Lv-1)×22. **총 누적: Lv1=165×, Lv10=330×**. (2026-05-16: _skMul(b:12) → flat 5+(Lv-1) 로 변경, 약 2.4배 감소) |
 | darkPillar | 악의기둥 | MP | mpCost 기반 | **900f (15초)** | INT × (4+(Lv-1)) | 9기둥 5초, 범위 250+(Lv-1)×22, Lv당 뎀+1 |
-| blueShot | 푸른비 | MP | **100+1.5×Lv** (110~115) | **300f (5초)** | INT × magicRef × pMagicMul × _skMul('blueShot') (b=4.0, g=1.6) | 50발 순차유도, Lv300 해금 |
+| blueShot | 푸른비 | MP | **100+1.5×Lv** (110~115) | **300f (5초)** | INT × magicRef × pMagicMul × _skMul('blueShot') (b=4.0, g=3.2) | 50발 순차유도, Lv300 해금. **Lv1=4×, Lv10=18.4×, Lv20=34.4× (g 2배 상향 2026-05-19)** |
 | burstLoop | 버스트루프 | 없음 | 0 | 없음 | INT × (mul+(Lv-1)) mul=1/3/5 | 홀드 차지, 범위 500/700/900px (합체600/800/1000), Lv700, Lv당 뎀+1 |
 | hellRay | 참회 | MP | **100/충전** | **600f (10초)/충전** | INT × (5+(Lv-1)) | 에너지 쐐기, 회전+뎀, Lv당 뎀+1 |
-| thunderStake | 뇌전창 | MP | **50/개** | **스택 5개 (12초/충전, Lv10→6)** | INT × magicRef × pMagicMul × _skMul('thunderStake') (b=5, g=2) | 전기창 설치, 1000px 이내 쌍끼리 전기 아크→경로 적 틱뎀 (×0.15/20f), 감전, 10초+0.5초/Lv |
+| thunderStake | 뇌전창 | MP | **50/개** | **스택 5개 (12초/충전, Lv10→6)** | INT × magicRef × pMagicMul × _skMul('thunderStake') (b=5, g=4.0) | 전기창 설치, 1000px 이내 쌍끼리 전기 아크→경로 적 틱뎀 (×0.15/20f), 감전, 10초+0.5초/Lv. **Lv1=5×, Lv10=23×, Lv20=43× (g 2배 상향 2026-05-19)** |
 
 ---
 

@@ -22,11 +22,7 @@ zht:{
 '서버 연결 실패: ':'伺服器連接失敗：','데이터를 불러오는 중...':'載入資料中...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — 確定要刪除該角色嗎？',
 '새 캐릭터':'新角色','지옥으로 입장하는 중...':'正在進入地獄...','건너뛰기':'跳過',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'您在Steam的一個願望清單
-將塑造EXODUSER: HELL LORD
-的下一段旅程',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'您在Steam的一個願望清單\n將塑造EXODUSER: HELL LORD\n的下一段旅程',
 '공식 출시 소식을 가장 먼저 받아보세요':'率先獲得官方上市通知',
 },
 // ═══ Русский (Russian) ═══
@@ -47,11 +43,7 @@ ru:{
 '서버 연결 실패: ':'Ошибка подключения: ','데이터를 불러오는 중...':'Загрузка данных...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Удалить этого персонажа?',
 '새 캐릭터':'Новый персонаж','지옥으로 입장하는 중...':'Вход в ад...','건너뛰기':'ПРОПУСТИТЬ',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Один вишлист в Steam
-определит следующую главу
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Один вишлист в Steam\nопределит следующую главу\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Узнайте о выходе игры первыми',
 },
 // ═══ Deutsch (German) ═══
@@ -72,11 +64,7 @@ de:{
 '서버 연결 실패: ':'Serververbindung fehlgeschlagen: ','데이터를 불러오는 중...':'Lade Daten...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Diesen Charakter wirklich löschen?',
 '새 캐릭터':'Neuer Charakter','지옥으로 입장하는 중...':'Betrete die Hölle...','건너뛰기':'ÜBERSPRINGEN',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Dein Steam-Wunschlisteneintrag
-prägt das nächste Kapitel von
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Dein Steam-Wunschlisteneintrag\nprägt das nächste Kapitel von\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Sei der Erste, der von der Veröffentlichung erfährt',
 },
 // ═══ Português do Brasil (Brazilian Portuguese) ═══
@@ -97,11 +85,7 @@ ptbr:{
 '서버 연결 실패: ':'Falha na conexão: ','데이터를 불러오는 중...':'Carregando dados...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Realmente deseja excluir este personagem?',
 '새 캐릭터':'Novo personagem','지옥으로 입장하는 중...':'Entrando no inferno...','건너뛰기':'PULAR',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Seu wishlist no Steam
-molda o próximo capítulo de
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Seu wishlist no Steam\nmolda o próximo capítulo de\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Seja o primeiro a saber quando lançarmos',
 },
 // ═══ Français (French) ═══
@@ -122,11 +106,7 @@ fr:{
 '서버 연결 실패: ':'Échec de connexion au serveur : ','데이터를 불러오는 중...':'Chargement des données...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Voulez-vous vraiment supprimer ce personnage ?',
 '새 캐릭터':'Nouveau personnage','지옥으로 입장하는 중...':'Entrée en enfer...','건너뛰기':'PASSER',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Votre soutien sur la liste de souhaits Steam
-façonne le prochain chapitre de
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Votre soutien sur la liste de souhaits Steam\nfaçonne le prochain chapitre de\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Soyez le premier informé de notre lancement',
 },
 // ═══ Polski (Polish) ═══
@@ -147,11 +127,7 @@ pl:{
 '서버 연결 실패: ':'Błąd połączenia z serwerem: ','데이터를 불러오는 중...':'Ładowanie danych...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Naprawdę usunąć tę postać?',
 '새 캐릭터':'Nowa postać','지옥으로 입장하는 중...':'Wchodzenie do piekła...','건너뛰기':'POMIŃ',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Twój Steam wishlist
-kształtuje następny rozdział
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Twój Steam wishlist\nkształtuje następny rozdział\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Bądź pierwszym, który dowie się o premierze',
 },
 // ═══ Italiano (Italian) ═══
@@ -172,11 +148,7 @@ it:{
 '서버 연결 실패: ':'Connessione al server fallita: ','데이터를 불러오는 중...':'Caricamento dati...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Vuoi davvero eliminare questo personaggio?',
 '새 캐릭터':'Nuovo personaggio','지옥으로 입장하는 중...':'Entrando all\'inferno...','건너뛰기':'SALTA',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Il tuo supporto su Steam Wishlist
-plasmerà il prossimo capitolo di
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Il tuo supporto su Steam Wishlist\nplasmerà il prossimo capitolo di\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Sii il primo a sapere quando usciremo',
 },
 // ═══ Українська (Ukrainian) ═══
@@ -197,11 +169,7 @@ uk:{
 '서버 연결 실패: ':'Помилка підключення: ','데이터를 불러오는 중...':'Завантаження даних...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Справді видалити цього персонажа?',
 '새 캐릭터':'Новий персонаж','지옥으로 입장하는 중...':'Вхід до пекла...','건너뛰기':'ПРОПУСТИТИ',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Один вішліст у Steam
-визначить наступний розділ
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Один вішліст у Steam\nвизначить наступний розділ\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Дізнайтесь про реліз першими',
 },
 // ═══ Türkçe (Turkish) ═══
@@ -222,11 +190,7 @@ tr:{
 '서버 연결 실패: ':'Sunucu bağlantı hatası: ','데이터를 불러오는 중...':'Veri yükleniyor...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Bu karakteri silmek istediğine emin misin?',
 '새 캐릭터':'Yeni karakter','지옥으로 입장하는 중...':'Cehenneme giriş...','건너뛰기':'ATLA',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Steam istek listenizdeki desteğiniz
-EXODUSER: HELL LORD'un
-sonraki bölümünü şekillendirir',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Steam istek listenizdeki desteğiniz\nEXODUSER: HELL LORD\'un\nsonraki bölümünü şekillendirir',
 '공식 출시 소식을 가장 먼저 받아보세요':'Çıkış haberini ilk alanlardan olun',
 },
 // ═══ Tiếng Việt (Vietnamese) ═══
@@ -247,11 +211,7 @@ vi:{
 '서버 연결 실패: ':'Kết nối máy chủ thất bại: ','데이터를 불러오는 중...':'Đang tải dữ liệu...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Bạn có chắc muốn xóa nhân vật này?',
 '새 캐릭터':'Nhân vật mới','지옥으로 입장하는 중...':'Đang vào địa ngục...','건너뛰기':'BỎ QUA',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Một lần thêm vào wishlist Steam
-sẽ định hình chương tiếp theo của
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Một lần thêm vào wishlist Steam\nsẽ định hình chương tiếp theo của\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Là người đầu tiên biết khi chúng tôi ra mắt',
 },
 // ═══ ไทย (Thai) ═══
@@ -272,11 +232,7 @@ th:{
 '서버 연결 실패: ':'เชื่อมต่อเซิร์ฟเวอร์ล้มเหลว: ','데이터를 불러오는 중...':'กำลังโหลดข้อมูล...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — ต้องการลบตัวละครนี้จริงหรือ?',
 '새 캐릭터':'ตัวละครใหม่','지옥으로 입장하는 중...':'กำลังเข้าสู่นรก...','건너뛰기':'ข้าม',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'การสนับสนุนใน Steam Wishlist
-ของคุณจะกำหนดบทต่อไปของ
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'การสนับสนุนใน Steam Wishlist\nของคุณจะกำหนดบทต่อไปของ\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'เป็นคนแรกที่รู้เมื่อเราเปิดตัว',
 },
 // ═══ Bahasa Indonesia (Indonesian) ═══
@@ -297,11 +253,7 @@ id:{
 '서버 연결 실패: ':'Gagal terhubung ke server: ','데이터를 불러오는 중...':'Memuat data...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Yakin ingin menghapus karakter ini?',
 '새 캐릭터':'Karakter baru','지옥으로 입장하는 중...':'Memasuki neraka...','건너뛰기':'LEWATI',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Dukungan wishlist Steam-mu
-membentuk babak selanjutnya dari
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Dukungan wishlist Steam-mu\nmembentuk babak selanjutnya dari\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Jadilah yang pertama tahu saat kami rilis',
 },
 // ═══ العربية (Arabic) ═══
@@ -322,11 +274,7 @@ ar:{
 '서버 연결 실패: ':'فشل الاتصال بالخادم: ','데이터를 불러오는 중...':'جارٍ تحميل البيانات...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — هل تريد حقاً حذف هذه الشخصية؟',
 '새 캐릭터':'شخصية جديدة','지옥으로 입장하는 중...':'الدخول إلى الجحيم...','건너뛰기':'تخطي',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'دعمك عبر قائمة الأمنيات في Steam
-يُشكّل الفصل القادم من
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'دعمك عبر قائمة الأمنيات في Steam\nيُشكّل الفصل القادم من\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'كن أوّل من يعلم بموعد الإطلاق',
 },
 // ═══ Svenska (Swedish) ═══
@@ -347,11 +295,7 @@ sv:{
 '서버 연결 실패: ':'Serveranslutning misslyckades: ','데이터를 불러오는 중...':'Laddar data...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Vill du verkligen radera denna karaktär?',
 '새 캐릭터':'Ny karaktär','지옥으로 입장하는 중...':'Går in i helvetet...','건너뛰기':'HOPPA ÖVER',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Ditt stöd i Steam-önskelistan
-formar nästa kapitel av
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Ditt stöd i Steam-önskelistan\nformar nästa kapitel av\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Var först med att veta när vi lanserar',
 },
 // ═══ Dansk (Danish) ═══
@@ -372,11 +316,7 @@ da:{
 '서버 연결 실패: ':'Serverforbindelse mislykkedes: ','데이터를 불러오는 중...':'Indlæser data...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Vil du virkelig slette denne karakter?',
 '새 캐릭터':'Ny karakter','지옥으로 입장하는 중...':'Træder ind i helvede...','건너뛰기':'SPRING OVER',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Din støtte på Steam-ønskelisten
-former det næste kapitel af
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Din støtte på Steam-ønskelisten\nformer det næste kapitel af\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Vær den første til at vide, når vi lancerer',
 },
 // ═══ Norsk (Norwegian) ═══
@@ -397,11 +337,7 @@ no:{
 '서버 연결 실패: ':'Servertilkobling mislyktes: ','데이터를 불러오는 중...':'Laster data...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Vil du virkelig slette denne karakteren?',
 '새 캐릭터':'Ny karakter','지옥으로 입장하는 중...':'Går inn i helvete...','건너뛰기':'HOPP OVER',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Din støtte på Steam-ønskelisten
-former neste kapittel av
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Din støtte på Steam-ønskelisten\nformer neste kapittel av\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Vær den første til å vite når vi lanserer',
 },
 // ═══ Suomi (Finnish) ═══
@@ -422,11 +358,7 @@ fi:{
 '서버 연결 실패: ':'Palvelinyhteys epäonnistui: ','데이터를 불러오는 중...':'Ladataan tietoja...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Haluatko varmasti poistaa tämän hahmon?',
 '새 캐릭터':'Uusi hahmo','지옥으로 입장하는 중...':'Astutaan helvettiin...','건너뛰기':'OHITA',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Steam-toivelistasi tuki
-muokkaa seuraavaa lukua
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Steam-toivelistasi tuki\nmuokkaa seuraavaa lukua\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Ole ensimmäinen, joka tietää julkaisusta',
 },
 // ═══ Čeština (Czech) ═══
@@ -447,11 +379,7 @@ cs:{
 '서버 연결 실패: ':'Připojení k serveru selhalo: ','데이터를 불러오는 중...':'Načítání dat...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Opravdu chceš smazat tuto postavu?',
 '새 캐릭터':'Nová postava','지옥으로 입장하는 중...':'Vstup do pekla...','건너뛰기':'PŘESKOČIT',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Tvá podpora na Steam wishlistu
-formuje další kapitolu
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Tvá podpora na Steam wishlistu\nformuje další kapitolu\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Buď první, kdo se dozví o vydání',
 },
 // ═══ Magyar (Hungarian) ═══
@@ -472,11 +400,7 @@ hu:{
 '서버 연결 실패: ':'Szerverkapcsolat sikertelen: ','데이터를 불러오는 중...':'Adatok betöltése...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Biztosan törölni akarod ezt a karaktert?',
 '새 캐릭터':'Új karakter','지옥으로 입장하는 중...':'Belépés a pokolba...','건너뛰기':'KIHAGYÁS',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Steam kívánságlistás támogatásod
-formálja az EXODUSER: HELL LORD
-következő fejezetét',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Steam kívánságlistás támogatásod\nformálja az EXODUSER: HELL LORD\nkövetkező fejezetét',
 '공식 출시 소식을 가장 먼저 받아보세요':'Legyél az első, aki értesül a megjelenésről',
 },
 // ═══ Română (Romanian) ═══
@@ -497,11 +421,7 @@ ro:{
 '서버 연결 실패: ':'Conexiune la server eșuată: ','데이터를 불러오는 중...':'Se încarcă datele...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Sigur vrei să ștergi acest personaj?',
 '새 캐릭터':'Personaj nou','지옥으로 입장하는 중...':'Intrare în iad...','건너뛰기':'SARI PESTE',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Sprijinul tău pe lista de dorințe Steam
-modelează următorul capitol din
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Sprijinul tău pe lista de dorințe Steam\nmodelează următorul capitol din\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Fii primul care află când lansăm',
 },
 // ═══ Nederlands (Dutch) ═══
@@ -522,11 +442,7 @@ nl:{
 '서버 연결 실패: ':'Serververbinding mislukt: ','데이터를 불러오는 중...':'Data laden...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Wil je dit karakter echt verwijderen?',
 '새 캐릭터':'Nieuw karakter','지옥으로 입장하는 중...':'Betreden van de hel...','건너뛰기':'OVERSLAAN',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Jouw steun op de Steam-verlanglijst
-vormgeeft het volgende hoofdstuk van
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Jouw steun op de Steam-verlanglijst\nvormgeeft het volgende hoofdstuk van\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Wees de eerste die het weet als we lanceren',
 },
 // ═══ Ελληνικά (Greek) ═══
@@ -547,11 +463,7 @@ el:{
 '서버 연결 실패: ':'Αποτυχία σύνδεσης με τον διακομιστή: ','데이터를 불러오는 중...':'Φόρτωση δεδομένων...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Θέλεις σίγουρα να διαγράψεις αυτόν τον χαρακτήρα;',
 '새 캐릭터':'Νέος χαρακτήρας','지옥으로 입장하는 중...':'Είσοδος στην κόλαση...','건너뛰기':'ΠΑΡΑΛΕΙΨΗ',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Η υποστήριξή σου στη λίστα επιθυμιών Steam
-διαμορφώνει το επόμενο κεφάλαιο του
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Η υποστήριξή σου στη λίστα επιθυμιών Steam\nδιαμορφώνει το επόμενο κεφάλαιο του\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Μάθε πρώτος πότε κυκλοφορούμε',
 },
 // ═══ Български (Bulgarian) ═══
@@ -572,11 +484,7 @@ bg:{
 '서버 연결 실패: ':'Грешка при свързване със сървъра: ','데이터를 불러오는 중...':'Зареждане на данни...',
 ' 캐릭터를 정말 삭제하시겠습니까?':' — Наистина ли искаш да изтриеш този персонаж?',
 '새 캐릭터':'Нов персонаж','지옥으로 입장하는 중...':'Влизане в ада...','건너뛰기':'ПРОПУСНИ',
-'여러분의 Steam 찜 하나가
-EXODUSER: HELL LORD의
-다음 여정을 만듭니다':'Подкрепата ти в Steam списъка с желания
-оформя следващата глава на
-EXODUSER: HELL LORD',
+'여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다':'Подкрепата ти в Steam списъка с желания\nоформя следващата глава на\nEXODUSER: HELL LORD',
 '공식 출시 소식을 가장 먼저 받아보세요':'Бъди първият, който разбере за издаването',
 },
 };
