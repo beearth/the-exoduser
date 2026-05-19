@@ -1,0 +1,37 @@
+"appbuild"
+{
+  "appid" "4749590"
+  "desc" "EXODUSER: HELL LORD build"
+  "buildoutput" "G:\hell\steam\output"
+  "contentroot" "G:\hell"
+  "setlive" ""
+  "preview" "0"
+
+  "depots"
+  {
+    "4749591"
+    {
+      "FileMapping"
+      {
+        "LocalPath" "*"
+        "DepotPath" "."
+        "recursive" "1"
+      }
+      "FileExclusion" "steam\*"
+      "FileExclusion" ".git\*"
+      "FileExclusion" ".github\*"
+      "FileExclusion" ".githooks\*"
+      "FileExclusion" ".claude\*"
+      "FileExclusion" "node_modules\*"
+      "FileExclusion" "_autosave\*"
+      "FileExclusion" "docs\*"
+      "FileExclusion" "tools\*"
+      "FileExclusion" "userdata\*"
+      "FileExclusion" "cache\*"
+      "FileExclusion" "*.md"
+      "FileExclusion" ".gitignore"
+      "FileExclusion" "CLAUDE.md"
+      "FileExclusion" "auto_commit.ps1"
+    }
+  }
+}

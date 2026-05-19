@@ -2550,31 +2550,42 @@ _GP.on('lobbyNav', (gp, just) => {
     return false;
   }
 
-  const items = lobby.querySelectorAll('.char-item, .char-item-new');
-  if(!items.length) return false;
+  // 로비 내 상호작용 가능한 요소 전부 자동 수집 (부모-자식 중복 제거)
+  const _navItems = [];
+  const _lobbyRight = lobby.querySelector('.lobby-right');
+  if(_lobbyRight) {
+    _lobbyRight.querySelectorAll('.char-item,.char-item-new,#enterGameBtn:not([disabled]),#lobbyLogout,#logoutBtn,.lma-steam-btn,.ll-steam-btn,.char-nav-btn:not([disabled])').forEach(el => {
+      if(el.offsetParent === null) return;
+      if(_navItems.some(n => n.el === el)) return;
+      const type = el.classList.contains('char-item') || el.classList.contains('char-item-new') ? 'slot'
+        : el.id === 'enterGameBtn' ? 'enter' : 'other';
+      _navItems.push({el, type});
+    });
+  }
+  if(!_navItems.length) return false;
+
+  if(_lobbyGpIdx >= _navItems.length) _lobbyGpIdx = _navItems.length - 1;
 
   // D-pad 위(12)/아래(13) 또는 좌스틱
   if(just[12] || (_GP.axes[1] < -0.5 && !_GP.prev._lobbyUp)) { _lobbyGpIdx = Math.max(0, _lobbyGpIdx - 1); }
-  if(just[13] || (_GP.axes[1] > 0.5 && !_GP.prev._lobbyDown)) { _lobbyGpIdx = Math.min(items.length - 1, _lobbyGpIdx + 1); }
+  if(just[13] || (_GP.axes[1] > 0.5 && !_GP.prev._lobbyDown)) { _lobbyGpIdx = Math.min(_navItems.length - 1, _lobbyGpIdx + 1); }
   _GP.prev._lobbyUp = _GP.axes[1] < -0.5;
   _GP.prev._lobbyDown = _GP.axes[1] > 0.5;
 
   // 포커스 하이라이트
-  items.forEach((el, i) => {
-    if(i === _lobbyGpIdx) { el.style.outline = '2px solid #C9A961'; el.style.outlineOffset = '-2px'; }
-    else { el.style.outline = ''; el.style.outlineOffset = ''; }
+  _navItems.forEach((ni, i) => {
+    if(i === _lobbyGpIdx) { ni.el.style.outline = '2px solid #C9A961'; ni.el.style.outlineOffset = '-2px'; }
+    else { ni.el.style.outline = ''; ni.el.style.outlineOffset = ''; }
   });
 
-  // A(0) = 선택한 캐릭터면 입장, 아니면 선택
+  // A(0) = 선택/실행
   if(just[0]) {
-    const target = items[_lobbyGpIdx];
-    if(target.classList.contains('char-item-new')) {
-      target.click(); // 새 캐릭터 생성 모달
-    } else if(target.classList.contains('active') && _selectedSlot) {
-      $('enterGameBtn').click(); // 이미 선택된 캐릭터 → 입장
-    } else {
-      target.click(); // 캐릭터 선택
-    }
+    const ni = _navItems[_lobbyGpIdx];
+    if(ni.type === 'enter') { ni.el.click(); }
+    else if(ni.type === 'steam') { ni.el.click(); }
+    else if(ni.el.classList.contains('char-item-new')) { ni.el.click(); }
+    else if(ni.el.classList.contains('active') && _selectedSlot) { $('enterGameBtn').click(); }
+    else { ni.el.click(); }
     return true;
   }
   // Y(3) = 새 캐릭터 생성 (바로가기)

@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "main": "index.html",
+  "main": "http://localhost:3333/index.html",
   "node-main": "node-main.js",
   "node-remote": [
     "http://127.0.0.1:3333",
