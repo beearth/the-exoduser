@@ -1944,8 +1944,6 @@ const _PL_BASE={
 '왕관':'Korona','장갑':'Rękawice','건틀릿':'Rękawice Pancerne','바지':'Spodnie','각반':'Nagolenniki',
 '허리띠':'Pas','벨트':'Pas','부적':'Talizman','목걸이':'Naszyjnik','반지':'Pierścień',
 '망토':'Peleryna','팔찌':'Bransoletka','귀걸이':'Kolczyk',
-// --- Demo End Screen ---
-// --- CAT-92 sync ---
 '투구 착용':'Hełm założony',
 '투구 해제':'Hełm zdjęty',
 '✟ 신성한 결계!':'✟ Święta Bariera!',

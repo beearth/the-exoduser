@@ -1963,8 +1963,6 @@ const _PTBR_BASE={'대검':'Espadão','석궁':'Besta','연사석궁':'Repetidor
 '왕관':'coroa','장갑':'luvas','건틀릿':'Manoplas','바지':'calça','각반':'Caneleiras',
 '허리띠':'Cinto','벨트':'Cinto','부적':'Talismã','목걸이':'colar','반지':'Anel',
 '망토':'Capa','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Bracelete','귀걸이':'Brinco',
-// --- Demo End Screen ---
-// --- CAT-92 sync ---
 '투구 착용':'Capacete equipado',
 '투구 해제':'Capacete removido',
 '혼돈의 투구':'Elmo do Caos',

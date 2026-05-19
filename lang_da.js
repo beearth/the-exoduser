@@ -1997,8 +1997,6 @@ const _DA_BASE={
 '왕관':'Krone','장갑':'Handsker','건틀릿':'Panserhandsker','바지':'Bukser','각반':'Benbeskyttelse',
 '허리띠':'Bælte','벨트':'Bælte','부적':'Talisman','목걸이':'Halskæde','반지':'Ring',
 '망토':'Kappe','팔찌':'Armbånd','귀걸이':'Øreringe',
-// --- Demo End Screen ---
-// --- CAT-92 sync ---
 '투구 착용':'Hjelm udstyret',
 '투구 해제':'Hjelm fjernet',
 '✟ 신성한 결계!':'✟ Hellig Barriere!',

@@ -1997,8 +1997,6 @@ const _NL_BASE={
 '왕관':'Kroon','장갑':'Handschoenen','건틀릿':'Pantserwanten','바지':'Broek','각반':'Beenbescherming',
 '허리띠':'Riem','벨트':'Riem','부적':'Talisman','목걸이':'Ketting','반지':'Ring',
 '망토':'Mantel','팔찌':'Armband','귀걸이':'Oorbel',
-// --- Demo End Screen ---
-// --- CAT-92 sync ---
 '투구 착용':'Helm uitgerust',
 '투구 해제':'Helm uitgetrokken',
 '✟ 신성한 결계!':'✟ Heilige Barrière!',

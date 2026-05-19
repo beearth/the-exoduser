@@ -1898,8 +1898,6 @@ const _CS_BASE={
 '왕관':'Koruna','장갑':'Rukavice','건틀릿':'Plátové rukavice','바지':'Kalhoty','각반':'Holenní chrániče',
 '허리띠':'Opasek','벨트':'Pás','부적':'Talisman','목걸이':'Náhrdelník','반지':'Prsten',
 '망토':'Plášť','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Náramek','귀걸이':'Náušnice',
-// --- Demo End Screen ---
-// --- CAT-92 sync ---
 '투구 착용':'Helma nasazena',
 '투구 해제':'Helma sundána',
 '✟ 신성한 결계!':'✟ Posvátná bariéra!',

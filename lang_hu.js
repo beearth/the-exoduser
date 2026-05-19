@@ -2352,13 +2352,10 @@ const _HU={
 '👻 공성유령!':'👻 Ostromkísértet!',
 };
 
-
 const _HU_PFX={
 '녹슨':'Rozsdás','강철':'Acél','흑요석':'Obszidián','미스릴':'Mithril','심판의':'Ítélet','천벌의':'Isteni Harag','파멸의':'Pusztítás','불꽃':'Láng','화염':'Pokoltűz','염화':'Pokoltűz','지옥불':'Pokollángja','지옥화':'Pokollángja','지옥':'Pokollángja','멸화의':'Megsemmisítő','냉기':'Fagy','빙결':'Jég','빙하':'Gleccser','서리의':'Dér','서리':'Dér','영겁빙':'Örökkévaló Jég','그림자':'Árnyék','암흑':'Sötét','심연':'Mélységi','나락의':'Alvilági','나락':'Alvilági','무간의':'Ürességi','전기':'Szikra','낙뢰':'Mennydörgés','암전':'Villám','뇌신의':'Viharisteni','뇌신':'Viharisteni','만뢰의':'Ezernyi Villám','축복':'Áldott','성광':'Szentfény','신성':'Szent','천사의':'Angyali','신벌의':'Isteni Ítélet','낡은':'Elnyűtt','천':'Vászon','가죽':'Bőr','강철사':'Acélszövés','은':'Ezüst','은사':'Ezüstfonál','화염의':'Pokoltűz','빙결의':'Jég','암흑의':'Sötét','암전의':'Villám'};
 const _HU_BASE={
 '대검':'Nagykard','석궁':'Számszeríj','연사석궁':'Ismétlő','마력석궁':'Arkán Számszeríj','견갑':'Pajzs','대견갑':'Nagypajzs','전투화':'Harci Csizma','갑옷':'Páncél','갑주':'Páncélzat','왕관':'Korona','장갑':'Kesztyű','건틀릿':'Vaskeztyű','바지':'Nadrág','각반':'Lábvért','허리띠':'Öv','벨트':'Öv','부적':'Talizmán','목걸이':'Nyaklánc','반지':'Gyűrű','망토':'Köpeny','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Karkötő','귀걸이':'Fülbevaló',
-// --- Demo End Screen ---
-// --- CAT-92 sync ---
 '투구 착용':'Sisak felszerelve',
 '투구 해제':'Sisak eltávolítva',
 '✟ 신성한 결계!':'✟ Szent Gát!',

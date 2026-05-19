@@ -1948,8 +1948,6 @@ const _DE_BASE={'대검':'Großschwert','석궁':'Armbrust','연사석궁':'Schn
 '왕관':'Krone','장갑':'Handschuhe','건틀릿':'Panzerhandschuhe','바지':'Hose','각반':'Beinschienen',
 '허리띠':'Gürtel','벨트':'Gürtel','부적':'Talisman','목걸이':'Halskette','반지':'Ring',
 '망토':'Umhang','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Armreif','귀걸이':'Ohrring',
-// --- Demo End Screen ---
-// --- CAT-92 sync ---
 '투구 착용':'Helm angelegt',
 '투구 해제':'Helm abgelegt',
 '혼돈의 투구':'Helm des Chaos',

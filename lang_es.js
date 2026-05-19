@@ -1982,8 +1982,6 @@ const _ES_BASE={'대검':'Espadón','석궁':'Ballesta','연사석궁':'Repetido
 '투구':'Yelmo','왕관':'corona','장갑':'guantes','건틀릿':'Manoplas','바지':'pantalones','각반':'Grebas',
 '허리띠':'Cinturón','벨트':'Cinturón','부적':'Talismán','목걸이':'collar','반지':'Anillo',
 '망토':'Capa','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet','팔찌':'Brazalete','귀걸이':'Pendiente',
-// --- Demo End Screen ---
-// --- CAT-92 sync ---
   '...사라짐': '...desaparición',
   '2장 — 벌레굴': 'Capítulo 2 — Guarida de gusanos',
   '3장 — 얼음굴': 'Capítulo 3: Cueva de hielo',

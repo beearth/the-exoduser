@@ -2343,9 +2343,9 @@ const _IT={
 '데모 종료':'Fine della Demo',
 '독사':'Serpente velenoso',
 '방어↓':'DEF↓',
-'여기까지 데모입니다. 정식 출시를 기대해주세요!':'Questa è la fine della demo. Non vediamo l\',
+'여기까지 데모입니다. 정식 출시를 기대해주세요!':'Questa è la fine della demo. Non vediamo l\'ora del rilascio completo!',
 '프레임 표시 (FPS)':'Mostra FPS',
-'흑요염 파괴자':'Distruttore della Fiamma d\',
+'흑요염 파괴자':'Distruttore della Fiamma d\'Ossidiana',
 '🌀 휘두르기!':'🌀 Sweep!',
 '🐍 독사!':'🐍 Serpente velenoso!',
 '💥 강타!':'💥 Slam!',
@@ -2357,10 +2357,6 @@ const _IT_PFX={
 };
 const _IT_BASE={
 '대검':'Spadone','석궁':'Balestra','연사석궁':'Balestra Ripetizione','마력석궁':'Balestra Arcana','견갑':'Scudo','대견갑':'Grande Scudo','전투화':'Stivali Combattimento','갑옷':'Armatura','갑주':'Armatura','왕관':'Corona','장갑':'Guanti','건틀릿':'Guanti Corazzati','바지':'Pantaloni','각반':'Schinieri','허리띠':'Cintura','벨트':'Cintura','부적':'Talismano','목걸이':'Collana','반지':'Anello','망토':'Mantello','팔찌':'Bracciale','귀걸이':'Orecchino',
-// --- Demo End Screen ---
-ora del lancio completo!',
-// --- CAT-92 sync ---
-Ossidiana',
 '투구 착용':'Elmo indossato',
 '투구 해제':'Elmo rimosso',
 '혼돈의 투구':'Elmo del Caos',

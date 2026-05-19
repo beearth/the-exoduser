@@ -1997,8 +1997,6 @@ const _SV_BASE={
 '왕관':'Krona','장갑':'Handskar','건틀릿':'Pansarhandskar','바지':'Byxor','각반':'Benskydd',
 '허리띠':'Bälte','벨트':'Bälte','부적':'Talisman','목걸이':'Halsband','반지':'Ring',
 '망토':'Kappa','팔찌':'Armband','귀걸이':'Örhänge',
-// --- Demo End Screen ---
-// --- CAT-92 sync ---
 '투구 착용':'Hjälm utrustad',
 '투구 해제':'Hjälm avrustad',
 '✟ 신성한 결계!':'✟ Helig Barriär!',
