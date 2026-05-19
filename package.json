@@ -1,8 +1,26 @@
 {
-  "name": "hell-road",
+  "name": "hell-exoduser-release",
   "private": true,
   "version": "1.0.0",
   "type": "module",
+  "main": "index.html",
+  "node-main": "node-main.js",
+  "node-remote": [
+    "http://127.0.0.1:3333",
+    "http://localhost:3333"
+  ],
+  "window": {
+    "title": "EXODUSER: HELL LORD",
+    "width": 1920,
+    "height": 1080,
+    "min_width": 1280,
+    "min_height": 720,
+    "fullscreen": true,
+    "resizable": true,
+    "frame": false,
+    "toolbar": false
+  },
+  "chromium-args": "--disable-features=CrossOriginOpenerPolicy,CrossOriginEmbedderPolicy,IsolateOrigins,SitePerProcess --disable-site-isolation-trials --disable-web-security --no-sandbox --allow-running-insecure-content --autoplay-policy=no-user-gesture-required --enable-features=SharedArrayBuffer --user-data-dir=./userdata",
   "scripts": {
     "serve:test": "node tools/local-static-server.mjs",
     "pixellab:request": "node tools/pixellab_request.mjs",

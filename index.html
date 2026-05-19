@@ -1835,9 +1835,12 @@ function pickRandomLoadingImage(){
   return 'img/lording/'+_RD_IMGS[~~(Math.random()*_RD_IMGS.length)];
 }
 
-// 로비 진입 시 로딩 이미지 프리로드 (5장 이상 → 전체 16장)
+// 로비 진입 시 로딩 이미지 프리로드
+// - rd*.png 16장 (index.html 게이트 오버레이)
+// - 1~19.png 19장 (game.html 부트 로딩 배경)
 function _preloadLoadingImgs(){
   _RD_IMGS.forEach(f=>{const i=new Image();i.src='img/lording/'+f;});
+  for(let n=1;n<=19;n++){const i=new Image();i.src='img/lording/'+n+'.png';}
 }
 
 function showLoading(msg){
