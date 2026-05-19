@@ -19604,7 +19604,7 @@ function pDefAdd(){return (P._altDef||0)*30}   // 철벽 패시브 제거: 제�
 function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
 function pParryDmg(){return 1+PASSIVES.pParry*.50}     // 카운터뎀 +50%/lv (10lv=×6)
-function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*(1+_gearBonus)*0.5;const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;return ~~(_base*pParryDmg()*_afxPB*_legSP);} // 탄뎀×0.5 베이스 + 장비보너스(0~100%)
+function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*(1+_gearBonus)*0.5;const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;const _calc=~~(_base*pParryDmg()*_afxPB*_legSP);const _kiFloor=~~(meleeRef()*14*statStr()*pAtkMul());return Math.max(_calc,_kiFloor);} // 탄뎀×0.5 베이스 + 장비보너스, 최소 기검참1방(14×) 보장
 function pParryBlueBeanBase(p){return Math.max(p.dmg,~~(magicRef()*statInt()*pMagicMul()*0.8));}
 function pParryRmbSpd(){return 1+PASSIVES.pParry*.10}  // 우클릭공속 +10%/lv (10lv=+100%)
 function pParryRainbowDR(){return Math.min(.50,PASSIVES.pParry*.10)} // 무지개탄 피해감소 +10%/lv (최대50%)
@@ -48310,7 +48310,7 @@ function _cutsceneEnd(){
   G._cutsceneDone=true;
   _cutsceneState=null;
   _cutC.style.display='none';
-  BGM.fadeOut(500);setTimeout(()=>BGM.play(BGM.stageKey(G.stage)),600);
+  BGM.fadeOut(500);setTimeout(()=>BGM.play(BGM.stageKey(G.stage),true),600);
   _startIntro();
 }
 

@@ -6733,9 +6733,9 @@ const _EN_BASE={'대검':'Greatsword','석궁':'Crossbow','연사석궁':'Repeat
 '허리띠':'Belt','벨트':'Belt','부적':'Talisman','목걸이':'Necklace','반지':'Ring',
 '망토':'Cape','팔찌':'Bracelet','귀걸이':'Earring','악마팔찌':'Demon Bracelet','생명팔찌':'Life Bracelet'};
 // ═══ 다국어 번역 테이블 매핑 ═══
-const _LANG_TBL=(function(){const t={en:_EN};const codes=['zh','ja','es','zht','ru','de','ptbr','fr','pl','it','uk','tr','vi','th','id','ar','sv','da','no','fi','cs','hu','ro','nl','el','bg'];const names=['_ZH','_JA','_ES','_ZHT','_RU','_DE','_PTBR','_FR','_PL','_IT','_UK','_TR','_VI','_TH','_ID','_AR','_SV','_DA','_NO','_FI','_CS','_HU','_RO','_NL','_EL','_BG'];for(let i=0;i<codes.length;i++){try{t[codes[i]]=eval(names[i])}catch(e){t[codes[i]]=null}}return t})();
-const _LANG_PFX=(function(){const t={en:_EN_PFX};const codes=['zh','ja','es','zht','ru','de','ptbr','fr','pl','it','uk','tr','vi','th','id','ar','sv','da','no','fi','cs','hu','ro','nl','el','bg'];const names=['_ZH_PFX','_JA_PFX','_ES_PFX','_ZHT_PFX','_RU_PFX','_DE_PFX','_PTBR_PFX','_FR_PFX','_PL_PFX','_IT_PFX','_UK_PFX','_TR_PFX','_VI_PFX','_TH_PFX','_ID_PFX','_AR_PFX','_SV_PFX','_DA_PFX','_NO_PFX','_FI_PFX','_CS_PFX','_HU_PFX','_RO_PFX','_NL_PFX','_EL_PFX','_BG_PFX'];for(let i=0;i<codes.length;i++){try{t[codes[i]]=eval(names[i])}catch(e){t[codes[i]]=null}}return t})();
-const _LANG_BASE=(function(){const t={en:_EN_BASE};const codes=['zh','ja','es','zht','ru','de','ptbr','fr','pl','it','uk','tr','vi','th','id','ar','sv','da','no','fi','cs','hu','ro','nl','el','bg'];const names=['_ZH_BASE','_JA_BASE','_ES_BASE','_ZHT_BASE','_RU_BASE','_DE_BASE','_PTBR_BASE','_FR_BASE','_PL_BASE','_IT_BASE','_UK_BASE','_TR_BASE','_VI_BASE','_TH_BASE','_ID_BASE','_AR_BASE','_SV_BASE','_DA_BASE','_NO_BASE','_FI_BASE','_CS_BASE','_HU_BASE','_RO_BASE','_NL_BASE','_EL_BASE','_BG_BASE'];for(let i=0;i<codes.length;i++){try{t[codes[i]]=eval(names[i])}catch(e){t[codes[i]]=null}}return t})();
+const _LANG_TBL=(function(){const t={en:_EN};const codes=['zh','ja','es','zht','ru','de','ptbr','fr','pl','it','uk','tr','vi','th','id','ar','sv','da','no','fi','cs','hu','ro','nl','el','bg'];const names=['_ZH','_JA','_ES','_ZHT','_RU','_DE','_PTBR','_FR','_PL','_IT','_UK','_TR','_VI','_TH','_ID','_AR','_SV','_DA','_NO','_FI','_CS','_HU','_RO','_NL','_EL','_BG'];for(let i=0;i<codes.length;i++){try{t[codes[i]]=eval(names[i])}catch(e){t[codes[i]]=null}}t['pt']=t['ptbr'];return t})();
+const _LANG_PFX=(function(){const t={en:_EN_PFX};const codes=['zh','ja','es','zht','ru','de','ptbr','fr','pl','it','uk','tr','vi','th','id','ar','sv','da','no','fi','cs','hu','ro','nl','el','bg'];const names=['_ZH_PFX','_JA_PFX','_ES_PFX','_ZHT_PFX','_RU_PFX','_DE_PFX','_PTBR_PFX','_FR_PFX','_PL_PFX','_IT_PFX','_UK_PFX','_TR_PFX','_VI_PFX','_TH_PFX','_ID_PFX','_AR_PFX','_SV_PFX','_DA_PFX','_NO_PFX','_FI_PFX','_CS_PFX','_HU_PFX','_RO_PFX','_NL_PFX','_EL_PFX','_BG_PFX'];for(let i=0;i<codes.length;i++){try{t[codes[i]]=eval(names[i])}catch(e){t[codes[i]]=null}}t['pt']=t['ptbr'];return t})();
+const _LANG_BASE=(function(){const t={en:_EN_BASE};const codes=['zh','ja','es','zht','ru','de','ptbr','fr','pl','it','uk','tr','vi','th','id','ar','sv','da','no','fi','cs','hu','ro','nl','el','bg'];const names=['_ZH_BASE','_JA_BASE','_ES_BASE','_ZHT_BASE','_RU_BASE','_DE_BASE','_PTBR_BASE','_FR_BASE','_PL_BASE','_IT_BASE','_UK_BASE','_TR_BASE','_VI_BASE','_TH_BASE','_ID_BASE','_AR_BASE','_SV_BASE','_DA_BASE','_NO_BASE','_FI_BASE','_CS_BASE','_HU_BASE','_RO_BASE','_NL_BASE','_EL_BASE','_BG_BASE'];for(let i=0;i<codes.length;i++){try{t[codes[i]]=eval(names[i])}catch(e){t[codes[i]]=null}}t['pt']=t['ptbr'];return t})();
 function _L(ko,en){if(OPT.lang==='ko')return ko;const _lt=_T(ko);return _lt===ko?en:_lt}
 function _T(s){
   if(OPT.lang==='ko')return s;
@@ -9486,6 +9486,21 @@ function _dispatchCtSkill(){
   return true;
 }
 
+document.addEventListener('keydown',(e)=>{
+ if(e.key==='F2'){
+  e.preventDefault();
+  const cv=document.querySelector('canvas');
+  if(!cv)return;
+  const url=cv.toDataURL('image/png');
+  const a=document.createElement('a');
+  a.href=url;
+  a.download='shot_'+Date.now()+'.png';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+ }
+},true);
+
 addEventListener('keydown',e=>{
   // 컷씬 진행 (Enter/Z=다음, Space 홀드=스킵, ESC=즉시 스킵)
   if(typeof _cutsceneState!=='undefined'&&_cutsceneState==='INTRO_CUTSCENE'){
@@ -9514,7 +9529,7 @@ addEventListener('keydown',e=>{
     e.preventDefault();e.stopPropagation();return;
   }
   // F11 전체화면 토글
-  if(e.code==='F11'){toggleFullscreen();return}
+  if(e.code==='F11'){e.preventDefault();toggleFullscreen();return}
   if(e.code==='F10'){togglePanel('settings');e.preventDefault();return}
   if(e.code==='F8'&&typeof tvfx==='function'){e.preventDefault();tvfx();return}
   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
@@ -33842,7 +33857,8 @@ function drawNumStr(X,num,x,y,ci){var s=typeof num==='number'?String(~~num):num;
 function $(id){return document.getElementById(id)}
 // ═══ 전체화면 ═══
 function toggleFullscreen(){
-  if(!document.fullscreenElement){document.documentElement.requestFullscreen().catch(()=>{})}
+  if(typeof nw!=='undefined'){nw.Window.get().toggleFullscreen();}
+  else if(!document.fullscreenElement){document.documentElement.requestFullscreen().catch(()=>{})}
   else{document.exitFullscreen().catch(()=>{})}
 }
 document.addEventListener('fullscreenchange',()=>{
@@ -35179,7 +35195,7 @@ function activateGiantSlam(srcId){
   // 즉시 히트 (hitStop/slowMo 억제)
   G._noHitStopT=60;
   const _gs1R=500+(slv-1)*15;
-  const _gs1Dmg=~~(meleeRef()*7.0*statStr()*pAtkMul()*_skMul('kiSlash')*3); // 기검참 한방×3 고정 (Lv1=42×)
+  const _gs1Dmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')*4); // Lv1=100×, Lv10=280×
   const _gs1El=wp().el||0;
   _gSlamHit(P.facing,_gs1R,Math.PI,_gs1Dmg,_gs1El,0,1.0);
   G.hitStop=0;G.slowMo=0;
