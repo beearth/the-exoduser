@@ -1618,27 +1618,10 @@ function playCinematic(){
     clearTimeout(_cinTimer);
     _clearVidTimers();
     stopIntroVoice();
-    
-    // UI 정리: 모든 시네마틱 관련 요소를 확실히 숨김
-    $('cinScene').style.display='none';
     $('cinVideo').style.opacity='0';
     $('skipBtn').classList.remove('show');
-    
-    clearInterval(_emberIv);
-    
-    // 메인 화면 표시
-    $('mainWrap').classList.add('show');
-    $('loading').style.display='none';
-    
     localStorage.setItem('_cinSeen','1');
-    if(_testMode){
-      $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
-      if($('userEmail'))$('userEmail').textContent='LOCAL MODE';if($('lobbyMode'))$('lobbyMode').textContent='LOCAL MODE';loadLocalCharacters();
-    } else if(currentUser){
-      showLobby();
-    } else {
-      $('loginSection').style.display='block';
-    }
+    if(currentUser||_testMode){_goLobby();}else{_goLogin();}
   }
 
   // 인트로 비디오: 첫 프레임(문 닫힘)에서 멈춤, 클릭 시 재생
@@ -1816,20 +1799,9 @@ function skipToGate(){
   [1,2,3,4,5,6,7,8,9,10,11,12,13,14].forEach(i=>{const e=$('cinImg'+i);if(e)e.classList.remove('show')});
   $('cinTextInner').innerHTML='';
   $('skipBtn').classList.remove('show');
-  // 시네마틱 끝 → 로비 또는 로그인
-  $('cinScene').style.display='none';
-  clearInterval(_emberIv);
-  $('mainWrap').classList.add('show');
-  $('loading').style.display='none';
+  $('cinVideo').style.opacity='0';
   localStorage.setItem('_cinSeen','1');
-  if(_testMode){
-    $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
-    if($('userEmail'))$('userEmail').textContent='LOCAL MODE';if($('lobbyMode'))$('lobbyMode').textContent='LOCAL MODE';loadLocalCharacters();
-  } else if(currentUser){
-    showLobby();
-  } else {
-    $('loginSection').style.display='block';
-  }
+  if(currentUser||_testMode){_goLobby();}else{_goLogin();}
 }
 // skipBtn 비활성 — 홀드 게이지로 대체
 // $('skipBtn').onclick=skipToGate;
@@ -1891,27 +1863,64 @@ function hideLoading(){
   if(loading) loading.style.display = 'none';
 }
 
-// ═══ Init ═══
+// ═══ 화면 전환 함수 ═══
 const _qp=new URLSearchParams(window.location.search);
 const _fromGame=_qp.get('lobby')==='1';
 const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
+
+function _goLogin(){
+  // 로그인창만 표시
+  _cinDone=true;startBGM();
+  $('cinScene').style.display='none';clearInterval(_emberIv);
+  $('mainWrap').classList.add('show');
+  $('lobby').style.display='none';
+  $('loginSection').style.display='block';
+  const _c=document.querySelector('.container');if(_c)_c.style.display='';
+  hideLoading();
+}
+function _goCinematic(){
+  // 시네마틱만 표시
+  _cinDone=false;
+  $('cinScene').style.display='';
+  $('mainWrap').classList.remove('show');
+  $('loginSection').style.display='none';
+  $('lobby').style.display='none';
+  hideLoading();
+  playCinematic();
+}
+async function _goLobby(){
+  // 로비만 표시
+  _cinDone=true;startBGM();
+  $('cinScene').style.display='none';clearInterval(_emberIv);
+  $('mainWrap').classList.add('show');
+  $('loginSection').style.display='none';
+  const _c=document.querySelector('.container');if(_c)_c.style.display='none';
+  const _cl=$('cinLang');if(_cl)_cl.style.display='none';
+  $('lobby').style.display='flex';
+  if(_testMode){
+    if($('userEmail'))$('userEmail').textContent='LOCAL MODE';
+    if($('lobbyMode'))$('lobbyMode').textContent='LOCAL MODE';
+    await loadLocalCharacters();
+  }else{
+    await showLobby();
+  }
+  hideLoading();
+}
+
+// ═══ Init ═══
 (async()=>{
-  // 시작 시 로딩 표시
   showLoading(_TL('데이터를 불러오는 중...'));
 
-  // ── 로컬 테스트 모드: 로그인 없이 로컬 폴더 세이브 ──
+  // ── 로컬 테스트 모드 ──
   if(_testMode){
-    // 생성 버튼 → 로컬 저장
     $('createBtn').onclick=async()=>{
       const name=$('charName').value.trim();
       if(name.length<2||name.length>8){setStatus(_TL('이름은 2~8자여야 합니다.'),true);return}
       if(/[<>"'&\/\\]/.test(name)){setStatus(_TL('특수문자는 사용할 수 없습니다.'),true);return}
       $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
       try{
-        // 이미 같은 이름 존재하는지 체크
         const chk=await fetch('/api/load/'+encodeURIComponent(name));
         if(chk.ok){const j=await chk.json();if(j.ok){$('createBtn').disabled=false;setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);return}}
-        // 새 캐릭터 파일 생성
         const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{name:name,ts:Date.now()}})});
         const j=await res.json();
         $('createBtn').disabled=false;
@@ -1919,77 +1928,34 @@ const _testMode=_qp.get('test')==='1'||location.hostname==='localhost'||location
         $('charName').value='';setStatus('');await loadLocalCharacters();
       }catch(e){$('createBtn').disabled=false;setStatus(_TL('생성 실패: ')+e.message,true)}
     };
-    // 로그아웃 버튼 숨기기
     if($('logoutBtn'))$('logoutBtn').style.display='none';
-    if(_fromGame){
-      // 게임에서 로비 복귀 → 인트로 스킵, 바로 로비
-      _cinDone=true;startBGM();
-      $('cinScene').style.display='none';clearInterval(_emberIv);
-      $('mainWrap').classList.add('show');
-      $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl=$('cinLang');if(_cl)_cl.style.display='none';
-      if($('userEmail'))$('userEmail').textContent='LOCAL MODE';if($('lobbyMode'))$('lobbyMode').textContent='LOCAL MODE';
-      await loadLocalCharacters();
-      hideLoading();
-    } else if(localStorage.getItem('_cinSeen')){
-      _cinDone=true;startBGM();
-      $('cinScene').style.display='none';clearInterval(_emberIv);
-      $('mainWrap').classList.add('show');
-      $('loginSection').style.display='none';$('lobby').style.display='flex';document.querySelector('.container').style.display='none';var _cl2=$('cinLang');if(_cl2)_cl2.style.display='none';
-      if($('userEmail'))$('userEmail').textContent='LOCAL MODE';if($('lobbyMode'))$('lobbyMode').textContent='LOCAL MODE';
-      await loadLocalCharacters();hideLoading();
-    } else {
-      // 처음 → 인트로 재생
-      hideLoading();
-      playCinematic();
-    }
+    if(_fromGame||localStorage.getItem('_cinSeen')){await _goLobby();}
+    else{_goCinematic();}
     return;
   }
+
+  // ── Supabase 모드 ──
   const{data:{session}}=await sb.auth.getSession();
   if(session) currentUser=session.user;
+
   if(_fromGame){
-    // 게임에서 로비 복귀 → 시네마틱 스킵, 바로 로비
-    _cinDone=true;startBGM();
-    $('cinScene').style.display='none';
-    clearInterval(_emberIv);
-    $('mainWrap').classList.add('show');
-    if(session){await showLobby()}else{$('loginSection').style.display='block'}
-    hideLoading();
+    await _goLobby();
   }else if(session){
-    // 로그인 상태 → 시네마틱 본 적 있으면 스킵, 처음이면 재생
-    if(localStorage.getItem('_cinSeen')){
-      _cinDone=true;startBGM();
-      $('cinScene').style.display='none';clearInterval(_emberIv);
-      $('mainWrap').classList.add('show');
-      await showLobby();
-      hideLoading();
-    }else{
-      hideLoading();
-      playCinematic();
-    }
+    if(localStorage.getItem('_cinSeen')){await _goLobby();}
+    else{_goCinematic();}
   }else{
-    // 비로그인 → 로그인창 먼저
-    _cinDone=true;startBGM();
-    $('cinScene').style.display='none';clearInterval(_emberIv);
-    $('mainWrap').classList.add('show');
-    $('loginSection').style.display='block';
-    hideLoading();
+    _goLogin();
   }
 
   sb.auth.onAuthStateChange((event,session)=>{
     if(event==='SIGNED_IN'&&session){
       currentUser=session.user;
-      $('loginSection').style.display='none';
-      if(localStorage.getItem('_cinSeen')){
-        showLobby();
-      }else{
-        // 처음 로그인 → 시네마틱 재생
-        $('mainWrap').classList.remove('show');
-        $('cinScene').style.display='';
-        _cinDone=false;
-        playCinematic();
-      }
+      if(localStorage.getItem('_cinSeen')){_goLobby();}
+      else{_goCinematic();}
+    }else if(event==='SIGNED_OUT'){
+      currentUser=null;
+      _goLogin();
     }
-    else if(event==='SIGNED_OUT'){currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='block';const _c=document.querySelector('.container');if(_c)_c.style.display=''}
   });
 })();
 
