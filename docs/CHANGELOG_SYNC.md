@@ -24338,3 +24338,18 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - lang_nl.js
 - lang_no.js
 
+
+## 2026-05-19 16:30 (auto)
+- assets/lobby/btn_frame.png
+- assets/lobby/btn_google_frame.png
+- assets/lobby/btn_hover.png
+- assets/lobby/btn_normal.png
+- assets/lobby/btn_pressed.png
+- assets/lobby/login_frame.png
+- index.html
+- lang_pl.js
+- lang_ptbr.js
+- lang_ru.js
+- lang_sv.js
+- lang_uk.js
+

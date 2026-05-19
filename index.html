@@ -35,7 +35,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500&family=Noto+Serif+KR:wght@400;500&family=Noto+Serif+JP:wght@400;500&family=Noto+Serif+SC:wght@400;500&family=Noto+Serif+TC:wght@400;500&family=Noto+Naskh+Arabic:wght@400;500&family=Noto+Serif+Thai:wght@400;500&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
+body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden;margin:0;padding:0;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
 
 /* ═══ Cinematic Scene ═══ */
 .cin-scene{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
@@ -118,7 +118,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 @keyframes rise{0%{opacity:1;transform:translateY(0) scale(1)}100%{opacity:0;transform:translateY(-50vh) scale(0.2)}}
 
 /* ═══ Main Content — HELL LOBBY ═══ */
-.main-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;opacity:0;transition:opacity 1.2s ease .5s;overflow:hidden}
+.main-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1;opacity:0;transition:opacity 1.2s ease .5s;overflow:visible}
 .main-wrap.show{opacity:1}
 
 /* ── 로비 CSS ── */
@@ -229,33 +229,39 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 }
 
 /* ── 로그인 ── */
-.container{position:relative;z-index:1;width:480px;max-width:92vw}
-.title{text-align:center;margin-bottom:32px}
+.container{position:relative;z-index:1;width:fit-content;max-width:96vw;display:flex;flex-direction:column;align-items:center}
+.title{text-align:center;margin-bottom:20px}
 .title h1{
   font-family:'Cinzel Decorative',serif;font-size:2.5rem;color:#ff6633;
   text-shadow:0 0 30px rgba(255,80,30,.4),0 0 60px rgba(255,40,10,.15);
   letter-spacing:.15em;margin-bottom:8px
 }
 .title p{font-size:.85rem;color:#665544;letter-spacing:.3em}
-.card{
-  background:linear-gradient(135deg,rgba(18,10,6,.95),rgba(26,14,8,.98));
-  border:1px solid #443322;padding:36px 30px;position:relative;overflow:hidden;
-  box-shadow:0 20px 60px rgba(0,0,0,.5)
-}
-.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#ff6633,transparent)}
-.login-section{text-align:center}
-.login-section h2{font-size:1.1rem;color:#aa7744;letter-spacing:.2em;margin-bottom:24px;font-weight:700}
+.card{background:none;border:none;padding:0;position:relative;overflow:visible;box-shadow:none;width:100%}
+.card::before{display:none}
+/* 프레임: 1536x1024(1.5:1), 콘텐츠영역 상15%하10%좌우10% */
+.login-section{text-align:center;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;width:50vw;max-width:960px;min-width:480px;aspect-ratio:1.5/1;background:url('assets/lobby/login_frame.png') center/100% 100% no-repeat;padding:15% 10% 10% 10%;margin:0 auto;box-sizing:border-box}
+.login-section h2{font-size:1.15rem;color:#aa7744;letter-spacing:.25em;margin:0;font-weight:700}
+.login-section .login-lang{margin:0}
+.login-section .login-lang select{background:rgba(10,6,2,.8);border:1px solid rgba(120,80,40,.4);color:#ccaa88;font-family:'Noto Sans KR';font-size:.8rem;padding:5px 14px;border-radius:3px;cursor:pointer}
+/* 버튼: 콘텐츠55%, aspect-ratio 3.15:1 원본비율 유지 */
 .google-btn{
-  display:inline-flex;align-items:center;gap:12px;padding:14px 32px;
-  background:rgba(255,255,255,.03);border:1px solid #554422;color:#ccaa77;
-  font-family:'Noto Sans KR';font-size:.95rem;font-weight:700;
-  cursor:pointer;letter-spacing:.1em;transition:all .4s
+  display:inline-flex;align-items:center;gap:14px;padding:0;width:55%;aspect-ratio:3.15/1;
+  background:url('assets/lobby/btn_normal.png') center/100% 100% no-repeat;
+  border:none;color:#eedd99;
+  font-family:'Noto Sans KR';font-size:1.05rem;font-weight:700;
+  cursor:pointer;letter-spacing:.12em;transition:all .15s;justify-content:center;
+  position:relative;text-shadow:0 0 8px rgba(255,180,60,.4)
 }
 .google-btn:hover{
-  border-color:#ff8844;color:#ffcc88;background:rgba(255,100,50,.06);
-  transform:translateY(-2px);box-shadow:0 8px 30px rgba(255,80,30,.15)
+  background-image:url('assets/lobby/btn_hover.png');
+  color:#ffeeaa;text-shadow:0 0 12px rgba(255,180,60,.6)
 }
-.google-btn svg{width:20px;height:20px}
+.google-btn:active{
+  background-image:url('assets/lobby/btn_pressed.png');
+  transform:translateY(1px);color:#ccaa66
+}
+.google-btn svg{width:22px;height:22px}
 
 /* ── 생성 모달 ── */
 .create-modal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.9);align-items:center;justify-content:center;backdrop-filter:blur(4px)}
@@ -464,12 +470,18 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     <div class="card">
       <div class="loading" id="loading"><div class="spinner"></div><p>연결 중...</p></div>
       <div class="login-section" id="loginSection" style="display:none">
-        <h2>캐릭터를 선택하세요</h2>
+        <div class="login-lang">
+          <select id="loginLangSelect" style="background:rgba(10,6,2,.8);border:1px solid rgba(120,80,40,.4);color:#ccaa88;font-family:'Noto Sans KR';font-size:.8rem;padding:5px 14px;border-radius:3px;cursor:pointer">
+            <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
+          </select>
+        </div>
+        <h2>계정으로 입장하세요</h2>
         <button class="google-btn" id="googleBtn">
           <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
           Google로 입장
         </button>
-        <button class="google-btn" id="offlineBtn" style="background:rgba(40,30,20,.8);border-color:rgba(120,90,60,.5);margin-top:8px">
+        <button class="google-btn" id="offlineBtn">
+          <svg viewBox="0 0 24 24" style="width:22px;height:22px"><path fill="#887755" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
           오프라인 모드
         </button>
       </div>
@@ -484,6 +496,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   <div class="lobby-left">
     <div class="lobby-bg-img" id="lobbyBgImg"></div>
     <canvas id="lobbyParticles" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5"></canvas>
+    <div id="lobbyVerOverlay" style="position:absolute;top:12px;left:14px;z-index:10;font-size:.75rem;color:rgba(160,130,90,.5);letter-spacing:.15em;line-height:1.6;pointer-events:none"></div>
     <div class="char-disp-empty" id="charDispEmpty">당신은 누구인가</div>
   </div>
   <!-- 우측: 슬롯 + 버튼 -->
@@ -628,6 +641,11 @@ const _LOBBY_QUOTES={
   demo:'멘트 준비 중',
 };
 const _LOBBY_VER_LABEL={full:'OFFICIAL',ea:'EARLY ACCESS',demo:'DEMO'};
+const _LOBBY_VER_LIMITS={
+  full:'All Chapters · No Level Cap',
+  ea:'Lv.500 · Chapter 1 (1-1~1-4) · 8~15h',
+  demo:'Lv.100 · Stage 1-1 Only · 1~2h',
+};
 var _selectedSlot=null;
 var _localSlots=[];
 var _curBg=null;
@@ -1402,7 +1420,7 @@ function _applyLobbyLang(){
   const m={
     'h1':['HELL','HELL'],
     '.loading p':['연결 중...','Connecting...'],
-    '#loginSection h2':['캐릭터를 선택하세요','Select your character'],
+    '#loginSection h2':['계정으로 입장하세요','Sign in to enter'],
     '#googleBtn':null, // 특수 처리
     '.lobby-header h2':['캐릭터 선택','Character Select'],
     '#logoutBtn':['로그아웃','Logout'],
@@ -1433,10 +1451,11 @@ function _applyLobbyLang(){
   const subTxt=document.querySelector('.lma-sub-txt');
   if(subTxt)subTxt.textContent=_TL('공식 출시 소식을 가장 먼저 받아보세요');
 }
-document.getElementById('langSelect').onchange=function(){setUserLanguage(this.value)};
-document.getElementById('cinLang').onchange=function(){setUserLanguage(this.value)};
+document.getElementById('langSelect').onchange=function(){setUserLanguage(this.value);const ll=document.getElementById('loginLangSelect');if(ll)ll.value=this.value};
+document.getElementById('cinLang').onchange=function(){setUserLanguage(this.value);const ll=document.getElementById('loginLangSelect');if(ll)ll.value=this.value};
+if(document.getElementById('loginLangSelect'))document.getElementById('loginLangSelect').onchange=function(){setUserLanguage(this.value);document.getElementById('langSelect').value=this.value;document.getElementById('cinLang').value=this.value};
 // 페이지 로드 시 4단계 폴백으로 초기 언어 결정 + UI 적용
-(function(){const lang=getCurrentLanguage();document.getElementById('cinLang').value=lang;document.getElementById('langSelect').value=lang;if(!localStorage.getItem('hellLang'))localStorage.setItem('hellLang',lang);_applyLobbyLang()})();
+(function(){const lang=getCurrentLanguage();document.getElementById('cinLang').value=lang;document.getElementById('langSelect').value=lang;const ll=document.getElementById('loginLangSelect');if(ll)ll.value=lang;if(!localStorage.getItem('hellLang'))localStorage.setItem('hellLang',lang);_applyLobbyLang()})();
 
 const lobbyBGM=new Audio('bgm/공통/lobby.mp3');
 lobbyBGM.preload='auto';lobbyBGM.loop=true;lobbyBGM.volume=0.65;
@@ -1887,8 +1906,10 @@ function _goLogin(){
   $('cinScene').style.display='none';clearInterval(_emberIv);
   $('mainWrap').classList.add('show');
   $('lobby').style.display='none';
-  $('loginSection').style.display='block';
+  $('loginSection').style.display='flex';
   const _c=document.querySelector('.container');if(_c)_c.style.display='';
+  // 프레임 안에 langSelect 있으므로 외부 langSelect 숨김
+  const _ls=document.querySelector('.container > div[style*="text-align:center"]');if(_ls)_ls.style.display='none';
   hideLoading();
 }
 function _goCinematic(){
@@ -1910,9 +1931,16 @@ async function _goLobby(){
   const _c=document.querySelector('.container');if(_c)_c.style.display='none';
   const _cl=$('cinLang');if(_cl)_cl.style.display='none';
   $('lobby').style.display='flex';
+  // 좌측 상단 버전 오버레이 갱신
+  const _vo=$('lobbyVerOverlay');if(_vo){
+    const _lb=_LOBBY_VER_LABEL[_LOBBY_BUILD]||'';
+    const _md=_testMode?'OFFLINE':'ONLINE';
+    const _lm=_LOBBY_VER_LIMITS[_LOBBY_BUILD]||'';
+    _vo.innerHTML=_lb+'<br>v0.5.0 · 20260414-hotfix2<br>'+_md+(_lm?'<br><span style="color:rgba(200,120,80,.5)">'+_lm+'</span>':'');
+  }
   if(_testMode){
-    if($('userEmail'))$('userEmail').textContent='LOCAL MODE';
-    if($('lobbyMode'))$('lobbyMode').textContent='LOCAL MODE';
+    if($('userEmail'))$('userEmail').textContent='OFFLINE';
+    if($('lobbyMode'))$('lobbyMode').textContent='OFFLINE';
     await loadLocalCharacters();
   }else{
     await showLobby();
@@ -1937,7 +1965,16 @@ function _enterOffline(){
       $('createBtn').disabled=false;
       if(!j.ok){setStatus(_TL('생성 실패: ')+(j.error||'unknown'),true);return}
       $('charName').value='';setStatus('');await loadLocalCharacters();
-    }catch(e){$('createBtn').disabled=false;setStatus(_TL('생성 실패: ')+e.message,true)}
+    }catch(e){
+      // 서버 없음 — localStorage 폴백 (DEMO)
+      const _LS_PREFIX='hellsave_demo_';
+      let _slot=-1;
+      for(let i=0;i<3;i++){if(!localStorage.getItem(_LS_PREFIX+i)){_slot=i;break}}
+      if(_slot<0){$('createBtn').disabled=false;setStatus(_TL('슬롯이 가득 찼습니다.'),true);return}
+      localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:0}));
+      $('createBtn').disabled=false;
+      $('charName').value='';setStatus('');await loadLocalCharacters();
+    }
   };
   if($('logoutBtn'))$('logoutBtn').style.display='none';
   _goLobby();
@@ -1985,7 +2022,7 @@ $('googleBtn').onclick=async()=>{
   const{error}=await sb.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+'/',queryParams:{prompt:'select_account'}}});
   if(error){$('status').textContent=_TL('로그인 실패: ')+error.message;$('status').className='status error'}
 };
-if($('logoutBtn'))$('logoutBtn').onclick=async()=>{await sb.auth.signOut();currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='block';document.querySelector('.container').style.display=''};
+if($('logoutBtn'))$('logoutBtn').onclick=async()=>{await sb.auth.signOut();currentUser=null;$('lobby').style.display='none';$('loginSection').style.display='flex';document.querySelector('.container').style.display=''};
 
 async function showLobby(){
   showLoading(_TL('캐릭터 불러오는 중...'));
@@ -2107,9 +2144,18 @@ async function loadLocalCharacters(){
     const res=await fetch('/api/slots');
     const j=await res.json();
     _localSlots=j.ok&&j.slots?j.slots:[];
-    _renderSlotList();
-    _updateCharDisplay();
-  }catch(e){cl.innerHTML='<div class="no-chars" style="color:#cc4433">'+_TL('서버 연결 실패: ')+e.message+'</div>'}
+  }catch(e){
+    // 서버 없음 (DEMO 등) — localStorage 폴백
+    _localSlots=[];
+    const _LS_PREFIX='hellsave_demo_';
+    for(let i=0;i<3;i++){
+      const raw=localStorage.getItem(_LS_PREFIX+i);
+      if(!raw)continue;
+      try{const d=JSON.parse(raw);_localSlots.push({name:d.name||('Slot '+(i+1)),lv:(d.player&&d.player.lv)||1,stage:(d.game&&d.game.stage)||0,charIdx:d.charIdx||0});}catch(pe){}
+    }
+  }
+  _renderSlotList();
+  _updateCharDisplay();
 }
 
 // 슬롯 스크롤 상태
@@ -2117,6 +2163,15 @@ let _slotScrollIdx=0; // 캐릭터 뷰포트 상단 인덱스
 
 function _renderSlotList(){
   const cl=$('charList');if(!cl)return;cl.innerHTML='';
+  // ── DEMO: 슬롯 1개 고정, 생성 버튼 없음 ──
+  if(_LOBBY_BUILD==='demo'){
+    const div=document.createElement('div');div.className='char-item active';
+    div.innerHTML='<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=2" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">DEMO CHARACTER</div><div class="char-info" style="color:rgba(200,150,100,.6)">Lv.100 · Stage 1-1</div></div>';
+    div.addEventListener('click',()=>{_selectedSlot='demo';const btn=$('enterGameBtn');if(btn)btn.disabled=false;});
+    cl.appendChild(div);
+    _selectedSlot='demo';const btn=$('enterGameBtn');if(btn)btn.disabled=false;
+    return;
+  }
   const MAX_CHARS=5; // 최대 생성 가능 캐릭터 수
   const VIEW=2;      // 한번에 보이는 캐릭터 슬롯 수
   const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
@@ -2246,6 +2301,13 @@ function _swapLobbyBg(stage){
 (function _initLobbyMid(){
   const q=$('lmaQuote');if(q)q.textContent=_LOBBY_QUOTES[_LOBBY_BUILD]||'';
   const v=$('lobbyVersionTxt');if(v)v.textContent=_LOBBY_VER_LABEL[_LOBBY_BUILD]||'';
+  // 좌측 상단 버전 오버레이
+  const vo=$('lobbyVerOverlay');if(vo){
+    const label=_LOBBY_VER_LABEL[_LOBBY_BUILD]||'UNKNOWN';
+    const ver='v0.5.0 · 20260414-hotfix2';
+    const mode=_testMode?'OFFLINE':'ONLINE';
+    vo.innerHTML=label+'<br>'+ver+'<br>'+mode;
+  }
 })();
 
 // ── 입장 버튼 사운드 ──
@@ -2676,10 +2738,12 @@ function showCharGate(charId){
     return false;
   }, skip);
 
-  // 재방문(시네마틱 본 적 있음) 또는 게임 복귀 → splash 전체 스킵
+  // 게임 복귀 → splash 전체 스킵, 재방문 → 경고문 스킵 FDG 로고부터
   const _splashQp=new URLSearchParams(window.location.search);
-  if(localStorage.getItem('_cinSeen')||_splashQp.get('lobby')==='1'){
+  if(_splashQp.get('lobby')==='1'){
     endSplash();
+  }else if(localStorage.getItem('_cinSeen')){
+    phase=1;startPhase();
   }else{
     startPhase();
   }
