@@ -24353,3 +24353,23 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - lang_sv.js
 - lang_uk.js
 
+
+## 2026-05-19 18:30 (auto)
+- _add_missing_keys.py
+- _autosave/game_20260519_173639.html
+- _autosave/game_20260519_175156.html
+- _autosave/game_20260519_175213.html
+- _autosave/game_20260519_175214.html
+- _autosave/game_20260519_175835.html
+- _autosave/game_20260519_180044.html
+- _autosave/game_20260519_181153.html
+- game.html
+- img/cursors/cursor_ice_dagger_2x.png
+- index.html
+- lang_bg.js
+- lang_cs.js
+- lang_da.js
+- lang_de.js
+- lang_es.js
+- lang_fr.js
+

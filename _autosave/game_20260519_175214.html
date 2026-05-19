@@ -100,7 +100,7 @@ if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!==
   --ui-inset-bottom:10px
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;overflow:hidden;font-family:var(--font);user-select:none;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
+body{background:#000;overflow:hidden;font-family:var(--font);user-select:none;cursor:url(img/cursors/cursor_ice_dagger_2x.png) 0 0,auto}
 canvas{display:block;position:fixed;inset:0}
 
 /* ══ HUD: Orbs of Fate ══ */
@@ -2430,7 +2430,7 @@ canvas{display:block;position:fixed;inset:0}
         <div class="set-section" style="margin-top:20px;border-top:1px solid #443322;padding-top:15px">
           <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">마우스 커서</div>
           <div id="cursorGrid" style="display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:#664422 transparent"></div>
-          <div class="set-range-row" style="margin-top:10px"><span class="set-name">커서 크기</span><input type="range" id="optCursorSize" min="30" max="100" step="5" style="flex:1;accent-color:#ccaa77"><span id="cursorSizeVal" style="min-width:36px;text-align:right;color:#ccaa77;font-size:.9rem">50%</span></div>
+          <div class="set-range-row" style="margin-top:10px"><span class="set-name">커서 크기</span><input type="range" id="optCursorSize" min="30" max="200" step="5" style="flex:1;accent-color:#ccaa77"><span id="cursorSizeVal" style="min-width:36px;text-align:right;color:#ccaa77;font-size:.9rem">50%</span></div>
         </div>
 
         <div class="set-section" style="margin-top:20px;border-top:1px solid #443322;padding-top:15px">
@@ -4716,7 +4716,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:9,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:11,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -9781,6 +9781,7 @@ function _gpClearAll(){
   if(_gpBtnsPrev['sD']){K['KeyS']=false;_gpBtnsPrev['sD']=false;}
   if(_gpBtnsPrev['sL']){K['KeyA']=false;_gpBtnsPrev['sL']=false;}
   if(_gpBtnsPrev['sR']){K['KeyD']=false;_gpBtnsPrev['sR']=false;}
+  if(_gpBtnsPrev['kRS']){_gpInjectKey('KeyE',false);_gpBtnsPrev['kRS']=false;}
 }
 
 // ═══ 범용 UI 게임패드 네비게이션 (엘든링/디아4 스타일) ═══
@@ -9886,8 +9887,9 @@ function _gpUINav(panel){
   const _dR=(_gpad.buttons[15]&&_gpad.buttons[15].pressed)||_gpAxes[6]>0.5;
   const u=_dU,d=_dD,l=_dL,r=_dR;
   if(u||d||l||r)_gpVCHide(); // D-pad 누르면 커서 숨기고 선택 모드
-  // 우측 스틱 → 스크롤 (휠 역할)
-  const rsYVal=_gpAxes[3],rsXVal=_gpAxes[2];
+  // 우측 스틱 → 스크롤 (휠 역할) — 원시값 사용 (데드존 없이 0.15 임계)
+  const rsYVal=_gpad.axes.length>=4?_gpad.axes[3]:0;
+  const rsXVal=_gpad.axes.length>=3?_gpad.axes[2]:0;
   const a=_gpad.buttons[0]&&_gpad.buttons[0].pressed;
   const b=_gpad.buttons[1]&&_gpad.buttons[1].pressed;
   const lb=_gpad.buttons[4]&&_gpad.buttons[4].pressed;
@@ -34200,7 +34202,7 @@ function _fuseStar(skId){
   return _max;
 }
 // 스킬별 배율 테이블: {b:Lv1, g:Lv당 성장} — g=b*0.8 기준 (2026-05-19 상향)
-// Lv20=Lv1×10.5 성장 (구 ×4.8 → 2배 상향, g=b*0.4→b*0.8)
+// Lv20=Lv1×8.6 성장 (구 ×4.8 → 2배 상향, g=b*0.4→b*0.8, 2026-05-19)
 // final ≈ meleeRef × _skMul × levelBonus × 특수보정
 const _SK_MUL={
   // ── 단발 폭딜 (장쿨, 단일/광역) ──
@@ -37708,7 +37710,7 @@ function _buildCursor(idx){
   const cur=_CURSORS[idx];
   // 이미지 파일 있고 로드 완료면 이미지 사용
   if(cur._imgEl&&cur._imgEl.complete&&cur._imgEl.naturalWidth>0){
-    const s=cur._imgEl.naturalWidth;const out=Math.max(16,Math.min(128,Math.round(s*sz/100)));
+    const s=cur._imgEl.naturalWidth;const out=Math.max(16,Math.min(256,Math.round(s*sz/100)));
     const cv2=document.createElement('canvas');cv2.width=out;cv2.height=out;
     const x2=cv2.getContext('2d');x2.drawImage(cur._imgEl,0,0,out,out);
     const isCenter=idx===3||idx===6;

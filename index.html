@@ -35,11 +35,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Cinzel+Decorative:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500&family=Noto+Serif+KR:wght@400;500&family=Noto+Serif+JP:wght@400;500&family=Noto+Serif+SC:wght@400;500&family=Noto+Serif+TC:wght@400;500&family=Noto+Naskh+Arabic:wght@400;500&family=Noto+Serif+Thai:wght@400;500&display=swap');
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden;margin:0;padding:0;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
+body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden;margin:0;padding:0;cursor:url(img/cursors/cursor_ice_dagger_2x.png) 0 0,auto}
 
 /* ═══ Cinematic Scene ═══ */
-.cin-scene{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
-.cin-scene *{cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
+.cin-scene{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;cursor:url(img/cursors/cursor_ice_dagger_2x.png) 0 0,auto}
+.cin-scene *{cursor:url(img/cursors/cursor_ice_dagger_2x.png) 0 0,auto}
 
 /* 레터박스 */
 .cin-lb{position:absolute;left:0;right:0;background:#000;z-index:30;pointer-events:none}
@@ -204,7 +204,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   border:none;padding:0;
   cursor:pointer;
   filter:drop-shadow(0 0 10px rgba(150,60,255,0.55)) drop-shadow(0 0 24px rgba(110,30,200,0.35));
-  transition:filter .3s ease, transform .25s ease;
+  transition:filter .3s ease, transform .25s ease, opacity .4s ease;
   display:block;
 }
 .enter-game-btn img{width:100%;height:auto;max-height:500px;display:block}
@@ -213,7 +213,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   transform:translateY(-2px) scale(1.03);
 }
 .enter-game-btn:active:not(:disabled){transform:translateY(0) scale(.99);filter:brightness(1.05)}
-.enter-game-btn:disabled{opacity:0.3;cursor:not-allowed;filter:grayscale(.6)}
+.enter-game-btn:disabled{opacity:0 !important;pointer-events:none !important;cursor:not-allowed;filter:none !important}
 
 /* Steam 찜하기 */
 .ll-steam-area{text-align:center;pointer-events:all;margin-top:auto;padding-top:20px}
@@ -2064,8 +2064,9 @@ async function loadCharacters(){
     });
     cl.appendChild(div);
   });
-  // 로비 진입 시 첫 캐릭터 자동 배경 표시
-  if(data&&data.length>0){const _d0=data[0].data||{};_updateCharDisplay({name:data[0].name,stage:_d0.game?_d0.game.stage||0:0})}else{_swapLobbyBg(0);}
+  // 로비 진입 시 첫 캐릭터 자동 배경 표시 (버튼은 선택 전까지 숨김)
+  if(data&&data.length>0){const _d0=data[0].data||{};_swapLobbyBg(_d0.game?_d0.game.stage||0:0)}else{_swapLobbyBg(0);}
+  const btn=$('enterGameBtn');if(btn)btn.disabled=true;
   // + 새 캐릭터 슬롯
   const newDiv=document.createElement('div');newDiv.className='char-item-new';
   newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">+</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+_TL('새 캐릭터')+'</div></div>';

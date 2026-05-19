@@ -100,7 +100,7 @@ if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!==
   --ui-inset-bottom:10px
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:#000;overflow:hidden;font-family:var(--font);user-select:none;cursor:url(img/cursors/cursor_death_scythe.png) 6 0,auto}
+body{background:#000;overflow:hidden;font-family:var(--font);user-select:none;cursor:url(img/cursors/cursor_ice_dagger_2x.png) 0 0,auto}
 canvas{display:block;position:fixed;inset:0}
 
 /* ══ HUD: Orbs of Fate ══ */
@@ -2430,7 +2430,7 @@ canvas{display:block;position:fixed;inset:0}
         <div class="set-section" style="margin-top:20px;border-top:1px solid #443322;padding-top:15px">
           <div class="set-label" style="text-align:center;font-size:1.3rem;margin-bottom:15px;color:#ccaa77;">마우스 커서</div>
           <div id="cursorGrid" style="display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:#664422 transparent"></div>
-          <div class="set-range-row" style="margin-top:10px"><span class="set-name">커서 크기</span><input type="range" id="optCursorSize" min="30" max="100" step="5" style="flex:1;accent-color:#ccaa77"><span id="cursorSizeVal" style="min-width:36px;text-align:right;color:#ccaa77;font-size:.9rem">50%</span></div>
+          <div class="set-range-row" style="margin-top:10px"><span class="set-name">커서 크기</span><input type="range" id="optCursorSize" min="30" max="200" step="5" style="flex:1;accent-color:#ccaa77"><span id="cursorSizeVal" style="min-width:36px;text-align:right;color:#ccaa77;font-size:.9rem">50%</span></div>
         </div>
 
         <div class="set-section" style="margin-top:20px;border-top:1px solid #443322;padding-top:15px">
@@ -4716,7 +4716,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:9,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:11,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -37700,7 +37700,7 @@ _CURSORS[10].img='img/cursors/cursor_demon_eye.png';
 _CURSORS[11].img='img/cursors/cursor_ice_dagger.png';
 _CURSORS[12].img='img/cursors/cursor_magic_staff.png';
 // 이미지 프리로드
-_CURSORS.forEach(cur=>{if(cur.img){const _i=new Image();_i.src=cur.img;cur._imgEl=_i}});
+_CURSORS.forEach(cur=>{if(cur.img){const _i=new Image();_i.src=cur.img;cur._imgEl=_i;_i.onload=()=>{_cursorCache=[];try{_applyCursor()}catch(e){}}}});
 let _cursorCache=[];
 function _buildCursor(idx){
   const sz=OPT.cursorSize||50;
@@ -37710,7 +37710,7 @@ function _buildCursor(idx){
   const cur=_CURSORS[idx];
   // 이미지 파일 있고 로드 완료면 이미지 사용
   if(cur._imgEl&&cur._imgEl.complete&&cur._imgEl.naturalWidth>0){
-    const s=cur._imgEl.naturalWidth;const out=Math.max(16,Math.min(128,Math.round(s*sz/100)));
+    const s=cur._imgEl.naturalWidth;const out=Math.max(16,Math.min(256,Math.round(s*sz/100)));
     const cv2=document.createElement('canvas');cv2.width=out;cv2.height=out;
     const x2=cv2.getContext('2d');x2.drawImage(cur._imgEl,0,0,out,out);
     const isCenter=idx===3||idx===6;
@@ -37743,7 +37743,7 @@ function _buildCursor(idx){
   _cursorCache[key]='url('+cv2.toDataURL()+') '+hx+' '+hy+', auto';
   return _cursorCache[key];
 }
-function _applyCursor(){C.style.cursor=_buildCursor(OPT.cursor??9);document.body.style.cursor=_buildCursor(OPT.cursor??9)}
+function _applyCursor(){C.style.cursor=_buildCursor(OPT.cursor??11);document.body.style.cursor=_buildCursor(OPT.cursor??11)}
 // ── Electron 화면 설정 (해상도 + 화면모드) ──
 if(IS_ELECTRON&&window.electronAPI){
   $('optScreenSection').style.display='';
@@ -37927,6 +37927,8 @@ try{
     if(data.binds){for(const k in data.binds){if(k in BINDS)BINDS[k]=data.binds[k]}}
     if(data.binds2){for(const k in data.binds2){if(k in BINDS2||k in BINDS)BINDS2[k]=data.binds2[k]}}
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
+    // 2026-05-19 마이그레이션: 기본 커서 얼음단검 강제
+    OPT.cursor=11;
     // 2026-04-17 마이그레이션: 사용자 UI 배율(uiScale/uiScaleAuto) 기능 완전 제거 — 기존 저장값 삭제
     if('uiScale' in OPT)delete OPT.uiScale;
     if('uiScaleAuto' in OPT)delete OPT.uiScaleAuto;
