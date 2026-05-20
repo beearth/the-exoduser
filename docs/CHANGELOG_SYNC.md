@@ -25301,3 +25301,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - lobby_i18n.js
 - steam/steam_deploy.bat
 
+
+## 2026-05-20 16:30 (auto)
+- steam_appid.txt
+
