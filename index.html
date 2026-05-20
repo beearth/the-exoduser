@@ -168,7 +168,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .lma-sub-txt{font-size:clamp(.68rem,1.3vw,.88rem);color:rgba(210,170,100,.7);letter-spacing:.1em;text-shadow:0 1px 4px rgba(0,0,0,.9)}
 .lma-steam-btn{width:62%;pointer-events:auto;cursor:pointer;background:transparent;border:none;padding:0;display:block;transition:filter .25s}
 .lma-steam-btn img{width:100%;display:block}
-.lma-steam-btn:hover{filter:brightness(1.2) drop-shadow(0 0 14px rgba(80,160,255,.7))}
+.lma-steam-btn:hover,.lma-steam-btn.gp-hover{filter:brightness(1.2) drop-shadow(0 0 14px rgba(80,160,255,.7))}
 .no-chars{color:rgba(180,140,110,0.5);text-align:center;padding:40px 20px;font-size:0.9rem;letter-spacing:0.1em}
 
 /* 슬롯 카드 */
@@ -209,7 +209,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   display:block;
 }
 .enter-game-btn img{width:100%;height:auto;max-height:500px;display:block}
-.enter-game-btn:hover:not(:disabled){
+.enter-game-btn:hover:not(:disabled),.enter-game-btn.gp-hover{
   filter:drop-shadow(0 0 18px rgba(180,80,255,1)) drop-shadow(0 0 44px rgba(140,40,220,0.75)) brightness(1.25);
   transform:translateY(-2px) scale(1.03);
 }
@@ -554,6 +554,17 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
       <button class="create-btn" id="createBtn">생성</button>
     </div>
     <div class="status" id="status"></div>
+  </div>
+</div>
+
+<!-- ═══ 캐릭터 삭제 확인 모달 ═══ -->
+<div id="delConfirmModal" style="display:none;position:fixed;inset:0;z-index:350;background:rgba(0,0,0,.85);align-items:center;justify-content:center">
+  <div style="background:#1a1410;border:2px solid #663322;border-radius:8px;padding:24px 32px;max-width:400px;text-align:center">
+    <p id="delConfirmMsg" style="color:#ccaa77;font-size:1rem;margin-bottom:20px"></p>
+    <div style="display:flex;gap:12px;justify-content:center">
+      <button id="delConfirmYes" style="padding:8px 28px;background:rgba(150,0,0,.3);border:1px solid #880000;color:#ff4444;font-family:'Noto Sans KR';font-size:1rem;font-weight:700;cursor:pointer;border-radius:4px">확인</button>
+      <button id="delConfirmNo" style="padding:8px 28px;background:rgba(0,0,0,.3);border:1px solid #554433;color:#aa8866;font-family:'Noto Sans KR';font-size:1rem;font-weight:700;cursor:pointer;border-radius:4px">취소</button>
+    </div>
   </div>
 </div>
 
@@ -2155,10 +2166,12 @@ async function loadCharacters(){
       div.classList.add('active');
       const btn=$('enterGameBtn');if(btn)btn.disabled=false;
     });
-    div.querySelector('.char-del').addEventListener('click',async e=>{
-      e.stopPropagation();if(!confirm(ch.name+_TL(' 캐릭터를 정말 삭제하시겠습니까?')))return;
-      const{error:de}=await sb.from('characters').delete().eq('id',ch.id);
-      if(de){setStatus(_TL('삭제 실패: ')+de.message,true);return}await loadCharacters();
+    div.querySelector('.char-del').addEventListener('click',e=>{
+      e.stopPropagation();
+      _showDelConfirm(ch.name,async()=>{
+        const{error:de}=await sb.from('characters').delete().eq('id',ch.id);
+        if(de){setStatus(_TL('삭제 실패: ')+de.message,true);return}await loadCharacters();
+      });
     });
     cl.appendChild(div);
   });
@@ -2309,9 +2322,11 @@ function _renderSlotList(){
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===s.name?' active':'');
       div.innerHTML=`<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=2" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(s.name)}</div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
       div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;_selectSlot(s)});
-      div.querySelector('.char-del').addEventListener('click',async e=>{
-        e.stopPropagation();if(!confirm(s.name+_TL(' 캐릭터를 정말 삭제하시겠습니까?')))return;
-        try{await fetch('/api/save/'+encodeURIComponent(s.name),{method:'DELETE'});_slotScrollIdx=Math.max(0,_slotScrollIdx-1);await loadLocalCharacters()}catch(de){setStatus(_TL('삭제 실패: ')+de.message,true)}
+      div.querySelector('.char-del').addEventListener('click',e=>{
+        e.stopPropagation();
+        _showDelConfirm(s.name,async()=>{
+          try{await fetch('/api/save/'+encodeURIComponent(s.name),{method:'DELETE'});_slotScrollIdx=Math.max(0,_slotScrollIdx-1);await loadLocalCharacters()}catch(de){setStatus(_TL('삭제 실패: ')+de.message,true)}
+        });
       });
       track.appendChild(div);
     }else{
@@ -2415,8 +2430,22 @@ function _swapLobbyBg(stage){
 
 // ── 입장 버튼 사운드 ──
 const _enterSFX=new Audio('assets/lobby/lobby_enter_sfx.mp3');
-_enterSFX.preload='auto';_enterSFX.volume=0.85;
-function playEnterSFX(){try{_enterSFX.currentTime=0;_enterSFX.play();}catch(e){}}
+_enterSFX.preload='auto';_enterSFX.volume=1.0;
+let _enterGain=null;
+try{const _ac=new(window.AudioContext||window.webkitAudioContext)();const src=_ac.createMediaElementSource(_enterSFX);_enterGain=_ac.createGain();_enterGain.gain.value=2.0;src.connect(_enterGain);_enterGain.connect(_ac.destination);}catch(e){}
+function playEnterSFX(){
+  try{_enterSFX.currentTime=0;_enterSFX.volume=1.0;if(_enterGain)_enterGain.gain.value=2.0;_enterSFX.play();}catch(e){}
+  // 패드 진동 최대
+  try{
+    const gps=navigator.getGamepads();
+    for(let i=0;i<gps.length;i++){
+      const gp=gps[i];
+      if(gp&&gp.vibrationActuator){
+        gp.vibrationActuator.playEffect('dual-rumble',{startDelay:0,duration:600,weakMagnitude:1.0,strongMagnitude:1.0});
+      }
+    }
+  }catch(e){}
+}
 // 호버 사운드 — 파일 기반 Web Audio 루프
 let _hoverCtx=null,_hoverBuf=null,_hoverSrc=null,_hoverGain=null;
 fetch('assets/lobby/11_loop.wav').then(r=>r.arrayBuffer()).then(ab=>{
@@ -2455,6 +2484,24 @@ if($('enterGameBtn')){
 }
 // 생성 모달
 $('createCancelBtn').addEventListener('click',()=>{$('createModal').classList.remove('show')});
+
+// ── 커스텀 삭제 확인 모달 ──
+let _delConfirmCb=null;
+let _delConfirmIdx=0; // 0=확인, 1=취소
+function _showDelConfirm(name,onYes){
+  const m=$('delConfirmModal');if(!m)return;
+  $('delConfirmMsg').textContent=name+_TL(' 캐릭터를 정말 삭제하시겠습니까?');
+  m.style.display='flex';_delConfirmCb=onYes;_delConfirmIdx=1; // 기본 취소에 포커스
+  _delHighlight();
+}
+function _hideDelConfirm(){const m=$('delConfirmModal');if(m)m.style.display='none';_delConfirmCb=null;}
+function _delHighlight(){
+  const y=$('delConfirmYes'),n=$('delConfirmNo');if(!y||!n)return;
+  y.style.outline=_delConfirmIdx===0?'2px solid #C9A961':'';
+  n.style.outline=_delConfirmIdx===1?'2px solid #C9A961':'';
+}
+$('delConfirmYes').onclick=()=>{if(_delConfirmCb)_delConfirmCb();_hideDelConfirm()};
+$('delConfirmNo').onclick=()=>{_hideDelConfirm()};
 
 // ── 가상 키보드 (게임패드용) + 한글 자동 조합 ──
 const _VKB_ROWS=[
@@ -2599,22 +2646,87 @@ function _vkbInput(k){
 }
 
 // ── 로그인 게임패드 네비게이션 ──
+// ── 커스텀 언어 드롭다운 (패드+마우스 공용) ──
+let _langPopOpen = false, _langPopIdx = 0, _langPopSel = null;
+function _openLangPop(targetSel){
+  let pop=$('_langPop');
+  const sel=targetSel||$('loginLangSelect')||$('langSelect');if(!sel)return;
+  _langPopSel=sel;
+  if(!pop){
+    pop=document.createElement('div');pop.id='_langPop';
+    pop.style.cssText='position:fixed;z-index:9999;background:rgba(10,6,2,.95);border:1px solid rgba(120,80,40,.6);border-radius:6px;padding:6px 0;max-height:60vh;overflow-y:auto;min-width:200px;box-shadow:0 8px 32px rgba(0,0,0,.8)';
+    document.body.appendChild(pop);
+  }
+  pop.innerHTML='';
+  const opts=sel.options;_langPopIdx=sel.selectedIndex;
+  for(let i=0;i<opts.length;i++){
+    const row=document.createElement('div');
+    row.style.cssText='padding:6px 16px;color:#ccaa88;font-size:.85rem;cursor:pointer;transition:background .1s';
+    row.textContent=opts[i].text;
+    row.dataset.idx=i;
+    row.onmouseenter=function(){this.style.background='rgba(255,150,80,.15)'};
+    row.onmouseleave=function(){this.style.background=''};
+    row.onclick=function(){sel.selectedIndex=+this.dataset.idx;sel.dispatchEvent(new Event('change'));_closeLangPop()};
+    if(i===sel.selectedIndex)row.style.color='#ffcc44';
+    pop.appendChild(row);
+  }
+  // 위치: select 아래
+  const r=sel.getBoundingClientRect();
+  pop.style.left=r.left+'px';pop.style.top=(r.bottom+4)+'px';
+  pop.style.display='block';_langPopOpen=true;
+  _hlLangPop();
+}
+function _closeLangPop(){const p=$('_langPop');if(p)p.style.display='none';_langPopOpen=false;}
+function _hlLangPop(){
+  const p=$('_langPop');if(!p)return;
+  const rows=p.children;
+  for(let i=0;i<rows.length;i++){
+    rows[i].style.background=i===_langPopIdx?'rgba(255,150,80,.2)':'';
+    rows[i].style.outline=i===_langPopIdx?'1px solid #C9A961':'';
+  }
+  if(rows[_langPopIdx])rows[_langPopIdx].scrollIntoView({block:'nearest'});
+}
+// 마우스로 select 클릭 시에도 커스텀 팝업 사용
+(function(){
+  ['loginLangSelect','langSelect'].forEach(function(id){
+    const s=$(id);if(s)s.addEventListener('mousedown',function(e){e.preventDefault();if(_langPopOpen)_closeLangPop();else _openLangPop(s)});
+  });
+})();
+
 let _loginGpIdx = 0;
 _GP.on('loginNav', (gp, just) => {
   const ls = $('loginSection');
   if(!ls || ls.style.display === 'none' || ls.style.display === '') return false;
+  // 언어 팝업 열려있으면 팝업 조작
+  if(_langPopOpen){
+    const sel=$('loginLangSelect');const opts=sel?sel.options.length:0;
+    if(just[12] || (_GP.axes[1] < -0.5 && !_GP.prev._lpU)) { _langPopIdx = Math.max(0, _langPopIdx - 1); _hlLangPop(); }
+    if(just[13] || (_GP.axes[1] > 0.5 && !_GP.prev._lpD)) { _langPopIdx = Math.min(opts - 1, _langPopIdx + 1); _hlLangPop(); }
+    _GP.prev._lpU = _GP.axes[1] < -0.5; _GP.prev._lpD = _GP.axes[1] > 0.5;
+    if(just[0] && sel) { sel.selectedIndex = _langPopIdx; sel.dispatchEvent(new Event('change')); _closeLangPop(); }
+    if(just[1]) { _closeLangPop(); }
+    return false;
+  }
   const btns = [].filter.call(ls.querySelectorAll('.google-btn'), b => b.style.display !== 'none');
-  if(!btns.length) return false;
-  if(_loginGpIdx >= btns.length) _loginGpIdx = 0;
+  // 언어 select도 네비게이션 대상에 추가
+  const langSel = $('loginLangSelect');
+  const allItems = langSel ? [langSel, ...btns] : [...btns];
+  if(!allItems.length) return false;
+  if(_loginGpIdx >= allItems.length) _loginGpIdx = 0;
   // D-pad 위(12)/아래(13) + 좌스틱
   if(just[12] || (_GP.axes[1] < -0.5 && !_GP.prev._loginUp)) _loginGpIdx = Math.max(0, _loginGpIdx - 1);
-  if(just[13] || (_GP.axes[1] > 0.5 && !_GP.prev._loginDown)) _loginGpIdx = Math.min(btns.length - 1, _loginGpIdx + 1);
+  if(just[13] || (_GP.axes[1] > 0.5 && !_GP.prev._loginDown)) _loginGpIdx = Math.min(allItems.length - 1, _loginGpIdx + 1);
   _GP.prev._loginUp = _GP.axes[1] < -0.5;
   _GP.prev._loginDown = _GP.axes[1] > 0.5;
   // 하이라이트
-  btns.forEach((b, i) => { b.style.outline = i === _loginGpIdx ? '2px solid #C9A961' : ''; b.style.outlineOffset = '-2px'; });
+  allItems.forEach((b, i) => { b.style.outline = i === _loginGpIdx ? '2px solid #C9A961' : ''; b.style.outlineOffset = '-2px'; });
   // A = 선택
-  if(just[0]) { btns[_loginGpIdx].click(); return true; }
+  if(just[0]) {
+    const cur = allItems[_loginGpIdx];
+    if(cur === langSel) { _openLangPop(); } // 언어 select → 커스텀 팝업
+    else { cur.click(); }
+    return true;
+  }
   return false;
 }, () => {});
 
@@ -2623,6 +2735,28 @@ let _lobbyGpIdx = 0;
 _GP.on('lobbyNav', (gp, just) => {
   const lobby = $('lobby');
   if(!lobby || lobby.style.display !== 'flex') return false;
+
+  // 언어 팝업 열려있으면 팝업 조작
+  if(_langPopOpen){
+    const sel=_langPopSel||$('langSelect');const opts=sel?sel.options.length:0;
+    if(just[12] || (_GP.axes[1] < -0.5 && !_GP.prev._lpU)) { _langPopIdx = Math.max(0, _langPopIdx - 1); _hlLangPop(); }
+    if(just[13] || (_GP.axes[1] > 0.5 && !_GP.prev._lpD)) { _langPopIdx = Math.min(opts - 1, _langPopIdx + 1); _hlLangPop(); }
+    _GP.prev._lpU = _GP.axes[1] < -0.5; _GP.prev._lpD = _GP.axes[1] > 0.5;
+    if(just[0] && sel) { sel.selectedIndex = _langPopIdx; sel.dispatchEvent(new Event('change')); _closeLangPop(); }
+    if(just[1]) { _closeLangPop(); }
+    return false;
+  }
+
+  // 삭제 확인 모달
+  const delM = $('delConfirmModal');
+  if(delM && delM.style.display === 'flex') {
+    if(just[14]||(_GP.axes[0]<-0.5&&!_GP.prev._dlL)){_delConfirmIdx=0;_delHighlight();}
+    if(just[15]||(_GP.axes[0]>0.5&&!_GP.prev._dlR)){_delConfirmIdx=1;_delHighlight();}
+    _GP.prev._dlL=_GP.axes[0]<-0.5;_GP.prev._dlR=_GP.axes[0]>0.5;
+    if(just[0]){[$('delConfirmYes'),$('delConfirmNo')][_delConfirmIdx].click();return true;} // A = 선택
+    if(just[1]){_hideDelConfirm();return true;} // B = 취소
+    return false;
+  }
 
   // 생성 모달이 열려있으면 가상 키보드 조작
   const modal = $('createModal');
@@ -2663,6 +2797,8 @@ _GP.on('lobbyNav', (gp, just) => {
 
   // 로비 내 상호작용 가능한 요소 전부 자동 수집 (부모-자식 중복 제거)
   const _navItems = [];
+  // 언어 select 먼저 추가
+  const _lSel=$('langSelect');if(_lSel&&_lSel.offsetParent!==null)_navItems.push({el:_lSel,type:'lang'});
   const _lobbyRight = lobby.querySelector('.lobby-right');
   if(_lobbyRight) {
     _lobbyRight.querySelectorAll('.char-item,.char-item-new,#enterGameBtn:not([disabled]),#lobbyLogout,#logoutBtn,.lma-steam-btn,.ll-steam-btn,.char-nav-btn:not([disabled])').forEach(el => {
@@ -2683,19 +2819,34 @@ _GP.on('lobbyNav', (gp, just) => {
   _GP.prev._lobbyUp = _GP.axes[1] < -0.5;
   _GP.prev._lobbyDown = _GP.axes[1] > 0.5;
 
-  // 포커스 하이라이트
+  // 우측 스틱 → 캐릭터 슬롯 스크롤 (휠처럼)
+  const _rsY = gp.axes&&gp.axes.length>=4 ? gp.axes[3] : 0;
+  if(_rsY < -0.5 && !_GP.prev._rsUp) { const u=$('charNavUp');if(u&&!u.disabled)u.click(); }
+  if(_rsY > 0.5 && !_GP.prev._rsDown) { const d=$('charNavDn');if(d&&!d.disabled)d.click(); }
+  _GP.prev._rsUp = _rsY < -0.5;
+  _GP.prev._rsDown = _rsY > 0.5;
+
+  // 포커스 하이라이트 + ENTER 호버 사운드
+  const _prevGpIdx = _GP.prev._lobbyIdx;
   _navItems.forEach((ni, i) => {
     if(i === _lobbyGpIdx) { ni.el.style.outline = '2px solid #C9A961'; ni.el.style.outlineOffset = '-2px'; }
     else { ni.el.style.outline = ''; ni.el.style.outlineOffset = ''; }
   });
+  if(_lobbyGpIdx !== _prevGpIdx) {
+    const cur = _navItems[_lobbyGpIdx];
+    // 이전 포커스 hover 제거
+    if(_prevGpIdx!==undefined&&_navItems[_prevGpIdx])_navItems[_prevGpIdx].el.classList.remove('gp-hover');
+    // 현재 포커스 hover 추가
+    if(cur) cur.el.classList.add('gp-hover');
+    if(cur && cur.el.id === 'enterGameBtn') { try{_startHover();}catch(e){} }
+    else { try{_stopHover();}catch(e){} }
+  }
+  _GP.prev._lobbyIdx = _lobbyGpIdx;
 
   // A(0) = 선택/실행
   if(just[0]) {
     const ni = _navItems[_lobbyGpIdx];
-    if(ni.type === 'enter') { ni.el.click(); }
-    else if(ni.type === 'steam') { ni.el.click(); }
-    else if(ni.el.classList.contains('char-item-new')) { ni.el.click(); }
-    else if(ni.el.classList.contains('active') && _selectedSlot) { $('enterGameBtn').click(); }
+    if(ni.type === 'lang') { _openLangPop(ni.el); }
     else { ni.el.click(); }
     return true;
   }

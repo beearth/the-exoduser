@@ -21,12 +21,17 @@ cp G:/hell/game.html G:/hell-ea/game.html
 cp G:/hell/index.html G:/hell-ea/index.html
 cp G:/hell/index.html G:/hell-DEMO/indexdemo.html
 cp G:/hell/index.html G:/hell-DEMO/index.html
+# _LOBBY_BUILD 버전별 설정 (복사 후 반드시 실행)
+sed -i "s/_LOBBY_BUILD='full'/_LOBBY_BUILD='demo'/" G:/hell-DEMO/indexdemo.html
+sed -i "s/_LOBBY_BUILD='full'/_LOBBY_BUILD='demo'/" G:/hell-DEMO/index.html
+sed -i "s/_LOBBY_BUILD='full'/_LOBBY_BUILD='ea'/" G:/hell-ea/index.html
 # lang/data 파일 동기화
 for f in lang_*.js lobby_i18n.js maps_data.js; do cp "G:/hell/$f" "G:/hell-DEMO/$f" && cp "G:/hell/$f" "G:/hell-ea/$f"; done
 ```
 - game.html, index.html, lang_*.js 중 **하나라도 수정하면** 위 명령 전부 실행
 - DEMO의 메인은 `indexdemo.html` — `index.html`만 복사하면 반영 안 됨
 - `gamedemo.html`은 `_DEMO_MODE=true`로 변경 필수
+- **`_LOBBY_BUILD`**: DEMO=`'demo'`, EA=`'ea'`, 정식=`'full'` — 복사 후 반드시 sed로 변경
 
 ## 서버
 

@@ -9899,6 +9899,14 @@ function _gpUIStep(dir,items){
     else{cur.value=Math.min(+cur.max,+cur.value+stp);cur.dispatchEvent(new Event('input'))}
     return;
   }
+  // select: 좌우 = 옵션 순환
+  if(cur&&cur.tagName==='SELECT'){
+    const opts=cur.options;if(!opts.length)return;
+    if(dir==='l')cur.selectedIndex=Math.max(0,cur.selectedIndex-1);
+    else cur.selectedIndex=Math.min(opts.length-1,cur.selectedIndex+1);
+    cur.dispatchEvent(new Event('change'));
+    return;
+  }
   // 그 외: 좌우 = 섹션 점프
   const ct=cur?_gpSectType(cur):'';
   if(dir==='r'){
@@ -9935,6 +9943,20 @@ function _gpUINav(panel){
   const _dL=(_gpad.buttons[14]&&_gpad.buttons[14].pressed)||_gpAxes[6]<-0.5;
   const _dR=(_gpad.buttons[15]&&_gpad.buttons[15].pressed)||_gpAxes[6]>0.5;
   const u=_dU,d=_dD,l=_dL,r=_dR;
+  // 가상 커서 모드 + 좌우 D-pad: 커서 아래 range 슬라이더 값 조절
+  if(_gpVC.vis&&(l||r)){
+    const _vcHover=document.elementFromPoint(_gpVC.x,_gpVC.y);
+    const _vcRng=_vcHover&&(_vcHover.tagName==='INPUT'&&_vcHover.type==='range'?_vcHover:_vcHover.closest?.('.set-range-row')?.querySelector('input[type="range"]'));
+    if(_vcRng){
+      const _nowTs2=performance.now();const _dir2=l?'l':'r';
+      if(_dir2!==_gpUIRepeatDir){_gpUIRepeatDir=_dir2;_gpUIRepeatTs=_nowTs2+_GP_UI_DELAY;
+        const _s2=+((_vcRng.step)||1);_vcRng.value=l?Math.max(+_vcRng.min,+_vcRng.value-_s2):Math.min(+_vcRng.max,+_vcRng.value+_s2);_vcRng.dispatchEvent(new Event('input'));
+      }else if(_nowTs2>=_gpUIRepeatTs){_gpUIRepeatTs=_nowTs2+_GP_UI_INTERVAL;
+        const _s2=+((_vcRng.step)||1);_vcRng.value=l?Math.max(+_vcRng.min,+_vcRng.value-_s2):Math.min(+_vcRng.max,+_vcRng.value+_s2);_vcRng.dispatchEvent(new Event('input'));
+      }
+      _gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.lb=lb;_gpUIPrev.rb=rb;return;
+    }
+  }
   if(u||d||l||r)_gpVCHide(); // D-pad 누르면 커서 숨기고 선택 모드
   // 우측 스틱 → 스크롤 (휠 역할) — 원시값 사용 (데드존 없이 0.15 임계)
   const rsYVal=_gpad.axes.length>=4?_gpad.axes[3]:0;
@@ -10012,17 +10034,37 @@ function _gpUINav(panel){
     }
   }
 
+  // 키바인딩 입력 대기 중 → B=취소(ESC 주입)
+  if(listeningBind&&b&&!_gpUIPrev.b){
+    listeningBind=null;_listenAlt=false;renderSettings();
+    _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.y=y;_gpUIPrev.lb=lb;_gpUIPrev.rb=rb;return;
+  }
+
   // A = 커서 위치 클릭 우선, 없으면 포커스 요소 클릭
   if(a&&!_gpUIPrev.a){
     if(_gpVC.vis){
-      const _vcEl=document.elementFromPoint(_gpVC.x,_gpVC.y);
-      if(_vcEl&&_vcEl.id!=='_gpVCursor'){_vcEl.click();_gpBtnsPrev['k0']=true;}
+      let _vcEl=document.elementFromPoint(_gpVC.x,_gpVC.y);
+      if(_vcEl&&_vcEl.id!=='_gpVCursor'){
+        // range/select 또는 그 행 클릭 → D-pad 선택 모드로 전환하여 해당 요소 포커스
+        const _vcRange=_vcEl.tagName==='INPUT'&&_vcEl.type==='range'?_vcEl:_vcEl.closest?.('.set-range-row')?.querySelector('input[type="range"]');
+        const _vcSel=!_vcRange&&(_vcEl.tagName==='SELECT'?_vcEl:_vcEl.closest?.('.set-range-row')?.querySelector('select'));
+        const _vcFocus=_vcRange||_vcSel;
+        if(_vcFocus){
+          for(let _ri=0;_ri<items.length;_ri++){if(items[_ri]===_vcFocus){_gpUIIdx=_ri;break}}
+          _gpVCHide();
+        } else {_vcEl.click()}
+        _gpBtnsPrev['k0']=true;
+      }
     } else if(cur){
       // 스킬카드 expanded: A → (+) 습득/강화 버튼 우선 클릭
       if(cur.dataset&&cur.dataset.skId){
         const _plusBtn=cur.querySelector('[style*="cursor:pointer"][style*="border:1px solid #aa8833"]');
         if(_plusBtn){_plusBtn.click();_gpBtnsPrev['k0']=true;}
         else{cur.click();_gpBtnsPrev['k0']=true;}
+      } else if(cur.tagName==='SELECT'){
+        // select: A = 다음 옵션 (네이티브 드롭다운 열지 않음 — 패드로 닫기 불가)
+        cur.selectedIndex=(cur.selectedIndex+1)%cur.options.length;cur.dispatchEvent(new Event('change'));
+        _gpBtnsPrev['k0']=true;
       } else {cur.click();_gpBtnsPrev['k0']=true;}
     }
   }
@@ -10063,18 +10105,16 @@ function _gpUINav(panel){
 
   _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.y=y;
 
-  // ── 우측 스틱: 패널 스크롤 (scrollTop 직접 조작) ──
+  // ── 우측 스틱: 패널 스크롤 (가상커서 위치 → 해당 영역, 없으면 포커스 항목 기준) ──
   if(Math.abs(rsYVal)>0.15||Math.abs(rsXVal)>0.15){
-    const _wx=_gpVC.vis?_gpVC.x:(cur?cur.getBoundingClientRect().left+cur.offsetWidth/2:window.innerWidth/2);
-    const _wy=_gpVC.vis?_gpVC.y:(cur?cur.getBoundingClientRect().top+cur.offsetHeight/2:window.innerHeight/2);
-    // 패널별 스크롤 대상 직접 지정 (중첩 overflow 문제 방지)
     let _sc=null;
-    if(panel.id==='skillPanel'){_sc=panel.querySelector('.frame-inner-panel-stack')}
-    else if(panel.id==='invPanel'){_sc=$('invGrid')}
-    if(!_sc){const _wt=document.elementFromPoint(_wx,_wy)||panel;_sc=_gpFindScroll(_wt)||_gpFindScroll(panel)||_gpFindScrollDown(panel);}
-    if(_sc){
-      _gpDoScroll(_sc,Math.abs(rsYVal)>0.15?rsYVal*18:0,Math.abs(rsXVal)>0.15?rsXVal*18:0);
+    if(_gpVC.vis){_sc=_gpFindScroll(document.elementFromPoint(_gpVC.x,_gpVC.y))}
+    if(!_sc){
+      if(panel.id==='skillPanel')_sc=panel.querySelector('.frame-inner-panel-stack');
+      if(!_sc&&cur)_sc=_gpFindScroll(cur);
     }
+    if(!_sc)_sc=_gpFindScroll(panel)||_gpFindScrollDown(panel);
+    if(_sc){_gpDoScroll(_sc,Math.abs(rsYVal)>0.15?rsYVal*18:0,Math.abs(rsXVal)>0.15?rsXVal*18:0)}
   }
 
   // 버튼 8(Back) = 전체 첫 항목  버튼 9(Start) = 전체 마지막 항목
@@ -10398,6 +10438,25 @@ function _gpInvNav(){
   if(u||d||l||r)_gpInvBotIdx=-1;
   _gpUIPrev.lb=lb;_gpUIPrev.rb=rb;
 
+  // ── 우스틱 스크롤 (모든 모드에서 공통 — 현재 모드에 맞는 영역 스크롤) ──
+  const _rsYFull=_gpad.axes.length>=4?_gpad.axes[3]:0;
+  const _rsXFull=_gpad.axes.length>=3?_gpad.axes[2]:0;
+  if(Math.abs(_rsYFull)>0.15||Math.abs(_rsXFull)>0.15){
+    let _sc=null;
+    if(_gpVC.vis){
+      // 가상 커서 모드: 커서 위치의 스크롤 영역 (마우스 휠과 동일 동작)
+      _sc=_gpFindScroll(document.elementFromPoint(_gpVC.x,_gpVC.y));
+    }
+    if(!_sc){
+      // 선택 모드: 현재 포커스된 영역
+      if(_gpInvMode==='bag')_sc=$('invGrid');
+      else if(_gpInvMode==='eq'){const _el=$('invPanel');if(_el)_sc=_el.querySelector('.inv-left')}
+      else if(_gpInvMode==='st'){const _el=$('invPanel');if(_el)_sc=_el.querySelector('.inv-storage')||_el.querySelector('.inv-left')}
+    }
+    if(!_sc)_sc=_gpFindScroll($('invPanel'))||_gpFindScrollDown($('invPanel'));
+    if(_sc){_gpDoScroll(_sc,Math.abs(_rsYFull)>0.15?_rsYFull*18:0,Math.abs(_rsXFull)>0.15?_rsXFull*18:0)}
+  }
+
   // outline 정리
   const _clr=()=>{const p=$('invPanel');if(p)p.querySelectorAll('.inv-item,.inv-eq-slot,.inv-cell').forEach(el=>{el.style.outline='';el.style.outlineOffset=''})};
 
@@ -10418,7 +10477,6 @@ function _gpInvNav(){
         items[_gpInvIdx].scrollIntoView({block:'nearest'});
       }
       if(moved&&typeof _invRenderDetail==='function'){const _wasEq=typeof INV.selected==='string';INV.selected=_gpInvIdx;if(_wasEq&&typeof renderInv==='function')renderInv();else _invRenderDetail(_gpInvIdx,'bag')}
-      if(Math.abs(rsY)>0.15)grid.scrollTop+=rsY*18;
       // A = 선택(비교창에 상세 표시)
       if(a&&!_gpUIPrev.a&&!_gpVC.vis&&items[_gpInvIdx]){
         INV.selected=_gpInvIdx;
@@ -10472,18 +10530,7 @@ function _gpInvNav(){
     const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
     if(_bots[_gpInvBotIdx])_bots[_gpInvBotIdx].click();
   }
-  // ── 우스틱: 스크롤 (scrollTop 직접 조작) ──
-  const _rsYFull=_gpad.axes.length>=4?_gpad.axes[3]:0;
-  const _rsXFull=_gpad.axes.length>=3?_gpad.axes[2]:0;
-  if(Math.abs(_rsYFull)>0.15||Math.abs(_rsXFull)>0.15){
-    const _iwx=_gpVC.vis?_gpVC.x:window.innerWidth/2;
-    const _iwy=_gpVC.vis?_gpVC.y:window.innerHeight/2;
-    // 인벤토리 스크롤 대상 직접 지정 (중첩 overflow 방지)
-    const _sc=$('invGrid')||_gpFindScroll(document.elementFromPoint(_iwx,_iwy)||$('invPanel'));
-    if(_sc){
-      _gpDoScroll(_sc,Math.abs(_rsYFull)>0.15?_rsYFull*18:0,Math.abs(_rsXFull)>0.15?_rsXFull*18:0);
-    }
-  }
+  // 우스틱 스크롤은 상단 공통 블록에서 처리됨
   // 가상 커서 호버 → inv-item mouseover 자동 발생
   if(_gpVC.vis){const _vhEl=document.elementFromPoint(_gpVC.x,_gpVC.y);const _vhIt=(_vhEl&&_vhEl.id!=="_gpVCursor")?_vhEl:null;if(_vhIt!==_gpVCPrevHoverEl){if(_gpVCPrevHoverEl)_gpVCPrevHoverEl.dispatchEvent(new MouseEvent("mouseleave",{bubbles:true,clientX:_gpVC.x,clientY:_gpVC.y}));if(_vhIt)_vhIt.dispatchEvent(new MouseEvent("mouseover",{bubbles:true,clientX:_gpVC.x,clientY:_gpVC.y}));_gpVCPrevHoverEl=_vhIt;}}else if(_gpVCPrevHoverEl){_gpVCPrevHoverEl.dispatchEvent(new MouseEvent("mouseleave",{bubbles:true}));_gpVCPrevHoverEl=null;}
   // B버튼 패널닫기 제거 — 전용 닫기버튼 사용
@@ -37219,23 +37266,29 @@ function renderSettings(){
   const _gpBtnNames={0:'A',1:'B',2:'X',3:'Y',4:'LB',5:'RB',8:'Select',9:'Start',10:'L3',11:'R3',12:'D↑',13:'D↓',14:'D←',15:'D→'};
   const _gpActNames={0:_T('무기 공격'),1:_T('B슬롯 스킬'),2:_T('우클릭 스킬'),3:_T('패링'),4:_T('돌진/작살'),5:_T('Ctrl 스킬'),8:_T('인벤토리'),9:_T('설정'),10:_T('줍기'),11:_T('마법'),12:_T('스킬창'),13:_T('대장간'),14:_T('능력치'),15:_T('창고')};
 
+  const _gpFixed=new Set([0,1,2,3,12,13,14,15]); // A,B,X,Y,D-pad 설정 불가
   for(const bi in _GP_KEY){
     const idx=+bi;
     const row=document.createElement('div');row.className='set-row';
     row.innerHTML='<span class="set-name" style="min-width:80px">'+(_gpBtnNames[idx]||'B'+idx)+'</span><span style="color:#887766;font-size:.85rem;min-width:60px">'+(_gpActNames[idx]||'')+'</span>';
     const keyBtn=document.createElement('div');
     keyBtn.className='set-key';
-    keyBtn.textContent=keyName(_GP_KEY[idx]);
-    keyBtn.onclick=(function(i){return function(e){
-      e.stopPropagation();
-      keyBtn.className='set-key listening';keyBtn.textContent=_T('⟨ 키 입력... ⟩');
-      const _h=function(ev){ev.preventDefault();ev.stopPropagation();document.removeEventListener('keydown',_h);document.removeEventListener('mousedown',_mh);
-        if(ev.code==='Escape'){renderSettings();return}
-        _GP_KEY[i]=ev.code;_saveGpKeyMap();renderSettings()};
-      const _mh=function(ev){ev.preventDefault();ev.stopPropagation();document.removeEventListener('keydown',_h);document.removeEventListener('mousedown',_mh);
-        _GP_KEY[i]='mouse'+ev.button;_saveGpKeyMap();renderSettings()};
-      document.addEventListener('keydown',_h);document.addEventListener('mousedown',_mh);
-    }})(idx);
+    if(_gpFixed.has(idx)){
+      keyBtn.textContent=_T('고정');
+      keyBtn.style.opacity='.4';keyBtn.style.cursor='default';
+    }else{
+      keyBtn.textContent=keyName(_GP_KEY[idx]);
+      keyBtn.onclick=(function(i){return function(e){
+        e.stopPropagation();
+        keyBtn.className='set-key listening';keyBtn.textContent=_T('⟨ 키 입력... ⟩');
+        const _h=function(ev){ev.preventDefault();ev.stopPropagation();document.removeEventListener('keydown',_h);document.removeEventListener('mousedown',_mh);
+          if(ev.code==='Escape'){renderSettings();return}
+          _GP_KEY[i]=ev.code;_saveGpKeyMap();renderSettings()};
+        const _mh=function(ev){ev.preventDefault();ev.stopPropagation();document.removeEventListener('keydown',_h);document.removeEventListener('mousedown',_mh);
+          _GP_KEY[i]='mouse'+ev.button;_saveGpKeyMap();renderSettings()};
+        document.addEventListener('keydown',_h);document.addEventListener('mousedown',_mh);
+      }})(idx);
+    }
     row.appendChild(keyBtn);
     list.appendChild(row);
   }
@@ -48405,10 +48458,17 @@ function _showIntroDiff(){
 }
 // ── 키 안내 3단계 ──
 function _ikB(keys,descs){return keys.map((k,i)=>'<span style="color:#ffcc44">'+k+'</span> — '+_T(descs[i])).join('<br>')}
+const _isPad=()=>{const gps=navigator.getGamepads();for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected)return true}return false};
 const _INTRO_KEY_STEPS=[
-  {title:'공격',body:()=>_ikB(['좌클릭','우클릭 / Q','SHIFT'],['무기 공격','패링·보호막','돌진 (적을 관통, 무적)']),hint:'클릭하여 계속'},
-  {title:'스킬',body:()=>_ikB(['SPACE','1','E','F','CTRL','T'],['대왕치기 (광역 기절)','가시덫 (슬로우+출혈)','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']),hint:'클릭하여 계속'},
-  {title:'생존',body:()=>_ikB(['1~4','R','TAB'],['선택 스킬 슬롯','아이템 줍기','인벤토리'])+'<br><span style="font-size:.85em;color:#887766">'+_T('(펫이 자동 수거)')+'</span><br><span style="font-size:.85em;color:#887766">'+_T('물약은 설정한 HP% 이하 시 자동 사용')+'</span>',hint:'클릭하여 시작'}
+  {title:'공격',body:()=>_isPad()?
+    _ikB(['A','Y','LB'],['무기 공격','패링·보호막','돌진 (적을 관통, 무적)']):
+    _ikB(['좌클릭','우클릭 / Q','SHIFT'],['무기 공격','패링·보호막','돌진 (적을 관통, 무적)']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
+  {title:'스킬',body:()=>_isPad()?
+    _ikB(['B','X','RB','LT+A','LT+B','LT+X'],['대왕치기 (광역 기절)','가시덫 (슬로우+출혈)','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']):
+    _ikB(['SPACE','1','E','F','CTRL','T'],['대왕치기 (광역 기절)','가시덫 (슬로우+출혈)','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
+  {title:'생존',body:()=>(_isPad()?
+    _ikB(['D-pad','L3','Select'],['스킬 슬롯 선택','아이템 줍기','인벤토리']):
+    _ikB(['1~4','R','TAB'],['선택 스킬 슬롯','아이템 줍기','인벤토리']))+'<br><span style="font-size:.85em;color:#887766">'+_T('(펫이 자동 수거)')+'</span><br><span style="font-size:.85em;color:#887766">'+_T('물약은 설정한 HP% 이하 시 자동 사용')+'</span>',hint:_isPad()?'A 버튼으로 시작':'클릭하여 시작'}
 ];
 function _showIntroKeys(step){
   const el=$('introKeys'),t=$('ikTitle'),b=$('ikBody'),h=$('ikHint');
