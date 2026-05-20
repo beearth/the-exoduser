@@ -24053,12 +24053,12 @@ function update(){
         if(dst(P.x,P.y,it.x,it.y)<30){it.picked=true;P.st=Math.min(P.mst,P.st+P.mst*.2);addTxt(it.x,it.y-15,'O2 +20%','#44aadd',30);addParts(it.x,it.y,'#44aadd',6);SFX.pickup();break}
       }
     }
-    // 장비 아이템 줍기 — R키: 화면 내 가장 가까운 1개 픽업
+    // 장비 아이템 줍기 — R키: 화면 내 가장 높은 등급 1개 픽업 (동급이면 가까운 것)
     if(!chestOpened){
-      let _bestWi=-1,_bestD=1e9;
+      let _bestWi=-1,_bestD=1e9,_bestR=-1;
       for(let _wi=0;_wi<worldItems.length;_wi++){const it=worldItems[_wi];if(it.type!=='item'||it.picked)continue;
         const _sx=it.x-G.cam.x,_sy=it.y-G.cam.y;if(_sx<-C.width/2-40||_sx>C.width/2+40||_sy<-C.height/2-40||_sy>C.height/2+40)continue;
-        const d=dst(P.x,P.y,it.x,it.y);if(d<_bestD){_bestD=d;_bestWi=_wi}
+        const _r=it.item?it.item.rarity||0:0;const d=dst(P.x,P.y,it.x,it.y);if(_r>_bestR||(_r===_bestR&&d<_bestD)){_bestR=_r;_bestD=d;_bestWi=_wi}
       }
       if(_bestWi>=0){const wi=worldItems[_bestWi];
         if(pickupItem(wi.item)){wi.picked=true;SFX.pickup();addParts(wi.x,wi.y,RARITY_C[wi.item.rarity]||'#aaa',6);if(deathDrop&&deathDrop.item===wi.item)deathDrop=null}
@@ -24080,11 +24080,11 @@ function update(){
     if(!P._pickHoldT)P._pickHoldT=0;
     P._pickHoldT+=sp;
     if(P._pickHoldT>=9){P._pickHoldT=0;
-      // 장비
-      let _hBi=-1,_hBd=1e9;
+      // 장비 — 높은 등급 우선 (동급이면 가까운 것)
+      let _hBi=-1,_hBd=1e9,_hBr=-1;
       for(let _wi=0;_wi<worldItems.length;_wi++){const it=worldItems[_wi];if(it.type!=='item'||it.picked)continue;
         const _sx=it.x-G.cam.x,_sy=it.y-G.cam.y;if(_sx<-C.width/2-40||_sx>C.width/2+40||_sy<-C.height/2-40||_sy>C.height/2+40)continue;
-        const d=dst(P.x,P.y,it.x,it.y);if(d<_hBd){_hBd=d;_hBi=_wi}
+        const _r=it.item?it.item.rarity||0:0;const d=dst(P.x,P.y,it.x,it.y);if(_r>_hBr||(_r===_hBr&&d<_hBd)){_hBr=_r;_hBd=d;_hBi=_wi}
       }
       if(_hBi>=0){const wi=worldItems[_hBi];
         if(pickupItem(wi.item)){wi.picked=true;SFX.pickup();addParts(wi.x,wi.y,RARITY_C[wi.item.rarity]||'#aaa',6);if(deathDrop&&deathDrop.item===wi.item)deathDrop=null}
@@ -25432,8 +25432,8 @@ function update(){
     let w=0,_deadCnt=0;for(let i=0;i<ens.length;i++){if(!ens[i])continue;if(ens[i].alive){ens[w++]=ens[i]}else if(ens[i]._reviveTimer>0&&_deadCnt<20){ens[w++]=ens[i];_deadCnt++}}ens.length=w;
     // worldItems picked 정리
     let ww=0;for(let i=0;i<worldItems.length;i++){if(!worldItems[i].picked)worldItems[ww++]=worldItems[i]}worldItems.length=ww;
-    // 아이템 상한 50개 — 초과 시 하급(낮은 rarity)부터 제거 (렉 방지)
-    if(worldItems.length>50){worldItems.sort((a,b)=>(a.item?a.item.rarity||0:99)-(b.item?b.item.rarity||0:99));worldItems.splice(0,worldItems.length-50);}
+    // 아이템 상한 20개 — 초과 시 하급(낮은 rarity)부터 제거 (렉 방지)
+    if(worldItems.length>20){worldItems.sort((a,b)=>(a.item?a.item.rarity||0:99)-(b.item?b.item.rarity||0:99));worldItems.splice(0,worldItems.length-20);}
     // G.txts: 링 버퍼 풀이므로 compaction 불필요 (축소 시 재할당 유발)
   }
   // 공간 해싱 리빌드 (2프레임 주기)

@@ -2743,7 +2743,7 @@ canvas{display:block;position:fixed;inset:0}
   <div class="v-map" id="vMap">🗺️</div>
   <div class="v-line" id="vD3" style="color:#aa9966;font-style:italic"></div>
   <div class="v-tbc" id="vTbc">TO BE CONTINUED...</div>
-  <div class="v-end" id="vEnd">END 시즌1</div>
+  <div class="v-end" id="vEnd">END Season 1</div>
 </div>
 <div id="stageClear" style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:25;text-align:center;opacity:0;pointer-events:none;transition:opacity .5s">
   <div style="color:#ffdd44;font-size:.8rem;font-weight:900;letter-spacing:.2em;margin-bottom:8px;text-shadow:0 0 20px rgba(255,200,0,.4)" id="clearTitle">구역 클리어!</div>
@@ -3479,9 +3479,9 @@ const BGM={
     const key=BGM._curKey;if(!key)return;
     let src=null;
     if(BGM._isActKey(key)&&OPT.bgmTrack==='auto'){
-      // 장 BGM 미소진: 미재생 트랙 중 선택 / 소진 후: 장+공용 혼합
-      src=BGM._actDone[key]?BGM._pickMixed(key):BGM._pickActFirst(key);
-      if(!src)src=BGM._pickMixed(key); // pickActFirst가 null(막 소진) → 즉시 혼합
+      // 장 BGM 미소진: 미재생 트랙 중 선택 / 소진 후: 전체 랜덤
+      src=BGM._actDone[key]?BGM._pickAllRandom():BGM._pickActFirst(key);
+      if(!src)src=BGM._pickAllRandom(); // pickActFirst가 null(막 소진) → 즉시 전체 랜덤
     }else if(OPT.bgmTrack==='allRandom'){src=BGM._pickAllRandom();}
     else{src=BGM._pickRandom(key);}
     if(!src)return;
@@ -6395,6 +6395,30 @@ const _EN={
 '데빌포스 흡수 (HP→에너지)':'Devil Force Absorb (HP→Energy)',
 '스킬슬롯 5':'Skill Slot 5','CT스킬 (유령걸음/얼음보주)':'CT Skill (Ghost Step/Ice Orb)',
 '스킬 (전투스킬 습득)':'Skills (Combat Skills)','대장간 (제작)':'Forge (Craft)',
+'클릭하여 계속':'Click to continue','클릭하여 시작':'Click to start',
+'SPACE 길게 눌러 건너뛰기':'Hold SPACE to skip',
+// --- Phase 33d: Intro key steps + Load tips ---
+'패링·보호막':'Parry / Shield','돌진 (적을 관통, 무적)':'Dash (pierce enemies, invincible)',
+'대왕치기 (광역 기절)':'Giant Slam (AoE stun)','가시덫 (슬로우+출혈)':'Spike Trap (slow+bleed)',
+'회복의 영역 (리젠 장판)':'Holy Domain (regen zone)','얼음보주 (무적+빙결)':'Ice Orb (invincible+freeze)',
+'석궁 자동발사':'Auto Crossbow','선택 스킬 슬롯':'Skill Slots',
+'(펫이 자동 수거)':'(pet auto-collects)','물약은 설정한 HP% 이하 시 자동 사용':'Potions auto-use when HP falls below set %',
+'💡 Shift로 작살 돌진! 적을 관통하며 무적':'💡 Shift to dash! Pierce enemies, invincible',
+'💡 Q로 보호막 발동 — 기본 흡수율 70%, 패링 성공 시 HP/ST/MP/기동게이지 회복':'💡 Q for Shield — 70% absorb, parry to recover HP/ST/MP/Charge',
+'💡 속성 약점을 찌르면 데미지 2배!':'💡 Hit elemental weaknesses for 2x damage!',
+'💡 ESC로 설정 — 난이도, 자동물약 조절':'💡 ESC for settings — difficulty, auto-potions',
+'💡 대왕치기로 기절 회복 + 포이즈를 깎아 그로기 유발!':'💡 Giant Slam: stun recovery + poise break for groggy!',
+'💡 그로기 상태에서 기본 데미지 1.5배':'💡 Groggy state = 1.5x base damage',
+'💡 탄막은 패링하면 되돌려 보낸다!':'💡 Parry bullets to reflect them!',
+'💡 Ctrl 얼음보주 — 무적! 재입력으로 즉시 폭파':'💡 Ctrl Ice Orb — invincible! Re-press to shatter',
+'💡 합체 스킬로 더 강한 공격을 만들어보세요':'💡 Fuse skills to create powerful combos',
+'💡 엘리트 몬스터는 특수 능력을 가지고 있다':'💡 Elite monsters have special abilities',
+'💡 보스의 패턴을 읽고 패링 타이밍을 잡아라':'💡 Read boss patterns, time your parries',
+'💡 인벤토리(TAB)에서 장비를 비교하고 장착':'💡 TAB for inventory — compare and equip gear',
+'💡 대장간에서 장비를 강화하고 분해하세요':'💡 Upgrade and dismantle gear at the forge',
+'💡 R키를 누르면 펫이 아이템을 자동으로 주워줍니다':'💡 Press R — your pet auto-collects items for you',
+'💡 물약은 설정한 HP% 이하에서 자동 사용':'💡 Potions auto-use when HP falls below set %',
+'💡 집중 스킬(홀드)은 시전 중 기절 면역!':'💡 Hold skills grant stun immunity while channeling!',
 // --- UI ---
 '일괄합성':'Bulk Fuse','일괄강화+합성':'Bulk Enhance+Fuse','자원 부족!':'Resources Low!',' 뎀':' DMG',
 // --- Game effects / combat messages ---
@@ -48310,7 +48334,7 @@ function _renderIntroCutscene(){
     const _hAlpha=_cutSkipHolding?.8:(.25+.1*Math.sin(performance.now()*.002));
     cx.font='11px "Noto Sans KR",sans-serif';cx.textAlign='right';
     cx.fillStyle='rgba(255,255,255,'+_hAlpha+')';
-    cx.fillText('SPACE 길게 눌러 건너뛰기',_fullW-20,_fullH-34);
+    cx.fillText(_T('SPACE 길게 눌러 건너뛰기'),_fullW-20,_fullH-34);
     // 게이지 바
     const _bW=120,_bH=3,_bX=_fullW-20-_bW,_bY=_fullH-28;
     cx.fillStyle='rgba(255,255,255,0.15)';cx.fillRect(_bX,_bY,_bW,_bH);
@@ -48369,16 +48393,16 @@ function _showIntroDiff(){
   setTimeout(()=>_showIntroKeys(0),100);
 }
 // ── 키 안내 3단계 ──
+function _ikB(keys,descs){return keys.map((k,i)=>'<span style="color:#ffcc44">'+k+'</span> — '+_T(descs[i])).join('<br>')}
 const _INTRO_KEY_STEPS=[
-  {title:['공격','Attack'],body:['<span style="color:#ffcc44">좌클릭</span> — 무기 공격<br><span style="color:#ffcc44">우클릭 / Q</span> — 패링·보호막<br><span style="color:#ffcc44">SHIFT</span> — 돌진 (적을 관통, 무적)','<span style="color:#ffcc44">LMB</span> — Weapon Attack<br><span style="color:#ffcc44">RMB / Q</span> — Parry / Shield<br><span style="color:#ffcc44">SHIFT</span> — Dash (pierce enemies, invincible)'],hint:['클릭하여 계속','Click to continue']},
-  {title:['스킬','Skills'],body:['<span style="color:#ffcc44">SPACE</span> — 대왕치기 (광역 기절)<br><span style="color:#ffcc44">1</span> — 가시덫 (슬로우+출혈)<br><span style="color:#ffcc44">E</span> — 마법 (탭=투사체, 홀드=빔)<br><span style="color:#ffcc44">F</span> — 회복의 영역 (리젠 장판)<br><span style="color:#ffcc44">CTRL</span> — 얼음보주 (무적+빙결)<br><span style="color:#ffcc44">T</span> — 석궁 자동발사','<span style="color:#ffcc44">SPACE</span> — Giant Slam (AoE stun)<br><span style="color:#ffcc44">1</span> — Spike Trap (slow+bleed)<br><span style="color:#ffcc44">E</span> — Magic (tap=projectile, hold=beam)<br><span style="color:#ffcc44">F</span> — Holy Domain (regen zone)<br><span style="color:#ffcc44">CTRL</span> — Ice Orb (invincible+freeze)<br><span style="color:#ffcc44">T</span> — Auto Crossbow'],hint:['클릭하여 계속','Click to continue']},
-  {title:['생존','Survival'],body:['<span style="color:#ffcc44">1~4</span> — 선택 스킬 슬롯<br><span style="color:#ffcc44">R</span> — 아이템 줍기 <span style="font-size:.85em;color:#887766">(펫이 자동 수거)</span><br><span style="color:#ffcc44">TAB</span> — 인벤토리<br><span style="font-size:.85em;color:#887766">물약은 설정한 HP% 이하 시 자동 사용</span>','<span style="color:#ffcc44">1~4</span> — Skill Slots<br><span style="color:#ffcc44">R</span> — Pick Up Item <span style="font-size:.85em;color:#887766">(pet auto-collects)</span><br><span style="color:#ffcc44">TAB</span> — Inventory<br><span style="font-size:.85em;color:#887766">Potions auto-use when HP falls below set %</span>'],hint:['클릭하여 시작','Click to start']}
+  {title:'공격',body:()=>_ikB(['좌클릭','우클릭 / Q','SHIFT'],['무기 공격','패링·보호막','돌진 (적을 관통, 무적)']),hint:'클릭하여 계속'},
+  {title:'스킬',body:()=>_ikB(['SPACE','1','E','F','CTRL','T'],['대왕치기 (광역 기절)','가시덫 (슬로우+출혈)','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']),hint:'클릭하여 계속'},
+  {title:'생존',body:()=>_ikB(['1~4','R','TAB'],['선택 스킬 슬롯','아이템 줍기','인벤토리'])+'<br><span style="font-size:.85em;color:#887766">'+_T('(펫이 자동 수거)')+'</span><br><span style="font-size:.85em;color:#887766">'+_T('물약은 설정한 HP% 이하 시 자동 사용')+'</span>',hint:'클릭하여 시작'}
 ];
 function _showIntroKeys(step){
   const el=$('introKeys'),t=$('ikTitle'),b=$('ikBody'),h=$('ikHint');
   const s=_INTRO_KEY_STEPS[step];
-  const _li=OPT.lang==='ko'?0:1;
-  t.textContent=s.title[_li];b.innerHTML=s.body[_li];h.textContent=s.hint[_li];
+  t.textContent=_T(s.title);b.innerHTML=s.body();h.textContent=_T(s.hint);
   el.style.opacity='1';el.style.pointerEvents='all';
   function next(){
     el.removeEventListener('click',next);
@@ -48688,7 +48712,7 @@ const _LOAD_TIPS_EN=[
 let _loadTipIdx=0,_loadTipIv=null;
 function _startLoadTips(){
   const el=$('stLoadTip');if(!el)return;
-  const tips=OPT.lang==='ko'?_LOAD_TIPS_KO:_LOAD_TIPS_EN;
+  const tips=_LOAD_TIPS_KO.map(s=>_T(s));
   _loadTipIdx=~~(Math.random()*tips.length);
   el.textContent=tips[_loadTipIdx];
   _loadTipIv=setInterval(()=>{_loadTipIdx=(_loadTipIdx+1)%tips.length;el.style.opacity='0';setTimeout(()=>{el.textContent=tips[_loadTipIdx];el.style.opacity='1'},300)},3000);
