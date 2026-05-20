@@ -36,3 +36,16 @@ assets/maps/stage_*/stage_*_bottom_*.png
 .aider*
 demo_build/
 deploy-demo.sh
+
+# NW.js 런타임 (GitHub 100MB 제한 + 배포 불필요)
+*.exe
+*.dll
+*.dat
+*.pak
+*.bin
+locales/
+swiftshader/
+Dictionaries/
+userdata/
+cache/
+steam/output/
