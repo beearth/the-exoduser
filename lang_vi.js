@@ -2369,6 +2369,9 @@ const _VI={
 'CT스킬 (유령걸음/얼음보주)':'Kỹ năng CT (Bước Ma/Cầu Băng)',
 '스킬 (전투스킬 습득)':'Kỹ năng (Chiến đấu)',
 '대장간 (제작)':'Lò rèn (Chế tạo)',
+'클릭하여 계속':'Nhấp để tiếp tục',
+'클릭하여 시작':'Nhấp để bắt đầu',
+'SPACE 길게 눌러 건너뛰기':'Giữ SPACE để bỏ qua',
 };
 
 const _VI_PFX={'녹슨':'Gỉ Sét','강철':'Thép','흑요석':'Hắc Diện','미스릴':'Mithril','심판의':'Phán Xét','천벌의':'Thiên Phạt','파멸의':'Hủy Diệt','불꽃':'Lửa','화염':'Hỏa Ngục','염화':'Lửa Địa Ngục','지옥불':'Lửa Địa Ngục','지옥화':'Lửa Địa Ngục','지옥':'Lửa Địa Ngục','멸화의':'Diệt Vong','냉기':'Sương Giá','빙결':'Băng Kết','빙하':'Băng Hà','서리의':'Sương Muối','서리':'Sương Muối','영겁빙':'Băng Vĩnh Cửu','그림자':'Bóng Tối','암흑':'Hắc Ám','심연':'Vực Thẳm','나락의':'Địa Phủ','나락':'Địa Phủ','무간의':'Hư Không','전기':'Tia Lửa','낙뢰':'Sấm Sét','암전':'Lôi Điện','뇌신의':'Lôi Thần','뇌신':'Lôi Thần','만뢰의':'Vạn Lôi','축복':'Chúc Phúc','성광':'Thánh Quang','신성':'Thần Thánh','천사의':'Thiên Thần','신벌의':'Thần Phạt','낡은':'Cũ','천':'Vải','가죽':'Da','강철사':'Thép Dệt','은':'Bạc','은사':'Chỉ Bạc','화염의':'Hỏa Ngục','빙결의':'Băng Kết','암흑의':'Hắc Ám','암전의':'Lôi Điện'};

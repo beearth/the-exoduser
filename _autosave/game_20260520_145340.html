@@ -9826,6 +9826,9 @@ function _gpVCHide(){if(_gpVC.el){_gpVC.el.style.display='none';}_gpVC.vis=false
 // ── 우스틱 스크롤 캐시 (getComputedStyle 매 프레임 호출 방지) ──
 let _gpScEl=null; // 캐시된 스크롤 대상
 const _gpFindScroll=el=>{let n=el;while(n){try{const ov=getComputedStyle(n).overflowY;if(n.scrollHeight>n.clientHeight+5&&['auto','scroll','overlay'].includes(ov))return n;}catch(e){}n=n.parentElement;}return null;};
+const _gpDoScroll=(sc,dy,dx)=>{if(!sc)return;const _prevTop=sc.scrollTop;if(dy)sc.scrollTop+=dy;if(dx)sc.scrollLeft+=dx;
+  // 끝에 닿았으면 부모 스크롤 컨테이너로 전파
+  if(dy&&sc.scrollTop===_prevTop){const _par=_gpFindScroll(sc.parentElement);if(_par)_par.scrollTop+=dy;}};
 const _gpFindScrollDown=el=>{if(!el)return null;try{const ov=getComputedStyle(el).overflowY;if(el.scrollHeight>el.clientHeight+5&&['auto','scroll','overlay'].includes(ov))return el;}catch(e){}const ch=el.children;for(let i=0;i<ch.length;i++){const r=_gpFindScrollDown(ch[i]);if(r)return r;}return null;};
 // 섹션 타입 분류
 const _gpSectType=el=>{
@@ -9979,7 +9982,20 @@ function _gpUINav(panel){
     if(_gpVC.vis){
       const _vcEl=document.elementFromPoint(_gpVC.x,_gpVC.y);
       if(_vcEl&&_vcEl.id!=='_gpVCursor'){_vcEl.click();_gpBtnsPrev['k0']=true;}
-    } else if(cur){cur.click();_gpBtnsPrev['k0']=true;}
+    } else if(cur){
+      // 스킬카드 expanded: A → (+) 습득/강화 버튼 우선 클릭
+      if(cur.dataset&&cur.dataset.skId){
+        const _plusBtn=cur.querySelector('[style*="cursor:pointer"][style*="border:1px solid #aa8833"]');
+        if(_plusBtn){_plusBtn.click();_gpBtnsPrev['k0']=true;}
+        else{cur.click();_gpBtnsPrev['k0']=true;}
+      } else {cur.click();_gpBtnsPrev['k0']=true;}
+    }
+  }
+  // X = 스킬카드 expanded: (-) 레벨다운/취소 버튼
+  const x=_gpad.buttons[2]&&_gpad.buttons[2].pressed;
+  if(x&&!_gpUIPrev.x&&cur&&cur.dataset&&cur.dataset.skId&&panel.id==='skillPanel'){
+    const _minBtn=cur.querySelector('[style*="cursor:pointer"][style*="border:1px solid #cc4444"]');
+    if(_minBtn){_minBtn.click();_gpBtnsPrev['k2']=true;}
   }
   // skSlotPop B = 팝업만 닫기 (패널 자체 닫기는 전용 닫기버튼으로)
   const _start=!!(_gpad.buttons[9]&&_gpad.buttons[9].pressed);
@@ -10016,11 +10032,13 @@ function _gpUINav(panel){
   if(Math.abs(rsYVal)>0.15||Math.abs(rsXVal)>0.15){
     const _wx=_gpVC.vis?_gpVC.x:(cur?cur.getBoundingClientRect().left+cur.offsetWidth/2:window.innerWidth/2);
     const _wy=_gpVC.vis?_gpVC.y:(cur?cur.getBoundingClientRect().top+cur.offsetHeight/2:window.innerHeight/2);
-    const _wt=document.elementFromPoint(_wx,_wy)||panel;
-    const _sc=_gpFindScroll(_wt)||_gpFindScroll(panel)||_gpFindScrollDown(panel);
+    // 패널별 스크롤 대상 직접 지정 (중첩 overflow 문제 방지)
+    let _sc=null;
+    if(panel.id==='skillPanel'){_sc=panel.querySelector('.frame-inner-panel-stack')}
+    else if(panel.id==='invPanel'){_sc=$('invGrid')}
+    if(!_sc){const _wt=document.elementFromPoint(_wx,_wy)||panel;_sc=_gpFindScroll(_wt)||_gpFindScroll(panel)||_gpFindScrollDown(panel);}
     if(_sc){
-      if(Math.abs(rsYVal)>0.15)_sc.scrollTop+=rsYVal*18;
-      if(Math.abs(rsXVal)>0.15)_sc.scrollLeft+=rsXVal*18;
+      _gpDoScroll(_sc,Math.abs(rsYVal)>0.15?rsYVal*18:0,Math.abs(rsXVal)>0.15?rsXVal*18:0);
     }
   }
 
@@ -10425,11 +10443,10 @@ function _gpInvNav(){
   if(Math.abs(_rsYFull)>0.15||Math.abs(_rsXFull)>0.15){
     const _iwx=_gpVC.vis?_gpVC.x:window.innerWidth/2;
     const _iwy=_gpVC.vis?_gpVC.y:window.innerHeight/2;
-    const _iwt=document.elementFromPoint(_iwx,_iwy)||$('invPanel');
-    const _sc=_gpFindScroll(_iwt)||_gpFindScroll($('invPanel'))||_gpFindScrollDown($('invPanel'));
+    // 인벤토리 스크롤 대상 직접 지정 (중첩 overflow 방지)
+    const _sc=$('invGrid')||_gpFindScroll(document.elementFromPoint(_iwx,_iwy)||$('invPanel'));
     if(_sc){
-      if(Math.abs(_rsYFull)>0.15)_sc.scrollTop+=_rsYFull*18;
-      if(Math.abs(_rsXFull)>0.15)_sc.scrollLeft+=_rsXFull*18;
+      _gpDoScroll(_sc,Math.abs(_rsYFull)>0.15?_rsYFull*18:0,Math.abs(_rsXFull)>0.15?_rsXFull*18:0);
     }
   }
   // 가상 커서 호버 → inv-item mouseover 자동 발생
@@ -37883,7 +37900,7 @@ function _invRenderDetail(idx,source){
       const _fe=_oeq?(_oeq.enh||0):0;
       const _xc=_fe>0?xferCost(_fe):0;
       const _lbl=_fe>0?_T('장착')+' (\u2692+'+_fe+' \u2192 '+_xc.toLocaleString()+_L('악의',' Malice')+((G.mats||0)<_xc?' \u26A0':'')+')'  :_T('장착');
-_actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><div class="id-btn equip" onclick="const _it=INV.bag[${idx}];const _s=_it?.slot;const _old=_s?INV.equipped[_s]:null;equipItem(_it);applyStats();if(_old){const _oi=INV.bag.indexOf(_old);INV.selected=_oi>=0?_oi:null}else{INV.selected=_s?'eq:'+_s:null}renderInv()">${_lbl}</div><div class="id-btn" onclick="if(dropItem(${idx}))renderInv()">${_T('분해')} (악의+${_salV})</div></div>`;
+_actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><div class="id-btn equip" onclick="const _it=INV.bag[${idx}];const _s=_it?.slot;const _old=_s?INV.equipped[_s]:null;equipItem(_it);applyStats();if(_old){const _oi=INV.bag.indexOf(_old);INV.selected=_oi>=0?_oi:null}else{INV.selected=_s?'eq:'+_s:null}renderInv()">${_lbl}</div><div class="id-btn" onclick="if(dropItem(${idx}))renderInv()">${_T('분해')} (${_T('악의')}+${_salV})</div></div>`;
     } else if(source==='eq'){
       _actB.innerHTML=`<div class="id-btns"><div class="id-btn" onclick="const _it=INV.equipped['${idx}'];unequipItem('${idx}');applyStats();const _ui=INV.bag.indexOf(_it);INV.selected=_ui>=0?_ui:null;renderInv()">${_T('해제')}</div></div>`;
     } else if(source==='st'){

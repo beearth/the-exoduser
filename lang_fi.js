@@ -2368,6 +2368,9 @@ const _FI={
 'CT스킬 (유령걸음/얼음보주)':'CT-taito (Haamukävely/Jääpallo)',
 '스킬 (전투스킬 습득)':'Taidot (Taistelu)',
 '대장간 (제작)':'Paja (Valmistus)',
+'클릭하여 계속':'Napsauta jatkaaksesi',
+'클릭하여 시작':'Napsauta aloittaaksesi',
+'SPACE 길게 눌러 건너뛰기':'Pidä SPACE ohittaaksesi',
 };
 
 const _FI_PFX={'녹슨':'Ruosteinen','강철':'Teräksinen','흑요석':'Obsidiaani','미스릴':'Mithriili','심판의':'Tuomion','천벌의':'Jumalan Vihan','파멸의':'Tuhon','불꽃':'Liekin','화염':'Helvetintuli','염화':'Helvetintuli','지옥불':'Helvetinliekki','지옥화':'Helvetinliekki','지옥':'Helvetinliekki','멸화의':'Tuhoava','냉기':'Pakkanen','빙결':'Jäätynyt','빙하':'Jäätikön','서리의':'Huurteen','서리':'Huurteen','영겁빙':'Ikijään','그림자':'Varjon','암흑':'Pimeä','심연':'Syvyyden','나락의':'Tuonelan','나락':'Tuonelan','무간의':'Tyhjyyden','전기':'Kipinän','낙뢰':'Ukkosen','암전':'Salaman','뇌신의':'Ukkosjumalan','뇌신':'Ukkosjumalan','만뢰의':'Tuhansien Salamoiden','축복':'Siunattu','성광':'Pyhä Valo','신성':'Pyhä','천사의':'Enkelien','신벌의':'Jumalan Tuomion','낡은':'Kulunut','천':'Kangas','가죽':'Nahka','강철사':'Teräslanka','은':'Hopea','은사':'Hopealanka','화염의':'Helvetintuli','빙결의':'Jäätynyt','암흑의':'Pimeä','암전의':'Salaman'};

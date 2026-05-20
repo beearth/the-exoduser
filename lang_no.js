@@ -1997,6 +1997,9 @@ const _NO={
 'CT스킬 (유령걸음/얼음보주)':'CT-evne (Spøkelsessteg/Iskule)',
 '스킬 (전투스킬 습득)':'Evner (Kamp)',
 '대장간 (제작)':'Smie (Lag)',
+'클릭하여 계속':'Klikk for å fortsette',
+'클릭하여 시작':'Klikk for å starte',
+'SPACE 길게 눌러 건너뛰기':'Hold SPACE for å hoppe over',
 };
 
 const _NO_PFX={

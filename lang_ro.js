@@ -2368,6 +2368,9 @@ const _RO={
 'CT스킬 (유령걸음/얼음보주)':'Ab. CT (Pas Fantomă/Sferă de Gheață)',
 '스킬 (전투스킬 습득)':'Abilități (Luptă)',
 '대장간 (제작)':'Fierărie (Fabricare)',
+'클릭하여 계속':'Click pentru a continua',
+'클릭하여 시작':'Click pentru a începe',
+'SPACE 길게 눌러 건너뛰기':'Ține SPACE pentru a sări',
 };
 
 const _RO_PFX={

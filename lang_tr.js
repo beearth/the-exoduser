@@ -2368,6 +2368,9 @@ const _TR={
 'CT스킬 (유령걸음/얼음보주)':'CT Beceri (Hayalet Adım/Buz Küre)',
 '스킬 (전투스킬 습득)':'Beceriler (Savaş)',
 '대장간 (제작)':'Demirci (Üretim)',
+'클릭하여 계속':'Devam etmek için tıkla',
+'클릭하여 시작':'Başlamak için tıkla',
+'SPACE 길게 눌러 건너뛰기':'Atlamak için SPACE basılı tut',
 };
 
 const _TR_PFX={'녹슨':'Paslı','강철':'Çelik','흑요석':'Obsidyen','미스릴':'Mithril','심판의':'Yargının','천벌의':'İlahi Gazabın','파멸의':'Yıkımın','불꽃':'Alev','화염':'Cehennem Ateşi','염화':'Cehennem Ateşi','지옥불':'Cehennem Alevi','지옥화':'Cehennem Alevi','지옥':'Cehennem Alevi','멸화의':'İmha Eden','냉기':'Ayaz','빙결':'Donmuş','빙하':'Buzul','서리의':'Kırağının','서리':'Kırağının','영겁빙':'Ebedi Buz','그림자':'Gölge','암흑':'Karanlık','심연':'Uçurum','나락의':'Cehennemin','나락':'Cehennemin','무간의':'Boşluğun','전기':'Kıvılcım','낙뢰':'Yıldırım','암전':'Şimşek','뇌신의':'Fırtına Tanrısının','뇌신':'Fırtına Tanrısının','만뢰의':'Bin Yıldırımın','축복':'Mübarek','성광':'Kutsal Işık','신성':'Kutsal','천사의':'Melek','신벌의':'İlahi Yargının','낡은':'Eski','천':'Kumaş','가죽':'Deri','강철사':'Çelik Örgü','은':'Gümüş','은사':'Gümüş İplik','화염의':'Cehennem Ateşi','빙결의':'Donmuş','암흑의':'Karanlık','암전의':'Şimşek'};

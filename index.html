@@ -710,6 +710,13 @@ const _LOBBY_EN={
   '누구를 부를 텐가':'Who will you call','다시 떨어졌군':'Fell again',
   '...일어났나':'...Awake?','또 너냐':'You again?','지치지도 않는군':'Never tire, do you',
   '문은 늘 그 자리에 있다':'The door is always there','이 자에게 또 기회를':'Another chance for this one',
+  '지옥 학살자':'Hell Slayer','대검 영웅':'Greatsword Hero','거대검 기사':'Colossal Knight',
+  '대검 기사':'Greatsword Knight','엑소듀서 전사':'Exoduser Warrior',
+  '거츠 스타일. 특대검+석궁+망토':'Guts style. Greatsword+Crossbow+Cape',
+  '풀갑옷 기사. 특대검+빨간 망토':'Full armor knight. Greatsword+Red cape',
+  '검은 갑옷. 초대형 특대검':'Black armor. Colossal greatsword',
+  '표준 기사. 대검+갑옷':'Standard knight. Greatsword+Armor',
+  '다크 판타지 전사. 거대검+검은 갑옷':'Dark fantasy warrior. Greatsword+Black armor',
   '얼음지옥':'Ice Hell','독충지옥':'Venom Hell','화염지옥':'Fire Hell',
   '심연지옥':'Abyss Hell','뇌전지옥':'Thunder Hell','백골지옥':'Bone Hell','혼돈지옥':'Chaos Hell',
 };
@@ -1532,7 +1539,9 @@ function _applyLobbyLang(){
   if(ci)ci.placeholder=_TL('캐릭터 이름 (2~8자)');
   // 오프라인/이름모달
   const ob=document.getElementById('offlineBtn');if(ob){const svg=ob.querySelector('svg');const txt=' '+_TL('오프라인 모드');ob.innerHTML='';if(svg)ob.appendChild(svg);ob.appendChild(document.createTextNode(txt))}
-  const np=document.querySelector('#charNameModal p, #charNamePop p');if(np)np.textContent=_TL('지옥에 보낼 캐릭터의 이름을 지어주세요');
+  const np=document.querySelector('#createModal p');if(np)np.textContent=_TL('지옥에 보낼 캐릭터의 이름을 지어주세요');
+  const cmh=document.querySelector('#createModal h2');if(cmh)cmh.textContent=_TL('새 캐릭터 생성');
+  const ccb=document.getElementById('createCancelBtn');if(ccb)ccb.textContent=_TL('취소');
   // 배너 텍스트 (lobby mid-area)
   const mainTxt=document.querySelector('.lma-main-txt');
   if(mainTxt)mainTxt.innerHTML=_TL('여러분의 Steam 찜 하나가\nEXODUSER: HELL LORD의\n다음 여정을 만듭니다').replace(/\n/g,'<br>');
@@ -2075,13 +2084,17 @@ function _enterOffline(){
   // 오프라인 버튼 이벤트
   if($('offlineBtn'))$('offlineBtn').onclick=()=>_enterOffline();
 
-  // ?test=1 강제 오프라인
+  // NW.js 데스크톱 빌드 → 자동 오프라인 (구글 로그인 불필요)
+  const _isNW=typeof nw!=='undefined';
+  if(_isNW&&!_testMode)_testMode=true;
+
+  // ?test=1 또는 NW.js → 강제 오프라인
   if(_testMode){
     if(_fromGame||localStorage.getItem('_cinSeen')){_enterOffline();return}
     else{_goCinematic();return}
   }
 
-  // ── Supabase 모드 (기본) ──
+  // ── Supabase 모드 (웹 전용) ──
   const{data:{session}}=await sb.auth.getSession();
   if(session) currentUser=session.user;
 
@@ -2182,11 +2195,11 @@ function openVisualSelect(name){
     _tryLoadSprite(ch.folder,ch.fw,ch.fh,cv);
     card.appendChild(cv);
     // 이름
-    const nm=document.createElement('div');nm.textContent=ch.name;
+    const nm=document.createElement('div');nm.textContent=_TL(ch.name);
     nm.style.cssText='color:#cccccc;font-size:.8rem;font-weight:bold;margin-bottom:3px';
     card.appendChild(nm);
     // 설명
-    const ds=document.createElement('div');ds.textContent=ch.desc;
+    const ds=document.createElement('div');ds.textContent=_TL(ch.desc);
     ds.style.cssText='color:#888888;font-size:.65rem;line-height:1.3';
     card.appendChild(ds);
     card.onclick=()=>{pop.style.display='none';doCreateChar(_pendingCharName,ci)};

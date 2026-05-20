@@ -11,7 +11,8 @@ echo.
 echo [1/2] SteamCMD 로그인 + 빌드 업로드 시작...
 echo.
 
-steamcmd +login %STEAM_USER% +run_app_build "G:\hell\steam\app_build_4749590.vdf" +quit
+set STEAMCMD="%LOCALAPPDATA%\Microsoft\WinGet\Packages\Valve.SteamCMD_Microsoft.Winget.Source_8wekyb3d8bbwe\steamcmd.exe"
+%STEAMCMD% +login %STEAM_USER% +run_app_build "G:\hell\steam\app_build_4749590.vdf" +quit
 
 echo.
 echo ═══════════════════════════════════════

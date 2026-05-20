@@ -2368,6 +2368,9 @@ const _ID={
 'CT스킬 (유령걸음/얼음보주)':'Skill CT (Langkah Hantu/Bola Es)',
 '스킬 (전투스킬 습득)':'Skill (Pertempuran)',
 '대장간 (제작)':'Pandai besi (Craft)',
+'클릭하여 계속':'Klik untuk lanjut',
+'클릭하여 시작':'Klik untuk mulai',
+'SPACE 길게 눌러 건너뛰기':'Tahan SPACE untuk lewati',
 };
 
 const _ID_PFX={'녹슨':'Berkarat','강철':'Baja','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Penghakiman','천벌의':'Murka Ilahi','파멸의':'Kehancuran','불꽃':'Api','화염':'Neraka Api','염화':'Api Neraka','지옥불':'Kobaran Neraka','지옥화':'Kobaran Neraka','지옥':'Kobaran Neraka','멸화의':'Pemusnah','냉기':'Es','빙결':'Beku','빙하':'Glasial','서리의':'Embun Beku','서리':'Embun Beku','영겁빙':'Es Abadi','그림자':'Bayangan','암흑':'Kegelapan','심연':'Jurang','나락의':'Alam Bawah','나락':'Alam Bawah','무간의':'Kehampaan','전기':'Percik','낙뢰':'Guntur','암전':'Petir','뇌신의':'Dewa Badai','뇌신':'Dewa Badai','만뢰의':'Seribu Petir','축복':'Terberkati','성광':'Cahaya Suci','신성':'Sakral','천사의':'Malaikat','신벌의':'Hukuman Ilahi','낡은':'Usang','천':'Kain','가죽':'Kulit','강철사':'Rajut Baja','은':'Perak','은사':'Benang Perak','화염의':'Neraka Api','빙결의':'Beku','암흑의':'Kegelapan','암전의':'Petir'};

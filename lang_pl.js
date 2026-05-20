@@ -1945,6 +1945,9 @@ const _PL={
 'CT스킬 (유령걸음/얼음보주)':'Um. CT (Krok Ducha/Lodowa Kula)',
 '스킬 (전투스킬 습득)':'Umiejętności (Walka)',
 '대장간 (제작)':'Kuźnia (Tworzenie)',
+'클릭하여 계속':'Kliknij, aby kontynuować',
+'클릭하여 시작':'Kliknij, aby rozpocząć',
+'SPACE 길게 눌러 건너뛰기':'Przytrzymaj SPACE aby pominąć',
 };
 
 const _PL_PFX={

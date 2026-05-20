@@ -1998,6 +1998,9 @@ const _SV={
 'CT스킬 (유령걸음/얼음보주)':'CT-färdighet (Spöksteg/Iskula)',
 '스킬 (전투스킬 습득)':'Färdigheter (Strid)',
 '대장간 (제작)':'Smedja (Tillverka)',
+'클릭하여 계속':'Klicka för att fortsätta',
+'클릭하여 시작':'Klicka för att starta',
+'SPACE 길게 눌러 건너뛰기':'Håll SPACE för att hoppa över',
 };
 
 const _SV_PFX={

@@ -1998,6 +1998,9 @@ const _DA={
 'CT스킬 (유령걸음/얼음보주)':'CT-evne (Spøgelsetrin/Iskugle)',
 '스킬 (전투스킬 습득)':'Evner (Kamp)',
 '대장간 (제작)':'Smedje (Fremstil)',
+'클릭하여 계속':'Klik for at fortsætte',
+'클릭하여 시작':'Klik for at starte',
+'SPACE 길게 눌러 건너뛰기':'Hold SPACE for at springe over',
 };
 
 const _DA_PFX={

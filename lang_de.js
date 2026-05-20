@@ -1952,6 +1952,9 @@ const _DE={
 'CT스킬 (유령걸음/얼음보주)':'CT-Skill (Geisterschritt/Eiskugel)',
 '스킬 (전투스킬 습득)':'Skills (Kampf)',
 '대장간 (제작)':'Schmiede (Herstellen)',
+'클릭하여 계속':'Klicken zum Fortfahren',
+'클릭하여 시작':'Klicken zum Starten',
+'SPACE 길게 눌러 건너뛰기':'SPACE halten zum Überspringen',
 };
 
 const _DE_PFX={'녹슨':'Rostig','강철':'Stahl','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Richter-','천벌의':'Göttlicher Zorn','파멸의':'Vernichtung',

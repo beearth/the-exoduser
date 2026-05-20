@@ -1986,6 +1986,9 @@ const _ES={
 'CT스킬 (유령걸음/얼음보주)':'Hab. CT (Paso Fantasma/Orbe Hielo)',
 '스킬 (전투스킬 습득)':'Habilidades (Combate)',
 '대장간 (제작)':'Forja (Fabricar)',
+'클릭하여 계속':'Clic para continuar',
+'클릭하여 시작':'Clic para empezar',
+'SPACE 길게 눌러 건너뛰기':'Mantén SPACE para omitir',
 };
 
 const _ES_PFX={'녹슨':'Oxidada','강철':'Acero','흑요석':'Obsidiana','미스릴':'Mithril','심판의':'Juicio','천벌의':'Castigo Divino','파멸의':'Ruinoso',

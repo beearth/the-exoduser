@@ -1900,6 +1900,9 @@ const _CS={
 'CT스킬 (유령걸음/얼음보주)':'CT dovednost (Přízračný krok/Ledová koule)',
 '스킬 (전투스킬 습득)':'Dovednosti (Bojové)',
 '대장간 (제작)':'Kovárna (Výroba)',
+'클릭하여 계속':'Klikněte pro pokračování',
+'클릭하여 시작':'Klikněte pro zahájení',
+'SPACE 길게 눌러 건너뛰기':'Podržte SPACE pro přeskočení',
 };
 
 const _CS_PFX={

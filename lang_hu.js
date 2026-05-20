@@ -2368,6 +2368,9 @@ const _HU={
 'CT스킬 (유령걸음/얼음보주)':'CT képesség (Szellemlépés/Jéggömb)',
 '스킬 (전투스킬 습득)':'Képességek (Harc)',
 '대장간 (제작)':'Kovács (Készítés)',
+'클릭하여 계속':'Kattints a folytatáshoz',
+'클릭하여 시작':'Kattints a kezdéshez',
+'SPACE 길게 눌러 건너뛰기':'Tartsd a SPACE-t a kihagyáshoz',
 };
 
 const _HU_PFX={

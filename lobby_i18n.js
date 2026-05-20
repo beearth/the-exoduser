@@ -46,7 +46,12 @@ zht:{
 '심연지옥':'深淵獄',
 '뇌전지옥':'雷電獄',
 '백골지옥':'白骨獄',
-'혼돈지옥':'混沌獄',},
+'혼돈지옥':'混沌獄',
+'지옥 학살자':'地獄屠殺者',
+'대검 영웅':'大劍英雄',
+'거대검 기사':'巨劍騎士',
+'대검 기사':'大劍騎士',
+'엑소듀서 전사':'流放者戰士',},
 // ═══ Русский (Russian) ═══
 ru:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Подключение...','캐릭터를 선택하세요':'Выберите персонажа','당신은 누구인가':'КТО ТЫ',
@@ -89,7 +94,12 @@ ru:{
 '심연지옥':'Бездна ад',
 '뇌전지옥':'Грозовой ад',
 '백골지옥':'Костяной ад',
-'혼돈지옥':'Хаос ад',},
+'혼돈지옥':'Хаос ад',
+'지옥 학살자':'Адский убийца',
+'대검 영웅':'Герой с мечом',
+'거대검 기사':'Колоссальный рыцарь',
+'대검 기사':'Рыцарь с мечом',
+'엑소듀서 전사':'Воин Экзодюсер',},
 // ═══ Deutsch (German) ═══
 de:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Verbinde...','캐릭터를 선택하세요':'Wähle deinen Charakter','당신은 누구인가':'WER BIST DU',
@@ -132,7 +142,12 @@ de:{
 '심연지옥':'Abgrundhölle',
 '뇌전지옥':'Donnerhölle',
 '백골지옥':'Knochenhölle',
-'혼돈지옥':'Chaoshölle',},
+'혼돈지옥':'Chaoshölle',
+'지옥 학살자':'Höllenschlächter',
+'대검 영웅':'Schwertheld',
+'거대검 기사':'Kolossalritter',
+'대검 기사':'Schwertritter',
+'엑소듀서 전사':'Exoduser-Krieger',},
 // ═══ Português do Brasil (Brazilian Portuguese) ═══
 ptbr:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Conectando...','캐릭터를 선택하세요':'Selecione seu personagem','당신은 누구인가':'QUEM ÉS TU',
@@ -175,7 +190,12 @@ ptbr:{
 '심연지옥':'Inferno Abismo',
 '뇌전지옥':'Inferno Trovão',
 '백골지옥':'Inferno Ossos',
-'혼돈지옥':'Inferno Caos',},
+'혼돈지옥':'Inferno Caos',
+'지옥 학살자':'Assassino Infernal',
+'대검 영웅':'Herói da Espada',
+'거대검 기사':'Cavaleiro Colossal',
+'대검 기사':'Cavaleiro da Espada',
+'엑소듀서 전사':'Guerreiro Exoduser',},
 // ═══ Français (French) ═══
 fr:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Connexion...','캐릭터를 선택하세요':'Choisissez votre personnage','당신은 누구인가':'QUI ES-TU',
@@ -218,7 +238,12 @@ fr:{
 '심연지옥':'Enfer Abîme',
 '뇌전지옥':'Enfer Foudre',
 '백골지옥':'Enfer Ossements',
-'혼돈지옥':'Enfer Chaos',},
+'혼돈지옥':'Enfer Chaos',
+'지옥 학살자':'Tueur Infernal',
+'대검 영웅':'Héros à l\'Épée',
+'거대검 기사':'Chevalier Colossal',
+'대검 기사':'Chevalier à l\'Épée',
+'엑소듀서 전사':'Guerrier Exoduser',},
 // ═══ Polski (Polish) ═══
 pl:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Łączenie...','캐릭터를 선택하세요':'Wybierz postać','당신은 누구인가':'KIM JESTEŚ',
@@ -261,7 +286,12 @@ pl:{
 '심연지옥':'Otchłanne piekło',
 '뇌전지옥':'Piorunowe piekło',
 '백골지옥':'Kościane piekło',
-'혼돈지옥':'Chaosowe piekło',},
+'혼돈지옥':'Chaosowe piekło',
+'지옥 학살자':'Pogromca Piekieł',
+'대검 영웅':'Bohater Miecza',
+'거대검 기사':'Kolosalny Rycerz',
+'대검 기사':'Rycerz Miecza',
+'엑소듀서 전사':'Wojownik Exoduser',},
 // ═══ Italiano (Italian) ═══
 it:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Connessione...','캐릭터를 선택하세요':'Scegli il tuo personaggio','당신은 누구인가':'CHI SEI TU',
@@ -304,7 +334,12 @@ it:{
 '심연지옥':'Inferno Abisso',
 '뇌전지옥':'Inferno Tuono',
 '백골지옥':'Inferno Ossa',
-'혼돈지옥':'Inferno Caos',},
+'혼돈지옥':'Inferno Caos',
+'지옥 학살자':'Massacratore Infernale',
+'대검 영웅':'Eroe della Spada',
+'거대검 기사':'Cavaliere Colossale',
+'대검 기사':'Cavaliere della Spada',
+'엑소듀서 전사':'Guerriero Exoduser',},
 // ═══ Українська (Ukrainian) ═══
 uk:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Підключення...','캐릭터를 선택하세요':'Оберіть персонажа','당신은 누구인가':'ХТО ТИ',
@@ -347,7 +382,12 @@ uk:{
 '심연지옥':'Безодня пекло',
 '뇌전지옥':'Громове пекло',
 '백골지옥':'Кісткове пекло',
-'혼돈지옥':'Хаосне пекло',},
+'혼돈지옥':'Хаосне пекло',
+'지옥 학살자':'Пекельний вбивця',
+'대검 영웅':'Герой з мечем',
+'거대검 기사':'Колосальний лицар',
+'대검 기사':'Лицар з мечем',
+'엑소듀서 전사':'Воїн Екзодюсер',},
 // ═══ Türkçe (Turkish) ═══
 tr:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Bağlanıyor...','캐릭터를 선택하세요':'Karakterini seç','당신은 누구인가':'SEN KİMSİN',
@@ -390,7 +430,12 @@ tr:{
 '심연지옥':'Uçurum Cehennemi',
 '뇌전지옥':'Yıldırım Cehennemi',
 '백골지옥':'Kemik Cehennemi',
-'혼돈지옥':'Kaos Cehennemi',},
+'혼돈지옥':'Kaos Cehennemi',
+'지옥 학살자':'Cehennem Kasabı',
+'대검 영웅':'Kılıç Kahramanı',
+'거대검 기사':'Devasa Şövalye',
+'대검 기사':'Kılıç Şövalyesi',
+'엑소듀서 전사':'Exoduser Savaşçısı',},
 // ═══ Tiếng Việt (Vietnamese) ═══
 vi:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Đang kết nối...','캐릭터를 선택하세요':'Chọn nhân vật','당신은 누구인가':'NGƯƠI LÀ AI',
@@ -433,7 +478,12 @@ vi:{
 '심연지옥':'Địa ngục Vực',
 '뇌전지옥':'Địa ngục Sấm',
 '백골지옥':'Địa ngục Xương',
-'혼돈지옥':'Địa ngục Hỗn Loạn',},
+'혼돈지옥':'Địa ngục Hỗn Loạn',
+'지옥 학살자':'Sát Thủ Địa Ngục',
+'대검 영웅':'Anh Hùng Đại Kiếm',
+'거대검 기사':'Hiệp Sĩ Cự Kiếm',
+'대검 기사':'Hiệp Sĩ Đại Kiếm',
+'엑소듀서 전사':'Chiến Binh Exoduser',},
 // ═══ ไทย (Thai) ═══
 th:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'กำลังเชื่อมต่อ...','캐릭터를 선택하세요':'เลือกตัวละคร','당신은 누구인가':'เจ้าเป็นใคร',
@@ -476,7 +526,12 @@ th:{
 '심연지옥':'นรกเหว',
 '뇌전지옥':'นรกสายฟ้า',
 '백골지옥':'นรกกระดูก',
-'혼돈지옥':'นรกวุ่นวาย',},
+'혼돈지옥':'นรกวุ่นวาย',
+'지옥 학살자':'นักล่าแห่งนรก',
+'대검 영웅':'วีรบุรุษดาบใหญ่',
+'거대검 기사':'อัศวินดาบยักษ์',
+'대검 기사':'อัศวินดาบ',
+'엑소듀서 전사':'นักรบ Exoduser',},
 // ═══ Bahasa Indonesia (Indonesian) ═══
 id:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Menghubungkan...','캐릭터를 선택하세요':'Pilih karaktermu','당신은 누구인가':'SIAPAKAH ENGKAU',
@@ -519,7 +574,12 @@ id:{
 '심연지옥':'Neraka Jurang',
 '뇌전지옥':'Neraka Petir',
 '백골지옥':'Neraka Tulang',
-'혼돈지옥':'Neraka Kekacauan',},
+'혼돈지옥':'Neraka Kekacauan',
+'지옥 학살자':'Pembantai Neraka',
+'대검 영웅':'Pahlawan Pedang',
+'거대검 기사':'Ksatria Kolosal',
+'대검 기사':'Ksatria Pedang',
+'엑소듀서 전사':'Pejuang Exoduser',},
 // ═══ العربية (Arabic) ═══
 ar:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'جارٍ الاتصال...','캐릭터를 선택하세요':'اختر شخصيتك','당신은 누구인가':'مَن أنتَ',
@@ -562,7 +622,12 @@ ar:{
 '심연지옥':'جحيم الهاوية',
 '뇌전지옥':'جحيم الرعد',
 '백골지옥':'جحيم العظام',
-'혼돈지옥':'جحيم الفوضى',},
+'혼돈지옥':'جحيم الفوضى',
+'지옥 학살자':'قاتل الجحيم',
+'대검 영웅':'بطل السيف',
+'거대검 기사':'فارس السيف العملاق',
+'대검 기사':'فارس السيف',
+'엑소듀서 전사':'محارب Exoduser',},
 // ═══ Svenska (Swedish) ═══
 sv:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Ansluter...','캐릭터를 선택하세요':'Välj din karaktär','당신은 누구인가':'VEM ÄR DU',
@@ -605,7 +670,12 @@ sv:{
 '심연지옥':'Avgrundshelvete',
 '뇌전지옥':'Åskhelvete',
 '백골지옥':'Benhelvete',
-'혼돈지옥':'Kaoshelvete',},
+'혼돈지옥':'Kaoshelvete',
+'지옥 학살자':'Helvetesslaktaren',
+'대검 영웅':'Svärdshjälten',
+'거대검 기사':'Kolossalriddaren',
+'대검 기사':'Svärdridddaren',
+'엑소듀서 전사':'Exoduser-krigaren',},
 // ═══ Dansk (Danish) ═══
 da:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Forbinder...','캐릭터를 선택하세요':'Vælg din karakter','당신은 누구인가':'HVEM ER DU',
@@ -648,7 +718,12 @@ da:{
 '심연지옥':'Afgrundshelvede',
 '뇌전지옥':'Tordenhelvede',
 '백골지옥':'Benhelvede',
-'혼돈지옥':'Kaoshelvede',},
+'혼돈지옥':'Kaoshelvede',
+'지옥 학살자':'Helvedes Slagteren',
+'대검 영웅':'Sværdhelten',
+'거대검 기사':'Kolossalridderen',
+'대검 기사':'Sværdridderen',
+'엑소듀서 전사':'Exoduser-krigeren',},
 // ═══ Norsk (Norwegian) ═══
 no:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Kobler til...','캐릭터를 선택하세요':'Velg din karakter','당신은 누구인가':'HVEM ER DU',
@@ -691,7 +766,12 @@ no:{
 '심연지옥':'Avgrunnshelvet',
 '뇌전지옥':'Tordenhelvete',
 '백골지옥':'Beinhelvete',
-'혼돈지옥':'Kaoshelvete',},
+'혼돈지옥':'Kaoshelvete',
+'지옥 학살자':'Helvetes Slakteren',
+'대검 영웅':'Sverdhelten',
+'거대검 기사':'Kolossalridderen',
+'대검 기사':'Sverdridderen',
+'엑소듀서 전사':'Exoduser-krigeren',},
 // ═══ Suomi (Finnish) ═══
 fi:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Yhdistetään...','캐릭터를 선택하세요':'Valitse hahmosi','당신은 누구인가':'KUKA OLET',
@@ -734,7 +814,12 @@ fi:{
 '심연지옥':'Kuiluhelvetti',
 '뇌전지옥':'Ukkoshelvetti',
 '백골지옥':'Luuhelvetti',
-'혼돈지옥':'Kaaoshelvetti',},
+'혼돈지옥':'Kaaoshelvetti',
+'지옥 학살자':'Helvetin Teurastaja',
+'대검 영웅':'Miekkasankari',
+'거대검 기사':'Jättimiekkaritari',
+'대검 기사':'Miekkaritari',
+'엑소듀서 전사':'Exoduser-soturi',},
 // ═══ Čeština (Czech) ═══
 cs:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Připojování...','캐릭터를 선택하세요':'Vyber si postavu','당신은 누구인가':'KDO JSI',
@@ -777,7 +862,12 @@ cs:{
 '심연지옥':'Propastné peklo',
 '뇌전지옥':'Hromové peklo',
 '백골지옥':'Kostěné peklo',
-'혼돈지옥':'Chaosové peklo',},
+'혼돈지옥':'Chaosové peklo',
+'지옥 학살자':'Pekelný řezník',
+'대검 영웅':'Hrdina s mečem',
+'거대검 기사':'Kolosální rytíř',
+'대검 기사':'Rytíř s mečem',
+'엑소듀서 전사':'Válečník Exoduser',},
 // ═══ Magyar (Hungarian) ═══
 hu:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Csatlakozás...','캐릭터를 선택하세요':'Válaszd ki a karaktered','당신은 누구인가':'KI VAGY TE',
@@ -820,7 +910,12 @@ hu:{
 '심연지옥':'Mélységpokol',
 '뇌전지옥':'Villámokol',
 '백골지옥':'Csontpokol',
-'혼돈지옥':'Káoszpokol',},
+'혼돈지옥':'Káoszpokol',
+'지옥 학살자':'Pokoli Mészáros',
+'대검 영웅':'Kardhős',
+'거대검 기사':'Kolosszális lovag',
+'대검 기사':'Kardlovag',
+'엑소듀서 전사':'Exoduser harcos',},
 // ═══ Română (Romanian) ═══
 ro:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Se conectează...','캐릭터를 선택하세요':'Alege-ți personajul','당신은 누구인가':'CINE EȘTI',
@@ -863,7 +958,12 @@ ro:{
 '심연지옥':'Iadul Abisului',
 '뇌전지옥':'Iadul Tunetului',
 '백골지옥':'Iadul Oaselor',
-'혼돈지옥':'Iadul Haosului',},
+'혼돈지옥':'Iadul Haosului',
+'지옥 학살자':'Ucigașul Infernului',
+'대검 영웅':'Eroul Sabiei',
+'거대검 기사':'Cavalerul Colosal',
+'대검 기사':'Cavalerul Sabiei',
+'엑소듀서 전사':'Războinicul Exoduser',},
 // ═══ Nederlands (Dutch) ═══
 nl:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Verbinden...','캐릭터를 선택하세요':'Kies je karakter','당신은 누구인가':'WIE BEN JIJ',
@@ -906,7 +1006,12 @@ nl:{
 '심연지옥':'Afgrondshel',
 '뇌전지옥':'Donderhel',
 '백골지옥':'Knekelhel',
-'혼돈지옥':'Chaoshel',},
+'혼돈지옥':'Chaoshel',
+'지옥 학살자':'Helslachter',
+'대검 영웅':'Zwardheld',
+'거대검 기사':'Kolossale Ridder',
+'대검 기사':'Zwaardridder',
+'엑소듀서 전사':'Exoduser-krijger',},
 // ═══ Ελληνικά (Greek) ═══
 el:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Σύνδεση...','캐릭터를 선택하세요':'Διάλεξε χαρακτήρα','당신은 누구인가':'ΠΟΙΟΣ ΕΙΣΑΙ',
@@ -949,7 +1054,12 @@ el:{
 '심연지옥':'Αβυσσαλέα Κόλαση',
 '뇌전지옥':'Κεραυνοβόλα Κόλαση',
 '백골지옥':'Οστεΐνη Κόλαση',
-'혼돈지옥':'Χαοτική Κόλαση',},
+'혼돈지옥':'Χαοτική Κόλαση',
+'지옥 학살자':'Σφαγέας Κόλασης',
+'대검 영웅':'Ήρωας Σπαθιού',
+'거대검 기사':'Κολοσσαίος Ιππότης',
+'대검 기사':'Ιππότης Σπαθιού',
+'엑소듀서 전사':'Πολεμιστής Exoduser',},
 // ═══ Български (Bulgarian) ═══
 bg:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Свързване...','캐릭터를 선택하세요':'Избери персонаж','당신은 누구인가':'КОЙ СИ ТИ',
@@ -992,7 +1102,12 @@ bg:{
 '심연지옥':'Бездната ад',
 '뇌전지옥':'Гръмотевичен ад',
 '백골지옥':'Костен ад',
-'혼돈지옥':'Хаосен ад',},
+'혼돈지옥':'Хаосен ад',
+'지옥 학살자':'Адски Кръвопиец',
+'대검 영웅':'Герой с меч',
+'거대검 기사':'Колосален рицар',
+'대검 기사':'Рицар с меч',
+'엑소듀서 전사':'Воин Exoduser',},
 };
 
 // ═══════════════════════════════════════════════════════

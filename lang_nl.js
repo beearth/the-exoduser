@@ -1998,6 +1998,9 @@ const _NL={
 'CT스킬 (유령걸음/얼음보주)':'CT-vaardigheid (Spookstap/IJsbol)',
 '스킬 (전투스킬 습득)':'Vaardigheden (Gevecht)',
 '대장간 (제작)':'Smederij (Maken)',
+'클릭하여 계속':'Klik om door te gaan',
+'클릭하여 시작':'Klik om te starten',
+'SPACE 길게 눌러 건너뛰기':'Houd SPACE om over te slaan',
 };
 
 const _NL_PFX={
