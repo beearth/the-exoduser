@@ -3479,9 +3479,9 @@ const BGM={
     const key=BGM._curKey;if(!key)return;
     let src=null;
     if(BGM._isActKey(key)&&OPT.bgmTrack==='auto'){
-      // 장 BGM 미소진: 미재생 트랙 중 선택 / 소진 후: 장+공용 혼합
-      src=BGM._actDone[key]?BGM._pickMixed(key):BGM._pickActFirst(key);
-      if(!src)src=BGM._pickMixed(key); // pickActFirst가 null(막 소진) → 즉시 혼합
+      // 장 BGM 미소진: 미재생 트랙 중 선택 / 소진 후: 전체 랜덤
+      src=BGM._actDone[key]?BGM._pickAllRandom():BGM._pickActFirst(key);
+      if(!src)src=BGM._pickAllRandom(); // pickActFirst가 null(막 소진) → 즉시 전체 랜덤
     }else if(OPT.bgmTrack==='allRandom'){src=BGM._pickAllRandom();}
     else{src=BGM._pickRandom(key);}
     if(!src)return;
