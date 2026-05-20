@@ -2743,7 +2743,7 @@ canvas{display:block;position:fixed;inset:0}
   <div class="v-map" id="vMap">🗺️</div>
   <div class="v-line" id="vD3" style="color:#aa9966;font-style:italic"></div>
   <div class="v-tbc" id="vTbc">TO BE CONTINUED...</div>
-  <div class="v-end" id="vEnd">END 시즌1</div>
+  <div class="v-end" id="vEnd">END Season 1</div>
 </div>
 <div id="stageClear" style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:25;text-align:center;opacity:0;pointer-events:none;transition:opacity .5s">
   <div style="color:#ffdd44;font-size:.8rem;font-weight:900;letter-spacing:.2em;margin-bottom:8px;text-shadow:0 0 20px rgba(255,200,0,.4)" id="clearTitle">구역 클리어!</div>
@@ -3479,9 +3479,9 @@ const BGM={
     const key=BGM._curKey;if(!key)return;
     let src=null;
     if(BGM._isActKey(key)&&OPT.bgmTrack==='auto'){
-      // 장 BGM 미소진: 미재생 트랙 중 선택 / 소진 후: 장+공용 혼합
-      src=BGM._actDone[key]?BGM._pickMixed(key):BGM._pickActFirst(key);
-      if(!src)src=BGM._pickMixed(key); // pickActFirst가 null(막 소진) → 즉시 혼합
+      // 장 BGM 미소진: 미재생 트랙 중 선택 / 소진 후: 전체 랜덤
+      src=BGM._actDone[key]?BGM._pickAllRandom():BGM._pickActFirst(key);
+      if(!src)src=BGM._pickAllRandom(); // pickActFirst가 null(막 소진) → 즉시 전체 랜덤
     }else if(OPT.bgmTrack==='allRandom'){src=BGM._pickAllRandom();}
     else{src=BGM._pickRandom(key);}
     if(!src)return;
@@ -6395,6 +6395,8 @@ const _EN={
 '데빌포스 흡수 (HP→에너지)':'Devil Force Absorb (HP→Energy)',
 '스킬슬롯 5':'Skill Slot 5','CT스킬 (유령걸음/얼음보주)':'CT Skill (Ghost Step/Ice Orb)',
 '스킬 (전투스킬 습득)':'Skills (Combat Skills)','대장간 (제작)':'Forge (Craft)',
+'클릭하여 계속':'Click to continue','클릭하여 시작':'Click to start',
+'SPACE 길게 눌러 건너뛰기':'Hold SPACE to skip',
 // --- UI ---
 '일괄합성':'Bulk Fuse','일괄강화+합성':'Bulk Enhance+Fuse','자원 부족!':'Resources Low!',' 뎀':' DMG',
 // --- Game effects / combat messages ---
@@ -38602,7 +38604,7 @@ $('forgeLore').textContent=_T('🔴화염→빙결 2배 | 🔵빙결→화염 2�
     const ok=G.mats>=_forgeSel.cost;
     cfm.style.display='';
     $('fgSelName').textContent=_T(_forgeSel.name);
-$('fgSelDesc').textContent=_forgeSel.desc+' — 악의 '+_forgeSel.cost;
+$('fgSelDesc').textContent=_forgeSel.desc+' — '+_T('악의')+' '+_forgeSel.cost;
     $('fgCraftBtn').style.opacity=ok?'1':'.4';
     $('fgCraftBtn').style.borderColor=ok?'#aa8833':'#443322';
     $('fgCraftBtn').onclick=_fgCraft;
@@ -47093,10 +47095,10 @@ function updateHUD(slow){
   // Helmet — show multi-element dots
   const helms=_h&&_h.elements?_h.elements:[{el:EL.P}];
   const hDots=helms.map(e=>`<div class="ee" style="background:${ELC[e.el]}"></div>`).join('');
-  $('eq4').innerHTML=(_h?`<span style="color:${RARITY_C[_h.rarity||0]}">${_h.emoji||'⛑️'}</span>${hDots}<div class="ed">${_eqE?'Crown':'왕관'}</div>`:'<span style="color:#555">-</span><div class="ed" style="color:#555">'+(_L('없음','None'))+'</div>');
+  $('eq4').innerHTML=(_h?`<span style="color:${RARITY_C[_h.rarity||0]}">${_h.emoji||'⛑️'}</span>${hDots}<div class="ed">${_T('왕관')}</div>`:'<span style="color:#555">-</span><div class="ed" style="color:#555">'+(_L('없음','None'))+'</div>');
   $('eq4').style.borderColor=_h?ELC[helms[0].el]:'#333';$('eq4').style.boxShadow=_h?`inset 0 0 10px ${ELC[helms[0].el]}33`:'none';
   const aelC=ELC[_bw?_bw.el:0];
-  $('eq5').innerHTML=(_bw?`<span style="color:${RARITY_C[_bw.rarity||0]}">${_bw.emoji||'🏹'}</span><div class="ee" style="background:${aelC}"></div><div class="ed">${_eqE?'Crossbow':'석궁'}</div>`:'<span style="color:#555">-</span><div class="ed" style="color:#555">'+(_L('없음','None'))+'</div>');
+  $('eq5').innerHTML=(_bw?`<span style="color:${RARITY_C[_bw.rarity||0]}">${_bw.emoji||'🏹'}</span><div class="ee" style="background:${aelC}"></div><div class="ed">${_T('석궁')}</div>`:'<span style="color:#555">-</span><div class="ed" style="color:#555">'+(_L('없음','None'))+'</div>');
   $('eq5').style.borderColor=_bw?aelC:'#333';$('eq5').style.boxShadow=_bw?`inset 0 0 10px ${aelC}33`:'none';
 }
 
@@ -48310,7 +48312,7 @@ function _renderIntroCutscene(){
     const _hAlpha=_cutSkipHolding?.8:(.25+.1*Math.sin(performance.now()*.002));
     cx.font='11px "Noto Sans KR",sans-serif';cx.textAlign='right';
     cx.fillStyle='rgba(255,255,255,'+_hAlpha+')';
-    cx.fillText('SPACE 길게 눌러 건너뛰기',_fullW-20,_fullH-34);
+    cx.fillText(_T('SPACE 길게 눌러 건너뛰기'),_fullW-20,_fullH-34);
     // 게이지 바
     const _bW=120,_bH=3,_bX=_fullW-20-_bW,_bY=_fullH-28;
     cx.fillStyle='rgba(255,255,255,0.15)';cx.fillRect(_bX,_bY,_bW,_bH);
@@ -48377,8 +48379,7 @@ const _INTRO_KEY_STEPS=[
 function _showIntroKeys(step){
   const el=$('introKeys'),t=$('ikTitle'),b=$('ikBody'),h=$('ikHint');
   const s=_INTRO_KEY_STEPS[step];
-  const _li=OPT.lang==='ko'?0:1;
-  t.textContent=s.title[_li];b.innerHTML=s.body[_li];h.textContent=s.hint[_li];
+  t.textContent=_T(s.title[0]);b.innerHTML=OPT.lang==='ko'?s.body[0]:s.body[1];h.textContent=_T(s.hint[0]);
   el.style.opacity='1';el.style.pointerEvents='all';
   function next(){
     el.removeEventListener('click',next);
@@ -48688,7 +48689,7 @@ const _LOAD_TIPS_EN=[
 let _loadTipIdx=0,_loadTipIv=null;
 function _startLoadTips(){
   const el=$('stLoadTip');if(!el)return;
-  const tips=OPT.lang==='ko'?_LOAD_TIPS_KO:_LOAD_TIPS_EN;
+  const tips=OPT.lang==='ko'?_LOAD_TIPS_KO:_LOAD_TIPS_EN;/* _T() per-tip is too costly; ko/en binary OK for tips */
   _loadTipIdx=~~(Math.random()*tips.length);
   el.textContent=tips[_loadTipIdx];
   _loadTipIv=setInterval(()=>{_loadTipIdx=(_loadTipIdx+1)%tips.length;el.style.opacity='0';setTimeout(()=>{el.textContent=tips[_loadTipIdx];el.style.opacity='1'},300)},3000);

@@ -2743,7 +2743,7 @@ canvas{display:block;position:fixed;inset:0}
   <div class="v-map" id="vMap">🗺️</div>
   <div class="v-line" id="vD3" style="color:#aa9966;font-style:italic"></div>
   <div class="v-tbc" id="vTbc">TO BE CONTINUED...</div>
-  <div class="v-end" id="vEnd">END 시즌1</div>
+  <div class="v-end" id="vEnd">END Season 1</div>
 </div>
 <div id="stageClear" style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:25;text-align:center;opacity:0;pointer-events:none;transition:opacity .5s">
   <div style="color:#ffdd44;font-size:.8rem;font-weight:900;letter-spacing:.2em;margin-bottom:8px;text-shadow:0 0 20px rgba(255,200,0,.4)" id="clearTitle">구역 클리어!</div>
@@ -3479,9 +3479,9 @@ const BGM={
     const key=BGM._curKey;if(!key)return;
     let src=null;
     if(BGM._isActKey(key)&&OPT.bgmTrack==='auto'){
-      // 장 BGM 미소진: 미재생 트랙 중 선택 / 소진 후: 장+공용 혼합
-      src=BGM._actDone[key]?BGM._pickMixed(key):BGM._pickActFirst(key);
-      if(!src)src=BGM._pickMixed(key); // pickActFirst가 null(막 소진) → 즉시 혼합
+      // 장 BGM 미소진: 미재생 트랙 중 선택 / 소진 후: 전체 랜덤
+      src=BGM._actDone[key]?BGM._pickAllRandom():BGM._pickActFirst(key);
+      if(!src)src=BGM._pickAllRandom(); // pickActFirst가 null(막 소진) → 즉시 전체 랜덤
     }else if(OPT.bgmTrack==='allRandom'){src=BGM._pickAllRandom();}
     else{src=BGM._pickRandom(key);}
     if(!src)return;
@@ -6395,6 +6395,8 @@ const _EN={
 '데빌포스 흡수 (HP→에너지)':'Devil Force Absorb (HP→Energy)',
 '스킬슬롯 5':'Skill Slot 5','CT스킬 (유령걸음/얼음보주)':'CT Skill (Ghost Step/Ice Orb)',
 '스킬 (전투스킬 습득)':'Skills (Combat Skills)','대장간 (제작)':'Forge (Craft)',
+'클릭하여 계속':'Click to continue','클릭하여 시작':'Click to start',
+'SPACE 길게 눌러 건너뛰기':'Hold SPACE to skip',
 // --- UI ---
 '일괄합성':'Bulk Fuse','일괄강화+합성':'Bulk Enhance+Fuse','자원 부족!':'Resources Low!',' 뎀':' DMG',
 // --- Game effects / combat messages ---
@@ -37900,7 +37902,7 @@ function _invRenderDetail(idx,source){
       const _fe=_oeq?(_oeq.enh||0):0;
       const _xc=_fe>0?xferCost(_fe):0;
       const _lbl=_fe>0?_T('장착')+' (\u2692+'+_fe+' \u2192 '+_xc.toLocaleString()+_L('악의',' Malice')+((G.mats||0)<_xc?' \u26A0':'')+')'  :_T('장착');
-_actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><div class="id-btn equip" onclick="const _it=INV.bag[${idx}];const _s=_it?.slot;const _old=_s?INV.equipped[_s]:null;equipItem(_it);applyStats();if(_old){const _oi=INV.bag.indexOf(_old);INV.selected=_oi>=0?_oi:null}else{INV.selected=_s?'eq:'+_s:null}renderInv()">${_lbl}</div><div class="id-btn" onclick="if(dropItem(${idx}))renderInv()">${_T('분해')} (악의+${_salV})</div></div>`;
+_actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><div class="id-btn equip" onclick="const _it=INV.bag[${idx}];const _s=_it?.slot;const _old=_s?INV.equipped[_s]:null;equipItem(_it);applyStats();if(_old){const _oi=INV.bag.indexOf(_old);INV.selected=_oi>=0?_oi:null}else{INV.selected=_s?'eq:'+_s:null}renderInv()">${_lbl}</div><div class="id-btn" onclick="if(dropItem(${idx}))renderInv()">${_T('분해')} (${_T('악의')}+${_salV})</div></div>`;
     } else if(source==='eq'){
       _actB.innerHTML=`<div class="id-btns"><div class="id-btn" onclick="const _it=INV.equipped['${idx}'];unequipItem('${idx}');applyStats();const _ui=INV.bag.indexOf(_it);INV.selected=_ui>=0?_ui:null;renderInv()">${_T('해제')}</div></div>`;
     } else if(source==='st'){
@@ -38602,7 +38604,7 @@ $('forgeLore').textContent=_T('🔴화염→빙결 2배 | 🔵빙결→화염 2�
     const ok=G.mats>=_forgeSel.cost;
     cfm.style.display='';
     $('fgSelName').textContent=_T(_forgeSel.name);
-$('fgSelDesc').textContent=_forgeSel.desc+' — 악의 '+_forgeSel.cost;
+$('fgSelDesc').textContent=_forgeSel.desc+' — '+_T('악의')+' '+_forgeSel.cost;
     $('fgCraftBtn').style.opacity=ok?'1':'.4';
     $('fgCraftBtn').style.borderColor=ok?'#aa8833':'#443322';
     $('fgCraftBtn').onclick=_fgCraft;
@@ -47093,10 +47095,10 @@ function updateHUD(slow){
   // Helmet — show multi-element dots
   const helms=_h&&_h.elements?_h.elements:[{el:EL.P}];
   const hDots=helms.map(e=>`<div class="ee" style="background:${ELC[e.el]}"></div>`).join('');
-  $('eq4').innerHTML=(_h?`<span style="color:${RARITY_C[_h.rarity||0]}">${_h.emoji||'⛑️'}</span>${hDots}<div class="ed">${_eqE?'Crown':'왕관'}</div>`:'<span style="color:#555">-</span><div class="ed" style="color:#555">'+(_L('없음','None'))+'</div>');
+  $('eq4').innerHTML=(_h?`<span style="color:${RARITY_C[_h.rarity||0]}">${_h.emoji||'⛑️'}</span>${hDots}<div class="ed">${_T('왕관')}</div>`:'<span style="color:#555">-</span><div class="ed" style="color:#555">'+(_L('없음','None'))+'</div>');
   $('eq4').style.borderColor=_h?ELC[helms[0].el]:'#333';$('eq4').style.boxShadow=_h?`inset 0 0 10px ${ELC[helms[0].el]}33`:'none';
   const aelC=ELC[_bw?_bw.el:0];
-  $('eq5').innerHTML=(_bw?`<span style="color:${RARITY_C[_bw.rarity||0]}">${_bw.emoji||'🏹'}</span><div class="ee" style="background:${aelC}"></div><div class="ed">${_eqE?'Crossbow':'석궁'}</div>`:'<span style="color:#555">-</span><div class="ed" style="color:#555">'+(_L('없음','None'))+'</div>');
+  $('eq5').innerHTML=(_bw?`<span style="color:${RARITY_C[_bw.rarity||0]}">${_bw.emoji||'🏹'}</span><div class="ee" style="background:${aelC}"></div><div class="ed">${_T('석궁')}</div>`:'<span style="color:#555">-</span><div class="ed" style="color:#555">'+(_L('없음','None'))+'</div>');
   $('eq5').style.borderColor=_bw?aelC:'#333';$('eq5').style.boxShadow=_bw?`inset 0 0 10px ${aelC}33`:'none';
 }
 
@@ -48310,7 +48312,7 @@ function _renderIntroCutscene(){
     const _hAlpha=_cutSkipHolding?.8:(.25+.1*Math.sin(performance.now()*.002));
     cx.font='11px "Noto Sans KR",sans-serif';cx.textAlign='right';
     cx.fillStyle='rgba(255,255,255,'+_hAlpha+')';
-    cx.fillText('SPACE 길게 눌러 건너뛰기',_fullW-20,_fullH-34);
+    cx.fillText(_T('SPACE 길게 눌러 건너뛰기'),_fullW-20,_fullH-34);
     // 게이지 바
     const _bW=120,_bH=3,_bX=_fullW-20-_bW,_bY=_fullH-28;
     cx.fillStyle='rgba(255,255,255,0.15)';cx.fillRect(_bX,_bY,_bW,_bH);
@@ -48369,16 +48371,16 @@ function _showIntroDiff(){
   setTimeout(()=>_showIntroKeys(0),100);
 }
 // ── 키 안내 3단계 ──
+function _ikB(keys,descs){return keys.map((k,i)=>'<span style="color:#ffcc44">'+k+'</span> — '+_T(descs[i])).join('<br>')}
 const _INTRO_KEY_STEPS=[
-  {title:['공격','Attack'],body:['<span style="color:#ffcc44">좌클릭</span> — 무기 공격<br><span style="color:#ffcc44">우클릭 / Q</span> — 패링·보호막<br><span style="color:#ffcc44">SHIFT</span> — 돌진 (적을 관통, 무적)','<span style="color:#ffcc44">LMB</span> — Weapon Attack<br><span style="color:#ffcc44">RMB / Q</span> — Parry / Shield<br><span style="color:#ffcc44">SHIFT</span> — Dash (pierce enemies, invincible)'],hint:['클릭하여 계속','Click to continue']},
-  {title:['스킬','Skills'],body:['<span style="color:#ffcc44">SPACE</span> — 대왕치기 (광역 기절)<br><span style="color:#ffcc44">1</span> — 가시덫 (슬로우+출혈)<br><span style="color:#ffcc44">E</span> — 마법 (탭=투사체, 홀드=빔)<br><span style="color:#ffcc44">F</span> — 회복의 영역 (리젠 장판)<br><span style="color:#ffcc44">CTRL</span> — 얼음보주 (무적+빙결)<br><span style="color:#ffcc44">T</span> — 석궁 자동발사','<span style="color:#ffcc44">SPACE</span> — Giant Slam (AoE stun)<br><span style="color:#ffcc44">1</span> — Spike Trap (slow+bleed)<br><span style="color:#ffcc44">E</span> — Magic (tap=projectile, hold=beam)<br><span style="color:#ffcc44">F</span> — Holy Domain (regen zone)<br><span style="color:#ffcc44">CTRL</span> — Ice Orb (invincible+freeze)<br><span style="color:#ffcc44">T</span> — Auto Crossbow'],hint:['클릭하여 계속','Click to continue']},
-  {title:['생존','Survival'],body:['<span style="color:#ffcc44">1~4</span> — 선택 스킬 슬롯<br><span style="color:#ffcc44">R</span> — 아이템 줍기 <span style="font-size:.85em;color:#887766">(펫이 자동 수거)</span><br><span style="color:#ffcc44">TAB</span> — 인벤토리<br><span style="font-size:.85em;color:#887766">물약은 설정한 HP% 이하 시 자동 사용</span>','<span style="color:#ffcc44">1~4</span> — Skill Slots<br><span style="color:#ffcc44">R</span> — Pick Up Item <span style="font-size:.85em;color:#887766">(pet auto-collects)</span><br><span style="color:#ffcc44">TAB</span> — Inventory<br><span style="font-size:.85em;color:#887766">Potions auto-use when HP falls below set %</span>'],hint:['클릭하여 시작','Click to start']}
+  {title:'공격',body:()=>_ikB(['좌클릭','우클릭 / Q','SHIFT'],['무기 공격','패링·보호막','돌진 (적을 관통, 무적)']),hint:'클릭하여 계속'},
+  {title:'스킬',body:()=>_ikB(['SPACE','1','E','F','CTRL','T'],['대왕치기 (광역 기절)','가시덫 (슬로우+출혈)','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']),hint:'클릭하여 계속'},
+  {title:'생존',body:()=>_ikB(['1~4','R','TAB'],['선택 스킬 슬롯','아이템 줍기','인벤토리'])+'<br><span style="font-size:.85em;color:#887766">'+_T('(펫이 자동 수거)')+'</span><br><span style="font-size:.85em;color:#887766">'+_T('물약은 설정한 HP% 이하 시 자동 사용')+'</span>',hint:'클릭하여 시작'}
 ];
 function _showIntroKeys(step){
   const el=$('introKeys'),t=$('ikTitle'),b=$('ikBody'),h=$('ikHint');
   const s=_INTRO_KEY_STEPS[step];
-  const _li=OPT.lang==='ko'?0:1;
-  t.textContent=s.title[_li];b.innerHTML=s.body[_li];h.textContent=s.hint[_li];
+  t.textContent=_T(s.title);b.innerHTML=s.body();h.textContent=_T(s.hint);
   el.style.opacity='1';el.style.pointerEvents='all';
   function next(){
     el.removeEventListener('click',next);
@@ -48688,7 +48690,7 @@ const _LOAD_TIPS_EN=[
 let _loadTipIdx=0,_loadTipIv=null;
 function _startLoadTips(){
   const el=$('stLoadTip');if(!el)return;
-  const tips=OPT.lang==='ko'?_LOAD_TIPS_KO:_LOAD_TIPS_EN;
+  const tips=OPT.lang==='ko'?_LOAD_TIPS_KO:_LOAD_TIPS_EN;/* _T() per-tip is too costly; ko/en binary OK for tips */
   _loadTipIdx=~~(Math.random()*tips.length);
   el.textContent=tips[_loadTipIdx];
   _loadTipIv=setInterval(()=>{_loadTipIdx=(_loadTipIdx+1)%tips.length;el.style.opacity='0';setTimeout(()=>{el.textContent=tips[_loadTipIdx];el.style.opacity='1'},300)},3000);
