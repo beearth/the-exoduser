@@ -48712,7 +48712,7 @@ const _LOAD_TIPS_EN=[
 let _loadTipIdx=0,_loadTipIv=null;
 function _startLoadTips(){
   const el=$('stLoadTip');if(!el)return;
-  const tips=OPT.lang==='ko'?_LOAD_TIPS_KO:_LOAD_TIPS_EN;/* _T() per-tip is too costly; ko/en binary OK for tips */
+  const tips=_LOAD_TIPS_KO.map(s=>_T(s));
   _loadTipIdx=~~(Math.random()*tips.length);
   el.textContent=tips[_loadTipIdx];
   _loadTipIv=setInterval(()=>{_loadTipIdx=(_loadTipIdx+1)%tips.length;el.style.opacity='0';setTimeout(()=>{el.textContent=tips[_loadTipIdx];el.style.opacity='1'},300)},3000);
