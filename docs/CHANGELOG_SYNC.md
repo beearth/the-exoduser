@@ -25171,3 +25171,90 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - vk_swiftshader.dll
 - vulkan-1.dll
 
+
+## 2026-05-20 13:30 (auto)
+- userdata/Default/AutofillAiModelCache/LOG.old
+- userdata/Default/AutofillStrikeDatabase/LOG.old
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/ClientCertificates/LOG.old
+- userdata/Default/Code Cache/js/14e10ca5d0397f9c_0
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/37daef5150c90021_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/55bae1ac5b6f7b79_0
+- userdata/Default/Code Cache/js/636663276ea33d84_0
+- userdata/Default/Code Cache/js/77f6a19b8da30168_0
+- userdata/Default/Code Cache/js/79a5cc23234185ae_0
+- userdata/Default/Code Cache/js/7b3bfe0d5d41934a_0
+- userdata/Default/Code Cache/js/8b154a7f82114d93_0
+- userdata/Default/Code Cache/js/8bbaa70c17594e00_0
+- userdata/Default/Code Cache/js/9ca96065df67559c_0
+- userdata/Default/Code Cache/js/a71024bd79711c03_0
+- userdata/Default/Code Cache/js/ac9069e4bf51200e_0
+- userdata/Default/Code Cache/js/ad161a679817db4e_0
+- userdata/Default/Code Cache/js/b77c241fe6244073_0
+- userdata/Default/Code Cache/js/e5d8a322b955ab84_0
+- userdata/Default/Code Cache/js/fef2c93b1aece463_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Rules/LOG.old
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension Scripts/LOG.old
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Extension State/LOG.old
+- userdata/Default/Favicons
+- userdata/Default/Feature Engagement Tracker/AvailabilityDB/LOG.old
+- userdata/Default/Feature Engagement Tracker/EventDB/LOG.old
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GCM Store/Encryption/LOG.old
+- userdata/Default/History
+- userdata/Default/LOG.old
+- userdata/Default/Local Storage/leveldb/000003.log
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Local Storage/leveldb/LOG.old
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/PersistentOriginTrials/LOG.old
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Segmentation Platform/SegmentInfoDB/LOG.old
+- userdata/Default/Segmentation Platform/SignalDB/LOG.old
+- userdata/Default/Segmentation Platform/SignalStorageConfigDB/LOG.old
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Session Storage/LOG.old
+- userdata/Default/Sessions/Session_13423724513547458
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Site Characteristics Database/LOG.old
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Sync Data/LevelDB/LOG.old
+- userdata/Default/Web Data
+- userdata/Default/chrome_cart_db/LOG.old
+- userdata/Default/commerce_subscription_db/LOG.old
+- userdata/Default/discount_infos_db/LOG.old
+- userdata/Default/discounts_db/LOG.old
+- userdata/Default/optimization_guide_hint_cache_store/LOG.old
+- userdata/Default/parcel_tracking_db/LOG.old
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/LOG.old
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/Default/shared_proto_db/metadata/LOG.old
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/Local State
+- userdata/segmentation_platform/ukm_db
+
