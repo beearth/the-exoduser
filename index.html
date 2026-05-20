@@ -717,6 +717,7 @@ const _LOBBY_EN={
   '검은 갑옷. 초대형 특대검':'Black armor. Colossal greatsword',
   '표준 기사. 대검+갑옷':'Standard knight. Greatsword+Armor',
   '다크 판타지 전사. 거대검+검은 갑옷':'Dark fantasy warrior. Greatsword+Black armor',
+  '슬롯이 가득 찼습니다.':'All slots are full.',
   '얼음지옥':'Ice Hell','독충지옥':'Venom Hell','화염지옥':'Fire Hell',
   '심연지옥':'Abyss Hell','뇌전지옥':'Thunder Hell','백골지옥':'Bone Hell','혼돈지옥':'Chaos Hell',
 };
@@ -2276,7 +2277,7 @@ function _renderSlotList(){
   }
   const MAX_CHARS=5; // 최대 생성 가능 캐릭터 수
   const VIEW=2;      // 한번에 보이는 캐릭터 슬롯 수
-  const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'];
+  const hn=['얼음지옥','독충지옥','화염지옥','심연지옥','뇌전지옥','백골지옥','혼돈지옥'].map(s=>_TL(s));
   const chars=_localSlots||[];
   const total=chars.length;
   const canScroll=total>VIEW;
@@ -2455,20 +2456,40 @@ if($('enterGameBtn')){
 // 생성 모달
 $('createCancelBtn').addEventListener('click',()=>{$('createModal').classList.remove('show')});
 
-// ── 가상 키보드 (게임패드용) ──
+// ── 가상 키보드 (게임패드용) + 한글 자동 조합 ──
 const _VKB_ROWS=[
   ['ㄱ','ㄴ','ㄷ','ㄹ','ㅁ','ㅂ','ㅅ','ㅇ','ㅈ','ㅊ'],
   ['ㅋ','ㅌ','ㅍ','ㅎ','ㅏ','ㅓ','ㅗ','ㅜ','ㅡ','ㅣ'],
   ['ㅐ','ㅔ','ㄲ','ㄸ','ㅃ','ㅆ','ㅉ','ㅑ','ㅕ','ㅛ'],
+  ['ㅠ','ㅢ','ㅘ','ㅙ','ㅚ','ㅝ','ㅞ','ㅟ','ㅒ','ㅖ'],
   ['A','B','C','D','E','F','G','H','I','J'],
   ['K','L','M','N','O','P','Q','R','S','T'],
   ['U','V','W','X','Y','Z','1','2','3','4'],
   ['⌫','␣','OK']
 ];
+// 한글 조합 엔진
+const _CHO='ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ';
+const _JUNG='ㅏㅐㅑㅒㅓㅔㅕㅖㅗㅘㅙㅚㅛㅜㅝㅞㅟㅠㅡㅢㅣ';
+const _JONG='\0ㄱㄲㄳㄴㄵㄶㄷㄹㄺㄻㄼㄽㄾㄿㅀㅁㅂㅄㅅㅆㅇㅈㅊㅋㅌㅍㅎ';
+// 복합 종성 분리: 종성 → [초성, 종성]
+const _JONG_SPLIT={'ㄳ':['ㄱ','ㅅ'],'ㄵ':['ㄴ','ㅈ'],'ㄶ':['ㄴ','ㅎ'],'ㄺ':['ㄹ','ㄱ'],'ㄻ':['ㄹ','ㅁ'],'ㄼ':['ㄹ','ㅂ'],'ㄽ':['ㄹ','ㅅ'],'ㄾ':['ㄹ','ㅌ'],'ㄿ':['ㄹ','ㅍ'],'ㅀ':['ㄹ','ㅎ'],'ㅄ':['ㅂ','ㅅ']};
+// 복합 종성 합성: [종성, 초성] → 복합종성
+const _JONG_MERGE={'ㄱㅅ':'ㄳ','ㄴㅈ':'ㄵ','ㄴㅎ':'ㄶ','ㄹㄱ':'ㄺ','ㄹㅁ':'ㄻ','ㄹㅂ':'ㄼ','ㄹㅅ':'ㄽ','ㄹㅌ':'ㄾ','ㄹㅍ':'ㄿ','ㄹㅎ':'ㅀ','ㅂㅅ':'ㅄ'};
+let _hgState=null; // {cho, jung, jong} 조합 상태
+function _hgCompose(cho,jung,jong){
+  const ci=_CHO.indexOf(cho),ji=_JUNG.indexOf(jung),fi=jong?_JONG.indexOf(jong):0;
+  if(ci<0||ji<0)return null;
+  return String.fromCharCode(0xAC00+ci*21*28+ji*28+fi);
+}
+function _isJamo(c){return _CHO.includes(c)||_JUNG.includes(c)}
+function _isCho(c){return _CHO.includes(c)}
+function _isJung(c){return _JUNG.includes(c)}
+function _isJong(c){return _JONG.indexOf(c)>0}
+
 let _vkbRow=0,_vkbCol=0,_vkbActive=false;
 function _vkbShow(){
   const w=$('vkbWrap');if(!w)return;
-  _vkbActive=true;_vkbRow=0;_vkbCol=0;
+  _vkbActive=true;_vkbRow=0;_vkbCol=0;_hgState=null;
   let h='';
   _VKB_ROWS.forEach((row,ri)=>{
     h+='<div style="display:flex;justify-content:center;gap:3px;margin:2px 0">';
@@ -2481,7 +2502,7 @@ function _vkbShow(){
   w.style.display='block';w.innerHTML=h;
   _vkbHighlight();
 }
-function _vkbHide(){const w=$('vkbWrap');if(w){w.style.display='none';w.innerHTML='';}_vkbActive=false;}
+function _vkbHide(){const w=$('vkbWrap');if(w){w.style.display='none';w.innerHTML='';}_vkbActive=false;_hgState=null;}
 function _vkbHighlight(){
   const w=$('vkbWrap');if(!w)return;
   w.querySelectorAll('span[data-vr]').forEach(s=>{
@@ -2493,10 +2514,87 @@ function _vkbHighlight(){
 }
 function _vkbInput(k){
   const inp=$('charName');if(!inp)return;
-  if(k==='⌫'){inp.value=inp.value.slice(0,-1);}
-  else if(k==='␣'){if(inp.value.length<8)inp.value+=' ';}
-  else if(k==='OK'){$('createBtn').click();}
-  else{if(inp.value.length<8)inp.value+=k;}
+  if(k==='OK'){_hgState=null;$('createBtn').click();return;}
+  if(k==='␣'){_hgState=null;if(inp.value.length<8)inp.value+=' ';inp.dispatchEvent(new Event('input'));return;}
+  if(k==='⌫'){
+    if(_hgState){
+      // 조합 중이면 마지막 자모 제거
+      if(_hgState.jong){
+        if(_JONG_SPLIT[_hgState.jong]){_hgState.jong=_JONG_SPLIT[_hgState.jong][0];}
+        else{_hgState.jong=null;}
+        inp.value=inp.value.slice(0,-1)+_hgCompose(_hgState.cho,_hgState.jung,_hgState.jong);
+      }else if(_hgState.jung){
+        _hgState.jung=null;
+        inp.value=inp.value.slice(0,-1)+_hgState.cho;
+      }else{
+        inp.value=inp.value.slice(0,-1);_hgState=null;
+      }
+    }else{
+      inp.value=inp.value.slice(0,-1);
+    }
+    inp.dispatchEvent(new Event('input'));return;
+  }
+  // 비한글
+  if(!_isJamo(k)){_hgState=null;if(inp.value.length<8)inp.value+=k;inp.dispatchEvent(new Event('input'));return;}
+  if(inp.value.length>=8&&!_hgState){inp.dispatchEvent(new Event('input'));return;}
+  // 한글 조합
+  if(!_hgState){
+    if(_isCho(k)){
+      _hgState={cho:k,jung:null,jong:null};
+      if(inp.value.length<8)inp.value+=k;
+    }else{
+      // 모음만 단독 입력
+      if(inp.value.length<8)inp.value+=k;
+    }
+  }else if(!_hgState.jung){
+    // 초성만 있는 상태
+    if(_isJung(k)){
+      _hgState.jung=k;
+      inp.value=inp.value.slice(0,-1)+_hgCompose(_hgState.cho,_hgState.jung,null);
+    }else{
+      // 초성+초성 → 이전 확정, 새 초성
+      _hgState={cho:k,jung:null,jong:null};
+      if(inp.value.length<8)inp.value+=k;
+    }
+  }else if(!_hgState.jong){
+    // 초성+중성 있는 상태
+    if(_isCho(k)&&_isJong(k)){
+      // 종성 후보
+      _hgState.jong=k;
+      inp.value=inp.value.slice(0,-1)+_hgCompose(_hgState.cho,_hgState.jung,_hgState.jong);
+    }else if(_isJung(k)){
+      // 모음 → 현재 확정, 새 시작 (모음 단독)
+      _hgState=null;
+      if(inp.value.length<8)inp.value+=k;
+    }else{
+      // 종성 불가 초성(ㄸ,ㅃ,ㅉ) → 현재 확정, 새 초성
+      _hgState={cho:k,jung:null,jong:null};
+      if(inp.value.length<8)inp.value+=k;
+    }
+  }else{
+    // 초성+중성+종성 있는 상태
+    if(_isJung(k)){
+      // 모음 → 종성을 떼서 다음 초성으로
+      const prevJong=_hgState.jong;
+      let splitCho=prevJong,remainJong=null;
+      if(_JONG_SPLIT[prevJong]){remainJong=_JONG_SPLIT[prevJong][0];splitCho=_JONG_SPLIT[prevJong][1];}
+      _hgState.jong=remainJong;
+      inp.value=inp.value.slice(0,-1)+_hgCompose(_hgState.cho,_hgState.jung,_hgState.jong);
+      _hgState={cho:splitCho,jung:k,jong:null};
+      if(inp.value.length<8)inp.value+=_hgCompose(splitCho,k,null);
+    }else if(_isCho(k)){
+      // 복합 종성 시도
+      const merged=_JONG_MERGE[_hgState.jong+k];
+      if(merged){
+        _hgState.jong=merged;
+        inp.value=inp.value.slice(0,-1)+_hgCompose(_hgState.cho,_hgState.jung,_hgState.jong);
+      }else{
+        // 현재 확정, 새 초성
+        _hgState={cho:k,jung:null,jong:null};
+        if(inp.value.length<8)inp.value+=k;
+      }
+    }
+  }
   inp.dispatchEvent(new Event('input'));
 }
 
@@ -2605,6 +2703,15 @@ _GP.on('lobbyNav', (gp, just) => {
   if(just[3]) {
     const newItem = lobby.querySelector('.char-item-new');
     if(newItem) newItem.click();
+    return true;
+  }
+  // X(2) = 선택된 캐릭터 삭제
+  if(just[2]) {
+    const ni = _navItems[_lobbyGpIdx];
+    if(ni && ni.el.classList.contains('char-item')) {
+      const delBtn = ni.el.querySelector('.char-del');
+      if(delBtn) delBtn.click();
+    }
     return true;
   }
   return false;

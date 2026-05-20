@@ -51,7 +51,8 @@ zht:{
 '대검 영웅':'大劍英雄',
 '거대검 기사':'巨劍騎士',
 '대검 기사':'大劍騎士',
-'엑소듀서 전사':'流放者戰士',},
+'엑소듀서 전사':'流放者戰士',
+'슬롯이 가득 찼습니다.':'所有槽位已滿。',},
 // ═══ Русский (Russian) ═══
 ru:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Подключение...','캐릭터를 선택하세요':'Выберите персонажа','당신은 누구인가':'КТО ТЫ',
@@ -99,7 +100,8 @@ ru:{
 '대검 영웅':'Герой с мечом',
 '거대검 기사':'Колоссальный рыцарь',
 '대검 기사':'Рыцарь с мечом',
-'엑소듀서 전사':'Воин Экзодюсер',},
+'엑소듀서 전사':'Воин Экзодюсер',
+'슬롯이 가득 찼습니다.':'Все слоты заполнены.',},
 // ═══ Deutsch (German) ═══
 de:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Verbinde...','캐릭터를 선택하세요':'Wähle deinen Charakter','당신은 누구인가':'WER BIST DU',
@@ -147,7 +149,8 @@ de:{
 '대검 영웅':'Schwertheld',
 '거대검 기사':'Kolossalritter',
 '대검 기사':'Schwertritter',
-'엑소듀서 전사':'Exoduser-Krieger',},
+'엑소듀서 전사':'Exoduser-Krieger',
+'슬롯이 가득 찼습니다.':'Alle Slots sind voll.',},
 // ═══ Português do Brasil (Brazilian Portuguese) ═══
 ptbr:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Conectando...','캐릭터를 선택하세요':'Selecione seu personagem','당신은 누구인가':'QUEM ÉS TU',
@@ -195,7 +198,8 @@ ptbr:{
 '대검 영웅':'Herói da Espada',
 '거대검 기사':'Cavaleiro Colossal',
 '대검 기사':'Cavaleiro da Espada',
-'엑소듀서 전사':'Guerreiro Exoduser',},
+'엑소듀서 전사':'Guerreiro Exoduser',
+'슬롯이 가득 찼습니다.':'Todos os slots estão cheios.',},
 // ═══ Français (French) ═══
 fr:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Connexion...','캐릭터를 선택하세요':'Choisissez votre personnage','당신은 누구인가':'QUI ES-TU',
@@ -243,7 +247,8 @@ fr:{
 '대검 영웅':'Héros à l\'Épée',
 '거대검 기사':'Chevalier Colossal',
 '대검 기사':'Chevalier à l\'Épée',
-'엑소듀서 전사':'Guerrier Exoduser',},
+'엑소듀서 전사':'Guerrier Exoduser',
+'슬롯이 가득 찼습니다.':'Tous les emplacements sont pleins.',},
 // ═══ Polski (Polish) ═══
 pl:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Łączenie...','캐릭터를 선택하세요':'Wybierz postać','당신은 누구인가':'KIM JESTEŚ',
@@ -291,7 +296,8 @@ pl:{
 '대검 영웅':'Bohater Miecza',
 '거대검 기사':'Kolosalny Rycerz',
 '대검 기사':'Rycerz Miecza',
-'엑소듀서 전사':'Wojownik Exoduser',},
+'엑소듀서 전사':'Wojownik Exoduser',
+'슬롯이 가득 찼습니다.':'Wszystkie sloty są pełne.',},
 // ═══ Italiano (Italian) ═══
 it:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Connessione...','캐릭터를 선택하세요':'Scegli il tuo personaggio','당신은 누구인가':'CHI SEI TU',
@@ -339,7 +345,8 @@ it:{
 '대검 영웅':'Eroe della Spada',
 '거대검 기사':'Cavaliere Colossale',
 '대검 기사':'Cavaliere della Spada',
-'엑소듀서 전사':'Guerriero Exoduser',},
+'엑소듀서 전사':'Guerriero Exoduser',
+'슬롯이 가득 찼습니다.':'Tutti gli slot sono pieni.',},
 // ═══ Українська (Ukrainian) ═══
 uk:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Підключення...','캐릭터를 선택하세요':'Оберіть персонажа','당신은 누구인가':'ХТО ТИ',
@@ -387,7 +394,8 @@ uk:{
 '대검 영웅':'Герой з мечем',
 '거대검 기사':'Колосальний лицар',
 '대검 기사':'Лицар з мечем',
-'엑소듀서 전사':'Воїн Екзодюсер',},
+'엑소듀서 전사':'Воїн Екзодюсер',
+'슬롯이 가득 찼습니다.':'Всі слоти заповнені.',},
 // ═══ Türkçe (Turkish) ═══
 tr:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Bağlanıyor...','캐릭터를 선택하세요':'Karakterini seç','당신은 누구인가':'SEN KİMSİN',
@@ -435,7 +443,8 @@ tr:{
 '대검 영웅':'Kılıç Kahramanı',
 '거대검 기사':'Devasa Şövalye',
 '대검 기사':'Kılıç Şövalyesi',
-'엑소듀서 전사':'Exoduser Savaşçısı',},
+'엑소듀서 전사':'Exoduser Savaşçısı',
+'슬롯이 가득 찼습니다.':'Tüm slotlar dolu.',},
 // ═══ Tiếng Việt (Vietnamese) ═══
 vi:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Đang kết nối...','캐릭터를 선택하세요':'Chọn nhân vật','당신은 누구인가':'NGƯƠI LÀ AI',
@@ -483,7 +492,8 @@ vi:{
 '대검 영웅':'Anh Hùng Đại Kiếm',
 '거대검 기사':'Hiệp Sĩ Cự Kiếm',
 '대검 기사':'Hiệp Sĩ Đại Kiếm',
-'엑소듀서 전사':'Chiến Binh Exoduser',},
+'엑소듀서 전사':'Chiến Binh Exoduser',
+'슬롯이 가득 찼습니다.':'Tất cả slot đã đầy.',},
 // ═══ ไทย (Thai) ═══
 th:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'กำลังเชื่อมต่อ...','캐릭터를 선택하세요':'เลือกตัวละคร','당신은 누구인가':'เจ้าเป็นใคร',
@@ -531,7 +541,8 @@ th:{
 '대검 영웅':'วีรบุรุษดาบใหญ่',
 '거대검 기사':'อัศวินดาบยักษ์',
 '대검 기사':'อัศวินดาบ',
-'엑소듀서 전사':'นักรบ Exoduser',},
+'엑소듀서 전사':'นักรบ Exoduser',
+'슬롯이 가득 찼습니다.':'ช่องทั้งหมดเต็มแล้ว',},
 // ═══ Bahasa Indonesia (Indonesian) ═══
 id:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Menghubungkan...','캐릭터를 선택하세요':'Pilih karaktermu','당신은 누구인가':'SIAPAKAH ENGKAU',
@@ -579,7 +590,8 @@ id:{
 '대검 영웅':'Pahlawan Pedang',
 '거대검 기사':'Ksatria Kolosal',
 '대검 기사':'Ksatria Pedang',
-'엑소듀서 전사':'Pejuang Exoduser',},
+'엑소듀서 전사':'Pejuang Exoduser',
+'슬롯이 가득 찼습니다.':'Semua slot sudah penuh.',},
 // ═══ العربية (Arabic) ═══
 ar:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'جارٍ الاتصال...','캐릭터를 선택하세요':'اختر شخصيتك','당신은 누구인가':'مَن أنتَ',
@@ -627,7 +639,8 @@ ar:{
 '대검 영웅':'بطل السيف',
 '거대검 기사':'فارس السيف العملاق',
 '대검 기사':'فارس السيف',
-'엑소듀서 전사':'محارب Exoduser',},
+'엑소듀서 전사':'محارب Exoduser',
+'슬롯이 가득 찼습니다.':'جميع الخانات ممتلئة.',},
 // ═══ Svenska (Swedish) ═══
 sv:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Ansluter...','캐릭터를 선택하세요':'Välj din karaktär','당신은 누구인가':'VEM ÄR DU',
@@ -675,7 +688,8 @@ sv:{
 '대검 영웅':'Svärdshjälten',
 '거대검 기사':'Kolossalriddaren',
 '대검 기사':'Svärdridddaren',
-'엑소듀서 전사':'Exoduser-krigaren',},
+'엑소듀서 전사':'Exoduser-krigaren',
+'슬롯이 가득 찼습니다.':'Alla platser är fulla.',},
 // ═══ Dansk (Danish) ═══
 da:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Forbinder...','캐릭터를 선택하세요':'Vælg din karakter','당신은 누구인가':'HVEM ER DU',
@@ -723,7 +737,8 @@ da:{
 '대검 영웅':'Sværdhelten',
 '거대검 기사':'Kolossalridderen',
 '대검 기사':'Sværdridderen',
-'엑소듀서 전사':'Exoduser-krigeren',},
+'엑소듀서 전사':'Exoduser-krigeren',
+'슬롯이 가득 찼습니다.':'Alle pladser er fulde.',},
 // ═══ Norsk (Norwegian) ═══
 no:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Kobler til...','캐릭터를 선택하세요':'Velg din karakter','당신은 누구인가':'HVEM ER DU',
@@ -771,7 +786,8 @@ no:{
 '대검 영웅':'Sverdhelten',
 '거대검 기사':'Kolossalridderen',
 '대검 기사':'Sverdridderen',
-'엑소듀서 전사':'Exoduser-krigeren',},
+'엑소듀서 전사':'Exoduser-krigeren',
+'슬롯이 가득 찼습니다.':'Alle plasser er fulle.',},
 // ═══ Suomi (Finnish) ═══
 fi:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Yhdistetään...','캐릭터를 선택하세요':'Valitse hahmosi','당신은 누구인가':'KUKA OLET',
@@ -819,7 +835,8 @@ fi:{
 '대검 영웅':'Miekkasankari',
 '거대검 기사':'Jättimiekkaritari',
 '대검 기사':'Miekkaritari',
-'엑소듀서 전사':'Exoduser-soturi',},
+'엑소듀서 전사':'Exoduser-soturi',
+'슬롯이 가득 찼습니다.':'Kaikki paikat ovat täynnä.',},
 // ═══ Čeština (Czech) ═══
 cs:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Připojování...','캐릭터를 선택하세요':'Vyber si postavu','당신은 누구인가':'KDO JSI',
@@ -867,7 +884,8 @@ cs:{
 '대검 영웅':'Hrdina s mečem',
 '거대검 기사':'Kolosální rytíř',
 '대검 기사':'Rytíř s mečem',
-'엑소듀서 전사':'Válečník Exoduser',},
+'엑소듀서 전사':'Válečník Exoduser',
+'슬롯이 가득 찼습니다.':'Všechny sloty jsou plné.',},
 // ═══ Magyar (Hungarian) ═══
 hu:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Csatlakozás...','캐릭터를 선택하세요':'Válaszd ki a karaktered','당신은 누구인가':'KI VAGY TE',
@@ -915,7 +933,8 @@ hu:{
 '대검 영웅':'Kardhős',
 '거대검 기사':'Kolosszális lovag',
 '대검 기사':'Kardlovag',
-'엑소듀서 전사':'Exoduser harcos',},
+'엑소듀서 전사':'Exoduser harcos',
+'슬롯이 가득 찼습니다.':'Minden hely foglalt.',},
 // ═══ Română (Romanian) ═══
 ro:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Se conectează...','캐릭터를 선택하세요':'Alege-ți personajul','당신은 누구인가':'CINE EȘTI',
@@ -963,7 +982,8 @@ ro:{
 '대검 영웅':'Eroul Sabiei',
 '거대검 기사':'Cavalerul Colosal',
 '대검 기사':'Cavalerul Sabiei',
-'엑소듀서 전사':'Războinicul Exoduser',},
+'엑소듀서 전사':'Războinicul Exoduser',
+'슬롯이 가득 찼습니다.':'Toate sloturile sunt pline.',},
 // ═══ Nederlands (Dutch) ═══
 nl:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Verbinden...','캐릭터를 선택하세요':'Kies je karakter','당신은 누구인가':'WIE BEN JIJ',
@@ -1011,7 +1031,8 @@ nl:{
 '대검 영웅':'Zwardheld',
 '거대검 기사':'Kolossale Ridder',
 '대검 기사':'Zwaardridder',
-'엑소듀서 전사':'Exoduser-krijger',},
+'엑소듀서 전사':'Exoduser-krijger',
+'슬롯이 가득 찼습니다.':'Alle slots zijn vol.',},
 // ═══ Ελληνικά (Greek) ═══
 el:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Σύνδεση...','캐릭터를 선택하세요':'Διάλεξε χαρακτήρα','당신은 누구인가':'ΠΟΙΟΣ ΕΙΣΑΙ',
@@ -1059,7 +1080,8 @@ el:{
 '대검 영웅':'Ήρωας Σπαθιού',
 '거대검 기사':'Κολοσσαίος Ιππότης',
 '대검 기사':'Ιππότης Σπαθιού',
-'엑소듀서 전사':'Πολεμιστής Exoduser',},
+'엑소듀서 전사':'Πολεμιστής Exoduser',
+'슬롯이 가득 찼습니다.':'Όλες οι θέσεις είναι γεμάτες.',},
 // ═══ Български (Bulgarian) ═══
 bg:{
 '지옥의 길':'HELL: EXODUSER','연결 중...':'Свързване...','캐릭터를 선택하세요':'Избери персонаж','당신은 누구인가':'КОЙ СИ ТИ',
@@ -1107,7 +1129,8 @@ bg:{
 '대검 영웅':'Герой с меч',
 '거대검 기사':'Колосален рицар',
 '대검 기사':'Рицар с меч',
-'엑소듀서 전사':'Воин Exoduser',},
+'엑소듀서 전사':'Воин Exoduser',
+'슬롯이 가득 찼습니다.':'Всички слотове са пълни.',},
 };
 
 // ═══════════════════════════════════════════════════════
