@@ -1,15 +1,3 @@
-2026/05/21-10:25:01.080 8738 Reusing MANIFEST G:\hell\userdata\Default\Local Storage\leveldb/MANIFEST-000001
-2026/05/21-10:25:01.084 8738 Recovering log #22
-2026/05/21-10:25:01.086 8738 Reusing old log G:\hell\userdata\Default\Local Storage\leveldb/000022.log 
-2026/05/21-10:26:01.090 7958 Level-0 table #26: started
-2026/05/21-10:26:01.100 7958 Level-0 table #26: 74578 bytes OK
-2026/05/21-10:26:01.101 7958 Delete type=0 #22
-2026/05/21-10:26:01.102 7958 Compacting 4@0 + 1@1 files
-2026/05/21-10:26:01.106 7958 Generated table #27@0: 10 keys, 74500 bytes
-2026/05/21-10:26:01.106 7958 Compacted 4@0 + 1@1 files => 74500 bytes
-2026/05/21-10:26:01.107 7958 compacted to: files[ 0 1 0 0 0 0 0 ]
-2026/05/21-10:26:01.107 7958 Delete type=2 #14
-2026/05/21-10:26:01.107 7958 Delete type=2 #17
-2026/05/21-10:26:01.107 7958 Delete type=2 #20
-2026/05/21-10:26:01.107 7958 Delete type=2 #23
-2026/05/21-10:26:01.107 7958 Delete type=2 #26
+2026/05/21-15:34:26.786 73ac Reusing MANIFEST G:\hell\userdata\Default\Local Storage\leveldb/MANIFEST-000001
+2026/05/21-15:34:26.793 73ac Recovering log #26
+2026/05/21-15:34:26.794 73ac Reusing old log G:\hell\userdata\Default\Local Storage\leveldb/000026.log 

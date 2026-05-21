@@ -31,7 +31,8 @@
     "docs:check:staged": "powershell -ExecutionPolicy Bypass -File tools/docs-sync-check.ps1 -Staged",
     "hooks:install": "git config core.hooksPath .githooks",
     "auto:sync": "powershell -ExecutionPolicy Bypass -File auto_commit.ps1",
-    "auto:task:install": "powershell -ExecutionPolicy Bypass -File tools/install-auto-sync-task.ps1"
+    "auto:task:install": "powershell -ExecutionPolicy Bypass -File tools/install-auto-sync-task.ps1",
+    "build:nwjs": "node build-nwjs.mjs"
   },
   "devDependencies": {
     "sharp": "^0.34.5"
@@ -39,6 +40,7 @@
   "dependencies": {
     "acorn": "^8.16.0",
     "canvas": "^3.2.3",
+    "nw-builder": "^4.17.10",
     "omggif": "^1.0.10",
     "playwright": "^1.58.2",
     "pngjs": "^7.0.0"

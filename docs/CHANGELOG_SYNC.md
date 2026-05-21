@@ -25617,3 +25617,56 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _autosave/game_20260521_152747.html
 - game.html
 
+
+## 2026-05-21 16:30 (auto)
+- build-nwjs.mjs
+- package-lock.json
+- package.json
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Code Cache/js/636663276ea33d84_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Rules/LOG.old
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension Scripts/LOG.old
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Extension State/LOG.old
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GCM Store/Encryption/LOG.old
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Local Storage/leveldb/LOG.old
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Session Storage/LOG.old
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Site Characteristics Database/LOG.old
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Sync Data/LevelDB/LOG.old
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/LOG.old
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/Default/shared_proto_db/metadata/LOG.old
+- userdata/GrShaderCache/data_1
+- userdata/Local State
+- userdata/segmentation_platform/ukm_db
+
