@@ -48290,7 +48290,8 @@ function _renderIntroCutscene(){
   if(ln.vfx&&ln.vfx.shake&&!_cutVibDone){
     _cutVibDone=true;
     const _mag=Math.min(1,ln.vfx.shake/3);
-    try{const gps=navigator.getGamepads();for(let i=0;i<gps.length;i++){const gp=gps[i];if(gp&&gp.vibrationActuator)gp.vibrationActuator.playEffect('dual-rumble',{startDelay:0,duration:Math.min(ln.dur,1200),weakMagnitude:_mag,strongMagnitude:_mag})}}catch(e){}
+    console.log('[CUT-VIB] id:'+ln.id+' shake:'+ln.vfx.shake+' mag:'+_mag);
+    try{const gps=navigator.getGamepads();for(let i=0;i<gps.length;i++){const gp=gps[i];if(gp){console.log('[CUT-VIB] gp['+i+'] vib:',!!gp.vibrationActuator);if(gp.vibrationActuator)gp.vibrationActuator.playEffect('dual-rumble',{startDelay:0,duration:Math.min(ln.dur,1200),weakMagnitude:_mag,strongMagnitude:_mag}).then(()=>console.log('[CUT-VIB] OK')).catch(e=>console.log('[CUT-VIB] ERR',e))}}}catch(e){console.log('[CUT-VIB] CATCH',e)}
   }
 
   // 페이드 opacity 계산

@@ -38,6 +38,10 @@
 [style*="cursor:pointer"],[style*="cursor: pointer"],button:not(:disabled),a,.char-item,.char-item-new,.enter-btn,.enter-game-btn:not(:disabled),[onclick]{cursor:url(img/cursors/cursor_dark_hover_css.png) 0 0,auto !important}
 body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans KR',sans-serif;min-height:100vh;overflow:hidden;margin:0;padding:0;cursor:url(img/cursors/cursor_dark_css.png) 0 0,auto}
 
+@keyframes cinShake{0%,100%{transform:translate(0)}10%{transform:translate(-8px,4px)}20%{transform:translate(6px,-6px)}30%{transform:translate(-4px,8px)}40%{transform:translate(8px,-2px)}50%{transform:translate(-6px,6px)}60%{transform:translate(4px,-8px)}70%{transform:translate(-8px,2px)}80%{transform:translate(6px,4px)}90%{transform:translate(-2px,-6px)}}
+@keyframes cinShakeLight{0%,100%{transform:translate(0)}25%{transform:translate(-3px,2px)}50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,3px)}}
+@keyframes cinZoomSlow{0%{transform:scale(1)}100%{transform:scale(1.08)}}
+@keyframes cinZoomIn{0%{transform:scale(1.15);opacity:0}100%{transform:scale(1);opacity:1}}
 /* ═══ Cinematic Scene ═══ */
 .cin-scene{position:fixed;inset:0;z-index:100;background:#000;display:flex;align-items:center;justify-content:center;cursor:url(img/cursors/cursor_dark_css.png) 0 0,auto}
 .cin-scene *{cursor:url(img/cursors/cursor_dark_css.png) 0 0,auto}
@@ -511,7 +515,12 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
         <h1 style="margin:0;line-height:1">HELL</h1>
         <div style="font-family:'Cinzel Decorative',serif;font-size:.85rem;color:#aa8855;letter-spacing:5px;margin-top:2px;padding-left:2px">EXODUSER</div>
       </div>
-      <div class="lobby-mode" id="lobbyMode"></div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <select id="lobbyLangSelect" style="background:rgba(10,6,2,.8);border:1px solid rgba(120,80,40,.4);color:#ccaa88;font-family:'Noto Sans KR';font-size:.75rem;padding:3px 10px;border-radius:3px;cursor:pointer">
+          <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
+        </select>
+        <div class="lobby-mode" id="lobbyMode"></div>
+      </div>
     </div>
     <div class="lobby-divider"></div>
     <div class="char-list" id="charList">
@@ -538,7 +547,10 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
     <div class="lobby-footer">
       <button class="enter-game-btn" id="enterGameBtn" disabled><img src="assets/lobby/lobby_enter_btn.png" draggable="false" alt=""></button>
     </div>
-    <div class="ll-version-txt" id="lobbyVersionTxt" style="text-align:right;padding:4px 0 2px"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 0 2px">
+      <span id="replayCinBtn" onclick="_goCinematic()" style="cursor:pointer;color:rgba(180,140,110,.45);font-size:.7rem;letter-spacing:.08em;transition:color .2s" onmouseover="this.style.color='#ccaa77'" onmouseout="this.style.color='rgba(180,140,110,.45)'">▶ 시네마틱</span>
+      <span class="ll-version-txt" id="lobbyVersionTxt"></span>
+    </div>
   </div>
 </div>
 
@@ -640,7 +652,7 @@ addEventListener('keydown', e => {
   }
   for(let i=0;i<_GP._handlers.length;i++){
     const h = _GP._handlers[i];
-    try { if(h.test(gp, just)) h.action(); } catch(e){}
+    try { if(h.test(gp, just)) { h.action(); break; } } catch(e){}
   }
 })();
 </script>
@@ -1560,11 +1572,18 @@ function _applyLobbyLang(){
   const subTxt=document.querySelector('.lma-sub-txt');
   if(subTxt)subTxt.textContent=_TL('공식 출시 소식을 가장 먼저 받아보세요');
 }
-document.getElementById('langSelect').onchange=function(){setUserLanguage(this.value);const ll=document.getElementById('loginLangSelect');if(ll)ll.value=this.value};
-document.getElementById('cinLang').onchange=function(){setUserLanguage(this.value);const ll=document.getElementById('loginLangSelect');if(ll)ll.value=this.value};
-if(document.getElementById('loginLangSelect'))document.getElementById('loginLangSelect').onchange=function(){setUserLanguage(this.value);document.getElementById('langSelect').value=this.value;document.getElementById('cinLang').value=this.value};
+// 모든 언어 select 동기화
+function _syncAllLangSelects(code){
+  ['langSelect','cinLang','loginLangSelect','lobbyLangSelect'].forEach(function(id){
+    const el=document.getElementById(id);if(el)el.value=code;
+  });
+}
+['langSelect','cinLang','loginLangSelect','lobbyLangSelect'].forEach(function(id){
+  const el=document.getElementById(id);
+  if(el)el.onchange=function(){setUserLanguage(this.value);_syncAllLangSelects(this.value)};
+});
 // 페이지 로드 시 4단계 폴백으로 초기 언어 결정 + UI 적용
-(function(){const lang=getCurrentLanguage();document.getElementById('cinLang').value=lang;document.getElementById('langSelect').value=lang;const ll=document.getElementById('loginLangSelect');if(ll)ll.value=lang;if(!localStorage.getItem('hellLang'))localStorage.setItem('hellLang',lang);_applyLobbyLang()})();
+(function(){const lang=getCurrentLanguage();_syncAllLangSelects(lang);if(!localStorage.getItem('hellLang'))localStorage.setItem('hellLang',lang);_applyLobbyLang()})();
 
 const lobbyBGM=new Audio('bgm/공통/lobby.mp3');
 lobbyBGM.preload='auto';lobbyBGM.loop=true;lobbyBGM.volume=0.65;
@@ -1619,12 +1638,12 @@ const CIN_LINES=[
   {v:46.0,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000,img:-1},
   {v:47.9,text:'그날 밤, 킬루 가문을 모두 죽였다.',en:'That night, he killed every last one of them.',zh:'那天夜里，他杀光了基路全族。',ja:'その夜、キルル家の全員を殺した。',es:'Esa noche, los mató a todos.',fr:'Cette nuit-là, il les tua tous jusqu\'au dernier.',it:'Quella notte, li uccise tutti fino all\'ultimo.',ptbr:'Naquela noite, ele matou todos até o último.',ro:'În acea noapte, i-a ucis pe toți până la ultimul.',de:'In jener Nacht tötete er sie alle bis auf den letzten.',nl:'Die nacht doodde hij ze allemaal tot de laatste.',sv:'Den natten dödade han var och en av dem.',da:'Den nat dræbte han dem alle til den sidste.',no:'Den natten drepte han dem alle til siste mann.',ru:'Той ночью он убил всех до единого.',uk:'Тієї ночі він убив усіх до останнього.',pl:'Tej nocy zabił ich wszystkich do jednego.',cs:'Tu noc je všechny do jednoho zabil.',hu:'Azon az éjszakán mindet megölte az utolsóig.',bg:'Онази нощ той уби всеки от тях до последния.',el:'Εκείνη τη νύχτα, τους σκότωσε όλους μέχρι τον τελευταίο.',fi:'Sinä yönä hän tappoi jokaisen heistä viimeistä myöten.',tr:'O gece, hepsini sonuncusuna kadar öldürdü.',ar:'في تلك الليلة، قتل كل واحد منهم حتى آخرهم.',vi:'Đêm đó, anh giết tất cả bọn họ đến người cuối cùng.',th:'คืนนั้น เขาสังหารพวกเขาทุกคนจนคนสุดท้าย',id:'Malam itu, ia membunuh semua orang hingga yang terakhir.',zht:'那天夜裡，他殺光了基路全族。',dur:3000,cls:'red',img:3},
   {v:51.0,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000},
-  {v:53.6,text:'칼로 킬루의 팔다리를 자르고',en:'He cut off Killu\'s limbs with a blade,',zh:'用刀砍断了基路的四肢，',ja:'刃でキルルの手足を切り落とし、',es:'Le cortó las extremidades a Killu con una espada,',fr:'Il coupa les membres de Killu avec une lame,',it:'Tagliò le membra di Killu con una lama,',ptbr:'Ele cortou os membros de Killu com uma lâmina,',ro:'I-a tăiat membrele lui Killu cu o lamă,',de:'Er schlug Killus Gliedmaßen mit einer Klinge ab,',nl:'Hij sneed Killu\'s ledematen af met een mes,',sv:'Han högg av Killus lemmar med ett blad,',da:'Han huggede Killus lemmer af med en klinge,',no:'Han hugget av Killus lemmer med et blad,',ru:'Он отрубил Киллу конечности клинком,',uk:'Він відрубав Кіллу кінцівки клинком,',pl:'Odciął kończyny Killu ostrzem,',cs:'Usekal Killuovi končetiny čepelí,',hu:'Pengével levágta Killu végtagjait,',bg:'Отряза крайниците на Килу с острие,',el:'Έκοψε τα άκρα του Κίλλου με λεπίδα,',fi:'Hän irrotti Killun raajat terällä,',tr:'Killu\'nun uzuvlarını bir bıçakla kesti,',ar:'قطع أطراف كيلو بالسيف،',vi:'Anh cắt đứt tay chân của Killu bằng lưỡi dao,',th:'เขาตัดแขนขาของคิลลูด้วยดาบ',id:'Ia memotong anggota tubuh Killu dengan pisau,',zht:'用刀砍斷了基路的四肢，',dur:3000,cls:'red',img:4},
+  {v:53.6,text:'칼로 킬루의 팔다리를 자르고',en:'He cut off Killu\'s limbs with a blade,',zh:'用刀砍断了基路的四肢，',ja:'刃でキルルの手足を切り落とし、',es:'Le cortó las extremidades a Killu con una espada,',fr:'Il coupa les membres de Killu avec une lame,',it:'Tagliò le membra di Killu con una lama,',ptbr:'Ele cortou os membros de Killu com uma lâmina,',ro:'I-a tăiat membrele lui Killu cu o lamă,',de:'Er schlug Killus Gliedmaßen mit einer Klinge ab,',nl:'Hij sneed Killu\'s ledematen af met een mes,',sv:'Han högg av Killus lemmar med ett blad,',da:'Han huggede Killus lemmer af med en klinge,',no:'Han hugget av Killus lemmer med et blad,',ru:'Он отрубил Киллу конечности клинком,',uk:'Він відрубав Кіллу кінцівки клинком,',pl:'Odciął kończyny Killu ostrzem,',cs:'Usekal Killuovi končetiny čepelí,',hu:'Pengével levágta Killu végtagjait,',bg:'Отряза крайниците на Килу с острие,',el:'Έκοψε τα άκρα του Κίλλου με λεπίδα,',fi:'Hän irrotti Killun raajat terällä,',tr:'Killu\'nun uzuvlarını bir bıçakla kesti,',ar:'قطع أطراف كيلو بالسيف،',vi:'Anh cắt đứt tay chân của Killu bằng lưỡi dao,',th:'เขาตัดแขนขาของคิลลูด้วยดาบ',id:'Ia memotong anggota tubuh Killu dengan pisau,',zht:'用刀砍斷了基路的四肢，',dur:3000,cls:'red',img:4,shake:true},
   {v:56.6,text:'불로 지혈까지 해주며',en:'cauterized the wounds with fire,',zh:'用火为他止住了血，',ja:'火で傷口を焼き止め、',es:'cauterizó las heridas con fuego,',fr:'cautérisé les plaies avec du feu,',it:'cauterizzò le ferite con il fuoco,',ptbr:'cauterizou as feridas com fogo,',ro:'a cauterizat rănile cu foc,',de:'die Wunden mit Feuer kauterisiert,',nl:'de wonden gecauteriseerd met vuur,',sv:'kauteriserade såren med eld,',da:'kauteriserede sårene med ild,',no:'kauteriserte sårene med ild,',ru:'прижёг раны огнём,',uk:'припік рани вогнем,',pl:'kauteryzował rany ogniem,',cs:'kauterizoval rány ohněm,',hu:'tűzzel kauterizálta a sebeket,',bg:'каутеризира раните с огън,',el:'καυτηρίασε τις πληγές με φωτιά,',fi:'kauterisoi haavat tulella,',tr:'yaraları ateşle dağladı,',ar:'وكوى الجراح بالنار،',vi:'đốt cháy vết thương bằng lửa,',th:'จี้แผลด้วยไฟ',id:'membakar luka dengan api,',zht:'用火為他止住了血，',dur:3000,cls:'red'},
   {v:59.2,text:'오래오래 살려두었다.',en:'and kept him alive for a long, long time.',zh:'让他活了很久很久。',ja:'長い長い間、生かし続けた。',es:'y lo mantuvo vivo por mucho, mucho tiempo.',fr:'et l\'a maintenu en vie pendant longtemps, très longtemps.',it:'e lo tenne in vita per un lungo, lunghissimo tempo.',ptbr:'e o manteve vivo por um longo, longo tempo.',ro:'și l-a ținut în viață mult, mult timp.',de:'und ihn lange, lange am Leben gehalten.',nl:'en hem lang, lang in leven gehouden.',sv:'och höll honom vid liv länge, länge.',da:'og holdt ham i live i lang, lang tid.',no:'og holdt ham i live i lang, lang tid.',ru:'и держал его живым долго, очень долго.',uk:'і тримав його живим довго, дуже довго.',pl:'i trzymał go przy życiu przez długi, bardzo długi czas.',cs:'a udržoval ho naživu dlouho, velmi dlouho.',hu:'és sokáig, nagyon sokáig életben tartotta.',bg:'и го държа жив дълго, много дълго.',el:'και τον κράτησε ζωντανό για πολύ, πολύ καιρό.',fi:'ja piti hänet elossa pitkään, hyvin pitkään.',tr:'ve onu uzun, uzun süre hayatta tuttu.',ar:'وأبقاه حياً لفترة طويلة، طويلة جداً.',vi:'và giữ anh ta sống sót trong một thời gian dài, rất dài.',th:'และรักษาชีวิตเขาไว้นานมาก นานมากจริงๆ',id:'dan membuatnya tetap hidup untuk waktu yang lama, sangat lama.',zht:'讓他活了很久很久。',dur:3000,cls:'red'},
   {v:65.2,text:'"기억하라."',en:'"Remember."',zh:'"记住。"',ja:'"覚えておけ。"',es:'"Recuerda."',fr:'"Souviens-toi."',it:'"Ricorda."',ptbr:'"Lembra."',ro:'"Amintește-ți."',de:'"Erinnere dich."',nl:'"Onthoud het."',sv:'"Kom ihåg."',da:'"Husk det."',no:'"Husk det."',ru:'"Запомни."',uk:'"Пам\'ятай."',pl:'"Pamiętaj."',cs:'"Pamatuj si."',hu:'"Emlékezz."',bg:'"Помни."',el:'"Θυμήσου."',fi:'"Muista."',tr:'"Unutma."',ar:'"تذكّر."',vi:'"Hãy nhớ lấy."',th:'"จงจำไว้"',id:'"Ingat."',zht:'"記住。"',dur:3000,cls:'red',img:12},
   {v:68.2,text:'"그리고 지옥에서도 후회하라."',en:'"And regret it even in hell."',zh:'"在地狱里也要后悔。"',ja:'"そして地獄でも悔やめ。"',es:'"Y arrepiéntete incluso en el infierno."',fr:'"Et regrette-le même en enfer."',it:'"E pentiti anche all\'inferno."',ptbr:'"E se arrependa mesmo no inferno."',ro:'"Și regretă chiar și în iad."',de:'"Und bereue es noch in der Hölle."',nl:'"En betreur het zelfs in de hel."',sv:'"Och ångra det även i helvetet."',da:'"Og fortryd det selv i helvede."',no:'"Og angre det selv i helvete."',ru:'"И сожалей об этом даже в аду."',uk:'"І жалкуй про це навіть у пеклі."',pl:'"I żałuj tego nawet w piekle."',cs:'"A lituji toho i v pekle."',hu:'"És bánd meg még a pokolban is."',bg:'"И съжалявай за това дори в ада."',el:'"Και να το μετανιώσεις ακόμα και στην κόλαση."',fi:'"Ja katuvan sitä jopa helvetissä."',tr:'"Ve cehennemde bile pişman ol."',ar:'"وانتدم على ذلك حتى في الجحيم."',vi:'"Và hãy hối hận về điều đó ngay cả khi ở địa ngục."',th:'"และจงเสียใจแม้ในนรก"',id:'"Dan sesali bahkan di neraka."',zht:'"在地獄裡也要後悔。"',dur:3000,cls:'red'},
-  {v:73.6,text:'그리고 지옥에 떨어진다.',en:'And so he fell into hell.',zh:'然后，他坠入了地狱。',ja:'そして地獄に落ちた。',es:'Y así cayó al infierno.',fr:'Et ainsi il tomba en enfer.',it:'E così cadde nell\'inferno.',ptbr:'E assim ele caiu no inferno.',ro:'Și astfel căzu în iad.',de:'Und so fiel er in die Hölle.',nl:'En zo viel hij in de hel.',sv:'Och så föll han ned i helvetet.',da:'Og således faldt han ned i helvede.',no:'Og slik falt han ned i helvete.',ru:'И так он упал в ад.',uk:'І так він впав у пекло.',pl:'I tak wpadł do piekła.',cs:'A tak padl do pekla.',hu:'És így esett a pokolba.',bg:'И така той падна в ада.',el:'Και έτσι έπεσε στην κόλαση.',fi:'Ja niin hän putosi helvettiin.',tr:'Ve böylece cehenneme düştü.',ar:'وهكذا سقط في الجحيم.',vi:'Và thế là anh rơi xuống địa ngục.',th:'แล้วเขาก็ตกลงไปในนรก',id:'Dan begitulah ia jatuh ke neraka.',zht:'然後，他墜入了地獄。',dur:3000,img:5},
+  {v:73.6,text:'그리고 지옥에 떨어진다.',en:'And so he fell into hell.',zh:'然后，他坠入了地狱。',ja:'そして地獄に落ちた。',es:'Y así cayó al infierno.',fr:'Et ainsi il tomba en enfer.',it:'E così cadde nell\'inferno.',ptbr:'E assim ele caiu no inferno.',ro:'Și astfel căzu în iad.',de:'Und so fiel er in die Hölle.',nl:'En zo viel hij in de hel.',sv:'Och så föll han ned i helvetet.',da:'Og således faldt han ned i helvede.',no:'Og slik falt han ned i helvete.',ru:'И так он упал в ад.',uk:'І так він впав у пекло.',pl:'I tak wpadł do piekła.',cs:'A tak padl do pekla.',hu:'És így esett a pokolba.',bg:'И така той падна в ада.',el:'Και έτσι έπεσε στην κόλαση.',fi:'Ja niin hän putosi helvettiin.',tr:'Ve böylece cehenneme düştü.',ar:'وهكذا سقط في الجحيم.',vi:'Và thế là anh rơi xuống địa ngục.',th:'แล้วเขาก็ตกลงไปในนรก',id:'Dan begitulah ia jatuh ke neraka.',zht:'然後，他墜入了地獄。',dur:3000,img:5,shake:true},
   {v:76.0,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000,img:-1,phase:2},
   {v:78.9,text:'"...이것은 셀 수 없는 복수자 중 하나의 이야기일 뿐."',en:'"...This is but one tale among countless avengers."',zh:'"……这不过是无数复仇者中一人的故事。"',ja:'"……これは数えきれない復讐者の中の、一つの物語に過ぎない。"',es:'"...Esta es solo una historia entre innumerables vengadores."',fr:'"...Ceci n\'est qu\'une histoire parmi d\'innombrables vengeurs."',it:'"...Questa è solo una storia tra innumerevoli vendicatori."',ptbr:'"...Esta é apenas uma história entre incontáveis vingadores."',ro:'"...Aceasta este doar o poveste dintre nenumărații răzbunători."',de:'"...Dies ist nur eine Geschichte unter zahllosen Rächern."',nl:'"...Dit is slechts één verhaal onder talloze wrekers."',sv:'"...Detta är bara en berättelse bland oräkneliga hämndare."',da:'"...Dette er blot én fortælling blandt utallige hævnere."',no:'"...Dette er bare én fortelling blant utallige hevnere."',ru:'"...Это лишь одна история среди бесчисленных мстителей."',uk:'"...Це лише одна історія серед незліченних месників."',pl:'"...To tylko jedna historia wśród niezliczonych mścicieli."',cs:'"...Toto je jen jeden příběh z nespočetných mstitelů."',hu:'"...Ez csupán egyetlen történet számtalan bosszúálló közül."',bg:'"...Това е само една история сред безброй отмъстители."',el:'"...Αυτή είναι μόνο μια ιστορία ανάμεσα σε αμέτρητους εκδικητές."',fi:'"...Tämä on vain yksi tarina lukemattomien kostajaein joukossa."',tr:'"...Bu, sayısız intikamcı arasındaki tek bir hikayedir."',ar:'"...هذه مجرد حكاية واحدة بين منتقمين لا يحصون."',vi:'"...Đây chỉ là một câu chuyện trong vô số những người báo thù."',th:'"...นี่เป็นเพียงเรื่องราวหนึ่งในหมู่ผู้แก้แค้นนับไม่ถ้วน"',id:'"...Ini hanyalah satu kisah di antara banyak pendendam."',zht:'"……這不過是無數復仇者中一人的故事。"',dur:3000,cls:'dim',img:13},
   {v:82.5,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000},
@@ -1633,7 +1652,7 @@ const CIN_LINES=[
   {v:94.0,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000,img:-1},
   {v:94.8,text:'"너는 왜 지옥에 왔느냐?"',en:'"Why have you come to hell?"',zh:'"你为什么来到地狱？"',ja:'"お前はなぜ地獄に来た？"',es:'"¿Por qué has venido al infierno?"',fr:'"Pourquoi es-tu venu en enfer ?"',it:'"Perché sei venuto all\'inferno?"',ptbr:'"Por que você veio ao inferno?"',ro:'"De ce ai venit în iad?"',de:'"Warum bist du in die Hölle gekommen?"',nl:'"Waarom ben je naar de hel gekomen?"',sv:'"Varför har du kommit till helvetet?"',da:'"Hvorfor er du kommet til helvede?"',no:'"Hvorfor har du kommet til helvete?"',ru:'"Зачем ты пришёл в ад?"',uk:'"Навіщо ти прийшов до пекла?"',pl:'"Dlaczego przyszedłeś do piekła?"',cs:'"Proč jsi přišel do pekla?"',hu:'"Miért jöttél a pokolba?"',bg:'"Защо дойде в ада?"',el:'"Γιατί ήρθες στην κόλαση;"',fi:'"Miksi olet tullut helvettiin?"',tr:'"Neden cehenneme geldin?"',ar:'"لماذا أتيتَ إلى الجحيم؟"',vi:'"Tại sao ngươi lại đến địa ngục?"',th:'"เจ้ามาสู่นรกทำไม?"',id:'"Mengapa kamu datang ke neraka?"',zht:'"你為什麼來到地獄？"',dur:3000,cls:'gold',img:7},
   {v:97.0,text:'',en:'',zh:'',ja:'',es:'',fr:'',it:'',ptbr:'',ro:'',de:'',nl:'',sv:'',da:'',no:'',ru:'',uk:'',pl:'',cs:'',hu:'',bg:'',el:'',fi:'',tr:'',ar:'',vi:'',th:'',id:'',zht:'',dur:3000},
-  {v:99.0,text:'"지옥을 탈출하라, 죄인이여."',en:'"Escape from hell, sinner."',zh:'"逃出地狱吧，罪人。"',ja:'"地獄から脱出せよ、罪人よ。"',es:'"Escapa del infierno, pecador."',fr:'"Échappe de l\'enfer, pécheur."',it:'"Fuggi dall\'inferno, peccatore."',ptbr:'"Escape do inferno, pecador."',ro:'"Evadează din iad, păcătosule."',de:'"Entfliehe der Hölle, Sünder."',nl:'"Ontvlucht de hel, zondaar."',sv:'"Fly från helvetet, syndare."',da:'"Flygt fra helvede, synder."',no:'"Flykt fra helvete, synder."',ru:'"Сбеги из ада, грешник."',uk:'"Тікай з пекла, грішник."',pl:'"Ucieknij z piekła, grzeszniku."',cs:'"Uteč z pekla, hříšníku."',hu:'"Menekülj el a pokolból, bűnös."',bg:'"Избягай от ада, грешнику."',el:'"Δράπε από την κόλαση, αμαρτωλέ."',fi:'"Pakene helvetistä, syntinen."',tr:'"Cehennemden kaç, günahkâr."',ar:'"اهرب من الجحيم أيها المذنب."',vi:'"Trốn thoát khỏi địa ngục, kẻ tội lỗi."',th:'"หลบหนีออกจากนรกซะ คนบาป"',id:'"Larilah dari neraka, pendosa."',zht:'"逃出地獄吧，罪人。"',dur:3000,cls:'gold',img:7,end:true},
+  {v:99.0,text:'"지옥을 탈출하라, 죄인이여."',en:'"Escape from hell, sinner."',zh:'"逃出地狱吧，罪人。"',ja:'"地獄から脱出せよ、罪人よ。"',es:'"Escapa del infierno, pecador."',fr:'"Échappe de l\'enfer, pécheur."',it:'"Fuggi dall\'inferno, peccatore."',ptbr:'"Escape do inferno, pecador."',ro:'"Evadează din iad, păcătosule."',de:'"Entfliehe der Hölle, Sünder."',nl:'"Ontvlucht de hel, zondaar."',sv:'"Fly från helvetet, syndare."',da:'"Flygt fra helvede, synder."',no:'"Flykt fra helvete, synder."',ru:'"Сбеги из ада, грешник."',uk:'"Тікай з пекла, грішник."',pl:'"Ucieknij z piekła, grzeszniku."',cs:'"Uteč z pekla, hříšníku."',hu:'"Menekülj el a pokolból, bűnös."',bg:'"Избягай от ада, грешнику."',el:'"Δράπε από την κόλαση, αμαρτωλέ."',fi:'"Pakene helvetistä, syntinen."',tr:'"Cehennemden kaç, günahkâr."',ar:'"اهرب من الجحيم أيها المذنب."',vi:'"Trốn thoát khỏi địa ngục, kẻ tội lỗi."',th:'"หลบหนีออกจากนรกซะ คนบาป"',id:'"Larilah dari neraka, pendosa."',zht:'"逃出地獄吧，罪人。"',dur:3000,cls:'gold',img:7,end:true,shake:true},
   {v:103,exit:true}
 ];
 
@@ -1654,11 +1673,14 @@ function playCinematic(){
   let _prevImg=-1;
   const showImg=(idx)=>{
     if(idx===_prevImg)return;
-    // 새 이미지를 위에 올려서 페이드인 (z-index로 겹침)
     cImgs.forEach((el,i)=>{
-      if(i===idx){el.style.zIndex=4;el.classList.add('show');}
-      else if(i===_prevImg){el.style.zIndex=3;setTimeout(()=>el.classList.remove('show'),800);}
-      else{el.classList.remove('show');el.style.zIndex=3;}
+      if(i===idx){
+        el.style.zIndex=4;el.classList.add('show');
+        // 슬로우 줌 (컷씬 느낌)
+        const im=el.querySelector('img');if(im){im.style.animation='cinZoomSlow 4s ease-out forwards';}
+      }
+      else if(i===_prevImg){el.style.zIndex=3;setTimeout(()=>{el.classList.remove('show');const im2=el.querySelector('img');if(im2)im2.style.animation=''},800);}
+      else{el.classList.remove('show');el.style.zIndex=3;const im3=el.querySelector('img');if(im3)im3.style.animation='';}
     });
     _prevImg=idx;
   };
@@ -1719,7 +1741,13 @@ function playCinematic(){
     // 텍스트가 있는 첫 대사가 나오면 스킵 해금
     if(line&&(line.text||line.en)&&_cinSkipLock){_cinSkipLock=false;}
     if(line.img!==undefined){if(line.img===-1)hideAll();else showImg(line.img);}
-    
+    // 화면 떨림 + 패드 진동
+    if(line.shake){
+      const _cs=$('cinScene');
+      if(_cs){_cs.style.animation='cinShake .5s ease';setTimeout(()=>{_cs.style.animation=''},600);}
+      try{const gps=navigator.getGamepads();for(let i=0;i<gps.length;i++){const gp=gps[i];if(gp&&gp.vibrationActuator)gp.vibrationActuator.playEffect('dual-rumble',{startDelay:0,duration:800,weakMagnitude:1.0,strongMagnitude:1.0})}}catch(e){}
+    }
+
     textBox.innerHTML='';
     const _cLang=_lobbyLang();
     const _cinTxt=_cLang==='ko'?line.text:(line[_cLang]||(typeof _CIN_I18N!=='undefined'&&_CIN_I18N[_cLang]&&_CIN_I18N[_cLang][idx])||line.en||line.text);
@@ -1776,6 +1804,11 @@ function playCinematic(){
     vid.volume=0.6;
     startBGM();
     vid.play().catch(()=>{});
+    // 문 열림 진동 — 4초 페이드아웃
+    try{const gps=navigator.getGamepads();for(let i=0;i<gps.length;i++){const g=gps[i];if(g&&g.vibrationActuator){
+      const _v=g.vibrationActuator;const _steps=[[0,200,.5,.7],[200,500,.45,.6],[700,500,.35,.5],[1200,500,.25,.35],[1700,500,.18,.25],[2200,500,.12,.15],[2700,500,.06,.08],[3200,800,.02,.03]];
+      _steps.forEach(s=>{setTimeout(()=>{try{_v.playEffect('dual-rumble',{startDelay:0,duration:s[1],weakMagnitude:s[2],strongMagnitude:s[3]})}catch(e){}},s[0])});
+    }}}catch(e){}
     // 사용자 제스처 컨텍스트에서 오디오 언락
     window._introVoiceUnlocked=true;
     
@@ -1840,6 +1873,19 @@ function playCinematic(){
   _GP.on('cinSub', (gp, just) => {
     if(_cinDone) { _GP.off('cinSub'); return false; }
     if(!_cinReady) return false;
+    // 언어 팝업 열려있으면 팝업 조작
+    if(_langPopOpen){
+      const sel=_langPopSel||$('cinLang');const opts=sel?sel.options.length:0;
+      if(just[12]||(_GP.axes[1]<-0.5&&!_GP.prev._lpU)){_langPopIdx=Math.max(0,_langPopIdx-1);_hlLangPop()}
+      if(just[13]||(_GP.axes[1]>0.5&&!_GP.prev._lpD)){_langPopIdx=Math.min(opts-1,_langPopIdx+1);_hlLangPop()}
+      _GP.prev._lpU=_GP.axes[1]<-0.5;_GP.prev._lpD=_GP.axes[1]>0.5;
+      if(just[0]&&sel){sel.selectedIndex=_langPopIdx;sel.dispatchEvent(new Event('change'));_closeLangPop()}
+      if(just[1]){_closeLangPop()}
+      return false;
+    }
+    // D-pad 좌우: 언어 팝업 열기
+    const _cSel=$('cinLang');
+    if(_cSel&&(just[14]||just[15])){_openLangPop(_cSel);return false}
     return just[0]||just[2]||just[3];
   }, onSubSkip);
 
@@ -2022,12 +2068,24 @@ function _goLogin(){
   hideLoading();
 }
 function _goCinematic(){
-  // 시네마틱만 표시
+  // 시네마틱 재시작 — 비디오+UI 초기화
   _cinDone=false;
+  const vid=$('cinVideo');
+  vid.currentTime=0;vid.style.opacity='1';vid.muted=false;vid.volume=0.6;
+  // 자막/이미지 초기화
+  const cImgs=[1,2,3,4,5,6,7,8,9,10,11,12,13,14].map(i=>$('cinImg'+i));
+  cImgs.forEach(el=>{if(el){el.classList.remove('show');el.style.zIndex=3}});
+  $('cinTextInner').innerHTML='';
+  const prompt=$('cinClickPrompt');if(prompt)prompt.style.display='';
+  // 문 초기화 (닫힌 상태)
+  const dl=$('cinDoorL'),dr=$('cinDoorR');
+  if(dl)dl.style.transform='';if(dr)dr.style.transform='';
+  // 화면 전환
   $('cinScene').style.display='';
   $('mainWrap').classList.remove('show');
   $('loginSection').style.display='none';
   $('lobby').style.display='none';
+  window._introVoiceStarted=false;window._introVoiceUnlocked=false;
   hideLoading();
   playCinematic();
 }
@@ -2688,7 +2746,7 @@ function _hlLangPop(){
 }
 // 마우스로 select 클릭 시에도 커스텀 팝업 사용
 (function(){
-  ['loginLangSelect','langSelect'].forEach(function(id){
+  ['loginLangSelect','langSelect','cinLang','lobbyLangSelect'].forEach(function(id){
     const s=$(id);if(s)s.addEventListener('mousedown',function(e){e.preventDefault();if(_langPopOpen)_closeLangPop();else _openLangPop(s)});
   });
 })();
@@ -2739,9 +2797,13 @@ _GP.on('lobbyNav', (gp, just) => {
   // 언어 팝업 열려있으면 팝업 조작
   if(_langPopOpen){
     const sel=_langPopSel||$('langSelect');const opts=sel?sel.options.length:0;
-    if(just[12] || (_GP.axes[1] < -0.5 && !_GP.prev._lpU)) { _langPopIdx = Math.max(0, _langPopIdx - 1); _hlLangPop(); }
-    if(just[13] || (_GP.axes[1] > 0.5 && !_GP.prev._lpD)) { _langPopIdx = Math.min(opts - 1, _langPopIdx + 1); _hlLangPop(); }
-    _GP.prev._lpU = _GP.axes[1] < -0.5; _GP.prev._lpD = _GP.axes[1] > 0.5;
+    const _lpU2=just[12]||(_GP.axes[1]<-0.5), _lpD2=just[13]||(_GP.axes[1]>0.5);
+    const _lpNow=performance.now();
+    if(_lpU2||_lpD2){
+      const _lpDir=_lpU2?'u':'d';
+      if(_lpDir!==_GP.prev._lpDir){_GP.prev._lpDir=_lpDir;_GP.prev._lpRepT=_lpNow+300;_langPopIdx=_lpU2?Math.max(0,_langPopIdx-1):Math.min(opts-1,_langPopIdx+1);_hlLangPop();}
+      else if(_lpNow>=_GP.prev._lpRepT){_GP.prev._lpRepT=_lpNow+80;_langPopIdx=_lpU2?Math.max(0,_langPopIdx-1):Math.min(opts-1,_langPopIdx+1);_hlLangPop();}
+    } else {_GP.prev._lpDir=null;}
     if(just[0] && sel) { sel.selectedIndex = _langPopIdx; sel.dispatchEvent(new Event('change')); _closeLangPop(); }
     if(just[1]) { _closeLangPop(); }
     return false;
@@ -2798,10 +2860,10 @@ _GP.on('lobbyNav', (gp, just) => {
   // 로비 내 상호작용 가능한 요소 전부 자동 수집 (부모-자식 중복 제거)
   const _navItems = [];
   // 언어 select 먼저 추가
-  const _lSel=$('langSelect');if(_lSel&&_lSel.offsetParent!==null)_navItems.push({el:_lSel,type:'lang'});
+  const _lSel=$('lobbyLangSelect');if(_lSel&&_lSel.offsetParent!==null)_navItems.push({el:_lSel,type:'lang'});
   const _lobbyRight = lobby.querySelector('.lobby-right');
   if(_lobbyRight) {
-    _lobbyRight.querySelectorAll('.char-item,.char-item-new,#enterGameBtn:not([disabled]),#lobbyLogout,#logoutBtn,.lma-steam-btn,.ll-steam-btn,.char-nav-btn:not([disabled])').forEach(el => {
+    _lobbyRight.querySelectorAll('.char-item,.char-item-new,#enterGameBtn:not([disabled]),#lobbyLogout,#logoutBtn,.lma-steam-btn,.ll-steam-btn,.char-nav-btn:not([disabled]),#replayCinBtn').forEach(el => {
       if(el.offsetParent === null) return;
       if(_navItems.some(n => n.el === el)) return;
       const type = el.classList.contains('char-item') || el.classList.contains('char-item-new') ? 'slot'
@@ -2814,10 +2876,14 @@ _GP.on('lobbyNav', (gp, just) => {
   if(_lobbyGpIdx >= _navItems.length) _lobbyGpIdx = _navItems.length - 1;
 
   // D-pad 위(12)/아래(13) 또는 좌스틱
-  if(just[12] || (_GP.axes[1] < -0.5 && !_GP.prev._lobbyUp)) { _lobbyGpIdx = Math.max(0, _lobbyGpIdx - 1); }
-  if(just[13] || (_GP.axes[1] > 0.5 && !_GP.prev._lobbyDown)) { _lobbyGpIdx = Math.min(_navItems.length - 1, _lobbyGpIdx + 1); }
-  _GP.prev._lobbyUp = _GP.axes[1] < -0.5;
-  _GP.prev._lobbyDown = _GP.axes[1] > 0.5;
+  // D-pad/스틱 이동 + 홀드 리피트 (초기 300ms, 이후 80ms)
+  const _lU=just[12]||(_GP.axes[1]<-0.5), _lD=just[13]||(_GP.axes[1]>0.5);
+  const _lNow=performance.now();
+  if(_lU||_lD){
+    const _dir=_lU?'u':'d';
+    if(_dir!==_GP.prev._lobbyDir){_GP.prev._lobbyDir=_dir;_GP.prev._lobbyRepT=_lNow+300;_lobbyGpIdx=_lU?Math.max(0,_lobbyGpIdx-1):Math.min(_navItems.length-1,_lobbyGpIdx+1);}
+    else if(_lNow>=_GP.prev._lobbyRepT){_GP.prev._lobbyRepT=_lNow+80;_lobbyGpIdx=_lU?Math.max(0,_lobbyGpIdx-1):Math.min(_navItems.length-1,_lobbyGpIdx+1);}
+  } else {_GP.prev._lobbyDir=null;}
 
   // 우측 스틱 → 캐릭터 슬롯 스크롤 (휠처럼)
   const _rsY = gp.axes&&gp.axes.length>=4 ? gp.axes[3] : 0;
@@ -2838,7 +2904,7 @@ _GP.on('lobbyNav', (gp, just) => {
     if(_prevGpIdx!==undefined&&_navItems[_prevGpIdx])_navItems[_prevGpIdx].el.classList.remove('gp-hover');
     // 현재 포커스 hover 추가
     if(cur) cur.el.classList.add('gp-hover');
-    if(cur && cur.el.id === 'enterGameBtn') { try{_startHover();}catch(e){} }
+    if(cur && cur.el.id === 'enterGameBtn') { try{_startHover();}catch(e){} try{const gps=navigator.getGamepads();for(let i=0;i<gps.length;i++){const g=gps[i];if(g&&g.vibrationActuator)g.vibrationActuator.playEffect('dual-rumble',{startDelay:0,duration:80,weakMagnitude:0.15,strongMagnitude:0.0})}}catch(e){} }
     else { try{_stopHover();}catch(e){} }
   }
   _GP.prev._lobbyIdx = _lobbyGpIdx;

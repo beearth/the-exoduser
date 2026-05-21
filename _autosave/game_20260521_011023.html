@@ -48200,7 +48200,7 @@ function _startIntroCutscene(){
   if(!_forceCutscene&&G._cutsceneDone){_startIntro();return}
   _cutsceneState='INTRO_CUTSCENE';
   _cutsceneStartMs=performance.now();
-  _cutsceneIdx=-1;_cutVibDone=false;
+  _cutsceneIdx=-1;
   _cutLineIdx=0;
   _cutLineStartMs=performance.now();
   _cutWaitInput=false;
@@ -48225,7 +48225,7 @@ function _cutsceneAdvance(){
   if(_cutLineIdx>=lns.length){_cutsceneEnd();return}
   _cutLineStartMs=performance.now();
   _cutWaitInput=false;
-  _cutsceneIdx=-1;_cutVibDone=false; // SFX 재트리거
+  _cutsceneIdx=-1; // SFX 재트리거
 }
 function _cutsceneGetLines(){
   const lang=(typeof OPT!=='undefined'&&OPT.lang)?OPT.lang:'ko';
@@ -48262,7 +48262,7 @@ function _renderIntroCutscene(){
 
   // 대사 없는 컷 → dur 후 자동 진행
   if(!ln.text||!ln.speaker){
-    if(lineElapsed>=ln.dur){_cutLineIdx++;_cutLineStartMs=now;_cutsceneIdx=-1;_cutVibDone=false;return}
+    if(lineElapsed>=ln.dur){_cutLineIdx++;_cutLineStartMs=now;_cutsceneIdx=-1;return}
   }
 
   // 캔버스 동기화

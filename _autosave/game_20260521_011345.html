@@ -48290,7 +48290,14 @@ function _renderIntroCutscene(){
   if(ln.vfx&&ln.vfx.shake&&!_cutVibDone){
     _cutVibDone=true;
     const _mag=Math.min(1,ln.vfx.shake/3);
-    try{const gps=navigator.getGamepads();for(let i=0;i<gps.length;i++){const gp=gps[i];if(gp&&gp.vibrationActuator)gp.vibrationActuator.playEffect('dual-rumble',{startDelay:0,duration:Math.min(ln.dur,1200),weakMagnitude:_mag,strongMagnitude:_mag})}}catch(e){}
+    // 디버그: 화면 좌상단에 표시
+    if(!window._cutDbg){const d=document.createElement('div');d.id='_cutDbg';d.style.cssText='position:fixed;top:10px;left:10px;z-index:99999;color:#ff0;font-size:14px;background:rgba(0,0,0,.8);padding:6px 10px;pointer-events:none';document.body.appendChild(d);window._cutDbg=d;}
+    const gps=navigator.getGamepads();let _dbg='VIB id:'+ln.id+' shake:'+ln.vfx.shake+' mag:'+_mag.toFixed(2);
+    let _vibOk=false;
+    try{for(let i=0;i<gps.length;i++){const gp=gps[i];if(gp){_dbg+=' gp'+i+':'+(gp.vibrationActuator?'HAS':'NO');if(gp.vibrationActuator){gp.vibrationActuator.playEffect('dual-rumble',{startDelay:0,duration:Math.min(ln.dur,1200),weakMagnitude:_mag,strongMagnitude:_mag});_vibOk=true;}}}}catch(e){_dbg+=' ERR:'+e.message}
+    _dbg+=_vibOk?' SENT':' NOSEND';
+    window._cutDbg.textContent=_dbg;
+    setTimeout(()=>{if(window._cutDbg)window._cutDbg.textContent=''},3000);
   }
 
   // 페이드 opacity 계산
