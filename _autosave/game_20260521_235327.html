@@ -2640,7 +2640,7 @@ canvas{display:block;position:fixed;inset:0}
         <div id="skillGrid"></div>
       </div>
     </div>
-    <div class="skill-close"><div id="skSlotBar"></div><button class="pclose" onclick="closePanel('skillPanel')">닫기 [ESC]</button></div>
+    <div class="skill-close"><div id="skSlotBar"></div><button class="pclose" onclick="_panelBack()" id="skBackBtn">닫기 [ESC]</button></div>
   </div>
 </div>
 
@@ -10101,12 +10101,10 @@ function _gpUINav(panel){
     const _minBtn=cur.querySelector('[style*="cursor:pointer"][style*="border:1px solid #cc4444"]');
     if(_minBtn){_minBtn.click();_gpBtnsPrev['k2']=true;}
   }
-  // B = 뒤로가기 (서브팝업 → 패널 순 닫기)
+  // B = 단계별 뒤로가기
   const _start=!!(_gpad.buttons[9]&&_gpad.buttons[9].pressed);
   if((b&&!_gpUIPrev.b)){
-    const slotPop=$('skSlotPop');
-    if(slotPop&&slotPop.style.display==='flex'){slotPop.style.display='none';_gpBtnsPrev['k1']=true;}
-    else{closeAllPanels();_gpBtnsPrev['k1']=true;}
+    _panelBack();_gpBtnsPrev['k1']=true;
   }
   _gpUIPrev.start=_start;
   // Y = 스킬 패널: 선택 스킬 슬롯 배정 / 인벤: 장착·해제·꺼내기
@@ -12206,6 +12204,7 @@ let G={on:false,paused:false,stage:0,kills:0,mats:0,cam:{x:0,y:0},shake:0,parts:
   combo:0,comboTimer:0,comboMax:0,stageTime:0,
   _zones:null,_curZone:0,_zoneState:{},_portals:null}; // 존 분할 시스템
 let P=null,ens=[],projs=[],pProjs=[],worldItems=[];// worldItems = items on ground, pProjs = player arrows
+function _wiPush(wi){worldItems.push(wi);if(worldItems.length>20){worldItems.sort((a,b)=>{const ra=a.type==='item'?(a.item?a.item.rarity||0:0):-1;const rb=b.type==='item'?(b.item?b.item.rarity||0:0):-1;return ra-rb});worldItems.splice(0,worldItems.length-20)}}
 // ── 적 투사체 오브젝트 풀 ──
 const _PROJ_POOL=600;
 const _projFree=[];
@@ -25514,15 +25513,15 @@ function update(){
   // 생존 적 수 카운트 (소환굴 스폰캡 기준)
   {let _ac=0;for(let i=0;i<ens.length;i++)if(ens[i].alive)_ac++;G._aliveEns=_ac}
   // ens 하드캡: 900 초과 시 즉시 정리 (원거리 비보스 우선 제거)
-  if(ens.length>900){console.warn('[ENS-CAP] ens='+ens.length+' alive='+G._aliveEns+' → 800으로 컬링');let _sorted=[];for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive){if(e._reviveTimer>0)_sorted.push(e);continue}_sorted.push(e)}_sorted.sort((a,b)=>(a.ib?0:1)-(b.ib?0:1)||dst2(P.x,P.y,a.x,a.y)-dst2(P.x,P.y,b.x,b.y));if(_sorted.length>800){for(let _ci=800;_ci<_sorted.length;_ci++){if(_sorted[_ci].alive&&!_sorted[_ci].ib){G.kills++;G._stageKills=(G._stageKills||0)+1}}_sorted.length=800}ens.length=0;for(let i=0;i<_sorted.length;i++)ens[i]=_sorted[i];ens.length=_sorted.length;_shDirty=true}
+  if(ens.length>500){console.warn('[ENS-CAP] ens='+ens.length+' alive='+G._aliveEns+' → 400으로 컬링');let _sorted=[];for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive){if(e._reviveTimer>0)_sorted.push(e);continue}_sorted.push(e)}_sorted.sort((a,b)=>(a.ib?0:1)-(b.ib?0:1)||dst2(P.x,P.y,a.x,a.y)-dst2(P.x,P.y,b.x,b.y));if(_sorted.length>400){for(let _ci=400;_ci<_sorted.length;_ci++){if(_sorted[_ci].alive&&!_sorted[_ci].ib){G.kills++;G._stageKills=(G._stageKills||0)+1}}_sorted.length=400}ens.length=0;for(let i=0;i<_sorted.length;i++)ens[i]=_sorted[i];ens.length=_sorted.length;_shDirty=true}
   if(G._gcT>20){G._gcT=0;
     // 시체 미생성 사망 fallback — GC 시점에만 (매 프레임→20프레임 주기)
     for(let i=0;i<ens.length;i++){if(!ens[i])continue;if(!ens[i].alive&&!ens[i]._corpseSpawned&&!ens[i]._isDecoy&&ens[i].mhp>0){_addCorpse(ens[i],Math.atan2(ens[i].y-P.y,ens[i].x-P.x),4)}}
     let w=0,_deadCnt=0;for(let i=0;i<ens.length;i++){if(!ens[i])continue;if(ens[i].alive){ens[w++]=ens[i]}else if(ens[i]._reviveTimer>0&&_deadCnt<20){ens[w++]=ens[i];_deadCnt++}}ens.length=w;
     // worldItems picked 정리
     let ww=0;for(let i=0;i<worldItems.length;i++){if(!worldItems[i].picked)worldItems[ww++]=worldItems[i]}worldItems.length=ww;
-    // 아이템 상한 20개 — 초과 시 하급(낮은 rarity)부터 제거 (렉 방지)
-    if(worldItems.length>20){worldItems.sort((a,b)=>(a.item?a.item.rarity||0:99)-(b.item?b.item.rarity||0:99));worldItems.splice(0,worldItems.length-20);}
+    // 아이템 상한 20개 — 초과 시 비장비(hp/debris/o2)→하급장비 순 제거, 고등급 보존
+    if(worldItems.length>20){worldItems.sort((a,b)=>{const ra=a.type==='item'?(a.item?a.item.rarity||0:0):-1;const rb=b.type==='item'?(b.item?b.item.rarity||0:0):-1;return ra-rb});worldItems.splice(0,worldItems.length-20);}
     // G.txts: 링 버퍼 풀이므로 compaction 불필요 (축소 시 재할당 유발)
   }
   // 공간 해싱 리빌드 (2프레임 주기)
@@ -26572,7 +26571,7 @@ function update(){
     const _hSi=G.stage;
     if(h._spawnTotal==null){const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';h._spawnTotal=SPAWN_HOLE.cnt[_hType]||50;h._spawned=0;h._spawnCD=0;h._spawnInterval=~~(300/h._spawnTotal)} // 5초÷총량=간격
     if(h._spawnCD>0){h._spawnCD-=sp;continue}
-    if(G._aliveEns>=750){h._spawnCD=30;continue} // 생존 적 750 이상이면 스폰 대기
+    if(G._aliveEns>=400){h._spawnCD=30;continue} // 생존 적 400 이상이면 스폰 대기
     // 1마리씩 순차 소환 (간격 = 300f/총량)
     {
       let _hsx,_hsy,_hTry=0;
@@ -36029,6 +36028,8 @@ addEventListener('mouseup',e=>{
 });
 
 function renderSkillPanel(){
+  // 뒤로가기 버튼 텍스트 갱신
+  const _bk=$('skBackBtn');if(_bk)_bk.textContent=(_skExpandedId||_fuseSelId)?_L('← 뒤로','← Back'):_L('닫기 [ESC]','Close [ESC]');
   // stormBeam 합체 시 히든 스킬 자동 복구
   if(_isFused('stormBeam')){if(!P.skills.peaceShield)P.skills.peaceShield=1;if(!P.skills.hellRay)P.skills.hellRay=1;}
   const _si=$('skillInfo');
@@ -37158,7 +37159,7 @@ function renderStorage(){
   store.forEach((it,idx)=>{
     const d=document.createElement('div');d.className='fg-i';d.style.borderLeftColor=RARITY_C[it.rarity];
     d.innerHTML=`<div class="fg-in" style="color:${RARITY_C[it.rarity]}">${it.emoji} ${_T(it.name)}</div><div class="fg-id">Lv.${it.itemLv||0} ${_rarName(it.rarity)}</div><div class="fg-ic" style="color:#66aacc;cursor:pointer">${_T('꺼내기')}</div>`;
-    d.onclick=()=>{if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}INV.bag.push(it);store.splice(idx,1);SFX.pickup();_persistSharedStorage();renderStorage();dbSaveNow()};
+    d.onclick=()=>{if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}it._gx=null;it._gy=null;INV.bag.push(it);store.splice(idx,1);SFX.pickup();_persistSharedStorage();renderStorage();dbSaveNow()};
     grid.appendChild(d);
   });
 }
@@ -37201,7 +37202,7 @@ function renderInvStorage(){
 function withdrawStorage(idx){
   if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}
   const store=_getStore();if(!store[idx])return;
-  INV.bag.push(store[idx]);store.splice(idx,1);INV.selected=null;SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow();
+  const wi=store[idx];wi._gx=null;wi._gy=null;INV.bag.push(wi);store.splice(idx,1);INV.selected=null;SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow();
 }
 
 // ═══ SETTINGS RENDER ═══

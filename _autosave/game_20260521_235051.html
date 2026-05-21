@@ -2640,7 +2640,7 @@ canvas{display:block;position:fixed;inset:0}
         <div id="skillGrid"></div>
       </div>
     </div>
-    <div class="skill-close"><div id="skSlotBar"></div><button class="pclose" onclick="closePanel('skillPanel')">닫기 [ESC]</button></div>
+    <div class="skill-close"><div id="skSlotBar"></div><button class="pclose" onclick="_panelBack()" id="skBackBtn">닫기 [ESC]</button></div>
   </div>
 </div>
 
@@ -36027,6 +36027,8 @@ addEventListener('mouseup',e=>{
 });
 
 function renderSkillPanel(){
+  // 뒤로가기 버튼 텍스트 갱신
+  const _bk=$('skBackBtn');if(_bk)_bk.textContent=(_skExpandedId||_fuseSelId)?_L('← 뒤로','← Back'):_L('닫기 [ESC]','Close [ESC]');
   // stormBeam 합체 시 히든 스킬 자동 복구
   if(_isFused('stormBeam')){if(!P.skills.peaceShield)P.skills.peaceShield=1;if(!P.skills.hellRay)P.skills.hellRay=1;}
   const _si=$('skillInfo');
@@ -37156,7 +37158,7 @@ function renderStorage(){
   store.forEach((it,idx)=>{
     const d=document.createElement('div');d.className='fg-i';d.style.borderLeftColor=RARITY_C[it.rarity];
     d.innerHTML=`<div class="fg-in" style="color:${RARITY_C[it.rarity]}">${it.emoji} ${_T(it.name)}</div><div class="fg-id">Lv.${it.itemLv||0} ${_rarName(it.rarity)}</div><div class="fg-ic" style="color:#66aacc;cursor:pointer">${_T('꺼내기')}</div>`;
-    d.onclick=()=>{if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}INV.bag.push(it);store.splice(idx,1);SFX.pickup();_persistSharedStorage();renderStorage();dbSaveNow()};
+    d.onclick=()=>{if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}it._gx=null;it._gy=null;INV.bag.push(it);store.splice(idx,1);SFX.pickup();_persistSharedStorage();renderStorage();dbSaveNow()};
     grid.appendChild(d);
   });
 }
@@ -37199,7 +37201,7 @@ function renderInvStorage(){
 function withdrawStorage(idx){
   if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}
   const store=_getStore();if(!store[idx])return;
-  INV.bag.push(store[idx]);store.splice(idx,1);INV.selected=null;SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow();
+  const wi=store[idx];wi._gx=null;wi._gy=null;INV.bag.push(wi);store.splice(idx,1);INV.selected=null;SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow();
 }
 
 // ═══ SETTINGS RENDER ═══

@@ -2640,7 +2640,7 @@ canvas{display:block;position:fixed;inset:0}
         <div id="skillGrid"></div>
       </div>
     </div>
-    <div class="skill-close"><div id="skSlotBar"></div><button class="pclose" onclick="closePanel('skillPanel')">닫기 [ESC]</button></div>
+    <div class="skill-close"><div id="skSlotBar"></div><button class="pclose" onclick="_panelBack()" id="skBackBtn">닫기 [ESC]</button></div>
   </div>
 </div>
 
@@ -9552,12 +9552,10 @@ addEventListener('keydown',e=>{
     if(e.code==='Space'){e.preventDefault();_cutSkipHolding=true;return}
     if(!e.repeat&&(e.code==='Enter'||e.code==='KeyZ')){e.preventDefault();_cutsceneAdvance();return}
   }
-  // ESC → 패널 열려있으면 닫기, 아니면 옵션 토글
+  // ESC → 뒤로가기 (서브상태→패널→설정 순), 아무것도 없으면 설정 토글
   if(e.code==='Escape'&&!e.repeat){
     if(listeningBind){listeningBind=null;_listenAlt=false;renderSettings();e.preventDefault();return}
-    // 설정 외 패널이 열려있으면 먼저 닫기
-    const _openP=['invPanel','forge','storagePanel','statPanel','skillPanel'].find(id=>$(id)&&$(id).classList.contains('on'));
-    if(_openP){closeAllPanels();e.preventDefault();return}
+    if(_panelBack()){e.preventDefault();return}
     BINDS.settings='Escape';K['Escape']=false;togglePanel('settings');e.preventDefault();return
   }
   // Ctrl/Meta 단축키 차단 (Ctrl+W, Ctrl+S 등 브라우저 기본 동작 방지)
@@ -9746,8 +9744,8 @@ addEventListener('mousedown',e=>{
 });
 addEventListener('mouseup',e=>{MB[e.button]=false;if(e.button>=1)e.preventDefault()});
 addEventListener('auxclick',e=>{e.preventDefault();e.stopPropagation()});
-// 마우스 뒤로가기(button 3) → 패널 닫기
-addEventListener('mousedown',e=>{if(e.button===3){e.preventDefault();const _op=['invPanel','forge','storagePanel','statPanel','skillPanel'].find(id=>$(id)&&$(id).classList.contains('on'));if(_op)closeAllPanels();else if($('settings')&&$('settings').classList.contains('on'))closePanel('settings')}},{passive:false});
+// 마우스 뒤로가기(button 3) → 단계별 뒤로가기
+addEventListener('mousedown',e=>{if(e.button===3){e.preventDefault();_panelBack()}},{passive:false});
 addEventListener('contextmenu',e=>e.preventDefault());
 addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey)e.preventDefault()},{passive:false});
 addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&(e.code==='Equal'||e.code==='Minus'||e.code==='NumpadAdd'||e.code==='NumpadSubtract'||e.code==='Digit0'))e.preventDefault()});
@@ -10103,12 +10101,10 @@ function _gpUINav(panel){
     const _minBtn=cur.querySelector('[style*="cursor:pointer"][style*="border:1px solid #cc4444"]');
     if(_minBtn){_minBtn.click();_gpBtnsPrev['k2']=true;}
   }
-  // B = 뒤로가기 (서브팝업 → 패널 순 닫기)
+  // B = 단계별 뒤로가기
   const _start=!!(_gpad.buttons[9]&&_gpad.buttons[9].pressed);
   if((b&&!_gpUIPrev.b)){
-    const slotPop=$('skSlotPop');
-    if(slotPop&&slotPop.style.display==='flex'){slotPop.style.display='none';_gpBtnsPrev['k1']=true;}
-    else{closeAllPanels();_gpBtnsPrev['k1']=true;}
+    _panelBack();_gpBtnsPrev['k1']=true;
   }
   _gpUIPrev.start=_start;
   // Y = 스킬 패널: 선택 스킬 슬롯 배정 / 인벤: 장착·해제·꺼내기
@@ -36031,6 +36027,8 @@ addEventListener('mouseup',e=>{
 });
 
 function renderSkillPanel(){
+  // 뒤로가기 버튼 텍스트 갱신
+  const _bk=$('skBackBtn');if(_bk)_bk.textContent=(_skExpandedId||_fuseSelId)?_L('← 뒤로','← Back'):_L('닫기 [ESC]','Close [ESC]');
   // stormBeam 합체 시 히든 스킬 자동 복구
   if(_isFused('stormBeam')){if(!P.skills.peaceShield)P.skills.peaceShield=1;if(!P.skills.hellRay)P.skills.hellRay=1;}
   const _si=$('skillInfo');
@@ -37203,7 +37201,7 @@ function renderInvStorage(){
 function withdrawStorage(idx){
   if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}
   const store=_getStore();if(!store[idx])return;
-  INV.bag.push(store[idx]);store.splice(idx,1);INV.selected=null;SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow();
+  const wi=store[idx];wi._gx=null;wi._gy=null;INV.bag.push(wi);store.splice(idx,1);INV.selected=null;SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow();
 }
 
 // ═══ SETTINGS RENDER ═══
