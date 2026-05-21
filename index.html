@@ -675,7 +675,7 @@ const _LOBBY_VER_LIMITS={
   ea:'Lv.500 · Chapter 1 (1-1~1-4) · 8~15h',
   demo:'Lv.100 · Stage 1-1 Only · 1~2h',
 };
-var _selectedSlot=null;
+var _selectedSlot=null,_selectedSlotName=null;
 var _localSlots=[];
 var _curBg=null;
 var _spriteOk={};// 캐릭터 스프라이트 존재 캐시
@@ -2219,7 +2219,7 @@ async function loadCharacters(){
     div.innerHTML=`<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=2" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(ch.name)}</div><div class="char-info">Lv.${lv} | ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
     div.addEventListener('click',e=>{
       if(e.target.classList.contains('char-del'))return;
-      _selectedSlot=ch.id;
+      _selectedSlot=ch.id;_selectedSlotName=ch.name;
       cl.querySelectorAll('.char-item').forEach(el=>el.classList.remove('active'));
       div.classList.add('active');
       const btn=$('enterGameBtn');if(btn)btn.disabled=false;
@@ -2940,7 +2940,8 @@ function showCharGate(charId){
   // 로딩 배경 이미지 1장만 미리 캐시 후 인덱스를 game.html에 전달
   const _rdIdx=~~(Math.random()*19)+1;
   const _preImg=new Image();_preImg.src='img/lording/'+_rdIdx+'.png';
-  const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId;
+  const _slotName=_testMode?charId:(_selectedSlotName||charId);
+  const _tp=_testMode?'game.html?test=1&slot='+encodeURIComponent(charId):'game.html?char='+charId+'&slot='+encodeURIComponent(_slotName);
   setTimeout(()=>{window.location.href=_tp+'&rd='+_rdIdx},1200);
 }
 

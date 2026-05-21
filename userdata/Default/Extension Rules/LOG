@@ -1,3 +1,4 @@
-2026/05/20-23:20:57.104 7b18 Reusing MANIFEST G:\hell\userdata\Default\Extension Rules/MANIFEST-000001
-2026/05/20-23:20:57.104 7b18 Recovering log #3
-2026/05/20-23:20:57.104 7b18 Reusing old log G:\hell\userdata\Default\Extension Rules/000003.log 
+2026/05/21-10:28:49.613 61b0 Creating DB G:\hell\userdata\Default\Extension Rules since it was missing.
+2026/05/21-10:28:49.617 61b0 Reusing MANIFEST G:\hell\userdata\Default\Extension Rules/MANIFEST-000001
+2026/05/21-10:28:49.617 61b0 Recovering log #3
+2026/05/21-10:28:49.617 61b0 Reusing old log G:\hell\userdata\Default\Extension Rules/000003.log 

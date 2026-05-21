@@ -25513,3 +25513,100 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - userdata/ShaderCache/data_1
 - userdata/segmentation_platform/ukm_db
 
+
+## 2026-05-21 11:30 (auto)
+- _autosave/game_20260521_095234.html
+- _autosave/game_20260521_095251.html
+- _autosave/game_20260521_095432.html
+- _autosave/game_20260521_095821.html
+- _autosave/game_20260521_095835.html
+- _autosave/game_20260521_100110.html
+- _autosave/game_20260521_100136.html
+- _autosave/game_20260521_100721.html
+- _autosave/game_20260521_100744.html
+- _autosave/game_20260521_100755.html
+- _autosave/game_20260521_100804.html
+- img/lording/rd18.png
+- img/lording/rd4.png
+- index.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Cache/Cache_Data/f_000001
+- userdata/Default/Cache/Cache_Data/f_000003
+- userdata/Default/Cache/Cache_Data/f_000006
+- userdata/Default/Cache/Cache_Data/f_000007
+- userdata/Default/Cache/Cache_Data/f_000008
+- userdata/Default/Cache/Cache_Data/f_000009
+- userdata/Default/Cache/Cache_Data/f_00000a
+- userdata/Default/Cache/Cache_Data/f_00000c
+- userdata/Default/Cache/Cache_Data/f_00000e
+- userdata/Default/Cache/Cache_Data/index
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/636663276ea33d84_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/Code Cache/wasm/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnGraphiteCache/index
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/DawnWebGPUCache/index
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Rules/LOG.old
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension Scripts/LOG.old
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Extension State/LOG.old
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GCM Store/Encryption/LOG.old
+- userdata/Default/GPUCache/data_0
+- userdata/Default/GPUCache/data_1
+- userdata/Default/GPUCache/index
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Local Storage/leveldb/LOG.old
+- userdata/Default/Local Storage/leveldb/MANIFEST-000001
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Session Storage/LOG.old
+- userdata/Default/Shared Dictionary/cache/index-dir/the-real-index
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Site Characteristics Database/LOG.old
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Sync Data/LevelDB/LOG.old
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/LOG.old
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/Default/shared_proto_db/metadata/LOG.old
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GrShaderCache/f_000001
+- userdata/GrShaderCache/f_000002
+- userdata/GrShaderCache/f_000003
+- userdata/GrShaderCache/index
+- userdata/GraphiteDawnCache/data_1
+- userdata/GraphiteDawnCache/index
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/ShaderCache/index
+- userdata/segmentation_platform/ukm_db
+

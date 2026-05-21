@@ -1,3 +1,4 @@
-2026/05/20-23:20:57.308 7bf8 Reusing MANIFEST G:\hell\userdata\Default\Session Storage/MANIFEST-000001
-2026/05/20-23:20:57.308 7bf8 Recovering log #3
-2026/05/20-23:20:57.310 7bf8 Reusing old log G:\hell\userdata\Default\Session Storage/000003.log 
+2026/05/21-10:28:49.802 7360 Creating DB G:\hell\userdata\Default\Session Storage since it was missing.
+2026/05/21-10:28:49.810 7360 Reusing MANIFEST G:\hell\userdata\Default\Session Storage/MANIFEST-000001
+2026/05/21-10:28:49.810 7360 Recovering log #3
+2026/05/21-10:28:49.811 7360 Reusing old log G:\hell\userdata\Default\Session Storage/000003.log 

@@ -1,3 +1,4 @@
-2026/05/20-23:20:57.092 96f4 Reusing MANIFEST G:\hell\userdata\Default\Site Characteristics Database/MANIFEST-000001
-2026/05/20-23:20:57.094 96f4 Recovering log #3
-2026/05/20-23:20:57.095 96f4 Reusing old log G:\hell\userdata\Default\Site Characteristics Database/000003.log 
+2026/05/21-10:28:49.599 78d8 Creating DB G:\hell\userdata\Default\Site Characteristics Database since it was missing.
+2026/05/21-10:28:49.605 78d8 Reusing MANIFEST G:\hell\userdata\Default\Site Characteristics Database/MANIFEST-000001
+2026/05/21-10:28:49.605 78d8 Recovering log #3
+2026/05/21-10:28:49.605 78d8 Reusing old log G:\hell\userdata\Default\Site Characteristics Database/000003.log 

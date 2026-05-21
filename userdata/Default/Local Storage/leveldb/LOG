@@ -1,6 +1,8 @@
-2026/05/20-23:20:57.115 7bf8 Reusing MANIFEST G:\hell\userdata\Default\Local Storage\leveldb/MANIFEST-000001
-2026/05/20-23:20:57.119 7bf8 Recovering log #6
-2026/05/20-23:20:57.120 7bf8 Reusing old log G:\hell\userdata\Default\Local Storage\leveldb/000006.log 
-2026/05/20-23:21:24.320 8108 Level-0 table #10: started
-2026/05/20-23:21:24.322 8108 Level-0 table #10: 5996 bytes OK
-2026/05/20-23:21:24.324 8108 Delete type=0 #6
+2026/05/21-10:28:49.618 7360 Creating DB G:\hell\userdata\Default\Local Storage\leveldb since it was missing.
+2026/05/21-10:28:49.629 7360 Reusing MANIFEST G:\hell\userdata\Default\Local Storage\leveldb/MANIFEST-000001
+2026/05/21-10:28:49.630 7360 Recovering log #25
+2026/05/21-10:28:49.632 7360 Reusing old log G:\hell\userdata\Default\Local Storage\leveldb/000025.log 
+2026/05/21-10:28:49.632 7360 Delete type=2 #27
+2026/05/21-10:29:31.073 2cf4 Level-0 table #27: started
+2026/05/21-10:29:31.077 2cf4 Level-0 table #27: 38407 bytes OK
+2026/05/21-10:29:31.078 2cf4 Delete type=0 #25

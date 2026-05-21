@@ -1,3 +1,4 @@
-2026/05/20-23:20:57.116 968c Reusing MANIFEST G:\hell\userdata\Default\Extension State/MANIFEST-000001
-2026/05/20-23:20:57.117 968c Recovering log #3
-2026/05/20-23:20:57.117 968c Reusing old log G:\hell\userdata\Default\Extension State/000003.log 
+2026/05/21-10:28:49.627 1e14 Creating DB G:\hell\userdata\Default\Extension State since it was missing.
+2026/05/21-10:28:49.631 1e14 Reusing MANIFEST G:\hell\userdata\Default\Extension State/MANIFEST-000001
+2026/05/21-10:28:49.631 1e14 Recovering log #3
+2026/05/21-10:28:49.631 1e14 Reusing old log G:\hell\userdata\Default\Extension State/000003.log 

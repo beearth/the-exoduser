@@ -1,3 +1,4 @@
-2026/05/20-23:20:57.103 9f74 Reusing MANIFEST G:\hell\userdata\Default\shared_proto_db\metadata/MANIFEST-000001
-2026/05/20-23:20:57.104 9f74 Recovering log #3
-2026/05/20-23:20:57.104 9f74 Reusing old log G:\hell\userdata\Default\shared_proto_db\metadata/000003.log 
+2026/05/21-10:28:49.611 7458 Creating DB G:\hell\userdata\Default\shared_proto_db\metadata since it was missing.
+2026/05/21-10:28:49.614 7458 Reusing MANIFEST G:\hell\userdata\Default\shared_proto_db\metadata/MANIFEST-000001
+2026/05/21-10:28:49.615 7458 Recovering log #3
+2026/05/21-10:28:49.615 7458 Reusing old log G:\hell\userdata\Default\shared_proto_db\metadata/000003.log 
