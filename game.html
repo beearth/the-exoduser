@@ -9847,7 +9847,7 @@ function _gpClearAll(){
 }
 
 // ═══ 범용 UI 게임패드 네비게이션 (엘든링/디아4 스타일) ═══
-let _gpUIIdx=0;
+let _gpUIIdx=0;let _gpRSScrolled=false; // 우스틱 스크롤 후 scrollIntoView 억제 플래그
 let _gpUIPrev={a:false,b:false,x:false,y:false,lb:false,rb:false,b8:false,b9:false};
 let _gpUIRepeatDir=null,_gpUIRepeatTs=0;
 const _GP_UI_DELAY=380,_GP_UI_INTERVAL=110;
@@ -9857,7 +9857,7 @@ function _gpVCInit(){
   if(_gpVC.el)return;
   const d=document.createElement('div');d.id='_gpVCursor';
   d.style.cssText='position:fixed;top:0;left:0;pointer-events:none;z-index:2147483647;display:none;will-change:transform';
-  d.innerHTML='<svg width="22" height="26" viewBox="0 0 22 26" style="filter:drop-shadow(0 1px 3px #000);pointer-events:none"><path d="M3 2L3 22L8 16.5L11.5 23L14 21.8L10.5 15L18 15Z" fill="#fff" stroke="#222" stroke-width="1.2" stroke-linejoin="round"/></svg>';
+  d.innerHTML='<img src="img/cursors/cursor_dark_css.png" style="width:24px;height:auto;pointer-events:none;image-rendering:pixelated;filter:drop-shadow(0 1px 3px #000)">';
   document.body.appendChild(d);_gpVC.el=d;
 }
 function _gpVCUpdate(){
@@ -10000,7 +10000,7 @@ function _gpUINav(panel){
   } else {
     _gpUIRepeatDir=null;
   }
-  if(_didMove)_gpVibrate(2,40);
+  if(_didMove){_gpVibrate(2,40);_gpRSScrolled=false;}
 
   const cur=items[_gpUIIdx];
 
@@ -10043,12 +10043,13 @@ function _gpUINav(panel){
 
   _gpUIPrev.lb=lb;_gpUIPrev.rb=rb;
 
-  // 하이라이트 (우스틱 스크롤 중에는 scrollIntoView 스킵 — 충돌 방지)
-  const _rsActive=_gpad.axes.length>=4&&(Math.abs(_gpad.axes[3])>0.15||Math.abs(_gpad.axes[2])>0.15);
+  // 하이라이트 (우스틱 스크롤 후에는 D-pad 이동 전까지 scrollIntoView 억제)
+  const _rsNow=_gpad.axes.length>=4&&(Math.abs(_gpad.axes[3])>0.15||Math.abs(_gpad.axes[2])>0.15);
+  if(_rsNow)_gpRSScrolled=true;
   for(let i=0;i<items.length;i++){
     if(i===_gpUIIdx){
       items[i].style.outline='2px solid #C9A961';items[i].style.outlineOffset='-1px';
-      if(!_rsActive){
+      if(!_gpRSScrolled){
         if(items[i].scrollIntoViewIfNeeded)items[i].scrollIntoViewIfNeeded(false);
         else items[i].scrollIntoView({block:'nearest'});
       }
