@@ -39,6 +39,7 @@ if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!==
   document.head.appendChild(_sbS);
 }
 </script>
+<script src="three.min.js"></script>
 <script src="maps_data.js"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
@@ -16418,7 +16419,7 @@ function _assignBossSkin(e,si){
 
 // ═══ 아틀라스 텍스처 워밍업 (오프스크린 + setTimeout 백그라운드) ═══
 var _ensWarmDone=false;
-var _wqBuf=new Array(40);
+var _wqBuf=new Array(120);
 var _wqLen=0,_wqIdx=0,_wqTotal=0;
 // 오프스크린 1×1 캔버스 (메인 캔버스 상태 오염 없음)
 var _wqCvs=document.createElement('canvas');_wqCvs.width=1;_wqCvs.height=1;
@@ -16444,6 +16445,15 @@ function _warmupEnsAtlas(){
   for(var gi=0;gi<3;gi++){var gt=_gEts[gi];
     if(_ghoulReady[gt]){var gm=_ghoulImgs[gt];
       for(var gk in gm){if(gm[gk]&&gm[gk].complete&&gm[gk].naturalWidth>0&&_wqLen<40)_wqBuf[_wqLen++]=gm[gk]}}}
+  // 추가 텍스처 워밍업: 투사체, 스킬 이펙트, PSPRITE
+  if(_projAtlas.ready&&_projAtlas.img&&_projAtlas.img.naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=_projAtlas.img;
+  if(_saReady&&_SA_IMG&&_SA_IMG.naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=_SA_IMG;
+  if(_saReady&&_SA_IMG_R&&_SA_IMG_R.naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=_SA_IMG_R;
+  if(_paReady&&_PA_IMG&&_PA_IMG.naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=_PA_IMG;
+  for(var bi=0;bi<_BULLET_IMGS.length;bi++){if(_BULLET_IMGS[bi]&&_BULLET_IMGS[bi].complete&&_BULLET_IMGS[bi].naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=_BULLET_IMGS[bi]}
+  for(var pk in _PSPRITES){var ps=_PSPRITES[pk];if(ps&&ps.img&&ps.img.complete&&ps.img.naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=ps.img}
+  // ESPRITE (몬스터 스프라이트)
+  for(var ek in _ESPRITES){var es=_ESPRITES[ek];if(es&&es.img&&es.img.complete&&es.img.naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=es.img}
   _wqTotal=_wqLen;
   if(_wqLen===0){_ensWarmDone=true;return}
   // setTimeout 체인으로 1장씩 백그라운드 워밍업 (게임 루프 밖)
@@ -49710,7 +49720,7 @@ document.addEventListener('keydown',function(ev){
 <canvas id="boss3dCvs" style="position:fixed;inset:0;pointer-events:none;z-index:5000"></canvas>
 <canvas id="chest3dCvs" style="position:fixed;pointer-events:none;z-index:4998;display:none"></canvas>
 <script type="importmap">
-{"imports":{"three":"./three.min.js","three/addons/loaders/GLTFLoader.js":"./GLTFLoader.js"}}
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
 </script>
 <script type="module">
 import * as THREE from 'three';
