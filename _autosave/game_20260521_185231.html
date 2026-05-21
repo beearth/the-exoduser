@@ -9778,11 +9778,28 @@ let _gpActive=false;    // 패드 모드 활성 (실제 입력 감지 시 true, 
 if(localStorage.getItem('inputMode')==='pad'){_gpActive=true;document.body.style.cursor='none'}
 addEventListener('gamepadconnected',e=>{
   _gpConnected=true;
-  console.log('[GAMEPAD] 연결:',e.gamepad.id);
+  _gpVibRef=e.gamepad; // vibrationActuator 캐시 (이 객체에만 존재)
+  console.log('[GAMEPAD] 연결:',e.gamepad.id,'vibrator:',!!e.gamepad.vibrationActuator);
   // 패드 연결 즉시 모드 전환 (자동 감지)
   if(!_gpActive){_gpActive=true;document.body.style.cursor='none';if(typeof C!=='undefined'&&C)C.style.cursor='none';localStorage.setItem('inputMode','pad')}
 });
-addEventListener('gamepaddisconnected',e=>{_gpConnected=false;_gpActive=false;_gpad=null;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
+// 시작 시 이미 꽂혀있는 패드 감지 (gamepadconnected 이벤트가 안 오는 경우)
+(function _gpBootDetect(){
+  const gps=navigator.getGamepads();
+  for(let i=0;i<gps.length;i++){
+    if(gps[i]&&gps[i].connected){
+      _gpConnected=true;
+      _gpVibRef=gps[i];
+      console.log('[GAMEPAD] 부팅 감지:',gps[i].id,'vibrator:',!!gps[i].vibrationActuator);
+      if(!_gpActive){_gpActive=true;document.body.style.cursor='none';localStorage.setItem('inputMode','pad')}
+      return;
+    }
+  }
+  // 아직 없으면 1초 후 재시도 (NW.js 초기화 지연 대응, 최대 5회)
+  if(!_gpBootDetect._n)_gpBootDetect._n=0;
+  if(++_gpBootDetect._n<5)setTimeout(_gpBootDetect,1000);
+})();
+addEventListener('gamepaddisconnected',e=>{_gpConnected=false;_gpActive=false;_gpad=null;_gpVibRef=null;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
 // 키보드/마우스 입력 → 패드모드 해제 + 패드 주입 키 정리
 addEventListener('mousemove',e=>{if(_gpActive&&(Math.abs(e.movementX)+Math.abs(e.movementY)>3)){_gpActive=false;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
 addEventListener('keydown',e=>{if(_gpActive&&!e._fromGp){_gpActive=false;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
@@ -9983,6 +10000,7 @@ function _gpUINav(panel){
   } else {
     _gpUIRepeatDir=null;
   }
+  if(_didMove)_gpVibrate(2,40);
 
   const cur=items[_gpUIIdx];
 
@@ -10130,8 +10148,9 @@ function _gpUINav(panel){
 function _pollGamepad(){
   if(!_gpConnected)return;
   const gps=navigator.getGamepads();
-  _gpad=null;
-  for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){_gpad=gps[i];break}}
+  let _found=null;
+  for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){_found=gps[i];break}}
+  if(_found)_gpad=_found;
   if(!_gpad)return;
 
   // ── 1단계: 하드웨어 상태만 읽기 ──
@@ -11878,7 +11897,7 @@ let invFilter={slot:null,rarity:null,el:null}; // toggle filters
 function equipItem(item){
   // 레벨 제한 체크
   if(item.reqLv&&P&&P.lv<item.reqLv){
-    notify(_T('레벨 부족! (요구: Lv.')+item.reqLv+_L(', 현재: Lv.',', Current: Lv.')+P.lv+')');return;
+    notify(_L('⚠ 아이템 레벨이 높습니다! (요구 Lv.'+item.reqLv+' / 현재 Lv.'+P.lv+')','⚠ Item level too high! (Req. Lv.'+item.reqLv+' / Current Lv.'+P.lv+')'));return;
   }
   const old=INV.equipped[item.slot];
   // ═══ 강화 자동 이전 ═══
@@ -13313,11 +13332,11 @@ const ETYPE_COLS=['#ee5544','#88cc44','#ff8822','#66dd66','#8888aa','#ff5500','#
   '#223344','#334455','#5566aa','#445533','#2a3a4a','#556644','#885566','#446655','#112233','#0a1122',
   '#aa3300','#cc4400','#ee5500','#dd6600','#332211','#ee4400','#555544','#881100','#993300','#660000'];
 // ─── [S08c] HELPERS — 충격/임팩트/유틸리티 함수 ───
-function shake(n){G.shake=Math.max(G.shake,n*OPT.shake/100);if(n>=10)_gpVibrate(n)}
+function shake(n){G.shake=Math.max(G.shake,n*OPT.shake/100);if(n>=4)_gpVibrate(n)}
 // ── 게임패드 진동 ──
 let _gpVibLastT=0;
 function _gpVibrate(intensity,durMs){
-  if(!_gpad||(OPT.vibration===false))return;
+  if(!_gpConnected||(OPT.vibration===false))return;
   // 쿨다운: 60ms 미만 간격 진동 무시 (지속공격 도배 방지)
   const now=performance.now();
   if(!durMs&&now-_gpVibLastT<60)return;
@@ -13326,14 +13345,18 @@ function _gpVibrate(intensity,durMs){
   const dur=durMs||Math.max(80,Math.min(800,intensity*12));
   const weak=Math.min(1,t*0.7);
   const strong=Math.min(1,t);
-  // dual-rumble (Chrome/Edge standard)
-  if(_gpad.vibrationActuator){
-    _gpad.vibrationActuator.playEffect('dual-rumble',{duration:dur,startDelay:0,strongMagnitude:strong,weakMagnitude:weak}).catch(()=>{});
+  // _gpVibRef: gamepadconnected 이벤트에서 캐싱한 원본 객체 (vibrationActuator 보유)
+  // _gpad: navigator.getGamepads() 스냅샷 (vibrationActuator 없을 수 있음)
+  const vg=_gpVibRef||_gpad;
+  if(!vg)return;
+  // dual-rumble (Chrome/Edge/NW.js standard)
+  if(vg.vibrationActuator){
+    vg.vibrationActuator.playEffect('dual-rumble',{duration:dur,startDelay:0,strongMagnitude:strong,weakMagnitude:weak}).catch(()=>{});
     return;
   }
   // hapticActuators 폴백 (Firefox/일부 브라우저)
-  if(_gpad.hapticActuators&&_gpad.hapticActuators.length>0){
-    _gpad.hapticActuators[0].pulse(strong,dur).catch(()=>{});
+  if(vg.hapticActuators&&vg.hapticActuators.length>0){
+    vg.hapticActuators[0].pulse(strong,dur).catch(()=>{});
   }
 }
 // ── 히트 플래시 (순간 백플래시) ──
@@ -37127,7 +37150,7 @@ function renderInvStorage(){
     if(sel)div.style.background='rgba(255,150,0,.1)';
     div.innerHTML=`<span style="color:${RARITY_C[item.rarity]}">${item.emoji}</span><div style="position:absolute;top:1px;left:1px;width:3px;height:3px;border-radius:50%;background:${RARITY_C[item.rarity]}"></div>`;
     const ii=i;
-    div.onclick=()=>{INV.selected='st:'+ii;renderInv();_invRenderDetail(ii,'st')};
+    div.onclick=()=>{withdrawStorage(ii)};
     div.oncontextmenu=(ev)=>{ev.preventDefault();withdrawStorage(ii)};
     grid.appendChild(div);
   }
@@ -37998,8 +38021,9 @@ function _invRenderDetail(idx,source){
       const _oeq=INV.equipped[it.slot];
       const _fe=_oeq?(_oeq.enh||0):0;
       const _xc=_fe>0?xferCost(_fe):0;
-      const _lbl=_fe>0?_T('장착')+' (\u2692+'+_fe+' \u2192 '+_xc.toLocaleString()+_L('악의',' Malice')+((G.mats||0)<_xc?' \u26A0':'')+')'  :_T('장착');
-_actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><div class="id-btn equip" onclick="const _it=INV.bag[${idx}];const _s=_it?.slot;const _old=_s?INV.equipped[_s]:null;equipItem(_it);applyStats();if(_old){const _oi=INV.bag.indexOf(_old);INV.selected=_oi>=0?_oi:null}else{INV.selected=_s?'eq:'+_s:null}renderInv()">${_lbl}</div><div class="id-btn" onclick="if(dropItem(${idx}))renderInv()">${_T('분해')} (${_T('악의')}+${_salV})</div></div>`;
+      const _reqFail=it.reqLv&&P&&P.lv<it.reqLv;
+      const _lbl=_reqFail?'⚠ '+_L('Lv.'+it.reqLv+' 필요','Req. Lv.'+it.reqLv):_fe>0?_T('장착')+' (\u2692+'+_fe+' \u2192 '+_xc.toLocaleString()+_L('악의',' Malice')+((G.mats||0)<_xc?' \u26A0':'')+')'  :_T('장착');
+_actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><div class="id-btn equip${_reqFail?' dis':''}" style="${_reqFail?'color:#ff4444;border-color:#ff444466':''}" onclick="const _it=INV.bag[${idx}];const _s=_it?.slot;const _old=_s?INV.equipped[_s]:null;equipItem(_it);applyStats();if(_old){const _oi=INV.bag.indexOf(_old);INV.selected=_oi>=0?_oi:null}else{INV.selected=_s?'eq:'+_s:null}renderInv()">${_lbl}</div><div class="id-btn" onclick="if(dropItem(${idx}))renderInv()">${_T('분해')} (${_T('악의')}+${_salV})</div></div>`;
     } else if(source==='eq'){
       _actB.innerHTML=`<div class="id-btns"><div class="id-btn" onclick="const _it=INV.equipped['${idx}'];unequipItem('${idx}');applyStats();const _ui=INV.bag.indexOf(_it);INV.selected=_ui>=0?_ui:null;renderInv()">${_T('해제')}</div></div>`;
     } else if(source==='st'){

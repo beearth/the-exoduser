@@ -10043,12 +10043,15 @@ function _gpUINav(panel){
 
   _gpUIPrev.lb=lb;_gpUIPrev.rb=rb;
 
-  // 하이라이트
+  // 하이라이트 (우스틱 스크롤 중에는 scrollIntoView 스킵 — 충돌 방지)
+  const _rsActive=_gpad.axes.length>=4&&(Math.abs(_gpad.axes[3])>0.15||Math.abs(_gpad.axes[2])>0.15);
   for(let i=0;i<items.length;i++){
     if(i===_gpUIIdx){
       items[i].style.outline='2px solid #C9A961';items[i].style.outlineOffset='-1px';
-      if(items[i].scrollIntoViewIfNeeded)items[i].scrollIntoViewIfNeeded(false);
-      else items[i].scrollIntoView({block:'nearest'});
+      if(!_rsActive){
+        if(items[i].scrollIntoViewIfNeeded)items[i].scrollIntoViewIfNeeded(false);
+        else items[i].scrollIntoView({block:'nearest'});
+      }
     } else {
       items[i].style.outline='';items[i].style.outlineOffset='';
     }

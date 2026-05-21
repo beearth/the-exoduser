@@ -25686,3 +25686,11 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - index.html
 
+
+## 2026-05-21 19:30 (auto)
+- _autosave/game_20260521_185231.html
+- _gif_capture/frame_000.png
+- _gif_capture/state_after8s.png
+- _gif_capture/state_after_click.png
+- game.html
+
