@@ -39,7 +39,6 @@ if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!==
   document.head.appendChild(_sbS);
 }
 </script>
-<script src="three.min.js"></script>
 <script src="maps_data.js"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
@@ -3571,6 +3570,7 @@ let _vignCvs=null,_vignW=0,_vignH=0;
 let _fogCvs=null,_fogW=0,_fogH=0,_fogHell=-1;
 // ── 안개 레이어 (하단 지면 안개 + 상단 대기 헤이즈) ──
 let _fogBotCvs=null,_fogTopCvs=null,_fogLayerW=0,_fogLayerH=0,_fogLayerHell=-1;
+let _fogMerged=null,_fogMX=null,_fogMW=0,_fogMH=0;
 const _FOG_BOT_COLS=[
   'rgba(60,90,120,.12)','rgba(20,40,15,.14)','rgba(60,15,8,.13)',
   'rgba(35,12,50,.14)','rgba(50,40,8,.12)','rgba(40,35,20,.13)','rgba(20,8,40,.15)'
@@ -42542,16 +42542,25 @@ function draw(){
     const beatPhase=(_now%beatSpeed)/beatSpeed;
     const heartPulse=beatPhase<.15?Math.sin(beatPhase/.15*Math.PI):beatPhase<.3?Math.sin((beatPhase-.15)/.15*Math.PI)*.6:0;
     const pulse=.4+heartPulse*.6;
-    // Full screen red tint (stronger with heartbeat)
+    // Full screen red tint (캐시 캔버스)
+    if(!G._redTintCvs||G._redTintW!==C.width){
+      if(!G._redTintCvs){G._redTintCvs=document.createElement('canvas');G._redTintCx=G._redTintCvs.getContext('2d')}
+      G._redTintCvs.width=C.width;G._redTintCvs.height=C.height;
+      G._redTintCx.fillStyle='#880000';G._redTintCx.fillRect(0,0,C.width,C.height);
+      G._redTintW=C.width;
+    }
     X.globalAlpha=(severity*.3+.08)*pulse;
-    X.fillStyle='#880000';X.fillRect(0,0,C.width,C.height);
-    // Vignette (dark red edges, cached gradient)
-    if(!G._vgCache||G._vgW!==C.width||G._vgH!==C.height){
-      G._vgCache=X.createRadialGradient(C.width/2,C.height/2,C.width*.15,C.width/2,C.height/2,C.width*.6);
-      G._vgCache.addColorStop(0,'rgba(0,0,0,0)');G._vgCache.addColorStop(.6,'rgba(80,0,0,.3)');G._vgCache.addColorStop(1,'rgba(120,0,0,.8)');
+    X.drawImage(G._redTintCvs,0,0);
+    // Vignette (dark red edges, 캐시 캔버스)
+    if(!G._vgCvs||G._vgW!==C.width||G._vgH!==C.height){
+      if(!G._vgCvs){G._vgCvs=document.createElement('canvas');G._vgCx=G._vgCvs.getContext('2d')}
+      G._vgCvs.width=C.width;G._vgCvs.height=C.height;
+      const _vgGr=G._vgCx.createRadialGradient(C.width/2,C.height/2,C.width*.15,C.width/2,C.height/2,C.width*.6);
+      _vgGr.addColorStop(0,'rgba(0,0,0,0)');_vgGr.addColorStop(.6,'rgba(80,0,0,.3)');_vgGr.addColorStop(1,'rgba(120,0,0,.8)');
+      G._vgCx.fillStyle=_vgGr;G._vgCx.fillRect(0,0,C.width,C.height);
       G._vgW=C.width;G._vgH=C.height;
     }
-    X.globalAlpha=(.3+severity*.5)*(.6+heartPulse*.4);X.fillStyle=G._vgCache;X.fillRect(0,0,C.width,C.height);
+    X.globalAlpha=(.3+severity*.5)*(.6+heartPulse*.4);X.drawImage(G._vgCvs,0,0);
     // Screen border glow
     X.globalAlpha=(.2+severity*.4)*pulse;X.strokeStyle='#aa0000';X.lineWidth=4+severity*6;X.strokeRect(0,0,C.width,C.height);
     // Generate stable cracks (only regenerate when HP changes)
@@ -42826,30 +42835,53 @@ function draw(){
     X.save();X.setTransform(1,0,0,1,0,0);
     // (C) 가장자리 안개 두께 sin 진동 (alpha 0.55±0.15, 주기 4초)
     const _fogPulse=.55+Math.sin(_now*Math.PI/2000)*.15;
+    // 합성 캐시: 2장 → 1장 (5프레임마다 갱신)
+    if(!_fogMerged||_fogMW!==C.width||_fogMH!==C.height||(_now|0)%5===0){
+      if(!_fogMerged){_fogMerged=document.createElement('canvas');_fogMX=_fogMerged.getContext('2d')}
+      if(_fogMerged.width!==C.width||_fogMerged.height!==C.height){_fogMerged.width=C.width;_fogMerged.height=C.height;_fogMW=C.width;_fogMH=C.height}
+      _fogMX.clearRect(0,0,C.width,C.height);
+      _fogMX.globalAlpha=1;_fogMX.drawImage(_fogBotCvs,0,0);
+      _fogMX.globalAlpha=.6;_fogMX.drawImage(_fogTopCvs,0,0);
+      _fogMX.globalAlpha=1;
+    }
     X.globalAlpha=_fogPulse;
-    X.drawImage(_fogBotCvs,0,0);
-    X.globalAlpha=_fogPulse*.6;
-    X.drawImage(_fogTopCvs,0,0);
+    X.drawImage(_fogMerged,0,0);
     X.globalAlpha=1;X.restore();
   }
   // ── [THREE-FOG] Three.js 안개 렌더 (별도 캔버스) ──
   if(OPT.fog&&typeof _fogGLRender==='function')_fogGLRender();
   // (Canvas2D depth-fog 제거됨 — Three.js fogGL로 대체)
-  // ── 동적 환경광 오버레이 (매 프레임 — 교대 렌더 제거, 깜빡임 방지) ──
+  // ── 동적 환경광 오버레이 (캐시 캔버스, 스테이지 변경 시만 갱신) ──
   {const _elHell=SI_TO_HELL[G.stage||0];
   const _elCol=_ENV_LIGHT[_elHell];
-  if(_elCol){X.save();X.setTransform(1,0,0,1,0,0);X.fillStyle=_elCol;X.fillRect(0,0,C.width,C.height);X.restore();}}
+  if(_elCol){
+    if(!G._envLightCvs||G._envLightHell!==_elHell||G._envLightW!==C.width){
+      if(!G._envLightCvs){G._envLightCvs=document.createElement('canvas');G._envLightCx=G._envLightCvs.getContext('2d')}
+      G._envLightCvs.width=C.width;G._envLightCvs.height=C.height;
+      G._envLightCx.fillStyle=_elCol;G._envLightCx.fillRect(0,0,C.width,C.height);
+      G._envLightHell=_elHell;G._envLightW=C.width;
+    }
+    X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(G._envLightCvs,0,0);X.restore();
+  }}
   // ═══ 지옥별 동적 비네팅 (매 프레임 — 교대 렌더 제거, 깜빡임 방지) ═══
   {
-  if(!G._dvgCache||G._dvgStage!==G.stage||G._dvgW!==C.width){const hell=SI_TO_HELL[G.stage];const _vCols=['rgba(20,60,120,','rgba(20,60,15,','rgba(100,20,10,','rgba(50,15,80,','rgba(80,60,10,','rgba(50,40,25,','rgba(30,10,60,'];const vc=_vCols[hell];G._dvgCache=X.createRadialGradient(C.width/2,C.height/2,C.width*.35,C.width/2,C.height/2,C.width*.7);G._dvgCache.addColorStop(0,'rgba(0,0,0,0)');G._dvgCache.addColorStop(.7,vc+'.05)');G._dvgCache.addColorStop(1,vc+'.15)');G._dvgStage=G.stage;G._dvgW=C.width}
+  // 비네팅 캐시 캔버스 (스테이지/해상도 변경 시만 리빌드)
+  if(!G._dvgCvs||G._dvgStage!==G.stage||G._dvgW!==C.width){
+    const hell=SI_TO_HELL[G.stage];const _vCols=['rgba(20,60,120,','rgba(20,60,15,','rgba(100,20,10,','rgba(50,15,80,','rgba(80,60,10,','rgba(50,40,25,','rgba(30,10,60,'];const vc=_vCols[hell];
+    if(!G._dvgCvs){G._dvgCvs=document.createElement('canvas');G._dvgCx=G._dvgCvs.getContext('2d')}
+    G._dvgCvs.width=C.width;G._dvgCvs.height=C.height;
+    const gr=G._dvgCx.createRadialGradient(C.width/2,C.height/2,C.width*.35,C.width/2,C.height/2,C.width*.7);
+    gr.addColorStop(0,'rgba(0,0,0,0)');gr.addColorStop(.7,vc+'.05)');gr.addColorStop(1,vc+'.15)');
+    G._dvgCx.fillStyle=gr;G._dvgCx.fillRect(0,0,C.width,C.height);
+    G._dvgStage=G.stage;G._dvgW=C.width;
+  }
   let _vAlpha=.2;
   if(G._bossArena){
     _vAlpha=.35;
     const _bRef=G._bossRef;
     if(_bRef&&_bRef.alive&&_bRef.hp<_bRef.mhp*.5){_vAlpha=.5+.15*(1-_bRef.hp/_bRef.mhp)}
   }
-  const _vQ=(_vAlpha*100|0);if(_vQ!==(G._lastVQ||0)){G._lastVQ=_vQ;G._lastVA=_vAlpha}
-  X.save();X.setTransform(1,0,0,1,0,0);X.globalAlpha=G._lastVA||_vAlpha;X.fillStyle=G._dvgCache;X.fillRect(0,0,C.width,C.height);X.restore()}
+  X.save();X.setTransform(1,0,0,1,0,0);X.globalAlpha=_vAlpha;X.drawImage(G._dvgCvs,0,0);X.restore()}
   _pC3=performance.now(); // envLight+vignette end
   // [GRAIN] 필름 그레인
   // [GRAIN+SCANLINE] CSS filter로 대체 (putImageData 제거 → 0ms)
@@ -49678,7 +49710,7 @@ document.addEventListener('keydown',function(ev){
 <canvas id="boss3dCvs" style="position:fixed;inset:0;pointer-events:none;z-index:5000"></canvas>
 <canvas id="chest3dCvs" style="position:fixed;pointer-events:none;z-index:4998;display:none"></canvas>
 <script type="importmap">
-{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+{"imports":{"three":"./three.min.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
 </script>
 <script type="module">
 import * as THREE from 'three';
