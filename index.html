@@ -8,7 +8,7 @@
 <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
 <script>
 (() => {
-  const v = '20260414-hotfix2-' + Date.now();
+  const v = '20260521-' + Date.now();
   const iconIco = '/favicon.ico?v=' + v;
   const iconPng = 'img/icon-256.png?v=' + v;
   const applyFavicon = () => {
@@ -600,16 +600,22 @@ const _GP = {
   prev: {},
   axes: [0,0,0,0],
   DEAD: 0.25,
+  vibRef: null, // gamepadconnected 이벤트 원본 (vibrationActuator 보유)
   _handlers: [],
   on(id, test, action) { this._handlers.push({id, test, action}) },
   off(id) { this._handlers = this._handlers.filter(h => h.id !== id) },
+  vib(dur,weak,strong){try{if(this.vibRef&&this.vibRef.vibrationActuator)this.vibRef.vibrationActuator.playEffect('dual-rumble',{startDelay:0,duration:dur,weakMagnitude:weak,strongMagnitude:strong})}catch(e){}},
+  _vibLoop:null,
+  vibLoop(dur,weak,strong,interval){this.vibLoopStop();this.vib(dur,weak,strong);this._vibLoop=setInterval(()=>this.vib(dur,weak,strong),interval||dur+30)},
+  vibLoopStop(){if(this._vibLoop){clearInterval(this._vibLoop);this._vibLoop=null}},
 };
 addEventListener('gamepadconnected', e => {
   _GP.connected = true;
-  console.log('[GP] 연결:', e.gamepad.id);
+  _GP.vibRef = e.gamepad;
+  console.log('[GP] 연결:', e.gamepad.id, 'vibrator:', !!e.gamepad.vibrationActuator);
 });
 addEventListener('gamepaddisconnected', e => {
-  _GP.connected = false; _GP.active = false;
+  _GP.connected = false; _GP.active = false; _GP.vibRef = null;
   console.log('[GP] 해제');
 });
 addEventListener('mousemove', e => {
@@ -670,6 +676,7 @@ const _LOBBY_QUOTES={
   demo:'멘트 준비 중',
 };
 const _LOBBY_VER_LABEL={full:'OFFICIAL',ea:'EARLY ACCESS',demo:'DEMO'};
+const _LOBBY_VER='v0.6.0 · 20260521';
 const _LOBBY_VER_LIMITS={
   full:'All Chapters · No Level Cap',
   ea:'Lv.500 · Chapter 1 (1-1~1-4) · 8~15h',
@@ -1745,7 +1752,7 @@ function playCinematic(){
     if(line.shake){
       const _cs=$('cinScene');
       if(_cs){_cs.style.animation='cinShake .5s ease';setTimeout(()=>{_cs.style.animation=''},600);}
-      try{const gps=navigator.getGamepads();for(let i=0;i<gps.length;i++){const gp=gps[i];if(gp&&gp.vibrationActuator)gp.vibrationActuator.playEffect('dual-rumble',{startDelay:0,duration:800,weakMagnitude:1.0,strongMagnitude:1.0})}}catch(e){}
+      _GP.vib(800,1.0,1.0);
     }
 
     textBox.innerHTML='';
@@ -1805,10 +1812,10 @@ function playCinematic(){
     startBGM();
     vid.play().catch(()=>{});
     // 문 열림 진동 — 4초 페이드아웃
-    try{const gps=navigator.getGamepads();for(let i=0;i<gps.length;i++){const g=gps[i];if(g&&g.vibrationActuator){
-      const _v=g.vibrationActuator;const _steps=[[0,200,.5,.7],[200,500,.45,.6],[700,500,.35,.5],[1200,500,.25,.35],[1700,500,.18,.25],[2200,500,.12,.15],[2700,500,.06,.08],[3200,800,.02,.03]];
+    try{if(_GP.vibRef&&_GP.vibRef.vibrationActuator){
+      const _v=_GP.vibRef.vibrationActuator;const _steps=[[0,200,.5,.7],[200,500,.45,.6],[700,500,.35,.5],[1200,500,.25,.35],[1700,500,.18,.25],[2200,500,.12,.15],[2700,500,.06,.08],[3200,800,.02,.03]];
       _steps.forEach(s=>{setTimeout(()=>{try{_v.playEffect('dual-rumble',{startDelay:0,duration:s[1],weakMagnitude:s[2],strongMagnitude:s[3]})}catch(e){}},s[0])});
-    }}}catch(e){}
+    }}catch(e){}
     // 사용자 제스처 컨텍스트에서 오디오 언락
     window._introVoiceUnlocked=true;
     
@@ -2103,7 +2110,7 @@ async function _goLobby(){
     const _lb=_LOBBY_VER_LABEL[_LOBBY_BUILD]||'';
     const _md=_testMode?'OFFLINE':'ONLINE';
     const _lm=_LOBBY_VER_LIMITS[_LOBBY_BUILD]||'';
-    _vo.innerHTML=_lb+'<br>v0.5.0 · 20260414-hotfix2<br>'+_md+(_lm?'<br><span style="color:rgba(200,120,80,.5)">'+_lm+'</span>':'');
+    _vo.innerHTML=_lb+'<br>'+_LOBBY_VER+'<br>'+_md+(_lm?'<br><span style="color:rgba(200,120,80,.5)">'+_lm+'</span>':'');
   }
   if(_testMode){
     if($('userEmail'))$('userEmail').textContent='OFFLINE';
@@ -2480,9 +2487,9 @@ function _swapLobbyBg(stage){
   // 좌측 상단 버전 오버레이
   const vo=$('lobbyVerOverlay');if(vo){
     const label=_LOBBY_VER_LABEL[_LOBBY_BUILD]||'UNKNOWN';
-    const ver='v0.5.0 · 20260414-hotfix2';
     const mode=_testMode?'OFFLINE':'ONLINE';
-    vo.innerHTML=label+'<br>'+ver+'<br>'+mode;
+    const lm=_LOBBY_VER_LIMITS[_LOBBY_BUILD]||'';
+    vo.innerHTML=label+'<br>'+_LOBBY_VER+'<br>'+mode+(lm?'<br><span style="color:rgba(200,120,80,.5)">'+lm+'</span>':'');
   }
 })();
 
@@ -2494,15 +2501,7 @@ try{const _ac=new(window.AudioContext||window.webkitAudioContext)();const src=_a
 function playEnterSFX(){
   try{_enterSFX.currentTime=0;_enterSFX.volume=1.0;if(_enterGain)_enterGain.gain.value=2.0;_enterSFX.play();}catch(e){}
   // 패드 진동 최대
-  try{
-    const gps=navigator.getGamepads();
-    for(let i=0;i<gps.length;i++){
-      const gp=gps[i];
-      if(gp&&gp.vibrationActuator){
-        gp.vibrationActuator.playEffect('dual-rumble',{startDelay:0,duration:600,weakMagnitude:1.0,strongMagnitude:1.0});
-      }
-    }
-  }catch(e){}
+  _GP.vib(600,1.0,1.0);
 }
 // 호버 사운드 — 파일 기반 Web Audio 루프
 let _hoverCtx=null,_hoverBuf=null,_hoverSrc=null,_hoverGain=null;
@@ -2904,13 +2903,15 @@ _GP.on('lobbyNav', (gp, just) => {
     if(_prevGpIdx!==undefined&&_navItems[_prevGpIdx])_navItems[_prevGpIdx].el.classList.remove('gp-hover');
     // 현재 포커스 hover 추가
     if(cur) cur.el.classList.add('gp-hover');
-    if(cur && cur.el.id === 'enterGameBtn') { try{_startHover();}catch(e){} try{const gps=navigator.getGamepads();for(let i=0;i<gps.length;i++){const g=gps[i];if(g&&g.vibrationActuator)g.vibrationActuator.playEffect('dual-rumble',{startDelay:0,duration:80,weakMagnitude:0.15,strongMagnitude:0.0})}}catch(e){} }
-    else { try{_stopHover();}catch(e){} }
+    if(cur && cur.el.id === 'enterGameBtn') { try{_startHover();}catch(e){} _GP.vibLoop(100,0.10,0.06,200); }
+    else { try{_stopHover();}catch(e){} _GP.vibLoopStop(); _GP.vib(60,0.12,0.06); }
   }
   _GP.prev._lobbyIdx = _lobbyGpIdx;
 
   // A(0) = 선택/실행
   if(just[0]) {
+    _GP.vibLoopStop();
+    _GP.vib(200,0.6,0.8);
     const ni = _navItems[_lobbyGpIdx];
     if(ni.type === 'lang') { _openLangPop(ni.el); }
     else { ni.el.click(); }

@@ -39,6 +39,7 @@ if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!==
   document.head.appendChild(_sbS);
 }
 </script>
+<script src="three.min.js"></script>
 <script src="maps_data.js"></script>
 <script src="lang_zh.js"></script>
 <script src="lang_ja.js"></script>
@@ -9770,6 +9771,7 @@ const GP_BINDS={
 };
 const GP_DEAD=0.25; // 스틱 데드존
 let _gpad=null,_gpBtns={},_gpBtnsJust={},_gpBtnsPrev={},_gpAxes=[0,0,0,0,0,0,0,0];
+let _gpVibRef=null; // vibrationActuator 용 원본 gamepad 객체 캐시
 let _gpConnected=false; // 패드 하드웨어 연결됨
 let _gpActive=false;    // 패드 모드 활성 (실제 입력 감지 시 true, 키마 입력 시 false)
 // 자동 감지: localStorage 힌트로 초기값 설정, 이후 실시간 전환
@@ -16418,7 +16420,7 @@ function _assignBossSkin(e,si){
 
 // ═══ 아틀라스 텍스처 워밍업 (오프스크린 + setTimeout 백그라운드) ═══
 var _ensWarmDone=false;
-var _wqBuf=new Array(40);
+var _wqBuf=new Array(120);
 var _wqLen=0,_wqIdx=0,_wqTotal=0;
 // 오프스크린 1×1 캔버스 (메인 캔버스 상태 오염 없음)
 var _wqCvs=document.createElement('canvas');_wqCvs.width=1;_wqCvs.height=1;
@@ -16444,6 +16446,15 @@ function _warmupEnsAtlas(){
   for(var gi=0;gi<3;gi++){var gt=_gEts[gi];
     if(_ghoulReady[gt]){var gm=_ghoulImgs[gt];
       for(var gk in gm){if(gm[gk]&&gm[gk].complete&&gm[gk].naturalWidth>0&&_wqLen<40)_wqBuf[_wqLen++]=gm[gk]}}}
+  // 추가 텍스처 워밍업: 투사체, 스킬 이펙트, PSPRITE
+  if(_projAtlas.ready&&_projAtlas.img&&_projAtlas.img.naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=_projAtlas.img;
+  if(_saReady&&_SA_IMG&&_SA_IMG.naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=_SA_IMG;
+  if(_saReady&&_SA_IMG_R&&_SA_IMG_R.naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=_SA_IMG_R;
+  if(_paReady&&_PA_IMG&&_PA_IMG.naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=_PA_IMG;
+  for(var bi=0;bi<_BULLET_IMGS.length;bi++){if(_BULLET_IMGS[bi]&&_BULLET_IMGS[bi].complete&&_BULLET_IMGS[bi].naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=_BULLET_IMGS[bi]}
+  for(var pk in _PSPRITES){var ps=_PSPRITES[pk];if(ps&&ps.img&&ps.img.complete&&ps.img.naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=ps.img}
+  // ESPRITE (몬스터 스프라이트)
+  for(var ek in _ESPRITES){var es=_ESPRITES[ek];if(es&&es.img&&es.img.complete&&es.img.naturalWidth>0&&_wqLen<80)_wqBuf[_wqLen++]=es.img}
   _wqTotal=_wqLen;
   if(_wqLen===0){_ensWarmDone=true;return}
   // setTimeout 체인으로 1장씩 백그라운드 워밍업 (게임 루프 밖)
@@ -46174,12 +46185,10 @@ function drawP(){
   }}
   // Additive 글로우 제거됨 (alpha .001~.003 = 보이지 않음, compositeOp 전환 비용만 낭비)
 
-  // 2패스 렌더: 푸른비(뒤) → 석궁/스킬(앞) — 석궁이 푸른비에 묻히지 않게
+  // 1패스 렌더 (2패스 제거 — 성능 우선)
   let _ppDrawN=0;
-  for(let _ppPass=0;_ppPass<2;_ppPass++){
+  {
   for(let _ppi3=0;_ppi3<pProjs.length;_ppi3++){const p=pProjs[_ppi3];
-    if(_ppPass===0&&!p.blueShot)continue; // 1패스: 푸른비만
-    if(_ppPass===1&&p.blueShot)continue;  // 2패스: 나머지만
     if(p.x<_vl-20||p.x>_vr+20||p.y<_vt-20||p.y>_vb+20)continue;
     if(++_ppDrawN>_PP_DRAW_MAX)break;
     if(p._sprFr==null)p._sprFr=Math.random()*8;p._sprFr+=.15;
@@ -46228,33 +46237,16 @@ function drawP(){
         X.beginPath();X.arc(p.x,p.y,p.r*1.5,0,Math.PI*2);X.fill();X.globalAlpha=1;
       }
     }else if(p.blueBean){
-      // ── 파란콩: 반사 블루콩과 동일 비주얼 ──
+      // ── 파란콩: 간소화 (12→3 draw calls) ──
       const _bb=3.5;
-      const _bpulse=.8+Math.sin(_now/50+p.x*.3)*.2;
-      const _bflk=Math.sin(_now/35+p.y*.2)>.1?1:.6;
-      X.globalAlpha=fa*.12*_bpulse;X.fillStyle='#00ccff';
-      X.beginPath();X.arc(p.x,p.y,_bb*3.5,0,Math.PI*2);X.fill();
-      X.globalAlpha=fa*.2*_bflk;X.fillStyle='#00ddff';
-      X.beginPath();X.arc(p.x,p.y,_bb*2.2,0,Math.PI*2);X.fill();
-      X.globalAlpha=fa*.85*_bflk;X.fillStyle='#00aadd';
+      // 글로우 + 코어 (2 calls)
+      X.globalAlpha=fa*.15;X.fillStyle='#00ccff';
+      X.beginPath();X.arc(p.x,p.y,_bb*2.5,0,Math.PI*2);X.fill();
+      X.globalAlpha=fa*.85;X.fillStyle='#00aadd';
       X.beginPath();X.arc(p.x,p.y,_bb,0,Math.PI*2);X.fill();
-      X.globalAlpha=fa*.9;X.fillStyle='#44eeff';
-      X.beginPath();X.arc(p.x,p.y,_bb*.6,0,Math.PI*2);X.fill();
-      X.globalAlpha=fa*.7*_bflk;X.fillStyle='#ccffff';
-      X.beginPath();X.arc(p.x,p.y-_bb*.2,_bb*.3,0,Math.PI*2);X.fill();
-      const _bvx=p.vx,_bvy=p.vy;
-      X.globalAlpha=fa*.15;X.strokeStyle='#0088cc';X.lineWidth=_bb*1.8;
-      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_bvx*7,p.y-_bvy*7);X.stroke();
-      X.globalAlpha=fa*.25*_bflk;X.strokeStyle='#00bbee';X.lineWidth=_bb*1.1;
-      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_bvx*5,p.y-_bvy*5);X.stroke();
-      X.globalAlpha=fa*.35;X.strokeStyle='#66eeff';X.lineWidth=_bb*.5;
-      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_bvx*3,p.y-_bvy*3);X.stroke();
-      for(let _bi2=0;_bi2<4;_bi2++){
-        const _ba2=_now/25+_bi2*Math.PI/2+p.x*.2;
-        const _br2=_bb*1.5+Math.sin(_now/30+_bi2*3)*_bb*.5;
-        X.globalAlpha=fa*(.2+Math.sin(_now/40+_bi2)*.1);X.fillStyle='#44ddff';
-        X.fillRect(p.x+Math.cos(_ba2)*_br2-1,p.y+Math.sin(_ba2)*_br2-1,2,2);
-      }
+      // 트레일 (1 call)
+      X.globalAlpha=fa*.2;X.strokeStyle='#00bbee';X.lineWidth=_bb*1.2;
+      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-p.vx*5,p.y-p.vy*5);X.stroke();
       X.globalAlpha=1;
     }else if(p.arcMissile){
       // ── 6원소 유도탄: 미사일형 곡선 투사체 ──
@@ -46512,7 +46504,7 @@ function drawP(){
       if(!_drawProjPNG(p.x,p.y,'arrow',p.el,p._sprFr,22,ang,fa)&&!_drawProjSprite(p.x,p.y,_PA_ARROW[p.el]||0,22,ang,fa))
         _drawProcArrow(p.x,p.y,p.el,ang,22,fa);
     }
-  }} // end 2패스 + pProjs for
+  }} // end pProjs for
   const _s7t1=performance.now(); // pProjs 끝
   const _s7sub={proj:_s7t1-_s7t0,shield:0,pet:0,orb:0,harp:0,misc:0};
   let _s7m0=_s7t1;
@@ -49710,7 +49702,7 @@ document.addEventListener('keydown',function(ev){
 <canvas id="boss3dCvs" style="position:fixed;inset:0;pointer-events:none;z-index:5000"></canvas>
 <canvas id="chest3dCvs" style="position:fixed;pointer-events:none;z-index:4998;display:none"></canvas>
 <script type="importmap">
-{"imports":{"three":"./three.min.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
+{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
 </script>
 <script type="module">
 import * as THREE from 'three';
