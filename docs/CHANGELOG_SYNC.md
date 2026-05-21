@@ -25773,3 +25773,17 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _gif_capture/intro_09.png
 - game.html
 
+
+## 2026-05-21 23:30 (auto)
+- _autosave/game_20260521_230908.html
+- _autosave/game_20260521_230923.html
+- _autosave/game_20260521_230941.html
+- _autosave/game_20260521_231148.html
+- _autosave/game_20260521_231513.html
+- _autosave/game_20260521_231523.html
+- _autosave/game_20260521_231530.html
+- _autosave/game_20260521_231543.html
+- _autosave/game_20260521_231610.html
+- _autosave/game_20260521_231638.html
+- game.html
+
