@@ -9709,7 +9709,7 @@ addEventListener('keyup',e=>{
       if(G._pStats)G._pStats._dC++;
       const _hSk=P.activeChargeSk||'charge';
       const _isDB=isDimBreach();
-      const _hDir=_gpActive?P.facing:(()=>{const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;return Math.atan2(mouse.y-sy,mouse.x-sx)})();
+      const _hDir=_gpActive?P.facing:_aimDir();
       const _tier=_dashTier;
       _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=_tier;_dashPhase=1;
       _harpSk=_isDB?'dimBreach':_hSk;_harpHits=[];
@@ -12212,7 +12212,7 @@ let G={on:false,paused:false,stage:0,kills:0,mats:0,cam:{x:0,y:0},shake:0,parts:
   combo:0,comboTimer:0,comboMax:0,stageTime:0,
   _zones:null,_curZone:0,_zoneState:{},_portals:null}; // 존 분할 시스템
 let P=null,ens=[],projs=[],pProjs=[],worldItems=[];// worldItems = items on ground, pProjs = player arrows
-function _wiPush(wi){worldItems.push(wi);if(worldItems.length>20){worldItems.sort((a,b)=>{const ra=a.type==='item'?(a.item?a.item.rarity||0:0):-1;const rb=b.type==='item'?(b.item?b.item.rarity||0:0):-1;return ra-rb});worldItems.splice(0,worldItems.length-20)}}
+function _wiPush(wi){worldItems.push(wi);while(worldItems.length>20){let mi=0,mr=Infinity;for(let i=0;i<worldItems.length;i++){const r=worldItems[i].type==='item'?(worldItems[i].item?worldItems[i].item.rarity||0:0):-1;if(r<mr){mr=r;mi=i}}worldItems[mi]=worldItems[worldItems.length-1];worldItems.length--}}
 // ── 적 투사체 오브젝트 풀 ──
 const _PROJ_POOL=600;
 const _projFree=[];
@@ -12902,17 +12902,17 @@ let _esReady=false;_ES_IMG.onload=()=>{_esReady=true};
 const _ES_FRAMES=30,_ES_FW=546,_ES_FH=51;
 const _ES_DRAW_H=84;               // 마력연사 시각 두께(px) (원본 대비 ~44% 축소)
 const _ES_HIT_HALF_W=(_ES_DRAW_H*.5); // 타격 반폭(px) — 시각과 판정 일치
-// ═══ 마력광선 텍스처 (870×2720 스프라이트시트, 16프레임, lighter 합성) ═══
-const _AL_IMG=new Image();_AL_IMG.src='assets/vfx/arc_laser/laser_sheet.png?v=20260429g';
+// ═══ 마력광선 텍스처 (726×2192 스프라이트시트, 16프레임 세로배치, lighter 합성) ═══
+const _AL_IMG=new Image();_AL_IMG.src='assets/vfx/arc_laser/laser_sheet.png?v=20260522b';
 let _alImgReady=false;_AL_IMG.onload=()=>{_alImgReady=true};
-const _AL_DRAW_H=170; // 시각 두께(px) — 빔 높이
+const _AL_DRAW_H=137; // 시각 두께(px) — 빔 높이
 const _AL_FRAMES=16; // 총 프레임 수
-const _AL_FW=870; // 프레임 폭
-const _AL_FH=170; // 프레임 높이
+const _AL_FW=726; // 프레임 폭
+const _AL_FH=137; // 프레임 높이
 // ═══ 마법 오브 투사체 (vfx_magic_orb.png 6열×5행=30프레임) ═══
 const _MO_IMG=new Image();_MO_IMG.src='assets/vfx/vfx_magic_orb.png';
 let _moReady=false;_MO_IMG.onload=()=>{_moReady=true};
-const _MO_COLS=6,_MO_ROWS=5,_MO_FRAMES=30,_MO_CW=240,_MO_CH=240;
+const _MO_COLS=7,_MO_ROWS=3,_MO_FRAMES=20,_MO_CW=161,_MO_CH=161;
 // ═══ 어둠 폭발 임팩트 (vfx_dark_burst.png 5열×4행=20프레임) ═══
 const _DB_IMG=new Image();_DB_IMG.src='assets/vfx/boss/vfx_dark_burst.png';
 let _dkbReady=false;_DB_IMG.onload=()=>{_dkbReady=true};
@@ -13220,6 +13220,14 @@ function _drawFrozenTint(mainX,e,alpha){
   mainX.drawImage(_iceTintC,0,0,cw,ch,cx,cy,cw,ch);
   mainX.restore();
 }
+
+// ── setLineDash 전역 상수 (GC 제거) ──
+const _D0=[],_D4_3=[4,3],_D4_4=[4,4],_D4_6=[4,6],_D4_8=[4,8],_D5_5=[5,5],_D6_4=[6,4],_D6_8=[6,8],_D8_4=[8,4],_D8_5=[8,5],_D8_6=[8,6],_D8_8=[8,8],_D10_6=[10,6],_D10_8=[10,8],_D12_8=[12,8],_D2_3=[2,3];
+// ── 에임 방향 함수 (IIFE 클로저 제거) ──
+function _aimDir(){const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;return Math.atan2(mouse.y-sy,mouse.x-sx)}
+// ── exits 중심 캐시 (reduce 제거) ──
+let _exitCX=0,_exitCY=0;
+function _cacheExitCenter(){_exitCX=0;_exitCY=0;if(!G.exits||!G.exits.length)return;for(let i=0;i<G.exits.length;i++){_exitCX+=G.exits[i].x;_exitCY+=G.exits[i].y}_exitCX/=G.exits.length;_exitCY/=G.exits.length}
 
 // 2) 오브젝트 풀 — 파티클 GC 제거
 const POOL_SZ=1000;
@@ -20512,10 +20520,10 @@ function _tickArcLaser(sp){
   const _alLv=P.skills.arcLaser||1;
   const _alMpPerSec=8+(_alLv-1)*1; // 초당 MP: 8+Lv (60f 기준)
   const _alMpTick=_alMpPerSec/60*sp;
-  if(P.mp<_alMpTick){P._alActive=false;addTxt(P.x,P.y-25,_T('MP 부족 — 광선 해제'),'#888',30);return}
+  if(P.mp<_alMpTick){P._alActive=false;P._alBeam=null;addTxt(P.x,P.y-25,_T('MP 부족 — 광선 해제'),'#888',30);return}
   P.mp-=_alMpTick;
   // 방향 부드러운 추적 (게임패드: P.facing 직접 / KBM: 마우스)
-  {const tgt=_gpActive?P.facing:(()=>{const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;return Math.atan2(mouse.y-sy,mouse.x-sx)})();
+  {const tgt=_gpActive?P.facing:_aimDir();
   let diff=tgt-P.atkArc;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
   P.atkArc+=diff*Math.min(1,0.12*sp);P.facing=P.atkArc;}
   const _alRange=1200+(_alLv-1)*80;
@@ -21222,7 +21230,7 @@ function genGauntlet(fi){
     else spawnHoles.splice(~~(Math.random()*spawnHoles.length),1);
   }
 
-  G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
+  G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;_cacheExitCenter();G.bossAlive=true;
   G.bossGate=_gateTiles;G.bossGateOpen=true;G.bossSealed=false;G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
   // 보스게이트 충돌 오브젝트 — 나무 상단 중심, 하단 입구는 열림
   if(_gateY!=null){MAP_OBJS.push({type:'boss_gate_col',x:(bossCx+.5)*T,y:(_gateY-1)*T})}
@@ -22097,7 +22105,7 @@ function genFromTemplate(tmpl,si){
     }
   }else{G._portals=null}
   console.log('[MAP] si='+si+' tileRLE='+(tmpl.tileRLE?'Y':'N')+' manualHoles='+(tmpl.spawnHoles?tmpl.spawnHoles.length:0)+' autoHoles='+spawnHoles.length+' rooms='+rooms.length+' bossRm='+(bossRm?'Y':'N')+' exits='+exits.length+' gateTiles='+_gateTiles.length+' portals='+(tmpl.portals?tmpl.portals.length:0));
-  G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;G.bossAlive=true;
+  G.rooms=rooms;G.map=map;G.mw=mw;G.mh=mh;G.exits=exits;_cacheExitCenter();G.bossAlive=true;
   G.bossGate=_gateTiles;G.bossGateOpen=true;G.bossSealed=false;
   G._bossCx=bossCx;G._bossCy=bossCy;G._gateY=_gateY;G._bossEntY=(_gateY-2+.5);
   if(_gateY!=null){MAP_OBJS.push({type:'boss_gate_col',x:(bossCx+.5)*T,y:(_gateY-1)*T})}
@@ -23410,7 +23418,7 @@ function update(){
         if(G._pStats)G._pStats._dC++;
         const _afSk=P.activeChargeSk||'charge';
         const _afDB=isDimBreach();
-        const _afDir=_gpActive?P.facing:(()=>{const _s=P.x-G.cam.x+C.width/2,_t=P.y-G.cam.y+C.height/2;return Math.atan2(mouse.y-_t,mouse.x-_s)})();
+        const _afDir=_gpActive?P.facing:_aimDir();
         _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=3;_dashPhase=1;
         _harpSk=_afDB?'dimBreach':_afSk;_harpHits=[];
         P._chainSlamReady=false;P._chainAssaultReady=false;P._chainSkDelay=3;
@@ -23427,7 +23435,7 @@ function update(){
     }
     // ── 조준선 벽 감지 → 자동 발사 (도우미) ──
     if(_dashTier>=1&&!_harpActive&&!_dashActive){
-      const _awDir=_gpActive?P.facing:(()=>{const _s=P.x-G.cam.x+C.width/2,_t=P.y-G.cam.y+C.height/2;return Math.atan2(mouse.y-_t,mouse.x-_s)})();
+      const _awDir=_gpActive?P.facing:_aimDir();
       const _awCos=Math.cos(_awDir),_awSin=Math.sin(_awDir);
       const _awMax=_harpDistTier(_dashTier);
       let _awWall=false;
@@ -23476,7 +23484,7 @@ function update(){
     if(_harpHit&&!_dashActive){
       _dashActive=true;_dashIframe=_HARP_IFRAME[_harpTier];_dashPhase=2;P.poise=4; // 탈출기 poise 풀회복
       // 기동칼날개 자동 활성화 (사슬기동 시작 시 스킬 보유 시 무조건)
-      if((P.skills.chainSlash||0)>=1&&!P._chainSlashActive){const _csAC=15+(P.skills.chainSlash||1)*2;if(P.st>=_csAC){P.st-=_csAC;P._chainSlashActive=true;P._chainSlashHits=[];P._chainSlashTick=0;_addSkProf('chainSlash');SFX.slash();addTxt(P.x,P.y-25,_T('⚔ 기동칼날개!'),'#ff4466',35)}}
+      if((P.skills.chainSlash||0)>=1&&!P._chainSlashActive){const _csAC=15+(P.skills.chainSlash||1)*2;if(P.st>=_csAC){P.st-=_csAC;P._chainSlashActive=true;if(!P._chainSlashHits)P._chainSlashHits=[];else P._chainSlashHits.length=0;P._chainSlashTick=0;_addSkProf('chainSlash');SFX.slash();addTxt(P.x,P.y-25,_T('⚔ 기동칼날개!'),'#ff4466',35)}}
       const _hd=dst(P.x,P.y,_harpX,_harpY);
       const _dur=_HARP_PULL_DUR[_harpTier];
       _dashLeft=_dur;
@@ -23523,7 +23531,7 @@ function update(){
     // ── 기동칼날개: 이동 중 광역 베기 (다단히트, 4프레임마다 리셋) ──
     if(P._chainSlashActive){
       P._chainSlashTick=(P._chainSlashTick||0)+1;
-      if(P._chainSlashTick%4===0)P._chainSlashHits=[]; // 4프레임마다 히트 리셋 → 다단히트
+      if(P._chainSlashTick%4===0){if(!P._chainSlashHits)P._chainSlashHits=[];else P._chainSlashHits.length=0} // 4프레임마다 히트 리셋 → 다단히트
       const _csLv=P.skills.chainSlash||1;
       const _csR=160+(_csLv-1)*5; // 반경 160+Lv×5 (docs 기준)
       const _csNe=shQuery(P.x,P.y,_csR);
@@ -23753,7 +23761,7 @@ function update(){
           if(G._pStats)G._pStats._dC++;
           const _rhSk=P.activeChargeSk||'charge';
           const _rhDB=isDimBreach();
-          const _rhDir=_gpActive?P.facing:(()=>{const _s=P.x-G.cam.x+C.width/2,_t=P.y-G.cam.y+C.height/2;return Math.atan2(mouse.y-_t,mouse.x-_s)})();
+          const _rhDir=_gpActive?P.facing:_aimDir();
           _harpActive=true;_harpHit=false;_harpLandT=0;_harpHitE=null;_harpTier=3;_dashPhase=1;
           _harpSk=_rhDB?'dimBreach':_rhSk;_harpHits=[];
           P._chainSlamReady=false;P._chainAssaultReady=false;P._chainSkDelay=3;
@@ -34007,7 +34015,7 @@ function _fallenResolve(){
     $('death').classList.add('on');
   });
 }
-function nextStage(){SFX.beamStop();$('stageClear').style.opacity='0';$('stageClear').style.pointerEvents='none';G.stageCleared=false;G.on=false;ens=[];G.rooms=[];G.exits=[];G.bossAlive=true;_ensWarmDone=false;G._zones=null;G._curZone=0;G._zoneState={};G._portals=null;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;const _curHell=SI_TO_HELL[G.stage];const _ch=CHAPTER_STAGES[_curHell];if(_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&_curHell===0){const _de=$('demoEnd');if(_de){_de.style.display='flex';const _dt=$('demoEndTitle');if(_dt)_dt.textContent=_T('데모 종료');const _dm=$('demoEndMsg');if(_dm)_dm.textContent=_T('여기까지 데모입니다. 정식 출시를 기대해주세요!');const _ds=$('demoEndSupport');if(_ds)_ds.textContent=_T('STEAM 위시리스트로 응원해 주세요!');const _dw=$('demoEndWishlist');if(_dw)_dw.textContent=_T('STEAM 위시리스트');const _dl=$('demoEndLobby');if(_dl)_dl.textContent=_T('로비로 돌아가기');}G.on=false;return}if(G.stage===_ch.startSi+_ch.stages-1&&_curHell<6){G.stage=CHAPTER_STAGES[_curHell+1].startSi}else{G.stage++}if(G.stage>=TOTAL_STAGES){doWin();return}initStage(G.stage);G.on=true;BGM.play(BGM.stageKey(G.stage))}
+function nextStage(){SFX.beamStop();$('stageClear').style.opacity='0';$('stageClear').style.pointerEvents='none';G.stageCleared=false;G.on=false;ens=[];G.rooms=[];G.exits=[];_cacheExitCenter();G.bossAlive=true;_ensWarmDone=false;G._zones=null;G._curZone=0;G._zoneState={};G._portals=null;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;const _curHell=SI_TO_HELL[G.stage];const _ch=CHAPTER_STAGES[_curHell];if(_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&_curHell===0){const _de=$('demoEnd');if(_de){_de.style.display='flex';const _dt=$('demoEndTitle');if(_dt)_dt.textContent=_T('데모 종료');const _dm=$('demoEndMsg');if(_dm)_dm.textContent=_T('여기까지 데모입니다. 정식 출시를 기대해주세요!');const _ds=$('demoEndSupport');if(_ds)_ds.textContent=_T('STEAM 위시리스트로 응원해 주세요!');const _dw=$('demoEndWishlist');if(_dw)_dw.textContent=_T('STEAM 위시리스트');const _dl=$('demoEndLobby');if(_dl)_dl.textContent=_T('로비로 돌아가기');}G.on=false;return}if(G.stage===_ch.startSi+_ch.stages-1&&_curHell<6){G.stage=CHAPTER_STAGES[_curHell+1].startSi}else{G.stage++}if(G.stage>=TOTAL_STAGES){doWin();return}initStage(G.stage);G.on=true;BGM.play(BGM.stageKey(G.stage))}
 function doWin(){
   SFX.beamStop();G.on=false;
   BGM.fadeOut(800);setTimeout(()=>BGM.play('victory'),1000);
@@ -39838,8 +39846,8 @@ function draw(){
       // ── 입구 포탈: 빨간 소용돌이 ──
       // 중앙 타일에만 큰 포탈 렌더
       if(ei===~~(G.exits.length/2)){
-        const _exCx2=G.exits.reduce((s,e)=>s+e.x,0)/G.exits.length;
-        const _exCy2=G.exits.reduce((s,e)=>s+e.y,0)/G.exits.length;
+        const _exCx2=_exitCX;
+        const _exCy2=_exitCY;
         const _pcx=(_exCx2+.5)*T,_pcy=(_exCy2+.5)*T;
         // 빨간 포탈 소용돌이 (보스 포탈과 동일 방식, 색만 다름)
         const _psz=T*3+Math.sin(_now/400)*T*.3;
@@ -39868,8 +39876,8 @@ function draw(){
     }else if(!G.bossAlive){
       // 보스 사망 후 출구 (포탈 애니) — 캐시 바닥 위에 포탈만 그림
       if(ei===~~(G.exits.length/2)){
-        const _exCx=G.exits.reduce((s,e)=>s+e.x,0)/G.exits.length;
-        const _exCy=G.exits.reduce((s,e)=>s+e.y,0)/G.exits.length;
+        const _exCx=_exitCX;
+        const _exCy=_exitCY;
         _drawPortal(X,(_exCx+.5)*T,(_exCy+.5)*T,T*3,_now,SI_TO_HELL[G.stage]);
       }
     }else{X.fillStyle='rgba(80,80,80,.5)';X.fillRect(px+2,py+2,T-4,T-4)}
@@ -39881,7 +39889,7 @@ function draw(){
     const _treeCx=(G._bossCx+.5)*T;
     const _gateBaseY=(G._gateY+.5)*T;
     // exit 타일 중심 Y (gateY+2)
-    const _exitCenterY=G.exits.length>0?(G.exits.reduce((s,e)=>s+e.y,0)/G.exits.length+.5)*T:_gateBaseY+2*T;
+    const _exitCenterY=G.exits.length>0?(_exitCY+.5)*T:_gateBaseY+2*T;
     const _gtI=_bossGateImgs[SI_TO_HELL[G.stage]];
     if(_gtI&&(_gtI.naturalWidth||_gtI.width)){
       const _gtW=600,_gtH=~~(600*(_gtI.naturalHeight||_gtI.height)/(_gtI.naturalWidth||_gtI.width));
@@ -40662,36 +40670,36 @@ function draw(){
     if(e.ib&&e.s==='bossSlamWind'){
       const _swP=1-e.st2/30;const _swR=1000+(G.stage||0)*30+((e._bossPhase||0))*80;
       X.globalAlpha=_swP*.12;X.fillStyle='#ff4400';X.beginPath();X.arc(e.x,e.y,_swR*_swP,0,Math.PI*2);X.fill();
-      X.globalAlpha=_swP*.4;X.strokeStyle='#ff4400';X.lineWidth=3;X.setLineDash([8,6]);
-      X.beginPath();X.arc(e.x,e.y,_swR,0,Math.PI*2);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+      X.globalAlpha=_swP*.4;X.strokeStyle='#ff4400';X.lineWidth=3;X.setLineDash(_D8_6);
+      X.beginPath();X.arc(e.x,e.y,_swR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);X.globalAlpha=sa}
     if(e.ib&&e.s==='bossSlashWind'){
       const _slP=1-e.st2/15;const _slR=e.r+(P.r||8)+300;
       X.globalAlpha=_slP*.15;X.fillStyle='#ff8844';
       X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_slR,e.facing-1.2,e.facing+1.2);X.closePath();X.fill();
-      X.globalAlpha=_slP*.5;X.strokeStyle='#ff8844';X.lineWidth=2;X.setLineDash([6,4]);
-      X.beginPath();X.arc(e.x,e.y,_slR,e.facing-1.2,e.facing+1.2);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+      X.globalAlpha=_slP*.5;X.strokeStyle='#ff8844';X.lineWidth=2;X.setLineDash(_D6_4);
+      X.beginPath();X.arc(e.x,e.y,_slR,e.facing-1.2,e.facing+1.2);X.stroke();X.setLineDash(_D0);X.globalAlpha=sa}
     if(e.ib&&e.s==='bossSweepWind'){
       const _swP2=1-e.st2/20;const _swR2=e.r+(P.r||8)+400;
       X.globalAlpha=_swP2*.15;X.fillStyle='#ffaa00';
       X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_swR2,e.facing-1.7,e.facing+1.7);X.closePath();X.fill();
-      X.globalAlpha=_swP2*.5;X.strokeStyle='#ffaa00';X.lineWidth=2;X.setLineDash([6,4]);
-      X.beginPath();X.arc(e.x,e.y,_swR2,e.facing-1.7,e.facing+1.7);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+      X.globalAlpha=_swP2*.5;X.strokeStyle='#ffaa00';X.lineWidth=2;X.setLineDash(_D6_4);
+      X.beginPath();X.arc(e.x,e.y,_swR2,e.facing-1.7,e.facing+1.7);X.stroke();X.setLineDash(_D0);X.globalAlpha=sa}
     if(e.ib&&e.s==='bossSpinWind'){
       const _spP=1-e.st2/25;const _spR=500+(G.stage||0)*15;
       X.globalAlpha=_spP*.12;X.fillStyle='#ff6644';X.beginPath();X.arc(e.x,e.y,_spR*_spP,0,Math.PI*2);X.fill();
-      X.globalAlpha=_spP*.4;X.strokeStyle='#ff6644';X.lineWidth=3;X.setLineDash([8,6]);
-      X.beginPath();X.arc(e.x,e.y,_spR,0,Math.PI*2);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+      X.globalAlpha=_spP*.4;X.strokeStyle='#ff6644';X.lineWidth=3;X.setLineDash(_D8_6);
+      X.beginPath();X.arc(e.x,e.y,_spR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);X.globalAlpha=sa}
     if(e.ib&&e.s==='bossGrabWind'){
       const _grP=1-e.st2/40;const _grR=e.r+(P.r||8)+200;
       X.globalAlpha=_grP*.2;X.fillStyle='#cc00ff';
       X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_grR,e.facing-.8,e.facing+.8);X.closePath();X.fill();
-      X.globalAlpha=_grP*.6;X.strokeStyle='#cc00ff';X.lineWidth=2;X.setLineDash([6,4]);
-      X.beginPath();X.arc(e.x,e.y,_grR,e.facing-.8,e.facing+.8);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+      X.globalAlpha=_grP*.6;X.strokeStyle='#cc00ff';X.lineWidth=2;X.setLineDash(_D6_4);
+      X.beginPath();X.arc(e.x,e.y,_grR,e.facing-.8,e.facing+.8);X.stroke();X.setLineDash(_D0);X.globalAlpha=sa}
     if(e.ib&&e.s==='bossShockWind'){
       const _shP=1-e.st2/30;const _shR=1000+(G.stage||0)*50;
       X.globalAlpha=_shP*.1;X.fillStyle='#44ccff';X.beginPath();X.arc(e.x,e.y,_shR*_shP,0,Math.PI*2);X.fill();
-      X.globalAlpha=_shP*.4;X.strokeStyle='#44ccff';X.lineWidth=3;X.setLineDash([8,6]);
-      X.beginPath();X.arc(e.x,e.y,_shR,0,Math.PI*2);X.stroke();X.setLineDash([]);X.globalAlpha=sa}
+      X.globalAlpha=_shP*.4;X.strokeStyle='#44ccff';X.lineWidth=3;X.setLineDash(_D8_6);
+      X.beginPath();X.arc(e.x,e.y,_shR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);X.globalAlpha=sa}
     if(e.ib&&e.s==='bossLaserWind'){
       const _lwP=1-e.st2/40;const _lwLen=Math.max(C.width,C.height)*1.5;
       const _lwW=30+_lwP*50; // 폭 점점 커짐
@@ -40705,8 +40713,8 @@ function draw(){
       X.lineTo(e.x-Math.cos(_lwPerp)*_lwW,e.y-Math.sin(_lwPerp)*_lwW);
       X.closePath();X.fill();
       // 중앙 조준선
-      X.globalAlpha=_lwP*(.4+Math.sin(_now*.03)*.2);X.strokeStyle='#ff2200';X.lineWidth=2+_lwP*3;X.setLineDash([12,8]);
-      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.laserAng)*_lwLen,e.y+Math.sin(e.laserAng)*_lwLen);X.stroke();X.setLineDash([]);
+      X.globalAlpha=_lwP*(.4+Math.sin(_now*.03)*.2);X.strokeStyle='#ff2200';X.lineWidth=2+_lwP*3;X.setLineDash(_D12_8);
+      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.laserAng)*_lwLen,e.y+Math.sin(e.laserAng)*_lwLen);X.stroke();X.setLineDash(_D0);
       // 경고 마크
       X.globalAlpha=_lwP*(.7+Math.sin(_now*.02)*.3);X.fillStyle='#ff2200';X.font='bold 22px sans-serif';X.textAlign='center';
       X.fillText('⚠ LASER',e.x,e.y-e.r-25);X.globalAlpha=sa}
@@ -40720,8 +40728,8 @@ function draw(){
       X.lineTo(e.x+Math.cos(e.facing)*_cwLen-Math.cos(_cwPerp)*_cwW2,e.y+Math.sin(e.facing)*_cwLen-Math.sin(_cwPerp)*_cwW2);
       X.lineTo(e.x-Math.cos(_cwPerp)*_cwW2,e.y-Math.sin(_cwPerp)*_cwW2);
       X.closePath();X.fill();
-      X.globalAlpha=_cwP*.5;X.strokeStyle='#ffaa00';X.lineWidth=3;X.setLineDash([10,6]);
-      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.facing)*_cwLen,e.y+Math.sin(e.facing)*_cwLen);X.stroke();X.setLineDash([]);
+      X.globalAlpha=_cwP*.5;X.strokeStyle='#ffaa00';X.lineWidth=3;X.setLineDash(_D10_6);
+      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.facing)*_cwLen,e.y+Math.sin(e.facing)*_cwLen);X.stroke();X.setLineDash(_D0);
       X.globalAlpha=_cwP*(.6+Math.sin(_now*.02)*.3);X.fillStyle='#ffaa00';X.font='bold 22px sans-serif';X.textAlign='center';
       X.fillText('⚠',e.x,e.y-e.r-20);X.globalAlpha=sa}
     if(e.s==='eCharge'||e.s==='bossCharge'){X.globalAlpha=.4;X.fillStyle=e.col;for(let ci=1;ci<=3;ci++){X.globalAlpha=.15/ci;X.beginPath();X.arc(e.x-(e.echDx||0)*8*ci,e.y-(e.echDy||0)*8*ci,e.r,0,Math.PI*2);X.fill()}
@@ -40755,10 +40763,10 @@ function draw(){
       X.globalAlpha=(.3+Math.sin(_now*.015)*0.2)*_fwP;X.strokeStyle='#ff6600';X.lineWidth=2+_fwP*2;
       X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_fwR2,e._fwAng-_fwW2/2,e._fwAng+_fwW2/2);X.closePath();X.stroke();
       // 안내 직선 2개 (양쪽 끝)
-      X.globalAlpha=_fwP*.5;X.strokeStyle='#ffaa44';X.lineWidth=1.5;X.setLineDash([8,6]);
+      X.globalAlpha=_fwP*.5;X.strokeStyle='#ffaa44';X.lineWidth=1.5;X.setLineDash(_D8_6);
       X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e._fwAng-_fwW2/2)*_fwR2,e.y+Math.sin(e._fwAng-_fwW2/2)*_fwR2);X.stroke();
       X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e._fwAng+_fwW2/2)*_fwR2,e.y+Math.sin(e._fwAng+_fwW2/2)*_fwR2);X.stroke();
-      X.setLineDash([]);
+      X.setLineDash(_D0);
       // 중앙선
       X.globalAlpha=_fwP*.3;X.strokeStyle='#ffffff';X.lineWidth=1;
       X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e._fwAng)*_fwR2,e.y+Math.sin(e._fwAng)*_fwR2);X.stroke();
@@ -40792,10 +40800,10 @@ function draw(){
         for(let t=0;t<_rlR2;t+=10){if(isW(e.x+Math.cos(_rA)*t,e.y+Math.sin(_rA)*t)){_rLen=t;break}}
         // 안내선 (점점 밝아짐 + 점멸)
         X.globalAlpha=_rlP*(.15+Math.sin(_now*.02+ri)*.08);X.strokeStyle='#ff44ff';X.lineWidth=1+_rlP*1.5;
-        X.setLineDash([6,8]);
+        X.setLineDash(_D6_8);
         X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(_rA)*_rLen,e.y+Math.sin(_rA)*_rLen);X.stroke();
       }
-      X.setLineDash([]);X.lineCap='butt';
+      X.setLineDash(_D0);X.lineCap='butt';
       // 중앙 에너지 집중
       X.globalAlpha=_rlP*.3;X.fillStyle='#ff00ff';X.beginPath();X.arc(e.x,e.y,15+_rlP*10,0,Math.PI*2);X.fill();
       X.globalAlpha=_rlP*.6;X.fillStyle='#ffffff';X.beginPath();X.arc(e.x,e.y,5+_rlP*5,0,Math.PI*2);X.fill();
@@ -40940,7 +40948,7 @@ function draw(){
       X.globalAlpha=_dP*.2;X.fillStyle=e._tpWarnCol||'#aa00ff';
       X.beginPath();X.arc(e._tpWarnX,e._tpWarnY,e.r+10,0,Math.PI*2);X.fill();
       X.globalAlpha=_dP*(.4+Math.sin(_now*.02)*.2);X.strokeStyle=e._tpWarnCol||'#aa00ff';X.lineWidth=2;
-      X.setLineDash([4,3]);X.beginPath();X.arc(e._tpWarnX,e._tpWarnY,e.r+10,0,Math.PI*2);X.stroke();X.setLineDash([]);
+      X.setLineDash(_D4_3);X.beginPath();X.arc(e._tpWarnX,e._tpWarnY,e.r+10,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
       X.globalAlpha=sa;
     }
     // ── 텔포 도착 임펙트 (충격파 확장 + 바닥 균열 + 글로우) ──
@@ -40969,7 +40977,7 @@ function draw(){
       X.globalAlpha=p*.12;X.fillStyle='#cc00ff';
       X.beginPath();X.arc(_twx,_twy,_twR,0,Math.PI*2);X.fill();
       X.globalAlpha=p*(.3+Math.sin(_now*.015)*.15);X.strokeStyle='#ff44ff';X.lineWidth=1.5+p*1.5;
-      X.setLineDash([6,4]);X.beginPath();X.arc(_twx,_twy,_twR,0,Math.PI*2);X.stroke();X.setLineDash([]);
+      X.setLineDash(_D6_4);X.beginPath();X.arc(_twx,_twy,_twR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
       // 십자 표시
       X.globalAlpha=p*.25;X.strokeStyle='#cc44ff';X.lineWidth=1;
       X.beginPath();X.moveTo(_twx-_twR*.6,_twy);X.lineTo(_twx+_twR*.6,_twy);X.stroke();
@@ -40986,7 +40994,7 @@ function draw(){
       X.globalAlpha=p*.2;X.fillStyle='#ff4400';
       X.beginPath();X.arc(e.x,e.y,_twR,0,Math.PI*2);X.fill();
       X.globalAlpha=p*(.5+Math.sin(_now*.015)*.2);X.strokeStyle='#ffaa00';X.lineWidth=2+p*3;
-      X.setLineDash([6,4]);X.beginPath();X.arc(e.x,e.y,_twR,0,Math.PI*2);X.stroke();X.setLineDash([]);
+      X.setLineDash(_D6_4);X.beginPath();X.arc(e.x,e.y,_twR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
       // 수축 링 (착지 임박 표현)
       if(p>.3){const _shr=1-((p-.3)/.7);
         X.globalAlpha=(.5-_shr*.3);X.strokeStyle='#ffcc00';X.lineWidth=1.5;
@@ -40996,7 +41004,7 @@ function draw(){
     if(e.s==='bossShockWind'){const p=1-e.st2/45;
       // 충격파 최대 범위 표시
       const _shMax=180+G.stage*8;X.globalAlpha=p*.08;X.fillStyle='#ff2200';X.beginPath();X.arc(e.x,e.y,_shMax,0,Math.PI*2);X.fill();
-      X.globalAlpha=p*.25;X.strokeStyle='#ff4400';X.lineWidth=1.5;X.setLineDash([6,4]);X.beginPath();X.arc(e.x,e.y,_shMax,0,Math.PI*2);X.stroke();X.setLineDash([]);
+      X.globalAlpha=p*.25;X.strokeStyle='#ff4400';X.lineWidth=1.5;X.setLineDash(_D6_4);X.beginPath();X.arc(e.x,e.y,_shMax,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
       X.globalAlpha=p*.4;X.strokeStyle=e.col;X.lineWidth=2+p*4;
       X.beginPath();X.arc(e.x,e.y,e.r+p*15,0,Math.PI*2);X.stroke();X.globalAlpha=sa}
     if(e.s==='bossShock'&&e.shockR>0){
@@ -41171,8 +41179,8 @@ function draw(){
       X.globalAlpha=_dsP*.2;X.fillStyle='#ff0000';
       X.beginPath();X.moveTo(e.x,e.y);X.arc(e.x,e.y,_dsLen,e.facing-_dsArcW/2,e.facing+_dsArcW/2);X.closePath();X.fill();
       // 경고 호
-      X.globalAlpha=_dsP*.6;X.strokeStyle='#ff2200';X.lineWidth=3+_dsP*4;X.setLineDash([10,6]);
-      X.beginPath();X.arc(e.x,e.y,_dsLen,e.facing-_dsArcW/2,e.facing+_dsArcW/2);X.stroke();X.setLineDash([]);
+      X.globalAlpha=_dsP*.6;X.strokeStyle='#ff2200';X.lineWidth=3+_dsP*4;X.setLineDash(_D10_6);
+      X.beginPath();X.arc(e.x,e.y,_dsLen,e.facing-_dsArcW/2,e.facing+_dsArcW/2);X.stroke();X.setLineDash(_D0);
       // 긴장선 (무기 떨림)
       const _trem=Math.sin(_now*.03+e.x)*3*(1+_dsP);
       X.globalAlpha=.5+_dsP*.4;X.strokeStyle='#ff2200';X.lineWidth=3+_dsP*3;X.lineCap='round';
@@ -41206,8 +41214,8 @@ function draw(){
       X.lineTo(e.x-Math.cos(_ptPerp)*_ptW,e.y-Math.sin(_ptPerp)*_ptW);
       X.closePath();X.fill();
       // 중앙선
-      X.globalAlpha=_ppP*.6;X.strokeStyle='#ff0000';X.lineWidth=3+_ppP*4;X.setLineDash([12,8]);
-      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.facing)*_ptLen,e.y+Math.sin(e.facing)*_ptLen);X.stroke();X.setLineDash([]);
+      X.globalAlpha=_ppP*.6;X.strokeStyle='#ff0000';X.lineWidth=3+_ppP*4;X.setLineDash(_D12_8);
+      X.beginPath();X.moveTo(e.x,e.y);X.lineTo(e.x+Math.cos(e.facing)*_ptLen,e.y+Math.sin(e.facing)*_ptLen);X.stroke();X.setLineDash(_D0);
       // 빨간 위험 마크
       X.globalAlpha=_ppP*(.7+Math.sin(_now*.02)*.3);X.fillStyle='#ff0000';X.font='bold 24px sans-serif';X.textAlign='center';
       X.fillText('⚠ !',e.x,e.y-e.r-25);
@@ -41790,8 +41798,8 @@ function draw(){
       X.textAlign='left';
     }else if(e.elite>0){const ec=ELITE_TIERS[e.elite].col;
       X.font='bold 11px monospace';X.textAlign='center';X.fillStyle=ec;
-      const mNames=e.mods.map(m=>{const d=_MOD_MAP[m];return d?_T(d.name):m});
-      X.fillText(_T(ELITE_TIERS[e.elite].name)+(mNames.length?' ['+mNames.join('·')+']':''),e.x,e.y-e.r-20);
+      if(!e._modNStr){let _mn='';for(let _mi=0;_mi<e.mods.length;_mi++){const d=_MOD_MAP[e.mods[_mi]];if(_mi)_mn+='·';_mn+=d?_T(d.name):e.mods[_mi]}e._modNStr=_mn}
+      X.fillText(_T(ELITE_TIERS[e.elite].name)+(e._modNStr?' ['+e._modNStr+']':''),e.x,e.y-e.r-20);
       // 오라 이름 (리더만)
       if(e.aura){const _ad=_AURA_MAP[e.aura];if(_ad){X.fillStyle=_ad.col;X.fillText('〔'+_T(_ad.name)+'〕',e.x,e.y-e.r-30)}}
       X.textAlign='left';X.globalAlpha=sa;
@@ -42874,8 +42882,8 @@ function draw(){
     X.globalAlpha=_bfAlpha*.04;X.fillStyle='#ff8c28';X.beginPath();X.arc(_bfsx,_bfsy,_bfDrawR,0,Math.PI*2);X.fill();
     X.globalAlpha=_bfAlpha*.08;X.fillStyle='#ff5014';X.beginPath();X.arc(_bfsx,_bfsy,_bfDrawR*.65,0,Math.PI*2);X.fill();
     X.globalAlpha=_bfAlpha*.12;X.fillStyle='#ff8c28';X.beginPath();X.arc(_bfsx,_bfsy,_bfDrawR*.3,0,Math.PI*2);X.fill();
-    X.globalAlpha=_bfAlpha*.4;X.strokeStyle='#ff6622';X.lineWidth=1.5;X.setLineDash([6,8]);
-    X.beginPath();X.arc(_bfsx,_bfsy,_bfDrawR,0,Math.PI*2);X.stroke();X.setLineDash([]);
+    X.globalAlpha=_bfAlpha*.4;X.strokeStyle='#ff6622';X.lineWidth=1.5;X.setLineDash(_D6_8);
+    X.beginPath();X.arc(_bfsx,_bfsy,_bfDrawR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
     X.globalAlpha=_bfAlpha*.5;X.fillStyle='#ff8833';X.font='10px serif';
     for(let _ri=0;_ri<4;_ri++){const _ra=_now/2000+_ri*Math.PI*.5;
       X.fillText('☲',_bfsx+Math.cos(_ra)*_bfDrawR*.85-5,_bfsy+Math.sin(_ra)*_bfDrawR*.85+4)}
@@ -43083,8 +43091,8 @@ function drawP(){
     // 범위 원
     X.globalAlpha=.1+.04*Math.sin(_hrt2*6);X.fillStyle='rgba(255,215,0,.08)';
     X.beginPath();X.arc(_hrTx,_hrTy,_hrAimR,0,Math.PI*2);X.fill();
-    X.globalAlpha=.3;X.strokeStyle='#ffd700';X.lineWidth=2;X.setLineDash([8,6]);X.lineDashOffset=-_now*.1;
-    X.beginPath();X.arc(_hrTx,_hrTy,_hrAimR,0,Math.PI*2);X.stroke();X.setLineDash([]);
+    X.globalAlpha=.3;X.strokeStyle='#ffd700';X.lineWidth=2;X.setLineDash(_D8_6);X.lineDashOffset=-_now*.1;
+    X.beginPath();X.arc(_hrTx,_hrTy,_hrAimR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
     // 예상 오망성 프리뷰
     const _hrPa=_hrt2*2;const _hrPR=_hrAimR*.35;
     X.globalAlpha=.25;X.strokeStyle='#ffd700';X.lineWidth=2;
@@ -43115,8 +43123,8 @@ function drawP(){
     for(let ri=0;ri<3;ri++){
       const _rr=_aimR*(1-ri*.2);const _ra=_now*.003*(ri%2?1:-1);
       X.globalAlpha=.15+.05*Math.sin(_mt+ri);X.strokeStyle=_iceFuse?(ri%2?'#66ccff':'#aaeeff'):(ri%2?'#cc44ff':'#8822aa');
-      X.lineWidth=2;X.setLineDash([10,8]);X.lineDashOffset=-_now*.15*(ri%2?1:-1.5);
-      X.beginPath();X.arc(_mmTx,_mmTy,_rr,_ra,_ra+Math.PI*2);X.stroke();X.setLineDash([]);
+      X.lineWidth=2;X.setLineDash(_D10_8);X.lineDashOffset=-_now*.15*(ri%2?1:-1.5);
+      X.beginPath();X.arc(_mmTx,_mmTy,_rr,_ra,_ra+Math.PI*2);X.stroke();X.setLineDash(_D0);
     }
     // 십자선
     X.globalAlpha=.4;X.strokeStyle=_iceFuse?'#88ddff':'#ff00ff';X.lineWidth=1;
@@ -43141,8 +43149,8 @@ function drawP(){
       // 해골번개 조준 — 뼈+암흑 테마
       X.globalAlpha=.08+.03*Math.sin(_mst*6);X.fillStyle='#334433';
       X.beginPath();X.arc(_msTx,_msTy,_msAimR,0,Math.PI*2);X.fill();
-      X.globalAlpha=.4;X.strokeStyle='#55cc77';X.lineWidth=14;X.setLineDash([8,6]);X.lineDashOffset=-_now*.12;
-      X.beginPath();X.arc(_msTx,_msTy,_msAimR,0,Math.PI*2);X.stroke();X.setLineDash([]);
+      X.globalAlpha=.4;X.strokeStyle='#55cc77';X.lineWidth=14;X.setLineDash(_D8_6);X.lineDashOffset=-_now*.12;
+      X.beginPath();X.arc(_msTx,_msTy,_msAimR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
       // 뼈기둥 미리보기
       const _bpCnt=12;
       for(let i=0;i<_bpCnt;i++){
@@ -43168,8 +43176,8 @@ function drawP(){
       X.globalAlpha=.1+.03*Math.sin(_mst*8);X.fillStyle='#8833cc';
       X.beginPath();X.arc(_msTx,_msTy,_msAimR,0,Math.PI*2);X.fill();
       // 점선 외곽
-      X.globalAlpha=.5;X.strokeStyle='#cc88ff';X.lineWidth=2;X.setLineDash([8,5]);X.lineDashOffset=-_now*.1;
-      X.beginPath();X.arc(_msTx,_msTy,_msAimR,0,Math.PI*2);X.stroke();X.setLineDash([]);
+      X.globalAlpha=.5;X.strokeStyle='#cc88ff';X.lineWidth=2;X.setLineDash(_D8_5);X.lineDashOffset=-_now*.1;
+      X.beginPath();X.arc(_msTx,_msTy,_msAimR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
       // 십자선
       X.globalAlpha=.4;X.strokeStyle='#cc88ff';X.lineWidth=1;
       X.beginPath();X.moveTo(_msTx-12,_msTy);X.lineTo(_msTx+12,_msTy);X.moveTo(_msTx,_msTy-12);X.lineTo(_msTx,_msTy+12);X.stroke();
@@ -43195,8 +43203,8 @@ function drawP(){
     X.save();
     X.globalAlpha=.1+.03*Math.sin(_now*.04);X.fillStyle='#2288cc';
     X.beginPath();X.arc(_isTx,_isTy,_isAimR,0,Math.PI*2);X.fill();
-    X.globalAlpha=.5;X.strokeStyle='#88ddff';X.lineWidth=2;X.setLineDash([8,5]);X.lineDashOffset=-_now*.1;
-    X.beginPath();X.arc(_isTx,_isTy,_isAimR,0,Math.PI*2);X.stroke();X.setLineDash([]);
+    X.globalAlpha=.5;X.strokeStyle='#88ddff';X.lineWidth=2;X.setLineDash(_D8_5);X.lineDashOffset=-_now*.1;
+    X.beginPath();X.arc(_isTx,_isTy,_isAimR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
     X.globalAlpha=.4;X.strokeStyle='#88ddff';X.lineWidth=1;
     X.beginPath();X.moveTo(_isTx-12,_isTy);X.lineTo(_isTx+12,_isTy);X.moveTo(_isTx,_isTy-12);X.lineTo(_isTx,_isTy+12);X.stroke();
     for(let i=0;i<5;i++){const a=Math.random()*Math.PI*2,d=Math.random()*_isAimR*.8;
@@ -43219,8 +43227,8 @@ function drawP(){
     // 원형 범위
     X.globalAlpha=.08+Math.sin(_bwt)*.04;X.fillStyle='#ccbb88';X.beginPath();X.arc(bwTx,bwTy,bwR,0,Math.PI*2);X.fill();
     // 둘레 뼈벽 미리보기
-    X.globalAlpha=.4;X.strokeStyle='#ddccaa';X.lineWidth=14;X.setLineDash([8,6]);X.lineDashOffset=-_now*.12;
-    X.beginPath();X.arc(bwTx,bwTy,bwR,0,Math.PI*2);X.stroke();X.setLineDash([]);
+    X.globalAlpha=.4;X.strokeStyle='#ddccaa';X.lineWidth=14;X.setLineDash(_D8_6);X.lineDashOffset=-_now*.12;
+    X.beginPath();X.arc(bwTx,bwTy,bwR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
     // 뼈기둥 미리보기 (16개)
     const bwPilCnt=16;
     for(let i=0;i<bwPilCnt;i++){
@@ -43233,8 +43241,8 @@ function drawP(){
     X.globalAlpha=.35;X.strokeStyle='#bbaa77';X.lineWidth=1;
     X.beginPath();X.moveTo(bwTx-12,bwTy);X.lineTo(bwTx+12,bwTy);X.moveTo(bwTx,bwTy-12);X.lineTo(bwTx,bwTy+12);X.stroke();
     // 사거리 점선
-    X.globalAlpha=.25;X.strokeStyle='#bbaa77';X.lineWidth=1;X.setLineDash([4,8]);
-    X.beginPath();X.moveTo(P.x,P.y);X.lineTo(bwTx,bwTy);X.stroke();X.setLineDash([]);
+    X.globalAlpha=.25;X.strokeStyle='#bbaa77';X.lineWidth=1;X.setLineDash(_D4_8);
+    X.beginPath();X.moveTo(P.x,P.y);X.lineTo(bwTx,bwTy);X.stroke();X.setLineDash(_D0);
     const bwD=Math.sqrt((bwTx-P.x)*(bwTx-P.x)+(bwTy-P.y)*(bwTy-P.y));
     X.globalAlpha=.8;X.fillStyle='#ddccaa';X.font='bold 10px monospace';X.textAlign='center';X.fillText(~~bwD+'px',(P.x+bwTx)/2,(P.y+bwTy)/2-3);
     X.restore();
@@ -43254,21 +43262,21 @@ function drawP(){
     X.fillStyle='#ffffff';X.fillRect(_tsTx-4,_tsTy-28,8,6); // 창날
     // 기존 창과의 아크 미리보기 점선
     if(G._thunderStakes){
-      X.strokeStyle='#44ddff';X.lineWidth=1;X.setLineDash([4,6]);X.globalAlpha=.3;
+      X.strokeStyle='#44ddff';X.lineWidth=1;X.setLineDash(_D4_6);X.globalAlpha=.3;
       for(let _ti=0;_ti<G._thunderStakes.length;_ti++){
         const ts=G._thunderStakes[_ti];
         if(dst(ts.x,ts.y,_tsTx,_tsTy)<=600){
           X.beginPath();X.moveTo(ts.x,ts.y);X.lineTo(_tsTx,_tsTy);X.stroke();
         }
       }
-      X.setLineDash([]);
+      X.setLineDash(_D0);
     }
     // 십자선
     X.globalAlpha=.4;X.strokeStyle='#44ddff';X.lineWidth=1;
     X.beginPath();X.moveTo(_tsTx-12,_tsTy);X.lineTo(_tsTx+12,_tsTy);X.moveTo(_tsTx,_tsTy-12);X.lineTo(_tsTx,_tsTy+12);X.stroke();
     // 사거리 점선
-    X.globalAlpha=.2;X.strokeStyle='#44ddff';X.lineWidth=1;X.setLineDash([4,8]);
-    X.beginPath();X.moveTo(P.x,P.y);X.lineTo(_tsTx,_tsTy);X.stroke();X.setLineDash([]);
+    X.globalAlpha=.2;X.strokeStyle='#44ddff';X.lineWidth=1;X.setLineDash(_D4_8);
+    X.beginPath();X.moveTo(P.x,P.y);X.lineTo(_tsTx,_tsTy);X.stroke();X.setLineDash(_D0);
     // 스택 표시
     const _tsMax2=(P.skills.thunderStake>=10)?6:5;
     X.globalAlpha=.8;X.fillStyle='#44ddff';X.font='bold 11px monospace';X.textAlign='center';
@@ -43701,9 +43709,9 @@ function drawP(){
           const _swa=_vt*((_swi%2?-1:1)*(3+_swi));
           X.globalAlpha=(.2+.08*Math.sin(_vt*6+_swi*2))*_vFade;
           X.strokeStyle=_vIce?(_swi%2?'#66ccff':'#aaeeff'):(_swi%2?'#cc66ff':'#8833cc');
-          X.lineWidth=2+_swi*.5;X.setLineDash([12,8]);X.lineDashOffset=-_now*.2*((_swi%2)?1:-1.5);
+          X.lineWidth=2+_swi*.5;X.setLineDash(_D12_8);X.lineDashOffset=-_now*.2*((_swi%2)?1:-1.5);
           X.beginPath();X.arc(fz.x,fz.y,_swr,_swa,_swa+Math.PI*1.5);X.stroke();
-          X.setLineDash([]);
+          X.setLineDash(_D0);
         }
         // 3) 중심 코어 (맥동)
         const _vcR=12+Math.sin(_vt*12)*5;
@@ -43817,8 +43825,8 @@ function drawP(){
         X.fillStyle=fz._grdCache;X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.fill();
         // 2) 외곽 점선 링
         X.strokeStyle=_wCol;X.lineWidth=1.5;X.globalAlpha=(.25+.1*Math.sin(_wt*7))*_fzFade;
-        X.setLineDash([6,4]);X.lineDashOffset=-_now*.08;
-        X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.stroke();X.setLineDash([]);
+        X.setLineDash(_D6_4);X.lineDashOffset=-_now*.08;
+        X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
         // 3) 아이콘 (중앙)
         X.globalAlpha=.2*_fzFade;X.fillStyle=_wCol;X.font='20px serif';X.textAlign='center';X.textBaseline='middle';
         const _wE=fz.type==='weakPhys'?'⚔':fz.type==='weakMag'?'🔮':fz.type==='weakPj'?'🏹':'💀';
@@ -43874,7 +43882,7 @@ function drawP(){
         X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();
       }else if(fz.type==='assaultFlame'){
         // 기동불꽃 불바닥 — 3중폭 스택별 차별화
-        const _afS=fz._afStk||0; // 0=기본, 1=×3, 2=×6, 3=×9
+        const _afS=fz._afStk||0;
         if(_flameImgs.length>=4){
           if(!fz._fp){
             fz._fp=[];const _fnC=Math.max(5,~~(fz.r*fz.r*.002))+_afS*8;
@@ -43884,7 +43892,6 @@ function drawP(){
                 fr:~~(Math.random()*4),spd:.8+Math.random()*1.5,sc:(.7+Math.random()*.8)*(1+_afS*.35)});
             }
           }
-          // 바닥 글로우/외곽 링 제거 — 불꽃 스프라이트만으로 표현
           const _fFr=_now*.005;
           for(let _fi=0;_fi<fz._fp.length;_fi++){
             const fp=fz._fp[_fi];
@@ -43894,7 +43901,6 @@ function drawP(){
             X.globalAlpha=(.5+.25*Math.sin(_now*.01+_fi))*_fzFade;
             X.drawImage(_fImg,fz.x+fp.x-_fw*.5,fz.y+fp.y-_fh,_fw,_fh);
           }
-          // 스택 2+: 상승 화염 기둥 파티클
           if(_afS>=2&&Math.random()>.5){
             const _pa=Math.random()*Math.PI*2;const _pd=Math.random()*fz.r*.6;
             poolPart(fz.x+Math.cos(_pa)*_pd,fz.y+Math.sin(_pa)*_pd,
@@ -44018,8 +44024,8 @@ function drawP(){
     const _gxX=_gxTurret.x,_gxY=_gxTurret.y,_gxA=_gxTurret.ang;
     // 1) 바닥 감지 범위 (은은한 원)
     X.globalAlpha=.04+.02*Math.sin(_gxt*3);
-    X.strokeStyle='#88aadd';X.lineWidth=1;X.setLineDash([4,8]);
-    X.beginPath();X.arc(_gxX,_gxY,XBOW_RANGE,0,Math.PI*2);X.stroke();X.setLineDash([]);
+    X.strokeStyle='#88aadd';X.lineWidth=1;X.setLineDash(_D4_8);
+    X.beginPath();X.arc(_gxX,_gxY,XBOW_RANGE,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
     // 2) 유령 석궁 본체 — 회전하는 석궁 모양 (×2 스케일)
     X.save();X.translate(_gxX,_gxY);X.rotate(_gxA);X.scale(2,2);
     // 석궁 몸통
@@ -44454,8 +44460,8 @@ function drawP(){
       for(let ri=0;ri<3;ri++){
         const _rr=_mbR*(1-ri*.2);const _ra=_now*.003*(ri%2?1:-1);
         X.globalAlpha=(.1+prog*.15);X.strokeStyle=_vIce?(ri%2?'#66ccff':'#aaeeff'):(ri%2?'#cc44ff':'#8822aa');
-        X.lineWidth=1.5+prog;X.setLineDash([10,8]);X.lineDashOffset=-_now*.15*(ri%2?1:-1.5);
-        X.beginPath();X.arc(mb.tx,mb.ty,_rr,_ra,_ra+Math.PI*2);X.stroke();X.setLineDash([]);
+        X.lineWidth=1.5+prog;X.setLineDash(_D10_8);X.lineDashOffset=-_now*.15*(ri%2?1:-1.5);
+        X.beginPath();X.arc(mb.tx,mb.ty,_rr,_ra,_ra+Math.PI*2);X.stroke();X.setLineDash(_D0);
       }
       // 날아가는 기원 구체
       const bSz=8+Math.sin(_mt*4)*2+prog*4;
@@ -44480,8 +44486,8 @@ function drawP(){
       const prog=Math.min(1,mb.t/mb.maxT);
       // 착지점 범위 표시 (얼음)
       X.globalAlpha=.06+prog*.12;X.fillStyle='#44aacc';X.beginPath();X.arc(mb.tx,mb.ty,_mbR,0,Math.PI*2);X.fill();
-      X.globalAlpha=.3+prog*.3;X.strokeStyle='#88ddff';X.lineWidth=1.5+prog*2;X.setLineDash([8,6]);X.lineDashOffset=-_now*.12;
-      X.beginPath();X.arc(mb.tx,mb.ty,_mbR,0,Math.PI*2);X.stroke();X.setLineDash([]);
+      X.globalAlpha=.3+prog*.3;X.strokeStyle='#88ddff';X.lineWidth=1.5+prog*2;X.setLineDash(_D8_6);X.lineDashOffset=-_now*.12;
+      X.beginPath();X.arc(mb.tx,mb.ty,_mbR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
       // 날아가는 폭탄 (악의포격 스타일, 아이스 색감)
       const bSz=10+Math.sin(_mt*3)*2;X.globalAlpha=.9;X.fillStyle='#003366';X.beginPath();X.arc(mb.x,mb.y,bSz,0,Math.PI*2);X.fill();
       X.fillStyle='#2288cc';X.beginPath();X.arc(mb.x-1,mb.y-1,bSz*.65,0,Math.PI*2);X.fill();
@@ -44519,8 +44525,8 @@ function drawP(){
       X.fillText(_ioFSec+'s',mb.tx,mb.ty-_ioFR-10);X.textAlign='left';
       // 어둠 범위 표시
       X.globalAlpha=.08;X.fillStyle='#552288';X.beginPath();X.arc(mb.tx,mb.ty,_ioFR+60,0,Math.PI*2);X.fill();
-      X.globalAlpha=.25;X.strokeStyle='#aa66ff';X.lineWidth=1;X.setLineDash([6,4]);X.lineDashOffset=-_now*.1;
-      X.beginPath();X.arc(mb.tx,mb.ty,_ioFR+60,0,Math.PI*2);X.stroke();X.setLineDash([]);
+      X.globalAlpha=.25;X.strokeStyle='#aa66ff';X.lineWidth=1;X.setLineDash(_D6_4);X.lineDashOffset=-_now*.1;
+      X.beginPath();X.arc(mb.tx,mb.ty,_ioFR+60,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
     }else if(mb.phase==='icePull'){
       // ── 얼음포격 10렙: 빙결 소용돌이 렌더 ──
       const _ipProg=Math.min(1,(mb.pullT||0)/(mb.pullMax||90));const _ipR=_mbR*1.2;
@@ -44530,8 +44536,8 @@ function drawP(){
       for(let ri=0;ri<3;ri++){
         const _rr=_ipR*(1-_ipProg*.4)*(1-ri*.25);const _ra=_now*.003*(ri%2?1:-1);
         X.globalAlpha=.15+_ipProg*.2;X.strokeStyle=ri%2?'#66ccff':'#3388aa';X.lineWidth=2+_ipProg*2;
-        X.setLineDash([12,8]);X.lineDashOffset=-_now*.2*(ri%2?1:-1.5);
-        X.beginPath();X.arc(mb.tx,mb.ty,_rr,_ra,_ra+Math.PI*2);X.stroke();X.setLineDash([]);
+        X.setLineDash(_D12_8);X.lineDashOffset=-_now*.2*(ri%2?1:-1.5);
+        X.beginPath();X.arc(mb.tx,mb.ty,_rr,_ra,_ra+Math.PI*2);X.stroke();X.setLineDash(_D0);
       }
       // 중심 코어 (냉기 맥동)
       const _icCoreR=8+_ipProg*18;const _icPulse=1+Math.sin(_now*.015)*.3;
@@ -44540,8 +44546,8 @@ function drawP(){
     }else if(mb.phase==='throw'){
       const prog=Math.min(1,mb.t/mb.maxT);
       X.globalAlpha=.06+prog*.15;X.fillStyle='#aa00ff';X.beginPath();X.arc(mb.tx,mb.ty,_mbR,0,Math.PI*2);X.fill();
-      X.globalAlpha=.3+prog*.4;X.strokeStyle='#ff44ff';X.lineWidth=1.5+prog*2;X.setLineDash([8,6]);X.lineDashOffset=-_now*.12;
-      X.beginPath();X.arc(mb.tx,mb.ty,_mbR,0,Math.PI*2);X.stroke();X.setLineDash([]);
+      X.globalAlpha=.3+prog*.4;X.strokeStyle='#ff44ff';X.lineWidth=1.5+prog*2;X.setLineDash(_D8_6);X.lineDashOffset=-_now*.12;
+      X.beginPath();X.arc(mb.tx,mb.ty,_mbR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
       const bSz=10+Math.sin(_mt*3)*2;X.globalAlpha=.9;X.fillStyle='#440066';X.beginPath();X.arc(mb.x,mb.y,bSz,0,Math.PI*2);X.fill();
       X.fillStyle='#8800cc';X.beginPath();X.arc(mb.x-1,mb.y-1,bSz*.65,0,Math.PI*2);X.fill();
     }else if(mb.phase==='pull'){
@@ -44553,8 +44559,8 @@ function drawP(){
       for(let ri=0;ri<3;ri++){
         const _rr=_pullR*(1-_pp*.4)*(1-ri*.25);const _ra=_now*.003*(ri%2?1:-1);
         X.globalAlpha=.15+_pp*.15;X.strokeStyle=ri%2?'#cc00ff':'#8800aa';X.lineWidth=2+_pp*2;
-        X.setLineDash([12,8]);X.lineDashOffset=-_now*.2*(ri%2?1:-1.5);
-        X.beginPath();X.arc(mb.tx,mb.ty,_rr,_ra,_ra+Math.PI*2);X.stroke();X.setLineDash([]);
+        X.setLineDash(_D12_8);X.lineDashOffset=-_now*.2*(ri%2?1:-1.5);
+        X.beginPath();X.arc(mb.tx,mb.ty,_rr,_ra,_ra+Math.PI*2);X.stroke();X.setLineDash(_D0);
       }
       // 중심 코어 (점점 커짐)
       const _coreR=8+_pp*20;const _corePulse=1+Math.sin(_now*.015)*.3;
@@ -44908,10 +44914,10 @@ function drawP(){
         // 경고: 점선
         const _wp2=sg.t/sg.warnT;
         X.globalAlpha=_wp2*.3;X.strokeStyle='#44ccff';X.lineWidth=sg.w*_wp2;
-        X.setLineDash([8,6]);
+        X.setLineDash(_D8_6);
         X.beginPath();X.moveTo(sg.x,sg.y);
         X.lineTo(sg.x+Math.cos(sg.ang)*sg.len,sg.y+Math.sin(sg.ang)*sg.len);X.stroke();
-        X.setLineDash([]);
+        X.setLineDash(_D0);
       }else{
         // 활성 전격
         const pulse2=.6+Math.sin(_now*.03+si)*.3;
@@ -44960,7 +44966,7 @@ function drawP(){
         X.beginPath();X.arc(sc.cx,sc.cy,sc.fullR,0,Math.PI*2);X.stroke();
         X.globalAlpha=_wp*.25;X.fillStyle='#44ff44';X.beginPath();X.arc(sc.safeX,sc.safeY,sc.safeR,0,Math.PI*2);X.fill();
         X.globalAlpha=_wp*(.6+Math.sin(_now*.01)*.2);X.strokeStyle='#44ff44';X.lineWidth=3+_wp*3;
-        X.setLineDash([8,4]);X.beginPath();X.arc(sc.safeX,sc.safeY,sc.safeR,0,Math.PI*2);X.stroke();X.setLineDash([]);
+        X.setLineDash(_D8_4);X.beginPath();X.arc(sc.safeX,sc.safeY,sc.safeR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
         X.globalAlpha=_wp*.4;X.strokeStyle='#88ff88';X.lineWidth=2;
         X.beginPath();X.moveTo(sc.safeX-sc.safeR*.6,sc.safeY);X.lineTo(sc.safeX+sc.safeR*.6,sc.safeY);X.stroke();
         X.beginPath();X.moveTo(sc.safeX,sc.safeY-sc.safeR*.6);X.lineTo(sc.safeX,sc.safeY+sc.safeR*.6);X.stroke();
@@ -44984,7 +44990,7 @@ function drawP(){
           X.beginPath();X.moveTo(cw.x,cw.y);X.lineTo(_ex,_ey);X.stroke();
         }else{const _wp2=Math.min(1,cw.t/cw.warnT);
           X.globalAlpha=_wp2*.25;X.strokeStyle='#ff44ff';X.lineWidth=cw.w*_wp2;
-          X.setLineDash([10,8]);X.beginPath();X.moveTo(cw.x,cw.y);X.lineTo(_ex,_ey);X.stroke();X.setLineDash([]);}
+          X.setLineDash(_D10_8);X.beginPath();X.moveTo(cw.x,cw.y);X.lineTo(_ex,_ey);X.stroke();X.setLineDash(_D0);}
       }
     }X.globalAlpha=1;
   }
@@ -45021,7 +45027,7 @@ function drawP(){
         const _wp=jc.t/jc.delay;
         X.globalAlpha=_wp*.15;X.fillStyle='#cc00cc';X.beginPath();X.arc(jc.x,jc.y,jc.r,0,Math.PI*2);X.fill();
         X.globalAlpha=_wp*(.4+Math.sin(_now*.015)*.2);X.strokeStyle='#ff44ff';X.lineWidth=2;
-        X.setLineDash([4,6]);X.beginPath();X.arc(jc.x,jc.y,jc.r,0,Math.PI*2);X.stroke();X.setLineDash([]);
+        X.setLineDash(_D4_6);X.beginPath();X.arc(jc.x,jc.y,jc.r,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
         // 십자 전조
         X.globalAlpha=_wp*.3;X.strokeStyle='#cc44ff';X.lineWidth=1;
         X.beginPath();X.moveTo(jc.x-jc.r,jc.y);X.lineTo(jc.x+jc.r,jc.y);X.stroke();
@@ -45182,7 +45188,7 @@ function drawP(){
       if(!rw.hit){
         X.globalAlpha=_rwP*.15;X.fillStyle='#00ccff';X.beginPath();X.arc(rw.x,rw.y,rw.r,0,Math.PI*2);X.fill();
         X.globalAlpha=_rwP*(.4+Math.sin(_now*.012)*.2);X.strokeStyle='#00aaff';X.lineWidth=2;
-        X.setLineDash([5,5]);X.beginPath();X.arc(rw.x,rw.y,rw.r,0,Math.PI*2);X.stroke();X.setLineDash([]);
+        X.setLineDash(_D5_5);X.beginPath();X.arc(rw.x,rw.y,rw.r,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
         // 시계 마크
         const _cA=_rwP*Math.PI*2;X.globalAlpha=_rwP*.6;X.strokeStyle='#66ddff';X.lineWidth=2;
         X.beginPath();X.moveTo(rw.x,rw.y);X.lineTo(rw.x+Math.cos(_cA-Math.PI/2)*rw.r*.4,rw.y+Math.sin(_cA-Math.PI/2)*rw.r*.4);X.stroke();
@@ -45241,8 +45247,8 @@ function drawP(){
     for(let ci=0;ci<G._cageTraps.length;ci++){
       const ct=G._cageTraps[ci];const _ctF=ct.t<ct.warnT?ct.t/ct.warnT:ct.t>ct.maxT-30?(1-(ct.t-(ct.maxT-30))/30):1;
       if(ct.t<ct.warnT){// 경고 원
-        X.globalAlpha=_ctF*.4;X.strokeStyle='#ff4444';X.lineWidth=2;X.setLineDash([5,5]);
-        X.beginPath();X.arc(ct.x,ct.y,ct.r,0,Math.PI*2);X.stroke();X.setLineDash([]);
+        X.globalAlpha=_ctF*.4;X.strokeStyle='#ff4444';X.lineWidth=2;X.setLineDash(_D5_5);
+        X.beginPath();X.arc(ct.x,ct.y,ct.r,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
       }else{// 가시 감옥
         X.globalAlpha=_ctF*.6;X.strokeStyle='#886644';X.lineWidth=3;
         X.beginPath();X.arc(ct.x,ct.y,ct.r,0,Math.PI*2);X.stroke();
@@ -45296,8 +45302,8 @@ function drawP(){
       X.fillStyle=grd5;X.beginPath();X.arc(sa.x,sa.y,sa.r,0,Math.PI*2);X.fill();
       // 사슬선
       if(dst(P.x,P.y,sa.x,sa.y)<sa.r*1.5){
-        X.globalAlpha=_saF*.4;X.strokeStyle='#aa44cc';X.lineWidth=2;X.setLineDash([4,4]);
-        X.beginPath();X.moveTo(sa.x,sa.y);X.lineTo(P.x,P.y);X.stroke();X.setLineDash([]);}
+        X.globalAlpha=_saF*.4;X.strokeStyle='#aa44cc';X.lineWidth=2;X.setLineDash(_D4_4);
+        X.beginPath();X.moveTo(sa.x,sa.y);X.lineTo(P.x,P.y);X.stroke();X.setLineDash(_D0);}
       // 닻 아이콘
       X.globalAlpha=_saF*.6;X.fillStyle='#cc66ff';X.beginPath();X.arc(sa.x,sa.y,6,0,Math.PI*2);X.fill();
     }X.globalAlpha=1;
@@ -46288,7 +46294,7 @@ function drawP(){
         const _moSz=p.r*5;
         X.save();X.translate(p.x,p.y);
         X.rotate(_now*.08+p.x*.5);
-        X.globalCompositeOperation='lighter';X.globalAlpha=fa*.4;
+        X.globalCompositeOperation='lighter';X.globalAlpha=fa*.85;
         X.drawImage(_MO_IMG,_moC*_MO_CW,_moR*_MO_CH,_MO_CW,_MO_CH,-_moSz/2,-_moSz/2,_moSz,_moSz);
         X.restore();X.globalAlpha=1;
       }else{
@@ -46801,8 +46807,8 @@ function drawP(){
     const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;
     const _hAng=Math.atan2(mouse.y-sy,mouse.x-sx);
     const _hdLv=_harpDistTier(_dashTier);const _px2=P.x+Math.cos(_hAng)*_hdLv,_py2=P.y+Math.sin(_hAng)*_hdLv;
-    X.setLineDash([4,4]);X.strokeStyle='rgba(255,255,255,.25)';X.lineWidth=1;
-    X.beginPath();X.moveTo(P.x,P.y);X.lineTo(_px2,_py2);X.stroke();X.setLineDash([]);
+    X.setLineDash(_D4_4);X.strokeStyle='rgba(255,255,255,.25)';X.lineWidth=1;
+    X.beginPath();X.moveTo(P.x,P.y);X.lineTo(_px2,_py2);X.stroke();X.setLineDash(_D0);
     X.strokeStyle=_dcols[_dashTier];X.lineWidth=1.5;
     X.beginPath();X.arc(_px2,_py2,6,0,Math.PI*2);X.stroke();
     // 단계 텍스트
@@ -46897,7 +46903,7 @@ function drawP(){
     X.fillStyle=_fz._grdCache;X.beginPath();X.arc(_fz.x,_fz.y,_fz.r,0,Math.PI*2);X.fill();
     // 2) 외곽 — 점선 원 + 물결
     X.strokeStyle='#ffdd88';X.lineWidth=1.5;X.globalAlpha=(.25+.1*Math.sin(_hpt*5))*_hpProg;
-    X.setLineDash([8,8]);X.beginPath();X.arc(_fz.x,_fz.y,_fz.r+Math.sin(_hpt*6)*2,0,Math.PI*2);X.stroke();X.setLineDash([]);
+    X.setLineDash(_D8_8);X.beginPath();X.arc(_fz.x,_fz.y,_fz.r+Math.sin(_hpt*6)*2,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
     // 3) 쐐기 6개 회전
     X.globalAlpha=(.25+Math.sin(_hpt*4)*.1)*_hpProg;X.font='bold 14px serif';X.textAlign='center';X.fillStyle='#ffdd88';
     for(let ci=0;ci<6;ci++){const ca=ci*Math.PI/3+_hpt*.8;X.fillText('✟',_fz.x+Math.cos(ca)*_fz.r*.92,_fz.y+Math.sin(ca)*_fz.r*.92+5)}
@@ -46974,8 +46980,8 @@ function drawP(){
     // 수거중 점선
     if(_pet.s==='fetch'&&_pet._tRef&&!_pet._tRef.picked){
       const _ti=_pet._tRef;
-      X.globalAlpha=.12+Math.sin(_pet.t*.1)*.08;X.strokeStyle='#555';X.lineWidth=.5;X.setLineDash([2,3]);
-      X.beginPath();X.moveTo(px,py);X.lineTo(_ti.x,_ti.y);X.stroke();X.setLineDash([]);
+      X.globalAlpha=.12+Math.sin(_pet.t*.1)*.08;X.strokeStyle='#555';X.lineWidth=.5;X.setLineDash(_D2_3);
+      X.beginPath();X.moveTo(px,py);X.lineTo(_ti.x,_ti.y);X.stroke();X.setLineDash(_D0);
     }
   }}
   _s7sub.pet=performance.now()-_s7m0;_s7m0=performance.now();
@@ -47630,7 +47636,7 @@ async function _startDemoTest(){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   PASSIVE_DEF.forEach(pd=>PASSIVES[pd.key]=0);
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=_DEMO_LAST_STAGE;G.kills=0;G.mats=999999;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
+  G.on=false;G.stage=_DEMO_LAST_STAGE;G.kills=0;G.mats=999999;G.exits=[];_cacheExitCenter();G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
   _charName='DEMO TEST';_charIdx=0;
   G._cutsceneDone=true;
   // Lv500
@@ -47803,7 +47809,7 @@ async function _startDemoNew(){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   PASSIVE_DEF.forEach(pd=>PASSIVES[pd.key]=0);
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=0;G.kills=0;G.mats=1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
+  G.on=false;G.stage=0;G.kills=0;G.mats=1000;G.exits=[];_cacheExitCenter();G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
   // localStorage 저장 함수
   dbSave=async function(){
     if(!P)return;
@@ -47901,7 +47907,7 @@ async function _startTestChar(){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   PASSIVE_DEF.forEach(pd=>PASSIVES[pd.key]=0);
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=999999;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
+  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=999999;G.exits=[];_cacheExitCenter();G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
   _charName='TEST';_charIdx=0;
   G._cutsceneDone=true;
   // Lv500
@@ -47994,7 +48000,7 @@ async function startGameFromDB(){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=_loadSharedMats()||1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
+  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=_loadSharedMats()||1000;G.exits=[];_cacheExitCenter();G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
   // forge gauge removed (CRAFT_COST system)
 
   // 3) DB에서 캐릭터 데이터 로드
@@ -48657,7 +48663,7 @@ $('retryBtn').onclick=async()=>{
     G._rewindMarks=[];G._gravityWells=[];G._wallPushes=[];G._poisonPools=[];G._cageTraps=[];
     G._chainLights=[];G._orbWeaves=[];G._soulAnchors=[];G._chaseAoes=[];G._lavaPools=[];G._fireRains=[];G._shockGrids=[];G._donutSlams=[];G._safeCorners=[];G._crossWipes=[];G._tidalWipes=[];
     G._gSlamWave=[];G._lavaField=null;G._gwPillar=null;_shDirty=true;
-    G.map=b.map;G.mw=b.mw;G.mh=b.mh;G.rooms=b.rooms;G.exits=b.exits;    G._fow=new Uint8Array(b.mw*b.mh);G._fowDirty=true;
+    G.map=b.map;G.mw=b.mw;G.mh=b.mh;G.rooms=b.rooms;G.exits=b.exits;_cacheExitCenter();    G._fow=new Uint8Array(b.mw*b.mh);G._fowDirty=true;
     G.bossGate=b.bossGate;G.bossGateOpen=true;G.bossSealed=false;
     G._bossCx=b._bossCx;G._bossCy=b._bossCy;G._gateY=b._gateY;G._bossEntY=b._bossEntY;
     G.spawnHoles=b.spawnHoles;G.rifts=b.rifts;
@@ -48995,7 +49001,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=_loadSharedMats()||1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
+  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=_loadSharedMats()||1000;G.exits=[];_cacheExitCenter();G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
   (async()=>{
     if(new URLSearchParams(window.location.search).get('testchar')==='1'){await _startTestChar();return;}
     let _loaded=false;
@@ -49129,7 +49135,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   for(const k in PASSIVES)PASSIVES[k]=0;
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=_loadSharedMats()||1000;G.exits=[];G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
+  G.on=false;G.stage=_stageTestReq>=0?_stageTestReq:0;G.kills=0;G.mats=_loadSharedMats()||1000;G.exits=[];_cacheExitCenter();G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
   (async()=>{
     try{
       const _raw=localStorage.getItem(_LS_KEY);
