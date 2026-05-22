@@ -1,94 +1,344 @@
 <!DOCTYPE html>
-<html><head><meta charset="utf-8"><title>VFX GIF Test</title>
+<html><head>
+<meta charset="utf-8">
+<title>VFX Three.js 3D Test</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:#111;color:#eee;font:14px monospace;display:flex;flex-direction:column;align-items:center;padding:20px;gap:20px}
-h1{font-size:18px;color:#ff8844}
-.grid{display:flex;flex-wrap:wrap;gap:20px;justify-content:center}
-.card{background:#222;border:1px solid #444;border-radius:8px;padding:10px;text-align:center;cursor:pointer;transition:.2s}
-.card:hover{border-color:#ff8844;transform:scale(1.02)}
-.card.active{border-color:#44ff44;box-shadow:0 0 15px #44ff4455}
-.card img{max-width:300px;max-height:200px;display:block;margin:0 auto 8px}
-.card .name{color:#aaa;font-size:12px}
-.preview{background:#000;border:2px solid #555;border-radius:8px;padding:10px;margin-top:10px;text-align:center}
-.preview img{max-width:90vw;max-height:60vh}
-.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:10px}
-.controls button{background:#333;color:#eee;border:1px solid #666;padding:6px 14px;border-radius:4px;cursor:pointer;font:13px monospace}
-.controls button:hover{background:#555}
-.canvas-wrap{position:relative;width:800px;height:500px;background:#1a1a1a;border:2px solid #555;border-radius:8px;overflow:hidden}
-canvas{width:100%;height:100%}
-.info{color:#888;font-size:11px;margin-top:5px}
-</style></head><body>
-<h1>VFX GIF Preview — 게임 내 테스트</h1>
-<div class="grid" id="grid"></div>
-<div class="preview" id="preview" style="display:none">
-  <div class="canvas-wrap">
-    <canvas id="cv" width="800" height="500"></canvas>
-  </div>
-  <div class="controls">
-    <button onclick="setScale(.5)">0.5x</button>
-    <button onclick="setScale(1)">1x</button>
-    <button onclick="setScale(2)">2x</button>
-    <button onclick="setScale(3)">3x</button>
-    <button onclick="toggleBg()">배경 전환 (어두움/밝음)</button>
-    <button onclick="toggleBlend()">블렌드: <span id="blendLabel">normal</span></button>
-  </div>
-  <div class="info">클릭해서 위치 이동 | 마우스휠로 크기 조절</div>
-</div>
+body{margin:0;background:#000;overflow:hidden;cursor:crosshair}
+canvas{display:block}
+#ui{position:fixed;top:10px;left:10px;color:#fff;font:14px monospace;z-index:10;pointer-events:none;text-shadow:0 1px 3px #000}
+#list{position:fixed;right:10px;top:10px;color:#aaa;font:12px monospace;z-index:10;max-height:90vh;overflow-y:auto}
+#list div{padding:4px 8px;cursor:pointer;border:1px solid #333;margin:2px;pointer-events:all}
+#list div:hover{background:#333;color:#fff}
+#list div.active{background:#442200;color:#ffaa00;border-color:#ffaa00}
+</style>
+</head><body>
+<div id="ui">Click = spawn | Scroll = size | Arrows = sheet | Drag = rotate camera</div>
+<div id="list"></div>
+<script src="three.min.js"></script>
 <script>
-const assets=[
-  {name:'electric-discharge',file:'assets/vfx/test_electric.gif',desc:'전기 방출'},
-  {name:'toxic-wave',file:'assets/vfx/test_toxic_wave.gif',desc:'독성 웨이브'},
-  {name:'toxic-spray',file:'assets/vfx/test_toxic_spray.gif',desc:'독성 스프레이'},
-  {name:'tornado',file:'assets/vfx/test_tornado.gif',desc:'토네이도'},
-  {name:'drone-swarm',file:'assets/vfx/test_drone.gif',desc:'드론 스웜'}
-];
-const grid=document.getElementById('grid');
-const preview=document.getElementById('preview');
-const cv=document.getElementById('cv');
-const X=cv.getContext('2d');
-let cur=null,scale=1,px=400,py=250,bright=false,blend='source-over';
-const blends=['source-over','lighter','screen','multiply'];
-let blendIdx=0;
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(50,innerWidth/innerHeight,0.1,200);
+camera.position.set(0,3,8);
+camera.lookAt(0,0,0);
+const renderer=new THREE.WebGLRenderer({antialias:true,alpha:false});
+renderer.setSize(innerWidth,innerHeight);
+renderer.setPixelRatio(devicePixelRatio);
+renderer.setClearColor(0x0a0a0a);
+document.body.appendChild(renderer.domElement);
 
-assets.forEach((a,i)=>{
-  const d=document.createElement('div');d.className='card';
-  d.innerHTML=`<img src="${a.file}"><div class="name">${a.name} — ${a.desc}</div>`;
-  d.onclick=()=>{
-    document.querySelectorAll('.card').forEach(c=>c.classList.remove('active'));
-    d.classList.add('active');
-    cur=new Image();cur.src=a.file;
-    preview.style.display='block';
-    px=400;py=250;scale=1;
+// Grid floor
+const gridGeo=new THREE.PlaneGeometry(20,20,20,20);
+const gridMat=new THREE.MeshBasicMaterial({color:0x222222,wireframe:true,transparent:true,opacity:0.3});
+const grid=new THREE.Mesh(gridGeo,gridMat);
+grid.rotation.x=-Math.PI/2;
+scene.add(grid);
+
+// Ambient reference sphere
+const refGeo=new THREE.SphereGeometry(0.15,16,16);
+const refMat=new THREE.MeshBasicMaterial({color:0x444444});
+const refSphere=new THREE.Mesh(refGeo,refMat);
+scene.add(refSphere);
+
+let spawnScale=2.0;
+
+const P='assets/vfx_impact/_original_color/';
+const SHEETS=[
+  // ── Power Impact (4x4, 16f) ──
+  {name:'🔥 Fire Impact',src:P+'Fire_ImpactFire_Sheet.png',cols:4,rows:4},
+  {name:'❄ Ice Impact',src:P+'Ice_ImpactIce_Sheet.png',cols:4,rows:4},
+  {name:'⚡ Lightning Impact',src:P+'Lightning_ImpactLightning_Sheet.png',cols:4,rows:4},
+  {name:'🌊 Water Impact',src:P+'Water_ImpactWater_Sheet.png',cols:4,rows:4},
+  {name:'🪨 Earth Impact',src:P+'Earth_ImpactEarth_Sheet.png',cols:4,rows:4},
+  {name:'🌿 Nature Impact',src:P+'Nature_ImpactNature_Sheet.png',cols:4,rows:4},
+  {name:'✨ Light Impact',src:P+'Light_ImpactLight_Sheet.png',cols:4,rows:4},
+  // ── Basic (3x3, 9f) ──
+  {name:'🔥 Fire Basic',src:P+'Fire_BasicImpact.png',cols:3,rows:3},
+  {name:'❄ Ice Basic',src:P+'Ice_BasicImpact.png',cols:3,rows:3},
+  {name:'🟣 Dark Basic',src:P+'Dark_BasicImpact.png',cols:3,rows:3},
+  {name:'⚡ Lightning Basic',src:P+'Lightning_BasicImpact.png',cols:3,rows:3},
+  {name:'💜 Arcane Basic',src:P+'Arcane_BasicImpact.png',cols:3,rows:3},
+  {name:'🌿 Nature Basic',src:P+'Nature_BasicImpact.png',cols:3,rows:3},
+  {name:'☠ Poison Basic',src:P+'Poison_BasicImpact.png',cols:3,rows:3},
+  {name:'🪨 Earth Basic',src:P+'Earth_BasicImpact.png',cols:3,rows:3},
+  // ── Medium (4x4, 16f) ──
+  {name:'🔥 Fire Medium',src:P+'Fire_MediumImpact.png',cols:4,rows:4},
+  {name:'❄ Ice Medium',src:P+'Ice_MediumImpact.png',cols:4,rows:4},
+  {name:'🟣 Dark Medium',src:P+'Dark_MediumImpact.png',cols:4,rows:4},
+  {name:'⚡ Lightning Medium',src:P+'Lightning_MediumImpact.png',cols:4,rows:4},
+  {name:'💜 Arcane Medium',src:P+'Arcane_MediumImpact.png',cols:4,rows:4},
+  {name:'🌿 Nature Medium',src:P+'Nature_MediumImpact.png',cols:4,rows:4},
+  {name:'☠ Poison Medium',src:P+'Poison_MediumImpact.png',cols:4,rows:4},
+  {name:'🪨 Earth Medium',src:P+'Earth_MediumImpact.png',cols:4,rows:4},
+  // ── FBF Anim (frame-by-frame) ──
+  {name:'🔥 Fire FBF 4x4',src:P+'Fire_FBF_4x4.png',cols:4,rows:4},
+  {name:'🟣 Dark Smoke 4x4',src:P+'Dark_DarkSmoke_FBF_4x4.png',cols:4,rows:4},
+  {name:'🟣 Dark Smoke 6x6',src:P+'Dark_Smoke_Sheet_6x6.png',cols:6,rows:6},
+  {name:'💜 Arcane FBF 6x6',src:P+'Arcane_Arcane_FBF_6x6.png',cols:6,rows:6},
+  {name:'❄ Ice Mist 4x4',src:P+'Ice_MistSmoke_FBF_4x4.png',cols:4,rows:4},
+  {name:'⚡ Lightning FBF 4x3',src:P+'Lightning_Lightning_FBF_4x3.png',cols:4,rows:3},
+  {name:'🌊 Water FBF 4x4',src:P+'Water_Water_FBF_4x4.png',cols:4,rows:4},
+  {name:'🪨 Earth Smoke 5x5',src:P+'Earth_EarthSmoke_FBF_5x5.png',cols:5,rows:5},
+  {name:'💨 Air FBF 4x4',src:P+'Air_Air_FBF_4x4.png',cols:4,rows:4},
+];
+
+// ── Unity 프리팹 콤보 (여러 시트를 겹쳐서 재생) ──
+const COMBOS=[
+  {name:'🔥 Power Fire',layers:[
+    {src:P+'Fire_ImpactFire_Sheet.png',cols:4,rows:4,scale:1.0,delay:0,speed:0.04},
+    {src:P+'Fire_FBF_4x4.png',cols:4,rows:4,scale:1.2,delay:0.02,speed:0.05},
+    {src:P+'Fire_BasicImpact.png',cols:3,rows:3,scale:0.5,delay:0,speed:0.03},
+  ]},
+  {name:'❄ Power Ice',layers:[
+    {src:P+'Ice_ImpactIce_Sheet.png',cols:4,rows:4,scale:1.0,delay:0,speed:0.04},
+    {src:P+'Ice_MistSmoke_FBF_4x4.png',cols:4,rows:4,scale:1.3,delay:0.03,speed:0.06},
+    {src:P+'Ice_BasicImpact.png',cols:3,rows:3,scale:0.5,delay:0,speed:0.03},
+  ]},
+  {name:'⚡ Power Lightning',layers:[
+    {src:P+'Lightning_ImpactLightning_Sheet.png',cols:4,rows:4,scale:1.0,delay:0,speed:0.035},
+    {src:P+'Lightning_Lightning_FBF_4x3.png',cols:4,rows:3,scale:1.1,delay:0.01,speed:0.04},
+    {src:P+'Lightning_BasicImpact.png',cols:3,rows:3,scale:0.5,delay:0,speed:0.025},
+  ]},
+  {name:'🟣 Power Dark',layers:[
+    {src:P+'Dark_DarkSmoke_FBF_4x4.png',cols:4,rows:4,scale:1.4,delay:0,speed:0.05},
+    {src:P+'Dark_Smoke_Sheet_6x6.png',cols:6,rows:6,scale:1.6,delay:0.02,speed:0.04},
+    {src:P+'Dark_BasicImpact.png',cols:3,rows:3,scale:0.6,delay:0,speed:0.03},
+  ]},
+  {name:'💜 Power Arcane',layers:[
+    {src:P+'Arcane_Arcane_FBF_6x6.png',cols:6,rows:6,scale:1.2,delay:0,speed:0.04},
+    {src:P+'Arcane_MediumImpact.png',cols:4,rows:4,scale:0.8,delay:0.01,speed:0.04},
+    {src:P+'Arcane_BasicImpact.png',cols:3,rows:3,scale:0.4,delay:0,speed:0.03},
+  ]},
+  {name:'🪨 Power Earth',layers:[
+    {src:P+'Earth_ImpactEarth_Sheet.png',cols:4,rows:4,scale:1.0,delay:0,speed:0.04},
+    {src:P+'Earth_EarthSmoke_FBF_5x5.png',cols:5,rows:5,scale:1.3,delay:0.02,speed:0.05},
+    {src:P+'Earth_BasicImpact.png',cols:3,rows:3,scale:0.5,delay:0,speed:0.03},
+  ]},
+  {name:'🌊 Power Water',layers:[
+    {src:P+'Water_ImpactWater_Sheet.png',cols:4,rows:4,scale:1.0,delay:0,speed:0.04},
+    {src:P+'Water_Water_FBF_4x4.png',cols:4,rows:4,scale:1.2,delay:0.02,speed:0.05},
+    {src:P+'Ice_BasicImpact.png',cols:3,rows:3,scale:0.4,delay:0,speed:0.03},
+  ]},
+  {name:'🌿 Power Nature',layers:[
+    {src:P+'Nature_ImpactNature_Sheet.png',cols:4,rows:4,scale:1.0,delay:0,speed:0.04},
+    {src:P+'Nature_MediumImpact.png',cols:4,rows:4,scale:0.7,delay:0.02,speed:0.05},
+    {src:P+'Nature_BasicImpact.png',cols:3,rows:3,scale:0.4,delay:0,speed:0.03},
+  ]},
+  {name:'✨ Power Light',layers:[
+    {src:P+'Light_ImpactLight_Sheet.png',cols:4,rows:4,scale:1.0,delay:0,speed:0.04},
+    {src:P+'Air_Air_FBF_4x4.png',cols:4,rows:4,scale:1.0,delay:0.01,speed:0.05},
+    {src:P+'Lightning_BasicImpact.png',cols:3,rows:3,scale:0.5,delay:0,speed:0.03},
+  ]},
+  {name:'☠ Power Poison',layers:[
+    {src:P+'Poison_MediumImpact.png',cols:4,rows:4,scale:1.0,delay:0,speed:0.04},
+    {src:P+'Dark_DarkSmoke_FBF_4x4.png',cols:4,rows:4,scale:1.3,delay:0.02,speed:0.05},
+    {src:P+'Poison_BasicImpact.png',cols:3,rows:3,scale:0.5,delay:0,speed:0.03},
+  ]},
+  {name:'💨 Power Air',layers:[
+    {src:P+'Air_Air_FBF_4x4.png',cols:4,rows:4,scale:1.2,delay:0,speed:0.04},
+    {src:P+'Ice_MistSmoke_FBF_4x4.png',cols:4,rows:4,scale:1.4,delay:0.02,speed:0.05},
+    {src:P+'Ice_BasicImpact.png',cols:3,rows:3,scale:0.4,delay:0,speed:0.03},
+  ]},
+  // ── 단일 시트 (개별 확인용) ──
+  ...SHEETS.map(s=>({name:s.name,layers:[{src:s.src,cols:s.cols,rows:s.rows,scale:1.0,delay:0,speed:0.05}]})),
+];
+
+let currentCombo=0;
+const loader=new THREE.TextureLoader();
+const texCache={};
+function getTex(src){
+  if(!texCache[src])texCache[src]=loader.load(src,t=>{t.minFilter=THREE.LinearFilter;t.magFilter=THREE.LinearFilter});
+  return texCache[src];
+}
+// Preload all
+COMBOS.forEach(c=>c.layers.forEach(l=>getTex(l.src)));
+
+const listEl=document.getElementById('list');
+COMBOS.forEach((c,i)=>{
+  const d=document.createElement('div');
+  d.textContent=(c.layers.length>1?'[COMBO] ':'')+c.name;
+  if(c.layers.length>1)d.style.color='#ffcc44';
+  d.onclick=()=>{currentCombo=i;updateList()};
+  listEl.appendChild(d);
+});
+function updateList(){
+  [...listEl.children].forEach((d,i)=>d.className=i===currentCombo?'active':'');
+  const c=COMBOS[currentCombo];
+  document.getElementById('ui').textContent=
+    `Click=spawn | Scale:${spawnScale.toFixed(1)} | [${c.name}] (${c.layers.length} layers) | Drag=rotate | Space=burst`;
+}
+updateList();
+
+const vfxPool=[];
+
+function makeLayer(l,wx,wy,wz,baseScale){
+  const tex=getTex(l.src);
+  if(!tex)return null;
+  const totalFrames=l.cols*l.rows;
+  const sc=baseScale*(l.scale||1);
+
+  // Billboard sprite
+  const ct=tex.clone();ct.needsUpdate=true;
+  ct.repeat.set(1/l.cols,1/l.rows);
+  ct.offset.set(0,1-1/l.rows);
+  const mat=new THREE.SpriteMaterial({map:ct,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false});
+  const sprite=new THREE.Sprite(mat);
+  sprite.scale.set(sc,sc,1);
+  sprite.position.set(wx,wy,wz);
+  scene.add(sprite);
+
+  // Cross planes
+  const mkPlane=()=>{
+    const ct2=tex.clone();ct2.needsUpdate=true;
+    ct2.repeat.set(1/l.cols,1/l.rows);
+    ct2.offset.set(0,1-1/l.rows);
+    const pm=new THREE.MeshBasicMaterial({map:ct2,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false,side:THREE.DoubleSide});
+    const pl=new THREE.Mesh(new THREE.PlaneGeometry(sc,sc),pm);
+    pl.position.set(wx,wy,wz);
+    return {mesh:pl,mat:pm,tex:ct2};
   };
-  grid.appendChild(d);
+  const p1=mkPlane();
+  p1.mesh.rotation.set(Math.random()*0.5-0.25,Math.random()*Math.PI*2,Math.random()*0.5-0.25);
+  scene.add(p1.mesh);
+  const p2=mkPlane();
+  p2.mesh.rotation.copy(p1.mesh.rotation);
+  p2.mesh.rotateY(Math.PI/2);
+  scene.add(p2.mesh);
+
+  return {
+    sprite,mat,tex:ct,
+    plane:p1.mesh,planeMat:p1.mat,tex2:p1.tex,
+    plane2:p2.mesh,planeMat2:p2.mat,tex3:p2.tex,
+    frame:0,totalFrames,
+    cols:l.cols,rows:l.rows,
+    timer:0,frameTime:l.speed||0.05,
+    delay:l.delay||0,
+    life:0,maxLife:totalFrames*(l.speed||0.05)+(l.delay||0),
+    scale:sc,
+    rotSpd:(Math.random()-0.5)*2,
+    started:false,
+  };
+}
+
+function spawnVFX(wx,wy,wz){
+  const c=COMBOS[currentCombo];
+  c.layers.forEach(l=>{
+    const layer=makeLayer(l,wx,wy,wz,spawnScale);
+    if(layer)vfxPool.push(layer);
+  });
+}
+
+// Raycaster for click placement
+const raycaster=new THREE.Raycaster();
+const groundPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0);
+
+renderer.domElement.addEventListener('click',(e)=>{
+  if(isDragging)return;
+  const mouse=new THREE.Vector2((e.clientX/innerWidth)*2-1,-(e.clientY/innerHeight)*2+1);
+  raycaster.setFromCamera(mouse,camera);
+  const hit=new THREE.Vector3();
+  raycaster.ray.intersectPlane(groundPlane,hit);
+  if(hit) spawnVFX(hit.x, 0.5+Math.random()*0.5, hit.z);
 });
 
-cv.addEventListener('click',e=>{const r=cv.getBoundingClientRect();px=~~((e.clientX-r.left)/r.width*800);py=~~((e.clientY-r.top)/r.height*500)});
-cv.addEventListener('wheel',e=>{e.preventDefault();scale=Math.max(.1,Math.min(8,scale+(e.deltaY>0?-.1:.1)))},{passive:false});
-
-function setScale(s){scale=s}
-function toggleBg(){bright=!bright}
-function toggleBlend(){blendIdx=(blendIdx+1)%blends.length;blend=blends[blendIdx];document.getElementById('blendLabel').textContent=blend}
-
-function draw(){
-  X.clearRect(0,0,800,500);
-  X.fillStyle=bright?'#888':'#111';X.fillRect(0,0,800,500);
-  // grid
-  X.strokeStyle=bright?'#999':'#222';X.lineWidth=1;
-  for(let x=0;x<800;x+=50){X.beginPath();X.moveTo(x,0);X.lineTo(x,500);X.stroke()}
-  for(let y=0;y<500;y+=50){X.beginPath();X.moveTo(0,y);X.lineTo(800,y);X.stroke()}
-  // crosshair
-  X.strokeStyle='#ff444444';X.beginPath();X.moveTo(px-20,py);X.lineTo(px+20,py);X.moveTo(px,py-20);X.lineTo(px,py+20);X.stroke();
-  if(cur&&cur.complete){
-    const w=cur.width*scale,h=cur.height*scale;
-    X.globalCompositeOperation=blend;
-    X.drawImage(cur,px-w/2,py-h/2,w,h);
-    X.globalCompositeOperation='source-over';
-  }
-  X.fillStyle='#888';X.font='12px monospace';
-  X.fillText(`scale: ${scale.toFixed(1)}x | pos: ${px},${py} | blend: ${blend}`,10,490);
-  requestAnimationFrame(draw);
+// Camera orbit (drag)
+let isDragging=false, dragStart={x:0,y:0}, camAngle=0.4, camHeight=3, camDist=8;
+function updateCam(){
+  camera.position.set(Math.sin(camAngle)*camDist, camHeight, Math.cos(camAngle)*camDist);
+  camera.lookAt(0,0.5,0);
 }
-draw();
-</script></body></html>
+updateCam();
+
+renderer.domElement.addEventListener('mousedown',(e)=>{isDragging=false;dragStart={x:e.clientX,y:e.clientY}});
+renderer.domElement.addEventListener('mousemove',(e)=>{
+  if(e.buttons!==1)return;
+  const dx=e.clientX-dragStart.x, dy=e.clientY-dragStart.y;
+  if(Math.abs(dx)+Math.abs(dy)>5)isDragging=true;
+  camAngle+=dx*0.01;
+  camHeight=Math.max(1,Math.min(12,camHeight-dy*0.03));
+  dragStart={x:e.clientX,y:e.clientY};
+  updateCam();
+});
+
+window.addEventListener('wheel',(e)=>{
+  if(e.shiftKey){
+    camDist=Math.max(2,Math.min(20,camDist+(e.deltaY>0?0.5:-0.5)));
+    updateCam();
+  }else{
+    spawnScale=Math.max(0.3,Math.min(6,spawnScale+(e.deltaY>0?-0.2:0.2)));
+    updateList();
+  }
+});
+
+window.addEventListener('keydown',(e)=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'){currentCombo=Math.min(COMBOS.length-1,currentCombo+1);updateList()}
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){currentCombo=Math.max(0,currentCombo-1);updateList()}
+  // Space = burst spawn
+  if(e.key===' '){
+    for(let i=0;i<5;i++) spawnVFX((Math.random()-0.5)*4, 0.5+Math.random(), (Math.random()-0.5)*4);
+  }
+});
+
+let lastT=performance.now();
+function animate(){
+  requestAnimationFrame(animate);
+  const now=performance.now();
+  const dt=Math.min(0.05,(now-lastT)/1000);
+  lastT=now;
+
+  for(let i=vfxPool.length-1;i>=0;i--){
+    const v=vfxPool[i];
+    v.life+=dt;
+    // Delay handling
+    if(v.delay>0){v.delay-=dt;v.mat.opacity=0;v.planeMat.opacity=0;v.planeMat2.opacity=0;continue;}
+    if(!v.started){v.started=true;v.life=0;v.timer=0;}
+    v.timer+=dt;
+
+    if(v.timer>=v.frameTime){
+      v.timer-=v.frameTime;
+      v.frame++;
+      if(v.frame>=v.totalFrames){
+        scene.remove(v.sprite);scene.remove(v.plane);scene.remove(v.plane2);
+        v.mat.dispose();v.planeMat.dispose();v.planeMat2.dispose();
+        v.tex.dispose();v.tex2.dispose();v.tex3.dispose();
+        vfxPool.splice(i,1);
+        continue;
+      }
+      const col=v.frame%v.cols;
+      const row=v.rows-1-Math.floor(v.frame/v.cols);
+      v.tex.offset.set(col/v.cols,row/v.rows);
+      v.tex2.offset.set(col/v.cols,row/v.rows);
+      v.tex3.offset.set(col/v.cols,row/v.rows);
+    }
+
+    const p=v.life/v.maxLife;
+    const alpha=Math.max(0,1-p*p);
+    v.mat.opacity=alpha*0.8;
+    v.planeMat.opacity=alpha;
+    v.planeMat2.opacity=alpha;
+
+    const sc=v.scale*(0.6+p*0.8);
+    v.sprite.scale.set(sc,sc,1);
+    v.plane.scale.set(1+p*0.3,1+p*0.3,1);
+    v.plane2.scale.set(1+p*0.3,1+p*0.3,1);
+
+    // Slight upward drift
+    v.sprite.position.y+=dt*0.3;
+    v.plane.position.y+=dt*0.3;
+    v.plane2.position.y+=dt*0.3;
+
+    // Rotate planes
+    v.plane.rotation.y+=dt*v.rotSpd;
+    v.plane2.rotation.y+=dt*v.rotSpd;
+  }
+
+  renderer.render(scene,camera);
+}
+animate();
+
+window.addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body></html>

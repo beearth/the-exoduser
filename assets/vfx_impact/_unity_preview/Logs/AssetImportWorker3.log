@@ -1,0 +1,417 @@
+[Licensing::Module] Trying to connect to existing licensing client channel...
+Built from '6000.4/staging' branch; Version is '6000.4.8f1 (f8b72d3d7343) revision 16299821'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-심도진" at "2026-05-22T11:30:32.9777927Z"
+OS: 'Windows 11  (10.0.26200) Professional' Language: 'ko' Physical Memory: 65345 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
+System  architecture: x64
+Process architecture: x64
+Date: 2026-05-22T11:30:32Z
+
+COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\6000.4.8f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker3
+-projectPath
+G:/hell/assets/vfx_impact/_unity_preview
+-logFile
+Logs/AssetImportWorker3.log
+-srvPort
+63838
+-force-d3d12
+-job-worker-count
+15
+-background-job-worker-count
+8
+-gc-helper-count
+1
+-name
+AssetImport
+Successfully changed project path to: G:/hell/assets/vfx_impact/_unity_preview
+G:/hell/assets/vfx_impact/_unity_preview
+[UnityMemory] Configuration Parameters - Can be set up in boot.config
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-gi-baking-worker=262144"
+    "memorysetup-temp-allocator-size-nav-mesh-worker=65536"
+    "memorysetup-temp-allocator-size-audio-worker=65536"
+    "memorysetup-temp-allocator-size-cloud-worker=32768"
+    "memorysetup-temp-allocator-size-gfx=262144"
+    "memorysetup-temp-allocator-size-preload-manager=33554432"
+    "memorysetup-temp-allocator-size-job-worker=262144"
+    "memorysetup-temp-allocator-size-background-worker=32768"
+    "memorysetup-allocator-temp-initial-block-size-main=262144"
+    "memorysetup-allocator-temp-initial-block-size-worker=262144"
+    "memorysetup-bucket-allocator-granularity=16"
+    "memorysetup-bucket-allocator-bucket-count=8"
+    "memorysetup-bucket-allocator-block-size=33554432"
+    "memorysetup-bucket-allocator-block-count=8"
+    "memorysetup-main-allocator-block-size=16777216"
+    "memorysetup-thread-allocator-block-size=16777216"
+    "memorysetup-gfx-main-allocator-block-size=16777216"
+    "memorysetup-gfx-thread-allocator-block-size=16777216"
+    "memorysetup-cache-allocator-block-size=4194304"
+    "memorysetup-typetree-allocator-block-size=2097152"
+    "memorysetup-profiler-bucket-allocator-granularity=16"
+    "memorysetup-profiler-bucket-allocator-bucket-count=8"
+    "memorysetup-profiler-bucket-allocator-block-size=33554432"
+    "memorysetup-profiler-bucket-allocator-block-count=8"
+    "memorysetup-profiler-allocator-block-size=16777216"
+    "memorysetup-profiler-editor-allocator-block-size=1048576"
+    "memorysetup-temp-allocator-size-main=16777216"
+    "memorysetup-job-temp-allocator-block-size=2097152"
+    "memorysetup-job-temp-allocator-block-size-background=1048576"
+    "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
+Player connection [41884]  Target information:
+
+Player connection [41884]  * "[IP] 192.168.0.146 [Port] 0 [Flags] 2 [Guid] 1493380035 [EditorId] 1493380035 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-R2F12NG) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [41884]  * "[IP] 192.168.79.1 [Port] 0 [Flags] 2 [Guid] 1493380035 [EditorId] 1493380035 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-R2F12NG) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [41884]  * "[IP] 192.168.12.1 [Port] 0 [Flags] 2 [Guid] 1493380035 [EditorId] 1493380035 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-R2F12NG) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+
+Player connection [41884] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [41884] Host joined alternative multi-casting on [225.0.0.222:34997]...
+JobSystem: Creating JobQueue using job-worker-count value 15
+Input System module state changed to: Initialized.
+[Physics::Module] Initialized fallback backend.
+[Physics::Module] Id: 0xdecafbad
+Library Redirect Path: Library/
+[Physics::Module] Selected backend.
+[Physics::Module] Name: PhysX
+[Physics::Module] Id: 0xf2b8ea05
+[Physics::Module] SDK Version: 4.1.2
+[Physics::Module] Integration Version: 1.0.0
+[Physics::Module] Threading Mode: Multi-Threaded
+Initialize engine version: 6000.4.8f1 (f8b72d3d7343)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path G:/hell/assets/vfx_impact/_unity_preview/Assets
+Forcing GfxDevice: Direct3D 12
+GfxDevice: creating device client; kGfxThreadingModeNonThreaded
+d3d12: failed to query info queue interface (0x80004002).
+Direct3D:
+    Version:         Direct3D 12 [level 12.2]
+    Renderer:        AMD Radeon RX 9070 XT (ID=0x7550)
+    Vendor:          ATI
+    VRAM:            16188 MB
+    App VRAM Budget: 15416 MB
+    Driver:          32.0.31007.5012
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56764
+CodeReloadManager initialized
+Begin MonoManager ReloadAssembly
+[Licensing::Client] Error: HandshakeResponse reported an error:
+	ResponseCode: 505
+	ResponseStatus: Unsupported protocol version '1.18.1'.
+[Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-심도진"
+[Licensing::IpcConnector] LicenseClient-심도진 channel disconnected successfully.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-심도진-6000.4.8" at "2026-05-22T11:30:34.9208112Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 38676, path: "C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+  Session Id:              fa560c4987e1476dad76e34ab51f44a9
+  Correlation Id:          0482cfb5e4dd3217c90b0f8b540b775f
+  External correlation Id: 8887984819448001514
+  Machine Id:              jyS+85x8cRWB1xbIp+nfp4tj7nk=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-심도진-6000.4.8" (connect: 0.00s, validation: 0.01s, handshake: 0.01s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-심도진-6000.4.8-notifications" at "2026-05-22T11:30:34.9540412Z"
+[Licensing::Module] Licensing Background thread has ended after 1.98s
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.006402 seconds.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Package Manager log level set to [2]
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.374 seconds
+Domain Reload Profiling: 1052ms
+	BeginReloadAssembly (241ms)
+	RebuildCommonClasses (36ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (137ms)
+	LoadAllAssembliesAndSetupDomain (252ms)
+		LoadAssemblies (227ms)
+		AnalyzeDomain (244ms)
+			TypeCache.Refresh (242ms)
+				TypeCache.ScanAssembly (229ms)
+	FinalizeReload (376ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (53ms)
+			BeforeProcessingInitializeOnLoad (79ms)
+			ProcessInitializeOnLoadAttributes (89ms)
+			ProcessInitializeOnLoadMethodAttributes (91ms)
+========================================================================
+Worker process is ready to serve import requests
+Import Worker Mode flag is 0x00
+Begin MonoManager ReloadAssembly
+[Licensing::Client] Successfully resolved entitlement details
+[Licensing::Module] License group:
+  Id: 14569722982794-UnityPersXXXX
+  Product: Unity Personal
+  Type: Assigned
+  Expiration: Unlimited
+Assembly Assembly-CSharp-Editor-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-Editor-firstpass.dll not valid. Loading of assembly skipped.
+Assembly Assembly-CSharp-Editor.dll at Library/ScriptAssemblies/Assembly-CSharp-Editor.dll not valid. Loading of assembly skipped.
+Assembly Assembly-CSharp-firstpass.dll at Library/ScriptAssemblies/Assembly-CSharp-firstpass.dll not valid. Loading of assembly skipped.
+Assembly Assembly-CSharp.dll at Library/ScriptAssemblies/Assembly-CSharp.dll not valid. Loading of assembly skipped.
+Assembly Unity.Multiplayer.Center.Editor.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Editor.Tests.dll not valid. Loading of assembly skipped.
+Assembly Unity.Multiplayer.Center.Tests.dll at Library/ScriptAssemblies/Unity.Multiplayer.Center.Tests.dll not valid. Loading of assembly skipped.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+[Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
+[Package Manager] Unable to send message (not connected to server process).
+[Package Manager] Cannot connect to Unity Package Manager local server
+ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
+Mono: successfully reloaded assembly
+- Finished resetting the current domain, in  0.361 seconds
+Domain Reload Profiling: 775ms
+	BeginReloadAssembly (255ms)
+		DisableScriptedObjects (5ms)
+		CreateAndSetChildDomain (29ms)
+	RebuildCommonClasses (44ms)
+	RebuildNativeTypeToScriptingClass (15ms)
+	initialDomainReloadingComplete (83ms)
+	LoadAllAssembliesAndSetupDomain (16ms)
+		LoadAssemblies (171ms)
+		AnalyzeDomain (7ms)
+			TypeCache.Refresh (4ms)
+	FinalizeReload (363ms)
+		SetupLoadedEditorAssemblies (0ms)
+			InitializePlatformSupportModulesInManaged (3ms)
+			BeforeProcessingInitializeOnLoad (100ms)
+			ProcessInitializeOnLoadAttributes (77ms)
+			ProcessInitializeOnLoadMethodAttributes (44ms)
+			AfterProcessingInitializeOnLoad (16ms)
+		AwakeInstancesAfterBackupRestoration (15ms)
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
+Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
+Unloading 67 unused Assets / (30.3 KB). Loaded Objects now: 670.
+Memory consumption went from 67.6 MB to 67.6 MB.
+Total: 3.857200 ms (FindLiveObjects: 0.052800 ms CreateObjectMapping: 0.010700 ms MarkObjects: 3.684800 ms  DeleteObjects: 0.106600 ms)
+
+========================================================================
+Received Import Request.
+  Time since last request: 104338.088687 seconds.
+  path: Assets/Ultimate Impact Fx/Materials/PowerImpact/Lightning_FBF_4x3_PNG.png
+  importAddress: Guid(b820934144c1ce643a6e45285c687583) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Materials/PowerImpact/Lightning_FBF_4x3_PNG.png using Guid(b820934144c1ce643a6e45285c687583) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '7da32703d60f64fe397bd346646efcfd') in 0.1313627 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=904a4c41a195cccc31bac811407f5030 DependenciesID=3538a80aa0bad68dabf46698c9fe8535 StaticDependenciesID=734bca1a4bb8e9df1216ed21c3248c1f 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Ultimate Impact Fx/Document.pdf
+  importAddress: Guid(f167754341c60d346a61dfc1dfeaae7d) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Document.pdf using Guid(f167754341c60d346a61dfc1dfeaae7d) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '2070be1fa6912a8abacb695ddc381b85') in 0.0098645 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=95866c5a2f2fc737eecc8b6c52d96cba DependenciesID=358edc3300a3d0c03bbbb0a9cd833bc4 StaticDependenciesID=836623f7388fa6e1cc4049419c447231 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000051 seconds.
+  path: Assets/Ultimate Impact Fx/Materials/PowerImpact/MistSmoke_FBF_4x4_Add.mat
+  importAddress: Guid(b232b1e85f2361044963b8c203512deb) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Materials/PowerImpact/MistSmoke_FBF_4x4_Add.mat using Guid(b232b1e85f2361044963b8c203512deb) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'eaae3ef69c0c4eac0e40494d4ceb97e1') in 0.0199898 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=212e961d51fc596d17bd1f764e6657e0 DependenciesID=27d067c3aaefcd73e8826c3d2c0e3c95 StaticDependenciesID=fe1ab32572d675d7dadab3845ffd25f3 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000026 seconds.
+  path: Assets/Ultimate Impact Fx/Resources/Prefabs/GrPower_Impact_Air_01.prefab
+  importAddress: Guid(fe0fc109a6460984197a79b2f8f8995f) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Resources/Prefabs/GrPower_Impact_Air_01.prefab using Guid(fe0fc109a6460984197a79b2f8f8995f) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'e85d57f17049b9318c88040690e7f542') in 0.0789131 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=b9ba32f86b61c957accb309cbb18f90b DependenciesID=c14925cf74786eccfc3ffe6c1c205a6f StaticDependenciesID=7d0e0e2d51410eb234404c1bdcc7104d 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 35
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Ultimate Impact Fx/Resources/Prefabs/GrBasic_Impact_05.prefab
+  importAddress: Guid(85a0053871c6a244d8b0f8a2b13c8719) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Resources/Prefabs/GrBasic_Impact_05.prefab using Guid(85a0053871c6a244d8b0f8a2b13c8719) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'f10813ef48a9977d4997e96b68e2bcb7') in 0.0277006 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=2f5350dda5fedac04972cdfa86ea15fe DependenciesID=e87d82ae0913c1fa0f8021c076a7cccb StaticDependenciesID=f3220869b9a929eafc3dad7013421e02 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 19
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000029 seconds.
+  path: Assets/Ultimate Impact Fx/Materials/PowerImpact/MistSmoke_FBF_4x4_PNG.png
+  importAddress: Guid(960e48191969fcb48862cf181e9bbe1d) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Materials/PowerImpact/MistSmoke_FBF_4x4_PNG.png using Guid(960e48191969fcb48862cf181e9bbe1d) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '23d2f7f2b360ba666f0a1cd9c95b4552') in 0.0132869 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=d17ea13214a52d97c4eed88147a6b34b DependenciesID=01971ede4888fe4bf1a110134c9494de StaticDependenciesID=54c30a6279ba0e8a884d287ad8ffd4f1 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Ultimate Impact Fx/Materials/PowerImpact/Fire_FBF_4x4_Add.mat
+  importAddress: Guid(6f2d6e87c0ba0f748b4b8129322d0b6a) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Materials/PowerImpact/Fire_FBF_4x4_Add.mat using Guid(6f2d6e87c0ba0f748b4b8129322d0b6a) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '932425e2f5d1a2fc12a507cb10f2b1ae') in 0.0135792 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=4968efb8d7b31618359f56fa82b9b1e4 DependenciesID=195e15ba4208fe5f4e71f4ba3393d44a StaticDependenciesID=ec0a1589ac0df69a13db12af0ba6b056 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000019 seconds.
+  path: Assets/Ultimate Impact Fx/Materials/PowerImpact/ImpactEarth_AB.mat
+  importAddress: Guid(9ce411f94d1e31c4fad42d7ba1cfd47d) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Materials/PowerImpact/ImpactEarth_AB.mat using Guid(9ce411f94d1e31c4fad42d7ba1cfd47d) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '2006c7ee090b01ffbfeea10e3a33c741') in 0.0135615 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=5b551980efbcd3a3e45d7167469d30ca DependenciesID=0af6d122f1b21bdc12b05d6f376309c9 StaticDependenciesID=f698e2879ef3948e2bd06366678d7b02 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000023 seconds.
+  path: Assets/Ultimate Impact Fx/Backdrop/Mesh/backdrop_curve.fbx
+  importAddress: Guid(c3b0b132135c7a040abd00db8c57495c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Backdrop/Mesh/backdrop_curve.fbx using Guid(c3b0b132135c7a040abd00db8c57495c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'f12c9f6d2e868cd8d765c330648be39f') in 0.044248 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=e907e38fbbf08263e40d0db5be7a5856 DependenciesID=7f8e615c9ce754d7611337c4ab89cfa3 StaticDependenciesID=f98ef87701ed3f94f7e8e33cd71d0aac 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 8
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Ultimate Impact Fx/Materials/PowerImpact/ImpactEarth_Add.mat
+  importAddress: Guid(6d0b9611a43c90f468c2af8ab6d5912a) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Materials/PowerImpact/ImpactEarth_Add.mat using Guid(6d0b9611a43c90f468c2af8ab6d5912a) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'c59817aa2d935e6a3f3fd780da21aa5b') in 0.0136294 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=da5d45c98bbb3a2a4c71a4c4f4e2a603 DependenciesID=95df351f18316333801c7076eb2f8405 StaticDependenciesID=46068fc58691ceafcb91b55afaa335db 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Ultimate Impact Fx/Materials/PowerImpact/DarkSmoke_FBF_4x4_PNG.png
+  importAddress: Guid(c3385bd6178b40f4ea2d07fa10eda267) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Materials/PowerImpact/DarkSmoke_FBF_4x4_PNG.png using Guid(c3385bd6178b40f4ea2d07fa10eda267) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'dc4fcf441ececd206418937a2564cd51') in 0.0158112 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=f14512c032f9e33d4bfd60e7da9c0dd0 DependenciesID=3df5d0675ba8a2700023be4dc7d7ac70 StaticDependenciesID=6a39e408212d826395e7de75d0297ed8 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000030 seconds.
+  path: Assets/Ultimate Impact Fx/Materials/PowerImpact/Water_FBF_4x4_Add.mat
+  importAddress: Guid(79fcd81af040a2148a50d3f37879ba27) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Materials/PowerImpact/Water_FBF_4x4_Add.mat using Guid(79fcd81af040a2148a50d3f37879ba27) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'c0e1ef18240c20a1fa3eb364800c3619') in 0.0126971 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=eb5bb933b9f6282c4a305fa0bd4c66b2 DependenciesID=11460a127880e6c471e42be80af3301e StaticDependenciesID=9a4f20877ac435eee129b37aa28a0471 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 2
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.609331 seconds.
+  path: Assets/Ultimate Impact Fx/Resources/Prefabs/GrPower_Impact_Lightning_01.prefab
+  importAddress: Guid(f43cf9029d95d1044827200d28e30940) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Resources/Prefabs/GrPower_Impact_Lightning_01.prefab using Guid(f43cf9029d95d1044827200d28e30940) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '459ba594535b89fca3904c91f96e60fc') in 0.0827119 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=9f007f81d414931219053f47ebeb8111 DependenciesID=590707f5c1e96a99e1ebfc0620d4a37e StaticDependenciesID=66552726952b23a736719cff0e3b7429 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 39
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000017 seconds.
+  path: Assets/Ultimate Impact Fx/Resources/Prefabs/Power_Impact_Dark_02.prefab
+  importAddress: Guid(b2d391588926fb845b3da80fce1a9aa9) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Resources/Prefabs/Power_Impact_Dark_02.prefab using Guid(b2d391588926fb845b3da80fce1a9aa9) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '2587ff1da0f77987e55fc14480d2a766') in 0.0277199 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=5690402cd0d66d1ca84fee99d862c575 DependenciesID=8980bd844a7b4482a39d6192473bb957 StaticDependenciesID=bbae9a94b4ef45f92c23389e1bd593c8 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 31
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000011 seconds.
+  path: Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_Stretch_3.png
+  importAddress: Guid(6f84b509dec30104fa9126bc8a9d806f) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_Stretch_3.png using Guid(6f84b509dec30104fa9126bc8a9d806f) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '027acf3691c1cf49372f502c0e312836') in 0.0126367 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=d74e1aea09c35e7fd54f0a5d209f88b7 DependenciesID=f3ded092d3ce708c3c5efbef0d35edd0 StaticDependenciesID=0cd8d239993780bf4b4e9811feb6c6bb 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000015 seconds.
+  path: Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_fire_2.png
+  importAddress: Guid(0f6332dc682df8d4a872551ac8f473bd) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_fire_2.png using Guid(0f6332dc682df8d4a872551ac8f473bd) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'befe85d8e4e1588dcd512819340073be') in 0.0134687 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=b5247784ff48278584bb3f2cdfdb187f DependenciesID=92fecdac93fbe3e808f7ce74c0253d72 StaticDependenciesID=a0ec7af8a4d4369aeb3c98f277d01494 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000015 seconds.
+  path: Assets/Ultimate Impact Fx/Resources/Prefabs/Power_Impact_Earth_02.prefab
+  importAddress: Guid(7bac2b470a0cb91498e0964530e36a94) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Resources/Prefabs/Power_Impact_Earth_02.prefab using Guid(7bac2b470a0cb91498e0964530e36a94) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '5e12af722c09518880859c5c37795739') in 0.0213114 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=d6dd29affe37db75f08530103d09cfac DependenciesID=ec44bcde1e585fbc870def2aca25cbd1 StaticDependenciesID=005ee3a570b901eb7251976cc86055ce 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 35
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000012 seconds.
+  path: Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_6.png
+  importAddress: Guid(b153c6667f642be4b8d7b17b4080b6c7) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_6.png using Guid(b153c6667f642be4b8d7b17b4080b6c7) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '694ee9b7562622edf682bad7f61868f0') in 0.0142472 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=198de8c02435195f37a020d4eeee8582 DependenciesID=7fa441991e18b107f507ae3e500c1952 StaticDependenciesID=d614a3adff939347ea5ccc30d93ea622 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000068 seconds.
+  path: Assets/Ultimate Impact Fx/Resources/Prefabs/GrPower_Impact_Nature_01.prefab
+  importAddress: Guid(0fcb44fd53167ef42b8c8d2a2f237233) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Resources/Prefabs/GrPower_Impact_Nature_01.prefab using Guid(0fcb44fd53167ef42b8c8d2a2f237233) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '442f833c6ea66c3baeb6b051ed7a43fe') in 0.0314271 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=20074521e224d876598cbd95a7f94b05 DependenciesID=f01e1af48a90c126fcba53dd0e55e5d4 StaticDependenciesID=5330164c48f3ffbf460e7a4935e82c30 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 35
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Ultimate Impact Fx/Resources/Prefabs/Power_Impact_Fire_02.prefab
+  importAddress: Guid(07c75687a13c1bc42a705848dc8e2f18) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Resources/Prefabs/Power_Impact_Fire_02.prefab using Guid(07c75687a13c1bc42a705848dc8e2f18) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '5e5ceb6f59cf522f920992ac3c6bef48') in 0.0235371 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=10f4956dde7e3732ef5e675451e0f6ea DependenciesID=9f9cff266654a71f11d11053e13b38fa StaticDependenciesID=cc8320e7344d1b49729d2f51cbb52113 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 31
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000016 seconds.
+  path: Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_14.png
+  importAddress: Guid(29a9fcd9aa2818042b365ecf0d44e7d0) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_14.png using Guid(29a9fcd9aa2818042b365ecf0d44e7d0) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '5229447b3cdc324266d82bf34c9b4257') in 0.0110459 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=38a1ed88c3088a38b3a06222ec2c1635 DependenciesID=d8bad18854309d553898cc02dc72e529 StaticDependenciesID=cac6ab16b2a7d45669821d26723105a5 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000043 seconds.
+  path: Assets/Ultimate Impact Fx/SourceFiles/PSD/ImpactIce_Sheet.psd
+  importAddress: Guid(9c0239dbb70e0824ab758082214518c8) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/SourceFiles/PSD/ImpactIce_Sheet.psd using Guid(9c0239dbb70e0824ab758082214518c8) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'fbc1b34d1fb6bded82082c3d2639fd99') in 0.0122467 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=01f72f9f68edef2c3e6c39af5751edae DependenciesID=ee67934743d942e9d0ac42d183170b60 StaticDependenciesID=0e6b64f0c4194b38e96a358c23b879a3 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000071 seconds.
+  path: Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_Stretch_11.png
+  importAddress: Guid(c639bbe1a68eafb4286738e377241af3) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_Stretch_11.png using Guid(c639bbe1a68eafb4286738e377241af3) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '78e43f035e8597877ba7abccb63b23c8') in 0.0132119 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=09c72b1563fa9367d0b6d8616d6a101d DependenciesID=54534e253e84b5ca38119faff6f46e40 StaticDependenciesID=1ef6222af5bb65760aff000d9ea1d445 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000031 seconds.
+  path: Assets/Ultimate Impact Fx/Resources/Prefabs/Medium_Impact_03.prefab
+  importAddress: Guid(abd21d0e6bd04734b9dba281706a34b5) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/Resources/Prefabs/Medium_Impact_03.prefab using Guid(abd21d0e6bd04734b9dba281706a34b5) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '6d7aef26f2aec01ba7c29ba5994ae6cd') in 0.0206713 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=cf553a3c26b10f25b079972501f70b6c DependenciesID=3eb7ddce186a31bd34a8b159803e1abc StaticDependenciesID=8d7820403bd8e2b47bdb626aa142d2f4 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 23
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000011 seconds.
+  path: Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_8.png
+  importAddress: Guid(34cb295fb4e54a74bb4fef70c65b422f) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_8.png using Guid(34cb295fb4e54a74bb4fef70c65b422f) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '54bf28fc303684711a79b3f0b6272f5e') in 0.010514 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=5426ef45b2855a8ce13fe10e1a74f618 DependenciesID=d9c86b6396476c03d7509f43b5f78e60 StaticDependenciesID=23e57457c795aec4427c0a080b470b4d 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.201547 seconds.
+  path: Assets/Ultimate Impact Fx/SourceFiles/PSD/Impact_Light.psd
+  importAddress: Guid(1672b2d0624e85044850b7c28c8fb2ae) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
+Start importing Assets/Ultimate Impact Fx/SourceFiles/PSD/Impact_Light.psd using Guid(1672b2d0624e85044850b7c28c8fb2ae) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '604fe0a5bb7ba5ec64894aed64bb856a') in 0.0151022 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=017323bbdd7336b85ed346d3549b4a82 DependenciesID=43dd6be51511671b50926137393831a3 StaticDependenciesID=8f20ff9dc38b0e4eaf1e7478bcfad475 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
+
+Editor requested this worker to shutdown with reason: Scaling down because of idle timeout
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
+AssetImportWorker is now disconnected from the server
+Process exiting
+Exiting without the bug reporter. Application will terminate with return code 0
