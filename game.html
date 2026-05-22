@@ -6932,6 +6932,12 @@ const _AMB_FLY={cols:['#ffee66','#ffdd44','#ffe888','#fff4bb'],vy:-.06,vx:.08,sz
 // 공통 화염/기폭 폭발 스프라이트 (fire_1~4 webp, 개별 이미지 4프레임)
 const _plagueBoomSprs=[];let _plagueBoomReady=0;
 (function(){for(let fi=1;fi<=4;fi++){const img=new Image();img.src='assets/vfx/fire_'+fi+'.webp';img.onload=function(){_plagueBoomReady++};_plagueBoomSprs.push(img)}})();
+// 빨콩 폭발 스프라이트시트 (parry_impact_red: 2048×128, 16프레임 128×128)
+const _redBoomSheet=new Image();let _redBoomReady=false;
+_redBoomSheet.src='assets/vfx/parry_impact_red.png';_redBoomSheet.onload=function(){_redBoomReady=true};
+// 무지개탄 폭발 스프라이트시트 (parry_impact_rainbow: 2560×128, 20프레임 128×128)
+const _rainbowBoomSheet=new Image();let _rainbowBoomReady=false;
+_rainbowBoomSheet.src='assets/vfx/parry_impact_rainbow.png';_rainbowBoomSheet.onload=function(){_rainbowBoomReady=true};
 // 폭독혈 전용 폭발 스프라이트시트 (boom_plague.png, 128x128 x 6프레임)
 const _plagueBoomSpr={img:null,ready:false,w:128,h:128,frames:6};
 (function(){const i=new Image();i.src='img/boom_plague.png';_plagueBoomSpr.img=i;i.onload=function(){_plagueBoomSpr.ready=true}})();
@@ -7018,7 +7024,8 @@ function _addDetVfx(x,y,r,dur,chgBars){
     b.sparks.push({a:a,len:.4+Math.random()*.6,w:2+Math.random()*3,spd:.6+Math.random()*.5})}
 }
 const _BOOM_MAX=12;const _booms=[];for(let i=0;i<_BOOM_MAX;i++)_booms.push({x:0,y:0,r:0,t:0,mt:0,col:'fire',active:false,arms:null});
-function _projHitFx(px,py,el,isRed){_addBoom(px,py,isRed?80:24,isRed?30:14,isRed?'redbean':el===EL.I?'ice':el===EL.L?'lightning':el===EL.D?'dark':'fire');if(isRed){addParts(px,py,'#ff2200',20);shake(8);SFX.detonate();doHitFlash('#ff2200',0.2)}else{addParts(px,py,ELC[el]||'#ff8844',8);shake(4);doHitFlash(ELC[el]||'#ff8844',0.12)}}
+function _projHitFx(px,py,el,isRed){_addBoom(px,py,isRed?80:24,isRed?72:14,isRed?'redbean':el===EL.I?'ice':el===EL.L?'lightning':el===EL.D?'dark':'fire');if(isRed){addParts(px,py,'#ff2200',20);shake(8);SFX.detonate();doHitFlash('#ff2200',0.2);
+  }else{addParts(px,py,ELC[el]||'#ff8844',8);shake(4);doHitFlash(ELC[el]||'#ff8844',0.12)}}
 function _addBoom(x,y,r,dur,col){
   let b=null;for(let i=0;i<_BOOM_MAX;i++){if(!_booms[i].active){b=_booms[i];break}}
   if(!b){let oldest=0,oT=999;for(let i=0;i<_BOOM_MAX;i++){if(_booms[i].t/_booms[i].mt>oT){oT=_booms[i].t/_booms[i].mt;oldest=i}}b=_booms[oldest]}
@@ -12862,7 +12869,7 @@ const _impSpr=new Image();_impSpr.src='assets/vfx/impact_basic_sheet.png';
 // ═══ 속성별 임팩트 스프라이트 시트 (Ultimate Impact Fx) ═══
 const _impElSpr={};const _impElBossSpr={};
 // ═══ VFX 콤보 테스트 시스템 (F8) ═══
-const _TVFX2_PATH='assets/vfx_impact/_original_color/';
+const _TVFX2_PATH='assets/vfx/';
 const _TVFX2_COMBOS=[
   {name:'Fire',layers:[
     {src:'Fire_ImpactFire_Sheet.png',cols:4,rows:4,sc:1.0,delay:0,spd:3},
@@ -12875,9 +12882,9 @@ const _TVFX2_COMBOS=[
     {src:'Ice_BasicImpact.png',cols:3,rows:3,sc:0.5,delay:0,spd:2},
   ]},
   {name:'Lightning',layers:[
-    {src:'Lightning_ImpactLightning_Sheet.png',cols:4,rows:4,sc:1.0,delay:0,spd:2},
-    {src:'Lightning_Lightning_FBF_4x3.png',cols:4,rows:3,sc:1.1,delay:1,spd:3},
-    {src:'Lightning_BasicImpact.png',cols:3,rows:3,sc:0.5,delay:0,spd:2},
+    {src:'Lightning_ImpactLightning_Sheet.png',cols:4,rows:4,sc:1.0,delay:0,spd:5},
+    {src:'Lightning_Lightning_FBF_4x3.png',cols:4,rows:3,sc:1.1,delay:1,spd:7},
+    {src:'Lightning_BasicImpact.png',cols:3,rows:3,sc:0.5,delay:0,spd:7},
   ]},
   {name:'Dark',layers:[
     {src:'Dark_DarkSmoke_FBF_4x4.png',cols:4,rows:4,sc:1.4,delay:0,spd:3},
@@ -12924,8 +12931,8 @@ window._tvfx2=[];
 // 연기 VFX 헬퍼: 지정 위치에 속성색 연기 1개 스폰
 function _spawnSmoke(x,y,type){
   if(!window._tvfx2)window._tvfx2=[];
-  const _smMap={red:'Fire_FBF_4x4.png',rainbow:'Arcane_Arcane_FBF_6x6.png',fire:'Fire_FBF_4x4.png',ice:'Ice_MistSmoke_FBF_4x4.png',dark:'Dark_DarkSmoke_FBF_4x4.png',lightning:'Lightning_Lightning_FBF_4x3.png'};
-  const _smCfg={red:{c:4,r:4},rainbow:{c:6,r:6},fire:{c:4,r:4},ice:{c:4,r:4},dark:{c:4,r:4},lightning:{c:4,r:3}};
+  const _smMap={red:'Fire_FBF_4x4.png',rainbow:'Dark_DarkSmoke_FBF_4x4.png',fire:'Fire_FBF_4x4.png',ice:'Ice_MistSmoke_FBF_4x4.png',dark:'Dark_DarkSmoke_FBF_4x4.png',lightning:'Lightning_Lightning_FBF_4x3.png'};
+  const _smCfg={red:{c:4,r:4},rainbow:{c:4,r:4},fire:{c:4,r:4},ice:{c:4,r:4},dark:{c:4,r:4},lightning:{c:4,r:3}};
   const src=_smMap[type]||_smMap.fire;
   const cfg=_smCfg[type]||{c:4,r:4};
   const img=_tvfx2Imgs[src];
@@ -13330,7 +13337,15 @@ registerVFX('earthquake','assets/vfx/vfx_earthquake.png',512,512,9,3);
 registerVFX('blue_vortex','assets/vfx/boss/vfx_dark_burst.png',192,192,5,4);
 registerVFX('ice_slash','assets/vfx/slash_impact_sheet.png',128,128,19,19);
 registerVFX('whirl_slash','assets/vfx/boss/vfx_white_slash.png',192,192,20,5);
-// 패링 VFX: 신형 _tvfx2 콤보로 이전 (구형 시트 삭제됨)
+// ── 패링/무지개탄 임팩트 VFX (parry_impact 시리즈, 128×128 프레임) ──
+registerVFX('parry_impact','assets/vfx/parry_impact_sheet.png',128,128,16,16);
+registerVFX('parry_impact_el1','assets/vfx/parry_impact_el1.png',128,128,16,16);
+registerVFX('parry_impact_el2','assets/vfx/parry_impact_el2.png',128,128,16,16);
+registerVFX('parry_impact_el3','assets/vfx/parry_impact_el3.png',128,128,16,16);
+registerVFX('parry_impact_el4','assets/vfx/parry_impact_el4.png',128,128,16,16);
+registerVFX('parry_impact_el5','assets/vfx/parry_impact_el5.png',128,128,16,16);
+registerVFX('parry_impact_red','assets/vfx/parry_impact_red.png',128,128,16,16);
+registerVFX('parry_impact_rainbow','assets/vfx/parry_impact_rainbow.png',128,128,20,20);
 registerVFX('purple_impact','img/fx/purple_impact_sheet.png',443,443,25,5);
 registerVFX('blue_impact','img/fx/blue_impact_sheet.png',225,225,27,6);
 // (삭제됨: vfx_burn_death — 파일 미존재)
@@ -26092,7 +26107,7 @@ function update(){
       if(!_bQuiet){_addBoom(p.x,p.y,br,22,'fire');shake(4);}
       _dead=true;
     }
-    if(!_dead&&p.life<=0){if(p.life<=-900||p.mine||p.bomb)_dead=true;else if(p.redBean){_addBoom(p.x,p.y,40,20,'redbean');_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#ff2200',12);shake(3);_dead=true}else{const _cdx=p.x-G.cam.x,_cdy=p.y-G.cam.y;if(_cdx*_cdx+_cdy*_cdy>6250000)_dead=true;else p.life=1}}
+    if(!_dead&&p.life<=0){if(p.life<=-900||p.mine||p.bomb)_dead=true;else if(p.redBean){_addBoom(p.x,p.y,40,72,'redbean');_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#ff2200',12);shake(3);_dead=true}else{const _cdx=p.x-G.cam.x,_cdy=p.y-G.cam.y;if(_cdx*_cdx+_cdy*_cdy>6250000)_dead=true;else p.life=1}}
     // 히트 임팩트 이펙트 (투사체 소멸 시)
     if(_dead&&OPT.deathFx&&!p.mine&&!p.trap&&!p.dimRift&&!p.web&&!p.poisonZone&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade){
       _addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx));
@@ -26229,7 +26244,7 @@ function update(){
       {const _bkA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bkA)*6;P.kb.y+=Math.sin(_bkA)*6}
       SFX.detonate();shake(12);doHitFlash('#ff00ff',0.25);
       scrFlash='rgba(255,0,255,.3)';scrFlashA=.3;G.slowMo=Math.max(G.slowMo,8);
-      _addBoom(p.x,p.y,120,24,'rainbow');
+      _addBoom(p.x,p.y,120,72,'rainbow');
       _spawnSmoke(p.x,p.y,'rainbow');
       for(let k=0;k<12;k++){const sa=Math.PI*2*k/12;poolPart(p.x,p.y,Math.cos(sa)*4,Math.sin(sa)*4,'#ff44ff',3,10)}
       _pHit=true;
@@ -26282,7 +26297,7 @@ function update(){
           if(dst(p.x,p.y,be.x,be.y)>_bkR)continue;
           hurtE(be,_bkDmg,Math.atan2(be.y-p.y,be.x-p.x),false,{noPoise:true},p.el);
         }
-        _addBoom(p.x,p.y,_bkR,24,'rainbow');
+        _addBoom(p.x,p.y,_bkR,72,'rainbow');
         _pHit=true;
       }
     }
@@ -26381,7 +26396,7 @@ function update(){
           hurtE(re,~~(_rbD*(.5+rf*.5)),ra2,false,_isBlue?{kbMult:3,noPoise:true,magic:!!p.magic,blueBean:!!p.blueBean,parryBlueBean:!!p.parryBlueBean}:{kbMult:3,magic:!!p.magic,blueBean:!!p.blueBean,parryBlueBean:!!p.parryBlueBean},p.el);
           re.kb.x+=Math.cos(ra2)*28*rf;re.kb.y+=Math.sin(ra2)*28*rf;
           if(!_isBlue)re.stunned=Math.max(re.stunned,~~(80*rf))}
-        _addBoom(p.x,p.y,_rbR,_isBlue?32:26,'redbean');
+        _addBoom(p.x,p.y,_rbR,_isBlue?32:72,'redbean');
       }else{
         const _blR=p._aoeR||100,_blD=p._aoeDmg||p.dmg||15;
         const _blNe=shQuery(p.x,p.y,_blR);
@@ -26390,7 +26405,7 @@ function update(){
           const ba=Math.atan2(be.y-p.y,be.x-p.x);const bf=Math.max(0,1-bd/_blR);
           hurtE(be,~~(_blD*(.8+bf*.2)),ba,false,{kbMult:2,magic:!!p.magic,blueBean:!!p.blueBean,parryBlueBean:!!p.parryBlueBean},p.el);
           be.kb.x+=Math.cos(ba)*18*bf;be.kb.y+=Math.sin(ba)*18*bf}
-        _addBoom(p.x,p.y,_blR,32,'redbean');SFX.detonate();
+        _addBoom(p.x,p.y,_blR,72,'redbean');SFX.detonate();
         G.shake=18*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25;
         addParts(p.x,p.y,'#00ccff',20);addTxt(p.x,p.y-20,_T('💥반사 폭발!'),'#00e5ff',50)}
       _pHit=true;break}}}
@@ -44646,12 +44661,14 @@ function drawP(){
         X.globalAlpha=.5*(1-_ep/.5);X.strokeStyle='#882222';X.lineWidth=3+5*(1-_ep/.5);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
     }else
-    // redbean(빨콩): fire_1~4 개별 이미지 4프레임 애니메이션
-    if(_bv.col==='redbean'&&_plagueBoomReady>=4){
-      const _drawSz=_bv.r*2.6*Math.pow(Math.min(1,_ep*3),.5);
-      const _fi=Math.min(3,~~(_ep*4));
-      X.globalAlpha=Math.max(0,1-_ep*.8);
-      X.drawImage(_plagueBoomSprs[_fi],bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);
+    // redbean(빨콩): Fire_FBF_4x4 스프라이트시트 (4x4, 16프레임)
+    if(_bv.col==='redbean'){
+      const _fb=_tvfx2Imgs['Fire_FBF_4x4.png'];
+      if(_fb&&_fb.complete){const _fw=~~(_fb.naturalWidth/4),_fh=~~(_fb.naturalHeight/4);
+        const _drawSz=_bv.r*3.2*Math.pow(Math.min(1,_ep*3),.5);
+        const _fi=Math.min(15,~~(_ep*16)),_fc=_fi%4,_fr=~~(_fi/4);
+        X.globalAlpha=Math.max(0,1-_ep*.8);
+        X.drawImage(_fb,_fc*_fw,_fr*_fh,_fw,_fh,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);}
       if(_ep<.4){const _swR=_bv.r*Math.pow(_ep/.4,.3)*1.15;
         X.globalAlpha=.6*(1-_ep/.4);X.strokeStyle='#ff4422';X.lineWidth=3+6*(1-_ep/.4);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
@@ -44665,13 +44682,38 @@ function drawP(){
       if(_ep<.5){const _swR=_bv.r*Math.pow(_ep/.5,.35)*1.1;
         X.globalAlpha=.6*(1-_ep/.5);X.strokeStyle='#ffaa33';X.lineWidth=3+6*(1-_ep/.5);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
+    }else
+    // rainbow(무지개): Power Dark 콤보 (Dark_DarkSmoke 4x4 + Dark_Smoke 6x6 + Dark_BasicImpact 3x3)
+    if(_bv.col==='rainbow'){
+      const _alpha=Math.max(0,1-_ep*.8);
+      // Layer 1: Dark_DarkSmoke_FBF_4x4 (16f, sc 1.4)
+      const _ds1=_tvfx2Imgs['Dark_DarkSmoke_FBF_4x4.png'];
+      if(_ds1&&_ds1.complete){const _fw1=~~(_ds1.naturalWidth/4),_fh1=~~(_ds1.naturalHeight/4);
+        const _fi1=Math.min(15,~~(_ep*16)),_c1=_fi1%4,_r1=~~(_fi1/4);
+        const _sz1=_bv.r*3.6*Math.pow(Math.min(1,_ep*3),.5);
+        X.globalAlpha=_alpha;X.drawImage(_ds1,_c1*_fw1,_r1*_fh1,_fw1,_fh1,bx-_sz1/2,by-_sz1/2,_sz1,_sz1);}
+      // Layer 2: Dark_Smoke_Sheet_6x6 (36f, sc 1.6, delay)
+      if(_ep>.05){const _ds2=_tvfx2Imgs['Dark_Smoke_Sheet_6x6.png'];
+      if(_ds2&&_ds2.complete){const _fw2=~~(_ds2.naturalWidth/6),_fh2=~~(_ds2.naturalHeight/6);
+        const _ep2=Math.min(1,(_ep-.05)/.95);const _fi2=Math.min(35,~~(_ep2*36)),_c2=_fi2%6,_r2=~~(_fi2/6);
+        const _sz2=_bv.r*4.2*Math.pow(Math.min(1,_ep2*3),.5);
+        X.globalAlpha=_alpha*.8;X.drawImage(_ds2,_c2*_fw2,_r2*_fh2,_fw2,_fh2,bx-_sz2/2,by-_sz2/2,_sz2,_sz2);}}
+      // Layer 3: Dark_BasicImpact (9f, sc 0.6)
+      const _ds3=_tvfx2Imgs['Dark_BasicImpact.png'];
+      if(_ds3&&_ds3.complete){const _fw3=~~(_ds3.naturalWidth/3),_fh3=~~(_ds3.naturalHeight/3);
+        const _fi3=Math.min(8,~~(_ep*9)),_c3=_fi3%3,_r3=~~(_fi3/3);
+        const _sz3=_bv.r*1.6*Math.pow(Math.min(1,_ep*3),.5);
+        X.globalAlpha=_alpha*.6;X.drawImage(_ds3,_c3*_fw3,_r3*_fh3,_fw3,_fh3,bx-_sz3/2,by-_sz3/2,_sz3,_sz3);}
+      // 충격파 링
+      if(_ep<.4){const _swR=_bv.r*Math.pow(_ep/.4,.3)*1.15;
+        X.globalAlpha=.6*(1-_ep/.4);X.strokeStyle='#cc88ff';X.lineWidth=3+6*(1-_ep/.4);
+        X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
     }else{
-      // 캔버스 폭발 (ice/lightning/dark/rainbow)
-      const _rbH=_isRb?~~((_ep*360+_bv.t*12)%360):0;
-      const _c1=_isBlk?'#444444':_isRb?'hsl('+_rbH+',100%,85%)':_isIce?'#aaeeff':_isLtn?'#ccffff':_isDark?'#cc88ff':'#ffee66';
-      const _c2=_isBlk?'#222222':_isRb?'hsl('+((_rbH+60)%360)+',100%,60%)':_isIce?'#44aacc':_isLtn?'#44ddff':_isDark?'#8833cc':'#ff6600';
-      const _c3=_isBlk?'#111111':_isRb?'hsl('+((_rbH+120)%360)+',80%,40%)':_isIce?'#226688':_isLtn?'#2266aa':_isDark?'#441166':'#cc2200';
-      const _c4=_isBlk?'#050505':_isRb?'hsl('+((_rbH+180)%360)+',60%,15%)':_isIce?'#0a2233':_isLtn?'#112244':_isDark?'#1a0033':'#3c0500';
+      // 캔버스 폭발 (ice/lightning/dark)
+      const _c1=_isBlk?'#444444':_isIce?'#aaeeff':_isLtn?'#ccffff':_isDark?'#cc88ff':'#ffee66';
+      const _c2=_isBlk?'#222222':_isIce?'#44aacc':_isLtn?'#44ddff':_isDark?'#8833cc':'#ff6600';
+      const _c3=_isBlk?'#111111':_isIce?'#226688':_isLtn?'#2266aa':_isDark?'#441166':'#cc2200';
+      const _c4=_isBlk?'#050505':_isIce?'#0a2233':_isLtn?'#112244':_isDark?'#1a0033':'#3c0500';
       // 충격파 링
       if(_ep<.6){const _swR=_bv.r*Math.pow(_ep/.6,.3)*1.15;
         X.globalAlpha=.7*(1-_ep/.6);X.strokeStyle=_c2;X.lineWidth=4+8*(1-_ep/.6);
