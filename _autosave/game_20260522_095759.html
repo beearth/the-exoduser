@@ -10442,25 +10442,18 @@ function _gpInvNav(){
   const y=_gpad.buttons[3]&&_gpad.buttons[3].pressed;
   const lb=_gpad.buttons[4]&&_gpad.buttons[4].pressed;
   const rb=_gpad.buttons[5]&&_gpad.buttons[5].pressed;
+  const l3=!!(_gpad.buttons[10]&&_gpad.buttons[10].pressed);
   const rsY=_gpad.axes.length>=4?_gpad.axes[3]:0; // 우스틱 상하 → 스크롤
 
-  // X: 영역 순환 (장비 ↔ 가방 ↔ 창고)
-  const modes=['eq','bag','st'];
-  if(x&&!_gpUIPrev.x){const ci=modes.indexOf(_gpInvMode);_gpInvMode=modes[(ci+1)%3];_gpInvIdx=0;_gpInvEqIdx=0;_gpInvBotIdx=-1}
+  // L3(좌스틱 푸시) = 정렬
+  if(l3&&!_gpUIPrev.l3){_invAutoPlace();_invSalSel.clear();INV.selected=null;renderInv()}
 
-  // LB/RB: 인벤 하단 버튼 순환 (전체쓰레기/분해/선택분해 등)
-  if((lb&&!_gpUIPrev.lb)||(rb&&!_gpUIPrev.rb)){
-    const _botIds=['invJunkSelBtn','invJunkBtn','invSalvageBtn'];
-    const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
-    if(_bots.length){
-      if(_gpInvBotIdx<0)_gpInvBotIdx=rb?0:_bots.length-1;
-      else if(rb&&!_gpUIPrev.rb)_gpInvBotIdx=Math.min(_bots.length-1,_gpInvBotIdx+1);
-      else if(lb&&!_gpUIPrev.lb)_gpInvBotIdx=Math.max(0,_gpInvBotIdx-1);
-      const p=$('invPanel');if(p)p.querySelectorAll('[id^="inv"]').forEach(el=>{if(el.tagName==='BUTTON'){el.style.outline='';el.style.outlineOffset=''}});
-      _bots[_gpInvBotIdx].style.outline='2px solid #C9A961';_bots[_gpInvBotIdx].style.outlineOffset='-1px';
-      _bots[_gpInvBotIdx].scrollIntoView({block:'nearest'});
-    }
-  }
+  // LB/RB: 영역 전환 (장비 ↔ 가방 ↔ 하단버튼 ↔ 창고)
+  const modes=['eq','bag','bot','st'];
+  if(rb&&!_gpUIPrev.rb){const ci=modes.indexOf(_gpInvMode);_gpInvMode=modes[(ci+1)%modes.length];_gpInvIdx=0;_gpInvEqIdx=0;_gpInvBotIdx=0}
+  if(lb&&!_gpUIPrev.lb){const ci=modes.indexOf(_gpInvMode);_gpInvMode=modes[(ci-1+modes.length)%modes.length];_gpInvIdx=0;_gpInvEqIdx=0;_gpInvBotIdx=0}
+  // bot 모드인데 하단 버튼 없으면 자동으로 다음 영역으로
+  if(_gpInvMode==='bot'){const _botIds=['invJunkSelBtn','invJunkBtn','invSalvageBtn'];const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');if(!_bots.length){_gpInvMode=rb&&!_gpUIPrev.rb?'st':'bag'}}
   // 방향키 누르면 하단 버튼 포커스 해제
   if(u||d||l||r)_gpInvBotIdx=-1;
   _gpUIPrev.lb=lb;_gpUIPrev.rb=rb;
@@ -10530,6 +10523,20 @@ function _gpInvNav(){
     if(moved){const sn=typeof SLOT_NAMES!=='undefined'?SLOT_NAMES:[];if(sn[_gpInvEqIdx]){INV.selected='eq:'+sn[_gpInvEqIdx];if(typeof _invRenderDetail==='function')_invRenderDetail(sn[_gpInvEqIdx],'eq')}}
     if(a&&!_gpUIPrev.a)eqSlots[_gpInvEqIdx].click();
     if(y&&!_gpUIPrev.y){const ev=new MouseEvent('contextmenu',{bubbles:true});eqSlots[_gpInvEqIdx].dispatchEvent(ev)}
+  } else if(_gpInvMode==='bot'){
+    // 하단 버튼 영역 (전체쓰레기/분해/선택분해)
+    const _botIds=['invJunkSelBtn','invJunkBtn','invSalvageBtn'];
+    const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
+    if(_bots.length){
+      if(_gpInvBotIdx>=_bots.length)_gpInvBotIdx=0;
+      if(r&&!_gpUIPrev.r)_gpInvBotIdx=Math.min(_bots.length-1,_gpInvBotIdx+1);
+      if(l&&!_gpUIPrev.l)_gpInvBotIdx=Math.max(0,_gpInvBotIdx-1);
+      _clr();
+      const p=$('invPanel');if(p)p.querySelectorAll('button,span').forEach(el=>{el.style.outline='';el.style.outlineOffset=''});
+      _bots[_gpInvBotIdx].style.outline='2px solid #C9A961';_bots[_gpInvBotIdx].style.outlineOffset='-1px';
+      _bots[_gpInvBotIdx].scrollIntoView({block:'nearest'});
+      if(a&&!_gpUIPrev.a)_bots[_gpInvBotIdx].click();
+    }
   } else {
     const stItems=$('invStGrid')?Array.from($('invStGrid').querySelectorAll('.inv-cell')):[];
     if(!stItems.length){_gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;_gpUIPrev.a=a;_gpUIPrev.b=b;return}
@@ -10551,18 +10558,13 @@ function _gpInvNav(){
     // B버튼 패널닫기 제거 — 전용 닫기버튼 사용
     _gpUIPrev.lb=lb;_gpUIPrev.rb=rb;return;
   }
-  // 하단 버튼 포커스 중 A = 클릭
-  if(a&&!_gpUIPrev.a&&_gpInvBotIdx>=0){
-    const _botIds=['invJunkSelBtn','invJunkBtn','invSalvageBtn'];
-    const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
-    if(_bots[_gpInvBotIdx])_bots[_gpInvBotIdx].click();
-  }
+  // 하단 버튼 A 클릭은 bot 모드 블록에서 처리됨
   // 우스틱 스크롤은 상단 공통 블록에서 처리됨
   // 가상 커서 호버 → inv-item mouseover 자동 발생
   if(_gpVC.vis){const _vhEl=document.elementFromPoint(_gpVC.x,_gpVC.y);const _vhIt=(_vhEl&&_vhEl.id!=="_gpVCursor")?_vhEl:null;if(_vhIt!==_gpVCPrevHoverEl){if(_gpVCPrevHoverEl)_gpVCPrevHoverEl.dispatchEvent(new MouseEvent("mouseleave",{bubbles:true,clientX:_gpVC.x,clientY:_gpVC.y}));if(_vhIt)_vhIt.dispatchEvent(new MouseEvent("mouseover",{bubbles:true,clientX:_gpVC.x,clientY:_gpVC.y}));_gpVCPrevHoverEl=_vhIt;}}else if(_gpVCPrevHoverEl){_gpVCPrevHoverEl.dispatchEvent(new MouseEvent("mouseleave",{bubbles:true}));_gpVCPrevHoverEl=null;}
   // B버튼 패널닫기 제거 — 전용 닫기버튼 사용
   _gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;
-  _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.x=x;_gpUIPrev.y=y;
+  _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.x=x;_gpUIPrev.y=y;_gpUIPrev.l3=l3;
 }
 
 function _chkAct(b){if(!b)return false;if(b.startsWith('mouse'))return!!MB[+b.slice(5)];return!!K[b]}
@@ -12204,6 +12206,7 @@ let G={on:false,paused:false,stage:0,kills:0,mats:0,cam:{x:0,y:0},shake:0,parts:
   combo:0,comboTimer:0,comboMax:0,stageTime:0,
   _zones:null,_curZone:0,_zoneState:{},_portals:null}; // 존 분할 시스템
 let P=null,ens=[],projs=[],pProjs=[],worldItems=[];// worldItems = items on ground, pProjs = player arrows
+function _wiPush(wi){worldItems.push(wi);if(worldItems.length>20){worldItems.sort((a,b)=>{const ra=a.type==='item'?(a.item?a.item.rarity||0:0):-1;const rb=b.type==='item'?(b.item?b.item.rarity||0:0):-1;return ra-rb});worldItems.splice(0,worldItems.length-20)}}
 // ── 적 투사체 오브젝트 풀 ──
 const _PROJ_POOL=600;
 const _projFree=[];
@@ -12813,7 +12816,7 @@ function _renderIceOrbVfx(ctx){
     const ri=8-v.frame; // 역순: 8,7,6,5,4,3,2,1,0
     const sx=(ri%3)*fw,sy=((ri/3)|0)*fh;
     const dw=fw*v.scale,dh=fh*v.scale;
-    ctx.globalAlpha=v.frame<7?1:1-((v.frame-7)/2);
+    ctx.globalAlpha=(v.frame<7?1:1-((v.frame-7)/2))*.45;
     ctx.drawImage(_IO_VFX_IMG,sx,sy,fw,fh,v.x-dw/2,v.y-dh/2,dw,dh);
   }
   ctx.globalAlpha=1;ctx.restore();
@@ -12826,7 +12829,7 @@ function renderMmExpVFX(ctx){
     const v=_mmExpVfx[i];if(!v.active)continue;
     const img=_MM_EXP_IMGS[v.frame];if(!img||!img.complete||!img.naturalWidth)continue;
     const dw=img.naturalWidth*v.scale,dh=img.naturalHeight*v.scale;
-    ctx.globalAlpha=1-(v.frame/_MM_EXP_FRAMES)*0.4;
+    ctx.globalAlpha=(1-(v.frame/_MM_EXP_FRAMES)*0.4)*.45;
     ctx.drawImage(img,v.x-dw/2,v.y-dh*0.75,dw,dh);
   }
   ctx.globalAlpha=1;ctx.restore();
@@ -12928,7 +12931,7 @@ function renderDarkBurstVFX(ctx){
     if(v.x<_cvl||v.x>_cvr||v.y<_cvt||v.y>_cvb)continue;
     var col=v.frame%_DB_COLS,row=Math.floor(v.frame/_DB_COLS)%_DB_ROWS;
     var dSz=_DB_CW*v.scale*.45;
-    ctx.globalAlpha=v.frame<10?1:1-((v.frame-10)/(_DB_FRAMES-10))*.8;
+    ctx.globalAlpha=(v.frame<10?1:1-((v.frame-10)/(_DB_FRAMES-10))*.8)*.45;
     ctx.drawImage(_DB_IMG,col*_DB_CW,row*_DB_CH,_DB_CW,_DB_CH,v.x-dSz/2,v.y-dSz/2,dSz,dSz);
     ctx.drawImage(_DB_IMG,col*_DB_CW,row*_DB_CH,_DB_CW,_DB_CH,v.x-dSz/2,v.y-dSz/2,dSz,dSz);
   }
@@ -12957,7 +12960,7 @@ function renderLightningBurstVFX(ctx){
   for(let i=0;i<_LB_MAX;i++){
     const v=_lbVfx[i];if(!v.active)continue;
     const sz=_lbFW*v.scale*.5,szH=_lbFH*v.scale*.5;
-    ctx.globalAlpha=v.frame<6?.9:Math.max(0,(1-((v.frame-6)/(_LB_FRAMES-6))*.9)*.9);
+    ctx.globalAlpha=(v.frame<6?.9:Math.max(0,(1-((v.frame-6)/(_LB_FRAMES-6))*.9)*.9))*.45;
     ctx.drawImage(_LB_IMG,v.frame*_lbFW,0,_lbFW,_lbFH,v.x-sz/2,v.y-szH*.8,sz,szH);
   }
   ctx.globalAlpha=1;ctx.restore();
@@ -12998,7 +13001,7 @@ function renderElecVFX(ctx){
     var col=v.frame%_EB_COLS,row=Math.floor(v.frame/_EB_COLS)%_EB_ROWS;
     var sx=col*_EB_CW,sy=row*_EB_CH;
     var dSz=_EB_CW*v.scale;
-    ctx.globalAlpha=v.frame<5?1:1-((v.frame-5)/(_EB_FRAMES-5))*0.9;
+    ctx.globalAlpha=(v.frame<5?1:1-((v.frame-5)/(_EB_FRAMES-5))*0.9)*.45;
     ctx.save();ctx.translate(v.x,v.y);ctx.rotate(v.ang);
     ctx.drawImage(_EB_IMG,sx,sy,_EB_CW,_EB_CH,-dSz/2,-dSz/2,dSz,dSz);
     ctx.restore();
@@ -13026,7 +13029,7 @@ function renderOldBurstVFX(ctx){
     if(v.x<_cvl||v.x>_cvr||v.y<_cvt||v.y>_cvb)continue;
     var img=_HB_IMGS[v.frame];if(!img||!img.complete||!img.naturalWidth)continue;
     var dw=img.naturalWidth*v.scale,dh=img.naturalHeight*v.scale;
-    ctx.globalAlpha=v.frame<4?1:1-((v.frame-3)/(_HB_FRAMES-3))*0.7;
+    ctx.globalAlpha=(v.frame<4?1:1-((v.frame-3)/(_HB_FRAMES-3))*0.7)*.45;
     ctx.save();ctx.translate(v.x,v.y);ctx.rotate(v.ang);
     ctx.drawImage(img,-dw/2,-dh/2,dw,dh);
     ctx.restore();
@@ -13055,7 +13058,7 @@ function renderHitVFX(ctx){
     var col=v.frame%_PS_COLS,row=Math.floor(v.frame/_PS_COLS)%_PS_ROWS;
     var sx=col*_PS_CW,sy=row*_PS_CH;
     var dSz=_PS_CW*v.scale;
-    ctx.globalAlpha=v.frame<12?1:1-((v.frame-12)/(_PS_FRAMES-12))*0.8;
+    ctx.globalAlpha=(v.frame<12?1:1-((v.frame-12)/(_PS_FRAMES-12))*0.8)*.45;
     ctx.save();ctx.translate(v.x,v.y);ctx.rotate(v.ang);
     ctx.drawImage(_PS_IMG,sx,sy,_PS_CW,_PS_CH,-dSz/2,-dSz/2,dSz,dSz);
     ctx.restore();
@@ -23308,7 +23311,7 @@ function rollDrop(e){
   const tier=e.dropTier||0;
   const item=mkItem(slot,tier,el,rarity);
   if(!item)continue;
-  worldItems.push({x:e.x+(Math.random()-.5)*30,y:e.y+(Math.random()-.5)*30,type:'item',item,picked:false});
+  _wiPush({x:e.x+(Math.random()-.5)*30,y:e.y+(Math.random()-.5)*30,type:'item',item,picked:false});
   }} // end dropCount loop
   // ═══ 결정 드롭 ═══
   if(CRYSTAL_BAG.length<CRYSTAL_BAG_MAX){
@@ -24082,7 +24085,7 @@ function update(){
           const leg=Math.min(.15+stgB*.5,.40);const hero=Math.min(.25+stgB*.4,.35);
           const rr=Math.random();const rar=rr<leg?4:rr<leg+hero?3:rr<leg+hero+.30?2:1;
           const item=mkItem(slot,0,el,rar);
-          worldItems.push({x:it.x+(Math.random()-.5)*50,y:it.y+(Math.random()-.5)*50,type:'item',item,picked:false});
+          _wiPush({x:it.x+(Math.random()-.5)*50,y:it.y+(Math.random()-.5)*50,type:'item',item,picked:false});
         }
         // 추가 보상: 악의 + 물약
         const matBonus=5+~~(G.stage*2);G.mats+=matBonus;
@@ -24112,7 +24115,7 @@ function update(){
             const si=G.stage||0;const rr=Math.random();
             const rar=_dt>=2?(rr<.2?4:rr<.5?3:2):_dt>=1?(rr<.1?3:rr<.4?2:1):(rr<.15?2:1);
             const item=mkItem(slot,0,el,rar);
-            worldItems.push({x:it.x+(Math.random()-.5)*40,y:it.y+(Math.random()-.5)*40,type:'item',item,picked:false});
+            _wiPush({x:it.x+(Math.random()-.5)*40,y:it.y+(Math.random()-.5)*40,type:'item',item,picked:false});
           }
           // 물약 보너스 (중형+)
           if(_dt>=1&&Math.random()<.4){if(addPotion('hp',1))addTxt(it.x+15,it.y+5,_T('HP물약 +1'),'#33ff33',25)}
@@ -25512,15 +25515,15 @@ function update(){
   // 생존 적 수 카운트 (소환굴 스폰캡 기준)
   {let _ac=0;for(let i=0;i<ens.length;i++)if(ens[i].alive)_ac++;G._aliveEns=_ac}
   // ens 하드캡: 900 초과 시 즉시 정리 (원거리 비보스 우선 제거)
-  if(ens.length>900){console.warn('[ENS-CAP] ens='+ens.length+' alive='+G._aliveEns+' → 800으로 컬링');let _sorted=[];for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive){if(e._reviveTimer>0)_sorted.push(e);continue}_sorted.push(e)}_sorted.sort((a,b)=>(a.ib?0:1)-(b.ib?0:1)||dst2(P.x,P.y,a.x,a.y)-dst2(P.x,P.y,b.x,b.y));if(_sorted.length>800){for(let _ci=800;_ci<_sorted.length;_ci++){if(_sorted[_ci].alive&&!_sorted[_ci].ib){G.kills++;G._stageKills=(G._stageKills||0)+1}}_sorted.length=800}ens.length=0;for(let i=0;i<_sorted.length;i++)ens[i]=_sorted[i];ens.length=_sorted.length;_shDirty=true}
+  if(ens.length>500){console.warn('[ENS-CAP] ens='+ens.length+' alive='+G._aliveEns+' → 400으로 컬링');let _sorted=[];for(let i=0;i<ens.length;i++){const e=ens[i];if(!e.alive){if(e._reviveTimer>0)_sorted.push(e);continue}_sorted.push(e)}_sorted.sort((a,b)=>(a.ib?0:1)-(b.ib?0:1)||dst2(P.x,P.y,a.x,a.y)-dst2(P.x,P.y,b.x,b.y));if(_sorted.length>400){for(let _ci=400;_ci<_sorted.length;_ci++){if(_sorted[_ci].alive&&!_sorted[_ci].ib){G.kills++;G._stageKills=(G._stageKills||0)+1}}_sorted.length=400}ens.length=0;for(let i=0;i<_sorted.length;i++)ens[i]=_sorted[i];ens.length=_sorted.length;_shDirty=true}
   if(G._gcT>20){G._gcT=0;
     // 시체 미생성 사망 fallback — GC 시점에만 (매 프레임→20프레임 주기)
     for(let i=0;i<ens.length;i++){if(!ens[i])continue;if(!ens[i].alive&&!ens[i]._corpseSpawned&&!ens[i]._isDecoy&&ens[i].mhp>0){_addCorpse(ens[i],Math.atan2(ens[i].y-P.y,ens[i].x-P.x),4)}}
     let w=0,_deadCnt=0;for(let i=0;i<ens.length;i++){if(!ens[i])continue;if(ens[i].alive){ens[w++]=ens[i]}else if(ens[i]._reviveTimer>0&&_deadCnt<20){ens[w++]=ens[i];_deadCnt++}}ens.length=w;
     // worldItems picked 정리
     let ww=0;for(let i=0;i<worldItems.length;i++){if(!worldItems[i].picked)worldItems[ww++]=worldItems[i]}worldItems.length=ww;
-    // 아이템 상한 20개 — 초과 시 하급(낮은 rarity)부터 제거 (렉 방지)
-    if(worldItems.length>20){worldItems.sort((a,b)=>(a.item?a.item.rarity||0:99)-(b.item?b.item.rarity||0:99));worldItems.splice(0,worldItems.length-20);}
+    // 아이템 상한 20개 — 초과 시 비장비(hp/debris/o2)→하급장비 순 제거, 고등급 보존
+    if(worldItems.length>20){worldItems.sort((a,b)=>{const ra=a.type==='item'?(a.item?a.item.rarity||0:0):-1;const rb=b.type==='item'?(b.item?b.item.rarity||0:0):-1;return ra-rb});worldItems.splice(0,worldItems.length-20);}
     // G.txts: 링 버퍼 풀이므로 compaction 불필요 (축소 시 재할당 유발)
   }
   // 공간 해싱 리빌드 (2프레임 주기)
@@ -26570,7 +26573,7 @@ function update(){
     const _hSi=G.stage;
     if(h._spawnTotal==null){const _hType=h.size<=.3?'S':h.size<=.5?'M':'L';h._spawnTotal=SPAWN_HOLE.cnt[_hType]||50;h._spawned=0;h._spawnCD=0;h._spawnInterval=~~(300/h._spawnTotal)} // 5초÷총량=간격
     if(h._spawnCD>0){h._spawnCD-=sp;continue}
-    if(G._aliveEns>=750){h._spawnCD=30;continue} // 생존 적 750 이상이면 스폰 대기
+    if(G._aliveEns>=400){h._spawnCD=30;continue} // 생존 적 400 이상이면 스폰 대기
     // 1마리씩 순차 소환 (간격 = 300f/총량)
     {
       let _hsx,_hsy,_hTry=0;
@@ -30902,7 +30905,7 @@ function updateE(e,sp){
             const _mcSlot=SLOT_NAMES[~~(Math.random()*SLOT_NAMES.length)];
             const _mcR=Math.random()<.3?4:3; // 30% 전설, 70% 영웅
             const _mcI=mkItem(_mcSlot,Math.min(SI_TO_HELL[G.stage]+2,4),[EL.P,EL.F,EL.I,EL.D,EL.L][~~(Math.random()*5)],_mcR);
-            worldItems.push({x:e.x+(Math.random()-.5)*16,y:e.y+20,type:'item',item:_mcI,picked:false});
+            _wiPush({x:e.x+(Math.random()-.5)*16,y:e.y+20,type:'item',item:_mcI,picked:false});
             addTxt(e.x,e.y-20,_T('거래 성공!'),'#44ff44',50);SFX.levelup();
           }else{addTxt(e.x,e.y-20,_T('악의 부족! (')+_mcCost+')','#ff4444',50)}
           addTxt(e.x,e.y-35,_T('상인이 떠납니다...'),'#886644',60);
@@ -32403,7 +32406,7 @@ function checkRooms(){
       addTxt(P.x,P.y-40,_T('출구가 열렸다!'),'#44ff88',80);
       SFX.victory();G.shake=10*OPT.shake/100;
       const cx=(bossRoom.cx+.5)*T,cy=(bossRoom.cy+.5)*T;
-      worldItems.push({x:cx,y:cy,type:'chest',picked:false,opened:false});
+      _wiPush({x:cx,y:cy,type:'chest',picked:false,opened:false});
       if(window._chest3d)window._chest3d.show(cx,cy);
       addTxt(cx,cy-30,_T('보물상자 출현!'),'#ffcc00',80);
       addParts(cx,cy,'#ffcc00',12);
@@ -33077,7 +33080,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       const _debC=e.elite>=3?.25:e.elite>=2?.15:e.elite>=1?.08:0;
       if(_debC>0&&Math.random()<_debC){
         const _dt=e.elite>=3?2:e.elite>=2?1:0; // 0소/1중/2대
-        worldItems.push({x:e.x+(Math.random()-.5)*20,y:e.y+(Math.random()-.5)*20,type:'debris',debTier:_dt,picked:false});
+        _wiPush({x:e.x+(Math.random()-.5)*20,y:e.y+(Math.random()-.5)*20,type:'debris',debTier:_dt,picked:false});
         addTxt(e.x,e.y-25,_T('잔해 출현!'),'#cc8844',40);addParts(e.x,e.y,'#cc8844',6);
       }
     }
@@ -33241,7 +33244,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     }
     // 5장 지옥의 군단: 산소방울 드롭 (30% 확률)
     if(e.etype>=60&&e.etype<=69&&Math.random()<.3){
-      worldItems.push({x:e.x+(Math.random()-.5)*20,y:e.y+(Math.random()-.5)*20,type:'o2bubble',picked:false});
+      _wiPush({x:e.x+(Math.random()-.5)*20,y:e.y+(Math.random()-.5)*20,type:'o2bubble',picked:false});
     }
     // ═══ 5장 지옥의 군단 사망 효과 ═══
     // 60:심해 보행자 — 사망 시 감속 수역
@@ -33300,7 +33303,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         const _wSlots=['weapon','bow'];const _ws=_wSlots[~~(Math.random()*_wSlots.length)];
         const _wr=Math.random()<.15?4:Math.random()<.4?3:2;
         const _wi=mkItem(_ws,e.dropTier||0,[EL.P,EL.F,EL.I,EL.D,EL.L][~~(Math.random()*5)],_wr);
-        worldItems.push({x:e.x+(Math.random()-.5)*16,y:e.y+(Math.random()-.5)*16,type:'item',item:_wi,picked:false});
+        _wiPush({x:e.x+(Math.random()-.5)*16,y:e.y+(Math.random()-.5)*16,type:'item',item:_wi,picked:false});
         addTxt(e.x,e.y-20,_T('무기 드롭!'),'#ffcc00',40);
       }
       // 91 보물악마: 대량 악의 + 보장 영웅이상 장비
@@ -33310,7 +33313,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         const _tmSlot=SLOT_NAMES[~~(Math.random()*SLOT_NAMES.length)];
         const _tmR=Math.random()<.25?4:3;
         const _tmI=mkItem(_tmSlot,e.dropTier||0,[EL.P,EL.F,EL.I,EL.D,EL.L][~~(Math.random()*5)],_tmR);
-        worldItems.push({x:e.x+(Math.random()-.5)*16,y:e.y+(Math.random()-.5)*16,type:'item',item:_tmI,picked:false});
+        _wiPush({x:e.x+(Math.random()-.5)*16,y:e.y+(Math.random()-.5)*16,type:'item',item:_tmI,picked:false});
         addTxt(e.x,e.y-5,_T('보물 발견!'),'#ffdd44',50);
       }
       // 93 상인악마: 상인의 주머니 (대량 악의)
@@ -33323,7 +33326,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         const _cpSlots=['ring1','necklace'];const _cs=_cpSlots[~~(Math.random()*_cpSlots.length)];
         const _cr=Math.random()<.2?4:Math.random()<.5?3:2;
         const _ci=mkItem(_cs,e.dropTier||0,[EL.P,EL.D,EL.L][~~(Math.random()*3)],_cr);
-        worldItems.push({x:e.x+(Math.random()-.5)*16,y:e.y+(Math.random()-.5)*16,type:'item',item:_ci,picked:false});
+        _wiPush({x:e.x+(Math.random()-.5)*16,y:e.y+(Math.random()-.5)*16,type:'item',item:_ci,picked:false});
         addTxt(e.x,e.y-20,_T('속박의 파편!'),'#888899',40);
       }
       // 95 시간사도: 부츠/장갑 드롭
@@ -33331,7 +33334,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         const _tsSlots=['boots','gloves'];const _tss=_tsSlots[~~(Math.random()*_tsSlots.length)];
         const _tsr=Math.random()<.2?4:Math.random()<.5?3:2;
         const _tsi=mkItem(_tss,e.dropTier||0,[EL.I,EL.L,EL.P][~~(Math.random()*3)],_tsr);
-        worldItems.push({x:e.x+(Math.random()-.5)*16,y:e.y+(Math.random()-.5)*16,type:'item',item:_tsi,picked:false});
+        _wiPush({x:e.x+(Math.random()-.5)*16,y:e.y+(Math.random()-.5)*16,type:'item',item:_tsi,picked:false});
         addTxt(e.x,e.y-20,_T('시간의 조각!'),'#aabb99',40);
       }
       // 96 탐욕사도: 훔친 골드 2배 반환
@@ -33355,14 +33358,14 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         const _drR=Math.random()<.3?4:3;
         const _drSlot=SLOT_NAMES[~~(Math.random()*SLOT_NAMES.length)];
         const _drI=mkItem(_drSlot,Math.min(SI_TO_HELL[G.stage]+3,4),[EL.D,EL.L][~~(Math.random()*2)],_drR);
-        worldItems.push({x:e.x+(Math.random()-.5)*16,y:e.y+(Math.random()-.5)*16,type:'item',item:_drI,picked:false});
+        _wiPush({x:e.x+(Math.random()-.5)*16,y:e.y+(Math.random()-.5)*16,type:'item',item:_drI,picked:false});
         addTxt(e.x,e.y-20,_T('차원의 결정!'),'#9900ff',40);
       }
       // 99 죽음: 보장 전설 드롭 + 대량 보상
       if(e.etype===99){
         const _deSlot=SLOT_NAMES[~~(Math.random()*SLOT_NAMES.length)];
         const _deI=mkItem(_deSlot,Math.min(SI_TO_HELL[G.stage]+4,4),[EL.D][0],4); // 전설 확정
-        worldItems.push({x:e.x+(Math.random()-.5)*16,y:e.y+(Math.random()-.5)*16,type:'item',item:_deI,picked:false});
+        _wiPush({x:e.x+(Math.random()-.5)*16,y:e.y+(Math.random()-.5)*16,type:'item',item:_deI,picked:false});
         const _deMat=200+~~(G.stage*5);G.mats+=_deMat;
         addTxt(e.x,e.y-20,_T('전설 아이템!'),'#ff4400',60);
         addTxt(e.x,e.y-50,_T('죽음을 이겨냈다!'),'#ffffff',80);
@@ -33398,7 +33401,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(e._isSlime&&e._eatenItems&&e._eatenItems.length){
       for(let _ei=0;_ei<e._eatenItems.length;_ei++){
         const _eit=e._eatenItems[_ei];
-        worldItems.push({x:e.x+(Math.random()-.5)*40,y:e.y+(Math.random()-.5)*40,type:'item',item:_eit,picked:false});
+        _wiPush({x:e.x+(Math.random()-.5)*40,y:e.y+(Math.random()-.5)*40,type:'item',item:_eit,picked:false});
       }
       addTxt(e.x,e.y-e.r-10,_T('장비 ')+e._eatenItems.length+_L('개 토해냄!',' gear spat out!'),'#ffcc44',40);
     }
@@ -34432,7 +34435,7 @@ const _SK_MUL={
   // ── 단일 연사 (~0.5초 사이클) ──
   fireball:{b:5.0,g:4.0},   // (구 g:2.0)
   fireBeam:{b:0.8,g:0.64},  // (구 g:0.32)
-  arcLaser:{b:8.0,g:6.72},  // (구 g:3.36)
+  arcLaser:{b:12.0,g:10.08}, // 채널링 프리미엄 1.5× (구 b:8.0,g:6.72)
   // ── 채널링 (주력기) ──
   whirlwind:{b:2.5,g:2.1},  // (구 g:1.05)
   omniBeam:{b:0.5,g:0.4},   // (구 g:0.2)
@@ -36027,6 +36030,8 @@ addEventListener('mouseup',e=>{
 });
 
 function renderSkillPanel(){
+  // 뒤로가기 버튼 텍스트 갱신
+  const _bk=$('skBackBtn');if(_bk)_bk.textContent=(_skExpandedId||_fuseSelId)?_L('← 뒤로','← Back'):_L('닫기 [ESC]','Close [ESC]');
   // stormBeam 합체 시 히든 스킬 자동 복구
   if(_isFused('stormBeam')){if(!P.skills.peaceShield)P.skills.peaceShield=1;if(!P.skills.hellRay)P.skills.hellRay=1;}
   const _si=$('skillInfo');
@@ -37156,7 +37161,7 @@ function renderStorage(){
   store.forEach((it,idx)=>{
     const d=document.createElement('div');d.className='fg-i';d.style.borderLeftColor=RARITY_C[it.rarity];
     d.innerHTML=`<div class="fg-in" style="color:${RARITY_C[it.rarity]}">${it.emoji} ${_T(it.name)}</div><div class="fg-id">Lv.${it.itemLv||0} ${_rarName(it.rarity)}</div><div class="fg-ic" style="color:#66aacc;cursor:pointer">${_T('꺼내기')}</div>`;
-    d.onclick=()=>{if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}INV.bag.push(it);store.splice(idx,1);SFX.pickup();_persistSharedStorage();renderStorage();dbSaveNow()};
+    d.onclick=()=>{if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}it._gx=null;it._gy=null;INV.bag.push(it);store.splice(idx,1);SFX.pickup();_persistSharedStorage();renderStorage();dbSaveNow()};
     grid.appendChild(d);
   });
 }
@@ -37199,7 +37204,7 @@ function renderInvStorage(){
 function withdrawStorage(idx){
   if(INV.bag.length>=BAG_MAX){notify(_T('가방이 가득 찼습니다!'));return}
   const store=_getStore();if(!store[idx])return;
-  INV.bag.push(store[idx]);store.splice(idx,1);INV.selected=null;SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow();
+  const wi=store[idx];wi._gx=null;wi._gy=null;INV.bag.push(wi);store.splice(idx,1);INV.selected=null;SFX.pickup();_persistSharedStorage();renderInv();dbSaveNow();
 }
 
 // ═══ SETTINGS RENDER ═══
@@ -42353,7 +42358,7 @@ function draw(){
       v.t+=_dtSp;if(v.t>=v.frameTime){v.t=0;v.frame++}
       if(v.frame>=v.maxFrames)continue;
       const dw=sh.fw*v.scale,dh=sh.fh*v.scale;
-      const _vAlpha=1-(v.frame/v.maxFrames)*0.3;
+      const _vAlpha=(1-(v.frame/v.maxFrames)*0.3)*.5;
       if(_vAlpha<0.05&&!v.isSkill)continue;
       if(v.x<_vl-dw||v.x>_vr+dw||v.y<_vt-dh||v.y>_vb+dh){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
       if(++_vDrw>_vfxBudgetCap&&!v.isSkill){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
@@ -42388,7 +42393,7 @@ function draw(){
       const f=_fireExps[fi];const img=_fireExpFrames[f.frame];
       if(!img){if(_fw2!==fi)_fireExps[_fw2]=f;_fw2++;continue}
       const dw=img.width*f.scale,dh=img.height*f.scale;
-      const _feAlpha=1-(f.frame/f.maxFrames)*0.4;
+      const _feAlpha=(1-(f.frame/f.maxFrames)*0.4)*.45;
       if(_feAlpha<0.05){f.t+=_dtSp;if(f.t>=f.frameTime){f.t=0;f.frame++}if(f.frame<f.maxFrames){if(_fw2!==fi)_fireExps[_fw2]=f;_fw2++}continue}
       if(f.x<_vl-dw||f.x>_vr+dw||f.y<_vt-dh||f.y>_vb+dh){f.t+=_dtSp;if(f.t>=f.frameTime){f.t=0;f.frame++}if(f.frame<f.maxFrames){if(_fw2!==fi)_fireExps[_fw2]=f;_fw2++}continue}
       if(++_feDrw>_feBudgetCap){f.t+=_dtSp;if(f.t>=f.frameTime){f.t=0;f.frame++}if(f.frame<f.maxFrames){if(_fw2!==fi)_fireExps[_fw2]=f;_fw2++}continue}
@@ -42438,7 +42443,7 @@ function draw(){
       f.t++;if(f.t>=8){f.t=0;f.f++}
       if(f.f>=_FX_FRAMES)continue;
       const prog=f.f/_FX_FRAMES;
-      const alpha=prog>.7?1-(prog-.7)/.3:1;
+      const alpha=(prog>.4?1-(prog-.4)/.6:1)*.45;
       const scale=1+prog*.5;
       const sz=f.sz*scale;
       X.globalAlpha=alpha;
@@ -42484,11 +42489,11 @@ function draw(){
         const fc=fr%_wwImpCols,frow=~~(fr/_wwImpCols);
         const drawSz=40*sz*(0.5+p*0.6);
         const _ia=im.ang+Math.random()*.2-.1;
-        if(_vfxGLMode&&_queueVfxGL(_wwImpCanvas,fc*_wwImpFW,frow*_wwImpFH,_wwImpFW,_wwImpFH,C.width*.5+(im.x-G.cam.x),C.height*.5+(im.y-G.cam.y),drawSz,drawSz,_ia,inv*0.85)){
+        if(_vfxGLMode&&_queueVfxGL(_wwImpCanvas,fc*_wwImpFW,frow*_wwImpFH,_wwImpFW,_wwImpFH,C.width*.5+(im.x-G.cam.x),C.height*.5+(im.y-G.cam.y),drawSz,drawSz,_ia,inv*0.4)){
           // queued to GL batch
         }else{
           const _ic=Math.cos(_ia),_is=Math.sin(_ia);
-          X.globalAlpha=inv*0.85;
+          X.globalAlpha=inv*0.4;
           X.setTransform(_ic,_is,-_is,_ic,im.x,im.y);
           X.drawImage(_wwImpCanvas,fc*_wwImpFW,frow*_wwImpFH,_wwImpFW,_wwImpFH,-drawSz/2,-drawSz/2,drawSz,drawSz);
           X.setTransform(1,0,0,1,0,0);
@@ -42498,16 +42503,16 @@ function draw(){
         const fr=Math.min(8,~~(p*9));
         const fsz=~~(_impSpr.naturalHeight); // 128
         const drawSz=fsz*sz*(0.8+p*0.6);
-        if(_vfxGLMode&&_queueVfxGL(_impSpr,fr*fsz,0,fsz,fsz,C.width*.5+(im.x-G.cam.x),C.height*.5+(im.y-G.cam.y),drawSz,drawSz,0,inv*0.95)){
+        if(_vfxGLMode&&_queueVfxGL(_impSpr,fr*fsz,0,fsz,fsz,C.width*.5+(im.x-G.cam.x),C.height*.5+(im.y-G.cam.y),drawSz,drawSz,0,inv*0.45)){
           // queued to GL batch
         }else{
-          X.globalAlpha=inv*0.95;
+          X.globalAlpha=inv*0.45;
           X.drawImage(_impSpr,fr*fsz,0,fsz,fsz,im.x-drawSz/2,im.y-drawSz/2,drawSz,drawSz);
         }
       }else{
         // 폴백: 기존 arc 렌더
-        {const _impR=(8+p*32)*sz;const _impSt=_getSparkStamp(ec);X.globalAlpha=inv*0.85;X.drawImage(_impSt,im.x-_impR,im.y-_impR,_impR*2,_impR*2);}
-        if(p<0.25){const fp=1-p/0.25;const _fpR=9*sz*fp;const _fpSt=_getSparkStamp('#ffffff');X.globalAlpha=fp*0.95;X.drawImage(_fpSt,im.x-_fpR,im.y-_fpR,_fpR*2,_fpR*2)}
+        {const _impR=(8+p*32)*sz;const _impSt=_getSparkStamp(ec);X.globalAlpha=inv*0.4;X.drawImage(_impSt,im.x-_impR,im.y-_impR,_impR*2,_impR*2);}
+        if(p<0.25){const fp=1-p/0.25;const _fpR=9*sz*fp;const _fpSt=_getSparkStamp('#ffffff');X.globalAlpha=fp*0.45;X.drawImage(_fpSt,im.x-_fpR,im.y-_fpR,_fpR*2,_fpR*2)}
       }
     }
     _flushVfxGL(); // 임팩트 GL 배치 flush

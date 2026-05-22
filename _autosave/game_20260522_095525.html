@@ -10442,25 +10442,18 @@ function _gpInvNav(){
   const y=_gpad.buttons[3]&&_gpad.buttons[3].pressed;
   const lb=_gpad.buttons[4]&&_gpad.buttons[4].pressed;
   const rb=_gpad.buttons[5]&&_gpad.buttons[5].pressed;
+  const l3=!!(_gpad.buttons[10]&&_gpad.buttons[10].pressed);
   const rsY=_gpad.axes.length>=4?_gpad.axes[3]:0; // 우스틱 상하 → 스크롤
 
-  // X: 영역 순환 (장비 ↔ 가방 ↔ 창고)
-  const modes=['eq','bag','st'];
-  if(x&&!_gpUIPrev.x){const ci=modes.indexOf(_gpInvMode);_gpInvMode=modes[(ci+1)%3];_gpInvIdx=0;_gpInvEqIdx=0;_gpInvBotIdx=-1}
+  // L3(좌스틱 푸시) = 정렬
+  if(l3&&!_gpUIPrev.l3){_invAutoPlace();_invSalSel.clear();INV.selected=null;renderInv()}
 
-  // LB/RB: 인벤 하단 버튼 순환 (전체쓰레기/분해/선택분해 등)
-  if((lb&&!_gpUIPrev.lb)||(rb&&!_gpUIPrev.rb)){
-    const _botIds=['invJunkSelBtn','invJunkBtn','invSalvageBtn'];
-    const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
-    if(_bots.length){
-      if(_gpInvBotIdx<0)_gpInvBotIdx=rb?0:_bots.length-1;
-      else if(rb&&!_gpUIPrev.rb)_gpInvBotIdx=Math.min(_bots.length-1,_gpInvBotIdx+1);
-      else if(lb&&!_gpUIPrev.lb)_gpInvBotIdx=Math.max(0,_gpInvBotIdx-1);
-      const p=$('invPanel');if(p)p.querySelectorAll('[id^="inv"]').forEach(el=>{if(el.tagName==='BUTTON'){el.style.outline='';el.style.outlineOffset=''}});
-      _bots[_gpInvBotIdx].style.outline='2px solid #C9A961';_bots[_gpInvBotIdx].style.outlineOffset='-1px';
-      _bots[_gpInvBotIdx].scrollIntoView({block:'nearest'});
-    }
-  }
+  // LB/RB: 영역 전환 (장비 ↔ 가방 ↔ 하단버튼 ↔ 창고)
+  const modes=['eq','bag','bot','st'];
+  if(rb&&!_gpUIPrev.rb){const ci=modes.indexOf(_gpInvMode);_gpInvMode=modes[(ci+1)%modes.length];_gpInvIdx=0;_gpInvEqIdx=0;_gpInvBotIdx=0}
+  if(lb&&!_gpUIPrev.lb){const ci=modes.indexOf(_gpInvMode);_gpInvMode=modes[(ci-1+modes.length)%modes.length];_gpInvIdx=0;_gpInvEqIdx=0;_gpInvBotIdx=0}
+  // bot 모드인데 하단 버튼 없으면 자동으로 다음 영역으로
+  if(_gpInvMode==='bot'){const _botIds=['invJunkSelBtn','invJunkBtn','invSalvageBtn'];const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');if(!_bots.length){_gpInvMode=rb&&!_gpUIPrev.rb?'st':'bag'}}
   // 방향키 누르면 하단 버튼 포커스 해제
   if(u||d||l||r)_gpInvBotIdx=-1;
   _gpUIPrev.lb=lb;_gpUIPrev.rb=rb;
@@ -10530,6 +10523,20 @@ function _gpInvNav(){
     if(moved){const sn=typeof SLOT_NAMES!=='undefined'?SLOT_NAMES:[];if(sn[_gpInvEqIdx]){INV.selected='eq:'+sn[_gpInvEqIdx];if(typeof _invRenderDetail==='function')_invRenderDetail(sn[_gpInvEqIdx],'eq')}}
     if(a&&!_gpUIPrev.a)eqSlots[_gpInvEqIdx].click();
     if(y&&!_gpUIPrev.y){const ev=new MouseEvent('contextmenu',{bubbles:true});eqSlots[_gpInvEqIdx].dispatchEvent(ev)}
+  } else if(_gpInvMode==='bot'){
+    // 하단 버튼 영역 (전체쓰레기/분해/선택분해)
+    const _botIds=['invJunkSelBtn','invJunkBtn','invSalvageBtn'];
+    const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
+    if(_bots.length){
+      if(_gpInvBotIdx>=_bots.length)_gpInvBotIdx=0;
+      if(r&&!_gpUIPrev.r)_gpInvBotIdx=Math.min(_bots.length-1,_gpInvBotIdx+1);
+      if(l&&!_gpUIPrev.l)_gpInvBotIdx=Math.max(0,_gpInvBotIdx-1);
+      _clr();
+      const p=$('invPanel');if(p)p.querySelectorAll('button,span').forEach(el=>{el.style.outline='';el.style.outlineOffset=''});
+      _bots[_gpInvBotIdx].style.outline='2px solid #C9A961';_bots[_gpInvBotIdx].style.outlineOffset='-1px';
+      _bots[_gpInvBotIdx].scrollIntoView({block:'nearest'});
+      if(a&&!_gpUIPrev.a)_bots[_gpInvBotIdx].click();
+    }
   } else {
     const stItems=$('invStGrid')?Array.from($('invStGrid').querySelectorAll('.inv-cell')):[];
     if(!stItems.length){_gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;_gpUIPrev.a=a;_gpUIPrev.b=b;return}
@@ -10551,18 +10558,13 @@ function _gpInvNav(){
     // B버튼 패널닫기 제거 — 전용 닫기버튼 사용
     _gpUIPrev.lb=lb;_gpUIPrev.rb=rb;return;
   }
-  // 하단 버튼 포커스 중 A = 클릭
-  if(a&&!_gpUIPrev.a&&_gpInvBotIdx>=0){
-    const _botIds=['invJunkSelBtn','invJunkBtn','invSalvageBtn'];
-    const _bots=_botIds.map(id=>$(id)).filter(el=>el&&el.style.display!=='none');
-    if(_bots[_gpInvBotIdx])_bots[_gpInvBotIdx].click();
-  }
+  // 하단 버튼 A 클릭은 bot 모드 블록에서 처리됨
   // 우스틱 스크롤은 상단 공통 블록에서 처리됨
   // 가상 커서 호버 → inv-item mouseover 자동 발생
   if(_gpVC.vis){const _vhEl=document.elementFromPoint(_gpVC.x,_gpVC.y);const _vhIt=(_vhEl&&_vhEl.id!=="_gpVCursor")?_vhEl:null;if(_vhIt!==_gpVCPrevHoverEl){if(_gpVCPrevHoverEl)_gpVCPrevHoverEl.dispatchEvent(new MouseEvent("mouseleave",{bubbles:true,clientX:_gpVC.x,clientY:_gpVC.y}));if(_vhIt)_vhIt.dispatchEvent(new MouseEvent("mouseover",{bubbles:true,clientX:_gpVC.x,clientY:_gpVC.y}));_gpVCPrevHoverEl=_vhIt;}}else if(_gpVCPrevHoverEl){_gpVCPrevHoverEl.dispatchEvent(new MouseEvent("mouseleave",{bubbles:true}));_gpVCPrevHoverEl=null;}
   // B버튼 패널닫기 제거 — 전용 닫기버튼 사용
   _gpUIPrev.u=u;_gpUIPrev.d=d;_gpUIPrev.l=l;_gpUIPrev.r=r;
-  _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.x=x;_gpUIPrev.y=y;
+  _gpUIPrev.a=a;_gpUIPrev.b=b;_gpUIPrev.x=x;_gpUIPrev.y=y;_gpUIPrev.l3=l3;
 }
 
 function _chkAct(b){if(!b)return false;if(b.startsWith('mouse'))return!!MB[+b.slice(5)];return!!K[b]}
@@ -12929,7 +12931,7 @@ function renderDarkBurstVFX(ctx){
     if(v.x<_cvl||v.x>_cvr||v.y<_cvt||v.y>_cvb)continue;
     var col=v.frame%_DB_COLS,row=Math.floor(v.frame/_DB_COLS)%_DB_ROWS;
     var dSz=_DB_CW*v.scale*.45;
-    ctx.globalAlpha=v.frame<10?1:1-((v.frame-10)/(_DB_FRAMES-10))*.8;
+    ctx.globalAlpha=(v.frame<10?1:1-((v.frame-10)/(_DB_FRAMES-10))*.8)*.45;
     ctx.drawImage(_DB_IMG,col*_DB_CW,row*_DB_CH,_DB_CW,_DB_CH,v.x-dSz/2,v.y-dSz/2,dSz,dSz);
     ctx.drawImage(_DB_IMG,col*_DB_CW,row*_DB_CH,_DB_CW,_DB_CH,v.x-dSz/2,v.y-dSz/2,dSz,dSz);
   }
@@ -12958,7 +12960,7 @@ function renderLightningBurstVFX(ctx){
   for(let i=0;i<_LB_MAX;i++){
     const v=_lbVfx[i];if(!v.active)continue;
     const sz=_lbFW*v.scale*.5,szH=_lbFH*v.scale*.5;
-    ctx.globalAlpha=v.frame<6?.9:Math.max(0,(1-((v.frame-6)/(_LB_FRAMES-6))*.9)*.9);
+    ctx.globalAlpha=(v.frame<6?.9:Math.max(0,(1-((v.frame-6)/(_LB_FRAMES-6))*.9)*.9))*.45;
     ctx.drawImage(_LB_IMG,v.frame*_lbFW,0,_lbFW,_lbFH,v.x-sz/2,v.y-szH*.8,sz,szH);
   }
   ctx.globalAlpha=1;ctx.restore();
@@ -12999,7 +13001,7 @@ function renderElecVFX(ctx){
     var col=v.frame%_EB_COLS,row=Math.floor(v.frame/_EB_COLS)%_EB_ROWS;
     var sx=col*_EB_CW,sy=row*_EB_CH;
     var dSz=_EB_CW*v.scale;
-    ctx.globalAlpha=v.frame<5?1:1-((v.frame-5)/(_EB_FRAMES-5))*0.9;
+    ctx.globalAlpha=(v.frame<5?1:1-((v.frame-5)/(_EB_FRAMES-5))*0.9)*.45;
     ctx.save();ctx.translate(v.x,v.y);ctx.rotate(v.ang);
     ctx.drawImage(_EB_IMG,sx,sy,_EB_CW,_EB_CH,-dSz/2,-dSz/2,dSz,dSz);
     ctx.restore();
@@ -13027,7 +13029,7 @@ function renderOldBurstVFX(ctx){
     if(v.x<_cvl||v.x>_cvr||v.y<_cvt||v.y>_cvb)continue;
     var img=_HB_IMGS[v.frame];if(!img||!img.complete||!img.naturalWidth)continue;
     var dw=img.naturalWidth*v.scale,dh=img.naturalHeight*v.scale;
-    ctx.globalAlpha=v.frame<4?1:1-((v.frame-3)/(_HB_FRAMES-3))*0.7;
+    ctx.globalAlpha=(v.frame<4?1:1-((v.frame-3)/(_HB_FRAMES-3))*0.7)*.45;
     ctx.save();ctx.translate(v.x,v.y);ctx.rotate(v.ang);
     ctx.drawImage(img,-dw/2,-dh/2,dw,dh);
     ctx.restore();
@@ -13056,7 +13058,7 @@ function renderHitVFX(ctx){
     var col=v.frame%_PS_COLS,row=Math.floor(v.frame/_PS_COLS)%_PS_ROWS;
     var sx=col*_PS_CW,sy=row*_PS_CH;
     var dSz=_PS_CW*v.scale;
-    ctx.globalAlpha=v.frame<12?1:1-((v.frame-12)/(_PS_FRAMES-12))*0.8;
+    ctx.globalAlpha=(v.frame<12?1:1-((v.frame-12)/(_PS_FRAMES-12))*0.8)*.45;
     ctx.save();ctx.translate(v.x,v.y);ctx.rotate(v.ang);
     ctx.drawImage(_PS_IMG,sx,sy,_PS_CW,_PS_CH,-dSz/2,-dSz/2,dSz,dSz);
     ctx.restore();
@@ -34433,7 +34435,7 @@ const _SK_MUL={
   // ── 단일 연사 (~0.5초 사이클) ──
   fireball:{b:5.0,g:4.0},   // (구 g:2.0)
   fireBeam:{b:0.8,g:0.64},  // (구 g:0.32)
-  arcLaser:{b:8.0,g:6.72},  // (구 g:3.36)
+  arcLaser:{b:12.0,g:10.08}, // 채널링 프리미엄 1.5× (구 b:8.0,g:6.72)
   // ── 채널링 (주력기) ──
   whirlwind:{b:2.5,g:2.1},  // (구 g:1.05)
   omniBeam:{b:0.5,g:0.4},   // (구 g:0.2)
@@ -42356,7 +42358,7 @@ function draw(){
       v.t+=_dtSp;if(v.t>=v.frameTime){v.t=0;v.frame++}
       if(v.frame>=v.maxFrames)continue;
       const dw=sh.fw*v.scale,dh=sh.fh*v.scale;
-      const _vAlpha=1-(v.frame/v.maxFrames)*0.3;
+      const _vAlpha=(1-(v.frame/v.maxFrames)*0.3)*.5;
       if(_vAlpha<0.05&&!v.isSkill)continue;
       if(v.x<_vl-dw||v.x>_vr+dw||v.y<_vt-dh||v.y>_vb+dh){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
       if(++_vDrw>_vfxBudgetCap&&!v.isSkill){if(_vw!==vi)_vfxAnims[_vw]=v;_vw++;continue}
@@ -42391,7 +42393,7 @@ function draw(){
       const f=_fireExps[fi];const img=_fireExpFrames[f.frame];
       if(!img){if(_fw2!==fi)_fireExps[_fw2]=f;_fw2++;continue}
       const dw=img.width*f.scale,dh=img.height*f.scale;
-      const _feAlpha=1-(f.frame/f.maxFrames)*0.4;
+      const _feAlpha=(1-(f.frame/f.maxFrames)*0.4)*.45;
       if(_feAlpha<0.05){f.t+=_dtSp;if(f.t>=f.frameTime){f.t=0;f.frame++}if(f.frame<f.maxFrames){if(_fw2!==fi)_fireExps[_fw2]=f;_fw2++}continue}
       if(f.x<_vl-dw||f.x>_vr+dw||f.y<_vt-dh||f.y>_vb+dh){f.t+=_dtSp;if(f.t>=f.frameTime){f.t=0;f.frame++}if(f.frame<f.maxFrames){if(_fw2!==fi)_fireExps[_fw2]=f;_fw2++}continue}
       if(++_feDrw>_feBudgetCap){f.t+=_dtSp;if(f.t>=f.frameTime){f.t=0;f.frame++}if(f.frame<f.maxFrames){if(_fw2!==fi)_fireExps[_fw2]=f;_fw2++}continue}
@@ -42441,7 +42443,7 @@ function draw(){
       f.t++;if(f.t>=8){f.t=0;f.f++}
       if(f.f>=_FX_FRAMES)continue;
       const prog=f.f/_FX_FRAMES;
-      const alpha=prog>.7?1-(prog-.7)/.3:1;
+      const alpha=(prog>.4?1-(prog-.4)/.6:1)*.45;
       const scale=1+prog*.5;
       const sz=f.sz*scale;
       X.globalAlpha=alpha;
@@ -42487,7 +42489,7 @@ function draw(){
         const fc=fr%_wwImpCols,frow=~~(fr/_wwImpCols);
         const drawSz=40*sz*(0.5+p*0.6);
         const _ia=im.ang+Math.random()*.2-.1;
-        if(_vfxGLMode&&_queueVfxGL(_wwImpCanvas,fc*_wwImpFW,frow*_wwImpFH,_wwImpFW,_wwImpFH,C.width*.5+(im.x-G.cam.x),C.height*.5+(im.y-G.cam.y),drawSz,drawSz,_ia,inv*0.85)){
+        if(_vfxGLMode&&_queueVfxGL(_wwImpCanvas,fc*_wwImpFW,frow*_wwImpFH,_wwImpFW,_wwImpFH,C.width*.5+(im.x-G.cam.x),C.height*.5+(im.y-G.cam.y),drawSz,drawSz,_ia,inv*0.4)){
           // queued to GL batch
         }else{
           const _ic=Math.cos(_ia),_is=Math.sin(_ia);
