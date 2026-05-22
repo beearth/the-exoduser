@@ -29240,7 +29240,7 @@ function doParry(_inDmg,_px,_py,_forceQ){if(_px===undefined)_px=P.x;if(_py===und
   G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
-  playVFXAng('blue_impact',_px,_py,0.8,2.5,P.facing,true);
+  playVFXAng('purple_impact',_px,_py,0.6,2.5,P.facing,true);
   // ═══ 공통 패링 성공 임팩트 (모든 패링에서 동일하게 발생) ═══
   SFX.deflect();doHitFlash('#00ccff',0.25);
   for(let _pk=0;_pk<12;_pk++){const _pa=Math.PI*2*_pk/12;poolPart(_px,_py,Math.cos(_pa)*(3+Math.random()*4),Math.sin(_pa)*(3+Math.random()*4),_pk%3===0?'#ffffff':_pk%3===1?'#00e5ff':'#40f0ff',2+Math.random()*3,10+Math.random()*6)}

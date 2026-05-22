@@ -13152,7 +13152,6 @@ registerVFX('ice_slash','assets/vfx/slash_impact_sheet.png',128,128,19,19);
 registerVFX('whirl_slash','assets/vfx/boss/vfx_white_slash.png',192,192,20,5);
 registerVFX('parry_flash','assets/vfx/parry_impact_sheet.png',128,128,20,20);
 registerVFX('purple_impact','img/fx/purple_impact_sheet.png',443,443,25,5);
-registerVFX('blue_impact','img/fx/blue_impact_sheet.png',225,225,27,6);
 // (삭제됨: vfx_burn_death — 파일 미존재)
 registerVFX('explode_scarecrow','assets/vfx/scarecrow_boom.png',64,64,9,9); // 폭발허수아비 전용 대형폭발 (9x1, 9프레임, 불속성)
 registerVFX('boss_revive_boom','assets/vfx/boss/boss_revive_boom.png',64,64,24,8); // 보스 부활 폭발 (8x3, 24프레임)
@@ -23503,12 +23502,8 @@ function update(){
     const _nx=P.x+_dashVX*_dtSp,_ny=P.y+_dashVY*_dtSp;
     if(canMvBlink(_nx,_ny,P.r)){P.x=_nx;P.y=_ny}
     else{_dashLeft=0}
-    // ── 경로상 적 히트 (스킬별 분화) ── shQuery 캐싱: 칼날개 활성 시 큰 반경 1회로 통합
-    const _csActiveNow=P._chainSlashActive;
-    const _csRNow=_csActiveNow?(160+((P.skills.chainSlash||1)-1)*5):40;
-    const _hpNeRaw=shQuery(P.x,P.y,_csRNow);
-    _shCacheFrom(_hpNeRaw); // 버퍼 복사 (shQuery 재호출 대비)
-    const _hpNe={length:_shCacheLen};for(let _ci=0;_ci<_shCacheLen;_ci++)_hpNe[_ci]=_shCacheBuf[_ci];
+    // ── 경로상 적 히트 (스킬별 분화) ──
+    const _hpNe=shQuery(P.x,P.y,40);
     for(let _hi=0;_hi<_hpNe.length;_hi++){
       const e=_hpNe[_hi];if(!e.alive||_harpHits.indexOf(e)>=0)continue;
       if(dst(P.x,P.y,e.x,e.y)>e.r+20)continue;
@@ -23541,7 +23536,7 @@ function update(){
       if(P._chainSlashTick%4===0){if(!P._chainSlashHits)P._chainSlashHits=[];else P._chainSlashHits.length=0} // 4프레임마다 히트 리셋 → 다단히트
       const _csLv=P.skills.chainSlash||1;
       const _csR=160+(_csLv-1)*5; // 반경 160+Lv×5 (docs 기준)
-      const _csNe=_hpNe; // shQuery 캐시 재사용 (위에서 _csRNow로 이미 쿼리됨)
+      const _csNe=shQuery(P.x,P.y,_csR);
       const _csDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('chainSlash')*_fuseMul('chainSlash')); // 통일공식: _skMul
       const _csAng=Math.atan2(_dashVY,_dashVX);
       for(let _ci=0;_ci<_csNe.length;_ci++){
@@ -29240,7 +29235,7 @@ function doParry(_inDmg,_px,_py,_forceQ){if(_px===undefined)_px=P.x;if(_py===und
   G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
-  playVFXAng('blue_impact',_px,_py,0.8,2.5,P.facing,true);
+  playVFXAng('purple_impact',_px,_py,0.6,2.5,P.facing,true);
   // ═══ 공통 패링 성공 임팩트 (모든 패링에서 동일하게 발생) ═══
   SFX.deflect();doHitFlash('#00ccff',0.25);
   for(let _pk=0;_pk<12;_pk++){const _pa=Math.PI*2*_pk/12;poolPart(_px,_py,Math.cos(_pa)*(3+Math.random()*4),Math.sin(_pa)*(3+Math.random()*4),_pk%3===0?'#ffffff':_pk%3===1?'#00e5ff':'#40f0ff',2+Math.random()*3,10+Math.random()*6)}
