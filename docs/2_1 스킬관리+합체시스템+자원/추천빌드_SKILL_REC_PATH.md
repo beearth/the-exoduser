@@ -15,7 +15,7 @@ game.html `SKILL_REC_PATH` 배열과 1:1 동기화.
 | 3 | 이동+사슬 | chargeBoost, magicBlink, chainAssault, chainSlam | dimBreach | 사슬기동 / 기동:전폭 | Chain Breach / Maneuver:Thunder | chargeBoost + magicBlink / +chainAssault + chainSlam |
 | 4 | 💀 필살기 선택 | holyBlast/blackStar/lavaSummon/execution (1택) | — | — | — | — |
 | 5 | 멸살+만화+원소 | omniBeam, fanShot, elemMissile | elemFuse | 추적암전 | Tracking Lightning | fanShot + omniBeam + elemMissile |
-| 6 | 회전참+기폭+대왕 | whirlwind, detonate, giantSlam | slamStorm | 지진폭풍 | Quake Storm | whirlwind + detonate + giantSlam |
+| 6 | 멸살+만화 | omniBeam, fanShot | sixFuse | 6단합체 | Six Fuse | omniBeam + fanShot |
 | 7 | 방패 합체 | maliceSwipe, shieldThrow | shieldFuse | 날개치기 | Wing Strike | maliceSwipe + shieldThrow |
 | 8 | 해골무덤+악의폭풍 | boneWall, maliceStorm | boneStorm | 해골번개 | Bone Lightning | maliceStorm + boneWall |
 | 9 | 폭풍소환+얼음보주+뇌전걸음 | maliceMortar, iceOrb, ghostWalk | iceMortar | 얼음소용돌이 | Ice Vortex | maliceMortar + iceOrb |

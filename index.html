@@ -2176,7 +2176,7 @@ function _enterOffline(){
   if(session) currentUser=session.user;
 
   if(_fromGame){
-    await _goLobby();
+    if(session) await _goLobby(); else{_testMode=true;await _goLobby();}
   }else if(session){
     if(localStorage.getItem('_cinSeen')){await _goLobby();}
     else{_goCinematic();}
@@ -2212,6 +2212,7 @@ async function showLobby(){
 }
 async function loadCharacters(){
   const cl=$('charList');if(!cl)return;cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
+  if(!currentUser||!currentUser.id){cl.innerHTML='<div class="no-chars">'+_TL('로그인 필요')+'</div>';return}
   const{data,error}=await sb.from('characters').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:true});
   if(error){cl.innerHTML='<div class="no-chars" style="color:#cc4433">'+_TL('오류: ')+error.message+'</div>';return}
   cl.innerHTML='';
