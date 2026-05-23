@@ -27987,3 +27987,18 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _autosave/game_20260523_175548.html
 - game.html
 
+
+## 2026-05-23 22:30 (auto)
+- _autosave/game_20260523_220537.html
+- _autosave/game_20260523_220708.html
+- _autosave/game_20260523_220709.html
+- _autosave/game_20260523_221152.html
+- _autosave/game_20260523_222410.html
+- _autosave/game_20260523_222419.html
+- _autosave/game_20260523_222427.html
+- _autosave/game_20260523_222430.html
+- docs/8.0몬스?�디?�인/?�막?�스??총정�?md
+- game.html
+- img/vfx_pentagram_gold.png
+- img/vfx_pentagram_purple.png
+

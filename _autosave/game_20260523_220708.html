@@ -6961,6 +6961,8 @@ const _plagueBoomSpr={img:null,ready:false,w:128,h:128,frames:6};
 // 사슬 수리검 작살 스프라이트
 const _chainShurikenImg=new Image();_chainShurikenImg.src='assets/vfx/chain_shuriken_2.webp';
 const _hrRepentImg=new Image();_hrRepentImg.src='img/vfx_repentance.png';
+const _pentaPurple=new Image();_pentaPurple.src='img/vfx_pentagram_purple.png';
+const _pentaGold=new Image();_pentaGold.src='img/vfx_pentagram_gold.png';
 // ═══ [TP-SMOKE] 순간이동 연기 스프라이트 (출발/도착) ═══
 const _tpSmokeOut=new Image();_tpSmokeOut.src='img/vfx/teleport_out.png';
 const _tpSmokeIn=new Image();_tpSmokeIn.src='img/vfx/teleport_in.png';
@@ -43190,6 +43192,13 @@ function draw(){
         _tc.globalAlpha=1;
       }
     }
+    // ── 신성 돔/십자가 조명 (holyDome — 어둠 뚫기) ──
+    if(G._fireZones){for(let _hzi=0;_hzi<G._fireZones.length;_hzi++){const _hz=G._fireZones[_hzi];
+      if(_hz.type!=='holyDome'||_hz.t>=_hz.maxT)continue;
+      const _hdx=_hz.x-G.cam.x,_hdy=_hz.y-G.cam.y;
+      if(Math.abs(_hdx)>_thw||Math.abs(_hdy)>_thh)continue;
+      const _hsx=C.width/2+_hdx,_hsy=C.height/2+_hdy,_hr=Math.max(80,_hz.r);
+      _tc.globalAlpha=.9;_tc.drawImage(_getTorchSmall(_hr),_hsx-_hr,_hsy-_hr);_tc.globalAlpha=1}}
     // ── 보스문 앞 횃불 조명 (화면 내만) ──
     if(G._gateY!=null&&G._bossCx!=null){const _gdx=(G._bossCx+.5)*T-G.cam.x,_gdy=(G._gateY+3.5)*T-G.cam.y;
       if(Math.abs(_gdx)<_thw&&Math.abs(_gdy)<_thh){const _gsx=C.width/2+_gdx,_gsy=C.height/2+_gdy;_tc.globalAlpha=.6;_tc.drawImage(_getTorchSmall(100),_gsx-100,_gsy-100);_tc.globalAlpha=1}}
@@ -45034,10 +45043,10 @@ function drawP(){
       X.translate(cx,cy);X.rotate(rot);
       // 글로우 (살짝 크게 lighter 합성)
       X.globalCompositeOperation='lighter';
-      X.globalAlpha=(.3+prog*.4)*_bsFlk;
+      X.globalAlpha=(.3+prog*.4)*_bsFlk*(1-_bsBurst);
       X.drawImage(G._blackStarImg,-_bsR*1.15,-_bsR*1.15,_bsR*2.3,_bsR*2.3);
       // 메인
-      X.globalAlpha=(.5+prog*.5)*_bsFlk;
+      X.globalAlpha=(.5+prog*.5)*_bsFlk*(1-_bsBurst);
       X.drawImage(G._blackStarImg,-_bsR,-_bsR,_bsR*2,_bsR*2);
       X.restore();
     }
@@ -45126,16 +45135,17 @@ function drawP(){
     X.beginPath();X.arc(cx,cy,r+60,0,Math.PI*2);X.fill();
     // 펜타그램 이미지 — 작게→커짐 + 글로우 + 깜빡임
     if(G._holyStarImg.complete&&G._holyStarImg.naturalWidth>0){
-      const _hsR=20+prog*(r-20);
+      const _hsBurst=prog>.9?(prog-.9)/.1:0;
+      const _hsR=(20+prog*(r-20))*(1+_hsBurst*1.5);
       const _hsFlk=.5+.5*(.5+.5*Math.sin(_now*.006))*(.6+.4*Math.sin(_now*.017));
       X.save();
       X.translate(cx,cy);X.rotate(rot);
       // 글로우 (lighter 합성, 크게)
       X.globalCompositeOperation='lighter';
-      X.globalAlpha=(.3+prog*.5)*_hsFlk;
+      X.globalAlpha=(.3+prog*.5)*_hsFlk*(1-_hsBurst);
       X.drawImage(G._holyStarImg,-_hsR*1.2,-_hsR*1.2,_hsR*2.4,_hsR*2.4);
       // 메인
-      X.globalAlpha=(.5+prog*.5)*_hsFlk;
+      X.globalAlpha=(.5+prog*.5)*_hsFlk*(1-_hsBurst);
       X.drawImage(G._holyStarImg,-_hsR,-_hsR,_hsR*2,_hsR*2);
       X.restore();
     }
@@ -45437,7 +45447,7 @@ function drawP(){
           X.globalAlpha=.9*p3*_fade3;X.strokeStyle='#fff';X.lineWidth=2;
           X.beginPath();X.moveTo(cw.x,cw.y);X.lineTo(_ex,_ey);X.stroke();
         }else{const _wp2=Math.min(1,cw.t/cw.warnT);
-          X.globalAlpha=_wp2*.55;X.strokeStyle='#ff44ff';X.lineWidth=cw.w*_wp2;
+          X.globalAlpha=_wp2;X.strokeStyle='#ff44ff';X.lineWidth=cw.w*_wp2;
           X.setLineDash(_D10_8);X.beginPath();X.moveTo(cw.x,cw.y);X.lineTo(_ex,_ey);X.stroke();X.setLineDash(_D0);}
       }
     }X.globalAlpha=1;
