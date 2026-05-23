@@ -27978,3 +27978,12 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - sprites/holy_star.png
 - sprites/spike_trap/결계.png
 
+
+## 2026-05-23 18:30 (auto)
+- _autosave/game_20260523_174503.html
+- _autosave/game_20260523_174508.html
+- _autosave/game_20260523_174525.html
+- _autosave/game_20260523_175349.html
+- _autosave/game_20260523_175548.html
+- game.html
+

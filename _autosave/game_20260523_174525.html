@@ -33909,8 +33909,9 @@ function _detonateBlast(label,elSrc){
   if(!(G._noHitStopT>0)){G.shake=(14+_chgBars*4)*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25+_chgBars*5;G.hitStop=Math.max(G.hitStop,~~((10+_chgBars*3)*OPT.hitStop/100))}  addTxt(P.x,P.y-30,_T(label||'기폭팔')+' '+_chgBars+'단계 ×'+_detTierMul+' '+boom,'#ff2200',70);
   const _isSlamDet=(label==='지진기폭!');
   if(!_isSlamDet){
-    _spawnFxAnim(P.x,P.y,boomR*(1+_chgBars*.2));
     _addBlastLight(P.x,P.y,boomR*1.2,18+_chgBars*4,255,160,60);
+    playVFXAng('center_explode',P.x,P.y,boomR/200*(1+_chgBars*.2),3,0,true);
+    playVFXAng('eq_impact',P.x,P.y,boomR/256,4+_chgBars*2,0,true);
     for(let _bi=0;_bi<12+_chgBars*3;_bi++){
       const _ba=Math.PI*2*_bi/(12+_chgBars*3);
       poolPart(P.x,P.y,Math.cos(_ba)*(5+Math.random()*7),Math.sin(_ba)*(5+Math.random()*7),_bi%2?'#ff6622':'#ffcc44',2+Math.random()*3,10+Math.random()*8);
@@ -33956,8 +33957,8 @@ function _slamStormBlast(skipVfx){
   G.hitStop=0;G.slowMo=0;
   // 진동파 이펙트 — 암전나선 합체면 기폭팔 VFX, 아니면 대왕치기 VFX
   if(_isFused('stormBeam')&&!skipVfx){
-    _spawnFxAnim(P.x,P.y,_ssR*1.2);
     _addBlastLight(P.x,P.y,_ssR*1.2,22,255,160,60);
+    playVFXAng('eq_impact',P.x,P.y,_ssR/256,8,0,true);
   }else if(!_isFused('stormBeam')){
     if(!G._gSlamWave)G._gSlamWave=[];
     G._gSlamWave.push({x:P.x,y:P.y,r:60,maxR:_ssR,t:0,maxT:45});
@@ -45024,13 +45025,20 @@ function drawP(){
     // 1) 어두운 배경 원
     X.globalAlpha=.15+prog*.25;X.fillStyle='#220033';
     X.beginPath();X.arc(cx,cy,r+80,0,Math.PI*2);X.fill();
-    // 2) 펜타그램 이미지 — 원형 clip으로 prog에 따라 서서히 드러남
+    // 2) 펜타그램 이미지 — 작게→커짐 + 글로우 + 깜빡임
     if(G._blackStarImg.complete&&G._blackStarImg.naturalWidth>0){
+      const _bsBurst=prog>.9?(prog-.9)/.1:0;
+      const _bsR=(20+prog*(r-20))*(1+_bsBurst*1.5);
+      const _bsFlk=.3+.7*(.5+.5*Math.sin(_now*.01))*(.4+.6*Math.sin(_now*.031));
       X.save();
-      X.beginPath();X.arc(cx,cy,r*prog,0,Math.PI*2);X.clip();
-      X.globalAlpha=.7+prog*.3;
       X.translate(cx,cy);X.rotate(rot);
-      X.drawImage(G._blackStarImg,-r,-r,r*2,r*2);
+      // 글로우 (살짝 크게 lighter 합성)
+      X.globalCompositeOperation='lighter';
+      X.globalAlpha=(.3+prog*.4)*_bsFlk*(1-_bsBurst);
+      X.drawImage(G._blackStarImg,-_bsR*1.15,-_bsR*1.15,_bsR*2.3,_bsR*2.3);
+      // 메인
+      X.globalAlpha=(.5+prog*.5)*_bsFlk*(1-_bsBurst);
+      X.drawImage(G._blackStarImg,-_bsR,-_bsR,_bsR*2,_bsR*2);
       X.restore();
     }
     // 3) 외곽 원 (prog에 따라)
@@ -45104,42 +45112,36 @@ function drawP(){
     X.fillText('🌋 '+_T('화상')+' '+rem+'s',C.width/2,30);
     X.restore();
   }
-  // ══ 신성폭발 — 시전 중 오망성 ══
+  // ══ 신성폭발 — 시전 중 황금 펜타그램 이미지 ══
   if(P._hbCasting){
     const prog=Math.min(1,P._hbT/300);
     const cx=P._hbX,cy=P._hbY;
     const r=160+prog*120;
-    const rot=_now*0.002;
+    const rot=_now*0.0005;
+    if(!G._holyStarImg){G._holyStarImg=new Image();G._holyStarImg.src='sprites/holy_star.png'}
     X.save();
     // 바닥 원형 글로우
     X.globalAlpha=.1+prog*.2;
     X.fillStyle='#ffd700';
     X.beginPath();X.arc(cx,cy,r+60,0,Math.PI*2);X.fill();
-    // 오망성 선분 그리기 (진행률에 따라)
-    X.globalAlpha=.5+prog*.4;
-    X.strokeStyle='#ffd700';
-    X.lineWidth=2+prog*3;
-    
-    +prog*20;
-    X.beginPath();
-    const drawLen=prog*5;
-    for(let i=0;i<5;i++){
-      const a1=rot+(i*4*Math.PI/5)-Math.PI/2;
-      const a2=rot+((i+1)*4*Math.PI/5)-Math.PI/2;
-      if(i<drawLen){
-        const px1=cx+Math.cos(a1)*r,py1=cy+Math.sin(a1)*r;
-        const px2=cx+Math.cos(a2)*r,py2=cy+Math.sin(a2)*r;
-        const seg=Math.min(1,drawLen-i);
-        X.moveTo(px1,py1);
-        X.lineTo(px1+(px2-px1)*seg,py1+(py2-py1)*seg);
-      }
+    // 펜타그램 이미지 — 작게→커짐 + 글로우 + 깜빡임
+    if(G._holyStarImg.complete&&G._holyStarImg.naturalWidth>0){
+      const _hsR=20+prog*(r-20);
+      const _hsFlk=.5+.5*(.5+.5*Math.sin(_now*.006))*(.6+.4*Math.sin(_now*.017));
+      X.save();
+      X.translate(cx,cy);X.rotate(rot);
+      // 글로우 (lighter 합성, 크게)
+      X.globalCompositeOperation='lighter';
+      X.globalAlpha=(.3+prog*.5)*_hsFlk;
+      X.drawImage(G._holyStarImg,-_hsR*1.2,-_hsR*1.2,_hsR*2.4,_hsR*2.4);
+      // 메인
+      X.globalAlpha=(.5+prog*.5)*_hsFlk;
+      X.drawImage(G._holyStarImg,-_hsR,-_hsR,_hsR*2,_hsR*2);
+      X.restore();
     }
-    X.stroke();
-    
     // 외접원
     X.globalAlpha=.3+prog*.3;
-    X.strokeStyle='#ffe466';
-    X.lineWidth=1.5;
+    X.strokeStyle='#ffe466';X.lineWidth=1.5;
     X.beginPath();X.arc(cx,cy,r,0,Math.PI*2*prog);X.stroke();
     // 에너지 수렴 파티클
     if(Math.random()>.4){
@@ -45435,7 +45437,7 @@ function drawP(){
           X.globalAlpha=.9*p3*_fade3;X.strokeStyle='#fff';X.lineWidth=2;
           X.beginPath();X.moveTo(cw.x,cw.y);X.lineTo(_ex,_ey);X.stroke();
         }else{const _wp2=Math.min(1,cw.t/cw.warnT);
-          X.globalAlpha=_wp2*.25;X.strokeStyle='#ff44ff';X.lineWidth=cw.w*_wp2;
+          X.globalAlpha=_wp2*.55;X.strokeStyle='#ff44ff';X.lineWidth=cw.w*_wp2;
           X.setLineDash(_D10_8);X.beginPath();X.moveTo(cw.x,cw.y);X.lineTo(_ex,_ey);X.stroke();X.setLineDash(_D0);}
       }
     }X.globalAlpha=1;
