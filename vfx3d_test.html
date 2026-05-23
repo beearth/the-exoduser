@@ -82,32 +82,58 @@ function addPart(opt){
     sp,mat,tex:ct,
     vx:(opt.vx||0),vy:(opt.vy||0),vz:(opt.vz||0),
     life:0,maxLife:opt.life||0.5,
-    sc0:sc,scEnd:opt.scEnd||sc*1.5,
+    sc0:sc,scEnd:opt.scEnd||sc*1.5,scCurve:opt.scCurve||null,
     alpha0:opt.alpha||1,alphaEnd:opt.alphaEnd||0,
     rot:opt.rot||0,rotSpd:opt.rotSpd||(Math.random()-.5)*4,
     gravity:opt.gravity||0,
+    colGrad:opt.colGrad||null, // [{t,r,g,b},...] color over lifetime
     sheet:opt.sheet||null,sheetFrame:0,sheetTimer:0,sheetSpd:opt.sheetSpd||0.04
   });
 }
+// Color over Lifetime 보간
+function lerpGrad(grad,t){
+  if(!grad||grad.length<2)return null;
+  for(let i=0;i<grad.length-1;i++){
+    if(t>=grad[i].t&&t<=grad[i+1].t){
+      const p=(t-grad[i].t)/(grad[i+1].t-grad[i].t);
+      return{r:grad[i].r+(grad[i+1].r-grad[i].r)*p,g:grad[i].g+(grad[i+1].g-grad[i].g)*p,b:grad[i].b+(grad[i+1].b-grad[i].b)*p};
+    }
+  }
+  const l=grad[grad.length-1];return{r:l.r,g:l.g,b:l.b};
+}
+// Size curve 보간 (0→0.47, 1→1.0 = Unity 기본)
+function sizeEase(t){return 0.47+(1-0.47)*t} // 0.47→1.0
 
 // ═══ 임팩트 프리셋 (Unity 재현) ═══
 const PRESETS={
-  fire:{name:'🔥 Fire',col:'#ff6622',spawn(x,y,z){
-    // 중심 섬광 (intensity)
-    addPart({tex:T.fire[~~(Math.random()*4)],x,y,z,sc:1.2,scEnd:2.0,life:.35,col:'#ffcc44',alpha:1,alphaEnd:0});
-    addPart({tex:T.fire[~~(Math.random()*4)],x,y,z,sc:0.8,scEnd:1.5,life:.3,col:'#ffffff',alpha:.8,alphaEnd:0});
-    // 충격파 (shockwave)
-    addPart({tex:T.impact[0],x,y,z,sc:0.3,scEnd:2.5,life:.25,col:'#ff8833',alpha:.7,alphaEnd:0});
-    // 연기/화염 FBF
-    addPart({tex:SHEETS.fireFBF.src,x,y:y+.1,z,sc:1.5,scEnd:2.2,life:.8,col:'#ff4400',alpha:.7,alphaEnd:0,sheet:SHEETS.fireFBF,sheetSpd:.05});
-    // 스파크 8개
-    for(let i=0;i<8;i++){const a=Math.PI*2*i/8+Math.random()*.4;const spd=2+Math.random()*3;
-      addPart({tex:T.stretch[~~(Math.random()*12)],x,y,z,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd*.5+1,vz:(Math.random()-.5)*spd*.3,
-        sc:.15+Math.random()*.15,scEnd:.05,life:.2+Math.random()*.2,col:'#ffaa33',alpha:1,alphaEnd:0,gravity:-3})}
-    // contrast stretched
-    for(let i=0;i<3;i++){const a=Math.random()*Math.PI*2;
-      addPart({tex:T.fire[~~(Math.random()*4)],x,y,z,sc:.6,scEnd:1.2,life:.4,col:'#ff2200',alpha:.5,alphaEnd:0,
-        vx:Math.cos(a)*.5,vy:.5+Math.random(),rotSpd:(Math.random()-.5)*6})}
+  fire:{name:'🔥 Fire (Unity)',col:'#ff6622',spawn(x,y,z){
+    const _fGrad=[{t:0,r:1,g:1,b:.08},{t:.33,r:.93,g:.43,b:.02},{t:1,r:.94,g:0,b:.08}]; // yellow→orange→red
+    const _fGrad2=[{t:0,r:1,g:.9,b:.35},{t:.1,r:1,g:.9,b:.35},{t:.34,r:.94,g:.29,b:0},{t:1,r:.94,g:0,b:.08}]; // sparks
+    const _fGradFire=[{t:.024,r:1,g:.99,b:.35},{t:1,r:.94,g:0,b:.08}]; // FireStretched
+    // [1] shockwave — 2개, 수평빌보드, 4x4 flipbook, 확장 0.47→1.0
+    for(let i=0;i<2;i++){addPart({tex:SHEETS.fireFBF.src,x,y,z,sc:.8,scEnd:2.0,life:.3,col:'#ffff14',alpha:1,alphaEnd:0,
+      sheet:SHEETS.fireFBF,sheetSpd:.02,colGrad:_fGrad,scCurve:true,rotSpd:Math.random()*2})}
+    // [2] contrast — 2개, 4x4 flipbook, deep red
+    for(let i=0;i<2;i++){addPart({tex:SHEETS.fireFBF.src,x,y,z,sc:1.0,scEnd:2.5,life:.5,col:'#bd0804',alpha:.88,alphaEnd:0,
+      sheet:SHEETS.fireFBF,sheetSpd:.03,scCurve:true,rotSpd:(Math.random()-.5)*3})}
+    // [3] contrast_stretched — 2개, 수평빌보드
+    for(let i=0;i<2;i++){addPart({tex:T.fire[~~(Math.random()*4)],x,y,z,sc:.7,scEnd:1.8,life:.5,col:'#bd0804',alpha:.88,alphaEnd:0,
+      rotSpd:(Math.random()-.5)*4})}
+    // [4] intensity — 1개, 수직빌보드, 수명 0.1s, 짧은 섬광
+    addPart({tex:T.fire[~~(Math.random()*4)],x,y,z,sc:1.0,scEnd:2.5,life:.1,col:'#ffffff',alpha:.83,alphaEnd:0,
+      colGrad:[{t:0,r:1,g:.9,b:.35},{t:.33,r:.94,g:.29,b:0},{t:1,r:.94,g:0,b:.08}]});
+    // [5] shockwave_stretched — 2개, 수직, 확장
+    for(let i=0;i<2;i++){addPart({tex:T.fire[~~(Math.random()*4)],x,y,z,sc:.5,scEnd:1.2,life:.3,col:'#ffff14',alpha:1,alphaEnd:0,
+      colGrad:_fGrad,scCurve:true})}
+    // [6] sparks — 25개, 속도20→중력0.63, 크기 축소→0
+    for(let i=0;i<25;i++){const a=Math.random()*Math.PI*2;const el=Math.random()*Math.PI-.5;const spd=4+Math.random()*6;
+      addPart({tex:T.stretch[~~(Math.random()*12)],x,y,z,
+        vx:Math.cos(a)*Math.cos(el)*spd,vy:Math.sin(el)*spd+1,vz:Math.sin(a)*Math.cos(el)*spd,
+        sc:.15+Math.random()*.15,scEnd:.0,life:.3+Math.random()*.3,col:'#ffe6c4',alpha:1,alphaEnd:0,
+        gravity:-6.3,colGrad:_fGrad2})}
+    // [7] FireStretched — 10개, 수직, 포인트스폰, 확장
+    for(let i=0;i<10;i++){addPart({tex:SHEETS.fireFBF.src,x,y,z,sc:.24,scEnd:.6,life:.3+Math.random()*.1,col:'#fffc59',alpha:1,alphaEnd:0,
+      sheet:SHEETS.fireFBF,sheetSpd:.02,colGrad:_fGradFire,scCurve:true,rotSpd:(Math.random()-.5)*8})}
   }},
   ice:{name:'❄ Ice',col:'#44ccff',spawn(x,y,z){
     addPart({tex:T.impact[4],x,y,z,sc:1.0,scEnd:2.2,life:.35,col:'#ffffff',alpha:1,alphaEnd:0});
@@ -332,12 +358,16 @@ function animate(){
     // 감속
     p.vx*=(1-dt*2);p.vz*=(1-dt*2);
 
-    // 스케일
-    const sc=p.sc0+(p.scEnd-p.sc0)*t;
+    // 스케일 (scCurve: Unity 0.47→1.0 이징)
+    const scT=p.scCurve?sizeEase(t):t;
+    const sc=p.sc0+(p.scEnd-p.sc0)*scT;
     p.sp.scale.set(sc,sc,1);
 
     // 알파
     p.mat.opacity=p.alpha0+(p.alphaEnd-p.alpha0)*(t*t);
+
+    // Color over Lifetime
+    if(p.colGrad){const c=lerpGrad(p.colGrad,t);if(c)p.mat.color.setRGB(c.r,c.g,c.b)}
 
     // 회전
     p.sp.material.rotation+=p.rotSpd*dt;
