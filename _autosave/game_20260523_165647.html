@@ -28481,35 +28481,36 @@ function update(){
         }
         G._fireZones[_fzW++]=fz;continue;
       }
-      // ═══ 참회: 시계방향 회전 쐐기 데미지 ═══
+      // ═══ 참회: 8방향 마법진 회전 쐐기 데미지 ═══
       if(fz.type==='hellRay'){
         fz.ang=(fz.ang||0)+Math.PI*2/fz.maxT*sp*2; // 지속시간에 2회전
-        // 쐐기 판정 — 세로축 위r*.5/아래r, 가로축 r*.6
+        // 8방향 팔 판정 — 45도 간격, 폭 40px
         if(~~(fz.t)%10<~~(sp)+1){
           const _hrNe=shQuery(fz.x,fz.y,fz.r+20);
-          const _hrMinMax=[[fz.r*.8,fz.r],[fz.r*.6,fz.r*.6]]; // [세로:위,아래],[가로:좌,우]
-          for(let _ai=0;_ai<2;_ai++){
-            const _a=fz.ang+_ai*Math.PI*.5;
-            const _c=Math.cos(_a),_s=Math.sin(_a);
-            const _negL=_hrMinMax[_ai][0],_posL=_hrMinMax[_ai][1];
-            for(let _hi=0;_hi<_hrNe.length;_hi++){
-              const e=_hrNe[_hi];if(!e.alive||e._hrHitT===~~(fz.t))continue;
-              const _dx=e.x-fz.x,_dy=e.y-fz.y;
-              const _proj=_dx*_c+_dy*_s;
-              if(_proj<-_negL||_proj>_posL)continue;
+          for(let _hi=0;_hi<_hrNe.length;_hi++){
+            const e=_hrNe[_hi];if(!e.alive||e._hrHitT===~~(fz.t))continue;
+            const _dx=e.x-fz.x,_dy=e.y-fz.y;
+            const _ed=Math.sqrt(_dx*_dx+_dy*_dy);
+            if(_ed>fz.r+e.r)continue;
+            // 8팔 중 하나와 정렬되면 히트
+            let _hrHit=false;
+            for(let _ai=0;_ai<4;_ai++){
+              const _a=fz.ang+_ai*Math.PI*.25;
+              const _c=Math.cos(_a),_s=Math.sin(_a);
               const _perp=Math.abs(-_dx*_s+_dy*_c);
-              if(_perp>30+e.r)continue;
-              e._hrHitT=~~(fz.t); // 같은 틱에 중복 히트 방지
-              // 참회의 증표: 히트마다 신성저항 -50 누적, 최대 5중첩(-250), 30초 지속(히트시 리셋)
-              if(!e._hrMark)e._hrMark=0;
-              const _hrOld=e._hrMark;
-              if(e._hrMark<250)e._hrMark+=50;
-              e._hrMarkT=1800; // 30초 타이머 리셋
-              const _hrMarkMul=1+e._hrMark/100; // 50→1.5x, 100→2x, ... 250→3.5x
-              const _hrAmpDmg=~~(fz.dmg*_hrMarkMul);
-              hurtE(e,_hrAmpDmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},fz.el);
-              if(_hrOld<e._hrMark){const _stk=e._hrMark/50;addTxt(e.x,e.y-30,_T('⚡ 증표 ')+_stk+'/5 (-'+e._hrMark+')','#ffd700',30)}
+              if(_perp<=40+e.r){_hrHit=true;break}
             }
+            if(!_hrHit)continue;
+            e._hrHitT=~~(fz.t);
+            // 참회의 증표: 히트마다 신성저항 -50 누적, 최대 5중첩(-250), 30초 지속(히트시 리셋)
+            if(!e._hrMark)e._hrMark=0;
+            const _hrOld=e._hrMark;
+            if(e._hrMark<250)e._hrMark+=50;
+            e._hrMarkT=1800; // 30초 타이머 리셋
+            const _hrMarkMul=1+e._hrMark/100; // 50→1.5x, 100→2x, ... 250→3.5x
+            const _hrAmpDmg=~~(fz.dmg*_hrMarkMul);
+            hurtE(e,_hrAmpDmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{shieldHit:true},fz.el);
+            if(_hrOld<e._hrMark){const _stk=e._hrMark/50;addTxt(e.x,e.y-30,_T('⚡ 증표 ')+_stk+'/5 (-'+e._hrMark+')','#ffd700',30)}
           }
         }
         // 쐐기 팔 파티클
@@ -33908,10 +33909,8 @@ function _detonateBlast(label,elSrc){
   if(!(G._noHitStopT>0)){G.shake=(14+_chgBars*4)*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25+_chgBars*5;G.hitStop=Math.max(G.hitStop,~~((10+_chgBars*3)*OPT.hitStop/100))}  addTxt(P.x,P.y-30,_T(label||'기폭팔')+' '+_chgBars+'단계 ×'+_detTierMul+' '+boom,'#ff2200',70);
   const _isSlamDet=(label==='지진기폭!');
   if(!_isSlamDet){
-    _addDetVfx(P.x,P.y,boomR,30+_chgBars*5,_chgBars);
+    _spawnFxAnim(P.x,P.y,boomR*(1+_chgBars*.2));
     _addBlastLight(P.x,P.y,boomR*1.2,18+_chgBars*4,255,160,60);
-    playVFXAng('center_explode',P.x,P.y,boomR/200*(1+_chgBars*.2),3,0,true);
-    playVFXAng('eq_impact',P.x,P.y,boomR/256,4+_chgBars*2,0,true);
     for(let _bi=0;_bi<12+_chgBars*3;_bi++){
       const _ba=Math.PI*2*_bi/(12+_chgBars*3);
       poolPart(P.x,P.y,Math.cos(_ba)*(5+Math.random()*7),Math.sin(_ba)*(5+Math.random()*7),_bi%2?'#ff6622':'#ffcc44',2+Math.random()*3,10+Math.random()*8);
@@ -44164,15 +44163,19 @@ function drawP(){
         // 지속적 미세 화면 흔들림
         if(_faFade>0.1)G.shake=Math.max(G.shake,~~(1.5*_faFade*OPT.shake/100));
       }else if(fz.type==='spikeTrap'){
-        // ═══ 가시덫 — 4컷 애니메이션 스프라이트 ═══
+        // ═══ 가시덫(결계) — 단일 이미지 + 슬로우 회전 ═══
         const _deployT=Math.min(1,fz.t/12);
         const _stSz=fz.r*2*_deployT;
-        if(!G._spikeTrapImgs){G._spikeTrapImgs=[];const _stNames=['spike_trap','spike_trap_1','spike_trap_2','spike_trap_4'];for(let _si=0;_si<4;_si++){const _im=new Image();_im.src='sprites/spike_trap/'+_stNames[_si]+'.webp';G._spikeTrapImgs[_si]=_im}}
-        const _stFrm=G._spikeTrapImgs[~~(_now/200)%4];
-        if(_stFrm.complete&&_stFrm.naturalWidth>0){
+        if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/결계.png'}
+        const _stImg=G._spikeTrapImg;
+        if(_stImg.complete&&_stImg.naturalWidth>0){
           const _stLife=fz.maxT>0?Math.max(0,1-fz.t/fz.maxT):1;
-          X.globalAlpha=(.2+.15*_stLife)*_fzFade;
-          X.drawImage(_stFrm,fz.x-_stSz/2,fz.y-_stSz/2,_stSz,_stSz);
+          X.globalAlpha=(.5+.5*(.5+.5*Math.sin(_now*.002)))*_fzFade;
+          X.save();
+          X.translate(fz.x,fz.y);
+          X.rotate(_now*0.0003);
+          X.drawImage(_stImg,-_stSz/2,-_stSz/2,_stSz,_stSz);
+          X.restore();
         }
       }else if(fz.type==='weakPhys'||fz.type==='weakMag'||fz.type==='weakPj'||fz.type==='weakRev'){
         // ═══ 영역 스킬 — 파쇄/침식/관통/부활 ═══
@@ -44208,14 +44211,15 @@ function drawP(){
           else X.lineTo(fz.x+Math.cos(_ra)*_rr,fz.y+Math.sin(_ra)*_rr);
         }
         X.closePath();X.stroke();
-        // 3) 십자가 문양 (중앙, 고정)
-        const _cSz=fz.r*.35;
-        X.save();X.translate(fz.x,fz.y);
-        X.globalAlpha=.5*_fzFade;X.strokeStyle='#ffd700';X.lineWidth=3;X.lineCap='round';
-        X.beginPath();X.moveTo(0,-_cSz);X.lineTo(0,_cSz);X.moveTo(-_cSz*.65,0);X.lineTo(_cSz*.65,0);X.stroke();
-        X.globalAlpha=.2*_fzFade;X.strokeStyle='#fff8dc';X.lineWidth=6;
-        X.beginPath();X.moveTo(0,-_cSz);X.lineTo(0,_cSz);X.moveTo(-_cSz*.65,0);X.lineTo(_cSz*.65,0);X.stroke();
-        X.restore();
+        // 3) 십자가 이미지 (중앙, 알파 0.7~1.0 왕복)
+        if(!G._holyCrossImg){G._holyCrossImg=new Image();G._holyCrossImg.src='sprites/holy_cross.png'}
+        if(G._holyCrossImg.complete&&G._holyCrossImg.naturalWidth>0){
+          const _cSz=fz.r*.8;
+          X.save();X.translate(fz.x,fz.y);
+          X.globalAlpha=1.0*_fzFade;
+          X.drawImage(G._holyCrossImg,-_cSz,-_cSz,_cSz*2,_cSz*2);
+          X.restore();
+        }
         // 4) 빛 파티클
         for(let _si=0;_si<4;_si++){
           const _sa=Math.random()*Math.PI*2;const _sd=Math.random()*fz.r*.8;
@@ -44226,15 +44230,25 @@ function drawP(){
       }else if(fz.type==='holyPrison'){
         // 감옥은 별도 렌더 (27793행 부근) — 여기서 skip
       }else if(fz.type==='hellRay'){
-        // ═══ 참회 — 마법진 이미지 (회전) ═══
+        // ═══ 참회 — 마법진 이미지 (회전 + 맥동) ═══
         var _hrSz=fz.r*1.8;
+        var _hrPulse=Math.sin(_now*.004); // 느린 맥동
         X.save();X.translate(fz.x,fz.y);X.rotate(fz.ang||0);
         X.globalCompositeOperation='lighter';
         if(_hrRepentImg.complete&&_hrRepentImg.naturalWidth){
-          X.globalAlpha=(.7+.2*Math.sin(_now*.01))*_fzFade;
-          X.drawImage(_hrRepentImg,-_hrSz/2,-_hrSz/2,_hrSz,_hrSz);
+          // 1) 외곽 글로우 레이어
+          var _hrGsz=_hrSz*(1.15+_hrPulse*.06);
+          X.globalAlpha=(.35+.15*_hrPulse)*_fzFade;
+          X.drawImage(_hrRepentImg,-_hrGsz/2,-_hrGsz/2,_hrGsz,_hrGsz);
+          // 2) 메인 레이어 (0.5~1.0 맥동)
+          var _hrMsz=_hrSz*(1+_hrPulse*.03);
+          X.globalAlpha=(.75+.25*_hrPulse)*_fzFade;
+          X.drawImage(_hrRepentImg,-_hrMsz/2,-_hrMsz/2,_hrMsz,_hrMsz);
+          // 3) 코어 레이어 (선명도 부스트)
+          var _hrCsz=_hrSz*(.7-.04*_hrPulse);
+          X.globalAlpha=(.4+.2*-_hrPulse)*_fzFade;
+          X.drawImage(_hrRepentImg,-_hrCsz/2,-_hrCsz/2,_hrCsz,_hrCsz);
         }else{
-          // 폴백: 기존 십자 광선
           var _hrH=fz.r*.9,_hrW=_hrH*.75;
           X.globalAlpha=(.4+.15*Math.sin(_now*.008))*_fzFade;X.fillStyle='#ffee88';
           X.fillRect(-_hrW,-4,_hrW*2,8);X.fillRect(-4,-_hrH,8,_hrH*2);
@@ -45004,25 +45018,28 @@ function drawP(){
     const prog=Math.min(1,P._bsT/180);
     const cx=P._bsX,cy=P._bsY;
     const r=160+prog*160;
-    const rot=-_now*0.003;
+    const rot=-_now*0.0005;
+    if(!G._blackStarImg){G._blackStarImg=new Image();G._blackStarImg.src='sprites/black_star.png'}
     X.save();
+    // 1) 어두운 배경 원
     X.globalAlpha=.15+prog*.25;X.fillStyle='#220033';
     X.beginPath();X.arc(cx,cy,r+80,0,Math.PI*2);X.fill();
-    X.globalAlpha=.6+prog*.4;X.strokeStyle='#aa00ff';X.lineWidth=2+prog*4;
-    +prog*30;
-    X.beginPath();
-    const drawLen=prog*5;
-    for(let i=0;i<5;i++){
-      const a1=rot+(i*4*Math.PI/5)-Math.PI/2;
-      const a2=rot+((i+1)*4*Math.PI/5)-Math.PI/2;
-      if(i<drawLen){const px1=cx+Math.cos(a1)*r,py1=cy+Math.sin(a1)*r,px2=cx+Math.cos(a2)*r,py2=cy+Math.sin(a2)*r;
-        const seg=Math.min(1,drawLen-i);X.moveTo(px1,py1);X.lineTo(px1+(px2-px1)*seg,py1+(py2-py1)*seg)}
+    // 2) 펜타그램 이미지 — 원형 clip으로 prog에 따라 서서히 드러남
+    if(G._blackStarImg.complete&&G._blackStarImg.naturalWidth>0){
+      X.save();
+      X.beginPath();X.arc(cx,cy,r*prog,0,Math.PI*2);X.clip();
+      X.globalAlpha=.7+prog*.3;
+      X.translate(cx,cy);X.rotate(rot);
+      X.drawImage(G._blackStarImg,-r,-r,r*2,r*2);
+      X.restore();
     }
-    X.stroke();
+    // 3) 외곽 원 (prog에 따라)
     X.globalAlpha=.3+prog*.3;X.strokeStyle='#6600aa';X.lineWidth=1.5;
     X.beginPath();X.arc(cx,cy,r,0,Math.PI*2*prog);X.stroke();
+    // 4) 흡인 파티클
     if(Math.random()>.3){const pa=Math.random()*Math.PI*2,pd=r+50+Math.random()*80;
       poolPart(cx+Math.cos(pa)*pd,cy+Math.sin(pa)*pd,-Math.cos(pa)*4,-Math.sin(pa)*4,Math.random()>.5?'#aa00ff':'#440066',2+Math.random()*3,10)}
+    // 5) 시전 게이지
     X.globalAlpha=.7;X.fillStyle='#111';X.fillRect(cx-40,cy-r-20,80,8);
     X.fillStyle='#aa00ff';X.fillRect(cx-40,cy-r-20,80*prog,8);
     X.strokeStyle='#666';X.lineWidth=1;X.strokeRect(cx-40,cy-r-20,80,8);

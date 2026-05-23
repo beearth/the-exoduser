@@ -27959,3 +27959,22 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/vfx_repentance.png
 - sprites/spike_trap/결계.png
 
+
+## 2026-05-23 17:30 (auto)
+- _autosave/game_20260523_165541.html
+- _autosave/game_20260523_165647.html
+- _autosave/game_20260523_165743.html
+- _autosave/game_20260523_165909.html
+- _autosave/game_20260523_171638.html
+- _autosave/game_20260523_171645.html
+- _autosave/game_20260523_171932.html
+- _autosave/game_20260523_172054.html
+- _autosave/game_20260523_172727.html
+- _autosave/game_20260523_172736.html
+- game.html
+- img/vfx_repentance.png
+- sprites/black_star.png
+- sprites/holy_cross.png
+- sprites/holy_star.png
+- sprites/spike_trap/결계.png
+

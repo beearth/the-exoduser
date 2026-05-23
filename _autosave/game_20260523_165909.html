@@ -6960,6 +6960,7 @@ const _plagueBoomSpr={img:null,ready:false,w:128,h:128,frames:6};
 (function(){const i=new Image();i.src='img/boom_plague.png';_plagueBoomSpr.img=i;i.onload=function(){_plagueBoomSpr.ready=true}})();
 // 사슬 수리검 작살 스프라이트
 const _chainShurikenImg=new Image();_chainShurikenImg.src='assets/vfx/chain_shuriken_2.webp';
+const _hrRepentImg=new Image();_hrRepentImg.src='img/vfx_repentance.png';
 // ═══ [TP-SMOKE] 순간이동 연기 스프라이트 (출발/도착) ═══
 const _tpSmokeOut=new Image();_tpSmokeOut.src='img/vfx/teleport_out.png';
 const _tpSmokeIn=new Image();_tpSmokeIn.src='img/vfx/teleport_in.png';
@@ -17649,27 +17650,30 @@ function _fireballExplode(p){
       // 업화선 폭발: 화상 부여
       if(p.fireBeamProj){e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*dmg*0.4}
     }}
-  // 업화선 전용 폭발 — Fire (Unity) 콤보 VFX (중앙 노랑, 외곽 붉은)
+  // 업화선 전용 폭발 — Fire VFX (중앙 노랑, 외곽 붉은)
   if(p.fireBeamProj){
     const _fbPx=p.x,_fbPy=p.y;
     const _fbSc=Math.min(3.0,Math.max(1.0,Math.sqrt(r/80)));
     if(!window._tvfx2)window._tvfx2=[];
-    // [1] 중앙 섬광 — ImpactFire 작게+고알파 (겹쳐서 노랑~흰)
+    // [0] 중앙 노란 섬광 — radial gradient (노랑→빨강→투명)
+    window._tvfx2.push({x:_fbPx,y:_fbPy,radial:true,r0:30*_fbSc,r1:120*_fbSc,
+      c0:'#ffffaa',c1:'#ff2200',life:18,t:0});
+    // [1] ImpactFire 시트
     const _fIS=_tvfx2Imgs['Fire_ImpactFire_Sheet.png'];
     if(_fIS&&_fIS.complete){const fw=~~(_fIS.naturalWidth/4),fh=~~(_fIS.naturalHeight/4);
-      for(let i=0;i<3;i++)window._tvfx2.push({img:_fIS,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:1.2*_fbSc,delay:0,spd:2,frame:0,total:16,t:0,timer:0,alphaMax:0.95})}
-    // [2] MediumImpact 크게 — 외곽 붉은 확산
+      for(let i=0;i<2;i++)window._tvfx2.push({img:_fIS,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:1.4*_fbSc,delay:0,spd:2,frame:0,total:16,t:0,timer:0,alphaMax:0.7})}
+    // [2] MediumImpact — 외곽
     const _fMI=_tvfx2Imgs['Fire_MediumImpact.png'];
     if(_fMI&&_fMI.complete){const fw=~~(_fMI.naturalWidth/4),fh=~~(_fMI.naturalHeight/4);
-      for(let i=0;i<2;i++)window._tvfx2.push({img:_fMI,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.2*_fbSc,delay:0,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.5})}
+      for(let i=0;i<2;i++)window._tvfx2.push({img:_fMI,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.0*_fbSc,delay:0,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.45})}
     // [3] BasicImpact — 쇼크웨이브
     const _fBI=_tvfx2Imgs['Fire_BasicImpact.png'];
     if(_fBI&&_fBI.complete){const fw=~~(_fBI.naturalWidth/3),fh=~~(_fBI.naturalHeight/3);
-      for(let i=0;i<2;i++)window._tvfx2.push({img:_fBI,x:_fbPx,y:_fbPy,cols:3,rows:3,fw,fh,sc:1.0*_fbSc,delay:0,spd:2,frame:0,total:9,t:0,timer:0,alphaMax:0.8})}
-    // [4] FBF 연기 — 외곽 붉은 연기 (낮은 알파)
+      for(let i=0;i<2;i++)window._tvfx2.push({img:_fBI,x:_fbPx,y:_fbPy,cols:3,rows:3,fw,fh,sc:1.0*_fbSc,delay:0,spd:2,frame:0,total:9,t:0,timer:0,alphaMax:0.6})}
+    // [4] FBF 연기 — 외곽 붉은
     const _fFB=_tvfx2Imgs['Fire_FBF_4x4.png'];
     if(_fFB&&_fFB.complete){const fw=~~(_fFB.naturalWidth/4),fh=~~(_fFB.naturalHeight/4);
-      for(let i=0;i<3;i++)window._tvfx2.push({img:_fFB,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.5*_fbSc,delay:1,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.35})}
+      for(let i=0;i<3;i++)window._tvfx2.push({img:_fFB,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.4*_fbSc,delay:1,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.3})}
     playSample('fireball',.9,_r(.7,.1));shake(8);if(window._v3fx)window._v3fx('fire',p.x,p.y)}
   else{
     // 보라색 콤보 임팩트 (기존 darkBurst 대체)
@@ -28477,35 +28481,36 @@ function update(){
         }
         G._fireZones[_fzW++]=fz;continue;
       }
-      // ═══ 참회: 시계방향 회전 쐐기 데미지 ═══
+      // ═══ 참회: 8방향 마법진 회전 쐐기 데미지 ═══
       if(fz.type==='hellRay'){
         fz.ang=(fz.ang||0)+Math.PI*2/fz.maxT*sp*2; // 지속시간에 2회전
-        // 쐐기 판정 — 세로축 위r*.5/아래r, 가로축 r*.6
+        // 8방향 팔 판정 — 45도 간격, 폭 40px
         if(~~(fz.t)%10<~~(sp)+1){
           const _hrNe=shQuery(fz.x,fz.y,fz.r+20);
-          const _hrMinMax=[[fz.r*.8,fz.r],[fz.r*.6,fz.r*.6]]; // [세로:위,아래],[가로:좌,우]
-          for(let _ai=0;_ai<2;_ai++){
-            const _a=fz.ang+_ai*Math.PI*.5;
-            const _c=Math.cos(_a),_s=Math.sin(_a);
-            const _negL=_hrMinMax[_ai][0],_posL=_hrMinMax[_ai][1];
-            for(let _hi=0;_hi<_hrNe.length;_hi++){
-              const e=_hrNe[_hi];if(!e.alive||e._hrHitT===~~(fz.t))continue;
-              const _dx=e.x-fz.x,_dy=e.y-fz.y;
-              const _proj=_dx*_c+_dy*_s;
-              if(_proj<-_negL||_proj>_posL)continue;
+          for(let _hi=0;_hi<_hrNe.length;_hi++){
+            const e=_hrNe[_hi];if(!e.alive||e._hrHitT===~~(fz.t))continue;
+            const _dx=e.x-fz.x,_dy=e.y-fz.y;
+            const _ed=Math.sqrt(_dx*_dx+_dy*_dy);
+            if(_ed>fz.r+e.r)continue;
+            // 8팔 중 하나와 정렬되면 히트
+            let _hrHit=false;
+            for(let _ai=0;_ai<4;_ai++){
+              const _a=fz.ang+_ai*Math.PI*.25;
+              const _c=Math.cos(_a),_s=Math.sin(_a);
               const _perp=Math.abs(-_dx*_s+_dy*_c);
-              if(_perp>30+e.r)continue;
-              e._hrHitT=~~(fz.t); // 같은 틱에 중복 히트 방지
-              // 참회의 증표: 히트마다 신성저항 -50 누적, 최대 5중첩(-250), 30초 지속(히트시 리셋)
-              if(!e._hrMark)e._hrMark=0;
-              const _hrOld=e._hrMark;
-              if(e._hrMark<250)e._hrMark+=50;
-              e._hrMarkT=1800; // 30초 타이머 리셋
-              const _hrMarkMul=1+e._hrMark/100; // 50→1.5x, 100→2x, ... 250→3.5x
-              const _hrAmpDmg=~~(fz.dmg*_hrMarkMul);
-              hurtE(e,_hrAmpDmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},fz.el);
-              if(_hrOld<e._hrMark){const _stk=e._hrMark/50;addTxt(e.x,e.y-30,_T('⚡ 증표 ')+_stk+'/5 (-'+e._hrMark+')','#ffd700',30)}
+              if(_perp<=40+e.r){_hrHit=true;break}
             }
+            if(!_hrHit)continue;
+            e._hrHitT=~~(fz.t);
+            // 참회의 증표: 히트마다 신성저항 -50 누적, 최대 5중첩(-250), 30초 지속(히트시 리셋)
+            if(!e._hrMark)e._hrMark=0;
+            const _hrOld=e._hrMark;
+            if(e._hrMark<250)e._hrMark+=50;
+            e._hrMarkT=1800; // 30초 타이머 리셋
+            const _hrMarkMul=1+e._hrMark/100; // 50→1.5x, 100→2x, ... 250→3.5x
+            const _hrAmpDmg=~~(fz.dmg*_hrMarkMul);
+            hurtE(e,_hrAmpDmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{shieldHit:true},fz.el);
+            if(_hrOld<e._hrMark){const _stk=e._hrMark/50;addTxt(e.x,e.y-30,_T('⚡ 증표 ')+_stk+'/5 (-'+e._hrMark+')','#ffd700',30)}
           }
         }
         // 쐐기 팔 파티클
@@ -33904,10 +33909,8 @@ function _detonateBlast(label,elSrc){
   if(!(G._noHitStopT>0)){G.shake=(14+_chgBars*4)*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25+_chgBars*5;G.hitStop=Math.max(G.hitStop,~~((10+_chgBars*3)*OPT.hitStop/100))}  addTxt(P.x,P.y-30,_T(label||'기폭팔')+' '+_chgBars+'단계 ×'+_detTierMul+' '+boom,'#ff2200',70);
   const _isSlamDet=(label==='지진기폭!');
   if(!_isSlamDet){
-    _addDetVfx(P.x,P.y,boomR,30+_chgBars*5,_chgBars);
+    _spawnFxAnim(P.x,P.y,boomR*(1+_chgBars*.2));
     _addBlastLight(P.x,P.y,boomR*1.2,18+_chgBars*4,255,160,60);
-    playVFXAng('center_explode',P.x,P.y,boomR/200*(1+_chgBars*.2),3,0,true);
-    playVFXAng('eq_impact',P.x,P.y,boomR/256,4+_chgBars*2,0,true);
     for(let _bi=0;_bi<12+_chgBars*3;_bi++){
       const _ba=Math.PI*2*_bi/(12+_chgBars*3);
       poolPart(P.x,P.y,Math.cos(_ba)*(5+Math.random()*7),Math.sin(_ba)*(5+Math.random()*7),_bi%2?'#ff6622':'#ffcc44',2+Math.random()*3,10+Math.random()*8);
@@ -33953,9 +33956,8 @@ function _slamStormBlast(skipVfx){
   G.hitStop=0;G.slowMo=0;
   // 진동파 이펙트 — 암전나선 합체면 기폭팔 VFX, 아니면 대왕치기 VFX
   if(_isFused('stormBeam')&&!skipVfx){
-    _addDetVfx(P.x,P.y,_ssR,40,3);
+    _spawnFxAnim(P.x,P.y,_ssR*1.2);
     _addBlastLight(P.x,P.y,_ssR*1.2,22,255,160,60);
-    playVFXAng('eq_impact',P.x,P.y,_ssR/256,8,0,true);
   }else if(!_isFused('stormBeam')){
     if(!G._gSlamWave)G._gSlamWave=[];
     G._gSlamWave.push({x:P.x,y:P.y,r:60,maxR:_ssR,t:0,maxT:45});
@@ -42865,6 +42867,20 @@ function draw(){
     for(let _ti=window._tvfx2.length-1;_ti>=0;_ti--){
       const v=window._tvfx2[_ti];
       if(v.delay>0){v.delay-=1;continue}
+      // radial gradient 플래시 (업화선 중앙 노란 코어)
+      if(v.radial){
+        v.t++;const rp=v.t/v.life;if(rp>=1){window._tvfx2.splice(_ti,1);continue}
+        const ra=Math.max(0,(1-rp*rp)*0.85);
+        const rScale=1+rp*0.6;
+        const _rr=v.r1*rScale;
+        const g=X.createRadialGradient(v.x,v.y,0,v.x,v.y,_rr);
+        g.addColorStop(0,'rgba(255,255,200,1)');g.addColorStop(0.15,'rgba(255,220,80,0.8)');
+        g.addColorStop(0.35,'rgba(255,120,20,0.35)');g.addColorStop(0.6,'rgba(200,30,0,0.1)');
+        g.addColorStop(1,'rgba(0,0,0,0)');
+        X.globalAlpha=ra;X.fillStyle=g;
+        X.fillRect(v.x-_rr,v.y-_rr,_rr*2,_rr*2);
+        continue;
+      }
       v.t++;v.timer++;
       if(v.timer>=v.spd){v.timer=0;v.frame++;
         if(v.frame>=v.total){window._tvfx2.splice(_ti,1);continue}}
@@ -44146,15 +44162,19 @@ function drawP(){
         // 지속적 미세 화면 흔들림
         if(_faFade>0.1)G.shake=Math.max(G.shake,~~(1.5*_faFade*OPT.shake/100));
       }else if(fz.type==='spikeTrap'){
-        // ═══ 가시덫 — 4컷 애니메이션 스프라이트 ═══
+        // ═══ 가시덫(결계) — 단일 이미지 + 슬로우 회전 ═══
         const _deployT=Math.min(1,fz.t/12);
         const _stSz=fz.r*2*_deployT;
-        if(!G._spikeTrapImgs){G._spikeTrapImgs=[];const _stNames=['spike_trap','spike_trap_1','spike_trap_2','spike_trap_4'];for(let _si=0;_si<4;_si++){const _im=new Image();_im.src='sprites/spike_trap/'+_stNames[_si]+'.webp';G._spikeTrapImgs[_si]=_im}}
-        const _stFrm=G._spikeTrapImgs[~~(_now/200)%4];
-        if(_stFrm.complete&&_stFrm.naturalWidth>0){
+        if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/결계.png'}
+        const _stImg=G._spikeTrapImg;
+        if(_stImg.complete&&_stImg.naturalWidth>0){
           const _stLife=fz.maxT>0?Math.max(0,1-fz.t/fz.maxT):1;
-          X.globalAlpha=(.2+.15*_stLife)*_fzFade;
-          X.drawImage(_stFrm,fz.x-_stSz/2,fz.y-_stSz/2,_stSz,_stSz);
+          X.globalAlpha=(.5+.5*(.5+.5*Math.sin(_now*.002)))*_fzFade;
+          X.save();
+          X.translate(fz.x,fz.y);
+          X.rotate(_now*0.0003);
+          X.drawImage(_stImg,-_stSz/2,-_stSz/2,_stSz,_stSz);
+          X.restore();
         }
       }else if(fz.type==='weakPhys'||fz.type==='weakMag'||fz.type==='weakPj'||fz.type==='weakRev'){
         // ═══ 영역 스킬 — 파쇄/침식/관통/부활 ═══
@@ -44190,37 +44210,49 @@ function drawP(){
           else X.lineTo(fz.x+Math.cos(_ra)*_rr,fz.y+Math.sin(_ra)*_rr);
         }
         X.closePath();X.stroke();
-        // 3) 십자가 문양 (중앙, 고정)
-        const _cSz=fz.r*.35;
-        X.save();X.translate(fz.x,fz.y);
-        X.globalAlpha=.5*_fzFade;X.strokeStyle='#ffd700';X.lineWidth=3;X.lineCap='round';
-        X.beginPath();X.moveTo(0,-_cSz);X.lineTo(0,_cSz);X.moveTo(-_cSz*.65,0);X.lineTo(_cSz*.65,0);X.stroke();
-        X.globalAlpha=.2*_fzFade;X.strokeStyle='#fff8dc';X.lineWidth=6;
-        X.beginPath();X.moveTo(0,-_cSz);X.lineTo(0,_cSz);X.moveTo(-_cSz*.65,0);X.lineTo(_cSz*.65,0);X.stroke();
-        X.restore();
-        // 4) 빛 파티클
+        // 3) 빛 파티클
         for(let _si=0;_si<4;_si++){
           const _sa=Math.random()*Math.PI*2;const _sd=Math.random()*fz.r*.8;
           X.globalAlpha=(.2+Math.random()*.3)*_fzFade;
           X.fillStyle=Math.random()>.5?'#ffd700':'#fff8dc';
           X.beginPath();X.arc(fz.x+Math.cos(_sa)*_sd,fz.y+Math.sin(_sa)*_sd,1+Math.random()*2,0,Math.PI*2);X.fill();
         }
+        // 4) 십자가 이미지 (맨 위, lighter 합성으로 빛남)
+        if(!G._holyCrossImg){G._holyCrossImg=new Image();G._holyCrossImg.src='sprites/holy_cross.png'}
+        if(G._holyCrossImg.complete&&G._holyCrossImg.naturalWidth>0){
+          const _cSz=fz.r*.8;
+          X.save();X.translate(fz.x,fz.y);
+          X.globalCompositeOperation='lighter';
+          X.globalAlpha=1.0*_fzFade;
+          X.drawImage(G._holyCrossImg,-_cSz,-_cSz,_cSz*2,_cSz*2);
+          X.restore();
+        }
       }else if(fz.type==='holyPrison'){
         // 감옥은 별도 렌더 (27793행 부근) — 여기서 skip
       }else if(fz.type==='hellRay'){
-        // ═══ 참회 — + 십자 광선 (세로 25% 길게, 회전) ═══
-        var _hrH=fz.r*.9,_hrW=_hrH*.75; // 세로:가로 = 4:3
+        // ═══ 참회 — 마법진 이미지 (회전 + 맥동) ═══
+        var _hrSz=fz.r*1.8;
+        var _hrPulse=Math.sin(_now*.004); // 느린 맥동
         X.save();X.translate(fz.x,fz.y);X.rotate(fz.ang||0);
         X.globalCompositeOperation='lighter';
-        // 외곽 글로우
-        X.globalAlpha=.12*_fzFade;X.fillStyle='#ffdd44';
-        X.fillRect(-_hrW,-8,_hrW*2,16);X.fillRect(-8,-_hrH,16,_hrH*2);
-        // 중간 빔
-        X.globalAlpha=(.4+.15*Math.sin(_now*.008))*_fzFade;X.fillStyle='#ffee88';
-        X.fillRect(-_hrW,-4,_hrW*2,8);X.fillRect(-4,-_hrH,8,_hrH*2);
-        // 코어 빔
-        X.globalAlpha=(.7+.2*Math.sin(_now*.01))*_fzFade;X.fillStyle='#ffffff';
-        X.fillRect(-_hrW,-1.5,_hrW*2,3);X.fillRect(-1.5,-_hrH,3,_hrH*2);
+        if(_hrRepentImg.complete&&_hrRepentImg.naturalWidth){
+          // 1) 외곽 글로우 레이어
+          var _hrGsz=_hrSz*(1.15+_hrPulse*.06);
+          X.globalAlpha=(.35+.15*_hrPulse)*_fzFade;
+          X.drawImage(_hrRepentImg,-_hrGsz/2,-_hrGsz/2,_hrGsz,_hrGsz);
+          // 2) 메인 레이어 (0.5~1.0 맥동)
+          var _hrMsz=_hrSz*(1+_hrPulse*.03);
+          X.globalAlpha=(.75+.25*_hrPulse)*_fzFade;
+          X.drawImage(_hrRepentImg,-_hrMsz/2,-_hrMsz/2,_hrMsz,_hrMsz);
+          // 3) 코어 레이어 (선명도 부스트)
+          var _hrCsz=_hrSz*(.7-.04*_hrPulse);
+          X.globalAlpha=(.4+.2*-_hrPulse)*_fzFade;
+          X.drawImage(_hrRepentImg,-_hrCsz/2,-_hrCsz/2,_hrCsz,_hrCsz);
+        }else{
+          var _hrH=fz.r*.9,_hrW=_hrH*.75;
+          X.globalAlpha=(.4+.15*Math.sin(_now*.008))*_fzFade;X.fillStyle='#ffee88';
+          X.fillRect(-_hrW,-4,_hrW*2,8);X.fillRect(-4,-_hrH,8,_hrH*2);
+        }
         X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();
       }else if(fz.type==='assaultFlame'){
         // 기동불꽃 불바닥 — 3중폭 스택별 차별화
@@ -44986,25 +45018,28 @@ function drawP(){
     const prog=Math.min(1,P._bsT/180);
     const cx=P._bsX,cy=P._bsY;
     const r=160+prog*160;
-    const rot=-_now*0.003;
+    const rot=-_now*0.0005;
+    if(!G._blackStarImg){G._blackStarImg=new Image();G._blackStarImg.src='sprites/black_star.png'}
     X.save();
+    // 1) 어두운 배경 원
     X.globalAlpha=.15+prog*.25;X.fillStyle='#220033';
     X.beginPath();X.arc(cx,cy,r+80,0,Math.PI*2);X.fill();
-    X.globalAlpha=.6+prog*.4;X.strokeStyle='#aa00ff';X.lineWidth=2+prog*4;
-    +prog*30;
-    X.beginPath();
-    const drawLen=prog*5;
-    for(let i=0;i<5;i++){
-      const a1=rot+(i*4*Math.PI/5)-Math.PI/2;
-      const a2=rot+((i+1)*4*Math.PI/5)-Math.PI/2;
-      if(i<drawLen){const px1=cx+Math.cos(a1)*r,py1=cy+Math.sin(a1)*r,px2=cx+Math.cos(a2)*r,py2=cy+Math.sin(a2)*r;
-        const seg=Math.min(1,drawLen-i);X.moveTo(px1,py1);X.lineTo(px1+(px2-px1)*seg,py1+(py2-py1)*seg)}
+    // 2) 펜타그램 이미지 — 원형 clip으로 prog에 따라 서서히 드러남
+    if(G._blackStarImg.complete&&G._blackStarImg.naturalWidth>0){
+      X.save();
+      X.beginPath();X.arc(cx,cy,r*prog,0,Math.PI*2);X.clip();
+      X.globalAlpha=.7+prog*.3;
+      X.translate(cx,cy);X.rotate(rot);
+      X.drawImage(G._blackStarImg,-r,-r,r*2,r*2);
+      X.restore();
     }
-    X.stroke();
+    // 3) 외곽 원 (prog에 따라)
     X.globalAlpha=.3+prog*.3;X.strokeStyle='#6600aa';X.lineWidth=1.5;
     X.beginPath();X.arc(cx,cy,r,0,Math.PI*2*prog);X.stroke();
+    // 4) 흡인 파티클
     if(Math.random()>.3){const pa=Math.random()*Math.PI*2,pd=r+50+Math.random()*80;
       poolPart(cx+Math.cos(pa)*pd,cy+Math.sin(pa)*pd,-Math.cos(pa)*4,-Math.sin(pa)*4,Math.random()>.5?'#aa00ff':'#440066',2+Math.random()*3,10)}
+    // 5) 시전 게이지
     X.globalAlpha=.7;X.fillStyle='#111';X.fillRect(cx-40,cy-r-20,80,8);
     X.fillStyle='#aa00ff';X.fillRect(cx-40,cy-r-20,80*prog,8);
     X.strokeStyle='#666';X.lineWidth=1;X.strokeRect(cx-40,cy-r-20,80,8);
@@ -49340,52 +49375,65 @@ setBootLoading(92,_L('오디오 준비...','Preparing audio...'));
 _loadAudioBuffers();
 setBootLoading(98,_L('게임 시작!','Starting game!'));
 _stopLoadTips();
-// ═══ [WARMUP] 셰이더 프리워밍 + envVig 캔버스 사전 빌드 ═══
+// ═══ [WARMUP] GPU 파이프라인 프리워밍 + 캔버스 사전 빌드 ═══
 {const _wmT0=performance.now();
-// [A] viewport 백업 + 1x1 축소
-try{if(_useGL&&GL){
+// [A] ProxyX 실제 _flush()로 GPU 셰이더 컴파일 강제 (텍스처 업로드 포함)
+try{if(_useGL&&GL&&X&&typeof _flush==='function'){
+  // 1x1 viewport로 축소 — 실제 픽셀 출력 최소화
   const _vpSave=GL.getParameter(GL.VIEWPORT);
   GL.viewport(0,0,1,1);
-  // [B] _glMainProg 프리워밍
-  try{if(_glMainProg){GL.useProgram(_glMainProg);GL.drawArrays(GL.POINTS,0,1)}}catch(e){}
-  // [C] _ensGLProg 프리워밍
-  try{if(_ensGLProg){GL.useProgram(_ensGLProg);GL.drawArrays(GL.POINTS,0,1)}}catch(e){}
-  // [D] _vfxGLProg 프리워밍
-  try{if(_vfxGLProg){GL.useProgram(_vfxGLProg);GL.drawArrays(GL.POINTS,0,1)}}catch(e){}
-  // 메인 프로그램 복원
-  if(_glMainProg)GL.useProgram(_glMainProg);
-  // [G] viewport 복원
+  // fillRect → ProxyX가 _glMainProg + drawElements(TRIANGLES) 실행
+  X.globalAlpha=0.01;X.fillStyle='#000';X.fillRect(0,0,1,1);_flush();
+  // 아틀라스 텍스처 GPU 업로드 강제 (첫 drawImage → _getTex → texImage2D)
+  if(typeof _atlas!=='undefined'&&_atlas&&_atlas.width>0){
+    X.drawImage(_atlas,0,0,1,1,0,0,1,1);_flush();
+  }
+  if(typeof _atlasE!=='undefined'&&_atlasE&&_atlasE.width>0){
+    X.drawImage(_atlasE,0,0,1,1,0,0,1,1);_flush();
+  }
+  if(typeof _atlasB!=='undefined'&&_atlasB&&_atlasB.width>0){
+    X.drawImage(_atlasB,0,0,1,1,0,0,1,1);_flush();
+  }
+  if(typeof _atlasP_img!=='undefined'&&_atlasP_img&&_atlasP_img.width>0){
+    X.drawImage(_atlasP_img,0,0,1,1,0,0,1,1);_flush();
+  }
+  X.globalAlpha=1;
+  // viewport 복원 + 워밍업 흔적 제거
   GL.viewport(_vpSave[0],_vpSave[1],_vpSave[2],_vpSave[3]);
+  GL.clear(GL.COLOR_BUFFER_BIT);
 }}catch(e){}
-// [E] _bstTfProg / _bstProg 프리워밍 (별도 _bGL context)
+// [B] _ensGLProg / _vfxGLProg 워밍업 (인스턴스드 — 별도 프로그램)
+try{if(_useGL&&GL){
+  const _vpSave2=GL.getParameter(GL.VIEWPORT);GL.viewport(0,0,1,1);
+  if(_ensGLProg){GL.useProgram(_ensGLProg);GL.drawArrays(GL.TRIANGLES,0,3)}
+  if(_vfxGLProg){GL.useProgram(_vfxGLProg);GL.drawArrays(GL.TRIANGLES,0,3)}
+  if(_glMainProg)GL.useProgram(_glMainProg);
+  GL.viewport(_vpSave2[0],_vpSave2[1],_vpSave2[2],_vpSave2[3]);
+}}catch(e){}
+// [C] Burst 파티클 프리워밍 (별도 _bGL context)
 try{if(_bGL&&_bstTfProg&&_bstProg){
-  const _bVp=_bGL.getParameter(_bGL.VIEWPORT);
-  _bGL.viewport(0,0,1,1);
-  _bGL.useProgram(_bstTfProg);_bGL.drawArrays(_bGL.POINTS,0,1);
-  _bGL.useProgram(_bstProg);_bGL.drawArrays(_bGL.POINTS,0,1);
-  _bGL.useProgram(null);
-  _bGL.viewport(_bVp[0],_bVp[1],_bVp[2],_bVp[3]);
+  const _bVp=_bGL.getParameter(_bGL.VIEWPORT);_bGL.viewport(0,0,1,1);
+  _bGL.useProgram(_bstProg);_bGL.drawArrays(_bGL.TRIANGLES,0,3);
+  _bGL.useProgram(null);_bGL.viewport(_bVp[0],_bVp[1],_bVp[2],_bVp[3]);
 }}catch(e){}
-// [H] envVig 캔버스 사전 빌드 (hell=0 기본, 첫 프레임 radialGradient 비용 제거)
+// [D] envVig 캔버스 사전 빌드 (hell=0 기본)
 try{if(C&&C.width>0){
-  const _wHell=0;
   const _vCols=['rgba(20,60,120,','rgba(20,60,15,','rgba(100,20,10,','rgba(50,15,80,','rgba(80,60,10,','rgba(50,40,25,','rgba(30,10,60,'];
-  const _wvc=_vCols[_wHell];
   if(!G._dvgCvs){G._dvgCvs=document.createElement('canvas');G._dvgCx=G._dvgCvs.getContext('2d')}
   G._dvgCvs.width=C.width;G._dvgCvs.height=C.height;
   const _wgr=G._dvgCx.createRadialGradient(C.width/2,C.height/2,C.width*.35,C.width/2,C.height/2,C.width*.7);
-  _wgr.addColorStop(0,'rgba(0,0,0,0)');_wgr.addColorStop(.7,_wvc+'.05)');_wgr.addColorStop(1,_wvc+'.15)');
+  _wgr.addColorStop(0,'rgba(0,0,0,0)');_wgr.addColorStop(.7,_vCols[0]+'.05)');_wgr.addColorStop(1,_vCols[0]+'.15)');
   G._dvgCx.fillStyle=_wgr;G._dvgCx.fillRect(0,0,C.width,C.height);
   G._dvgStage=0;G._dvgW=C.width;
 }}catch(e){}
-// [I] envLight 캐시 캔버스 사전 빌드
+// [E] envLight 캐시 캔버스 사전 빌드
 try{if(C&&C.width>0&&_ENV_LIGHT[0]){
   if(!G._envLightCvs){G._envLightCvs=document.createElement('canvas');G._envLightCx=G._envLightCvs.getContext('2d')}
   G._envLightCvs.width=C.width;G._envLightCvs.height=C.height;
   G._envLightCx.fillStyle=_ENV_LIGHT[0];G._envLightCx.fillRect(0,0,C.width,C.height);
   G._envLightHell=0;G._envLightW=C.width;
 }}catch(e){}
-console.log('[WARMUP] complete: shaders+envVig prewarmed ('+(performance.now()-_wmT0).toFixed(1)+'ms)');
+console.log('[WARMUP] GPU pipeline + canvas prewarmed ('+(performance.now()-_wmT0).toFixed(1)+'ms)');
 }
 _startLoop();
 // ═══ [EDITOR] 에디터 모드 부트 — 맵만 렌더, 게임 비활성 ═══
