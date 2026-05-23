@@ -266,7 +266,17 @@ canvas{display:block;position:fixed;inset:0}
 }
 .mini-bar.st .fill { background: linear-gradient(90deg, #114400, #44aa00); }
 .mini-bar.sh .fill { background: linear-gradient(90deg, #002266, #44aaff); }
-#skBar{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px) - 25px);left:50%;transform:translateX(-50%) scale(calc(var(--ui-scale) * .9));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;transform-origin:bottom center;background:url('img/ui_bar_only.png') no-repeat center/100% 100%;width:820px;height:182px;filter:brightness(0.8)}
+#skBar{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px) - 25px);left:50%;transform:translateX(-50%) scale(calc(var(--ui-scale) * .9));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;transform-origin:bottom center;background:url('img/ui_bar_only.png') no-repeat center/100% 100%;width:820px;height:182px;filter:brightness(0.8);overflow:visible}
+#skBar.burning::before{content:'';position:absolute;inset:-8px -4px -4px -4px;pointer-events:none;z-index:-1;
+  background:linear-gradient(0deg,rgba(255,60,0,calc(.2 + var(--burn-i,.5)*.5)) 0%,rgba(255,120,0,calc(.1 + var(--burn-i,.5)*.3)) 30%,rgba(255,60,0,calc(var(--burn-i,.5)*.15)) 60%,transparent 100%);
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 820 60'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.04,.15' numOctaves='4' seed='2'/%3E%3C/filter%3E%3Crect width='820' height='60' filter='url(%23t)'/%3E%3C/svg%3E");
+  mask-size:100% 100%;-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 820 60'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.04,.15' numOctaves='4' seed='2'/%3E%3C/filter%3E%3Crect width='820' height='60' filter='url(%23t)'/%3E%3C/svg%3E");
+  -webkit-mask-size:100% 100%;animation:skBarBurn .15s infinite alternate;border-radius:8px}
+#skBar.burning::after{content:'';position:absolute;inset:-12px -6px -2px -6px;pointer-events:none;z-index:-1;
+  background:linear-gradient(0deg,rgba(255,200,50,calc(.1 + var(--burn-i,.5)*.4)) 0%,rgba(255,80,0,calc(.05 + var(--burn-i,.5)*.25)) 40%,transparent 100%);
+  animation:skBarBurn2 .2s infinite alternate;border-radius:12px;filter:blur(6px)}
+@keyframes skBarBurn{0%{opacity:.7;transform:translateY(0)}100%{opacity:1;transform:translateY(-3px)}}
+@keyframes skBarBurn2{0%{opacity:.4;transform:translateY(0) scaleY(1)}100%{opacity:.8;transform:translateY(-5px) scaleY(1.1)}}
 .qs-row{position:absolute;top:0;left:0;width:100%;height:100%}
 .qs{position:absolute!important;flex:none!important}
 #poiseBarWrap{display:none!important}
@@ -9700,7 +9710,7 @@ addEventListener('keydown',e=>{
   // F11 전체화면 토글
   if(e.code==='F11'){e.preventDefault();toggleFullscreen();return}
   if(e.code==='F10'){togglePanel('settings');e.preventDefault();return}
-  if(e.code==='F8'){e.preventDefault();_tvfx2Spawn();return}
+  if(e.code==='F8'){e.preventDefault();(window._tvfx2Spawn||_tvfx2Spawn)();return}
   if(e.code==='F4'){e.preventDefault();const _nf=!OPT.fog;OPT.fog=_nf;OPT.bossFog=_nf;saveSettings();showPH(_nf?_L('안개 ON','Fog ON'):_L('안개 OFF','Fog OFF'),_nf?'#8899cc':'#888888');return}
   K[e.code]=true;KH[e.code]=true;
   if(['Space','Tab','Escape','KeyE','KeyQ','KeyZ','KeyX','KeyC','KeyB','KeyN','KeyH','KeyJ','KeyK','KeyL','KeyR','KeyF','KeyG','KeyV','ControlLeft','ControlRight','ShiftLeft','ShiftRight','CapsLock'].includes(e.code))e.preventDefault();
@@ -47568,15 +47578,13 @@ function updateHUD(slow){
   $('hpLiquid').style.background=_rbPoisoned
     ?'radial-gradient(ellipse at 50% 40%, #1B6020 0%, #0A3D12 50%, #051E0A 100%)'
     :'radial-gradient(ellipse at 50% 40%, #6B1020 0%, #3D0A12 50%, #1E050A 100%)';
-  // 화상/중독 시 스킬바 프레임 불타는 효과
+  // 빨콩 화상 시 스킬바 프레임 불타는 효과
   const _skBar=$('skBar');
-  if(_skBar){_skBar.style.filter=_rbBurning&&_rbPoisoned
-    ?'brightness(0.8) drop-shadow(0 0 12px rgba(255,100,0,.7)) drop-shadow(0 0 6px rgba(0,255,50,.5))'
-    :_rbBurning
-    ?'brightness(0.8) drop-shadow(0 0 14px rgba(255,60,0,.8)) drop-shadow(0 0 6px rgba(255,30,0,.5))'
-    :_rbPoisoned
-    ?'brightness(0.8) drop-shadow(0 0 12px rgba(0,255,60,.6)) drop-shadow(0 0 5px rgba(0,200,40,.4))'
-    :'brightness(0.8)'}
+  if(_skBar){if(_rbBurning){const _bs=Math.min(10,P._rbBurn.length),_bi=_bs/10;
+    _skBar.classList.add('burning');
+    _skBar.style.setProperty('--burn-i',_bi.toFixed(2));
+    _skBar.style.filter=`brightness(0.8) drop-shadow(0 0 ${6+_bs*2}px rgba(255,60,0,${(.3+_bi*.5).toFixed(2)})) drop-shadow(0 0 ${3+_bs}px rgba(255,30,0,${(.2+_bi*.3).toFixed(2)}))`}
+  else{_skBar.classList.remove('burning');_skBar.style.filter='brightness(0.8)'}}
   $('hpCur').textContent = ~~P.hp;
   $('hpMax').textContent = `/ ${P.mhp}`;
   $('hpShield').textContent = P.mshield>0?`${~~P.shield} / ${~~P.mshield}`:'';
@@ -50157,6 +50165,7 @@ document.addEventListener('keydown',function(ev){
 </script>
 <!-- ═══ 3D 보스 오버레이 ═══ -->
 <canvas id="boss3dCvs" style="position:fixed;inset:0;pointer-events:none;z-index:5000"></canvas>
+<canvas id="vfx3dCvs" style="position:fixed;inset:0;pointer-events:none;z-index:4999"></canvas>
 <canvas id="chest3dCvs" style="position:fixed;pointer-events:none;z-index:4998;display:none"></canvas>
 <script type="importmap">
 {"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}
@@ -50496,6 +50505,197 @@ function tick(){
 }
 tick();
 console.log('[CHEST3D] v8 Meshy GLB');
+})();
+</script>
+<!-- ═══ VFX 3D Overlay (Three.js 빌보드+크로스플레인 임팩트) ═══ -->
+<script>
+(function(){
+if(typeof THREE==='undefined'){console.error('[VFX3D] THREE not found');return}
+const _v3cvs=document.getElementById('vfx3dCvs');
+if(!_v3cvs)return;
+const _v3r=new THREE.WebGLRenderer({canvas:_v3cvs,alpha:true,antialias:false});
+_v3r.setPixelRatio(Math.min(window.devicePixelRatio,1.5));
+_v3r.setClearColor(0x000000,0);
+const _v3s=new THREE.Scene();
+const _v3cam=new THREE.OrthographicCamera(-1,1,1,-1,0.1,200);
+_v3cam.position.set(0,0,100);_v3cam.lookAt(0,0,0);
+
+// 텍스처 캐시
+const _v3texCache={};
+const _v3loader=new THREE.TextureLoader();
+function _v3tex(src){
+  if(!_v3texCache[src]){
+    const t=_v3loader.load(src);
+    t.minFilter=THREE.LinearFilter;t.magFilter=THREE.LinearFilter;
+    t.colorSpace=THREE.SRGBColorSpace;
+    _v3texCache[src]=t;
+  }
+  return _v3texCache[src];
+}
+
+// VFX 엔트리 풀
+const _v3pool=[];
+const _V3_MAX=60;
+
+function _v3makeLayer(src,cols,rows,wx,wy,sc,delay,spd){
+  const tex=_v3tex(src);
+  const totalFrames=cols*rows;
+  // UV 클리핑 텍스처
+  const ct=tex.clone();ct.needsUpdate=true;
+  ct.repeat.set(1/cols,1/rows);
+  ct.offset.set(0,1-1/rows);
+
+  // 빌보드 스프라이트
+  const mat=new THREE.SpriteMaterial({map:ct,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false});
+  const sprite=new THREE.Sprite(mat);
+  sprite.scale.set(sc,sc,1);
+  sprite.position.set(wx,wy,0);
+  _v3s.add(sprite);
+
+  // 크로스 플레인 2장
+  const mkPlane=()=>{
+    const ct2=tex.clone();ct2.needsUpdate=true;
+    ct2.repeat.set(1/cols,1/rows);ct2.offset.set(0,1-1/rows);
+    const pm=new THREE.MeshBasicMaterial({map:ct2,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false,side:THREE.DoubleSide});
+    const pl=new THREE.Mesh(new THREE.PlaneGeometry(sc,sc),pm);
+    pl.position.set(wx,wy,0);
+    return {mesh:pl,mat:pm,tex:ct2};
+  };
+  const p1=mkPlane();
+  p1.mesh.rotation.set(Math.random()*.4-.2,Math.random()*Math.PI*2,Math.random()*.4-.2);
+  _v3s.add(p1.mesh);
+  const p2=mkPlane();
+  p2.mesh.rotation.copy(p1.mesh.rotation);p2.mesh.rotateY(Math.PI/2);
+  _v3s.add(p2.mesh);
+
+  return {
+    sprite,mat,tex:ct,
+    p1m:p1.mesh,p1mat:p1.mat,p1tex:p1.tex,
+    p2m:p2.mesh,p2mat:p2.mat,p2tex:p2.tex,
+    frame:0,totalFrames,cols,rows,
+    timer:0,frameTime:spd||3,
+    delay:delay||0,life:0,maxLife:totalFrames*(spd||3)+(delay||0),
+    scale:sc,rotSpd:(Math.random()-.5)*2,started:false
+  };
+}
+
+// 월드→스크린 좌표 변환
+function _v3world(wx,wy){
+  const C=document.getElementById('gameCanvas');
+  if(!C||!window.G||!G.cam)return{x:0,y:0};
+  const cw=_v3cvs.width,ch=_v3cvs.height;
+  const sx=(wx-G.cam.x)+cw/2;
+  const sy=(wy-G.cam.y)+ch/2;
+  // 스크린→NDC→직교 카메라 좌표
+  const nx=(sx/cw)*2-1;
+  const ny=-(sy/ch)*2+1;
+  const hw=_v3cam.right-_v3cam.left;
+  const hh=_v3cam.top-_v3cam.bottom;
+  return{x:nx*hw/2,y:ny*hh/2};
+}
+
+// 스폰: _tvfx2 호환
+window._v3spawn=function(layers,wx,wy){
+  layers.forEach(function(l){
+    if(_v3pool.length>=_V3_MAX)return;
+    const pos=_v3world(wx,wy);
+    const entry=_v3makeLayer(
+      window._TVFX2_PATH+l.src,l.cols,l.rows||1,
+      pos.x,pos.y,
+      (l.sc||1)*0.8,l.delay||0,l.spd||3
+    );
+    entry.wx=wx;entry.wy=wy; // 원본 월드좌표 보관
+    _v3pool.push(entry);
+  });
+};
+
+// F8 테스트 오버라이드
+const _origSpawn=window._tvfx2Spawn;
+window._tvfx2Spawn=function(){
+  if(!window._TVFX2_COMBOS)return;
+  const idx=window._tvfx2Idx||0;
+  const c=window._TVFX2_COMBOS[idx];
+  const P=window.P;if(!P)return;
+  window._v3spawn(c.layers,P.x,P.y);
+  window.addTxt(P.x,P.y-30,'3D VFX: '+c.name,'#ffcc44',30);
+  window._tvfx2Idx=((window._tvfx2Idx||0)+1)%window._TVFX2_COMBOS.length;
+};
+
+// 리사이즈
+function _v3resize(){
+  const w=window.innerWidth,h=window.innerHeight;
+  _v3cvs.width=w;_v3cvs.height=h;
+  _v3r.setSize(w,h);
+  const aspect=w/h;
+  _v3cam.left=-aspect;_v3cam.right=aspect;
+  _v3cam.top=1;_v3cam.bottom=-1;
+  _v3cam.updateProjectionMatrix();
+}
+_v3resize();
+window.addEventListener('resize',_v3resize);
+
+// 메인 틱
+let _v3lastT=performance.now();
+function _v3tick(){
+  requestAnimationFrame(_v3tick);
+  if(!_v3pool.length){_v3r.clear();return;}
+  const now=performance.now();
+  const dt=Math.min(50,now-_v3lastT);_v3lastT=now;
+  const sp=dt/16.67; // 60fps 기준 스피드
+
+  for(let i=_v3pool.length-1;i>=0;i--){
+    const v=_v3pool[i];
+    // 딜레이
+    if(v.delay>0){v.delay-=sp;
+      v.mat.opacity=0;v.p1mat.opacity=0;v.p2mat.opacity=0;continue;}
+    if(!v.started){v.started=true;v.life=0;v.timer=0;}
+    v.life+=sp;v.timer+=sp;
+
+    // 프레임 전진
+    if(v.timer>=v.frameTime){
+      v.timer-=v.frameTime;v.frame++;
+      if(v.frame>=v.totalFrames){
+        // 제거
+        _v3s.remove(v.sprite);_v3s.remove(v.p1m);_v3s.remove(v.p2m);
+        v.mat.dispose();v.p1mat.dispose();v.p2mat.dispose();
+        v.tex.dispose();v.p1tex.dispose();v.p2tex.dispose();
+        _v3pool.splice(i,1);continue;
+      }
+      const col=v.frame%v.cols,row=v.rows-1-Math.floor(v.frame/v.cols);
+      v.tex.offset.set(col/v.cols,row/v.rows);
+      v.p1tex.offset.set(col/v.cols,row/v.rows);
+      v.p2tex.offset.set(col/v.cols,row/v.rows);
+    }
+
+    // 월드좌표 추적 (카메라 이동 반영)
+    const pos=_v3world(v.wx,v.wy);
+    v.sprite.position.set(pos.x,pos.y,0);
+    v.p1m.position.set(pos.x,pos.y,0);
+    v.p2m.position.set(pos.x,pos.y,0);
+
+    // 페이드+스케일
+    const p=v.life/v.maxLife;
+    const alpha=Math.max(0,1-p*p);
+    v.mat.opacity=alpha*0.8;
+    v.p1mat.opacity=alpha;
+    v.p2mat.opacity=alpha;
+
+    const sc=v.scale*(0.6+p*0.8);
+    v.sprite.scale.set(sc,sc,1);
+    v.p1m.scale.set(1+p*0.3,1+p*0.3,1);
+    v.p2m.scale.set(1+p*0.3,1+p*0.3,1);
+
+    // 위로 살짝 드리프트 + 회전
+    v.sprite.position.y+=sp*0.003;
+    v.p1m.position.y+=sp*0.003;
+    v.p2m.position.y+=sp*0.003;
+    v.p1m.rotation.y+=sp*0.02*v.rotSpd;
+    v.p2m.rotation.y+=sp*0.02*v.rotSpd;
+  }
+  _v3r.render(_v3s,_v3cam);
+}
+_v3tick();
+console.log('[VFX3D] Three.js VFX overlay initialized');
 })();
 </script>
 </body>

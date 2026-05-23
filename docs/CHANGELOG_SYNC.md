@@ -27823,3 +27823,55 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _autosave/game_20260523_092338.html
 - game.html
 
+
+## 2026-05-23 10:30 (auto)
+- _autosave/game_20260523_102257.html
+- _autosave/game_20260523_102317.html
+- _autosave/game_20260523_102331.html
+- assets/vfx/particles/Impact_0.png
+- assets/vfx/particles/Impact_1.png
+- assets/vfx/particles/Impact_10.png
+- assets/vfx/particles/Impact_11.png
+- assets/vfx/particles/Impact_12.png
+- assets/vfx/particles/Impact_13.png
+- assets/vfx/particles/Impact_14.png
+- assets/vfx/particles/Impact_15.png
+- assets/vfx/particles/Impact_2.png
+- assets/vfx/particles/Impact_3.png
+- assets/vfx/particles/Impact_4.png
+- assets/vfx/particles/Impact_5.png
+- assets/vfx/particles/Impact_6.png
+- assets/vfx/particles/Impact_7.png
+- assets/vfx/particles/Impact_8.png
+- assets/vfx/particles/Impact_9.png
+- assets/vfx/particles/Impact_Stretch_0.png
+- assets/vfx/particles/Impact_Stretch_1.png
+- assets/vfx/particles/Impact_Stretch_10.png
+- assets/vfx/particles/Impact_Stretch_11.png
+- assets/vfx/particles/Impact_Stretch_2.png
+- assets/vfx/particles/Impact_Stretch_3.png
+- assets/vfx/particles/Impact_Stretch_4.png
+- assets/vfx/particles/Impact_Stretch_5.png
+- assets/vfx/particles/Impact_Stretch_6.png
+- assets/vfx/particles/Impact_Stretch_7.png
+- assets/vfx/particles/Impact_Stretch_8.png
+- assets/vfx/particles/Impact_Stretch_9.png
+- assets/vfx/particles/Impact_fire_0.png
+- assets/vfx/particles/Impact_fire_1.png
+- assets/vfx/particles/Impact_fire_2.png
+- assets/vfx/particles/Impact_fire_3.png
+- assets/vfx/particles/Impact_light_0.png
+- assets/vfx/particles/Impact_light_1.png
+- assets/vfx/particles/Impact_light_2.png
+- assets/vfx/particles/Impact_light_3.png
+- assets/vfx/particles/Impact_lightning_0.png
+- assets/vfx/particles/Impact_lightning_1.png
+- assets/vfx/particles/Impact_lightning_2.png
+- assets/vfx/particles/Impact_lightning_3.png
+- assets/vfx/particles/Impact_water_0.png
+- assets/vfx/particles/Impact_water_1.png
+- assets/vfx/particles/Impact_water_2.png
+- assets/vfx/particles/Impact_water_3.png
+- game.html
+- vfx3d_test.html
+

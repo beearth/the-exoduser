@@ -47421,7 +47421,7 @@ function drawP(){
     _dpT0=_dpS0-_dpStart;_dpT1=_dpS1-_dpS0;_dpT2=_dpS2-_dpS1;_dpT3=_dpS3-_dpS2;
     _dpT4=_dpS4-_dpS3;_dpT5=_dpS5-_dpS4;_dpT6=_dpS6-_dpS5;_dpT7=_dpEnd-_dpS6;
     console.log('[drawP] '+_dpTotal.toFixed(2)+'ms | S0:'+_dpT0.toFixed(1)+' S1:'+_dpT1.toFixed(1)+' S2:'+_dpT2.toFixed(1)+' S3:'+_dpT3.toFixed(1)+' S4:'+_dpT4.toFixed(1)+' S5:'+_dpT5.toFixed(1)+' S6:'+_dpT6.toFixed(1)+' S7:'+_dpT7.toFixed(1));
-    if(_dpT7>4)console.log('[S7-SUB] proj:'+_s7sub.proj.toFixed(1)+' shield:'+_s7sub.shield.toFixed(1)+' pet:'+_s7sub.pet.toFixed(1)+' xbow+holy:'+_s7sub.misc.toFixed(1)+' orb:'+_s7sub.orb.toFixed(1)+' harp:'+_s7sub.harp.toFixed(1)+' | pProjs:'+pProjs.length);
+    if(_dpT7>4)console.log('[S7-SUB] proj:'+_s7sub.proj.toFixed(1)+' shieldQ:'+_s7sub.misc.toFixed(1)+' orb:'+_s7sub.orb.toFixed(1)+' shieldHold:'+_s7sub.shield.toFixed(1)+' pet:'+_s7sub.pet.toFixed(1)+' xbow+harp:'+_s7sub.harp.toFixed(1)+' | pProjs:'+pProjs.length);
     if(_dpT7>8)console.log('[S7-DETAIL] proj:'+(_s7t1-_s7t0).toFixed(1)+' shield+pet:'+(_dpEnd-_s7t1).toFixed(1)+' pProjs:'+pProjs.length+' ppDrawn:'+_ppDrawN);
     // [S7-BREAKDOWN] (2026-04-17) — _PERF_PROF.enabled(>300마리) 시에만 출력
     if(_s7Active&&_dpT7>8){
@@ -47900,12 +47900,11 @@ function _perfHookC2D(){
   }
 }
 function _perfReport(){
-  // 비활성화됨 — 재활성화: 아래 return 제거
-  _PERF_PROF.drawCalls=0;return;
-  let _alive=0;for(let _ai=0;_ai<ens.length;_ai++)if(ens[_ai].alive)_alive++;
+  const _avg=function(arr){if(!arr.length)return 0;let s=0;for(let i=0;i<arr.length;i++)s+=arr[i];return s/arr.length};
   const _fmt=function(arr){if(!arr.length)return'0.0/0.0';let s=0,m=0;for(let i=0;i<arr.length;i++){s+=arr[i];if(arr[i]>m)m=arr[i]}return(s/arr.length).toFixed(1)+'/'+m.toFixed(1)};
-  const _heap=(performance.memory&&performance.memory.usedJSHeapSize)?(performance.memory.usedJSHeapSize/1048576).toFixed(0)+'MB':'n/a';
-  console.log('[PERF] enemies='+_alive+' drawCalls='+_PERF_PROF.drawCalls+' ai(avg/max)='+_fmt(_PERF_PROF.ai)+'ms coll='+_fmt(_PERF_PROF.coll)+'ms render='+_fmt(_PERF_PROF.render)+'ms dom='+_fmt(_PERF_PROF.dom)+'ms heap='+_heap);
+  let _alive=0;for(let _ai=0;_ai<ens.length;_ai++)if(ens[_ai]&&ens[_ai].alive)_alive++;
+  console.log('[PERF avg'+_PERF_PROF.ai.length+'] ai:'+_avg(_PERF_PROF.ai).toFixed(1)+' coll:'+_avg(_PERF_PROF.coll).toFixed(1)+' render:'+_avg(_PERF_PROF.render).toFixed(1)+' dom:'+_avg(_PERF_PROF.dom).toFixed(1)+' drawCalls:'+_PERF_PROF.drawCalls);
+  console.log('[CTX] ens:'+ens.length+'(alive:'+_alive+') projs:'+projs.length+' pProjs:'+pProjs.length+' worldItems:'+worldItems.length);
   _PERF_PROF.drawCalls=0;
 }
 function _perfFrameTick(){
@@ -47920,7 +47919,7 @@ function _perfFrameTick(){
     if(_PERF_PROF.coll.length>=60)_PERF_PROF.coll.shift();_PERF_PROF.coll.push(_PERF_PROF._collAcc);
     if(_PERF_PROF.render.length>=60)_PERF_PROF.render.shift();_PERF_PROF.render.push(_PERF_PROF._renderAcc);
     if(_PERF_PROF.dom.length>=60)_PERF_PROF.dom.shift();_PERF_PROF.dom.push(_PERF_PROF._domAcc);
-    _PERF_PROF.frameCnt++;if(_PERF_PROF.frameCnt%60===0)_perfReport();
+    _PERF_PROF.frameCnt++;if(_PERF_PROF.frameCnt%30===0)_perfReport();
   }
   _PERF_PROF._aiAcc=0;_PERF_PROF._collAcc=0;_PERF_PROF._renderAcc=0;_PERF_PROF._domAcc=0;
 }
