@@ -28019,3 +28019,16 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - img/map_dragon_skeleton.png
 
+
+## 2026-05-24 00:30 (auto)
+- _autosave/game_20260523_235213.html
+- _autosave/game_20260524_001329.html
+- _autosave/game_20260524_001334.html
+- _autosave/game_20260524_001352.html
+- _autosave/game_20260524_001402.html
+- _autosave/game_20260524_001416.html
+- _autosave/game_20260524_002920.html
+- docs/2_5 부???�너지?�드?�스??2_5 부???�너지?�드?�스??md
+- game.html
+- img/map_dragon_3d.png
+

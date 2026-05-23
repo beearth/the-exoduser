@@ -12591,7 +12591,6 @@ const _OBJ_SPR_MAP={
 // ── 챕터별 맵 장식 에셋 (assets/map/ch*/) ──
 const _CH_DECO={
   0:[ // CH1 썩은숲
-    {id:'m_dragon_skeleton',file:'map_dragon_skeleton.png',sz:800,large:1,dir:'img'},
     {id:'m_tree1',file:'tree_dead_01.png',sz:100},{id:'m_tree2',file:'tree_dead_02.png',sz:100},{id:'m_tree3',file:'tree_dead_03.png',sz:100},
     {id:'m_eye',file:'eyeball.png',sz:40},{id:'m_eye1',file:'eye1_bloodshot.png',sz:40},{id:'m_eye2',file:'eye2_terror.png',sz:40},
     {id:'m_poison',file:'poison_pool.png',sz:48},{id:'m_puddle',file:'poison_puddle.png',sz:48},
@@ -12826,7 +12825,8 @@ const _OBJ_META={
   'm_skull_altar':{sz:300,col:1,large:1},'m_obelisk':{sz:300,col:1,large:1},'m_flesh_ball':{sz:270,col:1,large:1},
   'm_penta_circle':{sz:350,col:1,large:1},'m_flesh_maw':{sz:200,col:1,large:1},'m_skull_totem':{sz:240,col:1,large:1,keepAR:1},
   'm_bone_arch':{sz:300,col:1,large:1},'m_eye_tree':{sz:350,col:1,large:1},'m_throne':{sz:250,col:1,large:1},
-  'm_dragon_skeleton':{sz:800,large:1,keepAR:1},
+  'm_dragon_skeleton':{sz:800,large:1,keepAR:1,col:1,collision:true},
+  'm_dragon_3d':{sz:800,large:1,keepAR:1,col:1,collision:true},
   'm_usergore1':{sz:220,keepAR:1},'m_usergore2':{sz:220,keepAR:1},'m_usergore3':{sz:220,keepAR:1,anchorBottom:1},
   'm_usergore4':{sz:220,keepAR:1,anchorBottom:1},'m_usergore5':{sz:220,keepAR:1,anchorBottom:1},'m_usergore6':{sz:220,keepAR:1,anchorBottom:1},
 };
@@ -12834,6 +12834,8 @@ const _OBJ_META={
 for(const[ch,list]of Object.entries(_CH_DECO)){
   for(const d of list){const p='assets/map/ch'+(+ch+1)+'/'+(d.dir||'floor_objects')+'/'+d.file;_OBJ_SPR_MAP[d.id]=p;const im=new Image();im.onerror=function(){console.warn('[DECO] '+d.id+' 404→fallback');this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='};im.src=p;_OBJ_SPR[d.id]=im;const _prev=_OBJ_META[d.id]||{};_OBJ_META[d.id]=Object.assign(_prev,{sz:d.sz||32,light:d.light||0,large:d.large||0,rot:d.rot||0})}
 }
+// 용 해골 직접 프리로드 (img/ 경로)
+{const _dsImg=new Image();_dsImg.src='img/map_dragon_skeleton.png';_OBJ_SPR['m_dragon_skeleton']=_dsImg;_OBJ_SPR_MAP['m_dragon_skeleton']='img/map_dragon_skeleton.png'}
 
 // ═══ RAM 최적화 시스템 ═══
 
@@ -18762,6 +18764,18 @@ function initMapObjects(){
       };
       _placeFromPool(_lgSide,_lgSideMax);
       _placeFromPool(_lgCenter,_lgCenterMax);
+    }
+    // ── 용 해골: 1_1(stage 0) 맵 중앙에 거대 배치 ──
+    if(G.stage===0){
+      const _dsMidX=~~(G.mw/2),_dsMidY=~~(G.mh/2);
+      const _dsNear=_nearFloor(_dsMidX,_dsMidY);
+      if(_dsNear){const _dsx=(_dsNear.x+.5)*T,_dsy=(_dsNear.y+.5)*T;
+        // 주변 500px 내 기존 오브젝트 제거
+        const _dsClr=500;
+        MAP_OBJS=MAP_OBJS.filter(o=>{const dx=o.x-_dsx,dy=o.y-_dsy;return dx*dx+dy*dy>_dsClr*_dsClr});
+        // 그리드에도 해골 자리 등록 (다른 오브젝트 배치 방지)
+        const k=_gridKey(_dsx,_dsy);if(!_moGrid[k])_moGrid[k]=[];_moGrid[k].push({x:_dsx,y:_dsy,colR:500});
+        MAP_OBJS.push({type:'m_dragon_skeleton',x:_dsx,y:_dsy,hell:0})}
     }
     // ── 유니크 충돌 오브젝트: 12종 각 1개씩, 중앙 배치, 500px 간격 ──
     if(hell===0){
@@ -28561,16 +28575,16 @@ function update(){
             e.poisonT=Math.max(e.poisonT||0,300);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*fz.dmg*0.10;e.poison=1;
             e._webSlow=Math.max(e._webSlow||0,15);
           }else if(fz.type==='storm'){
-            // 악의폭풍: 암전 데미지 + 감속 (hurtE 경유)
-            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},fz.el||EL.L);
+            // 악의폭풍: 번개 마법 DOT + 감속 (쉴드 적용)
+            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},fz.el||EL.L);
             e._webSlow=Math.max(e._webSlow||0,20);
           }else if(fz.type==='darkPillar'){
-            // 악의기둥: 암흑 DOT + 감속
-            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.D);
+            // 악의기둥: 암흑 마법 DOT + 감속 (쉴드 적용)
+            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.D);
             e._webSlow=Math.max(e._webSlow||0,25);
           }else if(fz.type==='boneStorm'){
-            // 해골번개: 암흑 DOT + 감속 (hurtE 경유)
-            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.D);
+            // 해골번개: 암흑 마법 DOT + 감속 (쉴드 적용)
+            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.D);
             e._webSlow=Math.max(e._webSlow||0,25);
           }else if(fz.type==='dimLightning'){
             // 사슬이동:강화 번개길: 암전 DOT + 감전
