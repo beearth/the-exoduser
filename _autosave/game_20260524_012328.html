@@ -12825,7 +12825,8 @@ const _OBJ_META={
   'm_skull_altar':{sz:300,col:1,large:1},'m_obelisk':{sz:300,col:1,large:1},'m_flesh_ball':{sz:270,col:1,large:1},
   'm_penta_circle':{sz:350,col:1,large:1},'m_flesh_maw':{sz:200,col:1,large:1},'m_skull_totem':{sz:240,col:1,large:1,keepAR:1},
   'm_bone_arch':{sz:300,col:1,large:1},'m_eye_tree':{sz:350,col:1,large:1},'m_throne':{sz:250,col:1,large:1},
-  'm_dragon_skeleton':{sz:800,large:1,keepAR:1,col:1,collision:true},
+  'm_dragon_skeleton':{sz:1500,large:1,keepAR:1,col:1,collision:true,colW:700,colH:370},
+  'm_dragon_3d':{sz:3000,large:1,keepAR:1},
   'm_usergore1':{sz:220,keepAR:1},'m_usergore2':{sz:220,keepAR:1},'m_usergore3':{sz:220,keepAR:1,anchorBottom:1},
   'm_usergore4':{sz:220,keepAR:1,anchorBottom:1},'m_usergore5':{sz:220,keepAR:1,anchorBottom:1},'m_usergore6':{sz:220,keepAR:1,anchorBottom:1},
 };
@@ -12835,6 +12836,7 @@ for(const[ch,list]of Object.entries(_CH_DECO)){
 }
 // 용 해골 직접 프리로드 (img/ 경로)
 {const _dsImg=new Image();_dsImg.src='img/map_dragon_skeleton.png';_OBJ_SPR['m_dragon_skeleton']=_dsImg;_OBJ_SPR_MAP['m_dragon_skeleton']='img/map_dragon_skeleton.png'}
+{const _d3Img=new Image();_d3Img.src='img/map_dragon_3d.png';_OBJ_SPR['m_dragon_3d']=_d3Img;_OBJ_SPR_MAP['m_dragon_3d']='img/map_dragon_3d.png'}
 
 // ═══ RAM 최적화 시스템 ═══
 
@@ -13622,7 +13624,7 @@ function bigImpact(x,y,el,ang){
   doHitFlash('#ffffff',0.18);
   _speedLines.active=8;_speedLines.x=x;_speedLines.y=y;
 }
-function findBoss(){if(G._bossRef&&G._bossRef.alive)return G._bossRef;for(let i=0;i<ens.length;i++){if(ens[i].alive&&ens[i].ib){G._bossRef=ens[i];return ens[i]}}return null}
+function findBoss(){if(G._bossRef&&G._bossRef.alive)return G._bossRef;for(let i=0;i<ens.length;i++){const e=ens[i];if(e&&e.alive&&e.ib){G._bossRef=e;return e}}return null}
 // ═══ 통합 포이즈 시스템 ═══
 // 모든 포이즈 감소/그로기 판정을 이 함수 통해서만 처리
 // amt: 깎을 양 (고정값). 보스는 면역 체크, 일반몹은 그대로
@@ -18557,7 +18559,7 @@ function initMapObjects(){
   // 공간 해시 그리드 (O(1) 근접 체크, O(n²) 제거)
   const _GRID_SZ=200;const _moGrid={};
   function _gridKey(x,y){return(~~(x/_GRID_SZ))+'_'+(~~(y/_GRID_SZ))}
-  function _gridAdd(x,y,type){const k=_gridKey(x,y);if(!_moGrid[k])_moGrid[k]=[];const m=_OBJ_META[type];const colR=(m&&(m.collision||m.col))?(m.sz||64)*.4:0;_moGrid[k].push({x,y,colR})}
+  function _gridAdd(x,y,type){const k=_gridKey(x,y);if(!_moGrid[k])_moGrid[k]=[];const m=_OBJ_META[type];const colR=(m&&(m.collision||m.col))?(m.colW||m.colSz||(m.sz||64)*.4):0;_moGrid[k].push({x,y,colR})}
   function _gridNear(x,y,r,newColR){
     const gx=~~(x/_GRID_SZ),gy=~~(y/_GRID_SZ);const _ncr=newColR||0;
     for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
@@ -18769,12 +18771,17 @@ function initMapObjects(){
       const _dsMidX=~~(G.mw/2),_dsMidY=~~(G.mh/2);
       const _dsNear=_nearFloor(_dsMidX,_dsMidY);
       if(_dsNear){const _dsx=(_dsNear.x+.5)*T,_dsy=(_dsNear.y+.5)*T;
-        // 주변 500px 내 기존 오브젝트 제거
-        const _dsClr=500;
-        MAP_OBJS=MAP_OBJS.filter(o=>{const dx=o.x-_dsx,dy=o.y-_dsy;return dx*dx+dy*dy>_dsClr*_dsClr});
-        // 그리드에도 해골 자리 등록 (다른 오브젝트 배치 방지)
-        const k=_gridKey(_dsx,_dsy);if(!_moGrid[k])_moGrid[k]=[];_moGrid[k].push({x:_dsx,y:_dsy,colR:500});
-        MAP_OBJS.push({type:'m_dragon_skeleton',x:_dsx,y:_dsy,hell:0})}
+        // 2D 해골: 맵 구석 (보스방 근처)
+        const _bossRm2=rooms.find(r=>r.type==='boss');
+        const _2dx=_bossRm2?((_bossRm2.cx+.5)*T-800):_dsx-1500;
+        const _2dy=_bossRm2?((_bossRm2.cy+.5)*T):_dsy;
+        const k=_gridKey(_2dx,_2dy);if(!_moGrid[k])_moGrid[k]=[];_moGrid[k].push({x:_2dx,y:_2dy,colR:1000});
+        MAP_OBJS.push({type:'m_dragon_skeleton',x:_2dx,y:_2dy,hell:0});
+        // 3D 해골: 맵 중앙에 거대하게 (충돌 없음, 갈비 사이로 통과)
+        const k2=_gridKey(_dsx,_dsy);if(!_moGrid[k2])_moGrid[k2]=[];_moGrid[k2].push({x:_dsx,y:_dsy,colR:1500});
+        MAP_OBJS.push({type:'m_dragon_3d',x:_dsx,y:_dsy,hell:0});
+        // 용뼈 좌표 저장 (유니크 배치 후 정리용)
+        G._dragonCleanup={p1:{x:_2dx,y:_2dy},p2:{x:_dsx,y:_dsy}};}
     }
     // ── 유니크 충돌 오브젝트: 12종 각 1개씩, 중앙 배치, 500px 간격 ──
     if(hell===0){
@@ -19040,6 +19047,18 @@ function initMapObjects(){
   for(const eo of _editorObjs)MAP_OBJS.push(eo);
   // 그리드 래핑 해제
   MAP_OBJS.push=Array.prototype.push;
+  // 용뼈 주변 장식 오브젝트 최종 정리
+  if(G._dragonCleanup){
+    const _dc=G._dragonCleanup;
+    const _sysTy2=new Set(['bonfire','lore','breakable','trap','altar','boss_gate_col','m_dragon_skeleton','m_dragon_3d']);
+    for(let _ci=MAP_OBJS.length-1;_ci>=0;_ci--){
+      const o=MAP_OBJS[_ci];
+      if(_sysTy2.has(o.type)||o.type.startsWith('spawn_'))continue;
+      const dx1=o.x-_dc.p1.x,dy1=o.y-_dc.p1.y,dx2=o.x-_dc.p2.x,dy2=o.y-_dc.p2.y;
+      if(dx1*dx1+dy1*dy1<800*800||dx2*dx2+dy2*dy2<800*800)MAP_OBJS.splice(_ci,1);
+    }
+    delete G._dragonCleanup;
+  }
   console.log('[MAP_OBJS]',MAP_OBJS.length,'(editor:'+_editorObjs.length+')',MAP_OBJS.map(m=>m.type));
 }
 function _tseed(tx,ty){let s=tx*7919+ty*104729+31;return()=>{s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff}}
@@ -23306,7 +23325,7 @@ function hasLOS(x1,y1,x2,y2){
   }
   return true;
 }
-function isW(px,py,skipBone){const tx=~~(px/T),ty=~~(py/T);if(tx<0||ty<0||tx>=G.mw||ty>=G.mh)return true;const v=G.map[ty][tx];if(v===1)return true;if(!skipBone&&G._boneWalls){for(let bi=0;bi<G._boneWalls.length;bi++){const bw=G._boneWalls[bi];if(bw.phase==='rise'&&bw.t<bw.riseT*0.5)continue;const dx=px-bw.x,dy=py-bw.y;const d2=dx*dx+dy*dy;const rIn=bw.ringR-bw.wallThk,rOut=bw.ringR+bw.wallThk;if(d2>=rIn*rIn&&d2<=rOut*rOut)return true}}for(let _pi=0;_pi<MAP_OBJS.length;_pi++){const _po=MAP_OBJS[_pi];const _pm=_OBJ_META[_po.type];if(_pm&&(_pm.collision||_pm.col)){const _pr=_pm.sz*.4;const _pdx=px-_po.x,_pdy=py-_po.y;if(_pdx*_pdx+_pdy*_pdy<_pr*_pr)return true}}return false}
+function isW(px,py,skipBone){const tx=~~(px/T),ty=~~(py/T);if(tx<0||ty<0||tx>=G.mw||ty>=G.mh)return true;const v=G.map[ty][tx];if(v===1)return true;if(!skipBone&&G._boneWalls){for(let bi=0;bi<G._boneWalls.length;bi++){const bw=G._boneWalls[bi];if(bw.phase==='rise'&&bw.t<bw.riseT*0.5)continue;const dx=px-bw.x,dy=py-bw.y;const d2=dx*dx+dy*dy;const rIn=bw.ringR-bw.wallThk,rOut=bw.ringR+bw.wallThk;if(d2>=rIn*rIn&&d2<=rOut*rOut)return true}}for(let _pi=0;_pi<MAP_OBJS.length;_pi++){const _po=MAP_OBJS[_pi];const _pm=_OBJ_META[_po.type];if(_pm&&(_pm.collision||_pm.col)){const _pdx=px-_po.x,_pdy=py-_po.y;if(_pm.colW){const _rx=_pm.colW,_ry=_pm.colH||_pm.colW;if((_pdx*_pdx)/(_rx*_rx)+(_pdy*_pdy)/(_ry*_ry)<1)return true}else{const _pr=_pm.colSz||_pm.sz*.4;if(_pdx*_pdx+_pdy*_pdy<_pr*_pr)return true}}}return false}
 function canMv(x,y,r){return!isW(x-r,y-r)&&!isW(x+r,y-r)&&!isW(x-r,y+r)&&!isW(x+r,y+r)}
 function canMvBlink(x,y,r){return!isW(x-r,y-r,1)&&!isW(x+r,y-r,1)&&!isW(x-r,y+r,1)&&!isW(x+r,y+r,1)}
 // 안전한 위치 찾기: (x,y)가 벽이면 주변 나선탐색으로 빈 곳 반환
@@ -23660,6 +23679,8 @@ function _editorUpdate(){
 function update(){
   if(!G.on)return;
   if(_EDITOR_MODE){_editorUpdate();return}
+  // null 엔트리 정리 (mkEn 실패 등)
+  for(let _ni=ens.length-1;_ni>=0;_ni--){if(!ens[_ni])ens.splice(_ni,1)}
   // 백그라운드 초기화는 update() 끝에서 버짓 기반 처리 (게임 로직 스킵 안 함)
   _shBufI=0; // shQuery 깊이 버퍼 리셋 (이전 프레임 예외로 인한 누적 방지)
   _gameFrame++;
@@ -26927,6 +26948,7 @@ function update(){
         if(!_sf){_hsx=h.x;_hsy=h.y} // 최종 실패 → 소환굴 중심에 강제 스폰
       }
       const ne=mkEn(_hsx,_hsy,_hSi,rollEtype(_hSi),false,undefined,h.room);
+      if(!ne){h._spawned++;continue}
       ne.reviveIframes=15;
       ens[ens.length]=ne;
       h._spawned++;
@@ -28582,12 +28604,12 @@ function update(){
             hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.D);
             e._webSlow=Math.max(e._webSlow||0,25);
           }else if(fz.type==='boneStorm'){
-            // 해골번개: 암흑 DOT + 감속 (hurtE 경유)
-            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.D);
+            // 해골번개: 암흑 마법 DOT + 감속 (쉴드 적용)
+            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.D);
             e._webSlow=Math.max(e._webSlow||0,25);
           }else if(fz.type==='dimLightning'){
-            // 사슬이동:강화 번개길: 암전 DOT + 감전
-            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.L);
+            // 사슬이동:강화 번개길: 번개 마법 DOT + 감전 (쉴드 적용)
+            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.L);
             e.shockT=Math.max(e.shockT||0,60);
           }else if(fz.type==='shockField'){
             // 전격이동 전류장판: 번개 틱뎀 + 전류 방어력 감소 (마법기반 — 에너지쉴드 적용)
@@ -28603,12 +28625,12 @@ function update(){
             e._spikeSlow=Math.max(e._spikeSlow||0,90); // 1.5초 갱신
             e._spikeSlowLv=fz.lv||1;
           }else if(fz.type==='assaultFlame'){
-            // 기동칼날개 불바닥: 화염 DOT + 화상
-            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.F);
+            // 기동칼날개 불바닥: 화염 마법 DOT + 화상 (쉴드 적용)
+            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.F);
             e.burnT=180;e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.10;
           }else if(fz.type==='fireTrail'){
-            // 사슬기동:화염 경로 불길: 화염 DOT + 화상 + 감속
-            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true},EL.F);
+            // 사슬기동:화염 경로 불길: 화염 마법 DOT + 화상 + 감속 (쉴드 적용)
+            hurtE(e,fz.dmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{dot:true,shieldHit:true},EL.F);
             e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*fz.dmg*0.10;
             e._webSlow=Math.max(e._webSlow||0,20);
           }else{
@@ -40490,7 +40512,8 @@ function draw(){
   for(let _moi=0;_moi<MAP_OBJS.length;_moi++){const mo=MAP_OBJS[_moi];
     if(mo.type==='breakable'&&!mo.alive)continue;
     if(mo.type==='trap'&&!mo.active)continue;
-    if(mo.x<_wvl||mo.x>_wvr||mo.y<_wvt||mo.y>_wvb)continue;
+    {const _moM=(_OBJ_META[mo.type]&&_OBJ_META[mo.type].sz>200)?_OBJ_META[mo.type].sz:0;
+    if(mo.x<_wvl-_moM||mo.x>_wvr+_moM||mo.y<_wvt-_moM||mo.y>_wvb+_moM)continue;}
     const b=Math.sin(_now/300+mo.x)*2;X.textAlign='center';
     switch(mo.type){
       case 'bonfire':{
@@ -40817,6 +40840,7 @@ function draw(){
   if(!_ensWarmDone)_warmupEnsAtlas(); // 오프스크린 백그라운드 워밍업 시작 (setTimeout 체인)
   _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX);
   for(let _eri=0;_eri<ens.length;_eri++){const e=ens[_eri];
+    if(!e){continue}
     if(!e.alive){
       // ── 부활 대기 중: vfx_void_black 렌더링 ──
       if(e._reviveTimer>0&&e._reviveX!=null){

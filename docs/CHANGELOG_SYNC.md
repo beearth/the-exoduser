@@ -28032,3 +28032,24 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - img/map_dragon_3d.png
 
+
+## 2026-05-24 01:30 (auto)
+- _autosave/game_20260524_005307.html
+- _autosave/game_20260524_005442.html
+- _autosave/game_20260524_005521.html
+- _autosave/game_20260524_005728.html
+- _autosave/game_20260524_005755.html
+- _autosave/game_20260524_010345.html
+- _autosave/game_20260524_012238.html
+- _autosave/game_20260524_012257.html
+- _autosave/game_20260524_012328.html
+- _autosave/game_20260524_012335.html
+- docs/2_5 부???�너지?�드?�스??2_5 부???�너지?�드?�스??md
+- game.html
+- img/map_dragon_3d.png
+- img/ui_icons/ui_panel_forge.svg
+- img/ui_icons/ui_panel_inventory.svg
+- img/ui_icons/ui_panel_settings.svg
+- img/ui_icons/ui_panel_skill.svg
+- img/ui_icons/ui_panel_stats.svg
+
