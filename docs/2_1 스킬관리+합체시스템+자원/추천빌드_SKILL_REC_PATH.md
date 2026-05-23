@@ -11,8 +11,8 @@ game.html `SKILL_REC_PATH` 배열과 1:1 동기화.
 | # | 단계 | 새 스킬 | 합체 키 | 합체 이름(KO) | 합체 이름(EN) | 실제 FUSE_PAIRS 구성 |
 |---|---|---|---|---|---|---|
 | 1 | 악의폭풍 | maliceStorm | — | — | — | — |
-| 2 | 칼날+역병 | maliceHunt, guardian, plagueBurst | bladeFuse | 칼날 해방 / 독혈 해방 | Blade Liberation / Plague Liberation | maliceHunt + guardian / maliceHunt + guardian + plagueBurst |
-| 3 | 이동+사슬 | chargeBoost, magicBlink, chainAssault, chainSlam | dimBreach | 사슬기동 / 기동:전폭 | Chain Breach / Maneuver:Thunder | chargeBoost + magicBlink / +chainAssault + chainSlam |
+| 2 | 이동+사슬 | chargeBoost, magicBlink, chainAssault, chainSlam | dimBreach | 사슬기동 / 기동:전폭 | Chain Breach / Maneuver:Thunder | chargeBoost + magicBlink / +chainAssault + chainSlam |
+| 3 | 칼날+역병 | maliceHunt, guardian, plagueBurst | bladeFuse | 칼날 해방 / 독혈 해방 | Blade Liberation / Plague Liberation | maliceHunt + guardian / maliceHunt + guardian + plagueBurst |
 | 4 | 💀 필살기 선택 | holyBlast/blackStar/lavaSummon/execution (1택) | — | — | — | — |
 | 5 | 멸살+만화+원소 | omniBeam, fanShot, elemMissile | elemFuse | 추적암전 | Tracking Lightning | fanShot + omniBeam + elemMissile |
 | 6 | 허수아비 세트 | voidScarecrow, explodeScarecrow | dualScarecrow | 쌍허수아비 | Dual Scarecrow | voidScarecrow + explodeScarecrow |

@@ -12825,8 +12825,8 @@ const _OBJ_META={
   'm_skull_altar':{sz:300,col:1,large:1},'m_obelisk':{sz:300,col:1,large:1},'m_flesh_ball':{sz:270,col:1,large:1},
   'm_penta_circle':{sz:350,col:1,large:1},'m_flesh_maw':{sz:200,col:1,large:1},'m_skull_totem':{sz:240,col:1,large:1,keepAR:1},
   'm_bone_arch':{sz:300,col:1,large:1},'m_eye_tree':{sz:350,col:1,large:1},'m_throne':{sz:250,col:1,large:1},
-  'm_dragon_skeleton':{sz:1500,large:1,keepAR:1,col:1,collision:true,colW:700,colH:370},
-  'm_dragon_3d':{sz:1500,large:1,keepAR:1,col:1,collision:true,colW:450,colH:380},
+  'm_dragon_skeleton':{sz:1500,large:1,keepAR:1,col:1,collision:true,colW:650,colH:350,colOy:-37},
+  'm_dragon_3d':{sz:3000,large:1,keepAR:1,col:1,collision:true,colW:675,colH:570,colOy:120},
   'm_usergore1':{sz:220,keepAR:1},'m_usergore2':{sz:220,keepAR:1},'m_usergore3':{sz:220,keepAR:1,anchorBottom:1},
   'm_usergore4':{sz:220,keepAR:1,anchorBottom:1},'m_usergore5':{sz:220,keepAR:1,anchorBottom:1},'m_usergore6':{sz:220,keepAR:1,anchorBottom:1},
 };
@@ -18771,21 +18771,17 @@ function initMapObjects(){
       const _dsMidX=~~(G.mw/2),_dsMidY=~~(G.mh/2);
       const _dsNear=_nearFloor(_dsMidX,_dsMidY);
       if(_dsNear){const _dsx=(_dsNear.x+.5)*T,_dsy=(_dsNear.y+.5)*T;
-        // 2D 해골: 맵 중앙
-        const k=_gridKey(_dsx,_dsy);if(!_moGrid[k])_moGrid[k]=[];_moGrid[k].push({x:_dsx,y:_dsy,colR:1000});
-        MAP_OBJS.push({type:'m_dragon_skeleton',x:_dsx,y:_dsy,hell:0});
-        // 3D 해골: 시작방 근처
+        // 3D 해골: 맵 중앙 거대 (충돌 없음, 갈비 사이로 통과)
+        const k=_gridKey(_dsx,_dsy);if(!_moGrid[k])_moGrid[k]=[];_moGrid[k].push({x:_dsx,y:_dsy,colR:1500});
+        MAP_OBJS.push({type:'m_dragon_3d',x:_dsx,y:_dsy,hell:0});
+        // 2D 해골: 시작방 근처
         const _startRm2=rooms.find(r=>r.type==='start');
-        if(_startRm2){
-          const _d3x=(_startRm2.cx+.5)*T+600,_d3y=(_startRm2.cy+.5)*T;
-          const k2=_gridKey(_d3x,_d3y);if(!_moGrid[k2])_moGrid[k2]=[];_moGrid[k2].push({x:_d3x,y:_d3y,colR:1000});
-          MAP_OBJS.push({type:'m_dragon_3d',x:_d3x,y:_d3y,hell:0});
-        }
-        // 최종: 두 해골 근처 장식 오브젝트만 정리 (시스템 오브젝트 보호)
-        const _d3fx=_startRm2?((_startRm2.cx+.5)*T+600):_dsx;
-        const _d3fy=_startRm2?((_startRm2.cy+.5)*T):_dsy;
+        const _2dx=_startRm2?((_startRm2.cx+.5)*T+1200):_dsx+1500;
+        const _2dy=_startRm2?((_startRm2.cy+.5)*T):_dsy;
+        const k2=_gridKey(_2dx,_2dy);if(!_moGrid[k2])_moGrid[k2]=[];_moGrid[k2].push({x:_2dx,y:_2dy,colR:1000});
+        MAP_OBJS.push({type:'m_dragon_skeleton',x:_2dx,y:_2dy,hell:0});
         // 용뼈 좌표 저장 (유니크 배치 후 정리용)
-        G._dragonCleanup={p1:{x:_dsx,y:_dsy},p2:{x:_d3fx,y:_d3fy}};}
+        G._dragonCleanup={p1:{x:_dsx,y:_dsy},p2:{x:_2dx,y:_2dy}};}
     }
     // ── 유니크 충돌 오브젝트: 12종 각 1개씩, 중앙 배치, 500px 간격 ──
     if(hell===0){
@@ -19051,6 +19047,18 @@ function initMapObjects(){
   for(const eo of _editorObjs)MAP_OBJS.push(eo);
   // 그리드 래핑 해제
   MAP_OBJS.push=Array.prototype.push;
+  // 용뼈 주변 장식 오브젝트 최종 정리
+  if(G._dragonCleanup){
+    const _dc=G._dragonCleanup;
+    const _sysTy2=new Set(['bonfire','lore','breakable','trap','altar','boss_gate_col','m_dragon_skeleton','m_dragon_3d']);
+    for(let _ci=MAP_OBJS.length-1;_ci>=0;_ci--){
+      const o=MAP_OBJS[_ci];
+      if(_sysTy2.has(o.type)||o.type.startsWith('spawn_'))continue;
+      const dx1=o.x-_dc.p1.x,dy1=o.y-_dc.p1.y,dx2=o.x-_dc.p2.x,dy2=o.y-_dc.p2.y;
+      if(dx1*dx1+dy1*dy1<800*800||dx2*dx2+dy2*dy2<800*800)MAP_OBJS.splice(_ci,1);
+    }
+    delete G._dragonCleanup;
+  }
   console.log('[MAP_OBJS]',MAP_OBJS.length,'(editor:'+_editorObjs.length+')',MAP_OBJS.map(m=>m.type));
 }
 function _tseed(tx,ty){let s=tx*7919+ty*104729+31;return()=>{s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff}}
@@ -23317,7 +23325,7 @@ function hasLOS(x1,y1,x2,y2){
   }
   return true;
 }
-function isW(px,py,skipBone){const tx=~~(px/T),ty=~~(py/T);if(tx<0||ty<0||tx>=G.mw||ty>=G.mh)return true;const v=G.map[ty][tx];if(v===1)return true;if(!skipBone&&G._boneWalls){for(let bi=0;bi<G._boneWalls.length;bi++){const bw=G._boneWalls[bi];if(bw.phase==='rise'&&bw.t<bw.riseT*0.5)continue;const dx=px-bw.x,dy=py-bw.y;const d2=dx*dx+dy*dy;const rIn=bw.ringR-bw.wallThk,rOut=bw.ringR+bw.wallThk;if(d2>=rIn*rIn&&d2<=rOut*rOut)return true}}for(let _pi=0;_pi<MAP_OBJS.length;_pi++){const _po=MAP_OBJS[_pi];const _pm=_OBJ_META[_po.type];if(_pm&&(_pm.collision||_pm.col)){const _pdx=px-_po.x,_pdy=py-_po.y;if(_pm.colW){const _rx=_pm.colW,_ry=_pm.colH||_pm.colW;if((_pdx*_pdx)/(_rx*_rx)+(_pdy*_pdy)/(_ry*_ry)<1)return true}else{const _pr=_pm.colSz||_pm.sz*.4;if(_pdx*_pdx+_pdy*_pdy<_pr*_pr)return true}}}return false}
+function isW(px,py,skipBone){const tx=~~(px/T),ty=~~(py/T);if(tx<0||ty<0||tx>=G.mw||ty>=G.mh)return true;const v=G.map[ty][tx];if(v===1)return true;if(!skipBone&&G._boneWalls){for(let bi=0;bi<G._boneWalls.length;bi++){const bw=G._boneWalls[bi];if(bw.phase==='rise'&&bw.t<bw.riseT*0.5)continue;const dx=px-bw.x,dy=py-bw.y;const d2=dx*dx+dy*dy;const rIn=bw.ringR-bw.wallThk,rOut=bw.ringR+bw.wallThk;if(d2>=rIn*rIn&&d2<=rOut*rOut)return true}}for(let _pi=0;_pi<MAP_OBJS.length;_pi++){const _po=MAP_OBJS[_pi];const _pm=_OBJ_META[_po.type];if(_pm&&(_pm.collision||_pm.col)){const _pdx=px-_po.x,_pdy=py-_po.y;if(_pm.colW){const _rx=_pm.colW,_ry=_pm.colH||_pm.colW,_coy=_pm.colOy||0;const _pdy2=_pdy-_coy;if((_pdx*_pdx)/(_rx*_rx)+(_pdy2*_pdy2)/(_ry*_ry)<1)return true}else{const _pr=_pm.colSz||_pm.sz*.4;if(_pdx*_pdx+_pdy*_pdy<_pr*_pr)return true}}}return false}
 function canMv(x,y,r){return!isW(x-r,y-r)&&!isW(x+r,y-r)&&!isW(x-r,y+r)&&!isW(x+r,y+r)}
 function canMvBlink(x,y,r){return!isW(x-r,y-r,1)&&!isW(x+r,y-r,1)&&!isW(x-r,y+r,1)&&!isW(x+r,y+r,1)}
 // 안전한 위치 찾기: (x,y)가 벽이면 주변 나선탐색으로 빈 곳 반환
@@ -34482,8 +34490,8 @@ const SKILL_CATS=[
 // ═══ 추천 빌드 순서 (고정) ═══
 const SKILL_REC_PATH=[
   {phase:'1. 악의폭풍',phaseEn:'1. Malice Storm',skills:['maliceStorm'],fuse:null,desc:'핵심 광역기 — 먼저 배워서 정리력 확보',descEn:'Core AoE — learn first for mob clearing'},
-  {phase:'2. 칼날+역병',phaseEn:'2. Blade+Plague',skills:['maliceHunt','guardian','plagueBurst'],fuse:'bladeFuse',desc:'악의 사냥 + 보호자 + 폭독칼날 → 합체: 칼날 해방 / 독혈 해방',descEn:'Malice Hunt + Guardian + Plague Burst → Fuse: Blade Liberation / Plague Liberation'},
-  {phase:'3. 이동+사슬',phaseEn:'3. Movement+Chain',skills:['chargeBoost','magicBlink','chainAssault','chainSlam'],fuse:'dimBreach',desc:'충돌+화염+사슬 확장 → 합체: 사슬기동 / 기동:전폭',descEn:'Impact+Flame+Chain Expand → Fuse: Chain Breach / Maneuver:Thunder'},
+  {phase:'2. 이동+사슬',phaseEn:'2. Movement+Chain',skills:['chargeBoost','magicBlink','chainAssault','chainSlam'],fuse:'dimBreach',desc:'충돌+화염+사슬 확장 → 합체: 사슬기동 / 기동:전폭',descEn:'Impact+Flame+Chain Expand → Fuse: Chain Breach / Maneuver:Thunder'},
+  {phase:'3. 칼날+역병',phaseEn:'3. Blade+Plague',skills:['maliceHunt','guardian','plagueBurst'],fuse:'bladeFuse',desc:'악의 사냥 + 보호자 + 폭독칼날 → 합체: 칼날 해방 / 독혈 해방',descEn:'Malice Hunt + Guardian + Plague Burst → Fuse: Blade Liberation / Plague Liberation'},
   {phase:'4. 💀 필살기 선택',phaseEn:'4. 💀 Ultimate Pick',skills:['holyBlast','blackStar','lavaSummon','execution'],fuse:null,pick:true,desc:'필살기 1개 선택! 신성폭발(넉백) / 블랙(흡인) / 용암(화상) / 처형(보스킬)',descEn:'Pick 1 ultimate! Holy Blast(knockback) / Black Star(pull) / Lava(burn) / Execution(boss kill)'},
   {phase:'5. 멸살+만화+원소',phaseEn:'5. Beam+Barrage+Elem',skills:['omniBeam','fanShot','elemMissile'],fuse:'elemFuse',desc:'멸살광선+만화방창+원소추적탄 → 합체: 추적빔',descEn:'Omni Beam+Barrage+Elem Missile → Fuse: Tracking Beam'},
   {phase:'6. 허수아비 세트',phaseEn:'6. Scarecrow Set',skills:['voidScarecrow','explodeScarecrow'],fuse:'dualScarecrow',desc:'유령 허수아비 + 폭발 허수아비 → 합체: 쌍허수아비 (어그로+폭발)',descEn:'Void Scarecrow + Explode Scarecrow → Fuse: Dual Scarecrow (aggro+explosion)'},
@@ -40832,6 +40840,7 @@ function draw(){
   if(!_ensWarmDone)_warmupEnsAtlas(); // 오프스크린 백그라운드 워밍업 시작 (setTimeout 체인)
   _prepEnemyInstanced(_vl,_vr,_vt,_vb,_now,_E_RMAX);
   for(let _eri=0;_eri<ens.length;_eri++){const e=ens[_eri];
+    if(!e){continue}
     if(!e.alive){
       // ── 부활 대기 중: vfx_void_black 렌더링 ──
       if(e._reviveTimer>0&&e._reviveX!=null){

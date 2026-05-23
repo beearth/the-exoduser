@@ -28053,3 +28053,19 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/ui_icons/ui_panel_skill.svg
 - img/ui_icons/ui_panel_stats.svg
 
+
+## 2026-05-24 02:30 (auto)
+- _autosave/game_20260524_014009.html
+- _autosave/game_20260524_014029.html
+- _autosave/game_20260524_014228.html
+- _autosave/game_20260524_014335.html
+- _autosave/game_20260524_014525.html
+- _autosave/game_20260524_014547.html
+- _autosave/game_20260524_014606.html
+- _autosave/game_20260524_015145.html
+- _autosave/game_20260524_021708.html
+- _autosave/game_20260524_023004.html
+- docs/2_1 ?�킬관�??�체?�스???�원/추천빌드_SKILL_REC_PATH.md
+- docs/4.1맵디?�인+?�정/맵오브젝???�셋목록.md
+- game.html
+

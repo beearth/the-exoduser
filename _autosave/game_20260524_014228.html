@@ -18771,17 +18771,17 @@ function initMapObjects(){
       const _dsMidX=~~(G.mw/2),_dsMidY=~~(G.mh/2);
       const _dsNear=_nearFloor(_dsMidX,_dsMidY);
       if(_dsNear){const _dsx=(_dsNear.x+.5)*T,_dsy=(_dsNear.y+.5)*T;
-        // 2D 해골: 맵 구석 (보스방 근처)
-        const _bossRm2=rooms.find(r=>r.type==='boss');
-        const _2dx=_bossRm2?((_bossRm2.cx+.5)*T-800):_dsx-1500;
-        const _2dy=_bossRm2?((_bossRm2.cy+.5)*T):_dsy;
-        const k=_gridKey(_2dx,_2dy);if(!_moGrid[k])_moGrid[k]=[];_moGrid[k].push({x:_2dx,y:_2dy,colR:1000});
-        MAP_OBJS.push({type:'m_dragon_skeleton',x:_2dx,y:_2dy,hell:0});
-        // 3D 해골: 맵 중앙에 거대하게 (충돌 없음, 갈비 사이로 통과)
-        const k2=_gridKey(_dsx,_dsy);if(!_moGrid[k2])_moGrid[k2]=[];_moGrid[k2].push({x:_dsx,y:_dsy,colR:1500});
+        // 3D 해골: 맵 중앙 거대 (충돌 없음, 갈비 사이로 통과)
+        const k=_gridKey(_dsx,_dsy);if(!_moGrid[k])_moGrid[k]=[];_moGrid[k].push({x:_dsx,y:_dsy,colR:1500});
         MAP_OBJS.push({type:'m_dragon_3d',x:_dsx,y:_dsy,hell:0});
+        // 2D 해골: 시작방 근처
+        const _startRm2=rooms.find(r=>r.type==='start');
+        const _2dx=_startRm2?((_startRm2.cx+.5)*T+600):_dsx+1500;
+        const _2dy=_startRm2?((_startRm2.cy+.5)*T):_dsy;
+        const k2=_gridKey(_2dx,_2dy);if(!_moGrid[k2])_moGrid[k2]=[];_moGrid[k2].push({x:_2dx,y:_2dy,colR:1000});
+        MAP_OBJS.push({type:'m_dragon_skeleton',x:_2dx,y:_2dy,hell:0});
         // 용뼈 좌표 저장 (유니크 배치 후 정리용)
-        G._dragonCleanup={p1:{x:_2dx,y:_2dy},p2:{x:_dsx,y:_dsy}};}
+        G._dragonCleanup={p1:{x:_dsx,y:_dsy},p2:{x:_2dx,y:_2dy}};}
     }
     // ── 유니크 충돌 오브젝트: 12종 각 1개씩, 중앙 배치, 500px 간격 ──
     if(hell===0){

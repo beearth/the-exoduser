@@ -12825,8 +12825,8 @@ const _OBJ_META={
   'm_skull_altar':{sz:300,col:1,large:1},'m_obelisk':{sz:300,col:1,large:1},'m_flesh_ball':{sz:270,col:1,large:1},
   'm_penta_circle':{sz:350,col:1,large:1},'m_flesh_maw':{sz:200,col:1,large:1},'m_skull_totem':{sz:240,col:1,large:1,keepAR:1},
   'm_bone_arch':{sz:300,col:1,large:1},'m_eye_tree':{sz:350,col:1,large:1},'m_throne':{sz:250,col:1,large:1},
-  'm_dragon_skeleton':{sz:1500,large:1,keepAR:1,col:1,collision:true,colW:700,colH:370},
-  'm_dragon_3d':{sz:3000,large:1,keepAR:1},
+  'm_dragon_skeleton':{sz:1500,large:1,keepAR:1,col:1,collision:true,colW:650,colH:350,colOy:-37},
+  'm_dragon_3d':{sz:3000,large:1,keepAR:1,col:1,collision:true,colW:675,colH:570,colOy:120},
   'm_usergore1':{sz:220,keepAR:1},'m_usergore2':{sz:220,keepAR:1},'m_usergore3':{sz:220,keepAR:1,anchorBottom:1},
   'm_usergore4':{sz:220,keepAR:1,anchorBottom:1},'m_usergore5':{sz:220,keepAR:1,anchorBottom:1},'m_usergore6':{sz:220,keepAR:1,anchorBottom:1},
 };
@@ -18771,17 +18771,17 @@ function initMapObjects(){
       const _dsMidX=~~(G.mw/2),_dsMidY=~~(G.mh/2);
       const _dsNear=_nearFloor(_dsMidX,_dsMidY);
       if(_dsNear){const _dsx=(_dsNear.x+.5)*T,_dsy=(_dsNear.y+.5)*T;
-        // 2D 해골: 맵 중앙에 거대하게 (충돌 없음, 갈비 사이로 통과)
+        // 3D 해골: 맵 중앙 거대 (충돌 없음, 갈비 사이로 통과)
         const k=_gridKey(_dsx,_dsy);if(!_moGrid[k])_moGrid[k]=[];_moGrid[k].push({x:_dsx,y:_dsy,colR:1500});
-        MAP_OBJS.push({type:'m_dragon_skeleton',x:_dsx,y:_dsy,hell:0});
-        // 3D 해골: 보스방 근처 구석
-        const _bossRm2=rooms.find(r=>r.type==='boss');
-        const _3dx=_bossRm2?((_bossRm2.cx+.5)*T-800):_dsx-1500;
-        const _3dy=_bossRm2?((_bossRm2.cy+.5)*T):_dsy;
-        const k2=_gridKey(_3dx,_3dy);if(!_moGrid[k2])_moGrid[k2]=[];_moGrid[k2].push({x:_3dx,y:_3dy,colR:1000});
-        MAP_OBJS.push({type:'m_dragon_3d',x:_3dx,y:_3dy,hell:0});
+        MAP_OBJS.push({type:'m_dragon_3d',x:_dsx,y:_dsy,hell:0});
+        // 2D 해골: 시작방 근처
+        const _startRm2=rooms.find(r=>r.type==='start');
+        const _2dx=_startRm2?((_startRm2.cx+.5)*T+1200):_dsx+1500;
+        const _2dy=_startRm2?((_startRm2.cy+.5)*T):_dsy;
+        const k2=_gridKey(_2dx,_2dy);if(!_moGrid[k2])_moGrid[k2]=[];_moGrid[k2].push({x:_2dx,y:_2dy,colR:1000});
+        MAP_OBJS.push({type:'m_dragon_skeleton',x:_2dx,y:_2dy,hell:0});
         // 용뼈 좌표 저장 (유니크 배치 후 정리용)
-        G._dragonCleanup={p1:{x:_2dx,y:_2dy},p2:{x:_dsx,y:_dsy}};}
+        G._dragonCleanup={p1:{x:_dsx,y:_dsy},p2:{x:_2dx,y:_2dy}};}
     }
     // ── 유니크 충돌 오브젝트: 12종 각 1개씩, 중앙 배치, 500px 간격 ──
     if(hell===0){
@@ -23325,7 +23325,7 @@ function hasLOS(x1,y1,x2,y2){
   }
   return true;
 }
-function isW(px,py,skipBone){const tx=~~(px/T),ty=~~(py/T);if(tx<0||ty<0||tx>=G.mw||ty>=G.mh)return true;const v=G.map[ty][tx];if(v===1)return true;if(!skipBone&&G._boneWalls){for(let bi=0;bi<G._boneWalls.length;bi++){const bw=G._boneWalls[bi];if(bw.phase==='rise'&&bw.t<bw.riseT*0.5)continue;const dx=px-bw.x,dy=py-bw.y;const d2=dx*dx+dy*dy;const rIn=bw.ringR-bw.wallThk,rOut=bw.ringR+bw.wallThk;if(d2>=rIn*rIn&&d2<=rOut*rOut)return true}}for(let _pi=0;_pi<MAP_OBJS.length;_pi++){const _po=MAP_OBJS[_pi];const _pm=_OBJ_META[_po.type];if(_pm&&(_pm.collision||_pm.col)){const _pdx=px-_po.x,_pdy=py-_po.y;if(_pm.colW){const _rx=_pm.colW,_ry=_pm.colH||_pm.colW;if((_pdx*_pdx)/(_rx*_rx)+(_pdy*_pdy)/(_ry*_ry)<1)return true}else{const _pr=_pm.colSz||_pm.sz*.4;if(_pdx*_pdx+_pdy*_pdy<_pr*_pr)return true}}}return false}
+function isW(px,py,skipBone){const tx=~~(px/T),ty=~~(py/T);if(tx<0||ty<0||tx>=G.mw||ty>=G.mh)return true;const v=G.map[ty][tx];if(v===1)return true;if(!skipBone&&G._boneWalls){for(let bi=0;bi<G._boneWalls.length;bi++){const bw=G._boneWalls[bi];if(bw.phase==='rise'&&bw.t<bw.riseT*0.5)continue;const dx=px-bw.x,dy=py-bw.y;const d2=dx*dx+dy*dy;const rIn=bw.ringR-bw.wallThk,rOut=bw.ringR+bw.wallThk;if(d2>=rIn*rIn&&d2<=rOut*rOut)return true}}for(let _pi=0;_pi<MAP_OBJS.length;_pi++){const _po=MAP_OBJS[_pi];const _pm=_OBJ_META[_po.type];if(_pm&&(_pm.collision||_pm.col)){const _pdx=px-_po.x,_pdy=py-_po.y;if(_pm.colW){const _rx=_pm.colW,_ry=_pm.colH||_pm.colW,_coy=_pm.colOy||0;const _pdy2=_pdy-_coy;if((_pdx*_pdx)/(_rx*_rx)+(_pdy2*_pdy2)/(_ry*_ry)<1)return true}else{const _pr=_pm.colSz||_pm.sz*.4;if(_pdx*_pdx+_pdy*_pdy<_pr*_pr)return true}}}return false}
 function canMv(x,y,r){return!isW(x-r,y-r)&&!isW(x+r,y-r)&&!isW(x-r,y+r)&&!isW(x+r,y+r)}
 function canMvBlink(x,y,r){return!isW(x-r,y-r,1)&&!isW(x+r,y-r,1)&&!isW(x-r,y+r,1)&&!isW(x+r,y+r,1)}
 // 안전한 위치 찾기: (x,y)가 벽이면 주변 나선탐색으로 빈 곳 반환
