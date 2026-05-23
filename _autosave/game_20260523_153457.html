@@ -12894,6 +12894,7 @@ const _TVFX2_COMBOS=[
     {src:'Fire_ImpactFire_Sheet.png',cols:4,rows:4,sc:1.0,delay:0,spd:3},
     {src:'Fire_FBF_4x4.png',cols:4,rows:4,sc:1.2,delay:1,spd:3},
     {src:'Fire_BasicImpact.png',cols:3,rows:3,sc:0.5,delay:0,spd:2},
+    {src:'Fire_MediumImpact.png',cols:4,rows:4,sc:1.0,delay:0,spd:3},
   ]},
   {name:'Ice',layers:[
     {src:'Ice_ImpactIce_Sheet.png',cols:4,rows:4,sc:1.0,delay:0,spd:3},
@@ -17648,8 +17649,31 @@ function _fireballExplode(p){
       // 업화선 폭발: 화상 부여
       if(p.fireBeamProj){e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*dmg*0.4}
     }}
-  // 업화선 전용 폭발 애니 (3D Fire 콤보)
-  if(p.fireBeamProj){_spawnFxAnim(p.x,p.y,r*2.5);playSample('fireball',.9,_r(.7,.1));shake(8);if(window._v3fx)window._v3fx('fire',p.x,p.y)}
+  // 업화선 전용 폭발 — Fire VFX (중앙 노랑, 외곽 붉은)
+  if(p.fireBeamProj){
+    const _fbPx=p.x,_fbPy=p.y;
+    const _fbSc=Math.min(3.0,Math.max(1.0,Math.sqrt(r/80)));
+    if(!window._tvfx2)window._tvfx2=[];
+    // [0] 중앙 노란 섬광 — radial gradient (노랑→빨강→투명)
+    window._tvfx2.push({x:_fbPx,y:_fbPy,radial:true,r0:30*_fbSc,r1:120*_fbSc,
+      c0:'#ffffaa',c1:'#ff2200',life:18,t:0});
+    // [1] ImpactFire 시트
+    const _fIS=_tvfx2Imgs['Fire_ImpactFire_Sheet.png'];
+    if(_fIS&&_fIS.complete){const fw=~~(_fIS.naturalWidth/4),fh=~~(_fIS.naturalHeight/4);
+      for(let i=0;i<2;i++)window._tvfx2.push({img:_fIS,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:1.4*_fbSc,delay:0,spd:2,frame:0,total:16,t:0,timer:0,alphaMax:0.7})}
+    // [2] MediumImpact — 외곽
+    const _fMI=_tvfx2Imgs['Fire_MediumImpact.png'];
+    if(_fMI&&_fMI.complete){const fw=~~(_fMI.naturalWidth/4),fh=~~(_fMI.naturalHeight/4);
+      for(let i=0;i<2;i++)window._tvfx2.push({img:_fMI,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.0*_fbSc,delay:0,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.45})}
+    // [3] BasicImpact — 쇼크웨이브
+    const _fBI=_tvfx2Imgs['Fire_BasicImpact.png'];
+    if(_fBI&&_fBI.complete){const fw=~~(_fBI.naturalWidth/3),fh=~~(_fBI.naturalHeight/3);
+      for(let i=0;i<2;i++)window._tvfx2.push({img:_fBI,x:_fbPx,y:_fbPy,cols:3,rows:3,fw,fh,sc:1.0*_fbSc,delay:0,spd:2,frame:0,total:9,t:0,timer:0,alphaMax:0.6})}
+    // [4] FBF 연기 — 외곽 붉은
+    const _fFB=_tvfx2Imgs['Fire_FBF_4x4.png'];
+    if(_fFB&&_fFB.complete){const fw=~~(_fFB.naturalWidth/4),fh=~~(_fFB.naturalHeight/4);
+      for(let i=0;i<3;i++)window._tvfx2.push({img:_fFB,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.4*_fbSc,delay:1,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.3})}
+    playSample('fireball',.9,_r(.7,.1));shake(8);if(window._v3fx)window._v3fx('fire',p.x,p.y)}
   else{
     // 보라색 콤보 임팩트 (기존 darkBurst 대체)
     // 콤보 VFX: Dark Smoke + Arcane FBF + Dark Basic
@@ -26326,7 +26350,7 @@ function update(){
           if(dst(p.x,p.y,be.x,be.y)>_bkR)continue;
           hurtE(be,_bkDmg,Math.atan2(be.y-p.y,be.x-p.x),false,{noPoise:true},p.el);
         }
-        _addBoom(p.x,p.y,_bkR,72,'rainbow_light');if(window._v3fx)window._v3fx('poison',p.x,p.y);
+        _addBoom(p.x,p.y,_bkR,72,'rainbow_light');
         _pHit=true;
       }
     }
@@ -26428,7 +26452,7 @@ function update(){
           hurtE(re,~~(_rbD*(.5+rf*.5)),ra2,false,_isBlue?{kbMult:3,noPoise:true,magic:!!p.magic,blueBean:!!p.blueBean,parryBlueBean:!!p.parryBlueBean}:{kbMult:3,magic:!!p.magic,blueBean:!!p.blueBean,parryBlueBean:!!p.parryBlueBean},p.el);
           re.kb.x+=Math.cos(ra2)*28*rf;re.kb.y+=Math.sin(ra2)*28*rf;
           if(!_isBlue)re.stunned=Math.max(re.stunned,~~(80*rf))}
-        _addBoom(p.x,p.y,_rbR,_isBlue?32:72,'redbean');if(window._v3fx)window._v3fx('fire',p.x,p.y);
+        _addBoom(p.x,p.y,_rbR,_isBlue?32:72,'redbean');
       }else{
         const _blR=p._aoeR||100,_blD=p._aoeDmg||p.dmg||15;
         const _blNe=shQuery(p.x,p.y,_blR);
@@ -26437,7 +26461,7 @@ function update(){
           const ba=Math.atan2(be.y-p.y,be.x-p.x);const bf=Math.max(0,1-bd/_blR);
           hurtE(be,~~(_blD*(.8+bf*.2)),ba,false,{kbMult:2,magic:!!p.magic,blueBean:!!p.blueBean,parryBlueBean:!!p.parryBlueBean},p.el);
           be.kb.x+=Math.cos(ba)*18*bf;be.kb.y+=Math.sin(ba)*18*bf}
-        _addBoom(p.x,p.y,_blR,72,'redbean');if(window._v3fx)window._v3fx('fire',p.x,p.y);SFX.detonate();
+        _addBoom(p.x,p.y,_blR,72,'redbean');SFX.detonate();
         G.shake=18*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25;
         addParts(p.x,p.y,'#00ccff',20);addTxt(p.x,p.y-20,_T('💥반사 폭발!'),'#00e5ff',50)}
       _pHit=true;break}}}
@@ -42844,6 +42868,17 @@ function draw(){
     for(let _ti=window._tvfx2.length-1;_ti>=0;_ti--){
       const v=window._tvfx2[_ti];
       if(v.delay>0){v.delay-=1;continue}
+      // radial gradient 플래시 (업화선 중앙 노란 코어)
+      if(v.radial){
+        v.t++;const rp=v.t/v.life;if(rp>=1){window._tvfx2.splice(_ti,1);continue}
+        const ra=Math.max(0,(1-rp*rp)*0.85);
+        const rScale=1+rp*0.6;
+        const g=X.createRadialGradient(v.x,v.y,v.r0*rScale*0.3,v.x,v.y,v.r1*rScale);
+        g.addColorStop(0,v.c0);g.addColorStop(0.4,v.c1);g.addColorStop(1,'rgba(0,0,0,0)');
+        X.globalAlpha=ra;X.fillStyle=g;
+        X.fillRect(v.x-v.r1*rScale,v.y-v.r1*rScale,v.r1*rScale*2,v.r1*rScale*2);
+        continue;
+      }
       v.t++;v.timer++;
       if(v.timer>=v.spd){v.timer=0;v.frame++;
         if(v.frame>=v.total){window._tvfx2.splice(_ti,1);continue}}
@@ -42851,7 +42886,7 @@ function draw(){
       const p=v.t/(v.total*v.spd);
       const sc=v.sc*(1+p*0.4);
       const w=v.fw*sc,h=v.fh*sc;
-      X.globalAlpha=Math.max(0,(1-p*p)*0.7);
+      X.globalAlpha=Math.max(0,(1-p*p)*(v.alphaMax||0.7));
       X.drawImage(v.img,col*v.fw,row*v.fh,v.fw,v.fh,v.x-w/2,v.y-h/2,w,h);
     }
     X.globalAlpha=1;X.restore();
@@ -49319,6 +49354,53 @@ setBootLoading(92,_L('오디오 준비...','Preparing audio...'));
 _loadAudioBuffers();
 setBootLoading(98,_L('게임 시작!','Starting game!'));
 _stopLoadTips();
+// ═══ [WARMUP] 셰이더 프리워밍 + envVig 캔버스 사전 빌드 ═══
+{const _wmT0=performance.now();
+// [A] viewport 백업 + 1x1 축소
+try{if(_useGL&&GL){
+  const _vpSave=GL.getParameter(GL.VIEWPORT);
+  GL.viewport(0,0,1,1);
+  // [B] _glMainProg 프리워밍
+  try{if(_glMainProg){GL.useProgram(_glMainProg);GL.drawArrays(GL.POINTS,0,1)}}catch(e){}
+  // [C] _ensGLProg 프리워밍
+  try{if(_ensGLProg){GL.useProgram(_ensGLProg);GL.drawArrays(GL.POINTS,0,1)}}catch(e){}
+  // [D] _vfxGLProg 프리워밍
+  try{if(_vfxGLProg){GL.useProgram(_vfxGLProg);GL.drawArrays(GL.POINTS,0,1)}}catch(e){}
+  // 메인 프로그램 복원
+  if(_glMainProg)GL.useProgram(_glMainProg);
+  // [G] viewport 복원
+  GL.viewport(_vpSave[0],_vpSave[1],_vpSave[2],_vpSave[3]);
+}}catch(e){}
+// [E] _bstTfProg / _bstProg 프리워밍 (별도 _bGL context)
+try{if(_bGL&&_bstTfProg&&_bstProg){
+  const _bVp=_bGL.getParameter(_bGL.VIEWPORT);
+  _bGL.viewport(0,0,1,1);
+  _bGL.useProgram(_bstTfProg);_bGL.drawArrays(_bGL.POINTS,0,1);
+  _bGL.useProgram(_bstProg);_bGL.drawArrays(_bGL.POINTS,0,1);
+  _bGL.useProgram(null);
+  _bGL.viewport(_bVp[0],_bVp[1],_bVp[2],_bVp[3]);
+}}catch(e){}
+// [H] envVig 캔버스 사전 빌드 (hell=0 기본, 첫 프레임 radialGradient 비용 제거)
+try{if(C&&C.width>0){
+  const _wHell=0;
+  const _vCols=['rgba(20,60,120,','rgba(20,60,15,','rgba(100,20,10,','rgba(50,15,80,','rgba(80,60,10,','rgba(50,40,25,','rgba(30,10,60,'];
+  const _wvc=_vCols[_wHell];
+  if(!G._dvgCvs){G._dvgCvs=document.createElement('canvas');G._dvgCx=G._dvgCvs.getContext('2d')}
+  G._dvgCvs.width=C.width;G._dvgCvs.height=C.height;
+  const _wgr=G._dvgCx.createRadialGradient(C.width/2,C.height/2,C.width*.35,C.width/2,C.height/2,C.width*.7);
+  _wgr.addColorStop(0,'rgba(0,0,0,0)');_wgr.addColorStop(.7,_wvc+'.05)');_wgr.addColorStop(1,_wvc+'.15)');
+  G._dvgCx.fillStyle=_wgr;G._dvgCx.fillRect(0,0,C.width,C.height);
+  G._dvgStage=0;G._dvgW=C.width;
+}}catch(e){}
+// [I] envLight 캐시 캔버스 사전 빌드
+try{if(C&&C.width>0&&_ENV_LIGHT[0]){
+  if(!G._envLightCvs){G._envLightCvs=document.createElement('canvas');G._envLightCx=G._envLightCvs.getContext('2d')}
+  G._envLightCvs.width=C.width;G._envLightCvs.height=C.height;
+  G._envLightCx.fillStyle=_ENV_LIGHT[0];G._envLightCx.fillRect(0,0,C.width,C.height);
+  G._envLightHell=0;G._envLightW=C.width;
+}}catch(e){}
+console.log('[WARMUP] complete: shaders+envVig prewarmed ('+(performance.now()-_wmT0).toFixed(1)+'ms)');
+}
 _startLoop();
 // ═══ [EDITOR] 에디터 모드 부트 — 맵만 렌더, 게임 비활성 ═══
 if(_EDITOR_MODE){
