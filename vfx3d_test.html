@@ -56,6 +56,18 @@ const SHEETS={
   earthFBF: {src:SS+'Earth_EarthSmoke_FBF_5x5.png',c:5,r:5},
   waterFBF: {src:SS+'Water_Water_FBF_4x4.png',c:4,r:4},
   airFBF:   {src:SS+'Air_Air_FBF_4x4.png',c:4,r:4},
+  // Unity 원본 시트 (TGA→PNG 변환)
+  fireImp:  {src:P+'ImpactFire_Sheet.png',c:4,r:4},
+  iceImp:   {src:P+'ImpactIce_Sheet.png',c:4,r:4},
+  ltnImp:   {src:P+'ImpactLightning_Sheet.png',c:4,r:4},
+  lightImp: {src:P+'ImpactLight_Sheet.png',c:4,r:4},
+  earthImp: {src:P+'ImpactEarth_Sheet.png',c:4,r:4},
+  waterImp: {src:P+'ImpactWater_Sheet.png',c:4,r:4},
+  natureImp:{src:P+'ImpactNature_Sheet.png',c:4,r:4},
+  powerImp: {src:P+'PowerImpact.png',c:4,r:4},
+  groundImp:{src:P+'GroundImpact.png',c:4,r:2},
+  basicImp: {src:P+'BasicImpact.png',c:4,r:4},
+  smoke6x6: {src:P+'Smoke_Sheet_6x6.png',c:6,r:6},
 };
 
 // 프리로드
@@ -107,108 +119,155 @@ function sizeEase(t){return 0.47+(1-0.47)*t} // 0.47→1.0
 // ═══ 임팩트 프리셋 (Unity 재현) ═══
 const PRESETS={
   fire:{name:'🔥 Fire (Unity)',col:'#ff6622',spawn(x,y,z){
-    const _fGrad=[{t:0,r:1,g:1,b:.08},{t:.33,r:.93,g:.43,b:.02},{t:1,r:.94,g:0,b:.08}]; // yellow→orange→red
-    const _fGrad2=[{t:0,r:1,g:.9,b:.35},{t:.1,r:1,g:.9,b:.35},{t:.34,r:.94,g:.29,b:0},{t:1,r:.94,g:0,b:.08}]; // sparks
-    const _fGradFire=[{t:.024,r:1,g:.99,b:.35},{t:1,r:.94,g:0,b:.08}]; // FireStretched
-    // [1] shockwave — 2개, 수평빌보드, 4x4 flipbook, 확장 0.47→1.0
-    for(let i=0;i<2;i++){addPart({tex:SHEETS.fireFBF.src,x,y,z,sc:.8,scEnd:2.0,life:.3,col:'#ffff14',alpha:1,alphaEnd:0,
-      sheet:SHEETS.fireFBF,sheetSpd:.02,colGrad:_fGrad,scCurve:true,rotSpd:Math.random()*2})}
-    // [2] contrast — 2개, 4x4 flipbook, deep red
-    for(let i=0;i<2;i++){addPart({tex:SHEETS.fireFBF.src,x,y,z,sc:1.0,scEnd:2.5,life:.5,col:'#bd0804',alpha:.88,alphaEnd:0,
-      sheet:SHEETS.fireFBF,sheetSpd:.03,scCurve:true,rotSpd:(Math.random()-.5)*3})}
-    // [3] contrast_stretched — 2개, 수평빌보드
-    for(let i=0;i<2;i++){addPart({tex:T.fire[~~(Math.random()*4)],x,y,z,sc:.7,scEnd:1.8,life:.5,col:'#bd0804',alpha:.88,alphaEnd:0,
-      rotSpd:(Math.random()-.5)*4})}
-    // [4] intensity — 1개, 수직빌보드, 수명 0.1s, 짧은 섬광
-    addPart({tex:T.fire[~~(Math.random()*4)],x,y,z,sc:1.0,scEnd:2.5,life:.1,col:'#ffffff',alpha:.83,alphaEnd:0,
-      colGrad:[{t:0,r:1,g:.9,b:.35},{t:.33,r:.94,g:.29,b:0},{t:1,r:.94,g:0,b:.08}]});
-    // [5] shockwave_stretched — 2개, 수직, 확장
-    for(let i=0;i<2;i++){addPart({tex:T.fire[~~(Math.random()*4)],x,y,z,sc:.5,scEnd:1.2,life:.3,col:'#ffff14',alpha:1,alphaEnd:0,
-      colGrad:_fGrad,scCurve:true})}
-    // [6] sparks — 25개, 속도20→중력0.63, 크기 축소→0
-    for(let i=0;i<25;i++){const a=Math.random()*Math.PI*2;const el=Math.random()*Math.PI-.5;const spd=4+Math.random()*6;
-      addPart({tex:T.stretch[~~(Math.random()*12)],x,y,z,
-        vx:Math.cos(a)*Math.cos(el)*spd,vy:Math.sin(el)*spd+1,vz:Math.sin(a)*Math.cos(el)*spd,
-        sc:.15+Math.random()*.15,scEnd:.0,life:.3+Math.random()*.3,col:'#ffe6c4',alpha:1,alphaEnd:0,
-        gravity:-6.3,colGrad:_fGrad2})}
-    // [7] FireStretched — 10개, 수직, 포인트스폰, 확장
-    for(let i=0;i<10;i++){addPart({tex:SHEETS.fireFBF.src,x,y,z,sc:.24,scEnd:.6,life:.3+Math.random()*.1,col:'#fffc59',alpha:1,alphaEnd:0,
-      sheet:SHEETS.fireFBF,sheetSpd:.02,colGrad:_fGradFire,scCurve:true,rotSpd:(Math.random()-.5)*8})}
+    // ═══ Unity GrPower_Impact_Fire_01 — 이미 색이 입혀진 assets/vfx/ 스프라이트시트 사용 ═══
+    const U=0.25;
+    // 원본 colored sheets (assets/vfx/)
+    const _fireSheet={src:SS+'Fire_ImpactFire_Sheet.png',c:4,r:4};
+    const _fireFBF={src:SS+'Fire_FBF_4x4.png',c:4,r:4};
+    const _fireBasic={src:SS+'Fire_BasicImpact.png',c:3,r:3};
+    const _fireMedium={src:SS+'Fire_MediumImpact.png',c:4,r:4};
+    // [1] shockwave — ImpactFire (원본색), startSize:4.0, life:0.3, SizeOL 0.47→1.0
+    for(let i=0;i<2;i++){addPart({tex:_fireSheet.src,x,y,z,sc:4.0*U*0.47,scEnd:4.0*U,life:.3,col:'#ffffff',alpha:1,alphaEnd:0,
+      sheet:_fireSheet,sheetSpd:.02,scCurve:true,rotSpd:Math.random()*2})}
+    // [2] contrast — MediumImpact (원본색), startSize:5.0, life:0.5, alpha:0.878
+    for(let i=0;i<2;i++){addPart({tex:_fireMedium.src,x,y,z,sc:5.0*U*0.47,scEnd:5.0*U,life:.5,col:'#ffffff',alpha:.878,alphaEnd:0,
+      sheet:_fireMedium,sheetSpd:.03,scCurve:true,rotSpd:(Math.random()-.5)*3})}
+    // [3] contrast_stretched — Fire 개별 텍스처 (원본색), startSize:3.5, life:0.5
+    for(let i=0;i<2;i++){addPart({tex:T.fire[~~(Math.random()*4)],x,y,z,sc:3.5*U,scEnd:3.5*U,life:.5,col:'#ffffff',alpha:.878,alphaEnd:0,
+      rotSpd:(Math.random()-.5)*2})}
+    // [4] intensity — 짧은 섬광, startSize:5.0, life:0.1, alpha:0.831
+    addPart({tex:T.fire[~~(Math.random()*4)],x,y,z,sc:5.0*U,scEnd:5.0*U,life:.1,col:'#ffffff',alpha:.831,alphaEnd:0});
+    // [5] shockwave_stretched — BasicImpact (원본색), startSize:2.4, life:0.3, SizeOL 0.47→1.0
+    for(let i=0;i<2;i++){addPart({tex:_fireBasic.src,x,y,z,sc:2.4*U*0.47,scEnd:2.4*U,life:.3,col:'#ffffff',alpha:1,alphaEnd:0,
+      sheet:_fireBasic,sheetSpd:.033,scCurve:true})}
+    // [6] sparks — startSize:0.3, life:0.6, speed:20, gravity:0.63×9.8, count:25, SizeOL 1→0
+    for(let i=0;i<8;i++){const a=Math.random()*Math.PI*2;const el=Math.random()*Math.PI-.5;const spd=8*U;
+      addPart({tex:T.fire[~~(Math.random()*4)],x,y,z,
+        vx:Math.cos(a)*Math.cos(el)*spd,vy:Math.sin(el)*spd+.5,vz:Math.sin(a)*Math.cos(el)*spd,
+        sc:0.3*U,scEnd:0,life:.6,col:'#ffffff',alpha:1,alphaEnd:0,
+        gravity:-0.63*9.8*U})}
+    // [7] FireStretched — ImpactFire flipbook, startSize:1.2, life:0.3, SizeOL 0.47→1.0, count:10
+    for(let i=0;i<10;i++){addPart({tex:_fireSheet.src,x,y,z,sc:1.2*U*0.47,scEnd:1.2*U,life:.3+Math.random()*.05,col:'#ffffff',alpha:1,alphaEnd:0,
+      sheet:_fireSheet,sheetSpd:.02,scCurve:true,rotSpd:(Math.random()-.5)*8})}
+    // [8] Fire FBF 연기
+    for(let i=0;i<3;i++){addPart({tex:_fireFBF.src,x,y,z,sc:3.0*U,scEnd:5.0*U,life:.6,col:'#ffffff',alpha:.5,alphaEnd:0,
+      sheet:_fireFBF,sheetSpd:.04,rotSpd:(Math.random()-.5)*4})}
   }},
-  ice:{name:'❄ Ice',col:'#44ccff',spawn(x,y,z){
-    addPart({tex:T.impact[4],x,y,z,sc:1.0,scEnd:2.2,life:.35,col:'#ffffff',alpha:1,alphaEnd:0});
-    addPart({tex:T.impact[5],x,y,z,sc:0.4,scEnd:2.8,life:.3,col:'#88ddff',alpha:.6,alphaEnd:0});
-    addPart({tex:SHEETS.iceFBF.src,x,y:y+.1,z,sc:1.6,scEnd:2.4,life:.9,col:'#44aacc',alpha:.6,alphaEnd:0,sheet:SHEETS.iceFBF,sheetSpd:.06});
-    for(let i=0;i<10;i++){const a=Math.PI*2*i/10+Math.random()*.3;const spd=2+Math.random()*4;
-      addPart({tex:T.stretch[~~(Math.random()*12)],x,y,z,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd*.4+1.5,vz:(Math.random()-.5)*spd*.3,
-        sc:.12+Math.random()*.12,scEnd:.03,life:.25+Math.random()*.2,col:'#aaeeff',alpha:1,alphaEnd:0,gravity:-4})}
-    for(let i=0;i<3;i++){addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,sc:.4,scEnd:.8,life:.35,col:'#66ccff',alpha:.4,alphaEnd:0,rotSpd:(Math.random()-.5)*5})}
+  ice:{name:'❄ Ice (Unity)',col:'#44ccff',spawn(x,y,z){
+    const U=0.25;
+    const _s={imp:{src:SS+'Ice_ImpactIce_Sheet.png',c:4,r:4},fbf:{src:SS+'Ice_MistSmoke_FBF_4x4.png',c:4,r:4},bas:{src:SS+'Ice_BasicImpact.png',c:3,r:3},med:{src:SS+'Ice_MediumImpact.png',c:4,r:4}};
+    for(let i=0;i<2;i++){addPart({tex:_s.imp.src,x,y,z,sc:4.0*U*0.47,scEnd:4.0*U,life:.3,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.imp,sheetSpd:.02,scCurve:true,rotSpd:Math.random()*2})}
+    for(let i=0;i<2;i++){addPart({tex:_s.med.src,x,y,z,sc:5.0*U*0.47,scEnd:5.0*U,life:.5,col:'#ffffff',alpha:.878,alphaEnd:0,sheet:_s.med,sheetSpd:.03,scCurve:true,rotSpd:(Math.random()-.5)*3})}
+    for(let i=0;i<2;i++){addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,sc:3.5*U,scEnd:3.5*U,life:.5,col:'#88ddff',alpha:.878,alphaEnd:0,rotSpd:(Math.random()-.5)*2})}
+    addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,sc:5.0*U,scEnd:5.0*U,life:.1,col:'#ffffff',alpha:.831,alphaEnd:0});
+    for(let i=0;i<2;i++){addPart({tex:_s.bas.src,x,y,z,sc:2.4*U*0.47,scEnd:2.4*U,life:.3,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.bas,sheetSpd:.033,scCurve:true})}
+    for(let i=0;i<8;i++){const a=Math.random()*Math.PI*2;const el=Math.random()*Math.PI-.5;const spd=8*U;
+      addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,vx:Math.cos(a)*Math.cos(el)*spd,vy:Math.sin(el)*spd+.5,vz:Math.sin(a)*Math.cos(el)*spd,
+        sc:0.3*U,scEnd:0,life:.6,col:'#ccffff',alpha:1,alphaEnd:0,gravity:-0.63*9.8*U})}
+    for(let i=0;i<10;i++){addPart({tex:_s.fbf.src,x,y,z,sc:1.2*U*0.47,scEnd:1.2*U,life:.3+Math.random()*.05,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.fbf,sheetSpd:.02,scCurve:true,rotSpd:(Math.random()-.5)*8})}
+    for(let i=0;i<3;i++){addPart({tex:_s.fbf.src,x,y,z,sc:3.0*U,scEnd:5.0*U,life:.6,col:'#ffffff',alpha:.5,alphaEnd:0,sheet:_s.fbf,sheetSpd:.04,rotSpd:(Math.random()-.5)*4})}
   }},
-  lightning:{name:'⚡ Lightning',col:'#ccffff',spawn(x,y,z){
-    addPart({tex:T.lightning[~~(Math.random()*4)],x,y,z,sc:1.4,scEnd:2.0,life:.2,col:'#ffffff',alpha:1,alphaEnd:0});
-    addPart({tex:T.lightning[~~(Math.random()*4)],x,y,z,sc:0.8,scEnd:1.8,life:.25,col:'#aaddff',alpha:.9,alphaEnd:0});
-    addPart({tex:T.impact[8],x,y,z,sc:0.3,scEnd:3.0,life:.15,col:'#ccffff',alpha:.8,alphaEnd:0});
-    addPart({tex:SHEETS.ltnFBF.src,x,y,z,sc:1.3,scEnd:2.0,life:.6,col:'#44ddff',alpha:.7,alphaEnd:0,sheet:SHEETS.ltnFBF,sheetSpd:.035});
-    for(let i=0;i<12;i++){const a=Math.PI*2*i/12+Math.random()*.5;const spd=3+Math.random()*5;
-      addPart({tex:T.stretch[~~(Math.random()*12)],x,y,z,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd*.3+2,vz:(Math.random()-.5)*spd*.4,
-        sc:.1+Math.random()*.1,scEnd:.02,life:.15+Math.random()*.15,col:'#eeffff',alpha:1,alphaEnd:0,gravity:-5})}
+  lightning:{name:'⚡ Lightning (Unity)',col:'#ccffff',spawn(x,y,z){
+    const U=0.25;
+    const _s={imp:{src:SS+'Lightning_ImpactLightning_Sheet.png',c:4,r:4},fbf:{src:SS+'Lightning_Lightning_FBF_4x3.png',c:4,r:3},bas:{src:SS+'Lightning_BasicImpact.png',c:3,r:3},med:{src:SS+'Lightning_MediumImpact.png',c:4,r:4}};
+    for(let i=0;i<2;i++){addPart({tex:_s.imp.src,x,y,z,sc:4.0*U*0.47,scEnd:4.0*U,life:.25,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.imp,sheetSpd:.015,scCurve:true,rotSpd:Math.random()*2})}
+    for(let i=0;i<2;i++){addPart({tex:_s.med.src,x,y,z,sc:5.0*U*0.47,scEnd:5.0*U,life:.4,col:'#ffffff',alpha:.878,alphaEnd:0,sheet:_s.med,sheetSpd:.025,scCurve:true,rotSpd:(Math.random()-.5)*3})}
+    addPart({tex:T.lightning[~~(Math.random()*4)],x,y,z,sc:5.0*U,scEnd:5.0*U,life:.08,col:'#ffffff',alpha:1,alphaEnd:0});
+    for(let i=0;i<2;i++){addPart({tex:_s.bas.src,x,y,z,sc:2.4*U*0.47,scEnd:2.4*U,life:.25,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.bas,sheetSpd:.02,scCurve:true})}
+    for(let i=0;i<10;i++){const a=Math.random()*Math.PI*2;const el=Math.random()*Math.PI-.5;const spd=8*U;
+      addPart({tex:T.lightning[~~(Math.random()*4)],x,y,z,vx:Math.cos(a)*Math.cos(el)*spd,vy:Math.sin(el)*spd+.5,vz:Math.sin(a)*Math.cos(el)*spd,
+        sc:0.3*U,scEnd:0,life:.4,col:'#ffffff',alpha:1,alphaEnd:0,gravity:-0.63*9.8*U})}
+    for(let i=0;i<8;i++){addPart({tex:_s.fbf.src,x,y,z,sc:1.2*U*0.47,scEnd:1.2*U,life:.2+Math.random()*.05,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.fbf,sheetSpd:.015,scCurve:true,rotSpd:(Math.random()-.5)*10})}
   }},
-  dark:{name:'🟣 Dark',col:'#aa44ff',spawn(x,y,z){
-    addPart({tex:T.impact[12],x,y,z,sc:1.0,scEnd:2.5,life:.4,col:'#8833cc',alpha:.9,alphaEnd:0});
-    addPart({tex:T.impact[13],x,y,z,sc:0.5,scEnd:2.0,life:.35,col:'#cc88ff',alpha:.7,alphaEnd:0});
-    addPart({tex:SHEETS.darkFBF.src,x,y:y+.1,z,sc:1.8,scEnd:2.8,life:1.0,col:'#6622aa',alpha:.6,alphaEnd:0,sheet:SHEETS.darkFBF,sheetSpd:.06});
-    addPart({tex:T.impact[14],x,y,z,sc:0.3,scEnd:2.2,life:.3,col:'#441166',alpha:.5,alphaEnd:0});
-    for(let i=0;i<6;i++){const a=Math.PI*2*i/6+Math.random()*.5;const spd=1.5+Math.random()*2;
-      addPart({tex:T.stretch[~~(Math.random()*12)],x,y,z,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd*.4+.8,vz:(Math.random()-.5)*spd*.3,
-        sc:.15+Math.random()*.1,scEnd:.04,life:.3+Math.random()*.3,col:'#aa66ff',alpha:.8,alphaEnd:0,gravity:-2})}
+  dark:{name:'🟣 Dark (Unity)',col:'#aa44ff',spawn(x,y,z){
+    const U=0.25;
+    const _s={fbf:{src:SS+'Dark_DarkSmoke_FBF_4x4.png',c:4,r:4},sm6:{src:SS+'Dark_Smoke_Sheet_6x6.png',c:6,r:6},bas:{src:SS+'Dark_BasicImpact.png',c:3,r:3},med:{src:SS+'Dark_MediumImpact.png',c:4,r:4}};
+    for(let i=0;i<2;i++){addPart({tex:_s.fbf.src,x,y,z,sc:4.0*U*0.47,scEnd:4.0*U,life:.35,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.fbf,sheetSpd:.025,scCurve:true,rotSpd:Math.random()*2})}
+    for(let i=0;i<2;i++){addPart({tex:_s.med.src,x,y,z,sc:5.0*U*0.47,scEnd:5.0*U,life:.6,col:'#ffffff',alpha:.85,alphaEnd:0,sheet:_s.med,sheetSpd:.04,scCurve:true,rotSpd:(Math.random()-.5)*3})}
+    for(let i=0;i<2;i++){addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,sc:3.5*U,scEnd:3.5*U,life:.5,col:'#8844bb',alpha:.85,alphaEnd:0,rotSpd:(Math.random()-.5)*2})}
+    addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,sc:5.0*U,scEnd:5.0*U,life:.12,col:'#cc88ff',alpha:.9,alphaEnd:0});
+    for(let i=0;i<7;i++){const a=Math.random()*Math.PI*2;const el=Math.random()*Math.PI-.5;const spd=6*U;
+      addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,vx:Math.cos(a)*Math.cos(el)*spd,vy:Math.sin(el)*spd+.5,vz:Math.sin(a)*Math.cos(el)*spd,
+        sc:0.3*U,scEnd:0,life:.5,col:'#bb77ff',alpha:.9,alphaEnd:0,gravity:-0.63*9.8*U})}
+    for(let i=0;i<10;i++){addPart({tex:_s.sm6.src,x,y,z,sc:1.2*U*0.47,scEnd:1.2*U,life:.35+Math.random()*.1,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.sm6,sheetSpd:.02,scCurve:true,rotSpd:(Math.random()-.5)*6})}
+    for(let i=0;i<3;i++){addPart({tex:_s.fbf.src,x,y,z,sc:3.0*U,scEnd:5.0*U,life:.7,col:'#ffffff',alpha:.5,alphaEnd:0,sheet:_s.fbf,sheetSpd:.04,rotSpd:(Math.random()-.5)*4})}
   }},
-  arcane:{name:'💜 Arcane',col:'#ff44ff',spawn(x,y,z){
-    addPart({tex:T.impact[10],x,y,z,sc:1.2,scEnd:2.0,life:.35,col:'#ff88ff',alpha:1,alphaEnd:0});
-    addPart({tex:T.impact[11],x,y,z,sc:0.6,scEnd:2.5,life:.3,col:'#ffffff',alpha:.8,alphaEnd:0});
-    addPart({tex:SHEETS.arcaneFBF.src,x,y,z,sc:1.4,scEnd:2.2,life:1.2,col:'#cc44ff',alpha:.6,alphaEnd:0,sheet:SHEETS.arcaneFBF,sheetSpd:.04});
-    for(let i=0;i<10;i++){const a=Math.PI*2*i/10+Math.random()*.4;const spd=2+Math.random()*3;
-      addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd*.5+1,vz:(Math.random()-.5)*spd*.3,
-        sc:.1+Math.random()*.15,scEnd:.03,life:.2+Math.random()*.25,col:'#ff66ff',alpha:.9,alphaEnd:0,gravity:-3})}
+  arcane:{name:'💜 Arcane (Unity)',col:'#ff44ff',spawn(x,y,z){
+    const U=0.25;
+    const _s={fbf:{src:SS+'Arcane_Arcane_FBF_6x6.png',c:6,r:6},bas:{src:SS+'Arcane_BasicImpact.png',c:3,r:3},med:{src:SS+'Arcane_MediumImpact.png',c:4,r:4}};
+    for(let i=0;i<2;i++){addPart({tex:_s.fbf.src,x,y,z,sc:4.0*U*0.47,scEnd:4.0*U,life:.35,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.fbf,sheetSpd:.02,scCurve:true,rotSpd:Math.random()*2})}
+    for(let i=0;i<2;i++){addPart({tex:_s.med.src,x,y,z,sc:5.0*U*0.47,scEnd:5.0*U,life:.55,col:'#ffffff',alpha:.85,alphaEnd:0,sheet:_s.med,sheetSpd:.03,scCurve:true,rotSpd:(Math.random()-.5)*3})}
+    addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,sc:5.0*U,scEnd:5.0*U,life:.1,col:'#ffffff',alpha:.9,alphaEnd:0});
+    for(let i=0;i<2;i++){addPart({tex:_s.bas.src,x,y,z,sc:2.4*U*0.47,scEnd:2.4*U,life:.3,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.bas,sheetSpd:.033,scCurve:true})}
+    for(let i=0;i<8;i++){const a=Math.random()*Math.PI*2;const el=Math.random()*Math.PI-.5;const spd=7*U;
+      addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,vx:Math.cos(a)*Math.cos(el)*spd,vy:Math.sin(el)*spd+.5,vz:Math.sin(a)*Math.cos(el)*spd,
+        sc:0.3*U,scEnd:0,life:.5,col:'#ff88ff',alpha:.9,alphaEnd:0,gravity:-0.63*9.8*U})}
+    for(let i=0;i<10;i++){addPart({tex:_s.fbf.src,x,y,z,sc:1.2*U*0.47,scEnd:1.2*U,life:.3+Math.random()*.1,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.fbf,sheetSpd:.02,scCurve:true,rotSpd:(Math.random()-.5)*8})}
   }},
-  earth:{name:'🪨 Earth',col:'#cc8844',spawn(x,y,z){
-    addPart({tex:T.impact[6],x,y,z,sc:1.0,scEnd:2.0,life:.4,col:'#aa7744',alpha:.9,alphaEnd:0});
-    addPart({tex:T.impact[7],x,y,z,sc:0.5,scEnd:2.5,life:.35,col:'#ddaa66',alpha:.6,alphaEnd:0});
-    addPart({tex:SHEETS.earthFBF.src,x,y:y+.1,z,sc:1.6,scEnd:2.5,life:1.0,col:'#886633',alpha:.6,alphaEnd:0,sheet:SHEETS.earthFBF,sheetSpd:.05});
-    for(let i=0;i<8;i++){const a=Math.PI*2*i/8+Math.random()*.4;const spd=1.5+Math.random()*3;
-      addPart({tex:T.stretch[~~(Math.random()*12)],x,y,z,vx:Math.cos(a)*spd,vy:1+Math.random()*2,vz:(Math.random()-.5)*spd*.3,
-        sc:.12+Math.random()*.15,scEnd:.04,life:.3+Math.random()*.3,col:'#ccaa66',alpha:.8,alphaEnd:0,gravity:-4})}
+  earth:{name:'🪨 Earth (Unity)',col:'#cc8844',spawn(x,y,z){
+    const U=0.25;
+    const _s={imp:{src:SS+'Earth_ImpactEarth_Sheet.png',c:4,r:4},fbf:{src:SS+'Earth_EarthSmoke_FBF_5x5.png',c:5,r:5},bas:{src:SS+'Earth_BasicImpact.png',c:3,r:3},med:{src:SS+'Earth_MediumImpact.png',c:4,r:4}};
+    for(let i=0;i<2;i++){addPart({tex:_s.imp.src,x,y,z,sc:4.0*U*0.47,scEnd:4.0*U,life:.35,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.imp,sheetSpd:.02,scCurve:true,rotSpd:Math.random()*2})}
+    for(let i=0;i<2;i++){addPart({tex:_s.med.src,x,y,z,sc:5.0*U*0.47,scEnd:5.0*U,life:.55,col:'#ffffff',alpha:.85,alphaEnd:0,sheet:_s.med,sheetSpd:.035,scCurve:true,rotSpd:(Math.random()-.5)*3})}
+    addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,sc:5.0*U,scEnd:5.0*U,life:.1,col:'#ffddaa',alpha:.85,alphaEnd:0});
+    for(let i=0;i<2;i++){addPart({tex:_s.bas.src,x,y,z,sc:2.4*U*0.47,scEnd:2.4*U,life:.3,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.bas,sheetSpd:.033,scCurve:true})}
+    // stones — 무거운 중력
+    for(let i=0;i<5;i++){const a=Math.random()*Math.PI*2;const el=Math.random()*Math.PI*.3;const spd=7*U;
+      addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,vx:Math.cos(a)*Math.cos(el)*spd,vy:Math.sin(el)*spd+1,vz:Math.sin(a)*Math.cos(el)*spd,
+        sc:0.4*U,scEnd:0.1*U,life:.5,col:'#aa8855',alpha:1,alphaEnd:0,gravity:-0.9*9.8*U})}
+    for(let i=0;i<7;i++){const a=Math.random()*Math.PI*2;const el=Math.random()*Math.PI-.5;const spd=8*U;
+      addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,vx:Math.cos(a)*Math.cos(el)*spd,vy:Math.sin(el)*spd+.5,vz:Math.sin(a)*Math.cos(el)*spd,
+        sc:0.3*U,scEnd:0,life:.4,col:'#ddbb77',alpha:.9,alphaEnd:0,gravity:-0.63*9.8*U})}
+    for(let i=0;i<8;i++){addPart({tex:_s.fbf.src,x,y,z,sc:1.2*U*0.47,scEnd:1.2*U,life:.35+Math.random()*.1,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.fbf,sheetSpd:.025,scCurve:true,rotSpd:(Math.random()-.5)*6})}
+    for(let i=0;i<3;i++){addPart({tex:_s.fbf.src,x,y,z,sc:3.0*U,scEnd:5.0*U,life:.6,col:'#ffffff',alpha:.5,alphaEnd:0,sheet:_s.fbf,sheetSpd:.04,rotSpd:(Math.random()-.5)*4})}
   }},
-  water:{name:'🌊 Water',col:'#4488ff',spawn(x,y,z){
-    addPart({tex:T.water[~~(Math.random()*4)],x,y,z,sc:1.0,scEnd:2.2,life:.35,col:'#88ccff',alpha:1,alphaEnd:0});
-    addPart({tex:T.water[~~(Math.random()*4)],x,y,z,sc:0.6,scEnd:1.8,life:.3,col:'#ffffff',alpha:.7,alphaEnd:0});
-    addPart({tex:SHEETS.waterFBF.src,x,y:y+.1,z,sc:1.5,scEnd:2.2,life:.9,col:'#4488cc',alpha:.6,alphaEnd:0,sheet:SHEETS.waterFBF,sheetSpd:.05});
-    for(let i=0;i<8;i++){const a=Math.PI*2*i/8+Math.random()*.4;const spd=2+Math.random()*3;
-      addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd*.4+1.5,vz:(Math.random()-.5)*spd*.3,
-        sc:.1+Math.random()*.1,scEnd:.03,life:.2+Math.random()*.2,col:'#66aaff',alpha:.9,alphaEnd:0,gravity:-3})}
+  water:{name:'🌊 Water (Unity)',col:'#4488ff',spawn(x,y,z){
+    const U=0.25;
+    const _s={imp:{src:SS+'Water_ImpactWater_Sheet.png',c:4,r:4},fbf:{src:SS+'Water_Water_FBF_4x4.png',c:4,r:4},bas:{src:SS+'Ice_BasicImpact.png',c:3,r:3}};
+    for(let i=0;i<2;i++){addPart({tex:_s.imp.src,x,y,z,sc:4.0*U*0.47,scEnd:4.0*U,life:.3,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.imp,sheetSpd:.02,scCurve:true,rotSpd:Math.random()*2})}
+    for(let i=0;i<2;i++){addPart({tex:_s.fbf.src,x,y,z,sc:5.0*U*0.47,scEnd:5.0*U,life:.5,col:'#ffffff',alpha:.85,alphaEnd:0,sheet:_s.fbf,sheetSpd:.03,scCurve:true,rotSpd:(Math.random()-.5)*3})}
+    addPart({tex:T.water[~~(Math.random()*4)],x,y,z,sc:5.0*U,scEnd:5.0*U,life:.1,col:'#ffffff',alpha:.85,alphaEnd:0});
+    for(let i=0;i<2;i++){addPart({tex:_s.bas.src,x,y,z,sc:2.4*U*0.47,scEnd:2.4*U,life:.3,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.bas,sheetSpd:.033,scCurve:true})}
+    for(let i=0;i<8;i++){const a=Math.random()*Math.PI*2;const el=Math.random()*Math.PI-.5;const spd=8*U;
+      addPart({tex:T.water[~~(Math.random()*4)],x,y,z,vx:Math.cos(a)*Math.cos(el)*spd,vy:Math.sin(el)*spd+.5,vz:Math.sin(a)*Math.cos(el)*spd,
+        sc:0.3*U,scEnd:0,life:.5,col:'#ffffff',alpha:1,alphaEnd:0,gravity:-0.63*9.8*U})}
+    for(let i=0;i<10;i++){addPart({tex:_s.fbf.src,x,y,z,sc:1.2*U*0.47,scEnd:1.2*U,life:.3+Math.random()*.05,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.fbf,sheetSpd:.02,scCurve:true,rotSpd:(Math.random()-.5)*7})}
   }},
-  nature:{name:'🌿 Nature',col:'#44cc44',spawn(x,y,z){
-    addPart({tex:T.impact[2],x,y,z,sc:1.0,scEnd:2.0,life:.4,col:'#44cc44',alpha:.9,alphaEnd:0});
-    addPart({tex:T.impact[3],x,y,z,sc:0.5,scEnd:2.2,life:.3,col:'#88ff88',alpha:.7,alphaEnd:0});
-    for(let i=0;i<8;i++){const a=Math.PI*2*i/8+Math.random()*.4;const spd=2+Math.random()*3;
-      addPart({tex:T.stretch[~~(Math.random()*12)],x,y,z,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd*.5+1,vz:(Math.random()-.5)*spd*.3,
-        sc:.12+Math.random()*.12,scEnd:.03,life:.25+Math.random()*.25,col:'#66ff66',alpha:.9,alphaEnd:0,gravity:-3})}
+  nature:{name:'🌿 Nature (Unity)',col:'#44cc44',spawn(x,y,z){
+    const U=0.25;
+    const _s={imp:{src:SS+'Nature_ImpactNature_Sheet.png',c:4,r:4},bas:{src:SS+'Nature_BasicImpact.png',c:3,r:3},med:{src:SS+'Nature_MediumImpact.png',c:4,r:4}};
+    for(let i=0;i<2;i++){addPart({tex:_s.imp.src,x,y,z,sc:4.0*U*0.47,scEnd:4.0*U,life:.35,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.imp,sheetSpd:.02,scCurve:true,rotSpd:Math.random()*2})}
+    for(let i=0;i<2;i++){addPart({tex:_s.med.src,x,y,z,sc:5.0*U*0.47,scEnd:5.0*U,life:.5,col:'#ffffff',alpha:.85,alphaEnd:0,sheet:_s.med,sheetSpd:.035,scCurve:true,rotSpd:(Math.random()-.5)*3})}
+    addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,sc:5.0*U,scEnd:5.0*U,life:.1,col:'#bbffbb',alpha:.9,alphaEnd:0});
+    for(let i=0;i<2;i++){addPart({tex:_s.bas.src,x,y,z,sc:2.4*U*0.47,scEnd:2.4*U,life:.3,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.bas,sheetSpd:.033,scCurve:true})}
+    for(let i=0;i<7;i++){const a=Math.random()*Math.PI*2;const el=Math.random()*Math.PI-.5;const spd=7*U;
+      addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,vx:Math.cos(a)*Math.cos(el)*spd,vy:Math.sin(el)*spd+.5,vz:Math.sin(a)*Math.cos(el)*spd,
+        sc:0.3*U,scEnd:0,life:.5,col:'#88ff88',alpha:.9,alphaEnd:0,gravity:-0.63*9.8*U})}
+    for(let i=0;i<8;i++){addPart({tex:_s.imp.src,x,y,z,sc:1.2*U*0.47,scEnd:1.2*U,life:.3+Math.random()*.1,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.imp,sheetSpd:.02,scCurve:true,rotSpd:(Math.random()-.5)*7})}
   }},
-  light:{name:'✨ Light',col:'#ffdd88',spawn(x,y,z){
-    addPart({tex:T.light[~~(Math.random()*4)],x,y,z,sc:1.4,scEnd:2.2,life:.3,col:'#ffffff',alpha:1,alphaEnd:0});
-    addPart({tex:T.light[~~(Math.random()*4)],x,y,z,sc:0.8,scEnd:1.8,life:.35,col:'#ffee88',alpha:.8,alphaEnd:0});
-    addPart({tex:T.impact[0],x,y,z,sc:0.3,scEnd:3.0,life:.2,col:'#ffdd44',alpha:.7,alphaEnd:0});
-    addPart({tex:SHEETS.airFBF.src,x,y,z,sc:1.3,scEnd:2.0,life:.8,col:'#ffcc44',alpha:.5,alphaEnd:0,sheet:SHEETS.airFBF,sheetSpd:.05});
-    for(let i=0;i<12;i++){const a=Math.PI*2*i/12+Math.random()*.4;const spd=3+Math.random()*4;
-      addPart({tex:T.stretch[~~(Math.random()*12)],x,y,z,vx:Math.cos(a)*spd,vy:Math.sin(a)*spd*.4+1.5,vz:(Math.random()-.5)*spd*.3,
-        sc:.08+Math.random()*.1,scEnd:.02,life:.15+Math.random()*.15,col:'#ffffaa',alpha:1,alphaEnd:0,gravity:-4})}
+  light:{name:'✨ Light (Unity)',col:'#ffdd88',spawn(x,y,z){
+    const U=0.25;
+    const _s={imp:{src:SS+'Light_ImpactLight_Sheet.png',c:4,r:4},fbf:{src:SS+'Air_Air_FBF_4x4.png',c:4,r:4},bas:{src:SS+'Lightning_BasicImpact.png',c:3,r:3}};
+    for(let i=0;i<2;i++){addPart({tex:_s.imp.src,x,y,z,sc:4.0*U*0.47,scEnd:4.0*U,life:.3,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.imp,sheetSpd:.02,scCurve:true,rotSpd:Math.random()*2})}
+    for(let i=0;i<2;i++){addPart({tex:_s.fbf.src,x,y,z,sc:5.0*U*0.47,scEnd:5.0*U,life:.45,col:'#ffffff',alpha:.85,alphaEnd:0,sheet:_s.fbf,sheetSpd:.03,scCurve:true,rotSpd:(Math.random()-.5)*3})}
+    addPart({tex:T.light[~~(Math.random()*4)],x,y,z,sc:5.0*U,scEnd:5.0*U,life:.08,col:'#ffffff',alpha:1,alphaEnd:0});
+    for(let i=0;i<2;i++){addPart({tex:_s.bas.src,x,y,z,sc:2.4*U*0.47,scEnd:2.4*U,life:.25,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.bas,sheetSpd:.025,scCurve:true})}
+    for(let i=0;i<10;i++){const a=Math.random()*Math.PI*2;const el=Math.random()*Math.PI-.5;const spd=9*U;
+      addPart({tex:T.light[~~(Math.random()*4)],x,y,z,vx:Math.cos(a)*Math.cos(el)*spd,vy:Math.sin(el)*spd+.5,vz:Math.sin(a)*Math.cos(el)*spd,
+        sc:0.3*U,scEnd:0,life:.35,col:'#ffffff',alpha:1,alphaEnd:0,gravity:-0.63*9.8*U})}
+    for(let i=0;i<8;i++){addPart({tex:_s.fbf.src,x,y,z,sc:1.2*U*0.47,scEnd:1.2*U,life:.25+Math.random()*.05,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.fbf,sheetSpd:.02,scCurve:true,rotSpd:(Math.random()-.5)*9})}
   }},
-  poison:{name:'☠ Poison',col:'#88cc00',spawn(x,y,z){
-    addPart({tex:T.impact[14],x,y,z,sc:1.0,scEnd:2.2,life:.4,col:'#88cc00',alpha:.8,alphaEnd:0});
-    addPart({tex:T.impact[15],x,y,z,sc:0.5,scEnd:2.0,life:.35,col:'#ccff44',alpha:.6,alphaEnd:0});
-    addPart({tex:SHEETS.darkFBF.src,x,y:y+.1,z,sc:1.6,scEnd:2.5,life:1.0,col:'#44aa00',alpha:.5,alphaEnd:0,sheet:SHEETS.darkFBF,sheetSpd:.06});
-    for(let i=0;i<6;i++){const a=Math.PI*2*i/6+Math.random()*.5;const spd=1+Math.random()*2;
-      addPart({tex:T.stretch[~~(Math.random()*12)],x,y,z,vx:Math.cos(a)*spd,vy:.5+Math.random()*1.5,vz:(Math.random()-.5)*spd*.3,
-        sc:.15+Math.random()*.1,scEnd:.05,life:.4+Math.random()*.3,col:'#aaff44',alpha:.7,alphaEnd:0,gravity:-1.5})}
+  poison:{name:'☠ Poison (Unity)',col:'#88cc00',spawn(x,y,z){
+    const U=0.25;
+    const _s={fbf:{src:SS+'Dark_DarkSmoke_FBF_4x4.png',c:4,r:4},bas:{src:SS+'Poison_BasicImpact.png',c:3,r:3},med:{src:SS+'Poison_MediumImpact.png',c:4,r:4}};
+    for(let i=0;i<2;i++){addPart({tex:_s.med.src,x,y,z,sc:4.0*U*0.47,scEnd:4.0*U,life:.4,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.med,sheetSpd:.025,scCurve:true,rotSpd:Math.random()*2})}
+    for(let i=0;i<2;i++){addPart({tex:_s.fbf.src,x,y,z,sc:5.0*U*0.47,scEnd:5.0*U,life:.6,col:'#ffffff',alpha:.85,alphaEnd:0,sheet:_s.fbf,sheetSpd:.04,scCurve:true,rotSpd:(Math.random()-.5)*3})}
+    addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,sc:5.0*U,scEnd:5.0*U,life:.12,col:'#ccff44',alpha:.9,alphaEnd:0});
+    for(let i=0;i<2;i++){addPart({tex:_s.bas.src,x,y,z,sc:2.4*U*0.47,scEnd:2.4*U,life:.35,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.bas,sheetSpd:.04,scCurve:true})}
+    for(let i=0;i<6;i++){const a=Math.random()*Math.PI*2;const el=Math.random()*Math.PI-.5;const spd=5*U;
+      addPart({tex:T.impact[~~(Math.random()*16)],x,y,z,vx:Math.cos(a)*Math.cos(el)*spd,vy:Math.sin(el)*spd+.3,vz:Math.sin(a)*Math.cos(el)*spd,
+        sc:0.3*U,scEnd:0,life:.6,col:'#aaff44',alpha:.8,alphaEnd:0,gravity:-0.4*9.8*U})}
+    for(let i=0;i<8;i++){addPart({tex:_s.fbf.src,x,y,z,sc:1.2*U*0.47,scEnd:1.2*U,life:.4+Math.random()*.1,col:'#ffffff',alpha:1,alphaEnd:0,sheet:_s.fbf,sheetSpd:.03,scCurve:true,rotSpd:(Math.random()-.5)*5})}
   }},
 };
 // ═══ Basic 11종 (intensity+sparks+contrast, 색상 변형) ═══

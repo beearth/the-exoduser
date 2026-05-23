@@ -1,11 +1,11 @@
 [Licensing::Module] Trying to connect to existing licensing client channel...
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ì‹¬ë„ì§„" at "2026-05-22T11:30:32.9792672Z"
 Built from '6000.4/staging' branch; Version is '6000.4.8f1 (f8b72d3d7343) revision 16299821'; Using compiler version '194234433'; Build Type 'Release'
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ì‹¬ë„ì§„" at "2026-05-23T02:45:38.6192059Z"
 OS: 'Windows 11  (10.0.26200) Professional' Language: 'ko' Physical Memory: 65345 MB
 BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1
 System  architecture: x64
 Process architecture: x64
-Date: 2026-05-22T11:30:32Z
+Date: 2026-05-23T02:45:38Z
 
 COMMAND LINE ARGUMENTS:
 C:\Program Files\Unity\Hub\Editor\6000.4.8f1\Editor\Unity.exe
@@ -19,7 +19,7 @@ G:/hell/assets/vfx_impact/_unity_preview
 -logFile
 Logs/AssetImportWorker1.log
 -srvPort
-63838
+61157
 -force-d3d12
 -job-worker-count
 15
@@ -66,16 +66,16 @@ G:/hell/assets/vfx_impact/_unity_preview
     "memorysetup-job-temp-allocator-block-size=2097152"
     "memorysetup-job-temp-allocator-block-size-background=1048576"
     "memorysetup-job-temp-allocator-reduction-small-platforms=262144"
-Player connection [42740]  Target information:
+Player connection [32248]  Target information:
 
-Player connection [42740]  * "[IP] 192.168.0.146 [Port] 0 [Flags] 2 [Guid] 1668349897 [EditorId] 1668349897 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-R2F12NG) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [32248]  * "[IP] 192.168.0.146 [Port] 0 [Flags] 2 [Guid] 2257171133 [EditorId] 2257171133 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-R2F12NG) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [42740]  * "[IP] 192.168.79.1 [Port] 0 [Flags] 2 [Guid] 1668349897 [EditorId] 1668349897 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-R2F12NG) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [32248]  * "[IP] 192.168.79.1 [Port] 0 [Flags] 2 [Guid] 2257171133 [EditorId] 2257171133 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-R2F12NG) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [42740]  * "[IP] 192.168.12.1 [Port] 0 [Flags] 2 [Guid] 1668349897 [EditorId] 1668349897 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-R2F12NG) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
+Player connection [32248]  * "[IP] 192.168.12.1 [Port] 0 [Flags] 2 [Guid] 2257171133 [EditorId] 2257171133 [Version] 1048832 [Id] WindowsEditor(7,DESKTOP-R2F12NG) [Debug] 1 [PackageName] WindowsEditor [ProjectName] Editor" 
 
-Player connection [42740] Host joined multi-casting on [225.0.0.222:54997]...
-Player connection [42740] Host joined alternative multi-casting on [225.0.0.222:34997]...
+Player connection [32248] Host joined multi-casting on [225.0.0.222:54997]...
+Player connection [32248] Host joined alternative multi-casting on [225.0.0.222:34997]...
 JobSystem: Creating JobQueue using job-worker-count value 15
 Input System module state changed to: Initialized.
 [Physics::Module] Initialized fallback backend.
@@ -104,55 +104,55 @@ Initialize mono
 Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/Managed'
 Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit-win32'
 Mono config path = 'C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56000
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56672
 CodeReloadManager initialized
 Begin MonoManager ReloadAssembly
-[Licensing::Client] Error: HandshakeResponse reported an error:
-	ResponseCode: 505
-	ResponseStatus: Unsupported protocol version '1.18.1'.
-[Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-ì‹¬ë„ì§„"
-[Licensing::IpcConnector] LicenseClient-ì‹¬ë„ì§„ channel disconnected successfully.
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ì‹¬ë„ì§„-6000.4.8" at "2026-05-22T11:30:34.922214Z"
-[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 38676, path: "C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
-[Licensing::Module] LicensingClient has failed validation; ignoring
-[Licensing::Client] Handshaking with LicensingClient:
-  Version:                 1.18.1+9fbee8e
-  Session Id:              17a125c8a8ec42ff8d3556f1a056cee0
-  Correlation Id:          0482cfb5e4dd3217c90b0f8b540b775f
-  External correlation Id: 2740866589548112947
-  Machine Id:              jyS+85x8cRWB1xbIp+nfp4tj7nk=
-[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-ì‹¬ë„ì§„-6000.4.8" (connect: 0.00s, validation: 0.01s, handshake: 0.01s)
-[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ì‹¬ë„ì§„-6000.4.8-notifications" at "2026-05-22T11:30:34.9412768Z"
-[Licensing::Module] Licensing Background thread has ended after 1.96s
 Registering precompiled unity dll's ...
 Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
 Register platform support module: C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.003581 seconds.
+Registered in 0.003956 seconds.
 Native extension for WindowsStandalone target not found
 Native extension for WebGL target not found
 Package Manager log level set to [2]
 [Package Manager] Failed to launch server process. Reason: Unity was launched with the -noUpm command-line argument
 [Package Manager] Unable to send message (not connected to server process).
 [Package Manager] Cannot connect to Unity Package Manager local server
+[Licensing::Client] Error: HandshakeResponse reported an error:
+	ResponseCode: 505
+	ResponseStatus: Unsupported protocol version '1.18.1'.
+[Licensing::Module] Error: Failed to handshake to channel: "LicenseClient-ì‹¬ë„ì§„"
+[Licensing::IpcConnector] LicenseClient-ì‹¬ë„ì§„ channel disconnected successfully.
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ì‹¬ë„ì§„-6000.4.8" at "2026-05-23T02:45:39.8740519Z"
+[Licensing::Client] Code 10 while verifying Licensing Client signature (process Id: 38260, path: "C:/Program Files/Unity/Hub/Editor/6000.4.8f1/Editor/Data/Resources/Licensing/Client/Unity.Licensing.Client.exe")
+[Licensing::Module] LicensingClient has failed validation; ignoring
+[Licensing::Client] Handshaking with LicensingClient:
+  Version:                 1.18.1+9fbee8e
+  Session Id:              e337fc1f7a8e4491b2ea87af3cfe6c7e
+  Correlation Id:          57eb5923fbd15198d0f532121303c1dd
+  External correlation Id: 927245742885534595
+  Machine Id:              jyS+85x8cRWB1xbIp+nfp4tj7nk=
+[Licensing::Module] Successfully connected to LicensingClient on channel: "LicenseClient-ì‹¬ë„ì§„-6000.4.8" (connect: 0.00s, validation: 0.00s, handshake: 0.01s)
+[Licensing::IpcConnector] Successfully connected to: "LicenseClient-ì‹¬ë„ì§„-6000.4.8-notifications" at "2026-05-23T02:45:39.8820777Z"
+[Licensing::Module] Licensing Background thread has ended after 1.26s
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.378 seconds
-Domain Reload Profiling: 1033ms
-	BeginReloadAssembly (244ms)
-	RebuildCommonClasses (36ms)
-	RebuildNativeTypeToScriptingClass (12ms)
-	initialDomainReloadingComplete (113ms)
-	LoadAllAssembliesAndSetupDomain (250ms)
-		LoadAssemblies (232ms)
-		AnalyzeDomain (240ms)
-			TypeCache.Refresh (239ms)
-				TypeCache.ScanAssembly (226ms)
-	FinalizeReload (379ms)
+- Finished resetting the current domain, in  0.290 seconds
+Domain Reload Profiling: 702ms
+	BeginReloadAssembly (136ms)
+	RebuildCommonClasses (30ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (74ms)
+	LoadAllAssembliesAndSetupDomain (162ms)
+		LoadAssemblies (132ms)
+		AnalyzeDomain (154ms)
+			TypeCache.Refresh (153ms)
+				TypeCache.ScanAssembly (143ms)
+	FinalizeReload (291ms)
 		SetupLoadedEditorAssemblies (0ms)
-			InitializePlatformSupportModulesInManaged (52ms)
-			BeforeProcessingInitializeOnLoad (76ms)
-			ProcessInitializeOnLoadAttributes (98ms)
-			ProcessInitializeOnLoadMethodAttributes (91ms)
+			InitializePlatformSupportModulesInManaged (39ms)
+			BeforeProcessingInitializeOnLoad (61ms)
+			ProcessInitializeOnLoadAttributes (83ms)
+			ProcessInitializeOnLoadMethodAttributes (63ms)
 ========================================================================
 Worker process is ready to serve import requests
 Import Worker Mode flag is 0x00
@@ -176,108 +176,37 @@ Native extension for WebGL target not found
 [Package Manager] Cannot connect to Unity Package Manager local server
 ScheduleIndexationOnStartup MainProcess:False IndexOnStartup:True
 Mono: successfully reloaded assembly
-- Finished resetting the current domain, in  0.330 seconds
-Domain Reload Profiling: 737ms
-	BeginReloadAssembly (246ms)
-		DisableScriptedObjects (5ms)
-		CreateAndSetChildDomain (27ms)
-	RebuildCommonClasses (47ms)
-	RebuildNativeTypeToScriptingClass (15ms)
-	initialDomainReloadingComplete (80ms)
-	LoadAllAssembliesAndSetupDomain (19ms)
-		LoadAssemblies (167ms)
-		AnalyzeDomain (11ms)
-			TypeCache.Refresh (8ms)
-	FinalizeReload (331ms)
+- Finished resetting the current domain, in  0.242 seconds
+Domain Reload Profiling: 495ms
+	BeginReloadAssembly (159ms)
+		DisableScriptedObjects (4ms)
+		CreateAndSetChildDomain (20ms)
+	RebuildCommonClasses (28ms)
+	RebuildNativeTypeToScriptingClass (9ms)
+	initialDomainReloadingComplete (43ms)
+	LoadAllAssembliesAndSetupDomain (13ms)
+		LoadAssemblies (102ms)
+		AnalyzeDomain (6ms)
+			TypeCache.Refresh (4ms)
+	FinalizeReload (243ms)
 		SetupLoadedEditorAssemblies (0ms)
-			BeforeProcessingInitializeOnLoad (91ms)
-			ProcessInitializeOnLoadAttributes (81ms)
-			ProcessInitializeOnLoadMethodAttributes (39ms)
-			AfterProcessingInitializeOnLoad (14ms)
-		AwakeInstancesAfterBackupRestoration (12ms)
+			BeforeProcessingInitializeOnLoad (66ms)
+			ProcessInitializeOnLoadAttributes (55ms)
+			ProcessInitializeOnLoadMethodAttributes (27ms)
+			AfterProcessingInitializeOnLoad (8ms)
+		AwakeInstancesAfterBackupRestoration (9ms)
 Launched and connected shader compiler UnityShaderCompiler.exe after 0.01 seconds
 Unloading 0 Unused Serialized files (Serialized files now loaded: 0)
-Unloading 67 unused Assets / (30.3 KB). Loaded Objects now: 670.
+Unloading 67 unused Assets / (30.0 KB). Loaded Objects now: 673.
 Memory consumption went from 67.6 MB to 67.6 MB.
-Total: 3.708100 ms (FindLiveObjects: 0.055300 ms CreateObjectMapping: 0.010600 ms MarkObjects: 3.538600 ms  DeleteObjects: 0.101000 ms)
+Total: 2.344200 ms (FindLiveObjects: 0.028100 ms CreateObjectMapping: 0.005500 ms MarkObjects: 2.257700 ms  DeleteObjects: 0.051500 ms)
 
 ========================================================================
 Received Import Request.
-  Time since last request: 104339.100755 seconds.
-  path: Assets/Ultimate Impact Fx/Resources/Prefabs/GrPower_Impact_Ice_01.prefab
-  importAddress: Guid(af3dd3bcb4fff4d47821a6e69fd9b7dd) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Ultimate Impact Fx/Resources/Prefabs/GrPower_Impact_Ice_01.prefab using Guid(af3dd3bcb4fff4d47821a6e69fd9b7dd) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '4b2f5b768b2ba1351bf26617c049d71c') in 0.176263 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=3aae7d46d86a1f03b448a777cfcfebcc DependenciesID=9add98b7d432e3f5954982ab285966a6 StaticDependenciesID=ee366df744e4d0e287794b188f374b76 
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 35
+  Time since last request: 159250.466108 seconds.
+  path: Assets/Ultimate Impact Fx/Resources/Prefabs/Power_Impact_Earth_02.prefab
+  importAddress: Guid(7bac2b470a0cb91498e0964530e36a94) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Ultimate Impact Fx/Resources/Prefabs/Power_Impact_Earth_02.prefab using Guid(7bac2b470a0cb91498e0964530e36a94) Importer(815301076,1909f56bfc062723c751e8b465ee728b) (PreviewImporter) -> (Import Result ID: '4fd38a71d206fdb1f3ec585777fd9524') in 0.0763426 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=7093ab5fbd2f79975f70e922f0338bd8 DependenciesID=4e5e0b9db308db486dc8c696e18cec3e StaticDependenciesID=c30183140a132f7cd3286c06e6392e27 
+Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 42
 
-========================================================================
-Received Import Request.
-  Time since last request: 0.000021 seconds.
-  path: Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_Stretch_9.png
-  importAddress: Guid(5b22fc3b01c109c48bd66d7263057002) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_Stretch_9.png using Guid(5b22fc3b01c109c48bd66d7263057002) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'dfa0ba8f3153cabb13bf58e69427e8ca') in 0.0405797 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=3f3dc40b177249ad60ae0067cbbc52a4 DependenciesID=439af2473991a7647a45e8cd3d3c5605 StaticDependenciesID=b31b84a397690dddd00ec5d6fcc7d1dd 
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000069 seconds.
-  path: Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_water_3.png
-  importAddress: Guid(6dac8abbb47d26c469fe0f988120437c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_water_3.png using Guid(6dac8abbb47d26c469fe0f988120437c) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'f2986b0d76a51c2c8ba311c550355abb') in 0.0123202 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=cca373812f0e32915f78275a66f36e5b DependenciesID=bc1346bfa557c715016f88e0dfaab28f StaticDependenciesID=fb29e88e838f53fbf21a5f0bbb5cb220 
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000065 seconds.
-  path: Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_1.png
-  importAddress: Guid(67c7d2be79c65fc4698c048164053fad) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_1.png using Guid(67c7d2be79c65fc4698c048164053fad) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'b7fbd0ecbe22dd461078725fb4865483') in 0.0122141 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=86e5dd0b921105e0f89631ce1b68bdbf DependenciesID=d51822db84cf157ca8beea6fa4cd680d StaticDependenciesID=4f37f630ff340ab08c803992f15e95b9 
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000053 seconds.
-  path: Assets/Ultimate Impact Fx/Resources/Prefabs/GrPower_Impact_Poison_02.prefab
-  importAddress: Guid(4bc210c77a3098d4883f6a1373d6048f) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Ultimate Impact Fx/Resources/Prefabs/GrPower_Impact_Poison_02.prefab using Guid(4bc210c77a3098d4883f6a1373d6048f) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '96defb03e9e5d5668a4d44af7bbb31e7') in 0.0219856 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=804e9d77d7b48f39862a2572be0200c5 DependenciesID=00d0a1d84affe53f7e06f3a30fdcf8ee StaticDependenciesID=4ffe9ee2575e68ec51c5063c80867e7f 
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 39
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000013 seconds.
-  path: Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_9.png
-  importAddress: Guid(c16560d04aa9f2b4d87c7955c96f326b) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Ultimate Impact Fx/SourceFiles/PNG/Impact_9.png using Guid(c16560d04aa9f2b4d87c7955c96f326b) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '28d54fd419a819dc1f5f6cb4a9fb4bcd') in 0.0126913 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=eac049d5044bce9312a4ca791e8c829c DependenciesID=9dff59e5d1c667678db9af1f6997bd8d StaticDependenciesID=3f1d693033752459bfa27afc53d90b93 
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000078 seconds.
-  path: Assets/Ultimate Impact Fx/Resources/Prefabs/GrPower_Impact_Water_02.prefab
-  importAddress: Guid(cc51e5f8b6409184a84de3ef8b396309) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Ultimate Impact Fx/Resources/Prefabs/GrPower_Impact_Water_02.prefab using Guid(cc51e5f8b6409184a84de3ef8b396309) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '4e5d12a15f6eb9822a7fd0e715e52921') in 0.0239127 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=f036628de6966845b1f052ffd4572ab8 DependenciesID=65fc1d83d919eba229b0e25ef99d5139 StaticDependenciesID=d468ab4f3a7557a4988636c21fad6231 
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 39
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.199414 seconds.
-  path: Assets/Ultimate Impact Fx/SourceFiles/PSD/Impact_export.psd
-  importAddress: Guid(901773aa0397e774693f21e35f2d6e0a) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Ultimate Impact Fx/SourceFiles/PSD/Impact_export.psd using Guid(901773aa0397e774693f21e35f2d6e0a) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '0a0f54ba4c65fc5ce42d1aba4c8df45b') in 0.0112512 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=1b398756ab3f609ddca7882c6c89acbb DependenciesID=192df323f55404ec6e551eeb089faabb StaticDependenciesID=165f03ae5e2cf0e61360b6062077dab9 
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.000068 seconds.
-  path: Assets/Ultimate Impact Fx/SourceFiles/PSD/Impact_Water.psd
-  importAddress: Guid(533e42e941abd7b4cb618389e8ebfc2f) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Ultimate Impact Fx/SourceFiles/PSD/Impact_Water.psd using Guid(533e42e941abd7b4cb618389e8ebfc2f) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: 'efc929cc3586c80f71c2f6e0b567becb') in 0.0127106 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=7c50532249009b3c63b04ff8a62b6a7f DependenciesID=35de19cd409dbd874006e439251da4dc StaticDependenciesID=ff461fcbfc61ed54177d8ebedb499a0c 
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
-
-========================================================================
-Received Import Request.
-  Time since last request: 5930.915746 seconds.
-  path: Assets/Ultimate Impact Fx/Scenes/Demo.unity
-  importAddress: Guid(724f3d810df707c4eb7433bafe652f1b) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d)
-Start importing Assets/Ultimate Impact Fx/Scenes/Demo.unity using Guid(724f3d810df707c4eb7433bafe652f1b) Importer(2089858483,b0f066a214c2f5e87bad3c948f4d605d) (ScriptedImporter) -> (Import Result ID: '44293e8cd03438d8345a737167e41958') in 0.0195431 seconds [static and dynamic dependencies]. Details - ImportResultOutputID=bfc0ec6fa25f93f07a4831a6caa3e2b8 DependenciesID=799205c2d156f6c5be00c077718bf77e StaticDependenciesID=9720a65c0ea214a1a23cb6fc3104429f 
-Number of updated asset objects reloaded before import = 0Number of asset objects unloaded after import = 1
-
+AssetImportWorkerClient::OnTransportError - code=10054 error=ÇöÀç ¿¬°áÀº ¿ø°Ý È£½ºÆ®¿¡ ÀÇÇØ °­Á¦·Î ²÷°å½À´Ï´Ù.

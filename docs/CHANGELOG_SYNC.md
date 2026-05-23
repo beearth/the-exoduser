@@ -27882,3 +27882,65 @@ mpR = 0.05 + s.int√ó0.005                                        [NO P.lv√ó0.001
 - game.html
 - vfx3d_test.html
 
+
+## 2026-05-23 15:30 (auto)
+- _autosave/game_20260523_144240.html
+- _autosave/game_20260523_144247.html
+- _autosave/game_20260523_144256.html
+- _autosave/game_20260523_145716.html
+- _autosave/game_20260523_150232.html
+- _autosave/game_20260523_150741.html
+- _autosave/game_20260523_150806.html
+- _autosave/game_20260523_151325.html
+- _autosave/game_20260523_152136.html
+- _autosave/game_20260523_152141.html
+- assets/vfx/particles/BasicImpact.png
+- assets/vfx/particles/GroundImpact.png
+- assets/vfx/particles/ImpactEarth_Sheet.png
+- assets/vfx/particles/ImpactFire_Sheet.png
+- assets/vfx/particles/ImpactIce_Sheet.png
+- assets/vfx/particles/ImpactLight_Sheet.png
+- assets/vfx/particles/ImpactLightning_Sheet.png
+- assets/vfx/particles/ImpactNature_Sheet.png
+- assets/vfx/particles/ImpactWater_Sheet.png
+- assets/vfx/particles/PowerImpact.png
+- assets/vfx/particles/Smoke_Sheet_6x6.png
+- assets/vfx/particles/Water_FBF_4x4.png
+- assets/vfx_impact/_unity_preview/Library/ArtifactDB
+- assets/vfx_impact/_unity_preview/Library/Bee/1900b0aE.dag_fsmtime
+- assets/vfx_impact/_unity_preview/Library/Bee/TundraBuildState.state.map
+- assets/vfx_impact/_unity_preview/Library/Bee/backend1.traceevents
+- assets/vfx_impact/_unity_preview/Library/Bee/fullprofile.json
+- assets/vfx_impact/_unity_preview/Library/Bee/tundra.digestcache
+- assets/vfx_impact/_unity_preview/Library/Bee/tundra.log.json
+- assets/vfx_impact/_unity_preview/Library/BuildSettings.asset
+- assets/vfx_impact/_unity_preview/Library/EditorInstance.json
+- assets/vfx_impact/_unity_preview/Library/SceneVisibilityState.asset
+- assets/vfx_impact/_unity_preview/Library/Search/transactions.db
+- assets/vfx_impact/_unity_preview/Library/SourceAssetDB
+- assets/vfx_impact/_unity_preview/Library/StateCache/MainStageHierarchy/8f/8fd65426490f636435c901d65ce7ed24.json
+- assets/vfx_impact/_unity_preview/Library/StateCache/PrefabStageHierarchy/2e/2e2cfa2c3dfcb483f6e5a85bff706057.json
+- assets/vfx_impact/_unity_preview/Library/StateCache/SceneView/22/2292b454a68576aebdb7b1904dcd8dba.json
+- assets/vfx_impact/_unity_preview/Library/ilpp.pid
+- assets/vfx_impact/_unity_preview/Logs/AssetImportWorker0-prev.log
+- assets/vfx_impact/_unity_preview/Logs/AssetImportWorker0.log
+- assets/vfx_impact/_unity_preview/Logs/AssetImportWorker1-prev.log
+- assets/vfx_impact/_unity_preview/Logs/AssetImportWorker1.log
+- assets/vfx_impact/_unity_preview/Logs/AssetImportWorker2-prev.log
+- assets/vfx_impact/_unity_preview/Logs/AssetImportWorker3-prev.log
+- assets/vfx_impact/_unity_preview/Logs/AssetImportWorker4-prev.log
+- assets/vfx_impact/_unity_preview/Logs/AssetImportWorker5-prev.log
+- assets/vfx_impact/_unity_preview/Logs/AssetImportWorker6-prev.log
+- assets/vfx_impact/_unity_preview/Logs/AssetImportWorker7-prev.log
+- assets/vfx_impact/_unity_preview/Logs/shadercompiler-AssetImportWorker0-0.log
+- assets/vfx_impact/_unity_preview/Logs/shadercompiler-AssetImportWorker1-0.log
+- assets/vfx_impact/_unity_preview/Logs/shadercompiler-UnityShaderCompiler.exe-0.log
+- assets/vfx_impact/_unity_preview/Temp/FSTimeGet-3e098de51729aba44bd8fa9c101e61f4
+- assets/vfx_impact/_unity_preview/Temp/FSTimeGet-5268e6221fb0e9d44b4b0a77d8bedeb9
+- assets/vfx_impact/_unity_preview/Temp/FSTimeGet-6cc290f76ad41284aad0331a7e53dd14
+- assets/vfx_impact/_unity_preview/Temp/UnityLockfile
+- assets/vfx_impact/_unity_preview/UserSettings/Layouts/default-6000.dwlt
+- docs/2_1 ?§ÌÇ¨Í¥ÄÎ¶??©Ï≤¥?úÏä§???êÏõê/2_1 ?§ÌÇ¨Í¥ÄÎ¶??©Ï≤¥?úÏä§??md
+- game.html
+- vfx3d_test.html
+
