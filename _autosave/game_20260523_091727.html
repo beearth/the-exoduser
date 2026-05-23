@@ -266,7 +266,17 @@ canvas{display:block;position:fixed;inset:0}
 }
 .mini-bar.st .fill { background: linear-gradient(90deg, #114400, #44aa00); }
 .mini-bar.sh .fill { background: linear-gradient(90deg, #002266, #44aaff); }
-#skBar{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px) - 25px);left:50%;transform:translateX(-50%) scale(calc(var(--ui-scale) * .9));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;transform-origin:bottom center;background:url('img/ui_bar_only.png') no-repeat center/100% 100%;width:820px;height:182px;filter:brightness(0.8)}
+#skBar{position:fixed;bottom:calc(var(--ui-inset-bottom) + env(safe-area-inset-bottom, 0px) - 25px);left:50%;transform:translateX(-50%) scale(calc(var(--ui-scale) * .9));z-index:21;pointer-events:none;opacity:0;transition:opacity .5s;transform-origin:bottom center;background:url('img/ui_bar_only.png') no-repeat center/100% 100%;width:820px;height:182px;filter:brightness(0.8);overflow:visible}
+#skBar.burning::before{content:'';position:absolute;inset:-8px -4px -4px -4px;pointer-events:none;z-index:-1;
+  background:linear-gradient(0deg,rgba(255,60,0,calc(.2 + var(--burn-i,.5)*.5)) 0%,rgba(255,120,0,calc(.1 + var(--burn-i,.5)*.3)) 30%,rgba(255,60,0,calc(var(--burn-i,.5)*.15)) 60%,transparent 100%);
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 820 60'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.04,.15' numOctaves='4' seed='2'/%3E%3C/filter%3E%3Crect width='820' height='60' filter='url(%23t)'/%3E%3C/svg%3E");
+  mask-size:100% 100%;-webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 820 60'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.04,.15' numOctaves='4' seed='2'/%3E%3C/filter%3E%3Crect width='820' height='60' filter='url(%23t)'/%3E%3C/svg%3E");
+  -webkit-mask-size:100% 100%;animation:skBarBurn .15s infinite alternate;border-radius:8px}
+#skBar.burning::after{content:'';position:absolute;inset:-12px -6px -2px -6px;pointer-events:none;z-index:-1;
+  background:linear-gradient(0deg,rgba(255,200,50,calc(.1 + var(--burn-i,.5)*.4)) 0%,rgba(255,80,0,calc(.05 + var(--burn-i,.5)*.25)) 40%,transparent 100%);
+  animation:skBarBurn2 .2s infinite alternate;border-radius:12px;filter:blur(6px)}
+@keyframes skBarBurn{0%{opacity:.7;transform:translateY(0)}100%{opacity:1;transform:translateY(-3px)}}
+@keyframes skBarBurn2{0%{opacity:.4;transform:translateY(0) scaleY(1)}100%{opacity:.8;transform:translateY(-5px) scaleY(1.1)}}
 .qs-row{position:absolute;top:0;left:0;width:100%;height:100%}
 .qs{position:absolute!important;flex:none!important}
 #poiseBarWrap{display:none!important}
@@ -47562,25 +47572,19 @@ function updateHUD(slow){
   // HP 구슬 업데이트
   const hpPct = Math.max(0, Math.min(100, (~~P.hp / P.mhp) * 100));
   $('hpLiquid').style.transform = `translateY(${100 - hpPct}%)`;
-  // 빨콩 화상 / 무지개탄 중독 시 HP 구슬 색 전환
+  // 무지개탄 중독 시 HP 구슬 녹색 전환
   const _rbPoisoned=P._rbPoison&&P._rbPoison.length>0;
   const _rbBurning=P._rbBurn&&P._rbBurn.length>0;
-  $('hpLiquid').style.background=_rbPoisoned&&_rbBurning
-    ?'radial-gradient(ellipse at 50% 40%, #6B4010 0%, #3D2008 50%, #1E0A04 100%)'  // 둘 다: 주황
-    :_rbPoisoned
-    ?'radial-gradient(ellipse at 50% 40%, #1B6020 0%, #0A3D12 50%, #051E0A 100%)'  // 중독: 녹색
-    :_rbBurning
-    ?'radial-gradient(ellipse at 50% 40%, #6B2010 0%, #3D1508 50%, #1E0804 100%)'  // 화상: 밝은 붉은색
-    :'radial-gradient(ellipse at 50% 40%, #6B1020 0%, #3D0A12 50%, #1E050A 100%)'; // 기본
-  // 화상/중독 시 스킬바 프레임 불타는 효과
+  $('hpLiquid').style.background=_rbPoisoned
+    ?'radial-gradient(ellipse at 50% 40%, #1B6020 0%, #0A3D12 50%, #051E0A 100%)'
+    :'radial-gradient(ellipse at 50% 40%, #6B1020 0%, #3D0A12 50%, #1E050A 100%)';
+  // 빨콩 화상 시 스킬바 프레임 불타는 효과
   const _skBar=$('skBar');
-  if(_skBar){_skBar.style.filter=_rbBurning&&_rbPoisoned
-    ?'brightness(0.8) drop-shadow(0 0 12px rgba(255,100,0,.7)) drop-shadow(0 0 6px rgba(0,255,50,.5))'
-    :_rbBurning
-    ?'brightness(0.8) drop-shadow(0 0 14px rgba(255,60,0,.8)) drop-shadow(0 0 6px rgba(255,30,0,.5))'
-    :_rbPoisoned
-    ?'brightness(0.8) drop-shadow(0 0 12px rgba(0,255,60,.6)) drop-shadow(0 0 5px rgba(0,200,40,.4))'
-    :'brightness(0.8)'}
+  if(_skBar){if(_rbBurning){const _bs=Math.min(10,P._rbBurn.length),_bi=_bs/10;
+    _skBar.classList.add('burning');
+    _skBar.style.setProperty('--burn-i',_bi.toFixed(2));
+    _skBar.style.filter=`brightness(0.8) drop-shadow(0 0 ${6+_bs*2}px rgba(255,60,0,${(.3+_bi*.5).toFixed(2)})) drop-shadow(0 0 ${3+_bs}px rgba(255,30,0,${(.2+_bi*.3).toFixed(2)}))`}
+  else{_skBar.classList.remove('burning');_skBar.style.filter='brightness(0.8)'}}
   $('hpCur').textContent = ~~P.hp;
   $('hpMax').textContent = `/ ${P.mhp}`;
   $('hpShield').textContent = P.mshield>0?`${~~P.shield} / ${~~P.mshield}`:'';
@@ -50161,6 +50165,7 @@ document.addEventListener('keydown',function(ev){
 </script>
 <!-- ═══ 3D 보스 오버레이 ═══ -->
 <canvas id="boss3dCvs" style="position:fixed;inset:0;pointer-events:none;z-index:5000"></canvas>
+<canvas id="vfx3dCvs" style="position:fixed;inset:0;pointer-events:none;z-index:4999"></canvas>
 <canvas id="chest3dCvs" style="position:fixed;pointer-events:none;z-index:4998;display:none"></canvas>
 <script type="importmap">
 {"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}

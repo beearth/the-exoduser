@@ -27815,3 +27815,11 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - vfx_test.html
 
+
+## 2026-05-23 09:30 (auto)
+- _autosave/game_20260523_091622.html
+- _autosave/game_20260523_091727.html
+- _autosave/game_20260523_092041.html
+- _autosave/game_20260523_092338.html
+- game.html
+
