@@ -12825,6 +12825,7 @@ const _OBJ_META={
   'm_skull_altar':{sz:300,col:1,large:1},'m_obelisk':{sz:300,col:1,large:1},'m_flesh_ball':{sz:270,col:1,large:1},
   'm_penta_circle':{sz:350,col:1,large:1},'m_flesh_maw':{sz:200,col:1,large:1},'m_skull_totem':{sz:240,col:1,large:1,keepAR:1},
   'm_bone_arch':{sz:300,col:1,large:1},'m_eye_tree':{sz:350,col:1,large:1},'m_throne':{sz:250,col:1,large:1},
+  'm_dragon_skeleton':{sz:800,large:1,keepAR:1,col:1,collision:true},
   'm_usergore1':{sz:220,keepAR:1},'m_usergore2':{sz:220,keepAR:1},'m_usergore3':{sz:220,keepAR:1,anchorBottom:1},
   'm_usergore4':{sz:220,keepAR:1,anchorBottom:1},'m_usergore5':{sz:220,keepAR:1,anchorBottom:1},'m_usergore6':{sz:220,keepAR:1,anchorBottom:1},
 };
@@ -12832,6 +12833,8 @@ const _OBJ_META={
 for(const[ch,list]of Object.entries(_CH_DECO)){
   for(const d of list){const p='assets/map/ch'+(+ch+1)+'/'+(d.dir||'floor_objects')+'/'+d.file;_OBJ_SPR_MAP[d.id]=p;const im=new Image();im.onerror=function(){console.warn('[DECO] '+d.id+' 404→fallback');this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='};im.src=p;_OBJ_SPR[d.id]=im;const _prev=_OBJ_META[d.id]||{};_OBJ_META[d.id]=Object.assign(_prev,{sz:d.sz||32,light:d.light||0,large:d.large||0,rot:d.rot||0})}
 }
+// 용 해골 직접 프리로드 (img/ 경로)
+{const _dsImg=new Image();_dsImg.src='img/map_dragon_skeleton.png';_OBJ_SPR['m_dragon_skeleton']=_dsImg;_OBJ_SPR_MAP['m_dragon_skeleton']='img/map_dragon_skeleton.png'}
 
 // ═══ RAM 최적화 시스템 ═══
 
@@ -17651,6 +17654,8 @@ function _fireballExplode(p){
       hurtE(e,~~(dmg*m),a,false,_fireballKbOpts,el);
       // 업화선 폭발: 화상 부여
       if(p.fireBeamProj){e.burnT=Math.max(e.burnT||0,180);e.burnStk=Math.min(10,(e.burnStk||0)+1);if((e.burnStk||0)<10)e._burnPool=(e._burnPool||0)+pDotPool()*dmg*0.4}
+      // 악의구 폭발: 중독 부여 (데미지×2, 10초, 최대10중첩)
+      if(p.fireball&&!p.fireBeamProj){e.poison=1;e.poisonT=Math.max(e.poisonT||0,600);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*dmg*2}
     }}
   // 업화선 전용 폭발 — Fire VFX (중앙 노랑, 외곽 붉은)
   if(p.fireBeamProj){
@@ -18758,6 +18763,18 @@ function initMapObjects(){
       };
       _placeFromPool(_lgSide,_lgSideMax);
       _placeFromPool(_lgCenter,_lgCenterMax);
+    }
+    // ── 용 해골: 1_1(stage 0) 맵 중앙에 거대 배치 ──
+    if(G.stage===0){
+      const _dsMidX=~~(G.mw/2),_dsMidY=~~(G.mh/2);
+      const _dsNear=_nearFloor(_dsMidX,_dsMidY);
+      if(_dsNear){const _dsx=(_dsNear.x+.5)*T,_dsy=(_dsNear.y+.5)*T;
+        // 주변 500px 내 기존 오브젝트 제거
+        const _dsClr=500;
+        MAP_OBJS=MAP_OBJS.filter(o=>{const dx=o.x-_dsx,dy=o.y-_dsy;return dx*dx+dy*dy>_dsClr*_dsClr});
+        // 그리드에도 해골 자리 등록 (다른 오브젝트 배치 방지)
+        const k=_gridKey(_dsx,_dsy);if(!_moGrid[k])_moGrid[k]=[];_moGrid[k].push({x:_dsx,y:_dsy,colR:500});
+        MAP_OBJS.push({type:'m_dragon_skeleton',x:_dsx,y:_dsy,hell:0})}
     }
     // ── 유니크 충돌 오브젝트: 12종 각 1개씩, 중앙 배치, 500px 간격 ──
     if(hell===0){
@@ -26264,7 +26281,7 @@ function update(){
       // Q 패링 시도 → 잘못된 입력: 폭발 + 넉백
       const _rbWrongD=p.dmg;hurtP(_rbWrongD,{dtype:'magic',src:'빨콩오패링',redBean:true});
       // 빨콩 화상 (데미지×3, 10초, 최대10중첩)
-      {if(!P._rbBurn)P._rbBurn=[];if(P._rbBurn.length<10){P._rbBurn.push({total:_rbWrongD*3,t:600,tick:0});addTxt(P.x,P.y-30,_T('🔥화상!')+'×'+P._rbBurn.length,'#ff4400',30)}}
+      {if(!P._rbBurn)P._rbBurn=[];if(P._rbBurn.length<10){P._rbBurn.push({total:_rbWrongD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('🔥화상!')+'×'+P._rbBurn.length,'#ff4400',30)}}
       P.iframes=3;addTxt(p.x,p.y-15,_T('❌ 우클릭으로! -')+_rbWrongD,'#ff4444',50);
       {const _rbA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_rbA)*6;P.kb.y+=Math.sin(_rbA)*6}
       SFX.detonate();shake(12);doHitFlash('#ff2200',0.25);
@@ -26293,7 +26310,7 @@ function update(){
       // 우클릭 패링 시도 → 잘못된 입력: 폭발 + 넉백
       const _bkWrongD=~~(P.mhp*0.10);hurtP(_bkWrongD,{dtype:'magic',src:'무지개오패링'}); // 최대HP 10% 고정 페널티
       // 무지개탄 중독 (데미지×3, 10초, 최대10중첩)
-      {if(!P._rbPoison)P._rbPoison=[];if(P._rbPoison.length<10){P._rbPoison.push({total:_bkWrongD*3,t:600,tick:0});addTxt(P.x,P.y-30,_T('☠중독!')+'×'+P._rbPoison.length,'#33aa22',30)}}
+      {if(!P._rbPoison)P._rbPoison=[];if(P._rbPoison.length<10){P._rbPoison.push({total:_bkWrongD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('☠중독!')+'×'+P._rbPoison.length,'#33aa22',30)}}
       P.iframes=3;addTxt(p.x,p.y-15,_T('❌ Q키로! -')+_bkWrongD,'#ff44ff',50);
       {const _bkA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bkA)*6;P.kb.y+=Math.sin(_bkA)*6}
       SFX.detonate();shake(12);doHitFlash('#ff00ff',0.25);
@@ -26336,7 +26353,7 @@ function update(){
         const _bkD=Math.max(~~(P.mhp*.15*(1-pParryRainbowDR())),~~(p.dmg*.7*(1-pParryRainbowDR())));
         hurtP(_bkD,{dtype:'magic',src:'무지개폭발'});
         // 무지개탄 중독 (데미지×3, 10초, 최대10중첩)
-        {if(!P._rbPoison)P._rbPoison=[];if(P._rbPoison.length<10){P._rbPoison.push({total:_bkD*3,t:600,tick:0});addTxt(P.x,P.y-30,_T('☠중독!')+'×'+P._rbPoison.length,'#33aa22',30)}}
+        {if(!P._rbPoison)P._rbPoison=[];if(P._rbPoison.length<10){P._rbPoison.push({total:_bkD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('☠중독!')+'×'+P._rbPoison.length,'#33aa22',30)}}
         // 무지개탄 포이즈 데미지 (2칸 소모)
         {P.poise=Math.max(0,(P.poise||4)-2);P.poiseR=0;
         if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(480*(1-Math.min(.3,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}}
@@ -26439,7 +26456,7 @@ function update(){
           addTxt(P.x,P.y-20,_T('⚠트랩!'),'#997744',30);addParts(P.x,P.y,'#997744',8);_pHit=true}
         else{const _pjD=~~((p.dmg||10)*elMul(p.el,ar().el));hurtP(_pjD,{dtype:'magic',redBean:!!p.redBean,projHit:true});_projHitFx(p.x,p.y,p.el,!!p.redBean);if(p.el===EL.L)P._elecT=Math.max(P._elecT||0,30);
           // 빨콩 피격 화상 (데미지×3, 10초, 최대10중첩)
-          if(p.redBean){if(!P._rbBurn)P._rbBurn=[];if(P._rbBurn.length<10){P._rbBurn.push({total:_pjD*3,t:600,tick:0});addTxt(P.x,P.y-30,_T('🔥화상!')+'×'+P._rbBurn.length,'#ff4400',30)}}
+          if(p.redBean){if(!P._rbBurn)P._rbBurn=[];if(P._rbBurn.length<10){P._rbBurn.push({total:_pjD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('🔥화상!')+'×'+P._rbBurn.length,'#ff4400',30)}}
           _pHit=true}}}
     if(!_pHit&&p.friendly){const _fHitR=Math.max(6,(p.r||4)+Math.min(18,Math.sqrt(p.vx*p.vx+p.vy*p.vy)*0.5));const _ne3=shQuery(p.x,p.y,_fHitR+20);for(let ni=0;ni<_ne3.length;ni++){const e=_ne3[ni];if(!e.alive)continue;if(e._bluHitCD>0)continue;if(dst(p.x,p.y,e.x,e.y)<e.r+_fHitR){if(p.friendly&&p.redBean)e._bluHitCD=3;
       if(p.bomb){
@@ -40886,7 +40903,7 @@ function draw(){
       X.globalAlpha=1;
       // HP바 (공통)
       {const bw=e.r*2+6,bx=e.x-bw/2;let by=e.y-e.r-14;
-      if(e.hp<e.mhp||(e.eShieldMax||0)>0&&e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle=gt.col;X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*Math.min(1,e.eShield/e.eShieldMax),4)}by-=5}
+      if(e.hp<e.mhp||(e.eShieldMax||0)>0&&e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle=e.poisonT>0?'#33cc22':e.burnT>0?'#ff6622':gt.col;X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*Math.min(1,e.eShield/e.eShieldMax),4)}by-=5}
       if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}}
       continue;
     }
@@ -40932,7 +40949,7 @@ function draw(){
       // 에너지 바
       X.globalAlpha=1;
       {const bw=e.r*2+6,bx=e.x-bw/2;let by=e.y-e.r-14;
-      if(e.hp<e.mhp||(e.eShieldMax||0)>0&&e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc00cc';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*Math.min(1,e.eShield/e.eShieldMax),4)}by-=5}
+      if(e.hp<e.mhp||(e.eShieldMax||0)>0&&e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle=e.poisonT>0?'#33cc22':e.burnT>0?'#ff6622':'#cc00cc';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*Math.min(1,e.eShield/e.eShieldMax),4)}by-=5}
       if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}}
       continue;
     }
@@ -40964,7 +40981,7 @@ function draw(){
         }
       }
       {const bw=_er*2+6,bx=e.x-bw/2;let by=e.y-_er-16;
-      if(e.hp<e.mhp||(e.eShieldMax||0)>0&&e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*Math.min(1,e.eShield/e.eShieldMax),4)}by-=5}
+      if(e.hp<e.mhp||(e.eShieldMax||0)>0&&e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle=e.poisonT>0?'#33cc22':e.burnT>0?'#ff6622':'#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*Math.min(1,e.eShield/e.eShieldMax),4)}by-=5}
       if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
       }continue;}
     const isStunned=e.stunned>0;
@@ -42075,7 +42092,7 @@ function draw(){
     // ═══ 에너지 바 (HP+쉴드 오버레이 → 그로기 → 프리즌) ═══
     {const bw=e.r*2+6,bx=e.x-bw/2;let by=e.y-e.r-16;
     // 1) HP바 + 쉴드 오버레이 (쉴드=파랑이 빨강HP 위에 덮임, 보스바와 동일 구조)
-    if(e.hp<e.mhp||(e.eShieldMax||0)>0&&e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle='#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*Math.min(1,e.eShield/e.eShieldMax),4)}by-=5}
+    if(e.hp<e.mhp||(e.eShieldMax||0)>0&&e.eShield<e.eShieldMax){X.fillStyle='rgba(0,0,0,.6)';X.fillRect(bx,by,bw,4);X.fillStyle=e.poisonT>0?'#33cc22':e.burnT>0?'#ff6622':'#cc0000';X.fillRect(bx,by,bw*(e.hp/e.mhp),4);if(e.eShieldMax>0&&e.eShield>0){X.fillStyle='#44aaff';X.fillRect(bx,by,bw*Math.min(1,e.eShield/e.eShieldMax),4)}by-=5}
     // 2) 그로기바 (주황 3px, 스턴 중일 때만)
     if(e.stunned>0){const _grMax=e._maxStunned||(e.ib?180:90);X.fillStyle='rgba(0,0,0,.5)';X.fillRect(bx,by,bw,3);X.fillStyle='#ff8800';X.fillRect(bx,by,bw*Math.min(1,e.stunned/_grMax),3);by-=4}
     // 3) 프리즌바 (하늘 3px)

@@ -28002,3 +28002,20 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - img/vfx_pentagram_gold.png
 - img/vfx_pentagram_purple.png
 
+
+## 2026-05-23 23:30 (auto)
+- _autosave/game_20260523_224802.html
+- _autosave/game_20260523_224812.html
+- _autosave/game_20260523_224826.html
+- _autosave/game_20260523_224832.html
+- _autosave/game_20260523_224841.html
+- _autosave/game_20260523_224904.html
+- _autosave/game_20260523_224944.html
+- _autosave/game_20260523_225010.html
+- _autosave/game_20260523_225026.html
+- _autosave/game_20260523_230419.html
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤??md
+- docs/8.0ëª¬ìŠ¤?°ë””?ì¸/?„ë§‰?œìŠ¤??ì´ì •ë¦?md
+- game.html
+- img/map_dragon_skeleton.png
+
