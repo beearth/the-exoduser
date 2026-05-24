@@ -4936,7 +4936,7 @@ const _EN={
 '폭풍소환':'Vortex Summon','해골무덤':'Bone Tomb','신성폭발':'Holy Blast',
 '블랙':'Black Star','용암소환':'Lava Summon','처형':'Execution','악마화 부활':'Demon Revive',
 '붉은꽃':'Crimson Bloom','얼음보주':'Ice Orb','뇌전걸음':'Ghost Walk',
-'만화방창 II':'Needle Barrage II','마력연사':'Arcane Barrage','마력광선':'Arc Laser','업화선':'Hellfire Beam',
+'만화방창 II':'Needle Barrage II','마력연사':'Arcane Barrage','얼음송곳':'Ice Spike','업화선':'Hellfire Beam',
 '지옥진':'Inferno Array','폭독칼날':'Plague Blade','악의폭풍':'Malice Storm',
 '악의기둥':'Dark Pillar','회복의 영역':'Sacred Domain','구속의 영역':'Binding Domain',
 '아이스스톰':'Ice Storm','대왕치기':'Giant Slam','대왕치기 2':'Giant Slam II','독사':'Venom Snake','🐍 독사!':'🐍 Venom Snake!',
@@ -4951,7 +4951,7 @@ const _EN={
 '기동칼날개!':'Bladewing!','기동불꽃!':'Chain Blaze!','기동파괴!':'Chain Crush!',
 '사슬이동:강화!':'Chain Dash!','사슬기동:화염!':'Chain Flame!',
 '작살!':'Harpoon!','진입!':'Enter!','레인라이트닝!':'Rain Lightning!',
-'마력연사!':'Arcane Barrage!','🔷 마력광선!':'🔷 Arc Laser!','광선 해제':'Laser Off','MP 부족 — 광선 해제':'MP depleted — Laser Off','집중...':'Focus...','시전...':'Casting...',
+'마력연사!':'Arcane Barrage!','❄ 얼음송곳!':'❄ Ice Spike!','광선 해제':'Laser Off','MP 부족 — 광선 해제':'MP depleted — Laser Off','집중...':'Focus...','시전...':'Casting...',
 '만화방창!':'Needle Barrage!','바늘출!':'Needle Burst!','칼날!':'Blade!',
 '착지!':'Landing!','체간삭감!':'Poise Break!',
 '기동전폭 준비!':'Chain Burst Ready!','기동불꽃 준비!':'Chain Blaze Ready!',
@@ -6845,7 +6845,7 @@ const _EN={
 '처형':'Execution',
 '얼음보주':'Ice Orb',
 '만화방창 II':'Barrage II',
-'마력광선':'Arc Laser',
+'얼음송곳':'Ice Spike',
 '업화선':'Karma Beam',
 '지옥진':'Inferno Field',
 '폭독칼날':'Plague Blade',
@@ -7047,7 +7047,23 @@ const _BOOM_MAX=12;const _booms=[];for(let i=0;i<_BOOM_MAX;i++)_booms.push({x:0,
 function _projHitFx(px,py,el,isRed){_addBoom(px,py,isRed?80:24,isRed?72:14,isRed?'redbean':el===EL.I?'ice':el===EL.L?'lightning':el===EL.D?'dark':'fire');
   if(isRed){addParts(px,py,'#ff2200',20);shake(8);SFX.detonate();doHitFlash('#ff2200',0.2);
   }else{addParts(px,py,ELC[el]||'#ff8844',8);shake(4);doHitFlash(ELC[el]||'#ff8844',0.12)}}
-// ═══ 무지개탄 공통 Power Poison 임팩트 (피격/패링/적중 전부 동일) ═══
+// ═══ Dark 02 임팩트 (패링 전용) ═══
+function _dark02Impact(x,y){
+  if(!window._tvfx2)window._tvfx2=[];
+  const _d2L=[
+    {src:'Dark_MediumImpact.png',cols:4,rows:4,sc:2.2,delay:0,spd:2},
+    {src:'Dark_BasicImpact.png',cols:3,rows:3,sc:1.8,delay:0,spd:2},
+    {src:'Dark_MediumImpact.png',cols:4,rows:4,sc:3.0,delay:1,spd:3},
+    {src:'Dark_DarkSmoke_FBF_4x4.png',cols:4,rows:4,sc:1.0,delay:2,spd:4},
+  ];
+  _d2L.forEach(function(l){
+    const img=_tvfx2Imgs[l.src];if(!img||!img.complete)return;
+    const fw=~~(img.naturalWidth/l.cols),fh=~~(img.naturalHeight/l.rows);
+    window._tvfx2.push({img,x,y,cols:l.cols,rows:l.rows,fw,fh,
+      sc:l.sc,delay:l.delay||0,spd:l.spd||3,frame:0,total:l.cols*l.rows,t:0,timer:0});
+  });
+}
+// ═══ 무지개탄 블루콩 적중 임팩트 (Power Poison) ═══
 function _rainbowImpact(x,y){
   if(!window._tvfx2)window._tvfx2=[];
   const _qL=[
@@ -13137,10 +13153,10 @@ let _esReady=false;_ES_IMG.onload=()=>{_esReady=true};
 const _ES_FRAMES=30,_ES_FW=546,_ES_FH=51;
 const _ES_DRAW_H=84;               // 마력연사 시각 두께(px) (원본 대비 ~44% 축소)
 const _ES_HIT_HALF_W=(_ES_DRAW_H*.5); // 타격 반폭(px) — 시각과 판정 일치
-// ═══ 마력광선 텍스처 (726×2192 스프라이트시트, 16프레임 세로배치, lighter 합성) ═══
+// ═══ 얼음송곳 텍스처 (726×2192 스프라이트시트, 16프레임 세로배치, lighter 합성) ═══
 const _AL_IMG=new Image();_AL_IMG.src='assets/vfx/arc_laser/laser_sheet.png?v=20260522b';
 let _alImgReady=false;_AL_IMG.onload=()=>{_alImgReady=true};
-const _AL_DRAW_H=137; // 시각 두께(px) — 빔 높이
+const _AL_DRAW_H=178; // 시각 두께(px) — 빔 높이 (137→178, +30%)
 const _AL_FRAMES=16; // 총 프레임 수
 const _AL_FW=726; // 프레임 폭
 const _AL_FH=137; // 프레임 높이
@@ -20372,7 +20388,7 @@ function updateQS(){
           const _esAb=G._explodeScarecrow.absorbed,_esMx=G._explodeScarecrow.maxAbsorb;
           _cdPct=1-_esAb/_esMx;_cdSec=_esAb+'/'+_esMx;
         }else{
-          const _skCdMap={maliceMortar:P._mmCd||0,holyBlast:P._hbCd||0,bladeShot:P._bltCd||0,lavaSummon:P._lvCd||0,iceOrb:P._ioCd||0,ghostWalk:P._gwCd||0,bladeDash:P._bdCd||0,plagueBurst:P._pbCd||0,shieldThrow:P._stCd||0,blastShot:P._bsCd2||0,giantSlam:P._gslCd||0,holyDome:P._hdCd||0,spikeTrap:P._gcCd||0,needleShot:P._ndCd||0,holyPrison:P._hpCd||0,execution:P._execCd||0,peaceShield:P._psCd||0,blueShot:P._blueCd||0,blackStar:P._bsCd||0,weakPhys:P._wpCd||0,weakMag:P._wmCd||0,weakPj:P._wjCd||0,weakRev:P._wrCd||0,giantSlam2:P._gslCd||0,darkPillar:P._dpCd||0,ghostXbowTurret:P._gxCd||0,voidScarecrow:P._vsCd||0,explodeScarecrow:P._exsCd||0,timeWarp:P._twCd||0};
+          const _skCdMap={maliceMortar:P._mmCd||0,holyBlast:P._hbCd||0,bladeShot:P._bltCd||0,lavaSummon:P._lvCd||0,iceOrb:P._ioCd||0,ghostWalk:P._gwCd||0,bladeDash:P._bdCd||0,plagueBurst:P._pbCd||0,shieldThrow:P._stCd||0,blastShot:P._bsCd2||0,giantSlam:P._gslCd||0,holyDome:P._hdCd||0,spikeTrap:P._gcCd||0,needleShot:P._ndCd||0,holyPrison:P._hpCd||0,execution:P._execCd||0,peaceShield:P._psCd||0,blueShot:P._blueCd||0,blackStar:P._bsCd||0,weakPhys:P._wpCd||0,weakMag:P._wmCd||0,weakPj:P._wjCd||0,weakRev:P._wrCd||0,giantSlam2:P._gslCd||0,darkPillar:P._dpCd||0,ghostXbowTurret:P._gxCd||0,voidScarecrow:P._vsCd||0,explodeScarecrow:P._exsCd||0,timeWarp:P._twCd||0,maliceDome:P._mdCd||0};
           const _cn=_skCdMap[_ssid]||0;const _cm=_ssk.cd||0;
           _skOnCd=_cn>0;_cdPct=(_skOnCd&&_cm>0)?Math.min(_cn/_cm,1):0;_cdSec=(_cn/60).toFixed(1)+'s';
         }
@@ -20836,7 +20852,7 @@ function _fireEnergyShot(){
   if((P._esSfxCd||0)<=0){playSample('beam_fire',.42,_r(1.15,.08));P._esSfxCd=6;}
   shake(4);_addSkProf('energyShot');
 }
-// ── 마력광선 채널링 틱 (매 프레임 호출, E 홀드 중 지속) ──
+// ── 얼음송곳 채널링 틱 (매 프레임 호출, E 홀드 중 지속) ──
 const _AL_HIT_HALF_W=80; // 타격 반폭 80px
 function _tickArcLaser(sp){
   const _alLv=P.skills.arcLaser||1;
@@ -20863,9 +20879,9 @@ function _tickArcLaser(sp){
       const dx=e.x-P.x,dy=e.y-P.y;
       const proj=dx*cx+dy*cy;if(proj<0||proj>_alRange)continue;
       const perp=Math.abs(dx*cy-dy*cx);if(perp>_halfW+e.r)continue;
-      hurtE(e,~~(_alDmg*elMul(EL.L,e.el)),Math.atan2(dy,dx),false,{kbMult:0.1,noPoise:true,noStun:true},EL.L);
-      e._elecT=Math.max(e._elecT||0,30);
-      if(Math.random()<.15)addParts(e.x,e.y,'#4488ff',2);
+      hurtE(e,~~(_alDmg*elMul(EL.I,e.el)),Math.atan2(dy,dx),false,{kbMult:0.1,noPoise:true,noStun:true},EL.I);
+      e._webSlow=Math.max(e._webSlow||0,30);
+      if(Math.random()<.15)addParts(e.x,e.y,'#88ddff',2);
     }
     _shBufI--;
     _addSkProf('arcLaser');
@@ -20952,7 +20968,7 @@ const _MAGIC_E_HANDLERS={
     P._alActive=true;P._alDmgT=0;P._alSfxCd=0;P._alLog=false;P._alWarn=false;
     {if(_gpActive){_gpAutoAim(400);P.atkArc=P.facing;}else{const sx=P.x-G.cam.x+C.width/2,sy=P.y-G.cam.y+C.height/2;P.atkArc=Math.atan2(mouse.y-sy,mouse.x-sx);P.facing=P.atkArc;}}
 
-    addTxt(P.x,P.y-25,_T('🔷 마력광선!'),'#4488ff',40);
+    addTxt(P.x,P.y-25,_T('❄ 얼음송곳!'),'#88ddff',40);
     playSample('beam_fire',.5,_r(1.3,.1));
     P.s='beam';P._beamHold=true; // beam 상태 사용 (이동 감속)
     return true;
@@ -24941,7 +24957,7 @@ function update(){
         var _sdRange=_sfActive?~~(_gsRange2*1.5):_gsRange2;
         const _msReflect=pShieldMul();
         for(let i=projs.length-1;i>=0;i--){
-          const p=projs[i];if(p.friendly||p.noParry)continue;
+          const p=projs[i];if(p.friendly||p.noParry||p.blackBean)continue;
           const d=dst(P.x,P.y,p.x,p.y);if(d>_sdRange)continue;
           const ang=Math.atan2(p.y-P.y,p.x-P.x);
           let diff=ang-P.facing;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
@@ -25561,7 +25577,7 @@ function update(){
   // ── BEAM: Ultimate magic (hold E, 2+ elements, 3초 제한) ──
   case 'beam':{
     if(P._alActive){
-      // 마력광선 채널링 중 — 50% 감속 이동 허용
+      // 얼음송곳 채널링 중 — 50% 감속 이동 허용
       let _aldx=0,_aldy=0;
       if(isAct('up'))_aldy=-1;if(isAct('down'))_aldy=1;if(isAct('left'))_aldx=-1;if(isAct('right'))_aldx=1;
       const _all=Math.sqrt(_aldx*_aldx+_aldy*_aldy);if(_all>0){_aldx/=_all;_aldy/=_all}
@@ -27323,7 +27339,7 @@ function update(){
       else{P._esAutoFire=false;addTxt(P.x,P.y-25,_T('MP 부족 — 연사 해제'),'#888',30)}
     }
   }
-  // ═══ 마력광선 채널링 (E 홀드 지속) ═══
+  // ═══ 얼음송곳 채널링 (E 홀드 지속) ═══
   if(P._alActive&&G.on){
     // E키 떼면 해제
     if(!isHeld('beam')){P._alActive=false;P._alBeam=null;P.s='idle';P.st2=0;addTxt(P.x,P.y-25,_T('광선 해제'),'#888',25)}
@@ -28428,17 +28444,17 @@ function update(){
         }
         G._fireZones[_fzW++]=fz;continue;
       }
-      // ═══ 신의영역: 적 접근 차단 + 탄막 무효 ═══
+      // ═══ 신의영역: 보호돔 (밖→안 차단) + 탄막 무효 ═══
       if(fz.type==='maliceDome'){
         if(fz.t>=fz.maxT){continue}
-        // 적 밀어내기 (보스 순간이동 제외)
-        const _mdNe=shQuery(fz.x,fz.y,fz.r+30);
+        // 적 강제 밀어내기 (보스 무시) — 좌표 즉시 경계 밖으로 + 속도 초기화
+        const _mdNe=shQuery(fz.x,fz.y,fz.r+40);
         for(let _mi=0;_mi<_mdNe.length;_mi++){const e=_mdNe[_mi];if(!e.alive)continue;
+          if(e.ib)continue;
           const _ed=dst(e.x,e.y,fz.x,fz.y);if(_ed>=fz.r)continue;
-          if(e.ib&&e._teleporting)continue; // 보스 순간이동은 통과
           const _ea=Math.atan2(e.y-fz.y,e.x-fz.x);
-          e.x=fz.x+Math.cos(_ea)*(fz.r+4);e.y=fz.y+Math.sin(_ea)*(fz.r+4);
-          e.kb.x+=Math.cos(_ea)*2;e.kb.y+=Math.sin(_ea)*2;
+          e.x=fz.x+Math.cos(_ea)*(fz.r+8);e.y=fz.y+Math.sin(_ea)*(fz.r+8);
+          e.vx=0;e.vy=0;e.kb.x=Math.cos(_ea)*6;e.kb.y=Math.sin(_ea)*6;
         }
         // 파티클 (금색)
         if(Math.random()>.7){const _mda=Math.random()*Math.PI*2;
@@ -28569,7 +28585,7 @@ function update(){
       }
       // ═══ 참회: 8방향 마법진 회전 쐐기 데미지 ═══
       if(fz.type==='hellRay'){
-        fz.ang=(fz.ang||0)+Math.PI*2/fz.maxT*sp*2; // 지속시간에 2회전
+        fz.ang=(fz.ang||0)+Math.PI*2/fz.maxT*sp; // 지속시간에 1회전
         // 8방향 팔 판정 — 45도 간격, 폭 40px
         if(~~(fz.t)%10<~~(sp)+1){
           const _hrNe=shQuery(fz.x,fz.y,fz.r+20);
@@ -29616,10 +29632,10 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
-  // 패링 임팩트: 무지개=Power Poison만, 그 외=Lightning(기존)
+  // 패링 임팩트: 무지개/Q패링=Dark 02, 우클릭=Lightning(기존)
   if(!window._tvfx2)window._tvfx2=[];
-  if(_parryEl==='rainbow'){
-    _rainbowImpact(_px,_py);
+  if(_parryEl==='rainbow'||_isQParry){
+    _dark02Impact(_px,_py);
   }else{
     const _prCombo=_TVFX2_COMBOS[2]; // Lightning (기존)
     _prCombo.layers.forEach(function(l){
@@ -34207,7 +34223,7 @@ function hurtP(dmg,opts){
       a=overflow; // 오버플로우→HP (HP와 동일한 내구성)
     }else{
       P.shield-=a;
-      addTxt(P.x,P.y-25,'🔷-'+a,'#4488ff',20);
+      addTxt(P.x,P.y-25,'❄-'+a,'#4488ff',20);
       a=0;_shFullBlock=true; // 쉴드 완전 흡수 — HP 차단
     }
   }
@@ -34360,7 +34376,7 @@ function _drReset(){_drBuf=[];_drIdx=0;_drLen=0;_drCaptT=0}
 function die(){
   ultUnmute(); // 궁극기 시전 중 사망 시 음소거 해제
   P._esAutoFire=false; // 마력연사 해제
-  P._alActive=false;P._alBeam=null; // 마력광선 해제
+  P._alActive=false;P._alBeam=null; // 얼음송곳 해제
   if(P.s==='fallen'||P.s==='dead')return; // 이미 쓰러진 상태면 중복 방지
   // ═══ 어픽스: reviveOnce (1회부활) — HP 30%로 즉시 부활 ═══
   if(_eqAffix('reviveOnce')>0&&!P._reviveOnceUsed){P._reviveOnceUsed=true;P.hp=~~(P.mhp*_eqAffix('reviveOnce'));P.iframes=120;addTxt(P.x,P.y-25,_T('💀 1회부활!'),'#44ff88',60);return}
@@ -34592,9 +34608,9 @@ const SKILL_LIST=[
   {id:'iceOrb',name:'얼음보주',cat:'bow',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',descEn:'Enter ice — invincible. Re-press to shatter → 48 ice blades fan spread (MP 40, CD 20s). Per Lv blades+2 DMG+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
   {id:'needleShot',name:'만화방창 II',cat:'bow',act:true,emoji:'✨',desc:'[고정: T 자동] 초고속 바늘 연발. 1렙 2발, 5렙마다 +1발. 관통 없음. ST 8. 쿨 1.5초. Lv당 뎀+100%',descEn:'[Fixed: T auto] Ultra-fast needles burst. Lv1 2 shots, +1 per 5 levels. No pierce. ST 8. CD 1.5s',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
   // [SKILL REMOVED 2026-05-01] energyShot (마력연사) — 삭제
-  {id:'arcLaser',name:'마력광선',cat:'magic',emoji:'🔷',desc:'E홀드: 직선 관통 레이저 채널링. MP 8+Lv/초 지속소모. 폭160+(Lv×10)px, 사거리1200+Lv×80. 관통+감전. Lv당 뎀+21%',descEn:'E hold: Straight piercing laser channeling. MP 8+Lv/s drain. Width 160+(Lv×10)px, range 1200+Lv×80. Pierce+shock. Per Lv DMG+21%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'arcLaser',name:'얼음송곳',cat:'magic',emoji:'❄',desc:'E홀드: 직선 관통 냉기빔 채널링. MP 8+Lv/초 지속소모. 폭160+(Lv×10)px, 사거리1200+Lv×80. 관통+감속. Lv당 뎀+21%',descEn:'E hold: Straight piercing ice beam channeling. MP 8+Lv/s drain. Width 160+(Lv×10)px, range 1200+Lv×80. Pierce+slow. Per Lv DMG+21%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'fireBeam',name:'업화선',cat:'bow',emoji:'🔥',desc:'E탭: 화염 유도빔 발사. MP10. 쿨1초(DEX 스케일). 100% 관통+유도+화상. Lv당 사거리+50 뎀+12%',descEn:'E tap: fire homing beam. MP 10. CD 1s (DEX scale). 100% pierce+homing+burn. Per Lv range+50 DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'maliceDome',name:'신의영역',cat:'def',act:true,noDmg:true,emoji:'✟',desc:'현재 위치에 신성 보호돔 설치 (8초+Lv당0.5초). 돔 안: 적 탄막 무효화+적 접근 불가. 보스 순간이동은 통과. MP 60. 쿨 25초. Lv당 범위+15',descEn:'Place divine dome at current pos (8s+0.5s/Lv). Inside: nullify enemy projectiles + block enemy entry. Boss teleport bypasses. MP 60. CD 25s. Per Lv range+15',spCost:10,matCost:100,cd:1500,up:true,upSp:5,upMat:0},
+  {id:'maliceDome',name:'신의영역',cat:'def',act:true,noDmg:true,emoji:'✟',desc:'현재 위치에 신성 보호돔 설치 (8초+Lv당0.5초). 돔 안: 적 접근 불가+탄막 무효화. 보스 무시. MP 60. 쿨 25초. Lv당 범위+15',descEn:'Place divine dome at current pos (8s+0.5s/Lv). Inside: block enemy entry + nullify projectiles. Boss ignores. MP 60. CD 25s. Per Lv range+15',spCost:10,matCost:100,cd:1500,up:true,upSp:5,upMat:0},
   {id:'fireAura',name:'지옥진',cat:'magic',emoji:'🌋',desc:'E: 10초간 대지 진동. 범위 내 용암 기둥이 순차적으로 솟아올라 화상+틱 데미지. MP 100. 쿨 12초. Lv당 범위+10% 뎀+12%',descEn:'E: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'plagueBurst',name:'폭독칼날',cat:'bow',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)',descEn:'Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)',spCost:10,matCost:80,cd:1200,up:true,upSp:5,upMat:0},
   {id:'maliceStorm',name:'악의폭풍',cat:'magic',act:true,emoji:'🌀',desc:'마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (3초, 10틱, 틱당 100+Lv*20). Lv당 범위+22. 같은 지역 중복 불가',descEn:'Mouse-aim placement. CD 20s. Dark spiral at click pos (3s, 10 ticks, 100+Lv*20/tick). Per Lv range+22. No stacking same area',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
@@ -34645,7 +34661,7 @@ const SKILL_SLOT_DEFS={
           fireAura:{name:'지옥진',nameEn:'Inferno Field',emoji:'🌋',desc:'E: 10초 대지진동 (용암기둥+화상+틱뎀, MP100, 쿨12초)',descEn:'E: 10s ground quake (lava+burn+tick, MP100, cd 12s)'},
           fireBeam:{name:'업화선',nameEn:'Karma Beam',emoji:'🔥',desc:'E탭: 유도 화염빔 (100%관통+유도+화상, MP10, DEX공속)',descEn:'E tap: Homing fire beam (100% pierce+homing+burn, MP10, DEX aspd)'},
           // energyShot 삭제됨 (2026-05-01)
-          arcLaser:{name:'마력광선',nameEn:'Arc Laser',emoji:'🔷',desc:'E홀드: 직선 관통 레이저 채널링 (MP 8+Lv/초, 감전)',descEn:'E hold: straight piercing laser channel (MP 8+Lv/s, shock)'}}},
+          arcLaser:{name:'얼음송곳',nameEn:'Ice Spike',emoji:'❄',desc:'E홀드: 직선 관통 냉기빔 채널링 (MP 8+Lv/초, 감속)',descEn:'E hold: straight piercing ice beam channel (MP 8+Lv/s, slow)'}}},
   bow:{name:'석궁 자동(T)',nameEn:'Crossbow Auto(T)',key:'bow',skills:['normal','bladeShot','blastShot','fanShot','needleShot'],
     info:{normal:{name:'일반사격',nameEn:'Normal Shot',emoji:'🏹',desc:'T자동: 기본 화살',descEn:'T auto: Basic arrow'},
           bladeShot:{name:'붉은꽃',nameEn:'Red Bloom',emoji:'🌹',desc:'T자동: 붉은 꽃잎 칼날 (ST50)',descEn:'T auto: Red petal blade (ST50)'},
@@ -42867,7 +42883,7 @@ function draw(){
       X.restore();
     }else{P._esAnim=null}
   }
-  // ── 마력광선 VFX (채널링 지속 — 16프레임 애니메이션) ──
+  // ── 얼음송곳 VFX (채널링 지속 — 16프레임 애니메이션) ──
   if(P._alBeam&&_alImgReady){
     const al=P._alBeam;
     const t=al.t||0;
@@ -48142,7 +48158,7 @@ async function _startDemoTest(){
   SKILL_SLOTS[4]='giantSlam2';      // 대왕치기2 — Space키
   SKILL_SLOTS[5]='holyDome';        // 영역스킬(holyFuse) host — F키
   ULT_SLOT='blackStar'; // Z=블랙
-  P.activeCtSk='ghostWalk';P.activeMagicSk='arcLaser';P.activeBowSk='normal';P.activeChargeSk='charge';P.activeQSk='peaceShield';P.activeLMBSk='whirlwind'; // Ctrl=뇌전걸음, E=마력광선, Shift=기동강화전폭(dimBlast), Q=평화의보호, LMB=암전폭류(stormBurst)
+  P.activeCtSk='ghostWalk';P.activeMagicSk='arcLaser';P.activeBowSk='normal';P.activeChargeSk='charge';P.activeQSk='peaceShield';P.activeLMBSk='whirlwind'; // Ctrl=뇌전걸음, E=얼음송곳, Shift=기동강화전폭(dimBlast), Q=평화의보호, LMB=암전폭류(stormBurst)
   // 공격 패시브 9레벨
   ['pAtk','pParry','pMagic','pBow','pCrit','pPierce','pXbow','pMelee','pCombo','pAbund','pPred','pDot','pHunter'].forEach(k=>{if(k in PASSIVES)PASSIVES[k]=9;});
   // 스탯 5종 300씩
