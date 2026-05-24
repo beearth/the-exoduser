@@ -28131,3 +28131,23 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - index.html
 - sprites/zone_single.png
 
+
+## 2026-05-24 20:30 (auto)
+- _autosave/game_20260524_195810.html
+- _autosave/game_20260524_195954.html
+- _autosave/game_20260524_200032.html
+- _autosave/game_20260524_200742.html
+- _autosave/game_20260524_201230.html
+- _autosave/game_20260524_201303.html
+- _autosave/game_20260524_201322.html
+- _autosave/game_20260524_201732.html
+- _autosave/game_20260524_201746.html
+- _autosave/game_20260524_202328.html
+- assets/vfx/Dark_BasicImpact.png
+- assets/vfx/Dark_MediumImpact.png
+- assets/vfx/Dark_Smoke_Sheet_6x6.png
+- assets/vfx/Poison_BasicImpact.png
+- assets/vfx/Poison_MediumImpact.png
+- docs/8.0몬스?�디?�인/?�막?�스??총정�?md
+- game.html
+

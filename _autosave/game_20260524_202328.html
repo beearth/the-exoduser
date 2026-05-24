@@ -7047,7 +7047,23 @@ const _BOOM_MAX=12;const _booms=[];for(let i=0;i<_BOOM_MAX;i++)_booms.push({x:0,
 function _projHitFx(px,py,el,isRed){_addBoom(px,py,isRed?80:24,isRed?72:14,isRed?'redbean':el===EL.I?'ice':el===EL.L?'lightning':el===EL.D?'dark':'fire');
   if(isRed){addParts(px,py,'#ff2200',20);shake(8);SFX.detonate();doHitFlash('#ff2200',0.2);
   }else{addParts(px,py,ELC[el]||'#ff8844',8);shake(4);doHitFlash(ELC[el]||'#ff8844',0.12)}}
-// ═══ 무지개탄 공통 Power Poison 임팩트 (피격/패링/적중 전부 동일) ═══
+// ═══ Dark 02 임팩트 (패링 전용) ═══
+function _dark02Impact(x,y){
+  if(!window._tvfx2)window._tvfx2=[];
+  const _d2L=[
+    {src:'Dark_MediumImpact.png',cols:4,rows:4,sc:2.2,delay:0,spd:2},
+    {src:'Dark_BasicImpact.png',cols:3,rows:3,sc:1.8,delay:0,spd:2},
+    {src:'Dark_MediumImpact.png',cols:4,rows:4,sc:3.0,delay:1,spd:3},
+    {src:'Dark_DarkSmoke_FBF_4x4.png',cols:4,rows:4,sc:1.0,delay:2,spd:4},
+  ];
+  _d2L.forEach(function(l){
+    const img=_tvfx2Imgs[l.src];if(!img||!img.complete)return;
+    const fw=~~(img.naturalWidth/l.cols),fh=~~(img.naturalHeight/l.rows);
+    window._tvfx2.push({img,x,y,cols:l.cols,rows:l.rows,fw,fh,
+      sc:l.sc,delay:l.delay||0,spd:l.spd||3,frame:0,total:l.cols*l.rows,t:0,timer:0});
+  });
+}
+// ═══ 무지개탄 블루콩 적중 임팩트 (Power Poison) ═══
 function _rainbowImpact(x,y){
   if(!window._tvfx2)window._tvfx2=[];
   const _qL=[
@@ -26223,7 +26239,7 @@ function update(){
     }
     if(!_dead&&p.life<=0){if(p.life<=-900||p.mine||p.bomb)_dead=true;else if(p.redBean){_addBoom(p.x,p.y,40,72,'redbean');_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#ff2200',12);shake(3);_dead=true}else{const _cdx=p.x-G.cam.x,_cdy=p.y-G.cam.y;if(_cdx*_cdx+_cdy*_cdy>6250000)_dead=true;else p.life=1}}
     // 히트 임팩트 이펙트 (투사체 소멸 시)
-    if(_dead&&OPT.deathFx&&!p.mine&&!p.trap&&!p.dimRift&&!p.web&&!p.poisonZone&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade){
+    if(_dead&&OPT.deathFx&&!p.mine&&!p.trap&&!p.dimRift&&!p.web&&!p.poisonZone&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p._fromRainbow){
       _addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx));
     }
     if(_dead){_recycleProj(p);continue}
@@ -26284,11 +26300,11 @@ function update(){
     let hit = false;
     let _bombDead=false;
     if(isW(nx, p.y)) {
-      if(p.blueBean){_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#00ccff',6);_recycleProj(p);continue;}
+      if(p.blueBean){if(p._fromRainbow){_rainbowImpact(p.x,p.y)}else{_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion')}addParts(p.x,p.y,'#00ccff',6);_recycleProj(p);continue;}
       else if(p.bomb){const _br2=p.bombR||60;const _ne2=shQuery(p.x,p.y,_br2);for(let ni=0;ni<_ne2.length;ni++){const e=_ne2[ni];if(e.alive&&dst(e.x,e.y,p.x,p.y)<_br2)hurtE(e,~~((p.bombAtk||p.dmg)*1.0),Math.atan2(e.y-p.y,e.x-p.x),false,{},p.el)}if(!p.friendly&&dst(P.x,P.y,p.x,p.y)<_br2&&P.iframes<=0&&P.s!=='charge')hurtP(~~(p.dmg),{dtype:'magic'});const _isR=p.friendly&&p.redBean;addParts(p.x,p.y,_isR?'#00e5ff':'#ff8800',_isR?25:15);shake(_isR?12:4);_bombDead=true;}else if(p.redBean){_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#ff2200',10);_recycleProj(p);continue;}else{addParts(p.x,p.y,ELC[p.el],1);_recycleProj(p);continue;}
     }
     if(!_bombDead&&isW(p.x, ny)) {
-      if(p.blueBean){_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#00ccff',6);_recycleProj(p);continue;}
+      if(p.blueBean){if(p._fromRainbow){_rainbowImpact(p.x,p.y)}else{_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion')}addParts(p.x,p.y,'#00ccff',6);_recycleProj(p);continue;}
       else if(p.bomb){const _br2=p.bombR||60;const _ne2=shQuery(p.x,p.y,_br2);for(let ni=0;ni<_ne2.length;ni++){const e=_ne2[ni];if(e.alive&&dst(e.x,e.y,p.x,p.y)<_br2)hurtE(e,~~((p.bombAtk||p.dmg)*1.0),Math.atan2(e.y-p.y,e.x-p.x),false,{},p.el)}if(!p.friendly&&dst(P.x,P.y,p.x,p.y)<_br2&&P.iframes<=0&&P.s!=='charge')hurtP(~~(p.dmg),{dtype:'magic'});const _isR=p.friendly&&p.redBean;addParts(p.x,p.y,_isR?'#00e5ff':'#ff8800',_isR?25:15);shake(_isR?12:4);_bombDead=true;}else if(p.redBean){_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#ff2200',10);_recycleProj(p);continue;}else{addParts(p.x,p.y,ELC[p.el],1);_recycleProj(p);continue;}
     }
     if(_bombDead){_recycleProj(p);continue}
@@ -26351,7 +26367,7 @@ function update(){
     }
     // ══ 무지개콩탄: Q(sBlock)만 패링 가능, 우클릭(sBash) 시 데미지 ══
     const _wwDetAbs=P.s==='whirlwind'&&_isFused('whirlDet');
-    const _bkHitR=P.s==='sBash'||_anyPW?_rbDeflR:_pCollR+16;
+    const _bkHitR=P.s==='sBash'||_anyPW||(P._sbParryT>0)?_rbDeflR:_pCollR+16;
     // 우클릭(sBash)으로 무지개탄 패링 시도 → 잘못된 입력, 데미지
     if(p.blackBean&&!_pHit&&_pDist<_wrongR&&P.s==='sBash'&&!P._ioActive&&P.iframes<=0){
       // 우클릭 패링 시도 → 잘못된 입력: 폭발 + 넉백
@@ -26530,7 +26546,7 @@ function update(){
           hurtE(be,~~(_blD*(.8+bf*.2)),ba,false,{kbMult:2,magic:!!p.magic,blueBean:!!p.blueBean,parryBlueBean:!!p.parryBlueBean},p.el);
           be.kb.x+=Math.cos(ba)*18*bf;be.kb.y+=Math.sin(ba)*18*bf;
           be.poisonT=Math.max(be.poisonT||0,600);be.poisonStk=Math.min(10,(be.poisonStk||0)+3);be._poisonPool=(be._poisonPool||0)+pDotPool()*_blD*0.15;be.poison=1}
-        _rainbowImpact(p.x,p.y);SFX.detonate();
+        if(p._fromRainbow){_rainbowImpact(p.x,p.y)}else{_addBoom(p.x,p.y,_blR,72,'redbean')}SFX.detonate();
         G.shake=18*OPT.shake/100;if(G.slowMo<=0)G.slowMo=25;
         addParts(p.x,p.y,'#00ccff',20);addTxt(p.x,p.y-20,_T('💥반사 폭발!'),'#00e5ff',50)}
       _pHit=true;break}}}
@@ -26664,7 +26680,7 @@ function update(){
         dead=true}
     }
     // 플레이어 투사체 소멸 임팩트 (터렛 투사체 제외)
-    if(dead&&OPT.deathFx&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p.fireBeamProj&&!p._fromTurret){
+    if(dead&&OPT.deathFx&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p.fireBeamProj&&!p._fromTurret&&!p._fromRainbow){
       _addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),p.bomb?'explosion':'magic');
     }
     if(dead){continue}
@@ -29616,25 +29632,12 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
-  // 신형 패링 임팩트: 무지개=Power Poison, Q패링=Dark 02, 우클릭=Lightning
+  // 패링 임팩트: 무지개/Q패링=Dark 02, 우클릭=Lightning(기존)
   if(!window._tvfx2)window._tvfx2=[];
-  if(_parryEl==='rainbow'){
-    _rainbowImpact(_px,_py);
-  }else if(_isQParry){
-    const _qLayers=[
-      {src:'Dark_MediumImpact.png',cols:4,rows:4,sc:2.2,delay:0,spd:2},
-      {src:'Dark_BasicImpact.png',cols:3,rows:3,sc:1.8,delay:0,spd:2},
-      {src:'Dark_MediumImpact.png',cols:4,rows:4,sc:3.0,delay:1,spd:3},
-      {src:'Dark_DarkSmoke_FBF_4x4.png',cols:4,rows:4,sc:1.0,delay:2,spd:4},
-    ];
-    _qLayers.forEach(function(l){
-      const img=_tvfx2Imgs[l.src];if(!img||!img.complete)return;
-      const fw=~~(img.naturalWidth/l.cols),fh=~~(img.naturalHeight/l.rows);
-      window._tvfx2.push({img,x:_px,y:_py,cols:l.cols,rows:l.rows,fw,fh,
-        sc:l.sc,delay:l.delay||0,spd:l.spd||3,frame:0,total:l.cols*l.rows,t:0,timer:0});
-    });
+  if(_parryEl==='rainbow'||_isQParry){
+    _dark02Impact(_px,_py);
   }else{
-    const _prCombo=_TVFX2_COMBOS[2]; // Lightning
+    const _prCombo=_TVFX2_COMBOS[2]; // Lightning (기존)
     _prCombo.layers.forEach(function(l){
       const img=_tvfx2Imgs[l.src];if(!img||!img.complete)return;
       const fw=~~(img.naturalWidth/l.cols),fh=~~(img.naturalHeight/l.rows);

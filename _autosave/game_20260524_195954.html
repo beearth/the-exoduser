@@ -26223,7 +26223,7 @@ function update(){
     }
     if(!_dead&&p.life<=0){if(p.life<=-900||p.mine||p.bomb)_dead=true;else if(p.redBean){_addBoom(p.x,p.y,40,72,'redbean');_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#ff2200',12);shake(3);_dead=true}else{const _cdx=p.x-G.cam.x,_cdy=p.y-G.cam.y;if(_cdx*_cdx+_cdy*_cdy>6250000)_dead=true;else p.life=1}}
     // 히트 임팩트 이펙트 (투사체 소멸 시)
-    if(_dead&&OPT.deathFx&&!p.mine&&!p.trap&&!p.dimRift&&!p.web&&!p.poisonZone&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade){
+    if(_dead&&OPT.deathFx&&!p.mine&&!p.trap&&!p.dimRift&&!p.web&&!p.poisonZone&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p._fromRainbow){
       _addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx));
     }
     if(_dead){_recycleProj(p);continue}
@@ -26284,11 +26284,11 @@ function update(){
     let hit = false;
     let _bombDead=false;
     if(isW(nx, p.y)) {
-      if(p.blueBean){_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#00ccff',6);_recycleProj(p);continue;}
+      if(p.blueBean){if(p._fromRainbow){_rainbowImpact(p.x,p.y)}else{_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion')}addParts(p.x,p.y,'#00ccff',6);_recycleProj(p);continue;}
       else if(p.bomb){const _br2=p.bombR||60;const _ne2=shQuery(p.x,p.y,_br2);for(let ni=0;ni<_ne2.length;ni++){const e=_ne2[ni];if(e.alive&&dst(e.x,e.y,p.x,p.y)<_br2)hurtE(e,~~((p.bombAtk||p.dmg)*1.0),Math.atan2(e.y-p.y,e.x-p.x),false,{},p.el)}if(!p.friendly&&dst(P.x,P.y,p.x,p.y)<_br2&&P.iframes<=0&&P.s!=='charge')hurtP(~~(p.dmg),{dtype:'magic'});const _isR=p.friendly&&p.redBean;addParts(p.x,p.y,_isR?'#00e5ff':'#ff8800',_isR?25:15);shake(_isR?12:4);_bombDead=true;}else if(p.redBean){_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#ff2200',10);_recycleProj(p);continue;}else{addParts(p.x,p.y,ELC[p.el],1);_recycleProj(p);continue;}
     }
     if(!_bombDead&&isW(p.x, ny)) {
-      if(p.blueBean){_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#00ccff',6);_recycleProj(p);continue;}
+      if(p.blueBean){if(p._fromRainbow){_rainbowImpact(p.x,p.y)}else{_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion')}addParts(p.x,p.y,'#00ccff',6);_recycleProj(p);continue;}
       else if(p.bomb){const _br2=p.bombR||60;const _ne2=shQuery(p.x,p.y,_br2);for(let ni=0;ni<_ne2.length;ni++){const e=_ne2[ni];if(e.alive&&dst(e.x,e.y,p.x,p.y)<_br2)hurtE(e,~~((p.bombAtk||p.dmg)*1.0),Math.atan2(e.y-p.y,e.x-p.x),false,{},p.el)}if(!p.friendly&&dst(P.x,P.y,p.x,p.y)<_br2&&P.iframes<=0&&P.s!=='charge')hurtP(~~(p.dmg),{dtype:'magic'});const _isR=p.friendly&&p.redBean;addParts(p.x,p.y,_isR?'#00e5ff':'#ff8800',_isR?25:15);shake(_isR?12:4);_bombDead=true;}else if(p.redBean){_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#ff2200',10);_recycleProj(p);continue;}else{addParts(p.x,p.y,ELC[p.el],1);_recycleProj(p);continue;}
     }
     if(_bombDead){_recycleProj(p);continue}
@@ -26664,7 +26664,7 @@ function update(){
         dead=true}
     }
     // 플레이어 투사체 소멸 임팩트 (터렛 투사체 제외)
-    if(dead&&OPT.deathFx&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p.fireBeamProj&&!p._fromTurret){
+    if(dead&&OPT.deathFx&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p.fireBeamProj&&!p._fromTurret&&!p._fromRainbow){
       _addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),p.bomb?'explosion':'magic');
     }
     if(dead){continue}
@@ -29616,31 +29616,14 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
-  // 신형 패링 임팩트: 무지개=Power Poison, Q패링=Dark 02, 우클릭=Lightning
-  if(!window._tvfx2)window._tvfx2=[];
+  // 패링 임팩트: 무지개=Power Poison, 빨콩=redbean, 그 외=속성별 boom(기존)
   if(_parryEl==='rainbow'){
     _rainbowImpact(_px,_py);
-  }else if(_isQParry){
-    const _qLayers=[
-      {src:'Dark_MediumImpact.png',cols:4,rows:4,sc:2.2,delay:0,spd:2},
-      {src:'Dark_BasicImpact.png',cols:3,rows:3,sc:1.8,delay:0,spd:2},
-      {src:'Dark_MediumImpact.png',cols:4,rows:4,sc:3.0,delay:1,spd:3},
-      {src:'Dark_DarkSmoke_FBF_4x4.png',cols:4,rows:4,sc:1.0,delay:2,spd:4},
-    ];
-    _qLayers.forEach(function(l){
-      const img=_tvfx2Imgs[l.src];if(!img||!img.complete)return;
-      const fw=~~(img.naturalWidth/l.cols),fh=~~(img.naturalHeight/l.rows);
-      window._tvfx2.push({img,x:_px,y:_py,cols:l.cols,rows:l.rows,fw,fh,
-        sc:l.sc,delay:l.delay||0,spd:l.spd||3,frame:0,total:l.cols*l.rows,t:0,timer:0});
-    });
+  }else if(_parryEl==='red'){
+    _addBoom(_px,_py,80,72,'redbean');
   }else{
-    const _prCombo=_TVFX2_COMBOS[2]; // Lightning
-    _prCombo.layers.forEach(function(l){
-      const img=_tvfx2Imgs[l.src];if(!img||!img.complete)return;
-      const fw=~~(img.naturalWidth/l.cols),fh=~~(img.naturalHeight/l.rows);
-      window._tvfx2.push({img,x:_px,y:_py,cols:l.cols,rows:l.rows,fw,fh,
-        sc:l.sc*1.2,delay:l.delay||0,spd:l.spd||3,frame:0,total:l.cols*l.rows,t:0,timer:0});
-    });
+    const _pbEl=typeof _parryEl==='number'?_parryEl:0;
+    _addBoom(_px,_py,60,28,_pbEl===EL.I?'ice':_pbEl===EL.L?'lightning':_pbEl===EL.D?'dark':'fire');
   }
   // ═══ 공통 패링 성공 임팩트 (모든 패링에서 동일하게 발생) ═══
   const _parEC=_parryEl==='red'?'#ff2200':_parryEl==='rainbow'?'#ff00ff':ELC[_parryEl]||'#00ccff';
