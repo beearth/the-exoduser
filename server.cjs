@@ -76,7 +76,7 @@ const server = http.createServer(async (req, res) => {
 
   try {
     if (pathname === '/api/slots' && req.method === 'GET') {
-      const files = fs.readdirSync(SAVE_DIR).filter(f => f.endsWith('.json'));
+      const files = fs.readdirSync(SAVE_DIR).filter(f => f.endsWith('.json') && !f.startsWith('_'));
       const slots = files.map(f => {
         try {
           const data = JSON.parse(fs.readFileSync(path.join(SAVE_DIR, f), 'utf8'));

@@ -28092,3 +28092,22 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - sprites/spike_trap/vortex.png
 - sprites/spike_trap/결계.png
 
+
+## 2026-05-24 18:30 (auto)
+- _autosave/game_20260524_175310.html
+- _autosave/game_20260524_175408.html
+- _autosave/game_20260524_180210.html
+- _autosave/game_20260524_180404.html
+- _autosave/game_20260524_180747.html
+- _autosave/game_20260524_181037.html
+- _autosave/game_20260524_181750.html
+- _autosave/game_20260524_182132.html
+- _autosave/game_20260524_182329.html
+- _autosave/game_20260524_182646.html
+- assets/vfx/malice_dome.png
+- game.html
+- server.cjs
+- sprites/bonfire_barrier.png
+- sprites/holy_dome.png
+- vfx_test.html
+

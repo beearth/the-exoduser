@@ -12921,6 +12921,7 @@ const _TVFX2_COMBOS=[
     {src:'Dark_DarkSmoke_FBF_4x4.png',cols:4,rows:4,sc:1.4,delay:0,spd:3},
     {src:'Dark_Smoke_Sheet_6x6.png',cols:6,rows:6,sc:1.6,delay:1,spd:3},
     {src:'Dark_BasicImpact.png',cols:3,rows:3,sc:0.6,delay:0,spd:2},
+    {src:'Dark_MediumImpact.png',cols:4,rows:4,sc:1.0,delay:0,spd:3},
   ]},
   {name:'Arcane',layers:[
     {src:'Arcane_Arcane_FBF_6x6.png',cols:6,rows:6,sc:1.2,delay:0,spd:3},
@@ -29600,23 +29601,26 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
-  // 신형 패링 임팩트: 무지개=Dark, 그 외=Lightning
-  {const _prCombo=_TVFX2_COMBOS[_parryEl==='rainbow'?3:2]; // 3=Dark, 2=Lightning
+  // 신형 패링 임팩트: Q패링=Dark 02 임팩트, 우클릭=Lightning
   if(!window._tvfx2)window._tvfx2=[];
-  _prCombo.layers.forEach(function(l){
-    const img=_tvfx2Imgs[l.src];if(!img||!img.complete)return;
-    const fw=~~(img.naturalWidth/l.cols),fh=~~(img.naturalHeight/l.rows);
-    window._tvfx2.push({img,x:_px,y:_py,cols:l.cols,rows:l.rows,fw,fh,
-      sc:l.sc*(_parryEl==='rainbow'?1.5:1.2),delay:l.delay||0,spd:l.spd||3,frame:0,total:l.cols*l.rows,t:0,timer:0});
-  });
-  // Dark 02: 추가 MediumImpact 레이어 (무지개 전용)
-  if(_parryEl==='rainbow'){
-    const _d2L={src:'Dark_MediumImpact.png',cols:4,rows:4,sc:2.0,delay:0,spd:3};
-    const _d2Img=_tvfx2Imgs[_d2L.src];if(_d2Img&&_d2Img.complete){
-      const fw=~~(_d2Img.naturalWidth/4),fh=~~(_d2Img.naturalHeight/4);
-      window._tvfx2.push({img:_d2Img,x:_px,y:_py,cols:4,rows:4,fw,fh,sc:2.0,delay:0,spd:3,frame:0,total:16,t:0,timer:0});
-    }
-  }}
+  if(_isQParry){
+    // Q패링: Power Water 콤보
+    const _prCombo=_TVFX2_COMBOS[6]; // Water
+    _prCombo.layers.forEach(function(l){
+      const img=_tvfx2Imgs[l.src];if(!img||!img.complete)return;
+      const fw=~~(img.naturalWidth/l.cols),fh=~~(img.naturalHeight/l.rows);
+      window._tvfx2.push({img,x:_px,y:_py,cols:l.cols,rows:l.rows,fw,fh,
+        sc:l.sc*1.5,delay:l.delay||0,spd:l.spd||3,frame:0,total:l.cols*l.rows,t:0,timer:0});
+    });
+  }else{
+    const _prCombo=_TVFX2_COMBOS[2]; // Lightning
+    _prCombo.layers.forEach(function(l){
+      const img=_tvfx2Imgs[l.src];if(!img||!img.complete)return;
+      const fw=~~(img.naturalWidth/l.cols),fh=~~(img.naturalHeight/l.rows);
+      window._tvfx2.push({img,x:_px,y:_py,cols:l.cols,rows:l.rows,fw,fh,
+        sc:l.sc*1.2,delay:l.delay||0,spd:l.spd||3,frame:0,total:l.cols*l.rows,t:0,timer:0});
+    });
+  }
   // ═══ 공통 패링 성공 임팩트 (모든 패링에서 동일하게 발생) ═══
   const _parEC=_parryEl==='red'?'#ff2200':_parryEl==='rainbow'?'#ff00ff':ELC[_parryEl]||'#00ccff';
   SFX.deflect();doHitFlash(_parEC,0.25);
@@ -43336,20 +43340,19 @@ function draw(){
   }
   const _pC0=performance.now(); // postB=flash+chroma+lit+bloom+torch
   let _pC1=0,_pC2=0,_pC3=0,_pC4=0,_pC5=0;
-  // ── 화톳불 배리어 비주얼 ──
+  // ── 화톳불 배리어 비주얼 — 신성 마법진 이미지 ──
   if(G._bonfire&&G._bonfire.t>0){const _bfv=G._bonfire;const _bfsx=C.width/2+(_bfv.x-G.cam.x),_bfsy=C.height/2+(_bfv.y-G.cam.y);
     const _bfAlpha=Math.min(1,_bfv.t/120);const _bfPulse=1+Math.sin(_now/300)*.03;const _bfDrawR=_bfv.r*_bfPulse;
-    X.save();
-    // gradient 대신 arc 레이어드 (createRadialGradient 제거)
-    X.globalAlpha=_bfAlpha*.04;X.fillStyle='#ff8c28';X.beginPath();X.arc(_bfsx,_bfsy,_bfDrawR,0,Math.PI*2);X.fill();
-    X.globalAlpha=_bfAlpha*.08;X.fillStyle='#ff5014';X.beginPath();X.arc(_bfsx,_bfsy,_bfDrawR*.65,0,Math.PI*2);X.fill();
-    X.globalAlpha=_bfAlpha*.12;X.fillStyle='#ff8c28';X.beginPath();X.arc(_bfsx,_bfsy,_bfDrawR*.3,0,Math.PI*2);X.fill();
-    X.globalAlpha=_bfAlpha*.4;X.strokeStyle='#ff6622';X.lineWidth=1.5;X.setLineDash(_D6_8);
-    X.beginPath();X.arc(_bfsx,_bfsy,_bfDrawR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
-    X.globalAlpha=_bfAlpha*.5;X.fillStyle='#ff8833';X.font='10px serif';
-    for(let _ri=0;_ri<4;_ri++){const _ra=_now/2000+_ri*Math.PI*.5;
-      X.fillText('☲',_bfsx+Math.cos(_ra)*_bfDrawR*.85-5,_bfsy+Math.sin(_ra)*_bfDrawR*.85+4)}
-    X.restore()}
+    if(!G._holyDomeImg){G._holyDomeImg=new Image();G._holyDomeImg.src='sprites/holy_dome.png'}
+    const _bfImg=G._holyDomeImg;
+    if(_bfImg.complete&&_bfImg.naturalWidth>0){
+      const _bfSz=_bfDrawR*2;
+      X.save();X.translate(_bfsx,_bfsy);
+      X.globalAlpha=_bfAlpha*.9;
+      X.rotate(_now*0.0003);
+      X.drawImage(_bfImg,-_bfSz/2,-_bfSz/2,_bfSz,_bfSz);
+      X.restore();
+    }}
   _pC1=performance.now(); // bonfire end
   // [SMOG] 스모그 렌더 — 프리렌더 스탬프 + 회전
   if(OPT.fog&&_smogCnt>0&&OPT.quality!=='low'){
@@ -44167,17 +44170,11 @@ function drawP(){
         const _vtImg=G._vortexImg;
         if(_vtImg.complete&&_vtImg.naturalWidth>0){
           X.globalAlpha=(.5+.3*Math.sin(_vt*3))*_vFade*_fzFade;
-          X.save();X.globalCompositeOperation='lighter';
-          X.translate(fz.x,fz.y);
+          X.save();X.translate(fz.x,fz.y);
           X.rotate(_now*0.001*(_vIce?-1:1));
           X.drawImage(_vtImg,-_vSz/2,-_vSz/2,_vSz,_vSz);
           X.restore();
         }
-        // 중심 코어 (맥동)
-        const _vcR=12+Math.sin(_vt*12)*5;
-        X.globalAlpha=(.4+.2*Math.sin(_vt*10))*_vFade;
-        X.fillStyle=_vIce?'#44aacc':'#aa44ff';
-        X.beginPath();X.arc(fz.x,fz.y,_vcR,0,Math.PI*2);X.fill();
       }else if(fz.type==='fireAura'){
         // ═══ 지옥진 — 지진 + 80회 순차 화염기둥 ═══
         const _faProg=fz.t/fz.maxT;
@@ -44251,8 +44248,7 @@ function drawP(){
         if(_stImg.complete&&_stImg.naturalWidth>0){
           const _stLife=fz.maxT>0?Math.max(0,1-fz.t/fz.maxT):1;
           X.globalAlpha=(.5+.5*(.5+.5*Math.sin(_now*.002)))*_fzFade;
-          X.save();X.globalCompositeOperation='lighter';
-          X.translate(fz.x,fz.y);
+          X.save();X.translate(fz.x,fz.y);
           X.rotate(_now*0.0003);
           X.drawImage(_stImg,-_stSz/2,-_stSz/2,_stSz,_stSz);
           X.restore();
@@ -44262,50 +44258,30 @@ function drawP(){
         const _wt=_now*.001;
         const _wCol=fz.type==='weakPhys'?'#ff6644':fz.type==='weakMag'?'#aa66ff':fz.type==='weakPj'?'#44aaff':'#ff4488';
         const _wCol2=fz.type==='weakPhys'?'#cc4422':fz.type==='weakMag'?'#7733cc':fz.type==='weakPj'?'#2288dd':'#cc2266';
-        // 1) 바닥 그라데이션
-        X.globalAlpha=(.06+.03*Math.sin(_wt*5))*_fzFade;
-        if(!fz._grdCache||fz._grdR!==fz.r||fz._grdX!==fz.x||fz._grdY!==fz.y){const g=X.createRadialGradient(fz.x,fz.y,0,fz.x,fz.y,fz.r);g.addColorStop(0,_wCol+'44');g.addColorStop(.7,_wCol2+'22');g.addColorStop(1,_wCol+'00');fz._grdCache=g;fz._grdR=fz.r;fz._grdX=fz.x;fz._grdY=fz.y}
-        X.fillStyle=fz._grdCache;X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.fill();
-        // 2) 외곽 점선 링
-        X.strokeStyle=_wCol;X.lineWidth=1.5;X.globalAlpha=(.25+.1*Math.sin(_wt*7))*_fzFade;
-        X.setLineDash(_D6_4);X.lineDashOffset=-_now*.08;
-        X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
-        // 3) 아이콘 (중앙)
-        X.globalAlpha=.2*_fzFade;X.fillStyle=_wCol;X.font='20px serif';X.textAlign='center';X.textBaseline='middle';
-        const _wE=fz.type==='weakPhys'?'⚔':fz.type==='weakMag'?'🔮':fz.type==='weakPj'?'🏹':'💀';
-        X.fillText(_wE,fz.x,fz.y);
-      }else if(fz.type==='holyDome'){
-        // ═══ 회복의 영역 — 황금 보호막 ═══
-        const _hdt=_now*.001;
-        // 1) 바닥 — 은은한 황금 원
-        X.globalAlpha=(.08+.03*Math.sin(_hdt*4))*_fzFade;
-        if(!fz._grdCache||fz._grdR!==fz.r||fz._grdX!==fz.x||fz._grdY!==fz.y){const g=X.createRadialGradient(fz.x,fz.y,0,fz.x,fz.y,fz.r);g.addColorStop(0,'rgba(255,215,0,.3)');g.addColorStop(.6,'rgba(255,200,80,.15)');g.addColorStop(1,'rgba(255,180,50,0)');fz._grdCache=g;fz._grdR=fz.r;fz._grdX=fz.x;fz._grdY=fz.y}
-        X.fillStyle=fz._grdCache;X.beginPath();X.arc(fz.x,fz.y,fz.r,0,Math.PI*2);X.fill();
-        // 2) 외곽 — 회전하는 황금 링
-        X.strokeStyle='#ffd700';X.lineWidth=2;X.globalAlpha=(.3+.1*Math.sin(_hdt*6))*_fzFade;
-        X.beginPath();
-        for(let _ri=0;_ri<=48;_ri++){
-          const _ra=Math.PI*2*_ri/48;
-          const _rr=fz.r+Math.sin(_ra*6+_hdt*8)*3;
-          if(_ri===0)X.moveTo(fz.x+Math.cos(_ra)*_rr,fz.y+Math.sin(_ra)*_rr);
-          else X.lineTo(fz.x+Math.cos(_ra)*_rr,fz.y+Math.sin(_ra)*_rr);
-        }
-        X.closePath();X.stroke();
-        // 3) 빛 파티클
-        for(let _si=0;_si<4;_si++){
-          const _sa=Math.random()*Math.PI*2;const _sd=Math.random()*fz.r*.8;
-          X.globalAlpha=(.2+Math.random()*.3)*_fzFade;
-          X.fillStyle=Math.random()>.5?'#ffd700':'#fff8dc';
-          X.beginPath();X.arc(fz.x+Math.cos(_sa)*_sd,fz.y+Math.sin(_sa)*_sd,1+Math.random()*2,0,Math.PI*2);X.fill();
-        }
-        // 4) 십자가 이미지 (맨 위, lighter 합성으로 빛남)
-        if(!G._holyCrossImg){G._holyCrossImg=new Image();G._holyCrossImg.src='sprites/holy_cross.png'}
-        if(G._holyCrossImg.complete&&G._holyCrossImg.naturalWidth>0){
-          const _cSz=fz.r*.8;
+        // 렌더 제거 — 이미지 기반 결계로 대체 (가시덫/신성영역 이미지 공유)
+        if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/결계.png'}
+        const _wkImg=G._spikeTrapImg;
+        if(_wkImg.complete&&_wkImg.naturalWidth>0){
+          const _wkDeploy=Math.min(1,fz.t/15);
+          const _wkSz=fz.r*2*_wkDeploy;
+          X.globalAlpha=(.4+.3*Math.sin(_wt*3))*_fzFade;
           X.save();X.translate(fz.x,fz.y);
-          X.globalCompositeOperation='lighter';
-          X.globalAlpha=1.0*_fzFade;
-          X.drawImage(G._holyCrossImg,-_cSz,-_cSz,_cSz*2,_cSz*2);
+          X.rotate(_now*0.0004);
+          X.drawImage(_wkImg,-_wkSz/2,-_wkSz/2,_wkSz,_wkSz);
+          X.restore();
+        }
+      }else if(fz.type==='holyDome'){
+        // ═══ 회복의 영역 — 신성 마법진 이미지 ═══
+        const _hdt=_now*.001;
+        const _hdDeploy=Math.min(1,fz.t/15);
+        const _hdSz=fz.r*2*_hdDeploy;
+        if(!G._holyDomeImg){G._holyDomeImg=new Image();G._holyDomeImg.src='sprites/holy_dome.png'}
+        const _hdImg=G._holyDomeImg;
+        if(_hdImg.complete&&_hdImg.naturalWidth>0){
+          X.globalAlpha=(.6+.3*Math.sin(_hdt*3))*_fzFade;
+          X.save();X.translate(fz.x,fz.y);
+          X.rotate(_now*0.0004);
+          X.drawImage(_hdImg,-_hdSz/2,-_hdSz/2,_hdSz,_hdSz);
           X.restore();
         }
       }else if(fz.type==='holyPrison'){
@@ -47434,12 +47410,15 @@ function drawP(){
     // 외곽 링
     X.globalAlpha=(.3+.1*Math.sin(_now*.004))*_mdProg;X.strokeStyle='#bb66ff';X.lineWidth=2;
     X.beginPath();X.arc(_fz.x,_fz.y,_fz.r,0,Math.PI*2);X.stroke();
-    // 스프라이트시트 돔 애니 (프레임 고정: 마지막 프레임 유지)
+    // 스프라이트시트 돔 애니 (돔은 하단 60%에 위치, lighter 합성)
     const _mf=_fz._animF||0;const _mCol=_mf%_MD_COLS;
-    const _drawSz=_fz.r*2.2; // 돔 크기를 범위에 맞춤
+    const _drawSz=_fz.r*1.6;
     const _drawH=_drawSz*(_MD_FH/_MD_FW);
-    X.globalAlpha=(.7+.15*Math.sin(_now*.003))*_mdProg;
-    X.drawImage(_MD_IMG,_mCol*_MD_FW,0,_MD_FW,_MD_FH,_fz.x-_drawSz/2,_fz.y-_drawH*.7,_drawSz,_drawH);
+    const _prevGco=X.globalCompositeOperation;
+    X.globalCompositeOperation='lighter';
+    X.globalAlpha=(.8+.15*Math.sin(_now*.003))*_mdProg;
+    X.drawImage(_MD_IMG,_mCol*_MD_FW,0,_MD_FW,_MD_FH,_fz.x-_drawSz/2,_fz.y-_drawH*.45,_drawSz,_drawH);
+    X.globalCompositeOperation=_prevGco;
     // 종료 직전 깜빡임
     if(_mdProg<.2){X.globalAlpha=(_mdProg/.2)*.5*((~~(_now*.02))%2)}
     X.globalAlpha=1;
@@ -47447,21 +47426,19 @@ function drawP(){
   // ══ 구속의 영역 렌더 (fireZone 기반) ══
   if(G._fireZones){for(let _fi=0;_fi<G._fireZones.length;_fi++){const _fz=G._fireZones[_fi];if(_fz.type!=='holyPrison')continue;
     const _hpProg=Math.min(1,1-_fz.t/_fz.maxT);const _hpt=_now*.001;
-    // 1) 바닥 — 은은한 황금 원
-    X.globalAlpha=(.06+.02*Math.sin(_hpt*3))*_hpProg;
-    if(!_fz._grdCache||_fz._grdR!==_fz.r||_fz._grdX!==_fz.x||_fz._grdY!==_fz.y){const g=X.createRadialGradient(_fz.x,_fz.y,0,_fz.x,_fz.y,_fz.r);g.addColorStop(0,'rgba(255,221,136,.25)');g.addColorStop(.7,'rgba(255,200,100,.1)');g.addColorStop(1,'rgba(255,180,50,0)');_fz._grdCache=g;_fz._grdR=_fz.r;_fz._grdX=_fz.x;_fz._grdY=_fz.y}
-    X.fillStyle=_fz._grdCache;X.beginPath();X.arc(_fz.x,_fz.y,_fz.r,0,Math.PI*2);X.fill();
-    // 2) 외곽 — 점선 원 + 물결
-    X.strokeStyle='#ffdd88';X.lineWidth=1.5;X.globalAlpha=(.25+.1*Math.sin(_hpt*5))*_hpProg;
-    X.setLineDash(_D8_8);X.beginPath();X.arc(_fz.x,_fz.y,_fz.r+Math.sin(_hpt*6)*2,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
-    // 3) 쐐기 6개 회전
-    X.globalAlpha=(.25+Math.sin(_hpt*4)*.1)*_hpProg;X.font='bold 14px serif';X.textAlign='center';X.fillStyle='#ffdd88';
-    for(let ci=0;ci<6;ci++){const ca=ci*Math.PI/3+_hpt*.8;X.fillText('✟',_fz.x+Math.cos(ca)*_fz.r*.92,_fz.y+Math.sin(ca)*_fz.r*.92+5)}
-    // 4) 빛 파티클
-    for(let _si=0;_si<3;_si++){const _sa=Math.random()*Math.PI*2;const _sd=Math.random()*_fz.r*.7;
-      X.globalAlpha=(.15+Math.random()*.2)*_hpProg;X.fillStyle=Math.random()>.5?'#ffdd88':'#fff8dc';
-      X.beginPath();X.arc(_fz.x+Math.cos(_sa)*_sd,_fz.y+Math.sin(_sa)*_sd,1+Math.random()*1.5,0,Math.PI*2);X.fill();}
-    X.globalAlpha=1;X.textAlign='left';
+    // 신성 마법진 이미지
+    if(!G._holyDomeImg){G._holyDomeImg=new Image();G._holyDomeImg.src='sprites/holy_dome.png'}
+    const _hpImg=G._holyDomeImg;
+    if(_hpImg.complete&&_hpImg.naturalWidth>0){
+      const _hpDeploy=Math.min(1,(1-_fz.t/_fz.maxT)*5);
+      const _hpSz=_fz.r*2*_hpDeploy;
+      X.globalAlpha=(.5+.3*Math.sin(_hpt*3))*_hpProg;
+      X.save();X.translate(_fz.x,_fz.y);
+      X.rotate(-_now*0.0004);
+      X.drawImage(_hpImg,-_hpSz/2,-_hpSz/2,_hpSz,_hpSz);
+      X.restore();
+    }
+    X.globalAlpha=1;
   }}
   _s7sub.shield=performance.now()-_s7m0;_s7m0=performance.now();
   // ══ PET RENDER (검은까마귀=하늘, 검은고양이=땅) ══
@@ -49569,7 +49546,7 @@ const _isLocal=IS_ELECTRON||location.hostname==='localhost'||location.hostname==
 if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   // local test: save to server saves/ folder
   const _qpSlot=new URLSearchParams(window.location.search).get('slot');
-  const _SLOT=_qpSlot?decodeURIComponent(_qpSlot):'자동저장';
+  const _SLOT=_qpSlot?decodeURIComponent(_qpSlot):'t1';
   const _origDbSave=dbSave;
   dbSave=async function(){
     if(!P||_saving)return;
