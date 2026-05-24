@@ -28111,3 +28111,23 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - sprites/holy_dome.png
 - vfx_test.html
 
+
+## 2026-05-24 19:30 (auto)
+- _autosave/game_20260524_190618.html
+- _autosave/game_20260524_190624.html
+- _autosave/game_20260524_191009.html
+- _autosave/game_20260524_191242.html
+- _autosave/game_20260524_191250.html
+- _autosave/game_20260524_191429.html
+- _autosave/game_20260524_191523.html
+- _autosave/game_20260524_191530.html
+- _autosave/game_20260524_191544.html
+- _autosave/game_20260524_192236.html
+- assets/vfx/malice_dome.png
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤??md
+- docs/8.0ëª¬ìŠ¤?°ë””?ì¸/?„ë§‰?œìŠ¤??ì´ì •ë¦?md
+- game.html
+- img/skillskin_upscaled/maliceDome.png
+- index.html
+- sprites/zone_single.png
+

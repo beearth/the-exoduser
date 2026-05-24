@@ -2131,13 +2131,14 @@ function _enterOffline(){
     if(name.length<2||name.length>8){setStatus(_TL('이름은 2~8자여야 합니다.'),true);return}
     if(/[<>"'&\/\\]/.test(name)){setStatus(_TL('특수문자는 사용할 수 없습니다.'),true);return}
     $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
+    $('createModal').classList.remove('show');
     try{
       const chk=await fetch('/api/load/'+encodeURIComponent(name));
-      if(chk.ok){const j=await chk.json();if(j.ok){$('createBtn').disabled=false;setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);return}}
+      if(chk.ok){const j=await chk.json();if(j.ok){$('createBtn').disabled=false;$('createModal').classList.add('show');setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);return}}
       const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{name:name,ts:Date.now()}})});
       const j=await res.json();
       $('createBtn').disabled=false;
-      if(!j.ok){setStatus(_TL('생성 실패: ')+(j.error||'unknown'),true);return}
+      if(!j.ok){$('createModal').classList.add('show');setStatus(_TL('생성 실패: ')+(j.error||'unknown'),true);return}
       $('charName').value='';setStatus('');await loadLocalCharacters();
     }catch(e){
       // 서버 없음 — localStorage 폴백 (DEMO)
