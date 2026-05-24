@@ -7047,37 +7047,10 @@ const _BOOM_MAX=12;const _booms=[];for(let i=0;i<_BOOM_MAX;i++)_booms.push({x:0,
 function _projHitFx(px,py,el,isRed){_addBoom(px,py,isRed?80:24,isRed?72:14,isRed?'redbean':el===EL.I?'ice':el===EL.L?'lightning':el===EL.D?'dark':'fire');
   if(isRed){addParts(px,py,'#ff2200',20);shake(8);SFX.detonate();doHitFlash('#ff2200',0.2);
   }else{addParts(px,py,ELC[el]||'#ff8844',8);shake(4);doHitFlash(ELC[el]||'#ff8844',0.12)}}
-// ═══ Dark 02 임팩트 (패링 전용) ═══
-function _dark02Impact(x,y){
-  if(!window._tvfx2)window._tvfx2=[];
-  const _d2L=[
-    {src:'Dark_MediumImpact.png',cols:4,rows:4,sc:2.2,delay:0,spd:2},
-    {src:'Dark_BasicImpact.png',cols:3,rows:3,sc:1.8,delay:0,spd:2},
-    {src:'Dark_MediumImpact.png',cols:4,rows:4,sc:3.0,delay:1,spd:3},
-    {src:'Dark_DarkSmoke_FBF_4x4.png',cols:4,rows:4,sc:1.0,delay:2,spd:4},
-  ];
-  _d2L.forEach(function(l){
-    const img=_tvfx2Imgs[l.src];if(!img||!img.complete)return;
-    const fw=~~(img.naturalWidth/l.cols),fh=~~(img.naturalHeight/l.rows);
-    window._tvfx2.push({img,x,y,cols:l.cols,rows:l.rows,fw,fh,
-      sc:l.sc,delay:l.delay||0,spd:l.spd||3,frame:0,total:l.cols*l.rows,t:0,timer:0});
-  });
-}
-// ═══ 무지개탄 블루콩 적중 임팩트 (Power Poison) ═══
-function _rainbowImpact(x,y){
-  if(!window._tvfx2)window._tvfx2=[];
-  const _qL=[
-    {src:'Poison_MediumImpact.png',cols:4,rows:4,sc:2.0,delay:0,spd:3},
-    {src:'Dark_DarkSmoke_FBF_4x4.png',cols:4,rows:4,sc:2.2,delay:1,spd:3},
-    {src:'Poison_BasicImpact.png',cols:3,rows:3,sc:1.2,delay:0,spd:2},
-  ];
-  _qL.forEach(function(l){
-    const img=_tvfx2Imgs[l.src];if(!img||!img.complete)return;
-    const fw=~~(img.naturalWidth/l.cols),fh=~~(img.naturalHeight/l.rows);
-    window._tvfx2.push({img,x,y,cols:l.cols,rows:l.rows,fw,fh,
-      sc:l.sc,delay:l.delay||0,spd:l.spd||3,frame:0,total:l.cols*l.rows,t:0,timer:0});
-  });
-}
+// ═══ Dark 02 임팩트 (패링 전용, boom 연속보간) ═══
+function _dark02Impact(x,y){_addBoom(x,y,80,72,'dark02')}
+// ═══ 무지개탄 블루콩 적중 임팩트 (Power Poison, boom 연속보간) ═══
+function _rainbowImpact(x,y){_addBoom(x,y,80,72,'rainbow_light')}
 function _addBoom(x,y,r,dur,col){
   let b=null;for(let i=0;i<_BOOM_MAX;i++){if(!_booms[i].active){b=_booms[i];break}}
   if(!b){let oldest=0,oT=999;for(let i=0;i<_BOOM_MAX;i++){if(_booms[i].t/_booms[i].mt>oT){oT=_booms[i].t/_booms[i].mt;oldest=i}}b=_booms[oldest]}
@@ -20879,7 +20852,7 @@ function _tickArcLaser(sp){
       const dx=e.x-P.x,dy=e.y-P.y;
       const proj=dx*cx+dy*cy;if(proj<0||proj>_alRange)continue;
       const perp=Math.abs(dx*cy-dy*cx);if(perp>_halfW+e.r)continue;
-      hurtE(e,~~(_alDmg*elMul(EL.I,e.el)),Math.atan2(dy,dx),false,{kbMult:0.1,noPoise:true,noStun:true},EL.I);
+      hurtE(e,~~(_alDmg*elMul(EL.I,e.el)),Math.atan2(dy,dx),false,{kbMult:0,noPoise:true,noStun:true},EL.I);
       e._webSlow=Math.max(e._webSlow||0,30);
       if(Math.random()<.15)addParts(e.x,e.y,'#88ddff',2);
     }
@@ -24957,7 +24930,7 @@ function update(){
         var _sdRange=_sfActive?~~(_gsRange2*1.5):_gsRange2;
         const _msReflect=pShieldMul();
         for(let i=projs.length-1;i>=0;i--){
-          const p=projs[i];if(p.friendly||p.noParry)continue;
+          const p=projs[i];if(p.friendly||p.noParry||p.blackBean)continue;
           const d=dst(P.x,P.y,p.x,p.y);if(d>_sdRange)continue;
           const ang=Math.atan2(p.y-P.y,p.x-P.x);
           let diff=ang-P.facing;while(diff>Math.PI)diff-=Math.PI*2;while(diff<-Math.PI)diff+=Math.PI*2;
@@ -25239,7 +25212,7 @@ function update(){
     // 투사체 반사 (보호막 범위 내) — sBlock과 동일
     const _psR=P._psShieldR;
     for(let _pi=projs.length-1;_pi>=0;_pi--){
-      const p=projs[_pi];if(p.friendly||p.noParry)continue;
+      const p=projs[_pi];if(p.friendly||p.noParry||p.blackBean)continue;
       // 관통 방지: 현재 위치 OR 이전 위치가 보호막 안이면 흡수
       const _psDist=dst(P.x,P.y,p.x,p.y);
       const _psPrev=dst(P.x,P.y,p.x-p.vx*sp,p.y-p.vy*sp);
@@ -28444,34 +28417,17 @@ function update(){
         }
         G._fireZones[_fzW++]=fz;continue;
       }
-      // ═══ 신의영역: 양방향 감옥 (안→밖 차단 + 밖→안 차단) + 탄막 무효 ═══
+      // ═══ 신의영역: 보호돔 (밖→안 차단) + 탄막 무효 ═══
       if(fz.type==='maliceDome'){
         if(fz.t>=fz.maxT){continue}
-        // 첫 프레임: 안에 있는 적 객체 참조 태깅
-        if(!fz._tagged){
-          fz._tagged=true;fz._insideSet=new Set();
-          const _mdInit=shQuery(fz.x,fz.y,fz.r);
-          for(let _mi=0;_mi<_mdInit.length;_mi++){const e=_mdInit[_mi];if(e.alive&&dst(e.x,e.y,fz.x,fz.y)<fz.r)fz._insideSet.add(e)}
-        }
-        // 죽은 적 참조 정리
-        fz._insideSet.forEach(e=>{if(!e.alive)fz._insideSet.delete(e)});
-        // 양방향 감옥: 안에 태깅된 적은 밖으로 못 나감, 나머지는 안으로 못 들어옴
-        const _mdNe=shQuery(fz.x,fz.y,fz.r+30);
+        // 적 강제 밀어내기 (보스 무시) — 좌표 즉시 경계 밖으로 + 속도 초기화
+        const _mdNe=shQuery(fz.x,fz.y,fz.r+40);
         for(let _mi=0;_mi<_mdNe.length;_mi++){const e=_mdNe[_mi];if(!e.alive)continue;
-          if(e.ib&&e._teleporting)continue; // 보스 순간이동은 통과
-          const _ed=dst(e.x,e.y,fz.x,fz.y);
-          const _isInside=fz._insideSet.has(e);
-          if(_isInside&&_ed>=fz.r-4){
-            // 안에 갇힌 적 → 경계 안쪽으로 밀어넣기
-            const _ea=Math.atan2(e.y-fz.y,e.x-fz.x);
-            e.x=fz.x+Math.cos(_ea)*(fz.r-6);e.y=fz.y+Math.sin(_ea)*(fz.r-6);
-            e.kb.x-=Math.cos(_ea)*2;e.kb.y-=Math.sin(_ea)*2;
-          }else if(!_isInside&&_ed<fz.r){
-            // 밖에 있던 적 → 경계 바깥으로 밀어냄
-            const _ea=Math.atan2(e.y-fz.y,e.x-fz.x);
-            e.x=fz.x+Math.cos(_ea)*(fz.r+4);e.y=fz.y+Math.sin(_ea)*(fz.r+4);
-            e.kb.x+=Math.cos(_ea)*2;e.kb.y+=Math.sin(_ea)*2;
-          }
+          if(e.ib)continue;
+          const _ed=dst(e.x,e.y,fz.x,fz.y);if(_ed>=fz.r)continue;
+          const _ea=Math.atan2(e.y-fz.y,e.x-fz.x);
+          e.x=fz.x+Math.cos(_ea)*(fz.r+8);e.y=fz.y+Math.sin(_ea)*(fz.r+8);
+          e.vx=0;e.vy=0;e.kb.x=Math.cos(_ea)*6;e.kb.y=Math.sin(_ea)*6;
         }
         // 파티클 (금색)
         if(Math.random()>.7){const _mda=Math.random()*Math.PI*2;
@@ -34627,7 +34583,7 @@ const SKILL_LIST=[
   // [SKILL REMOVED 2026-05-01] energyShot (마력연사) — 삭제
   {id:'arcLaser',name:'얼음송곳',cat:'magic',emoji:'❄',desc:'E홀드: 직선 관통 냉기빔 채널링. MP 8+Lv/초 지속소모. 폭160+(Lv×10)px, 사거리1200+Lv×80. 관통+감속. Lv당 뎀+21%',descEn:'E hold: Straight piercing ice beam channeling. MP 8+Lv/s drain. Width 160+(Lv×10)px, range 1200+Lv×80. Pierce+slow. Per Lv DMG+21%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'fireBeam',name:'업화선',cat:'bow',emoji:'🔥',desc:'E탭: 화염 유도빔 발사. MP10. 쿨1초(DEX 스케일). 100% 관통+유도+화상. Lv당 사거리+50 뎀+12%',descEn:'E tap: fire homing beam. MP 10. CD 1s (DEX scale). 100% pierce+homing+burn. Per Lv range+50 DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'maliceDome',name:'신의영역',cat:'def',act:true,noDmg:true,emoji:'✟',desc:'현재 위치에 신성 보호돔 설치 (8초+Lv당0.5초). 돔 안: 적 탄막 무효화+적 접근 불가. 보스 순간이동은 통과. MP 60. 쿨 25초. Lv당 범위+15',descEn:'Place divine dome at current pos (8s+0.5s/Lv). Inside: nullify enemy projectiles + block enemy entry. Boss teleport bypasses. MP 60. CD 25s. Per Lv range+15',spCost:10,matCost:100,cd:1500,up:true,upSp:5,upMat:0},
+  {id:'maliceDome',name:'신의영역',cat:'def',act:true,noDmg:true,emoji:'✟',desc:'현재 위치에 신성 보호돔 설치 (8초+Lv당0.5초). 돔 안: 적 접근 불가+탄막 무효화. 보스 무시. MP 60. 쿨 25초. Lv당 범위+15',descEn:'Place divine dome at current pos (8s+0.5s/Lv). Inside: block enemy entry + nullify projectiles. Boss ignores. MP 60. CD 25s. Per Lv range+15',spCost:10,matCost:100,cd:1500,up:true,upSp:5,upMat:0},
   {id:'fireAura',name:'지옥진',cat:'magic',emoji:'🌋',desc:'E: 10초간 대지 진동. 범위 내 용암 기둥이 순차적으로 솟아올라 화상+틱 데미지. MP 100. 쿨 12초. Lv당 범위+10% 뎀+12%',descEn:'E: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'plagueBurst',name:'폭독칼날',cat:'bow',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)',descEn:'Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)',spCost:10,matCost:80,cd:1200,up:true,upSp:5,upMat:0},
   {id:'maliceStorm',name:'악의폭풍',cat:'magic',act:true,emoji:'🌀',desc:'마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (3초, 10틱, 틱당 100+Lv*20). Lv당 범위+22. 같은 지역 중복 불가',descEn:'Mouse-aim placement. CD 20s. Dark spiral at click pos (3s, 10 ticks, 100+Lv*20/tick). Per Lv range+22. No stacking same area',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
@@ -44796,29 +44752,28 @@ function drawP(){
         X.globalAlpha=.6*(1-_ep/.5);X.strokeStyle='#ffaa33';X.lineWidth=3+6*(1-_ep/.5);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
     }else
-    // rainbow_light(무지개 피격 폭발): Power Poison 콤보 (Poison_MediumImpact 4x4 + Dark_DarkSmoke 4x4 + Poison_BasicImpact 3x3)
+    // rainbow_light(무지개 피격/적중): Poison_MediumImpact 단일 시트 (redbean 타이밍)
     if(_bv.col==='rainbow_light'){
-      const _alpha=Math.max(0,1-_ep*.8);
-      // Layer 1: Poison_MediumImpact (4x4, 16f)
-      const _pp1=_tvfx2Imgs['Poison_MediumImpact.png'];
-      if(_pp1&&_pp1.complete){const _fw1=~~(_pp1.naturalWidth/4),_fh1=~~(_pp1.naturalHeight/4);
-        const _fi1=Math.min(15,~~(_ep*16)),_c1=_fi1%4,_r1=~~(_fi1/4);
-        const _sz1=_bv.r*3.2*Math.pow(Math.min(1,_ep*3),.5);
-        X.globalAlpha=_alpha;X.drawImage(_pp1,_c1*_fw1,_r1*_fh1,_fw1,_fh1,bx-_sz1/2,by-_sz1/2,_sz1,_sz1);}
-      // Layer 2: Dark_DarkSmoke_FBF_4x4 (4x4, 16f, delay)
-      if(_ep>.05){const _pp2=_tvfx2Imgs['Dark_DarkSmoke_FBF_4x4.png'];
-      if(_pp2&&_pp2.complete){const _fw2=~~(_pp2.naturalWidth/4),_fh2=~~(_pp2.naturalHeight/4);
-        const _ep2=Math.min(1,(_ep-.05)/.95);const _fi2=Math.min(15,~~(_ep2*16)),_c2=_fi2%4,_r2=~~(_fi2/4);
-        const _sz2=_bv.r*3.4*Math.pow(Math.min(1,_ep2*3),.5);
-        X.globalAlpha=_alpha*.8;X.drawImage(_pp2,_c2*_fw2,_r2*_fh2,_fw2,_fh2,bx-_sz2/2,by-_sz2/2,_sz2,_sz2);}}
-      // Layer 3: Poison_BasicImpact (3x3, 9f)
-      const _pp3=_tvfx2Imgs['Poison_BasicImpact.png'];
-      if(_pp3&&_pp3.complete){const _fw3=~~(_pp3.naturalWidth/3),_fh3=~~(_pp3.naturalHeight/3);
-        const _fi3=Math.min(8,~~(_ep*9)),_c3=_fi3%3,_r3=~~(_fi3/3);
-        const _sz3=_bv.r*1.6*Math.pow(Math.min(1,_ep*3),.5);
-        X.globalAlpha=_alpha*.6;X.drawImage(_pp3,_c3*_fw3,_r3*_fh3,_fw3,_fh3,bx-_sz3/2,by-_sz3/2,_sz3,_sz3);}
+      const _pp=_tvfx2Imgs['Poison_MediumImpact.png'];
+      if(_pp&&_pp.complete){const _fw=~~(_pp.naturalWidth/4),_fh=~~(_pp.naturalHeight/4);
+        const _drawSz=_bv.r*3.2*Math.pow(Math.min(1,_ep*3),.5);
+        const _fi=Math.min(15,~~(_ep*16)),_fc=_fi%4,_fr=~~(_fi/4);
+        X.globalAlpha=Math.max(0,1-_ep*.8);
+        X.drawImage(_pp,_fc*_fw,_fr*_fh,_fw,_fh,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);}
       if(_ep<.4){const _swR=_bv.r*Math.pow(_ep/.4,.3)*1.15;
         X.globalAlpha=.6*(1-_ep/.4);X.strokeStyle='#88cc44';X.lineWidth=3+6*(1-_ep/.4);
+        X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
+    }else
+    // dark02(패링 임팩트): Dark_MediumImpact 단일 시트 (redbean 타이밍)
+    if(_bv.col==='dark02'){
+      const _dd=_tvfx2Imgs['Dark_MediumImpact.png'];
+      if(_dd&&_dd.complete){const _fw=~~(_dd.naturalWidth/4),_fh=~~(_dd.naturalHeight/4);
+        const _drawSz=_bv.r*3.2*Math.pow(Math.min(1,_ep*3),.5);
+        const _fi=Math.min(15,~~(_ep*16)),_fc=_fi%4,_fr=~~(_fi/4);
+        X.globalAlpha=Math.max(0,1-_ep*.8);
+        X.drawImage(_dd,_fc*_fw,_fr*_fh,_fw,_fh,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);}
+      if(_ep<.4){const _swR=_bv.r*Math.pow(_ep/.4,.3)*1.15;
+        X.globalAlpha=.6*(1-_ep/.4);X.strokeStyle='#cc88ff';X.lineWidth=3+6*(1-_ep/.4);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
     }else
     // rainbow(무지개 소멸): Power Dark 콤보
