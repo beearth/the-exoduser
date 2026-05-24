@@ -313,6 +313,11 @@ canvas{display:block;position:fixed;inset:0}
 .bst{display:flex;justify-content:center;gap:6px;margin-top:5px;min-height:22px}
 .bst-i{font-size:.85rem;padding:1px 6px;border-radius:3px;background:rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.15);white-space:nowrap}
 
+/* ══ 패널 상단 탭 네비게이션 ══ */
+.panel-nav{display:flex;gap:2px;margin-bottom:10px;border-bottom:1px solid rgba(120,80,50,.3);padding-bottom:6px;flex-shrink:0}
+.panel-nav-tab{flex:1;text-align:center;padding:6px 4px;cursor:pointer;font-size:.72rem;font-weight:700;color:rgba(180,140,100,.45);border:1px solid transparent;border-bottom:none;border-radius:4px 4px 0 0;transition:all .15s;white-space:nowrap;letter-spacing:.04em}
+.panel-nav-tab:hover{color:rgba(220,180,130,.7);background:rgba(120,80,50,.08)}
+.panel-nav-tab.active{color:#dda866;background:rgba(120,80,50,.15);border-color:rgba(120,80,50,.35)}
 /* ══ PANELS (shared) ══ */
 .panel{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.88);opacity:0;pointer-events:none;transition:opacity .25s}
 .panel.on{opacity:1;pointer-events:all}
@@ -4778,7 +4783,7 @@ let BINDS={
   parry:'KeyQ',
   beam:'KeyE', forge:'KeyG',
   inventory:'Tab', settings:'Escape',
-  interact:'KeyR', storage:'KeyV', stats:'KeyC', skill:'KeyK',
+  interact:'KeyR', storage:'KeyN', stats:'KeyJ', skill:'KeyK',
   skillCycle:'KeyL', irisToggle:'KeyY', bladeToggle:'KeyU',
 };
 let BINDS2={
@@ -7054,7 +7059,7 @@ function _rainbowImpact(x,y){_addBoom(x,y,80,72,'rainbow_light')}
 function _addBoom(x,y,r,dur,col){
   let b=null;for(let i=0;i<_BOOM_MAX;i++){if(!_booms[i].active){b=_booms[i];break}}
   if(!b){let oldest=0,oT=999;for(let i=0;i<_BOOM_MAX;i++){if(_booms[i].t/_booms[i].mt>oT){oT=_booms[i].t/_booms[i].mt;oldest=i}}b=_booms[oldest]}
-  b.x=x;b.y=y;b.r=r;b.t=0;b.mt=dur||28;b.col=col||'fire';b.active=true;
+  b.x=x;b.y=y;b.r=r;b.t=0;b.mt=Math.max(66,dur||66);b.col=col||'fire';b.active=true; // 최소 1.1초, 기존 72는 유지
   b.arms=[];const nc=8+~~(r/25);for(let i=0;i<nc;i++)b.arms.push({a:Math.PI*2*i/nc+(Math.random()-.5)*.4,len:.5+Math.random()*.6,w:5+Math.random()*7,spd:.7+Math.random()*.5});
 }
 // ═══ [BLAST-LIGHT] 폭발 광원 시스템 ═══
@@ -34492,8 +34497,36 @@ document.addEventListener('fullscreenchange',()=>{
 // ═══════════════════════════════════════
 //  [S18] UI — Skill Panel, Fusion, Slots
 // ═══════════════════════════════════════
-function togglePanel(id){const el=$(id);const isOn=el.classList.contains('on');closeAllPanels();const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(!isOn){el.classList.add('on');G.paused=true;if(id==='invPanel')renderInv();if(id==='settings'){const _rc2=$('resetConfirm');if(_rc2)_rc2.style.display='none';renderSettings();}if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
-function openPanel(id){closeAllPanels();$(id).classList.add('on');G.paused=true;if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='storagePanel')renderStorage()}
+// ═══ 패널 상단 탭 네비게이션 ═══
+const _PANEL_TABS=[
+  {id:'settings',label:'설정',labelEn:'Settings',key:'ESC'},
+  {id:'invPanel',label:'인벤토리',labelEn:'Inventory',key:'TAB'},
+  {id:'forge',label:'대장간',labelEn:'Forge',key:'G'},
+  {id:'skillPanel',label:'스킬',labelEn:'Skills',key:'K'},
+  {id:'statPanel',label:'능력치',labelEn:'Stats',key:'J'},
+  {id:'storagePanel',label:'창고',labelEn:'Storage',key:'N'},
+];
+function _injectPanelNav(activeId){
+  _PANEL_TABS.forEach(function(tab){
+    const panel=$(tab.id);if(!panel)return;
+    const pbox=panel.querySelector('.pbox');if(!pbox)return;
+    // 기존 nav 제거
+    const old=pbox.querySelector('.panel-nav');if(old)old.remove();
+    // nav 생성
+    const nav=document.createElement('div');nav.className='panel-nav';
+    _PANEL_TABS.forEach(function(t){
+      const btn=document.createElement('div');btn.className='panel-nav-tab'+(t.id===activeId?' active':'');
+      const lbl=typeof _T==='function'?_T(t.label):t.label;
+      btn.textContent=lbl+(t.key?' ['+t.key+']':'');
+      btn.onclick=function(e){e.stopPropagation();if(t.id!==activeId)openPanel(t.id)};
+      nav.appendChild(btn);
+    });
+    // pbox 최상단에 삽입
+    pbox.insertBefore(nav,pbox.firstChild);
+  });
+}
+function togglePanel(id){const el=$(id);const isOn=el.classList.contains('on');closeAllPanels();const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';if(!isOn){el.classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings'){const _rc2=$('resetConfirm');if(_rc2)_rc2.style.display='none';renderSettings();}if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}}
+function openPanel(id){closeAllPanels();$(id).classList.add('on');G.paused=true;_injectPanelNav(id);if(id==='invPanel')renderInv();if(id==='settings')renderSettings();if(id==='forge')renderForge();if(id==='storagePanel')renderStorage();if(id==='statPanel')renderStatPanel();if(id==='skillPanel')renderSkillPanel()}
 // 뒤로가기 — 서브상태 → 패널 순으로 한 단계씩 빠져나옴
 function _panelBack(){
   // 1. gcModal (확인 팝업)
@@ -37751,7 +37784,7 @@ function renderSettings(){
   resetBtn.style.cssText='text-align:center;margin-top:12px;padding:8px;background:rgba(100,0,0,.2);border:1px solid #663333;color:#ff6666;cursor:pointer;font-size:.95rem;font-weight:700;letter-spacing:.1em';
   resetBtn.textContent=_T('키 설정 초기화 (또는 F5 키)');
   const _resetBinds=()=>{
-    BINDS={up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',weapon:'mouse0',shield:'mouse2',bow:'Space',charge:'ShiftLeft',parry:'KeyQ',beam:'KeyE',forge:'KeyG',inventory:'Tab',settings:'Escape',interact:'KeyR',storage:'KeyV',stats:'KeyC',skill:'KeyK',skillCycle:'KeyL'};
+    BINDS={up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',weapon:'mouse0',shield:'mouse2',bow:'Space',charge:'ShiftLeft',parry:'KeyQ',beam:'KeyE',forge:'KeyG',inventory:'Tab',settings:'Escape',interact:'KeyR',storage:'KeyN',stats:'KeyJ',skill:'KeyK',skillCycle:'KeyL'};
     BINDS2={up:null,down:null,left:null,right:null,weapon:null,shield:null,bow:null,charge:null,parry:null,beam:null,skill:null,forge:null,inventory:null,settings:null,interact:null,storage:null,stats:null,skillCycle:null};
     listeningBind=null;_listenAlt=false;saveSettings();renderSettings();
     notify(_T('키 설정 초기화 완료'));
@@ -38362,6 +38395,9 @@ try{
     if(BINDS.forge==='KeyQ')BINDS.forge='KeyG';
     // parry: KeyF → KeyQ 스왑 마이그레이션
     if(BINDS.parry==='KeyF')BINDS.parry='KeyQ';
+    // stats: KeyC → KeyJ, storage: KeyV → KeyN 마이그레이션
+    if(BINDS.stats==='KeyC')BINDS.stats='KeyJ';
+    if(BINDS.storage==='KeyV')BINDS.storage='KeyN';
     try{saveSettings()}catch(e){}
     if(OPT.bgmVol!==undefined)BGM.setVol(OPT.bgmVol/100);
     try{applyUIScale()}catch(e){}
@@ -44720,14 +44756,16 @@ function drawP(){
     const _er=_bv.r*Math.pow(_ep,.35);
     const _isIce=_bv.col==='ice',_isLtn=_bv.col==='lightning',_isDark=_bv.col==='dark',_isRb=_bv.col==='rainbow',_isBlk=_bv.col==='black';
     const _bvPrevAlpha=X.globalAlpha;
-    // black(폭독혈): boom_plague 스프라이트시트 6프레임
-    if(_bv.col==='black'&&_plagueBoomSpr.ready){
-      const _drawSz=_bv.r*2.4*Math.pow(Math.min(1,_ep*3),.45);
-      const _fi=Math.min(5,~~(_ep*6));
-      X.globalAlpha=Math.max(0,1-_ep*.7);
-      X.drawImage(_plagueBoomSpr.img,_fi*_plagueBoomSpr.w,0,_plagueBoomSpr.w,_plagueBoomSpr.h,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);
-      if(_ep<.5){const _swR=_bv.r*Math.pow(_ep/.5,.35)*1.1;
-        X.globalAlpha=.5*(1-_ep/.5);X.strokeStyle='#882222';X.lineWidth=3+5*(1-_ep/.5);
+    // black(폭독혈): Dark_DarkSmoke_FBF_4x4 시트 16프레임
+    if(_bv.col==='black'){
+      const _ds=_tvfx2Imgs['Dark_DarkSmoke_FBF_4x4.png'];
+      if(_ds&&_ds.complete){const _fw=~~(_ds.naturalWidth/4),_fh=~~(_ds.naturalHeight/4);
+        const _drawSz=_bv.r*3.2*Math.pow(Math.min(1,_ep*3),.5);
+        const _fi=Math.min(15,~~(_ep*16)),_fc=_fi%4,_fr=~~(_fi/4);
+        X.globalAlpha=Math.max(0,1-_ep*.8);
+        X.drawImage(_ds,_fc*_fw,_fr*_fh,_fw,_fh,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);}
+      if(_ep<.4){const _swR=_bv.r*Math.pow(_ep/.4,.3)*1.15;
+        X.globalAlpha=.5*(1-_ep/.4);X.strokeStyle='#882222';X.lineWidth=3+5*(1-_ep/.4);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
     }else
     // redbean(빨콩): Fire_FBF_4x4 스프라이트시트 (4x4, 16프레임)
@@ -44742,14 +44780,16 @@ function drawP(){
         X.globalAlpha=.6*(1-_ep/.4);X.strokeStyle='#ff4422';X.lineWidth=3+6*(1-_ep/.4);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
     }else
-    // fire: fire_1~4 개별 이미지 4프레임 애니메이션
-    if(_bv.col==='fire'&&_plagueBoomReady>=4){
-      const _drawSz=_bv.r*2.6*Math.pow(Math.min(1,_ep*3),.5);
-      const _fi=Math.min(3,~~(_ep*4));
-      X.globalAlpha=Math.max(0,1-_ep*.8);
-      X.drawImage(_plagueBoomSprs[_fi],bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);
-      if(_ep<.5){const _swR=_bv.r*Math.pow(_ep/.5,.35)*1.1;
-        X.globalAlpha=.6*(1-_ep/.5);X.strokeStyle='#ffaa33';X.lineWidth=3+6*(1-_ep/.5);
+    // fire: Fire_FBF_4x4 시트 16프레임 (빨콩과 동일 퀄리티)
+    if(_bv.col==='fire'){
+      const _fb=_tvfx2Imgs['Fire_FBF_4x4.png'];
+      if(_fb&&_fb.complete){const _fw=~~(_fb.naturalWidth/4),_fh=~~(_fb.naturalHeight/4);
+        const _drawSz=_bv.r*3.2*Math.pow(Math.min(1,_ep*3),.5);
+        const _fi=Math.min(15,~~(_ep*16)),_fc=_fi%4,_fr=~~(_fi/4);
+        X.globalAlpha=Math.max(0,1-_ep*.8);
+        X.drawImage(_fb,_fc*_fw,_fr*_fh,_fw,_fh,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);}
+      if(_ep<.4){const _swR=_bv.r*Math.pow(_ep/.4,.3)*1.15;
+        X.globalAlpha=.6*(1-_ep/.4);X.strokeStyle='#ffaa33';X.lineWidth=3+6*(1-_ep/.4);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
     }else
     // rainbow_light(무지개 피격/적중): Poison_MediumImpact 단일 시트 (redbean 타이밍)

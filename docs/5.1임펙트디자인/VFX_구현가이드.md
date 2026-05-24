@@ -1,9 +1,29 @@
 # VFX 구현 가이드
 
-## 폭발 임팩트 (`_addBoom`) 지속시간
+## 폭발 임팩트 (`_addBoom`) 총정리
+
+### 지속시간
 - **최소 66프레임 (1.1초) 보장** — `_addBoom` 함수에서 `Math.max(66, dur)` 적용
 - 기존 14~28이었던 fire/ice/dark 등 → 66으로 상향
 - 빨콩/무지개(72)는 기존값 유지 (66보다 크므로)
+
+### 타입별 스프라이트 프레임 수
+
+| 타입 | 지속시간 | 애니 프레임 수 | 시트 | 성능 영향 |
+|------|---------|-------------|------|----------|
+| fire | 66 (1.1초) | 16 | Fire_FBF_4x4 | 낮음 (drawImage 1회/프레임) |
+| black(폭독혈) | 66 (1.1초) | 16 | Dark_DarkSmoke_FBF_4x4 | 낮음 |
+| redbean(빨콩) | 72 (1.2초) | 16 | Fire_FBF_4x4 | 낮음 |
+| rainbow_light(무지개 적중) | 72 (1.2초) | 16×4 (4레이어) | Fire_FBF + Poison_Medium + Dark_DarkSmoke + Light_Impact (각 90° 회전+시차+lighter 합성, 알록달록) | 중간 (drawImage 4회/프레임) |
+| rainbow(무지개 소멸) | 72 (1.2초) | 16+36+9 (3레이어) | Dark_DarkSmoke_FBF + Dark_Smoke_6x6 + Dark_BasicImpact | 중간 |
+| dark02(패링) | 72 (1.2초) | 16 | Dark_MediumImpact | 낮음 |
+| explosion | 66 (1.1초) | 프로시저럴 | arms 기반 렌더 | 낮음 |
+| ice/lightning/dark | 66 (1.1초) | 프로시저럴 | 원+링 렌더 | 낮음 |
+
+### 성능 영향
+- 풀당 최대 12개(`_BOOM_MAX=12`), 뷰포트 컬링 적용 → **FPS 영향 거의 없음**
+- 3레이어(rainbow 계열)도 drawImage 3회 수준이라 부담 미미
+- 지속시간 66→72 상향은 동시 활성 boom 수가 약간 늘 수 있으나 12개 캡으로 제한됨
 
 ## 핵심 원칙
 
