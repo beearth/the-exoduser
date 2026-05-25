@@ -28203,3 +28203,8 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 ## 2026-05-25 19:30 (auto)
 - index.html
 
+
+## 2026-05-25 21:30 (auto)
+- _autosave/game_20260525_212433.html
+- game.html
+
