@@ -245,13 +245,13 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .card{background:none;border:none;padding:0;position:relative;overflow:visible;box-shadow:none;width:100%}
 .card::before{display:none}
 /* 프레임: 1536x1024(1.5:1), 콘텐츠영역 상15%하10%좌우10% */
-.login-section{text-align:center;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;width:90vw;max-width:1800px;aspect-ratio:1.43/1;transform:scale(0.85);background:url('assets/lobby/login_frame.png') center/100% 100% no-repeat;padding:10% 15% 8% 15%;margin:0 auto;box-sizing:border-box}
-.login-section h2{font-size:clamp(1.1rem,2vw,1.8rem);color:#aa7744;letter-spacing:.25em;margin:0;font-weight:700}
+.login-section{text-align:center;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;width:90vw;max-width:1800px;aspect-ratio:1.43/1;transform:scale(0.85);background:url('assets/lobby/login_frame.png') center/100% 100% no-repeat;padding:10% 15% 8% 15%;margin:0 auto;box-sizing:border-box}
+.login-section h2{font-size:clamp(.8rem,1.3vw,1.2rem);color:#aa7744;letter-spacing:.25em;margin:0;font-weight:700}
 .login-section .login-lang{margin:0}
 .login-section .login-lang select{background:rgba(10,6,2,.8);border:1px solid rgba(120,80,40,.4);color:#ccaa88;font-family:'Noto Sans KR';font-size:.8rem;padding:5px 14px;border-radius:3px;cursor:pointer}
 /* 버튼: 프레임 이미지, 비율 3.06:1 */
 .google-btn{
-  display:inline-flex;align-items:center;gap:14px;padding:0 0 13px 0;width:60%;aspect-ratio:3.06/1;
+  display:inline-flex;align-items:center;gap:10px;padding:0 0 7px 0;width:36%;aspect-ratio:3.06/1;
   background:url('assets/lobby/btn_normal.png') center/100% 100% no-repeat;
   border:none;color:#eedd99;
   font-family:'Noto Sans KR';font-size:clamp(1rem,1.5vw,1.5rem);font-weight:700;
@@ -466,7 +466,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 <!-- ═══ Main Content ═══ -->
 <div class="main-wrap" id="mainWrap">
   <div class="container">
-    <div class="title"><img src="img/logo_exoduser.png" alt="EXODUSER" style="max-width:420px;width:80%;height:auto;display:block;margin:0 auto"></div>
+    <div class="title"><img src="img/logo_exoduser.png" alt="EXODUSER" style="max-width:700px;width:90%;height:auto;display:block;margin:0 auto"></div>
     <div style="text-align:center;margin:-10px 0 10px">
       <select id="langSelect" style="background:#1a1008;border:1px solid #443322;color:#ccaa88;font-family:'Noto Sans KR';font-size:.85rem;padding:4px 12px;border-radius:4px;cursor:pointer">
         <option value="ko">한국어</option><option value="en">English</option><option value="zh">中文简体</option><option value="zht">繁體中文</option><option value="ja">日本語</option><option value="vi">Tiếng Việt</option><option value="th">ไทย</option><option value="id">Bahasa Indonesia</option><option value="es">Español</option><option value="fr">Français</option><option value="it">Italiano</option><option value="ptbr">Português</option><option value="ro">Română</option><option value="de">Deutsch</option><option value="nl">Nederlands</option><option value="sv">Svenska</option><option value="da">Dansk</option><option value="no">Norsk</option><option value="ru">Русский</option><option value="uk">Українська</option><option value="pl">Polski</option><option value="cs">Čeština</option><option value="hu">Magyar</option><option value="bg">Български</option><option value="el">Ελληνικά</option><option value="fi">Suomi</option><option value="tr">Türkçe</option><option value="ar">العربية</option>
@@ -476,7 +476,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
       <div class="loading" id="loading"><div class="spinner"></div><p>연결 중...</p></div>
       <div class="login-section" id="loginSection" style="display:none">
         <div style="text-align:center">
-          <img src="img/logo_exoduser.png" alt="EXODUSER" style="max-width:360px;width:70%;height:auto;display:block;margin:0 auto">
+          <img src="img/logo_exoduser.png" alt="EXODUSER" style="max-width:900px;width:100%;height:auto;display:block;margin:35px auto 15px">
         </div>
         <div class="login-lang">
           <select id="loginLangSelect" style="background:rgba(10,6,2,.8);border:1px solid rgba(120,80,40,.4);color:#ccaa88;font-family:'Noto Sans KR';font-size:.8rem;padding:5px 14px;border-radius:3px;cursor:pointer">
