@@ -34973,44 +34973,12 @@ function _addFuseProfTick(key){_addCardProfTick((_FUSE_PAIRS[key]||[])[0]);}
 function _fuseReqProf(key){return _CATPROF_REQ} // 600초(10분)
 function _canFuse(key){
   if(!_FUSE_PAIRS[key])return false;
-  if(P&&P.isDemoTest)return !_isFused(key); // 데모 테스트: 조건 없이 합체 가능
   if(_DEMO_MODE&&!_DEMO_FUSE_ALLOWED.has(key))return false;
-  if(key==='dimBreach'&&_isFused('dimBreach'))return false;
-  if(key==='dimSlam'&&!_isFused('dimBreach'))return false;
-  if(key==='dimSlam'&&_isFused('dimSlam'))return false;
-  if(key==='dimThunder'&&!_isFused('dimSlam'))return false;
-  if(key==='dimThunder'&&_isFused('dimThunder'))return false;
-  if(key==='dimRush'&&!_isFused('dimThunder'))return false;
-  if(key==='dimRush'&&_isFused('dimRush'))return false;
-  if(key==='dimBlast'&&!_isFused('dimRush'))return false;
-  if(key==='dimBlast'&&_isFused('dimBlast'))return false;
-  if(key==='elemFuse'&&!_isFused('sixFuse'))return false;
-  if(key==='sixFuse'&&_isFused('sixFuse'))return false;
-  if(key==='slamStorm'&&!_isFused('whirlDet'))return false;
-  if(key==='whirlDet'&&_isFused('whirlDet'))return false;
-  if(key==='stormBeam'&&(!_isFused('slamStorm')||!_isFused('elemFuse')))return false;
-  if(key==='stormBeam'&&(_isFused('stormBeam')||_isFused('stormBurst')))return false;
-  // stormBeam 숙련도 시간 조건 제거 — 스킬+선행합체만 필요
-  if(key==='stormBurst'&&!_isFused('stormBeam'))return false; // 선행: 암전나선
-  if(key==='stormBurst'&&_isFused('stormBurst'))return false;
-  if(key==='stormBurst')return P.skills.burstLoop>=1; // 버스트루프 습득
-  if(key==='elecRepent'&&_isFused('elecRepent'))return false;
-  if(key==='elecRepent'&&!_isFused('boneStorm'))return false; // 해골번개 합체 선행 필요
-  if(key==='elecRepent'&&!P.skills.hellRay)return false;
-  if(key==='holyFuse'&&_isFused('holyFuse'))return false;
-  if(key==='holyIce'&&_isFused('holyIce'))return false;
-  if(key==='holyIce'&&!_isFused('holyFuse'))return false; // 결계의 영역 선행 필요
-  // pillarSlam 레벨 제한 해제
-  // 시간 기반 합체 숙련 체크 (추적암전, 지진폭풍)
-  if(_FUSE_TIME_REQ[key])return _fuseProfSec(key)>=_FUSE_TIME_REQ[key];
-  // 구성 스킬 습득 여부 체크 (미습득 스킬로 합체 방지)
+  // 이미 합체 완료면 불가
+  if(_isFused(key))return false;
+  // 구성 스킬 습득 여부만 체크 (선행합체/숙련도 조건 전부 제거)
   const _fp=_FUSE_PAIRS[key]||[];
   for(let i=0;i<_fp.length;i++){if((P.skills[_fp[i]]||0)<1)return false}
-  // 양쪽 스킬 숙련도 체크 (하위 합체 완료된 스킬은 스킵)
-  const _req=_fuseReqProf(key);
-  const _absolved=new Set(); // 하위 합체로 이미 검증된 스킬
-  for(const[fk,fv]of Object.entries(_FUSE_PAIRS)){if(fk!==key&&_isFused(fk)){for(const s of fv)_absolved.add(s)}}
-  for(let i=0;i<_fp.length;i++){if(_absolved.has(_fp[i]))continue;if(_SK_CAT[_fp[i]]==='bow')continue;if(_skProfVal(_fp[i])<_req)return false}
   return true;
 }
 function _getAbsorbed(key){const m={dimBreach:['magicBlink'],dimSlam:['magicBlink','chainAssault'],dimThunder:['magicBlink','chainAssault','chainSlam'],dimRush:['magicBlink','chainAssault','chainSlash','chainSlam'],dimBlast:['magicBlink','chainAssault','chainSlash','chainSlam','giantSlam'],whirlDet:['detonate'],slamStorm:['detonate','giantSlam'],stormBeam:['detonate','giantSlam','fanShot','omniBeam','elemMissile'],stormBurst:['detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop'],bladeFuse:['guardian'],iceMortar:['iceOrb'],sixFuse:['omniBeam'],elemFuse:['fanShot','omniBeam','elemMissile'],boneStorm:['boneWall'],elecRepent:['hellRay','boneWall'],shieldFuse:['shieldThrow'],plagueFuse:['guardian','plagueBurst'],holyFuse:['holyPrison'],holyIce:['holyPrison','iceStorm'],holyWeak1:['holyPrison','iceStorm','weakPhys'],holyWeak2:['holyPrison','iceStorm','weakPhys','weakMag'],holyWeak3:['holyPrison','iceStorm','weakPhys','weakMag','weakPj'],holyWeak4:['holyPrison','iceStorm','weakPhys','weakMag','weakPj','weakRev'],pillarSpike:['spikeTrap'],pillarSlam:['darkPillar'],infernoSlam:['fireAura'],siegeGhost:['voidScarecrow'],dualScarecrow:['explodeScarecrow'],thunderGhost:['thunderStake'],timeStep:['ghostWalk']};return m[key]||[]}
