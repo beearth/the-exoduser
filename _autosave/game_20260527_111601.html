@@ -9602,7 +9602,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
         if(_isFused('dualScarecrow')&&_vs2.absorbed>0){
           _vs2.aggroOn=false;_vs2.exploding=60;_vs2._dualBoom=true;
           addTxt(_vs2.x,_vs2.y-35,_T('임계...!'),'#ff6644',50);
-          SFX.scarecrowCharge();
+          playSample('ghost_laugh',1.2,_r(1,.1));SFX.scarecrowCharge();
           // null 해제 지연 — 부풀기 끝나면 업데이트 루프에서 처리
         } else {
           G._voidScarecrow=null; // 회수 시 쿨 없음
@@ -9633,7 +9633,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
           if(_vs.absorbed>0){
             _vs.aggroOn=false;_vs.exploding=60;_vs._siegeBoom=true;
             addTxt(_vs.x,_vs.y-35,_T('임계...!'),'#ff6644',50);
-            SFX.scarecrowCharge();
+            playSample('ghost_laugh',1.2,_r(1,.1));SFX.scarecrowCharge();
           }else{
             addParts(P.x,P.y,'#bb88ee',8);SFX.scarecrowRecall();
             G._voidScarecrow=null;
@@ -33173,10 +33173,11 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   // 한방 데미지 캡: 삭제 (제한 없음)
 
   // ═══ 에너지쉴드: 모든 배율 확정 후 흡수 (HP와 동일 내구성) ═══
-  // DOT은 기본 제외. shieldHit:true 플래그 시 DOT도 쉴드 적용 (shockField 등 마법 장판)
+  // DOT은 기본 제외. shieldHit:true 플래그 시 DOT도 쉴드 적용 (50% 흡수, 50% HP 관통)
   if((!isDot||(opts&&opts.shieldHit))&&e.eShieldMax>0&&e.eShield>0){
-    const _shAbs=Math.min(e.eShield,dmg);
-    e.eShield=Math.max(0,e.eShield-dmg);
+    const _shDmg=isDot?~~(dmg*.5):dmg; // DOT은 50%만 쉴드로
+    const _shAbs=Math.min(e.eShield,_shDmg);
+    e.eShield=Math.max(0,e.eShield-_shDmg);
     dmg=Math.max(0,dmg-_shAbs);
     if(dmg===0)_shBlocked=true;
   }
@@ -34115,8 +34116,8 @@ function hurtP(dmg,opts){
       doParry(0,P.x,P.y,true);
       return;
     }
-    // 보호막 흡수 (패링 실패): 넉백 + 임팩트 (sBlock과 동일)
-    const _psBlkRate=Math.min(.90,pGuardAbsorb()+pShieldBlock());
+    // 보호막 흡수 (패링 실패): 넉백 + 임팩트 — DOT은 흡수율 절반
+    const _psBlkRate=Math.min(.90,(pGuardAbsorb()+pShieldBlock())*(_isDotEarly?.5:1));
     const _psRawDmg=dmg;
     dmg=Math.max(1,~~(dmg*(1-_psBlkRate)));
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+_psRawDmg}
@@ -34134,8 +34135,8 @@ function hurtP(dmg,opts){
       if(P.skills.detonate){P.parryBank=(P.parryBank||0)+100}
       return;
     }
-    // 보호막 흡수 (패링 실패): 넉백 + 임팩트
-    const _blkRate=Math.min(.80,pGuardAbsorb()+pShieldBlock());
+    // 보호막 흡수 (패링 실패): 넉백 + 임팩트 — DOT은 흡수율 절반
+    const _blkRate=Math.min(.80,(pGuardAbsorb()+pShieldBlock())*(_isDotEarly?.5:1));
     const _rawDmg=dmg;
     dmg=Math.max(1,~~(dmg*(1-_blkRate)));
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+_rawDmg;addTxt(P.x,P.y-25,_T('흡수!'),'#ff6644',35)}
@@ -34147,7 +34148,7 @@ function hurtP(dmg,opts){
   } else if(!(opts&&opts.dot))playSample('player_hit'+(1+~~(Math.random()*4)),.6,_r(1,.15));
   // 회전기폭 합체: 회전 중 보호막 자동 적용 (데미지 감소 + 흡수)
   if(P.s==='whirlwind'&&P.skills.detonate&&_isFused('whirlDet')){
-    const _wwBlk=pGuardAbsorb(); // 보호막과 동일 흡수율
+    const _wwBlk=pGuardAbsorb()*(_isDotEarly?.5:1); // 보호막과 동일 흡수율, DOT 절반
     const _rawDmg2=dmg;
     dmg=Math.max(1,~~(dmg*(1-_wwBlk)));
     P.parryBank=(P.parryBank||0)+_rawDmg2;
@@ -34973,44 +34974,12 @@ function _addFuseProfTick(key){_addCardProfTick((_FUSE_PAIRS[key]||[])[0]);}
 function _fuseReqProf(key){return _CATPROF_REQ} // 600초(10분)
 function _canFuse(key){
   if(!_FUSE_PAIRS[key])return false;
-  if(P&&P.isDemoTest)return !_isFused(key); // 데모 테스트: 조건 없이 합체 가능
   if(_DEMO_MODE&&!_DEMO_FUSE_ALLOWED.has(key))return false;
-  if(key==='dimBreach'&&_isFused('dimBreach'))return false;
-  if(key==='dimSlam'&&!_isFused('dimBreach'))return false;
-  if(key==='dimSlam'&&_isFused('dimSlam'))return false;
-  if(key==='dimThunder'&&!_isFused('dimSlam'))return false;
-  if(key==='dimThunder'&&_isFused('dimThunder'))return false;
-  if(key==='dimRush'&&!_isFused('dimThunder'))return false;
-  if(key==='dimRush'&&_isFused('dimRush'))return false;
-  if(key==='dimBlast'&&!_isFused('dimRush'))return false;
-  if(key==='dimBlast'&&_isFused('dimBlast'))return false;
-  if(key==='elemFuse'&&!_isFused('sixFuse'))return false;
-  if(key==='sixFuse'&&_isFused('sixFuse'))return false;
-  if(key==='slamStorm'&&!_isFused('whirlDet'))return false;
-  if(key==='whirlDet'&&_isFused('whirlDet'))return false;
-  if(key==='stormBeam'&&(!_isFused('slamStorm')||!_isFused('elemFuse')))return false;
-  if(key==='stormBeam'&&(_isFused('stormBeam')||_isFused('stormBurst')))return false;
-  // stormBeam 숙련도 시간 조건 제거 — 스킬+선행합체만 필요
-  if(key==='stormBurst'&&!_isFused('stormBeam'))return false; // 선행: 암전나선
-  if(key==='stormBurst'&&_isFused('stormBurst'))return false;
-  if(key==='stormBurst')return P.skills.burstLoop>=1; // 버스트루프 습득
-  if(key==='elecRepent'&&_isFused('elecRepent'))return false;
-  if(key==='elecRepent'&&!_isFused('boneStorm'))return false; // 해골번개 합체 선행 필요
-  if(key==='elecRepent'&&!P.skills.hellRay)return false;
-  if(key==='holyFuse'&&_isFused('holyFuse'))return false;
-  if(key==='holyIce'&&_isFused('holyIce'))return false;
-  if(key==='holyIce'&&!_isFused('holyFuse'))return false; // 결계의 영역 선행 필요
-  // pillarSlam 레벨 제한 해제
-  // 시간 기반 합체 숙련 체크 (추적암전, 지진폭풍)
-  if(_FUSE_TIME_REQ[key])return _fuseProfSec(key)>=_FUSE_TIME_REQ[key];
-  // 구성 스킬 습득 여부 체크 (미습득 스킬로 합체 방지)
+  // 이미 합체 완료면 불가
+  if(_isFused(key))return false;
+  // 구성 스킬 습득 여부만 체크 (선행합체/숙련도 조건 전부 제거)
   const _fp=_FUSE_PAIRS[key]||[];
   for(let i=0;i<_fp.length;i++){if((P.skills[_fp[i]]||0)<1)return false}
-  // 양쪽 스킬 숙련도 체크 (하위 합체 완료된 스킬은 스킵)
-  const _req=_fuseReqProf(key);
-  const _absolved=new Set(); // 하위 합체로 이미 검증된 스킬
-  for(const[fk,fv]of Object.entries(_FUSE_PAIRS)){if(fk!==key&&_isFused(fk)){for(const s of fv)_absolved.add(s)}}
-  for(let i=0;i<_fp.length;i++){if(_absolved.has(_fp[i]))continue;if(_SK_CAT[_fp[i]]==='bow')continue;if(_skProfVal(_fp[i])<_req)return false}
   return true;
 }
 function _getAbsorbed(key){const m={dimBreach:['magicBlink'],dimSlam:['magicBlink','chainAssault'],dimThunder:['magicBlink','chainAssault','chainSlam'],dimRush:['magicBlink','chainAssault','chainSlash','chainSlam'],dimBlast:['magicBlink','chainAssault','chainSlash','chainSlam','giantSlam'],whirlDet:['detonate'],slamStorm:['detonate','giantSlam'],stormBeam:['detonate','giantSlam','fanShot','omniBeam','elemMissile'],stormBurst:['detonate','giantSlam','fanShot','omniBeam','elemMissile','burstLoop'],bladeFuse:['guardian'],iceMortar:['iceOrb'],sixFuse:['omniBeam'],elemFuse:['fanShot','omniBeam','elemMissile'],boneStorm:['boneWall'],elecRepent:['hellRay','boneWall'],shieldFuse:['shieldThrow'],plagueFuse:['guardian','plagueBurst'],holyFuse:['holyPrison'],holyIce:['holyPrison','iceStorm'],holyWeak1:['holyPrison','iceStorm','weakPhys'],holyWeak2:['holyPrison','iceStorm','weakPhys','weakMag'],holyWeak3:['holyPrison','iceStorm','weakPhys','weakMag','weakPj'],holyWeak4:['holyPrison','iceStorm','weakPhys','weakMag','weakPj','weakRev'],pillarSpike:['spikeTrap'],pillarSlam:['darkPillar'],infernoSlam:['fireAura'],siegeGhost:['voidScarecrow'],dualScarecrow:['explodeScarecrow'],thunderGhost:['thunderStake'],timeStep:['ghostWalk']};return m[key]||[]}
@@ -44756,14 +44725,16 @@ function drawP(){
     const _er=_bv.r*Math.pow(_ep,.35);
     const _isIce=_bv.col==='ice',_isLtn=_bv.col==='lightning',_isDark=_bv.col==='dark',_isRb=_bv.col==='rainbow',_isBlk=_bv.col==='black';
     const _bvPrevAlpha=X.globalAlpha;
-    // black(폭독혈): boom_plague 스프라이트시트 6프레임
-    if(_bv.col==='black'&&_plagueBoomSpr.ready){
-      const _drawSz=_bv.r*2.4*Math.pow(Math.min(1,_ep*3),.45);
-      const _fi=Math.min(5,~~(_ep*6));
-      X.globalAlpha=Math.max(0,1-_ep*.7);
-      X.drawImage(_plagueBoomSpr.img,_fi*_plagueBoomSpr.w,0,_plagueBoomSpr.w,_plagueBoomSpr.h,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);
-      if(_ep<.5){const _swR=_bv.r*Math.pow(_ep/.5,.35)*1.1;
-        X.globalAlpha=.5*(1-_ep/.5);X.strokeStyle='#882222';X.lineWidth=3+5*(1-_ep/.5);
+    // black(폭독혈): Dark_DarkSmoke_FBF_4x4 시트 16프레임
+    if(_bv.col==='black'){
+      const _ds=_tvfx2Imgs['Dark_DarkSmoke_FBF_4x4.png'];
+      if(_ds&&_ds.complete){const _fw=~~(_ds.naturalWidth/4),_fh=~~(_ds.naturalHeight/4);
+        const _drawSz=_bv.r*3.2*Math.pow(Math.min(1,_ep*3),.5);
+        const _fi=Math.min(15,~~(_ep*16)),_fc=_fi%4,_fr=~~(_fi/4);
+        X.globalAlpha=Math.max(0,1-_ep*.8);
+        X.drawImage(_ds,_fc*_fw,_fr*_fh,_fw,_fh,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);}
+      if(_ep<.4){const _swR=_bv.r*Math.pow(_ep/.4,.3)*1.15;
+        X.globalAlpha=.5*(1-_ep/.4);X.strokeStyle='#882222';X.lineWidth=3+5*(1-_ep/.4);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
     }else
     // redbean(빨콩): Fire_FBF_4x4 스프라이트시트 (4x4, 16프레임)
@@ -44778,26 +44749,38 @@ function drawP(){
         X.globalAlpha=.6*(1-_ep/.4);X.strokeStyle='#ff4422';X.lineWidth=3+6*(1-_ep/.4);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
     }else
-    // fire: fire_1~4 개별 이미지 4프레임 애니메이션
-    if(_bv.col==='fire'&&_plagueBoomReady>=4){
-      const _drawSz=_bv.r*2.6*Math.pow(Math.min(1,_ep*3),.5);
-      const _fi=Math.min(3,~~(_ep*4));
-      X.globalAlpha=Math.max(0,1-_ep*.8);
-      X.drawImage(_plagueBoomSprs[_fi],bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);
-      if(_ep<.5){const _swR=_bv.r*Math.pow(_ep/.5,.35)*1.1;
-        X.globalAlpha=.6*(1-_ep/.5);X.strokeStyle='#ffaa33';X.lineWidth=3+6*(1-_ep/.5);
-        X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
-    }else
-    // rainbow_light(무지개 피격/적중): Poison_MediumImpact 단일 시트 (redbean 타이밍)
-    if(_bv.col==='rainbow_light'){
-      const _pp=_tvfx2Imgs['Poison_MediumImpact.png'];
-      if(_pp&&_pp.complete){const _fw=~~(_pp.naturalWidth/4),_fh=~~(_pp.naturalHeight/4);
+    // fire: Fire_FBF_4x4 시트 16프레임 (빨콩과 동일 퀄리티)
+    if(_bv.col==='fire'){
+      const _fb=_tvfx2Imgs['Fire_FBF_4x4.png'];
+      if(_fb&&_fb.complete){const _fw=~~(_fb.naturalWidth/4),_fh=~~(_fb.naturalHeight/4);
         const _drawSz=_bv.r*3.2*Math.pow(Math.min(1,_ep*3),.5);
         const _fi=Math.min(15,~~(_ep*16)),_fc=_fi%4,_fr=~~(_fi/4);
         X.globalAlpha=Math.max(0,1-_ep*.8);
-        X.drawImage(_pp,_fc*_fw,_fr*_fh,_fw,_fh,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);}
+        X.drawImage(_fb,_fc*_fw,_fr*_fh,_fw,_fh,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);}
       if(_ep<.4){const _swR=_bv.r*Math.pow(_ep/.4,.3)*1.15;
-        X.globalAlpha=.6*(1-_ep/.4);X.strokeStyle='#88cc44';X.lineWidth=3+6*(1-_ep/.4);
+        X.globalAlpha=.6*(1-_ep/.4);X.strokeStyle='#ffaa33';X.lineWidth=3+6*(1-_ep/.4);
+        X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
+    }else
+    // rainbow_light(무지개 피격 폭발): 알록달록 다원소 레이어 콤보
+    if(_bv.col==='rainbow_light'){
+      const _alpha=Math.max(0,1-_ep*.8);
+      const _rbSheets=['Fire_FBF_4x4.png','Poison_MediumImpact.png','Dark_DarkSmoke_FBF_4x4.png','Light_ImpactLight_Sheet.png'];
+      for(let _ri=0;_ri<_rbSheets.length;_ri++){
+        const _rImg=_tvfx2Imgs[_rbSheets[_ri]];
+        if(!_rImg||!_rImg.complete)continue;
+        const _rC=4,_rFw=~~(_rImg.naturalWidth/_rC),_rFh=~~(_rImg.naturalHeight/_rC);
+        const _rEp=Math.min(1,Math.max(0,_ep-_ri*.03)/Math.max(.01,1-_ri*.03)); // 시차
+        const _rFi=Math.min(15,~~(_rEp*16)),_rFc=_rFi%_rC,_rFr=~~(_rFi/_rC);
+        const _rSz=_bv.r*(2.8+_ri*.3)*Math.pow(Math.min(1,_rEp*3),.5);
+        const _rRot=_ri*Math.PI*.5; // 각 레이어 90도씩 회전
+        X.save();X.translate(bx,by);X.rotate(_rRot);
+        X.globalAlpha=_alpha*(1-_ri*.15);
+        X.globalCompositeOperation='lighter';
+        X.drawImage(_rImg,_rFc*_rFw,_rFr*_rFh,_rFw,_rFh,-_rSz/2,-_rSz/2,_rSz,_rSz);
+        X.restore();
+      }
+      if(_ep<.4){const _swR=_bv.r*Math.pow(_ep/.4,.3)*1.15;
+        X.globalAlpha=.6*(1-_ep/.4);X.strokeStyle='#ff88ff';X.lineWidth=3+6*(1-_ep/.4);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
     }else
     // dark02(패링 임팩트): Dark_MediumImpact 단일 시트 (redbean 타이밍)
@@ -48618,7 +48601,7 @@ const INTRO_CUTSCENE_LINES={
   ko:[
     {id:1,img:'00.png',t:0,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,px:0,py:0,ease:'out'},vfx:{vig:.4,grain:.15,grade:'purple'},fade:{in:800,out:200,type:'cross'},sfx:'goddess_laugh'},
     {id:2,img:'01.png',t:2500,dur:1500,speaker:null,text:'',cam:{zs:1.05,ze:1.15,px:0,py:0,ease:'out'},vfx:{vig:.35,chrom:.3,shake:2},fade:{type:'cross',in:300},sfx:'laugh_climax'},
-    {id:3,img:'02.png',t:4000,dur:4500,speaker:'GODDESS',text:'네놈의 그 짜릿한 복수극, 잘도 봤다. 명작이더구나.',cam:{zs:1,ze:1.05,px:5,py:0,ease:'linear'},vfx:{vig:.5,grain:.1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:60,shadow:true}},
+    {id:3,img:'02.png',t:4000,dur:4500,speaker:'GODDESS',text:'네놈의 그 짜릿한 복수극, 감명깊게 잘 봤다. 명작이더구나.',cam:{zs:1,ze:1.05,px:5,py:0,ease:'linear'},vfx:{vig:.5,grain:.1},fade:{type:'cross',in:400},text_cfg:{reveal:'char',speed:60,shadow:true}},
     {id:5,img:'03.png',t:8500,dur:5000,speaker:'GODDESS',text:'네놈에게 알량한 선의가 보이는구나. 구해야 할 사람이 아직 남아 있을 텐데.\n아직도 너를 기다리고 있는 것 같던데? 서로 시간이 많지 않다...',cam:{zs:1,ze:1.2,px:0,py:10,ease:'inout'},vfx:{vig:.5},fade:{type:'cross',in:500},text_cfg:{reveal:'char',speed:60,shadow:true}},
     {id:6,img:'04.png',t:13500,dur:1500,speaker:null,text:'',cam:{zs:1.3,ze:1,ease:'out'},vfx:{shake:3,chrom:.2},fade:{type:'cut',out:200},sfx:'wood_horse_drop'},
     {id:7,img:'05.png',t:15000,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.05,py:5,ease:'linear'},vfx:{vig:.6,grain:.2,grade:'purple_blood'},fade:{type:'cross',in:600},sfx:'body_thud'},

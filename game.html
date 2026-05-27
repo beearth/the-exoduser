@@ -25242,8 +25242,8 @@ function update(){
         }
       }
     }
-    // HP 회복: 초당 maxHP의 5%+α (소수점 누적)
-    const _psHealPct=(.05+_psGrowSec*.005);
+    // HP 회복: 초당 maxHP의 1.5%→3.0% (10초간 성장)
+    const _psHealPct=(.015+_psGrowSec*.0015);
     const _psHealRaw=P.mhp*_psHealPct/60*sp;
     P._psHealAcc=(P._psHealAcc||0)+_psHealRaw;
     if(P._psHealAcc>=1){const _psHeal=~~P._psHealAcc;P._psHealAcc-=_psHeal;if(P.hp<P.mhp){P.hp=Math.min(P.mhp,P.hp+_psHeal);addTxt(P.x,P.y-40,'+'+_psHeal,'#88ffaa',20)}}
@@ -33173,10 +33173,11 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   // 한방 데미지 캡: 삭제 (제한 없음)
 
   // ═══ 에너지쉴드: 모든 배율 확정 후 흡수 (HP와 동일 내구성) ═══
-  // DOT은 기본 제외. shieldHit:true 플래그 시 DOT도 쉴드 적용 (shockField 등 마법 장판)
+  // DOT은 기본 제외. shieldHit:true 플래그 시 DOT도 쉴드 적용 (50% 흡수, 50% HP 관통)
   if((!isDot||(opts&&opts.shieldHit))&&e.eShieldMax>0&&e.eShield>0){
-    const _shAbs=Math.min(e.eShield,dmg);
-    e.eShield=Math.max(0,e.eShield-dmg);
+    const _shDmg=isDot?~~(dmg*.5):dmg; // DOT은 50%만 쉴드로
+    const _shAbs=Math.min(e.eShield,_shDmg);
+    e.eShield=Math.max(0,e.eShield-_shDmg);
     dmg=Math.max(0,dmg-_shAbs);
     if(dmg===0)_shBlocked=true;
   }
@@ -34115,8 +34116,8 @@ function hurtP(dmg,opts){
       doParry(0,P.x,P.y,true);
       return;
     }
-    // 보호막 흡수 (패링 실패): 넉백 + 임팩트 (sBlock과 동일)
-    const _psBlkRate=Math.min(.90,pGuardAbsorb()+pShieldBlock());
+    // 보호막 흡수 (패링 실패): 넉백 + 임팩트 — DOT은 흡수율 절반
+    const _psBlkRate=Math.min(.90,(pGuardAbsorb()+pShieldBlock())*(_isDotEarly?.5:1));
     const _psRawDmg=dmg;
     dmg=Math.max(1,~~(dmg*(1-_psBlkRate)));
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+_psRawDmg}
@@ -34134,8 +34135,8 @@ function hurtP(dmg,opts){
       if(P.skills.detonate){P.parryBank=(P.parryBank||0)+100}
       return;
     }
-    // 보호막 흡수 (패링 실패): 넉백 + 임팩트
-    const _blkRate=Math.min(.80,pGuardAbsorb()+pShieldBlock());
+    // 보호막 흡수 (패링 실패): 넉백 + 임팩트 — DOT은 흡수율 절반
+    const _blkRate=Math.min(.80,(pGuardAbsorb()+pShieldBlock())*(_isDotEarly?.5:1));
     const _rawDmg=dmg;
     dmg=Math.max(1,~~(dmg*(1-_blkRate)));
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+_rawDmg;addTxt(P.x,P.y-25,_T('흡수!'),'#ff6644',35)}
@@ -34147,7 +34148,7 @@ function hurtP(dmg,opts){
   } else if(!(opts&&opts.dot))playSample('player_hit'+(1+~~(Math.random()*4)),.6,_r(1,.15));
   // 회전기폭 합체: 회전 중 보호막 자동 적용 (데미지 감소 + 흡수)
   if(P.s==='whirlwind'&&P.skills.detonate&&_isFused('whirlDet')){
-    const _wwBlk=pGuardAbsorb(); // 보호막과 동일 흡수율
+    const _wwBlk=pGuardAbsorb()*(_isDotEarly?.5:1); // 보호막과 동일 흡수율, DOT 절반
     const _rawDmg2=dmg;
     dmg=Math.max(1,~~(dmg*(1-_wwBlk)));
     P.parryBank=(P.parryBank||0)+_rawDmg2;
@@ -34631,7 +34632,7 @@ const SKILL_LIST=[
   {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 우클릭 → 땅 내려찍기. 범위200~350 데미지x8 그로기x6. 이동거리 비례 최대x6. 일반몹 즉시 기절(5초), 보스 체간 대량 삭감. Lv당 범위+16 데미지+15% 그로기+15%',descEn:'During chain dash RMB → ground slam. Range 200~350 DMG x8 groggy x6. Distance scale max x6. Instant stun mobs (5s), massive boss posture break. Per Lv range+16 DMG+15% groggy+15%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   // earthBreaker 삭제됨
   {id:'chainSlash',name:'기동칼날개',cat:'move',fixed:true,hidden:true,emoji:'⚔',desc:'[히든: 5성 dimRush 합체] 사슬기동 중 좌클릭 → 이동 중 전방 광역 베기+출혈. STR 스케일 물리데미지. 다단히트. Lv당 뎀+12% 범위+15',descEn:'[Hidden: 5-star dimRush fuse] During chain dash LMB → forward AoE slash+bleed while moving. STR scale physical DMG. Multi-hit. Per Lv DMG+12% range+15',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
-  {id:'peaceShield',name:'평화의보호',cat:'def',fixed:true,hidden:true,noDmg:true,emoji:'🕊️',desc:'[히든: 암전나선 합체] Q 홀드 시 보호막이 점점 커지며 HP 초당 10% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모',descEn:'[Hidden: Dark Spiral fuse] Q hold: shield grows over time + HP 10%/s regen. DMG reduction scales with shield size. MP cost',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
+  {id:'peaceShield',name:'평화의보호',cat:'def',fixed:true,noDmg:true,emoji:'🕊️',desc:'Q 홀드 시 보호막이 점점 커지며 HP 초당 5% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모',descEn:'Q hold: shield grows over time + HP 5%/s regen. DMG reduction scales with shield size. MP cost',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'⚡',desc:'[히든: 암전나선 합체] E로 조준, 클릭 설치. 에너지 쐐기를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. 범위 200+(Lv-1)×22',descEn:'[Hidden: Dark Spiral fuse] E to aim, click to place. Energy wedge planted on ground — rotates+DMG. MP 100. 1 charge CD 10s. 5s+0.5s/Lv duration. Range 200+(Lv-1)×22',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'shieldThrow',name:'칼등날개',cat:'def',fixed:true,emoji:'🔨',desc:'[고정: 칼등치기 합체] 보유 시 칼등치기에 전방 충격파 자동 발동. 제자리 처내기. 쿨 5초. Lv당 뎀+12% 범위+20',descEn:'[Fixed: Blade Parry fuse] When owned, swipe auto-triggers forward shockwave. Stationary swipe. CD 5s. Per Lv DMG+12% range+20',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
   // [SKILL REMOVED 2026-04-10] blastShot (폭산탄) — 석궁 개편
