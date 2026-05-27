@@ -49216,8 +49216,6 @@ function showStageTransition(callback){
   if(img&&_STAGE_TRANSITION_RD.length>0){
     const idx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[idx];
-    img.style.objectFit='cover';
-    img.style.filter='saturate(1.1) brightness(1.05)';
   }
   el.style.opacity='1';el.style.pointerEvents='all';bar.style.width='0%';
   requestAnimationFrame(()=>{
@@ -49234,11 +49232,12 @@ function showBootLoading(msg){
   if(!el||!bar||!name) return;
   _bootLoadShownAt=Date.now();
   name.textContent=msg||_T('불러오는 중...');
-  // 첫 부팅 로딩 → 로고, 이후 스테이지 전환 → 랜덤 이미지
-  if(!_bootRdPicked&&img){
-    img.src='img/logo_exoduser.png';
-    img.style.objectFit='contain';
-    img.style.filter='none';
+  // 세션 당 한 장만 — 이미 골랐으면 교체 금지
+  if(!_bootRdPicked&&img&&_STAGE_TRANSITION_RD.length>0){
+    // index.html에서 프리로드한 인덱스가 있으면 동일 이미지 사용 (캐시 히트)
+    const _rdParam=new URLSearchParams(location.search).get('rd');
+    const _rdIdx=_rdParam?Math.max(1,Math.min(19,+_rdParam))-1:_pickTransitionRd();
+    img.src=_STAGE_TRANSITION_RD[_rdIdx];
     _bootRdPicked=true;
   }
   bar.style.width='8%';
