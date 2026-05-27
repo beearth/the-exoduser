@@ -3075,6 +3075,7 @@ function dbRestore(d){
   P.st=pd.st||P.mst; P.mst=pd.mst||100;
   P.speed=pd.speed||2.6;
   P.shield=pd.shield||0;P.mshield=pd.mshield||0;
+  P.rage=0; // 분노게이지 (패링 성공 시 적립, 대왕치기 소비)
   P.maskOn=pd.maskOn!==undefined?pd.maskOn:true;
   _applyMaskAtlas();
   // Inventory
@@ -29607,6 +29608,9 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   P.mp=Math.min(P.mmp,P.mp+_prBase);
   _harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+10);
   addTxt(P.x,P.y-76,_T('⚡기동+10'),'#44ccff',35);
+  // 분노게이지 +10% (패링 성공)
+  P.rage=Math.min(100,P.rage+10);
+  addTxt(P.x,P.y-90,_T('🔥분노+')+P.rage+'%','#ff4400',35);
   G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
@@ -35836,7 +35840,10 @@ function activateGiantSlam(srcId){
   // 즉시 히트 (hitStop/slowMo 억제)
   G._noHitStopT=60;
   const _gs1R=500+(slv-1)*15;
-  const _gs1Dmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')*4); // Lv1=100×, Lv10=280×
+  // 분노게이지: 10%당 +100% 데미지 (100%=+1000%)
+  const _rageMul=1+(P.rage/10);
+  const _gs1Dmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')*4*_rageMul); // Lv1=100×, Lv10=280× + 분노배율
+  if(P.rage>0){addTxt(P.x,P.y-50,_T('🔥분노 ')+P.rage+'% → +'+~~((P.rage/10)*100)+'%!','#ff2200',45);P.rage=0;}
   const _gs1El=wp().el||0;
   _gSlamHit(P.facing,_gs1R,Math.PI,_gs1Dmg,_gs1El,0,1.0);
   G.hitStop=0;G.slowMo=0;
@@ -49216,6 +49223,8 @@ function showStageTransition(callback){
   if(img&&_STAGE_TRANSITION_RD.length>0){
     const idx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[idx];
+    img.style.objectFit='cover';
+    img.style.filter='saturate(1.1) brightness(1.05)';
   }
   el.style.opacity='1';el.style.pointerEvents='all';bar.style.width='0%';
   requestAnimationFrame(()=>{
@@ -49234,9 +49243,7 @@ function showBootLoading(msg){
   name.textContent=msg||_T('불러오는 중...');
   // 세션 당 한 장만 — 이미 골랐으면 교체 금지
   if(!_bootRdPicked&&img&&_STAGE_TRANSITION_RD.length>0){
-    // index.html에서 프리로드한 인덱스가 있으면 동일 이미지 사용 (캐시 히트)
-    const _rdParam=new URLSearchParams(location.search).get('rd');
-    const _rdIdx=_rdParam?Math.max(1,Math.min(19,+_rdParam))-1:_pickTransitionRd();
+    const _rdIdx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[_rdIdx];
     _bootRdPicked=true;
   }

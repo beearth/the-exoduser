@@ -3075,6 +3075,7 @@ function dbRestore(d){
   P.st=pd.st||P.mst; P.mst=pd.mst||100;
   P.speed=pd.speed||2.6;
   P.shield=pd.shield||0;P.mshield=pd.mshield||0;
+  P.rage=0; // 분노게이지 (패링 성공 시 적립, 대왕치기 소비)
   P.maskOn=pd.maskOn!==undefined?pd.maskOn:true;
   _applyMaskAtlas();
   // Inventory
@@ -49216,6 +49217,8 @@ function showStageTransition(callback){
   if(img&&_STAGE_TRANSITION_RD.length>0){
     const idx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[idx];
+    img.style.objectFit='cover';
+    img.style.filter='saturate(1.1) brightness(1.05)';
   }
   el.style.opacity='1';el.style.pointerEvents='all';bar.style.width='0%';
   requestAnimationFrame(()=>{
@@ -49234,9 +49237,7 @@ function showBootLoading(msg){
   name.textContent=msg||_T('불러오는 중...');
   // 세션 당 한 장만 — 이미 골랐으면 교체 금지
   if(!_bootRdPicked&&img&&_STAGE_TRANSITION_RD.length>0){
-    // index.html에서 프리로드한 인덱스가 있으면 동일 이미지 사용 (캐시 히트)
-    const _rdParam=new URLSearchParams(location.search).get('rd');
-    const _rdIdx=_rdParam?Math.max(1,Math.min(19,+_rdParam))-1:_pickTransitionRd();
+    const _rdIdx=_pickTransitionRd();
     img.src=_STAGE_TRANSITION_RD[_rdIdx];
     _bootRdPicked=true;
   }
@@ -49526,11 +49527,11 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         charIdx:_charIdx
       };
       const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:_SLOT,data:saveData})});
-      if(!res.ok){_localSaveFallback(saveData);return}
+      if(!res.ok){try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}return}
       const j=await res.json();
       if(j.ok){_lastSaveTime=Date.now()}
       else{if(!IS_ELECTRON)console.error('[LOCAL] Save failed:',j.error)}
-    }catch(e){if(!IS_ELECTRON)console.error('[LOCAL] Save failed:',e)}
+    }catch(e){try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}}
     finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
   };
 
@@ -49565,6 +49566,8 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
           recalcSt();
         }
       }
+      // localStorage 폴백 로드
+      if(!_loaded){try{const ls=localStorage.getItem('hellsave_'+_SLOT);if(ls){const ld=JSON.parse(ls);if(ld&&ld.player){dbRestore(ld);_loaded=true;console.log('[LOCAL] localStorage 폴백 로드 완료')}}}catch(le){}}
       if(!_loaded){
         if(!IS_ELECTRON)console.log('[LOCAL] 세이브 없음, 새 게임 시작');
         G._cutsceneDone=false;
