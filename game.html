@@ -20492,6 +20492,18 @@ function _updateActionKeys(){
     elBow.style.boxShadow=_techAim?'inset 0 0 10px rgba(255,136,0,.4)':'none';
     // 쿨다운 오버레이 + 숫자 표시
     if(elBow._skId!==_spSk){elBow._skId=_spSk;elBow.innerHTML=_spSk?_skIcon(_spSk):''}
+    // ── 분노게이지 오버레이 (빨간색, 아래→위) ──
+    let _rageEl=elBow.querySelector('._rageBar');
+    if(P.rage>0){
+      if(!_rageEl){_rageEl=document.createElement('div');_rageEl.className='_rageBar';_rageEl.style.cssText='position:absolute;bottom:0;left:0;right:0;pointer-events:none;z-index:1;background:rgba(255,20,0,.45);transition:height .15s';elBow.appendChild(_rageEl)}
+      _rageEl.style.height=(P.rage)+'%';
+      // 분노 수치 표시
+      let _rageTxt=_rageEl.querySelector('span');
+      if(!_rageTxt){_rageTxt=document.createElement('span');_rageTxt.style.cssText='position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:.6rem;font-weight:700;color:#fff;text-shadow:0 0 4px #ff0000';_rageEl.appendChild(_rageTxt)}
+      _rageTxt.textContent=P.rage+'%';
+      elBow.style.borderColor=P.rage>=100?'#ff2200':P.rage>=50?'#cc4400':'#884400';
+      if(P.rage>=100)elBow.style.boxShadow='inset 0 0 12px rgba(255,30,0,.6)';
+    }else if(_rageEl){_rageEl.remove()}
     let _spCdEl=elBow.querySelector('._skCd');
     if(_spSk&&_spOnCd){
       const _spSkDef=_skById(_spSk);
