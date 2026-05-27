@@ -3075,6 +3075,7 @@ function dbRestore(d){
   P.st=pd.st||P.mst; P.mst=pd.mst||100;
   P.speed=pd.speed||2.6;
   P.shield=pd.shield||0;P.mshield=pd.mshield||0;
+  P.rage=0; // 분노게이지 (패링 성공 시 적립, 대왕치기 소비)
   P.maskOn=pd.maskOn!==undefined?pd.maskOn:true;
   _applyMaskAtlas();
   // Inventory
@@ -7518,7 +7519,7 @@ function _checkPetDialogue(){
   }
   if(P.hp<P.mhp*.3||P.mp<P.mmp*.3||P.st<P.mst*.3){
     if(P.skills.holyDome>0)_petSayCD('resource_low_yes','crow','F키 회복의 영역을 써봐.',4,300);
-    else _petSayCD('resource_low_no','crow','빠져! 물약 마시고 회복해.',4,300,'cat','자원 없으면 도망가는 게 답이야!',4);
+    else _petSayCD('resource_low_no','crow','빠져! 물약 마시고 회복해.',4,300,'cat','HP가 없어 패링이라도 해서 회복해야해!!!',4);
   }
   if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야!',4,300);
   if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트 쌓였어! K 눌러!',4,300);
@@ -7644,6 +7645,9 @@ function _petOnHit(){_petHitCnt++;_petParryCombo=0}
 function _petOnParry(){_petParryCnt++;_petParryCombo++;
   // [10] BL 패링 콤보 5연속
   if(_petParryCombo>=5)_petSayCD('bl_combo5','crow','…이게 진짜 패링이야.',4,300,'cat','다섯 번 연속! 내가 본 인간 중 최고!',4);
+  // 분노게이지 대사
+  if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. Space를 눌러.',4,300,'cat','분노게이지 꽉 찼어! 스페이스로 폭발시켜!',4);
+  else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat','분노 '+P.rage+'%! 패링으로 분노 더 쌓아!',3);
 }
 function _petOnKill(){_petKillCnt++;_petComboKills++;_petKillsRecent++;_petKillsRecentT=G.frame;
   // [17] 콤보 킬
@@ -20491,6 +20495,18 @@ function _updateActionKeys(){
     elBow.style.boxShadow=_techAim?'inset 0 0 10px rgba(255,136,0,.4)':'none';
     // 쿨다운 오버레이 + 숫자 표시
     if(elBow._skId!==_spSk){elBow._skId=_spSk;elBow.innerHTML=_spSk?_skIcon(_spSk):''}
+    // ── 분노게이지 오버레이 (빨간색, 아래→위) ──
+    let _rageEl=elBow.querySelector('._rageBar');
+    if(P.rage>0){
+      if(!_rageEl){_rageEl=document.createElement('div');_rageEl.className='_rageBar';_rageEl.style.cssText='position:absolute;bottom:0;left:0;right:0;pointer-events:none;z-index:1;background:rgba(255,20,0,.45);transition:height .15s';elBow.appendChild(_rageEl)}
+      _rageEl.style.height=(P.rage)+'%';
+      // 분노 수치 표시
+      let _rageTxt=_rageEl.querySelector('span');
+      if(!_rageTxt){_rageTxt=document.createElement('span');_rageTxt.style.cssText='position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:.6rem;font-weight:700;color:#fff;text-shadow:0 0 4px #ff0000';_rageEl.appendChild(_rageTxt)}
+      _rageTxt.textContent=P.rage+'%';
+      elBow.style.borderColor=P.rage>=100?'#ff2200':P.rage>=50?'#cc4400':'#884400';
+      if(P.rage>=100)elBow.style.boxShadow='inset 0 0 12px rgba(255,30,0,.6)';
+    }else if(_rageEl){_rageEl.remove()}
     let _spCdEl=elBow.querySelector('._skCd');
     if(_spSk&&_spOnCd){
       const _spSkDef=_skById(_spSk);
@@ -29607,6 +29623,9 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   P.mp=Math.min(P.mmp,P.mp+_prBase);
   _harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+10);
   addTxt(P.x,P.y-76,_T('⚡기동+10'),'#44ccff',35);
+  // 분노게이지 +10% (패링 성공)
+  P.rage=Math.min(100,P.rage+10);
+  addTxt(P.x,P.y-90,_T('🔥분노+')+P.rage+'%','#ff4400',35);
   G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
@@ -35836,7 +35855,10 @@ function activateGiantSlam(srcId){
   // 즉시 히트 (hitStop/slowMo 억제)
   G._noHitStopT=60;
   const _gs1R=500+(slv-1)*15;
-  const _gs1Dmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')*4); // Lv1=100×, Lv10=280×
+  // 분노게이지: 10%당 +100% 데미지 (100%=+1000%)
+  const _rageMul=1+(P.rage/10);
+  const _gs1Dmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')*4*_rageMul); // Lv1=100×, Lv10=280× + 분노배율
+  if(P.rage>0){addTxt(P.x,P.y-50,_T('🔥분노 ')+P.rage+'% → +'+~~((P.rage/10)*100)+'%!','#ff2200',45);P.rage=0;}
   const _gs1El=wp().el||0;
   _gSlamHit(P.facing,_gs1R,Math.PI,_gs1Dmg,_gs1El,0,1.0);
   G.hitStop=0;G.slowMo=0;
@@ -49234,11 +49256,10 @@ function showBootLoading(msg){
   if(!el||!bar||!name) return;
   _bootLoadShownAt=Date.now();
   name.textContent=msg||_T('불러오는 중...');
-  // 부팅 로딩 → 로고 표시
-  if(!_bootRdPicked&&img){
-    img.src='img/logo_exoduser.png';
-    img.style.objectFit='contain';
-    img.style.filter='none';
+  // 세션 당 한 장만 — 이미 골랐으면 교체 금지
+  if(!_bootRdPicked&&img&&_STAGE_TRANSITION_RD.length>0){
+    const _rdIdx=_pickTransitionRd();
+    img.src=_STAGE_TRANSITION_RD[_rdIdx];
     _bootRdPicked=true;
   }
   bar.style.width='8%';

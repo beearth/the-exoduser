@@ -6536,7 +6536,7 @@ const _EN={
 'SPACE 길게 눌러 건너뛰기':'Hold SPACE to skip',
 // --- Phase 33d: Intro key steps + Load tips ---
 '패링·보호막':'Parry / Shield','돌진 (적을 관통, 무적)':'Dash (pierce enemies, invincible)',
-'대왕치기 (광역 기절)':'Giant Slam (AoE stun)','가시덫 (슬로우+출혈)':'Spike Trap (slow+bleed)',
+'대왕치기 (분노폭발, 광역 기절)':'Giant Slam (Rage Burst, AoE stun)','가시덫 (슬로우+출혈)':'Spike Trap (slow+bleed)',
 '회복의 영역 (리젠 장판)':'Holy Domain (regen zone)','얼음보주 (무적+빙결)':'Ice Orb (invincible+freeze)',
 '석궁 자동발사':'Auto Crossbow','선택 스킬 슬롯':'Skill Slots',
 '(펫이 자동 수거)':'(pet auto-collects)','물약은 설정한 HP% 이하 시 자동 사용':'Potions auto-use when HP falls below set %',
@@ -49069,8 +49069,8 @@ const _INTRO_KEY_STEPS=[
     _ikB(['A','X','Y','LB'],['무기 공격','우클릭 스킬','패링·보호막','돌진 (적을 관통, 무적)']):
     _ikB(['좌클릭','우클릭 / Q','SHIFT'],['무기 공격','패링·보호막','돌진 (적을 관통, 무적)']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
   {title:'스킬',body:()=>_isPad()?
-    _ikB(['B','RB','R3','LT+A','LT+B','LT+X'],['대왕치기 (광역 기절)','Ctrl 스킬','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']):
-    _ikB(['SPACE','1','E','F','CTRL','T'],['대왕치기 (광역 기절)','가시덫 (슬로우+출혈)','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
+    _ikB(['B','RB','R3','LT+A','LT+B','LT+X'],['대왕치기 (분노폭발, 광역 기절)','Ctrl 스킬','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']):
+    _ikB(['SPACE','1','E','F','CTRL','T'],['대왕치기 (분노폭발, 광역 기절)','가시덫 (슬로우+출혈)','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
   {title:'생존',body:()=>(_isPad()?
     _ikB(['L3','Select','Start'],['아이템 줍기','인벤토리','설정']):
     _ikB(['R','TAB','ESC'],['아이템 줍기','인벤토리','설정']))+'<br><span style="font-size:.85em;color:#887766">'+_T('(펫이 자동 수거)')+'</span><br><span style="font-size:.85em;color:#887766">'+_T('물약은 설정한 HP% 이하 시 자동 사용')+'</span>',hint:_isPad()?'A 버튼으로 시작':'클릭하여 시작'}
