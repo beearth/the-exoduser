@@ -28253,3 +28253,11 @@ mpR = 0.05 + s.int√ó0.005                                        [NO P.lv√ó0.001
 - img/logo_exoduser.png
 - index.html
 
+
+## 2026-05-27 12:30 (auto)
+- _autosave/game_20260527_120722.html
+- _autosave/game_20260527_120802.html
+- _autosave/game_20260527_120831.html
+- docs/15 ?∏Ïù¥Î∏??∞Ïù¥?∞Íµ¨Ï°?15 ?∏Ïù¥Î∏??∞Ïù¥?∞Íµ¨Ï°?md
+- game.html
+

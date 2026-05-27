@@ -49526,10 +49526,11 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         charIdx:_charIdx
       };
       const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:_SLOT,data:saveData})});
+      if(!res.ok){try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}return}
       const j=await res.json();
       if(j.ok){_lastSaveTime=Date.now()}
       else{if(!IS_ELECTRON)console.error('[LOCAL] Save failed:',j.error)}
-    }catch(e){if(!IS_ELECTRON)console.error('[LOCAL] Save failed:',e)}
+    }catch(e){try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}}
     finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
   };
 
@@ -49564,6 +49565,8 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
           recalcSt();
         }
       }
+      // localStorage 폴백 로드
+      if(!_loaded){try{const ls=localStorage.getItem('hellsave_'+_SLOT);if(ls){const ld=JSON.parse(ls);if(ld&&ld.player){dbRestore(ld);_loaded=true;console.log('[LOCAL] localStorage 폴백 로드 완료')}}}catch(le){}}
       if(!_loaded){
         if(!IS_ELECTRON)console.log('[LOCAL] 세이브 없음, 새 게임 시작');
         G._cutsceneDone=false;
