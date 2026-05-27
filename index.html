@@ -2145,7 +2145,7 @@ function _enterOffline(){
       // 서버 없음 — localStorage 폴백 (DEMO)
       const _LS_PREFIX='hellsave_demo_';
       let _slot=-1;
-      for(let i=0;i<3;i++){if(!localStorage.getItem(_LS_PREFIX+i)){_slot=i;break}}
+      for(let i=0;i<5;i++){if(!localStorage.getItem(_LS_PREFIX+i)){_slot=i;break}}
       if(_slot<0){$('createBtn').disabled=false;setStatus(_TL('슬롯이 가득 찼습니다.'),true);return}
       localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:0}));
       $('createBtn').disabled=false;
@@ -2332,11 +2332,19 @@ async function doCreateChar(name,visualIdx){
   if(_testMode){
     try{
       const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{ts:Date.now(),charIdx:visualIdx}})});
+      if(!res.ok)throw new Error('no server');
       const j=await res.json();
       $('createBtn').disabled=false;
       if(!j.ok){setStatus(_TL('생성 실패: ')+(j.error||_TL('알 수 없는 오류')),true);return}
       $('charName').value='';setStatus('');await loadLocalCharacters();
-    }catch(e){$('createBtn').disabled=false;setStatus(_TL('생성 실패: ')+e.message,true)}
+    }catch(e){
+      const _LS_PREFIX='hellsave_demo_';const MAX_LS=5;
+      for(let i=0;i<MAX_LS;i++){const raw=localStorage.getItem(_LS_PREFIX+i);if(raw){try{const d=JSON.parse(raw);if(d.name===name){$('createBtn').disabled=false;setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);return}}catch(pe){}}}
+      let _slot=-1;for(let i=0;i<MAX_LS;i++){if(!localStorage.getItem(_LS_PREFIX+i)){_slot=i;break}}
+      if(_slot<0){$('createBtn').disabled=false;setStatus(_TL('슬롯이 가득 찼습니다.'),true);return}
+      localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:visualIdx}));
+      $('createBtn').disabled=false;$('charName').value='';setStatus('');await loadLocalCharacters();
+    }
     return;
   }
   const{error}=await sb.from('characters').insert({user_id:currentUser.id,name:name,data:{charIdx:visualIdx}});
@@ -2363,13 +2371,14 @@ async function loadLocalCharacters(){
   _selectedSlot=null;_updateCharDisplay();
   try{
     const res=await fetch('/api/slots');
+    if(!res.ok)throw new Error('no server');
     const j=await res.json();
     _localSlots=j.ok&&j.slots?j.slots:[];
   }catch(e){
     // 서버 없음 (DEMO 등) — localStorage 폴백
     _localSlots=[];
     const _LS_PREFIX='hellsave_demo_';
-    for(let i=0;i<3;i++){
+    for(let i=0;i<5;i++){
       const raw=localStorage.getItem(_LS_PREFIX+i);
       if(!raw)continue;
       try{const d=JSON.parse(raw);_localSlots.push({name:d.name||('Slot '+(i+1)),lv:(d.player&&d.player.lv)||1,stage:(d.game&&d.game.stage)||0,charIdx:d.charIdx||0});}catch(pe){}
@@ -2430,7 +2439,16 @@ function _renderSlotList(){
       div.querySelector('.char-del').addEventListener('click',e=>{
         e.stopPropagation();
         _showDelConfirm(s.name,async()=>{
-          try{await fetch('/api/save/'+encodeURIComponent(s.name),{method:'DELETE'});_slotScrollIdx=Math.max(0,_slotScrollIdx-1);await loadLocalCharacters()}catch(de){setStatus(_TL('삭제 실패: ')+de.message,true)}
+          try{
+            const dr=await fetch('/api/save/'+encodeURIComponent(s.name),{method:'DELETE'});
+            if(!dr.ok)throw new Error('no server');
+            _slotScrollIdx=Math.max(0,_slotScrollIdx-1);await loadLocalCharacters();
+          }catch(de){
+            const _LS_PREFIX='hellsave_demo_';let _found=false;
+            for(let i=0;i<5;i++){const raw=localStorage.getItem(_LS_PREFIX+i);if(raw){try{const d=JSON.parse(raw);if(d.name===s.name){localStorage.removeItem(_LS_PREFIX+i);_found=true;break}}catch(pe){}}}
+            if(_found){_slotScrollIdx=Math.max(0,_slotScrollIdx-1);await loadLocalCharacters()}
+            else{setStatus(_TL('삭제 실패: ')+de.message,true)}
+          }
         });
       });
       track.appendChild(div);

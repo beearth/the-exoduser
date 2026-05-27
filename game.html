@@ -7519,7 +7519,7 @@ function _checkPetDialogue(){
   }
   if(P.hp<P.mhp*.3||P.mp<P.mmp*.3||P.st<P.mst*.3){
     if(P.skills.holyDome>0)_petSayCD('resource_low_yes','crow','F키 회복의 영역을 써봐.',4,300);
-    else _petSayCD('resource_low_no','crow','빠져! 물약 마시고 회복해.',4,300,'cat','자원 없으면 도망가는 게 답이야!',4);
+    else _petSayCD('resource_low_no','crow','빠져! 물약 마시고 회복해.',4,300,'cat','HP가 없어 패링이라도 해서 회복해야해!!!',4);
   }
   if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야!',4,300);
   if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트 쌓였어! K 눌러!',4,300);
@@ -7645,6 +7645,9 @@ function _petOnHit(){_petHitCnt++;_petParryCombo=0}
 function _petOnParry(){_petParryCnt++;_petParryCombo++;
   // [10] BL 패링 콤보 5연속
   if(_petParryCombo>=5)_petSayCD('bl_combo5','crow','…이게 진짜 패링이야.',4,300,'cat','다섯 번 연속! 내가 본 인간 중 최고!',4);
+  // 분노게이지 대사
+  if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. Space를 눌러.',4,300,'cat','분노게이지 꽉 찼어! 스페이스로 폭발시켜!',4);
+  else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat','분노 '+P.rage+'%! 패링으로 분노 더 쌓아!',3);
 }
 function _petOnKill(){_petKillCnt++;_petComboKills++;_petKillsRecent++;_petKillsRecentT=G.frame;
   // [17] 콤보 킬
