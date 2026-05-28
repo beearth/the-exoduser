@@ -2046,7 +2046,6 @@ const _SV={
 '줍기 (R)':'Plocka (R)',
 '스킬창':'Färdigheter',
 '이동 (WASD)':'Rörelse (WASD)',
-'🦴 해골무덤!':'🦴 Bengrav!',
 };
 
 const _SV_PFX={

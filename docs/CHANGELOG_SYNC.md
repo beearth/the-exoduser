@@ -28322,3 +28322,25 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - lang_zht.js
 - translation_audit_report.txt
 
+
+## 2026-05-28 14:30 (auto)
+- _check_missing.cjs
+- _dedup_lang.cjs
+- _fix_translations_batch4.cjs
+- _fix_translations_batch4b.cjs
+- _fix_translations_batch5.cjs
+- _rebuild_lang.cjs
+- lang_ja.js
+- lang_nl.js
+- lang_no.js
+- lang_pl.js
+- lang_ptbr.js
+- lang_ru.js
+- lang_ru.js.bak5
+- lang_sv.js
+- lang_sv.js.bak5
+- lang_uk.js
+- lang_uk.js.bak5
+- lang_zh.js
+- lang_zht.js
+
