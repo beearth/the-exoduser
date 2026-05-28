@@ -2219,7 +2219,13 @@ async function loadCharacters(){
   const{data,error}=await sb.from('characters').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:true});
   if(error){cl.innerHTML='<div class="no-chars" style="color:#cc4433">'+_TL('오류: ')+error.message+'</div>';return}
   cl.innerHTML='';
-  if(!data||data.length===0){cl.innerHTML='<div class="no-chars">'+_TL('캐릭터가 없습니다. 새로 생성하세요.')+'</div>';}
+  if(!data||data.length===0){
+    cl.innerHTML='<div class="no-chars">'+_TL('캐릭터가 없습니다. 새로 생성하세요.')+'</div>';
+    const newBtn=document.createElement('div');newBtn.className='char-item-new';newBtn.style.marginTop='10px';newBtn.style.cursor='pointer';
+    newBtn.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">+</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+_TL('새 캐릭터')+'</div></div>';
+    newBtn.addEventListener('click',()=>{$('createModal').classList.add('show');$('charName').value='';$('charName').focus()});
+    cl.appendChild(newBtn);
+  }
   else{
     _onlineChars=data;
     _onlineScrollIdx=Math.max(0,Math.min(_onlineScrollIdx||0,Math.max(0,data.length-2)));
