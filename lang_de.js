@@ -2000,6 +2000,15 @@ const _DE={
 '줍기 (R)':'Aufheben (R)',
 '스킬창':'Skills',
 '이동 (WASD)':'Bewegen (WASD)',
+
+// --- batch2-fix ---
+  '✟ 신성한 결계!':'✟ Heiliger Bann!',
+  '👻 유령총!':'👻 Geisterpistole!',
+  '기절!  ':'Betäubt!  ',
+  '녹슨':'Verrostet',
+  '화염의':'des Infernos',
+  '악마팔찌':'Teufelsarmband',
+  '생명팔찌':'Lebensarmband',
 };
 
 const _DE_PFX={'녹슨':'Rostig','강철':'Stahl','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Richter-','천벌의':'Göttlicher Zorn','파멸의':'Vernichtung',
@@ -3014,4 +3023,10 @@ const _DE_BASE={'대검':'Großschwert','석궁':'Armbrust','연사석궁':'Schn
   '🩸산란!': '🩸Spawn!',
   '🪞 반격!': '🪞 Gegenangriff!',
 
+
+// --- batch2 additions ---
+  '✟ 신성한 결계!':'✟ Heiliger Bann!',
+  '👻 유령총!':'👻 Geisterpistole!',
+  '🦴 해골무덤!':'🦴 Knochengruft!',
+  '기절!  ':'Betäubt!  ',
 };

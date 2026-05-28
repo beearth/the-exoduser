@@ -2015,6 +2015,15 @@ const _FR={
 '줍기 (R)':'Ramasser (R)',
 '스킬창':'Compétences',
 '이동 (WASD)':'Déplacer (WASD)',
+
+// --- batch2-fix ---
+  '투구 착용':'Équiper Heaume',
+  '투구 해제':'Déséquiper Heaume',
+  '✟ 신성한 결계!':'✟ Barrière Sacrée !',
+  '👻 유령총!':'👻 Pistolet Fantôme !',
+  '기절!  ':'Étourdi !  ',
+  '녹슨':'Rouillé',
+  '화염의':'de l\'Inferno',
 };
 
 const _FR_PFX={'녹슨':'Rouillé','강철':'Acier','흑요석':'Obsidienne','미스릴':'Mithril','심판의':'du Jugement','천벌의':'du Châtiment Divin','파멸의':'de Destruction',
@@ -3038,4 +3047,11 @@ const _FR_BASE={'대검':'Espadon','석궁':'Arbalète','연사석궁':'Répéte
   '🩸산란!': '🩸Spawn !',
   '🪞 반격!': '🪞 Contre-attaque !',
 
+
+// --- batch2 additions ---
+  '투구 착용':'Équiper Heaume',
+  '투구 해제':'Déséquiper Heaume',
+  '✟ 신성한 결계!':'✟ Barrière Sacrée !',
+  '👻 유령총!':'👻 Pistolet Fantôme !',
+  '기절!  ':'Étourdi !  ',
 };

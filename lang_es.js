@@ -2034,6 +2034,23 @@ const _ES={
 '줍기 (R)':'Recoger (R)',
 '스킬창':'Habilidades',
 '이동 (WASD)':'Mover (WASD)',
+
+// --- batch2-fix ---
+  '투구 착용':'Equipar Yelmo',
+  '투구 해제':'Desequipar Yelmo',
+  '✟ 신성한 결계!':'✟ ¡Barrera Sagrada!',
+  '혼돈의 투구':'Yelmo del Caos',
+  '전지전능의 투구':'Yelmo de la Omnipotencia',
+  '방향키 연타':'Machacar teclas de dirección',
+  '까마귀와 고양이가 아이템을 주워준다. 수거 범위 안이면.':'El cuervo y el gato recogen objetos dentro del rango.',
+  'Ctrl 얼음보주로 탈출! 없으면 방향키 연타!':'¡Ctrl Orbe de Hielo para escapar! ¡Si no, machaca las teclas!',
+  '👻 유령총!':'👻 ¡Pistola Fantasma!',
+  ' 뎀 ':' DMG ',
+  '기절!  ':'¡Aturdido!  ',
+  '녹슨':'Oxidado',
+  '화염의':'del Infierno',
+  '악마팔찌':'Brazalete Demoníaco',
+  '생명팔찌':'Brazalete de Vida',
 };
 
 const _ES_PFX={'녹슨':'Oxidada','강철':'Acero','흑요석':'Obsidiana','미스릴':'Mithril','심판의':'Juicio','천벌의':'Castigo Divino','파멸의':'Ruinoso',
@@ -3024,4 +3041,18 @@ const _ES_BASE={'대검':'Espadón','석궁':'Ballesta','연사석궁':'Repetido
   '🩸산란!': '🩸¡Engendro!',
   '🪞 반격!': '🪞 ¡Contraataque!',
 
+
+// --- batch2 additions ---
+  '투구 착용':'Equipar Yelmo',
+  '투구 해제':'Desequipar Yelmo',
+  '✟ 신성한 결계!':'✟ ¡Barrera Sagrada!',
+  '혼돈의 투구':'Yelmo del Caos',
+  '전지전능의 투구':'Yelmo de la Omnipotencia',
+  '방향키 연타':'Machacar teclas de dirección',
+  '까마귀와 고양이가 아이템을 주워준다. 수거 범위 안이면.':'El cuervo y el gato recogen objetos dentro del rango.',
+  'Ctrl 얼음보주로 탈출! 없으면 방향키 연타!':'¡Ctrl Orbe de Hielo para escapar! ¡Si no, machaca las teclas!',
+  '👻 유령총!':'👻 ¡Pistola Fantasma!',
+  ' 뎀 ':' DMG ',
+  '🦴 해골무덤!':'🦴 ¡Tumba de Huesos!',
+  '기절!  ':'¡Aturdido!  ',
 };
