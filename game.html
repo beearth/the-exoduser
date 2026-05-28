@@ -27929,7 +27929,7 @@ function update(){
   // ═══ 전격이동 — 충전 (1렙10개, 렙당+1) ═══
   {var _bdLv2=P.skills.bladeDash||1;var _bdMaxStk=10+(_bdLv2-1);
   if(P._bdStk!=null&&P._bdStk<_bdMaxStk){
-    if((P._bdRech||0)>0){P._bdRech-=sp;if(P._bdRech<=0){P._bdStk++;P._bdRech=P._bdStk<_bdMaxStk?~~(Math.max(120,(480-(_bdLv2-1)*18))*1):0}}
+    if((P._bdRech||0)>0){P._bdRech-=sp;if(P._bdRech<=0){P._bdStk++;P._bdRech=P._bdStk<_bdMaxStk?~~(Math.max(120,(300-(_bdLv2-1)*18))*1):0}}
   }}
   // ═══ 얼음보주 — 쿨다운 ═══
   if(P._ioCd>0)P._ioCd-=sp+_hdCdBonus;
