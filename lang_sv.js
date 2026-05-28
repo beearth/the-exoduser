@@ -2047,6 +2047,33 @@ const _SV={
 '스킬창':'Färdigheter',
 '이동 (WASD)':'Rörelse (WASD)',
 '🦴 해골무덤!':'🦴 Bengrav!',
+
+'👻 유령!':'👻 Spöke!',
+'탈취!':'Stjäl!',
+
+' 스킬 해제':' Ta bort färdighet',
+' 자동 OFF':' Auto AV',
+' 자동 ON':' Auto PÅ',
+'B슬롯 스킬':'B-plats färdighet',
+'☠중독!':'☠ Förgiftning!',
+'✟ 신의영역!':'✟ Gudomlig sfär!',
+'❄ 얼음송곳!':'❄ Ispigg!',
+'⟨ 키 입력... ⟩':'⟨ Tryck tangent... ⟩',
+'고정':'Fast',
+'다음 구역':'Nästa zon',
+'돌진/작살':'Framstöt/Harpun',
+'쓰러짐...':'Faller...',
+'우클릭 스킬':'Högerklick färdighet',
+'줍기':'Plocka upp',
+'패드 키 초기화':'Återställ gamepad-knappar',
+'패드 키 초기화 완료':'Gamepad-knappar återställda',
+'패링':'Parering',
+'🎮 게임패드 버튼 설정':'🎮 Gamepad-knapp inställningar',
+'💀 ':'💀 ',
+'🔥부활!':'🔥 Uppståndelse!',
+'🔥분노 ':'🔥 Raseri ',
+'🔥분노+':'🔥Raseri+',
+'🚀 미사일!':'🚀 Missil!',
 };
 
 const _SV_PFX={

@@ -2045,6 +2045,33 @@ const _NO={
 '줍기 (R)':'Plukk (R)',
 '스킬창':'Evner',
 '이동 (WASD)':'Beveg (WASD)',
+
+'👻 유령!':'👻 Spøkelse!',
+'탈취!':'Stjel!',
+
+' 스킬 해제':' Fjern ferdighet',
+' 자동 OFF':' Auto AV',
+' 자동 ON':' Auto PÅ',
+'B슬롯 스킬':'B-spor ferdighet',
+'☠중독!':'☠ Forgiftning!',
+'✟ 신의영역!':'✟ Guddommelig sone!',
+'❄ 얼음송곳!':'❄ Ispigg!',
+'⟨ 키 입력... ⟩':'⟨ Trykk tast... ⟩',
+'고정':'Fast',
+'다음 구역':'Neste sone',
+'돌진/작살':'Stormløp/Harpun',
+'쓰러짐...':'Faller...',
+'우클릭 스킬':'Høyreklikk ferdighet',
+'줍기':'Plukk opp',
+'패드 키 초기화':'Nullstill gamepad-taster',
+'패드 키 초기화 완료':'Gamepad-taster nullstilt',
+'패링':'Parering',
+'🎮 게임패드 버튼 설정':'🎮 Gamepad-knapp innstillinger',
+'💀 ':'💀 ',
+'🔥부활!':'🔥 Oppstandelse!',
+'🔥분노 ':'🔥 Raseri ',
+'🔥분노+':'🔥Raseri+',
+'🚀 미사일!':'🚀 Missil!',
 };
 
 const _NO_PFX={

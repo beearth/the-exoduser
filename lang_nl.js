@@ -2046,6 +2046,33 @@ const _NL={
 '줍기 (R)':'Oprapen (R)',
 '스킬창':'Vaardigheden',
 '이동 (WASD)':'Bewegen (WASD)',
+
+'👻 유령!':'👻 Geest!',
+'탈취!':'Steel!',
+
+' 스킬 해제':' Vaardigheid verwijderen',
+' 자동 OFF':' Auto UIT',
+' 자동 ON':' Auto AAN',
+'B슬롯 스킬':'B-slot vaardigheid',
+'☠중독!':'☠ Vergiftiging!',
+'✟ 신의영역!':'✟ Goddelijk domein!',
+'❄ 얼음송곳!':'❄ IJspen!',
+'⟨ 키 입력... ⟩':'⟨ Druk toets... ⟩',
+'고정':'Vast',
+'다음 구역':'Volgende zone',
+'돌진/작살':'Stormloop/Harpoen',
+'쓰러짐...':'Vallen...',
+'우클릭 스킬':'Rechtsklik vaardigheid',
+'줍기':'Oprapen',
+'패드 키 초기화':'Gamepad-toetsen resetten',
+'패드 키 초기화 완료':'Gamepad-toetsen gereset',
+'패링':'Pareren',
+'🎮 게임패드 버튼 설정':'🎮 Gamepad-knop instellingen',
+'💀 ':'💀 ',
+'🔥부활!':'🔥 Opstanding!',
+'🔥분노 ':'🔥 Woede ',
+'🔥분노+':'🔥Woede+',
+'🚀 미사일!':'🚀 Raket!',
 };
 
 const _NL_PFX={

@@ -1948,6 +1948,33 @@ const _CS={
 '줍기 (R)':'Sebrat (R)',
 '스킬창':'Dovednosti',
 '이동 (WASD)':'Pohyb (WASD)',
+
+'👻 유령!':'👻 Duch!',
+'탈취!':'Krádež!',
+
+' 스킬 해제':' Zrušit dovednost',
+' 자동 OFF':' Auto VYP',
+' 자동 ON':' Auto ZAP',
+'B슬롯 스킬':'Dovednost slotu B',
+'☠중독!':'☠ Otrávení!',
+'✟ 신의영역!':'✟ Boží sféra!',
+'❄ 얼음송곳!':'❄ Ledový hrot!',
+'⟨ 키 입력... ⟩':'⟨ Stiskněte klávesu... ⟩',
+'고정':'Pevný',
+'다음 구역':'Další zóna',
+'돌진/작살':'Výpad/Harpuna',
+'쓰러짐...':'Pád...',
+'우클릭 스킬':'Pravé tlačítko dovednost',
+'줍기':'Sbírání',
+'패드 키 초기화':'Reset tlačítek gamepadu',
+'패드 키 초기화 완료':'Tlačítka gamepadu resetována',
+'패링':'Parírování',
+'🎮 게임패드 버튼 설정':'🎮 Nastavení tlačítek gamepadu',
+'💀 ':'💀 ',
+'🔥부활!':'🔥 Vzkříšení!',
+'🔥분노 ':'🔥 Zuřivost ',
+'🔥분노+':'🔥Zuřivost+',
+'🚀 미사일!':'🚀 Střela!',
 };
 
 const _CS_PFX={

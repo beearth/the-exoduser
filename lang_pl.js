@@ -1993,6 +1993,33 @@ const _PL={
 '줍기 (R)':'Podnieś (R)',
 '스킬창':'Umiejętności',
 '이동 (WASD)':'Ruch (WASD)',
+
+'👻 유령!':'👻 Duch!',
+'탈취!':'Kradzież!',
+
+' 스킬 해제':' Usuń umiejętność',
+' 자동 OFF':' Auto WYŁ',
+' 자동 ON':' Auto WŁ',
+'B슬롯 스킬':'Umiejętność slotu B',
+'☠중독!':'☠ Zatrucie!',
+'✟ 신의영역!':'✟ Boska strefa!',
+'❄ 얼음송곳!':'❄ Lodowy kolec!',
+'⟨ 키 입력... ⟩':'⟨ Naciśnij klawisz... ⟩',
+'고정':'Stały',
+'다음 구역':'Następna strefa',
+'돌진/작살':'Szarża/Harpun',
+'쓰러짐...':'Upadek...',
+'우클릭 스킬':'Umiejętność PPM',
+'줍기':'Podnoszenie',
+'패드 키 초기화':'Reset przycisków pada',
+'패드 키 초기화 완료':'Przyciski pada zresetowane',
+'패링':'Parowanie',
+'🎮 게임패드 버튼 설정':'🎮 Ustawienia przycisków pada',
+'💀 ':'💀 ',
+'🔥부활!':'🔥 Wskrzeszenie!',
+'🔥분노 ':'🔥 Furia ',
+'🔥분노+':'🔥Furia+',
+'🚀 미사일!':'🚀 Pocisk!',
 };
 
 const _PL_PFX={
