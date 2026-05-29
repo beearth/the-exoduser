@@ -18,13 +18,13 @@ game_backup_*.html
 index_backup_*.html
 docs/
 
-# BGM: 2~7장 제외 (데모: 1장만)
-bgm/2장_벌레굴/
-bgm/3장_얼음굴/
-bgm/4장_화염지대/
-bgm/5장_지옥군단/
-bgm/6장_사도마굴/
-bgm/7장_지옥성/
+# BGM: 2~7장 전용 BGM만 제외 (gameplay 공유 트랙은 유지)
+bgm/2장_벌레굴/hell2_insect.mp3
+bgm/3장_얼음굴/hell3_fire.mp3
+bgm/4장_화염지대/hell4_abyss.mp3
+bgm/5장_지옥군단/hell5_thunder.mp3
+bgm/6장_사도마굴/hell6_bone.mp3
+bgm/7장_지옥성/hell7_chaos.mp3
 
 # BGM: 공통 폴더 미사용 파일
 bgm/공통/Crown of Ash and Iron.mp3
