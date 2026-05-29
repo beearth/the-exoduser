@@ -11070,9 +11070,10 @@ const AFFIX_POOL=[
   {id:'pickupRadius',type:1,tiers:[10,20,35,55,80],unit:'val',slots:['boots'],group:'pkRd',weight:55},
 
   // ═══ Phase 3: 장신구 확장 (30종) ═══
-  {id:'strFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['bracelet','ring'],group:'strF',weight:60},
-  {id:'dexFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['bracelet','ring'],group:'dexF',weight:60},
-  {id:'intFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['headband','ring'],group:'intF',weight:60},
+  {id:'strFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['ring','neck','belt','bracelet','headband'],group:'strF',weight:60},
+  {id:'dexFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['ring','neck','belt','bracelet','headband'],group:'dexF',weight:60},
+  {id:'intFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['ring','neck','belt','bracelet','headband'],group:'intF',weight:60},
+  {id:'vitFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['ring','neck','belt','bracelet','headband'],group:'vitF',weight:60},
   {id:'allStat',type:1,tiers:[2,4,7,11,16],unit:'val',slots:['neck'],group:'allS',weight:15,tierW:[40,30,20,8,2]},
   {id:'maxSTPct',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['belt','bracelet'],group:'stPct',weight:55},
   {id:'maxMPPct',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['headband','neck'],group:'mpPct',weight:55},
@@ -11308,7 +11309,7 @@ dodgeChance:'회피의',dodgeCooldown:'회피쿨감의',
   fireDR:'화염보호의',iceDR:'빙결보호의',lightDR:'뇌전보호의',darkDR:'암흑보호의',poisonDRdef:'해독의',allDR:'만물보호의',eliteDR:'정예보호의',
   stunRes:'경직저항의',freezeRes:'빙결저항의',slowRes:'감속저항의',knockbackRes:'넉백저항의',
   dashRange:'돌진거리의',dashCooldown:'돌진쿨감의',movSpeedCombat:'전투질주의',movSpeedOOC:'평화질주의',pickupRadius:'습득범위의',
-  strFlat:'힘의',dexFlat:'민첩의',intFlat:'지능의',allStat:'만능의',
+  strFlat:'힘의',dexFlat:'민첩의',intFlat:'지능의',vitFlat:'활력의',allStat:'만능의',
   maxSTPct:'지구력의',maxMPPct:'마나력의',resourceOnHit:'타격자원의',
   fireResMax:'화염한계의',iceResMax:'빙결한계의',lightResMax:'뇌전한계의',darkResMax:'암흑한계의',poisonResMax:'독한계의',
   skillCdRed:'스킬쿨감의',potionCdRed:'물약쿨감의',craftBonus:'장인의',goldFind:'탐욕의',expBonusRing:'수련의',dropRateAcc:'수집의',
@@ -11388,7 +11389,7 @@ const _AFFIX_DESC={
   fireDR:'화염DR',iceDR:'빙결DR',lightDR:'뇌전DR',darkDR:'암흑DR',poisonDRdef:'독DR',allDR:'전체DR',eliteDR:'엘리트DR',
   stunRes:'스턴저항',freezeRes:'빙결저항',slowRes:'감속저항',knockbackRes:'넉백저항',
   dashRange:'돌진거리+',dashCooldown:'돌진쿨-',movSpeedCombat:'전투이속+',movSpeedOOC:'비전투이속+',pickupRadius:'습득범위+',
-  strFlat:'STR+',dexFlat:'DEX+',intFlat:'INT+',allStat:'전스탯+',
+  strFlat:'STR+',dexFlat:'DEX+',intFlat:'INT+',vitFlat:'VIT+',allStat:'전스탯+',
   maxSTPct:'ST%+',maxMPPct:'MP%+',resourceOnHit:'적중자원+',
   fireResMax:'화염최대저항+',iceResMax:'빙결최대저항+',lightResMax:'뇌전최대저항+',darkResMax:'암흑최대저항+',poisonResMax:'독최대저항+',
   skillCdRed:'스킬쿨-',potionCdRed:'물약쿨-',craftBonus:'강화성공+',goldFind:'악의획득+',expBonusRing:'경험치+',dropRateAcc:'드롭률+',
@@ -13399,6 +13400,26 @@ registerVFX('purple_impact','img/fx/purple_impact_sheet.png',443,443,25,5);
 registerVFX('blue_impact','img/fx/blue_impact_sheet.png',225,225,27,6);
 // (삭제됨: vfx_burn_death — 파일 미존재)
 registerVFX('explode_scarecrow','assets/vfx/scarecrow_boom.png',64,64,9,9); // 폭발허수아비 전용 대형폭발 (9x1, 9프레임, 불속성)
+// ─── 악의폭풍 Power Lightning 스프라이트 (3레이어, 스카이블루 틴트) ───
+function _tintImg(src,tintColor,cb){
+  const img=new Image();img.src=src;
+  img.onload=()=>{
+    const c=document.createElement('canvas');c.width=img.width;c.height=img.height;
+    const x=c.getContext('2d');
+    x.drawImage(img,0,0);
+    x.globalCompositeOperation='source-atop';
+    x.fillStyle=tintColor;x.fillRect(0,0,c.width,c.height);
+    x.globalCompositeOperation='source-over';
+    // 원본 밝기 복원 (overlay)
+    x.globalCompositeOperation='luminosity';
+    x.drawImage(img,0,0);
+    cb(c);
+  };
+}
+let _msStormImg1=null,_msStormImg2=null,_msStormImg3=null;
+_tintImg('assets/vfx/Lightning_ImpactLightning_Sheet.png','#4488ff',c=>{_msStormImg1=c});
+_tintImg('assets/vfx/Lightning_Lightning_FBF_4x3.png','#4488ff',c=>{_msStormImg2=c});
+_tintImg('assets/vfx/Lightning_BasicImpact.png','#4488ff',c=>{_msStormImg3=c});
 registerVFX('boss_revive_boom','assets/vfx/boss/boss_revive_boom.png',64,64,24,8); // 보스 부활 폭발 (8x3, 24프레임)
 registerVFX('teleport_burst','assets/vfx/teleport_burst.png',64,64,9,9); // 순간이동 보라색 폭발 (9x1, 9프레임)
 // ─── 보스 스킬 VFX 스프라이트 (LUDO AI 생성, 256×256×16f 4열) ───
@@ -20017,7 +20038,7 @@ function applyStats(){
   let _eqStr=0,_eqDex=0,_eqInt=0;
   for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(it){_eqStr+=(it.bStr||0);_eqDex+=(it.bDex||0);_eqInt+=(it.bInt||0)}}
   const _lb=_lvB();
-  const s={str:STATS.str+_eqStr+_lb,dex:STATS.dex+_eqDex+_lb,int:STATS.int+_eqInt+_lb,vit:0,lck:STATS.lck+_lb};
+  const s={str:STATS.str+_eqStr+_lb+~~_eqAffix('strFlat'),dex:STATS.dex+_eqDex+_lb+~~_eqAffix('dexFlat'),int:STATS.int+_eqInt+_lb+~~_eqAffix('intFlat'),vit:~~_eqAffix('vitFlat'),lck:STATS.lck+_lb};
   P._effStats=s; // 유효 스탯 캐시 (UI 표시용)
   // ═══ 바이블 기준: HP = 100+(stage-1)*6 + VIT*2 + STR*1 + 장비HP ═══
   const _stgHp=G.on?100+((G.stage||1)-1)*6:100;
@@ -20029,7 +20050,7 @@ function applyStats(){
   const _armorSet=new Set(['shield','armor','gloves','pants','boots','cape']);
   const _accSet=new Set(['belt','bracelet','ring1','ring2','necklace','headband']);
   for(let _di=0;_di<_allDefSlots.length;_di++){const _dit=INV.equipped[_allDefSlots[_di]];if(_dit){_totalBonusHp+=(_dit.bonusHp||0);_totalBonusShield+=(_dit.bonusShield||0);_totalBonusMp+=(_dit.bonusMp||0);if(_dit.enh>0){_enhHp+=_dit.enh*0.5;if(_accSet.has(_allDefSlots[_di]))_enhMp+=_dit.enh*0.1;if(_armorSet.has(_allDefSlots[_di]))_enhSt+=_dit.enh*0.1}}}
-  P.mhp=~~((_stgHp+s.str*5+_totalBonusHp+_afHpF+_imHp+_enhHp)*(1+_afHpP+_imHpP*.01+(PASSIVES.pMelee||0)*.03));
+  P.mhp=~~((_stgHp+s.str*5+s.vit*3+_totalBonusHp+_afHpF+_imHp+_enhHp)*(1+_afHpP+_imHpP*.01+(PASSIVES.pMelee||0)*.03));
   P.baseDef=2;
   P.maxPoise=4; // 4칸 고정 (해골 눈알 4개)
   if(P.poise===undefined||P.poise>4)P.poise=4;
@@ -27727,7 +27748,8 @@ function update(){
           G._fireZones.push({x:_mswx,y:_mswy,r:_msR,t:0,maxT:600,
             dmg:_msDmg,el:EL.L,lv:_msLv,type:'storm'});
           SFX.magic(EL.L);
-          addTxt(_mswx,_mswy-20,_T('⚡악의폭풍!'),'#cc88ff',30);
+          playSample(['electric_storm','electric_storm2','electric_storm3','electric_storm4'][~~(Math.random()*4)],.6,_r(1,.1));
+          addTxt(_mswx,_mswy-20,_T('⚡악의폭풍!'),'#55ccff',30);
           shake(4);
           _castSuccess=true;
         }
@@ -28710,12 +28732,12 @@ function update(){
           // 악의폭풍 파티클 — 번개+전기 스파크
           poolPart(fz.x+Math.cos(_fza)*_fzd,fz.y+Math.sin(_fza)*_fzd,
             (Math.random()-.5)*5,-2-Math.random()*4,
-            Math.random()>.6?'#cc88ff':Math.random()>.3?'#8844dd':'#ffffff',2+Math.random()*3,6+Math.random()*8);
+            Math.random()>.6?'#66ddff':Math.random()>.3?'#3399ff':'#ffffff',2+Math.random()*3,6+Math.random()*8);
           // 추가 상승 스파크
           if(Math.random()>.5){
             poolPart(fz.x+(Math.random()-.5)*fz.r,fz.y+(Math.random()-.5)*fz.r,
               (Math.random()-.5)*3,-3-Math.random()*5,
-              '#eeddff',1+Math.random()*2,4+Math.random()*6);
+              '#aaeeff',1+Math.random()*2,4+Math.random()*6);
           }
         }else if(fz.type==='darkPillar'){
           // 악의기둥 파티클 — 보라 상승 + 암흑 파편
@@ -43665,24 +43687,24 @@ function drawP(){
       X.globalAlpha=.8;X.fillStyle='#55cc77';X.font='bold 11px monospace';X.textAlign='center';
       X.fillText('\u{1F9B4}'+((P._bnsCd||0)>0?((P._bnsCd/60).toFixed(1)+'s'):'OK'),_msTx,_msTy-_msAimR-8);
     }else{
-      // 반투명 보라 원
-      X.globalAlpha=.1+.03*Math.sin(_mst*8);X.fillStyle='#8833cc';
+      // 반투명 스카이블루 원
+      X.globalAlpha=.1+.03*Math.sin(_mst*8);X.fillStyle='#2288cc';
       X.beginPath();X.arc(_msTx,_msTy,_msAimR,0,Math.PI*2);X.fill();
       // 점선 외곽
-      X.globalAlpha=.5;X.strokeStyle='#cc88ff';X.lineWidth=2;X.setLineDash(_D8_5);X.lineDashOffset=-_now*.1;
+      X.globalAlpha=.5;X.strokeStyle='#55ccff';X.lineWidth=2;X.setLineDash(_D8_5);X.lineDashOffset=-_now*.1;
       X.beginPath();X.arc(_msTx,_msTy,_msAimR,0,Math.PI*2);X.stroke();X.setLineDash(_D0);
       // 십자선
-      X.globalAlpha=.4;X.strokeStyle='#cc88ff';X.lineWidth=1;
+      X.globalAlpha=.4;X.strokeStyle='#55ccff';X.lineWidth=1;
       X.beginPath();X.moveTo(_msTx-12,_msTy);X.lineTo(_msTx+12,_msTy);X.moveTo(_msTx,_msTy-12);X.lineTo(_msTx,_msTy+12);X.stroke();
       // 미니 번개 미리보기 4개
       for(let i=0;i<4;i++){
         const a=Math.random()*Math.PI*2;const d=Math.random()*_msAimR*.8;
         const bx=_msTx+Math.cos(a)*d,by=_msTy+Math.sin(a)*d;
         const ba=Math.random()*Math.PI*2;const bl=6+Math.random()*15;
-        X.strokeStyle='#cc88ff';X.lineWidth=.8;X.globalAlpha=.4;
+        X.strokeStyle='#55ccff';X.lineWidth=.8;X.globalAlpha=.4;
         X.beginPath();X.moveTo(bx,by);X.lineTo(bx+Math.cos(ba)*bl+(Math.random()-.5)*5,by+Math.sin(ba)*bl+(Math.random()-.5)*5);X.stroke();
       }
-      X.globalAlpha=.8;X.fillStyle='#cc88ff';X.font='bold 11px monospace';X.textAlign='center';
+      X.globalAlpha=.8;X.fillStyle='#55ccff';X.font='bold 11px monospace';X.textAlign='center';
       X.fillText('\u26A1 '+_T('악의폭풍'),_msTx,_msTy-_msAimR-8);
     }
     X.restore();
@@ -44012,52 +44034,77 @@ function drawP(){
           }
         }
       }else if(fz.type==='storm'){
-        // ═══ 악의폭풍 — 사이오닉 스톰 (자잘한 미니 번개) ═══
-        const _st=_now*.001;const _sf=~~(fz.t);
-        // 2) 자잘한 미니 번개 12~18개 (매 2프레임 갱신)
-        if(!fz._bolts||_sf%2===0){
-          fz._bolts=[];
-          const _bCnt=18+~~(Math.random()*10);
-          for(let _bi=0;_bi<_bCnt;_bi++){
-            const pts=[];
-            const cx=fz.x+(Math.random()-.5)*fz.r*1.2;
-            const cy=fz.y+(Math.random()-.5)*fz.r*1.2;
-            const len=30+Math.random()*60;
-            const ang=Math.random()*Math.PI*2;
-            const segs=3+~~(Math.random()*3);
-            for(let s=0;s<=segs;s++){
-              const t=s/segs;
-              pts.push({x:cx+Math.cos(ang)*len*t+(Math.random()-.5)*14,
-                        y:cy+Math.sin(ang)*len*t+(Math.random()-.5)*10});
-            }
-            fz._bolts.push({pts,w:1.5+Math.random()*2,a:.4+Math.random()*.5});
+        // ═══ 악의폭풍 — Power Lightning 스프라이트 (3레이어 콤보) ═══
+        // 초기화: 영역 내 랜덤 위치에 스프라이트 인스턴스 배치
+        if(!fz._spr){
+          fz._spr=[];
+          const _cnt=6+~~(Math.random()*3); // 6~8개 인스턴스
+          for(let i=0;i<_cnt;i++){
+            const a=Math.random()*Math.PI*2;
+            const d=Math.random()*fz.r*0.8;
+            fz._spr.push({
+              ox:Math.cos(a)*d, oy:Math.sin(a)*d,
+              f0:Math.random()*16, f1:Math.random()*12, f2:Math.random()*9,
+              sc:1.4+Math.random()*1.0, rot:Math.random()*Math.PI*2,
+              flip:Math.random()>.5?-1:1
+            });
           }
         }
-        for(let _bi=0;_bi<fz._bolts.length;_bi++){
-          const b=fz._bolts[_bi];
-          X.strokeStyle='#4488ff';X.lineWidth=b.w+3;X.globalAlpha=b.a*.25*_fzFade;
-          X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);
-          for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);
-          X.stroke();
-          X.strokeStyle='#66ccff';X.lineWidth=b.w;X.globalAlpha=b.a*_fzFade;
-          X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);
-          for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);
-          X.stroke();
-          if(b.w>2){
-            X.strokeStyle='#cceeff';X.lineWidth=b.w*.4;X.globalAlpha=b.a*.5*_fzFade;
-            X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);
-            for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);
-            X.stroke();
+        const _spT=fz.t; // 프레임 카운터
+        // 매 60프레임(1초)마다 위치 셔플
+        if(~~(_spT)%60===0&&_spT>1){
+          for(let i=0;i<fz._spr.length;i++){
+            const a=Math.random()*Math.PI*2;
+            const d=Math.random()*fz.r*0.8;
+            fz._spr[i].ox=Math.cos(a)*d;fz._spr[i].oy=Math.sin(a)*d;
+            fz._spr[i].rot=Math.random()*Math.PI*2;
+            fz._spr[i].flip=Math.random()>.5?-1:1;
           }
         }
-        // 3) 작은 스파크 점
-        for(let _si=0;_si<8;_si++){
-          const _sa=Math.random()*Math.PI*2;const _sd=Math.random()*fz.r*.85;
-          const _sx=fz.x+Math.cos(_sa)*_sd,_sy=fz.y+Math.sin(_sa)*_sd;
-          X.globalAlpha=(.3+Math.random()*.4)*_fzFade;
-          X.fillStyle=Math.random()>.5?'#cceeff':'#66aaff';
-          X.beginPath();X.arc(_sx,_sy,1+Math.random()*1.5,0,Math.PI*2);X.fill();
+        const _blend=X.globalCompositeOperation;
+        X.globalCompositeOperation='screen';
+        // 전기색 틴트: 배경 글로우
+        X.globalAlpha=0.15*_fzFade;
+        X.fillStyle='#55bbff';
+        X.beginPath();X.arc(fz.x,fz.y,fz.r*0.9,0,Math.PI*2);X.fill();
+        for(let i=0;i<fz._spr.length;i++){
+          const s=fz._spr[i];
+          const px=fz.x+s.ox, py=fz.y+s.oy;
+          // 레이어1: ImpactLightning 4x4 (16프레임) — 느리게
+          if(_msStormImg1&&_msStormImg1.width>0){
+            const fw1=_msStormImg1.width/4, fh1=_msStormImg1.height/4;
+            const fi1=~~((s.f0+_spT*0.15)%16);
+            const sx1=(fi1%4)*fw1, sy1=~~(fi1/4)*fh1;
+            const sz1=fw1*s.sc*1.0;
+            X.globalAlpha=1.0*_fzFade;
+            X.save();X.translate(px,py);X.rotate(s.rot);X.scale(s.flip,1);
+            X.drawImage(_msStormImg1,sx1,sy1,fw1,fh1,-sz1/2,-sz1/2,sz1,sz1);
+            X.restore();
+          }
+          // 레이어2: Lightning FBF 4x3 (12프레임) — 느리게
+          if(_msStormImg2&&_msStormImg2.width>0){
+            const fw2=_msStormImg2.width/4, fh2=_msStormImg2.height/3;
+            const fi2=~~((s.f1+_spT*0.18)%12);
+            const sx2=(fi2%4)*fw2, sy2=~~(fi2/4)*fh2;
+            const sz2=fw2*s.sc*1.1;
+            X.globalAlpha=1.0*_fzFade;
+            X.save();X.translate(px,py);X.rotate(s.rot+0.5);X.scale(s.flip,1);
+            X.drawImage(_msStormImg2,sx2,sy2,fw2,fh2,-sz2/2,-sz2/2,sz2,sz2);
+            X.restore();
+          }
+          // 레이어3: BasicImpact 3x3 (9프레임) — 느리게
+          if(_msStormImg3&&_msStormImg3.width>0){
+            const fw3=_msStormImg3.width/3, fh3=_msStormImg3.height/3;
+            const fi3=~~((s.f2+_spT*0.12)%9);
+            const sx3=(fi3%3)*fw3, sy3=~~(fi3/3)*fh3;
+            const sz3=fw3*s.sc*0.7;
+            X.globalAlpha=0.9*_fzFade;
+            X.save();X.translate(px,py);X.rotate(s.rot-0.3);X.scale(s.flip,1);
+            X.drawImage(_msStormImg3,sx3,sy3,fw3,fh3,-sz3/2,-sz3/2,sz3,sz3);
+            X.restore();
+          }
         }
+        X.globalCompositeOperation=_blend;
       }else if(fz.type==='boneStorm'){
         // ═══ 해골번개 — 뼈+암흑 DOT 장판 ═══
         const _bst=_now*.001;const _bsf=~~(fz.t);
