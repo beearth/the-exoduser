@@ -38446,7 +38446,7 @@ if($('resetYes'))$('resetYes').onclick=async()=>{
     // 로컬 세이브 파일 삭제
     const _qpSlotR=new URLSearchParams(window.location.search).get('slot');
     const _slotR=_qpSlotR?decodeURIComponent(_qpSlotR):'자동저장';
-    try{await fetch('/api/save/'+encodeURIComponent(_slotR),{method:'DELETE'})}catch(e){}
+    try{localStorage.removeItem('hellsave_'+_slotR);await fetch('/api/save/'+encodeURIComponent(_slotR),{method:'DELETE'})}catch(e){}
   }else if(_charId){
     await sb.from('characters').update({data:{},updated_at:new Date().toISOString()}).eq('id',_charId);
   }else{
@@ -49581,6 +49581,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   // local test: save to server saves/ folder
   const _qpSlot=new URLSearchParams(window.location.search).get('slot');
   const _SLOT=_qpSlot?decodeURIComponent(_qpSlot):'t1';
+  let _serverOk=null; // null=미확인, true/false
   const _origDbSave=dbSave;
   dbSave=async function(){
     if(!P||_saving)return;
@@ -49614,12 +49615,14 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         ultSlot:ULT_SLOT,
         charIdx:_charIdx
       };
+      if(_serverOk===false){localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now();return}
       const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:_SLOT,data:saveData})});
-      if(!res.ok){try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}return}
+      if(!res.ok){_serverOk=false;try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}return}
+      _serverOk=true;
       const j=await res.json();
       if(j.ok){_lastSaveTime=Date.now()}
       else{if(!IS_ELECTRON)console.error('[LOCAL] Save failed:',j.error)}
-    }catch(e){try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}}
+    }catch(e){_serverOk=false;try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}}
     finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
   };
 
@@ -49640,7 +49643,10 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     if(new URLSearchParams(window.location.search).get('testchar')==='1'){await _startTestChar();return;}
     let _loaded=false;
     try{
+      if(_serverOk===false)throw new Error('no server');
       const res=await fetch('/api/load/'+encodeURIComponent(_SLOT));
+      if(!res.ok){_serverOk=false;throw new Error('no server')}
+      _serverOk=true;
       if(res.ok){
         const j=await res.json();
         if(j.ok&&j.data&&j.data.player){
