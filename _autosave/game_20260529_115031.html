@@ -4,6 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
+<script>
+(function(){
+  if(typeof nw!=='undefined')return;
+  var _k='_exo_auth',_h='-hoq7vu';
+  function _c(s){for(var h=0,i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return h.toString(36)}
+  if(sessionStorage.getItem(_k)===_h)return;
+  document.documentElement.style.display='none';
+  window.addEventListener('DOMContentLoaded',function(){
+    document.documentElement.style.display='';
+    document.body.innerHTML='<div style="position:fixed;inset:0;background:#0a0604;display:flex;align-items:center;justify-content:center;z-index:999999;font-family:sans-serif"><div style="text-align:center"><div style="color:#aa8855;font-size:1.2rem;margin-bottom:18px;letter-spacing:.15em">EXODUSER — ACCESS</div><input id="_pw" type="password" placeholder="Password" style="background:#1a1208;border:1px solid #554422;color:#ccaa88;padding:10px 18px;font-size:1rem;border-radius:4px;text-align:center;width:220px" autofocus><div id="_pe" style="color:#cc4433;margin-top:10px;font-size:.85rem;min-height:1.2em"></div></div></div>';
+    var inp=document.getElementById('_pw');
+    inp.addEventListener('keydown',function(e){
+      if(e.key==='Enter'){
+        if(_c(inp.value)===_h){sessionStorage.setItem(_k,_h);location.reload()}
+        else{document.getElementById('_pe').textContent='Wrong password';inp.value=''}
+      }
+    });
+  });
+})();
+</script>
 <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
 <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
 <script>
@@ -20007,7 +20027,7 @@ const PASSIVE_DEF=[
   {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +10%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +10%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
   {key:'pBow',   name:'🎯 정밀사격',nameEn:'🎯 Precision',desc:'투사체뎀 +15%, 공속 +10%, 사거리 +8%, ST비용 -4%/lv',descEn:'Projectile DMG +15%, ATK speed +10%, Range +8%, ST cost -4%/lv',max:10, icon:'🎯',col:'#44ddaa'},
   {key:'pGuard', name:'🛡 수호신',nameEn:'🛡 Aegis',  desc:'보호막 흡수 +2%/lv (기본70→최대90%), 보호막 중 HP리젠 +0.1%/lv',descEn:'Shield absorb +2%/lv (base 70 to max 90%), HP regen during shield +0.1%/lv',max:10, icon:'🛡',col:'#55bbff'},
-  {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv',max:10, icon:'💚',col:'#33cc66'},
+  {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv, 패링회복 +10%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv, Parry recovery +10%/lv',max:10, icon:'💚',col:'#33cc66'},
   {key:'pCrit',  name:'💥 급소',nameEn:'💥 Vital Strike',    desc:'크리률 +2%, 크리뎀 +8%/lv',descEn:'Crit rate +2%, Crit DMG +8%/lv',max:10,icon:'💥',col:'#ff2266'},
   {key:'pDrop',  name:'🎁 약탈',nameEn:'🎁 Plunder',    desc:'아이템 드롭률 +8%/lv',descEn:'Item drop rate +8%/lv',    max:10, icon:'🎁',col:'#ffcc44'},
   {key:'pPierce',name:'🔱 관통',nameEn:'🔱 Pierce',desc:'투사체 관통률 +5%/lv, 관통횟수 +1/lv, 관통뎀감소 완화',descEn:'Projectile pierce rate +5%/lv, Pierce count +1/lv, Pierce DMG falloff reduced',max:10, icon:'🔱',col:'#44ffcc'},
@@ -25410,7 +25430,7 @@ function update(){
       // ═══ 전격이동 착지 — 전류장판 생성 ═══
       {const _sfLv=P.skills.bladeDash||1;
       const _sfR=120+(_sfLv-1)*8;
-      const _sfDmg=~~(magicRef()*statInt()*pMagicMul()*(0.3+(_sfLv-1)*.06));
+      const _sfDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('bladeDash'));
       const _sfDR=Math.min(.50,.10+(_sfLv-1)*.05); // 1렙10%, 렙당+5%, 캡50%
       if(!G._fireZones)G._fireZones=[];
       // 착지 번개 기둥 생성 (1회) — 화면 상단→착지점, 큰 지그재그+다분기
@@ -25531,7 +25551,7 @@ function update(){
       if(P.skills.magicBlink>=1){
         const _fbLv=P.skills.magicBlink||1;
         const _fbR=125+(_fbLv-1)*8;
-        const _fbDmg=~~(magicRef()*statInt()*pMagicMul()*(6+(_fbLv-1))*_fuseMul('magicBlink'));
+        const _fbDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('magicBlink')*_fuseMul('magicBlink'));
         const _fbNe=shQuery(P.x,P.y,_fbR);
         for(let _fi=0;_fi<_fbNe.length;_fi++){
           const e=_fbNe[_fi];if(!e.alive)continue;
@@ -26751,7 +26771,7 @@ function update(){
             addTxt(e.x,e.y-30,_T('💀 역병 처형!'),'#ff0022',60);
             // 폭발: 포격의 반 (125+Lv*8)
             const _peR=~~((160+((p._plagueLv||1)-1)*10)*0.5);
-            const _peDmg=~~(magicRef()*statInt()*pMagicMul()*0.35*(1+((p._plagueLv||1)-1)*.15));
+            const _peDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('plagueBurst'));
             const _peTargets=p._plagueTargets||[{x:p.x,y:p.y}];
             const _peHit=new Set();_peHit.add(e);
             for(let _pti=0;_pti<_peTargets.length;_pti++){const _pt=_peTargets[_pti];
@@ -27670,7 +27690,7 @@ function update(){
         // 전기 소용돌이 동시 생성 — storm DOT 장판
         const _msLv=P.skills.maliceStorm||1;
         const _msR=~~(_hrR*0.8);
-        const _msDmg=~~(magicRef()*statInt()*pMagicMul()*(5+(_msLv-1))*_fuseMul('maliceStorm'));
+        const _msDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('maliceStorm')*_fuseMul('maliceStorm'));
         G._fireZones.push({x:_hrwx,y:_hrwy,r:_msR,t:0,maxT:_hrDur,
           dmg:_msDmg,el:EL.L,lv:_msLv,type:'storm'});
       }
@@ -27718,7 +27738,7 @@ function update(){
       }
       if(_msBlocked){showPH(_T('이미 폭풍 지역!'),'#cc88ff')}
       else{
-        const _msDmg=~~(magicRef()*statInt()*pMagicMul()*(5+(_msLv-1))*_fuseMul('maliceStorm'));
+        const _msDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('maliceStorm')*_fuseMul('maliceStorm'));
         let _castSuccess=false;
         if(_msBF){
           const _bsMpCost=50;
@@ -34961,6 +34981,11 @@ const _SK_MUL={
   blastShot:{b:3.0,g:2.4},  // (구 g:1.2)
   // ── 설치형 (뇌전창) ──
   thunderStake:{b:5,g:4.0}, // (구 g:2)
+  // ── 설치형/DOT (성장 통일 2026-05-29) ──
+  maliceHuntBurst:{b:20,g:8.4}, // 악의사냥 칼날 발사 (구 20+(Lv-1)*4.21)
+  bladeDash:{b:3,g:2.4},    // 전격이동 전류장판 틱뎀 (구 0.3+Lv*0.06)
+  needleShot:{b:3,g:2.4},   // 니들샷 (구 1.2+(Lv-1))
+  blueShell:{b:6,g:4.8},    // 푸른구슬 (구 6*(1+Lv*0.1))
 };
 // 레벨 복리 보너스 삭제됨 — 스킬 배율은 순수 (b + (lv-1)*g*0.5) 만 사용
 function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];if(!t)return 1;return t.b+(lv-1)*t.g*0.5}
@@ -35415,7 +35440,7 @@ function activateMaliceHunt(){
     const _goR=(34)+P.r;
     const _bladePierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30)+_eqAffix('pierceFlat');
     const _mhBasePierce=800+_mhLv*20+_bladePierceBonus;
-    const _fbBaseDmg=~~(meleeRef()*statStr()*pAtkMul()*(20+(_mhLv-1)*4.21)*_fuseMul('maliceHunt')); // 단독과 동일 공식 (b:20, g:4.21) + fuseMul
+    const _fbBaseDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('maliceHuntBurst')*_fuseMul('maliceHunt')); // 단독과 동일 공식 (b:20, g:4.21) + fuseMul
     const _fbDmg=_fbBaseDmg; // 단독과 동일 1발 데미지 (합체 이점 = 발수 2→8)
     const _fbPierce=_mhBasePierce; // 악의해방/독혈해방 관통률 동일
     const _fbBombR=80+_mhLv*5; // 히트 시 폭발 반경
@@ -35446,7 +35471,7 @@ function activateMaliceHunt(){
     // 단독: 1발, 레벨 스케일 데미지, 10회 관통
     if(P.st<_mhStCost){showPH(_T('ST 부족!'),'#ff4444');return}
     G.mats-=_malCost(30);P.st=Math.max(0,P.st-_mhStCost);
-    const _mhDmg=~~(meleeRef()*statStr()*pAtkMul()*(20+(_mhLv-1)*4.21));
+    const _mhDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('maliceHuntBurst'));
     const _bladePierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30)+_eqAffix('pierceFlat');
     const _mhPierce=800+(_mhLv-1)*20+_bladePierceBonus; // 1렙800, 레벨당+20
     const _mhRange=2000+(_mhLv-1)*100; // 1렙2000, 레벨당+100
@@ -35520,7 +35545,7 @@ function fireBoneWall(tx,ty){
   _addSkProf('boneWall');
   const ringR=~~((400+(slv-1)*18)*.7); // 얼음소용돌이의 70% (lv1=280, lv10≈393, lv20≈512)
   const duration=Math.min(1800,180+(slv-1)*12);
-  const riseDmg=~~(meleeRef()*statStr()*pAtkMul()*8*(1+(slv-1)*0.15));
+  const riseDmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('boneWall'));
   if(!G._boneWalls)G._boneWalls=[];
   G._boneWalls.push({x:tx,y:ty,ringR:ringR,wallThk:14,
     t:0,riseT:60,maxT:duration,dmg:riseDmg,hitSet:new Set(),phase:'rise'});
@@ -35536,8 +35561,8 @@ function activateBladeShot(){
   const _bsStC=1+~~(slv/2); // 밸런스: ST 하향 (1렙1, 10렙6)
   if(P.st<_bsStC)return;P.st-=_bsStC;
   const _bsBon=~~(_bsStC*1.5);
-  const orbDmg=~~(bowRef()*statDex()*pBowMul()*6*(1+(slv-1)*0.1))+_bsBon; // 밸런스: 13→6
-  const shardDmg=~~(bowRef()*statDex()*pBowMul()*1.5*(1+(slv-1)*0.1))+~~(_bsBon*.3);
+  const orbDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('blueShell'))+_bsBon;
+  const shardDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('blueShell')*0.25)+~~(_bsBon*.3);
   const dx=Math.cos(P.facing),dy=Math.sin(P.facing);
   const _mxD=~~(400*(1+(slv-1)*0.11)); // 1렙 400, 10렙 ~796
   const px=P.x+dx*20, py=P.y+dy*20;
@@ -35572,7 +35597,7 @@ function activateNeedleShot(){
   if(P.st<_nStC||(P._ndCd||0)>0)return;
   _addSkProf('needleShot');
   P.st-=_nStC;P._ndCd=90;
-  const dmg=~~(bowRef()*statDex()*pBowMul()*(1.2+(slv-1)));
+  const dmg=~~(bowRef()*statDex()*pBowMul()*_skMul('needleShot'));
   // 관통 제거, 1렙 2발 / 5렙마다 +1발 (1렙=2, 5렙=3, 10렙=3)
   const _nCnt=2+~~((slv-1)/5); // 1렙=2, 6렙=3, 11렙=4...
   P._needleBurst={cnt:0,max:_nCnt,interval:2,timer:0,dmg:dmg,pierce:0,pierceMax:0,range:600,spd:30,aim:P.facing,ox:P.x,oy:P.y};
@@ -35617,7 +35642,7 @@ function activateSpikeTrap(){
   G.mats-=_malCost(10);P._gcCd=~~(600*(1+_eqAffix('cooldownRed')));
   const lv=P.skills.spikeTrap||1;
   const r=300+(lv-1)*22;
-  const dmg=~~(magicRef()*statInt()*pMagicMul()*(2+(lv-1)*.5)); // INT 스케일, +0.5/Lv (슬로우+출혈 유틸 감안, 2026-05-16 감소)
+  const dmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap'));
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:r,t:0,maxT:600,dmg:dmg,el:EL.P,lv:lv,type:'spikeTrap'});
   // 설치 즉발 데미지 제거됨 — DOT만 (슬로우+출혈 유틸 스킬)

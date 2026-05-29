@@ -43,7 +43,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | chargeBoost | 사슬기동:충돌 | ST | 10×1=10 → 10×10=100 (물리할인) | 3회 충전식 | STR × meleeRef × pAtkMul | 충전 3회, 이동중 무적, 관통뎀+그로기 |
 | magicBlink | 사슬기동:화염 | MP | 10×1=10 → 10×10=100 (마법할인) | 없음 | INT × magicRef × pMagicMul | 경로 화염길 3초 DOT, 합체 시 착지폭발 |
-| bladeDash | 전격이동 | MP | 10+(Lv-1)×5 (1렙10, 10렙55) | 1렙10스택, 렙당+1. 쿨 300f→Lv당-18f(최소120f=2초). 1렙5초 | magicRef × INT × pMagicMul × (0.3+(Lv-1)×0.06) 틱뎀 | 착지 전류장판(10초+Lv×0.5초, 반경120+Lv×8): INT 틱뎀 + 방어력↓(1렙10%, +5%/Lv, 캡50%). 이동 중 무적(15f). VFX: Power Lightning 스프라이트 | |
+| bladeDash | 전격이동 | MP | 10+(Lv-1)×5 (1렙10, 10렙55) | 1렙10스택, 렙당+1. 쿨 300f→Lv당-18f(최소120f=2초). 1렙5초 | magicRef × INT × pMagicMul × **_skMul('bladeDash')** (b:6, g:4.8) 틱뎀 | 3tick/s → DPS 18(Lv1)→155(Lv20). 착지 전류장판 반경120+Lv×8. VFX: Power Lightning 스프라이트 |
 | chainAssault | 기동불꽃 | MP | mpCost('dimBreach') | 없음 (이동 중) | INT × _skMul('chainAssault') × **티어3단계(×30/×60/×100)** | 착지 화염폭발, 3티어=업화선 2.5초 차징급 |
 | chainSlam | 기동파괴 | ST + 악의20 | stCost('giantSlam') | 없음 (이동 중) | STR × _skMul('chainSlam') × **티어3단계(×30/×60/×100)** | 보스 체간 대량삭감, 즉기절 5초, 3티어=업화선 2.5초 차징급 |
 | chainSlash | 기동칼날개 | 없음 | 0 | 없음 (이동 중) | STR 물리 | 전방 광역 베기+출혈, 다단히트 (레벨제한 없음) |
@@ -56,7 +56,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | kiSlash | 기검참 | ST | 10+(Lv-1)×2 = **10→48** | 없음 | meleeRef × **7.0(균등)** × statStr × pAtkMul × **_skMul(b:2.0,g:1.68)** | **Lv1: 타당 14×. Lv10: 타당=~54×. Lv20: 타당=~126× (7/7/7 균등, g 2배 상향 2026-05-19)** |
 | whirlwind | 회전참 | ST(틱) | **30+(Lv-1)×5 ST/초** (Lv1=30, Lv10=75, Lv20=125) | 없음 (홀드) | meleeRef × statStr × pAtkMul × _skMul × _fuseMul | 360도 광역, Lv당 범위+5 뎀+5% |
-| giantSlam | 대왕치기 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 600-(Lv-1)×12)f = **10초→8초** | meleeRef × statStr × pAtkMul × **_skMul(b:25,g:20.0) × 4** | **Lv1=100×, Lv10=460×, Lv20=860×** (g 2배 상향 2026-05-19). 보스: maxPoise×25% 고정(3~4방 그로기) (2026-05-17) |
+| giantSlam | 대왕치기 | ST + 악의20 | 250×DPS(+10%) (Lv1=250, Lv10=475) | max(60, 600-(Lv-1)×12)f = **10초→8초** | meleeRef × statStr × pAtkMul × **_skMul(b:16,g:12.8) × 4** | **Lv1=64×, Lv20=552×** (2026-05-29 밸런스 평균화). 보스: maxPoise×25% 고정 |
 | giantSlam2 | 대왕치기 2 | ST + 악의20 | giantSlam과 동일 | 동일 | 동일 | infernoSlam 합체용 복제 |
 
 ---
@@ -83,7 +83,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | fanShot | 만화방창 | ST | 250×DPS (석궁할인) | 없음 (자동) | DEX × bowRef × pBowMul × (Lv)÷6×2 | 6발 부채꼴, 속도×2, Lv당 뎀+1 |
 | ~~bladeShot~~ | ~~붉은꽃~~ | — | — | — | — | **삭제됨 (2026-04-10 석궁개편)** |
-| needleShot | 만화방창 II | ST | 8 고정 | **90f (1.5초)** | DEX × bowRef × pBowMul × (1.2+(Lv-1)) | **2발+5렙당1발**, 관통 0 (2026-04-10 개편) |
+| needleShot | 만화방창 II | ST | 8 고정 | **90f (1.5초)** | DEX × bowRef × pBowMul × **_skMul('needleShot')** (b:4, g:3.2) | 1.3hit/s → DPS 5.2(Lv1)→45(Lv20). 2발+5렙당1발 (2026-05-29 밸런스 평균화) |
 | ~~blastShot~~ | ~~폭산탄~~ | — | — | — | — | **삭제됨 (2026-04-10 석궁개편)** |
 | 석궁 기본 (fireBow) | 악의 1/발 | — | 없음 | bowRef × pBowMul × **10** | **단일뎀 ×10 (관통 0)** — 2026-04-10 단일타겟 극단 강화 |
 | shieldThrow | 칼등날개 | ST | 0 (우클릭에서 이미 차감) | **300f (5초)** | STR 스케일 | 합체 전용, 제자리 처내기+충격파, Lv당 뎀+12%, **넉백 1.5** |
@@ -99,12 +99,12 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | omniBeam | 멸살광선 | MP(틱) | 멸살:**10**(1+(Lv-1)×0.18)/초, 만화광선:**15**, 추적암전:**30** | 과부하 **300f (5초)** | INT × magicRef × pBeamMul × _skMul × drainBonus | tickMul=4(전체×2), 단독 멸살 ×3 집중보너스, 합체는 줄기별 풀뎀. 1적 DPS: 멸살 최강 (2026-04-21) |
 | elemMissile | 원소추적탄 | MP | ~250×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('elemMissile') (b=1.5, g=1.2) | 6원소 유도, 곡선궤적, 사거리+20/Lv. **Lv1=1.5×, Lv10=6.9×, Lv20=12.9× (b 1.0→1.5, g 2배 상향 2026-05-19)** |
 | ~~energyShot~~ | ~~마력연사~~ | — | — | — | — | **삭제됨 (2026-05-01)** |
-| arcLaser | 얼음송곳 | MP | **8+Lv/초 (채널링)** | 없음 (E홀드) | INT × magicRef × pMagicMul × _skMul('arcLaser') (b=12.0, g=10.08) ÷15틱/초 | 직선 관통 레이저 채널링, 폭160+(Lv×10), 사거리1200+Lv×80, 감속(slow 스택 축적), 4f마다 판정. noStun:true. **Lv1=12×, Lv10=57.4×, Lv20=108× (채널링 프리미엄 1.5×, 구 b:8.0→12.0 g:6.72→10.08, 2026-05-22)** |
+| arcLaser | 얼음송곳 | MP | **8+Lv/초 (채널링)** | 없음 (E홀드) | INT × magicRef × pMagicMul × _skMul('arcLaser') **(b:2.5, g:2.0)** ÷15틱/초 | 15hit/s → DPS 37(Lv1)→322(Lv20). 직선 관통 레이저, 폭160+(Lv×10), 사거리1200+Lv×80, 감속 (2026-05-29 밸런스 평균화) |
 | fireBeam | 업화선 | MP | 10/발 | DEX 스케일 | INT × (5+(Lv-1)) | 100%관통+유도+화상, 사거리+50/Lv, Lv당 뎀+1 |
 | fireAura | 지옥진 | MP | **100** 고정 | **720f (12초)** | INT × (6+(Lv-1)) /틱 | 10초간 용암기둥, 범위+10%/Lv 뎀+1/Lv |
 | maliceMortar | 폭풍소환 | MP | 250×DPS (마법할인, key=mortar) | **660f (11초)** | INT 스케일 | 6.5초간 소용돌이, 범위 400+(Lv-1)×18 (1렙400, 20렙742), **흡인력 2.0+Lv×0.1** — lv1=2.1, lv20=4.0, 랩당 +0.1 선형 (2026-05-13 수정), 마우스 조준 클릭 설치 (사거리 1000px) (2026-04-21 범위×2) |
 | plagueBurst | 폭독칼날 | 악의 | **15** 고정 | **900f (15초, 최소10초)** | STR 스케일 | 관통률 **800+(Lv-1)×20 + bowPierce×300 + pPierce×30 +100**, **적중뎀 10% 출혈(무한중첩)**, 전염+처형, 사거리 **2000+(Lv-1)×100** |
-| maliceStorm | 악의폭풍 | MP | 90 추정 | **1200f (20초)** | magicRef × INT × pMagicMul × **_skMul('maliceStorm')** × _fuseMul | 10초 암전나선(33틱), 범위 200+(Lv-1)×22. _skMul: Lv1=12×, Lv2=16.8×, Lv3=21.6× (b:12, g:9.6). (2026-05-29: _skMul 기반으로 복원) |
+| maliceStorm | 악의폭풍 | MP | 90 추정 | **1200f (20초)** | magicRef × INT × pMagicMul × **_skMul('maliceStorm')** (b:7, g:5.6) × _fuseMul | 3.3tick/s → DPS 23(Lv1)→198(Lv20). 10초 암전나선, 범위 200+(Lv-1)×22 (2026-05-29 밸런스 평균화) |
 | darkPillar | 악의기둥 | MP | mpCost 기반 | **900f (15초)** | INT × (4+(Lv-1)) | 9기둥 5초, 범위 250+(Lv-1)×22, Lv당 뎀+1 |
 | blueShot | 푸른비 | MP | **100+1.5×Lv** (110~115) | **300f (5초)** | INT × magicRef × pMagicMul × _skMul('blueShot') (b=4.0, g=3.2) | 50발 순차유도, Lv300 해금. **Lv1=4×, Lv10=18.4×, Lv20=34.4× (g 2배 상향 2026-05-19)** |
 | burstLoop | 버스트루프 | 없음 | 0 | 없음 | INT × (mul+(Lv-1)) mul=1/3/5 | 홀드 차지, 범위 500/700/900px (합체600/800/1000), Lv700, Lv당 뎀+1 |
@@ -117,7 +117,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 
 | ID | 이름 | 자원 | 비용 | 쿨다운 | 효과 | 지속시간 |
 |---|---|---|---|---|---|---|
-| spikeTrap | 가시덫 | 악의 | **10** | **600f (10초)** | INT×magicRef×pMagic×**(2+(Lv-1)×0.5)**, 슬로우 70~90%, 출혈 | 범위 300→498. Lv1=2×/틱, Lv10=6.5×/틱, 2.4틱/s. (2026-05-16: 3+(lv-1) → 2+(lv-1)×0.5, 약 50% 감소) |
+| spikeTrap | 가시덫 | 악의 | **10** | **600f (10초)** | INT×magicRef×pMagic×**_skMul('spikeTrap')** (b:7, g:5.6), 슬로우+출혈 | 2.4tick/s → DPS 17(Lv1)→144(Lv20). 범위 300→498 (2026-05-29 밸런스 평균화) |
 | boneWall | 해골무덤 | 악의 | **12** | 15초/스택 (2→3스택) | STR×(8+(Lv-1)) 솟을 때 | 18+(Lv-1)×1.2초 |
 | holyDome | 회복의 영역 | 없음 | 무료 | **1800f (30초)** | HP/MP/ST +10리젠, 회복×2, 쿨×2 | 12+Lv×0.5초 |
 | holyPrison | 구속의 영역 | 없음 | 무료 | **1800f (30초)** | 부활력 -15%~30%(Lv1=15%, Lv10=30%) | 10+Lv×0.3초 |
