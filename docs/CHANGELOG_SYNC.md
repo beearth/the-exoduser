@@ -28467,3 +28467,19 @@ mpR = 0.05 + s.int√ó0.005                                        [NO P.lv√ó0.001
 - game.html
 - index.html
 
+
+## 2026-05-30 08:30 (auto)
+- _autosave/game_20260529_235444.html
+- _autosave/game_20260529_235457.html
+- _autosave/game_20260530_000709.html
+- _autosave/game_20260530_000829.html
+- _autosave/game_20260530_000839.html
+- _autosave/game_20260530_001003.html
+- _autosave/game_20260530_001107.html
+- _autosave/game_20260530_001153.html
+- _autosave/game_20260530_001155.html
+- _autosave/game_20260530_001529.html
+- assets/vfx/vfx_shield_aura.png
+- docs/2_1 ?§ÌÇ¨Í¥ÄÎ¶??©Ï≤¥?úÏä§???êÏõê/2_1 ?§ÌÇ¨Í¥ÄÎ¶??©Ï≤¥?úÏä§??md
+- game.html
+

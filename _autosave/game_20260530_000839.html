@@ -3444,21 +3444,24 @@ const BGM={
     victory:['bgm/공통/victory.mp3','bgm/공통/탈출 성공.mp3']
   },
   _cache:{},
+  _badSrcs:{},
   _getAudio(src){
-    if(!this._cache[src]){const a=new Audio(src);a.preload='auto';this._cache[src]=a}
+    if(!this._cache[src]){const a=new Audio(src);a.preload='auto';a.onerror=()=>{BGM._badSrcs[src]=1;delete BGM._cache[src];if(BGM._cur===a){BGM._cur=null;setTimeout(BGM._onEnded,300)}};this._cache[src]=a}
     return this._cache[src];
   },
   _pickRandom(key){
     const arr=this.tracks[key];
     if(!arr||!arr.length)return null;
-    if(arr.length===1)return arr[0];
+    const ok=arr.filter(s=>!this._badSrcs[s]);
+    if(!ok.length)return null;
+    if(ok.length===1)return ok[0];
     let pick;
-    do{pick=arr[Math.random()*arr.length|0]}while(arr.length>1&&pick===this._lastSrc);
+    do{pick=ok[Math.random()*ok.length|0]}while(ok.length>1&&pick===this._lastSrc);
     return pick;
   },
   _pickAllRandom(){
     const keys=['hell1','hell2','hell3','hell4','hell5','hell6','hell7','gameplay'];
-    let all=[];for(let i=0;i<keys.length;i++){const a=this.tracks[keys[i]];if(a)for(let j=0;j<a.length;j++)all.push(a[j])}
+    let all=[];for(let i=0;i<keys.length;i++){const a=this.tracks[keys[i]];if(a)for(let j=0;j<a.length;j++)if(!this._badSrcs[a[j]])all.push(a[j])}
     if(!all.length)return null;
     let pick;
     do{pick=all[Math.random()*all.length|0]}while(all.length>1&&pick===this._lastSrc);
@@ -3470,15 +3473,15 @@ const BGM={
     const arr=this.tracks[key];if(!arr||!arr.length)return null;
     if(!this._playedSets[key])this._playedSets[key]=new Set();
     const ps=this._playedSets[key];
-    const up=arr.filter(s=>!ps.has(s));
+    const up=arr.filter(s=>!ps.has(s)&&!this._badSrcs[s]);
     if(!up.length){this._actDone[key]=true;return null;}
     let pick;do{pick=up[Math.random()*up.length|0]}while(up.length>1&&pick===this._lastSrc);
-    ps.add(pick);if(ps.size>=arr.length)this._actDone[key]=true;
+    ps.add(pick);if(ps.size>=arr.filter(s=>!this._badSrcs[s]).length)this._actDone[key]=true;
     return pick;
   },
   // 장 소진 후: 장 BGM + gameplay 합산 랜덤
   _pickMixed(key){
-    const all=[...(this.tracks[key]||[]),...(this.tracks.gameplay||[])];
+    const all=[...(this.tracks[key]||[]),...(this.tracks.gameplay||[])].filter(s=>!this._badSrcs[s]);
     if(!all.length)return null;
     let pick;do{pick=all[Math.random()*all.length|0]}while(all.length>1&&pick===this._lastSrc);
     return pick;
@@ -7645,9 +7648,7 @@ function _petOnHit(){_petHitCnt++;_petParryCombo=0}
 function _petOnParry(){_petParryCnt++;_petParryCombo++;
   // [10] BL 패링 콤보 5연속
   if(_petParryCombo>=5)_petSayCD('bl_combo5','crow','…이게 진짜 패링이야.',4,300,'cat','다섯 번 연속! 내가 본 인간 중 최고!',4);
-  // 분노게이지 대사
-  if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. Space를 눌러.',4,300,'cat','분노게이지 꽉 찼어! 스페이스로 폭발시켜!',4);
-  else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat','분노 '+P.rage+'%! 패링으로 분노 더 쌓아!',3);
+  // 분노 대사는 doParry() 내 P.rage 적립 후에서 체크 (여기선 아직 이전 값)
 }
 function _petOnKill(){_petKillCnt++;_petComboKills++;_petKillsRecent++;_petKillsRecentT=G.frame;
   // [17] 콤보 킬
@@ -13115,9 +13116,18 @@ for(let i=0;i<_HB_FRAMES;i++){const img=new Image();img.src=_HB_SRCS[i];img.onlo
 const _SA_IMG=new Image();    // 파란 버전
 const _SA_IMG_R=new Image();  // 빨간 버전 (기폭팔 차징)
 let _saReady=false;
-// vfx_shield_aura.png 미사용 — 폴백 렌더링 사용
 const _SA_COLS=5,_SA_ROWS=4,_SA_FRAMES=20,_SA_CW=480,_SA_CH=480;
 let _saFrame=0,_saTimer=0;
+_SA_IMG.src='assets/vfx/vfx_shield_aura.png';
+_SA_IMG.onload=()=>{
+  const _c=document.createElement('canvas');_c.width=_SA_IMG.naturalWidth;_c.height=_SA_IMG.naturalHeight;
+  const _cx=_c.getContext('2d');_cx.drawImage(_SA_IMG,0,0);
+  const _id=_cx.getImageData(0,0,_c.width,_c.height);const _d=_id.data;
+  for(let i=0;i<_d.length;i+=4){const r=_d[i],g=_d[i+1],b=_d[i+2];_d[i]=Math.min(255,b+40);_d[i+1]=~~(g*.4);_d[i+2]=~~(r*.3)}
+  _cx.putImageData(_id,0,0);
+  _SA_IMG_R.src=_c.toDataURL();
+  _SA_IMG_R.onload=()=>{_saReady=true};
+};
 // ═══ 지옥진 스프라이트시트 (9프레임, 512x512, vfx_earthquake) ═══
 const _FA_IMG=new Image();// fire_aura 에셋 미존재 — 로드 비활성
 let _faReady=false;
@@ -29650,6 +29660,9 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   // 분노게이지 +10% (패링 성공)
   P.rage=Math.min(100,P.rage+10);
   addTxt(P.x,P.y-90,_T('🔥분노+')+P.rage+'%','#ff4400',35);
+  // 분노 대사 (적립 후 체크)
+  if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. Space를 눌러.',4,300,'cat','분노게이지 꽉 찼어! 스페이스로 폭발시켜!',4);
+  else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat','분노 '+P.rage+'%! 패링으로 분노 더 쌓아!',3);
   G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
@@ -35935,7 +35948,7 @@ function _gSlamHit(dir,range,arcW,dmg,el,kbM,psM,stunRange){
     const ang=Math.atan2(e.y-P.y,e.x-P.x);
     const mult=elMul(el,e.el);const fd=~~(dmg*mult);
     // 데미지 범위 안이면 데미지 적용
-    if(d<=range+e.r){hurtE(e,~~(fd*0.5),ang,false,{kbMult:kbM||0,noPoise:true,noImpact:true},el);e.kb.x+=Math.cos(ang)*8;e.kb.y+=Math.sin(ang)*8} // 데미지 50% 감소, 임팩트 VFX는 고유 파티클로 대체
+    if(d<=range+e.r){hurtE(e,fd,ang,false,{kbMult:kbM||0,noPoise:true,noImpact:true},el);e.kb.x+=Math.cos(ang)*8;e.kb.y+=Math.sin(ang)*8}
     if(!e.alive)continue; // 데미지로 죽었으면 스턴 스킵
     // 포이즈 적용 (통합 함수)
     if(e.ib){
@@ -38443,7 +38456,7 @@ if($('resetYes'))$('resetYes').onclick=async()=>{
     // 로컬 세이브 파일 삭제
     const _qpSlotR=new URLSearchParams(window.location.search).get('slot');
     const _slotR=_qpSlotR?decodeURIComponent(_qpSlotR):'자동저장';
-    try{await fetch('/api/save/'+encodeURIComponent(_slotR),{method:'DELETE'})}catch(e){}
+    try{localStorage.removeItem('hellsave_'+_slotR);await fetch('/api/save/'+encodeURIComponent(_slotR),{method:'DELETE'})}catch(e){}
   }else if(_charId){
     await sb.from('characters').update({data:{},updated_at:new Date().toISOString()}).eq('id',_charId);
   }else{
@@ -47215,11 +47228,24 @@ function drawP(){
   const _showShield=(P.s==='sBlock')||(P.s==='whirlwind'&&P.skills.detonate>=1);
   if(_showShield){
     const _sbT=t/60;
-    const _sbR=(P.r+14)*2;
     const _sbHasDet=P.skills.detonate>=1;
     const _sbBank=P.parryBank||0;
     const pt=P.parryT||0;
-    const _sbPhase=_sbHasDet?(pt<60?0:pt<120?1:pt<180?2:3):0;
+    // 회전기폭: 자동폭발 주기(120f=2초, 지진폭풍150f=2.5초) 기준 phase 산출
+    const _wwDetCD=P.s==='whirlwind'&&_sbHasDet?(_isFused('slamStorm')?150:120):0;
+    const _sbPhase=_sbHasDet?(_wwDetCD>0
+      ?(pt<_wwDetCD*.33?0:pt<_wwDetCD*.67?1:pt<_wwDetCD*.9?2:3)  // 회전기폭: 주기 비례 4단계
+      :(pt<60?0:pt<120?1:pt<180?2:3)):0;  // sBlock: 기존 3초 기준
+    // 회전기폭: 회전참 실제 범위에 맞게 오라 크기 성장
+    let _sbR;
+    if(P.s==='whirlwind'&&_sbHasDet){
+      const _wwLvR=P.skills.whirlwind||1;
+      const _wwGrowR=Math.min(1,(P.wwAng||0)/63)+Math.min(1,(_sbBank)/500);
+      const _wwMinR=100,_wwMaxR=200+(_wwLvR-1)*15;
+      _sbR=(_wwMinR+(_wwMaxR-_wwMinR)*Math.min(1,_wwGrowR))*.55; // 오라 = 히트범위의 55%
+    }else{
+      _sbR=(P.r+14)*2; // sBlock: 기존 고정 크기
+    }
     const _sbColors=['#4488ff','#8844ff','#ff2200','#ff2200'];
     const _sbInner=['#88bbff','#aa88ff','#ff6644','#ff4400'];
     const _sbPW=P._sbParryT>0;
@@ -47229,12 +47255,13 @@ function drawP(){
     const ringR=_sbPhase===3?(_sbR+Math.sin(t/6)*4):_sbR;
     // ── 보호막 오라 — 스프라이트 (기폭팔: 파란→빨간 3초 크로스페이드) ──
     if(_saReady){
-      _saTimer++;if(_saTimer>=3){_saTimer=0;_saFrame=(_saFrame+1)%_SA_FRAMES}
+      _saTimer++;if(_saTimer>=8){_saTimer=0;_saFrame=(_saFrame+1)%2} // 0,1 두 프레임만 반복
       const _saCol2=_saFrame%_SA_COLS,_saRow2=~~(_saFrame/_SA_COLS);
-      const _saSz=ringR*3.75;
+      const _saSz=ringR*3.75*pulse;
       const _sx=_saCol2*_SA_CW,_sy=_saRow2*_SA_CH;
       const _dx=P.x-_saSz/2,_dy=P.y-_saSz/2;
-      const _detProg=_sbHasDet?Math.min((pt||0)/180,1):0; // 0→1 (3초)
+      const _detProgMax=_wwDetCD>0?_wwDetCD:180; // 회전기폭: 주기(120/150)에 맞춤, sBlock: 3초
+      const _detProg=_sbHasDet?Math.min((pt||0)/_detProgMax,1):0; // 0→1
       X.save();X.globalCompositeOperation='lighter';
       // 파란 오라 (1-progress) — 2패스 (기존 3→2, alpha 보정)
       if(_detProg<1){
@@ -49578,6 +49605,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   // local test: save to server saves/ folder
   const _qpSlot=new URLSearchParams(window.location.search).get('slot');
   const _SLOT=_qpSlot?decodeURIComponent(_qpSlot):'t1';
+  let _serverOk=null; // null=미확인, true/false
   const _origDbSave=dbSave;
   dbSave=async function(){
     if(!P||_saving)return;
@@ -49611,12 +49639,14 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         ultSlot:ULT_SLOT,
         charIdx:_charIdx
       };
+      if(_serverOk===false){localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now();return}
       const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:_SLOT,data:saveData})});
-      if(!res.ok){try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}return}
+      if(!res.ok){_serverOk=false;try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}return}
+      _serverOk=true;
       const j=await res.json();
       if(j.ok){_lastSaveTime=Date.now()}
       else{if(!IS_ELECTRON)console.error('[LOCAL] Save failed:',j.error)}
-    }catch(e){try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}}
+    }catch(e){_serverOk=false;try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}}
     finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
   };
 
@@ -49637,7 +49667,10 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     if(new URLSearchParams(window.location.search).get('testchar')==='1'){await _startTestChar();return;}
     let _loaded=false;
     try{
+      if(_serverOk===false)throw new Error('no server');
       const res=await fetch('/api/load/'+encodeURIComponent(_SLOT));
+      if(!res.ok){_serverOk=false;throw new Error('no server')}
+      _serverOk=true;
       if(res.ok){
         const j=await res.json();
         if(j.ok&&j.data&&j.data.player){
