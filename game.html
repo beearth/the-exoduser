@@ -3444,21 +3444,24 @@ const BGM={
     victory:['bgm/공통/victory.mp3','bgm/공통/탈출 성공.mp3']
   },
   _cache:{},
+  _badSrcs:{},
   _getAudio(src){
-    if(!this._cache[src]){const a=new Audio(src);a.preload='auto';this._cache[src]=a}
+    if(!this._cache[src]){const a=new Audio(src);a.preload='auto';a.onerror=()=>{BGM._badSrcs[src]=1;delete BGM._cache[src];if(BGM._cur===a){BGM._cur=null;setTimeout(BGM._onEnded,300)}};this._cache[src]=a}
     return this._cache[src];
   },
   _pickRandom(key){
     const arr=this.tracks[key];
     if(!arr||!arr.length)return null;
-    if(arr.length===1)return arr[0];
+    const ok=arr.filter(s=>!this._badSrcs[s]);
+    if(!ok.length)return null;
+    if(ok.length===1)return ok[0];
     let pick;
-    do{pick=arr[Math.random()*arr.length|0]}while(arr.length>1&&pick===this._lastSrc);
+    do{pick=ok[Math.random()*ok.length|0]}while(ok.length>1&&pick===this._lastSrc);
     return pick;
   },
   _pickAllRandom(){
     const keys=['hell1','hell2','hell3','hell4','hell5','hell6','hell7','gameplay'];
-    let all=[];for(let i=0;i<keys.length;i++){const a=this.tracks[keys[i]];if(a)for(let j=0;j<a.length;j++)all.push(a[j])}
+    let all=[];for(let i=0;i<keys.length;i++){const a=this.tracks[keys[i]];if(a)for(let j=0;j<a.length;j++)if(!this._badSrcs[a[j]])all.push(a[j])}
     if(!all.length)return null;
     let pick;
     do{pick=all[Math.random()*all.length|0]}while(all.length>1&&pick===this._lastSrc);
@@ -3470,15 +3473,15 @@ const BGM={
     const arr=this.tracks[key];if(!arr||!arr.length)return null;
     if(!this._playedSets[key])this._playedSets[key]=new Set();
     const ps=this._playedSets[key];
-    const up=arr.filter(s=>!ps.has(s));
+    const up=arr.filter(s=>!ps.has(s)&&!this._badSrcs[s]);
     if(!up.length){this._actDone[key]=true;return null;}
     let pick;do{pick=up[Math.random()*up.length|0]}while(up.length>1&&pick===this._lastSrc);
-    ps.add(pick);if(ps.size>=arr.length)this._actDone[key]=true;
+    ps.add(pick);if(ps.size>=arr.filter(s=>!this._badSrcs[s]).length)this._actDone[key]=true;
     return pick;
   },
   // 장 소진 후: 장 BGM + gameplay 합산 랜덤
   _pickMixed(key){
-    const all=[...(this.tracks[key]||[]),...(this.tracks.gameplay||[])];
+    const all=[...(this.tracks[key]||[]),...(this.tracks.gameplay||[])].filter(s=>!this._badSrcs[s]);
     if(!all.length)return null;
     let pick;do{pick=all[Math.random()*all.length|0]}while(all.length>1&&pick===this._lastSrc);
     return pick;
