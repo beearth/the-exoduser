@@ -6536,7 +6536,7 @@ const _EN={
 'SPACE 길게 눌러 건너뛰기':'Hold SPACE to skip',
 // --- Phase 33d: Intro key steps + Load tips ---
 '패링·보호막':'Parry / Shield','돌진 (적을 관통, 무적)':'Dash (pierce enemies, invincible)',
-'대왕치기 (광역 기절)':'Giant Slam (AoE stun)','가시덫 (슬로우+출혈)':'Spike Trap (slow+bleed)',
+'대왕치기 (분노폭발, 광역 기절)':'Giant Slam (Rage Burst, AoE stun)','가시덫 (슬로우+출혈)':'Spike Trap (slow+bleed)',
 '회복의 영역 (리젠 장판)':'Holy Domain (regen zone)','얼음보주 (무적+빙결)':'Ice Orb (invincible+freeze)',
 '석궁 자동발사':'Auto Crossbow','선택 스킬 슬롯':'Skill Slots',
 '(펫이 자동 수거)':'(pet auto-collects)','물약은 설정한 HP% 이하 시 자동 사용':'Potions auto-use when HP falls below set %',
@@ -7519,7 +7519,7 @@ function _checkPetDialogue(){
   }
   if(P.hp<P.mhp*.3||P.mp<P.mmp*.3||P.st<P.mst*.3){
     if(P.skills.holyDome>0)_petSayCD('resource_low_yes','crow','F키 회복의 영역을 써봐.',4,300);
-    else _petSayCD('resource_low_no','crow','빠져! 물약 마시고 회복해.',4,300,'cat','자원 없으면 도망가는 게 답이야!',4);
+    else _petSayCD('resource_low_no','crow','빠져! 물약 마시고 회복해.',4,300,'cat','HP가 없어 패링이라도 해서 회복해야해!!!',4);
   }
   if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야!',4,300);
   if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트 쌓였어! K 눌러!',4,300);
@@ -7645,6 +7645,9 @@ function _petOnHit(){_petHitCnt++;_petParryCombo=0}
 function _petOnParry(){_petParryCnt++;_petParryCombo++;
   // [10] BL 패링 콤보 5연속
   if(_petParryCombo>=5)_petSayCD('bl_combo5','crow','…이게 진짜 패링이야.',4,300,'cat','다섯 번 연속! 내가 본 인간 중 최고!',4);
+  // 분노게이지 대사
+  if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. Space를 눌러.',4,300,'cat','분노게이지 꽉 찼어! 스페이스로 폭발시켜!',4);
+  else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat','분노 '+P.rage+'%! 패링으로 분노 더 쌓아!',3);
 }
 function _petOnKill(){_petKillCnt++;_petComboKills++;_petKillsRecent++;_petKillsRecentT=G.frame;
   // [17] 콤보 킬
@@ -20492,6 +20495,18 @@ function _updateActionKeys(){
     elBow.style.boxShadow=_techAim?'inset 0 0 10px rgba(255,136,0,.4)':'none';
     // 쿨다운 오버레이 + 숫자 표시
     if(elBow._skId!==_spSk){elBow._skId=_spSk;elBow.innerHTML=_spSk?_skIcon(_spSk):''}
+    // ── 분노게이지 오버레이 (빨간색, 아래→위) ──
+    let _rageEl=elBow.querySelector('._rageBar');
+    if(P.rage>0){
+      if(!_rageEl){_rageEl=document.createElement('div');_rageEl.className='_rageBar';_rageEl.style.cssText='position:absolute;bottom:0;left:0;right:0;pointer-events:none;z-index:1;background:rgba(255,20,0,.45);transition:height .15s';elBow.appendChild(_rageEl)}
+      _rageEl.style.height=(P.rage)+'%';
+      // 분노 수치 표시
+      let _rageTxt=_rageEl.querySelector('span');
+      if(!_rageTxt){_rageTxt=document.createElement('span');_rageTxt.style.cssText='position:absolute;top:1px;left:50%;transform:translateX(-50%);font-size:.6rem;font-weight:700;color:#fff;text-shadow:0 0 4px #ff0000';_rageEl.appendChild(_rageTxt)}
+      _rageTxt.textContent=P.rage+'%';
+      elBow.style.borderColor=P.rage>=100?'#ff2200':P.rage>=50?'#cc4400':'#884400';
+      if(P.rage>=100)elBow.style.boxShadow='inset 0 0 12px rgba(255,30,0,.6)';
+    }else if(_rageEl){_rageEl.remove()}
     let _spCdEl=elBow.querySelector('._skCd');
     if(_spSk&&_spOnCd){
       const _spSkDef=_skById(_spSk);
@@ -27914,7 +27929,7 @@ function update(){
   // ═══ 전격이동 — 충전 (1렙10개, 렙당+1) ═══
   {var _bdLv2=P.skills.bladeDash||1;var _bdMaxStk=10+(_bdLv2-1);
   if(P._bdStk!=null&&P._bdStk<_bdMaxStk){
-    if((P._bdRech||0)>0){P._bdRech-=sp;if(P._bdRech<=0){P._bdStk++;P._bdRech=P._bdStk<_bdMaxStk?~~(Math.max(120,(480-(_bdLv2-1)*18))*1):0}}
+    if((P._bdRech||0)>0){P._bdRech-=sp;if(P._bdRech<=0){P._bdStk++;P._bdRech=P._bdStk<_bdMaxStk?~~(Math.max(120,(300-(_bdLv2-1)*18))*1):0}}
   }}
   // ═══ 얼음보주 — 쿨다운 ═══
   if(P._ioCd>0)P._ioCd-=sp+_hdCdBonus;
@@ -49054,8 +49069,8 @@ const _INTRO_KEY_STEPS=[
     _ikB(['A','X','Y','LB'],['무기 공격','우클릭 스킬','패링·보호막','돌진 (적을 관통, 무적)']):
     _ikB(['좌클릭','우클릭 / Q','SHIFT'],['무기 공격','패링·보호막','돌진 (적을 관통, 무적)']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
   {title:'스킬',body:()=>_isPad()?
-    _ikB(['B','RB','R3','LT+A','LT+B','LT+X'],['대왕치기 (광역 기절)','Ctrl 스킬','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']):
-    _ikB(['SPACE','1','E','F','CTRL','T'],['대왕치기 (광역 기절)','가시덫 (슬로우+출혈)','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
+    _ikB(['B','RB','R3','LT+A','LT+B','LT+X'],['대왕치기 (분노폭발, 광역 기절)','Ctrl 스킬','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']):
+    _ikB(['SPACE','1','E','F','CTRL','T'],['대왕치기 (분노폭발, 광역 기절)','가시덫 (슬로우+출혈)','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
   {title:'생존',body:()=>(_isPad()?
     _ikB(['L3','Select','Start'],['아이템 줍기','인벤토리','설정']):
     _ikB(['R','TAB','ESC'],['아이템 줍기','인벤토리','설정']))+'<br><span style="font-size:.85em;color:#887766">'+_T('(펫이 자동 수거)')+'</span><br><span style="font-size:.85em;color:#887766">'+_T('물약은 설정한 HP% 이하 시 자동 사용')+'</span>',hint:_isPad()?'A 버튼으로 시작':'클릭하여 시작'}

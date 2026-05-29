@@ -36550,6 +36550,7 @@ function renderSkillPanel(){
       } else {
         // 현재/미래: 풀 카드 표시
         phDiv.style.cssText='margin-bottom:12px;border:1px solid '+(_isCur?'#ffaa44':'#332211')+';border-radius:8px;padding:8px 10px;background:'+(_isCur?'rgba(60,30,5,.5)':'rgba(10,5,2,.4)')+';'+(_isFuture?'opacity:.5;':'');
+        if(_isCur)phDiv.setAttribute('data-rec-cur','1');
         const phHdr=document.createElement('div');
         phHdr.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:6px';
         phHdr.innerHTML='<span style="font-size:1.1rem">'+(_isCur?'👉':'⬜')+'</span><span style="color:'+(_isCur?'#ffcc44':'#887766')+';font-size:.95rem;font-weight:700">'+_L(ph.phase,ph.phaseEn||ph.phase)+'</span>';
@@ -36585,6 +36586,8 @@ function renderSkillPanel(){
       col.appendChild(_cg);
     }
     grid.appendChild(col);
+    // 현재 단계로 자동 스크롤
+    requestAnimationFrame(()=>{const _cur=col.querySelector('[data-rec-cur]');if(_cur)_cur.scrollIntoView({behavior:'smooth',block:'center'})});
   }
   const _stripHeadIcon=(t)=>String(t||'').replace(/^[^A-Za-z0-9가-힣]+/,'').trim();
   if(!_isRecTab) SKILL_CATS.forEach(cat=>{
@@ -36784,7 +36787,7 @@ function _drawSkillFuseLines(){
     svg.appendChild(_sDot);
   });
 }
-const _SKILL_ICON_SET=new Set(['arcLaser','blackStar','bladeDash','bladeShot','blueShot','boneStorm','boneWall','burstLoop','chainAssault','chainSlam','chainSlash','chargeBoost','darkPillar','detonate','elecRepent','elemMissile','execution','fanShot','fireAura','fireball','fireBeam','ghostWalk','ghostXbowTurret','giantSlam','giantSlam2','guardian','hellRay','holyBlast','holyDome','holyPrison','iceOrb','iceStorm','kiSlash','lavaSummon','magicBlink','maliceDome','maliceHunt','maliceHunt2','maliceMortar','maliceStorm','maliceSwipe','needleShot','omniBeam','peaceShield','plagueBurst','shieldThrow','spikeTrap','thunderStake','timeWarp','venomBlade','voidScarecrow','weakMag','weakPhys','weakPj','weakRev','whirlwind']);
+const _SKILL_ICON_SET=new Set(['arcLaser','blackStar','bladeDash','bladeShot','blueShot','boneStorm','boneWall','burstLoop','chainAssault','chainSlam','chainSlash','chargeBoost','darkPillar','detonate','elecRepent','elemMissile','execution','explodeScarecrow','fanShot','fireAura','fireball','fireBeam','ghostWalk','ghostXbowTurret','giantSlam','giantSlam2','guardian','hellRay','holyBlast','holyDome','holyPrison','iceOrb','iceStorm','kiSlash','lavaSummon','magicBlink','maliceDome','maliceHunt','maliceHunt2','maliceMortar','maliceStorm','maliceSwipe','needleShot','omniBeam','peaceShield','plagueBurst','shieldThrow','spikeTrap','thunderStake','timeWarp','venomBlade','voidScarecrow','weakMag','weakPhys','weakPj','weakRev','whirlwind']);
 function _renderSkillRow(sk,grid){
     // ═══ 흡수된 스킬은 스킬창에서 완전 제거 ═══
     if(_isAbsorbed(sk.id)) return;
