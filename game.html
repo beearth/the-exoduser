@@ -20027,7 +20027,7 @@ const PASSIVE_DEF=[
   {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +10%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +10%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
   {key:'pBow',   name:'🎯 정밀사격',nameEn:'🎯 Precision',desc:'투사체뎀 +15%, 공속 +10%, 사거리 +8%, ST비용 -4%/lv',descEn:'Projectile DMG +15%, ATK speed +10%, Range +8%, ST cost -4%/lv',max:10, icon:'🎯',col:'#44ddaa'},
   {key:'pGuard', name:'🛡 수호신',nameEn:'🛡 Aegis',  desc:'보호막 흡수 +2%/lv (기본70→최대90%), 보호막 중 HP리젠 +0.1%/lv',descEn:'Shield absorb +2%/lv (base 70 to max 90%), HP regen during shield +0.1%/lv',max:10, icon:'🛡',col:'#55bbff'},
-  {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv, 패링회복 +10%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv, Parry recovery +10%/lv',max:10, icon:'💚',col:'#33cc66'},
+  {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv, 패링회복 +30%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv, Parry recovery +30%/lv',max:10, icon:'💚',col:'#33cc66'},
   {key:'pCrit',  name:'💥 급소',nameEn:'💥 Vital Strike',    desc:'크리률 +2%, 크리뎀 +8%/lv',descEn:'Crit rate +2%, Crit DMG +8%/lv',max:10,icon:'💥',col:'#ff2266'},
   {key:'pDrop',  name:'🎁 약탈',nameEn:'🎁 Plunder',    desc:'아이템 드롭률 +8%/lv',descEn:'Item drop rate +8%/lv',    max:10, icon:'🎁',col:'#ffcc44'},
   {key:'pPierce',name:'🔱 관통',nameEn:'🔱 Pierce',desc:'투사체 관통률 +5%/lv, 관통횟수 +1/lv, 관통뎀감소 완화',descEn:'Projectile pierce rate +5%/lv, Pierce count +1/lv, Pierce DMG falloff reduced',max:10, icon:'🔱',col:'#44ffcc'},
@@ -29659,7 +29659,7 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   // ═══ 패링 보상: 우클릭 30, Q 50 (parryBonus 어픽스 적용) ═══
   const _isQParry=_isQ;
   const _pbMul=1+_eqAffix('parryBonus');
-  const _parryRegenMul=1+(PASSIVES.pRegen||0)*.10; // 회복력 패시브: 패링회복 +10%/lv
+  const _parryRegenMul=1+(PASSIVES.pRegen||0)*.30; // 회복력 패시브: 패링회복 +30%/lv
   const _prBase=~~((_isQParry?50:30)*_pbMul*_parryRegenMul);
   P.iframes=25;
   P.hp=Math.min(P.mhp,P.hp+_prBase);
