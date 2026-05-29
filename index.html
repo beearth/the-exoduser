@@ -4,26 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
-<script>
-(function(){
-  if(typeof nw!=='undefined')return;// NW.js 빌드는 패스
-  var _k='_exo_auth',_h='-hoq7vu';
-  function _c(s){for(var h=0,i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return h.toString(36)}
-  if(sessionStorage.getItem(_k)===_h)return;
-  document.documentElement.style.display='none';
-  window.addEventListener('DOMContentLoaded',function(){
-    document.documentElement.style.display='';
-    document.body.innerHTML='<div style="position:fixed;inset:0;background:#0a0604;display:flex;align-items:center;justify-content:center;z-index:999999;font-family:sans-serif"><div style="text-align:center"><div style="color:#aa8855;font-size:1.2rem;margin-bottom:18px;letter-spacing:.15em">EXODUSER — ACCESS</div><input id="_pw" type="password" placeholder="Password" style="background:#1a1208;border:1px solid #554422;color:#ccaa88;padding:10px 18px;font-size:1rem;border-radius:4px;text-align:center;width:220px" autofocus><div id="_pe" style="color:#cc4433;margin-top:10px;font-size:.85rem;min-height:1.2em"></div></div></div>';
-    var inp=document.getElementById('_pw');
-    inp.addEventListener('keydown',function(e){
-      if(e.key==='Enter'){
-        if(_c(inp.value)===_h){sessionStorage.setItem(_k,_h);location.reload()}
-        else{document.getElementById('_pe').textContent='Wrong password';inp.value=''}
-      }
-    });
-  });
-})();
-</script>
 <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
 <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
 <script>
