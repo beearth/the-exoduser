@@ -4,26 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
-<script>
-(function(){
-  if(typeof nw!=='undefined')return;
-  var _k='_exo_auth',_h='-hoq7vu';
-  function _c(s){for(var h=0,i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return h.toString(36)}
-  if(sessionStorage.getItem(_k)===_h)return;
-  document.documentElement.style.display='none';
-  window.addEventListener('DOMContentLoaded',function(){
-    document.documentElement.style.display='';
-    document.body.innerHTML='<div style="position:fixed;inset:0;background:#0a0604;display:flex;align-items:center;justify-content:center;z-index:999999;font-family:sans-serif"><div style="text-align:center"><div style="color:#aa8855;font-size:1.2rem;margin-bottom:18px;letter-spacing:.15em">EXODUSER — ACCESS</div><input id="_pw" type="password" placeholder="Password" style="background:#1a1208;border:1px solid #554422;color:#ccaa88;padding:10px 18px;font-size:1rem;border-radius:4px;text-align:center;width:220px" autofocus><div id="_pe" style="color:#cc4433;margin-top:10px;font-size:.85rem;min-height:1.2em"></div></div></div>';
-    var inp=document.getElementById('_pw');
-    inp.addEventListener('keydown',function(e){
-      if(e.key==='Enter'){
-        if(_c(inp.value)===_h){sessionStorage.setItem(_k,_h);location.reload()}
-        else{document.getElementById('_pe').textContent='Wrong password';inp.value=''}
-      }
-    });
-  });
-})();
-</script>
 <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
 <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
 <script>
@@ -3464,21 +3444,24 @@ const BGM={
     victory:['bgm/공통/victory.mp3','bgm/공통/탈출 성공.mp3']
   },
   _cache:{},
+  _badSrcs:{},
   _getAudio(src){
-    if(!this._cache[src]){const a=new Audio(src);a.preload='auto';this._cache[src]=a}
+    if(!this._cache[src]){const a=new Audio(src);a.preload='auto';a.onerror=()=>{BGM._badSrcs[src]=1;delete BGM._cache[src];if(BGM._cur===a){BGM._cur=null;setTimeout(BGM._onEnded,300)}};this._cache[src]=a}
     return this._cache[src];
   },
   _pickRandom(key){
     const arr=this.tracks[key];
     if(!arr||!arr.length)return null;
-    if(arr.length===1)return arr[0];
+    const ok=arr.filter(s=>!this._badSrcs[s]);
+    if(!ok.length)return null;
+    if(ok.length===1)return ok[0];
     let pick;
-    do{pick=arr[Math.random()*arr.length|0]}while(arr.length>1&&pick===this._lastSrc);
+    do{pick=ok[Math.random()*ok.length|0]}while(ok.length>1&&pick===this._lastSrc);
     return pick;
   },
   _pickAllRandom(){
     const keys=['hell1','hell2','hell3','hell4','hell5','hell6','hell7','gameplay'];
-    let all=[];for(let i=0;i<keys.length;i++){const a=this.tracks[keys[i]];if(a)for(let j=0;j<a.length;j++)all.push(a[j])}
+    let all=[];for(let i=0;i<keys.length;i++){const a=this.tracks[keys[i]];if(a)for(let j=0;j<a.length;j++)if(!this._badSrcs[a[j]])all.push(a[j])}
     if(!all.length)return null;
     let pick;
     do{pick=all[Math.random()*all.length|0]}while(all.length>1&&pick===this._lastSrc);
@@ -3490,15 +3473,15 @@ const BGM={
     const arr=this.tracks[key];if(!arr||!arr.length)return null;
     if(!this._playedSets[key])this._playedSets[key]=new Set();
     const ps=this._playedSets[key];
-    const up=arr.filter(s=>!ps.has(s));
+    const up=arr.filter(s=>!ps.has(s)&&!this._badSrcs[s]);
     if(!up.length){this._actDone[key]=true;return null;}
     let pick;do{pick=up[Math.random()*up.length|0]}while(up.length>1&&pick===this._lastSrc);
-    ps.add(pick);if(ps.size>=arr.length)this._actDone[key]=true;
+    ps.add(pick);if(ps.size>=arr.filter(s=>!this._badSrcs[s]).length)this._actDone[key]=true;
     return pick;
   },
   // 장 소진 후: 장 BGM + gameplay 합산 랜덤
   _pickMixed(key){
-    const all=[...(this.tracks[key]||[]),...(this.tracks.gameplay||[])];
+    const all=[...(this.tracks[key]||[]),...(this.tracks.gameplay||[])].filter(s=>!this._badSrcs[s]);
     if(!all.length)return null;
     let pick;do{pick=all[Math.random()*all.length|0]}while(all.length>1&&pick===this._lastSrc);
     return pick;
@@ -20027,7 +20010,7 @@ const PASSIVE_DEF=[
   {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +10%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +10%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
   {key:'pBow',   name:'🎯 정밀사격',nameEn:'🎯 Precision',desc:'투사체뎀 +15%, 공속 +10%, 사거리 +8%, ST비용 -4%/lv',descEn:'Projectile DMG +15%, ATK speed +10%, Range +8%, ST cost -4%/lv',max:10, icon:'🎯',col:'#44ddaa'},
   {key:'pGuard', name:'🛡 수호신',nameEn:'🛡 Aegis',  desc:'보호막 흡수 +2%/lv (기본70→최대90%), 보호막 중 HP리젠 +0.1%/lv',descEn:'Shield absorb +2%/lv (base 70 to max 90%), HP regen during shield +0.1%/lv',max:10, icon:'🛡',col:'#55bbff'},
-  {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv',max:10, icon:'💚',col:'#33cc66'},
+  {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv, 패링회복 +30%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv, Parry recovery +30%/lv',max:10, icon:'💚',col:'#33cc66'},
   {key:'pCrit',  name:'💥 급소',nameEn:'💥 Vital Strike',    desc:'크리률 +2%, 크리뎀 +8%/lv',descEn:'Crit rate +2%, Crit DMG +8%/lv',max:10,icon:'💥',col:'#ff2266'},
   {key:'pDrop',  name:'🎁 약탈',nameEn:'🎁 Plunder',    desc:'아이템 드롭률 +8%/lv',descEn:'Item drop rate +8%/lv',    max:10, icon:'🎁',col:'#ffcc44'},
   {key:'pPierce',name:'🔱 관통',nameEn:'🔱 Pierce',desc:'투사체 관통률 +5%/lv, 관통횟수 +1/lv, 관통뎀감소 완화',descEn:'Projectile pierce rate +5%/lv, Pierce count +1/lv, Pierce DMG falloff reduced',max:10, icon:'🔱',col:'#44ffcc'},
@@ -29659,7 +29642,8 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   // ═══ 패링 보상: 우클릭 30, Q 50 (parryBonus 어픽스 적용) ═══
   const _isQParry=_isQ;
   const _pbMul=1+_eqAffix('parryBonus');
-  const _prBase=~~((_isQParry?50:30)*_pbMul);
+  const _parryRegenMul=1+(PASSIVES.pRegen||0)*.30; // 회복력 패시브: 패링회복 +30%/lv
+  const _prBase=~~((_isQParry?50:30)*_pbMul*_parryRegenMul);
   P.iframes=25;
   P.hp=Math.min(P.mhp,P.hp+_prBase);
   P.st=Math.min(P.mst,P.st+_prBase);
@@ -34939,53 +34923,51 @@ function _fuseStar(skId){
 }
 // 스킬별 배율 테이블: {b:Lv1, g:Lv당 성장} — g=b*0.8 기준 (2026-05-19 상향)
 // Lv20=Lv1×8.6 성장 (구 ×4.8 → 2배 상향, g=b*0.4→b*0.8, 2026-05-19)
-// final ≈ meleeRef × _skMul × levelBonus × 특수보정
+// final ≈ ref × _skMul × levelBonus × 특수보정
+// ══ 2026-05-29 밸런스 평균화: 같은 역할군 DPS 1.5배 이내 ══
+// 연발 DPS 목표: 25~40 | 장판 DPS 목표: 15~25 | 단발 목표: 8~16
 const _SK_MUL={
-  // ── 단발 폭딜 (장쿨, 단일/광역) ──
-  giantSlam:{b:25,g:20.0},  // Lv1=25×, Lv20=215× (구 g:10.0)
-  maliceMortar:{b:7,g:5.6}, // (구 g:2.8)
-  iceOrb:{b:6,g:4.8},       // (구 g:2.4)
-  maliceStorm:{b:12,g:9.6}, // (구 g:4.8)
-  // ── 광역 지속 ──
-  fireAura:{b:5,g:4.0},     // (구 g:2)
-  darkPillar:{b:8,g:6.4},   // (구 g:3.2)
-  spikeTrap:{b:6,g:7.2},    // (구 g:3.6)
-  // ── 중쿨 다발 ──
-  blueShot:{b:4,g:3.2},     // (구 g:1.6)
-  // ── 단일 연사 (~0.5초 사이클) ──
-  fireball:{b:5.0,g:4.0},   // (구 g:2.0)
-  fireBeam:{b:0.8,g:0.64},  // (구 g:0.32)
-  arcLaser:{b:12.0,g:10.08}, // 채널링 프리미엄 1.5× (구 b:8.0,g:6.72)
-  // ── 채널링 (주력기) ──
-  whirlwind:{b:2.5,g:2.1},  // (구 g:1.05)
-  omniBeam:{b:0.5,g:0.4},   // (구 g:0.2)
-  maliceHunt:{b:1.0,g:0.8}, // (구 g:0.4)
-  venomBlade:{b:3.0,g:2.4}, // (구 g:1.2)
-  // ── 기본공격 ──
-  kiSlash:{b:2.0,g:1.68},   // 3단콤보, Lv1=14× Lv20=147× (구 g:0.84→70×)
-  // ── 이동콤보 ──
-  chainSlam:{b:6,g:4.8},    // (구 g:2.4)
-  detonate:{b:6,g:4.8},     // (구 g:2.4)
-  chainAssault:{b:2.45,g:1.96}, // (구 g:0.98)
-  chainSlash:{b:3.0,g:2.4}, // (구 g:1.2)
-  magicBlink:{b:3.0,g:2.4}, // (구 g:1.2)
+  // ── 단발 폭딜 (장쿨=높은 1회뎀, 단쿨=낮은 1회뎀) ──
+  giantSlam:{b:16,g:12.8},     // 단발1회=16, Lv20=138. 최장쿨 최고뎀
+  maliceMortar:{b:10,g:8.0},   // 단발1회=10, Lv20=86
+  iceOrb:{b:8,g:6.4},          // 단발1회=8, Lv20=69 (+빙결 유틸)
+  boneWall:{b:9,g:7.2},        // 단발1회=9, Lv20=77
+  chainSlam:{b:8,g:6.4},       // 단발1회=8, Lv20=69
+  detonate:{b:8,g:6.4},        // 단발1회=8, Lv20=69
+  plagueBurst:{b:7,g:5.6},     // 단발1회=7, Lv20=60 (+독/전염 유틸)
+  maliceHuntBurst:{b:14,g:11.2}, // 단발1회=14, Lv20=120. 칼날 버스트
+  blueShell:{b:8,g:6.4},       // 단발1회=8, Lv20=69
+  // ── 장판 DOT (틱/초 × _skMul = DPS 15~25) ──
+  maliceStorm:{b:7,g:5.6},     // 3.3tick/s → DPS 23, Lv20=198
+  fireAura:{b:5,g:4.0},        // 5tick/s → DPS 25, Lv20=215
+  darkPillar:{b:10,g:8.0},     // 2tick/s → DPS 20, Lv20=172
+  spikeTrap:{b:7,g:5.6},       // 2.4tick/s → DPS 17, Lv20=144 (+슬로우+출혈)
+  bladeDash:{b:6,g:4.8},       // 3tick/s → DPS 18, Lv20=155 (+방어력감소)
+  thunderStake:{b:5,g:4.0},    // 설치형 → DPS ~15
+  // ── 연발 채널링 (_skMul×히트율 = DPS 25~40) ──
+  arcLaser:{b:2.5,g:2.0},      // 15hit/s → DPS 37.5, Lv20=322. 채널링 최강
+  omniBeam:{b:0.5,g:0.4},      // 15hit/s×6줄기 → 타겟당7.5, 총DPS45
+  whirlwind:{b:3.0,g:2.4},     // ~1.2hit/s AoE → 타겟당3.6, 다수적 강점
+  maliceHunt:{b:1.0,g:0.8},    // 채널링 낮지만 칼날발사(burst)가 메인
+  venomBlade:{b:3.0,g:2.4},    // 독칼날
+  // ── 연발 발사형 (_skMul×발사율 = DPS 25~40) ──
+  blueShot:{b:1.8,g:1.44},     // 20hit/s → DPS 36, Lv20=310
+  fireball:{b:6,g:4.8},        // ~2hit/s → DPS 12, Lv20=103 (단발에 가까움)
+  fireBeam:{b:3,g:2.4},        // ~1hit/s → DPS 3 (유도탄 보조)
+  needleShot:{b:4,g:3.2},      // 1.3hit/s → DPS 5.2, Lv20=45
+  blastShot:{b:4,g:3.2},       // ~2hit/s → DPS 8, Lv20=69
   // ── 궁극기 ──
-  hellRay:{b:5,g:4.0},      // (구 g:2)
-  burstLoop:{b:5,g:4.0},    // (구 g:2)
+  hellRay:{b:5,g:4.0},         // 6hit/s → DPS 30, Lv20=258
+  burstLoop:{b:5,g:4.0},       // 차징형
+  // ── 기본공격 ──
+  kiSlash:{b:2.0,g:1.68},      // 3단콤보×7, ~2hit/s → DPS 28
+  // ── 이동콤보 ──
+  chainAssault:{b:3,g:2.4},    // 기동불꽃
+  chainSlash:{b:3.5,g:2.8},    // 기동칼날
+  magicBlink:{b:4,g:3.2},      // 사슬화염 착지폭발
   // ── 합체/보조 ──
-  boneWall:{b:9,g:7.2},     // (구 g:3.6)
-  plagueBurst:{b:4.0,g:3.2},// (구 g:1.6)
-  ghostWalk:{b:3.5,g:2.8},  // (구 g:1.4)
-  elemMissile:{b:1.5,g:1.2},// (구 g:0.6)
-  // ── 석궁 ──
-  blastShot:{b:3.0,g:2.4},  // (구 g:1.2)
-  // ── 설치형 (뇌전창) ──
-  thunderStake:{b:5,g:4.0}, // (구 g:2)
-  // ── 설치형/DOT (성장 통일 2026-05-29) ──
-  maliceHuntBurst:{b:20,g:8.4}, // 악의사냥 칼날 발사 (구 20+(Lv-1)*4.21)
-  bladeDash:{b:3,g:2.4},    // 전격이동 전류장판 틱뎀 (구 0.3+Lv*0.06)
-  needleShot:{b:3,g:2.4},   // 니들샷 (구 1.2+(Lv-1))
-  blueShell:{b:6,g:4.8},    // 푸른구슬 (구 6*(1+Lv*0.1))
+  ghostWalk:{b:4,g:3.2},       // 뇌전걸음
+  elemMissile:{b:2,g:1.6},     // 6발 유도 → 총 12
 };
 // 레벨 복리 보너스 삭제됨 — 스킬 배율은 순수 (b + (lv-1)*g*0.5) 만 사용
 function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];if(!t)return 1;return t.b+(lv-1)*t.g*0.5}
@@ -36613,7 +36595,7 @@ function renderSkillPanel(){
         for(let _si=0;_si<ph.skills.length;_si++){
           const skId=ph.skills[_si];
           const sk=_skById(skId);if(!sk)continue;
-          const skWrap=document.createElement('div');skWrap.style.cssText='flex:1;min-width:120px;max-width:220px';
+          const skWrap=document.createElement('div');skWrap.style.cssText='flex:1;min-width:120px;max-width:220px';skWrap._recTab=true;
           _renderSkillRow(sk,skWrap);
           skRow.appendChild(skWrap);
           if(_si<ph.skills.length-1){const plus=document.createElement('div');plus.style.cssText='display:flex;align-items:center;color:#776655;font-size:1.2rem;flex:0 0 16px;justify-content:center;padding-top:12px';plus.textContent='+';skRow.appendChild(plus)}
@@ -37071,7 +37053,7 @@ function _renderSkillRow(sk,grid){
       // ── 합체 선택 모드: _skExpandedId(상세 펼친 스킬) 있을 때 합체 가능 스킬만 컬러, 나머지 페이드 ──
       // 단 _skExpandedId === sk.id 인 경우는 펼침 모드로 분기되므로 여기 안 옴
       let _fadeOut=false,_fuseHighlight=false;
-      if(_skExpandedId){
+      if(_skExpandedId&&!grid._recTab){
         // 펼쳐진 스킬과 같은 합체 그룹이 있는지 확인
         const _selGrp=_fuseGemGroup(_skExpandedId);
         const _shareGrp=_selGrp&&_fGrp&&(_selGrp.key===_fGrp.key||(_FUSE_PAIRS[_selGrp.key]||[]).includes(sk.id)||(_FUSE_PAIRS[_fGrp.key]||[]).includes(_skExpandedId));

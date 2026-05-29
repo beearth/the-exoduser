@@ -2160,12 +2160,16 @@ function _enterOffline(){
 (async()=>{
   showLoading(_TL('데이터를 불러오는 중...'));
 
-  // 오프라인 버튼 이벤트
-  if($('offlineBtn'))$('offlineBtn').onclick=()=>_enterOffline();
-
   // NW.js 데스크톱 빌드 → 자동 오프라인 (구글 로그인 불필요)
   const _isNW=typeof nw!=='undefined';
   if(_isNW&&!_testMode)_testMode=true;
+
+  // 오프라인 버튼: Vercel 웹에서만 숨김 (로컬/NW.js/test는 표시)
+  const _isVercel=location.hostname.includes('vercel.app');
+  if($('offlineBtn')){
+    if(_isVercel&&!_testMode){$('offlineBtn').style.display='none'}
+    else{$('offlineBtn').onclick=()=>_enterOffline()}
+  }
 
   // ?test=1 또는 NW.js → 강제 오프라인
   if(_testMode){
@@ -2376,8 +2380,8 @@ async function loadLocalCharacters(){
   const cl=$('charList');if(cl)cl.innerHTML='<div class="no-chars">'+_TL('불러오는 중...')+'</div>';
   _selectedSlot=null;_updateCharDisplay();
   try{
-    const res=await fetch('/api/slots');
-    if(!res.ok)throw new Error('no server');
+    const res=await fetch('/api/slots').catch(()=>null);
+    if(!res||!res.ok)throw new Error('no server');
     const j=await res.json();
     _localSlots=j.ok&&j.slots?j.slots:[];
   }catch(e){

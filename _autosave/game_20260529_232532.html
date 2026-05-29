@@ -4,26 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HELL: EXODUSER</title>
-<script>
-(function(){
-  if(typeof nw!=='undefined')return;
-  var _k='_exo_auth',_h='-hoq7vu';
-  function _c(s){for(var h=0,i=0;i<s.length;i++){h=((h<<5)-h)+s.charCodeAt(i);h|=0}return h.toString(36)}
-  if(sessionStorage.getItem(_k)===_h)return;
-  document.documentElement.style.display='none';
-  window.addEventListener('DOMContentLoaded',function(){
-    document.documentElement.style.display='';
-    document.body.innerHTML='<div style="position:fixed;inset:0;background:#0a0604;display:flex;align-items:center;justify-content:center;z-index:999999;font-family:sans-serif"><div style="text-align:center"><div style="color:#aa8855;font-size:1.2rem;margin-bottom:18px;letter-spacing:.15em">EXODUSER — ACCESS</div><input id="_pw" type="password" placeholder="Password" style="background:#1a1208;border:1px solid #554422;color:#ccaa88;padding:10px 18px;font-size:1rem;border-radius:4px;text-align:center;width:220px" autofocus><div id="_pe" style="color:#cc4433;margin-top:10px;font-size:.85rem;min-height:1.2em"></div></div></div>';
-    var inp=document.getElementById('_pw');
-    inp.addEventListener('keydown',function(e){
-      if(e.key==='Enter'){
-        if(_c(inp.value)===_h){sessionStorage.setItem(_k,_h);location.reload()}
-        else{document.getElementById('_pe').textContent='Wrong password';inp.value=''}
-      }
-    });
-  });
-})();
-</script>
 <link rel="icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
 <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=20260414-iconfix">
 <script>
@@ -3464,21 +3444,24 @@ const BGM={
     victory:['bgm/공통/victory.mp3','bgm/공통/탈출 성공.mp3']
   },
   _cache:{},
+  _badSrcs:{},
   _getAudio(src){
-    if(!this._cache[src]){const a=new Audio(src);a.preload='auto';this._cache[src]=a}
+    if(!this._cache[src]){const a=new Audio(src);a.preload='auto';a.onerror=()=>{BGM._badSrcs[src]=1;delete BGM._cache[src];if(BGM._cur===a){BGM._cur=null;setTimeout(BGM._onEnded,300)}};this._cache[src]=a}
     return this._cache[src];
   },
   _pickRandom(key){
     const arr=this.tracks[key];
     if(!arr||!arr.length)return null;
-    if(arr.length===1)return arr[0];
+    const ok=arr.filter(s=>!this._badSrcs[s]);
+    if(!ok.length)return null;
+    if(ok.length===1)return ok[0];
     let pick;
-    do{pick=arr[Math.random()*arr.length|0]}while(arr.length>1&&pick===this._lastSrc);
+    do{pick=ok[Math.random()*ok.length|0]}while(ok.length>1&&pick===this._lastSrc);
     return pick;
   },
   _pickAllRandom(){
     const keys=['hell1','hell2','hell3','hell4','hell5','hell6','hell7','gameplay'];
-    let all=[];for(let i=0;i<keys.length;i++){const a=this.tracks[keys[i]];if(a)for(let j=0;j<a.length;j++)all.push(a[j])}
+    let all=[];for(let i=0;i<keys.length;i++){const a=this.tracks[keys[i]];if(a)for(let j=0;j<a.length;j++)if(!this._badSrcs[a[j]])all.push(a[j])}
     if(!all.length)return null;
     let pick;
     do{pick=all[Math.random()*all.length|0]}while(all.length>1&&pick===this._lastSrc);
@@ -3490,15 +3473,15 @@ const BGM={
     const arr=this.tracks[key];if(!arr||!arr.length)return null;
     if(!this._playedSets[key])this._playedSets[key]=new Set();
     const ps=this._playedSets[key];
-    const up=arr.filter(s=>!ps.has(s));
+    const up=arr.filter(s=>!ps.has(s)&&!this._badSrcs[s]);
     if(!up.length){this._actDone[key]=true;return null;}
     let pick;do{pick=up[Math.random()*up.length|0]}while(up.length>1&&pick===this._lastSrc);
-    ps.add(pick);if(ps.size>=arr.length)this._actDone[key]=true;
+    ps.add(pick);if(ps.size>=arr.filter(s=>!this._badSrcs[s]).length)this._actDone[key]=true;
     return pick;
   },
   // 장 소진 후: 장 BGM + gameplay 합산 랜덤
   _pickMixed(key){
-    const all=[...(this.tracks[key]||[]),...(this.tracks.gameplay||[])];
+    const all=[...(this.tracks[key]||[]),...(this.tracks.gameplay||[])].filter(s=>!this._badSrcs[s]);
     if(!all.length)return null;
     let pick;do{pick=all[Math.random()*all.length|0]}while(all.length>1&&pick===this._lastSrc);
     return pick;
@@ -20027,7 +20010,7 @@ const PASSIVE_DEF=[
   {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +10%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +10%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
   {key:'pBow',   name:'🎯 정밀사격',nameEn:'🎯 Precision',desc:'투사체뎀 +15%, 공속 +10%, 사거리 +8%, ST비용 -4%/lv',descEn:'Projectile DMG +15%, ATK speed +10%, Range +8%, ST cost -4%/lv',max:10, icon:'🎯',col:'#44ddaa'},
   {key:'pGuard', name:'🛡 수호신',nameEn:'🛡 Aegis',  desc:'보호막 흡수 +2%/lv (기본70→최대90%), 보호막 중 HP리젠 +0.1%/lv',descEn:'Shield absorb +2%/lv (base 70 to max 90%), HP regen during shield +0.1%/lv',max:10, icon:'🛡',col:'#55bbff'},
-  {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv, 패링회복 +10%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv, Parry recovery +10%/lv',max:10, icon:'💚',col:'#33cc66'},
+  {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv, 패링회복 +30%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv, Parry recovery +30%/lv',max:10, icon:'💚',col:'#33cc66'},
   {key:'pCrit',  name:'💥 급소',nameEn:'💥 Vital Strike',    desc:'크리률 +2%, 크리뎀 +8%/lv',descEn:'Crit rate +2%, Crit DMG +8%/lv',max:10,icon:'💥',col:'#ff2266'},
   {key:'pDrop',  name:'🎁 약탈',nameEn:'🎁 Plunder',    desc:'아이템 드롭률 +8%/lv',descEn:'Item drop rate +8%/lv',    max:10, icon:'🎁',col:'#ffcc44'},
   {key:'pPierce',name:'🔱 관통',nameEn:'🔱 Pierce',desc:'투사체 관통률 +5%/lv, 관통횟수 +1/lv, 관통뎀감소 완화',descEn:'Projectile pierce rate +5%/lv, Pierce count +1/lv, Pierce DMG falloff reduced',max:10, icon:'🔱',col:'#44ffcc'},
@@ -29659,7 +29642,7 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   // ═══ 패링 보상: 우클릭 30, Q 50 (parryBonus 어픽스 적용) ═══
   const _isQParry=_isQ;
   const _pbMul=1+_eqAffix('parryBonus');
-  const _parryRegenMul=1+(PASSIVES.pRegen||0)*.10; // 회복력 패시브: 패링회복 +10%/lv
+  const _parryRegenMul=1+(PASSIVES.pRegen||0)*.30; // 회복력 패시브: 패링회복 +30%/lv
   const _prBase=~~((_isQParry?50:30)*_pbMul*_parryRegenMul);
   P.iframes=25;
   P.hp=Math.min(P.mhp,P.hp+_prBase);
@@ -38463,7 +38446,7 @@ if($('resetYes'))$('resetYes').onclick=async()=>{
     // 로컬 세이브 파일 삭제
     const _qpSlotR=new URLSearchParams(window.location.search).get('slot');
     const _slotR=_qpSlotR?decodeURIComponent(_qpSlotR):'자동저장';
-    try{await fetch('/api/save/'+encodeURIComponent(_slotR),{method:'DELETE'})}catch(e){}
+    try{localStorage.removeItem('hellsave_'+_slotR);await fetch('/api/save/'+encodeURIComponent(_slotR),{method:'DELETE'})}catch(e){}
   }else if(_charId){
     await sb.from('characters').update({data:{},updated_at:new Date().toISOString()}).eq('id',_charId);
   }else{
@@ -49598,6 +49581,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
   // local test: save to server saves/ folder
   const _qpSlot=new URLSearchParams(window.location.search).get('slot');
   const _SLOT=_qpSlot?decodeURIComponent(_qpSlot):'t1';
+  let _serverOk=null; // null=미확인, true/false
   const _origDbSave=dbSave;
   dbSave=async function(){
     if(!P||_saving)return;
@@ -49631,12 +49615,14 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
         ultSlot:ULT_SLOT,
         charIdx:_charIdx
       };
+      if(_serverOk===false){localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now();return}
       const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:_SLOT,data:saveData})});
-      if(!res.ok){try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}return}
+      if(!res.ok){_serverOk=false;try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}return}
+      _serverOk=true;
       const j=await res.json();
       if(j.ok){_lastSaveTime=Date.now()}
       else{if(!IS_ELECTRON)console.error('[LOCAL] Save failed:',j.error)}
-    }catch(e){try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}}
+    }catch(e){_serverOk=false;try{localStorage.setItem('hellsave_'+_SLOT,JSON.stringify(saveData));_lastSaveTime=Date.now()}catch(le){}}
     finally{_saving=false;if(_pendingForce){_pendingForce=false;if(Date.now()-_lastSaveTime>=5000)dbSave()}}
   };
 
@@ -49657,7 +49643,10 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
     if(new URLSearchParams(window.location.search).get('testchar')==='1'){await _startTestChar();return;}
     let _loaded=false;
     try{
+      if(_serverOk===false)throw new Error('no server');
       const res=await fetch('/api/load/'+encodeURIComponent(_SLOT));
+      if(!res.ok){_serverOk=false;throw new Error('no server')}
+      _serverOk=true;
       if(res.ok){
         const j=await res.json();
         if(j.ok&&j.data&&j.data.player){

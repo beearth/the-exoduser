@@ -7648,9 +7648,7 @@ function _petOnHit(){_petHitCnt++;_petParryCombo=0}
 function _petOnParry(){_petParryCnt++;_petParryCombo++;
   // [10] BL 패링 콤보 5연속
   if(_petParryCombo>=5)_petSayCD('bl_combo5','crow','…이게 진짜 패링이야.',4,300,'cat','다섯 번 연속! 내가 본 인간 중 최고!',4);
-  // 분노게이지 대사
-  if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. Space를 눌러.',4,300,'cat','분노게이지 꽉 찼어! 스페이스로 폭발시켜!',4);
-  else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat','분노 '+P.rage+'%! 패링으로 분노 더 쌓아!',3);
+  // 분노 대사는 doParry() 내 P.rage 적립 후에서 체크 (여기선 아직 이전 값)
 }
 function _petOnKill(){_petKillCnt++;_petComboKills++;_petKillsRecent++;_petKillsRecentT=G.frame;
   // [17] 콤보 킬
@@ -29653,6 +29651,9 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   // 분노게이지 +10% (패링 성공)
   P.rage=Math.min(100,P.rage+10);
   addTxt(P.x,P.y-90,_T('🔥분노+')+P.rage+'%','#ff4400',35);
+  // 분노 대사 (적립 후 체크)
+  if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. Space를 눌러.',4,300,'cat','분노게이지 꽉 찼어! 스페이스로 폭발시켜!',4);
+  else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat','분노 '+P.rage+'%! 패링으로 분노 더 쌓아!',3);
   G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
