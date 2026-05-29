@@ -28605,7 +28605,7 @@ function update(){
             e._hrMarkT=1800; // 30초 타이머 리셋
             const _hrMarkMul=1+e._hrMark/100; // 50→1.5x, 100→2x, ... 250→3.5x
             const _hrAmpDmg=~~(fz.dmg*_hrMarkMul);
-            hurtE(e,_hrAmpDmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{shieldHit:true},fz.el);
+            hurtE(e,_hrAmpDmg,0,true,{shieldHit:true,noKB:true},fz.el);
             if(_hrOld<e._hrMark){const _stk=e._hrMark/50;addTxt(e.x,e.y-30,_T('⚡ 증표 ')+_stk+'/5 (-'+e._hrMark+')','#ffd700',30)}
           }
         }
@@ -33301,7 +33301,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   const _isBB=opts&&opts.blueBean; // 푸른비 넉백 없음
   const _isMagicProj=opts&&opts.magic; // 마법투사체(원소추적탄/악의구 등): 넉백 80% 감소
   const _kbScale=_isMagicProj?.2:1;
-  if(ang!==undefined&&!_isRanged&&!isDot&&!_isMH&&!_isBB){const _kbAmt=Math.min(dmg*.25*finalKbM*_kbScale,15*finalKbM*_kbScale);
+  const _noKB=opts&&opts.noKB;
+  if(ang!==undefined&&!_isRanged&&!isDot&&!_isMH&&!_isBB&&!_noKB){const _kbAmt=Math.min(dmg*.25*finalKbM*_kbScale,15*finalKbM*_kbScale);
     // 뷰포트 밖 적: 넉백 벡터 대신 즉시 위치 이동 (컬링 지연 버그 방지)
     const _kbInView=e.ib||e.hurt>0||(e.x>G.cam.x-C.width/2-300&&e.x<G.cam.x+C.width/2+300&&e.y>G.cam.y-C.height/2-300&&e.y<G.cam.y+C.height/2+300);
     if(_kbInView){e.kb.x+=Math.cos(ang)*_kbAmt;e.kb.y+=Math.sin(ang)*_kbAmt}
@@ -36550,6 +36551,7 @@ function renderSkillPanel(){
       } else {
         // 현재/미래: 풀 카드 표시
         phDiv.style.cssText='margin-bottom:12px;border:1px solid '+(_isCur?'#ffaa44':'#332211')+';border-radius:8px;padding:8px 10px;background:'+(_isCur?'rgba(60,30,5,.5)':'rgba(10,5,2,.4)')+';'+(_isFuture?'opacity:.5;':'');
+        if(_isCur)phDiv.setAttribute('data-rec-cur','1');
         const phHdr=document.createElement('div');
         phHdr.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:6px';
         phHdr.innerHTML='<span style="font-size:1.1rem">'+(_isCur?'👉':'⬜')+'</span><span style="color:'+(_isCur?'#ffcc44':'#887766')+';font-size:.95rem;font-weight:700">'+_L(ph.phase,ph.phaseEn||ph.phase)+'</span>';
@@ -36585,6 +36587,8 @@ function renderSkillPanel(){
       col.appendChild(_cg);
     }
     grid.appendChild(col);
+    // 현재 단계로 자동 스크롤
+    requestAnimationFrame(()=>{const _cur=col.querySelector('[data-rec-cur]');if(_cur)_cur.scrollIntoView({behavior:'smooth',block:'center'})});
   }
   const _stripHeadIcon=(t)=>String(t||'').replace(/^[^A-Za-z0-9가-힣]+/,'').trim();
   if(!_isRecTab) SKILL_CATS.forEach(cat=>{
@@ -36784,7 +36788,7 @@ function _drawSkillFuseLines(){
     svg.appendChild(_sDot);
   });
 }
-const _SKILL_ICON_SET=new Set(['arcLaser','blackStar','bladeDash','bladeShot','blueShot','boneStorm','boneWall','burstLoop','chainAssault','chainSlam','chainSlash','chargeBoost','darkPillar','detonate','elecRepent','elemMissile','execution','fanShot','fireAura','fireball','fireBeam','ghostWalk','ghostXbowTurret','giantSlam','giantSlam2','guardian','hellRay','holyBlast','holyDome','holyPrison','iceOrb','iceStorm','kiSlash','lavaSummon','magicBlink','maliceDome','maliceHunt','maliceHunt2','maliceMortar','maliceStorm','maliceSwipe','needleShot','omniBeam','peaceShield','plagueBurst','shieldThrow','spikeTrap','thunderStake','timeWarp','venomBlade','voidScarecrow','weakMag','weakPhys','weakPj','weakRev','whirlwind']);
+const _SKILL_ICON_SET=new Set(['arcLaser','blackStar','bladeDash','bladeShot','blueShot','boneStorm','boneWall','burstLoop','chainAssault','chainSlam','chainSlash','chargeBoost','darkPillar','detonate','elecRepent','elemMissile','execution','explodeScarecrow','fanShot','fireAura','fireball','fireBeam','ghostWalk','ghostXbowTurret','giantSlam','giantSlam2','guardian','hellRay','holyBlast','holyDome','holyPrison','iceOrb','iceStorm','kiSlash','lavaSummon','magicBlink','maliceDome','maliceHunt','maliceHunt2','maliceMortar','maliceStorm','maliceSwipe','needleShot','omniBeam','peaceShield','plagueBurst','shieldThrow','spikeTrap','thunderStake','timeWarp','venomBlade','voidScarecrow','weakMag','weakPhys','weakPj','weakRev','whirlwind']);
 function _renderSkillRow(sk,grid){
     // ═══ 흡수된 스킬은 스킬창에서 완전 제거 ═══
     if(_isAbsorbed(sk.id)) return;
@@ -44026,17 +44030,21 @@ function drawP(){
               pts.push({x:cx+Math.cos(ang)*len*t+(Math.random()-.5)*8,
                         y:cy+Math.sin(ang)*len*t+(Math.random()-.5)*6});
             }
-            fz._bolts.push({pts,w:.5+Math.random()*1.2,a:.3+Math.random()*.5});
+            fz._bolts.push({pts,w:1.5+Math.random()*2,a:.4+Math.random()*.5});
           }
         }
         for(let _bi=0;_bi<fz._bolts.length;_bi++){
           const b=fz._bolts[_bi];
-          X.strokeStyle='#cc88ff';X.lineWidth=b.w;X.globalAlpha=b.a*_fzFade;
+          X.strokeStyle='#4488ff';X.lineWidth=b.w+3;X.globalAlpha=b.a*.25*_fzFade;
           X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);
           for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);
           X.stroke();
-          if(b.w>1){
-            X.strokeStyle='#eeddff';X.lineWidth=b.w+1.5;X.globalAlpha=b.a*.2*_fzFade;
+          X.strokeStyle='#66ccff';X.lineWidth=b.w;X.globalAlpha=b.a*_fzFade;
+          X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);
+          for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);
+          X.stroke();
+          if(b.w>2){
+            X.strokeStyle='#cceeff';X.lineWidth=b.w*.4;X.globalAlpha=b.a*.5*_fzFade;
             X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);
             for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);
             X.stroke();
@@ -44047,7 +44055,7 @@ function drawP(){
           const _sa=Math.random()*Math.PI*2;const _sd=Math.random()*fz.r*.85;
           const _sx=fz.x+Math.cos(_sa)*_sd,_sy=fz.y+Math.sin(_sa)*_sd;
           X.globalAlpha=(.3+Math.random()*.4)*_fzFade;
-          X.fillStyle=Math.random()>.5?'#eeddff':'#bb77ff';
+          X.fillStyle=Math.random()>.5?'#cceeff':'#66aaff';
           X.beginPath();X.arc(_sx,_sy,1+Math.random()*1.5,0,Math.PI*2);X.fill();
         }
       }else if(fz.type==='boneStorm'){

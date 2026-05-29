@@ -6536,7 +6536,7 @@ const _EN={
 'SPACE 길게 눌러 건너뛰기':'Hold SPACE to skip',
 // --- Phase 33d: Intro key steps + Load tips ---
 '패링·보호막':'Parry / Shield','돌진 (적을 관통, 무적)':'Dash (pierce enemies, invincible)',
-'대왕치기 (광역 기절)':'Giant Slam (AoE stun)','가시덫 (슬로우+출혈)':'Spike Trap (slow+bleed)',
+'대왕치기 (분노폭발, 광역 기절)':'Giant Slam (Rage Burst, AoE stun)','가시덫 (슬로우+출혈)':'Spike Trap (slow+bleed)',
 '회복의 영역 (리젠 장판)':'Holy Domain (regen zone)','얼음보주 (무적+빙결)':'Ice Orb (invincible+freeze)',
 '석궁 자동발사':'Auto Crossbow','선택 스킬 슬롯':'Skill Slots',
 '(펫이 자동 수거)':'(pet auto-collects)','물약은 설정한 HP% 이하 시 자동 사용':'Potions auto-use when HP falls below set %',
@@ -7519,7 +7519,7 @@ function _checkPetDialogue(){
   }
   if(P.hp<P.mhp*.3||P.mp<P.mmp*.3||P.st<P.mst*.3){
     if(P.skills.holyDome>0)_petSayCD('resource_low_yes','crow','F키 회복의 영역을 써봐.',4,300);
-    else _petSayCD('resource_low_no','crow','빠져! 물약 마시고 회복해.',4,300,'cat','자원 없으면 도망가는 게 답이야!',4);
+    else _petSayCD('resource_low_no','crow','빠져! 물약 마시고 회복해.',4,300,'cat','HP가 없어 패링이라도 해서 회복해야해!!!',4);
   }
   if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야!',4,300);
   if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트 쌓였어! K 눌러!',4,300);
@@ -7647,7 +7647,7 @@ function _petOnParry(){_petParryCnt++;_petParryCombo++;
   if(_petParryCombo>=5)_petSayCD('bl_combo5','crow','…이게 진짜 패링이야.',4,300,'cat','다섯 번 연속! 내가 본 인간 중 최고!',4);
   // 분노게이지 대사
   if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. Space를 눌러.',4,300,'cat','분노게이지 꽉 찼어! 스페이스로 폭발시켜!',4);
-  else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat','분노 '+P.rage+'%! 패링으로 더 쌓아!',3);
+  else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat','분노 '+P.rage+'%! 패링으로 분노 더 쌓아!',3);
 }
 function _petOnKill(){_petKillCnt++;_petComboKills++;_petKillsRecent++;_petKillsRecentT=G.frame;
   // [17] 콤보 킬
@@ -27727,6 +27727,7 @@ function update(){
           G._fireZones.push({x:_mswx,y:_mswy,r:_msR,t:0,maxT:600,
             dmg:_msDmg,el:EL.L,lv:_msLv,type:'storm'});
           SFX.magic(EL.L);
+          playSample(['electric_storm','electric_storm2','electric_storm3','electric_storm4'][~~(Math.random()*4)],.6,_r(1,.1));
           addTxt(_mswx,_mswy-20,_T('⚡악의폭풍!'),'#cc88ff',30);
           shake(4);
           _castSuccess=true;
@@ -27929,7 +27930,7 @@ function update(){
   // ═══ 전격이동 — 충전 (1렙10개, 렙당+1) ═══
   {var _bdLv2=P.skills.bladeDash||1;var _bdMaxStk=10+(_bdLv2-1);
   if(P._bdStk!=null&&P._bdStk<_bdMaxStk){
-    if((P._bdRech||0)>0){P._bdRech-=sp;if(P._bdRech<=0){P._bdStk++;P._bdRech=P._bdStk<_bdMaxStk?~~(Math.max(120,(480-(_bdLv2-1)*18))*1):0}}
+    if((P._bdRech||0)>0){P._bdRech-=sp;if(P._bdRech<=0){P._bdStk++;P._bdRech=P._bdStk<_bdMaxStk?~~(Math.max(120,(300-(_bdLv2-1)*18))*1):0}}
   }}
   // ═══ 얼음보주 — 쿨다운 ═══
   if(P._ioCd>0)P._ioCd-=sp+_hdCdBonus;
@@ -28605,7 +28606,7 @@ function update(){
             e._hrMarkT=1800; // 30초 타이머 리셋
             const _hrMarkMul=1+e._hrMark/100; // 50→1.5x, 100→2x, ... 250→3.5x
             const _hrAmpDmg=~~(fz.dmg*_hrMarkMul);
-            hurtE(e,_hrAmpDmg,Math.atan2(e.y-fz.y,e.x-fz.x),true,{shieldHit:true},fz.el);
+            hurtE(e,_hrAmpDmg,0,true,{shieldHit:true,noKB:true},fz.el);
             if(_hrOld<e._hrMark){const _stk=e._hrMark/50;addTxt(e.x,e.y-30,_T('⚡ 증표 ')+_stk+'/5 (-'+e._hrMark+')','#ffd700',30)}
           }
         }
@@ -33301,7 +33302,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   const _isBB=opts&&opts.blueBean; // 푸른비 넉백 없음
   const _isMagicProj=opts&&opts.magic; // 마법투사체(원소추적탄/악의구 등): 넉백 80% 감소
   const _kbScale=_isMagicProj?.2:1;
-  if(ang!==undefined&&!_isRanged&&!isDot&&!_isMH&&!_isBB){const _kbAmt=Math.min(dmg*.25*finalKbM*_kbScale,15*finalKbM*_kbScale);
+  const _noKB=opts&&opts.noKB;
+  if(ang!==undefined&&!_isRanged&&!isDot&&!_isMH&&!_isBB&&!_noKB){const _kbAmt=Math.min(dmg*.25*finalKbM*_kbScale,15*finalKbM*_kbScale);
     // 뷰포트 밖 적: 넉백 벡터 대신 즉시 위치 이동 (컬링 지연 버그 방지)
     const _kbInView=e.ib||e.hurt>0||(e.x>G.cam.x-C.width/2-300&&e.x<G.cam.x+C.width/2+300&&e.y>G.cam.y-C.height/2-300&&e.y<G.cam.y+C.height/2+300);
     if(_kbInView){e.kb.x+=Math.cos(ang)*_kbAmt;e.kb.y+=Math.sin(ang)*_kbAmt}
@@ -36550,6 +36552,7 @@ function renderSkillPanel(){
       } else {
         // 현재/미래: 풀 카드 표시
         phDiv.style.cssText='margin-bottom:12px;border:1px solid '+(_isCur?'#ffaa44':'#332211')+';border-radius:8px;padding:8px 10px;background:'+(_isCur?'rgba(60,30,5,.5)':'rgba(10,5,2,.4)')+';'+(_isFuture?'opacity:.5;':'');
+        if(_isCur)phDiv.setAttribute('data-rec-cur','1');
         const phHdr=document.createElement('div');
         phHdr.style.cssText='display:flex;align-items:center;gap:8px;margin-bottom:6px';
         phHdr.innerHTML='<span style="font-size:1.1rem">'+(_isCur?'👉':'⬜')+'</span><span style="color:'+(_isCur?'#ffcc44':'#887766')+';font-size:.95rem;font-weight:700">'+_L(ph.phase,ph.phaseEn||ph.phase)+'</span>';
@@ -36585,6 +36588,8 @@ function renderSkillPanel(){
       col.appendChild(_cg);
     }
     grid.appendChild(col);
+    // 현재 단계로 자동 스크롤
+    requestAnimationFrame(()=>{const _cur=col.querySelector('[data-rec-cur]');if(_cur)_cur.scrollIntoView({behavior:'smooth',block:'center'})});
   }
   const _stripHeadIcon=(t)=>String(t||'').replace(/^[^A-Za-z0-9가-힣]+/,'').trim();
   if(!_isRecTab) SKILL_CATS.forEach(cat=>{
@@ -36784,7 +36789,7 @@ function _drawSkillFuseLines(){
     svg.appendChild(_sDot);
   });
 }
-const _SKILL_ICON_SET=new Set(['arcLaser','blackStar','bladeDash','bladeShot','blueShot','boneStorm','boneWall','burstLoop','chainAssault','chainSlam','chainSlash','chargeBoost','darkPillar','detonate','elecRepent','elemMissile','execution','fanShot','fireAura','fireball','fireBeam','ghostWalk','ghostXbowTurret','giantSlam','giantSlam2','guardian','hellRay','holyBlast','holyDome','holyPrison','iceOrb','iceStorm','kiSlash','lavaSummon','magicBlink','maliceDome','maliceHunt','maliceHunt2','maliceMortar','maliceStorm','maliceSwipe','needleShot','omniBeam','peaceShield','plagueBurst','shieldThrow','spikeTrap','thunderStake','timeWarp','venomBlade','voidScarecrow','weakMag','weakPhys','weakPj','weakRev','whirlwind']);
+const _SKILL_ICON_SET=new Set(['arcLaser','blackStar','bladeDash','bladeShot','blueShot','boneStorm','boneWall','burstLoop','chainAssault','chainSlam','chainSlash','chargeBoost','darkPillar','detonate','elecRepent','elemMissile','execution','explodeScarecrow','fanShot','fireAura','fireball','fireBeam','ghostWalk','ghostXbowTurret','giantSlam','giantSlam2','guardian','hellRay','holyBlast','holyDome','holyPrison','iceOrb','iceStorm','kiSlash','lavaSummon','magicBlink','maliceDome','maliceHunt','maliceHunt2','maliceMortar','maliceStorm','maliceSwipe','needleShot','omniBeam','peaceShield','plagueBurst','shieldThrow','spikeTrap','thunderStake','timeWarp','venomBlade','voidScarecrow','weakMag','weakPhys','weakPj','weakRev','whirlwind']);
 function _renderSkillRow(sk,grid){
     // ═══ 흡수된 스킬은 스킬창에서 완전 제거 ═══
     if(_isAbsorbed(sk.id)) return;
@@ -44008,47 +44013,61 @@ function drawP(){
           }
         }
       }else if(fz.type==='storm'){
-        // ═══ 악의폭풍 — 사이오닉 스톰 (자잘한 미니 번개) ═══
-        const _st=_now*.001;const _sf=~~(fz.t);
-        // 2) 자잘한 미니 번개 12~18개 (매 2프레임 갱신)
-        if(!fz._bolts||_sf%2===0){
+        // ═══ 악의폭풍 — 사이오닉 스톰 (넓게 퍼지는 번개 플래시) ═══
+        const _sf=~~(fz.t);
+        // 매 6프레임 번개 세트 교체 (일부만 갱신 → 자연스러운 깜빡임)
+        if(!fz._bolts||_sf%6===0){
+          const _old=fz._bolts||[];
           fz._bolts=[];
-          const _bCnt=12+~~(Math.random()*7);
-          for(let _bi=0;_bi<_bCnt;_bi++){
+          // 유지할 볼트 (50% 확률로 살리기 → 잔상감)
+          for(let _oi=0;_oi<_old.length;_oi++){if(Math.random()<.4)fz._bolts.push(_old[_oi])}
+          // 새 볼트 추가 (총 6~8개 유지)
+          const _need=Math.max(0,(6+~~(Math.random()*3))-fz._bolts.length);
+          for(let _bi=0;_bi<_need;_bi++){
+            // 영역 가장자리 두 점을 잇는 넓은 번개
+            const a1=Math.random()*Math.PI*2;
+            const a2=a1+Math.PI*(0.4+Math.random()*1.2); // 반대편~넓은 각도
+            const d1=fz.r*(0.3+Math.random()*0.7);
+            const d2=fz.r*(0.3+Math.random()*0.7);
+            const x1=fz.x+Math.cos(a1)*d1, y1=fz.y+Math.sin(a1)*d1;
+            const x2=fz.x+Math.cos(a2)*d2, y2=fz.y+Math.sin(a2)*d2;
             const pts=[];
-            const cx=fz.x+(Math.random()-.5)*fz.r*1.0;
-            const cy=fz.y+(Math.random()-.5)*fz.r*1.0;
-            const len=8+Math.random()*25;
-            const ang=Math.random()*Math.PI*2;
-            const segs=2+~~(Math.random()*2);
+            const segs=4+~~(Math.random()*4); // 4~7 꺾임
+            const jitter=fz.r*0.25; // 큰 지그재그
             for(let s=0;s<=segs;s++){
               const t=s/segs;
-              pts.push({x:cx+Math.cos(ang)*len*t+(Math.random()-.5)*8,
-                        y:cy+Math.sin(ang)*len*t+(Math.random()-.5)*6});
+              pts.push({x:x1+(x2-x1)*t+(s>0&&s<segs?(Math.random()-.5)*jitter:0),
+                        y:y1+(y2-y1)*t+(s>0&&s<segs?(Math.random()-.5)*jitter:0)});
             }
-            fz._bolts.push({pts,w:.5+Math.random()*1.2,a:.3+Math.random()*.5});
+            fz._bolts.push({pts,w:1.2+Math.random()*1.8,a:.5+Math.random()*.4,life:2+~~(Math.random()*3)});
           }
         }
         for(let _bi=0;_bi<fz._bolts.length;_bi++){
           const b=fz._bolts[_bi];
-          X.strokeStyle='#cc88ff';X.lineWidth=b.w;X.globalAlpha=b.a*_fzFade;
+          // 글로우
+          X.strokeStyle='#3366cc';X.lineWidth=b.w+4;X.globalAlpha=b.a*.2*_fzFade;
           X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);
           for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);
           X.stroke();
-          if(b.w>1){
-            X.strokeStyle='#eeddff';X.lineWidth=b.w+1.5;X.globalAlpha=b.a*.2*_fzFade;
-            X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);
-            for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);
-            X.stroke();
-          }
+          // 메인
+          X.strokeStyle='#6699ff';X.lineWidth=b.w;X.globalAlpha=b.a*.85*_fzFade;
+          X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);
+          for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);
+          X.stroke();
+          // 코어
+          X.strokeStyle='#ccddff';X.lineWidth=Math.max(1,b.w*.35);X.globalAlpha=b.a*.6*_fzFade;
+          X.beginPath();X.moveTo(b.pts[0].x,b.pts[0].y);
+          for(let p=1;p<b.pts.length;p++)X.lineTo(b.pts[p].x,b.pts[p].y);
+          X.stroke();
         }
-        // 3) 작은 스파크 점
-        for(let _si=0;_si<8;_si++){
-          const _sa=Math.random()*Math.PI*2;const _sd=Math.random()*fz.r*.85;
+        // 플래시 점 (넓게 흩뿌리기)
+        for(let _si=0;_si<12;_si++){
+          const _sa=Math.random()*Math.PI*2;const _sd=Math.random()*fz.r;
           const _sx=fz.x+Math.cos(_sa)*_sd,_sy=fz.y+Math.sin(_sa)*_sd;
-          X.globalAlpha=(.3+Math.random()*.4)*_fzFade;
-          X.fillStyle=Math.random()>.5?'#eeddff':'#bb77ff';
-          X.beginPath();X.arc(_sx,_sy,1+Math.random()*1.5,0,Math.PI*2);X.fill();
+          X.globalAlpha=(.2+Math.random()*.5)*_fzFade;
+          X.fillStyle=Math.random()>.6?'#ccddff':'#5588cc';
+          const _sz=1+Math.random()*2.5;
+          X.beginPath();X.arc(_sx,_sy,_sz,0,Math.PI*2);X.fill();
         }
       }else if(fz.type==='boneStorm'){
         // ═══ 해골번개 — 뼈+암흑 DOT 장판 ═══
@@ -49069,8 +49088,8 @@ const _INTRO_KEY_STEPS=[
     _ikB(['A','X','Y','LB'],['무기 공격','우클릭 스킬','패링·보호막','돌진 (적을 관통, 무적)']):
     _ikB(['좌클릭','우클릭 / Q','SHIFT'],['무기 공격','패링·보호막','돌진 (적을 관통, 무적)']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
   {title:'스킬',body:()=>_isPad()?
-    _ikB(['B','RB','R3','LT+A','LT+B','LT+X'],['대왕치기 (광역 기절)','Ctrl 스킬','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']):
-    _ikB(['SPACE','1','E','F','CTRL','T'],['대왕치기 (광역 기절)','가시덫 (슬로우+출혈)','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
+    _ikB(['B','RB','R3','LT+A','LT+B','LT+X'],['대왕치기 (분노폭발, 광역 기절)','Ctrl 스킬','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']):
+    _ikB(['SPACE','1','E','F','CTRL','T'],['대왕치기 (분노폭발, 광역 기절)','가시덫 (슬로우+출혈)','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
   {title:'생존',body:()=>(_isPad()?
     _ikB(['L3','Select','Start'],['아이템 줍기','인벤토리','설정']):
     _ikB(['R','TAB','ESC'],['아이템 줍기','인벤토리','설정']))+'<br><span style="font-size:.85em;color:#887766">'+_T('(펫이 자동 수거)')+'</span><br><span style="font-size:.85em;color:#887766">'+_T('물약은 설정한 HP% 이하 시 자동 사용')+'</span>',hint:_isPad()?'A 버튼으로 시작':'클릭하여 시작'}
