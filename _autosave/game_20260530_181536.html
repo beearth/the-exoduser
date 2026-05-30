@@ -69,7 +69,7 @@ if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!==
 <script src="lang_bg.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cinzel+Decorative:wght@700;900&family=Grenze+Gotisch:wght@700;900&family=Pirata+One&family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 :root{
   --c-bg:#090505;--c-panel-bg:#160b0c;--c-panel-bg2:#221111;
   --c-border:#5a2b22;--c-border-hover:#a95c3c;--c-border-active:#ff6d3a;
@@ -6964,8 +6964,8 @@ _redBoomSheet.src='assets/vfx/parry_impact_red.png';_redBoomSheet.onload=functio
 // 무지개탄 폭발 스프라이트시트 (parry_impact_rainbow: 2560×128, 20프레임 128×128)
 const _rainbowBoomSheet=new Image();let _rainbowBoomReady=false;
 _rainbowBoomSheet.src='assets/vfx/parry_impact_rainbow.png';_rainbowBoomSheet.onload=function(){_rainbowBoomReady=true};
-// 폭독혈 전용 폭발 스프라이트시트 (boom_plague.png, 7프레임 가로 스트립)
-const _plagueBoomSpr={img:null,ready:false,frames:7};
+// 폭독혈 전용 폭발 스프라이트시트 (boom_plague.png, 128x128 x 6프레임)
+const _plagueBoomSpr={img:null,ready:false,w:128,h:128,frames:6};
 (function(){const i=new Image();i.src='img/boom_plague.png';_plagueBoomSpr.img=i;i.onload=function(){_plagueBoomSpr.ready=true}})();
 // 사슬 수리검 작살 스프라이트
 const _chainShurikenImg=new Image();_chainShurikenImg.src='assets/vfx/chain_shuriken_2.webp';
@@ -26570,7 +26570,7 @@ function update(){
           re.kb.x+=Math.cos(ra2)*28*rf;re.kb.y+=Math.sin(ra2)*28*rf;
           if(_isBlue){re.poisonT=Math.max(re.poisonT||0,600);re.poisonStk=Math.min(10,(re.poisonStk||0)+3);re._poisonPool=(re._poisonPool||0)+pDotPool()*_rbD*0.15;re.poison=1}
           if(!_isBlue)re.stunned=Math.max(re.stunned,~~(80*rf))}
-        if(p._fromRainbow){_rainbowImpact(p.x,p.y)}else if(p.mhFused){_addBoom(p.x,p.y,_rbR,72,'plague')}else{_addBoom(p.x,p.y,_rbR,_isBlue?32:72,'redbean')}
+        if(p._fromRainbow){_rainbowImpact(p.x,p.y)}else if(p.mhFused){_addBoom(p.x,p.y,_rbR,15,'plague')}else{_addBoom(p.x,p.y,_rbR,_isBlue?32:72,'redbean')}
       }else{
         const _blR=p._aoeR||100,_blD=p._aoeDmg||p.dmg||15;
         const _blNe=shQuery(p.x,p.y,_blR);
@@ -33600,7 +33600,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         }
       }
       // 폭발 이펙트
-      _addBoom(e.x,e.y,_pbR,26,'black');//_addGibs(e,e.x,e.y,_pbR); // 비활성 — 고어 대체
+      _addBoom(e.x,e.y,_pbR,15,'plague');//_addGibs(e,e.x,e.y,_pbR); // 비활성 — 고어 대체
       addTxt(e.x,e.y-35,_T('💥폭독혈!'),'#882222',50);shake(8);
     }
     // 화약병 사망 폭발
@@ -34541,14 +34541,14 @@ _numAtlas.width=_NUM_W*10;_numAtlas.height=_NUM_H*3;
 var _numAx=_numAtlas.getContext('2d');
 function _buildNumAtlas(){
   const _styles=[
-    // 0: 골드 (일반 데미지) — 인벤토리풍 깔끔한 단색
-    {fill:'#ffcc33',outline:'#000000'},
-    // 1: 크림슨 (크리티컬)
-    {fill:'#dd2200',outline:'#000000'},
+    // 0: 화이트 (일반 데미지)
+    {top:'#ffffff',mid:'#cccccc',bot:'#888888',outline:'#000000',glow:'rgba(200,200,200,0.5)'},
+    // 1: 크림슨 (크리티컬) — 게임 톤 통일, 어둡고 진한 빨강
+    {top:'#dd2200',mid:'#aa0000',bot:'#440000',outline:'#000000',glow:'rgba(180,0,0,0.7)'},
     // 2: 예비
-    {fill:'#ffcc33',outline:'#000000'}
+    {top:'#ffffff',mid:'#cccccc',bot:'#888888',outline:'#000000',glow:'rgba(200,200,200,0.5)'}
   ];
-  const _font='700 44px "Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif';
+  const _font='900 44px "Pirata One","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",serif';
   _numAx.textBaseline='top';_numAx.textAlign='center';
   for(var _sr=0;_sr<3;_sr++){
     const s=_styles[_sr];
@@ -34557,15 +34557,28 @@ function _buildNumAtlas(){
       const _ch=String(_d);
       const _cx=_d*_NUM_W+_NUM_W/2;
       _numAx.font=_font;
-      // 외곽선 (2px 원형)
+      // 글로우 (shadowBlur)
+      _numAx.save();
+      _numAx.shadowColor=s.glow;_numAx.shadowBlur=12;
+      _numAx.fillStyle=s.mid;_numAx.fillText(_ch,_cx,_oy+6);
+      _numAx.restore();
+      // 두꺼운 외곽선 (8방향 × 2px + 4방향 × 3px)
       _numAx.fillStyle=s.outline;
-      for(var _ox=-2;_ox<=2;_ox++){for(var _oy2=-2;_oy2<=2;_oy2++){
-        if(_ox*_ox+_oy2*_oy2>4)continue;
+      for(var _ox=-3;_ox<=3;_ox++){for(var _oy2=-3;_oy2<=3;_oy2++){
+        if(_ox*_ox+_oy2*_oy2>9)continue; // 원형 외곽
         _numAx.fillText(_ch,_cx+_ox,_oy+6+_oy2);
       }}
-      // 단색 본체
-      _numAx.fillStyle=s.fill;
+      // 그라데이션 본체
+      const _grad=_numAx.createLinearGradient(_cx,_oy+4,_cx,_oy+_NUM_H-8);
+      _grad.addColorStop(0,s.top);_grad.addColorStop(0.4,s.mid);_grad.addColorStop(1,s.bot);
+      _numAx.fillStyle=_grad;
       _numAx.fillText(_ch,_cx,_oy+6);
+      // 상단 하이라이트 (빨강 행 제외 — 핑크 방지)
+      if(_sr!==1){_numAx.save();
+      _numAx.globalAlpha=0.15;
+      _numAx.fillStyle='#ffffff';
+      _numAx.fillText(_ch,_cx,_oy+5);
+      _numAx.restore();}
     }
   }
 }
@@ -34578,7 +34591,7 @@ function drawNumStr(X,num,x,y,ci,scale){
   var yy=(ci||0)*_NUM_H;
   var sc=scale||1;
   var dw=~~(_NUM_W*sc),dh=~~(_NUM_H*sc);
-  var gap=~~((_NUM_W-12)*sc); // 글자 간격
+  var gap=~~((_NUM_W-30)*sc); // 글자 간격
   var tw=s.length*gap;var ox=x-tw/2;
   for(var i=0;i<s.length;i++){
     var d=s.charCodeAt(i)-48;if(d<0||d>9)continue;
@@ -43157,7 +43170,7 @@ function draw(){
       if(!t._numStr){
         // 필수 텍스트만 허용 (스킬시전, 그로기, 무적, 사망 등)
         var _allow=false;
-        var _wl=['시전','그로기','무적','CRIT','사망','부활','탈출','💀','✟','🌋'];
+        var _wl=['시전','그로기','무적','CRIT','사망','탈출','✟','🌋'];
         for(var _wi=0;_wi<_wl.length;_wi++){if(t.t.indexOf(_wl[_wi])!==-1){_allow=true;break}}
         if(!_allow)continue;
       }
@@ -44931,14 +44944,13 @@ function drawP(){
         X.globalAlpha=.8*(1-_ep/.4);X.strokeStyle='#882222';X.lineWidth=3+5*(1-_ep/.4);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
     }else
-    // plague(칼날폭발): boom_plague.png 7프레임 가로 스트립
+    // plague(폭독혈 폭발): boom_plague.png 128x128 x 6프레임
     if(_bv.col==='plague'){
       if(_plagueBoomSpr.ready&&_plagueBoomSpr.img){
-        const _nf=7,_fw=~~(_plagueBoomSpr.img.naturalWidth/_nf),_fh=_plagueBoomSpr.img.naturalHeight;
-        const _fi=Math.min(_nf-1,~~(_ep*_nf));
+        const _fi=Math.min(5,~~(_ep*6));
         const _drawSz=_bv.r*3.2*Math.pow(Math.min(1,_ep*3),.5);
         X.globalAlpha=Math.max(0,1-_ep*.5);
-        X.drawImage(_plagueBoomSpr.img,_fi*_fw,0,_fw,_fh,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);
+        X.drawImage(_plagueBoomSpr.img,_fi*_plagueBoomSpr.w,0,_plagueBoomSpr.w,_plagueBoomSpr.h,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);
       }
       if(_ep<.4){const _swR=_bv.r*Math.pow(_ep/.4,.3)*1.15;
         X.globalAlpha=.8*(1-_ep/.4);X.strokeStyle='#cc4422';X.lineWidth=3+6*(1-_ep/.4);

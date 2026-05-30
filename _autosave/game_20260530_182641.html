@@ -69,7 +69,7 @@ if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!==
 <script src="lang_bg.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cinzel+Decorative:wght@700;900&family=Grenze+Gotisch:wght@700;900&family=Pirata+One&family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 :root{
   --c-bg:#090505;--c-panel-bg:#160b0c;--c-panel-bg2:#221111;
   --c-border:#5a2b22;--c-border-hover:#a95c3c;--c-border-active:#ff6d3a;
@@ -6964,8 +6964,8 @@ _redBoomSheet.src='assets/vfx/parry_impact_red.png';_redBoomSheet.onload=functio
 // 무지개탄 폭발 스프라이트시트 (parry_impact_rainbow: 2560×128, 20프레임 128×128)
 const _rainbowBoomSheet=new Image();let _rainbowBoomReady=false;
 _rainbowBoomSheet.src='assets/vfx/parry_impact_rainbow.png';_rainbowBoomSheet.onload=function(){_rainbowBoomReady=true};
-// 폭독혈 전용 폭발 스프라이트시트 (boom_plague.png, 7프레임 가로 스트립)
-const _plagueBoomSpr={img:null,ready:false,frames:7};
+// 폭독혈 전용 폭발 스프라이트시트 (boom_plague.png, 128x128 x 6프레임)
+const _plagueBoomSpr={img:null,ready:false,w:128,h:128,frames:6};
 (function(){const i=new Image();i.src='img/boom_plague.png';_plagueBoomSpr.img=i;i.onload=function(){_plagueBoomSpr.ready=true}})();
 // 사슬 수리검 작살 스프라이트
 const _chainShurikenImg=new Image();_chainShurikenImg.src='assets/vfx/chain_shuriken_2.webp';
@@ -7327,10 +7327,10 @@ const _CAT_RUN_FLIP={'east':true,'south-east':true,'north-east':true};
 // idle 미러: south-east→south-west 미러, east/west→south-west, north계→south
 const _CAT_IDLE_MIRROR={'south':'south','south-west':'south-west','south-east':'south-west','west':'south-west','east':'south-west','north-west':'south','north-east':'south','north':'south'};
 const _CAT_IDLE_FLIP={'south-east':true,'east':true,'north-east':true};
-// 난이도 = 몬스터 레벨 오프셋 (0=일반, 1~10단=+10~+100레벨)
-const DIFF_LV_OFF=[0,10,20,30,40,50,60,70,80,90,100];
-const DIFF_NAME=['일반','1단(+10)','2단(+20)','3단(+30)','4단(+40)','5단(+50)','6단(+60)','7단(+70)','8단(+80)','9단(+90)','10단(+100)'];
-const DIFF_NAME_EN=['Normal','Tier1(+10)','Tier2(+20)','Tier3(+30)','Tier4(+40)','Tier5(+50)','Tier6(+60)','Tier7(+70)','Tier8(+80)','Tier9(+90)','Tier10(+100)'];
+// 난이도 = 몬스터 레벨 오프셋 (0=일반, 1~10단=+50~+500레벨)
+const DIFF_LV_OFF=[0,50,100,150,200,250,300,350,400,450,500];
+const DIFF_NAME=['일반','1단(+50)','2단(+100)','3단(+150)','4단(+200)','5단(+250)','6단(+300)','7단(+350)','8단(+400)','9단(+450)','10단(+500)'];
+const DIFF_NAME_EN=['Normal','Tier1(+50)','Tier2(+100)','Tier3(+150)','Tier4(+200)','Tier5(+250)','Tier6(+300)','Tier7(+350)','Tier8(+400)','Tier9(+450)','Tier10(+500)'];
 function _diffName(i){return _L(DIFF_NAME[i],DIFF_NAME_EN[i])}
 const DIFF_MUL=[1.0,1.12,1.25,1.40,1.58,1.78,2.00,2.25,2.52,2.82,3.15]; // 난이도 단계별 몬스터 HP/ATK 배율
 const DIFF_MOB=[1,1,1,1,1,1,1,1,1,1,1]; // 레거시 호환용 (전부 1)
@@ -26570,7 +26570,7 @@ function update(){
           re.kb.x+=Math.cos(ra2)*28*rf;re.kb.y+=Math.sin(ra2)*28*rf;
           if(_isBlue){re.poisonT=Math.max(re.poisonT||0,600);re.poisonStk=Math.min(10,(re.poisonStk||0)+3);re._poisonPool=(re._poisonPool||0)+pDotPool()*_rbD*0.15;re.poison=1}
           if(!_isBlue)re.stunned=Math.max(re.stunned,~~(80*rf))}
-        if(p._fromRainbow){_rainbowImpact(p.x,p.y)}else if(p.mhFused){_addBoom(p.x,p.y,_rbR,72,'plague')}else{_addBoom(p.x,p.y,_rbR,_isBlue?32:72,'redbean')}
+        if(p._fromRainbow){_rainbowImpact(p.x,p.y)}else if(p.mhFused){_addBoom(p.x,p.y,_rbR,15,'plague')}else{_addBoom(p.x,p.y,_rbR,_isBlue?32:72,'redbean')}
       }else{
         const _blR=p._aoeR||100,_blD=p._aoeDmg||p.dmg||15;
         const _blNe=shQuery(p.x,p.y,_blR);
@@ -33600,7 +33600,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         }
       }
       // 폭발 이펙트
-      _addBoom(e.x,e.y,_pbR,26,'black');//_addGibs(e,e.x,e.y,_pbR); // 비활성 — 고어 대체
+      _addBoom(e.x,e.y,_pbR,15,'plague');//_addGibs(e,e.x,e.y,_pbR); // 비활성 — 고어 대체
       addTxt(e.x,e.y-35,_T('💥폭독혈!'),'#882222',50);shake(8);
     }
     // 화약병 사망 폭발
@@ -34033,11 +34033,11 @@ function _detonateBlast(label,elSrc){
   _addSkProf('detonate');
   const _detLv=P.skills.detonate||1;
   const _chgBars=Math.min(3,1+~~((P.parryT||0)/60));
-  const _detTierMul=_chgBars===3?64:_chgBars===2?38:19;
-  // 기본 데미지: 단발 스킬 — 기동:파괴 동급 (×19/38/64)
+  const _detTierMul=_chgBars===3?48:_chgBars===2?32:19;
+  // 기본 데미지: 단발 스킬 — 기동:파괴 동급 (×19/32/48)
   const _detBase=~~(meleeRef()*statStr()*pAtkMul()*_skMul('detonate')*_detTierMul);
-  // 패링 보너스 (가산)
-  const _detParry=~~((P.parryBank||0)*_chgBars*4);
+  // 패링 보너스 (가산) — 감소 후 축적값 기준, ×2.5/단계
+  const _detParry=~~((P.parryBank||0)*_chgBars*2.5);
   const boom=~~((_detBase+_detParry)*_fuseMul('detonate')*(_isFused('stormBurst')?1.5:_isFused('stormBeam')?1.2:1));
   // 회전기폭: 최소 범위 = 현재 회전참 범위
   const _wwBaseRDet=_wdFused?((wp().wRange||50)+(wp().bonusRange||0)*4)*1.3+((P.skills.whirlwind||1)-1)*11:0;
@@ -34181,7 +34181,7 @@ function hurtP(dmg,opts){
     const _psBlkRate=Math.min(.90,(pGuardAbsorb()+pShieldBlock())*(_isDotEarly?.5:1));
     const _psRawDmg=dmg;
     dmg=Math.max(1,~~(dmg*(1-_psBlkRate)));
-    if(P.skills.detonate){P.parryBank=(P.parryBank||0)+_psRawDmg}
+    if(P.skills.detonate){P.parryBank=(P.parryBank||0)+(_psRawDmg-dmg)}
     if(PASSIVES.pGuard>0){P.hp=Math.min(P.mhp,P.hp+P.mhp*pGuardRegen())}
     {var _psAng=opts&&opts.ang!==undefined?opts.ang+Math.PI:Math.random()*Math.PI*2;P.kb.x+=Math.cos(_psAng)*3;P.kb.y+=Math.sin(_psAng)*3}
     shake(4);playSample('player_hit'+(1+~~(Math.random()*4)),.4,_r(1,.15));doHitFlash('#ff88bb',0.15);
@@ -34200,7 +34200,7 @@ function hurtP(dmg,opts){
     const _blkRate=Math.min(.80,(pGuardAbsorb()+pShieldBlock())*(_isDotEarly?.5:1));
     const _rawDmg=dmg;
     dmg=Math.max(1,~~(dmg*(1-_blkRate)));
-    if(P.skills.detonate){P.parryBank=(P.parryBank||0)+_rawDmg;addTxt(P.x,P.y-25,_T('흡수!'),'#ff6644',35)}
+    if(P.skills.detonate){P.parryBank=(P.parryBank||0)+(_rawDmg-dmg);addTxt(P.x,P.y-25,_T('흡수!'),'#ff6644',35)}
     if(PASSIVES.pGuard>0){P.hp=Math.min(P.mhp,P.hp+P.mhp*pGuardRegen())}
     // 넉백 + 화면흔들림 + 피격음
     {const _bAng=opts&&opts.ang!==undefined?opts.ang+Math.PI:Math.random()*Math.PI*2;P.kb.x+=Math.cos(_bAng)*3;P.kb.y+=Math.sin(_bAng)*3}
@@ -34541,14 +34541,14 @@ _numAtlas.width=_NUM_W*10;_numAtlas.height=_NUM_H*3;
 var _numAx=_numAtlas.getContext('2d');
 function _buildNumAtlas(){
   const _styles=[
-    // 0: 골드 (일반 데미지) — 게임 톤 통일, 진한 골드+오렌지
-    {top:'#ffcc33',mid:'#cc8800',bot:'#663300',outline:'#000000',glow:'rgba(200,120,0,0.6)'},
+    // 0: 화이트 (일반 데미지)
+    {top:'#ffffff',mid:'#cccccc',bot:'#888888',outline:'#000000',glow:'rgba(200,200,200,0.5)'},
     // 1: 크림슨 (크리티컬) — 게임 톤 통일, 어둡고 진한 빨강
     {top:'#dd2200',mid:'#aa0000',bot:'#440000',outline:'#000000',glow:'rgba(180,0,0,0.7)'},
     // 2: 예비
-    {top:'#ffcc33',mid:'#cc8800',bot:'#663300',outline:'#000000',glow:'rgba(200,120,0,0.6)'}
+    {top:'#ffffff',mid:'#cccccc',bot:'#888888',outline:'#000000',glow:'rgba(200,200,200,0.5)'}
   ];
-  const _font='900 44px "Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif';
+  const _font='900 44px "Pirata One","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",serif';
   _numAx.textBaseline='top';_numAx.textAlign='center';
   for(var _sr=0;_sr<3;_sr++){
     const s=_styles[_sr];
@@ -34591,7 +34591,7 @@ function drawNumStr(X,num,x,y,ci,scale){
   var yy=(ci||0)*_NUM_H;
   var sc=scale||1;
   var dw=~~(_NUM_W*sc),dh=~~(_NUM_H*sc);
-  var gap=~~((_NUM_W-12)*sc); // 글자 간격
+  var gap=~~((_NUM_W-30)*sc); // 글자 간격
   var tw=s.length*gap;var ox=x-tw/2;
   for(var i=0;i<s.length;i++){
     var d=s.charCodeAt(i)-48;if(d<0||d>9)continue;
@@ -43170,7 +43170,7 @@ function draw(){
       if(!t._numStr){
         // 필수 텍스트만 허용 (스킬시전, 그로기, 무적, 사망 등)
         var _allow=false;
-        var _wl=['시전','그로기','무적','CRIT','사망','부활','탈출','💀','✟','🌋'];
+        var _wl=['시전','그로기','무적','CRIT','사망','탈출','✟','🌋'];
         for(var _wi=0;_wi<_wl.length;_wi++){if(t.t.indexOf(_wl[_wi])!==-1){_allow=true;break}}
         if(!_allow)continue;
       }
@@ -44944,14 +44944,13 @@ function drawP(){
         X.globalAlpha=.8*(1-_ep/.4);X.strokeStyle='#882222';X.lineWidth=3+5*(1-_ep/.4);
         X.beginPath();X.arc(bx,by,_swR,0,Math.PI*2);X.stroke();}
     }else
-    // plague(칼날폭발): boom_plague.png 7프레임 가로 스트립
+    // plague(폭독혈 폭발): boom_plague.png 128x128 x 6프레임
     if(_bv.col==='plague'){
       if(_plagueBoomSpr.ready&&_plagueBoomSpr.img){
-        const _nf=7,_fw=~~(_plagueBoomSpr.img.naturalWidth/_nf),_fh=_plagueBoomSpr.img.naturalHeight;
-        const _fi=Math.min(_nf-1,~~(_ep*_nf));
+        const _fi=Math.min(5,~~(_ep*6));
         const _drawSz=_bv.r*3.2*Math.pow(Math.min(1,_ep*3),.5);
         X.globalAlpha=Math.max(0,1-_ep*.5);
-        X.drawImage(_plagueBoomSpr.img,_fi*_fw,0,_fw,_fh,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);
+        X.drawImage(_plagueBoomSpr.img,_fi*_plagueBoomSpr.w,0,_plagueBoomSpr.w,_plagueBoomSpr.h,bx-_drawSz/2,by-_drawSz/2,_drawSz,_drawSz);
       }
       if(_ep<.4){const _swR=_bv.r*Math.pow(_ep/.4,.3)*1.15;
         X.globalAlpha=.8*(1-_ep/.4);X.strokeStyle='#cc4422';X.lineWidth=3+6*(1-_ep/.4);
