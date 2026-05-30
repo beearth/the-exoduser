@@ -7033,10 +7033,10 @@ const _lavaBoomSpr={img:null,ready:false,w:0,h:0,frames:9,cols:3};
 (function(){const i=new Image();i.src='img/vfx_earthquake/explosion_spritesheet.webp';_lavaBoomSpr.img=i;i.onload=function(){_lavaBoomSpr.ready=true;_lavaBoomSpr.w=~~(i.width/3);_lavaBoomSpr.h=~~(i.height/3)}})();
 // 지진폭풍 용암분출 이펙트 풀
 const _LAVA_ERUPT_MAX=8;const _lavaErupts=[];for(let i=0;i<_LAVA_ERUPT_MAX;i++)_lavaErupts.push({x:0,y:0,t:0,mt:0,r:0,active:false});
-function _addLavaErupt(x,y,r,dur){
+function _addLavaErupt(x,y,r,dur,rage){
   let b=null;for(let i=0;i<_LAVA_ERUPT_MAX;i++){if(!_lavaErupts[i].active){b=_lavaErupts[i];break}}
   if(!b){let oi=0,ot=999;for(let i=0;i<_LAVA_ERUPT_MAX;i++){if(_lavaErupts[i].t/_lavaErupts[i].mt>ot){ot=_lavaErupts[i].t/_lavaErupts[i].mt;oi=i}}b=_lavaErupts[oi]}
-  b.x=x;b.y=y;b.r=r;b.t=0;b.mt=dur||50;b.active=true;
+  b.x=x;b.y=y;b.r=r;b.t=0;b.mt=dur||50;b.active=true;b.rage=!!rage;
 }
 // ═══ [DET-BLAST-VFX] 기폭 전용 폭발 이펙트 풀 ═══
 const _DET_VFX_MAX=8;const _detVfx=[];for(let i=0;i<_DET_VFX_MAX;i++)_detVfx.push({x:0,y:0,r:0,t:0,mt:0,active:false,chg:1,rings:[],sparks:[]});
@@ -35899,7 +35899,18 @@ function activateGiantSlam(srcId){
   // 분노게이지: 10%당 +100% 데미지 (100%=+1000%)
   const _rageMul=1+(P.rage/10);
   const _gs1Dmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')*4*_rageMul); // Lv1=100×, Lv10=280× + 분노배율
-  if(P.rage>0){addTxt(P.x,P.y-50,_T('🔥분노 ')+P.rage+'% → +'+~~((P.rage/10)*100)+'%!','#ff2200',45);P.rage=0;}
+  if(P.rage>0){
+    const _rageP=P.rage;
+    addTxt(P.x,P.y-50,_T('🔥분노 ')+_rageP+'% → +'+~~((_rageP/10)*100)+'%!','#ff2200',45);
+    // ═══ 분노 폭발 VFX — 20%당 기폭팔 폭발(explosion_spritesheet) 1덩이 ═══
+    const _rageBombs=~~(_rageP/20); // 20%=1, 40%=2, 60%=3, 80%=4, 100%=5
+    for(let _rb=0;_rb<_rageBombs;_rb++){
+      const _ra=Math.PI*2*_rb/Math.max(1,_rageBombs)+(Math.random()-.5)*.4;
+      const _rd=80+_rb*35+Math.random()*40;
+      _addLavaErupt(P.x+Math.cos(_ra)*_rd,P.y+Math.sin(_ra)*_rd,120+_rb*30,60+_rb*8,true);
+    }
+    P.rage=0;
+  }
   const _gs1El=wp().el||0;
   _gSlamHit(P.facing,_gs1R,Math.PI,_gs1Dmg,_gs1El,0,1.0);
   G.hitStop=0;G.slowMo=0;
@@ -43826,16 +43837,16 @@ function drawP(){
       const _tsProg=ts.t/ts.maxT;
       const _tsFade=_tsProg>.8?1-(_tsProg-.8)/.2:1;
       // 지면 전기 파동
-      X.globalAlpha=.1*_tsFade;X.fillStyle='#44ddff';
+      X.globalAlpha=.35*_tsFade;X.fillStyle='#44ddff';
       X.beginPath();X.arc(ts.x,ts.y,25+5*Math.sin(_tst2*10+_ti*2),0,Math.PI*2);X.fill();
       // 창대 (세로)
-      X.globalAlpha=.7*_tsFade;X.fillStyle='#88ccee';
+      X.globalAlpha=.9*_tsFade;X.fillStyle='#88ccee';
       X.fillRect(ts.x-2,ts.y-30,4,42);
       // 창날
       X.fillStyle='#ffffff';
       X.beginPath();X.moveTo(ts.x,ts.y-36);X.lineTo(ts.x-5,ts.y-26);X.lineTo(ts.x+5,ts.y-26);X.closePath();X.fill();
       // 전기 깜빡임
-      X.globalAlpha=(.3+.2*Math.sin(_tst2*15+_ti*3))*_tsFade;
+      X.globalAlpha=(.5+.3*Math.sin(_tst2*15+_ti*3))*_tsFade;
       X.globalCompositeOperation='lighter';
       X.fillStyle='#44ddff';
       X.beginPath();X.arc(ts.x,ts.y-30,8+3*Math.sin(_tst2*20),0,Math.PI*2);X.fill();
@@ -43861,7 +43872,7 @@ function drawP(){
         }}
         // 메인 번개 라인 (지그재그)
         for(let _ln=0;_ln<2;_ln++){
-          X.globalAlpha=((_arcBoosted?.8:.6)-.15*_ln)*_arcFade;
+          X.globalAlpha=((_arcBoosted?.95:.8)-.1*_ln)*_arcFade;
           X.strokeStyle=_arcBoosted?(_ln===0?'#ff6644':'#ffaa88'):(_ln===0?'#44ddff':'#aaeeff');
           X.lineWidth=_arcBoosted?(_ln===0?6:3):(_ln===0?5:2);
           X.beginPath();X.moveTo(_ta.x,_ta.y-20);
@@ -44666,10 +44677,8 @@ function drawP(){
     const _lep=le.t/le.mt;const _lfi=Math.min(8,~~(_lep*9));
     const _lfCol=_lfi%3,_lfRow=~~(_lfi/3); // 3x3 그리드
     const _lSz=le.r*1.8*Math.pow(Math.min(1,_lep*2.5),.4);
-    X.save();X.globalAlpha=Math.max(0,1-Math.pow(_lep,1.5)*.9);
+    X.save();X.globalAlpha=le.rage?(_lep<.7?1:Math.max(0,(1-_lep)/.3)):Math.max(0,1-Math.pow(_lep,1.5)*.9);
     X.drawImage(_lavaBoomSpr.img,_lfCol*_lavaBoomSpr.w,_lfRow*_lavaBoomSpr.h,_lavaBoomSpr.w,_lavaBoomSpr.h,le.x-_lSz/2,le.y-_lSz/2,_lSz,_lSz);
-    // 바닥 균열 글로우
-    if(_lep<.6){X.globalAlpha=.4*(1-_lep/.6);X.fillStyle='#ff4400';X.beginPath();X.arc(le.x,le.y,_lSz*.3*(1-_lep),0,Math.PI*2);X.fill()}
     X.restore();
   }}
   // ══ [TP-SMOKE] 순간이동 연기 스프라이트 렌더 ══
@@ -44969,7 +44978,7 @@ function drawP(){
       const rt=_dv.t-rng.delay;if(rt<0)continue;
       const rp=rt/(_dv.mt-rng.delay);if(rp>=1)continue;
       const rR=_dv.r*Math.pow(rp,.4)*rng.spd*1.2;
-      const rA=Math.max(0,(1-rp)*.8);
+      const rA=Math.max(0,(1-rp)*1.0);
       X.globalAlpha=rA;X.strokeStyle=_ri===0?'#ffcc44':'#ff6622';
       X.lineWidth=(6-_ri*2)*(1-rp*.5);
       X.beginPath();X.arc(bx,by,rR,0,Math.PI*2);X.stroke();
@@ -47212,8 +47221,10 @@ function drawP(){
     const _psR=P._psShieldR;
     const _psPW=P._sbParryT>0;
     if(_paReady){
-      const _paCol=0,_paRow=0; // 1프레임 고정 — 크기+알파 변화만으로 연출
-      const _paSz=_psR*3.3;
+      _paTimer++;if(_paTimer>=8){_paTimer=0;_paFrame=(_paFrame+1)%2}
+      const _paCol=_paFrame%_PA_COLS,_paRow=~~(_paFrame/_PA_COLS);
+      const _paPulse=_psPW?1:(.9+Math.sin(t/60*3)*.1); // 패링 시 고정, 평소 부드러운 맥동
+      const _paSz=_psR*3.3*_paPulse;
       X.save();X.globalCompositeOperation='lighter';X.globalAlpha=_psPW?1:.95;
       X.drawImage(_PA_IMG,_paCol*_PA_CW,_paRow*_PA_CH,_PA_CW,_PA_CH,P.x-_paSz/2,P.y-_paSz/2,_paSz,_paSz);
       if(!_s7UseLite){X.drawImage(_PA_IMG,_paCol*_PA_CW,_paRow*_PA_CH,_PA_CW,_PA_CH,P.x-_paSz/2,P.y-_paSz/2,_paSz,_paSz);
@@ -47239,9 +47250,10 @@ function drawP(){
     let _sbR;
     if(P.s==='whirlwind'&&_sbHasDet){
       const _wwLvR=P.skills.whirlwind||1;
-      const _wwGrowR=Math.min(1,(P.wwAng||0)/63)+Math.min(1,(_sbBank)/500);
       const _wwMinR=100,_wwMaxR=200+(_wwLvR-1)*15;
-      _sbR=(_wwMinR+(_wwMaxR-_wwMinR)*Math.min(1,_wwGrowR))*.55; // 오라 = 히트범위의 55%
+      // 기폭 후 parryT 리셋 → 오라도 작게 시작, 차징에 따라 성장
+      const _detChgProg=_wwDetCD>0?Math.min(1,pt/_wwDetCD):0;
+      _sbR=(_wwMinR+(_wwMaxR-_wwMinR)*_detChgProg)*.55;
     }else{
       _sbR=(P.r+14)*2; // sBlock: 기존 고정 크기
     }
@@ -47254,7 +47266,8 @@ function drawP(){
     const ringR=_sbPhase===3?(_sbR+Math.sin(t/6)*4):_sbR;
     // ── 보호막 오라 — 스프라이트 (기폭팔: 파란→빨간 3초 크로스페이드) ──
     if(_saReady){
-      const _saCol2=0,_saRow2=0; // 1프레임 고정 — 크기+알파 변화만으로 연출
+      _saTimer++;if(_saTimer>=8){_saTimer=0;_saFrame=(_saFrame+1)%2}
+      const _saCol2=_saFrame%_SA_COLS,_saRow2=~~(_saFrame/_SA_COLS);
       const _saSz=ringR*3.75*pulse;
       const _sx=_saCol2*_SA_CW,_sy=_saRow2*_SA_CH;
       const _dx=P.x-_saSz/2,_dy=P.y-_saSz/2;
