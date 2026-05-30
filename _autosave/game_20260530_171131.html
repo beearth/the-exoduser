@@ -69,7 +69,7 @@ if(!window.__ELECTRON_IPC&&location.hostname!=='localhost'&&location.hostname!==
 <script src="lang_bg.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@400;500;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cinzel+Decorative:wght@700;900&family=Grenze+Gotisch:wght@700;900&family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Cinzel+Decorative:wght@700;900&family=Nanum+Myeongjo:wght@400;700;800&family=Gowun+Batang:wght@400;700&family=Noto+Serif+KR:wght@400;600;700;900&display=swap');
 :root{
   --c-bg:#090505;--c-panel-bg:#160b0c;--c-panel-bg2:#221111;
   --c-border:#5a2b22;--c-border-hover:#a95c3c;--c-border-active:#ff6d3a;
@@ -33600,7 +33600,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         }
       }
       // 폭발 이펙트
-      _addBoom(e.x,e.y,_pbR,26,'plague');//_addGibs(e,e.x,e.y,_pbR); // 비활성 — 고어 대체
+      _addBoom(e.x,e.y,_pbR,26,'black');//_addGibs(e,e.x,e.y,_pbR); // 비활성 — 고어 대체
       addTxt(e.x,e.y-35,_T('💥폭독혈!'),'#882222',50);shake(8);
     }
     // 화약병 사망 폭발
@@ -34548,7 +34548,7 @@ function _buildNumAtlas(){
     // 2: 예비
     {top:'#ffcc33',mid:'#cc8800',bot:'#663300',outline:'#000000',glow:'rgba(200,120,0,0.6)'}
   ];
-  const _font='900 44px "Grenze Gotisch","Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",serif';
+  const _font='900 44px "Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif';
   _numAx.textBaseline='top';_numAx.textAlign='center';
   for(var _sr=0;_sr<3;_sr++){
     const s=_styles[_sr];
@@ -43170,7 +43170,7 @@ function draw(){
       if(!t._numStr){
         // 필수 텍스트만 허용 (스킬시전, 그로기, 무적, 사망 등)
         var _allow=false;
-        var _wl=['시전','그로기','무적','CRIT','사망','탈출','✟','🌋'];
+        var _wl=['시전','그로기','무적','CRIT','사망','부활','탈출','💀','✟','🌋'];
         for(var _wi=0;_wi<_wl.length;_wi++){if(t.t.indexOf(_wl[_wi])!==-1){_allow=true;break}}
         if(!_allow)continue;
       }

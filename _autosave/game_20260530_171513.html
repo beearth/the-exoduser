@@ -43170,7 +43170,7 @@ function draw(){
       if(!t._numStr){
         // 필수 텍스트만 허용 (스킬시전, 그로기, 무적, 사망 등)
         var _allow=false;
-        var _wl=['시전','그로기','무적','CRIT','사망','탈출','✟','🌋'];
+        var _wl=['시전','그로기','무적','CRIT','사망','부활','탈출','✟','🌋'];
         for(var _wi=0;_wi<_wl.length;_wi++){if(t.t.indexOf(_wl[_wi])!==-1){_allow=true;break}}
         if(!_allow)continue;
       }
