@@ -43,9 +43,9 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | chargeBoost | 사슬기동:충돌 | ST | 10×1=10 → 10×10=100 (물리할인) | 3회 충전식 | STR × meleeRef × pAtkMul | 충전 3회, 이동중 무적, 관통뎀+그로기 |
 | magicBlink | 사슬기동:화염 | MP | 10×1=10 → 10×10=100 (마법할인) | 없음 | INT × magicRef × pMagicMul | 경로 화염길 3초 DOT, 합체 시 착지폭발 |
-| bladeDash | 전격이동 | MP | 10+(Lv-1)×5 (1렙10, 10렙55) | 1렙10스택, 렙당+1. 쿨 300f→Lv당-18f(최소120f=2초). 1렙5초 | magicRef × INT × pMagicMul × **_skMul('bladeDash')** (b:6, g:4.8) 틱뎀 | 3tick/s → DPS 18(Lv1)→155(Lv20). 착지 전류장판 반경120+Lv×8. VFX: Power Lightning 스프라이트 |
+| bladeDash | 전격이동 | MP | 10+(Lv-1)×5 (1렙10, 10렙55) | 1렙10스택, 렙당+1. 쿨 300f→Lv당-18f(최소120f=2초). 1렙5초 | magicRef × INT × pMagicMul × **_skMul('bladeDash')** (b:10, g:6) 틱뎀 | 3tick/s → DPS 30(Lv1)→244(Lv20). 착지 전류장판 반경 캡200px (120+Lv×5). VFX: Power Lightning 스프라이트 |
 | chainAssault | 기동불꽃 | MP | mpCost('dimBreach') | 없음 (이동 중) | INT × _skMul('chainAssault') × **티어3단계(×30/×60/×100)** | 착지 화염폭발, 3티어=업화선 2.5초 차징급 |
-| chainSlam | 기동파괴 | ST + 악의20 | stCost('giantSlam') | 없음 (이동 중) | STR × _skMul('chainSlam') × **티어3단계(×30/×60/×100)** | 보스 체간 대량삭감, 즉기절 5초, 3티어=업화선 2.5초 차징급 |
+| chainSlam | 기동파괴 | ST + 악의20 | stCost('giantSlam') | 없음 (이동 중) | STR × _skMul('chainSlam') × **티어3단계(×2/×5/×8)** | 보스 체간 대량삭감, 대왕치기급 데미지 (2026-05-30 재조정) |
 | chainSlash | 기동칼날개 | 없음 | 0 | 없음 (이동 중) | STR 물리 | 전방 광역 베기+출혈, 다단히트 (레벨제한 없음) |
 
 ---
@@ -99,7 +99,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | omniBeam | 멸살광선 | MP(틱) | 멸살:**10**(1+(Lv-1)×0.18)/초, 만화광선:**15**, 추적암전:**30** | 과부하 **300f (5초)** | INT × magicRef × pBeamMul × _skMul × drainBonus | tickMul=4(전체×2), 단독 멸살 ×3 집중보너스, 합체는 줄기별 풀뎀. 1적 DPS: 멸살 최강 (2026-04-21) |
 | elemMissile | 원소추적탄 | MP | ~250×DPS (마법할인) | 없음 | INT × magicRef × pMagicMul × _skMul('elemMissile') (b=1.5, g=1.2) | 6원소 유도, 곡선궤적, 사거리+20/Lv. **Lv1=1.5×, Lv10=6.9×, Lv20=12.9× (b 1.0→1.5, g 2배 상향 2026-05-19)** |
 | ~~energyShot~~ | ~~마력연사~~ | — | — | — | — | **삭제됨 (2026-05-01)** |
-| arcLaser | 얼음송곳 | MP | **8+Lv/초 (채널링)** | 없음 (E홀드) | INT × magicRef × pMagicMul × _skMul('arcLaser') **(b:2.5, g:2.0)** ÷15틱/초 | 15hit/s → DPS 37(Lv1)→322(Lv20). 직선 관통 레이저, 폭160+(Lv×10), 사거리1200+Lv×80, 감속 (2026-05-29 밸런스 평균화) |
+| arcLaser | 얼음송곳 | MP | **8+Lv/초 (채널링)** | 없음 (E홀드) | INT × magicRef × pMagicMul × _skMul('arcLaser') **(b:8, g:6.4)** ÷4틱/초 | 4hit/s → Lv20 DPS=276. 직선 관통 레이저, 폭160+(Lv×10), 사거리1200+Lv×80, 감속. (2026-05-30 b:2.5→8, g:2→6.4) |
 | fireBeam | 업화선 | MP | 10/발 | DEX 스케일 | INT × (5+(Lv-1)) | 100%관통+유도+화상, 사거리+50/Lv, Lv당 뎀+1 |
 | fireAura | 지옥진 | MP | **100** 고정 | **720f (12초)** | INT × (6+(Lv-1)) /틱 | 10초간 용암기둥, 범위+10%/Lv 뎀+1/Lv |
 | maliceMortar | 폭풍소환 | MP | 250×DPS (마법할인, key=mortar) | **660f (11초)** | INT 스케일 | 6.5초간 소용돌이, 범위 400+(Lv-1)×18 (1렙400, 20렙742), **흡인력 2.0+Lv×0.1** — lv1=2.1, lv20=4.0, 랩당 +0.1 선형 (2026-05-13 수정), 마우스 조준 클릭 설치 (사거리 1000px) (2026-04-21 범위×2) |
@@ -109,7 +109,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | blueShot | 푸른비 | MP | **100+1.5×Lv** (110~115) | **300f (5초)** | INT × magicRef × pMagicMul × _skMul('blueShot') (b=4.0, g=3.2) | 50발 순차유도, Lv300 해금. **Lv1=4×, Lv10=18.4×, Lv20=34.4× (g 2배 상향 2026-05-19)** |
 | burstLoop | 버스트루프 | 없음 | 0 | 없음 | INT × (mul+(Lv-1)) mul=1/3/5 | 홀드 차지, 범위 500/700/900px (합체600/800/1000), Lv700, Lv당 뎀+1 |
 | hellRay | 참회 | MP | **100/충전** | **600f (10초)/충전** | magicRef × INT × pMagicMul × pBeamMul × _skMul('hellRay') | 에너지 쐐기, 회전+뎀. ~~증표 시스템 삭제(2026-05-29)~~ |
-| thunderStake | 뇌전창 | MP | **50/개** | **스택 5개 (12초/충전, Lv10→6)** | INT × magicRef × pMagicMul × _skMul('thunderStake') (b=5, g=4.0) | 전기창 설치, 1000px 이내 쌍끼리 전기 아크→경로 적 틱뎀 (×0.15/20f), 감전, 10초+0.5초/Lv. **Lv1=5×, Lv10=23×, Lv20=43× (g 2배 상향 2026-05-19)** |
+| thunderStake | 뇌전창 | MP | **50/개** | **스택 5개 (12초/충전, Lv10→6)** | INT × magicRef × pMagicMul × _skMul('thunderStake') (b=12, g=8.0) | 전기창 설치, 1000px 이내 쌍끼리 전기 아크→경로 적 틱뎀 **(×0.50/20f)**, 감전, 10초+0.5초/Lv. **Lv1=12×, Lv10=48×, Lv20=88×. DPS≈132** (2026-05-30) |
 
 ---
 
