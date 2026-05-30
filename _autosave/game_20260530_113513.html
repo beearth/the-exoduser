@@ -34539,16 +34539,16 @@ var _NUM_W=48,_NUM_H=56;
 var _numAtlas=document.createElement('canvas');
 _numAtlas.width=_NUM_W*10;_numAtlas.height=_NUM_H*3;
 var _numAx=_numAtlas.getContext('2d');
-(function _buildNumAtlas(){
+function _buildNumAtlas(){
   const _styles=[
-    // 0: 흰색 (일반 데미지) — 밝은 흰+은 그라데이션
-    {top:'#ffffff',mid:'#dddddd',bot:'#888888',outline:'#000000',glow:'rgba(255,255,255,0.5)'},
-    // 1: 빨강 (크리티컬) — 순수 진빨강, 핑크 금지
-    {top:'#ff0000',mid:'#bb0000',bot:'#550000',outline:'#000000',glow:'rgba(255,0,0,0.8)'},
-    // 2: 금색 (보너스) — 골드
-    {top:'#ffee88',mid:'#ffaa00',bot:'#664400',outline:'#000000',glow:'rgba(255,170,0,0.5)'}
+    // 0: 골드 (일반 데미지) — 게임 톤 통일, 진한 골드+오렌지
+    {top:'#ffcc33',mid:'#cc8800',bot:'#663300',outline:'#000000',glow:'rgba(200,120,0,0.6)'},
+    // 1: 크림슨 (크리티컬) — 게임 톤 통일, 어둡고 진한 빨강
+    {top:'#dd2200',mid:'#aa0000',bot:'#440000',outline:'#000000',glow:'rgba(180,0,0,0.7)'},
+    // 2: 예비
+    {top:'#ffcc33',mid:'#cc8800',bot:'#663300',outline:'#000000',glow:'rgba(200,120,0,0.6)'}
   ];
-  const _font='bold 42px "Segoe UI",Impact,sans-serif';
+  const _font='900 44px "Noto Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif';
   _numAx.textBaseline='top';_numAx.textAlign='center';
   for(var _sr=0;_sr<3;_sr++){
     const s=_styles[_sr];
@@ -34573,15 +34573,19 @@ var _numAx=_numAtlas.getContext('2d');
       _grad.addColorStop(0,s.top);_grad.addColorStop(0.4,s.mid);_grad.addColorStop(1,s.bot);
       _numAx.fillStyle=_grad;
       _numAx.fillText(_ch,_cx,_oy+6);
-      // 상단 하이라이트 (밝은 줄)
-      _numAx.save();
-      _numAx.globalAlpha=0.35;
+      // 상단 하이라이트 (빨강 행 제외 — 핑크 방지)
+      if(_sr!==1){_numAx.save();
+      _numAx.globalAlpha=0.15;
       _numAx.fillStyle='#ffffff';
       _numAx.fillText(_ch,_cx,_oy+5);
-      _numAx.restore();
+      _numAx.restore();}
     }
   }
-})();
+}
+_buildNumAtlas();
+// 웹폰트 로드 완료 후 아틀라스 재빌드
+if(document.fonts&&document.fonts.ready){document.fonts.ready.then(()=>{_numAx.clearRect(0,0,_numAtlas.width,_numAtlas.height);_buildNumAtlas()})}
+else{setTimeout(()=>{_numAx.clearRect(0,0,_numAtlas.width,_numAtlas.height);_buildNumAtlas()},2000)}
 function drawNumStr(X,num,x,y,ci,scale){
   var s=typeof num==='number'?String(~~num):num;
   var yy=(ci||0)*_NUM_H;
@@ -43173,21 +43177,20 @@ function draw(){
     const _sk=_bSz>=36&&_age<0.3?(Math.sin(_age*80)*(1-_age*3.3)*3):0;
     // 데미지 숫자 (sz>=28): 비트맵 폰트 렌더
     if(t.sz>=28&&t._numStr){
-      const _ci=t.c==='#cc0000'||t.c==='#ff0000'?1:0;
+      const _ci=t.c==='#dd2200'||t.c==='#cc0000'||t.c==='#ff0000'?1:0;
       const _sc=(_bSz/48)*_bn;
       X.save();X.globalAlpha=_ta;
       drawNumStr(X,t._numStr,t.x+_sk,t.y-_NUM_H*_sc/2,_ci,_sc);
       X.restore();
     }else{
-      // 일반 텍스트: fillText 렌더
+      // 일반 텍스트: strokeText + fillText (2회만)
       const _fSz=~~(_bSz*_bn);
       X.save();X.translate(t.x+_sk,t.y);
-      X.font='bold '+_fSz+'px sans-serif';
-      const _ow=_bSz>=36?3:2;
-      X.globalAlpha=_ta;X.fillStyle='#000000';
-      X.fillText(t.t,-_ow,-_ow);X.fillText(t.t,_ow,-_ow);X.fillText(t.t,-_ow,_ow);X.fillText(t.t,_ow,_ow);
-      X.fillText(t.t,0,-_ow);X.fillText(t.t,0,_ow);X.fillText(t.t,-_ow,0);X.fillText(t.t,_ow,0);
-      X.globalAlpha=_ta;X.fillStyle=t.c;X.fillText(t.t,0,0);
+      X.font='900 '+_fSz+'px "Noto Sans KR","Malgun Gothic",sans-serif';
+      X.globalAlpha=_ta;
+      X.strokeStyle='#000000';X.lineWidth=_bSz>=36?6:4;X.lineJoin='round';
+      X.strokeText(t.t,0,0);
+      X.fillStyle=t.c;X.fillText(t.t,0,0);
       X.restore();
     }
   }X.globalAlpha=1;X.textBaseline='alphabetic'}if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
@@ -48286,7 +48289,7 @@ function loop(timestamp){
     if(G._dmgPeakShow){
       const _life=50; // 0.83초
       G._dmgTxts.push({dmg:_dp.dmg,t:_life,crit:!!_dp.crit});
-      const _col=_dp.crit?'#cc0000':'#ffffff';
+      const _col=_dp.crit?'#dd2200':'#ffcc33';
       const _sz=_dp.crit?72:56;
       const _pfx=_dp.crit?'💀':'⚔';
       addTxt(_dp.x,_dp.y-40,_pfx+_dp.dmg,_col,_dp.crit?70:_life,_sz,String(_dp.dmg));

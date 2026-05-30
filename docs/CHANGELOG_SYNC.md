@@ -28536,3 +28536,10 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - img/dmg_fonts/dmg_red.webp
 - img/dmg_fonts/dmg_white.webp
 
+
+## 2026-05-30 12:30 (auto)
+- _autosave/game_20260530_113207.html
+- _autosave/game_20260530_113443.html
+- _autosave/game_20260530_113513.html
+- game.html
+
