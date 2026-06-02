@@ -49763,7 +49763,7 @@ if(_EDITOR_MODE){
     console.log('[EDITOR] ready stage='+G.stage+' map='+G.mw+'x'+G.mh);
   })();
 }else if(_DEMO_MODE){
-  if(localStorage.getItem('_dLv500')==='1'){
+  if(_BIC||localStorage.getItem('_dLv500')==='1'){
     localStorage.removeItem('_dLv500');
     _startDemoTest();
   }else{
