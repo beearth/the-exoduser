@@ -28580,3 +28580,32 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - docs/14ë°¸ëŸ°???˜ì¹˜?Œì´ë¸??¤í‚¬?°ë?ì§€ê³µì‹??md
 - game.html
 
+
+## 2026-06-02 18:30 (auto)
+- _autosave/game_20260602_182321.html
+- _autosave/game_20260602_182332.html
+- _autosave/game_20260602_182346.html
+- _autosave/game_20260602_182354.html
+- _autosave/game_20260602_182358.html
+- _autosave/game_20260602_182416.html
+- _autosave/game_20260602_182421.html
+- bgm/1???©ì???Ashes Under the Banner (Remastered).wav
+- bgm/1???©ì???Cathedral of Steel (Remastered).wav
+- bgm/1???©ì???Iron Oath Under Ash (Remastered).wav
+- bgm/1???©ì???Neon Hellfire Protocol (Remastered).wav
+- bgm/1???©ì???Neon Hellfire Protocol2(Remastered).wav
+- bgm/1???©ì???Wrath of the Golden Age (Remastered).wav
+- bgm/3???¼ìŒêµ??°ëˆˆ??ë§¹ì„¸ (Remastered).wav
+- bgm/3???¼ìŒêµ??°ëˆˆ??ë§¹ì„¸2 (Remastered).wav
+- bgm/ê³µí†µ/Coronam Ferro (Remastered).wav
+- bgm/ê³µí†µ/Coronam Ferro2(Remastered).wav
+- bgm/ê³µí†µ/Just One More Hill (Remastered) 2.wav
+- bgm/ê³µí†µ/Just One More Hill (Remastered).wav
+- bgm/ê³µí†µ/ê³ ê°œ ?˜ë‚˜ë§?(Remastered) 2.wav
+- bgm/ê³µí†µ/ê³ ê°œ ?˜ë‚˜ë§?(Remastered).wav
+- bgm/ê³µí†µ/?¤ë©”?œì•„ ê°•ë¦¼ (Remastered).wav
+- bgm/ê³µí†µ/?¤ë©”?œì•„??ê°•ë¦¼2 (Remastered).wav
+- bgm/ê³µí†µ/?¤ë©”?œì•„??ê°•ë¦¼3(Remastered).wav
+- docs/6?¬ìš´?œë””?ì¸/6?¬ìš´?œë””?ì¸.md
+- game.html
+
