@@ -1,6 +1,3 @@
-2026/06/02-18:50:26.419 ad88 Reusing MANIFEST G:\hell\userdata\Default\Local Storage\leveldb/MANIFEST-000001
-2026/06/02-18:50:26.426 ad88 Recovering log #26
-2026/06/02-18:50:26.427 ad88 Reusing old log G:\hell\userdata\Default\Local Storage\leveldb/000026.log 
-2026/06/02-18:51:26.431 1d4 Level-0 table #30: started
-2026/06/02-18:51:26.440 1d4 Level-0 table #30: 15167 bytes OK
-2026/06/02-18:51:26.441 1d4 Delete type=0 #26
+2026/06/02-23:29:10.738 22d8 Reusing MANIFEST G:\hell\userdata\Default\Local Storage\leveldb/MANIFEST-000001
+2026/06/02-23:29:10.744 22d8 Recovering log #29
+2026/06/02-23:29:10.745 22d8 Reusing old log G:\hell\userdata\Default\Local Storage\leveldb/000029.log 

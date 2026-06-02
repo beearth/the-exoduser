@@ -4882,7 +4882,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:IS_ELECTRON?244:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:244,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -12346,8 +12346,10 @@ const CHAPTER_STAGES=[
 ];
 const TOTAL_STAGES=35;
 // ── 데모 잠금 ──────────────────────────────────────────
-const _DEMO_MODE=true;
-const _DEMO_LV_CAP=100;
+// ?bic → BIC부스 데모(Lv100), ?demo → 일반데모(Lv500), 없으면 정식
+const _BIC=location.search.includes('bic');
+const _DEMO_MODE=_BIC||location.search.includes('demo');
+const _DEMO_LV_CAP=_BIC?100:500;
 const _DEMO_LAST_STAGE=3; // ACT1(hell:0) 마지막 스테이지 인덱스
 const _DEMO_FUSE_ALLOWED=new Set(['dimBreach','dimSlam','sixFuse','elemFuse','whirlDet','slamStorm','bladeFuse','plagueFuse','boneStorm','elecRepent','shieldFuse','holyFuse','holyIce','iceMortar','pillarSpike','pillarSlam','infernoSlam','thunderGhost','dualScarecrow','siegeGhost']);
 const _DEMO_AFFIX_BANNED=new Set(['sharpAtk','brutalAtk','ruinAtk','overkilDmg','staggerExplosion','parryExplosion','elemConvert']);
@@ -38191,7 +38193,7 @@ const _crAutoEnhLabel=v=>v<0?_T('사용 안 함'):(v+1)+_L('성 이상','★ and
 $('optCrAutoFuse').oninput=function(){OPT.crAutoFuse=+this.value;const el=$('optCrAutoFuseVal');el.textContent=_crAutoFuseLabel(OPT.crAutoFuse);el.style.color=OPT.crAutoFuse>=0?CRYSTAL_STAR[OPT.crAutoFuse].color:'';_crAutoProcess();saveSettings()};
 $('optCrAutoEnh').oninput=function(){OPT.crAutoEnh=+this.value;const el=$('optCrAutoEnhVal');el.textContent=_crAutoEnhLabel(OPT.crAutoEnh);el.style.color=OPT.crAutoEnh>=0?CRYSTAL_STAR[OPT.crAutoEnh].color:'';_crAutoProcess();saveSettings()};
 
-const _FPS_STEPS=[30,60,120,144,244];
+const _FPS_STEPS=[30,60,120,144,244,0];
 $('optFps').oninput=function(){OPT.fpsCap=_FPS_STEPS[+this.value];$('optFpsVal').textContent=OPT.fpsCap;saveSettings()};
 $('optResScale').oninput=function(){OPT.resScale=+this.value;$('optResScaleVal').textContent=this.value+'%';rz();saveSettings()};
 if($('optPetAuto'))$('optPetAuto').onchange=function(){OPT.petAuto=this.checked;saveSettings()};
@@ -48401,7 +48403,7 @@ async function _startDemoTest(){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   PASSIVE_DEF.forEach(pd=>PASSIVES[pd.key]=0);
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=_DEMO_LAST_STAGE;G.kills=0;G.mats=999999;G.exits=[];_cacheExitCenter();G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
+  G.on=false;G.stage=_BIC?0:_DEMO_LAST_STAGE;G.kills=0;G.mats=999999;G.exits=[];_cacheExitCenter();G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
   _charName='DEMO TEST';_charIdx=0;
   G._cutsceneDone=true;
   // Lv500
@@ -49761,7 +49763,7 @@ if(_EDITOR_MODE){
     console.log('[EDITOR] ready stage='+G.stage+' map='+G.mw+'x'+G.mh);
   })();
 }else if(_DEMO_MODE){
-  if(localStorage.getItem('_dLv500')==='1'){
+  if(_BIC||localStorage.getItem('_dLv500')==='1'){
     localStorage.removeItem('_dLv500');
     _startDemoTest();
   }else{
