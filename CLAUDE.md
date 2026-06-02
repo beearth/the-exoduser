@@ -18,8 +18,8 @@ cp G:/hell/game.html G:/hell-DEMO/gamedemo.html
 cp G:/hell/game.html G:/hell-ea/game.html
 # DEMO 폴더: _BIC=true, _DEMO_MODE=true, _DEMO_LV_CAP=100 강제 (game.html + gamedemo.html 둘 다)
 for f in G:/hell-DEMO/game.html G:/hell-DEMO/gamedemo.html; do sed -i "s/const _BIC=location.search.includes('bic')/const _BIC=true/" "$f" && sed -i "s/_DEMO_MODE=_BIC||location.search.includes('demo')/_DEMO_MODE=true/" "$f" && sed -i "s/_DEMO_LV_CAP=_BIC?100:500/_DEMO_LV_CAP=100/" "$f"; done
-# DEMO 에셋 동기화 (sfx/img/assets/bgm 전체)
-for d in sfx img assets bgm; do cp -r "G:/hell/$d/"* "G:/hell-DEMO/$d/" 2>/dev/null; done
+# DEMO/EA 에셋 동기화 (sfx/img/assets/bgm/sprites 전체)
+for d in sfx img assets bgm sprites; do cp -r "G:/hell/$d/"* "G:/hell-DEMO/$d/" 2>/dev/null; cp -r "G:/hell/$d/"* "G:/hell-ea/$d/" 2>/dev/null; done
 # index.html 동기화
 cp G:/hell/index.html G:/hell-ea/index.html
 cp G:/hell/index.html G:/hell-DEMO/indexdemo.html
