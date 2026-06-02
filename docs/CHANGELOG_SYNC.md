@@ -28673,3 +28673,8 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - userdata/ShaderCache/data_1
 - userdata/segmentation_platform/ukm_db
 
+
+## 2026-06-02 22:30 (auto)
+- _autosave/game_20260602_222006.html
+- game.html
+
