@@ -15,8 +15,9 @@ git add -A && git status && git push origin main
 # game.html 동기화
 cp G:/hell/game.html G:/hell-DEMO/game.html
 cp G:/hell/game.html G:/hell-DEMO/gamedemo.html
-sed -i 's/_DEMO_MODE=false/_DEMO_MODE=true/' G:/hell-DEMO/gamedemo.html
 cp G:/hell/game.html G:/hell-ea/game.html
+# DEMO 폴더: _DEMO_MODE=true, _DEMO_LV_CAP=100 강제 (game.html + gamedemo.html 둘 다)
+for f in G:/hell-DEMO/game.html G:/hell-DEMO/gamedemo.html; do sed -i "s/_DEMO_MODE=_BIC||location.search.includes('demo')/_DEMO_MODE=true/" "$f" && sed -i "s/_DEMO_LV_CAP=_BIC?100:500/_DEMO_LV_CAP=100/" "$f"; done
 # index.html 동기화
 cp G:/hell/index.html G:/hell-ea/index.html
 cp G:/hell/index.html G:/hell-DEMO/indexdemo.html
@@ -30,7 +31,8 @@ for f in lang_*.js lobby_i18n.js maps_data.js; do cp "G:/hell/$f" "G:/hell-DEMO/
 ```
 - game.html, index.html, lang_*.js 중 **하나라도 수정하면** 위 명령 전부 실행
 - DEMO의 메인은 `indexdemo.html` — `index.html`만 복사하면 반영 안 됨
-- `gamedemo.html`은 `_DEMO_MODE=true`로 변경 필수
+- DEMO 폴더 `game.html`+`gamedemo.html` 둘 다 `_DEMO_MODE=true`, `_DEMO_LV_CAP=100` sed 강제
+- 개발 중 버전 전환: `?bic` → BIC부스 데모(Lv100), `?demo` → 일반데모(Lv500), 파라미터 없음 → 정식
 - **`_LOBBY_BUILD`**: DEMO=`'demo'`, EA=`'ea'`, 정식=`'full'` — 복사 후 반드시 sed로 변경
 
 ## 서버
