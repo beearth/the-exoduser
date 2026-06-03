@@ -13444,8 +13444,7 @@ registerVFX('parry_impact_el5','assets/vfx/parry_impact_el5.png',128,128,16,16);
 registerVFX('parry_impact_red','assets/vfx/parry_impact_red.png',128,128,16,16);
 registerVFX('parry_impact_rainbow','assets/vfx/parry_impact_rainbow.png',128,128,20,20);
 registerVFX('purple_impact','img/fx/purple_impact_sheet.png',443,443,25,5);
-registerVFX('blue_impact','img/fx/blue_impact_sheet.png',225,225,27,6);
-// (삭제됨: vfx_burn_death — 파일 미존재)
+// (삭제됨: blue_impact, vfx_burn_death — 파일 미존재)
 registerVFX('explode_scarecrow','assets/vfx/scarecrow_boom.png',64,64,9,9); // 폭발허수아비 전용 대형폭발 (9x1, 9프레임, 불속성)
 // ─── 악의폭풍 Power Lightning 스프라이트 (3레이어, 스카이블루 틴트) ───
 function _tintImg(src,tintColor,cb){
@@ -35960,7 +35959,7 @@ function activateDarkPillar(){
     const _stDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap')); // 통일공식: _skMul
     for(let _pi=0;_pi<_positions.length;_pi++){
       const p=_positions[_pi];
-      G._fireZones.push({x:p.x,y:p.y,r:_stR,t:0,maxT:600,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap'});
+      G._fireZones.push({x:p.x,y:p.y,r:_stR,t:0,maxT:600,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap',_pillarSpike:true});
     }
     P._gcCd=~~(600*(1+_eqAffix('cooldownRed'))); // 가시덫 쿨다운 소비
     addTxt(cx,cy-50,_T('🌿 기둥가시!'),'#88cc44',30);
@@ -44190,7 +44189,7 @@ function drawP(){
             const _dpScale=fz.r/120;
             const _dpW=384*_dpScale;
             const _dpH=384*_dpScale;
-            X.globalAlpha=(.12+.03*Math.sin(_dpt*4))*_fzFade*_dpVis;
+            X.globalAlpha=(_isPs?(.65+.15*Math.sin(_dpt*4)):(.12+.03*Math.sin(_dpt*4)))*_fzFade*_dpVis;
             const _prevComp=X.globalCompositeOperation;
             X.globalCompositeOperation='lighter';
             X.drawImage(_dpImg,fz.x-_dpW/2,fz.y-_dpH*0.75,_dpW,_dpH);
@@ -44399,18 +44398,20 @@ function drawP(){
         // 지속적 미세 화면 흔들림
         if(_faFade>0.1)G.shake=Math.max(G.shake,~~(1.5*_faFade*OPT.shake/100));
       }else if(fz.type==='spikeTrap'){
-        // ═══ 가시덫(결계) — 단일 이미지 + 슬로우 회전 ═══
+        // ═══ 가시덫 — 빨간 가시 마법진 (lighter 블렌딩) ═══
         const _deployT=Math.min(1,fz.t/12);
         const _stSz=fz.r*2*_deployT;
-        if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/결계.png'}
+        if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/spike_thorn.png'}
         const _stImg=G._spikeTrapImg;
         if(_stImg.complete&&_stImg.naturalWidth>0){
-          const _stLife=fz.maxT>0?Math.max(0,1-fz.t/fz.maxT):1;
-          X.globalAlpha=(.5+.5*(.5+.5*Math.sin(_now*.002)))*_fzFade;
+          X.globalAlpha=(.6+.2*Math.sin(_now*.003))*_fzFade;
+          const _prevComp=X.globalCompositeOperation;
+          X.globalCompositeOperation='lighter';
           X.save();X.translate(fz.x,fz.y);
           X.rotate(_now*0.00005);
           X.drawImage(_stImg,-_stSz/2,-_stSz/2,_stSz,_stSz);
           X.restore();
+          X.globalCompositeOperation=_prevComp;
         }
       }else if(fz.type==='weakPhys'||fz.type==='weakMag'||fz.type==='weakPj'||fz.type==='weakRev'){
         // ═══ 싱글 영역 — 십자 이미지 + 색상 틴트 ═══
@@ -50962,7 +50963,7 @@ _v3cam.position.set(0,0,1);
 
 const _v3tl=new THREE.TextureLoader();
 const _v3tc={};
-function _v3tex(src){if(!_v3tc[src])_v3tc[src]=_v3tl.load(src,function(t){t.minFilter=THREE.LinearFilter;t.magFilter=THREE.LinearFilter});return _v3tc[src]}
+function _v3tex(src){if(!src)return null;if(!_v3tc[src])_v3tc[src]=_v3tl.load(src,function(t){t.minFilter=THREE.LinearFilter;t.magFilter=THREE.LinearFilter});return _v3tc[src]}
 
 const _v3parts=[];
 const _V3_MAX=120;
