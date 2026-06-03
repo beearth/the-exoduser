@@ -13444,7 +13444,8 @@ registerVFX('parry_impact_el5','assets/vfx/parry_impact_el5.png',128,128,16,16);
 registerVFX('parry_impact_red','assets/vfx/parry_impact_red.png',128,128,16,16);
 registerVFX('parry_impact_rainbow','assets/vfx/parry_impact_rainbow.png',128,128,20,20);
 registerVFX('purple_impact','img/fx/purple_impact_sheet.png',443,443,25,5);
-// (삭제됨: blue_impact, vfx_burn_death — 파일 미존재)
+registerVFX('blue_impact','img/fx/blue_impact_sheet.png',225,225,27,6);
+// (삭제됨: vfx_burn_death — 파일 미존재)
 registerVFX('explode_scarecrow','assets/vfx/scarecrow_boom.png',64,64,9,9); // 폭발허수아비 전용 대형폭발 (9x1, 9프레임, 불속성)
 // ─── 악의폭풍 Power Lightning 스프라이트 (3레이어, 스카이블루 틴트) ───
 function _tintImg(src,tintColor,cb){
@@ -35721,7 +35722,7 @@ function activateSpikeTrap(){
   _addSkProf('spikeTrap');
   G.mats-=_malCost(10);P._gcCd=~~(600*(1+_eqAffix('cooldownRed')));
   const lv=P.skills.spikeTrap||1;
-  const r=300+(lv-1)*11;
+  const r=600+(lv-1)*44;
   const dmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap'));
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:r,t:0,maxT:600,dmg:dmg,el:EL.P,lv:lv,type:'spikeTrap'});

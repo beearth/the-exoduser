@@ -12349,7 +12349,7 @@ const TOTAL_STAGES=35;
 // ?bic → BIC부스 데모(Lv100), ?demo → 일반데모(Lv500), 없으면 정식
 const _BIC=location.search.includes('bic');
 const _DEMO_MODE=_BIC||location.search.includes('demo');
-const _DEMO_LV_CAP=_BIC?100:200;
+const _DEMO_LV_CAP=_BIC?100:500;
 const _DEMO_LAST_STAGE=3; // ACT1(hell:0) 마지막 스테이지 인덱스
 const _DEMO_FUSE_ALLOWED=new Set(['dimBreach','dimSlam','sixFuse','elemFuse','whirlDet','slamStorm','bladeFuse','plagueFuse','boneStorm','elecRepent','shieldFuse','holyFuse','holyIce','iceMortar','pillarSpike','pillarSlam','infernoSlam','thunderGhost','dualScarecrow','siegeGhost']);
 const _DEMO_AFFIX_BANNED=new Set(['sharpAtk','brutalAtk','ruinAtk','overkilDmg','staggerExplosion','parryExplosion','elemConvert']);
@@ -35721,7 +35721,7 @@ function activateSpikeTrap(){
   _addSkProf('spikeTrap');
   G.mats-=_malCost(10);P._gcCd=~~(600*(1+_eqAffix('cooldownRed')));
   const lv=P.skills.spikeTrap||1;
-  const r=300+(lv-1)*11;
+  const r=300+(lv-1)*22;
   const dmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap'));
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:r,t:0,maxT:600,dmg:dmg,el:EL.P,lv:lv,type:'spikeTrap'});
@@ -35955,7 +35955,7 @@ function activateDarkPillar(){
   // 합체: 기둥가시 — 가시덫 흡수 (각 기둥 위치에 가시덫 자동 설치)
   if(_isFused('pillarSpike')&&P.skills.spikeTrap>=1){
     const _stLv=P.skills.spikeTrap||1;
-    const _stR=200+(_stLv-1)*11;
+    const _stR=200+~~((_stLv-1)/2)*22;
     const _stDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap')); // 통일공식: _skMul
     for(let _pi=0;_pi<_positions.length;_pi++){
       const p=_positions[_pi];
@@ -44398,17 +44398,19 @@ function drawP(){
         // 지속적 미세 화면 흔들림
         if(_faFade>0.1)G.shake=Math.max(G.shake,~~(1.5*_faFade*OPT.shake/100));
       }else if(fz.type==='spikeTrap'){
-        // ═══ 가시덫 — 바닥 그래디언트 + 스프라이트 + 외곽 ═══
+        // ═══ 가시덫 — 빨간 가시 마법진 (lighter 블렌딩) ═══
         const _deployT=Math.min(1,fz.t/12);
         const _stSz=fz.r*2*_deployT;
-        // 스프라이트만 희미하게 (바닥 그래디언트·경계선 제거)
         if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/spike_thorn.png'}
         const _stImg=G._spikeTrapImg;
         if(_stImg.complete&&_stImg.naturalWidth>0){
+          X.globalAlpha=(.6+.2*Math.sin(_now*.003))*_fzFade;
           const _prevComp=X.globalCompositeOperation;
           X.globalCompositeOperation='lighter';
-          X.globalAlpha=.15*_fzFade;
-          X.drawImage(_stImg,fz.x-_stSz/2,fz.y-_stSz/2,_stSz,_stSz);
+          X.save();X.translate(fz.x,fz.y);
+          X.rotate(_now*0.00005);
+          X.drawImage(_stImg,-_stSz/2,-_stSz/2,_stSz,_stSz);
+          X.restore();
           X.globalCompositeOperation=_prevComp;
         }
       }else if(fz.type==='weakPhys'||fz.type==='weakMag'||fz.type==='weakPj'||fz.type==='weakRev'){

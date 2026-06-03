@@ -28982,3 +28982,66 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - userdata/ShaderCache/data_1
 - userdata/segmentation_platform/ukm_db
 
+
+## 2026-06-03 15:30 (auto)
+- _autosave/game_20260603_145348.html
+- _autosave/game_20260603_145354.html
+- _autosave/game_20260603_150135.html
+- _autosave/game_20260603_150539.html
+- _autosave/game_20260603_150543.html
+- _autosave/game_20260603_150636.html
+- _autosave/game_20260603_150649.html
+- _autosave/game_20260603_150750.html
+- _autosave/game_20260603_150904.html
+- _autosave/game_20260603_152632.html
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Rules/LOG.old
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension Scripts/LOG.old
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Extension State/LOG.old
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GCM Store/Encryption/LOG.old
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Local Storage/leveldb/LOG.old
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Session Storage/LOG.old
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Site Characteristics Database/LOG.old
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Sync Data/LevelDB/LOG.old
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/LOG.old
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/Default/shared_proto_db/metadata/LOG.old
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/Local State
+- userdata/segmentation_platform/ukm_db
+

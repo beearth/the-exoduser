@@ -13444,7 +13444,8 @@ registerVFX('parry_impact_el5','assets/vfx/parry_impact_el5.png',128,128,16,16);
 registerVFX('parry_impact_red','assets/vfx/parry_impact_red.png',128,128,16,16);
 registerVFX('parry_impact_rainbow','assets/vfx/parry_impact_rainbow.png',128,128,20,20);
 registerVFX('purple_impact','img/fx/purple_impact_sheet.png',443,443,25,5);
-// (삭제됨: blue_impact, vfx_burn_death — 파일 미존재)
+registerVFX('blue_impact','img/fx/blue_impact_sheet.png',225,225,27,6);
+// (삭제됨: vfx_burn_death — 파일 미존재)
 registerVFX('explode_scarecrow','assets/vfx/scarecrow_boom.png',64,64,9,9); // 폭발허수아비 전용 대형폭발 (9x1, 9프레임, 불속성)
 // ─── 악의폭풍 Power Lightning 스프라이트 (3레이어, 스카이블루 틴트) ───
 function _tintImg(src,tintColor,cb){
@@ -35721,7 +35722,7 @@ function activateSpikeTrap(){
   _addSkProf('spikeTrap');
   G.mats-=_malCost(10);P._gcCd=~~(600*(1+_eqAffix('cooldownRed')));
   const lv=P.skills.spikeTrap||1;
-  const r=300+(lv-1)*22;
+  const r=600+(lv-1)*44;
   const dmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap'));
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:r,t:0,maxT:600,dmg:dmg,el:EL.P,lv:lv,type:'spikeTrap'});
@@ -35930,8 +35931,8 @@ function activateDarkPillar(){
   // 9개 기둥 위치: 중앙 1 + 내원 4 + 외원 4
   const cx=P.x,cy=P.y;
   const _positions=[{x:cx,y:cy}]; // 중앙
-  const _innerR=_dpR*0.4;
-  for(let i=0;i<4;i++){const a=Math.PI*2*i/4+Math.PI/4;_positions.push({x:cx+Math.cos(a)*_innerR,y:cy+Math.sin(a)*_innerR})}
+  const _innerR=_dpR*0.3;
+  for(let i=0;i<4;i++){const a=Math.PI*2*i/4;_positions.push({x:cx+Math.cos(a)*_innerR,y:cy+Math.sin(a)*_innerR})}
   const _outerR=_dpR*0.75;
   for(let i=0;i<4;i++){const a=Math.PI*2*i/4;_positions.push({x:cx+Math.cos(a)*_outerR,y:cy+Math.sin(a)*_outerR})}
   // 첫번째 즉시 스폰, 나머지 큐에 넣기 (10프레임 간격)
@@ -35955,9 +35956,9 @@ function activateDarkPillar(){
   // 합체: 기둥가시 — 가시덫 흡수 (각 기둥 위치에 가시덫 자동 설치)
   if(_isFused('pillarSpike')&&P.skills.spikeTrap>=1){
     const _stLv=P.skills.spikeTrap||1;
-    const _stR=200+(_stLv-1)*22;
+    const _stR=400+(_stLv-1)*44;
     const _stDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap')); // 통일공식: _skMul
-    for(let _pi=0;_pi<_positions.length;_pi++){
+    for(let _pi=0;_pi<Math.min(5,_positions.length);_pi++){
       const p=_positions[_pi];
       G._fireZones.push({x:p.x,y:p.y,r:_stR,t:0,maxT:600,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap',_pillarSpike:true});
     }
@@ -44398,17 +44399,19 @@ function drawP(){
         // 지속적 미세 화면 흔들림
         if(_faFade>0.1)G.shake=Math.max(G.shake,~~(1.5*_faFade*OPT.shake/100));
       }else if(fz.type==='spikeTrap'){
-        // ═══ 가시덫 — 바닥 그래디언트 + 스프라이트 + 외곽 ═══
+        // ═══ 가시덫 — 빨간 가시 마법진 (lighter 블렌딩) ═══
         const _deployT=Math.min(1,fz.t/12);
         const _stSz=fz.r*2*_deployT;
-        // 스프라이트만 희미하게 (바닥 그래디언트·경계선 제거)
         if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/spike_thorn.png'}
         const _stImg=G._spikeTrapImg;
         if(_stImg.complete&&_stImg.naturalWidth>0){
+          X.globalAlpha=(1+.15*Math.sin(_now*.003))*_fzFade;
           const _prevComp=X.globalCompositeOperation;
           X.globalCompositeOperation='lighter';
-          X.globalAlpha=.15*_fzFade;
-          X.drawImage(_stImg,fz.x-_stSz/2,fz.y-_stSz/2,_stSz,_stSz);
+          X.save();X.translate(fz.x,fz.y);
+          X.rotate(_now*0.00005);
+          X.drawImage(_stImg,-_stSz/2,-_stSz/2,_stSz,_stSz);
+          X.restore();
           X.globalCompositeOperation=_prevComp;
         }
       }else if(fz.type==='weakPhys'||fz.type==='weakMag'||fz.type==='weakPj'||fz.type==='weakRev'){
