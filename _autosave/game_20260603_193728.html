@@ -12498,6 +12498,7 @@ function spawnProj(props){
   // 적 탄막 속도 60% 증가 + 데미지 2배
   if(!p.friendly){
     p.dmg=~~(p.dmg*2);
+    if(p.redBean)p.dmg=~~(p.dmg*0.5); // 빨콩 데미지 반감 (패링데미지)
     p.vx*=1.6;p.vy*=1.6;
     // 허수아비: 가까운 대상으로 발사 방향 변경 (무지개콩 제외, 보스탄 포함)
     if((G._voidScarecrow&&G._voidScarecrow.aggroOn||G._explodeScarecrow&&G._explodeScarecrow.aggroOn)&&!p.blackBean){
@@ -17754,9 +17755,7 @@ function _fireballExplode(p){
     const _fbSc=Math.min(3.0,Math.max(1.0,Math.sqrt(r/80)));
     if(!window._tvfx2)window._tvfx2=[];
     if(window._tvfx2.length<60){ // VFX 캡: 60개 초과 시 새 폭발 VFX 생략
-    // [0] 중앙 노란 섬광 — radial gradient (노랑→빨강→투명)
-    window._tvfx2.push({x:_fbPx,y:_fbPy,radial:true,r0:30*_fbSc,r1:120*_fbSc,
-      c0:'#ffffaa',c1:'#ff2200',life:18,t:0});
+    // [0] 중앙 노란 섬광 — 삭제 (동그라미 렉 원인)
     // [1] ImpactFire 시트
     const _fIS=_tvfx2Imgs['Fire_ImpactFire_Sheet.png'];
     if(_fIS&&_fIS.complete){const fw=~~(_fIS.naturalWidth/4),fh=~~(_fIS.naturalHeight/4);
@@ -26406,7 +26405,7 @@ function update(){
     const _wrongR=100; // 반대 패링 패널티: 고정 100px
     if(p.redBean&&_pDist<_wrongR&&_sbPW&&!P._ioActive&&P.iframes<=0){
       // Q 패링 시도 → 잘못된 입력: 폭발 + 넉백
-      const _rbWrongD=p.dmg;hurtP(_rbWrongD,{dtype:'magic',src:'빨콩오패링',redBean:true});
+      const _rbWrongD=p.dmg;hurtP(_rbWrongD,{dtype:'parry',src:'빨콩오패링',redBean:true});
       // 빨콩 화상 (데미지×3, 10초, 최대10중첩)
       {if(!P._rbBurn)P._rbBurn=[];if(P._rbBurn.length<10){P._rbBurn.push({total:_rbWrongD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('🔥화상!')+'×'+P._rbBurn.length,'#ff4400',30)}}
       P.iframes=3;addTxt(p.x,p.y-15,_T('❌ 우클릭으로! -')+_rbWrongD,'#ff4444',50);
@@ -29676,24 +29675,30 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   // 그로기 제거됨 — 포이즈 0 = 즉시 스턴
   if(P.skills.detonate&&P.parryT!==undefined&&P.parryT>0){G.shake=6*OPT.shake/100;_gpVibrate(20,120)} // 기폭 충전 중: hitStop/slowMo 없이 흔들림만
   else{G.hitStop=~~(_HS.parry*OPT.hitStop/100);G.slowMo=25;G.shake=14*OPT.shake/100;_gpVibrate(_isQ?50:30,_isQ?300:200)}
-  // ═══ 패링 보상: 우클릭 30, Q 50 (parryBonus 어픽스 적용) ═══
+  // ═══ 패링 보상: 빨콩 반감, 무지개 강화 ═══
   const _isQParry=_isQ;
+  const _isRedParry=_parryEl==='red';
+  const _isRainbowParry=_parryEl==='rainbow';
   const _pbMul=1+_eqAffix('parryBonus');
   const _parryRegenMul=1+(PASSIVES.pRegen||0)*.30; // 회복력 패시브: 패링회복 +30%/lv
-  const _prBase=~~((_isQParry?50:30)*_pbMul*_parryRegenMul);
+  const _prRaw=(_isQParry?50:30)*_pbMul*_parryRegenMul;
+  const _prBase=~~(_isRedParry?_prRaw*0.5:_isRainbowParry?_prRaw*1.5:_prRaw); // 빨콩 ×0.5, 무지개 ×1.5
   P.iframes=25;
   P.hp=Math.min(P.mhp,P.hp+_prBase);
   P.st=Math.min(P.mst,P.st+_prBase);
   P.mp=Math.min(P.mmp,P.mp+_prBase);
-  _harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+10);
-  addTxt(P.x,P.y-76,_T('⚡기동+10'),'#44ccff',35);
-  // 분노게이지 +10% (패링 성공)
-  P.rage=Math.min(100,P.rage+10);
+  const _harpAdd=_isRedParry?5:_isRainbowParry?15:10; // 빨콩 5, 무지개 15, 일반 10
+  _harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+_harpAdd);
+  addTxt(P.x,P.y-76,_T('⚡기동+')+_harpAdd,'#44ccff',35);
+  // 분노게이지: 빨콩 5%, 무지개 15%, 일반 10%
+  const _rageAdd=_isRedParry?5:_isRainbowParry?15:10;
+  P.rage=Math.min(100,P.rage+_rageAdd);
   addTxt(P.x,P.y-90,_T('🔥분노+')+P.rage+'%','#ff4400',35);
   // 분노 대사 (적립 후 체크)
   if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. Space를 눌러.',4,300,'cat','분노게이지 꽉 찼어! 스페이스로 폭발시켜!',4);
   else if(P.rage>=50)_petSayCD('rage_half','crow','분노가 차오른다…',3,300,'cat','분노 '+P.rage+'%! 패링으로 분노 더 쌓아!',3);
-  G.mats+=1000;addTxt(P.x,P.y-60,_T('👿악의+1000'),'#cc44ff',40);
+  const _matsAdd=_isRedParry?500:_isRainbowParry?2000:1000; // 빨콩 500, 무지개 2000, 일반 1000
+  G.mats+=_matsAdd;addTxt(P.x,P.y-60,_T('👿악의+')+_matsAdd,'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true,shieldHit:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
   // 패링 임팩트: 무지개/Q패링=Dark 02, 우클릭=Lightning(기존)
@@ -33259,11 +33264,10 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   // 한방 데미지 캡: 삭제 (제한 없음)
 
   // ═══ 에너지쉴드: 모든 배율 확정 후 흡수 (HP와 동일 내구성) ═══
-  // DOT은 기본 제외. shieldHit:true 플래그 시 DOT도 쉴드 적용 (50% 흡수, 50% HP 관통)
+  // 쉴드가 남아있는 한 HP는 절대 안 깎임. 오버플로우만 HP로.
   if((!isDot||(opts&&opts.shieldHit))&&e.eShieldMax>0&&e.eShield>0){
-    const _shDmg=isDot?~~(dmg*.5):dmg; // DOT은 50%만 쉴드로
-    const _shAbs=Math.min(e.eShield,_shDmg);
-    e.eShield=Math.max(0,e.eShield-_shDmg);
+    const _shAbs=Math.min(e.eShield,dmg);
+    e.eShield=Math.max(0,e.eShield-dmg);
     dmg=Math.max(0,dmg-_shAbs);
     if(dmg===0)_shBlocked=true;
   }
@@ -34327,7 +34331,7 @@ function hurtP(dmg,opts){
   // ═══ 어픽스: thorns (가시) — 피격 시 고정 반사뎀 ═══
   const _thV=~~(_eqAffix('thorns'));if(_thV>0){const _thE=shQuery(P.x,P.y,80);for(let _ti=0;_ti<_thE.length;_ti++){if(_thE[_ti].alive){hurtE(_thE[_ti],_thV,0,true,{dot:true,shieldHit:true});break}}}
   // ═══ 어픽스: reflect (반사) — 피격 데미지 비례 반사 ═══
-  const _refV=_eqAffix('reflect');if(_refV>0&&a>0){const _refE=shQuery(P.x,P.y,80);for(let _ri=0;_ri<_refE.length;_ri++){if(_refE[_ri].alive){hurtE(_refE[_ri],~~(a*_refV),0,true,{dot:true});break}}}
+  const _refV=_eqAffix('reflect');if(_refV>0&&a>0){const _refE=shQuery(P.x,P.y,80);for(let _ri=0;_ri<_refE.length;_ri++){if(_refE[_ri].alive){hurtE(_refE[_ri],~~(a*_refV),0,true,{dot:true,shieldHit:true});break}}}
   // ═══ 어픽스: lastStand (불굴) — 1회 사망 방지 ═══
   if(P.hp<=0&&_eqAffix('lastStand')>=1&&!P._lastStandUsed){P.hp=1;P._lastStandUsed=true;P.iframes=120;addTxt(P.x,P.y-25,_T('💀 불굴!'),'#ffdd44',60);return}
   if(P.hp<=0)die()}
@@ -43139,19 +43143,8 @@ function draw(){
     for(let _ti=0;_ti<window._tvfx2.length;_ti++){
       const v=window._tvfx2[_ti];
       if(v.delay>0){v.delay-=1;window._tvfx2[_tw++]=v;continue}
-      // radial gradient 플래시 (업화선 중앙 노란 코어)
-      if(v.radial){
-        v.t++;const rp=v.t/v.life;if(rp>=1)continue; // 만료 → 쓰기 안 함
-        const ra=Math.max(0,(1-rp*rp)*0.85);
-        const rScale=1+rp*0.6;
-        const _rr=v.r1*rScale;
-        // radial gradient → 단색 원 근사 (createRadialGradient 제거)
-        X.globalAlpha=ra*.7;X.fillStyle='#ffdd44';
-        X.beginPath();X.arc(v.x,v.y,_rr*.35,0,Math.PI*2);X.fill();
-        X.globalAlpha=ra*.3;X.fillStyle='#ff4400';
-        X.beginPath();X.arc(v.x,v.y,_rr*.7,0,Math.PI*2);X.fill();
-        window._tvfx2[_tw++]=v;continue;
-      }
+      // radial 동그라미 삭제 — 렌더 안 함, 즉시 만료
+      if(v.radial)continue;
       v.t++;v.timer++;
       if(v.timer>=v.spd){v.timer=0;v.frame++;
         if(v.frame>=v.total)continue} // 만료 → 쓰기 안 함

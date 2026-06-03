@@ -17754,9 +17754,7 @@ function _fireballExplode(p){
     const _fbSc=Math.min(3.0,Math.max(1.0,Math.sqrt(r/80)));
     if(!window._tvfx2)window._tvfx2=[];
     if(window._tvfx2.length<60){ // VFX 캡: 60개 초과 시 새 폭발 VFX 생략
-    // [0] 중앙 노란 섬광 — radial gradient (노랑→빨강→투명)
-    window._tvfx2.push({x:_fbPx,y:_fbPy,radial:true,r0:30*_fbSc,r1:120*_fbSc,
-      c0:'#ffffaa',c1:'#ff2200',life:18,t:0});
+    // [0] 중앙 노란 섬광 — 삭제 (동그라미 렉 원인)
     // [1] ImpactFire 시트
     const _fIS=_tvfx2Imgs['Fire_ImpactFire_Sheet.png'];
     if(_fIS&&_fIS.complete){const fw=~~(_fIS.naturalWidth/4),fh=~~(_fIS.naturalHeight/4);
@@ -33259,11 +33257,10 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   // 한방 데미지 캡: 삭제 (제한 없음)
 
   // ═══ 에너지쉴드: 모든 배율 확정 후 흡수 (HP와 동일 내구성) ═══
-  // DOT은 기본 제외. shieldHit:true 플래그 시 DOT도 쉴드 적용 (50% 흡수, 50% HP 관통)
+  // 쉴드가 남아있는 한 HP는 절대 안 깎임. 오버플로우만 HP로.
   if((!isDot||(opts&&opts.shieldHit))&&e.eShieldMax>0&&e.eShield>0){
-    const _shDmg=isDot?~~(dmg*.5):dmg; // DOT은 50%만 쉴드로
-    const _shAbs=Math.min(e.eShield,_shDmg);
-    e.eShield=Math.max(0,e.eShield-_shDmg);
+    const _shAbs=Math.min(e.eShield,dmg);
+    e.eShield=Math.max(0,e.eShield-dmg);
     dmg=Math.max(0,dmg-_shAbs);
     if(dmg===0)_shBlocked=true;
   }
@@ -33386,7 +33383,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(_eqAffix('staggerBns')>0) amt += ~~(_eqAffix('staggerBns'));
     if(_poiseHit(e, amt)){
       // 어픽스: staggerExplosion
-      if(_eqAffix('staggerExplosion')>0){const _seD=~~(dmg*_eqAffix('staggerExplosion'));const _seQ=shQuery(e.x,e.y,100);for(let _si=0;_si<_seQ.length;_si++){const se=_seQ[_si];if(se!==e&&se.alive)hurtE(se,_seD,0,true,{dot:true},atkEl)}}
+      if(_eqAffix('staggerExplosion')>0){const _seD=~~(dmg*_eqAffix('staggerExplosion'));const _seQ=shQuery(e.x,e.y,100);for(let _si=0;_si<_seQ.length;_si++){const se=_seQ[_si];if(se!==e&&se.alive)hurtE(se,_seD,0,true,{dot:true,shieldHit:true},atkEl)}}
     }
   }
   if(e.hp<=0){
@@ -34325,9 +34322,9 @@ function hurtP(dmg,opts){
   // ═══ 어픽스: counterHit (카운터히트) — 피격 시 확률로 반격 ═══
   const _chP=_eqAffix('counterHit');if(_chP>0&&!_isDot&&Math.random()<_chP){const _chE=shQuery(P.x,P.y,80);for(let _ci=0;_ci<_chE.length;_ci++){if(_chE[_ci].alive){hurtE(_chE[_ci],~~(meleeRef()*statStr()),0,true);break}}}
   // ═══ 어픽스: thorns (가시) — 피격 시 고정 반사뎀 ═══
-  const _thV=~~(_eqAffix('thorns'));if(_thV>0){const _thE=shQuery(P.x,P.y,80);for(let _ti=0;_ti<_thE.length;_ti++){if(_thE[_ti].alive){hurtE(_thE[_ti],_thV,0,true,{dot:true});break}}}
+  const _thV=~~(_eqAffix('thorns'));if(_thV>0){const _thE=shQuery(P.x,P.y,80);for(let _ti=0;_ti<_thE.length;_ti++){if(_thE[_ti].alive){hurtE(_thE[_ti],_thV,0,true,{dot:true,shieldHit:true});break}}}
   // ═══ 어픽스: reflect (반사) — 피격 데미지 비례 반사 ═══
-  const _refV=_eqAffix('reflect');if(_refV>0&&a>0){const _refE=shQuery(P.x,P.y,80);for(let _ri=0;_ri<_refE.length;_ri++){if(_refE[_ri].alive){hurtE(_refE[_ri],~~(a*_refV),0,true,{dot:true});break}}}
+  const _refV=_eqAffix('reflect');if(_refV>0&&a>0){const _refE=shQuery(P.x,P.y,80);for(let _ri=0;_ri<_refE.length;_ri++){if(_refE[_ri].alive){hurtE(_refE[_ri],~~(a*_refV),0,true,{dot:true,shieldHit:true});break}}}
   // ═══ 어픽스: lastStand (불굴) — 1회 사망 방지 ═══
   if(P.hp<=0&&_eqAffix('lastStand')>=1&&!P._lastStandUsed){P.hp=1;P._lastStandUsed=true;P.iframes=120;addTxt(P.x,P.y-25,_T('💀 불굴!'),'#ffdd44',60);return}
   if(P.hp<=0)die()}
@@ -43139,19 +43136,8 @@ function draw(){
     for(let _ti=0;_ti<window._tvfx2.length;_ti++){
       const v=window._tvfx2[_ti];
       if(v.delay>0){v.delay-=1;window._tvfx2[_tw++]=v;continue}
-      // radial gradient 플래시 (업화선 중앙 노란 코어)
-      if(v.radial){
-        v.t++;const rp=v.t/v.life;if(rp>=1)continue; // 만료 → 쓰기 안 함
-        const ra=Math.max(0,(1-rp*rp)*0.85);
-        const rScale=1+rp*0.6;
-        const _rr=v.r1*rScale;
-        // radial gradient → 단색 원 근사 (createRadialGradient 제거)
-        X.globalAlpha=ra*.7;X.fillStyle='#ffdd44';
-        X.beginPath();X.arc(v.x,v.y,_rr*.35,0,Math.PI*2);X.fill();
-        X.globalAlpha=ra*.3;X.fillStyle='#ff4400';
-        X.beginPath();X.arc(v.x,v.y,_rr*.7,0,Math.PI*2);X.fill();
-        window._tvfx2[_tw++]=v;continue;
-      }
+      // radial 동그라미 삭제 — 렌더 안 함, 즉시 만료
+      if(v.radial)continue;
       v.t++;v.timer++;
       if(v.timer>=v.spd){v.timer=0;v.frame++;
         if(v.frame>=v.total)continue} // 만료 → 쓰기 안 함
