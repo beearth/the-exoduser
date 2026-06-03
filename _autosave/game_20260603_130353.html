@@ -2429,7 +2429,7 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">최소 줍기 티어</span><input type="range" id="optMinLv" min="0" max="7" value="0"><span class="set-range-val" id="optMinLvVal">사용 안 함</span></div>
           <div class="set-range-row"><span class="set-name">결정 자동합성</span><input type="range" id="optCrAutoFuse" min="-1" max="3" step="1" value="-1"><span class="set-range-val" id="optCrAutoFuseVal">사용 안 함</span></div>
           <div class="set-range-row"><span class="set-name">결정 자동강화</span><input type="range" id="optCrAutoEnh" min="-1" max="4" step="1" value="-1"><span class="set-range-val" id="optCrAutoEnhVal">사용 안 함</span></div>
-          <div class="set-range-row"><span class="set-name">FPS 제한</span><input type="range" id="optFps" min="0" max="4" step="1" value="1"><span class="set-range-val" id="optFpsVal">60</span></div>
+          <div class="set-range-row"><span class="set-name">FPS 제한</span><input type="range" id="optFps" min="0" max="5" step="1" value="5"><span class="set-range-val" id="optFpsVal">제한없음</span></div>
           <div class="set-range-row"><span class="set-name">해상도 스케일</span><input type="range" id="optResScale" min="50" max="100" step="10" value="100"><span class="set-range-val" id="optResScaleVal">100%</span></div>
 
           <div class="set-range-row"><span class="set-name" style="color:#44aaff">유령불꽃 크기</span><input type="range" id="optIrisSz" min="1" max="100" value="20" style="accent-color:#44aaff"><span class="set-range-val" id="optIrisSzVal" style="color:#44aaff">20</span></div>
@@ -4882,7 +4882,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:244,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:0,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -22927,9 +22927,9 @@ function mkEn(x,y,si,etype,ib,el,room){
   const po=ib?105:_rare?_rd.poise:ETYPE_POISE[etype];
   // 레벨 보정: 플레이어 레벨이 맵보다 높으면 HP/ATK 비례 증가
   const _bossLvMul=_plvMul;
-  // ═══ HP 공식 v10: v9 ×1.3 (2026-05-05 약스킬 상향 + HP 30% 증가 밸런스) ═══
-  // Lv≤500: (0.4×Lv³+199×Lv+100)×1.3, Lv>500: 6500만×1.0014^(Lv-500)
-  const _baseHpCurve=(monLv<=500?0.4*monLv*monLv*monLv+199*monLv+100:50000000*Math.pow(1.0014,monLv-500))*1.3;
+  // ═══ HP 공식 v11: v10 ×1.5 (2026-06-03 +10단 HP 널널 → 전체 50% 상향) ═══
+  // Lv≤500: (0.4×Lv³+199×Lv+100)×1.95, Lv>500: 6500만×1.0014^(Lv-500)×1.5
+  const _baseHpCurve=(monLv<=500?0.4*monLv*monLv*monLv+199*monLv+100:50000000*Math.pow(1.0014,monLv-500))*1.95;
   const _bossMul=ib?24:1; // 보스 24배
   const _lvHp=Math.floor(_baseHpCurve*_bossMul*dm*et.hpMul);let _hp=Math.floor(_lvHp*(1+si*0.02)); // 스테이지당+2%
   // ═══ ATK 공식: 선형 반감 (2026-05-03 전면 50% 하향) ═══
@@ -38193,8 +38193,8 @@ const _crAutoEnhLabel=v=>v<0?_T('사용 안 함'):(v+1)+_L('성 이상','★ and
 $('optCrAutoFuse').oninput=function(){OPT.crAutoFuse=+this.value;const el=$('optCrAutoFuseVal');el.textContent=_crAutoFuseLabel(OPT.crAutoFuse);el.style.color=OPT.crAutoFuse>=0?CRYSTAL_STAR[OPT.crAutoFuse].color:'';_crAutoProcess();saveSettings()};
 $('optCrAutoEnh').oninput=function(){OPT.crAutoEnh=+this.value;const el=$('optCrAutoEnhVal');el.textContent=_crAutoEnhLabel(OPT.crAutoEnh);el.style.color=OPT.crAutoEnh>=0?CRYSTAL_STAR[OPT.crAutoEnh].color:'';_crAutoProcess();saveSettings()};
 
-const _FPS_STEPS=[30,60,120,144,244];
-$('optFps').oninput=function(){OPT.fpsCap=_FPS_STEPS[+this.value];$('optFpsVal').textContent=OPT.fpsCap;saveSettings()};
+const _FPS_STEPS=[30,60,120,144,244,0];
+$('optFps').oninput=function(){OPT.fpsCap=_FPS_STEPS[+this.value];$('optFpsVal').textContent=OPT.fpsCap||_L('제한없음','Unlimited');saveSettings()};
 $('optResScale').oninput=function(){OPT.resScale=+this.value;$('optResScaleVal').textContent=this.value+'%';rz();saveSettings()};
 if($('optPetAuto'))$('optPetAuto').onchange=function(){OPT.petAuto=this.checked;saveSettings()};
 $('optIrisSz').oninput=function(){const v=+this.value;G._irisSz=v;if(G.pets&&G.pets.iris)G.pets.iris.sz=v;$('optIrisSzVal').textContent=v;saveSettings()};
@@ -38482,7 +38482,7 @@ function syncSettingsUI(){
   if($('optFps')){
     const _fi=_FPS_STEPS.indexOf(OPT.fpsCap);
     $('optFps').value=_fi>=0?_fi:1;
-    $('optFpsVal').textContent=OPT.fpsCap||60;
+    $('optFpsVal').textContent=OPT.fpsCap||_L('제한없음','Unlimited');
   }
   if($('optResScale')){
     $('optResScale').value=OPT.resScale||100;
@@ -48164,7 +48164,7 @@ if(_EDITOR_MODE)window.addEventListener('message',function(ev){
   }
 });
 let _loopRunning=false;
-let _fpsCapInterval=1000/(OPT.fpsCap||60);
+let _fpsCapInterval=OPT.fpsCap?1000/OPT.fpsCap:0;
 let _lastLoopTs=0;
 // ═══ 500마리 난전 프로파일러 (2026-04-17) — 측정 전용, 로직 무수정 ═══
 const _PERF_PROF={enabled:false,frameCnt:0,
@@ -48275,8 +48275,8 @@ function loop(timestamp){
   if(!_bootLoadKilled) hideBootLoading();
   if(!timestamp)timestamp=performance.now();
   // ── FPS 캡: 목표 프레임타임 미달이면 스킵 ──
-  _fpsCapInterval=1000/(OPT.fpsCap||60);
-  if(OPT.fpsCap<244){
+  if(OPT.fpsCap){
+    _fpsCapInterval=1000/OPT.fpsCap;
     const _elapsed=timestamp-_lastLoopTs;
     if(_elapsed<_fpsCapInterval-1){requestAnimationFrame(loop);return}
   }
@@ -50967,8 +50967,6 @@ function _v3tex(src){if(!_v3tc[src])_v3tc[src]=_v3tl.load(src,function(t){t.minF
 const _v3parts=[];
 const _V3_MAX=120;
 const _V3_SS='assets/vfx/';
-const _V3_P='assets/vfx/particles/';
-
 // 스프라이트시트 정의
 const _V3_SHEETS={
   fireFBF:{src:_V3_SS+'Fire_FBF_4x4.png',c:4,r:4},fireImp:{src:_V3_SS+'Fire_ImpactFire_Sheet.png',c:4,r:4},

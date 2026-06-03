@@ -35960,7 +35960,7 @@ function activateDarkPillar(){
     const _stDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap')); // 통일공식: _skMul
     for(let _pi=0;_pi<_positions.length;_pi++){
       const p=_positions[_pi];
-      G._fireZones.push({x:p.x,y:p.y,r:_stR,t:0,maxT:600,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap'});
+      G._fireZones.push({x:p.x,y:p.y,r:_stR,t:0,maxT:600,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap',_pillarSpike:true});
     }
     P._gcCd=~~(600*(1+_eqAffix('cooldownRed'))); // 가시덫 쿨다운 소비
     addTxt(cx,cy-50,_T('🌿 기둥가시!'),'#88cc44',30);
@@ -44399,16 +44399,22 @@ function drawP(){
         // 지속적 미세 화면 흔들림
         if(_faFade>0.1)G.shake=Math.max(G.shake,~~(1.5*_faFade*OPT.shake/100));
       }else if(fz.type==='spikeTrap'){
-        // ═══ 가시덫(결계) — 단일 이미지 + 슬로우 회전 ═══
-        const _deployT=Math.min(1,fz.t/12);
-        const _stSz=fz.r*2*_deployT;
-        if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/결계.png'}
-        const _stImg=G._spikeTrapImg;
-        if(_stImg.complete&&_stImg.naturalWidth>0){
-          const _stLife=fz.maxT>0?Math.max(0,1-fz.t/fz.maxT):1;
-          X.globalAlpha=(.5+.5*(.5+.5*Math.sin(_now*.002)))*_fzFade;
+        // ═══ 가시덫 — 4프레임 애니메이션 스프라이트 ═══
+        if(!G._spikeTrapFrames){
+          G._spikeTrapFrames=[];
+          for(let _si=1;_si<=4;_si++){const _simg=new Image();_simg.src='sprites/spike_trap/spike_trap_'+_si+'.webp';G._spikeTrapFrames.push(_simg)}
+        }
+        if(!fz._vfxFrame)fz._vfxFrame=0;
+        if(!fz._vfxTimer)fz._vfxTimer=0;
+        fz._vfxTimer+=_dtSp;
+        if(fz._vfxTimer>=10){fz._vfxTimer-=10;fz._vfxFrame=(fz._vfxFrame+1)%4}
+        const _stImg=G._spikeTrapFrames[fz._vfxFrame];
+        if(_stImg&&_stImg.complete&&_stImg.naturalWidth>0){
+          const _deployT=Math.min(1,fz.t/12);
+          const _stSz=fz.r*2*_deployT;
+          X.globalAlpha=(.6+.2*Math.sin(_now*.003))*_fzFade;
           X.save();X.translate(fz.x,fz.y);
-          X.rotate(_now*0.00005);
+          X.rotate(_now*0.00008);
           X.drawImage(_stImg,-_stSz/2,-_stSz/2,_stSz,_stSz);
           X.restore();
         }
@@ -50962,13 +50968,11 @@ _v3cam.position.set(0,0,1);
 
 const _v3tl=new THREE.TextureLoader();
 const _v3tc={};
-function _v3tex(src){if(!_v3tc[src])_v3tc[src]=_v3tl.load(src,function(t){t.minFilter=THREE.LinearFilter;t.magFilter=THREE.LinearFilter});return _v3tc[src]}
+function _v3tex(src){if(!src)return null;if(!_v3tc[src])_v3tc[src]=_v3tl.load(src,function(t){t.minFilter=THREE.LinearFilter;t.magFilter=THREE.LinearFilter});return _v3tc[src]}
 
 const _v3parts=[];
 const _V3_MAX=120;
 const _V3_SS='assets/vfx/';
-const _V3_P='assets/vfx/particles/';
-
 // 스프라이트시트 정의
 const _V3_SHEETS={
   fireFBF:{src:_V3_SS+'Fire_FBF_4x4.png',c:4,r:4},fireImp:{src:_V3_SS+'Fire_ImpactFire_Sheet.png',c:4,r:4},
@@ -50988,17 +50992,10 @@ const _V3_SHEETS={
   lightImp:{src:_V3_SS+'Light_ImpactLight_Sheet.png',c:4,r:4},airFBF:{src:_V3_SS+'Air_Air_FBF_4x4.png',c:4,r:4},
   poisonBas:{src:_V3_SS+'Poison_BasicImpact.png',c:3,r:3},poisonMed:{src:_V3_SS+'Poison_MediumImpact.png',c:4,r:4},
 };
-// 개별 텍스처
-const _V3_T={
-  fire:[0,1,2,3].map(function(i){return _V3_P+'Impact_fire_'+i+'.png'}),
-  light:[0,1,2,3].map(function(i){return _V3_P+'Impact_light_'+i+'.png'}),
-  lightning:[0,1,2,3].map(function(i){return _V3_P+'Impact_lightning_'+i+'.png'}),
-  water:[0,1,2,3].map(function(i){return _V3_P+'Impact_water_'+i+'.png'}),
-  impact:[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15].map(function(i){return _V3_P+'Impact_'+i+'.png'}),
-};
+// 개별 텍스처 (particles/ 폴더 미생성 — 빈 배열로 대기)
+const _V3_T={fire:[],light:[],lightning:[],water:[],impact:[]};
 // 프리로드
 Object.values(_V3_SHEETS).forEach(function(s){_v3tex(s.src)});
-Object.values(_V3_T).forEach(function(a){a.forEach(function(s){_v3tex(s)})});
 
 function _v3sizeEase(t){return 0.47+(1-0.47)*t}
 
