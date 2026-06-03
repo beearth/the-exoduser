@@ -35041,7 +35041,7 @@ const _SK_MUL={
   darkPillar:{b:20,g:16.0},    // 2t/s → Lv20 DPS=344
   spikeTrap:{b:14,g:11.2},     // 2.4t/s → Lv20 DPS=288 (+슬로우+출혈)
   bladeDash:{b:20,g:12},       // 3t/s → Lv20 DPS=402 (+방어력감소)
-  thunderStake:{b:24,g:16.0},  // 아크×0.5, 1.5t/s → Lv20 DPS=264
+  thunderStake:{b:12,g:8.0},  // 아크×0.5, 1.5t/s → Lv20 DPS=132 (50% 너프)
   // ── 연발 채널링 ──
   arcLaser:{b:8,g:6.4},        // 4t/s → Lv20 DPS=276. E홀드 직선관통
   omniBeam:{b:0.75,g:0.6},     // 50%↑ (구 b:0.5,g:0.4). 15t/s×6줄기 → 타겟당 Lv20 DPS≈87, 총DPS≈580
@@ -35931,8 +35931,8 @@ function activateDarkPillar(){
   // 9개 기둥 위치: 중앙 1 + 내원 4 + 외원 4
   const cx=P.x,cy=P.y;
   const _positions=[{x:cx,y:cy}]; // 중앙
-  const _innerR=_dpR*0.4;
-  for(let i=0;i<4;i++){const a=Math.PI*2*i/4+Math.PI/4;_positions.push({x:cx+Math.cos(a)*_innerR,y:cy+Math.sin(a)*_innerR})}
+  const _innerR=_dpR*0.3;
+  for(let i=0;i<4;i++){const a=Math.PI*2*i/4;_positions.push({x:cx+Math.cos(a)*_innerR,y:cy+Math.sin(a)*_innerR})}
   const _outerR=_dpR*0.75;
   for(let i=0;i<4;i++){const a=Math.PI*2*i/4;_positions.push({x:cx+Math.cos(a)*_outerR,y:cy+Math.sin(a)*_outerR})}
   // 첫번째 즉시 스폰, 나머지 큐에 넣기 (10프레임 간격)
@@ -44405,7 +44405,7 @@ function drawP(){
         if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/spike_thorn.png'}
         const _stImg=G._spikeTrapImg;
         if(_stImg.complete&&_stImg.naturalWidth>0){
-          X.globalAlpha=(.6+.2*Math.sin(_now*.003))*_fzFade;
+          X.globalAlpha=(1+.15*Math.sin(_now*.003))*_fzFade;
           const _prevComp=X.globalCompositeOperation;
           X.globalCompositeOperation='lighter';
           X.save();X.translate(fz.x,fz.y);

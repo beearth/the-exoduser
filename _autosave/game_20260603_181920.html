@@ -12347,9 +12347,9 @@ const CHAPTER_STAGES=[
 const TOTAL_STAGES=35;
 // ── 데모 잠금 ──────────────────────────────────────────
 // ?bic → BIC부스 데모(Lv100), ?demo → 일반데모(Lv500), 없으면 정식
-const _BIC=location.search.includes('bic');\nconst _DEMO_MODE=_BIC||location.search.includes('demo');\nconst _DEMO_LV_CAP=_BIC?100:500;
-const _DEMO_MODE=true;
-const _DEMO_LV_CAP=100;
+const _BIC=location.search.includes('bic');
+const _DEMO_MODE=_BIC||location.search.includes('demo');
+const _DEMO_LV_CAP=_BIC?100:500;
 const _DEMO_LAST_STAGE=3; // ACT1(hell:0) 마지막 스테이지 인덱스
 const _DEMO_FUSE_ALLOWED=new Set(['dimBreach','dimSlam','sixFuse','elemFuse','whirlDet','slamStorm','bladeFuse','plagueFuse','boneStorm','elecRepent','shieldFuse','holyFuse','holyIce','iceMortar','pillarSpike','pillarSlam','infernoSlam','thunderGhost','dualScarecrow','siegeGhost']);
 const _DEMO_AFFIX_BANNED=new Set(['sharpAtk','brutalAtk','ruinAtk','overkilDmg','staggerExplosion','parryExplosion','elemConvert']);
@@ -35041,7 +35041,7 @@ const _SK_MUL={
   darkPillar:{b:20,g:16.0},    // 2t/s → Lv20 DPS=344
   spikeTrap:{b:14,g:11.2},     // 2.4t/s → Lv20 DPS=288 (+슬로우+출혈)
   bladeDash:{b:20,g:12},       // 3t/s → Lv20 DPS=402 (+방어력감소)
-  thunderStake:{b:24,g:16.0},  // 아크×0.5, 1.5t/s → Lv20 DPS=264
+  thunderStake:{b:12,g:8.0},  // 아크×0.5, 1.5t/s → Lv20 DPS=132 (50% 너프)
   // ── 연발 채널링 ──
   arcLaser:{b:8,g:6.4},        // 4t/s → Lv20 DPS=276. E홀드 직선관통
   omniBeam:{b:0.75,g:0.6},     // 50%↑ (구 b:0.5,g:0.4). 15t/s×6줄기 → 타겟당 Lv20 DPS≈87, 총DPS≈580
@@ -35722,7 +35722,7 @@ function activateSpikeTrap(){
   _addSkProf('spikeTrap');
   G.mats-=_malCost(10);P._gcCd=~~(600*(1+_eqAffix('cooldownRed')));
   const lv=P.skills.spikeTrap||1;
-  const r=300+(lv-1)*22;
+  const r=600+(lv-1)*44;
   const dmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap'));
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:r,t:0,maxT:600,dmg:dmg,el:EL.P,lv:lv,type:'spikeTrap'});
@@ -35931,8 +35931,8 @@ function activateDarkPillar(){
   // 9개 기둥 위치: 중앙 1 + 내원 4 + 외원 4
   const cx=P.x,cy=P.y;
   const _positions=[{x:cx,y:cy}]; // 중앙
-  const _innerR=_dpR*0.4;
-  for(let i=0;i<4;i++){const a=Math.PI*2*i/4+Math.PI/4;_positions.push({x:cx+Math.cos(a)*_innerR,y:cy+Math.sin(a)*_innerR})}
+  const _innerR=_dpR*0.3;
+  for(let i=0;i<4;i++){const a=Math.PI*2*i/4;_positions.push({x:cx+Math.cos(a)*_innerR,y:cy+Math.sin(a)*_innerR})}
   const _outerR=_dpR*0.75;
   for(let i=0;i<4;i++){const a=Math.PI*2*i/4;_positions.push({x:cx+Math.cos(a)*_outerR,y:cy+Math.sin(a)*_outerR})}
   // 첫번째 즉시 스폰, 나머지 큐에 넣기 (10프레임 간격)
@@ -35956,9 +35956,9 @@ function activateDarkPillar(){
   // 합체: 기둥가시 — 가시덫 흡수 (각 기둥 위치에 가시덫 자동 설치)
   if(_isFused('pillarSpike')&&P.skills.spikeTrap>=1){
     const _stLv=P.skills.spikeTrap||1;
-    const _stR=200+(_stLv-1)*22;
+    const _stR=400+(_stLv-1)*44;
     const _stDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap')); // 통일공식: _skMul
-    for(let _pi=0;_pi<_positions.length;_pi++){
+    for(let _pi=0;_pi<Math.min(5,_positions.length);_pi++){
       const p=_positions[_pi];
       G._fireZones.push({x:p.x,y:p.y,r:_stR,t:0,maxT:600,dmg:_stDmg,el:EL.P,lv:_stLv,type:'spikeTrap',_pillarSpike:true});
     }
@@ -44405,7 +44405,7 @@ function drawP(){
         if(!G._spikeTrapImg){G._spikeTrapImg=new Image();G._spikeTrapImg.src='sprites/spike_trap/spike_thorn.png'}
         const _stImg=G._spikeTrapImg;
         if(_stImg.complete&&_stImg.naturalWidth>0){
-          X.globalAlpha=(.6+.2*Math.sin(_now*.003))*_fzFade;
+          X.globalAlpha=(1+.15*Math.sin(_now*.003))*_fzFade;
           const _prevComp=X.globalCompositeOperation;
           X.globalCompositeOperation='lighter';
           X.save();X.translate(fz.x,fz.y);
@@ -50998,6 +50998,7 @@ function _v3sizeEase(t){return 0.47+(1-0.47)*t}
 function _v3addPart(opt){
   if(_v3parts.length>=_V3_MAX)return;
   var t=_v3tex(opt.tex);
+  if(!t)return;
   var ct=t.clone();ct.needsUpdate=true;
   if(opt.sheet){ct.repeat.set(1/opt.sheet.c,1/opt.sheet.r);ct.offset.set(0,1-1/opt.sheet.r)}
   var mat=new THREE.SpriteMaterial({map:ct,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false,

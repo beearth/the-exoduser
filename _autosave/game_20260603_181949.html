@@ -17748,30 +17748,32 @@ function _fireballExplode(p){
       // 악의구 폭발: 중독 부여 (데미지×2, 10초, 최대10중첩)
       if(p.fireball&&!p.fireBeamProj){e.poison=1;e.poisonT=Math.max(e.poisonT||0,600);e.poisonStk=Math.min(10,(e.poisonStk||0)+1);if((e.poisonStk||0)<10)e._poisonPool=(e._poisonPool||0)+pDotPool()*dmg*2}
     }}
-  // 업화선 전용 폭발 — Fire VFX (중앙 노랑, 외곽 붉은)
+  // 업화선 전용 폭발 — Fire VFX (중앙 노랑, 외곽 붉은) — 캡 8개 (렉 방지)
   if(p.fireBeamProj){
     const _fbPx=p.x,_fbPy=p.y;
     const _fbSc=Math.min(3.0,Math.max(1.0,Math.sqrt(r/80)));
     if(!window._tvfx2)window._tvfx2=[];
+    if(window._tvfx2.length<60){ // VFX 캡: 60개 초과 시 새 폭발 VFX 생략
     // [0] 중앙 노란 섬광 — radial gradient (노랑→빨강→투명)
     window._tvfx2.push({x:_fbPx,y:_fbPy,radial:true,r0:30*_fbSc,r1:120*_fbSc,
       c0:'#ffffaa',c1:'#ff2200',life:18,t:0});
     // [1] ImpactFire 시트
     const _fIS=_tvfx2Imgs['Fire_ImpactFire_Sheet.png'];
     if(_fIS&&_fIS.complete){const fw=~~(_fIS.naturalWidth/4),fh=~~(_fIS.naturalHeight/4);
-      for(let i=0;i<2;i++)window._tvfx2.push({img:_fIS,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:1.4*_fbSc,delay:0,spd:2,frame:0,total:16,t:0,timer:0,alphaMax:0.7})}
+      window._tvfx2.push({img:_fIS,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:1.4*_fbSc,delay:0,spd:2,frame:0,total:16,t:0,timer:0,alphaMax:0.7})}
     // [2] MediumImpact — 외곽
     const _fMI=_tvfx2Imgs['Fire_MediumImpact.png'];
     if(_fMI&&_fMI.complete){const fw=~~(_fMI.naturalWidth/4),fh=~~(_fMI.naturalHeight/4);
-      for(let i=0;i<2;i++)window._tvfx2.push({img:_fMI,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.0*_fbSc,delay:0,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.45})}
+      window._tvfx2.push({img:_fMI,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.0*_fbSc,delay:0,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.45})}
     // [3] BasicImpact — 쇼크웨이브
     const _fBI=_tvfx2Imgs['Fire_BasicImpact.png'];
     if(_fBI&&_fBI.complete){const fw=~~(_fBI.naturalWidth/3),fh=~~(_fBI.naturalHeight/3);
-      for(let i=0;i<2;i++)window._tvfx2.push({img:_fBI,x:_fbPx,y:_fbPy,cols:3,rows:3,fw,fh,sc:1.0*_fbSc,delay:0,spd:2,frame:0,total:9,t:0,timer:0,alphaMax:0.6})}
-    // [4] FBF 연기 — 외곽 붉은
+      window._tvfx2.push({img:_fBI,x:_fbPx,y:_fbPy,cols:3,rows:3,fw,fh,sc:1.0*_fbSc,delay:0,spd:2,frame:0,total:9,t:0,timer:0,alphaMax:0.6})}
+    // [4] FBF 연기 — 외곽 붉은 (3→1개)
     const _fFB=_tvfx2Imgs['Fire_FBF_4x4.png'];
     if(_fFB&&_fFB.complete){const fw=~~(_fFB.naturalWidth/4),fh=~~(_fFB.naturalHeight/4);
-      for(let i=0;i<3;i++)window._tvfx2.push({img:_fFB,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.4*_fbSc,delay:1,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.3})}
+      window._tvfx2.push({img:_fFB,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.4*_fbSc,delay:1,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.3})}
+    } // end VFX cap
     playSample('fireball',.9,_r(.7,.1));shake(8);if(window._v3fx)window._v3fx('fire',p.x,p.y)}
   else{
     // 보라색 콤보 임팩트 (기존 darkBurst 대체)
@@ -35041,7 +35043,7 @@ const _SK_MUL={
   darkPillar:{b:20,g:16.0},    // 2t/s → Lv20 DPS=344
   spikeTrap:{b:14,g:11.2},     // 2.4t/s → Lv20 DPS=288 (+슬로우+출혈)
   bladeDash:{b:20,g:12},       // 3t/s → Lv20 DPS=402 (+방어력감소)
-  thunderStake:{b:24,g:16.0},  // 아크×0.5, 1.5t/s → Lv20 DPS=264
+  thunderStake:{b:12,g:8.0},  // 아크×0.5, 1.5t/s → Lv20 DPS=132 (50% 너프)
   // ── 연발 채널링 ──
   arcLaser:{b:8,g:6.4},        // 4t/s → Lv20 DPS=276. E홀드 직선관통
   omniBeam:{b:0.75,g:0.6},     // 50%↑ (구 b:0.5,g:0.4). 15t/s×6줄기 → 타겟당 Lv20 DPS≈87, 총DPS≈580
@@ -50998,6 +51000,7 @@ function _v3sizeEase(t){return 0.47+(1-0.47)*t}
 function _v3addPart(opt){
   if(_v3parts.length>=_V3_MAX)return;
   var t=_v3tex(opt.tex);
+  if(!t)return;
   var ct=t.clone();ct.needsUpdate=true;
   if(opt.sheet){ct.repeat.set(1/opt.sheet.c,1/opt.sheet.r);ct.offset.set(0,1-1/opt.sheet.r)}
   var mat=new THREE.SpriteMaterial({map:ct,blending:THREE.AdditiveBlending,transparent:true,depthWrite:false,

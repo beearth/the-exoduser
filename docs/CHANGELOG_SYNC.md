@@ -29045,3 +29045,18 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - userdata/Local State
 - userdata/segmentation_platform/ukm_db
 
+
+## 2026-06-03 18:30 (auto)
+- _autosave/game_20260603_181846.html
+- _autosave/game_20260603_181920.html
+- _autosave/game_20260603_181949.html
+- _autosave/game_20260603_181956.html
+- _autosave/game_20260603_182010.html
+- _autosave/game_20260603_182141.html
+- _autosave/game_20260603_182342.html
+- _autosave/game_20260603_182757.html
+- _autosave/game_20260603_182807.html
+- _autosave/game_20260603_182919.html
+- docs/14ë°¸ëŸ°???˜ì¹˜?Œì´ë¸?14ë°¸ëŸ°???˜ì¹˜?Œì´ë¸?md
+- game.html
+
