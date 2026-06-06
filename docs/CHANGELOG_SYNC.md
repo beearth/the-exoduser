@@ -29118,3 +29118,18 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _autosave/game_20260606_102918.html
 - game.html
 
+
+## 2026-06-06 11:30 (auto)
+- _autosave/game_20260606_105759.html
+- _autosave/game_20260606_105922.html
+- _autosave/game_20260606_110134.html
+- _autosave/game_20260606_110718.html
+- _autosave/game_20260606_110730.html
+- _autosave/game_20260606_111022.html
+- _autosave/game_20260606_111036.html
+- _autosave/game_20260606_111602.html
+- _autosave/game_20260606_112020.html
+- _autosave/game_20260606_112031.html
+- assets/vfx/Blood_FBF_4x4.png
+- game.html
+

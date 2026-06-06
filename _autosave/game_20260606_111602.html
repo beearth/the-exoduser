@@ -13500,8 +13500,8 @@ registerVFX('boss_doppelganger','assets/vfx/boss/boss_doppelganger.webp',256,256
 registerVFX('boss_gSlamWave','assets/vfx/boss/boss_gSlamWave.webp',515,515,16,4);
 registerVFX('boss_gwPillar','assets/vfx/boss/boss_gwPillar.webp',512,512,16,4);
 registerVFX('boss_gwLightning','assets/vfx/boss/boss_gwLightning.webp',512,512,16,4);
-registerVFX('death_smoke','assets/vfx/Dark_Smoke_Sheet_6x6.png',170,170,36,6,'source-over');
-registerVFX('death_blood','assets/vfx/Blood_FBF_4x4.png',128,128,16,4,'source-over');
+registerVFX('death_smoke','assets/vfx/Dark_Smoke_Sheet_6x6.png',170,170,36,6,'lighter');
+registerVFX('death_blood','assets/vfx/Blood_FBF_4x4.png',128,128,16,4,'lighter');
 
 // ═══ 빙결 틴트용 오프스크린 캔버스 (몬스터 실루엣 파란 틴트) ═══
 const _iceTintC=document.createElement('canvas');
@@ -17917,11 +17917,11 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
   }
   // 6) 사망 연기 + 피 — 큰 몹/보스: 피+연기, 작은 몹: 연기만
   if(!_tooMany){
-    const _dsScale=isBoss?1.5:(r>15?0.8:0.5);
-    playVFXAng('death_smoke',x,y,_dsScale,isBoss?4:3,Math.random()*Math.PI*2);
+    const _dsScale=isBoss?1.2:(r>15?0.7:0.45);
+    playVFXAng('death_smoke',x,y,_dsScale,isBoss?2:1,Math.random()*Math.PI*2);
     if(isBoss||r>=12){
-      const _dbScale=isBoss?1.2:(r>20?0.7:0.45);
-      playVFXAng('death_blood',x,y,_dbScale,isBoss?3:2,Math.random()*Math.PI*2);
+      const _dbScale=isBoss?1.0:(r>20?0.6:0.4);
+      playVFXAng('death_blood',x,y,_dbScale,isBoss?2:1,Math.random()*Math.PI*2);
     }
   }
 }
@@ -29716,7 +29716,7 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   const _isRedParry=_parryEl==='red';
   const _isRainbowParry=_parryEl==='rainbow';
   const _pbMul=1+_eqAffix('parryBonus');
-  const _parryRegenMul=1+(PASSIVES.pRegen||0)*.20; // 회복력 패시브: 패링회복 +20%/lv
+  const _parryRegenMul=1+(PASSIVES.pRegen||0)*.30; // 회복력 패시브: 패링회복 +30%/lv
   const _prRaw=(_isQParry?50:30)*_pbMul*_parryRegenMul;
   const _prBase=~~(_isRedParry?_prRaw*0.5:_isRainbowParry?_prRaw*1.5:_prRaw); // 빨콩 ×0.5, 무지개 ×1.5
   P.iframes=25;

@@ -17917,11 +17917,11 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
   }
   // 6) 사망 연기 + 피 — 큰 몹/보스: 피+연기, 작은 몹: 연기만
   if(!_tooMany){
-    const _dsScale=isBoss?1.5:(r>15?0.8:0.5);
-    playVFXAng('death_smoke',x,y,_dsScale,isBoss?4:3,Math.random()*Math.PI*2);
+    const _dsScale=isBoss?1.2:(r>15?0.7:0.45);
+    playVFXAng('death_smoke',x,y,_dsScale,isBoss?2:1,Math.random()*Math.PI*2);
     if(isBoss||r>=12){
-      const _dbScale=isBoss?1.2:(r>20?0.7:0.45);
-      playVFXAng('death_blood',x,y,_dbScale,isBoss?3:2,Math.random()*Math.PI*2);
+      const _dbScale=isBoss?1.0:(r>20?0.6:0.4);
+      playVFXAng('death_blood',x,y,_dbScale,isBoss?2:1,Math.random()*Math.PI*2);
     }
   }
 }
