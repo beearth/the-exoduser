@@ -13399,15 +13399,15 @@ function registerVFX(id,src,fw,fh,frames,cols,blend){
   img.onload=()=>{_VFX_SHEETS[id]={img,fw,fh,frames,cols:cols||Math.floor(img.width/fw),blend:blend||"lighter"}};
 
 }
-function playVFXAng(id,x,y,scale,speed,ang,isSkill){
+function playVFXAng(id,x,y,scale,speed,ang,isSkill,alpha){
   if(!_VFX_SHEETS[id])return;
   if(_vfxAnims.length>=20){
     let vi=-1;for(let i=0;i<_vfxAnims.length;i++){if(!_vfxAnims[i].isSkill){vi=i;break}}
     if(vi<0)vi=0;
-    const v=_vfxAnims[vi];v.id=id;v.x=x;v.y=y;v.frame=0;v.maxFrames=_VFX_SHEETS[id].frames;v.t=0;v.frameTime=speed||3;v.scale=scale||2.0;v.ang=ang||0;v.isSkill=!!isSkill;
+    const v=_vfxAnims[vi];v.id=id;v.x=x;v.y=y;v.frame=0;v.maxFrames=_VFX_SHEETS[id].frames;v.t=0;v.frameTime=speed||3;v.scale=scale||2.0;v.ang=ang||0;v.isSkill=!!isSkill;v.baseAlpha=alpha||0;
     _vfxAnims.push(_vfxAnims.splice(vi,1)[0]);
   }
-  else _vfxAnims.push({id,x,y,frame:0,maxFrames:_VFX_SHEETS[id].frames,t:0,frameTime:speed||3,scale:scale||2.0,ang:ang||0,isSkill:!!isSkill});
+  else _vfxAnims.push({id,x,y,frame:0,maxFrames:_VFX_SHEETS[id].frames,t:0,frameTime:speed||3,scale:scale||2.0,ang:ang||0,isSkill:!!isSkill,baseAlpha:alpha||0});
 }
 // registerVFX('slash','impact/slash_vfx_export/slash_spritesheet_8x1_4096x512.png',512,512,8,8); // 파일 미존재 — 비활성
 registerVFX('eq_impact','img/vfx_earthquake/explosion_spritesheet.png',512,512,9,3,'multiply'); // 진동보행 착지 폭발 임팩트 (3x3, 9프레임)
@@ -13500,6 +13500,8 @@ registerVFX('boss_doppelganger','assets/vfx/boss/boss_doppelganger.webp',256,256
 registerVFX('boss_gSlamWave','assets/vfx/boss/boss_gSlamWave.webp',515,515,16,4);
 registerVFX('boss_gwPillar','assets/vfx/boss/boss_gwPillar.webp',512,512,16,4);
 registerVFX('boss_gwLightning','assets/vfx/boss/boss_gwLightning.webp',512,512,16,4);
+registerVFX('death_smoke','assets/vfx/Dark_Smoke_BW_6x6.png',170,170,36,6,'source-over');
+registerVFX('death_blood','assets/vfx/Blood_FBF_4x4.png',128,128,16,4,'source-over');
 
 // ═══ 빙결 틴트용 오프스크린 캔버스 (몬스터 실루엣 파란 틴트) ═══
 const _iceTintC=document.createElement('canvas');
@@ -17913,16 +17915,13 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
       poolPart(x,y,Math.cos(a)*spd,Math.sin(a)*spd,'#ffffff',4,6,1,0,0);
     }
   }
-  // 6) 사망 연기 — 느리게 퍼지며 상승하는 반투명 원
+  // 6) 사망 연기 + 피 — 큰 몹/보스: 피+연기, 작은 몹: 연기만
   if(!_tooMany){
-    const _smN=isBoss?8:4;
-    const _smCols=['#555555','#666666','#777777','#888888'];
-    for(let i=0;i<_smN;i++){
-      const a=Math.random()*Math.PI*2;const spd=.3+Math.random()*.6;
-      const sz=isBoss?5+Math.random()*4:3+Math.random()*3;
-      poolPart(x+(Math.random()-.5)*r,y+(Math.random()-.5)*r,
-        Math.cos(a)*spd,-.3-Math.random()*.5,
-        _smCols[i&3],sz,isBoss?20:14,1,0,0);
+    const _dsScale=isBoss?4.5:(r>15?2.4:1.5);
+    playVFXAng('death_smoke',x,y,_dsScale,isBoss?12:8,Math.random()*Math.PI*2);
+    if(isBoss||r>=12){
+      const _dbScale=isBoss?3.6:(r>20?2.1:1.35);
+      playVFXAng('death_blood',x,y,_dbScale,isBoss?6:4,Math.random()*Math.PI*2);
     }
   }
 }
@@ -20242,7 +20241,7 @@ function pAbundRegen(){return (PASSIVES.pAbund||0)*.05}  // 풍요: 회복력+5%
 function pPredDmg(e){return e&&e.hp<=e.mhp*.3?(PASSIVES.pPred||0)*.20:0}  // 약자포식: 적HP≤30% → 뎀+20%/lv (합연산)
 function pPredRegen(){return P.hp<=P.mhp*.3?(PASSIVES.pPred||0)*.10:0}    // 약자포식: 내HP≤30% → 회복력+10%/lv (합연산)
 function pPredSpd(){return P.hp<=P.mhp*.3?(PASSIVES.pPred||0)*.05:0}      // 약자포식: 내HP≤30% → 이속+5%/lv (합연산)
-function _cdRed(){return _cdRed()+_eqAffix('helmCooldown')+_eqAffix('endCooldownAll')+_eqAffix('skillCdRed')} // 쿨다운 감소 통합 (cooldownRed+helmCooldown+endCooldownAll+skillCdRed)
+function _cdRed(){return _eqAffix('cooldownRed')+_eqAffix('helmCooldown')+_eqAffix('endCooldownAll')+_eqAffix('skillCdRed')} // 쿨다운 감소 통합 (cooldownRed+helmCooldown+endCooldownAll+skillCdRed)
 function pDotDmg(){return _passDmgSum('dot')}   // 침식 통합배율 (합연산)
 function pDotDur(){return 1+(PASSIVES.pDot||0)*.10}    // 침식: DOT 지속시간 +10%/lv (10lv=+100%)
 function pDotPool(){return 1+(PASSIVES.pDot||0)*.05}   // 침식: DOT 축적률 +5%/lv (10lv=+50%)
@@ -25035,7 +25034,7 @@ function update(){
       if(P.st2<=12&&P.st2+sp>12){
         // ═══ 칼등날개: 전방 반원 충격파 히트 ═══
         const _sdLv=P.skills.maliceSwipe||0;
-        const _gsRange2=70+(_sdLv>=1?(_sdLv-1)*3:0)+(sh().bonusRange||0)*4;
+        const _gsRange2=70+(_sdLv>=1?(_sdLv-1)*1:0)+(sh().bonusRange||0)*4;
         // 우클릭(칼등 처내기): meleeRef × 2.0 (200%), Lv20=1000% (5배 성장, +21%/Lv 곱연산)
         const _gsDmg2=~~(meleeRef()*2.0*(1+(_sdLv>=1?(_sdLv-1)*0.21:0))*statStr()*pShieldMul())+(P._atkBon||0);P._atkBon=0;
         // ═══ 칼등날개 충격파 히트 (_gSlamHit 방식) ═══
@@ -29717,7 +29716,7 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   const _isRedParry=_parryEl==='red';
   const _isRainbowParry=_parryEl==='rainbow';
   const _pbMul=1+_eqAffix('parryBonus');
-  const _parryRegenMul=1+(PASSIVES.pRegen||0)*.30; // 회복력 패시브: 패링회복 +30%/lv
+  const _parryRegenMul=1+(PASSIVES.pRegen||0)*.20; // 회복력 패시브: 패링회복 +20%/lv
   const _prRaw=(_isQParry?50:30)*_pbMul*_parryRegenMul;
   const _prBase=~~(_isRedParry?_prRaw*0.5:_isRainbowParry?_prRaw*1.5:_prRaw); // 빨콩 ×0.5, 무지개 ×1.5
   P.iframes=25;
