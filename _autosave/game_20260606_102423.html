@@ -20155,7 +20155,7 @@ function statDex(){return 1+(STATS.dex+_eqStat('Dex')+_lvB())*.0005+(gl().atkSpd
 function statInt(){return 1} // INT는 ref 함수에서 직접 ATK로 더해짐 (1:1)
 function _eqLckTotal(){return STATS.lck+_lvB()+_eqStat('Lck')+_eqAffix('lckFlatN')+_eqAffix('lckFlatR')}
 function statCrit(){return _eqLckTotal()*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+_eqAffix('critRate')*100+(P._crystalStats?P._crystalStats.crit:0)} // critRate 어픽스 (무기 파트) pct단위 → %로 환산
-function statCritDmg(){return 1.5+_eqLckTotal()*.002+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5, LCK 1당 +0.2% (LCK1000=+200%, 1.5→3.5), critDmgW 추가 (무기 파트)
+function statCritDmg(){return 1.5+_eqLckTotal()*.002+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW')+_eqAffix('neckCritDmg')+_eqAffix('glovesCritDmg')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5, LCK 1당 +0.2% (LCK1000=+200%, 1.5→3.5), critDmgW+neckCritDmg+glovesCritDmg
 function statDropBonus(){return 1+_eqLckTotal()*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
 // 패시브 배율 함수 (max5, 효과 2배)
 // ═══ 통합 합연산 배율: 모든 데미지 패시브를 한 곳에서 합산 ═══
@@ -26257,7 +26257,7 @@ function update(){
       if(dst(P.x,P.y,p.x,p.y)<28&&P.iframes<=0&&P.s!=='charge'){
         hurtP(~~(p.dmg*elMul(p.el,ar().el)),{dtype:'magic',src:_T('함정')});
         const ka=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(ka)*8;P.kb.y+=Math.sin(ka)*8;
-        P._trapSlowT=120; // 2초 감속
+        P._trapSlowT=~~(120*(1-Math.min(.5,_eqAffix('slowRes')))); // 2초 감속 (slowRes 저항)
         addTxt(P.x,P.y-20,_T('⚠ 함정!'),'#997744',40);addParts(p.x,p.y,'#997744',10);
         G.shake=4*OPT.shake/100;_dead=true;
       }else if(p.life<=0){addParts(p.x,p.y,'#997744',3);_dead=true}
@@ -26484,7 +26484,7 @@ function update(){
         {if(!P._rbPoison)P._rbPoison=[];if(P._rbPoison.length<10){P._rbPoison.push({total:_bkD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('☠중독!')+'×'+P._rbPoison.length,'#33aa22',30)}}
         // 무지개탄 포이즈 데미지 (2칸 소모)
         {P.poise=Math.max(0,(P.poise||4)-2);P.poiseR=0;
-        if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(480*(1-Math.min(.3,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}}
+        if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))));P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}}
         // 넉백 + 피격플래시
         {const _bkA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bkA)*7;P.kb.y+=Math.sin(_bkA)*7}
         P.iframes=Math.max(P.iframes,15);
@@ -31056,7 +31056,7 @@ function updateE(e,sp){
     // 노래: 주변 플레이어 50% 감속 3초
     if(e._sirenSongCd<=0&&d<1200){
       e._sirenSongCd=150+Math.random()*50;
-      P._trapSlowT=Math.max(P._trapSlowT||0,180);
+      P._trapSlowT=Math.max(P._trapSlowT||0,~~(180*(1-Math.min(.5,_eqAffix('slowRes')))));
       addTxt(e.x,e.y-e.r-15,'~~♪~~','#446655',40);addTxt(P.x,P.y-15,_T('감속!'),'#446655',30);
     }
     // 돌진 할퀴기
@@ -32452,7 +32452,7 @@ function updateE(e,sp){
         e.stunned=60;hurtE(e,_pd,e._sbAng+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y,false,e.el);_poiseHit(e,25)}
       else if(P.s!=='charge'){hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
         const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*10;P.kb.y+=Math.sin(ka)*10;
-        P.stunned=Math.max(P.stunned||0,45)}// 스턴
+        P.stunned=Math.max(P.stunned||0,~~(45*(1-Math.min(.5,_eqAffix('stunRes')))))}// 스턴 (stunRes 저항)
       e.s='recover';e.st2=30;break}
     if(e.st2<=0){e.s='recover';e.st2=25}break}
   // ═══ 거울방어 — 공격받으면 카운터 (hurtE에서 체크) ═══
@@ -33258,7 +33258,15 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(!_isMagicDmg&&!_isArrow)_crBonus+=_eqAffix('critRateMelee')*100;
   if(_isMagicDmg||(opts&&opts.beam))_crBonus+=_eqAffix('critRateSpell')*100;
   if(_isArrow)_crBonus+=_eqAffix('critRateBow')*100;
-  var _isCrit=false;if(Math.random()*100<statCrit()+_crBonus){dmg=~~(dmg*statCritDmg());_isCrit=true;if(G._sStats)G._sStats.crits++}}
+  var _isCrit=false;if(Math.random()*100<statCrit()+_crBonus){dmg=~~(dmg*statCritDmg());_isCrit=true;if(G._sStats)G._sStats.crits++;
+    // ═══ onCrit 프록 (크리 시 발동) ═══
+    const _ocExpl=_eqAffix('onCritExplode');if(_ocExpl>0){const _ocR=80;const _ocD=~~(dmg*_ocExpl);for(let _oi=0;_oi<ens.length;_oi++){const _oe=ens[_oi];if(_oe&&_oe.alive&&_oe!==e&&dst(e.x,e.y,_oe.x,_oe.y)<_ocR){hurtE(_oe,_ocD,Math.atan2(_oe.y-e.y,_oe.x-e.x),false,{pure:true})}}addParts(e.x,e.y,'#ff6622',12)}
+    const _ocChain=_eqAffix('onCritChain');if(_ocChain>0){let _ocTgt=null,_ocMin=250;for(let _oi=0;_oi<ens.length;_oi++){const _oe=ens[_oi];if(_oe&&_oe.alive&&_oe!==e){const _od=dst(e.x,e.y,_oe.x,_oe.y);if(_od<_ocMin){_ocMin=_od;_ocTgt=_oe}}}if(_ocTgt){hurtE(_ocTgt,~~(dmg*_ocChain),Math.atan2(_ocTgt.y-e.y,_ocTgt.x-e.x),false,{pure:true})}}
+    const _ocFrz=_eqAffix('onCritFreeze');if(_ocFrz>0){e._freezeGauge=(e._freezeGauge||0)+~~(_ocFrz*100);if(e._freezeGauge>=100&&!e._freezeImmune){e._frozen=180;e._freezeGauge=0}}
+    const _ocHeal=_eqAffix('onCritHeal');if(_ocHeal>0)P.hp=Math.min(P.mhp,P.hp+_ocHeal);
+    const _ocMana=_eqAffix('onCritMana');if(_ocMana>0)P.mp=Math.min(P.mmp,P.mp+_ocMana);
+    const _ocShld=_eqAffix('onCritShield');if(_ocShld>0&&P.eShieldMax>0){P.eShield=Math.min(P.eShieldMax,P.eShield+_ocShld)}
+  }}
   // 스턴/그로기 상태 → 데미지 +50% (×1.5)
   if(e.stunned>0&&!isDot){dmg=~~(dmg*1.5)}
   // 프리즌(빙결) 상태 → 데미지 1.5배
@@ -33286,6 +33294,17 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       const _ml=_eqAffix('manaLeech');if(_ml>0)P.mp=Math.min(P.mmp,P.mp+dmg*_ml);
       const _sl=_eqAffix('stLeech');if(_sl>0)P.st=Math.min(P.mst,P.st+dmg*_sl);
       const _loh=_eqAffix('lifeOnHit');if(_loh>0)P.hp=Math.min(P.mhp,P.hp+_loh);
+    }
+    // ═══ 적중 시 상태이상 부여 (onHit 어픽스) ═══
+    if(!isDot){
+      const _ohFire=_eqAffix('fireOnHit');if(_ohFire>0&&Math.random()<_ohFire){e.burnT=Math.max(e.burnT||0,180);e.burnPool=(e.burnPool||0)+dmg*.3}
+      const _ohIce=_eqAffix('iceOnHit');if(_ohIce>0&&Math.random()<_ohIce){e._freezeGauge=(e._freezeGauge||0)+30;if(e._freezeGauge>=100&&!e._freezeImmune){e._frozen=180;e._freezeGauge=0}}
+      const _ohLtn=_eqAffix('lightOnHit');if(_ohLtn>0&&Math.random()<_ohLtn){e._shockT=Math.max(e._shockT||0,120);e._shockMul=Math.max(e._shockMul||0,.15)}
+      const _ohDark=_eqAffix('darkOnHit');if(_ohDark>0&&Math.random()<_ohDark){e._cursed=Math.max(e._cursed||0,180)}
+      const _ohPsn=_eqAffix('poisonOnHit');if(_ohPsn>0&&Math.random()<_ohPsn){e.poisonT=Math.max(e.poisonT||0,300);e.poisonPool=(e.poisonPool||0)+dmg*.2}
+      const _ohBld=_eqAffix('onHitBleed');if(_ohBld>0&&Math.random()<_ohBld){e.bleedT=Math.max(e.bleedT||0,300);e.bleedPool=(e.bleedPool||0)+dmg*.25}
+      const _ohStn=_eqAffix('onHitStun');if(_ohStn>0&&Math.random()<_ohStn){e.stunned=Math.min(180,Math.max(e.stunned||0,60))}
+      const _ohFrz=_eqAffix('onHitFreeze');if(_ohFrz>0&&Math.random()<_ohFrz){e._freezeGauge=(e._freezeGauge||0)+50;if(e._freezeGauge>=100&&!e._freezeImmune){e._frozen=180;e._freezeGauge=0}}
     }
     e._alerted=true; // 피격 시 즉시 플레이어 인식 (거리 무시 추적)
     // 피격 즉시 반격: recover/idle 상태면 즉시 전투 전환
@@ -34315,7 +34334,7 @@ function hurtP(dmg,opts){
     P.iframes=0;if(!_isFocusState()&&P.s!=='pStun'){
       // ═══ 포이즈 감소 → 기절 (4칸 시스템) ═══ 탄막 1칸, 근접 1칸
       P.poise=Math.max(0,(P.poise||4)-1);P.poiseR=0;
-      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(480*(1-Math.min(.3,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
       else{P.s='stagger';P.st2=6}
     }
     if(a>0)addTxt(P.x,P.y-10,'-'+a,'#ff3333',28);

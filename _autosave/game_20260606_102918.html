@@ -17756,22 +17756,22 @@ function _fireballExplode(p){
     if(!window._tvfx2)window._tvfx2=[];
     if(window._tvfx2.length<60){ // VFX 캡: 60개 초과 시 새 폭발 VFX 생략
     // [0] 중앙 노란 섬광 — 삭제 (동그라미 렉 원인)
-    // [1] ImpactFire 시트
+    // [1] ImpactFire 시트 — 중앙 코어
     const _fIS=_tvfx2Imgs['Fire_ImpactFire_Sheet.png'];
     if(_fIS&&_fIS.complete){const fw=~~(_fIS.naturalWidth/4),fh=~~(_fIS.naturalHeight/4);
-      window._tvfx2.push({img:_fIS,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:1.4*_fbSc,delay:0,spd:2,frame:0,total:16,t:0,timer:0,alphaMax:0.7})}
+      window._tvfx2.push({img:_fIS,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:1.4*_fbSc,delay:0,spd:2,frame:0,total:16,t:0,timer:0,alphaMax:1.0})}
     // [2] MediumImpact — 외곽
     const _fMI=_tvfx2Imgs['Fire_MediumImpact.png'];
     if(_fMI&&_fMI.complete){const fw=~~(_fMI.naturalWidth/4),fh=~~(_fMI.naturalHeight/4);
-      window._tvfx2.push({img:_fMI,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.0*_fbSc,delay:0,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.45})}
+      window._tvfx2.push({img:_fMI,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.0*_fbSc,delay:0,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.85})}
     // [3] BasicImpact — 쇼크웨이브
     const _fBI=_tvfx2Imgs['Fire_BasicImpact.png'];
     if(_fBI&&_fBI.complete){const fw=~~(_fBI.naturalWidth/3),fh=~~(_fBI.naturalHeight/3);
-      window._tvfx2.push({img:_fBI,x:_fbPx,y:_fbPy,cols:3,rows:3,fw,fh,sc:1.0*_fbSc,delay:0,spd:2,frame:0,total:9,t:0,timer:0,alphaMax:0.6})}
-    // [4] FBF 연기 — 외곽 붉은 (3→1개)
+      window._tvfx2.push({img:_fBI,x:_fbPx,y:_fbPy,cols:3,rows:3,fw,fh,sc:1.0*_fbSc,delay:0,spd:2,frame:0,total:9,t:0,timer:0,alphaMax:0.9})}
+    // [4] FBF 연기 — 외곽 붉은
     const _fFB=_tvfx2Imgs['Fire_FBF_4x4.png'];
     if(_fFB&&_fFB.complete){const fw=~~(_fFB.naturalWidth/4),fh=~~(_fFB.naturalHeight/4);
-      window._tvfx2.push({img:_fFB,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.4*_fbSc,delay:1,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.3})}
+      window._tvfx2.push({img:_fFB,x:_fbPx,y:_fbPy,cols:4,rows:4,fw,fh,sc:2.4*_fbSc,delay:1,spd:3,frame:0,total:16,t:0,timer:0,alphaMax:0.6})}
     } // end VFX cap
     playSample('fireball',.9,_r(.7,.1));shake(8);if(window._v3fx)window._v3fx('fire',p.x,p.y)}
   else{
@@ -20155,7 +20155,7 @@ function statDex(){return 1+(STATS.dex+_eqStat('Dex')+_lvB())*.0005+(gl().atkSpd
 function statInt(){return 1} // INT는 ref 함수에서 직접 ATK로 더해짐 (1:1)
 function _eqLckTotal(){return STATS.lck+_lvB()+_eqStat('Lck')+_eqAffix('lckFlatN')+_eqAffix('lckFlatR')}
 function statCrit(){return _eqLckTotal()*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+_eqAffix('critRate')*100+(P._crystalStats?P._crystalStats.crit:0)} // critRate 어픽스 (무기 파트) pct단위 → %로 환산
-function statCritDmg(){return 1.5+_eqLckTotal()*.002+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5, LCK 1당 +0.2% (LCK1000=+200%, 1.5→3.5), critDmgW 추가 (무기 파트)
+function statCritDmg(){return 1.5+_eqLckTotal()*.002+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW')+_eqAffix('neckCritDmg')+_eqAffix('glovesCritDmg')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5, LCK 1당 +0.2% (LCK1000=+200%, 1.5→3.5), critDmgW+neckCritDmg+glovesCritDmg
 function statDropBonus(){return 1+_eqLckTotal()*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
 // 패시브 배율 함수 (max5, 효과 2배)
 // ═══ 통합 합연산 배율: 모든 데미지 패시브를 한 곳에서 합산 ═══
@@ -20210,6 +20210,7 @@ function pAbundRegen(){return (PASSIVES.pAbund||0)*.05}  // 풍요: 회복력+5%
 function pPredDmg(e){return e&&e.hp<=e.mhp*.3?(PASSIVES.pPred||0)*.20:0}  // 약자포식: 적HP≤30% → 뎀+20%/lv (합연산)
 function pPredRegen(){return P.hp<=P.mhp*.3?(PASSIVES.pPred||0)*.10:0}    // 약자포식: 내HP≤30% → 회복력+10%/lv (합연산)
 function pPredSpd(){return P.hp<=P.mhp*.3?(PASSIVES.pPred||0)*.05:0}      // 약자포식: 내HP≤30% → 이속+5%/lv (합연산)
+function _cdRed(){return _eqAffix('cooldownRed')+_eqAffix('helmCooldown')+_eqAffix('endCooldownAll')+_eqAffix('skillCdRed')} // 쿨다운 감소 통합 (cooldownRed+helmCooldown+endCooldownAll+skillCdRed)
 function pDotDmg(){return _passDmgSum('dot')}   // 침식 통합배율 (합연산)
 function pDotDur(){return 1+(PASSIVES.pDot||0)*.10}    // 침식: DOT 지속시간 +10%/lv (10lv=+100%)
 function pDotPool(){return 1+(PASSIVES.pDot||0)*.05}   // 침식: DOT 축적률 +5%/lv (10lv=+50%)
@@ -25317,7 +25318,7 @@ function update(){
           // 패링 윈도우 아닐 때 OR 빨콩: 흡수 + 넉백 임팩트 (일반 Q 실패와 동일 연출)
           const _psBlk2=Math.min(.90,pGuardAbsorb()+pShieldBlock());
           const _absDmg=Math.max(1,~~(p.dmg*(1-_psBlk2)));
-          if(_absDmg>0){hurtP(_absDmg,{dtype:'magic',src:'보호막흡수',redBean:!!p.redBean})}
+          if(_absDmg>0){hurtP(_absDmg,{dtype:p.redBean?'parry':'magic',src:'보호막흡수',redBean:!!p.redBean})}
           // 공통 임팩트 (일반 피격과 동일)
           _projHitFx(p.x,p.y,p.el,!!p.redBean);
           {const _bAng=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bAng)*3;P.kb.y+=Math.sin(_bAng)*3}
@@ -26257,7 +26258,7 @@ function update(){
       if(dst(P.x,P.y,p.x,p.y)<28&&P.iframes<=0&&P.s!=='charge'){
         hurtP(~~(p.dmg*elMul(p.el,ar().el)),{dtype:'magic',src:_T('함정')});
         const ka=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(ka)*8;P.kb.y+=Math.sin(ka)*8;
-        P._trapSlowT=120; // 2초 감속
+        P._trapSlowT=~~(120*(1-Math.min(.5,_eqAffix('slowRes')))); // 2초 감속 (slowRes 저항)
         addTxt(P.x,P.y-20,_T('⚠ 함정!'),'#997744',40);addParts(p.x,p.y,'#997744',10);
         G.shake=4*OPT.shake/100;_dead=true;
       }else if(p.life<=0){addParts(p.x,p.y,'#997744',3);_dead=true}
@@ -26472,7 +26473,9 @@ function update(){
         addTxt(P.x,P.y-28,_T('🛡️💎 무지개→블루콩!'),'#00e5ff',60);
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
         doParry(p.dmg,p.x,p.y,true,'rainbow');
-        // 무지개탄 보너스 제거 — doParry 보상(50)만 적용
+        // 무지개탄 보너스: 에너지쉴드 15% 회복 + HP 5% 회복
+        if(P.eShieldMax>0){P.eShield=Math.min(P.eShieldMax,P.eShield+~~(P.eShieldMax*.15));addTxt(P.x,P.y-40,_T('🛡️쉴드+15%'),'#00ddff',35)}
+        P.hp=Math.min(P.mhp,P.hp+~~(P.mhp*.05));
         projs[pw++]=p;_pHit=true;continue;
       }else{
         // 패링 실패: 폭발 + 풀 피해
@@ -26482,7 +26485,7 @@ function update(){
         {if(!P._rbPoison)P._rbPoison=[];if(P._rbPoison.length<10){P._rbPoison.push({total:_bkD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('☠중독!')+'×'+P._rbPoison.length,'#33aa22',30)}}
         // 무지개탄 포이즈 데미지 (2칸 소모)
         {P.poise=Math.max(0,(P.poise||4)-2);P.poiseR=0;
-        if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(480*(1-Math.min(.3,_eqAffix('ccRes'))));P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}}
+        if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))));P.iframes=60;SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}}}
         // 넉백 + 피격플래시
         {const _bkA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bkA)*7;P.kb.y+=Math.sin(_bkA)*7}
         P.iframes=Math.max(P.iframes,15);
@@ -26580,7 +26583,7 @@ function update(){
           hurtP(~~((p.dmg||10)*elMul(p.el,ar().el)),{dtype:'magic'});
           if(P.s!=='charge'&&P.s!=='sBlock'){P.s='stagger';P.st2=30}
           addTxt(P.x,P.y-20,_T('⚠트랩!'),'#997744',30);addParts(P.x,P.y,'#997744',8);_pHit=true}
-        else{const _pjD=~~((p.dmg||10)*elMul(p.el,ar().el));hurtP(_pjD,{dtype:'magic',redBean:!!p.redBean,projHit:true});_projHitFx(p.x,p.y,p.el,!!p.redBean);if(p.el===EL.L)P._elecT=Math.max(P._elecT||0,30);
+        else{const _pjD=~~((p.dmg||10)*elMul(p.el,ar().el));hurtP(_pjD,{dtype:p.redBean?'parry':'magic',redBean:!!p.redBean,projHit:true});_projHitFx(p.x,p.y,p.el,!!p.redBean);if(p.el===EL.L)P._elecT=Math.max(P._elecT||0,30);
           // 빨콩 피격 화상 (데미지×3, 10초, 최대10중첩)
           if(p.redBean){if(!P._rbBurn)P._rbBurn=[];if(P._rbBurn.length<10){P._rbBurn.push({total:_pjD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('🔥화상!')+'×'+P._rbBurn.length,'#ff4400',30)}}
           _pHit=true}}}
@@ -31054,7 +31057,7 @@ function updateE(e,sp){
     // 노래: 주변 플레이어 50% 감속 3초
     if(e._sirenSongCd<=0&&d<1200){
       e._sirenSongCd=150+Math.random()*50;
-      P._trapSlowT=Math.max(P._trapSlowT||0,180);
+      P._trapSlowT=Math.max(P._trapSlowT||0,~~(180*(1-Math.min(.5,_eqAffix('slowRes')))));
       addTxt(e.x,e.y-e.r-15,'~~♪~~','#446655',40);addTxt(P.x,P.y-15,_T('감속!'),'#446655',30);
     }
     // 돌진 할퀴기
@@ -32450,7 +32453,7 @@ function updateE(e,sp){
         e.stunned=60;hurtE(e,_pd,e._sbAng+Math.PI);P.parryBank=(P.parryBank||0)+_pd;doParry(e.atk,e.x,e.y,false,e.el);_poiseHit(e,25)}
       else if(P.s!=='charge'){hurtP(~~(e.atk*1.8*elMul(e.el,ar().el)));
         const ka=Math.atan2(P.y-e.y,P.x-e.x);P.kb.x+=Math.cos(ka)*10;P.kb.y+=Math.sin(ka)*10;
-        P.stunned=Math.max(P.stunned||0,45)}// 스턴
+        P.stunned=Math.max(P.stunned||0,~~(45*(1-Math.min(.5,_eqAffix('stunRes')))))}// 스턴 (stunRes 저항)
       e.s='recover';e.st2=30;break}
     if(e.st2<=0){e.s='recover';e.st2=25}break}
   // ═══ 거울방어 — 공격받으면 카운터 (hurtE에서 체크) ═══
@@ -33256,7 +33259,15 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(!_isMagicDmg&&!_isArrow)_crBonus+=_eqAffix('critRateMelee')*100;
   if(_isMagicDmg||(opts&&opts.beam))_crBonus+=_eqAffix('critRateSpell')*100;
   if(_isArrow)_crBonus+=_eqAffix('critRateBow')*100;
-  var _isCrit=false;if(Math.random()*100<statCrit()+_crBonus){dmg=~~(dmg*statCritDmg());_isCrit=true;if(G._sStats)G._sStats.crits++}}
+  var _isCrit=false;if(Math.random()*100<statCrit()+_crBonus){dmg=~~(dmg*statCritDmg());_isCrit=true;if(G._sStats)G._sStats.crits++;
+    // ═══ onCrit 프록 (크리 시 발동) ═══
+    const _ocExpl=_eqAffix('onCritExplode');if(_ocExpl>0){const _ocR=80;const _ocD=~~(dmg*_ocExpl);for(let _oi=0;_oi<ens.length;_oi++){const _oe=ens[_oi];if(_oe&&_oe.alive&&_oe!==e&&dst(e.x,e.y,_oe.x,_oe.y)<_ocR){hurtE(_oe,_ocD,Math.atan2(_oe.y-e.y,_oe.x-e.x),false,{pure:true})}}addParts(e.x,e.y,'#ff6622',12)}
+    const _ocChain=_eqAffix('onCritChain');if(_ocChain>0){let _ocTgt=null,_ocMin=250;for(let _oi=0;_oi<ens.length;_oi++){const _oe=ens[_oi];if(_oe&&_oe.alive&&_oe!==e){const _od=dst(e.x,e.y,_oe.x,_oe.y);if(_od<_ocMin){_ocMin=_od;_ocTgt=_oe}}}if(_ocTgt){hurtE(_ocTgt,~~(dmg*_ocChain),Math.atan2(_ocTgt.y-e.y,_ocTgt.x-e.x),false,{pure:true})}}
+    const _ocFrz=_eqAffix('onCritFreeze');if(_ocFrz>0){e._freezeGauge=(e._freezeGauge||0)+~~(_ocFrz*100);if(e._freezeGauge>=100&&!e._freezeImmune){e._frozen=180;e._freezeGauge=0}}
+    const _ocHeal=_eqAffix('onCritHeal');if(_ocHeal>0)P.hp=Math.min(P.mhp,P.hp+_ocHeal);
+    const _ocMana=_eqAffix('onCritMana');if(_ocMana>0)P.mp=Math.min(P.mmp,P.mp+_ocMana);
+    const _ocShld=_eqAffix('onCritShield');if(_ocShld>0&&P.eShieldMax>0){P.eShield=Math.min(P.eShieldMax,P.eShield+_ocShld)}
+  }}
   // 스턴/그로기 상태 → 데미지 +50% (×1.5)
   if(e.stunned>0&&!isDot){dmg=~~(dmg*1.5)}
   // 프리즌(빙결) 상태 → 데미지 1.5배
@@ -33284,6 +33295,17 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       const _ml=_eqAffix('manaLeech');if(_ml>0)P.mp=Math.min(P.mmp,P.mp+dmg*_ml);
       const _sl=_eqAffix('stLeech');if(_sl>0)P.st=Math.min(P.mst,P.st+dmg*_sl);
       const _loh=_eqAffix('lifeOnHit');if(_loh>0)P.hp=Math.min(P.mhp,P.hp+_loh);
+    }
+    // ═══ 적중 시 상태이상 부여 (onHit 어픽스) ═══
+    if(!isDot){
+      const _ohFire=_eqAffix('fireOnHit');if(_ohFire>0&&Math.random()<_ohFire){e.burnT=Math.max(e.burnT||0,180);e.burnPool=(e.burnPool||0)+dmg*.3}
+      const _ohIce=_eqAffix('iceOnHit');if(_ohIce>0&&Math.random()<_ohIce){e._freezeGauge=(e._freezeGauge||0)+30;if(e._freezeGauge>=100&&!e._freezeImmune){e._frozen=180;e._freezeGauge=0}}
+      const _ohLtn=_eqAffix('lightOnHit');if(_ohLtn>0&&Math.random()<_ohLtn){e._shockT=Math.max(e._shockT||0,120);e._shockMul=Math.max(e._shockMul||0,.15)}
+      const _ohDark=_eqAffix('darkOnHit');if(_ohDark>0&&Math.random()<_ohDark){e._cursed=Math.max(e._cursed||0,180)}
+      const _ohPsn=_eqAffix('poisonOnHit');if(_ohPsn>0&&Math.random()<_ohPsn){e.poisonT=Math.max(e.poisonT||0,300);e.poisonPool=(e.poisonPool||0)+dmg*.2}
+      const _ohBld=_eqAffix('onHitBleed');if(_ohBld>0&&Math.random()<_ohBld){e.bleedT=Math.max(e.bleedT||0,300);e.bleedPool=(e.bleedPool||0)+dmg*.25}
+      const _ohStn=_eqAffix('onHitStun');if(_ohStn>0&&Math.random()<_ohStn){e.stunned=Math.min(180,Math.max(e.stunned||0,60))}
+      const _ohFrz=_eqAffix('onHitFreeze');if(_ohFrz>0&&Math.random()<_ohFrz){e._freezeGauge=(e._freezeGauge||0)+50;if(e._freezeGauge>=100&&!e._freezeImmune){e._frozen=180;e._freezeGauge=0}}
     }
     e._alerted=true; // 피격 시 즉시 플레이어 인식 (거리 무시 추적)
     // 피격 즉시 반격: recover/idle 상태면 즉시 전투 전환
@@ -34313,7 +34335,7 @@ function hurtP(dmg,opts){
     P.iframes=0;if(!_isFocusState()&&P.s!=='pStun'){
       // ═══ 포이즈 감소 → 기절 (4칸 시스템) ═══ 탄막 1칸, 근접 1칸
       P.poise=Math.max(0,(P.poise||4)-1);P.poiseR=0;
-      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(480*(1-Math.min(.3,_eqAffix('ccRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
+      if(P.poise<=0){P.poise=0;P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))));SFX.groggy();G.hitStop=~~((_HS.pStun||6)*OPT.hitStop/100);for(let j=0;j<12;j++){const sa=Math.PI*2*j/12;poolPart(P.x,P.y,Math.cos(sa)*5,Math.sin(sa)*5,'#ffcc44',3+Math.random()*3,15+Math.random()*8)}}
       else{P.s='stagger';P.st2=6}
     }
     if(a>0)addTxt(P.x,P.y-10,'-'+a,'#ff3333',28);
@@ -34785,7 +34807,7 @@ const SKILL_LIST=[
   {id:'chainSlash',name:'기동칼날개',cat:'move',fixed:true,hidden:true,emoji:'⚔',desc:'[히든: 5성 dimRush 합체] 사슬기동 중 좌클릭 → 이동 중 전방 광역 베기+출혈. STR 스케일 물리데미지. 다단히트. Lv당 뎀+12% 범위+15',descEn:'[Hidden: 5-star dimRush fuse] During chain dash LMB → forward AoE slash+bleed while moving. STR scale physical DMG. Multi-hit. Per Lv DMG+12% range+15',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'peaceShield',name:'평화의보호',cat:'def',fixed:true,noDmg:true,emoji:'🕊️',desc:'Q 홀드 시 보호막이 점점 커지며 HP 초당 5% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모',descEn:'Q hold: shield grows over time + HP 5%/s regen. DMG reduction scales with shield size. MP cost',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'hellRay',name:'참회',cat:'magic',fixed:true,hidden:true,emoji:'⚡',desc:'[히든: 암전나선 합체] E로 조준, 클릭 설치. 에너지 쐐기를 지상에 꽂아 회전+데미지. MP100. 1차지 쿨10초. 5초+Lv당0.5초 지속. 범위 200+(Lv-1)×22',descEn:'[Hidden: Dark Spiral fuse] E to aim, click to place. Energy wedge planted on ground — rotates+DMG. MP 100. 1 charge CD 10s. 5s+0.5s/Lv duration. Range 200+(Lv-1)×22',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
-  {id:'shieldThrow',name:'칼등날개',cat:'def',fixed:true,emoji:'🔨',desc:'[고정: 칼등치기 합체] 보유 시 칼등치기에 전방 충격파 자동 발동. 제자리 처내기. 쿨 5초. Lv당 뎀+12% 범위+20',descEn:'[Fixed: Blade Parry fuse] When owned, swipe auto-triggers forward shockwave. Stationary swipe. CD 5s. Per Lv DMG+12% range+20',spCost:10,matCost:80,cd:300,up:true,upSp:5,upMat:0},
+  {id:'shieldThrow',name:'칼등날개',cat:'def',fixed:true,emoji:'🔨',desc:'[고정: 칼등치기 합체] 보유 시 칼등치기에 전방 충격파 자동 발동. 제자리 처내기. 쿨 12초. Lv당 뎀+12% 범위+20',descEn:'[Fixed: Blade Parry fuse] When owned, swipe auto-triggers forward shockwave. Stationary swipe. CD 12s. Per Lv DMG+12% range+20',spCost:10,matCost:80,cd:720,up:true,upSp:5,upMat:0},
   // [SKILL REMOVED 2026-04-10] blastShot (폭산탄) — 석궁 개편
   {id:'weakPhys',name:'파쇄의 영역',cat:'tech',act:true,noDmg:true,emoji:'⚔',desc:'현재 위치에 파쇄 영역 설치 (10초). 범위 내 적 물리방어력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place shatter domain at current pos (10s). Enemy phys DEF -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'weakMag',name:'침식의 영역',cat:'tech',act:true,noDmg:true,emoji:'🔮',desc:'현재 위치에 침식 영역 설치 (10초). 범위 내 적 마법저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place corrosion domain at current pos (10s). Enemy magic resist -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
@@ -35878,7 +35900,7 @@ function _autoShieldThrow(){
   _addSkProf('shieldThrow');
   const _sfFused=P.skills.maliceSwipe>=1&&P.skills.shieldThrow>=1&&_isFused('shieldFuse');
   const _sfLv=_sfFused?Math.min(P.skills.maliceSwipe||1,P.skills.shieldThrow||1):0;
-  P._stCd=_sfFused?Math.max(120,300-_sfLv*15):300;
+  P._stCd=_sfFused?Math.max(120,720-_sfLv*15):720;
   const slv=P.skills.shieldThrow||1;
   const a=P.facing;
   if(!INV.equipped.shield)return;
@@ -43152,7 +43174,7 @@ function draw(){
       const p=v.t/(v.total*v.spd);
       const sc=v.sc*(1+p*0.4);
       const w=v.fw*sc,h=v.fh*sc;
-      X.globalAlpha=Math.max(0,(1-p*p)*(v.alphaMax||0.7));
+      X.globalAlpha=Math.max(0,(p<0.6?1:1-(p-0.6)/0.4)*(v.alphaMax||0.7));
       X.drawImage(v.img,col*v.fw,row*v.fh,v.fw,v.fh,v.x-w/2,v.y-h/2,w,h);
       window._tvfx2[_tw++]=v;
     }
