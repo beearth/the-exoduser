@@ -51089,11 +51089,13 @@ function _v3tick(){
   var now=performance.now();
   var dt=Math.min(0.05,(now-_v3lastT)/1000);_v3lastT=now;
 
-  for(var i=_v3parts.length-1;i>=0;i--){
+  var _v3w=0;
+  for(var i=0;i<_v3parts.length;i++){
     var v=_v3parts[i];
     v.life+=dt;
     var t=Math.min(1,v.life/v.maxLife);
-    if(t>=1){_v3s.remove(v.sp);v.mat.dispose();_v3parts.splice(i,1);continue}
+    if(t>=1){_v3s.remove(v.sp);v.tex.dispose();v.mat.dispose();continue}
+    _v3parts[_v3w++]=v;
     // 위치 업데이트 (화면 좌표계)
     v.sp.position.x+=v.vx*dt;
     v.sp.position.y+=v.vy*dt;
@@ -51121,6 +51123,7 @@ function _v3tick(){
       var col=v.sheetFrame%v.sheet.c,row=v.sheet.r-1-Math.floor(v.sheetFrame/v.sheet.c);
       v.tex.offset.set(col/v.sheet.c,row/v.sheet.r)}}
   }
+  _v3parts.length=_v3w;
   _v3r.render(_v3s,_v3cam);
 }
 _v3tick();
