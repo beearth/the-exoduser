@@ -13473,9 +13473,9 @@ function _tintImg(src,tintColor,cb){
   };
 }
 let _msStormImg1=null,_msStormImg2=null,_msStormImg3=null;
-_tintImg('assets/vfx/Lightning_ImpactLightning_Sheet.png','#4488ff',c=>{_msStormImg1=c});
-_tintImg('assets/vfx/Lightning_Lightning_FBF_4x3.png','#4488ff',c=>{_msStormImg2=c});
-_tintImg('assets/vfx/Lightning_BasicImpact.png','#4488ff',c=>{_msStormImg3=c});
+_tintImg('assets/vfx/Lightning_ImpactLightning_Sheet.png','#6644ff',c=>{_msStormImg1=c});
+_tintImg('assets/vfx/Lightning_Lightning_FBF_4x3.png','#7733ff',c=>{_msStormImg2=c});
+_tintImg('assets/vfx/Lightning_BasicImpact.png','#5566ff',c=>{_msStormImg3=c});
 registerVFX('boss_revive_boom','assets/vfx/boss/boss_revive_boom.png',64,64,24,8); // 보스 부활 폭발 (8x3, 24프레임)
 registerVFX('teleport_burst','assets/vfx/teleport_burst.png',64,64,9,9); // 순간이동 보라색 폭발 (9x1, 9프레임)
 // ─── 보스 스킬 VFX 스프라이트 (LUDO AI 생성, 256×256×16f 4열) ───
@@ -29748,9 +29748,11 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   G.mats+=_matsAdd;addTxt(P.x,P.y-60,_T('👿악의+')+_matsAdd,'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true,shieldHit:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
-  // 패링 임팩트: 무지개/Q패링=Dark 02, 우클릭=Lightning(기존)
+  // 패링 임팩트: 무지개=무지개폭발, Q패링=Dark 02, 우클릭=Lightning(기존)
   if(!window._tvfx2)window._tvfx2=[];
-  if(_parryEl==='rainbow'||_isQParry){
+  if(_parryEl==='rainbow'){
+    _rainbowImpact(_px,_py);
+  }else if(_isQParry){
     _dark02Impact(_px,_py);
   }else{
     const _prCombo=_TVFX2_COMBOS[2]; // Lightning (기존)
@@ -34799,8 +34801,8 @@ const SKILL_HIER=[
   {id:'spec',name:'⚙ 특수',nameEn:'⚙ Special',col:'#ff8800',cats:['tech','ult']},
 ];
 let _skHierTab='rec';
-const SKILL_ICONS={ghostWalk:1,maliceHunt:1,venomBlade:1,ltnChaser:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1,thunderStake:1,timeWarp:1,explodeScarecrow:1,arcLaser:1,maliceDome:1};
-function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="">`}
+const SKILL_ICONS={ghostWalk:1,maliceHunt:1,venomBlade:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1,thunderStake:1,timeWarp:1,explodeScarecrow:1,arcLaser:1,maliceDome:1,ltnChaser:1};
+function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="" onerror="this.style.display='none'">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.55) ${deg}deg,transparent ${deg}deg);pointer-events:none;z-index:1"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#ffee66;font-weight:900;text-shadow:0 0 4px #000,0 0 8px #000,0 1px 3px #000;z-index:2">${txt}</div>`:''}`}
 const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -44286,71 +44288,97 @@ function drawP(){
           }
         }
       }else if(fz.type==='storm'){
-        // ═══ 악의폭풍 — Power Lightning 스프라이트 (3레이어 콤보) ═══
-        // 초기화: 영역 내 랜덤 위치에 스프라이트 인스턴스 배치
+        // ═══ 악의폭풍 — 이오닉 스톰 (바닥 접지형 전기장 + 밀집 번개) ═══
         if(!fz._spr){
           fz._spr=[];
-          const _cnt=6+~~(Math.random()*3); // 6~8개 인스턴스
+          const _cnt=12+~~(Math.random()*5); // 12~16개 (밀집)
           for(let i=0;i<_cnt;i++){
             const a=Math.random()*Math.PI*2;
-            const d=Math.random()*fz.r*0.8;
+            const d=Math.random()*fz.r*0.85;
             fz._spr.push({
               ox:Math.cos(a)*d, oy:Math.sin(a)*d,
               f0:Math.random()*16, f1:Math.random()*12, f2:Math.random()*9,
-              sc:1.4+Math.random()*1.0, rot:Math.random()*Math.PI*2,
+              sc:0.9+Math.random()*0.7, rot:Math.random()*Math.PI*2,
               flip:Math.random()>.5?-1:1
             });
           }
         }
-        const _spT=fz.t; // 프레임 카운터
-        // 매 60프레임(1초)마다 위치 셔플
-        if(~~(_spT)%60===0&&_spT>1){
+        const _spT=fz.t;
+        // 매 30프레임(0.5초)마다 위치 셔플 (더 자주 번쩍)
+        if(~~(_spT)%30===0&&_spT>1){
           for(let i=0;i<fz._spr.length;i++){
             const a=Math.random()*Math.PI*2;
-            const d=Math.random()*fz.r*0.8;
+            const d=Math.random()*fz.r*0.85;
             fz._spr[i].ox=Math.cos(a)*d;fz._spr[i].oy=Math.sin(a)*d;
             fz._spr[i].rot=Math.random()*Math.PI*2;
             fz._spr[i].flip=Math.random()>.5?-1:1;
           }
         }
         const _blend=X.globalCompositeOperation;
+        const _stDeploy=Math.min(1,_spT/15);
+        // ── 바닥 격자 번개 (타일에 달라붙는 느낌) ──
         X.globalCompositeOperation='screen';
+        const _gridN=4+~~(fz.r/80); // 격자 줄 수
+        X.globalAlpha=(.25+.15*Math.sin(_now*.005))*_fzFade;
+        X.strokeStyle='#6644cc';X.lineWidth=1;
+        for(let gi=0;gi<_gridN;gi++){
+          const gy=fz.y-fz.r*_stDeploy+gi*(fz.r*2*_stDeploy/_gridN);
+          X.beginPath();X.moveTo(fz.x-fz.r*_stDeploy,gy);
+          for(let gx=fz.x-fz.r*_stDeploy;gx<fz.x+fz.r*_stDeploy;gx+=12){
+            X.lineTo(gx,gy+(Math.random()-.5)*4);
+          }
+          X.stroke();
+        }
+        // ── 밀집 번개 스프라이트 (스케일 작게, 수 많게) ──
         for(let i=0;i<fz._spr.length;i++){
           const s=fz._spr[i];
-          const px=fz.x+s.ox, py=fz.y+s.oy;
-          // 레이어1: ImpactLightning 4x4 (16프레임) — 느리게
+          const px=fz.x+s.ox*_stDeploy, py=fz.y+s.oy*_stDeploy;
           if(_msStormImg1&&_msStormImg1.width>0){
             const fw1=_msStormImg1.width/4, fh1=_msStormImg1.height/4;
-            const fi1=~~((s.f0+_spT*0.15)%16);
+            const fi1=~~((s.f0+_spT*0.2)%16);
             const sx1=(fi1%4)*fw1, sy1=~~(fi1/4)*fh1;
-            const sz1=fw1*s.sc*1.0;
+            const sz1=fw1*s.sc*0.8;
             X.globalAlpha=1.0*_fzFade;
             X.save();X.translate(px,py);X.rotate(s.rot);X.scale(s.flip,1);
             X.drawImage(_msStormImg1,sx1,sy1,fw1,fh1,-sz1/2,-sz1/2,sz1,sz1);
             X.restore();
           }
-          // 레이어2: Lightning FBF 4x3 (12프레임) — 느리게
           if(_msStormImg2&&_msStormImg2.width>0){
             const fw2=_msStormImg2.width/4, fh2=_msStormImg2.height/3;
-            const fi2=~~((s.f1+_spT*0.18)%12);
+            const fi2=~~((s.f1+_spT*0.25)%12);
             const sx2=(fi2%4)*fw2, sy2=~~(fi2/4)*fh2;
-            const sz2=fw2*s.sc*1.1;
-            X.globalAlpha=1.0*_fzFade;
-            X.save();X.translate(px,py);X.rotate(s.rot+0.5);X.scale(s.flip,1);
+            const sz2=fw2*s.sc*0.9;
+            X.globalAlpha=0.9*_fzFade;
+            X.save();X.translate(px,py);X.rotate(s.rot+0.7);X.scale(s.flip,1);
             X.drawImage(_msStormImg2,sx2,sy2,fw2,fh2,-sz2/2,-sz2/2,sz2,sz2);
             X.restore();
           }
-          // 레이어3: BasicImpact 3x3 (9프레임) — 느리게
           if(_msStormImg3&&_msStormImg3.width>0){
             const fw3=_msStormImg3.width/3, fh3=_msStormImg3.height/3;
-            const fi3=~~((s.f2+_spT*0.12)%9);
+            const fi3=~~((s.f2+_spT*0.18)%9);
             const sx3=(fi3%3)*fw3, sy3=~~(fi3/3)*fh3;
-            const sz3=fw3*s.sc*0.7;
-            X.globalAlpha=0.9*_fzFade;
-            X.save();X.translate(px,py);X.rotate(s.rot-0.3);X.scale(s.flip,1);
+            const sz3=fw3*s.sc*0.5;
+            X.globalAlpha=0.85*_fzFade;
+            X.save();X.translate(px,py);X.rotate(s.rot-0.4);X.scale(s.flip,1);
             X.drawImage(_msStormImg3,sx3,sy3,fw3,fh3,-sz3/2,-sz3/2,sz3,sz3);
             X.restore();
           }
+        }
+        // ── 외곽 전기 아크 (바깥 테두리에 번개 가닥) ──
+        X.globalAlpha=(.4+.2*Math.sin(_now*.004))*_fzFade;
+        X.strokeStyle='#8866ff';X.lineWidth=1.5;
+        for(let ai=0;ai<8;ai++){
+          const aa=ai*Math.PI/4+Math.sin(_now*.002+ai)*.3;
+          X.beginPath();
+          let ax=fz.x+Math.cos(aa)*fz.r*0.3*_stDeploy;
+          let ay=fz.y+Math.sin(aa)*fz.r*0.3*_stDeploy;
+          X.moveTo(ax,ay);
+          for(let seg=0;seg<5;seg++){
+            ax+=(Math.cos(aa)*fz.r*0.14+((Math.random()-.5)*12))*_stDeploy;
+            ay+=(Math.sin(aa)*fz.r*0.14+((Math.random()-.5)*12))*_stDeploy;
+            X.lineTo(ax,ay);
+          }
+          X.stroke();
         }
         X.globalCompositeOperation=_blend;
       }else if(fz.type==='boneStorm'){
@@ -45079,7 +45107,7 @@ function drawP(){
     // rainbow_light(무지개 피격 폭발): 알록달록 다원소 레이어 콤보
     if(_bv.col==='rainbow_light'){
       const _alpha=Math.max(0,1-_ep*.5);
-      const _rbSheets=['Fire_FBF_4x4.png','Poison_MediumImpact.png','Dark_DarkSmoke_FBF_4x4.png','Light_ImpactLight_Sheet.png'];
+      const _rbSheets=['Poison_MediumImpact.png','Dark_DarkSmoke_FBF_4x4.png','Light_ImpactLight_Sheet.png','Ice_ImpactIce_Sheet.png'];
       for(let _ri=0;_ri<_rbSheets.length;_ri++){
         const _rImg=_tvfx2Imgs[_rbSheets[_ri]];
         if(!_rImg||!_rImg.complete)continue;

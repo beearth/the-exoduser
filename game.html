@@ -17892,14 +17892,14 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
     _deathSfxCd=6; // 0.1초 쿨다운 (대량 사망 시에도 연속 재생)
     // 사망음은 큐 우회 — 직접 재생 (대량 전투에서 큐 포화로 씹히는 것 방지)
     const _dVol=sfxVol();
-    if(isBoss){const _bd=_bossSfx(G.stage);_playSampleNow(_bd?_bd.die:'death_boss',.5*_dVol,_r(_bd?_bd.dieP:.7,.15))}
-    else if(et>=100&&et<=102){const gk=_pickDeathVar(et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3');_playSampleNow(gk,_r(.5,.1)*_dVol,_r(1,.1))}
+    if(isBoss){const _bd=_bossSfx(G.stage);_playSampleNow(_bd?_bd.die:'death_boss',.75*_dVol,_r(_bd?_bd.dieP:.7,.15))}
+    else if(et>=100&&et<=102){const gk=_pickDeathVar(et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3');_playSampleNow(gk,_r(.75,.1)*_dVol,_r(1,.1))}
     else{
       const k=_deathSfxKey(et);
-      const v=_ARMOR_ET.has(et)?.35:r>=40?.7:.55;
+      const v=_ARMOR_ET.has(et)?.525:r>=40?1.05:.825;
       _playSampleNow(k,_r(v,.08)*_dVol,_r(1,.12));
-      if(r>=40&&Math.random()<.25)_playSampleNow('monster_die1',.5*_dVol,_r(.8,.15));
-      if(Math.random()<.15)_playSampleNow('death_grunt',.3*_dVol,_r(1,.15));
+      if(r>=40&&Math.random()<.25)_playSampleNow('monster_die1',.75*_dVol,_r(.8,.15));
+      if(Math.random()<.15)_playSampleNow('death_grunt',.45*_dVol,_r(1,.15));
     }
   }
   // 동시 사망 과다 시 파티클 절감
@@ -34887,7 +34887,7 @@ const SKILL_SLOT_DEFS={
           fireBeam:{name:'업화선',nameEn:'Karma Beam',emoji:'🔥',desc:'E탭: 유도 화염빔 (100%관통+유도+화상, MP10, DEX공속)',descEn:'E tap: Homing fire beam (100% pierce+homing+burn, MP10, DEX aspd)'},
           // energyShot 삭제됨 (2026-05-01)
           arcLaser:{name:'얼음송곳',nameEn:'Ice Spike',emoji:'❄',desc:'E홀드: 직선 관통 냉기빔 채널링 (MP 8+Lv/초, 감속)',descEn:'E hold: straight piercing ice beam channel (MP 8+Lv/s, slow)'}}},
-  bow:{name:'석궁 자동(T)',nameEn:'Crossbow Auto(T)',key:'bow',skills:['normal','bladeShot','blastShot','fanShot','needleShot','ltnChaser'],
+  bow:{name:'석궁 자동(T)',nameEn:'Crossbow Auto(T)',key:'bow',skills:['normal','bladeShot','blastShot','fanShot','needleShot'],
     info:{normal:{name:'일반사격',nameEn:'Normal Shot',emoji:'🏹',desc:'T자동: 기본 화살',descEn:'T auto: Basic arrow'},
           bladeShot:{name:'붉은꽃',nameEn:'Red Bloom',emoji:'🌹',desc:'T자동: 붉은 꽃잎 칼날 (ST50)',descEn:'T auto: Red petal blade (ST50)'},
           blastShot:{name:'폭산탄',nameEn:'Blast Shot',emoji:'💥',desc:'T자동: 폭탄 (악의5, 쿨0.5초)',descEn:'T auto: Bomb (malice 5, cd 0.5s)'},
@@ -35674,10 +35674,10 @@ function activateLtnChaser(){
   if(P.st<_lcStCost){showPH(_T('ST 부족!'),'#ff4444');return}
   P.st=Math.max(0,P.st-_lcStCost);
   const _lcDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('ltnChaser')*_fuseMul('ltnChaser'));
-  const _lcRange=2500+(_lcLv-1)*80;
+  const _lcRange=2000+(_lcLv-1)*100; // 악의사냥과 동일
   const _lcPierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30)+_eqAffix('pierceFlat');
-  const _lcPierce=800+(_lcLv-1)*20+_lcPierceBonus;
-  const _lcShotCnt=Math.min(8,1+_lcLv); // 1렙=2발, 7렙+=8발
+  const _lcPierce=2000+(_lcLv-1)*20+_lcPierceBonus; // 기본 2000
+  const _lcShotCnt=Math.min(6,1+_lcLv); // 1렙=2발, 5렙+=6발 (악의사냥과 동일)
   const _lcChainMax=Math.min(6,2+~~(_lcLv/4)); // 1렙=2체인, 4렙=3, 8렙=4, …20렙=7→cap6
   const _lcHalf=(_lcShotCnt-1)/2;
   // 방향: 마우스/게임패드
@@ -35690,7 +35690,7 @@ function activateLtnChaser(){
     const _lcDx=Math.cos(_lcAng0),_lcDy=Math.sin(_lcAng0);
     const _pp=_getPProj();
     _pp.x=P.x+_lcDx*16;_pp.y=P.y+_lcDy*16;
-    _pp.vx=_lcDx*16;_pp.vy=_lcDy*16;
+    _pp.vx=_lcDx*18;_pp.vy=_lcDy*18;
     _pp.dmg=_lcDmg;_pp.el=EL.L;_pp.maxDist=_lcRange;_pp.dist=0;
     _pp.r=8;_pp.stagger=4;_pp.kb=1;_pp.magic=true;
     _pp.ltnChaser=true;_pp.mhBlade=true; // mhBlade 재활용 (유도+트레일)
@@ -35699,7 +35699,7 @@ function activateLtnChaser(){
     _pp._hitSet=new Set();_pp._maxBounce=20;
     pProjs[pProjs.length]=_pp;
   }
-  SFX.magic(EL.L);addTxt(P.x,P.y-25,_T('⚡ 뇌전추격자!'),'#ffdd00',35);
+  SFX.magic(EL.L);addTxt(P.x,P.y-25,_T('⚡ 뇌전추격자!'),'#3388ff',35);
   _addSkProf('ltnChaser');
 }
 
@@ -47183,21 +47183,21 @@ function drawP(){
             X.beginPath();X.moveTo(_lx+8*_ts,_ly);X.lineTo(_lx-5*_ts,_ly-1*_ts);X.lineTo(_lx-5*_ts,_ly+1*_ts);X.closePath();X.fill();
           }
         }
-      }else if(p.ltnChaser){// ── LIGHTNING BLADE: 뇌전추격자 노란 전기칼날 ──
+      }else if(p.ltnChaser){// ── LIGHTNING BLADE: 뇌전추격자 푸른 전기칼날 ──
         X.rotate(ang);
         const _lcPulse=.8+Math.sin(_now/35+p.x*.4)*.2;
         // 전기 글로우 오라
-        X.globalAlpha=fa*.15*_lcPulse;X.fillStyle='#ffdd00';
+        X.globalAlpha=fa*.15*_lcPulse;X.fillStyle='#2266ff';
         X.beginPath();X.ellipse(0,0,22,8,0,0,Math.PI*2);X.fill();
-        // 메인 칼날: 노란색 다이아몬드
+        // 메인 칼날: 푸른 전기 다이아몬드
         X.globalAlpha=fa*.95*_lcPulse;
-        X.fillStyle='#ffdd00';
+        X.fillStyle='#3388ff';
         X.beginPath();X.moveTo(24,0);X.lineTo(2,-2.5);X.lineTo(-10,0);X.lineTo(2,2.5);X.closePath();X.fill();
         // 밝은 코어
-        X.globalAlpha=fa*.7;X.fillStyle='#ffffaa';
+        X.globalAlpha=fa*.7;X.fillStyle='#aaccff';
         X.beginPath();X.moveTo(20,0);X.lineTo(4,-1.2);X.lineTo(-6,0);X.lineTo(4,1.2);X.closePath();X.fill();
         // 전기 지직 (2줄)
-        X.globalAlpha=fa*.6*_lcPulse;X.strokeStyle='#ffffff';X.lineWidth=.6;
+        X.globalAlpha=fa*.6*_lcPulse;X.strokeStyle='#ccddff';X.lineWidth=.6;
         for(let _zi=0;_zi<2;_zi++){
           const _zy=(_zi?-1:1)*(2+Math.sin(_now*.03+_zi*5)*.8);
           X.beginPath();X.moveTo(-8,_zy);
@@ -47213,12 +47213,12 @@ function drawP(){
             const _tf=1-ti/p._trLen,_ts=_tf*.5;
             const _dx=_tt.x-p.x,_dy=_tt.y-p.y;
             const _lx=_dx*_cs-_dy*_sn,_ly=_dx*_sn+_dy*_cs;
-            X.globalAlpha=fa*_tf*.3;X.fillStyle='#ffee44';
+            X.globalAlpha=fa*_tf*.3;X.fillStyle='#4488ff';
             X.beginPath();X.moveTo(_lx+10*_ts,_ly);X.lineTo(_lx-6*_ts,_ly-1.5*_ts);X.lineTo(_lx-6*_ts,_ly+1.5*_ts);X.closePath();X.fill();
           }
         }
         // 파티클
-        if(Math.random()>.6)poolPart(p.x+(Math.random()-.5)*8,p.y+(Math.random()-.5)*8,-p.vx*.2+(Math.random()-.5),-p.vy*.2+(Math.random()-.5),'#ffdd00',2+Math.random()*2,5+Math.random()*4);
+        if(Math.random()>.6)poolPart(p.x+(Math.random()-.5)*8,p.y+(Math.random()-.5)*8,-p.vx*.2+(Math.random()-.5),-p.vy*.2+(Math.random()-.5),'#3388ff',2+Math.random()*2,5+Math.random()*4);
       }else if(p.mhBlade){// ── BLADE: 악의사냥/독혈해방 물리칼날 ──
         X.rotate(ang);
         const _mhF=p.mhFused;

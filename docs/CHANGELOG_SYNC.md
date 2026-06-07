@@ -29222,3 +29222,13 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - img/skillskin_upscaled/ltnChaser.png
 
+
+## 2026-06-07 13:30 (auto)
+- _autosave/game_20260607_125825.html
+- _autosave/game_20260607_125831.html
+- _autosave/game_20260607_130421.html
+- _autosave/game_20260607_132333.html
+- _autosave/game_20260607_132337.html
+- _autosave/game_20260607_132354.html
+- game.html
+
