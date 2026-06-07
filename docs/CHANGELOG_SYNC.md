@@ -29190,3 +29190,15 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _autosave/game_20260607_092736.html
 - game.html
 
+
+## 2026-06-07 10:30 (auto)
+- _autosave/game_20260607_094815.html
+- _autosave/game_20260607_094822.html
+- _autosave/game_20260607_101632.html
+- _autosave/game_20260607_101750.html
+- _autosave/game_20260607_102030.html
+- _autosave/game_20260607_102054.html
+- _autosave/game_20260607_102241.html
+- _autosave/game_20260607_102330.html
+- game.html
+

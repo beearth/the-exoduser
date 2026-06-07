@@ -9962,6 +9962,7 @@ let _gpad=null,_gpBtns={},_gpBtnsJust={},_gpBtnsPrev={},_gpAxes=[0,0,0,0,0,0,0,0
 let _gpVibRef=null; // vibrationActuator 용 원본 gamepad 객체 캐시
 let _gpConnected=false; // 패드 하드웨어 연결됨
 let _gpActive=false;    // 패드 모드 활성 (실제 입력 감지 시 true, 키마 입력 시 false)
+let _gpHasRStick=false; // 우스틱 실재 확인 (좌스틱과 독립적인 움직임 감지 시 true)
 // 자동 감지: localStorage 힌트로 초기값 설정, 이후 실시간 전환
 if(localStorage.getItem('inputMode')==='pad'){_gpActive=true;document.body.style.cursor='none'}
 addEventListener('gamepadconnected',e=>{
@@ -10559,7 +10560,12 @@ function _pollGamepad(){
     G._gpAiming=true;
   }else{
     // 비조준: 우스틱→방향+마법 자동발동 (트윈스틱)
-    const rx=_gpAxes[2],ry=_gpAxes[3];
+    let rx=_gpAxes[2],ry=_gpAxes[3];
+    // 아케이드스틱 등 우스틱 없는 패드: 좌스틱과 독립 움직임이 감지된 적 없으면 무시
+    if(!_gpHasRStick){
+      if((rx||ry)&&(rx!==_gpAxes[0]||ry!==_gpAxes[1]))_gpHasRStick=true;
+      else{rx=0;ry=0}
+    }
     const rMag=Math.sqrt(rx*rx+ry*ry);
     const _rsWas=!!_gpBtnsPrev['kRS'];
     if(rMag>0.2){
@@ -37932,7 +37938,7 @@ function renderSettings(){
     });
   }
   // ── 커서 크기 슬라이더 ──
-  const _csEl=$('optCursorSize');if(_csEl){_csEl.value=OPT.cursorSize||50;$('cursorSizeVal').textContent=(OPT.cursorSize||50)+'%';
+  const _csEl=$('optCursorSize');if(_csEl){_csEl.value=OPT.cursorSize||100;$('cursorSizeVal').textContent=(OPT.cursorSize||100)+'%';
     _csEl.oninput=function(){OPT.cursorSize=+this.value;$('cursorSizeVal').textContent=this.value+'%';_cursorCache=[];_applyCursor();saveSettings()};
   }
   // ── 캐릭터 선택 그리드 ──
@@ -38359,7 +38365,7 @@ _CURSORS.forEach(cur=>{
 });
 let _cursorCache=[];
 function _buildCursor(idx){
-  const sz=OPT.cursorSize||50;
+  const sz=OPT.cursorSize||100;
   const key=idx+'_'+sz;
   if(_cursorCache[key])return _cursorCache[key];
   const cur=_CURSORS[idx];
@@ -38400,7 +38406,7 @@ function _buildCursor(idx){
   return _cursorCache[key];
 }
 function _buildHoverCursor(idx){
-  const sz=OPT.cursorSize||50;const key='h_'+idx+'_'+sz;
+  const sz=OPT.cursorSize||100;const key='h_'+idx+'_'+sz;
   if(_cursorCache[key])return _cursorCache[key];
   const cur=_CURSORS[idx];
   if(!cur||!cur._hoverEl||!cur._hoverEl.complete||!cur._hoverEl.naturalWidth)return _buildCursor(idx);

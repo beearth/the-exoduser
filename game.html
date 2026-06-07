@@ -35824,7 +35824,7 @@ function activateSpikeTrap(){
   _addSkProf('spikeTrap');
   G.mats-=_malCost(10);P._gcCd=~~(600*(1+_cdRed()));
   const lv=P.skills.spikeTrap||1;
-  const r=600+(lv-1)*44;
+  const r=300+(lv-1)*15;
   const dmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap'));
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:r,t:0,maxT:600,dmg:dmg,el:EL.P,lv:lv,type:'spikeTrap'});
@@ -36051,7 +36051,7 @@ function activateDarkPillar(){
   // 합체: 기둥가시 — 가시덫 흡수 (각 기둥 위치에 가시덫 자동 설치)
   if(_isFused('pillarSpike')&&P.skills.spikeTrap>=1){
     const _stLv=P.skills.spikeTrap||1;
-    const _stR=400+(_stLv-1)*44;
+    const _stR=250+(_stLv-1)*15;
     const _stDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap')); // 통일공식: _skMul
     for(let _pi=0;_pi<Math.min(5,_positions.length);_pi++){
       const p=_positions[_pi];
@@ -37938,7 +37938,7 @@ function renderSettings(){
     });
   }
   // ── 커서 크기 슬라이더 ──
-  const _csEl=$('optCursorSize');if(_csEl){_csEl.value=OPT.cursorSize||50;$('cursorSizeVal').textContent=(OPT.cursorSize||50)+'%';
+  const _csEl=$('optCursorSize');if(_csEl){_csEl.value=OPT.cursorSize||100;$('cursorSizeVal').textContent=(OPT.cursorSize||100)+'%';
     _csEl.oninput=function(){OPT.cursorSize=+this.value;$('cursorSizeVal').textContent=this.value+'%';_cursorCache=[];_applyCursor();saveSettings()};
   }
   // ── 캐릭터 선택 그리드 ──
@@ -38365,7 +38365,7 @@ _CURSORS.forEach(cur=>{
 });
 let _cursorCache=[];
 function _buildCursor(idx){
-  const sz=OPT.cursorSize||50;
+  const sz=OPT.cursorSize||100;
   const key=idx+'_'+sz;
   if(_cursorCache[key])return _cursorCache[key];
   const cur=_CURSORS[idx];
@@ -38406,7 +38406,7 @@ function _buildCursor(idx){
   return _cursorCache[key];
 }
 function _buildHoverCursor(idx){
-  const sz=OPT.cursorSize||50;const key='h_'+idx+'_'+sz;
+  const sz=OPT.cursorSize||100;const key='h_'+idx+'_'+sz;
   if(_cursorCache[key])return _cursorCache[key];
   const cur=_CURSORS[idx];
   if(!cur||!cur._hoverEl||!cur._hoverEl.complete||!cur._hoverEl.naturalWidth)return _buildCursor(idx);
@@ -47058,7 +47058,7 @@ function drawP(){
       X.globalAlpha=fa*.9;X.fillStyle='#fff';
       X.beginPath();X.arc(_amR*.2,0,_amR*.45,0,Math.PI*2);X.fill();
       X.restore();X.globalAlpha=1;
-    }else if(p.magic&&p.chainMax){
+    }else if(p.magic&&p.chainMax&&!p.ltnChaser){
       // ── 체인 라이트닝: 뾰족 꼬불 레이저 (프리얼로케이션) ──
       const _lAng=Math.atan2(p.vy,p.vx);
       const _stk=p._gwStk||0;

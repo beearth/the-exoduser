@@ -9962,6 +9962,7 @@ let _gpad=null,_gpBtns={},_gpBtnsJust={},_gpBtnsPrev={},_gpAxes=[0,0,0,0,0,0,0,0
 let _gpVibRef=null; // vibrationActuator 용 원본 gamepad 객체 캐시
 let _gpConnected=false; // 패드 하드웨어 연결됨
 let _gpActive=false;    // 패드 모드 활성 (실제 입력 감지 시 true, 키마 입력 시 false)
+let _gpHasRStick=false; // 우스틱 실재 확인 (좌스틱과 독립적인 움직임 감지 시 true)
 // 자동 감지: localStorage 힌트로 초기값 설정, 이후 실시간 전환
 if(localStorage.getItem('inputMode')==='pad'){_gpActive=true;document.body.style.cursor='none'}
 addEventListener('gamepadconnected',e=>{
@@ -10559,7 +10560,12 @@ function _pollGamepad(){
     G._gpAiming=true;
   }else{
     // 비조준: 우스틱→방향+마법 자동발동 (트윈스틱)
-    const rx=_gpAxes[2],ry=_gpAxes[3];
+    let rx=_gpAxes[2],ry=_gpAxes[3];
+    // 아케이드스틱 등 우스틱 없는 패드: 좌스틱과 독립 움직임이 감지된 적 없으면 무시
+    if(!_gpHasRStick){
+      if((rx||ry)&&(rx!==_gpAxes[0]||ry!==_gpAxes[1]))_gpHasRStick=true;
+      else{rx=0;ry=0}
+    }
     const rMag=Math.sqrt(rx*rx+ry*ry);
     const _rsWas=!!_gpBtnsPrev['kRS'];
     if(rMag>0.2){
@@ -20228,7 +20234,7 @@ function pMeleeStCost(){return Math.max(.5,1-(PASSIVES.pMelee||0)*.05)} // ST소
 function pMagicSpd(){return (2+PASSIVES.pMagic*.08)*(1+_eqAffix('castSpeed')+_eqAffix('headbandCastSpd'))}     // 기본 2배속 + 시전속도 +8%/lv + castSpeed/headbandCastSpd 어픽스
 function pShieldMul(){return 1}    // removed passive pShield (수호)
 function pShieldBlock(){return 0}  // removed passive pShield (수호)
-function pGuardAbsorb(){return Math.min(.90,.70+PASSIVES.pGuard*.02)} // 보호막 흡수 70→90% (+2%/lv)
+function pGuardAbsorb(){return Math.min(.90,.50+PASSIVES.pGuard*.02)} // 보호막 흡수 50→90% (+2%/lv)
 function pGuardRegen(){return PASSIVES.pGuard*.001}     // 보호막 중 HP리젠 +0.1%/lv
 function pRegenMul(){return 1+PASSIVES.pRegen*.03}      // HP/ST리젠 +3%/lv (10lv=+30%)
 function pMRegenMul(){return 1+PASSIVES.pMRegen*.03}    // MP/쉴드리젠 +3%/lv (10lv=+30%)
@@ -29731,7 +29737,9 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   
   // 분노게이지: 빨콩 5%, 무지개 15%, 일반 10%
   const _rageAdd=_isRedParry?5:_isRainbowParry?15:10;
+  const _rageBefore=P.rage;
   P.rage=Math.min(100,P.rage+_rageAdd);
+  console.log('[RAGE] before='+_rageBefore+' add='+_rageAdd+' after='+P.rage);
   addTxt(P.x,P.y-90,_T('🔥분노+')+P.rage+'%','#ff4400',35);
   // 분노 대사 (적립 후 체크)
   if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. Space를 눌러.',4,300,'cat','분노게이지 꽉 찼어! 스페이스로 폭발시켜!',4);
@@ -34299,7 +34307,7 @@ function hurtP(dmg,opts){
   } else if(!(opts&&opts.dot))playSample('player_hit'+(1+~~(Math.random()*4)),.6,_r(1,.15));
   // 회전기폭 합체: 회전 중 보호막 자동 적용 (데미지 감소 + 흡수)
   if(P.s==='whirlwind'&&P.skills.detonate&&_isFused('whirlDet')){
-    const _wwBlk=pGuardAbsorb()*(_isDotEarly?.5:1); // 보호막과 동일 흡수율, DOT 절반
+    const _wwBlk=_isDotEarly?0:Math.min(.90,.50+PASSIVES.pGuard*.02); // 회전보호막: 기본50%+패시브2%/lv(최대90%), DOT 미적용
     const _rawDmg2=dmg;
     dmg=Math.max(1,~~(dmg*(1-_wwBlk)));
     P.parryBank=(P.parryBank||0)+(_rawDmg2-dmg);
@@ -34887,7 +34895,7 @@ const SKILL_SLOT_DEFS={
           ghostXbowTurret:{name:'공성쇠뇌',nameEn:'Siege Ballista',emoji:'🏹',desc:'선택스킬: 터렛 설치/철거 (Lv500, ST100, 쿨없음)',descEn:'Select skill: Deploy/remove turret (Lv500, ST100, no cd)'},
           }},
   tech:{name:'영역 스킬',nameEn:'Area Skill',key:'tech',skills:['giantSlam','spikeTrap'],
-    info:{giantSlam:{name:'대왕치기',nameEn:'Giant Slam',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨10초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 10s)'},
+    info:{giantSlam:{name:'대왕치기',nameEn:'Giant Slam',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨15초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 15s)'},
           spikeTrap:{name:'가시덫',nameEn:'Spike Trap',emoji:'🌿',desc:'Space: 가시덫 설치 (악의10, 쿨10초)',descEn:'Space: Place spike trap (malice 10, cd 10s)'}}},
   lmb:{name:'좌클 스킬',nameEn:'LMB Skill',key:'lmb',skills:['kiSlash','whirlwind'],
     info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클: 3단 콤보 검기 (ST 10+Lv당2)',descEn:'LMB: 3-hit combo ki blade (ST 10+2/Lv)'},
@@ -37932,7 +37940,7 @@ function renderSettings(){
     });
   }
   // ── 커서 크기 슬라이더 ──
-  const _csEl=$('optCursorSize');if(_csEl){_csEl.value=OPT.cursorSize||50;$('cursorSizeVal').textContent=(OPT.cursorSize||50)+'%';
+  const _csEl=$('optCursorSize');if(_csEl){_csEl.value=OPT.cursorSize||100;$('cursorSizeVal').textContent=(OPT.cursorSize||100)+'%';
     _csEl.oninput=function(){OPT.cursorSize=+this.value;$('cursorSizeVal').textContent=this.value+'%';_cursorCache=[];_applyCursor();saveSettings()};
   }
   // ── 캐릭터 선택 그리드 ──
@@ -38359,7 +38367,7 @@ _CURSORS.forEach(cur=>{
 });
 let _cursorCache=[];
 function _buildCursor(idx){
-  const sz=OPT.cursorSize||50;
+  const sz=OPT.cursorSize||100;
   const key=idx+'_'+sz;
   if(_cursorCache[key])return _cursorCache[key];
   const cur=_CURSORS[idx];
@@ -38400,7 +38408,7 @@ function _buildCursor(idx){
   return _cursorCache[key];
 }
 function _buildHoverCursor(idx){
-  const sz=OPT.cursorSize||50;const key='h_'+idx+'_'+sz;
+  const sz=OPT.cursorSize||100;const key='h_'+idx+'_'+sz;
   if(_cursorCache[key])return _cursorCache[key];
   const cur=_CURSORS[idx];
   if(!cur||!cur._hoverEl||!cur._hoverEl.complete||!cur._hoverEl.naturalWidth)return _buildCursor(idx);
