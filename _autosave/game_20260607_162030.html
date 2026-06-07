@@ -26726,6 +26726,7 @@ function update(){
       }
     }
     p.x+=p.vx*sp;p.y+=p.vy*sp;p.dist+=spd*sp;
+    if(p._lcGrace>0)p._lcGrace-=sp;
     // 악의구: 날아가면서 크기 성장 (초기 12 → 최종 _fbRMax)
     if(p.fireball&&p._fbRMax&&p.maxDist>0){p.r=~~(p._fbR0+(p._fbRMax-p._fbR0)*Math.min(1,p.dist/p.maxDist))}
     // 플레이어 투사체 서브 파티클 (매 10프레임)
@@ -26798,6 +26799,31 @@ function update(){
     for(let _ni=0;_ni<_neP.length;_ni++){const e=_neP[_ni];if(!e.alive)continue;
       if(p._hitSet&&p._hitSet.has(e)&&!p.plagueBlade&&!p.venomBlade)continue; // 관통한 적 스킵 (폭독혈/독사는 같은 적 재히트 허용)
       if(dst(p.x,p.y,e.x,e.y)<e.r+p.r){
+        // ── 뇌전추격자: 관통 시 2분열 + 관통력 반감 ──
+        if(p.ltnChaser&&p._mhMaxPierce>0){
+          if(p._lcGrace>0){hit=false;continue} // 분열 직후 무적
+          if(!p._hitSet)p._hitSet=new Set();
+          if(p._hitSet.has(e)){hit=false;continue}
+          p._hitSet.add(e);
+          const _lcHalf=~~(p._mhMaxPierce/2);
+          if(_lcHalf>=10){ // 관통력 10 이상이면 분열
+            const _lcAng=Math.atan2(p.vy,p.vx);
+            for(let _si=0;_si<2;_si++){
+              const _sa=_lcAng+(_si?0.3:-0.3);
+              const _sp=_getPProj();
+              _sp.x=p.x;_sp.y=p.y;_sp.vx=Math.cos(_sa)*18;_sp.vy=Math.sin(_sa)*18;
+              _sp.dmg=p.dmg;_sp.el=p.el;_sp.maxDist=3000;_sp.dist=0;
+              _sp.r=p.r;_sp.stagger=p.stagger;_sp.kb=p.kb;_sp.magic=true;
+              _sp.ltnChaser=true;_sp.mhBlade=true;
+              _sp.lightning=true;_sp.chainMax=p.chainMax;_sp.chainR=p.chainR;_sp._chainCount=p._chainCount||0;
+              _sp._pierced=0;_sp._mhMaxPierce=_lcHalf;
+              _sp._hitSet=new Set(p._hitSet);_sp._maxBounce=p._maxBounce;
+              _sp._lcGrace=15; // 15프레임 무적 (분열 후 좀 날아가게)
+              pProjs[pProjs.length]=_sp;
+            }
+          }
+          hit=true;break; // 원본은 소멸, 데미지 적용
+        }
         // ── 폭독혈: hurtE 호출 전에 전염+관통 처리 ──
         // ── 독사: hurtE 호출 전에 재히트/관통/독 처리 ──
         if(p.venomBlade){
@@ -35674,11 +35700,11 @@ function activateLtnChaser(){
   if(P.st<_lcStCost){showPH(_T('ST 부족!'),'#ff4444');return}
   P.st=Math.max(0,P.st-_lcStCost);
   const _lcDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('ltnChaser')*_fuseMul('ltnChaser'));
-  const _lcRange=2000+(_lcLv-1)*100; // 악의사냥과 동일
+  const _lcRange=6000+(_lcLv-1)*200; // 기본 6000
   const _lcPierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30)+_eqAffix('pierceFlat');
-  const _lcPierce=2000+(_lcLv-1)*20+_lcPierceBonus; // 기본 2000
-  const _lcShotCnt=Math.min(6,1+_lcLv); // 1렙=2발, 5렙+=6발 (악의사냥과 동일)
-  const _lcChainMax=Math.min(6,2+~~(_lcLv/4)); // 1렙=2체인, 4렙=3, 8렙=4, …20렙=7→cap6
+  const _lcPierce=10000+(_lcLv-1)*200+_lcPierceBonus; // 기본 10000, Lv당+200
+  const _lcShotCnt=Math.min(12,2+_lcLv*2); // 1렙=4발, 5렙+=12발
+  const _lcChainMax=Math.min(12,4+~~(_lcLv/2)); // 1렙=4체인, 4렙=6, …cap12
   const _lcHalf=(_lcShotCnt-1)/2;
   // 방향: 마우스/게임패드
   let _lcBaseAng;
