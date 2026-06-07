@@ -10559,7 +10559,9 @@ function _pollGamepad(){
     G._gpAiming=true;
   }else{
     // 비조준: 우스틱→방향+마법 자동발동 (트윈스틱)
-    const rx=_gpAxes[2],ry=_gpAxes[3];
+    let rx=_gpAxes[2],ry=_gpAxes[3];
+    // 아케이드스틱 등 우스틱 없는 패드: axes[2/3]이 axes[0/1]과 동일하면 중복 매핑 → 무시
+    if(rx===_gpAxes[0]&&ry===_gpAxes[1]){rx=0;ry=0}
     const rMag=Math.sqrt(rx*rx+ry*ry);
     const _rsWas=!!_gpBtnsPrev['kRS'];
     if(rMag>0.2){
@@ -19137,7 +19139,8 @@ function initMapObjects(){
       if(!adjFloor)continue;
       if(_eyeSeed()<.02){
         const _eid=_eyeIds[~~(_eyeSeed()*_eyeIds.length)];
-        MAP_OBJS.push({type:_eid,x:x*T+T/2,y:y*T+T/2,hell});
+        const _eR=_eyeSeed();const _eSc=_eR<0.6?0.5+_eR*1.5:(_eR<0.9?2+(_eR-0.6)*10:5+(_eR-0.9)*50);
+        MAP_OBJS.push({type:_eid,x:x*T+T/2,y:y*T+T/2,hell,scale:_eSc});
         _eyePlaced++;
       }
     }
@@ -20227,7 +20230,7 @@ function pMeleeStCost(){return Math.max(.5,1-(PASSIVES.pMelee||0)*.05)} // ST소
 function pMagicSpd(){return (2+PASSIVES.pMagic*.08)*(1+_eqAffix('castSpeed')+_eqAffix('headbandCastSpd'))}     // 기본 2배속 + 시전속도 +8%/lv + castSpeed/headbandCastSpd 어픽스
 function pShieldMul(){return 1}    // removed passive pShield (수호)
 function pShieldBlock(){return 0}  // removed passive pShield (수호)
-function pGuardAbsorb(){return Math.min(.90,.70+PASSIVES.pGuard*.02)} // 보호막 흡수 70→90% (+2%/lv)
+function pGuardAbsorb(){return Math.min(.90,.50+PASSIVES.pGuard*.02)} // 보호막 흡수 50→90% (+2%/lv)
 function pGuardRegen(){return PASSIVES.pGuard*.001}     // 보호막 중 HP리젠 +0.1%/lv
 function pRegenMul(){return 1+PASSIVES.pRegen*.03}      // HP/ST리젠 +3%/lv (10lv=+30%)
 function pMRegenMul(){return 1+PASSIVES.pMRegen*.03}    // MP/쉴드리젠 +3%/lv (10lv=+30%)
@@ -22551,7 +22554,10 @@ function genFromTemplate(tmpl,si){
     if(o.id==='bonfire'||o.id==='lore'||o.id==='trap'||o.id==='altar'||o.id==='forge')continue;
     // floor_eye: 에디터 배치 눈알 → G._editorEyes에 저장, _initEyes에서 처리
     if(o.id==='floor_eye'){if(!G._editorEyes)G._editorEyes=[];G._editorEyes.push({x:o.x*T+T*.5,y:o.y*T+T*.5});continue}
-    const _mo={type:o.id,x:o.x*T,y:o.y*T,hell:SI_TO_HELL[si]};if(o.scale&&o.scale!==1)_mo.scale=o.scale;MAP_OBJS.push(_mo);
+    const _mo={type:o.id,x:o.x*T,y:o.y*T,hell:SI_TO_HELL[si]};if(o.scale&&o.scale!==1)_mo.scale=o.scale;
+    // 눈알 오브젝트 랜덤 크기 (0.5~10배)
+    if(o.id==='m_eye'||o.id==='m_eye1'||o.id==='m_eye2'){const _eR=Math.random();_mo.scale=(_mo.scale||1)*(_eR<0.6?0.5+_eR*1.5:(_eR<0.9?2+(_eR-0.6)*10:5+(_eR-0.9)*50))}
+    MAP_OBJS.push(_mo);
   }}
 }
 
@@ -26777,7 +26783,7 @@ function update(){
         dead=true}
     }
     // 플레이어 투사체 소멸 임팩트 (터렛 투사체 제외)
-    if(dead&&OPT.deathFx&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p.fireBeamProj&&!p._fromTurret&&!p._fromRainbow){
+    if(dead&&OPT.deathFx&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p.fireBeamProj&&!p._fromTurret&&!p._fromRainbow&&!p.ltnChaser){
       _addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),p.bomb?'explosion':'magic');
     }
     if(dead){continue}
@@ -34295,7 +34301,7 @@ function hurtP(dmg,opts){
   } else if(!(opts&&opts.dot))playSample('player_hit'+(1+~~(Math.random()*4)),.6,_r(1,.15));
   // 회전기폭 합체: 회전 중 보호막 자동 적용 (데미지 감소 + 흡수)
   if(P.s==='whirlwind'&&P.skills.detonate&&_isFused('whirlDet')){
-    const _wwBlk=pGuardAbsorb()*(_isDotEarly?.5:1); // 보호막과 동일 흡수율, DOT 절반
+    const _wwBlk=_isDotEarly?0:Math.min(.90,.50+PASSIVES.pGuard*.02); // 회전보호막: 기본50%+패시브2%/lv(최대90%), DOT 미적용
     const _rawDmg2=dmg;
     dmg=Math.max(1,~~(dmg*(1-_wwBlk)));
     P.parryBank=(P.parryBank||0)+(_rawDmg2-dmg);
@@ -34829,8 +34835,8 @@ const SKILL_LIST=[
   {id:'holyDome',name:'회복의 영역',cat:'tech',act:true,noDmg:true,emoji:'🛡',desc:'현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초',descEn:'Place holy domain at current pos (12s duration). On ground: HP/MP/ST +10/s regen + 2x recovery + 2x CD speed. CD 30s. Per Lv range+20 duration+0.5s',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
   {id:'holyPrison',name:'구속의 영역',cat:'tech',act:true,noDmg:true,emoji:'✟',desc:'범위 내 몬스터 부활력 -15%~30%(Lv1=15%, Lv10=30%). Lv1 범위400, Lv10 범위697. Lv당 범위+33. 쿨 30초. 지속 10초',descEn:'Monsters in range: revive power -15%~30%(Lv1=15%, Lv10=30%). Lv1 range 400, Lv10 range 697. Per Lv range+33. CD 30s. Duration 10s',spCost:10,matCost:80,cd:1800,up:true,upSp:5,upMat:0},
   {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,noDmg:true,emoji:'❄',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 10초 지속. MP 40. Lv당 범위+22 축적+10%',descEn:'Mouse-aim placement. 2 stocks (15s/charge, Lv10→3 stocks). Freeze resist -50% in range, rapid freeze gauge buildup. 10s duration. MP 40. Per Lv range+22 buildup+10%',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
-  {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 회전기폭과 합체→지진폭풍!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Whirlwind Detonate → Earthquake Storm!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:600},
-  {id:'giantSlam2',name:'대왕치기 2',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 악의기둥과 합체→기둥강타!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Dark Pillar → Pillar Slam!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:600},
+  {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 회전기폭과 합체→지진폭풍!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Whirlwind Detonate → Earthquake Storm!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:900},
+  {id:'giantSlam2',name:'대왕치기 2',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 악의기둥과 합체→기둥강타!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Dark Pillar → Pillar Slam!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:900},
   // quakeStride 삭제됨
   {id:'chainAssault',name:'기동불꽃',cat:'move',desc:'사슬기동 중 E → 즉시 착지하며 화염폭발. 범위200~350 INT 스케일 화염 마법데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). MP 소모. Lv당 범위+16 뎀+12%',descEn:'During chain dash E → instant land with fire explosion. Range 200~350 INT scale fire magic DMG+knockback. DMG scales with travel distance (max x4.0). MP cost. Per Lv range+16 DMG+12%',spCost:10,matCost:0,up:true,upSp:5,upMat:0},
   {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 우클릭 → 땅 내려찍기. 범위200~350 데미지x8 그로기x6. 이동거리 비례 최대x6. 일반몹 즉시 기절(5초), 보스 체간 대량 삭감. Lv당 범위+16 데미지+15% 그로기+15%',descEn:'During chain dash RMB → ground slam. Range 200~350 DMG x8 groggy x6. Distance scale max x6. Instant stun mobs (5s), massive boss posture break. Per Lv range+16 DMG+15% groggy+15%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -34883,7 +34889,7 @@ const SKILL_SLOT_DEFS={
           ghostXbowTurret:{name:'공성쇠뇌',nameEn:'Siege Ballista',emoji:'🏹',desc:'선택스킬: 터렛 설치/철거 (Lv500, ST100, 쿨없음)',descEn:'Select skill: Deploy/remove turret (Lv500, ST100, no cd)'},
           }},
   tech:{name:'영역 스킬',nameEn:'Area Skill',key:'tech',skills:['giantSlam','spikeTrap'],
-    info:{giantSlam:{name:'대왕치기',nameEn:'Giant Slam',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨10초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 10s)'},
+    info:{giantSlam:{name:'대왕치기',nameEn:'Giant Slam',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨15초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 15s)'},
           spikeTrap:{name:'가시덫',nameEn:'Spike Trap',emoji:'🌿',desc:'Space: 가시덫 설치 (악의10, 쿨10초)',descEn:'Space: Place spike trap (malice 10, cd 10s)'}}},
   lmb:{name:'좌클 스킬',nameEn:'LMB Skill',key:'lmb',skills:['kiSlash','whirlwind'],
     info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클: 3단 콤보 검기 (ST 10+Lv당2)',descEn:'LMB: 3-hit combo ki blade (ST 10+2/Lv)'},
