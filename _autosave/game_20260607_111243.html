@@ -13473,9 +13473,9 @@ function _tintImg(src,tintColor,cb){
   };
 }
 let _msStormImg1=null,_msStormImg2=null,_msStormImg3=null;
-_tintImg('assets/vfx/Lightning_ImpactLightning_Sheet.png','#4488ff',c=>{_msStormImg1=c});
-_tintImg('assets/vfx/Lightning_Lightning_FBF_4x3.png','#4488ff',c=>{_msStormImg2=c});
-_tintImg('assets/vfx/Lightning_BasicImpact.png','#4488ff',c=>{_msStormImg3=c});
+_tintImg('assets/vfx/Lightning_ImpactLightning_Sheet.png','#6644ff',c=>{_msStormImg1=c});
+_tintImg('assets/vfx/Lightning_Lightning_FBF_4x3.png','#7733ff',c=>{_msStormImg2=c});
+_tintImg('assets/vfx/Lightning_BasicImpact.png','#5566ff',c=>{_msStormImg3=c});
 registerVFX('boss_revive_boom','assets/vfx/boss/boss_revive_boom.png',64,64,24,8); // 보스 부활 폭발 (8x3, 24프레임)
 registerVFX('teleport_burst','assets/vfx/teleport_burst.png',64,64,9,9); // 순간이동 보라색 폭발 (9x1, 9프레임)
 // ─── 보스 스킬 VFX 스프라이트 (LUDO AI 생성, 256×256×16f 4열) ───
@@ -20879,7 +20879,9 @@ function _autoFireBowSkill(tx,ty){
   else if(_effAbs==='blastShot'&&P.skills.blastShot&&G.mats>=_malCost(5)&&(P._bsCd2||0)<=0){activateBlastShot();fired=true} // 밸런스: 악의 8→5 (50% 할인 반영)
   else if(_effAbs==='fanShot'&&P.skills.fanShot&&(_gxFiring||(!_isFused('sixFuse')&&!_isFused('elemFuse')&&!_isFused('stormBeam')))){_fireFanShot();fired=true}
   else if(_effAbs==='needleShot'&&P.skills.needleShot&&(P._ndCd||0)<=0){activateNeedleShot();fired=pProjs.length>_pBefore}
-  else if(_effAbs==='ltnChaser'&&P.skills.ltnChaser&&(P._lcCd||0)<=0){activateLtnChaser();P._lcCd=Math.max(480,~~(720*(1+_cdRed())));fired=pProjs.length>_pBefore}
+  else if(_effAbs==='ltnChaser'&&P.skills.ltnChaser){
+    // 자동발사 금지 — 수동(스킬키)으로만 발동
+  }
   else if(_effAbs==='ghostXbowTurret'&&P.skills.ghostXbowTurret){
     // 자동설치 금지 — 수동(스킬키)으로만 설치
   }
@@ -20887,7 +20889,7 @@ function _autoFireBowSkill(tx,ty){
     // 스킬 실패/쿨다운 → 터렛이면 기본 석궁 폴백, 플레이어면 쿨다운 대기
     if(_gxFiring){_fireXbow(tx,ty)}
     else{
-      const _skOnCd=(_effAbs==='bladeShot'&&(P._bltCd||0)>0)||(_effAbs==='blastShot'&&(P._bsCd2||0)>0)||(_effAbs==='needleShot'&&(P._ndCd||0)>0)||(_effAbs==='ltnChaser'&&(P._lcCd||0)>0);
+      const _skOnCd=(_effAbs==='bladeShot'&&(P._bltCd||0)>0)||(_effAbs==='blastShot'&&(P._bsCd2||0)>0)||(_effAbs==='needleShot'&&(P._ndCd||0)>0);
       if(_skOnCd){P.s=_sS;P.st2=_sSt2;P.facing=_svF;P.atkArc=_svA;return}
       _fireXbow(tx,ty)
     }
@@ -26344,7 +26346,7 @@ function update(){
     }
     if(!_dead&&p.life<=0){if(p.life<=-900||p.mine||p.bomb)_dead=true;else if(p.redBean){_addBoom(p.x,p.y,40,72,'redbean');_addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),'explosion');addParts(p.x,p.y,'#ff2200',12);shake(3);_dead=true}else{const _cdx=p.x-G.cam.x,_cdy=p.y-G.cam.y;if(_cdx*_cdx+_cdy*_cdy>6250000)_dead=true;else p.life=1}}
     // 히트 임팩트 이펙트 (투사체 소멸 시)
-    if(_dead&&OPT.deathFx&&!p.mine&&!p.trap&&!p.dimRift&&!p.web&&!p.poisonZone&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p._fromRainbow){
+    if(_dead&&OPT.deathFx&&!p.mine&&!p.trap&&!p.dimRift&&!p.web&&!p.poisonZone&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p._fromRainbow&&!p.redBean&&!p.blackBean){
       _addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx));
     }
     if(_dead){_recycleProj(p);continue}
@@ -29737,9 +29739,7 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   
   // 분노게이지: 빨콩 5%, 무지개 15%, 일반 10%
   const _rageAdd=_isRedParry?5:_isRainbowParry?15:10;
-  const _rageBefore=P.rage;
   P.rage=Math.min(100,P.rage+_rageAdd);
-  console.log('[RAGE] before='+_rageBefore+' add='+_rageAdd+' after='+P.rage);
   addTxt(P.x,P.y-90,_T('🔥분노+')+P.rage+'%','#ff4400',35);
   // 분노 대사 (적립 후 체크)
   if(P.rage>=100)_petSayCD('rage_full','crow','…분노가 끓어넘친다. Space를 눌러.',4,300,'cat','분노게이지 꽉 찼어! 스페이스로 폭발시켜!',4);
@@ -29748,9 +29748,11 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   G.mats+=_matsAdd;addTxt(P.x,P.y-60,_T('👿악의+')+_matsAdd,'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true,shieldHit:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
-  // 패링 임팩트: 무지개/Q패링=Dark 02, 우클릭=Lightning(기존)
+  // 패링 임팩트: 무지개=무지개폭발, Q패링=Dark 02, 우클릭=Lightning(기존)
   if(!window._tvfx2)window._tvfx2=[];
-  if(_parryEl==='rainbow'||_isQParry){
+  if(_parryEl==='rainbow'){
+    _rainbowImpact(_px,_py);
+  }else if(_isQParry){
     _dark02Impact(_px,_py);
   }else{
     const _prCombo=_TVFX2_COMBOS[2]; // Lightning (기존)
@@ -34799,8 +34801,8 @@ const SKILL_HIER=[
   {id:'spec',name:'⚙ 특수',nameEn:'⚙ Special',col:'#ff8800',cats:['tech','ult']},
 ];
 let _skHierTab='rec';
-const SKILL_ICONS={ghostWalk:1,maliceHunt:1,venomBlade:1,ltnChaser:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1,thunderStake:1,timeWarp:1,explodeScarecrow:1,arcLaser:1,maliceDome:1};
-function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="">`}
+const SKILL_ICONS={ghostWalk:1,maliceHunt:1,venomBlade:1,maliceMortar:1,boneWall:1,plagueBurst:1,maliceStorm:1,darkPillar:1,holyDome:1,holyPrison:1,iceStorm:1,giantSlam:1,giantSlam2:1,holyBlast:1,blackStar:1,lavaSummon:1,kiSlash:1,maliceSwipe:1,whirlwind:1,bladeShot:1,fireball:1,iceOrb:1,detonate:1,charge:'chargeBoost',chargeBoost:1,dimBreach:'chargeBoost',dimSlam:'chargeBoost',dimThunder:'chargeBoost',dimBlast:'chargeBoost',dimRush:'chargeBoost',bladeDash:1,fanShot:1,omniBeam:1,elemMissile:1,shieldThrow:1,execution:1,spikeTrap:1,chainSlam:'chainSlash',chainAssault:'chainSlash',chainSlash:1,magicBlink:1,fireAura:1,fireBeam:1,needleShot:1,burstLoop:1,peaceShield:1,parry:'peaceShield',ghostXbowTurret:1,voidScarecrow:1,blueShot:1,hellRay:1,energyShot:1,guardian:1,weakMag:1,weakPhys:1,weakPj:1,weakRev:1,thunderStake:1,timeWarp:1,explodeScarecrow:1,arcLaser:1,maliceDome:1};
+function _skIcon(id){const v=SKILL_ICONS[id];if(!v)return'';const f=v===1?id:v;return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="" onerror="this.style.display='none'">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.55) ${deg}deg,transparent ${deg}deg);pointer-events:none;z-index:1"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#ffee66;font-weight:900;text-shadow:0 0 4px #000,0 0 8px #000,0 1px 3px #000;z-index:2">${txt}</div>`:''}`}
 const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -35826,7 +35828,7 @@ function activateSpikeTrap(){
   _addSkProf('spikeTrap');
   G.mats-=_malCost(10);P._gcCd=~~(600*(1+_cdRed()));
   const lv=P.skills.spikeTrap||1;
-  const r=600+(lv-1)*44;
+  const r=300+(lv-1)*15;
   const dmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap'));
   if(!G._fireZones)G._fireZones=[];
   G._fireZones.push({x:P.x,y:P.y,r:r,t:0,maxT:600,dmg:dmg,el:EL.P,lv:lv,type:'spikeTrap'});
@@ -36053,7 +36055,7 @@ function activateDarkPillar(){
   // 합체: 기둥가시 — 가시덫 흡수 (각 기둥 위치에 가시덫 자동 설치)
   if(_isFused('pillarSpike')&&P.skills.spikeTrap>=1){
     const _stLv=P.skills.spikeTrap||1;
-    const _stR=400+(_stLv-1)*44;
+    const _stR=250+(_stLv-1)*15;
     const _stDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap')); // 통일공식: _skMul
     for(let _pi=0;_pi<Math.min(5,_positions.length);_pi++){
       const p=_positions[_pi];
@@ -45079,7 +45081,7 @@ function drawP(){
     // rainbow_light(무지개 피격 폭발): 알록달록 다원소 레이어 콤보
     if(_bv.col==='rainbow_light'){
       const _alpha=Math.max(0,1-_ep*.5);
-      const _rbSheets=['Fire_FBF_4x4.png','Poison_MediumImpact.png','Dark_DarkSmoke_FBF_4x4.png','Light_ImpactLight_Sheet.png'];
+      const _rbSheets=['Poison_MediumImpact.png','Dark_DarkSmoke_FBF_4x4.png','Light_ImpactLight_Sheet.png','Ice_ImpactIce_Sheet.png'];
       for(let _ri=0;_ri<_rbSheets.length;_ri++){
         const _rImg=_tvfx2Imgs[_rbSheets[_ri]];
         if(!_rImg||!_rImg.complete)continue;

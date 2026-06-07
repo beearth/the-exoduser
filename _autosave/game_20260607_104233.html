@@ -20879,7 +20879,9 @@ function _autoFireBowSkill(tx,ty){
   else if(_effAbs==='blastShot'&&P.skills.blastShot&&G.mats>=_malCost(5)&&(P._bsCd2||0)<=0){activateBlastShot();fired=true} // 밸런스: 악의 8→5 (50% 할인 반영)
   else if(_effAbs==='fanShot'&&P.skills.fanShot&&(_gxFiring||(!_isFused('sixFuse')&&!_isFused('elemFuse')&&!_isFused('stormBeam')))){_fireFanShot();fired=true}
   else if(_effAbs==='needleShot'&&P.skills.needleShot&&(P._ndCd||0)<=0){activateNeedleShot();fired=pProjs.length>_pBefore}
-  else if(_effAbs==='ltnChaser'&&P.skills.ltnChaser&&(P._lcCd||0)<=0){activateLtnChaser();P._lcCd=Math.max(480,~~(720*(1+_cdRed())));fired=pProjs.length>_pBefore}
+  else if(_effAbs==='ltnChaser'&&P.skills.ltnChaser){
+    // 자동발사 금지 — 수동(스킬키)으로만 발동
+  }
   else if(_effAbs==='ghostXbowTurret'&&P.skills.ghostXbowTurret){
     // 자동설치 금지 — 수동(스킬키)으로만 설치
   }
@@ -29746,10 +29748,12 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   G.mats+=_matsAdd;addTxt(P.x,P.y-60,_T('👿악의+')+_matsAdd,'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true,shieldHit:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
-  // 패링 임팩트: 무지개/Q패링=Dark 02, 우클릭=Lightning(기존)
+  // 패링 임팩트: 빨콩=빨간폭발, 무지개=무지개폭발, 일반=Lightning TVFX2
   if(!window._tvfx2)window._tvfx2=[];
-  if(_parryEl==='rainbow'||_isQParry){
-    _dark02Impact(_px,_py);
+  if(_isRedParry){
+    playVFXAng('parry_impact_red',_px,_py,2.5,2,0);
+  }else if(_isRainbowParry){
+    playVFXAng('parry_impact_rainbow',_px,_py,2.5,2,0);
   }else{
     const _prCombo=_TVFX2_COMBOS[2]; // Lightning (기존)
     _prCombo.layers.forEach(function(l){
@@ -36051,7 +36055,7 @@ function activateDarkPillar(){
   // 합체: 기둥가시 — 가시덫 흡수 (각 기둥 위치에 가시덫 자동 설치)
   if(_isFused('pillarSpike')&&P.skills.spikeTrap>=1){
     const _stLv=P.skills.spikeTrap||1;
-    const _stR=400+(_stLv-1)*44;
+    const _stR=250+(_stLv-1)*15;
     const _stDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('spikeTrap')); // 통일공식: _skMul
     for(let _pi=0;_pi<Math.min(5,_positions.length);_pi++){
       const p=_positions[_pi];
