@@ -17892,14 +17892,14 @@ function deathFX(x,y,r,col,isBoss,noSound,et){
     _deathSfxCd=6; // 0.1초 쿨다운 (대량 사망 시에도 연속 재생)
     // 사망음은 큐 우회 — 직접 재생 (대량 전투에서 큐 포화로 씹히는 것 방지)
     const _dVol=sfxVol();
-    if(isBoss){const _bd=_bossSfx(G.stage);_playSampleNow(_bd?_bd.die:'death_boss',.5*_dVol,_r(_bd?_bd.dieP:.7,.15))}
-    else if(et>=100&&et<=102){const gk=_pickDeathVar(et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3');_playSampleNow(gk,_r(.5,.1)*_dVol,_r(1,.1))}
+    if(isBoss){const _bd=_bossSfx(G.stage);_playSampleNow(_bd?_bd.die:'death_boss',.75*_dVol,_r(_bd?_bd.dieP:.7,.15))}
+    else if(et>=100&&et<=102){const gk=_pickDeathVar(et===100?'death_ghoul1':et===101?'death_ghoul2':'death_ghoul3');_playSampleNow(gk,_r(.75,.1)*_dVol,_r(1,.1))}
     else{
       const k=_deathSfxKey(et);
-      const v=_ARMOR_ET.has(et)?.35:r>=40?.7:.55;
+      const v=_ARMOR_ET.has(et)?.525:r>=40?1.05:.825;
       _playSampleNow(k,_r(v,.08)*_dVol,_r(1,.12));
-      if(r>=40&&Math.random()<.25)_playSampleNow('monster_die1',.5*_dVol,_r(.8,.15));
-      if(Math.random()<.15)_playSampleNow('death_grunt',.3*_dVol,_r(1,.15));
+      if(r>=40&&Math.random()<.25)_playSampleNow('monster_die1',.75*_dVol,_r(.8,.15));
+      if(Math.random()<.15)_playSampleNow('death_grunt',.45*_dVol,_r(1,.15));
     }
   }
   // 동시 사망 과다 시 파티클 절감
@@ -26798,6 +26798,29 @@ function update(){
     for(let _ni=0;_ni<_neP.length;_ni++){const e=_neP[_ni];if(!e.alive)continue;
       if(p._hitSet&&p._hitSet.has(e)&&!p.plagueBlade&&!p.venomBlade)continue; // 관통한 적 스킵 (폭독혈/독사는 같은 적 재히트 허용)
       if(dst(p.x,p.y,e.x,e.y)<e.r+p.r){
+        // ── 뇌전추격자: 관통 시 2분열 + 관통력 반감 ──
+        if(p.ltnChaser&&p._mhMaxPierce>0){
+          if(!p._hitSet)p._hitSet=new Set();
+          if(p._hitSet.has(e)){hit=false;continue}
+          p._hitSet.add(e);
+          const _lcHalf=~~(p._mhMaxPierce/2);
+          if(_lcHalf>=10){ // 관통력 10 이상이면 분열
+            const _lcAng=Math.atan2(p.vy,p.vx);
+            for(let _si=0;_si<2;_si++){
+              const _sa=_lcAng+(_si?0.3:-0.3);
+              const _sp=_getPProj();
+              _sp.x=p.x;_sp.y=p.y;_sp.vx=Math.cos(_sa)*18;_sp.vy=Math.sin(_sa)*18;
+              _sp.dmg=p.dmg;_sp.el=p.el;_sp.maxDist=p.maxDist-p.dist;_sp.dist=0;
+              _sp.r=p.r;_sp.stagger=p.stagger;_sp.kb=p.kb;_sp.magic=true;
+              _sp.ltnChaser=true;_sp.mhBlade=true;
+              _sp.lightning=true;_sp.chainMax=p.chainMax;_sp.chainR=p.chainR;_sp._chainCount=p._chainCount||0;
+              _sp._pierced=0;_sp._mhMaxPierce=_lcHalf;
+              _sp._hitSet=new Set(p._hitSet);_sp._maxBounce=p._maxBounce;
+              pProjs[pProjs.length]=_sp;
+            }
+          }
+          hit=true;break; // 원본은 소멸, 데미지 적용
+        }
         // ── 폭독혈: hurtE 호출 전에 전염+관통 처리 ──
         // ── 독사: hurtE 호출 전에 재히트/관통/독 처리 ──
         if(p.venomBlade){
@@ -34821,7 +34844,7 @@ const SKILL_LIST=[
   {id:'guardian',name:'악의 보호자',cat:'def',noDmg:true,desc:'3초마다 악의 구체 생성(1렙 2개). 몸에 밀착하여 적 투사체를 자동 방어(파괴). 레벨당 구체+1',descEn:'Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceHunt',name:'악의 사냥',cat:'bow',act:true,emoji:'⚔',desc:'유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초',descEn:'1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
   {id:'venomBlade',name:'독사',cat:'bow',act:true,emoji:'🐍',desc:'유도 독사 1+Lv발 (ST40). DEX+석궁 기반. 직타 최소, 독 DOT 위주. 관통 800+Lv×20+장비(91보장+9확률). 독 10초·스택당+50%·50스택캡. 쿨 15초',descEn:'Homing venom snake 1+Lv shots (ST40). DEX+bow base. Minimal direct DMG, Poison DOT. Pierce 800+Lv×20+gear (91gtd+9rng). Poison 10s, +50%/stk, 50stk cap. CD 15s',spCost:10,matCost:0,cd:900,up:true,upSp:5,upMat:0},
-  {id:'ltnChaser',name:'뇌전추격자',cat:'bow',act:true,emoji:'⚡',desc:'전기 칼날 1+Lv발 발사 (ST40). DEX+석궁 기반. 유도+관통. 관통 시 체인라이트닝 2회 발생. 쿨 12초. Lv당 뎀+12% 칼날+1 체인+1',descEn:'Lightning blade 1+Lv shots (ST40). DEX+bow base. Homing+pierce. Chain lightning ×2 on pierce. CD 12s. Per Lv DMG+12% blade+1 chain+1',spCost:10,matCost:80,cd:720,up:true,upSp:5,upMat:0},
+  {id:'ltnChaser',name:'뇌전추격자',cat:'magic',act:true,emoji:'⚡',desc:'전기 칼날 1+Lv발 발사 (ST40). DEX 기반. 유도+관통. 관통 시 체인라이트닝 발생. 쿨 12초. Lv당 뎀+12% 칼날+1 체인+1',descEn:'Lightning blade 1+Lv shots (ST40). DEX base. Homing+pierce. Chain lightning on pierce. CD 12s. Per Lv DMG+12% blade+1 chain+1',spCost:10,matCost:80,cd:720,up:true,upSp:5,upMat:0},
   {id:'maliceMortar',name:'폭풍소환',cat:'magic',act:true,emoji:'🌪️',desc:'어둠 소용돌이 소환 (마우스 조준 설치, MP 소모, 쿨 11초, INT 스케일링, 1렙 200범위 +30/렙, 5초 지속, 적 흡인)',descEn:'Summon dark vortex (mouse-aim placement, MP cost, CD 11s, INT scale, Lv1 range 200 +30/Lv, 5s duration, pulls enemies)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'boneWall',name:'해골무덤',cat:'magic',act:true,emoji:'🦴',desc:'포격식 조준 → 원형 해골무덤 소환. 2스택 (15초/1충전, Lv10→3스택). 둘레에서 뼈가 솟아 공간을 감쌈. 솟을 때 데미지. 적/투사체 차단. 악의 12. Lv당 범위+5% 지속+0.3초',descEn:'Artillery-aim → circular bone tomb. 2 stocks (15s/charge, Lv10→3 stocks). Bones rise around perimeter. DMG on rise. Blocks enemies/projectiles. Malice 12. Per Lv range+5% duration+0.3s',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'holyBlast',name:'신성폭발',cat:'ult',act:true,ult:true,emoji:'✟',desc:'오망성 시전 → 신성 빛기둥 대폭발. 범위 1500+Lv×100px. 범위 끝까지 넉백(주 성능). 거리감쇠 50%. 스턴 2초. Lv당 뎀+10%. (MP 30%, 쿨 120초)',descEn:'Pentagram cast → holy light pillar mega-explosion. Range 1500+Lv×100px. Full-range knockback (main feature). 50% distance falloff. Stun 2s. Per Lv DMG+10%. (MP 30%, CD 120s)',spCost:10,matCost:100,cd:7200,up:true,upSp:5,upMat:0},
@@ -34887,13 +34910,13 @@ const SKILL_SLOT_DEFS={
           fireBeam:{name:'업화선',nameEn:'Karma Beam',emoji:'🔥',desc:'E탭: 유도 화염빔 (100%관통+유도+화상, MP10, DEX공속)',descEn:'E tap: Homing fire beam (100% pierce+homing+burn, MP10, DEX aspd)'},
           // energyShot 삭제됨 (2026-05-01)
           arcLaser:{name:'얼음송곳',nameEn:'Ice Spike',emoji:'❄',desc:'E홀드: 직선 관통 냉기빔 채널링 (MP 8+Lv/초, 감속)',descEn:'E hold: straight piercing ice beam channel (MP 8+Lv/s, slow)'}}},
-  bow:{name:'석궁 자동(T)',nameEn:'Crossbow Auto(T)',key:'bow',skills:['normal','bladeShot','blastShot','fanShot','needleShot','ltnChaser'],
+  bow:{name:'석궁 자동(T)',nameEn:'Crossbow Auto(T)',key:'bow',skills:['normal','bladeShot','blastShot','fanShot','needleShot'],
     info:{normal:{name:'일반사격',nameEn:'Normal Shot',emoji:'🏹',desc:'T자동: 기본 화살',descEn:'T auto: Basic arrow'},
           bladeShot:{name:'붉은꽃',nameEn:'Red Bloom',emoji:'🌹',desc:'T자동: 붉은 꽃잎 칼날 (ST50)',descEn:'T auto: Red petal blade (ST50)'},
           blastShot:{name:'폭산탄',nameEn:'Blast Shot',emoji:'💥',desc:'T자동: 폭탄 (악의5, 쿨0.5초)',descEn:'T auto: Bomb (malice 5, cd 0.5s)'},
           fanShot:{name:'만화방창',nameEn:'Barrage',emoji:'✨',desc:'T자동: 물리 바늘 3방향 3발 (관통X)',descEn:'T auto: 3 physical needles 3-way (no pierce)'},
           needleShot:{name:'만화방창 II',nameEn:'Barrage II',emoji:'✨',desc:'T자동: 초고속 바늘 2발+5렙당1 (ST8, 쿨1.5초)',descEn:'T auto: Ultra-fast 2 needles +1/5lv (ST8, cd 1.5s)'},
-          ltnChaser:{name:'뇌전추격자',nameEn:'Lightning Chaser',emoji:'⚡',desc:'전기 유도칼날 (ST40, 쿨12초). 관통 시 체인라이트닝',descEn:'Lightning homing blades (ST40, CD 12s). Chain lightning on pierce'},
+          ltnChaser:{name:'뇌전추격자',nameEn:'Lightning Chaser',emoji:'⚡',desc:'전기 유도칼날 (ST40, 쿨12초). 관통+체인라이트닝',descEn:'Lightning homing blades (ST40, CD 12s). Pierce+chain lightning'},
           ghostXbowTurret:{name:'공성쇠뇌',nameEn:'Siege Ballista',emoji:'🏹',desc:'선택스킬: 터렛 설치/철거 (Lv500, ST100, 쿨없음)',descEn:'Select skill: Deploy/remove turret (Lv500, ST100, no cd)'},
           }},
   tech:{name:'영역 스킬',nameEn:'Area Skill',key:'tech',skills:['giantSlam','spikeTrap'],
@@ -35674,10 +35697,10 @@ function activateLtnChaser(){
   if(P.st<_lcStCost){showPH(_T('ST 부족!'),'#ff4444');return}
   P.st=Math.max(0,P.st-_lcStCost);
   const _lcDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('ltnChaser')*_fuseMul('ltnChaser'));
-  const _lcRange=2500+(_lcLv-1)*80;
+  const _lcRange=3000+(_lcLv-1)*100; // 기본 3000
   const _lcPierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30)+_eqAffix('pierceFlat');
-  const _lcPierce=800+(_lcLv-1)*20+_lcPierceBonus;
-  const _lcShotCnt=Math.min(8,1+_lcLv); // 1렙=2발, 7렙+=8발
+  const _lcPierce=2000+(_lcLv-1)*100+_lcPierceBonus; // 기본 2000, Lv당+100
+  const _lcShotCnt=Math.min(6,1+_lcLv); // 1렙=2발, 5렙+=6발 (악의사냥과 동일)
   const _lcChainMax=Math.min(6,2+~~(_lcLv/4)); // 1렙=2체인, 4렙=3, 8렙=4, …20렙=7→cap6
   const _lcHalf=(_lcShotCnt-1)/2;
   // 방향: 마우스/게임패드
@@ -35690,7 +35713,7 @@ function activateLtnChaser(){
     const _lcDx=Math.cos(_lcAng0),_lcDy=Math.sin(_lcAng0);
     const _pp=_getPProj();
     _pp.x=P.x+_lcDx*16;_pp.y=P.y+_lcDy*16;
-    _pp.vx=_lcDx*16;_pp.vy=_lcDy*16;
+    _pp.vx=_lcDx*18;_pp.vy=_lcDy*18;
     _pp.dmg=_lcDmg;_pp.el=EL.L;_pp.maxDist=_lcRange;_pp.dist=0;
     _pp.r=8;_pp.stagger=4;_pp.kb=1;_pp.magic=true;
     _pp.ltnChaser=true;_pp.mhBlade=true; // mhBlade 재활용 (유도+트레일)
