@@ -29358,3 +29358,14 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - lang_vi.js
 - sprites/bonfire_barrier.png
 
+
+## 2026-06-08 17:30 (auto)
+- _autosave/game_20260608_172056.html
+- _autosave/game_20260608_172348.html
+- docs/16번역·로컬?�이?�이??번역?�???�체목록.md
+- game.html
+- lang_ja.js
+- lang_zh.js
+- lang_zht.js
+- sprites/bonfire_barrier.png
+

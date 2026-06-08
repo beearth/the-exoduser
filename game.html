@@ -26854,7 +26854,7 @@ function update(){
           // 현재 ltnChaser 투사체 수 카운트
           let _lcCnt=0;for(let _ci=0;_ci<pProjs.length;_ci++)if(pProjs[_ci].alive&&pProjs[_ci].ltnChaser)_lcCnt++;
           const _lcHalf=~~(p._mhMaxPierce/2);
-          if(_lcHalf>=10&&_lcCnt<32){ // 분열 가능: 관통력 10 이상 + 동시 32발 미만
+          if(_lcHalf>=10&&_lcCnt<100){ // 분열 가능: 관통력 10 이상 + 동시 100발 미만
             const _lcAng=Math.atan2(p.vy,p.vx);
             for(let _si=0;_si<2;_si++){
               const _sa=_lcAng+(_si?0.3:-0.3);
@@ -43770,7 +43770,6 @@ function draw(){
       const _bfSz=_bfDrawR*2;
       X.save();X.translate(_bfsx,_bfsy);
       X.globalAlpha=_bfAlpha*.9;
-      X.rotate(_now*0.00005);
       X.drawImage(_bfImg,-_bfSz/2,-_bfSz/2,_bfSz,_bfSz);
       X.restore();
     }}
