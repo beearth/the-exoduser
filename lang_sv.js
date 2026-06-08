@@ -3117,4 +3117,6 @@ const _SV_BASE={
 '⚠패링 실패!':'⚠Parering misslyckades!',
 '🔥피격→분노!':'🔥Träff→Raseri!',
 '✦ 유니크 부활!':'✦ Unik återupplivning!',
+'닫기 [V]':'Stäng [V]',
+'닫기 [C]':'Stäng [C]',
 };

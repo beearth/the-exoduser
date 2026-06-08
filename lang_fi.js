@@ -2477,4 +2477,6 @@ const _FI_BASE={'대검':'Suuri Miekka','석궁':'Varsijousi','연사석궁':'Sa
 '⚠패링 실패!':'⚠Torjunta epäonnistui!',
 '🔥피격→분노!':'🔥Osuma→Raivo!',
 '✦ 유니크 부활!':'✦ Uniikki herätys!',
+'닫기 [V]':'Sulje [V]',
+'닫기 [C]':'Sulje [C]',
 };

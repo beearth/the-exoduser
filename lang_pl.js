@@ -3604,4 +3604,6 @@ const _PL_BASE={
 '⚠패링 실패!':'⚠Parowanie nieudane!',
 '🔥피격→분노!':'🔥Trafienie→Furia!',
 '✦ 유니크 부활!':'✦ Unikatowe wskrzeszenie!',
+'닫기 [V]':'Zamknij [V]',
+'닫기 [C]':'Zamknij [C]',
 };

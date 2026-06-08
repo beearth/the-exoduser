@@ -3628,4 +3628,6 @@ const _NO_BASE={
 '⚠패링 실패!':'⚠Parering mislyktes!',
 '🔥피격→분노!':'🔥Treff→Raseri!',
 '✦ 유니크 부활!':'✦ Unik gjenoppliving!',
+'닫기 [V]':'Lukk [V]',
+'닫기 [C]':'Lukk [C]',
 };

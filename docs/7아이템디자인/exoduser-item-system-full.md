@@ -371,9 +371,7 @@ Object.freeze(LEGENDARY_SPECIAL);
 const UNIQUE_SPECIAL = {
   weapon_sword:    {ko:'분노의 최대치가 100% 추가된다 (200%까지)',  stat:'_uRageMax',       val:100},
   weapon_dagger:   {ko:'패링한 탄막의 관통률이 100% 추가된다',      stat:'_uDaggerPierce',  val:1.0},
-  weapon_hammer:   {ko:'강타가 적 방어력을 완전 무시한다',          stat:'_uHammerIgnore',  val:1},
   weapon_axe:      {ko:'출혈 적에게 공격 시 HP 5% 흡수',           stat:'_uAxeLeech',      val:0.05},
-  weapon_spear:    {ko:'작살이 벽을 관통하며 돌아온다 (부메랑)',     stat:'_uSpearBoomerang',val:1},
   weapon_mace:     {ko:'적 처치 시 폭발 (최대HP의 30% AoE)',       stat:'_uMaceExplode',   val:0.30},
   weapon_club:     {ko:'적 스턴 중 데미지 ×3',                    stat:'_uClubStun',      val:3},
   bow:             {ko:'모든 투사체가 관통한다',                   stat:'_uBowPierce',     val:1},
@@ -381,13 +379,6 @@ const UNIQUE_SPECIAL = {
   armor:           {ko:'피격 시 25% 확률로 데미지를 분노로 전환',   stat:'_uArmorRage',     val:0.25},
   helmet:          {ko:'마법 스킬 데미지 +50% + 마나 소모 -50%',   stat:'_uHelmMagic',     val:0.50},
   gloves:          {ko:'공격속도 +40%',                           stat:'_uGloveSpd',      val:0.40},
-  pants:           {ko:'이동 중 모든 디버프 자동 해제',             stat:'_uPantsClean',    val:1},
-  boots:           {ko:'회피가 데미지를 입힌다 (ATK×200%)',        stat:'_uBootsDmg',      val:2.0},
-  cape:            {ko:'패리 성공 시 주변 적 3초 빙결',             stat:'_uCapeFreeze',    val:3},
-  ring1:           {ko:'크리 시 HP/MP/ST 전부 3% 회복',            stat:'_uRingCrit',      val:0.03},
-  ring2:           {ko:'적 처치 시 10초간 투명화 (피격 해제)',       stat:'_uRingInvis',     val:10},
-  necklace:        {ko:'사망 시 즉시 부활 (HP 100%, 1회/스테이지)', stat:'_uNeckRevive',    val:1},
-  belt:            {ko:'물약 효과가 주변 아군(소환수)에게도 적용',   stat:'_uBeltShare',     val:1},
 };
 ```
 
@@ -397,23 +388,14 @@ const UNIQUE_SPECIAL = {
 |---|---|---|---|---|---|
 | 1 | weapon_sword | `_uRageMax` | 분노 최대치 +100% (200%까지) | `doParry()` → `Math.min(100+_uEq('_uRageMax'),...)`, UI height 비율 계산 | 분노 캡 확장 |
 | 2 | weapon_dagger | `_uDaggerPierce` | 패링 반사탄 관통 100% | 기본 패링 반사 + Q패링 반사 → `p.pierce=1;p.pierceMax=99` | 반사 투사체에 관통 부여 |
-| 3 | weapon_hammer | `_uHammerIgnore` | 에너지쉴드 무시, HP 직행 | `hurtE()` eShield 체크 바이패스 | eShield 흡수 스킵 |
-| 4 | weapon_axe | `_uAxeLeech` | 출혈 적 공격 시 HP 5% 흡수 | `hurtE()` 흡수 어픽스 블록 → `e.bleed>0` 조건 | dmg×val HP 회복 |
-| 5 | weapon_spear | `_uSpearBoomerang` | 작살 사거리 2배 | `pChargeRange()` × 2 | 사거리 배율 |
-| 6 | weapon_mace | `_uMaceExplode` | 처치 시 폭발 (최대HP 30% AoE, 반경150) | `hurtE()` on-kill 블록 → `shQuery(e.x,e.y,150)` | 주변 적에게 e.mhp×val 데미지 |
-| 7 | weapon_club | `_uClubStun` | 스턴 중 데미지 ×3 | `hurtE()` 조건부 뎀업 → `e.stunned>0` 시 합연산 +2 | _cAx 합연산 |
-| 8 | bow | `_uBowPierce` | 모든 투사체 관통 | `_resetPProj()` → `p.pierce=1;p.pierceMax=99` | 투사체 초기화 시 관통 강제 |
-| 9 | shield | `_uShieldRage` | 보호막 흡수 시 분노 +10% | `doParry()` → `_isQParry` 조건으로 `_rageAdd += _uSR` | Q패링(보호막) 전용 |
-| 10 | armor | `_uArmorRage` | 피격 시 25% 확률로 데미지→분노 전환 | `hurtP()` → HP 차감 직전, `a=0` 으로 데미지 무효화 + 분노 +10% | 확률적 데미지 면역 |
-| 11 | helmet | `_uHelmMagic` | 마법 데미지 +50%, MP 소모 -50% | `pMagicMul()` × (1+val), `pMagicCost()` 에서 val 차감 | 배율/비용 함수 직접 수정 |
-| 12 | gloves | `_uGloveSpd` | 공격속도 +40% | `statDex()` 에 val 합산 | 공속 배율 |
-| 13 | pants | `_uPantsClean` | 이동 중(WASD/방향키) 디버프 자동 해제 | 게임 루프 → `KH.KeyW` 등 체크 시 `burnT/poison/webSlow/freezeSlow/trapSlowT` = 0 | 매 프레임 해제 |
-| 14 | boots | `_uBootsDmg` | 회피 시 주변 AoE (ATK×200%, 반경120) | `hurtP()` 회피 성공 → `shQuery(P.x,P.y,120)` → `hurtE` | 회피 프록 |
-| 15 | cape | `_uCapeFreeze` | 패리 시 주변 적 3초 빙결 (반경150) | `doParry()` → `shQuery` → `e._frozen=180;e.stunned` | 빙결 + 스턴 |
-| 16 | ring1 | `_uRingCrit` | 크리 시 HP/MP/ST 전부 3% 회복 | `hurtE()` 크리 블록 → `P.mhp/mmp/mst × val` | 최대치 비례 |
-| 17 | ring2 | `_uRingInvis` | 처치 시 10초 투명화 + 무적 | on-kill → `P._uInvisT=val×60`, 게임 루프에서 `P.iframes≥2` 유지 | 타이머+무적 |
-| 18 | necklace | `_uNeckRevive` | 사망 시 즉시 부활 (HP 100%, 1회/스테이지) | `die()` → `P._uReviveUsed` 플래그, 스테이지 시작 시 리셋 | 1회 소모 |
-| 19 | belt | `_uBeltShare` | 물약 사용 시 ST/MP도 동일량 회복 | 물약 HP 회복 직후 → `P.st+=v;P.mp+=v` | 회복량 공유 |
+| 3 | weapon_axe | `_uAxeLeech` | 출혈 적 공격 시 HP 5% 흡수 | `hurtE()` 흡수 어픽스 블록 → `e.bleed>0` 조건 | dmg×val HP 회복 |
+| 4 | weapon_mace | `_uMaceExplode` | 처치 시 폭발 (최대HP 30% AoE, 반경150) | `hurtE()` on-kill 블록 → `shQuery(e.x,e.y,150)` | 주변 적에게 e.mhp×val 데미지 |
+| 5 | weapon_club | `_uClubStun` | 스턴 중 데미지 ×3 | `hurtE()` 조건부 뎀업 → `e.stunned>0` 시 합연산 +2 | _cAx 합연산 |
+| 6 | bow | `_uBowPierce` | 모든 투사체 관통 | `_resetPProj()` → `p.pierce=1;p.pierceMax=99` | 투사체 초기화 시 관통 강제 |
+| 7 | shield | `_uShieldRage` | 보호막 흡수 시 분노 +10% | `doParry()` → `_isQParry` 조건으로 `_rageAdd += _uSR` | Q패링(보호막) 전용 |
+| 8 | armor | `_uArmorRage` | 피격 시 25% 확률로 데미지→분노 전환 | `hurtP()` → HP 차감 직전, `a=0` 으로 데미지 무효화 + 분노 +10% | 확률적 데미지 면역 |
+| 9 | helmet | `_uHelmMagic` | 마법 데미지 +50%, MP 소모 -50% | `pMagicMul()` × (1+val), `pMagicCost()` 에서 val 차감 | 배율/비용 함수 직접 수정 |
+| 10 | gloves | `_uGloveSpd` | 공격속도 +40% | `statDex()` 에 val 합산 | 공속 배율 |
 
 **헬퍼 함수**: `_uEq(stat)` — 전 장비 슬롯에서 해당 stat 값 반환 (없으면 0). 위치: `game.html:12376`
 

@@ -3072,4 +3072,6 @@ const _DE_BASE={'대검':'Großschwert','석궁':'Armbrust','연사석궁':'Schn
 '⚠패링 실패!':'⚠Parade fehlgeschlagen!',
 '🔥피격→분노!':'🔥Treffer→Wut!',
 '✦ 유니크 부활!':'✦ Einzigartige Wiederbelebung!',
+'닫기 [V]':'Schließen [V]',
+'닫기 [C]':'Schließen [C]',
 };

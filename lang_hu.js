@@ -2479,4 +2479,6 @@ const _HU_BASE={
 '⚠패링 실패!':'⚠Hárítás sikertelen!',
 '🔥피격→분노!':'🔥Találat→Düh!',
 '✦ 유니크 부활!':'✦ Egyedi feltámadás!',
+'닫기 [V]':'Bezárás [V]',
+'닫기 [C]':'Bezárás [C]',
 };

@@ -3525,4 +3525,6 @@ const _CS_BASE={
 '⚠패링 실패!':'⚠Parírování selhalo!',
 '🔥피격→분노!':'🔥Zásah→Zuřivost!',
 '✦ 유니크 부활!':'✦ Unikátní vzkříšení!',
+'닫기 [V]':'Zavřít [V]',
+'닫기 [C]':'Zavřít [C]',
 };

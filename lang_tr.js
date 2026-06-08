@@ -2477,4 +2477,6 @@ const _TR_BASE={'대검':'Büyük Kılıç','석궁':'Tatar Yayı','연사석궁
 '⚠패링 실패!':'⚠Savuşturma Başarısız!',
 '🔥피격→분노!':'🔥Darbe→Öfke!',
 '✦ 유니크 부활!':'✦ Benzersiz Diriliş!',
+'닫기 [V]':'Kapat [V]',
+'닫기 [C]':'Kapat [C]',
 };

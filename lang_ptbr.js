@@ -3603,4 +3603,6 @@ const _PTBR_BASE={'대검':'Espadão','석궁':'Besta','연사석궁':'Repetidor
 '⚠패링 실패!':'⚠Aparar falhou!',
 '🔥피격→분노!':'🔥Golpe→Fúria!',
 '✦ 유니크 부활!':'✦ Reviver único!',
+'닫기 [V]':'Fechar [V]',
+'닫기 [C]':'Fechar [C]',
 };

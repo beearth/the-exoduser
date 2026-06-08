@@ -2482,4 +2482,6 @@ const _RO_BASE={
 '⚠패링 실패!':'⚠Parare eșuată!',
 '🔥피격→분노!':'🔥Lovitură→Furie!',
 '✦ 유니크 부활!':'✦ Înviere unică!',
+'닫기 [V]':'Închide [V]',
+'닫기 [C]':'Închide [C]',
 };

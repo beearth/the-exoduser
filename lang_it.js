@@ -2482,4 +2482,6 @@ const _IT_BASE={
 '⚠패링 실패!':'⚠Parata fallita!',
 '🔥피격→분노!':'🔥Colpo→Furia!',
 '✦ 유니크 부활!':'✦ Resurrezione unica!',
+'닫기 [V]':'Chiudi [V]',
+'닫기 [C]':'Chiudi [C]',
 };

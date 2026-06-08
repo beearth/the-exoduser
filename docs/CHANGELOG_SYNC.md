@@ -29467,3 +29467,45 @@ mpR = 0.05 + s.int√ó0.005                                        [NO P.lv√ó0.001
 - lang_zh.js
 - lang_zht.js
 
+
+## 2026-06-08 22:30 (auto)
+- _autosave/game_20260608_214543.html
+- _autosave/game_20260608_214731.html
+- _autosave/game_20260608_214751.html
+- _autosave/game_20260608_214953.html
+- _autosave/game_20260608_220330.html
+- _autosave/game_20260608_220339.html
+- _autosave/game_20260608_221456.html
+- _autosave/game_20260608_221745.html
+- _autosave/game_20260608_222148.html
+- _autosave/game_20260608_222238.html
+- _fix_remaining.cjs
+- docs/7?ÑÏù¥?úÎîî?êÏù∏/exoduser-item-system-full.md
+- game.html
+- lang_ar.js
+- lang_bg.js
+- lang_cs.js
+- lang_da.js
+- lang_de.js
+- lang_el.js
+- lang_es.js
+- lang_fi.js
+- lang_fr.js
+- lang_hu.js
+- lang_id.js
+- lang_it.js
+- lang_ja.js
+- lang_nl.js
+- lang_no.js
+- lang_pl.js
+- lang_ptbr.js
+- lang_ro.js
+- lang_ru.js
+- lang_sv.js
+- lang_th.js
+- lang_tr.js
+- lang_uk.js
+- lang_vi.js
+- lang_zh.js
+- lang_zht.js
+

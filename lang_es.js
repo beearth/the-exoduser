@@ -3098,4 +3098,6 @@ const _ES_BASE={'대검':'Espadón','석궁':'Ballesta','연사석궁':'Repetido
 '⚠패링 실패!':'⚠Parada fallida!',
 '🔥피격→분노!':'🔥Golpe→Furia!',
 '✦ 유니크 부활!':'✦ Revivir único!',
+'닫기 [V]':'Cerrar [V]',
+'닫기 [C]':'Cerrar [C]',
 };

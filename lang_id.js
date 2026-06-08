@@ -2477,4 +2477,6 @@ const _ID_BASE={'대검':'Pedang Besar','석궁':'Panah Silang','연사석궁':'
 '⚠패링 실패!':'⚠Parry Gagal!',
 '🔥피격→분노!':'🔥Terkena→Amukan!',
 '✦ 유니크 부활!':'✦ Kebangkitan Unik!',
+'닫기 [V]':'Tutup [V]',
+'닫기 [C]':'Tutup [C]',
 };

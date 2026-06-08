@@ -3629,4 +3629,6 @@ const _NL_BASE={
 '⚠패링 실패!':'⚠Pareren mislukt!',
 '🔥피격→분노!':'🔥Treffer→Woede!',
 '✦ 유니크 부활!':'✦ Unieke herleving!',
+'닫기 [V]':'Sluiten [V]',
+'닫기 [C]':'Sluiten [C]',
 };

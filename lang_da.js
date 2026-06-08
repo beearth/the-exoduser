@@ -3624,4 +3624,6 @@ const _DA_BASE={
 '⚠패링 실패!':'⚠Parering mislykkedes!',
 '🔥피격→분노!':'🔥Træf→Raseri!',
 '✦ 유니크 부활!':'✦ Unik genoplivning!',
+'닫기 [V]':'Luk [V]',
+'닫기 [C]':'Luk [C]',
 };

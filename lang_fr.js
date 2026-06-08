@@ -3097,4 +3097,6 @@ const _FR_BASE={'대검':'Espadon','석궁':'Arbalète','연사석궁':'Répéte
 '⚠패링 실패!':'⚠Parade échouée!',
 '🔥피격→분노!':'🔥Coup→Rage!',
 '✦ 유니크 부활!':'✦ Résurrection unique!',
+'닫기 [V]':'Fermer [V]',
+'닫기 [C]':'Fermer [C]',
 };
