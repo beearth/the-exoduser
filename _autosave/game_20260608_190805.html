@@ -2276,7 +2276,7 @@ canvas{display:block;position:fixed;inset:0}
   <span style="color: #665544; margin: 0 10px;">|</span>
   <span id="roomLbl" style="color: #887766;"></span>
   <span style="color: #665544; margin: 0 10px;">|</span>
-  <div id="spCnt" style="color: #ffcc00; cursor: pointer; pointer-events: all;" title="[J] 능력치">SP 0</div>
+  <div id="spCnt" style="color: #ffcc00; cursor: pointer; pointer-events: all;" title="[C] 능력치">SP 0</div>
   <span style="color: #665544; margin: 0 10px;">|</span>
   <div id="cpHud" style="color: #ffaa44; text-shadow: 0 0 5px rgba(255,170,68,0.3);">⚡ 0 CP</div>
   <span style="color: #665544; margin: 0 10px;">|</span>
@@ -6454,7 +6454,7 @@ const _EN={
 '좌클스킬 (클릭 전환)':'LMB Skill (click to switch)','우클스킬 (클릭 전환)':'RMB Skill (click to switch)',
 '이동스킬 (클릭 전환)':'Move Skill (click to switch)','마법스킬 (클릭 전환)':'Magic Skill (click to switch)',
 '영역스킬 (클릭 전환)':'Area Skill (click to switch)','피보호막 (클릭 전환)':'Blood Shield (click to switch)',
-'CT스킬 (클릭 전환)':'CT Skill (click to switch)','[J] 능력치':'[C] Stats',
+'CT스킬 (클릭 전환)':'CT Skill (click to switch)','[C] 능력치':'[C] Stats',
 // --- Key binding action names (BIND_NAMES) ---
 '위로 이동':'Move Up','아래로 이동':'Move Down','왼쪽 이동':'Move Left','오른쪽 이동':'Move Right',
 '칼등 처내기 (탭=처내기, 홀드=연사)':'Blade Parry (tap=parry, hold=rapid)',
@@ -6491,7 +6491,7 @@ const _EN={
 'ACT1 완주! 우리가 진짜 해냈어!':'ACT1 complete! We really did it!',
 'Ctrl 얼음보주로 탈출하라.':'Ctrl — escape with Ice Orb.',
 'Ctrl 유령걸음으로 탈출하라.':'Ctrl — escape with Ghost Walk.',
-'J키! 패시브 강해져!':'J key! Passives get stronger!',
+'C키! 패시브 강해져!':'C key! Passives get stronger!',
 'DEX 빌드! 거리에서 패고, 추적탄 좋아!':'DEX build! Poke from range, tracking shots are great!',
 'E로 마력공격을 해봐!':'Try magic attack with E!',
 'G 눌러서 대장간 가봐!':'Press G to visit the forge!',
@@ -6638,7 +6638,7 @@ const _EN={
 '쉬프트! 사슬기동은 이동기야!':'Shift! Chain Dash is a movement tool!',
 '스킬포인트 쌓였어! K 눌러!':'Skill points are stacking! Press K!',
 '스킬 포인트 있어! K!':'Got skill points! K!',
-'J키. 패시브 포인트가 쌓여있다.':'J key. Passive points have built up.',
+'C키. 패시브 포인트가 쌓여있다.':'C key. Passive points have built up.',
 '…쓸 거 아니면 분해해.':'...Salvage what you won\'t use.',
 '…강화 안 하면 그냥 고철이야.':'...Without enhancement, it\'s just scrap.',
 '빨간 탄은 우클릭. 무지개는 Q.':'Red shots: right-click. Rainbow: Q.',
@@ -7555,7 +7555,7 @@ function _checkPetDialogue(){
   if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야!',4,300);
   if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트 쌓였어! K 눌러!',4,300);
   if(P.lv>=5&&P.sp>0)_petSayCD('has_sp','cat','스킬 포인트 있어! K!',5,180,'crow','L키로 스킬 슬롯에 넣어야 쓸 수 있어.',4);
-  if((P.ap||0)>=3)_petSayCD('has_ap','crow','J키. 패시브 포인트가 쌓여있다.',4,240,'cat','J키! 패시브 강해져!',4);
+  if((P.ap||0)>=3)_petSayCD('has_ap','crow','C키. 패시브 포인트가 쌓여있다.',4,240,'cat','C키! 패시브 강해져!',4);
   if(INV.bag.length>=15)_petSayCD('bag_full','crow','…쓸 거 아니면 분해해.',4,120,'cat','아이템 넘쳐! 우리가 주워줄게!',4);
   if(G.mats<10)_petSayCD('low_mats','crow','악의가 바닥이다.',3,240,'cat','장비 분해해! 쓰레기도 악의!',5);
   if(G.mats>=50){let _uE=false;for(const sl in INV.equipped){const it=INV.equipped[sl];if(it&&it.rarity>=3&&(it.enhLv||0)===0){_uE=true;break}}
@@ -31416,7 +31416,7 @@ function updateE(e,sp){
       e._iaSpearCd=100+Math.random()*40;
       const _el86=e.el;
       e.s='eShootWind';e.st2=60;
-      e._swFire=function(){const sa=Math.atan2(P.y-e.y,P.x-e.x);spawnProj({x:e.x,y:e.y,vx:Math.cos(sa)*4.5,vy:Math.sin(sa)*4.5,dmg:~~(e.atk*1.2),el:_el86,friendly:false,life:120,ml:120,col:_el86===EL.D?'#443366':'#dddd66',sz:2,pierce:true});addTxt(e.x,e.y-15,_el86===EL.D?_T('암흑창!'):_T('빛창!'),_el86===EL.D?'#8866cc':'#dddd66',30);SFX.magic(1)};
+      e._swFire=function(){const sa=Math.atan2(P.y-e.y,P.x-e.x);spawnProj({x:e.x,y:e.y,vx:Math.cos(sa)*4.5,vy:Math.sin(sa)*4.5,dmg:~~(e.atk*1.2),el:_el86,friendly:false,life:120,ml:120,col:_el86===EL.D?'#443366':'#dddd66',sz:2,pierce:true});addTxt(e.x,e.y-15,_el86===EL.D?_T('암흑창!'):_T('빛창!'),_el86===EL.D?'#443366':'#dddd66',30);SFX.magic(1)};
     }
     if(e._iaBurstCd<=0&&d<100){
       e._iaBurstCd=200+Math.random()*60;
@@ -33463,7 +33463,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     e.hp-=dmg;
     _dpsDmg+=dmg; // DPS 누적
     // ── 데미지 텍스트: DOT/채널링 제외, 단발 히트만 ──
-    const _quiet2=!!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade||opts.beam||opts.dot||opts.ltnChaser||opts.lightning));
+    const _quiet2=!!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade||opts.beam||opts.dot));
     if(!isDot&&!_quiet2&&P.s!=='whirlwind'){
       if(!G._dmgPeakShow||dmg>G._dmgPeakShow.dmg){
         G._dmgPeakShow={x:e.x,y:e.y,dmg:dmg,crit:_isCrit};
@@ -38353,7 +38353,7 @@ function _applyLang(){try{
     const _lastD=_ho.querySelector('div[style*="color:#666"]');if(_lastD)_lastD.textContent=_T('클릭하면 닫힘');
   }
   // Slot title attributes
-  const _titles={skSlotLMB:'좌클스킬 (클릭 전환)',skSlotRMB:'우클스킬 (클릭 전환)',skSlot0:'이동스킬 (클릭 전환)',qsE:'마법스킬 (클릭 전환)',skSlot1:'영역스킬 (클릭 전환)',qsQ:'피보호막 (클릭 전환)',skSlotCT:'CT스킬 (클릭 전환)',spCnt:'[J] 능력치'};
+  const _titles={skSlotLMB:'좌클스킬 (클릭 전환)',skSlotRMB:'우클스킬 (클릭 전환)',skSlot0:'이동스킬 (클릭 전환)',qsE:'마법스킬 (클릭 전환)',skSlot1:'영역스킬 (클릭 전환)',qsQ:'피보호막 (클릭 전환)',skSlotCT:'CT스킬 (클릭 전환)',spCnt:'[C] 능력치'};
   for(const[id,ko]of Object.entries(_titles)){const el=$(id);if(el)el.title=_T(ko)}
   // Inventory panel
   const _invP=$('invPanel');if(_invP){

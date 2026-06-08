@@ -33463,7 +33463,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     e.hp-=dmg;
     _dpsDmg+=dmg; // DPS 누적
     // ── 데미지 텍스트: DOT/채널링 제외, 단발 히트만 ──
-    const _quiet2=!!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade||opts.beam||opts.dot||opts.ltnChaser||opts.lightning));
+    const _quiet2=!!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade||opts.beam||opts.dot));
     if(!isDot&&!_quiet2&&P.s!=='whirlwind'){
       if(!G._dmgPeakShow||dmg>G._dmgPeakShow.dmg){
         G._dmgPeakShow={x:e.x,y:e.y,dmg:dmg,crit:_isCrit};

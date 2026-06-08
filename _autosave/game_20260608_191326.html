@@ -2276,7 +2276,7 @@ canvas{display:block;position:fixed;inset:0}
   <span style="color: #665544; margin: 0 10px;">|</span>
   <span id="roomLbl" style="color: #887766;"></span>
   <span style="color: #665544; margin: 0 10px;">|</span>
-  <div id="spCnt" style="color: #ffcc00; cursor: pointer; pointer-events: all;" title="[J] 능력치">SP 0</div>
+  <div id="spCnt" style="color: #ffcc00; cursor: pointer; pointer-events: all;" title="[C] 능력치">SP 0</div>
   <span style="color: #665544; margin: 0 10px;">|</span>
   <div id="cpHud" style="color: #ffaa44; text-shadow: 0 0 5px rgba(255,170,68,0.3);">⚡ 0 CP</div>
   <span style="color: #665544; margin: 0 10px;">|</span>
@@ -6454,7 +6454,7 @@ const _EN={
 '좌클스킬 (클릭 전환)':'LMB Skill (click to switch)','우클스킬 (클릭 전환)':'RMB Skill (click to switch)',
 '이동스킬 (클릭 전환)':'Move Skill (click to switch)','마법스킬 (클릭 전환)':'Magic Skill (click to switch)',
 '영역스킬 (클릭 전환)':'Area Skill (click to switch)','피보호막 (클릭 전환)':'Blood Shield (click to switch)',
-'CT스킬 (클릭 전환)':'CT Skill (click to switch)','[J] 능력치':'[C] Stats',
+'CT스킬 (클릭 전환)':'CT Skill (click to switch)','[C] 능력치':'[C] Stats',
 // --- Key binding action names (BIND_NAMES) ---
 '위로 이동':'Move Up','아래로 이동':'Move Down','왼쪽 이동':'Move Left','오른쪽 이동':'Move Right',
 '칼등 처내기 (탭=처내기, 홀드=연사)':'Blade Parry (tap=parry, hold=rapid)',
@@ -33463,7 +33463,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     e.hp-=dmg;
     _dpsDmg+=dmg; // DPS 누적
     // ── 데미지 텍스트: DOT/채널링 제외, 단발 히트만 ──
-    const _quiet2=!!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade||opts.beam||opts.dot||opts.ltnChaser||opts.lightning));
+    const _quiet2=!!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade||opts.beam||opts.dot));
     if(!isDot&&!_quiet2&&P.s!=='whirlwind'){
       if(!G._dmgPeakShow||dmg>G._dmgPeakShow.dmg){
         G._dmgPeakShow={x:e.x,y:e.y,dmg:dmg,crit:_isCrit};
@@ -38353,7 +38353,7 @@ function _applyLang(){try{
     const _lastD=_ho.querySelector('div[style*="color:#666"]');if(_lastD)_lastD.textContent=_T('클릭하면 닫힘');
   }
   // Slot title attributes
-  const _titles={skSlotLMB:'좌클스킬 (클릭 전환)',skSlotRMB:'우클스킬 (클릭 전환)',skSlot0:'이동스킬 (클릭 전환)',qsE:'마법스킬 (클릭 전환)',skSlot1:'영역스킬 (클릭 전환)',qsQ:'피보호막 (클릭 전환)',skSlotCT:'CT스킬 (클릭 전환)',spCnt:'[J] 능력치'};
+  const _titles={skSlotLMB:'좌클스킬 (클릭 전환)',skSlotRMB:'우클스킬 (클릭 전환)',skSlot0:'이동스킬 (클릭 전환)',qsE:'마법스킬 (클릭 전환)',skSlot1:'영역스킬 (클릭 전환)',qsQ:'피보호막 (클릭 전환)',skSlotCT:'CT스킬 (클릭 전환)',spCnt:'[C] 능력치'};
   for(const[id,ko]of Object.entries(_titles)){const el=$(id);if(el)el.title=_T(ko)}
   // Inventory panel
   const _invP=$('invPanel');if(_invP){
