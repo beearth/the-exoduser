@@ -5237,7 +5237,7 @@ const _EN={
 '암전!':'Lightning!','암흑!':'Dark!','암흑창!':'Dark Spear!','빛창!':'Light Spear!',
 '💥 보스 그로기!':'💥 Boss Groggy!','💥 그로기!':'💥 Groggy!',
 '⚡ 암전나선!':'⚡ Lightning Helix!','🌋 지진폭풍!':'🌋 Quake Storm!',
-'⚔🩸 독혈해방!':'⚔🩸 Plague Liberation!','⚔🐍 독사해방!':'⚔🐍 Venom Liberation!','⚔ 칼날 해방!':'⚔ Blade Liberation!',
+'⚔🩸 독혈해방!':'⚔🩸 Plague Liberation!','⚔ 칼날 해방!':'⚔ Blade Liberation!',
 '🔨🌋 지옥강타!':'🔨🌋 Inferno Slam!','🔨 대왕치기!':'🔨 Giant Slam!',
 '✟ 결계의 영역!':'✟ Ward Domain!','✟ 물의 영역!':'✟ Water Domain!','✟ 파쇄의 영역!':'✟ Shatter Domain!','✟ 침식의 영역!':'✟ Corrode Domain!','✟ 관통의 영역!':'✟ Pierce Domain!','✟ 권능의 영역!':'✟ Sovereign Domain!','🛡 회복의 영역!':'🛡 Sacred Domain!',
 '파도!':'Wave!',
@@ -12424,7 +12424,7 @@ const _BIC=location.search.includes('bic');
 const _DEMO_MODE=_BIC||location.search.includes('demo');
 const _DEMO_LV_CAP=_BIC?100:500;
 const _DEMO_LAST_STAGE=3; // ACT1(hell:0) 마지막 스테이지 인덱스
-const _DEMO_FUSE_ALLOWED=new Set(['dimBreach','dimSlam','sixFuse','elemFuse','whirlDet','slamStorm','bladeFuse','plagueFuse','plagueVenom','boneStorm','elecRepent','shieldFuse','holyFuse','holyIce','iceMortar','pillarSpike','pillarSlam','infernoSlam','thunderGhost','dualScarecrow','siegeGhost']);
+const _DEMO_FUSE_ALLOWED=new Set(['dimBreach','dimSlam','sixFuse','elemFuse','whirlDet','slamStorm','bladeFuse','plagueFuse','boneStorm','elecRepent','shieldFuse','holyFuse','holyIce','iceMortar','pillarSpike','pillarSlam','infernoSlam','thunderGhost','dualScarecrow','siegeGhost']);
 const _DEMO_AFFIX_BANNED=new Set(['sharpAtk','brutalAtk','ruinAtk','overkilDmg','staggerExplosion','parryExplosion','elemConvert']);
 // ──────────────────────────────────────────────────────
 const SI_TO_HELL=new Uint8Array(TOTAL_STAGES);
@@ -25422,10 +25422,10 @@ function update(){
           P.parryBank=(P.parryBank||0)+p.dmg;
           doParry(p.dmg,p.x,p.y,true,p.el);
         }else{
-          // 패링 윈도우 아닐 때 OR 빨콩: 빨콩은 풀뎀, 일반은 흡수
-          const _psBlk2=p.redBean?0:Math.min(.90,pGuardAbsorb()+pShieldBlock());
+          // 패링 윈도우 아닐 때 OR 빨콩: 흡수 + 넉백 임팩트 (일반 Q 실패와 동일 연출)
+          const _psBlk2=Math.min(.90,pGuardAbsorb()+pShieldBlock());
           const _absDmg=Math.max(1,~~(p.dmg*(1-_psBlk2)));
-          if(_absDmg>0){hurtP(_absDmg,{dtype:p.redBean?'parry':'magic',src:p.redBean?'빨콩 직격':'보호막흡수',redBean:!!p.redBean})}
+          if(_absDmg>0){hurtP(_absDmg,{dtype:p.redBean?'parry':'magic',src:'보호막흡수',redBean:!!p.redBean})}
           // 공통 임팩트 (일반 피격과 동일)
           _projHitFx(p.x,p.y,p.el,!!p.redBean);
           {const _bAng=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bAng)*3;P.kb.y+=Math.sin(_bAng)*3}
@@ -26541,8 +26541,8 @@ function update(){
     const _bkHitR=P.s==='sBash'||_anyPW||(P._sbParryT>0)?_rbDeflR:_pCollR+16;
     // 우클릭(sBash)으로 무지개탄 패링 시도 → 잘못된 입력, 데미지
     if(p.blackBean&&!_pHit&&_pDist<_wrongR&&P.s==='sBash'&&!P._ioActive&&P.iframes<=0){
-      // 우클릭 패링 시도 → 잘못된 입력: 풀뎀 + 넉백
-      const _bkWrongD=Math.max(~~(P.mhp*0.10),p.dmg);hurtP(_bkWrongD,{dtype:'magic',src:'무지개오패링'}); // 탄 데미지 or 최대HP 10% 중 큰 쪽
+      // 우클릭 패링 시도 → 잘못된 입력: 폭발 + 넉백
+      const _bkWrongD=~~(P.mhp*0.10);hurtP(_bkWrongD,{dtype:'magic',src:'무지개오패링'}); // 최대HP 10% 고정 페널티
       // 무지개탄 중독 (데미지×3, 10초, 최대10중첩)
       {if(!P._rbPoison)P._rbPoison=[];if(P._rbPoison.length<10){P._rbPoison.push({total:_bkWrongD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('☠중독!')+'×'+P._rbPoison.length,'#33aa22',30)}}
       P.iframes=3;addTxt(p.x,p.y-15,_T('❌ Q키로! -')+_bkWrongD,'#ff44ff',50);
@@ -26937,12 +26937,11 @@ function update(){
           if(!_vbRehit)p._hitSet.add(e);
           p._pierced=(p._pierced||0)+(_vbRehit?2:1); // 재히트=2배 관통력 소모
           const _vbAng=Math.atan2(e.y-p.y,e.x-p.x);
-          const _vbHitDmg=~~((p._venomPool||0)*0.15); // 직타 15% (독 쌓기 + 즉뎀)
-          hurtE(e,_vbHitDmg,_vbAng,false,p,p.el);
+          hurtE(e,0,_vbAng,false,p,p.el); // 직타 0 — 독 DOT만
           // 독: 스택당 50% 증가, 50스택 캡
           e.poison=1;e.poisonT=Math.max(e.poisonT||0,600);
           const _vbPriorStk=e.poisonStk||0;
-          if(_vbPriorStk<50){e.poisonStk=_vbPriorStk+1;e._poisonPool=(e._poisonPool||0)+pDotPool()*(p._venomPool||0)*(1+_vbPriorStk*0.5)*1.5;}
+          if(_vbPriorStk<50){e.poisonStk=_vbPriorStk+1;e._poisonPool=(e._poisonPool||0)+pDotPool()*(p._venomPool||0)*(1+_vbPriorStk*0.5);}
           playSampleAt('chain_fly',.3,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,_vbAng);
           // 91보장+9확률 관통 (악의사냥 동일)
           const _vbGtd=Math.floor(p._mhMaxPierce*91/1000);
@@ -28273,7 +28272,7 @@ function update(){
     if(P._gOrbSpawnSeq==null)P._gOrbSpawnSeq=0;
     const _goLv=P.skills.guardian;
     const _isGF=P.skills.maliceHunt>=1&&_isFused('bladeFuse');
-    const _isPlagueGF=_isGF&&P.skills.plagueBurst>=1&&(_isFused('plagueFuse')||_isFused('plagueVenom')); // 합체 조건
+    const _isPlagueGF=_isGF&&P.skills.plagueBurst>=1&&_isFused('plagueFuse'); // 합체 조건
     // 합체 전환 감지: 구체→칼날 전환 시 리셋
     if(_isGF&&!P._gFused){P._gFused=true;P._gOrbs=[];P._gOrbRegen=0;P._gOrbSpawnSeq=0}
     if(!_isGF)P._gFused=false;
@@ -35762,8 +35761,7 @@ function activateMaliceHunt(){
     if(P.st<_mhStCost){showPH(_T('ST 부족!'),'#ff4444');return}
     // 합체: 궤도 칼날 전부 발사
     if(!P._gOrbs||P._gOrbs.length===0){showPH(_T('칼날 없음!'),'#cccccc');return}
-    const _isPlagueGF=P.skills.plagueBurst>=1&&(_isFused('plagueFuse')||_isFused('plagueVenom'));
-    const _isPlagueVenomGF=_isPlagueGF&&P.skills.venomBlade>=1&&_isFused('plagueVenom');
+    const _isPlagueGF=P.skills.plagueBurst>=1&&_isFused('plagueFuse');
     if(_isPlagueGF&&(P._pbCd||0)>0){return}
     G.mats-=_malCost(30);P.st=Math.max(0,P.st-_mhStCost);
     if(_isPlagueGF)P._pbCd=Math.max(600,~~(900*(1+_cdRed()))); // 독혈해방 15초, 최소 10초
@@ -35796,32 +35794,7 @@ function activateMaliceHunt(){
       const _pfAng=_bestE?Math.atan2(_bestE.y-P.y,_bestE.x-P.x):P.facing;
       {const _pp=_getPProj();_pp.x=P.x+Math.cos(_pfAng)*16;_pp.y=P.y+Math.sin(_pfAng)*16;_pp.vx=Math.cos(_pfAng)*18;_pp.vy=Math.sin(_pfAng)*18;_pp.dmg=_fbDmg;_pp.el=EL.P;_pp.maxDist=_pfRange;_pp.dist=0;_pp.r=10;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.plagueBlade=true;_pp.plagueHoming=true;_pp._plagueLv=_pfLv;_pp._plagueHit=0;_pp._plagueMax=_pfPrc;_pp._plagueCap=_pfCap;_pp._maxBounce=_pfCap;_pp._hitSet=new Set();pProjs[pProjs.length]=_pp;}
     }
-    // 독사해방 합체(4성): 독사탄 동시 발사
-    if(_isPlagueVenomGF){
-      const _vbLv=P.skills.venomBlade||1;
-      const _vbDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('venomBlade')*_fuseMul('venomBlade'));
-      const _vbRange=6000+(_vbLv-1)*300;
-      const _vbPrc=800+(_vbLv-1)*20+_bladePierceBonus;
-      const _vbCnt=Math.min(6,1+_vbLv);
-      const _vbHalf=(_vbCnt-1)/2;
-      const _vbAng=_bestE?Math.atan2(_bestE.y-P.y,_bestE.x-P.x):P.facing;
-      for(let _vi=0;_vi<_vbCnt;_vi++){
-        const _va=_vbAng+(_vi-_vbHalf)*0.12;
-        const _vdx=Math.cos(_va),_vdy=Math.sin(_va);
-        const _pp=_getPProj();
-        _pp.x=P.x+_vdx*16;_pp.y=P.y+_vdy*16;
-        _pp.vx=_vdx*18;_pp.vy=_vdy*18;
-        _pp.dmg=1;_pp.el=EL.D;_pp.maxDist=_vbRange;_pp.dist=0;
-        _pp.r=8;_pp.stagger=0;_pp.kb=0;_pp.magic=true;_pp.mhBlade=true;
-        _pp.venomBlade=true;_pp._venomPool=_vbDmg;
-        _pp._pierced=0;_pp._mhMaxPierce=_vbPrc;_pp._pierceRate=0;
-        _pp._hitSet=new Set();_pp._maxBounce=10;_pp._reHitT=0;
-        pProjs[pProjs.length]=_pp;
-      }
-    }
     P._gOrbs.length=0;
-    if(_isPlagueVenomGF)addTxt(P.x,P.y-25,_T('⚔🐍 독사해방!'),'#44dd44',40);
-    else if(_isPlagueGF)addTxt(P.x,P.y-25,_T('⚔🩸 독혈해방!'),'#cc4444',40);
     SFX.slash();playSample(Math.random()<.5?'voice_dark_skill':'voice_bladefuse',1,_r(1,.05));    shake(6);
   }else{
     // 단독: 1발, 레벨 스케일 데미지, 10회 관통
@@ -35844,7 +35817,7 @@ function activateVenomBlade(){
   if(P.st<_vbStCost){showPH(_T('ST 부족!'),'#ff4444');return}
   P.st=Math.max(0,P.st-_vbStCost);
   const _vbDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('venomBlade')*_fuseMul('venomBlade'));
-  const _vbRange=6000+(_vbLv-1)*300;
+  const _vbRange=2000+(_vbLv-1)*100;
   const _vbPierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30)+_eqAffix('pierceFlat');
   const _vbPierce=800+(_vbLv-1)*20+_vbPierceBonus; // 악의사냥과 동일 공식
   const _vbShotCnt=Math.min(6,1+_vbLv); // 1렙=2발, 2렙=3발, …5렙+=6발
@@ -37325,7 +37298,7 @@ function _renderSkillRow(sk,grid){
     const _hasGem=learned&&_fGrp;
     const _gemGlow=_hasGem?'box-shadow:0 0 '+(_fuseReady?'14':'8')+'px '+_fGrp.color+(_fuseReady?'aa':'55')+',inset 0 0 '+(_fuseReady?'25':'12')+'px '+_fGrp.color+(_fuseReady?'33':'15')+';'+(_fuseReady?'animation:_fglow 1.5s ease-in-out infinite;':''):'';
     const _bdrCss=_fGrp?'border:2px solid transparent;border-image:linear-gradient(135deg,'+_fGrp.color+','+(_fGrp.color2||_fGrp.color)+') 1;':'border:1px solid '+(learned?'#448833':'#443322')+';';
-    const _bgMap={dimBreach:'40,15,80',dimSlam:'40,15,80',dimThunder:'40,15,80',sixFuse:'70,45,0',elemFuse:'70,45,0',whirlDet:'70,35,0',slamStorm:'70,35,0',stormBeam:'80,30,0',bladeFuse:'60,55,50',iceMortar:'15,50,85',boneStorm:'20,70,35',elecRepent:'30,70,20',shieldFuse:'45,45,60',plagueFuse:'60,55,50',plagueVenom:'40,60,30',pillarSlam:'80,40,0',pillarSpike:'50,15,70',holyFuse:'70,35,45'};
+    const _bgMap={dimBreach:'40,15,80',dimSlam:'40,15,80',dimThunder:'40,15,80',sixFuse:'70,45,0',elemFuse:'70,45,0',whirlDet:'70,35,0',slamStorm:'70,35,0',stormBeam:'80,30,0',bladeFuse:'60,55,50',iceMortar:'15,50,85',boneStorm:'20,70,35',elecRepent:'30,70,20',shieldFuse:'45,45,60',plagueFuse:'60,55,50',plagueVenom:'20,60,20',pillarSlam:'80,40,0',pillarSpike:'50,15,70',holyFuse:'70,35,45'};
     const _bgRgb=_fGrp?(_bgMap[_fGrp.key]||'0,0,0'):'0,0,0';
     const _isLocked=!learned&&(!_reqMet||!_lvMet);
     const _lockBdr=_isLocked?'border:1px solid #661111;':'';
@@ -37723,7 +37696,7 @@ function _renderSkillRow(sk,grid){
               const absorbed=_getAbsorbed(_grp.key);
               absorbed.forEach(rid=>{for(let j=0;j<SKILL_SLOTS.length;j++){if(SKILL_SLOTS[j]===rid)SKILL_SLOTS[j]=null}if(ULT_SLOT===rid)ULT_SLOT=null});
               // ═══ 합체 후 호스트 스킬 자동 슬롯 배정 ═══
-              {const _fhM2={whirlDet:"whirlwind",slamStorm:"whirlwind",stormBeam:"whirlwind",stormBurst:"whirlwind",dimBreach:"chargeBoost",dimSlam:"chargeBoost",dimThunder:"chargeBoost",dimBlast:"chargeBoost",sixFuse:"fanShot",elemFuse:"omniBeam",bladeFuse:"maliceHunt",plagueFuse:"maliceHunt",plagueVenom:"maliceHunt",iceMortar:"maliceMortar",boneStorm:"maliceStorm",elecRepent:"maliceStorm",shieldFuse:"maliceSwipe",pillarSlam:"giantSlam2",pillarSpike:"darkPillar",holyFuse:"holyDome",holyIce:"holyDome",siegeGhost:"ghostXbowTurret",dualScarecrow:"voidScarecrow",thunderGhost:"bladeDash",timeStep:"timeWarp",infernoSlam:"giantSlam2"};
+              {const _fhM2={whirlDet:"whirlwind",slamStorm:"whirlwind",stormBeam:"whirlwind",stormBurst:"whirlwind",dimBreach:"chargeBoost",dimSlam:"chargeBoost",dimThunder:"chargeBoost",dimBlast:"chargeBoost",sixFuse:"fanShot",elemFuse:"omniBeam",bladeFuse:"maliceHunt",plagueFuse:"maliceHunt",iceMortar:"maliceMortar",boneStorm:"maliceStorm",elecRepent:"maliceStorm",shieldFuse:"maliceSwipe",pillarSlam:"giantSlam2",pillarSpike:"darkPillar",holyFuse:"holyDome",holyIce:"holyDome",siegeGhost:"ghostXbowTurret",dualScarecrow:"voidScarecrow",thunderGhost:"bladeDash",timeStep:"timeWarp",infernoSlam:"giantSlam2"};
               const _hSk=_fhM2[_grp.key];
               if(_hSk&&P.skills[_hSk]>=1&&!SKILL_SLOTS.includes(_hSk)){
                 const _ei2=SKILL_SLOTS.findIndex(s=>s===null);

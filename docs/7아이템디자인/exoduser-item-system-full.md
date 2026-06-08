@@ -371,10 +371,11 @@ Object.freeze(LEGENDARY_SPECIAL);
 const UNIQUE_SPECIAL = {
   weapon_sword:    {ko:'분노의 최대치가 100% 추가된다 (200%까지)',  stat:'_uRageMax',       val:100},
   weapon_dagger:   {ko:'패링한 탄막의 관통률이 100% 추가된다',      stat:'_uDaggerPierce',  val:1.0},
+  weapon_hammer:   {ko:'폭발 데미지 50% 증가',                   stat:'_uExplDmg',       val:0.50},
   weapon_axe:      {ko:'출혈 적에게 공격 시 HP 5% 흡수',           stat:'_uAxeLeech',      val:0.05},
   weapon_mace:     {ko:'적 처치 시 폭발 (최대HP의 30% AoE)',       stat:'_uMaceExplode',   val:0.30},
   weapon_club:     {ko:'적 스턴 중 데미지 ×3',                    stat:'_uClubStun',      val:3},
-  bow:             {ko:'모든 투사체가 관통한다',                   stat:'_uBowPierce',     val:1},
+  bow:             {ko:'투사체 관통력 50% 증가',                   stat:'_uBowPierce',     val:0.5},
   shield:          {ko:'보호막이 탄막을 흡수하면 분노 10%를 생성',  stat:'_uShieldRage',    val:10},
   armor:           {ko:'피격 시 25% 확률로 데미지를 분노로 전환',   stat:'_uArmorRage',     val:0.25},
   helmet:          {ko:'마법 스킬 데미지 +50% + 마나 소모 -50%',   stat:'_uHelmMagic',     val:0.50},
@@ -388,10 +389,11 @@ const UNIQUE_SPECIAL = {
 |---|---|---|---|---|---|
 | 1 | weapon_sword | `_uRageMax` | 분노 최대치 +100% (200%까지) | `doParry()` → `Math.min(100+_uEq('_uRageMax'),...)`, UI height 비율 계산 | 분노 캡 확장 |
 | 2 | weapon_dagger | `_uDaggerPierce` | 패링 반사탄 관통 100% | 기본 패링 반사 + Q패링 반사 → `p.pierce=1;p.pierceMax=99` | 반사 투사체에 관통 부여 |
-| 3 | weapon_axe | `_uAxeLeech` | 출혈 적 공격 시 HP 5% 흡수 | `hurtE()` 흡수 어픽스 블록 → `e.bleed>0` 조건 | dmg×val HP 회복 |
+| 3 | weapon_hammer | `_uExplDmg` | 폭발 데미지 50% 증가 | AoE 판정 시 `_ad*(1+_uEq('_uExplDmg'))`, 블루콩 AoE도 동일 | _aoeDmg 배율 |
+| 4 | weapon_axe | `_uAxeLeech` | 출혈 적 공격 시 HP 5% 흡수 | `hurtE()` 흡수 어픽스 블록 → `e.bleed>0` 조건 | dmg×val HP 회복 |
 | 4 | weapon_mace | `_uMaceExplode` | 처치 시 폭발 (최대HP 30% AoE, 반경150) | `hurtE()` on-kill 블록 → `shQuery(e.x,e.y,150)` | 주변 적에게 e.mhp×val 데미지 |
 | 5 | weapon_club | `_uClubStun` | 스턴 중 데미지 ×3 | `hurtE()` 조건부 뎀업 → `e.stunned>0` 시 합연산 +2 | _cAx 합연산 |
-| 6 | bow | `_uBowPierce` | 모든 투사체 관통 | `_resetPProj()` → `p.pierce=1;p.pierceMax=99` | 투사체 초기화 시 관통 강제 |
+| 6 | bow | `_uBowPierce` | 투사체 관통력 50% 증가 | `_resetPProj()` → `p._pierceRate *= 1.5` | _pierceRate 배율 적용 |
 | 7 | shield | `_uShieldRage` | 보호막 흡수 시 분노 +10% | `doParry()` → `_isQParry` 조건으로 `_rageAdd += _uSR` | Q패링(보호막) 전용 |
 | 8 | armor | `_uArmorRage` | 피격 시 25% 확률로 데미지→분노 전환 | `hurtP()` → HP 차감 직전, `a=0` 으로 데미지 무효화 + 분노 +10% | 확률적 데미지 면역 |
 | 9 | helmet | `_uHelmMagic` | 마법 데미지 +50%, MP 소모 -50% | `pMagicMul()` × (1+val), `pMagicCost()` 에서 val 차감 | 배율/비용 함수 직접 수정 |

@@ -26541,8 +26541,8 @@ function update(){
     const _bkHitR=P.s==='sBash'||_anyPW||(P._sbParryT>0)?_rbDeflR:_pCollR+16;
     // 우클릭(sBash)으로 무지개탄 패링 시도 → 잘못된 입력, 데미지
     if(p.blackBean&&!_pHit&&_pDist<_wrongR&&P.s==='sBash'&&!P._ioActive&&P.iframes<=0){
-      // 우클릭 패링 시도 → 잘못된 입력: 풀뎀 + 넉백
-      const _bkWrongD=Math.max(~~(P.mhp*0.10),p.dmg);hurtP(_bkWrongD,{dtype:'magic',src:'무지개오패링'}); // 탄 데미지 or 최대HP 10% 중 큰 쪽
+      // 우클릭 패링 시도 → 잘못된 입력: 폭발 + 넉백
+      const _bkWrongD=~~(P.mhp*0.10);hurtP(_bkWrongD,{dtype:'magic',src:'무지개오패링'}); // 최대HP 10% 고정 페널티
       // 무지개탄 중독 (데미지×3, 10초, 최대10중첩)
       {if(!P._rbPoison)P._rbPoison=[];if(P._rbPoison.length<10){P._rbPoison.push({total:_bkWrongD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('☠중독!')+'×'+P._rbPoison.length,'#33aa22',30)}}
       P.iframes=3;addTxt(p.x,p.y-15,_T('❌ Q키로! -')+_bkWrongD,'#ff44ff',50);
