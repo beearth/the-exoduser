@@ -29272,3 +29272,13 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html
 - img/cin_remember_wide.png
 
+
+## 2026-06-08 11:30 (auto)
+- _autosave/game_20260608_105950.html
+- _autosave/game_20260608_110649.html
+- _autosave/game_20260608_110955.html
+- _autosave/game_20260608_111003.html
+- _autosave/game_20260608_111027.html
+- _autosave/game_20260608_111121.html
+- game.html
+

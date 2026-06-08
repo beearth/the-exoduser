@@ -489,7 +489,7 @@ canvas{display:block;position:fixed;inset:0}
 .sp-k{font-weight:900;font-size:clamp(.8rem,1.8vw,1.2rem);color:#cc6644;margin-top:8px;letter-spacing:.3em}
 @keyframes spBlink{0%,100%{opacity:.3}50%{opacity:1}}
 
-#death{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,rgba(10,5,15,.92),rgba(2,1,5,.98));opacity:0;pointer-events:none;transition:opacity 2.5s ease-out}
+#death{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;background:url('img/cin_remember_wide.png') center/cover no-repeat,radial-gradient(ellipse at center,rgba(10,5,15,.92),rgba(2,1,5,.98));opacity:0;pointer-events:none;transition:opacity 2.5s ease-out}
 #death.on{opacity:1;pointer-events:all}
 #death::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(180,140,100,.08),transparent 70%);animation:deathLight 4s ease-out forwards}
 @keyframes deathLight{0%{width:400px;height:400px;opacity:1}100%{width:40px;height:40px;opacity:0}}
@@ -500,10 +500,10 @@ canvas{display:block;position:fixed;inset:0}
 #drTime{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);font-family:'Courier New',monospace;font-size:clamp(.8rem,1.5vw,1.1rem);color:rgba(200,160,120,.8);letter-spacing:.1em;text-shadow:0 1px 4px rgba(0,0,0,.8);z-index:2}
 #drBar{position:absolute;bottom:20px;left:10%;width:80%;height:4px;background:rgba(100,60,40,.4);border-radius:2px;z-index:2}
 #drBarFill{height:100%;background:linear-gradient(90deg,#cc4444,#ff6644);border-radius:2px;width:0%;transition:width .08s linear;box-shadow:0 0 8px rgba(200,50,50,.5)}
-.dt{font-family:var(--font);font-weight:700;font-size:clamp(1.2rem,3vw,2rem);color:rgba(180,140,100,.7);letter-spacing:.5em;text-shadow:0 0 40px rgba(180,140,100,.2);animation:dp 5s ease-in-out infinite}
+.dt{font-family:var(--font);font-weight:700;font-size:clamp(1.2rem,3vw,2rem);color:rgba(220,180,140,.9);letter-spacing:.5em;text-shadow:0 0 40px rgba(180,140,100,.4),0 0 8px rgba(0,0,0,.9),0 2px 4px rgba(0,0,0,1),0 0 20px rgba(0,0,0,.8);animation:dp 5s ease-in-out infinite}
 @keyframes dp{0%,100%{opacity:.3}50%{opacity:.8}}
-.ds{color:#443333;margin-top:10px;font-size:1.1rem;letter-spacing:.15em}
-.retry{margin-top:28px;padding:10px 36px;background:transparent;border:1px solid #550000;color:#993333;font-family:'Noto Sans KR';font-weight:700;font-size:1.3rem;cursor:pointer;letter-spacing:.2em;transition:all .3s}
+.ds{color:rgba(200,160,130,.85);margin-top:10px;font-size:1.1rem;letter-spacing:.15em;text-shadow:0 0 6px rgba(0,0,0,.9),0 2px 4px rgba(0,0,0,1),0 0 16px rgba(0,0,0,.7)}
+.retry{margin-top:28px;padding:10px 36px;background:rgba(0,0,0,.55);border:1px solid #772222;color:#cc4444;font-family:'Noto Sans KR';font-weight:700;font-size:1.3rem;cursor:pointer;letter-spacing:.2em;transition:all .3s;text-shadow:0 0 6px rgba(0,0,0,.9),0 2px 3px rgba(0,0,0,1)}
 .retry:hover{background:rgba(120,0,0,.1)}
 
 #victory{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 2s;background:#000;overflow:hidden}
@@ -2683,7 +2683,7 @@ canvas{display:block;position:fixed;inset:0}
 <div id="spStart" style="margin-top:18px;font-size:clamp(.6rem,1.2vw,.9rem);color:#886644;letter-spacing:.2em;animation:spBlink 1.2s ease-in-out infinite">— 클릭하여 시작 —</div>
 </div></div>
 <div id="deathReplay"><canvas id="drCvs"></canvas><div id="drLabel">☠ 사망 리플레이</div><div id="drTime"></div><div id="drBar"><div id="drBarFill"></div></div></div>
-<div id="death"><div class="dt" id="deathTitle">빛이 꺼졌다</div><div class="ds" id="deathSub">누군가는 너를 기다리고 있다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry" id="toLobbyBtn" style="margin-top:8px;background:rgba(0,0,0,.3);border-color:#554433;color:#886644;font-size:.9rem">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div></div>
+<div id="death"><div class="dt" id="deathTitle">빛이 꺼졌다</div><div class="ds" id="deathSub">누군가는 너를 기다리고 있다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry" id="toLobbyBtn" style="margin-top:8px;background:rgba(0,0,0,.55);border-color:#664433;color:#aa8855;font-size:.9rem;text-shadow:0 0 6px rgba(0,0,0,.9),0 2px 3px rgba(0,0,0,1)">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div></div>
 
 <!-- LEVEL UP SCREEN (10렙마다) -->
 <div id="lvUpScreen" style="position:fixed;inset:0;z-index:35;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.92);opacity:0;pointer-events:none;transition:opacity .4s">
@@ -25116,7 +25116,7 @@ function update(){
               {p.dmg=~~(pParryProjDmg(p.dmg,false)*1.8);}p._aoeDmg=p.dmg*1.5;
               p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;p.magic=true;p.parryBlueBean=true;
               addTxt(p.x,p.y-10,_T('💎 블루콩!'),'#00e5ff',45);
-              doParry(p.dmg,p.x,p.y,false,p.el);
+              doParry(p.dmg,p.x,p.y,false,'red');
             }else{
               // 기본 패링 반사: 스킬 없이도 투사체 반사
               p.vx*=-1.5;p.vy*=-1.5;p.friendly=true;
@@ -29783,14 +29783,20 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   G.mats+=_matsAdd;addTxt(P.x,P.y-60,_T('👿악의+')+_matsAdd,'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true,shieldHit:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
-  // 패링 임팩트: 무지개=무지개폭발, Q패링=Dark 02, 우클릭=Lightning(기존)
+  // 패링 임팩트: Q패링=무지개폭발, 우클릭=Fire (P.s로 직접 판정)
   if(!window._tvfx2)window._tvfx2=[];
-  if(_parryEl==='rainbow'){
-    _rainbowImpact(_px,_py);
-  }else if(_isQParry){
-    _dark02Impact(_px,_py);
+  if(P.s==='sBash'){
+    const _prCombo=_TVFX2_COMBOS[0]; // Fire
+    _prCombo.layers.forEach(function(l){
+      const img=_tvfx2Imgs[l.src];if(!img||!img.complete)return;
+      const fw=~~(img.naturalWidth/l.cols),fh=~~(img.naturalHeight/l.rows);
+      window._tvfx2.push({img,x:_px,y:_py,cols:l.cols,rows:l.rows,fw,fh,
+        sc:l.sc*1.2,delay:l.delay||0,spd:l.spd||3,frame:0,total:l.cols*l.rows,t:0,timer:0});
+    });
   }else{
-    const _prCombo=_TVFX2_COMBOS[2]; // Lightning (기존)
+    _rainbowImpact(_px,_py);
+  }
+    const _prCombo=_TVFX2_COMBOS[0]; // Fire
     _prCombo.layers.forEach(function(l){
       const img=_tvfx2Imgs[l.src];if(!img||!img.complete)return;
       const fw=~~(img.naturalWidth/l.cols),fh=~~(img.naturalHeight/l.rows);
@@ -49791,16 +49797,42 @@ function _stopLoadTips(){if(_loadTipIv){clearInterval(_loadTipIv);_loadTipIv=nul
 function _preloadAssets(){
   return new Promise(resolve=>{
     const imgs=[
-      'atlas_player.png','img/ui_refs/window_frames/panel-settings-chains-v2.png',
+      'atlas_player.png','atlas_enemies.png','proj_atlas.png',
+      'img/ui_refs/window_frames/panel-settings-chains-v2.png',
       'img/ui_refs/window_frames/panel-inventory-chains-v2.png',
       'img/ui_refs/window_frames/panel-forge-skulls-v2.png',
       'img/ui_refs/window_frames/panel-skills-runes.png',
-      'img/crow/south.png','img/cat_pet/south.png'
+      'img/crow/south.png','img/cat_pet/south.png',
+      // VFX
+      'assets/vfx/chain_shuriken_2.webp','assets/vfx/crescent_slash.webp',
+      'assets/vfx/impact_basic_sheet.png','assets/vfx/lightning_burst_sheet.png',
+      'assets/vfx/ground_crack_sheet.png','assets/vfx/parry_impact_rainbow.png',
+      'assets/vfx/parry_impact_red.png','assets/vfx/malice_dome.png',
+      'assets/vfx/vfx_ice_orb.png','assets/vfx/vfx_magic_orb.png',
+      'assets/vfx/vfx_peace_shield.png','assets/vfx/vfx_shield_aura.png',
+      'assets/vfx/ww_hit_impact.jpg',
+      'assets/vfx/fire_beam/fire_beam_spritesheet.png',
+      'assets/vfx/fire_explode/fire_explode_spritesheet.png',
+      'assets/vfx/boss/vfx_dark_burst.png','assets/vfx/boss/vfx_holy_burst.png',
+      'img/vfx/chain_blade.webp','img/vfx/sbash_blade.webp','img/vfx/sbash_blade_black.webp',
+      'img/vfx/teleport_in.png','img/vfx/teleport_out.png',
+      'img/vfx_earthquake/explosion_spritesheet.webp',
+      'img/vfx_pentagram_gold.png','img/vfx_pentagram_purple.png',
+      'img/vfx_repentance.png','img/boom_plague.png','img/tp_impact.png',
+      // projectiles
+      'img/balls/arrow.png','img/balls/proj_bolt_dark.png','img/balls/proj_bolt_phys.png',
+      // map
+      'assets/map/ch1/boss_room_bg.png','assets/map/ch1/collision/boss_pillar_01.webp',
+      'assets/map/ch2/skull_wall_tile.png','assets/map/ch2/wall_edge_tile.png',
+      'assets/map/eye_bloodshot_8dir.png','img/map_dragon_3d.png','img/map_dragon_skeleton.png','img/crater.png',
+      // sprites
+      'sprites/bonfire_barrier.png','sprites/holy_dome.png',
+      'sprites/spike_trap/spike_thorn.png','sprites/spike_trap/vortex.png','sprites/zone_single.png'
     ];
     let loaded=0;const total=imgs.length;
     function tick(){loaded++;setBootLoading(8+~~(loaded/total*70),_L('에셋 로딩 중...','Loading assets...'));if(loaded>=total)resolve()}
     for(const src of imgs){const im=new Image();im.onload=tick;im.onerror=tick;im.src=src}
-    setTimeout(()=>resolve(),8000); // 8초 타임아웃
+    setTimeout(()=>resolve(),15000); // 15초 타임아웃
   });
 }
 

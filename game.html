@@ -12480,7 +12480,7 @@ function _resetProj(p){
   p.iceZone=p.blizzard=p.elemBall=p.swordWave=p.fast=false;
   p.pierce=p.explosive=false;p.delay=0;p.hitTriggered=false;
   p._coralSpike=p._seaSlow=p._bpDrain=p.phantomSword=false;
-  p.beam=p.maliceHunt=p.bladeShard=p.iceBlade=false;
+  p.beam=p.maliceHunt=p.bladeShard=p.iceBlade=p._fromRainbow=false;
   p.bombR=p.bombAtk=p._tickCd=p._tickRate=0;p._aoeR=p._aoeDmg=0;
   p._trail=null; p._trH=0;p._typed=false;p._sprFr=0;p.bounces=0;
   p.parryable=p.rainbow=p._lavaPool=p.noParry=false;p._bluHitCD=0;p._hitSet=null;
@@ -25116,7 +25116,7 @@ function update(){
               {p.dmg=~~(pParryProjDmg(p.dmg,false)*1.8);}p._aoeDmg=p.dmg*1.5;
               p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;p.magic=true;p.parryBlueBean=true;
               addTxt(p.x,p.y-10,_T('💎 블루콩!'),'#00e5ff',45);
-              doParry(p.dmg,p.x,p.y,false,p.el);
+              doParry(p.dmg,p.x,p.y,false,'red');
             }else{
               // 기본 패링 반사: 스킬 없이도 투사체 반사
               p.vx*=-1.5;p.vy*=-1.5;p.friendly=true;
