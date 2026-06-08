@@ -20250,7 +20250,7 @@ function _predBonus(e){return e&&e.hp<=e.mhp*.3?(PASSIVES.pPred||0)*.20:0}
 function pAtkMul(){return _passDmgSum('melee')}  // 근접 통합배율 (합연산)
 function pAtkCost(){return Math.max(.60,1-PASSIVES.pAtk*.04)} // ST비용 유지
 function pDefAdd(){return (P._altDef||0)*30}   // 철벽 패시브 제거: 제단 보너스만 유지
-function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
+function pChargeRange(){return (1+PASSIVES.pCharge*.02)*(_uEq('_uSpearBoomerang')>0?2:1)}               // 작살사거리 +2%/lv (10lv=+20%) + 유니크 ×2
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
 function pParryDmg(){return 1+PASSIVES.pParry*.50}     // 카운터뎀 +50%/lv (10lv=×6)
 function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*(1+_gearBonus)*0.5;const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;const _calc=~~(_base*pParryDmg()*_afxPB*_legSP);const _kiFloor=~~(meleeRef()*14*statStr()*pAtkMul());return Math.max(_calc,_kiFloor);} // 탄뎀×0.5 베이스 + 장비보너스, 최소 기검참1방(14×) 보장
@@ -24143,7 +24143,7 @@ function update(){
         const _stR=450+(_stLv-1)*~~(225/9); // 1렙450, 10렙675
         // 사슬기동 티어 3단계 매핑: 1티어(탭)=×30, 2티어(0.1초)=×60, 3티어(0.2초)=×100
         const _stTier=Math.max(1,Math.min(3,_harpTier||1));
-        const _stDistMul=_stTier===3?3:_stTier===2?2:1;
+        const _stDistMul=_stTier===3?100:_stTier===2?60:30;
         const _stDmg=~~(magicRef()*_skMul('chainAssault')*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 통일공식: _skMul
         const _stEl=EL.F;
         G._noHitStopT=40;
@@ -26773,6 +26773,8 @@ function update(){
     }
     p.x+=p.vx*sp;p.y+=p.vy*sp;p.dist+=spd*sp;
     if(p._lcGrace>0)p._lcGrace-=sp;
+    // 뇌전추격자: 플레이어에서 1000px 넘으면 소멸 (화면 밖 방지)
+    if(p.ltnChaser){const _odx=p.x-P.x,_ody=p.y-P.y;if(_odx*_odx+_ody*_ody>1000000){p.alive=false;continue}}
     // 악의구: 날아가면서 크기 성장 (초기 12 → 최종 _fbRMax)
     if(p.fireball&&p._fbRMax&&p.maxDist>0){p.r=~~(p._fbR0+(p._fbRMax-p._fbR0)*Math.min(1,p.dist/p.maxDist))}
     // 플레이어 투사체 서브 파티클 (매 10프레임)
@@ -26854,7 +26856,7 @@ function update(){
           // 현재 ltnChaser 투사체 수 카운트
           let _lcCnt=0;for(let _ci=0;_ci<pProjs.length;_ci++)if(pProjs[_ci].alive&&pProjs[_ci].ltnChaser)_lcCnt++;
           const _lcHalf=~~(p._mhMaxPierce/2);
-          if(_lcHalf>=10&&_lcCnt<32){ // 분열 가능: 관통력 10 이상 + 동시 32발 미만
+          if(_lcHalf>=1&&_lcCnt<100){ // 분열 가능: 관통력 1 이상 + 동시 100발 미만
             const _lcAng=Math.atan2(p.vy,p.vx);
             for(let _si=0;_si<2;_si++){
               const _sa=_lcAng+(_si?0.3:-0.3);
@@ -26866,16 +26868,16 @@ function update(){
               _sp.lightning=true;_sp.chainMax=p.chainMax;_sp.chainR=p.chainR;_sp._chainCount=p._chainCount||0;
               _sp._pierced=0;_sp._mhMaxPierce=_lcHalf;
               _sp._hitSet=new Set(p._hitSet);_sp._maxBounce=p._maxBounce;
-              _sp._lcGrace=15;
+              _sp._lcGrace=15;_sp._lcOx=p._lcOx;_sp._lcOy=p._lcOy;_sp._lcMaxR=p._lcMaxR;
               pProjs[pProjs.length]=_sp;
             }
             hit=true;break; // 원본 소멸
-          }else{ // 32발 캡 또는 관통력 부족: 분열 멈추고 관통으로 전환
+          }else{ // 100발 캡 또는 관통력 부족: 분열 멈추고 관통으로 전환
             p._pierced=(p._pierced||0)+1;
-            const _lcGtd=Math.floor(p._mhMaxPierce*91/1000);
+            const _lcGtd=Math.floor(p._mhMaxPierce*91/100);
             if(p._pierced<=_lcGtd){hit=false;continue}
             const _lcOver=p._pierced-_lcGtd;
-            const _lcSvP=Math.max(0,1-_lcOver*0.1);
+            const _lcSvP=Math.max(0,1-_lcOver*1);
             if(_lcSvP>0&&Math.random()<_lcSvP){hit=false;continue}
           }
         }
@@ -34376,14 +34378,21 @@ function hurtP(dmg,opts){
       return;
     }
     // 보호막 흡수 (패링 실패): 넉백 + 임팩트 — DOT은 흡수율 절반
-    const _psBlkRate=Math.min(.90,(pGuardAbsorb()+pShieldBlock())*(_isDotEarly?.5:1));
+    // 패링 윈도우 지남 → 흡수율 절반 + 데미지 1.3배 + 포이즈 -1
+    const _psParryFailed=P._sbParryT<=0&&!(opts&&opts.dot);
+    const _psBlkBase=(pGuardAbsorb()+pShieldBlock())*(_isDotEarly?.5:1);
+    const _psBlkRate=Math.min(_psParryFailed?.45:.90,_psParryFailed?_psBlkBase*.5:_psBlkBase);
     const _psRawDmg=dmg;
     dmg=Math.max(1,~~(dmg*(1-_psBlkRate)));
+    if(_psParryFailed){dmg=~~(dmg*1.3);
+      P.poise=Math.max(0,(P.poise||4)-1);P.poiseR=0;
+      if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))));P.iframes=60;SFX.groggy()}}
+      addTxt(P.x,P.y-32,_T('⚠패링 실패!'),'#ff6644',30)}
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+(_psRawDmg-dmg)}
     if(PASSIVES.pGuard>0){P.hp=Math.min(P.mhp,P.hp+P.mhp*pGuardRegen())}
-    {var _psAng=opts&&opts.ang!==undefined?opts.ang+Math.PI:Math.random()*Math.PI*2;P.kb.x+=Math.cos(_psAng)*3;P.kb.y+=Math.sin(_psAng)*3}
-    shake(4);playSample('player_hit'+(1+~~(Math.random()*4)),.4,_r(1,.15));doHitFlash('#ff88bb',0.15);
-    addTxt(P.x,P.y-18,_T('🕊️ 평화보호 ')+~~(_psBlkRate*100)+'%','#ff88bb',22);
+    {var _psAng=opts&&opts.ang!==undefined?opts.ang+Math.PI:Math.random()*Math.PI*2;P.kb.x+=Math.cos(_psAng)*(_psParryFailed?5:3);P.kb.y+=Math.sin(_psAng)*(_psParryFailed?5:3)}
+    shake(_psParryFailed?8:4);playSample('player_hit'+(1+~~(Math.random()*4)),_psParryFailed?.6:.4,_r(1,.15));doHitFlash(_psParryFailed?'#ff4422':'#ff88bb',_psParryFailed?.25:.15);
+    addTxt(P.x,P.y-18,_T('🕊️ 평화보호 ')+~~(_psBlkRate*100)+'%',_psParryFailed?'#ff6644':'#ff88bb',22);
   }
   // 보호막: 데미지 70% 감소 + 방패 DEF 적용 + 기폭팔 축적
   else if(P.s==='sBlock'){
@@ -34395,15 +34404,22 @@ function hurtP(dmg,opts){
       return;
     }
     // 보호막 흡수 (패링 실패): 넉백 + 임팩트 — DOT은 흡수율 절반
-    const _blkRate=Math.min(.80,(pGuardAbsorb()+pShieldBlock())*(_isDotEarly?.5:1));
+    // 패링 윈도우 지남 → 흡수율 절반 + 데미지 1.3배 + 포이즈 -1
+    const _parryFailed=P._sbParryT<=0&&!(opts&&opts.dot);
+    const _blkBase=(pGuardAbsorb()+pShieldBlock())*(_isDotEarly?.5:1);
+    const _blkRate=Math.min(_parryFailed?.40:.80,_parryFailed?_blkBase*.5:_blkBase);
     const _rawDmg=dmg;
     dmg=Math.max(1,~~(dmg*(1-_blkRate)));
+    if(_parryFailed){dmg=~~(dmg*1.3);
+      P.poise=Math.max(0,(P.poise||4)-1);P.poiseR=0;
+      if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))));P.iframes=60;SFX.groggy()}}
+      addTxt(P.x,P.y-32,_T('⚠패링 실패!'),'#ff6644',30)}
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+(_rawDmg-dmg);addTxt(P.x,P.y-25,_T('흡수!'),'#ff6644',35)}
     if(PASSIVES.pGuard>0){P.hp=Math.min(P.mhp,P.hp+P.mhp*pGuardRegen())}
     // 넉백 + 화면흔들림 + 피격음
-    {const _bAng=opts&&opts.ang!==undefined?opts.ang+Math.PI:Math.random()*Math.PI*2;P.kb.x+=Math.cos(_bAng)*3;P.kb.y+=Math.sin(_bAng)*3}
-    shake(4);playSample('player_hit'+(1+~~(Math.random()*4)),.4,_r(1,.15));doHitFlash('#4488ff',0.15);
-    addTxt(P.x,P.y-18,_T('🛡 보호막 ')+~~(_blkRate*100)+'%','#4488ff',22);
+    {const _bAng=opts&&opts.ang!==undefined?opts.ang+Math.PI:Math.random()*Math.PI*2;P.kb.x+=Math.cos(_bAng)*(_parryFailed?5:3);P.kb.y+=Math.sin(_bAng)*(_parryFailed?5:3)}
+    shake(_parryFailed?8:4);playSample('player_hit'+(1+~~(Math.random()*4)),_parryFailed?.6:.4,_r(1,.15));doHitFlash(_parryFailed?'#ff4422':'#4488ff',_parryFailed?.25:.15);
+    addTxt(P.x,P.y-18,_T('🛡 보호막 ')+~~(_blkRate*100)+'%',_parryFailed?'#ff6644':'#4488ff',22);
   } else if(!(opts&&opts.dot))playSample('player_hit'+(1+~~(Math.random()*4)),.6,_r(1,.15));
   // 회전기폭 합체: 회전 중 보호막 자동 적용 (데미지 감소 + 흡수)
   if(P.s==='whirlwind'&&P.skills.detonate&&_isFused('whirlDet')){
@@ -35779,9 +35795,9 @@ function activateLtnChaser(){
   if(P.st<_lcStCost){showPH(_T('ST 부족!'),'#ff4444');return}
   P.st=Math.max(0,P.st-_lcStCost);
   const _lcDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('ltnChaser')*_fuseMul('ltnChaser'));
-  const _lcRange=6000+(_lcLv-1)*200; // 기본 6000
-  const _lcPierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30)+_eqAffix('pierceFlat');
-  const _lcPierce=5000+(_lcLv-1)*200+_lcPierceBonus; // 기본 5000, Lv당+200
+  const _lcRange=1000; // 시전 지점에서 최대 1000px
+  const _lcPierceBonus=~~((bw().bowPierce||0)*30+(PASSIVES.pPierce||0)*3)+_eqAffix('pierceFlat');
+  const _lcPierce=500+(_lcLv-1)*20+_lcPierceBonus; // 기본 500, Lv당+20
   const _lcShotCnt=Math.min(12,2+_lcLv*2); // 1렙=4발, 5렙+=12발
   const _lcChainMax=Math.min(12,4+~~(_lcLv/2)); // 1렙=4체인, 4렙=6, …cap12
   const _lcHalf=(_lcShotCnt-1)/2;
@@ -35796,9 +35812,10 @@ function activateLtnChaser(){
     const _pp=_getPProj();
     _pp.x=P.x+_lcDx*16;_pp.y=P.y+_lcDy*16;
     _pp.vx=_lcDx*18;_pp.vy=_lcDy*18;
-    _pp.dmg=_lcDmg;_pp.el=EL.L;_pp.maxDist=_lcRange;_pp.dist=0;
+    _pp.dmg=_lcDmg;_pp.el=EL.L;_pp.maxDist=99999;_pp.dist=0;
     _pp.r=8;_pp.stagger=4;_pp.kb=1;_pp.magic=true;
     _pp.ltnChaser=true;_pp.mhBlade=true; // mhBlade 재활용 (유도+트레일)
+    _pp._lcOx=P.x;_pp._lcOy=P.y;_pp._lcMaxR=_lcRange; // 시전 원점+반경
     _pp.lightning=true;_pp.chainMax=_lcChainMax;_pp.chainR=150+_lcLv*5;_pp._chainCount=0;
     _pp._pierced=0;_pp._mhMaxPierce=_lcPierce;
     _pp._hitSet=new Set();_pp._maxBounce=20;
@@ -43756,7 +43773,6 @@ function draw(){
       const _bfSz=_bfDrawR*2;
       X.save();X.translate(_bfsx,_bfsy);
       X.globalAlpha=_bfAlpha*.9;
-      X.rotate(_now*0.00005);
       X.drawImage(_bfImg,-_bfSz/2,-_bfSz/2,_bfSz,_bfSz);
       X.restore();
     }}
@@ -44399,8 +44415,9 @@ function drawP(){
             X.globalCompositeOperation=_prevComp;
           }
         }
-      }else if(fz.type==='storm'){
-        // ═══ 악의폭풍 — 이오닉 스톰 (바닥 접지형 전기장 + 밀집 번개) ═══
+      }else if(fz.type==='storm'||fz.type==='boneStorm'){
+        // ═══ 악의폭풍 / 해골번개 — 이오닉 스톰 (바닥 접지형 전기장 + 밀집 번개) ═══
+        const _isBoneStormVFX=(fz.type==='boneStorm');
         if(!fz._spr){
           fz._spr=[];
           const _cnt=12+~~(Math.random()*5); // 12~16개 (밀집)
@@ -44432,7 +44449,7 @@ function drawP(){
         X.globalCompositeOperation='screen';
         const _gridN=4+~~(fz.r/80); // 격자 줄 수
         X.globalAlpha=(.25+.15*Math.sin(_now*.005))*_fzFade;
-        X.strokeStyle='#6644cc';X.lineWidth=1;
+        X.strokeStyle=_isBoneStormVFX?'#446622':'#6644cc';X.lineWidth=1;
         for(let gi=0;gi<_gridN;gi++){
           const gy=fz.y-fz.r*_stDeploy+gi*(fz.r*2*_stDeploy/_gridN);
           X.beginPath();X.moveTo(fz.x-fz.r*_stDeploy,gy);
@@ -44478,7 +44495,7 @@ function drawP(){
         }
         // ── 외곽 전기 아크 (바깥 테두리에 번개 가닥) ──
         X.globalAlpha=(.4+.2*Math.sin(_now*.004))*_fzFade;
-        X.strokeStyle='#8866ff';X.lineWidth=1.5;
+        X.strokeStyle=_isBoneStormVFX?'#55cc44':'#8866ff';X.lineWidth=1.5;
         for(let ai=0;ai<8;ai++){
           const aa=ai*Math.PI/4+Math.sin(_now*.002+ai)*.3;
           X.beginPath();
@@ -44521,8 +44538,30 @@ function drawP(){
           X.beginPath();X.arc(fz.x+Math.cos(_sa)*_sd,fz.y+Math.sin(_sa)*_sd,1+Math.random()*1.5,0,Math.PI*2);X.fill();
         }
       }else if(fz.type==='iceStorm'){
-        // ═══ 아이스스톰 — 블리자드 장판 ═══
+        // ═══ 아이스스톰 — 블리자드 소용돌이 장판 (iceVortex 스타일) ═══
         const _ist=_now*.001;const _isf=~~(fz.t);
+        const _isDeployT=Math.min(1,fz.t/20);
+        const _isSz=fz.r*2*_isDeployT;
+        // 1) 소용돌이 이미지 (iceVortex와 동일 에셋, 역회전)
+        if(!G._vortexImg){G._vortexImg=new Image();G._vortexImg.src='sprites/spike_trap/vortex.png'}
+        const _isVImg=G._vortexImg;
+        if(_isVImg.complete&&_isVImg.naturalWidth>0){
+          X.globalAlpha=(.4+.2*Math.sin(_ist*3))*_fzFade;
+          X.save();X.translate(fz.x,fz.y);
+          X.rotate(-_now*0.00006);
+          X.drawImage(_isVImg,-_isSz/2,-_isSz/2,_isSz,_isSz);
+          X.restore();
+          // 2차 레이어 (작게, 반대 회전)
+          X.globalAlpha=(.25+.1*Math.sin(_ist*5))*_fzFade;
+          X.save();X.translate(fz.x,fz.y);
+          X.rotate(_now*0.00009);
+          X.drawImage(_isVImg,-_isSz*.35,-_isSz*.35,_isSz*.7,_isSz*.7);
+          X.restore();
+        }
+        // 2) 바닥 서리 원 (범위 가이드)
+        X.globalAlpha=(.12+.06*Math.sin(_ist*2))*_fzFade;
+        X.strokeStyle='#88ddff';X.lineWidth=2;
+        X.beginPath();X.arc(fz.x,fz.y,fz.r*_isDeployT,0,Math.PI*2);X.stroke();
         // 3) 얼음 파편 — 다이아몬드
         if(!fz._iceShards||_isf%3===0){
           fz._iceShards=[];
@@ -44540,7 +44579,7 @@ function drawP(){
           X.beginPath();X.moveTo(0,-s.sz);X.lineTo(s.sz*.6,0);X.lineTo(0,s.sz);X.lineTo(-s.sz*.6,0);X.closePath();X.fill();
           X.restore();
         }
-        // 4) 스파크 점
+        // 4) 눈보라 스파크 점
         for(let _si=0;_si<10;_si++){
           const _sa=Math.random()*Math.PI*2;const _sd=Math.random()*fz.r*.85;
           X.globalAlpha=(.3+Math.random()*.4)*_fzFade;
@@ -47295,42 +47334,53 @@ function drawP(){
             X.beginPath();X.moveTo(_lx+8*_ts,_ly);X.lineTo(_lx-5*_ts,_ly-1*_ts);X.lineTo(_lx-5*_ts,_ly+1*_ts);X.closePath();X.fill();
           }
         }
-      }else if(p.ltnChaser){// ── LIGHTNING BLADE: 뇌전추격자 푸른 전기칼날 ──
+      }else if(p.ltnChaser){// ── LIGHTNING BOLT: 뇌전추격자 체인라이트닝 스타일 ──
         X.rotate(ang);
-        const _lcPulse=.8+Math.sin(_now/35+p.x*.4)*.2;
-        // 전기 글로우 오라
-        X.globalAlpha=fa*.15*_lcPulse;X.fillStyle='#2266ff';
-        X.beginPath();X.ellipse(0,0,22,8,0,0,Math.PI*2);X.fill();
-        // 메인 칼날: 푸른 전기 다이아몬드
-        X.globalAlpha=fa*.95*_lcPulse;
-        X.fillStyle='#3388ff';
-        X.beginPath();X.moveTo(24,0);X.lineTo(2,-2.5);X.lineTo(-10,0);X.lineTo(2,2.5);X.closePath();X.fill();
-        // 밝은 코어
-        X.globalAlpha=fa*.7;X.fillStyle='#aaccff';
-        X.beginPath();X.moveTo(20,0);X.lineTo(4,-1.2);X.lineTo(-6,0);X.lineTo(4,1.2);X.closePath();X.fill();
-        // 전기 지직 (2줄)
-        X.globalAlpha=fa*.6*_lcPulse;X.strokeStyle='#ccddff';X.lineWidth=.6;
-        for(let _zi=0;_zi<2;_zi++){
-          const _zy=(_zi?-1:1)*(2+Math.sin(_now*.03+_zi*5)*.8);
-          X.beginPath();X.moveTo(-8,_zy);
-          X.lineTo(-2,_zy+Math.sin(_now*.05+_zi*3)*1.5);
-          X.lineTo(8,_zy-Math.sin(_now*.07+_zi*7)*1.2);
-          X.lineTo(18,_zy+Math.sin(_now*.04+_zi)*1);X.stroke();
+        const _lcPulse=.7+Math.sin(_now/25+p.x*.5)*.3;
+        // ── 지그재그 번개 볼트 (워크래프트 체인라이트닝) ──
+        const _lcSegs=6,_lcLen=56,_lcSegL=_lcLen/_lcSegs;
+        // 외곽 글로우 (넓은 번개)
+        X.globalAlpha=fa*.12*_lcPulse;X.strokeStyle='#2244ff';X.lineWidth=12;X.lineCap='round';
+        X.beginPath();X.moveTo(-10,0);
+        for(let _s=1;_s<=_lcSegs;_s++){const _sx=_s*_lcSegL-10,_sy=((_s&1)?1:-1)*(2+Math.sin(_now*.09+p.y*.3+_s*2.1)*3);X.lineTo(_sx,_sy)}
+        X.stroke();
+        // 메인 볼트 (푸른 번개)
+        X.globalAlpha=fa*.85*_lcPulse;X.strokeStyle='#4499ff';X.lineWidth=3.5;
+        X.beginPath();X.moveTo(-10,0);
+        for(let _s=1;_s<=_lcSegs;_s++){const _sx=_s*_lcSegL-10,_sy=((_s&1)?1:-1)*(2+Math.sin(_now*.09+p.y*.3+_s*2.1)*3);X.lineTo(_sx,_sy)}
+        X.stroke();
+        // 백색 코어 (가는 번개)
+        X.globalAlpha=fa*.95;X.strokeStyle='#eef4ff';X.lineWidth=1.2;
+        X.beginPath();X.moveTo(-10,0);
+        for(let _s=1;_s<=_lcSegs;_s++){const _sx=_s*_lcSegL-10,_sy=((_s&1)?1:-1)*(2+Math.sin(_now*.09+p.y*.3+_s*2.1)*3);X.lineTo(_sx,_sy)}
+        X.stroke();
+        // 분기 번개 (매 2세그먼트마다 짧은 가지)
+        X.globalAlpha=fa*.4*_lcPulse;X.strokeStyle='#88bbff';X.lineWidth=1;
+        for(let _s=2;_s<=_lcSegs;_s+=2){
+          const _bx=_s*_lcSegL-10,_by=((_s&1)?1:-1)*(2+Math.sin(_now*.09+p.y*.3+_s*2.1)*3);
+          const _bdir=(_s&2)?1:-1;
+          X.beginPath();X.moveTo(_bx,_by);X.lineTo(_bx+4,_by+_bdir*(4+Math.sin(_now*.12+_s)*2));X.lineTo(_bx+8,_by+_bdir*(2+Math.sin(_now*.08+_s*3)*1.5));X.stroke();
         }
-        // 트레일: 전기 잔상
+        X.lineCap='butt';
+        // 선단 전기 구체
+        X.globalAlpha=fa*.5*_lcPulse;X.fillStyle='#88ccff';X.beginPath();X.arc(46,0,4+Math.sin(_now*.07)*1.5,0,Math.PI*2);X.fill();
+        X.globalAlpha=fa*.9;X.fillStyle='#eeffff';X.beginPath();X.arc(46,0,1.8,0,Math.PI*2);X.fill();
+        // 트레일: 전기 잔상 지그재그
         if(p._trail&&p._trLen>0){
           const _cs=Math.cos(-ang),_sn=Math.sin(-ang);
-          for(let ti=0;ti<p._trLen;ti++){
+          X.strokeStyle='#4488ff';X.lineWidth=1.5;X.lineCap='round';
+          for(let ti=0;ti<p._trLen;ti+=2){
             const _tt=p._trail[(p._trH-1-ti+p._trail.length)%p._trail.length];
-            const _tf=1-ti/p._trLen,_ts=_tf*.5;
+            const _tf=1-ti/p._trLen;
             const _dx=_tt.x-p.x,_dy=_tt.y-p.y;
             const _lx=_dx*_cs-_dy*_sn,_ly=_dx*_sn+_dy*_cs;
-            X.globalAlpha=fa*_tf*.3;X.fillStyle='#4488ff';
-            X.beginPath();X.moveTo(_lx+10*_ts,_ly);X.lineTo(_lx-6*_ts,_ly-1.5*_ts);X.lineTo(_lx-6*_ts,_ly+1.5*_ts);X.closePath();X.fill();
+            X.globalAlpha=fa*_tf*.2;
+            X.beginPath();X.moveTo(_lx,_ly);X.lineTo(_lx-4,_ly+(ti&2?-3:3)*_tf);X.lineTo(_lx-8,_ly);X.stroke();
           }
+          X.lineCap='butt';
         }
-        // 파티클
-        if(Math.random()>.6)poolPart(p.x+(Math.random()-.5)*8,p.y+(Math.random()-.5)*8,-p.vx*.2+(Math.random()-.5),-p.vy*.2+(Math.random()-.5),'#3388ff',2+Math.random()*2,5+Math.random()*4);
+        // 전기 파티클
+        if(Math.random()>.5)poolPart(p.x+(Math.random()-.5)*10,p.y+(Math.random()-.5)*10,-p.vx*.15+(Math.random()-.5)*2,-p.vy*.15+(Math.random()-.5)*2,'#4499ff',1.5+Math.random()*2.5,4+Math.random()*5);
       }else if(p.mhBlade){// ── BLADE: 악의사냥/독혈해방 물리칼날 ──
         X.rotate(ang);
         const _mhF=p.mhFused;

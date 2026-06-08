@@ -29369,3 +29369,18 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - lang_zht.js
 - sprites/bonfire_barrier.png
 
+
+## 2026-06-08 18:30 (auto)
+- _autosave/game_20260608_175451.html
+- _autosave/game_20260608_175744.html
+- _autosave/game_20260608_175809.html
+- _autosave/game_20260608_180036.html
+- _autosave/game_20260608_180044.html
+- _autosave/game_20260608_180047.html
+- _autosave/game_20260608_180104.html
+- _autosave/game_20260608_180116.html
+- _autosave/game_20260608_180222.html
+- _autosave/game_20260608_180231.html
+- docs/5.1?�펙?�디?�인/VFX_구현가?�드.md
+- game.html
+
