@@ -489,7 +489,7 @@ canvas{display:block;position:fixed;inset:0}
 .sp-k{font-weight:900;font-size:clamp(.8rem,1.8vw,1.2rem);color:#cc6644;margin-top:8px;letter-spacing:.3em}
 @keyframes spBlink{0%,100%{opacity:.3}50%{opacity:1}}
 
-#death{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(ellipse at center,rgba(10,5,15,.92),rgba(2,1,5,.98));opacity:0;pointer-events:none;transition:opacity 2.5s ease-out}
+#death{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;background:url('img/cin_remember_wide.png') center/cover no-repeat,radial-gradient(ellipse at center,rgba(10,5,15,.92),rgba(2,1,5,.98));opacity:0;pointer-events:none;transition:opacity 2.5s ease-out}
 #death.on{opacity:1;pointer-events:all}
 #death::before{content:'';position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(180,140,100,.08),transparent 70%);animation:deathLight 4s ease-out forwards}
 @keyframes deathLight{0%{width:400px;height:400px;opacity:1}100%{width:40px;height:40px;opacity:0}}
@@ -500,10 +500,10 @@ canvas{display:block;position:fixed;inset:0}
 #drTime{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);font-family:'Courier New',monospace;font-size:clamp(.8rem,1.5vw,1.1rem);color:rgba(200,160,120,.8);letter-spacing:.1em;text-shadow:0 1px 4px rgba(0,0,0,.8);z-index:2}
 #drBar{position:absolute;bottom:20px;left:10%;width:80%;height:4px;background:rgba(100,60,40,.4);border-radius:2px;z-index:2}
 #drBarFill{height:100%;background:linear-gradient(90deg,#cc4444,#ff6644);border-radius:2px;width:0%;transition:width .08s linear;box-shadow:0 0 8px rgba(200,50,50,.5)}
-.dt{font-family:var(--font);font-weight:700;font-size:clamp(1.2rem,3vw,2rem);color:rgba(180,140,100,.7);letter-spacing:.5em;text-shadow:0 0 40px rgba(180,140,100,.2);animation:dp 5s ease-in-out infinite}
+.dt{font-family:var(--font);font-weight:700;font-size:clamp(1.2rem,3vw,2rem);color:rgba(220,180,140,.9);letter-spacing:.5em;text-shadow:0 0 40px rgba(180,140,100,.4),0 0 8px rgba(0,0,0,.9),0 2px 4px rgba(0,0,0,1),0 0 20px rgba(0,0,0,.8);animation:dp 5s ease-in-out infinite}
 @keyframes dp{0%,100%{opacity:.3}50%{opacity:.8}}
-.ds{color:#443333;margin-top:10px;font-size:1.1rem;letter-spacing:.15em}
-.retry{margin-top:28px;padding:10px 36px;background:transparent;border:1px solid #550000;color:#993333;font-family:'Noto Sans KR';font-weight:700;font-size:1.3rem;cursor:pointer;letter-spacing:.2em;transition:all .3s}
+.ds{color:rgba(200,160,130,.85);margin-top:10px;font-size:1.1rem;letter-spacing:.15em;text-shadow:0 0 6px rgba(0,0,0,.9),0 2px 4px rgba(0,0,0,1),0 0 16px rgba(0,0,0,.7)}
+.retry{margin-top:28px;padding:10px 36px;background:rgba(0,0,0,.55);border:1px solid #772222;color:#cc4444;font-family:'Noto Sans KR';font-weight:700;font-size:1.3rem;cursor:pointer;letter-spacing:.2em;transition:all .3s;text-shadow:0 0 6px rgba(0,0,0,.9),0 2px 3px rgba(0,0,0,1)}
 .retry:hover{background:rgba(120,0,0,.1)}
 
 #victory{position:fixed;inset:0;z-index:40;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 2s;background:#000;overflow:hidden}
@@ -2683,7 +2683,7 @@ canvas{display:block;position:fixed;inset:0}
 <div id="spStart" style="margin-top:18px;font-size:clamp(.6rem,1.2vw,.9rem);color:#886644;letter-spacing:.2em;animation:spBlink 1.2s ease-in-out infinite">— 클릭하여 시작 —</div>
 </div></div>
 <div id="deathReplay"><canvas id="drCvs"></canvas><div id="drLabel">☠ 사망 리플레이</div><div id="drTime"></div><div id="drBar"><div id="drBarFill"></div></div></div>
-<div id="death"><div class="dt" id="deathTitle">빛이 꺼졌다</div><div class="ds" id="deathSub">누군가는 너를 기다리고 있다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry" id="toLobbyBtn" style="margin-top:8px;background:rgba(0,0,0,.3);border-color:#554433;color:#886644;font-size:.9rem">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div></div>
+<div id="death"><div class="dt" id="deathTitle">빛이 꺼졌다</div><div class="ds" id="deathSub">누군가는 너를 기다리고 있다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry" id="toLobbyBtn" style="margin-top:8px;background:rgba(0,0,0,.55);border-color:#664433;color:#aa8855;font-size:.9rem;text-shadow:0 0 6px rgba(0,0,0,.9),0 2px 3px rgba(0,0,0,1)">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div></div>
 
 <!-- LEVEL UP SCREEN (10렙마다) -->
 <div id="lvUpScreen" style="position:fixed;inset:0;z-index:35;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.92);opacity:0;pointer-events:none;transition:opacity .4s">
@@ -3568,7 +3568,7 @@ const BGM={
       // 장 진입마다 played set 초기화 → 장 BGM 먼저
       this._playedSets[key]=new Set();this._actDone[key]=false;
       src=this._pickActFirst(key);if(!src)src=this._pickMixed(key);
-    }else if(OPT.bgmTrack==='allRandom'&&key!=='death'&&key!=='victory'&&key!=='forge'){
+    }else if(OPT.bgmTrack==='allRandom'&&key!=='death'&&key!=='victory'&&key!=='forge'&&!key.startsWith('cutscene_')){
       src=this._pickAllRandom();
     }else{
       src=this._pickRandom(key);
@@ -26805,8 +26805,10 @@ function update(){
           if(!p._hitSet)p._hitSet=new Set();
           if(p._hitSet.has(e)){hit=false;continue}
           p._hitSet.add(e);
+          // 현재 ltnChaser 투사체 수 카운트
+          let _lcCnt=0;for(let _ci=0;_ci<pProjs.length;_ci++)if(pProjs[_ci].alive&&pProjs[_ci].ltnChaser)_lcCnt++;
           const _lcHalf=~~(p._mhMaxPierce/2);
-          if(_lcHalf>=10){ // 관통력 10 이상이면 분열
+          if(_lcHalf>=10&&_lcCnt<32){ // 분열 가능: 관통력 10 이상 + 동시 32발 미만
             const _lcAng=Math.atan2(p.vy,p.vx);
             for(let _si=0;_si<2;_si++){
               const _sa=_lcAng+(_si?0.3:-0.3);
@@ -26818,11 +26820,18 @@ function update(){
               _sp.lightning=true;_sp.chainMax=p.chainMax;_sp.chainR=p.chainR;_sp._chainCount=p._chainCount||0;
               _sp._pierced=0;_sp._mhMaxPierce=_lcHalf;
               _sp._hitSet=new Set(p._hitSet);_sp._maxBounce=p._maxBounce;
-              _sp._lcGrace=15; // 15프레임 무적 (분열 후 좀 날아가게)
+              _sp._lcGrace=15;
               pProjs[pProjs.length]=_sp;
             }
+            hit=true;break; // 원본 소멸
+          }else{ // 32발 캡 또는 관통력 부족: 분열 멈추고 관통으로 전환
+            p._pierced=(p._pierced||0)+1;
+            const _lcGtd=Math.floor(p._mhMaxPierce*91/1000);
+            if(p._pierced<=_lcGtd){hit=false;continue}
+            const _lcOver=p._pierced-_lcGtd;
+            const _lcSvP=Math.max(0,1-_lcOver*0.1);
+            if(_lcSvP>0&&Math.random()<_lcSvP){hit=false;continue}
           }
-          hit=true;break; // 원본은 소멸, 데미지 적용
         }
         // ── 폭독혈: hurtE 호출 전에 전염+관통 처리 ──
         // ── 독사: hurtE 호출 전에 재히트/관통/독 처리 ──
@@ -35702,7 +35711,7 @@ function activateLtnChaser(){
   const _lcDmg=~~(bowRef()*statDex()*pBowMul()*_skMul('ltnChaser')*_fuseMul('ltnChaser'));
   const _lcRange=6000+(_lcLv-1)*200; // 기본 6000
   const _lcPierceBonus=~~((bw().bowPierce||0)*300+(PASSIVES.pPierce||0)*30)+_eqAffix('pierceFlat');
-  const _lcPierce=10000+(_lcLv-1)*200+_lcPierceBonus; // 기본 10000, Lv당+200
+  const _lcPierce=5000+(_lcLv-1)*200+_lcPierceBonus; // 기본 5000, Lv당+200
   const _lcShotCnt=Math.min(12,2+_lcLv*2); // 1렙=4발, 5렙+=12발
   const _lcChainMax=Math.min(12,4+~~(_lcLv/2)); // 1렙=4체인, 4렙=6, …cap12
   const _lcHalf=(_lcShotCnt-1)/2;
