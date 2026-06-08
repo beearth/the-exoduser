@@ -29282,3 +29282,45 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _autosave/game_20260608_111121.html
 - game.html
 
+
+## 2026-06-08 12:30 (auto)
+- _autosave/game_20260608_121927.html
+- _autosave/game_20260608_121942.html
+- _autosave/game_20260608_121957.html
+- _autosave/game_20260608_122014.html
+- _autosave/game_20260608_122042.html
+- _autosave/game_20260608_122048.html
+- _autosave/game_20260608_122115.html
+- _autosave/game_20260608_122132.html
+- _autosave/game_20260608_122203.html
+- _autosave/game_20260608_122220.html
+- docs/16번역·로컬?�이?�이??번역?�???�체목록.md
+- docs/7?�이?�디?�인/exoduser-item-system-full.md
+- game.html
+- lang_ar.js
+- lang_bg.js
+- lang_cs.js
+- lang_da.js
+- lang_de.js
+- lang_el.js
+- lang_es.js
+- lang_fi.js
+- lang_fr.js
+- lang_hu.js
+- lang_id.js
+- lang_it.js
+- lang_ja.js
+- lang_nl.js
+- lang_no.js
+- lang_pl.js
+- lang_ptbr.js
+- lang_ro.js
+- lang_ru.js
+- lang_sv.js
+- lang_th.js
+- lang_tr.js
+- lang_uk.js
+- lang_vi.js
+- lang_zh.js
+- lang_zht.js
+

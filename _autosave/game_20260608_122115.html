@@ -20250,7 +20250,7 @@ function _predBonus(e){return e&&e.hp<=e.mhp*.3?(PASSIVES.pPred||0)*.20:0}
 function pAtkMul(){return _passDmgSum('melee')}  // 근접 통합배율 (합연산)
 function pAtkCost(){return Math.max(.60,1-PASSIVES.pAtk*.04)} // ST비용 유지
 function pDefAdd(){return (P._altDef||0)*30}   // 철벽 패시브 제거: 제단 보너스만 유지
-function pChargeRange(){return (1+PASSIVES.pCharge*.02)*(_uEq('_uSpearBoomerang')>0?2:1)}               // 작살사거리 +2%/lv (10lv=+20%) + 유니크 ×2
+function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
 function pParryDmg(){return 1+PASSIVES.pParry*.50}     // 카운터뎀 +50%/lv (10lv=×6)
 function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*(1+_gearBonus)*0.5;const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;const _calc=~~(_base*pParryDmg()*_afxPB*_legSP);const _kiFloor=~~(meleeRef()*14*statStr()*pAtkMul());return Math.max(_calc,_kiFloor);} // 탄뎀×0.5 베이스 + 장비보너스, 최소 기검참1방(14×) 보장
@@ -20447,8 +20447,6 @@ function useQuickslot(idx){
     const v=~~(potHeal('hp')*(1+_eqAffix('potionPower')));
     P.hp=Math.min(P.mhp,P.hp+v);
     addTxt(P.x,P.y-25,_T('👿 악의 추출: +')+v+' HP','#33ff33',40);
-    // 유니크: _uBeltShare — 물약 효과가 ST/MP에도 적용
-    if(_uEq('_uBeltShare')>0){P.st=Math.min(P.mst,P.st+v);P.mp=Math.min(P.mmp,P.mp+v);addTxt(P.x,P.y-45,_T('✦ 유니크 공유!'),'#ff4466',30)}
   }
   
   addParts(P.x,P.y,p.col,8);
@@ -24469,10 +24467,6 @@ function update(){
   if(G._sStats){const _ss=G._sStats;if(_ss._prevX||_ss._prevY){const _dx=P.x-_ss._prevX,_dy=P.y-_ss._prevY,_dd=Math.sqrt(_dx*_dx+_dy*_dy);if(_dd>0.5&&_dd<500){if(_harpActive||_dashActive)_ss.dashDist+=_dd;else _ss.walked+=_dd}}_ss._prevX=P.x;_ss._prevY=P.y}
   // ═══ 어픽스: statusClean (정화) — 10초마다 상태이상 해제 ═══
   if(_eqAffix('statusClean')>0){P._statusCleanT=(P._statusCleanT||0)+sp;if(P._statusCleanT>=600){P._statusCleanT=0;let _scCnt=~~(_eqAffix('statusClean'));if(_scCnt>0&&P.burnT>0){P.burnT=0;_scCnt--}if(_scCnt>0&&P.poison>0){P.poison=0;_scCnt--}if(_scCnt>0&&P._webSlow>0){P._webSlow=0;_scCnt--}if(_scCnt>0&&P._freezeSlow>0){P._freezeSlow=0;_scCnt--}}}
-  // 유니크: _uPantsClean — 이동 중 디버프 자동 해제
-  if(_uEq('_uPantsClean')>0&&(KH.KeyW||KH.KeyA||KH.KeyS||KH.KeyD||KH.ArrowUp||KH.ArrowDown||KH.ArrowLeft||KH.ArrowRight)){P.burnT=0;P.poison=0;P._webSlow=0;P._freezeSlow=0;P._trapSlowT=0}
-  // 유니크: _uRingInvis — 투명화 타이머 감소
-  if(P._uInvisT>0){P._uInvisT-=sp;if(P._uInvisT<=0)P._uInvisT=0}
   // ═══ 5장 지옥의 군단 스테이지 규칙 ═══
   if(SI_TO_HELL[G.stage]===4){
     // 스태미나 자동 감소 (초당 2% = 프레임당 2%/60)
@@ -24503,7 +24497,6 @@ function update(){
     P.facing=Math.atan2(mouse.y-sy,mouse.x-sx);
   }
   if(P.iframes>0)P.iframes=Math.max(0,P.iframes-sp); // 무적판정 자연 감소
-  if(P._uInvisT>0)P.iframes=Math.max(P.iframes,2); // 유니크 투명화 중 무적 유지
   if(P._hurtCd>0)P._hurtCd=Math.max(0,P._hurtCd-sp); // 다중히트 방지 쿨다운
   // 돌진 스톡 재충전 (기본 3, chargeBoost Lv10마다 +1, 장비 보너스, 캡 5)
   const _cbLvSt=P.skills.chargeBoost||0;

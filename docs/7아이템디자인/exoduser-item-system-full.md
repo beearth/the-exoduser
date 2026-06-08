@@ -354,6 +354,43 @@ const LEGENDARY_SPECIAL = {
 Object.freeze(LEGENDARY_SPECIAL);
 ```
 
+### 유니크 등급 (rarity=5, 2026-06-08 추가)
+
+**등급 체계**: 일반(0) → 고급(1) → 희귀(2) → 영웅(3) → 전설(4) → **유니크(5)**
+
+- 색상: `#ff4466` (붉은 핑크)
+- RARITY_MUL: 2.5
+- 어픽스 수: 7개 (전설6 +1)
+- ATK 최소 보장: 50%
+- 드롭 확률: 전설의 약 1/100 (극극희귀)
+  - 일반몹: 0.01, 엘리트: 0.03, 미니보스: 0.1, 스테이지보스: 0.2, 챕터보스: 0.7
+- 전설 특수 효과 상속 + **유니크 특수 효과 1개 추가**
+
+```javascript
+// ─── 유니크 특수 효과 (rarity=5 전용, 슬롯+무기타입별 고정 1개) ───
+const UNIQUE_SPECIAL = {
+  weapon_sword:    {ko:'분노의 최대치가 100% 추가된다 (200%까지)',  stat:'_uRageMax',       val:100},
+  weapon_dagger:   {ko:'패링한 탄막의 관통률이 100% 추가된다',      stat:'_uDaggerPierce',  val:1.0},
+  weapon_hammer:   {ko:'강타가 적 방어력을 완전 무시한다',          stat:'_uHammerIgnore',  val:1},
+  weapon_axe:      {ko:'출혈 적에게 공격 시 HP 5% 흡수',           stat:'_uAxeLeech',      val:0.05},
+  weapon_spear:    {ko:'작살이 벽을 관통하며 돌아온다 (부메랑)',     stat:'_uSpearBoomerang',val:1},
+  weapon_mace:     {ko:'적 처치 시 폭발 (최대HP의 30% AoE)',       stat:'_uMaceExplode',   val:0.30},
+  weapon_club:     {ko:'적 스턴 중 데미지 ×3',                    stat:'_uClubStun',      val:3},
+  bow:             {ko:'모든 투사체가 관통한다',                   stat:'_uBowPierce',     val:1},
+  shield:          {ko:'보호막이 탄막을 흡수하면 분노 10%를 생성',  stat:'_uShieldRage',    val:10},
+  armor:           {ko:'피격 시 25% 확률로 데미지를 분노로 전환',   stat:'_uArmorRage',     val:0.25},
+  helmet:          {ko:'마법 스킬 데미지 +50% + 마나 소모 -50%',   stat:'_uHelmMagic',     val:0.50},
+  gloves:          {ko:'공격속도 +40%',                           stat:'_uGloveSpd',      val:0.40},
+  pants:           {ko:'이동 중 모든 디버프 자동 해제',             stat:'_uPantsClean',    val:1},
+  boots:           {ko:'회피가 데미지를 입힌다 (ATK×200%)',        stat:'_uBootsDmg',      val:2.0},
+  cape:            {ko:'패리 성공 시 주변 적 3초 빙결',             stat:'_uCapeFreeze',    val:3},
+  ring1:           {ko:'크리 시 HP/MP/ST 전부 3% 회복',            stat:'_uRingCrit',      val:0.03},
+  ring2:           {ko:'적 처치 시 10초간 투명화 (피격 해제)',       stat:'_uRingInvis',     val:10},
+  necklace:        {ko:'사망 시 즉시 부활 (HP 100%, 1회/스테이지)', stat:'_uNeckRevive',    val:1},
+  belt:            {ko:'물약 효과가 주변 아군(소환수)에게도 적용',   stat:'_uBeltShare',     val:1},
+};
+```
+
 ---
 
 ## STEP 3. mkItem() 함수 업그레이드

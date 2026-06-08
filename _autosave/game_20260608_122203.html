@@ -20250,7 +20250,7 @@ function _predBonus(e){return e&&e.hp<=e.mhp*.3?(PASSIVES.pPred||0)*.20:0}
 function pAtkMul(){return _passDmgSum('melee')}  // 근접 통합배율 (합연산)
 function pAtkCost(){return Math.max(.60,1-PASSIVES.pAtk*.04)} // ST비용 유지
 function pDefAdd(){return (P._altDef||0)*30}   // 철벽 패시브 제거: 제단 보너스만 유지
-function pChargeRange(){return (1+PASSIVES.pCharge*.02)*(_uEq('_uSpearBoomerang')>0?2:1)}               // 작살사거리 +2%/lv (10lv=+20%) + 유니크 ×2
+function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
 function pParryDmg(){return 1+PASSIVES.pParry*.50}     // 카운터뎀 +50%/lv (10lv=×6)
 function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*(1+_gearBonus)*0.5;const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;const _calc=~~(_base*pParryDmg()*_afxPB*_legSP);const _kiFloor=~~(meleeRef()*14*statStr()*pAtkMul());return Math.max(_calc,_kiFloor);} // 탄뎀×0.5 베이스 + 장비보너스, 최소 기검참1방(14×) 보장
@@ -20447,8 +20447,6 @@ function useQuickslot(idx){
     const v=~~(potHeal('hp')*(1+_eqAffix('potionPower')));
     P.hp=Math.min(P.mhp,P.hp+v);
     addTxt(P.x,P.y-25,_T('👿 악의 추출: +')+v+' HP','#33ff33',40);
-    // 유니크: _uBeltShare — 물약 효과가 ST/MP에도 적용
-    if(_uEq('_uBeltShare')>0){P.st=Math.min(P.mst,P.st+v);P.mp=Math.min(P.mmp,P.mp+v);addTxt(P.x,P.y-45,_T('✦ 유니크 공유!'),'#ff4466',30)}
   }
   
   addParts(P.x,P.y,p.col,8);

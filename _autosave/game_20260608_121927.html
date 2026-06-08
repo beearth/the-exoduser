@@ -20250,7 +20250,7 @@ function _predBonus(e){return e&&e.hp<=e.mhp*.3?(PASSIVES.pPred||0)*.20:0}
 function pAtkMul(){return _passDmgSum('melee')}  // 근접 통합배율 (합연산)
 function pAtkCost(){return Math.max(.60,1-PASSIVES.pAtk*.04)} // ST비용 유지
 function pDefAdd(){return (P._altDef||0)*30}   // 철벽 패시브 제거: 제단 보너스만 유지
-function pChargeRange(){return (1+PASSIVES.pCharge*.02)*(_uEq('_uSpearBoomerang')>0?2:1)}               // 작살사거리 +2%/lv (10lv=+20%) + 유니크 ×2
+function pChargeRange(){return 1+PASSIVES.pCharge*.02}               // 작살사거리 +2%/lv (10lv=+20%)
 function pChargeGauge(){return 1+PASSIVES.pCharge*.03}               // 사슬기동 게이지회복 +3%/lv (10lv=+30%)
 function pParryDmg(){return 1+PASSIVES.pParry*.50}     // 카운터뎀 +50%/lv (10lv=×6)
 function pParryProjDmg(bulletDmg,isQ){const scale=isQ?magicRef()*statInt()*pMagicMul():meleeRef()*statStr()*pAtkMul();const _gearBonus=Math.min(1,scale/300);const _base=bulletDmg*(1+_gearBonus)*0.5;const _afxPB=1+_eqAffix('parryBonus');const _legSP=(sh()._lShieldParry||0)>0?sh()._lShieldParry:1;const _calc=~~(_base*pParryDmg()*_afxPB*_legSP);const _kiFloor=~~(meleeRef()*14*statStr()*pAtkMul());return Math.max(_calc,_kiFloor);} // 탄뎀×0.5 베이스 + 장비보너스, 최소 기검참1방(14×) 보장
@@ -20447,8 +20447,6 @@ function useQuickslot(idx){
     const v=~~(potHeal('hp')*(1+_eqAffix('potionPower')));
     P.hp=Math.min(P.mhp,P.hp+v);
     addTxt(P.x,P.y-25,_T('👿 악의 추출: +')+v+' HP','#33ff33',40);
-    // 유니크: _uBeltShare — 물약 효과가 ST/MP에도 적용
-    if(_uEq('_uBeltShare')>0){P.st=Math.min(P.mst,P.st+v);P.mp=Math.min(P.mmp,P.mp+v);addTxt(P.x,P.y-45,_T('✦ 유니크 공유!'),'#ff4466',30)}
   }
   
   addParts(P.x,P.y,p.col,8);
@@ -23401,7 +23399,7 @@ function initStage(si){
   const st=G.rooms.find(r=>r.type==='start')||G.rooms[0];let _spX=st.cx,_spY=st.cy;
   if(G.map[_spY]&&G.map[_spY][_spX]!==0){for(let _sr=1;_sr<30;_sr++)for(let _sdy=-_sr;_sdy<=_sr;_sdy++)for(let _sdx=-_sr;_sdx<=_sr;_sdx++){const _sx=_spX+_sdx,_sy=_spY+_sdy;if(_sx>0&&_sy>0&&_sx<G.mw-1&&_sy<G.mh-1&&G.map[_sy]&&G.map[_sy][_sx]===0){_spX=_sx;_spY=_sy;_sr=99;break}}}
   P.x=(_spX+.5)*T;P.y=(_spY+.5)*T;
-  P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle';P.iframes=360;P.kb={x:0,y:0};P._webSlow=0;P._trapSlowT=0;P._freezeSlow=0;P.burnT=0;P.poison=0;P._rbPoison=[];P._rbBurn=[];P._ioActive=false;P._ioT=0;P._altAtk=0;P._altDef=0;P._altSpd=0;P._lastStandUsed=false;P._reviveOnceUsed=false;P._uReviveUsed=false;P._uInvisT=0;
+  P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle';P.iframes=360;P.kb={x:0,y:0};P._webSlow=0;P._trapSlowT=0;P._freezeSlow=0;P.burnT=0;P.poison=0;P._rbPoison=[];P._rbBurn=[];P._ioActive=false;P._ioT=0;P._altAtk=0;P._altDef=0;P._altSpd=0;P._lastStandUsed=false;P._reviveOnceUsed=false;
   P.chargeStocks=P.maxChargeStocks||1;P.chargeCd=0;
   G.stageCleared=false;G._deathSpawned=false;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G.stageTime=0;G.combo=0;G.comboTimer=0;G._stageKills=0;G._sStats={deaths:0,dmgDealt:0,dmgTaken:0,parries:0,potions:0,items:0,dodges:0,crits:0,maxHit:0,dashDist:0,dashCount:0,walked:0,_prevX:0,_prevY:0};G._dmgPeak={val:0,t:0};
   if(typeof _clearExtEPalCache==='function')_clearExtEPalCache();
@@ -24469,10 +24467,6 @@ function update(){
   if(G._sStats){const _ss=G._sStats;if(_ss._prevX||_ss._prevY){const _dx=P.x-_ss._prevX,_dy=P.y-_ss._prevY,_dd=Math.sqrt(_dx*_dx+_dy*_dy);if(_dd>0.5&&_dd<500){if(_harpActive||_dashActive)_ss.dashDist+=_dd;else _ss.walked+=_dd}}_ss._prevX=P.x;_ss._prevY=P.y}
   // ═══ 어픽스: statusClean (정화) — 10초마다 상태이상 해제 ═══
   if(_eqAffix('statusClean')>0){P._statusCleanT=(P._statusCleanT||0)+sp;if(P._statusCleanT>=600){P._statusCleanT=0;let _scCnt=~~(_eqAffix('statusClean'));if(_scCnt>0&&P.burnT>0){P.burnT=0;_scCnt--}if(_scCnt>0&&P.poison>0){P.poison=0;_scCnt--}if(_scCnt>0&&P._webSlow>0){P._webSlow=0;_scCnt--}if(_scCnt>0&&P._freezeSlow>0){P._freezeSlow=0;_scCnt--}}}
-  // 유니크: _uPantsClean — 이동 중 디버프 자동 해제
-  if(_uEq('_uPantsClean')>0&&(KH.KeyW||KH.KeyA||KH.KeyS||KH.KeyD||KH.ArrowUp||KH.ArrowDown||KH.ArrowLeft||KH.ArrowRight)){P.burnT=0;P.poison=0;P._webSlow=0;P._freezeSlow=0;P._trapSlowT=0}
-  // 유니크: _uRingInvis — 투명화 타이머 감소
-  if(P._uInvisT>0){P._uInvisT-=sp;if(P._uInvisT<=0)P._uInvisT=0}
   // ═══ 5장 지옥의 군단 스테이지 규칙 ═══
   if(SI_TO_HELL[G.stage]===4){
     // 스태미나 자동 감소 (초당 2% = 프레임당 2%/60)
@@ -24503,7 +24497,6 @@ function update(){
     P.facing=Math.atan2(mouse.y-sy,mouse.x-sx);
   }
   if(P.iframes>0)P.iframes=Math.max(0,P.iframes-sp); // 무적판정 자연 감소
-  if(P._uInvisT>0)P.iframes=Math.max(P.iframes,2); // 유니크 투명화 중 무적 유지
   if(P._hurtCd>0)P._hurtCd=Math.max(0,P._hurtCd-sp); // 다중히트 방지 쿨다운
   // 돌진 스톡 재충전 (기본 3, chargeBoost Lv10마다 +1, 장비 보너스, 캡 5)
   const _cbLvSt=P.skills.chargeBoost||0;
@@ -29830,8 +29823,6 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   G.mats+=_matsAdd;addTxt(P.x,P.y-60,_T('👿악의+')+_matsAdd,'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true,shieldHit:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
-  // 유니크: _uCapeFreeze — 패리 시 주변 적 빙결
-  if(_uEq('_uCapeFreeze')>0){const _cfQ=shQuery(P.x,P.y,150);for(let _ci=0;_ci<_cfQ.length;_ci++){const _ce=_cfQ[_ci];if(_ce.alive){_ce._frozen=~~(_uEq('_uCapeFreeze')*60);_ce.stunned=Math.max(_ce.stunned||0,_ce._frozen)}}addTxt(P.x,P.y-50,_T('❄유니크 빙결!'),'#88ddff',35)}
   // 패링 임팩트: 무지개=무지개폭발, Q패링=Dark 02, 우클릭=Lightning(기존)
   if(!window._tvfx2)window._tvfx2=[];
   if(_parryEl==='rainbow'){
@@ -33393,8 +33384,6 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     const _ocExpl=_eqAffix('onCritExplode');if(_ocExpl>0){const _ocR=80;const _ocD=~~(dmg*_ocExpl);for(let _oi=0;_oi<ens.length;_oi++){const _oe=ens[_oi];if(_oe&&_oe.alive&&_oe!==e&&dst(e.x,e.y,_oe.x,_oe.y)<_ocR){hurtE(_oe,_ocD,Math.atan2(_oe.y-e.y,_oe.x-e.x),false,{pure:true})}}addParts(e.x,e.y,'#ff6622',12)}
     const _ocChain=_eqAffix('onCritChain');if(_ocChain>0){let _ocTgt=null,_ocMin=250;for(let _oi=0;_oi<ens.length;_oi++){const _oe=ens[_oi];if(_oe&&_oe.alive&&_oe!==e){const _od=dst(e.x,e.y,_oe.x,_oe.y);if(_od<_ocMin){_ocMin=_od;_ocTgt=_oe}}}if(_ocTgt){hurtE(_ocTgt,~~(dmg*_ocChain),Math.atan2(_ocTgt.y-e.y,_ocTgt.x-e.x),false,{pure:true})}}
     const _ocFrz=_eqAffix('onCritFreeze');if(_ocFrz>0){e._freezeGauge=(e._freezeGauge||0)+~~(_ocFrz*100);if(e._freezeGauge>=100&&!e._freezeImmune){e._frozen=180;e._freezeGauge=0}}
-    // 유니크: _uRingCrit — 크리 시 HP/MP/ST 3% 회복
-    if(_uEq('_uRingCrit')>0){const _rcP=_uEq('_uRingCrit');P.hp=Math.min(P.mhp,P.hp+~~(P.mhp*_rcP));P.mp=Math.min(P.mmp,P.mp+~~(P.mmp*_rcP));P.st=Math.min(P.mst,P.st+~~(P.mst*_rcP))}
     const _ocHeal=_eqAffix('onCritHeal');if(_ocHeal>0)P.hp=Math.min(P.mhp,P.hp+_ocHeal);
     const _ocMana=_eqAffix('onCritMana');if(_ocMana>0)P.mp=Math.min(P.mmp,P.mp+_ocMana);
     const _ocShld=_eqAffix('onCritShield');if(_ocShld>0&&P.eShieldMax>0){P.eShield=Math.min(P.eShieldMax,P.eShield+_ocShld)}
@@ -34353,10 +34342,7 @@ function hurtP(dmg,opts){
   // ═══ 회피 판정: DEX 0.05%/pt + 근성 0.5%/pt + dodgeChance 어픽스 (캡 35%, DOT 제외) ═══
   if(!(opts&&opts.dot)){
     const _dodgePct=Math.min(35,(STATS.dex+_lvB()+_eqStat('Dex'))*.05+_eqAffix('dodgeChance')*100);
-    if(Math.random()*100<_dodgePct){addTxt(P.x,P.y-18,_T('회피!'),'#44ffaa',25);if(G._sStats)G._sStats.dodges++;
-      // 유니크: _uBootsDmg — 회피가 데미지를 입힌다
-      if(_uEq('_uBootsDmg')>0){const _evD=~~(meleeRef()*statStr()*pAtkMul()*_uEq('_uBootsDmg'));const _evQ=shQuery(P.x,P.y,120);for(let _ei=0;_ei<_evQ.length;_ei++){if(_evQ[_ei].alive)hurtE(_evQ[_ei],_evD,Math.atan2(_evQ[_ei].y-P.y,_evQ[_ei].x-P.x),true,{dot:true})}addTxt(P.x,P.y-30,_T('⚡회피 반격!'),'#ff4466',35)}
-      return}
+    if(Math.random()*100<_dodgePct){addTxt(P.x,P.y-18,_T('회피!'),'#44ffaa',25);if(G._sStats)G._sStats.dodges++;return}
   }
   const _isDotEarly=opts&&opts.dot;
   if(G._pStats)G._pStats._pA++;if(P.s==='beam'){SFX.beamStop()}
@@ -34464,11 +34450,6 @@ function hurtP(dmg,opts){
       addTxt(P.x,P.y-25,'❄-'+a,'#4488ff',20);
       a=0;_shFullBlock=true; // 쉴드 완전 흡수 — HP 차단
     }
-  }
-  // 유니크: _uArmorRage — 피격 시 25% 확률로 데미지를 분노로 전환
-  if(_uEq('_uArmorRage')>0&&a>0&&Math.random()<_uEq('_uArmorRage')){
-    const _rMax=100+(_uEq('_uRageMax')||0);
-    P.rage=Math.min(_rMax,P.rage+10);addTxt(P.x,P.y-40,_T('🔥피격→분노!'),'#ff4466',30);a=0;
   }
   const _dlSrc=(opts&&opts.src)||(_isDot?_L('도트','DoT'):_L('투사체','Projectile'));
   _logDmg(dmg,a,_dlSrc);
@@ -34623,8 +34604,6 @@ function die(){
   if(P.s==='fallen'||P.s==='dead')return; // 이미 쓰러진 상태면 중복 방지
   // ═══ 어픽스: reviveOnce (1회부활) — HP 30%로 즉시 부활 ═══
   if(_eqAffix('reviveOnce')>0&&!P._reviveOnceUsed){P._reviveOnceUsed=true;P.hp=~~(P.mhp*_eqAffix('reviveOnce'));P.iframes=120;addTxt(P.x,P.y-25,_T('💀 1회부활!'),'#44ff88',60);return}
-  // 유니크: _uNeckRevive — 사망 시 즉시 부활 (HP 100%, 1회/스테이지)
-  if(_uEq('_uNeckRevive')>0&&!P._uReviveUsed){P._uReviveUsed=true;P.hp=P.mhp;P.iframes=180;addTxt(P.x,P.y-25,_T('✦ 유니크 부활!'),'#ff4466',60);return}
   // ── 쓰러짐 → 5초 카운트다운 → 부활 판정 (스킬 미습득이어도 자연부활력으로 부활 가능) ──
   P.hp=0;P.s='fallen';P.st2=300; // 5초(300f) 카운트다운
   P.iframes=9999; // 쓰러진 동안 무적
