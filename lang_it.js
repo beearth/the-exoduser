@@ -2241,6 +2241,7 @@ const _IT={
 '부활력 +X%':'Revive Power +X%',
 '마법 데미지 +X%':'Magic DMG +X%',
 '전설 특수':'Legendary Special',
+'유니크 특수':'Unique Special',
 '5타 콤보 완성 시 데빌포스 20% 즉시 충전':'5-hit combo: instantly charge DevilForce 20%',
 '처치 시 이속 +40%(3초) + 다음 공격 크리 보장':'Kill: MoveSpd +40%(3s) + next attack guaranteed Crit',
 '스태거 발동 시 범위 충격파 (ATK×120%)':'Stagger: AoE shockwave (ATK×120%)',

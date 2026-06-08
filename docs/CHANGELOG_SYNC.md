@@ -29324,3 +29324,37 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - lang_zh.js
 - lang_zht.js
 
+
+## 2026-06-08 13:30 (auto)
+- _autosave/game_20260608_125826.html
+- _autosave/game_20260608_125839.html
+- docs/2_3 ?Œì§„+?¨ë§+ë°©íŒ¨?œìŠ¤??2_3 ?Œì§„+?¨ë§+ë°©íŒ¨?œìŠ¤??md
+- docs/7?„ì´?œë””?ì¸/exoduser-item-system-full.md
+- docs/7?„ì´?œë””?ì¸/?¬ë¡¯ë³??´í”½???€.md
+- docs/7?„ì´?œë””?ì¸/?„ì´???´í”½???œìŠ¤??md
+- game.html
+- lang_ar.js
+- lang_bg.js
+- lang_cs.js
+- lang_da.js
+- lang_de.js
+- lang_el.js
+- lang_es.js
+- lang_fi.js
+- lang_fr.js
+- lang_hu.js
+- lang_id.js
+- lang_it.js
+- lang_nl.js
+- lang_no.js
+- lang_pl.js
+- lang_ptbr.js
+- lang_ro.js
+- lang_ru.js
+- lang_sv.js
+- lang_th.js
+- lang_tr.js
+- lang_uk.js
+- lang_vi.js
+- sprites/bonfire_barrier.png
+
