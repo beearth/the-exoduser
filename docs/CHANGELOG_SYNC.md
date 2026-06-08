@@ -29425,3 +29425,45 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - lang_zh.js
 - lang_zht.js
 
+
+## 2026-06-08 21:30 (auto)
+- _add_missing_translations.cjs
+- _autosave/game_20260608_210656.html
+- _autosave/game_20260608_210927.html
+- _autosave/game_20260608_211309.html
+- _autosave/game_20260608_211352.html
+- _autosave/game_20260608_211954.html
+- _autosave/game_20260608_212027.html
+- _autosave/game_20260608_212033.html
+- _autosave/game_20260608_212037.html
+- _autosave/game_20260608_212544.html
+- _autosave/game_20260608_212845.html
+- docs/16번역·로컬?�이?�이??번역?�???�체목록.md
+- game.html
+- lang_ar.js
+- lang_bg.js
+- lang_cs.js
+- lang_da.js
+- lang_de.js
+- lang_el.js
+- lang_es.js
+- lang_fi.js
+- lang_fr.js
+- lang_hu.js
+- lang_id.js
+- lang_it.js
+- lang_ja.js
+- lang_nl.js
+- lang_no.js
+- lang_pl.js
+- lang_ptbr.js
+- lang_ro.js
+- lang_ru.js
+- lang_sv.js
+- lang_th.js
+- lang_tr.js
+- lang_uk.js
+- lang_vi.js
+- lang_zh.js
+- lang_zht.js
+

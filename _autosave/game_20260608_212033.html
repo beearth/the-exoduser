@@ -2276,7 +2276,7 @@ canvas{display:block;position:fixed;inset:0}
   <span style="color: #665544; margin: 0 10px;">|</span>
   <span id="roomLbl" style="color: #887766;"></span>
   <span style="color: #665544; margin: 0 10px;">|</span>
-  <div id="spCnt" style="color: #ffcc00; cursor: pointer; pointer-events: all;" title="[C] 능력치">SP 0</div>
+  <div id="spCnt" style="color: #ffcc00; cursor: pointer; pointer-events: all;" title="[J] 능력치">SP 0</div>
   <span style="color: #665544; margin: 0 10px;">|</span>
   <div id="cpHud" style="color: #ffaa44; text-shadow: 0 0 5px rgba(255,170,68,0.3);">⚡ 0 CP</div>
   <span style="color: #665544; margin: 0 10px;">|</span>
@@ -2627,7 +2627,7 @@ canvas{display:block;position:fixed;inset:0}
       <div id="storageFloorNav" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;justify-content:center"></div>
       <div id="storageGrid" style="display:grid;grid-template-columns:1fr;gap:6px;max-height:50vh;overflow-y:auto"></div>
     </div>
-    <button class="pclose" id="storageClose">닫기 [V]</button>
+    <button class="pclose" id="storageClose">닫기 [N]</button>
   </div>
 </div>
 
@@ -2657,7 +2657,7 @@ canvas{display:block;position:fixed;inset:0}
     </div>
     <div style="display:flex;gap:20px;justify-content:center;margin-top:20px">
       <button class="pclose" id="statResetBtn" style="color:#ff6666;border-color:#663333;font-size:1.5rem !important;padding:12px 40px !important;margin:0;">올 리셋</button>
-      <button class="pclose" id="statClose" style="font-size:1.5rem !important;padding:12px 40px !important;margin:0;">닫기 [C]</button>
+      <button class="pclose" id="statClose" style="font-size:1.5rem !important;padding:12px 40px !important;margin:0;">닫기 [J]</button>
     </div>
   </div>
 </div>
@@ -4925,7 +4925,7 @@ const _EN={
 'Z. 필살기다. 아껴 써라.':"Z. That's your ultimate. Use it wisely.",
 'L-CTRL로 유령걸음이나 얼음보주 쓸 수 있어!':'L-CTRL for Ghost Walk or Ice Orb!',
 'L을 눌러. 스킬 슬롯을 정리해야 한다.':'Press L. Organize your skill slots.',
-'가방 터지겠다! V 눌러서 창고에 넣어둬!':"Bag's about to burst! Press V to stash!",
+'가방 터지겠다! N 눌러서 창고에 넣어둬!':"Bag's about to burst! Press N to stash!",
 'ESC로 설정 열 수 있어! 난이도 바꾸기, 자동물약 조절~':'ESC for settings! Difficulty, auto-potions~',
 // --- Tutorial (Cat) ---
 '...아직 살아있네. 좌클릭으로 저것들 쳐봐.':'...Still alive. Try hitting those with left click.',
@@ -5683,8 +5683,8 @@ const _EN={
 '쉴드는 마법으로, HP는 물리로. 반대로 치면 데미지 안 들어간다.':'Shields need magic, HP needs physical. Wrong type does no damage.',
 // ── Skill / passive / stamina hints ──
 'L키로 스킬 슬롯에 넣어야 쓸 수 있어.':'Press L to assign skills to slots.',
-'C키를 눌러. 패시브 포인트가 쌓여있다.':'Press C. Passive points have stacked up.',
-'C키! 패시브 올리면 진짜 강해져!':'Press C! Passives make you way stronger!',
+'J키를 눌러. 패시브 포인트가 쌓여있다.':'Press J. Passive points have stacked up.',
+'J키! 패시브 올리면 진짜 강해져!':'Press J! Passives make you way stronger!',
 '스태미나가 부족하다. 무리하지 마.':'Low on stamina. Don\'t overdo it.',
 'ST 없으면 스킬 못 써! 잠깐 빠져!':'No ST means no skills! Pull back!',
 // ── Item pickup (line 9324) ──
@@ -6414,7 +6414,7 @@ const _EN={
 '반경':'Radius','슬로우':'Slow','활':'Bow',
 '게임 리셋 (처음부터)':'Reset Game (from start)',
 '캐릭터 선택 (로비)':'Character Select (Lobby)',
-'닫기 [ESC]':'Close [ESC]','닫기 [G]':'Close [G]','닫기 [V]':'Close [V]','닫기 [C]':'Close [C]',
+'닫기 [ESC]':'Close [ESC]','닫기 [G]':'Close [G]','닫기 [N]':'Close [N]','닫기 [J]':'Close [J]',
 '전체화면 (F11)':'Fullscreen (F11)',
 '정말 모든 진행을 초기화하시겠습니까?':'Really reset all progress?',
 '검출 중...':'Detecting...',
@@ -6454,7 +6454,7 @@ const _EN={
 '좌클스킬 (클릭 전환)':'LMB Skill (click to switch)','우클스킬 (클릭 전환)':'RMB Skill (click to switch)',
 '이동스킬 (클릭 전환)':'Move Skill (click to switch)','마법스킬 (클릭 전환)':'Magic Skill (click to switch)',
 '영역스킬 (클릭 전환)':'Area Skill (click to switch)','피보호막 (클릭 전환)':'Blood Shield (click to switch)',
-'CT스킬 (클릭 전환)':'CT Skill (click to switch)','[C] 능력치':'[C] Stats',
+'CT스킬 (클릭 전환)':'CT Skill (click to switch)','[J] 능력치':'[C] Stats',
 // --- Key binding action names (BIND_NAMES) ---
 '위로 이동':'Move Up','아래로 이동':'Move Down','왼쪽 이동':'Move Left','오른쪽 이동':'Move Right',
 '칼등 처내기 (탭=처내기, 홀드=연사)':'Blade Parry (tap=parry, hold=rapid)',
@@ -6491,7 +6491,7 @@ const _EN={
 'ACT1 완주! 우리가 진짜 해냈어!':'ACT1 complete! We really did it!',
 'Ctrl 얼음보주로 탈출하라.':'Ctrl — escape with Ice Orb.',
 'Ctrl 유령걸음으로 탈출하라.':'Ctrl — escape with Ghost Walk.',
-'C키! 패시브 강해져!':'C key! Passives get stronger!',
+'J키! 패시브 강해져!':'J key! Passives get stronger!',
 'DEX 빌드! 거리에서 패고, 추적탄 좋아!':'DEX build! Poke from range, tracking shots are great!',
 'E로 마력공격을 해봐!':'Try magic attack with E!',
 'G 눌러서 대장간 가봐!':'Press G to visit the forge!',
@@ -6622,7 +6622,7 @@ const _EN={
 // --- Pet dialogue: key tutorials ---
 'F키도 스킬 슬롯이야!':'F-key is a skill slot too!',
 'L-CTRL로 유령걸음/얼음보주!':'L-CTRL for Ghost Walk / Ice Orb!',
-'V 눌러서 창고에 넣어둬!':'Press V to put stuff in storage!',
+'N 눌러서 창고에 넣어둬!':'Press N to put stuff in storage!',
 'ESC로 설정! 난이도/자동물약!':'ESC for settings! Difficulty/Auto-potion!',
 // --- Pet dialogue: combat hints ---
 '잡몹이다. 먼저 정리해.':'Regular mobs. Clear them first.',
@@ -6638,7 +6638,7 @@ const _EN={
 '쉬프트! 사슬기동은 이동기야!':'Shift! Chain Dash is a movement tool!',
 '스킬포인트 쌓였어! K 눌러!':'Skill points are stacking! Press K!',
 '스킬 포인트 있어! K!':'Got skill points! K!',
-'C키. 패시브 포인트가 쌓여있다.':'C key. Passive points have built up.',
+'J키. 패시브 포인트가 쌓여있다.':'J key. Passive points have built up.',
 '…쓸 거 아니면 분해해.':'...Salvage what you won\'t use.',
 '…강화 안 하면 그냥 고철이야.':'...Without enhancement, it\'s just scrap.',
 '빨간 탄은 우클릭. 무지개는 Q.':'Red shots: right-click. Rainbow: Q.',
@@ -6929,6 +6929,40 @@ const _EN={
 '여기까지 데모입니다. 정식 출시를 기대해주세요!':'This is the end of the demo. Looking forward to the full release!',
 'STEAM 위시리스트로 응원해 주세요!':'Support us by wishlisting on Steam!',
 'STEAM 위시리스트':'Wishlist on Steam',
+'\u26e7 시전...':'\u26e7 Casting...',
+'✦ 유니크 공유!':'✦ Unique Share!',
+' 스킬 해제':' Skill Release',
+' 자동 ON':' Auto ON',
+' 자동 OFF':' Auto OFF',
+'☠중독!':'☠Poison!',
+'🛡️쉴드+15%':'🛡️Shield+15%',
+'🚀 미사일!':'🚀 Missile!',
+'🔥분노+':'🔥Rage+',
+'👿악의+':'👿Malice+',
+'❄유니크 빙결!':'❄Unique Freeze!',
+'🔨방어무시!':'🔨DEF Ignore!',
+'💀 ':'💀 ',
+'🔥부활!':'🔥Revive!',
+'💥유니크 폭발!':'💥Unique Blast!',
+'👻 투명화!':'👻 Stealth!',
+'⚡회피 반격!':'⚡Dodge Counter!',
+'⚠패링 실패!':'⚠Parry Fail!',
+'🔥피격→분노!':'🔥Hit→Rage!',
+'✦ 유니크 부활!':'✦ Unique Revive!',
+'🔥분노 ':'🔥Rage ',
+'✟ 신의영역!':'✟ Divine Domain!',
+'🎮 게임패드 버튼 설정':'🎮 Gamepad Button Config',
+'B슬롯 스킬':'B-Slot Skill',
+'우클릭 스킬':'R-Click Skill',
+'패링':'Parry',
+'돌진/작살':'Dash/Harpoon',
+'줍기':'Pick Up',
+'고정':'Lock',
+'⟨ 키 입력... ⟩':'⟨ Press Key... ⟩',
+'패드 키 초기화':'Reset Pad Keys',
+'패드 키 초기화 완료':'Pad Keys Reset Done',
+'다음 구역':'Next Zone',
+'쓰러짐...':'Falling...',
 };
 // --- 장비명 조합 번역 (접두사 + 기본형) ---
 const _EN_PFX={'녹슨':'Rusty','강철':'Steel','흑요석':'Obsidian','미스릴':'Mithril','심판의':'Judgment','천벌의':'Divine Wrath','파멸의':'Destruction',
@@ -7527,7 +7561,7 @@ function _checkPetDialogue(){
   if(!_petTut.keyCT&&(P.skills.ghostWalk>0||P.skills.iceOrb>0)){_petTut.keyCT=true;_petSayCD('tut_keyCT','cat','L-CTRL로 유령걸음/얼음보주!',5,9999,'crow','Ctrl. 위기에 쓸 카드가 하나 늘었군.',4)}
   if(!_petTut.keyL){let _sc2=0;for(const k in P.skills){if(P.skills[k]>0)_sc2++}
     if(_sc2>=3){_petTut.keyL=true;_petSayCD('tut_keyL','crow','L을 눌러. 스킬 슬롯을 정리해야 한다.',5,9999,'cat','L로 어디에 뭘 넣을지 골라!',4)}}
-  if(!_petTut.keyV&&INV.bag.length>=20){_petTut.keyV=true;_petSayCD('tut_keyV','cat','V 눌러서 창고에 넣어둬!',5,9999,'crow','…버리기 아까운 건 창고에.',4)}
+  if(!_petTut.keyV&&INV.bag.length>=20){_petTut.keyV=true;_petSayCD('tut_keyV','cat','N 눌러서 창고에 넣어둬!',5,9999,'crow','…버리기 아까운 건 창고에.',4)}
   if(!_petTut.keyESC&&P.lv>=10){_petTut.keyESC=true;_petSayCD('tut_keyESC','cat','ESC로 설정! 난이도/자동물약!',5,9999,'crow','…설정을 확인해.',4)}
   }
 
@@ -7555,7 +7589,7 @@ function _checkPetDialogue(){
   if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야!',4,300);
   if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트 쌓였어! K 눌러!',4,300);
   if(P.lv>=5&&P.sp>0)_petSayCD('has_sp','cat','스킬 포인트 있어! K!',5,180,'crow','L키로 스킬 슬롯에 넣어야 쓸 수 있어.',4);
-  if((P.ap||0)>=3)_petSayCD('has_ap','crow','C키. 패시브 포인트가 쌓여있다.',4,240,'cat','C키! 패시브 강해져!',4);
+  if((P.ap||0)>=3)_petSayCD('has_ap','crow','J키. 패시브 포인트가 쌓여있다.',4,240,'cat','J키! 패시브 강해져!',4);
   if(INV.bag.length>=15)_petSayCD('bag_full','crow','…쓸 거 아니면 분해해.',4,120,'cat','아이템 넘쳐! 우리가 주워줄게!',4);
   if(G.mats<10)_petSayCD('low_mats','crow','악의가 바닥이다.',3,240,'cat','장비 분해해! 쓰레기도 악의!',5);
   if(G.mats>=50){let _uE=false;for(const sl in INV.equipped){const it=INV.equipped[sl];if(it&&it.rarity>=3&&(it.enhLv||0)===0){_uE=true;break}}
@@ -26838,7 +26872,7 @@ function update(){
         dead=true}
     }
     // 플레이어 투사체 소멸 임팩트 (터렛 투사체 제외)
-    if(dead&&OPT.deathFx&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p.fireBeamProj&&!p._fromTurret&&!p._fromRainbow&&!p.ltnChaser){
+    if(dead&&OPT.deathFx&&!p.maliceHunt&&!p.bladeShard&&!p.iceBlade&&!p.fireBeamProj&&!p._fromTurret&&!p._fromRainbow&&!p.ltnChaser&&!p.lightning){
       _addImpact(p.x,p.y,p.el,Math.atan2(p.vy,p.vx),p.bomb?'explosion':'magic');
     }
     if(dead){continue}
@@ -26856,14 +26890,24 @@ function update(){
           // ★ 데미지 먼저 (관통/분열 여부와 무관하게 항상 적중)
           const _lcAng2=Math.atan2(e.y-p.y,e.x-p.x);
           hurtE(e,p.dmg,_lcAng2,false,p,p.el);
-          // 체인라이트닝 스폰
+          // 체인라이트닝: 디아2식 즉발 연쇄 (투사체 없음)
           if(p.chainMax&&(p._chainCount||0)<p.chainMax){
-            const _clR2=p.chainR||180;const _clNe2=shQuery(e.x,e.y,_clR2);
-            let _clT2=null,_clB2=_clR2;
-            for(let _ci2=0;_ci2<_clNe2.length;_ci2++){const ce=_clNe2[_ci2];if(!ce.alive||ce===e||(p._hitSet&&p._hitSet.has(ce)))continue;const cd2=dst(e.x,e.y,ce.x,ce.y);if(cd2<_clB2){_clB2=cd2;_clT2=ce}}
-            if(_clT2){const ca2=Math.atan2(_clT2.y-e.y,_clT2.x-e.x);const _clS2=new Set(p._hitSet);
-              const _cp=_getPProj();_cp.x=e.x;_cp.y=e.y;_cp.vx=Math.cos(ca2)*8;_cp.vy=Math.sin(ca2)*8;_cp.dmg=~~(p.dmg*0.7);_cp.el=EL.L;_cp.maxDist=_clR2+80;_cp.dist=0;_cp.r=4;_cp.stagger=2;_cp.kb=1;_cp.magic=true;_cp.lightning=true;_cp.chainMax=p.chainMax;_cp.chainR=_clR2;_cp._chainCount=(p._chainCount||0)+1;_cp._hitSet=_clS2;pProjs[pProjs.length]=_cp;
-              addTxt(e.x,e.y-15,'⚡','#44ddff',20);poolPart(e.x,e.y,(Math.random()-.5)*4,(Math.random()-.5)*4,'#88eeff',3,8);
+            const _clR2=p.chainR||180;
+            let _prev=e,_clDmg=p.dmg,_clHitSet=new Set(p._hitSet);_clHitSet.add(e);
+            const _clMax=p.chainMax-(p._chainCount||0);
+            for(let _ci=0;_ci<_clMax;_ci++){
+              const _clNe2=shQuery(_prev.x,_prev.y,_clR2);
+              let _clT2=null,_clB2=_clR2;
+              for(let _ci2=0;_ci2<_clNe2.length;_ci2++){const ce=_clNe2[_ci2];if(!ce.alive||_clHitSet.has(ce))continue;const cd2=dst(_prev.x,_prev.y,ce.x,ce.y);if(cd2<_clB2){_clB2=cd2;_clT2=ce}}
+              if(!_clT2)break;
+              _clHitSet.add(_clT2);
+              _clDmg=~~(_clDmg*0.8);
+              const _ca=Math.atan2(_clT2.y-_prev.y,_clT2.x-_prev.x);
+              hurtE(_clT2,_clDmg,_ca,true,{lightning:true,ltnChaser:true},EL.L);
+              // VFX: 아크 라인
+              if(!G._chainArcs)G._chainArcs=[];
+              if(G._chainArcs.length<60)G._chainArcs.push({x1:_prev.x,y1:_prev.y,x2:_clT2.x,y2:_clT2.y,t:0,maxT:18});
+              _prev=_clT2;
             }
           }
           // 현재 ltnChaser 투사체 수 카운트
@@ -27037,7 +27081,7 @@ function update(){
           hit=true;break;
         }
         // ── Magic Splash Damage ──
-        if(p.magic&&!p.bladeShard&&!p.maliceHunt&&!p.iceBlade&&!p.blueBean){
+        if(p.magic&&!p.bladeShard&&!p.maliceHunt&&!p.iceBlade&&!p.blueBean&&!p.lightning){
           const hel=hm(); // helmet stats
           const splR=45+p.r*3+(hel.splashR||0); // splash radius (base + helmet bonus)
           const splMul=0.5+(hel.splashMul||0); // splash dmg ratio (base 50% + helmet bonus)
@@ -31416,7 +31460,7 @@ function updateE(e,sp){
       e._iaSpearCd=100+Math.random()*40;
       const _el86=e.el;
       e.s='eShootWind';e.st2=60;
-      e._swFire=function(){const sa=Math.atan2(P.y-e.y,P.x-e.x);spawnProj({x:e.x,y:e.y,vx:Math.cos(sa)*4.5,vy:Math.sin(sa)*4.5,dmg:~~(e.atk*1.2),el:_el86,friendly:false,life:120,ml:120,col:_el86===EL.D?'#443366':'#dddd66',sz:2,pierce:true});addTxt(e.x,e.y-15,_el86===EL.D?_T('암흑창!'):_T('빛창!'),_el86===EL.D?'#443366':'#dddd66',30);SFX.magic(1)};
+      e._swFire=function(){const sa=Math.atan2(P.y-e.y,P.x-e.x);spawnProj({x:e.x,y:e.y,vx:Math.cos(sa)*4.5,vy:Math.sin(sa)*4.5,dmg:~~(e.atk*1.2),el:_el86,friendly:false,life:120,ml:120,col:_el86===EL.D?'#443366':'#dddd66',sz:2,pierce:true});addTxt(e.x,e.y-15,_el86===EL.D?_T('암흑창!'):_T('빛창!'),_el86===EL.D?'#8866cc':'#dddd66',30);SFX.magic(1)};
     }
     if(e._iaBurstCd<=0&&d<100){
       e._iaBurstCd=200+Math.random()*60;
@@ -33463,7 +33507,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     e.hp-=dmg;
     _dpsDmg+=dmg; // DPS 누적
     // ── 데미지 텍스트: DOT/채널링 제외, 단발 히트만 ──
-    const _quiet2=!!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade||opts.beam||opts.dot));
+    const _quiet2=!!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade||opts.beam||opts.dot||opts.ltnChaser||opts.lightning));
     if(!isDot&&!_quiet2&&P.s!=='whirlwind'){
       if(!G._dmgPeakShow||dmg>G._dmgPeakShow.dmg){
         G._dmgPeakShow={x:e.x,y:e.y,dmg:dmg,crit:_isCrit};
@@ -33473,7 +33517,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       // 회전참: hitArc에서 적마다 wwSlash 임팩트 생성, hurtE에서는 피 스플래시만
       e._hitFlash=4;
       if(ang!==undefined&&OPT.parts>=40){const _bN=Math.min(4,~~(1+dmg*0.01)*OPT.parts/100);const _bCols=['#aa0000','#880000','#cc1111'];for(let _bi=0;_bi<_bN;_bi++){const _ba=ang+(Math.random()-.5)*.8;const _bs=1+Math.random()*2;poolPart(e.x+(Math.random()-.5)*6,e.y+(Math.random()-.5)*6,Math.cos(_ba)*_bs,Math.sin(_ba)*_bs-Math.random(),_bCols[~~(Math.random()*3)],1.5+Math.random()*2,8+Math.random()*6,0,0,.12)}}
-    }else{const _quiet=!!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade||opts.beam));
+    }else{const _quiet=!!(opts&&(opts.bladeShard||opts.maliceHunt||opts.iceBlade||opts.beam||opts.ltnChaser||opts.lightning));
     _txtPerFrame++;
     const _overBudget=_txtPerFrame>_TXT_BUDGET;
     if(!_quiet&&!_overBudget){addParts(e.x,e.y,e.col,Math.min(~~(dmg/3*OPT.parts/100),_overBudget?0:8));
@@ -33606,10 +33650,10 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       if(_doRevive){
         addTxt(e.x,e.y-55,_T('💀 ')+e.deaths+_L('차 부활! ',' Revive! ')+_revPct+'%',_revPct>=80?'#ff2244':_revPct>=50?'#ff8844':'#ffcc44',50);
         addTxt(e.x,e.y-70,_L('부활력 -','Revive Power -')+_revCost+' ('+e._revPts+'/'+e._maxRevPts+')',_revCost>=13?'#ffdd44':'#ffffff',60);
-        if(_bSuppress>0)addTxt(e.x,e.y-85,_T('✟ 신성력 억제! +')+~~(Math.min(5,_bSuppress*10+2)),_hpZone?'#ffdd00':'#ffdd88',50);
+        if(_bSuppress>0)addTxt(e.x,e.y-85,_T('✟ 신성력 억제! +')+~~(Math.min(5,_bSuppress*10+2)),_hpZone?'#ffffff':'#ffffff',50);
       }else if(e._revPts<=0){addTxt(e.x,e.y-55,_T('☠ 부활력 고갈!'),'#ff2222',80);addTxt(e.x,e.y-40,'0/'+e._maxRevPts,'#ff4444',50)}
-      else if(_bSuppress>0){addTxt(e.x,e.y-40,_T('✟ 신성력 억제! (')+_revPct+'%)','#ffdd88',60)}
-      else{addTxt(e.x,e.y-40,_T('부활 실패 (')+_revPct+'%)','#888888',40)}
+      else if(_bSuppress>0){addTxt(e.x,e.y-40,_T('✟ 신성력 억제! (')+_revPct+'%)','#ffffff',60)}
+      else{addTxt(e.x,e.y-40,_T('부활 실패 (')+_revPct+'%)','#bbbbbb',40)}
       if(_doRevive){
         // 풀피 부활 (HP 변동 없음)
         e.hp=e.mhp;e.eShield=0;e.eShieldMax=0;
@@ -33699,7 +33743,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
         e._revived=true;e._reviveTimer=e.elite>0?120:90;e._reviveX=e.x;e._reviveY=e.y;
         e._reviveAsGhoul=Math.random()<0.5; // 50% 구울, 50% 본모습
       }else if(_suppress>0){
-        addTxt(e.x,e.y-30,_T('✟ 신성력 억제!'),'#ffdd88',50);
+        addTxt(e.x,e.y-30,_T('✟ 신성력 억제!'),'#ffffff',50);
       }
     }
     // 보스: 부활력 남아있으면 3초 카운트다운 → 부활률 공식 + 포인트 체크
@@ -38353,7 +38397,7 @@ function _applyLang(){try{
     const _lastD=_ho.querySelector('div[style*="color:#666"]');if(_lastD)_lastD.textContent=_T('클릭하면 닫힘');
   }
   // Slot title attributes
-  const _titles={skSlotLMB:'좌클스킬 (클릭 전환)',skSlotRMB:'우클스킬 (클릭 전환)',skSlot0:'이동스킬 (클릭 전환)',qsE:'마법스킬 (클릭 전환)',skSlot1:'영역스킬 (클릭 전환)',qsQ:'피보호막 (클릭 전환)',skSlotCT:'CT스킬 (클릭 전환)',spCnt:'[C] 능력치'};
+  const _titles={skSlotLMB:'좌클스킬 (클릭 전환)',skSlotRMB:'우클스킬 (클릭 전환)',skSlot0:'이동스킬 (클릭 전환)',qsE:'마법스킬 (클릭 전환)',skSlot1:'영역스킬 (클릭 전환)',qsQ:'피보호막 (클릭 전환)',skSlotCT:'CT스킬 (클릭 전환)',spCnt:'[J] 능력치'};
   for(const[id,ko]of Object.entries(_titles)){const el=$(id);if(el)el.title=_T(ko)}
   // Inventory panel
   const _invP=$('invPanel');if(_invP){
@@ -43472,14 +43516,18 @@ function draw(){
       drawNumStr(X,t._numStr,t.x+_sk,t.y-_NUM_H*_sc/2,_ci,_sc);
       X.restore();
     }else{
-      // 일반 텍스트: strokeText + fillText (2회만)
+      // 일반 텍스트: 무조건 흰색 fill + 얇은 외곽선
       const _fSz=~~(_bSz*_bn);
       X.save();X.translate(t.x+_sk,t.y);
       X.font='900 '+_fSz+'px "Noto Sans KR","Malgun Gothic",sans-serif';
-      X.globalAlpha=_ta;
-      X.strokeStyle='#000000';X.lineWidth=_bSz>=36?6:4;X.lineJoin='round';
+      X.textAlign='center';
+      // 1) 얇은 검정 외곽선
+      X.globalAlpha=_ta*.7;
+      X.strokeStyle='#000000';X.lineWidth=Math.max(1,~~(_fSz*.06));X.lineJoin='round';
       X.strokeText(t.t,0,0);
-      X.fillStyle=t.c;X.fillText(t.t,0,0);
+      // 2) 흰색 텍스트 (무조건)
+      X.globalAlpha=_ta;
+      X.fillStyle='#ffffff';X.fillText(t.t,0,0);
       X.restore();
     }
   }X.globalAlpha=1;X.textBaseline='alphabetic'}if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
@@ -43706,6 +43754,37 @@ function draw(){
   }
   // ═══ 화면 플래시 (피격/보스 패턴) ═══
   if(G._flashT>0){X.save();X.setTransform(1,0,0,1,0,0);X.globalAlpha=Math.min(.55,G._flashT*.18);X.fillStyle=G._flashCol||'#ffffff';X.fillRect(0,0,C.width,C.height);X.restore();G._flashT-=_dtSp}
+  // ═══ 체인라이트닝 아크 VFX (디아2식 즉발 번개) ═══
+  if(G._chainArcs&&G._chainArcs.length>0){
+    const _cx=G.cam.x-C.width/2,_cy=G.cam.y-C.height/2;
+    let _aw=0;
+    for(let _ai=0;_ai<G._chainArcs.length;_ai++){
+      const a=G._chainArcs[_ai];a.t+=_dtSp;
+      if(a.t>=a.maxT)continue;
+      G._chainArcs[_aw++]=a;
+      const _af=1-a.t/a.maxT;
+      const _ax1=a.x1-_cx,_ay1=a.y1-_cy,_ax2=a.x2-_cx,_ay2=a.y2-_cy;
+      const _adx=_ax2-_ax1,_ady=_ay2-_ay1;
+      const _asegs=8;
+      // 외곽 글로우
+      X.globalAlpha=_af*.15;X.strokeStyle='#2255ff';X.lineWidth=10*_af;X.lineCap='round';
+      X.beginPath();X.moveTo(_ax1,_ay1);
+      for(let s=1;s<=_asegs;s++){const f2=s/_asegs;const wx=(s&1?1:-1)*(3+Math.sin(_now*.1+s*2.3)*4)*_af;const px=f2>0.5?Math.cos(Math.atan2(_ady,_adx)+Math.PI/2):Math.cos(Math.atan2(_ady,_adx)-Math.PI/2);const py=f2>0.5?Math.sin(Math.atan2(_ady,_adx)+Math.PI/2):Math.sin(Math.atan2(_ady,_adx)-Math.PI/2);X.lineTo(_ax1+_adx*f2+px*wx,_ay1+_ady*f2+py*wx)}
+      X.stroke();
+      // 메인 볼트
+      X.globalAlpha=_af*.7;X.strokeStyle='#4499ff';X.lineWidth=3*_af;
+      X.beginPath();X.moveTo(_ax1,_ay1);
+      for(let s=1;s<=_asegs;s++){const f2=s/_asegs;const wx=(s&1?1:-1)*(3+Math.sin(_now*.1+s*2.3)*4)*_af;const px=Math.cos(Math.atan2(_ady,_adx)+Math.PI/2);const py=Math.sin(Math.atan2(_ady,_adx)+Math.PI/2);X.lineTo(_ax1+_adx*f2+px*wx*(s&1?1:-1),_ay1+_ady*f2+py*wx*(s&1?1:-1))}
+      X.stroke();
+      // 백색 코어
+      X.globalAlpha=_af*.9;X.strokeStyle='#eef8ff';X.lineWidth=1.2*_af;
+      X.beginPath();X.moveTo(_ax1,_ay1);
+      for(let s=1;s<=_asegs;s++){const f2=s/_asegs;const wx=(s&1?1:-1)*(2+Math.sin(_now*.1+s*2.3)*3)*_af;const px=Math.cos(Math.atan2(_ady,_adx)+Math.PI/2);const py=Math.sin(Math.atan2(_ady,_adx)+Math.PI/2);X.lineTo(_ax1+_adx*f2+px*wx*(s&1?1:-1),_ay1+_ady*f2+py*wx*(s&1?1:-1))}
+      X.stroke();
+      X.lineCap='butt';
+    }
+    G._chainArcs.length=_aw;X.globalAlpha=1;
+  }
   // ═══ 색수차 (강타 피격) — 매 프레임 렌더 (깜빡임 방지) ═══
   if(G._chromaT>0){const _csh=G._chromaT*1.5;X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=.04;X.drawImage(C,-_csh,0);X.drawImage(C,_csh,0);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();G._chromaT-=_dtSp}
   // ═══ 동적 조명 패스 (3프레임마다 계산) ═══
@@ -47413,8 +47492,8 @@ function drawP(){
           }
           X.lineCap='butt';
         }
-        // 전기 파티클
-        if(Math.random()>.5)poolPart(p.x+(Math.random()-.5)*10,p.y+(Math.random()-.5)*10,-p.vx*.15+(Math.random()-.5)*2,-p.vy*.15+(Math.random()-.5)*2,'#4499ff',1.5+Math.random()*2.5,4+Math.random()*5);
+        // 전기 파티클 (10%로 제한 — 다수 분열 시 과다 파티클 방지)
+        if(Math.random()>.9)poolPart(p.x+(Math.random()-.5)*10,p.y+(Math.random()-.5)*10,-p.vx*.15+(Math.random()-.5)*2,-p.vy*.15+(Math.random()-.5)*2,'#4499ff',1.5+Math.random()*2.5,4+Math.random()*5);
       }else if(p.mhBlade){// ── BLADE: 악의사냥/독혈해방 물리칼날 ──
         X.rotate(ang);
         const _mhF=p.mhFused;
