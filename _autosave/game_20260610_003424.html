@@ -6572,7 +6572,7 @@ const _EN={
 '석궁 자동발사':'Auto Crossbow','선택 스킬 슬롯':'Skill Slots',
 '(펫이 자동 수거)':'(pet auto-collects)','물약은 설정한 HP% 이하 시 자동 사용':'Potions auto-use when HP falls below set %',
 '💡 Shift로 작살 돌진! 적을 관통하며 무적':'💡 Shift to dash! Pierce enemies, invincible',
-'💡 Q로 보호막 발동 — 기본 흡수율 70%, 패링 성공 시 HP/ST/MP/기동게이지 회복':'💡 Q for Shield — 70% absorb, parry to recover HP/ST/MP/Charge',
+'💡 Q로 보호막 발동 — 기본 흡수율 30%, 패링 성공 시 HP/ST/MP/기동게이지 회복':'💡 Q for Shield — 30% absorb, parry to recover HP/ST/MP/Charge',
 '💡 속성 약점을 찌르면 데미지 2배!':'💡 Hit elemental weaknesses for 2x damage!',
 '💡 ESC로 설정 — 난이도, 자동물약 조절':'💡 ESC for settings — difficulty, auto-potions',
 '💡 대왕치기로 기절 회복 + 포이즈를 깎아 그로기 유발!':'💡 Giant Slam: stun recovery + poise break for groggy!',
@@ -20138,7 +20138,7 @@ const PASSIVE_DEF=[
   {key:'pParry', name:'⚡ 반격',nameEn:'⚡ Retaliation',desc:'카운터뎀 +50%/lv, 우클릭 공속 +10%/lv, 무지개탄 피해감소 +10%/lv (최대50%)',descEn:'Counter DMG +50%/lv, RMB ATK speed +10%/lv, Rainbow shot DMG reduction +10%/lv (max 50%)',max:10,icon:'⚡',col:'#ffdd00'},
   {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +10%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +10%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
   {key:'pBow',   name:'🎯 정밀사격',nameEn:'🎯 Precision',desc:'투사체뎀 +15%, 공속 +10%, 사거리 +8%, ST비용 -4%/lv',descEn:'Projectile DMG +15%, ATK speed +10%, Range +8%, ST cost -4%/lv',max:10, icon:'🎯',col:'#44ddaa'},
-  {key:'pGuard', name:'🛡 수호신',nameEn:'🛡 Aegis',  desc:'보호막 흡수 +2%/lv (기본50→최대90%)',descEn:'Shield absorb +2%/lv (base 50 to max 90%)',max:10, icon:'🛡',col:'#55bbff'},
+  {key:'pGuard', name:'🛡 수호신',nameEn:'🛡 Aegis',  desc:'보호막 흡수 +2%/lv (기본30→최대50%)',descEn:'Shield absorb +2%/lv (base 30 to max 50%)',max:10, icon:'🛡',col:'#55bbff'},
   {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv, 패링회복 +30%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv, Parry recovery +30%/lv',max:10, icon:'💚',col:'#33cc66'},
   {key:'pCrit',  name:'💥 급소',nameEn:'💥 Vital Strike',    desc:'크리률 +2%, 크리뎀 +8%/lv',descEn:'Crit rate +2%, Crit DMG +8%/lv',max:10,icon:'💥',col:'#ff2266'},
   {key:'pDrop',  name:'🎁 약탈',nameEn:'🎁 Plunder',    desc:'아이템 드롭률 +8%/lv',descEn:'Item drop rate +8%/lv',    max:10, icon:'🎁',col:'#ffcc44'},
@@ -20311,7 +20311,7 @@ function pMeleeStCost(){return Math.max(.5,1-(PASSIVES.pMelee||0)*.05)} // ST소
 function pMagicSpd(){return (2+PASSIVES.pMagic*.08)*(1+_eqAffix('castSpeed')+_eqAffix('headbandCastSpd'))}     // 기본 2배속 + 시전속도 +8%/lv + castSpeed/headbandCastSpd 어픽스
 function pShieldMul(){return 1}    // removed passive pShield (수호)
 function pShieldBlock(){return 0}  // removed passive pShield (수호)
-function pGuardAbsorb(){return Math.min(.90,.50+PASSIVES.pGuard*.02)} // 보호막 흡수 50→90% (+2%/lv)
+function pGuardAbsorb(){return Math.min(.50,.30+PASSIVES.pGuard*.02)} // 보호막 흡수 30→50% (+2%/lv)
 function pGuardRegen(){return PASSIVES.pGuard*.001}     // 보호막 중 HP리젠 +0.1%/lv
 function pRegenMul(){return 1+PASSIVES.pRegen*.03}      // HP/ST리젠 +3%/lv (10lv=+30%)
 function pMRegenMul(){return 1+PASSIVES.pMRegen*.03}    // MP/쉴드리젠 +3%/lv (10lv=+30%)
@@ -25438,7 +25438,7 @@ function update(){
           doParry(p.dmg,p.x,p.y,true,p.el);
         }else{
           // 패링 윈도우 아닐 때 OR 빨콩: 빨콩은 풀뎀, 일반은 흡수
-          const _psBlk2=p.redBean?0:Math.min(.90,pGuardAbsorb()+pShieldBlock());
+          const _psBlk2=p.redBean?0:Math.min(.50,pGuardAbsorb()+pShieldBlock());
           const _absDmg=Math.max(1,~~(p.dmg*(1-_psBlk2)));
           if(_absDmg>0){hurtP(_absDmg,{dtype:p.redBean?'parry':'magic',src:p.redBean?'빨콩 직격':'보호막흡수',redBean:!!p.redBean})}
           // 공통 임팩트 (일반 피격과 동일)
@@ -26571,9 +26571,9 @@ function update(){
     }
     // 회전참 중: iframes여도 범위 내 탄 소멸 (흡수율 적용 데미지)
     if(p.blackBean&&!_pHit&&_pDist<_bkHitR&&P.iframes>0&&!P._ioActive&&P.s==='whirlwind'){
-      const _bkAbs3=Math.min(.95,0.70+0+(_isFused('whirlDet')?(P.skills.detonate||1)*0.005:0));
+      const _bkAbs3=Math.min(.55,0.40+0+(_isFused('whirlDet')?(P.skills.detonate||1)*0.005:0));
       const _bkD3=Math.max(1,~~(p.dmg*0.3*(1-_bkAbs3)*(1-pParryRainbowDR())));
-      hurtP(_bkD3,{dtype:'magic',src:'무지개흡수'});
+      hurtP(_bkD3,{dtype:'magic',src:'무지개흡수',wwAbsorbed:true});
       P.parryBank=(P.parryBank||0)+(_isFused('whirlDet')?(p.dmg||10):~~(p.dmg*0.3*_bkAbs3));
       {const _bkA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bkA)*2;P.kb.y+=Math.sin(_bkA)*2}
       shake(3);doHitFlash('#ff00ff',0.1);addParts(p.x,p.y,'#ff00ff',4);_pHit=true;
@@ -26657,9 +26657,9 @@ function update(){
         addParts(p.x,p.y,'#22cc66',6);addParts(p.x,p.y,'#4488ff',6);_pHit=true;
       }
     }
-    // ══ 회전참 범위 내 탄 흡수: 보호막과 동일 흡수율 (pGuardAbsorb), iframes 무관 ══
+    // ══ 회전참 범위 내 탄 흡수: 기본15% + pGuard 1%/lv (캡25%) ══
     if(!p.blackBean&&!p.bwBean&&!p.gbBean&&!p.poisonZone&&!p.mine&&!p.elemBall&&!p.dimRift&&!_pHit&&_pDist<_normalR&&!P._ioActive&&P.s==='whirlwind'){
-      const _wwAbs=pGuardAbsorb();
+      const _wwAbs=Math.min(.25,.15+PASSIVES.pGuard*.01);
       const _wwD=Math.max(1,~~(p.dmg*(1-_wwAbs)));
       hurtP(_wwD,{dtype:'magic',src:'회전흡수',wwAbsorbed:true});
       P.parryBank=(P.parryBank||0)+(_isFused('whirlDet')?(p.dmg||10):~~(p.dmg*_wwAbs));
@@ -26683,10 +26683,10 @@ function update(){
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
         addTxt(P.x,P.y-28,_T('⚡💎 블루콩!'),'#00e5ff',35);doParry(p.dmg,p.x,p.y,false,p.el);projs[pw++]=p;_pHit=true;continue}
       else if(P.s==='whirlwind'&&_isFused('whirlDet')&&!p.friendly&&!p.bomb&&!p.iceZone&&!p.blizzard&&!p.web){
-        // 회전기폭 합체: 회전 중 일반탄 흡수 → parryBank 축적
-        const _wdAbs=Math.min(.95,0.70+(P.skills.detonate||1)*0.005);
+        // 회전기폭 합체: 회전 중 일반탄 흡수 → parryBank 축적 (기본40% + 기폭Lv 0.5%, 캡55%)
+        const _wdAbs=Math.min(.55,0.40+(P.skills.detonate||1)*0.005);
         const _wdD=Math.max(1,~~(p.dmg*(1-_wdAbs)));
-        hurtP(_wdD,{dtype:'magic'});
+        hurtP(_wdD,{dtype:'magic',wwAbsorbed:true});
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
         addParts(p.x,p.y,'#ff4400',2);_pHit=true;
       }
@@ -34435,7 +34435,7 @@ function hurtP(dmg,opts){
     // 패링 윈도우 지남 → 흡수율 절반 + 데미지 1.3배 + 포이즈 -1
     const _psParryFailed=P._sbParryT<=0&&!(opts&&opts.dot);
     const _psBlkBase=(pGuardAbsorb()+pShieldBlock())*(_isDotEarly?.5:1);
-    const _psBlkRate=Math.min(_psParryFailed?.45:.90,_psParryFailed?_psBlkBase*.5:_psBlkBase);
+    const _psBlkRate=Math.min(_psParryFailed?.25:.50,_psParryFailed?_psBlkBase*.5:_psBlkBase);
     const _psRawDmg=dmg;
     dmg=Math.max(1,~~(dmg*(1-_psBlkRate)));
     if(_psParryFailed){dmg=~~(dmg*1.3);
@@ -34460,7 +34460,7 @@ function hurtP(dmg,opts){
     // 패링 윈도우 지남 → 흡수율 절반 + 데미지 1.3배 + 포이즈 -1
     const _parryFailed=P._sbParryT<=0&&!(opts&&opts.dot);
     const _blkBase=(pGuardAbsorb()+pShieldBlock())*(_isDotEarly?.5:1);
-    const _blkRate=Math.min(_parryFailed?.40:.80,_parryFailed?_blkBase*.5:_blkBase);
+    const _blkRate=Math.min(_parryFailed?.25:.50,_parryFailed?_blkBase*.5:_blkBase);
     const _rawDmg=dmg;
     dmg=Math.max(1,~~(dmg*(1-_blkRate)));
     if(_parryFailed){dmg=~~(dmg*1.3);
@@ -34473,9 +34473,9 @@ function hurtP(dmg,opts){
     shake(_parryFailed?8:4);playSample('player_hit'+(1+~~(Math.random()*4)),_parryFailed?.6:.4,_r(1,.15));doHitFlash(_parryFailed?'#ff4422':'#4488ff',_parryFailed?.25:.15);
     addTxt(P.x,P.y-18,_T('🛡 보호막 ')+~~(_blkRate*100)+'%',_parryFailed?'#ff6644':'#4488ff',22);
   } else if(!(opts&&opts.dot))playSample('player_hit'+(1+~~(Math.random()*4)),.6,_r(1,.15));
-  // 회전기폭 합체: 회전 중 보호막 자동 적용 (데미지 감소 + 흡수)
-  if(P.s==='whirlwind'&&P.skills.detonate&&_isFused('whirlDet')){
-    const _wwBlk=_isDotEarly?0:Math.min(.90,.50+PASSIVES.pGuard*.02); // 회전보호막: 기본50%+패시브2%/lv(최대90%), DOT 미적용
+  // 회전기폭 합체: 회전 중 보호막 자동 적용 (근접만 — 투사체는 충돌 시 이미 흡수됨)
+  if(P.s==='whirlwind'&&P.skills.detonate&&_isFused('whirlDet')&&!(opts&&opts.wwAbsorbed)){
+    const _wwBlk=_isDotEarly?0:Math.min(.55,.30+PASSIVES.pGuard*.02); // 회전보호막: 기본30%+패시브2%/lv(캡55%), DOT 미적용
     const _rawDmg2=dmg;
     dmg=Math.max(1,~~(dmg*(1-_wwBlk)));
     P.parryBank=(P.parryBank||0)+(_rawDmg2-dmg);
@@ -35091,7 +35091,7 @@ const SKILL_SLOT_DEFS={
   rmb:{name:'우클 스킬',nameEn:'RMB Skill',key:'rmb',skills:['maliceSwipe'],
     info:{maliceSwipe:{name:'칼등 처내기',nameEn:'Blade Parry',emoji:'💀',desc:'우클: 칼등 처내기 (홀드 연사, Lv당 반사뎀+10%)',descEn:'RMB: Blade parry (hold rapid, reflect dmg+10%/Lv)'}}},
   q:{name:'보호막 스킬',nameEn:'Shield Skill',key:'q',skills:['parry','detonate','peaceShield'],
-    info:{parry:{name:'보호막',nameEn:'Shield',emoji:'💠',desc:'Q: 피보호막 (데미지 70% 흡수, 수호신 패시브로 최대 90%)',descEn:'Q: Damage shield (absorb 70%, up to 90% with Guardian passive)'},
+    info:{parry:{name:'보호막',nameEn:'Shield',emoji:'💠',desc:'Q: 피보호막 (데미지 30% 흡수, 수호신 패시브로 최대 50%)',descEn:'Q: Damage shield (absorb 30%, up to 50% with Guardian passive)'},
           detonate:{name:'기폭팔',nameEn:'Detonate',emoji:'💥',desc:'Q 홀드: 흡수 데미지 축적 → 해제 시 광역 폭발',descEn:'Q Hold: Accumulate absorbed dmg → AoE explosion on release'},
           peaceShield:{name:'평화의보호',nameEn:'Aegis of Peace',emoji:'🕊️',desc:'Q 홀드: 버블 보호막+힐+반사. 해제 시 충격파',descEn:'Q Hold: Bubble shield+heal+reflect. Shockwave on release'}}},
   ct:{name:'CT 스킬',nameEn:'CT Skill',key:'ct',skills:['ghostWalk','iceOrb','timeWarp'],
@@ -40499,7 +40499,7 @@ function renderStatSummary(){
     `<div style="${_sLn}">${_L('속성방어','Elem DEF')}: <span style="color:#bb88ff">${_sTotalEDef}</span> → <span style="color:#44ff88">${(_sElemDR*100).toFixed(1)}%${_L('감소','red')}</span></div>`+
     `<div style="font-size:1rem;color:#887766;line-height:1.6;margin-left:12px">${_L('왕관','crown')}:${hm().eDef||0} | ${_L('목걸이','necklace')}:${nc().eDef||0} | ${_L('반지1','ring1')}:${rg1().eDef||0} | ${_L('반지2','ring2')}:${rg2().eDef||0}</div>`+
     `<div style="${_sLn}">${_L('반사','Reflect')}: <span style="color:${_afc('reflect','#aaaaff')}">${_afp('reflect')}</span> | ${_L('가시','Thorns')}: <span style="color:${_afc('thorns','#ff8844')}">${_af('thorns').toFixed(0)}</span> | ${_L('배리어','Barrier')}: <span style="color:${_afc('barrier','#4488ff')}">${_af('barrier').toFixed(0)}</span></div>`+
-    `<div style="${_sLn}">${_L('보호막 흡수','Shield Absorb')}: <span style="color:#55bbff">${~~(pGuardAbsorb()*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}50% +pGuard ${PASSIVES.pGuard||0}lv)</span></div>`+
+    `<div style="${_sLn}">${_L('보호막 흡수','Shield Absorb')}: <span style="color:#55bbff">${~~(pGuardAbsorb()*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}30% +pGuard ${PASSIVES.pGuard||0}lv)</span></div>`+
     // ── 속성 저항 ──
     `<div style="${_sHd}">🌀 ${_L('속성 저항','Elem Resist')}</div>`+
     `<div style="${_sLn}">🔴${_L('화염','Fire')}: <span style="color:${_sFireR?'#ff5522':'#555544'}">${~~(_sFireR*100)}%</span> | 🔵${_L('빙결','Ice')}: <span style="color:${_sIceR?'#88ccff':'#555544'}">${~~(_sIceR*100)}%</span> | 🟡${_L('암전','Lightning')}: <span style="color:${_sLitR?'#ffee44':'#555544'}">${~~(_sLitR*100)}%</span></div>`+
@@ -50043,7 +50043,7 @@ window.addEventListener('beforeunload',()=>{
 // ═══ 부트 로딩 — 에셋 프리로드 + 팁 텍스트 ═══
 const _LOAD_TIPS_KO=[
   '💡 Shift로 작살 돌진! 적을 관통하며 무적',
-  '💡 Q로 보호막 발동 — 기본 흡수율 70%, 패링 성공 시 HP/ST/MP/기동게이지 회복',
+  '💡 Q로 보호막 발동 — 기본 흡수율 30%, 패링 성공 시 HP/ST/MP/기동게이지 회복',
   '💡 속성 약점을 찌르면 데미지 2배!',
   '💡 ESC로 설정 — 난이도, 자동물약 조절',
   '💡 대왕치기로 기절 회복 + 포이즈를 깎아 그로기 유발!',
@@ -50061,7 +50061,7 @@ const _LOAD_TIPS_KO=[
 ];
 const _LOAD_TIPS_EN=[
   '💡 Shift to dash! Pierce enemies, invincible',
-  '💡 Q for Shield — 70% absorb, parry to recover HP/ST/MP/Charge',
+  '💡 Q for Shield — 30% absorb, parry to recover HP/ST/MP/Charge',
   '💡 Hit elemental weaknesses for 2x damage!',
   '💡 ESC for settings — difficulty, auto-potions',
   '💡 Giant Slam: stun recovery + poise break for groggy!',
