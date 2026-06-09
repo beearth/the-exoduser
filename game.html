@@ -5626,8 +5626,8 @@ const _EN={
 '실패하면 악의만 날아가~ 장비는 안 부서져!':'On fail, only Malice is lost~ Gear survives!',
 '대장간에서 장비 제작도 된다. 악의 30000개면 영웅급 이상.':'Forge can craft gear too. 30000 Malice for Heroic+.',
 '랜덤이지만 좋은 거 나올 수도 있어!':'Random, but you might get something great!',
-'쉴드는 마법으로, HP는 물리로 깎아야 제대로 먹힌다.':'Shield needs magic, HP needs physical to be effective.',
-'반대로 치면 50%만 들어가! 무기 바꿔가면서 싸워!':'Wrong type only does 50%! Switch weapons!',
+'쉴드는 추가 HP다. 쉴드부터 깎인다.':'Shield is extra HP. Shield takes damage first.',
+'쉴드 있으면 HP 안 닳아! 쉴드 먼저 깨야 해!':'While shield is up, HP stays safe! Break shield first!',
 '장비에 접두사, 접미사가 붙으면 특수 효과가 생긴다.':'Gear with prefix/suffix gets special effects.',
 '영웅급 이상 장비에만 붙어! 좋은 거 나오면 강화해!':'Only on Heroic+ gear! Enhance the good rolls!',
 '강화는 장비를 바꿔도 자동 이전된다. 악의만 있으면.':'Enhancement auto-transfers to new gear. Just costs Malice.',
@@ -5679,8 +5679,8 @@ const _EN={
 '그로기 터지면 데미지 1.5배!':'Groggy triggers 1.5x damage!',
 '회전참이나 광역기로 몰아! 한 놈씩 상대하면 죽어.':'Use Whirlwind or AoE! One-by-one and you\'re dead.',
 '뭉쳐있을 때가 기회야!':'When they clump, that\'s your chance!',
-'E로 마력공격을 해봐! 악의 쉴드를 해제할려면 마법 공격을 해야 해!':'Try E for magic attacks! You need magic to break Malice shields!',
-'쉴드는 마법으로, HP는 물리로. 반대로 치면 데미지 안 들어간다.':'Shields need magic, HP needs physical. Wrong type does no damage.',
+'쉴드가 있는 적은 쉴드부터 깨야 HP가 깎여!':'Enemies with shields — break the shield first to reach HP!',
+'쉴드는 추가 HP야. 모든 공격이 쉴드를 먼저 깎아!':'Shield is extra HP. All attacks hit the shield first!',
 // ── Skill / passive / stamina hints ──
 'L키로 스킬 슬롯에 넣어야 쓸 수 있어.':'Press L to assign skills to slots.',
 'J키를 눌러. 패시브 포인트가 쌓여있다.':'Press J. Passive points have stacked up.',
@@ -6628,7 +6628,7 @@ const _EN={
 '잡몹이다. 먼저 정리해.':'Regular mobs. Clear them first.',
 '…얼어붙은 놈은 오래 안 간다.':'...A frozen one won\'t last long.',
 '…냄새가 짙다. 큰 놈이 있어.':'...The smell is thick. Something big nearby.',
-'쉴드는 마법으로, HP는 물리로.':'Shield takes magic, HP takes physical.',
+'쉴드는 추가 HP다. 쉴드부터 깎인다.':'Shield is extra HP. Shield takes damage first.',
 '스페이스! 가시덫으로 적 묶어!':'Space! Trap enemies with Spike Trap!',
 '근접 너무 많아! 거리 벌려!':'Too many in close! Spread out!',
 '회전참이나 광역기로 몰아!':'Use Spin Slash or AoE to round them up!',
@@ -7438,7 +7438,19 @@ let _petDiffLast=0;const _petDiffSeen={};
 let _petParryCombo=0;
 
 // 대사 발동 함수
-function _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur){
+// 펫 대사 사운드 — 화자별 합성음
+function _petSfx(who,urgent){
+  if(who==='crow'){
+    // 까마귀: 낮고 날카로운 톤
+    if(urgent){playFM(420,180,300,.06,.04,'sine',200);playNoise(.03,4000,.02,1500,.002,'bandpass')}
+    else playFM(350,120,80,.05,.025,'sine',250)
+  }else{
+    // 고양이: 높고 밝은 톤
+    if(urgent){playFM(800,300,400,.06,.04,'sine',500);playNoise(.03,6000,.02,3000,.002,'bandpass')}
+    else playFM(700,250,60,.05,.025,'sine',500)
+  }
+}
+function _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur,_noSfx){
   if(_petBubble.t>0)return false; // 이미 말풍선 표시 중
   if(_petDlgCD[id]>0)return false; // 쿨다운 중
   _petBubble.who=who;_petBubble.txt=_T(txt);_petBubble.mt=~~(durSec*60);_petBubble.t=_petBubble.mt;
@@ -7447,6 +7459,7 @@ function _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur){
   else{_petBubble.pair=null}
   // 자막 표시
   {const _ps=$('petSubtitle');if(_ps){const _isCrow=who==='crow';_ps.style.color=_isCrow?'#ccbbff':'#ffdd88';_ps.textContent=(_isCrow?_L('핵터','Hecter')+': ':_L('디로이','Deroy')+': ')+_T(txt);_ps.style.opacity='1'}}
+  if(!_noSfx)_petSfx(who,false);
   return true;
 }
 let _petGlobalCD=0; // 글로벌 쿨다운 (15초 — 연속 대사 방지)
@@ -7461,7 +7474,8 @@ function _petSayUrgent(id,who,txt,durSec,cdSec,pairWho,pairTxt,pairDur){
   if(_petBubble._uid===id&&_petBubble.t>0)return false; // 같은 긴급 대사 재생 중이면 스킵
   // 현재 말풍선 강제 종료
   _petBubble.t=0;_petBubble.pair=null;
-  _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur);
+  _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur,true);
+  _petSfx(who,true); // urgent 전용 긴급음
   _petBubble._uid=id; // 현재 긴급 대사 id 기록
   _petGlobalCD=600; // 긴급 후 10초 글로벌쿨 (일반 대사만 억제)
   return true;
@@ -7481,8 +7495,9 @@ function _updatePetBubble(){
       _petBubble.who=_petBubble.pair.who;_petBubble.txt=_petBubble.pair.txt;
       _petBubble.mt=_petBubble.pair.mt;_petBubble.t=_petBubble.pair.mt;
       _petBubble.pair=null;
-      // 자막 갱신 (페어 대사)
+      // 자막 갱신 (페어 대사) + 후발 사운드
       {const _ps=$('petSubtitle');if(_ps){const _isCrow=_petBubble.who==='crow';_ps.style.color=_isCrow?'#ccbbff':'#ffdd88';_ps.textContent=(_isCrow?_L('핵터','Hecter')+': ':_L('디로이','Deroy')+': ')+_petBubble.txt;_ps.style.opacity='1'}}
+      _petSfx(_petBubble.who,false);
     }
     // 자막 페이드아웃 (마지막 0.5초)
     if(_petBubble.t>0&&_petBubble.t<30){const _ps=$('petSubtitle');if(_ps)_ps.style.opacity=(_petBubble.t/30).toFixed(2)}
@@ -7611,7 +7626,7 @@ function _checkPetDialogue(){
         const _nags=[['시간이 없어. 움직여.','멍하게 서있으면 안 돼!'],['…뭘 기다리는 거야?','가자가자! 몬스터가 기다려!'],['여기 오래 있으면 위험해.','가만있으면 둘러싸여!'],['쉬는 건 죽고 나서 해.','살아있을 때 쉬면 안 돼!'],['적이 몰려오고 있어.','냄새 맡고 올 거야. 빨리!'],['…아직 살아있는 거 맞지?','혹시 잠든 거야…?']];
         const _ni=~~(Math.random()*_nags.length);_petSayCD('idle_nag'+_ni,'crow',_nags[_ni][0],4,30,'cat',_nags[_ni][1],4);
       }else if(Math.random()<.5){
-        const _tips=[['작살을 땅에 꽂으면 끌려간다.','Shift로 작살 던져봐!'],['패링 성공하면 ST가 회복된다.','패링 많이 하면 ST 걱정 없어~'],['장비 분해하면 악의를 얻는다.','TAB 열어서 안 쓰는 장비 분해!'],['그로기 적은 1.5배 데미지.','무릎 꿇으면 전력으로 때려!'],['화염은 빙결, 암전은 암흑에 약하다.','무기 속성 바꿔가며 싸워!'],['빙결 적은 1.5배 데미지.','얼리고 때리는 게 기본!'],['보스 빨강은 패링, 보라는 회피만.','빨강 받아치고 무지개는 피해!'],['VIT 올리면 최대 HP.','STR 근접, DEX 활, INT 마법!'],['E 길게 = 빔, 짧게 = 투사체.','MP 잘 봐! 빔은 연속으로 깎여!'],['펫이 아이템을 주워준다.','우리한테 고마워해~'],['LCK 올리면 레어 드롭률.','운빨 게임! LCK 올려봐!'],['G 누르면 대장간.','강화하면 공격력 쭉쭉!'],['강화 +1에서 99%. 높을수록 떨어져.','실패해도 장비 안 부서져!'],['대장간 제작도 가능. 악의 30000개+.','영웅급 이상 나올 수 있어!'],['쉴드는 마법, HP는 물리.','반대로 치면 50%만!'],['영웅급+ 장비에 접두/접미사.','좋은 거 나오면 강화!'],['강화는 장비 바꿔도 자동 이전.','더 좋은 거 나오면 바로 장착!']];
+        const _tips=[['작살을 땅에 꽂으면 끌려간다.','Shift로 작살 던져봐!'],['패링 성공하면 ST가 회복된다.','패링 많이 하면 ST 걱정 없어~'],['장비 분해하면 악의를 얻는다.','TAB 열어서 안 쓰는 장비 분해!'],['그로기 적은 1.5배 데미지.','무릎 꿇으면 전력으로 때려!'],['화염은 빙결, 암전은 암흑에 약하다.','무기 속성 바꿔가며 싸워!'],['빙결 적은 1.5배 데미지.','얼리고 때리는 게 기본!'],['보스 빨강은 패링, 보라는 회피만.','빨강 받아치고 무지개는 피해!'],['VIT 올리면 최대 HP.','STR 근접, DEX 활, INT 마법!'],['E 길게 = 빔, 짧게 = 투사체.','MP 잘 봐! 빔은 연속으로 깎여!'],['펫이 아이템을 주워준다.','우리한테 고마워해~'],['LCK 올리면 레어 드롭률.','운빨 게임! LCK 올려봐!'],['G 누르면 대장간.','강화하면 공격력 쭉쭉!'],['강화 +1에서 99%. 높을수록 떨어져.','실패해도 장비 안 부서져!'],['대장간 제작도 가능. 악의 30000개+.','영웅급 이상 나올 수 있어!'],['쉴드는 추가 HP다. 쉴드부터 깎인다.','쉴드 있으면 HP 안 닳아!'],['영웅급+ 장비에 접두/접미사.','좋은 거 나오면 강화!'],['강화는 장비 바꿔도 자동 이전.','더 좋은 거 나오면 바로 장착!']];
         const ti=~~(Math.random()*_tips.length);_petSayCD('idle_tip'+ti,'crow',_tips[ti][0],5,30,'cat',_tips[ti][1],5);
       }
     }
@@ -20123,7 +20138,7 @@ const PASSIVE_DEF=[
   {key:'pParry', name:'⚡ 반격',nameEn:'⚡ Retaliation',desc:'카운터뎀 +50%/lv, 우클릭 공속 +10%/lv, 무지개탄 피해감소 +10%/lv (최대50%)',descEn:'Counter DMG +50%/lv, RMB ATK speed +10%/lv, Rainbow shot DMG reduction +10%/lv (max 50%)',max:10,icon:'⚡',col:'#ffdd00'},
   {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +10%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +10%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
   {key:'pBow',   name:'🎯 정밀사격',nameEn:'🎯 Precision',desc:'투사체뎀 +15%, 공속 +10%, 사거리 +8%, ST비용 -4%/lv',descEn:'Projectile DMG +15%, ATK speed +10%, Range +8%, ST cost -4%/lv',max:10, icon:'🎯',col:'#44ddaa'},
-  {key:'pGuard', name:'🛡 수호신',nameEn:'🛡 Aegis',  desc:'보호막 흡수 +2%/lv (기본70→최대90%), 보호막 중 HP리젠 +0.1%/lv',descEn:'Shield absorb +2%/lv (base 70 to max 90%), HP regen during shield +0.1%/lv',max:10, icon:'🛡',col:'#55bbff'},
+  {key:'pGuard', name:'🛡 수호신',nameEn:'🛡 Aegis',  desc:'보호막 흡수 +2%/lv (기본50→최대90%)',descEn:'Shield absorb +2%/lv (base 50 to max 90%)',max:10, icon:'🛡',col:'#55bbff'},
   {key:'pRegen', name:'💚 회복력',nameEn:'💚 Recovery',  desc:'HP/ST리젠 +3%/lv, 물약쿨 -3%/lv, 패링회복 +30%/lv',descEn:'HP/ST regen +3%/lv, Potion cooldown -3%/lv, Parry recovery +30%/lv',max:10, icon:'💚',col:'#33cc66'},
   {key:'pCrit',  name:'💥 급소',nameEn:'💥 Vital Strike',    desc:'크리률 +2%, 크리뎀 +8%/lv',descEn:'Crit rate +2%, Crit DMG +8%/lv',max:10,icon:'💥',col:'#ff2266'},
   {key:'pDrop',  name:'🎁 약탈',nameEn:'🎁 Plunder',    desc:'아이템 드롭률 +8%/lv',descEn:'Item drop rate +8%/lv',    max:10, icon:'🎁',col:'#ffcc44'},
@@ -25580,7 +25595,7 @@ function update(){
           P._tgCnt=0;
           const _tgLv=P.skills.thunderStake||1;
           const _tgDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('thunderStake')*_fuseMul('thunderStake'));
-          const _tgMaxT=600+(_tgLv-1)*30;
+          const _tgMaxT=900+(_tgLv-1)*30;
           if(!G._thunderStakes)G._thunderStakes=[];
           G._thunderStakes.push({x:P.x,y:P.y,t:0,maxT:_tgMaxT,dmg:_tgDmg,lv:_tgLv,el:EL.L});
           SFX.magic(EL.L);
@@ -26556,9 +26571,9 @@ function update(){
     }
     // 회전참 중: iframes여도 범위 내 탄 소멸 (흡수율 적용 데미지)
     if(p.blackBean&&!_pHit&&_pDist<_bkHitR&&P.iframes>0&&!P._ioActive&&P.s==='whirlwind'){
-      const _bkAbs3=Math.min(.95,0.70+0+(_isFused('whirlDet')?(P.skills.detonate||1)*0.005:0));
+      const _bkAbs3=Math.min(.55,0.40+0+(_isFused('whirlDet')?(P.skills.detonate||1)*0.005:0));
       const _bkD3=Math.max(1,~~(p.dmg*0.3*(1-_bkAbs3)*(1-pParryRainbowDR())));
-      hurtP(_bkD3,{dtype:'magic',src:'무지개흡수'});
+      hurtP(_bkD3,{dtype:'magic',src:'무지개흡수',wwAbsorbed:true});
       P.parryBank=(P.parryBank||0)+(_isFused('whirlDet')?(p.dmg||10):~~(p.dmg*0.3*_bkAbs3));
       {const _bkA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bkA)*2;P.kb.y+=Math.sin(_bkA)*2}
       shake(3);doHitFlash('#ff00ff',0.1);addParts(p.x,p.y,'#ff00ff',4);_pHit=true;
@@ -26642,11 +26657,11 @@ function update(){
         addParts(p.x,p.y,'#22cc66',6);addParts(p.x,p.y,'#4488ff',6);_pHit=true;
       }
     }
-    // ══ 회전참 범위 내 탄 흡수: 보호막과 동일 흡수율 (pGuardAbsorb), iframes 무관 ══
+    // ══ 회전참 범위 내 탄 흡수: 기본30% + pGuard 1%/lv (캡50%) ══
     if(!p.blackBean&&!p.bwBean&&!p.gbBean&&!p.poisonZone&&!p.mine&&!p.elemBall&&!p.dimRift&&!_pHit&&_pDist<_normalR&&!P._ioActive&&P.s==='whirlwind'){
-      const _wwAbs=pGuardAbsorb();
+      const _wwAbs=Math.min(.50,.30+PASSIVES.pGuard*.01);
       const _wwD=Math.max(1,~~(p.dmg*(1-_wwAbs)));
-      hurtP(_wwD,{dtype:'magic',src:'회전흡수'});
+      hurtP(_wwD,{dtype:'magic',src:'회전흡수',wwAbsorbed:true});
       P.parryBank=(P.parryBank||0)+(_isFused('whirlDet')?(p.dmg||10):~~(p.dmg*_wwAbs));
       addParts(p.x,p.y,ELC[p.el]||'#888',1);_pHit=true;_recycleProj(p);continue;
     }
@@ -26668,10 +26683,10 @@ function update(){
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
         addTxt(P.x,P.y-28,_T('⚡💎 블루콩!'),'#00e5ff',35);doParry(p.dmg,p.x,p.y,false,p.el);projs[pw++]=p;_pHit=true;continue}
       else if(P.s==='whirlwind'&&_isFused('whirlDet')&&!p.friendly&&!p.bomb&&!p.iceZone&&!p.blizzard&&!p.web){
-        // 회전기폭 합체: 회전 중 일반탄 흡수 → parryBank 축적
-        const _wdAbs=Math.min(.95,0.70+(P.skills.detonate||1)*0.005);
+        // 회전기폭 합체: 회전 중 일반탄 흡수 → parryBank 축적 (기본40% + 기폭Lv 0.5%, 캡55%)
+        const _wdAbs=Math.min(.55,0.40+(P.skills.detonate||1)*0.005);
         const _wdD=Math.max(1,~~(p.dmg*(1-_wdAbs)));
-        hurtP(_wdD,{dtype:'magic'});
+        hurtP(_wdD,{dtype:'magic',wwAbsorbed:true});
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
         addParts(p.x,p.y,'#ff4400',2);_pHit=true;
       }
@@ -28082,7 +28097,7 @@ function update(){
       if(_tsD>1000){const _tsA=Math.atan2(_tsy-P.y,_tsx-P.x);_tsx=P.x+Math.cos(_tsA)*1000;_tsy=P.y+Math.sin(_tsA)*1000}
       const _tsLv=P.skills.thunderStake||1;
       const _tsDmg=~~(magicRef()*statInt()*pMagicMul()*_skMul('thunderStake')*_fuseMul('thunderStake'));
-      const _tsMaxT=600+(_tsLv-1)*30; // 10초+Lv당0.5초
+      const _tsMaxT=900+(_tsLv-1)*30; // 15초+Lv당0.5초
       P.mp=Math.max(0,P.mp-50);
       P._tsStk=Math.max(0,(P._tsStk||1)-1);
       if(P._tsStk<((P.skills.thunderStake>=10)?6:5))P._tsRech=720;
@@ -34428,7 +34443,6 @@ function hurtP(dmg,opts){
       if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))));P.iframes=60;SFX.groggy()}}
       addTxt(P.x,P.y-32,_T('⚠패링 실패!'),'#ff6644',30)}
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+(_psRawDmg-dmg)}
-    if(PASSIVES.pGuard>0){P.hp=Math.min(P.mhp,P.hp+P.mhp*pGuardRegen())}
     {var _psAng=opts&&opts.ang!==undefined?opts.ang+Math.PI:Math.random()*Math.PI*2;P.kb.x+=Math.cos(_psAng)*(_psParryFailed?5:3);P.kb.y+=Math.sin(_psAng)*(_psParryFailed?5:3)}
     shake(_psParryFailed?8:4);playSample('player_hit'+(1+~~(Math.random()*4)),_psParryFailed?.6:.4,_r(1,.15));doHitFlash(_psParryFailed?'#ff4422':'#ff88bb',_psParryFailed?.25:.15);
     addTxt(P.x,P.y-18,_T('🕊️ 평화보호 ')+~~(_psBlkRate*100)+'%',_psParryFailed?'#ff6644':'#ff88bb',22);
@@ -34454,15 +34468,14 @@ function hurtP(dmg,opts){
       if(P.poise<=0){P.poise=0;if(_isFocusState()){P.poise=1;addTxt(P.x,P.y-20,_T('집중!'),'#44ddff',20)}else{P.s='pStun';P.st2=~~(480*(1-Math.min(.5,_eqAffix('ccRes')+_eqAffix('stunRes'))));P.iframes=60;SFX.groggy()}}
       addTxt(P.x,P.y-32,_T('⚠패링 실패!'),'#ff6644',30)}
     if(P.skills.detonate){P.parryBank=(P.parryBank||0)+(_rawDmg-dmg);addTxt(P.x,P.y-25,_T('흡수!'),'#ff6644',35)}
-    if(PASSIVES.pGuard>0){P.hp=Math.min(P.mhp,P.hp+P.mhp*pGuardRegen())}
     // 넉백 + 화면흔들림 + 피격음
     {const _bAng=opts&&opts.ang!==undefined?opts.ang+Math.PI:Math.random()*Math.PI*2;P.kb.x+=Math.cos(_bAng)*(_parryFailed?5:3);P.kb.y+=Math.sin(_bAng)*(_parryFailed?5:3)}
     shake(_parryFailed?8:4);playSample('player_hit'+(1+~~(Math.random()*4)),_parryFailed?.6:.4,_r(1,.15));doHitFlash(_parryFailed?'#ff4422':'#4488ff',_parryFailed?.25:.15);
     addTxt(P.x,P.y-18,_T('🛡 보호막 ')+~~(_blkRate*100)+'%',_parryFailed?'#ff6644':'#4488ff',22);
   } else if(!(opts&&opts.dot))playSample('player_hit'+(1+~~(Math.random()*4)),.6,_r(1,.15));
-  // 회전기폭 합체: 회전 중 보호막 자동 적용 (데미지 감소 + 흡수)
-  if(P.s==='whirlwind'&&P.skills.detonate&&_isFused('whirlDet')){
-    const _wwBlk=_isDotEarly?0:Math.min(.90,.50+PASSIVES.pGuard*.02); // 회전보호막: 기본50%+패시브2%/lv(최대90%), DOT 미적용
+  // 회전기폭 합체: 회전 중 보호막 자동 적용 (근접만 — 투사체는 충돌 시 이미 흡수됨)
+  if(P.s==='whirlwind'&&P.skills.detonate&&_isFused('whirlDet')&&!(opts&&opts.wwAbsorbed)){
+    const _wwBlk=_isDotEarly?0:Math.min(.55,.30+PASSIVES.pGuard*.02); // 회전보호막: 기본30%+패시브2%/lv(캡55%), DOT 미적용
     const _rawDmg2=dmg;
     dmg=Math.max(1,~~(dmg*(1-_wwBlk)));
     P.parryBank=(P.parryBank||0)+(_rawDmg2-dmg);
@@ -40486,7 +40499,7 @@ function renderStatSummary(){
     `<div style="${_sLn}">${_L('속성방어','Elem DEF')}: <span style="color:#bb88ff">${_sTotalEDef}</span> → <span style="color:#44ff88">${(_sElemDR*100).toFixed(1)}%${_L('감소','red')}</span></div>`+
     `<div style="font-size:1rem;color:#887766;line-height:1.6;margin-left:12px">${_L('왕관','crown')}:${hm().eDef||0} | ${_L('목걸이','necklace')}:${nc().eDef||0} | ${_L('반지1','ring1')}:${rg1().eDef||0} | ${_L('반지2','ring2')}:${rg2().eDef||0}</div>`+
     `<div style="${_sLn}">${_L('반사','Reflect')}: <span style="color:${_afc('reflect','#aaaaff')}">${_afp('reflect')}</span> | ${_L('가시','Thorns')}: <span style="color:${_afc('thorns','#ff8844')}">${_af('thorns').toFixed(0)}</span> | ${_L('배리어','Barrier')}: <span style="color:${_afc('barrier','#4488ff')}">${_af('barrier').toFixed(0)}</span></div>`+
-    `<div style="${_sLn}">${_L('보호막 흡수','Shield Absorb')}: <span style="color:#55bbff">${~~(pGuardAbsorb()*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}70% +pGuard ${PASSIVES.pGuard||0}lv)</span></div>`+
+    `<div style="${_sLn}">${_L('보호막 흡수','Shield Absorb')}: <span style="color:#55bbff">${~~(pGuardAbsorb()*100)}%</span> <span style="color:#887766;font-size:1.1rem">(${_L('기본','base')}50% +pGuard ${PASSIVES.pGuard||0}lv)</span></div>`+
     // ── 속성 저항 ──
     `<div style="${_sHd}">🌀 ${_L('속성 저항','Elem Resist')}</div>`+
     `<div style="${_sLn}">🔴${_L('화염','Fire')}: <span style="color:${_sFireR?'#ff5522':'#555544'}">${~~(_sFireR*100)}%</span> | 🔵${_L('빙결','Ice')}: <span style="color:${_sIceR?'#88ccff':'#555544'}">${~~(_sIceR*100)}%</span> | 🟡${_L('암전','Lightning')}: <span style="color:${_sLitR?'#ffee44':'#555544'}">${~~(_sLitR*100)}%</span></div>`+
