@@ -6543,7 +6543,7 @@ const _EN={
 '패링으로 돌려주고, Q 보호막도 써!':'Parry to reflect, and use Q shield too!',
 '패턴이 빨라졌어!':'Patterns got faster!',
 '한 대만 맞아도 죽어! 패링이든 회피든!!':'One hit and you die! Parry or dodge!!',
-'한 방이면 죽어! 도망쳐!!':'One shot kills! Run!!',
+'한 방이면 죽어! 패링으로 HP 채워!!':'One hit kills! Parry to recover HP!!',
 '화염엔 빙결! 암전엔 암흑!':'Fire → frost! Void → shadow!',
 // --- Death / Level-up / Intro screen ---
 '빛이 꺼졌다':'The Light Fades','누군가는 너를 기다리고 있다':'Someone waits for you',
@@ -6613,7 +6613,7 @@ const _EN={
 '💥 대왕치기 그로기!':'💥 Colossal Groggy!','💫 미니스턴!':'💫 Mini Stun!','⚡ 뇌전창!':'⚡ Thunder Spear!',
 // --- Pet dialogue: combat status ---
 '…절반이다. 정신차려.':'...Half health. Stay sharp.',
-'…죽기 직전이다. 한 발만 더.':'...Almost dead. One more hit.',
+'…죽기 직전이다. 패링해. 피를 채워.':'...Almost dead. Parry. Recover HP.',
 '…다음 한 방이 마지막이야.':'...The next hit is the last.',
 '기절! ':'Stunned! ','마력이 빈다. 평타 섞어.':'MP running low. Mix in normals.',
 '그랩이다. 거리를 둬.':'Grab attack. Keep your distance.',
@@ -7504,7 +7504,7 @@ function _checkPetDialogue(){
   // HP 30%
   if(P.hp>0&&P.hp<P.mhp*.3&&P.hp>=P.mhp*.1)_petSayUrgent('crisis_hp30','crow','피가 새고 있다. Shift. 빠져.',4,20,'cat','작살 던져! 끌려가면 무적이야!',4);
   // HP 10% (v4 신규)
-  if(P.hp>0&&P.hp<P.mhp*.1)_petSayUrgent('hp_critical','crow','…죽기 직전이다. 한 발만 더.',3,30,'cat','한 방이면 죽어! 도망쳐!!',3);
+  if(P.hp>0&&P.hp<P.mhp*.1)_petSayUrgent('hp_critical','crow','…죽기 직전이다. 패링해. 피를 채워.',3,30,'cat','한 방이면 죽어! 패링으로 HP 채워!!',3);
   // HP 한방컷 (v4 — 적 평균ATK 캐싱)
   if(G.frame%60===0){let _sa=0,_sc=0;for(let i=0;i<ens.length;i++){if(ens[i].alive&&dst2(P.x,P.y,ens[i].x,ens[i].y)<250000){_sa+=(ens[i].atk||0);_sc++}}_petEnemyAvgAtk=_sc>0?_sa/_sc:0}
   if(P.hp>0&&_petEnemyAvgAtk>0&&P.hp<_petEnemyAvgAtk*1.2)_petSayUrgent('hp_oneshot','crow','…다음 한 방이 마지막이야.',3,20,'cat','한 대만 맞아도 죽어! 패링이든 회피든!!',3);
