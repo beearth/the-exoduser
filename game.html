@@ -4466,7 +4466,7 @@ return c;}`;
 //  WebGL2 BACKEND (Immediate Mode)
 // ═══════════════════════════════════════
 function _initWebGL(){
-  try{GL=C.getContext('webgl2',{alpha:false,premultipliedAlpha:false,powerPreference:'high-performance',antialias:false,preserveDrawingBuffer:true})}catch(e){}
+  try{GL=C.getContext('webgl2',{alpha:false,premultipliedAlpha:false,powerPreference:'high-performance',antialias:false,preserveDrawingBuffer:false})}catch(e){}
   if(!GL){if(!IS_ELECTRON)console.log('[GPU] WebGL2 not available');return false}
   _useGL=true;
 
