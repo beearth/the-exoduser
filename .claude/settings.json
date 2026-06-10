@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "git pull --rebase --autostash || true",
+            "statusMessage": "Syncing from remote (git pull --rebase)..."
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "shell": "bash",
+            "command": "if [ -n \"$(git status --porcelain)\" ]; then git add -A || true; git commit -m \"auto: session sync\" || true; git push || true; fi",
+            "statusMessage": "Syncing changes to remote..."
+          }
+        ]
+      }
+    ]
+  }
+}
