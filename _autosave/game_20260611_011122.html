@@ -38072,7 +38072,7 @@ let _matsSyncTimer=0,_matsSyncLast=0,_matsSyncDirty=false,_matsPrev=0;
 const _isLocalServer=location.hostname==='localhost'||location.hostname==='127.0.0.1'||location.protocol==='file:';
 function _saveSharedMatsToServer(n){if(!_isLocalServer)return;try{fetch('/api/mats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mats:n})}).catch(()=>{})}catch(e){}}
 // 디바운스 동기화: mats 변경 시 호출, 3초 이내 중복 방지
-function _matsDirty(){_matsSyncDirty=true;const now=Date.now();if(now-_matsSyncLast>=3000){_matsSyncLast=now;_matsSyncDirty=false;_saveSharedMats(G.mats||0)}else if(!_matsSyncTimer){_matsSyncTimer=setTimeout(()=>{_matsSyncTimer=0;if(_matsSyncDirty){_matsSyncLast=Date.now();_matsSyncDirty=false;_saveSharedMats(G.mats||0)}},3000-(now-_matsSyncLast))}}
+function _matsDirty(){if(!isFinite(G.mats)){console.warn('[MATS] NaN detected!',new Error().stack);G.mats=0;}_matsSyncDirty=true;const now=Date.now();if(now-_matsSyncLast>=3000){_matsSyncLast=now;_matsSyncDirty=false;_saveSharedMats(G.mats||0)}else if(!_matsSyncTimer){_matsSyncTimer=setTimeout(()=>{_matsSyncTimer=0;if(_matsSyncDirty){_matsSyncLast=Date.now();_matsSyncDirty=false;_saveSharedMats(G.mats||0)}},3000-(now-_matsSyncLast))}}
 async function _loadSharedMatsFromServer(){if(!_isLocalServer)return _loadSharedMats();try{const r=await fetch('/api/mats');if(r.ok){const j=await r.json();if(j.ok&&isFinite(j.mats)&&j.mats>=0){const n=Math.min(j.mats,Number.MAX_SAFE_INTEGER);localStorage.setItem(_SHARED_MATS_KEY,String(n));return n}}return _loadSharedMats()}catch(e){return _loadSharedMats()}}
 function _getStore(){
   // 계정 공유 창고: localStorage에서 로드, STORAGE[0]은 참조만 유지
@@ -39259,7 +39259,7 @@ function renderInv(){
   $('cpVal').textContent=cp.total;
   $('cpBreak').textContent=`⚔${cp.atk} 🛡${cp.def} ✨${cp.extra}`;
   // ── 리소스 바 ──
-{const _rb=$('invResBar');if(_rb)_rb.innerHTML=_L('결정','Crystals')+' '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | '+_L('가루: ','Dust: ')+'<span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | '+_L('악의: ','Malice: ')+'<span style="color:#cc66ff">'+G.mats+'</span>'}
+{if(!isFinite(G.mats))G.mats=0;const _rb=$('invResBar');if(_rb)_rb.innerHTML=_L('결정','Crystals')+' '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | '+_L('가루: ','Dust: ')+'<span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | '+_L('악의: ','Malice: ')+'<span style="color:#cc66ff">'+G.mats+'</span>'}
   // ── 창고 컬럼 (항상 렌더) ──
   try{renderInvStorage()}catch(e){console.error('창고 렌더 오류:',e)}
   // Equipped slots (paper doll)
@@ -48952,7 +48952,7 @@ async function _startDemoTest(){
         if(_d5.activeLMBSk)P.activeLMBSk=_d5.activeLMBSk;
         if(_d5.upgrades){for(const k in _d5.upgrades)UPGRADES[k]=_d5.upgrades[k]||0}
         if(_d5.game?.stage!==undefined)G.stage=_d5.game.stage;
-        if(_d5.game?.mats!==undefined)G.mats=_d5.game.mats;
+        if(_d5.game?.mats!==undefined)G.mats=Math.max(0,Number(_d5.game.mats)||0);
         if(_d5.hellCleared)G.hellCleared=_d5.hellCleared;
         // AP 최솟값 보정 (구버전 세이브 대응)
         if(P.ap<100)P.ap=100;

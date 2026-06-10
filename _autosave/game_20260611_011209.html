@@ -3778,8 +3778,7 @@ function _bakeFog(w,h,hell){
   fc.fillStyle=fg;fc.fillRect(0,0,w,h);_fogW=w;_fogH=h;_fogHell=hell;
 }
 function rz(){
-  _dpr=window.devicePixelRatio||1;
-  if(IS_MOBILE&&_dpr>_MOBILE_DPR_CAP)_dpr=_MOBILE_DPR_CAP; // 모바일 DPR 캡
+  _dpr=Math.min(window.devicePixelRatio||1,1.5); // DPR 캡 1.5 (Retina 4x fillrate 방지)
   const _rsf=(OPT.resScale||100)/100;
   // 캔버스 = 물리 픽셀 (DPR 적용), CSS = CSS픽셀 → 물리 1:1 매핑
   let rw=(~~(innerWidth*_dpr*_rsf))&~1, rh=(~~(innerHeight*_dpr*_rsf))&~1;
@@ -12745,16 +12744,16 @@ const _CH_DECO={
     {id:'m_tomb',file:'tombstone.png',sz:56},{id:'m_wpile',file:'weapon_pile.png',sz:64},
     {id:'m_meat',file:'meat_stake.png',sz:64},
     {id:'m_acid',file:'acid_pool.png',sz:56},
-    {id:'m_ctree1',file:'cursed_tree_01.png',sz:400,large:1,dir:'collision'},
-    {id:'m_ctree2',file:'cursed_tree_02.png',sz:400,large:1,dir:'collision'},
-    {id:'m_ctree3',file:'cursed_tree_03.png',sz:400,large:1,dir:'collision'},
-    {id:'m_ctree4',file:'cursed_tree_04.png',sz:400,large:1,dir:'collision'},
-    {id:'m_ctree5',file:'cursed_tree_05.png',sz:400,large:1,dir:'collision'},
-    {id:'m_ctree6',file:'cursed_tree_06.png',sz:400,large:1,dir:'collision'},
-    {id:'m_ctree7',file:'cursed_tree_07.png',sz:400,large:1,dir:'collision'},
-    {id:'m_ctree8',file:'cursed_tree_08.png',sz:400,large:1,dir:'collision'},
-    {id:'m_ctree9',file:'cursed_tree_09.png',sz:400,large:1,dir:'collision'},
-    {id:'m_ctree10',file:'cursed_tree_10.png',sz:400,large:1,dir:'collision'},
+    {id:'m_ctree1',file:'cursed_tree_01.png',sz:400,large:1,dir:'collision',colSz:60},
+    {id:'m_ctree2',file:'cursed_tree_02.png',sz:400,large:1,dir:'collision',colSz:60},
+    {id:'m_ctree3',file:'cursed_tree_03.png',sz:400,large:1,dir:'collision',colSz:60},
+    {id:'m_ctree4',file:'cursed_tree_04.png',sz:400,large:1,dir:'collision',colSz:60},
+    {id:'m_ctree5',file:'cursed_tree_05.png',sz:400,large:1,dir:'collision',colSz:60},
+    {id:'m_ctree6',file:'cursed_tree_06.png',sz:400,large:1,dir:'collision',colSz:60},
+    {id:'m_ctree7',file:'cursed_tree_07.png',sz:400,large:1,dir:'collision',colSz:60},
+    {id:'m_ctree8',file:'cursed_tree_08.png',sz:400,large:1,dir:'collision',colSz:60},
+    {id:'m_ctree9',file:'cursed_tree_09.png',sz:400,large:1,dir:'collision',colSz:60},
+    {id:'m_ctree10',file:'cursed_tree_10.png',sz:400,large:1,dir:'collision',colSz:60},
     {id:'m_ctree11',file:'cursed_tree_11.png',sz:400,large:1,dir:'collision'},
     {id:'m_ctree12',file:'cursed_tree_12.png',sz:400,large:1,dir:'collision'},
     {id:'m_atree1',file:'anim_tree_01.png',sz:400,large:1,dir:'collision'},
@@ -24180,7 +24179,7 @@ function update(){
         const _stR=450+(_stLv-1)*~~(225/9); // 1렙450, 10렙675
         // 사슬기동 티어 3단계 매핑: 1티어(탭)=×30, 2티어(0.1초)=×60, 3티어(0.2초)=×100
         const _stTier=Math.max(1,Math.min(3,_harpTier||1));
-        const _stDistMul=_stTier===3?100:_stTier===2?60:30;
+        const _stDistMul=_stTier===3?50:_stTier===2?30:15; // 착지 직격 50% 너프
         const _stDmg=~~(magicRef()*_skMul('chainAssault')*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 통일공식: _skMul
         const _stEl=EL.F;
         G._noHitStopT=40;
@@ -34262,8 +34261,8 @@ function _detonateAssaultFlames(){
     const fz=G._fireZones[_di];if(fz.type!=='assaultFlame')continue;
     _detAny=true;
     const _remT=fz.maxT-fz.t;const _ticks=~~(_remT/20);
-    const _totalDmg=fz.dmg*Math.max(1,_ticks); // 3중폭 45초 누적 폭발 — 의도된 설계
-    const _detR=fz.r*1.8;
+    const _totalDmg=fz.dmg*Math.max(1,_ticks)*2; // 바닥불꽃 폭발 2배 버프
+    const _detR=fz.r*3.0; // 폭발 데미지 범위 확대 (1.8→3.0)
     _shBufI++;
     const _detNe=shQuery(fz.x,fz.y,_detR+20);
     for(let _si=0;_si<_detNe.length;_si++){const e=_detNe[_si];if(!e.alive)continue;
@@ -34276,22 +34275,20 @@ function _detonateAssaultFlames(){
     _shBufI--;
     const _afS2=fz._afStk||0;
     shake(30+_afS2*15);G.chromaT=10+_afS2*5;G._flashT=8+_afS2*4;G._flashCol='#ff4400';
-    // ── 기동불꽃 일괄폭발 VFX: Power Fire 콤보 (3레이어 동시) ──
+    // ── 기동불꽃 일괄폭발 VFX: Power Fire 콤보 (vfx_test.html 비율 동일) ──
     {const _dPx=fz.x,_dPy=fz.y,_dSc=Math.min(4.0,Math.max(1.5,Math.sqrt(fz.r/50)*(1+_afS2*.4)));
     if(!window._tvfx2)window._tvfx2=[];
     if(window._tvfx2.length<60){
-    // [1] ImpactFire — 코어 폭발
+    // Power Fire: scale 1.0 / 1.2 / 0.5, 전부 delay:0 동시
     const _fIS=_tvfx2Imgs['Fire_ImpactFire_Sheet.png'];
     if(_fIS&&_fIS.complete){const fw=~~(_fIS.naturalWidth/4),fh=~~(_fIS.naturalHeight/4);
-      window._tvfx2.push({img:_fIS,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:1.8*_dSc,delay:0,spd:10,frame:0,total:16,t:0,timer:0,alphaMax:1.0,slowFade:true})}
-    // [2] FBF — 불꽃 연기 (살짝 지연, 더 크게)
+      window._tvfx2.push({img:_fIS,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:2.0*_dSc,delay:0,spd:8,frame:0,total:16,t:0,timer:0,alphaMax:1.0,slowFade:true})}
     const _fFB=_tvfx2Imgs['Fire_FBF_4x4.png'];
     if(_fFB&&_fFB.complete){const fw=~~(_fFB.naturalWidth/4),fh=~~(_fFB.naturalHeight/4);
-      window._tvfx2.push({img:_fFB,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:2.2*_dSc,delay:2,spd:12,frame:0,total:16,t:0,timer:0,alphaMax:0.8,slowFade:true})}
-    // [3] BasicImpact — 쇼크웨이브 (즉시, 작게)
+      window._tvfx2.push({img:_fFB,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:2.4*_dSc,delay:0,spd:10,frame:0,total:16,t:0,timer:0,alphaMax:1.0,slowFade:true})}
     const _fBI=_tvfx2Imgs['Fire_BasicImpact.png'];
     if(_fBI&&_fBI.complete){const fw=~~(_fBI.naturalWidth/3),fh=~~(_fBI.naturalHeight/3);
-      window._tvfx2.push({img:_fBI,x:_dPx,y:_dPy,cols:3,rows:3,fw,fh,sc:0.9*_dSc,delay:0,spd:8,frame:0,total:9,t:0,timer:0,alphaMax:0.9,slowFade:true})}
+      window._tvfx2.push({img:_fBI,x:_dPx,y:_dPy,cols:3,rows:3,fw,fh,sc:1.0*_dSc,delay:0,spd:6,frame:0,total:9,t:0,timer:0,alphaMax:1.0,slowFade:true})}
     }}
     addTxt(fz.x,fz.y-30,_T('💥 불꽃폭발! ')+_totalDmg,'#ff2200',60+_afS2*10);
     const _epC=16+_afS2*8;
@@ -38074,7 +38071,7 @@ let _matsSyncTimer=0,_matsSyncLast=0,_matsSyncDirty=false,_matsPrev=0;
 const _isLocalServer=location.hostname==='localhost'||location.hostname==='127.0.0.1'||location.protocol==='file:';
 function _saveSharedMatsToServer(n){if(!_isLocalServer)return;try{fetch('/api/mats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mats:n})}).catch(()=>{})}catch(e){}}
 // 디바운스 동기화: mats 변경 시 호출, 3초 이내 중복 방지
-function _matsDirty(){_matsSyncDirty=true;const now=Date.now();if(now-_matsSyncLast>=3000){_matsSyncLast=now;_matsSyncDirty=false;_saveSharedMats(G.mats||0)}else if(!_matsSyncTimer){_matsSyncTimer=setTimeout(()=>{_matsSyncTimer=0;if(_matsSyncDirty){_matsSyncLast=Date.now();_matsSyncDirty=false;_saveSharedMats(G.mats||0)}},3000-(now-_matsSyncLast))}}
+function _matsDirty(){if(!isFinite(G.mats)){console.warn('[MATS] NaN detected!',new Error().stack);G.mats=0;}_matsSyncDirty=true;const now=Date.now();if(now-_matsSyncLast>=3000){_matsSyncLast=now;_matsSyncDirty=false;_saveSharedMats(G.mats||0)}else if(!_matsSyncTimer){_matsSyncTimer=setTimeout(()=>{_matsSyncTimer=0;if(_matsSyncDirty){_matsSyncLast=Date.now();_matsSyncDirty=false;_saveSharedMats(G.mats||0)}},3000-(now-_matsSyncLast))}}
 async function _loadSharedMatsFromServer(){if(!_isLocalServer)return _loadSharedMats();try{const r=await fetch('/api/mats');if(r.ok){const j=await r.json();if(j.ok&&isFinite(j.mats)&&j.mats>=0){const n=Math.min(j.mats,Number.MAX_SAFE_INTEGER);localStorage.setItem(_SHARED_MATS_KEY,String(n));return n}}return _loadSharedMats()}catch(e){return _loadSharedMats()}}
 function _getStore(){
   // 계정 공유 창고: localStorage에서 로드, STORAGE[0]은 참조만 유지
@@ -39261,7 +39258,7 @@ function renderInv(){
   $('cpVal').textContent=cp.total;
   $('cpBreak').textContent=`⚔${cp.atk} 🛡${cp.def} ✨${cp.extra}`;
   // ── 리소스 바 ──
-{const _rb=$('invResBar');if(_rb)_rb.innerHTML=_L('결정','Crystals')+' '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | '+_L('가루: ','Dust: ')+'<span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | '+_L('악의: ','Malice: ')+'<span style="color:#cc66ff">'+G.mats+'</span>'}
+{if(!isFinite(G.mats))G.mats=0;const _rb=$('invResBar');if(_rb)_rb.innerHTML=_L('결정','Crystals')+' '+CRYSTAL_BAG.length+'/'+CRYSTAL_BAG_MAX+' | '+_L('가루: ','Dust: ')+'<span style="color:#cc88ff">'+CRYSTAL_DUST+'</span> | '+_L('악의: ','Malice: ')+'<span style="color:#cc66ff">'+G.mats+'</span>'}
   // ── 창고 컬럼 (항상 렌더) ──
   try{renderInvStorage()}catch(e){console.error('창고 렌더 오류:',e)}
   // Equipped slots (paper doll)
@@ -48954,7 +48951,7 @@ async function _startDemoTest(){
         if(_d5.activeLMBSk)P.activeLMBSk=_d5.activeLMBSk;
         if(_d5.upgrades){for(const k in _d5.upgrades)UPGRADES[k]=_d5.upgrades[k]||0}
         if(_d5.game?.stage!==undefined)G.stage=_d5.game.stage;
-        if(_d5.game?.mats!==undefined)G.mats=_d5.game.mats;
+        if(_d5.game?.mats!==undefined)G.mats=Math.max(0,Number(_d5.game.mats)||0);
         if(_d5.hellCleared)G.hellCleared=_d5.hellCleared;
         // AP 최솟값 보정 (구버전 세이브 대응)
         if(P.ap<100)P.ap=100;
@@ -51096,7 +51093,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const _b3cvs=document.getElementById('boss3dCvs');
 const _b3r=new THREE.WebGLRenderer({canvas:_b3cvs,alpha:true,antialias:false});
-_b3r.setPixelRatio(Math.min(window.devicePixelRatio,2));
+_b3r.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));
 _b3r.setClearColor(0x000000,0);
 const _b3clipFloor=new THREE.Plane(new THREE.Vector3(0,1,0),0);
 _b3r.clippingPlanes=[];
@@ -51237,7 +51234,7 @@ function _b3animate(){
   const cW=c?c.width:innerWidth,cH=c?c.height:innerHeight;
   const physX=cW/2+(bE.x-G.cam.x);
   const physY=cH/2+(bE.y-G.cam.y);
-  const scale=(typeof _dpr!=='undefined'?_dpr:devicePixelRatio)*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
+  const scale=(typeof _dpr!=='undefined'?_dpr:Math.min(devicePixelRatio||1,1.5))*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
   const cssX=physX/scale,cssY=physY/scale;
   const W=innerWidth,H=innerHeight;
 
@@ -51295,7 +51292,7 @@ if(!CVS)return;
 
 const SZ=140;
 const R=new THREE.WebGLRenderer({canvas:CVS,alpha:true,antialias:true,powerPreference:'high-performance'});
-R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio,2));
+R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
 CVS.style.width=CVS.style.height=SZ+'px';
 R.setClearColor(0,0);R.outputColorSpace=THREE.SRGBColorSpace;
 R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
@@ -51375,7 +51372,7 @@ window._chest3d={
 function updatePos(){
   const c=document.getElementById('c');
   if(!c||typeof G==='undefined'||!G.on)return;
-  const sc=(typeof _dpr!=='undefined'?_dpr:devicePixelRatio)*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
+  const sc=(typeof _dpr!=='undefined'?_dpr:Math.min(devicePixelRatio||1,1.5))*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
   const cssX=(c.width/2+(_wx-G.cam.x))/sc;
   const cssY=(c.height/2+(_wy-G.cam.y))/sc;
   if(cssX<-200||cssX>innerWidth+200||cssY<-200||cssY>innerHeight+200){CVS.style.opacity='0';return;}

@@ -29624,3 +29624,16 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - sfx/pet/crow_hp_critical.mp3
 - sfx/pet/crow_warn_hp50.mp3
 
+
+## 2026-06-11 01:30 (auto)
+- _autosave/game_20260611_011122.html
+- _autosave/game_20260611_011131.html
+- _autosave/game_20260611_011141.html
+- _autosave/game_20260611_011149.html
+- _autosave/game_20260611_011157.html
+- _autosave/game_20260611_011209.html
+- _autosave/game_20260611_011245.html
+- _autosave/game_20260611_012142.html
+- game.html.bak_20260611_dprcap
+- game.html.bak_20260611_pdb
+
