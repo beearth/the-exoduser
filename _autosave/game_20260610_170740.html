@@ -7117,7 +7117,7 @@ function _addDetVfx(x,y,r,dur,chgBars){
     b.sparks.push({a:a,len:.4+Math.random()*.6,w:2+Math.random()*3,spd:.6+Math.random()*.5})}
 }
 const _BOOM_MAX=12;const _booms=[];for(let i=0;i<_BOOM_MAX;i++)_booms.push({x:0,y:0,r:0,t:0,mt:0,col:'fire',active:false,arms:null});
-function _projHitFx(px,py,el,isRed){_addBoom(px,py,isRed?80:24,isRed?72:14,isRed?'fire_medium':el===EL.I?'ice':el===EL.L?'lightning':el===EL.D?'dark':'fire');
+function _projHitFx(px,py,el,isRed){_addBoom(px,py,isRed?80:24,isRed?72:14,isRed?'redbean':el===EL.I?'ice':el===EL.L?'lightning':el===EL.D?'dark':'fire');
   if(isRed){addParts(px,py,'#ff2200',20);shake(8);SFX.detonate();doHitFlash('#ff2200',0.2);
   }else{addParts(px,py,ELC[el]||'#ff8844',8);shake(4);doHitFlash(ELC[el]||'#ff8844',0.12)}}
 // ═══ Dark 02 임팩트 (패링 전용, boom 연속보간) ═══
@@ -24180,7 +24180,7 @@ function update(){
         const _stR=450+(_stLv-1)*~~(225/9); // 1렙450, 10렙675
         // 사슬기동 티어 3단계 매핑: 1티어(탭)=×30, 2티어(0.1초)=×60, 3티어(0.2초)=×100
         const _stTier=Math.max(1,Math.min(3,_harpTier||1));
-        const _stDistMul=_stTier===3?100:_stTier===2?60:30;
+        const _stDistMul=_stTier===3?50:_stTier===2?30:15; // 착지 직격 50% 너프
         const _stDmg=~~(magicRef()*_skMul('chainAssault')*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 통일공식: _skMul
         const _stEl=EL.F;
         G._noHitStopT=40;
@@ -24955,9 +24955,9 @@ function update(){
       // 빔 포인트 풀 (렌더용) — 재귀 번개용 확장
       if(!P._sbPts){P._sbPts=[];for(let i=0;i<6;i++)P._sbPts.push(new Float32Array(128))}
       if(!P._sbPtsCnt)P._sbPtsCnt=new Int32Array(6);
-      // MP 소비: 초당 7% 고정소모 + 소비량 보너스
+      // MP 소비: ST와 동급 소모 + 소비량 보너스
       const _sbLv=P.skills.detonate||1;
-      const _sbCostSec=~~(30*(1+(_sbLv-1)*0.05)); // MP/초 (DPS비례: +5%/Lv, Lv1=30 Lv10=43)
+      const _sbCostSec=~~(30+(_sbLv-1)*5); // MP/초 (Lv당+5, Lv1=30 Lv10=75 — ST소모와 동급)
       const _sbMpCost=_sbCostSec/60*sp;
       const _sbDrainBonus=1+_sbCostSec*0.001;
       if(P.mp>_sbMpCost){
@@ -25173,6 +25173,7 @@ function update(){
                 {p.dmg=~~(pParryProjDmg(p.dmg,false)*(2.5+(_sdLv-1))*_wingMul);}p._aoeDmg=p.dmg*2;
                 p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;p.magic=true;p.parryBlueBean=true;
                 addTxt(p.x,p.y-10,_T('🛡️💎 유도반사!'),'#00e5ff',60);
+                _addBoom(p.x,p.y,80,72,'fire_medium'); // 빨콩 패링 임팩트
                 doParry(0,p.x,p.y,false,'red'); // 빨간콩 반사: 관통뎀 없음
               }else{
               // 칼등 처내기: 일반 투사체 반사 → 블루콩 변환 + 패링 사운드
@@ -25193,6 +25194,7 @@ function update(){
               {p.dmg=~~(pParryProjDmg(p.dmg,false)*1.8);}p._aoeDmg=p.dmg*1.5;
               p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;p.magic=true;p.parryBlueBean=true;
               addTxt(p.x,p.y-10,_T('💎 블루콩!'),'#00e5ff',45);
+              _addBoom(p.x,p.y,80,72,'fire_medium'); // 빨콩 패링 임팩트
               doParry(p.dmg,p.x,p.y,false,'red');
             }else{
               // 기본 패링 반사: 스킬 없이도 투사체 반사
@@ -26360,9 +26362,9 @@ function update(){
       else if(_tr<.50){p.gbBean=true;p.sz=Math.max(p.sz||1,1.6)}
     }
     // 화톳불 배리어: 적 투사체 차단
-    if(_bfActive&&!p.friendly&&dst2(_bf.x,_bf.y,p.x,p.y)<_bfR2){p.life=-1;_recycleProj(p);continue}
+    if(_bfActive&&!p.friendly&&dst2(_bf.x,_bf.y,p.x,p.y)<_bfR2){if(p.redBean){_addBoom(p.x,p.y,80,72,'fire_medium');addParts(p.x,p.y,'#ff2200',8)}p.life=-1;_recycleProj(p);continue}
     // 신의영역: 적 투사체 돔 경계에서 소멸
-    if(!p.friendly&&!p.mine&&!p.trap&&G._fireZones){for(let _mdi=0;_mdi<G._fireZones.length;_mdi++){const _md=G._fireZones[_mdi];if(_md.type!=='maliceDome')continue;if(dst2(_md.x,_md.y,p.x,p.y)<_md.r*_md.r){addParts(p.x,p.y,'#ffd700',3);_recycleProj(p);_dead=true;break}}if(_dead)continue}
+    if(!p.friendly&&!p.mine&&!p.trap&&G._fireZones){for(let _mdi=0;_mdi<G._fireZones.length;_mdi++){const _md=G._fireZones[_mdi];if(_md.type!=='maliceDome')continue;if(dst2(_md.x,_md.y,p.x,p.y)<_md.r*_md.r){if(p.redBean){_addBoom(p.x,p.y,80,72,'fire_medium');addParts(p.x,p.y,'#ff2200',8)}else{addParts(p.x,p.y,'#ffd700',3)}_recycleProj(p);_dead=true;break}}if(_dead)continue}
     // 지뢰: 정지 상태, 플레이어 접근 시 폭발
     if(p.mine){
       p.vx=0;p.vy=0;
@@ -26548,6 +26550,7 @@ function update(){
       else{p.vx*=-4;p.vy*=-4}
       {p.friendly=true;p.life=240;p.ml=240;p.dmg=~~(pParryProjDmg(p.dmg,false)*1.5);p._aoeR=160;p._aoeDmg=p.dmg*2;}
       p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;p.magic=true;p.parryBlueBean=true;
+      _addBoom(p.x,p.y,80,72,'fire_medium'); // 빨콩 패링 Fire Medium 임팩트
       doParry(p.dmg,p.x,p.y,false,'red');
       projs[pw++]=p;continue;
     }
@@ -28317,7 +28320,8 @@ function update(){
         const p=projs[pi];if(p.friendly||p.noParry||p.blackBean)continue; // 무지개탄(noParry/blackBean): 궤도 칼날 무시 — 절대 가로채기 불가
         if(dst(p.x,p.y,ox,oy)<14){
           p.life=-999;
-          addParts(ox,oy,_isGF?'#cccccc':'#aa33ff',8);
+          if(p.redBean){_addBoom(ox,oy,80,72,'fire_medium');addParts(ox,oy,'#ff2200',10)}
+          else{_addBoom(ox,oy,24,18,_isGF?'dark02':'dark');addParts(ox,oy,_isGF?'#cccccc':'#aa33ff',8)}
           addTxt(ox,oy-10,_T('방어!'),_isGF?'#ffffff':'#cc66ff',20);
           SFX.block();
           if(_isGF){const _orb=P._gOrbs[gi];if(_orb&&typeof _orb==='object'){_orb.hp=(_orb.hp||1)-1;if(_orb.hp<=0)destroyed=true;}else{P._gOrbs[gi]--;if(P._gOrbs[gi]<=0)destroyed=true;}}else{destroyed=true;}
@@ -34258,7 +34262,7 @@ function _detonateAssaultFlames(){
     const fz=G._fireZones[_di];if(fz.type!=='assaultFlame')continue;
     _detAny=true;
     const _remT=fz.maxT-fz.t;const _ticks=~~(_remT/20);
-    const _totalDmg=fz.dmg*Math.max(1,_ticks); // 3중폭 45초 누적 폭발 — 의도된 설계
+    const _totalDmg=fz.dmg*Math.max(1,_ticks)*2; // 바닥불꽃 폭발 2배 버프
     const _detR=fz.r*1.8;
     _shBufI++;
     const _detNe=shQuery(fz.x,fz.y,_detR+20);
@@ -34272,13 +34276,20 @@ function _detonateAssaultFlames(){
     _shBufI--;
     const _afS2=fz._afStk||0;
     shake(30+_afS2*15);G.chromaT=10+_afS2*5;G._flashT=8+_afS2*4;G._flashCol='#ff4400';
-    // ── 기동불꽃 일괄폭발 VFX: Fire Impact (ImpactFire_Sheet 4x4) ──
+    // ── 기동불꽃 일괄폭발 VFX: Power Fire 콤보 (vfx_test.html 비율 동일) ──
     {const _dPx=fz.x,_dPy=fz.y,_dSc=Math.min(4.0,Math.max(1.5,Math.sqrt(fz.r/50)*(1+_afS2*.4)));
     if(!window._tvfx2)window._tvfx2=[];
     if(window._tvfx2.length<60){
+    // Power Fire: scale 1.0 / 1.2 / 0.5, 전부 delay:0 동시
     const _fIS=_tvfx2Imgs['Fire_ImpactFire_Sheet.png'];
     if(_fIS&&_fIS.complete){const fw=~~(_fIS.naturalWidth/4),fh=~~(_fIS.naturalHeight/4);
-      window._tvfx2.push({img:_fIS,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:2.0*_dSc,delay:0,spd:10,frame:0,total:16,t:0,timer:0,alphaMax:1.0,slowFade:true})}
+      window._tvfx2.push({img:_fIS,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:2.0*_dSc,delay:0,spd:8,frame:0,total:16,t:0,timer:0,alphaMax:1.0,slowFade:true})}
+    const _fFB=_tvfx2Imgs['Fire_FBF_4x4.png'];
+    if(_fFB&&_fFB.complete){const fw=~~(_fFB.naturalWidth/4),fh=~~(_fFB.naturalHeight/4);
+      window._tvfx2.push({img:_fFB,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:2.4*_dSc,delay:0,spd:10,frame:0,total:16,t:0,timer:0,alphaMax:1.0,slowFade:true})}
+    const _fBI=_tvfx2Imgs['Fire_BasicImpact.png'];
+    if(_fBI&&_fBI.complete){const fw=~~(_fBI.naturalWidth/3),fh=~~(_fBI.naturalHeight/3);
+      window._tvfx2.push({img:_fBI,x:_dPx,y:_dPy,cols:3,rows:3,fw,fh,sc:1.0*_dSc,delay:0,spd:6,frame:0,total:9,t:0,timer:0,alphaMax:1.0,slowFade:true})}
     }}
     addTxt(fz.x,fz.y-30,_T('💥 불꽃폭발! ')+_totalDmg,'#ff2200',60+_afS2*10);
     const _epC=16+_afS2*8;

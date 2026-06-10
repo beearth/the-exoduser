@@ -24180,7 +24180,7 @@ function update(){
         const _stR=450+(_stLv-1)*~~(225/9); // 1렙450, 10렙675
         // 사슬기동 티어 3단계 매핑: 1티어(탭)=×30, 2티어(0.1초)=×60, 3티어(0.2초)=×100
         const _stTier=Math.max(1,Math.min(3,_harpTier||1));
-        const _stDistMul=_stTier===3?100:_stTier===2?60:30;
+        const _stDistMul=_stTier===3?50:_stTier===2?30:15; // 착지 직격 50% 너프
         const _stDmg=~~(magicRef()*_skMul('chainAssault')*statInt()*pMagicMul()*_stDistMul*_fuseMul('chainAssault')); // 통일공식: _skMul
         const _stEl=EL.F;
         G._noHitStopT=40;
@@ -34262,8 +34262,8 @@ function _detonateAssaultFlames(){
     const fz=G._fireZones[_di];if(fz.type!=='assaultFlame')continue;
     _detAny=true;
     const _remT=fz.maxT-fz.t;const _ticks=~~(_remT/20);
-    const _totalDmg=fz.dmg*Math.max(1,_ticks); // 3중폭 45초 누적 폭발 — 의도된 설계
-    const _detR=fz.r*1.8;
+    const _totalDmg=fz.dmg*Math.max(1,_ticks)*2; // 바닥불꽃 폭발 2배 버프
+    const _detR=fz.r*3.0; // 폭발 데미지 범위 확대 (1.8→3.0)
     _shBufI++;
     const _detNe=shQuery(fz.x,fz.y,_detR+20);
     for(let _si=0;_si<_detNe.length;_si++){const e=_detNe[_si];if(!e.alive)continue;
@@ -34276,22 +34276,20 @@ function _detonateAssaultFlames(){
     _shBufI--;
     const _afS2=fz._afStk||0;
     shake(30+_afS2*15);G.chromaT=10+_afS2*5;G._flashT=8+_afS2*4;G._flashCol='#ff4400';
-    // ── 기동불꽃 일괄폭발 VFX: Power Fire 콤보 (3레이어 동시) ──
+    // ── 기동불꽃 일괄폭발 VFX: Power Fire 콤보 (vfx_test.html 비율 동일) ──
     {const _dPx=fz.x,_dPy=fz.y,_dSc=Math.min(4.0,Math.max(1.5,Math.sqrt(fz.r/50)*(1+_afS2*.4)));
     if(!window._tvfx2)window._tvfx2=[];
     if(window._tvfx2.length<60){
-    // [1] ImpactFire — 코어 폭발
+    // Power Fire: scale 1.0 / 1.2 / 0.5, 전부 delay:0 동시
     const _fIS=_tvfx2Imgs['Fire_ImpactFire_Sheet.png'];
     if(_fIS&&_fIS.complete){const fw=~~(_fIS.naturalWidth/4),fh=~~(_fIS.naturalHeight/4);
-      window._tvfx2.push({img:_fIS,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:1.8*_dSc,delay:0,spd:10,frame:0,total:16,t:0,timer:0,alphaMax:1.0,slowFade:true})}
-    // [2] FBF — 불꽃 연기 (살짝 지연, 더 크게)
+      window._tvfx2.push({img:_fIS,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:2.0*_dSc,delay:0,spd:8,frame:0,total:16,t:0,timer:0,alphaMax:1.0,slowFade:true})}
     const _fFB=_tvfx2Imgs['Fire_FBF_4x4.png'];
     if(_fFB&&_fFB.complete){const fw=~~(_fFB.naturalWidth/4),fh=~~(_fFB.naturalHeight/4);
-      window._tvfx2.push({img:_fFB,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:2.2*_dSc,delay:2,spd:12,frame:0,total:16,t:0,timer:0,alphaMax:0.8,slowFade:true})}
-    // [3] BasicImpact — 쇼크웨이브 (즉시, 작게)
+      window._tvfx2.push({img:_fFB,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:2.4*_dSc,delay:0,spd:10,frame:0,total:16,t:0,timer:0,alphaMax:1.0,slowFade:true})}
     const _fBI=_tvfx2Imgs['Fire_BasicImpact.png'];
     if(_fBI&&_fBI.complete){const fw=~~(_fBI.naturalWidth/3),fh=~~(_fBI.naturalHeight/3);
-      window._tvfx2.push({img:_fBI,x:_dPx,y:_dPy,cols:3,rows:3,fw,fh,sc:0.9*_dSc,delay:0,spd:8,frame:0,total:9,t:0,timer:0,alphaMax:0.9,slowFade:true})}
+      window._tvfx2.push({img:_fBI,x:_dPx,y:_dPy,cols:3,rows:3,fw,fh,sc:1.0*_dSc,delay:0,spd:6,frame:0,total:9,t:0,timer:0,alphaMax:1.0,slowFade:true})}
     }}
     addTxt(fz.x,fz.y-30,_T('💥 불꽃폭발! ')+_totalDmg,'#ff2200',60+_afS2*10);
     const _epC=16+_afS2*8;
