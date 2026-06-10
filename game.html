@@ -43345,7 +43345,7 @@ function draw(){
   }
   // ── lighter 통합 블록 (GL flush로 stall 최소화) ──
   const _vfxT0=performance.now();
-  if(_useGL&&GL){_flush();GL.flush()} // GPU 백로그 미리 제출
+  if(_useGL&&GL){_flush()} // GPU 배칭 제출 (GL.flush 제거 — 브라우저 자동 제출, Metal 스톨 방지)
   X.save();X.globalCompositeOperation='lighter';
   const _vfxT1=performance.now();
   {
