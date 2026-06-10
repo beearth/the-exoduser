@@ -29562,3 +29562,21 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - _autosave/game_20260610_005319.html
 - game.html
 
+
+## 2026-06-10 09:30 (auto)
+- _autosave/game_20260610_092017.html
+- _autosave/game_20260610_092216.html
+- _autosave/game_20260610_092325.html
+- _autosave/game_20260610_092330.html
+- _autosave/game_20260610_092358.html
+- _autosave/game_20260610_092423.html
+- _autosave/game_20260610_092545.html
+- _autosave/game_20260610_092602.html
+- _autosave/game_20260610_092636.html
+- _autosave/game_20260610_092759.html
+- docs/14ë°¸ëŸ°???˜ì¹˜?Œì´ë¸??¨ì‹œë¸Œíš¨ê³¼í‘œ.md
+- docs/16ë²ˆì—­Â·ë¡œì»¬?¼ì´?œì´??ë²ˆì—­?€???„ì²´ëª©ë¡.md
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤??md
+- docs/2_3 ?Œì§„+?¨ë§+ë°©íŒ¨?œìŠ¤??2_3 ?Œì§„+?¨ë§+ë°©íŒ¨?œìŠ¤??md
+- game.html
+

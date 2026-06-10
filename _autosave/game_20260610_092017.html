@@ -12316,9 +12316,9 @@ function recalcSt(){
   _eqAffixCache=null;_eqStatCache=null; // 어픽스/스탯 캐시 무효화
   const base=100+STATS.dex*2;
   let bonus=0,_enhSt2=0;
-  const _armorSet2=new Set(['shield','armor','gloves','pants','boots','cape']);
-  for(const slot of SLOT_NAMES){const it=INV.equipped[slot];if(it){if(it.bonusSt)bonus+=it.bonusSt;if(it.enh>0&&_armorSet2.has(slot))_enhSt2+=it.enh*0.1}}
-  P.mst=~~(base+bonus+_eqAffix('maxSTFlat')+~~(P._crystalStats?P._crystalStats.st:0)+_enhSt2)+(PASSIVES.pHuman||0)*100+_gritStFlat();P.st=Math.min(P.st,P.mst); // 방어구 강화: 1강당 +0.1 ST + 인간성: ST+100/Lv
+  const _stEnhSet=new Set(['ring1','ring2','belt']); // ST 강화 3종
+  for(const slot of SLOT_NAMES){const it=INV.equipped[slot];if(it){if(it.bonusSt)bonus+=it.bonusSt;if(it.enh>0&&_stEnhSet.has(slot))_enhSt2+=it.enh*0.2}}
+  P.mst=~~(base+bonus+_eqAffix('maxSTFlat')+~~(P._crystalStats?P._crystalStats.st:0)+_enhSt2)+(PASSIVES.pHuman||0)*100+_gritStFlat();P.st=Math.min(P.st,P.mst); // 악세ST강화: ring1/ring2/belt 1강당 +0.2 ST + 인간성: ST+100/Lv
 }
 
 function itemPower(it){
@@ -20184,13 +20184,12 @@ function applyStats(){
   // ═══ 바이블 기준: HP = 100+(stage-1)*6 + VIT*2 + STR*1 + 장비HP ═══
   const _stgHp=G.on?100+((G.stage||1)-1)*6:100;
   const _afHpF=_eqAffix('maxHPFlat'),_afHpP=_eqAffix('maxHPPct')+_eqAffix('lifeMaxHP'),_imHp=_eqImplicit('_iMaxHP'),_imHpP=_eqImplicit('_iMaxHPPct')+_eqImplicit('_iLifeHPPct');
-  // bonusHp: 방어구 파트(6) + 장신구 파트(6) = 12슬롯 (무기 파트 weapon/bow/helmet 제외)
-  // 강화 HP: 1강당 +0.5 HP (2026-04-11)
-  let _totalBonusHp=0,_totalBonusShield=0,_totalBonusMp=0,_enhHp=0,_enhMp=0,_enhSt=0;
+  // 강화 보너스 15슬롯 분리 (2026-06-10): HP=gloves/pants/boots, MP=bracelet/necklace/headband
+  let _totalBonusHp=0,_totalBonusShield=0,_totalBonusMp=0,_enhHp=0,_enhMp=0;
   const _allDefSlots=['shield','armor','boots','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
-  const _armorSet=new Set(['shield','armor','gloves','pants','boots','cape']);
-  const _accSet=new Set(['belt','bracelet','ring1','ring2','necklace','headband']);
-  for(let _di=0;_di<_allDefSlots.length;_di++){const _dit=INV.equipped[_allDefSlots[_di]];if(_dit){_totalBonusHp+=(_dit.bonusHp||0);_totalBonusShield+=(_dit.bonusShield||0);_totalBonusMp+=(_dit.bonusMp||0);if(_dit.enh>0){_enhHp+=_dit.enh*0.5;if(_accSet.has(_allDefSlots[_di]))_enhMp+=_dit.enh*0.1;if(_armorSet.has(_allDefSlots[_di]))_enhSt+=_dit.enh*0.1}}}
+  const _hpEnhSet=new Set(['gloves','pants','boots']); // HP 강화 3종
+  const _mpEnhSet=new Set(['bracelet','necklace','headband']); // MP 강화 3종
+  for(let _di=0;_di<_allDefSlots.length;_di++){const _dit=INV.equipped[_allDefSlots[_di]];if(_dit){_totalBonusHp+=(_dit.bonusHp||0);_totalBonusShield+=(_dit.bonusShield||0);_totalBonusMp+=(_dit.bonusMp||0);if(_dit.enh>0){if(_hpEnhSet.has(_allDefSlots[_di]))_enhHp+=_dit.enh*1.0;if(_mpEnhSet.has(_allDefSlots[_di]))_enhMp+=_dit.enh*0.2}}}
   P.mhp=~~((_stgHp+s.str*5+s.vit*3+_totalBonusHp+_afHpF+_imHp+_enhHp)*(1+_afHpP+_imHpP*.01+(PASSIVES.pMelee||0)*.03));
   P.baseDef=2;
   P.maxPoise=4; // 4칸 고정 (해골 눈알 4개)
@@ -25441,8 +25440,9 @@ function update(){
           const _psBlk2=p.redBean?0:Math.min(.50,pGuardAbsorb()+pShieldBlock());
           const _absDmg=Math.max(1,~~(p.dmg*(1-_psBlk2)));
           if(_absDmg>0){hurtP(_absDmg,{dtype:p.redBean?'parry':'magic',src:p.redBean?'빨콩 직격':'보호막흡수',redBean:!!p.redBean})}
-          // 공통 임팩트 (일반 피격과 동일)
-          _projHitFx(p.x,p.y,p.el,!!p.redBean);
+          // 보호막 흡수 임팩트: 빨콩=fire_medium boom(80,72), 일반=속성 파티클
+          _addBoom(p.x,p.y,p.redBean?80:20,p.redBean?72:18,p.redBean?'fire_medium':'dark');
+          addParts(p.x,p.y,p.redBean?'#ff2200':ELC[p.el]||'#ff88bb',p.redBean?10:6);
           {const _bAng=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bAng)*3;P.kb.y+=Math.sin(_bAng)*3}
           playSample('player_hit'+(1+~~(Math.random()*4)),.4,_r(1,.15));
           addTxt(p.x,p.y-10,(p.redBean?_L('🕊️빨콩 흡수 -','🕊️Red absorb -'):_L('🕊️흡수 -','🕊️Absorb -'))+_absDmg,p.redBean?'#ff6644':'#ffaadd',25);
@@ -26571,7 +26571,7 @@ function update(){
     }
     // 회전참 중: iframes여도 범위 내 탄 소멸 (흡수율 적용 데미지)
     if(p.blackBean&&!_pHit&&_pDist<_bkHitR&&P.iframes>0&&!P._ioActive&&P.s==='whirlwind'){
-      const _bkAbs3=Math.min(.55,0.40+0+(_isFused('whirlDet')?(P.skills.detonate||1)*0.005:0));
+      const _bkAbs3=Math.min(.30,0.20+0+(_isFused('whirlDet')?(P.skills.detonate||1)*0.005:0));
       const _bkD3=Math.max(1,~~(p.dmg*0.3*(1-_bkAbs3)*(1-pParryRainbowDR())));
       hurtP(_bkD3,{dtype:'magic',src:'무지개흡수',wwAbsorbed:true});
       P.parryBank=(P.parryBank||0)+(_isFused('whirlDet')?(p.dmg||10):~~(p.dmg*0.3*_bkAbs3));
@@ -26683,8 +26683,8 @@ function update(){
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
         addTxt(P.x,P.y-28,_T('⚡💎 블루콩!'),'#00e5ff',35);doParry(p.dmg,p.x,p.y,false,p.el);projs[pw++]=p;_pHit=true;continue}
       else if(P.s==='whirlwind'&&_isFused('whirlDet')&&!p.friendly&&!p.bomb&&!p.iceZone&&!p.blizzard&&!p.web){
-        // 회전기폭 합체: 회전 중 일반탄 흡수 → parryBank 축적 (기본40% + 기폭Lv 0.5%, 캡55%)
-        const _wdAbs=Math.min(.55,0.40+(P.skills.detonate||1)*0.005);
+        // 회전기폭 합체: 회전 중 일반탄 흡수 → parryBank 축적 (기본20% + 기폭Lv 0.5%, 캡30%)
+        const _wdAbs=Math.min(.30,0.20+(P.skills.detonate||1)*0.005);
         const _wdD=Math.max(1,~~(p.dmg*(1-_wdAbs)));
         hurtP(_wdD,{dtype:'magic',wwAbsorbed:true});
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
@@ -34270,7 +34270,25 @@ function _detonateAssaultFlames(){
     _shBufI--;
     const _afS2=fz._afStk||0;
     shake(30+_afS2*15);G.chromaT=10+_afS2*5;G._flashT=8+_afS2*4;G._flashCol='#ff4400';
-    playVFXAng('fire_burst',fz.x,fz.y,fz.r/133*(1+_afS2*.3),4,0,true);
+    // ── 기동불꽃 일괄폭발 VFX: 4종 중 랜덤 2~3종 콤보 ──
+    {const _dPx=fz.x,_dPy=fz.y,_dSc=Math.min(3.0,Math.max(1.0,fz.r/80*(1+_afS2*.3)));
+    if(!window._tvfx2)window._tvfx2=[];
+    if(window._tvfx2.length<60){
+      const _afL=[
+        {s:'Fire_ImpactFire_Sheet.png',c:4,r:4,sc:1.4,dl:0,sp:6,a:1.0},
+        {s:'Fire_MediumImpact.png',c:4,r:4,sc:2.2,dl:0,sp:7,a:0.85},
+        {s:'Fire_BasicImpact.png',c:3,r:3,sc:1.0,dl:0,sp:5,a:0.9},
+        {s:'Fire_FBF_4x4.png',c:4,r:4,sc:2.8,dl:2,sp:8,a:0.6},
+      ];
+      for(let _si=_afL.length-1;_si>0;_si--){const _sj=~~(Math.random()*(_si+1));const _st=_afL[_si];_afL[_si]=_afL[_sj];_afL[_sj]=_st}
+      const _pick=2+~~(Math.random()*2);
+      for(let _pi=0;_pi<_pick;_pi++){const l=_afL[_pi];
+        const img=_tvfx2Imgs[l.s];if(!img||!img.complete)continue;
+        const fw=~~(img.naturalWidth/l.c),fh=~~(img.naturalHeight/l.r);
+        window._tvfx2.push({img,x:_dPx,y:_dPy,cols:l.c,rows:l.r,fw,fh,
+          sc:l.sc*_dSc,delay:l.dl,spd:l.sp,frame:0,total:l.c*l.r,t:0,timer:0,alphaMax:l.a});
+      }
+    }}
     addTxt(fz.x,fz.y-30,_T('💥 불꽃폭발! ')+_totalDmg,'#ff2200',60+_afS2*10);
     const _epC=16+_afS2*8;
     for(let _ep=0;_ep<_epC;_ep++){const _ea=Math.PI*2*_ep/_epC;const _ed=fz.r*.3+Math.random()*fz.r*.5;
@@ -34475,7 +34493,7 @@ function hurtP(dmg,opts){
   } else if(!(opts&&opts.dot))playSample('player_hit'+(1+~~(Math.random()*4)),.6,_r(1,.15));
   // 회전기폭 합체: 회전 중 보호막 자동 적용 (근접만 — 투사체는 충돌 시 이미 흡수됨)
   if(P.s==='whirlwind'&&P.skills.detonate&&_isFused('whirlDet')&&!(opts&&opts.wwAbsorbed)){
-    const _wwBlk=_isDotEarly?0:Math.min(.55,.30+PASSIVES.pGuard*.02); // 회전보호막: 기본30%+패시브2%/lv(캡55%), DOT 미적용
+    const _wwBlk=_isDotEarly?0:Math.min(.30,.15+PASSIVES.pGuard*.02); // 회전보호막: 기본15%+패시브2%/lv(캡30%), DOT 미적용
     const _rawDmg2=dmg;
     dmg=Math.max(1,~~(dmg*(1-_wwBlk)));
     P.parryBank=(P.parryBank||0)+(_rawDmg2-dmg);
@@ -34485,10 +34503,11 @@ function hurtP(dmg,opts){
   const dtype=(opts&&opts.dtype)||'phys'; // 'phys','magic','grab','parry'
   const isEnergy=dtype==='magic'||dtype==='parry'; // 패링데미지는 마법 DR 적용
   // 물리방어: 갑옷/방패/장갑/바지/부츠 (물리장비)
-  const _enhDef=~~(enhMul(sh().enh||0)+enhMul(ar().enh||0)+enhMul(bt().enh||0)+enhMul(gl().enh||0)+enhMul(pt().enh||0)+enhMul(hm().enh||0)+enhMul(nc().enh||0)+enhMul(rg1().enh||0)+enhMul(rg2().enh||0));
+  // DEF 강화: shield/armor/cape 3종만 (2026-06-10)
+  const _enhDef=~~(enhMul(sh().enh||0)+enhMul(ar().enh||0)+enhMul(cp().enh||0));
   const totalPDef=P.baseDef+pDefAdd()+(sh().def||0)+(ar().def||0)+(bt().def||0)+(gl().def||0)+(pt().def||0)+_enhDef;
-  // 에너지방어: 투구/목걸이/반지 (마법장비)
-  const _enhEDef=~~(enhMul(sh().enh||0)+enhMul(ar().enh||0)+enhMul(bt().enh||0)+enhMul(gl().enh||0)+enhMul(pt().enh||0)+enhMul(hm().enh||0)+enhMul(nc().enh||0)+enhMul(rg1().enh||0)+enhMul(rg2().enh||0));
+  // 에너지방어: DEF 강화 3종(shield/armor/cape)만
+  const _enhEDef=~~(enhMul(sh().enh||0)+enhMul(ar().enh||0)+enhMul(cp().enh||0));
   const totalEDef=(hm().eDef||0)+(nc().eDef||0)+(rg1().eDef||0)+(rg2().eDef||0)+(cp().eDef||0)+(sh().eDef||0)+(ar().eDef||0)+(bt().eDef||0)+(gl().eDef||0)+(pt().eDef||0)+(blt().eDef||0)+(INV.equipped.bracelet&&INV.equipped.bracelet.eDef||0)+(INV.equipped.headband&&INV.equipped.headband.eDef||0)+_eqAffix('eDefFlat')+_enhEDef+~~(P._crystalStats?P._crystalStats.eDef:0)+~~(_gritTotal()*.5);
   // DR 캡 적용 (바이블 75%) + 어픽스 physDR
   const pDR=Math.min(DR_CAP,totalPDef/(totalPDef+2500)+_eqAffix('physDR'));
@@ -39027,8 +39046,8 @@ function _invCardFields(it){
   if(it.btype)stats+=`<div style="color:#ccaa77;font-weight:700">${(BOWTYPES[it.btype]||{}).name||it.btype}</div>`;
   if(it.atk){const _enhB=it.enh?enhMulAtk(it.enh):0;stats+=`<div>ATK: <span>${it.atk}</span>${_enhB>0?` <span style="color:${enhColor(it.enh)}">+${_enhB}</span>`:''}</div>`}
   if(it.atk&&(it.wtype||it.btype)){const _enhM=it.enh?enhMulAtk(it.enh):0;const _atkE=~~(it.atk*(1+_enhM));const dps=_itemDps({...it,atk:_atkE});if(dps!==null)stats+=`<div style="color:#ff6644;font-weight:700">DPS: <span style="color:#ffaa66">${dps.toFixed(1)}</span></div>`}
-  if(it.def){const _defB=it.enh?~~enhMul(it.enh):0;stats+=`<div>${_L('물리DEF','Phys DEF')}: <span>${it.def}</span>${_defB>0?` <span style="color:${enhColor(it.enh)}">+${_defB}</span>`:''}</div>`}
-  if(it.eDef){const _eDefB=it.enh?~~enhMul(it.enh):0;stats+=`<div>${_L('에너지DEF','Energy DEF')}: <span>${it.eDef}</span>${_eDefB>0?` <span style="color:${enhColor(it.enh)}">+${_eDefB}</span>`:''}</div>`}
+  if(it.def){const _isDefEnh=it.slot==='shield'||it.slot==='armor'||it.slot==='cape';const _defB=it.enh&&_isDefEnh?~~enhMul(it.enh):0;stats+=`<div>${_L('물리DEF','Phys DEF')}: <span>${it.def}</span>${_defB>0?` <span style="color:${enhColor(it.enh)}">+${_defB}</span>`:''}</div>`}
+  if(it.eDef){const _isDefEnh2=it.slot==='shield'||it.slot==='armor'||it.slot==='cape';const _eDefB=it.enh&&_isDefEnh2?~~enhMul(it.enh):0;stats+=`<div>${_L('에너지DEF','Energy DEF')}: <span>${it.eDef}</span>${_eDefB>0?` <span style="color:${enhColor(it.enh)}">+${_eDefB}</span>`:''}</div>`}
   if(it.spd!==undefined)stats+=`<div>SPD: <span>${it.spd>=0?'+':''}${it.spd}</span></div>`;
   if(it.wStCost)stats+=`<div>${_L('ST소모','ST Cost')}: <span style="color:#cc8844">${it.wStCost}</span></div>`;
   if(it.wRange)stats+=`<div>${_L('무기사거리','Weapon Range')}: <span>${it.wRange}</span></div>`;
@@ -39727,13 +39746,16 @@ uhdr.textContent=_T('장비 강화 (실패 시 재료만 소멸)');grid.appendCh
         const rateCol=enhRateColor(rate);
         const atkMulNow=it.atk?~~(enhMulAtk(enh)*100):0;
         const atkMulNext=it.atk?~~(enhMulAtk(enh+1)*100):0;
-        const defMulNow=it.def?~~(enhMul(enh)*100):0;
-        const defMulNext=it.def?~~(enhMul(enh+1)*100):0;
-        const _isDefSlot=['shield','armor','boots','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'].indexOf(it.slot)>=0;
+        const _enhDefSlots=new Set(['shield','armor','cape']);
+        const _enhHpSlots=new Set(['gloves','pants','boots']);
+        const _enhStSlots=new Set(['ring1','ring2','belt']);
+        const _enhMpSlots=new Set(['bracelet','necklace','headband']);
         let bonusTxt='';
         if(it.atk)bonusTxt+=`ATK +${atkMulNow}% → +${atkMulNext}%`;
-        if(it.def)bonusTxt+=(bonusTxt?' | ':'')+ `DEF +${defMulNow}% → +${defMulNext}%`;
-        if(_isDefSlot)bonusTxt+=(bonusTxt?' | ':'')+`HP +${enh} → +${enh+1}`;
+        if(_enhDefSlots.has(it.slot))bonusTxt+=(bonusTxt?' | ':'')+ `DEF +${~~(enhMul(enh))} → +${~~(enhMul(enh+1))}`;
+        if(_enhHpSlots.has(it.slot))bonusTxt+=(bonusTxt?' | ':'')+`HP +${~~(enh*1.0)} → +${~~((enh+1)*1.0)}`;
+        if(_enhStSlots.has(it.slot))bonusTxt+=(bonusTxt?' | ':'')+`ST +${~~(enh*0.2)} → +${~~((enh+1)*0.2)}`;
+        if(_enhMpSlots.has(it.slot))bonusTxt+=(bonusTxt?' | ':'')+`MP +${~~(enh*0.2)} → +${~~((enh+1)*0.2)}`;
         if(!bonusTxt)bonusTxt=_T('강화 보너스 적용');
 d.innerHTML=`<div class="fg-in" style="color:${rc}">${label} <span style="color:${ec}">+${enh}</span></div><div class="fg-id">${bonusTxt}</div><div class="fg-ic" style="display:flex;justify-content:space-between"><span style="color:${rateCol};font-weight:700">${_T('성공률')} ${ratePct}%</span><span>${_T('악의')} ${cost}</span></div>`;
         d.onclick=()=>{
@@ -45412,6 +45434,7 @@ function drawP(){
       dark:['Dark_MediumImpact.png','Dark_DarkSmoke_FBF_4x4.png'],
       dark02:['Dark_MediumImpact.png'],
       explosion:['Fire_ImpactFire_Sheet.png'],
+      fire_medium:['Fire_MediumImpact.png'],
     };
     const _boomColMap={
       ice:{c:4,r:4},lightning:{c:4,r:4},'Lightning_Lightning_FBF_4x3.png':{c:4,r:3},

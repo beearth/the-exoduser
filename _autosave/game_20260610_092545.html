@@ -25440,8 +25440,9 @@ function update(){
           const _psBlk2=p.redBean?0:Math.min(.50,pGuardAbsorb()+pShieldBlock());
           const _absDmg=Math.max(1,~~(p.dmg*(1-_psBlk2)));
           if(_absDmg>0){hurtP(_absDmg,{dtype:p.redBean?'parry':'magic',src:p.redBean?'빨콩 직격':'보호막흡수',redBean:!!p.redBean})}
-          // 공통 임팩트 (일반 피격과 동일)
-          _projHitFx(p.x,p.y,p.el,!!p.redBean);
+          // 보호막 흡수 임팩트: 빨콩=fire_medium boom(80,72), 일반=속성 파티클
+          _addBoom(p.x,p.y,p.redBean?80:20,p.redBean?72:18,p.redBean?'fire_medium':'dark');
+          addParts(p.x,p.y,p.redBean?'#ff2200':ELC[p.el]||'#ff88bb',p.redBean?10:6);
           {const _bAng=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_bAng)*3;P.kb.y+=Math.sin(_bAng)*3}
           playSample('player_hit'+(1+~~(Math.random()*4)),.4,_r(1,.15));
           addTxt(p.x,p.y-10,(p.redBean?_L('🕊️빨콩 흡수 -','🕊️Red absorb -'):_L('🕊️흡수 -','🕊️Absorb -'))+_absDmg,p.redBean?'#ff6644':'#ffaadd',25);
@@ -26534,7 +26535,7 @@ function update(){
       {const _rbA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_rbA)*6;P.kb.y+=Math.sin(_rbA)*6}
       SFX.detonate();shake(12);doHitFlash('#ff2200',0.25);
       scrFlash='rgba(255,60,0,.3)';scrFlashA=.3;G.slowMo=Math.max(G.slowMo,8);
-      _addBoom(p.x,p.y,100,20,'explosion');
+      _addBoom(p.x,p.y,100,72,'fire_medium');
       _spawnSmoke(p.x,p.y,'red');
       for(let k=0;k<12;k++){const sa=Math.PI*2*k/12;poolPart(p.x,p.y,Math.cos(sa)*4,Math.sin(sa)*4,'#ff4422',3,10)}
       _pHit=true;
@@ -26662,7 +26663,8 @@ function update(){
       const _wwD=Math.max(1,~~(p.dmg*(1-_wwAbs)));
       hurtP(_wwD,{dtype:'magic',src:'회전흡수',wwAbsorbed:true});
       P.parryBank=(P.parryBank||0)+(_isFused('whirlDet')?(p.dmg||10):~~(p.dmg*_wwAbs));
-      addParts(p.x,p.y,ELC[p.el]||'#888',1);_pHit=true;_recycleProj(p);continue;
+      if(p.redBean){_addBoom(p.x,p.y,80,72,'fire_medium');addParts(p.x,p.y,'#ff2200',8)}else{addParts(p.x,p.y,ELC[p.el]||'#888',4)}
+      _pHit=true;_recycleProj(p);continue;
     }
     // ══ 일반탄: 원래 좁은 범위로 판정 (회전기폭: 빨콩도 넓은 흡수 범위) ══
     const _wwAbsR=_wwDetAbs?90:_normalR;
@@ -26687,7 +26689,8 @@ function update(){
         const _wdD=Math.max(1,~~(p.dmg*(1-_wdAbs)));
         hurtP(_wdD,{dtype:'magic',wwAbsorbed:true});
         P.parryBank=(P.parryBank||0)+(p.dmg||10);
-        addParts(p.x,p.y,'#ff4400',2);_pHit=true;
+        if(p.redBean){_addBoom(p.x,p.y,80,72,'fire_medium');addParts(p.x,p.y,'#ff2200',8)}else{addParts(p.x,p.y,'#ff4400',4)}
+        _pHit=true;
       }
       else if(P.s!=='charge'&&!p.friendly){
         if(p.bomb){const _br2=p.bombR||60;const _ne2=shQuery(p.x,p.y,_br2);for(let ni=0;ni<_ne2.length;ni++){const e=_ne2[ni];if(e.alive&&dst(e.x,e.y,p.x,p.y)<_br2)hurtE(e,~~((p.bombAtk||p.dmg)*1.0),Math.atan2(e.y-p.y,e.x-p.x),false,{},p.el)}if(!p.friendly&&dst(P.x,P.y,p.x,p.y)<_br2&&P.iframes<=0&&P.s!=='charge')hurtP(~~(p.dmg),{dtype:'magic'});const _isR=p.friendly&&p.redBean;addParts(p.x,p.y,_isR?'#00e5ff':'#ff8800',_isR?25:15);shake(_isR?12:4);_bombDead=true;if(_bombDead){_recycleProj(p);continue}}
@@ -34269,7 +34272,14 @@ function _detonateAssaultFlames(){
     _shBufI--;
     const _afS2=fz._afStk||0;
     shake(30+_afS2*15);G.chromaT=10+_afS2*5;G._flashT=8+_afS2*4;G._flashCol='#ff4400';
-    playVFXAng('fire_burst',fz.x,fz.y,fz.r/133*(1+_afS2*.3),4,0,true);
+    // ── 기동불꽃 일괄폭발 VFX: Fire Impact (ImpactFire_Sheet 4x4) ──
+    {const _dPx=fz.x,_dPy=fz.y,_dSc=Math.min(4.0,Math.max(1.5,Math.sqrt(fz.r/50)*(1+_afS2*.4)));
+    if(!window._tvfx2)window._tvfx2=[];
+    if(window._tvfx2.length<60){
+    const _fIS=_tvfx2Imgs['Fire_ImpactFire_Sheet.png'];
+    if(_fIS&&_fIS.complete){const fw=~~(_fIS.naturalWidth/4),fh=~~(_fIS.naturalHeight/4);
+      window._tvfx2.push({img:_fIS,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:2.0*_dSc,delay:0,spd:4,frame:0,total:16,t:0,timer:0,alphaMax:1.0})}
+    }}
     addTxt(fz.x,fz.y-30,_T('💥 불꽃폭발! ')+_totalDmg,'#ff2200',60+_afS2*10);
     const _epC=16+_afS2*8;
     for(let _ep=0;_ep<_epC;_ep++){const _ea=Math.PI*2*_ep/_epC;const _ed=fz.r*.3+Math.random()*fz.r*.5;
@@ -39027,8 +39037,8 @@ function _invCardFields(it){
   if(it.btype)stats+=`<div style="color:#ccaa77;font-weight:700">${(BOWTYPES[it.btype]||{}).name||it.btype}</div>`;
   if(it.atk){const _enhB=it.enh?enhMulAtk(it.enh):0;stats+=`<div>ATK: <span>${it.atk}</span>${_enhB>0?` <span style="color:${enhColor(it.enh)}">+${_enhB}</span>`:''}</div>`}
   if(it.atk&&(it.wtype||it.btype)){const _enhM=it.enh?enhMulAtk(it.enh):0;const _atkE=~~(it.atk*(1+_enhM));const dps=_itemDps({...it,atk:_atkE});if(dps!==null)stats+=`<div style="color:#ff6644;font-weight:700">DPS: <span style="color:#ffaa66">${dps.toFixed(1)}</span></div>`}
-  if(it.def){const _defB=it.enh?~~enhMul(it.enh):0;stats+=`<div>${_L('물리DEF','Phys DEF')}: <span>${it.def}</span>${_defB>0?` <span style="color:${enhColor(it.enh)}">+${_defB}</span>`:''}</div>`}
-  if(it.eDef){const _eDefB=it.enh?~~enhMul(it.enh):0;stats+=`<div>${_L('에너지DEF','Energy DEF')}: <span>${it.eDef}</span>${_eDefB>0?` <span style="color:${enhColor(it.enh)}">+${_eDefB}</span>`:''}</div>`}
+  if(it.def){const _isDefEnh=it.slot==='shield'||it.slot==='armor'||it.slot==='cape';const _defB=it.enh&&_isDefEnh?~~enhMul(it.enh):0;stats+=`<div>${_L('물리DEF','Phys DEF')}: <span>${it.def}</span>${_defB>0?` <span style="color:${enhColor(it.enh)}">+${_defB}</span>`:''}</div>`}
+  if(it.eDef){const _isDefEnh2=it.slot==='shield'||it.slot==='armor'||it.slot==='cape';const _eDefB=it.enh&&_isDefEnh2?~~enhMul(it.enh):0;stats+=`<div>${_L('에너지DEF','Energy DEF')}: <span>${it.eDef}</span>${_eDefB>0?` <span style="color:${enhColor(it.enh)}">+${_eDefB}</span>`:''}</div>`}
   if(it.spd!==undefined)stats+=`<div>SPD: <span>${it.spd>=0?'+':''}${it.spd}</span></div>`;
   if(it.wStCost)stats+=`<div>${_L('ST소모','ST Cost')}: <span style="color:#cc8844">${it.wStCost}</span></div>`;
   if(it.wRange)stats+=`<div>${_L('무기사거리','Weapon Range')}: <span>${it.wRange}</span></div>`;
@@ -39727,8 +39737,6 @@ uhdr.textContent=_T('장비 강화 (실패 시 재료만 소멸)');grid.appendCh
         const rateCol=enhRateColor(rate);
         const atkMulNow=it.atk?~~(enhMulAtk(enh)*100):0;
         const atkMulNext=it.atk?~~(enhMulAtk(enh+1)*100):0;
-        const defMulNow=it.def?~~(enhMul(enh)*100):0;
-        const defMulNext=it.def?~~(enhMul(enh+1)*100):0;
         const _enhDefSlots=new Set(['shield','armor','cape']);
         const _enhHpSlots=new Set(['gloves','pants','boots']);
         const _enhStSlots=new Set(['ring1','ring2','belt']);
@@ -45417,6 +45425,7 @@ function drawP(){
       dark:['Dark_MediumImpact.png','Dark_DarkSmoke_FBF_4x4.png'],
       dark02:['Dark_MediumImpact.png'],
       explosion:['Fire_ImpactFire_Sheet.png'],
+      fire_medium:['Fire_MediumImpact.png'],
     };
     const _boomColMap={
       ice:{c:4,r:4},lightning:{c:4,r:4},'Lightning_Lightning_FBF_4x3.png':{c:4,r:3},
