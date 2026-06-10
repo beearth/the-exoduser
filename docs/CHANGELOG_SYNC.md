@@ -29580,3 +29580,16 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - docs/2_3 ?�진+?�링+방패?�스??2_3 ?�진+?�링+방패?�스??md
 - game.html
 
+
+## 2026-06-10 10:30 (auto)
+- _autosave/game_20260610_093241.html
+- _autosave/game_20260610_093413.html
+- _autosave/game_20260610_093655.html
+- _autosave/game_20260610_093703.html
+- _autosave/game_20260610_093911.html
+- _autosave/game_20260610_093919.html
+- _autosave/game_20260610_094125.html
+- _autosave/game_20260610_094335.html
+- _autosave/game_20260610_101633.html
+- game.html
+

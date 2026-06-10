@@ -26548,6 +26548,7 @@ function update(){
       else{p.vx*=-4;p.vy*=-4}
       {p.friendly=true;p.life=240;p.ml=240;p.dmg=~~(pParryProjDmg(p.dmg,false)*1.5);p._aoeR=160;p._aoeDmg=p.dmg*2;}
       p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;p.magic=true;p.parryBlueBean=true;
+      _addBoom(p.x,p.y,80,72,'fire_medium'); // 빨콩 패링 Fire Medium 임팩트
       doParry(p.dmg,p.x,p.y,false,'red');
       projs[pw++]=p;continue;
     }

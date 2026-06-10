@@ -26548,6 +26548,7 @@ function update(){
       else{p.vx*=-4;p.vy*=-4}
       {p.friendly=true;p.life=240;p.ml=240;p.dmg=~~(pParryProjDmg(p.dmg,false)*1.5);p._aoeR=160;p._aoeDmg=p.dmg*2;}
       p.redBean=false;p.blueBean=true;p.col='#00e5ff';p.homing=true;p.magic=true;p.parryBlueBean=true;
+      _addBoom(p.x,p.y,80,72,'fire_medium'); // 빨콩 패링 Fire Medium 임팩트
       doParry(p.dmg,p.x,p.y,false,'red');
       projs[pw++]=p;continue;
     }
@@ -34279,6 +34280,9 @@ function _detonateAssaultFlames(){
     const _fIS=_tvfx2Imgs['Fire_ImpactFire_Sheet.png'];
     if(_fIS&&_fIS.complete){const fw=~~(_fIS.naturalWidth/4),fh=~~(_fIS.naturalHeight/4);
       window._tvfx2.push({img:_fIS,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:2.0*_dSc,delay:0,spd:10,frame:0,total:16,t:0,timer:0,alphaMax:1.0,slowFade:true})}
+    const _fFB=_tvfx2Imgs['Fire_FBF_4x4.png'];
+    if(_fFB&&_fFB.complete){const fw=~~(_fFB.naturalWidth/4),fh=~~(_fFB.naturalHeight/4);
+      window._tvfx2.push({img:_fFB,x:_dPx,y:_dPy,cols:4,rows:4,fw,fh,sc:3.0*_dSc,delay:3,spd:10,frame:0,total:16,t:0,timer:0,alphaMax:0.8,slowFade:true})}
     }}
     addTxt(fz.x,fz.y-30,_T('💥 불꽃폭발! ')+_totalDmg,'#ff2200',60+_afS2*10);
     const _epC=16+_afS2*8;
@@ -43489,7 +43493,7 @@ function draw(){
       const p=v.t/(v.total*v.spd);
       const sc=v.sc*(1+p*0.4);
       const w=v.fw*sc,h=v.fh*sc;
-      X.globalAlpha=Math.max(0,(p<0.6?1:1-(p-0.6)/0.4)*(v.alphaMax||0.7));
+      X.globalAlpha=Math.max(0,(v.slowFade?(p<0.85?1:1-(p-0.85)/0.15):(p<0.6?1:1-(p-0.6)/0.4))*(v.alphaMax||0.7));
       X.drawImage(v.img,col*v.fw,row*v.fh,v.fw,v.fh,v.x-w/2,v.y-h/2,w,h);
       window._tvfx2[_tw++]=v;
     }
