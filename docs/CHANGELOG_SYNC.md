@@ -29606,3 +29606,21 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - _autosave/game_20260610_174721.html
 - game.html
 
+
+## 2026-06-10 19:30 (auto)
+- _autosave/game_20260610_183352.html
+- _autosave/game_20260610_183403.html
+- _autosave/game_20260610_183429.html
+- _autosave/game_20260610_183439.html
+- game.html
+- sfx/pet/cat_boss_aoe.mp3
+- sfx/pet/cat_boss_groggy.mp3
+- sfx/pet/cat_crisis_hp30.mp3
+- sfx/pet/cat_hp_critical.mp3
+- sfx/pet/cat_warn_hp50.mp3
+- sfx/pet/crow_boss_aoe.mp3
+- sfx/pet/crow_boss_groggy.mp3
+- sfx/pet/crow_crisis_hp30.mp3
+- sfx/pet/crow_hp_critical.mp3
+- sfx/pet/crow_warn_hp50.mp3
+
