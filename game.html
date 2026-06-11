@@ -2961,7 +2961,8 @@ const _MOBILE_DPR_CAP=1.5; // 모바일 DPR 상한
 // ─── [S01b] SUPABASE — 인증 & DB 연동 ───
 const SUPABASE_URL='https://tevlznuhjqcnzgewlswx.supabase.co';
 const SUPABASE_KEY='sb_publishable_chAwadci1zVQNEKPC__s_w_7K3Oz_WP';
-const sb=typeof supabase!=='undefined'?supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
+const _isTestMode=location.search.includes('test=');
+const sb=(!_isTestMode&&typeof supabase!=='undefined')?supabase.createClient(SUPABASE_URL,SUPABASE_KEY):null;
 // Supabase 403 등 unhandled rejection 콘솔 빨간에러 억제
 addEventListener('unhandledrejection',e=>{e.preventDefault()});
 
@@ -13645,7 +13646,7 @@ const _VFX_SOFT_CAP=IS_MOBILE?60:150;
 function poolPart(x,y,vx,vy,col,sz,life,tp,rot,grav,isSkill){
   // VFX 총량 소프트캡: 150 이상이면 비스킬 파티클 스킵
   if(_vfxLiveCount>=_VFX_SOFT_CAP&&!isSkill)return;
-  if(_partSpawnCnt>=(IS_MOBILE?15:50))return;_partSpawnCnt++;
+  if(_partSpawnCnt>=(IS_MOBILE?15:50)&&!isSkill)return;_partSpawnCnt++;
   // 고FPS 파티클 스폰 정규화: ~60/sec 동등하게 확률적 간적
   if(_hiFPS&&Math.random()>_dtSp)return;
   var p;
@@ -34257,9 +34258,11 @@ $('lvUpClose').onclick=()=>{
   G.paused=false;
 };
 // ═══ 기동불꽃 일괄폭발 함수 (Shift+우클릭 / 기동파괴 / 대왕치기에서 호출) ═══
+const _detDeaths=[]; // 폭발 사망 위치 수집용 (재할당 X, 재사용)
 function _detonateAssaultFlames(){
   if(!G._fireZones)return false;
   let _detAny=false;
+  _detDeaths.length=0;
   for(let _di=G._fireZones.length-1;_di>=0;_di--){
     const fz=G._fireZones[_di];if(fz.type!=='assaultFlame')continue;
     _detAny=true;
@@ -34275,29 +34278,11 @@ function _detonateAssaultFlames(){
       hurtE(e,_totalDmg,ang,false,{kbMult:1.2,poiseHit:true,poiseMult:2,explode:true},EL.F);
       e.kb.x+=Math.cos(ang)*8;e.kb.y+=Math.sin(ang)*8;
       e.burnT=Math.max(e.burnT||0,300);e.burnStk=Math.min(10,(e.burnStk||0)+3);
-      // ── 폭발 사망: 파티클 기반 피 대량 분출 (VFX/고어 풀 캡 무관) ──
+      // 사망 위치 수집 (파티클은 나중에 일괄 스폰)
       if(_wasAlive&&!e.alive){
-        const _bCols=['#ff2233','#ee1122','#dd0033','#cc0044','#ff4455','#aa0011'];
-        // 1) 피 방사 파티클 — 큰 입자, 폭발 방향 + 전방위
-        const _bpN=e.ib?24:12;
-        for(let _bp=0;_bp<_bpN;_bp++){
-          const _ba=ang+(Math.random()-.5)*2.0;const _bs=3+Math.random()*8;
-          poolPart(e.x+(Math.random()-.5)*e.r,e.y+(Math.random()-.5)*e.r,
-            Math.cos(_ba)*_bs,Math.sin(_ba)*_bs-1.5,
-            _bCols[~~(Math.random()*6)],2.5+Math.random()*4,14+Math.random()*10);
-        }
-        // 2) 중심 피 분출 (위로 솟구침)
-        for(let _bp=0;_bp<4;_bp++){
-          poolPart(e.x+(Math.random()-.5)*6,e.y,
-            (Math.random()-.5)*3,-4-Math.random()*6,
-            _bCols[~~(Math.random()*6)],3+Math.random()*3,10+Math.random()*6);
-        }
-        // 3) 흰색 플래시 (사망 확인용)
-        poolPart(e.x,e.y,0,0,'#ffffff',e.r||8,8,3,0,0);
-        // 4) 피 웅덩이 + 시체 (풀 여유 있으면)
+        _detDeaths.push(e.x,e.y,e.r||10,ang);
         _addStain(e.x,e.y,Math.max(14,e.r*1.4));
         _addCorpse(e,ang,Math.min(8,_totalDmg/Math.max(1,e.mhp)*20));
-        if(Math.random()<.5)_addGorePiece(e.x,e.y,Math.random()<.6?'flesh':'blood');
       }
     }
     _shBufI--;
@@ -34319,12 +34304,35 @@ function _detonateAssaultFlames(){
       window._tvfx2.push({img:_fBI,x:_dPx,y:_dPy,cols:3,rows:3,fw,fh,sc:1.0*_dSc,delay:0,spd:6,frame:0,total:9,t:0,timer:0,alphaMax:1.0,slowFade:true})}
     }}
     addTxt(fz.x,fz.y-30,_T('💥 불꽃폭발! ')+_totalDmg,'#ff2200',60+_afS2*10);
-    const _epC=16+_afS2*8;
+    const _epC=2+_afS2; // 불꽃 파티클 최소 (16+8*s → 2+s) — 스프라이트 VFX가 메인
     for(let _ep=0;_ep<_epC;_ep++){const _ea=Math.PI*2*_ep/_epC;const _ed=fz.r*.3+Math.random()*fz.r*.5;
-      poolPart(fz.x+Math.cos(_ea)*_ed,fz.y+Math.sin(_ea)*_ed,Math.cos(_ea)*(4+_afS2*2),Math.sin(_ea)*(4+_afS2*2)-2,Math.random()>.3?'#ff4400':'#ffcc00',3+Math.random()*4+_afS2,14+_afS2*3)}
+      poolPart(fz.x+Math.cos(_ea)*_ed,fz.y+Math.sin(_ea)*_ed,Math.cos(_ea)*(4+_afS2*2),Math.sin(_ea)*(4+_afS2*2)-2,Math.random()>.3?'#ff4400':'#ffcc00',4+Math.random()*5+_afS2,14+_afS2*3)}
     G._fireZones.splice(_di,1);
   }
   if(_detAny){playSample('chain_assault_fire',1,_r(.7,.1));playSample('heavy_hit',1,_r(.8,.1))}
+  // ── 사망 피 일괄 스폰: 모든 데미지/VFX 처리 끝난 후 파티클 풀 독점 ──
+  if(_detDeaths.length>0){
+    const _savePCnt=_partCnt; // 현재 파티클 수 기억
+    _partSpawnCnt=0; // 하드캡 리셋
+    const _bCols=['#ff2233','#ee1122','#dd0033','#cc0044','#ff4455','#aa0011'];
+    const _dN=_detDeaths.length>>2; // 4개씩 (x,y,r,ang)
+    // 파티클 예산: 총 _dynPLim의 절반을 피에 할당, 마리당 균등 분배
+    const _budget=Math.max(3,Math.min(16,~~(_dynPLim*.5/_dN)));
+    for(let _di=0;_di<_dN;_di++){
+      const _dx=_detDeaths[_di*4],_dy=_detDeaths[_di*4+1],_dr=_detDeaths[_di*4+2],_da=_detDeaths[_di*4+3];
+      _partSpawnCnt=0; // 매 적마다 리셋
+      // 피 방사
+      for(let _bp=0;_bp<_budget;_bp++){
+        const _ba=_da+(Math.random()-.5)*2.4;const _bs=2+Math.random()*5;
+        poolPart(_dx+(Math.random()-.5)*_dr,_dy+(Math.random()-.5)*_dr,
+          Math.cos(_ba)*_bs,Math.sin(_ba)*_bs-1,
+          _bCols[~~(Math.random()*6)],4+Math.random()*5,40+Math.random()*25,0,0,0,true);
+      }
+      // 플래시 링
+      poolPart(_dx,_dy,0,0,'#ffffff',Math.max(12,_dr*1.2),12,3,0,0,true);
+      poolPart(_dx,_dy,0,0,'#ff2233',Math.max(16,_dr*1.5),18,3,0,0,true);
+    }
+  }
   return _detAny;
 }
 // ═══ 기폭팔 공통 폭발 함수 ═══
@@ -35041,36 +35049,12 @@ function _skIcon(id){const fId=_skFuseIcon(id);const rId=fId||id;const v=SKILL_I
 function _updateScarecrowIcons(){
   const _exActive=!!G._explodeScarecrow;
   const _vsActive=!!G._voidScarecrow;
-  // 모든 스킬 슬롯 요소에서 허수아비 아이콘 찾아 갱신
-  const _allSlots=[
-    ...Array.from({length:6},(_,i)=>({el:$('qs'+i),sid:SKILL_SLOTS[i]})),
-    {el:$('skSlot1'),sid:SKILL_SLOTS[4]},
-    {el:$('skSlot0'),sid:SKILL_SLOTS[5]||null},
-    {el:$('qsE'),sid:P.activeMagicSk||null},
-    {el:$('skSlotCT'),sid:P.activeCtSk||null},
-    {el:$('qsQ'),sid:P.activeQSk||null}
-  ];
-  for(const s of _allSlots){
-    if(!s.el||!s.sid)continue;
-    const img=s.el.querySelector('.qs-icon');if(!img)continue;
-    // 폭발 허수아비 슬롯
-    if(s.sid==='explodeScarecrow'){
-      const want=_exActive?'explodeScarecrow':'voidScarecrow';
-      if(!img.src.includes(want+'.png'))img.src='img/skillskin_upscaled/'+want+'.png';
-    }
-    // 유령 허수아비 슬롯 (합체 dualScarecrow 시 폭발 상태 반영)
-    if(s.sid==='voidScarecrow'&&_isFused('dualScarecrow')){
-      const want=_vsActive?'explodeScarecrow':'voidScarecrow';
-      if(!img.src.includes(want+'.png'))img.src='img/skillskin_upscaled/'+want+'.png';
-    }
-    // 공성쇠뇌 슬롯 (합체 siegeGhost 시 허수아비 상태 반영)
-    if(s.sid==='ghostXbowTurret'&&_isFused('siegeGhost')){
-      const want=_vsActive?'explodeScarecrow':'siegeGhost';
-      if(!img.src.includes(want+'.png')){
-        // siegeGhost 아이콘이 없으면 voidScarecrow 사용
-        img.src='img/skillskin_upscaled/'+(want==='siegeGhost'?'ghostXbowTurret':want)+'.png';
-      }
-    }
+  // HUD 바 전체에서 qs-icon 이미지 스캔 → 허수아비 src 찾아 상태별 교체
+  const _imgs=document.querySelectorAll('#qsRow img.qs-icon, #qsRow img[src*="Scarecrow"], .qs img.qs-icon');
+  for(let i=0;i<_imgs.length;i++){
+    const img=_imgs[i];const s=img.src||'';
+    if(s.includes('explodeScarecrow')&&!_exActive){img.src='img/skillskin_upscaled/voidScarecrow.png';continue}
+    if(s.includes('voidScarecrow')&&_exActive){img.src='img/skillskin_upscaled/explodeScarecrow.png';continue}
   }
 }
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.55) ${deg}deg,transparent ${deg}deg);pointer-events:none;z-index:1"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#ffee66;font-weight:900;text-shadow:0 0 4px #000,0 0 8px #000,0 1px 3px #000;z-index:2">${txt}</div>`:''}`}
