@@ -4466,9 +4466,10 @@ return c;}`;
 //  WebGL2 BACKEND (Immediate Mode)
 // ═══════════════════════════════════════
 function _initWebGL(){
-  try{GL=C.getContext('webgl2',{alpha:false,premultipliedAlpha:false,powerPreference:'high-performance',antialias:false,preserveDrawingBuffer:true})}catch(e){}
+  try{GL=C.getContext('webgl2',{alpha:false,premultipliedAlpha:false,powerPreference:'high-performance',antialias:false,preserveDrawingBuffer:false})}catch(e){}
   if(!GL){if(!IS_ELECTRON)console.log('[GPU] WebGL2 not available');return false}
   _useGL=true;
+  GL.pixelStorei(GL.UNPACK_COLORSPACE_CONVERSION_WEBGL,GL.NONE);
 
   const _VS=`#version 300 es
 layout(location=0)in vec2 aP;layout(location=1)in vec2 aU;layout(location=2)in vec4 aC;layout(location=3)in float aS;layout(location=4)in vec2 aR;
@@ -4881,7 +4882,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:0,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -20560,7 +20561,7 @@ function updateQS(){
         }
         el.className='qs'+(_skOnCd?' cd':'');
         // 아이콘은 스킬 변경 시만 교체 (깜빡임 방지)
-        {const _dispId=_skFuseIcon(_ssid)||_ssid;if(el._skId!==_dispId){el._skId=_dispId;el.innerHTML=_skIcon(_ssid)}}
+        {const _dispId=_skFuseIcon(_ssid)||_ssid;const _stateKey=_ssid==='explodeScarecrow'?(_dispId+(G._explodeScarecrow?'_active':'')):_dispId;if(el._skId!==_stateKey){el._skId=_stateKey;el.innerHTML=_skIcon(_ssid);if(_ssid==='explodeScarecrow')console.log('[ESC-ICON] stateKey=',_stateKey,'G._expl=',!!G._explodeScarecrow,'html=',el.innerHTML.slice(0,80))}}
         // 쿨다운 오버레이만 갱신
         let _cdEl=el.querySelector('._skCd');
         if(_skOnCd||_skStkTxt){
@@ -24374,7 +24375,7 @@ function update(){
         for(let _ti=0;_ti<G._thunderStakes.length;_ti++){for(let _tj=_ti+1;_tj<G._thunderStakes.length;_tj++){
           const _ta=G._thunderStakes[_ti],_tb=G._thunderStakes[_tj];
           const _td=dst(_ta.x,_ta.y,_tb.x,_tb.y);if(_td>1000)continue;
-          const _arcDmg=~~((_ta.dmg+_tb.dmg)*0.5);
+          const _arcDmg=~~((_ta.dmg+_tb.dmg)*0.175);
           const _mx=(_ta.x+_tb.x)/2,_my=(_ta.y+_tb.y)/2;
           const _ne=shQuery(_mx,_my,_td/2+40);
           // 전류강화: 아크 선분이 iceStorm 존과 교차하면 데미지×2 (물→전기 반응, 2026-05-08 holyDome 제외)
@@ -33267,6 +33268,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(e.hp<=0)return; // 2026-04-17 이미 죽은 적 이중 처리 방지 (alive 플래그 지연 케이스)
   if(window._btDmgLog)window._btDmgLog.push({t:_now,src:'player',dmg:dmg});
   _shBufI++; // ═══ shQuery 버퍼 보호: 내부 shQuery 호출이 호출자의 결과를 오염시키지 않도록 ═══
+  try{
   _petOnAtk();
   const isDot=opts&&opts.dot;
   // 부활 무적 (캡 180, 피격마다 감소)
@@ -34197,6 +34199,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     checkRooms(); // Immediate check on kill
     if(G.kills%10===0)dbSaveNow(); // 10킬마다 자동저장
   }
+  }finally{_shBufI--} // ═══ shQuery 버퍼 반환 (누락 시 버퍼 오버플로우 → 폭발 범위 적중 누락) ═══
 }
 
 // ═══ 초월 레벨 (1000+) 헬퍼 ═══
@@ -35008,7 +35011,7 @@ function _skFuseIcon(id){
     timeWarp:_isFused('timeStep')?'timeStep':null};
   return _fIcoMap[id]||null;
 }
-function _skIcon(id){const fId=_skFuseIcon(id);const rId=fId||id;const v=SKILL_ICONS[rId];if(!v){if(fId){return`<img class="qs-icon" src="img/skillskin_upscaled/${fId}.png" alt="" onerror="this.style.display='none'">`}return''}const f=v===1?rId:v;return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="" onerror="this.style.display='none'">`}
+function _skIcon(id){const fId=_skFuseIcon(id);const rId=fId||id;const v=SKILL_ICONS[rId];if(!v){if(fId){return`<img class="qs-icon" src="img/skillskin_upscaled/${fId}.png" alt="" onerror="this.style.display='none'">`}return''}let f=v===1?rId:v;if(id==='explodeScarecrow')f=G._explodeScarecrow?'explodeScarecrow':'voidScarecrow';return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="" onerror="this.style.display='none'">`}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.55) ${deg}deg,transparent ${deg}deg);pointer-events:none;z-index:1"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#ffee66;font-weight:900;text-shadow:0 0 4px #000,0 0 8px #000,0 1px 3px #000;z-index:2">${txt}</div>`:''}`}
 const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -35322,8 +35325,8 @@ const _SK_MUL={
   fireAura:{b:10,g:8.0},       // 5t/s → Lv20 DPS=430
   darkPillar:{b:20,g:16.0},    // 2t/s → Lv20 DPS=344
   spikeTrap:{b:14,g:11.2},     // 2.4t/s → Lv20 DPS=288 (+슬로우+출혈)
-  bladeDash:{b:20,g:12},       // 3t/s → Lv20 DPS=402 (+방어력감소)
-  thunderStake:{b:2.4,g:1.6},  // 아크×0.5, 1.5t/s → Lv20 DPS=26 (90% 너프)
+  bladeDash:{b:3.5,g:2.1},      // 3t/s → Lv20 DPS≈70 (추가 30% 너프)
+  thunderStake:{b:2.4,g:1.6},  // 아크×0.25, 1.5t/s → Lv20 DPS≈13 (아크 계수 50% 너프)
   // ── 연발 채널링 ──
   arcLaser:{b:8,g:6.4},        // 4t/s → Lv20 DPS=276. E홀드 직선관통
   omniBeam:{b:0.75,g:0.6},     // 50%↑ (구 b:0.5,g:0.4). 15t/s×6줄기 → 타겟당 Lv20 DPS≈87, 총DPS≈580
@@ -36118,6 +36121,7 @@ function activateExplodeScarecrow(){
   G._explodeScarecrow={x:P.x,y:P.y,maxAbsorb:maxAbsorb,absorbed:0,aggroOn:true,lv:slv,dmgPool:0};
   playSample('ghost_laugh',1.2,_r(1.3,.1));
     addParts(P.x,P.y,'#ff4422',10);shake(2);
+  updateQS();
 }
 function _detonateExplodeScarecrow(){
   const es=G._explodeScarecrow;if(!es)return;
@@ -36157,6 +36161,7 @@ function _doExplodeScarecrowBoom(){
   else addTxt(_esX,_esY-40,_T('불발...'),'#ff8844',40);
   G._explodeScarecrow=null;
   P._exsCd=1200; // 20초 쿨 고정
+  updateQS();
 }
 function _fireExsBoom(bx,by,boomR,boom,absorbed,absRatio){
   const _ar=absRatio||0;
@@ -38862,6 +38867,8 @@ try{
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
     // 2026-05-19 마이그레이션: 기본 커서 다크커서 강제
     OPT.cursor=0;
+    // 2026-06-11 마이그레이션: fpsCap 0(무제한)→60 기본값 (120Hz 맥 ProMotion 대응)
+    if(!OPT.fpsCap)OPT.fpsCap=60;
     // 2026-04-17 마이그레이션: 사용자 UI 배율(uiScale/uiScaleAuto) 기능 완전 제거 — 기존 저장값 삭제
     if('uiScale' in OPT)delete OPT.uiScale;
     if('uiScaleAuto' in OPT)delete OPT.uiScaleAuto;
@@ -43343,7 +43350,7 @@ function draw(){
   }
   // ── lighter 통합 블록 (GL flush로 stall 최소화) ──
   const _vfxT0=performance.now();
-  if(_useGL&&GL){_flush();GL.flush()} // GPU 백로그 미리 제출
+  if(_useGL&&GL){_flush()} // GPU 배칭 제출 (GL.flush 제거 — 브라우저 자동 제출, Metal 스톨 방지)
   X.save();X.globalCompositeOperation='lighter';
   const _vfxT1=performance.now();
   {
@@ -51234,7 +51241,7 @@ function _b3animate(){
   const cW=c?c.width:innerWidth,cH=c?c.height:innerHeight;
   const physX=cW/2+(bE.x-G.cam.x);
   const physY=cH/2+(bE.y-G.cam.y);
-  const scale=(typeof _dpr!=='undefined'?_dpr:devicePixelRatio)*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
+  const scale=(typeof _dpr!=='undefined'?_dpr:Math.min(devicePixelRatio||1,1.5))*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
   const cssX=physX/scale,cssY=physY/scale;
   const W=innerWidth,H=innerHeight;
 
@@ -51292,7 +51299,7 @@ if(!CVS)return;
 
 const SZ=140;
 const R=new THREE.WebGLRenderer({canvas:CVS,alpha:true,antialias:true,powerPreference:'high-performance'});
-R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio,2));
+R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
 CVS.style.width=CVS.style.height=SZ+'px';
 R.setClearColor(0,0);R.outputColorSpace=THREE.SRGBColorSpace;
 R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
@@ -51372,7 +51379,7 @@ window._chest3d={
 function updatePos(){
   const c=document.getElementById('c');
   if(!c||typeof G==='undefined'||!G.on)return;
-  const sc=(typeof _dpr!=='undefined'?_dpr:devicePixelRatio)*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
+  const sc=(typeof _dpr!=='undefined'?_dpr:Math.min(devicePixelRatio||1,1.5))*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
   const cssX=(c.width/2+(_wx-G.cam.x))/sc;
   const cssY=(c.height/2+(_wy-G.cam.y))/sc;
   if(cssX<-200||cssX>innerWidth+200||cssY<-200||cssY>innerHeight+200){CVS.style.opacity='0';return;}

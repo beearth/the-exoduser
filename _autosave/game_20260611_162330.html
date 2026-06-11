@@ -9692,7 +9692,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
           playSample('ghost_laugh',1.2,_r(1,.1));SFX.scarecrowCharge();
           // null 해제 지연 — 부풀기 끝나면 업데이트 루프에서 처리
         } else {
-          G._voidScarecrow=null;_updateScarecrowIcons(); // 회수 시 쿨 없음
+          G._voidScarecrow=null; // 회수 시 쿨 없음
         }
         _skOk=true;
       } else if((P._vsCd||0)<=0){activateVoidScarecrow();_skOk=true}
@@ -9723,7 +9723,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
             playSample('ghost_laugh',1.2,_r(1,.1));SFX.scarecrowCharge();
           }else{
             addParts(P.x,P.y,'#bb88ee',8);SFX.scarecrowRecall();
-            G._voidScarecrow=null;_updateScarecrowIcons();
+            G._voidScarecrow=null;
           }
         }
         showPH(_T('공성쇠뇌 철거 → 이동식'),'#66aadd');playSample('bow_release',.4,_r(1.2,.1));
@@ -27563,7 +27563,7 @@ function update(){
       _fireExsBoom(_vs.x,_vs.y,_dsBoomR,_dsDmg,_dsAb,_dsAb/Math.max(1,_vs.maxAbsorb));
       const _boomLabel=_vs._siegeBoom?_T('💥 공성유령 폭발!'):_T('합체 폭발!');
       if(_dsAb>0){addTxt(_vs.x,_vs.y-50,_boomLabel,'#ffcc00',60);addParts(_vs.x,_vs.y,'#ff6622',20);shake(Math.min(15,5+_dsAb*.4));SFX.detonate()}
-      G._voidScarecrow=null;_updateScarecrowIcons();
+      G._voidScarecrow=null;
     }
   }
   // ═══ 유령 허수아비 — 거리 3000px 자동회수 (공성유령 합체 시 제외) ═══
@@ -27577,7 +27577,7 @@ function update(){
       }
       addExp(1000);addTxt(P.x,P.y-50,'+1000 XP','#ffcc44',50);
       addParts(P.x,P.y,'#bb88ee',10);SFX.scarecrowRecall();
-      G._voidScarecrow=null;_updateScarecrowIcons(); // 자동회수 시 쿨 없음
+      G._voidScarecrow=null; // 자동회수 시 쿨 없음
     }
   }
   // ═══ 푸른비 — 쿨다운 ═══
@@ -36133,7 +36133,6 @@ function activateVoidScarecrow(){
   }
   playSample('ghost_laugh',1.6,_r(1,.1));
     addParts(P.x,P.y,'#aa66dd',10);shake(2);
-  _updateScarecrowIcons();
 }
 // ═══ 폭발 허수아비 — 설치 + 폭발 ═══
 function activateExplodeScarecrow(){
