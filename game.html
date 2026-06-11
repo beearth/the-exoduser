@@ -24374,7 +24374,7 @@ function update(){
         for(let _ti=0;_ti<G._thunderStakes.length;_ti++){for(let _tj=_ti+1;_tj<G._thunderStakes.length;_tj++){
           const _ta=G._thunderStakes[_ti],_tb=G._thunderStakes[_tj];
           const _td=dst(_ta.x,_ta.y,_tb.x,_tb.y);if(_td>1000)continue;
-          const _arcDmg=~~((_ta.dmg+_tb.dmg)*0.5);
+          const _arcDmg=~~((_ta.dmg+_tb.dmg)*0.25);
           const _mx=(_ta.x+_tb.x)/2,_my=(_ta.y+_tb.y)/2;
           const _ne=shQuery(_mx,_my,_td/2+40);
           // 전류강화: 아크 선분이 iceStorm 존과 교차하면 데미지×2 (물→전기 반응, 2026-05-08 holyDome 제외)
@@ -35322,8 +35322,8 @@ const _SK_MUL={
   fireAura:{b:10,g:8.0},       // 5t/s → Lv20 DPS=430
   darkPillar:{b:20,g:16.0},    // 2t/s → Lv20 DPS=344
   spikeTrap:{b:14,g:11.2},     // 2.4t/s → Lv20 DPS=288 (+슬로우+출혈)
-  bladeDash:{b:20,g:12},       // 3t/s → Lv20 DPS=402 (+방어력감소)
-  thunderStake:{b:2.4,g:1.6},  // 아크×0.5, 1.5t/s → Lv20 DPS=26 (90% 너프)
+  bladeDash:{b:10,g:6},        // 3t/s → Lv20 DPS=201 (50% 너프)
+  thunderStake:{b:1.2,g:0.8},  // 아크×0.25, 1.5t/s → Lv20 DPS=13 (50% 추가 너프)
   // ── 연발 채널링 ──
   arcLaser:{b:8,g:6.4},        // 4t/s → Lv20 DPS=276. E홀드 직선관통
   omniBeam:{b:0.75,g:0.6},     // 50%↑ (구 b:0.5,g:0.4). 15t/s×6줄기 → 타겟당 Lv20 DPS≈87, 총DPS≈580

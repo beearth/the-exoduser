@@ -43,7 +43,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 |---|---|---|---|---|---|---|
 | chargeBoost | 사슬기동:충돌 | ST | 10×1=10 → 10×10=100 (물리할인) | 3회 충전식 | STR × meleeRef × pAtkMul | 충전 3회, 이동중 무적, 관통뎀+그로기 |
 | magicBlink | 사슬기동:화염 | MP | 10×1=10 → 10×10=100 (마법할인) | 없음 | INT × magicRef × pMagicMul | 경로 화염길 3초 DOT, 합체 시 착지폭발 |
-| bladeDash | 전격이동 | MP | 10+(Lv-1)×5 (1렙10, 10렙55) | 1렙10스택, 렙당+1. 쿨 300f→Lv당-18f(최소120f=2초). 1렙5초 | magicRef × INT × pMagicMul × **_skMul('bladeDash')** (b:10, g:6) 틱뎀 | 3tick/s → DPS 30(Lv1)→244(Lv20). 착지 전류장판 반경 캡200px (120+Lv×5). VFX: Power Lightning 스프라이트 |
+| bladeDash | 전격이동 | MP | 10+(Lv-1)×5 (1렙10, 10렙55) | 1렙10스택, 렙당+1. 쿨 300f→Lv당-18f(최소120f=2초). 1렙5초 | magicRef × INT × pMagicMul × **_skMul('bladeDash')** (b:10, g:6) 틱뎀 | 3tick/s → DPS 30(Lv1)→122(Lv20). 착지 전류장판 반경 캡200px (120+Lv×5). VFX: Power Lightning 스프라이트. (50% 너프 2026-06-11) |
 | chainAssault | 기동불꽃 | MP | mpCost('dimBreach') | 없음 (이동 중) | INT × _skMul('chainAssault') × **티어3단계(×30/×60/×100)** | 착지 화염폭발, 3티어=업화선 2.5초 차징급 |
 | chainSlam | 기동파괴 | ST + 악의20 | stCost('giantSlam') | 없음 (이동 중) | STR × _skMul('chainSlam') × **티어3단계(×2/×5/×8)** | 보스 체간 대량삭감, 대왕치기급 데미지 (2026-05-30 재조정) |
 | chainSlash | 기동칼날개 | 없음 | 0 | 없음 (이동 중) | STR 물리 | 전방 광역 베기+출혈, 다단히트 (레벨제한 없음) |
@@ -109,7 +109,7 @@ DPS_BAL = { bow: 0.77, magic: 0.475, beam: 0.0080 }
 | blueShot | 푸른비 | MP | **100+1.5×Lv** (110~115) | **300f (5초)** | INT × magicRef × pMagicMul × _skMul('blueShot') (b=4.0, g=3.2) | 50발 순차유도, Lv300 해금. **Lv1=4×, Lv10=18.4×, Lv20=34.4× (g 2배 상향 2026-05-19)** |
 | burstLoop | 버스트루프 | 없음 | 0 | 없음 | INT × (mul+(Lv-1)) mul=1/3/5 | 홀드 차지, 범위 500/700/900px (합체600/800/1000), Lv700, Lv당 뎀+1 |
 | hellRay | 참회 | MP | **100/충전** | **600f (10초)/충전** | magicRef × INT × pMagicMul × pBeamMul × _skMul('hellRay') | 에너지 쐐기, 회전+뎀. ~~증표 시스템 삭제(2026-05-29)~~ |
-| thunderStake | 뇌전창 | MP | **50/개** | **스택 5개 (12초/충전, Lv10→6)** | INT × magicRef × pMagicMul × _skMul('thunderStake') (b=12, g=8.0) | 전기창 설치, 1000px 이내 쌍끼리 전기 아크→경로 적 틱뎀 **(×0.50/20f)**, 감전, 10초+0.5초/Lv. **Lv1=12×, Lv10=48×, Lv20=88×. DPS≈132** (2026-05-30) |
+| thunderStake | 뇌전창 | MP | **50/개** | **스택 5개 (12초/충전, Lv10→6)** | INT × magicRef × pMagicMul × _skMul('thunderStake') (b=1.2, g=0.8) | 전기창 설치, 1000px 이내 쌍끼리 전기 아크→경로 적 틱뎀 **(×0.25/20f)**, 감전, 10초+0.5초/Lv. **Lv1=1.2×, Lv10=4.8×, Lv20=8.8×. DPS≈13** (50% 너프 2026-06-11) |
 
 ---
 

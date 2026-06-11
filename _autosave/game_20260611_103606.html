@@ -3778,8 +3778,7 @@ function _bakeFog(w,h,hell){
   fc.fillStyle=fg;fc.fillRect(0,0,w,h);_fogW=w;_fogH=h;_fogHell=hell;
 }
 function rz(){
-  _dpr=window.devicePixelRatio||1;
-  if(IS_MOBILE&&_dpr>_MOBILE_DPR_CAP)_dpr=_MOBILE_DPR_CAP; // 모바일 DPR 캡
+  _dpr=Math.min(window.devicePixelRatio||1,1.5); // DPR 캡 1.5 (Retina 4x fillrate 방지)
   const _rsf=(OPT.resScale||100)/100;
   // 캔버스 = 물리 픽셀 (DPR 적용), CSS = CSS픽셀 → 물리 1:1 매핑
   let rw=(~~(innerWidth*_dpr*_rsf))&~1, rh=(~~(innerHeight*_dpr*_rsf))&~1;
@@ -4467,7 +4466,7 @@ return c;}`;
 //  WebGL2 BACKEND (Immediate Mode)
 // ═══════════════════════════════════════
 function _initWebGL(){
-  try{GL=C.getContext('webgl2',{alpha:false,premultipliedAlpha:false,powerPreference:'high-performance',antialias:false,preserveDrawingBuffer:true})}catch(e){}
+  try{GL=C.getContext('webgl2',{alpha:false,premultipliedAlpha:false,powerPreference:'high-performance',antialias:false,preserveDrawingBuffer:false})}catch(e){}
   if(!GL){if(!IS_ELECTRON)console.log('[GPU] WebGL2 not available');return false}
   _useGL=true;
 
@@ -4882,7 +4881,7 @@ function keyName(code){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:0,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:2,minPickRar:0,minPickLvTier:0,fpsCap:60,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -35324,7 +35323,7 @@ const _SK_MUL={
   darkPillar:{b:20,g:16.0},    // 2t/s → Lv20 DPS=344
   spikeTrap:{b:14,g:11.2},     // 2.4t/s → Lv20 DPS=288 (+슬로우+출혈)
   bladeDash:{b:20,g:12},       // 3t/s → Lv20 DPS=402 (+방어력감소)
-  thunderStake:{b:2.4,g:1.6},  // 아크×0.5, 1.5t/s → Lv20 DPS=26 (90% 너프)
+  thunderStake:{b:1.2,g:0.8},  // 아크×0.25, 1.5t/s → Lv20 DPS=13 (50% 추가 너프)
   // ── 연발 채널링 ──
   arcLaser:{b:8,g:6.4},        // 4t/s → Lv20 DPS=276. E홀드 직선관통
   omniBeam:{b:0.75,g:0.6},     // 50%↑ (구 b:0.5,g:0.4). 15t/s×6줄기 → 타겟당 Lv20 DPS≈87, 총DPS≈580
@@ -38072,7 +38071,7 @@ let _matsSyncTimer=0,_matsSyncLast=0,_matsSyncDirty=false,_matsPrev=0;
 const _isLocalServer=location.hostname==='localhost'||location.hostname==='127.0.0.1'||location.protocol==='file:';
 function _saveSharedMatsToServer(n){if(!_isLocalServer)return;try{fetch('/api/mats',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mats:n})}).catch(()=>{})}catch(e){}}
 // 디바운스 동기화: mats 변경 시 호출, 3초 이내 중복 방지
-function _matsDirty(){if(!isFinite(G.mats))G.mats=0;_matsSyncDirty=true;const now=Date.now();if(now-_matsSyncLast>=3000){_matsSyncLast=now;_matsSyncDirty=false;_saveSharedMats(G.mats||0)}else if(!_matsSyncTimer){_matsSyncTimer=setTimeout(()=>{_matsSyncTimer=0;if(_matsSyncDirty){_matsSyncLast=Date.now();_matsSyncDirty=false;_saveSharedMats(G.mats||0)}},3000-(now-_matsSyncLast))}}
+function _matsDirty(){if(!isFinite(G.mats)){console.warn('[MATS] NaN detected!',new Error().stack);G.mats=0;}_matsSyncDirty=true;const now=Date.now();if(now-_matsSyncLast>=3000){_matsSyncLast=now;_matsSyncDirty=false;_saveSharedMats(G.mats||0)}else if(!_matsSyncTimer){_matsSyncTimer=setTimeout(()=>{_matsSyncTimer=0;if(_matsSyncDirty){_matsSyncLast=Date.now();_matsSyncDirty=false;_saveSharedMats(G.mats||0)}},3000-(now-_matsSyncLast))}}
 async function _loadSharedMatsFromServer(){if(!_isLocalServer)return _loadSharedMats();try{const r=await fetch('/api/mats');if(r.ok){const j=await r.json();if(j.ok&&isFinite(j.mats)&&j.mats>=0){const n=Math.min(j.mats,Number.MAX_SAFE_INTEGER);localStorage.setItem(_SHARED_MATS_KEY,String(n));return n}}return _loadSharedMats()}catch(e){return _loadSharedMats()}}
 function _getStore(){
   // 계정 공유 창고: localStorage에서 로드, STORAGE[0]은 참조만 유지
@@ -38863,6 +38862,8 @@ try{
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
     // 2026-05-19 마이그레이션: 기본 커서 다크커서 강제
     OPT.cursor=0;
+    // 2026-06-11 마이그레이션: fpsCap 0(무제한)→60 기본값 (120Hz 맥 ProMotion 대응)
+    if(!OPT.fpsCap)OPT.fpsCap=60;
     // 2026-04-17 마이그레이션: 사용자 UI 배율(uiScale/uiScaleAuto) 기능 완전 제거 — 기존 저장값 삭제
     if('uiScale' in OPT)delete OPT.uiScale;
     if('uiScaleAuto' in OPT)delete OPT.uiScaleAuto;
@@ -43344,7 +43345,7 @@ function draw(){
   }
   // ── lighter 통합 블록 (GL flush로 stall 최소화) ──
   const _vfxT0=performance.now();
-  if(_useGL&&GL){_flush();GL.flush()} // GPU 백로그 미리 제출
+  if(_useGL&&GL){_flush()} // GPU 배칭 제출 (GL.flush 제거 — 브라우저 자동 제출, Metal 스톨 방지)
   X.save();X.globalCompositeOperation='lighter';
   const _vfxT1=performance.now();
   {
@@ -51094,7 +51095,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 const _b3cvs=document.getElementById('boss3dCvs');
 const _b3r=new THREE.WebGLRenderer({canvas:_b3cvs,alpha:true,antialias:false});
-_b3r.setPixelRatio(Math.min(window.devicePixelRatio,2));
+_b3r.setPixelRatio(Math.min(window.devicePixelRatio||1,1.5));
 _b3r.setClearColor(0x000000,0);
 const _b3clipFloor=new THREE.Plane(new THREE.Vector3(0,1,0),0);
 _b3r.clippingPlanes=[];
@@ -51235,7 +51236,7 @@ function _b3animate(){
   const cW=c?c.width:innerWidth,cH=c?c.height:innerHeight;
   const physX=cW/2+(bE.x-G.cam.x);
   const physY=cH/2+(bE.y-G.cam.y);
-  const scale=(typeof _dpr!=='undefined'?_dpr:devicePixelRatio)*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
+  const scale=(typeof _dpr!=='undefined'?_dpr:Math.min(devicePixelRatio||1,1.5))*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
   const cssX=physX/scale,cssY=physY/scale;
   const W=innerWidth,H=innerHeight;
 
@@ -51293,7 +51294,7 @@ if(!CVS)return;
 
 const SZ=140;
 const R=new THREE.WebGLRenderer({canvas:CVS,alpha:true,antialias:true,powerPreference:'high-performance'});
-R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio,2));
+R.setSize(SZ,SZ);R.setPixelRatio(Math.min(devicePixelRatio||1,1.5));
 CVS.style.width=CVS.style.height=SZ+'px';
 R.setClearColor(0,0);R.outputColorSpace=THREE.SRGBColorSpace;
 R.shadowMap.enabled=true;R.shadowMap.type=THREE.PCFSoftShadowMap;
@@ -51373,7 +51374,7 @@ window._chest3d={
 function updatePos(){
   const c=document.getElementById('c');
   if(!c||typeof G==='undefined'||!G.on)return;
-  const sc=(typeof _dpr!=='undefined'?_dpr:devicePixelRatio)*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
+  const sc=(typeof _dpr!=='undefined'?_dpr:Math.min(devicePixelRatio||1,1.5))*((typeof OPT!=='undefined'&&OPT.resScale)?OPT.resScale/100:1);
   const cssX=(c.width/2+(_wx-G.cam.x))/sc;
   const cssY=(c.height/2+(_wy-G.cam.y))/sc;
   if(cssX<-200||cssX>innerWidth+200||cssY<-200||cssY>innerHeight+200){CVS.style.opacity='0';return;}
