@@ -29637,3 +29637,8 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html.bak_20260611_dprcap
 - game.html.bak_20260611_pdb
 
+
+## 2026-06-11 10:30 (auto)
+- _autosave/game_20260611_013119.html
+- game.html.bak_20260611_flush
+
