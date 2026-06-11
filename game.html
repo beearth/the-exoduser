@@ -26249,6 +26249,7 @@ function update(){
   // 오브젝트 풀 파티클 업데이트 (히트스톱 중은 위에서 정상속도 처리)
   if(!_hsActive)poolUpdate(sp);
   updateCrescents(_dtSp);
+  _updateBloodSplats(_dtSp);
   if(_cresCd>0)_cresCd-=_dtSp;
   if(_cresComboT>0){_cresComboT-=_dtSp;if(_cresComboT<=0)_cresStep=0;}
   if(P._execCd>0)P._execCd-=_dtSp; // 처형 쿨다운
@@ -33778,7 +33779,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // ═══ 유니크 On-Kill 효과 ═══
     // _uMaceExplode: 적 처치 시 폭발 (최대HP의 30% AoE)
     if(_uEq('_uMaceExplode')>0){const _exD=~~(e.mhp*_uEq('_uMaceExplode'));const _exQ=shQuery(e.x,e.y,150);for(let _ei=0;_ei<_exQ.length;_ei++){if(_exQ[_ei].alive&&_exQ[_ei]!==e)hurtE(_exQ[_ei],_exD,Math.atan2(_exQ[_ei].y-e.y,_exQ[_ei].x-e.x),true,{dot:true})}addTxt(e.x,e.y-20,_T('💥유니크 폭발!'),'#ff4466',40)}
-    const _isBurnDeath=atkEl===EL.F||(opts&&opts.beam);
+    const _isBurnDeath=(atkEl===EL.F||(opts&&opts.beam))&&!(opts&&opts.explode); // explode: 화염이어도 고어/시체 정상 출력
     const _isWhirlKill=(P.s==='whirlwind'&&!(opts&&opts.detonate));
     atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;_petOnKill();
     // 버스트루프 광역 사망음 카운터
@@ -33799,21 +33800,18 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(G.combo>=1000&&G.combo%1000===0){const _cbPct=~~((~~(G.combo/100)*0.05+(OPT.diff||0)*0.10)*100);addTxt(P.x,P.y-40,'🔥 '+G.combo+' COMBO!'+(_cbPct>0?' +'+_cbPct+_L('%보상','% Bonus'):''),'#ffaa00',50)}
     const _killAng=ang!==undefined?ang:Math.atan2(e.y-P.y,e.x-P.x);
     if(!_isWhirlKill)_spawnLargeMonsterDeathFx(e,_killAng);
-    // 시체 잔해 — 모든 사망 (화염은 burnCorpse가 대신)
-    if(!_isBurnDeath){const _cp=Math.min(8,dmg/Math.max(1,e.mhp)*20);_addCorpse(e,_killAng,_cp)}
-    // 화염/빔 사망 → 불타는 시체 + 전용 사운드
+    // 시체 잔해 — 모든 사망 (화염 포함, 몬스터가 그냥 사라지면 안 됨)
+    {const _cp=Math.min(8,dmg/Math.max(1,e.mhp)*20);_addCorpse(e,_killAng,_cp)}
+    // 화염/빔 사망 → 추가로 불타는 시체 + 전용 사운드
     if(_isBurnDeath){_addBurnCorpse(e);playSample((opts&&opts.beam)?['fire_death','fire_death2','fire_death3'][Math.random()*3|0]:'fire_hit',.5,_r(1,.15));playVFXAng('burn_death',e.x,e.y-e.r*0.3,Math.max(0.15,e.r*2.2/211),4,0,false)}
-    // 큰 몬스터는 기본 사망 시 큰 시체 파편(gib) 생성
-    // 모든 사망 시 gib + 스프라이트 분할 (화염 제외)
-    if(!_isBurnDeath){//_addSplitGibs(e,_killAng); // 비활성 — 고어 시스템으로 대체
-      // gore 파편: 일반 1개(살점/피/내장 위주), 대형/보스 2개
-      {const _gL=e.ib||e.r>=18;
-      const _gCommon=['flesh','flesh','flesh','blood','blood','intestine','organ','tendon'];
-      const _gRare=['bone','eye','skull','heart','finger','tooth'];
-      const _gPick=Math.random()<.8?_gCommon:_gRare;
-      _addGorePiece(e.x,e.y,_gPick[~~(Math.random()*_gPick.length)]);
-      if(_gL)_addGorePiece(e.x,e.y,Math.random()<.5?'intestine':'organ')}
-      _addDeathImpact(e.x,e.y,e.r)}
+    // gore 파편 + 사망 임팩트 — 모든 사망
+    {const _gL=e.ib||e.r>=18;
+    const _gCommon=['flesh','flesh','flesh','blood','blood','intestine','organ','tendon'];
+    const _gRare=['bone','eye','skull','heart','finger','tooth'];
+    const _gPick=Math.random()<.8?_gCommon:_gRare;
+    _addGorePiece(e.x,e.y,_gPick[~~(Math.random()*_gPick.length)]);
+    if(_gL)_addGorePiece(e.x,e.y,Math.random()<.5?'intestine':'organ')}
+    _addDeathImpact(e.x,e.y,e.r);
     if(e._fromHole!=null&&G.spawnHoles[e._fromHole])G.spawnHoles[e._fromHole].alive--;
     if(e.ib&&e._bossRevJudged){addTxt(e.x,e.y-45,_T('💀 부활 판정 중...'),'#ff8844',90);G._flashT=3;G._flashCol='#ff4400'}
     else if(e.ib){addTxt(e.x,e.y-45,_T('☠ 완전 사망!'),'#ff4400',90);G._flashT=6;G._flashCol='#ffffff';G._chromaT=5}
@@ -34259,6 +34257,44 @@ $('lvUpClose').onclick=()=>{
 };
 // ═══ 기동불꽃 일괄폭발 함수 (Shift+우클릭 / 기동파괴 / 대왕치기에서 호출) ═══
 const _detDeaths=[]; // 폭발 사망 위치 수집용 (재할당 X, 재사용)
+// ═══ 대량 사망 피 스플래시 시스템 (모든 풀 캡 우회, 직접 렌더) ═══
+const _bloodSplats=[];
+function _addBloodSplat(x,y,r,ang){
+  _bloodSplats.push({x,y,r:Math.max(10,r),ang,t:0,maxT:90,sz:r*2+Math.random()*20});
+}
+function _updateBloodSplats(sp){
+  for(let i=_bloodSplats.length-1;i>=0;i--){
+    const b=_bloodSplats[i];b.t+=sp;
+    if(b.t>=b.maxT){_bloodSplats.splice(i,1)}
+  }
+}
+function _renderBloodSplats(X,cam){
+  if(!_bloodSplats.length)return;
+  for(let i=0;i<_bloodSplats.length;i++){
+    const b=_bloodSplats[i];
+    const prog=b.t/b.maxT;
+    const alpha=prog<.3?1:1-(prog-.3)/.7; // 0.3까지 불투명, 이후 페이드
+    const expand=.3+prog*.7; // 30%→100% 확장
+    const sz=b.sz*expand;
+    X.save();
+    X.globalAlpha=alpha*.8;
+    X.globalCompositeOperation='source-over';
+    // 피 원형 스플래시
+    X.fillStyle='#cc1122';
+    X.beginPath();X.arc(b.x,b.y,sz*.5,0,Math.PI*2);X.fill();
+    // 내부 밝은 코어
+    X.fillStyle='#ff3344';
+    X.beginPath();X.arc(b.x,b.y,sz*.25,0,Math.PI*2);X.fill();
+    // 방향성 피 튀김 (3줄기)
+    X.strokeStyle='#ee1133';X.lineWidth=3+b.r*.1;X.lineCap='round';
+    for(let j=0;j<3;j++){
+      const a=b.ang+(j-1)*.5;const len=sz*(.4+Math.random()*.3);
+      X.globalAlpha=alpha*.6;
+      X.beginPath();X.moveTo(b.x,b.y);X.lineTo(b.x+Math.cos(a)*len,b.y+Math.sin(a)*len);X.stroke();
+    }
+    X.restore();
+  }
+}
 function _detonateAssaultFlames(){
   if(!G._fireZones)return false;
   let _detAny=false;
@@ -34268,7 +34304,7 @@ function _detonateAssaultFlames(){
     _detAny=true;
     const _remT=fz.maxT-fz.t;const _ticks=~~(_remT/20);
     const _totalDmg=fz.dmg*Math.max(1,_ticks)*2; // 바닥불꽃 폭발 2배 버프
-    const _detR=fz.r*3.0; // 폭발 데미지 범위 확대 (1.8→3.0)
+    const _detR=fz.r*3.0; // 폭발 데미지 범위 확대
     _shBufI++;
     const _detNe=shQuery(fz.x,fz.y,_detR+20);
     for(let _si=0;_si<_detNe.length;_si++){const e=_detNe[_si];if(!e.alive)continue;
@@ -34278,11 +34314,11 @@ function _detonateAssaultFlames(){
       hurtE(e,_totalDmg,ang,false,{kbMult:1.2,poiseHit:true,poiseMult:2,explode:true},EL.F);
       e.kb.x+=Math.cos(ang)*8;e.kb.y+=Math.sin(ang)*8;
       e.burnT=Math.max(e.burnT||0,300);e.burnStk=Math.min(10,(e.burnStk||0)+3);
-      // 사망 위치 수집 (파티클은 나중에 일괄 스폰)
+      // 사망: 피 스플래시 + 위치 수집
       if(_wasAlive&&!e.alive){
+        _addBloodSplat(e.x,e.y,e.r||10,ang); // 캡 없는 전용 피 시스템
         _detDeaths.push(e.x,e.y,e.r||10,ang);
         _addStain(e.x,e.y,Math.max(14,e.r*1.4));
-        _addCorpse(e,ang,Math.min(8,_totalDmg/Math.max(1,e.mhp)*20));
       }
     }
     _shBufI--;
@@ -43362,6 +43398,8 @@ function draw(){
   if(!_fOverBudget&&_goreReady){for(let gi=0;gi<_GORE_MAX;gi++){const g=_gorePieces[gi];if(!g.active||!g.img||g.camFling)continue;if(g.x<_vl-30||g.x>_vr+30||g.y<_vt-30||g.y>_vb+30)continue;const alpha=Math.min(1,g.life/g.ml*3);const sc=g.life>10?1:g.life/10;const hs=g.sz*sc*.5;X.save();X.globalAlpha=alpha;X.translate(g.x,g.y);X.rotate(g.rot);X.drawImage(g.img,-hs,-hs,g.sz*sc,g.sz*sc);X.restore();}}
   // 데드 임팩트 렌더 (additive blend 혈흔 폭발)
   if(!_fOverBudget&&_diReady){for(let di=0;di<_DI_MAX;di++){const d=_diPool[di];if(!d.active||!d.img)continue;if(d.x<_vl-60||d.x>_vr+60||d.y<_vt-60||d.y>_vb+60)continue;const _lt=1-d.life;const _eo=_lt<.3?_lt/.3:1+(_lt-.3)*.2;const sz=d.maxSz*_eo;const alpha=d.life<.3?1:1-(d.life-.3)/.7;X.save();X.globalAlpha=Math.max(0,alpha);X.globalCompositeOperation='lighter';X.drawImage(d.img,d.x-sz*.5,d.y-sz*.5,sz,sz);X.restore();}}
+  // ── 폭발 사망 피 스플래시 (캡 없음, 직접 렌더) ──
+  _renderBloodSplats(X,G.cam);
   // ── VFX GL 인스턴싱 (lighter 블록 밖 — 자체 additive blend, compositeOp stall 회피) ──
   _dbgVfxGLDrawn=0;
   if(_vfxAnims.length>0){
