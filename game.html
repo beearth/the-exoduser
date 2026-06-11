@@ -34271,9 +34271,34 @@ function _detonateAssaultFlames(){
     for(let _si=0;_si<_detNe.length;_si++){const e=_detNe[_si];if(!e.alive)continue;
       const d=dst(fz.x,fz.y,e.x,e.y);if(d>_detR+e.r)continue;
       const ang=Math.atan2(e.y-fz.y,e.x-fz.x);
-      hurtE(e,_totalDmg,ang,false,{kbMult:1.2,poiseHit:true,poiseMult:2},EL.F);
+      const _wasAlive=e.alive;
+      hurtE(e,_totalDmg,ang,false,{kbMult:1.2,poiseHit:true,poiseMult:2,explode:true},EL.F);
       e.kb.x+=Math.cos(ang)*8;e.kb.y+=Math.sin(ang)*8;
       e.burnT=Math.max(e.burnT||0,300);e.burnStk=Math.min(10,(e.burnStk||0)+3);
+      // ── 폭발 사망: 파티클 기반 피 대량 분출 (VFX/고어 풀 캡 무관) ──
+      if(_wasAlive&&!e.alive){
+        const _bCols=['#ff2233','#ee1122','#dd0033','#cc0044','#ff4455','#aa0011'];
+        // 1) 피 방사 파티클 — 큰 입자, 폭발 방향 + 전방위
+        const _bpN=e.ib?24:12;
+        for(let _bp=0;_bp<_bpN;_bp++){
+          const _ba=ang+(Math.random()-.5)*2.0;const _bs=3+Math.random()*8;
+          poolPart(e.x+(Math.random()-.5)*e.r,e.y+(Math.random()-.5)*e.r,
+            Math.cos(_ba)*_bs,Math.sin(_ba)*_bs-1.5,
+            _bCols[~~(Math.random()*6)],2.5+Math.random()*4,14+Math.random()*10);
+        }
+        // 2) 중심 피 분출 (위로 솟구침)
+        for(let _bp=0;_bp<4;_bp++){
+          poolPart(e.x+(Math.random()-.5)*6,e.y,
+            (Math.random()-.5)*3,-4-Math.random()*6,
+            _bCols[~~(Math.random()*6)],3+Math.random()*3,10+Math.random()*6);
+        }
+        // 3) 흰색 플래시 (사망 확인용)
+        poolPart(e.x,e.y,0,0,'#ffffff',e.r||8,8,3,0,0);
+        // 4) 피 웅덩이 + 시체 (풀 여유 있으면)
+        _addStain(e.x,e.y,Math.max(14,e.r*1.4));
+        _addCorpse(e,ang,Math.min(8,_totalDmg/Math.max(1,e.mhp)*20));
+        if(Math.random()<.5)_addGorePiece(e.x,e.y,Math.random()<.6?'flesh':'blood');
+      }
     }
     _shBufI--;
     const _afS2=fz._afStk||0;
