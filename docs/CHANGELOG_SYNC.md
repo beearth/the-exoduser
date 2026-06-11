@@ -29672,3 +29672,9 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html.bak_20260611_colorspace
 - img/skillskin_upscaled/explodeScarecrow.png
 
+
+## 2026-06-11 17:30 (auto)
+- _autosave/game_20260611_163422.html
+- _autosave/game_20260611_164038.html
+- game.html
+

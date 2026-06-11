@@ -35014,21 +35014,37 @@ function _skFuseIcon(id){
 function _skIcon(id){const fId=_skFuseIcon(id);const rId=fId||id;const v=SKILL_ICONS[rId];if(!v){if(fId){return`<img class="qs-icon" src="img/skillskin_upscaled/${fId}.png" alt="" onerror="this.style.display='none'">`}return''}const f=v===1?rId:v;return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="" onerror="this.style.display='none'">`}
 // ═══ 허수아비 아이콘 상태 갱신 (설치 전 보라 / 설치 후 빨강) ═══
 function _updateScarecrowIcons(){
-  const _active=!!G._explodeScarecrow;
-  for(let i=0;i<6;i++){
-    const el=$('qs'+i);if(!el)continue;
-    const sid=SKILL_SLOTS[i];if(!sid)continue;
-    // 폭발 허수아비 직접 슬롯
-    if(sid==='explodeScarecrow'){
-      const img=el.querySelector('.qs-icon');if(!img)continue;
-      const want=_active?'explodeScarecrow':'voidScarecrow';
-      if(!img.src.includes(want))img.src='img/skillskin_upscaled/'+want+'.png';
+  const _exActive=!!G._explodeScarecrow;
+  const _vsActive=!!G._voidScarecrow;
+  // 모든 스킬 슬롯 요소에서 허수아비 아이콘 찾아 갱신
+  const _allSlots=[
+    ...Array.from({length:6},(_,i)=>({el:$('qs'+i),sid:SKILL_SLOTS[i]})),
+    {el:$('skSlot1'),sid:SKILL_SLOTS[4]},
+    {el:$('skSlot0'),sid:SKILL_SLOTS[5]||null},
+    {el:$('qsE'),sid:P.activeMagicSk||null},
+    {el:$('skSlotCT'),sid:P.activeCtSk||null},
+    {el:$('qsQ'),sid:P.activeQSk||null}
+  ];
+  for(const s of _allSlots){
+    if(!s.el||!s.sid)continue;
+    const img=s.el.querySelector('.qs-icon');if(!img)continue;
+    // 폭발 허수아비 슬롯
+    if(s.sid==='explodeScarecrow'){
+      const want=_exActive?'explodeScarecrow':'voidScarecrow';
+      if(!img.src.includes(want+'.png'))img.src='img/skillskin_upscaled/'+want+'.png';
     }
-    // 합체: dualScarecrow → voidScarecrow 슬롯에 표시
-    if(sid==='voidScarecrow'&&_isFused('dualScarecrow')){
-      const img=el.querySelector('.qs-icon');if(!img)continue;
-      const want=_active?'explodeScarecrow':'voidScarecrow';
-      if(!img.src.includes(want))img.src='img/skillskin_upscaled/'+want+'.png';
+    // 유령 허수아비 슬롯 (합체 dualScarecrow 시 폭발 상태 반영)
+    if(s.sid==='voidScarecrow'&&_isFused('dualScarecrow')){
+      const want=_vsActive?'explodeScarecrow':'voidScarecrow';
+      if(!img.src.includes(want+'.png'))img.src='img/skillskin_upscaled/'+want+'.png';
+    }
+    // 공성쇠뇌 슬롯 (합체 siegeGhost 시 허수아비 상태 반영)
+    if(s.sid==='ghostXbowTurret'&&_isFused('siegeGhost')){
+      const want=_vsActive?'explodeScarecrow':'siegeGhost';
+      if(!img.src.includes(want+'.png')){
+        // siegeGhost 아이콘이 없으면 voidScarecrow 사용
+        img.src='img/skillskin_upscaled/'+(want==='siegeGhost'?'ghostXbowTurret':want)+'.png';
+      }
     }
   }
 }

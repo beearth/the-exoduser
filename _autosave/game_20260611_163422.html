@@ -9692,7 +9692,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
           playSample('ghost_laugh',1.2,_r(1,.1));SFX.scarecrowCharge();
           // null 해제 지연 — 부풀기 끝나면 업데이트 루프에서 처리
         } else {
-          G._voidScarecrow=null; // 회수 시 쿨 없음
+          G._voidScarecrow=null;_updateScarecrowIcons(); // 회수 시 쿨 없음
         }
         _skOk=true;
       } else if((P._vsCd||0)<=0){activateVoidScarecrow();_skOk=true}
@@ -9723,7 +9723,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
             playSample('ghost_laugh',1.2,_r(1,.1));SFX.scarecrowCharge();
           }else{
             addParts(P.x,P.y,'#bb88ee',8);SFX.scarecrowRecall();
-            G._voidScarecrow=null;
+            G._voidScarecrow=null;_updateScarecrowIcons();
           }
         }
         showPH(_T('공성쇠뇌 철거 → 이동식'),'#66aadd');playSample('bow_release',.4,_r(1.2,.1));
@@ -20561,7 +20561,7 @@ function updateQS(){
         }
         el.className='qs'+(_skOnCd?' cd':'');
         // 아이콘은 스킬 변경 시만 교체 (깜빡임 방지)
-        {const _dispId=_skFuseIcon(_ssid)||_ssid;const _stateKey=_ssid==='explodeScarecrow'?(_dispId+(G._explodeScarecrow?'_active':'')):_dispId;if(el._skId!==_stateKey){el._skId=_stateKey;el.innerHTML=_skIcon(_ssid);if(_ssid==='explodeScarecrow')console.log('[ESC-ICON] stateKey=',_stateKey,'G._expl=',!!G._explodeScarecrow,'html=',el.innerHTML.slice(0,80))}}
+        {const _dispId=_skFuseIcon(_ssid)||_ssid;if(el._skId!==_dispId){el._skId=_dispId;el.innerHTML=_skIcon(_ssid)}}
         // 쿨다운 오버레이만 갱신
         let _cdEl=el.querySelector('._skCd');
         if(_skOnCd||_skStkTxt){
@@ -27563,7 +27563,7 @@ function update(){
       _fireExsBoom(_vs.x,_vs.y,_dsBoomR,_dsDmg,_dsAb,_dsAb/Math.max(1,_vs.maxAbsorb));
       const _boomLabel=_vs._siegeBoom?_T('💥 공성유령 폭발!'):_T('합체 폭발!');
       if(_dsAb>0){addTxt(_vs.x,_vs.y-50,_boomLabel,'#ffcc00',60);addParts(_vs.x,_vs.y,'#ff6622',20);shake(Math.min(15,5+_dsAb*.4));SFX.detonate()}
-      G._voidScarecrow=null;
+      G._voidScarecrow=null;_updateScarecrowIcons();
     }
   }
   // ═══ 유령 허수아비 — 거리 3000px 자동회수 (공성유령 합체 시 제외) ═══
@@ -27577,7 +27577,7 @@ function update(){
       }
       addExp(1000);addTxt(P.x,P.y-50,'+1000 XP','#ffcc44',50);
       addParts(P.x,P.y,'#bb88ee',10);SFX.scarecrowRecall();
-      G._voidScarecrow=null; // 자동회수 시 쿨 없음
+      G._voidScarecrow=null;_updateScarecrowIcons(); // 자동회수 시 쿨 없음
     }
   }
   // ═══ 푸른비 — 쿨다운 ═══
@@ -35011,7 +35011,27 @@ function _skFuseIcon(id){
     timeWarp:_isFused('timeStep')?'timeStep':null};
   return _fIcoMap[id]||null;
 }
-function _skIcon(id){const fId=_skFuseIcon(id);const rId=fId||id;const v=SKILL_ICONS[rId];if(!v){if(fId){return`<img class="qs-icon" src="img/skillskin_upscaled/${fId}.png" alt="" onerror="this.style.display='none'">`}return''}let f=v===1?rId:v;if(id==='explodeScarecrow')f=G._explodeScarecrow?'explodeScarecrow':'voidScarecrow';return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="" onerror="this.style.display='none'">`}
+function _skIcon(id){const fId=_skFuseIcon(id);const rId=fId||id;const v=SKILL_ICONS[rId];if(!v){if(fId){return`<img class="qs-icon" src="img/skillskin_upscaled/${fId}.png" alt="" onerror="this.style.display='none'">`}return''}const f=v===1?rId:v;return`<img class="qs-icon" src="img/skillskin_upscaled/${f}.png" alt="" onerror="this.style.display='none'">`}
+// ═══ 허수아비 아이콘 상태 갱신 (설치 전 보라 / 설치 후 빨강) ═══
+function _updateScarecrowIcons(){
+  const _active=!!G._explodeScarecrow;
+  for(let i=0;i<6;i++){
+    const el=$('qs'+i);if(!el)continue;
+    const sid=SKILL_SLOTS[i];if(!sid)continue;
+    // 폭발 허수아비 직접 슬롯
+    if(sid==='explodeScarecrow'){
+      const img=el.querySelector('.qs-icon');if(!img)continue;
+      const want=_active?'explodeScarecrow':'voidScarecrow';
+      if(!img.src.includes(want))img.src='img/skillskin_upscaled/'+want+'.png';
+    }
+    // 합체: dualScarecrow → voidScarecrow 슬롯에 표시
+    if(sid==='voidScarecrow'&&_isFused('dualScarecrow')){
+      const img=el.querySelector('.qs-icon');if(!img)continue;
+      const want=_active?'explodeScarecrow':'voidScarecrow';
+      if(!img.src.includes(want))img.src='img/skillskin_upscaled/'+want+'.png';
+    }
+  }
+}
 function _skCdSweep(pct,txt){if(pct<=0)return'';const deg=~~(pct*360);return`<div style="position:absolute;top:0;left:0;width:100%;height:100%;background:conic-gradient(rgba(0,0,0,.55) ${deg}deg,transparent ${deg}deg);pointer-events:none;z-index:1"></div>${txt?`<div style="position:absolute;top:0;left:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.85rem;color:#ffee66;font-weight:900;text-shadow:0 0 4px #000,0 0 8px #000,0 1px 3px #000;z-index:2">${txt}</div>`:''}`}
 const SKILL_LIST=[
   {id:'chargeBoost',name:'사슬기동:충돌',cat:'move',desc:'STR 스케일. 3회 충전 + Lv3마다 사거리 1단계↑(최대4단). 이동 중 무적, 통과 적에 데미지+그로기 (쿨 5초)',descEn:'STR scale. 3 stocks + range tier up every Lv3 (max 4). Invincible while moving, DMG+groggy on pass-through (CD 5s)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
@@ -36113,6 +36133,7 @@ function activateVoidScarecrow(){
   }
   playSample('ghost_laugh',1.6,_r(1,.1));
     addParts(P.x,P.y,'#aa66dd',10);shake(2);
+  _updateScarecrowIcons();
 }
 // ═══ 폭발 허수아비 — 설치 + 폭발 ═══
 function activateExplodeScarecrow(){
@@ -36121,7 +36142,7 @@ function activateExplodeScarecrow(){
   G._explodeScarecrow={x:P.x,y:P.y,maxAbsorb:maxAbsorb,absorbed:0,aggroOn:true,lv:slv,dmgPool:0};
   playSample('ghost_laugh',1.2,_r(1.3,.1));
     addParts(P.x,P.y,'#ff4422',10);shake(2);
-  updateQS();
+  _updateScarecrowIcons();
 }
 function _detonateExplodeScarecrow(){
   const es=G._explodeScarecrow;if(!es)return;
@@ -36161,7 +36182,7 @@ function _doExplodeScarecrowBoom(){
   else addTxt(_esX,_esY-40,_T('불발...'),'#ff8844',40);
   G._explodeScarecrow=null;
   P._exsCd=1200; // 20초 쿨 고정
-  updateQS();
+  _updateScarecrowIcons();
 }
 function _fireExsBoom(bx,by,boomR,boom,absorbed,absRatio){
   const _ar=absRatio||0;
