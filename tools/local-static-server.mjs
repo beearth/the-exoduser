@@ -122,6 +122,28 @@ export function createStaticServer({ rootDir = process.cwd(), host = '127.0.0.1'
         return;
       }
 
+      if (reqUrl.pathname === '/api/mats') {
+        const MATS_FILE = path.resolve(ROOT, 'saves', '_sharedMats.json');
+        if (req.method === 'GET') {
+          try {
+            const text = await fs.readFile(MATS_FILE, 'utf8');
+            const data = JSON.parse(text);
+            return sendJson(res, 200, { ok: true, mats: Number.isFinite(data.mats) ? data.mats : 0 });
+          } catch {
+            return sendJson(res, 200, { ok: true, mats: 0 });
+          }
+        }
+        if (req.method === 'POST') {
+          const body = await readJsonBody(req);
+          const mats = Math.max(0, Math.min(Math.floor(+body.mats || 0), Number.MAX_SAFE_INTEGER));
+          await fs.mkdir(SAVES_DIR, { recursive: true });
+          await fs.writeFile(MATS_FILE, JSON.stringify({ mats, ts: Date.now() }), 'utf8');
+          return sendJson(res, 200, { ok: true, mats });
+        }
+        sendJson(res, 405, { ok: false, error: 'Method not allowed' });
+        return;
+      }
+
       if (req.method === 'GET' && reqUrl.pathname.startsWith('/api/load/')) {
         const filePath = resolveSavePath(reqUrl.pathname.slice('/api/load/'.length));
         if (!filePath) {
