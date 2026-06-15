@@ -3621,6 +3621,7 @@ const C=document.getElementById('c'),CT=document.getElementById('ct');
 const MC=document.getElementById('mm'),MX=MC.getContext('2d');
 MX.imageSmoothingEnabled=false;
 let GPU=null,GL=null,_useGPU=false,_useGL=false,_gpuCtx=null,_bGL=null;
+let _glFrameClear=true; // WebGPU: 프레임 내 첫 flush만 clear, 이후 flush는 load(누적). 매 프레임 끝에 true 리셋. (맥 멀티 present 깜빡임 픽스)
 
 // ═══ WebGL2 SpriteBatcher — 제거됨 (2026-05-21) ═══
 if(false){
@@ -4349,7 +4350,7 @@ async function _initWebGPU(){
 
   GPU=device;
   const fmt=navigator.gpu.getPreferredCanvasFormat();
-  _gpuCtx.configure({device:GPU,format:fmt,alphaMode:'premultiplied'});
+  _gpuCtx.configure({device:GPU,format:fmt,alphaMode:'opaque'});
 
   const info=adapter.info||{};
   if(!IS_ELECTRON)console.log('[GPU] WebGPU init — '+(info.description||info.device||''));
@@ -4468,7 +4469,8 @@ return c;}`;
     // CommandEncoder 1개, RenderPass 1개, Submit 1번
     const enc=GPU.createCommandEncoder();
     const pass=enc.beginRenderPass({colorAttachments:[{
-      view:view,loadOp:'clear',storeOp:'store',clearValue:{r:0,g:0,b:0,a:1}}]});
+      view:view,loadOp:_glFrameClear?'clear':'load',storeOp:'store',clearValue:{r:0,g:0,b:0,a:1}}]});
+    _glFrameClear=false; // 이번 프레임 첫 flush 완료 — 이후 flush는 누적
     pass.setVertexBuffer(0,vBuf);
     pass.setIndexBuffer(iBuf,'uint16');
     pass.setBindGroup(0,uniBG);
@@ -48940,6 +48942,7 @@ function loop(timestamp){
   const _p2=performance.now();
   const _domT0=_PERF_PROF.enabled?performance.now():0;
   _fpsDraw();if(_useGPU||_useGL)_glFlush();
+  _glFrameClear=true; // 프레임 종료 — 다음 프레임 첫 flush는 clear부터
   _drawBurst(); // GPU Burst (별도 context — 기존 배처 무관)
   if(_PERF_PROF.enabled)_PERF_PROF._domAcc+=performance.now()-_domT0;
   // 사망 리플레이 캡처 (10fps)
