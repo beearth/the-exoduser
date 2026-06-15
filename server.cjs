@@ -233,13 +233,16 @@ const server = http.createServer(async (req, res) => {
         });
         return file.pipe(res);
       } else {
-        res.writeHead(200, {
-          'Content-Length': stat.size,
-          'Content-Type': mime,
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0'
-        });
+        // HTML(코드)만 no-cache로 즉시 반영. 에셋(이미지/오디오/JSON 등)은 캐시 허용
+        // — no-store를 모든 파일에 걸면 게임 중 에셋 재요청마다 디스크 재읽기 → 렉.
+        // Vercel 배포(vercel.json)와 동일 정책: html=no-cache, 그 외=캐시.
+        const _isHtml = ext === '.html';
+        const _cache = _isHtml
+          ? 'no-cache, no-store, must-revalidate'
+          : 'public, max-age=3600';
+        const _h = { 'Content-Length': stat.size, 'Content-Type': mime, 'Cache-Control': _cache };
+        if (_isHtml) { _h['Pragma'] = 'no-cache'; _h['Expires'] = '0'; }
+        res.writeHead(200, _h);
         const file200 = fs.createReadStream(filePath);
         file200.on('error', (err) => {
           if (err.code === 'EPIPE' || err.code === 'ECONNRESET') return;
