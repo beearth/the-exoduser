@@ -3621,7 +3621,7 @@ const C=document.getElementById('c'),CT=document.getElementById('ct');
 const MC=document.getElementById('mm'),MX=MC.getContext('2d');
 MX.imageSmoothingEnabled=false;
 let GPU=null,GL=null,_useGPU=false,_useGL=false,_gpuCtx=null,_bGL=null;
-let _lastGpuTex=null; // WebGPU: 직전 flush가 그린 스왑체인 텍스처. 새 텍스처(새 프레임)면 첫 패스 clear, 같으면 load(누적). 깜빡임 방지 + 맥 Metal uncleared-texture 크래시 방지.
+let _glFrameClear=true; // WebGPU: 프레임 내 첫 flush만 clear, 이후 flush는 load(누적). 매 프레임 끝에 true 리셋. (맥 멀티 present 깜빡임 픽스)
 
 // ═══ WebGL2 SpriteBatcher — 제거됨 (2026-05-21) ═══
 if(false){
@@ -3788,7 +3788,7 @@ function _bakeFog(w,h,hell){
   fc.fillStyle=fg;fc.fillRect(0,0,w,h);_fogW=w;_fogH=h;_fogHell=hell;
 }
 function rz(){
-  _dpr=(IS_MAC?Math.min(window.devicePixelRatio||1,1.0):1.25); // 데스크탑: 모니터 Windows 배율과 무관하게 고정 DPR(1.25)로 화면비·줌·선명도 통일 (Mac Retina은 1.0 캡으로 성능 안정화)
+  _dpr=Math.min(window.devicePixelRatio||1,(IS_MAC?1.0:1.5)); // Mac Retina은 더 낮은 DPR로 성능 안정화
   const _rsf=(OPT.resScale||100)/100;
   let rw, rh;
   if(_renderRes){
@@ -4459,21 +4459,18 @@ return c;}`;
     _flush();
     // 그릴 게 없으면 아무것도 하지 않음 (clear도 안 함)
     if(_cmds.length===0){_bufOff=0;_qCnt=0;return}
-    // 프레임당 getCurrentTexture 1번 — 텍스처 객체 동일성으로 첫 패스 판별
-    let tex,view;
-    try{tex=_gpuCtx.getCurrentTexture();view=tex.createView()}
+    // 프레임당 getCurrentTexture 정확히 1번
+    let view;
+    try{view=_gpuCtx.getCurrentTexture().createView()}
     catch(e){console.error('[GPU] getCurrentTexture 실패:',e.message);_cmds=[];_bufOff=0;_qCnt=0;return}
-    // ★ 맥 Metal 픽스: 새 프레임의 스왑체인 텍스처는 자동 lazy-clear가 안 됨.
-    //   첫 렌더패스를 반드시 'clear'로 — 'load'면 "uncleared texture" 에러 → 무효화 → GPU 크래시(맥 전용).
-    //   같은 텍스처(같은 프레임 내 후속 flush)는 'load'로 누적해 깜빡임 방지.
-    const _firstUse=(tex!==_lastGpuTex);_lastGpuTex=tex;
     // 전체 버퍼를 GPU에 1번만 쓴다
     GPU.queue.writeBuffer(uniBuf,0,new Float32Array([C.width,C.height]));
     GPU.queue.writeBuffer(vBuf,0,_buf.buffer,0,_bufOff*4*_FPV*4);
     // CommandEncoder 1개, RenderPass 1개, Submit 1번
     const enc=GPU.createCommandEncoder();
     const pass=enc.beginRenderPass({colorAttachments:[{
-      view:view,loadOp:_firstUse?'clear':'load',storeOp:'store',clearValue:{r:0,g:0,b:0,a:1}}]});
+      view:view,loadOp:_glFrameClear?'clear':'load',storeOp:'store',clearValue:{r:0,g:0,b:0,a:1}}]});
+    _glFrameClear=false; // 이번 프레임 첫 flush 완료 — 이후 flush는 누적
     pass.setVertexBuffer(0,vBuf);
     pass.setIndexBuffer(iBuf,'uint16');
     pass.setBindGroup(0,uniBG);
@@ -7280,9 +7277,7 @@ function _fogGLRender(){
   _fogThree.renderer.render(_fogThree.scene,_fogThree.camera);
 }
 // 초기화: 게임 시작 시 호출
-// Mac WebGPU에선 Three.js(별도 WebGL 컨텍스트) 안개 비활성 — 같은 페이지 WebGPU+WebGL 동시 사용이
-// Mac Metal에서 불안정. 윈도우(WebGL2)·Mac WebGL2(?webgpu 없이)는 정상 활성. (재활성 검토는 미정)
-if(!(typeof IS_MAC!=='undefined'&&IS_MAC&&typeof navigator!=='undefined'&&navigator.gpu))setTimeout(_fogGLInit,500);
+setTimeout(_fogGLInit,500);
 // ── 보스 다리 안개 스탬프 (프리렌더 노이즈 텍스처, 4장 프레임) ──
 const _bossLegFogFrames={};
 const _BOSS_FOG_FRAMES=4; // 프레임 수
@@ -40823,9 +40818,7 @@ function draw(){
     // 카메라 2타일 이상 이동 시만 합성 캔버스 갱신
     // 뷰포트 합성: 카메라 3타일 이상 이동 시만 갱신
     const _vpMoved=Math.abs(_streamVpWorldX-_drawX)>T*3||Math.abs(_streamVpWorldY-_drawY)>T*3;
-    // WebGPU(Mac): 매 프레임 재합성 — 합성기준(_offX)과 그리기위치(_drawX)를 항상 일치시켜 맵 드리프트/덜덜떨림 제거.
-    //   copyExternalImageToTexture가 빨라 120fps 유지. WebGL2(윈도우)는 3타일 임계 유지(매프레임 재업로드=swizzle 비용 회피).
-    if(_streamVpDirty||_vpMoved||!_streamVpCvs||_useGPU){
+    if(_streamVpDirty||_vpMoved||!_streamVpCvs){
       _streamVpWorldX=_drawX;_streamVpWorldY=_drawY;_streamVpW=~~_vpW;_streamVpH=~~_vpH;_streamVpDirty=false;
       // 뷰포트 캔버스 1회 할당, 크기 변경 시에만 리사이즈
       if(!_streamVpCvs){
@@ -40839,9 +40832,6 @@ function draw(){
         const _src=_sc.bmp||_sc.cvs;if(!_src)continue;
         _streamVpCtx.drawImage(_src,Math.floor(_scx*_STREAM_CHUNK*T-_offX),Math.floor(_scy*_STREAM_CHUNK*T-_offY));
       }
-      // ★ 재합성된 뷰포트 캔버스 → 텍스처 캐시 무효화. WebGPU _getTex/_uploadCanvasTex는 _glVer로
-      //   캐싱하므로 안 올리면 첫 프레임 텍스처가 고정돼 맵이 안 스크롤됨(=Mac WebGPU 제자리걸음).
-      _streamVpCvs._glVer=(_streamVpCvs._glVer||0)+1;
     }
     // 매 프레임 1회 drawImage
     if(_streamVpCvs){X.drawImage(_streamVpCvs,_drawX|0,_drawY|0)}
@@ -48952,6 +48942,7 @@ function loop(timestamp){
   const _p2=performance.now();
   const _domT0=_PERF_PROF.enabled?performance.now():0;
   _fpsDraw();if(_useGPU||_useGL)_glFlush();
+  _glFrameClear=true; // 프레임 종료 — 다음 프레임 첫 flush는 clear부터
   _drawBurst(); // GPU Burst (별도 context — 기존 배처 무관)
   if(_PERF_PROF.enabled)_PERF_PROF._domAcc+=performance.now()-_domT0;
   // 사망 리플레이 캡처 (10fps)
