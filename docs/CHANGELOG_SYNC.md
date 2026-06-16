@@ -29689,3 +29689,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 
 =======
 >>>>>>> Stashed changes
+
+## 2026-06-15 21:30 (auto)
+- game.html.bak_20260611_premerge_winlocal
+
