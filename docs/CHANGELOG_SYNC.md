@@ -42447,3 +42447,9 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - rename_docs_v3.py
 - rename_lang.py
 
+
+## 2026-06-30 18:30 (auto)
+- docs/8.0ëª¬ìŠ¤?°ë””?ì¸/?„ë§‰?œìŠ¤??ì´ì •ë¦?md
+- docs/8.1ë³´ìŠ¤?”ì?¸ë°”?´ë¸”/BOSS_BATTLE_SETTINGS.md
+- game.html
+

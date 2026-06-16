@@ -43298,11 +43298,20 @@ function draw(){
       X.globalAlpha=1;continue;
     }
     if(p.mine){
-      // 지뢰: 바닥에 깜빡이는 원 (강한 붉은색 — 가시성)
+      // 지뢰: 바닥에 깜빡이는 원 (강한 붉은색 — 가시성, 가산합성 글로우)
       const mp=p.life/(p.ml||180);
-      X.globalAlpha=.22+Math.sin(_now/200)*.08;X.fillStyle='#ff1a00';X.beginPath();X.arc(p.x,p.y,10,0,Math.PI*2);X.fill();
-      X.globalAlpha=.7+Math.sin(_now/(80+mp*100))*.2;X.fillStyle='#ff4422';X.beginPath();X.arc(p.x,p.y,4,0,Math.PI*2);X.fill();
-      X.globalAlpha=.6;X.strokeStyle=mp<.3?'#ffff00':'#ff2200';X.lineWidth=2;X.beginPath();X.arc(p.x,p.y,10,0,Math.PI*2);X.stroke();
+      const _mPul=.5+Math.sin(_now/(80+mp*100))*.5;
+      X.save();X.globalCompositeOperation='lighter';
+      // 외곽 위험 글로우
+      X.globalAlpha=.35+_mPul*.15;X.fillStyle='#ff2a00';X.beginPath();X.arc(p.x,p.y,22,0,Math.PI*2);X.fill();
+      // 중간
+      X.globalAlpha=.6;X.fillStyle='#ff3010';X.beginPath();X.arc(p.x,p.y,12,0,Math.PI*2);X.fill();
+      // 밝은 코어
+      X.globalAlpha=.9;X.fillStyle='#ff8855';X.beginPath();X.arc(p.x,p.y,5,0,Math.PI*2);X.fill();
+      X.globalAlpha=1;X.fillStyle='#ffeecc';X.beginPath();X.arc(p.x,p.y,2.2,0,Math.PI*2);X.fill();
+      X.restore();
+      // 경고 링 (펄스)
+      X.globalAlpha=.5+_mPul*.4;X.strokeStyle=mp<.3?'#ffee00':'#ff3a00';X.lineWidth=2.5;X.beginPath();X.arc(p.x,p.y,16+_mPul*4,0,Math.PI*2);X.stroke();
       X.globalAlpha=1;continue;
     }
     if(p.iceZone||p.blizzard){
@@ -46764,12 +46773,18 @@ function drawP(){
   if(G._seekerMines&&G._seekerMines.length>0){
     for(let mi=0;mi<G._seekerMines.length;mi++){
       const sm=G._seekerMines[mi];const _armed=sm.t>sm.armT;
-      const _pulse=_armed?(.7+Math.sin(_now*.015)*.3):.4;
-      X.globalAlpha=_pulse;X.fillStyle=_armed?'#5e10a8':'#552288';
-      X.beginPath();X.arc(sm.x,sm.y,sm.r,0,Math.PI*2);X.fill();
-      X.globalAlpha=_pulse*.6;X.strokeStyle=_armed?'#7a14c8':'#663388';X.lineWidth=2;
-      X.beginPath();X.arc(sm.x,sm.y,sm.r+3,0,Math.PI*2);X.stroke();
-      if(_armed){X.globalAlpha=.4;X.fillStyle='#7a14c8';X.beginPath();X.arc(sm.x,sm.y,sm.r*.4,0,Math.PI*2);X.fill();}
+      const _pulse=_armed?(.6+Math.sin(_now*.015)*.4):.45;
+      X.save();X.globalCompositeOperation='lighter';
+      // 외곽 위험 글로우
+      X.globalAlpha=_pulse*(_armed?.4:.28);X.fillStyle=_armed?'#ff2a00':'#ff5522';X.beginPath();X.arc(sm.x,sm.y,sm.r+12,0,Math.PI*2);X.fill();
+      // 본체
+      X.globalAlpha=_pulse*.75;X.fillStyle=_armed?'#ff3010':'#ff6a33';X.beginPath();X.arc(sm.x,sm.y,sm.r,0,Math.PI*2);X.fill();
+      // 밝은 코어
+      X.globalAlpha=_armed?.9:.6;X.fillStyle=_armed?'#ffaa66':'#ffcc99';X.beginPath();X.arc(sm.x,sm.y,sm.r*.45,0,Math.PI*2);X.fill();
+      X.restore();
+      // 경고 링
+      X.globalAlpha=_pulse*.7;X.strokeStyle=_armed?'#ff3a00':'#ff7744';X.lineWidth=2.5;
+      X.beginPath();X.arc(sm.x,sm.y,sm.r+4+(_armed?_pulse*3:0),0,Math.PI*2);X.stroke();
     }X.globalAlpha=1;
   }
   // ══ 되감기참 렌더 ══
