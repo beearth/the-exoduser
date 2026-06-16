@@ -20,7 +20,7 @@
     "frame": false,
     "toolbar": false
   },
-  "chromium-args": "--disable-features=CrossOriginOpenerPolicy,CrossOriginEmbedderPolicy,IsolateOrigins,SitePerProcess --disable-site-isolation-trials --disable-web-security --no-sandbox --allow-running-insecure-content --autoplay-policy=no-user-gesture-required --enable-features=SharedArrayBuffer --user-data-dir=./userdata",
+  "chromium-args": "--disable-features=CrossOriginOpenerPolicy,CrossOriginEmbedderPolicy,IsolateOrigins,SitePerProcess,SkiaGraphite --disable-site-isolation-trials --disable-web-security --no-sandbox --allow-running-insecure-content --autoplay-policy=no-user-gesture-required --enable-features=SharedArrayBuffer --user-data-dir=./userdata",
   "scripts": {
     "serve:test": "node tools/local-static-server.mjs",
     "pixellab:request": "node tools/pixellab_request.mjs",

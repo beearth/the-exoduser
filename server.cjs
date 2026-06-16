@@ -2,6 +2,10 @@ const http = require('http');
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
+const zlib = require('zlib');
+
+// gzip 대상 (텍스트/코드만 — 이미지·오디오는 이미 압축됨)
+const COMPRESSIBLE = new Set(['.html', '.js', '.css', '.json', '.svg', '.gltf']);
 
 // .env 로드
 const _envPath = path.join(__dirname, '.env');
@@ -240,17 +244,31 @@ const server = http.createServer(async (req, res) => {
         const _cache = _isHtml
           ? 'no-cache, no-store, must-revalidate'
           : 'public, max-age=3600';
-        const _h = { 'Content-Length': stat.size, 'Content-Type': mime, 'Cache-Control': _cache };
+        const _acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
+        const _gzip = _acceptsGzip && COMPRESSIBLE.has(ext);
+        const _h = { 'Content-Type': mime, 'Cache-Control': _cache };
         if (_isHtml) { _h['Pragma'] = 'no-cache'; _h['Expires'] = '0'; }
-        res.writeHead(200, _h);
         const file200 = fs.createReadStream(filePath);
         file200.on('error', (err) => {
           if (err.code === 'EPIPE' || err.code === 'ECONNRESET') return;
           console.error('[Stream] Read error:', err.message);
           if (!res.headersSent) { res.writeHead(500); res.end(); }
         });
-        res.on('close', () => file200.destroy());
-        return file200.pipe(res);
+        if (_gzip) {
+          // 압축 전송: Content-Length 생략(청크), Content-Encoding 명시
+          _h['Content-Encoding'] = 'gzip';
+          _h['Vary'] = 'Accept-Encoding';
+          res.writeHead(200, _h);
+          const gz = zlib.createGzip({ level: 6 });
+          gz.on('error', () => { try { res.end(); } catch (e) {} });
+          res.on('close', () => { file200.destroy(); gz.destroy(); });
+          return file200.pipe(gz).pipe(res);
+        } else {
+          _h['Content-Length'] = stat.size;
+          res.writeHead(200, _h);
+          res.on('close', () => file200.destroy());
+          return file200.pipe(res);
+        }
       }
     }
 
