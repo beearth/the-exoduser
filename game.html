@@ -22762,7 +22762,7 @@ function _enterBossArena(){
   MAP_OBJS=[];  // 던전 오브젝트 제거 (boss_gate_col 등 아레나에 불필요)
   G.map=arena.map;G.mw=arena.mw;G.mh=arena.mh;  G._fow=new Uint8Array(arena.mw*arena.mh);G._fowDirty=true;
   G.rooms=arena.rooms;G.exits=[];
-  G._bossArena=true;G._bossArenaExit={x:arena.exitX,y:arena.exitY};
+  G._bossArena=true;if(typeof _b3loadModel==='function')_b3loadModel(SI_TO_HELL[G.stage]||0);G._bossArenaExit={x:arena.exitX,y:arena.exitY};
   G._bossArenaGate={x:arena.exitX,y:arena.exitY}; // 12시 최상단 눈나무 위치
   G._bossArenaEntry={x:arena.entryX,y:arena.entryY}; // 6시 입구
   G.bossGate=null;G.bossGateOpen=true;G.bossSealed=true;_shDirty=true;
@@ -51246,14 +51246,32 @@ const _b3flash=new THREE.MeshBasicMaterial({color:0xffffff});
 let _b3flashT=0,_b3prevHP=-1,_b3hitT=0;
 let _b3actions={},_b3state='idle';
 
-// 5개 애니메이션 매핑
-const _B3_ANIMS={
+// ── 스테이지별 3D 보스 모델 정의 ──
+const _B3_MODELS={
+  // hell:0 (1장 — 썩은 숲) = Vinebound Sentinel
+  0:{
+    idle:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Walking_withSkin.glb'},
+    walk:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Walking_withSkin.glb'},
+    aggro:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Running_withSkin.glb'},
+    run:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Running_withSkin.glb'},
+    hit:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Dead_withSkin.glb'},
+    chargeWind:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Running_withSkin.glb'},
+    charge:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Running_withSkin.glb'},
+    multiDashWind:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Running_withSkin.glb'},
+    multiDash:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Running_withSkin.glb'},
+    spinWind:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Running_withSkin.glb'},
+    spin:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Running_withSkin.glb'},
+    slamWind:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Charged_Ground_Slam_withSkin.glb'},
+    slam:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Charged_Ground_Slam_withSkin.glb'}
+  }
+};
+// 기본 폴백 (등록 안 된 챕터용)
+const _B3_DEFAULT={
   idle:{src:'assets/3d/Meshy_AI_1_biped_Animation_Alert_withSkin.glb'},
   walk:{src:'assets/3d/Meshy_AI_1_biped_Animation_Walking_withSkin.glb'},
   aggro:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
   run:{src:'assets/3d/Meshy_AI_1_biped_Animation_Running_withSkin.glb'},
   hit:{src:'assets/3d/Meshy_AI_1_biped_Animation_Unsteady_Walk_withSkin.glb'},
-  // ── 공격 전용 슬롯 (임시: aggro GLB 폴백, 추후 전용 클립으로 교체) ──
   chargeWind:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
   charge:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
   multiDashWind:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
@@ -51263,6 +51281,9 @@ const _B3_ANIMS={
   slamWind:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
   slam:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'}
 };
+// 현재 활성 클립맵 (스테이지 전환 시 교체)
+let _B3_ANIMS=_B3_DEFAULT;
+let _b3curHell=-1; // 현재 로드된 챕터 인덱스
 
 // 보스 상태 → 3D 애니메이션 매핑
 const _B3_RUN_STATES=new Set(['bossJump','bossDash','bossLeap','bossRush',
@@ -51309,43 +51330,55 @@ function _b3switchState(ns){
 }
 
 const _b3loader=new GLTFLoader();
-// idle 먼저 로드 → 모델 확정 → 나머지 순차
-_b3loader.load(_B3_ANIMS.idle.src,(gltf)=>{
-  _b3model=gltf.scene;
-  const box=new THREE.Box3().setFromObject(_b3model);
-  const sz=box.getSize(new THREE.Vector3());
-  _b3model.scale.setScalar(2.2/(sz.y||1));
-  const box2=new THREE.Box3().setFromObject(_b3model);
-  const center=box2.getCenter(new THREE.Vector3());
-  const _modelSz=box2.getSize(new THREE.Vector3());
-  _b3model.position.sub(center);
-  _b3model.position.y+=_modelSz.y*0.5;
-  _b3model.traverse(c=>{if(c.isMesh){c.castShadow=true;_b3meshes.push(c);_b3origMats.push(c.material);if(c.material)c.material.side=THREE.DoubleSide;}});
-  _b3pivot=new THREE.Group();_b3pivot.add(_b3model);
-  _b3anchor=new THREE.Group();_b3anchor.add(_b3pivot);
-  _b3anchor.visible=false;
-  _b3s.add(_b3anchor);
-  _b3size=new THREE.Box3().setFromObject(_b3pivot).getSize(new THREE.Vector3());
-  _b3mixer=new THREE.AnimationMixer(_b3model);
-  // idle 클립 등록+재생
-  if(gltf.animations.length>0){
-    const clip=gltf.animations[0];clip.name='idle';
-    const act=_b3mixer.clipAction(clip);_b3actions.idle=act;act.play();
-  }
-  _b3ready=true;
-  window._b3dbg={size:_b3size,pivot:_b3pivot,sc:()=>_b3sc,floorY:()=>window._b3lastFloorY};
-  console.log('[BOSS3D] Model loaded',_b3size.x.toFixed(1)+'x'+_b3size.y.toFixed(1)+'x'+_b3size.z.toFixed(1));
-  // 나머지 애니 로드 (기존 4 + 공격 8)
-  for(const st of ['walk','aggro','run','hit','chargeWind','charge','multiDashWind','multiDash','spinWind','spin','slamWind','slam']){
-    _b3loader.load(_B3_ANIMS[st].src,(g2)=>{
-      if(g2.animations.length>0){
-        const clip=g2.animations[0];clip.name=st;
-        _b3actions[st]=_b3mixer.clipAction(clip);
-        console.log('[BOSS3D] Anim loaded:',st);
-      }
-    },null,(err)=>{console.warn('[BOSS3D] Anim failed:',st,err)});
-  }
-},null,(err)=>{console.warn('[BOSS3D] GLB failed:',err)});
+
+// ── 스테이지별 모델 로드 함수 ──
+function _b3loadModel(hellIdx){
+  if(hellIdx===_b3curHell&&_b3ready)return; // 이미 같은 모델
+  _B3_ANIMS=_B3_MODELS[hellIdx]||_B3_DEFAULT;
+  _b3curHell=hellIdx;
+  _b3ready=false;
+  // 기존 모델 정리
+  if(_b3anchor){_b3s.remove(_b3anchor);_b3anchor=null}
+  if(_b3mixer){_b3mixer.stopAllAction();_b3mixer=null}
+  _b3model=null;_b3pivot=null;_b3meshes=[];_b3origMats=[];_b3actions={};_b3state='idle';
+  // idle 먼저 로드 → 모델 확정 → 나머지 순차
+  _b3loader.load(_B3_ANIMS.idle.src,(gltf)=>{
+    _b3model=gltf.scene;
+    const box=new THREE.Box3().setFromObject(_b3model);
+    const sz=box.getSize(new THREE.Vector3());
+    _b3model.scale.setScalar(2.2/(sz.y||1));
+    const box2=new THREE.Box3().setFromObject(_b3model);
+    const center=box2.getCenter(new THREE.Vector3());
+    const _modelSz=box2.getSize(new THREE.Vector3());
+    _b3model.position.sub(center);
+    _b3model.position.y+=_modelSz.y*0.5;
+    _b3model.traverse(c=>{if(c.isMesh){c.castShadow=true;_b3meshes.push(c);_b3origMats.push(c.material);if(c.material)c.material.side=THREE.DoubleSide;}});
+    _b3pivot=new THREE.Group();_b3pivot.add(_b3model);
+    _b3anchor=new THREE.Group();_b3anchor.add(_b3pivot);
+    _b3anchor.visible=false;
+    _b3s.add(_b3anchor);
+    _b3size=new THREE.Box3().setFromObject(_b3pivot).getSize(new THREE.Vector3());
+    _b3mixer=new THREE.AnimationMixer(_b3model);
+    if(gltf.animations.length>0){
+      const clip=gltf.animations[0];clip.name='idle';
+      const act=_b3mixer.clipAction(clip);_b3actions.idle=act;act.play();
+    }
+    _b3ready=true;
+    window._b3dbg={size:_b3size,pivot:_b3pivot,sc:()=>_b3sc,floorY:()=>window._b3lastFloorY};
+    console.log('[BOSS3D] Model loaded (hell:'+hellIdx+')',_b3size.x.toFixed(1)+'x'+_b3size.y.toFixed(1)+'x'+_b3size.z.toFixed(1));
+    for(const st of ['walk','aggro','run','hit','chargeWind','charge','multiDashWind','multiDash','spinWind','spin','slamWind','slam']){
+      _b3loader.load(_B3_ANIMS[st].src,(g2)=>{
+        if(g2.animations.length>0){
+          const clip=g2.animations[0];clip.name=st;
+          _b3actions[st]=_b3mixer.clipAction(clip);
+          console.log('[BOSS3D] Anim loaded:',st);
+        }
+      },null,(err)=>{console.warn('[BOSS3D] Anim failed:',st,err)});
+    }
+  },null,(err)=>{console.warn('[BOSS3D] GLB failed:',err)});
+}
+// 초기 로드 (기본 폴백 모델)
+_b3loadModel(-1);
 
 function _b3resize(){
   const w=innerWidth,h=innerHeight;
