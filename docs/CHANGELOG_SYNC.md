@@ -29766,3 +29766,4435 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - userdata/ShaderCache/data_1
 - userdata/segmentation_platform/ukm_db
 
+
+## 2026-06-16 18:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _dep_norm.html
+- _disk_norm.html
+- _fpscheck.png
+- _fpscheck.py
+- _shot3333.png
+- _shot3333.py
+- _verify_load.py
+- game.html
+
+
+## 2026-06-16 20:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _dep_norm.html
+- _disk_norm.html
+- _fpscheck.png
+- _fpscheck.py
+- _shot3333.png
+- _shot3333.py
+- _verify_load.py
+- docs/CHANGELOG_SYNC.md
+- game.html
+
+
+## 2026-06-16 21:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _dep_norm.html
+- _disk_norm.html
+- _fpscheck.png
+- _fpscheck.py
+- _shot3333.png
+- _shot3333.py
+- _verify_load.py
+- docs/CHANGELOG_SYNC.md
+- game.html
+
+
+## 2026-06-16 22:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _verify_load.py
+- docs/CHANGELOG_SYNC.md
+- game.html
+
+
+## 2026-06-16 23:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-17 12:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-17 13:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-17 14:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-17 15:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-17 19:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-17 21:31 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-17 22:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-17 23:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 00:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 01:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 02:32 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 09:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 10:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 11:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 12:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 13:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 14:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 15:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 16:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 17:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 18:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-18 19:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 09:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 10:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 11:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 12:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 13:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 14:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 15:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 16:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 17:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 18:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 19:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 20:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 21:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 22:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-20 23:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 00:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 01:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 02:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 03:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 04:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 05:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 06:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 07:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 08:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 09:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 10:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 11:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 12:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 13:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 14:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 15:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 16:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 17:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 18:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 19:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+
+
+## 2026-06-21 20:30 (auto)
+- _autosave/game.html.20260616_174503.pre-webgpu-recover
+- _autosave/game.html.20260616_175247.pre-webclone
+- _autosave/game.html.20260616_202054.pre-arrowfix
+- _autosave/game_PREMERGE_20260616_203141.html
+- _cmp.py
+- _cmp_local.png
+- _cmp_web.png
+- _dep_norm.html
+- _diag.py
+- _diag411.png
+- _disk_norm.html
+- _dupcheck.py
+- _finaltest.png
+- _finaltest.py
+- _fpscheck.png
+- _fpscheck.py
+- _play411.png
+- _play411.py
+- _shot3333.png
+- _shot3333.py
+- _ultrawide.py
+- _verify_load.py
+- docs/2_1 ?¤í‚¬ê´€ë¦??©ì²´?œìŠ¤???ì›/?ì›ë¦¬ì  +?Œëª¨ê³µì‹.md
+- docs/CHANGELOG_SYNC.md
+- game.html
+- userdata/Default/BrowsingTopicsState
+- userdata/Default/Cache/Cache_Data/data_0
+- userdata/Default/Cache/Cache_Data/data_1
+- userdata/Default/Cache/Cache_Data/data_2
+- userdata/Default/Cache/Cache_Data/data_3
+- userdata/Default/Code Cache/js/16b8505f8747655f_0
+- userdata/Default/Code Cache/js/39ce9ef77fb77391_0
+- userdata/Default/Code Cache/js/index-dir/the-real-index
+- userdata/Default/DIPS
+- userdata/Default/DawnGraphiteCache/data_1
+- userdata/Default/DawnWebGPUCache/data_1
+- userdata/Default/Extension Rules/000003.log
+- userdata/Default/Extension Rules/LOG
+- userdata/Default/Extension Scripts/000003.log
+- userdata/Default/Extension Scripts/LOG
+- userdata/Default/Extension State/000003.log
+- userdata/Default/Extension State/LOG
+- userdata/Default/Favicons
+- userdata/Default/GCM Store/Encryption/LOG
+- userdata/Default/GPUCache/data_1
+- userdata/Default/History
+- userdata/Default/Local Storage/leveldb/LOG
+- userdata/Default/Network Action Predictor
+- userdata/Default/Network/Cookies
+- userdata/Default/Network/Network Persistent State
+- userdata/Default/Network/Reporting and NEL
+- userdata/Default/Network/TransportSecurity
+- userdata/Default/Preferences
+- userdata/Default/Secure Preferences
+- userdata/Default/Session Storage/000003.log
+- userdata/Default/Session Storage/LOG
+- userdata/Default/Site Characteristics Database/000003.log
+- userdata/Default/Site Characteristics Database/LOG
+- userdata/Default/Sync Data/LevelDB/LOG
+- userdata/Default/Web Data
+- userdata/Default/shared_proto_db/000003.log
+- userdata/Default/shared_proto_db/LOG
+- userdata/Default/shared_proto_db/metadata/000003.log
+- userdata/Default/shared_proto_db/metadata/LOG
+- userdata/GrShaderCache/data_0
+- userdata/GrShaderCache/data_1
+- userdata/GrShaderCache/data_3
+- userdata/GraphiteDawnCache/data_1
+- userdata/Local State
+- userdata/ShaderCache/data_1
+- userdata/segmentation_platform/ukm_db
+

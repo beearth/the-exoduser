@@ -3788,7 +3788,7 @@ function _bakeFog(w,h,hell){
   fc.fillStyle=fg;fc.fillRect(0,0,w,h);_fogW=w;_fogH=h;_fogHell=hell;
 }
 function rz(){
-  _dpr=(IS_MAC?Math.min(window.devicePixelRatio||1,1.0):1.25); // 데스크탑: 모니터 Windows 배율과 무관하게 고정 DPR(1.25)로 화면비·줌·선명도 통일 (Mac Retina은 1.0 캡으로 성능 안정화)
+  _dpr=Math.min(window.devicePixelRatio||1,(IS_MAC?1.0:1.5));
   const _rsf=(OPT.resScale||100)/100;
   let rw, rh;
   if(_renderRes){
@@ -9610,7 +9610,7 @@ let _harpSk='charge',_harpHits=[];
 let _harpLandT=0; // 착지 후 애니메이션 잔여 프레임
 // ── 작살 게이지 (최대300, 자동회복, 1단=25 2단=75 3단=150 4단=300) ──
 let _HARP_GAUGE_MAX=300;const _HARP_GAUGE_REGEN=20/60; // 초당 20 회복, MAX = maxChargeStocks * 100
-const _HARP_GAUGE_COST=[0,30,65,100];
+const _HARP_GAUGE_COST=[0,45,98,150];
 let _harpGauge=_HARP_GAUGE_MAX;
 const MBjust={}; // just-pressed mouse buttons
 let mouse={x:0,y:0};
@@ -51252,12 +51252,20 @@ const _B3_ANIMS={
   walk:{src:'assets/3d/Meshy_AI_1_biped_Animation_Walking_withSkin.glb'},
   aggro:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
   run:{src:'assets/3d/Meshy_AI_1_biped_Animation_Running_withSkin.glb'},
-  hit:{src:'assets/3d/Meshy_AI_1_biped_Animation_Unsteady_Walk_withSkin.glb'}
+  hit:{src:'assets/3d/Meshy_AI_1_biped_Animation_Unsteady_Walk_withSkin.glb'},
+  // ── 공격 전용 슬롯 (임시: aggro GLB 폴백, 추후 전용 클립으로 교체) ──
+  chargeWind:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
+  charge:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
+  multiDashWind:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
+  multiDash:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
+  spinWind:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
+  spin:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
+  slamWind:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'},
+  slam:{src:'assets/3d/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb'}
 };
 
 // 보스 상태 → 3D 애니메이션 매핑
-const _B3_RUN_STATES=new Set(['bossCharge','bossJump','bossDash','bossLeap','bossRush',
-  'bossChargeWind','bossMultiDashWind','bossSpinWind','bossSlamWind',
+const _B3_RUN_STATES=new Set(['bossJump','bossDash','bossLeap','bossRush',
   'eCharge','eSwoop','eShieldCharge','eDash']);
 const _B3_AGGRO_STATES=new Set(['eChase','eApproach','eWindup','eBreath','eSlamWind',
   'eSummon','eShootWind','eAttack','eSlam','eShieldBash',
@@ -51266,28 +51274,36 @@ const _B3_AGGRO_STATES=new Set(['eChase','eApproach','eWindup','eBreath','eSlamW
   'bossVortexWind','bossSlashWind','bossSweepWind','bossBeanStormWind',
   'bossBeanRainWind','bossFanWaveAim','bossRadialAim','bossDelaySlashHold',
   'bossPerilWind','bossShock','bossLaser','bossBurst','bossFan',
-  'bossSummon','bossMeteor','bossGrab','bossSpin','bossMine',
-  'bossVortex','bossMultiDash','bossSlash','bossSlam','bossSweep']);
+  'bossSummon','bossMeteor','bossGrab','bossMine',
+  'bossVortex','bossSlash','bossSweep']);
 const _B3_HIT_STATES=new Set(['eHit','eKB','eStagger','eDeath']);
 const _B3_WALK_STATES=new Set(['eWalk','eWander','ePatrol','bossRec','eRetreat']);
+// 공격 전용 4종 매핑 (windup → 실행)
+const _B3_ATK_MAP={'bossChargeWind':'chargeWind','bossCharge':'charge',
+  'bossMultiDashWind':'multiDashWind','bossMultiDash':'multiDash',
+  'bossSpinWind':'spinWind','bossSpin':'spin',
+  'bossSlamWind':'slamWind','bossSlam':'slam'};
 function _b3mapState(s,stunned){
   if(stunned)return 'hit';
   if(_B3_HIT_STATES.has(s))return 'hit';
+  if(_B3_ATK_MAP[s])return _B3_ATK_MAP[s];
   if(_B3_RUN_STATES.has(s))return 'run';
   if(_B3_AGGRO_STATES.has(s))return 'aggro';
   if(_B3_WALK_STATES.has(s))return 'walk';
   return 'idle';
 }
 
+const _B3_FAST_FADE=new Set(['charge','multiDash','spin','slam']);
 function _b3switchState(ns){
   if(ns===_b3state||!_b3actions[ns])return;
   const prev=_b3actions[_b3state];
   const next=_b3actions[ns];
+  const fadeT=_B3_FAST_FADE.has(ns)?0.08:0.2;
   // 모든 액션 정지 후 새 액션만 재생 (weight/enabled 꼬임 방지)
   for(const k in _b3actions){
     const a=_b3actions[k];
-    if(k===ns){a.reset();a.enabled=true;a.setEffectiveWeight(1);a.fadeIn(0.2).play()}
-    else{a.fadeOut(0.2)}
+    if(k===ns){a.reset();a.enabled=true;a.setEffectiveWeight(1);a.fadeIn(fadeT).play()}
+    else{a.fadeOut(fadeT)}
   }
   _b3state=ns;
 }
@@ -51319,8 +51335,8 @@ _b3loader.load(_B3_ANIMS.idle.src,(gltf)=>{
   _b3ready=true;
   window._b3dbg={size:_b3size,pivot:_b3pivot,sc:()=>_b3sc,floorY:()=>window._b3lastFloorY};
   console.log('[BOSS3D] Model loaded',_b3size.x.toFixed(1)+'x'+_b3size.y.toFixed(1)+'x'+_b3size.z.toFixed(1));
-  // 나머지 4개 애니 로드
-  for(const st of ['walk','aggro','run','hit']){
+  // 나머지 애니 로드 (기존 4 + 공격 8)
+  for(const st of ['walk','aggro','run','hit','chargeWind','charge','multiDashWind','multiDash','spinWind','spin','slamWind','slam']){
     _b3loader.load(_B3_ANIMS[st].src,(g2)=>{
       if(g2.animations.length>0){
         const clip=g2.animations[0];clip.name=st;
