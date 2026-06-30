@@ -184,6 +184,13 @@ shake(14 + _bp*4)                              // 페이즈별 18~30
 - `mine` 액션 range: `[0, 999]` → `[0, 220]`
 - 이유: 원거리에서 지뢰 설치 방지 — 보스가 플레이어 근처에 있을 때만 사용
 
+### 바닥 지뢰 어둠속성·진보라 통일 (2026-06-27, 진보라 심화 2026-06-28)
+- 바닥에 깔리는 지뢰류를 모두 **어둠속성(EL.D)** + **진보라** 비주얼로 통일
+- 대상: `mine`(설치형 지뢰), `seekerMines`(추적지뢰), `trap`(덫), `iceZone`/`blizzard`(빙판슬라임·눈보라마법사), etype16 지뢰몹 오라
+- 속성 변경: 두 액션 모두 `el:e.el`(보스 속성) → **`el:EL.D`** — 데미지 계산 시 어둠 상성(elMul) 적용
+- 색상 변경: 노랑/주황(`#ffcc00`/`#ffaa00`/`#ff8800`/`#ff4400`) → 보라(`#a833ff`/`#d488ff`) → **최종 진보라(`#5e10a8` 메인 / `#7a14c8` 하이라이트)** — 설치 파티클·렌더·폭발 파티클·예고 텍스트 전부. seekerMines 미점화 dim상태 `#552288`/`#663388` 유지
+- 이유: 바닥 함정(덫)·지뢰류 위협 표시를 진보라 어둠 계열로 시각 통일
+
 ---
 
 ## 6. Three.js 3D 보스 오버레이
@@ -313,6 +320,26 @@ http://localhost:3333/game.html?bosstest=0
 | 2D 캔버스 (`_drawBossWalk`) | `_largeMul = _btScaleMul` |
 | 2D 캔버스 (ext atlas, int atlas) | `_eLargeMul / _bLM = _btScaleMul` |
 | 2D 캔버스 렌더 래퍼 | `X.translate(e.x, e.y+_bYOff); X.scale(_bScMul, _bScMul)` — `_btOffsetY`도 피벗 Y에 반영 (2026-05-13) |
+
+### 알려진 이슈 — 검정 배경 (WebGL 컨텍스트 소실) (2026-06-28 수정)
+
+**증상**: `?bosstest=N` 진입 시 맵/배경 전체가 검정으로 렌더. 콘솔에 `CONTEXT_LOST_WEBGL` 로그.
+
+**원인**: 테스트베드는 동시에 WebGL 컨텍스트를 다수 생성 (메인 월드 + BOSS3D `_b3r` + VFX3D + Vinebound `_v3r` + CHEST3D `R` + FOG ≈ 9개). 브라우저 동시 컨텍스트 한도를 넘으면 **메인 월드 webgl2 컨텍스트가 먼저 소실** → 맵이 안 그려져 검정.
+
+**복구 핸들러** (`game.html` line ~4602, `C._glCtxHandlers` 가드로 최초 1회만 등록):
+
+| 이벤트 | 동작 |
+|---|---|
+| `webglcontextlost` | `ev.preventDefault()`; `_useGL=false`, `GL=null`; instanced 리셋; 렌더 함수 no-op化 |
+| `webglcontextrestored` | `_initWebGL()`로 파이프라인 통째 재구축 → `_buildProxyX()` 재빌드 → `_shDirty=true` + `_queueMapCacheRefresh()`로 텍스처 자동 재업로드 |
+
+> webgl2 캔버스는 `getContext('2d')`가 `null`이라 Canvas2D 폴백 불가 — 반드시 컨텍스트 재구축 경로로 복구.
+> **복구일 뿐 예방은 아님.** 근본 해결은 3D 오버레이 렌더러(`_b3r`/`_v3r`/CHEST `R`)의 지연 생성으로 컨텍스트 수를 줄이는 것 (미구현).
+
+### HP 표시 오버플로우 수정 (2026-06-28)
+
+`_btUpdateInfo` 의 HP 표기가 `~~`(ToInt32) 32비트 절단으로 HP > 2³¹ 시 음수 쓰레기값(`-7851003392`) 출력 → `Math.floor(...).toLocaleString()` 으로 교체. HP/maxHP/Poise 동일 적용.
 
 ---
 

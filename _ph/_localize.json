@@ -1,0 +1,2326 @@
+[
+ {
+  "ko": "타",
+  "en": "Hit",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "ja"
+  ]
+ },
+ {
+  "ko": "정밀",
+  "en": "Prec",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "es"
+  ]
+ },
+ {
+  "ko": "감소",
+  "en": "red",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "es"
+  ]
+ },
+ {
+  "ko": "임플",
+  "en": "Impl",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "es"
+  ]
+ },
+ {
+  "ko": "환영",
+  "en": "Phantom",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "de"
+  ]
+ },
+ {
+  "ko": "💫 피니셔!",
+  "en": "💫 Finisher!",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "de"
+  ]
+ },
+ {
+  "ko": "💀 도넛!",
+  "en": "💀 Donut!",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "de"
+  ]
+ },
+ {
+  "ko": "환영!",
+  "en": "Phantom!",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "de"
+  ]
+ },
+ {
+  "ko": "골드+",
+  "en": "Gold+",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "de"
+  ]
+ },
+ {
+  "ko": "공포!",
+  "en": "Terror!",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "ptbr"
+  ]
+ },
+ {
+  "ko": "💫 진동!",
+  "en": "💫 Tremor!",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "ptbr"
+  ]
+ },
+ {
+  "ko": "대장",
+  "en": "Forge",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "지능",
+  "en": "Intelligence",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "악의",
+  "en": "Malice",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "레어",
+  "en": "Rare",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "체간",
+  "en": "Posture",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "투사체",
+  "en": "Projectile",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "폭력",
+  "en": "Violence",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "기생",
+  "en": "Parasite",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "소용돌이",
+  "en": "Vortex",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "악의 +",
+  "en": "Malice +",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "크리MP+",
+  "en": "Crit MP+",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "물약",
+  "en": "Potion",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "대장간",
+  "en": "Forge",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "전투",
+  "en": "Combat",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "마력",
+  "en": "Arcane",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "독",
+  "en": "Poison",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "자연",
+  "en": "Nature",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "☠ 침식",
+  "en": "☠ Corrosion",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "🔥분노+",
+  "en": "🔥Rage+",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "fr"
+  ]
+ },
+ {
+  "ko": "만능의",
+  "en": "Versatile",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "it"
+  ]
+ },
+ {
+  "ko": " 자동 ON",
+  "en": " Auto ON",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "it"
+  ]
+ },
+ {
+  "ko": " 자동 OFF",
+  "en": " Auto OFF",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "it"
+  ]
+ },
+ {
+  "ko": "이전",
+  "en": "Transfer",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "id"
+  ]
+ },
+ {
+  "ko": "레벨",
+  "en": "Level",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "id"
+  ]
+ },
+ {
+  "ko": "체기의",
+  "en": "HP-Stamina",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "id"
+  ]
+ },
+ {
+  "ko": "마기의",
+  "en": "Mana-Stamina",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "id"
+  ]
+ },
+ {
+  "ko": "HP≥70%뎀+",
+  "en": "HP≥70% DMG+",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "id"
+  ]
+ },
+ {
+  "ko": "HP100%뎀+",
+  "en": "HP100% DMG+",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "id"
+  ]
+ },
+ {
+  "ko": "HP≤35%뎀+",
+  "en": "HP≤35% DMG+",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "id"
+  ]
+ },
+ {
+  "ko": "스태미나",
+  "en": "Stamina",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "id"
+  ]
+ },
+ {
+  "ko": "침식의",
+  "en": "Erosion",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "sv"
+  ]
+ },
+ {
+  "ko": "블록영력의",
+  "en": "Block Mana",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "sv"
+  ]
+ },
+ {
+  "ko": "돌진공격의",
+  "en": "Dash ATK",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "sv"
+  ]
+ },
+ {
+  "ko": "속성침식의",
+  "en": "Elem Erosion",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "sv"
+  ]
+ },
+ {
+  "ko": "탱크블록의",
+  "en": "Tank Block",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "sv"
+  ]
+ },
+ {
+  "ko": "블록HP+",
+  "en": "Block HP+",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "sv"
+  ]
+ },
+ {
+  "ko": "블록MP+",
+  "en": "Block MP+",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "sv"
+  ]
+ },
+ {
+  "ko": "SP슬롯",
+  "en": "SP Slot",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "da"
+  ]
+ },
+ {
+  "ko": "F슬롯",
+  "en": "F Slot",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "da"
+  ]
+ },
+ {
+  "ko": "마나흡수%",
+  "en": "Mana Leech%",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "da"
+  ]
+ },
+ {
+  "ko": "ST흡수%",
+  "en": "ST Leech%",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "da"
+  ]
+ },
+ {
+  "ko": "HP≤35%흡혈",
+  "en": "HP≤35% Leech",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "da"
+  ]
+ },
+ {
+  "ko": "확률",
+  "en": "Rate",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "da"
+  ]
+ },
+ {
+  "ko": "확산의",
+  "en": "AoE Radius",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "no"
+  ]
+ },
+ {
+  "ko": "전스탯+",
+  "en": "All Stats+",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "no"
+  ]
+ },
+ {
+  "ko": "흡혈의",
+  "en": "Vampirism",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "ro"
+  ]
+ },
+ {
+  "ko": "콤보한계의",
+  "en": "Combo Max",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "ro"
+  ]
+ },
+ {
+  "ko": "최대콤보",
+  "en": "Max Combo",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "집중...",
+  "en": "Focus...",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "💫 집중...",
+  "en": "💫 Focus...",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "수역!",
+  "en": "Water!",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "집중!",
+  "en": "Focus!",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "정예살의",
+  "en": "Elite Slayer",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "군살의",
+  "en": "Mob Slayer",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "수련의",
+  "en": "Training",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "마나왕관의",
+  "en": "Mana Helm",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "쿨감왕관의",
+  "en": "CD Helm",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "경험왕관의",
+  "en": "EXP Helm",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "콤보반지의",
+  "en": "Combo Ring",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "마나띠의",
+  "en": "Mana Band",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "속성띠의",
+  "en": "Elem Band",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "콤보보너스+",
+  "en": "Combo Bonus+",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "어픽스",
+  "en": "affix",
+  "loc": 25,
+  "kept": 1,
+  "frac": 0.96,
+  "missing": [
+   "nl"
+  ]
+ },
+ {
+  "ko": "재생",
+  "en": "Regen",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "es",
+   "ptbr"
+  ]
+ },
+ {
+  "ko": " 뎀",
+  "en": " DMG",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "es",
+   "id"
+  ]
+ },
+ {
+  "ko": "챔피언",
+  "en": "Champion",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "de",
+   "fr"
+  ]
+ },
+ {
+  "ko": "💥 그로기!",
+  "en": "💥 Groggy!",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "de",
+   "sv"
+  ]
+ },
+ {
+  "ko": "위상!",
+  "en": "Phase!",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "de",
+   "fr"
+  ]
+ },
+ {
+  "ko": "충격!",
+  "en": "Impact!",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "fr",
+   "ro"
+  ]
+ },
+ {
+  "ko": "삼지창!",
+  "en": "Trident!",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "fr",
+   "ro"
+  ]
+ },
+ {
+  "ko": "🚀 미사일!",
+  "en": "🚀 Missile!",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "fr",
+   "it"
+  ]
+ },
+ {
+  "ko": "지속피해방어의",
+  "en": "DoT DR",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "nl",
+   "tr"
+  ]
+ },
+ {
+  "ko": "보조",
+  "en": "Sub",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "id",
+   "nl"
+  ]
+ },
+ {
+  "ko": "마력재생의",
+  "en": "Mana Regen",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "nl",
+   "sv"
+  ]
+ },
+ {
+  "ko": "최대공격의",
+  "en": "Max ATK",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "nl",
+   "sv"
+  ]
+ },
+ {
+  "ko": "만마력공의",
+  "en": "Full Mana ATK",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "no",
+   "sv"
+  ]
+ },
+ {
+  "ko": "돌진범위의",
+  "en": "Dash AoE",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "da",
+   "sv"
+  ]
+ },
+ {
+  "ko": "전재생의",
+  "en": "All Regen",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "no",
+   "sv"
+  ]
+ },
+ {
+  "ko": "⚙ 특수",
+  "en": "⚙ Special",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "ro",
+   "sv"
+  ]
+ },
+ {
+  "ko": "범위반경+",
+  "en": "AoE Radius+",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "da",
+   "no"
+  ]
+ },
+ {
+  "ko": "엘리트DR",
+  "en": "Elite DR",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "da",
+   "nl"
+  ]
+ },
+ {
+  "ko": "반지1",
+  "en": "ring1",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "da",
+   "nl"
+  ]
+ },
+ {
+  "ko": "반지2",
+  "en": "ring2",
+  "loc": 24,
+  "kept": 2,
+  "frac": 0.92,
+  "missing": [
+   "da",
+   "nl"
+  ]
+ },
+ {
+  "ko": "방어↓",
+  "en": "DEF↓",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "es",
+   "id",
+   "ptbr"
+  ]
+ },
+ {
+  "ko": "뎀",
+  "en": " DMG",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "es",
+   "id",
+   "ro"
+  ]
+ },
+ {
+  "ko": "방어력+",
+  "en": "DEF+",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "es",
+   "id",
+   "ptbr"
+  ]
+ },
+ {
+  "ko": "기본",
+  "en": "base",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "es",
+   "it",
+   "ptbr"
+  ]
+ },
+ {
+  "ko": "💥폭발!",
+  "en": "💥Explosion!",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "de",
+   "fr",
+   "sv"
+  ]
+ },
+ {
+  "ko": "낙하!",
+  "en": "Fall!",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "de",
+   "no",
+   "sv"
+  ]
+ },
+ {
+  "ko": "폭발!",
+  "en": "Explosion!",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "de",
+   "fr",
+   "sv"
+  ]
+ },
+ {
+  "ko": "💢 폭발!",
+  "en": "💢 Explosion!",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "de",
+   "fr",
+   "sv"
+  ]
+ },
+ {
+  "ko": "최대HP의33%",
+  "en": "33% Max HP",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "de",
+   "nl",
+   "sv"
+  ]
+ },
+ {
+  "ko": "분신!",
+  "en": "Clone!",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "fr",
+   "it",
+   "ptbr"
+  ]
+ },
+ {
+  "ko": "👥 분신!",
+  "en": "👥 Clone!",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "fr",
+   "it",
+   "ptbr"
+  ]
+ },
+ {
+  "ko": "👤 분신!",
+  "en": "👤 Clone!",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "fr",
+   "it",
+   "ptbr"
+  ]
+ },
+ {
+  "ko": "리셋!",
+  "en": "Reset!",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "cs",
+   "nl",
+   "pl"
+  ]
+ },
+ {
+  "ko": "리셋",
+  "en": "Reset",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "cs",
+   "nl",
+   "pl"
+  ]
+ },
+ {
+  "ko": "속성감쇠의",
+  "en": "Elem DR",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "da",
+   "nl",
+   "tr"
+  ]
+ },
+ {
+  "ko": "돌진쿨-",
+  "en": "Dash CD-",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "da",
+   "nl",
+   "sv"
+  ]
+ },
+ {
+  "ko": "착지!",
+  "en": "Landing!",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "da",
+   "nl",
+   "no"
+  ]
+ },
+ {
+  "ko": "💥 착지!",
+  "en": "💥 Landing!",
+  "loc": 23,
+  "kept": 3,
+  "frac": 0.88,
+  "missing": [
+   "da",
+   "nl",
+   "no"
+  ]
+ },
+ {
+  "ko": "최대HP",
+  "en": "Max HP",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "de",
+   "hu",
+   "nl",
+   "sv"
+  ]
+ },
+ {
+  "ko": "지뢰",
+  "en": "Mine",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "da",
+   "de",
+   "fr",
+   "no"
+  ]
+ },
+ {
+  "ko": "구역",
+  "en": "Zone",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "da",
+   "de",
+   "fr",
+   "nl"
+  ]
+ },
+ {
+  "ko": "환영술사",
+  "en": "Illusionist",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "da",
+   "de",
+   "nl",
+   "sv"
+  ]
+ },
+ {
+  "ko": "💥 지뢰!",
+  "en": "💥 Mine!",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "da",
+   "de",
+   "fr",
+   "no"
+  ]
+ },
+ {
+  "ko": "💣 지뢰!",
+  "en": "💣 Mine!",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "da",
+   "de",
+   "fr",
+   "no"
+  ]
+ },
+ {
+  "ko": "환영술!",
+  "en": "Illusion!",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "da",
+   "de",
+   "fr",
+   "sv"
+  ]
+ },
+ {
+  "ko": "❄서리!",
+  "en": "❄Frost!",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "da",
+   "de",
+   "no",
+   "sv"
+  ]
+ },
+ {
+  "ko": "최대 HP +X",
+  "en": "Max HP +X",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "de",
+   "hu",
+   "nl",
+   "sv"
+  ]
+ },
+ {
+  "ko": "최대 HP +X%",
+  "en": "Max HP +X%",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "de",
+   "hu",
+   "nl",
+   "sv"
+  ]
+ },
+ {
+  "ko": "최대HP%+",
+  "en": "Max HP%+",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "de",
+   "hu",
+   "nl",
+   "sv"
+  ]
+ },
+ {
+  "ko": "반경",
+  "en": "Radius",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "da",
+   "de",
+   "id",
+   "no"
+  ]
+ },
+ {
+  "ko": "타입",
+  "en": "Type",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "da",
+   "fr",
+   "nl",
+   "no"
+  ]
+ },
+ {
+  "ko": "최소공격의",
+  "en": "Min ATK",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "da",
+   "nl",
+   "sv",
+   "tr"
+  ]
+ },
+ {
+  "ko": "암묵",
+  "en": "Implicit",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "da",
+   "hu",
+   "ro",
+   "sv"
+  ]
+ },
+ {
+  "ko": "대기",
+  "en": "Standby",
+  "loc": 22,
+  "kept": 4,
+  "frac": 0.85,
+  "missing": [
+   "da",
+   "nl",
+   "no",
+   "sv"
+  ]
+ },
+ {
+  "ko": "쿨감",
+  "en": "CDR",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "da",
+   "es",
+   "id",
+   "ja",
+   "no"
+  ]
+ },
+ {
+  "ko": "제단",
+  "en": "Altar",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "de",
+   "es",
+   "id",
+   "ptbr",
+   "ro"
+  ]
+ },
+ {
+  "ko": "영빙의",
+  "en": "Permafrost",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "es",
+   "ptbr",
+   "ro",
+   "sv",
+   "tr"
+  ]
+ },
+ {
+  "ko": "스태거+",
+  "en": "Stagger+",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "da",
+   "es",
+   "id",
+   "it",
+   "nl"
+  ]
+ },
+ {
+  "ko": "스태거",
+  "en": "Stagger",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "da",
+   "es",
+   "id",
+   "it",
+   "nl"
+  ]
+ },
+ {
+  "ko": "비석",
+  "en": "Stele",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "da",
+   "de",
+   "it",
+   "no",
+   "sv"
+  ]
+ },
+ {
+  "ko": "시스템",
+  "en": "System",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "da",
+   "de",
+   "no",
+   "pl",
+   "sv"
+  ]
+ },
+ {
+  "ko": "기세의",
+  "en": "Momentum",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "id",
+   "no",
+   "ptbr",
+   "sv",
+   "tr"
+  ]
+ },
+ {
+  "ko": "자동 ON",
+  "en": " Auto ON",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "fi",
+   "fr",
+   "id",
+   "it",
+   "ro"
+  ]
+ },
+ {
+  "ko": "자동 OFF",
+  "en": " Auto OFF",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "fi",
+   "fr",
+   "id",
+   "it",
+   "ro"
+  ]
+ },
+ {
+  "ko": "🍀 행운 (LCK)",
+  "en": "🍀 LCK",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "da",
+   "id",
+   "pl",
+   "sv",
+   "vi"
+  ]
+ },
+ {
+  "ko": "HP리젠+",
+  "en": "HP Regen+",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "da",
+   "fi",
+   "nl",
+   "no",
+   "sv"
+  ]
+ },
+ {
+  "ko": "HP리젠%+",
+  "en": "HP Regen%+",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "da",
+   "fi",
+   "nl",
+   "no",
+   "sv"
+  ]
+ },
+ {
+  "ko": "ST리젠+",
+  "en": "ST Regen+",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "da",
+   "fi",
+   "nl",
+   "no",
+   "sv"
+  ]
+ },
+ {
+  "ko": "ST리젠%+",
+  "en": "ST Regen%+",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "da",
+   "fi",
+   "nl",
+   "no",
+   "sv"
+  ]
+ },
+ {
+  "ko": "MP리젠+",
+  "en": "MP Regen+",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "da",
+   "fi",
+   "nl",
+   "no",
+   "sv"
+  ]
+ },
+ {
+  "ko": "MP리젠%+",
+  "en": "MP Regen%+",
+  "loc": 21,
+  "kept": 5,
+  "frac": 0.81,
+  "missing": [
+   "da",
+   "fi",
+   "nl",
+   "no",
+   "sv"
+  ]
+ },
+ {
+  "ko": "드롭",
+  "en": "Drop",
+  "loc": 20,
+  "kept": 6,
+  "frac": 0.77,
+  "missing": [
+   "cs",
+   "da",
+   "it",
+   "no",
+   "ptbr",
+   "sv"
+  ]
+ },
+ {
+  "ko": "스탯",
+  "en": "Stat",
+  "loc": 20,
+  "kept": 6,
+  "frac": 0.77,
+  "missing": [
+   "da",
+   "fr",
+   "nl",
+   "no",
+   "sv",
+   "tr"
+  ]
+ },
+ {
+  "ko": "힘민의",
+  "en": "STR-DEX",
+  "loc": 20,
+  "kept": 6,
+  "frac": 0.77,
+  "missing": [
+   "da",
+   "id",
+   "no",
+   "sv",
+   "th",
+   "vi"
+  ]
+ },
+ {
+  "ko": "힘지의",
+  "en": "STR-INT",
+  "loc": 20,
+  "kept": 6,
+  "frac": 0.77,
+  "missing": [
+   "da",
+   "id",
+   "no",
+   "sv",
+   "th",
+   "vi"
+  ]
+ },
+ {
+  "ko": "⚡기동+10",
+  "en": "⚡Dash+10",
+  "loc": 20,
+  "kept": 6,
+  "frac": 0.77,
+  "missing": [
+   "da",
+   "id",
+   "nl",
+   "no",
+   "ro",
+   "sv"
+  ]
+ },
+ {
+  "ko": "슬롯:",
+  "en": "Slot:",
+  "loc": 19,
+  "kept": 7,
+  "frac": 0.73,
+  "missing": [
+   "cs",
+   "de",
+   "id",
+   "it",
+   "nl",
+   "pl",
+   "ro"
+  ]
+ },
+ {
+  "ko": "슬롯",
+  "en": "Slot",
+  "loc": 19,
+  "kept": 7,
+  "frac": 0.73,
+  "missing": [
+   "cs",
+   "de",
+   "id",
+   "it",
+   "nl",
+   "pl",
+   "ro"
+  ]
+ },
+ {
+  "ko": "의식!",
+  "en": "Ritual!",
+  "loc": 19,
+  "kept": 7,
+  "frac": 0.73,
+  "missing": [
+   "da",
+   "de",
+   "id",
+   "no",
+   "ptbr",
+   "ro",
+   "sv"
+  ]
+ },
+ {
+  "ko": "💪 힘 (STR)",
+  "en": "💪 STR",
+  "loc": 19,
+  "kept": 7,
+  "frac": 0.73,
+  "missing": [
+   "da",
+   "de",
+   "id",
+   "no",
+   "pl",
+   "sv",
+   "vi"
+  ]
+ },
+ {
+  "ko": "유틸",
+  "en": "Util",
+  "loc": 18,
+  "kept": 8,
+  "frac": 0.69,
+  "missing": [
+   "de",
+   "es",
+   "fr",
+   "id",
+   "it",
+   "nl",
+   "ptbr",
+   "ro"
+  ]
+ },
+ {
+  "ko": "리젠",
+  "en": "Regen",
+  "loc": 18,
+  "kept": 8,
+  "frac": 0.69,
+  "missing": [
+   "da",
+   "es",
+   "fi",
+   "id",
+   "nl",
+   "no",
+   "ptbr",
+   "sv"
+  ]
+ },
+ {
+  "ko": "조각",
+  "en": "Fragment",
+  "loc": 18,
+  "kept": 8,
+  "frac": 0.69,
+  "missing": [
+   "da",
+   "de",
+   "fr",
+   "nl",
+   "no",
+   "pl",
+   "ro",
+   "sv"
+  ]
+ },
+ {
+  "ko": "텔레포트",
+  "en": "Teleport",
+  "loc": 18,
+  "kept": 8,
+  "frac": 0.69,
+  "missing": [
+   "cs",
+   "da",
+   "de",
+   "hu",
+   "nl",
+   "no",
+   "pl",
+   "sv"
+  ]
+ },
+ {
+  "ko": "파편!",
+  "en": "Fragment!",
+  "loc": 18,
+  "kept": 8,
+  "frac": 0.69,
+  "missing": [
+   "da",
+   "de",
+   "fr",
+   "nl",
+   "no",
+   "pl",
+   "ro",
+   "sv"
+  ]
+ },
+ {
+  "ko": "비이이명!!",
+  "en": "Riiing!!",
+  "loc": 18,
+  "kept": 8,
+  "frac": 0.69,
+  "missing": [
+   "da",
+   "de",
+   "fi",
+   "id",
+   "nl",
+   "no",
+   "ptbr",
+   "sv"
+  ]
+ },
+ {
+  "ko": "👻 순간이동!",
+  "en": "👻 Teleport!",
+  "loc": 18,
+  "kept": 8,
+  "frac": 0.69,
+  "missing": [
+   "cs",
+   "da",
+   "de",
+   "hu",
+   "nl",
+   "no",
+   "pl",
+   "sv"
+  ]
+ },
+ {
+  "ko": "⚡순간이동!",
+  "en": "⚡Teleport!",
+  "loc": 18,
+  "kept": 8,
+  "frac": 0.69,
+  "missing": [
+   "cs",
+   "da",
+   "de",
+   "hu",
+   "nl",
+   "no",
+   "pl",
+   "sv"
+  ]
+ },
+ {
+  "ko": "용암!",
+  "en": "Lava!",
+  "loc": 18,
+  "kept": 8,
+  "frac": 0.69,
+  "missing": [
+   "da",
+   "de",
+   "id",
+   "it",
+   "nl",
+   "no",
+   "ptbr",
+   "sv"
+  ]
+ },
+ {
+  "ko": "민지의",
+  "en": "DEX-INT",
+  "loc": 18,
+  "kept": 8,
+  "frac": 0.69,
+  "missing": [
+   "da",
+   "fr",
+   "id",
+   "no",
+   "ro",
+   "sv",
+   "th",
+   "vi"
+  ]
+ },
+ {
+  "ko": "🏹 민첩 (DEX)",
+  "en": "🏹 DEX",
+  "loc": 18,
+  "kept": 8,
+  "frac": 0.69,
+  "missing": [
+   "da",
+   "fr",
+   "id",
+   "no",
+   "pl",
+   "ro",
+   "sv",
+   "vi"
+  ]
+ },
+ {
+  "ko": "미구현",
+  "en": "N/A",
+  "loc": 17,
+  "kept": 9,
+  "frac": 0.65,
+  "missing": [
+   "da",
+   "de",
+   "es",
+   "ja",
+   "nl",
+   "ptbr",
+   "ro",
+   "zh",
+   "zht"
+  ]
+ },
+ {
+  "ko": "HP≥70%공격+",
+  "en": "HP≥70% ATK+",
+  "loc": 17,
+  "kept": 9,
+  "frac": 0.65,
+  "missing": [
+   "da",
+   "de",
+   "it",
+   "nl",
+   "no",
+   "pl",
+   "ro",
+   "sv",
+   "th"
+  ]
+ },
+ {
+  "ko": "보스",
+  "en": "Boss",
+  "loc": 17,
+  "kept": 9,
+  "frac": 0.65,
+  "missing": [
+   "cs",
+   "da",
+   "de",
+   "fr",
+   "it",
+   "no",
+   "pl",
+   "ro",
+   "sv"
+  ]
+ },
+ {
+  "ko": "메뉴",
+  "en": "Menu",
+  "loc": 17,
+  "kept": 9,
+  "frac": 0.65,
+  "missing": [
+   "cs",
+   "da",
+   "fr",
+   "id",
+   "it",
+   "nl",
+   "pl",
+   "ptbr",
+   "vi"
+  ]
+ },
+ {
+  "ko": "경험치",
+  "en": "EXP",
+  "loc": 16,
+  "kept": 10,
+  "frac": 0.62,
+  "missing": [
+   "da",
+   "es",
+   "fr",
+   "id",
+   "nl",
+   "no",
+   "pl",
+   "ptbr",
+   "ro",
+   "sv"
+  ]
+ },
+ {
+  "ko": "일반",
+  "en": "Normal",
+  "loc": 16,
+  "kept": 10,
+  "frac": 0.62,
+  "missing": [
+   "da",
+   "de",
+   "es",
+   "fr",
+   "id",
+   "no",
+   "ptbr",
+   "ro",
+   "sv",
+   "tr"
+  ]
+ },
+ {
+  "ko": "로비",
+  "en": "Lobby",
+  "loc": 16,
+  "kept": 10,
+  "frac": 0.62,
+  "missing": [
+   "cs",
+   "da",
+   "de",
+   "it",
+   "nl",
+   "no",
+   "pl",
+   "ptbr",
+   "ro",
+   "sv"
+  ]
+ },
+ {
+  "ko": "마나의",
+  "en": "Mana",
+  "loc": 16,
+  "kept": 10,
+  "frac": 0.62,
+  "missing": [
+   "hu",
+   "id",
+   "it",
+   "nl",
+   "no",
+   "ptbr",
+   "ro",
+   "sv",
+   "tr",
+   "vi"
+  ]
+ },
+ {
+  "ko": "체마의",
+  "en": "HP-Mana",
+  "loc": 16,
+  "kept": 10,
+  "frac": 0.62,
+  "missing": [
+   "hu",
+   "id",
+   "it",
+   "nl",
+   "no",
+   "ptbr",
+   "ro",
+   "sv",
+   "tr",
+   "vi"
+  ]
+ },
+ {
+  "ko": "광전사",
+  "en": "Berserker",
+  "loc": 15,
+  "kept": 11,
+  "frac": 0.58,
+  "missing": [
+   "de",
+   "es",
+   "fr",
+   "hu",
+   "id",
+   "it",
+   "nl",
+   "pl",
+   "ptbr",
+   "ro",
+   "tr"
+  ]
+ },
+ {
+  "ko": "림보",
+  "en": "Limbo",
+  "loc": 15,
+  "kept": 11,
+  "frac": 0.58,
+  "missing": [
+   "cs",
+   "da",
+   "es",
+   "fi",
+   "id",
+   "it",
+   "nl",
+   "no",
+   "pl",
+   "ptbr",
+   "sv"
+  ]
+ },
+ {
+  "ko": "ST/틱",
+  "en": "ST/Tick",
+  "loc": 15,
+  "kept": 11,
+  "frac": 0.58,
+  "missing": [
+   "da",
+   "de",
+   "es",
+   "hu",
+   "id",
+   "it",
+   "nl",
+   "ptbr",
+   "ro",
+   "sv",
+   "vi"
+  ]
+ },
+ {
+  "ko": "⚔ 광전사",
+  "en": "⚔ Berserker",
+  "loc": 15,
+  "kept": 11,
+  "frac": 0.58,
+  "missing": [
+   "de",
+   "es",
+   "fr",
+   "hu",
+   "id",
+   "it",
+   "nl",
+   "pl",
+   "ptbr",
+   "ro",
+   "tr"
+  ]
+ },
+ {
+  "ko": "⚔ 연격!",
+  "en": "⚔ Combo!",
+  "loc": 15,
+  "kept": 11,
+  "frac": 0.58,
+  "missing": [
+   "da",
+   "de",
+   "fi",
+   "fr",
+   "it",
+   "nl",
+   "no",
+   "ptbr",
+   "ro",
+   "sv",
+   "vi"
+  ]
+ },
+ {
+  "ko": "원소",
+  "en": "Elem",
+  "loc": 14,
+  "kept": 12,
+  "frac": 0.54,
+  "missing": [
+   "da",
+   "de",
+   "es",
+   "fi",
+   "hu",
+   "id",
+   "it",
+   "nl",
+   "no",
+   "ptbr",
+   "ro",
+   "sv"
+  ]
+ },
+ {
+  "ko": "인벤",
+  "en": "Inv",
+  "loc": 13,
+  "kept": 13,
+  "frac": 0.5,
+  "missing": [
+   "cs",
+   "da",
+   "de",
+   "es",
+   "fi",
+   "fr",
+   "id",
+   "it",
+   "nl",
+   "no",
+   "ptbr",
+   "ro",
+   "sv"
+  ]
+ },
+ {
+  "ko": "벤치 FPS:",
+  "en": "Bench FPS:",
+  "loc": 13,
+  "kept": 13,
+  "frac": 0.5,
+  "missing": [
+   "cs",
+   "de",
+   "el",
+   "es",
+   "fi",
+   "fr",
+   "hu",
+   "id",
+   "it",
+   "nl",
+   "ptbr",
+   "sv",
+   "uk"
+  ]
+ },
+ {
+  "ko": "초",
+  "en": "s",
+  "loc": 13,
+  "kept": 13,
+  "frac": 0.5,
+  "missing": [
+   "cs",
+   "da",
+   "de",
+   "es",
+   "fi",
+   "fr",
+   "it",
+   "nl",
+   "no",
+   "pl",
+   "ptbr",
+   "ro",
+   "sv"
+  ]
+ },
+ {
+  "ko": "🔮 지능 (INT)",
+  "en": "🔮 INT",
+  "loc": 13,
+  "kept": 13,
+  "frac": 0.5,
+  "missing": [
+   "da",
+   "de",
+   "es",
+   "fr",
+   "id",
+   "it",
+   "nl",
+   "no",
+   "pl",
+   "ptbr",
+   "ro",
+   "sv",
+   "vi"
+  ]
+ }
+]

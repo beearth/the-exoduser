@@ -702,3 +702,32 @@ Space 슬롯(SKILL_SLOTS[4])에도 모든 스킬 쿨다운 오버레이+숫자 �
 | skSlot1 | Space | B |
 
 - 라벨 위치: `slotEl.getBoundingClientRect()` 기준 실제 좌표 → `m.left` 폴백
+
+---
+
+## 2026-06-28 스킬 슬롯 팝업(L키) 확대 + 게임 일시정지
+
+L키(`skillCycle`)로 여는 스킬 슬롯 배정 팝업(`#skSlotPop`, `openSkSlotPop()`)이 너무 작아 시인성 개선 + 배정 중 게임 정지 추가.
+
+### 1) 크기 ~3배 확대 (`.sk-pop` / `.sk-opt` CSS)
+
+| 항목 | 이전 | 변경 |
+|---|---|---|
+| `.sk-pop` min-width | 160px | 440px |
+| `.sk-pop` padding | 6px | 14px |
+| `.sk-pop` gap | 4px | 8px |
+| `.sk-pop` max-width/height | — | 92vw / 86vh (`overflow-y:auto`) |
+| `.sk-opt` padding | 6px 8px | 14px 18px |
+| `.sk-opt` gap | 8px | 14px |
+| `.sk-opt-emoji` | 18px | 34px |
+| `.sk-opt-name` | .85rem / min-width 50px | 1.5rem / min-width 110px |
+| `.sk-opt-desc` | .7rem | 1.15rem |
+| 탭(`.sk-pop-tab` 인라인) font | .65rem / padding 3px 2px | 1.05rem / padding 7px 5px |
+| 탭 행(tabRow 인라인) | gap 2px, mb 6px, pb 4px | gap 4px, mb 10px, pb 8px |
+
+### 2) 게임 일시정지 (퍼즈)
+
+- 전역 플래그 `_skPopOwnsPause` + 닫기 헬퍼 `_closeSkPop()` 추가.
+- 인게임에서 팝업을 열 때 `G.paused`가 false면 `G.paused=true` + `_skPopOwnsPause=true`.
+- 닫힐 때 `_skPopOwnsPause`일 때만 `G.paused=false`로 복원 → 스킬 패널 등 **이미 정지된 상태에서 연 경우엔 정지 유지**(중첩 안전).
+- 모든 닫기 경로를 `_closeSkPop()`로 통일: L 재토글, 옵션/합체 클릭 세팅, ESC, 외부 클릭, `_panelBack`, 게임패드 Back. `closeAllPanels()`는 `_skPopOwnsPause=false` 클리어 추가.

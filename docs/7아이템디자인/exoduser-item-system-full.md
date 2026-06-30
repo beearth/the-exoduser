@@ -219,7 +219,7 @@ Object.freeze(AFFIX_POOL);
 | elemFocus | 원소집중의 | PREFIX | 12%/20%/32% | pct | wpn,nck | 속성 공격 시 뎀×(1+배율) |
 | parryBonus | 패리의 | PREFIX | 20%/35%/55% | pct | wpn,clk | 패링 HP/ST/MP 회복량 ×(1+배율) |
 | comboBoost | 콤보의 | PREFIX | 20%/35%/55% | pct | wpn | 같은 적 연속 공격 시 +5%/중첩 |
-| dashBoost | 돌진의 | PREFIX | 25%/40%/65% | pct | wpn,bts | 작살/돌진 데미지 ×(1+배율) |
+| dashBoost | 돌진의 | PREFIX | 25%/40%/65% | pct | wpn,bts | 사슬/돌진 데미지 ×(1+배율) |
 | skillBoost | 궁극의 | PREFIX | 15%/25%/40% | pct | wpn | 선택스킬 데미지 ×(1+배율) (_fuseMul 내장) |
 | cooldownRed | 집중력의 | PREFIX | -2%/-3%/-5%/-7%/-10% | pct | wpn | 스킬 쿨다운 ×(1+값) (음수=감소) |
 | reflect | 반사의 | SUFFIX | 5%/9%/15% | pct | arm,shd,rng | 피격 데미지×배율 반사 (반경80, 1명) |
