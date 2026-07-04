@@ -1,5 +1,6 @@
 ﻿// 지옥의 길 — Norsk (no)
 const _NO={
+'💫 암전폭류':'💫 Lynstøt','⚡ 암전나선':'⚡ Lynspiral','🌋 지진폭풍':'🌋 Jordskjelvstorm','🔥 회전기폭':'🔥 Hvirveldetonasjon','⚔ 기동:섬멸':'⚔ Drive:Utryddelse','⚔ 기동:칼날개':'⚔ Drive:Klinge','⚡ 기동:전폭':'⚡ Drive:Slag','🌀 기동:파쇄':'🌀 Drive:Knusing','🌀 기동:기습':'🌀 Drive:Bakhold','💫 →좌클 통합':'💫 →Slått sammen LMB','⚡ →좌클 통합':'⚡ →Slått sammen LMB','🎯 추적암전':'🎯 Sporende Lyn','☆ 만화광선':'☆ Lysstråle','⏳⚡ 시간걸음':'⏳⚡ Tidssteg','SSAA 슈퍼샘플':'SSAA Supersampling','끄기 (1x)':'Av (1x)','커서 크기':'Markørstørrelse','다크 판타지 전사':'Mørk fantasy-kriger','거대검+검은 갑옷':'Tohandsssverd + Sort rustning',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Helvetesporten er åpen. Den venter på deg der inne.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Porten er åpen! La oss drepe bossen!",
 '\u26e7 시전...':'⛧ Kanaliserer...',

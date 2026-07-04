@@ -1,5 +1,6 @@
 ﻿// 지옥의 길 — Bahasa Indonesia (id)
 const _ID={
+'💫 암전폭류':'💫 Petir Lompatan','⚡ 암전나선':'⚡ Petir Helix','🌋 지진폭풍':'🌋 Badai Gempa','🔥 회전기폭':'🔥 Putar-Ledak','⚔ 기동:섬멸':'⚔ Drive:Pemusnahan','⚔ 기동:칼날개':'⚔ Drive:Pisau','⚡ 기동:전폭':'⚡ Drive:Serangan','🌀 기동:파쇄':'🌀 Drive:Penghancuran','🌀 기동:기습':'🌀 Drive:Penyergapan','💫 →좌클 통합':'💫 →Gabung LMB','⚡ →좌클 통합':'⚡ →Gabung LMB','🎯 추적암전':'🎯 Petir Pelacak','☆ 만화광선':'☆ Sinar Luminesen','⏳⚡ 시간걸음':'⏳⚡ Langkah Waktu','SSAA 슈퍼샘플':'SSAA Supersampling','끄기 (1x)':'Nonaktif (1x)','커서 크기':'Ukuran Kursor','다크 판타지 전사':'Pejuang fantasi gelap','거대검+검은 갑옷':'Pedang besar + Baju besi hitam',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Gerbang Neraka terbuka. Ia menunggumu di dalam.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Gerbangnya terbuka! Ayo bunuh bos-nya!",
 '\u26e7 시전...':'⛧ Merapal...',

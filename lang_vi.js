@@ -1,5 +1,6 @@
 ﻿// 지옥의 길 — Tiếng Việt (vi)
 const _VI={
+'💫 암전폭류':'💫 Sét Bùng Phát','⚡ 암전나선':'⚡ Sét Helix','🌋 지진폭풍':'🌋 Bão Chấn','🔥 회전기폭':'🔥 Xoáy Nổ','⚔ 기동:섬멸':'⚔ Drive:Tiêu Diệt','⚔ 기동:칼날개':'⚔ Drive:Lưỡi','⚡ 기동:전폭':'⚡ Drive:Tấn công','🌀 기동:파쇄':'🌀 Drive:Nghiền','🌀 기동:기습':'🌀 Drive:Phục kích','💫 →좌클 통합':'💫 →Gộp LMB','⚡ →좌클 통합':'⚡ →Gộp LMB','🎯 추적암전':'🎯 Sét Truy Vết','☆ 만화광선':'☆ Tia Phát Quang','⏳⚡ 시간걸음':'⏳⚡ Bước Thời Gian','SSAA 슈퍼샘플':'SSAA Siêu Lấy Mẫu','끄기 (1x)':'Tắt (1x)','커서 크기':'Kích thước con trỏ','다크 판타지 전사':'Chiến binh dark fantasy','거대검+검은 갑옷':'Đại kiếm + Giáp đen',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Cổng Địa Ngục đã mở. Nó đang chờ ngươi bên trong.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Cổng mở rồi! Đi giết boss thôi!",
 '\u26e7 시전...':'⛧ Đang niệm...',

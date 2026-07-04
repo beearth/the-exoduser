@@ -6,6 +6,7 @@
 // Whirlwind=Torbellino, Forge=Forja de Venganza, Enhancement=Mejora
 // Affix=Afijo, Crystal=Cristal, Poise=Postura
 const _ES={
+'💫 암전폭류':'💫 Torrente Eléctrico','⚡ 암전나선':'⚡ Hélice Eléctrica','🌋 지진폭풍':'🌋 Tormenta Sísmica','🔥 회전기폭':'🔥 Torbellino-Det','⚔ 기동:섬멸':'⚔ Impulso:Aniquilar','⚔ 기동:칼날개':'⚔ Impulso:Hoja','⚡ 기동:전폭':'⚡ Impulso:Asalto','🌀 기동:파쇄':'🌀 Impulso:Triturar','🌀 기동:기습':'🌀 Impulso:Emboscada','💫 →좌클 통합':'💫 →Unido al botón izq','⚡ →좌클 통합':'⚡ →Unido al botón izq','🎯 추적암전':'🎯 Rayo Rastreador','☆ 만화광선':'☆ Rayo Luminoso','⏳⚡ 시간걸음':'⏳⚡ Paso Temporal','SSAA 슈퍼샘플':'SSAA Supermuestra','끄기 (1x)':'Desactivado (1x)','커서 크기':'Tamaño del cursor','다크 판타지 전사':'Guerrero Dark Fantasy','거대검+검은 갑옷':'Espadón + Armadura negra',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...La Puerta del Infierno está abierta. Te espera dentro.",
 '문 열렸어! 이제 보스 잡으러 가자!':"¡La puerta está abierta! ¡Vamos a matar al jefe!",
 '\u26e7 시전...':'⛧ Lanzando...',

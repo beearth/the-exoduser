@@ -1,4 +1,5 @@
 ﻿const _DE={
+'💫 암전폭류':'💫 Blitzstrom','⚡ 암전나선':'⚡ Blitzhelix','🌋 지진폭풍':'🌋 Erdbebensturm','🔥 회전기폭':'🔥 Wirbel-Det.','⚔ 기동:섬멸':'⚔ Schub:Vernichten','⚔ 기동:칼날개':'⚔ Schub:Klinge','⚡ 기동:전폭':'⚡ Schub:Angriff','🌀 기동:파쇄':'🌀 Schub:Zertrümmern','🌀 기동:기습':'🌀 Schub:Hinterhalt','💫 →좌클 통합':'💫 →In LMT zusammengeführt','⚡ →좌클 통합':'⚡ →In LMT zusammengeführt','🎯 추적암전':'🎯 Verfolgungsblitz','☆ 만화광선':'☆ Leuchtstrahl','⏳⚡ 시간걸음':'⏳⚡ Zeitschritt','SSAA 슈퍼샘플':'SSAA Supersampling','끄기 (1x)':'Aus (1x)','커서 크기':'Cursorgröße','다크 판타지 전사':'Dunkler Fantasy-Krieger','거대검+검은 갑옷':'Großschwert + Schwarze Rüstung',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Das Höllentor ist offen. Es wartet drinnen auf dich.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Das Tor ist offen! Jetzt erledigen wir den Boss!",
 'MP 부족!':'Nicht genug MP!',

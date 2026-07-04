@@ -1,5 +1,6 @@
 ﻿// 지옥의 길 — Română (ro)
 const _RO={
+'💫 암전폭류':'💫 Val de Fulgere','⚡ 암전나선':'⚡ Spirală Fulger','🌋 지진폭풍':'🌋 Furtună Seismică','🔥 회전기폭':'🔥 Vârtej detonare','⚔ 기동:섬멸':'⚔ Drive:Nimicire','⚔ 기동:칼날개':'⚔ Drive:Lamă','⚡ 기동:전폭':'⚡ Drive:Lovitură','🌀 기동:파쇄':'🌀 Drive:Zdrobire','🌀 기동:기습':'🌀 Drive:Ambuscadă','💫 →좌클 통합':'💫 →Unificat cu LMB','⚡ →좌클 통합':'⚡ →Unificat cu LMB','🎯 추적암전':'🎯 Fulger Urmăritor','☆ 만화광선':'☆ Rază Luminescentă','⏳⚡ 시간걸음':'⏳⚡ Pas în Timp','SSAA 슈퍼샘플':'SSAA Supraesantionare','끄기 (1x)':'Oprit (1x)','커서 크기':'Dimensiune cursor','다크 판타지 전사':'Războinic dark fantasy','거대검+검은 갑옷':'Spadă mare + Armură neagră',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Poarta Iadului este deschisă. Te așteaptă înăuntru.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Poarta e deschisă! Hai să ucidem bossul!",
 '\u26e7 시전...':'⛧ Incantare...',

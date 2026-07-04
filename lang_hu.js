@@ -1,5 +1,6 @@
 ﻿// 지옥의 길 — Magyar (hu)
 const _HU={
+'💫 암전폭류':'💫 Villám Hullám','⚡ 암전나선':'⚡ Villám Spirál','🌋 지진폭풍':'🌋 Földrengés Vihar','🔥 회전기폭':'🔥 Forgás Detonáció','⚔ 기동:섬멸':'⚔ Drive:Megsemmisítés','⚔ 기동:칼날개':'⚔ Drive:Penge','⚡ 기동:전폭':'⚡ Drive:Csapás','🌀 기동:파쇄':'🌀 Drive:Zúzás','🌀 기동:기습':'🌀 Drive:Lesvetés','💫 →좌클 통합':'💫 →Egyesítve LMB-be','⚡ →좌클 통합':'⚡ →Egyesítve LMB-be','🎯 추적암전':'🎯 Követő Villám','☆ 만화광선':'☆ Fénysugár','⏳⚡ 시간걸음':'⏳⚡ Időlépés','SSAA 슈퍼샘플':'SSAA Szupermintavétel','끄기 (1x)':'Ki (1x)','커서 크기':'Kurzor mérete','다크 판타지 전사':'Sötét fantázia harcos','거대검+검은 갑옷':'Nagykard + Fekete páncél',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...A Pokol Kapuja nyitva. Odabent vár rád.",
 '문 열렸어! 이제 보스 잡으러 가자!':"A kapu nyitva! Menjünk, öljük meg a bosst!",
 '\u26e7 시전...':'⛧ Varázslás...',

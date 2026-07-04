@@ -704,7 +704,6 @@ const sb=typeof supabase!=='undefined'?supabase.createClient(SUPABASE_URL,SUPABA
 
 // ═══ [LANG] 로비 다국어 ═══
 const _LOBBY_EN={
-  '로그인 필요':'Login Required','▶ 시네마틱':'▶ Cinematic','확인':'Confirm',
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Connecting...','캐릭터를 선택하세요':'Select your character','당신은 누구인가':'WHO ART THOU',
   'Google로 입장':'Enter with Google','캐릭터 선택':'Character Select','로그아웃':'Logout',
   '캐릭터가 없습니다. 새로 생성하세요.':'No characters. Create a new one.',
@@ -814,15 +813,7 @@ const _LOBBY_ZH={
 '심연지옥':'深渊狱',
 '뇌전지옥':'雷电狱',
 '백골지옥':'白骨狱',
-'혼돈지옥':'混沌狱',
-'거츠 스타일. 특대검+석궁+망토':'盖茨风格. 巨剑+弩弓+披风',
-'풀갑옷 기사. 특대검+빨간 망토':'全甲骑士. 巨剑+红色披风',
-'검은 갑옷. 초대형 특대검':'黑色铠甲. 超巨型巨剑',
-'표준 기사. 대검+갑옷':'标准骑士. 大剑+铠甲',
-'다크 판타지 전사. 거대검+검은 갑옷':'黑暗幻想战士. 巨剑+黑甲',
-'로그인 필요':'需要登录',
-'▶ 시네마틱':'▶ 过场动画',
-'확인':'确认',};
+'혼돈지옥':'混沌狱',};
 const _LOBBY_JA={
   '지옥의 길':'地獄の道：EXODUSER','연결 중...':'接続中...','캐릭터를 선택하세요':'キャラクターを選択','당신은 누구인가':'汝は何者か',
   'Google로 입장':'Googleでログイン','캐릭터 선택':'キャラクター選択','로그아웃':'ログアウト',
@@ -879,15 +870,7 @@ const _LOBBY_JA={
 '심연지옥':'深淵獄',
 '뇌전지옥':'雷電獄',
 '백골지옥':'白骨獄',
-'혼돈지옥':'混沌獄',
-'거츠 스타일. 특대검+석궁+망토':'ガッツスタイル. 大剣+クロスボウ+マント',
-'풀갑옷 기사. 특대검+빨간 망토':'フルアーマー騎士. 大剣+赤いマント',
-'검은 갑옷. 초대형 특대검':'黒鎧. 超巨大グレートソード',
-'표준 기사. 대검+갑옷':'スタンダード騎士. グレートソード+鎧',
-'다크 판타지 전사. 거대검+검은 갑옷':'ダークファンタジー戦士. 巨剣+黒鎧',
-'로그인 필요':'ログインが必要です',
-'▶ 시네마틱':'▶ シネマティック',
-'확인':'確認',};
+'혼돈지옥':'混沌獄',};
 const _LOBBY_ES={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Conectando...','캐릭터를 선택하세요':'Selecciona tu personaje','당신은 누구인가':'¿QUIÉN ERES?',
   'Google로 입장':'Entrar con Google','캐릭터 선택':'Selección de personaje','로그아웃':'Cerrar sesión',
@@ -944,15 +927,7 @@ const _LOBBY_ES={
 '심연지옥':'Infierno Abismo',
 '뇌전지옥':'Infierno Trueno',
 '백골지옥':'Infierno Huesos',
-'혼돈지옥':'Infierno Caos',
-'거츠 스타일. 특대검+석궁+망토':'Estilo Guts. Mandoble+Ballesta+Capa',
-'풀갑옷 기사. 특대검+빨간 망토':'Caballero con armadura completa. Mandoble+Capa roja',
-'검은 갑옷. 초대형 특대검':'Armadura negra. Mandoble colosal',
-'표준 기사. 대검+갑옷':'Caballero estandar. Mandoble+Armadura',
-'다크 판타지 전사. 거대검+검은 갑옷':'Guerrero de fantasia oscura. Mandoble+Armadura negra',
-'로그인 필요':'Inicio de sesion requerido',
-'▶ 시네마틱':'▶ Cinematica',
-'확인':'Confirmar',};
+'혼돈지옥':'Infierno Caos',};
 const _LOBBY_FR={
   '지옥의 길':'HELL: EXODUSER','연결 중...':'Connexion...','캐릭터를 선택하세요':'Sélectionnez votre personnage','당신은 누구인가':'QUI ES-TU ?',
   'Google로 입장':'Entrer avec Google','캐릭터 선택':'Sélection du personnage','로그아웃':'Déconnexion',
@@ -1554,8 +1529,6 @@ const _LOBBY_ZHT={
 const _LOBBY_SK={'친애하는 게이머 여러분께 바칩니다':'Venované vám všetkým, drahí hráči'};
 const _LOBBY_HR={'친애하는 게이머 여러분께 바칩니다':'Posvećeno svima vama, dragi igrači'};
 const _LOBBY_TABLES=Object.assign({en:_LOBBY_EN,zh:_LOBBY_ZH,ja:_LOBBY_JA,es:_LOBBY_ES,fr:_LOBBY_FR,it:_LOBBY_IT,pt:_LOBBY_PTBR,ro:_LOBBY_RO,de:_LOBBY_DE,nl:_LOBBY_NL,sv:_LOBBY_SV,da:_LOBBY_DA,no:_LOBBY_NO,ru:_LOBBY_RU,uk:_LOBBY_UK,pl:_LOBBY_PL,cs:_LOBBY_CS,hu:_LOBBY_HU,bg:_LOBBY_BG,el:_LOBBY_EL,fi:_LOBBY_FI,tr:_LOBBY_TR,ar:_LOBBY_AR,vi:_LOBBY_VI,th:_LOBBY_TH,id:_LOBBY_ID,zht:_LOBBY_ZHT,sk:_LOBBY_SK,hr:_LOBBY_HR},typeof _LOBBY_I18N!=='undefined'?_LOBBY_I18N:{});
-// pt(유럽 포르투갈어): 인라인 _LOBBY_PTBR(45키)만 있어 나머지가 영어로 폴백되던 문제 보강 — 더 완전한 브라질 포르투갈어(_LOBBY_I18N.ptbr, 66키)를 베이스로 깔고 pt 고유 인라인 값을 위에 얹음
-if(typeof _LOBBY_I18N!=='undefined'&&_LOBBY_I18N.ptbr){_LOBBY_TABLES.pt=Object.assign({},_LOBBY_I18N.ptbr,_LOBBY_TABLES.pt);}
 // ═══ 다국어 4단계 폴백 체인 ═══
 const _I18N_SUPPORTED=['ko','en','zh','ja','es','fr','de','ru','pt','it','vi','th','id','tr','pl','cs','hu','bg','el','fi','sv','da','no','nl','ro','uk','ar','zht'];
 const _STEAM_LANG_MAP={koreana:'ko',english:'en',schinese:'zh',tchinese:'zht',japanese:'ja',spanish:'es',latam:'es',french:'fr',german:'de',russian:'ru',portuguese:'pt',brazilianportuguese:'ptbr',italian:'it',vietnamese:'vi',thai:'th',indonesian:'id',turkish:'tr',polish:'pl',czech:'cs',hungarian:'hu',bulgarian:'bg',greek:'el',finnish:'fi',swedish:'sv',danish:'da',norwegian:'no',dutch:'nl',romanian:'ro',ukrainian:'uk',arabic:'ar'};
@@ -1589,9 +1562,6 @@ function _applyLobbyLang(){
     '#charVisualPop h2':['외형 선택','Appearance'],
     '#charVisualPop p':['캐릭터의 외형을 선택하세요','Choose your appearance'],
     '#visualCancelBtn':['취소','Cancel'],
-    '#delConfirmYes':['확인','Confirm'],
-    '#delConfirmNo':['취소','Cancel'],
-    '#replayCinBtn':['▶ 시네마틱','▶ Cinematic'],
   };
   for(const[sel,pair]of Object.entries(m)){
     if(!pair)continue;

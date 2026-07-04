@@ -1,5 +1,6 @@
 ﻿// 지옥의 길 — Svenska (sv)
 const _SV={
+'💫 암전폭류':'💫 Blixtansats','⚡ 암전나선':'⚡ Blixtspiral','🌋 지진폭풍':'🌋 Jordbävningsstorm','🔥 회전기폭':'🔥 Virveldetonation','⚔ 기동:섬멸':'⚔ Drive:Utplåning','⚔ 기동:칼날개':'⚔ Drive:Blad','⚡ 기동:전폭':'⚡ Drive:Slag','🌀 기동:파쇄':'🌀 Drive:Krossning','🌀 기동:기습':'🌀 Drive:Bakhåll','💫 →좌클 통합':'💫 →Sammanslagen LMB','⚡ →좌클 통합':'⚡ →Sammanslagen LMB','🎯 추적암전':'🎯 Spårande Blixt','☆ 만화광선':'☆ Luminescensstråle','⏳⚡ 시간걸음':'⏳⚡ Tidssteg','SSAA 슈퍼샘플':'SSAA Supersampling','끄기 (1x)':'Av (1x)','커서 크기':'Markörstorlek','다크 판타지 전사':'Mörk fantasy-krigare','거대검+검은 갑옷':'Tvåhandssvärd + Svart rustning',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Helvetesporten är öppen. Den väntar på dig därinne.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Porten är öppen! Nu dödar vi bossen!",
 '\u26e7 시전...':'⛧ Kanaliserar...',

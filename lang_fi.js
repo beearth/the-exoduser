@@ -1,5 +1,6 @@
 ﻿// 지옥의 길 — Suomi (fi)
 const _FI={
+'💫 암전폭류':'💫 Salama Aalto','⚡ 암전나선':'⚡ Salama Helix','🌋 지진폭풍':'🌋 Maanjäristys','🔥 회전기폭':'🔥 Pyörimisräjäytys','⚔ 기동:섬멸':'⚔ Drive:Tuho','⚔ 기동:칼날개':'⚔ Drive:Terä','⚡ 기동:전폭':'⚡ Drive:Isku','🌀 기동:파쇄':'🌀 Drive:Murska','🌀 기동:기습':'🌀 Drive:Väijytys','💫 →좌클 통합':'💫 →Yhdistetty LMB','⚡ →좌클 통합':'⚡ →Yhdistetty LMB','🎯 추적암전':'🎯 Tracking Salama','☆ 만화광선':'☆ Valosäde','⏳⚡ 시간걸음':'⏳⚡ Aikaaskel','SSAA 슈퍼샘플':'SSAA Supernäytteet','끄기 (1x)':'Pois (1x)','커서 크기':'Kursorin koko','다크 판타지 전사':'Synkän fantasian soturi','거대검+검은 갑옷':'Suuri miekka + Musta haarniska',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Helvetin portti on auki. Se odottaa sinua sisällä.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Portti on auki! Mennään tappamaan pomo!",
 '\u26e7 시전...':'⛧ Loihditaan...',

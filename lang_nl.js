@@ -1,5 +1,6 @@
 ﻿// 지옥의 길 — Nederlands (nl)
 const _NL={
+'💫 암전폭류':'💫 Bliksemgolf','⚡ 암전나선':'⚡ Bliksemspiraal','🌋 지진폭풍':'🌋 Aardbevingstorm','🔥 회전기폭':'🔥 Wervel Detonatie','⚔ 기동:섬멸':'⚔ Drive:Vernietiging','⚔ 기동:칼날개':'⚔ Drive:Kling','⚡ 기동:전폭':'⚡ Drive:Slag','🌀 기동:파쇄':'🌀 Drive:Verbrijzeling','🌀 기동:기습':'🌀 Drive:Hinderlaag','💫 →좌클 통합':'💫 →Samengevoegd LMB','⚡ →좌클 통합':'⚡ →Samengevoegd LMB','🎯 추적암전':'🎯 Bliksemvolgend','☆ 만화광선':'☆ Luminescentiebundel','⏳⚡ 시간걸음':'⏳⚡ Tijdstap','SSAA 슈퍼샘플':'SSAA Supersampling','끄기 (1x)':'Uit (1x)','커서 크기':'Cursorgrootte','다크 판타지 전사':'Donker fantasy krijger','거대검+검은 갑옷':'Grootzwaard + Zwart pantser',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...De Hellepoort is open. Het wacht binnen op je.",
 '문 열렸어! 이제 보스 잡으러 가자!':"De poort is open! Laten we de baas verslaan!",
 '\u26e7 시전...':'⛧ Bezweren...',

@@ -1,5 +1,6 @@
 ﻿// 지옥의 길 — Čeština (cs)
 const _CS={
+'💫 암전폭류':'💫 Blesková Vlna','⚡ 암전나선':'⚡ Blesková spirála','🌋 지진폭풍':'🌋 Zemětřesná bouře','🔥 회전기폭':'🔥 Vírová detonace','⚔ 기동:섬멸':'⚔ Drive:Zničení','⚔ 기동:칼날개':'⚔ Drive:Čepel','⚡ 기동:전폭':'⚡ Drive:Úder','🌀 기동:파쇄':'🌀 Drive:Drcení','🌀 기동:기습':'🌀 Drive:Záloha','💫 →좌클 통합':'💫 →Sloučeno do LMB','⚡ →좌클 통합':'⚡ →Sloučeno do LMB','🎯 추적암전':'🎯 Sledující blesk','☆ 만화광선':'☆ Paprsek záře','⏳⚡ 시간걸음':'⏳⚡ Časový krok','SSAA 슈퍼샘플':'SSAA Supersamplovanie','끄기 (1x)':'Vypnout (1x)','커서 크기':'Velikost kurzoru','다크 판타지 전사':'Temný fantasy válečník','거대검+검은 갑옷':'Obouruční meč + Černé brnění',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Pekelná brána je otevřená. Čeká na tebe uvnitř.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Brána je otevřená! Pojďme zabít bosse!",
 'MP 부족!':'Nedostatek MP!',
