@@ -44146,3 +44146,11 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - lang_zht.js
 - lobby_i18n.js
 
+
+## 2026-07-05 14:30 (auto)
+- _gamepad_test.html
+- docs/3.3 ?¤ë°”?¸ë”©+?¤ì •/ê²Œì„?¨ë“œ_?¸ëŸ¬ë¸”ìŠˆ??md
+- docs/8.0ëª¬ìŠ¤?°ë””?ì¸/?„ë§‰?œìŠ¤??ì´ì •ë¦?md
+- docs/8.1ë³´ìŠ¤?”ì?¸ë°”?´ë¸”/BOSS_BATTLE_SETTINGS.md
+- game.html
+

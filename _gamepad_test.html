@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>게임패드 진단</title>
+<style>
+body{background:#111;color:#eee;font-family:Consolas,monospace;padding:20px}
+h1{font-size:18px;color:#ffcc44}
+.warn{color:#ff8866;font-size:14px;margin:8px 0}
+.ok{color:#66ff88}
+#pads{margin-top:16px}
+.pad{border:1px solid #444;padding:12px;margin-bottom:12px;border-radius:6px}
+.btn{display:inline-block;width:44px;height:44px;line-height:44px;text-align:center;margin:3px;border:1px solid #555;border-radius:6px;background:#222;font-size:12px}
+.btn.on{background:#ffcc44;color:#000;font-weight:bold}
+.axis{margin:4px 0;font-size:13px}
+.bar{display:inline-block;width:200px;height:10px;background:#333;vertical-align:middle;position:relative;margin-left:8px}
+.bar i{position:absolute;top:0;bottom:0;width:4px;background:#66ff88}
+#log{margin-top:16px;font-size:12px;color:#aaa;max-height:200px;overflow-y:auto;border-top:1px solid #333;padding-top:8px}
+</style>
+</head>
+<body>
+<h1>🎮 게임패드 진단 (순수 Gamepad API — 게임 코드 미사용)</h1>
+<div class="warn">⚠ 크롬/NW.js는 <b>버튼을 한 번 눌러야</b> 패드를 노출합니다. 스틱만 움직이면 절대 인식 안 됨.</div>
+<div class="warn">⚠ 이 창이 <b>포커스</b> 상태여야 입력이 들어옵니다. (창 클릭 후 테스트)</div>
+<div id="status">패드 미감지 — 아무 버튼이나 눌러보세요</div>
+<div id="pads"></div>
+<div id="log"></div>
+<script>
+const logEl=document.getElementById('log'),statusEl=document.getElementById('status'),padsEl=document.getElementById('pads');
+function log(m){const d=document.createElement('div');d.textContent=new Date().toLocaleTimeString()+' '+m;logEl.prepend(d)}
+addEventListener('gamepadconnected',e=>{log('✅ gamepadconnected: '+e.gamepad.id+' (index '+e.gamepad.index+', mapping="'+e.gamepad.mapping+'", buttons '+e.gamepad.buttons.length+', axes '+e.gamepad.axes.length+')')});
+addEventListener('gamepaddisconnected',e=>{log('❌ gamepaddisconnected: '+e.gamepad.id)});
+addEventListener('blur',()=>log('⚠ 창 포커스 잃음 — 입력 안 들어옴'));
+addEventListener('focus',()=>log('포커스 복귀'));
+const NAMES=['A','B','X','Y','LB','RB','LT','RT','Back','Start','L3','R3','D↑','D↓','D←','D→','Home'];
+function frame(){
+  const gps=navigator.getGamepads();let any=false,html='';
+  for(let i=0;i<gps.length;i++){
+    const gp=gps[i];if(!gp||!gp.connected)continue;any=true;
+    html+='<div class="pad"><b>'+gp.id+'</b> — mapping: <b class="'+(gp.mapping==='standard'?'ok':'warn')+'">'+(gp.mapping||'(비표준!)')+'</b><br>';
+    for(let b=0;b<gp.buttons.length;b++){
+      const bt=gp.buttons[b];const on=bt.pressed||bt.value>0.5;
+      html+='<span class="btn'+(on?' on':'')+'">'+(NAMES[b]||b)+'<br>'+bt.value.toFixed(1)+'</span>';
+    }
+    for(let a=0;a<gp.axes.length;a++){
+      const v=gp.axes[a];
+      html+='<div class="axis">axis['+a+'] '+v.toFixed(2)+'<span class="bar"><i style="left:'+((v+1)/2*196)+'px"></i></span></div>';
+    }
+    html+='</div>';
+  }
+  padsEl.innerHTML=html;
+  statusEl.innerHTML=any?'<span class="ok">패드 감지됨 ✅</span>':'패드 미감지 — 아무 버튼이나 눌러보세요 (스틱 X)';
+  requestAnimationFrame(frame);
+}
+frame();
+</script>
+</body>
+</html>
