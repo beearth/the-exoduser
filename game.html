@@ -4938,10 +4938,10 @@ const BIND_NAMES_EN={
   bladeToggle:'Bladewing Auto On/Off',
 };
 function _bindName(key){if(OPT.lang==='ko')return BIND_NAMES[key]||key;const ko=BIND_NAMES[key]||key;const t=_T(ko);return t!==ko?t:(BIND_NAMES_EN[key]||key);}
-function keyName(code){
+function keyName(code,forceKbm){
   if(!code)return _L('없음','None');
-  // 패드 모드: 키코드→패드 버튼 이름 변환
-  if(typeof _gpActive!=='undefined'&&_gpActive){
+  // 패드 모드: 키코드→패드 버튼 이름 변환 (forceKbm이면 항상 키보드 키명)
+  if(!forceKbm&&typeof _gpActive!=='undefined'&&_gpActive){
     const gp={
       'mouse0':'Ⓐ','Space':'Ⓑ','KeyE':'Ⓧ','ControlLeft':'Ⓨ',
       'ShiftLeft':'LB','mouse2':'RB',
@@ -9840,6 +9840,7 @@ let _harpGauge=_HARP_GAUGE_MAX;
 const MBjust={}; // just-pressed mouse buttons
 let mouse={x:0,y:0};
 let listeningBind=null,_listenAlt=false;
+let _bindTab=''; // 키설정 탭: 'kbm'(키보드·마우스) | 'pad'(게임패드)
 
 // ═══ 스킬 슬롯 통합 디스패치 ═══
 function _dispatchSkillSlot(slotIdx,keyCode){
@@ -38902,6 +38903,19 @@ function renderSettings(){
   const list=$('keyBindList');if(!list)return;list.innerHTML='';
   // 리스닝 오버레이 제거
   const oldOv=document.getElementById('bindOverlay');if(oldOv)oldOv.remove();
+  // ── 탭: 키보드·마우스 / 게임패드 (기본은 현재 입력모드) ──
+  if(!_bindTab)_bindTab=(typeof _gpActive!=='undefined'&&_gpActive)?'pad':'kbm';
+  const _tabRow=document.createElement('div');_tabRow.style.cssText='display:flex;gap:6px;margin-bottom:14px';
+  [['kbm','⌨ 키보드·마우스','⌨ Keyboard & Mouse'],['pad','🎮 게임패드','🎮 Gamepad']].forEach(function(_t){
+    const _tk=_t[0],_on=_bindTab===_tk;
+    const _tb=document.createElement('div');
+    _tb.style.cssText='flex:1;text-align:center;padding:8px;cursor:pointer;font-size:.9rem;font-weight:700;letter-spacing:.05em;border-radius:6px;border:1px solid '+(_on?'#ccaa66':'#443322')+';background:'+(_on?'rgba(204,170,102,.18)':'rgba(0,0,0,.25)')+';color:'+(_on?'#ffdd99':'#887766');
+    _tb.textContent=_L(_t[1],_t[2]);
+    _tb.onclick=function(e){e.stopPropagation();_bindTab=_tk;renderSettings()};
+    _tabRow.appendChild(_tb);
+  });
+  list.appendChild(_tabRow);
+  if(_bindTab==='kbm'){
   Object.keys(BINDS).forEach(action=>{
     const row=document.createElement('div');row.className='set-row';
     row.innerHTML=`<span class="set-name">${_bindName(action)}</span>`;
@@ -38909,7 +38923,7 @@ function renderSettings(){
     const btn=document.createElement('div');
     const isL=listeningBind===action&&!_listenAlt;
     btn.className='set-key'+(isL?' listening':'');
-    btn.textContent=isL?_T('⟨ 입력 대기... ⟩'):keyName(BINDS[action]);
+    btn.textContent=isL?_T('⟨ 입력 대기... ⟩'):keyName(BINDS[action],true);
     btn.onclick=(e)=>{e.stopPropagation();e.preventDefault();listeningBind=action;_listenAlt=false;renderSettings()};
     row.appendChild(btn);
     // 보조 키
@@ -38917,7 +38931,7 @@ function renderSettings(){
     const isL2=listeningBind===action&&_listenAlt;
     btn2.className='set-key'+(isL2?' listening':'');
     btn2.style.cssText='margin-left:4px;min-width:56px;font-size:.9rem;opacity:'+(BINDS2[action]?'1':'.5');
-    btn2.textContent=isL2?_T('⟨ 대기 ⟩'):(BINDS2[action]?keyName(BINDS2[action]):_T('보조'));
+    btn2.textContent=isL2?_T('⟨ 대기 ⟩'):(BINDS2[action]?keyName(BINDS2[action],true):_T('보조'));
     btn2.onclick=(e)=>{e.stopPropagation();e.preventDefault();listeningBind=action;_listenAlt=true;renderSettings()};
     row.appendChild(btn2);
     // 보조키 삭제
@@ -38932,15 +38946,16 @@ function renderSettings(){
   const resetBtn=document.createElement('div');
   resetBtn.style.cssText='text-align:center;margin-top:12px;padding:8px;background:rgba(100,0,0,.2);border:1px solid #663333;color:#ff6666;cursor:pointer;font-size:.95rem;font-weight:700;letter-spacing:.1em';
   resetBtn.textContent=_T('키 설정 초기화 (또는 F5 키)');
-  const _resetBinds=()=>{
+  window._resetBinds=()=>{
     BINDS={up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',weapon:'mouse0',shield:'mouse2',bow:'Space',charge:'ShiftLeft',parry:'KeyQ',beam:'KeyE',forge:'KeyG',inventory:'Tab',settings:'Escape',interact:'KeyR',storage:'KeyN',stats:'KeyJ',skill:'KeyK',skillCycle:'KeyL'};
     BINDS2={up:null,down:null,left:null,right:null,weapon:null,shield:null,bow:null,charge:null,parry:null,beam:null,skill:null,forge:null,inventory:null,settings:null,interact:null,storage:null,stats:null,skillCycle:null};
     listeningBind=null;_listenAlt=false;saveSettings();renderSettings();
     notify(_T('키 설정 초기화 완료'));
   };
-  resetBtn.onclick=(e)=>{e.stopPropagation();_resetBinds()};
+  resetBtn.onclick=(e)=>{e.stopPropagation();window._resetBinds()};
   list.appendChild(resetBtn);
-
+  } // ── end 키보드·마우스 탭 ──
+  if(_bindTab==='pad'){
   // ═══ 패드 키바인딩 섹션 ═══
   const gpTitle=document.createElement('div');
   gpTitle.style.cssText='text-align:center;font-size:1.1rem;margin:20px 0 10px;color:#ccaa77;letter-spacing:.1em;border-top:1px solid #443322;padding-top:12px';
@@ -38961,7 +38976,7 @@ function renderSettings(){
       keyBtn.textContent=_T('고정');
       keyBtn.style.opacity='.4';keyBtn.style.cursor='default';
     }else{
-      keyBtn.textContent=keyName(_GP_KEY[idx]);
+      keyBtn.textContent=keyName(_GP_KEY[idx],true);
       keyBtn.onclick=(function(i){return function(e){
         e.stopPropagation();
         keyBtn.className='set-key listening';keyBtn.textContent=_T('⟨ 키 입력... ⟩');
@@ -39014,9 +39029,10 @@ function renderSettings(){
     _gR('좌스틱','이동 (WASD)')+
     '</div>';
   list.appendChild(gpNote);
+  } // ── end 게임패드 탭 ──
 
   // F5키로도 리셋 가능 (마우스 클릭 불가 상황 대비)
-  window._bindResetHandler=function(e){if(e.code==='F5'&&$('settings')&&$('settings').classList.contains('on')){e.preventDefault();_resetBinds()}};
+  window._bindResetHandler=function(e){if(e.code==='F5'&&$('settings')&&$('settings').classList.contains('on')){e.preventDefault();window._resetBinds&&window._resetBinds()}};
   document.removeEventListener('keydown',window._bindResetHandler);
   document.addEventListener('keydown',window._bindResetHandler);
   // 리스닝 모드: 전체화면 투명 오버레이로 모든 마우스 버튼 캡처
