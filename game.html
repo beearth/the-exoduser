@@ -7637,13 +7637,23 @@ function _petSfx(who,urgent){
 }
 // 말풍선 표시 — 통합 프레임(초상화+이름표+텍스트박스). 까마귀=왼쪽, 고양이=오른쪽.
 // 배경 투명 PNG. 텍스트는 프레임 내 빈 박스 영역에 오버레이.
+// ─── v7 패드 인지 힌트: 패드 모드일 때 텍스트 내 키보드 키 토큰을 패드 글리프로 치환 ───
+// GP_BINDS 기준 (weapon=Ⓐ, bow=Ⓑ, beam=Ⓧ, parry=Ⓨ, charge=LB, shield=RB, ULT=RT, F슬롯=LT, inv=Select, 줍기=L3, 스킬창=D↑, 대장간=D↓, 능력치=D←, 창고=D→)
+const _PAD_GLYPH_KO={'좌클릭':'Ⓐ','우클릭':'RB','쉬프트':'LB','스페이스':'Ⓑ'};
+const _PAD_GLYPH_KEY={'Shift':'LB','Space':'Ⓑ','TAB':'Select','Tab':'Select','Q':'Ⓨ','E':'Ⓧ','K':'D↑','G':'D↓','J':'D←','N':'D→','R':'L3','Z':'RT','F':'LT'};
+function _padifyHint(txt){
+  if(!(typeof _gpActive!=='undefined'&&_gpActive)||!txt)return txt;
+  return txt.replace(/좌클릭|우클릭|쉬프트|스페이스/g,function(m){return _PAD_GLYPH_KO[m]||m})
+            .replace(/Right[- ]?click|Left[- ]?click|RMB|LMB/gi,function(m){return /left|lmb/i.test(m)?'Ⓐ':'RB'})
+            .replace(/\b(Shift|Space|TAB|Tab|Q|E|K|G|J|N|R|Z|F)\b/g,function(m){return _PAD_GLYPH_KEY[m]||m});
+}
 function _petBubbleShow(who,txt){
   const _ps=$('petSubtitle');if(!_ps)return;
   const _isCrow=who==='crow';
   const _img=$('petPortrait'),_txt=$('petBubbleTxt');
   if(_img)_img.src='img/'+(_isCrow?'crow':'cat_pet')+'/portrait.png?v=4';
   if(_txt){
-    _txt.textContent=txt;
+    _txt.textContent=_padifyHint(txt);
     // 프레임 내 텍스트박스 영역 (이미지 표시폭 480px→높이 320px 기준 px좌표)
     if(_isCrow){_txt.style.left='92px';_txt.style.top='237px';_txt.style.width='306px';_txt.style.height='51px'}
     else{_txt.style.left='122px';_txt.style.top='250px';_txt.style.width='190px';_txt.style.height='42px'}
