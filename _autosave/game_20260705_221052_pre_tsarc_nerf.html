@@ -7640,12 +7640,12 @@ function _petSfx(who,urgent){
 // ─── v7 패드 인지 힌트: 패드 모드일 때 텍스트 내 키보드 키 토큰을 패드 글리프로 치환 ───
 // GP_BINDS 기준 (weapon=Ⓐ, bow=Ⓑ, beam=Ⓧ, parry=Ⓨ, charge=LB, shield=RB, ULT=RT, F슬롯=LT, inv=Select, 줍기=L3, 스킬창=D↑, 대장간=D↓, 능력치=D←, 창고=D→)
 const _PAD_GLYPH_KO={'좌클릭':'Ⓐ','우클릭':'RB','쉬프트':'LB','스페이스':'Ⓑ'};
-const _PAD_GLYPH_KEY={'Shift':'LB','Space':'Ⓑ','TAB':'Select','Tab':'Select','Q':'Ⓨ','E':'Ⓧ','K':'D↑','G':'D↓','J':'D←','N':'D→','R':'L3','Z':'RT','F':'LT','X':'LT+RT'};
+const _PAD_GLYPH_KEY={'Shift':'LB','Space':'Ⓑ','TAB':'Select','Tab':'Select','Q':'Ⓨ','E':'Ⓧ','K':'D↑','G':'D↓','J':'D←','N':'D→','R':'L3','Z':'RT','F':'LT'};
 function _padifyHint(txt){
   if(!(typeof _gpActive!=='undefined'&&_gpActive)||!txt)return txt;
   return txt.replace(/좌클릭|우클릭|쉬프트|스페이스/g,function(m){return _PAD_GLYPH_KO[m]||m})
             .replace(/Right[- ]?click|Left[- ]?click|RMB|LMB/gi,function(m){return /left|lmb/i.test(m)?'Ⓐ':'RB'})
-            .replace(/\b(Shift|Space|TAB|Tab|Q|E|K|G|J|N|R|Z|F|X)\b/g,function(m){return _PAD_GLYPH_KEY[m]||m});
+            .replace(/\b(Shift|Space|TAB|Tab|Q|E|K|G|J|N|R|Z|F)\b/g,function(m){return _PAD_GLYPH_KEY[m]||m});
 }
 function _petBubbleShow(who,txt){
   const _ps=$('petSubtitle');if(!_ps)return;
@@ -7683,7 +7683,7 @@ function _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur,_noSfx){
 // 티어: 5생존 / 4전투핵심 / 3전투조언 / 2진행성취 / 1튜토리얼 / 0분위기
 const _PET_TIER_COOL=[1200,720,480,360,240,0]; // T0~T5 티어별 글로벌쿨(프레임). T5=0(인터럽트)
 const _petTierCD=[0,0,0,0,0,0];
-const _PET_SURV_W={hp_critical:100,hp_oneshot:95,boss_grab_warn:90,boss_aoe_warn:90,boss_exec:88,stun_warn:80,boss_groggy:70,crisis_hp30:60,warn_hp50:40}; // 생존 내부 우선순위
+const _PET_SURV_W={hp_critical:100,hp_oneshot:95,boss_grab_warn:90,boss_aoe_warn:90,stun_warn:80,boss_groggy:70,crisis_hp30:60,warn_hp50:40}; // 생존 내부 우선순위
 const _PB={tier:-1,weight:0,id:'',who:'',txt:'',dur:0,cd:0,pw:null,pt:null,pd:0}; // 프레임 입찰 슬롯(재사용, 무할당)
 let _petInFrame=false; // _checkPetDialogue 실행 중 여부(이벤트 콜백과 구분)
 // id → 티어 추론 (문자열 접두 매칭, 무할당)
@@ -7808,11 +7808,7 @@ function _checkPetDialogue(){
   // ST 부족
   if(P.st<P.mst*.5&&P.lv<=100)_petBidCD('low_st','crow','스태미나가 부족하다. 무리하지 마.',3,60,'cat','ST 없으면 스킬 못 써!',3);
   // 보스 그로기
-  if(G._bossRef&&G._bossRef.alive&&G._bossRef.stunned>0){
-    // v7: 처형 스킬 보유 + 쿨 종료면 처형 안내(X / 패드 LT+RT), 아니면 기존 그로기 대사
-    if(P.skills.execution>=1&&(P._execCd||0)<=0)_petSayUrgent('boss_exec','crow','무릎 꿇었다. 지금 처형해. X.',3,20,'cat','처형각이야!! X 눌러!!',3);
-    else _petSayUrgent('boss_groggy','crow','무릎 꿇었다.',3,30,'cat','지금이야! 몰아쳐!!',3);
-  }
+  if(G._bossRef&&G._bossRef.stunned>0)_petSayUrgent('boss_groggy','crow','무릎 꿇었다.',3,30,'cat','지금이야! 몰아쳐!!',3);
   // 보스 grab/aoe 텔레그래프 (v4)
   if(G._bossRef){ // v7 버그수정: 존재하지 않던 _curMove/_teleT → 실제 윈드업 상태(e.s)로 판정
     const _bs=G._bossRef.s;
@@ -24774,7 +24770,7 @@ function update(){
         for(let _ti=0;_ti<G._thunderStakes.length;_ti++){for(let _tj=_ti+1;_tj<G._thunderStakes.length;_tj++){
           const _ta=G._thunderStakes[_ti],_tb=G._thunderStakes[_tj];
           const _td=dst(_ta.x,_ta.y,_tb.x,_tb.y);if(_td>1000)continue;
-          const _arcDmg=~~((_ta.dmg+_tb.dmg)*0.0875); // 아크 계수 0.175→0.0875 (50% 너프 2026-07-05)
+          const _arcDmg=~~((_ta.dmg+_tb.dmg)*0.175);
           const _mx=(_ta.x+_tb.x)/2,_my=(_ta.y+_tb.y)/2;
           const _ne=shQuery(_mx,_my,_td/2+40);
           // 전류강화: 아크 선분이 iceStorm 존과 교차하면 데미지×2 (물→전기 반응, 2026-05-08 holyDome 제외)
