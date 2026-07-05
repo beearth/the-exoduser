@@ -2077,6 +2077,8 @@
 '패드 키 초기화 완료':'Teclas do controle redefinidas',
 '패링':'Aparar',
 '🎮 게임패드 버튼 설정':'🎮 Configuração botões controle',
+'🎮 패드 연결됨':'🎮 Controle conectado',
+'🎮 패드 연결 끊김':'🎮 Controle desconectado',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 Ressurreição!',
 '🔥분노 ':'🔥 Fúria ',

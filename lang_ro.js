@@ -2460,6 +2460,8 @@ const _RO={
 '패드 키 초기화 완료':'Taste gamepad resetate',
 '패링':'Parare',
 '🎮 게임패드 버튼 설정':'🎮 Setări butoane gamepad',
+'🎮 패드 연결됨':'🎮 Gamepad conectat',
+'🎮 패드 연결 끊김':'🎮 Gamepad deconectat',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 Înviere!',
 '🔥분노 ':'🔥 Furie ',

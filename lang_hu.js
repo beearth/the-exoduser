@@ -2460,6 +2460,8 @@ const _HU={
 '패드 키 초기화 완료':'Gamepad gombok visszaállítva',
 '패링':'Hárítás',
 '🎮 게임패드 버튼 설정':'🎮 Gamepad gomb beállítások',
+'🎮 패드 연결됨':'🎮 Kontroller csatlakoztatva',
+'🎮 패드 연결 끊김':'🎮 Kontroller leválasztva',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 Feltámadás!',
 '🔥분노 ':'🔥 Düh ',

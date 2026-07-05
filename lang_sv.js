@@ -2089,6 +2089,8 @@ const _SV={
 '패드 키 초기화 완료':'Gamepad-knappar återställda',
 '패링':'Parering',
 '🎮 게임패드 버튼 설정':'🎮 Gamepad-knapp inställningar',
+'🎮 패드 연결됨':'🎮 Gamepad ansluten',
+'🎮 패드 연결 끊김':'🎮 Gamepad frånkopplad',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 Uppståndelse!',
 '🔥분노 ':'🔥 Raseri ',

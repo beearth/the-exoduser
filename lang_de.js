@@ -2057,6 +2057,8 @@
 '패드 키 초기화 완료':'Gamepad-Tasten zurückgesetzt',
 '패링':'Parieren',
 '🎮 게임패드 버튼 설정':'🎮 Gamepad-Tastenbelegung',
+'🎮 패드 연결됨':'🎮 Gamepad verbunden',
+'🎮 패드 연결 끊김':'🎮 Gamepad getrennt',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 Auferstehung!',
 '🔥분노 ':'🔥 Wut ',

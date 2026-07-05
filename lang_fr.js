@@ -2085,6 +2085,8 @@
 '패드 키 초기화 완료':'Touches manette réinitialisées',
 '패링':'Parade',
 '🎮 게임패드 버튼 설정':'🎮 Configuration boutons manette',
+'🎮 패드 연결됨':'🎮 Manette connectée',
+'🎮 패드 연결 끊김':'🎮 Manette déconnectée',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 Résurrection!',
 '🔥분노 ':'🔥 Rage ',

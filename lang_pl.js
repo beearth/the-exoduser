@@ -2053,6 +2053,8 @@ const _PL={
 '패드 키 초기화 완료':'Przyciski pada zresetowane',
 '패링':'Parowanie',
 '🎮 게임패드 버튼 설정':'🎮 Ustawienia przycisków pada',
+'🎮 패드 연결됨':'🎮 Pad połączony',
+'🎮 패드 연결 끊김':'🎮 Pad rozłączony',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 Wskrzeszenie!',
 '🔥분노 ':'🔥 Furia ',

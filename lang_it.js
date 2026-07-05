@@ -2481,6 +2481,8 @@ const _IT={
 '패드 키 초기화 완료':'Tasti gamepad ripristinati',
 '패링':'Parata',
 '🎮 게임패드 버튼 설정':'🎮 Impostazioni tasti gamepad',
+'🎮 패드 연결됨':'🎮 Gamepad connesso',
+'🎮 패드 연결 끊김':'🎮 Gamepad disconnesso',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 Resurrezione!',
 '🔥분노 ':'🔥 Furia ',

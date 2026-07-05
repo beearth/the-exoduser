@@ -2460,6 +2460,8 @@ const _FI={
 '패드 키 초기화 완료':'Ohjaintaimen näppäimet nollattu',
 '패링':'Torjunta',
 '🎮 게임패드 버튼 설정':'🎮 Ohjaintaimen nappiasetukset',
+'🎮 패드 연결됨':'🎮 Ohjain yhdistetty',
+'🎮 패드 연결 끊김':'🎮 Ohjaimen yhteys katkesi',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 Ylösnousemus!',
 '🔥분노 ':'🔥 Raivo ',

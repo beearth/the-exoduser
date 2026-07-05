@@ -2088,6 +2088,8 @@ const _NO={
 '패드 키 초기화 완료':'Gamepad-taster nullstilt',
 '패링':'Parering',
 '🎮 게임패드 버튼 설정':'🎮 Gamepad-knapp innstillinger',
+'🎮 패드 연결됨':'🎮 Gamepad tilkoblet',
+'🎮 패드 연결 끊김':'🎮 Gamepad frakoblet',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 Oppstandelse!',
 '🔥분노 ':'🔥 Raseri ',

@@ -2478,6 +2478,8 @@ const _TR={
 '패드 키 초기화 완료':'Gamepad tuşları sıfırlandı',
 '패링':'Savuşturma',
 '🎮 게임패드 버튼 설정':'🎮 Gamepad düğme ayarları',
+'🎮 패드 연결됨':'🎮 Gamepad bağlandı',
+'🎮 패드 연결 끊김':'🎮 Gamepad bağlantısı kesildi',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 Diriliş!',
 '🔥분노 ':'🔥 Öfke ',

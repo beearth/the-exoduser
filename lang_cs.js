@@ -1997,6 +1997,8 @@ const _CS={
 '패드 키 초기화 완료':'Tlačítka gamepadu resetována',
 '패링':'Parírování',
 '🎮 게임패드 버튼 설정':'🎮 Nastavení tlačítek gamepadu',
+'🎮 패드 연결됨':'🎮 Gamepad připojen',
+'🎮 패드 연결 끊김':'🎮 Gamepad odpojen',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 Vzkříšení!',
 '🔥분노 ':'🔥 Zuřivost ',

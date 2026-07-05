@@ -2463,6 +2463,8 @@ const _ID={
 '패드 키 초기화 완료':'Tombol gamepad direset',
 '패링':'Tangkis',
 '🎮 게임패드 버튼 설정':'🎮 Pengaturan tombol gamepad',
+'🎮 패드 연결됨':'🎮 Gamepad terhubung',
+'🎮 패드 연결 끊김':'🎮 Gamepad terputus',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 Kebangkitan!',
 '🔥분노 ':'🔥 Murka ',

@@ -2688,7 +2688,7 @@ canvas{display:block;position:fixed;inset:0}
 <div id="spStart" style="margin-top:18px;font-size:clamp(.6rem,1.2vw,.9rem);color:#886644;letter-spacing:.2em;animation:spBlink 1.2s ease-in-out infinite">— 클릭하여 시작 —</div>
 </div></div>
 <div id="deathReplay"><canvas id="drCvs"></canvas><div id="drLabel">☠ 사망 리플레이</div><div id="drTime"></div><div id="drBar"><div id="drBarFill"></div></div></div>
-<div id="death"><div class="dt" id="deathTitle">빛이 꺼졌다</div><div class="ds" id="deathSub">누군가는 너를 기다리고 있다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry" id="toLobbyBtn" style="margin-top:8px;background:rgba(0,0,0,.55);border-color:#664433;color:#aa8855;font-size:.9rem;text-shadow:0 0 6px rgba(0,0,0,.9),0 2px 3px rgba(0,0,0,1)">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div><div id="deathPetDlg" style="position:absolute;left:50%;bottom:36px;transform:translateX(-50%) scale(var(--ui-scale));transform-origin:center bottom;display:flex;gap:20px;pointer-events:none;opacity:0;transition:opacity .25s;z-index:41;font-family:'Malgun Gothic',sans-serif"><div style="position:relative;width:440px"><img src="img/crow/portrait.png?v=4" style="display:block;width:440px;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))"><div id="dpdCrowTxt" style="position:absolute;left:84px;top:216px;width:281px;height:56px;display:flex;align-items:center;color:#fff;font-weight:700;font-size:.86rem;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.85)"></div></div><div style="position:relative;width:440px"><img src="img/cat_pet/portrait.png?v=4" style="display:block;width:440px;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))"><div id="dpdCatTxt" style="position:absolute;left:112px;top:229px;width:174px;height:48px;display:flex;align-items:center;color:#fff;font-weight:700;font-size:.86rem;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.85)"></div></div></div></div>
+<div id="death"><div class="dt" id="deathTitle">빛이 꺼졌다</div><div class="ds" id="deathSub">누군가는 너를 기다리고 있다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry" id="toLobbyBtn" style="margin-top:8px;background:rgba(0,0,0,.55);border-color:#664433;color:#aa8855;font-size:.9rem;text-shadow:0 0 6px rgba(0,0,0,.9),0 2px 3px rgba(0,0,0,1)">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div></div>
 
 <!-- LEVEL UP SCREEN (10렙마다) -->
 <div id="lvUpScreen" style="position:fixed;inset:0;z-index:35;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.92);opacity:0;pointer-events:none;transition:opacity .4s">
@@ -6792,63 +6792,6 @@ const _EN={
 // --- Pet dialogue: revival/death ---
 '…죽었다 살아났네. 여신은 너를 포기 안 했어.':'...Died and came back. The goddess didn\'t give up on you.',
 '…또야? 패턴 좀 외워!':'...Again? Learn the pattern!',
-// --- Pet dialogue: death screen (death_dual, simultaneous) ---
-'…죽었군. 하지만 여신은 아직 널 안 놓았어.':'...You died. But the goddess hasn\'t let go of you yet.',
-'괜찮아?! 다시 일어설 수 있어, 포기하지 마!':'You okay?! You can get back up, don\'t give up!',
-'…한 끗이었어. 아까워 말고 다시 해.':'...So close. No use regretting it—do it again.',
-'아아! 조금만 더였는데!! 다음엔 진짜 잡자!':'Aah! Just a little more!! Let\'s really get it next time!',
-'보스는 원래 이렇게 죽이는 거다. 여러 번.':'This is how you kill a boss. Over and over.',
-'저 녀석 패턴 봤지?! 다음엔 안 당해!':'You saw its pattern, right?! It won\'t get you next time!',
-'…이름값 하는 놈이었군.':'...That one lived up to its name.',
-'레어몹한테?! 센 만큼 좋은 걸 떨군다니까!':'A rare mob?! The tougher they are, the better the drops!',
-'잡졸한테 죽다니. …방심했군.':'Killed by a nobody. ...You let your guard down.',
-'저런 애들한테?! 정신 좀 차려어!':'To those things?! Pull yourself together!',
-'…발밑을 봐. 서 있던 자리가 널 죽였어.':'...Watch your feet. The ground you stood on killed you.',
-'장판 위에 서 있었잖아! 빨리 빠졌어야지!':'You were standing in the zone! You should\'ve gotten out!',
-'탄을 못 읽었어. 눈을 크게 떠.':'You misread the shot. Open your eyes wide.',
-'날아오는 거 봤어야지! 패링이든 회피든!':'You had to see it coming! Parry or dodge!',
-'잡히면 끝이야. 거리를 배워.':'Once you\'re grabbed, it\'s over. Learn your spacing.',
-'붙잡혔어! 다음엔 옆으로 굴러!':'You got grabbed! Roll to the side next time!',
-'…이 챕터가 네 무덤이 되고 있다.':'...This chapter is becoming your grave.',
-'여기서 또?! 이 구간 진짜 조심해!':'Again here?! Be really careful in this stretch!',
-'열 번. …죽는 것도 재능이군.':'Ten times. ...Dying is a talent too.',
-'또?! 우리 진짜 같이 좀 살자아!':'Again?! Let\'s actually survive together, please!',
-'…또야. 같은 실수는 그만.':'...Again. Enough of the same mistake.',
-'다섯 번째야! 패턴 좀 외워줘!':'That\'s the fifth time! Please learn the pattern!',
-'잘 나가다 한 방에. …끝까지 방심 마.':'Doing great, then one hit. ...Don\'t drop your guard till the end.',
-'그렇게 잘하다가!! 아까워 죽겠어!':'You were doing so well!! It\'s such a waste!',
-'…지옥에 망자 하나 더 늘릴 셈이야?':'...Planning to add one more corpse to Hell?',
-'그런 소리 마! 얜 아직 안 죽었어! 일어나!':'Don\'t say that! This one isn\'t dead yet! Get up!',
-'…여왕님이 실망하시겠군.':'...The Queen will be disappointed.',
-'실망은 무슨! 다시 일어나면 되잖아, 얼른!':'Disappointed nothing! Just get back up—come on!',
-'잠은 집에 가서 자. …일어나.':'Sleep when you get home. ...Get up.',
-'여기서 자면 진짜 집 못 가! 얼른 일어나!':'Fall asleep here and you\'ll never get home! Get up!',
-'여기서 포기하면… 누가 가족의 원수를 갚지?':'If you give up here... who avenges your family?',
-'우리가 있잖아! 다시 일어나 끝까지 가!':'You\'ve got us! Get up and see it through!',
-'네가 멈추면, 가족을 위해 싸울 자는 없어.':'If you stop, no one is left to fight for your family.',
-'너밖에 없어! 여기서 주저앉지 마!':'It\'s only you! Don\'t sink down here!',
-'…복수는 살아남은 자만이 한다.':'...Only the survivor gets revenge.',
-'죽은 채로는 아무것도 못 갚아! 일어나!':'You can\'t settle anything dead! Get up!',
-'가족의 얼굴을 떠올려. 그게 네가 일어날 이유야.':'Picture your family\'s faces. That\'s your reason to rise.',
-'잊지 마! 우리가 왜 여기 있는지!':'Don\'t forget why we\'re here!',
-'포기하는 건… 결국 습관이 돼.':'Giving up... becomes a habit in the end.',
-'한 번 포기하면 계속 포기하게 돼! 여기서 끊어!':'Quit once and you\'ll keep quitting! Break it here!',
-'일어나. 복수만이 정의다.':'Get up. Revenge is the only justice.',
-'맞아! 여기서 끝낼 순 없어! 일어나!':'Right! It can\'t end here! Get up!',
-'썩은 숲이 첫 무덤이라니. 일어나.':'The Rotting Forest as your first grave? Get up.',
-'아직 시작인데! 다시 가자!':'It\'s only the beginning! Let\'s go again!',
-'벌레 밥이 될 뻔했군.':'Almost became bug food.',
-'으으 여기서 죽기 싫어! 다시!':'Ugh, I don\'t want to die here! Again!',
-'얼어붙기 전에 일어나.':'Get up before you freeze over.',
-'추운 데서 쓰러지지 마! 얼른!':'Don\'t go down in the cold! Hurry!',
-'잿더미가 되기 전에.':'Before you turn to ash.',
-'뜨거운 데서 눕지 좀 마아!':'Stop lying down where it\'s so hot!',
-'수에 삼켜졌군. 다시.':'Swallowed by numbers. Again.',
-'너무 많았어! 이번엔 뭉칠 때 노리자!':'There were too many! Let\'s strike when they clump up!',
-'사도들이 널 비웃고 있어.':'The Apostles are laughing at you.',
-'여기 진짜 까다로워! 정신 바짝!':'This place is really tricky! Stay sharp!',
-'지옥성이 널 붙잡았어. 놓지 않게 해.':'The Hell Castle has caught you. Don\'t let it keep you.',
-'최종장이야! 여기서 무너지면 안 돼!':'It\'s the final chapter! You can\'t fall apart here!',
 // --- Pet dialogue: records ---
 '…한 번도 안 죽고. 그건 진짜 실력이야.':'...Not once dead. That\'s real skill.',
 '…ACT1을 끝냈다. 진짜 시작은 여기서부터야.':'...ACT1 done. The real start is here.',
@@ -7113,8 +7056,6 @@ const _EN={
 '🔥분노 ':'🔥Rage ',
 '✟ 신의영역!':'✟ Divine Domain!',
 '🎮 게임패드 버튼 설정':'🎮 Gamepad Button Config',
-'🎮 패드 연결됨':'🎮 Gamepad Connected',
-'🎮 패드 연결 끊김':'🎮 Gamepad Disconnected',
 'B슬롯 스킬':'B-Slot Skill',
 '우클릭 스킬':'R-Click Skill',
 '패링':'Parry',
@@ -7618,9 +7559,6 @@ const _petEnvFlags={chestFirst:false,breakWall:false,torchLit:false};
 let _petDiffLast=0;const _petDiffSeen={};
 // v5 패링 콤보 (연속 성공 카운트, 피격 시 리셋)
 let _petParryCombo=0;
-// v7 배선/랜덤: 보스 재도전 카운트 + idle 무중복 셔플백
-const _petBossEngage={};let _petBossPrevAlive=false;
-const _petNagBag=[],_petTipBag=[],_petTalkBag=[]; // 셔플백(무중복 순환)
 
 // 대사 발동 함수
 // 펫 대사 사운드 — 화자별 합성음
@@ -7669,84 +7607,30 @@ function _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur,_noSfx){
   if(!_noSfx)_petSfx(who,false);
   return true;
 }
-// ═══ v7 우선순위 디스패처 (즉시발동 → 프레임당 최고우선순위 1건만) ═══
-// 티어: 5생존 / 4전투핵심 / 3전투조언 / 2진행성취 / 1튜토리얼 / 0분위기
-const _PET_TIER_COOL=[1200,720,480,360,240,0]; // T0~T5 티어별 글로벌쿨(프레임). T5=0(인터럽트)
-const _petTierCD=[0,0,0,0,0,0];
-const _PET_SURV_W={hp_critical:100,hp_oneshot:95,boss_grab_warn:90,boss_aoe_warn:90,stun_warn:80,boss_groggy:70,crisis_hp30:60,warn_hp50:40}; // 생존 내부 우선순위
-const _PB={tier:-1,weight:0,id:'',who:'',txt:'',dur:0,cd:0,pw:null,pt:null,pd:0}; // 프레임 입찰 슬롯(재사용, 무할당)
-let _petInFrame=false; // _checkPetDialogue 실행 중 여부(이벤트 콜백과 구분)
-// id → 티어 추론 (문자열 접두 매칭, 무할당)
-function _petTierOf(id){
-  if(id==='enh_hint')return 1; // enh_ 접두보다 먼저(자원힌트)
-  if(id.startsWith('bl_')||id.startsWith('cd_')||id.startsWith('combo_')||id==='multi_kill'||id==='low_hp_kill'||id==='stage_clear'||id.startsWith('chapter_clear_')||id.startsWith('trophy_')||id.startsWith('enh_')||id==='first_legend'||id.startsWith('speed_')||id==='elite_kill'||id==='miniboss_kill'||id.startsWith('build_')||id.startsWith('diff_')||id.startsWith('syn_'))return 2;
-  if(id==='boss_elem')return 3;
-  if(id.startsWith('boss_')||id==='near_boss'||id==='elite_first'||id==='miniboss_appear')return 4;
-  if(id.startsWith('melee_')||id.startsWith('resource_')||id==='enemy_ice'||id==='rage_full2'||id==='mp_warn'||id==='low_st')return 3;
-  if(id.startsWith('tut_')||id.startsWith('parry_')||id.startsWith('sp_')||id.startsWith('has_')||id==='bag_full'||id==='low_mats'||id==='shift_hint')return 1;
-  if(id.startsWith('idle_')||id.startsWith('env_')||id.startsWith('chapter_')||id.startsWith('petTalk'))return 0;
-  return 2;
-}
-// 프레임 내 입찰 (경쟁 대사 — 최고 티어 1건, 동일티어는 코드순 먼저가 우선)
-function _petBidCD(id,who,txt,dur,cd,pw,pt,pd){
-  if(_petDlgCD[id]>0)return;
-  const tier=_petTierOf(id);
-  if(tier<=_PB.tier)return; // 더 낮거나 같으면(먼저 입찰 우선) 무시
-  _PB.tier=tier;_PB.weight=tier*10;_PB.id=id;_PB.who=who;_PB.txt=txt;_PB.dur=dur;_PB.cd=cd;_PB.pw=pw||null;_PB.pt=pt||null;_PB.pd=pd||0;
-}
-// 생존 대사 — 프레임 내: 티어5 입찰(내부 weight) / 프레임 외(이벤트): 즉시 인터럽트
-function _petSayUrgent(id,who,txt,dur,cd,pw,pt,pd){
-  if(_petDlgCD[id]>0)return false;
-  if(_petInFrame){
-    const w=_PET_SURV_W[id]||50;
-    if(_PB.tier===5&&w<=_PB.weight)return false;
-    _PB.tier=5;_PB.weight=w;_PB.id=id;_PB.who=who;_PB.txt=txt;_PB.dur=dur;_PB.cd=cd;_PB.pw=pw||null;_PB.pt=pt||null;_PB.pd=pd||0;
-    return true;
-  }
-  if(_petBubble._uid===id&&_petBubble.t>0)return false;
-  _petBubble.t=0;_petBubble.pair=null;
-  _petSay(id,who,txt,dur,pw,pt,pd,true);_petSfx(who,true);
-  _petBubble._uid=id;_petDlgCD[id]=~~(cd*60);
-  for(let i=0;i<5;i++)if(_petTierCD[i]<300)_petTierCD[i]=300;
-  return true;
-}
-// 프레임 승자 발동
-function _petFireBid(){
-  if(_PB.tier<0)return;
-  const t=_PB.tier;
-  if(t>=5){ // 생존 인터럽트
-    if(!(_petBubble._uid===_PB.id&&_petBubble.t>0)){
-      _petBubble.t=0;_petBubble.pair=null;
-      _petSay(_PB.id,_PB.who,_PB.txt,_PB.dur,_PB.pw,_PB.pt,_PB.pd,true);_petSfx(_PB.who,true);
-      _petBubble._uid=_PB.id;_petDlgCD[_PB.id]=~~(_PB.cd*60);
-      for(let i=0;i<5;i++)if(_petTierCD[i]<300)_petTierCD[i]=300;
-    }
-  }else if(_petBubble.t<=0&&_petTierCD[t]<=0){
-    const ok=_petSay(_PB.id,_PB.who,_PB.txt,_PB.dur,_PB.pw,_PB.pt,_PB.pd);
-    if(ok){_petDlgCD[_PB.id]=~~(_PB.cd*60);_petTierCD[t]=_PET_TIER_COOL[t]}
-  }
-  _PB.tier=-1;_PB.weight=0;
-}
-// 무중복 셔플백 — 전체를 한 번씩 다 보여준 뒤에야 반복 (idle 대사 다양성)
-function _petBagNext(bag,len){
-  if(bag.length===0){for(let i=0;i<len;i++)bag.push(i);for(let i=len-1;i>0;i--){const j=~~(Math.random()*(i+1));const t=bag[i];bag[i]=bag[j];bag[j]=t}}
-  return bag.pop();
-}
-// 일반 즉시 대사 (튜토리얼·이벤트 콜백 전용 — 티어별 글로벌쿨 준수)
-function _petSayCD(id,who,txt,dur,cd,pw,pt,pd){
-  if(_petDlgCD[id]>0||_petBubble.t>0)return false;
-  const tier=_petTierOf(id);
-  if(_petTierCD[tier]>0)return false;
-  const ok=_petSay(id,who,txt,dur,pw,pt,pd);
-  if(ok){_petDlgCD[id]=~~(cd*60);_petTierCD[tier]=_PET_TIER_COOL[tier]}
+let _petGlobalCD=0; // 글로벌 쿨다운 (15초 — 연속 대사 방지)
+function _petSayCD(id,who,txt,durSec,cdSec,pairWho,pairTxt,pairDur){
+  if(_petDlgCD[id]>0||_petBubble.t>0||_petGlobalCD>0)return false;
+  const ok=_petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur);
+  if(ok){_petDlgCD[id]=~~(cdSec*60);_petGlobalCD=900} // 15초 글로벌 쿨
   return ok;
+}
+// 긴급 대사 — 모든 쿨 무시, 조건 충족 시 무조건 출력
+function _petSayUrgent(id,who,txt,durSec,cdSec,pairWho,pairTxt,pairDur){
+  if(_petBubble._uid===id&&_petBubble.t>0)return false; // 같은 긴급 대사 재생 중이면 스킵
+  // 현재 말풍선 강제 종료
+  _petBubble.t=0;_petBubble.pair=null;
+  _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur,true);
+  _petSfx(who,true); // urgent 전용 긴급음
+  _petBubble._uid=id; // 현재 긴급 대사 id 기록
+  _petGlobalCD=600; // 긴급 후 10초 글로벌쿨 (일반 대사만 억제)
+  return true;
 }
 
 // 말풍선 업데이트 (updatePet에서 호출)
 function _updatePetBubble(){
   // 쿨다운 감소
   for(const k in _petDlgCD){_petDlgCD[k]-=_dtSp;if(_petDlgCD[k]<=0)delete _petDlgCD[k]}
-  for(let _ti=0;_ti<6;_ti++)if(_petTierCD[_ti]>0){_petTierCD[_ti]-=_dtSp;if(_petTierCD[_ti]<0)_petTierCD[_ti]=0}
+  if(_petGlobalCD>0)_petGlobalCD-=_dtSp;
   // 말풍선 타이머
   if(_petBubble.t>0){
     _petBubble.t-=_dtSp;
@@ -7771,7 +7655,6 @@ function _updatePetBubble(){
 function _checkPetDialogue(){
   if(!G.on||!G.pets)return;
   _updatePetBubble();
-  _PB.tier=-1;_petInFrame=true; // 프레임 입찰 리셋
   const si=G.stage||0;
   const _ch=SI_TO_HELL[si]||0;
 
@@ -7794,9 +7677,9 @@ function _checkPetDialogue(){
     _petSayUrgent('stun_warn','cat',_T('기절!')+' '+_esc.map(e=>_T(e)).join(' / ')+' '+_T('으로 탈출!'),4,8,'crow',P.skills.bladeDash>0?'더블탭 or Shift+방향키! 전격이동으로 탈출해!':P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출하라.':P.skills.iceOrb>0?'Ctrl 얼음보주로 탈출하라.':'스킬 없으면 방향키 연타뿐이야.',3);
   }
   // MP 위기 (v4 — INT빌드)
-  if(P.mp<P.mmp*.2&&(P.aint||0)>Math.max(P.astr||0,P.adex||0))_petBidCD('mp_warn','crow','마력이 빈다. 평타 섞어.',3,60,'cat','MP 부족! 평타로 패면서 회복해!',3);
+  if(P.mp<P.mmp*.2&&(P.aint||0)>Math.max(P.astr||0,P.adex||0))_petSayUrgent('mp_warn','crow','마력이 빈다. 평타 섞어.',3,60,'cat','MP 부족! 평타로 패면서 회복해!',3);
   // ST 부족
-  if(P.st<P.mst*.5&&P.lv<=100)_petBidCD('low_st','crow','스태미나가 부족하다. 무리하지 마.',3,60,'cat','ST 없으면 스킬 못 써!',3);
+  if(P.st<P.mst*.5&&P.lv<=100)_petSayUrgent('low_st','crow','스태미나가 부족하다. 무리하지 마.',3,60,'cat','ST 없으면 스킬 못 써!',3);
   // 보스 그로기
   if(G._bossRef&&G._bossRef.stunned>0)_petSayUrgent('boss_groggy','crow','무릎 꿇었다.',3,30,'cat','지금이야! 몰아쳐!!',3);
   // 보스 grab/aoe 텔레그래프 (v4)
@@ -7806,7 +7689,6 @@ function _checkPetDialogue(){
     if((_bmid==='burst'||_bmid==='shock')&&G._bossRef._teleT>0)_petSayUrgent('boss_aoe_warn','crow','광역기다. 멀어져.',3,10,'cat','큰 거 온다! 도망쳐!',3);
   }
 
-  _petFireBid();_petInFrame=false;_PB.tier=-1; // 생존(T5) 인터럽트 발동 후 프레임 나머지 입찰 리셋
   if(P.lv>500)return; // Lv500 이후 나머지 대사 비활성
 
   // ══ [1] 튜토리얼 (Stage 0, Lv200 이하) — 15종 ══
@@ -7846,42 +7728,42 @@ function _checkPetDialogue(){
   }
 
   // ══ [4] 보스 패턴 + 전투 — 12종 ══
-  if(G.bossAlive&&G._bossRef&&G._bossRef.el>0)_petBidCD('boss_elem','crow','속성을 읽어. 약점을 찌르면 두 배로 썩는다.',4,30,'cat','화염엔 빙결! 암전엔 암흑!',4);
-  if(G._bossRef&&G._bossRef._curMove&&G._bossRef._curMove.id==='summon')_petBidCD('boss_summon','crow','잡몹이다. 먼저 정리해.',4,60,'cat','소환수 왔어! 먼저 처리해야 해!',4);
-  for(let i=0;i<ens.length;i++){if(ens[i].alive&&ens[i].frozen>0){_petBidCD('enemy_ice','crow','…얼어붙은 놈은 오래 안 간다.',4,60,'cat','얼었어! 빙결 중 1.5배야!',4);break}}
-  if(G.bossAlive&&G._bossCx&&G._bossCy){const _bD=Math.sqrt((P.x-G._bossCx*16)**2+(P.y-G._bossCy*16)**2);if(_bD<300)_petBidCD('near_boss','crow','…냄새가 짙다. 큰 놈이 있어.',4,30,'cat','준비됐어? 물약 확인하고!',4)}
+  if(G.bossAlive&&G._bossRef&&G._bossRef.el>0)_petSayCD('boss_elem','crow','속성을 읽어. 약점을 찌르면 두 배로 썩는다.',4,30,'cat','화염엔 빙결! 암전엔 암흑!',4);
+  if(G._bossRef&&G._bossRef._curMove&&G._bossRef._curMove.id==='summon')_petSayCD('boss_summon','crow','잡몹이다. 먼저 정리해.',4,60,'cat','소환수 왔어! 먼저 처리해야 해!',4);
+  for(let i=0;i<ens.length;i++){if(ens[i].alive&&ens[i].frozen>0){_petSayCD('enemy_ice','crow','…얼어붙은 놈은 오래 안 간다.',4,60,'cat','얼었어! 빙결 중 1.5배야!',4);break}}
+  if(G.bossAlive&&G._bossCx&&G._bossCy){const _bD=Math.sqrt((P.x-G._bossCx*16)**2+(P.y-G._bossCy*16)**2);if(_bD<300)_petSayCD('near_boss','crow','…냄새가 짙다. 큰 놈이 있어.',4,30,'cat','준비됐어? 물약 확인하고!',4)}
   // eShield 이원방어 삭제 — 보스 쉴드 힌트 제거
   {let _nc=0;for(let _ni=0;_ni<ens.length;_ni++){if(ens[_ni].alive&&dst2(P.x,P.y,ens[_ni].x,ens[_ni].y)<90000)_nc++}
-  if(_nc>=10){if(P.skills.spikeTrap>0)_petBidCD('melee_trap_yes','cat','스페이스! 가시덫으로 적 묶어!',4,300);else _petBidCD('melee_trap_no','cat','근접 너무 많아! 거리 벌려!',4,300,'crow','…둘러싸이면 끝이야.',4)}
-  if(_nc>=20){if(P.skills.giantSlam>0)_petBidCD('melee_slam_yes','crow','1번 대왕치기로 쓸어버려!',4,300,'cat','그로기 터지면 1.5배!',3);else _petBidCD('melee_slam_no','crow','회전참이나 광역기로 몰아!',4,300,'cat','뭉쳐있을 때가 기회야!',3)}
+  if(_nc>=10){if(P.skills.spikeTrap>0)_petSayCD('melee_trap_yes','cat','스페이스! 가시덫으로 적 묶어!',4,300);else _petSayCD('melee_trap_no','cat','근접 너무 많아! 거리 벌려!',4,300,'crow','…둘러싸이면 끝이야.',4)}
+  if(_nc>=20){if(P.skills.giantSlam>0)_petSayCD('melee_slam_yes','crow','1번 대왕치기로 쓸어버려!',4,300,'cat','그로기 터지면 1.5배!',3);else _petSayCD('melee_slam_no','crow','회전참이나 광역기로 몰아!',4,300,'cat','뭉쳐있을 때가 기회야!',3)}
   // eShield 이원방어 삭제 — 비보스 쉴드 힌트 제거
   }
   // 분노 풀: 전투 중 주기적 리마인더 (패링으로 막 찬 순간 외에도 알림)
-  if(P.rage>=100)_petBidCD('rage_full2','cat','분노게이지 꽉 찼어! 스페이스로 폭발시켜!',4,40,'crow','…분노가 끓어넘친다. 스페이스로 적들에게 폭발시켜!',4);
+  if(P.rage>=100)_petSayCD('rage_full2','cat','분노게이지 꽉 찼어! 스페이스로 폭발시켜!',4,40,'crow','…분노가 끓어넘친다. 스페이스로 적들에게 폭발시켜!',4);
 
   // ══ [5] 자원/힌트 — 12종 ══
   if(P.hp<P.mhp*.5||P.mp<P.mmp*.5||P.st<P.mst*.5){
-    if(P.skills.holyDome>0&&(P._hdCd||0)<=0)_petBidCD('resource_half_dome','cat','F 눌러! 회복의 영역 깔아!',4,120,'crow','자원이 반이다. F키로 회복해.',4);
-    else _petBidCD('resource_parry','cat','패링을 써야 자원을 흡수한다고!',3,300);
+    if(P.skills.holyDome>0&&(P._hdCd||0)<=0)_petSayCD('resource_half_dome','cat','F 눌러! 회복의 영역 깔아!',4,120,'crow','자원이 반이다. F키로 회복해.',4);
+    else _petSayCD('resource_parry','cat','패링을 써야 자원을 흡수한다고!',3,300);
   }
   if(P.hp<P.mhp*.3||P.mp<P.mmp*.3||P.st<P.mst*.3){
-    if(P.skills.holyDome>0)_petBidCD('resource_low_yes','crow','F키 회복의 영역을 써봐.',4,300);
-    else _petBidCD('resource_low_no','crow','빠져! 물약 마시고 회복해.',4,300,'cat','HP가 없어 패링이라도 해서 회복해야해!!!',4);
+    if(P.skills.holyDome>0)_petSayCD('resource_low_yes','crow','F키 회복의 영역을 써봐.',4,300);
+    else _petSayCD('resource_low_no','crow','빠져! 물약 마시고 회복해.',4,300,'cat','HP가 없어 패링이라도 해서 회복해야해!!!',4);
   }
-  if(!_petChargeUsed&&_petAtkCnt>=15)_petBidCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야!',4,300);
-  if(P.sp>=10)_petBidCD('sp_hint','cat','스킬포인트 쌓였어! K 눌러!',4,300);
-  if(P.lv>=5&&P.sp>0)_petBidCD('has_sp','cat','스킬 포인트 있어! K!',5,180,'crow','L키로 스킬 슬롯에 넣어야 쓸 수 있어.',4);
-  if((P.ap||0)>=3)_petBidCD('has_ap','crow','J키. 패시브 포인트가 쌓여있다.',4,240,'cat','J키! 패시브 강해져!',4);
-  if(INV.bag.length>=15)_petBidCD('bag_full','crow','…쓸 거 아니면 분해해.',4,120,'cat','아이템 넘쳐! 우리가 주워줄게!',4);
-  if(G.mats<10)_petBidCD('low_mats','crow','악의가 바닥이다.',3,240,'cat','장비 분해해! 쓰레기도 악의!',5);
+  if(!_petChargeUsed&&_petAtkCnt>=15)_petSayCD('shift_hint','cat','쉬프트! 사슬기동은 이동기야!',4,300);
+  if(P.sp>=10)_petSayCD('sp_hint','cat','스킬포인트 쌓였어! K 눌러!',4,300);
+  if(P.lv>=5&&P.sp>0)_petSayCD('has_sp','cat','스킬 포인트 있어! K!',5,180,'crow','L키로 스킬 슬롯에 넣어야 쓸 수 있어.',4);
+  if((P.ap||0)>=3)_petSayCD('has_ap','crow','J키. 패시브 포인트가 쌓여있다.',4,240,'cat','J키! 패시브 강해져!',4);
+  if(INV.bag.length>=15)_petSayCD('bag_full','crow','…쓸 거 아니면 분해해.',4,120,'cat','아이템 넘쳐! 우리가 주워줄게!',4);
+  if(G.mats<10)_petSayCD('low_mats','crow','악의가 바닥이다.',3,240,'cat','장비 분해해! 쓰레기도 악의!',5);
   if(G.mats>=50){let _uE=false;for(const sl in INV.equipped){const it=INV.equipped[sl];if(it&&it.rarity>=3&&(it.enhLv||0)===0){_uE=true;break}}
-    if(_uE)_petBidCD('enh_hint','crow','…강화 안 하면 그냥 고철이야.',4,300,'cat','G 눌러서 대장간 가봐!',4)}
+    if(_uE)_petSayCD('enh_hint','crow','…강화 안 하면 그냥 고철이야.',4,300,'cat','G 눌러서 대장간 가봐!',4)}
 
   // ══ [6] 패링 교육 + 대기 — 3종 ══
-  if(_petParryCnt<3)_petBidCD('parry_low','crow','빨간 탄은 우클릭. 무지개는 Q.',4,90,'cat','나머진 전부 우클릭 패링 가능!',4);
-  else if(_petParryCnt<10)_petBidCD('parry_mid','crow','빨강=우클릭, 무지개=Q.',4,90,'cat','나머진 전부 우클릭!',4);
+  if(_petParryCnt<3)_petSayCD('parry_low','crow','빨간 탄은 우클릭. 무지개는 Q.',4,90,'cat','나머진 전부 우클릭 패링 가능!',4);
+  else if(_petParryCnt<10)_petSayCD('parry_mid','crow','빨강=우클릭, 무지개=Q.',4,90,'cat','나머진 전부 우클릭!',4);
   {let _nE=true;for(let i=0;i<ens.length;i++){if(ens[i].alive){_nE=false;break}}
-  if(_nE&&P.s==='idle')_petBidCD('idle_noE','crow','…멈추지 마. 여신은 기다리지 않는다.',4,60,'cat','앞으로 가자~',4)}
+  if(_nE&&P.s==='idle')_petSayCD('idle_noE','crow','…멈추지 마. 여신은 기다리지 않는다.',4,60,'cat','앞으로 가자~',4)}
 
   // ══ [7] Idle 대사 — 23종 (보스전 중 차단) ══
   if(G.bossAlive){_petIdleT=0;_petIdleTalkT=0}
@@ -7889,10 +7771,10 @@ function _checkPetDialogue(){
     if(_petIdleT>60*20){_petIdleT=0;
       if(Math.random()<.5){
         const _nags=[['시간이 없어. 움직여.','멍하게 서있으면 안 돼!'],['…뭘 기다리는 거야?','가자가자! 몬스터가 기다려!'],['여기 오래 있으면 위험해.','가만있으면 둘러싸여!'],['쉬는 건 죽고 나서 해.','살아있을 때 쉬면 안 돼!'],['적이 몰려오고 있어.','냄새 맡고 올 거야. 빨리!'],['…아직 살아있는 거 맞지?','혹시 잠든 거야…?']];
-        const _ni=_petBagNext(_petNagBag,_nags.length);_petBidCD('idle_nag'+_ni,'crow',_nags[_ni][0],4,30,'cat',_nags[_ni][1],4);
+        const _ni=~~(Math.random()*_nags.length);_petSayCD('idle_nag'+_ni,'crow',_nags[_ni][0],4,30,'cat',_nags[_ni][1],4);
       }else if(Math.random()<.5){
         const _tips=[['사슬을 땅에 꽂으면 끌려간다.','Shift로 사슬 던져봐!'],['패링 성공하면 ST가 회복된다.','패링 많이 하면 ST 걱정 없어~'],['장비 분해하면 악의를 얻는다.','TAB 열어서 안 쓰는 장비 분해!'],['그로기 적은 1.5배 데미지.','무릎 꿇으면 전력으로 때려!'],['화염은 빙결, 암전은 암흑에 약하다.','무기 속성 바꿔가며 싸워!'],['빙결 적은 1.5배 데미지.','얼리고 때리는 게 기본!'],['보스 빨강은 패링, 보라는 회피만.','빨강 받아치고 무지개는 피해!'],['VIT 올리면 최대 HP.','STR 근접, DEX 활, INT 마법!'],['E 길게 = 빔, 짧게 = 투사체.','MP 잘 봐! 빔은 연속으로 깎여!'],['펫이 아이템을 주워준다.','우리한테 고마워해~'],['LCK 올리면 레어 드롭률.','운빨 게임! LCK 올려봐!'],['G 누르면 대장간.','강화하면 공격력 쭉쭉!'],['강화 +1에서 99%. 높을수록 떨어져.','실패해도 장비 안 부서져!'],['대장간 제작도 가능. 악의 30000개+.','영웅급 이상 나올 수 있어!'],['쉴드는 추가 HP다. 쉴드부터 깎인다.','쉴드 있으면 HP 안 닳아!'],['영웅급+ 장비에 접두/접미사.','좋은 거 나오면 강화!'],['강화는 장비 바꿔도 자동 이전.','더 좋은 거 나오면 바로 장착!']];
-        const ti=_petBagNext(_petTipBag,_tips.length);_petBidCD('idle_tip'+ti,'crow',_tips[ti][0],5,30,'cat',_tips[ti][1],5);
+        const ti=~~(Math.random()*_tips.length);_petSayCD('idle_tip'+ti,'crow',_tips[ti][0],5,30,'cat',_tips[ti][1],5);
       }
     }
     // v6 [22] 펫 간 토크 (idle 120초+, 적 0)
@@ -7900,7 +7782,7 @@ function _checkPetDialogue(){
     {let _anyE=false;for(let i=0;i<ens.length;i++){if(ens[i].alive){_anyE=true;break}}
     if(!_anyE&&_petIdleTalkT>60*120){_petIdleTalkT=0;
       const _pt=[['cat','핵터, 너 좀 친절하게 말할 줄 모르냐?',4,'crow','…친절은 살아남고 나서 따져.',4],['crow','…디로이. 너무 떠들면 적이 몰린다.',4,'cat','어머! 미안! 입 다물게!',4],['cat','핵터, 우리 주인 이번엔 진짜 강해진 것 같아.',4,'crow','…아직 멀었어. 지옥성까지 봐야 안다.',4],['crow','디로이. 또 길 잘못 알려줬지.',4,'cat','누가?! 나 아니야! 너지 너!',4],['cat','…핵터, 우린 죽으면 어디 가?',4,'crow','…질문이 너무 많아. 일단 살아.',4]];
-      const _pi=_petBagNext(_petTalkBag,_pt.length);_petBidCD('petTalk_'+_pi,_pt[_pi][0],_pt[_pi][1],_pt[_pi][2],600,_pt[_pi][3],_pt[_pi][4],_pt[_pi][5]);
+      const _pi=~~(Math.random()*_pt.length);_petSayCD('petTalk_'+_pi,_pt[_pi][0],_pt[_pi][1],_pt[_pi][2],600,_pt[_pi][3],_pt[_pi][4],_pt[_pi][5]);
     }}
   }else{_petIdleT=0;_petIdleTalkT=0}
 
@@ -7914,13 +7796,13 @@ function _checkPetDialogue(){
     ['crow','이 길의 끝에 뭐가 있을까.',5],
     ['crow','…여기가 끝이야. 돌아갈 길은 없어.',5]
   ];
-  if(_chDlg[_ch])_petBidCD('chapter_'+_ch,_chDlg[_ch][0],_chDlg[_ch][1],_chDlg[_ch][2],99999);}
+  if(_chDlg[_ch])_petSayCD('chapter_'+_ch,_chDlg[_ch][0],_chDlg[_ch][1],_chDlg[_ch][2],99999);}
 
   // ══ [9] 챕터 환경 멘트 (진입 30초 후, v4) — 7종 (보스전 중 차단) ══
   if(!_petStageEnv[_ch]){_petStageEnvT+=_dtSp;
     if(!G.bossAlive&&_petStageEnvT>60*30){_petStageEnv[_ch]=true;
       const _envDlg=[['crow','…새 한 마리 안 우네. 죽은 숲이야.',4,'cat','나무들이 우릴 보고 있는 것 같아…',4],['crow','…발밑이 움직이고 있다.',4,'cat','으으! 뭔가 기어다녀! 빨리 가자!',4],['crow','입김이 얼어. 오래 있으면 못 나간다.',4,'cat','손가락 안 움직여… 빨리 끝내!',4],['crow','공기가 타. 숨도 데인다.',4,'cat','살이 익는 거 같아! 뜨거워!',4],['crow','…수가 끝이 없어. 길을 뚫어.',4,'cat','끝이 안 보여! 한꺼번에 쓸어!',4],['crow','…벽 너머에서 보고 있어.',4,'cat','누가 우릴 지켜보고 있어… 무서워.',4],['crow','여기서 죽어도 돌아갈 곳은 없어.',4,'cat','마지막이야… 끝까지 가자.',4]];
-      if(_envDlg[_ch])_petBidCD('env_ch'+_ch,_envDlg[_ch][0],_envDlg[_ch][1],_envDlg[_ch][2],99999,_envDlg[_ch][3],_envDlg[_ch][4],_envDlg[_ch][5]);
+      if(_envDlg[_ch])_petSayCD('env_ch'+_ch,_envDlg[_ch][0],_envDlg[_ch][1],_envDlg[_ch][2],99999,_envDlg[_ch][3],_envDlg[_ch][4],_envDlg[_ch][5]);
     }
   }
   if(_petLastChapter!==-1&&_petLastChapter!==_ch){_petStageEnvT=0}
@@ -7929,28 +7811,24 @@ function _checkPetDialogue(){
   // ══ [16] 보스/스테이지 진행 — 5종 ══
   if(G._bossRef&&G._bossRef.alive){
     const _bHpR=G._bossRef.hp/G._bossRef.mhp;
-    if(!_petBossPhase.p2&&_bHpR<.7){_petBossPhase.p2=true;_petBidCD('boss_p2','crow','패턴이 바뀐다. 거리를 둬.',4,9999,'cat','HP 70%! 조심해!',3)}
-    if(!_petBossPhase.p3&&_bHpR<.4){_petBossPhase.p3=true;_petBidCD('boss_p3','crow','미쳐가고 있어. 광폭화다.',4,9999,'cat','패턴이 빨라졌어!',3)}
-    if(!_petBossPhase.p4&&_bHpR<.15){_petBossPhase.p4=true;_petBidCD('boss_p4','cat','마지막이야! 끝장내!',4,9999,'crow','…빈틈을 노려.',3)}
+    if(!_petBossPhase.p2&&_bHpR<.7){_petBossPhase.p2=true;_petSayCD('boss_p2','crow','패턴이 바뀐다. 거리를 둬.',4,9999,'cat','HP 70%! 조심해!',3)}
+    if(!_petBossPhase.p3&&_bHpR<.4){_petBossPhase.p3=true;_petSayCD('boss_p3','crow','미쳐가고 있어. 광폭화다.',4,9999,'cat','패턴이 빨라졌어!',3)}
+    if(!_petBossPhase.p4&&_bHpR<.15){_petBossPhase.p4=true;_petSayCD('boss_p4','cat','마지막이야! 끝장내!',4,9999,'crow','…빈틈을 노려.',3)}
   }
   // 보스 킬 — 기존 대사 강제 종료 후 처치 대사 무조건 재생
   if(_petBossAliveLast&&!G.bossAlive){_petBubble.t=0;_petBubble.pair=null;_petBubble._uid=null;delete _petDlgCD['boss_kill'];_petSay('boss_kill','crow','…끝났다. 다음으로.',4,'cat','핵터 니가 진짜 해냈구나, 여왕님이 기뻐하시겠어!',4);_petBossPhase.p2=false;_petBossPhase.p3=false;_petBossPhase.p4=false}
   _petBossAliveLast=G.bossAlive;
   // 스테이지 클리어
   {let _ac=0;for(let i=0;i<ens.length;i++){if(ens[i].alive)_ac++}
-  if(_petLastEnemyCount>=5&&_ac===0&&!G.bossAlive&&!_petStageCleared){_petStageCleared=true;_petBidCD('stage_clear','cat','다 잡았다! 포탈 어딨어?',4,60,'crow','길이 열렸다.',3)}
+  if(_petLastEnemyCount>=5&&_ac===0&&!G.bossAlive&&!_petStageCleared){_petStageCleared=true;_petSayCD('stage_clear','cat','다 잡았다! 포탈 어딨어?',4,60,'crow','길이 열렸다.',3)}
   if(_ac>0)_petStageCleared=false;
   _petLastEnemyCount=_ac}
 
   // ══ [23] 보스 인트로 (v6, 챕터별 1회) — 7종 ══
-  // [19b] 보스 재도전 — 같은 보스전 재진입(상승엣지) 5회째 (v7 배선)
-  if(G.bossAlive&&!_petBossPrevAlive){_petBossEngage[_ch]=(_petBossEngage[_ch]||0)+1;
-    if(_petBossEngage[_ch]===5)_petBidCD('boss_retry5','crow','다섯 번째군. 이번엔 바뀐 게 있어야지.',4,9999,'cat','또 와?! 이번엔 진짜 패턴 외웠어!',4);}
-  _petBossPrevAlive=G.bossAlive;
   if(G.bossAlive&&G._bossRef&&G._bossRef.alive&&!_petBossIntroSeen[_ch]){
     _petBossIntroSeen[_ch]=true;
     const _bi=[['crow','…첫 번째다. 부담 갖지 마. 죽어도 다시 와.',5,'cat','첫 보스! 우리 같이 잡자!',4],['crow','벌레의 왕이다. 꺼림칙하게 생겼군.',5,'cat','으으! 큰 벌레야! 진짜 끔찍해!',4],['crow','…빙결 마법을 쓴다. 화염 무기로 가.',5,'cat','얼음 보스! 화염 칼 꺼내!',4],['crow','화염의 군주야. 빙결 무기로 맞불 놔.',5,'cat','불 보스! 얼음 무기 꺼내라구!',4],['crow','군단의 우두머리다. 잡몹부터 정리해.',5,'cat','부하 먼저! 안 그럼 끝없이 나와!',4],['crow','…사도다. 패턴이 복잡해. 집중해.',5,'cat','사도 보스 진짜 강해! 정신 똑바로 차려!',4],['crow','…최종 보스. 여신도 더는 도와줄 수 없어.',5,'cat','마지막!! 우리 다 같이 끝내자!!',4]];
-    if(_bi[_ch])_petBidCD('boss_intro_ch'+_ch,_bi[_ch][0],_bi[_ch][1],_bi[_ch][2],99999,_bi[_ch][3],_bi[_ch][4],_bi[_ch][5]);
+    if(_bi[_ch])_petSayCD('boss_intro_ch'+_ch,_bi[_ch][0],_bi[_ch][1],_bi[_ch][2],99999,_bi[_ch][3],_bi[_ch][4],_bi[_ch][5]);
   }
 
   // ══ [13] 챕터 클리어 (v5) — 7종 ══
@@ -7961,13 +7839,13 @@ function _checkPetDialogue(){
   // ══ [15] 빌드별 차별화 (v5) — 6종 (보스전 중 차단) ══
   if(!G.bossAlive&&P.lv>=50&&G.frame%300===0){
     const _s=P.astr||0,_d=P.adex||0,_i2=P.aint||0,_l=P.alck||0,_v=P.avit||0;
-    if(!_petBuildHinted.str&&_s>_d*1.5&&_s>_i2*1.5)_petBidCD('build_str','crow','근육으로 만든 빌드군. 베고 부숴.',4,9999,'cat','STR 빌드! 회전참, 회오리, 광역기 추천!',4);
-    if(!_petBuildHinted.dex&&_d>_s*1.5&&_d>_i2*1.5)_petBidCD('build_dex','crow','활을 쥐었군. 거리를 둬.',4,9999,'cat','DEX 빌드! 거리에서 패고, 추적탄 좋아!',4);
-    if(!_petBuildHinted.int&&_i2>_s*1.5&&_i2>_d*1.5)_petBidCD('build_int','crow','마법사군. MP 관리부터 배워라.',4,9999,'cat','INT 빌드! 빔이랑 폭발 마법! MP 잘 봐!',4);
-    if(!_petBuildHinted.lck&&_l>=30)_petBidCD('build_lck_high','crow','운에 기댄 빌드군. …드롭은 좋겠어.',4,9999,'cat','LCK 높아! 레어 드롭률 미친 거 알지?',4);
-    if(_v<10&&P.lv>=50)_petBidCD('build_vit_low','crow','…VIT가 너무 낮아. 한 방에 죽는다.',4,600,'cat','VIT 좀 찍어! HP 너무 적어!',4);
+    if(!_petBuildHinted.str&&_s>_d*1.5&&_s>_i2*1.5)_petSayCD('build_str','crow','근육으로 만든 빌드군. 베고 부숴.',4,9999,'cat','STR 빌드! 회전참, 회오리, 광역기 추천!',4);
+    if(!_petBuildHinted.dex&&_d>_s*1.5&&_d>_i2*1.5)_petSayCD('build_dex','crow','활을 쥐었군. 거리를 둬.',4,9999,'cat','DEX 빌드! 거리에서 패고, 추적탄 좋아!',4);
+    if(!_petBuildHinted.int&&_i2>_s*1.5&&_i2>_d*1.5)_petSayCD('build_int','crow','마법사군. MP 관리부터 배워라.',4,9999,'cat','INT 빌드! 빔이랑 폭발 마법! MP 잘 봐!',4);
+    if(!_petBuildHinted.lck&&_l>=30)_petSayCD('build_lck_high','crow','운에 기댄 빌드군. …드롭은 좋겠어.',4,9999,'cat','LCK 높아! 레어 드롭률 미친 거 알지?',4);
+    if(_v<10&&P.lv>=50)_petSayCD('build_vit_low','crow','…VIT가 너무 낮아. 한 방에 죽는다.',4,600,'cat','VIT 좀 찍어! HP 너무 적어!',4);
     // 골고루 경고
-    if(P.lv>=100){const _mx=Math.max(_s,_d,_i2),_mn=Math.min(_s,_d,_i2);if(_mx>0&&(_mx-_mn)/_mx<.2)_petBidCD('build_balanced_warn','crow','다 찍으면 다 약해진다. 하나만 골라.',4,600,'cat','골고루 안 돼! 하나로 밀어!',4)}
+    if(P.lv>=100){const _mx=Math.max(_s,_d,_i2),_mn=Math.min(_s,_d,_i2);if(_mx>0&&(_mx-_mn)/_mx<.2)_petSayCD('build_balanced_warn','crow','다 찍으면 다 약해진다. 하나만 골라.',4,600,'cat','골고루 안 돼! 하나로 밀어!',4)}
     // 체크 후 플래그
     if(_s>_d*1.5&&_s>_i2*1.5)_petBuildHinted.str=true;
     if(_d>_s*1.5&&_d>_i2*1.5)_petBuildHinted.dex=true;
@@ -7978,17 +7856,16 @@ function _checkPetDialogue(){
   // ══ [27] 난이도 변경 (v6) — 5종 ══
   {const _cd=OPT.diff||1;
   if(_cd!==_petDiffLast){
-    if(_cd>=3&&!_petDiffSeen[3]){_petDiffSeen[3]=true;_petBidCD('diff_3','crow','…3단. 적이 강해져. 정신 차려.',4,9999,'cat','3단! 보상도 좋아지지만 죽기 쉬워!',4)}
-    if(_cd>=5&&!_petDiffSeen[5]){_petDiffSeen[5]=true;_petBidCD('diff_5','crow','5단이다. …너도 강해졌단 뜻이야.',4,9999,'cat','5단!! 진짜 게이머 인증!',4)}
-    if(_cd>=7&&!_petDiffSeen[7]){_petDiffSeen[7]=true;_petBidCD('diff_7','crow','…7단. 아직 살아있단 게 신기하군.',4,9999,'cat','7단!! 다른 사람들 이 정도 못 와!',4)}
-    if(_cd>=10&&!_petDiffSeen[10]){_petDiffSeen[10]=true;_petBidCD('diff_10','crow','10단. …너는 이제 인간이 아니야.',4,9999,'cat','10단 최고난이도! 너 진짜 광기야!',4)}
-    if(_cd===1&&_petDiffLast>1)_petBidCD('diff_back','crow','…일반으로 내려왔군. 가끔은 쉬어가야지.',4,600,'cat','일반 모드! 편하게 즐기자!',4);
+    if(_cd>=3&&!_petDiffSeen[3]){_petDiffSeen[3]=true;_petSayCD('diff_3','crow','…3단. 적이 강해져. 정신 차려.',4,9999,'cat','3단! 보상도 좋아지지만 죽기 쉬워!',4)}
+    if(_cd>=5&&!_petDiffSeen[5]){_petDiffSeen[5]=true;_petSayCD('diff_5','crow','5단이다. …너도 강해졌단 뜻이야.',4,9999,'cat','5단!! 진짜 게이머 인증!',4)}
+    if(_cd>=7&&!_petDiffSeen[7]){_petDiffSeen[7]=true;_petSayCD('diff_7','crow','…7단. 아직 살아있단 게 신기하군.',4,9999,'cat','7단!! 다른 사람들 이 정도 못 와!',4)}
+    if(_cd>=10&&!_petDiffSeen[10]){_petDiffSeen[10]=true;_petSayCD('diff_10','crow','10단. …너는 이제 인간이 아니야.',4,9999,'cat','10단 최고난이도! 너 진짜 광기야!',4)}
+    if(_cd===1&&_petDiffLast>1)_petSayCD('diff_back','crow','…일반으로 내려왔군. 가끔은 쉬어가야지.',4,600,'cat','일반 모드! 편하게 즐기자!',4);
     _petDiffLast=_cd;
   }}
 
   // ══ [21] 스피드런 (v5) — _petStageStartT로 추적 ══
   // 스테이지 진입 시 _petStageStartT = G.frame (외부에서 호출)
-  _petFireBid(); // 프레임 경쟁 대사(T0~T4) 승자 1건 발동
 }
 
 // ═══ 외부 호출 콜백 ═══
@@ -7999,14 +7876,12 @@ function _petOnParry(){_petParryCnt++;_petParryCombo++;
   if(_petParryCombo>=5)_petSayCD('bl_combo5','crow','…이게 진짜 패링이야.',4,300,'cat','다섯 번 연속! 내가 본 인간 중 최고!',4);
   // 분노 대사는 doParry() 내 P.rage 적립 후에서 체크 (여기선 아직 이전 값)
 }
-function _petOnKill(e){_petKillCnt++;_petComboKills++;_petKillsRecent++;_petKillsRecentT=G.frame;
+function _petOnKill(){_petKillCnt++;_petComboKills++;_petKillsRecent++;_petKillsRecentT=G.frame;
   // [17] 콤보 킬
   if(_petComboKills===50)_petSayCD('combo_50','crow','…피가 묻기 시작했군.',4,600,'cat','50명! 학살자야!',4);
   if(_petComboKills===100)_petSayCD('combo_100','crow','100. 너는 인간이 아니야.',4,600,'cat','100명?! 미쳤어!',4);
   // HP 10% 이하 킬
   if(P.hp>0&&P.hp<P.mhp*.1)_petSayCD('low_hp_kill','crow','…피 흘리며 베는군.',4,300,'cat','죽기 직전에 죽이다니! 멋져!',4);
-  // [20] 트로피: 전설급(초레어 etype99 "죽음") 처치 — 1회 (v7 배선)
-  if(e&&e.etype===99&&!_petTrophy_legendary){_petTrophy_legendary=true;_petSayCD('trophy_legendary_kill','crow','…전설을 잡았다. 보상도 전설이겠지.',5,9999,'cat','전설급 잡았어!! 드롭 확인해!',4);}
 }
 function _petOnCharge(){_petChargeUsed=true}
 // [10] BL 빨간콩 패링 변환
@@ -8053,7 +7928,6 @@ function _petOnChapterClear(ch){
   // [20] 트로피: 사망 0 클리어
   if(_petCurrentChapterDeaths===0)_petSayCD('trophy_no_death_run','crow','…한 번도 안 죽고. 그건 진짜 실력이야.',5,9999,'cat','안 죽고 깼어! 진짜 천재 맞네!',4);
   _petCurrentChapterDeaths=0;
-  _petBossEngage[ch]=0; // 보스 처치 → 재도전 카운트 리셋 (v7)
   // ACT1 완주 (0~3 클리어)
   if(!_petTrophy_act1&&_petChapterCleared[0]&&_petChapterCleared[1]&&_petChapterCleared[2]&&_petChapterCleared[3]){_petTrophy_act1=true;_petSayCD('trophy_act1_clear','crow','…ACT1을 끝냈다. 진짜 시작은 여기서부터야.',5,9999,'cat','ACT1 완주! 우리가 진짜 해냈어!',4)}
   // 전보스 처치
@@ -10288,7 +10162,6 @@ let _gpHasRStick=false; // 우스틱 실재 확인 (좌스틱과 독립적인 �
 // 자동 감지: localStorage 힌트로 초기값 설정, 이후 실시간 전환
 if(localStorage.getItem('inputMode')==='pad'){_gpActive=true;document.body.style.cursor='none'}
 addEventListener('gamepadconnected',e=>{
-  if(!_gpConnected)try{notify('🎮 패드 연결됨')}catch(e2){}
   _gpConnected=true;
   _gpVibRef=e.gamepad; // vibrationActuator 캐시 (이 객체에만 존재)
   console.log('[GAMEPAD] 연결:',e.gamepad.id,'vibrator:',!!e.gamepad.vibrationActuator);
@@ -10311,7 +10184,7 @@ addEventListener('gamepadconnected',e=>{
   if(!_gpBootDetect._n)_gpBootDetect._n=0;
   if(++_gpBootDetect._n<5)setTimeout(_gpBootDetect,1000);
 })();
-addEventListener('gamepaddisconnected',e=>{try{_gpClearAll()}catch(e3){}if(_gpConnected)try{notify('🎮 패드 연결 끊김')}catch(e4){}_gpConnected=false;_gpActive=false;_gpad=null;_gpVibRef=null;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
+addEventListener('gamepaddisconnected',e=>{_gpConnected=false;_gpActive=false;_gpad=null;_gpVibRef=null;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}console.log('[GAMEPAD] 해제')});
 // 키보드/마우스 입력 → 패드모드 해제 + 패드 주입 키 정리
 addEventListener('mousemove',e=>{if(_gpActive&&(Math.abs(e.movementX)+Math.abs(e.movementY)>3)){_gpActive=false;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
 addEventListener('keydown',e=>{if(_gpActive&&!e._fromGp){_gpActive=false;localStorage.setItem('inputMode','kbm');try{_applyCursor()}catch(e2){document.body.style.cursor=''}_gpClearAll();}},{passive:true});
@@ -10661,17 +10534,12 @@ function _gpUINav(panel){
 }
 
 function _pollGamepad(){
-  // 이벤트 의존 금지 — BT 재연결 시 gamepadconnected가 안 오는 경우가 있어 매 프레임 폴링으로 직접 감지 (index.html과 동일 방식)
+  if(!_gpConnected)return;
   const gps=navigator.getGamepads();
   let _found=null;
   for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){_found=gps[i];break}}
-  if(_found&&!_gpConnected){_gpConnected=true;_gpVibRef=_found;console.log('[GAMEPAD] 폴링 감지:',_found.id);try{notify('🎮 패드 연결됨')}catch(e2){}}
-  if(!_found){
-    // 패드 사라짐 (BT 절전/블립) — 주입 키 즉시 해제, _gpActive는 유지 (재연결 시 패드모드 그대로 복귀)
-    if(_gpConnected){_gpConnected=false;_gpad=null;_gpClearAll();try{notify('🎮 패드 연결 끊김')}catch(e2){}}
-    return;
-  }
-  _gpad=_found;
+  if(_found)_gpad=_found;
+  if(!_gpad)return;
 
   // ── 1단계: 하드웨어 상태만 읽기 ──
   let _anyInput=false;
@@ -26725,9 +26593,9 @@ function update(){
         hurtP(~~(p.dmg*elMul(p.el,ar().el)),{dtype:'magic',src:_T('덫')});
         const ka=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(ka)*8;P.kb.y+=Math.sin(ka)*8;
         P._trapSlowT=~~(120*(1-Math.min(.5,_eqAffix('slowRes')))); // 2초 감속 (slowRes 저항)
-        addTxt(P.x,P.y-20,_T('⚠ 덫!'),'#ffcc00',40);addParts(p.x,p.y,'#ffaa00',10);
+        addTxt(P.x,P.y-20,_T('⚠ 덫!'),'#5e10a8',40);addParts(p.x,p.y,'#5e10a8',10);
         G.shake=4*OPT.shake/100;_dead=true;
-      }else if(p.life<=0){addParts(p.x,p.y,'#ffaa00',3);_dead=true}
+      }else if(p.life<=0){addParts(p.x,p.y,'#5e10a8',3);_dead=true}
       if(_dead){_recycleProj(p);continue}
     }
     // 차원 균열(98:균열체): 밟으면 랜덤 텔포
@@ -27053,7 +26921,7 @@ function update(){
         else if(p.trap){// 덫: 데미지 + 0.5초 경직
           hurtP(~~((p.dmg||10)*elMul(p.el,ar().el)),{dtype:'magic'});
           if(P.s!=='charge'&&P.s!=='sBlock'){P.s='stagger';P.st2=30}
-          addTxt(P.x,P.y-20,_T('⚠ 덫!'),'#ffcc00',30);addParts(P.x,P.y,'#ffaa00',8);_pHit=true}
+          addTxt(P.x,P.y-20,_T('⚠ 덫!'),'#5e10a8',30);addParts(P.x,P.y,'#5e10a8',8);_pHit=true}
         else{const _pjD=~~((p.dmg||10)*elMul(p.el,ar().el));hurtP(_pjD,{dtype:p.redBean?'parry':'magic',redBean:!!p.redBean,projHit:true});_projHitFx(p.x,p.y,p.el,!!p.redBean);if(p.el===EL.L)P._elecT=Math.max(P._elecT||0,30);
           // 빨콩 피격 화상 (데미지×3, 10초, 최대10중첩)
           if(p.redBean){if(!P._rbBurn)P._rbBurn=[];if(P._rbBurn.length<10){P._rbBurn.push({total:_pjD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('🔥화상!')+'×'+P._rbBurn.length,'#ff4400',30)}}
@@ -30687,8 +30555,8 @@ function updateE(e,sp){
     e.trapT-=sp;
     if(e.trapT<=0&&d<250){
       // 적 투사체로 덫 생성 (수명 길고 이동 안 함)
-      spawnProj({x:e.x,y:e.y,vx:0,vy:0,dmg:~~(e.atk*1.5),el:e.el,friendly:false,life:600,ml:600,col:'#ff2000',sz:.8,trap:true});
-      e.trapT=e.trapCd;addTxt(e.x,e.y-10,'⚠','#ff3a00',20);addParts(e.x,e.y,'#ff6600',4);
+      spawnProj({x:e.x,y:e.y,vx:0,vy:0,dmg:~~(e.atk*1.5),el:e.el,friendly:false,life:600,ml:600,col:'#5e10a8',sz:.8,trap:true});
+      e.trapT=e.trapCd;addTxt(e.x,e.y-10,'⚠','#5e10a8',20);addParts(e.x,e.y,'#5e10a8',4);
     }
     if(d<100){const _sm=e.speed*(e._aSpdM||1);const mx=-Math.cos(e.facing)*_sm*sp,my=-Math.sin(e.facing)*_sm*sp;
       const nx=e.x+mx,ny=e.y+my;if(canMv(nx,ny,e.r)){e.x=nx;e.y=ny}}
@@ -33987,7 +33855,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(e.hp<=0){
     // 디코이(환영) 사망: 파티클만 + 드롭 없음
     if(e._isDecoy){
-      atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;_petOnKill(e);addParts(e.x,e.y,'#bb66ff',15);addTxt(e.x,e.y-15,_T('환영 소멸!'),'#bb66ff',25);
+      atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;_petOnKill();addParts(e.x,e.y,'#bb66ff',15);addTxt(e.x,e.y-15,_T('환영 소멸!'),'#bb66ff',25);
       shake(3);return;
     }
     // ══ 87:도플갱어 부활 (1회) ══
@@ -34146,7 +34014,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(_uEq('_uMaceExplode')>0){const _exD=~~(e.mhp*_uEq('_uMaceExplode'));const _exQ=shQuery(e.x,e.y,150);for(let _ei=0;_ei<_exQ.length;_ei++){if(_exQ[_ei].alive&&_exQ[_ei]!==e)hurtE(_exQ[_ei],_exD,Math.atan2(_exQ[_ei].y-e.y,_exQ[_ei].x-e.x),true,{dot:true})}addTxt(e.x,e.y-20,_T('💥유니크 폭발!'),'#ff4466',40)}
     const _isBurnDeath=(atkEl===EL.F||(opts&&opts.beam))&&!(opts&&opts.explode); // explode: 화염이어도 고어/시체 정상 출력
     const _isWhirlKill=(P.s==='whirlwind'&&!(opts&&opts.detonate));
-    atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;_petOnKill(e);
+    atkTicketRelease(e);e.alive=false;G.kills++;G._stageKills=(G._stageKills||0)+1;_petOnKill();
     // 버스트루프 광역 사망음 카운터
     if(opts&&opts._blastKill&&G._blDeathSndQ!==undefined){
       // 사망음은 큐에만 쌓고 deathFX는 묵음 처리
@@ -35178,99 +35046,6 @@ function die(){
   P._fallenRevRoll=Math.random()*100; // 미리 굴림
   return;
 }
-// ═══ 죽음 화면 동시 대사 (death_dual) — 두 펫 동시 발화 + 5초 로테이션 ═══
-// 핵터(crow)=왼쪽 / 디로이(cat)=오른쪽. 슬롯0=상황진단(A/D), 이후 냉소+사명 풀(B+C) 5초마다 셔플 순환.
-let _ddDeaths=0;const _ddChapDeathMap={};
-const _DD_LINES={
-  // A. 상황 특수 (id → [핵터, 디로이])
-  dd_first:['…죽었군. 하지만 여신은 아직 널 안 놓았어.','괜찮아?! 다시 일어설 수 있어, 포기하지 마!'],
-  dd_boss_lowhp:['…한 끗이었어. 아까워 말고 다시 해.','아아! 조금만 더였는데!! 다음엔 진짜 잡자!'],
-  dd_boss:['보스는 원래 이렇게 죽이는 거다. 여러 번.','저 녀석 패턴 봤지?! 다음엔 안 당해!'],
-  dd_rare:['…이름값 하는 놈이었군.','레어몹한테?! 센 만큼 좋은 걸 떨군다니까!'],
-  dd_trash:['잡졸한테 죽다니. …방심했군.','저런 애들한테?! 정신 좀 차려어!'],
-  dd_dot:['…발밑을 봐. 서 있던 자리가 널 죽였어.','장판 위에 서 있었잖아! 빨리 빠졌어야지!'],
-  dd_proj:['탄을 못 읽었어. 눈을 크게 떠.','날아오는 거 봤어야지! 패링이든 회피든!'],
-  dd_grab:['잡히면 끝이야. 거리를 배워.','붙잡혔어! 다음엔 옆으로 굴러!'],
-  dd_chapter_repeat:['…이 챕터가 네 무덤이 되고 있다.','여기서 또?! 이 구간 진짜 조심해!'],
-  dd_repeat10:['열 번. …죽는 것도 재능이군.','또?! 우리 진짜 같이 좀 살자아!'],
-  dd_repeat5:['…또야. 같은 실수는 그만.','다섯 번째야! 패턴 좀 외워줘!'],
-  dd_highcombo:['잘 나가다 한 방에. …끝까지 방심 마.','그렇게 잘하다가!! 아까워 죽겠어!'],
-  // B. 냉소·독려 (로테이션 풀)
-  dd_corpse:['…지옥에 망자 하나 더 늘릴 셈이야?','그런 소리 마! 얜 아직 안 죽었어! 일어나!'],
-  dd_queen:['…여왕님이 실망하시겠군.','실망은 무슨! 다시 일어나면 되잖아, 얼른!'],
-  dd_sleep:['잠은 집에 가서 자. …일어나.','여기서 자면 진짜 집 못 가! 얼른 일어나!'],
-  // C. 사명·각오 (로테이션 풀, 복수 결)
-  dd_purpose:['여기서 포기하면… 누가 가족의 원수를 갚지?','우리가 있잖아! 다시 일어나 끝까지 가!'],
-  dd_purpose2:['네가 멈추면, 가족을 위해 싸울 자는 없어.','너밖에 없어! 여기서 주저앉지 마!'],
-  dd_purpose3:['…복수는 살아남은 자만이 한다.','죽은 채로는 아무것도 못 갚아! 일어나!'],
-  dd_purpose4:['가족의 얼굴을 떠올려. 그게 네가 일어날 이유야.','잊지 마! 우리가 왜 여기 있는지!'],
-  dd_habit:['포기하는 건… 결국 습관이 돼.','한 번 포기하면 계속 포기하게 돼! 여기서 끊어!'],
-  dd_vengeance:['일어나. 복수만이 정의다.','맞아! 여기서 끝낼 순 없어! 일어나!'],
-  // D. 챕터 기본 (폴백)
-  dd_ch0:['썩은 숲이 첫 무덤이라니. 일어나.','아직 시작인데! 다시 가자!'],
-  dd_ch1:['벌레 밥이 될 뻔했군.','으으 여기서 죽기 싫어! 다시!'],
-  dd_ch2:['얼어붙기 전에 일어나.','추운 데서 쓰러지지 마! 얼른!'],
-  dd_ch3:['잿더미가 되기 전에.','뜨거운 데서 눕지 좀 마아!'],
-  dd_ch4:['수에 삼켜졌군. 다시.','너무 많았어! 이번엔 뭉칠 때 노리자!'],
-  dd_ch5:['사도들이 널 비웃고 있어.','여기 진짜 까다로워! 정신 바짝!'],
-  dd_ch6:['지옥성이 널 붙잡았어. 놓지 않게 해.','최종장이야! 여기서 무너지면 안 돼!'],
-};
-const _DD_POOL=['dd_corpse','dd_queen','dd_sleep','dd_purpose','dd_purpose2','dd_purpose3','dd_purpose4','dd_habit','dd_vengeance'];
-let _ddTimer=null,_ddSeq=[],_ddIdx=0;
-function _ddShuffle(a){for(let i=a.length-1;i>0;i--){const j=~~(Math.random()*(i+1));const t=a[i];a[i]=a[j];a[j]=t}return a}
-// 사망 이벤트 판정 → 슬롯0에 띄울 진단 대사 id
-function _ddPickEvent(){
-  const dc=_ddDeaths||0;
-  const hell=(typeof SI_TO_HELL!=='undefined'&&SI_TO_HELL[G.stage]!=null)?SI_TO_HELL[G.stage]:0;
-  const cdc=_ddChapDeathMap[hell]||0;
-  const bref=G._bossRef;
-  const inBoss=!!(bref&&bref.alive);
-  const bossLow=inBoss&&bref.mhp>0&&(bref.hp/bref.mhp)<=0.15;
-  const last=_dmgLog.length?(_dmgLog[_dmgLog.length-1].src||''):'';
-  const combo=G.combo||0;
-  if(dc<=1)return 'dd_first';
-  if(bossLow)return 'dd_boss_lowhp';
-  if(inBoss)return 'dd_boss';
-  if(/레어|Rare/.test(last))return 'dd_rare';
-  if(/그랩|잡히|Grab|grab/.test(last))return 'dd_grab';
-  if(/도트|장판|DoT|Zone|dot/.test(last))return 'dd_dot';
-  if(/투사체|탄|Projectile|Bullet|bullet/.test(last))return 'dd_proj';
-  if(dc>=10)return 'dd_repeat10';
-  if(cdc>=3)return 'dd_chapter_repeat';
-  if(dc>=5)return 'dd_repeat5';
-  if(combo>=50)return 'dd_highcombo';
-  if(/몬스터|Monster|근접|Melee/.test(last))return 'dd_trash';
-  return 'dd_ch'+Math.max(0,Math.min(6,hell));
-}
-function _ddRender(id){
-  const line=_DD_LINES[id];if(!line)return;
-  const _cont=$('deathPetDlg');if(!_cont)return;
-  _cont.style.opacity='0';
-  setTimeout(()=>{
-    if(!$('death')||!$('death').classList.contains('on'))return;
-    const _ct=$('dpdCrowTxt'),_at=$('dpdCatTxt');
-    if(_ct)_ct.textContent=_T(line[0]);
-    if(_at)_at.textContent=_T(line[1]);
-    _cont.style.opacity='1';
-  },200);
-}
-function _deathDlgStart(){
-  _deathDlgStop();
-  // 기존 인게임 말풍선 정리
-  const _ps=$('petSubtitle');if(_ps)_ps.style.opacity='0';if(typeof _petBubble!=='undefined'){_petBubble.t=0;_petBubble.pair=null}
-  const ev=_ddPickEvent();
-  _ddSeq=[ev].concat(_ddShuffle(_DD_POOL.slice()));
-  _ddIdx=0;
-  _ddRender(_ddSeq[0]);
-  _ddTimer=setInterval(()=>{
-    const _d=$('death');
-    if(!_d||!_d.classList.contains('on')){_deathDlgStop();return}
-    _ddIdx++;
-    if(_ddIdx>=_ddSeq.length){_ddSeq=_ddShuffle(_DD_POOL.slice());_ddIdx=0} // 풀 소진 → 재셔플(진단 제외)
-    _ddRender(_ddSeq[_ddIdx]);
-  },5000);
-}
-function _deathDlgStop(){if(_ddTimer){clearInterval(_ddTimer);_ddTimer=null}const _c=$('deathPetDlg');if(_c)_c.style.opacity='0'}
 function _fallenResolve(){
   // 카운트다운 종료 → 부활 or 사망
   if(P._fallenCanRevive&&P._fallenRevRoll<P._fallenRevChance){
@@ -35290,7 +35065,6 @@ function _fallenResolve(){
     return;
   }
   // ── 부활 실패 → 진짜 사망 ──
-  _ddDeaths++;{const _ddH=(typeof SI_TO_HELL!=='undefined'&&SI_TO_HELL[G.stage]!=null)?SI_TO_HELL[G.stage]:0;_ddChapDeathMap[_ddH]=(_ddChapDeathMap[_ddH]||0)+1}
   P.s='dead';P.iframes=0;if(G._sStats)G._sStats.deaths++;
   SFX.die();G.on=false;G._ebBomb=null;G._mmBomb=null;G._gsBombs=[];G._bsBombs=[];G._boneWalls=[];G._fireZones=[];G._stProjs=[];G._gwLightning=null;G._voidScarecrow=null;
   BGM.fadeOut(500);setTimeout(()=>BGM.play('death'),600);
@@ -35315,7 +35089,6 @@ function _fallenResolve(){
     $('dInfo').textContent=infoTxt;
     $('dDmgLog').innerHTML=_dlHtml;
     $('death').classList.add('on');
-    _deathDlgStart(); // 두 펫 동시 대사 로테이션 시작
   });
 }
 function nextStage(){SFX.beamStop();$('stageClear').style.opacity='0';$('stageClear').style.pointerEvents='none';G.stageCleared=false;G.on=false;ens=[];G.rooms=[];G.exits=[];_cacheExitCenter();G.bossAlive=true;_ensWarmDone=false;G._zones=null;G._curZone=0;G._zoneState={};G._portals=null;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;const _curHell=SI_TO_HELL[G.stage];const _ch=CHAPTER_STAGES[_curHell];if(_DEMO_MODE&&G.stage===_DEMO_LAST_STAGE&&_curHell===0){const _de=$('demoEnd');if(_de){_de.style.display='flex';const _dt=$('demoEndTitle');if(_dt)_dt.textContent=_T('데모 종료');const _dm=$('demoEndMsg');if(_dm)_dm.textContent=_T('여기까지 데모입니다. 정식 출시를 기대해주세요!');const _ds=$('demoEndSupport');if(_ds)_ds.textContent=_T('STEAM 위시리스트로 응원해 주세요!');const _dw=$('demoEndWishlist');if(_dw)_dw.textContent=_T('STEAM 위시리스트');const _dl=$('demoEndLobby');if(_dl)_dl.textContent=_T('로비로 돌아가기');}G.on=false;return}if(G.stage===_ch.startSi+_ch.stages-1&&_curHell<6){G.stage=CHAPTER_STAGES[_curHell+1].startSi}else{G.stage++}if(G.stage>=TOTAL_STAGES){doWin();return}initStage(G.stage);G.on=true;BGM.play(BGM.stageKey(G.stage))}
@@ -43491,7 +43264,7 @@ function draw(){
   // 패스 1: Additive 글로우 — 특수탄만 (alpha .003~.009은 일반탄에서 보이지 않으므로 스킵)
   X.globalCompositeOperation='lighter';
   for(let _vi=0;_vi<_visProjs.length;_vi++){const p=projs[_visProjs[_vi]];
-    const _gc=p.trap?'#ff2200':((p.iceZone||p.blizzard)&&p.el===EL.D)?'#5e10a8':p.bwBean?'#ffffff':p.gbBean?'#cc44ff':p.blackBean?'#ff00ff':p.redBean?'#ff2200':p.blueBean?'#00ccff':ELC[p.el]||p.col||'#ff4444';
+    const _gc=p.trap?'#5e10a8':((p.iceZone||p.blizzard)&&p.el===EL.D)?'#5e10a8':p.bwBean?'#ffffff':p.gbBean?'#cc44ff':p.blackBean?'#ff00ff':p.redBean?'#ff2200':p.blueBean?'#00ccff':ELC[p.el]||p.col||'#ff4444';
     const _isSpec=p.redBean||p.blackBean||p.blueBean||p.bwBean||p.gbBean;
     const _glR=_isSpec?12:6;
     const pulse=.7+Math.sin(_now/200+p.x)*.3;
@@ -43519,21 +43292,16 @@ function draw(){
       X.globalAlpha=1;continue;
     }
     if(p.trap){
-      // 덫: 강한 빨강 위험 표식 — 지뢰와 동일 팔레트(빨강=패링가능·자원수급 신호로 동질감). 솔리드 본체+검은테두리
-      const _trP=.5+Math.sin(_now/200)*.5;
-      // 외곽 위험 글로우 (가산)
-      X.save();X.globalCompositeOperation='lighter';
-      X.globalAlpha=.5+_trP*.25;X.fillStyle='#ff2200';X.beginPath();X.arc(p.x,p.y,26,0,Math.PI*2);X.fill();
-      X.globalAlpha=.7;X.fillStyle='#ff3010';X.beginPath();X.arc(p.x,p.y,15,0,Math.PI*2);X.fill();
-      X.restore();
-      // 솔리드 본체 — 어두운 배경과 확실히 대비되도록 불투명 + 검은 테두리
-      X.globalAlpha=1;
-      X.fillStyle='#ff2000';X.beginPath();X.arc(p.x,p.y,8,0,Math.PI*2);X.fill();
-      X.lineWidth=2;X.strokeStyle='#000000';X.stroke();
-      X.fillStyle='#ffffff';X.beginPath();X.arc(p.x,p.y,3,0,Math.PI*2);X.fill();
-      // 강한 경고 링 (펄스 확장)
-      X.globalAlpha=.6+_trP*.4;X.strokeStyle='#ff3a00';X.lineWidth=2.5;
-      X.beginPath();X.arc(p.x,p.y,18+_trP*5,0,Math.PI*2);X.stroke();
+      // 덫: 강한 보라색 글로우 (펄스, 가산합성) — 위험 표식이라 눈에 잘 띄게 강화
+      const _trP=Math.sin(_now/200);
+      X.globalCompositeOperation='lighter';
+      X.globalAlpha=.30+_trP*.10;X.fillStyle='#9933ff';X.beginPath();X.arc(p.x,p.y,28,0,Math.PI*2);X.fill();
+      X.globalAlpha=.45+_trP*.12;X.fillStyle='#7a00ff';X.beginPath();X.arc(p.x,p.y,16,0,Math.PI*2);X.fill();
+      X.globalAlpha=.62+_trP*.14;X.fillStyle='#aa44ff';X.beginPath();X.arc(p.x,p.y,9,0,Math.PI*2);X.fill();
+      X.globalAlpha=.9;X.fillStyle='#e0bbff';X.beginPath();X.arc(p.x,p.y,4,0,Math.PI*2);X.fill();
+      // 위험 링(펄스 확장) — 덫 위치를 명확히
+      X.globalAlpha=.55+_trP*.2;X.strokeStyle='#cc66ff';X.lineWidth=2;X.beginPath();X.arc(p.x,p.y,20+_trP*4,0,Math.PI*2);X.stroke();
+      X.globalCompositeOperation='source-over';
       X.globalAlpha=1;X.lineWidth=1;continue;
     }
     if(p.web){
@@ -50619,7 +50387,7 @@ function showTutorial(){
 
 // ═══ 사망 처리 (PoE2식) ═══
 $('retryBtn').onclick=async()=>{
-  $('death').classList.remove('on');$('victory').classList.remove('on');_drReset();if(typeof _deathDlgStop==='function')_deathDlgStop();
+  $('death').classList.remove('on');$('victory').classList.remove('on');_drReset();
   // 경험치 30% 손실
   const expLoss=~~(P.exp*0.3);
   P.exp=Math.max(0,P.exp-expLoss);
@@ -50793,7 +50561,6 @@ function openWishlist(){
 }
 // ═══ 로비 복귀 버튼 ═══
 async function goToLobby(){
-  if(typeof _deathDlgStop==='function')_deathDlgStop();
   try{
     // 사망 상태면 HP 복구 후 저장 (죽은 채로 저장 방지)
     if(P&&P.hp<=0){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.shield=P.mshield;P.s='idle'}

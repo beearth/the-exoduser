@@ -2094,6 +2094,8 @@ const _ES={
 '패드 키 초기화 완료':'Teclas del mando restablecidas',
 '패링':'Parada',
 '🎮 게임패드 버튼 설정':'🎮 Configuración botones mando',
+'🎮 패드 연결됨':'🎮 Mando conectado',
+'🎮 패드 연결 끊김':'🎮 Mando desconectado',
 '💀 ':'💀 ',
 '🔥부활!':'🔥 ¡Resurrección!',
 '🔥분노 ':'🔥 Furia ',
