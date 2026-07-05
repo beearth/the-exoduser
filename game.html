@@ -2688,7 +2688,7 @@ canvas{display:block;position:fixed;inset:0}
 <div id="spStart" style="margin-top:18px;font-size:clamp(.6rem,1.2vw,.9rem);color:#886644;letter-spacing:.2em;animation:spBlink 1.2s ease-in-out infinite">— 클릭하여 시작 —</div>
 </div></div>
 <div id="deathReplay"><canvas id="drCvs"></canvas><div id="drLabel">☠ 사망 리플레이</div><div id="drTime"></div><div id="drBar"><div id="drBarFill"></div></div></div>
-<div id="death"><div class="dt" id="deathTitle">빛이 꺼졌다</div><div class="ds" id="deathSub">누군가는 너를 기다리고 있다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry" id="toLobbyBtn" style="margin-top:8px;background:rgba(0,0,0,.55);border-color:#664433;color:#aa8855;font-size:.9rem;text-shadow:0 0 6px rgba(0,0,0,.9),0 2px 3px rgba(0,0,0,1)">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div><div id="deathPetDlg" style="position:absolute;left:50%;bottom:36px;transform:translateX(-50%) scale(var(--ui-scale));transform-origin:center bottom;display:flex;gap:20px;pointer-events:none;opacity:0;transition:opacity .25s;z-index:41;font-family:'Malgun Gothic',sans-serif"><div style="position:relative;width:440px"><img src="img/crow/portrait.png?v=4" style="display:block;width:440px;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))"><div id="dpdCrowTxt" style="position:absolute;left:84px;top:216px;width:281px;height:56px;display:flex;align-items:center;color:#fff;font-weight:700;font-size:.86rem;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.85)"></div></div><div style="position:relative;width:440px"><img src="img/cat_pet/portrait.png?v=4" style="display:block;width:440px;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))"><div id="dpdCatTxt" style="position:absolute;left:112px;top:229px;width:174px;height:48px;display:flex;align-items:center;color:#fff;font-weight:700;font-size:.86rem;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.85)"></div></div></div></div>
+<div id="death"><div class="dt" id="deathTitle">빛이 꺼졌다</div><div class="ds" id="deathSub">누군가는 너를 기다리고 있다</div><div class="ds" id="dInfo"></div><button class="retry" id="retryBtn">다시 일어서라</button><button class="retry" id="toLobbyBtn" style="margin-top:8px;background:rgba(0,0,0,.55);border-color:#664433;color:#aa8855;font-size:.9rem;text-shadow:0 0 6px rgba(0,0,0,.9),0 2px 3px rgba(0,0,0,1)">로비로 돌아가기</button><div id="dDmgLog" style="position:fixed;right:24px;top:50%;transform:translateY(-50%);text-align:right;font-size:.95rem;line-height:2;color:#aa8866;pointer-events:none"></div><div id="deathPetDlg" style="position:absolute;left:50%;bottom:20px;transform:translateX(-50%) scale(calc(var(--ui-scale) * 1.5));transform-origin:center bottom;display:flex;gap:12px;pointer-events:none;opacity:0;transition:opacity .25s;z-index:41;font-family:'Malgun Gothic',sans-serif"><div style="position:relative;width:480px"><img src="img/crow/portrait.png?v=4" style="display:block;width:480px;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))"><div id="dpdCrowTxt" style="position:absolute;left:92px;top:237px;width:306px;height:51px;display:flex;align-items:center;color:#fff;font-weight:700;font-size:.92rem;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.85)"></div></div><div style="position:relative;width:480px"><img src="img/cat_pet/portrait.png?v=4" style="display:block;width:480px;height:auto;filter:drop-shadow(0 2px 8px rgba(0,0,0,.7))"><div id="dpdCatTxt" style="position:absolute;left:122px;top:250px;width:190px;height:42px;display:flex;align-items:center;color:#fff;font-weight:700;font-size:.92rem;line-height:1.25;text-shadow:0 1px 4px rgba(0,0,0,.95),0 0 8px rgba(0,0,0,.85)"></div></div></div></div>
 
 <!-- LEVEL UP SCREEN (10렙마다) -->
 <div id="lvUpScreen" style="position:fixed;inset:0;z-index:35;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.92);opacity:0;pointer-events:none;transition:opacity .4s">
@@ -7846,9 +7846,9 @@ function _checkPetDialogue(){
   }
 
   // ══ [4] 보스 패턴 + 전투 — 12종 ══
-  if(G.bossAlive&&G._bossRef&&G._bossRef.el>0)_petBidCD('boss_elem','crow','속성을 읽어. 약점을 찌르면 두 배로 썩는다.',4,30,'cat','화염엔 빙결! 암전엔 암흑!',4);
+  if(G.bossAlive&&G._bossRef&&G._bossRef.el>0&&elMul(wp().el||0,G._bossRef.el)<2)_petBidCD('boss_elem','crow','속성을 읽어. 약점을 찌르면 두 배로 썩는다.',4,30,'cat','화염엔 빙결! 암전엔 암흑!',4); // v7: 이미 약점 무기면 억제
   if(G._bossRef&&G._bossRef._curMove&&G._bossRef._curMove.id==='summon')_petBidCD('boss_summon','crow','잡몹이다. 먼저 정리해.',4,60,'cat','소환수 왔어! 먼저 처리해야 해!',4);
-  for(let i=0;i<ens.length;i++){if(ens[i].alive&&ens[i].frozen>0){_petBidCD('enemy_ice','crow','…얼어붙은 놈은 오래 안 간다.',4,60,'cat','얼었어! 빙결 중 1.5배야!',4);break}}
+  for(let i=0;i<ens.length;i++){if(ens[i].alive&&ens[i]._frozen>0&&dst2(P.x,P.y,ens[i].x,ens[i].y)<90000){_petBidCD('enemy_ice','crow','…얼어붙은 놈은 오래 안 간다.',4,60,'cat','얼었어! 빙결 중 1.5배야!',4);break}} // v7: _frozen 필드 수정(버그) + 반경300 게이팅
   if(G.bossAlive&&G._bossCx&&G._bossCy){const _bD=Math.sqrt((P.x-G._bossCx*16)**2+(P.y-G._bossCy*16)**2);if(_bD<300)_petBidCD('near_boss','crow','…냄새가 짙다. 큰 놈이 있어.',4,30,'cat','준비됐어? 물약 확인하고!',4)}
   // eShield 이원방어 삭제 — 보스 쉴드 힌트 제거
   {let _nc=0;for(let _ni=0;_ni<ens.length;_ni++){if(ens[_ni].alive&&dst2(P.x,P.y,ens[_ni].x,ens[_ni].y)<90000)_nc++}
@@ -26727,8 +26727,10 @@ function update(){
         P._trapSlowT=~~(120*(1-Math.min(.5,_eqAffix('slowRes')))); // 2초 감속 (slowRes 저항)
         addTxt(P.x,P.y-20,_T('⚠ 덫!'),'#ffcc00',40);addParts(p.x,p.y,'#ffaa00',10);
         G.shake=4*OPT.shake/100;_dead=true;
-      }else if(p.life<=0){addParts(p.x,p.y,'#ffaa00',3);_dead=true}
+      }
+      // 영구 지속 (2026-07-05): 15초 수명 만료 제거 — 밟기/패링으로만 소멸
       if(_dead){_recycleProj(p);continue}
+      projs[pw++]=p;continue;
     }
     // 차원 균열(98:균열체): 밟으면 랜덤 텔포
     // 5장: 감속 수역 투사체
@@ -35268,7 +35270,7 @@ function _deathDlgStart(){
     _ddIdx++;
     if(_ddIdx>=_ddSeq.length){_ddSeq=_ddShuffle(_DD_POOL.slice());_ddIdx=0} // 풀 소진 → 재셔플(진단 제외)
     _ddRender(_ddSeq[_ddIdx]);
-  },5000);
+  },10000);
 }
 function _deathDlgStop(){if(_ddTimer){clearInterval(_ddTimer);_ddTimer=null}const _c=$('deathPetDlg');if(_c)_c.style.opacity='0'}
 function _fallenResolve(){

@@ -44198,3 +44198,39 @@ mpR = 0.05 + s.intÃ—0.005                                        [NO P.lvÃ—0.001
 - lang_zht.js
 - scratchpad_petv7_backup_game.html
 
+
+## 2026-07-05 17:30 (auto)
+- docs/16ë²ˆì—­Â·ë¡œì»¬?¼ì´?œì´??ë²ˆì—­?€???„ì²´ëª©ë¡.md
+- docs/2_4 ?«ì‹œ?¤í…œ/?€??ê°œí¸_v7_?¤ê³„.md
+- docs/2_4 ?«ì‹œ?¤í…œ/?€???¤í¬ë¦½íŠ¸.md
+- docs/3.3 ?¤ë°”?¸ë”©+?¤ì •/ê²Œì„?¨ë“œ_?¸ëŸ¬ë¸”ìŠˆ??md
+- docs/8.0ëª¬ìŠ¤?°ë””?ì¸/?„ë§‰?œìŠ¤??ì´ì •ë¦?md
+- game.html
+- index.html
+- lang_ar.js
+- lang_bg.js
+- lang_cs.js
+- lang_da.js
+- lang_de.js
+- lang_el.js
+- lang_es.js
+- lang_fi.js
+- lang_fr.js
+- lang_hu.js
+- lang_id.js
+- lang_it.js
+- lang_ja.js
+- lang_nl.js
+- lang_no.js
+- lang_pl.js
+- lang_ptbr.js
+- lang_ro.js
+- lang_ru.js
+- lang_sv.js
+- lang_th.js
+- lang_tr.js
+- lang_uk.js
+- lang_vi.js
+- lang_zh.js
+- lang_zht.js
+

@@ -634,11 +634,20 @@ addEventListener('keydown', e => {
     document.body.style.cursor = '';
   }
 }, {passive:true});
+// 🎮 패드 상태 인디케이터 (우하단 아이콘) — 브라우저가 지금 패드를 노출 중인지 육안 확인용 (텍스트 없음)
+let _gpDotOn=null;
+function _gpDot(on){
+  if(on===_gpDotOn||!document.body)return;_gpDotOn=on;
+  let d=document.getElementById('gpDot');
+  if(!d){d=document.createElement('div');d.id='gpDot';d.textContent='🎮';d.style.cssText='position:fixed;right:14px;bottom:12px;font-size:24px;z-index:99999;pointer-events:none;filter:drop-shadow(0 0 4px #000);transition:opacity .3s;opacity:0';document.body.appendChild(d)}
+  d.style.opacity=on?'1':'0';
+}
 (function _gpGlobalPoll() {
   requestAnimationFrame(_gpGlobalPoll);
   const gps = navigator.getGamepads();
   let gp = null;
   for(let i=0;i<gps.length;i++){if(gps[i]&&gps[i].connected){gp=gps[i];break}}
+  _gpDot(!!gp);
   if(!gp) return;
   const just = {};
   let anyInput = false;
