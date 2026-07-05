@@ -44154,3 +44154,7 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - docs/8.1보스?�자?�바?�블/BOSS_BATTLE_SETTINGS.md
 - game.html
 
+
+## 2026-07-05 15:30 (auto)
+- docs/2_4 ?�시?�템/?�??개편_v7_?�계.md
+
