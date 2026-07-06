@@ -24838,7 +24838,7 @@ function update(){
         const _pd=Math.sqrt(_pdx*_pdx+_pdy*_pdy);if(_pd<30||_pd>_pullR)continue;
         // 감전 틱 데미지 (3프레임치 합산×3 → 동일 DPS)
         if(_pd<35+e.r){
-          const _sDmg=~~((_ta.dmg+_tb.dmg)*0.075); // 전류강화 감전 틱 0.15→0.075 (50% 너프 2026-07-06)
+          const _sDmg=~~((_ta.dmg+_tb.dmg)*0.15);
           hurtE(e,_sDmg,Math.atan2(_pdy,_pdx),false,{dot:true,noKb:true,shieldHit:true},EL.L);
         }
         // 3프레임치 이동량 한번에 적용

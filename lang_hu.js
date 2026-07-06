@@ -1,5 +1,14 @@
 ﻿// 지옥의 길 — Magyar (hu)
 const _HU={
+// --- v7 신규 펫/UI 8종 (2026-07-05) ---
+'다섯 번째군. 이번엔 바뀐 게 있어야지.':"Ötödször. Ezúttal változnia kéne valaminek.",
+'또 와?! 이번엔 진짜 패턴 외웠어!':"Már megint?! Ezúttal tényleg megjegyeztem a mintát!",
+'…전설을 잡았다. 보상도 전설이겠지.':"…Elejtettél egy legendát. A jutalom is legendás lesz.",
+'전설급 잡았어!! 드롭 확인해!':"Legendást ejtettél!! Nézd a dropot!",
+'무릎 꿇었다. 지금 처형해. X.':"Térdre rogyott. Végezd ki most. X.",
+'처형각이야!! X 눌러!!':"Kivégzés ideje!! Nyomd az X-et!!",
+'⌨ 키보드·마우스':"⌨ Billentyűzet és egér",
+'🎮 게임패드':"🎮 Kontroller",
 '💫 암전폭류':'💫 Villám Hullám','⚡ 암전나선':'⚡ Villám Spirál','🌋 지진폭풍':'🌋 Földrengés Vihar','🔥 회전기폭':'🔥 Forgás Detonáció','⚔ 기동:섬멸':'⚔ Drive:Megsemmisítés','⚔ 기동:칼날개':'⚔ Drive:Penge','⚡ 기동:전폭':'⚡ Drive:Csapás','🌀 기동:파쇄':'🌀 Drive:Zúzás','🌀 기동:기습':'🌀 Drive:Lesvetés','💫 →좌클 통합':'💫 →Egyesítve LMB-be','⚡ →좌클 통합':'⚡ →Egyesítve LMB-be','🎯 추적암전':'🎯 Követő Villám','☆ 만화광선':'☆ Fénysugár','⏳⚡ 시간걸음':'⏳⚡ Időlépés','SSAA 슈퍼샘플':'SSAA Szupermintavétel','끄기 (1x)':'Ki (1x)','커서 크기':'Kurzor mérete','다크 판타지 전사':'Sötét fantázia harcos','거대검+검은 갑옷':'Nagykard + Fekete páncél',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...A Pokol Kapuja nyitva. Odabent vár rád.",
 '문 열렸어! 이제 보스 잡으러 가자!':"A kapu nyitva! Menjünk, öljük meg a bosst!",

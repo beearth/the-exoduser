@@ -1,4 +1,13 @@
 ﻿const _DE={
+// --- v7 신규 펫/UI 8종 (2026-07-05) ---
+'다섯 번째군. 이번엔 바뀐 게 있어야지.':"Das fünfte Mal. Diesmal sollte sich etwas ändern.",
+'또 와?! 이번엔 진짜 패턴 외웠어!':"Schon wieder?! Diesmal hab ich das Muster echt drauf!",
+'…전설을 잡았다. 보상도 전설이겠지.':"…Du hast eine Legende erlegt. Die Belohnung sollte auch legendär sein.",
+'전설급 잡았어!! 드롭 확인해!':"Du hast einen Legendären erlegt!! Check den Drop!",
+'무릎 꿇었다. 지금 처형해. X.':"Es kniet. Richte es jetzt hin. X.",
+'처형각이야!! X 눌러!!':"Hinrichtung jetzt!! Drück X!!",
+'⌨ 키보드·마우스':"⌨ Tastatur & Maus",
+'🎮 게임패드':"🎮 Gamepad",
 '💫 암전폭류':'💫 Blitzstrom','⚡ 암전나선':'⚡ Blitzhelix','🌋 지진폭풍':'🌋 Erdbebensturm','🔥 회전기폭':'🔥 Wirbel-Det.','⚔ 기동:섬멸':'⚔ Schub:Vernichten','⚔ 기동:칼날개':'⚔ Schub:Klinge','⚡ 기동:전폭':'⚡ Schub:Angriff','🌀 기동:파쇄':'🌀 Schub:Zertrümmern','🌀 기동:기습':'🌀 Schub:Hinterhalt','💫 →좌클 통합':'💫 →In LMT zusammengeführt','⚡ →좌클 통합':'⚡ →In LMT zusammengeführt','🎯 추적암전':'🎯 Verfolgungsblitz','☆ 만화광선':'☆ Leuchtstrahl','⏳⚡ 시간걸음':'⏳⚡ Zeitschritt','SSAA 슈퍼샘플':'SSAA Supersampling','끄기 (1x)':'Aus (1x)','커서 크기':'Cursorgröße','다크 판타지 전사':'Dunkler Fantasy-Krieger','거대검+검은 갑옷':'Großschwert + Schwarze Rüstung',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Das Höllentor ist offen. Es wartet drinnen auf dich.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Das Tor ist offen! Jetzt erledigen wir den Boss!",

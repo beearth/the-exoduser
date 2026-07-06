@@ -1,5 +1,14 @@
 ﻿// 지옥의 길 — Suomi (fi)
 const _FI={
+// --- v7 신규 펫/UI 8종 (2026-07-05) ---
+'다섯 번째군. 이번엔 바뀐 게 있어야지.':"Viides kerta. Tällä kertaa jotain pitäisi muuttua.",
+'또 와?! 이번엔 진짜 패턴 외웠어!':"Taasko?! Tällä kertaa opin kuvion ihan oikeasti!",
+'…전설을 잡았다. 보상도 전설이겠지.':"…Kaadoit legendan. Palkintokin lienee legendaarinen.",
+'전설급 잡았어!! 드롭 확인해!':"Kaadoit legendaarisen!! Katso droppi!",
+'무릎 꿇었다. 지금 처형해. X.':"Se polvistui. Teloita se nyt. X.",
+'처형각이야!! X 눌러!!':"Teloitushetki!! Paina X!!",
+'⌨ 키보드·마우스':"⌨ Näppäimistö ja hiiri",
+'🎮 게임패드':"🎮 Ohjain",
 '💫 암전폭류':'💫 Salama Aalto','⚡ 암전나선':'⚡ Salama Helix','🌋 지진폭풍':'🌋 Maanjäristys','🔥 회전기폭':'🔥 Pyörimisräjäytys','⚔ 기동:섬멸':'⚔ Drive:Tuho','⚔ 기동:칼날개':'⚔ Drive:Terä','⚡ 기동:전폭':'⚡ Drive:Isku','🌀 기동:파쇄':'🌀 Drive:Murska','🌀 기동:기습':'🌀 Drive:Väijytys','💫 →좌클 통합':'💫 →Yhdistetty LMB','⚡ →좌클 통합':'⚡ →Yhdistetty LMB','🎯 추적암전':'🎯 Tracking Salama','☆ 만화광선':'☆ Valosäde','⏳⚡ 시간걸음':'⏳⚡ Aikaaskel','SSAA 슈퍼샘플':'SSAA Supernäytteet','끄기 (1x)':'Pois (1x)','커서 크기':'Kursorin koko','다크 판타지 전사':'Synkän fantasian soturi','거대검+검은 갑옷':'Suuri miekka + Musta haarniska',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Helvetin portti on auki. Se odottaa sinua sisällä.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Portti on auki! Mennään tappamaan pomo!",

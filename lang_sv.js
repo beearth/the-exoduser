@@ -1,5 +1,14 @@
 ﻿// 지옥의 길 — Svenska (sv)
 const _SV={
+// --- v7 신규 펫/UI 8종 (2026-07-05) ---
+'다섯 번째군. 이번엔 바뀐 게 있어야지.':"Femte gången. Den här gången måste något förändras.",
+'또 와?! 이번엔 진짜 패턴 외웠어!':"Igen?! Den här gången har jag faktiskt lärt mig mönstret!",
+'…전설을 잡았다. 보상도 전설이겠지.':"…Du fällde en legend. Belöningen lär också vara legendarisk.",
+'전설급 잡았어!! 드롭 확인해!':"Du fällde en legendarisk!! Kolla droppen!",
+'무릎 꿇었다. 지금 처형해. X.':"Den knäböjer. Avrätta den nu. X.",
+'처형각이야!! X 눌러!!':"Dags för avrättning!! Tryck X!!",
+'⌨ 키보드·마우스':"⌨ Tangentbord & mus",
+'🎮 게임패드':"🎮 Handkontroll",
 '💫 암전폭류':'💫 Blixtansats','⚡ 암전나선':'⚡ Blixtspiral','🌋 지진폭풍':'🌋 Jordbävningsstorm','🔥 회전기폭':'🔥 Virveldetonation','⚔ 기동:섬멸':'⚔ Drive:Utplåning','⚔ 기동:칼날개':'⚔ Drive:Blad','⚡ 기동:전폭':'⚡ Drive:Slag','🌀 기동:파쇄':'🌀 Drive:Krossning','🌀 기동:기습':'🌀 Drive:Bakhåll','💫 →좌클 통합':'💫 →Sammanslagen LMB','⚡ →좌클 통합':'⚡ →Sammanslagen LMB','🎯 추적암전':'🎯 Spårande Blixt','☆ 만화광선':'☆ Luminescensstråle','⏳⚡ 시간걸음':'⏳⚡ Tidssteg','SSAA 슈퍼샘플':'SSAA Supersampling','끄기 (1x)':'Av (1x)','커서 크기':'Markörstorlek','다크 판타지 전사':'Mörk fantasy-krigare','거대검+검은 갑옷':'Tvåhandssvärd + Svart rustning',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Helvetesporten är öppen. Den väntar på dig därinne.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Porten är öppen! Nu dödar vi bossen!",

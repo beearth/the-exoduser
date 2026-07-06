@@ -1,4 +1,13 @@
 ﻿const _FR={
+// --- v7 신규 펫/UI 8종 (2026-07-05) ---
+'다섯 번째군. 이번엔 바뀐 게 있어야지.':"La cinquième fois. Cette fois, il faudrait que ça change.",
+'또 와?! 이번엔 진짜 패턴 외웠어!':"Encore ?! Cette fois j'ai vraiment retenu le pattern !",
+'…전설을 잡았다. 보상도 전설이겠지.':"…Tu as terrassé une légende. La récompense sera légendaire aussi.",
+'전설급 잡았어!! 드롭 확인해!':"Tu as tué un légendaire !! Regarde le butin !",
+'무릎 꿇었다. 지금 처형해. X.':"Il est à genoux. Exécute-le maintenant. X.",
+'처형각이야!! X 눌러!!':"C'est le moment d'exécuter !! Appuie sur X !!",
+'⌨ 키보드·마우스':"⌨ Clavier et souris",
+'🎮 게임패드':"🎮 Manette",
 '💫 암전폭류':'💫 Surge de Foudre',
 '⚡ 암전나선':'⚡ Hélice de Foudre',
 '🌋 지진폭풍':'🌋 Tempête Sismique',

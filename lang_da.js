@@ -1,5 +1,14 @@
 ﻿// 지옥의 길 — Dansk (da)
 const _DA={
+// --- v7 신규 펫/UI 8종 (2026-07-05) ---
+'다섯 번째군. 이번엔 바뀐 게 있어야지.':"Femte gang. Denne gang må noget ændre sig.",
+'또 와?! 이번엔 진짜 패턴 외웠어!':"Igen?! Denne gang har jeg virkelig lært mønstret!",
+'…전설을 잡았다. 보상도 전설이겠지.':"…Du fældede en legende. Belønningen bør også være legendarisk.",
+'전설급 잡았어!! 드롭 확인해!':"Du nedlagde en legendarisk!! Tjek droppet!",
+'무릎 꿇었다. 지금 처형해. X.':"Den knæler. Henret den nu. X.",
+'처형각이야!! X 눌러!!':"Henrettelse nu!! Tryk X!!",
+'⌨ 키보드·마우스':"⌨ Tastatur og mus",
+'🎮 게임패드':"🎮 Controller",
 '💫 암전폭류':'💫 Lynstød','⚡ 암전나선':'⚡ Lynspiral','🌋 지진폭풍':'🌋 Jordskælvsstorm','🔥 회전기폭':'🔥 Hvirveldetonation','⚔ 기동:섬멸':'⚔ Drive:Udslettelse','⚔ 기동:칼날개':'⚔ Drive:Klinge','⚡ 기동:전폭':'⚡ Drive:Slag','🌀 기동:파쇄':'🌀 Drive:Knusning','🌀 기동:기습':'🌀 Drive:Baghold','💫 →좌클 통합':'💫 →Sammenlagt LMB','⚡ →좌클 통합':'⚡ →Sammenlagt LMB','🎯 추적암전':'🎯 Sporende Lyn','☆ 만화광선':'☆ Lysstråle','⏳⚡ 시간걸음':'⏳⚡ Tidsskridt','SSAA 슈퍼샘플':'SSAA Supersampling','끄기 (1x)':'Fra (1x)','커서 크기':'Markørstørrelse','다크 판타지 전사':'Mørk fantasy-kriger','거대검+검은 갑옷':'Tohandssværd + Sort rustning',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Helvedesporten er åben. Den venter på dig derinde.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Porten er åben! Lad os dræbe bossen!",

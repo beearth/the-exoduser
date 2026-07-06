@@ -1,5 +1,14 @@
 ﻿// 지옥의 길 — Italiano (it)
 const _IT={
+// --- v7 신규 펫/UI 8종 (2026-07-05) ---
+'다섯 번째군. 이번엔 바뀐 게 있어야지.':"La quinta volta. Stavolta qualcosa dovrebbe cambiare.",
+'또 와?! 이번엔 진짜 패턴 외웠어!':"Ancora?! Stavolta il pattern me lo sono imparato davvero!",
+'…전설을 잡았다. 보상도 전설이겠지.':"…Hai abbattuto una leggenda. Anche la ricompensa sarà leggendaria.",
+'전설급 잡았어!! 드롭 확인해!':"Hai steso un leggendario!! Controlla il drop!",
+'무릎 꿇었다. 지금 처형해. X.':"È in ginocchio. Giustizialo ora. X.",
+'처형각이야!! X 눌러!!':"Momento dell'esecuzione!! Premi X!!",
+'⌨ 키보드·마우스':"⌨ Tastiera e mouse",
+'🎮 게임패드':"🎮 Controller",
 '💫 암전폭류':'💫 Ondata di Fulmini',
 '⚡ 암전나선':'⚡ Elica Fulmine',
 '🌋 지진폭풍':'🌋 Tempesta Sismica',

@@ -1,5 +1,14 @@
 ﻿// 지옥의 길 — Bahasa Indonesia (id)
 const _ID={
+// --- v7 신규 펫/UI 8종 (2026-07-05) ---
+'다섯 번째군. 이번엔 바뀐 게 있어야지.':"Kelima kalinya. Kali ini harus ada yang berubah.",
+'또 와?! 이번엔 진짜 패턴 외웠어!':"Lagi?! Kali ini aku benar-benar hafal polanya!",
+'…전설을 잡았다. 보상도 전설이겠지.':"…Kau membunuh legenda. Hadiahnya pasti legendaris juga.",
+'전설급 잡았어!! 드롭 확인해!':"Kau menjatuhkan yang legendaris!! Cek drop-nya!",
+'무릎 꿇었다. 지금 처형해. X.':"Ia berlutut. Eksekusi sekarang. X.",
+'처형각이야!! X 눌러!!':"Saatnya eksekusi!! Tekan X!!",
+'⌨ 키보드·마우스':"⌨ Keyboard & Mouse",
+'🎮 게임패드':"🎮 Gamepad",
 '💫 암전폭류':'💫 Petir Lompatan','⚡ 암전나선':'⚡ Petir Helix','🌋 지진폭풍':'🌋 Badai Gempa','🔥 회전기폭':'🔥 Putar-Ledak','⚔ 기동:섬멸':'⚔ Drive:Pemusnahan','⚔ 기동:칼날개':'⚔ Drive:Pisau','⚡ 기동:전폭':'⚡ Drive:Serangan','🌀 기동:파쇄':'🌀 Drive:Penghancuran','🌀 기동:기습':'🌀 Drive:Penyergapan','💫 →좌클 통합':'💫 →Gabung LMB','⚡ →좌클 통합':'⚡ →Gabung LMB','🎯 추적암전':'🎯 Petir Pelacak','☆ 만화광선':'☆ Sinar Luminesen','⏳⚡ 시간걸음':'⏳⚡ Langkah Waktu','SSAA 슈퍼샘플':'SSAA Supersampling','끄기 (1x)':'Nonaktif (1x)','커서 크기':'Ukuran Kursor','다크 판타지 전사':'Pejuang fantasi gelap','거대검+검은 갑옷':'Pedang besar + Baju besi hitam',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Gerbang Neraka terbuka. Ia menunggumu di dalam.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Gerbangnya terbuka! Ayo bunuh bos-nya!",

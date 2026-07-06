@@ -1,4 +1,13 @@
 ﻿const _PTBR={
+// --- v7 신규 펫/UI 8종 (2026-07-05) ---
+'다섯 번째군. 이번엔 바뀐 게 있어야지.':"A quinta vez. Desta vez algo tem que mudar.",
+'또 와?! 이번엔 진짜 패턴 외웠어!':"De novo?! Dessa vez eu decorei o padrão de verdade!",
+'…전설을 잡았다. 보상도 전설이겠지.':"…Você abateu uma lenda. A recompensa também será lendária.",
+'전설급 잡았어!! 드롭 확인해!':"Você derrubou um lendário!! Confere o drop!",
+'무릎 꿇었다. 지금 처형해. X.':"Ajoelhou. Execute agora. X.",
+'처형각이야!! X 눌러!!':"Hora da execução!! Aperta X!!",
+'⌨ 키보드·마우스':"⌨ Teclado e mouse",
+'🎮 게임패드':"🎮 Controle",
 '💫 암전폭류':'💫 Surto de Raio',
 '⚡ 암전나선':'⚡ Hélice de Raio',
 '🌋 지진폭풍':'🌋 Tempestade Sísmica',

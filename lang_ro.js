@@ -1,5 +1,14 @@
 ﻿// 지옥의 길 — Română (ro)
 const _RO={
+// --- v7 신규 펫/UI 8종 (2026-07-05) ---
+'다섯 번째군. 이번엔 바뀐 게 있어야지.':"A cincea oară. De data asta ceva trebuie să se schimbe.",
+'또 와?! 이번엔 진짜 패턴 외웠어!':"Iar?! De data asta chiar am învățat tiparul!",
+'…전설을 잡았다. 보상도 전설이겠지.':"…Ai doborât o legendă. Și răsplata va fi legendară.",
+'전설급 잡았어!! 드롭 확인해!':"Ai doborât un legendar!! Verifică drop-ul!",
+'무릎 꿇었다. 지금 처형해. X.':"A îngenuncheat. Execută-l acum. X.",
+'처형각이야!! X 눌러!!':"E momentul execuției!! Apasă X!!",
+'⌨ 키보드·마우스':"⌨ Tastatură și mouse",
+'🎮 게임패드':"🎮 Controler",
 '💫 암전폭류':'💫 Val de Fulgere','⚡ 암전나선':'⚡ Spirală Fulger','🌋 지진폭풍':'🌋 Furtună Seismică','🔥 회전기폭':'🔥 Vârtej detonare','⚔ 기동:섬멸':'⚔ Drive:Nimicire','⚔ 기동:칼날개':'⚔ Drive:Lamă','⚡ 기동:전폭':'⚡ Drive:Lovitură','🌀 기동:파쇄':'🌀 Drive:Zdrobire','🌀 기동:기습':'🌀 Drive:Ambuscadă','💫 →좌클 통합':'💫 →Unificat cu LMB','⚡ →좌클 통합':'⚡ →Unificat cu LMB','🎯 추적암전':'🎯 Fulger Urmăritor','☆ 만화광선':'☆ Rază Luminescentă','⏳⚡ 시간걸음':'⏳⚡ Pas în Timp','SSAA 슈퍼샘플':'SSAA Supraesantionare','끄기 (1x)':'Oprit (1x)','커서 크기':'Dimensiune cursor','다크 판타지 전사':'Războinic dark fantasy','거대검+검은 갑옷':'Spadă mare + Armură neagră',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Poarta Iadului este deschisă. Te așteaptă înăuntru.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Poarta e deschisă! Hai să ucidem bossul!",

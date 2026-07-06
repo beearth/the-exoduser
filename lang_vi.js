@@ -1,5 +1,14 @@
 ﻿// 지옥의 길 — Tiếng Việt (vi)
 const _VI={
+// --- v7 신규 펫/UI 8종 (2026-07-05) ---
+'다섯 번째군. 이번엔 바뀐 게 있어야지.':"Lần thứ năm rồi. Lần này phải có gì đó khác đi.",
+'또 와?! 이번엔 진짜 패턴 외웠어!':"Lại nữa à?! Lần này tớ thuộc lòng chiêu thức rồi!",
+'…전설을 잡았다. 보상도 전설이겠지.':"…Ngươi đã hạ một huyền thoại. Phần thưởng hẳn cũng là huyền thoại.",
+'전설급 잡았어!! 드롭 확인해!':"Hạ được con huyền thoại rồi!! Kiểm tra đồ rơi đi!",
+'무릎 꿇었다. 지금 처형해. X.':"Nó quỳ rồi. Hành quyết ngay. X.",
+'처형각이야!! X 눌러!!':"Thời cơ hành quyết!! Nhấn X!!",
+'⌨ 키보드·마우스':"⌨ Bàn phím & Chuột",
+'🎮 게임패드':"🎮 Tay cầm",
 '💫 암전폭류':'💫 Sét Bùng Phát','⚡ 암전나선':'⚡ Sét Helix','🌋 지진폭풍':'🌋 Bão Chấn','🔥 회전기폭':'🔥 Xoáy Nổ','⚔ 기동:섬멸':'⚔ Drive:Tiêu Diệt','⚔ 기동:칼날개':'⚔ Drive:Lưỡi','⚡ 기동:전폭':'⚡ Drive:Tấn công','🌀 기동:파쇄':'🌀 Drive:Nghiền','🌀 기동:기습':'🌀 Drive:Phục kích','💫 →좌클 통합':'💫 →Gộp LMB','⚡ →좌클 통합':'⚡ →Gộp LMB','🎯 추적암전':'🎯 Sét Truy Vết','☆ 만화광선':'☆ Tia Phát Quang','⏳⚡ 시간걸음':'⏳⚡ Bước Thời Gian','SSAA 슈퍼샘플':'SSAA Siêu Lấy Mẫu','끄기 (1x)':'Tắt (1x)','커서 크기':'Kích thước con trỏ','다크 판타지 전사':'Chiến binh dark fantasy','거대검+검은 갑옷':'Đại kiếm + Giáp đen',
 '…지옥문이 열렸다. 안에서 그것이 기다리고 있어.':"...Cổng Địa Ngục đã mở. Nó đang chờ ngươi bên trong.",
 '문 열렸어! 이제 보스 잡으러 가자!':"Cổng mở rồi! Đi giết boss thôi!",

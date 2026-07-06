@@ -1,5 +1,14 @@
 ﻿// 지옥의 길 — Türkçe (tr)
 const _TR={
+// --- v7 신규 펫/UI 8종 (2026-07-05) ---
+'다섯 번째군. 이번엔 바뀐 게 있어야지.':"Beşinci kez. Bu sefer bir şeyler değişmeli.",
+'또 와?! 이번엔 진짜 패턴 외웠어!':"Yine mi?! Bu sefer deseni gerçekten ezberledim!",
+'…전설을 잡았다. 보상도 전설이겠지.':"…Bir efsaneyi devirdin. Ödül de efsanevi olmalı.",
+'전설급 잡았어!! 드롭 확인해!':"Efsanevi birini indirdin!! Düşen eşyaya bak!",
+'무릎 꿇었다. 지금 처형해. X.':"Diz çöktü. Şimdi infaz et. X.",
+'처형각이야!! X 눌러!!':"İnfaz vakti!! X'e bas!!",
+'⌨ 키보드·마우스':"⌨ Klavye ve Fare",
+'🎮 게임패드':"🎮 Oyun Kolu",
 '💫 암전폭류':'💫 Yıldırım Dalgası',
 '⚡ 암전나선':'⚡ Yıldırım Helix',
 '🌋 지진폭풍':'🌋 Deprem Fırtınası',
