@@ -953,6 +953,10 @@ const _NO={
 '🏹 공성쇠뇌 설치!':'🏹 Beleirigsarmbue Plassert!',
 '뜨거워! 여기 왜 이렇게 빨개!':'Så varmt! Hvorfor er alt så rødt her!',
 '유령쇠뇌야. 인사해.':'Det er den spøkelsesarmbrøsten. Si hei.',
+'보물상자를 열었군. 보스급 장비가 쏟아진다.': 'Du åpnet en kiste. Boss-utstyr velter ut.',
+'상자 대박! 좋은 거 잔뜩 나와! 보이면 꼭 열어!': 'Kiste-jackpot! Massevis av bra saker! Åpne dem alltid!',
+'잔해도 부숴서 열어. 악의와 장비가 숨어있다.': 'Knus også ruinene. Ondskap og utstyr gjemmer seg inni.',
+'잔해에서 악의가 나온다! 보이면 다 주워!': 'Ruiner gir Ondskap! Plukk opp hver eneste du ser!',
 // --- Phase 27 additions ---
 '위로 이동':'Beveg opp','아래로 이동':'Beveg ned','왼쪽 이동':'Beveg venstre','오른쪽 이동':'Beveg høyre',
 '칼등 처내기 (탭=처내기, 홀드=연사)':'Klingeparering (trykk=parering, hold=salve)',
