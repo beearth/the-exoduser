@@ -4993,6 +4993,10 @@ const _EN={
 '됐어! 감 잡았구나.':"There you go! You're getting the hang of it.",
 '하나 죽었군.':'One down.',
 '유령쇠뇌야. 인사해.':"That's the ghost crossbow. Say hello.",
+'보물상자를 열었군. 보스급 장비가 쏟아진다.':"You opened a treasure chest. Boss-tier gear pours out.",
+'상자 대박! 좋은 거 잔뜩 나와! 보이면 꼭 열어!':'Chest jackpot! Tons of good stuff! Always open them!',
+'잔해도 부숴서 열어. 악의와 장비가 숨어있다.':'Break the debris open too. Malice and gear hide inside.',
+'잔해에서 악의가 나온다! 보이면 다 주워!':'Debris drops malice! Grab every one you see!',
 '빨간 탄을 무서워하지 마. 악의가 강하다.':"Don't fear red bullets. Malice is strong.",
 '패링으로 돌려주고, Q 보호막도 써! 악의를 잘 굴려!':'Parry them back, use Q shield too! Master your malice!',
 '무지개빛은 패링 불가! 피해!':"Rainbow shots can't be parried! Dodge!",
@@ -25031,6 +25035,7 @@ function update(){
         // 추가 보상: 악의 + 물약
         const matBonus=5+~~(G.stage*2);G.mats+=matBonus;
         if(addPotion('hp',2))addTxt(it.x+20,it.y+10,_T('HP물약 +2'),'#33ff33',30);
+        if(!_petTut.firstChest){_petTut.firstChest=true;_petSayCD('tut_chest','crow','보물상자를 열었군. 보스급 장비가 쏟아진다.',5,9999,'cat','상자 대박! 좋은 거 잔뜩 나와! 보이면 꼭 열어!',5)}
         chestOpened=true;break;
       }
     }
@@ -25048,6 +25053,7 @@ function update(){
           // 악의 보상
           const _dMat=[3,8,15][_dt]+~~(G.stage*[.5,1,2][_dt]);G.mats+=_dMat;
           addTxt(it.x,it.y-30,_T('악의 +')+_dMat,'#cc66ff',30);
+          if(!_petTut.firstDebris){_petTut.firstDebris=true;_petSayCD('tut_debris','crow','잔해도 부숴서 열어. 악의와 장비가 숨어있다.',5,9999,'cat','잔해에서 악의가 나온다! 보이면 다 주워!',5)}
           // 장비 드롭
           const _dCnt=[0,1,2][_dt]+(_dt>=1&&Math.random()<.5?1:0);
           for(let _ci=0;_ci<_dCnt;_ci++){
