@@ -50,7 +50,3 @@ userdata/
 cache/
 steam/output/
 exoduser-demo-web.zip
-
-# 도진 퀀트 킷 (로컬 데이터/키)
-reports/logs/
-reports/.env
