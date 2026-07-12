@@ -11,8 +11,14 @@
 필요: pip install yfinance pandas requests (선택: pykrx + KRX_ID/KRX_PW 환경변수)
 """
 import sys, os, json, datetime as dt
+from io import StringIO
 import pandas as pd, numpy as np, requests
 import yfinance as yf
+try:  # .env 자동 로드 (스크립트 폴더 기준) — 키는 실측 소스 활성화용, 없으면 해당 모듈만 스킵
+    from dotenv import load_dotenv
+    load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
+except Exception:
+    pass
 
 pd.set_option('display.width', 140)
 H_SEC = {'User-Agent': 'DojinQuant contact@example.com'}
@@ -53,13 +59,14 @@ def _indiv_flow(code='005930', days=420):
         rows = []
         for page in range(1, 22):  # 페이지당 약 20영업일
             url = f'https://finance.naver.com/item/frgn.naver?code={code}&page={page}'
-            tabs = pd.read_html(requests.get(url, headers=H_WEB, timeout=10).text)
+            tabs = pd.read_html(StringIO(requests.get(url, headers=H_WEB, timeout=10).text))
             t = max(tabs, key=len).dropna(how='all')
             rows.append(t)
         t = pd.concat(rows)
         t.columns = ['날짜','종가','전일비','등락률','거래량','기관','외국인','보유주수','보유율'][:len(t.columns)]
         t = t.dropna(subset=['날짜']).drop_duplicates('날짜')
-        t['date'] = pd.to_datetime(t['날짜'])
+        t['date'] = pd.to_datetime(t['날짜'], errors='coerce')
+        t = t.dropna(subset=['date'])
         for c in ['종가','기관','외국인']:
             t[c] = pd.to_numeric(t[c].astype(str).str.replace(',',''), errors='coerce')
         t = t.set_index('date').sort_index()
@@ -67,6 +74,10 @@ def _indiv_flow(code='005930', days=420):
         return (indiv_qty * t['종가']).rename('indiv'), '네이버 역산(근사)'
     except Exception as e:
         return None, f'실측 불가({e}) — KRX 계정(KRX_ID/KRX_PW) 설정 권장'
+
+def _zone(g):
+    return ('매수최적(3~5)' if 3<=g<5 else '보유(5~7)' if 5<=g<7 else
+            '데드존·신규금지(7~9)' if 7<=g<9 else '극단·당일방향확인(9~10)' if g>=9 else '소진(0~3)')
 
 def ant_index(metric='vol', code='005930.KS'):
     print('\n■ 1. 개미지수 — 삼성전자')
@@ -92,12 +103,9 @@ def ant_index(metric='vol', code='005930.KS'):
     wk['next'] = wk['close'].shift(-1) / wk['close'] - 1
 
     gd, gw = df['g_d'].iloc[-1], wk['g_w'].iloc[-1]
-    def zone(g):
-        return ('매수최적(3~5)' if 3<=g<5 else '보유(5~7)' if 5<=g<7 else
-                '데드존·신규금지(7~9)' if 7<=g<9 else '극단·당일방향확인(9~10)' if g>=9 else '소진(0~3)')
     print(f'  기준: {metric}' + (f' [{src}]' if src else ''))
-    print(f'  일단위 등급(40일): {gd:.1f} → {zone(gd)}')
-    print(f'  주단위 등급(40주): {gw:.1f} → {zone(gw)}')
+    print(f'  일단위 등급(40일): {gd:.1f} → {_zone(gd)}')
+    print(f'  주단위 등급(40주): {gw:.1f} → {_zone(gw)}')
     print(f'  종가 {df["Close"].iloc[-1]:,.0f}원 ({df.index[-1].date()}), 5일 등급 추이 ' +
           '→'.join(f'{v:.1f}' for v in df['g_d'].tail(5)))
 
@@ -134,7 +142,7 @@ def koru_decay():
     m = r.loc[r.index[-1].strftime('%Y-%m')]
     ku=(1+m['KORU']).prod()-1; bs=(1+m['EWY']).prod()-1
     print(f'  이번달 누적: 기초 {bs*100:+.1f}% | 이론x3 {bs*300:+.1f}% | KORU {ku*100:+.1f}% | 갭 {(ku-bs*3)*100:+.1f}%p')
-    return cur
+    return cur, streak
 
 # ---------------------------------------------------------------
 # 3. SPCX 공시 감시 (SEC EDGAR) — Form 144/4 = 내부자 매도 신호
@@ -158,6 +166,8 @@ def spcx_edgar(cik='0001181412'):
         print('  내부자 신고 최근:')
         for _,row in ins.head(3).iterrows(): print(f'    {row.filingDate} Form {row.form}')
     st['edgar_seen'] = f['accessionNumber'].tolist(); _save_state(st)
+    new_ins = new[new['form'].isin(['4','144','144/A'])] if seen else new.iloc[0:0]
+    return [(r.filingDate, r.form) for _, r in new_ins.iterrows()]
 
 # ---------------------------------------------------------------
 # 4. SPCX 공매도 잔고 (나스닥, 월 2회 결제일 기준)
@@ -174,6 +184,8 @@ def spcx_short():
         if len(rows) >= 2:
             d = int(rows[0]['interest'].replace(',','')) - int(rows[1]['interest'].replace(',',''))
             print(f'  직전 대비 {"+" if d>=0 else ""}{d/1e6:,.1f}M주 → 숏 {"증가(비관 확대)" if d>0 else "감소(커버링)"}')
+            return rows[0]['settlementDate'], int(rows[0]['interest'].replace(',',''))/1e6, d/1e6
+        return rows[0]['settlementDate'], int(rows[0]['interest'].replace(',',''))/1e6, None
     except Exception as e:
         print(f'  조회 실패: {e}')
 
@@ -195,6 +207,136 @@ def macro():
             print(f'  {name:<12} (데이터 없음)')
 
 # ---------------------------------------------------------------
+# 7. FOMC 시장 프라이싱 — 연방기금선물(ZQ)로 CME FedWatch 대체
+# ---------------------------------------------------------------
+def fomc(meeting_month=7, meeting_label='7/28-29 FOMC'):
+    print(f'\n■ 7. FOMC 프라이싱 ({meeting_label})')
+    MC = {1:'F',2:'G',3:'H',4:'J',5:'K',6:'M',7:'N',8:'Q',9:'U',10:'V',11:'X',12:'Z'}
+    yy = dt.date.today().year % 100
+    months = [meeting_month + i for i in range(3)]
+    imp = {}
+    for m in months:
+        mm, y2 = (m-1) % 12 + 1, yy + (m-1)//12
+        t = f'ZQ{MC[mm]}{y2}.CBT'
+        try:
+            s = yf.download(t, period='5d', progress=False, auto_adjust=True)['Close'].dropna()
+            imp[mm] = 100 - float(s.iloc[-1].item() if hasattr(s.iloc[-1],'item') else s.iloc[-1])
+            print(f'  {y2+2000}-{mm:02d}월물 내재금리 {imp[mm]:.2f}%')
+        except Exception:
+            print(f'  {t} 조회 실패')
+    m0, m1 = meeting_month, (meeting_month % 12) + 1
+    if m0 in imp and m1 in imp:
+        move = imp[m1] - imp[m0]
+        prob = abs(move) / 0.25 * 100
+        direction = '인상' if move > 0 else '인하'
+        print(f'  → 회의 통과 시 {move*100:+.0f}bp 반영 = 25bp {direction} 확률 약 {min(prob,100):.0f}% 프라이싱')
+        return move
+    return None
+
+# ---------------------------------------------------------------
+# 8. OpenDART 공시 감시 — 삼성/하이닉스 (무료 API키: opendart.fss.or.kr)
+# ---------------------------------------------------------------
+def opendart():
+    print('\n■ 8. 국장 공시 (OpenDART)')
+    key = os.environ.get('DART_API_KEY')
+    if not key:
+        print('  DART_API_KEY 없음 → 건너뜀 (opendart.fss.or.kr에서 무료 발급, 즉시)')
+        return
+    corps = {'00126380':'삼성전자', '00164779':'SK하이닉스'}
+    st = _load_state(); seen = set(st.get('dart_seen', []))
+    bgn = (dt.date.today()-dt.timedelta(days=7)).strftime('%Y%m%d')
+    new_ids = []
+    for cc, name in corps.items():
+        try:
+            r = requests.get('https://opendart.fss.or.kr/api/list.json',
+                params={'crtfc_key':key,'corp_code':cc,'bgn_de':bgn,'page_count':20}, timeout=12).json()
+            for it in r.get('list', []):
+                new_ids.append(it['rcept_no'])
+                mark = '🆕 ' if (seen and it['rcept_no'] not in seen) else '   '
+                print(f"  {mark}{it['rcept_dt']} [{name}] {it['report_nm']}")
+        except Exception as e:
+            print(f'  {name} 조회 실패: {e}')
+    st['dart_seen'] = list(seen | set(new_ids)); _save_state(st)
+
+# ---------------------------------------------------------------
+# 9. 국장 공매도 잔고 — KRX 로그인 필요 (KRX_ID/KRX_PW)
+# ---------------------------------------------------------------
+def krx_short(code='005930'):
+    print('\n■ 9. 국장 공매도 잔고 (삼성전자, T+2 공시)')
+    if not (os.environ.get('KRX_ID') and os.environ.get('KRX_PW')):
+        print('  KRX_ID/KRX_PW 없음 → 건너뜀 (data.krx.co.kr 무료 계정)')
+        return
+    try:
+        from pykrx import stock
+        end = dt.date.today(); start = end - dt.timedelta(days=30)
+        df = stock.get_shorting_balance_by_date(start.strftime('%Y%m%d'), end.strftime('%Y%m%d'), code)
+        if len(df):
+            last = df.iloc[-1]; prev = df.iloc[-6] if len(df) > 5 else df.iloc[0]
+            print(f"  잔고 {last['공매도잔고']/1e6:.1f}M주 (비중 {last['비중']:.2f}%) | 5일전 대비 {(last['공매도잔고']-prev['공매도잔고'])/1e6:+.1f}M주")
+    except Exception as e:
+        print(f'  조회 실패: {e}')
+
+# ---------------------------------------------------------------
+# 10. 알림 레이어 — 트리거 발생 시에만 텔레그램/디스코드 푸시
+#     python3 dojin_quant.py alert  (스케줄 태스크는 이 모드로)
+# ---------------------------------------------------------------
+def _send_alert(text):
+    tok, cid = os.environ.get('TELEGRAM_BOT_TOKEN'), os.environ.get('TELEGRAM_CHAT_ID')
+    hook = os.environ.get('DISCORD_WEBHOOK_URL')
+    if tok and cid:
+        r = requests.post(f'https://api.telegram.org/bot{tok}/sendMessage',
+                          json={'chat_id': cid, 'text': text}, timeout=10)
+        print(f'\n[텔레그램 전송 {r.status_code}]')
+    elif hook:
+        r = requests.post(hook, json={'content': text}, timeout=10)
+        print(f'\n[디스코드 전송 {r.status_code}]')
+    else:
+        print('\n[알림 채널 미설정 — 콘솔 출력]\n' + text)
+
+def alerts():
+    st = _load_state()
+    msgs = []
+    # 1. 개미지수 존 변경 (삼성 일/주)
+    gd, gw = ant_index(metric=os.environ.get('ANT_METRIC', 'vol'))
+    zd, zw = _zone(gd), _zone(gw)
+    if st.get('zone_d') and st['zone_d'] != zd:
+        msgs.append(f"개미지수(일) 존 변경: {st['zone_d']} → {zd} (등급 {gd:.1f})")
+    if st.get('zone_w') and st['zone_w'] != zw:
+        msgs.append(f"개미지수(주) 존 변경: {st['zone_w']} → {zw} (등급 {gw:.1f})")
+    st['zone_d'], st['zone_w'] = zd, zw
+    # 2. KORU 톱질 타임스톱 트리거
+    cur, streak = koru_decay()
+    fire = streak >= 5 and cur.gap10 < -3
+    if fire and not st.get('streak_ge5'):
+        msgs.append(f"KORU 톱질 {streak}일 연속 + 10일 감쇠 {cur.gap10:+.1f}%p → 타임스톱 검토")
+    st['streak_ge5'] = bool(fire)
+    # 3. SPCX 내부자 신고 (락업 테제 핵심)
+    new_ins = spcx_edgar() or []
+    if new_ins:
+        forms = ', '.join(f'{d} Form{f}' for d, f in new_ins[:5])
+        msgs.append(f"SPCX 내부자 신고 신규 {len(new_ins)}건: {forms}")
+    # 4. FOMC 프라이싱 급변 (±10%p = 2.5bp)
+    bp = fomc()
+    if bp is not None:
+        prev = st.get('fomc_bp')
+        if prev is not None and abs(bp - prev) >= 0.025:
+            msgs.append(f"FOMC 프라이싱 급변: {prev/0.25*100:+.0f}% → {bp/0.25*100:+.0f}% (25bp 기준)")
+        st['fomc_bp'] = bp
+    # 5. SPCX 공매도 신규 결제일
+    si = spcx_short()
+    if si:
+        date, mil, delta = si
+        if st.get('si_date') and st['si_date'] != date:
+            d_txt = f' ({delta:+.1f}M)' if delta is not None else ''
+            msgs.append(f"SPCX 숏 갱신 {date}: {mil:.1f}M주{d_txt}")
+        st['si_date'] = date
+    _save_state(st)
+    if msgs:
+        _send_alert(f"🔔 도진 퀀트 — {dt.date.today()}\n" + '\n'.join(f'• {m}' for m in msgs))
+    else:
+        print('\n[알림] 트리거 없음 — 전송 안 함 (정상)')
+
+# ---------------------------------------------------------------
 def calendar():
     print('\n■ 6. 캘린더')
     today = dt.date.today()
@@ -205,12 +347,42 @@ def calendar():
         dd = (d-today).days
         if dd >= -1: print(f'  D{dd:+d}  {d.strftime("%m/%d")}  {name}')
 
+class _Tee:
+    """stdout을 콘솔+로그파일 동시 출력 — 실행마다 logs/날짜_시각.txt 축적(등급 경계 재검증용)."""
+    def __init__(self, *streams): self.streams = streams
+    def write(self, d):
+        for s in self.streams:
+            try: s.write(d)
+            except Exception: pass
+    def flush(self):
+        for s in self.streams:
+            try: s.flush()
+            except Exception: pass
+
 if __name__ == '__main__':
     cmd = sys.argv[1] if len(sys.argv) > 1 else 'all'
-    print(f'=== 도진 퀀트 데일리 체크 — {dt.date.today()} ===')
-    if cmd in ('all','ant'):   ant_index(metric=os.environ.get('ANT_METRIC','vol'))
+    _logdir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'logs')
+    os.makedirs(_logdir, exist_ok=True)
+    _logpath = os.path.join(_logdir, f'{dt.datetime.now():%Y-%m-%d_%H%M}_{cmd}.txt')
+    _logf = open(_logpath, 'a', encoding='utf-8')
+    sys.stdout = _Tee(sys.__stdout__, _logf)
+    print(f'=== 도진 퀀트 데일리 체크 — {dt.date.today()} ({dt.datetime.now():%H:%M} KST) ===')
+    if cmd == 'alert':
+        alerts(); sys.exit(0)
+    if cmd in ('all','ant'):
+        ant_index(metric=os.environ.get('ANT_METRIC','vol'))
+        try:  # 하이닉스 등급 한 줄 (KORU 최대비중 24.65%)
+            h = yf.download('000660.KS', start='2024-06-01', auto_adjust=False, progress=False)
+            if isinstance(h.columns, pd.MultiIndex): h.columns = h.columns.get_level_values(0)
+            gd = _grade(h['Volume'], 40).iloc[-1]
+            gw = _grade(h['Volume'].resample('W-FRI').sum().dropna(), 40).iloc[-1]
+            print(f'  (참고) SK하이닉스: 일단위 {gd:.1f} / 주단위 {gw:.1f}')
+        except Exception: pass
     if cmd in ('all','decay'): koru_decay()
     if cmd in ('all','edgar'): spcx_edgar()
     if cmd in ('all','short'): spcx_short()
+    if cmd in ('all','kshort'):krx_short()
+    if cmd in ('all','dart'):  opendart()
+    if cmd in ('all','fomc'):  fomc()
     if cmd in ('all','macro'): macro()
     if cmd == 'all':           calendar()

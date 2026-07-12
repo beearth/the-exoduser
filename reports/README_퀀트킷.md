@@ -33,3 +33,25 @@ KRX가 2025년부터 데이터 다운로드에 로그인을 요구함 → pykrx�
 
 ## 상태 파일
 `~/.dojin_quant_state.json` — EDGAR 마지막 확인 시점 저장. 지우면 기준선 리셋.
+
+## v1.1 추가 (7/12)
+| 모듈 | 명령 | 소스 | 상태 |
+|---|---|---|---|
+| FOMC 프라이싱 | `fomc` | 연방기금선물 ZQ (야후) | ✅ 라이브 — FedWatch 대체 |
+| 국장 공시 | `dart` | OpenDART (DART_API_KEY 필요, 무료 즉시발급) | 키 대기 |
+| 국장 공매도 | `kshort` | pykrx (KRX_ID/KRX_PW 필요) | 키 대기 |
+| 하이닉스 등급 | ant에 포함 | yfinance 000660.KS | ✅ 라이브 |
+
+키 2개(DART, KRX) 환경변수만 넣으면 9개 모듈 전부 활성화.
+
+## v1.2 — 알림 레이어 (7/12)
+`python3 dojin_quant.py alert` — 전체 체크 실행 후 **변화가 있을 때만** 폰으로 푸시.
+
+**트리거 5종:** ①개미지수 존 변경(일/주) ②KORU 톱질 5일+ & 감쇠 -3%p(타임스톱) ③SPCX Form 4/144 신규(내부자) ④FOMC 프라이싱 ±10%p 급변 ⑤SPCX 숏 잔고 신규 결제일
+
+**채널 셋업 (하나만):**
+- 텔레그램: @BotFather로 봇 생성→토큰, 봇에 아무 메시지 1개 보낸 뒤 `api.telegram.org/bot토큰/getUpdates`에서 chat_id 확인 → `export TELEGRAM_BOT_TOKEN=... TELEGRAM_CHAT_ID=...`
+- 디스코드: 채널 설정→연동→웹훅 URL 복사 → `export DISCORD_WEBHOOK_URL=...`
+- 둘 다 없으면 콘솔 출력(드라이런)
+
+**스케줄 연결:** 클코/cron에 `python3 dojin_quant.py alert`를 하루 2회(아침 07:40 개장 전 + 저녁 22:00 미장 전) 걸면 끝. 조용한 날은 안 울림 — 그게 정상.
