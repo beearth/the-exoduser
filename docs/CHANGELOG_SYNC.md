@@ -44314,3 +44314,9 @@ mpR = 0.05 + s.int√ó0.005                                        [NO P.lv√ó0.001
 - reports/dojin_quant.py
 - reports/run_alert.cmd
 
+
+## 2026-07-12 20:30 (auto)
+- reports/README_?Ä?∏ÌÇ∑.md
+- reports/dojin_quant.py
+- reports/positions.json
+

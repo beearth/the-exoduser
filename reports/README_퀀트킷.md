@@ -55,3 +55,27 @@ KRX가 2025년부터 데이터 다운로드에 로그인을 요구함 → pykrx�
 - 둘 다 없으면 콘솔 출력(드라이런)
 
 **스케줄 연결:** 클코/cron에 `python3 dojin_quant.py alert`를 하루 2회(아침 07:40 개장 전 + 저녁 22:00 미장 전) 걸면 끝. 조용한 날은 안 울림 — 그게 정상.
+
+## v1.3 — 실배포 완료 (2026-07-12)
+전 모듈 라이브. 위치 `G:\hell\reports\`.
+
+**환경 배선**
+- `.env` 자동 로드(python-dotenv) — `reports\.env` (gitignore됨). 템플릿 `.env.example`.
+- 출력 tee → `reports\logs\YYYY-MM-DD_HHMM_명령.txt` 매 실행 자동 축적(등급 경계 재검증용).
+- 상태파일 `~/.dojin_quant_state.json` (edgar_seen/dart_seen/zone_d/zone_w/streak_ge5/fomc_bp/si_date).
+
+**활성화 상태 (전부 실측 검증)**
+| 기능 | 상태 |
+|---|---|
+| 개미지수 (기본 `ANT_METRIC=indiv` = pykrx 실측, 실패시 네이버역산→vol 폴백) | ✅ 라이브 |
+| KORU 감쇠 / SPCX EDGAR / SPCX 나스닥 공매도 / FOMC(ZQ) / 시그널보드 / 캘린더 | ✅ 라이브 |
+| 국장 공시 `dart` (OpenDART) | ✅ 라이브 (키 검증 status 000) |
+| 국장 공매도 `kshort` (pykrx, KRX 로그인) | ✅ 라이브 |
+| 텔레그램 알림 (@dojin2_quant_bot) | ✅ 라이브 (테스트 전송 성공) |
+
+**스케줄 (Windows 작업 스케줄러 — cron 대체)**
+- `DojinQuant_Morning` 평일 07:40 KST / `DojinQuant_Evening` 평일 22:00 KST → `run_alert.cmd` → `alert`
+- 로그인 상태에서만 실행(암호 미저장). 로그오프 중 실행하려면 `schtasks /RU` 자격증명 저장 필요.
+- 관리: `schtasks /Query /TN DojinQuant_Morning` · 삭제 `schtasks /Delete /TN DojinQuant_Morning /F`
+
+**주의 — 산식 변경 이력**: 기본을 `indiv`(개인 순매수 실측)로 승격. `vol`은 폴백, `value`(거래대금)는 랠리 고착으로 비권장. 존 경계(데드존=7 등)는 원본 정의 유지 — 실측 데이터 축적 후 재캘리브레이션 예정(문서의 분기 재검증 규정).

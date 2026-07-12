@@ -330,11 +330,96 @@ def alerts():
             d_txt = f' ({delta:+.1f}M)' if delta is not None else ''
             msgs.append(f"SPCX 숏 갱신 {date}: {mil:.1f}M주{d_txt}")
         st['si_date'] = date
+    # 11. 익절 트리거 (보유 포지션) — 추가 전용, 위 5종 트리거 무수정
+    tp_blocks = _take_profit(st)
     _save_state(st)
     if msgs:
         _send_alert(f"🔔 도진 퀀트 — {dt.date.today()}\n" + '\n'.join(f'• {m}' for m in msgs))
     else:
         print('\n[알림] 트리거 없음 — 전송 안 함 (정상)')
+    for block in tp_blocks:      # 익절 신호는 포지션별 독립 메시지로 발송
+        _send_alert(block)
+
+# ---------------------------------------------------------------
+# 11. 익절 트리거 — 보유 포지션의 개미지수 고쏠림 + 수익 중일 때만 사다리 익절 신호
+#     positions.json 기반. 기존 산식(_grade)·존·트리거 5종 무수정, 추가 전용.
+# ---------------------------------------------------------------
+_POSITIONS = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'positions.json')
+_POS_TEMPLATE = {"positions": [
+    {"ticker": "KORU", "ant_source": "005930.KS", "avg_price": 931980, "qty": 89, "note": "러너49+회전40"}
+]}
+
+def _load_positions():
+    """positions.json 로드. 없으면 템플릿 생성 후 None(미등록 신호) 반환."""
+    if not os.path.exists(_POSITIONS):
+        json.dump(_POS_TEMPLATE, open(_POSITIONS, 'w', encoding='utf-8'), ensure_ascii=False, indent=2)
+        return None
+    try:
+        return json.load(open(_POSITIONS, encoding='utf-8')).get('positions', [])
+    except Exception as e:
+        print(f'  positions.json 파싱 실패: {e}'); return []
+
+def _daily_grade(code, metric='indiv'):
+    """ant_source의 일단위(40일) 등급 — 기존 _grade/_indiv_flow 재사용(산식 무수정)."""
+    df = yf.download(code, start='2024-06-01', auto_adjust=False, progress=False)
+    if isinstance(df.columns, pd.MultiIndex): df.columns = df.columns.get_level_values(0)
+    df['value'] = df['Close'] * df['Volume']; df['vol'] = df['Volume']
+    m = metric
+    if m == 'indiv':
+        flow, _ = _indiv_flow(code.split('.')[0])
+        if flow is None: m = 'vol'
+        else: df = df.join(flow.abs().rename('indiv'))
+    return float(_grade(df[m], 40).iloc[-1])
+
+def _tp_ladder(grade, day_chg):
+    """등급/당일등락률 → (밴드키, 문구). 8 미만이면 None."""
+    if grade < 8.0: return None
+    if grade < 8.5: return ('8.0~8.5', '1차 익절 구간 — 1/3 사다리 지정가')
+    if grade < 9.0: return ('8.5~9.0', '2차 익절 구간 — 추가 1/3')
+    if day_chg < 0: return ('9.0+되돌림', '되돌림 시작 — 잔량 정리 검토')
+    return ('9.0+지속', '고쏠림 지속 — 사다리 유지, 연타 금지')
+
+def _take_profit(st, price_fn=None, grade_fn=None):
+    """포지션별 익절 신호 블록 리스트 반환. 등급>=8 AND 수익중(ret>0) AND 밴드변경 시에만 발화.
+    price_fn(p)->(현재가, 당일등락%), grade_fn(p)->등급: 테스트용 강제주입 훅(없으면 실측)."""
+    positions = _load_positions()
+    if positions is None:
+        print('\n■ 11. 익절 트리거 — positions.json 미등록(템플릿 생성) → 스킵'); return []
+    if not positions:
+        print('\n■ 11. 익절 트리거 — 등록 포지션 없음'); return []
+    print('\n■ 11. 익절 트리거')
+    bands = st.setdefault('tp_band', {})
+    metric = os.environ.get('ANT_METRIC', 'vol')
+    out = []
+    for p in positions:
+        tkr = p.get('ticker'); src = p.get('ant_source', tkr); avg = p.get('avg_price')
+        try:
+            grade = grade_fn(p) if grade_fn else _daily_grade(src, metric)
+            if price_fn:
+                cur, day_chg = price_fn(p)
+            else:
+                h = yf.Ticker(tkr).history(period='7d', auto_adjust=False)['Close'].dropna()
+                cur = float(h.iloc[-1]); day_chg = (cur / float(h.iloc[-2]) - 1) * 100
+            ret = (cur / avg - 1) * 100 if avg else 0.0
+        except Exception as e:
+            print(f'  {tkr}: 조회 실패 {e}'); continue
+        line = f'  {tkr}: 등급(일) {grade:.1f} | 평가 {ret:+.1f}% | 당일 {day_chg:+.1f}%'
+        if grade < 8.0:                       # 등급 8 아래 → 상태 리셋(다음 8돌파 때 1차부터)
+            reset = bands.pop(tkr, None) is not None
+            print(line + (' → 8 아래, 상태 리셋' if reset else ' → 등급<8')); continue
+        if ret <= 0:                          # 손실 중 고쏠림은 익절 신호 아님(바닥 신호일 수 있음)
+            print(line + ' → 고쏠림이나 수익 중 아님(무시)'); continue
+        band, phrase = _tp_ladder(grade, day_chg)
+        if bands.get(tkr) == band:            # 같은 밴드 반복 억제(한 방 익절 방지)
+            print(line + f' → 이미 {band} 발화(중복 억제)'); continue
+        bands[tkr] = band
+        avg_txt = f'{avg:,.0f}' if avg else 'N/A'
+        out.append(f"🔔 익절 신호 — {tkr}\n"
+                   f"- 개미지수(일) {grade:.1f} / 평가 {ret:+.1f}% (평단 {avg_txt} → 현재 {cur:,.0f})\n"
+                   f"- {phrase}\n"
+                   f"- 당일 {day_chg:+.1f}%")
+        print(line + f' → 발화[{band}]')
+    return out
 
 # ---------------------------------------------------------------
 def calendar():
@@ -369,6 +454,9 @@ if __name__ == '__main__':
     print(f'=== 도진 퀀트 데일리 체크 — {dt.date.today()} ({dt.datetime.now():%H:%M} KST) ===')
     if cmd == 'alert':
         alerts(); sys.exit(0)
+    if cmd == 'tp':          # 익절 트리거 수동 확인(상태 저장 안 함 — 실제 state 무오염)
+        for b in _take_profit(_load_state()): print('\n' + b)
+        sys.exit(0)
     if cmd in ('all','ant'):
         ant_index(metric=os.environ.get('ANT_METRIC','vol'))
         try:  # 하이닉스 등급 한 줄 (KORU 최대비중 24.65%)
