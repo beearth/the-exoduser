@@ -1652,6 +1652,11 @@ const introVoice=new Audio('bgm/공통/intro_voice.mp3');
 introVoice.preload='auto';introVoice.volume=0.7;
 introVoice.playbackRate=0.95;
 const _CIN_VOICE=false; // 2026-07-27 인트로 스왑: 세계관 프롤로그는 보이스 없음 (전쟁 서사 나레이션 보이스는 game.html로 이관)
+// ═══ 컷신 BGM (2026-07-27 BGM 스왑): 세계관 프롤로그 = 주제가 웅장버전 4곡 랜덤 (game.html cutscene_prologue 풀과 동일 파일) ═══
+const _CIN_BGM_TRACKS=['bgm/cutscene/prologue_theme.mp3','bgm/cutscene/prologue_theme_abyssal_fracture.mp3','bgm/cutscene/prologue_theme_rebirth_gate_1.mp3','bgm/cutscene/prologue_theme_rebirth_gate_2.mp3'];
+let _cinBgm=null;
+function startCinBgm(){try{if(_cinBgm)return;_cinBgm=new Audio(_CIN_BGM_TRACKS[~~(Math.random()*_CIN_BGM_TRACKS.length)]);_cinBgm.volume=0.6;_cinBgm.play().catch(()=>{})}catch(e){}}
+function stopCinBgm(){if(!_cinBgm)return;const _a=_cinBgm;_cinBgm=null;const _fd=setInterval(()=>{if(_a.volume>0.06){_a.volume=Math.max(0,_a.volume-0.06)}else{clearInterval(_fd);try{_a.pause()}catch(e){}}},50)}
 let bgmStarted=false;
 function _tryBGM(){
   if(bgmStarted)return;
@@ -1845,6 +1850,7 @@ function playCinematic(){
     clearTimeout(_cinTimer);
     _clearVidTimers();
     stopIntroVoice();
+    stopCinBgm();
     $('cinVideo').style.opacity='0';
     $('skipBtn').classList.remove('show');
     _cinSeenSet();
@@ -1880,6 +1886,7 @@ function playCinematic(){
     }}catch(e){}
     // 사용자 제스처 컨텍스트에서 오디오 언락
     window._introVoiceUnlocked=true;
+    startCinBgm(); // 주제가 BGM 시작 (제스처 컨텍스트)
     
     // 비디오 시작 시 스킵 버튼 즉시 표시
     skipBtn.classList.add('show');
@@ -2038,6 +2045,7 @@ function skipToGate(){
   clearTimeout(_cinTimer);
   _clearVidTimers();
   stopIntroVoice();
+  stopCinBgm();
   startBGM();
   stopMediaVideo($('cinVideo'));
   $('cinVideo').style.opacity='0';

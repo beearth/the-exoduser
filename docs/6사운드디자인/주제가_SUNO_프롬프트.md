@@ -79,8 +79,10 @@ HELL: EXODUSER
 | Broken Rebirth Gate 2 | `bgm/cutscene/prologue_theme_rebirth_gate_2.mp3` | 215s |
 
 - [x] 전곡 192kbps mp3 변환, DEMO/EA 동기화 완료
-- [x] 게임 연결: BGM 키 `cutscene_prologue`에 4곡 등록 — **프롤로그(19라인, ~68초) + 네메시아(여신) 컷신
-  전 구간**에서 랜덤 1곡 재생(_pickRandom), 곡 소진 시 풀에서 자동 이어감. 전환 시 교체 없이 연속 재생.
+- [x] 게임 연결 (2026-07-27 인트로 스왑 후 최종):
+  - **index.html 세계관 프롤로그**: `_CIN_BGM_TRACKS` 4곡 랜덤 재생 (startCinBgm/stopCinBgm, 제스처 시점 시작·종료/스킵 시 페이드아웃)
+  - **game.html 전쟁 복수 서사**: BGM 무음 + 나레이션 보이스(intro_voice.mp3)만 — 구 index 인트로 방식 그대로 이관
+  - **game.html 네메시아(여신) 컷신**: `cutscene_prologue` 키 4곡 랜덤 (_pickRandom)
   언어 무관(가사 없음).
 - **구 `cutscene_goddess`/`cutscene_goddess_en` 트랙은 미사용 전환** (2026-07-27, 사용자 지시) —
   키·파일은 보존, 복원하려면 `_cutsceneEnd` PRO 분기에서 `BGM.play('cutscene_goddess')` 호출 추가
