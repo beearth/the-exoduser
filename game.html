@@ -49816,7 +49816,7 @@ async function _startDemoTest(){
   _dbReady=true;
   startAutoSave();setTimeout(()=>dbSave(),3000);
   _ensWarmDone=false;_wqLen=0;_wqIdx=0;_warmupEnsAtlas();
-  BGM.play(BGM.stageKey(G.stage));
+  if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
   setBootLoading(100,'완료');
   hideBootLoading();
   await new Promise(r=>{
@@ -49921,7 +49921,7 @@ async function _startDemoNew(){
     setBootLoading(97,'맵 캐시 생성 중...');
     await _bootMapBuildPromise;
   }
-  BGM.play(BGM.stageKey(G.stage));
+  if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
   setBootLoading(100,'완료');
   hideBootLoading();
   _dbReady=true;
@@ -50010,7 +50010,7 @@ async function _startTestChar(){
   await new Promise(r=>setTimeout(r,0));
   _dbReady=true;
   _ensWarmDone=false;_wqLen=0;_wqIdx=0;_warmupEnsAtlas();
-  BGM.play(BGM.stageKey(G.stage));
+  if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
   setBootLoading(100,'완료');
   hideBootLoading();
   await new Promise(r=>{
@@ -50118,7 +50118,7 @@ async function startGameFromDB(){
   _ensWarmDone=false;_wqLen=0;_wqIdx=0;_warmupEnsAtlas();
   startAutoSave();
   // 캐릭터 선택 → 문 열림 후 바로 게임 시작 (스플래시 스킵)
-  BGM.play(BGM.stageKey(G.stage));
+  if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
 setBootLoading(100,'완료');
 hideBootLoading();
   // 로딩 화면이 완전히 사라진 뒤에 게임 시작
@@ -50930,7 +50930,7 @@ $('retryBtn').onclick=async()=>{
     buildMapCache();initTorchLights();
     _bgInitQueue=[initSwayObjects,initWallEyes,_initEyes,initGlowObjects,initMapObjects].filter(Boolean);
     _bgInitDone=false;_bgInitIdx=0;
-    BGM.play(BGM.stageKey(G.stage));
+    if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
   }else{
     // 일반 사망: 같은 스테이지 재시작 (존 상태 리셋)
     G._zoneState={};
@@ -51409,7 +51409,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
       setBootLoading(97,_T('맵 캐시 생성 중...'));
       await _bootMapBuildPromise;
     }
-    BGM.play(BGM.stageKey(G.stage));
+    if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
   setBootLoading(100,'완료');
   hideBootLoading();
     _dbReady=true;
@@ -51520,7 +51520,7 @@ if(_isLocal||new URLSearchParams(window.location.search).get('test')==='1'){
       setBootLoading(97,_T('맵 캐시 생성 중...'));
       await _bootMapBuildPromise;
     }
-    BGM.play(BGM.stageKey(G.stage));
+    if(!(_forceCutscene||(G.stage===0&&!G._cutsceneDone)))BGM.play(BGM.stageKey(G.stage)); // 컷신 예정 시 보류 — 전쟁 서사는 보이스 전용, 스테이지 BGM은 컷신 종료 후 시작 (2026-07-27)
     setBootLoading(100,'완료');
     hideBootLoading();
     _dbReady=true;
