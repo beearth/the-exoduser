@@ -3575,6 +3575,14 @@ const BGM={
     this._cur=a;
   },
   play(key,force){
+    // ═══ 인트로 컷신 게이트 (2026-07-27): 컷신 재생 중/예정이면 cutscene_* 키 외 전부 차단 ═══
+    // (부팅 자동재생 + autoplay 차단 후 첫 클릭 지연재생(_pending)까지 모두 원천 차단 — 전쟁 서사는 보이스 전용)
+    if(typeof key==='string'&&key.indexOf('cutscene_')!==0){try{
+      const _cutBlock=(typeof _cutsceneState!=='undefined'&&_cutsceneState==='INTRO_CUTSCENE')
+        ||(typeof _forceCutscene!=='undefined'&&_forceCutscene&&!(G&&G._cutsceneDone))
+        ||(typeof G!=='undefined'&&G&&G.stage===0&&!G._cutsceneDone&&!G.on);
+      if(_cutBlock)return;
+    }catch(e){}}
     if(!force&&OPT.bgmTrack&&OPT.bgmTrack.startsWith('t:'))return;
     if(!force&&OPT.bgmTrack!=='auto'&&OPT.bgmTrack!=='allRandom'&&key!=='death'&&key!=='victory'&&key!=='forge'&&key!==OPT.bgmTrack)return;
     this.stop();
