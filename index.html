@@ -411,7 +411,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   <div class="cin-lb cin-lb-b"></div>
 
   <!-- 인트로 비디오 (THE EXODUSER) -->
-  <video id="cinVideo" muted playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:20;opacity:1;transition:opacity 1.5s ease;pointer-events:none">
+  <video id="cinVideo" muted playsinline preload="none" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;z-index:20;opacity:1;transition:opacity 1.5s ease;pointer-events:none">
     <source src="video/intro.mp4" type="video/mp4">
   </video>
   <!-- 클릭 안내 -->
@@ -1882,35 +1882,13 @@ function playCinematic(){
     if(_vidStarted||_cinDone)return;
     _vidStarted=true;
     prompt.style.display='none';
-    vid.muted=false; // 영상 자체 사운드(문 열림) 재생
-    vid.volume=0.6;
-    // startBGM() 제거 (2026-07-27): 시네마틱 중 로비BGM(lobby.mp3)이 주제가와 겹침 — 로비 진입 시(_goLobby/_goLogin)에만 시작
-    vid.play().catch(()=>{});
-    // 문 열림 진동 — 4초 페이드아웃
-    try{if(_GP.vibRef&&_GP.vibRef.vibrationActuator){
-      const _v=_GP.vibRef.vibrationActuator;const _steps=[[0,200,.5,.7],[200,500,.45,.6],[700,500,.35,.5],[1200,500,.25,.35],[1700,500,.18,.25],[2200,500,.12,.15],[2700,500,.06,.08],[3200,800,.02,.03]];
-      _steps.forEach(s=>{setTimeout(()=>{try{_v.playEffect('dual-rumble',{startDelay:0,duration:s[1],weakMagnitude:s[2],strongMagnitude:s[3]})}catch(e){}},s[0])});
-    }}catch(e){}
+    // ═══ 문 열림 영상 스킵 (2026-07-27 유저 지시): 클릭 즉시 세계관 프롤로그 시작 ═══
+    vid.pause();vid.style.opacity='0';vid.style.display='none';
     // 사용자 제스처 컨텍스트에서 오디오 언락
     window._introVoiceUnlocked=true;
     startCinBgm(); // 주제가 BGM 시작 (제스처 컨텍스트)
-    
-    // 비디오 시작 시 스킵 버튼 즉시 표시
     skipBtn.classList.add('show');
-
-    // 비디오 페이드아웃 → 프롤로그 시작 — 실제 재생 시간 기반 (2026-07-27: 고정 8.5s 벽시계 타이머가 렉/버퍼링 시 어긋나 문이 덜 열린 채 자막과 겹치던 문제)
-    vid.onended=()=>{vid.style.opacity='0'};
-    let _vidFadeDone=false;const _vidWatchT0=performance.now();
-    _vidStartTimer=setInterval(()=>{
-      if(_cinDone){clearInterval(_vidStartTimer);return}
-      const _d=(isFinite(vid.duration)&&vid.duration>0)?vid.duration:8;
-      const _stall=performance.now()-_vidWatchT0>15000; // 15s 안전장치 (영상 멈춤/코덱 실패)
-      if(!_vidFadeDone&&(vid.ended||_stall||vid.currentTime>=_d-1.5)){_vidFadeDone=true;vid.style.opacity='0'}
-      if(vid.ended||_stall||vid.currentTime>=_d-0.05){
-        clearInterval(_vidStartTimer);
-        _cinReady=true;showLine(0);
-      }
-    },100);
+    _cinReady=true;showLine(0); // 즉시 첫 컷
   }
   
   // [보정] 클릭 안내가 확실히 작동하도록 다시 연결
