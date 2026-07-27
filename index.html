@@ -1673,6 +1673,26 @@ function stopIntroVoice(){
   try{introVoice.pause();introVoice.currentTime=0;}catch(e){}
 }
 
+// ═══ 시네마틱 시청 플래그 — 계정 단위 (2026-07-27) ═══
+// 정본은 Supabase user_metadata.cin_seen (서버, 계정에 귀속 — 어느 브라우저/PC에서든 유지).
+// localStorage '_cinSeen:<uid>'는 캐시, 전역 '_cinSeen'은 스플래시(경고문 스킵)용 재방문 마커 + 오프라인 모드용.
+function _cinSeenChk(){
+  const u=(typeof currentUser!=='undefined'&&currentUser)?currentUser:null;
+  if(u){
+    if(u.user_metadata&&u.user_metadata.cin_seen)return'1'; // 서버 정본
+    return localStorage.getItem('_cinSeen:'+u.id); // 캐시 (updateUser 반영 전 폴백)
+  }
+  return localStorage.getItem('_cinSeen'); // 오프라인/테스트 모드
+}
+function _cinSeenSet(){
+  localStorage.setItem('_cinSeen','1');
+  const u=(typeof currentUser!=='undefined'&&currentUser)?currentUser:null;
+  if(u){
+    localStorage.setItem('_cinSeen:'+u.id,'1');
+    try{if(typeof sb!=='undefined'&&sb)sb.auth.updateUser({data:{cin_seen:1}}).catch(()=>{})}catch(e){} // 서버 저장 (실패해도 캐시로 동작)
+  }
+}
+
 // ═══ Prologue Script (풀버전) ═══
 // img: 이미지 인덱스 (0~8), -1=어둠, undefined=이전 유지
 // v: 음성 재생 시점 (초), 이 시점에 해당 라인이 시작됨
@@ -1836,7 +1856,7 @@ function playCinematic(){
     stopIntroVoice();
     $('cinVideo').style.opacity='0';
     $('skipBtn').classList.remove('show');
-    localStorage.setItem('_cinSeen','1');
+    _cinSeenSet();
     if(_LOBBY_BUILD==='demo'&&_testMode){_goLogin();}
     else if(currentUser||_testMode){_goLobby();}else{_goLogin();}
   }
@@ -2035,7 +2055,7 @@ function skipToGate(){
   $('cinTextInner').innerHTML='';
   $('skipBtn').classList.remove('show');
   $('cinVideo').style.opacity='0';
-  localStorage.setItem('_cinSeen','1');
+  _cinSeenSet();
   if(_LOBBY_BUILD==='demo'&&_testMode){_goLogin();}
   else if(currentUser||_testMode){_goLobby();}else{_goLogin();}
 }
@@ -2233,10 +2253,10 @@ function _enterOffline(){
   if(_testMode){
     if(_LOBBY_BUILD==='demo'){
       // 데모 빌드: 시네마틱 후 데모 입장 화면 표시
-      if(_fromGame||localStorage.getItem('_cinSeen')){_goLogin();return}
+      if(_fromGame||_cinSeenChk()){_goLogin();return}
       else{_goCinematic();return}
     }
-    if(_fromGame||localStorage.getItem('_cinSeen')){_enterOffline();return}
+    if(_fromGame||_cinSeenChk()){_enterOffline();return}
     else{_goCinematic();return}
   }
 
@@ -2248,7 +2268,7 @@ function _enterOffline(){
   if(_fromGame){
     if(session) await _goLobby(); else{_testMode=true;await _goLobby();}
   }else if(session){
-    if(localStorage.getItem('_cinSeen')){await _goLobby();}
+    if(_cinSeenChk()){await _goLobby();}
     else{_goCinematic();}
   }else{
     _goLogin();
@@ -2257,7 +2277,7 @@ function _enterOffline(){
   sb.auth.onAuthStateChange((event,session)=>{
     if(event==='SIGNED_IN'&&session){
       currentUser=session.user;
-      if(localStorage.getItem('_cinSeen')){_goLobby();}
+      if(_cinSeenChk()){_goLobby();}
       else{_goCinematic();}
     }else if(event==='SIGNED_OUT'){
       currentUser=null;
