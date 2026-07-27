@@ -49683,9 +49683,9 @@ async function _startDemoTest(){
   STATS={str:0,dex:0,int:0,vit:0,lck:0};
   PASSIVE_DEF.forEach(pd=>PASSIVES[pd.key]=0);
   BAG_MAX=300;invFilter={slot:null,rarity:null,el:null};
-  G.on=false;G.stage=_BIC?0:_DEMO_LAST_STAGE;G.kills=0;G.mats=999999;G.exits=[];_cacheExitCenter();G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
+  G.on=false;G.stage=0;/* 데모 캐릭도 1장 처음부터 (2026-07-27 유저 지시, 구: _BIC?0:_DEMO_LAST_STAGE) */G.kills=0;G.mats=999999;G.exits=[];_cacheExitCenter();G.bossAlive=true;G._bossRef=null;G._crT=0;G.atkTickets=0;_hudT=0;_hudAlive=0;G.rifts=[];G.spawnHoles=[];G._chainCnt=0;G._chainT=0;G._bossArena=false;G._bossLoadPhase=0;G._bossLoadFade=0;G._bfxBolt=null;G.hellCleared=[];STORAGE={};STORAGE._synced=false;_getStore();
   _charName='DEMO TEST';_charIdx=0;
-  G._cutsceneDone=true;
+  G._cutsceneDone=false; // 데모도 전쟁 서사+네메시아 인트로 재생 (2026-07-27 유저 지시, 구: true)
   // Lv500
   P.lv=_DEMO_LV_CAP;P.exp=0;P.maxExp=_calcMaxExp(_DEMO_LV_CAP);P.sp=200;P.ap=100;P.isDemoTest=true;G.mats=10000000000;
   // ACT1 스킬 전체 Lv5
@@ -50026,7 +50026,7 @@ async function _startTestChar(){
     const _el=$('stageTransition');
     const _elapsed=Date.now()-_bootLoadShownAt;
     const _wait=Math.max(0,3000-_elapsed)+200;
-    setTimeout(()=>{if(_el){_el.style.opacity='0';_el.style.pointerEvents='none';}G.on=true;P.iframes=120;r();},_wait);
+    setTimeout(()=>{if(_el){_el.style.opacity='0';_el.style.pointerEvents='none';}if(G.stage===0&&!G._cutsceneDone){_startIntroCutscene();}else{G.on=true;P.iframes=120;}r();},_wait); // 데모 첫 시작 시 인트로 컷신 (2026-07-27)
   });
 }
 // ═══ DB-aware startup ═══
