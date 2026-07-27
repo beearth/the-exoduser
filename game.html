@@ -2297,11 +2297,11 @@ canvas{display:block;position:fixed;inset:0}
   <div style="color:#ffcc66;font-weight:700;font-size:.9rem;margin-bottom:4px">⌨ 조작법</div>
   <div><b style="color:#fff">WASD</b> — 이동</div>
   <div><b style="color:#fff">좌클릭</b> — 무기 공격</div>
-  <div><b style="color:#fff">우클릭 탭</b> — 칼등 처내기 (투사체 반사, 홀드 연사)</div>
-  <div><b style="color:#fff">우클릭 홀드</b> — 연속 처내기</div>
+  <div><b style="color:#fff">E 탭</b> — 칼등 처내기 (투사체 반사, 홀드 연사)</div>
+  <div><b style="color:#fff">E 홀드</b> — 연속 처내기</div>
   <div><b style="color:#fff">SPACE</b> — 영역 스킬 (폭풍소환 등)</div>
   <div><b style="color:#fff">SHIFT</b> — 사슬 발사</div>
-  <div><b style="color:#fff">E</b> — 마법 (탭=투사체, 홀드=빔)</div>
+  <div><b style="color:#fff">우클릭</b> — 마법 (탭=투사체, 홀드=빔)</div>
   <div><b style="color:#fff">Q</b> — 데빌포스 흡수</div>
   <div><b style="color:#fff">R</b> — 아이템 줍기</div>
   <div><b style="color:#fff">1~4</b> — 물약 / 스킬슬롯</div>
@@ -2435,7 +2435,6 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><span class="set-name">결정 자동강화</span><input type="range" id="optCrAutoEnh" min="-1" max="4" step="1" value="-1"><span class="set-range-val" id="optCrAutoEnhVal">사용 안 함</span></div>
           <div class="set-range-row"><span class="set-name">FPS 제한</span><input type="range" id="optFps" min="0" max="5" step="1" value="5"><span class="set-range-val" id="optFpsVal">제한없음</span></div>
           <div class="set-range-row"><span class="set-name">해상도 스케일</span><input type="range" id="optResScale" min="50" max="100" step="10" value="100"><span class="set-range-val" id="optResScaleVal">100%</span></div>
-          <div class="set-range-row"><span class="set-name">SSAA 슈퍼샘플</span><select id="optSsaa" style="background:#1a1a22;color:#ddd;border:1px solid #444;border-radius:4px;padding:2px 6px"><option value="1">끄기 (1x)</option><option value="1.5">1.5x</option><option value="2">2x</option></select></div>
 
           <div class="set-range-row"><span class="set-name" style="color:#44aaff">유령불꽃 크기</span><input type="range" id="optIrisSz" min="1" max="100" value="20" style="accent-color:#44aaff"><span class="set-range-val" id="optIrisSzVal" style="color:#44aaff">20</span></div>
           <div class="set-range-row"><span class="set-name" style="color:#ddddaa">화면 명암</span><input type="range" id="optBrightness" min="70" max="130" value="100" style="accent-color:#ddddaa"><span class="set-range-val" id="optBrightnessVal" style="color:#ddddaa">100%</span></div>
@@ -2709,11 +2708,11 @@ canvas{display:block;position:fixed;inset:0}
       <div style="border-bottom:1px solid #332211;padding:8px 0">
         <div style="color:#886644;font-weight:700;margin-bottom:6px;font-size:.9rem;letter-spacing:.1em">전투</div>
         <div style="margin-bottom:3px"><span class="tkey">좌클릭</span> 무기 공격</div>
-        <div style="margin-bottom:3px"><span class="tkey">우클릭 탭</span> 칼등 처내기</div>
-        <div style="margin-bottom:3px"><span class="tkey">우클릭 홀드</span> 연속 처내기</div>
+        <div style="margin-bottom:3px"><span class="tkey">E 탭</span> 칼등 처내기</div>
+        <div style="margin-bottom:3px"><span class="tkey">E 홀드</span> 연속 처내기</div>
         <div style="margin-bottom:3px"><span class="tkey">SHIFT</span> 사슬 발사</div>
         <div style="margin-bottom:3px"><span class="tkey">SPACE</span> 영역스킬 / <span class="tkey">T</span> 석궁자동</div>
-        <div style="margin-bottom:3px"><span class="tkey">E</span> 마법 (탭=투사체, 홀드=빔)</div>
+        <div style="margin-bottom:3px"><span class="tkey">우클릭</span> 마법 (탭=투사체, 홀드=빔)</div>
         <div><span class="tkey">Q</span> 데빌포스 흡수 (HP→에너지)</div>
       </div>
       <div style="border-bottom:1px solid #332211;padding:8px 0 8px 12px">
@@ -3442,6 +3441,11 @@ const BGM={
     hell5:['bgm/5장_지옥군단/hell5_thunder.mp3'],
     hell6:['bgm/6장_사도마굴/hell6_bone.mp3'],
     hell7:['bgm/7장_지옥성/hell7_chaos.mp3'],
+    cutscene_prologue:[ // 주제가 웅장버전 4곡 (Suno, 2026-07-27) — 프롤로그 세계관 나레이션 구간
+      'bgm/cutscene/prologue_theme.mp3', // 심연의 탈주
+      'bgm/cutscene/prologue_theme_abyssal_fracture.mp3', // Abyssal Fracture: The Unbroken Cycle
+      'bgm/cutscene/prologue_theme_rebirth_gate_1.mp3', // Broken Rebirth Gate
+      'bgm/cutscene/prologue_theme_rebirth_gate_2.mp3'], // Broken Rebirth Gate 2
     cutscene_goddess:['bgm/cutscene/cutscene_goddess_1.mp3','bgm/cutscene/cutscene_goddess_2.mp3'],
     cutscene_goddess_en:['bgm/cutscene/cutscene_goddess_en_1.mp3','bgm/cutscene/cutscene_goddess_en_2.mp3'],
     boss:['bgm/공통/boss.mp3'], finalboss:['bgm/공통/finalboss.mp3'],
@@ -3827,7 +3831,7 @@ function rz(){
   rw=Math.max(2,rw);rh=Math.max(2,rh);
   // ── 논리 시야(VW/VH) = rw/rh (ss 미포함). 백킹(bw/bh) = VW*ss / VH*ss. ──
   // ss=1이면 bw===rw 로 기존과 완전 동일.
-  _ssaa=+OPT.ssaa||1; if(_ssaa<1)_ssaa=1;
+  _ssaa=1; // SSAA(슈퍼샘플) 기능 제거 — 항상 1x 고정 (화면 왜곡 방지)
   VW=rw; VH=rh;
   let bw=(~~(rw*_ssaa))&~1, bh=(~~(rh*_ssaa))&~1;
   bw=Math.max(2,bw); bh=Math.max(2,bh);
@@ -4896,10 +4900,10 @@ async function _bootRenderer(){
 // ─── [S03a] KEYBIND — 키 바인딩 시스템 ───
 let BINDS={
   up:'KeyW', down:'KeyS', left:'KeyA', right:'KeyD',
-  weapon:'mouse0', shield:'mouse2',
+  weapon:'mouse0', shield:'KeyE',
   bow:'Space', charge:'ShiftLeft',
   parry:'KeyQ',
-  beam:'KeyE', forge:'KeyG',
+  beam:'mouse2', forge:'KeyG',
   inventory:'Tab', settings:'Escape',
   interact:'KeyR', storage:'KeyN', stats:'KeyJ', skill:'KeyK',
   skillCycle:'KeyL', irisToggle:'KeyY', bladeToggle:'KeyU',
@@ -4988,7 +4992,7 @@ const _EN={
 '...아파? 당연하지. 여긴 지옥이야.':'...Hurts? Of course. This is hell.',
 'Q를 눌러! 악의로 보호막을 만들 수 있다.':'Press Q! Create a shield with malice.',
 '보호막 없이 버틸 생각은 버려.':'Forget surviving without a shield.',
-'우클릭이 패링이다. 적 공격이 닿기 직전에 눌러!':'Right click to parry. Press it right before the enemy hits!',
+'E가 패링이다. 적 공격이 닿기 직전에 눌러!':'E is your parry. Press it right before the enemy hits!',
 '못 하겠으면 때려. 안 죽으면 그만이야.':"Can't parry? Just hit them. Not dying is enough.",
 '됐어! 감 잡았구나.':"There you go! You're getting the hang of it.",
 '하나 죽었군.':'One down.',
@@ -5000,9 +5004,13 @@ const _EN={
 '빨간 탄을 무서워하지 마. 악의가 강하다.':"Don't fear red bullets. Malice is strong.",
 '패링으로 돌려주고, Q 보호막도 써! 악의를 잘 굴려!':'Parry them back, use Q shield too! Master your malice!',
 '무지개빛은 패링 불가! 피해!':"Rainbow shots can't be parried! Dodge!",
+'빨강은 E! Q는 안 돼!':"Red = E! Q won't work!",
+'무지개탄은 Q 패링이다. E는 안 통해.':"Rainbow shots take a Q parry. E won't work.",
+'타고 있군. 화상은 점점 심해진다. 피를 채워.':"…You're burning. Burns only get worse. Restore your HP.",
+'화상이야! 점점 심해져! 물약으로 HP 관리해!':"You're burning! It keeps getting worse! Manage HP with potions!",
 '피가 새고 있다. Shift. 빠져.':"You're bleeding out. Shift. Get out.",
 '물약 있잖아! 숫자키!':'You have potions! Number keys!',
-'우클릭. 적 손목이 꺾일 때 쳐.':'Right click. Strike when their wrist bends.',
+'E. 적 손목이 꺾일 때 쳐.':'E. Strike when their wrist bends.',
 '빨간 탄은 악의 덩어리다. 쳐내서 이용해.':'Red bullets are chunks of malice. Deflect and use them.',
 '무지개빛만 피하면 돼! 나머지는 다 패링!':'Just dodge the rainbow! Parry everything else!',
 'Q 보호막도 패링이 가능해!':'Q shield can parry too!',
@@ -5146,8 +5154,8 @@ const _EN={
 '창 모드':'Windowed','보더리스':'Borderless','전체화면':'Fullscreen',
 '설정':'Settings','조작 키 설정 (클릭하여 변경)':'Key Bindings (Click to Change)',
 // --- Key Guide ---
-'좌클릭 무기 공격':'LMB Weapon Attack','우클릭 탭 칼등 처내기':'RMB Tap Blade Parry',
-'우클릭 홀드 연속 처내기':'RMB Hold Continuous Parry','SHIFT 사슬 발사':'SHIFT Chain Launch',
+'좌클릭 무기 공격':'LMB Weapon Attack','E 탭 칼등 처내기':'E Tap Blade Parry',
+'E 홀드 연속 처내기':'E Hold Continuous Parry','SHIFT 사슬 발사':'SHIFT Chain Launch',
 '이동':'Move','아이템 줍기':'Pick Up Item','능력치 (스탯/패시브)':'Stats (Stats/Passives)',
 // --- Forge ---
 '복수의 대장간':'Forge of Vengeance','강화':'Enhance','분해':'Dismantle','제작':'Craft',
@@ -5247,7 +5255,7 @@ const _EN={
 'ST 부족!':'Not enough ST!','HP 부족!':'Not enough HP!',
 '필살기 슬롯 클릭하여 배정!':'Click ultimate slot to assign!',
 '필살기 스킬을 습득하세요':'Learn an ultimate skill',
-'우클릭(칼등치기)에 합체됨':'Merged into RMB (blade parry)',
+'E(칼등치기)에 합체됨':'Merged into E (blade parry)',
 'T(석궁자동)에 세팅하세요':'Set to T (auto crossbow)',
 '공성쇠뇌 철거 → 이동식':'Siege crossbow dismantled → portable',
 'ST 부족! (100)':'Not enough ST! (100)',
@@ -5433,7 +5441,7 @@ const _EN={
 '⚔ 처형! ':'⚔ Execution! ',
 '💥 지뢰!':'💥 Mine!',
 '⚠ 덫!':'⚠ Trap!',
-'❌ 우클릭으로! -':'❌ Use RMB! -',
+'❌ E키로! -':'❌ Use E! -',
 '❌ Q키로! -':'❌ Use Q! -',
 '💥무지개 폭발! ':'💥Rainbow Blast! ',
 '🛡️💎 블루콩!':'🛡️💎 Blue Bean!',
@@ -5771,10 +5779,10 @@ const _EN={
 'Ctrl 유령걸음으로 탈출!':'Ctrl Ghost Walk to escape!',
 'Ctrl 얼음보주로 탈출!':'Ctrl Ice Orb to escape!',
 // ── Parry guide ──
-'빨간 탄은 우클릭 패링. 무지개는 Q 패링.':'Red bullets: RMB parry. Rainbow: Q parry.',
-'나머지는 전부 우클릭 패링 가능해!':'Everything else can be parried with RMB!',
-'빨강=우클릭, 무지개=Q 패링. 나머진 다 쳐내.':'Red=RMB, Rainbow=Q parry. Deflect the rest.',
-'무지개는 Q로 패링! 나머지는 전부 우클릭!':'Rainbow with Q! Everything else with RMB!',
+'빨간 탄은 E 패링. 무지개는 Q 패링.':'Red bullets: E parry. Rainbow: Q parry.',
+'나머지는 전부 E 패링 가능해!':'Everything else can be parried with E!',
+'빨강=E, 무지개=Q 패링. 나머진 다 쳐내.':'Red=E, Rainbow=Q parry. Deflect the rest.',
+'무지개는 Q로 패링! 나머지는 전부 E!':'Rainbow with Q! Everything else with E!',
 // ── Resource / combat ──
 '빠져! 물약 마시고 안전한 곳에서 회복해.':'Fall back! Drink potions and recover somewhere safe.',
 '자원 없으면 도망가는 게 답이야!':'No resources? Running is the answer!',
@@ -6042,6 +6050,7 @@ const _EN={
 '만물보호의':'All Protection',
 '정예보호의':'Elite Shield',
 '경직저항의':'Stagger Resist',
+'화상저항의':'Burn Resist',
 '빙결저항의':'Freeze Resist',
 '감속저항의':'Slow Resist',
 '넉백저항의':'Knockback Resist',
@@ -6296,6 +6305,7 @@ const _EN={
 '암흑저항':'Dark Res',
 '독저항':'Poison Res',
 '전원소저항':'All Elem Res',
+'화상피해감소':'Burn DMG Red',
 '물리DR':'Phys DR',
 '반사%':'Reflect%',
 '가시뎀':'Thorns DMG',
@@ -6557,7 +6567,7 @@ const _EN={
 '창고':'Storage','스탯 포인트':'Stat Points','능력치 요약':'Stat Summary','올 리셋':'Reset All',
 '대장간':'Forge','스킬':'Skills','능력치':'Stats',
 // --- Slot title tooltips ---
-'좌클스킬 (클릭 전환)':'LMB Skill (click to switch)','우클스킬 (클릭 전환)':'RMB Skill (click to switch)',
+'좌클스킬 (클릭 전환)':'LMB Skill (click to switch)','E스킬 (클릭 전환)':'E Skill (click to switch)',
 '이동스킬 (클릭 전환)':'Move Skill (click to switch)','마법스킬 (클릭 전환)':'Magic Skill (click to switch)',
 '영역스킬 (클릭 전환)':'Area Skill (click to switch)','피보호막 (클릭 전환)':'Blood Shield (click to switch)',
 'CT스킬 (클릭 전환)':'CT Skill (click to switch)','[J] 능력치':'[C] Stats',
@@ -6625,8 +6635,8 @@ const _EN={
 '골고루 안 돼! 하나로 밀어!':'Don\'t spread stats! Push one!',
 '그로기 터지면 1.5배!':'Groggy = 1.5x damage!',
 '길이 열렸다.':'The path is open.',
-'나머진 전부 우클릭 패링 가능!':'Everything else can be parried with right click!',
-'나머진 전부 우클릭!':'Everything else — right click!',
+'나머진 전부 E 패링 가능!':'Everything else can be parried with E!',
+'나머진 전부 E!':'Everything else — E!',
 '다섯 번 연속! 내가 본 인간 중 최고!':'Five in a row! Best human I\'ve ever seen!',
 '다음엔 죽지 마!':'Don\'t die next time!',
 '더블탭 or Shift+방향키! 전격이동으로 탈출해!':'Double-tap or Shift+Dir! Dash to escape!',
@@ -6749,8 +6759,8 @@ const _EN={
 'J키. 패시브 포인트가 쌓여있다.':'J key. Passive points have built up.',
 '…쓸 거 아니면 분해해.':'...Salvage what you won\'t use.',
 '…강화 안 하면 그냥 고철이야.':'...Without enhancement, it\'s just scrap.',
-'빨간 탄은 우클릭. 무지개는 Q.':'Red shots: right-click. Rainbow: Q.',
-'빨강=우클릭, 무지개=Q.':'Red = right-click, rainbow = Q.',
+'빨간 탄은 E. 무지개는 Q.':'Red shots: E. Rainbow: Q.',
+'빨강=E, 무지개=Q.':'Red = E, rainbow = Q.',
 '…멈추지 마. 여신은 기다리지 않는다.':'...Don\'t stop. The goddess doesn\'t wait.',
 // --- Pet dialogue: boss reactions ---
 '패턴이 바뀐다. 거리를 둬.':'Pattern is changing. Keep distance.',
@@ -7590,7 +7600,7 @@ const DIFF_MOB=[1,1,1,1,1,1,1,1,1,1,1]; // 레거시 호환용 (전부 1)
 const _petBubble={who:null,txt:'',t:0,mt:0,pair:null,pairFired:false};
 const _petDlgCD={}; // 대사 쿨다운 {id: remainFrames}
 // 튜토리얼 플래그 (1회성, 세이브 불필요 — 스테이지0 전용)
-const _petTut={start:false,atk3:false,atk7:false,charge:false,firstCharge:false,firstHit:false,hit2:false,parryHint:false,firstParry:false,redBean:false,rainbowBean:false,firstKill:false,
+const _petTut={start:false,atk3:false,atk7:false,charge:false,firstCharge:false,firstHit:false,hit2:false,parryHint:false,firstParry:false,bulletGuide:false,redBean:false,rainbowBean:false,firstKill:false,
   keyK:false,keyC:false,keyG:false,keyF:false,keyZ:false,keyCT:false,keyL:false,keyV:false,keyESC:false,
   firstItem:false,potionCraft:false,firstDebris:false,firstChest:false,firstForge:false};
 // v1 누적 카운터 (세이브 불필요 — 런 내 일시)
@@ -7643,14 +7653,16 @@ function _petSfx(who,urgent){
 // 배경 투명 PNG. 텍스트는 프레임 내 빈 박스 영역에 오버레이.
 // ─── v7 패드 인지 힌트: 패드 모드일 때 텍스트 내 키보드 키 토큰을 패드 글리프로 치환 ───
 // GP_BINDS 기준 (weapon=Ⓐ, bow=Ⓑ, beam=Ⓧ, parry=Ⓨ, charge=LB, shield=RB, ULT=RT, F슬롯=LT, inv=Select, 줍기=L3, 스킬창=D↑, 대장간=D↓, 능력치=D←, 창고=D→)
-const _PAD_GLYPH_KO={'좌클릭':'Ⓐ','우클릭':'RB','쉬프트':'LB','스페이스':'Ⓑ'};
-const _PAD_GLYPH_KEY={'Shift':'LB','Space':'Ⓑ','TAB':'Select','Tab':'Select','Q':'Ⓨ','E':'Ⓧ','K':'D↑','G':'D↓','J':'D←','N':'D→','R':'L3','Z':'RT','F':'LT','X':'LT+RT'};
+const _PAD_GLYPH_KO={'좌클릭':'Ⓐ','우클릭':'Ⓧ','쉬프트':'LB','스페이스':'Ⓑ'}; // 2026-07-27 키스왑: 우클릭=마법(beam)=Ⓧ
+const _PAD_GLYPH_KEY={'Shift':'LB','Space':'Ⓑ','TAB':'Select','Tab':'Select','Q':'Ⓨ','E':'RB','K':'D↑','G':'D↓','J':'D←','N':'D→','R':'L3','Z':'RT','F':'LT','X':'LT+RT'}; // E=처내기(shield)=RB
 function _padifyHint(txt){
   if(!(typeof _gpActive!=='undefined'&&_gpActive)||!txt)return txt;
   return txt.replace(/좌클릭|우클릭|쉬프트|스페이스/g,function(m){return _PAD_GLYPH_KO[m]||m})
-            .replace(/Right[- ]?click|Left[- ]?click|RMB|LMB/gi,function(m){return /left|lmb/i.test(m)?'Ⓐ':'RB'})
+            .replace(/Right[- ]?click|Left[- ]?click|RMB|LMB/gi,function(m){return /left|lmb/i.test(m)?'Ⓐ':'Ⓧ'})
             .replace(/\b(Shift|Space|TAB|Tab|Q|E|K|G|J|N|R|Z|F|X)\b/g,function(m){return _PAD_GLYPH_KEY[m]||m});
 }
+// 팻 자막 최대 불투명도 — 표시 시작부터 반투명(캐릭터 위에 겹쳐도 비쳐 보이도록)
+const _PET_OP_MAX=0.6;
 function _petBubbleShow(who,txt){
   const _ps=$('petSubtitle');if(!_ps)return;
   const _isCrow=who==='crow';
@@ -7669,7 +7681,7 @@ function _petBubbleShow(who,txt){
   // 게임 전체 UI 스케일(--ui-scale = min(sw/1920, sh/1080))에 직접 연결 — HUD와 동일하게 창 크기 따라감
   _ps.style.transformOrigin=_isCrow?'left bottom':'right bottom';
   _ps.style.transform='scale(calc(var(--ui-scale) * 1.5))';
-  _ps.style.opacity='1';
+  _ps.style.opacity=_PET_OP_MAX;
 }
 function _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur,_noSfx){
   if(_petBubble.t>0)return false; // 이미 말풍선 표시 중
@@ -7687,7 +7699,7 @@ function _petSay(id,who,txt,durSec,pairWho,pairTxt,pairDur,_noSfx){
 // 티어: 5생존 / 4전투핵심 / 3전투조언 / 2진행성취 / 1튜토리얼 / 0분위기
 const _PET_TIER_COOL=[1200,720,480,360,240,0]; // T0~T5 티어별 글로벌쿨(프레임). T5=0(인터럽트)
 const _petTierCD=[0,0,0,0,0,0];
-const _PET_SURV_W={hp_critical:100,hp_oneshot:95,boss_grab_warn:90,boss_aoe_warn:90,boss_exec:88,stun_warn:80,boss_groggy:70,crisis_hp30:60,warn_hp50:40}; // 생존 내부 우선순위
+const _PET_SURV_W={hp_critical:100,hp_oneshot:95,boss_grab_warn:90,boss_aoe_warn:90,boss_exec:88,stun_warn:80,boss_groggy:70,crisis_hp30:60,burn_warn:55,warn_hp50:40}; // 생존 내부 우선순위
 const _PB={tier:-1,weight:0,id:'',who:'',txt:'',dur:0,cd:0,pw:null,pt:null,pd:0}; // 프레임 입찰 슬롯(재사용, 무할당)
 let _petInFrame=false; // _checkPetDialogue 실행 중 여부(이벤트 콜백과 구분)
 // id → 티어 추론 (문자열 접두 매칭, 무할당)
@@ -7775,7 +7787,7 @@ function _updatePetBubble(){
       _petSfx(_petBubble.who,false);
     }
     // 자막 페이드아웃 (표시 순간부터 전체 지속시간에 걸쳐 점점 흐려지며 사라짐)
-    if(_petBubble.t>0){const _ps=$('petSubtitle');if(_ps){const _r=_petBubble.mt>0?_petBubble.t/_petBubble.mt:0;_ps.style.opacity=Math.pow(Math.max(0,Math.min(1,_r)),0.6).toFixed(2)}}
+    if(_petBubble.t>0){const _ps=$('petSubtitle');if(_ps){const _r=_petBubble.mt>0?_petBubble.t/_petBubble.mt:0;_ps.style.opacity=(Math.pow(Math.max(0,Math.min(1,_r)),0.6)*_PET_OP_MAX).toFixed(2)}}
   }
   // 대사 완전 종료 시 자막 숨김
   if(_petBubble.t<=0&&!_petBubble.pair){const _ps=$('petSubtitle');if(_ps&&_ps.style.opacity!=='0')_ps.style.opacity='0'}
@@ -7796,6 +7808,8 @@ function _checkPetDialogue(){
   if(P.hp>0&&P.hp<P.mhp*.3&&P.hp>=P.mhp*.1)_petSayUrgent('crisis_hp30','crow','피가 새고 있다. Shift. 빠져.',4,20,'cat','사슬 던져! 끌려가면 무적이야!',4);
   // HP 10% (v4 신규)
   if(P.hp>0&&P.hp<P.mhp*.1)_petSayUrgent('hp_critical','crow','…죽기 직전이다. 패링해. 피를 채워.',3,30,'cat','한 방이면 죽어! 패링으로 HP 채워!!',3);
+  // 화상 DOT 경고 — 일반화상(burnT) 또는 빨콩 중첩화상(_rbBurn) 진행 중
+  if(P.hp>0&&((P.burnT||0)>0||(P._rbBurn&&P._rbBurn.length>0)))_petSayUrgent('burn_warn','crow','타고 있군. 화상은 점점 심해진다. 피를 채워.',4,45,'cat','화상이야! 점점 심해져! 물약으로 HP 관리해!',4);
   // HP 한방컷 (v4 — 적 평균ATK 캐싱)
   if(G.frame%60===0){let _sa=0,_sc=0;for(let i=0;i<ens.length;i++){if(ens[i].alive&&dst2(P.x,P.y,ens[i].x,ens[i].y)<250000){_sa+=(ens[i].atk||0);_sc++}}_petEnemyAvgAtk=_sc>0?_sa/_sc:0}
   if(P.hp>0&&_petEnemyAvgAtk>0&&P.hp<_petEnemyAvgAtk*1.2)_petSayUrgent('hp_oneshot','crow','…다음 한 방이 마지막이야.',3,20,'cat','한 대만 맞아도 죽어! 패링이든 회피든!!',3);
@@ -7835,16 +7849,18 @@ function _checkPetDialogue(){
     if(!_petTut.firstCharge&&_petChargeUsed){_petTut.firstCharge=true;_petSayCD('tut_1stcharge','crow','사슬로 끌려가는 중엔 무적이다. 위험할 때 쓰면 좋아.',5,9999,'cat','흥, 사슬 못 맞추면 헛수고야.',5);return}
     if(!_petTut.firstHit&&_petHitCnt>=1){_petTut.firstHit=true;_petSayCD('tut_1sthit','cat','…아파? 당연하지. 여긴 지옥이야.',5,9999);return}
     if(!_petTut.hit2&&_petHitCnt>=2){_petTut.hit2=true;_petSayCD('tut_hit2','crow','Q를 눌러! 악의로 보호막을 만들 수 있다.',5,9999,'cat','보호막 없이 버틸 생각은 버려.',5);return}
-    if(!_petTut.parryHint&&_petAtkCnt>=8&&_petParryCnt===0){_petTut.parryHint=true;_petSayCD('tut_parry','crow','우클릭이 패링이다. 적 공격이 닿기 직전에 눌러!',5,9999,'cat','못 하겠으면 때려. 안 죽으면 그만이야.',5);return}
+    if(!_petTut.parryHint&&_petAtkCnt>=8&&_petParryCnt===0){_petTut.parryHint=true;_petSayCD('tut_parry','crow','E가 패링이다. 적 공격이 닿기 직전에 눌러!',5,9999,'cat','못 하겠으면 때려. 안 죽으면 그만이야.',5);return}
     if(!_petTut.firstParry&&_petParryCnt>=1){_petTut.firstParry=true;_petSayCD('tut_1stparry','crow','됐어! 감 잡았구나.',4,9999,'cat','…운이 좋았을 뿐이야. 아마.',5);return}
     if(!_petTut.firstKill&&_petKillCnt>=1){_petTut.firstKill=true;_petSayCD('tut_1stkill','crow','하나 죽었군.',4,9999,'cat','…고기 냄새. 싫진 않네.',5);return}
     if(!_petTut.bowIntro&&_petKillCnt>=3){_petTut.bowIntro=true;_petSayCD('tut_bow','crow','유령쇠뇌야. 인사해.',3,9999,'cat','…말은 못해.',4);return}
     if(!_petTut.firstItem&&INV.bag.length>=1){_petTut.firstItem=true;_petSayCD('tut_firstItem','crow','TAB을 눌러. 가방을 열고 장비를 입어야 한다.',5,9999,'cat','주웠으면 껴야지! TAB!',4);return}
     if(!_petTut.potionCraft&&P.lv>=100){_petTut.potionCraft=true;_petSayCD('tut_potionCraft','crow','G. 대장간에서 물약도 제작할 수 있다.',5,9999,'cat','악의로 물약 만들어! G키야!',4);return}
   }
-  // 빨간/무지개 탄 튜토리얼
-  if(!_petTut.redBean){for(let i=0;i<projs.length;i++){if(projs[i].alive&&projs[i].parryable){_petTut.redBean=true;_petSayCD('tut_red','crow','빨간 탄을 무서워하지 마. 악의가 강하다.',5,9999,'cat','패링으로 돌려주고, Q 보호막도 써!',5);break}}}
-  if(!_petTut.rainbowBean){for(let i=0;i<projs.length;i++){if(projs[i].alive&&projs[i].rainbow){_petTut.rainbowBean=true;_petSayCD('tut_rainbow','crow','무지개빛은 패링 불가! 피해!',4,9999,'cat','예쁘다고 만지면 죽어.',4);break}}}
+  // 탄막 기본 가이드 — 첫 적 투사체 등장 시 (표시 성공까지 재시도)
+  if(!_petTut.bulletGuide){for(let i=0;i<projs.length;i++){if(projs[i].alive&&!projs[i].friendly){if(_petSayCD('tut_bullets','crow','빨간 탄은 E. 무지개는 Q.',5,9999,'cat','나머진 전부 E 패링 가능!',5))_petTut.bulletGuide=true;break}}}
+  // 빨간/무지개 탄 튜토리얼 (빨강=E 전용, 무지개=Q 전용)
+  if(!_petTut.redBean){for(let i=0;i<projs.length;i++){if(projs[i].alive&&projs[i].parryable){_petTut.redBean=true;_petSayCD('tut_red','crow','빨간 탄을 무서워하지 마. 악의가 강하다.',5,9999,'cat','빨강은 E! Q는 안 돼!',5);break}}}
+  if(!_petTut.rainbowBean){for(let i=0;i<projs.length;i++){if(projs[i].alive&&projs[i].rainbow){_petTut.rainbowBean=true;_petSayCD('tut_rainbow','crow','무지개탄은 Q 패링이다. E는 안 통해.',4,9999,'cat','예쁘다고 만지면 죽어.',4);break}}}
   // 부활 몹 튜토리얼 — 호출처: ~22778줄 (기존)
 
   // ══ [2] 키 안내 튜토리얼 (Lv200 이하, 1회성) — 9종 ══
@@ -7896,8 +7912,8 @@ function _checkPetDialogue(){
     if(_uE)_petBidCD('enh_hint','crow','…강화 안 하면 그냥 고철이야.',4,300,'cat','G 눌러서 대장간 가봐!',4)}
 
   // ══ [6] 패링 교육 + 대기 — 3종 ══
-  if(_petParryCnt<3)_petBidCD('parry_low','crow','빨간 탄은 우클릭. 무지개는 Q.',4,90,'cat','나머진 전부 우클릭 패링 가능!',4);
-  else if(_petParryCnt<10)_petBidCD('parry_mid','crow','빨강=우클릭, 무지개=Q.',4,90,'cat','나머진 전부 우클릭!',4);
+  if(_petParryCnt<3)_petBidCD('parry_low','crow','빨간 탄은 E. 무지개는 Q.',4,90,'cat','나머진 전부 E 패링 가능!',4);
+  else if(_petParryCnt<10)_petBidCD('parry_mid','crow','빨강=E, 무지개=Q.',4,90,'cat','나머진 전부 E!',4);
   {let _nE=true;for(let i=0;i<ens.length;i++){if(ens[i].alive){_nE=false;break}}
   if(_nE&&P.s==='idle')_petBidCD('idle_noE','crow','…멈추지 마. 여신은 기다리지 않는다.',4,60,'cat','앞으로 가자~',4)}
 
@@ -7909,7 +7925,7 @@ function _checkPetDialogue(){
         const _nags=[['시간이 없어. 움직여.','멍하게 서있으면 안 돼!'],['…뭘 기다리는 거야?','가자가자! 몬스터가 기다려!'],['여기 오래 있으면 위험해.','가만있으면 둘러싸여!'],['쉬는 건 죽고 나서 해.','살아있을 때 쉬면 안 돼!'],['적이 몰려오고 있어.','냄새 맡고 올 거야. 빨리!'],['…아직 살아있는 거 맞지?','혹시 잠든 거야…?']];
         const _ni=_petBagNext(_petNagBag,_nags.length);_petBidCD('idle_nag'+_ni,'crow',_nags[_ni][0],4,30,'cat',_nags[_ni][1],4);
       }else if(Math.random()<.5){
-        const _tips=[['사슬을 땅에 꽂으면 끌려간다.','Shift로 사슬 던져봐!'],['패링 성공하면 ST가 회복된다.','패링 많이 하면 ST 걱정 없어~'],['장비 분해하면 악의를 얻는다.','TAB 열어서 안 쓰는 장비 분해!'],['그로기 적은 1.5배 데미지.','무릎 꿇으면 전력으로 때려!'],['화염은 빙결, 암전은 암흑에 약하다.','무기 속성 바꿔가며 싸워!'],['빙결 적은 1.5배 데미지.','얼리고 때리는 게 기본!'],['보스 빨강은 패링, 보라는 회피만.','빨강 받아치고 무지개는 피해!'],['VIT 올리면 최대 HP.','STR 근접, DEX 활, INT 마법!'],['E 길게 = 빔, 짧게 = 투사체.','MP 잘 봐! 빔은 연속으로 깎여!'],['펫이 아이템을 주워준다.','우리한테 고마워해~'],['LCK 올리면 레어 드롭률.','운빨 게임! LCK 올려봐!'],['G 누르면 대장간.','강화하면 공격력 쭉쭉!'],['강화 +1에서 99%. 높을수록 떨어져.','실패해도 장비 안 부서져!'],['대장간 제작도 가능. 악의 30000개+.','영웅급 이상 나올 수 있어!'],['쉴드는 추가 HP다. 쉴드부터 깎인다.','쉴드 있으면 HP 안 닳아!'],['영웅급+ 장비에 접두/접미사.','좋은 거 나오면 강화!'],['강화는 장비 바꿔도 자동 이전.','더 좋은 거 나오면 바로 장착!']];
+        const _tips=[['사슬을 땅에 꽂으면 끌려간다.','Shift로 사슬 던져봐!'],['패링 성공하면 ST가 회복된다.','패링 많이 하면 ST 걱정 없어~'],['장비 분해하면 악의를 얻는다.','TAB 열어서 안 쓰는 장비 분해!'],['그로기 적은 1.5배 데미지.','무릎 꿇으면 전력으로 때려!'],['화염은 빙결, 암전은 암흑에 약하다.','무기 속성 바꿔가며 싸워!'],['빙결 적은 1.5배 데미지.','얼리고 때리는 게 기본!'],['보스 빨강은 패링, 보라는 회피만.','빨강 받아치고 무지개는 피해!'],['VIT 올리면 최대 HP.','STR 근접, DEX 활, INT 마법!'],['우클릭 길게 = 빔, 짧게 = 투사체.','MP 잘 봐! 빔은 연속으로 깎여!'],['펫이 아이템을 주워준다.','우리한테 고마워해~'],['LCK 올리면 레어 드롭률.','운빨 게임! LCK 올려봐!'],['G 누르면 대장간.','강화하면 공격력 쭉쭉!'],['강화 +1에서 99%. 높을수록 떨어져.','실패해도 장비 안 부서져!'],['대장간 제작도 가능. 악의 30000개+.','영웅급 이상 나올 수 있어!'],['쉴드는 추가 HP다. 쉴드부터 깎인다.','쉴드 있으면 HP 안 닳아!'],['영웅급+ 장비에 접두/접미사.','좋은 거 나오면 강화!'],['강화는 장비 바꿔도 자동 이전.','더 좋은 거 나오면 바로 장착!']];
         const ti=_petBagNext(_petTipBag,_tips.length);_petBidCD('idle_tip'+ti,'crow',_tips[ti][0],5,30,'cat',_tips[ti][1],5);
       }
     }
@@ -10020,7 +10036,7 @@ function _dispatchSkillSlot(slotIdx,keyCode){
       } else if((P._gxCd||0)>0){showPH(_T('쿨다운!')+' '+((P._gxCd/60)|0)+'s','#888');break}
       else if(P.st>=GXBOW_ST){_xbowEquipped=true;activateGhostXbowTurret();P._gxCd=1200;_skOk=true}
       else showPH(_T('ST 부족! (100)'),'#ff4444');break;
-    case 'shieldThrow': showPH(_T('우클릭(칼등치기)에 합체됨'),'#66aadd');break;
+    case 'shieldThrow': showPH(_T('E(칼등치기)에 합체됨'),'#66aadd');break;
     case 'blastShot': showPH(_T('T(석궁자동)에 세팅하세요'),'#ff6633');break;
     default: return P.skills[sid]>=1;
   }
@@ -10282,11 +10298,11 @@ const GP_BINDS={
   // 페이스 버튼
   0:'weapon',       // A → 좌클릭 (무기 공격)
   1:'bow',          // B → Space (영역 스킬)
-  2:'beam',         // X → E (마법)
+  2:'beam',         // X → 우클릭 (마법)
   3:'parry',        // Y → Q (패링)
   // 범퍼
   4:'charge',       // LB → Shift (사슬이동)
-  5:'shield',       // RB → 우클릭 (칼등 처내기)
+  5:'shield',       // RB → E (칼등 처내기)
   // 메뉴
   8:'inventory',    // Back — 인벤토리
   9:'settings',     // Start — 설정
@@ -11548,6 +11564,7 @@ const AFFIX_POOL=[
   {id:'cloakDodgeDR',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['cloak'],group:'cDDR',weight:35},
   {id:'cloakMSPct',type:0,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['cloak'],group:'cMSP',weight:50},
   {id:'cloakElemDR',type:1,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['cloak'],group:'cEDR',weight:40},
+  {id:'burnDR',type:1,tiers:[.10,.16,.24,.36,.50],unit:'pct',slots:['cloak'],group:'brDR',weight:45},
   {id:'helmMPPct',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['helm'],group:'hMPP',weight:50},
   {id:'helmCastSpd',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['helm'],group:'hCSp',weight:50},
   {id:'helmCooldown',type:0,tiers:[-.04,-.07,-.11,-.16,-.22],unit:'pct',slots:['helm'],group:'hCd',weight:45},
@@ -11711,7 +11728,7 @@ dodgeChance:'회피의',dodgeCooldown:'회피쿨감의',
   igniteDmg:'발화강화의',frostbiteDmg:'동상강화의',shockDmg:'감전강화의',critMultiOnLowHP:'사선회심의',
   armorDefPct:'갑옷강화의',shieldBlockDR:'블록흡수의',shieldBashDmg:'방패타격의',shieldStagger:'방패경직의',
   glovesAtkSpd:'격투속의',glovesCritDmg:'격투회심의',glovesStagger:'격투경직의',pantsHPRegen:'하반재생의',pantsCCDuration:'CC단축의',
-  bootsDashDmg:'돌진타의',bootsChargeRange:'돌진범위의',bootsMSOnKill:'처치질주의',cloakDodgeDR:'회피감쇠의',cloakMSPct:'은신질주의',cloakElemDR:'속성감쇠의',
+  bootsDashDmg:'돌진타의',bootsChargeRange:'돌진범위의',bootsMSOnKill:'처치질주의',cloakDodgeDR:'회피감쇠의',cloakMSPct:'은신질주의',cloakElemDR:'속성감쇠의',burnDR:'화상저항의',
   helmMPPct:'마나왕관의',helmCastSpd:'시전왕관의',helmCooldown:'쿨감왕관의',helmExpPct:'경험왕관의',
   hybAtkHP:'공생의',hybDefSpd:'수질의',hybCritLeech:'회심흡의',hybHPMP:'체마의',hybHPST:'체기의',hybMPST:'마기의',hybAllRegen:'전재생의',
   hybStrDex:'힘민의',hybStrInt:'힘지의',hybDexInt:'민지의',hybLckGrit:'운근의',hybDropExp:'수확의',hybFireIce:'빙화의',hybLightDark:'뇌암의',hybMeleeSpell:'근마의',hybElemDotDmg:'속성침식의',
@@ -11787,7 +11804,7 @@ const _AFFIX_DESC={
   lifeLeech:'물리흡혈%',manaLeech:'마나흡수%',stLeech:'ST흡수%',lifeOnHit:'적중HP+',
   onKillHeal:'처치HP+',onKillMana:'처치MP+',onKillStam:'처치ST+',onKillExplode:'처치시폭발',onKillSpeed:'처치이속+',
   healthyDef:'HP≥70%방어+',injuredDR:'HP≤30%DR+',injuredSpeed:'HP≤50%이속+',
-  dotDR:'DoT피해감소',bossDR:'보스피해감소',closeDR:'근접피해감소',farDR:'원거리피해감소',
+  dotDR:'DoT피해감소',bossDR:'보스피해감소',closeDR:'근접피해감소',farDR:'원거리피해감소',burnDR:'화상피해감소',
   hpOnKill:'처치HP회복',shieldOnKill:'처치쉴드회복',
   stCostRed:'ST소비-',
   healthyAtk:'HP≥70%공격+',injuredDmg:'HP≤35%뎀+',injuredLeech:'HP≤35%흡혈',vsBossDmg:'보스추가뎀',vsEliteDmg:'엘리트추가뎀',
@@ -20530,7 +20547,7 @@ const STAT_MAX={str:500,dex:500,int:500,vit:500,lck:500};
 const PASSIVE_DEF=[
   {key:'pAtk',   name:'⚔️ 맹공',nameEn:'⚔️ Onslaught',desc:'근접뎀 +10%, ST비용 -4%/lv (최대-40%)',descEn:'Melee DMG +10%, ST cost -4%/lv (max -40%)',max:10,icon:'⚔️',col:'#ff6644'},
   {key:'pCharge',name:'🔱 돌파',nameEn:'🔱 Breakthrough',    desc:'사슬 사거리 +2%/lv, 기동게이지 회복 +3%/lv',descEn:'Chain range +2%/lv, Mobility gauge recovery +3%/lv',max:10, icon:'🔱',col:'#ff8800'},
-  {key:'pParry', name:'⚡ 반격',nameEn:'⚡ Retaliation',desc:'카운터뎀 +50%/lv, 우클릭 공속 +10%/lv, 무지개탄 피해감소 +10%/lv (최대50%)',descEn:'Counter DMG +50%/lv, RMB ATK speed +10%/lv, Rainbow shot DMG reduction +10%/lv (max 50%)',max:10,icon:'⚡',col:'#ffdd00'},
+  {key:'pParry', name:'⚡ 반격',nameEn:'⚡ Retaliation',desc:'카운터뎀 +50%/lv, E 공속 +10%/lv, 무지개탄 피해감소 +10%/lv (최대50%)',descEn:'Counter DMG +50%/lv, E ATK speed +10%/lv, Rainbow shot DMG reduction +10%/lv (max 50%)',max:10,icon:'⚡',col:'#ffdd00'},
   {key:'pMagic', name:'🔮 마력폭주',nameEn:'🔮 Mana Surge',desc:'마법뎀 +10%, MP비용 -4%, 시전속도 +8%/lv',descEn:'Magic DMG +10%, MP cost -4%, Cast speed +8%/lv',max:10, icon:'🔮',col:'#8844ff'},
   {key:'pBow',   name:'🎯 정밀사격',nameEn:'🎯 Precision',desc:'투사체뎀 +15%, 공속 +10%, 사거리 +8%, ST비용 -4%/lv',descEn:'Projectile DMG +15%, ATK speed +10%, Range +8%, ST cost -4%/lv',max:10, icon:'🎯',col:'#44ddaa'},
   {key:'pGuard', name:'🛡 수호신',nameEn:'🛡 Aegis',  desc:'보호막 흡수 +2%/lv (기본30→최대50%)',descEn:'Shield absorb +2%/lv (base 30 to max 50%)',max:10, icon:'🛡',col:'#55bbff'},
@@ -21626,7 +21643,7 @@ function mkP(){
     baseAtk:8,baseDef:2,speed:2.6,facing:0,
     s:'idle',st2:0,atkArc:0,swProg:0,iframes:0,combo:0,comboT:0,blockFlash:0,blockPushT:0,
     chargeDx:0,chargeDy:0,chargeSpd:0,chargeHits:null,chargeKills:0,chargeCd:0,chargeStocks:1,maxChargeStocks:1,kb:{x:0,y:0},
-    shield:0,mshield:0,shieldRegenT:0,wwAng:0,
+    shield:0,mshield:0,shieldRegenT:0,wwAng:0,rage:0,
     activeChargeSk:'charge',
     activeBowSk:'normal',
     activeTechSk:'spikeTrap',
@@ -25162,7 +25179,7 @@ function update(){
     if(P._freezeSlow>0)P._freezeSlow-=sp;
     if(P._trapSlowT>0)P._trapSlowT-=sp;
     // 화상 데미지 (초당 HP 4%, 3초)
-    if(P.burnT>0){P.burnT-=sp;if(Math.floor(P.burnT/60)<Math.floor((P.burnT+sp)/60)){const bd=~~(P.mhp*.04);hurtP(bd,{dot:true,src:_T('화상')});addTxt(P.x,P.y-15,'🔥'+bd,'#ff4400',18);addParts(P.x,P.y,'#ff4400',3)}}
+    if(P.burnT>0){P.burnT-=sp;if(Math.floor(P.burnT/60)<Math.floor((P.burnT+sp)/60)){const bd=~~(P.mhp*.04);hurtP(bd,{dot:true,burn:true,src:_T('화상')});addTxt(P.x,P.y-15,'🔥'+bd,'#ff4400',18);addParts(P.x,P.y,'#ff4400',3)}}
     // 전류 효과 타이머 감소
     if(P._elecT>0)P._elecT-=sp;
     // 독 데미지 (초당 HP 0.8%, 감소)
@@ -25170,7 +25187,7 @@ function update(){
     // 무지개탄 중독 DOT (데미지×10 총량, 10초, 최대10중첩, 30f마다 틱)
     if(P._rbPoison&&P._rbPoison.length>0){let _rpW=0;for(let _ri=0;_ri<P._rbPoison.length;_ri++){const rp=P._rbPoison[_ri];rp.t-=sp;rp.tick+=sp;if(rp.t<=0)continue;if(rp.tick>=30){rp.tick=0;const _rpD=Math.max(1,~~(rp.total/20));hurtP(_rpD,{dot:true,src:_T('중독')});addTxt(P.x,P.y-15-_ri*12,'☠'+_rpD,'#88cc44',18);addParts(P.x,P.y,'#88cc44',2)}P._rbPoison[_rpW++]=rp}P._rbPoison.length=_rpW}
     // 빨콩 화상 DOT (데미지×10 총량, 10초, 최대10중첩, 30f마다 틱)
-    if(P._rbBurn&&P._rbBurn.length>0){let _rbW=0;for(let _ri=0;_ri<P._rbBurn.length;_ri++){const rb=P._rbBurn[_ri];rb.t-=sp;rb.tick+=sp;if(rb.t<=0)continue;if(rb.tick>=30){rb.tick=0;const _rbD=Math.max(1,~~(rb.total/20));hurtP(_rbD,{dot:true,src:_T('화상')});addTxt(P.x,P.y-15-_ri*12,'🔥'+_rbD,'#ff4400',18);addParts(P.x,P.y,'#ff4400',2)}P._rbBurn[_rbW++]=rb}P._rbBurn.length=_rbW}
+    if(P._rbBurn&&P._rbBurn.length>0){let _rbW=0;for(let _ri=0;_ri<P._rbBurn.length;_ri++){const rb=P._rbBurn[_ri];rb.t-=sp;rb.tick+=sp;if(rb.t<=0)continue;if(rb.tick>=30){rb.tick=0;const _rbD=Math.max(1,~~(rb.total/20));hurtP(_rbD,{dot:true,burn:true,src:_T('화상')});addTxt(P.x,P.y-15-_ri*12,'🔥'+_rbD,'#ff4400',18);addParts(P.x,P.y,'#ff4400',2)}P._rbBurn[_rbW++]=rb}P._rbBurn.length=_rbW}
     // ═══ 5장 지옥의 군단: 잡기/마비 상태 ═══
     if(P._seaGrabbed>0){P._seaGrabbed-=sp;P.kb.x*=.1;P.kb.y*=.1;if(~~(P._seaGrabbed)%30<2)addTxt(P.x,P.y-20,_T('잡힘!'),'#334466',10)}
     if(P._seaParalyzed>0){P._seaParalyzed-=sp;P.kb.x*=.05;P.kb.y*=.05}
@@ -25197,7 +25214,7 @@ function update(){
     else if(false){} // 진동보행: 선택슬롯으로 이동됨
     else if(P._hrAiming&&isJust('beam')){P._hrAiming=false;showPH(_T('취소'),'#888')} // 참회 조준 중 E 취소
     else if(P._msAiming||P._isAiming||P._bwAiming||P._ebAiming||P._hrAiming||P._tsAiming){} // 조준 모드 중 공격 차단
-    // ── 기동불꽃 일괄폭발: Shift+우클릭 → 활성 불바닥 DOT 전량 즉시 폭발 ──
+    // ── 기동불꽃 일괄폭발: Shift+E → 활성 불바닥 DOT 전량 즉시 폭발 ──
     else if(isAct('charge')&&isJust('shield')&&G._fireZones&&_detonateAssaultFlames()){}
     else if(isAct('parry')&&_qIsIceOrb()){_qDispatchIceOrb()} // Q: 얼음보주
     else if(isAct('parry')&&_qIsPeaceShield()&&P.mp>0&&(P._sbCd||0)<=0){_enterPeaceShield()} // Q: 평화의보호 (stormBeam)
@@ -26904,7 +26921,7 @@ function update(){
       const _rbWrongD=p.dmg;hurtP(_rbWrongD,{dtype:'parry',src:'빨콩오패링',redBean:true});
       // 빨콩 화상 (데미지×3, 10초, 최대10중첩)
       {if(!P._rbBurn)P._rbBurn=[];if(P._rbBurn.length<10){P._rbBurn.push({total:_rbWrongD*2,t:600,tick:0});addTxt(P.x,P.y-30,_T('🔥화상!')+'×'+P._rbBurn.length,'#ff4400',30)}}
-      P.iframes=3;addTxt(p.x,p.y-15,_T('❌ 우클릭으로! -')+_rbWrongD,'#ff4444',50);
+      P.iframes=3;addTxt(p.x,p.y-15,_T('❌ E키로! -')+_rbWrongD,'#ff4444',50);
       {const _rbA=Math.atan2(P.y-p.y,P.x-p.x);P.kb.x+=Math.cos(_rbA)*6;P.kb.y+=Math.sin(_rbA)*6}
       SFX.detonate();shake(12);doHitFlash('#ff2200',0.25);
       scrFlash='rgba(255,60,0,.3)';scrFlashA=.3;G.slowMo=Math.max(G.slowMo,8);
@@ -34651,7 +34668,7 @@ $('lvUpClose').onclick=()=>{
   $('lvUpScreen').style.opacity='0';$('lvUpScreen').style.pointerEvents='none';
   G.paused=false;
 };
-// ═══ 기동불꽃 일괄폭발 함수 (Shift+우클릭 / 기동파괴 / 대왕치기에서 호출) ═══
+// ═══ 기동불꽃 일괄폭발 함수 (Shift+E / 기동파괴 / 대왕치기에서 호출) ═══
 const _detDeaths=[]; // 폭발 사망 위치 수집용 (재할당 X, 재사용)
 // ═══ 대량 사망 피 스플래시 시스템 (모든 풀 캡 우회, 직접 렌더) ═══
 const _bloodSplats=[];
@@ -35004,6 +35021,7 @@ function hurtP(dmg,opts){
     if(P.hp>=P.mhp*.7)_cDR+=_eqAffix('healthyDef')/((_eqAffix('healthyDef')||0)+2500); // healthyDef: 플랫→DR변환
     if(P.hp<=P.mhp*.3)_cDR+=_eqAffix('injuredDR');
     if(_isDot)_cDR+=_eqAffix('dotDR');
+    if(opts&&opts.burn)_cDR+=_eqAffix('burnDR'); // 화상저항 (망토): 화상 DOT 전용 DR
     if(opts&&opts.src&&opts.src.ib)_cDR+=_eqAffix('bossDR');
     if(opts&&opts.src){const _sd=Math.abs(P.x-(opts.src.x||0))+Math.abs(P.y-(opts.src.y||0));
       if(_sd<=120)_cDR+=_eqAffix('closeDR');if(_sd>300)_cDR+=_eqAffix('farDR')}
@@ -35603,7 +35621,7 @@ const SKILL_LIST=[
   {id:'maliceSwipe',name:'칼등 처내기',cat:'def',desc:'우클 처내기 강화. Lv당 반사 데미지 +10%. 홀드 시 연사',descEn:'RMB swipe enhanced. Per Lv reflect DMG +10%. Hold for rapid fire',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
   {id:'fanShot',name:'만화방창',cat:'bow',desc:'[고정: T 자동] 물리 바늘 3방향 3발 발사. 관통 없음',descEn:'[Fixed: T auto] 3 physical needles 3-way spread. No pierce',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'omniBeam',name:'멸살광선',cat:'magic',desc:'[고정: E] 1발 직선 레이저. +만화방창 → 만화광선(3발 꽈배기). +원소추적탄 → 추적암전(6발 유도)',descEn:'[Fixed: E] 1 straight laser. +Barrage → Omni Beam (3 spiral). +Elem Seeker → Homing Dark (6 homing)',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'elemMissile',name:'원소추적탄',cat:'bow',desc:'E탭 마법을 6원소 유도 미사일로 변경. 곡선 궤적으로 적을 추적. 레벨당 사거리+20 (뎀은 _skMul 계수 적용)',descEn:'Changes E-tap magic to 6-element homing missiles. Curved trajectory tracking enemies. Per Lv range+20 (DMG uses _skMul)',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
+  {id:'elemMissile',name:'원소추적탄',cat:'bow',desc:'우클릭 탭 마법을 6원소 유도 미사일로 변경. 곡선 궤적으로 적을 추적. 레벨당 사거리+20 (뎀은 _skMul 계수 적용)',descEn:'Changes RMB-tap magic to 6-element homing missiles. Curved trajectory tracking enemies. Per Lv range+20 (DMG uses _skMul)',spCost:10,matCost:80,up:true,upSp:5,upMat:0},
 
   {id:'guardian',name:'악의 보호자',cat:'def',noDmg:true,desc:'3초마다 악의 구체 생성(1렙 2개). 몸에 밀착하여 적 투사체를 자동 방어(파괴). 레벨당 구체+1',descEn:'Spawns malice orbs every 3s (Lv1: 2 orbs). Orbits body, auto-blocks (destroys) enemy projectiles. Per Lv orb+1',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceHunt',name:'악의 사냥',cat:'bow',act:true,emoji:'⚔',desc:'유도 물리 칼날 1발 (악의30+ST50). 관통률 800+Lv×20+장비. 지속뎀 5초. 쿨 15초',descEn:'1 homing physical blade (malice 30 + ST 50). Pierce 800+Lv×20+gear. DOT 5s. CD 15s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
@@ -35621,20 +35639,20 @@ const SKILL_LIST=[
   {id:'needleShot',name:'만화방창 II',cat:'bow',act:true,emoji:'✨',desc:'[고정: T 자동] 초고속 바늘 연발. 1렙 2발, 5렙마다 +1발. 관통 없음. ST 8. 쿨 1.5초. Lv당 뎀+100%',descEn:'[Fixed: T auto] Ultra-fast needles burst. Lv1 2 shots, +1 per 5 levels. No pierce. ST 8. CD 1.5s',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
   // [SKILL REMOVED 2026-05-01] energyShot (마력연사) — 삭제
   {id:'arcLaser',name:'얼음송곳',cat:'magic',emoji:'❄',desc:'E홀드: 직선 관통 냉기빔 채널링. MP 8+Lv/초 지속소모. 폭160+(Lv×10)px, 사거리1200+Lv×80. 관통+감속. Lv당 뎀+21%',descEn:'E hold: Straight piercing ice beam channeling. MP 8+Lv/s drain. Width 160+(Lv×10)px, range 1200+Lv×80. Pierce+slow. Per Lv DMG+21%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
-  {id:'fireBeam',name:'업화선',cat:'bow',emoji:'🔥',desc:'E탭: 화염 유도빔 발사. MP10. 쿨1초(DEX 스케일). 100% 관통+유도+화상. Lv당 사거리+50 뎀+12%',descEn:'E tap: fire homing beam. MP 10. CD 1s (DEX scale). 100% pierce+homing+burn. Per Lv range+50 DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'fireBeam',name:'업화선',cat:'bow',emoji:'🔥',desc:'우클릭 탭: 화염 유도빔 발사. MP10. 쿨1초(DEX 스케일). 100% 관통+유도+화상. Lv당 사거리+50 뎀+12%',descEn:'RMB tap: fire homing beam. MP 10. CD 1s (DEX scale). 100% pierce+homing+burn. Per Lv range+50 DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'maliceDome',name:'신의영역',cat:'def',act:true,noDmg:true,emoji:'✟',desc:'현재 위치에 신성 보호돔 설치 (8초+Lv당0.5초). 돔 안: 적 접근 불가+탄막 무효화. 보스 무시. MP 60. 쿨 25초. Lv당 범위+15',descEn:'Place divine dome at current pos (8s+0.5s/Lv). Inside: block enemy entry + nullify projectiles. Boss ignores. MP 60. CD 25s. Per Lv range+15',spCost:10,matCost:100,cd:1500,up:true,upSp:5,upMat:0},
-  {id:'fireAura',name:'지옥진',cat:'magic',emoji:'🌋',desc:'E: 10초간 대지 진동. 범위 내 용암 기둥이 순차적으로 솟아올라 화상+틱 데미지. MP 100. 쿨 12초. Lv당 범위+10% 뎀+12%',descEn:'E: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'fireAura',name:'지옥진',cat:'magic',emoji:'🌋',desc:'우클릭: 10초간 대지 진동. 범위 내 용암 기둥이 순차적으로 솟아올라 화상+틱 데미지. MP 100. 쿨 12초. Lv당 범위+10% 뎀+12%',descEn:'RMB: 10s ground tremor. Lava pillars rise sequentially in range — burn+tick DMG. MP 100. CD 12s. Per Lv range+10% DMG+12%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   {id:'plagueBurst',name:'폭독칼날',cat:'bow',act:true,emoji:'🩸',desc:'독혈 칼날 1발 발사: 관통률 기본 800+Lv×20 + 장비 bowPierce×300/패시브 pPierce×30 반영, +100 보정. 전염+마지막 적 처형. 감염 사망 시 폭발+연쇄 전염. 악의 15. 사거리 4000. 쿨 15초(Lv당-0.5초)',descEn:'Fire 1 poison-blood blade: base pierce rate 800+Lv×20 with bowPierce×300 and pPierce×30 scaling, plus +100 bonus. Plague+execute last enemy. Infected death → explosion+chain plague. Malice 15. Range 4000. CD 15s (-0.5s/Lv)',spCost:10,matCost:80,cd:1200,up:true,upSp:5,upMat:0},
   {id:'maliceStorm',name:'악의폭풍',cat:'magic',act:true,emoji:'🌀',desc:'마우스 조준 설치. 쿨 20초. 화면 내 클릭 위치에 암전나선 (3초, 10틱, 틱당 100+Lv*20). Lv당 범위+22. 같은 지역 중복 불가',descEn:'Mouse-aim placement. CD 20s. Dark spiral at click pos (3s, 10 ticks, 100+Lv*20/tick). Per Lv range+22. No stacking same area',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
   {id:'darkPillar',name:'악의기둥',cat:'magic',act:true,emoji:'🏛️',desc:'현재 위치에 9개 기둥 순차 발동. 5초간 악의 기둥을 소환하여 반경 내 적에게 지속 암전 데미지+감속. 범위 250+(Lv-1)×22. 대왕치기와 합체→기둥강타. 쿨 15초',descEn:'9 pillars activate sequentially at current pos. 5s dark pillars deal sustained dark DMG+slow to enemies in radius. Range 250+(Lv-1)×22. Fuses with Giant Slam → Pillar Strike. CD 15s',spCost:10,matCost:100,cd:900,up:true,upSp:5,upMat:0},
   {id:'holyDome',name:'회복의 영역',cat:'tech',act:true,noDmg:true,emoji:'🛡',desc:'현재 위치에 회복의 영역 설치 (12초 지속). 땅 위: HP/MP/ST 초당+10 리젠 + 회복력 2배 + 쿨다운 속도 2배. 쿨 30초. Lv당 범위+20 지속+0.5초',descEn:'Place holy domain at current pos (12s duration). On ground: HP/MP/ST +10/s regen + 2x recovery + 2x CD speed. CD 30s. Per Lv range+20 duration+0.5s',spCost:10,matCost:90,cd:1800,up:true,upSp:5,upMat:0},
   {id:'holyPrison',name:'구속의 영역',cat:'tech',act:true,noDmg:true,emoji:'✟',desc:'범위 내 몬스터 부활력 -15%~30%(Lv1=15%, Lv10=30%). Lv1 범위400, Lv10 범위697. Lv당 범위+33. 쿨 30초. 지속 10초',descEn:'Monsters in range: revive power -15%~30%(Lv1=15%, Lv10=30%). Lv1 range 400, Lv10 range 697. Per Lv range+33. CD 30s. Duration 10s',spCost:10,matCost:80,cd:1800,up:true,upSp:5,upMat:0},
   {id:'iceStorm',name:'아이스스톰',cat:'magic',act:true,noDmg:true,emoji:'❄',desc:'마우스 조준 설치. 2스택 (15초/1충전, Lv10→3스택). 범위 내 빙결 저항 -50%, 빙결 게이지 급속 축적. 10초 지속. MP 40. Lv당 범위+22 축적+10%',descEn:'Mouse-aim placement. 2 stocks (15s/charge, Lv10→3 stocks). Freeze resist -50% in range, rapid freeze gauge buildup. 10s duration. MP 40. Per Lv range+22 buildup+10%',spCost:10,matCost:90,up:true,upSp:5,upMat:0},
-  {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 회전기폭과 합체→지진폭풍!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Whirlwind Detonate → Earthquake Storm!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:900},
-  {id:'giantSlam2',name:'대왕치기 2',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 악의기둥과 합체→기둥강타!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Dark Pillar → Pillar Slam!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:900},
+  {id:'giantSlam',name:'대왕치기',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 회전기폭과 합체→지진폭풍!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Whirlwind Detonate → Earthquake Storm!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:1800},
+  {id:'giantSlam2',name:'대왕치기 2',cat:'phys',act:true,emoji:'🔨',desc:'땅을 내리쳐 원형 진동파 발생(범위400). 일반몹에게 큰 포이즈 피해, 보스 체간 파괴에 강함. 악의기둥과 합체→기둥강타!',descEn:'Slam ground → circular shockwave (range 400). High poise DMG to mobs, strong posture break vs bosses. Fuses with Dark Pillar → Pillar Slam!',spCost:10,matCost:120,up:true,upSp:5,upMat:0,cd:1800},
   // quakeStride 삭제됨
-  {id:'chainAssault',name:'기동불꽃',cat:'move',desc:'사슬기동 중 E → 즉시 착지하며 화염폭발. 범위200~350 INT 스케일 화염 마법데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). MP 소모. Lv당 범위+16 뎀+12%',descEn:'During chain dash E → instant land with fire explosion. Range 200~350 INT scale fire magic DMG+knockback. DMG scales with travel distance (max x4.0). MP cost. Per Lv range+16 DMG+12%',spCost:10,matCost:0,up:true,upSp:5,upMat:0},
-  {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 우클릭 → 땅 내려찍기. 범위200~350 데미지x8 그로기x6. 이동거리 비례 최대x6. 일반몹 즉시 기절(5초), 보스 체간 대량 삭감. Lv당 범위+16 데미지+15% 그로기+15%',descEn:'During chain dash RMB → ground slam. Range 200~350 DMG x8 groggy x6. Distance scale max x6. Instant stun mobs (5s), massive boss posture break. Per Lv range+16 DMG+15% groggy+15%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
+  {id:'chainAssault',name:'기동불꽃',cat:'move',desc:'사슬기동 중 우클릭 → 즉시 착지하며 화염폭발. 범위200~350 INT 스케일 화염 마법데미지+넉백. 이동거리에 비례해 데미지↑(최대 x4.0). MP 소모. Lv당 범위+16 뎀+12%',descEn:'During chain dash RMB → instant land with fire explosion. Range 200~350 INT scale fire magic DMG+knockback. DMG scales with travel distance (max x4.0). MP cost. Per Lv range+16 DMG+12%',spCost:10,matCost:0,up:true,upSp:5,upMat:0},
+  {id:'chainSlam',name:'기동파괴',cat:'move',desc:'사슬기동 중 E → 땅 내려찍기. 범위200~350 데미지x8 그로기x6. 이동거리 비례 최대x6. 일반몹 즉시 기절(5초), 보스 체간 대량 삭감. Lv당 범위+16 데미지+15% 그로기+15%',descEn:'During chain dash E → ground slam. Range 200~350 DMG x8 groggy x6. Distance scale max x6. Instant stun mobs (5s), massive boss posture break. Per Lv range+16 DMG+15% groggy+15%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},
   // earthBreaker 삭제됨
   {id:'chainSlash',name:'기동칼날개',cat:'move',fixed:true,hidden:true,emoji:'⚔',desc:'[히든: 5성 dimRush 합체] 사슬기동 중 좌클릭 → 이동 중 전방 광역 베기+출혈. STR 스케일 물리데미지. 다단히트. Lv당 뎀+12% 범위+15',descEn:'[Hidden: 5-star dimRush fuse] During chain dash LMB → forward AoE slash+bleed while moving. STR scale physical DMG. Multi-hit. Per Lv DMG+12% range+15',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
   {id:'peaceShield',name:'평화의보호',cat:'def',fixed:true,noDmg:true,emoji:'🕊️',desc:'Q 홀드 시 보호막이 점점 커지며 HP 초당 5% 회복. 보호막 크기에 비례해 데미지 감소. MP 소모',descEn:'Q hold: shield grows over time + HP 5%/s regen. DMG reduction scales with shield size. MP cost',spCost:0,matCost:0,up:true,upSp:5,upMat:0},
@@ -35647,7 +35665,7 @@ const SKILL_LIST=[
   {id:'weakRev',name:'부활의 영역',cat:'tech',act:true,noDmg:true,emoji:'💀',desc:'현재 위치에 부활 영역 설치 (10초). 영역 안에서 부활력 +10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (1렙 반경200, 10렙398). 슬로우 70%(+2%/Lv, 최대90%)+출혈. INT×magicRef×3(+10%/Lv). 악의 10, 쿨 10초. Lv당 범위+22',descEn:'[Fixed: Space] Place spike trap at current pos (Lv1 radius 200, Lv10 398). Slow 70%(+2%/Lv, max 90%)+bleed. INT×magicRef×3(+10%/Lv). Malice 10, CD 10s. Per Lv range+22',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},
   {id:'blueShot',name:'푸른비',cat:'bow',fixed:true,emoji:'💎',desc:'[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)',descEn:'[Fixed: E, unlock Lv300] 50 homing blue shots fired sequentially (over 5s). MP 100(+1.5/Lv) cost. Tracks enemies. CD 5s. Per Lv range+30 (DMG uses _skMul)',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:300},
-  {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: E, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.5/1.0/1.5초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',descEn:'[Hidden: E, unlock Lv700] Hold for 3-stage charge AoE explosion (0.5/1.0/1.5s). Range 600/1000/1400px. Stage 3 full charge auto-detonates. INT scale, no element',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700},
+  {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: 우클릭, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.5/1.0/1.5초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',descEn:'[Hidden: RMB, unlock Lv700] Hold for 3-stage charge AoE explosion (0.5/1.0/1.5s). Range 600/1000/1400px. Stage 3 full charge auto-detonates. INT scale, no element',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700},
   {id:'voidScarecrow',name:'유령 허수아비',cat:'def',act:true,emoji:'👻',desc:'유령 허수아비를 소환하여 유도탄막 어그로를 끈다. 탄막을 흡수해 자원 축적 (기본 20개, Lv당+3). 1개당 HP/MP/ST 각 100. R키로 회수. 쿨 10초',descEn:'Summon phantom scarecrow to draw homing projectile aggro. Absorbs projectiles for resource buildup (base 20, +3/Lv). Per absorbed: HP/MP/ST +100 each. R key to retrieve. CD 10s',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
   {id:'explodeScarecrow',name:'폭발 허수아비',cat:'def',act:true,emoji:'💥',desc:'폭발 허수아비 설치. 탄막을 흡수하고 재입력 시 폭발! 1스택당 (INT마법뎀+탄막뎀)×10 마법데미지. 범위 250+흡수×25 (최대1000). 최대흡수 1렙20~20렙60. 쿨 10초',descEn:'Place explosive scarecrow. Absorbs projectiles, re-press to detonate! Per stack: (INT magic DMG + proj DMG)×10. Range 250+absorbed×25 (max 1000). Max absorb Lv1=20~Lv20=60. CD 10s',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
   {id:'ghostXbowTurret',name:'공성쇠뇌',cat:'bow',act:true,emoji:'🏹',desc:'[선택: 1~4번, Lv500 해금] 현재 위치에 공성쇠뇌 터렛 설치. 재입력 시 철거. 설치 중 플레이어 석궁 사용 불가 (터렛만 발사). 데미지+50%, 공속+50%, 사거리+50%. ST 100. 쿨 10초. Lv당 뎀+5% 공속+5% 사거리+5%',descEn:'[Select: 1~4, unlock Lv500] Deploy siege crossbow turret at current pos. Re-press to dismantle. While deployed: player crossbow disabled (turret fires only). DMG+50%, ATK SPD+50%, range+50%. ST 100. CD 10s. Per Lv DMG+5% ATK SPD+5% range+5%',spCost:10,matCost:120,cd:600,up:true,upSp:5,upMat:0,reqLv:500},
@@ -35664,14 +35682,14 @@ const SKILL_SLOT_DEFS={
     info:{charge:{name:'사슬',nameEn:'Chain',emoji:'⛓️',desc:'Shift: 사슬 발사 → 끌려감',descEn:'Shift: Fire chain → pull toward'},
           magicBlink:{name:'사슬기동:화염',nameEn:'Chain Drive: Flame',emoji:'🔥',desc:'Shift: 화염길+화상',descEn:'Shift: Flame trail + burn'}}},
   magic:{name:'마법스킬',nameEn:'Magic Skill',key:'magic',skills:['fireball','omniBeam','elemMissile','hellRay','blueShot','burstLoop','fireAura','fireBeam','arcLaser'],
-    info:{fireball:{name:'악의구',nameEn:'Malice Orb',emoji:'🔮',desc:'E: 어둠 오브 (크기+50%/Lv, 데미지 _skMul)',descEn:'E: Dark orb (size+50%/Lv, DMG via _skMul)'},
-          omniBeam:{name:'멸살광선',nameEn:'Omni Beam',emoji:'☄️',desc:'E: 1발 직선 레이저',descEn:'E: Single straight laser'},
-          elemMissile:{name:'원소추적탄',nameEn:'Elem Missile',emoji:'🎯',desc:'E: 6원소 유도 미사일',descEn:'E: 6-element homing missiles'},
-          hellRay:{name:'참회',nameEn:'Repentance',emoji:'⚡',desc:'E: 신성한 선 설치 (시계방향 회전)',descEn:'E: Place holy line (clockwise rotation)'},
-          blueShot:{name:'푸른비',nameEn:'Blue Rain',emoji:'💎',desc:'E: 5초간 50발 파란콩 순차 발사 (MP100+1.5/Lv, 추적, 쿨5초)',descEn:'E: 50 blue shots over 5s (MP100+1.5/Lv, homing, cd 5s)'},
-          burstLoop:{name:'버스트루프',nameEn:'Burst Loop',emoji:'💫',desc:'E 홀드: 3단계 차지 범위폭발 (Lv700 히든)',descEn:'E Hold: 3-stage charge AoE (Lv700 hidden)'},
-          fireAura:{name:'지옥진',nameEn:'Inferno Field',emoji:'🌋',desc:'E: 10초 대지진동 (용암기둥+화상+틱뎀, MP100, 쿨12초)',descEn:'E: 10s ground quake (lava+burn+tick, MP100, cd 12s)'},
-          fireBeam:{name:'업화선',nameEn:'Karma Beam',emoji:'🔥',desc:'E탭: 유도 화염빔 (100%관통+유도+화상, MP10, DEX공속)',descEn:'E tap: Homing fire beam (100% pierce+homing+burn, MP10, DEX aspd)'},
+    info:{fireball:{name:'악의구',nameEn:'Malice Orb',emoji:'🔮',desc:'우클릭: 어둠 오브 (크기+50%/Lv, 데미지 _skMul)',descEn:'RMB: Dark orb (size+50%/Lv, DMG via _skMul)'},
+          omniBeam:{name:'멸살광선',nameEn:'Omni Beam',emoji:'☄️',desc:'우클릭: 1발 직선 레이저',descEn:'RMB: Single straight laser'},
+          elemMissile:{name:'원소추적탄',nameEn:'Elem Missile',emoji:'🎯',desc:'우클릭: 6원소 유도 미사일',descEn:'RMB: 6-element homing missiles'},
+          hellRay:{name:'참회',nameEn:'Repentance',emoji:'⚡',desc:'우클릭: 신성한 선 설치 (시계방향 회전)',descEn:'RMB: Place holy line (clockwise rotation)'},
+          blueShot:{name:'푸른비',nameEn:'Blue Rain',emoji:'💎',desc:'우클릭: 5초간 50발 파란콩 순차 발사 (MP100+1.5/Lv, 추적, 쿨5초)',descEn:'RMB: 50 blue shots over 5s (MP100+1.5/Lv, homing, cd 5s)'},
+          burstLoop:{name:'버스트루프',nameEn:'Burst Loop',emoji:'💫',desc:'우클릭 홀드: 3단계 차지 범위폭발 (Lv700 히든)',descEn:'RMB Hold: 3-stage charge AoE (Lv700 hidden)'},
+          fireAura:{name:'지옥진',nameEn:'Inferno Field',emoji:'🌋',desc:'우클릭: 10초 대지진동 (용암기둥+화상+틱뎀, MP100, 쿨12초)',descEn:'RMB: 10s ground quake (lava+burn+tick, MP100, cd 12s)'},
+          fireBeam:{name:'업화선',nameEn:'Karma Beam',emoji:'🔥',desc:'우클릭 탭: 유도 화염빔 (100%관통+유도+화상, MP10, DEX공속)',descEn:'RMB tap: Homing fire beam (100% pierce+homing+burn, MP10, DEX aspd)'},
           // energyShot 삭제됨 (2026-05-01)
           arcLaser:{name:'얼음송곳',nameEn:'Ice Spike',emoji:'❄',desc:'E홀드: 직선 관통 냉기빔 채널링 (MP 8+Lv/초, 감속)',descEn:'E hold: straight piercing ice beam channel (MP 8+Lv/s, slow)'}}},
   bow:{name:'석궁 자동(T)',nameEn:'Crossbow Auto(T)',key:'bow',skills:['normal','bladeShot','blastShot','fanShot','needleShot'],
@@ -35684,13 +35702,13 @@ const SKILL_SLOT_DEFS={
           ghostXbowTurret:{name:'공성쇠뇌',nameEn:'Siege Ballista',emoji:'🏹',desc:'선택스킬: 터렛 설치/철거 (Lv500, ST100, 쿨없음)',descEn:'Select skill: Deploy/remove turret (Lv500, ST100, no cd)'},
           }},
   tech:{name:'영역 스킬',nameEn:'Area Skill',key:'tech',skills:['giantSlam','spikeTrap'],
-    info:{giantSlam:{name:'대왕치기',nameEn:'Giant Slam',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨15초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 15s)'},
+    info:{giantSlam:{name:'대왕치기',nameEn:'Giant Slam',emoji:'🔨',desc:'Space: 원형 진동파 (ST+악의20, 포이즈 특화, 쿨30초)',descEn:'Space: AoE shockwave (ST+malice20, poise focus, cd 30s)'},
           spikeTrap:{name:'가시덫',nameEn:'Spike Trap',emoji:'🌿',desc:'Space: 가시덫 설치 (악의10, 쿨10초)',descEn:'Space: Place spike trap (malice 10, cd 10s)'}}},
   lmb:{name:'좌클 스킬',nameEn:'LMB Skill',key:'lmb',skills:['kiSlash','whirlwind'],
     info:{kiSlash:{name:'기검참',nameEn:'Ki Slash',emoji:'⚔',desc:'좌클: 3단 콤보 검기 (ST 10+Lv당2)',descEn:'LMB: 3-hit combo ki blade (ST 10+2/Lv)'},
           whirlwind:{name:'회전참',nameEn:'Whirlwind',emoji:'🌀',desc:'좌클 홀드: 회전 베기',descEn:'LMB Hold: Spin attack'}}},
-  rmb:{name:'우클 스킬',nameEn:'RMB Skill',key:'rmb',skills:['maliceSwipe'],
-    info:{maliceSwipe:{name:'칼등 처내기',nameEn:'Blade Parry',emoji:'💀',desc:'우클: 칼등 처내기 (홀드 연사, Lv당 반사뎀+10%)',descEn:'RMB: Blade parry (hold rapid, reflect dmg+10%/Lv)'}}},
+  rmb:{name:'E 스킬',nameEn:'E Skill',key:'rmb',skills:['maliceSwipe'],
+    info:{maliceSwipe:{name:'칼등 처내기',nameEn:'Blade Parry',emoji:'💀',desc:'E: 칼등 처내기 (홀드 연사, Lv당 반사뎀+10%)',descEn:'E: Blade parry (hold rapid, reflect dmg+10%/Lv)'}}},
   q:{name:'보호막 스킬',nameEn:'Shield Skill',key:'q',skills:['parry','detonate','peaceShield'],
     info:{parry:{name:'보호막',nameEn:'Shield',emoji:'💠',desc:'Q: 피보호막 (데미지 30% 흡수, 수호신 패시브로 최대 50%)',descEn:'Q: Damage shield (absorb 30%, up to 50% with Guardian passive)'},
           detonate:{name:'기폭팔',nameEn:'Detonate',emoji:'💥',desc:'Q 홀드: 흡수 데미지 축적 → 해제 시 광역 폭발',descEn:'Q Hold: Accumulate absorbed dmg → AoE explosion on release'},
@@ -36893,7 +36911,7 @@ function activateGiantSlam(srcId){
   _addSkProf(srcId);
   if(G.mats<_malCost(20)){showPH(_T('악의 부족!'),'#ff4444');return}
   useStPct('giantSlam');G.mats-=_malCost(20);
-  const _gslBase=(srcId==='giantSlam2'&&_isFused('pillarSlam'))?420:(srcId==='giantSlam2'&&_isFused('infernoSlam'))?420:Math.max(60,600-(slv-1)*12);
+  const _gslBase=(srcId==='giantSlam2'&&_isFused('pillarSlam'))?420:(srcId==='giantSlam2'&&_isFused('infernoSlam'))?420:Math.max(60,1800-(slv-1)*12);
   P._gslCd=~~(_gslBase*(1+_cdRed()));
   P._gslDir=P.facing;P._gslLv=slv;
   P.s='gSlamWindup';P.st2=10;
@@ -38973,7 +38991,7 @@ function renderSettings(){
   resetBtn.style.cssText='text-align:center;margin-top:12px;padding:8px;background:rgba(100,0,0,.2);border:1px solid #663333;color:#ff6666;cursor:pointer;font-size:.95rem;font-weight:700;letter-spacing:.1em';
   resetBtn.textContent=_T('키 설정 초기화 (또는 F5 키)');
   window._resetBinds=()=>{
-    BINDS={up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',weapon:'mouse0',shield:'mouse2',bow:'Space',charge:'ShiftLeft',parry:'KeyQ',beam:'KeyE',forge:'KeyG',inventory:'Tab',settings:'Escape',interact:'KeyR',storage:'KeyN',stats:'KeyJ',skill:'KeyK',skillCycle:'KeyL'};
+    BINDS={up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',weapon:'mouse0',shield:'KeyE',bow:'Space',charge:'ShiftLeft',parry:'KeyQ',beam:'mouse2',forge:'KeyG',inventory:'Tab',settings:'Escape',interact:'KeyR',storage:'KeyN',stats:'KeyJ',skill:'KeyK',skillCycle:'KeyL'};
     BINDS2={up:null,down:null,left:null,right:null,weapon:null,shield:null,bow:null,charge:null,parry:null,beam:null,skill:null,forge:null,inventory:null,settings:null,interact:null,storage:null,stats:null,skillCycle:null};
     listeningBind=null;_listenAlt=false;saveSettings();renderSettings();
     notify(_T('키 설정 초기화 완료'));
@@ -39152,12 +39170,12 @@ function _applyLang(){try{
   const _ho=$('keyGuide');if(_ho){
     const _ht=_ho.querySelector('div[style*="ffcc66"]');if(_ht)_ht.textContent=_T('⌨ 조작법');
     const _hDivs=_ho.querySelectorAll('div');
-    const _hMap=[['WASD','이동'],['좌클릭','무기 공격'],['우클릭 탭','칼등 처내기 (투사체 반사, 홀드 연사)'],['우클릭 홀드','연속 처내기'],['SPACE','영역 스킬 (폭풍소환 등)'],['SHIFT','사슬 발사'],['E','마법 (탭=투사체, 홀드=빔)'],['Q','데빌포스 흡수'],['R','아이템 줍기'],['1~4','물약 / 스킬슬롯'],['F / Z / L-CTRL','스킬슬롯 5 / 필살기 / CT스킬'],['L','스킬 슬롯 배정'],['K','스킬'],['C','능력치'],['TAB','인벤토리'],['G','대장간'],['V','창고'],['ESC','설정']];
+    const _hMap=[['WASD','이동'],['좌클릭','무기 공격'],['E 탭','칼등 처내기 (투사체 반사, 홀드 연사)'],['E 홀드','연속 처내기'],['SPACE','영역 스킬 (폭풍소환 등)'],['SHIFT','사슬 발사'],['우클릭','마법 (탭=투사체, 홀드=빔)'],['Q','데빌포스 흡수'],['R','아이템 줍기'],['1~4','물약 / 스킬슬롯'],['F / Z / L-CTRL','스킬슬롯 5 / 필살기 / CT스킬'],['L','스킬 슬롯 배정'],['K','스킬'],['C','능력치'],['TAB','인벤토리'],['G','대장간'],['V','창고'],['ESC','설정']];
     _hDivs.forEach(d=>{const b=d.querySelector('b');if(b){const k=b.textContent;const m=_hMap.find(h=>h[0]===k);if(m){const t=d.innerHTML;const afterB=t.indexOf('</b>');if(afterB>=0)d.innerHTML=t.slice(0,afterB+4)+' — '+_T(m[1])}}});
     const _lastD=_ho.querySelector('div[style*="color:#666"]');if(_lastD)_lastD.textContent=_T('클릭하면 닫힘');
   }
   // Slot title attributes
-  const _titles={skSlotLMB:'좌클스킬 (클릭 전환)',skSlotRMB:'우클스킬 (클릭 전환)',skSlot0:'이동스킬 (클릭 전환)',qsE:'마법스킬 (클릭 전환)',skSlot1:'영역스킬 (클릭 전환)',qsQ:'피보호막 (클릭 전환)',skSlotCT:'CT스킬 (클릭 전환)',spCnt:'[J] 능력치'};
+  const _titles={skSlotLMB:'좌클스킬 (클릭 전환)',skSlotRMB:'E스킬 (클릭 전환)',skSlot0:'이동스킬 (클릭 전환)',qsE:'마법스킬 (클릭 전환)',skSlot1:'영역스킬 (클릭 전환)',qsQ:'피보호막 (클릭 전환)',skSlotCT:'CT스킬 (클릭 전환)',spCnt:'[J] 능력치'};
   for(const[id,ko]of Object.entries(_titles)){const el=$(id);if(el)el.title=_T(ko)}
   // Inventory panel
   const _invP=$('invPanel');if(_invP){
@@ -39218,7 +39236,7 @@ function _applyLang(){try{
     const _tuSub=_tu.querySelector('div[style*=".9rem"][style*="665544"]');if(_tuSub&&(_tuSub.textContent.trim()==='살아남으려면 익혀라'||_tuSub.dataset.ko==='살아남으려면 익혀라')){_tuSub.dataset.ko='살아남으려면 익혀라';_tuSub.textContent=_T('살아남으려면 익혀라')}
     const _tuFt=_tu.querySelector('div[style*="554433"]');if(_tuFt&&(_tuFt.textContent.trim()==='아무 키를 눌러 시작'||_tuFt.dataset.ko==='아무 키를 눌러 시작')){_tuFt.dataset.ko='아무 키를 눌러 시작';_tuFt.textContent=_T('아무 키를 눌러 시작')}
     // Tutorial key descriptions
-    const _tkMap={'좌클릭':'좌클릭','우클릭 탭':'우클릭 탭','우클릭 홀드':'우클릭 홀드','SHIFT':'SHIFT','SPACE':'SPACE','E':'E','Q':'Q','W A S D':'W A S D','R':'R','1~4':'1~4','F':'F','Z':'Z','L-CTRL':'L-CTRL','K':'K','C':'C','TAB':'TAB','G':'G','V':'V','L':'L','ESC':'ESC','F11':'F11'};
+    const _tkMap={'좌클릭':'좌클릭','E 탭':'E 탭','E 홀드':'E 홀드','SHIFT':'SHIFT','SPACE':'SPACE','우클릭':'우클릭','Q':'Q','W A S D':'W A S D','R':'R','1~4':'1~4','F':'F','Z':'Z','L-CTRL':'L-CTRL','K':'K','C':'C','TAB':'TAB','G':'G','V':'V','L':'L','ESC':'ESC','F11':'F11'};
     const _tkDesc={'무기 공격':'무기 공격','칼등 처내기':'칼등 처내기','연속 처내기':'연속 처내기','사슬 발사':'사슬 발사','영역스킬':'영역스킬','석궁자동':'석궁자동','마법 (탭=투사체, 홀드=빔)':'마법 (탭=투사체, 홀드=빔)','데빌포스 흡수 (HP→에너지)':'데빌포스 흡수 (HP→에너지)','이동':'이동','아이템 줍기':'아이템 줍기','물약 / 스킬슬롯':'물약 / 스킬슬롯','스킬슬롯 5':'스킬슬롯 5','필살기':'필살기','CT스킬 (유령걸음/얼음보주)':'CT스킬 (유령걸음/얼음보주)','스킬 (전투스킬 습득)':'스킬 (전투스킬 습득)','능력치 (스탯/패시브)':'능력치 (스탯/패시브)','인벤토리':'인벤토리','대장간 (제작)':'대장간 (제작)','창고':'창고','스킬 슬롯 배정':'스킬 슬롯 배정','설정':'설정','전체화면':'전체화면'};
     _tu.querySelectorAll('div[style*="margin-bottom"]').forEach(d=>{
       const tkey=d.querySelector('.tkey');if(!tkey)return;
@@ -39598,6 +39616,8 @@ try{
     // stats: KeyC → KeyJ, storage: KeyV → KeyN 마이그레이션
     if(BINDS.stats==='KeyC')BINDS.stats='KeyJ';
     if(BINDS.storage==='KeyV')BINDS.storage='KeyN';
+    // 2026-07-27 마이그레이션: 기본키 스왑 — 처내기(shield) mouse2→KeyE, 마법(beam) KeyE→mouse2 (구 기본값 그대로인 세이브만)
+    if(BINDS.shield==='mouse2'&&BINDS.beam==='KeyE'){BINDS.shield='KeyE';BINDS.beam='mouse2'}
     try{saveSettings()}catch(e){}
     if(OPT.bgmVol!==undefined)BGM.setVol(OPT.bgmVol/100);
     try{applyUIScale()}catch(e){}
@@ -50127,6 +50147,51 @@ const CUTSCENE_SPEAKER_STYLES={
   HECTOR:{color:'#fb923c',label:{ko:'핵터',en:'Hector',ja:'ヘクター',zh:'赫克特'}}
 };
 const _ease={linear:t=>t,in:t=>t*t,out:t=>1-(1-t)*(1-t),inout:t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2};
+// ═══ 프롤로그 시퀀스 (세계관 나레이션, 여신 컷신 앞에 재생) ═══
+let _cutSeq='PRO'; // 'PRO'=프롤로그, 'INTRO'=여신 컷신
+const PROLOGUE_LINES={
+  ko:[
+    {id:'pr01',img:'prologue/p01.png',t:0,dur:3400,speaker:null,narr:1,text:'우주에는 셀 수 없는 세계가 있다',cam:{zs:1.06,ze:1,ease:'out'},vfx:{vig:.45,grain:.12},fade:{type:'cross',in:800}},
+    {id:'pr02',img:'prologue/p01b.png',t:3400,dur:3000,speaker:null,narr:1,text:'끝없는 시대, 끝없는 메타우주',cam:{zs:1.04,ze:1,ease:'linear'},vfx:{vig:.45,grain:.12},fade:{type:'cross',in:300}},
+    {id:'pr03',img:'prologue/p02.png',t:6400,dur:3600,speaker:null,narr:1,text:'그러나 지옥은 하나다',cam:{zs:1.08,ze:1.08,py:-14,ease:'inout'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr04',img:'prologue/p03.png',t:10000,dur:3400,speaker:null,narr:1,text:'모든 세계의 악의가\n한 곳으로 흘러든다',cam:{zs:1.06,ze:1,ease:'linear'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr05',img:'prologue/p04.png',t:13400,dur:3600,speaker:null,narr:1,text:'죽은 자의 세계와 지옥을 잇는 길은\n단 하나뿐이다',cam:{zs:1.06,ze:1,ease:'out'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr06',img:'prologue/p05.png',t:17000,dur:3000,speaker:null,narr:1,text:'들어온 것은 나가지 못한다',cam:{zs:1.02,ze:1,ease:'linear'},vfx:{vig:.55,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr07',img:'prologue/p06.png',t:20000,dur:3800,speaker:null,narr:1,text:'나가지 못한 영혼은\n환생하지 못한다',cam:{zs:1.06,ze:1.06,px:10,ease:'inout'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr08',img:'prologue/p07.png',t:23800,dur:3000,speaker:null,narr:1,text:'그리고 억겁의 시간이 흐른다',cam:{zs:1.06,ze:1.06,px:-16,ease:'linear'},vfx:{vig:.5,grain:.15},fade:{type:'cross',in:400}},
+    {id:'pr09',img:'prologue/p08.png',t:26800,dur:3600,speaker:null,narr:1,text:'고통은 살에 스며들고\n살은 제 형체를 잊는다',cam:{zs:1.04,ze:1,ease:'linear'},vfx:{vig:.55,grain:.15},fade:{type:'cross',in:500}},
+    {id:'pr10',img:'prologue/p09.png',t:30400,dur:4000,speaker:null,narr:1,text:'지옥의 모든 괴물은\n한때 어딘가의 누군가였다',cam:{zs:1.06,ze:1,ease:'out'},vfx:{vig:.55,grain:.12},fade:{type:'cross',in:500}},
+    {id:'pr11',img:'prologue/p10.png',t:34400,dur:3200,speaker:null,narr:1,text:'나가는 길은 하나뿐이다',cam:{zs:1.08,ze:1.08,py:14,ease:'inout'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr12',img:'prologue/p11.png',t:37600,dur:3600,speaker:null,narr:1,text:'찢고 나가는 것',cam:{zs:1,ze:1.18,ease:'in'},vfx:{vig:.5,grain:.12,shake:1},fade:{type:'cross',in:300,out:400}},
+    {id:'pr12b',img:'prologue/p12.png',t:41200,dur:3400,speaker:null,narr:1,text:'지옥은 시대를 묻지 않는다',cam:{zs:1.06,ze:1,ease:'out'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:600}},
+    {id:'pr12c',img:'prologue/p13.png',t:44600,dur:4000,speaker:null,narr:1,text:'',cam:{zs:1.05,ze:1.05,px:-16,ease:'linear'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr12d',img:'prologue/p14.png',t:48600,dur:3600,speaker:null,narr:1,text:'검을 쥔 자도,\n강철의 몸을 가진 자도',cam:{zs:1.04,ze:1,ease:'linear'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr12e',img:'prologue/p15.png',t:52200,dur:3600,speaker:null,narr:1,text:'어느 현실에서 떨어졌든\n도착지는 같다',cam:{zs:1.02,ze:1.08,py:8,ease:'inout'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr12f',img:'prologue/p16.png',t:55800,dur:3800,speaker:null,narr:1,text:'오래 머문 것은\n자신이 무엇이었는지 잊는다',cam:{zs:1.02,ze:1.1,ease:'in'},vfx:{vig:.55,grain:.15},fade:{type:'cross',in:500}},
+    {id:'pr12g',img:'prologue/p17.png',t:59600,dur:3600,speaker:null,narr:1,text:'그리고 추락은 멈추지 않는다',cam:{zs:1.08,ze:1,ease:'out'},vfx:{vig:.55,grain:.12},fade:{type:'cross',in:500}},
+    {id:'pr13',img:null,t:63200,dur:5000,speaker:null,narr:1,title:1,text:'HELL: EXODUSER',fade:{type:'black',in:800,out:600}}
+  ],en:[
+    {id:'pr01',img:'prologue/p01.png',t:0,dur:3400,speaker:null,narr:1,text:'There are countless worlds',cam:{zs:1.06,ze:1,ease:'out'},vfx:{vig:.45,grain:.12},fade:{type:'cross',in:800}},
+    {id:'pr02',img:'prologue/p01b.png',t:3400,dur:3000,speaker:null,narr:1,text:'Endless ages. Endless metaverses.',cam:{zs:1.04,ze:1,ease:'linear'},vfx:{vig:.45,grain:.12},fade:{type:'cross',in:300}},
+    {id:'pr03',img:'prologue/p02.png',t:6400,dur:3600,speaker:null,narr:1,text:'But there is only one Hell',cam:{zs:1.08,ze:1.08,py:-14,ease:'inout'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr04',img:'prologue/p03.png',t:10000,dur:3400,speaker:null,narr:1,text:'All malice of every world\nflows into one place',cam:{zs:1.06,ze:1,ease:'linear'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr05',img:'prologue/p04.png',t:13400,dur:3600,speaker:null,narr:1,text:'Only one road binds\nthe world of the dead to Hell',cam:{zs:1.06,ze:1,ease:'out'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr06',img:'prologue/p05.png',t:17000,dur:3000,speaker:null,narr:1,text:'What enters does not leave',cam:{zs:1.02,ze:1,ease:'linear'},vfx:{vig:.55,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr07',img:'prologue/p06.png',t:20000,dur:3800,speaker:null,narr:1,text:'What cannot leave\nis never reborn',cam:{zs:1.06,ze:1.06,px:10,ease:'inout'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr08',img:'prologue/p07.png',t:23800,dur:3000,speaker:null,narr:1,text:'And eons pass',cam:{zs:1.06,ze:1.06,px:-16,ease:'linear'},vfx:{vig:.5,grain:.15},fade:{type:'cross',in:400}},
+    {id:'pr09',img:'prologue/p08.png',t:26800,dur:3600,speaker:null,narr:1,text:'Pain seeps into the flesh\nand the flesh forgets its shape',cam:{zs:1.04,ze:1,ease:'linear'},vfx:{vig:.55,grain:.15},fade:{type:'cross',in:500}},
+    {id:'pr10',img:'prologue/p09.png',t:30400,dur:4000,speaker:null,narr:1,text:'Every monster in Hell\nwas once someone',cam:{zs:1.06,ze:1,ease:'out'},vfx:{vig:.55,grain:.12},fade:{type:'cross',in:500}},
+    {id:'pr11',img:'prologue/p10.png',t:34400,dur:3200,speaker:null,narr:1,text:'There is only one way out',cam:{zs:1.08,ze:1.08,py:14,ease:'inout'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr12',img:'prologue/p11.png',t:37600,dur:3600,speaker:null,narr:1,text:'To tear it open',cam:{zs:1,ze:1.18,ease:'in'},vfx:{vig:.5,grain:.12,shake:1},fade:{type:'cross',in:300,out:400}},
+    {id:'pr12b',img:'prologue/p12.png',t:41200,dur:3400,speaker:null,narr:1,text:'Hell does not ask\nwhat age you came from',cam:{zs:1.06,ze:1,ease:'out'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:600}},
+    {id:'pr12c',img:'prologue/p13.png',t:44600,dur:4000,speaker:null,narr:1,text:'',cam:{zs:1.05,ze:1.05,px:-16,ease:'linear'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr12d',img:'prologue/p14.png',t:48600,dur:3600,speaker:null,narr:1,text:'Those who held a blade.\nThose born of steel.',cam:{zs:1.04,ze:1,ease:'linear'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr12e',img:'prologue/p15.png',t:52200,dur:3600,speaker:null,narr:1,text:'Whatever reality they fell from,\nthe destination is one',cam:{zs:1.02,ze:1.08,py:8,ease:'inout'},vfx:{vig:.5,grain:.12},fade:{type:'cross',in:400}},
+    {id:'pr12f',img:'prologue/p16.png',t:55800,dur:3800,speaker:null,narr:1,text:'What stays long enough\nforgets what it was',cam:{zs:1.02,ze:1.1,ease:'in'},vfx:{vig:.55,grain:.15},fade:{type:'cross',in:500}},
+    {id:'pr12g',img:'prologue/p17.png',t:59600,dur:3600,speaker:null,narr:1,text:'And they keep falling',cam:{zs:1.08,ze:1,ease:'out'},vfx:{vig:.55,grain:.12},fade:{type:'cross',in:500}},
+    {id:'pr13',img:null,t:63200,dur:5000,speaker:null,narr:1,title:1,text:'HELL: EXODUSER',fade:{type:'black',in:800,out:600}}
+  ]
+};
 const INTRO_CUTSCENE_LINES={
   ko:[
     {id:1,img:'00.png',t:0,dur:2500,speaker:null,text:'',cam:{zs:1,ze:1.08,px:0,py:0,ease:'out'},vfx:{vig:.4,grain:.15,grade:'purple'},fade:{in:800,out:200,type:'cross'},sfx:'goddess_laugh'},
@@ -50265,7 +50330,7 @@ function _getCutsceneImg(filename){
   if(!filename)return null;
   if(_cutsceneImgCache[filename])return _cutsceneImgCache[filename];
   const img=new Image();
-  img.src='assets/cutscene/images/'+filename;
+  img.src=filename.indexOf('/')>=0?'assets/cutscene/'+filename:'assets/cutscene/images/'+filename;
   _cutsceneImgCache[filename]=img;
   return img;
 }
@@ -50302,6 +50367,9 @@ function _startIntroCutscene(){
   if(!_forceCutscene&&G.stage!==0){_startIntro();return}
   if(!_forceCutscene&&G._cutsceneDone){_startIntro();return}
   _cutsceneState='INTRO_CUTSCENE';
+  _cutSeq='PRO'; // 프롤로그부터 시작 → 종료 시 여신 컷신으로 연결
+  {const _pl=PROLOGUE_LINES.ko;for(let _pi=0;_pi<_pl.length;_pi++)if(_pl[_pi].img)_getCutsceneImg(_pl[_pi].img)} // 프리로드 (진입 시 1회)
+  if(!window._cutLogoImg){window._cutLogoImg=new Image();window._cutLogoImg.src='img/logo_exoduser.png'} // 타이틀 로고 프리로드
   _cutsceneStartMs=performance.now();
   _cutsceneIdx=-1;_cutVibDone=false;
   _cutLineIdx=0;
@@ -50310,10 +50378,8 @@ function _startIntroCutscene(){
   G.on=false;
   // HUD 숨기기
   ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>{const el=$(id);if(el)el.classList.remove('on')});
-  // 컷신 BGM (한국어/외국어 분리)
-  const _cutLang=(typeof OPT!=='undefined'&&OPT.lang)?OPT.lang:'ko';
-  const _cutBgmKey=_cutLang==='ko'?'cutscene_goddess':'cutscene_goddess_en';
-  BGM.fadeOut(300);setTimeout(()=>BGM.play(_cutBgmKey,true),400);
+  // 컷신 BGM — 프롤로그+여신 컷신 전 구간 주제가 풀(cutscene_prologue, 웅장버전 4곡 랜덤)
+  BGM.fadeOut(300);setTimeout(()=>BGM.play('cutscene_prologue',true),400);
   console.log('[CUTSCENE] Intro cutscene started');
 }
 
@@ -50332,10 +50398,20 @@ function _cutsceneAdvance(){
 }
 function _cutsceneGetLines(){
   const lang=(typeof OPT!=='undefined'&&OPT.lang)?OPT.lang:'ko';
-  const lines=INTRO_CUTSCENE_LINES[lang];
-  return(lines&&lines.length>0)?lines:INTRO_CUTSCENE_LINES.ko;
+  const src=_cutSeq==='PRO'?PROLOGUE_LINES:INTRO_CUTSCENE_LINES;
+  const lines=src[lang];
+  return(lines&&lines.length>0)?lines:src.ko;
 }
 function _cutsceneEnd(){
+  if(_cutSeq==='PRO'){ // 프롤로그 종료 → 여신 컷신으로 연결 (컷신 자체는 계속)
+    _cutSeq='INTRO';
+    _cutLineIdx=0;_cutLineStartMs=performance.now();
+    _cutWaitInput=false;_cutsceneIdx=-1;_cutVibDone=false;
+    _cutSkipHold=0;_cutSkipHolding=false;
+    // BGM: 여신 컷신도 주제가 풀(cutscene_prologue) 그대로 유지 — 교체 없이 이어감 (2026-07-27)
+    // (구 cutscene_goddess/_en 트랙은 미사용 전환. 복원하려면 여기서 BGM.play('cutscene_goddess')로 교체)
+    return;
+  }
   G._cutsceneDone=true;
   _cutsceneState=null;
   _cutC.style.display='none';
@@ -50437,6 +50513,42 @@ function _renderIntroCutscene(){
       _cutVignette(cx,cw,ch,vfx.vig||0);
       _cutGrain(cx,cw,ch,vfx.grain||0,now);
     }
+  }
+
+  // 나레이션 렌더 (프롤로그 narr 전용 — 중앙 정렬, 기존 자막 경로 불변)
+  if(ln.narr&&ln.text){
+    cx.fillStyle='rgba(0,0,0,0.35)';cx.fillRect(0,0,cw,ch); // 가독성 오버레이
+    cx.save();
+    cx.globalAlpha=fadeAlpha;
+    let _logoDrawn=false;
+    if(ln.title){ // 타이틀 컷 → 메탈 로고 이미지 (2026-07-27 골드 타이포 대체)
+      if(!window._cutLogoImg){window._cutLogoImg=new Image();window._cutLogoImg.src='img/logo_exoduser.png'}
+      const _lg=window._cutLogoImg;
+      if(_lg.complete&&_lg.naturalWidth>0){
+        const _lw=Math.min(cw*.52,_lg.naturalWidth*1.2);
+        const _lh=_lw*_lg.naturalHeight/_lg.naturalWidth;
+        cx.drawImage(_lg,cw*.5-_lw*.5,ch*.5-_lh*.5,_lw,_lh);
+        _logoDrawn=true;
+      }
+    }
+    if(!_logoDrawn){
+      cx.textAlign='center';cx.textBaseline='middle';
+      const _nFs=ln.title?Math.max(24,ch*.075):Math.max(14,ch*.031);
+      cx.font=(ln.title?'bold ':'')+(~~_nFs)+'px "Noto Sans KR",sans-serif';
+      cx.fillStyle=ln.col||(ln.title?'#d4af37':'#d8d4cc');
+      cx.shadowColor='#000';cx.shadowBlur=6;cx.shadowOffsetX=0;cx.shadowOffsetY=1;
+      const _nLines=ln.text.split('\n');
+      const _nLh=_nFs*1.5;
+      const _nCy=ch*.5-(_nLines.length-1)*_nLh*.5;
+      for(let _nli=0;_nli<_nLines.length;_nli++)cx.fillText(_nLines[_nli],cw*.5,_nCy+_nli*_nLh);
+      cx.shadowColor='transparent';cx.shadowBlur=0;cx.shadowOffsetY=0;
+      if(ln.title){ // 하단 붉은 세리프 라인
+        cx.fillStyle='#7a1d1d';
+        cx.fillRect(cw*.5-cw*.09,_nCy+(_nLines.length-1)*_nLh+_nFs*.9,cw*.18,Math.max(2,ch*.004));
+      }
+    }
+    cx.restore();
+    cx.textAlign='left';cx.textBaseline='middle';
   }
 
   // 자막 렌더 (대사 있는 컷만)
@@ -50575,7 +50687,7 @@ const _isPad=()=>{const gps=navigator.getGamepads();for(let i=0;i<gps.length;i++
 const _INTRO_KEY_STEPS=[
   {title:'공격',body:()=>_isPad()?
     _ikB(['A','X','Y','LB'],['무기 공격','우클릭 스킬','패링·보호막','돌진 (적을 관통, 무적)']):
-    _ikB(['좌클릭','우클릭 / Q','SHIFT'],['무기 공격','패링·보호막','돌진 (적을 관통, 무적)']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
+    _ikB(['좌클릭','E / Q','SHIFT'],['무기 공격','패링·보호막','돌진 (적을 관통, 무적)']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},
   {title:'스킬',body:()=>_isPad()?
     _ikB(['B','RB','R3','LT+A','LT+B','LT+X'],['대왕치기 (분노폭발, 광역 기절)','Ctrl 스킬','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']):
     _ikB(['SPACE','1','E','F','CTRL','T'],['대왕치기 (분노폭발, 광역 기절)','가시덫 (슬로우+출혈)','마법 (탭=투사체, 홀드=빔)','회복의 영역 (리젠 장판)','얼음보주 (무적+빙결)','석궁 자동발사']),hint:_isPad()?'A 버튼으로 계속':'클릭하여 계속'},

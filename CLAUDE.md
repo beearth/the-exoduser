@@ -18,23 +18,23 @@ git add -A && git status && git push origin main
 **DEMO/EA 동기화 (배포 시 반드시 함께):**
 ```bash
 # game.html 동기화
-cp G:/hell/game.html G:/hell-DEMO/game.html
-cp G:/hell/game.html G:/hell-DEMO/gamedemo.html
-cp G:/hell/game.html G:/hell-ea/game.html
+cp G:/exoduser/game.html G:/exoduser-DEMO/game.html
+cp G:/exoduser/game.html G:/exoduser-DEMO/gamedemo.html
+cp G:/exoduser/game.html G:/exoduser-ea/game.html
 # DEMO 폴더: _BIC=true, _DEMO_MODE=true, _DEMO_LV_CAP=100 강제 (game.html + gamedemo.html 둘 다)
-for f in G:/hell-DEMO/game.html G:/hell-DEMO/gamedemo.html; do sed -i "s/const _BIC=location.search.includes('bic')/const _BIC=true/" "$f" && sed -i "s/_DEMO_MODE=_BIC||location.search.includes('demo')/_DEMO_MODE=true/" "$f" && sed -i "s/_DEMO_LV_CAP=_BIC?100:500/_DEMO_LV_CAP=100/" "$f"; done
+for f in G:/exoduser-DEMO/game.html G:/exoduser-DEMO/gamedemo.html; do sed -i "s/const _BIC=location.search.includes('bic')/const _BIC=true/" "$f" && sed -i "s/_DEMO_MODE=_BIC||location.search.includes('demo')/_DEMO_MODE=true/" "$f" && sed -i "s/_DEMO_LV_CAP=_BIC?100:500/_DEMO_LV_CAP=100/" "$f"; done
 # DEMO/EA 에셋 동기화 (sfx/img/assets/bgm/sprites 전체)
-for d in sfx img assets bgm sprites; do cp -r "G:/hell/$d/"* "G:/hell-DEMO/$d/" 2>/dev/null; cp -r "G:/hell/$d/"* "G:/hell-ea/$d/" 2>/dev/null; done
+for d in sfx img assets bgm sprites; do cp -r "G:/exoduser/$d/"* "G:/exoduser-DEMO/$d/" 2>/dev/null; cp -r "G:/exoduser/$d/"* "G:/exoduser-ea/$d/" 2>/dev/null; done
 # index.html 동기화
-cp G:/hell/index.html G:/hell-ea/index.html
-cp G:/hell/index.html G:/hell-DEMO/indexdemo.html
-cp G:/hell/index.html G:/hell-DEMO/index.html
+cp G:/exoduser/index.html G:/exoduser-ea/index.html
+cp G:/exoduser/index.html G:/exoduser-DEMO/indexdemo.html
+cp G:/exoduser/index.html G:/exoduser-DEMO/index.html
 # _LOBBY_BUILD 버전별 설정 (복사 후 반드시 실행)
-sed -i "s/_LOBBY_BUILD='full'/_LOBBY_BUILD='demo'/" G:/hell-DEMO/indexdemo.html
-sed -i "s/_LOBBY_BUILD='full'/_LOBBY_BUILD='demo'/" G:/hell-DEMO/index.html
-sed -i "s/_LOBBY_BUILD='full'/_LOBBY_BUILD='ea'/" G:/hell-ea/index.html
+sed -i "s/_LOBBY_BUILD='full'/_LOBBY_BUILD='demo'/" G:/exoduser-DEMO/indexdemo.html
+sed -i "s/_LOBBY_BUILD='full'/_LOBBY_BUILD='demo'/" G:/exoduser-DEMO/index.html
+sed -i "s/_LOBBY_BUILD='full'/_LOBBY_BUILD='ea'/" G:/exoduser-ea/index.html
 # lang/data 파일 동기화
-for f in lang_*.js lobby_i18n.js maps_data.js; do cp "G:/hell/$f" "G:/hell-DEMO/$f" && cp "G:/hell/$f" "G:/hell-ea/$f"; done
+for f in lang_*.js lobby_i18n.js maps_data.js; do cp "G:/exoduser/$f" "G:/exoduser-DEMO/$f" && cp "G:/exoduser/$f" "G:/exoduser-ea/$f"; done
 ```
 - game.html, index.html, lang_*.js 중 **하나라도 수정하면** 위 명령 전부 실행
 - DEMO의 메인은 `indexdemo.html` — `index.html`만 복사하면 반영 안 됨
@@ -45,10 +45,12 @@ for f in lang_*.js lobby_i18n.js maps_data.js; do cp "G:/hell/$f" "G:/hell-DEMO/
 ## 서버
 
 ```
-cd G:\hell && node server.cjs
+cd G:\exoduser
+& "C:\nvm4w\nodejs\node.exe" server.cjs
 ```
 - 포트 3333, `/api/slots` 등 API 포함
 - **python http.server 사용 금지** — API 404 남
+- `node`를 그냥 치면 `C:\WINDOWS\system32\node`(깨진 shim)가 잡혀 실행 실패 → 반드시 `C:\nvm4w\nodejs\node.exe` 전체 경로 사용 (또는 `G:\NODE.JS\node.exe`)
 
 ## 기획 문서 (docs/ 폴더 30개)
 
@@ -130,8 +132,8 @@ cd G:\hell && node server.cjs
 |------|------|
 | `game.html` | 현재 게임 코드 (메인) |
 | `index.html` | 로비/시네마틱/캐릭터 선택 |
-| `G:\hell-DEMO\` | NW.js 데모 빌드 (itch.io 무료 배포) |
-| `G:\hell-ea\` | NW.js EA 빌드 (itch.io + Steam EA) |
+| `G:\exoduser-DEMO\` | NW.js 데모 빌드 (itch.io 무료 배포) |
+| `G:\exoduser-ea\` | NW.js EA 빌드 (itch.io + Steam EA) |
 
 ## 작업 규칙
 

@@ -334,7 +334,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 }
 .fdg-eye-glow.left{left:33.5%}
 .fdg-eye-glow.right{left:50.5%}
-@keyframes fdg-eye-pulse{0%,100%{opacity:.10}50%{opacity:.55}}
+@keyframes fdg-eye-pulse{0%,100%{opacity:.15}50%{opacity:.75}}
 /* FDG v2 타이틀 */
 .fdg-title{
   display:flex;justify-content:center;align-items:baseline;
@@ -346,24 +346,26 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 .fdg-title.expand{gap:.6em;letter-spacing:.2em}
 .fdg-title .w{display:inline-flex;align-items:baseline}
 .fdg-title .a{
-  color:#C9A961;opacity:0;
+  color:#E02412;opacity:0;
+  text-shadow:0 0 16px rgba(224,36,18,.6),0 0 44px rgba(224,36,18,.35);
   transform:translateY(13px) scale(.87);
   transition:opacity .5s ease-out,transform .65s cubic-bezier(.22,1,.36,1);
 }
 .fdg-title .a.on{opacity:1;transform:translateY(0) scale(1)}
 .fdg-title .x{
   display:inline-block;max-width:0;overflow:hidden;white-space:nowrap;
-  vertical-align:bottom;color:#E8E0D0;
+  vertical-align:bottom;color:#EDD5CC;
+  text-shadow:0 0 22px rgba(224,36,18,.25);
   padding:.1em 0 .4em 0;
   transition:max-width .8s cubic-bezier(.22,1,.36,1);
 }
 .fdg-title .x.on{max-width:9em}
 .fdg-title .x::after{content:'';display:inline-block;width:.5em}
 /* PRESENTS + 부제 (JS 타이머 제어) */
-.fdg-presents{font:400 clamp(12px,1.25vw,24px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#888;letter-spacing:.5em;text-align:center;opacity:0;transition:opacity .5s ease-out}
+.fdg-presents{font:400 clamp(12px,1.25vw,24px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#9a5a4a;letter-spacing:.5em;text-align:center;opacity:0;transition:opacity .5s ease-out}
 .fdg-subtitle{
   font:400 clamp(15px,1.7vw,26px) 'Noto Serif KR','Noto Serif JP','Noto Serif SC','Noto Serif TC','Noto Naskh Arabic','Noto Serif Thai','Noto Serif',serif;
-  color:#C9A961;letter-spacing:.20em;text-align:center;opacity:1;line-height:1.4
+  color:#C64A30;letter-spacing:.20em;text-align:center;opacity:1;line-height:1.4
 }
 /* 언어별 명시 폰트 — :lang() 매칭용 (html[lang] 동적 설정) */
 :lang(ja)  .fdg-subtitle{font-family:'Noto Serif JP',serif;letter-spacing:.15em}
@@ -373,7 +375,7 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 :lang(th)  .fdg-subtitle{font-family:'Noto Serif Thai',serif;letter-spacing:.08em}
 .fdg-subtitle .fdg-char{display:inline-block;opacity:0;filter:blur(12px);transition:opacity .4s ease-out, filter .5s ease-out}
 .fdg-subtitle .fdg-char.on{opacity:1;filter:blur(0)}
-.fdg-prompt{font:400 clamp(14px,1.5vw,22px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#666;letter-spacing:.35em;text-align:center;opacity:0}
+.fdg-prompt{font:400 clamp(14px,1.5vw,22px) 'Cinzel Decorative','Cinzel',Georgia,serif;color:#8a4a3a;letter-spacing:.35em;text-align:center;opacity:0}
 .fdg-prompt.on{animation:fdg-blink 1.2s ease-in-out infinite alternate}
 @keyframes fdg-blink{from{opacity:0}to{opacity:.5}}
 </style>
@@ -3232,7 +3234,9 @@ function showCharGate(charId){
      <div style="font:18px sans-serif;color:#666;line-height:1.6">${_warnBody}</div>
      <div id="splashBlink" style="font:14px sans-serif;color:#444;margin-top:40px">${_warnCont}</div>`;
 
-  // ── SCREEN 3: 타이틀 (캔버스, 4초 자동, 즉시 스킵) ──
+  // ── SCREEN 3: 타이틀 키아트 (여캐 고정, 클릭/키 입력 시 진행) ──
+  const _titleArt=new Image();
+  _titleArt.src='img/title_art_1.png';
 
   // ── SCREEN 2: FDG → 늑대 엠블럼 + FOR DEAR GAMERS (HTML/CSS, 5.5초) ──
   const FDG_DUR=5500;
@@ -3270,6 +3274,8 @@ function showCharGate(charId){
     // 프롬프트
     const _promptMs=3800+(_subChars.length-1)*80+400;
     s(()=>{const _pr=document.getElementById('fdgPrompt');if(_pr){_pr.textContent=_TL('아무 키나 눌러 계속');_pr.classList.add('on')}},_promptMs);
+    // 키 입력 없어도 자동 진행 (프롬프트 표시 후 1.2초)
+    fdgTimerId=setTimeout(()=>{if(!done&&phase===1)nextPhase()},_promptMs+1200);
   }
   let fdgTimerId=null;
   function hideFDGScreen(){
@@ -3304,25 +3310,35 @@ function showCharGate(charId){
       showFDGScreen();
       return;
     } else if(phase===2){
-      // 타이틀 (캔버스, 4초 자동 진행, 즉시 스킵 가능)
+      // 타이틀 키아트 (2종 랜덤, 자동 진행 없음 — 클릭/키/패드 입력 시 진행)
       t0=performance.now();
-      console.log('[SPLASH] TITLE screen shown');
-      let _titlePrevTs=performance.now();
+      console.log('[SPLASH] TITLE screen shown (art: '+_titleArt.src.split('/').pop()+')');
       function titleLoop(){
         if(done||phase!==2)return;
-        const now=performance.now();
-        const elapsed=now-t0;
+        const elapsed=performance.now()-t0;
         const w=cv.offsetWidth,h=cv.offsetHeight;
         cx.clearRect(0,0,w,h);cx.fillStyle='#000';cx.fillRect(0,0,w,h);
         const fadeIn=Math.min(1,elapsed/1000);
-        const fadeOut=elapsed>3500?Math.max(0,1-(elapsed-3500)/500):1;
-        cx.save();cx.globalAlpha=fadeIn*fadeOut;cx.textAlign='center';cx.textBaseline='middle';
-        cx.font="700 72px 'Cinzel Decorative','Cinzel',Georgia,serif";
-        cx.fillStyle='#cc4400';cx.fillText('EXODUSER',w/2,h*0.42);
-        cx.font="24px 'Noto Sans KR',sans-serif";cx.fillStyle='#888';
-        cx.fillText(_TL('지옥의 길'),w/2,h*0.42+50);
+        cx.save();cx.globalAlpha=fadeIn;
+        if(_titleArt.complete&&_titleArt.naturalWidth){
+          // cover fit — 화면 꽉 채우고 넘치는 부분 크롭
+          const ir=_titleArt.naturalWidth/_titleArt.naturalHeight;
+          let dw,dh;
+          if(w/h>ir){dw=w;dh=w/ir}else{dh=h;dw=h*ir}
+          cx.drawImage(_titleArt,(w-dw)/2,(h-dh)/2,dw,dh);
+        }else{
+          cx.textAlign='center';cx.textBaseline='middle';
+          cx.font="700 72px 'Cinzel Decorative','Cinzel',Georgia,serif";
+          cx.fillStyle='#cc4400';cx.fillText('EXODUSER',w/2,h*0.42);
+        }
+        if(elapsed>1200){
+          cx.globalAlpha=fadeIn*(Math.sin(elapsed*0.004)*0.35+0.55);
+          cx.textAlign='center';cx.textBaseline='middle';
+          cx.font="15px 'Noto Sans KR',sans-serif";cx.fillStyle='#ccc';
+          cx.shadowColor='#000';cx.shadowBlur=8;
+          cx.fillText(_TL('아무 키나 눌러 계속'),w/2,h*0.92);
+        }
         cx.restore();
-        if(elapsed>=4000){nextPhase();return}
         rafId=requestAnimationFrame(titleLoop);
       }
       titleLoop();return;
@@ -3338,7 +3354,7 @@ function showCharGate(charId){
     cx.clearRect(0,0,cv.offsetWidth,cv.offsetHeight);
     cx.fillStyle='#000';cx.fillRect(0,0,cv.offsetWidth,cv.offsetHeight);
     phase++;
-    if(phase>=2){endSplash();return}
+    if(phase>=3){endSplash();return}
     setTimeout(()=>{startPhase()},300);
   }
 

@@ -5,10 +5,12 @@
 ## 서버
 
 ```
-cd G:\hell && node server.cjs
+cd G:\exoduser
+& "C:\nvm4w\nodejs\node.exe" server.cjs
 ```
 - 포트 3333, `/api/slots` 등 API 포함
 - **python http.server 사용 금지** — API 404 남
+- `node`를 그냥 치면 `C:\WINDOWS\system32\node`(깨진 shim)가 잡혀 실행 실패 → 반드시 `C:\nvm4w\nodejs\node.exe` 전체 경로 사용 (또는 `G:\NODE.JS\node.exe`)
 
 ## 프로젝트 구조
 

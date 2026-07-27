@@ -59,7 +59,7 @@ export function createStaticServer({ rootDir = process.cwd(), host = '127.0.0.1'
   const SAVES_PREFIX = createRootPrefix(SAVES_DIR);
 
   async function resolveFile(urlPath) {
-    let safePath = urlPath === '/' ? '/game.html' : urlPath;
+    let safePath = urlPath === '/' ? '/index.html' : urlPath;
     safePath = decodeURIComponent(safePath);
     let filePath = path.resolve(ROOT, '.' + safePath);
     if (filePath !== ROOT && !filePath.startsWith(ROOT_PREFIX)) return null;
