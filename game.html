@@ -30270,6 +30270,8 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   P.hp=Math.min(P.mhp,P.hp+_prBase);
   P.st=Math.min(P.mst,P.st+_prBase);
   P.mp=Math.min(P.mmp,P.mp+_prBase);
+  // 패링 성공: 포이즈(기절포인트) 1칸 회복 — 피격 -1과 대칭 (2026-07-27)
+  P.poise=Math.min(P.maxPoise||4,(P.poise||0)+1);
   const _harpAdd=_isRedParry?5:_isRainbowParry?15:10; // 빨콩 5, 무지개 15, 일반 10
   _harpGauge=Math.min(_HARP_GAUGE_MAX,_harpGauge+_harpAdd);
   
