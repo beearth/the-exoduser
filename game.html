@@ -50500,10 +50500,10 @@ function _startIntroCutscene(){
   G.on=false;
   // HUD 숨기기
   ['hud','hudTop','mmWrap','skBar','mmLvl','globeHP','globeMP'].forEach(id=>{const el=$(id);if(el)el.classList.remove('on')});
-  // 오디오 (2026-07-27): PRO(전쟁 서사) = 전용 BGM(h0_explore, cutscene_warintro) + 나레이션 보이스.
-  // 여신 컷신(INTRO) 진입 시점(_cutsceneEnd PRO 분기)에 주제가 풀(cutscene_prologue)로 교체.
+  // 오디오 (2026-07-27 v2): PRO(전쟁 서사) = 주제가 웅장버전 풀(cutscene_prologue) + 나레이션 보이스.
+  // (h0_explore(cutscene_warintro)는 1장 느낌이라 제외 — 유저 지시. 키는 보존)
   BGM.fadeOut(300);
-  setTimeout(()=>BGM.play('cutscene_warintro',true),400);
+  setTimeout(()=>BGM.play('cutscene_prologue',true),400);
   try{_proVoice.currentTime=_PRO_VOICE_OFS}catch(e){}
   _proVoice.play().catch(()=>{});
   console.log('[CUTSCENE] Intro cutscene started');
@@ -50534,10 +50534,10 @@ function _cutsceneEnd(){
     _cutLineIdx=0;_cutLineStartMs=performance.now();
     _cutWaitInput=false;_cutsceneIdx=-1;_cutVibDone=false;
     _cutSkipHold=0;_cutSkipHolding=false;
-    // 전쟁 서사 보이스 종료 → 여신 컷신부터 주제가 풀(cutscene_prologue) 재생 (2026-07-27 인트로 스왑)
+    // 전쟁 서사 보이스 종료 → 여신 컷신은 주제가 풀 이어감 (재시작 없이 연속 재생, 2026-07-27 v2)
     // (구 cutscene_goddess/_en 트랙은 미사용 전환. 복원하려면 여기서 BGM.play('cutscene_goddess')로 교체)
     _proVoiceStop();
-    BGM.play('cutscene_prologue',true);
+    if(BGM._curKey!=='cutscene_prologue')BGM.play('cutscene_prologue',true);
     return;
   }
   G._cutsceneDone=true;
