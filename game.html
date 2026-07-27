@@ -50309,7 +50309,7 @@ const PROLOGUE_LINES={
 };
 // ── 전쟁 서사 나레이션 보이스 (index.html에서 이관, 2026-07-27) — 단일 파일(언어 공통), PRO 구간 BGM 대신 재생
 const _proVoice=new Audio('bgm/공통/intro_voice.mp3');
-_proVoice.preload='auto';_proVoice.volume=0.7;_proVoice.playbackRate=0.95;
+_proVoice.preload='auto';_proVoice.volume=0.7;_proVoice.playbackRate=1.0; // 1.0 고정 (2026-07-27): 라인 t가 보이스 원본 타임스탬프라 0.95면 5% 드리프트→문장 꼬리 잘림
 const _PRO_VOICE_OFS=0.3; // 파일 선두 무음 스킵 (구 index VOICE_DELAY=-0.3 동일)
 function _proVoiceStop(){try{_proVoice.pause();_proVoice.currentTime=0}catch(e){}}
 const INTRO_CUTSCENE_LINES={
@@ -50589,8 +50589,8 @@ function _renderIntroCutscene(){
 
   // SFX/Voice (라인 전환 시 1회)
   if(_cutsceneIdx!==_cutLineIdx){
-    // 전쟁 서사 보이스 동기: 라인 t와 0.35s 이상 어긋나면 점프 (클릭 스킵 대응)
-    if(_cutSeq==='PRO'&&!_proVoice.paused){const _vt=ln.t/1000+_PRO_VOICE_OFS;if(Math.abs(_proVoice.currentTime-_vt)>0.35){try{_proVoice.currentTime=_vt}catch(e){}}}
+    // 전쟁 서사 보이스 동기: 1.2s 이상 어긋날 때만 점프 — 클릭 스킵 전용 (2026-07-27: 0.35s는 자연 드리프트에도 걸려 문장이 잘렸음)
+    if(_cutSeq==='PRO'&&!_proVoice.paused){const _vt=ln.t/1000+_PRO_VOICE_OFS;if(Math.abs(_proVoice.currentTime-_vt)>1.2){try{_proVoice.currentTime=_vt}catch(e){}}}
     if(ln.sfx)_playSfxSafe(ln.sfx);
     if(ln.speaker&&ln.text)_playVoiceSafe('voice_cut_'+String(ln.id).padStart(2,'0'));
     _cutsceneIdx=_cutLineIdx;
