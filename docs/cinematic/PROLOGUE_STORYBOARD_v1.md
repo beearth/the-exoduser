@@ -136,7 +136,8 @@
 DaVinci 전용. 이미지 생성 금지.
 > **2026-07-27 변경**: 인게임 타이틀 컷은 골드 타이포 대신 **메탈 로고 이미지**(`img/logo_exoduser.png`,
 > 유튜브 배너에서 추출한 투명배경 로고)를 화면 중앙에 렌더 (화면폭 52%). 로고 미로드 시 기존 타이포 폴백.
-> B06 KO 나레이션 "그리고 지옥은 계속 떨어진다" → **"그리고 추락은 멈추지 않는다"** 수정 (주어 오류 — 떨어지는 것은 지옥이 아니라 존재들).
+> B06 나레이션 변경 이력: "그리고 지옥은 계속 떨어진다"(주어 오류) → "그리고 추락은 멈추지 않는다" →
+> **"그리고 추락은 영겁의 세월 동안 멈추지 않을 것이다..."** (2026-07-27 최종, 유저 지시 — dur 3.6s→4.2s, 타이틀 t 63.8s).
 
 ===
 
@@ -156,7 +157,7 @@ A13 타이틀 직전에 삽입한다. 즉 A12 다음에 B01부터 B06, 그 다�
 | B03 | p14 | 3.6s | 검을 쥔 자도, 강철의 몸을 가진 자도 | Those who held a blade. Those born of steel. |
 | B04 | p15 | 3.6s | 어느 현실에서 떨어졌든 도착지는 같다 | Whatever reality they fell from, the destination is one |
 | B05 | p16 | 3.8s | 오래 머문 것은 자신이 무엇이었는지 잊는다 | What stays long enough forgets what it was |
-| B06 | p17 | 3.6s | 그리고 추락은 멈추지 않는다 | And they keep falling |
+| B06 | p17 | 4.2s | 그리고 추락은 영겁의 세월 동안 멈추지 않을 것이다... | And through eons without end, the falling shall never cease... |
 
 ### 컷별 화면 지시
 
