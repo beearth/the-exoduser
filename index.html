@@ -1898,15 +1898,19 @@ function playCinematic(){
     // 비디오 시작 시 스킵 버튼 즉시 표시
     skipBtn.classList.add('show');
 
-    // 비디오 페이드아웃 → 프롤로그 시작
-    const videoEnd=8500;
+    // 비디오 페이드아웃 → 프롤로그 시작 — 실제 재생 시간 기반 (2026-07-27: 고정 8.5s 벽시계 타이머가 렉/버퍼링 시 어긋나 문이 덜 열린 채 자막과 겹치던 문제)
     vid.onended=()=>{vid.style.opacity='0'};
-    _vidFadeTimer=setTimeout(()=>{if(_cinDone)return;vid.style.opacity='0'},videoEnd-1500);
-    _vidStartTimer=setTimeout(()=>{
-      if(_cinDone)return;
-      _cinReady=true;
-      showLine(0);
-    },videoEnd);
+    let _vidFadeDone=false;const _vidWatchT0=performance.now();
+    _vidStartTimer=setInterval(()=>{
+      if(_cinDone){clearInterval(_vidStartTimer);return}
+      const _d=(isFinite(vid.duration)&&vid.duration>0)?vid.duration:8;
+      const _stall=performance.now()-_vidWatchT0>15000; // 15s 안전장치 (영상 멈춤/코덱 실패)
+      if(!_vidFadeDone&&(vid.ended||_stall||vid.currentTime>=_d-1.5)){_vidFadeDone=true;vid.style.opacity='0'}
+      if(vid.ended||_stall||vid.currentTime>=_d-0.05){
+        clearInterval(_vidStartTimer);
+        _cinReady=true;showLine(0);
+      }
+    },100);
   }
   
   // [보정] 클릭 안내가 확실히 작동하도록 다시 연결
