@@ -51279,7 +51279,7 @@ if(_EDITOR_MODE){
     console.log('[EDITOR] ready stage='+G.stage+' map='+G.mw+'x'+G.mh);
   })();
 }else if(_DEMO_MODE){
-  if(_BIC||localStorage.getItem('_dLv500')==='1'){
+  if(localStorage.getItem('_dLv500')==='1'){ // BIC도 일반 신규(Lv1+시네마틱)로 시작 (2026-07-27 유저 지시, 구: _BIC||...)
     localStorage.removeItem('_dLv500');
     _startDemoTest();
   }else{
