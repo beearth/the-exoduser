@@ -1656,6 +1656,10 @@ const _CIN_VOICE=false; // 2026-07-27 인트로 스왑: 세계관 프롤로그�
 const _CIN_BGM_TRACKS=['bgm/cutscene/prologue_theme.mp3','bgm/cutscene/prologue_theme_abyssal_fracture.mp3','bgm/cutscene/prologue_theme_rebirth_gate_1.mp3','bgm/cutscene/prologue_theme_rebirth_gate_2.mp3'];
 let _cinBgm=null;
 function startCinBgm(){try{if(_cinBgm)return;_cinBgm=new Audio(_CIN_BGM_TRACKS[~~(Math.random()*_CIN_BGM_TRACKS.length)]);_cinBgm.volume=0.6;_cinBgm.play().catch(()=>{})}catch(e){}}
+function stopLobbyBgm(){ // 시네마틱 진입 시 로비BGM 페이드 정지 (2026-07-27 겹침 해소) — bgmStarted 리셋으로 종료 후 재시작 가능
+  try{if(lobbyBGM.paused){bgmStarted=false;return}
+  const _lv=setInterval(()=>{if(lobbyBGM.volume>0.07){lobbyBGM.volume=Math.max(0,lobbyBGM.volume-0.07)}else{clearInterval(_lv);lobbyBGM.pause();lobbyBGM.currentTime=0;lobbyBGM.volume=0.65;bgmStarted=false}},50)}catch(e){}
+}
 function stopCinBgm(){if(!_cinBgm)return;const _a=_cinBgm;_cinBgm=null;const _fd=setInterval(()=>{if(_a.volume>0.06){_a.volume=Math.max(0,_a.volume-0.06)}else{clearInterval(_fd);try{_a.pause()}catch(e){}}},50)}
 let bgmStarted=false;
 function _tryBGM(){
@@ -2158,6 +2162,7 @@ function _goLogin(){
 function _goCinematic(){
   // 시네마틱 재시작 — 비디오+UI 초기화
   _cinDone=false;
+  stopLobbyBgm(); // 로비BGM 정지 — 시네마틱은 주제가만 (겹침 방지)
   const vid=$('cinVideo');
   vid.currentTime=0;vid.style.opacity='1';vid.muted=false;vid.volume=0.6;
   // 자막/이미지 초기화
