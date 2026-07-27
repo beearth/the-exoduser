@@ -20593,8 +20593,10 @@ function applyStats(){
   const _lb=_lvB();
   const s={str:STATS.str+_eqStr+_lb+~~_eqAffix('strFlat'),dex:STATS.dex+_eqDex+_lb+~~_eqAffix('dexFlat'),int:STATS.int+_eqInt+_lb+~~_eqAffix('intFlat'),vit:~~_eqAffix('vitFlat'),lck:STATS.lck+_lb};
   P._effStats=s; // 유효 스탯 캐시 (UI 표시용)
-  // ═══ 바이블 기준: HP = 100+(stage-1)*6 + VIT*2 + STR*1 + 장비HP ═══
-  const _stgHp=G.on?100+((G.stage||1)-1)*6:100;
+  // ═══ 바이블 기준: HP = 시작HP+(stage-1)*6 + VIT*2 + STR*1 + 장비HP ═══
+  // 시작HP = 300-20×난이도 (2026-07-27 초반 난이도 완화: 일반0=300, 1단=280 … 10단=100)
+  const _diffBaseHp=Math.max(100,300-20*(OPT.diff||0));
+  const _stgHp=G.on?_diffBaseHp+((G.stage||1)-1)*6:_diffBaseHp;
   const _afHpF=_eqAffix('maxHPFlat'),_afHpP=_eqAffix('maxHPPct')+_eqAffix('lifeMaxHP'),_imHp=_eqImplicit('_iMaxHP'),_imHpP=_eqImplicit('_iMaxHPPct')+_eqImplicit('_iLifeHPPct');
   // 강화 보너스 15슬롯 분리 (2026-06-10): HP=gloves/pants/boots, MP=bracelet/necklace/headband
   let _totalBonusHp=0,_totalBonusShield=0,_totalBonusMp=0,_enhHp=0,_enhMp=0;
@@ -39247,7 +39249,7 @@ function _applyLang(){try{
   // Refresh dynamic slots
   try{updateMagicSlot();updateLMBSlot();updateQSlot();_updateUltSlot();_renderPresetBtns()}catch(_e2){}
 }catch(_applyErr){console.warn('[_applyLang]',_applyErr)}}
-$('optDiff').oninput=function(){OPT.diff=+this.value;const d=OPT.diff;$('optDiffVal').textContent=_diffName(d);saveSettings()};$('optDiff').max=10;
+$('optDiff').oninput=function(){OPT.diff=+this.value;const d=OPT.diff;$('optDiffVal').textContent=_diffName(d);saveSettings();if(typeof applyStats==='function'&&typeof P!=='undefined'&&P)applyStats()};$('optDiff').max=10; // 난이도 변경 즉시 시작HP(300-20×diff) 반영
 $('optAutoPot').oninput=function(){const v=+this.value/100;OPT.autoPotThr=v;$('optAutoPotVal').textContent='HP '+this.value+_L('% 이하','% or below');saveSettings()};
 const RAR_LABEL=['일반 이상','고급 이상','희귀 이상','영웅 이상','전설만'];
 const RAR_LABEL_EN=['Common+','Uncommon+','Rare+','Epic+','Legendary only'];
