@@ -1660,6 +1660,9 @@ function stopCinBgm(){if(!_cinBgm)return;const _a=_cinBgm;_cinBgm=null;const _fd
 let bgmStarted=false;
 function _tryBGM(){
   if(bgmStarted)return;
+  // 게이트 (2026-07-27): FDG 스플래시/시네마틱 중엔 로비BGM 시작 금지 (마우스무브 지연재생이 스플래시 밑에 깔리던 문제)
+  {const _sp=document.getElementById('splashOverlay');if(_sp&&_sp.style.display!=='none'&&_sp.style.opacity!=='0')return;
+   const _cs=document.getElementById('cinScene');if(_cs&&_cs.style.display!=='none'&&_cs.offsetParent!==null&&!_cinDone)return;}
   lobbyBGM.play().then(()=>{bgmStarted=true;_rmBGMListeners()}).catch(()=>{});
 }
 function _rmBGMListeners(){['click','keydown','pointerdown','touchstart','mousemove','scroll','wheel'].forEach(e=>document.removeEventListener(e,_tryBGM))}
@@ -1877,7 +1880,7 @@ function playCinematic(){
     prompt.style.display='none';
     vid.muted=false; // 영상 자체 사운드(문 열림) 재생
     vid.volume=0.6;
-    startBGM();
+    // startBGM() 제거 (2026-07-27): 시네마틱 중 로비BGM(lobby.mp3)이 주제가와 겹침 — 로비 진입 시(_goLobby/_goLogin)에만 시작
     vid.play().catch(()=>{});
     // 문 열림 진동 — 4초 페이드아웃
     try{if(_GP.vibRef&&_GP.vibRef.vibrationActuator){
