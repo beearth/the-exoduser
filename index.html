@@ -428,24 +428,24 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
   </div>
 
   <!-- 세계관 프롤로그 이미지 p01~p17 + 타이틀 로고 (2026-07-27 인트로 스왑) -->
-  <div class="cin-img" id="cinImg1"><img src="assets/cutscene/prologue/p01.png" alt=""></div>
-  <div class="cin-img" id="cinImg2"><img src="assets/cutscene/prologue/p01b.png" alt=""></div>
-  <div class="cin-img" id="cinImg3"><img src="assets/cutscene/prologue/p02.png" alt=""></div>
-  <div class="cin-img" id="cinImg4"><img src="assets/cutscene/prologue/p03.png" alt=""></div>
-  <div class="cin-img" id="cinImg5"><img src="assets/cutscene/prologue/p04.png" alt=""></div>
-  <div class="cin-img" id="cinImg6"><img src="assets/cutscene/prologue/p05.png" alt=""></div>
-  <div class="cin-img" id="cinImg7"><img src="assets/cutscene/prologue/p06.png" alt=""></div>
-  <div class="cin-img" id="cinImg8"><img src="assets/cutscene/prologue/p07.png" alt=""></div>
-  <div class="cin-img" id="cinImg9"><img src="assets/cutscene/prologue/p08.png" alt=""></div>
-  <div class="cin-img" id="cinImg10"><img src="assets/cutscene/prologue/p09.png" alt=""></div>
-  <div class="cin-img" id="cinImg11"><img src="assets/cutscene/prologue/p10.png" alt=""></div>
-  <div class="cin-img" id="cinImg12"><img src="assets/cutscene/prologue/p11.png" alt=""></div>
-  <div class="cin-img" id="cinImg13"><img src="assets/cutscene/prologue/p12.png" alt=""></div>
-  <div class="cin-img" id="cinImg14"><img src="assets/cutscene/prologue/p13.png" alt=""></div>
-  <div class="cin-img" id="cinImg15"><img src="assets/cutscene/prologue/p14.png" alt=""></div>
-  <div class="cin-img" id="cinImg16"><img src="assets/cutscene/prologue/p15.png" alt=""></div>
-  <div class="cin-img" id="cinImg17"><img src="assets/cutscene/prologue/p16.png" alt=""></div>
-  <div class="cin-img" id="cinImg18"><img src="assets/cutscene/prologue/p17.png" alt=""></div>
+  <div class="cin-img" id="cinImg1"><img data-src="assets/cutscene/prologue/p01.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg2"><img data-src="assets/cutscene/prologue/p01b.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg3"><img data-src="assets/cutscene/prologue/p02.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg4"><img data-src="assets/cutscene/prologue/p03.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg5"><img data-src="assets/cutscene/prologue/p04.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg6"><img data-src="assets/cutscene/prologue/p05.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg7"><img data-src="assets/cutscene/prologue/p06.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg8"><img data-src="assets/cutscene/prologue/p07.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg9"><img data-src="assets/cutscene/prologue/p08.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg10"><img data-src="assets/cutscene/prologue/p09.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg11"><img data-src="assets/cutscene/prologue/p10.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg12"><img data-src="assets/cutscene/prologue/p11.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg13"><img data-src="assets/cutscene/prologue/p12.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg14"><img data-src="assets/cutscene/prologue/p13.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg15"><img data-src="assets/cutscene/prologue/p14.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg16"><img data-src="assets/cutscene/prologue/p15.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg17"><img data-src="assets/cutscene/prologue/p16.jpg" alt=""></div>
+  <div class="cin-img" id="cinImg18"><img data-src="assets/cutscene/prologue/p17.jpg" alt=""></div>
   <div class="cin-img" id="cinImg19"><img src="img/logo_exoduser.png" alt=""></div>
 
   <!-- 프롤로그 텍스트 -->
@@ -2163,6 +2163,11 @@ function _goCinematic(){
   // 시네마틱 재시작 — 비디오+UI 초기화
   _cinDone=false;
   stopLobbyBgm(); // 로비BGM 정지 — 시네마틱은 주제가만 (겹침 방지)
+  // ═══ 이미지 지연 로딩 (2026-07-27 문영상 렉 해소): 페이지 로드 시 140MB PNG 일괄 로드 → 진입 시 JPG 순차 로드 ═══
+  {const _lzImgs=[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18].map(i=>{const d=$('cinImg'+i);return d?d.querySelector('img'):null});
+   const _lzLoad=i=>{const im=_lzImgs[i];if(im&&!im.getAttribute('src')&&im.dataset.src)im.src=im.dataset.src};
+   [0,1,2,3].forEach(_lzLoad);
+   let _lzi=4;const _lzIv=setInterval(()=>{if(_lzi>=_lzImgs.length){clearInterval(_lzIv);return}_lzLoad(_lzi++)},700);}
   const vid=$('cinVideo');
   vid.currentTime=0;vid.style.opacity='1';vid.muted=false;vid.volume=0.6;
   // 자막/이미지 초기화

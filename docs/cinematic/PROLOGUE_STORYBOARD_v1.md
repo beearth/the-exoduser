@@ -284,3 +284,5 @@ Higgsfield 영상 모델은 Steam 스토어 트레일러 제작 시점에 재검
 ===
 
 FDG / HELL: EXODUSER / (c) 2026 SIM DOJIN
+
+> 2026-07-27 웹 최적화: index 시네마틱 JPG(q88) + 지연 로딩 (문영상 렉 해소). PNG 원본 보존.
