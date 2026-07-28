@@ -263,7 +263,7 @@ style 맨 아래에 추가:
 ```html
 <div class="eq-row" style="display:none">
   <div class="eq-s" id="eq0" title="검 (좌클릭)"><div class="ed">검</div></div>
-  <div class="eq-s" id="eq1" title="견갑 (우클릭)"><div class="ed">견갑</div></div>
+  <div class="eq-s" id="eq1" title="견갑 (E키)"><div class="ed">견갑</div></div>
   <div class="eq-s" id="eq2" title="부츠"><div class="ed">부츠</div></div>
   <div class="eq-s" id="eq3" title="갑옷 (SHIFT)"><div class="ed">갑옷</div></div>
   <div class="eq-s" id="eq4" title="왕관 (E)"><div class="ed">왕관</div></div>
@@ -694,9 +694,9 @@ Space 슬롯(SKILL_SLOTS[4])에도 모든 스킬 쿨다운 오버레이+숫자 �
 | qs5 | KeyF | LT |
 | ultSlot | KeyZ | LT+RT |
 | skSlotLMB | mouse0 | A |
-| skSlotRMB | mouse2 | RB |
+| skSlotRMB | KeyE (2026-07-27 스왑, 구 mouse2) | RB |
 | skSlot0 | ShiftLeft | LB |
-| qsE | KeyE | X |
+| qsE | mouse2 (2026-07-27 스왑, 구 KeyE) | X |
 | qsQ | KeyQ | RT |
 | skSlotCT | ControlLeft | Y |
 | skSlot1 | Space | B |
