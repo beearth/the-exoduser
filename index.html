@@ -1929,8 +1929,11 @@ function playCinematic(){
     if(_cinDone || !_cinReady) return;
     const nextIdx = _cinIdx + 1;
     if(nextIdx >= CIN_LINES.length) { finishCin(); return; }
-    
+
     const nextLine = CIN_LINES[nextIdx];
+    if(nextLine.exit) { finishCin(); return; } // 마지막 다음이 exit 라인이면 바로 종료
+    // 타이머 동기화 엔진의 시간 기준점 재설정 — 이거 없으면 다음 rAF에서 경과시간 기준으로 이전 대사로 되돌아가 스킵이 무효화됨 (2026-07-30 부분스킵 수리)
+    if(nextLine.v !== undefined) _sceneStartTime = Date.now() - nextLine.v*1000;
     if(_CIN_VOICE && nextLine.v !== undefined) { // 보이스 없음 — 오디오 점프 스킵
       const targetAudioTime = nextLine.v - VOICE_DELAY;
       if(targetAudioTime >= 0 && targetAudioTime <= introVoice.duration) {
