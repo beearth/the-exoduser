@@ -18,6 +18,14 @@ game_backup_*.html
 index_backup_*.html
 docs/
 
+# 대용량/웹 배포 불필요 (2026-07-30: exoduser-demo-web.zip 1.4GB가 Vercel 파일당 1GB 제한 초과로 배포 실패)
+*.zip
+nw.dll
+nw.exe
+cache/
+userdata/
+data/
+
 # BGM: 2~7장 전용 BGM만 제외 (gameplay 공유 트랙은 유지)
 bgm/2장_벌레굴/hell2_insect.mp3
 bgm/3장_얼음굴/hell3_fire.mp3

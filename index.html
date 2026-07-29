@@ -3306,10 +3306,9 @@ function showCharGate(charId){
     s(()=>{document.getElementById('fdgPresents').style.opacity='1'},3200);
     // 부제
     for(let _ci=0;_ci<_subChars.length;_ci++){s(()=>{_subChars[_ci].classList.add('on')},3800+_ci*80)}
-    // 프롬프트
+    // 프롬프트 문구 미표시 — 어차피 1.2초 뒤 자동 진행이라 "아무 키나 눌러 계속" 표기는 혼란만 줌 (2026-07-30)
     const _promptMs=3800+(_subChars.length-1)*80+400;
-    s(()=>{const _pr=document.getElementById('fdgPrompt');if(_pr){_pr.textContent=_TL('아무 키나 눌러 계속');_pr.classList.add('on')}},_promptMs);
-    // 키 입력 없어도 자동 진행 (프롬프트 표시 후 1.2초)
+    // 키 입력 없어도 자동 진행 (부제 완료 후 1.2초)
     fdgTimerId=setTimeout(()=>{if(!done&&phase===1)nextPhase()},_promptMs+1200);
   }
   let fdgTimerId=null;
