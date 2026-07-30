@@ -50506,7 +50506,8 @@ let _cutLineStartMs=0; // 현재 라인 시작 시간
 let _cutWaitInput=false; // 입력 대기 중
 let _cutSkipHold=0; // 스페이스 홀드 스킵 게이지 (0~1)
 let _cutSkipHolding=false; // 스페이스 홀드 중
-const _CUT_SKIP_DUR=1500; // 1.5초 홀드로 스킵
+let _cutSkipLastT=0; // 홀드 게이지 실시간 기준 (고주사율 모니터에서 프레임당 고정증가 시 과속 방지)
+const _CUT_SKIP_DUR=2000; // 2초 홀드로 스킵 (2026-07-30: 1.5초 → 2초, 실수 스킵 방지)
 const _cutsceneImgCache={};
 
 function _playSfxSafe(key){try{if(typeof playSample==='function')playSample(key,.8,1)}catch(e){console.log('[CUTSCENE] sfx missing:',key)}}
@@ -50815,11 +50816,13 @@ function _renderIntroCutscene(){
   }
   cx.restore(); // 레터박스 클리핑 해제
 
-  // ── 스페이스 홀드 스킵 게이지 ──
+  // ── 스페이스 홀드 스킵 게이지 (실제 경과시간 기반 — 144Hz 등 고주사율에서 과속 스킵 방지) ──
   if(_cutSkipHolding){
-    _cutSkipHold+=16.67; // ~1프레임 (60fps)
-    if(_cutSkipHold>=_CUT_SKIP_DUR){_cutSkipHold=0;_cutSkipHolding=false;_cutsceneEnd();return}
-  }
+    const _nowT=performance.now();
+    _cutSkipHold+=_cutSkipLastT>0?Math.min(100,_nowT-_cutSkipLastT):16.67;
+    _cutSkipLastT=_nowT;
+    if(_cutSkipHold>=_CUT_SKIP_DUR){_cutSkipHold=0;_cutSkipHolding=false;_cutSkipLastT=0;_cutsceneEnd();return}
+  }else{_cutSkipLastT=0}
   // 우측 하단 스킵 힌트 (항상 표시)
   {
     const _skP=Math.min(1,_cutSkipHold/_CUT_SKIP_DUR);
