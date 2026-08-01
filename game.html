@@ -20672,6 +20672,10 @@ const ICONV={
  clover:'<path d="M12 12c-1.5-1.5-1.5-4 0-5.5a2.6 2.6 0 1 1 0 5.5zM12 12c1.5-1.5 4-1.5 5.5 0a2.6 2.6 0 1 1-5.5 0zM12 12c1.5 1.5 1.5 4 0 5.5a2.6 2.6 0 1 1 0-5.5zM12 12c-1.5 1.5-4 1.5-5.5 0a2.6 2.6 0 1 1 5.5 0z"/><path d="M12 13.5V21"/>',
  gemdot:'<path d="M12 3l7 4v8l-7 4-7-4V7z"/><path d="M5 7l7 4 7-4M12 11v8"/>',
  regen:'<path d="M20 12a8 8 0 1 1-2.3-5.6"/><path d="M20 4v4h-4"/>',
+ lock:'<rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/><circle cx="12" cy="15" r="1.4" fill="currentColor" stroke="none"/><path d="M12 16v2"/>',
+ gear:'<circle cx="12" cy="12" r="3.7"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><path stroke-width="2.6" d="M12 4.2v2.3M12 17.5v2.3M4.2 12h2.3M17.5 12h2.3M6.4 6.4l1.6 1.6M16 16l1.6 1.6M17.6 6.4l-1.6 1.6M8 16l-1.6 1.6"/>',
+ trash:'<path d="M5 7h14M10 4h4M6.5 7l1 12.5a1.5 1.5 0 0 0 1.5 1.4h6a1.5 1.5 0 0 0 1.5-1.4L18 7"/><path d="M10 10.5v7M14 10.5v7"/>',
+ ghost:'<path d="M5 20V11a7 7 0 0 1 14 0v9l-2.3-1.8L14.3 20 12 18.2 9.7 20 7.3 18.2z"/><circle cx="9.5" cy="10.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="14.5" cy="10.5" r="1.1" fill="currentColor" stroke="none"/>',
 };
 const SLOT_SVG=['sword','shield','boot','armor','helmet','crossbow','glove','pants','belt','amulet','ring','ring','cape','bracelet','earring'];
 function _slotGlyph(i,col,sz){return _glyph(SLOT_SVG[i]||'',col||'#6a5a44',sz||22);}
@@ -27937,12 +27941,12 @@ function update(){
     // 상태이상 아이콘 (6프레임마다 갱신, 내용 동일하면 미기록)
     if(!G._bsSkip||G._bsSkip<=0){G._bsSkip=6;
       let _bsHtml='';
-      if(bE.stunned>0)_bsHtml+='<span class="bst-i" style="color:#ff8800;border-color:#ff880055">💥 그로기 '+(bE.stunned/60).toFixed(1)+'s</span>';
-      if(bE._pImmune>0)_bsHtml+='<span class="bst-i" style="color:#8888ff;border-color:#8888ff55">🛡 면역 '+(bE._pImmune/60).toFixed(1)+'s</span>';
-      if(bE.bleedT>0)_bsHtml+='<span class="bst-i" style="color:#ff4444;border-color:#ff444455">🩸 출혈'+(bE.bleedStk||1)+' '+(bE.bleedT/60).toFixed(1)+'s</span>';
-      if(bE.poisonT>0)_bsHtml+='<span class="bst-i" style="color:#44dd44;border-color:#44dd4455">☠ 독'+(bE.poisonStk||1)+' '+(bE.poisonT/60).toFixed(1)+'s</span>';
-      if(bE.burnT>0)_bsHtml+='<span class="bst-i" style="color:#ff8833;border-color:#ff883355">🔥 화상'+(bE.burnStk||1)+' '+(bE.burnT/60).toFixed(1)+'s</span>';
-      if(bE._shockT>0)_bsHtml+='<span class="bst-i" style="color:#44ddff;border-color:#44ddff55">⚡ 감전'+(bE._shockStk||1)+' '+(bE._shockT/60).toFixed(1)+'s</span>';
+      if(bE.stunned>0)_bsHtml+='<span class="bst-i" style="color:#ff8800;border-color:#ff880055">'+_glyph('burst','#ff8800',13)+' 그로기 '+(bE.stunned/60).toFixed(1)+'s</span>';
+      if(bE._pImmune>0)_bsHtml+='<span class="bst-i" style="color:#8888ff;border-color:#8888ff55">'+_glyph('shield','#8888ff',13)+' 면역 '+(bE._pImmune/60).toFixed(1)+'s</span>';
+      if(bE.bleedT>0)_bsHtml+='<span class="bst-i" style="color:#ff4444;border-color:#ff444455">'+_glyph('droplet','#ff4444',13)+' 출혈'+(bE.bleedStk||1)+' '+(bE.bleedT/60).toFixed(1)+'s</span>';
+      if(bE.poisonT>0)_bsHtml+='<span class="bst-i" style="color:#44dd44;border-color:#44dd4455">'+_glyph('venom','#44dd44',13)+' 독'+(bE.poisonStk||1)+' '+(bE.poisonT/60).toFixed(1)+'s</span>';
+      if(bE.burnT>0)_bsHtml+='<span class="bst-i" style="color:#ff8833;border-color:#ff883355">'+_glyph('flame','#ff8833',13)+' 화상'+(bE.burnStk||1)+' '+(bE.burnT/60).toFixed(1)+'s</span>';
+      if(bE._shockT>0)_bsHtml+='<span class="bst-i" style="color:#44ddff;border-color:#44ddff55">'+_glyph('bolt','#44ddff',13)+' 감전'+(bE._shockStk||1)+' '+(bE._shockT/60).toFixed(1)+'s</span>';
       if(BH.status._h!==_bsHtml){BH.status._h=_bsHtml;BH.status.innerHTML=_bsHtml}
     }else G._bsSkip-=sp;
     const bKey=STG[G.stage].isHellBoss?'finalboss':'boss';
@@ -33788,7 +33792,7 @@ function checkRooms(){
             showPH(_T(HELL_NAMES[hellIdx])+_L(' 탈출!',' Escaped!'),'#44ffaa');
             addTxt(P.x,P.y-50,'🔓 '+_T(HELL_NAMES[hellIdx])+_L(' 탈출!',' Escaped!'),'#44ffaa',100);
             SFX.victory();G.shake=15*OPT.shake/100;
-            $('clearTitle').textContent='🔓 '+_T(HELL_NAMES[hellIdx])+_L(' 탈출!',' Escaped!');
+            $('clearTitle').innerHTML=_glyph('lock','#44ffaa',16)+' '+_T(HELL_NAMES[hellIdx])+_L(' 탈출!',' Escaped!');
             $('clearSub').textContent=_L('다음 소지옥이 기다리고 있다...','The next sub-hell awaits...');
             $('nextBtn').textContent=_L('다음 소지옥으로 ▶','Next Sub-hell ▶');
             $('stageClear').style.opacity='1';$('stageClear').style.pointerEvents='all';$('nextBtn').disabled=false;$('nextBtn').style.opacity='1';
@@ -37852,7 +37856,7 @@ function renderSkillPanel(){
   // 뒤로가기 버튼 텍스트 갱신
   const _bk=$('skBackBtn');if(_bk)_bk.textContent=(_skExpandedId||_fuseSelId)?_L('← 뒤로','← Back'):_L('닫기 [ESC]','Close [ESC]');
   const _bbu=$('skBatchUpBtn');if(_bbu)_bbu.textContent='⏫ '+_L('일괄 레벨업','Batch Level Up');
-  const _bra=$('skRecAutoBtn');if(_bra)_bra.textContent='⭐ '+_L('추천 자동','Auto Build');
+  const _bra=$('skRecAutoBtn');if(_bra)_bra.innerHTML=_glyph('star','#ffcc44',13)+' '+_L('추천 자동','Auto Build');
   // stormBeam 합체 시 히든 스킬 자동 복구
   if(_isFused('stormBeam')){if(!P.skills.peaceShield)P.skills.peaceShield=1;if(!P.skills.hellRay)P.skills.hellRay=1;}
   const _si=$('skillInfo');
@@ -39366,7 +39370,7 @@ function _applyLang(){try{
     const _pt5=_skP.querySelector('.ptitle');if(_pt5)_pt5.textContent=_T('전투 스킬');
     const _skc=_skP.querySelector('.pclose');if(_skc)_skc.textContent=_T('닫기 [ESC]');
     const _sbu=$('skBatchUpBtn');if(_sbu)_sbu.textContent='⏫ '+_L('일괄 레벨업','Batch Level Up');
-    const _sra=$('skRecAutoBtn');if(_sra)_sra.textContent='⭐ '+_L('추천 자동','Auto Build');
+    const _sra=$('skRecAutoBtn');if(_sra)_sra.innerHTML=_glyph('star','#ffcc44',13)+' '+_L('추천 자동','Auto Build');
   }
   // Death screen
   const _dt=$('deathTitle');if(_dt)_dt.textContent=_T('빛이 꺼졌다');
@@ -39861,7 +39865,7 @@ function _invRenderDetail(idx,source){
   // ── 2) 비교 아이템 (가방 아이템 상세) ──
   const d=document.createElement('div');d.className='item-detail';
   d.style.cssText='display:flex;flex-direction:column;overflow:visible';
-  const _jfTag=it.fav?' 🔒':it.junk?' 🗑️':'';
+  const _jfTag=it.fav?' '+_glyph('lock','#ffcc00',12):it.junk?' '+_glyph('trash','#cc7744',12):'';
   const srcLabel=source==='eq'?_T('장착 중'):source==='st'?_T('보관 아이템'):'';
   const isSel=source==='bag'&&INV.selected===idx;
   d.innerHTML=`
@@ -39983,7 +39987,7 @@ function _invCardFields(it){
   if(it.bDex)stats+=`<div style="color:#44ff44">🏹 DEX: <span>+${it.bDex}</span></div>`;
   if(it.bInt)stats+=`<div style="color:#4488ff">🔮 INT: <span>+${it.bInt}</span></div>`;
   if(it.bLck)stats+=`<div style="color:#ffcc44">🍀 LCK: <span>+${it.bLck}</span></div>`;
-  if(it.bGrit)stats+=`<div style="color:#cc88ff">⚙️ ${_L('근성','Grit')}: <span>+${it.bGrit}</span></div>`;
+  if(it.bGrit)stats+=`<div style="color:#cc88ff">${_glyph('anvil','#cc88ff',13)} ${_L('근성','Grit')}: <span>+${it.bGrit}</span></div>`;
   if(it.critRate)stats+=`<div style="color:#ff6666">${_L('치명률','Crit Rate')}: <span>+${(it.critRate).toFixed(1)}%</span></div>`;
   if(it.dmgBonus)stats+=`<div style="color:#ff8844">${_L('데미지 보너스','DMG Bonus')}: <span>+${(+it.dmgBonus).toFixed(1)}%</span></div>`;
   if(it.critDmg)stats+=`<div style="color:#ff4444">${_L('치명뎀','Crit DMG')}: <span>+${~~(it.critDmg*100)}%</span></div>`;// 레거시 호환
@@ -40368,7 +40372,7 @@ function renderInv(){
     div.style.boxShadow=isSal?'inset 0 0 12px rgba(200,30,20,.4)':`inset 0 0 8px ${ELC[item.el]}22`;
     let _markHtml='';
     if(isJunk)_markHtml='<div style="position:absolute;top:0;right:0;font-size:.55rem;line-height:1;pointer-events:none">🗑️</div>';
-    if(isFav)_markHtml='<div style="position:absolute;top:0;right:0;font-size:.55rem;line-height:1;pointer-events:none">🔒</div>';
+    if(isFav)_markHtml='<div style="position:absolute;top:0;right:0;line-height:0;pointer-events:none">'+_glyph('lock','#ffcc00',11)+'</div>';
     const ip=itemPower(item);
     const _eSz=_GC>=48?(Math.min(w,h)>1?'1.8rem':'1.3rem'):(Math.min(w,h)>1?'1.3rem':'1rem');
     const _ipSz=_GC>=48?'9px':'8px';
