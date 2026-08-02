@@ -20700,11 +20700,15 @@ function _itemSkin(it,sz,col){
   base=({ring1:'ring',ring2:'ring',headband:'earring'})[base]||base;
   const el=_ELKEY[it.el||0]||'phys';
   const uniq=(it.rarity>=5)?'_uniq':'';
-  const src='output/imagegen/item-skins/'+base+'_'+el+uniq+'.png';
-  // 폴백 글리프를 스킨 뒤에 깔고, 이미지 로드 성공 시 위를 덮음. 실패(onerror) 시 이미지 제거→글리프 노출
+  const dir='output/imagegen/item-skins/';
+  const src=dir+base+'_'+el+uniq+'.png';
+  const srcPhys=dir+base+'_phys.png';       // 속성 전용 아트 없으면 물리 base로 폴백
+  const fbAttr=(src!==srcPhys)?' data-fb="'+srcPhys+'"':'';
+  // 폴백 글리프를 스킨 뒤에 깔고, 이미지 성공 시 덮음. onerror: 속성→물리→(그래도 없으면)제거→글리프
   return '<span class="iskin r'+(it.rarity||0)+'" style="width:'+sz+'px;height:'+sz+'px">'
     +_itemIco(it,col,Math.round(sz*0.82))
-    +'<img class="iskin-img" src="'+src+'" width="'+sz+'" height="'+sz+'" loading="lazy" onerror="this.remove()">'
+    +'<img class="iskin-img" src="'+src+'"'+fbAttr+' width="'+sz+'" height="'+sz+'" loading="lazy" '
+    +'onerror="if(this.dataset.fb){this.src=this.dataset.fb;this.removeAttribute(\'data-fb\');}else{this.remove();}">'
     +'</span>';
 }
 const STAT_SVG={str:'fist',dex:'bow',int:'sigil',lck:'die'};
