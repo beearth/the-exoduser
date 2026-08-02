@@ -20696,7 +20696,8 @@ const _ELKEY=['phys','fire','ice','dark','light','holy','earth'];
 function _itemSkin(it,sz,col){
   if(!it)return '';
   col=col||(RARITY_C[it.rarity||0]||'#c8a24a');
-  const base=it.wtype||it.btype||it.slot||'';
+  let base=it.wtype||it.btype||it.slot||'';
+  base=({ring1:'ring',ring2:'ring',headband:'earring'})[base]||base;
   const el=_ELKEY[it.el||0]||'phys';
   const uniq=(it.rarity>=5)?'_uniq':'';
   const src='output/imagegen/item-skins/'+base+'_'+el+uniq+'.png';
