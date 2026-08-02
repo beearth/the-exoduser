@@ -729,6 +729,16 @@ canvas{display:block;position:fixed;inset:0}
   box-shadow:inset 0 0 0 1px rgba(220,148,255,.12),0 6px 12px rgba(0,0,0,.35);
 }
 .passive-info{flex:1}
+/* ═══ 아이템 스킨 컨테이너 + 등급 프레임 글로우 ═══ */
+.iskin{position:relative;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;border-radius:6px;overflow:hidden;flex:none}
+.iskin>svg{position:absolute;z-index:0}
+.iskin .iskin-img{position:relative;z-index:1;width:100%;height:100%;object-fit:contain;display:block}
+.iskin.r0{box-shadow:inset 0 0 0 1px rgba(150,150,150,.28)}
+.iskin.r1{box-shadow:inset 0 0 0 1px rgba(76,203,76,.5),0 0 4px rgba(76,203,76,.28)}
+.iskin.r2{box-shadow:inset 0 0 0 1px rgba(75,143,255,.55),0 0 5px rgba(75,143,255,.3)}
+.iskin.r3{box-shadow:inset 0 0 0 1px rgba(187,85,255,.6),0 0 6px rgba(187,85,255,.36)}
+.iskin.r4{box-shadow:inset 0 0 0 1.5px rgba(255,170,0,.85),0 0 9px rgba(255,170,0,.42)}
+.iskin.r5{box-shadow:inset 0 0 0 1.5px rgba(255,74,102,.9),0 0 11px rgba(255,74,102,.5)}
 .passive-name{font-size:1.5rem;font-weight:700}
 .passive-desc{font-size:1.2rem;color:var(--c-text-dim);margin-top:4px}
 .passive-pips{display:flex;gap:4px;margin-left:10px}
@@ -2932,8 +2942,8 @@ const _gcMsg=document.getElementById('gcMsg');
 const _gcOk=document.getElementById('gcOk');
 const _gcCancel=document.getElementById('gcCancel');
 let _gcResolve=null;
-function gameConfirm(msg,okTxt,cancelTxt){
-  _gcMsg.textContent=msg;
+function gameConfirm(msg,okTxt,cancelTxt,html){
+  if(html)_gcMsg.innerHTML=msg; else _gcMsg.textContent=msg;
   _gcOk.textContent=okTxt||'\ud655\uc778';
   _gcCancel.textContent=cancelTxt||'\ucde8\uc18c';
   _gcEl.classList.add('on');
@@ -20676,10 +20686,26 @@ const ICONV={
  gear:'<circle cx="12" cy="12" r="3.7"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/><path stroke-width="2.6" d="M12 4.2v2.3M12 17.5v2.3M4.2 12h2.3M17.5 12h2.3M6.4 6.4l1.6 1.6M16 16l1.6 1.6M17.6 6.4l-1.6 1.6M8 16l-1.6 1.6"/>',
  trash:'<path d="M5 7h14M10 4h4M6.5 7l1 12.5a1.5 1.5 0 0 0 1.5 1.4h6a1.5 1.5 0 0 0 1.5-1.4L18 7"/><path d="M10 10.5v7M14 10.5v7"/>',
  ghost:'<path d="M5 20V11a7 7 0 0 1 14 0v9l-2.3-1.8L14.3 20 12 18.2 9.7 20 7.3 18.2z"/><circle cx="9.5" cy="10.5" r="1.1" fill="currentColor" stroke="none"/><circle cx="14.5" cy="10.5" r="1.1" fill="currentColor" stroke="none"/>',
+ warn:'<path d="M12 3.6L22 20.4H2z"/><path d="M12 9.5v5"/><circle cx="12" cy="17.4" r="0.7" fill="currentColor" stroke="none"/>',
 };
 const SLOT_SVG=['sword','shield','boot','armor','helmet','crossbow','glove','pants','belt','amulet','ring','ring','cape','bracelet','earring'];
 function _slotGlyph(i,col,sz){return _glyph(SLOT_SVG[i]||'',col||'#6a5a44',sz||22);}
 function _itemIco(it,col,sz){if(!it)return '';const i=(typeof SLOT_NAMES!=='undefined')?SLOT_NAMES.indexOf(it.slot):-1;return i>=0?_slotGlyph(i,col,sz):(it.emoji||'');}
+// ═══ 아이템 스킨: 지옥 대장간 톤 PNG (output/imagegen/item-skins/), 없으면 글리프 폴백 (2026-08-02) ═══
+const _ELKEY=['phys','fire','ice','dark','light','holy','earth'];
+function _itemSkin(it,sz,col){
+  if(!it)return '';
+  col=col||(RARITY_C[it.rarity||0]||'#c8a24a');
+  const base=it.wtype||it.btype||it.slot||'';
+  const el=_ELKEY[it.el||0]||'phys';
+  const uniq=(it.rarity>=5)?'_uniq':'';
+  const src='output/imagegen/item-skins/'+base+'_'+el+uniq+'.png';
+  // 폴백 글리프를 스킨 뒤에 깔고, 이미지 로드 성공 시 위를 덮음. 실패(onerror) 시 이미지 제거→글리프 노출
+  return '<span class="iskin r'+(it.rarity||0)+'" style="width:'+sz+'px;height:'+sz+'px">'
+    +_itemIco(it,col,Math.round(sz*0.82))
+    +'<img class="iskin-img" src="'+src+'" width="'+sz+'" height="'+sz+'" loading="lazy" onerror="this.remove()">'
+    +'</span>';
+}
 const STAT_SVG={str:'fist',dex:'bow',int:'sigil',lck:'die'};
 const PASSIVE_SVG={pAtk:'swords',pCharge:'trident',pParry:'bolt',pMagic:'orb',pBow:'reticle',pGuard:'shield',pRegen:'flask',pCrit:'burst',pDrop:'sack',pPierce:'arrow',pMelee:'axe',pCombo:'eye',pAbund:'leaf',pPred:'fang',pDot:'venom',pVital:'gem',pStamina:'vial',pMalice:'demon',pFortify:'heart',pArmor:'shield',pHunter:'reticle',pHuman:'star',pDemon:'skull',pRage:'flame',pMRegen:'droplet',pXbow:'crossbow'};
 function _glyph(id,col,sz){const g=ICONV[id];if(!g)return '';sz=sz||34;const sh=(col&&col[0]==='#')?col+'77':col;return `<svg viewBox="0 0 24 24" width="${sz}" height="${sz}" fill="none" stroke="${col}" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" style="color:${col};vertical-align:middle;filter:drop-shadow(0 0 5px ${sh})">${g}</svg>`;}
@@ -40174,7 +40200,7 @@ function renderInv(){
     const div=document.createElement('div');div.className='inv-eq-slot'+(item?' inv-eq-item':'');
     div.style.left=pos[0]+'px';div.style.top=pos[1]+'px';
     const isEqSel=item&&INV.selected==='eq:'+slot;
-    div.innerHTML=item?`<span>${_slotGlyph(i,RARITY_C[item.rarity]||'#c8a24a',22)}</span><span class="ieq-label">${_slotName(i)}</span>`:`<span style="opacity:.45">${_slotGlyph(i,'#6a5a44',22)}</span><span class="ieq-label">${_slotName(i)}</span>`;
+    div.innerHTML=item?`${_itemSkin(item,34,RARITY_C[item.rarity])}<span class="ieq-label">${_slotName(i)}</span>`:`<span style="opacity:.45">${_slotGlyph(i,'#6a5a44',22)}</span><span class="ieq-label">${_slotName(i)}</span>`;
     if(item){
       if(isEqSel){
         div.style.borderColor='#ffaa33';
@@ -40377,7 +40403,7 @@ function renderInv(){
     const _eSz=_GC>=48?(Math.min(w,h)>1?'1.8rem':'1.3rem'):(Math.min(w,h)>1?'1.3rem':'1rem');
     const _ipSz=_GC>=48?'9px':'8px';
     const _nmHtml=(w*h>=4&&_GC>=42)?`<div style="font-size:${_GC>=48?'.65rem':'.55rem'};color:${RARITY_C[item.rarity]}88;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:${w*_GC-6}px;pointer-events:none;line-height:1;margin-top:1px">${_T(item.name)}</div>`:'';
-    div.innerHTML=`<span>${_itemIco(item,RARITY_C[item.rarity],_GC>=48?24:18)}</span>${_nmHtml}<div class="rarity-dot" style="background:${RARITY_C[item.rarity]}"></div>${_markHtml}<div style="font-size:${_ipSz};color:#aa9977;position:absolute;bottom:1px;right:2px;pointer-events:none">${ip}</div>${isSal?'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#ff3333;text-shadow:0 0 6px #000;pointer-events:none;font-weight:900">✕</div>':''}`;
+    div.innerHTML=`${_itemSkin(item,_GC>=48?40:30,RARITY_C[item.rarity])}${_nmHtml}<div class="rarity-dot" style="background:${RARITY_C[item.rarity]}"></div>${_markHtml}<div style="font-size:${_ipSz};color:#aa9977;position:absolute;bottom:1px;right:2px;pointer-events:none">${ip}</div>${isSal?'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#ff3333;text-shadow:0 0 6px #000;pointer-events:none;font-weight:900">✕</div>':''}`;
     // 드래그 시작
     div.onmousedown=(ev)=>{
       if(ev.button!==0)return;ev.preventDefault();
@@ -40429,7 +40455,7 @@ function renderInv(){
       let _isTot=0;for(const idx of _invSalSel){const it=INV.bag[idx];if(it)_isTot+=salvageVal(it)}
 _isBtn.style.display='';_isBtn.textContent=_L(`선택분해 (${_isCnt}개 -> 악의 +${_isTot})`,`Salvage (${_isCnt} -> +${_isTot} Malice)`);
       _isBtn.onclick=async()=>{
-        if(!await gameConfirm(_L(`${_isCnt}개 아이템을 분해합니다.\n👿 ${_isTot} 악의 획득.\n\n⚠️ 복구 불가!`,`Salvage ${_isCnt} items.\n👿 ${_isTot} Malice gained.\n\n⚠️ Cannot undo!`)))return;
+        if(!await gameConfirm(_L(`${_isCnt}개 아이템을 분해합니다.<br>${_glyph('demon','#cc66ff',15)} ${_isTot} 악의 획득.<br><br>${_glyph('warn','#ff6644',15)} 복구 불가!`,`Salvage ${_isCnt} items.<br>${_glyph('demon','#cc66ff',15)} ${_isTot} Malice gained.<br><br>${_glyph('warn','#ff6644',15)} Cannot undo!`),null,null,true))return;
         const idxArr=[..._invSalSel].sort((a,b)=>b-a);
         for(const idx of idxArr)INV.bag.splice(idx,1);
         G.mats+=_isTot;_invSalSel.clear();INV.selected=null;
@@ -40455,7 +40481,7 @@ _jkSelBtn.style.display='';_jkSelBtn.textContent=_L(`전체 쓰레기 지정 (${
       let _jkTot=0;for(const it of _jkItems)_jkTot+=salvageVal(it);
 _jkBtn.style.display='';_jkBtn.textContent=_L(`쓰레기 전부 분해 (${_jkItems.length}개 -> 악의 +${_jkTot})`,`Salvage all junk (${_jkItems.length} -> +${_jkTot} Malice)`);
       _jkBtn.onclick=async()=>{
-        if(!await gameConfirm(_L(`🗑️ 쓰레기 ${_jkItems.length}개를 일괄 분해합니다.\n👿 ${_jkTot} 악의 획득.\n\n⚠️ 중요잠금 아이템은 제외됩니다.\n⚠️ 복구 불가!`,`🗑️ Bulk salvage ${_jkItems.length} junk items.\n👿 ${_jkTot} Malice gained.\n\n⚠️ Favorited items excluded.\n⚠️ Cannot undo!`)))return;
+        if(!await gameConfirm(_L(`${_glyph('trash','#cc9944',15)} 쓰레기 ${_jkItems.length}개를 일괄 분해합니다.<br>${_glyph('demon','#cc66ff',15)} ${_jkTot} 악의 획득.<br><br>${_glyph('warn','#ffaa33',15)} 중요잠금 아이템은 제외됩니다.<br>${_glyph('warn','#ff6644',15)} 복구 불가!`,`${_glyph('trash','#cc9944',15)} Bulk salvage ${_jkItems.length} junk items.<br>${_glyph('demon','#cc66ff',15)} ${_jkTot} Malice gained.<br><br>${_glyph('warn','#ffaa33',15)} Favorited items excluded.<br>${_glyph('warn','#ff6644',15)} Cannot undo!`),null,null,true))return;
         INV.bag=INV.bag.filter(it=>!(it.junk&&!it.fav));
         G.mats+=_jkTot;_invSalSel.clear();INV.selected=null;
         SFX.pickup();dbSaveNow();renderInv();
@@ -40817,7 +40843,7 @@ btn.textContent=_L(`분해 (${selArr.length}개 -> 악의 ${totalMats})`,`Salvag
       btn.onmouseenter=()=>{btn.style.borderColor='#ff6644';btn.style.boxShadow='0 0 16px #cc332244'};
       btn.onmouseleave=()=>{btn.style.borderColor='#cc3322';btn.style.boxShadow='none'};
       btn.onclick=async()=>{
-        if(!await gameConfirm(_L(`${selArr.length}개 아이템을 분해합니다.\n👿 ${totalMats} 악의 획득.\n\n⚠️ 복구 불가!`,`Salvage ${selArr.length} items.\n👿 ${totalMats} Malice gained.\n\n⚠️ Cannot undo!`)))return;
+        if(!await gameConfirm(_L(`${selArr.length}개 아이템을 분해합니다.<br>${_glyph('demon','#cc66ff',15)} ${totalMats} 악의 획득.<br><br>${_glyph('warn','#ff6644',15)} 복구 불가!`,`Salvage ${selArr.length} items.<br>${_glyph('demon','#cc66ff',15)} ${totalMats} Malice gained.<br><br>${_glyph('warn','#ff6644',15)} Cannot undo!`),null,null,true))return;
         const idxs=[...selArr].sort((a,b)=>b-a);
         idxs.forEach(i=>INV.bag.splice(i,1));
         G.mats+=totalMats;
