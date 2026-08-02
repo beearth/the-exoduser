@@ -739,6 +739,12 @@ canvas{display:block;position:fixed;inset:0}
 .iskin.r3{box-shadow:inset 0 0 0 1px rgba(187,85,255,.6),0 0 6px rgba(187,85,255,.36)}
 .iskin.r4{box-shadow:inset 0 0 0 1.5px rgba(255,170,0,.85),0 0 9px rgba(255,170,0,.42)}
 .iskin.r5{box-shadow:inset 0 0 0 1.5px rgba(255,74,102,.9),0 0 11px rgba(255,74,102,.5)}
+/* 속성 틴트: 물리 base(용암 오렌지) → 속성색 hue-rotate (el0 물리 / el1 화염=원본) */
+.iskin-img.el2{filter:hue-rotate(175deg) saturate(1.25)}                    /* 빙결 blue */
+.iskin-img.el3{filter:hue-rotate(255deg) saturate(1.2)}                     /* 암흑 purple */
+.iskin-img.el4{filter:hue-rotate(20deg) brightness(1.18) saturate(1.35)}    /* 암전 yellow */
+.iskin-img.el5{filter:hue-rotate(300deg) saturate(.7) brightness(1.2)}      /* 신성 pink-white */
+.iskin-img.el6{filter:hue-rotate(85deg) saturate(1.05)}                     /* 대지 green */
 .passive-name{font-size:1.5rem;font-weight:700}
 .passive-desc{font-size:1.2rem;color:var(--c-text-dim);margin-top:4px}
 .passive-pips{display:flex;gap:4px;margin-left:10px}
@@ -20707,8 +20713,8 @@ function _itemSkin(it,sz,col){
   // 폴백 글리프를 스킨 뒤에 깔고, 이미지 성공 시 덮음. onerror: 속성→물리→(그래도 없으면)제거→글리프
   return '<span class="iskin r'+(it.rarity||0)+'" style="width:'+sz+'px;height:'+sz+'px">'
     +_itemIco(it,col,Math.round(sz*0.82))
-    +'<img class="iskin-img" src="'+src+'"'+fbAttr+' width="'+sz+'" height="'+sz+'" loading="lazy" '
-    +'onerror="if(this.dataset.fb){this.src=this.dataset.fb;this.removeAttribute(\'data-fb\');}else{this.remove();}">'
+    +'<img class="iskin-img" src="'+src+'"'+fbAttr+' data-el="'+(it.el||0)+'" width="'+sz+'" height="'+sz+'" loading="lazy" '
+    +'onerror="if(this.dataset.fb){this.src=this.dataset.fb;this.classList.add(\'el\'+this.dataset.el);this.removeAttribute(\'data-fb\');}else{this.remove();}">'
     +'</span>';
 }
 const STAT_SVG={str:'fist',dex:'bow',int:'sigil',lck:'die'};
