@@ -5176,6 +5176,7 @@ const _EN={
 '생명력의':'Vigorous','재생의':'Regenerating','치유의':'Healing',
 '마력의':'Arcane','절약의':'Efficient','영혼의':'Soulbound',
 '예리한':'Keen','맹렬한':'Brutal','파멸의':'Ruinous',
+'격노의':'Enraged','광분의':'Frenzied',
 // --- Settings UI ---
 '게임 설정':'Game Settings','화면 흔들림':'Screen Shake','파티클 양':'Particle Amount',
 '효과음 볼륨':'SFX Volume','음악 볼륨':'Music Volume','난이도':'Difficulty',
@@ -6546,6 +6547,7 @@ const _EN={
 '엘리트추가뎀':'vs Elite DMG+',
 '공격력+':'ATK+',
 '크리뎀+':'Crit DMG+',
+'분노최대치+':'Max Rage+','분노뎀%+':'Rage DMG%+',
 // --- Skill Info Panel (CAT-82) ---
 '스킬 정보':'Skill Info','타입':'Type','미습득':'Not Learned',
 'SP 비용':'SP Cost','악의 비용':'Malice Cost','쿨다운':'Cooldown',
@@ -11313,6 +11315,9 @@ const AFFIX_POOL=[
   {id:'onKillStam',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['wpn'],group:'okSt',weight:45},
   // onKillExplode 삭제 (시체폭발 시스템 없음)
   {id:'onKillSpeed',type:1,tiers:[.05,.08,.12,.18,.25],unit:'pct',slots:['wpn'],group:'okSp',weight:40},
+  // 분노(rage) — 패링 적립 / 대왕치기 소비 강화 (근접무기 전용, 석궁 제외)
+  {id:'rageMaxFlat',type:0,tiers:[10,20,35,55,80],unit:'val',slots:['wpn'],group:'rgMx',weight:45},
+  {id:'rageDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'rgDm',weight:45},
 
   // ═══════════════════════════════════════════════════
   // 방어구 파트 PREFIX (armor,shield,gloves,pants,boots,cloak)
@@ -11807,6 +11812,7 @@ dodgeChance:'회피의',dodgeCooldown:'회피쿨감의',
   endSTR:'종결힘의',endDEX:'종결민첩의',endINT:'종결지능의',endLCK:'종결행운의',endGrit:'종결근성의',endKillChain:'종결연살의',
   healthyAtk:'건강공세의',injuredDmg:'중상폭발의',injuredLeech:'중상흡혈의',vsBossDmg:'토벌의',vsEliteDmg:'정예토벌의',
   sharpAtk:'예리한',brutalAtk:'맹렬한',ruinAtk:'파멸의',
+  rageMaxFlat:'격노의',rageDmg:'광분의',
   critRate:'광폭의',critDmgW:'극대화의',
   critDmgA:'행운의',critDmgB:'극대화의'
 };
@@ -11868,6 +11874,7 @@ const _AFFIX_DESC={
   stCostRed:'ST소비-',
   healthyAtk:'HP≥70%공격+',injuredDmg:'HP≤35%뎀+',injuredLeech:'HP≤35%흡혈',vsBossDmg:'보스추가뎀',vsEliteDmg:'엘리트추가뎀',
   sharpAtk:'공격력+',brutalAtk:'공격력+',ruinAtk:'공격력+',
+  rageMaxFlat:'분노최대치+',rageDmg:'분노뎀%+',
   critDmgA:'크리뎀+',critDmgB:'크리뎀+',
   pierceFlat:'관통력+'
 };
@@ -20723,8 +20730,8 @@ function _glyph(id,col,sz){const g=ICONV[id];if(!g)return '';sz=sz||34;const sh=
 function _stripIco(s){return String(s).replace(/^[^\p{L}(]+/u,'');}
 // ═══ 악의중독 배율 (악의 획득 시 곱연산) ═══
 function _maliceMul(){return 1+(PASSIVES.pMalice||0)*0.08}
-// ═══ 분노 최대치 (기본100 + 무기고유옵션 + 분노폭주 패시브 +10%/lv) ═══
-function _rageMax(){return ~~((100+(_uEq('_uRageMax')||0))*(1+(PASSIVES.pRage||0)*0.10))}
+// ═══ 분노 최대치 (기본100 + 무기고유옵션 + 어픽스 rageMaxFlat + 분노폭주 패시브 +10%/lv) ═══
+function _rageMax(){return ~~((100+(_uEq('_uRageMax')||0)+(_eqAffix('rageMaxFlat')||0))*(1+(PASSIVES.pRage||0)*0.10))}
 // ═══ 사냥꾼 배율 (엘리트/보스 추가뎀) ═══
 function _hunterMul(e){return(e&&(e.isBoss||e.isElite||e.etype>=90))?1+(PASSIVES.pHunter||0)*0.10:1}
 // ═══ 근성 (보조스텟): SP 소모, 무한 레벨, HP/MP/ST 각각 +1/lv ═══
@@ -37102,12 +37109,13 @@ function activateGiantSlam(srcId){
     // 즉시 히트 (hitStop/slowMo 억제)
   G._noHitStopT=60;
   const _gs1R=500+(slv-1)*15;
-  // 분노게이지: 풀100%=20× (테스트값, 기존 11×에서 상향) + 분노폭주 패시브: 분노 데미지 +10%/lv
-  const _rageMul=1+(P.rage*0.19*(1+(PASSIVES.pRage||0)*0.10));
+  // 분노게이지: 풀100%=20× (테스트값, 기존 11×에서 상향) + 분노폭주 패시브: 분노 데미지 +10%/lv + 어픽스 rageDmg
+  const _rageDmgAf=1+(_eqAffix('rageDmg')||0);
+  const _rageMul=1+(P.rage*0.19*(1+(PASSIVES.pRage||0)*0.10)*_rageDmgAf);
   const _gs1Dmg=~~(meleeRef()*statStr()*pAtkMul()*_skMul('giantSlam')*_rageMul); // _skMul에 ×4 흡수됨
   if(P.rage>0){
     const _rageP=P.rage;
-    addTxt(P.x,P.y-50,_T('🔥분노 ')+_rageP+'% → +'+~~(_rageP*19*(1+(PASSIVES.pRage||0)*0.10))+'%!','#ff2200',45);
+    addTxt(P.x,P.y-50,_T('🔥분노 ')+_rageP+'% → +'+~~(_rageP*19*(1+(PASSIVES.pRage||0)*0.10)*_rageDmgAf)+'%!','#ff2200',45);
     // ═══ 분노 폭발 VFX — 20%당 기폭팔 폭발(explosion_spritesheet) 1덩이 ═══
     const _rageBombs=~~(_rageP/20); // 20%=1, 40%=2, 60%=3, 80%=4, 100%=5
     for(let _rb=0;_rb<_rageBombs;_rb++){
@@ -40414,7 +40422,9 @@ function renderInv(){
     const _eSz=_GC>=48?(Math.min(w,h)>1?'1.8rem':'1.3rem'):(Math.min(w,h)>1?'1.3rem':'1rem');
     const _ipSz=_GC>=48?'9px':'8px';
     const _nmHtml=(w*h>=4&&_GC>=42)?`<div style="font-size:${_GC>=48?'.65rem':'.55rem'};color:${RARITY_C[item.rarity]}88;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:${w*_GC-6}px;pointer-events:none;line-height:1;margin-top:1px">${_T(item.name)}</div>`:'';
-    div.innerHTML=`${_itemSkin(item,_GC>=48?40:30,RARITY_C[item.rarity])}${_nmHtml}<div class="rarity-dot" style="background:${RARITY_C[item.rarity]}"></div>${_markHtml}<div style="font-size:${_ipSz};color:#aa9977;position:absolute;bottom:1px;right:2px;pointer-events:none">${ip}</div>${isSal?'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#ff3333;text-shadow:0 0 6px #000;pointer-events:none;font-weight:900">✕</div>':''}`;
+    // 스킨은 셀(w*_GC × h*_GC)을 꽉 채우도록 스케일 — 이름 라벨 있으면 그 높이만큼 양보
+    const _skSz=Math.max(24,Math.min(w,h)*_GC-(_nmHtml?16:6));
+    div.innerHTML=`${_itemSkin(item,_skSz,RARITY_C[item.rarity])}${_nmHtml}<div class="rarity-dot" style="background:${RARITY_C[item.rarity]}"></div>${_markHtml}<div style="font-size:${_ipSz};color:#aa9977;position:absolute;bottom:1px;right:2px;pointer-events:none">${ip}</div>${isSal?'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:1.6rem;color:#ff3333;text-shadow:0 0 6px #000;pointer-events:none;font-weight:900">✕</div>':''}`;
     // 드래그 시작
     div.onmousedown=(ev)=>{
       if(ev.button!==0)return;ev.preventDefault();
