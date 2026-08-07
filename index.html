@@ -131,9 +131,12 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 
 /* 좌측 영역 */
 .lobby-left{position:relative;flex:1;height:100%;overflow:hidden;background:#000}
-.lobby-bg-img{position:absolute;inset:0;background-position:left center;background-size:cover;background-repeat:no-repeat;opacity:1;transition:opacity 400ms ease}
+.lobby-bg-img{position:absolute;inset:0;background-position:left center;background-size:cover;background-repeat:no-repeat;opacity:1;transition:opacity 400ms ease;transform-origin:50% 45%;animation:lobbyKenburns 46s ease-in-out infinite alternate}
+@keyframes lobbyKenburns{0%{transform:scale(1.04) translate(.4%,.2%)}100%{transform:scale(1.08) translate(-.8%,-.5%)}}
+@media(prefers-reduced-motion:reduce){.lobby-bg-img{animation:none}}
 .lobby-bg-img::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,0) 50%,rgba(0,0,0,0.55) 90%,rgba(0,0,0,0.85) 100%);pointer-events:none}
-.char-disp-empty{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);color:rgba(220,110,80,0.78);font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,2.6vw,2.8rem);font-weight:300;letter-spacing:0.25em;text-shadow:0 0 28px rgba(196,68,68,0.35),0 0 60px rgba(0,0,0,0.7);white-space:nowrap;pointer-events:none;user-select:none;opacity:1;transition:opacity 500ms ease;z-index:2}
+.char-disp-empty{position:absolute;left:50%;bottom:8%;transform:translateX(-50%);color:rgba(220,110,80,0.78);font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,2.6vw,2.8rem);font-weight:300;letter-spacing:0.25em;text-shadow:0 0 28px rgba(196,68,68,0.35),0 0 60px rgba(0,0,0,0.7);white-space:nowrap;pointer-events:none;user-select:none;opacity:1;transition:opacity 500ms ease;z-index:2;animation:lobbyDispGlow 4.6s ease-in-out infinite}
+@keyframes lobbyDispGlow{0%,100%{text-shadow:0 0 24px rgba(196,68,68,0.30),0 0 60px rgba(0,0,0,0.7)}50%{text-shadow:0 0 46px rgba(224,96,74,0.55),0 0 74px rgba(0,0,0,0.7)}}
 .char-disp-empty.hidden{opacity:0}
 
 /* 우측 영역 */
@@ -193,6 +196,9 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 /* 텍스트 영역 */
 .char-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
 .char-name{color:rgba(230,200,170,0.95);font-size:1.05rem;font-weight:600;letter-spacing:0.05em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.char-cls{margin-left:8px;font-size:0.7rem;font-weight:700;letter-spacing:0.08em;color:#d9a24a;
+  border:1px solid rgba(180,130,70,0.45);border-radius:3px;padding:1px 7px;vertical-align:middle;
+  background:rgba(120,80,40,0.14);text-shadow:0 1px 2px #000}
 .char-info{color:rgba(180,140,110,0.9);font-size:0.78rem;opacity:0.7;letter-spacing:0.06em}
 
 /* 삭제 버튼 */
@@ -591,12 +597,192 @@ body{background:#000 center/cover no-repeat;color:#ccaa88;font-family:'Noto Sans
 </div>
 
 <!-- ═══ 캐릭터 외형 선택 팝업 ═══ -->
-<div id="charVisualPop" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.85);align-items:center;justify-content:center">
-  <div style="background:#1a1410;border:2px solid #554422;border-radius:12px;padding:30px;max-width:720px;width:90%;text-align:center">
-    <h2 style="color:#ccaa77;font-family:'Cinzel Decorative',serif;margin-bottom:6px">외형 선택</h2>
-    <p style="color:#887755;font-size:.85rem;margin-bottom:20px">캐릭터의 외형을 선택하세요</p>
-    <div id="visualGrid" style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-bottom:20px"></div>
-    <button id="visualCancelBtn" style="padding:8px 24px;background:transparent;border:1px solid #553322;color:#886644;font-family:'Noto Sans KR';font-size:.9rem;cursor:pointer;border-radius:6px">취소</button>
+<div id="charVisualPop" style="display:none;position:fixed;inset:0;z-index:300;background:radial-gradient(ellipse at 50% 38%,#191019 0%,#0b0709 58%,#050304 100%);align-items:center;justify-content:center">
+  <style>
+    #charVisualPop .cs-panel{position:relative;width:100%;height:100%;max-width:none;padding:0;text-align:center;
+      display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;background:none;overflow:hidden}
+    /* ── 상단 타이틀 ── */
+    #charVisualPop .cs-head{flex:0 0 auto;padding:min(4.5vh,42px) 0 0;pointer-events:none;position:relative;z-index:4}
+    #charVisualPop h2{color:#e8c87a;font-family:'Cinzel Decorative',serif;font-size:min(3vw,2.4rem);letter-spacing:.14em;margin:0 0 6px;
+      text-shadow:0 0 34px rgba(230,160,50,.45),0 2px 8px rgba(0,0,0,.9)}
+    #charVisualPop h2::before,#charVisualPop h2::after{content:'';display:inline-block;width:min(9vw,120px);height:1px;vertical-align:middle;
+      margin:0 22px;background:linear-gradient(90deg,transparent,rgba(200,150,70,.7),transparent)}
+    #charVisualPop .cs-sub{color:#9a8468;font-size:min(1.3vw,1rem);letter-spacing:.06em;margin:0}
+    /* ── 3분할 무대 ── */
+    #charVisualPop .cs-body{flex:1 1 auto;display:flex;align-items:stretch;justify-content:space-between;
+      gap:min(2vw,28px);padding:min(2vh,22px) min(4vw,64px) 0;min-height:0;position:relative;z-index:2}
+    .cs-side{flex:0 0 min(26vw,340px);display:flex;flex-direction:column;justify-content:center;gap:18px;
+      opacity:0;transform:translateY(10px);transition:opacity .4s ease,transform .4s ease}
+    .cs-side.in{opacity:1;transform:none}
+    .cs-side.left{text-align:left;align-items:flex-start}
+    .cs-side.right{text-align:left;align-items:stretch}
+    /* 좌: 직업/이름/설명/썸네일 */
+    #csClsName{color:#c89a4a;font-family:'Cinzel Decorative',serif;font-size:min(1.1vw,.85rem);letter-spacing:.34em}
+    #csCharName{color:#fff;font-size:min(2.6vw,2.1rem);font-weight:800;letter-spacing:.02em;line-height:1.1;
+      text-shadow:0 2px 14px rgba(0,0,0,.8);margin:-4px 0 2px}
+    #csCharName::after{content:'';display:block;width:56px;height:2px;margin-top:12px;
+      background:linear-gradient(90deg,#c89a4a,transparent)}
+    #csCharDesc{color:#b7a488;font-size:min(1.15vw,.95rem);line-height:1.6;max-width:320px}
+    .cs-thumb-wrap{position:relative;width:min(11vw,150px);margin-top:6px}
+    #csThumb{width:100%;aspect-ratio:3/4;border:1px solid rgba(150,110,60,.5);border-radius:2px;
+      background-size:cover;background-position:top center;
+      box-shadow:0 8px 26px rgba(0,0,0,.6),inset 0 0 40px rgba(0,0,0,.45),inset 0 0 0 3px rgba(0,0,0,.4)}
+    /* 공용 코너 브래킷 장식 */
+    .cnr{position:absolute;width:16px;height:16px;border:2px solid rgba(205,155,75,.7);pointer-events:none;z-index:2}
+    .cnr.tl{top:-2px;left:-2px;border-right:0;border-bottom:0}
+    .cnr.tr{top:-2px;right:-2px;border-left:0;border-bottom:0}
+    .cnr.bl{bottom:-2px;left:-2px;border-right:0;border-top:0}
+    .cnr.br{bottom:-2px;right:-2px;border-left:0;border-top:0}
+    /* 우: 플레이 방식 — 조각 프레임 박스 */
+    .cs-frame-box{position:relative;width:100%;padding:26px 22px 20px;
+      background:linear-gradient(180deg,rgba(32,23,16,.62),rgba(12,8,6,.72));
+      border:1px solid rgba(140,105,60,.42);border-radius:3px;
+      box-shadow:inset 0 0 0 3px rgba(0,0,0,.42),inset 0 0 30px rgba(0,0,0,.55),0 8px 26px rgba(0,0,0,.5)}
+    .cs-frame-box .cnr{width:20px;height:20px}
+    .cs-crest{position:absolute;top:-14px;left:50%;transform:translateX(-50%);z-index:3;
+      width:28px;height:28px;line-height:26px;text-align:center;color:#e0b055;font-size:.9rem;
+      background:radial-gradient(circle at 50% 40%,#2c1f13,#120c07);border:1px solid rgba(205,155,75,.65);
+      border-radius:50%;box-shadow:0 0 12px rgba(180,120,50,.45),inset 0 1px 2px rgba(230,180,90,.3)}
+    .cs-right-title{color:#d9c08a;font-family:'Cinzel Decorative',serif;font-size:min(1.3vw,1rem);letter-spacing:.18em;text-align:center;
+      padding-bottom:12px;border-bottom:1px solid rgba(150,110,60,.35);margin-bottom:6px}
+    .cs-trait{display:flex;gap:13px;align-items:flex-start;text-align:left;padding:9px 0}
+    .cs-trait .ti{flex:0 0 34px;height:34px;border-radius:6px;display:flex;align-items:center;justify-content:center;
+      font-size:1.05rem;background:radial-gradient(circle at 40% 30%,rgba(120,80,40,.55),rgba(30,18,10,.6));
+      border:1px solid rgba(160,120,70,.5);box-shadow:inset 0 0 10px rgba(0,0,0,.5)}
+    .cs-trait .tt{color:#e2cfa6;font-size:min(1.05vw,.92rem);font-weight:700;letter-spacing:.02em}
+    .cs-trait .td{color:#8f8068;font-size:min(.95vw,.82rem);line-height:1.45;margin-top:2px}
+    /* 중앙 무대 + 포트레이트 */
+    .cs-stage{flex:1 1 auto;position:relative;display:flex;align-items:flex-end;justify-content:center;min-width:0}
+    .cs-stage::after{content:'';position:absolute;left:50%;bottom:2%;transform:translateX(-50%);
+      width:min(30vw,420px);height:60px;border-radius:50%;pointer-events:none;
+      background:radial-gradient(ellipse,rgba(190,150,80,.28),transparent 70%);filter:blur(4px)}
+    #csPortrait{max-height:min(80vh,860px);max-width:100%;width:auto;height:auto;object-fit:contain;object-position:bottom center;
+      filter:drop-shadow(0 22px 40px rgba(0,0,0,.75));transition:opacity .28s ease;
+      transform-origin:50% 100%;animation:csIdle 5.6s ease-in-out infinite}
+    #csPortrait.swap{opacity:0;animation:none}
+    @keyframes csIdle{
+      0%{transform:translateY(0) scale(1) rotate(0deg)}
+      25%{transform:translateY(-6px) scale(1.005) rotate(.3deg)}
+      50%{transform:translateY(-2px) scale(1.009) rotate(0deg)}
+      75%{transform:translateY(-7px) scale(1.005) rotate(-.3deg)}
+      100%{transform:translateY(0) scale(1) rotate(0deg)}}
+    @media(prefers-reduced-motion:reduce){#csPortrait{animation:none}}
+    /* ── 하단 아이콘 레일 ── */
+    #charVisualPop .cs-foot{flex:0 0 auto;position:relative;z-index:5;padding:0 min(4vw,64px) min(3vh,30px)}
+    #visualGrid{display:flex;gap:min(2.6vw,36px);justify-content:center;align-items:flex-start;margin-bottom:18px}
+    .cs-ico{display:flex;flex-direction:column;align-items:center;gap:9px;cursor:pointer;transition:transform .18s}
+    .cs-ico:hover{transform:translateY(-3px)}
+    .cs-ico-ring{position:relative;width:min(5.6vw,70px);aspect-ratio:1;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      background:radial-gradient(circle at 50% 36%,#2b2420,#141010 72%);
+      box-shadow:0 0 0 2px #0a0806,0 0 0 4px #3d3024,0 0 0 5px #17110d,
+        inset 0 2px 7px rgba(0,0,0,.75),inset 0 -2px 5px rgba(130,95,55,.18);
+      transition:box-shadow .18s;overflow:hidden}
+    .cs-ico-ring svg{width:56%;height:56%;color:#8a7452;filter:drop-shadow(0 1px 1px rgba(0,0,0,.8));transition:color .18s,filter .18s}
+    .cs-ico:hover .cs-ico-ring svg{color:#c9a35e}
+    .cs-ico-ring img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(.5) brightness(.62);transition:filter .2s}
+    .cs-ico:hover .cs-ico-ring img{filter:grayscale(.12) brightness(.85)}
+    .cs-ico.sel .cs-ico-ring img{filter:none}
+    .cs-ico .lbl{color:#7f7159;font-size:min(1vw,.82rem);letter-spacing:.04em;font-weight:700;transition:color .18s;text-shadow:0 1px 3px #000}
+    .cs-ico:hover .lbl{color:#c9a35e}
+    .cs-ico.sel .cs-ico-ring{box-shadow:0 0 0 2px #0a0806,0 0 0 4px #7a2420,0 0 0 5px #2c0e0c,
+        0 0 18px 3px rgba(205,45,32,.6),inset 0 2px 7px rgba(0,0,0,.75)}
+    .cs-ico.sel .cs-ico-ring svg{color:#f0d492;filter:drop-shadow(0 0 5px rgba(230,80,50,.65))}
+    .cs-ico.sel .lbl{color:#e8c87a}
+    /* 하단 액션 바 */
+    .cs-actions{display:flex;align-items:center;justify-content:space-between;max-width:min(56vw,760px);margin:0 auto}
+    #visualCancelBtn{padding:10px 34px;background:transparent;border:1px solid rgba(150,100,60,.5);color:#a88a64;
+      font-family:'Noto Sans KR';font-size:.92rem;cursor:pointer;border-radius:4px;letter-spacing:.05em;transition:all .18s}
+    #visualCancelBtn:hover{border-color:#c88844;color:#e8c87a;background:rgba(120,70,30,.15)}
+    #visualCreateBtn{padding:11px 46px;font-family:'Cinzel Decorative',serif;font-size:1.05rem;letter-spacing:.16em;cursor:pointer;
+      color:#f4e4b8;border:1px solid #a86a2c;border-radius:4px;
+      background:linear-gradient(180deg,rgba(150,40,30,.92),rgba(90,20,16,.95));
+      box-shadow:0 6px 20px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,210,150,.25),0 0 22px rgba(180,60,40,.35);
+      text-shadow:0 1px 4px #000;transition:all .18s}
+    #visualCreateBtn:hover{filter:brightness(1.14);box-shadow:0 8px 26px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,210,150,.35),0 0 30px rgba(210,80,50,.55)}
+    /* 배경 장식 (은은한 상/하 비네트) */
+    #charVisualPop .cs-vig{position:absolute;inset:0;z-index:1;pointer-events:none;
+      background:radial-gradient(ellipse at 50% 30%,rgba(120,70,90,.12),transparent 60%),
+                 linear-gradient(180deg,rgba(0,0,0,.55) 0%,transparent 22%,transparent 68%,rgba(0,0,0,.7) 100%)}
+    /* 배경 씬 (캐릭터별, 켄번스 모션) */
+    #charVisualPop .cs-scene{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+    #csScene{position:absolute;inset:-5%;background-size:cover;background-position:center;
+      animation:csKenburns 34s ease-in-out infinite alternate;filter:saturate(.9) brightness(.64);
+      transition:opacity .5s ease}
+    #charVisualPop .cs-scene-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+      opacity:0;transition:opacity .5s ease;filter:saturate(.92) brightness(.66);pointer-events:none}
+    #charVisualPop .cs-scene-vid.on{opacity:1}
+    /* 캐릭터 포함 풀스테이지 아이들 영상 */
+    #charVisualPop .cs-idle-vid{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;
+      opacity:0;transition:opacity .55s ease;filter:saturate(.96) brightness(.82);pointer-events:none}
+    #charVisualPop .cs-idle-vid.on{opacity:1}
+    #charVisualPop .cs-scene::after{content:'';position:absolute;inset:0;
+      background:radial-gradient(ellipse at 50% 44%,transparent 24%,rgba(8,5,7,.5) 70%,rgba(5,3,4,.92)),
+                 linear-gradient(180deg,rgba(6,4,6,.55),transparent 26%,transparent 60%,rgba(4,2,3,.9))}
+    @keyframes csKenburns{0%{transform:scale(1.05) translate(-1%,.5%)}100%{transform:scale(1.14) translate(1.5%,-1%)}}
+    /* 캐릭터별 배경 오라 (JS가 색 지정) */
+    #charVisualPop .cs-aura{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:0;pointer-events:none;
+      width:min(46vw,640px);height:min(70vh,740px);border-radius:50%;filter:blur(60px);opacity:.5;
+      background:radial-gradient(ellipse,var(--aura,rgba(150,90,180,.5)),transparent 68%);
+      transition:background .5s ease,opacity .5s ease;animation:csAuraPulse 5.6s ease-in-out infinite}
+    @keyframes csAuraPulse{0%,100%{opacity:.42;transform:translate(-50%,-50%) scale(1)}
+      50%{opacity:.62;transform:translate(-50%,-50%) scale(1.06)}}
+    /* 잉걸불 파티클 */
+    #charVisualPop .cs-embers{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+    #charVisualPop .cs-embers b{position:absolute;bottom:-12px;width:3px;height:3px;border-radius:50%;
+      background:rgba(255,180,90,.9);box-shadow:0 0 8px 2px rgba(255,150,60,.55);opacity:0;
+      animation:csEmber linear infinite}
+    @keyframes csEmber{0%{opacity:0;transform:translateY(0) translateX(0) scale(.6)}
+      12%{opacity:.9}80%{opacity:.7}100%{opacity:0;transform:translateY(-92vh) translateX(var(--dx,10px)) scale(1.1)}}
+    /* 장식 프레임 (이중 금선 + 코너 문장) */
+    #charVisualPop .cs-frame{position:absolute;inset:min(1.6vh,16px) min(1.4vw,20px);z-index:3;pointer-events:none;
+      border:1px solid rgba(150,110,60,.28);border-radius:3px;
+      box-shadow:inset 0 0 0 4px rgba(0,0,0,.35),inset 0 0 60px rgba(0,0,0,.45),inset 0 0 3px rgba(200,150,70,.25)}
+    #charVisualPop .cs-frame::before,#charVisualPop .cs-frame::after{content:'';position:absolute;width:44px;height:44px;
+      border:2px solid rgba(200,150,70,.55)}
+    #charVisualPop .cs-frame::before{top:-2px;left:-2px;border-right:none;border-bottom:none;
+      box-shadow:-1px -1px 12px rgba(200,150,70,.2)}
+    #charVisualPop .cs-frame::after{bottom:-2px;right:-2px;border-left:none;border-top:none;
+      box-shadow:1px 1px 12px rgba(200,150,70,.2)}
+    @media(max-width:900px){.cs-side{flex-basis:min(30vw,220px)}#csThumb{display:none}}
+  </style>
+  <div class="cs-panel">
+    <div class="cs-scene"><div class="cs-scene-img" id="csScene"></div><video class="cs-scene-vid" id="csSceneVid" muted loop playsinline preload="auto"></video><video class="cs-idle-vid" id="csIdleVid" muted loop playsinline preload="auto"></video></div>
+    <div class="cs-aura" id="csAura"></div>
+    <div class="cs-vig"></div>
+    <div class="cs-embers" id="csEmbers"></div>
+    <div class="cs-frame"></div>
+    <div class="cs-head">
+      <h2>캐릭터 선택</h2>
+      <p class="cs-sub">지옥에 강림할 화신을 선택하라</p>
+    </div>
+    <div class="cs-body">
+      <div class="cs-side left" id="csLeft">
+        <div id="csClsName"></div>
+        <div id="csCharName"></div>
+        <div id="csCharDesc"></div>
+        <div class="cs-thumb-wrap">
+          <span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
+          <div id="csThumb"></div>
+        </div>
+      </div>
+      <div class="cs-stage"><img id="csPortrait" alt=""></div>
+      <div class="cs-side right" id="csRight">
+        <div class="cs-frame-box">
+          <span class="cnr tl"></span><span class="cnr tr"></span><span class="cnr bl"></span><span class="cnr br"></span>
+          <div class="cs-crest">✦</div>
+          <div class="cs-right-title">플레이 방식</div>
+          <div id="csTraits"></div>
+        </div>
+      </div>
+    </div>
+    <div class="cs-foot">
+      <div id="visualGrid"></div>
+      <div class="cs-actions">
+        <button id="visualCancelBtn">취소</button>
+        <button id="visualCreateBtn">생성</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -1601,9 +1787,11 @@ function _applyLobbyLang(){
     '.no-chars':['캐릭터가 없습니다. 새로 생성하세요.','No characters. Create a new one.'],
     '.create-section h3':['새 캐릭터 생성','Create New Character'],
     '#createBtn':['생성','Create'],
-    '#charVisualPop h2':['외형 선택','Appearance'],
-    '#charVisualPop p':['캐릭터의 외형을 선택하세요','Choose your appearance'],
+    '#charVisualPop h2':['캐릭터 선택','Choose Your Vessel'],
+    '#charVisualPop p':['지옥에 강림할 화신을 선택하라','Select the incarnation to descend into Hell'],
+    '#charVisualPop .cs-right-title':['플레이 방식','Playstyle'],
     '#visualCancelBtn':['취소','Cancel'],
+    '#visualCreateBtn':['생성','Create'],
     '#delConfirmYes':['확인','Confirm'],
     '#delConfirmNo':['취소','Cancel'],
     '#replayCinBtn':['▶ 시네마틱','▶ Cinematic'],
@@ -2232,7 +2420,7 @@ function _enterOffline(){
     try{
       const chk=await fetch('/api/load/'+encodeURIComponent(name));
       if(chk.ok){const j=await chk.json();if(j.ok){$('createBtn').disabled=false;$('createModal').classList.add('show');setStatus(_TL('이미 같은 이름의 캐릭터가 있습니다.'),true);return}}
-      const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{name:name,ts:Date.now()}})});
+      const res=await fetch('/api/save',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({slot:name,data:{name:name,ts:Date.now(),charIdx:_pendingVisualIdx}})});
       const j=await res.json();
       $('createBtn').disabled=false;
       if(!j.ok){$('createModal').classList.add('show');setStatus(_TL('생성 실패: ')+(j.error||'unknown'),true);return}
@@ -2243,7 +2431,7 @@ function _enterOffline(){
       let _slot=-1;
       for(let i=0;i<5;i++){if(!localStorage.getItem(_LS_PREFIX+i)){_slot=i;break}}
       if(_slot<0){$('createBtn').disabled=false;setStatus(_TL('슬롯이 가득 찼습니다.'),true);return}
-      localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:0}));
+      localStorage.setItem(_LS_PREFIX+_slot,JSON.stringify({name:name,ts:Date.now(),charIdx:_pendingVisualIdx}));
       $('createBtn').disabled=false;
       $('charName').value='';setStatus('');await loadLocalCharacters();
     }
@@ -2328,7 +2516,7 @@ async function loadCharacters(){
     cl.innerHTML='<div class="no-chars">'+_TL('캐릭터가 없습니다. 새로 생성하세요.')+'</div>';
     const newBtn=document.createElement('div');newBtn.className='char-item-new';newBtn.style.marginTop='10px';newBtn.style.cursor='pointer';
     newBtn.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">+</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+_TL('새 캐릭터')+'</div></div>';
-    newBtn.addEventListener('click',()=>{$('createModal').classList.add('show');$('charName').value='';$('charName').focus()});
+    newBtn.addEventListener('click',()=>openVisualSelect());
     cl.appendChild(newBtn);
   }
   else{
@@ -2361,8 +2549,9 @@ function _renderOnlineSlots(){
       const d=ch.data||{};const lv=d.player?d.player.lv||1:1;const stage=d.game?d.game.stage||0:0;
       const hell=Math.min(6,~~(stage/10));const floor=stage%10+1;
       const st=stage===0?_TL('시작점'):(hell+1)+_TL('장')+' '+hn[hell]+' '+floor+_TL('층');
+      const _pci=(ch.charIdx!=null?ch.charIdx:(ch.data&&ch.data.charIdx)||0);const _vi=CHAR_VISUALS[_pci]||CHAR_VISUALS[0];
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===ch.id?' active':'');
-      div.innerHTML=`<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=2" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(ch.name)}</div><div class="char-info">Lv.${lv} | ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=2'}" style="width:100%;height:100%;object-fit:cover;object-position:center 12%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(ch.name)}<span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${lv} | ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
       div.addEventListener('click',e=>{
         if(e.target.classList.contains('char-del'))return;
         _selectedSlot=ch.id;_selectedSlotName=ch.name;
@@ -2390,7 +2579,7 @@ function _renderOnlineSlots(){
   const MAX_CHARS=5,canCreate=total<MAX_CHARS;
   const newDiv=document.createElement('div');newDiv.className='char-item-new';newDiv.style.marginTop='10px';
   newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">'+(canCreate?'+':'✕')+'</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+(canCreate?_TL('새 캐릭터'):_TL('슬롯 가득참'))+'</div></div>';
-  if(canCreate)newDiv.addEventListener('click',()=>{$('createModal').classList.add('show');$('charName').value='';$('charName').focus()});
+  if(canCreate)newDiv.addEventListener('click',()=>openVisualSelect());
   else{newDiv.style.opacity='.35';newDiv.style.cursor='default';newDiv.style.pointerEvents='none'}
   cl.appendChild(newDiv);
   // ── 이벤트 ──
@@ -2401,42 +2590,111 @@ function _renderOnlineSlots(){
   vp.addEventListener('wheel',e=>{e.preventDefault();if(e.deltaY>0&&_onlineScrollIdx<total-VIEW){_onlineScrollIdx++;_renderOnlineSlots()}else if(e.deltaY<0&&_onlineScrollIdx>0){_onlineScrollIdx--;_renderOnlineSlots()}},{passive:false});
 }
 // ── 캐릭터 외형 목록 (game.html CHAR_LIST와 동기화) ──
+// index = game.html CHAR_LIST 인덱스와 반드시 일치 (저장 charIdx가 곧 이 인덱스)
 const CHAR_VISUALS=[
-  {id:'hell_slayer',name:'지옥 학살자',desc:'거츠 스타일. 특대검+석궁+망토',folder:'img/exoduser_warrior',fw:64,fh:64},
-  {id:'greatsword_hero',name:'대검 영웅',desc:'풀갑옷 기사. 특대검+빨간 망토',folder:'img/exoduser_warrior',fw:64,fh:64},
-  {id:'colossal_knight',name:'거대검 기사',desc:'검은 갑옷. 초대형 특대검',folder:'img/exoduser_warrior',fw:64,fh:64},
-  {id:'greatsword_knight',name:'대검 기사',desc:'표준 기사. 대검+갑옷',folder:'img/exoduser_warrior',fw:64,fh:64},
-  {id:'exoduser_warrior',name:'엑소듀서 전사',desc:'다크 판타지 전사. 거대검+검은 갑옷',folder:'img/exoduser_warrior',fw:64,fh:64},
+  {id:'exoduser_warrior',name:'엑소듀서 전사',cls:'WARRIOR',desc:'거대검을 휘두르는 흑철의 전사',folder:'img/exoduser_warrior',fw:48,fh:48,portrait:'assets/charselect/warrior_cut.png?v=3',bust:'assets/charselect/portrait_warrior.png?v=1',emblemImg:'assets/charselect/emblem_warrior.png?v=1',aura:'rgba(140,70,190,.55)',scene:'assets/charselect/bg_scene1.png?v=1',sceneVid:'assets/charselect/bg_scene1_loop.mp4?v=2',idleVid:'assets/charselect/idle_warrior.mp4?v=1',poster:'assets/charselect/poster_idle_warrior.jpg?v=1',tab:'전사',job:'전사',
+    emblem:'<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M50 28 L50 82"/><path d="M35 44 L65 44"/><path d="M31 33 C23 25 21 17 23 11 C31 15 34 24 35 32"/><path d="M69 33 C77 25 79 17 77 11 C69 15 66 24 65 32"/></svg>',
+    traits:[
+      ['⚔','근접 화신','거대검을 휘두르는 정면 돌파형 전투가입니다.'],
+      ['🛡','흑철의 방어','검은 갑옷으로 적의 공세를 견디고 되받아칩니다.'],
+      ['💥','파멸의 일격','느리지만 치명적인 광역 참격을 내리꽂습니다.'],
+    ]},
+  {id:'exoduser_silvertail',name:'실버테일',cls:'BLADE DANCER',desc:'회전하는 단 하나의 검, 그녀의 춤은 파멸',folder:'img/exoduser_silvertail',fw:48,fh:48,portrait:'assets/charselect/silvertail_cut.png?v=3',bust:'assets/charselect/portrait_silvertail.png?v=1',emblemImg:'assets/charselect/emblem_silvertail.png?v=1',aura:'rgba(120,165,215,.5)',scene:'assets/charselect/bg_scene2.png?v=1',sceneVid:'assets/charselect/bg_scene2_loop.mp4?v=1',idleVid:'assets/charselect/idle_silvertail.mp4?v=1',poster:'assets/charselect/poster_idle_silvertail.jpg?v=1',tab:'실버테일',job:'블레이드 댄서',
+    emblem:'<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M24 24 L72 72"/><path d="M76 24 L28 72"/><circle cx="50" cy="50" r="3.5" fill="currentColor" stroke="none"/></svg>',
+    traits:[
+      ['🌀','검무의 화신','회전대검으로 사방의 적을 동시에 베어냅니다.'],
+      ['🗡','쌍단검 기동','빠르고 민첩한 연속 공격으로 파고듭니다.'],
+      ['✨','무희의 춤','화려한 회피와 폭발적인 딜을 오가는 곡예입니다.'],
+    ]},
 ];
-let _pendingCharName=null;
+let _pendingVisualIdx=0;
 
-function openVisualSelect(name){
-  _pendingCharName=name;
+// 선택된 화신으로 좌·중·우 패널을 갱신 (미리보기)
+function selectVisual(ci){
+  const ch=CHAR_VISUALS[ci];if(!ch)return;
+  _pendingVisualIdx=ci;
+  // 중앙: 아이들 영상 있으면 우선 재생(실패·지연 시 정적 누끼로 폴백), 없으면 정적 누끼
+  const idle=$('csIdleVid'), port=$('csPortrait');
+  const _showStatic=()=>{
+    if(idle){idle.classList.remove('on');idle.pause&&idle.pause();}
+    if(port){port.style.display='';port.classList.add('swap');
+      setTimeout(()=>{port.src=ch.portrait||'';port.classList.remove('swap');},180);}
+    const _sc=$('csScene');if(_sc&&ch.scene){_sc.style.backgroundImage="url('"+ch.scene+"')";_sc.style.opacity='1';}
+  };
+  if(ch.idleVid&&idle){
+    if(ch.poster)idle.poster=ch.poster;             // 로딩 중 즉시 첫 프레임 표시
+    const _isrc=ch.idleVid.split('?')[0];
+    if(!idle.src.endsWith(_isrc)){idle.classList.remove('on');idle.src=ch.idleVid;idle.load&&idle.load();}
+    clearTimeout(idle._csT);
+    idle.onerror=_showStatic;                         // 로드/디코드 실패 → 정적 폴백
+    idle.oncanplay=()=>{clearTimeout(idle._csT);};
+    idle._csT=setTimeout(()=>{if(idle.readyState<2)_showStatic();},5000); // 5초 스톨 → 폴백
+    idle.classList.add('on');if(port)port.style.display='none';
+    const _pr=idle.play&&idle.play();if(_pr&&_pr.catch)_pr.catch(()=>{}); // autoplay 막혀도 poster 프레임 유지
+  }else{
+    _showStatic();
+  }
+  // 좌측 정보
+  $('csClsName').textContent=ch.cls||'';
+  $('csCharName').textContent=_TL(ch.name);
+  $('csCharDesc').textContent=_TL(ch.desc);
+  const th=$('csThumb');if(th){const _tp=ch.bust||ch.portrait;th.style.backgroundImage=_tp?"url('"+_tp+"')":'';}
+  const aura=$('csAura');if(aura&&ch.aura)aura.style.setProperty('--aura',ch.aura);
+  // 배경 씬 — 아이들 영상 있으면 그게 전체를 덮으므로 배경 레이어는 끔
+  const sc=$('csScene'), vid=$('csSceneVid');
+  if(ch.idleVid){
+    if(sc)sc.style.opacity='0';
+    if(vid){vid.classList.remove('on');vid.pause&&vid.pause();}
+  }else{
+    if(sc&&ch.scene){sc.style.opacity='0';setTimeout(()=>{sc.style.backgroundImage="url('"+ch.scene+"')";sc.style.opacity='1';},180);}
+    if(vid){
+      if(ch.sceneVid){const _src=ch.sceneVid.split('?')[0];if(!vid.src.endsWith(_src)){vid.src=ch.sceneVid;}vid.classList.add('on');vid.play&&vid.play().catch(()=>{});}
+      else{vid.classList.remove('on');vid.pause&&vid.pause();}
+    }
+  }
+  // 우측 플레이 방식
+  const tr=$('csTraits');
+  if(tr){tr.innerHTML=(ch.traits||[]).map(t=>
+    '<div class="cs-trait"><div class="ti">'+t[0]+'</div><div><div class="tt">'+escHtml(_TL(t[1]))
+    +'</div><div class="td">'+escHtml(_TL(t[2]))+'</div></div></div>').join('');}
+  // 아이콘 레일 선택 표시
+  const grid=$('visualGrid');if(grid)grid.querySelectorAll('.cs-ico').forEach((c,i)=>c.classList.toggle('sel',i===ci));
+  // 좌우 패널 등장 애니메이션 (재트리거)
+  ['csLeft','csRight'].forEach(id=>{const el=$(id);if(el){el.classList.remove('in');void el.offsetWidth;el.classList.add('in');}});
+}
+
+// 잉걸불 파티클 1회 생성
+function _spawnEmbers(){
+  const box=$('csEmbers');if(!box||box.childElementCount)return;
+  let h='';for(let i=0;i<26;i++){
+    const x=(i*3.9+((i*i)%7))%100, dur=6+((i*7)%9), delay=-((i*11)%14), dx=((i%2)?1:-1)*(6+(i%5)*5), sz=2+(i%3);
+    h+='<b style="left:'+x.toFixed(1)+'%;width:'+sz+'px;height:'+sz+'px;--dx:'+dx+'px;animation-duration:'+dur+'s;animation-delay:'+delay+'s"></b>';
+  }
+  box.innerHTML=h;
+}
+function openVisualSelect(){
   const pop=$('charVisualPop');pop.style.display='flex';
+  _spawnEmbers();
   const grid=$('visualGrid');grid.innerHTML='';
   CHAR_VISUALS.forEach((ch,ci)=>{
-    const card=document.createElement('div');
-    card.style.cssText='width:120px;padding:10px;border-radius:8px;cursor:pointer;text-align:center;border:2px solid #443322;background:rgba(20,20,30,.8);transition:all .2s';
-    card.onmouseenter=()=>{card.style.borderColor='#886633';card.style.background='rgba(40,30,20,.9)'};
-    card.onmouseleave=()=>{card.style.borderColor='#443322';card.style.background='rgba(20,20,30,.8)'};
-    // 프리뷰
-    const cv=document.createElement('canvas');cv.width=ch.fw;cv.height=ch.fh;
-    cv.style.cssText='width:64px;height:64px;image-rendering:pixelated;display:block;margin:0 auto 6px';
-    _tryLoadSprite(ch.folder,ch.fw,ch.fh,cv);
-    card.appendChild(cv);
-    // 이름
-    const nm=document.createElement('div');nm.textContent=_TL(ch.name);
-    nm.style.cssText='color:#cccccc;font-size:.8rem;font-weight:bold;margin-bottom:3px';
-    card.appendChild(nm);
-    // 설명
-    const ds=document.createElement('div');ds.textContent=_TL(ch.desc);
-    ds.style.cssText='color:#888888;font-size:.65rem;line-height:1.3';
-    card.appendChild(ds);
-    card.onclick=()=>{pop.style.display='none';doCreateChar(_pendingCharName,ci)};
-    grid.appendChild(card);
+    const ico=document.createElement('div');ico.className='cs-ico';ico.setAttribute('data-vi',ci);
+    ico.title=_TL(ch.name);
+    const _inner=ch.emblemImg?('<img src="'+ch.emblemImg+'" alt="">'):(ch.emblem||'');
+    ico.innerHTML='<div class="cs-ico-ring">'+_inner+'</div>'
+      +'<div class="lbl">'+escHtml(_TL(ch.tab||ch.name))+'</div>';
+    ico.onclick=()=>selectVisual(ci);
+    grid.appendChild(ico);
   });
+  selectVisual(_pendingVisualIdx||0);
 }
-$('visualCancelBtn').onclick=()=>{$('charVisualPop').style.display='none';$('createBtn').disabled=false};
+// 생성 확정 → 이름 입력 모달
+function _visualConfirm(){
+  const pop=$('charVisualPop');pop.style.display='none';
+  $('createModal').classList.add('show');$('charName').value='';
+  setTimeout(()=>$('charName').focus(),50);
+}
+$('visualCreateBtn').onclick=_visualConfirm;
+$('visualCancelBtn').onclick=()=>{$('charVisualPop').style.display='none'};
 
 async function doCreateChar(name,visualIdx){
   $('createBtn').disabled=true;setStatus(_TL('생성 중...'));
@@ -2468,7 +2726,7 @@ $('createBtn').onclick=()=>{
   const name=$('charName').value.trim();
   if(name.length<2||name.length>8){setStatus(_TL('이름은 2~8자여야 합니다.'),true);return}
   if(/[<>"'&]/.test(name)){setStatus(_TL('특수문자는 사용할 수 없습니다.'),true);return}
-  setStatus('');$('createModal').classList.remove('show');doCreateChar(name,0);
+  setStatus('');$('createModal').classList.remove('show');doCreateChar(name,_pendingVisualIdx);
 };
 $('charName').addEventListener('keydown',e=>{if(e.key==='Enter')$('createBtn').click()});
 function setStatus(m,err){$('status').textContent=m;$('status').className=err?'status error':'status'}
@@ -2545,7 +2803,7 @@ function _renderSlotList(){
       const st=stage===0?_TL('시작점'):(hell+1)+_TL('장')+' '+hn[hell]+' '+floor+_TL('층');
       const _vi=CHAR_VISUALS[s.charIdx||0]||CHAR_VISUALS[0];
       const div=document.createElement('div');div.className='char-item'+(_selectedSlot===s.name?' active':'');
-      div.innerHTML=`<div class="char-thumb"><img src="assets/lobby/lobby_portrait.png?v=2" style="width:100%;height:100%;object-fit:cover;object-position:center 20%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(s.name)}</div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
+      div.innerHTML=`<div class="char-thumb"><img src="${(_vi&&(_vi.bust||_vi.portrait))||'assets/lobby/lobby_portrait.png?v=2'}" style="width:100%;height:100%;object-fit:cover;object-position:center 12%;border-radius:2px"></div><div class="char-text"><div class="char-name">${escHtml(s.name)}<span class="char-cls">${escHtml(_TL((_vi&&(_vi.job||_vi.cls))||''))}</span></div><div class="char-info">Lv.${s.lv||1} · ${st}</div></div><button class="char-del" title="${_TL('삭제')}">✕</button>`;
       div.addEventListener('click',e=>{if(e.target.classList.contains('char-del'))return;_selectSlot(s)});
       div.querySelector('.char-del').addEventListener('click',e=>{
         e.stopPropagation();
@@ -2579,7 +2837,7 @@ function _renderSlotList(){
   const canCreate=total<MAX_CHARS;
   newDiv.innerHTML='<div class="char-thumb"><span class="char-thumb-empty">'+(canCreate?'+':'✕')+'</span></div><div class="char-text"><div class="char-name" style="color:#886644">'+(canCreate?_TL('새 캐릭터'):_TL('슬롯 가득참'))+'</div>'+(canCreate?'':'<div class="char-info">'+_TL('최대')+' '+MAX_CHARS+_TL('개')+'</div>')+'</div>';
   if(canCreate){
-    newDiv.addEventListener('click',()=>{$('createModal').classList.add('show');$('charName').value='';$('charName').focus()});
+    newDiv.addEventListener('click',()=>openVisualSelect());
   }else{
     newDiv.style.opacity='.35';newDiv.style.cursor='default';newDiv.style.pointerEvents='none';
   }
@@ -3013,13 +3271,14 @@ _GP.on('lobbyNav', (gp, just) => {
   if(vpop && vpop.style.display !== 'none' && vpop.style.display !== '') {
     const cards = vpop.querySelectorAll('[data-vi]');
     if(cards.length) {
-      if(!_GP.prev._viIdx) _GP.prev._viIdx = 0;
-      if(just[14] || (_GP.axes[0] < -0.5 && !_GP.prev._viL)) _GP.prev._viIdx = Math.max(0, _GP.prev._viIdx - 1);
-      if(just[15] || (_GP.axes[0] > 0.5 && !_GP.prev._viR)) _GP.prev._viIdx = Math.min(cards.length - 1, _GP.prev._viIdx + 1);
+      let idx = (typeof _pendingVisualIdx==='number') ? _pendingVisualIdx : 0;
+      let moved = false;
+      if(just[14] || (_GP.axes[0] < -0.5 && !_GP.prev._viL)) { idx = Math.max(0, idx - 1); moved = true; }
+      if(just[15] || (_GP.axes[0] > 0.5 && !_GP.prev._viR)) { idx = Math.min(cards.length - 1, idx + 1); moved = true; }
       _GP.prev._viL = _GP.axes[0] < -0.5;
       _GP.prev._viR = _GP.axes[0] > 0.5;
-      cards.forEach((c, i) => { c.style.outline = i === _GP.prev._viIdx ? '2px solid #C9A961' : ''; });
-      if(just[0]) { cards[_GP.prev._viIdx].click(); return true; } // A = 선택
+      if(moved && typeof selectVisual==='function') selectVisual(idx); // 좌우 = 미리보기 전환
+      if(just[0]) { $('visualCreateBtn').click(); return true; } // A = 생성 확정
       if(just[1]) { $('visualCancelBtn').click(); return true; } // B = 취소
     }
     return false;
