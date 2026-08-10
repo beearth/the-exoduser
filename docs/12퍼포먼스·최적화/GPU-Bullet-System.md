@@ -853,3 +853,16 @@ async function updateComputeBullets(sp) {
 - `_queueVfxGL(img,sx,sy,sw,sh,x,y,dw,dh,ang,alpha)`: 배치에 추가
 - `_flushVfxGL()`: GPU 제출 (drawArraysInstanced)
 - `_resetVfxInstanced()`: context lost 시 리셋
+
+### 브라우저 격리 검증 (2026-08-09)
+
+`tools/verify_vfx_gl_instancing_browser.mjs`는 headless Chrome WebGL2에서 64×64 임시 텍스처 하나를 사용해 256개 additive VFX를 큐잉하고 제출한다.
+
+| 확인 항목 | 결과 |
+|---|---|
+| 큐 등록 | 256 / 256 |
+| 인스턴스 드로우 | 1회, 256 인스턴스 |
+| 큐+제출 CPU | 0.3~0.6ms (Chrome/SwiftShader 격리 3회 측정) |
+| 오류 | `GL.getError()=0`, 페이지 오류 0건 |
+
+이 검증은 한 텍스처 배치의 기능·제출 경로를 확인하는 용도다. 실제 전투의 여러 텍스처/수명/충돌 비용과 동일시하지 않으며, normal-blend VFX를 additive VFX-GL에 합치지 않는다.

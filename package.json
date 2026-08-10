@@ -24,6 +24,7 @@
   "scripts": {
     "serve:test": "node tools/local-static-server.mjs",
     "pixellab:request": "node tools/pixellab_request.mjs",
+    "pixellab:silvertail:sync": "node tools/sync_silvertail_pixellab.mjs",
     "pixellab:ch1:8dir": "node tools/complete_ch1_8dir.mjs",
     "pixellab:ch1:atlas-sync": "node tools/sync_ch1_monster_atlas_sources.mjs",
     "elevenlabs:tts": "node tools/elevenlabs_tts.mjs",

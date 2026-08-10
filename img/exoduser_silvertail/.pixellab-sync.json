@@ -1,0 +1,30 @@
+{
+  "characterId": "eda1221a-6fee-4228-9350-c36a15a3eaea",
+  "gameDirections": [
+    "south",
+    "south-east",
+    "east",
+    "north-east",
+    "north",
+    "north-west",
+    "west",
+    "south-west"
+  ],
+  "pixelLabDirectionOverrides": {
+    "south-east": "south-west",
+    "south-west": "south-east"
+  },
+  "clockFiles": {
+    "south": "6",
+    "south-east": "5",
+    "east": "3",
+    "north-east": "1",
+    "north": "12",
+    "north-west": "11",
+    "west": "9",
+    "south-west": "7"
+  },
+  "idleSource": "walk frame_000 duplicated (PixelLab rotations excluded)",
+  "idleFrames": 2,
+  "walkFrames": 8
+}

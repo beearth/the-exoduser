@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>FDG — Image Intro</title>
+  <style>
+    :root{color-scheme:dark}
+    *{box-sizing:border-box}
+    html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#000}
+    .stage{position:relative;width:100vw;height:100vh;overflow:hidden;background:#000;isolation:isolate}
+    .art{position:absolute;inset:0;z-index:1;display:grid;place-items:center;background:#000;opacity:0;transform:scale(1.045);transition:opacity .5s linear,transform 3s cubic-bezier(.2,.65,.2,1)}
+    .art img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;user-select:none;-webkit-user-drag:none}
+    .smoke{position:absolute;inset:0;z-index:2;pointer-events:none;opacity:0;background:radial-gradient(ellipse at 0 100%,rgba(92,83,79,.28),transparent 25%),radial-gradient(ellipse at 100% 100%,rgba(92,83,79,.24),transparent 25%);filter:blur(12px);transition:opacity .65s ease-out}
+    #fx{position:absolute;inset:0;z-index:3;width:100%;height:100%;pointer-events:none;opacity:.62}
+    .fade{position:absolute;inset:0;z-index:4;background:#000;opacity:1;pointer-events:none;transition:opacity .25s linear}
+    .controls{position:absolute;z-index:5;right:20px;bottom:18px;display:flex;gap:10px;align-items:center;opacity:.3;font:11px Arial,sans-serif;letter-spacing:.15em;color:#c4b9b3;text-transform:uppercase}.controls button{border:1px solid rgba(196,185,179,.4);background:rgba(0,0,0,.45);padding:8px 12px;color:inherit;font:inherit;letter-spacing:inherit;cursor:pointer}.controls button:focus-visible{outline:1px solid #c8321e;outline-offset:3px}
+    .stage.ready .fade{opacity:0}.stage.ready .art{opacity:1;transform:scale(1)}.stage.ready .smoke{opacity:1}.stage.finished .fade{opacity:1}
+    @media (prefers-reduced-motion:reduce){.art,.smoke,.fade{transition:none}#fx{display:none}}
+  </style>
+</head>
+<body>
+  <main class="stage" id="stage" aria-label="FDG image intro">
+    <div class="art"><img src="img/fdg_intro/fdg_reference.png" alt="FDG studio intro artwork"></div>
+    <div class="smoke" aria-hidden="true"></div>
+    <canvas id="fx" aria-hidden="true"></canvas>
+    <div class="fade" aria-hidden="true"></div>
+    <div class="controls"><span>3.0s / 60fps</span><button id="replay" type="button">Replay</button></div>
+  </main>
+  <script>
+    (()=>{
+      'use strict';
+      const stage=document.getElementById('stage');
+      const canvas=document.getElementById('fx');
+      const gl=canvas.getContext('webgl2',{alpha:true,antialias:false,premultipliedAlpha:true});
+      const duration=3000;
+      let started=0,frame=0,finished=false;
+      if(gl){
+        const vs=`#version 300 es
+          precision highp float;
+          in vec2 p; in float s; in float a; uniform float t; uniform vec2 r; out float v;
+          void main(){float q=mod(t*.000018+p.y,1.0);float x=p.x+sin(t*.00055+p.y*31.0)*.012;gl_Position=vec4(x*2.0-1.0,(mod(p.y-q+1.0,1.0))*2.0-1.0,0,1);gl_PointSize=s*min(r.x/1920.0,r.y/1080.0);v=a*(.2+.8*sin(q*3.1415926));}`;
+        const fs=`#version 300 es
+          precision highp float;in float v;out vec4 c;void main(){float d=distance(gl_PointCoord,vec2(.5));c=vec4(.64,.12,.045,(1.0-smoothstep(.03,.5,d))*v);}`;
+        const shader=(type,source)=>{const s=gl.createShader(type);gl.shaderSource(s,source);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(s));return s};
+        const program=gl.createProgram();gl.attachShader(program,shader(gl.VERTEX_SHADER,vs));gl.attachShader(program,shader(gl.FRAGMENT_SHADER,fs));gl.linkProgram(program);
+        const count=90,pos=new Float32Array(count*2),size=new Float32Array(count),alpha=new Float32Array(count);
+        for(let i=0;i<count;i++){pos[i*2]=Math.random();pos[i*2+1]=Math.random();size[i]=1+Math.random()*3;alpha[i]=.12+Math.random()*.36}
+        const attr=(name,data,sizeValue)=>{const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,data,gl.STATIC_DRAW);const loc=gl.getAttribLocation(program,name);gl.enableVertexAttribArray(loc);gl.vertexAttribPointer(loc,sizeValue,gl.FLOAT,false,0,0)};
+        gl.useProgram(program);attr('p',pos,2);attr('s',size,1);attr('a',alpha,1);const tLoc=gl.getUniformLocation(program,'t'),rLoc=gl.getUniformLocation(program,'r');
+        const resize=()=>{const d=innerWidth>2560?1:Math.min(devicePixelRatio||1,2);canvas.width=Math.floor(innerWidth*d);canvas.height=Math.floor(innerHeight*d);gl.viewport(0,0,canvas.width,canvas.height);gl.uniform2f(rLoc,canvas.width,canvas.height)};
+        addEventListener('resize',resize,{passive:true});resize();gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE);
+        const draw=time=>{gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);gl.uniform1f(tLoc,time);gl.drawArrays(gl.POINTS,0,count);requestAnimationFrame(draw)};requestAnimationFrame(draw);
+      }
+      const reset=()=>{stage.classList.remove('ready','finished')};
+      const tick=now=>{if(!started)started=now;const elapsed=now-started;if(elapsed>=500)stage.classList.add('ready');if(elapsed>=duration&&!finished){finished=true;stage.classList.add('finished');cancelAnimationFrame(frame);return}frame=requestAnimationFrame(tick)};
+      const play=()=>{started=0;finished=false;reset();cancelAnimationFrame(frame);frame=requestAnimationFrame(tick)};
+      document.getElementById('replay').addEventListener('click',play);addEventListener('keydown',event=>{if(event.key.toLowerCase()==='r')play()});play();
+    })();
+  </script>
+</body>
+</html>

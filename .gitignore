@@ -51,3 +51,6 @@ cache/
 steam/output/
 exoduser-demo-web.zip
 assets/cutscene/prologue/_p11_candidates/
+
+.env
+.env.*

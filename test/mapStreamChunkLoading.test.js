@@ -62,11 +62,11 @@ test('stream viewport cache is invalidated by viewport origin changes, not only 
   );
   assert.match(
     gameHtml,
-    /const _vpMoved=Math\.abs\(_streamVpWorldX-_drawX\)>T\*3\|\|Math\.abs\(_streamVpWorldY-_drawY\)>T\*3;/,
+    /const _vpMoved=Math\.abs\(_streamVpWorldX-_drawX\)>T\*1\|\|Math\.abs\(_streamVpWorldY-_drawY\)>T\*1;/,
   );
   assert.match(
     gameHtml,
-    /if\(_streamVpDirty\|\|_vpMoved\|\|!_streamVpCvs\)\{/,
+    /if\(_streamVpDirty\|\|_vpMoved\|\|!_streamVpCvs\|\|_useGPU\)\{/,
   );
   assert.doesNotMatch(
     gameHtml,

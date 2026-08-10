@@ -286,3 +286,30 @@ Higgsfield 영상 모델은 Steam 스토어 트레일러 제작 시점에 재검
 FDG / HELL: EXODUSER / (c) 2026 SIM DOJIN
 
 > 2026-07-27 웹 최적화: index 시네마틱 JPG(q88) + 지연 로딩 (문영상 렉 해소). PNG 원본 보존.
+
+## 7. CLICK TO HELL 지옥문 고어 오버레이 (2026-08-10, 유저 지시 "너무 깔끔")
+
+`index.html`의 시네마틱 지옥문 씬(`.cin-gate` > `img/hellgate.png`)은 원본이 은색 판화풍이라 "지옥 입장"에 비해 너무 깔끔했다. 이미지 원본은 그대로 두고 CSS 오버레이 레이어(`.cin-gore`)로 피·지옥불을 덧입혀 오염시킨다. 문 이미지와 동일 transform 컨텍스트 안에 있어 줌 인/아웃·페이드와 함께 움직인다.
+
+| 레이어 | 역할 | 핵심 값 |
+|---|---|---|
+| `.g-grade` | 혈색 컬러그레이드 (은색 제거) | 방사형 crimson `rgba(120,12,0,.32)→(14,0,0,.82)` + 세로 암부, `mix-blend-mode:multiply` |
+| `.g-warm` | 중앙 온기 | `rgba(255,66,12,.22)` 방사형, `overlay` |
+| `.g-blood` | 상단·자물쇠에서 흘러내리는 핏자국 | 인라인 SVG(15줄기, `#3a0300→#7a0d00` 그라데이션), `multiply`, opacity .9 |
+| `.g-seam` | 중앙 이음새 지옥불 (맥동) | `left:52.5%` 방사형 `rgba(255,130,26,.6)`, blur 11px, `screen`, `@keyframes goreSeam` 3.2s |
+| `.g-embers` | 이음새 불티 (맥동) | 3점 방사형, `screen`, 2.4s |
+
+### 7-1. `CLICK TO HELL` 디자인 타이틀 (2026-08-10, 유저 "전자 텍스트 말고 디자인해라")
+
+기존은 `font-family` 미지정으로 본문 시스템 폰트(Noto Sans KR)를 상속받아 밋밋한 "전자 텍스트"였다. 게임 타이틀 공용 폰트인 **Cinzel Decorative**(구글폰트, `@import` 기존 로드)로 인라인 SVG 타이틀을 새로 디자인해 교체(`#cinClickPrompt` 내부). 이미지 API(Higgsfield 크레딧 소진 0.42, Ludo 키 만료)를 쓸 수 없어 SVG로 제작 — 벡터라 해상도 무관·경량·애니메이션 가능하고 로비 타이틀 톤과 통일.
+
+| 요소 | 값 |
+|---|---|
+| 폰트 | `Cinzel Decorative` 900, `letter-spacing 8`, `font-size 96`, viewBox `0 0 900 300` |
+| 채움 | 세로 그라디언트 `#e9ddd0`(강철 하이라이트)→`#c98a4e`→`#a12c14`→`#7a1206`→`#3c0500`(마른피) = 달군 철+피 |
+| 외곽선 | `stroke #1c0400 2.2`, `paint-order:stroke` (단조 철 테두리) |
+| 글로우 | SVG 필터 `chtEmber`(오렌지 `#ff6a12` feDropShadow + 흑색 미세 그림자) + CSS `drop-shadow` 적색 이중, `hellTitlePulse 2.6s` 맥동 |
+| 핏방울 | 글자 아래 5줄기 SVG(`#6e0d02→#280300`), `hellDrip 3.4s` 흘러내림 애니 |
+
+- API 크레딧/키 복구 시 생성 PNG로 교체 가능하나, 현재 SVG 버전이 벡터 이점(선명·경량·애니)으로 우위.
+- `silvertail_wakeup` 등과 무관한 순수 index.html 시네마틱 UI 변경. 게임 수치·공식 영향 없음.

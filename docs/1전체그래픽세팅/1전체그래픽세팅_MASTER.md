@@ -937,23 +937,40 @@ G.cam.y += (targetY - G.cam.y) * camSpd;
   position: fixed; inset: 0; z-index: 40;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
-  background: radial-gradient(ellipse at center, rgba(10,5,15,.92), rgba(2,1,5,.98));
+  background: url('img/cin_remember_wide.png') center/cover no-repeat,
+    radial-gradient(ellipse at center, rgba(10,5,15,.92), rgba(2,1,5,.98));
   opacity: 0; pointer-events: none;
   transition: opacity 2.5s ease-out;
 }
 #death.on { opacity: 1; pointer-events: all; }
 .dt {
-  font-family: 'Noto Sans KR', sans-serif; font-weight: 700;
-  font-size: clamp(1.2rem, 3vw, 2rem);
-  color: rgba(180,140,100,.7);
-  letter-spacing: .5em;
-  text-shadow: 0 0 40px rgba(180,140,100,.2);
+  font-family: var(--font-hell-title); font-weight: 700;
+  font-size: clamp(2rem, 2.9vw, 2.84rem);
+  color: rgba(218,210,193,.94); letter-spacing: .14em;
+  text-shadow: 0 2px 8px rgba(0,0,0,.95), 0 0 18px rgba(126,31,24,.16);
   animation: dp 5s ease-in-out infinite;
 }
+.ds {
+  font-family: var(--font-hell); font-size: clamp(1rem,1.25vw,1.22rem);
+  color: rgba(198,184,158,.82); letter-spacing: .12em;
+  margin-top: 10px; text-shadow: 0 1px 3px rgba(0,0,0,.95);
+}
+#dInfo {
+  font-family: 'Cinzel', var(--font-hell); font-size: clamp(.92rem,1vw,1.12rem);
+  color: rgba(174,151,111,.82); letter-spacing: .13em; margin-top: 18px;
+}
+.retry {
+  margin-top: 28px; padding: 10px 36px; background: rgba(8,6,5,.42);
+  border: 1px solid rgba(141,124,96,.58); color: rgba(218,210,193,.9);
+  font-family: var(--font-hell-title); font-size: 1.05rem; letter-spacing: .14em;
+}
+.retry-lobby { margin-top: 8px; color: rgba(174,151,111,.78); border-color: rgba(101,88,68,.48); font-size: .82rem; }
 @keyframes dp { 0%, 100% { opacity: .3; } 50% { opacity: .8; } }
 ```
 
 사망 텍스트: `"빛이 꺼졌다"` 또는 `"어둠이 삼켰다"`
+
+사망 화면의 제목·부제·결과 수치·행동 버튼은 인게임 HUD와 같은 `--font-hell-title`/`--font-hell`, dirty ivory·aged silver·muted bronze 팔레트를 사용한다. 배경, 사망 리플레이, 펫 초상화/대사, 재시작·로비 이동의 동작은 이 타이포그래피 정리 범위에 포함하지 않는다.
 
 ---
 

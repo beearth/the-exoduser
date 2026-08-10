@@ -44325,3 +44325,50 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - .gitignore
 - docs/HELL_EXODUSER_WORLDVIEW_v2.md
 
+
+## 2026-08-08
+- index.html / video/fdg_intro.mp4: Added the 5-second FDG game-start video intro.
+- docs/3.1 ui hud ???/????_???_???.md: Synced FDG video timing and asset path.
+- game.html: Updated full-rage pet dialogue for the Space rage-skill detonation prompt.
+- docs/2_4 ????/??_????.md: Synced rage_full and rage_full2 dialogue text.
+- test/petRageFullDialogue.test.js: Added full-rage dialogue regression coverage.
+
+- video/fdg_intro.mp4: Replaced 720p playback asset with a 3840x2160 high-bitrate Lanczos upscale; retained video/fdg_intro_720p_original.mp4 as backup.
+- output/fdg_sora_1080p_5s.mp4 / video/fdg_intro.mp4: Generated and deployed the native 1920x1080 Sora Pro 5-second FDG intro; preserved previous 720p and 4K-upscale variants as backups.
+- output/fdg_sora_1080p_4s.mp4 / video/fdg_intro.mp4: Trimmed the 1080p intro to 4 seconds and faded out at 3.35 seconds to remove the late ember/pollen segment.
+- index.html: Matched FDG_DUR to the 4-second final intro asset.
+- output/fdg_sora_1080p_3_5s.mp4 / video/fdg_intro.mp4: Trimmed another 0.5 seconds; final runtime is 3.5 seconds with fade-out from 2.85 seconds.
+- index.html: Matched FDG_DUR to the 3.5-second final intro asset.
+
+- index.html: Character portrait selection now changes the lobby title from the default prompt to the selected character name and job, using the in-game area-title visual treatment.
+- docs/3.1 ui hud ???/?????_????_???.md: Documented the lobby selected-character title data flow and visual rules.
+- index.html: Preserved the selected-character name and job display when the lobby language changes without replacing the display container.
+- docs/3.1 ui hud ???/lobby_full_patch.md: Updated the documented lobby title markup for the two-line character display.
+- index.html: Fixed the lobby language initialization crash that prevented splash-screen click handlers from registering by avoiding the not-yet-initialized DOM helper.
+- test/lobbyCharacterSelectionInfo.test.js: Added regression coverage for safe initial language setup.
+- index.html: Character slot selection now displays the matching existing warrior or blade-dancer selection portrait in the lobby left panel.
+- docs/3.1 ui hud ???/?????_????_???.md: Synced the selected-character portrait preview source and layer behavior.
+- test/lobbyCharacterSelectionInfo.test.js: Added selected portrait preview coverage.
+- video/fdg_intro.mp4: Trimmed the final 0.2 seconds; deployment runtime is now 3.3 seconds. Preserved the prior 3.5-second file as video/fdg_intro_3_5s_before_final_trim.mp4.
+- index.html: Matched FDG_DUR to the 3.3-second final video runtime.
+- docs/3.1 ui hud ???/????_???_???.md: Synced FDG intro timing and fade window.
+- test/fdgIntroDuration.test.js: Updated the startup intro duration regression check.
+- index.html: Replaced the lobby's selected-character portrait overlay with the existing full-body character-selection idle video, covering the old fixed giant-warrior background on selection.
+- docs/3.1 ui hud ???/?????_????_???.md: Synced full-screen selected-character video behavior.
+- test/lobbyCharacterSelectionInfo.test.js: Updated coverage for the full-body character-selection video layer.
+- video/fdg_intro.mp4: Trimmed a further final 0.1 seconds to remove the awkward falling petal/ember tail; deployment runtime is now 3.2 seconds. Preserved the prior 3.3-second file as video/fdg_intro_3_3s_before_final_trim.mp4.
+- index.html: Matched FDG_DUR to the 3.2-second final video runtime.
+- docs/3.1 ui hud ???/????_???_???.md: Synced FDG intro timing and final-tail removal note.
+- test/fdgIntroDuration.test.js: Updated the startup intro duration regression check to 3.2 seconds.
+- game.html: Changed the standard holyDome visual from yellow to green, with a green-tinted circle, subtle double ripple, and nine low-density rising healing-mist particles. Gameplay values are unchanged.
+- docs/5.1??????/VFX_?????.md: Documented holyDome green color, ripple, and mist limits.
+- docs/2_1 ????+?????+??/2_1 ????+?????.md: Synced holyDome visual specification without changing skill values.
+- test/holyDomeGreenVisual.test.js: Added green healing-domain visual regression coverage.
+
+- game.html: Retuned holyDome visual effects to tree-green (#3fa85b), changed mist highlights to #8bd48c, and reduced healing ripple strokes to 1px.
+- docs: Synced the holyDome tree-green palette and thin-ripple visual specification.
+- test/holyDomeGreenVisual.test.js: Updated the healing-domain visual regression target for tree-green thin ripples.
+
+- game.html: Corrected holyDome from teal-leaning green to pure healing green (#35b84b) with a light-green mist highlight (#8ae58b).
+- docs: Synced the pure-green holyDome visual palette.
+- test/holyDomeGreenVisual.test.js: Updated the pure-green visual regression target.

@@ -1,0 +1,135 @@
+{
+  "warrior": {
+    "1": {
+      "facing": -0.6498704494119476,
+      "facingDir": "ne",
+      "playerState": "idle",
+      "charIdx": 0,
+      "mouseFacing": -0.6498704494119476,
+      "gamepad": false
+    },
+    "3": {
+      "facing": 0,
+      "facingDir": "e",
+      "playerState": "idle",
+      "charIdx": 0,
+      "mouseFacing": 0,
+      "gamepad": false
+    },
+    "5": {
+      "facing": 0.673878407417478,
+      "facingDir": "se",
+      "playerState": "idle",
+      "charIdx": 0,
+      "mouseFacing": 0.673878407417478,
+      "gamepad": false
+    },
+    "6": {
+      "facing": 1.6191520393597185,
+      "facingDir": "s",
+      "playerState": "idle",
+      "charIdx": 0,
+      "mouseFacing": 1.6191520393597185,
+      "gamepad": false
+    },
+    "7": {
+      "facing": 2.5135135424920048,
+      "facingDir": "sw",
+      "playerState": "idle",
+      "charIdx": 0,
+      "mouseFacing": 2.5135135424920048,
+      "gamepad": false
+    },
+    "9": {
+      "facing": 3.141592653589793,
+      "facingDir": "w",
+      "playerState": "idle",
+      "charIdx": 0,
+      "mouseFacing": 3.141592653589793,
+      "gamepad": false
+    },
+    "11": {
+      "facing": -2.513658161052736,
+      "facingDir": "nw",
+      "playerState": "idle",
+      "charIdx": 0,
+      "mouseFacing": -2.513658161052736,
+      "gamepad": false
+    },
+    "12": {
+      "facing": -1.62187124325953,
+      "facingDir": "n",
+      "playerState": "idle",
+      "charIdx": 0,
+      "mouseFacing": -1.62187124325953,
+      "gamepad": false
+    }
+  },
+  "silvertail": {
+    "1": {
+      "facing": -0.6743681250485111,
+      "facingDir": "ne",
+      "playerState": "idle",
+      "charIdx": 1,
+      "mouseFacing": -0.6743681250485111,
+      "gamepad": false
+    },
+    "3": {
+      "facing": 0,
+      "facingDir": "e",
+      "playerState": "idle",
+      "charIdx": 1,
+      "mouseFacing": 0,
+      "gamepad": false
+    },
+    "5": {
+      "facing": 0.6735165807679625,
+      "facingDir": "se",
+      "playerState": "idle",
+      "charIdx": 1,
+      "mouseFacing": 0.6735165807679625,
+      "gamepad": false
+    },
+    "6": {
+      "facing": 1.6224501299442782,
+      "facingDir": "s",
+      "playerState": "idle",
+      "charIdx": 1,
+      "mouseFacing": 1.6224501299442782,
+      "gamepad": false
+    },
+    "7": {
+      "facing": 2.514898628092647,
+      "facingDir": "sw",
+      "playerState": "idle",
+      "charIdx": 1,
+      "mouseFacing": 2.514898628092647,
+      "gamepad": false
+    },
+    "9": {
+      "facing": 3.141592653589793,
+      "facingDir": "w",
+      "playerState": "idle",
+      "charIdx": 1,
+      "mouseFacing": 3.141592653589793,
+      "gamepad": false
+    },
+    "11": {
+      "facing": -2.514898628092647,
+      "facingDir": "nw",
+      "playerState": "idle",
+      "charIdx": 1,
+      "mouseFacing": -2.514898628092647,
+      "gamepad": false
+    },
+    "12": {
+      "facing": -1.6224501299442782,
+      "facingDir": "n",
+      "playerState": "idle",
+      "charIdx": 1,
+      "mouseFacing": -1.6224501299442782,
+      "gamepad": false
+    }
+  },
+  "consoleErrors": []
+}

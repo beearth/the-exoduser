@@ -733,6 +733,82 @@ const HUD_ICON = {
 - 기존 이벤트 리스너(qs0~6 click/contextmenu, qsK/G/TAB/ESC click) 유지 필수
 - `qsFlash`, `swap-sel`, `sk-drop-hover` 클래스 유지 필수 (드래그앤드롭 시스템)
 
+---
+
+## 2026-08-08 — 인게임 시네마틱 HUD 정리 완료
+
+> 범위: `game.html`의 **플레이 중 HUD 표현만** 변경. 맵·카메라·캐릭터·몬스터·전투·스테이지/결과 로직은 변경하지 않는다.
+
+### 항상 표시하는 정보
+
+| 위치 | DOM/표현 | 표시 규칙 | 갱신 원본 | 적용 위치 |
+|---|---|---|---|---|
+| 상단 중앙 2행 | `#spCnt` → `✦ {SP}` | `SP` 라벨 제거. AP가 있을 때만 `+{AP}` 보조 수치. `#stageClock` 아래 `+32px`에 중앙 정렬해 좌측 미니맵을 비움. 테두리·배경·구분선 없음 | `P.sp`, `P.ap` | `updateHUD(true)` |
+| 상단 중앙 2행 | `#cpHud` → `◇ {CP}` | 지옥/층 접두어 및 `CP` 라벨 제거. SP·콤보와 동일한 **텍스트 전용** 보조 정보 묶음 | `calcCP().total` | `updateHUD(true)` |
+| 상단 중앙 | `#stageTimerHud` → `MM:SS` | `TIME`, `CLEAR`, `TOTAL`, BEST 표기를 플레이 중 숨김 | `G.stageTime / 60` | `updateHUD(true)` |
+| 상단 중앙 | `#stageProgressFill` | 숫자 없이 2px 진행선만 표시 | `G._stageKills / G._totalSpawned × 100` | `updateHUD(true)`, width `.6s ease-out` |
+| 우측 상단 | `#lvLbl` → Roman numeral | 현대식 `LV` 라벨/대형 숫자 대신 I~MMMCMXCIX. 프레임 없이 단독 표기 | `P.lv` | `updateHUD(true)`, `_hudRoman()` |
+| 우측 상단 | `#expTxt` → `{현재 EXP} / {필요 EXP}` | 경험치 바 없이 텍스트만 표시 | `P.exp`, `P.maxExp` | `updateHUD()` |
+| 우측 상단 | `#killCnt`, `#matCnt`, `#expBar` | 플레이 HUD에서는 숨김. 처치·악의·게이지 UI를 노출하지 않음 | `G.kills`, `G.mats`, `P.exp` | 기존 갱신/DOM은 호환을 위해 보존 |
+
+### 지역 진입 연출
+
+| 항목 | 값 | 구현 |
+|---|---|---|
+| 표시 내용 | `제{stage+1}구역 · {STG.kr}` / `THE {STG.n}` | `#areaTitleKr`, `#areaTitleEn` |
+| 지속시간 | **3.1초** (진입/유지/페이드 포함) | `.show` + `hudAreaTitle` keyframe |
+| 재생 조건 | `G.stage`가 직전 HUD 기록 `_hudAreaStage`와 달라질 때 1회 | `_showHudAreaTitle(G.stage, STG[G.stage])` |
+| 화면 영향 | 중앙 상단 일시 표시 후 opacity 0. 상시 HUD는 타이머 1행·보조 정보 2행의 상단 중앙 및 우측 목표 영역에만 유지하며, 좌측 상단은 미니맵 전용으로 비움 | `#areaTitle` |
+
+### 시각 규격과 보존 항목
+
+| 항목 | 규격 | 의도 |
+|---|---|---|
+| 프레임 | 상단 중앙 자원과 우측 레벨/경험치는 프레임·배경·구분선 없이 텍스트만 사용 | 플레이 화면을 완전히 비우고 정보는 필요한 수치만 읽게 함 |
+| 타이포그래피 | 지역명 `--font-hell-title`, 영문/수치 `Cinzel`/`--font-hell` | 현대식 sans HUD 인상을 축소 |
+| 색상 | dirty ivory, aged silver, muted bronze만 사용 | 밝은 cyan/네온/gold 패널을 추가하지 않음 |
+| 결과 화면 | 기존 `stageClear` 및 종료 결과의 TIME/TOTAL/CLEAR/KILL 상세 통계는 보존 | 상세 분석은 플레이 중이 아닌 결과 시점에만 노출 |
+| 안전성 | 기존 ID(`spCnt`, `cpHud`, `killCnt`, `matCnt`, `lvLbl`, `expF`)와 클릭 이벤트 유지 | 능력치 패널, 자원/경험치 갱신, 게임 플레이 로직 보존 |
+
+---
+
+## 2026-08-09 — 하단 오브 자원 링 (현행 구현)
+
+> `game.html`의 `updateHUD()` 빠른 경로가 오브 수위와 링을 함께 갱신한다. 좌측의 파란 링은 방어용 에너지 쉴드, 우측의 노란 링은 **Shift 사슬기동 게이지**다. 사슬기동은 기존 `_harpGauge`를 소비·재생하므로, ST(`P.st`)와 동일시하지 않는다.
+
+| id / DOM | 한글명 | 위치·색상 | 갱신 원본·공식 | 표시 규칙 | 적용 위치 |
+|---|---|---|---|---|---|
+| `shieldRing` | 에너지 쉴드 링 | 좌측 HP 오브 외곽, 파랑 `#3399ff` | `shPct = clamp(P.shield / P.mshield × 100)` | `P.mshield > 0`일 때만 `conic-gradient`로 잔량을 표시. 0이면 링을 숨긴다. | `#globeHP > .globe-ring-wrap`, `updateHUD()` |
+| `mobilityRing` + `mobilityRingTicks` | 공용 기동게이지 링 | 우측 MP/SP 오브 외곽, 노랑 `#ffcc33` / `rgba(255,204,51,.95)` | 채움: `mobilityPct = clamp(_harpGauge / _HARP_GAUGE_MAX, 0, 1) × 100`; 구분선: `shiftCellDeg = 360 × _HARP_GAUGE_COST[1] / _HARP_GAUGE_MAX` | Shift 사슬기동과 방향키 더블탭 전격이동이 같은 게이지를 소비한다. `mobilityRingTicks`가 1단 탭 코스트(45)마다 간격을 내며, **한 칸은 최소 사슬 이동거리 또는 전격이동 1회**를 뜻한다. 기본 5칸(225)이며, 게이지가 0이면 채움 링을 숨기고 빈 트랙과 구분선은 유지한다. | `#globeMP > .globe-ring-wrap`, `updateHUD()` |
+| `stFill`, `stCur`, `stMax` | SP 수치·수위 | 우측 오브의 오른쪽 반, 초록 | `P.st / P.mst` | 기존 수위·숫자 표기는 유지한다. 노란 사슬기동 링은 ST와 독립된 기존 `_harpGauge` 보조표시다. | `#globeMP`, `updateHUD()` |
+
+- 공통 링은 오브의 붉은 프레임 가장자리 안쪽(`inset: 11px`)에 두고, 글라스 레이어 위(`z-index: 33`)에 렌더한다.
+- 노란 링은 새 자원을 만들지 않고, 기존 `_harpGauge`를 즉시 읽도록 한 HUD 표현이다. Shift 사슬기동과 전격이동(방향키 더블탭)이 이를 공용으로 사용한다. SP 수위는 초록 오브 수위와 숫자로 별도 확인한다.
+- 노란 링의 구분선은 장식용 균등 점선이 아니다. 최대치가 변해도 최소 Shift 탭 1회분인 `_HARP_GAUGE_COST[1]`(45)마다 배치되어, 각 칸이 최소 사슬 이동거리 1회를 보장한다. 구분 간격은 `3deg`, 불투명도는 `0.9`로 두어 실제 플레이 해상도에서도 한 칸의 경계가 보인다.
+
+---
+
+## 2026-08-08 — 게임 시작 가이드 시네마틱 정리 완료
+
+> 범위: 첫 스테이지 인트로의 대사와 3단계 조작 가이드. 초상화/캐릭터가 놓이는 좌측 영역을 비우고, 게임 플레이·난이도 기본값·입력 진행 규칙은 변경하지 않는다. **모바일 전용 레이아웃은 제공하지 않는다.**
+
+| 화면 | 요소 | 위치/형태 | 보존한 동작 |
+|---|---|---|---|
+| 시작 대사 | `#introTextPanel` | 화면 폭 **50%의 실제 중앙**(컨테이너 좌측 padding 0), 최대 480px, 외곽선 없는 약한 좌→우 음영과 짧은 하단 룬선 | `_INTRO_LINES` 4개를 기존대로 각 1.5초 표시 후 다음 문장으로 진행 |
+| 시작 대사 | `#introTextKr`, `#introTextEn` | dirty ivory 고딕 한글 + aged silver Cinzel 영문 | `_showIntroLine()`이 각 리프 노드에 `textContent`로 갱신. 부모 HTML을 교체하지 않음 |
+| 조작 가이드 | `#introKeys > .intro-key-panel` | 화면 폭 **50%의 실제 중앙**(컨테이너 좌측 padding 0), 폭 최대 **650px**, 외곽선 없는 약한 좌→우 음영 | 공격 → 스킬 → 생존의 3단계, 클릭/키보드/게임패드 다음 단계 및 350ms 전환 유지 |
+| 조작 가이드 글자 | `#ikTitle`, `#ikBody`, `#ikHint` | 제목 `2rem–2.84rem`, 본문 `1.45rem–1.8rem`, 힌트 `1rem` | 모든 안내 문구와 키 입력 표기를 기존 내용 그대로 노출 |
+| 커튼 | `#introCurtainTop`, `#introCurtainBot` | 검은 철 그라데이션과 1px aged-silver 봉합선 | 기존 상·하 열림 0.8초와 몬스터 스폰 시점 유지 |
+| 모바일 | — | 별도 media query 없음 | 현재 프로젝트는 데스크톱 전용 |
+
+### 시각 의도
+
+- 시작 가이드는 관리형 팝업이 아니라, 짧은 **지옥의 교리문**처럼 한 문장씩 읽히도록 설계한다.
+- 울트라와이드에서도 대사·조작 가이드·난이도 선택의 중심은 뷰포트 정확히 50%에 고정한다. 컨테이너에 좌측 padding을 추가해 flex 중심을 밀지 않는다.
+- 사각 패널 테두리·좌측 세로선·`GUIDE` 장식·불투명 카드 배경은 사용하지 않는다. 약한 좌→우 음영과 대사의 짧은 하단 룬선만 남긴다.
+- 가이드는 실제 플레이 직전의 필수 안내이므로 기존 대비 약 2배의 제목·본문·힌트 크기로 읽히게 하되, 화면 중앙의 전투/캐릭터 영역은 계속 비운다.
+- 사용 색상은 dirty ivory / aged silver / muted bronze만 사용하며, 큰 네온·밝은 버튼·모바일형 카드 장식은 추가하지 않는다.
+
 ## 검증 방법 (각 WORK 완료 후)
 
 ```bash
@@ -752,3 +828,37 @@ grep "hud-res" game.html      # 존재
 # WORK 4
 grep "hud.*::before" game.html  # 2개
 ```
+
+---
+
+## 2026-08-10 시네마틱 HUD 2차 정비 (Dark Industrial / Black Iron)
+
+> 목표: "HUD가 게임 위에 얹힌 정보가 아니라 세계의 일부처럼" — 중앙 비우기, 시스템 텍스트 최소화, 저채도/저투명 융합.
+> 게임플레이·맵·캐릭터·카메라 등 로직 무변경. HUD 표현만 수정.
+
+### 변경 요약
+
+| 요소 | 변경 전 | 변경 후 |
+|---|---|---|
+| ✦SP/◇CP 자원 | `#hudTop` 상단 중앙 (시계 아래 나열) | 신설 `#hudCorner` 좌측 상단(미니맵 아래 y≈178px), Cinzel .62rem, opacity **.48** |
+| 우측 목표 프레임 `.objective-frame` | `display:none` (킬/악의 숨김) | **활성화** — 얇은 철제 프레임(1px rgba(88,72,54,.42), 반투명 흑철 배경) 안에 ☠ 킬 / ◆ 악의 |
+| `#killCnt` | JS가 `☠ 0 / 0` 기록 (아이콘 span과 중복) | 숫자만 `0 / 0` (아이콘은 row의 span이 담당) |
+| `#expF` 경험치 라인 | 밝은 골드 그라디언트 | 뮤트 브론즈 rgba(122,101,72,.55)→rgba(196,171,124,.85), 2px 룬 라인 |
+| CP 숫자 | 원시값 그대로 | `1,584` 천단위 구분, 10만 이상은 `1.06M` 압축 |
+| LV 로마숫자 | 정적 | 레벨업 순간 `hud-pulse` 반응 추가 |
+| COMBO HUD | 네온 오렌지 #ff6600 + 글로우, 최대 1.2rem | 뮤트 엠버 rgba(201,168,110)→고콤보 rgba(196,74,48), 글로우 축소, 최대 1.1rem |
+| MAX COMBO 기록 | 콤보 발생 후 **상시 표시** | 콤보 진행 중(combo≥2)에만 표시 (결과 화면에서 상세) |
+| DPS HUD | 네온 레드 #ff4466, 1.4~1.8rem 900weight | 뮤트 브론즈/엠버, 0.92~1.05rem 600weight |
+| MAX HIT HUD | 네온 레드 계열 | dirty ivory→엠버 티어 (적색은 최상위 티어만) |
+| HUD 토글 배열 12곳 | `['hud','hudTop','mmWrap',…]` | `'hudCorner'` 추가 |
+
+### 유지된 기존 시네마틱 요소 (2026-06 1차 정비분)
+- `#areaTitle` 지역 진입 타이틀: `제N구역 · 이름` + `THE ~` 영문 각인체, 3.1s fade in/out ✓
+- `#stageClock` 상단 중앙 `02:19` (TIME 텍스트 없음) + 2px 진행 룬 라인 (숫자 % 없음), opacity .57 ✓
+- TIME/CLEAR/TOTAL 나열 HUD는 1차 정비에서 이미 제거 — 구버전(_deployed_game.html 6/16)에만 존재. **배포 동기화 필요.**
+- 우측 상단 `#mmLvl` opacity .68, 로마숫자 LV ✓
+
+### 색상 규칙 (준수)
+dirty ivory `rgba(214,205,187)` / aged silver `rgba(196,187,168)` / dark iron `rgba(88,72,54)` / muted bronze `rgba(196,171,124)` — 순백·네온·시안 금지, 적색은 위험/최상위 티어 한정.
+
+### 신규 표시 텍스트: 없음 (아이콘+숫자만) → 번역대상_전체목록.md 변경 불필요.

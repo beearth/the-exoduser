@@ -89,7 +89,11 @@
 <!-- 좌측: 배경 + 안내 -->
 <div class="lobby-left">
   <div class="lobby-bg-img" id="lobbyBgImg"></div>
-  <div class="char-disp-empty" id="charDispEmpty">당신은 누구인가</div>
+  <video class="lobby-char-preview" id="lobbyCharPreview" muted loop playsinline></video>
+  <div class="char-disp-empty" id="charDispEmpty">
+    <div class="char-disp-title" id="charDispTitle">당신은 누구인가</div>
+    <div class="char-disp-sub" id="charDispSub"></div>
+  </div>
 </div>
 
 <!-- 우측: 슬롯 + 버튼 -->
