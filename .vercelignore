@@ -59,3 +59,11 @@ img/lording/ig_*
 img/lording/ChatGPT*
 img/lording/2026년*
 assets/cutscene/prologue/_p11_candidates/
+
+# 개발용 스냅샷/디버그 파일 — 런타임 참조 없음, 배포 제외 (2026-08-10)
+_deployed_game.html
+_dep_norm.html
+_disk_norm.html
+_main.js
+_check.js
+_tmp_check.js
