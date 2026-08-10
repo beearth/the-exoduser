@@ -12242,19 +12242,85 @@ function rollAffixes(grade,slot,brType){
       r-=a.weight;if(r<=0){
         // 티어 상한: 등급 + 200렙 보너스, 어픽스별 cap
         const maxTier=Math.min(a.tiers.length-1,_baseTier+_lvBonus);
-        let val,tierIdx;
-        if(a.tierW){
-          let _twSum=0;for(let _ti=0;_ti<=maxTier;_ti++)_twSum+=(a.tierW[_ti]||1);
-          let _tr=Math.random()*_twSum;tierIdx=0;
-          for(let _ti=0;_ti<=maxTier;_ti++){_tr-=(a.tierW[_ti]||1);if(_tr<=0){tierIdx=_ti;break}}
-          val=a.tiers[tierIdx];
-        }else{
-          const lo=a.tiers[0],hi=a.tiers[maxTier];
-          const _rr=a.skewRoll?Math.pow(Math.random(),a.skewRoll):Math.random();
-          val=a.unit==='cnt'||a.unit==='val'?lo+~~(_rr*(hi-lo+1)):+(lo+(hi-lo)*_rr).toFixed(4);
-          tierIdx=val>=a.tiers[Math.min(2,maxTier)]?maxTier:val>=a.tiers[Math.min(1,maxTier)]?Math.min(1,maxTier):0;
+        const _tv=_affixTierRoll(a,maxTier); // [PHASE 2] 수치품질 로직 공통화 — 동작 불변(레거시·레이어 공용)
+        result.push({id:a.id,tier:_tv.tier,value:_tv.value});usedG[a.group]=1;break}
+    }
+  }
+  return result;
+}
+
+// ═══ [AFFIX PHASE 2] Layer-aware Affix Roll — 신규 세대(item.layerLv) 전용 병행 경로 (2026-08-11) ═══
+// 레거시 rollAffixes(type 접두/접미 · maxCount[grade])는 그대로 보존. 본 경로는 feature flag로 완전 차단.
+// 구조: affix "선택"은 layer/sub(affixLayer), 수치 "품질"은 기존 affixRollTier(tiers/tierW/skewRoll/lv) — 두 축 분리(§8).
+const ITEM_LAYER_ROLL_V2=false; // 기본 false: 기존 생성 100% 무변경. true여도 layerLv 명시 아이템만 사용.
+
+// 수치품질 롤 — 레거시 인라인 로직과 완전 동일(§9 공통 helper). Math.random 호출 순서 보존 → 레거시 결과 불변.
+function _affixTierRoll(a,maxTier){
+  let val,tierIdx;
+  if(a.tierW){
+    let _twSum=0;for(let _ti=0;_ti<=maxTier;_ti++)_twSum+=(a.tierW[_ti]||1);
+    let _tr=Math.random()*_twSum;tierIdx=0;
+    for(let _ti=0;_ti<=maxTier;_ti++){_tr-=(a.tierW[_ti]||1);if(_tr<=0){tierIdx=_ti;break}}
+    val=a.tiers[tierIdx];
+  }else{
+    const lo=a.tiers[0],hi=a.tiers[maxTier];
+    const _rr=a.skewRoll?Math.pow(Math.random(),a.skewRoll):Math.random();
+    val=a.unit==='cnt'||a.unit==='val'?lo+~~(_rr*(hi-lo+1)):+(lo+(hi-lo)*_rr).toFixed(4);
+    tierIdx=val>=a.tiers[Math.min(2,maxTier)]?maxTier:val>=a.tiers[Math.min(1,maxTier)]?Math.min(1,maxTier):0;
+  }
+  return {tier:tierIdx,value:val};
+}
+
+// layer/sub별 후보 인덱스 캐시 — 레거시와 동일 필터(slots·brType·DEMO banned) 후 layer→{A,B}로 사전 분류(§19).
+// FLEX는 A·B 양쪽 후보에 포함. LEGACY(layer 0)는 레이어 롤 대상 아님(제외).
+function _affixLayerCandidates(aSlot,brType,layer,sub){
+  if(!_affixLayerCandidates._c)_affixLayerCandidates._c={};
+  const ck=aSlot+(brType?'_'+brType:'');
+  let idx=_affixLayerCandidates._c[ck];
+  if(!idx){
+    idx={};
+    for(let i=0;i<AFFIX_POOL.length;i++){
+      const a=AFFIX_POOL[i];
+      if(a.slots.indexOf(aSlot)<0)continue;
+      if(a.brType&&a.brType!==brType)continue;
+      if(_DEMO_MODE&&_DEMO_AFFIX_BANNED.has(a.id))continue;
+      if(!(a.layer>=1))continue; // LEGACY(0)/무태깅 제외
+      if(!idx[a.layer])idx[a.layer]={A:[],B:[]};
+      if(a.sub==='FLEX'){idx[a.layer].A.push(a);idx[a.layer].B.push(a);}
+      else if(a.sub==='A')idx[a.layer].A.push(a);
+      else if(a.sub==='B')idx[a.layer].B.push(a);
+    }
+    _affixLayerCandidates._c[ck]=idx;
+  }
+  const Lo=idx[layer];if(!Lo)return [];
+  return Lo[sub]||[];
+}
+
+// 신규 Layer Roll — L1~LN × {A,B} 각 최대 1개(층당 최대 2). grade는 수치품질(baseTier/lvBonus)에만 관여, 개수는 layerLv×2.
+// 후보 0/부족/group·id 충돌 시 안전 skip(무한 재롤 없음). L9 소수·L10 0 Pool도 자연 skip.
+function rollAffixesLayered(grade,slot,brType,layerLv){
+  const aSlot=_AFSLOT[slot];if(!aSlot)return[];
+  const N=Math.max(1,Math.min(10,~~layerLv));
+  const _baseTier=grade>=4?2:grade>=3?1:0;
+  const _lvBonus=~~((P?P.lv:1)/200);
+  const result=[];const usedG={},usedId={};
+  for(let L=1;L<=N;L++){
+    for(let _si=0;_si<2;_si++){
+      const sub=_si===0?'A':'B';
+      const cand=_affixLayerCandidates(aSlot,brType,L,sub);
+      if(!cand.length)continue; // 빈 Pool → skip
+      let tw=0;for(let j=0;j<cand.length;j++){const a=cand[j];if(usedG[a.group]||usedId[a.id]||a.tiers[0]==null)continue;tw+=a.weight}
+      if(tw<=0)continue; // 유효 후보 없음 → skip
+      let r=Math.random()*tw;
+      for(let j=0;j<cand.length;j++){
+        const a=cand[j];if(usedG[a.group]||usedId[a.id]||a.tiers[0]==null)continue;
+        r-=a.weight;if(r<=0){
+          const maxTier=Math.min(a.tiers.length-1,_baseTier+_lvBonus);
+          const _tv=_affixTierRoll(a,maxTier);
+          result.push({id:a.id,tier:_tv.tier,value:_tv.value});
+          usedG[a.group]=1;usedId[a.id]=1;break;
         }
-        result.push({id:a.id,tier:tierIdx,value:val});usedG[a.group]=1;break}
+      }
     }
   }
   return result;
@@ -12712,7 +12778,8 @@ function mkItem(slot,tier,el,rarity,wtype,layerLv){
     item.name=_brNames[item.brType][el]?_brNames[item.brType][el][Math.min(tier,4)]:(item.brType==='demon'?'악마의 팔찌':'생명의 팔찌');
   }
   // ── 어픽스 시스템: 등급별 접두/접미 롤링 ──
-  item.affixes=rollAffixes(rarity,slot,item.brType);
+  // [PHASE 2] layerLv 명시 + flag ON → Layer Roll(L1~LN×A/B). 그 외 100% 레거시 경로.
+  item.affixes=(ITEM_LAYER_ROLL_V2&&layerLv>=1)?rollAffixesLayered(rarity,slot,item.brType,layerLv):rollAffixes(rarity,slot,item.brType);
   // ── 임플리싯 (슬롯 고유 스탯 1개) ──
   const _implKey=slot==='bracelet'?'bracelet_'+item.brType:slot;
   const _impl=IMPLICIT_TABLE[_implKey];
