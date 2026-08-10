@@ -287,29 +287,37 @@ FDG / HELL: EXODUSER / (c) 2026 SIM DOJIN
 
 > 2026-07-27 웹 최적화: index 시네마틱 JPG(q88) + 지연 로딩 (문영상 렉 해소). PNG 원본 보존.
 
-## 7. CLICK TO HELL 지옥문 고어 오버레이 (2026-08-10, 유저 지시 "너무 깔끔")
+## 7. 진입 화면 ENTER 버튼 (2026-08-10)
 
-`index.html`의 시네마틱 지옥문 씬(`.cin-gate` > `img/hellgate.png`)은 원본이 은색 판화풍이라 "지옥 입장"에 비해 너무 깔끔했다. 이미지 원본은 그대로 두고 CSS 오버레이 레이어(`.cin-gore`)로 피·지옥불을 덧입혀 오염시킨다. 문 이미지와 동일 transform 컨텍스트 안에 있어 줌 인/아웃·페이드와 함께 움직인다.
+유저 피드백 반복: ①"너무 깔끔" → ②"디자인, GPT API로" → ③"가독성" → ④"촌스럽다(피 메탈로고)" → ⑤"지옥 느낌 안 남 + 배경 짜침" → ⑥"CLICK TO HELL은 콩글리시" → ⑦"글씨만"(배경 X) → ⑧"얼룩 심하다" → ⑨"안 보인다"(→OPEN THE HELLGATE) → ⑩"EXODUSER 엠블럼으로, 아래 깔끔한 ENTER 버튼만, 안개처럼" → **최종: 큰 타이틀/엠블럼 폐기, 깔끔한 ENTER 버튼 하나**.
 
-| 레이어 | 역할 | 핵심 값 |
-|---|---|---|
-| `.g-grade` | 혈색 컬러그레이드 (은색 제거) | 방사형 crimson `rgba(120,12,0,.32)→(14,0,0,.82)` + 세로 암부, `mix-blend-mode:multiply` |
-| `.g-warm` | 중앙 온기 | `rgba(255,66,12,.22)` 방사형, `overlay` |
-| `.g-blood` | 상단·자물쇠에서 흘러내리는 핏자국 | 인라인 SVG(15줄기, `#3a0300→#7a0d00` 그라데이션), `multiply`, opacity .9 |
-| `.g-seam` | 중앙 이음새 지옥불 (맥동) | `left:52.5%` 방사형 `rgba(255,130,26,.6)`, blur 11px, `screen`, `@keyframes goreSeam` 3.2s |
-| `.g-embers` | 이음새 불티 (맥동) | 3점 방사형, `screen`, 2.4s |
+### 최종 결론 (중요)
 
-### 7-1. `CLICK TO HELL` 디자인 타이틀 (2026-08-10, 유저 "전자 텍스트 말고 디자인해라")
+**배경/문은 절대 건드리지 않는다. 진입 화면엔 문 중앙 하단에 깔끔한 ENTER 버튼 하나뿐.** 버튼은 인트로 비디오(`video/intro.mp4`, 닫힌 문 첫 프레임) 위 `#cinClickPrompt > .cin-hell-frame > .cin-enter-btn`. 클릭 시 `.cin-hell-frame.dissolve`로 안개처럼 흩어진 뒤 `#cinClickPrompt` `display:none` → 문 열림 영상 재생.
 
-기존은 `font-family` 미지정으로 본문 시스템 폰트(Noto Sans KR)를 상속받아 밋밋한 "전자 텍스트"였다. 게임 타이틀 공용 폰트인 **Cinzel Decorative**(구글폰트, `@import` 기존 로드)로 인라인 SVG 타이틀을 새로 디자인해 교체(`#cinClickPrompt` 내부). 이미지 API(Higgsfield 크레딧 소진 0.42, Ludo 키 만료)를 쓸 수 없어 SVG로 제작 — 벡터라 해상도 무관·경량·애니메이션 가능하고 로비 타이틀 톤과 통일.
+- **ENTER 버튼**: `.cin-enter-btn` — 얇은 골드 테두리(`1px rgba(206,166,86,.6)`) + 반투명 다크 필 + 골드 그라디언트 텍스트(`Cinzel`), `border-radius:5px`, `cinEnterPulse 2.8s`(테두리 글로우 은은한 맥동). 문틈 정렬 `left:51.7%`, `top:74%`(문 중앙 자물쇠 아래). 비율 무관 `.cin-hell-frame`(비디오 contain 박스 복제) 기준.
+- **라벨**: "들어가기/입장" = 타이틀 화면 문맥에선 **ENTER**가 표준 영어. (Enter키+입장 동시 의미)
+- **안개 디졸브**: `.dissolve` 시 `opacity 0`+`blur 18px`+`translateY(-66%) scale(1.06)` 1.1~1.2s.
+- **폐기된 시도**: ⓐ OPEN THE HELLGATE 골드 타이틀(`open_final.png`, 자산은 보존) — 유저가 엠블럼/엔터버튼으로 방향 전환. ⓑ EXODUSER 엠블럼(`emblem_cut.png`) 문 위 오버레이 — 복잡한 문 아트와 충돌+거의 안 보임, 레퍼 자체가 "ICON & LAUNCHER CONCEPT"(런처/앱아이콘용). ⓒ `.cin-gore` 고어 오버레이, `.cin-hell-atmo` 지옥 분위기 레이어 — "추잡/짜침"으로 거부. 모두 미사용(일부 CSS orphan, 렌더 영향 없음).
+
+### (히스토리) 폐기된 OPEN THE HELLGATE 타이틀 아트 (`.cin-hell-title`)
+
+우아한 골드 각인 로고. **피 뚝뚝 메탈밴드 로고(촌스러움) 폐기** → Elden Ring/Diablo IV 톤의 절제된 골드 세리프로 전환.
 
 | 요소 | 값 |
 |---|---|
-| 폰트 | `Cinzel Decorative` 900, `letter-spacing 8`, `font-size 96`, viewBox `0 0 900 300` |
-| 채움 | 세로 그라디언트 `#e9ddd0`(강철 하이라이트)→`#c98a4e`→`#a12c14`→`#7a1206`→`#3c0500`(마른피) = 달군 철+피 |
-| 외곽선 | `stroke #1c0400 2.2`, `paint-order:stroke` (단조 철 테두리) |
-| 글로우 | SVG 필터 `chtEmber`(오렌지 `#ff6a12` feDropShadow + 흑색 미세 그림자) + CSS `drop-shadow` 적색 이중, `hellTitlePulse 2.6s` 맥동 |
-| 핏방울 | 글자 아래 5줄기 SVG(`#6e0d02→#280300`), `hellDrip 3.4s` 흘러내림 애니 |
+| 아트 | "OPEN THE HELLGATE" 2줄 락업(OPEN THE 소·화살표 + HELLGATE 대·필리그리), 낡은 골드+흑철 각인 세리프. `img/click_to_hell.png` |
+| 생성 | `gpt-image-1.5`, `quality:high`, `size:1536x1024`, n=3 중 `open_1`(2줄 락업, 철자 정확) 채택 |
+| 배경 제거 | **휘도 기반 알파**(`a = clamp((max(RGB)-26)*1.9)`) — 검은 픽셀 0, 순수 골드만. (1차 고주파 매트는 다크 후광=얼룩이라 폐기) |
+| 키라인(가독성) | 알파 `MaxFilter(13)` 팽창 + blur 1 → 다크(`rgba(12,7,4)`) 링을 글자 뒤 합성 = **얇은 다크 외곽선 구워넣음**. 소프트 구름 없이 crisp 대비. `open_final.png` 1251×941 RGBA |
+| 합성 | 노멀, `drop-shadow(0 2px 6px rgba(0,0,0,.55))` 약하게. `hellTitlePulse 3s` |
+| 문 중앙 정렬 (비율 무관) | 인트로 비디오는 `object-fit:contain`이라 문 위치가 화면 비율에 따라 변한다. 화면 중앙 기준 `vw/vh` 오프셋은 16:9와 울트라와이드에서 어긋남 → **`.cin-hell-frame`으로 비디오 contain 박스(1200×700)를 CSS로 복제**(`width:min(100vw,100vh*1200/700)` 등, 중앙 고정) 후 타이틀을 프레임 기준 배치. 어떤 화면 비율에서도 문 중앙 추적. 문 좌표는 `intro.mp4` 첫 프레임 `ffmpeg` 추출로 측정(문틈 seam ≈ x51.7%) |
+| HELLGATE 정렬 (유저 지정) | 유저 요구: "8글자 4자4자 중간(HELL\|GATE 경계)을 문틈에". PNG에서 GATE가 HELL보다 넓어 **글자경계(x≈540/1251)가 이미지 중심(625)보다 좌측** → `left:53.75%`면 경계가 문틈(51.7%)에 안착. 유저가 "조금만 더 우측" 요청 → 최종 **`left:55%`**(경계가 문틈 살짝 우측). `top:55.6%`, `width:30%` |
+| 안개 디졸브 (클릭 시) | 유저: "뿅 사라지지 말고 안개처럼". 기존 `onVidClick`의 즉시 `display:none` 대신 `.cin-hell-frame.dissolve` 클래스 부여 → 타이틀 `opacity 0`+`blur(24px)`+`translateY(-72%) scale(1.08)`로 1.1~1.2s 전이(위로 피어오르며 흩어짐), 이후 `display:none`. 문 열림 영상과 겹쳐 자연스럽게 소멸. (더 강한 "가루 부스러짐"은 canvas 파티클로 가능하나 무거움 — 현재는 안개 페이드) |
+| 크기 | 프레임 폭의 `30%`(유저 요청 "50% 확대" 반영, 이전 440px 상한 대비 ↑). `hellgate.png` 프록시(cover+확대)는 실제 비디오(contain)와 프레이밍이 달라 초기 위치 오차의 원인이었음 |
 
-- API 크레딧/키 복구 시 생성 PNG로 교체 가능하나, 현재 SVG 버전이 벡터 이점(선명·경량·애니)으로 우위.
-- `silvertail_wakeup` 등과 무관한 순수 index.html 시네마틱 UI 변경. 게임 수치·공식 영향 없음.
+- 문구 변천: "CLICK TO HELL"(콩글리시) → "CLICK TO ENTER" → **"OPEN THE HELLGATE"**(유저 지정). 이미지(영문 아트)라 번역 대상 아님.
+- API 이력: Higgsfield 크레딧 소진(0.42)·Ludo 키 만료 → OpenAI만 사용. OpenAI 월 지출 한도($20) 초과 429 → 유저가 $30 상향 후 성공.
+- 후보: scratchpad `open_0~2.png`(`open_1` 채택), 이전 `enter_0`/`cth_1`/`eleg_1`. 재생성 프롬프트는 `gen_open.py` 참조.
+- 신규 에셋 `img/click_to_hell.png` — 배포 시 DEMO/EA `img/` 동기화 포함.
+- 순수 index.html 시네마틱 UI 변경. 게임 수치·공식 영향 없음.

@@ -6,6 +6,24 @@ const zlib = require('zlib');
 
 // gzip 대상 (텍스트/코드만 — 이미지·오디오는 이미 압축됨)
 const COMPRESSIBLE = new Set(['.html', '.js', '.css', '.json', '.svg', '.gltf']);
+// 반복 진입 시 대형 HTML을 매번 gzip 하지 않도록 파일 버전별 압축 결과를 보관한다.
+// size/mtime이 바뀌면 새 Promise로 교체되므로 코드 수정은 다음 요청에 바로 반영된다.
+const GZIP_HTML_CACHE = new Map();
+
+function gzipHtmlCached(filePath, stat) {
+  const _gzipCacheKey = stat.size + ':' + Math.floor(stat.mtimeMs);
+  const cached = GZIP_HTML_CACHE.get(filePath);
+  if (cached && cached.key === _gzipCacheKey) return cached.body;
+  const entry = { key: _gzipCacheKey, body: null };
+  entry.body = fs.promises.readFile(filePath).then(body => new Promise((resolve, reject) => {
+    zlib.gzip(body, { level: 6 }, (err, compressed) => err ? reject(err) : resolve(compressed));
+  })).catch(err => {
+    if (GZIP_HTML_CACHE.get(filePath) === entry) GZIP_HTML_CACHE.delete(filePath);
+    throw err;
+  });
+  GZIP_HTML_CACHE.set(filePath, entry);
+  return entry.body;
+}
 
 // .env 로드
 const _envPath = path.join(__dirname, '.env');
@@ -244,10 +262,30 @@ const server = http.createServer(async (req, res) => {
         const _cache = _isHtml
           ? 'no-cache, no-store, must-revalidate'
           : 'public, max-age=3600';
+        const _etag='"'+stat.size.toString(16)+'-'+Math.floor(stat.mtimeMs).toString(16)+'"';
+        if(!_isHtml&&req.headers['if-none-match']===_etag){
+          res.writeHead(304, { 'Cache-Control': _cache, 'ETag': _etag });
+          return res.end();
+        }
         const _acceptsGzip = /\bgzip\b/.test(req.headers['accept-encoding'] || '');
         const _gzip = _acceptsGzip && COMPRESSIBLE.has(ext);
         const _h = { 'Content-Type': mime, 'Cache-Control': _cache };
+        _h['ETag'] = _etag;
         if (_isHtml) { _h['Pragma'] = 'no-cache'; _h['Expires'] = '0'; }
+        if (_gzip && _isHtml) {
+          _h['Content-Encoding'] = 'gzip';
+          _h['Vary'] = 'Accept-Encoding';
+          try {
+            const _gzipBody = await gzipHtmlCached(filePath, stat);
+            _h['Content-Length'] = _gzipBody.length;
+            res.writeHead(200, _h);
+            return res.end(_gzipBody);
+          } catch (err) {
+            console.error('[Stream] HTML gzip cache error:', err.message);
+            if (!res.headersSent) { res.writeHead(500); res.end(); }
+            return;
+          }
+        }
         const file200 = fs.createReadStream(filePath);
         file200.on('error', (err) => {
           if (err.code === 'EPIPE' || err.code === 'ECONNRESET') return;
