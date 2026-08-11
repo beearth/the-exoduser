@@ -100,7 +100,9 @@ test('§5/§17-I,J,K slots·brType·DEMO banned 필터 준수', () => {
         const r=apiDemo.rollAffixesLayered(5,s,br,10);
         for(const a of r){
           // 중복 id(critDmgW 등)는 slots가 다른 두 엔트리 존재 → 해당 슬롯·brType을 만족하는 엔트리가 하나라도 있으면 통과
-          const match=POOL.some(e=>e.id===a.id&&e.slots.indexOf(aSlot)>=0&&(!e.brType||e.brType===br));
+          // [P4A C1] universal-A(uni:1)는 전 슬롯 backbone이므로 slot 제한 면제 (설계상 의도)
+          const isUni=POOL.some(e=>e.id===a.id&&e.uni===1);
+          const match=isUni||POOL.some(e=>e.id===a.id&&e.slots.indexOf(aSlot)>=0&&(!e.brType||e.brType===br));
           assert.ok(match,`slots/brType 위반 ${a.id} @${s}(${br||'-'})`);
           assert.ok(!banned.has(a.id),`DEMO banned 유출 ${a.id}`);
         }

@@ -11528,17 +11528,17 @@ const AFFIX_POOL=[
   {id:'killSlayer',type:0,tiers:[.10,.15,.25,.40,.55],unit:'pct',slots:['wpn'],group:'kill',weight:75,layer:6,sub:'B'},
   {id:'comboBoost',type:0,tiers:[.12,.20,.35,.55,.75],unit:'pct',slots:['wpn'],group:'combo',weight:60,layer:6,sub:'A'},
   {id:'dashBoost',type:0,tiers:[.15,.25,.40,.65,.90],unit:'pct',slots:['wpn'],group:'dash',weight:55,layer:5,sub:'A'},
-  {id:'skillBoost',type:0,tiers:[.10,.15,.25,.40,.55],unit:'pct',slots:['wpn'],group:'skill',weight:65,layer:6,sub:'A'},
+  {id:'skillBoost',type:0,tiers:[.10,.15,.25,.40,.55],unit:'pct',slots:['wpn'],group:'skill',weight:65,layer:6,sub:'A',uni:1},
   // 무기+helm 공유
-  {id:'elemFocus',type:0,tiers:[.08,.12,.20,.32,.44],unit:'pct',slots:['helm'],group:'elemfcs',weight:70,layer:4,sub:'A'},
-  {id:'atkSpeed',type:0,tiers:[.04,.06,.10,.16,.22],unit:'pct',slots:['wpn','helm'],group:'aspd',weight:85,layer:5,sub:'A'},
+  {id:'elemFocus',type:0,tiers:[.08,.12,.20,.32,.44],unit:'pct',slots:['helm'],group:'elemfcs',weight:70,layer:4,sub:'A',uni:1},
+  {id:'atkSpeed',type:0,tiers:[.04,.06,.10,.16,.22],unit:'pct',slots:['wpn','helm'],group:'aspd',weight:85,layer:5,sub:'A',uni:1},
   {id:'parryBonus',type:0,tiers:[.12,.20,.35,.55,.75],unit:'pct',slots:['wpn'],group:'parry',weight:65,layer:9,sub:'FLEX'},
-  {id:'cooldownRed',type:0,tiers:[-.02,-.03,-.05,-.07,-.10],unit:'pct',slots:['wpn'],group:'cd',weight:70,layer:2,sub:'A'},
+  {id:'cooldownRed',type:0,tiers:[-.02,-.03,-.05,-.07,-.10],unit:'pct',slots:['wpn'],group:'cd',weight:70,layer:2,sub:'A',uni:1},
   {id:'magicDmg',type:0,tiers:[.06,.10,.18,.28,.40],unit:'pct',slots:['helm'],group:'mdmg',weight:85,layer:7,sub:'B'},
   // 크리티컬 (5티어)
-  {id:'critDmgW',type:1,tiers:[.10,.20,.30,.40,.50],unit:'pct',slots:['wpn','helm'],group:'cdmgW',weight:60,tierW:[40,30,20,8,2],layer:8,sub:'A'},
-  {id:'critRate',type:0,tiers:[.01,.02,.03,.04,.05],unit:'pct',slots:['ring','neck','bracelet'],group:'crt',weight:50,tierW:[40,30,20,8,2],layer:8,sub:'A'},
-  {id:'critDmgW',type:1,tiers:[.10,.20,.30,.40,.50],unit:'pct',slots:['ring','neck','bracelet'],group:'cdmgW',weight:50,tierW:[40,30,20,8,2],layer:8,sub:'A'},
+  {id:'critDmgW',type:1,tiers:[.10,.20,.30,.40,.50],unit:'pct',slots:['wpn','helm'],group:'cdmgW',weight:60,tierW:[40,30,20,8,2],layer:8,sub:'A',uni:1},
+  {id:'critRate',type:0,tiers:[.01,.02,.03,.04,.05],unit:'pct',slots:['ring','neck','bracelet'],group:'crt',weight:50,tierW:[40,30,20,8,2],layer:8,sub:'A',uni:1},
+  {id:'critDmgW',type:1,tiers:[.10,.20,.30,.40,.50],unit:'pct',slots:['ring','neck','bracelet'],group:'cdmgW',weight:50,tierW:[40,30,20,8,2],layer:8,sub:'A',uni:1},
   // 플랫 ATK (극악)
   {id:'sharpAtk',type:0,tiers:[20,50,170,330,500],unit:'val',slots:['wpn'],group:'satk',weight:25,skewRoll:3,tierW:[40,30,20,8,2],layer:7,sub:'A'},
   {id:'brutalAtk',type:0,tiers:[20,50,170,330,500],unit:'val',slots:['wpn'],group:'batk',weight:20,skewRoll:3,tierW:[40,30,20,8,2],layer:7,sub:'A'},
@@ -11564,7 +11564,7 @@ const AFFIX_POOL=[
   {id:'curseDmgUp',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'cuDU',weight:50,layer:4,sub:'B'},
   {id:'slowDmgUp',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'slDU',weight:50,layer:4,sub:'B'},
   // ── 조건부 DPS (대상 타입) ──
-  {id:'bossSlayer',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn','helm'],group:'bsSl',weight:40,tierW:[40,30,20,8,2],layer:6,sub:'A'},
+  {id:'bossSlayer',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn','helm'],group:'bsSl',weight:40,tierW:[40,30,20,8,2],layer:6,sub:'A',uni:1},
   {id:'eliteSlayer',type:1,tiers:[.12,.20,.32,.46,.65],unit:'pct',slots:['wpn','helm'],group:'elSl',weight:45,layer:6,sub:'A'},
   {id:'mobSlayer',type:1,tiers:[.15,.25,.40,.60,.85],unit:'pct',slots:['wpn'],group:'moSl',weight:60,layer:6,sub:'A'},
   // ── 조건부 DPS (타이밍) ──
@@ -11581,15 +11581,15 @@ const AFFIX_POOL=[
   // onKillExplode 삭제 (시체폭발 시스템 없음)
   {id:'onKillSpeed',type:1,tiers:[.05,.08,.12,.18,.25],unit:'pct',slots:['wpn'],group:'okSp',weight:40,layer:6,sub:'B'},
   // 분노(rage) — 패링 적립 / 대왕치기 소비 강화 (근접무기 전용, 석궁 제외)
-  {id:'rageMaxFlat',type:0,tiers:[10,20,35,55,80],unit:'val',slots:['wpn'],group:'rgMx',weight:45,layer:9,sub:'A'},
-  {id:'rageDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'rgDm',weight:45,layer:9,sub:'A'},
+  {id:'rageMaxFlat',type:0,tiers:[10,20,35,55,80],unit:'val',slots:['wpn'],group:'rgMx',weight:45,layer:9,sub:'A',uni:1},
+  {id:'rageDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'rgDm',weight:45,layer:9,sub:'A',uni:1},
 
   // ═══════════════════════════════════════════════════
   // 방어구 파트 PREFIX (armor,shield,gloves,pants,boots,cloak)
   // ═══════════════════════════════════════════════════
-  {id:'defFlat',type:0,tiers:[10,20,30,40,50],unit:'val',slots:['armor','shield','gloves','pants','boots','cloak'],group:'defF',weight:100,layer:3,sub:'A'},
-  {id:'maxHPFlat',type:0,tiers:[60,100,200,300,420],unit:'val',slots:['armor','shield','gloves','pants','boots','cloak'],group:'hp',weight:90,layer:3,sub:'A'},
-  {id:'shieldFlat',type:0,tiers:[120,200,400,600,840],unit:'val',slots:['armor','shield','gloves','pants','boots','cloak'],group:'shd',weight:80,layer:3,sub:'A'},
+  {id:'defFlat',type:0,tiers:[10,20,30,40,50],unit:'val',slots:['armor','shield','gloves','pants','boots','cloak'],group:'defF',weight:100,layer:3,sub:'A',uni:1},
+  {id:'maxHPFlat',type:0,tiers:[60,100,200,300,420],unit:'val',slots:['armor','shield','gloves','pants','boots','cloak'],group:'hp',weight:90,layer:3,sub:'A',uni:1},
+  {id:'shieldFlat',type:0,tiers:[120,200,400,600,840],unit:'val',slots:['armor','shield','gloves','pants','boots','cloak'],group:'shd',weight:80,layer:3,sub:'A',uni:1},
   {id:'maxHPPct',type:0,tiers:[.05,.08,.14,.22,.32],unit:'pct',slots:['armor'],group:'hpp',weight:80,layer:3,sub:'A'},
   {id:'movSpeed',type:0,tiers:[.03,.05,.09,.14,.20],unit:'pct',slots:['boots','cloak'],group:'mspd',weight:85,layer:2,sub:'B'},
   // 방어 SUFFIX
@@ -11631,8 +11631,8 @@ const AFFIX_POOL=[
   {id:'allRes',type:1,tiers:[.03,.05,.09,.15,.22],unit:'pct',slots:['neck'],group:'rall',weight:50,layer:3,sub:'A'},
   {id:'eDefFlat',type:1,tiers:[25,50,100,150,220],unit:'val',slots:['neck','ring','belt','headband','bracelet'],group:'edf',weight:40,layer:3,sub:'A'},
   // 자원
-  {id:'maxSTFlat',type:0,tiers:[20,40,60,80,100],unit:'val',slots:['belt','bracelet','ring','neck','headband'],group:'stf',weight:75,layer:2,sub:'A'},
-  {id:'maxMPFlat',type:0,tiers:[20,40,60,80,100],unit:'val',slots:['belt','bracelet','ring','neck','headband'],group:'mpf',weight:75,layer:2,sub:'A'},
+  {id:'maxSTFlat',type:0,tiers:[20,40,60,80,100],unit:'val',slots:['belt','bracelet','ring','neck','headband'],group:'stf',weight:75,layer:2,sub:'A',uni:1},
+  {id:'maxMPFlat',type:0,tiers:[20,40,60,80,100],unit:'val',slots:['belt','bracelet','ring','neck','headband'],group:'mpf',weight:75,layer:2,sub:'A',uni:1},
   {id:'mpCostRed',type:0,tiers:[-.05,-.08,-.14,-.22,-.30],unit:'pct',slots:['headband','neck'],group:'mpcr',weight:80,layer:2,sub:'A'},
   {id:'stCostRed',type:0,tiers:[-.05,-.08,-.14,-.22,-.30],unit:'pct',slots:['belt','bracelet'],group:'stcr',weight:75,layer:2,sub:'A'},
   // 유틸
@@ -11799,10 +11799,10 @@ const AFFIX_POOL=[
   {id:'pickupRadius',type:1,tiers:[10,20,35,55,80],unit:'val',slots:['boots'],group:'pkRd',weight:55,layer:2,sub:'B'},
 
   // ═══ Phase 3: 장신구 확장 (30종) ═══
-  {id:'strFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['ring','neck','belt','bracelet','headband'],group:'strF',weight:60,layer:1,sub:'A'},
-  {id:'dexFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['ring','neck','belt','bracelet','headband'],group:'dexF',weight:60,layer:1,sub:'A'},
-  {id:'intFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['ring','neck','belt','bracelet','headband'],group:'intF',weight:60,layer:1,sub:'A'},
-  {id:'vitFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['ring','neck','belt','bracelet','headband'],group:'vitF',weight:60,layer:1,sub:'A'},
+  {id:'strFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['ring','neck','belt','bracelet','headband'],group:'strF',weight:60,layer:1,sub:'A',uni:1},
+  {id:'dexFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['ring','neck','belt','bracelet','headband'],group:'dexF',weight:60,layer:1,sub:'A',uni:1},
+  {id:'intFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['ring','neck','belt','bracelet','headband'],group:'intF',weight:60,layer:1,sub:'A',uni:1},
+  {id:'vitFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['ring','neck','belt','bracelet','headband'],group:'vitF',weight:60,layer:1,sub:'A',uni:1},
   {id:'allStat',type:1,tiers:[2,4,7,11,16],unit:'val',slots:['neck'],group:'allS',weight:15,tierW:[40,30,20,8,2],layer:1,sub:'B'},
   {id:'maxSTPct',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['belt','bracelet'],group:'stPct',weight:55,layer:2,sub:'A'},
   {id:'maxMPPct',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['headband','neck'],group:'mpPct',weight:55,layer:2,sub:'A'},
@@ -12275,6 +12275,15 @@ function _affixTierRoll(a,maxTier){
 // FLEX는 A·B 양쪽 후보에 포함. LEGACY(layer 0)는 레이어 롤 대상 아님(제외).
 function _affixLayerCandidates(aSlot,brType,layer,sub){
   if(!_affixLayerCandidates._c)_affixLayerCandidates._c={};
+  // [P4A HYBRID C1] universal-A backbone 인덱스: uni:1 어픽스(layer별 id-dedupe, slot 무관) — 전 슬롯 A 슬롯 공통 제공
+  if(!_affixLayerCandidates._uni){
+    const u={},seen={};
+    for(let i=0;i<AFFIX_POOL.length;i++){const a=AFFIX_POOL[i];
+      if(a.uni!==1||!(a.layer>=1))continue;
+      const k=a.layer+'|'+a.id;if(seen[k])continue;seen[k]=1;
+      (u[a.layer]=u[a.layer]||[]).push(a);}
+    _affixLayerCandidates._uni=u;
+  }
   const ck=aSlot+(brType?'_'+brType:'');
   let idx=_affixLayerCandidates._c[ck];
   if(!idx){
@@ -12292,8 +12301,18 @@ function _affixLayerCandidates(aSlot,brType,layer,sub){
     }
     _affixLayerCandidates._c[ck]=idx;
   }
-  const Lo=idx[layer];if(!Lo)return [];
-  return Lo[sub]||[];
+  const Lo=idx[layer];
+  let base=Lo?(Lo[sub]||[]):[];
+  if(sub==='A'){ // [P4A C1] universal-A 병합 — 전 슬롯 backbone 보장(id 중복·DEMO ban 제외). 레거시 rollAffixes는 별도 캐시라 무영향.
+    const uni=_affixLayerCandidates._uni[layer];
+    if(uni&&uni.length){
+      const have={};for(let i=0;i<base.length;i++)have[base[i].id]=1;
+      const merged=base.slice();
+      for(let i=0;i<uni.length;i++){const a=uni[i];if(have[a.id])continue;if(_DEMO_MODE&&_DEMO_AFFIX_BANNED.has(a.id))continue;merged.push(a)}
+      base=merged;
+    }
+  }
+  return base;
 }
 
 // 신규 Layer Roll — L1~LN × {A,B} 각 최대 1개(층당 최대 2). grade는 수치품질(baseTier/lvBonus)에만 관여, 개수는 layerLv×2.
