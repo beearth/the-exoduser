@@ -20,8 +20,9 @@ function makeApi(P){return new Function('AFFIX_POOL','P','_DEMO_MODE','_DEMO_AFF
   `${afslot}\n${fTier}\n${fCand}\n${fRoll}\nreturn {rollAffixesLayered,_affixLayerCandidates};`)(POOL,P,false,new Set());}
 function seed(n){let s=n>>>0;Math.random=()=>{s=(s*1664525+1013904223)>>>0;return s/4294967296};}
 
-const UNI_IDS=['strFlat','dexFlat','intFlat','vitFlat','maxSTFlat','maxMPFlat','cooldownRed','maxHPFlat','defFlat','shieldFlat','elemFocus','atkSpeed','skillBoost','bossSlayer','critDmgW','critRate','rageMaxFlat','rageDmg'];
-const UNI_BY_LAYER={1:['strFlat','dexFlat','intFlat','vitFlat'],2:['maxSTFlat','maxMPFlat','cooldownRed'],3:['maxHPFlat','defFlat','shieldFlat'],4:['elemFocus'],5:['atkSpeed'],6:['skillBoost','bossSlayer'],8:['critDmgW','critRate'],9:['rageMaxFlat','rageDmg']};
+// P4A 18종 + P4B-1 L7-A backbone 3종 = 21 (universal-A 누적 현재 상태)
+const UNI_IDS=['strFlat','dexFlat','intFlat','vitFlat','maxSTFlat','maxMPFlat','cooldownRed','maxHPFlat','defFlat','shieldFlat','elemFocus','atkSpeed','skillBoost','bossSlayer','critDmgW','critRate','rageMaxFlat','rageDmg','atkPctAll','neckAllDmg','endAllDmg'];
+const UNI_BY_LAYER={1:['strFlat','dexFlat','intFlat','vitFlat'],2:['maxSTFlat','maxMPFlat','cooldownRed'],3:['maxHPFlat','defFlat','shieldFlat'],4:['elemFocus'],5:['atkSpeed'],6:['skillBoost','bossSlayer'],7:['atkPctAll','neckAllDmg','endAllDmg'],8:['critDmgW','critRate'],9:['rageMaxFlat','rageDmg']};
 const SLOTS=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
 
 test('§7 uni:1 메타 — 18 designated id 태깅, 값/효과 무변경', () => {

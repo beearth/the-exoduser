@@ -11838,7 +11838,7 @@ const AFFIX_POOL=[
   {id:'flatPoisonDmg',type:0,tiers:[5,10,18,30,44],unit:'val',slots:['wpn'],group:'fPoD',weight:60,layer:7,sub:'A'},
   {id:'minDmgFlat',type:0,tiers:[3,6,10,16,24],unit:'val',slots:['wpn'],group:'mnDm',weight:55,layer:7,sub:'A'},
   {id:'maxDmgFlat',type:0,tiers:[5,10,18,28,40],unit:'val',slots:['wpn'],group:'mxDm',weight:55,layer:7,sub:'A'},
-  {id:'atkPctAll',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['wpn','helm'],group:'aAll',weight:50,layer:7,sub:'B'},
+  {id:'atkPctAll',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['wpn','helm'],group:'aAll',weight:50,layer:7,sub:'A',uni:1},
   {id:'weaponRange',type:0,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['wpn'],group:'wRng',weight:55,layer:5,sub:'A'},
   {id:'bowRange',type:0,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['xbow'],group:'bRng',weight:55,layer:5,sub:'A'},
   {id:'doubleStrike',type:1,tiers:[.02,.04,.06,.09,.13],unit:'prob',slots:['wpn'],group:'dStr',weight:20,tierW:[40,30,20,8,2],layer:5,sub:'B'},
@@ -11926,7 +11926,7 @@ const AFFIX_POOL=[
   {id:'ringMPOnKill',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['ring'],group:'rMOK',weight:40,layer:6,sub:'B'},
   {id:'ringProjPierce',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['ring'],group:'rPP',weight:30,layer:5,sub:'B'},
   // 목걸이 전용
-  {id:'neckAllDmg',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['neck'],group:'nAD',weight:25,tierW:[40,30,20,8,2],layer:7,sub:'B'},
+  {id:'neckAllDmg',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['neck'],group:'nAD',weight:25,tierW:[40,30,20,8,2],layer:7,sub:'A',uni:1},
   {id:'neckCritDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['neck'],group:'nCD',weight:35,layer:8,sub:'A'},
   {id:'neckElemPen',type:1,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['neck'],group:'nEP',weight:25,tierW:[40,30,20,8,2],layer:4,sub:'A'},
   {id:'neckSkillDmg',type:1,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['neck'],group:'nSkD',weight:35,layer:6,sub:'A'},
@@ -11972,7 +11972,7 @@ const AFFIX_POOL=[
   {id:'endCritDmg',type:1,tiers:[.10,.20,.30,.40,.50],unit:'pct',slots:['wpn'],group:'eCD',weight:10,tierW:[40,30,20,8,2],layer:8,sub:'A'},
   {id:'endAtkFlat',type:0,tiers:[30,70,150,260,400],unit:'val',slots:['wpn'],group:'eAF',weight:8,tierW:[40,30,20,8,2],skewRoll:3,layer:7,sub:'A'},
   {id:'endAllRes',type:1,tiers:[.04,.07,.11,.16,.22],unit:'pct',slots:['neck'],group:'eAR',weight:10,tierW:[40,30,20,8,2],layer:3,sub:'A'},
-  {id:'endAllDmg',type:1,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['neck'],group:'eAD',weight:8,tierW:[40,30,20,8,2],layer:7,sub:'B'},
+  {id:'endAllDmg',type:1,tiers:[.05,.08,.14,.22,.30],unit:'pct',slots:['neck'],group:'eAD',weight:8,tierW:[40,30,20,8,2],layer:7,sub:'A',uni:1},
   {id:'endAllDR',type:1,tiers:[.03,.05,.08,.12,.18],unit:'pct',slots:['armor'],group:'eADR',weight:8,tierW:[40,30,20,8,2],layer:3,sub:'A'},
   {id:'endLeech',type:1,tiers:[.006,.012,.020,.030,.042],unit:'pct',slots:['wpn'],group:'eLch',weight:8,tierW:[40,30,20,8,2],layer:6,sub:'B'},
   {id:'endPoise',type:0,tiers:[10,20,35,55,80],unit:'val',slots:['armor'],group:'ePo',weight:15,layer:3,sub:'A'},
@@ -22077,9 +22077,12 @@ function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.
 // 레벨 자동 성장: 비하인드 적용 (UI에 안 보임, 장비처럼 계산에만 반영)
 function _lvB(){return~~(P.lv*.5)}
 
-function meleeRef(){return(((wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')+_lvB()))*(P._weaponSeal>0?.3:1)}
-function bowRef(){return(((bw().atk||0)+enhMulAtk(bw().enh||0))+_slotFlatAtk(bw())+P.baseAtk+(STATS.dex+_eqStat('Dex')+_lvB()))*(P._weaponSeal>0?.3:1)}
-function magicRef(){return(((hm().atk||0)+enhMulAtk(hm().enh||0))+_slotFlatAtk(hm())+P.baseAtk+(STATS.int+_eqStat('Int')+_lvB()))*(P._weaponSeal>0?.3:1)}
+// [P4B-1 L7-A backbone] 전역 공격력% — atkPctAll·neckAllDmg·endAllDmg("전 피해 %") 합산. 부위 무관 global additional damage.
+// 없으면 0 → ×(1+0)=×1로 기존 전투 불변(항등). 무기 implicit _iAtkPct는 전 무기 상시값이라 활성화 시 base 변동 → 미연결(도먼트 유지).
+function _globalAtkPct(){return _eqAffix('atkPctAll')+_eqAffix('neckAllDmg')+_eqAffix('endAllDmg')}
+function meleeRef(){return(((wp().atk||0)+enhMulAtk(wp().enh||0))+_slotFlatAtk(wp())+P.baseAtk+(STATS.str+_eqStat('Str')+_lvB()))*(P._weaponSeal>0?.3:1)*(1+_globalAtkPct())}
+function bowRef(){return(((bw().atk||0)+enhMulAtk(bw().enh||0))+_slotFlatAtk(bw())+P.baseAtk+(STATS.dex+_eqStat('Dex')+_lvB()))*(P._weaponSeal>0?.3:1)*(1+_globalAtkPct())}
+function magicRef(){return(((hm().atk||0)+enhMulAtk(hm().enh||0))+_slotFlatAtk(hm())+P.baseAtk+(STATS.int+_eqStat('Int')+_lvB()))*(P._weaponSeal>0?.3:1)*(1+_globalAtkPct())}
 const DPS_BAL={bow:0.77,magic:0.475,beam:0.0080};
 function beamCost(){return(75+((P.skills.omniBeam||1)-1)*8)/60*pMagicCost()} // 틱당: 초당75+lv*8 소비 (패시브 할인 적용)
 // ═══ E키 마법 라우팅 — 합체/스킬 상태 → beam/magicCast 자동 분기 ═══
