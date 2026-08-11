@@ -231,7 +231,9 @@ git diff --check -- game.html server.cjs `
 
 **Headless 실험 한계 (사실 기록)**
 - timer query / resScale / seeded RNG / movement 등 원인 후보를 하나씩 제거하며 반복했으나 renderer crash가 재현되어 GPU-vs-submit 분리 실험을 완주하지 못했다.
-- renderer crash인데 process exit code가 0으로 끝난 사례가 있어, **현재 attribution 실험 하니스는 신뢰 가능한 회귀 자산이 아니다.** 따라서 해당 불안정 하니스는 커밋하지 않는다. 기존 안정 프로파일러(`tools/verify_entity_load_cpu_profile.mjs`)는 유지한다. 필요 시 향후 browser/page crash를 감지해 non-zero exit 하도록 별도 수정한다.
+- renderer crash인데 process exit code가 0으로 끝난 사례가 있어, **현재 attribution 실험 하니스는 신뢰 가능한 회귀 자산이 아니다.**
+- Git 사실관계: Unstable attribution harness was accidentally committed by auto-sync in `9c88158f` and removed in `9ae5ef29`. It is not retained in the current tree as a regression/profiling asset. (history rewrite/force push 없이 전진 커밋으로 제거함.)
+- 기존 안정 프로파일러(`tools/verify_entity_load_cpu_profile.mjs`)는 유지한다. 필요 시 향후 browser/page crash를 감지해 non-zero exit 하도록 별도 수정한다.
 
 ## 7. Claude Code 작업 체크리스트
 
