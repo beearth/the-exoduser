@@ -204,6 +204,35 @@ git diff --check -- game.html server.cjs `
 - (1) AI 이웃질의/공간질의(spatial-query) 비용: 밀집 셀 이웃 상한/샘플링, 분리력 계산 주기 분할(_gcT 스태거) 등 — **단, 위 귀속(fill/overdraw vs CPU) 미확정 상태이므로 실기기 실측으로 원인 확정 후에만 착수.** 핫패스 고위험, 충돌/밸런스 분리, TDD 우선.
 - (2) ~~적/투사체 GPU 배칭~~ → **CLOSED / NO-GO**: 실게임 적은 전부 8방향 인스턴싱이라 이미 배칭됨. 드로우콜 배칭 최적화 대상 아님.
 
+### 6.4 병목 귀속 실측 시도 — GPU-fill vs CPU-spatial-query (2026-08-11)
+
+**측정 방법**: 게임 자체 `[PERF avg]`(크래시 전 안정 실행 구간) + shQuery 런타임 계측(page.evaluate 래핑, game.html 무수정).
+
+**CONFIRMED**
+- dense combat 안정 측정 구간에서:
+  - coll ≈ 0.1ms
+  - ai/update ≈ 5~8ms
+  - render/draw() wall-time ≈ 12~14ms
+  - shQuery ≈ 130~175 calls/frame (@ 약 300 active enemies)
+- 현재 프로파일러가 측정한 CPU-side 구간 중 render/draw() wall-time이 가장 큰 성분이었다.
+- AI/update 전체가 render/draw() wall-time보다 작았으므로, CPU spatial-query가 전체 프레임의 단독 최대 병목일 가능성은 낮아졌다.
+- collision은 현재 조건에서 지배 병목이 아니다.
+
+**NOT CONFIRMED**
+- shQuery 자체가 ai 5~8ms 중 실제 몇 ms를 차지하는지는 미측정.
+- render 12~14ms가 GPU fill/overdraw 비용이라는 결론은 **금지**.
+- render 12~14ms는 draw() CPU wall-time 측정이므로 GPU execution과 CPU submission을 분리하지 못했다.
+- 따라서 GPU fill/overdraw vs CPU render submission 귀속은 여전히 **unresolved**.
+
+**최종 판정**
+
+> evidence insufficient for GPU-fill vs CPU-submit attribution.
+> CPU AI/spatial path is currently secondary at aggregate level; render/draw path is the leading measured component.
+
+**Headless 실험 한계 (사실 기록)**
+- timer query / resScale / seeded RNG / movement 등 원인 후보를 하나씩 제거하며 반복했으나 renderer crash가 재현되어 GPU-vs-submit 분리 실험을 완주하지 못했다.
+- renderer crash인데 process exit code가 0으로 끝난 사례가 있어, **현재 attribution 실험 하니스는 신뢰 가능한 회귀 자산이 아니다.** 따라서 해당 불안정 하니스는 커밋하지 않는다. 기존 안정 프로파일러(`tools/verify_entity_load_cpu_profile.mjs`)는 유지한다. 필요 시 향후 browser/page crash를 감지해 non-zero exit 하도록 별도 수정한다.
+
 ## 7. Claude Code 작업 체크리스트
 
 - [ ] 작업 전 해당 시스템 문서를 먼저 읽기
