@@ -1,0 +1,53 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>아이템 사운드 오디션</title>
+<style>
+  body{background:#141018;color:#e8e0f0;font-family:system-ui,sans-serif;margin:0;padding:26px;max-width:600px;margin:0 auto}
+  h1{font-size:20px;margin:0 0 2px}
+  h2{font-size:14px;color:#c9b8e8;margin:26px 0 10px;border-bottom:1px solid #2c2438;padding-bottom:6px}
+  p.sub{color:#9a8fb0;font-size:12px;margin:0 0 8px}
+  .row{display:flex;align-items:center;gap:12px;padding:13px 15px;border-radius:11px;margin-bottom:9px;border:1px solid #2c2438;background:#1c1626}
+  .meta{flex:1}.meta b{font-size:14px}.meta small{display:block;color:#9a8fb0;font-size:11px;margin-top:2px}
+  button{cursor:pointer;border:none;border-radius:9px;padding:11px 17px;font-size:14px;font-weight:600;color:#fff;background:#4a3f66}
+  button:active{transform:translateY(1px)}
+  .tag{width:10px;height:10px;border-radius:50%;flex:none}
+  .c0{background:#aaa}.c2{background:#4488ff}.c4{background:#ffaa00}
+  .big{background:#5a3fa8}
+</style></head><body>
+<h1>🎧 아이템 사운드 오디션</h1>
+<p class="sub">전부 인게임 재생값(볼륨·피치) 그대로입니다.</p>
+
+<h2>💎 바닥 드랍음 (등급 스케일) — 신설</h2>
+<div class="row"><span class="tag c0"></span><div class="meta"><b>일반·고급 (0~1)</b><small>drop_common · vol .5 · pitch ±.04</small></div><button onclick="one('drop','drop_common',.5,.04)">▶</button></div>
+<div class="row"><span class="tag c2"></span><div class="meta"><b>희귀·영웅 (2~3)</b><small>drop_rare</small></div><button onclick="one('drop','drop_rare',.5,.04)">▶</button></div>
+<div class="row"><span class="tag c4"></span><div class="meta"><b>전설·유니크 (4~5) — A (적용중)</b><small>drop_legend · 밝은 종/트라이앵글 띵 + 서스테인</small></div><button onclick="one('drop','drop_legend',.5,.04)">▶</button></div>
+<div class="row" style="border-color:#7a5a1a"><span class="tag c4"></span><div class="meta"><b>전설 — B (후보)</b><small>_cand_legend2 · 천상 샤임 + 반짝 상승</small></div><button onclick="one('drop','_cand_legend2',.5,.04)">▶</button></div>
+
+<h2>🖐️ 습득음 (그랩/뒤적임 랜덤 풀 6종)</h2>
+<div class="row"><div class="meta"><b>랜덤 습득 (인게임처럼)</b><small>pickup_item + rummage1~5 중 랜덤 · vol .5 · pitch ±.05</small></div><button class="big" onclick="pickup()">▶ 랜덤</button></div>
+<div class="row"><div class="meta"><small style="color:#9a8fb0">개별: </small></div>
+  <button onclick="one('pickup','pickup_item',.5,.05)">cloth</button>
+  <button onclick="one('pickup','pickup_rummage1',.5,.05)">r1</button>
+  <button onclick="one('pickup','pickup_rummage2',.5,.05)">r2</button>
+  <button onclick="one('pickup','pickup_rummage3',.5,.05)">r3</button>
+  <button onclick="one('pickup','pickup_rummage4',.5,.05)">r4</button>
+  <button onclick="one('pickup','pickup_rummage5',.5,.05)">r5</button>
+</div>
+
+<h2>⚔️ 장착음 (무기 타입별)</h2>
+<div class="row"><div class="meta"><b>검 (sword)</b><small>equip_sword · vol .42 · pitch ±.04</small></div><button onclick="one('equipment','equip_sword',.42,.04)">▶</button></div>
+<div class="row"><div class="meta"><b>석궁 (crossbow)</b><small>equip_crossbow</small></div><button onclick="one('equipment','equip_crossbow',.42,.04)">▶</button></div>
+<div class="row"><div class="meta"><b>기본 (그 외 전부)</b><small>equip_base</small></div><button onclick="one('equipment','equip_base',.42,.04)">▶</button></div>
+<div class="row"><div class="meta"><b>희귀 장착 = 검 + 룬 레이어</b><small>equip_sword .42 + equip_rare .28 (rarity≥2 동시)</small></div><button class="big" onclick="rareEquip()">▶</button></div>
+
+<script>
+const ctx=new (window.AudioContext||window.webkitAudioContext)();
+const buf={};
+async function load(dir,k){const id=dir+'/'+k;if(buf[id])return buf[id];const r=await fetch('/sfx/'+dir+'/'+k+'.mp3?'+Date.now());const ab=await r.arrayBuffer();buf[id]=await ctx.decodeAudioData(ab);return buf[id];}
+function _r(base,j){return base+(Math.random()*2-1)*j;}
+async function shot(dir,k,vol,jit){const b=await load(dir,k);const s=ctx.createBufferSource();s.buffer=b;s.playbackRate.value=_r(1,jit);const g=ctx.createGain();g.gain.value=vol;s.connect(g).connect(ctx.destination);s.start();}
+async function one(dir,k,vol,jit){if(ctx.state==='suspended')await ctx.resume();shot(dir,k,vol,jit);}
+const POOL=['pickup_item','pickup_rummage1','pickup_rummage2','pickup_rummage3','pickup_rummage4','pickup_rummage5'];
+async function pickup(){if(ctx.state==='suspended')await ctx.resume();shot('pickup',POOL[~~(Math.random()*POOL.length)],.5,.05);}
+async function rareEquip(){if(ctx.state==='suspended')await ctx.resume();shot('equipment','equip_sword',.42,.04);shot('equipment','equip_rare',.28,.03);}
+</script>
+</body></html>

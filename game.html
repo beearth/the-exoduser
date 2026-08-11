@@ -8652,13 +8652,22 @@ const _sampleFiles={
   voice_execution:'sfx/voice/voice_attack.mp3',
   voice_clear:'sfx/voice/voice_magic.mp3',
   voice_fuse:'sfx/voice/voice_magic.mp3',
-  // equipment/ — 장비 장착 전용 (재질 3종 + 희귀 룬 레이어)
-  equip_weapon:'sfx/equipment/equip_weapon.mp3',
-  equip_armor:'sfx/equipment/equip_armor.mp3',
-  equip_accessory:'sfx/equipment/equip_accessory.mp3',
+  // equipment/ — 장비 장착 전용 (기본음 + 무기타입별 전용 + 희귀 룬 레이어)
+  equip_base:'sfx/equipment/equip_base.mp3',
+  equip_sword:'sfx/equipment/equip_sword.mp3',
+  equip_crossbow:'sfx/equipment/equip_crossbow.mp3',
   equip_rare:'sfx/equipment/equip_rare.mp3',
-  // pickup/ — 아이템 습득 전용 (단일 스와이프음, 등급 무관)
+  // drop/ — 아이템 바닥 드랍음 (등급 스케일: 일반/희귀/전설). 임시 ElevenLabs 음원.
+  drop_common:'sfx/drop/drop_common.mp3',
+  drop_rare:'sfx/drop/drop_rare.mp3',
+  drop_legend:'sfx/drop/drop_legend.mp3',
+  // pickup/ — 아이템 습득 전용 (그랩/뒤적임 풀에서 랜덤 재생, 등급 무관)
   pickup_item:'sfx/pickup/pickup_item.mp3',
+  pickup_rummage1:'sfx/pickup/pickup_rummage1.mp3',
+  pickup_rummage2:'sfx/pickup/pickup_rummage2.mp3',
+  pickup_rummage3:'sfx/pickup/pickup_rummage3.mp3',
+  pickup_rummage4:'sfx/pickup/pickup_rummage4.mp3',
+  pickup_rummage5:'sfx/pickup/pickup_rummage5.mp3',
   // weapon/ — 무기 발사
   crossbow_shot:'sfx/skillsound/bow/crossbow_shot.mp3',
   bow_release:'sfx/weapon/bow_releasE.wav',  // 공성쇠뇌 장착/해제
@@ -12859,10 +12868,16 @@ let STORAGE={}; // 하위호환용 객체, 실제는 STORAGE[0] 단일 배열 �
 const STORAGE_MAX=200; // 창고 최대 슬롯
 let invFilter={slot:null,rarity:null,el:null}; // toggle filters
 
-const _EQUIP_SFX_BY_SLOT={weapon:'equip_weapon',bow:'equip_weapon',shield:'equip_armor',armor:'equip_armor',helmet:'equip_armor',boots:'equip_armor',gloves:'equip_armor',pants:'equip_armor',cape:'equip_armor'};
-function playEquipSfx(item){if(!item)return;const _equipSfx=_EQUIP_SFX_BY_SLOT[item.slot]||'equip_accessory';playSample(_equipSfx,.42,_r(1,.04));if(item.rarity>=2)playSample('equip_rare',.28,_r(1,.03));}
-// 아이템 습득음 — 단일 스와이프("사삭"). 등급 무관 모든 아이템 습득에 동일 재생. 골드·물약·보주 등 비아이템 습득은 기존 절차음(SFX.pickup) 유지.
-function playItemPickupSfx(item){playSample('pickup_item',.5,_r(1,.05));}
+// 장착음 — 무기 타입별 전용음(검=wtype:sword, 석궁=btype:crossbow) + 그 외 전부 기본음(equip_base) + 희귀(rarity>=2) 룬 글린트 레이어.
+const _EQUIP_SFX_BY_WTYPE={sword:'equip_sword'};
+const _EQUIP_SFX_BY_BTYPE={crossbow:'equip_crossbow'};
+function playEquipSfx(item){if(!item)return;const _k=(item.wtype&&_EQUIP_SFX_BY_WTYPE[item.wtype])||(item.btype&&_EQUIP_SFX_BY_BTYPE[item.btype])||'equip_base';playSample(_k,.42,_r(1,.04));if(item.rarity>=2)playSample('equip_rare',.28,_r(1,.03));}
+// 아이템 바닥 드랍음 — 등급 스케일(일반0~1 / 희귀2~3 / 전설4~5). 드랍 위치에서 공간 재생. 대량 드랍 머신건 방지용 45ms 게이트.
+let _lastDropSndT=0;
+function playItemDropSfx(rar,x,y){const now=performance.now();if(now-_lastDropSndT<45)return;_lastDropSndT=now;const k=rar>=4?'drop_legend':rar>=2?'drop_rare':'drop_common';playSampleAt(k,.5,_r(1,.04),x,y);}
+// 아이템 습득음 — 그랩/뒤적임("사삭") 풀에서 랜덤 재생(등급 무관). cloth-grab 1 + rummage 슬라이스 5 = 6종. 골드·물약·보주 등 비아이템 습득은 기존 절차음(SFX.pickup) 유지.
+const _PICKUP_SFX_POOL=['pickup_item','pickup_rummage1','pickup_rummage2','pickup_rummage3','pickup_rummage4','pickup_rummage5'];
+function playItemPickupSfx(item){playSample(_PICKUP_SFX_POOL[~~(Math.random()*_PICKUP_SFX_POOL.length)],.5,_r(1,.05));}
 function equipItem(item){
   // 레벨 제한 체크
   if(item.reqLv&&P&&P.lv<item.reqLv){
@@ -13167,7 +13182,7 @@ let G={on:false,paused:false,stage:0,kills:0,mats:0,cam:{x:0,y:0},shake:0,parts:
   combo:0,comboTimer:0,comboMax:0,stageTime:0,
   _zones:null,_curZone:0,_zoneState:{},_portals:null}; // 존 분할 시스템
 let P=null,ens=[],projs=[],pProjs=[],worldItems=[];// worldItems = items on ground, pProjs = player arrows
-function _wiPush(wi){worldItems.push(wi);while(worldItems.length>20){let mi=0,mr=Infinity;for(let i=0;i<worldItems.length;i++){const r=worldItems[i].type==='item'?(worldItems[i].item?worldItems[i].item.rarity||0:0):-1;if(r<mr){mr=r;mi=i}}worldItems[mi]=worldItems[worldItems.length-1];worldItems.length--}}
+function _wiPush(wi){worldItems.push(wi);if(wi.type==='item'&&wi.item&&!wi._dropPreview)playItemDropSfx(wi.item.rarity||0,wi.x,wi.y);while(worldItems.length>20){let mi=0,mr=Infinity;for(let i=0;i<worldItems.length;i++){const r=worldItems[i].type==='item'?(worldItems[i].item?worldItems[i].item.rarity||0:0):-1;if(r<mr){mr=r;mi=i}}worldItems[mi]=worldItems[worldItems.length-1];worldItems.length--}}
 function _spawnWorldDropPreview(){
   if(!_DROP_PREVIEW||!P)return;
   const samples=[['weapon',EL.F,1],['bow',EL.I,2],['ring1',EL.D,3],['armor',EL.L,4],['helmet',EL.H,5]];

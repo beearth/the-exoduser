@@ -4,11 +4,14 @@ import { existsSync, readFileSync } from 'node:fs';
 
 const gameHtml = readFileSync(new URL('../game.html', import.meta.url), 'utf8');
 
-test('item pickup uses a single dedicated swipe sound for all rarities', () => {
-  assert.match(gameHtml, /pickup_item:'sfx\/pickup\/pickup_item\.mp3'/);
-  assert.ok(existsSync(new URL('../sfx/pickup/pickup_item.mp3', import.meta.url)), 'pickup_item sample exists');
-  // 단일 스와이프음: 등급 무관 모든 아이템에 pickup_item 하나만 재생.
-  assert.match(gameHtml, /function playItemPickupSfx\(item\)\{playSample\('pickup_item',\.5,_r\(1,\.05\)\);\}/);
+test('item pickup plays a random grab/rummage variant for all rarities', () => {
+  for (const key of ['pickup_item', 'pickup_rummage1', 'pickup_rummage2', 'pickup_rummage3', 'pickup_rummage4', 'pickup_rummage5']) {
+    assert.match(gameHtml, new RegExp(`${key}:'sfx/pickup/${key}\\.mp3'`));
+    assert.ok(existsSync(new URL(`../sfx/pickup/${key}.mp3`, import.meta.url)), `${key} sample exists`);
+  }
+  // 등급 무관 랜덤 풀에서 1종 재생.
+  assert.match(gameHtml, /const _PICKUP_SFX_POOL=\['pickup_item','pickup_rummage1','pickup_rummage2','pickup_rummage3','pickup_rummage4','pickup_rummage5'\];/);
+  assert.match(gameHtml, /function playItemPickupSfx\(item\)\{playSample\(_PICKUP_SFX_POOL\[~~\(Math\.random\(\)\*_PICKUP_SFX_POOL\.length\)\],\.5,_r\(1,\.05\)\);\}/);
   // 폐기된 등급 레이어 키가 남아있지 않아야 함.
   assert.doesNotMatch(gameHtml, /pickup_rare|pickup_legend/);
   // 가방 습득 경로
