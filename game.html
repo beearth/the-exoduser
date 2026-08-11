@@ -13049,7 +13049,7 @@ function recalcSt(){
   let bonus=0,_enhSt2=0;
   const _stEnhSet=new Set(['ring1','ring2','belt']); // ST 강화 3종
   for(const slot of SLOT_NAMES){const it=INV.equipped[slot];if(it){if(it.bonusSt)bonus+=it.bonusSt;if(it.enh>0&&_stEnhSet.has(slot))_enhSt2+=it.enh*0.2}}
-  P.mst=~~(base+bonus+_eqAffix('maxSTFlat')+~~(P._crystalStats?P._crystalStats.st:0)+_enhSt2)+(PASSIVES.pHuman||0)*100+_gritStFlat();P.st=Math.min(P.st,P.mst); // 악세ST강화: ring1/ring2/belt 1강당 +0.2 ST + 인간성: ST+100/Lv
+  P.mst=~~((base+bonus+_eqAffix('maxSTFlat')+~~(P._crystalStats?P._crystalStats.st:0)+_enhSt2)*(1+_eqAffix('maxSTPct')))+(PASSIVES.pHuman||0)*100+_gritStFlat();P.st=Math.min(P.st,P.mst); // 악세ST강화 + [P3 SAFE_FIX] maxSTPct 활성화(플랫합 ×(1+%), maxSTPct=0이면 불변) + 인간성: ST+100/Lv
 }
 
 function itemPower(it){
@@ -21253,7 +21253,7 @@ function applyStats(){
   // 시작HP = 300-20×부호난이도 (2026-07-30 개편: -5단=400 … 일반=300 … +5단=200)
   const _diffBaseHp=Math.max(100,300-20*_diffSigned());
   const _stgHp=G.on?_diffBaseHp+((G.stage||1)-1)*6:_diffBaseHp;
-  const _afHpF=_eqAffix('maxHPFlat'),_afHpP=_eqAffix('maxHPPct')+_eqAffix('lifeMaxHP'),_imHp=_eqImplicit('_iMaxHP'),_imHpP=_eqImplicit('_iMaxHPPct')+_eqImplicit('_iLifeHPPct');
+  const _afHpF=_eqAffix('maxHPFlat'),_afHpP=_eqAffix('maxHPPct')+_eqAffix('lifeMaxHP')+_eqAffix('maxHPPctArmor'),_imHp=_eqImplicit('_iMaxHP'),_imHpP=_eqImplicit('_iMaxHPPct')+_eqImplicit('_iLifeHPPct'); // [P3 MERGE] maxHPPctArmor→maxHPPct 효과처리 통합(ID 유지)
   // 강화 보너스 15슬롯 분리 (2026-06-10): HP=gloves/pants/boots, MP=bracelet/necklace/headband
   let _totalBonusHp=0,_totalBonusShield=0,_totalBonusMp=0,_enhHp=0,_enhMp=0;
   const _allDefSlots=['shield','armor','boots','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
@@ -21269,10 +21269,10 @@ function applyStats(){
   P.baseAtk=G.on?15+((G.stage||1)-1)*2:15;
   P.speed=(2.6+s.dex*.005)*(1+(P._altSpd||0)+_eqAffix('movSpeed')+_eqAffix('movSpeedCombat')+_eqImplicit('_iMovSpd')*.01+pPredSpd()+(P._okSpdBuff>0?P._okSpdMul||0:0)+(_eqAffix('injuredSpeed')>0&&P.hp<=P.mhp*.5?_eqAffix('injuredSpeed'):0));
   P._oocSpeed=_eqAffix('movSpeedOOC'); // 비전투 이속 (별도 적용)
-  P.stR=.05+s.dex*.005; // ST리젠: DEX 기반 (레벨→스탯 자동성장으로 간접 반영)
-  P.hpR=.05+s.str*.002+_eqAffix('lifeRegen')/60; // HP리젠: STR 기반 + 생명팔찌
+  P.stR=.05+s.dex*.005+(_eqAffix('stRegenFlat')+_eqAffix('beltSTRegen'))/60; // ST리젠: DEX 기반 + [P3 SAFE_FIX] stRegenFlat·beltSTRegen 활성화(lifeRegen /60 관례)
+  P.hpR=.05+s.str*.002+_eqAffix('lifeRegen')/60+(_eqAffix('hpRegenFlat')+_eqAffix('pantsHPRegen'))/60; // HP리젠: STR 기반 + 생명팔찌 + [P3 SAFE_FIX] hpRegenFlat·pantsHPRegen 활성화
   P.mmp=~~(100+s.int*2+_totalBonusMp+_eqAffix('maxMPFlat')+_enhMp); // MP: INT + 장신구 bonusMp
-  P.mpR=.05+s.int*.005; // MP리젠: INT 기반 (레벨→스탯 자동성장으로 간접 반영)
+  P.mpR=.05+s.int*.005+(_eqAffix('mpRegenFlat')+_eqAffix('headbandMPRegen'))/60; // MP리젠: INT 기반 + [P3 SAFE_FIX] mpRegenFlat·headbandMPRegen 활성화
   // ═══ 결정 스탯 합산 ═══
   const _cr={hp:0,st:0,mp:0,atk:0,def:0,eDef:0,spd:0,crit:0,cdmg:0,fire:0,ice:0,dark:0,light:0,holy:0,hpR:0,stR:0,mpR:0,drop:0};
   for(const sl of SLOT_NAMES){const it=INV.equipped[sl];if(!it||!it.crystals)continue;
@@ -22054,7 +22054,7 @@ function _autoFireBowSkill(tx,ty){
   P.st=Math.max(0,_sSt-_xbStCost);
   P.s=_sS;P.st2=_sSt2;P.facing=_svF;P.atkArc=_svA;
 }
-function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];if(a.id==='sharpAtk'||a.id==='brutalAtk'||a.id==='ruinAtk')s+=a.value}return s}
+function _slotFlatAtk(it){if(!it||!it.affixes)return 0;let s=0;for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];if(a.id==='sharpAtk'||a.id==='brutalAtk'||a.id==='ruinAtk'||a.id==='flatPhysDmg'||a.id==='flatMagicDmg')s+=a.value}return s} // [P3 SAFE_FIX] flatPhysDmg(wpn)·flatMagicDmg(helm) sharpAtk와 동일 flat-atk 채널 활성화
 // 레벨 자동 성장: 비하인드 적용 (UI에 안 보임, 장비처럼 계산에만 반영)
 function _lvB(){return~~(P.lv*.5)}
 
