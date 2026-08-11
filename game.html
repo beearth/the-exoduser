@@ -21356,7 +21356,7 @@ function statDex(){return 1+(STATS.dex+_eqStat('Dex')+_lvB())*.0005+(gl().atkSpd
 function statInt(){return 1} // INT는 ref 함수에서 직접 ATK로 더해짐 (1:1)
 function _eqLckTotal(){return STATS.lck+_lvB()+_eqStat('Lck')+_eqAffix('lckFlatN')+_eqAffix('lckFlatR')}
 function statCrit(){return _eqLckTotal()*.025+PASSIVES.pCrit*1.5+(rg1().critRate||0)+(rg2().critRate||0)+(nc().critRate||0)+_eqAffix('critRate')*100+(P._crystalStats?P._crystalStats.crit:0)} // critRate 어픽스 (무기 파트) pct단위 → %로 환산
-function statCritDmg(){return 1.5+_eqLckTotal()*.002+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW')+_eqAffix('neckCritDmg')+_eqAffix('glovesCritDmg')+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // 기본 1.5, LCK 1당 +0.2% (LCK1000=+200%, 1.5→3.5), critDmgW+neckCritDmg+glovesCritDmg
+function statCritDmg(){return 1.5+_eqLckTotal()*.002+PASSIVES.pCrit*.08+_eqAffix('critDmgA')+_eqAffix('critDmgB')+_eqAffix('critDmgW')+_eqAffix('neckCritDmg')+_eqAffix('glovesCritDmg')+(P.hp<=P.mhp*.35?_eqAffix('critMultiOnLowHP'):0)+(P._crystalStats?P._crystalStats.cdmg*0.01:0)} // [P4B-3] critMultiOnLowHP: HP≤35% 치명뎀+ // 기본 1.5, LCK 1당 +0.2% (LCK1000=+200%, 1.5→3.5), critDmgW+neckCritDmg+glovesCritDmg
 function statDropBonus(){return 1+_eqLckTotal()*.0015+PASSIVES.pDrop*.08+_eqAffix('dropRate')+(P._crystalStats?P._crystalStats.drop*0.01:0)}
 // 패시브 배율 함수 (max5, 효과 2배)
 // ═══ 통합 합연산 배율: 모든 데미지 패시브를 한 곳에서 합산 ═══
@@ -34598,10 +34598,11 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     if(dmg>G._dmgPeak.val){G._dmgPeak.val=dmg;G._dmgPeak.t=300} // 5초(300프레임) 유지
     // ═══ 흡수 어픽스: lifeLeech/manaLeech/stLeech/lifeOnHit ═══
     if(!isDot){
-      const _ll=_eqAffix('lifeLeech')+(_eqAffix('injuredLeech')>0&&P.hp<=P.mhp*.35?_eqAffix('injuredLeech'):0);
+      const _ll=_eqAffix('lifeLeech')+_eqAffix('lifeLeechBr')+_eqAffix('endLeech')+(_eqAffix('injuredLeech')>0&&P.hp<=P.mhp*.35?_eqAffix('injuredLeech'):0); // [P4B-3] lifeLeechBr·endLeech 활성화
       if(_ll>0)P.hp=Math.min(P.mhp,P.hp+dmg*_ll);
       const _ml=_eqAffix('manaLeech');if(_ml>0)P.mp=Math.min(P.mmp,P.mp+dmg*_ml);
       const _sl=_eqAffix('stLeech');if(_sl>0)P.st=Math.min(P.mst,P.st+dmg*_sl);
+      const _roh=_eqAffix('resourceOnHit');if(_roh>0){P.mp=Math.min(P.mmp,P.mp+dmg*_roh);P.st=Math.min(P.mst,P.st+dmg*_roh)} // [P4B-3] 타격 시 MP+ST 회수
       const _loh=_eqAffix('lifeOnHit');if(_loh>0)P.hp=Math.min(P.mhp,P.hp+_loh);
       // 유니크: _uAxeLeech — 출혈 적 공격 시 HP 흡수
       if(_uEq('_uAxeLeech')>0&&(e.bleed>0||e.bleedT>0))P.hp=Math.min(P.mhp,P.hp+~~(dmg*_uEq('_uAxeLeech')));
@@ -34612,7 +34613,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       const _ohIce=_eqAffix('iceOnHit');if(_ohIce>0&&Math.random()<_ohIce){e._freezeGauge=(e._freezeGauge||0)+30;if(e._freezeGauge>=100&&!e._freezeImmune){e._frozen=180;e._freezeGauge=0}}
       const _ohLtn=_eqAffix('lightOnHit');if(_ohLtn>0&&Math.random()<_ohLtn){e._shockT=Math.max(e._shockT||0,120);e._shockMul=Math.max(e._shockMul||0,.15)}
       const _ohDark=_eqAffix('darkOnHit');if(_ohDark>0&&Math.random()<_ohDark){e._cursed=Math.max(e._cursed||0,180)}
-      const _ohPsn=_eqAffix('poisonOnHit');if(_ohPsn>0&&Math.random()<_ohPsn){e.poisonT=Math.max(e.poisonT||0,300);e.poisonPool=(e.poisonPool||0)+dmg*.2}
+      const _ohPsn=_eqAffix('poisonOnHit')+_eqAffix('onHitPoison');if(_ohPsn>0&&Math.random()<_ohPsn){e.poisonT=Math.max(e.poisonT||0,300);e.poisonPool=(e.poisonPool||0)+dmg*.2} // [P4B-3] onHitPoison 활성화
       const _ohBld=_eqAffix('onHitBleed');if(_ohBld>0&&Math.random()<_ohBld){e.bleedT=Math.max(e.bleedT||0,300);e.bleedPool=(e.bleedPool||0)+dmg*.25}
       const _ohStn=_eqAffix('onHitStun');if(_ohStn>0&&Math.random()<_ohStn){e.stunned=Math.min(180,Math.max(e.stunned||0,60))}
       const _ohFrz=_eqAffix('onHitFreeze');if(_ohFrz>0&&Math.random()<_ohFrz){e._freezeGauge=(e._freezeGauge||0)+50;if(e._freezeGauge>=100&&!e._freezeImmune){e._frozen=180;e._freezeGauge=0}}
@@ -34874,13 +34875,13 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
       e._bossRevived=true; // 타이머 활성 (실제 부활 여부는 resolve에서)
     }
     // ═══ 어픽스: killSlayer (처치보너스) — 처치 시 3초간 뎀업 ═══
-    if(_eqAffix('killSlayer')>0){P._killBuff=180;P._killMul=_eqAffix('killSlayer')}
+    {const _ks=_eqAffix('killSlayer')+_eqAffix('endKillChain');if(_ks>0){P._killBuff=180;P._killMul=_ks}} // [P4B-3] endKillChain 활성화
     // ═══ On-Kill 어픽스: 처치 시 회복/폭발/이속 ═══
-    {const _okH=_eqAffix('onKillHeal')+_eqAffix('hpOnKill');if(_okH>0)P.hp=Math.min(P.mhp,P.hp+_okH);
-    const _okM=_eqAffix('onKillMana');if(_okM>0)P.mp=Math.min(P.mmp,P.mp+_okM);
+    {const _okH=_eqAffix('onKillHeal')+_eqAffix('hpOnKill')+_eqAffix('neckKillHeal');if(_okH>0)P.hp=Math.min(P.mhp,P.hp+_okH); // [P4B-3] neckKillHeal
+    const _okM=_eqAffix('onKillMana')+_eqAffix('ringMPOnKill');if(_okM>0)P.mp=Math.min(P.mmp,P.mp+_okM); // [P4B-3] ringMPOnKill
     const _okS=_eqAffix('onKillStam');if(_okS>0)P.st=Math.min(P.mst,P.st+_okS);
     const _okSh=_eqAffix('shieldOnKill');if(_okSh>0)P.shield=Math.min(P.mshield,P.shield+_okSh);
-    const _okSp=_eqAffix('onKillSpeed');if(_okSp>0){P._okSpdBuff=120;P._okSpdMul=_okSp}
+    const _okSp=_eqAffix('onKillSpeed')+_eqAffix('bootsMSOnKill');if(_okSp>0){P._okSpdBuff=120;P._okSpdMul=_okSp} // [P4B-3] bootsMSOnKill
     }
     // ═══ 유니크 On-Kill 효과 ═══
     // _uMaceExplode: 적 처치 시 폭발 (최대HP의 30% AoE)
@@ -35770,7 +35771,7 @@ function hurtP(dmg,opts){
   // ═══ 어픽스: counterHit (카운터히트) — 피격 시 확률로 반격 ═══
   const _chP=_eqAffix('counterHit');if(_chP>0&&!_isDot&&Math.random()<_chP){const _chE=shQuery(P.x,P.y,80);for(let _ci=0;_ci<_chE.length;_ci++){if(_chE[_ci].alive){hurtE(_chE[_ci],~~(meleeRef()*statStr()),0,true);break}}}
   // ═══ 어픽스: thorns (가시) — 피격 시 고정 반사뎀 ═══
-  const _thV=~~(_eqAffix('thorns'));if(_thV>0){const _thE=shQuery(P.x,P.y,80);for(let _ti=0;_ti<_thE.length;_ti++){if(_thE[_ti].alive){hurtE(_thE[_ti],_thV,0,true,{dot:true,shieldHit:true});break}}}
+  const _thV=~~(_eqAffix('thorns')+_eqAffix('arcTankThorns'));if(_thV>0){/* [P4B-3] arcTankThorns 활성화 */const _thE=shQuery(P.x,P.y,80);for(let _ti=0;_ti<_thE.length;_ti++){if(_thE[_ti].alive){hurtE(_thE[_ti],_thV,0,true,{dot:true,shieldHit:true});break}}}
   // ═══ 어픽스: reflect (반사) — 피격 데미지 비례 반사 ═══
   const _refV=_eqAffix('reflect');if(_refV>0&&a>0){const _refE=shQuery(P.x,P.y,80);for(let _ri=0;_ri<_refE.length;_ri++){if(_refE[_ri].alive){hurtE(_refE[_ri],~~(a*_refV),0,true,{dot:true,shieldHit:true});break}}}
   // ═══ 어픽스: lastStand (불굴) — 1회 사망 방지 ═══
