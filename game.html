@@ -11722,7 +11722,7 @@ const AFFIX_POOL=[
   {id:'elemPenAll',type:1,tiers:[.03,.05,.09,.15,.22],unit:'pct',slots:['wpn'],group:'ePnA',weight:30,tierW:[40,30,20,8,2],layer:4,sub:'A'},
   {id:'shieldBypass',type:1,tiers:[.05,.08,.14,.22,.32],unit:'prob',slots:['wpn'],group:'shBp',weight:30,tierW:[40,30,20,8,2],layer:5,sub:'B',compat:['OFFENSE']},
   {id:'armorShred',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['wpn'],group:'arSh',weight:50,layer:5,sub:'B',compat:['OFFENSE']},
-  {id:'projSpeedPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'pjSp',weight:55,layer:5,sub:'B',compat:['OFFENSE']},
+  {id:'projSpeedPct',type:0,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'pjSp',weight:55,layer:5,sub:'B',compat:['OFFENSE'],family:['PROJECTILE']},
 
   // ═══ Phase 3: On-Hit/Crit 프록 (25종) ═══
   {id:'onHitFireball',type:1,tiers:[.04,.07,.11,.16,.22],unit:'prob',slots:['wpn'],group:'ohFb',weight:25,tierW:[40,30,20,8,2],layer:6,sub:'B',compat:['OFFENSE']},
@@ -11853,11 +11853,11 @@ const AFFIX_POOL=[
   {id:'doubleStrike',type:1,tiers:[.02,.04,.06,.09,.13],unit:'prob',slots:['wpn'],group:'dStr',weight:20,tierW:[40,30,20,8,2],layer:5,sub:'B',compat:['OFFENSE']},
   {id:'multiShot',type:1,tiers:[.03,.05,.08,.12,.18],unit:'prob',slots:['xbow'],group:'mSht',weight:20,tierW:[40,30,20,8,2],layer:5,sub:'B',compat:['OFFENSE']},
   {id:'pierceChance',type:0,tiers:[.05,.08,.14,.22,.30],unit:'prob',slots:['xbow'],group:'prCh',weight:50,layer:5,sub:'B',compat:['OFFENSE']},
-  {id:'pierceCount',type:0,tiers:[1,1,2,2,3],unit:'cnt',slots:['xbow'],group:'prCt',weight:40,layer:5,sub:'B',compat:['OFFENSE']},
+  {id:'pierceCount',type:0,tiers:[1,1,2,2,3],unit:'cnt',slots:['xbow'],group:'prCt',weight:40,layer:5,sub:'B',compat:['OFFENSE'],family:['PROJECTILE']},
   {id:'pierceDmgKeep',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['xbow'],group:'prDK',weight:40,layer:5,sub:'B',compat:['OFFENSE']},
   {id:'chainDmgKeep',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'chDK',weight:40,layer:5,sub:'B',compat:['OFFENSE']},
-  {id:'splashRadius',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['xbow'],group:'spRd',weight:45,layer:5,sub:'B',compat:['OFFENSE']},
-  {id:'splashDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['xbow'],group:'spDm',weight:35,layer:5,sub:'B',compat:['OFFENSE']},
+  {id:'splashRadius',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['xbow'],group:'spRd',weight:45,layer:5,sub:'B',compat:['OFFENSE'],family:['ORB','BEAM']},
+  {id:'splashDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['xbow'],group:'spDm',weight:35,layer:5,sub:'B',compat:['OFFENSE'],family:['ORB','BEAM']},
   {id:'chargeAtkDmg',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'chAD',weight:50,layer:5,sub:'A'},
   {id:'counterAtkDmg',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'ctAD',weight:45,layer:5,sub:'A'},
   {id:'backstabDmg',type:1,tiers:[.12,.20,.32,.46,.65],unit:'pct',slots:['wpn'],group:'bkSt',weight:35,layer:6,sub:'A'},
@@ -13399,7 +13399,7 @@ function _mkPProj(){return{x:0,y:0,vx:0,vy:0,dmg:0,el:0,r:4,spd:0,
   sz:1,rot:0,rotSpd:0,t:0,maxT:0,explosive:false,
   _trail:null,_trH:0,_trLen:0,
   sfxHit:null,sfxSpawn:null,_extraData:null,
-  _aoeR:0,_aoeDmg:0}}
+  _aoeR:0,_aoeDmg:0,_pcBonus:0,_psApplied:0}}
 function _resetPProj(p){
   p.x=p.y=p.vx=p.vy=p.dmg=0;p.el=0;p.r=4;p.spd=0;
   p.alive=true;p.owner='p';p.maxDist=0;p.dist=0;p.stagger=0;p.kb=0;
@@ -13419,6 +13419,8 @@ function _resetPProj(p){
   p.omniHoming=p.ebHoming=p.home=p.split=p.splitDone=false;
   p._gwStk=p._pierced=0;p._hitSet=null;p._plagueTargets=p._lastPlagueE=null;
   p._pierceRate=50+_eqAffix('pierceFlat'); // 통일 관통률 기본값 50+장비관통력, 스폰 시 덮어쓰기 가능
+  p._pcBonus=_eqAffix('pierceCount'); // [P4B-5B] pierceCount = pierce count-model(pierceMax) 확장 (pierceFlat=rate-model과 별개)
+  p._psApplied=0;                      // [P4B-5B] projSpeedPct 1회 적용 플래그
   p.knockback=p.kbAng=0;p.col=p.img=p.imgKey=null;
   p.sz=1;p.rot=p.rotSpd=p.t=p.maxT=0;p.explosive=false;
   p._trail=null;p._trH=0;p._trLen=0;p._fromTurret=false;
@@ -18769,7 +18771,8 @@ function _buildAtlasB(){
 const _fxAnims=[];
 function _spawnFxAnim(x,y,sz){_fxAnims.push({x,y,sz,f:0,t:0,ml:30})}
 function _fireballExplode(p){
-  const r=p.explR||80,dmg=p.explDmg||~~(p.dmg*.6),el=p.el;
+  // [P4B-5B] splashRadius→explR(폭발 반경%), splashDmg→explDmg(폭발 뎀%). explosion component만 강화 — main hit(p.dmg) 불변, double-dip 없음. 폭발 없는 공격엔 이 함수 미호출.
+  const r=(p.explR||80)*(1+_eqAffix('splashRadius')),dmg=~~((p.explDmg||~~(p.dmg*.6))*(1+_eqAffix('splashDmg'))),el=p.el;
   const _ne=shQuery(p.x,p.y,r+20);
   for(let i=0;i<_ne.length;i++){const e=_ne[i];if(!e.alive)continue;
     if(dst(p.x,p.y,e.x,e.y)<r+e.r){
@@ -27880,6 +27883,8 @@ function update(){
     const p=pProjs[i];
     // 트레일 업데이트
     {const _tMax=p.arcMissile?16:(p.mhBlade||p.plagueBlade)?12:6;if(!p._trail){p._trail=new Array(_tMax);for(let _ti=0;_ti<_tMax;_ti++)p._trail[_ti]={x:0,y:0};p._trH=0;p._trLen=0}const _tSlot=p._trail[p._trH%_tMax];_tSlot.x=p.x;_tSlot.y=p.y;p._trH=(p._trH+1)%_tMax;if(p._trLen<_tMax)p._trLen++}
+    // [P4B-5B] projSpeedPct — 투사체 이동속도% (투사체당 1회, homing/bounce는 spd magnitude 보존이라 유지). dmg 불변.
+    if(!p._psApplied){p._psApplied=1;const _ps=_eqAffix('projSpeedPct');if(_ps>0){p.vx*=(1+_ps);p.vy*=(1+_ps);}}
     const spd=Math.sqrt(p.vx*p.vx+p.vy*p.vy);
     // 반사 쿨 감소
     if(p._bounceCool>0)p._bounceCool-=sp;
@@ -28153,7 +28158,7 @@ function update(){
         if(p.fireball&&p.explR){
           _fireballExplode(p);
           // 업화선: 폭발 후에도 관통 가능 (차징 관통력 소진 전까지)
-          if(p.fireBeamProj&&p.pierce>0&&(p._pierceCount||0)<(p.pierceMax||0)){
+          if(p.fireBeamProj&&p.pierce>0&&(p._pierceCount||0)<((p.pierceMax||0)+(p._pcBonus||0))){/*[P4B-5B]pierceCount*/
             p._pierceCount=(p._pierceCount||0)+1;
             if(!p._hitSet)p._hitSet=new Set();
             p._hitSet.add(e);
@@ -28172,7 +28177,7 @@ function update(){
             }}
           for(let _bbk=0;_bbk<6;_bbk++){const _bba2=Math.PI*2*_bbk/6;poolPart(p.x,p.y,Math.cos(_bba2)*3,Math.sin(_bba2)*3,'#00ccff',2+Math.random()*2,8+Math.random()*4)}
           // 관통 체크: AoE 터뜨리고도 관통 시 탄 유지
-          if(p.pierce>0&&Math.random()<p.pierce&&(p._pierceCount||0)<(p.pierceMax||1)){
+          if(p.pierce>0&&Math.random()<p.pierce&&(p._pierceCount||0)<((p.pierceMax||1)+(p._pcBonus||0))){/*[P4B-5B]pierceCount*/
             p._pierceCount=(p._pierceCount||0)+1;
             p.dmg=~~(p.dmg*Math.min(1,0.85+(PASSIVES.pPierce||0)*0.03));
             if(!p._hitSet)p._hitSet=new Set();p._hitSet.add(e);
@@ -28268,7 +28273,7 @@ function update(){
           }
         // ── 투사체 관통: 확률 굴림 → 통과 (패시브 '관통' 전체 투사체 적용) ──
         if(!p.explosive&&p.pierce>0){
-          const _pMax=p.pierceMax||1;
+          const _pMax=(p.pierceMax||1)+(p._pcBonus||0);/*[P4B-5B]pierceCount = pierce count-model 확장*/
           if(Math.random()<p.pierce&&(p._pierceCount||0)<_pMax){
             p._pierceCount=(p._pierceCount||0)+1;
             p.dmg=~~(p.dmg*Math.min(1,0.85+(PASSIVES.pPierce||0)*0.03)); // 관통뎀감소 완화: lv당 3%p

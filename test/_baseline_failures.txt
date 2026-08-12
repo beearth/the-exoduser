@@ -1,0 +1,34 @@
+boot flow no longer does a duplicate full map rebuild immediately after waiting for map object sprites
+compact resources and objective values omit developer labels and abbreviate large malice totals
+completed warmup rescans periodically for images that finished loading later
+defines earth slam fusion for giantSlam2 and earthBreaker
+defines earthBreaker as a separate physical active skill
+dispatches giantSlam2 through activateGiantSlam
+double-tap Flash Step shares the five-cell Shift mobility gauge
+earth slam fusion adds one giant slam poise hit before two earthBreaker damage pulses
+earthBreaker becomes the host card for earth slam fusion
+earthBreaker dispatches through skill slots as a standalone cast
+earthBreaker hit count scales at level 1, 5, and 10
+earthBreaker total damage scales by 10 percent per level and splits across hits
+friendly reflected projectile hit path forwards blue bean damage flags
+grit adds flat hp, mp, and stamina caps after bonus aggregation
+grit is defined as an unbounded SP sink with flat +1 bonuses
+grit summary explains the 1 SP to 1 grit rule
+laser family tuning keeps base beam near whirlwind DPS and fusion beams stacked
+late-loaded warmup images are queued only once across rescan passes
+map cache refreshes from late-loading assets are debounced through a single queued refresh path
+non-stream buildMapCache restores CH1 soil floor tiling before floor fallback pass
+only 1000x1000 class maps force stream loading; 300x300 maps stay on the legacy cache path
+parried projectiles get an explicit reflect-only damage bonus
+parry blue beans bypass the default magic-to-HP penalty
+parry grants +10 malice instead of +100
+parry passive description states the 50 percent rainbow bean cap
+reflected blue beans use a player-based minimum damage floor
+right objective readout shows only level and current versus required experience as text
+skill panel stays clean and removes the old grit button
+stage 1 (1_2 map) loads and paints the black void wall tile on wall cells
+stat panel renders grit as a dedicated row below the base stats
+test\\pixellab8dirFiles.test.js
+tmp_cross_test.js
+void wall tile reloads the map cache when it finishes loading
+void wall tiles are not overwritten by the fallback black wall fill
