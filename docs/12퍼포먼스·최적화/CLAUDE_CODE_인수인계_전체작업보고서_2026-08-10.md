@@ -387,6 +387,26 @@ heavy 교전(적 537, 투사체 623, 2814 ticks) 실측:
 
 **diagnostic 처리**: 조사용 계측(`_HITCH`/`_UPROF`/tick recorder/`_ISW`/HTICK/shQuery·chunk·tier 카운터, `?perf=1` 게이트)은 **일회성 실험 코드로 분류 → production commit에서 제거**. game.html 최종 diff는 isW 최적화(+6/−1)만. (계측 스크립트는 scratchpad 보존: `hitch_stream.js`/`cpu_profile.js`/`gc_enrich.js`/`isw_diff.js`/`isw_regress.js`.)
 
+### 6.10 Fresh post-isW baseline — passive vs skill-use (2026-08-13)
+
+isW 최적화(d074f3a9) 후 CPU 구조가 바뀌어 hotspot 순위를 재측정. **측정만**(production 무변경). 진단(`_HITCH`/`_UPROF`)은 임시 진단본으로 측정 후 game.html은 `d074f3a9`와 byte-equivalent 복원(hash MATCH).
+
+**Passive 정상 교전 (플레이어 공격/스킬 미사용, 적 250~350, 3회)**:
+- fps 111~127, frame p50/p95/p99/max ≈ 7/12/**16**/23~45, **U p99 3.5~4.5**(isW 제거로 미미), **D p99 12~13**, hitch>16.7 0.34~1.30%.
+- Clean production CPU profile(303적, profiler A/B OFF86/ON69fps): **drawImage 14.3%(#1)** · draw 13.6% · loop 7.9% · **isW 5.4%(25.1%→5.4% sanity 확인)** · update 4.7% · bufferSubData 4.4% · updateE 3.4%. **subtree total: update 18% vs draw 63%.**
+- → **passive steady-state = draw-bound**(drawImage/ens/GL submission). 전부 이미 GPU 8dir 인스턴싱 배칭(CLOSED), 비휴리스틱 intrinsic 렌더. **behavior-preserving 큰 이득 없음 → passive는 NO-GO(headroom 충분).**
+
+**Skill-use 교전 (Lv100 전스킬 43개, heavy 슬롯 maliceStorm/maliceMortar/ghostXbowTurret/plagueBurst/giantSlam2/holyDome + ULT blackStar, 스킬 연속 발동)** — 유저 지적("스킬 쓸 때 끊긴다") 반영:
+- fps 106, frame p99 **17.0**, **max 57.0ms**, hitch>16.7 1.35%(>33=2, >50=1). U **max 44.8ms**.
+- **worst-U 프레임 6/6 전부 `proj` dominant**: #최악 U/frame=44.8 → **proj=41.9ms**(shq=586, 그 프레임 586 투사체 homing), 이하 proj 12~19.5ms. → **간헐 stutter의 CPU-update 원인 = 대량 스킬 투사체의 homing/neighbor query(O(투사체×적))**.
+- draw-side: **ens-dominant hitch 51%**(11~14.6ms, 스킬 화면효과로 악화) + parallax(9.6ms)·post(9.2ms)·part(VFX) 간헐 spike + kill 드랍 items(22ms).
+- Skill-use CPU 평균 profile: 여전히 drawImage 14.9%/draw 13.1% 상위(대부분 프레임은 draw-bound)이나 **간헐 44ms proj spike는 평균에 안 잡힘** — 평균이 아니라 worst-frame 분석으로 stutter 원인 특정.
+
+**판정**:
+> isW = CLOSED/PASS. **Passive steady-state = draw-bound intrinsic → NO-GO.** 실제 유저 체감 "스킬 끊김" = **간헐 `proj` 업데이트 스파이크(대량 스킬 투사체 homing, ~44ms/최악프레임)** + ens/VFX 렌더 hitch. → **다음 후보 = 대량 스킬 투사체 homing/투사체 업데이트 비용**(behavior risk: homing 정확도·투사체 수 불변 필수 — 별도 실패테스트로 신중히). 이번 단계 **미착수**(측정만).
+
+**caveat**: 측정 harness는 스킬을 140ms마다 연속 발동(인간보다 공격적) → hitch **빈도는 과장**, 단 spike **magnitude(proj 44ms)는 실재**. game.html 계측은 미커밋·측정 후 제거, `d074f3a9` 복원 확인.
+
 ## 7. Claude Code 작업 체크리스트
 
 - [ ] 작업 전 해당 시스템 문서를 먼저 읽기
