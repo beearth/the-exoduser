@@ -5677,6 +5677,7 @@ const _EN={
 '🌊충격파!':'🌊Shockwave!',
 '👿악의+100':'👿Malice+100',
 '💥패링폭발!':'💥Parry Blast!',
+'🛡패링실드+':'🛡Parry Shield+',
 '균열 충돌! ':'Rift Collision! ',
 '벽 충돌! ':'Wall Collision! ',
 '소환!':'Summon!','환영!':'Phantom!',
@@ -30998,6 +30999,8 @@ function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(
   G.mats+=_matsAdd;addTxt(P.x,P.y-60,_T('👿악의+')+_matsAdd,'#cc44ff',40);
   // ═══ 어픽스: parryExplosion (패링폭발) — 패링 성공 시 주변 AoE ═══
   if(_eqAffix('parryExplosion')>0){const _peD=~~(meleeRef()*statStr()*_eqAffix('parryExplosion'));const _peQ=shQuery(P.x,P.y,100);for(let _pi=0;_pi<_peQ.length;_pi++){if(_peQ[_pi].alive)hurtE(_peQ[_pi],_peD,0,true,{dot:true,shieldHit:true})}addTxt(P.x,P.y-40,_T('💥패링폭발!'),'#ff6644',35)}
+  // ═══ [P5B/LOCK-27] afterParryShield — 패링 성공 시 실드 flat 회복(shieldOnKill 선례 재사용, cap=P.mshield, RNG 없음, rage/HP 무관) ═══
+  {const _apS=_eqAffix('afterParryShield');if(_apS>0){P.shield=Math.min(P.mshield,P.shield+_apS);addTxt(P.x,P.y-70,_T('🛡패링실드+')+~~_apS,'#44ccff',33)}}
   // 패링 임팩트: 무지개=무지개폭발, Q패링=Dark 02, 우클릭=Lightning(기존)
   if(!window._tvfx2)window._tvfx2=[];
   if(_parryEl==='rainbow'){
