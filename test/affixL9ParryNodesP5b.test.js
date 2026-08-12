@@ -69,8 +69,8 @@ test('§5 afterParryShield E2E — A~E, cap/HP/rage', () => {
 test('§6 afterParryShield — RNG 없음(unit=val), parry당 1회', () => {
   const blk=gameHtml.match(/\{const _apS=_eqAffix\('afterParryShield'\);if\(_apS>0\)\{[^\n]*\}\}/)[0];
   assert.ok(!/random/.test(blk),'Math.random 미추가(deterministic)');
-  // parryExplosion과 같은 doParry 블록(단일 parry event당 1회) — addTxt 각 1회
-  assert.equal([...gameHtml.matchAll(/🛡패링실드\+/g)].length,1,'afterParryShield 배선 1곳(doParry)');
+  // consumer(_eqAffix)는 doParry 블록 1곳만 (단일 parry event당 1회). 라벨 문자열은 배선+번역키로 2회 나올 수 있어 consumer로 카운트.
+  assert.equal([...gameHtml.matchAll(/_eqAffix\('afterParryShield'\)/g)].length,1,'afterParryShield consumer 1곳(doParry)');
 });
 
 test('§7 Rage foundation regression (무변경)', () => {
