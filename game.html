@@ -9633,10 +9633,10 @@ function _evictLowest(newPri){
   if(minI>=0&&(newPri>minP||(newPri>=_SFX_PRI.SKILL&&newPri>=minP))){const n=_activeNodes[minI];try{n.src.stop()}catch(e){}n._dn();return true}
   return false;
 }
-function _playSampleNow(key,vol,rate,startTime,pan){
+function _playSampleNow(key,vol,rate,startTime,pan,priOverride){
   const buf=_audioBuffers[key];
   if(!buf){if(_sampleFiles[key]&&!_audioLoadPending[key]){_audioLoadPending[key]=true;const _c2=actx();fetch(_sampleFiles[key]).then(r=>r.arrayBuffer()).then(ab=>_c2.decodeAudioData(ab)).then(b=>{_audioBuffers[key]=b;delete _audioLoadPending[key]}).catch(()=>{delete _audioLoadPending[key]})}return;}
-  const pri=_sfxPri(key);
+  const pri=(priOverride!=null)?priOverride:_sfxPri(key);
   // PROJ 하드캡: 동시 2개
   if(pri<=_SFX_PRI.PROJ){let _pCnt=0;for(let i=0;i<_activeNodes.length;i++)if(_activeNodes[i].pri<=_SFX_PRI.PROJ)_pCnt++;if(_pCnt>=_MAX_PROJ_NODES)return;}
   // HIT 하드캡: 동시 3개 (PROJ 포함)
@@ -9741,7 +9741,7 @@ function playSample(key,vol,rate,pri){
   return;
 }
 // 거리 기반 사운드: 가까우면 vol 그대로, 멀면 작게 (화면 밖이면 거의 안 들림)
-function playSampleAt(key,vol,rate,x,y){
+function playSampleAt(key,vol,rate,x,y,priOverride){
   key=_silvertailVoiceKey(key);
   if(!key)return;
   if(!P)return;
@@ -9754,7 +9754,7 @@ function playSampleAt(key,vol,rate,x,y){
   const pan=Math.max(-0.7,Math.min(0.7,dx/600));
   const _v=(vol*falloff*falloff)*(_gxVolMul<1?_gxVolMul:1);
   if(_v<0.01)return;
-  _playSampleNow(key,_v,rate*(0.92+Math.random()*0.16),0,pan);
+  _playSampleNow(key,_v,rate*(0.92+Math.random()*0.16),0,pan,priOverride);
 }
 
 // ── 칼등치기 전용 사운드 (이전 재생 확실히 끊고 1개만) ──
@@ -28003,7 +28003,7 @@ function update(){
           e.poison=1;e.poisonT=Math.max(e.poisonT||0,600);
           const _vbPriorStk=e.poisonStk||0;
           if(_vbPriorStk<50){e.poisonStk=_vbPriorStk+1;e._poisonPool=(e._poisonPool||0)+pDotPool()*(p._venomPool||0)*(1+_vbPriorStk*0.5)*1.5;}
-          playSampleAt('chain_fly',.3,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,_vbAng);
+          playSampleAt('chain_fly',.3,_r(1.2,.2),e.x,e.y,_SFX_PRI.PROJ);playVFXAng('magic_burst',e.x,e.y,0.3,1,_vbAng);
           // 91보장+9확률 관통 (악의사냥 동일)
           const _vbGtd=Math.floor(p._mhMaxPierce*91/1000);
           if(p._pierced<=_vbGtd){hit=false;continue}
@@ -28059,7 +28059,7 @@ function update(){
           if((e.bleedStk||0)<10)e._bleedPool=(e._bleedPool||0)+pDotPool()*_bladeBleed;
         }
         if(!_isTurretProj||_ftV>0.01){
-          if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
+          if(p.bladeShard||p.maliceHunt||p.iceBlade){playSampleAt('chain_fly',.3*_ftV,_r(1.2,.2),e.x,e.y,_SFX_PRI.PROJ);playVFXAng('magic_burst',e.x,e.y,0.3,1,ang)}
           else if(p.blueBean){if(!P._bbHitCd||P._bbHitCd<=0){playSample('bean_hit',.1*_ftV,_r(1,.15));P._bbHitCd=4}}
           else if(p.arcMissile){}
           else if(p.magic)playSampleAt('bullet_hit',.15*_ftV,_r(1,.15),e.x,e.y);
