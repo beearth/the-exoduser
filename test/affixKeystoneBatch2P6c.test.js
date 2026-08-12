@@ -25,15 +25,24 @@ test('§1 pool — 거인(L5-B/armor)·핏빛(L6-B/wpn), keystone:1 v2only', () 
   assert.deepEqual([bp.layer,bp.sub,bp.slots[0],bp.keystone,bp.v2only],[6,'B','wpn',1,1]);
 });
 
-test('§2 standing 판정 — position-delta(신설, standingDmg DEAD)', () => {
-  const blk=gameHtml.match(/if\(P\)\{P\._moving=\(P\._lastX!==undefined&&\(P\.x!==P\._lastX\|\|P\.y!==P\._lastY\)\);P\._lastX=P\.x;P\._lastY=P\.y;\}/)[0];
-  assert.ok(blk,'position-delta 배선(update 시작부)');
-  function step(P){new Function('P',blk)(P);return P._moving}
+test('§2 standing 판정 — position-delta + P6D epsilon 하드닝(sub-pixel noise 흡수)', () => {
+  // [P6D] exact-equality → squared-epsilon(_KS_MOVE_EPS2). walk step ≫ eps라 게임플레이 불변, float noise/초미세 nudge만 정지로.
+  const blk=gameHtml.match(/if\(P\)\{const _mdx=P\._lastX===undefined\?0:P\.x-P\._lastX,_mdy=P\._lastX===undefined\?0:P\.y-P\._lastY;P\._moving=\(P\._lastX!==undefined&&\(_mdx\*_mdx\+_mdy\*_mdy\)>_KS_MOVE_EPS2\);P\._lastX=P\.x;P\._lastY=P\.y;\}/)[0];
+  assert.ok(blk,'position-delta+epsilon 배선(update 시작부)');
+  const EPS2=gameHtml.match(/const _KS_MOVE_EPS2=([^;]+);/)[1];
+  const eps2=new Function('return '+EPS2)();
+  assert.ok(Math.abs(eps2-0.0025)<1e-12,'_KS_MOVE_EPS2=0.05² (px²)');
+  function step(P){new Function('P','_KS_MOVE_EPS2',blk)(P,eps2);return P._moving}
   const P={x:0,y:0};
   assert.equal(step(P),false,'첫 프레임: _lastX undefined → 정지(false)');
-  assert.equal(step(P),false,'위치 불변 → 정지');
-  P.x=5;assert.equal(step(P),true,'위치 변화 → 이동');
+  assert.equal(step(P),false,'위치 불변(Δ=0) → 정지');
+  P.x=5;assert.equal(step(P),true,'실제 walk(Δ5px) → 이동');
   assert.equal(step(P),false,'다시 불변 → 정지');
+  // sub-pixel noise(<0.05px) → 정지 유지(깜빡임 방지)
+  P.x+=0.03;assert.equal(step(P),false,'Δ0.03px noise → 정지(흡수)');
+  P.x+=0.03;P.y+=0.03;assert.equal(step(P),false,'대각 Δ(0.03,0.03)=0.0018<eps → 정지');
+  // 임계 근처: 0.05px 초과 이동은 이동으로
+  P.x+=0.06;assert.equal(step(P),true,'Δ0.06px>0.05 → 이동');
   // standingDmg는 여전히 consumer 없음(DEAD, 재사용 불가였음)
   assert.equal([...gameHtml.matchAll(/_eqAffix\('standingDmg'\)/g)].length,0,'standingDmg 여전히 DEAD');
 });

@@ -12851,6 +12851,8 @@ function mkItem(slot,tier,el,rarity,wtype,layerLv){
   item.itemLv=itemLv;
   item.reqLv=Math.max(0,itemLv-10);
   if(layerLv>=1)item.layerLv=Math.max(1,Math.min(10,~~layerLv)); // [AFFIX PHASE 1] 명시 주입 전용 — 드랍 단수 테이블은 Phase 2
+  // [P6D/LOCK-32] Keystone production roll — flag off면 단락(Math.random 미소비, 레거시 byte-identical). layerLv≥8 & B슬롯 후보 존재 시에만 저확률 부여, 아이템당 1개.
+  if(KEYSTONE_ROLL_ENABLED&&item.affixes&&_itemKeystoneCount(item)<1){const _ks=_rollKeystoneOnItem(item,false);if(_ks)item.affixes.push(_ks);}
   // ═══ 결정 슬롯 생성 (1~4소켓 랜덤) ═══
   const _scR=Math.random();
   item.socketCount=_scR<.50?1:_scR<.80?2:_scR<.95?3:4;
@@ -21358,7 +21360,8 @@ let _eqStatCache=null;
 function _eqStatRebuild(){_eqStatCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it){for(const k2 in it){if(k2[0]==='b'&&typeof it[k2]==='number'){const sk=k2.slice(1);_eqStatCache[sk]=(_eqStatCache[sk]||0)+it[k2]}}}}}
 function _eqStat(k){if(!_eqStatCache)_eqStatRebuild();return _eqStatCache[k]||0}
 // ═══ [P6B/LOCK-30] KEYSTONE Batch 1 (LOCK-6 트레이드오프) — equip-derived rule modifier, 별도 save state 없음 ═══
-const KEYSTONE_ROLL_ENABLED=false; // 확률 UNRESOLVED → 기본 off: production 미출현. forced 경로만 테스트.
+const KEYSTONE_ROLL_ENABLED=false; // [P6D] BLOCKED: production drop pipeline이 layerLv≥8 미할당(ITEM_LAYER_ROLL_V2=false, rollDrop→mkItem에 layerLv 미전달) → eligible item 0 → flag만 켜도 무출현. Layer drop economy(Phase2) 선행 필요. 로직·확률·UI·save/load는 6D에서 완비. 활성화는 economy 구현 후 1줄 변경.
+const KEYSTONE_ROLL_RATE=0.02; // [P6D/LOCK-32] eligible(layerLv≥8) item당 2% 저확률(§5 추천). 산정: "저확률" LOCK-6 + 8단 자체 희소성과 중복 아님(eligible 기준) + slot fairness(§6). 실측 per-hour는 economy 부재로 미확정 — economy 구현 후 재튜닝.
 function _ksBloodOath(){return _eqAffix('ksBloodOath')>0}       // 혈석의서약: maxHP+80% / 플레이어 shield(P.mshield) 0. enemy e.eShield 무관.
 function _ksNoCrit(){return _eqAffix('ksDullConviction')>0}     // 무딘확신: 치명타 불가
 function _ksDmgMul(){return 1+(_eqAffix('ksDullConviction')>0?0.30:0)+(_eqAffix('ksGlassGreatsword')>0?0.40:0)} // 무딘 +30% / 유리 +40% 주는피해(아이템당1개라 동시 없음; 비정상 fixture도 가산=무한/NaN 없음)
@@ -21367,18 +21370,34 @@ function _ksRootedGiant(){return _eqAffix('ksRootedGiant')>0} // [P6C] 뿌리내
 function _ksBloodPact(){return _eqAffix('ksBloodPact')>0}     // [P6C] 핏빛계약: 흡혈×2 / 물약·lifeRegen -50%(흡혈·시스템복원 제외, LOCK-6 "potionPower/lifeRegen 경로" 근거)
 function _ksLifestealMul(){return _ksBloodPact()?2:1}          // 흡혈 배율(핏빛계약 ×2)
 function _ksHealMul(){return _ksBloodPact()?0.5:1}             // 물약·lifeRegen 배율(핏빛계약 ×0.5)
+// [P6D/LOCK-32] 뿌리내린거인 정지판정 sub-pixel noise 흡수 임계값(px²). walk step(수 px/frame)·knockback·dash ≫ 0.05px라 게임플레이 불변, IEEE float noise 및 초미세 충돌분리 nudge만 정지로 흡수(frame-stable, deterministic).
+const _KS_MOVE_EPS2=0.05*0.05;
+// [P6D/LOCK-32] Keystone 툴팁 표시 계약 — SSOT(LOCK-6/31) wording. good=장점, bad=대가(tradeoff 필수). 핏빛은 "물약·HP재생" 범위 명시(전체회복 아님), 혈석은 "에너지실드"(enemy 아님).
+const _KS_UI={
+  ksDullConviction:{n:['무딘 확신','Dull Conviction'],good:[['주는 피해 +30%','Damage +30%']],bad:[['치명타 발생 불가','Cannot Critical Hit']]},
+  ksGlassGreatsword:{n:['유리 대검','Glass Greatsword'],good:[['주는 피해 +40%','Damage +40%']],bad:[['받는 피해 +25%','Damage Taken +25%']]},
+  ksBloodOath:{n:['혈석의 서약','Oath of the Bloodstone'],good:[['최대 HP +80%','Max HP +80%']],bad:[['에너지 실드 사용 불가','Energy Shield Disabled']]},
+  ksRootedGiant:{n:['뿌리내린 거인','Rooted Giant'],good:[['정지 중 주는 피해 +50%','While Stationary: Damage +50%'],['정지 중 받는 피해 감소 +15%','While Stationary: DR +15%']],bad:[['이동 속도 -25%','Movement Speed -25%']]},
+  ksBloodPact:{n:['핏빛 계약','Blood Pact'],good:[['흡혈 효과 ×2','Life Steal ×2']],bad:[['물약·HP재생 회복 -50%','Potion/HP-Regen Recovery -50%']]}
+};
+function _isKeystone(id){const p=AFFIX_POOL.find(a=>a.id===id);return !!(p&&p.keystone)}
+function _itemHasKeystone(it){return !!(it&&it.affixes&&it.affixes.some(a=>_isKeystone(a.id)))}
 function _keystoneCandidates(aSlot,layerLv){ // 8단+ · slot/layer(≤layerLv)·B keystone
   const out=[];if(~~layerLv<8)return out;
   for(let i=0;i<AFFIX_POOL.length;i++){const a=AFFIX_POOL[i];if(!a.keystone)continue;if(a.slots.indexOf(aSlot)<0)continue;if(a.layer>~~layerLv)continue;out.push(a)}
   return out;
 }
 function _itemKeystoneCount(item){if(!item||!item.affixes)return 0;let c=0;for(const x of item.affixes){const d=_getAffixDef(x.id);if(d&&d.keystone)c++}return c}
-function _rollKeystoneOnItem(item,forced){ // eligibility + 아이템당 1개 cap. 확률 UNRESOLVED → forced/flag만. deterministic.
+function _rollKeystoneOnItem(item,forced){ // eligibility + 아이템당 1개 cap + 저확률 롤(§5). forced=100%(테스트/강제), production=KEYSTONE_ROLL_RATE. deterministic(Math.random 순서 고정).
   if(!forced&&!KEYSTONE_ROLL_ENABLED)return null;
   if(!item)return null;const aSlot=_AFSLOT[item.slot];if(!aSlot)return null;
-  if(_itemKeystoneCount(item)>=1)return null; // 이미 1개 → 추가 제외
-  const cand=_keystoneCandidates(aSlot,item.layerLv||0);if(!cand.length)return null;
-  return {id:cand[0].id,tier:0,value:1};
+  if(_itemKeystoneCount(item)>=1)return null; // 아이템당 1개 cap
+  const cand=_keystoneCandidates(aSlot,item.layerLv||0);if(!cand.length)return null; // 8단 게이트 + slot/layer 후보
+  // [P6D/LOCK-32] 확률 게이트: eligible item당 KEYSTONE_ROLL_RATE. forced는 게이트 통과(테스트/강제). 8단 자체 희소성과 중복계산 아님(eligible item 기준).
+  if(!forced&&Math.random()>=KEYSTONE_ROLL_RATE)return null;
+  // [P6D/LOCK-32] 후보 균등 선택(§6 — 개별 keystone weight 없음, slot 내 uniform). 1개면 그대로.
+  const pick=cand.length===1?cand[0]:cand[~~(Math.random()*cand.length)];
+  return {id:pick.id,tier:0,value:1};
 }
 // 장비 어픽스 합산 (id별 value 합계)
 let _eqAffixCache=null,_eqAffixVer=0;
@@ -25063,7 +25082,7 @@ function update(){
   if(!G.on)return;
   if(_EDITOR_MODE){_editorUpdate();return}
   // [P6C/LOCK-31] 뿌리내린거인 정지 판정 — position-delta(직전 프레임 대비 P 위치 불변=정지). 모든 이동 모드(walk/dash/knockback) 포함, frame-stable(1프레임 지연 무시). standingDmg DEAD라 §4 position-delta 방식으로 신설.
-  if(P){P._moving=(P._lastX!==undefined&&(P.x!==P._lastX||P.y!==P._lastY));P._lastX=P.x;P._lastY=P.y;}
+  if(P){const _mdx=P._lastX===undefined?0:P.x-P._lastX,_mdy=P._lastX===undefined?0:P.y-P._lastY;P._moving=(P._lastX!==undefined&&(_mdx*_mdx+_mdy*_mdy)>_KS_MOVE_EPS2);P._lastX=P.x;P._lastY=P.y;}
   // null 엔트리 정리 (mkEn 실패 등)
   for(let _ni=ens.length-1;_ni>=0;_ni--){if(!ens[_ni])ens.splice(_ni,1)}
   // 백그라운드 초기화는 update() 끝에서 버짓 기반 처리 (게임 로직 스킵 안 함)
@@ -40669,6 +40688,16 @@ function _invCardFields(it){
     stats+='<div style="margin-top:6px;border-top:1px solid #333;padding-top:4px">';
     for(let i=0;i<it.affixes.length;i++){
       const af=it.affixes[i];const p=AFFIX_POOL.find(a=>a.id===af.id);
+      // [P6D/LOCK-32] Keystone: 일반 어픽스와 구별되는 [KEYSTONE] 블록 — 장점(▲)+대가(▼) 둘 다 표시(tradeoff 필수). 마커값(+1) 미표시.
+      if(p&&p.keystone&&_KS_UI[af.id]){
+        const K=_KS_UI[af.id];
+        stats+='<div style="margin:5px 0;padding:5px 7px;background:rgba(181,107,255,.12);border:1px solid #b56bff;border-radius:3px">';
+        stats+='<div style="color:#d9a6ff;font-size:.68rem;font-weight:700;letter-spacing:.6px;margin-bottom:2px">◈ [KEYSTONE] '+_L(K.n[0],K.n[1])+'</div>';
+        for(const g of K.good)stats+='<div style="color:#7fe0a0;font-size:.78rem">▲ '+_L(g[0],g[1])+'</div>';
+        for(const b of K.bad)stats+='<div style="color:#ff7a7a;font-size:.78rem">▼ '+_L(b[0],b[1])+'</div>';
+        stats+='</div>';
+        continue;
+      }
       const c=p&&p.type===0?'#66ddff':'#ffcc44';
       stats+='<div style="color:'+c+';font-size:.82rem">'+_T(AFFIX_NAMES_KO[af.id]||af.id)+': '+_T(_AFFIX_DESC[af.id]||'')+' '+_affixValStr(af)+'</div>';
     }
@@ -41038,6 +41067,7 @@ function renderInv(){
     let _markHtml='';
     if(isJunk)_markHtml='<div style="position:absolute;top:0;right:0;font-size:.55rem;line-height:1;pointer-events:none">🗑️</div>';
     if(isFav)_markHtml='<div style="position:absolute;top:0;right:0;line-height:0;pointer-events:none">'+_glyph('lock','#ffcc00',11)+'</div>';
+    if(_itemHasKeystone(item))_markHtml+='<div style="position:absolute;bottom:1px;left:1px;font-size:.62rem;line-height:1;color:#d9a6ff;text-shadow:0 0 3px #b56bff,0 0 2px #000;pointer-events:none">◈</div>'; // [P6D/LOCK-32] keystone 식별 마커(재사용 rarity-dot 체계)
     const ip=itemPower(item);
     const _eSz=_GC>=48?(Math.min(w,h)>1?'1.8rem':'1.3rem'):(Math.min(w,h)>1?'1.3rem':'1rem');
     const _ipSz=_GC>=48?'9px':'8px';
