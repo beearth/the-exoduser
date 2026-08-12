@@ -6176,6 +6176,8 @@ const _EN={
 '블록치유의':'Block Heal',
 '블록영력의':'Block Mana',
 '회전참강화':'Spin Slash Boost',
+'근접시너지':'Melee Synergy','투사체시너지':'Projectile Synergy','구체시너지':'Orb Synergy','광선시너지':'Beam Synergy','포격시너지':'Bombardment Synergy','지면시너지':'Ground Aura Synergy',
+'근접시너지뎀+':'Melee Syn DMG+','투사체시너지뎀+':'Projectile Syn DMG+','구체시너지뎀+':'Orb Syn DMG+','광선시너지뎀+':'Beam Syn DMG+','포격시너지뎀+':'Bombardment Syn DMG+','지면시너지뎀+':'Ground Aura Syn DMG+',
 '옴니빔강화':'Omni Beam Boost',
 '화구강화':'Fireball Boost',
 '미사일강화':'Missile Boost',
@@ -11747,26 +11749,33 @@ const AFFIX_POOL=[
   {id:'onBlockMana',type:1,tiers:[3,6,10,16,24],unit:'val',slots:['shield'],group:'oBMn',weight:40,layer:3,sub:'B',compat:['DEFENSE']},
 
   // ═══ Phase 3: 스킬 개별 강화 (20종) ═══
-  {id:'skWhirlDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sWD',weight:40,layer:6,sub:'FLEX'},
-  {id:'skBeamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sBD',weight:40,layer:6,sub:'FLEX'},
-  {id:'skFireballDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sFD',weight:40,layer:6,sub:'FLEX'},
-  {id:'skMissileDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sMD',weight:40,layer:6,sub:'FLEX'},
-  {id:'skBlueShotDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sBSD',weight:40,layer:6,sub:'FLEX'},
-  {id:'skBlastShotDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sBShD',weight:40,layer:6,sub:'FLEX'},
-  {id:'skHellRayDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sHRD',weight:35,layer:6,sub:'FLEX'},
-  {id:'skMaliceStormDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sMSD',weight:35,layer:6,sub:'FLEX'},
-  {id:'skChainSlashDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sCSD',weight:40,layer:6,sub:'FLEX'},
-  {id:'skGiantSlamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sGSD',weight:40,layer:6,sub:'FLEX'},
-  {id:'skGhostWalkDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sGWD',weight:35,layer:6,sub:'FLEX'},
-  {id:'skMaliceMortarDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sMMD',weight:35,layer:6,sub:'FLEX'},
-  {id:'skFireAuraDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sFAD',weight:40,layer:6,sub:'FLEX'},
-  {id:'skIceOrbDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sIOD',weight:35,layer:6,sub:'FLEX'},
-  {id:'skFireBeamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sFBD',weight:35,layer:6,sub:'FLEX'},
-  {id:'skMaliceHuntDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sMHD',weight:35,layer:6,sub:'FLEX'},
-  {id:'skDarkPillarDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sDPD',weight:35,layer:6,sub:'FLEX'},
-  {id:'skPlagueDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sPBD',weight:35,layer:6,sub:'FLEX'},
-  {id:'skSpikeAuraDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sSAD',weight:35,layer:6,sub:'FLEX'},
-  {id:'skChainAssaultDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sCAD',weight:35,layer:6,sub:'FLEX'},
+  {id:'skWhirlDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sWD',weight:40,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skBeamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sBD',weight:40,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skFireballDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sFD',weight:40,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skMissileDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sMD',weight:40,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skBlueShotDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sBSD',weight:40,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skBlastShotDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sBShD',weight:40,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skHellRayDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sHRD',weight:35,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skMaliceStormDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sMSD',weight:35,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skChainSlashDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sCSD',weight:40,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skGiantSlamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sGSD',weight:40,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skGhostWalkDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn'],group:'sGWD',weight:35,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skMaliceMortarDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sMMD',weight:35,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skFireAuraDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sFAD',weight:40,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skIceOrbDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sIOD',weight:35,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skFireBeamDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sFBD',weight:35,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skMaliceHuntDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sMHD',weight:35,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skDarkPillarDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sDPD',weight:35,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skPlagueDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sPBD',weight:35,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skSpikeAuraDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['helm'],group:'sSAD',weight:35,layer:6,sub:'FLEX',v2skip:1},
+  {id:'skChainAssaultDmg',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['xbow'],group:'sCAD',weight:35,layer:6,sub:'FLEX',v2skip:1},
+  // ═══ [PHASE 4B-4] SKILL SYNERGY CANONICAL — L6-B STRICT NODE. 20 legacy sk*Dmg → 6 family. V2 전용(v2only), legacy 롤 byte-identical 보존 ═══
+  {id:'skFamMelee',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm','xbow'],group:'sfMel',weight:38,layer:6,sub:'B',compat:['OFFENSE'],fam:'MELEE',canon:1,v2only:1},
+  {id:'skFamProjectile',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm','xbow'],group:'sfPrj',weight:38,layer:6,sub:'B',compat:['OFFENSE'],fam:'PROJECTILE',canon:1,v2only:1},
+  {id:'skFamOrb',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm','xbow'],group:'sfOrb',weight:38,layer:6,sub:'B',compat:['OFFENSE'],fam:'ORB',canon:1,v2only:1},
+  {id:'skFamBeam',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm','xbow'],group:'sfBem',weight:38,layer:6,sub:'B',compat:['OFFENSE'],fam:'BEAM',canon:1,v2only:1},
+  {id:'skFamBombard',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm','xbow'],group:'sfBmb',weight:38,layer:6,sub:'B',compat:['OFFENSE'],fam:'BOMBARDMENT',canon:1,v2only:1},
+  {id:'skFamAura',type:1,tiers:[.08,.14,.22,.32,.44],unit:'pct',slots:['wpn','helm','xbow'],group:'sfAur',weight:38,layer:6,sub:'B',compat:['OFFENSE'],fam:'AREA_GROUND',canon:1,v2only:1},
 
   // ═══ Phase 3: 생존/방어 확장 (30종) ═══
   {id:'dodgeChance',type:1,tiers:[.02,.04,.06,.09,.13],unit:'pct',slots:['boots','cloak'],group:'ddgC',weight:45,tierW:[40,30,20,8,2],layer:3,sub:'B',compat:['DEFENSE']},
@@ -12049,6 +12058,7 @@ const AFFIX_NAMES_KO={
   skHellRayDmg:'지옥광선강화',skMaliceStormDmg:'악의폭풍강화',skChainSlashDmg:'연쇄참강화',skGiantSlamDmg:'거인강타강화',
   skGhostWalkDmg:'유령보행강화',skMaliceMortarDmg:'악의박격강화',skFireAuraDmg:'화염오라강화',skIceOrbDmg:'빙구강화',skFireBeamDmg:'화염빔강화',
   skMaliceHuntDmg:'악의사냥강화',skDarkPillarDmg:'암흑기둥강화',skPlagueDmg:'역병강화',skSpikeAuraDmg:'가시오라강화',skChainAssaultDmg:'연쇄돌격강화',
+  skFamMelee:'근접시너지',skFamProjectile:'투사체시너지',skFamOrb:'구체시너지',skFamBeam:'광선시너지',skFamBombard:'포격시너지',skFamAura:'지면시너지', // [P4B-4] canonical family (V2 전용)
 dodgeChance:'회피의',dodgeCooldown:'회피쿨감의',
   maxHPPctArmor:'생명력의',shieldPct:'수호력의',shieldRegenPct:'수호재생의',shieldCdRed:'수호쿨감의',
   hpRegenFlat:'재생의',hpRegenPct:'재생력의',stRegenFlat:'활력재생의',stRegenPct:'활력의',mpRegenFlat:'마력재생의',mpRegenPct:'마력의',
@@ -12130,6 +12140,7 @@ const _AFFIX_DESC={
   skHellRayDmg:'지옥광선뎀+',skMaliceStormDmg:'악의폭풍뎀+',skChainSlashDmg:'연쇄참뎀+',skGiantSlamDmg:'거인강타뎀+',
   skGhostWalkDmg:'유령보행뎀+',skMaliceMortarDmg:'악의박격뎀+',skFireAuraDmg:'화염오라뎀+',skIceOrbDmg:'빙구뎀+',skFireBeamDmg:'화염빔뎀+',
   skMaliceHuntDmg:'악의사냥뎀+',skDarkPillarDmg:'암흑기둥뎀+',skPlagueDmg:'역병뎀+',skSpikeAuraDmg:'가시오라뎀+',skChainAssaultDmg:'연쇄돌격뎀+',
+  skFamMelee:'근접시너지뎀+',skFamProjectile:'투사체시너지뎀+',skFamOrb:'구체시너지뎀+',skFamBeam:'광선시너지뎀+',skFamBombard:'포격시너지뎀+',skFamAura:'지면시너지뎀+', // [P4B-4] canonical family (V2 전용)
   dodgeChance:'회피확률+',dodgeCooldown:'회피쿨-',
   maxHPPctArmor:'HP%+',shieldPct:'쉴드%+',shieldRegenPct:'쉴드리젠%+',shieldCdRed:'쉴드쿨-',
   hpRegenFlat:'HP리젠+',hpRegenPct:'HP리젠%+',stRegenFlat:'ST리젠+',stRegenPct:'ST리젠%+',mpRegenFlat:'MP리젠+',mpRegenPct:'MP리젠%+',
@@ -12221,7 +12232,7 @@ function rollAffixes(grade,slot,brType){
   if(!rollAffixes._c)rollAffixes._c={};
   const ck=aSlot+(brType?'_'+brType:'');
   if(!rollAffixes._c[ck]){
-    const sa=[];for(let i=0;i<AFFIX_POOL.length;i++){const a=AFFIX_POOL[i];if(a.slots.indexOf(aSlot)<0)continue;if(a.brType&&a.brType!==brType)continue;if(_DEMO_MODE&&_DEMO_AFFIX_BANNED.has(a.id))continue;sa.push(a)}
+    const sa=[];for(let i=0;i<AFFIX_POOL.length;i++){const a=AFFIX_POOL[i];if(a.slots.indexOf(aSlot)<0)continue;if(a.brType&&a.brType!==brType)continue;if(_DEMO_MODE&&_DEMO_AFFIX_BANNED.has(a.id))continue;if(a.v2only)continue;/*[P4B-4] canonical family는 V2 전용 — legacy 롤 byte-identical 보존*/sa.push(a)}
     rollAffixes._c[ck]={pre:[],suf:[]};
     for(let i=0;i<sa.length;i++){if(sa[i].type===0)rollAffixes._c[ck].pre.push(sa[i]);else rollAffixes._c[ck].suf.push(sa[i])}
   }
@@ -12293,6 +12304,7 @@ function _affixLayerCandidates(aSlot,brType,layer,sub){
       if(a.slots.indexOf(aSlot)<0)continue;
       if(a.brType&&a.brType!==brType)continue;
       if(_DEMO_MODE&&_DEMO_AFFIX_BANNED.has(a.id))continue;
+      if(a.v2skip)continue; // [P4B-4] legacy sk*Dmg 20종은 V2 롤 제외 — canonical 6종만 skill-synergy 롤
       if(!(a.layer>=1))continue; // LEGACY(0)/무태깅 제외
       if(!idx[a.layer])idx[a.layer]={A:[],B:[]};
       if(a.sub==='FLEX'){idx[a.layer].A.push(a);idx[a.layer].B.push(a);}
@@ -36657,7 +36669,41 @@ const _SK_MUL={
   elemMissile:{b:2,g:1.6},     // 6발 유도 → 총 12
 };
 // 레벨 복리 보너스 삭제됨 — 스킬 배율은 순수 (b + (lv-1)*g*0.5) 만 사용
-function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];if(!t)return 1;return t.b+(lv-1)*t.g*0.5}
+// ═══ [PHASE 4B-4 / LOCK-21] SKILL SYNERGY CANONICALIZATION ═══
+// canonical family(6) = 해당 family 全 skill 강화 / legacy sk*(20) = 지정 skill 1개만 강화 (cross-boost 없음).
+// family 판정은 이름이 아닌 실제 skill implementation 기준. _SK_MUL 전체 damaging skill 35종 100% 커버(sibling 포함, 미분류 0).
+// AREA_GROUND = self/현재위치 지면 필드·충격파 (구 내부명 AURA_GROUND 개명 — V2 배포 전이라 안전).
+//   근거 예: hellRay=pBeamMul→BEAM · arcLaser=직선관통빔 채널→BEAM(sibling) · maliceHunt=유도칼날 발사→PROJECTILE
+//           chargeBoost=pAtkMul 근접충돌→MELEE · thunderStake/boneWall=조준 원격설치→BOMBARDMENT · bladeDash/magicBlink/burstLoop=self 장판/폭발→AREA_GROUND
+const _SK_FAM={
+  // MELEE — 무기 홀드/물리 근접 (pAtkMul 파이프라인)
+  whirlwind:'MELEE',chainSlash:'MELEE',kiSlash:'MELEE',chargeBoost:'MELEE',
+  // PROJECTILE — 발사 이동탄 (유도/관통 포함, bowRef/pBowMul 다수)
+  elemMissile:'PROJECTILE',blueShot:'PROJECTILE',blastShot:'PROJECTILE',maliceHunt:'PROJECTILE',maliceHuntBurst:'PROJECTILE',plagueBurst:'PROJECTILE',needleShot:'PROJECTILE',venomBlade:'PROJECTILE',ltnChaser:'PROJECTILE',blueShell:'PROJECTILE',
+  // ORB — 구체/보주
+  fireball:'ORB',iceOrb:'ORB',
+  // BEAM — 직선 채널 레이저 (omni/fire/hell=pBeamMul, arcLaser=직선관통빔)
+  omniBeam:'BEAM',fireBeam:'BEAM',hellRay:'BEAM',arcLaser:'BEAM',
+  // BOMBARDMENT — 마우스/포격 조준 원격 설치 장판
+  maliceMortar:'BOMBARDMENT',maliceStorm:'BOMBARDMENT',boneWall:'BOMBARDMENT',thunderStake:'BOMBARDMENT',
+  // AREA_GROUND — self/현재위치 지면 필드·충격파
+  giantSlam:'AREA_GROUND',ghostWalk:'AREA_GROUND',chainAssault:'AREA_GROUND',darkPillar:'AREA_GROUND',fireAura:'AREA_GROUND',spikeTrap:'AREA_GROUND',detonate:'AREA_GROUND',chainSlam:'AREA_GROUND',bladeDash:'AREA_GROUND',magicBlink:'AREA_GROUND',burstLoop:'AREA_GROUND',
+};
+const _FAM_CANON={MELEE:'skFamMelee',PROJECTILE:'skFamProjectile',ORB:'skFamOrb',BEAM:'skFamBeam',BOMBARDMENT:'skFamBombard',AREA_GROUND:'skFamAura'};
+// legacy sk*(20): 지정 skill 1개만 강화 (canonicalization — cross-boost 폐기). maliceHunt/Burst만 동일 affix 공유.
+const _SK_LEGACY={
+  whirlwind:'skWhirlDmg',chainSlash:'skChainSlashDmg',
+  elemMissile:'skMissileDmg',blueShot:'skBlueShotDmg',blastShot:'skBlastShotDmg',maliceHunt:'skMaliceHuntDmg',maliceHuntBurst:'skMaliceHuntDmg',plagueBurst:'skPlagueDmg',
+  fireball:'skFireballDmg',iceOrb:'skIceOrbDmg',
+  omniBeam:'skBeamDmg',fireBeam:'skFireBeamDmg',hellRay:'skHellRayDmg',
+  maliceStorm:'skMaliceStormDmg',maliceMortar:'skMaliceMortarDmg',
+  giantSlam:'skGiantSlamDmg',ghostWalk:'skGhostWalkDmg',chainAssault:'skChainAssaultDmg',darkPillar:'skDarkPillarDmg',fireAura:'skFireAuraDmg',spikeTrap:'skSpikeAuraDmg',
+};
+// canonical = 해당 family 全 skill / legacy specific = 지정 skill 1개. 미장착 시 0 → base 전투 불변.
+function _canonFamBonus(fam){return fam?_eqAffix(_FAM_CANON[fam]):0;}
+function _legacySkBonus(skId){const a=_SK_LEGACY[skId];return a?_eqAffix(a):0;}
+function _skSynBonus(skId){return _canonFamBonus(_SK_FAM[skId])+_legacySkBonus(skId);}
+function _skMul(skId){const lv=P.skills[skId]||1;const t=_SK_MUL[skId];const _b=t?(t.b+(lv-1)*t.g*0.5):1;return _b*(1+_skSynBonus(skId));}
 function _fuseMul(skId){const s=_fuseStar(skId);const _fm=s>=2?1+(s-1)*.2:1;return skId==='chargeBoost'||skId==='magicBlink'?_fm:_fm*(1+_eqAffix('skillBoost'))}
 // ═══ 카테고리별 숙련도 시스템 ═══
 // 스킬 카테고리(cat)별로 사용시간(초) 축적. 합체 해금 조건 = 구성스킬 각 카테고리 600초(10분)

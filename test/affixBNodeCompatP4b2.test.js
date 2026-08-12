@@ -15,7 +15,7 @@ const As=POOL.filter(a=>a.sub==='A');
 const FLEX=POOL.filter(a=>a.sub==='FLEX');
 
 test('§7 모든 B Affix에 compat 존재 (150)', () => {
-  assert.equal(Bs.length,150,'B 150 유지');
+  assert.equal(Bs.length,156,'B 156 (150 + P4B-4 canonical family 6, 전부 compat 보유)');
   for(const a of Bs){
     assert.ok(Array.isArray(a.compat)&&a.compat.length>=1,a.id+' compat 배열 존재');
   }
@@ -59,9 +59,9 @@ test('§13 compat는 ROLL FILTER 미사용 — 롤 결과 불변 (compat-strip �
 });
 
 test('§13 AFFIX_POOL compat 외 완전 불변 (value/weight/tiers/slots/layer/sub)', () => {
-  assert.equal(POOL.length,402);
+  assert.equal(POOL.length,408);
   // tiers 5칸·layer/sub 유지 스팟
   for(const a of POOL){assert.equal(a.tiers.length,5,a.id+' tiers');assert.ok('layer'in a&&'sub'in a,a.id);}
-  // B count = 150, A count 불변
-  assert.equal(Bs.length,150);
+  // B count = 156 (150 + canonical 6), A count 불변
+  assert.equal(Bs.length,156);
 });
