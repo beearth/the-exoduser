@@ -11858,6 +11858,9 @@ const AFFIX_POOL=[
   {id:'chainDmgKeep',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'chDK',weight:40,layer:5,sub:'B',compat:['OFFENSE']},
   {id:'splashRadius',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['xbow'],group:'spRd',weight:45,layer:5,sub:'B',compat:['OFFENSE'],family:['ORB','BEAM']},
   {id:'splashDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['xbow'],group:'spDm',weight:35,layer:5,sub:'B',compat:['OFFENSE'],family:['ORB','BEAM']},
+  // ═══ [P4B-5C / LOCK-24] L5 Attack-Style Batch 2 신규 노드 — v2only(legacy byte-identical 보존, V2 전용) ═══
+  {id:'projBounce',type:0,tiers:[1,1,2,2,3],unit:'cnt',slots:['xbow'],group:'pjBn',weight:35,layer:5,sub:'B',compat:['OFFENSE'],family:['PROJECTILE'],v2only:1},
+  {id:'beamWidth',type:0,tiers:[.10,.16,.24,.34,.46],unit:'pct',slots:['helm'],group:'bmWd',weight:35,layer:5,sub:'B',compat:['OFFENSE'],family:['BEAM'],v2only:1},
   {id:'chargeAtkDmg',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'chAD',weight:50,layer:5,sub:'A'},
   {id:'counterAtkDmg',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'ctAD',weight:45,layer:5,sub:'A'},
   {id:'backstabDmg',type:1,tiers:[.12,.20,.32,.46,.65],unit:'pct',slots:['wpn'],group:'bkSt',weight:35,layer:6,sub:'A'},
@@ -13399,7 +13402,7 @@ function _mkPProj(){return{x:0,y:0,vx:0,vy:0,dmg:0,el:0,r:4,spd:0,
   sz:1,rot:0,rotSpd:0,t:0,maxT:0,explosive:false,
   _trail:null,_trH:0,_trLen:0,
   sfxHit:null,sfxSpawn:null,_extraData:null,
-  _aoeR:0,_aoeDmg:0,_pcBonus:0,_psApplied:0}}
+  _aoeR:0,_aoeDmg:0,_pcBonus:0,_psApplied:0,_pbBonus:0}}
 function _resetPProj(p){
   p.x=p.y=p.vx=p.vy=p.dmg=0;p.el=0;p.r=4;p.spd=0;
   p.alive=true;p.owner='p';p.maxDist=0;p.dist=0;p.stagger=0;p.kb=0;
@@ -13421,6 +13424,7 @@ function _resetPProj(p){
   p._pierceRate=50+_eqAffix('pierceFlat'); // 통일 관통률 기본값 50+장비관통력, 스폰 시 덮어쓰기 가능
   p._pcBonus=_eqAffix('pierceCount'); // [P4B-5B] pierceCount = pierce count-model(pierceMax) 확장 (pierceFlat=rate-model과 별개)
   p._psApplied=0;                      // [P4B-5B] projSpeedPct 1회 적용 플래그
+  p._pbBonus=_eqAffix('projBounce');   // [P4B-5C] projBounce = 기존 bounce-capable 투사체의 max bounce 확장
   p.knockback=p.kbAng=0;p.col=p.img=p.imgKey=null;
   p.sz=1;p.rot=p.rotSpd=p.t=p.maxT=0;p.explosive=false;
   p._trail=null;p._trH=0;p._trLen=0;p._fromTurret=false;
@@ -13451,7 +13455,7 @@ function _beamFindTarget(ox,oy,ang,maxDist,stepSz){
   let best=null,bestD=maxDist;
   _bpHitR.clear(); const _bpHit=_bpHitR; // 경로상 이미 처리한 적
   const _bpPierce=(bw().bowPierce||0)+(PASSIVES.pPierce||0)*0.05; // 관통력
-  const _beamHitW=28; // 빔 히트 폭 (반경)
+  const _beamHitW=28*(1+_eqAffix('beamWidth')); // 빔 히트 폭 (반경) — [P4B-5C]beamWidth: 순수 geometry(폭)만, damage/tick/duration 불변
   // 벽 사거리 먼저 계산
   let wallD=maxDist;
   for(let t=stepSz;t<=maxDist;t+=stepSz){
@@ -27940,8 +27944,8 @@ function update(){
       }
       dead=true}
     else if(isW(p.x,p.y)){
-      const _bMax=p._maxBounce||3;
-      const canBounce=(p.magic||p.mhBlade)?(p.bounces||0)<_bMax:(!p.explosive&&p.dist<p.maxDist*0.5&&(p.bounces||0)<2);
+      const _bMax=(p._maxBounce||3)+(p._pbBonus||0);/*[P4B-5C]projBounce = 기존 bounce max 확장(신규 bounce 생성 없음)*/
+      const canBounce=(p.magic||p.mhBlade)?(p.bounces||0)<_bMax:(!p.explosive&&p.dist<p.maxDist*0.5&&(p.bounces||0)<(2+(p._pbBonus||0)));
       if(canBounce){
         p.x-=p.vx*sp;p.y-=p.vy*sp;
         // 벽 탈출: 스텝백 후에도 벽 안이면 추가로 밀어냄
@@ -34601,7 +34605,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
 
   // ═══ 에너지쉴드: 모든 배율 확정 후 흡수 (HP와 동일 내구성) ═══
   // 쉴드가 남아있는 한 HP는 절대 안 깎임. 오버플로우만 HP로.
-  if((!isDot||(opts&&opts.shieldHit))&&e.eShieldMax>0&&e.eShield>0){
+  // [P4B-5C]shieldBypass(unit=prob) — 비-DOT 명중이 X% 확률로 쉴드를 무시하고 HP 직행. affix 0이면 Math.random 미호출(short-circuit)→base RNG 불변. 무쉴드 적 항등. dmg 값 불변(라우팅만)→double-dip 없음.
+  if((!isDot||(opts&&opts.shieldHit))&&e.eShieldMax>0&&e.eShield>0&&!(!isDot&&_eqAffix('shieldBypass')>0&&Math.random()<_eqAffix('shieldBypass'))){
     const _shAbs=Math.min(e.eShield,dmg);
     e.eShield=Math.max(0,e.eShield-dmg);
     dmg=Math.max(0,dmg-_shAbs);
