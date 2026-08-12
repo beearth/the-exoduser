@@ -21341,6 +21341,7 @@ function applyStats(){
   P.mshield=~~(100+s.int*5+_totalBonusShield+_eqAffix('shieldFlat'));
   P.shield=Math.min(P.shield,P.mshield);
   recalcSt();
+  P.rage=Math.min(_rageMax(),P.rage||0); // [P5A.1] rageMax 감소(rageMaxFlat 장비 해제/교체) 시 current rage clamp — invariant current≤max. equip/스탯 재계산 지점(매프레임 아님). rage 미장착·증가 시 불변.
 }
 let _eqStatCache=null;
 function _eqStatRebuild(){_eqStatCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it){for(const k2 in it){if(k2[0]==='b'&&typeof it[k2]==='number'){const sk=k2.slice(1);_eqStatCache[sk]=(_eqStatCache[sk]||0)+it[k2]}}}}}
