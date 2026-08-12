@@ -11855,7 +11855,7 @@ const AFFIX_POOL=[
   {id:'pierceChance',type:0,tiers:[.05,.08,.14,.22,.30],unit:'prob',slots:['xbow'],group:'prCh',weight:50,layer:5,sub:'B',compat:['OFFENSE']},
   {id:'pierceCount',type:0,tiers:[1,1,2,2,3],unit:'cnt',slots:['xbow'],group:'prCt',weight:40,layer:5,sub:'B',compat:['OFFENSE'],family:['PROJECTILE']},
   {id:'pierceDmgKeep',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['xbow'],group:'prDK',weight:40,layer:5,sub:'B',compat:['OFFENSE']},
-  {id:'chainDmgKeep',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'chDK',weight:40,layer:5,sub:'B',compat:['OFFENSE']},
+  {id:'chainDmgKeep',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'chDK',weight:40,layer:5,sub:'B',compat:['OFFENSE'],family:['PROJECTILE']},
   {id:'splashRadius',type:0,tiers:[.06,.10,.16,.24,.34],unit:'pct',slots:['xbow'],group:'spRd',weight:45,layer:5,sub:'B',compat:['OFFENSE'],family:['ORB','BEAM']},
   {id:'splashDmg',type:1,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['xbow'],group:'spDm',weight:35,layer:5,sub:'B',compat:['OFFENSE'],family:['ORB','BEAM']},
   // ═══ [P4B-5C / LOCK-24] L5 Attack-Style Batch 2 신규 노드 — v2only(legacy byte-identical 보존, V2 전용) ═══
@@ -28004,13 +28004,14 @@ function update(){
             const _clR2=p.chainR||180;
             let _prev=e,_clDmg=p.dmg,_clHitSet=new Set(p._hitSet);_clHitSet.add(e);
             const _clMax=p.chainMax-(p._chainCount||0);
+            const _clKeep=Math.min(1,0.8+_eqAffix('chainDmgKeep')); // [P4B-5D]chainDmgKeep: 체인 홉당 보존율 0.8→상향(cap 1.0=증폭 없음). affix0→0.8 항등, RNG 미추가
             for(let _ci=0;_ci<_clMax;_ci++){
               const _clNe2=shQuery(_prev.x,_prev.y,_clR2);
               let _clT2=null,_clB2=_clR2;
               for(let _ci2=0;_ci2<_clNe2.length;_ci2++){const ce=_clNe2[_ci2];if(!ce.alive||_clHitSet.has(ce))continue;const cd2=dst(_prev.x,_prev.y,ce.x,ce.y);if(cd2<_clB2){_clB2=cd2;_clT2=ce}}
               if(!_clT2)break;
               _clHitSet.add(_clT2);
-              _clDmg=~~(_clDmg*0.8);
+              _clDmg=~~(_clDmg*_clKeep);/*[P4B-5D]chainDmgKeep 배선(기존 0.8 decay)*/
               const _ca=Math.atan2(_clT2.y-_prev.y,_clT2.x-_prev.x);
               hurtE(_clT2,_clDmg,_ca,true,{lightning:true,ltnChaser:true},EL.L);
               // VFX: 아크 라인
