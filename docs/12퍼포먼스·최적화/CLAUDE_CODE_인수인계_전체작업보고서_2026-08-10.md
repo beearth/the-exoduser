@@ -235,6 +235,158 @@ git diff --check -- game.html server.cjs `
 - Git 사실관계: Unstable attribution harness was accidentally committed by auto-sync in `9c88158f` and removed in `9ae5ef29`. It is not retained in the current tree as a regression/profiling asset. (history rewrite/force push 없이 전진 커밋으로 제거함.)
 - 기존 안정 프로파일러(`tools/verify_entity_load_cpu_profile.mjs`)는 유지한다. 필요 시 향후 browser/page crash를 감지해 non-zero exit 하도록 별도 수정한다.
 
+### 6.5 정상 교전 병목 재귀속 — headed 실GPU 실측 (2026-08-12)
+
+6.4의 미해결 귀속을, **headed 실GPU Chrome(Playwright, `game.html?perf=1`) + frame-total 트리거 + U/D·섹션별 히스토그램 + update tick/frame 분해 + CDP V8 GC 트레이스**로 재실측했다. 계측은 전부 `?perf=1` 게이트 진단 전용(`_HITCH`/`_UPROF`/`shQuery` 카운터), 게임 동작 무변경.
+
+**측정 조건 (정상 교전 레짐)**: stage0, 약 373 active enemies(정지 플레이어에 aggro/공격 활성, 투사체 ~600·입자 ~150), baseline ~66fps, teleport 미사용, summoner 과증식(600~700) 런은 제외. 별도로 stage2(오브젝트 185)·stage19/32(streamMap=true) 등 실 stage 전수(0~34) 진입 측정.
+
+#### CLOSED / NO-GO
+- enemy 8dir body batching (실게임 적 전부 8방향 인스턴싱, 이미 배칭)
+- shadow pass separation
+- frame-wide GL draw-call batching
+- **map chunk streaming / eviction–rebuild churn** — stage32(290×290) serpentine 전체맵 스윕에서 실제 churn 확보: builds=393, evicts=420, rebuilds=293. chunk-work 프레임=490(2.39%), chunk-work 프레임 maxTot≈9.6ms, cache 섹션 p99≈0, 전 프레임 hitch와 상관 없음. → 스트리밍은 예산 내 완전 흡수, 병목 아님.
+- **spatial query(shQuery)** — 정상 교전에서 calls≈46/frame, candidates≈4375/frame, **aggregate time≈0.05ms/frame**. 호출수가 아니라 시간으로 측정한 결과 무시 가능. CPU update 병목 아님.
+
+#### STEADY-STATE (건강)
+- 정상 교전은 전반적으로 건강. **단일 draw section이 반복적으로 16.7ms를 초과하지 않음**(ens/proj/para/mobj/cache 전부 section-self >16.7 = 0). draw 섹션 p99: ens 6.0 / proj 4.0 / para(=parallax, stage종속) ≤3.5.
+- `ens`는 가장 큰 지속 draw contributor(draw-dominant hitch의 77%)지만 **standalone frame-budget breaker 아님**(max 13.6ms). ens를 최종 후보로 삼았던 이전 판정은 **철회**.
+- parallax는 stage 종속 고정비(stage0 ≈2.7ms, stage19 ≈0.13ms) — 보편값 아님, hitch 원인 아님.
+- 670-enemy 24fps 과부하 런은 catch-up 다중 tick로 U가 인위 증폭되므로 정상 플레이 귀속 자료에서 **제외**.
+
+#### FIRST-USE / WARMUP CLASS (별도 축, 이번 작업과 분리)
+관측된 first-use/warmup 계열 스파이크(각 별도 축으로 기록):
+- mobj first-region build: max ≈ 29.2ms (미방문 밀집영역 첫 진입 시 static-object-canvas 1회 빌드; p99=0, steady 아님)
+- worldItems first-use spike: ≈ 51.9ms (worldItems 20개 상한, `_worldItemSkinCache` 첫사용 Image + 첫 draw 텍스처 업로드/드랍빔 아틀라스 계열 추정)
+- 과거 enemy/atlas 계열 ≈ 96.7ms sample (부팅 아틀라스 워밍으로 자동재현 억제되어 규모 미재현)
+
+> Multiple first-use/warmup-class spikes have been observed, but their underlying mechanisms have not yet been proven identical.
+
+warmup preload 최적화는 CPU update 귀속이 끝난 뒤 별도로 다룬다.
+
+### 6.6 intermittent CPU update spike attribution — 완료 (2026-08-12)
+
+6.5에서 설정한 NEXT TARGET(`intermittent CPU update spike attribution`)을 실측 완료.
+
+**update 구조 (실측 기준 coarse 분해)**: `update()`는 프레임당 catch-up으로 0~3회 tick. 섹션 경계(재사용/신규 boundary) — pre(player+skill+cleanup+`_rest` 거리정렬), ai(enemy 루프: 뷰포트 컬링 + 4단계 티어링 T1~T4 → per-enemy `updateE()`; 기존 12ms 버짓 early-break 존재), proj(projs+pProjs), tail(소환굴+킬체인+상태/VFX). 분리력(separation)은 Web Worker(`_dispatchColWorker`) off-thread, 플로우필드(`_ffBuild`)도 Worker 오프로드.
+
+**정상 교전 분포 (90s, 5950 frames, ~66fps, 373 enemies)**:
+- ticks/frame: 0=904, 1=4628, 2=416, 3=2 (avg 0.92) — 정상 레짐은 대개 1 tick, 느린 프레임에서만 2 tick catch-up.
+- U/frame: p50 5.5 / p95 14.5 / p99 21.0 / max 27.1 / >16.7 = 201(3.4%)
+- U/tick: p50 6.0 / p95 10.5 / p99 12.5 / max 23.2 / single-tick>16.7 = 6
+- section/frame mean(p99,max): **ai 3.28(11.0, 20.7)**, proj 1.85(7.0, 14.4), pre 0.90(4.0, 5.4), tail 0.09(0, 6.6)
+- **U/frame>16.7 dominant: ai=195(97%)**, proj=6, pre/tail=0
+- worst-U 프레임 전부 sum(pre+ai+proj+tail)≈U/frame, 스파이크 구성 = ai(8~12) + proj(5~9) 동반, 대부분 ticks=2.
+
+**GC 트레이스 (CDP disabled-by-default-v8.gc, 교전 30s)**:
+- MinorGC(V8.GCScavenger): n=177(≈6/sec), max 12.72ms, sum 144.6ms
+- MajorGC(MarkCompactor): n=31, max 8.17ms
+- GC 이벤트 >5ms = 102, >10ms = 4
+- (CDP 트레이스 오버헤드로 해당 창의 hitch율 자체는 비대표적. GC 이벤트 duration/빈도는 실측 신호.)
+
+**중간 표현(당시)**: "sum≈tick"은 GC 배제 근거가 아니며 GC 일시정지가 ai 섹션 시간창에 흡수될 수 있다 — 이는 **overlap 검증 전 추론**이었다. 아래 6.7에서 직접 검증하여 정정한다.
+
+### 6.7 GC 인과 검증 → allocation/GC 가설 기각 (2026-08-12)
+
+6.6의 MIXED 추론을 **직접 검증**했다. headed 실GPU, 정상~heavy 교전(적 450~532, 투사체 387~523, uf16 593~964), CDP `disabled-by-default-v8.gc` 트레이스 + HeapProfiler allocation sampling.
+
+**A/B 트레이스 교란**: tracing OFF vs ON에서 fps·U/tick p50/p95/p99·section 거의 동일(OFF 88fps U/tick p99 11 / ON 97fps p99 10.5) → **GC trace는 무교란·신뢰 가능**.
+
+**Allocation 실측 랭킹 (HeapProfiler self-size, heavy 25s)**: **총 0.60MB(≈24KB/s) — 극히 낮음.** 게임이 공격적으로 풀링(`_projFree`/`_pprojFree`/파티클/`_shBufs`/`_shCellPool`)한 결과. 상위: `shRebuild` 168KB(27.6%, 이미 셀풀 사용·잔여는 배열 grow), `update` 144KB, `loop` 56KB, `isW` 36KB, `updateE` 24KB, **`spawnProj` 5KB(0.8%, 풀링됨)**. `_rest=[]`는 `if(ens.length>800)` 게이트라 정상 레짐 미실행.
+
+**GC magnitude (heavy 45s)**: Scavenger 300회(6.7/sec)이나 **max 7.7ms, >10ms = 0**(>5ms=101). 6.6의 12.7ms는 희소 이상치.
+
+**직접 timestamp overlap (측정 완료)**: 마커를 `performance.mark`(cat `blink.user_timing`, 이벤트명=마크명)로 교체하니 캡처됨(이전 실패는 `performance.measure`가 `UserTiming::Measure`로 뜨고 `console.timeStamp`는 `devtools.timeline` 카테고리라 필터 불일치였음). **모든 tick을 preallocated Float64에 할당 없이 기록**(GC 교란 회피). **clock alignment 검증**: UCLOCK 45마크로 CDP trace µs ↔ page performance.now offset 산출, spread **0.16ms**(정렬 유효). overlap = interval intersection.
+
+heavy 교전(적 537, 투사체 623, 2814 ticks) 실측:
+- baseline **P(GC|all ticks) = 3.52%**
+- U/tick>10ms: 2263개, GC-overlap 94 = **4.2%** → enrichment **1.18×(무의미)**
+- U/tick>16.7ms: 196개, GC-overlap 19 = **9.7%** → enrichment **2.76×(극단 tail에서만 약함, 그마저 90%는 GC-free)**
+- GC-overlap slow tick vs non-GC slow tick: ai **8.3 vs 7.2ms**, U p95 20.1 vs 18.1 — **거의 동일** (GC 유무가 tick 심각도를 좌우 안 함)
+- MinorGC 272회(6/sec) dur p50/p95/p99/max = 0.52/1.54/8.69/**11.69ms** · MajorGC 32회 max 8.65ms
+
+**최종 판정 (6.6 정정)**
+
+> **AI/state work PRIMARY; GC causal contribution SECONDARY (하향 — CONFIRMED 아님).**
+> - 지속·간헐 지배 = **enemy AI(`updateE`) 실작업**(+proj), catch-up 2-tick 증폭. draw-side/spatial(0.05ms)/collision(worker)/streaming 배제.
+> - **GC는 최우선 lever 아님**: slow tick(>10ms)의 95.8%가 GC-free, enrichment 1.18×(무의미). GC-overlap tick과 non-GC tick의 ai·U 분포 거의 동일 → slow tick은 ai 자체 시간 증가로 설명됨.
+> - GC는 극단 tail(>16.7ms)에서만 **2.76× 약한 enrichment**(19/196=9.7%만 overlap) → **secondary tail 기여**이나 "대부분 overlap" 기준 미충족 → CONFIRMED 아님.
+> - steady allocation 18~24KB/s(고도 풀링), MinorGC max 11.69ms(희소). "max U tick = AI + Scavenger 합" 류 확정 문구는 **폐기**.
+
+**Allocation 최소수정 미착수 (근거)**: (1) GC 인과 미확정(secondary/하향) → 유저 게이트("GC 확정 뒤에만 allocation 수정") 미충족. (2) 안전·고임팩트 후보 부재 — `shRebuild`(최상위)는 이미 셀풀·잔여는 배열 grow(제거=구조변경, 금지), `spawnProj` 무시(풀링), `_rest` 미실행. (3) allocation 18~24KB/s에서 제거 가능분의 U-tail 개선이 noise 이하로 예측. **"실측으로 효과가 입증되지 않으면 유지하지 마" 원칙에 따라 투기적 수정을 하지 않는다.** production 코드 무변경.
+
+**실제 lever (다음 단계 후보, 이번 미착수)**: 병목이 AI 실작업이므로 — AI tiering/budget은 이미 존재(뷰포트 컬링 + T1~T4 + 12ms early-break). 추가 여지는 close-band(T1/T2) 스태거 정교화나 per-`updateE` 핫패스 산술 캐시 등이나, **AI 단순화·cadence 변경 금지 범위 내에서만** 별도 실패테스트로 검증 후 판단.
+
+### 6.8 Enemy AI CPU hotspot 귀속 → isW MAP_OBJS 선형스캔 확정 (2026-08-12)
+
+6.6/6.7에서 PRIMARY로 확정된 AI/state work의 **함수/분기 수준 hotspot**을 CDP CPU sampling profiler(120µs)로 귀속. 정상 교전(stage0, 380 enemies, 투사체~490, ~48–53fps). per-enemy timer 없이 CPU profile + 집계 카운터(isW 호출수/MAP_OBJS 스캔량/tier 분포, `?perf=1` 게이트).
+
+**A/B 교란**: profiler OFF 48fps(U/tick p99 15) → ON 36fps(p99 16.5) → **profiler는 ~25% 부하**. 절대 self-time은 부풀려짐, **상대 랭킹은 유효**.
+
+**CPU profile top self-time (41s)**: **`isW` 34.8%** (2위 draw 8.2% / drawImage 6.8% / update 6.6% / **updateE 4.5%** / _ffBuild 3.1% / canMv 1.8%). `isW`가 압도적 1위(4배).
+
+**updateE 서브트리(29.7% of CPU) 내부 self-time**: **`isW` 73.8%**, updateE self 15.2%, `canMv` 6.1%(내부가 isW 4회), `_ffMoveE` 2.8%, `shQuery` 1.1%, `spawnProj` 0.2%. → **updateE 비용의 대부분이 isW**.
+
+**정량화 (집계 카운터, 380 enemies)**:
+- `MAP_OBJS`=125, 그중 **collision meta 보유 = 22개**.
+- **isW 호출 ≈ 2421/frame**, 각 호출이 전 MAP_OBJS 선형스캔 → **≈302,649 MAP_OBJS iteration/frame** (= calls×125). 22개만 실제 충돌체 → **103개 비충돌 오브젝트를 매 호출 `_OBJ_META` 조회+분기로 무의미 스캔**.
+- tier exec/frame: T1 130 · T2 135 · T3 19 · T4 14 · updateE-exec 204. → 근접(T1/T2) 다수가 updateE→(knockback/이동)→canMv(isW×4)→isW 다발.
+- **slow frame(U/frame>16.7) isW 호출 = 4353/frame vs 전체 2421 → enrichment 1.80×** (slow tick = isW 호출 급증).
+
+**60fps+ 정상 레짐 재검증 (268 enemies, profiler OFF 89fps — 유저 60fps+ 요건 충족)**:
+- U/tick p50/p95/p99/max = 5/9/11/19.1, ai mean 2.19, catch-up 최소.
+- isW **997 calls/frame** × 125 = 124,666 iter/frame, collision 22/125.
+- **slow frame enrichment: isW 2.81× / T1 2.76× / T2 2.70× / updateE-exec 2.74×** — isW·tier·updateE-exec가 **함께** 급증(일관) → slow tick의 원인 = 근접(T1/T2) enemy 클러스터링 → updateE-exec 급증 → 각 updateE의 isW×MAP_OBJS 스캔이 곱해져 AI section spike.
+- CPU profile(268, profiler ON 64fps): **isW 25.1% self(#1, 2위 drawImage 11.3%의 2배+)**, updateE 서브트리 isW 73.8% — **60fps+에서도 isW 지배 유지 확정**.
+- A/B: profiler OFF 89fps(U/tick p99 11) → ON 64fps(p99 11.5) — ~28% 부하이나 U/tick·랭킹 불변.
+- **isW는 main-thread scan** — off-thread collision worker(`_dispatchColWorker`, update 서브트리 0.2%)·spatial shQuery(0.05ms, CLOSED)와 **별개 병목**(혼동 금지).
+
+**근본 원인**: `isW(px,py)`(벽/충돌 판정)가 tile 검사(O(1)) 후 **전 MAP_OBJS를 매번 선형 순회**. 이미 `_bgInit`에 MAP_OBJS 충돌용 공간그리드 `_moGrid`(200px 셀)가 존재하나 **isW는 이를 사용하지 않는다**.
+
+**AI hotspot 최종 판정**
+
+> **AI CPU hotspot = `isW()`의 MAP_OBJS 선형스캔** (self-time 34.8%, updateE의 73.8%). 근접 enemy 밀도 × canMv/isW 호출수 × 전 MAP_OBJS(125) 스캔이 곱해져 302K iter/frame. 유저 5요건(정상레짐 반복 / 큰 self-time / slow-tick 1.80× enrichment / behavior-preserving 수정 가능 / 실패테스트 가능) 모두 충족.
+
+**선정 후보 (단 하나): `isW`의 MAP_OBJS 선형스캔 제거.**
+
+**최소수정 형태 (behavior-preserving, 이번 미구현)**:
+- (1순위, 최안전) **collision-only prefilter**: MAP_OBJS 변경 시 `_colObjs`=충돌체(22개)만 미리 필터, isW가 이를 순회 → 125→22(5.7× 감소), 순회 대상·판정 로직 **완전 동일**(비충돌체는 어차피 skip되던 것). MAP_OBJS 변경(init/파괴)시 `_colObjs` 재빌드.
+- (2순위, 더 큰 win) **`_moGrid` 공간질의**: isW가 (px,py) 셀+이웃만 조회. 단 `_moGrid`가 colR 단일반경만 저장 → colW/colH 타원판정 fidelity 위해 셀에 **오브젝트 인덱스 저장 후 동일 상세판정** 필요.
+- 금지 준수: AI tier/cadence·적 수·공격빈도·투사체·행동·시각 무변경. 위는 "필요없는 branch skip / 공간 lookup hoist"에 해당.
+
+**실패테스트 설계 (구현 전)**: 고정(stage0, enemy band 350–400, 정지 교전, 투사체 활성, 60s). before 측정: `_iswReport`의 **isW iter/frame(≈302K)**, U/tick p95/p99(11.5/14.5), AI section p95/p99(10.5/13.5), CPU profile isW self%(≈35%). behavior invariant: enemy 수/공격 cadence/투사체/damage/kill/이동/충돌결과 동일(충돌 판정 로직 불변이므로 자명). after: isW iter/frame 및 AI section·U/tick p99 하락, isW self% 하락 확인. RNG 비결정 → 고정 duration 통계 threshold + 3회 variance.
+
+### 6.9 isW collision-only prefilter — 최소수정 완료 (2026-08-13)
+
+6.8 후보(isW의 MAP_OBJS 선형스캔)를 TDD(실측→differential→최소수정→before/after)로 적용.
+
+**ROOT CAUSE**: `isW(px,py)`가 collision object 판정 시 **전 MAP_OBJS(125)를 매 호출 선형순회**. collision meta(`_OBJ_META[type].collision||col`) 보유는 stage0 기준 **22개뿐** — 103개 비충돌체를 매 호출 무의미 스캔. isW predicate는 순전히 `type` 기반(정적), 동적 상태(alive/destroyed) 미참조.
+
+**CHANGE (production diff = +6 / −1 줄)**:
+- `_colObjs`(collision object 배열) + `_rebuildColObjs()` + `_ensureColObjs()` 추가.
+- isW: MAP_OBJS 루프 → `_colObjs` 루프. **collision 판정 수식 한 글자도 안 바꿈**. `_ensureColObjs()`가 MAP_OBJS **identity 또는 length 변경 시에만** rebuild(O(1) 체크). `_moGrid` 미사용(이번 스코프 제외).
+- MAP_OBJS lifecycle: stage/보스 셋업에서 `=[]` 재할당(identity 변경 감지) + `boss_gate_col` 런타임 push(length 변경 감지) + 에디터 splice — 전부 rebuild 트리거로 커버. combat 중 collision object 불변.
+
+**CORRECTNESS (differential, legacy full-scan = oracle)**:
+- object-only diff: stage 0/3/8/14/19/26/34 + lifecycle(push/splice/재할당) **233,721 query mismatch=0**.
+- full-isW(tile+bone+object) live vs legacy: 5 stage + 298마리 실교전 좌표 **130,162 query mismatch=0**.
+- object 중심/경계(colR·colW/colH ellipse)/그리드/랜덤/skipBone 양쪽 커버. → **100% 동일**.
+
+**AFTER (동일 harness, stage0 ~250–290 enemies, 60fps+, 3회)**:
+| metric | BEFORE | AFTER |
+|---|---|---|
+| isW scan iter/frame | 124,666 (=997×125) | 13,427~21,353 (=calls×22) — **약 82.9% 감소(결정적)** |
+| isW CPU self% | 25.1% (#1) | **5.4%** (draw가 #1로 밀림) |
+| AI section mean | 2.19ms | **0.47~0.91ms** |
+| U/tick p99 | 11ms | **4~6ms** |
+| U/tick max | 19.1ms | 11~16.3ms |
+| fps(OFF) | 89 | **101~140** |
+- isW **calls/frame은 불변**(호출수 아닌 per-call scan만 감소 = 설계대로). CPU profiler A/B 교란: 최적화 후 OFF/ON 거의 동일(isW가 더 이상 병목 아님).
+
+**VERDICT: PASS.** differential mismatch=0 · scan −82.9% · isW CPU −4.6× · AI/U-tail 대폭 하락 · gameplay invariant(충돌 판정 불변으로 자명, differential로 실증). `_moGrid`(2순위)는 **불필요** — collision object가 stage당 1~28개로 적어 prefilter만으로 충분.
+
+**diagnostic 처리**: 조사용 계측(`_HITCH`/`_UPROF`/tick recorder/`_ISW`/HTICK/shQuery·chunk·tier 카운터, `?perf=1` 게이트)은 **일회성 실험 코드로 분류 → production commit에서 제거**. game.html 최종 diff는 isW 최적화(+6/−1)만. (계측 스크립트는 scratchpad 보존: `hitch_stream.js`/`cpu_profile.js`/`gc_enrich.js`/`isw_diff.js`/`isw_regress.js`.)
+
 ## 7. Claude Code 작업 체크리스트
 
 - [ ] 작업 전 해당 시스템 문서를 먼저 읽기
