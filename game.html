@@ -11866,6 +11866,8 @@ const AFFIX_POOL=[
   {id:'ksDullConviction',type:1,tiers:[1,1,1,1,1],unit:'val',slots:['wpn'],group:'ksDC',weight:10,layer:8,sub:'B',compat:['OFFENSE'],keystone:1,v2only:1},
   {id:'ksGlassGreatsword',type:1,tiers:[1,1,1,1,1],unit:'val',slots:['wpn'],group:'ksGG',weight:10,layer:7,sub:'B',compat:['OFFENSE'],keystone:1,v2only:1},
   {id:'ksBloodOath',type:1,tiers:[1,1,1,1,1],unit:'val',slots:['armor'],group:'ksBO',weight:10,layer:3,sub:'B',compat:['DEFENSE'],keystone:1,v2only:1},
+  {id:'ksRootedGiant',type:1,tiers:[1,1,1,1,1],unit:'val',slots:['armor'],group:'ksRG',weight:10,layer:5,sub:'B',compat:['DEFENSE'],keystone:1,v2only:1}, // [P6C] 정지중 피해+50%·DR+15% / 이속-25%
+  {id:'ksBloodPact',type:1,tiers:[1,1,1,1,1],unit:'val',slots:['wpn'],group:'ksBP',weight:10,layer:6,sub:'B',compat:['OFFENSE'],keystone:1,v2only:1},   // [P6C] 흡혈×2 / 물약·lifeRegen -50%
   {id:'chargeAtkDmg',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'chAD',weight:50,layer:5,sub:'A'},
   {id:'counterAtkDmg',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'ctAD',weight:45,layer:5,sub:'A'},
   {id:'backstabDmg',type:1,tiers:[.12,.20,.32,.46,.65],unit:'pct',slots:['wpn'],group:'bkSt',weight:35,layer:6,sub:'A'},
@@ -21350,6 +21352,7 @@ function applyStats(){
   P.rage=Math.min(_rageMax(),P.rage||0); // [P5A.1] rageMax 감소(rageMaxFlat 장비 해제/교체) 시 current rage clamp — invariant current≤max. equip/스탯 재계산 지점(매프레임 아님). rage 미장착·증가 시 불변.
   // [P6B/LOCK-30] 혈석의서약 keystone: maxHP +80%(equip-derived, 현재HP 무상헐링=기존 maxHP affix 선례) / 플레이어 에너지쉴드(P.mshield/P.shield) 0. **enemy e.eShield 무관.** 해제 시 재계산으로 원복(current HP는 기존 clamp).
   if(_ksBloodOath()){P.mhp=~~(P.mhp*1.8);P.hp=Math.min(P.hp,P.mhp);P.mshield=0;P.shield=0}
+  if(_ksRootedGiant())P.speed*=0.75; // [P6C/LOCK-31] 뿌리내린거인 이동속도 -25% (최종 speed 1회, equip-derived, 해제 시 재계산 원복)
 }
 let _eqStatCache=null;
 function _eqStatRebuild(){_eqStatCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it){for(const k2 in it){if(k2[0]==='b'&&typeof it[k2]==='number'){const sk=k2.slice(1);_eqStatCache[sk]=(_eqStatCache[sk]||0)+it[k2]}}}}}
@@ -21360,6 +21363,10 @@ function _ksBloodOath(){return _eqAffix('ksBloodOath')>0}       // 혈석의서�
 function _ksNoCrit(){return _eqAffix('ksDullConviction')>0}     // 무딘확신: 치명타 불가
 function _ksDmgMul(){return 1+(_eqAffix('ksDullConviction')>0?0.30:0)+(_eqAffix('ksGlassGreatsword')>0?0.40:0)} // 무딘 +30% / 유리 +40% 주는피해(아이템당1개라 동시 없음; 비정상 fixture도 가산=무한/NaN 없음)
 function _ksTakenMul(){return 1+(_eqAffix('ksGlassGreatsword')>0?0.25:0)} // 유리대검 받는피해 +25%
+function _ksRootedGiant(){return _eqAffix('ksRootedGiant')>0} // [P6C] 뿌리내린거인: 정지중 피해+50%·DR+15% / 이속-25%. 정지판정=P._moving(position-delta, standingDmg DEAD라 신설)
+function _ksBloodPact(){return _eqAffix('ksBloodPact')>0}     // [P6C] 핏빛계약: 흡혈×2 / 물약·lifeRegen -50%(흡혈·시스템복원 제외, LOCK-6 "potionPower/lifeRegen 경로" 근거)
+function _ksLifestealMul(){return _ksBloodPact()?2:1}          // 흡혈 배율(핏빛계약 ×2)
+function _ksHealMul(){return _ksBloodPact()?0.5:1}             // 물약·lifeRegen 배율(핏빛계약 ×0.5)
 function _keystoneCandidates(aSlot,layerLv){ // 8단+ · slot/layer(≤layerLv)·B keystone
   const out=[];if(~~layerLv<8)return out;
   for(let i=0;i<AFFIX_POOL.length;i++){const a=AFFIX_POOL[i];if(!a.keystone)continue;if(a.slots.indexOf(aSlot)<0)continue;if(a.layer>~~layerLv)continue;out.push(a)}
@@ -21619,7 +21626,7 @@ function useQuickslot(idx){
   qsCooldown[idx]=Math.max(6,~~(_potCdBase*(1-_glPotCd-_bltPotCd-_regenPotCd-_potCdAffix))); // 최대 90%, 최소 0.1초
   
   if(s.type==='hp'){
-    const v=~~(potHeal('hp')*(1+_eqAffix('potionPower')));
+    const v=~~(potHeal('hp')*(1+_eqAffix('potionPower'))*_ksHealMul());
     P.hp=Math.min(P.mhp,P.hp+v);
     addTxt(P.x,P.y-25,_T('👿 악의 추출: +')+v+' HP','#33ff33',40);
   }
@@ -25055,6 +25062,8 @@ function _eWallStuck(px,py){const tx=~~(px/T),ty=~~(py/T);return tx<0||ty<0||tx>
 function update(){
   if(!G.on)return;
   if(_EDITOR_MODE){_editorUpdate();return}
+  // [P6C/LOCK-31] 뿌리내린거인 정지 판정 — position-delta(직전 프레임 대비 P 위치 불변=정지). 모든 이동 모드(walk/dash/knockback) 포함, frame-stable(1프레임 지연 무시). standingDmg DEAD라 §4 position-delta 방식으로 신설.
+  if(P){P._moving=(P._lastX!==undefined&&(P.x!==P._lastX||P.y!==P._lastY));P._lastX=P.x;P._lastY=P.y;}
   // null 엔트리 정리 (mkEn 실패 등)
   for(let _ni=ens.length-1;_ni>=0;_ni--){if(!ens[_ni])ens.splice(_ni,1)}
   // 백그라운드 초기화는 update() 끝에서 버짓 기반 처리 (게임 로직 스킵 안 함)
@@ -25641,7 +25650,7 @@ function update(){
   // HP 자연 리젠 (VIT + 레벨 기반, 회복력 패시브 + 생명팔찌 적용)
   const _hpr=(P.hpR||0)*pRegenMul()*_hdMul*(1+_eqAffix('lifeHealPow'))*(1+pAbundRegen()+pPredRegen());
   const _regenDiv=P.s==='idle'?8:16;
-  if(_hpr>0&&P.hp>0&&P.hp<P.mhp){P.hp=Math.min(P.mhp,P.hp+_hpr/_regenDiv*sp)}
+  if(_hpr>0&&P.hp>0&&P.hp<P.mhp){P.hp=Math.min(P.mhp,P.hp+_hpr/_regenDiv*sp*_ksHealMul())} // [P6C/LOCK-31] 핏빛계약 lifeRegen -50%(_ksHealMul, 물약과 동일 penalty. 흡혈·시스템복원 제외)
   {const _stBefore=P.st,_mpBefore=P.mp,_hpBefore=P.hp;
   if(P.s==='idle'){P.st=Math.min(P.mst,P.st+_str/8*sp);P.mp=Math.min(P.mmp,P.mp+_mpr/8*sp)}
   else{P.st=Math.min(P.mst,P.st+_str/16*sp);const _mpMul=P.s==='beam'?.5:1;P.mp=Math.min(P.mmp,P.mp+_mpr/16*_mpMul*sp)}
@@ -28582,7 +28591,7 @@ function update(){
   if(~~(_now)%6===0)_updateActionKeys(); // E/SH/F 슬롯 상태 갱신
   // Auto-potion: HP가 물약 회복량 이상 빠지면 자동 섭취
   if(autoPotCd>0)autoPotCd-=sp;
-  const _apHealAmt=~~(potHeal('hp')*(1+_eqAffix('potionPower')));
+  const _apHealAmt=~~(potHeal('hp')*(1+_eqAffix('potionPower'))*_ksHealMul());
   if(autoPotCd<=0&&P.hp>0&&G.mats>0&&P.mhp-P.hp>=_apHealAmt){
     G.mats--;
     const _potCdBase=420;
@@ -28590,7 +28599,7 @@ function update(){
     const _bltPotCd=Math.min(blt().potCd||0,.2);
     const _regenPotCd=Math.min(PASSIVES.pRegen*.03,.3);
     autoPotCd=Math.max(6,~~(_potCdBase*(1-_glPotCd-_bltPotCd-_regenPotCd)));
-    const v=~~(potHeal('hp')*(1+_eqAffix('potionPower')));
+    const v=~~(potHeal('hp')*(1+_eqAffix('potionPower'))*_ksHealMul());
     P.hp=Math.min(P.mhp,P.hp+v);
     SFX.potion();
     addTxt(P.x,P.y-25,_T('👿 악의 추출: +')+v+' HP','#33ff33',40);
@@ -34634,6 +34643,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(e._frozen>0&&!isDot){dmg=~~(dmg*1.5)}
   // 한방 데미지 캡: 삭제 (제한 없음)
   // [P6B/LOCK-30] 무딘확신 +30% / 유리대검 +40% "주는 피해" — 모든 배율(스킬·crit·rageDmg·상태) 확정 후 최종 1회 곱연산(hurtE 단일 지점→모든 player 데미지 커버, double-dip 없음). 미장착 시 ×1.0.
+  if(_ksRootedGiant()&&!P._moving)dmg=~~(dmg*1.5); // [P6C/LOCK-31] 뿌리내린거인 정지중 주는 피해 +50%(조건부, 이동 중 없음)
   dmg=~~(dmg*_ksDmgMul());
 
   // ═══ 에너지쉴드: 모든 배율 확정 후 흡수 (HP와 동일 내구성) ═══
@@ -34654,7 +34664,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
     // ═══ 흡수 어픽스: lifeLeech/manaLeech/stLeech/lifeOnHit ═══
     if(!isDot){
       const _ll=_eqAffix('lifeLeech')+_eqAffix('lifeLeechBr')+_eqAffix('endLeech')+(_eqAffix('injuredLeech')>0&&P.hp<=P.mhp*.35?_eqAffix('injuredLeech'):0); // [P4B-3] lifeLeechBr·endLeech 활성화
-      if(_ll>0)P.hp=Math.min(P.mhp,P.hp+dmg*_ll);
+      if(_ll>0)P.hp=Math.min(P.mhp,P.hp+dmg*_ll*_ksLifestealMul()); // [P6C/LOCK-31] 핏빛계약 흡혈 ×2(_ksLifestealMul, 흡혈 전용 — 회복 -50% penalty 미적용)
       const _ml=_eqAffix('manaLeech');if(_ml>0)P.mp=Math.min(P.mmp,P.mp+dmg*_ml);
       const _sl=_eqAffix('stLeech');if(_sl>0)P.st=Math.min(P.mst,P.st+dmg*_sl);
       const _roh=_eqAffix('resourceOnHit');if(_roh>0){P.mp=Math.min(P.mmp,P.mp+dmg*_roh);P.st=Math.min(P.mst,P.st+dmg*_roh)} // [P4B-3] 타격 시 MP+ST 회수
@@ -35775,6 +35785,7 @@ function hurtP(dmg,opts){
       if(_sd<=120)_cDR+=_eqAffix('closeDR');if(_sd>300)_cDR+=_eqAffix('farDR')}
     if(_cDR>0)a=Math.max(0,~~(a*(1-Math.min(.50,_cDR))))} // DR캡 50%
   a=~~(a*_ksTakenMul()); // [P6B/LOCK-30] 유리대검 "받는 피해 +25%" — 모든 DR 적용 후 최종 incoming 1회(shield+HP 공통). 미장착 시 ×1.0.
+  if(_ksRootedGiant()&&!P._moving)a=~~(a*0.85); // [P6C/LOCK-31] 뿌리내린거인 정지중 DR +15% — 기존 DR캡(50%) 우회 최종 ×0.85(keystone=강 rule modifier, 이동 중 없음)
   // 최소 데미지: 최대HP의 0.5% (순수뎀, 방어 무시)
   const _minDmg=Math.max(1,~~(P.mhp*0.005));
   if(a<_minDmg)a=_minDmg;

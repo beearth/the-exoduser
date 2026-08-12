@@ -15,7 +15,7 @@ function extractPool(src){
 const POOL=extractPool(gameHtml);
 
 test('AFFIX_POOL 402 엔트리 전부 layer/sub 메타 존재 (LEGACY 예외 명시)', () => {
-  assert.equal(POOL.length, 413, '엔트리 수 413 (410 + P6B keystone 3)');
+  assert.equal(POOL.length, 415, '엔트리 수 413 (410 + P6B keystone 3)');
   const legacy=POOL.filter(a=>a.sub==='LEGACY');
   assert.equal(legacy.length,1,'LEGACY는 armorPen 1건');
   assert.equal(legacy[0].id,'armorPen');

@@ -46,8 +46,8 @@ test('§12 기존 WORKING 보호 — 활성화는 가산형(부재 시 항등)',
 });
 
 test('§13/§18 AFFIX_POOL 구조 불변 — 활성화는 combat 배선만 (pool 메타 무변경)', () => {
-  assert.equal(POOL.length,413,'413 (410 + P6B keystone 3)');
-  assert.equal(POOL.filter(a=>a.sub==='B').length,161,'B 161 (158 + keystone 3)');
+  assert.equal(POOL.length,415,'413 (410 + P6B keystone 3)');
+  assert.equal(POOL.filter(a=>a.sub==='B').length,163,'B 161 (158 + keystone 3)');
   assert.ok(POOL.filter(a=>a.sub==='B').every(a=>Array.isArray(a.compat)),'B compat 유지');
   // 활성화 대상들은 pool에서 layer/sub/tiers 그대로 (combat만 배선)
   for(const id of ACTIVATED){

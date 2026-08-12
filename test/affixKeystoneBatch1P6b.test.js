@@ -106,11 +106,11 @@ test('§8 eligibility — 8단 게이트 / slot / 아이템당 1개 cap / 확률
   assert.equal(e.KEYSTONE_ROLL_ENABLED,false,'확률 UNRESOLVED → flag off');
   // 8단 미만 → 후보 0
   assert.equal(e._keystoneCandidates('wpn',7).length,0,'layerLv 7 → 후보 0');
-  // 8단+ wpn → 무딘/유리(layer 8/7 ≤8, wpn)
+  // 8단+ wpn → 무딘(8)·유리(7)·핏빛(6) (P6C 핏빛 wpn 추가)
   const c8=e._keystoneCandidates('wpn',8).map(a=>a.id).sort();
-  assert.deepEqual(c8,['ksDullConviction','ksGlassGreatsword'],'wpn 8단 → 무딘·유리');
-  // armor 8단 → 혈석(layer3≤8)
-  assert.deepEqual(e._keystoneCandidates('armor',8).map(a=>a.id),['ksBloodOath'],'armor 8단 → 혈석');
+  assert.deepEqual(c8,['ksBloodPact','ksDullConviction','ksGlassGreatsword'],'wpn 8단 → 무딘·유리·핏빛');
+  // armor 8단 → 혈석(3)·거인(5) (P6C 거인 armor 추가)
+  assert.deepEqual(e._keystoneCandidates('armor',8).map(a=>a.id).sort(),['ksBloodOath','ksRootedGiant'],'armor 8단 → 혈석·거인');
   // forced 아니고 flag off → null (silent random roll 없음)
   assert.equal(e._rollKeystoneOnItem({slot:'weapon',layerLv:10,affixes:[]},false),null,'flag off → 미출현');
   // forced → 후보 1개 부여
@@ -123,6 +123,6 @@ test('§8 eligibility — 8단 게이트 / slot / 아이템당 1개 cap / 확률
 });
 
 test('§9 legacy/구조 보호 — POOL 413/B 161, keystone은 v2only(legacy byte-identical)', () => {
-  assert.equal(POOL.length,413);assert.equal(POOL.filter(a=>a.sub==='B').length,161);
+  assert.equal(POOL.length,415);assert.equal(POOL.filter(a=>a.sub==='B').length,163);
   for(const id of KS)assert.equal(by(id).v2only,1,id+' v2only(legacy 제외)');
 });
