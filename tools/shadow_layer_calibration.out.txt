@@ -1,0 +1,138 @@
+═══ LOCK-34 SHADOW LAYER CALIBRATION ═══
+seed=0x6f6c draws/cap=100000
+
+── §1 layerCap formula 검증 (itemLv=min(900,floor(lv/10)*10)) ──
+  itemLv   0~ 90 → cap 1  (expect 1) OK
+  itemLv 100~190 → cap 2  (expect 2) OK
+  itemLv 200~290 → cap 3  (expect 3) OK
+  itemLv 300~390 → cap 4  (expect 4) OK
+  itemLv 400~490 → cap 5  (expect 5) OK
+  itemLv 500~590 → cap 6  (expect 6) OK
+  itemLv 600~690 → cap 7  (expect 7) OK
+  itemLv 700~790 → cap 8  (expect 8) OK
+  itemLv 800~890 → cap 9  (expect 9) OK
+  itemLv 900~900 → cap 10  (expect 10) OK
+  ▶ cap10 = itemLv 900 유일(캡 900). formula 무충돌 CONFIRMED
+
+── 결정론 검증: 동일 seed 반복 결과 동일 = PASS ──
+
+════════ MODEL A1 ════════
+cap itemLv | L1..L10 분포(%) | mean med p90 P(cap) P(cap-1+) P(L1-4) entropy | MC오차
+ 1     0  | 100.0   .    .    .    .    .    .    .    .    .  | 1.00 1 1 100.0% 100.0% 100.0% 0.00b | 0.00%
+ 2   100  | 42.6 57.4   .    .    .    .    .    .    .    .  | 1.57 2 2 57.4% 100.0% 100.0% 0.98b | 0.15%
+ 3   200  | 24.0 32.4 43.7   .    .    .    .    .    .    .  | 2.20 2 3 43.7% 76.0% 100.0% 1.54b | 0.22%
+ 4   300  | 15.1 20.4 27.5 37.1   .    .    .    .    .    .  | 2.87 3 4 37.1% 64.6% 100.0% 1.92b | 0.15%
+ 5   400  | 10.0 13.6 18.3 24.7 33.4   .    .    .    .    .  | 3.58 4 5 33.4% 58.1% 66.6% 2.20b | 0.26%
+ 6   500  | 6.9 9.4 12.6 17.0 23.0 31.1   .    .    .    .  | 4.33 5 6 31.1% 54.1% 45.9% 2.41b | 0.24%
+ 7   600  | 4.9 6.6 8.9 12.0 16.2 21.9 29.5   .    .    .  | 5.12 6 7 29.5% 51.4% 32.4% 2.57b | 0.15%
+ 8   700  | 3.5 4.7 6.4 8.6 11.6 15.6 21.1 28.5   .    .  | 5.94 6 8 28.5% 49.6% 23.1% 2.70b | 0.29%
+ 9   800  | 2.5 3.4 4.6 6.2 8.4 11.3 15.2 20.6 27.8   .  | 6.79 7 9 27.8% 48.4% 16.7% 2.80b | 0.24%
+10   900  | 1.8 2.5 3.3 4.5 6.1 8.2 11.1 15.0 20.2 27.3 | 7.67 8 10 27.3% 47.5% 12.2% 2.88b | 0.21%
+
+════════ MODEL A2 ════════
+cap itemLv | L1..L10 분포(%) | mean med p90 P(cap) P(cap-1+) P(L1-4) entropy | MC오차
+ 1     0  | 100.0   .    .    .    .    .    .    .    .    .  | 1.00 1 1 100.0% 100.0% 100.0% 0.00b | 0.00%
+ 2   100  | 64.1 35.9   .    .    .    .    .    .    .    .  | 1.36 1 2 35.9% 100.0% 100.0% 0.94b | 0.32%
+ 3   200  | 45.1 38.2 16.7   .    .    .    .    .    .    .  | 1.72 2 3 16.7% 54.9% 100.0% 1.48b | 0.04%
+ 4   300  | 38.5 32.6 20.4 8.5   .    .    .    .    .    .  | 1.99 2 3 8.5% 28.9% 100.0% 1.83b | 0.31%
+ 5   400  | 24.6 29.1 24.6 15.4 6.4   .    .    .    .    .  | 2.50 2 4 6.4% 21.8% 93.6% 2.18b | 0.16%
+ 6   500  | 13.3 21.3 25.2 21.3 13.3 5.6   .    .    .    .  | 3.17 3 5 5.6% 18.9% 81.1% 2.46b | 0.24%
+ 7   600  | 6.6 12.4 19.9 23.5 19.9 12.4 5.2   .    .    .  | 3.96 4 6 5.2% 17.6% 62.5% 2.65b | 0.15%
+ 8   700  | 3.8 6.3 12.0 19.1 22.6 19.1 12.0 5.0   .    .  | 4.81 5 7 5.0% 17.0% 41.3% 2.78b | 0.28%
+ 9   800  | 3.0 3.7 6.2 11.6 18.6 22.0 18.6 11.6 4.8   .  | 5.66 6 8 4.8% 16.4% 24.5% 2.89b | 0.13%
+10   900  | 2.8 2.9 3.6 6.0 11.3 18.0 21.3 18.0 11.3 4.7 | 6.50 7 9 4.7% 16.0% 15.3% 2.99b | 0.23%
+
+════════ MODEL A3 ════════
+cap itemLv | L1..L10 분포(%) | mean med p90 P(cap) P(cap-1+) P(L1-4) entropy | MC오차
+ 1     0  | 100.0   .    .    .    .    .    .    .    .    .  | 1.00 1 1 100.0% 100.0% 100.0% 0.00b | 0.00%
+ 2   100  | 42.6 57.4   .    .    .    .    .    .    .    .  | 1.57 2 2 57.4% 100.0% 100.0% 0.98b | 0.01%
+ 3   200  | 24.7 33.3 42.0   .    .    .    .    .    .    .  | 2.17 2 3 42.0% 75.3% 100.0% 1.55b | 0.24%
+ 4   300  | 16.4 22.1 27.9 33.6   .    .    .    .    .    .  | 2.79 3 4 33.6% 61.5% 100.0% 1.95b | 0.13%
+ 5   400  | 11.8 15.9 20.0 24.1 28.2   .    .    .    .    .  | 3.41 4 5 28.2% 52.4% 71.8% 2.26b | 0.35%
+ 6   500  | 8.9 12.0 15.1 18.2 21.3 24.4   .    .    .    .  | 4.04 4 6 24.4% 45.8% 54.2% 2.51b | 0.10%
+ 7   600  | 7.0 9.4 11.8 14.3 16.7 19.2 21.6   .    .    .  | 4.68 5 7 21.6% 40.8% 42.5% 2.72b | 0.19%
+ 8   700  | 5.6 7.6 9.6 11.5 13.5 15.4 17.4 19.4   .    .  | 5.33 6 8 19.4% 36.8% 34.3% 2.90b | 0.12%
+ 9   800  | 4.6 6.3 7.9 9.5 11.1 12.7 14.4 16.0 17.6   .  | 5.97 6 9 17.6% 33.6% 28.2% 3.06b | 0.16%
+10   900  | 3.9 5.2 6.6 8.0 9.3 10.7 12.0 13.4 14.8 16.1 | 6.62 7 10 16.1% 30.9% 23.7% 3.21b | 0.17%
+
+── §6 cap=10 search-bound 판정 (L10:1~8% / L8-10:15~35% / L1-4:≥15%) ──
+  A1: L10=27.3%✗  L8-10=62.5%✗  L1-4=12.2%✗  → FAIL
+  A2: L10=4.7%✓  L8-10=34.0%✓  L1-4=15.3%✓  → PASS
+  A3: L10=16.1%✗  L8-10=44.3%✗  L1-4=23.7%✓  → FAIL
+
+── §8 affix power (A1) — cap | E[wpn] p50 p90 max / E[armor] p50 p90 max ──
+  cap 1: wpn E=1.00 p50=1 p90=1 max=1 | armor E=2.00 p50=2 p90=2 max=2
+  cap 2: wpn E=1.57 p50=2 p90=2 max=2 | armor E=2.57 p50=3 p90=3 max=3
+  cap 3: wpn E=2.20 p50=2 p90=3 max=3 | armor E=3.63 p50=3 p90=5 max=5
+  cap 4: wpn E=3.24 p50=3 p90=5 max=5 | armor E=4.51 p50=5 p90=6 max=6
+  cap 5: wpn E=4.49 p50=5 p90=7 max=7 | armor E=5.34 p50=6 p90=7 max=7
+  cap 6: wpn E=5.89 p50=7 p90=9 max=9 | armor E=6.48 p50=7 p90=9 max=9
+  cap 7: wpn E=7.40 p50=9 p90=11 max=11 | armor E=7.52 p50=9 p90=10 max=10
+  cap 8: wpn E=9.00 p50=9 p90=13 max=13 | armor E=8.51 p50=9 p90=11 max=11
+  cap 9: wpn E=10.67 p50=11 p90=15 max=15 | armor E=9.48 p50=10 p90=12 max=12
+  cap10: wpn E=11.85 p50=13 p90=15 max=15 | armor E=10.17 p50=11 p90=12 max=12
+
+── §8 affix power (A2) — cap | E[wpn] p50 p90 max / E[armor] p50 p90 max ──
+  cap 1: wpn E=1.00 p50=1 p90=1 max=1 | armor E=2.00 p50=2 p90=2 max=2
+  cap 2: wpn E=1.36 p50=1 p90=2 max=2 | armor E=2.36 p50=2 p90=3 max=3
+  cap 3: wpn E=1.72 p50=2 p90=3 max=3 | armor E=2.88 p50=3 p90=5 max=5
+  cap 4: wpn E=2.07 p50=2 p90=3 max=5 | armor E=3.28 p50=3 p90=5 max=6
+  cap 5: wpn E=2.78 p50=2 p90=5 max=7 | armor E=3.96 p50=3 p90=6 max=7
+  cap 6: wpn E=3.81 p50=3 p90=7 max=9 | armor E=4.88 p50=5 p90=7 max=9
+  cap 7: wpn E=5.17 p50=5 p90=9 max=11 | armor E=5.94 p50=6 p90=9 max=10
+  cap 8: wpn E=6.75 p50=7 p90=11 max=13 | armor E=7.07 p50=7 p90=10 max=11
+  cap 9: wpn E=8.42 p50=9 p90=13 max=15 | armor E=8.16 p50=9 p90=11 max=12
+  cap10: wpn E=10.00 p50=11 p90=15 max=15 | armor E=9.13 p50=10 p90=12 max=12
+
+── §8 affix power (A3) — cap | E[wpn] p50 p90 max / E[armor] p50 p90 max ──
+  cap 1: wpn E=1.00 p50=1 p90=1 max=1 | armor E=2.00 p50=2 p90=2 max=2
+  cap 2: wpn E=1.57 p50=2 p90=2 max=2 | armor E=2.57 p50=3 p90=3 max=3
+  cap 3: wpn E=2.17 p50=2 p90=3 max=3 | armor E=3.59 p50=3 p90=5 max=5
+  cap 4: wpn E=3.12 p50=3 p90=5 max=5 | armor E=4.40 p50=5 p90=6 max=6
+  cap 5: wpn E=4.22 p50=5 p90=7 max=7 | armor E=5.14 p50=6 p90=7 max=7
+  cap 6: wpn E=5.39 p50=5 p90=9 max=9 | armor E=6.08 p50=6 p90=9 max=9
+  cap 7: wpn E=6.60 p50=7 p90=11 max=11 | armor E=6.93 p50=7 p90=10 max=10
+  cap 8: wpn E=7.84 p50=9 p90=13 max=13 | armor E=7.72 p50=9 p90=11 max=11
+  cap 9: wpn E=9.10 p50=9 p90=15 max=15 | armor E=8.47 p50=9 p90=12 max=12
+  cap10: wpn E=10.05 p50=11 p90=15 max=15 | armor E=9.04 p50=10 p90=12 max=12
+
+── §9 boundary smoothness (A1) — cap→cap+1 | Δmean-layer Δmean-wpn-affix Δp90-wpn ──
+  L1→L2 (itemLv 90→100): Δmean=0.57 ΔwpnE=0.57 Δwpn-p90=1
+  L2→L3 (itemLv 190→200): Δmean=0.62 ΔwpnE=0.62 Δwpn-p90=1
+  L3→L4 (itemLv 290→300): Δmean=0.67 ΔwpnE=1.04 Δwpn-p90=2
+  L4→L5 (itemLv 390→400): Δmean=0.71 ΔwpnE=1.26 Δwpn-p90=2
+  L5→L6 (itemLv 490→500): Δmean=0.75 ΔwpnE=1.40 Δwpn-p90=2
+  L6→L7 (itemLv 590→600): Δmean=0.79 ΔwpnE=1.51 Δwpn-p90=2
+  L7→L8 (itemLv 690→700): Δmean=0.82 ΔwpnE=1.60 Δwpn-p90=2
+  L8→L9 (itemLv 790→800): Δmean=0.85 ΔwpnE=1.67 Δwpn-p90=2
+  L9→L10 (itemLv 890→900): Δmean=0.88 ΔwpnE=1.18 Δwpn-p90=0
+
+── §9 boundary smoothness (A2) — cap→cap+1 | Δmean-layer Δmean-wpn-affix Δp90-wpn ──
+  L1→L2 (itemLv 90→100): Δmean=0.36 ΔwpnE=0.36 Δwpn-p90=1
+  L2→L3 (itemLv 190→200): Δmean=0.36 ΔwpnE=0.36 Δwpn-p90=1
+  L3→L4 (itemLv 290→300): Δmean=0.27 ΔwpnE=0.36 Δwpn-p90=0
+  L4→L5 (itemLv 390→400): Δmean=0.51 ΔwpnE=0.71 Δwpn-p90=2
+  L5→L6 (itemLv 490→500): Δmean=0.67 ΔwpnE=1.03 Δwpn-p90=2
+  L6→L7 (itemLv 590→600): Δmean=0.79 ΔwpnE=1.36 Δwpn-p90=2
+  L7→L8 (itemLv 690→700): Δmean=0.85 ΔwpnE=1.58 Δwpn-p90=2
+  L8→L9 (itemLv 790→800): Δmean=0.86 ΔwpnE=1.67 Δwpn-p90=2
+  L9→L10 (itemLv 890→900): Δmean=0.84 ΔwpnE=1.58 Δwpn-p90=2
+
+── §9 boundary smoothness (A3) — cap→cap+1 | Δmean-layer Δmean-wpn-affix Δp90-wpn ──
+  L1→L2 (itemLv 90→100): Δmean=0.57 ΔwpnE=0.57 Δwpn-p90=1
+  L2→L3 (itemLv 190→200): Δmean=0.60 ΔwpnE=0.60 Δwpn-p90=1
+  L3→L4 (itemLv 290→300): Δmean=0.61 ΔwpnE=0.95 Δwpn-p90=2
+  L4→L5 (itemLv 390→400): Δmean=0.62 ΔwpnE=1.09 Δwpn-p90=2
+  L5→L6 (itemLv 490→500): Δmean=0.63 ΔwpnE=1.17 Δwpn-p90=2
+  L6→L7 (itemLv 590→600): Δmean=0.64 ΔwpnE=1.21 Δwpn-p90=2
+  L7→L8 (itemLv 690→700): Δmean=0.64 ΔwpnE=1.24 Δwpn-p90=2
+  L8→L9 (itemLv 790→800): Δmean=0.65 ΔwpnE=1.26 Δwpn-p90=2
+  L9→L10 (itemLv 890→900): Δmean=0.65 ΔwpnE=0.95 Δwpn-p90=0
+
+── §10/§11 cap=10 3-bucket 잔존 + §16 Keystone per-item ──
+   Keystone/item = P(L≥8|cap10) × P(eligible slot=2/15) × 0.02
+  A1: L1-4=12.2% L5-7=25.4% L8-10=62.5% (all>0=true) | P(L≥8)=62.5% → Keystone 1/600 items(cap10)
+  A2: L1-4=15.3% L5-7=50.7% L8-10=34.0% (all>0=true) | P(L≥8)=34.0% → Keystone 1/1102 items(cap10)
+  A3: L1-4=23.7% L5-7=32.0% L8-10=44.3% (all>0=true) | P(L≥8)=44.3% → Keystone 1/847 items(cap10)
+
+   주: cap<8(itemLv<700) 아이템은 P(L≥8)=0 → Keystone 불가. 시간단위 변환은 kill/drop rate 없어 미산출(날조 금지).
