@@ -11862,6 +11862,10 @@ const AFFIX_POOL=[
   // ═══ [P4B-5C / LOCK-24] L5 Attack-Style Batch 2 신규 노드 — v2only(legacy byte-identical 보존, V2 전용) ═══
   {id:'projBounce',type:0,tiers:[1,1,2,2,3],unit:'cnt',slots:['xbow'],group:'pjBn',weight:35,layer:5,sub:'B',compat:['OFFENSE'],family:['PROJECTILE'],v2only:1},
   {id:'beamWidth',type:0,tiers:[.10,.16,.24,.34,.46],unit:'pct',slots:['helm'],group:'bmWd',weight:35,layer:5,sub:'B',compat:['OFFENSE'],family:['BEAM'],v2only:1},
+  // ═══ [P6B/LOCK-30] KEYSTONE Batch 1 — LOCK-6 트레이드오프. keystone:1(정상 롤 제외), v2only(legacy byte-identical), 효과는 소비부 하드코딩(LOCK-6 고정값), tiers는 마커. 8단+ B슬롯·아이템당 1개(_keystoneCandidates). ═══
+  {id:'ksDullConviction',type:1,tiers:[1,1,1,1,1],unit:'val',slots:['wpn'],group:'ksDC',weight:10,layer:8,sub:'B',compat:['OFFENSE'],keystone:1,v2only:1},
+  {id:'ksGlassGreatsword',type:1,tiers:[1,1,1,1,1],unit:'val',slots:['wpn'],group:'ksGG',weight:10,layer:7,sub:'B',compat:['OFFENSE'],keystone:1,v2only:1},
+  {id:'ksBloodOath',type:1,tiers:[1,1,1,1,1],unit:'val',slots:['armor'],group:'ksBO',weight:10,layer:3,sub:'B',compat:['DEFENSE'],keystone:1,v2only:1},
   {id:'chargeAtkDmg',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'chAD',weight:50,layer:5,sub:'A'},
   {id:'counterAtkDmg',type:0,tiers:[.10,.18,.28,.40,.55],unit:'pct',slots:['wpn'],group:'ctAD',weight:45,layer:5,sub:'A'},
   {id:'backstabDmg',type:1,tiers:[.12,.20,.32,.46,.65],unit:'pct',slots:['wpn'],group:'bkSt',weight:35,layer:6,sub:'A'},
@@ -12309,6 +12313,7 @@ function _affixLayerCandidates(aSlot,brType,layer,sub){
       if(a.brType&&a.brType!==brType)continue;
       if(_DEMO_MODE&&_DEMO_AFFIX_BANNED.has(a.id))continue;
       if(a.v2skip)continue; // [P4B-4] legacy sk*Dmg 20종은 V2 롤 제외 — canonical 6종만 skill-synergy 롤
+      if(a.keystone)continue; // [P6B] keystone은 일반 롤 후보 제외 — _rollKeystoneOnItem(8단+/1개 cap)로만 부여. 일반 V2 롤 distribution 불변.
       if(!(a.layer>=1))continue; // LEGACY(0)/무태깅 제외
       if(!idx[a.layer])idx[a.layer]={A:[],B:[]};
       if(a.sub==='FLEX'){idx[a.layer].A.push(a);idx[a.layer].B.push(a);}
@@ -21343,10 +21348,31 @@ function applyStats(){
   P.shield=Math.min(P.shield,P.mshield);
   recalcSt();
   P.rage=Math.min(_rageMax(),P.rage||0); // [P5A.1] rageMax 감소(rageMaxFlat 장비 해제/교체) 시 current rage clamp — invariant current≤max. equip/스탯 재계산 지점(매프레임 아님). rage 미장착·증가 시 불변.
+  // [P6B/LOCK-30] 혈석의서약 keystone: maxHP +80%(equip-derived, 현재HP 무상헐링=기존 maxHP affix 선례) / 플레이어 에너지쉴드(P.mshield/P.shield) 0. **enemy e.eShield 무관.** 해제 시 재계산으로 원복(current HP는 기존 clamp).
+  if(_ksBloodOath()){P.mhp=~~(P.mhp*1.8);P.hp=Math.min(P.hp,P.mhp);P.mshield=0;P.shield=0}
 }
 let _eqStatCache=null;
 function _eqStatRebuild(){_eqStatCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it){for(const k2 in it){if(k2[0]==='b'&&typeof it[k2]==='number'){const sk=k2.slice(1);_eqStatCache[sk]=(_eqStatCache[sk]||0)+it[k2]}}}}}
 function _eqStat(k){if(!_eqStatCache)_eqStatRebuild();return _eqStatCache[k]||0}
+// ═══ [P6B/LOCK-30] KEYSTONE Batch 1 (LOCK-6 트레이드오프) — equip-derived rule modifier, 별도 save state 없음 ═══
+const KEYSTONE_ROLL_ENABLED=false; // 확률 UNRESOLVED → 기본 off: production 미출현. forced 경로만 테스트.
+function _ksBloodOath(){return _eqAffix('ksBloodOath')>0}       // 혈석의서약: maxHP+80% / 플레이어 shield(P.mshield) 0. enemy e.eShield 무관.
+function _ksNoCrit(){return _eqAffix('ksDullConviction')>0}     // 무딘확신: 치명타 불가
+function _ksDmgMul(){return 1+(_eqAffix('ksDullConviction')>0?0.30:0)+(_eqAffix('ksGlassGreatsword')>0?0.40:0)} // 무딘 +30% / 유리 +40% 주는피해(아이템당1개라 동시 없음; 비정상 fixture도 가산=무한/NaN 없음)
+function _ksTakenMul(){return 1+(_eqAffix('ksGlassGreatsword')>0?0.25:0)} // 유리대검 받는피해 +25%
+function _keystoneCandidates(aSlot,layerLv){ // 8단+ · slot/layer(≤layerLv)·B keystone
+  const out=[];if(~~layerLv<8)return out;
+  for(let i=0;i<AFFIX_POOL.length;i++){const a=AFFIX_POOL[i];if(!a.keystone)continue;if(a.slots.indexOf(aSlot)<0)continue;if(a.layer>~~layerLv)continue;out.push(a)}
+  return out;
+}
+function _itemKeystoneCount(item){if(!item||!item.affixes)return 0;let c=0;for(const x of item.affixes){const d=_getAffixDef(x.id);if(d&&d.keystone)c++}return c}
+function _rollKeystoneOnItem(item,forced){ // eligibility + 아이템당 1개 cap. 확률 UNRESOLVED → forced/flag만. deterministic.
+  if(!forced&&!KEYSTONE_ROLL_ENABLED)return null;
+  if(!item)return null;const aSlot=_AFSLOT[item.slot];if(!aSlot)return null;
+  if(_itemKeystoneCount(item)>=1)return null; // 이미 1개 → 추가 제외
+  const cand=_keystoneCandidates(aSlot,item.layerLv||0);if(!cand.length)return null;
+  return {id:cand[0].id,tier:0,value:1};
+}
 // 장비 어픽스 합산 (id별 value 합계)
 let _eqAffixCache=null,_eqAffixVer=0;
 function _eqAffixRebuild(){_eqAffixCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it&&it.affixes)for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];_eqAffixCache[a.id]=(_eqAffixCache[a.id]||0)+a.value}}}
@@ -34593,7 +34619,7 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   if(!_isMagicDmg&&!_isArrow)_crBonus+=_eqAffix('critRateMelee')*100;
   if(_isMagicDmg||(opts&&opts.beam))_crBonus+=_eqAffix('critRateSpell')*100;
   if(_isArrow)_crBonus+=_eqAffix('critRateBow')*100;
-  var _isCrit=false;if(Math.random()*100<statCrit()+_crBonus){dmg=~~(dmg*statCritDmg());_isCrit=true;if(G._sStats)G._sStats.crits++;
+  var _isCrit=false;if(Math.random()*100<statCrit()+_crBonus&&!_ksNoCrit()){dmg=~~(dmg*statCritDmg());_isCrit=true;if(G._sStats)G._sStats.crits++;/*[P6B]무딘확신: crit 차단(Math.random 선평가로 RNG parity 유지)*/
     // ═══ onCrit 프록 (크리 시 발동) ═══
     const _ocExpl=_eqAffix('onCritExplode');if(_ocExpl>0){const _ocR=80;const _ocD=~~(dmg*_ocExpl);for(let _oi=0;_oi<ens.length;_oi++){const _oe=ens[_oi];if(_oe&&_oe.alive&&_oe!==e&&dst(e.x,e.y,_oe.x,_oe.y)<_ocR){hurtE(_oe,_ocD,Math.atan2(_oe.y-e.y,_oe.x-e.x),false,{pure:true})}}addParts(e.x,e.y,'#ff6622',12)}
     const _ocChain=_eqAffix('onCritChain');if(_ocChain>0){let _ocTgt=null,_ocMin=250;for(let _oi=0;_oi<ens.length;_oi++){const _oe=ens[_oi];if(_oe&&_oe.alive&&_oe!==e){const _od=dst(e.x,e.y,_oe.x,_oe.y);if(_od<_ocMin){_ocMin=_od;_ocTgt=_oe}}}if(_ocTgt){hurtE(_ocTgt,~~(dmg*_ocChain),Math.atan2(_ocTgt.y-e.y,_ocTgt.x-e.x),false,{pure:true})}}
@@ -34607,6 +34633,8 @@ function hurtE(e,dmg,ang,noSound,opts,atkEl=0){
   // 프리즌(빙결) 상태 → 데미지 1.5배
   if(e._frozen>0&&!isDot){dmg=~~(dmg*1.5)}
   // 한방 데미지 캡: 삭제 (제한 없음)
+  // [P6B/LOCK-30] 무딘확신 +30% / 유리대검 +40% "주는 피해" — 모든 배율(스킬·crit·rageDmg·상태) 확정 후 최종 1회 곱연산(hurtE 단일 지점→모든 player 데미지 커버, double-dip 없음). 미장착 시 ×1.0.
+  dmg=~~(dmg*_ksDmgMul());
 
   // ═══ 에너지쉴드: 모든 배율 확정 후 흡수 (HP와 동일 내구성) ═══
   // 쉴드가 남아있는 한 HP는 절대 안 깎임. 오버플로우만 HP로.
@@ -35746,6 +35774,7 @@ function hurtP(dmg,opts){
     if(opts&&opts.src){const _sd=Math.abs(P.x-(opts.src.x||0))+Math.abs(P.y-(opts.src.y||0));
       if(_sd<=120)_cDR+=_eqAffix('closeDR');if(_sd>300)_cDR+=_eqAffix('farDR')}
     if(_cDR>0)a=Math.max(0,~~(a*(1-Math.min(.50,_cDR))))} // DR캡 50%
+  a=~~(a*_ksTakenMul()); // [P6B/LOCK-30] 유리대검 "받는 피해 +25%" — 모든 DR 적용 후 최종 incoming 1회(shield+HP 공통). 미장착 시 ×1.0.
   // 최소 데미지: 최대HP의 0.5% (순수뎀, 방어 무시)
   const _minDmg=Math.max(1,~~(P.mhp*0.005));
   if(a<_minDmg)a=_minDmg;

@@ -82,7 +82,7 @@ test('§8 narrow scope + family + 기존 affix', () => {
   const a=by('chainDmgKeep');
   assert.equal(a.unit,'pct');assert.deepEqual(a.family,['PROJECTILE']);assert.ok(!('v2only'in a),'legacy-rollable 유지(신규 ID 아님)');
   assert.deepEqual(a.tiers,TIERS,'tier 데이터 무변경');
-  assert.equal(POOL.length,410);assert.equal(POOL.filter(x=>x.sub==='B').length,158);
+  assert.equal(POOL.length,413);assert.equal(POOL.filter(x=>x.sub==='B').length,161);
 });
 
 test('§9 Batch1/2 working L5-B 보호', () => {
