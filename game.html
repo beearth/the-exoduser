@@ -28004,7 +28004,7 @@ function update(){
             const _clR2=p.chainR||180;
             let _prev=e,_clDmg=p.dmg,_clHitSet=new Set(p._hitSet);_clHitSet.add(e);
             const _clMax=p.chainMax-(p._chainCount||0);
-            const _clKeep=Math.min(1,0.8+_eqAffix('chainDmgKeep')); // [P4B-5D]chainDmgKeep: 체인 홉당 보존율 0.8→상향(cap 1.0=증폭 없음). affix0→0.8 항등, RNG 미추가
+            const _clKeep=Math.min(1,0.8+0.2*_eqAffix('chainDmgKeep')); // [P4B-5D]chainDmgKeep: 체인 hop decay(0.2)를 X% 감소 → retention=1-0.2*(1-val)=0.8+0.2*val. 전 tier distinct, cap 1.0(스택 시만·증폭 없음), affix0→0.8 항등, RNG 미추가
             for(let _ci=0;_ci<_clMax;_ci++){
               const _clNe2=shQuery(_prev.x,_prev.y,_clR2);
               let _clT2=null,_clB2=_clR2;
