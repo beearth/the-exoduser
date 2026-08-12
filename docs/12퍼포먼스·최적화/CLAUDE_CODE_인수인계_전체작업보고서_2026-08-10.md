@@ -407,6 +407,31 @@ isW 최적화(d074f3a9) 후 CPU 구조가 바뀌어 hotspot 순위를 재측정.
 
 **caveat**: 측정 harness는 스킬을 140ms마다 연속 발동(인간보다 공격적) → hitch **빈도는 과장**, 단 spike **magnitude(proj 44ms)는 실재**. game.html 계측은 미커밋·측정 후 제거, `d074f3a9` 복원 확인.
 
+### 6.11 skill-use proj 스파이크 = per-hit SFX 오분류 확정 + 최소수정 완료 (2026-08-13)
+
+6.10의 "proj 스파이크"를 함수/분기 수준까지 귀속. pProjs 루프에 branch counter + 함수별 프레임 타이머 진단 삽입 → spike enrichment 분석(측정 후 byte-복원 MATCH).
+
+**귀속 경로 (가설 순차 기각)**:
+- shQuery(spatial query) = **0.10ms** 기각(6.x 기확정) · hurtE aggregate <0.8% 기각 · candidate dst 루프 = **고hitCand·저hits(hitCand 3517, hits 30) → 2.15ms** 기각 · trail allocation = **A/B(재할당 68→48 감소해도 스파이크 불변)** 기각 · homing = iceBlade 제외 homCand=0 · GC aggregate 1.3%.
+- 스파이크 프레임(ms 22.83) **함수별 분해**: `playSampleAt` **16.87ms(74%)** · `hurtE` 3.90ms(17%) · `playVFXAng` 0.30ms → **합 92% 설명**. hits enrichment 155.78x(hits 2→374/frame), **per-hit ≈60µs**(hurtE 7.2µs의 8배).
+
+**ROOT CAUSE**: iceBlade(및 venomBlade/bladeShard/maliceHunt) 히트마다 `playSampleAt('chain_fly')`. `chain_fly`는 `chain_` prefix라 `_isSkillSfx`→SKILL(10)로 분류돼 **PROJ(5)·HIT(3) 동시재생 하드캡 + 30ms dedup을 전부 우회** → 대량 명중 시 한 프레임에 수백 회, `_MAX_ACTIVE_NODES=48` 포화까지 WebAudio 노드 생성.
+
+**최소수정(behavior-preserving, 사용자 승인)**: `playSampleAt`/`_playSampleNow`에 옵셔널 `priOverride` 추가(미전달=기존 동작, 하위호환). 두 히트음 호출부에 `_SFX_PRI.PROJ` 전달 → 탄막 히트음답게 동시 5개 캡. `playSampleAt` 반환값 미사용이라 **게임플레이 상태 완전 불변**(투사체 수/궤적/데미지/hit timing/충돌). 상세: `docs/6사운드디자인/6사운드디자인.md` "우선순위 오버라이드(2026-08-13)".
+
+**BEFORE→AFTER (mass iceBlade 히트 재현, rAF+playSampleAt 래퍼 계측)**:
+| 지표 | BEFORE | AFTER |
+|---|---|---|
+| playSampleAt 총시간/60s | 637ms | **45ms** (−93%) |
+| 최악 프레임 playSampleAt | 158.8ms | **9.2ms** (−94%) |
+| per-call | ~45µs | **~1.7µs** |
+| sfx 스파이크 프레임(>5ms) | 17 | **1** |
+| 대형 스터터(dt>33ms) | 69 | **30** (−57%) |
+| 실측 FPS | 73 | **90** |
+| 투사체 mean/max·적 수(sanity) | 39/95·301 | 40/96·301 (동일) |
+
+**판정**: proj 스파이크의 **PRIMARY(74%)=per-hit SFX 오분류 → CLOSED/PASS**. 잔여(dt>16.7 스파이크 588회)는 draw/ens/기타(6.10의 draw-bound 축) — SFX와 무관, 별도 축. hurtE(17%)는 부차로 잔존하나 단독 스파이크 유발 안 함.
+
 ## 7. Claude Code 작업 체크리스트
 
 - [ ] 작업 전 해당 시스템 문서를 먼저 읽기
