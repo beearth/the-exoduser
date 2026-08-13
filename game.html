@@ -12275,6 +12275,29 @@ function rollAffixes(grade,slot,brType){
 // 구조: affix "선택"은 layer/sub(affixLayer), 수치 "품질"은 기존 affixRollTier(tiers/tierW/skewRoll/lv) — 두 축 분리(§8).
 const ITEM_LAYER_ROLL_V2=false; // 기본 false: 기존 생성 100% 무변경. true여도 layerLv 명시 아이템만 사용.
 
+// ═══ [P6G/LOCK-35] SHADOW LAYER TELEMETRY — 관찰 전용(production 무변경) ═══
+// _SHADOW_LAYER_LOG=false(기본)면 mkItem 관찰 분기 미진입 → Math.random 미소비 · item 불변 · 레거시 byte-identical.
+// 독립 seeded RNG(mulberry32) 사용 — production Math.random sequence 미소비. item.layerLv/affix/socket/save 절대 미변경.
+// LOCK-34 추천 MODEL_A2 분포를 실 gameplay itemLv 스트림에 얹어 관측만 한다(확률/flag production 미확정). 콘솔: window._shadowLayer.enable('A2')→플레이→.report().
+let _SHADOW_LAYER_LOG=false;      // debug/telemetry 토글(기본 off — 배포 상태)
+let _SHADOW_LAYER_MODEL='A2';     // LOCK-34 추천. 'A1'/'A2'/'A3' 비교 가능
+function _shadowMulberry32(s){let a=s>>>0;return function(){a|=0;a=(a+0x6D2B79F5)|0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296}}
+let _shadowRNG=_shadowMulberry32(0x6F6C); // 독립 스트림(production Math.random 미소비)
+function _shadowLayerCap(itemLv){return Math.max(1,Math.min(10,1+Math.floor((itemLv||0)/100)))} // LOCK-34 §1
+function _shadowLayerWeights(cap,model){const w=[];if(model==='A1'){for(let L=1;L<=cap;L++)w.push(Math.pow(1.35,L-1))}else if(model==='A3'){for(let L=1;L<=cap;L++)w.push(1+0.35*(L-1))}else{const mode=Math.max(1,cap-3),sig=1.6,kap=0.6,fl=0.15;for(let L=1;L<=cap;L++){let g=Math.exp(-((L-mode)*(L-mode))/(2*sig*sig));if(L===cap&&cap>1)g*=kap;w.push(g+fl)}}return w} // A2=MID-BIASED
+function _shadowRollLayer(itemLv,rng,model){const cap=_shadowLayerCap(itemLv);const w=_shadowLayerWeights(cap,model||_SHADOW_LAYER_MODEL);let s=0;for(let i=0;i<w.length;i++)s+=w[i];let x=rng()*s;for(let L=1;L<=cap;L++){x-=w[L-1];if(x<0)return L}return cap}
+const _shadowHist={draws:0,byLayer:new Array(11).fill(0),byCap:{}};
+function _shadowObserve(item){ // 관찰 전용 — item 절대 미변경, 독립 RNG만 소비
+  if(!item)return;const lv=item.itemLv||0;const cap=_shadowLayerCap(lv);
+  const L=_shadowRollLayer(lv,_shadowRNG,_SHADOW_LAYER_MODEL);
+  _shadowHist.draws++;_shadowHist.byLayer[L]++;
+  const c=_shadowHist.byCap[cap]||(_shadowHist.byCap[cap]={draws:0,layer:new Array(11).fill(0)});
+  c.draws++;c.layer[L]++;
+}
+function _shadowReset(seed){_shadowRNG=_shadowMulberry32((seed>>>0)||0x6F6C);_shadowHist.draws=0;_shadowHist.byLayer.fill(0);for(const k in _shadowHist.byCap)delete _shadowHist.byCap[k]}
+function _shadowReport(){const H=_shadowHist;const out=[`shadow draws=${H.draws} model=${_SHADOW_LAYER_MODEL}`];const caps=Object.keys(H.byCap).map(Number).sort((a,b)=>a-b);for(const cap of caps){const c=H.byCap[cap];const pct=[];for(let L=1;L<=cap;L++)pct.push(L+':'+(100*c.layer[L]/c.draws).toFixed(1)+'%');out.push(`cap${cap}(n=${c.draws}) `+pct.join(' '))}const s=out.join('\n');if(typeof console!=='undefined')console.log(s);return s}
+if(typeof window!=='undefined')window._shadowLayer={enable(m){_SHADOW_LAYER_LOG=true;if(m)_SHADOW_LAYER_MODEL=m;_shadowReset();return'shadow ON '+_SHADOW_LAYER_MODEL},disable(){_SHADOW_LAYER_LOG=false;return'shadow OFF'},report:_shadowReport,reset:_shadowReset,get hist(){return _shadowHist},roll:_shadowRollLayer,cap:_shadowLayerCap};
+
 // 수치품질 롤 — 레거시 인라인 로직과 완전 동일(§9 공통 helper). Math.random 호출 순서 보존 → 레거시 결과 불변.
 function _affixTierRoll(a,maxTier){
   let val,tierIdx;
@@ -12857,6 +12880,7 @@ function mkItem(slot,tier,el,rarity,wtype,layerLv){
   const _scR=Math.random();
   item.socketCount=_scR<.50?1:_scR<.80?2:_scR<.95?3:4;
   item.crystals=new Array(item.socketCount).fill(null);
+  if(_SHADOW_LAYER_LOG)_shadowObserve(item); // [P6G/LOCK-35] 관찰 전용 — flag off면 미진입(byte-identical). item 미변경.
   return item;
 }
 
