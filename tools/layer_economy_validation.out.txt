@@ -1,0 +1,73 @@
+═══════════════════════════════════════════════════════════════════════
+LOCK-37 AUTOMATED LAYER ECONOMY VALIDATION — production-path 재사용 harness
+  실제 재사용: itemLv공식·slot·rarity테이블·shadow A2 sampler·V2 roller·keystone·socket (전부 game.html verbatim)
+═══════════════════════════════════════════════════════════════════════
+
+── §3/§5 cap1~10 A2 analytic parity (각 100k, 목표 maxErr≤0.5%p) ──
+  cap 1 (n=100000) maxErr=0.000%p OK
+  cap 2 (n=100000) maxErr=0.172%p OK
+  cap 3 (n=100000) maxErr=0.207%p OK
+  cap 4 (n=100000) maxErr=0.143%p OK
+  cap 5 (n=100000) maxErr=0.166%p OK
+  cap 6 (n=100000) maxErr=0.189%p OK
+  cap 7 (n=100000) maxErr=0.188%p OK
+  cap 8 (n=100000) maxErr=0.191%p OK
+  cap 9 (n=100000) maxErr=0.128%p OK
+  cap10 (n=100000) maxErr=0.244%p OK
+  ▶ 전 cap 최악 maxErr=0.244%p @cap10 → PARITY_PASS(≤0.5%p)
+
+── §6 cap10 최종 분포 (500k) ──
+  P(L1..L10)%: 2.82 2.92 3.59 5.96 11.29 18.04 21.35 18.10 11.28 4.65
+  mean=6.50 med=7 p90=9 P(cap=L10)=4.65% P(L8+)=34.03% P(L1-4)=15.29%
+
+── §7 affix power (shadow layer → 실제 rollAffixesLayered 구조, cap별 40k) ──
+  cap | weapon: E med p90 max | armor: E med p90 max  (실제 V2 roller 실행, item 미부착)
+  cap 1 | 1.00 1 1 1 | 2.00 2 2 2
+  cap 2 | 1.36 1 2 2 | 2.36 2 3 3
+  cap 3 | 1.71 2 3 3 | 2.88 3 5 5
+  cap 4 | 2.07 2 3 5 | 3.27 3 5 6
+  cap 5 | 2.77 2 5 7 | 3.95 3 6 7
+  cap 6 | 3.82 3 7 9 | 4.87 5 7 9
+  cap 7 | 5.17 5 9 11 | 5.94 6 9 10
+  cap 8 | 6.76 7 11 13 | 7.07 7 10 11
+  cap 9 | 8.40 9 13 15 | 8.15 9 11 12
+  cap10 | 10.02 11 15 15 | 9.15 10 12 12
+
+── §9 V2 dry-run massive invariants (1,000,000 shadow-V2 items, 실제 roller) ──
+  N=1000000 실행 9.0s (111k items/s)
+  C1 violation=0 | invalidLayer=0 invalidSub=0 dupID=0 illegalKeystone=0 NaN=0 undefinedAffix=0 nonArray=0 legacyLeak=0
+  (정상 FLEX 관측=1062 — parryBonus 등 유효 sub, 위반 아님) maxAffixCount observed=15
+  ▶ ALL_INVARIANTS_CLEAN
+
+── §10 slot coverage (모든 production slot × cap1~10, 각 4k) ──
+  weapon    reach L1..L10=Y L≥8 affix max=15 
+  armor     reach L1..L10=Y L≥8 affix max=12 
+  ring1     reach L1..L10=Y L≥8 affix max=13 
+  ▶ slot broken count=0 → SLOT_COVERAGE_OK
+
+── §11/§12 Keystone economy (production-path item, 300k) ──
+  drops=300000 P(L≥8)=5.59% eligible=2213 P(eligible)=0.738%
+  expectedKeystones=44.26 → Keystone/all-items = 1/6778
+  expected share: ksDullConviction=7.54 ksGlassGreatsword=7.54 ksBloodPact=7.54 ksBloodOath=10.82 ksRootedGiant=10.82
+  eligible slot: weapon(1131) armor(1082) (weapon/armor만 기대)
+  [forced-RNG, KEYSTONE_ROLL_ENABLED=true sandbox] eligible=1403 rolled=36 observed≈2.57% (목표~2%) layer<8 roll=0 invalidSlot roll=0 item당>1=0
+
+── §13 rarity independence (동일 itemLv900, rarity별 A2 분포, 각 100k) ──
+  rarity 0~5 각 분포 vs analytic 최대편차=0.299%p (sampling noise) → RARITY_INDEPENDENT(sampler에 rarity 입력 없음)
+  코드근거: _shadowRollLayer(itemLv,rng,model) — rarity 파라미터 부재. rollAffixesLayered(grade,...)에서 grade=수치tier만, layer 무관.
+
+── §14 CORE/socket independence ──
+  layer별 socket 분포 vs baseline(50/30/15/5) 최대편차=0.63%p → CORE_INDEPENDENT
+  코드근거: socketCount = _scR<.50?1:_scR<.80?2:_scR<.95?3:4 (mkItem) — layerLv 인자 없음. layer↑ ≠ CORE↑.
+
+── §16 determinism (동일 seed 2회 checksum) ──
+  seed A run1=2d99e3f0 run2=2d99e3f0 동일=true | seed B=d7dc609c (다름=true)
+  ▶ DETERMINISTIC_OK
+
+── §20 performance ──
+  shadowObserve ON: 100k in 36ms = 0.356µs/item (keystone 스캔 L≥8만)
+  OFF overhead = mkItem 내 'if(_SHADOW_LAYER_LOG)' 분기 1회(배포 상태) — 사실상 zero.
+
+═══ GATE SUMMARY ═══
+  parity(≤0.5%p)=PASS · 자세한 판정은 상단 각 섹션 참조.
+  ⚠ REAL_PLAY 아님(제거됨). AUTOMATED_PRODUCTION_PATH_VALIDATION. production 파일 미변경, flag 2개 false.
