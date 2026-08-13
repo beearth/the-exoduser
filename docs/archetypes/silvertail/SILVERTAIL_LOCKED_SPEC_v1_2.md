@@ -23,6 +23,8 @@ EXODUSER: HELL LORD / FDG
 
 > **쌍단검 충돌의 본질**: 무기 정보 패널 `DAGGER(2)` + `THIGH DAGGER(BOTH SIDES)`는 (a) "ONE BLADE" 정체성과, (b) v3 ACTION의 단검 1자루 사용과, (c) 한쪽 hip으로 오프셋되는 Blade Tail 접힘 위치와 상충. **해소 = 단검 2→1(휴대·사용 모두 1), 반대 허벅지 단측 수납, 대검은 언제나 유일 주무기.** 단검은 **secondary/utility blade — 독립 스킬/메커니즘 없음(no independent skill/mechanic)** — v1_1 전 검-스킬 세트와 무충돌.
 
+> **⚠ WEAPON BIBLE §07 "COMBINATION - TWIN DAGGERS" = PRE-v1.2 DEPRECATED CONCEPT.** 웨폰바이블(refs/10_20_48) §07의 단검 콤보(단검 접근→회전 AoE→단검 처형)는 **v1.2에서 폐기**된다. v1_1 스킬셋에 단검 스킬이 0이므로 §07은 미구현 컨셉일 뿐이며, v1.2 확정: **단검 = single secondary/utility dagger, no independent skill/mechanic** / **Blade Tail = sole primary weapon / core combat mechanic.** §07의 "twin daggers 전투 콤보"는 아트/스펙 진실공급원에서 무효(참조 시 이 LOCK이 우선).
+
 ---
 
 ## [A] FINAL EQUIPMENT COUNT (LOCKED)
