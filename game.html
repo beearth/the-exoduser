@@ -21456,7 +21456,7 @@ let _eqStatCache=null;
 function _eqStatRebuild(){_eqStatCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it){for(const k2 in it){if(k2[0]==='b'&&typeof it[k2]==='number'){const sk=k2.slice(1);_eqStatCache[sk]=(_eqStatCache[sk]||0)+it[k2]}}}}}
 function _eqStat(k){if(!_eqStatCache)_eqStatRebuild();return _eqStatCache[k]||0}
 // ═══ [P6B/LOCK-30] KEYSTONE Batch 1 (LOCK-6 트레이드오프) — equip-derived rule modifier, 별도 save state 없음 ═══
-const KEYSTONE_ROLL_ENABLED=false; // [P6J/LOCK-38] 유지 false. P6J에서 Layer economy(ITEM_LAYER_ROLL_V2=true) 활성화로 production layerLv≥8 이제 생성됨 → eligible economy 측정 가능(LOCK-38 §19). 단 Layer/V2와 Keystone 동시 활성 금지 — Keystone enable은 별도 후속 Phase(§21 게이트 충족 후 1줄 변경).
+const KEYSTONE_ROLL_ENABLED=true; // [P6K/LOCK-39] PRODUCTION 활성 — eligible item(layerLv≥8 & slot candidate≥1 & 기존 keystone 없음)당 2%(KEYSTONE_ROLL_RATE) conditional roll, item당 최대1. OFF(false)면 mkItem keystone 블록 단락(byte-identical). 2% conditional 계약 FREEZE(all-item 확률 아님). LOCK-38 Layer economy 선행 완료(P6J)로 layerLv≥8 생성됨.
 const KEYSTONE_ROLL_RATE=0.02; // [P6D/LOCK-32] eligible(layerLv≥8) item당 2% 저확률(§5 추천). 산정: "저확률" LOCK-6 + 8단 자체 희소성과 중복 아님(eligible 기준) + slot fairness(§6). 실측 per-hour는 economy 부재로 미확정 — economy 구현 후 재튜닝.
 function _ksBloodOath(){return _eqAffix('ksBloodOath')>0}       // 혈석의서약: maxHP+80% / 플레이어 shield(P.mshield) 0. enemy e.eShield 무관.
 function _ksNoCrit(){return _eqAffix('ksDullConviction')>0}     // 무딘확신: 치명타 불가

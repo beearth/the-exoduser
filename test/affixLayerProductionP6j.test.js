@@ -37,9 +37,9 @@ function seededMath(s){const m=Object.create(Math);m.random=mul(s);return m}
 function analyticP(cap){const w=API._itemLayerWeightsA2(cap);const s=w.reduce((a,b)=>a+b,0);return w.map(x=>x/s)}
 
 // ══════════════════════════════════════════════════════════════════════
-test('§0 wiring — V2=true · producer gated · canonical · shadow 위임 · UI · beam · Keystone false', () => {
+test('§0 wiring — V2=true · producer gated · canonical · shadow 위임 · UI · beam · Keystone true(P6K)', () => {
   assert.match(gameHtml,/const ITEM_LAYER_ROLL_V2=true;/,'V2 활성');
-  assert.match(gameHtml,/const KEYSTONE_ROLL_ENABLED=false;/,'Keystone 여전히 false');
+  assert.match(gameHtml,/const KEYSTONE_ROLL_ENABLED=true;/,'Keystone 활성(P6K/LOCK-39)');
   assert.match(gameHtml,/if\(ITEM_LAYER_ROLL_V2&&!\(layerLv>=1\)\)\{const _plvP=P&&P\.lv\?P\.lv:1;layerLv=_rollItemLayerA2\(Math\.min\(900,Math\.floor\(_plvP\/10\)\*10\),Math\.random\);\}/,'producer 주입(gated)');
   assert.match(gameHtml,/function _rollItemLayerA2\(itemLv,rng\)/,'canonical producer');
   assert.match(gameHtml,/function _shadowLayerCap\(itemLv\)\{return _itemLayerCap\(itemLv\)\}/,'shadow cap 위임');

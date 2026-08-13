@@ -1,0 +1,58 @@
+═══════════════════════════════════════════════════════════════════════
+LOCK-39 KEYSTONE PRODUCTION ENABLE & FINAL CLOSURE — 실제 production path
+═══════════════════════════════════════════════════════════════════════
+
+── §2 keystone metadata (HEAD POOL) + eligible slot set ──
+  ksDullConviction: slots=["wpn"] layer=8 keystone=1 sub=B
+  ksGlassGreatsword: slots=["wpn"] layer=7 keystone=1 sub=B
+  ksBloodOath: slots=["armor"] layer=3 keystone=1 sub=B
+  ksRootedGiant: slots=["armor"] layer=5 keystone=1 sub=B
+  ksBloodPact: slots=["wpn"] layer=6 keystone=1 sub=B
+  eligible item slot set = ["weapon","armor"] (2/15 = 2/15)
+  weapon 후보(L≥8): ksDullConviction,ksGlassGreatsword,ksBloodPact | armor 후보(L≥8): ksBloodOath,ksRootedGiant
+
+── §1/§8 scenario별 A=P(L≥8) / B=P(eligible item) / C=P(actual Keystone)=B×0.02 ──
+  scenario | A P(L≥8) | B P(eligible) | C P(Keystone) | items/Keystone
+  EARLY    | 0.00% | 0.000% | 0.0000% | ∞
+  MID      | 0.00% | 0.000% | 0.0000% | ∞
+  LATE     | 10.42% | 1.388% | 0.0278% | 1/3602
+  ENDGAME  | 34.08% | 4.524% | 0.0905% | 1/1105
+  UNIFORM  | 5.49% | 0.754% | 0.0151% | 1/6631
+  ▶ 6J "ENDGAME 34.22%" = A(P(L≥8)). B(eligible)=A×2/15≈4.56%, C=B×0.02≈0.0913%≈1/1095. (label 확인, 코드 무변경)
+
+── §7 observed conditional 2% (실제 production roll, eligible denominator) ──
+  N=2000000 eligible=15046 keystone rolled=311 → observed = 2.067% / eligible (목표 2%, tol ±0.15%p)
+  ▶ CONDITIONAL_2PCT_OK (2% denominator=eligible item, all-item 해석 아님)
+
+── §6/§10 1,000,000 production items (flag=true) invariants ──
+  N=1000000 keystone total=156 (0.016% all-items)
+  layer<8 KS=0 invalidSlot KS=0 item당2+ KS=0 unknown KS=0 noCandidate KS=0
+  v2skip leak=0 C1 violation=0 dupID=0 NaN=0 undefinedAffix=0 legacyLeak=0
+  ▶ ALL_INVARIANTS_CLEAN
+
+── §9 5 Keystone distribution (실제 production roll) ──
+  ksDullConviction: 26 (16.7% of keystones)
+  ksGlassGreatsword: 29 (18.6% of keystones)
+  ksBloodOath: 29 (18.6% of keystones)
+  ksRootedGiant: 41 (26.3% of keystones)
+  ksBloodPact: 31 (19.9% of keystones)
+  주: weapon 후보3(각~1/3), armor 후보2(각~1/2). slot frequency 동일(2/15)이므로 global share = wpn 3종≈(1/2)×(1/3)=1/6, armor 2종≈(1/2)×(1/2)=1/4. 20% 균등 아님.
+
+── §16 Layer/Keystone relationship (L8/9/10 가능, L1~7 불가) ──
+  L1: (none)
+  L2: (none)
+  L3: (none)
+  L4: (none)
+  L5: (none)
+  L6: (none)
+  L7: (none)
+  L8: ksDullConviction,ksGlassGreatsword,ksBloodPact,ksRootedGiant,ksBloodOath
+  L9: ksGlassGreatsword,ksDullConviction,ksBloodPact,ksRootedGiant,ksBloodOath
+  L10: ksGlassGreatsword,ksDullConviction,ksBloodPact,ksBloodOath,ksRootedGiant
+  ▶ L1~7 keystone=0: true · L8/9/10 reachable: true → LAYER_GATE_OK
+
+── §15 RNG short-circuit (non-eligible item keystone RNG 0 소비) ──
+  non-eligible RNG 소비: invalidSlot=0 layer<8=0 alreadyHasKS=0 → SHORT_CIRCUIT_OK
+
+═══ GATE (see sections above) ═══
+  ⚠ 이 tool은 flag=true sandbox 검증. game.html flag flip은 별도(commit).

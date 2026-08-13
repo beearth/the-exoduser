@@ -189,7 +189,7 @@ test('§10 equip visibility — keystone 마커 배선', () => {
 });
 
 test('§11 production wire — flag-gated inert(legacy byte-identical) + append-only(C1 무손상)', () => {
-  assert.match(gameHtml,/const KEYSTONE_ROLL_ENABLED=false;/,'flag off(BLOCKED — economy 부재)');
+  assert.match(gameHtml,/const KEYSTONE_ROLL_ENABLED=true;/,'flag ON (P6K/LOCK-39 enabled)');
   // mkItem 배선: flag로 단락 → Math.random 미소비 → 레거시 동일. append만(정상 affix 제거 없음).
   assert.match(gameHtml,/if\(KEYSTONE_ROLL_ENABLED&&item\.affixes&&_itemKeystoneCount\(item\)<1\)\{const _ks=_rollKeystoneOnItem\(item,false\);if\(_ks\)item\.affixes\.push\(_ks\);\}/,'mkItem 배선(append-only, flag-gated)');
   // flag off → 실제 롤 null

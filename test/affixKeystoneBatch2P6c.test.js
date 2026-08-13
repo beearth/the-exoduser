@@ -108,10 +108,11 @@ test('§8 핏빛 heal scope — 시스템복원/흡혈은 penalty 제외 (전수
 test('§9 5-keystone eligibility — layer gate / slot / item당 1개', () => {
   const afslot=gameHtml.match(/const _AFSLOT=\{[^}]*\};/)[0];
   const flag=gameHtml.match(/const KEYSTONE_ROLL_ENABLED=[^;]*;/)[0];
+  const krate=gameHtml.match(/const KEYSTONE_ROLL_RATE=[^;]*;/)[0]; // [P6K] flag ON path rate 게이트
   const fCand=gameHtml.match(/function _keystoneCandidates\(aSlot,layerLv\)\{[\s\S]*?\n\}/)[0];
   const fCount=gameHtml.match(/function _itemKeystoneCount\(item\)\{.*\}/)[0];
   const fRoll=gameHtml.match(/function _rollKeystoneOnItem\(item,forced\)\{[\s\S]*?\n\}/)[0];
-  const e=new Function('AFFIX_POOL',`${afslot}\n${flag}\nfunction _getAffixDef(id){return AFFIX_POOL.find(a=>a.id===id)||null}\n${fCand}\n${fCount}\n${fRoll}\nreturn {_keystoneCandidates,_rollKeystoneOnItem};`)(POOL);
+  const e=new Function('AFFIX_POOL',`${afslot}\n${flag}\n${krate}\nfunction _getAffixDef(id){return AFFIX_POOL.find(a=>a.id===id)||null}\n${fCand}\n${fCount}\n${fRoll}\nreturn {_keystoneCandidates,_rollKeystoneOnItem};`)(POOL);
   // 5종 전체
   assert.equal(POOL.filter(a=>a.keystone).length,5,'keystone 5종');
   // 8단 하드 게이트(layerLv<8 → []): wpn/armor 공통
@@ -122,8 +123,8 @@ test('§9 5-keystone eligibility — layer gate / slot / item당 1개', () => {
   assert.deepEqual(e._keystoneCandidates('armor',8).map(a=>a.id).sort(),['ksBloodOath','ksRootedGiant']);
   // 아이템당 1개 cap: 이미 거인 있으면 추가 0
   assert.equal(e._rollKeystoneOnItem({slot:'armor',layerLv:10,affixes:[{id:'ksRootedGiant',value:1}]},true),null,'1개 cap');
-  // forced 아니고 flag off → null (silent roll 없음)
-  assert.equal(e._rollKeystoneOnItem({slot:'weapon',layerLv:10,affixes:[]},false),null,'flag off → 미출현');
+  // [P6K] non-eligible(layer<8) → null (candidate 0, flag 무관·안정). eligible 2%는 P6d §3/P6k §7 대량검증.
+  assert.equal(e._rollKeystoneOnItem({slot:'weapon',layerLv:7,affixes:[]},false),null,'layer<8 → 미출현(flag 무관)');
 });
 
 test('§10 Batch1 regression + count', () => {

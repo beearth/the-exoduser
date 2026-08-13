@@ -44,7 +44,7 @@ test('§0 production 불변 — flag 기본 off · hook gated · 단일 관찰 �
   assert.equal(/Math\.random\(/.test(gameHtml.slice(start, end)), false, 'shadow 블록 Math.random() 미호출');
   // 두 production flag 여전히 false
   assert.match(gameHtml, /const ITEM_LAYER_ROLL_V2=true;/, 'V2 flag ON (P6J/LOCK-38 production 활성)');
-  assert.match(gameHtml, /const KEYSTONE_ROLL_ENABLED=false;/, 'Keystone flag off 유지');
+  assert.match(gameHtml, /const KEYSTONE_ROLL_ENABLED=true;/, 'Keystone flag ON (P6K/LOCK-39)');
 });
 
 test('§1 layerCap = clamp(1+floor(itemLv/100),1,10) (LOCK-34 §1)', () => {

@@ -24,10 +24,11 @@ function buildKs(equip){
 function buildEligibility(){
   const afslot=gameHtml.match(/const _AFSLOT=\{[^}]*\};/)[0];
   const flag=gameHtml.match(/const KEYSTONE_ROLL_ENABLED=[^;]*;/)[0];
+  const krate=gameHtml.match(/const KEYSTONE_ROLL_RATE=[^;]*;/)[0]; // [P6K] flag ON path에서 rate 게이트 참조
   const fCand=gameHtml.match(/function _keystoneCandidates\(aSlot,layerLv\)\{[\s\S]*?\n\}/)[0];
   const fCount=gameHtml.match(/function _itemKeystoneCount\(item\)\{.*\}/)[0];
   const fRoll=gameHtml.match(/function _rollKeystoneOnItem\(item,forced\)\{[\s\S]*?\n\}/)[0];
-  return new Function('AFFIX_POOL',`${afslot}\n${flag}\nfunction _getAffixDef(id){return AFFIX_POOL.find(a=>a.id===id)||null}\n${fCand}\n${fCount}\n${fRoll}\nreturn {_keystoneCandidates,_itemKeystoneCount,_rollKeystoneOnItem,KEYSTONE_ROLL_ENABLED};`)(POOL);
+  return new Function('AFFIX_POOL',`${afslot}\n${flag}\n${krate}\nfunction _getAffixDef(id){return AFFIX_POOL.find(a=>a.id===id)||null}\n${fCand}\n${fCount}\n${fRoll}\nreturn {_keystoneCandidates,_itemKeystoneCount,_rollKeystoneOnItem,KEYSTONE_ROLL_ENABLED};`)(POOL);
 }
 
 // ══════════════════════════════════════════════════════════════
@@ -103,7 +104,7 @@ test('§7 혈석 tradeoff — afterParryShield도 shield 금지(mshield=0)', () 
 
 test('§8 eligibility — 8단 게이트 / slot / 아이템당 1개 cap / 확률 미결정', () => {
   const e=buildEligibility();
-  assert.equal(e.KEYSTONE_ROLL_ENABLED,false,'확률 UNRESOLVED → flag off');
+  assert.equal(e.KEYSTONE_ROLL_ENABLED,true,'[P6K/LOCK-39] production 활성(true)');
   // 8단 미만 → 후보 0
   assert.equal(e._keystoneCandidates('wpn',7).length,0,'layerLv 7 → 후보 0');
   // 8단+ wpn → 무딘(8)·유리(7)·핏빛(6) (P6C 핏빛 wpn 추가)
@@ -111,8 +112,8 @@ test('§8 eligibility — 8단 게이트 / slot / 아이템당 1개 cap / 확률
   assert.deepEqual(c8,['ksBloodPact','ksDullConviction','ksGlassGreatsword'],'wpn 8단 → 무딘·유리·핏빛');
   // armor 8단 → 혈석(3)·거인(5) (P6C 거인 armor 추가)
   assert.deepEqual(e._keystoneCandidates('armor',8).map(a=>a.id).sort(),['ksBloodOath','ksRootedGiant'],'armor 8단 → 혈석·거인');
-  // forced 아니고 flag off → null (silent random roll 없음)
-  assert.equal(e._rollKeystoneOnItem({slot:'weapon',layerLv:10,affixes:[]},false),null,'flag off → 미출현');
+  // [P6K] non-eligible(layer<8) → null (candidate 0, flag 무관·안정). eligible 2% 확률은 §3/§7에서 대량검증.
+  assert.equal(e._rollKeystoneOnItem({slot:'weapon',layerLv:7,affixes:[]},false),null,'layer<8 → 미출현(flag 무관)');
   // forced → 후보 1개 부여
   const r=e._rollKeystoneOnItem({slot:'weapon',layerLv:10,affixes:[]},true);
   assert.ok(r&&by(r.id).keystone,'forced → keystone 1개');

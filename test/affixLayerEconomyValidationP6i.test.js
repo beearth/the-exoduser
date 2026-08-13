@@ -43,7 +43,7 @@ function analyticP(cap){const w=API._shadowLayerWeights(cap,'A2');const s=w.redu
 // ══════════════════════════════════════════════════════════════════════
 test('§1 production-path 재사용 진위 — 실제 함수 추출 확인 + flag off', () => {
   assert.match(gameHtml,/const ITEM_LAYER_ROLL_V2=true;/,'V2 ON(P6J)');
-  assert.match(gameHtml,/const KEYSTONE_ROLL_ENABLED=false;/);
+  assert.match(gameHtml,/const KEYSTONE_ROLL_ENABLED=true;/);
   assert.match(gameHtml,/const itemLv=Math\.min\(900,Math\.floor\(_pLv\/10\)\*10\);/,'실제 itemLv 공식');
   assert.match(gameHtml,/const slot=SLOT_NAMES\[~~\(Math\.random\(\)\*SLOT_NAMES\.length\)\];/,'실제 slot 선택');
   assert.match(gameHtml,/item\.socketCount=_scR<\.50\?1:_scR<\.80\?2:_scR<\.95\?3:4;/,'실제 socket(layer 무관)');
