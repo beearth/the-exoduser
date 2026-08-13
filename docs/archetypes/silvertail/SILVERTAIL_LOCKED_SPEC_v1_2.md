@@ -116,6 +116,41 @@ greatsword, the single curved dagger drawn in the LEFT hand, ragged skirt shreds
 
 ---
 
+## [J] 3-VIEW PRODUCTION BRIEF (기준샷 생성 규격 — 생성 전 LOCK)
+
+**생성 도구 규약**: ludo/higgsfield **사용 금지**. 생성은 프로젝트 파이프라인(PixelLab / ChatGPT 키아트, 업로드된 MASTER refs 사용 가능한 환경)에서 수행. 3-view PASS 전 **8-dir sprite 생성 금지**.
+
+**Reference priority (생성 시 반드시 이 우선순위)**:
+1. **업로드된 MASTER refs (최우선)** — `MASTER_CHARACTER_CORE` / `MASTER_REFERENCE_SHEET` / `master face` / `master body` / `MASTER-BLADETAIL` / `바디.txt`. (repo 파일 아님 — 프로젝트 대화 업로드본. 얼굴·비율·바디·Blade Tail 마운트의 1차 진실.)
+2. **본 SILVERTAIL_LOCKED_SPEC_v1_2.md** (장비/오클루전/단검 규칙 = 이 LOCK 우선).
+3. **PRE-v1.2 MASTER TURNAROUND(09_41_58)** — **수정 기준(baseline)으로만** 사용. 그 단검2·center-spine·mid-thigh tip은 **복제 금지**(v1.2에서 교정 대상). WEAPON BIBLE §07 twin-daggers = deprecated(위).
+
+**교정 델타(PRE-v1.2 → v1.2, 모든 뷰 공통)**: 단검 2→1(LEFT 단측) · 접힘 center-spine→RIGHT hip ㄱfold · tip mid-thigh→calf · IDLE 빈손 유지 · 수직(비대각) 유지.
+
+### FRONT — 절대 규칙 / PASS 체크
+- [ ] Blade Tail body/origin **torso 뒤 완전 차폐**
+- [ ] **RIGHT** outer thigh 옆에 **outermost curved tip만 소량**
+- [ ] pelvis 앞 노출 **0** · between legs **0** · centerline **0**
+- [ ] **LEFT** outer thigh dagger **1개**(힐트만 소량, 골반앞 교차 금지)
+- [ ] 중앙 실루엣 clean
+
+### REAR 45 — 절대 규칙 / PASS 체크
+- [ ] neck rotary hub 디스크 명확(브라스 스터드)
+- [ ] spine에서 **RIGHT hip으로 ㄱ자 fold**
+- [ ] **calf-length** blade
+- [ ] **diagonal back-sword처럼 보이면 FAIL**(수직/ㄱfold만)
+- [ ] **LEFT** dagger 1개
+
+### SIDE — 절대 규칙 / PASS 체크
+- [ ] neck-back hub volume
+- [ ] folded blade **body 뒤**에 자연스럽게 매달림
+- [ ] **calf-level** tip
+- [ ] Blade Tail ↔ dagger **physical overlap 0**(테일 tip=RIGHT / dagger=LEFT 분리)
+
+> 세 뷰 전부 위 체크 PASS → 검증 통과 후에만 PixelLab 8-dir idle/walk 확장. 미PASS 뷰는 재생성.
+
+---
+
 ## 미해결(별도 트랙 — 본 LOCK 범위 밖)
 
 - v1_1 [9] 미결(밸런스/판정 비용 등)은 기구 트랙 유지. 본 문서는 **비주얼/장비 LOCK만**.
