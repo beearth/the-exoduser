@@ -149,6 +149,14 @@ greatsword, the single curved dagger drawn in the LEFT hand, ragged skirt shreds
 
 > 세 뷰 전부 위 체크 PASS → 검증 통과 후에만 PixelLab 8-dir idle/walk 확장. 미PASS 뷰는 재생성.
 
+### [J-1] 3-VIEW VALIDATION RESULT (2026-08-13)
+사용자 제공 construction guide(`ChatGPT Image 2026-08-13 12_58_07`)를 Blade Tail 위치·가림·길이 + 단검 위치 한정 검증(외형/갑주/얼굴=MASTER refs 우선, 판정 제외).
+- **FRONT = PASS** — Blade Tail origin torso 뒤 완전차폐 · 정면 blade centerline/between-legs/pelvis-front 노출 0 · tip RIGHT outer thigh 소량 · dagger LEFT 단측 1.
+- **REAR45 = PASS** — neck rotary hub 가시 · spine→RIGHT hip 오프셋 · tip ≥calf · dagger LEFT 1. (⚠caution: 곡선 하강이 diagonal back-sword로 읽히지 않도록 8-dir/최종에서 상단은 spine-hug 후 ㄱ-offset 유지.)
+- **SIDE = PASS** — neck-back hub · folded blade body 뒤 · tip ≥calf · blade↔dagger overlap 0. (minor: RIGHT side view에서 LEFT 단검은 far-side이므로 최종은 거의 가려지게.)
+- **note: 블레이드 형상** — 가이드는 곡검으로 보이나 MASTER/WEAPON-BIBLE canon은 straight double-edged. 형상은 MASTER refs 따름(본 검증은 위치/가림/길이만).
+- **3-VIEW GATE = PASS** → PixelLab 8-dir idle/walk 확장 허용(생성은 사용자 파이프라인, MASTER refs=외형 + 본 guide=Blade Tail/dagger 배치).
+
 ---
 
 ## 미해결(별도 트랙 — 본 LOCK 범위 밖)
