@@ -24,7 +24,7 @@ const MERGE=['maxHPPctArmor'];
 test('§1 BASELINE 동결 — Phase1/2 구조 불변 (layer/sub/layerLv/flag/roller)', () => {
   assert.equal(POOL.length,415,'413 유지 (410 + P6B keystone 3)');
   for(const a of POOL){assert.ok('layer'in a&&'sub'in a,a.id+' layer/sub 유지');}
-  assert.match(gameHtml,/const ITEM_LAYER_ROLL_V2=false;/,'flag 불변');
+  assert.match(gameHtml,/const ITEM_LAYER_ROLL_V2=true;/,'[P6J/LOCK-38] flag production 활성(true)');
   assert.match(gameHtml,/function rollAffixesLayered\(grade,slot,brType,layerLv\)/,'레이어 롤러 불변');
   assert.match(gameHtml,/function rollAffixes\(grade,slot,brType\)\{/,'레거시 롤러 불변');
   assert.match(gameHtml,/function _getItemLayerLv\(item\)/,'layerLv 헬퍼 불변');

@@ -12,7 +12,9 @@ function buildShadow(injectMath){
   const start = gameHtml.indexOf('let _SHADOW_LAYER_LOG=false;');
   const end   = gameHtml.indexOf('if(typeof window!==', start); // window 라인 직전까지
   assert.ok(start > 0 && end > start, 'shadow 블록 추출 실패');
-  const body = gameHtml.slice(start, end) +
+  // [P6J] shadow는 canonical _itemLayerCap/_itemLayerWeightsA2에 위임 → 샌드박스에 주입
+  const canon = gameHtml.match(/function _itemLayerCap\(itemLv\)\{[^}]*\}/)[0]+'\n'+gameHtml.match(/function _itemLayerWeightsA2\(cap\)\{[\s\S]*?return w\}/)[0];
+  const body = canon + '\n' + gameHtml.slice(start, end) +
     '\nreturn {_shadowLayerCap,_shadowLayerWeights,_shadowRollLayer,_shadowObserve,_shadowReset,_shadowReport,' +
     'get _shadowHist(){return _shadowHist},' +  // live getter (reset가 재할당하므로 스냅샷 금지)
     'get model(){return _SHADOW_LAYER_MODEL},set model(v){_SHADOW_LAYER_MODEL=v},get log(){return _SHADOW_LAYER_LOG},set log(v){_SHADOW_LAYER_LOG=v}};';
@@ -41,7 +43,7 @@ test('§0 production 불변 — flag 기본 off · hook gated · 단일 관찰 �
   const end   = gameHtml.indexOf('if(typeof window!==', start);
   assert.equal(/Math\.random\(/.test(gameHtml.slice(start, end)), false, 'shadow 블록 Math.random() 미호출');
   // 두 production flag 여전히 false
-  assert.match(gameHtml, /const ITEM_LAYER_ROLL_V2=false;/, 'V2 flag off 유지');
+  assert.match(gameHtml, /const ITEM_LAYER_ROLL_V2=true;/, 'V2 flag ON (P6J/LOCK-38 production 활성)');
   assert.match(gameHtml, /const KEYSTONE_ROLL_ENABLED=false;/, 'Keystone flag off 유지');
 });
 

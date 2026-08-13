@@ -34,9 +34,9 @@ LOCK-37 AUTOMATED LAYER ECONOMY VALIDATION — production-path 재사용 harness
   cap10 | 10.02 11 15 15 | 9.15 10 12 12
 
 ── §9 V2 dry-run massive invariants (1,000,000 shadow-V2 items, 실제 roller) ──
-  N=1000000 실행 9.0s (111k items/s)
+  N=1000000 실행 8.8s (114k items/s)
   C1 violation=0 | invalidLayer=0 invalidSub=0 dupID=0 illegalKeystone=0 NaN=0 undefinedAffix=0 nonArray=0 legacyLeak=0
-  (정상 FLEX 관측=1062 — parryBonus 등 유효 sub, 위반 아님) maxAffixCount observed=15
+  (정상 FLEX 관측=1072 — parryBonus 등 유효 sub, 위반 아님) maxAffixCount observed=15
   ▶ ALL_INVARIANTS_CLEAN
 
 ── §10 slot coverage (모든 production slot × cap1~10, 각 4k) ──
@@ -65,7 +65,7 @@ LOCK-37 AUTOMATED LAYER ECONOMY VALIDATION — production-path 재사용 harness
   ▶ DETERMINISTIC_OK
 
 ── §20 performance ──
-  shadowObserve ON: 100k in 36ms = 0.356µs/item (keystone 스캔 L≥8만)
+  shadowObserve ON: 100k in 31ms = 0.312µs/item (keystone 스캔 L≥8만)
   OFF overhead = mkItem 내 'if(_SHADOW_LAYER_LOG)' 분기 1회(배포 상태) — 사실상 zero.
 
 ═══ GATE SUMMARY ═══

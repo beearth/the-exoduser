@@ -19,9 +19,10 @@ function buildTel(injectMath){
   const afslot = gameHtml.match(/const _AFSLOT=\{[^}]*\};/)[0];
   const rate = gameHtml.match(/const KEYSTONE_ROLL_RATE=[^;]*;/)[0];
   const fCand = gameHtml.match(/function _keystoneCandidates\(aSlot,layerLv\)\{[\s\S]*?\n\}/)[0];
+  const canon = gameHtml.match(/function _itemLayerCap\(itemLv\)\{[^}]*\}/)[0]+'\n'+gameHtml.match(/function _itemLayerWeightsA2\(cap\)\{[\s\S]*?return w\}/)[0];
   const body =
     `${pool}\n${afslot}\n${rate}\n${fCand}\n` +
-    `let P=null,G=null;\n` +
+    `let P=null,G=null;\n` + canon + '\n' +
     shadowBlk +
     `\nreturn {_shadowObserve,_shadowReset,_shadowStats,_shadowReport,_shadowLayerCap,_shadowRollLayer,_keystoneCandidates,` +
     `get hist(){return _shadowHist},get KRATE(){return KEYSTONE_ROLL_RATE},setP(v){P=v},setG(v){G=v},` +

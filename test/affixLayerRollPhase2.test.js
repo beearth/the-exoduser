@@ -33,8 +33,8 @@ function seed(n){let s=n>>>0;Math.random=()=>{s=(s*1664525+1013904223)>>>0;retur
 
 const SLOTS=['weapon','armor','ring1','necklace','boots','shield','bow','gloves','pants','cape','helmet','headband','belt','bracelet'];
 
-test('Phase2 구조 — flag/함수/라우팅 존재, flag 기본 false', () => {
-  assert.match(gameHtml,/const ITEM_LAYER_ROLL_V2=false;/,'flag 기본 false');
+test('Phase2 구조 — flag/함수/라우팅 존재, flag production 활성(P6J)', () => {
+  assert.match(gameHtml,/const ITEM_LAYER_ROLL_V2=true;/,'[P6J/LOCK-38] flag production 활성(true)');
   assert.match(gameHtml,/function rollAffixesLayered\(grade,slot,brType,layerLv\)/);
   assert.match(gameHtml,/function _affixTierRoll\(a,maxTier\)/);
   assert.match(gameHtml,/function _affixLayerCandidates\(aSlot,brType,layer,sub\)/);

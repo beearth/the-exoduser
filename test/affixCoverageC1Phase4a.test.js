@@ -105,5 +105,5 @@ test('§9 A/B ≤1·layer≤N·group/id 무중복 불변 (universal 병합 후�
 test('§15 legacy rollAffixes 함수 원형 보존 (universal 미참조)', () => {
   const leg=gameHtml.match(/function rollAffixes\(grade,slot,brType\)\{[\s\S]*?\n  return result;\n\}/)[0];
   assert.ok(!/uni/.test(leg),'레거시 롤러는 uni 미참조(무영향)');
-  assert.match(gameHtml,/const ITEM_LAYER_ROLL_V2=false;/,'flag 기본 false 불변');
+  assert.match(gameHtml,/const ITEM_LAYER_ROLL_V2=true;/,'[P6J/LOCK-38] flag production 활성(true)');
 });

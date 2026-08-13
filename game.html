@@ -12023,6 +12023,9 @@ function _getItemLayerLv(item){
   return [1,1,2,3,3,4][item.rarity]||1;
 }
 function _canItemHostAffixLayer(item,layer){return layer>=1&&layer<=10&&layer<=_getItemLayerLv(item)}
+// [P6J/LOCK-38] 드롭 빔 단수 — layerLv(신규 A2 item) 우선 → L1~L10 tier. 구세대는 _getItemLayerLv fallback.
+// world drop 렌더러(현 4-tile rarity 아틀라스)는 VFX 재설계·8~10단 빔아트(사전승인) 도입 Phase에서 이 helper로 스왑. 현재는 데이터 계층만 정확.
+function _itemLayerBeamTier(item){if(!item)return 1;if(item.layerLv>=1)return Math.max(1,Math.min(10,~~item.layerLv));return _getItemLayerLv(item)}
 const AFFIX_NAMES_KO={
   poisonDot:'맹독의',fireDot:'불꽃의',iceDot:'냉기의',lightChain:'번개의',darkCurse:'암흑의',
   armorPen:'관통의',critChance:'광폭의',staggerBns:'파쇄의',chainTarget:'연쇄의',
@@ -12273,7 +12276,14 @@ function rollAffixes(grade,slot,brType){
 // ═══ [AFFIX PHASE 2] Layer-aware Affix Roll — 신규 세대(item.layerLv) 전용 병행 경로 (2026-08-11) ═══
 // 레거시 rollAffixes(type 접두/접미 · maxCount[grade])는 그대로 보존. 본 경로는 feature flag로 완전 차단.
 // 구조: affix "선택"은 layer/sub(affixLayer), 수치 "품질"은 기존 affixRollTier(tiers/tierW/skewRoll/lv) — 두 축 분리(§8).
-const ITEM_LAYER_ROLL_V2=false; // 기본 false: 기존 생성 100% 무변경. true여도 layerLv 명시 아이템만 사용.
+const ITEM_LAYER_ROLL_V2=true; // [P6J/LOCK-38] PRODUCTION 활성 — 신규 item에 A2 layer 생성(mkItem producer). OFF(false)면 producer 미진입 → 레거시 byte-identical.
+
+// ═══ [P6J/LOCK-38] MODEL_A2 CANONICAL LAYER HELPERS — production+shadow 공유 단일 수식 ═══
+// LOCK-34~37 검증·FREEZE된 A2 계약. production(rng=Math.random)과 shadow(rng=독립 mulberry32)가 동일 수식 공유(구현 copy 1개).
+// 수식 변경 금지. cap10 analytic ref: L10≈4.65% L8+≈34.03% L1-4≈15.29%(reference, 런타임 하드코드 아님).
+function _itemLayerCap(itemLv){return Math.max(1,Math.min(10,1+Math.floor((itemLv||0)/100)))} // layerCap=clamp(1+floor(itemLv/100),1,10)
+function _itemLayerWeightsA2(cap){const w=[];const mode=Math.max(1,cap-3),sig=1.6,kap=0.6,fl=0.15;for(let L=1;L<=cap;L++){let g=Math.exp(-((L-mode)*(L-mode))/(2*sig*sig));if(L===cap&&cap>1)g*=kap;w.push(g+fl)}return w} // MID-BIASED(mode=cap-3,σ1.6,κ0.6,floor0.15)
+function _rollItemLayerA2(itemLv,rng){const cap=_itemLayerCap(itemLv);const w=_itemLayerWeightsA2(cap);let s=0;for(let i=0;i<w.length;i++)s+=w[i];let x=(rng?rng():Math.random())*s;for(let L=1;L<=cap;L++){x-=w[L-1];if(x<0)return L}return cap} // bounded·deterministic given rng, 1..cap
 
 // ═══ [P6G/LOCK-35 · P6H/LOCK-36] SHADOW LAYER TELEMETRY — 관찰 전용(production 무변경) ═══
 // _SHADOW_LAYER_LOG=false(기본)면 mkItem 관찰 분기 미진입 → Math.random 미소비 · item 불변 · 레거시 byte-identical.
@@ -12284,8 +12294,8 @@ let _SHADOW_LAYER_LOG=false;      // debug/telemetry 토글(기본 off — 배�
 let _SHADOW_LAYER_MODEL='A2';     // LOCK-34 추천. 'A1'/'A2'/'A3' 비교 가능
 function _shadowMulberry32(s){let a=s>>>0;return function(){a|=0;a=(a+0x6D2B79F5)|0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296}}
 let _shadowRNG=_shadowMulberry32(0x6F6C); // 독립 스트림(production Math.random 미소비)
-function _shadowLayerCap(itemLv){return Math.max(1,Math.min(10,1+Math.floor((itemLv||0)/100)))} // LOCK-34 §1
-function _shadowLayerWeights(cap,model){const w=[];if(model==='A1'){for(let L=1;L<=cap;L++)w.push(Math.pow(1.35,L-1))}else if(model==='A3'){for(let L=1;L<=cap;L++)w.push(1+0.35*(L-1))}else{const mode=Math.max(1,cap-3),sig=1.6,kap=0.6,fl=0.15;for(let L=1;L<=cap;L++){let g=Math.exp(-((L-mode)*(L-mode))/(2*sig*sig));if(L===cap&&cap>1)g*=kap;w.push(g+fl)}}return w} // A2=MID-BIASED(mode=cap-3,σ1.6,κ0.6,floor0.15 FREEZE)
+function _shadowLayerCap(itemLv){return _itemLayerCap(itemLv)} // [P6J] canonical 위임(단일 수식)
+function _shadowLayerWeights(cap,model){if(model==='A1'){const w=[];for(let L=1;L<=cap;L++)w.push(Math.pow(1.35,L-1));return w}if(model==='A3'){const w=[];for(let L=1;L<=cap;L++)w.push(1+0.35*(L-1));return w}return _itemLayerWeightsA2(cap)} // A2=canonical 위임, A1/A3=shadow 비교 전용
 function _shadowRollLayer(itemLv,rng,model){const cap=_shadowLayerCap(itemLv);const w=_shadowLayerWeights(cap,model||_SHADOW_LAYER_MODEL);let s=0;for(let i=0;i<w.length;i++)s+=w[i];let x=rng()*s;for(let L=1;L<=cap;L++){x-=w[L-1];if(x<0)return L}return cap}
 // LOCK-33 §7 structural affix-count profile(층에 의해 결정론적) — affix implication용
 const _SHADOW_AFFIX_W=[0,1,2,3,5,7,9,11,13,15,15], _SHADOW_AFFIX_A=[0,2,3,5,6,7,9,10,11,12,12];
@@ -12901,8 +12911,11 @@ function mkItem(slot,tier,el,rarity,wtype,layerLv){
     const _brNames={demon:{0:['낡은 악마의 팔찌','악마의 팔찌','흑요석 악마의 팔찌','미스릴 악마의 팔찌','천벌의 악마팔찌'],1:['불꽃 악마팔찌','화염 악마팔찌','염화 악마팔찌','지옥 악마팔찌','멸화의 악마팔찌'],2:['냉기 악마팔찌','빙결 악마팔찌','빙하 악마팔찌','서리 악마팔찌','영겁빙 악마팔찌'],3:['그림자 악마팔찌','암흑 악마팔찌','심연 악마팔찌','나락 악마팔찌','무간의 악마팔찌'],4:['전기 악마팔찌','낙뢰 악마팔찌','암전 악마팔찌','뇌신 악마팔찌','만뢰의 악마팔찌']},life:{0:['낡은 생명의 팔찌','생명의 팔찌','흑요석 생명팔찌','미스릴 생명팔찌','천벌의 생명팔찌'],1:['불꽃 생명팔찌','화염 생명팔찌','염화 생명팔찌','지옥 생명팔찌','멸화의 생명팔찌'],2:['냉기 생명팔찌','빙결 생명팔찌','빙하 생명팔찌','서리 생명팔찌','영겁빙 생명팔찌'],3:['그림자 생명팔찌','암흑 생명팔찌','심연 생명팔찌','나락 생명팔찌','무간의 생명팔찌'],4:['전기 생명팔찌','낙뢰 생명팔찌','암전 생명팔찌','뇌신 생명팔찌','만뢰의 생명팔찌']}};
     item.name=_brNames[item.brType][el]?_brNames[item.brType][el][Math.min(tier,4)]:(item.brType==='demon'?'악마의 팔찌':'생명의 팔찌');
   }
+  // [P6J/LOCK-38] MODEL_A2 production layer producer — V2 ON & layerLv 미지정 시 itemLv에서 canonical A2 롤.
+  // flag OFF면 미진입(Math.random 미소비 → 레거시 byte-identical). 명시 layerLv(crafting/test/debug)는 존중(재롤 안 함).
+  if(ITEM_LAYER_ROLL_V2&&!(layerLv>=1)){const _plvP=P&&P.lv?P.lv:1;layerLv=_rollItemLayerA2(Math.min(900,Math.floor(_plvP/10)*10),Math.random);}
   // ── 어픽스 시스템: 등급별 접두/접미 롤링 ──
-  // [PHASE 2] layerLv 명시 + flag ON → Layer Roll(L1~LN×A/B). 그 외 100% 레거시 경로.
+  // [PHASE 2] layerLv 명시(또는 P6J producer) + flag ON → Layer Roll(L1~LN×A/B). 그 외 100% 레거시 경로.
   item.affixes=(ITEM_LAYER_ROLL_V2&&layerLv>=1)?rollAffixesLayered(rarity,slot,item.brType,layerLv):rollAffixes(rarity,slot,item.brType);
   // ── 임플리싯 (슬롯 고유 스탯 1개) ──
   const _implKey=slot==='bracelet'?'bracelet_'+item.brType:slot;
@@ -21443,7 +21456,7 @@ let _eqStatCache=null;
 function _eqStatRebuild(){_eqStatCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it){for(const k2 in it){if(k2[0]==='b'&&typeof it[k2]==='number'){const sk=k2.slice(1);_eqStatCache[sk]=(_eqStatCache[sk]||0)+it[k2]}}}}}
 function _eqStat(k){if(!_eqStatCache)_eqStatRebuild();return _eqStatCache[k]||0}
 // ═══ [P6B/LOCK-30] KEYSTONE Batch 1 (LOCK-6 트레이드오프) — equip-derived rule modifier, 별도 save state 없음 ═══
-const KEYSTONE_ROLL_ENABLED=false; // [P6D] BLOCKED: production drop pipeline이 layerLv≥8 미할당(ITEM_LAYER_ROLL_V2=false, rollDrop→mkItem에 layerLv 미전달) → eligible item 0 → flag만 켜도 무출현. Layer drop economy(Phase2) 선행 필요. 로직·확률·UI·save/load는 6D에서 완비. 활성화는 economy 구현 후 1줄 변경.
+const KEYSTONE_ROLL_ENABLED=false; // [P6J/LOCK-38] 유지 false. P6J에서 Layer economy(ITEM_LAYER_ROLL_V2=true) 활성화로 production layerLv≥8 이제 생성됨 → eligible economy 측정 가능(LOCK-38 §19). 단 Layer/V2와 Keystone 동시 활성 금지 — Keystone enable은 별도 후속 Phase(§21 게이트 충족 후 1줄 변경).
 const KEYSTONE_ROLL_RATE=0.02; // [P6D/LOCK-32] eligible(layerLv≥8) item당 2% 저확률(§5 추천). 산정: "저확률" LOCK-6 + 8단 자체 희소성과 중복 아님(eligible 기준) + slot fairness(§6). 실측 per-hour는 economy 부재로 미확정 — economy 구현 후 재튜닝.
 function _ksBloodOath(){return _eqAffix('ksBloodOath')>0}       // 혈석의서약: maxHP+80% / 플레이어 shield(P.mshield) 0. enemy e.eShield 무관.
 function _ksNoCrit(){return _eqAffix('ksDullConviction')>0}     // 무딘확신: 치명타 불가
@@ -40711,6 +40724,8 @@ function _invCardFields(it){
     return rawDmg*aps;
   }
   if(it.itemLv)stats+=`<div style="color:#aaa">${_L('아이템 Lv.','Item Lv.')}${it.itemLv}</div>`;
+  // [P6J/LOCK-38] Layer(단) 표기 — 신규 production item(layerLv≥1)만. bucket 색: L8-10 금 / L5-7 청 / L1-4 회보라.
+  if(it.layerLv>=1){const _lyr=Math.max(1,Math.min(10,~~it.layerLv));const _lc=_lyr>=8?'#ffcc44':_lyr>=5?'#66ccff':'#aa99cc';stats+=`<div style="color:${_lc};font-weight:700">${_L(_lyr+'단','Layer '+_lyr)}</div>`}
   if(it.reqLv>0){const canEquip=!P||P.lv>=it.reqLv;stats+=`<div style="color:${canEquip?'#88cc88':'#ff4444'}">${_L('요구 Lv.','Req. Lv.')}${it.reqLv}${canEquip?'':' ✘'}</div>`}
   if(it.wtype)stats+=`<div style="color:#ccaa77;font-weight:700">${(WTYPES[it.wtype]||{}).name||it.wtype}</div>`;
   if(it.btype)stats+=`<div style="color:#ccaa77;font-weight:700">${(BOWTYPES[it.btype]||{}).name||it.btype}</div>`;

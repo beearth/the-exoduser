@@ -39,6 +39,7 @@ const F_KCAND= grab(/function _keystoneCandidates\(aSlot,layerLv\)\{[\s\S]*?\n\}
 const F_KCNT = grab(/function _itemKeystoneCount\(item\)\{.*\}/, '_itemKeystoneCount');
 const F_KROLL= grab(/function _rollKeystoneOnItem\(item,forced\)\{[\s\S]*?\n\}/, '_rollKeystoneOnItem');
 const SOCKET_SRC = grab(/const _scR=Math\.random\(\);[\s\S]*?item\.socketCount=_scR<\.50\?1:_scR<\.80\?2:_scR<\.95\?3:4;/, 'socketCount');
+const CANON = grab(/function _itemLayerCap\(itemLv\)\{[^}]*\}/, '_itemLayerCap')+'\n'+grab(/function _itemLayerWeightsA2\(cap\)\{[\s\S]*?return w\}/, '_itemLayerWeightsA2')+'\n'+grab(/function _rollItemLayerA2\(itemLv,rng\)\{[\s\S]*?return cap\}/, '_rollItemLayerA2');
 
 const DEF={}; for(const a of AFFIX_POOL) DEF[a.id]=a;
 
@@ -49,7 +50,7 @@ function build(injectMath, keystoneEnabled){
     `let KEYSTONE_ROLL_ENABLED=${!!keystoneEnabled};let ITEM_LAYER_ROLL_V2=false;\n`+
     `let _DEMO_MODE=false,_DEMO_AFFIX_BANNED=new Set();let P={lv:1},G=null;\n`+
     `function _getAffixDef(id){return AFFIX_POOL.find(a=>a.id===id)||null}\n`+
-    `${RW_SRC}\nconst _rwMap={normal:_RW_normal,elite:_RW_elite,miniboss:_RW_mini,stageBoss:_RW_sBoss,chapterBoss:_RW_cBoss};\n`+
+    `${RW_SRC}\nconst _rwMap={normal:_RW_normal,elite:_RW_elite,miniboss:_RW_mini,stageBoss:_RW_sBoss,chapterBoss:_RW_cBoss};\n${CANON}\n`+
     `${SHADOW_BLK}\n${F_TIER}\n${F_CAND}\n${F_ROLL}\n${F_KCAND}\n${F_KCNT}\n${F_KROLL}\n`+
     // 실제 rollDrop rarity 롤 verbatim 재현
     `function rollRarity(rng,mTier){const rw=_rwMap[mTier]||_RW_normal;const tot=rw[0]+rw[1]+rw[2]+rw[3]+rw[4]+(rw[5]||0);const roll=rng()*tot;let acc=0;for(let i=0;i<6;i++){acc+=(rw[i]||0);if(roll<acc)return i}return 5}\n`+

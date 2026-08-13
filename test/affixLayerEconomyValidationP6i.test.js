@@ -24,13 +24,14 @@ const parts={
   kcnt:   grab(/function _itemKeystoneCount\(item\)\{.*\}/,'kcnt'),
   kroll:  grab(/function _rollKeystoneOnItem\(item,forced\)\{[\s\S]*?\n\}/,'kroll'),
 };
+const CANON = gameHtml.match(/function _itemLayerCap\(itemLv\)\{[^}]*\}/)[0]+'\n'+gameHtml.match(/function _itemLayerWeightsA2\(cap\)\{[\s\S]*?return w\}/)[0]+'\n'+gameHtml.match(/function _rollItemLayerA2\(itemLv,rng\)\{[\s\S]*?return cap\}/)[0];
 function build(injectMath,ksEnabled){
   const body=`const AFFIX_POOL=arguments[2];const SLOT_NAMES=${JSON.stringify(SLOT_NAMES)};\n${parts.afslot}\n${parts.krate}\n`+
     `let KEYSTONE_ROLL_ENABLED=${!!ksEnabled};let ITEM_LAYER_ROLL_V2=false;let _DEMO_MODE=false,_DEMO_AFFIX_BANNED=new Set();let P={lv:1},G=null;\n`+
-    `function _getAffixDef(id){return AFFIX_POOL.find(a=>a.id===id)||null}\n${parts.rw}\n`+
+    `function _getAffixDef(id){return AFFIX_POOL.find(a=>a.id===id)||null}\n${parts.rw}\n${CANON}\n`+
     `${parts.shadow}\n${parts.tier}\n${parts.cand}\n${parts.roll}\n${parts.kcand}\n${parts.kcnt}\n${parts.kroll}\n`+
     `function itemLvOf(pLv){return Math.min(900,Math.floor(pLv/10)*10)}function rollSocket(rng){const _scR=rng();return _scR<.50?1:_scR<.80?2:_scR<.95?3:4}function setP(v){P=v}\n`+
-    `return {SLOT_NAMES,_shadowObserve,_shadowReset,_shadowStats,_shadowRollLayer,_shadowLayerCap,_shadowLayerWeights,rollAffixesLayered,_keystoneCandidates,_itemKeystoneCount,_rollKeystoneOnItem,itemLvOf,rollSocket,setP,get KRATE(){return KEYSTONE_ROLL_RATE}};`;
+    `return {SLOT_NAMES,_shadowObserve,_shadowReset,_shadowStats,_shadowRollLayer,_shadowLayerCap,_shadowLayerWeights,_itemLayerCap,_rollItemLayerA2,rollAffixesLayered,_keystoneCandidates,_itemKeystoneCount,_rollKeystoneOnItem,itemLvOf,rollSocket,setP,get KRATE(){return KEYSTONE_ROLL_RATE}};`;
   return new Function('Math','console','p',body).call(null,injectMath||Math,{log(){}},AFFIX_POOL);
 }
 const API=build(); const RATE=API.KRATE;
@@ -41,7 +42,7 @@ function analyticP(cap){const w=API._shadowLayerWeights(cap,'A2');const s=w.redu
 
 // ══════════════════════════════════════════════════════════════════════
 test('§1 production-path 재사용 진위 — 실제 함수 추출 확인 + flag off', () => {
-  assert.match(gameHtml,/const ITEM_LAYER_ROLL_V2=false;/);
+  assert.match(gameHtml,/const ITEM_LAYER_ROLL_V2=true;/,'V2 ON(P6J)');
   assert.match(gameHtml,/const KEYSTONE_ROLL_ENABLED=false;/);
   assert.match(gameHtml,/const itemLv=Math\.min\(900,Math\.floor\(_pLv\/10\)\*10\);/,'실제 itemLv 공식');
   assert.match(gameHtml,/const slot=SLOT_NAMES\[~~\(Math\.random\(\)\*SLOT_NAMES\.length\)\];/,'실제 slot 선택');
