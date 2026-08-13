@@ -5,32 +5,34 @@
 > **캐논 기준 = MASTER TURNAROUND + WEAPON BIBLE (refs/).**
 > 스프라이트 세트는 이 두 레퍼런스와 99% 싱크가 목표. 프롬프트/편집은 전부 여기에 맞춘다.
 
-## 무기 = ROTARY BLADE SYSTEM (웨폰 바이블 확정)
-- **단일 회전대검 1자루** — 목 뒤 **회전 허브(rotary hub)** 에 연결. 총길이 1830mm.
-- **IDLE(정지)**: 블레이드가 **수직으로 접혀 등 척추 중앙에 밀착**, 팁이 허벅지 근처까지. 대각선 ✗, 머리 위로 솟음 ✗.
-- **ACTION(공격/스프린트)**: 원심력으로 전개 → 큰 검을 **한 손에 draw** + 다른 손에 **단검 1자루**.
-- **단검 2자루**: IDLE엔 **양쪽 허벅지 홀스터**(THIGH DAGGER, both sides), 액션에만 손에.
+## 무기 = ROTARY BLADE SYSTEM (웨폰 바이블 확정 · **v1.2 LOCK 반영**)
+> **⚠ v1.2 충돌 종결(`SILVERTAIL_LOCKED_SPEC_v1_2.md`)**: 단검 **2→1** 확정, 허벅지 sheath **단측(LEFT)** 확정, Blade Tail 접힘 **RIGHT hip 오프셋** 확정. 아래는 그 LOCK 반영본. 구 `DAGGER(2)`/`BOTH SIDES`는 폐기.
+- **단일 회전대검 1자루** — 목 뒤 **회전 허브(rotary hub)** 에 연결. 총길이 1830mm. **= Blade Tail, 유일 주무기.**
+- **IDLE(정지)**: 블레이드가 **수직으로 접혀 척추를 따라 하강, RIGHT hip으로 ㄱ자 오프셋**, 팁이 허벅지~종아리. 대각선 ✗, 머리 위로 솟음 ✗. 정면=torso 뒤 완전 차폐, RIGHT 바깥허벅지로 tip만 소량 노출.
+- **ACTION(공격/스프린트/회전)**: 원심력으로 전개 → 큰 검을 **우수에 draw** + **좌수에 단검 1자루**.
+- **단검 1자루**(secondary/utility blade, no independent skill/mechanic): IDLE엔 **LEFT 바깥 허벅지 홀스터 단측**(THIGH DAGGER, left only), 액션에만 좌수에. **Blade Tail = sole primary weapon / core combat mechanic.**
 
 ## ⚠️ v2 프롬프트 폐기 사유 (싱크 갭 원인)
 구 v2는 "머리 위 대각선 대검 + 양손 쌍단검"으로 적혀 있었음 → 이는 **액션 무기배치를 IDLE에 잘못 얹은 것**.
 `pixellab/Idle_rotations_8dir_EDIT.gif` / `_silvertail_edit_contact.png` 가 이 오류를 반영(특히 north 등검이 얇은 대각선 힐트로 나옴). 캐논과 불일치 → 재편집/재생성 대상.
 
-## v3 IDLE 프롬프트 (캐논)
+## v3 IDLE 프롬프트 (캐논 · v1.2 LOCK)
 ```
 silver-haired female blade dancer, very long high silver ponytail, blackened iron plate
 armor over sheer black mesh midriff, black plate bustier, long tattered ragged feathered
 black skirt splitting into thin blade-like shreds (Berserk style), thigh-high black armored
 high-heeled boots, a single folded straight double-edged blade sheathed flat and vertical
-down the center of her spine, connected to a round mechanical rotary hub at the back of the
-neck, blade tip reaching mid-thigh, two curved daggers holstered on both outer thighs,
-empty hands, gritty dark fantasy, Berserk + FromSoftware art language, high contrast,
-muted black palette (#0E0E10 / #1A1A1D / #2B2B2F, ash-white hair #C7C7C7)
+down the spine angled/offset toward her RIGHT hip in a right-angle fold, connected to a round
+mechanical rotary hub at the back of the neck, blade tip reaching mid-thigh/calf, ONE curved
+dagger holstered on her LEFT outer thigh only, empty hands, gritty dark fantasy, Berserk +
+FromSoftware art language, high contrast, muted black palette (#0E0E10 / #1A1A1D / #2B2B2F,
+ash-white hair #C7C7C7)
 ```
 
-## v3 ACTION 프롬프트 (attack/whirl/sprint 계열)
+## v3 ACTION 프롬프트 (attack/whirl/sprint 계열 · v1.2 LOCK)
 ```
-...(위와 동일 캐릭터)... rotary blade DEPLOYED and gripped in the right hand as an oversized
-greatsword, a single curved dagger in the left hand, ragged skirt shreds trailing in motion
+...(위와 동일 캐릭터)... rotary blade DEPLOYED and gripped in the RIGHT hand as an oversized
+greatsword, the single curved dagger drawn in the LEFT hand, ragged skirt shreds trailing in motion
 ```
 
 ## north(REAR) 재편집 타겟 — 정밀
