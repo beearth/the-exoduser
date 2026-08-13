@@ -432,6 +432,21 @@ isW 최적화(d074f3a9) 후 CPU 구조가 바뀌어 hotspot 순위를 재측정.
 
 **판정**: proj 스파이크의 **PRIMARY(74%)=per-hit SFX 오분류 → CLOSED/PASS**. 잔여(dt>16.7 스파이크 588회)는 draw/ens/기타(6.10의 draw-bound 축) — SFX와 무관, 별도 축. hurtE(17%)는 부차로 잔존하나 단독 스파이크 유발 안 함.
 
+### 6.12 pProjs homing `_anyAlive` memoize — candidate-loop 잔여 O(k²) 제거 (2026-08-13)
+
+§6.10이 지목한 미착수 후보 "대량 스킬 투사체 homing/proj 업데이트 비용"의 candidate-loop(§6.11 실측 2.15ms, hitCand 3517)에서 **provably behavior-preserving(byte-identical)한 잔여 낭비만** 제거. 나머지 proj 경로는 §6.11에서 measured-minor 또는 draw-bound NO-GO로 종결됐으므로 **hot combat loop의 거동 위험 수정은 배제**.
+
+**대상 코드**: `game.html` pProjs per-frame 업데이트 루프(≈L27837), homing 타겟 재획득 내부.
+- **문제**: `plagueHoming`/`mhBlade`(역병·악의사냥, 관통 800+) 투사체가 타겟 재획득 시, 이미-때린 생존적 후보를 만날 때마다 `_anyAlive`(안 때린 생존적 존재?) 를 `_neH` 전체 재스캔 → **이미-때린 생존적이 N개면 O(N²)**. maliceHunt(=mhBlade)는 §6.11 heavy 시나리오에 포함.
+- **불변식**: `_anyAlive`는 `(_neH, _hitSet)`만의 함수. **TRUE면 루프 중 값 불변**(clear 미발생), **FALSE면 `_hitSet.clear()` 후 해당 분기 재진입 불가**(빈 set). → 프레임당 1회만 계산해도 `bestE` 선택·`clear` 타이밍이 **원본과 완전 동일**.
+- **수정**: `_aaChk` 플래그로 memoize — `if((p.plagueHoming||p.mhBlade)&&!_aaChk){_aaChk=true; …기존 스캔…}`. 2줄(선언 1 + 조건 1). 투사체 수/궤적/데미지/hit timing/충돌 **전부 불변**.
+
+**검증**:
+- **동등성 fuzz**: `test/homingAnyAliveMemo.test.js` — OLD/NEW 내부 타겟팅 로직 재현, seed-42 LCG로 20,000 시나리오(plague/mh/venom/일반 × 생존·피격 랜덤) → `bestE`·`clear`·`bestD` **전부 일치(0 mismatch)**. 스캔 카운트: anyAlive=TRUE+이미-때린 다수 시 OLD 4회→NEW 1회.
+- **전체 스위트 회귀**: game.html 변경 순수 영향 대조(내 테스트 격리) → 실패셋 **A(변경본)=33 vs B(pristine)=33, NEW_ONLY=0·FIXED_ONLY=0**(byte-identical 실패셋). 33건은 전부 기존 HEAD-서술 baseline(parry malice·grit·earthBreaker·map cache 등, homing 무관).
+
+**판정**: candidate-loop pierce-heavy 성분의 잔여 O(k²) → O(k) 축약, **byte-identical 확정 → CLOSED/PASS**. live 프로파일 없이도 안전 정당화 가능한 유일한 잔여 최적화였음(제거 후 proj 경로는 measured-minor/draw-bound NO-GO만 남음 = perf 트랙 최종 종점).
+
 ## 7. Claude Code 작업 체크리스트
 
 - [ ] 작업 전 해당 시스템 문서를 먼저 읽기

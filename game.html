@@ -27838,8 +27838,9 @@ function update(){
       let bestE=null,bestD=p.plagueHoming?(p._pierced===0?1000:500):p.mhBlade?(p._pierced===0?1000:500):p.blueBean?600:p.chainMax?400:p.arcMissile?350:p.fireball?280:p.magic?250:200;
       const _neH=shQuery(p.x,p.y,bestD);
       let _vbFall=null,_vbFD=bestD; // 독사 fallback: 이미 때린 적
+      let _aaChk=false; // plague/mh _anyAlive(안 때린 생존적 존재?): 프레임당 1회만 계산 — 동일결과 재스캔 제거(byte-identical). TRUE면 루프중 불변, FALSE면 clear후 분기 재진입 없음
       for(let h=0;h<_neH.length;h++){const e=_neH[h];if(!e.alive)continue;
-        if(p._hitSet&&p._hitSet.has(e)&&!p.venomBlade){if(p.plagueHoming||p.mhBlade){let _anyAlive=false;for(let _pi=0;_pi<_neH.length;_pi++){if(_neH[_pi].alive&&!p._hitSet.has(_neH[_pi])){_anyAlive=true;break}}if(!_anyAlive)p._hitSet.clear();}continue;}
+        if(p._hitSet&&p._hitSet.has(e)&&!p.venomBlade){if((p.plagueHoming||p.mhBlade)&&!_aaChk){_aaChk=true;let _anyAlive=false;for(let _pi=0;_pi<_neH.length;_pi++){if(_neH[_pi].alive&&!p._hitSet.has(_neH[_pi])){_anyAlive=true;break}}if(!_anyAlive)p._hitSet.clear();}continue;}
         // 독사: 안 때린 적 우선, 때린 적은 fallback
         if(p.venomBlade&&p._hitSet&&p._hitSet.has(e)){const fd=dst(p.x,p.y,e.x,e.y);if(fd<_vbFD){_vbFD=fd;_vbFall=e}continue}
         const d=dst(p.x,p.y,e.x,e.y);if(d<bestD){bestD=d;bestE=e}}
