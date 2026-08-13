@@ -157,6 +157,13 @@ greatsword, the single curved dagger drawn in the LEFT hand, ragged skirt shreds
 - **note: 블레이드 형상** — 가이드는 곡검으로 보이나 MASTER/WEAPON-BIBLE canon은 straight double-edged. 형상은 MASTER refs 따름(본 검증은 위치/가림/길이만).
 - **3-VIEW GATE = PASS** → PixelLab 8-dir idle/walk 확장 허용(생성은 사용자 파이프라인, MASTER refs=외형 + 본 guide=Blade Tail/dagger 배치).
 
+**보관 & Reference Priority / Scope (LOCKED):**
+- 아카이브: `refs/guides/SILVERTAIL_v1_2_3VIEW_CONSTRUCTION_GUIDE.png`
+- **① MASTER refs** (CORE / REFERENCE_SHEET / face / body / BLADETAIL / 바디.txt) = **외형·얼굴·체형·갑주·Blade Tail 실제 형상 최우선**.
+- **② SILVERTAIL_LOCKED_SPEC_v1_2** = 기구·배치·규칙 SSOT.
+- **③ 3-view construction guide** = **occlusion / mount / offset / length / dagger placement 전용 보조 레퍼런스**.
+- ⚠ 가이드는 **MASTER 외형이나 Blade Tail 형상을 덮어쓰지 않음**. 가이드의 **곡검처럼 보이는 실루엣은 canon 아님** — **MASTER/WEAPON BIBLE의 straight double-edged blade 형상 유지**.
+
 ---
 
 ## 미해결(별도 트랙 — 본 LOCK 범위 밖)
