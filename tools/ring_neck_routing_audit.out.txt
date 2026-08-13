@@ -1,0 +1,43 @@
+═══ LOCK-40 RING/NECK ROUTING DEBT AUDIT (실제 경로 재현) ═══
+
+── ring1 3 sample (manual push → routing) ──
+  layerLv=5
+    PUSHED   : fireRes(val), lckFlatR(val)
+    FINAL(V2): vitFlat, hybStrInt, maxSTFlat, expBonusRing, lightResMax, ringLightDmg, atkSpeed, ringProjPierce
+    OVERWRITTEN(pushed→사라짐): fireRes(val), lckFlatR(val)
+  layerLv=5
+    PUSHED   : gritFlatR(val), poisonRes(val)
+    FINAL(V2): gritFlatR, hybStrInt, maxMPFlat, craftBonus, iceRes, elemFocus, atkSpeed, ringProjPierce
+    OVERWRITTEN(pushed→사라짐): poisonRes(val)
+  layerLv=7
+    PUSHED   : iceRes(val), poisonRes(val)
+    FINAL(V2): vitFlat, hybStrInt, cooldownRed, dropRateAcc, poisonRes, ringIceDmg, atkSpeed, ringProjPierce, whileStationaryDmg, resourceOnHit, neckAllDmg
+    OVERWRITTEN(pushed→사라짐): iceRes(val)
+
+── necklace 3 sample (manual push → routing) ──
+  layerLv=6
+    PUSHED   : maxMPFlat(val), expBonus(val)
+    FINAL(V2): intFlat, allStat, maxMPFlat, expBonus, poisonRes, fireDmgBns, atkSpeed, vsEliteDmg, neckComboMax
+    OVERWRITTEN(pushed→사라짐): (none)
+  layerLv=6
+    PUSHED   : fireRes(val), poisonRes(val)
+    FINAL(V2): intFlat, hybLckGrit, maxSTFlat, expBonus, lightRes, darkDmgBns, atkSpeed, healthyAtk, neckKillHeal
+    OVERWRITTEN(pushed→사라짐): fireRes(val), poisonRes(val)
+  layerLv=6
+    PUSHED   : eDefFlat(val), expBonus(val)
+    FINAL(V2): lckFlatN, allStat, mpRegenFlat, dropRateAcc, lightResMax, elemFocus, atkSpeed, injuredDmg, neckComboMax
+    OVERWRITTEN(pushed→사라짐): eDefFlat(val), expBonus(val)
+
+── ring1 10k 통계 ──
+  V2 final에 resist(fireRes 등) 출현: 48.6% · resource(maxSTFlat 등) 출현: 79.4%
+  → manual push 없이도 V2 roller가 resist/resource affix 제공(pool에 ring/neck slot·v2-rollable).
+
+── necklace 10k 통계 ──
+  V2 final에 resist(fireRes 등) 출현: 50.4% · resource(maxSTFlat 등) 출현: 85.5%
+  → manual push 없이도 V2 roller가 resist/resource affix 제공(pool에 ring/neck slot·v2-rollable).
+
+── 결론 ──
+  1) routing `item.affixes=(...)` 가 배열을 통째 재할당 → manual push 인스턴스 100% overwrite(생존 0).
+  2) manual push는 field `val` 사용, roller/consumer는 `value` → 살아남아도 값 0(broken).
+  3) push된 ID 전부 AFFIX_POOL에 ring/neck slot·v2-rollable(v2skip=0) → V2 roller가 정상 제공.
+  ▶ manual push = LEGACY DEAD CODE(overwritten + wrong field + redundant). 제거 = 최소수정(Option C), affix 손실 없음.

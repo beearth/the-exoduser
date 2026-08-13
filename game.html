@@ -12855,31 +12855,12 @@ function mkItem(slot,tier,el,rarity,wtype,layerLv){
     item.potCd=+([.03,.06,.10,.15,.22][rarity]*(0.9+Math.random()*.2)).toFixed(3);
     item.bonusHp=(item.bonusHp||0)+~~((3+tier*2+rarity*4)*(0.9+Math.random()*.2));
   }
-  // 반지: 장신구 파트 (크리 어픽스 제거 2026-04-10, 속성저항/자원 어픽스 2개 추가)
-  if(slot==='ring1'||slot==='ring2'){
-    // 반지 전용 추가 어픽스 2개 (장신구 파트 룰 준수)
-    const _ringAffPool=['fireRes','iceRes','lightRes','darkRes','poisonRes','maxSTFlat','maxMPFlat','eDefFlat','lckFlatR','gritFlatR'];
-    const _rAff1=_ringAffPool[~~(Math.random()*_ringAffPool.length)];
-    let _rAff2=_ringAffPool[~~(Math.random()*_ringAffPool.length)];
-    while(_rAff2===_rAff1)_rAff2=_ringAffPool[~~(Math.random()*_ringAffPool.length)];
-    if(!item.affixes)item.affixes=[];
-    const _affDef=AFFIX_POOL.find(a=>a.id===_rAff1);
-    const _affDef2=AFFIX_POOL.find(a=>a.id===_rAff2);
-    if(_affDef){const _aTier=Math.min(tier,_affDef.tiers.length-1);item.affixes.push({id:_rAff1,val:_affDef.tiers[_aTier]})}
-    if(_affDef2){const _aTier2=Math.min(tier,_affDef2.tiers.length-1);item.affixes.push({id:_rAff2,val:_affDef2.tiers[_aTier2]})}
-  }
-  // 목걸이: 장신구 파트 (크리/뎀보너스 제거 2026-04-10, 속성저항/자원 어픽스 2개 추가)
-  if(slot==='necklace'){
-    const _neckAffPool=['fireRes','iceRes','lightRes','darkRes','poisonRes','allRes','maxSTFlat','maxMPFlat','eDefFlat','lckFlatN','gritFlatN','mpCostRed','expBonus'];
-    const _nAff1=_neckAffPool[~~(Math.random()*_neckAffPool.length)];
-    let _nAff2=_neckAffPool[~~(Math.random()*_neckAffPool.length)];
-    while(_nAff2===_nAff1)_nAff2=_neckAffPool[~~(Math.random()*_neckAffPool.length)];
-    if(!item.affixes)item.affixes=[];
-    const _nDef1=AFFIX_POOL.find(a=>a.id===_nAff1);
-    const _nDef2=AFFIX_POOL.find(a=>a.id===_nAff2);
-    if(_nDef1){const _nt=Math.min(tier,_nDef1.tiers.length-1);item.affixes.push({id:_nAff1,val:_nDef1.tiers[_nt]})}
-    if(_nDef2){const _nt2=Math.min(tier,_nDef2.tiers.length-1);item.affixes.push({id:_nAff2,val:_nDef2.tiers[_nt2]})}
-  }
+  // [P6L/LOCK-40] ring/neck 수동 affix push 제거 — legacy DEAD CODE(감사 확정, tools/ring_neck_routing_audit.mjs).
+  //   근거: (1) 직후 routing `item.affixes=(...)` 배열 통째 재할당 → 수동 push 인스턴스 100% overwrite(생존 0),
+  //         (2) push는 field `val` 사용(roller/consumer는 `value`) → 살아남아도 값 0(broken),
+  //         (3) push된 ID(fireRes/maxSTFlat/expBonus 등) 전부 AFFIX_POOL에 ring/neck slot·v2-rollable(L1~3 A/B) →
+  //             V2 roller가 정상 제공(resist ~49%·resource ~80% 출현). → 제거해도 affix 손실 없음, RNG 낭비 제거.
+  //   ring/neck 스탯(bLck/bGrit/bStr 등)은 아래 _isAccess 블록에서 별도 부여(불변). Extraction 전 item-gen 정리.
   // ── 스탯 보너스: 언커먼+ 아이템에 랜덤 부여 ──
   // 3파트 룰 (2026-04-10):
   //   무기 파트(weapon/bow/helmet): 스탯 보너스 금지
