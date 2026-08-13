@@ -166,6 +166,28 @@ greatsword, the single curved dagger drawn in the LEFT hand, ragged skirt shreds
 
 ---
 
+## [J-2] 8-DIR ASSET NAMING CONTRACT (LOCKED)
+
+Silvertail 렌더는 `_SILVERTAIL_CLOCK_FILES`(game.html) 매핑으로 8방향을 **독립 파일**에서 로드. 아래 계약 고정 — **어떤 방향도 flip-derived 금지**.
+
+| clock | 방향(_CHAR_DIRS) | key(_CHAR_DKS) | 파일 | flip 금지 대응쌍 |
+|---|---|---|---|---|
+| 12시 | north | n | `12.png` | (축) |
+| 1시 | north-east | ne | `1.png` | ↔ 11 (NW) |
+| 3시 | east | e | `3.png` | ↔ 9 (W) |
+| 5시 | south-east | se | `5.png` | ↔ 7 (SW) |
+| 6시 | south | s | `6.png` | (축) |
+| 7시 | south-west | sw | `7.png` | ↔ 5 (SE) |
+| 9시 | west | w | `9.png` | ↔ 3 (E) |
+| 11시 | north-west | nw | `11.png` | ↔ 1 (NE) |
+
+- **E(3)≠W(9) · NE(1)≠NW(11) · SE(5)≠SW(7)** — 좌우 대응쌍은 각각 Blade Tail=RIGHT/dagger=LEFT 실배치로 **개별 작화**. flip으로 파생 금지.
+- **MIRROR/FALLBACK RISK**: 렌더러(game.html ≈L48470)는 directional frame 결손 시 `_pFlip=!_apHasDir && 좌향`으로 **좌우 flip 폴백** → Silvertail 비대칭 파손. **missing direction을 정상 fallback으로 승인 금지.**
+- **Asset completeness guard**: `test/silvertailAssetCompleteness.test.js` (4케이스: 계약 매핑 · 8파일 존재 · 8독립(중복0) · 대응쌍 E≠W/NE≠NW/SE≠SW). PixelLab PNG 교체 시 CI에서 누락·flip-derived 중복 차단. **runtime renderer 무변경**(가드/테스트로만 차단).
+- 한계: byte-동일 중복만 자동 차단. 실제 "좌우 mirror 시각 판정"은 [J] 224→48 human gate.
+
+---
+
 ## 미해결(별도 트랙 — 본 LOCK 범위 밖)
 
 - v1_1 [9] 미결(밸런스/판정 비용 등)은 기구 트랙 유지. 본 문서는 **비주얼/장비 LOCK만**.
