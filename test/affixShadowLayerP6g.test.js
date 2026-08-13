@@ -13,8 +13,10 @@ function buildShadow(injectMath){
   const end   = gameHtml.indexOf('if(typeof window!==', start); // window 라인 직전까지
   assert.ok(start > 0 && end > start, 'shadow 블록 추출 실패');
   const body = gameHtml.slice(start, end) +
-    '\nreturn {_shadowLayerCap,_shadowLayerWeights,_shadowRollLayer,_shadowObserve,_shadowReset,_shadowReport,_shadowHist,' +
+    '\nreturn {_shadowLayerCap,_shadowLayerWeights,_shadowRollLayer,_shadowObserve,_shadowReset,_shadowReport,' +
+    'get _shadowHist(){return _shadowHist},' +  // live getter (reset가 재할당하므로 스냅샷 금지)
     'get model(){return _SHADOW_LAYER_MODEL},set model(v){_SHADOW_LAYER_MODEL=v},get log(){return _SHADOW_LAYER_LOG},set log(v){_SHADOW_LAYER_LOG=v}};';
+  // 6H 확장: observe가 _AFSLOT/_keystoneCandidates/KEYSTONE_ROLL_RATE 참조 → typeof 가드로 미주입 시 skip
   return new Function('Math', 'console', body)(injectMath || Math, { log(){} });
 }
 const S = buildShadow();

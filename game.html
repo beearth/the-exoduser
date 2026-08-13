@@ -12275,28 +12275,87 @@ function rollAffixes(grade,slot,brType){
 // 구조: affix "선택"은 layer/sub(affixLayer), 수치 "품질"은 기존 affixRollTier(tiers/tierW/skewRoll/lv) — 두 축 분리(§8).
 const ITEM_LAYER_ROLL_V2=false; // 기본 false: 기존 생성 100% 무변경. true여도 layerLv 명시 아이템만 사용.
 
-// ═══ [P6G/LOCK-35] SHADOW LAYER TELEMETRY — 관찰 전용(production 무변경) ═══
+// ═══ [P6G/LOCK-35 · P6H/LOCK-36] SHADOW LAYER TELEMETRY — 관찰 전용(production 무변경) ═══
 // _SHADOW_LAYER_LOG=false(기본)면 mkItem 관찰 분기 미진입 → Math.random 미소비 · item 불변 · 레거시 byte-identical.
 // 독립 seeded RNG(mulberry32) 사용 — production Math.random sequence 미소비. item.layerLv/affix/socket/save 절대 미변경.
 // LOCK-34 추천 MODEL_A2 분포를 실 gameplay itemLv 스트림에 얹어 관측만 한다(확률/flag production 미확정). 콘솔: window._shadowLayer.enable('A2')→플레이→.report().
+// [P6H] 경제 판단 필드 확장(itemLvBand/slot/rarity/capSlot/keystone eligible+expected/session meta/affix implication). A2 파라미터 FREEZE(LOCK-34 값 불변).
 let _SHADOW_LAYER_LOG=false;      // debug/telemetry 토글(기본 off — 배포 상태)
 let _SHADOW_LAYER_MODEL='A2';     // LOCK-34 추천. 'A1'/'A2'/'A3' 비교 가능
 function _shadowMulberry32(s){let a=s>>>0;return function(){a|=0;a=(a+0x6D2B79F5)|0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296}}
 let _shadowRNG=_shadowMulberry32(0x6F6C); // 독립 스트림(production Math.random 미소비)
 function _shadowLayerCap(itemLv){return Math.max(1,Math.min(10,1+Math.floor((itemLv||0)/100)))} // LOCK-34 §1
-function _shadowLayerWeights(cap,model){const w=[];if(model==='A1'){for(let L=1;L<=cap;L++)w.push(Math.pow(1.35,L-1))}else if(model==='A3'){for(let L=1;L<=cap;L++)w.push(1+0.35*(L-1))}else{const mode=Math.max(1,cap-3),sig=1.6,kap=0.6,fl=0.15;for(let L=1;L<=cap;L++){let g=Math.exp(-((L-mode)*(L-mode))/(2*sig*sig));if(L===cap&&cap>1)g*=kap;w.push(g+fl)}}return w} // A2=MID-BIASED
+function _shadowLayerWeights(cap,model){const w=[];if(model==='A1'){for(let L=1;L<=cap;L++)w.push(Math.pow(1.35,L-1))}else if(model==='A3'){for(let L=1;L<=cap;L++)w.push(1+0.35*(L-1))}else{const mode=Math.max(1,cap-3),sig=1.6,kap=0.6,fl=0.15;for(let L=1;L<=cap;L++){let g=Math.exp(-((L-mode)*(L-mode))/(2*sig*sig));if(L===cap&&cap>1)g*=kap;w.push(g+fl)}}return w} // A2=MID-BIASED(mode=cap-3,σ1.6,κ0.6,floor0.15 FREEZE)
 function _shadowRollLayer(itemLv,rng,model){const cap=_shadowLayerCap(itemLv);const w=_shadowLayerWeights(cap,model||_SHADOW_LAYER_MODEL);let s=0;for(let i=0;i<w.length;i++)s+=w[i];let x=rng()*s;for(let L=1;L<=cap;L++){x-=w[L-1];if(x<0)return L}return cap}
-const _shadowHist={draws:0,byLayer:new Array(11).fill(0),byCap:{}};
-function _shadowObserve(item){ // 관찰 전용 — item 절대 미변경, 독립 RNG만 소비
-  if(!item)return;const lv=item.itemLv||0;const cap=_shadowLayerCap(lv);
+// LOCK-33 §7 structural affix-count profile(층에 의해 결정론적) — affix implication용
+const _SHADOW_AFFIX_W=[0,1,2,3,5,7,9,11,13,15,15], _SHADOW_AFFIX_A=[0,2,3,5,6,7,9,10,11,12,12];
+function _shadowNewHist(){return{draws:0,byLayer:new Array(11).fill(0),byCap:{},byBand:{},bySlot:{},byRarity:{},byCapSlot:{},byKindLayer:{weapon:new Array(11).fill(0),other:new Array(11).fill(0)},highLayerItems:0,eligibleKeystoneItems:0,expectedKeystones:0,expectedByKeystone:{},sess:{t0:null,tN:null,startLv:null,endLv:null,minStage:null,maxStage:null}}}
+let _shadowHist=_shadowNewHist();
+function _shadowKsRate(){return (typeof KEYSTONE_ROLL_RATE==='number')?KEYSTONE_ROLL_RATE:0.02}
+function _shadowNow(){try{return (typeof performance!=='undefined'&&performance.now)?performance.now():Date.now()}catch(e){return null}}
+function _shadowObserve(item){ // 관찰 전용 — item 절대 미변경, 독립 RNG만 소비, production Math.random 미호출
+  if(!item)return;const H=_shadowHist;const lv=item.itemLv||0;const cap=_shadowLayerCap(lv);
   const L=_shadowRollLayer(lv,_shadowRNG,_SHADOW_LAYER_MODEL);
-  _shadowHist.draws++;_shadowHist.byLayer[L]++;
-  const c=_shadowHist.byCap[cap]||(_shadowHist.byCap[cap]={draws:0,layer:new Array(11).fill(0)});
-  c.draws++;c.layer[L]++;
+  const band=Math.min(9,Math.floor(lv/100)), slot=item.slot||'?', rar=(item.rarity==null?-1:item.rarity), kind=(slot==='weapon')?'weapon':'other';
+  H.draws++;H.byLayer[L]++;
+  const c=H.byCap[cap]||(H.byCap[cap]={draws:0,layer:new Array(11).fill(0)});c.draws++;c.layer[L]++;
+  const b=H.byBand[band]||(H.byBand[band]={draws:0,layer:new Array(11).fill(0),cap:cap});b.draws++;b.layer[L]++;
+  const sl=H.bySlot[slot]||(H.bySlot[slot]={draws:0,ge8:0});sl.draws++;
+  H.byRarity[rar]=(H.byRarity[rar]||0)+1;
+  const cs=H.byCapSlot[cap]||(H.byCapSlot[cap]={});cs[slot]=(cs[slot]||0)+1;
+  H.byKindLayer[kind][L]++;
+  if(L>=8){
+    H.highLayerItems++;sl.ge8++;
+    // Keystone eligible = shadowLayer≥8 AND _keystoneCandidates non-empty (§5). 실제 Keystone RNG는 돌리지 않음 — 기대값만.
+    const aSlot=(typeof _AFSLOT!=='undefined')?_AFSLOT[slot]:null;
+    const cand=(aSlot&&typeof _keystoneCandidates==='function')?_keystoneCandidates(aSlot,L):[];
+    if(cand.length){
+      H.eligibleKeystoneItems++;const rate=_shadowKsRate();H.expectedKeystones+=rate;
+      const share=rate/cand.length; // eligible item당 후보 균등선택(LOCK-32) → 기대 share
+      for(let i=0;i<cand.length;i++){H.expectedByKeystone[cand[i].id]=(H.expectedByKeystone[cand[i].id]||0)+share}
+    }
+  }
+  // session metadata(측정 가능한 것만). RNG와 무관 — sampler 결정론 불변.
+  const s=H.sess;const t=_shadowNow();if(s.t0==null)s.t0=t;s.tN=t;
+  const plv=(typeof P!=='undefined'&&P&&P.lv)?P.lv:null;if(plv!=null){if(s.startLv==null)s.startLv=plv;s.endLv=plv}
+  const stg=(typeof G!=='undefined'&&G&&G.stage!=null)?G.stage:null;if(stg!=null){if(s.minStage==null||stg<s.minStage)s.minStage=stg;if(s.maxStage==null||stg>s.maxStage)s.maxStage=stg}
 }
-function _shadowReset(seed){_shadowRNG=_shadowMulberry32((seed>>>0)||0x6F6C);_shadowHist.draws=0;_shadowHist.byLayer.fill(0);for(const k in _shadowHist.byCap)delete _shadowHist.byCap[k]}
-function _shadowReport(){const H=_shadowHist;const out=[`shadow draws=${H.draws} model=${_SHADOW_LAYER_MODEL}`];const caps=Object.keys(H.byCap).map(Number).sort((a,b)=>a-b);for(const cap of caps){const c=H.byCap[cap];const pct=[];for(let L=1;L<=cap;L++)pct.push(L+':'+(100*c.layer[L]/c.draws).toFixed(1)+'%');out.push(`cap${cap}(n=${c.draws}) `+pct.join(' '))}const s=out.join('\n');if(typeof console!=='undefined')console.log(s);return s}
-if(typeof window!=='undefined')window._shadowLayer={enable(m){_SHADOW_LAYER_LOG=true;if(m)_SHADOW_LAYER_MODEL=m;_shadowReset();return'shadow ON '+_SHADOW_LAYER_MODEL},disable(){_SHADOW_LAYER_LOG=false;return'shadow OFF'},report:_shadowReport,reset:_shadowReset,get hist(){return _shadowHist},roll:_shadowRollLayer,cap:_shadowLayerCap};
+function _shadowReset(seed){_shadowRNG=_shadowMulberry32((seed>>>0)||0x6F6C);_shadowHist=_shadowNewHist()}
+function _shadowAdequacy(n){return n<100?'INSUFFICIENT':n<500?'PRELIMINARY':'CALIBRATION_USABLE'} // §9 운영 기준(통계 보증 아님)
+function _shadowQuant(arr,q){let n=0;for(let L=1;L<=10;L++)n+=arr[L]||0;if(!n)return null;let c=0;for(let L=1;L<=10;L++){c+=arr[L]||0;if(c>=q*n-1e-9)return L}return 10}
+function _shadowStats(){ // 구조화 통계(테스트/툴/report 공용)
+  const H=_shadowHist,N=H.draws||0;
+  const P_=new Array(11).fill(0);if(N)for(let L=1;L<=10;L++)P_[L]=H.byLayer[L]/N;
+  const bkt=(lo,hi)=>{let s=0;for(let L=lo;L<=hi;L++)s+=P_[L];return s};
+  const mean=(()=>{let m=0;for(let L=1;L<=10;L++)m+=L*P_[L];return m})();
+  const med=_shadowQuant(H.byLayer,0.5),p90=_shadowQuant(H.byLayer,0.9);
+  // cap-conditioned analytic parity(LOCK-34 §12)
+  const capReport={};for(const capK of Object.keys(H.byCap)){const cap=+capK,c=H.byCap[cap];const w=_shadowLayerWeights(cap,_SHADOW_LAYER_MODEL);let ws=0;for(const x of w)ws+=x;let maxErr=0;const obs=[],ana=[];for(let L=1;L<=cap;L++){const o=c.layer[L]/c.draws,a=w[L-1]/ws;obs.push(o);ana.push(a);maxErr=Math.max(maxErr,Math.abs(o-a))}capReport[cap]={n:c.draws,obs,ana,maxErr}}
+  // affix implication(§13) — kind별 expected/median/p90
+  const aff={};for(const kind of ['weapon','other']){const arr=H.byKindLayer[kind],tbl=kind==='weapon'?_SHADOW_AFFIX_W:_SHADOW_AFFIX_A;let n=0,sum=0;for(let L=1;L<=10;L++){n+=arr[L];sum+=arr[L]*tbl[L]}const medL=_shadowQuant(arr,0.5),p90L=_shadowQuant(arr,0.9);aff[kind]={n,expected:n?sum/n:0,median:medL?tbl[medL]:0,p90:p90L?tbl[p90L]:0,max:tbl[Math.min(10,Math.max(1,medL||1))]}}
+  const s=H.sess,dur=(s.t0!=null&&s.tN!=null)?(s.tN-s.t0):null;
+  return {model:_SHADOW_LAYER_MODEL,draws:N,adequacy:_shadowAdequacy(N),
+    P:P_,buckets:{L1_4:bkt(1,4),L5_7:bkt(5,7),L8_10:bkt(8,10)},mean,median:med,p90,
+    Pcap:(()=>{let s2=0;for(const capK of Object.keys(H.byCap)){const cap=+capK,c=H.byCap[cap];s2+=c.layer[cap]}return N?s2/N:0})(),
+    capParity:capReport,affix:aff,
+    highLayerItems:H.highLayerItems,eligibleKeystoneItems:H.eligibleKeystoneItems,
+    expectedKeystones:H.expectedKeystones,expectedByKeystone:Object.assign({},H.expectedByKeystone),
+    bySlot:H.bySlot,byRarity:H.byRarity,byBand:H.byBand,byCapSlot:H.byCapSlot,
+    session:{durationMs:dur,startLv:s.startLv,endLv:s.endLv,minStage:s.minStage,maxStage:s.maxStage}};
+}
+function _shadowReport(){const st=_shadowStats();const out=[];
+  out.push(`═ SHADOW TELEMETRY model=${st.model} N=${st.draws} adequacy=${st.adequacy} ═`);
+  if(st.draws){
+    out.push(`P(L1..L10)%: `+st.P.slice(1).map(x=>(x*100).toFixed(1)).join(' '));
+    out.push(`buckets L1-4=${(st.buckets.L1_4*100).toFixed(1)}% L5-7=${(st.buckets.L5_7*100).toFixed(1)}% L8-10=${(st.buckets.L8_10*100).toFixed(1)}% | mean=${st.mean.toFixed(2)} med=${st.median} p90=${st.p90} P(cap)=${(st.Pcap*100).toFixed(1)}%`);
+    out.push(`cap-conditioned parity vs LOCK-34 analytic:`);
+    for(const cap of Object.keys(st.capParity).map(Number).sort((a,b)=>a-b)){const c=st.capParity[cap];out.push(`  cap${cap}(n=${c.n}) obs=[${c.obs.map(x=>(x*100).toFixed(0)).join(',')}] maxErr=${(c.maxErr*100).toFixed(1)}%p`)}
+    out.push(`affix impl: weapon E=${st.affix.weapon.expected.toFixed(2)} med=${st.affix.weapon.median} p90=${st.affix.weapon.p90} | other E=${st.affix.other.expected.toFixed(2)} med=${st.affix.other.median} p90=${st.affix.other.p90}`);
+    out.push(`keystone: highLayer(≥8)=${st.highLayerItems} eligible=${st.eligibleKeystoneItems} expectedK=${st.expectedKeystones.toFixed(3)} byId=${JSON.stringify(st.expectedByKeystone)}`);
+    out.push(`session: dur=${st.session.durationMs==null?'n/a':Math.round(st.session.durationMs)+'ms'} lv ${st.session.startLv}→${st.session.endLv} stage ${st.session.minStage}~${st.session.maxStage}`);
+  }
+  const s=out.join('\n');if(typeof console!=='undefined')console.log(s);return s}
+if(typeof window!=='undefined')window._shadowLayer={enable(m){_SHADOW_LAYER_LOG=true;if(m)_SHADOW_LAYER_MODEL=m;_shadowReset();return'shadow ON '+_SHADOW_LAYER_MODEL},disable(){_SHADOW_LAYER_LOG=false;return'shadow OFF'},report:_shadowReport,stats:_shadowStats,reset:_shadowReset,get hist(){return _shadowHist},roll:_shadowRollLayer,cap:_shadowLayerCap,weights:_shadowLayerWeights};
 
 // 수치품질 롤 — 레거시 인라인 로직과 완전 동일(§9 공통 helper). Math.random 호출 순서 보존 → 레거시 결과 불변.
 function _affixTierRoll(a,maxTier){

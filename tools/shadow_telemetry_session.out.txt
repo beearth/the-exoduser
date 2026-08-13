@@ -1,0 +1,67 @@
+═══════════════════════════════════════════════════════════════
+LOCK-36 SHADOW TELEMETRY SESSION — ⚠ SIMULATED (NOT REAL_PLAY)
+game.html shadow 블록 추출·실행. itemLv 공식 코드-정확 재현. production 미접촉.
+═══════════════════════════════════════════════════════════════
+
+──── SIMULATED_SWEEP (pLv 0→900 uniform, cap1~10 전역) ────  [SIMULATED]
+session: pLv 0→900  drops=60000  adequacy=CALIBRATION_USABLE  (dur=SIMULATED n/a)
+  itemLv band(actual) / cap / drops:
+    band 0~90  cap1  n=6634
+    band 100~190  cap2  n=6666
+    band 200~290  cap3  n=6667
+    band 300~390  cap4  n=6666
+    band 400~490  cap5  n=6667
+    band 500~590  cap6  n=6667
+    band 600~690  cap7  n=6666
+    band 700~790  cap8  n=6667
+    band 800~890  cap9  n=6666
+    band 900~990+  cap10  n=34
+  shadow layer P(L1..L10)%: 33.3 19.8 13.9 11.0 9.0 6.6 4.1 1.8 0.6 0.0
+  buckets L1-4=78.0% L5-7=19.7% L8-10=2.4%  mean=2.91 med=2 p90=6 P(cap)=20.8%
+  cap-conditioned parity vs LOCK-34 analytic (maxErr):
+    cap1(n=6634)  obs%=[100]  ana%=[100]  maxErr=0.00%p
+    cap2(n=6666)  obs%=[65,35]  ana%=[64,36]  maxErr=0.51%p
+    cap3(n=6667)  obs%=[45,38,17]  ana%=[45,38,17]  maxErr=0.76%p
+    cap4(n=6666)  obs%=[38,33,21,8]  ana%=[39,33,20,8]  maxErr=0.26%p
+    cap5(n=6667)  obs%=[25,29,24,15,7]  ana%=[25,29,25,15,6]  maxErr=0.66%p
+    cap6(n=6667)  obs%=[13,21,25,20,14,5]  ana%=[13,21,25,21,13,6]  maxErr=0.96%p
+    cap7(n=6666)  obs%=[7,12,20,24,20,12,5]  ana%=[7,12,20,24,20,12,5]  maxErr=0.48%p
+    cap8(n=6667)  obs%=[4,6,12,19,23,19,12,5]  ana%=[4,6,12,19,23,19,12,5]  maxErr=0.37%p
+    cap9(n=6666)  obs%=[3,4,6,11,17,22,20,12,5]  ana%=[3,4,6,12,19,22,19,12,5]  maxErr=1.33%p
+    cap10(n=34)  obs%=[6,0,6,21,6,15,12,18,12,6]  ana%=[3,3,4,6,11,18,21,18,11,5]  maxErr=14.61%p
+  affix implication: weapon E=3.68 med=2 p90=9 | other E=4.51 med=3 p90=9
+  keystone: highLayer(≥8)=1432  eligible=178  P(eligible)=0.30%  expectedK=3.560
+    expected by keystone: ksBloodOath=0.790 ksRootedGiant=0.790 ksDullConviction=0.660 ksGlassGreatsword=0.660 ksBloodPact=0.660
+  slot P(layer≥8): ring1:3% ring2:2% headband:2% gloves:2% boots:2% belt:2% ...
+
+──── SIMULATED_EARLYGAME (pLv 1→150, 데모 근사) ────  [SIMULATED]
+session: pLv 1→150  drops=800  adequacy=CALIBRATION_USABLE  (dur=SIMULATED n/a)
+  itemLv band(actual) / cap / drops:
+    band 0~90  cap1  n=529
+    band 100~190  cap2  n=271
+  shadow layer P(L1..L10)%: 87.6 12.4 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+  buckets L1-4=100.0% L5-7=0.0% L8-10=0.0%  mean=1.12 med=1 p90=2 P(cap)=78.5%
+  cap-conditioned parity vs LOCK-34 analytic (maxErr):
+    cap1(n=529)  obs%=[100]  ana%=[100]  maxErr=0.00%p
+    cap2(n=271)  obs%=[63,37]  ana%=[64,36]  maxErr=0.65%p
+  affix implication: weapon E=1.13 med=1 p90=2 | other E=2.12 med=2 p90=3
+  keystone: highLayer(≥8)=0  eligible=0  P(eligible)=0.00%  expectedK=0.000
+    expected by keystone: (none — 이 session에 L≥8 eligible 없음)
+  slot P(layer≥8): cape:0% belt:0% helmet:0% gloves:0% boots:0% ring1:0% ...
+
+──── SIMULATED_ENDGAME (pLv 900, cap10) ────  [SIMULATED]
+session: pLv 900→900  drops=2000  adequacy=CALIBRATION_USABLE  (dur=SIMULATED n/a)
+  itemLv band(actual) / cap / drops:
+    band 900~990+  cap10  n=2000
+  shadow layer P(L1..L10)%: 3.1 3.3 3.8 5.3 12.0 17.0 21.9 17.2 11.8 4.8
+  buckets L1-4=15.4% L5-7=50.9% L8-10=33.7%  mean=6.48 med=7 p90=9 P(cap)=4.8%
+  cap-conditioned parity vs LOCK-34 analytic (maxErr):
+    cap10(n=2000)  obs%=[3,3,4,5,12,17,22,17,12,5]  ana%=[3,3,4,6,11,18,21,18,11,5]  maxErr=1.10%p
+  affix implication: weapon E=10.04 med=11 p90=15 | other E=9.09 med=10 p90=12
+  keystone: highLayer(≥8)=674  eligible=98  P(eligible)=4.90%  expectedK=1.960
+    expected by keystone: ksBloodOath=0.480 ksRootedGiant=0.480 ksDullConviction=0.333 ksGlassGreatsword=0.333 ksBloodPact=0.333
+  slot P(layer≥8): headband:38% shield:33% necklace:26% boots:37% belt:34% pants:30% ...
+
+─ §15 endgame reachability(코드 기준): itemLv=min(900,floor(P.lv/10)*10) → P.lv≥900이면 itemLv=900=cap10 reachable. 위 C는 도달 확인.
+─ §14 구분: EARLYGAME(B)에서 L8-10/keystone 미출현은 itemLv 저구간(cap 낮음) 때문 — Layer economy 버그 아님(progression 상태).
+─ ⚠ 위 전부 SIMULATED. REAL_PLAY telemetry = window._shadowLayer.enable("A2")→실플레이→.report()로 별도 수집 필요(미수집).
