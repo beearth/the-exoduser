@@ -183,8 +183,12 @@ Silvertail 렌더는 `_SILVERTAIL_CLOCK_FILES`(game.html) 매핑으로 8방향�
 
 - **E(3)≠W(9) · NE(1)≠NW(11) · SE(5)≠SW(7)** — 좌우 대응쌍은 각각 Blade Tail=RIGHT/dagger=LEFT 실배치로 **개별 작화**. flip으로 파생 금지.
 - **MIRROR/FALLBACK RISK**: 렌더러(game.html ≈L48470)는 directional frame 결손 시 `_pFlip=!_apHasDir && 좌향`으로 **좌우 flip 폴백** → Silvertail 비대칭 파손. **missing direction을 정상 fallback으로 승인 금지.**
-- **Asset completeness guard**: `test/silvertailAssetCompleteness.test.js` (4케이스: 계약 매핑 · 8파일 존재 · 8독립(중복0) · 대응쌍 E≠W/NE≠NW/SE≠SW). PixelLab PNG 교체 시 CI에서 누락·flip-derived 중복 차단. **runtime renderer 무변경**(가드/테스트로만 차단).
-- 한계: byte-동일 중복만 자동 차단. 실제 "좌우 mirror 시각 판정"은 [J] 224→48 human gate.
+- **Asset guard**: `test/silvertailAssetCompleteness.test.js` (5케이스). **runtime renderer 무변경** — 가드/테스트로만 차단.
+  - §1 8 files exist(missing=FAIL) · §2 mapping=contract · §3 no byte-identical duplicate · §4 pair files not byte-identical · **§5 exact horizontal-flip differential(PNG decode) — `exactFlipMatch`면 FAIL**.
+- **가드가 실제로 차단하는 것 (정확 기술)**: (a) 방향 파일 누락, (b) byte-동일 중복본, (c) **exact horizontal-mirror asset**(pixel-exact flip). → "**exact horizontal-mirror asset 차단**"까지만 주장. **"모든 mirror-derived 차단" 아님.**
+- **증명 못 하는 것**: near-mirror(거의 미러지만 픽셀 미세차)는 표본 부재로 **자동 FAIL threshold 미설정 → diagnostic만**(`diffRatio` 출력). §3/§4/byte 비교는 "파일 상이"만 증명(v1.2 geometry/canon 검증 아님 — PRE-v1.2 asset도 PASS).
+- **PRE-v1.2 실측(2026-08-14)**: 대응쌍 exactFlipMatch **전부 false**, diffRatio E/W 18.00% · NE/NW 20.59% · SE/SW 25.01% → 현행 8파일은 exact flip 아님(독립 작화). 즉 기존 guard가 놓친 exact-flip 문제는 **없었음**.
+- 시각적 좌우 mirror/near-mirror 최종 판정은 [J] 224→48 human gate에서 수행.
 
 ---
 
