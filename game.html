@@ -21532,6 +21532,76 @@ function _isAffixStone(it){return !!(it&&it.type==='affixStone')}
 // stone 표시용 메타(pool lookup — stone에 저장 안 함). {name,layer,sub,tierTxt}|null
 function _affixStoneMeta(stone){if(!_isAffixStone(stone))return null;const d=AFFIX_POOL.find(a=>a.id===stone.affixId);
   return {def:d||null,layer:d?d.layer:0,sub:d?d.sub:'?',name:(typeof AFFIX_NAMES_KO!=='undefined'&&AFFIX_NAMES_KO[stone.affixId])||stone.affixId,tier:stone.tier,value:stone.value,valid:!!d};}
+
+// ═══ [P7C/LOCK-43] AFFIX ABSORPTION CORE — validate/plan/atomic transfer (UI 미구현) ═══
+// 계약: affixStone을 valid target equipment(unequipped·V2 layerLv) 동일 Layer/Sub에 INSERT|REPLACE(완전교체, merge/stronger/reroll 없음).
+//   A=universal(원본 slots 무시, uni:1 gate 아님) · B=target slot compat ∩ def.compat · family 비-gate.
+//   exact tier/value, deterministic(RNG 0), 비용 0. keystone 완전 보존. dup(id/group)/C1 안전. atomic(실패 시 부분 mutation 0).
+let _slotCompatCache=null;
+function _getSlotCompatGroups(itemSlot){ // canonical: B affix 공존 파생(pool 일치, 임의 매핑 없음)
+  if(!_slotCompatCache){const m={};
+    for(let i=0;i<AFFIX_POOL.length;i++){const a=AFFIX_POOL[i];if(!a.compat||!a.slots)continue;
+      for(const asl of a.slots){(m[asl]=m[asl]||new Set());for(const c of a.compat)m[asl].add(c);}}
+    _slotCompatCache={};for(const k in m)_slotCompatCache[k]=[...m[k]];}
+  const asl=(typeof _AFSLOT!=='undefined')?_AFSLOT[itemSlot]:null;
+  return (asl&&_slotCompatCache[asl])?_slotCompatCache[asl]:[];
+}
+function _getStoneValidity(stone){ // domain validity(bag-layout _gx/_gy 무관). {ok:true,def}|{ok:false,reason}
+  if(!_isAffixStone(stone)||stone.affixId==null)return {ok:false,reason:'INVALID_STONE'};
+  const d=AFFIX_POOL.find(a=>a.id===stone.affixId);
+  if(!d)return {ok:false,reason:'INVALID_STONE'};
+  if(d.sub==='LEGACY'||!(d.layer>=1&&d.layer<=10))return {ok:false,reason:'LEGACY_BLOCKED'};
+  if(d.v2skip)return {ok:false,reason:'V2SKIP_BLOCKED'};
+  if(d.keystone)return {ok:false,reason:'KEYSTONE_BLOCKED'};
+  if(d.sub!=='A'&&d.sub!=='B')return {ok:false,reason:'WRONG_SUB'}; // FLEX 등 = A/B destination 없음(FLEX dead-end debt)
+  if(typeof stone.value!=='number'||!isFinite(stone.value))return {ok:false,reason:'INVALID_STONE'};
+  if(stone.tier!=null&&(typeof stone.tier!=='number'||!isFinite(stone.tier)||stone.tier<0||stone.tier>4))return {ok:false,reason:'INVALID_STONE'};
+  return {ok:true,def:d};
+}
+function _getTargetValidity(target){ // {ok:true}|{ok:false,reason} — equipped/bag은 호출부에서
+  if(!target||typeof target!=='object'||target.type==='affixStone'||!Array.isArray(target.affixes))return {ok:false,reason:'INVALID_TARGET'};
+  if(!(target.layerLv>=1&&target.layerLv<=10))return {ok:false,reason:'TARGET_NOT_V2'}; // old-gen(무 layerLv) 차단
+  return {ok:true};
+}
+function planAbsorption(target,stone){ // 순수(mutation 없음). {ok:true,action,layer,sub,oldAffix,newAffix,newAffixes}|{ok:false,reason}
+  const sv=_getStoneValidity(stone);if(!sv.ok)return sv;
+  const tv=_getTargetValidity(target);if(!tv.ok)return tv;
+  const def=sv.def,layer=def.layer,sub=def.sub;
+  if(!(target.layerLv>=layer))return {ok:false,reason:'TARGET_TOO_LOW'};       // [§5] target layer gate
+  if(sub==='B'){const g=_getSlotCompatGroups(target.slot);                      // [§8] B compat gate(A는 slots 무시)
+    if(!def.compat||!def.compat.some(c=>g.indexOf(c)>=0))return {ok:false,reason:'INCOMPATIBLE_SLOT'};}
+  let occ=null;                                                                  // [§6/§19] destination occupant = 동일 layer+sub, non-keystone
+  for(let i=0;i<target.affixes.length;i++){const a=target.affixes[i];const ad=AFFIX_POOL.find(x=>x.id===a.id);
+    if(!ad||ad.keystone)continue;if(ad.layer===layer&&ad.sub===sub){occ=a;break;}}
+  const action=occ?'REPLACE':'INSERT';
+  const newAffix={id:def.id,tier:stone.tier,value:stone.value};                  // [§17] exact
+  const survivors=target.affixes.filter(a=>a!==occ);                             // occupant 제거(REPLACE), keystone/기타 전부 보존
+  for(const a of survivors){                                                     // [§11] dup(REPLACE oldAffix 제외)
+    if(a.id===newAffix.id)return {ok:false,reason:'DUPLICATE_ID'};
+    const ad=AFFIX_POOL.find(x=>x.id===a.id);if(ad&&def.group&&ad.group===def.group)return {ok:false,reason:'DUPLICATE_GROUP'};}
+  const newAffixes=survivors.concat([newAffix]);
+  const seen={};                                                                 // [§12] C1: 각 layer×sub(A/B, keystone 제외) 최대 1
+  for(const a of newAffixes){const ad=AFFIX_POOL.find(x=>x.id===a.id);if(!ad||ad.keystone||(ad.sub!=='A'&&ad.sub!=='B'))continue;
+    const k=ad.layer+'|'+ad.sub;if(seen[k])return {ok:false,reason:'C1_VIOLATION'};seen[k]=1;}
+  return {ok:true,action,layer,sub,oldAffix:occ,newAffix,newAffixes};
+}
+function absorbStone(stone,targetItemId){ // atomic. {ok:true,action,newAffix}|{ok:false,reason}
+  if(!INV||!Array.isArray(INV.bag))return {ok:false,reason:'INVALID_TARGET'};
+  const sv=_getStoneValidity(stone);if(!sv.ok)return sv;
+  if(INV.bag.indexOf(stone)<0)return {ok:false,reason:'STONE_NOT_IN_BAG'};       // [§13] stone ref 실재(sort/move 안전)
+  for(const sl in INV.equipped){const eq=INV.equipped[sl];if(eq&&eq.id===targetItemId)return {ok:false,reason:'TARGET_EQUIPPED'};}
+  const target=INV.bag.find(it=>it&&it.id===targetItemId&&it.type!=='affixStone');
+  if(!target)return {ok:false,reason:'TARGET_NOT_IN_BAG'};
+  const plan=planAbsorption(target,stone);if(!plan.ok)return plan;
+  // [§14] REVALIDATE identities(직전) — stale 방지
+  if(INV.bag.indexOf(stone)<0)return {ok:false,reason:'STONE_NOT_IN_BAG'};
+  if(INV.bag.indexOf(target)<0)return {ok:false,reason:'STALE_TARGET'};
+  for(const sl in INV.equipped){if(INV.equipped[sl]&&INV.equipped[sl].id===targetItemId)return {ok:false,reason:'STALE_TARGET'};}
+  target.affixes=plan.newAffixes;                                                // APPLY(단일 지점): affix 교체 + stone 1개 소비
+  const sIdx=INV.bag.indexOf(stone);INV.bag.splice(sIdx,1);
+  if(typeof dbSaveForce==='function'){try{dbSaveForce()}catch(e){}}
+  return {ok:true,action:plan.action,newAffix:plan.newAffix};
+}
 // 장비 어픽스 합산 (id별 value 합계)
 let _eqAffixCache=null,_eqAffixVer=0;
 function _eqAffixRebuild(){_eqAffixCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it&&it.affixes)for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];_eqAffixCache[a.id]=(_eqAffixCache[a.id]||0)+a.value}}}
