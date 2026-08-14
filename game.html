@@ -21613,6 +21613,91 @@ function absorbStone(stone,targetItemId){ // atomic. {ok:true,action,newAffix}|{
   if(typeof dbSaveForce==='function'){try{dbSaveForce()}catch(e){}}
   return {ok:true,action:plan.action,newAffix:plan.newAffix};
 }
+// ═══ [P7D/LOCK-44] AFFIX TRANSFER PLAYER UI — domain API 위임(compat/gate/dup/C1 재구현 없음) ═══
+function _transferReasonText(reason){ // 내부 enum → user-friendly i18n(#3002~)
+  const M={ITEM_EQUIPPED:['장착 해제 필요','Unequip first'],TARGET_EQUIPPED:['장착 해제 필요','Unequip first'],
+    TARGET_NOT_V2:['흡수 대상이 아닌 장비','Not an absorbable item'],TARGET_TOO_LOW:['대상 장비 단수 부족','Target layer too low'],
+    INCOMPATIBLE_SLOT:['이 장비 종류엔 이식 불가','Incompatible equipment type'],
+    DUPLICATE_ID:['중복 옵션 충돌','Duplicate option conflict'],DUPLICATE_GROUP:['중복 옵션 충돌','Duplicate option conflict'],
+    FLEX_BLOCKED:['흡수 불가 옵션','Non-transferable option'],KEYSTONE_BLOCKED:['흡수 불가 옵션','Non-transferable option'],
+    LEGACY_BLOCKED:['흡수 불가 옵션','Non-transferable option'],V2SKIP_BLOCKED:['흡수 불가 옵션','Non-transferable option'],WRONG_SUB:['흡수 불가 옵션','Non-transferable option'],
+    C1_VIOLATION:['구조 조건 불충족','Structure requirement unmet'],STALE_TARGET:['대상이 변경됨 — 다시 시도','Target changed — retry'],
+    STONE_NOT_IN_BAG:['어픽스석 없음','Stone missing'],TARGET_NOT_IN_BAG:['대상 없음','Target missing'],ITEM_NOT_IN_BAG:['대상 없음','Item missing'],
+    INVALID_STONE:['잘못된 어픽스석','Invalid stone'],INVALID_TARGET:['잘못된 대상','Invalid target'],INVALID_ITEM:['잘못된 아이템','Invalid item'],
+    INVALID_AFFIX:['잘못된 옵션','Invalid option'],INVALID_VALUE:['잘못된 값','Invalid value'],COMMIT_FAILED:['처리 실패','Failed']};
+  const e=M[reason];return e?_L(e[0],e[1]):_L('불가','Unavailable');
+}
+function _affixNameOf(id){return (typeof AFFIX_NAMES_KO!=='undefined'&&AFFIX_NAMES_KO[id])?_T(AFFIX_NAMES_KO[id]):id}
+function _layerSubLabel(layer,sub){return _L(layer+'단-'+sub,'L'+layer+'-'+sub)}
+function _compatSlotLabel(slot){const g=(typeof _getSlotCompatGroups==='function')?_getSlotCompatGroups(slot):[];
+  const map={OFFENSE:['공격','Offense'],DEFENSE:['방어','Defense'],ACCESSORY:['장신구','Accessory']};
+  return g.map(c=>map[c]?_L(map[c][0],map[c][1]):c).join('/');
+}
+function _extractionVM(item){ // getExtractableAffixes 위임 + 표시필드/파괴경고
+  if(!item||item.type==='affixStone'||!Array.isArray(item.affixes))return {ok:false};
+  const cands=getExtractableAffixes(item).map(c=>{const d=AFFIX_POOL.find(a=>a.id===c.affixId)||{};
+    return {affixId:c.affixId,name:_affixNameOf(c.affixId),layer:d.layer,sub:d.sub,label:_layerSubLabel(d.layer,d.sub),tier:c.tier,value:c.value,compat:d.sub==='B'?(d.compat||[]):null};});
+  return {ok:true,itemId:item.id,itemName:_T(item.name||''),layerLv:item.layerLv,candidates:cands,
+    warning:_L('선택한 옵션 1개만 추출되며 원본 장비는 파괴됩니다.','Only the selected option is extracted; the source item is destroyed.')};
+}
+function _absorptionTargetsVM(stone){ // INV.bag equipment별 planAbsorption 위임 → ok/reasonText
+  const out=[];if(!INV||!Array.isArray(INV.bag))return out;
+  for(const it of INV.bag){if(!it||it.type==='affixStone')continue;
+    const pr=planAbsorption(it,stone);
+    out.push({id:it.id,name:_T(it.name||''),slot:it.slot,slotLabel:_compatSlotLabel(it.slot),ok:pr.ok,reason:pr.ok?'':pr.reason,reasonText:pr.ok?'':_transferReasonText(pr.reason),action:pr.ok?pr.action:null});}
+  return out;
+}
+function _absorptionPreviewVM(target,stone){ // planAbsorption 위임 → INSERT/REPLACE preview(exact)
+  const pr=planAbsorption(target,stone);
+  if(!pr.ok)return {ok:false,reason:pr.reason,reasonText:_transferReasonText(pr.reason)};
+  return {ok:true,action:pr.action,layer:pr.layer,sub:pr.sub,label:_layerSubLabel(pr.layer,pr.sub),
+    oldAffix:pr.oldAffix?{id:pr.oldAffix.id,name:_affixNameOf(pr.oldAffix.id),value:pr.oldAffix.value}:null,
+    newAffix:{id:pr.newAffix.id,name:_affixNameOf(pr.newAffix.id),value:pr.newAffix.value,tier:pr.newAffix.tier}};
+}
+let _transferBusy=false; // double-submit guard(same-tick). cross-click은 domain identity(item.id/stone ref)로 차단.
+function _uiExtract(itemId,affixId){
+  if(_transferBusy)return {ok:false,reason:'BUSY'};_transferBusy=true;
+  try{const r=extractAffix(itemId,affixId);if(!r.ok&&typeof notify==='function')notify(_transferReasonText(r.reason));
+    if(r.ok&&typeof renderInv==='function'){try{renderInv()}catch(e){}}return r;}finally{_transferBusy=false;}
+}
+function _uiAbsorb(stone,targetItemId){
+  if(_transferBusy)return {ok:false,reason:'BUSY'};_transferBusy=true;
+  try{const r=absorbStone(stone,targetItemId);if(!r.ok&&typeof notify==='function')notify(_transferReasonText(r.reason));
+    if(r.ok&&typeof renderInv==='function'){try{renderInv()}catch(e){}}return r;}finally{_transferBusy=false;}
+}
+// [P7D/LOCK-44] transfer 패널(invRight 상주, VM/도메인 위임 — DOM은 얇은 렌더러). 전용 modal 없음, 대형 HUD 무변경.
+let _txState=null;
+function _txClose(){_txState=null;if(typeof renderInv==='function')try{renderInv()}catch(e){}}
+function _openExtractPanel(bagIdx){const it=INV.bag[bagIdx];if(!it||it.type==='affixStone')return;_txState={mode:'extract',itemId:it.id,sel:null};_txRender();}
+function _openAbsorbPanel(bagIdx){const st=INV.bag[bagIdx];if(!st||st.type!=='affixStone')return;_txState={mode:'absorb',stoneRef:st,targetId:null};_txRender();}
+function _txSelExtract(id){if(_txState)_txState.sel=id;_txRender();}
+function _txSelTarget(id){if(_txState)_txState.targetId=id;_txRender();}
+function _txDoExtract(){if(!_txState||!_txState.sel)return;const r=_uiExtract(_txState.itemId,_txState.sel);if(r.ok)_txClose();else _txRender();}
+function _txDoAbsorb(){if(!_txState||!_txState.targetId)return;const r=_uiAbsorb(_txState.stoneRef,_txState.targetId);if(r.ok)_txClose();else _txRender();}
+function _txRender(){const rp=$('invRight');if(!rp||!_txState)return;rp.innerHTML='';const box=document.createElement('div');box.style.cssText='padding:10px;font-size:.8rem;color:#d8c8b0';
+  const back='<div onclick="_txClose()" style="cursor:pointer;color:#888;margin-bottom:6px">← '+_L('닫기','Close')+'</div>';let h='';
+  if(_txState.mode==='extract'){const it=INV.bag.find(x=>x&&x.id===_txState.itemId);if(!it){_txClose();return;}
+    const vm=_extractionVM(it);h=back+'<div style="font-weight:700;color:#ffcc66">🔮 '+_L('어픽스 추출','Extract Affix')+'</div><div style="color:#aaa;margin:4px 0">'+vm.itemName+'</div>';
+    if(!vm.candidates.length)h+='<div style="color:#886">'+_L('추출 가능한 옵션 없음','No extractable options')+'</div>';
+    for(const c of vm.candidates){const on=_txState.sel===c.affixId;
+      h+='<div onclick="_txSelExtract(\''+c.affixId+'\')" style="cursor:pointer;padding:4px 6px;margin:2px 0;border:1px solid '+(on?'#ffcc66':'#443')+';border-radius:3px;background:'+(on?'rgba(255,204,102,.12)':'rgba(0,0,0,.15)')+'"><b>'+c.name+'</b> <span style="color:#88ccff">'+c.label+'</span> <span style="color:#9a8">t'+(c.tier==null?'-':c.tier)+' · '+c.value+'</span></div>';}
+    if(_txState.sel){h+='<div style="color:#ff8866;margin:8px 0;font-size:.74rem">⚠ '+vm.warning+'</div><div style="color:#998;font-size:.72rem">'+_L('소모: 원본 장비','Cost: source item')+'</div>'+
+      '<div onclick="_txDoExtract()" style="cursor:pointer;text-align:center;padding:6px;margin-top:6px;background:#663322;border:1px solid #cc6633;border-radius:4px;color:#ffcc99;font-weight:700">'+_L('추출 (원본 파괴)','Extract (destroys item)')+'</div>';}
+  }else{const st=_txState.stoneRef;const meta=_affixStoneMeta(st);
+    h=back+'<div style="font-weight:700;color:#c88bff">💠 '+_L('어픽스 흡수','Absorb Affix')+'</div><div style="color:#aaa;margin:4px 0">'+(meta&&meta.valid?(_affixNameOf(st.affixId)+' <span style="color:#88ccff">'+_layerSubLabel(meta.layer,meta.sub)+'</span> <span style="color:#9a8">'+st.value+'</span>'):_L('알 수 없는 어픽스','Unknown Affix'))+'</div>';
+    if(!_txState.targetId){h+='<div style="color:#aaa;margin:4px 0">'+_L('대상 장비 선택','Select target')+'</div>';
+      for(const t of _absorptionTargetsVM(st)){h+='<div '+(t.ok?('onclick="_txSelTarget(\''+t.id+'\')" style="cursor:pointer;'):'style="opacity:.5;')+'padding:4px 6px;margin:2px 0;border:1px solid #443;border-radius:3px"><b>'+t.name+'</b> <span style="color:#778">'+t.slotLabel+'</span>'+(t.ok?(' <span style="color:#8c8">'+_L(t.action==='REPLACE'?'교체':'삽입',t.action)+'</span>'):(' <span style="color:#c66;font-size:.72rem">'+t.reasonText+'</span>'))+'</div>';}
+    }else{const tgt=INV.bag.find(x=>x&&x.id===_txState.targetId);const pv=tgt?_absorptionPreviewVM(tgt,st):{ok:false,reasonText:_L('대상 없음','Target missing')};
+      h+='<div onclick="_txSelTarget(null)" style="cursor:pointer;color:#888;margin:4px 0">← '+_L('대상 다시 선택','Reselect target')+'</div>';
+      if(!pv.ok)h+='<div style="color:#c66">'+pv.reasonText+'</div>';
+      else{h+='<div style="margin:6px 0;padding:6px;border:1px solid #556;border-radius:4px"><div style="color:#88ccff">'+pv.label+' · '+_L(pv.action==='REPLACE'?'교체':'삽입',pv.action)+'</div>'+
+        (pv.oldAffix?('<div style="color:#c88">'+pv.oldAffix.name+' ('+pv.oldAffix.value+') <span style="color:#666">→ '+_L('소멸','removed')+'</span></div>'):'')+
+        '<div style="color:#8f8">'+pv.newAffix.name+' ('+pv.newAffix.value+')</div></div><div style="color:#998;font-size:.72rem">'+_L('소모: 어픽스석 ×1','Cost: Affix Stone ×1')+'</div>'+
+        '<div onclick="_txDoAbsorb()" style="cursor:pointer;text-align:center;padding:6px;margin-top:6px;background:#33224a;border:1px solid #8866cc;border-radius:4px;color:#d9b3ff;font-weight:700">'+_L('흡수','Absorb')+'</div>';}
+    }
+  }
+  box.innerHTML=h;rp.appendChild(box);
+}
 // 장비 어픽스 합산 (id별 value 합계)
 let _eqAffixCache=null,_eqAffixVer=0;
 function _eqAffixRebuild(){_eqAffixCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it&&it.affixes)for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];_eqAffixCache[a.id]=(_eqAffixCache[a.id]||0)+a.value}}}
@@ -40750,14 +40835,16 @@ function _invRenderDetail(idx,source){
   const it=source==='eq'?INV.equipped[idx]:source==='st'?(_getStore()[idx]||null):INV.bag[idx];
   if(!it)return;
   const rp=$('invRight');if(!rp)return;
+  if(typeof _txState!=='undefined'&&_txState)return; // [P7D] transfer 패널 활성 중엔 detail 재렌더 억제(hover override 방지)
   rp.innerHTML='';
-  // [P7B/LOCK-42] affixStone은 장비 상세 렌더 경로 미진입 — pool lookup 최소 placeholder(타입세이프). 전용 UI/버튼 없음.
+  // [P7B/LOCK-42→P7D] affixStone: 장비 상세 미진입, pool lookup placeholder + 흡수 진입 버튼(bag stone).
   if(it.type==='affixStone'){const _m=(typeof _affixStoneMeta==='function')?_affixStoneMeta(it):null;
     const _card=document.createElement('div');_card.style.cssText='padding:10px;color:#d9b3ff';
-    const _nm=_m&&_m.valid?_T(_m.name):_L('알 수 없는 어픽스','Unknown Affix');
+    const _nm=_m&&_m.valid?(typeof _affixNameOf==='function'?_affixNameOf(it.affixId):_T(_m.name)):_L('알 수 없는 어픽스','Unknown Affix');
     _card.innerHTML='<div style="font-weight:700;font-size:.8rem;color:#c88bff">💠 '+_L('어픽스석','Affix Stone')+'</div>'+
       '<div style="margin-top:4px">'+_nm+'</div>'+
-      (_m&&_m.valid?('<div style="color:#88ccff;margin-top:2px">L'+_m.layer+' · '+_m.sub+' · tier '+(it.tier==null?'-':it.tier)+' · '+it.value+'</div>'):
+      (_m&&_m.valid?('<div style="color:#88ccff;margin-top:2px">'+(typeof _layerSubLabel==='function'?_layerSubLabel(_m.layer,_m.sub):('L'+_m.layer+' · '+_m.sub))+' · tier '+(it.tier==null?'-':it.tier)+' · '+it.value+'</div>'+
+        (source!=='eq'&&source!=='st'&&typeof _openAbsorbPanel==='function'?'<div class="id-btn" onclick="_openAbsorbPanel('+idx+')" style="cursor:pointer;text-align:center;margin-top:8px;padding:5px;background:#33224a;border:1px solid #8866cc;border-radius:4px;color:#d9b3ff;font-weight:700">💠 '+_L('흡수','Absorb')+'</div>':'')):
         '<div style="color:#ff6666;margin-top:2px">'+_L('사용 불가(정의 없음)','Unusable (no definition)')+'</div>');
     rp.appendChild(_card);return;}
   // ── 비교 데이터 준비 (가방 아이템일 때) ──
@@ -40815,7 +40902,7 @@ function _invRenderDetail(idx,source){
       const _xc=_fe>0?xferCost(_fe):0;
       const _reqFail=it.reqLv&&P&&P.lv<it.reqLv;
       const _lbl=_reqFail?'⚠ '+_L('Lv.'+it.reqLv+' 필요','Req. Lv.'+it.reqLv):_fe>0?_T('장착')+' (\u2692+'+_fe+' \u2192 '+_xc.toLocaleString()+_L('악의',' Malice')+((G.mats||0)<_xc?' \u26A0':'')+')'  :_T('장착');
-_actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><div class="id-btn equip${_reqFail?' dis':''}" style="${_reqFail?'color:#ff4444;border-color:#ff444466':''}" onclick="const _it=INV.bag[${idx}];const _s=_it?.slot;const _old=_s?INV.equipped[_s]:null;equipItem(_it);applyStats();if(_old){const _oi=INV.bag.indexOf(_old);INV.selected=_oi>=0?_oi:null}else{INV.selected=_s?'eq:'+_s:null}renderInv()">${_lbl}</div><div class="id-btn" onclick="if(dropItem(${idx}))renderInv()">${_T('분해')} (${_T('악의')}+${_salV})</div></div>`;
+_actB.innerHTML=`<div class="id-btns" style="display:flex;gap:6px"><div class="id-btn equip${_reqFail?' dis':''}" style="${_reqFail?'color:#ff4444;border-color:#ff444466':''}" onclick="const _it=INV.bag[${idx}];const _s=_it?.slot;const _old=_s?INV.equipped[_s]:null;equipItem(_it);applyStats();if(_old){const _oi=INV.bag.indexOf(_old);INV.selected=_oi>=0?_oi:null}else{INV.selected=_s?'eq:'+_s:null}renderInv()">${_lbl}</div><div class="id-btn" onclick="if(dropItem(${idx}))renderInv()">${_T('분해')} (${_T('악의')}+${_salV})</div>${(typeof getExtractableAffixes==='function'&&Array.isArray(it.affixes)&&getExtractableAffixes(it).length>0)?`<div class="id-btn" onclick="_openExtractPanel(${idx})" title="${_L('어픽스 추출','Extract affix')}">🔮 ${_L('추출','Extract')}</div>`:''}</div>`;
     } else if(source==='eq'){
       _actB.innerHTML=`<div class="id-btns"><div class="id-btn" onclick="const _it=INV.equipped['${idx}'];unequipItem('${idx}');applyStats();const _ui=INV.bag.indexOf(_it);INV.selected=_ui>=0?_ui:null;renderInv()">${_T('해제')}</div></div>`;
     } else if(source==='st'){
