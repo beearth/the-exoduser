@@ -37,7 +37,13 @@ function mul(s){let a=s>>>0;return()=>{a|=0;a=(a+0x6D2B79F5)|0;let t=Math.imul(a
 function seededMath(s){const m=Object.create(Math);m.random=mul(s);return m}
 const stone=(affixId,tier,value)=>({type:'affixStone',affixId,tier,value});
 const aff=(id,tier,value)=>({id,tier,value:value==null?0.3:value});
-const target=(over)=>Object.assign({id:'t1',slot:'weapon',rarity:4,layerLv:10,affixes:[]},over);
+// [P7C.1] backbone: uni:1 A per layer(L1~9). 정상 V2 item은 A가 각 layer 충전(C1). A 흡수=REPLACE, B=INSERT/REPLACE.
+const BB={1:'strFlat',2:'cooldownRed',3:'defFlat',4:'elemFocus',5:'atkSpeed',6:'skillBoost',7:'atkPctAll',8:'critDmgW',9:'rageMaxFlat'};
+const target=(over={})=>{const lv=over.layerLv==null?10:over.layerLv;const extra=over.affixes||[];
+  const exA=new Set(extra.map(a=>DEF[a.id]).filter(d=>d&&d.sub==='A').map(d=>d.layer));
+  const bb=[];for(let L=1;L<=Math.min(lv,9);L++)if(!exA.has(L))bb.push(aff(BB[L],2,0.1));
+  return {id:over.id||'t1',slot:over.slot||'weapon',rarity:over.rarity==null?4:over.rarity,layerLv:lv,brType:over.brType,affixes:bb.concat(extra)};};
+const rawTarget=(over={})=>Object.assign({id:'t1',slot:'weapon',rarity:4,layerLv:10,affixes:[]},over); // malformed/backbone-없음 fixture
 const KS_IDS=['ksDullConviction','ksGlassGreatsword','ksBloodOath','ksRootedGiant','ksBloodPact'];
 
 // ══════════════════════════════════════════════════════════════════════
@@ -49,11 +55,14 @@ test('§2 canonical slot→compat mapping (B affix 공존 파생)', () => {
   assert.deepEqual(API._getSlotCompatGroups('shield').sort(),['ACCESSORY','DEFENSE']);
 });
 
-test('§29-1/2 A empty INSERT · occupied REPLACE (old 소멸)', () => {
+test('§29-1/2 A absorption = REPLACE (backbone A 교체, INSERT 불가) · old 소멸', () => {
+  // 정상 target은 각 layer A 충전(backbone) → staggerBns(L5-A) 흡수 = atkSpeed(L5-A backbone) REPLACE
   const A=build(); const t=target({affixes:[]}); const s0=stone('staggerBns',2,0.5); A.setBag([t,s0]);
-  let r=A.absorbStone(s0,'t1'); assert.ok(r.ok); assert.equal(r.action,'INSERT');
-  assert.ok(t.affixes.some(a=>a.id==='staggerBns'&&a.value===0.5),'insert 반영');
-  // 재장전: occupied replace
+  let r=A.absorbStone(s0,'t1'); assert.ok(r.ok); assert.equal(r.action,'REPLACE','A는 backbone 점유로 항상 REPLACE');
+  assert.ok(t.affixes.some(a=>a.id==='staggerBns'&&a.value===0.5),'new A 반영');
+  assert.ok(!t.affixes.some(a=>a.id==='atkSpeed'),'backbone L5-A(atkSpeed) 소멸');
+  assert.equal(t.affixes.filter(a=>DEF[a.id]&&DEF[a.id].layer===5&&DEF[a.id].sub==='A').length,1,'L5-A 정확히 1');
+  // 명시 occupant replace
   const B=build(); const t2=target({affixes:[aff('staggerBns',1,0.1)]}); B.setBag([t2,stone('staggerBns',3,0.9)]);
   const s=B.getBag()[1]; r=B.absorbStone(s,'t1'); assert.ok(r.ok); assert.equal(r.action,'REPLACE');
   const occ=t2.affixes.filter(a=>a.id==='staggerBns'); assert.equal(occ.length,1,'중복 없음'); assert.equal(occ[0].value,0.9,'old 소멸·new 값');
@@ -61,13 +70,14 @@ test('§29-1/2 A empty INSERT · occupied REPLACE (old 소멸)', () => {
 
 test('§29-3/§23 A cross-slot — 원본 slots 무시(weapon-origin A → armor target)', () => {
   const A=build(); const t=target({slot:'armor',affixes:[]}); const s0=stone('staggerBns',2,0.4); A.setBag([t,s0]); // staggerBns.slots=[wpn]
-  const r=A.absorbStone(s0,'t1'); assert.ok(r.ok,'A universal cross-slot 허용'); assert.equal(r.action,'INSERT');
-  // A universal sweep: 모든 V2-active A가 15 slot에서 slots 때문에 reject=0
+  const r=A.absorbStone(s0,'t1'); assert.ok(r.ok,'A universal cross-slot 허용(armor에 wpn-origin A)'); assert.equal(r.action,'REPLACE');
+  assert.ok(t.affixes.some(a=>a.id==='staggerBns'),'armor에 wpn-origin A 이식됨');
+  // A universal sweep: 모든 V2-active A가 15 slot에서 slots/compat 때문에 reject=0(backbone target)
   const A2=API; let rejectBySlots=0;
-  const Aaffs=AFFIX_POOL.filter(a=>a.sub==='A'&&!a.keystone&&!a.v2skip&&a.layer>=1&&a.layer<=10);
+  const Aaffs=AFFIX_POOL.filter(a=>a.sub==='A'&&!a.keystone&&!a.v2skip&&a.layer>=1&&a.layer<=9); // L10 A 없음
   const SLOTS=['weapon','shield','boots','armor','helmet','bow','gloves','pants','belt','necklace','ring1','ring2','cape','bracelet','headband'];
   for(const d of Aaffs)for(const sl of SLOTS){const pr=A2.planAbsorption(target({slot:sl,layerLv:10,affixes:[]}),stone(d.id,2,0.3));
-    if(!pr.ok&&(pr.reason==='INCOMPATIBLE_SLOT'))rejectBySlots++;}
+    if(!pr.ok&&(pr.reason==='INCOMPATIBLE_SLOT'||pr.reason==='WRONG_SUB'))rejectBySlots++;}
   assert.equal(rejectBySlots,0,'A는 slots/compat 때문에 reject 0(universal)');
 });
 
@@ -136,9 +146,9 @@ test('§29-17-equipped/§20 target equipped blocked · legacy/v2skip stone block
   // keystone stone
   A=build(); A.setBag([target({slot:'weapon'}),stone('ksDullConviction',0,1)]);
   assert.equal(A.absorbStone(A.getBag()[1],'t1').reason,'KEYSTONE_BLOCKED');
-  // FLEX stone(parryBonus) → WRONG_SUB (A/B destination 없음)
+  // FLEX stone(parryBonus) → FLEX_BLOCKED [P7C.1] (A/B destination 없음)
   A=build(); A.setBag([target({slot:'weapon'}),stone('parryBonus',2,0.3)]);
-  assert.equal(A.absorbStone(A.getBag()[1],'t1').reason,'WRONG_SUB');
+  assert.equal(A.absorbStone(A.getBag()[1],'t1').reason,'FLEX_BLOCKED');
   // old-gen target(무 layerLv) → TARGET_NOT_V2
   A=build(); A.setBag([{id:'old',slot:'weapon',rarity:2,affixes:[]},stone('staggerBns',2,0.3)]);
   assert.equal(A.absorbStone(A.getBag()[1],'old').reason,'TARGET_NOT_V2');

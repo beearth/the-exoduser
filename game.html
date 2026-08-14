@@ -21491,6 +21491,7 @@ function _getAffixExtractionStatus(item,affix){ // {ok:true}|{ok:false,reason}
   if(d.keystone)return {ok:false,reason:'KEYSTONE_BLOCKED'};      // keystone:1 제외(안전)
   if(d.sub==='LEGACY'||!(d.layer>=1&&d.layer<=10))return {ok:false,reason:'LEGACY_BLOCKED'}; // LEGACY/layer0
   if(d.v2skip)return {ok:false,reason:'V2SKIP_BLOCKED'};          // V2 미생성 → 증식 금지
+  if(d.sub!=='A'&&d.sub!=='B')return {ok:false,reason:'FLEX_BLOCKED'}; // [P7C.1] FLEX 등 = V1 transfer destination 없음(unusable stone 방지). item roll/equip/consumer는 불변.
   if(typeof affix.value!=='number'||!isFinite(affix.value))return {ok:false,reason:'INVALID_VALUE'};
   if(affix.tier!=null&&(typeof affix.tier!=='number'||!isFinite(affix.tier)||affix.tier<0||affix.tier>4))return {ok:false,reason:'INVALID_VALUE'};
   return {ok:true};
@@ -21553,7 +21554,7 @@ function _getStoneValidity(stone){ // domain validity(bag-layout _gx/_gy 무관)
   if(d.sub==='LEGACY'||!(d.layer>=1&&d.layer<=10))return {ok:false,reason:'LEGACY_BLOCKED'};
   if(d.v2skip)return {ok:false,reason:'V2SKIP_BLOCKED'};
   if(d.keystone)return {ok:false,reason:'KEYSTONE_BLOCKED'};
-  if(d.sub!=='A'&&d.sub!=='B')return {ok:false,reason:'WRONG_SUB'}; // FLEX 등 = A/B destination 없음(FLEX dead-end debt)
+  if(d.sub!=='A'&&d.sub!=='B')return {ok:false,reason:'FLEX_BLOCKED'}; // [P7C.1] FLEX 등 = A/B destination 없음(defense: 기존 FLEX stone도 차단, crash/자동변환/삭제 없음)
   if(typeof stone.value!=='number'||!isFinite(stone.value))return {ok:false,reason:'INVALID_STONE'};
   if(stone.tier!=null&&(typeof stone.tier!=='number'||!isFinite(stone.tier)||stone.tier<0||stone.tier>4))return {ok:false,reason:'INVALID_STONE'};
   return {ok:true,def:d};
@@ -21580,9 +21581,19 @@ function planAbsorption(target,stone){ // 순수(mutation 없음). {ok:true,acti
     if(a.id===newAffix.id)return {ok:false,reason:'DUPLICATE_ID'};
     const ad=AFFIX_POOL.find(x=>x.id===a.id);if(ad&&def.group&&ad.group===def.group)return {ok:false,reason:'DUPLICATE_GROUP'};}
   const newAffixes=survivors.concat([newAffix]);
-  const seen={};                                                                 // [§12] C1: 각 layer×sub(A/B, keystone 제외) 최대 1
+  const seen={};                                                                 // [§12] C1-(B) cardinality: 각 layer×sub(A/B, keystone 제외) 최대 1
   for(const a of newAffixes){const ad=AFFIX_POOL.find(x=>x.id===a.id);if(!ad||ad.keystone||(ad.sub!=='A'&&ad.sub!=='B'))continue;
     const k=ad.layer+'|'+ad.sub;if(seen[k])return {ok:false,reason:'C1_VIOLATION'};seen[k]=1;}
+  // [P7C.1 §5/§6] C1-(A) backbone: A가 롤 가능한 각 layer(1..layerLv)에 A-role(sub A|FLEX, A-슬롯 충전분) ≥1.
+  //   pool 실측: L10은 affix 자체 부재(A:0 B:0) → aCand 비어 면제. FLEX(parryBonus)는 A-버킷 충전이라 A-role로 계수.
+  //   malformed target(예 L3-A 결손, layerLv≥3) 거부. 정상 V2 item은 항상 통과(roller가 A-슬롯 충전).
+  const _aSlot=(typeof _AFSLOT!=='undefined')?_AFSLOT[target.slot]:null;
+  if(_aSlot&&typeof _affixLayerCandidates==='function'){
+    for(let L=1;L<=target.layerLv;L++){const aCand=_affixLayerCandidates(_aSlot,target.brType,L,'A');
+      if(!aCand||!aCand.length)continue;                                          // A 롤 불가 layer(L10 등) 면제
+      let hasA=false;for(const a of newAffixes){const ad=AFFIX_POOL.find(x=>x.id===a.id);if(ad&&(ad.sub==='A'||ad.sub==='FLEX')&&ad.layer===L){hasA=true;break;}}
+      if(!hasA)return {ok:false,reason:'C1_VIOLATION'};}
+  }
   return {ok:true,action,layer,sub,oldAffix:occ,newAffix,newAffixes};
 }
 function absorbStone(stone,targetItemId){ // atomic. {ok:true,action,newAffix}|{ok:false,reason}
