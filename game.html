@@ -3197,6 +3197,7 @@ function dbRestore(d){
     // 구버전 아이템 affixes/implicit/legendary 마이그레이션
     const _fixItem=(it)=>{
       if(!it)return;
+      if(it.type==='affixStone')return; // [P7B/LOCK-42] stone은 장비 마이그레이션 제외(affixes/CORE 필드 주입 금지)
       if(!it.affixes)it.affixes=[];
       // 구버전 prefix/suffix 단일 객체 → affixes 배열로 이식
       if(it.prefix&&typeof it.prefix==='object'&&it.prefix.name&&!it.affixes.length){
@@ -3288,7 +3289,7 @@ function dbRestore(d){
   if(STORAGE[0]&&STORAGE[0].length>STORAGE_MAX){STORAGE[0].length=STORAGE_MAX;_persistSharedStorage()}
   // 결정 주머니 복원 + 마이그레이션
   CRYSTAL_BAG=d.crystalBag||[];CRYSTAL_DUST=d.crystalDust||0;
-  const _fixCr=it=>{if(!it)return;if(it.socketCount===undefined){const _r=Math.random();it.socketCount=_r<.5?1:_r<.8?2:_r<.95?3:4;it.crystals=new Array(it.socketCount).fill(null)}};
+  const _fixCr=it=>{if(!it)return;if(it.type==='affixStone')return;if(it.socketCount===undefined){const _r=Math.random();it.socketCount=_r<.5?1:_r<.8?2:_r<.95?3:4;it.crystals=new Array(it.socketCount).fill(null)}};
   if(INV.bag)INV.bag.forEach(_fixCr);for(const s of SLOT_NAMES)_fixCr(INV.equipped[s]);
   if(STORAGE)for(const k in STORAGE){const st=STORAGE[k];if(Array.isArray(st))st.forEach(_fixCr)}
   // Upgrades
@@ -13035,6 +13036,8 @@ const STORAGE_MAX=200; // 창고 최대 슬롯
 let invFilter={slot:null,rarity:null,el:null}; // toggle filters
 
 function equipItem(item){
+  // [P7B/LOCK-42] affixStone은 장착 불가 — applyStats/equip slot 진입 금지(slot 없음 → INV.equipped 오염 방지)
+  if(item&&item.type==='affixStone'){if(typeof notify==='function')notify(_L('어픽스석은 장착할 수 없습니다.','Affix Stones cannot be equipped.'));return;}
   // 레벨 제한 체크
   if(item.reqLv&&P&&P.lv<item.reqLv){
     notify(_L('⚠ 아이템 레벨이 높습니다! (요구 Lv.'+item.reqLv+' / 현재 Lv.'+P.lv+')','⚠ Item level too high! (Req. Lv.'+item.reqLv+' / Current Lv.'+P.lv+')'));return;
@@ -21273,7 +21276,7 @@ const ICONV={
 };
 const SLOT_SVG=['sword','shield','boot','armor','helmet','crossbow','glove','pants','belt','amulet','ring','ring','cape','bracelet','earring'];
 function _slotGlyph(i,col,sz){return _glyph(SLOT_SVG[i]||'',col||'#6a5a44',sz||22);}
-function _itemIco(it,col,sz){if(!it)return '';const i=(typeof SLOT_NAMES!=='undefined')?SLOT_NAMES.indexOf(it.slot):-1;return i>=0?_slotGlyph(i,col,sz):(it.emoji||'');}
+function _itemIco(it,col,sz){if(!it)return '';if(it.type==='affixStone')return '💠';const i=(typeof SLOT_NAMES!=='undefined')?SLOT_NAMES.indexOf(it.slot):-1;return i>=0?_slotGlyph(i,col,sz):(it.emoji||'');}
 // ═══ 아이템 스킨: 지옥 대장간 톤 PNG (output/imagegen/item-skins/), 없으면 글리프 폴백 (2026-08-02) ═══
 const _ELKEY=['phys','fire','ice','dark','light','holy','earth'];
 // 현재 생성돼 있지 않은 변형은 존재하는 물리 스킨을 바로 사용해 UI 재렌더마다 404를 반복하지 않는다.
@@ -21476,6 +21479,59 @@ function _rollKeystoneOnItem(item,forced){ // eligibility + 아이템당 1개 ca
   const pick=cand.length===1?cand[0]:cand[~~(Math.random()*cand.length)];
   return {id:pick.id,tier:0,value:1};
 }
+// ═══ [P7B/LOCK-42] AFFIX EXTRACTION CORE — destructive source transaction (Absorption 미구현) ═══
+// 계약(LOCK-41→42): bag의 unequipped equipment에서 affix 1개 선택 → 성공 시 source item 전체 파괴 →
+//   affixStone {type:'affixStone',affixId,tier,value} 1개 생성. deterministic 100%(RNG 0), 비용 0, exact tier/value(reroll 없음).
+//   BLOCKED: keystone·LEGACY·v2skip·CORE·rarity special·direct property·invalid def. atomic(실패 시 부분 mutation 0).
+function _getAffixExtractionStatus(item,affix){ // {ok:true}|{ok:false,reason}
+  if(!item||typeof item!=='object'||item.type==='affixStone')return {ok:false,reason:'INVALID_ITEM'};
+  if(!affix||typeof affix!=='object'||affix.id==null)return {ok:false,reason:'INVALID_AFFIX'};
+  const d=AFFIX_POOL.find(a=>a.id===affix.id);
+  if(!d)return {ok:false,reason:'INVALID_AFFIX'};                 // pool 정의 없음
+  if(d.keystone)return {ok:false,reason:'KEYSTONE_BLOCKED'};      // keystone:1 제외(안전)
+  if(d.sub==='LEGACY'||!(d.layer>=1&&d.layer<=10))return {ok:false,reason:'LEGACY_BLOCKED'}; // LEGACY/layer0
+  if(d.v2skip)return {ok:false,reason:'V2SKIP_BLOCKED'};          // V2 미생성 → 증식 금지
+  if(typeof affix.value!=='number'||!isFinite(affix.value))return {ok:false,reason:'INVALID_VALUE'};
+  if(affix.tier!=null&&(typeof affix.tier!=='number'||!isFinite(affix.tier)||affix.tier<0||affix.tier>4))return {ok:false,reason:'INVALID_VALUE'};
+  return {ok:true};
+}
+function getExtractableAffixes(item){ // 추출 가능 affix만(원본 인스턴스 참조 + 식별자)
+  if(!item||item.type==='affixStone'||!Array.isArray(item.affixes))return [];
+  const out=[];
+  for(let i=0;i<item.affixes.length;i++){const a=item.affixes[i];
+    if(a&&_getAffixExtractionStatus(item,a).ok)out.push({index:i,affixId:a.id,tier:a.tier,value:a.value,affix:a});}
+  return out;
+}
+function _createExtractedAffix(affix){ // 순수·exact: {id,tier,value} → stone 4필드(메타 미복제)
+  return {type:'affixStone',affixId:affix.id,tier:affix.tier,value:affix.value};
+}
+// atomic destructive extraction. source=item.id 재확인, 대상=affixId 재검증. 성공 시 source item 통째 파괴.
+function extractAffix(sourceItemId,affixId){ // {ok:true,stone}|{ok:false,reason}
+  if(!INV||!Array.isArray(INV.bag))return {ok:false,reason:'INVALID_ITEM'};
+  // [§7] equipped item은 직접 추출 금지 — equip slot reference 불변
+  for(const sl in INV.equipped){const eq=INV.equipped[sl];if(eq&&eq.id===sourceItemId)return {ok:false,reason:'ITEM_EQUIPPED'};}
+  // [§8] identity=item.id 로 bag에서 재확인(정렬/이동 무관, index 비의존)
+  const src=INV.bag.find(it=>it&&it.id===sourceItemId&&it.type!=='affixStone');
+  if(!src)return {ok:false,reason:'ITEM_NOT_IN_BAG'};
+  if(!Array.isArray(src.affixes))return {ok:false,reason:'INVALID_ITEM'};
+  const affix=src.affixes.find(a=>a&&a.id===affixId);
+  if(!affix)return {ok:false,reason:'INVALID_AFFIX'};
+  const st=_getAffixExtractionStatus(src,affix);if(!st.ok)return {ok:false,reason:st.reason};
+  const stone=_createExtractedAffix(affix);            // CREATE STONE IN MEMORY
+  const commitIdx=INV.bag.indexOf(src);                 // REVALIDATE SOURCE(동일 인스턴스 재확인)
+  if(commitIdx<0)return {ok:false,reason:'COMMIT_FAILED'};
+  INV.bag.splice(commitIdx,1);                          // REMOVE SOURCE ITEM(통째, affix splice 금지)
+  stone._gx=null;stone._gy=null;                        // INSERT STONE(_gx/_gy=bag 위치, stone 스키마 아님)
+  const pos=(typeof _invFindSpace==='function')?_invFindSpace(1,1,-1):null;
+  if(pos){stone._gx=pos.x;stone._gy=pos.y;}
+  INV.bag.push(stone);
+  if(typeof dbSaveForce==='function'){try{dbSaveForce()}catch(e){}} // COMMIT
+  return {ok:true,stone};
+}
+function _isAffixStone(it){return !!(it&&it.type==='affixStone')}
+// stone 표시용 메타(pool lookup — stone에 저장 안 함). {name,layer,sub,tierTxt}|null
+function _affixStoneMeta(stone){if(!_isAffixStone(stone))return null;const d=AFFIX_POOL.find(a=>a.id===stone.affixId);
+  return {def:d||null,layer:d?d.layer:0,sub:d?d.sub:'?',name:(typeof AFFIX_NAMES_KO!=='undefined'&&AFFIX_NAMES_KO[stone.affixId])||stone.affixId,tier:stone.tier,value:stone.value,valid:!!d};}
 // 장비 어픽스 합산 (id별 value 합계)
 let _eqAffixCache=null,_eqAffixVer=0;
 function _eqAffixRebuild(){_eqAffixCache={};for(let si=0;si<SLOT_NAMES.length;si++){const it=INV.equipped[SLOT_NAMES[si]];if(it&&it.affixes)for(let i=0;i<it.affixes.length;i++){const a=it.affixes[i];_eqAffixCache[a.id]=(_eqAffixCache[a.id]||0)+a.value}}}
@@ -21681,6 +21737,7 @@ function _doAiEnhance(){
   renderForge();
 }
 function salvageVal(it){
+  if(it&&it.type==='affixStone')return 0; // [P7B/LOCK-42] stone은 분해가치 0(discard 안전, 장비 아님)
   const e=it.enh||0;
   // 강화 투자분 50% 환수: 실제 강화 비용 누적합의 절반
   let enhRefund=0;
@@ -40613,6 +40670,15 @@ function _invRenderDetail(idx,source){
   if(!it)return;
   const rp=$('invRight');if(!rp)return;
   rp.innerHTML='';
+  // [P7B/LOCK-42] affixStone은 장비 상세 렌더 경로 미진입 — pool lookup 최소 placeholder(타입세이프). 전용 UI/버튼 없음.
+  if(it.type==='affixStone'){const _m=(typeof _affixStoneMeta==='function')?_affixStoneMeta(it):null;
+    const _card=document.createElement('div');_card.style.cssText='padding:10px;color:#d9b3ff';
+    const _nm=_m&&_m.valid?_T(_m.name):_L('알 수 없는 어픽스','Unknown Affix');
+    _card.innerHTML='<div style="font-weight:700;font-size:.8rem;color:#c88bff">💠 '+_L('어픽스석','Affix Stone')+'</div>'+
+      '<div style="margin-top:4px">'+_nm+'</div>'+
+      (_m&&_m.valid?('<div style="color:#88ccff;margin-top:2px">L'+_m.layer+' · '+_m.sub+' · tier '+(it.tier==null?'-':it.tier)+' · '+it.value+'</div>'):
+        '<div style="color:#ff6666;margin-top:2px">'+_L('사용 불가(정의 없음)','Unusable (no definition)')+'</div>');
+    rp.appendChild(_card);return;}
   // ── 비교 데이터 준비 (가방 아이템일 때) ──
   let _cmpData=null;
   if(source==='bag'){
