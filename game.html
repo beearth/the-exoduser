@@ -21521,11 +21521,10 @@ function extractAffix(sourceItemId,affixId){ // {ok:true,stone}|{ok:false,reason
   const stone=_createExtractedAffix(affix);            // CREATE STONE IN MEMORY
   const commitIdx=INV.bag.indexOf(src);                 // REVALIDATE SOURCE(동일 인스턴스 재확인)
   if(commitIdx<0)return {ok:false,reason:'COMMIT_FAILED'};
-  INV.bag.splice(commitIdx,1);                          // REMOVE SOURCE ITEM(통째, affix splice 금지)
-  stone._gx=null;stone._gy=null;                        // INSERT STONE(_gx/_gy=bag 위치, stone 스키마 아님)
-  const pos=(typeof _invFindSpace==='function')?_invFindSpace(1,1,-1):null;
-  if(pos){stone._gx=pos.x;stone._gy=pos.y;}
-  INV.bag.push(stone);
+  // [P7B.1] stone은 source의 bag grid 위치(_gx/_gy)를 승계 — same-slot replacement.
+  //   bag count 불변 · full bag에서도 성공 · null-grid stone 미생성 · _invFindSpace 비의존 · UI 위치 불변.
+  stone._gx=(src._gx!=null)?src._gx:null;stone._gy=(src._gy!=null)?src._gy:null;
+  INV.bag.splice(commitIdx,1,stone);                    // ATOMIC source→stone 동일슬롯 교체(통째, affix splice 금지)
   if(typeof dbSaveForce==='function'){try{dbSaveForce()}catch(e){}} // COMMIT
   return {ok:true,stone};
 }
@@ -41354,7 +41353,7 @@ _isBtn.style.display='';_isBtn.textContent=_L(`선택분해 (${_isCnt}개 -> 악
       _isBtn.onclick=async()=>{
         if(!await gameConfirm(_L(`${_isCnt}개 아이템을 분해합니다.<br>${_glyph('demon','#cc66ff',15)} ${_isTot} 악의 획득.<br><br>${_glyph('warn','#ff6644',15)} 복구 불가!`,`Salvage ${_isCnt} items.<br>${_glyph('demon','#cc66ff',15)} ${_isTot} Malice gained.<br><br>${_glyph('warn','#ff6644',15)} Cannot undo!`),null,null,true))return;
         const idxArr=[..._invSalSel].sort((a,b)=>b-a);
-        for(const idx of idxArr)INV.bag.splice(idx,1);
+        for(const idx of idxArr){if(INV.bag[idx]&&INV.bag[idx].type==='affixStone')continue;INV.bag.splice(idx,1);} // [P7B.1] affixStone은 분해 소각 제외(BLOCK)
         G.mats+=_isTot;_invSalSel.clear();INV.selected=null;
         SFX.pickup();
         dbSaveNow();renderInv();
@@ -41367,7 +41366,7 @@ _isBtn.style.display='';_isBtn.textContent=_L(`선택분해 (${_isCnt}개 -> 악
     const _nonJunk=INV.bag.filter(it=>it&&!it.junk&&!it.fav);
     if(_nonJunk.length>0){
 _jkSelBtn.style.display='';_jkSelBtn.textContent=_L(`전체 쓰레기 지정 (${_nonJunk.length}개)`,`Mark all junk (${_nonJunk.length})`);
-      _jkSelBtn.onclick=()=>{for(const it of INV.bag){if(it&&!it.fav)it.junk=true}renderInv()};
+      _jkSelBtn.onclick=()=>{for(const it of INV.bag){if(it&&!it.fav&&it.type!=='affixStone')it.junk=true}renderInv()}; // [P7B.1] affixStone junk 지정 제외
     }else{_jkSelBtn.style.display='none'}
   }
   // ── 쓰레기 일괄분해 버튼 ──
