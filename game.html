@@ -4908,15 +4908,22 @@ oC=c;}`;
       console.warn('[GPU] WebGL context lost — 복구 대기');
       if(_DCP.on)console.warn('[DCPROF CTX-LOST] frame='+_DCP.frame+' lastFrameDC='+_DCP.dc+' trans='+_DCP.transState+' — 직전 프레임 폭주 여부는 위 [DCPROF] 로그 참조');
       _useGL=false;GL=null;_glMainProg=null;
+      // ★ 손실 배치 카운터 리셋 — 손실 중 _flush가 no-op면 _quad의 (_bufOff+_qCnt)>=_MQ→_flush()가
+      //   리셋을 못 해 _qCnt가 프레임마다 무한 증가(수백만~수천만). 복구 첫 flush가 그 stale _qCnt로
+      //   drawElements(_qCnt*6)를 호출 → EBO 용량(_MQ*6=393216) 폭파 → "Insufficient buffer size"(GL 0x502).
+      //   손실 no-op flush도 카운터를 리셋하게 하여 _qCnt를 [0,_MQ)로 상한(무한증가·오버사이즈 draw 차단).
+      _qCnt=0;_bufOff=0;
       _resetEnemyInstanced();_resetVfxInstanced();
-      _flush=function(){};_setTex=function(){};_getTex=function(){return null};
-      _setBlend=function(){};_glFlush=function(){};_clearFrame=function(){};
+      _flush=function(){_qCnt=0;_bufOff=0};_setTex=function(){};_getTex=function(){return null};
+      _setBlend=function(){};_glFlush=function(){_qCnt=0;_bufOff=0};_clearFrame=function(){_qCnt=0;_bufOff=0};
     });
     C.addEventListener('webglcontextrestored',function(){
       console.log('[GPU] WebGL context restored — 파이프라인 재구축');
       let _ok=false;
+      _qCnt=0;_bufOff=0; // ★ 복구 첫 flush 전에 stale 배치 카운터 확실히 제거 (오버사이즈 drawElements 방지)
       try{_ok=_initWebGL()}catch(e){console.error('[GPU] WebGL 재초기화 실패:',e);_ok=false}
       if(_ok){
+        _qCnt=0;_bufOff=0; // ★ _initWebGL 재설치 후에도 재보장
         try{_buildProxyX()}catch(e){console.error('[GPU] ProxyX 재빌드 실패:',e)}
         _shDirty=true;
         if(typeof _queueMapCacheRefresh==='function')_queueMapCacheRefresh();

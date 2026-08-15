@@ -279,3 +279,54 @@ CPU-bound라 이 손실이 크게 체감). `_quad`(정점당 최핫)에도 버�
 - 회귀 원인이 계측 OFF 오버헤드였다면 이 수정으로 해소. (신고된 실기 하락이 dcprof ON 잔존/
   URL·localStorage 지속 때문이었다면, OFF 확인 + 이 구조로 확정 해소.)
 - root-cause(2.7M) fix 및 restore-bug fix는 여전히 **미적용** — 별도 issue로 분리 유지.
+
+---
+
+## restore-bug RUNTIME CONFIRMED + 최소 수정 (2026-08-16)
+
+> 위 [220] "독립 결함 후보"(정적 예측)를 **실기가 아닌 자동화(headful Chrome + 실 GPU AMD RX 9070 XT / ANGLE D3D11 + Playwright)로 런타임 확증**하고 최소 수정 적용. `?testchar=1`로 실전투 진입 후 `WEBGL_lose_context` 확장으로 context-loss를 synthetic 유발.
+
+### 런타임 재현 (수정 전, game.html HEAD 63f785fb)
+단일 lose→restore 사이클 로그:
+```
+[GPU] WebGL context lost — 복구 대기
+  qCnt-peak-during-loss = 4,627,612          ← 손실 중 _qCnt 무한 증가 (0→460만, 1.6초)
+[GPU] WebGL context restored — 파이프라인 재구축
+[DCPROF EBO-OVERFLOW] qCnt=4635854 needIdx=27,815,124 ebo.len=393,216
+[DCPROF RESTORE-ERR] glErr=0x502 drawCount=27,815,124 type=UNSIGNED_SHORT
+GL_INVALID_OPERATION: glDrawElements: Insufficient buffer size.   ← 인시던트 오류문자열 그대로 재현
+maxIdxCount = 27,815,124  (=4,635,854 quads ×6)                    ← 단일 프레임 27.8M 인덱스 draw = "폭발"
+```
+
+### 인과 사슬 (CONFIRMED — 단일 root)
+| 단계 | 위치 (game.html) | 내용 |
+|---|---|---|
+| 1 | `webglcontextlost` 핸들러 (~L4912) | `_flush=function(){}` **no-op**로 교체하되 `_qCnt`/`_bufOff` **미리셋**. |
+| 2 | `_quad` 핫패스 (L4580) | `if((_bufOff+_qCnt)>=_MQ)_flush()` — 손실 중 `_flush`가 no-op → 리셋 안 됨 → `_qCnt++`만 계속. 손실 지속(수 초) 동안 `_qCnt`가 수백만~수천만 누적. |
+| 3 | `webglcontextrestored`→`_initWebGL` (~L4915) | real `_flush` 재설치. 복구 첫 `_flush`가 **stale 거대 `_qCnt`**로 `GL.drawElements(_qCnt*6,…)` 실행. |
+| 4 | EBO 용량 | `_MQ*6 = 393,216` 초과 (27.8M) → `Insufficient buffer size` (GL 0x502) + 거대 draw 스톨. |
+
+- **dcprof OFF에서도 동일 발생**: OFF `_flush`도 `GL.drawElements(_qCnt*6,…)` 호출 → stale `_qCnt`로 동일 폭발. DCPROF는 이 사건을 **로깅만** 할 뿐 원인 아님(계측 무관 게임 버그).
+- **정상 맵 전환(context-loss 없음)에서는 미발생**: 자동으로 stage 0→14 nextStage 전환 14회 구동 시 peak dc=77/frame, RUNAWAY·CTX-LOST 0. 즉 "2.7M 맵 전환 폭발"은 **그 전환 중 context-loss가 동반될 때**(Mac 메모리/드라이버 리셋 추정)만 발생. restore-bug와 2.7M 인시던트는 **동일 root cause**로 확인됨(별개 아님).
+
+### 적용한 최소 수정 (2026-08-16, game.html) — 정정성 버그픽스, cap/생략/품질하향 없음
+1. `webglcontextlost` 핸들러: 즉시 `_qCnt=0;_bufOff=0;` + no-op flush들을 **리셋판**으로 교체
+   (`_flush=function(){_qCnt=0;_bufOff=0}`, `_glFlush`/`_clearFrame` 동일). → 손실 중 `_quad`가 `_MQ`
+   도달로 flush를 부르면 리셋되어 `_qCnt`가 **[0,_MQ) 상한**(무한증가·오버사이즈 draw 원천 차단).
+2. `webglcontextrestored`: `_initWebGL` 전후로 `_qCnt=0;_bufOff=0;` 명시 리셋 (복구 첫 flush가 stale 배치 사용 불가).
+
+### 수정 후 검증 (동일 자동 재현)
+```
+  qCnt-peak-during-loss = 4120   (< _MQ 65536, 상한 확인)
+  [DCPROF EBO-OVERFLOW]  없음
+  [DCPROF RESTORE-ERR]   없음
+  Insufficient buffer size 없음
+  oversizeHits = []              (>400k 인덱스 draw 0건)
+  maxIdxCount = 23,058           (정상 범위)
+  useGL=true, 정상 복구
+```
+- **회귀 검사**: 수정은 context-lost/restored 핸들러만 변경(정상 플레이 중 미실행). 부팅 정상, 실전투(testchar, 적 199, dc 107/frame, proc_t 2.1ms) 정상, `_flush` OFF 원본 유지, pageerror 0.
+
+### 남은 이슈 (이 수정과 별개)
+- **왜 context-loss가 발생하는가**(Mac 메모리/드라이버 리셋 촉발원)는 미해결 — 이 수정은 loss가 나도 **폭발/스톨을 막는** 하류 방어. 근본 촉발원(맵 캐시 텍스처 업로드 피크 등)은 [1][5]의 DPR·preserveDrawingBuffer·VRAM 항목과 함께 별도 추적.
+- **현재 "지속적" 로컬 FPS 하락**: 이 자동화 환경(AMD 데스크톱)에서는 정상 플레이 전 구간 재현 안 됨(steady 375~560fps). restore-bug는 loss-이벤트당 1프레임 스톨이라 지속 저하와는 결이 다름 — 지속 저하가 실제라면 [1순위] DPR/fpsCap·[2순위] preserveDrawingBuffer(Mac 환경 요인) 우선.
