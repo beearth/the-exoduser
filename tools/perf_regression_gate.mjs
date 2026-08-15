@@ -11,6 +11,13 @@
 //  - HEADED 실GPU 필수(headless swiftshader는 수백 엔티티에서 크래시/document.hidden으로 sim 정지).
 //    → CI hard gate 부적합. correctness는 test/ deterministic guard, 이건 advisory perf gate.
 //
+// 신뢰센서 (2026-08-15 3회 baseline 실측):
+//  - A(STEADY_COMBAT, 300적·무스킬) dt_p50 spread 0% / dt_p95 spread 2.3% = 극안정. FLAG 대상.
+//  - B(SKILL_BURST)/C(HOMING_STRESS): 강제 dispatch가 실 게임에 없는 VFX/particle 부하를 만들어
+//    fps/p99 spread 23~109%+. pProjs cap으로 투사체는 대표화했으나 cadence(≈8casts/s vs 실 1~2/s)가
+//    본질적으로 artificial → 회귀 감지용 hard 센서 부적합. diagnostic-only(표시만, 무플래그).
+//  - 결론: steady-state 회귀는 A.dt_p50/p95로 신뢰 감지, skill/homing 축은 참고용 리포트.
+//
 // 사용:
 //   node tools/perf_regression_gate.mjs                 # 1회 측정 리포트
 //   node tools/perf_regression_gate.mjs --baseline      # N회(기본3) 측정→median/range를 baseline JSON에 저장
@@ -38,9 +45,9 @@ const median = arr => { const s = [...arr].sort((a, b) => a - b); const n = s.le
 
 // ── 시나리오 정의: 기존 실제 gameplay path 우선. 각 scenario는 spawn 수 + 스킬 구동을 지정. ──
 const SCENARIOS = {
-  A: { name: 'STEADY_COMBAT', enemies: 300, skills: [] },                          // 일반 교전·스킬 미사용 (draw/AI bound)
-  B: { name: 'SKILL_BURST', enemies: 150, skills: ['iceOrb', 'venomBlade', 'maliceHunt', 'bladeShard'] }, // 기존 SFX regression 재현 부하
-  C: { name: 'HOMING_STRESS', enemies: 300, skills: ['maliceHunt', 'plagueBurst'] },  // plagueHoming/mhBlade 관통·재획득
+  A: { name: 'STEADY_COMBAT', enemies: 300, skills: [], ppCap: 0 },                          // 일반 교전·스킬 미사용 (draw/AI bound)
+  B: { name: 'SKILL_BURST', enemies: 150, skills: ['iceOrb', 'venomBlade', 'maliceHunt', 'bladeShard'], ppCap: 80 }, // 기존 SFX regression 재현 부하 (heavy play 밴드)
+  C: { name: 'HOMING_STRESS', enemies: 300, skills: ['maliceHunt', 'plagueBurst'], ppCap: 60 },  // plagueHoming/mhBlade 관통·재획득
 };
 
 async function bootPage(browser) {
@@ -106,15 +113,21 @@ async function runScenario(page, scen, secs) {
   for (let w = 0; w < 2500; w += 250) { await page.waitForTimeout(250); await page.evaluate((n) => { window.__forceOn(); window.__spawnTo(n); }, cfg.enemies); }
   // 측정 시작
   await page.evaluate(() => window.__fpStart());
-  const t0 = Date.now(); const castLog = { casts: 0 };
+  const t0 = Date.now(); const castLog = { casts: 0 }; let rr = 0;
   while (Date.now() - t0 < secs * 1000) {
     await page.waitForTimeout(120);
+    // 대표성(representative heavy play): 매 tick마다 4스킬을 전부 zero-cd로 재발사하면
+    //  실제 게임에 없는 ~200 투사체 홍수(4fps floor)가 나 gate가 포화돼 회귀 감지 불능.
+    //  → round-robin으로 tick당 1스킬만, 그리고 pProjs가 대표적 heavy-play 밴드(≤PP_CAP)
+    //    아래일 때만 발사해 지속적이되 재현가능한 부하로 고정한다.
     const c = await page.evaluate((args) => {
-      const [skills, n] = args;
+      const [skills, n, rrIdx, ppCap] = args;
       window.__forceOn(); window.__spawnTo(n);       // 목표 수 연속 유지
-      let cast = 0; for (const s of skills) if (window.__castSkill(s)) cast++;
-      return cast;
-    }, [cfg.skills, cfg.enemies]);
+      if (!skills.length) return 0;
+      if (pProjs.length >= ppCap) return 0;          // saturation guard: heavy play 밴드 유지
+      const s = skills[rrIdx % skills.length];
+      return window.__castSkill(s) ? 1 : 0;
+    }, [cfg.skills, cfg.enemies, rr++, cfg.ppCap || 80]);
     castLog.casts += c;
   }
   await page.evaluate(() => window.__fpStop());
@@ -195,22 +208,34 @@ function fmtRow(r) {
     } else if (MODE === 'check') {
       if (!existsSync(BASELINE_PATH)) { console.error('❌ baseline 없음. 먼저 --baseline 실행.'); process.exit(2); }
       const base = JSON.parse(readFileSync(BASELINE_PATH, 'utf8'));
+      // 신뢰 가능한 회귀 센서만 advisory FLAG를 올린다. 3회 baseline 실측 결과:
+      //   A(STEADY_COMBAT) dt_p50 spread 0% / dt_p95 spread 2.3% = 극안정 → FLAG 대상.
+      //   A tail(p99/max/hitch)·B·C 전부 spread 40~1000%+ = 측정 노이즈 → 표시만(never flag),
+      //   안 그러면 B/C 노이즈가 매 run false-positive를 내 gate 신뢰도가 붕괴한다.
+      // 임의 5/10% 대신 관측 spread 위에 넉넉한 floor(25%p) 마진 → 실제 회귀만 잡음.
+      const RELIABLE = { A: ['dt_p50', 'dt_p95'] };
+      const FLAG_FLOOR = 25; // %p, A의 관측 노이즈(≤2.3%)를 크게 상회
       console.log('\n════════ REGRESSION CHECK (advisory, relative) ════════');
+      console.log('  · FLAG 대상 = 신뢰센서만 [A.dt_p50, A.dt_p95]. 그 외는 info(δ만 표시, 무플래그).');
       let warn = 0;
       for (const s of SCENS) {
         if (!agg[s] || !base.scenarios[s]) continue;
-        for (const m of ['dt_p95', 'dt_p99', 'hitch_33']) {
+        const flaggable = RELIABLE[s] || [];
+        for (const m of ['dt_p50', 'dt_p95', 'dt_p99', 'hitch_33', 'fps']) {
+          if (!agg[s][m] || !base.scenarios[s][m]) continue;
           const cur = agg[s][m].median, ref = base.scenarios[s][m].median;
+          const isFlaggable = flaggable.includes(m);
           const refSpread = base.scenarios[s][m].spread_pct || 20;
-          // 상대 악화가 baseline 자체 분산(spread) + 마진을 넘으면 advisory WARN
-          const tol = Math.max(refSpread, 15) + 10; // 관측된 분산 + 10%p 마진
-          const chg = ref > 0 ? ((cur - ref) / ref) * 100 : 0;
-          const flag = chg > tol;
+          const tol = Math.max(refSpread, FLAG_FLOOR) + 10; // 관측 분산 or floor + 10%p
+          // fps는 낮을수록 악화 → 부호 반전. 나머지 frame-time metric은 클수록 악화.
+          const chg = ref > 0 ? ((cur - ref) / ref) * 100 * (m === 'fps' ? -1 : 1) : 0;
+          const flag = isFlaggable && chg > tol;
           if (flag) warn++;
-          console.log(`  [${s}] ${m.padEnd(9)} cur ${String(cur).padStart(8)} vs base ${String(ref).padStart(8)}  Δ${chg > 0 ? '+' : ''}${chg.toFixed(1)}%  tol +${tol}%  ${flag ? '⚠️ REGRESSION' : 'ok'}`);
+          const tag = isFlaggable ? (flag ? '⚠️ REGRESSION' : 'ok') : 'info';
+          console.log(`  [${s}] ${m.padEnd(9)} cur ${String(cur).padStart(8)} vs base ${String(ref).padStart(8)}  Δ${chg > 0 ? '+' : ''}${chg.toFixed(1)}%${isFlaggable ? `  tol +${tol}%` : '        '}  ${tag}`);
         }
       }
-      console.log(warn ? `\n⚠️ ${warn} advisory regression signal(s) — REOPEN CONDITION 후보. 수동 재현 확인 필요.` : '\n✅ regression 신호 없음 (headroom 유지).');
+      console.log(warn ? `\n⚠️ ${warn} advisory regression signal(s) on RELIABLE sensor — REOPEN CONDITION 후보. 수동 재현 확인 필요.` : '\n✅ 신뢰센서 regression 신호 없음 (steady-state headroom 유지). B/C는 diagnostic-only.');
       process.exit(0); // advisory: 항상 0 exit (correctness CI를 깨지 않음)
     }
   } finally {

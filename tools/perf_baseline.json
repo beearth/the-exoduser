@@ -1,0 +1,217 @@
+{
+  "created": "2026-08-15",
+  "note": "Known-good post-optimization baseline. RELIABLE regression sensor = A(STEADY_COMBAT).dt_p50/dt_p95 only (spread 0%/2.3%). B/C skill scenarios and all tail/hitch metrics are diagnostic-only (spread 40-1000%+, forced-dispatch VFX flood not representative) — reported, never flagged. Advisory gate only; never a CI hard gate. Re-baseline on the same PC after any environment change.",
+  "env": {
+    "headed": true,
+    "chrome": "C:/Program Files/Google/Chrome/Application/chrome.exe",
+    "viewport": "1280x720",
+    "secs": 6,
+    "runs": 3
+  },
+  "scenarios": {
+    "A": {
+      "name": "STEADY_COMBAT",
+      "n_runs": 3,
+      "dt_p50": {
+        "median": 4.2,
+        "min": 4.2,
+        "max": 4.2,
+        "spread_pct": 0
+      },
+      "dt_p95": {
+        "median": 4.4,
+        "min": 4.3,
+        "max": 4.4,
+        "spread_pct": 2.3
+      },
+      "dt_p99": {
+        "median": 8.4,
+        "min": 4.4,
+        "max": 8.6,
+        "spread_pct": 50
+      },
+      "dt_max": {
+        "median": 12.5,
+        "min": 8.7,
+        "max": 166.8,
+        "spread_pct": 1264.8
+      },
+      "hitch_16": {
+        "median": 0,
+        "min": 0,
+        "max": 8,
+        "spread_pct": 80000
+      },
+      "hitch_33": {
+        "median": 0,
+        "min": 0,
+        "max": 5,
+        "spread_pct": 50000
+      },
+      "fps": {
+        "median": 229.5,
+        "min": 212.5,
+        "max": 238.2,
+        "spread_pct": 11.2
+      },
+      "u_ema": {
+        "median": 0.31,
+        "min": 0.27,
+        "max": 0.31,
+        "spread_pct": 12.9
+      },
+      "d_ema": {
+        "median": 1.55,
+        "min": 1.39,
+        "max": 1.79,
+        "spread_pct": 25.8
+      },
+      "t_ema": {
+        "median": 1.82,
+        "min": 1.71,
+        "max": 2.1,
+        "spread_pct": 21.4
+      },
+      "workload": {
+        "enemies": 300,
+        "pproj": 0
+      }
+    },
+    "B": {
+      "name": "SKILL_BURST",
+      "n_runs": 3,
+      "dt_p50": {
+        "median": 77.2,
+        "min": 45.9,
+        "max": 91.8,
+        "spread_pct": 59.5
+      },
+      "dt_p95": {
+        "median": 300.3,
+        "min": 271,
+        "max": 312.8,
+        "spread_pct": 13.9
+      },
+      "dt_p99": {
+        "median": 504.4,
+        "min": 375.3,
+        "max": 925.9,
+        "spread_pct": 109.2
+      },
+      "dt_max": {
+        "median": 504.4,
+        "min": 375.3,
+        "max": 925.9,
+        "spread_pct": 109.2
+      },
+      "hitch_16": {
+        "median": 35,
+        "min": 28,
+        "max": 42,
+        "spread_pct": 40
+      },
+      "hitch_33": {
+        "median": 34,
+        "min": 26,
+        "max": 41,
+        "spread_pct": 44.1
+      },
+      "fps": {
+        "median": 7.3,
+        "min": 7,
+        "max": 8.7,
+        "spread_pct": 23.3
+      },
+      "u_ema": {
+        "median": 4.97,
+        "min": 4.62,
+        "max": 5.01,
+        "spread_pct": 7.8
+      },
+      "d_ema": {
+        "median": 102.09,
+        "min": 88.89,
+        "max": 302.61,
+        "spread_pct": 209.3
+      },
+      "t_ema": {
+        "median": 106.74,
+        "min": 93.88,
+        "max": 307.66,
+        "spread_pct": 200.3
+      },
+      "workload": {
+        "enemies": 150,
+        "pproj": 67
+      }
+    },
+    "C": {
+      "name": "HOMING_STRESS",
+      "n_runs": 3,
+      "dt_p50": {
+        "median": 12.5,
+        "min": 8.5,
+        "max": 250.2,
+        "spread_pct": 1933.6
+      },
+      "dt_p95": {
+        "median": 246.2,
+        "min": 158.5,
+        "max": 296,
+        "spread_pct": 55.8
+      },
+      "dt_p99": {
+        "median": 296.4,
+        "min": 283.6,
+        "max": 571.7,
+        "spread_pct": 97.2
+      },
+      "dt_max": {
+        "median": 571.7,
+        "min": 283.8,
+        "max": 817.5,
+        "spread_pct": 93.4
+      },
+      "hitch_16": {
+        "median": 26,
+        "min": 21,
+        "max": 28,
+        "spread_pct": 26.9
+      },
+      "hitch_33": {
+        "median": 24,
+        "min": 21,
+        "max": 28,
+        "spread_pct": 29.2
+      },
+      "fps": {
+        "median": 26.4,
+        "min": 4.7,
+        "max": 27.6,
+        "spread_pct": 86.7
+      },
+      "u_ema": {
+        "median": 12.77,
+        "min": 10.41,
+        "max": 13.46,
+        "spread_pct": 23.9
+      },
+      "d_ema": {
+        "median": 122.78,
+        "min": 52.68,
+        "max": 139.31,
+        "spread_pct": 70.6
+      },
+      "t_ema": {
+        "median": 135.61,
+        "min": 66.2,
+        "max": 149.76,
+        "spread_pct": 61.6
+      },
+      "workload": {
+        "enemies": 298,
+        "pproj": 26
+      }
+    }
+  }
+}
