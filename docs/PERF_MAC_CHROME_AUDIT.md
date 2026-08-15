@@ -185,3 +185,58 @@
 ### 미해결 TODO (root cause)
 - **맵 전환 프레임의 drawCall 폭발(~277만)**: 맵 캐시(`_tickBuildMapCache`, `_bmcDone`) 완성 전 렌더 창에서 무엇이 프레임당 ~92k 드로우콜을 내는지 미확정. 후보: (a) 맵 캐시 미완성 시 타일 단위 immediate 드로우 폴백, (b) 적 300+ 인스턴싱 버퍼 미준비 시 per-enemy 폴백, (c) restored 후 `Insufficient buffer size`로 보아 배처/인스턴싱 버퍼 용량 초과 flush 누락.
 - **다음 단계**: 맵 전환 첫 30프레임 동안 drawCall 소스를 세분(맵/적/파티클/텍스트) 카운터로 분해 → 폴백 경로 특정 후 배칭/캐시-게이트 적용. 성능·다중경로 변경이므로 heavy 에이전트 위임 권장.
+
+---
+
+## 진단 계측 착수 (2026-08-15) — measurement-first, 아직 수정 없음
+
+> root cause를 **추측으로 수정하지 않기 위해** drawCall 폭발을 subsystem/flush-사유 단위로 실측하는 게이트를 먼저 구현했다. production 기본 OFF, `?dcprof` URL 파라미터(또는 `localStorage.dcprof='1'`)로만 ON. 모든 훅이 `_DCP.on` 게이트라 정상 실행 성능/동작 무영향.
+
+### 구현 위치 (game.html, 전부 `_DCP.on` 게이트)
+| 항목 | 위치 | 기록 내용 |
+|---|---|---|
+| `_DCP` 계측 객체 | `_flush` 포인터 선언 직후 (`const _DCP={...}`) | on 판정, 프레임 카운터, 사유별 분포, subsystem 델타, runaway 캡처, restore 프로브 |
+| WebGL2 `_flush` | 즉시모드 flush | `_onFlush(qc,true)` — drawElements 1회=dc 1, qc*4 vtxPeak/qc*6 idxPeak, **EBO 초과 감지**(`_qc*6>_idx.length`), restore 직후 `getError` 프로브 |
+| WebGL2 `_setTex`/`_setBlend` | 텍스처/블렌드 전환 | `setTex++`/`setBlend++` + `reason='tex'\|'blend'` (다음 flush 사유 귀속) |
+| `_quad` 버퍼풀 | `(_bufOff+_qCnt)>=_MQ` 분기 | `bufFull++` + `reason='buffull'` |
+| WebGPU `_flush`/`_setTex`/`_setBlend` | deferred 커맨드 기록 | 동일 패턴 (cmds 1개=drawIndexed 1회=dc 1) |
+| 인스턴싱 draw | 적(`_ensGLCount`/8dir) + VFX | `_onInst(cnt)` — drawArraysInstanced 1회=dc 1 |
+| `draw()` 진입 | 함수 첫 줄 | `drawInvokes++` (프레임당 scene traversal 횟수 = **중복 traversal 감지**) |
+| subsystem 마크 ×7 | 기존 `_snapPara/_snapTile/_snapMobj/_snapEns/_snapProj/_snapPart/_snapPost` 경계 | `_mark('bg'\|'map'\|'worldobj'\|'enemies'\|'projectiles'\|'particles'\|'post')` — 구간별 dc 델타 |
+| loop 프레임 끝 | 최종 `_glFlush()` 직후 | `frame++`, `report()`(임계 초과 or 60프레임마다), `resetFrame()` |
+| `buildMapCache` 진입 | 함수 첫 줄 | `markTransition()` — 전환 태그 + runaway 재무장 |
+| context-lost/restored | GL 핸들러 | lost: 직전 dc 로그 / restored: `restoreProbe=600` getError 무장 + runaway 재무장 + `[DCPROF GLBUF]` VBO/EBO 크기 |
+
+### 기록 필드
+- **프레임별**: `dc`(총 drawCall), `flush`, `inst`, `setTex`, `setBlend`, `bufFull`, 사유분포 `{tex,blend,buffull,expl}`, `drawInvokes`, `transState`, subsystem별 dc(`sub={}`), `vtxPeak`/`idxPeak`.
+- **runaway one-shot**(`dc>50000` 최초 초과 시 1회만, 전환마다 재무장): frame, drawInvokes, trans, stage/map, 사유, batch vtx/idx, subsystem 스냅샷, 짧은 stack.
+- **restore 프로브**: drawElements count/type/offset, EBO idx 용량, VBO bytes, qCnt.
+
+### 정적 분석으로 좁힌 범위
+- **맵/배경/리플레이는 폭발원 아님**: 맵 캐시는 단일 `drawImage`(L42154/42157), 배경은 뷰포트 한정(L42047~), 리플레이 캡처는 `drawImage(C,…)` 캔버스 복사(L35767) — 어느 것도 scene를 재순회하지 않음.
+- **2.7M drawCall ≈ 2.7M flush**: WebGL2 `_flush`는 1 flush=1 drawElements이며 텍스처/블렌드 전환·버퍼풀에서만 flush → 폭발은 (a) 텍스처 thrash로 flush 폭증, 또는 (b) 단일 프레임 내 scene traversal 중복. `_DCP.sub`/`reasons`/`drawInvokes`가 즉시 판별.
+- **500마리 프로파일러(`_PERF_PROF`)는 전환 시 OFF**: `_alive>300` 게이트라 저-적군 맵 전환 프레임은 계측 공백 → 이 게이트가 그 공백을 메움.
+
+### 독립 결함 후보 (root cause와 분리) — `Insufficient buffer size`
+정적 근거로 **restore-path 독립 결함**을 특정:
+- context-lost 핸들러(L~4873)가 `_flush/_setTex/_clearFrame`를 no-op로 교체하지만 **`_qCnt`/`_bufOff`를 리셋하지 않음**.
+- ProxyX의 `fillRect`/`drawImage`→`_quad`(L5017~)는 `_useGL` 게이트 없이 **무조건** `_qCnt`를 증가. lost 구간엔 `_flush`(no-op)가 리셋 안 하므로 `_qCnt`가 **lost 전 구간 누적**(수만~수백만 가능).
+- restore 후 첫 `_clearFrame`→real `_flush`가 stale 거대 `_qCnt`로 `drawElements(_qCnt*6,…)` 실행. **EBO 최대 인덱스=`_MQ*6`=393216**(계측 `[DCPROF GLBUF]`로 실측 확인) 초과 → **`glDrawElements: Insufficient buffer size`**.
+- 즉 이 오류는 폭발의 **원인이 아니라, 어떤 원인이든 context-loss가 발생하면 터지는 하류(downstream) 별도 버그**. `_DCP` EBO-초과 가드 + restore getError 프로브가 런타임 확증 예정.
+- (참고) `_idx=Uint16Array(_MQ*6)`, `_MQ=65536` → 인덱스값 `i*4`가 uint16(65535) 초과분 wrap. 단일 flush가 16384쿼드↑면 잘못된 정점 참조(용량초과는 아님). 정상 경로에선 `_quad`가 `_MQ`에서 flush하므로 count는 항상 EBO 용량 이하.
+
+### 현재 Chrome 환경(SwiftShader headless) 검증
+- 부팅 정상, `_useGL=true`(WebGL2 — 인시던트 오류문자열과 일치), `_DCP.on`은 `?dcprof`에서만 true.
+- `[DCPROF GLBUF] VBO bytes=11534336 EBO idx=393216 maxDrawIdx=393216` — Insufficient-buffer 임계=393216 실측 확인.
+- `markTransition`(`buildMapCache`) 정상 발화, dc 카운터 실측 증가 확인, **crash/regression 0**.
+- 한계: headless는 `document.hidden=true`로 게임 루프가 프레임 유지 안 됨(게임 `if(document.hidden)return` 가드) → `G.on` 지속 게임플레이 미도달로 `[DCPROF f]` 프레임 리포트·전환 폭발 실측은 **실기 repro 필요**. 폭발은 Mac Metal 특유 조건이라 SwiftShader 재현도 기대 어려움.
+
+### 실기(Mac Chrome) 캡처 방법 — 폭발 재현 시 실행
+1. `game.html?dcprof` 로 실행(정식 빌드 그대로, 게이트만 ON).
+2. 콘솔 열고 **문제의 맵 전환을 반복 수행**.
+3. 아래 로그 수집:
+   - `[DCPROF f…]` — 폭주 프레임의 `dc`/`sub`/`reasons`/`drawInvokes` (어느 subsystem·사유가 폭증했는지).
+   - `[DCPROF RUNAWAY]` — 5만 최초 초과 지점의 subsystem·flush 사유·batch count·**stack**.
+   - `[DCPROF EBO-OVERFLOW]` / `[DCPROF RESTORE-ERR]` — restore 직후 stale `_qCnt`·drawCount·EBO 용량 (독립 결함 확증).
+   - `[DCPROF CTX-LOST]`/`[DCPROF CTX-RESTORED]` — 폭발→손실→복구 타임라인.
+4. 이 로그가 나오면 root cause subsystem이 확정되고, 그때 **최소 수정**을 제시한다. (현재는 수정 없음.)

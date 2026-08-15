@@ -4150,6 +4150,75 @@ let _glFlush=function(){},_setBlend=function(additive){};
 let _clearFrame=function(){};
 let _whiteTex=null;
 const _texUploaded=new WeakMap();
+// ═══ [DCPROF] 맵 전환 drawCall 폭발 진단 계측 — 기본 OFF, ?dcprof URL 파라미터로만 ON ═══
+//   production 성능/동작 무영향(모든 훅이 _DCP.on 게이트). 측정 전용, 렌더 로직 무수정.
+const _DCP={
+  on:(function(){try{return /[?&]dcprof\b/.test(location.search)||(typeof localStorage!=='undefined'&&localStorage.getItem('dcprof')==='1')}catch(e){return false}})(),
+  reason:'explicit',   // 현재 flush 사유 (setTex/setBlend/quad가 flush 직전 세팅)
+  frame:0, drawInvokes:0, // drawInvokes: 프레임당 draw() 호출 횟수 (중복 traversal 감지)
+  transState:'idle', transMap:'', transTTL:0, // 맵 전환 상태 태그 (buildMapCache 후 N프레임 유지)
+  markTransition:function(mapId){ if(!this.on)return; this.transState='transition'; this.transMap=String(mapId==null?'?':mapId); this.transTTL=45; this.captured=false; /* 전환마다 runaway 캡처 재무장 */ console.log('[DCPROF TRANSITION] begin map='+this.transMap+' frame='+this.frame); },
+  // 프레임별 카운터
+  dc:0, flush:0, setTex:0, setBlend:0, bufFull:0, texChange:0, instDraw:0,
+  rTex:0, rBlend:0, rBufFull:0, rExplicit:0,   // flush 사유별 분포
+  vtxPeak:0, idxPeak:0,   // 배치 정점/인덱스 사용 피크 (quad*4 verts, quad*6 idx)
+  // subsystem drawCall 델타
+  sub:Object.create(null), _subSnap:0,
+  // runaway one-shot capture
+  thresh:50000,   // 평시 7-9k → 5만 초과면 명백 폭주
+  captured:false,
+  restoreProbe:0, // context-restored 직후 N flush 동안 GL.getError로 buffer-size 오류 포착 (>0일 때만 getError=stall)
+  _mark:function(name){ if(!this.on)return; this.sub[name]=(this.sub[name]||0)+(this.dc-this._subSnap); this._subSnap=this.dc; },
+  // flush 1회 기록 — WebGL2/WebGPU 공통. qc=이번 flush의 quad 수, drew=실제 draw 발생 여부.
+  //   빈 flush(qc=0)는 draw가 없으므로 사유만 소거하고 카운트하지 않는다(다음 실draw로 사유 누수 방지).
+  _onFlush:function(qc,drew){
+    if(!this.on)return;
+    if(!drew){this.reason='explicit';return}
+    this.flush++;
+    var r=this.reason;
+    if(r==='tex')this.rTex++; else if(r==='blend')this.rBlend++; else if(r==='buffull')this.rBufFull++; else this.rExplicit++;
+    this.reason='explicit';
+    this.dc++;
+    var v=qc*4, i=qc*6;
+    if(v>this.vtxPeak)this.vtxPeak=v;
+    if(i>this.idxPeak)this.idxPeak=i;
+    if(!this.captured&&this.dc>this.thresh)this._capture('flush:'+r,qc);
+  },
+  _onInst:function(cnt){ if(!this.on)return; this.instDraw++; this.dc++; if(!this.captured&&this.dc>this.thresh)this._capture('instanced',cnt); },
+  _capture:function(where,cnt){
+    this.captured=true;
+    var stack='';try{throw new Error('dcprof')}catch(e){stack=(e.stack||'').split('\n').slice(2,10).join(' | ')}
+    var G_=(typeof G!=='undefined')?G:{};
+    console.warn('[DCPROF RUNAWAY] dc='+this.dc+' first-exceed@'+where
+      +' frame='+this.frame+' drawInvokes='+this.drawInvokes
+      +' trans='+this.transState+'('+this.transMap+')'
+      +' stage='+(G_.stage)+' map='+(G_.mapId||G_.area||'?')
+      +' cnt='+cnt+' vtxPeak='+this.vtxPeak+' idxPeak='+this.idxPeak
+      +' flush='+this.flush+' setTex='+this.setTex+' setBlend='+this.setBlend+' bufFull='+this.bufFull
+      +' reasons{tex:'+this.rTex+',blend:'+this.rBlend+',buffull:'+this.rBufFull+',expl:'+this.rExplicit+'}'
+      +'\n  sub='+JSON.stringify(this.sub)
+      +'\n  stack='+stack);
+  },
+  resetFrame:function(){
+    if(!this.on)return;
+    this.dc=0;this.flush=0;this.setTex=0;this.setBlend=0;this.bufFull=0;this.texChange=0;this.instDraw=0;
+    this.rTex=0;this.rBlend=0;this.rBufFull=0;this.rExplicit=0;this.vtxPeak=0;this.idxPeak=0;
+    this.drawInvokes=0;this._subSnap=0;this.sub=Object.create(null);
+    if(this.transTTL>0){this.transTTL--;if(this.transTTL===0){this.transState='idle';this.transMap='';}}
+  },
+  report:function(){
+    if(!this.on)return;
+    // 폭주(임계 초과) 프레임 또는 60프레임마다 1회 요약
+    if(this.dc>this.thresh||(this.frame%60===0)){
+      console.log('[DCPROF f'+this.frame+'] dc='+this.dc+' flush='+this.flush+' inst='+this.instDraw
+        +' setTex='+this.setTex+' setBlend='+this.setBlend+' bufFull='+this.bufFull
+        +' reasons{tex:'+this.rTex+',blend:'+this.rBlend+',buffull:'+this.rBufFull+',expl:'+this.rExplicit+'}'
+        +' invokes='+this.drawInvokes+' trans='+this.transState
+        +' sub='+JSON.stringify(this.sub));
+    }
+  }
+};
+if(typeof window!=='undefined')window._DCP=_DCP;
 const _ENS_GL_MAX=512,_ENS_GL_STRIDE=9;
 const _ensGLCpu=new Float32Array(_ENS_GL_MAX*_ENS_GL_STRIDE);
 // 8방향 몬스터는 방향별 idle/walk 텍스처가 다르므로 16개 텍스처 버킷으로 분리한다.
@@ -4238,7 +4307,7 @@ function _drawEnemyInstanced(){
   GL.bufferSubData(GL.ARRAY_BUFFER,0,_ensGLCpu,0,_ensGLCount*_ENS_GL_STRIDE);
   GL.activeTexture(GL.TEXTURE0);GL.bindTexture(GL.TEXTURE_2D,_tex);
   GL.uniform1i(_ensGLUTex,0);GL.uniform2f(_ensGLURes,VW,VH);
-  GL.drawArraysInstanced(GL.TRIANGLE_STRIP,0,4,_ensGLCount);
+  GL.drawArraysInstanced(GL.TRIANGLE_STRIP,0,4,_ensGLCount);if(_DCP.on)_DCP._onInst(_ensGLCount);
   GL.bindVertexArray(null);GL.bindBuffer(GL.ARRAY_BUFFER,null);
   if(_glMainProg)GL.useProgram(_glMainProg);
   return _ensGLCount
@@ -4271,7 +4340,7 @@ function _drawEnemy8DirInstanced(){
     const _tex=_getTex(_img,true);if(!_tex)continue;
     GL.bufferSubData(GL.ARRAY_BUFFER,0,_ens8GLCpu,_g*_ENS_GL_MAX*_ENS_GL_STRIDE,_cnt*_ENS_GL_STRIDE);
     GL.activeTexture(GL.TEXTURE0);GL.bindTexture(GL.TEXTURE_2D,_tex);
-    GL.drawArraysInstanced(GL.TRIANGLE_STRIP,0,4,_cnt);_drawn+=_cnt;_dbgEns8GLDraws++;
+    GL.drawArraysInstanced(GL.TRIANGLE_STRIP,0,4,_cnt);if(_DCP.on)_DCP._onInst(_cnt);_drawn+=_cnt;_dbgEns8GLDraws++;
   }
   GL.bindVertexArray(null);GL.bindBuffer(GL.ARRAY_BUFFER,null);
   if(_glMainProg)GL.useProgram(_glMainProg);
@@ -4360,7 +4429,7 @@ function _flushVfxGL(){
   GL.bufferSubData(GL.ARRAY_BUFFER,0,_vfxGLCpu,0,_vfxGLCount*_VFX_GL_STRIDE);
   GL.activeTexture(GL.TEXTURE0);GL.bindTexture(GL.TEXTURE_2D,_vfxGLCurTex);
   GL.uniform1i(_vfxGLUTex,0);GL.uniform2f(_vfxGLURes,VW,VH);
-  GL.drawArraysInstanced(GL.TRIANGLE_STRIP,0,4,_vfxGLCount);
+  GL.drawArraysInstanced(GL.TRIANGLE_STRIP,0,4,_vfxGLCount);if(_DCP.on)_DCP._onInst(_vfxGLCount);
   GL.bindVertexArray(null);GL.bindBuffer(GL.ARRAY_BUFFER,null);
   GL.blendFunc(GL.SRC_ALPHA,GL.ONE_MINUS_SRC_ALPHA); // 복원
   if(_glMainProg)GL.useProgram(_glMainProg);
@@ -4506,7 +4575,7 @@ _txtEvict=function(){if(_txtUV.size>600){for(const[mk,mv]of _txtUV)if(_txtTick-m
 
 // ── 공통: _quad (오프셋 기반) ──
 function _quad(x0,y0,x1,y1,x2,y2,x3,y3,u0,v0,u1,v1,r,g,b,a,sh,p1,p2){
-if((_bufOff+_qCnt)>=_MQ)_flush();const o=(_bufOff+_qCnt)*4*_FPV;
+if((_bufOff+_qCnt)>=_MQ){if(_DCP.on){_DCP.bufFull++;_DCP.reason='buffull'}_flush();}const o=(_bufOff+_qCnt)*4*_FPV;
 _buf[o]=x0;_buf[o+1]=y0;_buf[o+2]=u0;_buf[o+3]=v0;_buf[o+4]=r;_buf[o+5]=g;_buf[o+6]=b;_buf[o+7]=a;_buf[o+8]=sh;_buf[o+9]=p1;_buf[o+10]=p2;
 const o1=o+_FPV;_buf[o1]=x1;_buf[o1+1]=y1;_buf[o1+2]=u1;_buf[o1+3]=v0;_buf[o1+4]=r;_buf[o1+5]=g;_buf[o1+6]=b;_buf[o1+7]=a;_buf[o1+8]=sh;_buf[o1+9]=p1;_buf[o1+10]=p2;
 const o2=o+_FPV*2;_buf[o2]=x2;_buf[o2+1]=y2;_buf[o2+2]=u1;_buf[o2+3]=v1;_buf[o2+4]=r;_buf[o2+5]=g;_buf[o2+6]=b;_buf[o2+7]=a;_buf[o2+8]=sh;_buf[o2+9]=p1;_buf[o2+10]=p2;
@@ -4631,22 +4700,25 @@ return c;}`;
   let _cmds=[];
   let _curBG=whiteBG,_curPipe=pipeN;
 
-  // ★ _flush: draw 명령만 기록. GPU 제출 안 함.
+  // ★ _flush: draw 명령만 기록. GPU 제출 안 함. (WebGPU에선 cmds 1개 = drawIndexed 1회 = drawCall 1)
   _flush=function(){
-    if(_qCnt===0)return;
+    if(_qCnt===0){if(_DCP.on)_DCP._onFlush(0,false);return}
     if(_bufOff+_qCnt>_MQ){
       console.warn('[GPU] 쿼드 오버플로우 — 프레임 드랍');
+      if(_DCP.on)console.warn('[DCPROF GPU-OVERFLOW] bufOff='+_bufOff+' qCnt='+_qCnt+' MQ='+_MQ);
       _qCnt=0;
       return;
     }
+    const _qc=_qCnt;
     _cmds.push({bg:_curBG,pipe:_curPipe,startQ:_bufOff,numQ:_qCnt});
     _bufOff+=_qCnt;
     _qCnt=0;
+    if(_DCP.on)_DCP._onFlush(_qc,true);
   };
-  _setTex=function(bg){if(bg!==_curBG){_flush();_curBG=bg}};
+  _setTex=function(bg){if(bg!==_curBG){if(_DCP.on){_DCP.setTex++;_DCP.texChange++;_DCP.reason='tex'}_flush();_curBG=bg}};
   _setBlend=function(additive){
     const p=additive?pipeA:pipeN;
-    if(p!==_curPipe){_flush();_curPipe=p}
+    if(p!==_curPipe){if(_DCP.on){_DCP.setBlend++;_DCP.reason='blend'}_flush();_curPipe=p}
   };
 
   // ★ _glFlush: 프레임 끝. 1 pass, 1 submit, getCurrentTexture 1번.
@@ -4738,6 +4810,11 @@ oC=c;}`;
   for(let i=0;i<_MQ;i++){const v=i*4,o=i*6;_idx[o]=v;_idx[o+1]=v+1;_idx[o+2]=v+2;_idx[o+3]=v+2;_idx[o+4]=v+3;_idx[o+5]=v}
   GL.bindBuffer(GL.ELEMENT_ARRAY_BUFFER,_ibo);GL.bufferData(GL.ELEMENT_ARRAY_BUFFER,_idx,GL.STATIC_DRAW);
   GL.bindVertexArray(null);
+  // [DCPROF] VBO/EBO 재생성 크기 기록 — restore-path "Insufficient buffer size" 검증용.
+  //   주의: _idx는 Uint16Array(_MQ*6), _MQ=65536 → i*4가 uint16(65535) 초과분은 wrap. 단일 flush가
+  //   16384쿼드 이상 배치되면 인덱스가 잘못 참조되나(용량초과 아님, 값 wrap), _quad가 _MQ에서 flush하므로
+  //   drawElements count(_qCnt*6)는 항상 EBO 용량(_MQ*6) 이하 → 정상 경로에선 buffer size 부족 불가.
+  if(_DCP.on)console.log('[DCPROF GLBUF] VBO bytes='+_buf.byteLength+' EBO idx='+_idx.length+'(bytes='+(_idx.length*2)+') MQ='+_MQ+' maxDrawIdx='+(_MQ*6)+' — restore rebuild');
   const wt=GL.createTexture();GL.bindTexture(GL.TEXTURE_2D,wt);
   GL.texImage2D(GL.TEXTURE_2D,0,GL.RGBA,1,1,0,GL.RGBA,GL.UNSIGNED_BYTE,new Uint8Array([255,255,255,255]));
   GL.enable(GL.BLEND);GL.blendFunc(GL.SRC_ALPHA,GL.ONE_MINUS_SRC_ALPHA);
@@ -4762,15 +4839,22 @@ oC=c;}`;
     GL.bindTexture(GL.TEXTURE_2D,_curTex);_texCache.set(src,{tex:t,v:src._glVer||0});return t};
 
   // ★ WebGL은 즉시 모드: flush마다 그리고 리셋
-  _flush=function(){if(_qCnt===0)return;
+  _flush=function(){if(_qCnt===0){if(_DCP.on)_DCP._onFlush(0,false);return}
+    const _qc=_qCnt;
+    // [DCPROF] EBO 용량 대비 인덱스 초과 감지 — "glDrawElements: Insufficient buffer size"의 직접 조건
+    if(_DCP.on&&_qc*6>_idx.length)console.warn('[DCPROF EBO-OVERFLOW] qCnt='+_qc+' needIdx='+(_qc*6)+' ebo.len='+_idx.length+' MQ='+_MQ+' bufOff='+_bufOff);
     GL.useProgram(_prog);
     GL.bindVertexArray(_vao);GL.bindBuffer(GL.ARRAY_BUFFER,_vbo);
     GL.bufferSubData(GL.ARRAY_BUFFER,0,_buf.subarray(0,_qCnt*4*_FPV));
     GL.bindTexture(GL.TEXTURE_2D,_curTex);GL.uniform2f(_uR,C.width,C.height);
-    GL.drawElements(GL.TRIANGLES,_qCnt*6,GL.UNSIGNED_SHORT,0);_qCnt=0;_bufOff=0};
+    GL.drawElements(GL.TRIANGLES,_qCnt*6,GL.UNSIGNED_SHORT,0);
+    // [DCPROF] restore 직후에만 getError로 "Insufficient buffer size" 실측 (평시엔 stall 회피 위해 스킵)
+    if(_DCP.on&&_DCP.restoreProbe>0){_DCP.restoreProbe--;const _ge=GL.getError();if(_ge)console.warn('[DCPROF RESTORE-ERR] glErr=0x'+_ge.toString(16)+' drawCount='+(_qc*6)+' type=UNSIGNED_SHORT offset=0 eboIdxCap='+_idx.length+' vboBytes='+_buf.byteLength+' qCnt='+_qc);}
+    _qCnt=0;_bufOff=0;
+    if(_DCP.on)_DCP._onFlush(_qc,true)};
 
-  _setTex=function(t){if(t!==_curTex){_flush();_curTex=t}};
-  _setBlend=function(additive){_flush();
+  _setTex=function(t){if(t!==_curTex){if(_DCP.on){_DCP.setTex++;_DCP.texChange++;_DCP.reason='tex'}_flush();_curTex=t}};
+  _setBlend=function(additive){if(_DCP.on){_DCP.setBlend++;_DCP.reason='blend'}_flush();
     GL.blendFunc(additive?GL.ONE:GL.SRC_ALPHA,
                  additive?GL.ONE:GL.ONE_MINUS_SRC_ALPHA)};
   _glFlush=function(){_flush()};
@@ -4787,6 +4871,7 @@ oC=c;}`;
     C.addEventListener('webglcontextlost',function(ev){
       ev.preventDefault(); // restored 이벤트 수신을 위해 필수
       console.warn('[GPU] WebGL context lost — 복구 대기');
+      if(_DCP.on)console.warn('[DCPROF CTX-LOST] frame='+_DCP.frame+' lastFrameDC='+_DCP.dc+' trans='+_DCP.transState+' — 직전 프레임 폭주 여부는 위 [DCPROF] 로그 참조');
       _useGL=false;GL=null;_glMainProg=null;
       _resetEnemyInstanced();_resetVfxInstanced();
       _flush=function(){};_setTex=function(){};_getTex=function(){return null};
@@ -4800,6 +4885,7 @@ oC=c;}`;
         try{_buildProxyX()}catch(e){console.error('[GPU] ProxyX 재빌드 실패:',e)}
         _shDirty=true;
         if(typeof _queueMapCacheRefresh==='function')_queueMapCacheRefresh();
+        if(_DCP.on){_DCP.restoreProbe=600;_DCP.captured=false;console.log('[DCPROF CTX-RESTORED] getError probe armed 600 flushes, runaway 재무장');}
       }
     });
   }
@@ -20372,6 +20458,7 @@ function _finalizeBMC(){
 }
 function buildMapCache(){
   if(!G.map)return;
+  if(_DCP.on)_DCP.markTransition((typeof G.mapId!=='undefined'?G.mapId:(typeof G.area!=='undefined'?G.area:'st'+G.stage)));
   _mapCacheRefreshQueued=0;_mapCacheRefreshToken++;
   _autoChunkConfig(G.mw,G.mh);
   _visChunks=null;_visChunkLen=0;_visCamX=-9999;_visCamY=-9999;
@@ -42019,6 +42106,7 @@ function _oriInitParticles(){
 // ═══════════════════════════════════════
 function draw(){
   if(!X)return;
+  if(_DCP.on)_DCP.drawInvokes++; // 프레임당 draw() 호출 횟수 — 중복 scene traversal 감지
   X.imageSmoothingEnabled=false;
   const _drawStart=performance.now();
   const _fBudget=14; // 14ms = ~70fps 타겟
@@ -42176,6 +42264,7 @@ function draw(){
   }
   const _tMap=performance.now();
   if(_fc2d){var _dPara=_PERF_PROF._delta(_snapPara);_PERF_PROF._para_di=_dPara.di}
+  if(_DCP.on)_DCP._mark('bg'); // [DCPROF] 배경(패럴랙스+검정오버레이+반딧불이) 구간 종료
   var _snapTile=_fc2d?_PERF_PROF._snap():null;
   // ── 보스 아레나 입구 포탈 ──
   if(G._bossArena&&G._bossArenaEntry){
@@ -42511,6 +42600,7 @@ function draw(){
   // ═══ MAP_OBJS 렌더 ═══
   const _tMObj=performance.now();
   if(_fc2d){var _dTile=_PERF_PROF._delta(_snapTile);_PERF_PROF._tile_di=_dTile.di}
+  if(_DCP.on)_DCP._mark('map'); // [DCPROF] 맵/지형(타일 캐시+포탈+출구+데코) 구간 종료
   var _snapMobj=_fc2d?_PERF_PROF._snap():null;
   const _wvl=G.cam.x-VW/2-40,_wvr=G.cam.x+VW/2+40,_wvt=G.cam.y-VH/2-40,_wvb=G.cam.y+VH/2+40;
   for(let _moi=0;_moi<MAP_OBJS.length;_moi++){const mo=MAP_OBJS[_moi];
@@ -42823,6 +42913,7 @@ function draw(){
   X.restore();}
 
   const _dd1=performance.now();
+  if(_DCP.on)_DCP._mark('worldobj'); // [DCPROF] 월드 오브젝트(맵 스프라이트/장식) 구간 종료
   if(_fc2d){var _dSnap=_PERF_PROF._delta({di:0,st:0,fr:0,ga:0});_PERF_PROF._map_di=_dSnap.di;_PERF_PROF._map_st=_dSnap.st;_PERF_PROF._map_fr=_dSnap.fr;_PERF_PROF._map_ga=_dSnap.ga;var _snapEns=_PERF_PROF._snap()}
   // [EDITOR] 에디터 모드: 맵+MAP_OBJS까지만 그리고 종료
   if(_EDITOR_MODE){X.restore();return}
@@ -44213,6 +44304,7 @@ function draw(){
     X.globalAlpha=1}
 
   const _dd2=performance.now();
+  if(_DCP.on)_DCP._mark('enemies'); // [DCPROF] 적/보스/플레이어(엔티티) 구간 종료
   if(_fc2d){var _dEns=_PERF_PROF._delta(_snapEns);_PERF_PROF._ens_di=_dEns.di;_PERF_PROF._ens_st=_dEns.st;_PERF_PROF._ens_fr=_dEns.fr;_PERF_PROF._ens_ga=_dEns.ga;var _snapProj=_PERF_PROF._snap()}
   if(G.debugPerf&&_dd2-_dd1>20)console.log('[ENS-DETAIL] '+(_dd2-_dd1).toFixed(1)+'ms | drawn:'+_eRCnt+' total:'+ens.length);
   // ═══ 적 투사체 3패스 렌더 (composite 전환 최소화) ═══
@@ -44710,6 +44802,7 @@ function draw(){
   }
 
   const _dd3=performance.now();
+  if(_DCP.on)_DCP._mark('projectiles'); // [DCPROF] 투사체 구간 종료
   if(_fc2d){var _dProj=_PERF_PROF._delta(_snapProj);_PERF_PROF._proj_di=_dProj.di;_PERF_PROF._proj_st=_dProj.st;_PERF_PROF._proj_fr=_dProj.fr;_PERF_PROF._proj_ga=_dProj.ga;var _snapPart=_PERF_PROF._snap()}
   const _tDP0=performance.now();
   drawP();
@@ -45058,6 +45151,7 @@ function draw(){
   }X.globalAlpha=1;X.textBaseline='alphabetic'}if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
   X.restore();
   const _dd4=performance.now();
+  if(_DCP.on)_DCP._mark('particles'); // [DCPROF] 파티클/VFX 구간 종료
   if(_fc2d){var _dPart=_PERF_PROF._delta(_snapPart);_PERF_PROF._part_di=_dPart.di;_PERF_PROF._part_st=_dPart.st;_PERF_PROF._part_fr=_dPart.fr;_PERF_PROF._part_ga=_dPart.ga;var _snapPost=_PERF_PROF._snap()}
   const _pA0=performance.now();
   // ═══ 공성쇠뇌 터렛 상태 HUD ═══
@@ -45553,6 +45647,7 @@ function draw(){
   drawMM();
   {const _dd5=performance.now();
   if(_fc2d){var _dPost=_PERF_PROF._delta(_snapPost);_PERF_PROF._post_di=_dPost.di;_PERF_PROF._post_st=_dPost.st;_PERF_PROF._post_fr=_dPost.fr;_PERF_PROF._post_ga=_dPost.ga}
+  if(_DCP.on)_DCP._mark('post'); // [DCPROF] HUD/포스트/미니맵/리플레이 오버레이 구간 종료
   _dbgDPost=_dd5-_dd4;
   if(_DEBUG_PERF){_dbgDMap=_dd1-_dd0;_dbgDEns=_dd2-_dd1;_dbgDProj=_dd3-_dd2;_dbgDPart=_dd4-_dd3}
   if(_DEBUG_PERF&&_dbgDPost>16){const _pA=_pB0-_pA0,_pB=_pC0-_pB0,_pC=_dd5-_pC0;console.warn('[POST SPIKE] '+_dbgDPost.toFixed(1)+'ms | A(hud+lowHP):'+_pA.toFixed(1)+' B(flash+lit+bloom+torch):'+_pB.toFixed(1)+' C:'+_pC.toFixed(1)+' [bonfire:'+(_pC1-_pC0).toFixed(1)+' fog:'+(_pC2-_pC1).toFixed(1)+' envVig:'+(_pC3-_pC2).toFixed(1)+' grainScan:'+(_pC4-_pC3).toFixed(1)+' bossCine:'+(_pC5-_pC4).toFixed(1)+' minimap:'+(_dd5-_pC5).toFixed(1)+']')}}
@@ -50355,6 +50450,7 @@ function loop(timestamp){
   const _p2=performance.now();
   const _domT0=_PERF_PROF.enabled?performance.now():0;
   _fpsDraw();if(_useGPU||_useGL)_glFlush();
+  if(_DCP.on){_DCP.frame++;_DCP.report();_DCP.resetFrame();} // [DCPROF] 프레임 요약 후 리셋 (최종 glFlush 포함)
   _drawBurst(); // GPU Burst (별도 context — 기존 배처 무관)
   if(_PERF_PROF.enabled)_PERF_PROF._domAcc+=performance.now()-_domT0;
   // 사망 리플레이 캡처 (10fps)
