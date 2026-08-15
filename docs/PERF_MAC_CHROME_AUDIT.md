@@ -350,6 +350,22 @@ maxIdxCount = 27,815,124  (=4,635,854 quads ×6)                    ← 단일 �
 - ∴ restore-bug(단일 27.8M-index 호출)와 **별개**. ~92,500 draw-call/frame invocation 폭증 = **배칭 붕괴**(quad당 draw 1 수준) 후보. 정상은 tex 전환당 flush로 ~190 draws/frame(아래 Track C 실측)이므로, 92k/frame은 텍스처 thrash 극단화 또는 맵캐시 미완성 시 per-tile immediate draw 폴백 유력.
 - **미해결. OPEN 유지.** 실기(Mac, slot=119 조건) 또는 특정 맵/캐시-미완성 타이밍에서만 발현 추정 — 이 데스크톱 자동화(정상 전환 14회 + 72초 부하)에서 배칭 붕괴 미재현(peak 197 draws/frame).
 
+#### Track B 심층 감사 (2026-08-16) — 배치 붕괴 메커니즘 CONFIRMED, 90K 유발 loop는 STILL OPEN
+- **90K/frame 가능 경로 전수 역추적**: GL draw는 전부 `_flush`(=drawElements 1회). flush는 텍스처전환/블렌드전환/버퍼풀(_MQ쿼드)에서만 발생. 90K flush = 90K 텍스처전환 또는 블렌드전환(버퍼풀은 90K×65536쿼드=불가). 후보 cardinality:
+  | 경로 | 최대 draw/frame | 판정 |
+  |---|---|---|
+  | map blit(L42237~) | 1~가시청크(~9). 캐시 미준비 시 **미렌더**(per-tile 폴백 없음) | 폭발원 아님 |
+  | 적 스프라이트 | instanced(≤8 draw) | 폭발원 아님 |
+  | 적 오버레이/HP바 | `_whiteTex` 고정 → 배칭 | 폭발원 아님 |
+  | decor(`_buildDecorList`) | 첫줄 `return;`(dead) | 폭발원 아님 |
+  | 텍스트 fillText | 실측 ≤9/frame | 정상 폭발원 아님 |
+  | 스프라이트 drawImage | 실측 ≤4166/frame(적250) | 정상 폭발원 아님 |
+- **배치 붕괴 메커니즘 CONFIRMED**(런타임 1:1): `fillText`→`_uploadCanvasTex(_txtAtlas)`(L5028-5037)가 아틀라스 `_glVer` 변동 시 `_flush()`+`texImage2D` 재업로드. 신규 글리프마다 `_getAtlasTxt`가 `_glVer` 증가(L4575) → **fillText 1회 = flush 1회**. 아틀라스(2048×512, ~441문자@12px) 초과 시 프레임 중 `_txtUV.clear()`(L4571) → 이후 전 텍스트 영구 miss → 매 프레임 텍스트당 flush. 실측: K=100→100,1000→901,5000→5000,15000→15000 draws(perText≈1.0); 2000유니크 재실행 2pass 모두 2000(캐시 무효). drawImage(동적 캔버스 `_glVer`변동)도 동일.
+- **그러나 90K 유발 실제 loop 미특정**: 최대부하(bossDebug·적250·전투)에서 fillText 최대 **9**/frame, drawImage 최대 **4166**/frame — 90K의 1/20~1/10000. 정상 렌더로 90K 도달 불가(적500이어도 drawImage ~8k). ∴ 원 92K/frame은 **정상 스테디 렌더로 설명 불가.**
+- **인시던트 시퀀스 재해석**: `2.7M`→`context lost`→`[LOOP CRASH] bindTexture null 무한반복`(구 `_uploadCanvasTex` 널가드 부재, 81d670a0 수정)→restore `Insufficient buffer size`. 90K가 정상 렌더 미도달 + loss/crash 인접 → **explosion이 context-loss/재진입(crash-retry) 프레임과 결합됐을 가능성**이 스테디 폭발보다 정합적(미증명).
+- **B↔D 연결**: 아틀라스 재업로드(B=대역폭) + 미해제 125MB 맵텍스처(D=VRAM)는 상이한 자원압. 어느 쪽도 이 HW 단독서 90K/loss 미유발. 순서(2.7M이 loss 앞)는 explosion이 loss에 기여함을 시사하나 explosion 유발 loop 미증명.
+- **판정: B = STILL OPEN**(counter=invocation·메커니즘 CONFIRMED, 90K callsite 미특정). B1(cache-fallback)=반증. B2(atlas-thrash)=메커니즘 CONFIRMED이나 정상 cardinality 부족. B3(traversal)=미발견. B4(resource-link)=가설.
+
 ### Track C — 지속적 로컬 FPS 저하 : NOT REPRODUCED
 - 72초 연속(testchar Lv500, `_btGod`, 실입력 버스트=LMB/RMB/스킬키/이동, 5회 transition, dcprof ON) 자동 부하:
   | 구간 | p95(ms) | p99(ms) | fps | draws/frame | context-loss |
