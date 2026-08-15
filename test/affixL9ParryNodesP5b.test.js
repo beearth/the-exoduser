@@ -89,5 +89,5 @@ test('§8 WORKING L9 보호 — parryBonus/parryExplosion/rageMaxFlat/rageDmg', 
   assert.match(gameHtml,/_eqAffix\('rageMaxFlat'\)/);
   assert.match(gameHtml,/const _rageDmgAf=1\+\(_eqAffix\('rageDmg'\)/);
   // afterParryShield는 신규 ID 아님(기존 affix 배선) — POOL 410 불변
-  assert.equal(POOL.length,415);assert.equal(POOL.filter(a=>a.sub==='B').length,163);
+  assert.equal(POOL.length,416);assert.equal(POOL.filter(a=>a.sub==='B').length,163);
 });

@@ -31,18 +31,18 @@ LOCK-37 AUTOMATED LAYER ECONOMY VALIDATION — production-path 재사용 harness
   cap 7 | 5.17 5 9 11 | 5.94 6 9 10
   cap 8 | 6.76 7 11 13 | 7.07 7 10 11
   cap 9 | 8.40 9 13 15 | 8.15 9 11 12
-  cap10 | 10.02 11 15 15 | 9.15 10 12 12
+  cap10 | 10.07 11 15 16 | 9.20 10 12 13
 
 ── §9 V2 dry-run massive invariants (1,000,000 shadow-V2 items, 실제 roller) ──
   N=1000000 실행 8.8s (114k items/s)
   C1 violation=0 | invalidLayer=0 invalidSub=0 dupID=0 illegalKeystone=0 NaN=0 undefinedAffix=0 nonArray=0 legacyLeak=0
-  (정상 FLEX 관측=1072 — parryBonus 등 유효 sub, 위반 아님) maxAffixCount observed=15
+  (정상 FLEX 관측=1071 — parryBonus 등 유효 sub, 위반 아님) maxAffixCount observed=16
   ▶ ALL_INVARIANTS_CLEAN
 
 ── §10 slot coverage (모든 production slot × cap1~10, 각 4k) ──
-  weapon    reach L1..L10=Y L≥8 affix max=15 
-  armor     reach L1..L10=Y L≥8 affix max=12 
-  ring1     reach L1..L10=Y L≥8 affix max=13 
+  weapon    reach L1..L10=Y L≥8 affix max=16 
+  armor     reach L1..L10=Y L≥8 affix max=13 
+  ring1     reach L1..L10=Y L≥8 affix max=14 
   ▶ slot broken count=0 → SLOT_COVERAGE_OK
 
 ── §11/§12 Keystone economy (production-path item, 300k) ──
@@ -65,7 +65,7 @@ LOCK-37 AUTOMATED LAYER ECONOMY VALIDATION — production-path 재사용 harness
   ▶ DETERMINISTIC_OK
 
 ── §20 performance ──
-  shadowObserve ON: 100k in 31ms = 0.312µs/item (keystone 스캔 L≥8만)
+  shadowObserve ON: 100k in 30ms = 0.300µs/item (keystone 스캔 L≥8만)
   OFF overhead = mkItem 내 'if(_SHADOW_LAYER_LOG)' 분기 1회(배포 상태) — 사실상 zero.
 
 ═══ GATE SUMMARY ═══

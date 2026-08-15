@@ -79,7 +79,7 @@ test('§8/§9 V2 dry-run massive invariants (100k, 실제 roller) — 전부 0',
   }
   assert.equal(viol,0,'C1'); assert.equal(badLayer,0); assert.equal(badSub,0); assert.equal(dup,0);
   assert.equal(illegalKs,0,'정상롤 keystone 0'); assert.equal(nan,0); assert.equal(undef,0); assert.equal(legacyLeak,0,'layer0 leak');
-  assert.ok(maxAffix<=15,'max affix ≤15');
+  assert.ok(maxAffix<=16,'max affix ≤16 ([P8B/LOCK-47] L10-A ultDmg +1 → cap10 상한 15→16, 정상 structural consequence)');
 });
 
 test('§10 slot coverage — 모든 slot L1~L10 reachable · L≥8 affix>0', () => {

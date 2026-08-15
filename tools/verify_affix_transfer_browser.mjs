@@ -697,6 +697,82 @@ async function main() {
       assert('17', 'Stone detail', smoke.stoneShown && !smoke.stoneErr, JSON.stringify(smoke));
     }
 
+    // ── §18 L10-A ULTIMATE DAMAGE E2E ([P8B/LOCK-47] Z ult 데미지 배수·blackStar noDmg·cooldown/UI) ──
+    {
+      const ult = await page.evaluate(() => {
+        const out = {};
+        INV.bag = []; for (const k in INV.equipped) INV.equipped[k] = null; INV.selected = null; _txState = null; _eqAffixCache = null;
+        P.skills = P.skills || {}; P.skills.holyBlast = 1; P.skills.lavaSummon = 1; P.skills.blackStar = 1; // Lv1 → _ult10xMul=1.0
+        const origHurt = hurtE; let cap = [];
+        window.hurtE = function (e, dmg) { cap.push(dmg); return 0; }; // 데미지 캡처 stub (전역 hurtE 재배선)
+        const dummy = () => { ens.length = 0; ens.push({ alive: true, x: P.x, y: P.y, r: 20, kb: { x: 0, y: 0 }, stunned: 0, hp: 1e9 }); };
+        const measHoly = () => { cap = []; dummy(); P._hbX = P.x; P._hbY = P.y; P._hbCasting = true; P._hbCd = 0; fireHolyBlast(); return cap.length ? Math.max(...cap) : 0; };
+        const measLava = () => { cap = []; dummy(); P._lvX = P.x; P._lvY = P.y; P._lvCasting = true; P._lvCd = 0; fireLavaSummon(); G._lavaField = null; return cap.length ? Math.max(...cap) : 0; };
+        const measBlack = () => { cap = []; dummy(); P._bsX = P.x; P._bsY = P.y; P._bsCasting = true; P._bsCd = 0; fireBlackStar(); return cap.length; };
+        out.holyBase = measHoly(); out.lavaBase = measLava();                            // baseline: no L10-A
+        INV.equipped.weapon = { id: 'ult_w', slot: 'weapon', rarity: 4, layerLv: 10, affixes: [{ id: 'ultDmg', tier: 4, value: 0.5 }] }; _eqAffixCache = null; // equip ultDmg 0.5
+        out.mul = _ultDmgMul();
+        out.holyBoost = measHoly(); out.lavaBoost = measLava();                          // boosted
+        out.blackHurt = measBlack();                                                     // blackStar noDmg (ultDmg 장착에도)
+        out.hbCd = P._hbCd;                                                              // cooldown 세팅 확인
+        try { if (typeof ULT_SLOT !== 'undefined') ULT_SLOT = 'holyBlast'; if (typeof _updateUltSlot === 'function') _updateUltSlot(); out.uiOk = true; } catch (e) { out.uiErr = e.message; }
+        window.hurtE = origHurt;
+        INV.equipped.weapon = null; _eqAffixCache = null; ens.length = 0; G._lavaField = null; P._hbCasting = P._lvCasting = P._bsCasting = false;
+        out.holyRatio = out.holyBase > 0 ? out.holyBoost / out.holyBase : 0;
+        out.lavaRatio = out.lavaBase > 0 ? out.lavaBoost / out.lavaBase : 0;
+        return out;
+      });
+      assert('18', '_ultDmgMul() = 1.5 (ultDmg .5 장착)', Math.abs(ult.mul - 1.5) < 1e-6, JSON.stringify(ult));
+      assert('18', 'holyBlast 데미지 ×_ultDmgMul (ratio≈1.5)', ult.holyBase > 0 && Math.abs(ult.holyRatio - 1.5) < 0.02, JSON.stringify(ult));
+      assert('18', 'lavaSummon 직격 ×_ultDmgMul (FULL_COVERAGE, ratio≈1.5)', ult.lavaBase > 0 && Math.abs(ult.lavaRatio - 1.5) < 0.02, JSON.stringify(ult));
+      assert('18', 'blackStar noDmg 유지(hurtE 0회·ultDmg 장착에도)', ult.blackHurt === 0, JSON.stringify(ult));
+      assert('18', 'cooldown 세팅(cast 후 _hbCd>0)', ult.hbCd > 0, JSON.stringify(ult));
+      assert('18', 'Ultimate HUD 갱신 no-throw', ult.uiOk && !ult.uiErr, JSON.stringify(ult));
+    }
+
+    // ── §19 L10-A TRANSFER DOM E2E (extract 10단-A → cross-slot absorb → commit) ──
+    {
+      await installSaveCounter(page); // §15 full-reload 이후 save 훅 소실 → 재설치(saveN 계측 복구)
+      const setup = await page.evaluate(() => {
+        INV.bag = []; for (const k in INV.equipped) INV.equipped[k] = null; INV.selected = null; _txState = null;
+        const src = { id: 'src_ult', slot: 'weapon', rarity: 4, layerLv: 10, brType: undefined, affixes: rollAffixesLayered(4, 'weapon', undefined, 10) };
+        const tgt = { id: 'tgt_ult', slot: 'armor', rarity: 4, layerLv: 10, brType: undefined, affixes: rollAffixesLayered(4, 'armor', undefined, 10) };
+        INV.bag = [src, tgt];
+        const ex = getExtractableAffixes(src).find(c => c.affixId === 'ultDmg');
+        openPanel('invPanel'); INV.selected = 0; _invRenderDetail(0, 'bag');
+        return { srcHasUlt: src.affixes.some(a => a.id === 'ultDmg'), tgtHasUlt: tgt.affixes.some(a => a.id === 'ultDmg'), extractable: !!ex, exVal: ex ? ex.value : null };
+      });
+      assert('19', 'cap10 weapon·armor에 L10-A(ultDmg) 자동 롤', setup.srcHasUlt && setup.tgtHasUlt, JSON.stringify(setup));
+      assert('19', 'ultDmg extractable(FLEX/keystone처럼 block 아님)', setup.extractable, JSON.stringify(setup));
+      // extract DOM flow
+      await click(page, '#invActionBtns [onclick^="_openExtractPanel"]');
+      const exLabel = await page.evaluate(() => ({ hasUltBtn: !!document.querySelector('#invRight [onclick*="_txSelExtract(\'ultDmg\')"]'), label10: document.getElementById('invRight').textContent.includes('10단-A') }));
+      assert('19', 'extract 후보에 ultDmg + "10단-A" 라벨', exLabel.hasUltBtn && exLabel.label10, JSON.stringify(exLabel));
+      await click(page, `#invRight [onclick*="_txSelExtract('ultDmg')"]`);
+      await resetSaveN(page);
+      await click(page, '#invRight [onclick^="_txDoExtract"]');
+      await page.waitForTimeout(80);
+      const exDone = await page.evaluate(() => { const s = INV.bag.filter(i => i.type === 'affixStone'); return { stones: s.length, stone: s[0] ? { affixId: s[0].affixId, tier: s[0].tier, value: s[0].value } : null, srcGone: !INV.bag.find(i => i.id === 'src_ult') }; });
+      assert('19', 'ultDmg 추출 → affixStone 1개 + source 파괴', exDone.stones === 1 && exDone.stone.affixId === 'ultDmg' && exDone.srcGone, JSON.stringify(exDone));
+      assert('19', 'stone exact value 보존', exDone.stone && Math.abs(exDone.stone.value - setup.exVal) < 1e-9, JSON.stringify(exDone));
+      // absorb DOM flow (cross-slot: armor target, A universal REPLACE)
+      const absPrep = await page.evaluate(() => { const si = INV.bag.findIndex(i => i.type === 'affixStone'); INV.selected = si; _invRenderDetail(si, 'bag'); return { si }; });
+      await click(page, '#invRight [onclick^="_openAbsorbPanel"]');
+      const tgtClickable = await page.evaluate(() => !!document.querySelector(`#invRight [onclick*="_txSelTarget('tgt_ult')"]`));
+      assert('19', 'cross-slot armor target 선택 가능(A universal)', tgtClickable, JSON.stringify({ absPrep }));
+      await click(page, `#invRight [onclick*="_txSelTarget('tgt_ult')"]`);
+      await page.waitForTimeout(40);
+      const pv = await page.evaluate(() => ({ confirm: !!document.querySelector('#invRight [onclick^="_txDoAbsorb"]'), label10: document.getElementById('invRight').textContent.includes('10단-A') }));
+      assert('19', 'absorb preview: confirm 노출 + "10단-A"', pv.confirm && pv.label10, JSON.stringify(pv));
+      await resetSaveN(page);
+      await click(page, '#invRight [onclick^="_txDoAbsorb"]');
+      await page.waitForTimeout(80);
+      const abDone = await page.evaluate(() => { const t = INV.bag.find(i => i.id === 'tgt_ult'); return { ultCount: t ? t.affixes.filter(a => a.id === 'ultDmg').length : -1, stones: INV.bag.filter(i => i.type === 'affixStone').length }; });
+      const sN19 = await saveN(page);
+      assert('19', 'armor target에 ultDmg REPLACE(정확히 1·dup 없음)·stone 소비', abDone.ultCount === 1 && abDone.stones === 0, JSON.stringify(abDone));
+      assert('19', 'absorb commit 저장 호출', sN19 === 1, `saveN=${sN19}`);
+    }
+
     // transfer-phase console errors (since boot boundary reset)
     const transferConsole = consoleErrors.filter(t => !/Failed to load resource|api\/load|api\/save|no server|\[LOCAL\]/i.test(t));
     assert('2', 'transfer-phase console.error = 0 (all sections)', transferConsole.length === 0, JSON.stringify(transferConsole));

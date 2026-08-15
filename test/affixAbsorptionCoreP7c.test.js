@@ -37,11 +37,12 @@ function mul(s){let a=s>>>0;return()=>{a|=0;a=(a+0x6D2B79F5)|0;let t=Math.imul(a
 function seededMath(s){const m=Object.create(Math);m.random=mul(s);return m}
 const stone=(affixId,tier,value)=>({type:'affixStone',affixId,tier,value});
 const aff=(id,tier,value)=>({id,tier,value:value==null?0.3:value});
-// [P7C.1] backbone: uni:1 A per layer(L1~9). 정상 V2 item은 A가 각 layer 충전(C1). A 흡수=REPLACE, B=INSERT/REPLACE.
-const BB={1:'strFlat',2:'cooldownRed',3:'defFlat',4:'elemFocus',5:'atkSpeed',6:'skillBoost',7:'atkPctAll',8:'critDmgW',9:'rageMaxFlat'};
+// [P7C.1] backbone: uni:1 A per layer(L1~10). 정상 V2 item은 A가 각 layer 충전(C1). A 흡수=REPLACE, B=INSERT/REPLACE.
+// [P8B/LOCK-47] L10-A(ultDmg) 활성 → cap10 target backbone에 L10 포함(구 L10 면제 종료).
+const BB={1:'strFlat',2:'cooldownRed',3:'defFlat',4:'elemFocus',5:'atkSpeed',6:'skillBoost',7:'atkPctAll',8:'critDmgW',9:'rageMaxFlat',10:'ultDmg'};
 const target=(over={})=>{const lv=over.layerLv==null?10:over.layerLv;const extra=over.affixes||[];
   const exA=new Set(extra.map(a=>DEF[a.id]).filter(d=>d&&d.sub==='A').map(d=>d.layer));
-  const bb=[];for(let L=1;L<=Math.min(lv,9);L++)if(!exA.has(L))bb.push(aff(BB[L],2,0.1));
+  const bb=[];for(let L=1;L<=Math.min(lv,10);L++)if(!exA.has(L))bb.push(aff(BB[L],2,0.1));
   return {id:over.id||'t1',slot:over.slot||'weapon',rarity:over.rarity==null?4:over.rarity,layerLv:lv,brType:over.brType,affixes:bb.concat(extra)};};
 const rawTarget=(over={})=>Object.assign({id:'t1',slot:'weapon',rarity:4,layerLv:10,affixes:[]},over); // malformed/backbone-없음 fixture
 const KS_IDS=['ksDullConviction','ksGlassGreatsword','ksBloodOath','ksRootedGiant','ksBloodPact'];

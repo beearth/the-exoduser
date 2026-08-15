@@ -59,7 +59,7 @@ test('§13 compat는 ROLL FILTER 미사용 — 롤 결과 불변 (compat-strip �
 });
 
 test('§13 AFFIX_POOL compat 외 완전 불변 (value/weight/tiers/slots/layer/sub)', () => {
-  assert.equal(POOL.length,415);
+  assert.equal(POOL.length,416);
   // tiers 5칸·layer/sub 유지 스팟
   for(const a of POOL){assert.equal(a.tiers.length,5,a.id+' tiers');assert.ok('layer'in a&&'sub'in a,a.id);}
   // B count = 156 (150 + canonical 6), A count 불변

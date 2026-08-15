@@ -31,8 +31,9 @@ const API=build();
 function mul(s){let a=s>>>0;return()=>{a|=0;a=(a+0x6D2B79F5)|0;let t=Math.imul(a^(a>>>15),1|a);t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296}}
 const stone=(affixId,tier,value)=>({type:'affixStone',affixId,tier,value});
 const aff=(id,tier,value)=>({id,tier,value});
-const BB={1:'strFlat',2:'cooldownRed',3:'defFlat',4:'elemFocus',5:'atkSpeed',6:'skillBoost',7:'atkPctAll',8:'critDmgW',9:'rageMaxFlat'};
-const backbone=(lv,skip)=>{const o=[];for(let L=1;L<=Math.min(lv,9);L++)if(L!==skip)o.push(aff(BB[L],2,0.1));return o;};
+// [P8B/LOCK-47] L10-A(ultDmg) 활성 → backbone에 L10 포함.
+const BB={1:'strFlat',2:'cooldownRed',3:'defFlat',4:'elemFocus',5:'atkSpeed',6:'skillBoost',7:'atkPctAll',8:'critDmgW',9:'rageMaxFlat',10:'ultDmg'};
+const backbone=(lv,skip)=>{const o=[];for(let L=1;L<=Math.min(lv,10);L++)if(L!==skip)o.push(aff(BB[L],2,0.1));return o;};
 
 // ══════════════════════════════════════════════════════════════════════
 test('§1/§2 FLEX extraction BLOCKED — predicate + candidate list 제외', () => {
@@ -76,12 +77,19 @@ test('§5/§6/§7 real C1 min-A validation — 정상 target 통과 · malformed
   assert.equal(A.planAbsorption(bad,stone('poisonDot',2,0.3)).reason,'C1_VIOLATION');
 });
 
-test('§6 L10 면제 — L10은 pool상 affix 부재(A:0) → backbone 요구 안 함', () => {
-  // L10 A/B affix 자체가 없음(pool)
-  assert.equal(AFFIX_POOL.filter(a=>a.layer===10).length,0,'L10 affix pool 부재');
-  // layerLv10 target(backbone L1-9)에 흡수 성공 — L10-A 없다고 C1_VIOLATION 아님
+test('§6 L10-A 활성(ultDmg) — cap10 target은 L10-A backbone 필수(C1 자동활성)', () => {
+  // [P8B/LOCK-47] L10 pool = ultDmg 1종(uni:1 A backbone). 구 "L10 면제" 종료.
+  const l10=AFFIX_POOL.filter(a=>a.layer===10);
+  assert.equal(l10.length,1,'L10 affix = ultDmg 1종'); assert.equal(l10[0].id,'ultDmg');
+  assert.equal(l10[0].sub,'A'); assert.equal(l10[0].uni,1,'universal backbone');
+  // cap10 target에 L10-A 충전 시 흡수 성공
   const A=build(); A.setBag([{id:'t1',slot:'weapon',layerLv:10,affixes:backbone(10)},stone('poisonDot',2,0.3)]);
-  assert.ok(A.absorbStone(A.getBag()[1],'t1').ok,'L10 면제 — 흡수 성공');
+  assert.ok(A.absorbStone(A.getBag()[1],'t1').ok,'L10-A 충전 target → 흡수 성공');
+  // cap10 target에 L10-A 결손(L1-9 backbone만) → C1_VIOLATION(자동활성)
+  const bb9=[1,2,3,4,5,6,7,8,9].map(L=>aff(BB[L],2,0.1));
+  const B=build(); B.setBag([{id:'t2',slot:'weapon',layerLv:10,affixes:bb9},stone('poisonDot',2,0.3)]);
+  const r=B.absorbStone(B.getBag()[1],'t2');
+  assert.equal(r.ok,false,'L10-A 결손 cap10 → 거부'); assert.equal(r.reason,'C1_VIOLATION','C1 자동활성');
 });
 
 test('§11 atomic — FLEX_BLOCKED/C1_VIOLATION 실패 시 bag deep-equal 불변', () => {

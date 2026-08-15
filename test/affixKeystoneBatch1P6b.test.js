@@ -124,6 +124,6 @@ test('§8 eligibility — 8단 게이트 / slot / 아이템당 1개 cap / 확률
 });
 
 test('§9 legacy/구조 보호 — POOL 413/B 161, keystone은 v2only(legacy byte-identical)', () => {
-  assert.equal(POOL.length,415);assert.equal(POOL.filter(a=>a.sub==='B').length,163);
+  assert.equal(POOL.length,416);assert.equal(POOL.filter(a=>a.sub==='B').length,163);
   for(const id of KS)assert.equal(by(id).v2only,1,id+' v2only(legacy 제외)');
 });

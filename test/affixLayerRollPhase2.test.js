@@ -111,18 +111,23 @@ test('§5/§17-I,J,K slots·brType·DEMO banned 필터 준수', () => {
   }
 });
 
-test('§14 L10 현재 0 Pool — layerLv=10도 안전(에러/무한루프 없음), L10 어픽스 0건', () => {
-  const l10=POOL.filter(a=>a.layer===10).length;
-  assert.equal(l10,0,'현재 L10 Pool 0 전제');
+test('§14 L10-A(ultDmg) 활성 — layerLv=10 roll은 L10-A 생성, layerLv<10은 0', () => {
+  // [P8B/LOCK-47] L10 Pool = ultDmg 1종(uni:1 sole A backbone). cap10 roll은 매번 L10-A 충전.
+  const l10=POOL.filter(a=>a.layer===10);
+  assert.equal(l10.length,1,'L10 Pool = ultDmg 1종'); assert.equal(l10[0].id,'ultDmg');
   const api=makeApi({lv:500},false,new Set());
   seed(4040);
-  let produced10=0,count=0;
+  let with10=0,count=0;
   for(let i=0;i<400;i++){
     const r=api.rollAffixesLayered(5,'weapon',undefined,10);count++;
-    for(const a of r)if(DEF[a.id].layer===10)produced10++;
+    if(r.some(a=>DEF[a.id].layer===10))with10++;
   }
-  assert.equal(produced10,0,'L10 어픽스는 생성되지 않아야 함(Pool 0)');
+  assert.equal(with10,400,'cap10 roll은 매번 L10-A(ultDmg) 생성(sole A backbone)');
   assert.ok(count===400,'무한루프 없이 정상 종료');
+  // layerLv<10 → L10 어픽스 0(L=10 iteration 미실행)
+  let below=0;
+  for(let i=0;i<200;i++){const r=api.rollAffixesLayered(5,'weapon',undefined,9);for(const a of r)if(DEF[a.id].layer===10)below++;}
+  assert.equal(below,0,'layerLv<10 → L10-A 미출현');
 });
 
 test('§12 후보 0/부족 안전 — 빈 결과 허용, 예외 없음', () => {

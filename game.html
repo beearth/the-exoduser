@@ -11533,6 +11533,10 @@ const AFFIX_POOL=[
   {id:'comboBoost',type:0,tiers:[.12,.20,.35,.55,.75],unit:'pct',slots:['wpn'],group:'combo',weight:60,layer:6,sub:'A'},
   {id:'dashBoost',type:0,tiers:[.15,.25,.40,.65,.90],unit:'pct',slots:['wpn'],group:'dash',weight:55,layer:5,sub:'A'},
   {id:'skillBoost',type:0,tiers:[.10,.15,.25,.40,.55],unit:'pct',slots:['wpn'],group:'skill',weight:65,layer:6,sub:'A',uni:1},
+  // ═══ [Phase 8B / LOCK-47] L10-A ULTIMATE DAMAGE BACKBONE ═══
+  //  ultDmg = 궁극(Z Ultimate) 피해 %. universal C1 backbone(uni:1 → 전 15슬롯 L10-A 도달). v2only(legacy 롤 byte-identical 보존).
+  //  tier curve = skillBoost(uni:1 ability-damage% backbone) 재사용 — pool에 layer→magnitude 단조증가 규칙 부재(L9 rageDmg .08~.44 < L6 skillBoost .10~.55)이므로 인플레 금지. 소비자 _ultDmgMul() = Z hurtE 데미지 전용(execution/blackStar 미수혜).
+  {id:'ultDmg',type:0,tiers:[.10,.15,.25,.40,.55],unit:'pct',slots:['wpn'],group:'ultD',weight:50,layer:10,sub:'A',uni:1,v2only:1},
   // 무기+helm 공유
   {id:'elemFocus',type:0,tiers:[.08,.12,.20,.32,.44],unit:'pct',slots:['helm'],group:'elemfcs',weight:70,layer:4,sub:'A',uni:1},
   {id:'atkSpeed',type:0,tiers:[.04,.06,.10,.16,.22],unit:'pct',slots:['wpn','helm'],group:'aspd',weight:85,layer:5,sub:'A',uni:1},
@@ -12031,7 +12035,7 @@ const AFFIX_NAMES_KO={
   poisonDot:'맹독의',fireDot:'불꽃의',iceDot:'냉기의',lightChain:'번개의',darkCurse:'암흑의',
   armorPen:'관통의',critChance:'광폭의',staggerBns:'파쇄의',chainTarget:'연쇄의',
   killSlayer:'학살의',critExplosion:'폭발의',elemFocus:'집중의',atkSpeed:'쾌속의',parryBonus:'패리의',
-  comboBoost:'추적자의',dashBoost:'사슬의',skillBoost:'궁극의',cooldownRed:'집중력의',
+  comboBoost:'추적자의',dashBoost:'사슬의',skillBoost:'궁극의',cooldownRed:'집중력의',ultDmg:'종언의',
   defFlat:'강철의',maxHPFlat:'강인의',shieldFlat:'수호의',maxHPPct:'활력의',movSpeed:'신속의',
   fireRes:'화염수호',iceRes:'빙결수호',lightRes:'암전수호',darkRes:'암흑수호',poisonRes:'독수호',allRes:'전원소수호',
   physDR:'물리방패의',reflect:'반사의',thorns:'가시의',barrier:'흡수의',ccRes:'인내의',
@@ -12125,7 +12129,7 @@ const _AFFIX_DESC={
   poisonDot:'독 DoT',fireDot:'화상 DoT',iceDot:'빙결 DoT+감속',lightChain:'연쇄전격',darkCurse:'저주(힐차단)',
   armorPen:'방어무시',critChance:'치명타율',staggerBns:'스태거+',chainTarget:'체인타겟+',
   killSlayer:'처치 후 뎀+',critExplosion:'크리폭발(ATK×)',elemFocus:'원소뎀+',atkSpeed:'공격속도+',parryBonus:'패리보너스+',
-  comboBoost:'추적콤보+10',dashBoost:'사슬뎀+',skillBoost:'스킬뎀+',cooldownRed:'쿨다운-',
+  comboBoost:'추적콤보+10',dashBoost:'사슬뎀+',skillBoost:'스킬뎀+',cooldownRed:'쿨다운-',ultDmg:'궁극뎀+',
   defFlat:'방어력+',maxHPFlat:'HP+',shieldFlat:'쉴드+',maxHPPct:'HP%+',movSpeed:'이동속도+',
   critRate:'크리확률+',critDmgW:'크리배율+',
   fireRes:'화염저항',iceRes:'빙결저항',lightRes:'암전저항',darkRes:'암흑저항',poisonRes:'독저항',allRes:'전원소저항',
@@ -29702,7 +29706,8 @@ function update(){
         const _lvSlv=G._lavaField.slv||1;
         // 필살기 10배 스케일: 용암 도트 틱 Lv1 ×4, Lv20 ×40
         const _ult10xMul=(1+((_lvSlv-1)*9/19)); // Lv1=1.0, Lv20=10.0
-        let tickDmg=Math.max(1,~~(magicRef()*statInt()*pMagicMul()*(4*_ult10xMul)));
+        // [L10-A] ultDmg% 배수 — lavaSummon 20s DOT까지 궁극 피해 semantic 포함(FULL_COVERAGE). DOT는 이미 _ult10xMul 파이프라인 → 배수 1지점만 추가(대수술 없음).
+        let tickDmg=Math.max(1,~~(magicRef()*statInt()*pMagicMul()*(4*_ult10xMul)*_ultDmgMul()));
         if(tickDmg>0){
           // 용암 도트도 순수데미지: 물리/마법/투사체 분류 및 쉴드 관통 규칙 무시
           hurtE(e,tickDmg,Math.atan2(e.y-P.y,e.x-P.x),true,{dot:true,pure:true,magic:true,noImpact:true,shieldHit:true},EL.F);
@@ -38360,6 +38365,11 @@ function activateIceShatter(){
   updateQS();
 }
 
+// ═══ [Phase 8B / LOCK-47] L10-A ULTIMATE DAMAGE 소비자 ═══
+//  ultDmg(L10-A) = 궁극(Z Ultimate) 피해 배수. 장비 어픽스 합산(_eqAffix)만 참조 — persistent runtime state 없음.
+//  적용 = Z ult 데미지 산출 3지점(holyBlast 직격 / lavaSummon 직격 / lava DOT 틱)에서 곱. per-skill 하드mult×_ult10xMul 위에 배수.
+//  execution(X키·직접 HP감산)·blackStar(noDmg)은 이 3지점을 타지 않음 → 구조적으로 미수혜(격리 보장). cooldown/crit/element/Rage 무관.
+function _ultDmgMul(){return 1+_eqAffix('ultDmg');}
 // ═══ 신성폭발 발사 ═══
 function fireHolyBlast(){
   if(!P._hbCasting)return;
@@ -38368,8 +38378,8 @@ function fireHolyBlast(){
   P._hbCd=~~(7200*(1+_cdRed()));
   // 필살기 10배 스케일: Lv20 = Lv1의 10배
   const _ult10xMul=(1+((slv-1)*9/19)); // Lv1=1.0, Lv20=10.0
-  // 신성폭발: Lv1 ×50, Lv20 ×500 (중앙 별은 추가 2배)
-  const dmg=~~(magicRef()*statInt()*pMagicMul()*(50*_ult10xMul));
+  // 신성폭발: Lv1 ×50, Lv20 ×500 (중앙 별은 추가 2배). [L10-A] ultDmg% 배수 적용.
+  const dmg=~~(magicRef()*statInt()*pMagicMul()*(50*_ult10xMul)*_ultDmgMul());
   const cx=P._hbX,cy=P._hbY;
   // 범위: Lv1=2000, Lv20=4000 선형 확장
   const blastR=2000+((slv-1)*(2000/19));
@@ -38434,8 +38444,8 @@ function fireLavaSummon(){
   P._lvCd=~~(7200*(1+_cdRed()));
   const cx=P._lvX,cy=P._lvY;
   const _ult10xMul=(1+((slv-1)*9/19)); // Lv1=1.0, Lv20=10.0
-  // 용암소환 직격: Lv1 ×8, Lv20 ×80
-  const dmg=~~(magicRef()*statInt()*pMagicMul()*(8*_ult10xMul));
+  // 용암소환 직격: Lv1 ×8, Lv20 ×80. [L10-A] ultDmg% 배수 적용.
+  const dmg=~~(magicRef()*statInt()*pMagicMul()*(8*_ult10xMul)*_ultDmgMul());
   // 범위: Lv1=2000, Lv20=4000 선형 확장
   const blastR=2000+((slv-1)*(2000/19));
   for(let i=0;i<ens.length;i++){
