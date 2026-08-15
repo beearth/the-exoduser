@@ -4176,6 +4176,8 @@ const _DCP={
     if(!drew){this.reason='explicit';return}
     this.flush++;
     var r=this.reason;
+    // _quad가 _MQ 도달로 flush했고 tex/blend 사유가 아니면 buffer-full로 귀속 (_quad 핫패스 무개입)
+    if(r==='explicit'&&qc>=_MQ){r='buffull';this.bufFull++}
     if(r==='tex')this.rTex++; else if(r==='blend')this.rBlend++; else if(r==='buffull')this.rBufFull++; else this.rExplicit++;
     this.reason='explicit';
     this.dc++;
@@ -4575,7 +4577,7 @@ _txtEvict=function(){if(_txtUV.size>600){for(const[mk,mv]of _txtUV)if(_txtTick-m
 
 // ── 공통: _quad (오프셋 기반) ──
 function _quad(x0,y0,x1,y1,x2,y2,x3,y3,u0,v0,u1,v1,r,g,b,a,sh,p1,p2){
-if((_bufOff+_qCnt)>=_MQ){if(_DCP.on){_DCP.bufFull++;_DCP.reason='buffull'}_flush();}const o=(_bufOff+_qCnt)*4*_FPV;
+if((_bufOff+_qCnt)>=_MQ)_flush();const o=(_bufOff+_qCnt)*4*_FPV;
 _buf[o]=x0;_buf[o+1]=y0;_buf[o+2]=u0;_buf[o+3]=v0;_buf[o+4]=r;_buf[o+5]=g;_buf[o+6]=b;_buf[o+7]=a;_buf[o+8]=sh;_buf[o+9]=p1;_buf[o+10]=p2;
 const o1=o+_FPV;_buf[o1]=x1;_buf[o1+1]=y1;_buf[o1+2]=u1;_buf[o1+3]=v0;_buf[o1+4]=r;_buf[o1+5]=g;_buf[o1+6]=b;_buf[o1+7]=a;_buf[o1+8]=sh;_buf[o1+9]=p1;_buf[o1+10]=p2;
 const o2=o+_FPV*2;_buf[o2]=x2;_buf[o2+1]=y2;_buf[o2+2]=u1;_buf[o2+3]=v1;_buf[o2+4]=r;_buf[o2+5]=g;_buf[o2+6]=b;_buf[o2+7]=a;_buf[o2+8]=sh;_buf[o2+9]=p1;_buf[o2+10]=p2;
@@ -4701,25 +4703,46 @@ return c;}`;
   let _curBG=whiteBG,_curPipe=pipeN;
 
   // ★ _flush: draw 명령만 기록. GPU 제출 안 함. (WebGPU에선 cmds 1개 = drawIndexed 1회 = drawCall 1)
+  //   [DCPROF] 원본 그대로 설치 — dcprof OFF면 계측 참조/오버헤드 0 (핫패스 바이트동일).
   _flush=function(){
-    if(_qCnt===0){if(_DCP.on)_DCP._onFlush(0,false);return}
+    if(_qCnt===0)return;
     if(_bufOff+_qCnt>_MQ){
       console.warn('[GPU] 쿼드 오버플로우 — 프레임 드랍');
-      if(_DCP.on)console.warn('[DCPROF GPU-OVERFLOW] bufOff='+_bufOff+' qCnt='+_qCnt+' MQ='+_MQ);
       _qCnt=0;
       return;
     }
-    const _qc=_qCnt;
     _cmds.push({bg:_curBG,pipe:_curPipe,startQ:_bufOff,numQ:_qCnt});
     _bufOff+=_qCnt;
     _qCnt=0;
-    if(_DCP.on)_DCP._onFlush(_qc,true);
   };
-  _setTex=function(bg){if(bg!==_curBG){if(_DCP.on){_DCP.setTex++;_DCP.texChange++;_DCP.reason='tex'}_flush();_curBG=bg}};
+  _setTex=function(bg){if(bg!==_curBG){_flush();_curBG=bg}};
   _setBlend=function(additive){
     const p=additive?pipeA:pipeN;
-    if(p!==_curPipe){if(_DCP.on){_DCP.setBlend++;_DCP.reason='blend'}_flush();_curPipe=p}
+    if(p!==_curPipe){_flush();_curPipe=p}
   };
+  // ── [DCPROF] WebGPU 계측판: dcprof ON일 때만 설치 ──
+  if(_DCP.on){
+    if(!IS_ELECTRON)console.log('[DCPROF] WebGPU 계측판 설치');
+    _flush=function(){
+      if(_qCnt===0){_DCP._onFlush(0,false);return}
+      if(_bufOff+_qCnt>_MQ){
+        console.warn('[GPU] 쿼드 오버플로우 — 프레임 드랍');
+        console.warn('[DCPROF GPU-OVERFLOW] bufOff='+_bufOff+' qCnt='+_qCnt+' MQ='+_MQ);
+        _qCnt=0;
+        return;
+      }
+      const _qc=_qCnt;
+      _cmds.push({bg:_curBG,pipe:_curPipe,startQ:_bufOff,numQ:_qCnt});
+      _bufOff+=_qCnt;
+      _qCnt=0;
+      _DCP._onFlush(_qc,true);
+    };
+    _setTex=function(bg){if(bg!==_curBG){_DCP.setTex++;_DCP.texChange++;_DCP.reason='tex';_flush();_curBG=bg}};
+    _setBlend=function(additive){
+      const p=additive?pipeA:pipeN;
+      if(p!==_curPipe){_DCP.setBlend++;_DCP.reason='blend';_flush();_curPipe=p}
+    };
+  }
 
   // ★ _glFlush: 프레임 끝. 1 pass, 1 submit, getCurrentTexture 1번.
   _glFlush=function(){
@@ -4839,26 +4862,38 @@ oC=c;}`;
     GL.bindTexture(GL.TEXTURE_2D,_curTex);_texCache.set(src,{tex:t,v:src._glVer||0});return t};
 
   // ★ WebGL은 즉시 모드: flush마다 그리고 리셋
-  _flush=function(){if(_qCnt===0){if(_DCP.on)_DCP._onFlush(0,false);return}
-    const _qc=_qCnt;
-    // [DCPROF] EBO 용량 대비 인덱스 초과 감지 — "glDrawElements: Insufficient buffer size"의 직접 조건
-    if(_DCP.on&&_qc*6>_idx.length)console.warn('[DCPROF EBO-OVERFLOW] qCnt='+_qc+' needIdx='+(_qc*6)+' ebo.len='+_idx.length+' MQ='+_MQ+' bufOff='+_bufOff);
+  //   [DCPROF] 원본을 그대로 설치 — dcprof OFF면 계측 참조/오버헤드 0 (핫패스 바이트동일).
+  _flush=function(){if(_qCnt===0)return;
     GL.useProgram(_prog);
     GL.bindVertexArray(_vao);GL.bindBuffer(GL.ARRAY_BUFFER,_vbo);
     GL.bufferSubData(GL.ARRAY_BUFFER,0,_buf.subarray(0,_qCnt*4*_FPV));
     GL.bindTexture(GL.TEXTURE_2D,_curTex);GL.uniform2f(_uR,C.width,C.height);
-    GL.drawElements(GL.TRIANGLES,_qCnt*6,GL.UNSIGNED_SHORT,0);
-    // [DCPROF] restore 직후에만 getError로 "Insufficient buffer size" 실측 (평시엔 stall 회피 위해 스킵)
-    if(_DCP.on&&_DCP.restoreProbe>0){_DCP.restoreProbe--;const _ge=GL.getError();if(_ge)console.warn('[DCPROF RESTORE-ERR] glErr=0x'+_ge.toString(16)+' drawCount='+(_qc*6)+' type=UNSIGNED_SHORT offset=0 eboIdxCap='+_idx.length+' vboBytes='+_buf.byteLength+' qCnt='+_qc);}
-    _qCnt=0;_bufOff=0;
-    if(_DCP.on)_DCP._onFlush(_qc,true)};
-
-  _setTex=function(t){if(t!==_curTex){if(_DCP.on){_DCP.setTex++;_DCP.texChange++;_DCP.reason='tex'}_flush();_curTex=t}};
-  _setBlend=function(additive){if(_DCP.on){_DCP.setBlend++;_DCP.reason='blend'}_flush();
+    GL.drawElements(GL.TRIANGLES,_qCnt*6,GL.UNSIGNED_SHORT,0);_qCnt=0;_bufOff=0};
+  _setTex=function(t){if(t!==_curTex){_flush();_curTex=t}};
+  _setBlend=function(additive){_flush();
     GL.blendFunc(additive?GL.ONE:GL.SRC_ALPHA,
                  additive?GL.ONE:GL.ONE_MINUS_SRC_ALPHA)};
   _glFlush=function(){_flush()};
   _clearFrame=function(){_flush();GL.clearColor(0,0,0,1);GL.clear(GL.COLOR_BUFFER_BIT);_qCnt=0;_bufOff=0;_curTex=wt};
+  // ── [DCPROF] 계측판: dcprof ON일 때만 설치. _glFlush/_clearFrame은 현재 _flush 바인딩을 호출하므로 재정의 불필요. ──
+  if(_DCP.on){
+    if(!IS_ELECTRON)console.log('[DCPROF] WebGL2 계측판 설치');
+    _flush=function(){if(_qCnt===0){_DCP._onFlush(0,false);return}
+      const _qc=_qCnt;
+      if(_qc*6>_idx.length)console.warn('[DCPROF EBO-OVERFLOW] qCnt='+_qc+' needIdx='+(_qc*6)+' ebo.len='+_idx.length+' MQ='+_MQ+' bufOff='+_bufOff);
+      GL.useProgram(_prog);
+      GL.bindVertexArray(_vao);GL.bindBuffer(GL.ARRAY_BUFFER,_vbo);
+      GL.bufferSubData(GL.ARRAY_BUFFER,0,_buf.subarray(0,_qCnt*4*_FPV));
+      GL.bindTexture(GL.TEXTURE_2D,_curTex);GL.uniform2f(_uR,C.width,C.height);
+      GL.drawElements(GL.TRIANGLES,_qCnt*6,GL.UNSIGNED_SHORT,0);
+      if(_DCP.restoreProbe>0){_DCP.restoreProbe--;const _ge=GL.getError();if(_ge)console.warn('[DCPROF RESTORE-ERR] glErr=0x'+_ge.toString(16)+' drawCount='+(_qc*6)+' type=UNSIGNED_SHORT offset=0 eboIdxCap='+_idx.length+' vboBytes='+_buf.byteLength+' qCnt='+_qc);}
+      _qCnt=0;_bufOff=0;
+      _DCP._onFlush(_qc,true)};
+    _setTex=function(t){if(t!==_curTex){_DCP.setTex++;_DCP.texChange++;_DCP.reason='tex';_flush();_curTex=t}};
+    _setBlend=function(additive){_DCP.setBlend++;_DCP.reason='blend';_flush();
+      GL.blendFunc(additive?GL.ONE:GL.SRC_ALPHA,
+                   additive?GL.ONE:GL.ONE_MINUS_SRC_ALPHA)};
+  }
   _initEnemyInstancing();
   _initVfxInstancing();
 

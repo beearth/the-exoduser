@@ -240,3 +240,42 @@
    - `[DCPROF EBO-OVERFLOW]` / `[DCPROF RESTORE-ERR]` — restore 직후 stale `_qCnt`·drawCount·EBO 용량 (독립 결함 확증).
    - `[DCPROF CTX-LOST]`/`[DCPROF CTX-RESTORED]` — 폭발→손실→복구 타임라인.
 4. 이 로그가 나오면 root cause subsystem이 확정되고, 그때 **최소 수정**을 제시한다. (현재는 수정 없음.)
+
+---
+
+## 계측 성능 회귀 수정 (2026-08-15) — install-time gating
+
+> b2790050 적용 후 로컬 인게임 FPS 하락 신고 → root-cause 조사 중단하고 **계측 자체의 성능 회귀**부터 처리.
+
+### 원인
+b2790050은 핫패스 함수 `_flush`/`_setTex`/`_setBlend`(배치당 수천 회/프레임 호출)의 본문을
+직접 확장하고 `_DCP` 참조 + 무조건 `const _qc=_qCnt`를 넣었다. `_DCP.on` 게이트라 OFF 시
+로직은 안 타지만, **함수 본문이 커져 V8 인라이닝/최적화 손실 위험**(실 GPU에선 프레임이
+CPU-bound라 이 손실이 크게 체감). `_quad`(정점당 최핫)에도 버퍼풀 훅을 넣었다.
+
+### 측정 (JS-isolated, GL 스텁 → 순수 JS 핫패스 비용, 동일 V8)
+| 빌드 | flushJS ns/iter | quadJS ns/quad |
+|---|---|---|
+| 계측 이전(parent) | 53~88 | 12.7~21.3 |
+| b2790050 OFF | 64~96 | 14~24 |
+| **수정 후 OFF** | **56~87 (parent와 동일)** | **13~18 (parent와 동일)** |
+| 수정 후 ON | 72~101 | 13~21 |
+- SwiftShader 실 drawElements 포함 벤치는 GPU가 지배해 μs 단위 노이즈로 JS 차이 불가시 →
+  GL no-op 스텁으로 순수 JS만 격리 측정. (headless document.hidden 루프는 성능 증거로 미사용.)
+
+### 수정 내용 (install-time gating, game.html)
+- `_initWebGL`/`_initWebGPU`: `_flush`/`_setTex`/`_setBlend`를 **계측 이전 원본 그대로 설치**하고,
+  **`if(_DCP.on)`일 때만** 계측판으로 재할당. → dcprof OFF면 설치되는 함수가 원본과 **바이트 동일**,
+  `_DCP` 참조/분기/`_qc` 전부 없음. (`_glFlush`/`_clearFrame`는 현재 `_flush` 바인딩을 호출하므로
+  재정의 불필요.)
+- `_quad`: 버퍼풀 훅 제거 → **원본 바이트 동일**. 버퍼풀 사유 귀속은 계측판 `_onFlush`에서
+  `qc>=_MQ`로 판정(핫패스 무개입).
+- draw() 진입/subsystem 마크 ×7/loop 리포트/인스턴싱 훅은 프레임당(또는 few/frame) 단일
+  `if(_DCP.on)` 분기 — per-primitive 아님, 측정상 OFF 영향 0이라 유지.
+- ON에서도 per-call allocation/string/stack 없음. stack은 runaway 최초 1회(`_capture`)만.
+
+### 결과
+- **OFF 핫패스 = 계측 이전과 동일**(측정 확인). b2790050의 계측은 그대로 유지(진단 기능 무손실).
+- 회귀 원인이 계측 OFF 오버헤드였다면 이 수정으로 해소. (신고된 실기 하락이 dcprof ON 잔존/
+  URL·localStorage 지속 때문이었다면, OFF 확인 + 이 구조로 확정 해소.)
+- root-cause(2.7M) fix 및 restore-bug fix는 여전히 **미적용** — 별도 issue로 분리 유지.
