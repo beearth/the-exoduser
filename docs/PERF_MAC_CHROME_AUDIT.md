@@ -307,7 +307,12 @@ maxIdxCount = 27,815,124  (=4,635,854 quads ×6)                    ← 단일 �
 | 4 | EBO 용량 | `_MQ*6 = 393,216` 초과 (27.8M) → `Insufficient buffer size` (GL 0x502) + 거대 draw 스톨. |
 
 - **dcprof OFF에서도 동일 발생**: OFF `_flush`도 `GL.drawElements(_qCnt*6,…)` 호출 → stale `_qCnt`로 동일 폭발. DCPROF는 이 사건을 **로깅만** 할 뿐 원인 아님(계측 무관 게임 버그).
-- **정상 맵 전환(context-loss 없음)에서는 미발생**: 자동으로 stage 0→14 nextStage 전환 14회 구동 시 peak dc=77/frame, RUNAWAY·CTX-LOST 0. 즉 "2.7M 맵 전환 폭발"은 **그 전환 중 context-loss가 동반될 때**(Mac 메모리/드라이버 리셋 추정)만 발생. restore-bug와 2.7M 인시던트는 **동일 root cause**로 확인됨(별개 아님).
+- **정상 맵 전환(context-loss 없음)에서는 미발생**: 자동으로 stage 0→14 nextStage 전환 14회 구동 시 peak dc=77/frame, RUNAWAY·CTX-LOST 0.
+- **⚠ 정정(2026-08-16): restore-bug ≠ 원 "2.7M" 인시던트 (별개, 단위 상이)**. 처음엔 동일 root로 적었으나 원 측정값 대조 결과 **별개**로 정정:
+  - restore-bug 재현값 = drawElements **호출 1회 / 인덱스 27,815,124 / 쿼드 4,635,854**.
+  - 원 인시던트 "2.7M"(본 문서 L166 `drawCalls:2775741`) = `_PERF_PROF.drawCalls` = **drawArrays/drawElements 호출(invocation) 횟수**(L50320-50321 후킹, 30프레임 창 누적 후 리셋). 즉 **30프레임 동안 약 277만 호출 ≈ 92,500 draw-call/frame**(평시 30f당 7~9천 → 300~400배).
+  - **단위가 다르다**: restore-bug=단일 거대 호출(1 invocation), 원 인시던트=호출 횟수 폭증(~92k/frame invocations = 배칭 붕괴, quad당 1 draw 수준). → **동일 root 아님**.
+  - 인시던트 시퀀스 재해석: ① 무언가가 전환 창에서 draw-call 호출 폭증(2.7M) → GPU 과부하 → CONTEXT_LOST → ② 손실 중 `_qCnt` runaway → ③ 복구 첫 flush 오버사이즈 draw(`Insufficient buffer size`). **이 수정은 ②③(하류)만 차단. ①(2.7M invocation 폭증)은 STILL OPEN.**
 
 ### 적용한 최소 수정 (2026-08-16, game.html) — 정정성 버그픽스, cap/생략/품질하향 없음
 1. `webglcontextlost` 핸들러: 즉시 `_qCnt=0;_bufOff=0;` + no-op flush들을 **리셋판**으로 교체
@@ -330,3 +335,40 @@ maxIdxCount = 27,815,124  (=4,635,854 quads ×6)                    ← 단일 �
 ### 남은 이슈 (이 수정과 별개)
 - **왜 context-loss가 발생하는가**(Mac 메모리/드라이버 리셋 촉발원)는 미해결 — 이 수정은 loss가 나도 **폭발/스톨을 막는** 하류 방어. 근본 촉발원(맵 캐시 텍스처 업로드 피크 등)은 [1][5]의 DPR·preserveDrawingBuffer·VRAM 항목과 함께 별도 추적.
 - **현재 "지속적" 로컬 FPS 하락**: 이 자동화 환경(AMD 데스크톱)에서는 정상 플레이 전 구간 재현 안 됨(steady 375~560fps). restore-bug는 loss-이벤트당 1프레임 스톨이라 지속 저하와는 결이 다름 — 지속 저하가 실제라면 [1순위] DPR/fpsCap·[2순위] preserveDrawingBuffer(Mac 환경 요인) 우선.
+
+---
+
+## 3-트랙 분리 조사 (2026-08-16) — 자동화 실측, Track A만 수정
+
+> 사용자 지시: (A) restore stale-batch bug는 LOCK, (B) 원 "2.7M"은 원측정값 근거로 재판정, (C) 지속 FPS 저하 별도 추적, (D) context-loss 촉발원 별도 측정. 측정 우선, C/D는 수정 금지.
+
+### Track A — Restore stale-batch bug : CONFIRMED / FIXED / LOCKED
+- 커밋 1728852c. 위 "restore-bug RUNTIME CONFIRMED" 섹션 참조. **되돌리거나 확대하지 않음(LOCK).**
+
+### Track B — 원 "2.7M" 인시던트 : STILL OPEN (draw-call invocation count)
+- 원 측정값 = 본 문서 L166 `drawCalls:2775741` = `_PERF_PROF.drawCalls`(GL drawArrays/drawElements **호출 횟수**, 30프레임 창 누적). **quad/index/batch element 오기가 아니라 실제 invocation count.**
+- ∴ restore-bug(단일 27.8M-index 호출)와 **별개**. ~92,500 draw-call/frame invocation 폭증 = **배칭 붕괴**(quad당 draw 1 수준) 후보. 정상은 tex 전환당 flush로 ~190 draws/frame(아래 Track C 실측)이므로, 92k/frame은 텍스처 thrash 극단화 또는 맵캐시 미완성 시 per-tile immediate draw 폴백 유력.
+- **미해결. OPEN 유지.** 실기(Mac, slot=119 조건) 또는 특정 맵/캐시-미완성 타이밍에서만 발현 추정 — 이 데스크톱 자동화(정상 전환 14회 + 72초 부하)에서 배칭 붕괴 미재현(peak 197 draws/frame).
+
+### Track C — 지속적 로컬 FPS 저하 : NOT REPRODUCED
+- 72초 연속(testchar Lv500, `_btGod`, 실입력 버스트=LMB/RMB/스킬키/이동, 5회 transition, dcprof ON) 자동 부하:
+  | 구간 | p95(ms) | p99(ms) | fps | draws/frame | context-loss |
+  |---|---|---|---|---|---|
+  | 초반 3창 | 4.0 | 7.6 | 436 | 108 | 0 |
+  | 후반 3창 | 2.0 | 3.0 | 852 | 33 | 0 |
+- **드리프트/누수/열화 없음** — FPS 변동은 전적으로 스테이지별 적 수(0~250)에 종속. 시간경과 악화 0. context-loss/EBO-overflow/runaway 전 구간 0.
+- 전환 프레임에 단발 히치(~70~150ms) 있으나 즉시 회복(창 p99 정상). **지속 저하 아님.**
+- `texAvg ≈ flushAvg ≈ glDcAvg` 실측 → flush는 **텍스처 전환당 1회**가 지배(draw ≈ setTex). 배칭이 tex-bound.
+- 결론: 이 하드웨어(AMD RX 9070 XT/D3D11/DPR1/1280×720)에서 지속 저하 root cause **미확정**. 실기 요인(Metal/DPR2 상당 해상도/ProMotion 120Hz/VRAM) 우선순위 유지. **OPEN.**
+
+### Track D — Mac context-loss 촉발원 : 측정 — **텍스처 미해제 누수(VRAM 피크) 유력**
+- 텍스처 자원 계측(createTexture/deleteTexture/texImage2D 후킹, 6회 transition):
+  | 시점 | liveTex(창출) | deleteTexture | maxSingle |
+  |---|---|---|---|
+  | BASE st0 | 90 | **0** | 125.18MB (6408×5121) |
+  | TRANS#5 st6 | **136** | **0** | 125.18MB (6408×5121) |
+- **코드 전체에 `deleteTexture` 호출 0건**(grep 확인). GL 텍스처는 **명시적 해제 없음** — `_texCache`(WeakMap, src 캔버스 키)의 JS GC + 드라이버 지연 회수에만 의존.
+- 맵 전환마다 신규 맵 캔버스(`_mapCvs`) → **125MB급 단일 맵 텍스처** 신규 생성. 구 맵 텍스처의 `WebGLTexture` 래퍼는 GC 전까지 잔존 → **전환 폭주 시 GPU 텍스처 메모리가 정상치 훨씬 위로 순간 피크**.
+- 인과 가설(측정 근거): 제한 VRAM(Mac 통합/공유 or 소용량) + 미해제 125MB×N 누적 → 전환 창 VRAM 고갈 → **드라이버 컨텍스트 리셋(context lost)**. 대용량 VRAM(이 AMD 16GB+)은 흡수 → **loss 미발생**(재현 불가 이유와 일치).
+- 이것이 Track A(restore-bug)의 **선행 트리거** 후보이자, Track B(2.7M) 발현 시 GPU 스트레스 가중 요인일 수 있음.
+- **측정만 완료. 수정 미적용**(품질저하/DPR 강제제한 금지 지시 준수). 후속: 전환 시 구 맵/스테이지 텍스처 명시적 `deleteTexture` + 125MB 맵텍스처 청킹/해상도 재검토를 별도 트랙에서 설계(측정→최소수정).
