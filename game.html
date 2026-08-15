@@ -4899,6 +4899,7 @@ let _pathA=[],_pathL=[],_pathR=[],_pathE=[];
 let _sstk=[],_sstkPool=[],_sstkPoolI=0;
 function _uploadCanvasTex(src){
   if(_useGPU){const bg=_getTex(src);_setTex(bg);return}
+  if(!_useGL||!GL)return; // WebGL context lost — GL 직접 호출 방지 (restored 시 _initWebGL로 텍스처 자동 재업로드)
   const tex=_getTex(src);_setTex(tex);
   const prev=_texUploaded.get(src);const ver=src._glVer||0;
   if(!prev||prev.w!==src.width||prev.h!==src.height||prev.v!==ver){
@@ -35753,6 +35754,7 @@ const _drSnapCvs=document.createElement('canvas'),_drSnapCtx=_drSnapCvs.getConte
 function _drCapture(){
   const cw=C.width,ch=C.height;
   if(!cw||!ch)return;
+  if(!_useGL&&!_useGPU)return; // WebGL context lost — 빈 프레임 캡처 방지 (리플레이 검은 프레임 오염 차단)
   const scale=Math.min(1,480/Math.max(cw,ch));
   const w=~~(cw*scale)||1,h=~~(ch*scale)||1;
   try{

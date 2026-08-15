@@ -157,3 +157,31 @@
 4. **`GL.flush()` 제거** (L43347)
 5. **`X.filter` 제거** — 빙결 오브 hue-rotate를 프리렌더 캔버스로 대체
 6. **`_fogGLTime` 수정**: `+=0.016` → `+=actualDeltaTime` (또는 `_dtSp/60`)
+
+---
+
+## 인시던트: 맵 전환 시 WebGL context lost + 루프 크래시 스팸 (2026-08-15)
+
+### 증상 (콘솔 로그, slot=119)
+- 맵 로드 직후 첫 PERF 리포트에서 **`drawCalls:2775741`** (평소 7천~9천 대 → 약 300~400배 폭발).
+- 직후 `WebGL: CONTEXT_LOST_WEBGL: loseContext: context lost` (GPU 드라이버 리셋).
+- context lost 구간 동안 `[LOOP CRASH] Cannot read properties of null (reading 'bindTexture')` 무한 반복.
+- context restored 후 `GL_INVALID_OPERATION: glDrawElements: Insufficient buffer size` 1회.
+- 사용자 관찰: **사망 리플레이가 "이상함"** (검은 프레임 섞임).
+
+### 원인 사슬 (단일 root → 3증상)
+| 단계 | 위치 | 내용 |
+|---|---|---|
+| **root** | 맵 전환 렌더 창 | drawCall 폭발(~277만) → GPU 컨텍스트 리셋. **미해결 (아래 TODO)** |
+| 증상1 | `_uploadCanvasTex` (game.html ~L4906) | context lost 핸들러(L4787)가 `GL=null` + 형제 함수(`_flush/_setTex/_getTex/_setBlend/_glFlush/_clearFrame`) no-op 교체 시 **`_uploadCanvasTex`만 누락** → `GL.bindTexture` 직접 호출 → null crash. `fillText`/`drawImage` 경로에서 매 프레임 스팸. |
+| 증상2 | `_drCapture` (game.html ~L35753) | 메인 캔버스 `C`를 `drawImage`로 복사 → context lost 구간엔 빈/검은 프레임이 리플레이 버퍼에 섞임. |
+
+### 적용한 수정 (2026-08-15)
+1. `_uploadCanvasTex`: `if(_useGPU)` 분기 직후 **`if(!_useGL||!GL)return;`** 가드 추가. restored 시 `_initWebGL`이 텍스처 자동 재업로드하므로 손실 없음.
+2. `_drCapture`: 초입에 **`if(!_useGL&&!_useGPU)return;`** 가드 추가. context lost 구간 캡처 스킵 → 리플레이 검은 프레임 오염 차단.
+
+두 수정 모두 방어 가드(no-op skip)로 로직 변경 없음. 컨텍스트 손실 시 **크래시 스팸 대신 프레임 정지 후 자동 복구**.
+
+### 미해결 TODO (root cause)
+- **맵 전환 프레임의 drawCall 폭발(~277만)**: 맵 캐시(`_tickBuildMapCache`, `_bmcDone`) 완성 전 렌더 창에서 무엇이 프레임당 ~92k 드로우콜을 내는지 미확정. 후보: (a) 맵 캐시 미완성 시 타일 단위 immediate 드로우 폴백, (b) 적 300+ 인스턴싱 버퍼 미준비 시 per-enemy 폴백, (c) restored 후 `Insufficient buffer size`로 보아 배처/인스턴싱 버퍼 용량 초과 flush 누락.
+- **다음 단계**: 맵 전환 첫 30프레임 동안 drawCall 소스를 세분(맵/적/파티클/텍스트) 카운터로 분해 → 폴백 경로 특정 후 배칭/캐시-게이트 적용. 성능·다중경로 변경이므로 heavy 에이전트 위임 권장.
