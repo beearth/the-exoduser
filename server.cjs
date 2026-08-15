@@ -16,7 +16,7 @@ if (fs.existsSync(_envPath)) {
   });
 }
 
-const PORT = 3333;
+const PORT = +process.env.PORT || 3333;
 const ROOT = __dirname;
 const SAVE_DIR = path.join(ROOT, 'saves');
 const FAVICON_ICO_PATH = path.join(ROOT, 'favicon.ico');

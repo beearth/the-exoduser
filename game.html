@@ -21676,7 +21676,7 @@ function _txClose(){_txState=null;if(typeof renderInv==='function')try{renderInv
 function _openExtractPanel(bagIdx){const it=INV.bag[bagIdx];if(!it||it.type==='affixStone')return;_txState={mode:'extract',itemId:it.id,sel:null};_txRender();}
 function _openAbsorbPanel(bagIdx){const st=INV.bag[bagIdx];if(!st||st.type!=='affixStone')return;_txState={mode:'absorb',stoneRef:st,targetId:null};_txRender();}
 function _txSelExtract(id){if(_txState)_txState.sel=id;_txRender();}
-function _txSelTarget(id){if(_txState)_txState.targetId=id;_txRender();}
+function _txSelTarget(id){if(_txState){if(id===null||id===undefined){_txState.targetId=null;}else{const _t=INV.bag.find(x=>x&&x.type!=='affixStone'&&String(x.id)===String(id));_txState.targetId=_t?_t.id:id;}}_txRender();} // [P7E] onclick 문자열 id → canonical item.id(숫자) 해소: absorbStone/preview strict === 매칭 복구(domain 불변)
 function _txDoExtract(){if(!_txState||!_txState.sel)return;const r=_uiExtract(_txState.itemId,_txState.sel);if(r.ok)_txClose();else _txRender();}
 function _txDoAbsorb(){if(!_txState||!_txState.targetId)return;const r=_uiAbsorb(_txState.stoneRef,_txState.targetId);if(r.ok)_txClose();else _txRender();}
 function _txRender(){const rp=$('invRight');if(!rp||!_txState)return;rp.innerHTML='';const box=document.createElement('div');box.style.cssText='padding:10px;font-size:.8rem;color:#d8c8b0';
@@ -36628,7 +36628,7 @@ function _panelBack(){
   return false
 }
 function closePanel(id){$(id).classList.remove('on');G.paused=false}
-function closeAllPanels(){$('resetConfirm')&&($('resetConfirm').style.display='none');['settings','invPanel','forge','storagePanel','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;_skPopOwnsPause=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;_skExpandedId=null;const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';/* 패드 UI 잔류 정리 */for(let i=0;i<16;i++){const el=$('qs'+i);if(el)el.classList.remove('sk-drop-hover')}const _uc=$('ultSlot');if(_uc){_uc.classList.remove('sk-drop-hover');_uc.style.outline='';_uc.style.outlineOffset=''}document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}})}
+function closeAllPanels(){$('resetConfirm')&&($('resetConfirm').style.display='none');['settings','invPanel','forge','storagePanel','statPanel','skillPanel'].forEach(id=>{$(id).classList.remove('on')});G.paused=false;_skPopOwnsPause=false;if(G.forgeOpen)BGM.play(BGM.stageKey(G.stage));G.forgeOpen=false;_fuseSelId=null;_skExpandedId=null;if(typeof _txState!=='undefined')_txState=null;/* [P7E] 인벤 전체 닫힘(ESC/Tab) 시 transfer 선택 초기화 — 재진입 stale 패널 방지(_txClose 미경유 경로) */const _sp=$('skSlotPop');if(_sp)_sp.style.display='none';const _cf=$('invCompareFloat');if(_cf)_cf.style.display='none';const _rc=$('resetConfirm');if(_rc)_rc.style.display='none';/* 패드 UI 잔류 정리 */for(let i=0;i<16;i++){const el=$('qs'+i);if(el)el.classList.remove('sk-drop-hover')}const _uc=$('ultSlot');if(_uc){_uc.classList.remove('sk-drop-hover');_uc.style.outline='';_uc.style.outlineOffset=''}document.querySelectorAll('[style*="outline"]').forEach(el=>{if(el.style.outline){el.style.outline='';el.style.outlineOffset=''}})}
 
 // ═══ 스킬 패널 ═══
 const SKILL_CATS=[
