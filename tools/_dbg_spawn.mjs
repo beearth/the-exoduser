@@ -1,0 +1,16 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch({ headless:false, executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe', args:['--disable-background-timer-throttling','--disable-backgrounding-occluded-windows','--disable-renderer-backgrounding'] });
+const p = await b.newPage({ viewport:{width:1280,height:720} });
+const errs=[]; p.on('pageerror',e=>errs.push(e.message));
+await p.goto('http://127.0.0.1:3333/game.html?bosstest=3&perf=1',{waitUntil:'commit',timeout:15000});
+await p.waitForFunction(()=>typeof G!=='undefined'&&G&&typeof mkEn==='function'&&typeof ens!=='undefined',null,{timeout:30000,polling:200});
+await p.waitForTimeout(8000);
+const s1 = await p.evaluate(()=>{ try{G._cutsceneDone=true;try{_cutsceneState=null;}catch(e){} if(!(G.mw>0))initStage(G.stage||3); G.on=true;}catch(e){return 'init err '+e.message} return {gon:G.on,mw:G.mw,stage:G.stage,ens:ens.length,hidden:document.hidden,vis:document.visibilityState,Pexists:typeof P!=='undefined'&&!!P};});
+console.log('after init:', JSON.stringify(s1));
+const s2 = await p.evaluate(()=>{ let made=0,nullc=0,samples=[]; for(let i=0;i<40;i++){ const ang=Math.random()*6.28,d=90+Math.random()*340; const e=mkEn(P.x+Math.cos(ang)*d,P.y+Math.sin(ang)*d,G.stage,6,false,i%5,-1); if(e){made++;e.alive=true;ens.push(e);if(samples.length<2)samples.push({alive:e.alive,hp:e.hp,etype:e.etype});}else nullc++; } let alive=0; for(const e of ens)if(e&&e.alive)alive++; return {made,nullc,alive,ensLen:ens.length,Px:Math.round(P.x),Py:Math.round(P.y),samples};});
+console.log('spawn40:', JSON.stringify(s2));
+await p.waitForTimeout(1500);
+const s3 = await p.evaluate(()=>{ let alive=0; for(const e of ens)if(e&&e.alive)alive++; return {alive,gon:G.on,u:+_prof.u.toFixed(2),d:+_prof.d.toFixed(2),t:+_prof.t.toFixed(2),mw:G.mw,ph:P.s};});
+console.log('after 1.5s:', JSON.stringify(s3));
+console.log('errors:', errs.slice(0,3));
+await b.close();
