@@ -1,0 +1,25 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><style>*{margin:0}body{background:#202028}canvas{display:block}</style></head><body>
+<canvas id="cv" width="480" height="480"></canvas>
+<script type="importmap">{"imports":{"three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/"}}</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+const q=new URLSearchParams(location.search); const file=q.get('f')||'assets/vb_A.glb';
+const cv=document.getElementById('cv');
+const r=new THREE.WebGLRenderer({canvas:cv,antialias:true}); r.setSize(480,480); r.outputColorSpace=THREE.SRGBColorSpace;
+const s=new THREE.Scene(); s.background=new THREE.Color(0x202028);
+const cam=new THREE.OrthographicCamera(-1.5,1.5,2.6,-0.4,0.1,100); cam.position.set(0,1.1,6); cam.lookAt(0,1.1,0);
+s.add(new THREE.AmbientLight(0xffffff,0.9)); const dl=new THREE.DirectionalLight(0xffffff,1.1); dl.position.set(3,6,5); s.add(dl);
+let mixer=null, clock=new THREE.Clock(), ready=false;
+const loader=new GLTFLoader();
+loader.load(file,(g)=>{
+  const m=g.scene; const box=new THREE.Box3().setFromObject(m); const sz=box.getSize(new THREE.Vector3());
+  m.scale.setScalar(2.2/(sz.y||1)); const b2=new THREE.Box3().setFromObject(m); const c=b2.getCenter(new THREE.Vector3());
+  m.position.sub(c); m.position.y+=1.1; s.add(m);
+  mixer=new THREE.AnimationMixer(m); if(g.animations[0]) mixer.clipAction(g.animations[0]).play();
+  window._dur=g.animations[0]?g.animations[0].duration:0; ready=true; window._ready=true;
+});
+window._seek=(t)=>{ if(!mixer)return; mixer.setTime(t); r.render(s,cam); };
+function loop(){ requestAnimationFrame(loop); if(!ready)return; }
+loop();
+</script></body></html>

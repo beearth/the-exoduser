@@ -53152,7 +53152,7 @@ let _b3actions={},_b3state='idle';
 const _B3_MODELS={
   // hell:0 (1장 — 썩은 숲) = Vinebound Sentinel
   0:{
-    idle:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Walking_withSkin.glb'},
+    idle:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Idle_withSkin.glb'},
     walk:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Walking_withSkin.glb'},
     aggro:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Running_withSkin.glb'},
     run:{src:'assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Running_withSkin.glb'},
@@ -53281,6 +53281,7 @@ function _b3loadModel(hellIdx){
 }
 // 초기 로드 (기본 폴백 모델)
 _b3loadModel(-1);
+window._b3loadModel=_b3loadModel; // classic 스코프/테스트에서 챕터 모델 강제 로드용 노출
 
 function _b3resize(){
   const w=innerWidth,h=innerHeight;
@@ -53307,6 +53308,11 @@ function _b3animate(){
     if(_b3anchor.visible){_b3anchor.visible=false;_b3r.render(_b3s,_b3cam)}
     return;
   }
+
+  // 챕터별 3D 모델 자동 스왑: classic→module 스코프 경계로 23906의 _b3loadModel 호출이
+  // 죽어있어(모듈 스코프 미노출) 여기서 스테이지→hell 인덱스를 직접 읽어 교체한다.
+  const _wantHell=(typeof SI_TO_HELL!=='undefined'&&SI_TO_HELL[G.stage]!=null)?SI_TO_HELL[G.stage]:0;
+  if(_wantHell!==_b3curHell){_b3loadModel(_wantHell);return;}
 
   // 2D 보스 완전 차단 (플래그 + _spawnT 이중 보호)
   window._b3Active=true;

@@ -206,13 +206,17 @@ let mixer = null;
 const loader = new GLTFLoader();
 
 // 상태 매핑: 키 = 상태명, src = GLB 파일
+// ── Vinebound Sentinel (4 anims: Walking / Running / Charged_Ground_Slam / Dead) ──
+const _VB = 'assets/Meshy_AI_Vinebound_Sentinel_biped/Meshy_AI_Vinebound_Sentinel_biped_Animation_';
 const BOSS_ANIMS = {
-  idle:   { src: 'assets/Meshy_AI_1_biped_Animation_Alert_withSkin.glb',         label: 'Alert/Idle' },
-  walk:   { src: 'assets/Meshy_AI_1_biped_Animation_Walking_withSkin.glb',       label: 'Walking' },
-  aggro:  { src: 'assets/Meshy_AI_1_biped_Animation_Monster_Walk_withSkin.glb',  label: 'Monster Walk' },
-  run:    { src: 'assets/Meshy_AI_1_biped_Animation_Running_withSkin.glb',       label: 'Running/Charge' },
-  hit:    { src: 'assets/Meshy_AI_1_biped_Animation_Unsteady_Walk_withSkin.glb', label: 'Stagger/Hit' }
+  idle:   { src: _VB + 'Walking_withSkin.glb',              label: 'Walking(idle 대용)' },
+  walk:   { src: _VB + 'Walking_withSkin.glb',              label: 'Walking' },
+  aggro:  { src: _VB + 'Charged_Ground_Slam_withSkin.glb',  label: 'Charged Ground Slam' },
+  run:    { src: _VB + 'Running_withSkin.glb',              label: 'Running/Charge' },
+  hit:    { src: _VB + 'Dead_withSkin.glb',                 label: 'Dead(hit 대용)' }
 };
+// 이전 biped 매핑 (참고용, 복구 시 사용):
+// idle:Alert  walk:Walking  aggro:Monster_Walk  run:Running  hit:Unsteady_Walk
 
 let _bossModel = null;   // 씬에 추가된 보스 모델
 let _bossActions = {};   // 상태명 → AnimationAction
