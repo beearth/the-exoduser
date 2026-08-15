@@ -377,7 +377,7 @@ maxIdxCount = 27,815,124  (=4,635,854 quads ×6)                    ← 단일 �
 - `texAvg ≈ flushAvg ≈ glDcAvg` 실측 → flush는 **텍스처 전환당 1회**가 지배(draw ≈ setTex). 배칭이 tex-bound.
 - 결론: 이 하드웨어(AMD RX 9070 XT/D3D11/DPR1/1280×720)에서 지속 저하 root cause **미확정**. 실기 요인(Metal/DPR2 상당 해상도/ProMotion 120Hz/VRAM) 우선순위 유지. **OPEN.**
 
-### Track D — Mac context-loss 촉발원 : 측정 — **텍스처 미해제 누수(VRAM 피크) 유력**
+### Track D — Mac context-loss 촉발원 : 측정 — **GC-지연 회수에 의한 transient VRAM 피크 (영구 strong-ref leak 아님)**
 - 텍스처 자원 계측(createTexture/deleteTexture/texImage2D 후킹, 6회 transition):
   | 시점 | liveTex(창출) | deleteTexture | maxSingle |
   |---|---|---|---|
@@ -387,4 +387,10 @@ maxIdxCount = 27,815,124  (=4,635,854 quads ×6)                    ← 단일 �
 - 맵 전환마다 신규 맵 캔버스(`_mapCvs`) → **125MB급 단일 맵 텍스처** 신규 생성. 구 맵 텍스처의 `WebGLTexture` 래퍼는 GC 전까지 잔존 → **전환 폭주 시 GPU 텍스처 메모리가 정상치 훨씬 위로 순간 피크**.
 - 인과 가설(측정 근거): 제한 VRAM(Mac 통합/공유 or 소용량) + 미해제 125MB×N 누적 → 전환 창 VRAM 고갈 → **드라이버 컨텍스트 리셋(context lost)**. 대용량 VRAM(이 AMD 16GB+)은 흡수 → **loss 미발생**(재현 불가 이유와 일치).
 - 이것이 Track A(restore-bug)의 **선행 트리거** 후보이자, Track B(2.7M) 발현 시 GPU 스트레스 가중 요인일 수 있음.
-- **측정만 완료. 수정 미적용**(품질저하/DPR 강제제한 금지 지시 준수). 후속: 전환 시 구 맵/스테이지 텍스처 명시적 `deleteTexture` + 125MB 맵텍스처 청킹/해상도 재검토를 별도 트랙에서 설계(측정→최소수정).
+- **Q4 lifetime 판정 (2026-08-16, FinalizationRegistry+강제 gc() 실측)**: **분류 B — GC-eligible, 명시적 delete 없음 → 비결정적 GPU 회수 / transient VRAM 피크** (영구 strong-ref leak=C 아님).
+  - `_texCache`/`_texUploaded` **둘 다 WeakMap**(src 캔버스 약참조) — 구 텍스처를 strong-hold하는 배열/맵/전역 없음.
+  - `_getTex`(L4851)는 `src._glVer` 변동 시 **신규 WebGLTexture 생성 + `_texCache.set`으로 이전 값 교체** → 구 텍스처는 무참조(GC-eligible)로 전락. `_mapCvs`는 동일차원 전환 시 **재사용**(canvas 동일성 유지)되나 `_glVer` 증가로 매 전환 새 텍스처 생성.
+  - 실측: 8회 전환 createTexture 0→52, **deleteTexture=0**. `_mapCvs` 실측 크기 **8000×8000 = 256MB** 단일 텍스처(초기 6408×5121=125MB보다 큼). 강제 gc() 7회 후 추가 finalize=1(대부분 생존 텍스처는 정당한 live 스프라이트/아틀라스라 격리 불가 → 카운트는 비결정적, FR 콜백 지연). **코드 참조분석(WeakMap-only)이 GC-eligibility의 결정 근거.**
+  - ∴ **영구 누수 아님**. 단 명시적 `deleteTexture` 부재로 회수가 GC 타이밍에 종속 → **전환율 > GC 속도**일 때 256MB×N 오펀 텍스처가 동시 잔존 → **transient VRAM 피크** → 저-VRAM(Mac)에서 컨텍스트 리셋 촉발 가설. 대용량 VRAM(이 AMD)은 흡수(loss 미발생=재현불가 정합).
+- 이것이 Track A(restore-bug)의 **선행 트리거** 후보이자, Track B(2.7M) 발현 시 GPU 스트레스 가중 요인일 수 있음.
+- **측정만 완료. 수정 미적용**(품질저하/DPR 강제제한 금지 지시 준수). 후속: 전환 시 구 맵/스테이지 텍스처 명시적 `deleteTexture`(GC 대기 제거) + 256MB 맵텍스처 청킹/해상도 재검토를 별도 트랙에서 설계(측정→최소수정).
