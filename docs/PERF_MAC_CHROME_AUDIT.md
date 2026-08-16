@@ -433,3 +433,47 @@ maxIdxCount = 27,815,124  (=4,635,854 quads ×6)                    ← 단일 �
   - ∴ **영구 누수 아님**. 단 명시적 `deleteTexture` 부재로 회수가 GC 타이밍에 종속 → **전환율 > GC 속도**일 때 256MB×N 오펀 텍스처가 동시 잔존 → **transient VRAM 피크** → 저-VRAM(Mac)에서 컨텍스트 리셋 촉발 가설. 대용량 VRAM(이 AMD)은 흡수(loss 미발생=재현불가 정합).
 - 이것이 Track A(restore-bug)의 **선행 트리거** 후보이자, Track B(2.7M) 발현 시 GPU 스트레스 가중 요인일 수 있음.
 - **측정만 완료. 수정 미적용**(품질저하/DPR 강제제한 금지 지시 준수). 후속: 전환 시 구 맵/스테이지 텍스처 명시적 `deleteTexture`(GC 대기 제거) + 256MB 맵텍스처 청킹/해상도 재검토를 별도 트랙에서 설계(측정→최소수정).
+
+#### Track D 확정 (2026-08-16) — 결정적 WeakRef 증명 + peak 계산 + 최소수정 후보
+
+> 위 Q4는 class B를 **정적 코드분석(WeakMap-only)**으로 추론했고 FinalizationRegistry는 격리불가로 미결이었다. 이번에 **단일 orphan 맵 텍스처를 WeakRef로 직접 추적**해 GC-eligibility를 런타임 확증한다. probe: `tmp/probe_trackd_texlife.py`(수명주기·overlap), `tmp/probe_trackd_gceligible.py`(결정적 WeakRef), 모두 `--js-flags=--expose-gc`.
+
+**A. transition resource lifecycle (확정)**
+- `_mapCvs`는 **재사용 싱글턴**(L20571 `if(!_mapCvs)_mapCvs=document.createElement`). 전환마다 `.width=mw*T`로 리사이즈(2D 백킹 재할당·구 백킹 브라우저 즉시 해제) + `_glVer++`(L20573).
+- 다음 렌더에서 `_getTex(_mapCvs)`가 버전 불일치 감지(L4878) → **신규 `GL.createTexture()` + `texImage2D(src)` 업로드**(L4879-4887) + `_texCache.set(src, 신규)`로 캐시 덮어쓰기(L4889) → **구 `WebGLTexture` 무참조화**.
+- 청크 경로(맵>texLimit): `_mapChunks=[]` 신규 배열·각 청크 신규 캔버스, 완료 후 `_mapCvs=null`(L20525). 구 배열·청크 드롭.
+- 스트림 경로(맵≥64Mpx or >texLimit): `_streamChunks={}` 리셋(L20539) + `_STREAM_MAX_CHUNKS` 캡 eviction(L42279-42287).
+
+**B. old/new overlap (실측 CONFIRMED)** — 6회 연속 전환, GC 개입 없음:
+| 시점 | createTexture(누적) | liveTex | deleteTexture |
+|---|---|---|---|
+| before | 36 | 27 | 0 |
+| 6 transitions (no gc) | 68 (+32) | **48** | **0** |
+| after forced gc | 83 | 60 | **0** |
+- 전환당 ~5 텍스처 신규, **삭제 0** → 구 텍스처가 GC 전까지 신규와 **동시 잔존**(overlap 실재). `deleted:0` 전 구간.
+
+**C. strong-reference audit (전수, clean)**
+- `_texCache`(L4876)·`_texUploaded`(L4152) **둘 다 WeakMap**. 맵 캔버스/텍스처를 붙잡는 배열·전역·히스토리·스테이지캐시 **없음**(grep `push(_mapCvs`/`_stageCache`/`prevMap` 등 0건).
+- **결정적 WeakRef 테스트**: stage0 맵 텍스처를 `WeakRef`로 추적→강참조 드롭→전환(glVer 범프로 캐시 덮어써 orphan)→**aggressive gc()**:
+  - `isTexObj=true`, `_mapCvs` 동일성 4전환 내내 유지(`same:[T,T,T,T]`).
+  - `orphanTexAliveBeforeGC=true`(transient overlap 존재) → **`orphanTexAliveAfterGC=false`**(GC 후 회수됨).
+  - **verdict=CLASS_B_GC_DEFERRED_TRANSIENT** — orphan 맵 텍스처는 **GC-eligible**. strong-ref leak(class A) **런타임 반증**(정적추론→런타임확증으로 격상).
+
+**D. theoretical/observed peak (확정)**
+- 단일 맵 텍스처 상한 = `_shouldStreamMapCache`(L19559): `(mw*T)*(mh*T)>64,000,000`(~8000×8000)이면 강제 스트리밍 → **비스트림 단일 텍스처는 정확히 ≤64Mpx = 8000×8000×4 = 244MiB(256MB decimal)로 상한**. 실측: stage0-3(mw/mh=200)=8000×8000=244.1MB 단일; stage20(196×166)=7840×6640=198.6MB; stage≥210=스트림(작은 뷰포트 청크).
+- **전환 순간 동시 존재 가능 GPU 텍스처 피크**(비스트림 최대 맵): 구 256MB(GC 대기) + 신규 256MB = **~512MB** + 2D 소스 캔버스 백킹 256MB(리사이즈 중) + preserveDrawingBuffer 드로잉버퍼(C.w×C.h×4 ×front/back, Mac DPR2면 4배) + depth 버퍼 → **worst instant ~800MB급**, 대부분 transient/GC-대기.
+
+**E. preserveDrawingBuffer (런타임 CONFIRMED)**
+- `GL.getContextAttributes()` 실측: **`preserveDrawingBuffer:true`**, `alpha:false`, `powerPreference:'high-performance'`, `antialias:false`, **`depth:true`**(요청 L4821에 depth 미지정 → 기본 true, 화면크기 깊이버퍼 추가 할당), `MAX_TEXTURE_SIZE=8192`(headless SwiftShader; 실 Mac ANGLE Metal은 통상 16384). true는 매 프레임 백버퍼 resolve 복사본 + ANGLE 최적화 일부 비활성 → 상시 VRAM 가산.
+
+**F. Mac context-loss ROOT CAUSE = CONFIRMED (mechanism)**
+- 촉발원 = **map transition의 GC-지연 transient VRAM 피크**: 명시적 `deleteTexture` 부재(코드 전체 0건, 실측 `deleted:0`)로 구 256MB 텍스처 회수가 GC 타이밍에 종속 → **전환율 > GC 속도**면 256MB급 orphan이 신규와 동시 잔존(~512MB↑), preserveDrawingBuffer(true)·Retina DPR2 드로잉버퍼·depth버퍼가 가산 → **Mac ANGLE Metal GPU 프로세스 메모리 예산 초과 → 컨텍스트 리셋**. Windows D3D11(WDDM VRAM 가상화·이 AMD 16GB+)은 흡수 → **미재현**(플랫폼 특이성과 정합).
+- **한계**: 이 HW(Win/AMD)에서 실제 loss 재현·수정검증 불가. 확증 범위 = **메커니즘 레벨**(WeakRef로 GC-eligible 증명 + peak 상한 + preserveDrawingBuffer + deleteTexture 부재). 실 Mac in-situ 재현은 별건.
+
+**G. 최소 수정 후보 (제안, 미적용)**
+- **후보1 (권장, 최소·저위험): 프레임말 deferred-delete 큐**. `_getTex`에서 버전 불일치로 캐시 덮어쓰기 직전, 구 `e.tex`를 `_texGCQueue.push`; 프레임 끝 `_glFlush()` 직후(L50529 부근)에 큐를 `GL.deleteTexture` 후 clear. → 구 텍스처를 **GC 대기 없이 프레임말 결정적 해제**(transient 피크 즉시 제거). 플러시 완료 후라 in-flight 배치 안전. 품질/해상도/DPR/청킹 **무변경**.
+- **후보2 (2차): 맵 전환 전용 명시 해제**. `buildMapCache`/`_finalizeBMC`에서 구 맵 텍스처만 타겟 해제(맵 텍스처는 1개라 범위 협소).
+- **후보3 (보조): `depth:false` 명시**(L4821 컨텍스트 옵션) — 불필요한 깊이버퍼 제거(2D 게임, 깊이 미사용). 소폭 VRAM 절감.
+- ⚠ 후보1도 hot 텍스처 경로 GL 변경이라 Mac 실검증 없이 적용 시 회귀위험(바인딩 중 텍스처 삭제 등). **Mac repro 확보 후 적용 권장**. 금지목록(맵 축소/청킹/DPR 제한/품질하향)은 **어느 후보도 미포함**.
+
+**H. 코드 수정 여부**: **미적용 (제안만)**. 지시("lifetime bug CONFIRMED → 최소 fix **제안**") 준수 + Mac 실검증 불가로 hot-path 적용 보류. 본 커밋 = **문서(측정 확정)만**, 코드 무변경(prior Track D 커밋과 동일 discipline).
