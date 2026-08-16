@@ -50351,8 +50351,11 @@ function _perfHookGL(){
   for(let _gi=0;_gi<_glCands.length;_gi++){const g=_glCands[_gi];if(!g||g.__perfHooked)continue;
     g.__perfHooked=true;
     const oA=g.drawArrays.bind(g),oE=g.drawElements.bind(g);
-    g.drawArrays=function(){_PERF_PROF.drawCalls++;return oA.apply(g,arguments)};
-    g.drawElements=function(){_PERF_PROF.drawCalls++;return oE.apply(g,arguments)};
+    // [TRACK-B FIX] enabled 가드 필수 — 없으면 OFF(몹≤300) 구간 draw가 계속 누적돼
+    // 다음 ON 리포트에 섞여 30프레임 창이 실제로는 수천 프레임 누적이 됨(2.7M 팬텀 원인).
+    // C2D 래퍼(_perfHookC2D)와 동일 가드. drawCalls는 enabled 프레임에서만 카운트.
+    g.drawArrays=function(){if(_PERF_PROF.enabled)_PERF_PROF.drawCalls++;return oA.apply(g,arguments)};
+    g.drawElements=function(){if(_PERF_PROF.enabled)_PERF_PROF.drawCalls++;return oE.apply(g,arguments)};
     // S7-BREAKDOWN: GL state change 카운터 (useProgram/bindTexture/blendFunc) — 2026-04-17
     if(g.useProgram){const oUP=g.useProgram.bind(g);g.useProgram=function(){_PERF_PROF._glProg++;return oUP.apply(g,arguments)}}
     if(g.bindTexture){const oBT=g.bindTexture.bind(g);g.bindTexture=function(){_PERF_PROF._glTex++;return oBT.apply(g,arguments)}}
@@ -50413,7 +50416,7 @@ function _perfReport(){
 function _perfFrameTick(){
   let _alive=0;for(let _ai=0;_ai<ens.length;_ai++)if(ens[_ai]&&ens[_ai].alive)_alive++;
   const _shouldOn=_alive>300;
-  if(_shouldOn&&!_PERF_PROF.enabled){_PERF_PROF.enabled=true;_perfHookGL()}
+  if(_shouldOn&&!_PERF_PROF.enabled){_PERF_PROF.enabled=true;_PERF_PROF.drawCalls=0;_perfHookGL()} // [TRACK-B FIX] ON 진입 시 창 리셋 — 이전 잔여 draw 격리
   else if(!_shouldOn&&_PERF_PROF.enabled){_PERF_PROF.enabled=false;_PERF_PROF.ai.length=0;_PERF_PROF.coll.length=0;_PERF_PROF.render.length=0;_PERF_PROF.dom.length=0;_PERF_PROF.drawCalls=0}
   if(_PERF_PROF.enabled){
     // ai = update 전체 시간 - 충돌 시간 (충돌은 update 내부에서 호출됨)
