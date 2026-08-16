@@ -1,0 +1,121 @@
+==== TRACK D REGRESSION + TRACK A ====
+{
+  "baseline": {
+    "on": false,
+    "useGL": true,
+    "stage": 0,
+    "mapLiveTex": true,
+    "frameT": 0,
+    "enemies": -1,
+    "streamMap": false,
+    "mapCvs": false,
+    "lost": false
+  },
+  "render_sanity": {
+    "nonBlackSamples": 0,
+    "samples": [
+      [
+        0,
+        0,
+        0,
+        255
+      ],
+      [
+        0,
+        0,
+        0,
+        255
+      ],
+      [
+        0,
+        0,
+        0,
+        255
+      ],
+      [
+        0,
+        0,
+        0,
+        255
+      ],
+      [
+        0,
+        0,
+        0,
+        255
+      ]
+    ],
+    "glErr": 0
+  },
+  "live_transitions": [
+    {
+      "stage": 1,
+      "glErr": 0,
+      "lost": false,
+      "mapCvs": true,
+      "streamMap": false,
+      "qlen": 0
+    },
+    {
+      "stage": 2,
+      "glErr": 0,
+      "lost": false,
+      "mapCvs": true,
+      "streamMap": false,
+      "qlen": 0
+    },
+    {
+      "stage": 0,
+      "glErr": 0,
+      "lost": false,
+      "mapCvs": true,
+      "streamMap": false,
+      "qlen": 0
+    },
+    {
+      "stage": 3,
+      "glErr": 0,
+      "lost": false,
+      "mapCvs": true,
+      "streamMap": false,
+      "qlen": 0
+    },
+    {
+      "stage": 0,
+      "glErr": 0,
+      "lost": false,
+      "mapCvs": true,
+      "streamMap": false,
+      "qlen": 0
+    }
+  ],
+  "frameT_after_trans": 22.99,
+  "context_loss": {
+    "lose": {
+      "ext": true
+    },
+    "lost_mid": {
+      "useGL": false,
+      "glNull": true
+    },
+    "restored": {
+      "restoreCalled": true
+    },
+    "post_restore": {
+      "useGL": true,
+      "lost": false,
+      "glErr": 0,
+      "stage": 0,
+      "on": true,
+      "mapCvs": true
+    },
+    "post_restore_transition": {
+      "glErr": 0,
+      "lost": false,
+      "on": true
+    }
+  },
+  "trackA_signals(0x502/crashloop)": [],
+  "pageerrors": [],
+  "console_err_warn_count": 247
+}

@@ -2,11 +2,12 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>Boss 3D Test — 본게임 내장 오버레이 사용</title>
+<title>Boss 3D Overlay Test</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;background:#000}
 #gameFrame{width:100%;height:100%;border:none}
+#overlay3d{position:fixed;inset:0;pointer-events:none;z-index:50}
 #boss3d-hud{position:fixed;bottom:12px;right:12px;color:#0f0;font:13px/1.5 monospace;
   background:rgba(0,0,0,.7);padding:8px 12px;border-radius:6px;z-index:60;pointer-events:none;
   white-space:pre;max-width:420px}
@@ -17,27 +18,128 @@ html,body{width:100%;height:100%;overflow:hidden;background:#000}
 </head>
 <body>
 <iframe id="gameFrame" src="/game.html"></iframe>
+<canvas id="overlay3d"></canvas>
 <div id="boss3d-keys">F10: 보스전 | F9: 무적 | F8: 프로파일 | Shift+R: 리셋</div>
 <div id="boss3d-hud">Boss 3D: 초기화 중...</div>
 
-<script>
-// ══════════════════════════════════════════════════════════════════
-// 이 하니스는 3D 보스를 "직접" 그리지 않는다.
-// game.html 내장 오버레이(#boss3dCvs, _b3*)가 곧 본게임 보스전 렌더러이며
-// (발 기준 Y배치 · 챕터별 scaleMul · 모델 스왑 전부 내장),
-// 이 하니스는 game.html 을 iframe 으로 띄우고 디버그 키만 제공한다.
-//   → 테스트에서 보이는 3D 보스 = 본게임 보스전과 100% 동일.
-// (예전엔 여기서 별도 Three.js 오버레이를 얹어 이중 렌더 + 비율/배치가 어긋났음 → 제거)
-// ══════════════════════════════════════════════════════════════════
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+
 const hud = document.getElementById('boss3d-hud');
+const overlay = document.getElementById('overlay3d');
 const iframe = document.getElementById('gameFrame');
 
-// ── 로그 ──
-const logLines = [];
-function log(...args) { logLines.push(args.join(' ')); if (logLines.length > 10) logLines.shift(); }
+// ══════════════════════════════
+// ── Three.js 씬 셋업
+// ══════════════════════════════
+const renderer = new THREE.WebGLRenderer({ canvas: overlay, alpha: true, antialias: false });
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.setClearColor(0x000000, 0);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+const scene = new THREE.Scene();
+
+// 직교 카메라 — 정면(Z축) 배치, frustum = 화면 절반 높이(CSS px)
+// 이렇게 하면 Three.js 월드 1유닛 = CSS 1픽셀
+const cam = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 100);
+cam.position.set(0, 0, 50);
+cam.lookAt(0, 0, 0);
+
+const dirLight = new THREE.DirectionalLight(0xffcc88, 1.0);
+dirLight.position.set(100, 200, 300);
+scene.add(dirLight);
+scene.add(new THREE.AmbientLight(0x887799, 0.6));
+const rimLight = new THREE.DirectionalLight(0x4444aa, 0.3);
+rimLight.position.set(-100, 50, -200);
+scene.add(rimLight);
+
+// ── GLB 로드 ──
+// bossPivot: 위치 + facing 회전 (syncBoss에서 조작)
+// bossModel: GLB scene, 자세 보정만 (X -90도 = 탑다운에서 서있게)
+let bossPivot = null;
+let bossModel = null;
+let bossMixer = null;
+let bossReady = false;
+let bossSize = new THREE.Vector3();
+let bossMeshes = []; // flash 효과용
+let bossOrigMats = []; // 원본 머티리얼 백업
+
+const loader = new GLTFLoader();
+loader.load(
+  '/boss_3d_poc/assets/boss_01.glb',
+  (gltf) => {
+    bossModel = gltf.scene;
+
+    // 1) 높이 기준 스케일
+    const box = new THREE.Box3().setFromObject(bossModel);
+    const sz = box.getSize(new THREE.Vector3());
+    const sc = 2.2 / sz.y;
+    bossModel.scale.setScalar(sc);
+
+    // 2) 모델 중심 → 원점 정렬 (탑다운에서 3D 중심 = 2D 보스 중심)
+    const box2 = new THREE.Box3().setFromObject(bossModel);
+    const center = box2.getCenter(new THREE.Vector3());
+    bossModel.position.sub(center); // 모델 중심을 원점에 맞춤
+
+    // 메시 수집 + 원본 머티리얼 백업 (flash용)
+    bossModel.traverse(c => {
+      if (c.isMesh) {
+        c.castShadow = true;
+        c.receiveShadow = true;
+        bossMeshes.push(c);
+        bossOrigMats.push(c.material);
+      }
+    });
+
+    // 4) Pivot Group으로 감싸기
+    bossPivot = new THREE.Group();
+    bossPivot.add(bossModel);
+    bossPivot.visible = false;
+    scene.add(bossPivot);
+
+    // bossSize 측정 (pivot 기준)
+    bossSize = new THREE.Box3().setFromObject(bossPivot).getSize(new THREE.Vector3());
+
+    // 애니메이션
+    if (gltf.animations.length > 0) {
+      bossMixer = new THREE.AnimationMixer(bossModel);
+      bossMixer.clipAction(gltf.animations[0]).play();
+    }
+    bossReady = true;
+    log('GLB OK', `${bossSize.x.toFixed(1)}x${bossSize.y.toFixed(1)}x${bossSize.z.toFixed(1)}`);
+  },
+  null,
+  (err) => { log('GLB 실패', err.message); }
+);
+
+// flash 머티리얼 (피격 시 흰색)
+const flashMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+// ── 리사이즈 ──
+// frustum = 화면 절반(CSS px) → Three.js 1유닛 = 1 CSS px
+function resize() {
+  const w = window.innerWidth, h = window.innerHeight;
+  renderer.setSize(w, h);
+  cam.left = -w / 2;
+  cam.right = w / 2;
+  cam.top = h / 2;
+  cam.bottom = -h / 2;
+  cam.updateProjectionMatrix();
+}
+resize();
+window.addEventListener('resize', resize);
 
 // ══════════════════════════════
-// ── 브릿지 주입 (디버그 키 + 상태 읽기)
+// ── 브릿지 주입
 // ══════════════════════════════
 let _bridgeReady = false;
 function injectBridge() {
@@ -51,14 +153,42 @@ function injectBridge() {
       // ── 3D 모드 상태 ──
       window._b3d_testMode = false;
       window._b3d_preBackup = null;
+      window._b3d_lastHitT = 0;   // 마지막 보스 피격 시각
+      window._b3d_prevHP = -1;    // 이전 프레임 보스 HP
+
+      // ── 매 프레임 호출: 2D 보스 숨기기 + 피격 감지 ──
+      window._b3d_tick = () => {
+        if (!window._b3d_testMode) return;
+        const boss = (typeof G!=='undefined' && G._bossRef && G._bossRef.alive) ? G._bossRef : null;
+        if (!boss) return;
+
+        // 2D 보스 렌더링 차단: _spawnT를 999로 유지
+        // (렌더러가 _spawnT>0이면 alpha=max(0,1-_spawnT/20)=0 → continue로 스킵)
+        boss._spawnT = 999;
+
+        // 피격 감지 (HP 감소 or flashT)
+        if (window._b3d_prevHP > 0 && boss.hp < window._b3d_prevHP) {
+          window._b3d_lastHitT = performance.now();
+        }
+        if (boss.flashT > 0) {
+          window._b3d_lastHitT = performance.now();
+        }
+        window._b3d_prevHP = boss.hp;
+
+        // 프로파일링 틱
+        if (window._b3d_profiling) window._b3d_profTick();
+      };
 
       // ── 상태 읽기 ──
       window._b3d = () => {
         try {
-          // 프로파일링 틱 (테스트모드 무관 동작)
-          if (window._b3d_profiling) window._b3d_profTick();
+          // 틱 실행
+          if (window._b3d_testMode) window._b3d_tick();
+          // 프로파일링은 테스트모드 외에도 동작
+          else if (window._b3d_profiling) window._b3d_profTick();
 
           const boss = (typeof G!=='undefined'&&G._bossRef&&G._bossRef.alive) ? G._bossRef : null;
+          // 보스 사망 체크 (alive=false이지만 ref 존재)
           const deadBoss = (typeof G!=='undefined'&&G._bossRef&&!G._bossRef.alive) ? G._bossRef : null;
           const c = document.getElementById('c');
           return {
@@ -75,14 +205,23 @@ function injectBridge() {
             bossDead: !!deadBoss && !boss,
             bossState: boss ? boss.s : '',
             bossFacing: boss ? boss.facing : 0,
+            bossFlashT: boss ? (boss.flashT || 0) : 0,
+            bossHitT: window._b3d_lastHitT || 0,
             bossStunned: boss ? (boss.stunned > 0) : false,
+            playerX: (typeof P!=='undefined' && P) ? P.x : 0,
+            playerY: (typeof P!=='undefined' && P) ? P.y : 0,
             playerHP: (typeof P!=='undefined' && P) ? P.hp : 0,
             playerMHP: (typeof P!=='undefined' && P) ? P.mhp : 0,
+            camX: typeof G!=='undefined' ? G.cam.x : 0,
+            camY: typeof G!=='undefined' ? G.cam.y : 0,
+            canvasW: c ? c.width : 0,
+            canvasH: c ? c.height : 0,
             stage: typeof G!=='undefined' ? G.stage : 0,
             _bossArena: typeof G!=='undefined' && !!G._bossArena,
-            b3Active: !!window._b3Active,        // 본게임 내장 3D 오버레이 렌더 여부
             gameFps: (typeof _prof!=='undefined' && _prof.t>0) ? Math.round(1000/_prof.t) : 0,
-            testMode: !!window._b3d_testMode
+            testMode: !!window._b3d_testMode,
+            dpr: (typeof _dpr!=='undefined') ? _dpr : (window.devicePixelRatio||1),
+            resScale: (typeof OPT!=='undefined' && OPT.resScale) ? OPT.resScale/100 : 1
           };
         } catch(e) { return null; }
       };
@@ -112,6 +251,8 @@ function injectBridge() {
         try {
           _enterBossArena();
           window._b3d_testMode = true;
+          window._b3d_prevHP = -1;
+          window._b3d_lastHitT = 0;
           if(P) { P.hp = P.mhp; P.st = P.mst; P.mp = P.mmp; }
           return 'OK';
         } catch(e) { return 'ERROR: ' + e.message; }
@@ -269,7 +410,7 @@ function injectBridge() {
         return 'OK';
       };
 
-      // ── iframe 내부 키 핸들러 (F10/F9/F8/Shift+R) ──
+      // ── iframe 내부 키 핸들러 (F10/F9/Shift+R) ──
       // iframe에 포커스가 있을 때 부모 keydown이 안 잡히므로 여기서 처리
       window._b3d_godMode = false;
       document.addEventListener('keydown', (e) => {
@@ -339,12 +480,14 @@ function getGameState() {
 }
 
 // ══════════════════════════════
-// ── 디버그 키 상태 (postMessage 수신)
+// ── 디버그 키 (F10/F9/Shift+R)
+// iframe 내부 capture-phase에서 가로채고 postMessage로 부모에 전파
 // ══════════════════════════════
 let testModeActive = false;
 let godModeActive = false;
 let profilingActive = false;
 
+// iframe에서 올라오는 메시지 수신
 window.addEventListener('message', (ev) => {
   if (!ev.data || !ev.data.type) return;
   if (ev.data.type === 'b3d_boss') {
@@ -419,18 +562,36 @@ window.addEventListener('keydown', (e) => {
 }, true);
 
 // ══════════════════════════════
-// ── HUD 업데이트 루프
+// ── 3D 보스 피격 flash
 // ══════════════════════════════
+let flashTimer = 0;
+const FLASH_DUR = 0.12; // 120ms
+
+function applyFlash(isFlashing) {
+  for (let i = 0; i < bossMeshes.length; i++) {
+    bossMeshes[i].material = isFlashing ? flashMat : bossOrigMats[i];
+  }
+}
+
+// ══════════════════════════════
+// ── FPS + HUD
+// ══════════════════════════════
+let frames = 0, fpsTime = 0, curFps = 0;
+const logLines = [];
+function log(...args) { logLines.push(args.join(' ')); if (logLines.length > 10) logLines.shift(); }
+
 function updateHud(state) {
   const L = [];
   const tags = [testModeActive ? '★TEST' : '', godModeActive ? '★GOD' : '', profilingActive ? '★PROF' : ''].filter(Boolean).join(' ');
-  L.push(`[Boss 3D — 본게임 내장 오버레이] ${tags}`);
+  L.push(`[Boss 3D Overlay] ${tags}`);
+  L.push(`Three.js: OK | GLB: ${bossReady ? 'OK' : '...'}`);
   if (state) {
     L.push(`Game: ${state.gameOn?'ON':'OFF'} | Stage: ${state.stage} | Arena: ${state._bossArena}`);
-    L.push(`본게임 3D보스: ${state.b3Active ? 'ON (동일 렌더)' : 'OFF'}`);
     if (state.bossVisible) {
+      const dx = state.bossX - state.playerX, dy = state.bossY - state.playerY;
       L.push(`Boss HP: ${state.bossHP}/${state.bossMHP} (${(state.bossHP/state.bossMHP*100).toFixed(1)}%)`);
-      L.push(`Boss: st=${state.bossState} R=${state.bossR} etype=${state.bossEtype}`);
+      L.push(`Boss: st=${state.bossState} dist=${Math.sqrt(dx*dx+dy*dy).toFixed(0)} R=${state.bossR}`);
+      L.push(`Boss 2D hidden: ${testModeActive} | 3D vis: ${bossPivot?.visible}`);
       if (state.bossStunned) L.push(`★ STUNNED (그로기)`);
     } else if (state.bossDead) {
       L.push(`Boss: ☠ DEAD`);
@@ -438,37 +599,129 @@ function updateHud(state) {
       L.push(`Boss: not spawned`);
     }
     L.push(`Player HP: ${state.playerHP}/${state.playerMHP}`);
-    L.push(`Game FPS: ${state.gameFps||'?'}`);
+    L.push(`3D FPS: ${curFps} | Game FPS: ${state.gameFps||'?'}`);
   } else {
-    L.push(`Game: 접속 대기...`);
+    L.push(`Game: 접속 대기... | 3D FPS: ${curFps}`);
   }
   if (logLines.length) { L.push('---'); logLines.forEach(l => L.push(l)); }
   hud.textContent = L.join('\n');
 }
 
-// F9 무적: iframe 내부 _b3d_godMode 기반으로 매 프레임 회복
-function godTick(state) {
-  if (!godModeActive || !state || !state.gameOn) return;
-  try {
-    const w = iframe.contentWindow;
-    if (!w._b3d_godTick) {
-      const gs = w.document.createElement('script');
-      gs.textContent = `window._b3d_godTick = () => { if(typeof P!=='undefined'&&P){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.iframes=9999;P.shield=P.mshield} };`;
-      w.document.body.appendChild(gs);
-    }
-    if (w._b3d_godTick) w._b3d_godTick();
-  } catch (e) {}
+// ══════════════════════════════
+// ── 보스 3D 위치 동기 + 렌더
+// ══════════════════════════════
+let prevBossHitT = 0;
+
+function syncBoss(state, dt) {
+  if (!bossPivot || !bossReady) return;
+
+  // 보스 사망 → 3D 숨김
+  if (!state || !state.gameOn || state.bossDead || !state.bossVisible) {
+    bossPivot.visible = false;
+    applyFlash(false);
+    return;
+  }
+
+  // 테스트 모드 아니면 3D 안 보여줌
+  if (!testModeActive) {
+    bossPivot.visible = false;
+    return;
+  }
+
+  // ── 좌표 변환 ──
+  const physX = state.canvasW / 2 + (state.bossX - state.camX);
+  const physY = state.canvasH / 2 + (state.bossY - state.camY);
+
+  const scale = (state.dpr || 1) * (state.resScale || 1);
+  const cssX = physX / scale;
+  const cssY = physY / scale;
+
+  const W = window.innerWidth, H = window.innerHeight;
+  const margin = 200;
+  if (cssX < -margin || cssX > W + margin || cssY < -margin || cssY > H + margin) {
+    bossPivot.visible = false;
+    return;
+  }
+
+  // CSS 픽셀 → Three.js 월드 좌표 (1유닛 = 1 CSS px)
+  const worldX = cssX - W / 2;
+  const worldY = -(cssY - H / 2);
+
+  bossPivot.position.x = worldX;
+  bossPivot.position.y = worldY - 100;
+  bossPivot.position.z = 0;
+
+  // 스케일 (pivot 단위로 설정)
+  const bossRcss = state.bossR / scale;
+  const tgtH = bossRcss * 2.0; // 3D 크기를 2D 프레임에 맞춤 (3.0→2.0)
+  if (bossSize.y > 0) {
+    bossPivot.scale.setScalar(Math.max(0.1, tgtH / bossSize.y));
+  }
+
+  // facing → Y축 회전 (모델 기본 앞면=6시, 게임 facing 0=3시 → -PI/2 보정)
+  bossPivot.rotation.set(0, -state.bossFacing + Math.PI / 2, 0);
+
+  // 디버그 콘솔 제거됨 (콘솔 오염 방지)
+
+  bossPivot.visible = true;
+
+  // ── 피격 flash ──
+  if (state.bossHitT > prevBossHitT) {
+    flashTimer = FLASH_DUR;
+    prevBossHitT = state.bossHitT;
+  }
+  if (flashTimer > 0) {
+    flashTimer -= dt;
+    applyFlash(true);
+  } else {
+    applyFlash(false);
+  }
+
+  // 그로기 시 살짝 흔들림 (CSS px 단위)
+  if (state.bossStunned) {
+    bossPivot.position.x += Math.sin(performance.now() * 0.03) * 2;
+    bossPivot.position.y += Math.cos(performance.now() * 0.04) * 2;
+  }
 }
 
-function loop() {
-  requestAnimationFrame(loop);
+// ══════════════════════════════
+// ── 메인 렌더 루프
+// ══════════════════════════════
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  const dt = clock.getDelta();
+
+  frames++;
+  fpsTime += dt;
+  if (fpsTime >= 1) { curFps = frames; frames = 0; fpsTime = 0; }
+
+  if (bossMixer) bossMixer.update(dt);
+
   const state = getGameState();
-  godTick(state);
-  updateHud(state);
-}
-loop();
 
-log('하니스 준비 완료 (3D 보스 = 본게임 내장 오버레이)');
+  // F9 무적: iframe 내부 _b3d_godMode 기반으로 매 프레임 회복
+  if (godModeActive && state && state.gameOn) {
+    try {
+      const w = iframe.contentWindow;
+      if (!w._b3d_godTick) {
+        const gs = w.document.createElement('script');
+        gs.textContent = `window._b3d_godTick = () => { if(typeof P!=='undefined'&&P){P.hp=P.mhp;P.st=P.mst;P.mp=P.mmp;P.iframes=9999;P.shield=P.mshield} };`;
+        w.document.body.appendChild(gs);
+      }
+      if (w._b3d_godTick) w._b3d_godTick();
+    } catch (e) {}
+  }
+
+  syncBoss(state, dt);
+  updateHud(state);
+
+  renderer.render(scene, cam);
+}
+
+animate();
+log('Three.js 초기화 완료');
 log('F10=보스전, F9=무적, F8=프로파일, Shift+R=리셋');
 
 // ── iframe 포커스 ──

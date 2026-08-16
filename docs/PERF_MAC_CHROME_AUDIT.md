@@ -476,4 +476,65 @@ maxIdxCount = 27,815,124  (=4,635,854 quads ×6)                    ← 단일 �
 - **후보3 (보조): `depth:false` 명시**(L4821 컨텍스트 옵션) — 불필요한 깊이버퍼 제거(2D 게임, 깊이 미사용). 소폭 VRAM 절감.
 - ⚠ 후보1도 hot 텍스처 경로 GL 변경이라 Mac 실검증 없이 적용 시 회귀위험(바인딩 중 텍스처 삭제 등). **Mac repro 확보 후 적용 권장**. 금지목록(맵 축소/청킹/DPR 제한/품질하향)은 **어느 후보도 미포함**.
 
-**H. 코드 수정 여부**: **미적용 (제안만)**. 지시("lifetime bug CONFIRMED → 최소 fix **제안**") 준수 + Mac 실검증 불가로 hot-path 적용 보류. 본 커밋 = **문서(측정 확정)만**, 코드 무변경(prior Track D 커밋과 동일 discipline).
+**H. 코드 수정 여부**: ~~미적용 (제안만)~~ → **적용 완료 (아래 Track D FIX 참조)**. 후보1(프레임말 deferred-delete 큐)을 **map 텍스처 한정**으로 최소 적용 + before/after 자동 검증.
+
+---
+
+#### Track D FIX 적용 (2026-08-16) — 맵 텍스처 수명 결정적 종료 (RESOURCE-LIFETIME = CONFIRMED)
+
+> 지시("resource-lifetime 조사 결과 기반 최소 수정 + 검증"). 후보1(프레임말 deferred-delete 큐)을 **map canvas 텍스처 한정**으로 적용. 금지목록(맵 축소/DPR 제한/청킹 강제/품질하향/preserveDrawingBuffer·depth 변경/Track A·B 코드 변경) **전부 미포함**. 검증 probe: `tmp/probe_trackd_fix_verify.py`(before/after 동일 harness), `tmp/probe_trackd_regression.py`(라이브 회귀+Track A synthetic loss), `tmp/probe_trackd_visual.py`(비주얼).
+
+**A. 정확한 map texture ownership 지점**
+- **재사용 싱글턴 `_mapCvs`**(L20571 생성, `_mapTex=1` 표식): 전환마다 리사이즈+`_glVer++` → 다음 `_getTex(_mapCvs)`가 **버전 불일치로 캐시 덮어쓰기**(L4878) = 구 `WebGLTexture` 무참조화 지점. **비스트림 단일 244MiB 텍스처(확정 케이스)의 유일 소유 경계.**
+- 청크 캔버스(`_mapChunks[].cvs`, 맵>glMaxTex): 신규 배열로 교체 시 구 청크 드롭(재조회 불가) → 명시 해제 필요.
+- 명시적 ownership boundary = **`buildMapCache` 진입부**("맵 재빌드 = 직전 맵 GPU 텍스처 소유권 종료").
+
+**B. 수정 전 lifecycle** — `_getTex`가 신규 텍스처 생성+`_texCache.set` 덮어쓰기만, `deleteTexture` **호출 0건**(코드 전체). 구 텍스처는 GC까지 잔존 → 전환율>GC속도면 244MiB×N 동시 잔존(transient VRAM 피크).
+
+**C. 수정 코드** (game.html, +37/−4 lines, map 텍스처 한정):
+1. 모듈 스코프: `_texGCQueue`(종료 대기 큐) + `_drainTexGCQueue()`(프레임말 결정적 삭제) + `_freeMapTex`(ownership 종료 헬퍼) + 불변식 4종 주석(L4153 부근).
+2. `_getTex` WebGL(L4878): 버전 불일치 재업로드 직전, `src._mapTex`면 구 `e.tex`를 큐로 push(1줄, 비-map은 short-circuit → 핫패스 무영향).
+3. `_freeMapTex`(L4896): `_texCache`의 캐시 텍스처를 큐로 이관+슬롯 제거(`_initWebGL` WebGL 분기 할당, Canvas2D/WebGPU는 no-op).
+4. `buildMapCache` 진입부(invariant #3): `_freeMapTex(_mapCvs)` + 구 `_mapChunks[].cvs` 전부 해제 → 재사용/드롭/비스트림→스트림 전환 모두 커버.
+5. 프레임말(L50564): `_glFlush()` **직후** `_drainTexGCQueue()` → 현재 frame 마지막 flush 완료 후 삭제(invariant #2).
+6. context-lost 핸들러: 큐 clear + `_freeMapTex` no-op화(핸들은 컨텍스트와 함께 소멸).
+7. `_mapCvs._mapTex=1`(생성 시), 청크 `cc._mapTex=1`(2곳).
+
+**D. delete 시점 / in-flight safety 근거**
+- 삭제는 **프레임 마지막 `_glFlush()` 직후**에만(invariant #2). 큐잉된 구 텍스처의 마지막 GPU 사용은 **직전 frame**(이미 flush 완료). 현재 frame은 신규 텍스처만 참조(`_getTex`→신규→`_setTex(신규)`). `_curTex`는 매 frame `_clearFrame`에서 `wt`로 리셋 → 삭제 텍스처가 다음 frame에 stale 바인딩으로 남지 않음.
+- 다중 `buildMapCache`(draw 사이): `_freeMapTex`가 캐시 슬롯 삭제하므로 2회차부터 no-op → **구 텍스처 1개만** 큐잉(중복 없음).
+- WebGL `deleteTexture`는 파이프라인 참조 중이면 드라이버가 지연 해제(spec) → GL 레벨 use-after-free 불가.
+
+**E. 20~50 transition before/after** (`?testchar=1&stage=0`, 8000×8000 단일맵 stage0↔1, headless SwiftShader MAX_TEXTURE_SIZE=8192, `G.on=false`로 프레임 경계 결정적 구동):
+
+| 지표 | BEFORE(fix stash) | AFTER(fix) |
+|---|---|---|
+| deleteTexture (normal 20 + fast 50 = 70 전환) | **0** | **140** |
+| map 텍스처 created / deleted | 측정불가(플래그 없음)* | **141 / 140** |
+| **peak concurrent MAP 텍스처** | 누적(0삭제) | **1 (244.1MB)** |
+| map live (최종) | — | **1** |
+| 총 live 텍스처(70전환+GC 후) | **233** (단조증가, 0 삭제) | **93** (map 해제, 스프라이트 캐시만 잔존) |
+| GL error | 0 | 0 |
+| context loss | 없음 | 없음 |
+
+*BEFORE는 `_mapTex` 플래그 자체가 fix 소속 → 격리 불가. 대신 **deleteTexture=0·총 live 0→233 단조증가**가 누수(GC 종속) 직접 증거.
+
+**F. create/delete/live/peak MB before/after**
+- BEFORE: 삭제 0 → 244MiB급 맵 텍스처가 전환마다 누적(GC 전까지). 총 텍스처 0→233 단조증가.
+- AFTER: **create ≈ delete 균형**(141≈140), **동시 생존 맵 텍스처 상한 = 1 = 244.1MB**(빠른 50연속 전환에서도 peak=1). 전환당 build 내부 progressive 버전으로 순간 ≤4개 공존하나 프레임말 drain이 즉시 1로 붕괴.
+
+**G. GL error / context-loss 결과**
+- 전 구간 `GL.getError()=0`, `isContextLost()=false`. use-after-delete 체크(140 삭제 후 맵 재업로드+flush): `glErr=0`, loss 없음.
+
+**H. visual / gameplay regression**
+- 라이브 루프(`G.on=true`) 실전투 진입 후 stage 0/1/2/3 실전환: 매 전환 nonBlack 픽셀 5/5(실제 지형색), glErr=0, loss 없음, 검은맵/플리커 없음, pageerror 0. 스크린샷(`tmp/_trackd_visual_stage0.png`): 썩은숲 지형+HUD+펫+보스+에리어타이틀 정상 렌더.
+
+**I. Track A regression** — synthetic context loss(`WEBGL_lose_context.loseContext()`)→restore(`restoreContext()`):
+- loss: `useGL=false`, GL null(핸들러 정상). restore: `useGL=true`, `isContextLost()=false`, `glErr=0`, 파이프라인 재구축(mapCvs 재생성), `G.on=true`.
+- restore 후 실전환으로 real batch flush 강제: `glErr=0`. **`Insufficient buffer size`(0x502)/crash-loop/`bindTexture null` 시그널 0건** → **1728852c LOCK 정상 유지**(Track D fix가 loss/restore 경로 무간섭).
+
+**J. Track D 상태**
+- **RESOURCE-LIFETIME FIX = CONFIRMED** — stale map 텍스처 explicit delete 정상, old/new 누적 window bounded(peak=1×244MiB), GL regression 없음.
+- **MAC CONTEXT LOSS = IN-SITU CONFIRMATION PENDING** — Windows/AMD에서 **트리거 완화 메커니즘 검증 완료**(GC 대기 제거→transient VRAM 피크 소거를 계측 확증). 단 이 HW는 실제 loss 미재현 → **Mac 실기에서 동일 전환 stress 후 context-loss=0 확인 시 Track D 전체 FIXED/CLOSED 승격**. 그 전까지 Mac root cause는 STRONGLY SUPPORTED(메커니즘 레벨), 완전 CONFIRMED 아님.
+
+**K. Track D2 후보(별건, 미적용)**: 본 lifetime fix 독립 측정 완료. resource peak 추가 절감 필요 시 `preserveDrawingBuffer`/`depth` 필요성 감사(후보3)를 Track D2로 — 본 커밋과 미혼합(지시 §8).

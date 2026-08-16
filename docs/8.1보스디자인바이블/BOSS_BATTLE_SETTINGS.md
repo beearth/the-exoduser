@@ -202,10 +202,21 @@ shake(14 + _bp*4)                              // 페이즈별 18~30
 | 항목 | 값 |
 |---|---|
 | 캔버스 | `<canvas id="boss3dCvs">` |
-| z-index | `50` (2D 게임 캔버스 위) |
+| z-index | `5000` (2D 게임 캔버스 위. `vfx3dCvs`=4999, `chest3dCvs`=4998) |
 | 렌더러 | `THREE.WebGLRenderer` (alpha:true) |
 | 2D 보스 숨김 방법 | `window._b3Active=true` + `bE._spawnT=999` 이중 보호 — 3D 활성 시 2D 렌더 완전 차단 |
 | 메쉬 컬링 | `THREE.DoubleSide` — 이동 중 facing 회전 시 텍스처 소실 방지 |
+
+### 독립 테스트 하니스 = 본게임 오버레이 사용 (2026-08-16 정합)
+
+`game_boss3d_test.html`은 **자체 3D 보스를 그리지 않는다.** `game.html`을 iframe으로 띄우고 디버그 키(F10 보스전 / F9 무적 / F8 프로파일 / Shift+R 리셋)만 주입하며, 화면에 보이는 3D 보스는 **game.html 내장 오버레이(`#boss3dCvs`/`_b3*`)** 가 그대로 렌더한 것이다 → 테스트 = 본게임 보스전과 정의상 100% 동일.
+
+> **폐기된 구버전 (2026-08-16 이전)**: 하니스가 iframe 위에 별도 `<canvas id="overlay3d">`(부모 문서, z-index 50)를 얹어 **자체 Three.js 오버레이로 보스를 이중 렌더**했다. 이 외부 오버레이는 내장 `_b3`와 어긋난 낡은 값을 써서 유저가 "비율/배치가 다르다"고 관측:
+> - 스케일 `bossRcss * 2.0`만 사용 → 챕터 `scaleMul`(1장 `0.4`) 누락으로 **약 2.5배 과대**
+> - Y배치 하드코딩 `worldY - 100`(중심 기준) → 내장은 발 기준 `worldY - bossRcss`
+> - 모델 `boss_01.glb` 고정 → 내장은 챕터별 스왑
+>
+> 외부 오버레이를 제거해 이중 렌더·불일치를 근본 차단했다. 부수효과로 하니스의 여분 WebGL 컨텍스트 1개가 사라져 컨텍스트 소실(§ Mac 컨텍스트 소실) 압력도 완화된다. 백업: `game_backup_boss3d_test_pre_align.html`.
 
 ### 챕터 모델 선택·비동기 교체 (2026-08-16 LOCK)
 

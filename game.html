@@ -4150,6 +4150,25 @@ let _glFlush=function(){},_setBlend=function(additive){};
 let _clearFrame=function(){};
 let _whiteTex=null;
 const _texUploaded=new WeakMap();
+// ═══ [Track D] 맵 텍스처 수명 결정적 종료 (frame-end deferred-delete queue) ═══
+//   불변식(ownership invariant):
+//   1. source/version(_glVer)이 교체된 map 텍스처는 이후 frame에서 더 이상 사용되지 않는다.
+//   2. 현재 frame에 이미 제출 대기 중인 batch만 flush(_glFlush)한 뒤 삭제한다.
+//   3. map 텍스처 lifetime은 map transition ownership(buildMapCache/_finalizeBMC)과 함께 종료한다.
+//   4. GC는 JS wrapper(WebGLTexture 객체) 회수용일 뿐, GPU 텍스처 lifetime 정책으로 쓰지 않는다.
+//   범위: _mapTex 플래그가 붙은 map canvas 텍스처 한정. UI/VFX/atlas/dynamic 텍스처는 무관(무변경).
+const _texGCQueue=[];        // 종료 대기 중인 old map WebGLTexture (프레임말 _glFlush 직후 drain)
+let _mapTexDelTotal=0;       // 계측: 누적 deleteTexture 호출 수 (검증용)
+let _freeMapTex=function(){}; // _initWebGL WebGL 분기에서 할당 — 캐시된 map 텍스처를 queue로 이관
+function _drainTexGCQueue(){  // 프레임말(현재 frame 마지막 GL flush 완료 뒤) 결정적 삭제
+  if(!_texGCQueue.length)return;
+  if(typeof GL!=='undefined'&&GL&&GL.deleteTexture){
+    for(let i=0;i<_texGCQueue.length;i++){try{GL.deleteTexture(_texGCQueue[i])}catch(e){}}
+    _mapTexDelTotal+=_texGCQueue.length;
+  }
+  // context lost(GL null) 시 텍스처는 컨텍스트와 함께 이미 소멸 → 큐만 비운다.
+  _texGCQueue.length=0;
+}
 // ═══ [DCPROF] 맵 전환 drawCall 폭발 진단 계측 — 기본 OFF, ?dcprof URL 파라미터로만 ON ═══
 //   production 성능/동작 무영향(모든 훅이 _DCP.on 게이트). 측정 전용, 렌더 로직 무수정.
 const _DCP_SRC=Object.freeze({MAP_CACHE:1,TILE_FALLBACK:2,WORLD_OBJECT:3,PLAYER:4,ENEMY:5,PROJECTILE:6,PARTICLE_VFX:7,DROP_ITEM:8,UI_HUD:9,POST_DEBUG:10,UNKNOWN:0});
@@ -4874,8 +4893,15 @@ oC=c;}`;
   _whiteTex=wt;
   let _curTex=wt;
   const _texCache=new WeakMap();
+  // [Track D] 명시적 ownership 종료: map canvas의 캐시된 텍스처를 삭제 큐로 이관 + 캐시 슬롯 제거.
+  //   호출측(buildMapCache/_finalizeBMC)에서 old map 텍스처를 rebuild 직전에 넘긴다.
+  _freeMapTex=function(src){const e=src&&_texCache.get(src);if(e&&e.tex){_texGCQueue.push(e.tex);_texCache.delete(src);}};
 
   _getTex=function(src,_nearestHint){let e=_texCache.get(src);if(e&&e.v===(src._glVer||0))return e.tex;
+    // [Track D] map 텍스처만: 버전 불일치로 캐시 덮어쓰기 직전, 구 텍스처를 프레임말 삭제 큐로.
+    //   (invariant #1: 구 map 텍스처는 이후 frame에서 미사용 — 이 캐시 슬롯이 유일 참조였음)
+    //   비-map 텍스처(_mapTex 미설정)는 short-circuit → 핫패스/기존 동작 무영향.
+    if(e&&e.tex&&src._mapTex){_texGCQueue.push(e.tex);}
     const t=GL.createTexture();GL.bindTexture(GL.TEXTURE_2D,t);
     const _isCanvas=src instanceof HTMLCanvasElement||src instanceof ImageBitmap||_nearestHint;
     const _flt=_isCanvas?GL.NEAREST:GL.LINEAR;
@@ -4940,6 +4966,8 @@ oC=c;}`;
       //   drawElements(_qCnt*6)를 호출 → EBO 용량(_MQ*6=393216) 폭파 → "Insufficient buffer size"(GL 0x502).
       //   손실 no-op flush도 카운터를 리셋하게 하여 _qCnt를 [0,_MQ)로 상한(무한증가·오버사이즈 draw 차단).
       _qCnt=0;_bufOff=0;
+      // [Track D] context lost → 큐의 텍스처 핸들은 컨텍스트와 함께 무효화. 큐 비우고 free는 no-op.
+      _texGCQueue.length=0;_freeMapTex=function(){};
       _resetEnemyInstanced();_resetVfxInstanced();
       _flush=function(){_qCnt=0;_bufOff=0};_setTex=function(){};_getTex=function(){return null};
       _setBlend=function(){};_glFlush=function(){_qCnt=0;_bufOff=0};_clearFrame=function(){_qCnt=0;_bufOff=0};
@@ -20519,7 +20547,7 @@ function _finalizeBMC(){
     for(let cy=0;cy<_mapCvs.height;cy+=mmt)for(let cx=0;cx<_mapCvs.width;cx+=mmt){
       const cw=Math.min(mmt,_mapCvs.width-cx),ch=Math.min(mmt,_mapCvs.height-cy);
       const cc=document.createElement('canvas');cc.width=cw;cc.height=ch;
-      cc.getContext('2d').drawImage(_mapCvs,cx,cy,cw,ch,0,0,cw,ch);cc._glVer=1;
+      cc.getContext('2d').drawImage(_mapCvs,cx,cy,cw,ch,0,0,cw,ch);cc._glVer=1;cc._mapTex=1;/* [Track D] */
       _mapChunks.push({cvs:cc,x:cx,y:cy,w:cw,h:ch});
     }
     _mapCvs=null;_mapCtx=null;
@@ -20527,6 +20555,11 @@ function _finalizeBMC(){
 }
 function buildMapCache(){
   if(!G.map)return;
+  // [Track D] map transition ownership boundary(invariant #3): 직전 맵의 GPU 텍스처를 종료 큐로.
+  //   재사용 싱글턴 _mapCvs(리사이즈+_glVer 범프로 다음 _getTex가 덮어씀) 및 드롭되는 청크 캔버스,
+  //   비스트림→스트림 전환(_mapCvs=null로 재조회 불가) 모두 여기서 명시 종료 → GC 대기 제거.
+  if(_mapCvs)_freeMapTex(_mapCvs);
+  if(_mapChunks)for(let _mci=0;_mci<_mapChunks.length;_mci++){if(_mapChunks[_mci]&&_mapChunks[_mci].cvs)_freeMapTex(_mapChunks[_mci].cvs);}
   if(_DCP.on)_DCP.markTransition((typeof G.mapId!=='undefined'?G.mapId:(typeof G.area!=='undefined'?G.area:'st'+G.stage)));
   _dcpCacheDelayLeft=_DCP.on?_DCP_FAULT_CACHE_DELAY:0;
   _mapCacheRefreshQueued=0;_mapCacheRefreshToken++;
@@ -20568,7 +20601,7 @@ function buildMapCache(){
   _streamMap=false;
   const th=_MTHEME[hell];const wc=_hexRgb('#0a0a0a');const fc=_hexRgb(th.f);
   const mw=G.mw,mh=G.mh,map=G.map;
-  if(!_mapCvs)_mapCvs=document.createElement('canvas');
+  if(!_mapCvs){_mapCvs=document.createElement('canvas');_mapCvs._mapTex=1;/* [Track D] map 텍스처 표식 */}
   _mapCvs.width=mw*T;_mapCvs.height=mh*T;
   if(_mapCvs._glVer!=null)_mapCvs._glVer=(_mapCvs._glVer||0)+1;
   const c=_mapCvs.getContext('2d');_mapCtx=c;c.imageSmoothingEnabled=false;
@@ -21068,7 +21101,7 @@ function buildMapCache(){
         const cw=Math.min(_mmt,_mapCvs.width-cx),ch=Math.min(_mmt,_mapCvs.height-cy);
         const cc=document.createElement('canvas');cc.width=cw;cc.height=ch;
         cc.getContext('2d').drawImage(_mapCvs,cx,cy,cw,ch,0,0,cw,ch);
-        cc._glVer=1;
+        cc._glVer=1;cc._mapTex=1;/* [Track D] */
         _mapChunks.push({cvs:cc,x:cx,y:cy,w:cw,h:ch});
       }
     }
@@ -50531,7 +50564,7 @@ function loop(timestamp){
   if(_PERF_PROF.enabled)_PERF_PROF._renderAcc+=performance.now()-_rndT0;
   const _p2=performance.now();
   const _domT0=_PERF_PROF.enabled?performance.now():0;
-  _fpsDraw();if(_useGPU||_useGL)_glFlush();
+  _fpsDraw();if(_useGPU||_useGL){_glFlush();_drainTexGCQueue();/* [Track D] 프레임 마지막 flush 완료 후 old map 텍스처 결정적 삭제 (invariant #2) */}
   if(_DCP.on){_DCP.frame++;_DCP.report();_DCP.resetFrame();} // [DCPROF] 프레임 요약 후 리셋 (최종 glFlush 포함)
   _drawBurst(); // GPU Burst (별도 context — 기존 배처 무관)
   if(_PERF_PROF.enabled)_PERF_PROF._domAcc+=performance.now()-_domT0;
