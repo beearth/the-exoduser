@@ -28497,7 +28497,7 @@ function update(){
   if(!G._camLkX)G._camLkX=0;if(!G._camLkY)G._camLkY=0;
   G._camLkX+=((_lkX-G._camLkX)*_lkSmooth);G._camLkY+=((_lkY-G._camLkY)*_lkSmooth);
   let targetX=P.x+G._camLkX,targetY=P.y+G._camLkY;
-  if(G._bossRef&&G._bossRef.alive){targetX=(P.x+G._bossRef.x)*.5+G._camLkX*.3;targetY=(P.y+G._bossRef.y)*.5+G._camLkY*.3}
+  if(!window._btActive&&G._bossRef&&G._bossRef.alive){targetX=(P.x+G._bossRef.x)*.5+G._camLkX*.3;targetY=(P.y+G._bossRef.y)*.5+G._camLkY*.3}
   G.cam.x+=(targetX-G.cam.x)*camSpd;G.cam.y+=(targetY-G.cam.y)*camSpd;
   G.cam.x=~~G.cam.x;G.cam.y=~~G.cam.y;
   // 보스 아레나 줌아웃 (보스 생존 시 0.80x, 일반 1.0x)
@@ -28506,8 +28506,10 @@ function update(){
   G._camZoom+=(_czTgt-G._camZoom)*(1-Math.pow(0.94,_dtSp));}
   // 카메라 클램핑
   const _mwPx=G.mw*T,_mhPx=G.mh*T;
-  if(_mwPx<=VW){G.cam.x=_mwPx/2}else{G.cam.x=Math.max(VW/2,Math.min(_mwPx-VW/2,G.cam.x))}
-  if(_mhPx<=VH){G.cam.y=_mhPx/2}else{G.cam.y=Math.max(VH/2,Math.min(_mhPx-VH/2,G.cam.y))}
+  if(!window._btActive){
+    if(_mwPx<=VW){G.cam.x=_mwPx/2}else{G.cam.x=Math.max(VW/2,Math.min(_mwPx-VW/2,G.cam.x))}
+    if(_mhPx<=VH){G.cam.y=_mhPx/2}else{G.cam.y=Math.max(VH/2,Math.min(_mhPx-VH/2,G.cam.y))}
+  }
   if(G.shake>0){G.shake*=.86**(_hsActive?_hsDtOrig:sp);if(G.shake<.3)G.shake=0}
   // [TORCH] 반경 업데이트
   if(OPT.torch){let _tTarget=_TORCH.baseRadius;
