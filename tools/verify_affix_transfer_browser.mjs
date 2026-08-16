@@ -17,6 +17,7 @@ const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 // 메모리 압박(호스트 Chrome 다수 동시 실행) 하 렌더러 크래시 완화 args.
 const LAUNCH_ARGS = ['--no-sandbox', '--use-angle=swiftshader', '--disable-dev-shm-usage', '--disable-gpu-program-cache', '--disable-background-timer-throttling', '--disable-backgrounding-occluded-windows', '--disable-renderer-backgrounding', '--js-flags=--max-old-space-size=1024'];
 const results = [];
+const L10_ONLY = process.argv.includes('--section=l10') || process.argv.includes('--l10-only');
 function rec(sec, name, ok, detail) { results.push({ sec, name, ok: !!ok, detail: detail || '' }); }
 function assert(sec, name, ok, detail) { rec(sec, name, ok, detail); if (!ok) console.error(`  ✗ [${sec}] ${name} — ${detail || ''}`); else console.log(`  ✓ [${sec}] ${name}`); }
 
@@ -62,6 +63,62 @@ async function installSaveCounter(page) {
 async function saveN(page) { return await page.evaluate(() => window.__saveN || 0); }
 async function resetSaveN(page) { await page.evaluate(() => { window.__saveN = 0; }); }
 
+// [Phase 8B.2 / LOCK-47A] BOUNDED-STEP BLACKSTAR BROWSER PROOF.
+//   90s hang root cause = FIXTURE_ENTITY_EXPLOSION, NOT an unbounded loop in the consumer.
+//   A single production update() returns in ~0.35s. The stall came from letting the game's
+//   real requestAnimationFrame loop (~206fps in headless swiftshader) replay the whole BlackStar
+//   cast + VFX in a booted world → unbounded particle/field accumulation → renderer OOM crash
+//   / non-return. FIX: never let the real loop run free. Do the entire measurement inside ONE
+//   synchronous page.evaluate (single JS thread freezes the RAF loop), directly construct the
+//   BlackStar ACTIVE state, call production update() exactly once per case, and clear G.on at
+//   teardown so the loop early-returns. Bounded, deterministic, sub-second.
+async function runL10Only(page) {
+  await boot(page, '_p8b2_l10', 1);
+  const out = await page.evaluate(() => {
+    // Deterministic test world: production update() and BlackStar pull consumer used UNCHANGED.
+    G.map=Array.from({length:32},()=>Array(32).fill(0));G.mw=32;G.mh=32;G.rooms=[];G.exits=[];G.on=true;
+    P.x=400;P.y=400;P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;P.skills.blackStar=1;P.skills.holyBlast=1;P.skills.lavaSummon=1;
+    INV.bag=[];for(const k in INV.equipped)INV.equipped[k]=null;_eqAffixCache=null;
+    const orig=hurtE;let hits=[];window.hurtE=(e,d)=>{hits.push(d);return 0};
+    // One fixed BlackStar consumer step vs a stationary in-zone enemy. slowMo/hitStop/_dtSp pinned
+    // so base & powered steps share an identical dt (sp) — the pull differs ONLY by _ultDmgMul().
+    // enemy has zero velocity/knockback/stun → pull is the sole displacement source.
+    const pull=()=>{
+      G.slowMo=0;G.hitStop=0;_dtSp=1;
+      // isolate BlackStar: clear any transient AoE field (e.g. a prior lava field's DOT would
+      // otherwise apply hurtE inside this same update() step and taint the no-damage invariant).
+      G._lavaField=null;G._fireZones=null;G._hbPillar=null;
+      hits=[]; // reset the shared hurtE sink so o.hits reflects THIS step only (not a prior dmg())
+      const e={alive:true,x:1000,y:400,r:20,vx:0,vy:0,kb:{x:0,y:0},stunned:0,hp:100000};
+      ens.length=0;ens.push(e);
+      P._bsX=400;P._bsY=400;P._bsT=0;P._bsCasting=true;P._bsCd=0;
+      const before=e.x;update();
+      const o={moved:before-e.x,hits:hits.length,hp:e.hp,t:P._bsT,cd:P._bsCd};
+      P._bsCasting=false;ens.length=0;return o;
+    };
+    const dmg=(fn,cast,x,y)=>{G.slowMo=0;G.hitStop=0;hits=[];ens.length=0;ens.push({alive:true,x:P.x,y:P.y,r:20,kb:{x:0,y:0},stunned:0,hp:100000});P[x]=P.x;P[y]=P.y;P[cast]=true;fn();const v=hits[0]||0;ens.length=0;return v};
+    // BlackStar geometry/cooldown snapshot — ultDmg must NOT touch radius/duration/cooldown.
+    const geom=()=>{const lv=P.skills.blackStar||1;return {maxR:1500+lv*100,dur:420+(lv-1)*30,cdBase:~~(7200*(1+_cdRed()))};};
+    const geoBefore=geom();
+    const base={black:pull(),holy:dmg(fireHolyBlast,'_hbCasting','_hbX','_hbY'),lava:dmg(fireLavaSummon,'_lvCasting','_lvX','_lvY')};
+    INV.equipped.weapon={id:'p8b2',slot:'weapon',layerLv:10,affixes:[{id:'ultDmg',tier:4,value:.5}]};_eqAffixCache=null;
+    const geoAfter=geom();
+    const power={black:pull(),holy:dmg(fireHolyBlast,'_hbCasting','_hbX','_hbY'),lava:dmg(fireLavaSummon,'_lvCasting','_lvX','_lvY')};
+    window.hurtE=orig;G.on=false;G._lavaField=null;G._hbPillar=null;
+    return {base,power,mul:_ultDmgMul(),geoBefore,geoAfter};
+  });
+  const D0=out.base.black.moved, D1=out.power.black.moved;
+  const ratio=D0>0?D1/D0:0;
+  // Zero-denominator safety (task §11): D0<=0 means the enemy was not inside the pull zone.
+  assert('L10', 'BlackStar fixture valid (D0>0, enemy in pull zone)', D0>0, `BLACKSTAR_FIXTURE_INVALID D0=${D0}`);
+  assert('L10', 'BlackStar actual update pull ratio = 1.5 (real position mutation)', D0>0&&Math.abs(ratio-1.5)<.01, JSON.stringify({D0,D1,ratio}));
+  assert('L10', 'BlackStar no damage (hurtE count 0 + HP delta 0)', out.base.black.hits===0&&out.power.black.hits===0&&out.base.black.hp===out.power.black.hp, JSON.stringify(out));
+  assert('L10', 'BlackStar radius/duration/cooldown invariant (L10-A off→on)', out.geoBefore.maxR===out.geoAfter.maxR&&out.geoBefore.dur===out.geoAfter.dur&&out.geoBefore.cdBase===out.geoAfter.cdBase, JSON.stringify({b:out.geoBefore,a:out.geoAfter}));
+  assert('L10', 'Holy browser ratio = 1.5', out.base.holy>0&&Math.abs(out.power.holy/out.base.holy-1.5)<.02, JSON.stringify(out));
+  assert('L10', 'Lava direct browser ratio = 1.5', out.base.lava>0&&Math.abs(out.power.lava/out.base.lava-1.5)<.04, JSON.stringify(out));
+  console.log(`  · L10 BlackStar D0=${D0.toFixed(4)} D1=${D1.toFixed(4)} ratio=${ratio.toFixed(6)} | radius=${out.geoBefore.maxR} dur=${out.geoBefore.dur} cdBase=${out.geoBefore.cdBase}`);
+}
+
 // ═══════════════════════════════════════════════════════════════════════════
 async function main() {
   const browser = await chromium.launch({ headless: true, executablePath: CHROME, args: ['--no-sandbox', '--use-angle=swiftshader'] });
@@ -75,6 +132,8 @@ async function main() {
   page.on('console', m => { /* rejection surfaced via pageerror */ });
 
   try {
+    if(L10_ONLY){await runL10Only(page);}
+    else {
     // ── §2 BOOT / ERRORS ────────────────────────────────────────────────
     await boot(page, '_p7e_main', 1);
     // classify boot console errors: transfer-related?
@@ -426,7 +485,7 @@ async function main() {
         const w = mkItem('weapon', 4, EL.F, 4, 'sword', 10);
         const g = _getSlotCompatGroups('weapon'); const haveB = {}; const groups = new Set();
         for (const a of w.affixes) { const d = AFFIX_POOL.find(x => x.id === a.id); if (d) { if (d.sub === 'B') haveB[d.layer] = 1; if (d.group) groups.add(d.group); } }
-        const pick = AFFIX_POOL.find(a => a.sub === 'B' && a.compat && a.compat.some(c => g.indexOf(c) >= 0) && a.layer <= w.layerLv && a.layer >= 1 && !a.keystone && !a.v2skip && !haveB[a.layer] && !groups.has(a.group));
+        const pick = AFFIX_POOL.find(a => { if(!(a.sub === 'B' && a.compat && a.compat.some(c => g.indexOf(c) >= 0) && a.layer <= w.layerLv && a.layer >= 1 && !a.keystone && !a.v2skip && !haveB[a.layer] && !groups.has(a.group)))return false; const stone={type:'affixStone',affixId:a.id,tier:3,value:.25};return planAbsorption(w, stone).ok; });
         const stone = { type: 'affixStone', affixId: pick.id, tier: 3, value: 0.25 };
         const other = mkItem('armor', 4, EL.F, 4, null, 10);
         INV.bag = [w, other, stone];
@@ -455,7 +514,7 @@ async function main() {
         const w = mkItem('weapon', 4, EL.F, 4, 'sword', 10);
         const g = _getSlotCompatGroups('weapon'); const haveB = {}; const groups = new Set();
         for (const a of w.affixes) { const d = AFFIX_POOL.find(x => x.id === a.id); if (d) { if (d.sub === 'B') haveB[d.layer] = 1; if (d.group) groups.add(d.group); } }
-        const pick = AFFIX_POOL.find(a => a.sub === 'B' && a.compat && a.compat.some(c => g.indexOf(c) >= 0) && a.layer <= w.layerLv && a.layer >= 1 && !a.keystone && !a.v2skip && !haveB[a.layer] && !groups.has(a.group));
+        const pick = AFFIX_POOL.find(a => { if(!(a.sub === 'B' && a.compat && a.compat.some(c => g.indexOf(c) >= 0) && a.layer <= w.layerLv && a.layer >= 1 && !a.keystone && !a.v2skip && !haveB[a.layer] && !groups.has(a.group)))return false; const stone={type:'affixStone',affixId:a.id,tier:3,value:.25};return planAbsorption(w, stone).ok; });
         const stone = { type: 'affixStone', affixId: pick.id, tier: 3, value: 0.25 };
         INV.bag = [w, stone]; openPanel('invPanel'); INV.selected = 1; _invRenderDetail(1, 'bag');
         return { targetId: w.id, before: w.affixes.length };
@@ -773,6 +832,7 @@ async function main() {
       assert('19', 'absorb commit 저장 호출', sN19 === 1, `saveN=${sN19}`);
     }
 
+    }
     // transfer-phase console errors (since boot boundary reset)
     const transferConsole = consoleErrors.filter(t => !/Failed to load resource|api\/load|api\/save|no server|\[LOCAL\]/i.test(t));
     assert('2', 'transfer-phase console.error = 0 (all sections)', transferConsole.length === 0, JSON.stringify(transferConsole));
