@@ -208,8 +208,8 @@
 | context-lost/restored | GL 핸들러 | lost: 직전 dc 로그 / restored: `restoreProbe=600` getError 무장 + runaway 재무장 + `[DCPROF GLBUF]` VBO/EBO 크기 |
 
 ### 기록 필드
-- **프레임별**: `dc`(총 drawCall), `flush`, `inst`, `setTex`, `setBlend`, `bufFull`, 사유분포 `{tex,blend,buffull,expl}`, `drawInvokes`, `transState`, subsystem별 dc(`sub={}`), `vtxPeak`/`idxPeak`.
-- **runaway one-shot**(`dc>50000` 최초 초과 시 1회만, 전환마다 재무장): frame, drawInvokes, trans, stage/map, 사유, batch vtx/idx, subsystem 스냅샷, 짧은 stack.
+- **프레임별**: `dc`(원 PERF와 같은 drawArrays/drawElements invocation), `flush`, `inst`, `texCalls`(모든 setter), `setTex`(실변경), `uniqueTex`, `setBlend`, `bufFull`, 사유분포 `{tex,blend,buffull,expl}`, `drawInvokes`, `transState`, source별 dc, subsystem별 dc(`sub={}`), `vtxPeak`/`idxPeak`.
+- **runaway one-shot**(`dc>50000` 최초 초과 시 1회만, 전환마다 재무장): frame, drawInvokes, trans, stage/map, 사유, batch vtx/idx, source/subsystem 스냅샷, cache/entity 상태. per-draw stack은 생성하지 않는다.
 - **restore 프로브**: drawElements count/type/offset, EBO idx 용량, VBO bytes, qCnt.
 
 ### 정적 분석으로 좁힌 범위
@@ -235,8 +235,8 @@
 1. `game.html?dcprof` 로 실행(정식 빌드 그대로, 게이트만 ON).
 2. 콘솔 열고 **문제의 맵 전환을 반복 수행**.
 3. 아래 로그 수집:
-   - `[DCPROF f…]` — 폭주 프레임의 `dc`/`sub`/`reasons`/`drawInvokes` (어느 subsystem·사유가 폭증했는지).
-   - `[DCPROF RUNAWAY]` — 5만 최초 초과 지점의 subsystem·flush 사유·batch count·**stack**.
+   - `[DCPROF f…]` — 폭주 프레임의 `dc`/source/`sub`/`reasons`/`drawInvokes` (어느 source·subsystem·사유가 폭증했는지).
+   - `[DCPROF RUNAWAY]` — 5만 최초 초과 지점의 source별 count·texture identity·cache/entity 상태·flush 사유·batch count. per-draw stack은 생성하지 않음.
    - `[DCPROF EBO-OVERFLOW]` / `[DCPROF RESTORE-ERR]` — restore 직후 stale `_qCnt`·drawCount·EBO 용량 (독립 결함 확증).
    - `[DCPROF CTX-LOST]`/`[DCPROF CTX-RESTORED]` — 폭발→손실→복구 타임라인.
 4. 이 로그가 나오면 root cause subsystem이 확정되고, 그때 **최소 수정**을 제시한다. (현재는 수정 없음.)
@@ -347,10 +347,49 @@ maxIdxCount = 27,815,124  (=4,635,854 quads ×6)                    ← 단일 �
 
 ### Track B — 원 "2.7M" 인시던트 : STILL OPEN (draw-call invocation count)
 - 원 측정값 = 본 문서 L166 `drawCalls:2775741` = `_PERF_PROF.drawCalls`(GL drawArrays/drawElements **호출 횟수**, 30프레임 창 누적). **quad/index/batch element 오기가 아니라 실제 invocation count.**
-- ∴ restore-bug(단일 27.8M-index 호출)와 **별개**. ~92,500 draw-call/frame invocation 폭증 = **배칭 붕괴**(quad당 draw 1 수준) 후보. 정상은 tex 전환당 flush로 ~190 draws/frame(아래 Track C 실측)이므로, 92k/frame은 텍스처 thrash 극단화 또는 맵캐시 미완성 시 per-tile immediate draw 폴백 유력.
+- ∴ restore-bug(단일 27.8M-index 호출)와 **별개**. ~92,500 draw-call/frame invocation 폭증의 실제 source/loop는 미확정이다. 정상은 tex 전환당 flush로 ~190 draws/frame(아래 Track C 실측)이며, cache-miss의 per-tile immediate GL fallback은 아래 fault audit에서 반증됐다.
 - **미해결. OPEN 유지.** 실기(Mac, slot=119 조건) 또는 특정 맵/캐시-미완성 타이밍에서만 발현 추정 — 이 데스크톱 자동화(정상 전환 14회 + 72초 부하)에서 배칭 붕괴 미재현(peak 197 draws/frame).
 
-#### Track B 심층 감사 (2026-08-16) — 배치 붕괴 메커니즘 CONFIRMED, 90K 유발 loop는 STILL OPEN
+#### Track B source attribution + cache-miss fault audit (2026-08-16)
+
+> 범위는 원 `_PERF_PROF.drawCalls`와 동일한 **`GL.drawArrays` + `GL.drawElements` invocation**만이다. restore stale-batch의 raw 값은 별도 Track A SSOT(`qCnt=4,635,854`, `indices=27,815,124`, 단일 호출)이며 여기와 합산하거나 원인으로 결론내지 않는다.
+
+| 항목 | 구현/판정 |
+|---|---|
+| source attribution | `?dcprof`일 때만 WebGL context의 `drawArrays`/`drawElements`를 감싼다. 호출당 stack/문자열/console 작업 없이 현재 numeric source id의 `Uint32Array` slot만 `++`한다. source: map/cache, tile/fallback, world object, player, enemy, projectile, particle/VFX, drop/item, UI/HUD, post/debug, unknown. |
+| scope | `draw()` pipeline boundary와 `drawP()`에서 source를 설정한다. `_flush`/instancing은 현재 source를 유지해 source별 actual GL invocation을 누적한다. |
+| texture 구분 | `texCalls`=모든 `_setTex` 호출, `setTex`=실제 identity 변경, `uniqueTex`=프레임 내 고유 identity. `flush`, blend, flush reason도 함께 출력한다. 따라서 `draws≈setTex`와 단순 setter 호출 폭증을 구별한다. |
+| runaway dump | threshold 초과 시 1회: source별 count, texCalls/setTex/uniqueTex, flush/blend/reason, drawInvokes, stage/map/transition, cacheReady/cachePending, mapObjects/enemies/projectiles/particles. per-draw log 없음. |
+| fault injection | `?dcprof&dcprofCacheDelay=N`(최대 600)은 **N 프레임 동안 cached-map blit만 숨긴다.** production 경로, cache builder, 품질, DPR을 변경하지 않는다. 목적은 cache missing 때 per-tile GL fallback이 존재하는지 검증하는 것뿐이다. |
+
+브라우저 smoke (`testchar=1`, WebGL2, `dcprofCacheDelay=600`) 결과:
+
+```
+[DCPROF f60] dc=28 flush=28 inst=0 texCalls=4001 setTex=27 uniqueTex=23
+  reasons{tex:26,blend:0,buffull:0,expl:2} invokes=1
+  sources=map/cache:7,tile/fallback:2,world object:4,player:10,UI/HUD:4,post/debug:1
+  cacheReady=false cachePending=true enemies=0 projectiles=0 particles=1
+```
+
+- **cache fallback 판정: 없음 (반증)**. map renderer는 stream viewport 1장, `_mapCvs` 1장, 또는 visible `_mapChunks`만 blit하며, 어느 cache도 없으면 최종 `else`은 **그리지 않는다**. tile fallback 루프는 `_tickBuildMapCache()`의 offscreen 2D canvas build로 GL draw가 0이다. 강제 cache miss에서도 92K가 아니라 28 calls/frame이며 normal smoke(29 calls/frame)보다 1 낮다.
+- normal smoke의 source report는 `dc=29~40`, `texCalls≈4,003`, `setTex=28~39`, `uniqueTex=24~32`, `flush=29~40`이었다. 즉 현재 정상 경로는 `draw≈actual texture change`이고 setter 호출 자체가 수천 회여도 batch collapse가 아니다.
+
+92,525 invocations/frame 대비 cardinality 감사:
+
+| source/loop | 실제 반복 상한 또는 renderer 동작 | 92K 가능성 |
+|---|---|---|
+| map cache / chunks | stream viewport=1 blit, `_mapCvs`=1 blit, chunks=visible chunks만; cache missing=0 blit | 불가 |
+| tile fallback builder | phase-1은 최대 `20 rows × map width`를 **offscreen Canvas2D**에 작성, GL renderer 호출 0 | 불가 |
+| visible enemy | desktop `_dynERMax=45`; 8-dir body는 texture bucket instancing | 불가 |
+| projectile | pool `600` + player pool `120`; renderer 3-pass여도 최대 반복은 수천 단위 | 불가 |
+| pooled particle/VFX | pool 1,000, desktop dynamic limit `_dynPLim=300` | 불가 |
+| ground drop/item | `worldItems` hard cap 20 | 불가 |
+| world object | single `MAP_OBJS` traversal(객체당 drawImage 계열); source report에 live `mapObjects`도 기록. 90K를 만들려면 map data가 수만 객체이거나 traversal 재진입이 필요하며 아직 실측되지 않음 | OPEN candidate |
+| text/dynamic canvas | glyph/`_glVer` churn은 text/drawImage 당 flush 1이라는 메커니즘만 CONFIRMED. 기존 최대부하 관측 `fillText≤9`, `drawImage≤4166`/frame | 정상 경로만으로 불가 |
+
+**현재 결론:** cache fallback, pool/visible-loop cardinality, 단순 `_setTex` call volume은 원 `92,525/frame`의 원인이 아니다. 90K가 재현되면 새 source dump가 exact top source와 texture identity 관계를 판정한다. 그 전까지 **Original 2.7M ROOT CAUSE = STILL OPEN**이며 production fix 후보는 없다.
+
+#### Track B 심층 감사 (2026-08-16) — 90K 유발 loop는 STILL OPEN
 - **90K/frame 가능 경로 전수 역추적**: GL draw는 전부 `_flush`(=drawElements 1회). flush는 텍스처전환/블렌드전환/버퍼풀(_MQ쿼드)에서만 발생. 90K flush = 90K 텍스처전환 또는 블렌드전환(버퍼풀은 90K×65536쿼드=불가). 후보 cardinality:
   | 경로 | 최대 draw/frame | 판정 |
   |---|---|---|

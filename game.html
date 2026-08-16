@@ -4152,6 +4152,10 @@ let _whiteTex=null;
 const _texUploaded=new WeakMap();
 // ═══ [DCPROF] 맵 전환 drawCall 폭발 진단 계측 — 기본 OFF, ?dcprof URL 파라미터로만 ON ═══
 //   production 성능/동작 무영향(모든 훅이 _DCP.on 게이트). 측정 전용, 렌더 로직 무수정.
+const _DCP_SRC=Object.freeze({MAP_CACHE:1,TILE_FALLBACK:2,WORLD_OBJECT:3,PLAYER:4,ENEMY:5,PROJECTILE:6,PARTICLE_VFX:7,DROP_ITEM:8,UI_HUD:9,POST_DEBUG:10,UNKNOWN:0});
+const _DCP_SRC_NAME=['unknown','map/cache','tile/fallback','world object','player','enemy','projectile','particle/VFX','drop/item','UI/HUD','post/debug'];
+const _DCP_FAULT_CACHE_DELAY=(function(){try{const n=+new URLSearchParams(location.search).get('dcprofCacheDelay');return Number.isFinite(n)?Math.max(0,Math.min(600,~~n)):0}catch(e){return 0}})();
+let _dcpCacheDelayLeft=0,_dcpCacheFaultActive=false;
 const _DCP={
   on:(function(){try{return /[?&]dcprof\b/.test(location.search)||(typeof localStorage!=='undefined'&&localStorage.getItem('dcprof')==='1')}catch(e){return false}})(),
   reason:'explicit',   // 현재 flush 사유 (setTex/setBlend/quad가 flush 직전 세팅)
@@ -4159,15 +4163,22 @@ const _DCP={
   transState:'idle', transMap:'', transTTL:0, // 맵 전환 상태 태그 (buildMapCache 후 N프레임 유지)
   markTransition:function(mapId){ if(!this.on)return; this.transState='transition'; this.transMap=String(mapId==null?'?':mapId); this.transTTL=45; this.captured=false; /* 전환마다 runaway 캡처 재무장 */ console.log('[DCPROF TRANSITION] begin map='+this.transMap+' frame='+this.frame); },
   // 프레임별 카운터
-  dc:0, flush:0, setTex:0, setBlend:0, bufFull:0, texChange:0, instDraw:0,
+  dc:0, flush:0, setTex:0, texCalls:0, uniqueTex:0, setBlend:0, bufFull:0, texChange:0, instDraw:0,
   rTex:0, rBlend:0, rBufFull:0, rExplicit:0,   // flush 사유별 분포
   vtxPeak:0, idxPeak:0,   // 배치 정점/인덱스 사용 피크 (quad*4 verts, quad*6 idx)
+  src:_DCP_SRC.UNKNOWN, srcDc:new Uint32Array(_DCP_SRC_NAME.length), rawGL:false,
+  _texSeen:new WeakMap(), _texEpoch:1,
   // subsystem drawCall 델타
   sub:Object.create(null), _subSnap:0,
   // runaway one-shot capture
   thresh:50000,   // 평시 7-9k → 5만 초과면 명백 폭주
   captured:false,
   restoreProbe:0, // context-restored 직후 N flush 동안 GL.getError로 buffer-size 오류 포착 (>0일 때만 getError=stall)
+  _setSource:function(id){if(this.on)this.src=id},
+  _srcSummary:function(){let a=[];for(let i=0;i<this.srcDc.length;i++)if(this.srcDc[i])a.push(_DCP_SRC_NAME[i]+':'+this.srcDc[i]);return a.join(',')||'none'},
+  _sceneSummary:function(){var G_=(typeof G!=='undefined')?G:{};var cacheReady=!_dcpCacheFaultActive&&!!(_bmcDone&&(_streamMap?_streamVpCvs:(_mapCvs||(_mapChunks&&_mapChunks.length))));var particles=(typeof _partCnt!=='undefined'?_partCnt:0)+(G_.parts?G_.parts.length:0);return 'cacheReady='+cacheReady+' cachePending='+(!_bmcDone||_dcpCacheFaultActive)+' mapObjects='+(MAP_OBJS?MAP_OBJS.length:0)+' enemies='+(ens?ens.length:0)+' projectiles='+((projs?projs.length:0)+(pProjs?pProjs.length:0))+' particles='+particles},
+  _onRawDraw:function(){if(!this.on)return;this.dc++;this.srcDc[this.src]++},
+  _onSetTex:function(t,changed){if(!this.on)return;this.texCalls++;if(changed)this.setTex++;if(t&&(typeof t==='object'||typeof t==='function')){if(this._texSeen.get(t)!==this._texEpoch){this._texSeen.set(t,this._texEpoch);this.uniqueTex++}}},
   _mark:function(name){ if(!this.on)return; this.sub[name]=(this.sub[name]||0)+(this.dc-this._subSnap); this._subSnap=this.dc; },
   // flush 1회 기록 — WebGL2/WebGPU 공통. qc=이번 flush의 quad 수, drew=실제 draw 발생 여부.
   //   빈 flush(qc=0)는 draw가 없으므로 사유만 소거하고 카운트하지 않는다(다음 실draw로 사유 누수 방지).
@@ -4180,32 +4191,33 @@ const _DCP={
     if(r==='explicit'&&qc>=_MQ){r='buffull';this.bufFull++}
     if(r==='tex')this.rTex++; else if(r==='blend')this.rBlend++; else if(r==='buffull')this.rBufFull++; else this.rExplicit++;
     this.reason='explicit';
-    this.dc++;
+    if(!this.rawGL){this.dc++;this.srcDc[this.src]++}
     var v=qc*4, i=qc*6;
     if(v>this.vtxPeak)this.vtxPeak=v;
     if(i>this.idxPeak)this.idxPeak=i;
     if(!this.captured&&this.dc>this.thresh)this._capture('flush:'+r,qc);
   },
-  _onInst:function(cnt){ if(!this.on)return; this.instDraw++; this.dc++; if(!this.captured&&this.dc>this.thresh)this._capture('instanced',cnt); },
+  _onInst:function(cnt){ if(!this.on)return; this.instDraw++; if(!this.rawGL){this.dc++;this.srcDc[this.src]++} if(!this.captured&&this.dc>this.thresh)this._capture('instanced',cnt); },
   _capture:function(where,cnt){
     this.captured=true;
-    var stack='';try{throw new Error('dcprof')}catch(e){stack=(e.stack||'').split('\n').slice(2,10).join(' | ')}
     var G_=(typeof G!=='undefined')?G:{};
     console.warn('[DCPROF RUNAWAY] dc='+this.dc+' first-exceed@'+where
       +' frame='+this.frame+' drawInvokes='+this.drawInvokes
       +' trans='+this.transState+'('+this.transMap+')'
       +' stage='+(G_.stage)+' map='+(G_.mapId||G_.area||'?')
       +' cnt='+cnt+' vtxPeak='+this.vtxPeak+' idxPeak='+this.idxPeak
-      +' flush='+this.flush+' setTex='+this.setTex+' setBlend='+this.setBlend+' bufFull='+this.bufFull
+      +' flush='+this.flush+' texCalls='+this.texCalls+' setTex='+this.setTex+' uniqueTex='+this.uniqueTex+' setBlend='+this.setBlend+' bufFull='+this.bufFull
       +' reasons{tex:'+this.rTex+',blend:'+this.rBlend+',buffull:'+this.rBufFull+',expl:'+this.rExplicit+'}'
+      +' '+this._sceneSummary()
+      +' sources='+this._srcSummary()
       +'\n  sub='+JSON.stringify(this.sub)
-      +'\n  stack='+stack);
+    );
   },
   resetFrame:function(){
     if(!this.on)return;
-    this.dc=0;this.flush=0;this.setTex=0;this.setBlend=0;this.bufFull=0;this.texChange=0;this.instDraw=0;
+    this.dc=0;this.flush=0;this.setTex=0;this.texCalls=0;this.uniqueTex=0;this.setBlend=0;this.bufFull=0;this.texChange=0;this.instDraw=0;
     this.rTex=0;this.rBlend=0;this.rBufFull=0;this.rExplicit=0;this.vtxPeak=0;this.idxPeak=0;
-    this.drawInvokes=0;this._subSnap=0;this.sub=Object.create(null);
+    this.drawInvokes=0;this.src=_DCP_SRC.UNKNOWN;this.srcDc.fill(0);this._texEpoch++;if(this._texEpoch===0)this._texEpoch=1;this._subSnap=0;this.sub=Object.create(null);
     if(this.transTTL>0){this.transTTL--;if(this.transTTL===0){this.transState='idle';this.transMap='';}}
   },
   report:function(){
@@ -4213,10 +4225,10 @@ const _DCP={
     // 폭주(임계 초과) 프레임 또는 60프레임마다 1회 요약
     if(this.dc>this.thresh||(this.frame%60===0)){
       console.log('[DCPROF f'+this.frame+'] dc='+this.dc+' flush='+this.flush+' inst='+this.instDraw
-        +' setTex='+this.setTex+' setBlend='+this.setBlend+' bufFull='+this.bufFull
+        +' texCalls='+this.texCalls+' setTex='+this.setTex+' uniqueTex='+this.uniqueTex+' setBlend='+this.setBlend+' bufFull='+this.bufFull
         +' reasons{tex:'+this.rTex+',blend:'+this.rBlend+',buffull:'+this.rBufFull+',expl:'+this.rExplicit+'}'
         +' invokes='+this.drawInvokes+' trans='+this.transState
-        +' sub='+JSON.stringify(this.sub));
+        +' sources='+this._srcSummary()+' '+this._sceneSummary()+' sub='+JSON.stringify(this.sub));
     }
   }
 };
@@ -4737,7 +4749,7 @@ return c;}`;
       _qCnt=0;
       _DCP._onFlush(_qc,true);
     };
-    _setTex=function(bg){if(bg!==_curBG){_DCP.setTex++;_DCP.texChange++;_DCP.reason='tex';_flush();_curBG=bg}};
+    _setTex=function(bg){const _changed=bg!==_curBG;_DCP._onSetTex(bg,_changed);if(_changed){_DCP.texChange++;_DCP.reason='tex';_flush();_curBG=bg}};
     _setBlend=function(additive){
       const p=additive?pipeA:pipeN;
       if(p!==_curPipe){_DCP.setBlend++;_DCP.reason='blend';_flush();_curPipe=p}
@@ -4802,6 +4814,14 @@ function _initWebGL(){
   try{GL=C.getContext('webgl2',{alpha:false,premultipliedAlpha:false,powerPreference:'high-performance',antialias:false,preserveDrawingBuffer:true})}catch(e){}
   if(!GL){if(!IS_ELECTRON)console.log('[GPU] WebGL2 not available');return false}
   _useGL=true;
+  // Mirrors the original PERF counter exactly: drawArrays/drawElements only.
+  // Installed only in ?dcprof mode and performs numeric increments, never stacks.
+  if(_DCP.on&&!GL._dcpSourceWrapped){
+    GL._dcpSourceWrapped=true;_DCP.rawGL=true;
+    const _dcpDrawArrays=GL.drawArrays.bind(GL),_dcpDrawElements=GL.drawElements.bind(GL);
+    GL.drawArrays=function(){_DCP._onRawDraw();return _dcpDrawArrays.apply(GL,arguments)};
+    GL.drawElements=function(){_DCP._onRawDraw();return _dcpDrawElements.apply(GL,arguments)};
+  }
   GL.pixelStorei(GL.UNPACK_COLORSPACE_CONVERSION_WEBGL,GL.NONE);
 
   const _VS=`#version 300 es
@@ -4889,7 +4909,7 @@ oC=c;}`;
       if(_DCP.restoreProbe>0){_DCP.restoreProbe--;const _ge=GL.getError();if(_ge)console.warn('[DCPROF RESTORE-ERR] glErr=0x'+_ge.toString(16)+' drawCount='+(_qc*6)+' type=UNSIGNED_SHORT offset=0 eboIdxCap='+_idx.length+' vboBytes='+_buf.byteLength+' qCnt='+_qc);}
       _qCnt=0;_bufOff=0;
       _DCP._onFlush(_qc,true)};
-    _setTex=function(t){if(t!==_curTex){_DCP.setTex++;_DCP.texChange++;_DCP.reason='tex';_flush();_curTex=t}};
+    _setTex=function(t){const _changed=t!==_curTex;_DCP._onSetTex(t,_changed);if(_changed){_DCP.texChange++;_DCP.reason='tex';_flush();_curTex=t}};
     _setBlend=function(additive){_DCP.setBlend++;_DCP.reason='blend';_flush();
       GL.blendFunc(additive?GL.ONE:GL.SRC_ALPHA,
                    additive?GL.ONE:GL.ONE_MINUS_SRC_ALPHA)};
@@ -20501,6 +20521,7 @@ function _finalizeBMC(){
 function buildMapCache(){
   if(!G.map)return;
   if(_DCP.on)_DCP.markTransition((typeof G.mapId!=='undefined'?G.mapId:(typeof G.area!=='undefined'?G.area:'st'+G.stage)));
+  _dcpCacheDelayLeft=_DCP.on?_DCP_FAULT_CACHE_DELAY:0;
   _mapCacheRefreshQueued=0;_mapCacheRefreshToken++;
   _autoChunkConfig(G.mw,G.mh);
   _visChunks=null;_visChunkLen=0;_visCamX=-9999;_visCamY=-9999;
@@ -42148,7 +42169,7 @@ function _oriInitParticles(){
 // ═══════════════════════════════════════
 function draw(){
   if(!X)return;
-  if(_DCP.on)_DCP.drawInvokes++; // 프레임당 draw() 호출 횟수 — 중복 scene traversal 감지
+  if(_DCP.on){_DCP.drawInvokes++;_DCP._setSource(_DCP_SRC.MAP_CACHE)} // 프레임당 draw() 호출 횟수 — 중복 scene traversal 감지
   X.imageSmoothingEnabled=false;
   const _drawStart=performance.now();
   const _fBudget=14; // 14ms = ~70fps 타겟
@@ -42233,8 +42254,11 @@ function draw(){
     X.globalAlpha=_fg*.7;X.fillStyle='#ccffdd';X.fillRect(f.x-.5,f.y-.5,1,1);
   }
   X.restore();}
-  // 맵 캐시 drawImage
-  if(_streamMap){
+  // 맵 캐시 drawImage. ?dcprof&dcprofCacheDelay=N은 N프레임 동안 이 blit만 숨겨
+  // cache-miss에 per-tile GL fallback이 있는지 검증하는 debug-only fault injection이다.
+  let _dcpHideMapCache=false;if(_DCP.on&&_DCP_FAULT_CACHE_DELAY>0&&_dcpCacheDelayLeft>0){_dcpHideMapCache=true;_dcpCacheDelayLeft--}
+  _dcpCacheFaultActive=_dcpHideMapCache;
+  if(_streamMap&&!_dcpHideMapCache){
     // 대형 맵 스트리밍: 뷰포트 합성 캔버스 1장 방식
     const _camL=s1*T,_camT=s2*T,_camR=e1*T,_camB=e2*T;
     const _vpW=_camR-_camL+T*4,_vpH=_camB-_camT+T*4;
@@ -42282,10 +42306,10 @@ function draw(){
     // 매 프레임 1회 drawImage
     // 합성할 때 기록한 월드 원점으로 그린다. 현재 카메라 원점에 그리면 캐시 내용이 이동 중 최대 3타일 밀린다.
     if(_streamVpCvs){X.drawImage(_streamVpCvs,_streamVpWorldX|0,_streamVpWorldY|0)}
-  }else if(_mapCvs){
+  }else if(_mapCvs&&!_dcpHideMapCache){
     const sx0=s1*T,sy0=s2*T,sw=(e1-s1)*T,sh=(e2-s2)*T;
     X.drawImage(_mapCvs,sx0,sy0,sw,sh,sx0,sy0,sw,sh);
-  }else if(_mapChunks){
+  }else if(_mapChunks&&!_dcpHideMapCache){
     const sx0=s1*T,sy0=s2*T,sx1=e1*T,sy1=e2*T;
     // 카메라 청크 좌표 비교 — 동일하면 재계산 스킵
     const _curCCX=~~(G.cam.x/_mcW),_curCCY=~~(G.cam.y/_mcH);
@@ -42306,7 +42330,7 @@ function draw(){
   }
   const _tMap=performance.now();
   if(_fc2d){var _dPara=_PERF_PROF._delta(_snapPara);_PERF_PROF._para_di=_dPara.di}
-  if(_DCP.on)_DCP._mark('bg'); // [DCPROF] 배경(패럴랙스+검정오버레이+반딧불이) 구간 종료
+  if(_DCP.on){_DCP._mark('bg');_DCP._setSource(_DCP_SRC.TILE_FALLBACK)} // [DCPROF] 배경(패럴랙스+검정오버레이+반딧불이) 구간 종료
   var _snapTile=_fc2d?_PERF_PROF._snap():null;
   // ── 보스 아레나 입구 포탈 ──
   if(G._bossArena&&G._bossArenaEntry){
@@ -42642,7 +42666,7 @@ function draw(){
   // ═══ MAP_OBJS 렌더 ═══
   const _tMObj=performance.now();
   if(_fc2d){var _dTile=_PERF_PROF._delta(_snapTile);_PERF_PROF._tile_di=_dTile.di}
-  if(_DCP.on)_DCP._mark('map'); // [DCPROF] 맵/지형(타일 캐시+포탈+출구+데코) 구간 종료
+  if(_DCP.on){_DCP._mark('map');_DCP._setSource(_DCP_SRC.WORLD_OBJECT)} // [DCPROF] 맵/지형(타일 캐시+포탈+출구+데코) 구간 종료
   var _snapMobj=_fc2d?_PERF_PROF._snap():null;
   const _wvl=G.cam.x-VW/2-40,_wvr=G.cam.x+VW/2+40,_wvt=G.cam.y-VH/2-40,_wvb=G.cam.y+VH/2+40;
   for(let _moi=0;_moi<MAP_OBJS.length;_moi++){const mo=MAP_OBJS[_moi];
@@ -42792,6 +42816,7 @@ function draw(){
   const _tWI=performance.now();
   if(_fc2d){var _dMobj=_PERF_PROF._delta(_snapMobj);_PERF_PROF._mobj_di=_dMobj.di}
   // World items (화면 내만 렌더)
+  if(_DCP.on)_DCP._setSource(_DCP_SRC.DROP_ITEM);
   for(let _wii=0;_wii<worldItems.length;_wii++){const it=worldItems[_wii];if(it.picked)continue;var _sx=it.x-G.cam.x,_sy=it.y-G.cam.y;var _pad=40;if(_sx<-VW/2-_pad||_sx>VW/2+_pad||_sy<-VH/2-_pad||_sy>VH/2+_pad)continue;const b=Math.sin(_now/300+it.x)*3;X.textAlign='center';
     if(it.type==='forge'){X.font='28px sans-serif';X.fillText('⚒️',it.x,it.y+b);X.font='14px "Noto Sans KR"';X.fillStyle='#ff8844';X.fillText('['+keyName(BINDS.forge)+']',it.x,it.y+b+20)}
     else if(it.type==='hp'){X.font='22px sans-serif';X.fillText('❤️',it.x,it.y+b);
@@ -42955,7 +42980,7 @@ function draw(){
   X.restore();}
 
   const _dd1=performance.now();
-  if(_DCP.on)_DCP._mark('worldobj'); // [DCPROF] 월드 오브젝트(맵 스프라이트/장식) 구간 종료
+  if(_DCP.on){_DCP._mark('worldobj');_DCP._setSource(_DCP_SRC.ENEMY)} // [DCPROF] 월드 오브젝트(맵 스프라이트/장식) 구간 종료
   if(_fc2d){var _dSnap=_PERF_PROF._delta({di:0,st:0,fr:0,ga:0});_PERF_PROF._map_di=_dSnap.di;_PERF_PROF._map_st=_dSnap.st;_PERF_PROF._map_fr=_dSnap.fr;_PERF_PROF._map_ga=_dSnap.ga;var _snapEns=_PERF_PROF._snap()}
   // [EDITOR] 에디터 모드: 맵+MAP_OBJS까지만 그리고 종료
   if(_EDITOR_MODE){X.restore();return}
@@ -44346,7 +44371,7 @@ function draw(){
     X.globalAlpha=1}
 
   const _dd2=performance.now();
-  if(_DCP.on)_DCP._mark('enemies'); // [DCPROF] 적/보스/플레이어(엔티티) 구간 종료
+  if(_DCP.on){_DCP._mark('enemies');_DCP._setSource(_DCP_SRC.PROJECTILE)} // [DCPROF] 적/보스/플레이어(엔티티) 구간 종료
   if(_fc2d){var _dEns=_PERF_PROF._delta(_snapEns);_PERF_PROF._ens_di=_dEns.di;_PERF_PROF._ens_st=_dEns.st;_PERF_PROF._ens_fr=_dEns.fr;_PERF_PROF._ens_ga=_dEns.ga;var _snapProj=_PERF_PROF._snap()}
   if(G.debugPerf&&_dd2-_dd1>20)console.log('[ENS-DETAIL] '+(_dd2-_dd1).toFixed(1)+'ms | drawn:'+_eRCnt+' total:'+ens.length);
   // ═══ 적 투사체 3패스 렌더 (composite 전환 최소화) ═══
@@ -44844,7 +44869,7 @@ function draw(){
   }
 
   const _dd3=performance.now();
-  if(_DCP.on)_DCP._mark('projectiles'); // [DCPROF] 투사체 구간 종료
+  if(_DCP.on){_DCP._mark('projectiles');_DCP._setSource(_DCP_SRC.PARTICLE_VFX)} // [DCPROF] 투사체 구간 종료
   if(_fc2d){var _dProj=_PERF_PROF._delta(_snapProj);_PERF_PROF._proj_di=_dProj.di;_PERF_PROF._proj_st=_dProj.st;_PERF_PROF._proj_fr=_dProj.fr;_PERF_PROF._proj_ga=_dProj.ga;var _snapPart=_PERF_PROF._snap()}
   const _tDP0=performance.now();
   drawP();
@@ -45193,7 +45218,7 @@ function draw(){
   }X.globalAlpha=1;X.textBaseline='alphabetic'}if(_DEBUG_PERF)_dbgTxt=performance.now()-_t0;}
   X.restore();
   const _dd4=performance.now();
-  if(_DCP.on)_DCP._mark('particles'); // [DCPROF] 파티클/VFX 구간 종료
+  if(_DCP.on){_DCP._mark('particles');_DCP._setSource(_DCP_SRC.UI_HUD)} // [DCPROF] 파티클/VFX 구간 종료
   if(_fc2d){var _dPart=_PERF_PROF._delta(_snapPart);_PERF_PROF._part_di=_dPart.di;_PERF_PROF._part_st=_dPart.st;_PERF_PROF._part_fr=_dPart.fr;_PERF_PROF._part_ga=_dPart.ga;var _snapPost=_PERF_PROF._snap()}
   const _pA0=performance.now();
   // ═══ 공성쇠뇌 터렛 상태 HUD ═══
@@ -45686,6 +45711,7 @@ function draw(){
     if(t>=_bossCine.maxT){_bossCine.active=false;_bossCine._introFill=null}
     X.globalAlpha=1;X.restore()}
   _pC5=performance.now(); // bossCine end
+  if(_DCP.on)_DCP._setSource(_DCP_SRC.POST_DEBUG);
   drawMM();
   {const _dd5=performance.now();
   if(_fc2d){var _dPost=_PERF_PROF._delta(_snapPost);_PERF_PROF._post_di=_dPost.di;_PERF_PROF._post_st=_dPost.st;_PERF_PROF._post_fr=_dPost.fr;_PERF_PROF._post_ga=_dPost.ga}
@@ -45723,6 +45749,7 @@ const ELG2=['#ffffff','#ffaa44','#88ccff','#cc77ff','#ffffaa','#ffccee']; // bri
 const ELP=['#dddddd','#ff6622','#44aaff','#bb55ee','#ffee44','#ffdd55']; // particle colors
 
 function drawP(){
+  if(_DCP.on)_DCP._setSource(_DCP_SRC.PLAYER);
   const _dpStart=performance.now();
   const sp=(G.slowMo>0?.35:1)*_dtSp;
   const _vl=G.cam.x-VW/2-60,_vr=G.cam.x+VW/2+60,_vt=G.cam.y-VH/2-60,_vb=G.cam.y+VH/2+60;
