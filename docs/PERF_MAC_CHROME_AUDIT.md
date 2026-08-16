@@ -6,6 +6,27 @@
 
 ---
 
+## ★ 최종 상태 (FROZEN, 2026-08-16 유저 ratify) — Track A/B/D LOCK
+
+> **PERFORMANCE / GL INVESTIGATION = FROZEN.** 아래 확정 상태가 SSOT. 추가 성능 조사 **중단**.
+> **REOPEN 조건**(둘 중 하나): ① 재현 가능한 새 메모리/성능 증거, ② Mac context-loss 재발. 그 외 재개 금지(억지 추적 금지).
+
+| Track | 내용 | 최종 상태 | commit |
+|---|---|---|---|
+| **A** | Restore stale-batch (`_qCnt` 무한증가 → EBO overflow `Insufficient buffer size` 0x502) | **CONFIRMED / FIXED / LOCKED** | `1728852c` |
+| **B** | Original 2.7M drawCall (`_PERF_PROF` 윈도우 회계 결함, OFF구간 누적이 30프레임창에 혼입) | **WINDOW ACCOUNTING ERROR / FIXED / CLOSED** | `2c9474e9` |
+| **D1** | Map WebGL texture lifetime (GC-지연 transient VRAM 피크, 명시적 deleteTexture 0건) | **CONFIRMED / FIXED / LOCKED** | `ae7eaf82` |
+| — | **Mac context-loss** (root cause) | **IN-SITU CONFIRMATION PENDING** | — |
+| **D2** | `preserveDrawingBuffer` / `depth` VRAM 감사 | **DEFERRED** | — |
+
+- **A/B/D1 = LOCKED**: 해당 fix 코드는 재조사·재수정 금지(회귀 검증만 허용). 상세=본 문서 §Track A(L167~), §Track B 종결, §Track D FIX(하단).
+- **D1 검증 요약**: before/after 동일 harness 70전환 — deleteTexture **0→140**, peak concurrent map tex **1 (244MiB)**, GL error/context-loss/use-after-delete **0**, 검은맵·플리커 없음, Track A synthetic loss→restore `0x502`/crash-loop **0건**(1728852c 무간섭 확인).
+- **Mac context-loss = PENDING**: Windows/AMD는 실 loss 미재현 → **트리거 완화 메커니즘만** 검증(GC 대기 제거로 transient VRAM 피크 소거). **Mac 실기에서 동일 transition stress 후 context-loss=0 확인 시에만 Track D 전체를 FIXED/CLOSED로 승격.** 그 전까지 Mac root cause는 STRONGLY SUPPORTED(메커니즘 레벨), 완전 CONFIRMED 아님.
+- **D2 = DEFERRED**: `preserveDrawingBuffer`(true)/`depth`(true) **현재 변경 금지.** 새 실측 메모리/성능 증거 또는 Mac loss 재발 없이는 재개 금지. D1 lifetime fix와 혼합 금지(독립 측정 완료).
+- **git provenance**: 하단 §"git provenance — ae7eaf82 번들" 참조. `ae7eaf82`는 auto-sync cron이 boss3d 타세션 파일을 같은 commit에 흡수함. **이미 push된 history는 rewrite하지 않음.**
+
+---
+
 ## [1] DPR 검사 — 캔버스 백버퍼 크기
 
 | 라인번호 | 현재 코드 | 맥에서 문제되는 이유 | 위험도 |
@@ -537,4 +558,18 @@ maxIdxCount = 27,815,124  (=4,635,854 quads ×6)                    ← 단일 �
 - **RESOURCE-LIFETIME FIX = CONFIRMED** — stale map 텍스처 explicit delete 정상, old/new 누적 window bounded(peak=1×244MiB), GL regression 없음.
 - **MAC CONTEXT LOSS = IN-SITU CONFIRMATION PENDING** — Windows/AMD에서 **트리거 완화 메커니즘 검증 완료**(GC 대기 제거→transient VRAM 피크 소거를 계측 확증). 단 이 HW는 실제 loss 미재현 → **Mac 실기에서 동일 전환 stress 후 context-loss=0 확인 시 Track D 전체 FIXED/CLOSED 승격**. 그 전까지 Mac root cause는 STRONGLY SUPPORTED(메커니즘 레벨), 완전 CONFIRMED 아님.
 
-**K. Track D2 후보(별건, 미적용)**: 본 lifetime fix 독립 측정 완료. resource peak 추가 절감 필요 시 `preserveDrawingBuffer`/`depth` 필요성 감사(후보3)를 Track D2로 — 본 커밋과 미혼합(지시 §8).
+**K. Track D2 후보(별건, DEFERRED)**: 본 lifetime fix 독립 측정 완료. resource peak 추가 절감 필요 시 `preserveDrawingBuffer`/`depth` 필요성 감사(후보3)를 Track D2로 — 본 커밋과 미혼합(지시 §8). **현재 변경 금지·재개 조건은 상단 FROZEN 블록 참조.**
+
+**L. LOCK 서명 (2026-08-16 유저 ratify)**: D1 = **CONFIRMED / FIXED / LOCKED** (`ae7eaf82`). Mac context-loss = **IN-SITU CONFIRMATION PENDING** (Mac 실기 transition stress 후 context-loss=0 확인 시에만 Track D 전체 CLOSED 승격). Track D2 = **DEFERRED**. → 상단 §최종 상태(FROZEN) 표에 통합.
+
+---
+
+## git provenance — `ae7eaf82` 번들 (2026-08-16)
+
+> **history rewrite 금지.** 이 노트는 사실 기록용이며, 이미 push된 `ae7eaf82`를 재작성하지 않는다.
+
+- **사실**: Track D1 fix(`game.html` 맵 텍스처 수명 + 본 문서)는 **별도 commit**을 의도했으나, 커밋 시점에 **auto-sync cron**이 working-tree 전체를 `git add -A` → `ae7eaf82 "auto: session sync"` 단일 commit으로 흡수했다. 그 결과 **boss3d 타세션 파일**(`game_boss3d_test.html`, `docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md`, `game_backup_boss3d_test_pre_align.html`)이 D1 변경과 **같은 commit에 번들**되어 함께 push됨.
+- **무결성**: 본 세션은 boss3d 파일 **내용을 수정한 바 없음**(순수 auto-sync 흡수). D1 변경분은 `game.html`(맵 텍스처 수명, `[Track D]` 마커 9개)과 `docs/PERF_MAC_CHROME_AUDIT.md`로 한정.
+- **재분리 불가 사유**: `ae7eaf82`를 소프트리셋해 클린 분리하려 했으나 `git reset` 권한 거부 → 재분리 포기. **history rewrite 대신 provenance note로 기록**(지시 준수).
+- **영향**: `origin/main` 히스토리에서 D1 커밋을 단독 식별하려면 이 노트 + `game.html`의 `[Track D]` diff로 판별. 기능/정확성 영향 없음(번들된 boss3d 파일은 그 세션의 정당한 작업물).
+- **재발 방지**: 하단 및 `CLAUDE.md §동시 세션 / git commit ownership` 운영 규칙 참조.

@@ -206,3 +206,14 @@ docs/는 게임과 완전 동기화된 진실 공급원(source of truth)이다. 
 
 - 해당 시스템의 docs 폴더를 **1차 레퍼런스**로 읽고, 설계 의도·공식·제약조건을 파악한 뒤 해결책을 찾을 것
 - docs에 없는 정보면 코드 조사 후 docs에 추가
+
+### 동시 세션 / git commit ownership (auto-sync cron 주의)
+
+> **배경**: `auto-sync cron`이 주기적으로 `git add -A` + `commit "auto: session sync"` + push를 실행한다. 여러 세션이 동시에 working-tree를 편집하면 **한 세션의 변경이 다른 세션의 파일과 같은 commit에 흡수**된다. 실제 사고: `ae7eaf82`에 Track D1(perf) 변경과 boss3d 타세션 파일이 번들됨 (docs/PERF_MAC_CHROME_AUDIT.md §git provenance).
+
+1. **작업별 commit ownership 분리** — 가능하면 세션마다 **별도 branch 또는 worktree**에서 작업. 한 세션 = 한 논리적 변경 집합.
+2. **커밋은 경로 지정 스테이징** — `git add -A` 금지, 반드시 `git add <내 파일들>`로 **내 변경만** 스테이징 후 즉시 `git commit`. auto-sync가 흡수하기 전에 선점.
+3. **타세션 파일 불간섭** — 다른 세션이 수정 중인 파일(working-tree의 M/??)은 **읽지도 쓰지도 스테이징도 하지 말 것**. 내 작업과 무관한 변경은 그대로 둔다.
+4. **history rewrite 금지** — 이미 push된 commit이 잘못 번들돼도 `reset`/`rebase`/force-push로 재작성하지 말 것. **provenance note**(해당 docs)로 사실만 기록.
+5. **auto-sync 흡수 시** — 내 변경이 `auto: session sync`에 흡수됐으면, 재분리 시도(soft reset 등)보다 **provenance note 기록**을 우선. `git reset`은 권한 게이트라 거부될 수 있음.
+6. **동시성 회피 최선책** — 장시간·다파일 작업은 `git worktree add`로 격리(예: `affix-phase1` 워크트리 관례). 메인 working-tree 공유를 줄인다.
