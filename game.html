@@ -4166,16 +4166,22 @@ const _DCP={
   dc:0, flush:0, setTex:0, texCalls:0, uniqueTex:0, setBlend:0, bufFull:0, texChange:0, instDraw:0,
   rTex:0, rBlend:0, rBufFull:0, rExplicit:0,   // flush 사유별 분포
   vtxPeak:0, idxPeak:0,   // 배치 정점/인덱스 사용 피크 (quad*4 verts, quad*6 idx)
-  src:_DCP_SRC.UNKNOWN, srcDc:new Uint32Array(_DCP_SRC_NAME.length), rawGL:false,
+  // Out-of-scene direct main-GL draws (bootstrap/warmup) belong to post/debug;
+  // unknown stays reserved for an explicit unclassified caller.
+  src:_DCP_SRC.POST_DEBUG, srcDc:new Uint32Array(_DCP_SRC_NAME.length), rawGL:false,
   _texSeen:new WeakMap(), _texEpoch:1,
   // subsystem drawCall 델타
   sub:Object.create(null), _subSnap:0,
+  // renderer entry counters: one numeric increment at each boundary, dcprof-only.
+  _entry:{raf:0,main:0,draw:0,map:0,world:0,entity:0,post:0},
   // runaway one-shot capture
   thresh:50000,   // 평시 7-9k → 5만 초과면 명백 폭주
   captured:false,
   restoreProbe:0, // context-restored 직후 N flush 동안 GL.getError로 buffer-size 오류 포착 (>0일 때만 getError=stall)
   _setSource:function(id){if(this.on)this.src=id},
   _srcSummary:function(){let a=[];for(let i=0;i<this.srcDc.length;i++)if(this.srcDc[i])a.push(_DCP_SRC_NAME[i]+':'+this.srcDc[i]);return a.join(',')||'none'},
+  _sourceSum:function(){let n=0;for(let i=0;i<this.srcDc.length;i++)n+=this.srcDc[i];return n},
+  _entrySummary:function(){const e=this._entry;return 'raf='+e.raf+' main='+e.main+' draw='+e.draw+' map='+e.map+' world='+e.world+' entity='+e.entity+' post='+e.post},
   _sceneSummary:function(){var G_=(typeof G!=='undefined')?G:{};var cacheReady=!_dcpCacheFaultActive&&!!(_bmcDone&&(_streamMap?_streamVpCvs:(_mapCvs||(_mapChunks&&_mapChunks.length))));var particles=(typeof _partCnt!=='undefined'?_partCnt:0)+(G_.parts?G_.parts.length:0);return 'cacheReady='+cacheReady+' cachePending='+(!_bmcDone||_dcpCacheFaultActive)+' mapObjects='+(MAP_OBJS?MAP_OBJS.length:0)+' enemies='+(ens?ens.length:0)+' projectiles='+((projs?projs.length:0)+(pProjs?pProjs.length:0))+' particles='+particles},
   _onRawDraw:function(){if(!this.on)return;this.dc++;this.srcDc[this.src]++},
   _onSetTex:function(t,changed){if(!this.on)return;this.texCalls++;if(changed)this.setTex++;if(t&&(typeof t==='object'||typeof t==='function')){if(this._texSeen.get(t)!==this._texEpoch){this._texSeen.set(t,this._texEpoch);this.uniqueTex++}}},
@@ -4209,7 +4215,8 @@ const _DCP={
       +' flush='+this.flush+' texCalls='+this.texCalls+' setTex='+this.setTex+' uniqueTex='+this.uniqueTex+' setBlend='+this.setBlend+' bufFull='+this.bufFull
       +' reasons{tex:'+this.rTex+',blend:'+this.rBlend+',buffull:'+this.rBufFull+',expl:'+this.rExplicit+'}'
       +' '+this._sceneSummary()
-      +' sources='+this._srcSummary()
+      +' sources='+this._srcSummary()+' sourceSum='+this._sourceSum()+'/total='+this.dc+' unknown='+this.srcDc[_DCP_SRC.UNKNOWN]
+      +' entries='+this._entrySummary()
       +'\n  sub='+JSON.stringify(this.sub)
     );
   },
@@ -4217,7 +4224,7 @@ const _DCP={
     if(!this.on)return;
     this.dc=0;this.flush=0;this.setTex=0;this.texCalls=0;this.uniqueTex=0;this.setBlend=0;this.bufFull=0;this.texChange=0;this.instDraw=0;
     this.rTex=0;this.rBlend=0;this.rBufFull=0;this.rExplicit=0;this.vtxPeak=0;this.idxPeak=0;
-    this.drawInvokes=0;this.src=_DCP_SRC.UNKNOWN;this.srcDc.fill(0);this._texEpoch++;if(this._texEpoch===0)this._texEpoch=1;this._subSnap=0;this.sub=Object.create(null);
+    this.drawInvokes=0;this.src=_DCP_SRC.POST_DEBUG;this.srcDc.fill(0);this._texEpoch++;if(this._texEpoch===0)this._texEpoch=1;this._subSnap=0;this.sub=Object.create(null);const e=this._entry;e.raf=0;e.main=0;e.draw=0;e.map=0;e.world=0;e.entity=0;e.post=0;
     if(this.transTTL>0){this.transTTL--;if(this.transTTL===0){this.transState='idle';this.transMap='';}}
   },
   report:function(){
@@ -4228,7 +4235,7 @@ const _DCP={
         +' texCalls='+this.texCalls+' setTex='+this.setTex+' uniqueTex='+this.uniqueTex+' setBlend='+this.setBlend+' bufFull='+this.bufFull
         +' reasons{tex:'+this.rTex+',blend:'+this.rBlend+',buffull:'+this.rBufFull+',expl:'+this.rExplicit+'}'
         +' invokes='+this.drawInvokes+' trans='+this.transState
-        +' sources='+this._srcSummary()+' '+this._sceneSummary()+' sub='+JSON.stringify(this.sub));
+        +' sources='+this._srcSummary()+' sourceSum='+this._sourceSum()+'/total='+this.dc+' unknown='+this.srcDc[_DCP_SRC.UNKNOWN]+' entries='+this._entrySummary()+' '+this._sceneSummary()+' sub='+JSON.stringify(this.sub));
     }
   }
 };
@@ -42169,7 +42176,7 @@ function _oriInitParticles(){
 // ═══════════════════════════════════════
 function draw(){
   if(!X)return;
-  if(_DCP.on){_DCP.drawInvokes++;_DCP._setSource(_DCP_SRC.MAP_CACHE)} // 프레임당 draw() 호출 횟수 — 중복 scene traversal 감지
+  if(_DCP.on){_DCP.drawInvokes++;_DCP._entry.draw++;_DCP._entry.map++;_DCP._setSource(_DCP_SRC.MAP_CACHE)} // 프레임당 draw() 호출 횟수 — 중복 scene traversal 감지
   X.imageSmoothingEnabled=false;
   const _drawStart=performance.now();
   const _fBudget=14; // 14ms = ~70fps 타겟
@@ -42666,7 +42673,7 @@ function draw(){
   // ═══ MAP_OBJS 렌더 ═══
   const _tMObj=performance.now();
   if(_fc2d){var _dTile=_PERF_PROF._delta(_snapTile);_PERF_PROF._tile_di=_dTile.di}
-  if(_DCP.on){_DCP._mark('map');_DCP._setSource(_DCP_SRC.WORLD_OBJECT)} // [DCPROF] 맵/지형(타일 캐시+포탈+출구+데코) 구간 종료
+  if(_DCP.on){_DCP._mark('map');_DCP._entry.world++;_DCP._setSource(_DCP_SRC.WORLD_OBJECT)} // [DCPROF] 맵/지형(타일 캐시+포탈+출구+데코) 구간 종료
   var _snapMobj=_fc2d?_PERF_PROF._snap():null;
   const _wvl=G.cam.x-VW/2-40,_wvr=G.cam.x+VW/2+40,_wvt=G.cam.y-VH/2-40,_wvb=G.cam.y+VH/2+40;
   for(let _moi=0;_moi<MAP_OBJS.length;_moi++){const mo=MAP_OBJS[_moi];
@@ -42980,7 +42987,7 @@ function draw(){
   X.restore();}
 
   const _dd1=performance.now();
-  if(_DCP.on){_DCP._mark('worldobj');_DCP._setSource(_DCP_SRC.ENEMY)} // [DCPROF] 월드 오브젝트(맵 스프라이트/장식) 구간 종료
+  if(_DCP.on){_DCP._mark('worldobj');_DCP._entry.entity++;_DCP._setSource(_DCP_SRC.ENEMY)} // [DCPROF] 월드 오브젝트(맵 스프라이트/장식) 구간 종료
   if(_fc2d){var _dSnap=_PERF_PROF._delta({di:0,st:0,fr:0,ga:0});_PERF_PROF._map_di=_dSnap.di;_PERF_PROF._map_st=_dSnap.st;_PERF_PROF._map_fr=_dSnap.fr;_PERF_PROF._map_ga=_dSnap.ga;var _snapEns=_PERF_PROF._snap()}
   // [EDITOR] 에디터 모드: 맵+MAP_OBJS까지만 그리고 종료
   if(_EDITOR_MODE){X.restore();return}
@@ -45711,7 +45718,7 @@ function draw(){
     if(t>=_bossCine.maxT){_bossCine.active=false;_bossCine._introFill=null}
     X.globalAlpha=1;X.restore()}
   _pC5=performance.now(); // bossCine end
-  if(_DCP.on)_DCP._setSource(_DCP_SRC.POST_DEBUG);
+  if(_DCP.on){_DCP._entry.post++;_DCP._setSource(_DCP_SRC.POST_DEBUG);}
   drawMM();
   {const _dd5=performance.now();
   if(_fc2d){var _dPost=_PERF_PROF._delta(_snapPost);_PERF_PROF._post_di=_dPost.di;_PERF_PROF._post_st=_dPost.st;_PERF_PROF._post_fr=_dPost.fr;_PERF_PROF._post_ga=_dPost.ga}
@@ -50420,6 +50427,7 @@ function _perfFrameTick(){
   _PERF_PROF._aiAcc=0;_PERF_PROF._collAcc=0;_PERF_PROF._renderAcc=0;_PERF_PROF._domAcc=0;
 }
 function loop(timestamp){
+  if(_DCP.on)_DCP._entry.raf++;
   if(!_bootLoadKilled) hideBootLoading();
   if(_DEBUG_PERF)_installDebugLongTaskObserver();
   if(!timestamp)timestamp=performance.now();
@@ -50429,7 +50437,7 @@ function loop(timestamp){
     const _elapsed=timestamp-_lastLoopTs;
     if(_elapsed<_fpsCapInterval-1){requestAnimationFrame(loop);return}
   }
-  _lastLoopTs=timestamp;_sfxFrameReset();_partSpawnCnt=0;_aoeHitCnt=0;try{_pollGamepad()}catch(e){console.error('[GAMEPAD] poll error:',e)}
+  _lastLoopTs=timestamp;if(_DCP.on)_DCP._entry.main++;_sfxFrameReset();_partSpawnCnt=0;_aoeHitCnt=0;try{_pollGamepad()}catch(e){console.error('[GAMEPAD] poll error:',e)}
   if(!_prevTs)_prevTs=timestamp;
   if(!_loopRunning){_loopRunning=true}
   _perfFrames++;
