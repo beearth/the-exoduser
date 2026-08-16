@@ -11533,9 +11533,10 @@ const AFFIX_POOL=[
   {id:'comboBoost',type:0,tiers:[.12,.20,.35,.55,.75],unit:'pct',slots:['wpn'],group:'combo',weight:60,layer:6,sub:'A'},
   {id:'dashBoost',type:0,tiers:[.15,.25,.40,.65,.90],unit:'pct',slots:['wpn'],group:'dash',weight:55,layer:5,sub:'A'},
   {id:'skillBoost',type:0,tiers:[.10,.15,.25,.40,.55],unit:'pct',slots:['wpn'],group:'skill',weight:65,layer:6,sub:'A',uni:1},
-  // ═══ [Phase 8B / LOCK-47] L10-A ULTIMATE DAMAGE BACKBONE ═══
-  //  ultDmg = 궁극(Z Ultimate) 피해 %. universal C1 backbone(uni:1 → 전 15슬롯 L10-A 도달). v2only(legacy 롤 byte-identical 보존).
-  //  tier curve = skillBoost(uni:1 ability-damage% backbone) 재사용 — pool에 layer→magnitude 단조증가 규칙 부재(L9 rageDmg .08~.44 < L6 skillBoost .10~.55)이므로 인플레 금지. 소비자 _ultDmgMul() = Z hurtE 데미지 전용(execution/blackStar 미수혜).
+  // ═══ [Phase 8B/8B.1 / LOCK-47·47A] L10-A ULTIMATE POWER BACKBONE ═══
+  //  ultDmg(표시명 "궁극위력") = 궁극(Z Ultimate) 위력 %. universal C1 backbone(uni:1 → 전 15슬롯 L10-A 도달). v2only(legacy 롤 byte-identical 보존).
+  //  tier curve = skillBoost(uni:1 ability-damage% backbone) 재사용 — pool에 layer→magnitude 단조증가 규칙 부재(L9 rageDmg .08~.44 < L6 skillBoost .10~.55)이므로 인플레 금지.
+  //  소비자 _ultDmgMul() = holyBlast/lava damage + blackStar 흡인력(pull) — 선택 가능한 3 Z Ultimate 모두에 의미. execution(X) 격리. ID는 유지, 표시 semantic만 Ultimate Power로 일반화.
   {id:'ultDmg',type:0,tiers:[.10,.15,.25,.40,.55],unit:'pct',slots:['wpn'],group:'ultD',weight:50,layer:10,sub:'A',uni:1,v2only:1},
   // 무기+helm 공유
   {id:'elemFocus',type:0,tiers:[.08,.12,.20,.32,.44],unit:'pct',slots:['helm'],group:'elemfcs',weight:70,layer:4,sub:'A',uni:1},
@@ -12129,7 +12130,7 @@ const _AFFIX_DESC={
   poisonDot:'독 DoT',fireDot:'화상 DoT',iceDot:'빙결 DoT+감속',lightChain:'연쇄전격',darkCurse:'저주(힐차단)',
   armorPen:'방어무시',critChance:'치명타율',staggerBns:'스태거+',chainTarget:'체인타겟+',
   killSlayer:'처치 후 뎀+',critExplosion:'크리폭발(ATK×)',elemFocus:'원소뎀+',atkSpeed:'공격속도+',parryBonus:'패리보너스+',
-  comboBoost:'추적콤보+10',dashBoost:'사슬뎀+',skillBoost:'스킬뎀+',cooldownRed:'쿨다운-',ultDmg:'궁극뎀+',
+  comboBoost:'추적콤보+10',dashBoost:'사슬뎀+',skillBoost:'스킬뎀+',cooldownRed:'쿨다운-',ultDmg:'궁극위력+',
   defFlat:'방어력+',maxHPFlat:'HP+',shieldFlat:'쉴드+',maxHPPct:'HP%+',movSpeed:'이동속도+',
   critRate:'크리확률+',critDmgW:'크리배율+',
   fireRes:'화염저항',iceRes:'빙결저항',lightRes:'암전저항',darkRes:'암흑저항',poisonRes:'독저항',allRes:'전원소저항',
@@ -21595,7 +21596,7 @@ function planAbsorption(target,stone){ // 순수(mutation 없음). {ok:true,acti
     for(let L=1;L<=target.layerLv;L++){const aCand=_affixLayerCandidates(_aSlot,target.brType,L,'A');
       if(!aCand||!aCand.length)continue;                                          // A 롤 불가 layer(L10 등) 면제
       let hasA=false;for(const a of newAffixes){const ad=AFFIX_POOL.find(x=>x.id===a.id);if(ad&&(ad.sub==='A'||ad.sub==='FLEX')&&ad.layer===L){hasA=true;break;}}
-      if(!hasA)return {ok:false,reason:'C1_VIOLATION'};}
+      if(!hasA)return {ok:false,reason:'C1_BACKBONE_MISSING'};} // [8B.1] backbone A-role 결손(legacy T10 등) → cardinality C1과 구분(복구=해당 layer A 흡수)
   }
   return {ok:true,action,layer,sub,oldAffix:occ,newAffix,newAffixes};
 }
@@ -21625,7 +21626,7 @@ function _transferReasonText(reason,ctx){ // 내부 enum → user-friendly i18n.
     DUPLICATE_ID:['중복 옵션 충돌','Duplicate option conflict'],DUPLICATE_GROUP:['중복 옵션 충돌','Duplicate option conflict'],
     FLEX_BLOCKED:nt,KEYSTONE_BLOCKED:nt,
     LEGACY_BLOCKED:nt,V2SKIP_BLOCKED:nt,WRONG_SUB:nt,
-    C1_VIOLATION:['구조 조건 불충족','Structure requirement unmet'],STALE_TARGET:['대상이 변경됨 — 다시 시도','Target changed — retry'],
+    C1_VIOLATION:['구조 조건 불충족','Structure requirement unmet'],C1_BACKBONE_MISSING:['핵심 옵션(백본)이 필요합니다','Needs a core backbone option'],STALE_TARGET:['대상이 변경됨 — 다시 시도','Target changed — retry'],
     STONE_NOT_IN_BAG:['어픽스석 없음','Stone missing'],TARGET_NOT_IN_BAG:['대상 없음','Target missing'],ITEM_NOT_IN_BAG:['대상 없음','Item missing'],
     INVALID_STONE:['잘못된 어픽스석','Invalid stone'],INVALID_TARGET:['잘못된 대상','Invalid target'],INVALID_ITEM:['잘못된 아이템','Invalid item'],
     INVALID_AFFIX:['잘못된 옵션','Invalid option'],INVALID_VALUE:['잘못된 값','Invalid value'],COMMIT_FAILED:['처리 실패','Failed']};
@@ -29730,7 +29731,7 @@ function update(){
       const _bsMinR=60+e.r; // 중심 최소 거리: 60+몹크기 (과도한 중첩 방지)
       if(d<_bsMinR)continue;
       const ang=Math.atan2(P._bsY-e.y,P._bsX-e.x);
-      const pull=(5+(_bsLvP-1)*0.5)*(1-d/_bsR*0.3)*sp; // 기본5+Lv당0.5
+      const pull=(5+(_bsLvP-1)*0.5)*(1-d/_bsR*0.3)*sp*_ultDmgMul(); // 기본5+Lv당0.5. [L10-A/8B.1] Ultimate Power = blackStar 흡인력(pull strength)에 +value% (핵심 output·clamp/wall 안전). damage 아님.
       const _newD=d-pull; // 끌린 후 거리
       const _clampPull=_newD<_bsMinR?Math.max(0,d-_bsMinR):pull; // 최소거리 이하로 안 끌림
       const _bsNx=e.x+Math.cos(ang)*_clampPull,_bsNy=e.y+Math.sin(ang)*_clampPull;
@@ -38365,10 +38366,14 @@ function activateIceShatter(){
   updateQS();
 }
 
-// ═══ [Phase 8B / LOCK-47] L10-A ULTIMATE DAMAGE 소비자 ═══
-//  ultDmg(L10-A) = 궁극(Z Ultimate) 피해 배수. 장비 어픽스 합산(_eqAffix)만 참조 — persistent runtime state 없음.
-//  적용 = Z ult 데미지 산출 3지점(holyBlast 직격 / lavaSummon 직격 / lava DOT 틱)에서 곱. per-skill 하드mult×_ult10xMul 위에 배수.
-//  execution(X키·직접 HP감산)·blackStar(noDmg)은 이 3지점을 타지 않음 → 구조적으로 미수혜(격리 보장). cooldown/crit/element/Rage 무관.
+// ═══ [Phase 8B/8B.1 / LOCK-47·47A] L10-A ULTIMATE POWER 소비자 ═══
+//  ultDmg(L10-A, 표시명 "궁극위력") = 궁극(Z Ultimate) 위력 배수. 장비 어픽스 합산(_eqAffix)만 참조 — persistent runtime state 없음.
+//  universal backbone: 선택 가능한 3 Z Ultimate 모두에서 각자의 핵심 output을 +value% 강화(하나의 값, ult별 primitive 1개).
+//   · holyBlast  : 직격 damage ×(1+value)  (38x)
+//   · lavaSummon : 직격 + 20s DOT damage ×(1+value)  (FULL_COVERAGE, 38x/29x)
+//   · blackStar  : 흡인력(pull strength) ×(1+value)  (noDmg 유지·damage 미생성, 29x)  ← [8B.1] dead-stat 해소
+//  execution(X키·직접 HP감산)은 이 소비지점을 타지 않음 → 구조적으로 미수혜(격리). cooldown/crit/element/Rage 무관.
+//  ID는 ultDmg 유지(save/transfer 호환) — 내부 헬퍼명도 유지, semantic만 "Ultimate Power"로 확대.
 function _ultDmgMul(){return 1+_eqAffix('ultDmg');}
 // ═══ 신성폭발 발사 ═══
 function fireHolyBlast(){

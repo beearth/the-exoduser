@@ -67,17 +67,16 @@ test('§2 tier curve = skillBoost 참조(REFERENCE_AFFIX) — 인플레 없음',
 
 test('§3 i18n name/desc — AFFIX_NAMES_KO·_AFFIX_DESC 등록(기존 KO-only 규약)', () => {
   assert.match(gameHtml,/ultDmg:'종언의'/,'AFFIX_NAMES_KO.ultDmg 등록');
-  assert.match(gameHtml,/ultDmg:'궁극뎀\+'/,'_AFFIX_DESC.ultDmg 등록');
+  assert.match(gameHtml,/ultDmg:'궁극위력\+'/,'_AFFIX_DESC.ultDmg 등록(8B.1 Ultimate Power)');
 });
 
-test('§4 소비자 배선 — Z ult 데미지 3지점에 _ultDmgMul() 곱, 정의 존재', () => {
+test('§4 소비자 배선 — 3 Z Ultimate 핵심 output에 _ultDmgMul() 곱, 정의 존재', () => {
   assert.match(gameHtml,/function _ultDmgMul\(\)\{return 1\+_eqAffix\('ultDmg'\);\}/,'_ultDmgMul 정의');
-  // holyBlast 직격
   assert.match(gameHtml,/\(50\*_ult10xMul\)\*_ultDmgMul\(\)/,'holyBlast dmg × _ultDmgMul');
-  // lavaSummon 직격
   assert.match(gameHtml,/\(8\*_ult10xMul\)\*_ultDmgMul\(\)/,'lavaSummon 직격 dmg × _ultDmgMul');
-  // lava DOT tick (FULL_COVERAGE)
-  assert.match(gameHtml,/\(4\*_ult10xMul\)\*_ultDmgMul\(\)/,'lava DOT tick × _ultDmgMul');
+  assert.match(gameHtml,/\(4\*_ult10xMul\)\*_ultDmgMul\(\)/,'lava DOT tick × _ultDmgMul (FULL_COVERAGE)');
+  // [8B.1] blackStar 흡인력(pull) × _ultDmgMul — dead-stat 해소(damage 아님)
+  assert.match(gameHtml,/const pull=\(5\+\(_bsLvP-1\)\*0\.5\)\*\(1-d\/_bsR\*0\.3\)\*sp\*_ultDmgMul\(\);/,'blackStar pull strength × _ultDmgMul');
 });
 
 test('§5 execution hard exclusion — execution 데미지 산출에 _ultDmgMul 미개입', () => {
@@ -88,9 +87,10 @@ test('§5 execution hard exclusion — execution 데미지 산출에 _ultDmgMul 
 });
 
 test('§6 blackStar noDmg — hurtE·_ultDmgMul 미호출(견인 전용)', () => {
+  // fireBlackStar(detonate)는 여전히 noDmg — hurtE·_ultDmgMul 미호출. L10-A는 cast-time 흡인력에만 작용(별도 위치).
   const bs=grabFn('fireBlackStar');
-  assert.ok(!/hurtE\(/.test(bs),'blackStar hurtE 미호출(noDmg)');
-  assert.ok(!/_ultDmgMul/.test(bs),'blackStar _ultDmgMul 미적용');
+  assert.ok(!/hurtE\(/.test(bs),'blackStar detonate hurtE 미호출(noDmg 유지)');
+  assert.ok(!/_ultDmgMul/.test(bs),'blackStar detonate에는 _ultDmgMul 없음(damage 미생성)');
 });
 
 test('§7 _ultDmgMul 소비자 semantic — 1+Σ ultDmg, equip/unequip 완전복구·stacking', () => {
@@ -127,9 +127,9 @@ test('§10 C1 backbone(absorption) — cap10 L10-A 결손 target 거부, 충전 
   // 충전된 cap10 target → 흡수 성공
   let A=build(); A.setBag([capTarget('weapon',10),{type:'affixStone',affixId:'poisonDot',tier:2,value:0.3}]);
   assert.ok(A.absorbStone(A.getBag()[1],'t1').ok,'L10-A 충전 cap10 → 흡수 성공');
-  // L10-A 결손 cap10 → C1_VIOLATION
+  // L10-A 결손 cap10 → C1_BACKBONE_MISSING ([8B.1] backbone 결손 전용 reason)
   A=build(); A.setBag([capTarget('weapon',10,10),{type:'affixStone',affixId:'poisonDot',tier:2,value:0.3}]);
-  const r=A.absorbStone(A.getBag()[1],'t1'); assert.equal(r.ok,false); assert.equal(r.reason,'C1_VIOLATION','L10-A 결손 cap10 거부');
+  const r=A.absorbStone(A.getBag()[1],'t1'); assert.equal(r.ok,false); assert.equal(r.reason,'C1_BACKBONE_MISSING','L10-A 결손 cap10 거부');
   // cap9 target(L10-A 없음)은 면제(L10 iteration 미도달)
   A=build(); A.setBag([capTarget('weapon',9),{type:'affixStone',affixId:'poisonDot',tier:2,value:0.3}]);
   assert.ok(A.absorbStone(A.getBag()[1],'t1').ok,'cap9 → L10-A 면제, 흡수 성공');

@@ -32,7 +32,7 @@ const aff=(id,tier,value)=>({id,tier,value});
 const BB={1:'strFlat',2:'cooldownRed',3:'defFlat',4:'elemFocus',5:'atkSpeed',6:'skillBoost',7:'atkPctAll',8:'critDmgW',9:'rageMaxFlat'};
 const backbone=(lv,skip)=>{const o=[];for(let L=1;L<=Math.min(lv,9);L++)if(L!==skip)o.push(aff(BB[L],2,0.1));return o;};
 const tgt=(over={})=>({id:over.id||'t1',slot:over.slot||'weapon',rarity:4,layerLv:over.layerLv||10,name:over.name||'테스트장비',affixes:over.affixes||backbone(over.layerLv||10,over.skip)});
-const REASONS=['ITEM_EQUIPPED','TARGET_EQUIPPED','TARGET_NOT_V2','TARGET_TOO_LOW','INCOMPATIBLE_SLOT','DUPLICATE_ID','DUPLICATE_GROUP','FLEX_BLOCKED','KEYSTONE_BLOCKED','LEGACY_BLOCKED','V2SKIP_BLOCKED','C1_VIOLATION','STALE_TARGET','STONE_NOT_IN_BAG','TARGET_NOT_IN_BAG','COMMIT_FAILED'];
+const REASONS=['ITEM_EQUIPPED','TARGET_EQUIPPED','TARGET_NOT_V2','TARGET_TOO_LOW','INCOMPATIBLE_SLOT','DUPLICATE_ID','DUPLICATE_GROUP','FLEX_BLOCKED','KEYSTONE_BLOCKED','LEGACY_BLOCKED','V2SKIP_BLOCKED','C1_VIOLATION','C1_BACKBONE_MISSING','STALE_TARGET','STONE_NOT_IN_BAG','TARGET_NOT_IN_BAG','COMMIT_FAILED'];
 
 // ══════════════════════════════════════════════════════════════════════
 test('§11 reason 매핑 — enum 문자열 직접 노출 0, 전 reason 매핑', () => {

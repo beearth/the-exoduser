@@ -71,10 +71,10 @@ test('§5/§6/§7 real C1 min-A validation — 정상 target 통과 · malformed
   // malformed target(L3-A 결손, layerLv 5) + B insert 시도 → C1_VIOLATION(commit 거부)
   A=build(); const bad={id:'t1',slot:'weapon',layerLv:5,affixes:backbone(5,3)}; const s=stone('poisonDot',2,0.3); A.setBag([bad,s]);
   const before=JSON.stringify(A.getBag());
-  const r=A.absorbStone(s,'t1'); assert.equal(r.reason,'C1_VIOLATION','malformed(L3-A 결손) 거부');
+  const r=A.absorbStone(s,'t1'); assert.equal(r.reason,'C1_BACKBONE_MISSING','malformed(L3-A 결손) 거부');
   assert.equal(JSON.stringify(A.getBag()),before,'target/stone 불변'); assert.equal(A.saveN(),0,'save 미호출');
   // planAbsorption도 동일 판정(순수)
-  assert.equal(A.planAbsorption(bad,stone('poisonDot',2,0.3)).reason,'C1_VIOLATION');
+  assert.equal(A.planAbsorption(bad,stone('poisonDot',2,0.3)).reason,'C1_BACKBONE_MISSING');
 });
 
 test('§6 L10-A 활성(ultDmg) — cap10 target은 L10-A backbone 필수(C1 자동활성)', () => {
@@ -89,7 +89,7 @@ test('§6 L10-A 활성(ultDmg) — cap10 target은 L10-A backbone 필수(C1 자�
   const bb9=[1,2,3,4,5,6,7,8,9].map(L=>aff(BB[L],2,0.1));
   const B=build(); B.setBag([{id:'t2',slot:'weapon',layerLv:10,affixes:bb9},stone('poisonDot',2,0.3)]);
   const r=B.absorbStone(B.getBag()[1],'t2');
-  assert.equal(r.ok,false,'L10-A 결손 cap10 → 거부'); assert.equal(r.reason,'C1_VIOLATION','C1 자동활성');
+  assert.equal(r.ok,false,'L10-A 결손 cap10 → 거부'); assert.equal(r.reason,'C1_BACKBONE_MISSING','C1 자동활성(backbone 결손)');
 });
 
 test('§11 atomic — FLEX_BLOCKED/C1_VIOLATION 실패 시 bag deep-equal 불변', () => {
