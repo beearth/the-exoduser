@@ -207,6 +207,37 @@ shake(14 + _bp*4)                              // 페이즈별 18~30
 | 2D 보스 숨김 방법 | `window._b3Active=true` + `bE._spawnT=999` 이중 보호 — 3D 활성 시 2D 렌더 완전 차단 |
 | 메쉬 컬링 | `THREE.DoubleSide` — 이동 중 facing 회전 시 텍스처 소실 방지 |
 
+### 챕터 모델 선택·비동기 교체 (2026-08-16 LOCK)
+
+`_b3animate()`는 매 프레임 `SI_TO_HELL[G.stage]`로 필요한 hell index를 계산하고, 현재 모델과 다르면 `window._b3loadModel(hellIdx)`를 호출한다. `window._b3loadModel`은 classic/module 스코프 경계를 넘어 테스트·보스 진입 코드에서 쓸 수 있도록 노출한 동일 함수다.
+
+| hell index | 챕터 | 모델 세트 | runtime idle | 전용 배율(`scaleMul`) | 비고 |
+|---:|---|---|---|---:|---|
+| `0` | 1장 썩은 숲 | Vinebound Sentinel | `assets/3d/Meshy_AI_Vinebound_Sentinel_biped_Animation_Idle_withSkin.glb` | `0.4` | 직립 휴머노이드. 전역 보스 시각 배율 4.0×와 곱해 실제 화면에서 발 정렬·전신 가시성을 유지 |
+| 그 외 / 미등록 | 해당 챕터 | 기존 Meshy_AI_1 fallback | `assets/3d/Meshy_AI_1_biped_Animation_Alert_withSkin.glb` | `1.0` (암묵) | 기존 모델·애니메이션 경로 유지 |
+
+| Vinebound action id | GLB | 슬롯/사용 위치 |
+|---|---|---|
+| `idle` | `Meshy_AI_Vinebound_Sentinel_biped_Animation_Idle_withSkin.glb` | 기본 loop |
+| `walk` | `Meshy_AI_Vinebound_Sentinel_biped_Animation_Walking_withSkin.glb` | `eWalk`/`eWander`/`ePatrol`/`bossRec`/`eRetreat` |
+| `aggro`, `run`, `chargeWind`, `charge`, `multiDashWind`, `multiDash`, `spinWind`, `spin` | `Meshy_AI_Vinebound_Sentinel_biped_Animation_Running_withSkin.glb` | 추적·돌진·회전 상태 |
+| `slamWind`, `slam` | `Meshy_AI_Vinebound_Sentinel_biped_Animation_Charged_Ground_Slam_withSkin.glb` | slam windup/실행 |
+| `hit` | `Meshy_AI_Vinebound_Sentinel_biped_Animation_Dead_withSkin.glb` | 현행 hit/stagger 매핑. 별도 품질 작업 전까지 유지 |
+
+`Unsteady_Walk_withSkin.glb`는 **hit에 연결하지 않는다**. 길이 약 3초, `Hips` translation이 있고 평면 이동 범위가 약 17.45 source units인 locomotion clip이므로 피격 제자리 모션 후보가 아니다.
+
+Vinebound의 UUID/raw 다운로드 GLB 2개는 runtime 경로에서 제거하지 않고 `assets/3d/raw/vinebound/`에 provenance로 보관한다. 코드가 참조하는 production GLB는 `assets/3d/` 루트의 deterministic animation 이름만 사용한다.
+
+#### generation guard
+
+| 항목 | 구현/규칙 |
+|---|---|
+| generation | `_b3loadGeneration`은 실제 `_b3loadModel` 요청마다 증가. 각 GLTF load는 시작 시 `loadGeneration`을 캡처 |
+| stale idle model | callback에서 `loadGeneration !== _b3loadGeneration`이면 `_b3disposeGltf(gltf)` 후 return. `_b3anchor`/`_b3model`/`_b3mixer`/`_b3actions`에 설치 금지 |
+| stale action GLB | generation 불일치 또는 mixer identity 불일치면 dispose 후 return. 이전 skeleton mixer에 action을 붙이지 않음 |
+| current model | 현재 generation만 scene anchor, mixer, action map을 교체 가능 |
+| 회귀 검증 | headed Chrome에서 `hell 0 → hell 1 → hell 0`의 첫 Vinebound idle 응답을 1.2초 지연. 최종 `Model loaded (hell:0)` 1회, `sceneChildren=4`(조명 3+anchor 1), `anchorChildren=1`, console error 0 PASS |
+
 ### 위치/스케일 계산 (`_b3animate`)
 
 > **수정 (2026-05-07 v1.5)**: `_btOffsetY`가 피벗 Y에만 반영되고 클리핑 평면에 미반영돼 50px 어긋나던 버그 수정. `_footY = _b3floorY + _b3yOff`로 피벗과 클리핑 동기화.
@@ -248,7 +279,7 @@ window._b3footScreenX = cssX
 window._b3footScreenY = cssY + bossRcss
 
 // 스케일 (pivot에 적용)
-tgtH = (bE.r / scale) * 2.0 * (window._btScaleMul || 1)
+tgtH = (bE.r / scale) * 2.0 * (window._btScaleMul || 1) * (_B3_ANIMS.scaleMul || 1)
 _b3sc = Math.max(0.1, tgtH / _b3size.y)
 _b3pivot.scale.setScalar(_b3sc)
 
@@ -304,7 +335,7 @@ http://localhost:3333/game.html?bosstest=0
 |---|---|---|
 | `window._btScaleMul` | `4.0` (전역), 테스트베드에서 `5.0` 설정 | Three.js + 2D 캔버스 보스 시각 배율 |
 | `window._btRotX` | `0.0` (rad) | 보스 3D X축 회전 |
-| `window._btOffsetY` | `-200` (px) | 보스 Y 오프셋 — 2D 캔버스 스케일 피벗 Y + Three.js 피벗 Y에 반영. 양수=위로 이동 |
+| `window._btOffsetY` | `0` (px) | 실제 게임 기본값. 보스 Y 오프셋 — 2D 캔버스 스케일 피벗 Y + Three.js 피벗 Y에 반영. 양수=위로 이동. 이전 `-200`은 실제 3D 발 위치를 화면 아래로 200px 밀어 모델을 가리므로 폐기 |
 | `window._b3footScreenX` | `cssX` | 보스 발 스크린 X 좌표 (blob shadow 등 외부 활용) |
 | `window._b3footScreenY` | `cssY + bossRcss` | 보스 발 스크린 Y 좌표 (blob shadow 등 외부 활용) |
 | ~~`_b3clipFloor`~~ | ~~`Plane(0,1,0)`~~ | **제거됨 (v1.6)** — `clippingPlanes=[]`, 클리핑 비활성화 |

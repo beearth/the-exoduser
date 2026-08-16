@@ -44372,3 +44372,13 @@ mpR = 0.05 + s.int×0.005                                        [NO P.lv×0.001
 - game.html: Corrected holyDome from teal-leaning green to pure healing green (#35b84b) with a light-green mist highlight (#8ae58b).
 - docs: Synced the pure-green holyDome visual palette.
 - test/holyDomeGreenVisual.test.js: Updated the pure-green visual regression target.
+
+## 2026-08-16 — Vinebound Sentinel 3D Boss Integration LOCK
+
+- game.html: Added `_b3loadGeneration` guard so only the newest chapter GLTF request can install the scene, mixer, or actions; stale model/action GLTFs are disposed before attachment.
+- game.html: Bound hell 0 to Vinebound Sentinel idle/walk/run/slam assets, with a Vinebound-only `scaleMul:0.4`; preserved the existing Meshy_AI_1 fallback set for other chapters.
+- game.html: Changed the real-game `_btOffsetY` default from `-200` to `0`, so the Three.js anchor matches the gameplay boss foot position; aligned the boss testbed offset slider's initial value.
+- assets/3d/raw/vinebound/: Moved the two UUID-named Vinebound raw downloads out of the runtime asset root without deleting provenance; production code references deterministic GLB names only.
+- tools/verify_boss3d_load_race_browser.mjs: Added headed Chrome delayed-completion regression (`hell 0 → 1 → 0`) verifying final Vinebound only, no console errors, 4 scene children (3 lights + 1 anchor), and one anchor child.
+- tools/verify_vinebound_boss_integration_browser.mjs: Added headed Chrome real game-route verification for boss-gate entry, Vinebound idle/walk/run/slam/idle-return captures, HP-bar sync, 0px foot alignment, chapter swap, and zero console/request errors.
+- docs/8.1보스디자인바이블/BOSS_BATTLE_SETTINGS.md: Synced model/action table, scale formula, generation guard, raw provenance, Unsteady_Walk exclusion, and real-game offset default.
