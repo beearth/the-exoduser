@@ -3893,16 +3893,15 @@ function _bakeFog(w,h,hell){
   fc.fillStyle=fg;fc.fillRect(0,0,w,h);_fogW=w;_fogH=h;_fogHell=hell;
 }
 function rz(){
-  _dpr=Math.min(window.devicePixelRatio||1,(IS_MAC?1.0:1.5));
+  _dpr=1;
   const _rsf=(OPT.resScale||100)/100;
   let rw, rh;
   if(_renderRes){
     rw=(~~(_renderRes.w*_rsf))&~1;
     rh=(~~(_renderRes.h*_rsf))&~1;
   }else{
-    rw=(~~(innerWidth*_dpr*_rsf))&~1;
-    rh=(~~(innerHeight*_dpr*_rsf))&~1;
-    // 모바일: 캔버스 총 픽셀 수 상한 (2M px → ~1920x1080)
+    rw=(~~(innerWidth*_rsf))&~1;
+    rh=(~~(innerHeight*_rsf))&~1;
     if(IS_MOBILE){const _maxPx=2097152;if(rw*rh>_maxPx){const _sc=Math.sqrt(_maxPx/(rw*rh));rw=(~~(rw*_sc))&~1;rh=(~~(rh*_sc))&~1}}
   }
   // Intro(splash on) only: keep cinematic ultra-wide cap.
@@ -8191,7 +8190,7 @@ function _checkPetDialogue(){
     _petSayUrgent('stun_warn','cat',_T('기절!')+' '+_esc.map(e=>_T(e)).join(' / ')+' '+_T('으로 탈출!'),4,8,'crow',P.skills.bladeDash>0?'더블탭 or Shift+방향키! 전격이동으로 탈출해!':P.skills.ghostWalk>0?'Ctrl 유령걸음으로 탈출하라.':P.skills.iceOrb>0?'Ctrl 얼음보주로 탈출하라.':'스킬 없으면 방향키 연타뿐이야.',3);
   }
   // MP 위기 (v4 — INT빌드)
-  if(P.mp<P.mmp*.2&&(P.aint||0)>Math.max(P.astr||0,P.adex||0))_petBidCD('mp_warn','crow','마력이 빈다. 평타 섞어.',3,60,'cat','MP 부족! 평타로 패면서 회복해!',3);
+  if(P.mp<P.mmp*.2&&(STATS.int||0)>Math.max(STATS.str||0,STATS.dex||0))_petBidCD('mp_warn','crow','마력이 빈다. 평타 섞어.',3,60,'cat','MP 부족! 평타로 패면서 회복해!',3);
   // ST 부족
   if(P.st<P.mst*.5&&P.lv<=100)_petBidCD('low_st','crow','스태미나가 부족하다. 무리하지 마.',3,60,'cat','ST 없으면 스킬 못 써!',3);
   // 보스 그로기
@@ -8363,12 +8362,15 @@ function _checkPetDialogue(){
 
   // ══ [15] 빌드별 차별화 (v5) — 6종 (보스전 중 차단) ══
   if(!G.bossAlive&&P.lv>=50&&G.frame%300===0){
-    const _s=P.astr||0,_d=P.adex||0,_i2=P.aint||0,_l=P.alck||0,_v=P.avit||0;
+    // 빌드 판정은 실제 배분 스탯 STATS.*(할당 UI STAT_DEF와 일치)를 읽는다. 구 P.a{str,dex,int,lck} 필드는
+    // 스탯 리팩터 이후 어디서도 기록되지 않아(항상 0) 모든 힌트가 죽어 있었다 → STATS.*로 교체.
+    const _s=STATS.str||0,_d=STATS.dex||0,_i2=STATS.int||0,_l=STATS.lck||0;
     if(!_petBuildHinted.str&&_s>_d*1.5&&_s>_i2*1.5)_petBidCD('build_str','crow','근육으로 만든 빌드군. 베고 부숴.',4,9999,'cat','STR 빌드! 회전참, 회오리, 광역기 추천!',4);
     if(!_petBuildHinted.dex&&_d>_s*1.5&&_d>_i2*1.5)_petBidCD('build_dex','crow','활을 쥐었군. 거리를 둬.',4,9999,'cat','DEX 빌드! 거리에서 패고, 추적탄 좋아!',4);
     if(!_petBuildHinted.int&&_i2>_s*1.5&&_i2>_d*1.5)_petBidCD('build_int','crow','마법사군. MP 관리부터 배워라.',4,9999,'cat','INT 빌드! 빔이랑 폭발 마법! MP 잘 봐!',4);
     if(!_petBuildHinted.lck&&_l>=30)_petBidCD('build_lck_high','crow','운에 기댄 빌드군. …드롭은 좋겠어.',4,9999,'cat','LCK 높아! 레어 드롭률 미친 거 알지?',4);
-    if(_v<10&&P.lv>=50)_petBidCD('build_vit_low','crow','…VIT가 너무 낮아. 한 방에 죽는다.',4,600,'cat','VIT 좀 찍어! HP 너무 적어!',4);
+    // (제거) 구 'build_vit_low' 나그: VIT는 할당 UI(STAT_DEF)에서 삭제된 사탈 스탯(항상 0)이라 매 프레임 오발동했다.
+    //   생존력 경고는 STR(+5HP)·GRIT·장비 등 복수 출처로 HP가 결정돼 단일 스탯 임계로 대체 불가 → 제거(오조언 근절).
     // 골고루 경고
     if(P.lv>=100){const _mx=Math.max(_s,_d,_i2),_mn=Math.min(_s,_d,_i2);if(_mx>0&&(_mx-_mn)/_mx<.2)_petBidCD('build_balanced_warn','crow','다 찍으면 다 약해진다. 하나만 골라.',4,600,'cat','골고루 안 돼! 하나로 밀어!',4)}
     // 체크 후 플래그
@@ -9087,7 +9089,7 @@ let _atlasPReady=false,_atlasP_img=null,_atlasP_frames=null;
 let _genSpriteOK=false;
 const CHAR_LIST=[
   {id:'exoduser_warrior',name:'엑소듀서 전사',desc:'다크 판타지 전사. 거대검+검은 갑옷',folder:'img/exoduser_warrior',fw:48,fh:48,idleN:2,walkN:8,atkN:8,whirlN:1,throwN:1,chainN:0,dashN:1},
-  {id:'exoduser_silvertail',name:'실버테일',desc:'블레이드 댄서. 회전대검+쌍단검 (PixelLab 8방향 걷기)',folder:'img/exoduser_silvertail',fw:48,fh:48,idleN:2,walkN:8,atkN:0,whirlN:0,throwN:0,chainN:0,dashN:0},
+  {id:'exoduser_silvertail',name:'실버테일',desc:'블레이드 댄서. 회전대검, 단검 하나',folder:'img/exoduser_silvertail',fw:48,fh:48,idleN:2,walkN:4,atkN:4,whirlN:0,throwN:0,chainN:0,dashN:0},
 ];
 let _charIdx=0;
 try{const _sv=localStorage.getItem('_charIdx');if(_sv!=null)_charIdx=+_sv;}catch(e){}
@@ -9104,7 +9106,7 @@ const _CHAR_ANIMS=['idle','run','atk1','atk2','atk3','hurt','die','bash','block'
 const _CHAR_DIRS=['south','south-east','east','north-east','north','north-west','west','south-west'];
 const _CHAR_DKS=['s','se','e','ne','n','nw','w','sw'];
 const _SILVERTAIL_CLOCK_FILES={south:'6','south-east':'5',east:'3','north-east':'1',north:'12','north-west':'11',west:'9','south-west':'7'};
-const _SILVERTAIL_ASSET_VERSION='20260808-clockfiles-v11';
+const _SILVERTAIL_ASSET_VERSION='20260817-4frame-v4';
 function _loadCharAtlas(idx){
   if(idx<0||idx>=CHAR_LIST.length)idx=0;
   _charIdx=idx;try{localStorage.setItem('_charIdx',''+idx);}catch(e){}
@@ -9579,6 +9581,66 @@ const _wallTreeImgs={};
 const _skullWallImg=new Image();_skullWallImg.src='assets/map/ch2/skull_wall_tile.png';
 
 const _wallEdgeImg=new Image();_wallEdgeImg.src='assets/map/ch2/wall_edge_tile.png';
+const _pathBgImg=new Image();
+_pathBgImg.onload=()=>{
+  console.log('[PATH_BG] loaded '+_pathBgImg.naturalWidth+'x'+_pathBgImg.naturalHeight);
+  if(typeof _streamChunks==='object'){_streamChunks={};if(typeof _streamChunkCnt!=='undefined')_streamChunkCnt=0;if(typeof _streamVpDirty!=='undefined')_streamVpDirty=true}
+  if(typeof G!=='undefined'&&G.map&&typeof _queueMapCacheRefresh==='function')_queueMapCacheRefresh();
+};
+_pathBgImg.src='assets/map/ch1/map_1-2.jpg?v=20260817-paint2';
+function _pathBgReady(){return _pathBgImg&&_pathBgImg.complete&&_pathBgImg.naturalWidth>8}
+function _isMapPaint(){
+  const p=_MAP_COMPOSE[typeof G!=='undefined'?G.stage:-1];
+  return !!(p&&p.path&&p.path.paint);
+}
+function _drawMapPaintWorld(ctx,x0,y0,x1,y1){
+  if(!_pathBgReady()||!G.mw)return false;
+  const mapW=G.mw*T,mapH=G.mh*T;
+  const ww=x1-x0,wh=y1-y0;
+  if(ww<=0||wh<=0)return false;
+  ctx.imageSmoothingEnabled=true;
+  ctx.drawImage(_pathBgImg,(x0/mapW)*_pathBgImg.naturalWidth,(y0/mapH)*_pathBgImg.naturalHeight,(ww/mapW)*_pathBgImg.naturalWidth,(wh/mapH)*_pathBgImg.naturalHeight,x0,y0,ww,wh);
+  ctx.imageSmoothingEnabled=false;
+  return true;
+}
+function _fillMapPaint(c,tx0,ty0,tx1,ty1,local){
+  const mw=G.mw,mh=G.mh,mapW=mw*T,mapH=mh*T;
+  const dw=(tx1-tx0)*T,dh=(ty1-ty0)*T;
+  const ox=local?0:tx0*T,oy=local?0:ty0*T;
+  if(_pathBgReady()){
+    c.imageSmoothingEnabled=true;
+    const sx=(tx0*T/mapW)*_pathBgImg.naturalWidth;
+    const sy=(ty0*T/mapH)*_pathBgImg.naturalHeight;
+    const sw=(dw/mapW)*_pathBgImg.naturalWidth;
+    const sh=(dh/mapH)*_pathBgImg.naturalHeight;
+    c.drawImage(_pathBgImg,sx,sy,sw,sh,ox,oy,dw,dh);
+  }else{
+    c.fillStyle='#0a120c';c.fillRect(ox,oy,dw,dh);
+  }
+}
+function _fillPathBg(c,map,tx0,ty0,tx1,ty1,local){
+  if(G._mapPaint||_isMapPaint()){_fillMapPaint(c,tx0,ty0,tx1,ty1,local);return}
+  const mw=G.mw,mh=G.mh,mapW=mw*T,mapH=mh*T;
+  const dw=(tx1-tx0)*T,dh=(ty1-ty0)*T;
+  const ox=local?0:tx0*T,oy=local?0:ty0*T;
+  c.save();c.beginPath();
+  for(let ty=ty0;ty<ty1;ty++){
+    const row=map[ty];if(!row)continue;
+    for(let tx=tx0;tx<tx1;tx++)if(row[tx]===1)c.rect(ox+(tx-tx0)*T,oy+(ty-ty0)*T,T,T);
+  }
+  c.clip();
+  if(_pathBgReady()){
+    c.imageSmoothingEnabled=true;
+    const sx=(tx0*T/mapW)*_pathBgImg.naturalWidth;
+    const sy=(ty0*T/mapH)*_pathBgImg.naturalHeight;
+    const sw=(dw/mapW)*_pathBgImg.naturalWidth;
+    const sh=(dh/mapH)*_pathBgImg.naturalHeight;
+    c.drawImage(_pathBgImg,sx,sy,sw,sh,ox,oy,dw,dh);
+  }else{
+    c.fillStyle='#0a120c';c.fillRect(ox,oy,dw,dh);
+  }
+  c.restore();
+}
 let _skullWallPat=null;
 function _buildSkullWallPat(){
   if(_skullWallPat)return;
@@ -9663,7 +9725,8 @@ function _silvertailAttackPose(){
     const q=smooth((p-.70)/.30);
     bladeRotation=.96-.42*q;arcAlpha=1-q;
   }
-  return {spriteDir:_DIR8[(_silvBaseDirI+_silvSpinOffsets[_silvSpinFrame]+8)%8],bladeRotation,backBladeRotation:_silvBackBladeRotation,arcAlpha,spinProgress:_silvSpinProgress,kind:P._silvAttackKind||'lmb'};
+  const _silvHasAtk=!!(CHAR_LIST[_charIdx]&&CHAR_LIST[_charIdx].atkN);
+  return {spriteDir:_silvHasAtk?_silvBaseDir:_DIR8[(_silvBaseDirI+_silvSpinOffsets[_silvSpinFrame]+8)%8],bladeRotation,backBladeRotation:_silvBackBladeRotation,arcAlpha,spinProgress:_silvSpinProgress,kind:P._silvAttackKind||'lmb',hasAtk:_silvHasAtk};
 }
 function _drawSilvertailBackBlade(ctx,pose){
   // 칼의 피벗은 항상 목뒤 한 점이다. 골반/조준 반대편으로 이동시키지 않는다.
@@ -13323,6 +13386,16 @@ for(const ch of CHAPTER_STAGES){
     SI_TO_FLOOR[si]=f;
   }
 }
+// 대표맵=필드(1-1 동형). 던전은 특별맵만. ready=false면 필드로 플레이.
+const _FIELD_FACE=new Set();
+for(const ch of CHAPTER_STAGES)_FIELD_FACE.add(ch.startSi);
+const _DUNGEON_SPEC={
+  11:{name:'미끄러운 얼음길',ready:false},
+  16:{name:'화산 심장',ready:false},
+  33:{name:'지옥 탑',ready:false}
+};
+function _isFaceMap(si){return _FIELD_FACE.has(si)}
+function _isDungeonMap(si){const d=_DUNGEON_SPEC[si];return !!(d&&d.ready)}
 const HELL_NAMES=['1장 — 썩은 숲','2장 — 벌레굴','3장 — 얼음굴',
   '4장 — 고통의 화염지대','5장 — 지옥의 군단','6장 — 사도의 마굴','7장 — 지옥성'];
 const HELL_THEMES=[
@@ -13700,55 +13773,30 @@ const _CH_DECO={
     {id:'m_bone_arch',file:'bone_arch.png',sz:300,large:1,dir:'collision'},
     {id:'m_eye_tree',file:'eye_tree.png',sz:350,large:1,dir:'collision'},
     {id:'m_throne',file:'throne.png',sz:250,large:1,dir:'collision'},
+    {id:'m_vine_pillar',file:'vine_pillar.png',sz:280,large:1,dir:'collision',col:1,colSz:45,keepAR:1},
+    {id:'m_rotten_tree',file:'rotten_tree.png',sz:380,large:1,dir:'collision',col:1,colSz:60,keepAR:1},
+    {id:'m_mega_statue',file:'mega_statue.png',sz:480,large:1,mega:1,dir:'collision',col:1,colSz:140,keepAR:1},
+    {id:'m_mega_ribs',file:'mega_ribs.png',sz:900,large:1,mega:1,dir:'collision',col:1,colW:380,colH:150,keepAR:1},
+    {id:'m_mega_chapel',file:'mega_chapel.png',sz:520,large:1,mega:1,dir:'collision',col:1,colSz:110,keepAR:1},
+    {id:'m_mega_head',file:'mega_head.png',sz:720,large:1,mega:1,dir:'collision',col:1,colW:260,colH:160,keepAR:1},
     {id:'m_flesh_g0',file:'flesh_g_0.png',sz:352,scatter:1},
-    {id:'m_flesh_g90',file:'flesh_g_90.png',sz:352,scatter:1},
-    {id:'m_flesh_g180',file:'flesh_g_180.png',sz:352,scatter:1},
-    {id:'m_flesh_g270',file:'flesh_g_270.png',sz:352,scatter:1},
+    {id:'m_flesh_g0f',file:'flesh_g_0.png',sz:352,scatter:1,flip:1},
     {id:'m_flesh_h0',file:'flesh_h_0.png',sz:352,scatter:1},
-    {id:'m_flesh_h90',file:'flesh_h_90.png',sz:352,scatter:1},
-    {id:'m_flesh_h180',file:'flesh_h_180.png',sz:352,scatter:1},
-    {id:'m_flesh_h270',file:'flesh_h_270.png',sz:352,scatter:1},
-    // ── deco/ 폴더 장식 (종양·살점·눈알벽) 4방향 ──
+    {id:'m_flesh_h0f',file:'flesh_h_0.png',sz:352,scatter:1,flip:1},
     {id:'m_tumor00',file:'clean_tumor_0_0.png',sz:150,scatter:1},
-    {id:'m_tumor00_90',file:'clean_tumor_0_0.png',sz:150,scatter:1,rot:90},
-    {id:'m_tumor00_180',file:'clean_tumor_0_0.png',sz:150,scatter:1,rot:180},
-    {id:'m_tumor00_270',file:'clean_tumor_0_0.png',sz:150,scatter:1,rot:270},
+    {id:'m_tumor00f',file:'clean_tumor_0_0.png',sz:150,scatter:1,flip:1},
     {id:'m_tumor01',file:'clean_tumor_0_1.png',sz:150,scatter:1},
-    {id:'m_tumor01_90',file:'clean_tumor_0_1.png',sz:150,scatter:1,rot:90},
-    {id:'m_tumor01_180',file:'clean_tumor_0_1.png',sz:150,scatter:1,rot:180},
-    {id:'m_tumor01_270',file:'clean_tumor_0_1.png',sz:150,scatter:1,rot:270},
+    {id:'m_tumor01f',file:'clean_tumor_0_1.png',sz:150,scatter:1,flip:1},
     {id:'m_tumor02',file:'clean_tumor_0_2.png',sz:150,scatter:1},
-    {id:'m_tumor02_90',file:'clean_tumor_0_2.png',sz:150,scatter:1,rot:90},
-    {id:'m_tumor02_180',file:'clean_tumor_0_2.png',sz:150,scatter:1,rot:180},
-    {id:'m_tumor02_270',file:'clean_tumor_0_2.png',sz:150,scatter:1,rot:270},
     {id:'m_tumor10',file:'clean_tumor_1_0.png',sz:150,scatter:1},
-    {id:'m_tumor10_90',file:'clean_tumor_1_0.png',sz:150,scatter:1,rot:90},
-    {id:'m_tumor10_180',file:'clean_tumor_1_0.png',sz:150,scatter:1,rot:180},
-    {id:'m_tumor10_270',file:'clean_tumor_1_0.png',sz:150,scatter:1,rot:270},
     {id:'m_tumor11',file:'clean_tumor_1_1.png',sz:150,scatter:1},
-    {id:'m_tumor11_90',file:'clean_tumor_1_1.png',sz:150,scatter:1,rot:90},
-    {id:'m_tumor11_180',file:'clean_tumor_1_1.png',sz:150,scatter:1,rot:180},
-    {id:'m_tumor11_270',file:'clean_tumor_1_1.png',sz:150,scatter:1,rot:270},
     {id:'m_tumor12',file:'clean_tumor_1_2.png',sz:150,scatter:1},
-    {id:'m_tumor12_90',file:'clean_tumor_1_2.png',sz:150,scatter:1,rot:90},
-    {id:'m_tumor12_180',file:'clean_tumor_1_2.png',sz:150,scatter:1,rot:180},
-    {id:'m_tumor12_270',file:'clean_tumor_1_2.png',sz:150,scatter:1,rot:270},
     {id:'m_fixblk0',file:'fixed_black_0.png',sz:150,scatter:1},
-    {id:'m_fixblk0_90',file:'fixed_black_0.png',sz:150,scatter:1,rot:90},
-    {id:'m_fixblk0_180',file:'fixed_black_0.png',sz:150,scatter:1,rot:180},
-    {id:'m_fixblk0_270',file:'fixed_black_0.png',sz:150,scatter:1,rot:270},
     {id:'m_fixblk1',file:'fixed_black_1.png',sz:150,scatter:1},
-    {id:'m_fixblk1_90',file:'fixed_black_1.png',sz:150,scatter:1,rot:90},
-    {id:'m_fixblk1_180',file:'fixed_black_1.png',sz:150,scatter:1,rot:180},
-    {id:'m_fixblk1_270',file:'fixed_black_1.png',sz:150,scatter:1,rot:270},
     {id:'m_fleshwall_a',file:'flesh_wall_a.png',sz:300,scatter:1},
-    {id:'m_fleshwall_a90',file:'flesh_wall_a.png',sz:300,scatter:1,rot:90},
-    {id:'m_fleshwall_a180',file:'flesh_wall_a.png',sz:300,scatter:1,rot:180},
-    {id:'m_fleshwall_a270',file:'flesh_wall_a.png',sz:300,scatter:1,rot:270},
+    {id:'m_fleshwall_af',file:'flesh_wall_a.png',sz:300,scatter:1,flip:1},
     {id:'m_fleshwall_b',file:'flesh_wall_b.png',sz:300,scatter:1},
-    {id:'m_fleshwall_b90',file:'flesh_wall_b.png',sz:300,scatter:1,rot:90},
-    {id:'m_fleshwall_b180',file:'flesh_wall_b.png',sz:300,scatter:1,rot:180},
-    {id:'m_fleshwall_b270',file:'flesh_wall_b.png',sz:300,scatter:1,rot:270},
+    {id:'m_fleshwall_bf',file:'flesh_wall_b.png',sz:300,scatter:1,flip:1},
     {id:'m_usergore1',file:'provided_gore_01.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:34},
     {id:'m_usergore2',file:'provided_gore_02.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:34},
     {id:'m_usergore3',file:'provided_gore_03.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:34},
@@ -13756,6 +13804,114 @@ const _CH_DECO={
     {id:'m_usergore5',file:'provided_gore_05.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:34},
     {id:'m_usergore6',file:'provided_gore_06.png',sz:220,userProvided:1,floorMount:1,stageMin:0,stageMax:34},
   ],
+  1:[ // CH2 벌레굴
+    {id:'m_c2p1',file:'prop_a.png',sz:380,large:1,dir:'collision',col:1,colSz:70,keepAR:1},
+    {id:'m_c2p1b',file:'prop_a.png',sz:320,large:1,dir:'collision',col:1,colSz:58,keepAR:1,flip:1},
+    {id:'m_c2p2',file:'prop_b.png',sz:360,large:1,dir:'collision',col:1,colSz:62,keepAR:1},
+    {id:'m_c2hive',file:'prop_hive.png',sz:360,large:1,dir:'collision',col:1,colSz:90,keepAR:1},
+    {id:'m_c2webp',file:'prop_webp.png',sz:340,large:1,dir:'collision',col:1,colSz:55,keepAR:1},
+    {id:'m_c2webpf',file:'prop_webp.png',sz:340,large:1,dir:'collision',col:1,colSz:55,keepAR:1,flip:1},
+    {id:'m_c2pit',file:'pit_bugs.png',sz:200,large:1,dir:'collision',col:1,collision:1,colSz:80},
+    {id:'m_c2chitin',file:'chitin_debris.png',sz:56,scatter:1},
+    {id:'m_c2larva',file:'larva.png',sz:52,scatter:1},
+    {id:'m_c2mini',file:'minibug.png',sz:36,scatter:1},
+    {id:'m_c2web',file:'spider_web.png',sz:64,scatter:1},
+    {id:'m_c2mush',file:'toxic_mushroom.png',sz:56,light:1},
+    {id:'m_c2glow',file:'mushroom_glow_01.png',sz:44,light:1,scatter:1},
+    {id:'m_c2eye',file:'eye_mushroom.png',sz:52,scatter:1},
+  ],
+  2:[ // CH3 얼음굴
+    {id:'m_c3p1',file:'prop_a.png',sz:400,large:1,dir:'collision',col:1,colSz:72,keepAR:1},
+    {id:'m_c3p1b',file:'prop_a.png',sz:330,large:1,dir:'collision',col:1,colSz:60,keepAR:1,flip:1},
+    {id:'m_c3p2',file:'prop_b.png',sz:360,large:1,dir:'collision',col:1,colSz:70,keepAR:1},
+    {id:'m_c3shrine',file:'prop_iceshrine.png',sz:360,large:1,dir:'collision',col:1,colSz:85,keepAR:1},
+    {id:'m_c3cage',file:'prop_icecage.png',sz:360,large:1,dir:'collision',col:1,colSz:40,keepAR:1},
+    {id:'m_c3cagef',file:'prop_icecage.png',sz:360,large:1,dir:'collision',col:1,colSz:40,keepAR:1,flip:1},
+    {id:'m_c3pit',file:'pit_ice.png',sz:200,large:1,dir:'collision',col:1,collision:1,colSz:80},
+    {id:'m_c3fbones',file:'frozen_bones.png',sz:56,scatter:1},
+    {id:'m_c3bones',file:'bones.png',sz:44,scatter:1},
+    {id:'m_c3deco',file:'deco_bones_03.png',sz:48,scatter:1},
+  ],
+  3:[ // CH4 화염
+    {id:'m_c4p1',file:'prop_a.png',sz:400,large:1,dir:'collision',col:1,colSz:72,keepAR:1},
+    {id:'m_c4p1b',file:'prop_a.png',sz:330,large:1,dir:'collision',col:1,colSz:60,keepAR:1,flip:1},
+    {id:'m_c4p2',file:'prop_b.png',sz:360,large:1,dir:'collision',col:1,colSz:70,keepAR:1},
+    {id:'m_c4brazier',file:'prop_brazier.png',sz:300,large:1,dir:'collision',col:1,colSz:80,keepAR:1},
+    {id:'m_c4pit',file:'pit_lava.png',sz:200,large:1,dir:'collision',col:1,collision:1,colSz:80},
+    {id:'m_c4fire',file:'fire_pillar.png',sz:220,large:1,dir:'collision',col:1,colSz:50,keepAR:1},
+    {id:'m_c4crack',file:'lava_crack.png',sz:56,scatter:1},
+  ],
+  4:[ // CH5 군단
+    {id:'m_c5p1',file:'prop_a.png',sz:400,large:1,dir:'collision',col:1,colSz:75,keepAR:1},
+    {id:'m_c5p1b',file:'prop_a.png',sz:330,large:1,dir:'collision',col:1,colSz:62,keepAR:1,flip:1},
+    {id:'m_c5p2',file:'prop_b.png',sz:380,large:1,dir:'collision',col:1,colSz:90,keepAR:1},
+    {id:'m_c5banner',file:'prop_banner.png',sz:380,large:1,dir:'collision',col:1,colSz:50,keepAR:1},
+    {id:'m_c5bannerf',file:'prop_banner.png',sz:380,large:1,dir:'collision',col:1,colSz:50,keepAR:1,flip:1},
+    {id:'m_c5totem',file:'skull_totem.png',sz:260,large:1,dir:'collision',col:1,colSz:55,keepAR:1},
+    {id:'m_c5arch',file:'bone_arch.png',sz:300,large:1,dir:'collision',col:1,colSz:60,keepAR:1},
+    {id:'m_c5wpile',file:'weapon_pile.png',sz:72},
+    {id:'m_c5bones',file:'bones.png',sz:44,scatter:1},
+    {id:'m_c5deco',file:'deco_bones_04.png',sz:48,scatter:1},
+    {id:'m_c5tomb',file:'tombstone.png',sz:56},
+  ],
+  5:[ // CH6 사도
+    {id:'m_c6p1',file:'prop_a.png',sz:400,large:1,dir:'collision',col:1,colSz:75,keepAR:1},
+    {id:'m_c6p1b',file:'prop_a.png',sz:330,large:1,dir:'collision',col:1,colSz:62,keepAR:1,flip:1},
+    {id:'m_c6p2',file:'prop_b.png',sz:360,large:1,dir:'collision',col:1,colSz:68,keepAR:1},
+    {id:'m_c6eyetotem',file:'prop_eyetotem.png',sz:340,large:1,dir:'collision',col:1,colSz:55,keepAR:1},
+    {id:'m_c6eyetotemf',file:'prop_eyetotem.png',sz:340,large:1,dir:'collision',col:1,colSz:55,keepAR:1,flip:1},
+    {id:'m_c6flesh',file:'flesh_pile.png',sz:80,scatter:1},
+    {id:'m_c6meat',file:'meat_stake.png',sz:64},
+    {id:'m_c6corpse',file:'corpse.png',sz:52,scatter:1},
+    {id:'m_c6rune',file:'rune_mark.png',sz:44,light:1,scatter:1},
+    {id:'m_c6eye',file:'eyeball.png',sz:36,scatter:1},
+  ],
+  6:[ // CH7 지옥성
+    {id:'m_c7p1',file:'prop_a.png',sz:420,large:1,dir:'collision',col:1,colSz:70,keepAR:1},
+    {id:'m_c7p1b',file:'prop_a.png',sz:340,large:1,dir:'collision',col:1,colSz:58,keepAR:1,flip:1},
+    {id:'m_c7p2',file:'prop_b.png',sz:380,large:1,dir:'collision',col:1,colSz:70,keepAR:1},
+    {id:'m_c7garg',file:'prop_gargoyle.png',sz:340,large:1,dir:'collision',col:1,colSz:70,keepAR:1},
+    {id:'m_c7gargf',file:'prop_gargoyle.png',sz:340,large:1,dir:'collision',col:1,colSz:70,keepAR:1,flip:1},
+    {id:'m_c7obelisk',file:'obelisk.png',sz:300,large:1,dir:'collision',col:1,colSz:50,keepAR:1},
+    {id:'m_c7throne',file:'throne.png',sz:260,large:1,dir:'collision',col:1,colSz:55,keepAR:1},
+    {id:'m_c7vine',file:'vine_pillar.png',sz:240,large:1,dir:'collision',col:1,colSz:45,keepAR:1},
+    {id:'m_c7rune',file:'rune_mark.png',sz:44,light:1,scatter:1},
+    {id:'m_c7tomb',file:'tombstone.png',sz:56,scatter:1},
+  ],
+};
+// 한 장씩만 채운다. 없으면 균등 살포(구 동작). 기획: docs/4.1맵디자인+설정/맵구성_1장.md
+// path:{w,pts} 있으면 이동지역만 바닥 타일, 나머지는 이미지(_pathImgTerrain)
+const _MAP_COMPOSE={
+  0:{keepDragon:1,mega:[
+    {id:'m_mega_ribs',x:.84,y:.22,sz:1400}
+  ]},
+  1:{
+    lm:[{id:'m_eye_tree',x:.16,y:.42,sz:560},{id:'m_eye_tree',x:.84,y:.40,sz:500},{id:'m_eye_tree',x:.15,y:.58,sz:440}],
+    mega:[{id:'m_mega_chapel',x:.14,y:.26,sz:880}],
+    lgMul:1.10,lgDist:700,scMul:.85,
+    largeBias:['m_ctree','m_atree','m_cage','m_hang','m_rotten','m_vine'],
+    uni:['m_cage_gate','m_hang_cage','m_sword_pile','m_bone_arch','m_skull_totem','m_obelisk'],
+    empty:[{x:.50,y:.88,r:480},{x:.50,y:.14,r:420}],
+    path:{paint:1,bg:'assets/map/ch1/map_1-2.png',col:{x0:42,y0:46,x1:158,y1:194}}
+  },
+  2:{
+    lm:[{id:'m_penta_circle',x:.72,y:.38,sz:400},{id:'m_eye_tree',x:.74,y:.42,sz:380},{id:'m_flesh_ball',x:.50,y:.62,sz:520}],
+    mega:[{id:'m_mega_head',x:.28,y:.35,sz:980}],
+    lgMul:1.00,lgDist:720,scMul:1.00,
+    largeBias:['m_ctree','m_flesh','m_penta','m_eye_tree'],
+    uni:['m_flesh_ball','m_penta_circle','m_flesh_maw','m_eye_tree','m_skull_altar'],
+    empty:[{x:.50,y:.88,r:420},{x:.50,y:.14,r:380},{x:.50,y:.48,r:700}],
+    groves:[{x:.28,y:.35,r:900},{x:.72,y:.38,r:900},{x:.50,y:.62,r:800}]
+  },
+  3:{
+    lm:[{id:'m_throne',x:.50,y:.30,sz:400},{id:'m_bone_arch',x:.22,y:.32,sz:360},{id:'m_flesh_maw',x:.78,y:.32,sz:320}],
+    mega:[],
+    lgMul:1.25,lgDist:640,scMul:.90,
+    largeBias:['m_ctree','m_flesh','m_throne','m_vine','m_rotten'],
+    uni:['m_throne','m_bone_arch','m_flesh_maw','m_skull_altar','m_penta_circle'],
+    empty:[{x:.50,y:.52,r:1200},{x:.50,y:.88,r:400},{x:.50,y:.12,r:400}],
+    rim:.22
+  }
 };
 // _CH_DECO 프리로드는 _OBJ_META 선언 뒤에서 실행
 for(const[k,v]of Object.entries(_OBJ_SPR_MAP)){const im=new Image();im.src=v;_OBJ_SPR[k]=im}
@@ -13906,7 +14062,7 @@ function _drawGateSwirl(ctx,cx,cy,sz,t,unlocked){
 function _waitObjSprites(timeout){
   return new Promise(r=>{
     const t0=Date.now();
-    const _extraImgs=[_bossRoomBg,..._bossGateImgs,_impSpr,_skullWallImg,_wallEdgeImg];
+    const _extraImgs=[_bossRoomBg,..._bossGateImgs,_impSpr,_skullWallImg,_wallEdgeImg,_pathBgImg,_GROUND_TILES['gt_soil'],_GROUND_TILES['gt_ch2'],_GROUND_TILES['gt_ch3'],_GROUND_TILES['gt_ch4'],_GROUND_TILES['gt_ch5'],_GROUND_TILES['gt_ch6'],_GROUND_TILES['gt_ch7']];
     const check=()=>{
       let done=true;
       for(const k in _OBJ_SPR){const im=_OBJ_SPR[k];if(!im.complete&&!im.naturalWidth){done=false;break}}
@@ -13952,7 +14108,7 @@ const _OBJ_META={
 };
 // _CH_DECO 프리로드
 for(const[ch,list]of Object.entries(_CH_DECO)){
-  for(const d of list){const p='assets/map/ch'+(+ch+1)+'/'+(d.dir||'floor_objects')+'/'+d.file;_OBJ_SPR_MAP[d.id]=p;const im=new Image();im.onerror=function(){console.warn('[DECO] '+d.id+' 404→fallback');this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='};im.src=p;_OBJ_SPR[d.id]=im;const _prev=_OBJ_META[d.id]||{};_OBJ_META[d.id]=Object.assign(_prev,{sz:d.sz||32,light:d.light||0,large:d.large||0,rot:d.rot||0})}
+  for(const d of list){const p='assets/map/ch'+(+ch+1)+'/'+(d.dir||'floor_objects')+'/'+d.file;_OBJ_SPR_MAP[d.id]=p;const im=new Image();im.onerror=function(){console.warn('[DECO] '+d.id+' 404→fallback');this.onerror=null;this.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg=='};im.src=p;_OBJ_SPR[d.id]=im;const _prev=_OBJ_META[d.id]||{};_OBJ_META[d.id]=Object.assign(_prev,{sz:d.sz||32,light:d.light||0,large:d.large||0,mega:d.mega||0,rot:d.rot||0,flip:d.flip||0,col:d.col||_prev.col||0,collision:d.collision||_prev.collision||false,colSz:d.colSz||_prev.colSz,colW:d.colW||_prev.colW,colH:d.colH||_prev.colH,keepAR:d.keepAR||_prev.keepAR||0})}
 }
 // 용 해골 직접 프리로드 (img/ 경로)
 {const _dsImg=new Image();_dsImg.src='img/map_dragon_skeleton.png';_OBJ_SPR['m_dragon_skeleton']=_dsImg;_OBJ_SPR_MAP['m_dragon_skeleton']='img/map_dragon_skeleton.png'}
@@ -19820,14 +19976,22 @@ function initMapObjects(){
   // 공간 해시 그리드 (O(1) 근접 체크, O(n²) 제거)
   const _GRID_SZ=200;const _moGrid={};
   function _gridKey(x,y){return(~~(x/_GRID_SZ))+'_'+(~~(y/_GRID_SZ))}
-  function _gridAdd(x,y,type){const k=_gridKey(x,y);if(!_moGrid[k])_moGrid[k]=[];const m=_OBJ_META[type];const colR=(m&&(m.collision||m.col))?(m.colW||m.colSz||(m.sz||64)*.4):0;_moGrid[k].push({x,y,colR})}
-  function _gridNear(x,y,r,newColR){
-    const gx=~~(x/_GRID_SZ),gy=~~(y/_GRID_SZ);const _ncr=newColR||0;
-    for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){
+  function _visR(type){
+    const m=_OBJ_META[type];if(!m)return 40;
+    const sz=m.sz||64;
+    if(m.large||sz>=150)return Math.max(sz*0.55,160);
+    return Math.max(sz*0.5,28);
+  }
+  function _gridAdd(x,y,type){const k=_gridKey(x,y);if(!_moGrid[k])_moGrid[k]=[];const m=_OBJ_META[type];const colR=(m&&(m.collision||m.col))?(m.colW||m.colSz||(m.sz||64)*.4):0;_moGrid[k].push({x,y,colR,visR:_visR(type)})}
+  function _gridNear(x,y,r,newVisR){
+    const gx=~~(x/_GRID_SZ),gy=~~(y/_GRID_SZ);const _nvr=newVisR||0;
+    const reach=Math.max(r||0,_nvr,200);
+    const cells=Math.ceil(reach/_GRID_SZ)+1;
+    for(let dy=-cells;dy<=cells;dy++)for(let dx=-cells;dx<=cells;dx++){
       const c=_moGrid[(gx+dx)+'_'+(gy+dy)];if(!c)continue;
       for(let i=0;i<c.length;i++){const _dx=c[i].x-x,_dy=c[i].y-y;const d2=_dx*_dx+_dy*_dy;
-        // 충돌체끼리: 양쪽 반경 합 이상 떨어져야 함
-        const minD=Math.max(r,c[i].colR+_ncr+40);
+        const otherR=c[i].visR||c[i].colR||0;
+        const minD=Math.max(r||0,otherR+_nvr+56);
         if(d2<minD*minD)return true}
     }return false;
   }
@@ -19837,6 +20001,14 @@ function initMapObjects(){
   MAP_OBJS.push=function(o){_gridAdd(o.x,o.y,o.type);return _origPush(o)}
   function _floorAt(tx,ty){return tx>=0&&ty>=0&&tx<G.mw&&ty<G.mh&&(map[ty][tx]===0||map[ty][tx]===4)}
   function _nearFloor(tx,ty){if(_floorAt(tx,ty))return{x:tx,y:ty};for(let r=1;r<10;r++)for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){if(_floorAt(tx+dx,ty+dy))return{x:tx+dx,y:ty+dy}}return null}
+  function _nearOffPath(tx,ty){
+    if(ty>=0&&tx>=0&&ty<G.mh&&tx<G.mw&&map[ty][tx]===1)return{x:tx,y:ty};
+    for(let r=1;r<14;r++)for(let dy=-r;dy<=r;dy++)for(let dx=-r;dx<=r;dx++){
+      const x=tx+dx,y=ty+dy;
+      if(x>0&&y>0&&x<G.mw-1&&y<G.mh-1&&map[y][x]===1)return{x,y};
+    }
+    return null;
+  }
   function _roomOf(x,y){for(const r of rooms){if(x>=r.x&&x<=r.x+r.w&&y>=r.y&&y<=r.y+r.h)return r}return null}
 
   // 소환굴 좌표를 그리드에 등록 (데코가 소환굴 위에 겹치지 않도록)
@@ -19963,13 +20135,38 @@ function initMapObjects(){
     const _providedWallDeco=_chDeco.filter(d=>d.userProvided&&d.wallMount);
     const _baseDeco=_chDeco.filter(d=>!d.userProvided);
     // ── 1차: 대형 에셋 우선 배치 (맵당 1~2개, 넓은 간격) ──
-    const _largeDeco=_baseDeco.filter(d=>d.large);
+    const _cmp=_MAP_COMPOSE[G.stage]||null;
+    const _mwPx=G.mw*T,_mhPx=G.mh*T;
+    const _cmpInEmpty=(px,py)=>{
+      if(!_cmp||!_cmp.empty)return false;
+      for(let i=0;i<_cmp.empty.length;i++){const e=_cmp.empty[i];const dx=px-e.x*_mwPx,dy=py-e.y*_mhPx;if(dx*dx+dy*dy<e.r*e.r)return true}
+      return false;
+    };
+    const _cmpInLane=(px)=>_cmp&&_cmp.lane&&Math.abs(px/_mwPx-_cmp.lane.x)<_cmp.lane.w/2;
+    const _cmpRimOk=(px,py)=>{
+      if(!_cmp||!_cmp.rim)return true;
+      const nx=px/_mwPx-.5,ny=py/_mhPx-.5;return Math.sqrt(nx*nx+ny*ny)>=(.5-_cmp.rim);
+    };
+    const _cmpInGrove=(px,py)=>{
+      if(!_cmp||!_cmp.groves)return true;
+      for(let i=0;i<_cmp.groves.length;i++){const g=_cmp.groves[i];const dx=px-g.x*_mwPx,dy=py-g.y*_mhPx;if(dx*dx+dy*dy<g.r*g.r)return true}
+      return false;
+    };
+    let _largeDeco=_baseDeco.filter(d=>d.large&&!d.mega);
+    if(_cmp&&_cmp.largeBias){
+      const _lf=_largeDeco.filter(d=>_cmp.largeBias.some(k=>d.id.indexOf(k)>=0));
+      if(_lf.length)_largeDeco=_lf;
+    }
     const _normalDeco=_baseDeco.filter(d=>!d.large&&!d.scatter);
     let _lgPlaced=0;
-    if(_largeDeco.length>0){
-      const _lgBase=Math.min(15,Math.max(2,~~(_dcFloors.length/400)));
-      const _lgMax=_lgBase;
-      const _lgMinDist=900; // 대형 충돌체 간격 900px (길 막힘 방지)
+    if(_largeDeco.length>0&&!(_cmp&&_cmp.path)){
+      const _isOpenField=!!G._isTileRLE&&G.mw>=180&&G.mh>=180;
+      const _flDens=1+Math.min(0.85,(SI_TO_FLOOR[G.stage]||0)*0.22);
+      const _lgBase=_isOpenField
+        ?Math.min(56,Math.max(28,~~(_dcFloors.length/700*_flDens)))
+        :Math.min(22,Math.max(4,~~(_dcFloors.length/400*_flDens)));
+      const _lgMax=Math.round(_lgBase*(_cmp&&_cmp.lgMul||1));
+      const _lgMinDist=_cmp&&_cmp.lgDist||(_isOpenField?760:900);
       // 벽 인접 바닥(사이드) vs 중앙 분리 — 사이드 80% 먼저
       const _lgSide=[],_lgCenter=[];
       for(let fi=0;fi<_dcFloors.length;fi++){
@@ -19988,8 +20185,7 @@ function initMapObjects(){
         if(tooClose)continue;
         if(nearWall)_lgSide.push(f);else _lgCenter.push(f);
       }
-      // 사이드 80% → 중앙 20%
-      const _lgSideMax=~~(_lgMax*0.8),_lgCenterMax=_lgMax-_lgSideMax;
+      const _lgSideMax=~~(_lgMax*(_isOpenField?0.35:0.8)),_lgCenterMax=_lgMax-_lgSideMax;
       const _placeFromPool=(pool,max)=>{
         let placed=0;let _lastType='';
         for(let li=0;li<max*60&&placed<max&&pool.length>0;li++){
@@ -19997,7 +20193,11 @@ function initMapObjects(){
           const f=pool[fi];
           const px=f.x*T+T/2,py=f.y*T+T/2;
           let ok=true;
-          if(_gridNear(px,py,_lgMinDist,160)){ok=false}
+          if(_gridNear(px,py,_lgMinDist,220)){ok=false}
+          if(ok&&_cmpInEmpty(px,py))ok=false;
+          if(ok&&_cmpInLane(px))ok=false;
+          if(ok&&!_cmpRimOk(px,py))ok=false;
+          if(ok&&_cmp&&_cmp.groves&&!_cmpInGrove(px,py)&&_dcSeed()>0.25)ok=false;
           if(!ok){pool.splice(fi,1);continue}
           if(bossRoom&&px/T>=bossRoom.x-3&&px/T<=bossRoom.x+bossRoom.w+3&&py/T>=bossRoom.y-3&&py/T<=bossRoom.y+bossRoom.h+3){pool.splice(fi,1);continue}
           // 출구/게이트/포탈 근처 400px 이내 대형 오브젝트 배치 금지
@@ -20009,7 +20209,7 @@ function initMapObjects(){
           // 소환굴 근처 200px 이내 배치 금지
           {let _shNear=false;for(let _si=0;_si<G.spawnHoles.length;_si++){if(dst(px,py,G.spawnHoles[_si].x,G.spawnHoles[_si].y)<200){_shNear=true;break}}if(_shNear){pool.splice(fi,1);continue}}
           // 복도(좁은 통로) 배치 금지: 주변 8타일 범위에 바닥이 충분해야 함
-          {let _flCnt=0;for(let dy=-8;dy<=8;dy++)for(let dx=-8;dx<=8;dx++){const tx=f.x+dx,ty=f.y+dy;if(tx>=0&&ty>=0&&tx<G.mw&&ty<G.mh&&map[ty][tx]===0)_flCnt++}if(_flCnt<220){pool.splice(fi,1);continue}}
+          if(!(_cmp&&_cmp.path)){{let _flCnt=0;for(let dy=-8;dy<=8;dy++)for(let dx=-8;dx<=8;dx++){const tx=f.x+dx,ty=f.y+dy;if(tx>=0&&ty>=0&&tx<G.mw&&ty<G.mh&&map[ty][tx]===0)_flCnt++}if(_flCnt<220){pool.splice(fi,1);continue}}}
           // 같은 타입 근거리 중복 방지 (800px 내 동일 타입 금지)
           let pick;
           for(let _try=0;_try<5;_try++){
@@ -20027,7 +20227,7 @@ function initMapObjects(){
       _placeFromPool(_lgSide,_lgSideMax);
       _placeFromPool(_lgCenter,_lgCenterMax);
     }
-    // ── 용 해골: 1_1(stage 0) 맵 중앙에 거대 배치 ──
+    // ── 필드 랜드마크: 1-1 용해골, 구성표 lm, 그 외 장/층 1기 ──
     if(G.stage===0){
       const _dsMidX=~~(G.mw/2),_dsMidY=~~(G.mh/2);
       const _dsNear=_nearFloor(_dsMidX,_dsMidY);
@@ -20043,12 +20243,59 @@ function initMapObjects(){
         MAP_OBJS.push({type:'m_dragon_skeleton',x:_2dx,y:_2dy,hell:0});
         // 용뼈 좌표 저장 (유니크 배치 후 정리용)
         G._dragonCleanup={p1:{x:_dsx,y:_dsy},p2:{x:_2dx,y:_2dy}};}
+    }else if(_cmp&&_cmp.lm&&!(_cmp.path&&_cmp.path.paint)){
+      for(let _li=0;_li<_cmp.lm.length;_li++){
+        const L=_cmp.lm[_li];
+        const _lmNear=(_cmp.path?_nearOffPath:_nearFloor)(~~(L.x*G.mw),~~(L.y*G.mh));
+        if(!_lmNear)continue;
+        const _lmx=(_lmNear.x+.5)*T,_lmy=(_lmNear.y+.5)*T;
+        const _msz=(_OBJ_META[L.id]&&_OBJ_META[L.id].sz)||L.sz||300;
+        const _sc=L.sz?L.sz/_msz:1;
+        const _vr=Math.max((L.sz||_msz)*.5,220);
+        const _lk=_gridKey(_lmx,_lmy);if(!_moGrid[_lk])_moGrid[_lk]=[];_moGrid[_lk].push({x:_lmx,y:_lmy,colR:_vr,visR:_vr});
+        MAP_OBJS.push({type:L.id,x:_lmx,y:_lmy,hell,scale:_sc});
+      }
+    }else{
+      const _ch1Lm=['m_eye_tree','m_penta_circle','m_throne'];
+      const _hellLm=[null,'m_c2p1','m_c3p1','m_c4p1','m_c5p1','m_c6p1','m_c7p1'];
+      const _lmId=hell===0?_ch1Lm[Math.min(2,Math.max(0,(SI_TO_FLOOR[G.stage]||1)-1))]:_hellLm[hell];
+      if(_lmId){
+        const _lmNear=_nearFloor(~~(G.mw/2),~~(G.mh/2));
+        if(_lmNear){
+          const _lmx=(_lmNear.x+.5)*T,_lmy=(_lmNear.y+.5)*T;
+          const _lk=_gridKey(_lmx,_lmy);if(!_moGrid[_lk])_moGrid[_lk]=[];_moGrid[_lk].push({x:_lmx,y:_lmy,colR:220});
+          MAP_OBJS.push({type:_lmId,x:_lmx,y:_lmy,hell});
+        }
+      }
     }
-    // ── 유니크 충돌 오브젝트: 12종 각 1개씩, 중앙 배치, 500px 간격 ──
-    if(hell===0){
-      const _uniObjs=['m_cage_gate','m_sword_pile','m_hang_cage','m_skull_altar','m_obelisk','m_flesh_ball','m_penta_circle','m_flesh_maw','m_skull_totem','m_bone_arch','m_eye_tree','m_throne'];
+    if(_cmp&&_cmp.mega&&!(_cmp.path&&_cmp.path.paint)){
+      for(let _mi=0;_mi<_cmp.mega.length;_mi++){
+        const L=_cmp.mega[_mi];
+        const _lmNear=(_cmp.path?_nearOffPath:_nearFloor)(~~(L.x*G.mw),~~(L.y*G.mh));
+        if(!_lmNear)continue;
+        const _lmx=(_lmNear.x+.5)*T,_lmy=(_lmNear.y+.5)*T;
+        const _msz=(_OBJ_META[L.id]&&_OBJ_META[L.id].sz)||L.sz||600;
+        const _sc=L.sz?L.sz/_msz:1;
+        const _vr=Math.max((L.sz||_msz)*.45,280);
+        const _lk=_gridKey(_lmx,_lmy);if(!_moGrid[_lk])_moGrid[_lk]=[];_moGrid[_lk].push({x:_lmx,y:_lmy,colR:_vr,visR:_vr});
+        MAP_OBJS.push({type:L.id,x:_lmx,y:_lmy,hell,scale:_sc});
+      }
+    }
+    // ── 유니크 충돌 오브젝트: 장별 1기씩, 중앙 배치 ──
+    {
+      const _uniByHell=[
+        ['m_cage_gate','m_sword_pile','m_hang_cage','m_skull_altar','m_obelisk','m_flesh_ball','m_penta_circle','m_flesh_maw','m_skull_totem','m_bone_arch','m_eye_tree','m_throne'],
+        ['m_c2p1','m_c2p2','m_c2hive','m_c2webp','m_c2pit','m_c2mush'],
+        ['m_c3p1','m_c3p2','m_c3shrine','m_c3cage','m_c3pit'],
+        ['m_c4p1','m_c4p2','m_c4brazier','m_c4pit','m_c4fire'],
+        ['m_c5p1','m_c5p2','m_c5banner','m_c5totem','m_c5arch'],
+        ['m_c6p1','m_c6p2','m_c6eyetotem'],
+        ['m_c7p1','m_c7p2','m_c7garg','m_c7obelisk','m_c7throne']
+      ];
+      const _uniObjs=(_cmp&&_cmp.uni)?_cmp.uni:(_uniByHell[hell]||[]);
+      if(_uniObjs.length&&!(_cmp&&_cmp.path)){
       const _uniSeed=_tseed(G.stage*71+13,hell*53+7);
-      const _uniMinDist=800;
+      const _uniMinDist=880;
       // 벽에서 4타일 이상 떨어진 중앙 바닥만 수집
       const _uniCenter=[];
       for(let fi=0;fi<_dcFloors.length;fi++){
@@ -20067,7 +20314,10 @@ function initMapObjects(){
           const f=_uniCenter[fi];
           const px=f.x*T+T/2,py=f.y*T+T/2;
           let ok=true;
-          if(_gridNear(px,py,_uniMinDist)){ok=false}
+          if(_gridNear(px,py,Math.max(_uniMinDist,_visR(_uniObjs[ui])*2+80),_visR(_uniObjs[ui]))){ok=false}
+          if(ok&&_cmpInEmpty(px,py))ok=false;
+          if(ok&&_cmpInLane(px))ok=false;
+          if(ok&&!_cmpRimOk(px,py))ok=false;
           if(!ok)continue;
           if(bossRoom&&px/T>=bossRoom.x-3&&px/T<=bossRoom.x+bossRoom.w+3&&py/T>=bossRoom.y-3&&py/T<=bossRoom.y+bossRoom.h+3)continue;
           // 출구/게이트/포탈 근처 400px 이내 배치 금지
@@ -20080,11 +20330,12 @@ function initMapObjects(){
           _uniCenter.splice(fi,1);_uDone=true;_uniPlaced++;
         }
       }
-      console.log('[UNIQUE_OBJ] placed:'+_uniPlaced+'/12');
+      console.log('[UNIQUE_OBJ] placed:'+_uniPlaced+'/'+_uniObjs.length);
+      }
     }
   let _providedFloorPlaced=0;
   const _providedFloorTarget=Math.min(16,_providedFloorDeco.length?16:0);
-    if(_providedFloorTarget>0){
+    if(_providedFloorTarget>0&&!(_cmp&&_cmp.path)){
       const _providedMinDist=260;
       const _providedSameTypeDist=420;
       const _providedPlacedList=[];
@@ -20167,11 +20418,12 @@ function initMapObjects(){
         _providedWallPlaced=1;
       }
       // CH1 1-1처럼 벽 셀이 없으면 바닥에 강제로 깐다 (기본 20개)
-      if(_providedWallPlaced===0&&_wallCells.length===0&&hell===0){
-        const _fbTarget=Math.max(20,Math.min(60,~~(_dcFloors.length/150)));
+      if(_providedWallPlaced===0&&_wallCells.length===0){
+        const _fbTarget=Math.max(20,Math.min(90,~~(_dcFloors.length/150)));
         const _fbMinDist=220;
         const _fbSameTypeDist=360;
-        const _fbPool=_providedFloorDeco.length>0?_providedFloorDeco:_providedWallDeco;
+        const _fbPool=_providedFloorDeco.length>0?_providedFloorDeco:(_providedWallDeco.length>0?_providedWallDeco:_normalDeco);
+        if(!_fbPool.length){/* no floor-fill pool */}else{
         const _fbPlaced=[];
         // 바닥 후보를 다시 모은다 (기존 _dcFloors는 다른 배치용이므로 그대로 둔다)
         const _fbFloors=_dcFloors.length>0?_dcFloors.slice():[];
@@ -20200,19 +20452,21 @@ function initMapObjects(){
           _fbFloors.splice(ci,1);
           _providedWallPlaced++;
         }
+        }
       }
     }
     // ── scatter 에셋: 방 전체 랜덤 배치 (벽 무관) ──
     const _scatterDeco=_baseDeco.filter(d=>d.scatter);
-    if(_scatterDeco.length>0){
+    if(_scatterDeco.length>0&&!(_cmp&&_cmp.path)){
       // 시작방/보스방 중심 좌표 (scatter 배치 금지 영역)
       const _scStartRm=G.rooms.find(r=>r.type==='start');
       const _scBossRm=G.rooms.find(r=>r.type==='boss');
       const _scStartX=_scStartRm?(_scStartRm.cx+.5)*T:0,_scStartY=_scStartRm?(_scStartRm.cy+.5)*T:0;
       const _scBossX=_scBossRm?(_scBossRm.cx+.5)*T:0,_scBossY=_scBossRm?(_scBossRm.cy+.5)*T:0;
-      const _scBase=Math.min(30,Math.max(3,~~(_dcFloors.length/100)));
-      const _scMax=_scBase;
-      const _scMinDist=500; // scatter끼리 500px 이상 간격
+      const _scOpen=!!G._isTileRLE&&G.mw>=180;
+      const _scBase=_scOpen?Math.min(90,Math.max(40,~~(_dcFloors.length/420))):Math.min(30,Math.max(3,~~(_dcFloors.length/100)));
+      const _scMax=Math.round(_scBase*(_cmp&&_cmp.scMul||1));
+      const _scMinDist=_scOpen?400:500;
       const _scPlacedList=[]; // scatter 전용 좌표 목록
       let _scPlaced=0;
       for(let si=0;si<_scMax*40&&_scPlaced<_scMax&&_dcFloors.length>0;si++){
@@ -20222,6 +20476,8 @@ function initMapObjects(){
         // 시작방/보스방 300px 이내 배치 금지
         if(_scStartRm&&(px-_scStartX)*(px-_scStartX)+(py-_scStartY)*(py-_scStartY)<300*300)continue;
         if(_scBossRm&&(px-_scBossX)*(px-_scBossX)+(py-_scBossY)*(py-_scBossY)<300*300)continue;
+        if(_cmpInEmpty(px,py))continue;
+        if(_cmpInLane(px))continue;
         // 벽에서 3타일 이상 떨어진 곳 (방 내부)
         let wallOk=true;
         for(let dy=-3;dy<=3&&wallOk;dy++)for(let dx=-3;dx<=3&&wallOk;dx++){
@@ -20229,10 +20485,6 @@ function initMapObjects(){
           if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0)wallOk=false;
         }
         if(!wallOk)continue;
-        // scatter끼리만 거리 체크
-        let ok=true;
-        for(const sp of _scPlacedList){if(dst(px,py,sp.x,sp.y)<_scMinDist){ok=false;break}}
-        if(!ok)continue;
         // 같은 타입 근거리 중복 방지 (800px 내 동일 타입 금지)
         let _scPick;
         for(let _try=0;_try<5;_try++){
@@ -20241,6 +20493,11 @@ function initMapObjects(){
           if(_nearbyTypeCount(_scPlacedList,_scPick,px,py,_SAME_TYPE_DIST)>0)dup=true;
           if(!dup)break;
         }
+        const _scVR=_visR(_scPick);
+        let ok=true;
+        for(const sp of _scPlacedList){if(dst(px,py,sp.x,sp.y)<_scMinDist){ok=false;break}}
+        if(ok&&_gridNear(px,py,Math.max(_scMinDist,_scVR+80),_scVR))ok=false;
+        if(!ok)continue;
         MAP_OBJS.push({type:_scPick,x:px,y:py,hell,_scatter:1});
         _scPlacedList.push({x:px,y:py,type:_scPick});
         _scPlaced++;
@@ -20248,8 +20505,9 @@ function initMapObjects(){
       console.log('[SCATTER] placed:'+_scPlaced);
     }
     // ── 2차: 일반(소/중형) 에셋 배치 ──
-  const _dcBase=Math.max(8,Math.min(60,~~(_dcFloors.length/100)));
-    const _dcCnt=_dcBase;
+  const _dcOpen=!!G._isTileRLE&&G.mw>=180;
+  const _dcBase=_dcOpen?Math.max(50,Math.min(140,~~(_dcFloors.length/260))):Math.max(8,Math.min(60,~~(_dcFloors.length/100)));
+    const _dcCnt=(_cmp&&_cmp.path)?0:_dcBase;
     let _dcPlaced=0;
     for(let di=0;di<_dcCnt&&_dcFloors.length>0;di++){
       const _fi=~~(_dcSeed()*_dcFloors.length);
@@ -20264,7 +20522,7 @@ function initMapObjects(){
       // 기존 오브젝트와 겹침 방지
       const _px=_ft.x*T+T/2,_py=_ft.y*T+T/2;
       let _tooClose=false;
-      if(_gridNear(_px,_py,120,0)){_tooClose=true}
+      if(_gridNear(_px,_py,80,36)){_tooClose=true}
       if(_tooClose){_dcFloors.splice(_fi,1);di--;continue}
       // 일반 에셋만 선택 (대형 제외, 화면 내 동일 타입 2개 제한)
       const _pool=_normalDeco.length>0?_normalDeco:_baseDeco;
@@ -20285,9 +20543,69 @@ function initMapObjects(){
       _dcFloors.splice(_fi,1);_dcPlaced++;
     }
     console.log('[DECO] ch'+(hell+1)+' auto-placed:'+_dcPlaced+' large:'+_lgPlaced+' providedFloor:'+_providedFloorPlaced+' providedWall:'+_providedWallPlaced);
+    // ── path 맵: 이동 타일(바닥)은 비우고, 길 밖(벽)에만 이미지 ──
+    if(_cmp&&_cmp.path&&!_cmp.path.paint){
+      const _offNear=[],_offMid=[],_offFar=[];
+      const _df=new Int16Array(G.mw*G.mh);_df.fill(999);
+      const _dq=[];
+      for(let y=0;y<G.mh;y++)for(let x=0;x<G.mw;x++){
+        if(map[y][x]===0){_df[y*G.mw+x]=0;_dq.push(x,y)}
+      }
+      for(let qi=0;qi<_dq.length;){
+        const x=_dq[qi++],y=_dq[qi++],d=_df[y*G.mw+x];
+        if(x>0&&_df[y*G.mw+x-1]>d+1){_df[y*G.mw+x-1]=d+1;_dq.push(x-1,y)}
+        if(x<G.mw-1&&_df[y*G.mw+x+1]>d+1){_df[y*G.mw+x+1]=d+1;_dq.push(x+1,y)}
+        if(y>0&&_df[(y-1)*G.mw+x]>d+1){_df[(y-1)*G.mw+x]=d+1;_dq.push(x,y-1)}
+        if(y<G.mh-1&&_df[(y+1)*G.mw+x]>d+1){_df[(y+1)*G.mw+x]=d+1;_dq.push(x,y+1)}
+      }
+      for(let y=3;y<G.mh-3;y++)for(let x=3;x<G.mw-3;x++){
+        if(map[y][x]!==1)continue;
+        const d=_df[y*G.mw+x];
+        if(d>=999)continue;
+        if(bossRoom&&x>=bossRoom.x-2&&x<=bossRoom.x+bossRoom.w+2&&y>=bossRoom.y-2&&y<=bossRoom.y+bossRoom.h+2)continue;
+        const rec={x,y,d};
+        if(d<=3)_offNear.push(rec);
+        else if(d<=14)_offMid.push(rec);
+        else _offFar.push(rec);
+      }
+      const _offLgPool=_largeDeco.length?_largeDeco:_baseDeco.filter(d=>d.large&&!d.mega);
+      const _offSmPool=_baseDeco.filter(d=>d.scatter||(!d.large&&!d.userProvided));
+      const _offUniIds=(_cmp.uni||[]);
+      const _placeOff=(pool,ids,max,minDist)=>{
+        if(!ids.length||!pool.length)return 0;
+        let placed=0,last='';
+        const cells=pool.slice();
+        for(let i=0;i<max*55&&placed<max&&cells.length>0;i++){
+          const fi=~~(_dcSeed()*cells.length);
+          const f=cells[fi];
+          const px=f.x*T+T/2,py=f.y*T+T/2;
+          if(_gridNear(px,py,minDist,Math.max(40,minDist*0.35))){cells.splice(fi,1);continue}
+          if(_cmpInEmpty(px,py)){cells.splice(fi,1);continue}
+          {let _exNear=false;
+            if(G.exits){for(let _ei=0;_ei<G.exits.length;_ei++){if(dst(px,py,G.exits[_ei].x*T+T/2,G.exits[_ei].y*T+T/2)<360){_exNear=true;break}}}
+            if(!_exNear&&G.bossGate){for(let _gi=0;_gi<G.bossGate.length;_gi++){if(dst(px,py,(G.bossGate[_gi].x+.5)*T,(G.bossGate[_gi].y+.5)*T)<360){_exNear=true;break}}}
+            if(_exNear){cells.splice(fi,1);continue}}
+          let pick=ids[~~(_dcSeed()*ids.length)];
+          for(let t=0;t<5;t++){
+            const cand=ids[~~(_dcSeed()*ids.length)];
+            if(cand!==last&&_nearbyTypeCount(MAP_OBJS,cand,px,py,Math.max(480,minDist))<1){pick=cand;break}
+          }
+          last=pick;
+          MAP_OBJS.push({type:pick,x:px,y:py,hell,_offPath:1});
+          cells.splice(fi,1);placed++;
+        }
+        return placed;
+      };
+      const _lgIds=_offLgPool.map(d=>d.id);
+      const _smIds=_offSmPool.map(d=>d.id);
+      const _offUn=_placeOff(_offFar.concat(_offMid),_offUniIds,Math.min(6,_offUniIds.length),720);
+      const _offLg=_placeOff(_offNear.concat(_offMid.filter(c=>c.d<=6)),_lgIds,18,420);
+      const _offSm=_placeOff(_offNear,_smIds,28,160);
+      console.log('[PATH_IMG] off-path large:'+_offLg+' small:'+_offSm+' uni:'+_offUn+' cells:'+(_offNear.length+_offMid.length+_offFar.length));
+    }
   }
   // ── 벽 눈깔 에셋 배치 ──
-  if(hell===0||hell===1){
+  if((hell===0||hell===1)&&!G._mapPaint){
     const _eyeIds=['m_eye','m_eye1','m_eye2'];
     const _eyeSeed=_tseed(G.stage*31+13,hell*53+7);
     let _eyePlaced=0;
@@ -20312,7 +20630,7 @@ function initMapObjects(){
   // 용뼈 주변 장식 오브젝트 최종 정리
   if(G._dragonCleanup){
     const _dc=G._dragonCleanup;
-    const _sysTy2=new Set(['bonfire','lore','breakable','trap','altar','boss_gate_col','m_dragon_skeleton','m_dragon_3d']);
+    const _sysTy2=new Set(['bonfire','lore','breakable','trap','altar','boss_gate_col','m_dragon_skeleton','m_dragon_3d','m_mega_statue','m_mega_ribs','m_mega_chapel','m_mega_head']);
     for(let _ci=MAP_OBJS.length-1;_ci>=0;_ci--){
       const o=MAP_OBJS[_ci];
       if(_sysTy2.has(o.type)||o.type.startsWith('spawn_'))continue;
@@ -20369,11 +20687,67 @@ const _MAP_TEX_FILES={};
 const _GROUND_TILES={};let _gtScaled=null,_gtPadded=null;
 const _GT_FILES={
   'gt_03':'assets/map/ch1/ground_tile_03.png',
-  'gt_soil':'assets/map/ch1/ground_dark_soil.png?v=20260403-floorfix'
+  'gt_soil':'assets/map/ch1/ground_dark_soil.png?v=20260403-floorfix',
+  'gt_ch2':'assets/map/ch2/ground.png?v=20260816-detail',
+  'gt_ch3':'assets/map/ch3/ground.png?v=20260816-detail',
+  'gt_ch4':'assets/map/ch4/ground.png?v=20260816-detail',
+  'gt_ch5':'assets/map/ch5/ground.png?v=20260816-detail',
+  'gt_ch6':'assets/map/ch6/ground.png?v=20260816-detail',
+  'gt_ch7':'assets/map/ch7/ground.png?v=20260816-detail'
 };
+const _GT_HELL_ID=['gt_soil','gt_ch2','gt_ch3','gt_ch4','gt_ch5','gt_ch6','gt_ch7'];
+function _gtFloorImg(hell){
+  const id=_GT_HELL_ID[hell|0]||'gt_soil';
+  const im=_GROUND_TILES[id];
+  if(im&&im.complete&&im.naturalWidth>1)return im;
+  const fb=_GROUND_TILES['gt_soil'];
+  return (fb&&fb.complete&&fb.naturalWidth>1)?fb:null;
+}
+function _gtTileSz(img){
+  const w=img&&img.naturalWidth|0;
+  return (w>=128&&w<=1024)?w:256;
+}
+function _paintHellFloorMarks(c,hell,map,tx0,ty0,tx1,ty1,wx0,wy0){
+  if(hell<=0||!map)return;
+  for(let ty=ty0;ty<ty1;ty++){
+    const row=map[ty];if(!row)continue;
+    for(let tx=tx0;tx<tx1;tx++){
+      const v=row[tx];
+      if(!(v===0||v===2||v===4||v===5||v===6))continue;
+      const h=_tileHash(tx,ty,hell+19);
+      if((h&15)>5)continue;
+      const px=tx*T-wx0+T*0.5,py=ty*T-wy0+T*0.5;
+      const r=7+((h>>>8)&15);
+      c.save();
+      if(hell===1){
+        if((h&15)>2){c.restore();continue}
+        c.fillStyle='rgba(28,52,22,'+(0.08+((h>>>4)&7)*0.012)+')';
+        c.beginPath();c.ellipse(px,py,r*1.1,r*0.55,(h&7)*0.4,0,Math.PI*2);c.fill();
+      }else if(hell===2){
+        c.fillStyle='rgba(190,235,255,'+(0.14+((h>>>4)&7)*0.02)+')';
+        c.beginPath();c.arc(px,py,2+((h>>>6)&3),0,Math.PI*2);c.fill();
+        if((h&3)===0){c.strokeStyle='rgba(90,210,240,.28)';c.lineWidth=1;c.beginPath();c.moveTo(px-r,py);c.lineTo(px+r*0.6,py+r*0.35);c.stroke()}
+      }else if(hell===3){
+        const g=c.createRadialGradient(px,py,0,px,py,r);
+        g.addColorStop(0,'rgba(255,110,30,.38)');g.addColorStop(1,'rgba(180,40,0,0)');
+        c.fillStyle=g;c.beginPath();c.arc(px,py,r,0,Math.PI*2);c.fill();
+      }else if(hell===4){
+        c.fillStyle='rgba(214,196,150,'+(0.28+((h>>>4)&7)*0.03)+')';
+        c.fillRect(px-2,py-1,3+((h>>5)&4),1+((h>>8)&1));
+      }else if(hell===5){
+        c.strokeStyle='rgba(170,80,210,.3)';c.lineWidth=1.5;
+        c.beginPath();c.moveTo(px-r,py);c.quadraticCurveTo(px,py+r,px+r,py-r*0.25);c.stroke();
+      }else{
+        c.strokeStyle='rgba(190,130,255,.22)';c.lineWidth=1;
+        c.beginPath();c.moveTo(px-r,py-r*0.15);c.lineTo(px+r,py+r*0.2);c.stroke();
+      }
+      c.restore();
+    }
+  }
+}
 const _FB64='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==';
 for(const[id,src] of Object.entries(_GT_FILES)){
-  const img=new Image();img.onload=()=>{console.log('[GT] '+id+' loaded');if((id==='gt_soil'||id==='gt_void_wall')&&G.map)_queueMapCacheRefresh()};
+  const img=new Image();img.onload=()=>{console.log('[GT] '+id+' loaded');if(G&&G.map)_queueMapCacheRefresh()};
   img.onerror=function(){console.warn('[GT] '+id+' 404→fallback');this.onerror=null;this.src=_FB64};
   img.src=src;_GROUND_TILES[id]=img;
 }
@@ -20471,7 +20845,9 @@ function _tickBuildMapCache(){
   const t0=performance.now();
   // Phase 0: 벽 패턴/텍스처 (전체 1회)
   if(_bmcPhase===0){
-    if(_bmcHasSkull){
+    if(G._pathImgTerrain){
+      _fillPathBg(c,map,0,0,mw,mh,false);
+    }else if(_bmcHasSkull){
       c.save();c.beginPath();
       for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){if(map[ty][tx]===1)c.rect(tx*T,ty*T,T,T)}
       c.clip();c.fillStyle=_skullWallPat;c.fillRect(0,0,mw*T,mh*T);c.restore();
@@ -20483,12 +20859,14 @@ function _tickBuildMapCache(){
       for(let py=0;py<mh*T;py+=256)for(let px=0;px<mw*T;px+=256)c.drawImage(vi,px,py,256,256);
       c.restore();
     }
-    if(_bmcHasSoil){
-      const si=_GROUND_TILES['gt_soil'];
+    if(_bmcHasSoil&&!G._mapPaint){
+      const si=_gtFloorImg(_bmcHell)||_GROUND_TILES['gt_soil'];
+      const _tsz=_gtTileSz(si);
       c.save();c.beginPath();
       for(let ty=0;ty<mh;ty++)for(let tx=0;tx<mw;tx++){const v=map[ty][tx];if(v===0||v===2||v===4||v===5||v===6)c.rect(tx*T,ty*T,T,T)}
       c.clip();c.imageSmoothingEnabled=false;
-      for(let py=0;py<mh*T;py+=256)for(let px=0;px<mw*T;px+=256)c.drawImage(si,px,py,256,256);
+      for(let py=0;py<mh*T;py+=_tsz)for(let px=0;px<mw*T;px+=_tsz)c.drawImage(si,px,py,_tsz,_tsz);
+      _paintHellFloorMarks(c,_bmcHell,map,0,0,mw,mh,0,0);
       c.restore();
     }
     _bmcPhase=1;_bmcRow=0;return;
@@ -20507,7 +20885,7 @@ function _tickBuildMapCache(){
       }
       // 기둥/경계 (이 행의 벽 타일)
       if(ty>=1&&ty<mh-1){
-        if(hell===0&&_wallEdgeImg&&_wallEdgeImg.complete&&_wallEdgeImg.naturalWidth>0){
+        if(!G._pathImgTerrain&&hell===0&&_wallEdgeImg&&_wallEdgeImg.complete&&_wallEdgeImg.naturalWidth>0){
           const ar=_wallEdgeImg.naturalHeight/_wallEdgeImg.naturalWidth,wW=T*3,wH=~~(wW*ar);
           for(let tx=1;tx<mw-1;tx++){
             if(map[ty][tx]!==1)continue;
@@ -20630,10 +21008,10 @@ function buildMapCache(){
     }
   }
   // 충돌 오브젝트 배치는 initMapObjects()에서 처리
-  const _soilImg2=_GROUND_TILES['gt_soil'];
-  const _hasSoil2=_soilImg2&&_soilImg2.complete&&_soilImg2.naturalWidth>1;
+  const _soilImg2=_gtFloorImg(hell);
+  const _hasSoil2=!!_soilImg2;
   if(_hasSoil2){
-    const _tileSz2=256;
+    const _tileSz2=_gtTileSz(_soilImg2);
     c.save();c.beginPath();
     for(let ty2=0;ty2<mh;ty2++)for(let tx2=0;tx2<mw;tx2++){const _v2=map[ty2][tx2];if(_v2===0||_v2===2||_v2===4||_v2===5||_v2===6)c.rect(tx2*T,ty2*T,T,T)}
     c.clip();
@@ -20641,6 +21019,7 @@ function buildMapCache(){
     for(let _sty=0;_sty<mh*T;_sty+=_tileSz2)for(let _stx=0;_stx<mw*T;_stx+=_tileSz2){
       c.drawImage(_soilImg2,Math.floor(_stx),Math.floor(_sty),_tileSz2,_tileSz2);
     }
+    _paintHellFloorMarks(c,hell,map,0,0,mw,mh,0,0);
     c.restore();
   }
   // ── Pass 0.5: 에디터 맵 텍스처 오버레이 ──
@@ -20928,7 +21307,7 @@ function buildMapCache(){
         if(R()<.12){_drawEye(c,px+R()*30+5,py+R()*30+5,2+R()*3,hell,(R()-.5)*.5)}break;
     }
   }
-  if(hell===0&&_wallEdgeImg&&_wallEdgeImg.complete&&_wallEdgeImg.naturalWidth>0){
+  if(!G._pathImgTerrain&&hell===0&&_wallEdgeImg&&_wallEdgeImg.complete&&_wallEdgeImg.naturalWidth>0){
     const _weAR=_wallEdgeImg.naturalHeight/_wallEdgeImg.naturalWidth,_weW=T*3,_weH=~~(_weW*_weAR);
     for(let ty=1;ty<mh-1;ty++)for(let tx=1;tx<mw-1;tx++){
       if(map[ty][tx]!==1)continue;
@@ -21123,15 +21502,17 @@ function _buildStreamChunk(cx,cy){
   if(tw<=0||th<=0)return null;
   const tx1=tx0+tw,ty1=ty0+th;
   const hell=SI_TO_HELL[G.stage],_th=_MTHEME[hell];
-  const _tileSz=256,_wx0=tx0*T,_wy0=ty0*T,_ww=tw*T,_wh=th*T;
+  const _soilImg=_gtFloorImg(hell);
+  const _hasSoil=!!_soilImg;
+  const _tileSz=_hasSoil?_gtTileSz(_soilImg):256,_wx0=tx0*T,_wy0=ty0*T,_ww=tw*T,_wh=th*T;
   const cc=document.createElement('canvas');cc.width=tw*T+1;cc.height=th*T+1;
   const c=cc.getContext('2d');c.imageSmoothingEnabled=false;
   if(!_skullWallPat){_buildSkullWallPat()}
   const _voidWallImg=hell===0?_GROUND_TILES['gt_void_wall']:null;
   const _hasVoidWall=_voidWallImg&&_voidWallImg.complete&&_voidWallImg.naturalWidth>1;
-  const _soilImg=_GROUND_TILES['gt_soil'];
-  const _hasSoil=_soilImg&&_soilImg.complete&&_soilImg.naturalWidth>1;
-  if(hell===0&&_skullWallPat){
+  if(G._pathImgTerrain){
+    _fillPathBg(c,map,tx0,ty0,tx1,ty1,true);
+  }else if(hell===0&&_skullWallPat){
     c.save();c.beginPath();
     for(let ty=ty0;ty<ty1;ty++)for(let tx=tx0;tx<tx1;tx++)if(map[ty][tx]===1)c.rect((tx-tx0)*T,(ty-ty0)*T,T,T);
     c.clip();c.fillStyle=_skullWallPat;c.fillRect(0,0,_ww,_wh);c.restore();
@@ -21144,13 +21525,14 @@ function _buildStreamChunk(cx,cy){
     }
     c.restore();
   }
-  if(_hasSoil){
+  if(_hasSoil&&!G._mapPaint&&!_isMapPaint()){
     c.save();c.beginPath();
     for(let ty=ty0;ty<ty1;ty++)for(let tx=tx0;tx<tx1;tx++){const _v=map[ty][tx];if(_v===0||_v===2||_v===4||_v===5||_v===6)c.rect((tx-tx0)*T,(ty-ty0)*T,T,T)}
     c.clip();
     for(let py=Math.floor(_wy0/_tileSz)*_tileSz;py<_wy0+_wh;py+=_tileSz)for(let px=Math.floor(_wx0/_tileSz)*_tileSz;px<_wx0+_ww;px+=_tileSz){
       c.drawImage(_soilImg,px-_wx0,py-_wy0,_tileSz,_tileSz);
     }
+    _paintHellFloorMarks(c,hell,map,tx0,ty0,tx1,ty1,_wx0,_wy0);
     c.restore();
   }
   for(let ty=ty0;ty<ty1;ty++)for(let tx=tx0;tx<tx1;tx++){
@@ -21161,7 +21543,7 @@ function _buildStreamChunk(cx,cy){
     else if(v===1&&!_hasVoidWall&&!(hell===0&&_skullWallPat)){c.fillStyle='#000000';c.fillRect(lx,ly,T,T)}
     else if(v===3){c.fillStyle='#000000';c.fillRect(lx,ly,T,T)}
   }
-  if(hell===0&&_wallEdgeImg&&_wallEdgeImg.complete&&_wallEdgeImg.naturalWidth>0){
+  if(!G._pathImgTerrain&&hell===0&&_wallEdgeImg&&_wallEdgeImg.complete&&_wallEdgeImg.naturalWidth>0){
     const _weAR=_wallEdgeImg.naturalHeight/_wallEdgeImg.naturalWidth,_weW=T*3,_weH=~~(_weW*_weAR);
     for(let ty=Math.max(1,ty0);ty<Math.min(mh-1,ty1);ty++)for(let tx=Math.max(1,tx0);tx<Math.min(mw-1,tx1);tx++){
       if(map[ty][tx]!==1)continue;
@@ -23005,7 +23387,11 @@ function genGauntlet(fi){
   }
 
 // ═══ MAP — STAGES 정의 + 절차적 맵 생성 ═══
-const STAGES=[{"id":0,"hell":0,"floor":1,"mw":200,"mh":200,"type":"vert"},{"id":1,"hell":0,"floor":2,"mw":200,"mh":200,"type":"vert"},{"id":2,"hell":0,"floor":3,"mw":200,"mh":200,"type":"vert"},{"id":3,"hell":0,"floor":4,"mw":93,"mh":230,"type":"grid"},{"id":4,"hell":1,"floor":1,"mw":96,"mh":240,"type":"vert"},{"id":5,"hell":1,"floor":2,"mw":125,"mh":99,"type":"horiz"},{"id":6,"hell":1,"floor":3,"mw":102,"mh":260,"type":"vert"},{"id":7,"hell":1,"floor":4,"mw":140,"mh":108,"type":"horiz"},{"id":8,"hell":1,"floor":5,"mw":114,"mh":300,"type":"vert"},{"id":9,"hell":1,"floor":6,"mw":123,"mh":330,"type":"grid"},{"id":10,"hell":2,"floor":1,"mw":126,"mh":340,"type":"vert"},{"id":11,"hell":2,"floor":2,"mw":175,"mh":129,"type":"horiz"},{"id":12,"hell":2,"floor":3,"mw":132,"mh":360,"type":"vert"},{"id":13,"hell":2,"floor":4,"mw":153,"mh":430,"type":"grid"},{"id":14,"hell":3,"floor":1,"mw":156,"mh":440,"type":"vert"},{"id":15,"hell":3,"floor":2,"mw":225,"mh":159,"type":"horiz"},{"id":16,"hell":3,"floor":3,"mw":162,"mh":460,"type":"vert"},{"id":17,"hell":3,"floor":4,"mw":165,"mh":470,"type":"vert"},{"id":18,"hell":3,"floor":5,"mw":240,"mh":168,"type":"horiz"},{"id":19,"hell":3,"floor":6,"mw":174,"mh":500,"type":"vert"},{"id":20,"hell":3,"floor":7,"mw":183,"mh":530,"type":"grid"},{"id":21,"hell":4,"floor":1,"mw":186,"mh":540,"type":"vert"},{"id":22,"hell":4,"floor":2,"mw":275,"mh":189,"type":"horiz"},{"id":23,"hell":4,"floor":3,"mw":192,"mh":560,"type":"vert"},{"id":24,"hell":4,"floor":4,"mw":290,"mh":198,"type":"horiz"},{"id":25,"hell":4,"floor":5,"mw":213,"mh":630,"type":"grid"},{"id":26,"hell":5,"floor":1,"mw":216,"mh":640,"type":"vert"},{"id":27,"hell":5,"floor":2,"mw":325,"mh":219,"type":"horiz"},{"id":28,"hell":5,"floor":3,"mw":222,"mh":660,"type":"vert"},{"id":29,"hell":5,"floor":4,"mw":340,"mh":228,"type":"horiz"},{"id":60,"hell":5,"floor":5,"mw":234,"mh":700,"type":"vert"},{"id":31,"hell":5,"floor":6,"mw":243,"mh":730,"type":"grid"},{"id":32,"hell":6,"floor":1,"mw":246,"mh":740,"type":"vert"},{"id":33,"hell":6,"floor":2,"mw":375,"mh":249,"type":"horiz"},{"id":34,"hell":6,"floor":3,"mw":273,"mh":830,"type":"grid"}];
+const STAGES=[];
+for(let _si=0;_si<TOTAL_STAGES;_si++){
+  const _kind=_DUNGEON_SPEC[_si]?'dungeon':'field';
+  STAGES.push({id:_si,hell:SI_TO_HELL[_si],floor:SI_TO_FLOOR[_si]+1,mw:200,mh:200,type:_isFaceMap(_si)?'field':_kind,face:_isFaceMap(_si)});
+}
 
 // ── 시드 기반 랜덤 ──
 function mkRng(seed){
@@ -23380,21 +23766,83 @@ function _buildZone0FromGrid(){
   console.log('[ZONE0] built from grid 200x200, rooms='+tmpl.rooms.length);
   return JSON.parse(JSON.stringify(tmpl));
 }
-function _getFixedMapForStage(si){
-  if(!(si<TOTAL_STAGES&&FIXED_MAPS[si]))return null;
-  const fm=FIXED_MAPS[si];
-  // 존 분할 맵: zones 배열이 있으면 zone[0]은 원본 격자맵 스케일
-  if(fm.zones){
-    G._zones=fm.zones;G._curZone=0;G._zoneState={};
-    // 존0: 원본 격자맵 200×200 스케일
-    const z0=_buildZone0FromGrid();
-    if(z0){G._zones[0]=z0;fm.zones[0]=z0}
-    console.log('[ZONE] stage '+si+' has '+fm.zones.length+' zones, loading zone 0');
-    return JSON.parse(JSON.stringify(fm.zones[0]));
+function _rleEncodeGrid(g,n){
+  const o=[];let v=g[0],c=1;
+  for(let i=1;i<n;i++){if(g[i]===v)c++;else{o.push(v,c);v=g[i];c=1}}
+  o.push(v,c);return o;
+}
+function _paintPathDisk(g,mw,mh,cx,cy,r){
+  const r2=r*r;
+  for(let y=cy-r;y<=cy+r;y++)for(let x=cx-r;x<=cx+r;x++){
+    if(x>1&&x<mw-2&&y>1&&y<mh-2&&(x-cx)*(x-cx)+(y-cy)*(y-cy)<=r2)g[y*mw+x]=1;
   }
+}
+function _paintPathSeg(g,mw,mh,x0,y0,x1,y1,r){
+  const dx=x1-x0,dy=y1-y0,n=Math.max(1,Math.abs(dx),Math.abs(dy));
+  for(let i=0;i<=n;i++)_paintPathDisk(g,mw,mh,~~(x0+dx*i/n),~~(y0+dy*i/n),r);
+}
+function _buildWalkPathRLE(mw,mh,spec,si){
+  const n=mw*mh,g=new Uint8Array(n);
+  const w=Math.max(70,spec.w||80),r=Math.max(35,~~(w/2));
+  const pts=spec.pts||[[100,190],[72,148],[128,108],[78,68],[100,18]];
+  for(let i=0;i<pts.length-1;i++)_paintPathSeg(g,mw,mh,pts[i][0],pts[i][1],pts[i+1][0],pts[i+1][1],r);
+  _paintPathDisk(g,mw,mh,pts[0][0],pts[0][1],r+3);
+  _paintPathDisk(g,mw,mh,pts[pts.length-1][0],pts[pts.length-1][1],r+4);
+  return _rleEncodeGrid(g,n);
+}
+function _buildColRectRLE(mw,mh,col){
+  const n=mw*mh,g=new Uint8Array(n);
+  const x0=Math.max(2,col.x0|0),y0=Math.max(2,col.y0|0);
+  const x1=Math.min(mw-3,col.x1|0),y1=Math.min(mh-3,col.y1|0);
+  for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)g[y*mw+x]=1;
+  return _rleEncodeGrid(g,n);
+}
+function _cloneField11(si){
+  const base=FIXED_MAPS[0];
+  if(!base)return null;
+  const tmpl=JSON.parse(JSON.stringify(base));
+  tmpl.mw=200;tmpl.mh=200;
+  const _pc=_MAP_COMPOSE[si];
+  tmpl.tileRLE=(_pc&&_pc.path)?((_pc.path.col)?_buildColRectRLE(200,200,_pc.path.col):_buildWalkPathRLE(200,200,_pc.path,si)):[1,40000];
+  if(tmpl.spawnHoles&&si>0){
+    if(_pc&&_pc.path&&_pc.path.col){
+      const c=_pc.path.col,n=tmpl.spawnHoles.length;
+      const mx=~~((c.x0+c.x1)/2);
+      for(let i=0;i<n;i++){
+        const t=(i+1)/(n+1);
+        tmpl.spawnHoles[i].x=mx;
+        tmpl.spawnHoles[i].y=Math.max(c.y0+4,Math.min(c.y1-4,~~(c.y0+(c.y1-c.y0)*t)));
+      }
+    }else if(_pc&&_pc.path&&_pc.path.pts&&_pc.path.pts.length>1){
+      const pts=_pc.path.pts,n=tmpl.spawnHoles.length;
+      for(let i=0;i<n;i++){
+        const t=(i+1)/(n+1);
+        const seg=Math.min(pts.length-2,~~(t*(pts.length-1)));
+        const f=t*(pts.length-1)-seg;
+        tmpl.spawnHoles[i].x=Math.max(8,Math.min(191,~~(pts[seg][0]+(pts[seg+1][0]-pts[seg][0])*f)));
+        tmpl.spawnHoles[i].y=Math.max(8,Math.min(191,~~(pts[seg][1]+(pts[seg+1][1]-pts[seg][1])*f)));
+      }
+    }else{
+      const rng=mkRng(si*7919+17);
+      for(const h of tmpl.spawnHoles){
+        h.x=Math.max(18,Math.min(182,~~(h.x+(rng()-0.5)*36)));
+        h.y=Math.max(18,Math.min(182,~~(h.y+(rng()-0.5)*36)));
+      }
+    }
+  }
+  return tmpl;
+}
+function _getFixedMapForStage(si){
+  if(si>=TOTAL_STAGES)si=TOTAL_STAGES-1;
   G._zones=null;
-  if(si===1||si===2)return _buildScaledFixedMap300(si);
-  return fm;
+  if(_isDungeonMap(si)&&FIXED_MAPS[si]){
+    console.log('[MAP] dungeon special si='+si);
+    return FIXED_MAPS[si];
+  }
+  if(!FIXED_MAPS[0])return (si<TOTAL_STAGES&&FIXED_MAPS[si])?FIXED_MAPS[si]:null;
+  const tmpl=_cloneField11(si);
+  console.log('[MAP] field'+(_isFaceMap(si)?'-face':'')+' si='+si+' 200x200');
+  return tmpl;
 }
 
 // ═══ 존 분할 시스템 ═══
@@ -23474,6 +23922,8 @@ function genFromTemplate(tmpl,si){
   const roomMap={};
 
   G._isTileRLE=_hasTileRLE;G._floorTiles=null;
+  G._pathImgTerrain=!!(_MAP_COMPOSE[si]&&_MAP_COMPOSE[si].path);
+  G._mapPaint=!!(_MAP_COMPOSE[si]&&_MAP_COMPOSE[si].path&&_MAP_COMPOSE[si].path.paint);
   // ── 기존 카빙 방식 (항상 실행 — rooms/spawns/소환굴 정상 동작 보장) ──
   {for(const rd of tmpl.rooms){
       const cx=rd.cx,cy=rd.cy,rx=rd.rx||8,ry=rd.ry||rx;
@@ -23515,7 +23965,18 @@ function genFromTemplate(tmpl,si){
 
   // ── 5. 보스방 처리 ──
   // tileRLE 맵: 보스방+복도를 tileRLE 위에 다시 카빙 (에디터 맵에 보스방이 포함 안 됨)
-  if(_hasTileRLE){
+  if(_hasTileRLE&&_MAP_COMPOSE[si]&&_MAP_COMPOSE[si].path&&_MAP_COMPOSE[si].path.paint&&_MAP_COMPOSE[si].path.col){
+    const col=_MAP_COMPOSE[si].path.col;
+    const _brd=tmpl.rooms.find(r=>r.type==='boss');
+    const gx=_brd?_brd.cx:100,gy=_brd?_brd.cy:14;
+    for(let y=Math.min(col.y0,gy);y<=Math.max(col.y0,gy);y++)
+      for(let x=gx-7;x<=gx+7;x++)
+        if(x>1&&x<mw-2&&y>1&&y<mh-2)map[y][x]=0;
+    for(let y=gy-4;y<=gy+6;y++)
+      for(let x=gx-10;x<=gx+10;x++)
+        if(x>1&&x<mw-2&&y>1&&y<mh-2)map[y][x]=0;
+    console.log('[MAP] paint col+gate corridor');
+  }else if(_hasTileRLE){
     const _brd=tmpl.rooms.find(r=>r.type==='boss');
     if(_brd){
       const _bcx=_brd.cx,_bcy=_brd.cy,_brx=_brd.rx||12,_bry=_brd.ry||_brx;
@@ -23819,6 +24280,30 @@ function genFromTemplate(tmpl,si){
     // 주변 5타일 범위에 바닥이 30칸 미만이면 제거 (스폰 공간 부족)
     let _fc=0;for(let _dy=-5;_dy<=5;_dy++)for(let _dx=-5;_dx<=5;_dx++){const _nx=_stx+_dx,_ny=_sty+_dy;if(_nx>=0&&_ny>=0&&_nx<mw&&_ny<mh&&map[_ny][_nx]===0)_fc++}
     if(_fc<30){spawnHoles.splice(_shi,1)}
+  }
+  if(G._pathImgTerrain){
+    const _pc=_MAP_COMPOSE[si];
+    const _pts=_pc&&_pc.path&&_pc.path.pts;
+    const _col=_pc&&_pc.path&&_pc.path.col;
+    let _fill=0;
+    while(spawnHoles.length<6&&_fill<12){
+      _fill++;
+      let hx,hy;
+      if(_col){
+        hx=(((_col.x0+_col.x1)/2)+.5)*T;
+        hy=(_col.y0+(_col.y1-_col.y0)*(_fill/12)+.5)*T;
+      }else if(_pts&&_pts.length>1){
+        const t=(_fill)/(12);
+        const seg=Math.min(_pts.length-2,~~(t*(_pts.length-1)));
+        const f=t*(_pts.length-1)-seg;
+        hx=(_pts[seg][0]+(_pts[seg+1][0]-_pts[seg][0])*f+.5)*T;
+        hy=(_pts[seg][1]+(_pts[seg+1][1]-_pts[seg][1])*f+.5)*T;
+      }else break;
+      const tx=~~(hx/T),ty=~~(hy/T);
+      if(tx<2||ty<2||tx>=mw-2||ty>=mh-2||map[ty][tx]!==0)continue;
+      let too=false;for(let i=0;i<spawnHoles.length;i++){const d=spawnHoles[i];const dx=d.x-hx,dy=d.y-hy;if(dx*dx+dy*dy<250000){too=true;break}}
+      if(!too)spawnHoles.push({x:hx,y:hy,size:.5,timer:600+Math.random()*60,alive:0,room:1});
+    }
   }
   // 소환굴 총 스폰량 계산 (유효성 검증 후 확정)
   {let _ts=0;for(let _hi=0;_hi<spawnHoles.length;_hi++){const _hType=spawnHoles[_hi].size<=.3?'S':spawnHoles[_hi].size<=.5?'M':'L';_ts+=SPAWN_HOLE.cnt[_hType]||50}G._totalSpawned=_ts}
@@ -28533,16 +29018,9 @@ function update(){
   if(!window._btActive&&G._bossRef&&G._bossRef.alive){targetX=(P.x+G._bossRef.x)*.5+G._camLkX*.3;targetY=(P.y+G._bossRef.y)*.5+G._camLkY*.3}
   G.cam.x+=(targetX-G.cam.x)*camSpd;G.cam.y+=(targetY-G.cam.y)*camSpd;
   G.cam.x=~~G.cam.x;G.cam.y=~~G.cam.y;
-  // 보스 아레나 줌아웃 (보스 생존 시 0.80x, 일반 1.0x)
   const _czTgt=(G._bossRef&&G._bossRef.alive)?0.80:1.0;
   if(!G._camZoom)G._camZoom=1.0;
   G._camZoom+=(_czTgt-G._camZoom)*(1-Math.pow(0.94,_dtSp));}
-  // 카메라 클램핑
-  const _mwPx=G.mw*T,_mhPx=G.mh*T;
-  if(!window._btActive){
-    if(_mwPx<=VW){G.cam.x=_mwPx/2}else{G.cam.x=Math.max(VW/2,Math.min(_mwPx-VW/2,G.cam.x))}
-    if(_mhPx<=VH){G.cam.y=_mhPx/2}else{G.cam.y=Math.max(VH/2,Math.min(_mhPx-VH/2,G.cam.y))}
-  }
   if(G.shake>0){G.shake*=.86**(_hsActive?_hsDtOrig:sp);if(G.shake<.3)G.shake=0}
   // [TORCH] 반경 업데이트
   if(OPT.torch){let _tTarget=_TORCH.baseRadius;
@@ -42300,7 +42778,9 @@ function draw(){
   // cache-miss에 per-tile GL fallback이 있는지 검증하는 debug-only fault injection이다.
   let _dcpHideMapCache=false;if(_DCP.on&&_DCP_FAULT_CACHE_DELAY>0&&_dcpCacheDelayLeft>0){_dcpHideMapCache=true;_dcpCacheDelayLeft--}
   _dcpCacheFaultActive=_dcpHideMapCache;
-  if(_streamMap&&!_dcpHideMapCache){
+  if(_isMapPaint()&&_drawMapPaintWorld(X,s1*T,s2*T,e1*T,e2*T)){
+    /* 페인트 맵: 청크/타일 캐시 대신 그림 한 장을 월드에 직접 그림 */
+  }else if(_streamMap&&!_dcpHideMapCache){
     // 대형 맵 스트리밍: 뷰포트 합성 캔버스 1장 방식
     const _camL=s1*T,_camT=s2*T,_camR=e1*T,_camB=e2*T;
     const _vpW=_camR-_camL+T*4,_vpH=_camB-_camT+T*4;
@@ -42792,7 +43272,8 @@ function draw(){
           if(_meta&&_meta.sheet){const _sh=_meta.sheet,_cw=~~(_spr.naturalWidth/_sh.c),_ch=~~(_spr.naturalHeight/_sh.r);
             const _si=((~~(mo.x*7919+mo.y*104729+31))&0x7fffffff)%(_sh.c*_sh.r);
             X.drawImage(_spr,(_si%_sh.c)*_cw,~~(_si/_sh.c)*_ch,_cw,_ch,mo.x-sz/2,mo.y-sz/2,sz,sz);
-          }else if(_meta&&_meta.rot){X.save();X.translate(mo.x,mo.y);X.rotate(_meta.rot*Math.PI/180);X.drawImage(_spr,-sz/2,-sz/2,sz,sz);X.restore()
+          }else if(_meta&&_meta.flip&&!_meta.keepAR){X.save();X.translate(mo.x,mo.y);X.scale(-1,1);X.drawImage(_spr,-sz/2,-sz/2,sz,sz);X.restore()
+          }else if(_meta&&_meta.rot&&_meta.rot!==180&&_meta.rot!==270){X.save();X.translate(mo.x,mo.y);X.rotate(_meta.rot*Math.PI/180);X.drawImage(_spr,-sz/2,-sz/2,sz,sz);X.restore()
           }else if(_meta&&_meta.touchAnim){
             // 접촉 애니메이션: 플레이어 근접 시 프레임1, 아니면 프레임0
             const _ta=_meta.touchAnim,_taR=_ta.radius||120;
@@ -42841,7 +43322,11 @@ function draw(){
             }
           }else if(_meta&&_meta.keepAR){
             const _ar=_spr.naturalWidth/_spr.naturalHeight,_dw=sz*(_ar<1?_ar:1),_dh=sz*(_ar>1?1/_ar:1);
-            if(_meta.anchorBottom)X.drawImage(_spr,mo.x-_dw/2,mo.y-_dh,_dw,_dh);
+            if(_meta.flip){X.save();X.translate(mo.x,mo.y);X.scale(-1,1);
+              if(_meta.anchorBottom)X.drawImage(_spr,-_dw/2,-_dh,_dw,_dh);
+              else X.drawImage(_spr,-_dw/2,-_dh/2,_dw,_dh);
+              X.restore()}
+            else if(_meta.anchorBottom)X.drawImage(_spr,mo.x-_dw/2,mo.y-_dh,_dw,_dh);
             else X.drawImage(_spr,mo.x-_dw/2,mo.y-_dh/2,_dw,_dh);
           }else X.drawImage(_spr,mo.x-sz/2,mo.y-sz/2,sz,sz);
           // 눈알 오버레이 비활성화
@@ -48674,7 +49159,12 @@ function drawP(){
     }else{
       X.scale(_pScale,_pScale);
     }
-    if(_silvAtk){_drawSilvertailBackBlade(X,_silvAtk);}
+    if(_silvAtk&&!_silvAtk.hasAtk){_drawSilvertailBackBlade(X,_silvAtk);}
+    if(_silvAtk&&_silvAtk.hasAtk){
+      const _silvAtkN=CHAR_LIST[_charIdx].atkN||4;
+      P._sa.anim='atk2';
+      P._sa.f=Math.min(_silvAtkN-1,~~(_silvAtk.spinProgress*_silvAtkN));
+    }
     const _pFlip=!_apHasDir&&Math.abs(_fa)>Math.PI/2,_pDk=_apHasDir?(_silvAtk?_silvAtk.spriteDir:_apDir):null;
     // ── 외곽선: 4방향만 (성능 최적화) ──
     if(OPT.outline&&_atlasP_outline&&!_apDead){
