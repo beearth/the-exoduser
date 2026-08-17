@@ -157,6 +157,6 @@ test('§9 기존 working L5-B 불변 — chainTarget/staggerExplosion/pierceFlat
 });
 
 test('§10 pool count — 410 (408+2), B 158', () => {
-  assert.equal(POOL.length,416);
-  assert.equal(POOL.filter(a=>a.sub==='B').length,163);
+  assert.equal(POOL.length,417);
+  assert.equal(POOL.filter(a=>a.sub==='B').length,164);
 });

@@ -212,5 +212,5 @@ test('§13 Batch1/2 runtime regression + legacy v2only', () => {
   const g=gameHtml;
   assert.match(g,/if\(Math\.random\(\)\*100<statCrit\(\)\+_crBonus&&!_ksNoCrit\(\)\)\{/,'무딘 crit gate 무변경');
   for(const id of KS)assert.equal(by(id).v2only,1,id+' v2only(legacy byte-identical)');
-  assert.equal(POOL.length,416);assert.equal(POOL.filter(a=>a.sub==='B').length,163);
+  assert.equal(POOL.length,417);assert.equal(POOL.filter(a=>a.sub==='B').length,164);
 });

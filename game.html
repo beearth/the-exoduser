@@ -11538,6 +11538,12 @@ const AFFIX_POOL=[
   //  tier curve = skillBoost(uni:1 ability-damage% backbone) 재사용 — pool에 layer→magnitude 단조증가 규칙 부재(L9 rageDmg .08~.44 < L6 skillBoost .10~.55)이므로 인플레 금지.
   //  소비자 _ultDmgMul() = holyBlast/lava damage + blackStar 흡인력(pull) — 선택 가능한 3 Z Ultimate 모두에 의미. execution(X) 격리. ID는 유지, 표시 semantic만 Ultimate Power로 일반화.
   {id:'ultDmg',type:0,tiers:[.10,.15,.25,.40,.55],unit:'pct',slots:['wpn'],group:'ultD',weight:50,layer:10,sub:'A',uni:1,v2only:1},
+  // ═══ [Phase 8C / LOCK-48] L10-B ULTIMATE MECHANIC BATCH 1 — onUltRageFill ═══
+  //  ultRageGain(표시명 "분출의"/"궁극시전 분노+") = Z Ultimate(holyBlast/blackStar/lavaSummon) 시전 시 분노 게이지를 단방향 충전.
+  //  L10-B = Z Ultimate cast-event 기반 specialized mechanic(궁극→분노 크로스시스템 시너지). sub B(compat-gated, non-uni). v2only.
+  //  소비자 _ultRageFill() = fire* 3곳(Z-only)에서만 호출, 분노를 _rageMax() 상한으로 clamp 충전. execution(X)·rageMax/parry gain/rageDmg/giantSlam 불변. clamp가 상한 강제(피드백 루프 0).
+  //  tier curve = onKillMana/onKillHeal([5,10,18,28,40]) 이벤트-프록 자원부여 구조 참조 — 상단 40 매칭, 하단만 상향(궁극은 120s cd로 on-kill보다 희소). rageMaxFlat(80·영구최대치) 미만 유지.
+  {id:'ultRageGain',type:1,tiers:[10,15,20,30,40],unit:'val',slots:['wpn'],group:'ultRg',weight:50,layer:10,sub:'B',compat:['OFFENSE'],v2only:1},
   // 무기+helm 공유
   {id:'elemFocus',type:0,tiers:[.08,.12,.20,.32,.44],unit:'pct',slots:['helm'],group:'elemfcs',weight:70,layer:4,sub:'A',uni:1},
   {id:'atkSpeed',type:0,tiers:[.04,.06,.10,.16,.22],unit:'pct',slots:['wpn','helm'],group:'aspd',weight:85,layer:5,sub:'A',uni:1},
@@ -12036,7 +12042,7 @@ const AFFIX_NAMES_KO={
   poisonDot:'맹독의',fireDot:'불꽃의',iceDot:'냉기의',lightChain:'번개의',darkCurse:'암흑의',
   armorPen:'관통의',critChance:'광폭의',staggerBns:'파쇄의',chainTarget:'연쇄의',
   killSlayer:'학살의',critExplosion:'폭발의',elemFocus:'집중의',atkSpeed:'쾌속의',parryBonus:'패리의',
-  comboBoost:'추적자의',dashBoost:'사슬의',skillBoost:'궁극의',cooldownRed:'집중력의',ultDmg:'종언의',
+  comboBoost:'추적자의',dashBoost:'사슬의',skillBoost:'궁극의',cooldownRed:'집중력의',ultDmg:'종언의',ultRageGain:'분출의',
   defFlat:'강철의',maxHPFlat:'강인의',shieldFlat:'수호의',maxHPPct:'활력의',movSpeed:'신속의',
   fireRes:'화염수호',iceRes:'빙결수호',lightRes:'암전수호',darkRes:'암흑수호',poisonRes:'독수호',allRes:'전원소수호',
   physDR:'물리방패의',reflect:'반사의',thorns:'가시의',barrier:'흡수의',ccRes:'인내의',
@@ -12130,7 +12136,7 @@ const _AFFIX_DESC={
   poisonDot:'독 DoT',fireDot:'화상 DoT',iceDot:'빙결 DoT+감속',lightChain:'연쇄전격',darkCurse:'저주(힐차단)',
   armorPen:'방어무시',critChance:'치명타율',staggerBns:'스태거+',chainTarget:'체인타겟+',
   killSlayer:'처치 후 뎀+',critExplosion:'크리폭발(ATK×)',elemFocus:'원소뎀+',atkSpeed:'공격속도+',parryBonus:'패리보너스+',
-  comboBoost:'추적콤보+10',dashBoost:'사슬뎀+',skillBoost:'스킬뎀+',cooldownRed:'쿨다운-',ultDmg:'궁극위력+',
+  comboBoost:'추적콤보+10',dashBoost:'사슬뎀+',skillBoost:'스킬뎀+',cooldownRed:'쿨다운-',ultDmg:'궁극위력+',ultRageGain:'궁극시전 분노+',
   defFlat:'방어력+',maxHPFlat:'HP+',shieldFlat:'쉴드+',maxHPPct:'HP%+',movSpeed:'이동속도+',
   critRate:'크리확률+',critDmgW:'크리배율+',
   fireRes:'화염저항',iceRes:'빙결저항',lightRes:'암전저항',darkRes:'암흑저항',poisonRes:'독저항',allRes:'전원소저항',
@@ -38376,11 +38382,16 @@ function activateIceShatter(){
 //  ID는 ultDmg 유지(save/transfer 호환) — 내부 헬퍼명도 유지, semantic만 "Ultimate Power"로 확대.
 function _ultDmgMul(){return 1+_eqAffix('ultDmg');}
 // ═══ 신성폭발 발사 ═══
+// ═══ [Phase 8C / LOCK-48] L10-B onUltRageFill 소비자 — Z Ultimate 시전 시에만 호출(fire* 3곳). ═══
+//  분노 게이지 단방향 충전: 현재분노 + Σ ultRageGain 을 _rageMax() 상한으로 clamp. clamp가 상한 강제 → 피드백 루프 0.
+//  execution(X)은 fire* 미경유 → 구조적 격리. rageMax/parry gain/rageDmg/giantSlam damage·consume 불변.
+function _ultRageFill(){const _urg=_eqAffix('ultRageGain');if(_urg>0){P.rage=Math.min(_rageMax(),(P.rage||0)+_urg);addTxt(P.x,P.y-70,_T('⛧ 분노+')+_urg,'#ff4400',35);}}
 function fireHolyBlast(){
   if(!P._hbCasting)return;
   P._hbCasting=false;ultUnmute();
   const slv=P.skills.holyBlast||1;
   P._hbCd=~~(7200*(1+_cdRed()));
+  _ultRageFill(); // [LOCK-48] Z Ultimate 시전 → 분노 충전(Z-only)
   // 필살기 10배 스케일: Lv20 = Lv1의 10배
   const _ult10xMul=(1+((slv-1)*9/19)); // Lv1=1.0, Lv20=10.0
   // 신성폭발: Lv1 ×50, Lv20 ×500 (중앙 별은 추가 2배). [L10-A] ultDmg% 배수 적용.
@@ -38420,6 +38431,7 @@ function fireBlackStar(){
   P._bsCasting=false;ultUnmute();
   const slv=P.skills.blackStar||1;
   P._bsCd=~~(7200*(1+_cdRed()));
+  _ultRageFill(); // [LOCK-48] Z Ultimate 시전 → 분노 충전(Z-only)
   const cx=P._bsX,cy=P._bsY;
   G._bsPillar={x:cx,y:cy,t:0,maxT:120};
   for(let k=0;k<80;k++){
@@ -38447,6 +38459,7 @@ function fireLavaSummon(){
   P._lvCasting=false;ultUnmute();
   const slv=P.skills.lavaSummon||1;
   P._lvCd=~~(7200*(1+_cdRed()));
+  _ultRageFill(); // [LOCK-48] Z Ultimate 시전 → 분노 충전(Z-only)
   const cx=P._lvX,cy=P._lvY;
   const _ult10xMul=(1+((slv-1)*9/19)); // Lv1=1.0, Lv20=10.0
   // 용암소환 직격: Lv1 ×8, Lv20 ×80. [L10-A] ultDmg% 배수 적용.

@@ -78,10 +78,12 @@ test('§5/§6/§7 real C1 min-A validation — 정상 target 통과 · malformed
 });
 
 test('§6 L10-A 활성(ultDmg) — cap10 target은 L10-A backbone 필수(C1 자동활성)', () => {
-  // [P8B/LOCK-47] L10 pool = ultDmg 1종(uni:1 A backbone). 구 "L10 면제" 종료.
+  // [P8B/LOCK-47] L10-A = ultDmg(uni:1 A backbone). [P8C/LOCK-48] L10-B ultRageGain 추가. 구 "L10 면제" 종료.
   const l10=AFFIX_POOL.filter(a=>a.layer===10);
-  assert.equal(l10.length,1,'L10 affix = ultDmg 1종'); assert.equal(l10[0].id,'ultDmg');
-  assert.equal(l10[0].sub,'A'); assert.equal(l10[0].uni,1,'universal backbone');
+  const l10A=l10.filter(a=>a.sub==='A');
+  assert.equal(l10A.length,1,'L10-A = ultDmg 1종(sole A backbone)'); assert.equal(l10A[0].id,'ultDmg');
+  assert.equal(l10A[0].sub,'A'); assert.equal(l10A[0].uni,1,'universal backbone');
+  assert.equal(l10.length,2,'L10 pool = ultDmg(A)+ultRageGain(B) 2종 [P8C]');
   // cap10 target에 L10-A 충전 시 흡수 성공
   const A=build(); A.setBag([{id:'t1',slot:'weapon',layerLv:10,affixes:backbone(10)},stone('poisonDot',2,0.3)]);
   assert.ok(A.absorbStone(A.getBag()[1],'t1').ok,'L10-A 충전 target → 흡수 성공');

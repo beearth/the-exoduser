@@ -70,7 +70,7 @@ test('§5 rageDmg formula 무변경 (giantSlam rage burst 전용)', () => {
 
 test('§6 reset safety — dbRestore=0, stage carry(미변경)', () => {
   assert.match(gameHtml,/P\.rage=0; \/\/ 분노게이지/,'dbRestore rage=0(세션 로드 reset)');
-  // stage carry: clamp 추가 외에 stage 경로 P.rage 신규 mutation 없음 — P.rage 대입은 정확히 4곳(dbRestore·parry·hit·giantSlam) + clamp 1곳
+  // stage carry: stage/death 경로 P.rage 신규 reset mutation 없음. P.rage 대입 = 4(dbRestore·parry·hit·giantSlam) + clamp 1 + [P8C/LOCK-48] _ultRageFill 1(Z Ultimate 시전 시 단방향 충전) = 6곳.
   const muts=[...gameHtml.matchAll(/P\.rage=(?!=)/g)].length; // P.rage= (== 제외)
-  assert.equal(muts,5,'P.rage 대입 = 4(기존)+1(clamp)만 (stage/death 신규 reset 없음)');
+  assert.equal(muts,6,'P.rage 대입 = 5(기존 4+clamp)+1(_ultRageFill, LOCK-48 Z-only) (stage/death 신규 reset 없음)');
 });

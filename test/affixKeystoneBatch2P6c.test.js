@@ -133,5 +133,5 @@ test('§10 Batch1 regression + count', () => {
   assert.match(gameHtml,/if\(_ksBloodOath\(\)\)\{P\.mhp=~~\(P\.mhp\*1\.8\)/,'혈석');
   const g=buildKs({ksGlassGreatsword:1}),d=buildKs({ksDullConviction:1});
   assert.equal(g._ksDmgMul(),1.4);assert.equal(g._ksTakenMul(),1.25);assert.equal(d._ksNoCrit(),true);
-  assert.equal(POOL.length,416);assert.equal(POOL.filter(a=>a.sub==='B').length,163);
+  assert.equal(POOL.length,417);assert.equal(POOL.filter(a=>a.sub==='B').length,164);
 });

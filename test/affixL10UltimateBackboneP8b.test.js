@@ -50,8 +50,9 @@ test('§1 ultDmg pool 정의 — layer10·sub A·uni:1·v2only·type0·group ult
   assert.equal(d.v2only,1,'v2only(legacy byte-identical 보존)'); assert.equal(d.type,0,'type 0(prefix)');
   assert.equal(d.group,'ultD','group ultD'); assert.ok(d.weight>0,'weight>0'); assert.equal(d.unit,'pct','pct');
   assert.equal(d.tiers.length,5,'5 tiers');
-  // L10 pool = ultDmg 단독
-  assert.deepEqual(AFFIX_POOL.filter(a=>a.layer===10).map(a=>a.id),['ultDmg'],'L10 pool = ultDmg 1종');
+  // L10 pool = ultDmg(A) + [P8C/LOCK-48] ultRageGain(B). L10-A는 ultDmg 단독(sub A).
+  assert.deepEqual(AFFIX_POOL.filter(a=>a.layer===10&&a.sub==='A').map(a=>a.id),['ultDmg'],'L10-A = ultDmg 1종(sub A)');
+  assert.deepEqual(AFFIX_POOL.filter(a=>a.layer===10).map(a=>a.id).sort(),['ultDmg','ultRageGain'],'L10 pool = ultDmg(A)+ultRageGain(B) [P8C]');
   // group·id 중복 없음
   assert.equal(AFFIX_POOL.filter(a=>a.id==='ultDmg').length,1,'id 유일');
   assert.equal(AFFIX_POOL.filter(a=>a.group==='ultD').length,1,'group 유일');
@@ -117,9 +118,10 @@ test('§9 reachability — 전 15슬롯 L10-A 후보에 ultDmg 도달(uni backbo
   for(const slot of SLOT_NAMES){
     const cand=A._affixLayerCandidates(AFSLOT[slot],slot==='bracelet'?'demon':undefined,10,'A');
     assert.ok(cand.some(c=>c.id==='ultDmg'),`${slot} L10-A 후보에 ultDmg 포함`);
-    // L10-B는 없음
+    // [P8C/LOCK-48] L10-B(ultRageGain)는 weapon(OFFENSE·wpn slot)에만 도달, 그 외 슬롯 부재
     const bCand=A._affixLayerCandidates(AFSLOT[slot],slot==='bracelet'?'demon':undefined,10,'B');
-    assert.ok(!bCand.length,`${slot} L10-B 후보 부재`);
+    if(slot==='weapon')assert.ok(bCand.some(c=>c.id==='ultRageGain'),'weapon L10-B 후보에 ultRageGain');
+    else assert.ok(!bCand.some(c=>c.id==='ultRageGain'),`${slot} L10-B(ultRageGain) 부재(slot-gated)`);
   }
 });
 

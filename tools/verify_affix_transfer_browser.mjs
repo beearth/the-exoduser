@@ -18,6 +18,7 @@ const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const LAUNCH_ARGS = ['--no-sandbox', '--use-angle=swiftshader', '--disable-dev-shm-usage', '--disable-gpu-program-cache', '--disable-background-timer-throttling', '--disable-backgrounding-occluded-windows', '--disable-renderer-backgrounding', '--js-flags=--max-old-space-size=1024'];
 const results = [];
 const L10_ONLY = process.argv.includes('--section=l10') || process.argv.includes('--l10-only');
+const L10B_ONLY = process.argv.includes('--section=l10b'); // [P8C/LOCK-48] L10-B onUltRageFill runtime proof
 function rec(sec, name, ok, detail) { results.push({ sec, name, ok: !!ok, detail: detail || '' }); }
 function assert(sec, name, ok, detail) { rec(sec, name, ok, detail); if (!ok) console.error(`  ✗ [${sec}] ${name} — ${detail || ''}`); else console.log(`  ✓ [${sec}] ${name}`); }
 
@@ -120,6 +121,55 @@ async function runL10Only(page) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
+// [Phase 8C / LOCK-48] L10-B onUltRageFill BOUNDED-STEP RUNTIME PROOF.
+//   실제 booted game.html의 production fire*(fireHolyBlast/fireBlackStar/fireLavaSummon)를 각 1회
+//   동기 호출(적 0·VFX 1-shot=bounded)하여, ultRageGain 장착 시 P.rage가 _rageMax() 상한으로 단방향
+//   충전됨을 실측. 미착용/unequip no-op·clamp 초과 금지·_rageMax 불변 확인. execution(X)은 fire* 미경유
+//   → 구조적 격리(unit §4/§5가 call-site 3곳=fire* 전용·execution 블록 미포함을 증명).
+async function runL10bOnly(page) {
+  await boot(page, '_p8c_l10b', 1);
+  const out = await page.evaluate(() => {
+    G.map=Array.from({length:32},()=>Array(32).fill(0));G.mw=32;G.mh=32;G.rooms=[];G.exits=[];G.on=true;
+    P.x=400;P.y=400;P.hp=P.mhp;P.mp=P.mmp;P.st=P.mst;
+    P.skills.holyBlast=1;P.skills.blackStar=1;P.skills.lavaSummon=1;
+    INV.bag=[];for(const k in INV.equipped)INV.equipped[k]=null;_eqAffixCache=null;
+    ens.length=0;G.slowMo=0;G.hitStop=0;_dtSp=1;
+    // 하나의 fire*를 bounded 실행하고 종료 후 P.rage 반환. (casting=true → fire fn → rage 관측)
+    const fireRage=(fn,cast,x,y,startRage)=>{
+      G._lavaField=null;G._hbPillar=null;G._bsPillar=null;ens.length=0;
+      P.rage=startRage;P[x]=P.x;P[y]=P.y;P[cast]=true;P._hbCd=0;P._bsCd=0;P._lvCd=0;
+      fn();const r=P.rage;P[cast]=false;return r;
+    };
+    const rmax0=_rageMax();
+    // 미착용: fire* 3곳 rage 불변(0)
+    const noAffix={holy:fireRage(fireHolyBlast,'_hbCasting','_hbX','_hbY',0),
+                   black:fireRage(fireBlackStar,'_bsCasting','_bsX','_bsY',0),
+                   lava:fireRage(fireLavaSummon,'_lvCasting','_lvX','_lvY',0)};
+    // ultRageGain tier4=40 장착
+    INV.equipped.weapon={id:'p8c',slot:'weapon',layerLv:10,affixes:[{id:'ultRageGain',tier:4,value:40}]};_eqAffixCache=null;
+    const eqVal=_eqAffix('ultRageGain');const rmax=_rageMax();
+    const withAffix={holy:fireRage(fireHolyBlast,'_hbCasting','_hbX','_hbY',0),
+                     black:fireRage(fireBlackStar,'_bsCasting','_bsX','_bsY',0),
+                     lava:fireRage(fireLavaSummon,'_lvCasting','_lvX','_lvY',0)};
+    // clamp: rmax-5에서 +40 → rmax 상한(초과 금지)
+    const clampTest=fireRage(fireHolyBlast,'_hbCasting','_hbX','_hbY',rmax-5);
+    // unequip → 직접 소비자 no-op
+    INV.equipped.weapon=null;_eqAffixCache=null;P.rage=10;_ultRageFill();const uneqRage=P.rage;
+    G.on=false;G._lavaField=null;G._hbPillar=null;G._bsPillar=null;
+    return {rmax0,rmax,eqVal,noAffix,withAffix,clampTest,uneqRage,expect:Math.min(rmax,40)};
+  });
+  assert('L10B','ultRageGain 장착 _eqAffix=40', out.eqVal===40, JSON.stringify({eqVal:out.eqVal}));
+  assert('L10B','미착용 시 fire* 3곳 rage 불변(0) — affix-gated', out.noAffix.holy===0&&out.noAffix.black===0&&out.noAffix.lava===0, JSON.stringify(out.noAffix));
+  assert('L10B','holyBlast 시전 → rage=min(_rageMax,+40)', out.withAffix.holy===out.expect, JSON.stringify({got:out.withAffix.holy,expect:out.expect}));
+  assert('L10B','blackStar 시전 → rage=min(_rageMax,+40)', out.withAffix.black===out.expect, JSON.stringify(out.withAffix));
+  assert('L10B','lavaSummon 시전 → rage=min(_rageMax,+40)', out.withAffix.lava===out.expect, JSON.stringify(out.withAffix));
+  assert('L10B','clamp: rmax-5 에서 +40 → rmax 상한(초과 없음)', out.clampTest===out.rmax, JSON.stringify({clampTest:out.clampTest,rmax:out.rmax}));
+  assert('L10B','_rageMax 불변(ultRageGain은 max 미변경, equip 전후 동일)', out.rmax0===out.rmax, JSON.stringify({rmax0:out.rmax0,rmax:out.rmax}));
+  assert('L10B','unequip 후 _ultRageFill no-op(rage 10 불변)', out.uneqRage===10, JSON.stringify({uneqRage:out.uneqRage}));
+  console.log(`  · L10-B ultRageGain: eq=${out.eqVal} rmax=${out.rmax} fill(H/B/L)=${out.withAffix.holy}/${out.withAffix.black}/${out.withAffix.lava} clamp=${out.clampTest} uneq=${out.uneqRage}`);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
 async function main() {
   const browser = await chromium.launch({ headless: true, executablePath: CHROME, args: ['--no-sandbox', '--use-angle=swiftshader'] });
   const page = await browser.newPage({ viewport: { width: 1280, height: 720 } });
@@ -132,7 +182,8 @@ async function main() {
   page.on('console', m => { /* rejection surfaced via pageerror */ });
 
   try {
-    if(L10_ONLY){await runL10Only(page);}
+    if(L10B_ONLY){await runL10bOnly(page);}
+    else if(L10_ONLY){await runL10Only(page);}
     else {
     // ── §2 BOOT / ERRORS ────────────────────────────────────────────────
     await boot(page, '_p7e_main', 1);
