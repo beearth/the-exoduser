@@ -3215,6 +3215,13 @@ function dbRestore(d){
       it._spdMig=3}};
     INV.bag.forEach(_fixWpnSpd);
     for(const s of SLOT_NAMES)_fixWpnSpd(INV.equipped[s]);
+    // 무기 표시명 마이그레이션: 구 wpNames(타입 무관 '대검') 저장분을 _weaponName(타입별 정합)으로 재생성.
+    //   name(표시 문자열)만 갱신 — wtype/id/스탯 불변 → 세이브 타입 identity 유지.
+    const _fixWpnName=(it)=>{if(it&&it.slot==='weapon'&&it.wtype&&WTYPES[it.wtype]&&(it._nameMig||0)<1){
+      it.name=_weaponName(it.wtype,it.el||0,it.tier||0);
+      it._nameMig=1}};
+    INV.bag.forEach(_fixWpnName);
+    for(const s of SLOT_NAMES)_fixWpnName(INV.equipped[s]);
   }
   INV.selected=null;
   // Stats
@@ -9581,6 +9588,43 @@ const _wallTreeImgs={};
 const _skullWallImg=new Image();_skullWallImg.src='assets/map/ch2/skull_wall_tile.png';
 
 const _wallEdgeImg=new Image();_wallEdgeImg.src='assets/map/ch2/wall_edge_tile.png';
+const _voidVistaImg=new Image();
+_voidVistaImg.src='assets/map/ch1/void_vista.jpg?v=20260817-vista';
+function _voidVistaReady(){return _voidVistaImg&&_voidVistaImg.complete&&_voidVistaImg.naturalWidth>8}
+function _isVistaMap(){
+  const p=_MAP_COMPOSE[typeof G!=='undefined'?G.stage:-1];
+  return !!(p&&p.vista);
+}
+function _drawVistaWorld(ctx){
+  if(!_voidVistaReady()||!G.mw)return false;
+  const mwPx=G.mw*T,mhPx=G.mh*T,pad=Math.max(mwPx,mhPx)*0.4;
+  const dw=mwPx+pad*2,dh=mhPx+pad*2;
+  const iw=_voidVistaImg.naturalWidth,ih=_voidVistaImg.naturalHeight;
+  const sc=Math.max(dw/iw,dh/ih);
+  const w=iw*sc,h=ih*sc;
+  ctx.imageSmoothingEnabled=true;
+  ctx.drawImage(_voidVistaImg,(mwPx-w)/2,(mhPx-h)/2,w,h);
+  ctx.imageSmoothingEnabled=false;
+  return true;
+}
+function _fillVoidWithFloor(ctx){
+  const img=_gtFloorImg(SI_TO_HELL[G.stage|0]);
+  const mwPx=G.mw*T,mhPx=G.mh*T,pad=2400;
+  if(!img||!img.complete||img.naturalWidth<8){
+    ctx.fillStyle='#0a0806';
+    ctx.fillRect(-pad,-pad,mwPx+pad*2,mhPx+pad*2);
+    return;
+  }
+  const sz=_gtTileSz(img);
+  ctx.save();
+  ctx.beginPath();
+  ctx.rect(-pad,-pad,mwPx+pad*2,mhPx+pad*2);
+  ctx.rect(0,0,mwPx,mhPx);
+  ctx.clip('evenodd');
+  ctx.imageSmoothingEnabled=false;
+  for(let y=-pad;y<mhPx+pad;y+=sz)for(let x=-pad;x<mwPx+pad;x+=sz)ctx.drawImage(img,x,y,sz,sz);
+  ctx.restore();
+}
 const _pathBgImg=new Image();
 _pathBgImg.onload=()=>{
   console.log('[PATH_BG] loaded '+_pathBgImg.naturalWidth+'x'+_pathBgImg.naturalHeight);
@@ -9593,30 +9637,34 @@ function _isMapPaint(){
   const p=_MAP_COMPOSE[typeof G!=='undefined'?G.stage:-1];
   return !!(p&&p.path&&p.path.paint);
 }
+function _mapPaintCell(){
+  const p=_MAP_COMPOSE[typeof G!=='undefined'?G.stage:-1];
+  const n=p&&p.path&&p.path.cell;
+  return Math.max(480,n||1080);
+}
+function _blitPaintTiles(ctx,wx0,wy0,wx1,wy1,ox,oy){
+  const cell=_mapPaintCell(),iw=_pathBgImg.naturalWidth,ih=_pathBgImg.naturalHeight;
+  const gx0=Math.floor(wx0/cell)*cell,gy0=Math.floor(wy0/cell)*cell;
+  ctx.imageSmoothingEnabled=true;
+  for(let gy=gy0;gy<wy1;gy+=cell)for(let gx=gx0;gx<wx1;gx+=cell){
+    const dx=Math.max(gx,wx0),dy=Math.max(gy,wy0);
+    const dx1=Math.min(gx+cell,wx1),dy1=Math.min(gy+cell,wy1);
+    if(dx1<=dx||dy1<=dy)continue;
+    ctx.drawImage(_pathBgImg,((dx-gx)/cell)*iw,((dy-gy)/cell)*ih,((dx1-dx)/cell)*iw,((dy1-dy)/cell)*ih,dx+ox,dy+oy,dx1-dx,dy1-dy);
+  }
+  ctx.imageSmoothingEnabled=false;
+}
 function _drawMapPaintWorld(ctx,x0,y0,x1,y1){
   if(!_pathBgReady()||!G.mw)return false;
-  const mapW=G.mw*T,mapH=G.mh*T;
-  const ww=x1-x0,wh=y1-y0;
-  if(ww<=0||wh<=0)return false;
-  ctx.imageSmoothingEnabled=true;
-  ctx.drawImage(_pathBgImg,(x0/mapW)*_pathBgImg.naturalWidth,(y0/mapH)*_pathBgImg.naturalHeight,(ww/mapW)*_pathBgImg.naturalWidth,(wh/mapH)*_pathBgImg.naturalHeight,x0,y0,ww,wh);
-  ctx.imageSmoothingEnabled=false;
+  if(x1<=x0||y1<=y0)return false;
+  _blitPaintTiles(ctx,x0,y0,x1,y1,0,0);
   return true;
 }
 function _fillMapPaint(c,tx0,ty0,tx1,ty1,local){
-  const mw=G.mw,mh=G.mh,mapW=mw*T,mapH=mh*T;
-  const dw=(tx1-tx0)*T,dh=(ty1-ty0)*T;
-  const ox=local?0:tx0*T,oy=local?0:ty0*T;
-  if(_pathBgReady()){
-    c.imageSmoothingEnabled=true;
-    const sx=(tx0*T/mapW)*_pathBgImg.naturalWidth;
-    const sy=(ty0*T/mapH)*_pathBgImg.naturalHeight;
-    const sw=(dw/mapW)*_pathBgImg.naturalWidth;
-    const sh=(dh/mapH)*_pathBgImg.naturalHeight;
-    c.drawImage(_pathBgImg,sx,sy,sw,sh,ox,oy,dw,dh);
-  }else{
-    c.fillStyle='#0a120c';c.fillRect(ox,oy,dw,dh);
-  }
+  const wx0=tx0*T,wy0=ty0*T,wx1=tx1*T,wy1=ty1*T;
+  const ox=local?-wx0:0,oy=local?-wy0:0;
+  if(!_pathBgReady()){c.fillStyle='#0a120c';c.fillRect(ox+wx0,oy+wy0,wx1-wx0,wy1-wy0);return}
+  _blitPaintTiles(c,wx0,wy0,wx1,wy1,ox,oy);
 }
 function _fillPathBg(c,map,tx0,ty0,tx1,ty1,local){
   if(G._mapPaint||_isMapPaint()){_fillMapPaint(c,tx0,ty0,tx1,ty1,local);return}
@@ -12749,6 +12797,17 @@ const WTYPES={
   spear:  {name:'창',   emoji:'⚔️', atkMul:1.0, stCost:5,  spdMul:0.45, arcW:.95, range:50, stagger:8},
 };
 const WTYPE_KEYS=Object.keys(WTYPES);
+// ═══ 무기 표시명 = 원소/티어 수식어 + WTYPES canonical name(SSOT) ═══
+//   구 wpNames는 7종 타입 풀이 전부 '대검'으로 복붙돼(도끼/창/해머도 "…대검") 타입 배지와 이름이 모순이었다.
+//   수식어만 원소×티어로 두고, 타입 명사는 WTYPES[wt].name을 직접 참조 → 중복 풀 제거 + identity 정합.
+const _WP_MOD={
+  0:['녹슨','강철','흑요석','심판의','천벌의'],     // 물리(EL.P) — 근접무기는 el=P 고정
+  1:['불꽃','화염','염화','지옥불','멸화의'],        // 화염
+  2:['냉기','빙결','빙하','서리의','영겁빙'],        // 냉기
+  3:['그림자','암흑','심연','나락의','무간의'],       // 암흑
+  4:['전기','낙뢰','암전','뇌신의','만뢰의'],        // 전격
+};
+function _weaponName(wt,el,tier){const w=WTYPES[wt];if(!w)return _L('무기','Weapon');const m=_WP_MOD[el]||_WP_MOD[0];return (m[Math.min(tier,4)]||m[0])+' '+w.name;}
 
 // ═══ BOW TYPES ═══
 const BOWTYPES={
@@ -12761,15 +12820,7 @@ const BTYPE_KEYS=Object.keys(BOWTYPES);
 // Item template
 function mkItem(slot,tier,el,rarity,wtype){
   const rm=RARITY_MUL[rarity];
-  const wpNames={
-    sword:{0:['녹슨 대검','강철 대검','흑요석 대검','심판의 대검','천벌의 대검'],1:['불꽃 대검','화염 대검','염화 대검','지옥불 대검','멸화의 대검'],2:['냉기 대검','빙결 대검','빙하 대검','서리의 대검','영겁빙 대검'],3:['그림자 대검','암흑 대검','심연 대검','나락의 대검','무간의 대검'],4:['전기 대검','낙뢰 대검','암전 대검','뇌신의 대검','만뢰의 대검']},
-    dagger:{0:['녹슨 대검','강철 대검','흑요석 대검','심판의 대검','천벌의 대검'],1:['불꽃 대검','화염 대검','염화 대검','지옥 대검','멸화의 대검'],2:['냉기 대검','빙결 대검','빙하 대검','서리의 대검','영겁빙 대검'],3:['그림자 대검','암흑 대검','심연 대검','나락 대검','무간의 대검'],4:['전기 대검','낙뢰 대검','암전 대검','뇌신 대검','만뢰의 대검']},
-    hammer:{0:['녹슨 대검','강철 대검','흑요석 대검','심판의 대검','천벌의 대검'],1:['불꽃 대검','화염 대검','염화 대검','지옥 대검','멸화의 대검'],2:['냉기 대검','빙결 대검','빙하 대검','서리의 대검','영겁빙 대검'],3:['그림자 대검','암흑 대검','심연 대검','나락 대검','무간의 대검'],4:['전기 대검','낙뢰 대검','암전 대검','뇌신 대검','만뢰의 대검']},
-    mace:{0:['녹슨 대검','강철 대검','흑요석 대검','심판의 대검','천벌의 대검'],1:['불꽃 대검','화염 대검','염화 대검','지옥 대검','멸화의 대검'],2:['냉기 대검','빙결 대검','빙하 대검','서리의 대검','영겁빙 대검'],3:['그림자 대검','암흑 대검','심연 대검','나락 대검','무간의 대검'],4:['전기 대검','낙뢰 대검','암전 대검','뇌신 대검','만뢰의 대검']},
-    club:{0:['녹슨 대검','강철 대검','흑요석 대검','심판의 대검','천벌의 대검'],1:['불꽃 대검','화염 대검','염화 대검','지옥 대검','멸화의 대검'],2:['냉기 대검','빙결 대검','빙하 대검','서리의 대검','영겁빙 대검'],3:['그림자 대검','암흑 대검','심연 대검','나락 대검','무간의 대검'],4:['전기 대검','낙뢰 대검','암전 대검','뇌신 대검','만뢰의 대검']},
-    axe:{0:['녹슨 대검','강철 대검','흑요석 대검','심판의 대검','천벌의 대검'],1:['불꽃 대검','화염 대검','염화 대검','지옥 대검','멸화의 대검'],2:['냉기 대검','빙결 대검','빙하 대검','서리의 대검','영겁빙 대검'],3:['그림자 대검','암흑 대검','심연 대검','나락 대검','무간의 대검'],4:['전기 대검','낙뢰 대검','암전 대검','뇌신 대검','만뢰의 대검']},
-    spear:{0:['녹슨 대검','강철 대검','흑요석 대검','심판의 대검','천벌의 대검'],1:['불꽃 대검','화염 대검','염화 대검','지옥 대검','멸화의 대검'],2:['냉기 대검','빙결 대검','빙하 대검','서리의 대검','영겁빙 대검'],3:['그림자 대검','암흑 대검','심연 대검','나락 대검','무간의 대검'],4:['전기 대검','낙뢰 대검','암전 대검','뇌신 대검','만뢰의 대검']},
-  };
+  // (구 wpNames 제거) 무기 표시명은 _weaponName(wt,el,tier) = 수식어 + WTYPES[wt].name 로 생성. 위 _WP_MOD 참조.
   const bowNames={
     crossbow:{0:['낡은 석궁','강철 석궁','흑요석 석궁','미스릴 석궁','천벌의 석궁'],1:['불꽃 석궁','화염 석궁','염화 석궁','지옥 석궁','멸화의 석궁'],2:['냉기 석궁','빙결 석궁','빙하 석궁','서리의 석궁','영겁빙 석궁'],3:['그림자 석궁','암흑 석궁','심연 석궁','나락 석궁','무간의 석궁'],4:['전기 석궁','낙뢰 석궁','암전 석궁','뇌신 석궁','만뢰의 석궁']},
     repeater:{0:['낡은 연사석궁','강철 연사석궁','흑요석 연사석궁','미스릴 연사석궁','천벌의 연사석궁'],1:['불꽃 연사석궁','화염 연사석궁','염화 연사석궁','지옥 연사석궁','멸화의 연사석궁'],2:['냉기 연사석궁','빙결 연사석궁','빙하 연사석궁','서리의 연사석궁','영겁빙 연사석궁'],3:['그림자 연사석궁','암흑 연사석궁','심연 연사석궁','나락 연사석궁','무간의 연사석궁'],4:['전기 연사석궁','낙뢰 연사석궁','암전 연사석궁','뇌신 연사석궁','만뢰의 연사석궁']},
@@ -12831,7 +12882,7 @@ function mkItem(slot,tier,el,rarity,wtype){
     const wt=wtype||(WTYPE_KEYS[~~(Math.random()*WTYPE_KEYS.length)]);
     const wd=WTYPES[wt];
     item.wtype=wt;
-    item.name=wpNames[wt][el][Math.min(tier,4)];
+    item.name=_weaponName(wt,el,tier);
     item.emoji=wd.emoji;
     item.atk=~~(_atkRoll*wd.atkMul);
     item.spd=+(wd.spdMul*rm).toFixed(2);
@@ -13880,19 +13931,15 @@ const _CH_DECO={
   ],
 };
 // 한 장씩만 채운다. 없으면 균등 살포(구 동작). 기획: docs/4.1맵디자인+설정/맵구성_1장.md
-// path:{w,pts} 있으면 이동지역만 바닥 타일, 나머지는 이미지(_pathImgTerrain)
+// hand:1 = 중심 타일(통바닥) + compose에 적힌 커스텀만. 자동 살포/페인트맵 없음
 const _MAP_COMPOSE={
   0:{keepDragon:1,mega:[
     {id:'m_mega_ribs',x:.84,y:.22,sz:1400}
   ]},
   1:{
-    lm:[{id:'m_eye_tree',x:.16,y:.42,sz:560},{id:'m_eye_tree',x:.84,y:.40,sz:500},{id:'m_eye_tree',x:.15,y:.58,sz:440}],
-    mega:[{id:'m_mega_chapel',x:.14,y:.26,sz:880}],
-    lgMul:1.10,lgDist:700,scMul:.85,
-    largeBias:['m_ctree','m_atree','m_cage','m_hang','m_rotten','m_vine'],
-    uni:['m_cage_gate','m_hang_cage','m_sword_pile','m_bone_arch','m_skull_totem','m_obelisk'],
-    empty:[{x:.50,y:.88,r:480},{x:.50,y:.14,r:420}],
-    path:{paint:1,bg:'assets/map/ch1/map_1-2.png',col:{x0:42,y0:46,x1:158,y1:194}}
+    hand:1,vista:1,
+    basin:{cx:100,cy:122,rx:80,ry:64},
+    empty:[{x:.50,y:.88,r:360},{x:.50,y:.14,r:320}]
   },
   2:{
     lm:[{id:'m_penta_circle',x:.72,y:.38,sz:400},{id:'m_eye_tree',x:.74,y:.42,sz:380},{id:'m_flesh_ball',x:.50,y:.62,sz:520}],
@@ -14062,7 +14109,7 @@ function _drawGateSwirl(ctx,cx,cy,sz,t,unlocked){
 function _waitObjSprites(timeout){
   return new Promise(r=>{
     const t0=Date.now();
-    const _extraImgs=[_bossRoomBg,..._bossGateImgs,_impSpr,_skullWallImg,_wallEdgeImg,_pathBgImg,_GROUND_TILES['gt_soil'],_GROUND_TILES['gt_ch2'],_GROUND_TILES['gt_ch3'],_GROUND_TILES['gt_ch4'],_GROUND_TILES['gt_ch5'],_GROUND_TILES['gt_ch6'],_GROUND_TILES['gt_ch7']];
+    const _extraImgs=[_bossRoomBg,..._bossGateImgs,_impSpr,_skullWallImg,_wallEdgeImg,_pathBgImg,_voidVistaImg,_GROUND_TILES['gt_soil'],_GROUND_TILES['gt_ch2'],_GROUND_TILES['gt_ch3'],_GROUND_TILES['gt_ch4'],_GROUND_TILES['gt_ch5'],_GROUND_TILES['gt_ch6'],_GROUND_TILES['gt_ch7']];
     const check=()=>{
       let done=true;
       for(const k in _OBJ_SPR){const im=_OBJ_SPR[k];if(!im.complete&&!im.naturalWidth){done=false;break}}
@@ -20159,7 +20206,7 @@ function initMapObjects(){
     }
     const _normalDeco=_baseDeco.filter(d=>!d.large&&!d.scatter);
     let _lgPlaced=0;
-    if(_largeDeco.length>0&&!(_cmp&&_cmp.path)){
+    if(_largeDeco.length>0&&!(_cmp&&(_cmp.path||_cmp.hand))){
       const _isOpenField=!!G._isTileRLE&&G.mw>=180&&G.mh>=180;
       const _flDens=1+Math.min(0.85,(SI_TO_FLOOR[G.stage]||0)*0.22);
       const _lgBase=_isOpenField
@@ -20243,7 +20290,7 @@ function initMapObjects(){
         MAP_OBJS.push({type:'m_dragon_skeleton',x:_2dx,y:_2dy,hell:0});
         // 용뼈 좌표 저장 (유니크 배치 후 정리용)
         G._dragonCleanup={p1:{x:_dsx,y:_dsy},p2:{x:_2dx,y:_2dy}};}
-    }else if(_cmp&&_cmp.lm&&!(_cmp.path&&_cmp.path.paint)){
+    }else if(_cmp&&_cmp.lm){
       for(let _li=0;_li<_cmp.lm.length;_li++){
         const L=_cmp.lm[_li];
         const _lmNear=(_cmp.path?_nearOffPath:_nearFloor)(~~(L.x*G.mw),~~(L.y*G.mh));
@@ -20268,7 +20315,7 @@ function initMapObjects(){
         }
       }
     }
-    if(_cmp&&_cmp.mega&&!(_cmp.path&&_cmp.path.paint)){
+    if(_cmp&&_cmp.mega){
       for(let _mi=0;_mi<_cmp.mega.length;_mi++){
         const L=_cmp.mega[_mi];
         const _lmNear=(_cmp.path?_nearOffPath:_nearFloor)(~~(L.x*G.mw),~~(L.y*G.mh));
@@ -20293,7 +20340,7 @@ function initMapObjects(){
         ['m_c7p1','m_c7p2','m_c7garg','m_c7obelisk','m_c7throne']
       ];
       const _uniObjs=(_cmp&&_cmp.uni)?_cmp.uni:(_uniByHell[hell]||[]);
-      if(_uniObjs.length&&!(_cmp&&_cmp.path)){
+      if(_uniObjs.length&&!(_cmp&&(_cmp.path||_cmp.hand))){
       const _uniSeed=_tseed(G.stage*71+13,hell*53+7);
       const _uniMinDist=880;
       // 벽에서 4타일 이상 떨어진 중앙 바닥만 수집
@@ -20335,7 +20382,7 @@ function initMapObjects(){
     }
   let _providedFloorPlaced=0;
   const _providedFloorTarget=Math.min(16,_providedFloorDeco.length?16:0);
-    if(_providedFloorTarget>0&&!(_cmp&&_cmp.path)){
+    if(_providedFloorTarget>0&&!(_cmp&&(_cmp.path||_cmp.hand))){
       const _providedMinDist=260;
       const _providedSameTypeDist=420;
       const _providedPlacedList=[];
@@ -20370,7 +20417,7 @@ function initMapObjects(){
       }
     }
   let _providedWallPlaced=0;
-  if(_providedWallDeco.length>0){
+  if(_providedWallDeco.length>0&&!(_cmp&&(_cmp.path||_cmp.hand))){
       const _wallCells=[];
       for(let y=2;y<G.mh-2;y++)for(let x=2;x<G.mw-2;x++){
         if(map[y][x]!==1)continue;
@@ -20457,7 +20504,7 @@ function initMapObjects(){
     }
     // ── scatter 에셋: 방 전체 랜덤 배치 (벽 무관) ──
     const _scatterDeco=_baseDeco.filter(d=>d.scatter);
-    if(_scatterDeco.length>0&&!(_cmp&&_cmp.path)){
+    if(_scatterDeco.length>0&&!(_cmp&&(_cmp.path||_cmp.hand))){
       // 시작방/보스방 중심 좌표 (scatter 배치 금지 영역)
       const _scStartRm=G.rooms.find(r=>r.type==='start');
       const _scBossRm=G.rooms.find(r=>r.type==='boss');
@@ -20507,7 +20554,7 @@ function initMapObjects(){
     // ── 2차: 일반(소/중형) 에셋 배치 ──
   const _dcOpen=!!G._isTileRLE&&G.mw>=180;
   const _dcBase=_dcOpen?Math.max(50,Math.min(140,~~(_dcFloors.length/260))):Math.max(8,Math.min(60,~~(_dcFloors.length/100)));
-    const _dcCnt=(_cmp&&_cmp.path)?0:_dcBase;
+    const _dcCnt=(_cmp&&(_cmp.path||_cmp.hand))?0:_dcBase;
     let _dcPlaced=0;
     for(let di=0;di<_dcCnt&&_dcFloors.length>0;di++){
       const _fi=~~(_dcSeed()*_dcFloors.length);
@@ -21510,7 +21557,10 @@ function _buildStreamChunk(cx,cy){
   if(!_skullWallPat){_buildSkullWallPat()}
   const _voidWallImg=hell===0?_GROUND_TILES['gt_void_wall']:null;
   const _hasVoidWall=_voidWallImg&&_voidWallImg.complete&&_voidWallImg.naturalWidth>1;
-  if(G._pathImgTerrain){
+  const _vista=_isVistaMap();
+  if(_vista){
+    /* 벽은 투명 — 아래 비스타가 보임 */
+  }else if(G._pathImgTerrain){
     _fillPathBg(c,map,tx0,ty0,tx1,ty1,true);
   }else if(hell===0&&_skullWallPat){
     c.save();c.beginPath();
@@ -21526,6 +21576,28 @@ function _buildStreamChunk(cx,cy){
     c.restore();
   }
   if(_hasSoil&&!G._mapPaint&&!_isMapPaint()){
+    if(_vista){
+      for(let ty=ty0;ty<ty1;ty++)for(let tx=tx0;tx<tx1;tx++){
+        const _v=map[ty][tx];if(!(_v===0||_v===2||_v===4||_v===5||_v===6))continue;
+        let d=5;
+        for(let r=1;r<=4;r++){
+          let hit=false;
+          for(let dy=-r;dy<=r&&!hit;dy++)for(let dx=-r;dx<=r&&!hit;dx++){
+            if(Math.abs(dx)!==r&&Math.abs(dy)!==r)continue;
+            const x=tx+dx,y=ty+dy;
+            if(x<0||y<0||x>=mw||y>=mh||map[y][x]===1)hit=true;
+          }
+          if(hit){d=r;break}
+        }
+        c.globalAlpha=d/4;
+        c.save();c.beginPath();
+        c.rect((tx-tx0)*T,(ty-ty0)*T,T,T);c.clip();
+        const ox=Math.floor((tx*T)/_tileSz)*_tileSz-_wx0,oy=Math.floor((ty*T)/_tileSz)*_tileSz-_wy0;
+        c.drawImage(_soilImg,ox,oy,_tileSz,_tileSz);
+        c.restore();
+      }
+      c.globalAlpha=1;
+    }else{
     c.save();c.beginPath();
     for(let ty=ty0;ty<ty1;ty++)for(let tx=tx0;tx<tx1;tx++){const _v=map[ty][tx];if(_v===0||_v===2||_v===4||_v===5||_v===6)c.rect((tx-tx0)*T,(ty-ty0)*T,T,T)}
     c.clip();
@@ -21534,16 +21606,18 @@ function _buildStreamChunk(cx,cy){
     }
     _paintHellFloorMarks(c,hell,map,tx0,ty0,tx1,ty1,_wx0,_wy0);
     c.restore();
+    }
   }
   for(let ty=ty0;ty<ty1;ty++)for(let tx=tx0;tx<tx1;tx++){
     const v=map[ty]?map[ty][tx]:1;
     const lx=(tx-tx0)*T,ly=(ty-ty0)*T;
+    if(_vista)continue;
     if((v===2||v===6)&&!_hasSoil){c.fillStyle=_th.f;c.fillRect(lx,ly,T,T)}
     else if((v===0||v===4||v===5)&&!_hasSoil){c.fillStyle=_th.f;c.fillRect(lx,ly,T,T)}
     else if(v===1&&!_hasVoidWall&&!(hell===0&&_skullWallPat)){c.fillStyle='#000000';c.fillRect(lx,ly,T,T)}
     else if(v===3){c.fillStyle='#000000';c.fillRect(lx,ly,T,T)}
   }
-  if(!G._pathImgTerrain&&hell===0&&_wallEdgeImg&&_wallEdgeImg.complete&&_wallEdgeImg.naturalWidth>0){
+  if(!_vista&&!G._pathImgTerrain&&hell===0&&_wallEdgeImg&&_wallEdgeImg.complete&&_wallEdgeImg.naturalWidth>0){
     const _weAR=_wallEdgeImg.naturalHeight/_wallEdgeImg.naturalWidth,_weW=T*3,_weH=~~(_weW*_weAR);
     for(let ty=Math.max(1,ty0);ty<Math.min(mh-1,ty1);ty++)for(let tx=Math.max(1,tx0);tx<Math.min(mw-1,tx1);tx++){
       if(map[ty][tx]!==1)continue;
@@ -21551,7 +21625,7 @@ function _buildStreamChunk(cx,cy){
       if(allWall)continue;
       c.drawImage(_wallEdgeImg,(tx-tx0)*T+T/2-_weW/2,(ty-ty0)*T+T/2-_weH/2,_weW,_weH);
     }
-  }else if(_pillarCvs){
+  }else if(!_vista&&_pillarCvs){
     const _pW=T*3,_pH=_pW*_pillarAR;
     for(let ty=Math.max(1,ty0);ty<Math.min(mh-1,ty1);ty++)for(let tx=Math.max(1,tx0);tx<Math.min(mw-1,tx1);tx++){
       if(map[ty][tx]!==1)continue;
@@ -23790,6 +23864,19 @@ function _buildWalkPathRLE(mw,mh,spec,si){
   _paintPathDisk(g,mw,mh,pts[pts.length-1][0],pts[pts.length-1][1],r+4);
   return _rleEncodeGrid(g,n);
 }
+function _buildBasinRLE(mw,mh,b){
+  const n=mw*mh,g=new Uint8Array(n);
+  const cx=b.cx||100,cy=b.cy||120,rx=Math.max(24,b.rx||72),ry=Math.max(20,b.ry||56);
+  const rx2=rx*rx,ry2=ry*ry;
+  for(let y=2;y<mh-2;y++)for(let x=2;x<mw-2;x++){
+    const dx=x-cx,dy=y-cy;
+    if((dx*dx)/rx2+(dy*dy)/ry2<=1)g[y*mw+x]=1;
+  }
+  const gx=b.gateX||100,gy=b.gateY||16,hw=b.gateW||8;
+  for(let y=gy;y<=cy;y++)for(let x=gx-hw;x<=gx+hw;x++)
+    if(x>1&&x<mw-2&&y>1&&y<mh-2)g[y*mw+x]=1;
+  return _rleEncodeGrid(g,n);
+}
 function _buildColRectRLE(mw,mh,col){
   const n=mw*mh,g=new Uint8Array(n);
   const x0=Math.max(2,col.x0|0),y0=Math.max(2,col.y0|0);
@@ -23803,9 +23890,16 @@ function _cloneField11(si){
   const tmpl=JSON.parse(JSON.stringify(base));
   tmpl.mw=200;tmpl.mh=200;
   const _pc=_MAP_COMPOSE[si];
-  tmpl.tileRLE=(_pc&&_pc.path)?((_pc.path.col)?_buildColRectRLE(200,200,_pc.path.col):_buildWalkPathRLE(200,200,_pc.path,si)):[1,40000];
+  tmpl.tileRLE=(_pc&&_pc.basin)?_buildBasinRLE(200,200,_pc.basin):((_pc&&_pc.path)?((_pc.path.col)?_buildColRectRLE(200,200,_pc.path.col):_buildWalkPathRLE(200,200,_pc.path,si)):[1,40000]);
   if(tmpl.spawnHoles&&si>0){
-    if(_pc&&_pc.path&&_pc.path.col){
+    if(_pc&&_pc.basin){
+      const b=_pc.basin,n=tmpl.spawnHoles.length;
+      for(let i=0;i<n;i++){
+        const t=(i+1)/(n+1);
+        tmpl.spawnHoles[i].x=b.cx||100;
+        tmpl.spawnHoles[i].y=Math.max(8,Math.min(191,~~((b.cy||120)-(b.ry||60)*0.65+(b.ry||60)*1.3*t)));
+      }
+    }else if(_pc&&_pc.path&&_pc.path.col){
       const c=_pc.path.col,n=tmpl.spawnHoles.length;
       const mx=~~((c.x0+c.x1)/2);
       for(let i=0;i<n;i++){
@@ -42721,7 +42815,7 @@ function draw(){
   const _tPara=performance.now();
   var _snapPara=_fc2d?_PERF_PROF._snap():null;
   {const _bgHell=SI_TO_HELL[G.stage||0];
-  const _bgLayers=MAP_BG_LAYERS[_bgHell];
+  const _bgLayers=_isVistaMap()?null:MAP_BG_LAYERS[_bgHell];
   if(_bgLayers){for(let _li=0;_li<_bgLayers.length;_li++){
     const _bl=_bgLayers[_li];
     const _bSrc=_bl.cvs||_bgImgs[_bl.src];
@@ -42753,13 +42847,7 @@ function draw(){
     }
     X.globalAlpha=1;
   }}}
-  // ── 맵 외부 영역 검정 오버레이 (패럴랙스 초록빛 차단) ──
-  {const _mwPx2=G.mw*T,_mhPx2=G.mh*T,_mPad=1200;
-  X.fillStyle='#000';
-  X.fillRect(-_mPad,-_mPad,_mPad,_mhPx2+_mPad*2);         // 왼쪽
-  X.fillRect(_mwPx2,-_mPad,_mPad,_mhPx2+_mPad*2);          // 오른쪽
-  X.fillRect(0,-_mPad,_mwPx2,_mPad);                        // 위
-  X.fillRect(0,_mhPx2,_mwPx2,_mPad);}                       // 아래
+  if(!_isVistaMap())_fillVoidWithFloor(X);
   // ── 반딧불이 파티클 (가벼운 버전 — arc/gradient 없이 fillRect만) ──
   {if(!_oriInited)_oriInitParticles();
   const _fvl=G.cam.x-VW/2,_fvt=G.cam.y-VH/2,_fvr=G.cam.x+VW/2,_fvb=G.cam.y+VH/2;
@@ -42778,8 +42866,8 @@ function draw(){
   // cache-miss에 per-tile GL fallback이 있는지 검증하는 debug-only fault injection이다.
   let _dcpHideMapCache=false;if(_DCP.on&&_DCP_FAULT_CACHE_DELAY>0&&_dcpCacheDelayLeft>0){_dcpHideMapCache=true;_dcpCacheDelayLeft--}
   _dcpCacheFaultActive=_dcpHideMapCache;
+  if(_isVistaMap())_drawVistaWorld(X);
   if(_isMapPaint()&&_drawMapPaintWorld(X,s1*T,s2*T,e1*T,e2*T)){
-    /* 페인트 맵: 청크/타일 캐시 대신 그림 한 장을 월드에 직접 그림 */
   }else if(_streamMap&&!_dcpHideMapCache){
     // 대형 맵 스트리밍: 뷰포트 합성 캔버스 1장 방식
     const _camL=s1*T,_camT=s2*T,_camR=e1*T,_camB=e2*T;
