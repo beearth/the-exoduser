@@ -11019,6 +11019,20 @@ addEventListener('keyup',e=>{
     _dashTier=0;
   }
 });
+// ── 포커스 상실 시 눌린 입력 전부 해제 — 미수신 keyup으로 인한 stuck-key 방지 ──
+// (홀드 중 alt-tab/OS알림/다른창 클릭 등으로 keyup을 못 받으면 KH['ShiftLeft'] 잔류 →
+//  착지마다 돌진 자동 재발사(26302 참조) → "입력 안 했는데 쉬프트 자동 연속 돌진" 버그)
+function _clearHeldInput(){
+  for(const k in K)K[k]=false;
+  for(const k in KH)KH[k]=false;
+  for(const b in MB)MB[b]=false;
+  for(const b in MBjust)MBjust[b]=false;
+  _dashHold=false;_dashHoldF=0;_dashTier=0; // 쉬프트 홀드 무장 해제 (팬텀 릴리즈/재발사 차단)
+  if(typeof P!=='undefined'&&P)P._beamHold=false;
+  _cutSkipHolding=false;_cutSkipHold=0;
+}
+addEventListener('blur',_clearHeldInput);
+document.addEventListener('visibilitychange',()=>{if(document.hidden)_clearHeldInput()});
 addEventListener('mousemove',e=>{
   _setMousePosition(e);
   _setMouseFacing();
