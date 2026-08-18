@@ -37280,7 +37280,7 @@ const SKILL_LIST=[
   {id:'weakMag',name:'침식의 영역',cat:'tech',act:true,noDmg:true,emoji:'🔮',desc:'현재 위치에 침식 영역 설치 (10초). 범위 내 적 마법저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place corrosion domain at current pos (10s). Enemy magic resist -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'weakPj',name:'관통의 영역',cat:'tech',act:true,noDmg:true,emoji:'🏹',desc:'현재 위치에 관통 영역 설치 (10초). 범위 내 적 투사체저항력 -10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place pierce domain at current pos (10s). Enemy projectile resist -10% in range. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
   {id:'weakRev',name:'부활의 영역',cat:'tech',act:true,noDmg:true,emoji:'💀',desc:'현재 위치에 부활 영역 설치 (10초). 영역 안에서 부활력 +10%. 쿨 25초. Lv당 범위+22 효과+1% 지속+0.3초',descEn:'Place revival domain at current pos (10s). Revive power +10% inside zone. CD 25s. Per Lv range+22 effect+1% duration+0.3s',spCost:10,matCost:80,cd:1500,up:true,upSp:5,upMat:0},
-  {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (1렙 반경200, 10렙398). 슬로우 70%(+2%/Lv, 최대90%)+출혈. INT×magicRef×3(+10%/Lv). 악의 10, 쿨 10초. Lv당 범위+22',descEn:'[Fixed: Space] Place spike trap at current pos (Lv1 radius 200, Lv10 398). Slow 70%(+2%/Lv, max 90%)+bleed. INT×magicRef×3(+10%/Lv). Malice 10, CD 10s. Per Lv range+22',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},
+  {id:'spikeTrap',name:'가시덫',cat:'tech',fixed:true,act:true,emoji:'🌿',desc:'[고정: Space] 현재 위치에 가시덫 설치 (1렙 반경300, 10렙435). 슬로우 70%(+2%/Lv, 최대90%)+출혈. INT×magicRef×3(+10%/Lv). 악의 10, 쿨 10초. Lv당 범위+15',descEn:'[Fixed: Space] Place spike trap at current pos (Lv1 radius 300, Lv10 435). Slow 70%(+2%/Lv, max 90%)+bleed. INT×magicRef×3(+10%/Lv). Malice 10, CD 10s. Per Lv range+15',spCost:10,matCost:80,cd:600,up:true,upSp:5,upMat:0},
   {id:'blueShot',name:'푸른비',cat:'bow',fixed:true,emoji:'💎',desc:'[고정: E, Lv300 해금] 유도 파란콩 50발 순차 발사 (5초간). MP 100(+1.5/Lv) 소모. 적 추적. 쿨 5초. Lv당 사거리+30 (뎀은 _skMul 계수 적용)',descEn:'[Fixed: E, unlock Lv300] 50 homing blue shots fired sequentially (over 5s). MP 100(+1.5/Lv) cost. Tracks enemies. CD 5s. Per Lv range+30 (DMG uses _skMul)',spCost:10,matCost:100,up:true,upSp:5,upMat:0,reqLv:300},
   {id:'burstLoop',name:'버스트루프',cat:'magic',fixed:true,hidden:true,emoji:'💫',desc:'[히든: 우클릭, Lv700 해금] 홀드 시 3단계 차지 범위폭발 (0.5/1.0/1.5초). 범위 600/1000/1400px. 3단 만충 자동폭발. INT 스케일, 무속성',descEn:'[Hidden: RMB, unlock Lv700] Hold for 3-stage charge AoE explosion (0.5/1.0/1.5s). Range 600/1000/1400px. Stage 3 full charge auto-detonates. INT scale, no element',spCost:0,matCost:0,up:true,upSp:5,upMat:0,reqLv:700},
   {id:'voidScarecrow',name:'유령 허수아비',cat:'def',act:true,emoji:'👻',desc:'유령 허수아비를 소환하여 유도탄막 어그로를 끈다. 탄막을 흡수해 자원 축적 (기본 20개, Lv당+3). 1개당 HP/MP/ST 각 100. R키로 회수. 쿨 10초',descEn:'Summon phantom scarecrow to draw homing projectile aggro. Absorbs projectiles for resource buildup (base 20, +3/Lv). Per absorbed: HP/MP/ST +100 each. R key to retrieve. CD 10s',spCost:10,matCost:100,cd:600,up:true,upSp:5,upMat:0},
@@ -37823,7 +37823,7 @@ function _skSpecificDetails(sk,slv){
     ];
   }
   if(id==='spikeTrap'){
-    const _r=200+(lv-1)*22;
+    const _r=300+(lv-1)*15;
     const _slow=Math.min(90,70+(lv-1)*2);
     return [
       [_L('반경','Radius'),_r+'px','#ddaa66'],
