@@ -69,12 +69,14 @@ EXODUSER: HELL LORD / FDG
 
 ## [G] SPRITE PRODUCTION RULE (LOCKED)
 
-- 파이프라인: **PixelLab** `mannequin`, 8-dir, `low top-down`, 224×224 → 인게임 **48×48** 다운스케일.
-- 인게임 프레임: 전사와 동일 **idle 2 + walk 8**(현행 적용분). 추가 상태(attack-deploy/whirl/throw/dash)는 생성 시 방향·프레임수를 `game.html` + `PIXELLAB_PROMPT.md`에 동시 반영.
+> **v1.2.1 (2026-08-16)**: 생산 도구만 개정. 계약(8dir, 시계 파일, idle2+walk8, 48px, 투명 배경)은 유지. PixelLab `mannequin` 신규 생성은 주인공 경로에서 폐기한다. 본체는 identity lock → video-first → 48px 다운. 상세: `docs/4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md` A.5.
+
+- 파이프라인 (v1.2 원문, 폐기된 생성 수단): ~~PixelLab `mannequin`~~ → **video-first**. 8-dir, `low top-down`, 제작 마스터 224–512 → 인게임 **48×48** 다운스케일.
+- 인게임 프레임: 전사와 동일 **idle 2 + walk 8**(현행 적용분). 추가 상태(attack-deploy/whirl/throw/dash)는 생성 시 방향·프레임수를 `game.html` + 본 스펙 v1.2.1에 동시 반영 (`PIXELLAB_PROMPT.md`는 역사 문서).
 - 파일명 시방향: `12,1,3,5,6,7,9,11`. rotations 좌 2프레임(방향 혼재) 제외, idle 2프레임=walk `frame_000` 복제.
 - 224→48 다운스케일 시 **단검은 1~2px** — 식별 실루엣은 **포니테일 + 척추 블레이드 + 찢긴 스커트-날개**가 담당. 단검은 노이즈화되므로 **단측 1개로 최소화(가독 우선)**.
 - 검정 무투명 배경 프레임별 투명화 후 `contain`, 빈 영역 `RGBA 0,0,0,0`.
-- **PixelLab 생성/대량 이미지 제작은 본 LOCK 확정 후 별도 단계** — 본 문서는 생성 전 SPEC LOCK만.
+- ~~PixelLab 생성/대량 이미지 제작은 본 LOCK 확정 후 별도 단계~~ **폐기 (v1.2.1).** 본체 생성 = video-first. PixelLab `create_character` 금지.
 
 ## [H] 실제 CONFLICT 해결 내용 (7 검토항목 대응)
 
@@ -89,6 +91,8 @@ EXODUSER: HELL LORD / FDG
 | 7 | 선택화면 vs 48px sprite 식별성 | 단검 2 = 다운스케일 노이즈 | 실루엣축=포니테일+척추블레이드+스커트, 단검 1로 노이즈 저감 |
 
 ## [I] 다음 이미지 생성용 LOCKED PROMPT
+
+> **v1.2.1 HISTORICAL.** PixelLab 입력용으로 잠갔던 문장이다. 주인공 생산은 video-first / Imagine edit-chain. 아래 텍스트는 **장비·실루엣 설명의 참고**로만 남긴다. 이 프롬프트로 PixelLab `create_character`를 돌리지 말 것.
 
 **IDLE (canon, v1.2):**
 ```
@@ -117,6 +121,6 @@ greatsword, the single curved dagger drawn in the LEFT hand, ragged skirt shreds
 ## 미해결(별도 트랙 — 본 LOCK 범위 밖)
 
 - v1_1 [9] 미결(밸런스/판정 비용 등)은 기구 트랙 유지. 본 문서는 **비주얼/장비 LOCK만**.
-- attack-deploy/whirl/throw/dash 스프라이트 상태 실제 생성은 LOCK 확정 후 진행(PixelLab 단계).
+- attack-deploy/whirl/throw/dash 스프라이트 상태 실제 생성은 LOCK 확정 후 진행(**video-first**, 구 PixelLab 단계 폐기).
 
 FDG / EXODUSER: HELL LORD / (c) 2026 SIM DOJIN

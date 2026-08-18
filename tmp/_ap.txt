@@ -1,0 +1,55 @@
+==== AUTOPOT VERIFY (port 3333) ====
+{
+  "reached_gameplay": true,
+  "result": {
+    "attrs": {
+      "min": "30",
+      "max": "99",
+      "step": "1"
+    },
+    "clamp": {
+      "30": "30",
+      "60": "60",
+      "95": "95",
+      "99": "99",
+      "100": "99"
+    },
+    "roundtrip": {
+      "30": 0.3,
+      "60": 0.6,
+      "99": 0.99
+    },
+    "populate": {
+      "0.99": "99",
+      "0.95": "95",
+      "0.6": "60",
+      "0.3": "30"
+    },
+    "deadwire": {
+      "at80pct_thr010": {
+        "missing": 1479,
+        "healAmt": 100,
+        "condMissingGEHeal": true,
+        "refsThreshold": false
+      },
+      "at80pct_thr099": {
+        "missing": 1479,
+        "healAmt": 100,
+        "condMissingGEHeal": true,
+        "refsThreshold": false
+      }
+    }
+  },
+  "transitions": [
+    {
+      "si": 1,
+      "ok": true
+    },
+    {
+      "si": 0,
+      "ok": true
+    }
+  ],
+  "pageerrors": [],
+  "console_errors": []
+}

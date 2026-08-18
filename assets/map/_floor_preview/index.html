@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>장별 바닥 프레임</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0a0a0a;color:#ccc;font:13px/1.4 sans-serif;padding:16px}
+h1{color:#ffea00;font-size:16px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.card{background:#141414;border:1px solid #333;border-radius:6px;overflow:hidden}
+.swatch{height:220px;image-rendering:pixelated;background-repeat:repeat;background-size:128px 128px}
+.meta{padding:8px 10px}
+.meta b{color:#eee;display:block}
+.meta span{color:#888;font-size:11px}
+</style></head><body>
+<h1>장별 바닥 프레임 — 200×200 필드에 256px 타일링</h1>
+<div class="grid" id="g"></div>
+<script>
+const CH=[
+  {n:'1장 썩은 숲',src:'../ch1/ground_dark_soil.png',col:'#66ee55'},
+  {n:'2장 벌레굴',src:'../ch2/ground.png?v=detail',col:'#aacc44'},
+  {n:'3장 얼음굴',src:'../ch3/ground.png?v=detail',col:'#44ddee'},
+  {n:'4장 화염지대',src:'../ch4/ground.png?v=detail',col:'#ff8844'},
+  {n:'5장 지옥 군단',src:'../ch5/ground.png?v=detail',col:'#ffcc44'},
+  {n:'6장 사도의 마굴',src:'../ch6/ground.png?v=detail',col:'#bb77ff'},
+  {n:'7장 지옥성',src:'../ch7/ground.png?v=detail',col:'#cc88ff'}
+];
+const g=document.getElementById('g');
+CH.forEach((c,i)=>{
+  const el=document.createElement('div');el.className='card';
+  el.innerHTML='<div class="swatch" style="background-image:url(\''+c.src+'\');outline:2px solid '+c.col+'"></div><div class="meta"><b>'+c.n+'</b><span>hell '+i+' · '+c.src+'</span></div>';
+  g.appendChild(el);
+});
+</script>
+</body></html>

@@ -1,0 +1,74 @@
+==== PET BUILD-ADVICE VERIFY (port 3333) ====
+{
+  "reached_gameplay": true,
+  "STR_build": {
+    "fired": [],
+    "stats": {
+      "str": 100,
+      "dex": 5,
+      "int": 5,
+      "lck": 0,
+      "vit": 0
+    },
+    "grit": 0,
+    "lv": 60
+  },
+  "INT_build": {
+    "fired": [
+      "has_ap",
+      "enh_hint",
+      "parry_low",
+      "idle_noE",
+      "chapter_0",
+      "build_vit_low"
+    ],
+    "stats": {
+      "str": 5,
+      "dex": 5,
+      "int": 100,
+      "lck": 0,
+      "vit": 0
+    },
+    "grit": 0,
+    "lv": 60
+  },
+  "LCK_build": {
+    "fired": [
+      "has_ap",
+      "enh_hint",
+      "parry_low",
+      "idle_noE",
+      "chapter_0",
+      "build_vit_low"
+    ],
+    "stats": {
+      "str": 40,
+      "dex": 5,
+      "int": 5,
+      "lck": 40,
+      "vit": 0
+    },
+    "grit": 0,
+    "lv": 60
+  },
+  "TANK_build": {
+    "fired": [
+      "has_ap",
+      "enh_hint",
+      "parry_low",
+      "idle_noE",
+      "chapter_0",
+      "build_vit_low"
+    ],
+    "stats": {
+      "str": 200,
+      "dex": 5,
+      "int": 5,
+      "lck": 0,
+      "vit": 0
+    },
+    "grit": 50,
+    "lv": 60
+  },
+  "pageerrors": []
+}

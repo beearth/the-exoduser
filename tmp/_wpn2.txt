@@ -1,0 +1,322 @@
+==== WEAPON NAME VERIFY (port 3333) ====
+{
+  "reached_gameplay": true,
+  "unit_weaponName": {
+    "sword": "녹슨 검",
+    "dagger": "녹슨 단검",
+    "hammer": "녹슨 해머",
+    "mace": "녹슨 메이스",
+    "club": "녹슨 곤봉",
+    "axe": "녹슨 도끼",
+    "spear": "녹슨 창"
+  },
+  "generation": {
+    "sword": [
+      {
+        "tier": 0,
+        "name": "녹슨 검",
+        "wtype": "sword",
+        "emoji": "⚔️",
+        "badge": "검",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 2,
+        "name": "흑요석 검",
+        "wtype": "sword",
+        "emoji": "⚔️",
+        "badge": "검",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 4,
+        "name": "천벌의 검",
+        "wtype": "sword",
+        "emoji": "⚔️",
+        "badge": "검",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      }
+    ],
+    "dagger": [
+      {
+        "tier": 0,
+        "name": "녹슨 단검",
+        "wtype": "dagger",
+        "emoji": "🗡️",
+        "badge": "단검",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 2,
+        "name": "흑요석 단검",
+        "wtype": "dagger",
+        "emoji": "🗡️",
+        "badge": "단검",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 4,
+        "name": "천벌의 단검",
+        "wtype": "dagger",
+        "emoji": "🗡️",
+        "badge": "단검",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      }
+    ],
+    "hammer": [
+      {
+        "tier": 0,
+        "name": "녹슨 해머",
+        "wtype": "hammer",
+        "emoji": "🔨",
+        "badge": "해머",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 2,
+        "name": "흑요석 해머",
+        "wtype": "hammer",
+        "emoji": "🔨",
+        "badge": "해머",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 4,
+        "name": "천벌의 해머",
+        "wtype": "hammer",
+        "emoji": "🔨",
+        "badge": "해머",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      }
+    ],
+    "mace": [
+      {
+        "tier": 0,
+        "name": "녹슨 메이스",
+        "wtype": "mace",
+        "emoji": "⚔️",
+        "badge": "메이스",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 2,
+        "name": "흑요석 메이스",
+        "wtype": "mace",
+        "emoji": "⚔️",
+        "badge": "메이스",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 4,
+        "name": "천벌의 메이스",
+        "wtype": "mace",
+        "emoji": "⚔️",
+        "badge": "메이스",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      }
+    ],
+    "club": [
+      {
+        "tier": 0,
+        "name": "녹슨 곤봉",
+        "wtype": "club",
+        "emoji": "⚔️",
+        "badge": "곤봉",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 2,
+        "name": "흑요석 곤봉",
+        "wtype": "club",
+        "emoji": "⚔️",
+        "badge": "곤봉",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 4,
+        "name": "천벌의 곤봉",
+        "wtype": "club",
+        "emoji": "⚔️",
+        "badge": "곤봉",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      }
+    ],
+    "axe": [
+      {
+        "tier": 0,
+        "name": "녹슨 도끼",
+        "wtype": "axe",
+        "emoji": "🪓",
+        "badge": "도끼",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 2,
+        "name": "흑요석 도끼",
+        "wtype": "axe",
+        "emoji": "🪓",
+        "badge": "도끼",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 4,
+        "name": "천벌의 도끼",
+        "wtype": "axe",
+        "emoji": "🪓",
+        "badge": "도끼",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      }
+    ],
+    "spear": [
+      {
+        "tier": 0,
+        "name": "녹슨 창",
+        "wtype": "spear",
+        "emoji": "⚔️",
+        "badge": "창",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 2,
+        "name": "흑요석 창",
+        "wtype": "spear",
+        "emoji": "⚔️",
+        "badge": "창",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      },
+      {
+        "tier": 4,
+        "name": "천벌의 창",
+        "wtype": "spear",
+        "emoji": "⚔️",
+        "badge": "창",
+        "name_has_type": true,
+        "name_has_daegeom": false,
+        "card_has_type": true,
+        "wtype_ok": true
+      }
+    ]
+  },
+  "migration_roundtrip": {
+    "restoreError": null,
+    "before": [
+      {
+        "id": 1001,
+        "name": "녹슨 대검",
+        "wtype": "axe",
+        "atk": 10
+      },
+      {
+        "id": 1002,
+        "name": "심판의 대검",
+        "wtype": "spear",
+        "atk": 20
+      },
+      {
+        "id": 1003,
+        "name": "흑요석 대검",
+        "wtype": "sword",
+        "atk": 15
+      }
+    ],
+    "after": {
+      "axe": {
+        "name": "녹슨 도끼",
+        "wtype": "axe",
+        "atk": 10,
+        "tier": 0,
+        "nameMig": 1
+      },
+      "spear": {
+        "name": "심판의 창",
+        "wtype": "spear",
+        "atk": 20,
+        "tier": 3,
+        "nameMig": 1
+      },
+      "sword": {
+        "name": "흑요석 검",
+        "wtype": "sword",
+        "atk": 15,
+        "tier": 2,
+        "nameMig": 1
+      }
+    }
+  },
+  "transitions": [
+    {
+      "si": 1,
+      "ok": true
+    },
+    {
+      "si": 2,
+      "ok": true
+    },
+    {
+      "si": 0,
+      "ok": true
+    }
+  ],
+  "pageerrors": [],
+  "console_errors": []
+}

@@ -1,0 +1,20 @@
+==== PET COLLECT AUDIT (port 3333) ====
+{
+  "reached_gameplay": true,
+  "runtime": {
+    "itemsBefore": 5,
+    "itemsStillOnGround": 5,
+    "itemsPicked": 0,
+    "everEnteredFetch": false,
+    "petStates": {
+      "crow": "follow",
+      "cat": "follow",
+      "xbow": "follow",
+      "iris": "follow"
+    }
+  },
+  "strings": {
+    "startScreen_hasAutoCollect": true
+  },
+  "pageerrors": []
+}

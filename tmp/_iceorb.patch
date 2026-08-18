@@ -1,0 +1,13 @@
+diff --git a/game.html b/game.html
+index 14d0d30a..8169cb8d 100644
+--- a/game.html
++++ b/game.html
+@@ -37071,7 +37169,7 @@ const SKILL_LIST=[
+   {id:'execution',name:'처형',cat:'ult',act:true,ult:true,emoji:'⚔',desc:'X키: 그로기 보스 전용. 보스 현재HP 20%(+2%/Lv) + 무기뎀×30(+21%/Lv, 20Lv=150배) + 보스HP 30% 순수뎀. 섬광 돌진 연출. HP/MP/ST 10% 소모. 쿨 5초',descEn:'X key: Groggy boss only. Boss current HP 20%(+2%/Lv) + weapon DMG×30(+21%/Lv, Lv20=150×) + boss HP 30% pure DMG. Flash dash. HP/MP/ST 10% cost. CD 5s',spCost:10,matCost:100,cd:300,up:true,upSp:5,upMat:0},
+   // [MOVED TO PASSIVE_DEF] demonRevive → pDemon, humanity → pHuman
+   // [SKILL REMOVED 2026-04-10] bladeShot (붉은꽃) — 석궁 개편
+-  {id:'iceOrb',name:'얼음보주',cat:'def',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 48발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+2 뎀+15%',descEn:'Enter ice — invincible. Re-press to shatter → 48 ice blades fan spread (MP 40, CD 20s). Per Lv blades+2 DMG+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
++  {id:'iceOrb',name:'얼음보주',cat:'def',act:true,emoji:'❄',desc:'얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 8발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+4 뎀+15%',descEn:'Enter ice — invincible. Re-press to shatter → 8 ice blades fan spread (MP 40, CD 20s). Per Lv blades+4 DMG+15%',spCost:10,matCost:100,cd:1200,up:true,upSp:5,upMat:0},
+   {id:'needleShot',name:'만화방창 II',cat:'bow',act:true,emoji:'✨',desc:'[고정: T 자동] 초고속 바늘 연발. 1렙 2발, 5렙마다 +1발. 관통 없음. ST 8. 쿨 1.5초. Lv당 뎀+100%',descEn:'[Fixed: T auto] Ultra-fast needles burst. Lv1 2 shots, +1 per 5 levels. No pierce. ST 8. CD 1.5s',spCost:10,matCost:80,cd:90,up:true,upSp:5,upMat:0},
+   // [SKILL REMOVED 2026-05-01] energyShot (마력연사) — 삭제
+   {id:'arcLaser',name:'얼음송곳',cat:'magic',emoji:'❄',desc:'E홀드: 직선 관통 냉기빔 채널링. MP 8+Lv/초 지속소모. 폭160+(Lv×10)px, 사거리1200+Lv×80. 관통+감속. Lv당 뎀+21%',descEn:'E hold: Straight piercing ice beam channeling. MP 8+Lv/s drain. Width 160+(Lv×10)px, range 1200+Lv×80. Pierce+slow. Per Lv DMG+21%',spCost:10,matCost:100,up:true,upSp:5,upMat:0},

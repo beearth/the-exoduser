@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>CH1 MASTER 12 plates</title>
+<style>
+  body{margin:0;background:#0a0808;color:#c8b8a0;font:14px/1.4 sans-serif}
+  h1{font-size:16px;margin:16px 20px 8px}
+  .refs{display:flex;gap:12px;padding:0 20px 16px}
+  .refs img{height:120px;border:1px solid #333}
+  .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 20px 24px;max-width:1200px}
+  .cell{background:#161010;border:1px solid #3a2a22;min-height:180px;position:relative}
+  .cell img{width:100%;height:180px;object-fit:cover;display:block}
+  .cell .id{position:absolute;left:6px;top:6px;background:#000a;padding:2px 6px;font-size:12px}
+  .cell.empty{display:flex;align-items:center;justify-content:center;color:#664}
+  .note{padding:0 20px 24px;max-width:900px;color:#978}
+</style>
+</head>
+<body>
+<h1>CH1 12 plates — A 북쪽 / C 남쪽 시작</h1>
+<div class="refs">
+  <img src="CH1_STYLE_VISTA.jpg" alt="vista">
+  <img src="HELL_DESCENT_STRIP.jpg" alt="strip">
+</div>
+<div class="grid" id="g"></div>
+<div class="note">파일명: plates/CH1_A1.png … CH1_C4.png. 없으면 칸이 비어 있다.</div>
+<script>
+const ids=['A1','A2','A3','A4','B1','B2','B3','B4','C1','C2','C3','C4'];
+const g=document.getElementById('g');
+ids.forEach(id=>{
+  const d=document.createElement('div');d.className='cell empty';
+  d.innerHTML='<span class="id">'+id+'</span>'+id;
+  const img=new Image();
+  img.onload=()=>{d.className='cell';d.innerHTML='';d.appendChild(img);const s=document.createElement('span');s.className='id';s.textContent=id;d.appendChild(s)};
+  img.src='plates/CH1_'+id+'.png?t='+Date.now();
+  g.appendChild(d);
+});
+</script>
+</body>
+</html>

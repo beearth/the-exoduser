@@ -1,0 +1,42 @@
+==== PET-STALE VERIFY (port 3333) ====
+{
+  "reached_gameplay": true,
+  "start_card": {
+    "html_has_autocollect": false,
+    "html_has_R_pickup": true,
+    "snippet": "R — 아이템 줍기 TAB — 인벤토리 ESC — 설정 물약은 설정한 HP% 이하 시 자동 사용"
+  },
+  "loading_tips": {
+    "autocollect_tips": [],
+    "ko_R_tip": null,
+    "en_R_tip": "💡 Press R to collect items"
+  },
+  "pet_autocollect": {
+    "itemsPicked": 0,
+    "itemsOnGround": 5,
+    "everFetch": false
+  },
+  "r_key_pickup": {
+    "picked": true
+  },
+  "transitions": [
+    {
+      "si": 1,
+      "ok": true
+    },
+    {
+      "si": 2,
+      "ok": true
+    },
+    {
+      "si": 3,
+      "ok": true
+    },
+    {
+      "si": 0,
+      "ok": true
+    }
+  ],
+  "pageerrors": [],
+  "console_errors": []
+}

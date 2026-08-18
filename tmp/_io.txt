@@ -1,0 +1,43 @@
+==== ICEORB VERIFY (port 3333) ====
+{
+  "reached_gameplay": true,
+  "tooltip": {
+    "found": true,
+    "desc": "얼음 속에 들어가 무적 상태. 다시 누르면 파쇄 → 얼음칼날 8발 부채꼴 방사 (MP 40, 쿨 20초). Lv당 칼날+4 뎀+15%",
+    "descEn": "Enter ice — invincible. Re-press to shatter → 8 ice blades fan spread (MP 40, CD 20s). Per Lv blades+4 DMG+15%",
+    "ko_has_8": true,
+    "ko_has_plus4": true,
+    "ko_has_48": false,
+    "en_has_8": true,
+    "en_has_plus4": true,
+    "en_has_48": false
+  },
+  "blades_lv1": {
+    "lv": 1,
+    "spawned": 8
+  },
+  "blades_lv10": {
+    "lv": 10,
+    "spawned": 44
+  },
+  "transitions": [
+    {
+      "si": 1,
+      "ok": true
+    },
+    {
+      "si": 2,
+      "ok": true
+    },
+    {
+      "si": 3,
+      "ok": true
+    },
+    {
+      "si": 0,
+      "ok": true
+    }
+  ],
+  "pageerrors": [],
+  "console_errors": []
+}

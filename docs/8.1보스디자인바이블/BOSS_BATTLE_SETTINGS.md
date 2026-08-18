@@ -1,7 +1,8 @@
 # 보스 배틀 세팅 바이블
 
-> 최종 업데이트: 2026-05-06  
+> 최종 업데이트: 2026-08-18  
 > 담당 코드: `game.html` — `genBossArena()`, `_enterBossArena()`, `_b3animate()`, `_poiseReset()`, 보스 테스트베드
+> 전투 정체성/전조/페이즈 연극 옵트인 기획: [`../4.0케릭터스프라이트 디자인/캐릭터_몬스터_보스_최적화디자인_v1.md`](../4.0케릭터스프라이트%20디자인/캐릭터_몬스터_보스_최적화디자인_v1.md) Track C. 본 파일의 HP×8·포이즈·아레나 수치는 유지. `2_3` 불변.
 
 ---
 
@@ -324,11 +325,24 @@ if(bE.stunned>0){ _b3pivot.position.x+=sin(...); _b3pivot.position.y+=cos(...) }
 
 ### 실행
 
+**node `server.cjs` :3333 에서만 연다.** `python http.server` 금지(API 404).
+
 ```
-http://localhost:3333/game.html?bosstest=0
+http://127.0.0.1:3333/game.html?bosstest=0
+http://127.0.0.1:3333/game.html?bosstest=2
 ```
 
-`N` = 스테이지 인덱스 (0~34). 지정 스테이지 보스 즉시 소환.
+`N` = 스테이지 인덱스 (0~34). 지정 스테이지 **원형 보스 아레나**에 즉시 소환.
+
+| 항목 | 값 |
+|---|---|
+| 서버 | `C:\nvm4w\nodejs\node.exe server.cjs` 포트 3333 |
+| 필드 | `initStage` 필드/고정맵 **생성 금지** (`_bossTestReq>=0`이면 `_enterBossArena()` 직행) |
+| 인트로 | `_startIntroCutscene` 스킵 (`G._cutsceneDone=true`, `G.on=true`) |
+| 테스트베드 | `G._bossArena` 준비 후 버프/UI. 필드 `initStage`를 다시 호출하지 않음 |
+| si2 | 지옥기형 (`?bosstest=2`) |
+
+> 2026-08-18: 예전엔 부트가 `initStage`(1장 필드)를 만든 뒤 2초 후 아레나로 바꾸려다, 부트가 더 느리면 필드가 아레나를 덮어썼다. 지금은 `?bosstest`면 필드 자체를 만들지 않는다.
 
 ### 기능
 
@@ -340,7 +354,7 @@ http://localhost:3333/game.html?bosstest=0
 | 갓 모드 | 플레이어 무적 + 스킬 프로필 MAX |
 | 보스 재소환 | `_enterBossArena()` 재호출 후 500ms 대기로 `_btBoss` 갱신 |
 
-테스트베드 최초 진입은 `_enterBossArena()`의 플레이어 6시 입구 배치를 유지한다. 테스트베드 활성 중(`window._btActive=true`)에는 본게임의 플레이어+보스 중간점 카메라 분기를 사용하지 않고 `P.x/y + look-ahead`만 추적하며, 맵 경계 카메라 클램프도 적용하지 않아 **플레이어 캐릭터를 화면 중앙 기준으로 유지**한다. 보스 위치나 플레이어 월드 좌표를 중앙으로 강제 이동하지 않으며, 본게임 보스 아레나 카메라·클램프 규칙은 변경하지 않는다.
+본게임 `_enterBossArena()`는 플레이어를 6시 입구에 둔다. **`?bosstest=N`만** 보스 남쪽 10타일(`P.y = boss.y + 10*T`)에 세워 원형 아레나와 보스가 첫 프레임에 보이게 한다(6시 립은 보스와 ~2000px라 빈 바닥만 보여 필드로 오인됨). 테스트베드 활성 중(`window._btActive=true`)에는 본게임의 플레이어+보스 중간점 카메라 분기를 사용하지 않고 `P.x/y + look-ahead`만 추적한다. 본게임 보스 아레나 카메라·클램프·6시 입구 규칙은 변경하지 않는다.
 
 ### 주요 전역 변수
 

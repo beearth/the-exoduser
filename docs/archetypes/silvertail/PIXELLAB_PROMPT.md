@@ -57,7 +57,7 @@ PixelLab ZIP의 최신 `Idle/animations/walk`만 `img/exoduser_silvertail/`에 �
 
 전사와 같은 내부 8방향 행 순서를 사용한다. 실버테일 에셋 파일명은 방향 영문 대신 시 방향만 사용한다: `12, 1, 3, 5, 6, 7, 9, 11`. 수동 확인 매핑은 5시·7시만 같은 walk 원본을 서로 교환한다. 방향이 섞인 PixelLab `rotations`는 전 방향에서 완전히 제외한다.
 
-재동기화 명령은 `npm run pixellab:silvertail:sync`이다. 이 명령은 API의 만료 가능한 개별 프레임 URL 대신 캐릭터 ZIP을 사용하며, 위의 5시↔7시 walk 원본 교환과 rotations 제외만 항상 적용한다. 게임 로더는 실버테일 PNG에 `?v=20260808-clockfiles-v11`를 붙여 이전 이미지 캐시를 사용하지 않는다.
+재동기화 명령은 `npm run pixellab:silvertail:sync`이다. 이 명령은 API의 만료 가능한 개별 프레임 URL 대신 캐릭터 ZIP을 사용하며, 위의 5시↔7시 walk 원본 교환과 rotations 제외만 항상 적용한다. 게임 로더는 실버테일 PNG에 `?v=` + `_SILVERTAIL_ASSET_VERSION`를 붙인다. 2026-08-17부터 `20260817-keyart-body-v1` (키아트 본체). 구값 `20260808-clockfiles-v11`은 PixelLab 시트 시절.
 
 ## 상태(state)별 생성 필요
 

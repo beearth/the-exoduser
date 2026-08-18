@@ -749,7 +749,14 @@ const HUD_ICON = {
 | 상단 중앙 | `#stageProgressFill` | 숫자 없이 2px 진행선만 표시 | `G._stageKills / G._totalSpawned × 100` | `updateHUD(true)`, width `.6s ease-out` |
 | 우측 상단 | `#lvLbl` → Roman numeral | 현대식 `LV` 라벨/대형 숫자 대신 I~MMMCMXCIX. 프레임 없이 단독 표기 | `P.lv` | `updateHUD(true)`, `_hudRoman()` |
 | 우측 상단 | `#expTxt` → `{현재 EXP} / {필요 EXP}` | 경험치 바 없이 텍스트만 표시 | `P.exp`, `P.maxExp` | `updateHUD()` |
-| 우측 상단 | `#killCnt`, `#matCnt`, `#expBar` | 플레이 HUD에서는 숨김. 처치·악의·게이지 UI를 노출하지 않음 | `G.kills`, `G.mats`, `P.exp` | 기존 갱신/DOM은 호환을 위해 보존 |
+| 우측 상단(목표 패널 `#mmLvl`) | `#killCnt` → `{처치} / {총스폰}` | 미니맵 옆 목표 패널에 **표시됨**(구 "숨김" 기술은 stale). 현재 스테이지 진행도(`#stageProgressFill`과 동일 분모) | `G._stageKills / G._totalSpawned` | `updateHUD(true)`, `_hudPulse('killCnt',_stageK)` |
+| 우측 상단 | `#matCnt`, `#expBar` | 처치·악의·게이지 UI 노출 축소 방향 | `G.mats`, `P.exp` | 기존 갱신/DOM은 호환을 위해 보존 |
+
+> **[2026-08-18 correctness fix] 처치 카운터 분자 stale (game.html:50934)**
+> - **버그**: `#killCnt`가 `G.kills`(런 전체 누적) / `G._totalSpawned`(스테이지별 스폰) 조합이라, 2번째 지역부터 분자>분모(예: `150 / 92`)로 100% 초과 표시. 바로 아래 진행바(`#stageProgressFill`)는 `G._stageKills/_totalSpawned`로 정상 → 카운터만 어긋남.
+> - **canonical**: 스테이지 진행 지표는 `G._stageKills`(initStage에서 0 리셋, 킬마다 `G.kills`와 동시 증가). 게이트 해금(80%)·진행바 모두 `_stageKills` 사용.
+> - **수정**: 분자를 `G.kills`→`G._stageKills`로 교체(`_hudPulse`도 `_stageK` 기준). 밸런스/기능 변경 없음(표시값만 정정).
+> - **검증**: 라이브 시뮬(kills=150,stageKills=20,total=92) `150/92`→`20/92`, 진행바 21.7%와 일치. 스테이지 전환 3회 매번 per-stage 리셋(`1/650`→`1/1000`→`1/1100`), 누적 `G.kills`는 유지. pageerror 0.
 
 ### 지역 진입 연출
 

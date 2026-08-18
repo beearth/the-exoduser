@@ -1,0 +1,72 @@
+==== MINPICKLV VERIFY (port 3333) ====
+{
+  "reached_gameplay": true,
+  "threshold_values": {
+    "0": -1,
+    "1": 0,
+    "2": 100,
+    "4": 300,
+    "6": 500,
+    "7": 900
+  },
+  "drop_low_off": {
+    "plv": 50,
+    "tier": 0,
+    "thr": -1,
+    "expectedReq": 40,
+    "added": 20,
+    "minReq": 40,
+    "maxReq": 40,
+    "belowThreshold": 0
+  },
+  "drop_low_tier2": {
+    "plv": 50,
+    "tier": 2,
+    "thr": 100,
+    "expectedReq": 40,
+    "added": 0,
+    "minReq": null,
+    "maxReq": null,
+    "belowThreshold": 0
+  },
+  "drop_high_tier2": {
+    "plv": 500,
+    "tier": 2,
+    "thr": 100,
+    "expectedReq": 490,
+    "added": 20,
+    "minReq": 490,
+    "maxReq": 490,
+    "belowThreshold": 0
+  },
+  "drop_high_tier6": {
+    "plv": 500,
+    "tier": 6,
+    "thr": 500,
+    "expectedReq": 490,
+    "added": 0,
+    "minReq": null,
+    "maxReq": null,
+    "belowThreshold": 0
+  },
+  "transitions": [
+    {
+      "si": 1,
+      "ok": true
+    },
+    {
+      "si": 2,
+      "ok": true
+    },
+    {
+      "si": 3,
+      "ok": true
+    },
+    {
+      "si": 0,
+      "ok": true
+    }
+  ],
+  "pageerrors": [],
+  "console_errors": []
+}

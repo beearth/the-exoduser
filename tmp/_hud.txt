@@ -1,0 +1,61 @@
+==== HUD SWEEP (port 3333) ====
+{
+  "reached_gameplay": true,
+  "snaps": [
+    {
+      "tag": "spawn",
+      "bad": [],
+      "hp": 8944,
+      "mhp": 8944,
+      "mp": 3881,
+      "lv": 500,
+      "hud": {}
+    },
+    {
+      "tag": "after_skills",
+      "bad": [],
+      "hp": 8944,
+      "mhp": 8944,
+      "mp": 3818,
+      "lv": 500,
+      "hud": {}
+    },
+    {
+      "tag": "after_trans",
+      "bad": [],
+      "hp": 8944,
+      "mhp": 8944,
+      "mp": 3881,
+      "lv": 500,
+      "hud": {}
+    }
+  ],
+  "transitions": [
+    {
+      "si": 1,
+      "ok": true
+    },
+    {
+      "si": 2,
+      "ok": true
+    },
+    {
+      "si": 3,
+      "ok": true
+    },
+    {
+      "si": 0,
+      "ok": true
+    },
+    {
+      "si": 4,
+      "ok": true
+    }
+  ],
+  "settings": "panel-exists",
+  "console_counts": {
+    "warning": 104
+  },
+  "interesting_errors": [],
+  "pageerrors": []
+}
