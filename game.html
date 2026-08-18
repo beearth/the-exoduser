@@ -46670,7 +46670,7 @@ function drawP(){
   }
   // ══ 폭풍소환 조준 인디케이터 (마우스 커서 위치 — 악의폭풍과 동일) ══
   if(P._mmAiming){
-    const _mmSlvR=P.skills.maliceMortar||1;const _aimR=200+(_mmSlvR-1)*22;
+    const _mmSlvR=P.skills.maliceMortar||1;const _aimR=400+(_mmSlvR-1)*18; // 실제 소용돌이 반경(_mmR)과 일치 — 조준 미리보기 정합
     const _iceFuse=P.skills.iceOrb>=1&&_isFused('iceMortar');
     const _mmTx=P.x+Math.cos(P.facing)*(P._mmDist||150),_mmTy=P.y+Math.sin(P.facing)*(P._mmDist||150);
     const _mt=_now*.06;
