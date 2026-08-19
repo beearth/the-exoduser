@@ -1,0 +1,120 @@
+{
+  "file": "G:\\exoduser\\assets\\map\\ch1\\master\\CH1_MASTER_16x9.jpg",
+  "bytes": 323902,
+  "px": [
+    1280,
+    720
+  ],
+  "ar": 1.777778,
+  "ar_16_9": 1.777778,
+  "format": "JPEG 24bpp",
+  "class_pct": {
+    "playable_dirt": 52.27,
+    "swamp": 0.0,
+    "bone": 0.68,
+    "dark_tree": 47.02,
+    "hellfire": 0.57
+  },
+  "center_box_65area": {
+    "bbox": [
+      124,
+      70,
+      1155,
+      650
+    ],
+    "dirt_pct_inside": 69.65,
+    "swamp_pct_inside": 0.0,
+    "bone_pct_inside": 0.94,
+    "dark_pct_inside": 29.36
+  },
+  "center_box_70area": {
+    "bbox": [
+      105,
+      59,
+      1175,
+      661
+    ],
+    "dirt_pct_inside": 67.16,
+    "swamp_pct_inside": 0.0,
+    "bone_pct_inside": 0.92,
+    "dark_pct_inside": 31.87
+  },
+  "best_ellipse": {
+    "rx": 588,
+    "ry": 337,
+    "area_pct": 67.54,
+    "dirt_inside_pct": 67.42
+  },
+  "inner_50_box": {
+    "bbox": [
+      320,
+      180,
+      960,
+      540
+    ],
+    "nonplay_pct": 10.39,
+    "bone_px": 896,
+    "swamp_px": 0,
+    "dark_px": 23012,
+    "fire_px": 24
+  },
+  "vignette": {
+    "center_L": 50.71,
+    "corners_L": {
+      "TL": 18.54,
+      "TR": 20.33,
+      "BL": 17.43,
+      "BR": 15.84
+    },
+    "corner_vs_center": {
+      "TL": -32.17,
+      "TR": -30.38,
+      "BL": -33.28,
+      "BR": -34.87
+    },
+    "edge_strip_L": 24.33,
+    "edge_minus_center": -26.38
+  },
+  "seam_math": {
+    "max_diff": 0,
+    "mean_diff": 0.0,
+    "mismatch_px": 0,
+    "pixel_identical": true
+  },
+  "seam_content": {
+    "vertical_mid_jump": 2.851,
+    "horizontal_mid_jump": 3.607,
+    "typical_v_jump": 5.123,
+    "typical_h_jump": 6.096
+  },
+  "field_one": {
+    "px": [
+      1448,
+      1086
+    ],
+    "ar": 1.333333,
+    "dirt_pct": 38.88,
+    "swamp_pct": 2.83,
+    "dark_pct": 58.29,
+    "bytes": 2889164,
+    "rgba_mb": 5.999
+  },
+  "playable_compare": {
+    "master_dirt_px": 481684,
+    "master_native_playable_px": 481684,
+    "kit36x27_walk_tiles": 463,
+    "kit36x27_walk_px": 740800,
+    "kit_walk_pct": 47.63,
+    "prod200_walk_tiles_est": 36100,
+    "prod200_walk_px_est": 57760000
+  },
+  "memory": {
+    "jpeg_kb": 316.3,
+    "gpu_rgba_1280x720_mb": 3.516,
+    "gpu_pot_2048x1024_mb": 8.0,
+    "gpu_if_stretch_1440x1080_mb": 5.933,
+    "gpu_if_1920x1080_mb": 7.91,
+    "gpu_if_8000x8000_mb": 244.141,
+    "gpu_if_4chunk_1024_mb": 16.0
+  }
+}

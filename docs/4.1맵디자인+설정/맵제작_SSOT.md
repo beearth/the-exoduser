@@ -1,6 +1,7 @@
 # EXODUSER 맵 제작·최적화 SSOT
 
-> 2026-08-17 | STATUS: **METHOD LOCK** (픽셀 크기·청크 px는 OPEN)
+> 2026-08-17 | STATUS: **METHOD LOCK** (픽셀 크기·청크 px는 OPEN)  
+> 2026-08-19 | CH1 본편: **OPTION B LOCK** — v2는 룩 레퍼런스. 200×200 = 타일+소품. 키트: `CH1_MAP_KIT_OptionB.md`
 > 원안: 사용자 초안. 엔진 수치는 `game.html` / `맵유형_확장기획.md`와 동기화.
 > 이미지 제작은 이 문서만 본다. 통이미지 스탬프·페인트맵 전맵 스트레치는 폐기.
 
@@ -363,14 +364,16 @@ CH1 야생 지옥 → CH2 생태계 → CH3 고대 → CH4 재해
 |------|------|
 | `assets/map/ch1/master/CH1_STYLE_VISTA.jpg` | 1장 장소성. 독늪·철창·거목·북쪽 지옥성 |
 | `assets/map/ch1/master/HELL_DESCENT_STRIP.jpg` | 카메라. 고각 쿼터뷰, 절벽 위 길. 7장 하강 |
+| `assets/map/ch1/master/CH1_MASTER_16x9.jpg` | v1 구도 레퍼런스. 원형 분지. 런타임 금지. 폐기 아님 |
+| `assets/map/ch1/master/CH1_MASTER_16x9_v2.jpg` | **COMPOSITION SSOT LOCK**. 1280×720. 구도 재생성 금지 |
+| `assets/map/ch1/master/CH1_MASTER_16x9_v2_PROD.jpg` | v2 고해상 조립 2176×1224. 4플레이트 18% overlap 블렌드. 4K native 불가 |
 
 12장 드롭: `assets/map/ch1/master/plates/CH1_A1.png` … `CH1_C4.png`  
 미리보기: `http://localhost:3333/assets/map/ch1/master/index.html`
 
-**키트 필드 테스트:** `http://localhost:3333/game.html?stage=0` 또는 `?mapTest=v4` (`?classic=1`이면 본편 1-1)  
-한 장 필드 테스트: `CH1_FIELD_ONE.png` 1448×1086. 맵 36×27 (T=40 → 1440×1080, 픽셀 1:1).  
-그림이 맵. 흙만 걸음(타원+남·북 통로). 독늪은 벽. 소품·용해골· squish 없음.  
-시작 `(16,24)` 문 `(24,4)`. 코드 `_buildKitFieldTest`.
+**키트 필드 테스트:** `http://localhost:3333/game.html?stage=0` → 기본 `CH1_MASTER_16x9_v2_PROD.jpg` (native 1:1, 55×31).  
+복구: `?stage=0&plate=fieldone` → `CH1_FIELD_ONE.png` 36×27. `?classic=1`이면 본편 1-1.  
+인게임 구도 QA: `qa_ch1_master_16x9/QA_REPORT_INGAME.md` (**NEEDS_REVISION**, 한 화면≈맵).
 
 둘째 장(스트립)이 **카메라 정답**. 첫째 장은 **1장 소품·색**. 플레이트는 스트립처럼 길을 위에서 그리고, 비스타의 독녹·철창·성을 넣는다. 강한 소실점 한 장으로 밟지 않는다.
 
@@ -379,6 +382,9 @@ CH1 야생 지옥 → CH2 생태계 → CH3 고대 → CH4 재해
 | # | 파일 | 내용 |
 |---|------|------|
 | 0 | `CH1_MASTER.png` | 4×3가 한눈에 들어오는 전체. 8192×6144 권장. 6시 시작·12시 문 |
+| 0b | `CH1_MASTER_16x9.jpg` | v1 레퍼런스. 원형 분지. 쓰지 말 것 |
+| 0c | `CH1_MASTER_16x9_v2.jpg` | COMPOSITION LOCK. 1280×720. 재생성 금지 |
+| 0d | `CH1_MASTER_16x9_v2_PROD.jpg` | 2176×1224 조립. `?stage=0` 구도 QA용. FINAL 아님. 보고: `qa_ch1_master_16x9/QA_REPORT_INGAME.md` |
 | 1–12 | `CH1_A1.png` … `CH1_C4.png` | 각 2048×2048, 인접 12% 겹침, MASTER와 같은 카메라 |
 | G | `CH1_ground.png` | 이음매 없는 흙 타일 512 또는 1024. 작은 뼈·균열 bake |
 | P | props 폴더 | 거목, 철창, 교수대, 폐허 아치 등 **배경에서 뺀** 개별 PNG, 배경 투명 |

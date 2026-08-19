@@ -1,0 +1,142 @@
+{
+  "fieldone_1920": {
+    "mw": 36,
+    "mh": 27,
+    "T": 40,
+    "world": [
+      1440,
+      1080
+    ],
+    "VW": 1920,
+    "VH": 1080,
+    "canvas": [
+      1920,
+      1080
+    ],
+    "window": [
+      1920,
+      1080
+    ],
+    "plate": "assets/map/ch1/master/CH1_FIELD_ONE.png?v=1",
+    "native": false,
+    "cam": {
+      "x": 720,
+      "y": 561
+    },
+    "player": {
+      "x": 720,
+      "y": 561.6,
+      "r": 15
+    },
+    "ens": 13,
+    "fps": 22,
+    "fpsMin": 14,
+    "ftAvg": 35.78,
+    "ftMax": 273.9
+  },
+  "prod_1920": {
+    "mw": 55,
+    "mh": 31,
+    "T": 40,
+    "world": [
+      2200,
+      1240
+    ],
+    "VW": 1920,
+    "VH": 1080,
+    "canvas": [
+      1920,
+      1080
+    ],
+    "window": [
+      1920,
+      1080
+    ],
+    "plate": "assets/map/ch1/master/CH1_MASTER_16x9_v2_PROD.jpg?v=qa-prod1",
+    "native": true,
+    "cam": {
+      "x": 1100,
+      "y": 644
+    },
+    "player": {
+      "x": 1100,
+      "y": 644.8000000000001,
+      "r": 15
+    },
+    "ens": 15,
+    "fps": 23,
+    "fpsMin": 7,
+    "ftAvg": 35.77,
+    "ftMax": 293.7
+  },
+  "prod_3440": {
+    "mw": 55,
+    "mh": 31,
+    "T": 40,
+    "world": [
+      2200,
+      1240
+    ],
+    "VW": 3440,
+    "VH": 1440,
+    "canvas": [
+      3440,
+      1440
+    ],
+    "window": [
+      3440,
+      1440
+    ],
+    "plate": "assets/map/ch1/master/CH1_MASTER_16x9_v2_PROD.jpg?v=qa-prod1",
+    "native": true,
+    "cam": {
+      "x": 1100,
+      "y": 644
+    },
+    "player": {
+      "x": 1100,
+      "y": 644.8000000000001,
+      "r": 15
+    },
+    "ens": 14,
+    "fps": 6,
+    "fpsMin": 6,
+    "ftAvg": 40.61,
+    "ftMax": 369.8
+  },
+  "prod_5120": {
+    "mw": 55,
+    "mh": 31,
+    "T": 40,
+    "world": [
+      2200,
+      1240
+    ],
+    "VW": 5120,
+    "VH": 1440,
+    "canvas": [
+      5120,
+      1440
+    ],
+    "window": [
+      5120,
+      1440
+    ],
+    "plate": "assets/map/ch1/master/CH1_MASTER_16x9_v2_PROD.jpg?v=qa-prod1",
+    "native": true,
+    "cam": {
+      "x": 1100,
+      "y": 644
+    },
+    "player": {
+      "x": 1100,
+      "y": 644.8000000000001,
+      "r": 15
+    },
+    "ens": 14,
+    "fps": 6,
+    "fpsMin": 5,
+    "ftAvg": 43.37,
+    "ftMax": 433.5
+  }
+}

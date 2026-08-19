@@ -1,0 +1,1 @@
+{'mw': 48, 'mh': 27, 'T': 40, 'VW': 1920, 'VH': 1080, 'cam': {'x': 980, 'y': 900}, 'player': {'x': 980, 'y': 900}, 'plate': 'assets/map/ch1/master/CH1_MASTER_16x9.jpg?v=qa1', 'kit': False, 'testbed': True, 'canvas': {'w': 1920, 'h': 1080}, 'window': {'w': 1920, 'h': 1080}}

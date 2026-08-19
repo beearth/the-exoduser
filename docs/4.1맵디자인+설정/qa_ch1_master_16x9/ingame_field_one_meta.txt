@@ -1,0 +1,1 @@
+{'mw': 36, 'mh': 27, 'T': 40, 'VW': 1920, 'VH': 1080, 'cam': {'x': 660, 'y': 980}, 'player': {'x': 660, 'y': 980}, 'plate': 'assets/map/ch1/master/CH1_FIELD_ONE.png?v=1', 'kit': False, 'testbed': True, 'canvas': {'w': 1920, 'h': 1080}, 'window': {'w': 1920, 'h': 1080}}

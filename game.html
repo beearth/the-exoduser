@@ -3060,6 +3060,9 @@ const _stageTestReq=(function(){const _v=new URLSearchParams(window.location.sea
 const _bossTestReq=(function(){const _v=new URLSearchParams(window.location.search).get('bosstest');return _v===null?-1:Math.max(0,~~(+_v||0))})();
 const _classicMap=new URLSearchParams(window.location.search).get('classic')==='1';
 function _wantPlateTest(){return !_classicMap&&(_mapTestReq==='v4'||_mapTestReq==='1'||_stageTestReq===0)}
+// stage=0 QA plate: default PROD. Instant restore: ?stage=0&plate=fieldone
+const _kitPlateReq=(new URLSearchParams(window.location.search).get('plate')||'').toLowerCase();
+function _kitPlateIsFieldOne(){return _kitPlateReq==='fieldone'||_kitPlateReq==='v1'}
 const _DROP_PREVIEW=new URLSearchParams(window.location.search).get('dropPreview')==='1';
 
 // 저장/표시 전 핵심 상태 정규화 (입력값 -> 출력값 동기화)
@@ -9654,7 +9657,11 @@ function _drawVistaWorld(ctx){
     const pad=Math.max(mwPx,mhPx);
     ctx.fillStyle='#0a0806';
     ctx.fillRect(-pad,-pad,mwPx+pad*2,mhPx+pad*2);
-    ctx.drawImage(im,0,0,mwPx,mhPx);
+    if(G._plateNative&&im.naturalWidth>8){
+      ctx.drawImage(im,0,0,im.naturalWidth,im.naturalHeight);
+    }else{
+      ctx.drawImage(im,0,0,mwPx,mhPx);
+    }
   }else{
     const pad=Math.max(mwPx,mhPx)*0.4;
     const dw=mwPx+pad*2,dh=mhPx+pad*2;
@@ -24075,6 +24082,10 @@ function _cloneField11(si){
   return tmpl;
 }
 function _buildKitFieldTest(){
+  if(_kitPlateIsFieldOne())return _buildKitFieldOne();
+  return _buildKitFieldProd();
+}
+function _buildKitFieldOne(){
   // CH1_FIELD_ONE.png 1448×1086. T=40 → 36×27 = 1440×1080 (픽셀 1:1)
   // 그림 한 장 = 맵. 흙만 걸음. 독늪은 벽. 소품 안 올림.
   const mw=36,mh=27,n=mw*mh,g=new Uint8Array(n);
@@ -24096,9 +24107,31 @@ function _buildKitFieldTest(){
     _testbed:1,_plate:'assets/map/ch1/master/CH1_FIELD_ONE.png?v=1'
   };
 }
+function _buildKitFieldProd(){
+  // QA TEMP: CH1_MASTER_16x9_v2_PROD.jpg 2176×1224 native. Restore: ?plate=fieldone
+  // T=40 → 55×31 = 2200×1240. Image drawn 1:1 (no stretch). Extra tiles are void pad.
+  const mw=55,mh=31,n=mw*mh,g=new Uint8Array(n);
+  const cx=27,cy=15,rx=21,ry=10,rx2=rx*rx,ry2=ry*ry;
+  for(let y=1;y<mh-1;y++)for(let x=1;x<mw-1;x++){
+    const dx=x-cx,dy=y-cy;
+    if((dx*dx)/rx2+(dy*dy)/ry2<=1)g[y*mw+x]=1;
+  }
+  for(let y=15;y<=28;y++)for(let x=18;x<=32;x++)g[y*mw+x]=1;
+  for(let y=2;y<=15;y++)for(let x=22;x<=33;x++)g[y*mw+x]=1;
+  return{
+    mw,mh,tileRLE:_rleEncodeGrid(g,n),
+    rooms:[
+      {id:'s',type:'start',cx:27,cy:27,shape:'ellipse',rx:4,ry:3},
+      {id:'b',type:'boss',cx:27,cy:4,shape:'ellipse',rx:4,ry:3}
+    ],
+    corridors:[{from:'s',to:'b',width:8,style:'cave'}],
+    spawnHoles:[{x:27,y:16,type:'M'},{x:20,y:15,type:'M'},{x:34,y:18,type:'S'}],
+    _testbed:1,_plateNative:1,_plate:'assets/map/ch1/master/CH1_MASTER_16x9_v2_PROD.jpg?v=qa-prod1'
+  };
+}
 function _buildPlateTestV4(){return _buildKitFieldTest()}
 function _getFixedMapForStage(si){
-  if(_wantPlateTest()){console.log('[MAP] field one 36x27 plate');return _buildKitFieldTest()}
+  if(_wantPlateTest()){console.log('[MAP] kit plate mode='+(_kitPlateIsFieldOne()?'fieldone':'prod'));return _buildKitFieldTest()}
   if(si>=TOTAL_STAGES)si=TOTAL_STAGES-1;
   G._zones=null;
   if(_isDungeonMap(si)&&FIXED_MAPS[si]){
@@ -24188,7 +24221,7 @@ function genFromTemplate(tmpl,si){
   const roomMap={};
 
   G._isTileRLE=_hasTileRLE;G._floorTiles=null;
-  G._testbed=!!tmpl._testbed;G._kitField=!!tmpl._kitField;G._plateSrc=tmpl._plate||((_MAP_COMPOSE[si]&&_MAP_COMPOSE[si].plate)||null);
+  G._testbed=!!tmpl._testbed;G._kitField=!!tmpl._kitField;G._plateNative=!!tmpl._plateNative;G._plateSrc=tmpl._plate||((_MAP_COMPOSE[si]&&_MAP_COMPOSE[si].plate)||null);
   G._pathImgTerrain=!!(_MAP_COMPOSE[si]&&_MAP_COMPOSE[si].path);
   G._mapPaint=!!(_MAP_COMPOSE[si]&&_MAP_COMPOSE[si].path&&_MAP_COMPOSE[si].path.paint);
   // ── 기존 카빙 방식 (항상 실행 — rooms/spawns/소환굴 정상 동작 보장) ──
@@ -46037,8 +46070,9 @@ function draw(){
   X.restore();
   if(_wantPlateTest()){
     X.save();X.setTransform(_ssaa||1,0,0,_ssaa||1,0,0);
-    X.font='bold 16px sans-serif';X.fillStyle='#000';X.fillText('PLATE 1장 36x27',13,29);
-    X.fillStyle='#ffe08a';X.fillText('PLATE 1장 36x27',12,28);
+    const _plb='PLATE 1장 '+(G.mw||'?')+'x'+(G.mh||'?');
+    X.font='bold 16px sans-serif';X.fillStyle='#000';X.fillText(_plb,13,29);
+    X.fillStyle='#ffe08a';X.fillText(_plb,12,28);
     X.restore();
   }
   const _dd4=performance.now();

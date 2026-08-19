@@ -1,0 +1,94 @@
+{
+  "src": "G:\\exoduser\\assets\\map\\ch1\\master\\CH1_MASTER_16x9_v2.jpg",
+  "src_px": [
+    1280,
+    720
+  ],
+  "overlap_frac": 0.18,
+  "overlap_px": [
+    115,
+    65
+  ],
+  "regions": {
+    "Q1_TL": {
+      "src_box": [
+        0,
+        0,
+        755,
+        425
+      ],
+      "src_size": [
+        755,
+        425
+      ],
+      "plate3x": [
+        2265,
+        1275
+      ],
+      "files": {
+        "src": "G:\\exoduser\\assets\\map\\ch1\\master\\production\\Q1_TL_src.png",
+        "plate3x": "G:\\exoduser\\assets\\map\\ch1\\master\\production\\Q1_TL_plate3x.png"
+      }
+    },
+    "Q2_TR": {
+      "src_box": [
+        525,
+        0,
+        1280,
+        425
+      ],
+      "src_size": [
+        755,
+        425
+      ],
+      "plate3x": [
+        2265,
+        1275
+      ],
+      "files": {
+        "src": "G:\\exoduser\\assets\\map\\ch1\\master\\production\\Q2_TR_src.png",
+        "plate3x": "G:\\exoduser\\assets\\map\\ch1\\master\\production\\Q2_TR_plate3x.png"
+      }
+    },
+    "Q3_BR": {
+      "src_box": [
+        525,
+        295,
+        1280,
+        720
+      ],
+      "src_size": [
+        755,
+        425
+      ],
+      "plate3x": [
+        2265,
+        1275
+      ],
+      "files": {
+        "src": "G:\\exoduser\\assets\\map\\ch1\\master\\production\\Q3_BR_src.png",
+        "plate3x": "G:\\exoduser\\assets\\map\\ch1\\master\\production\\Q3_BR_plate3x.png"
+      }
+    },
+    "Q4_BL": {
+      "src_box": [
+        0,
+        295,
+        755,
+        720
+      ],
+      "src_size": [
+        755,
+        425
+      ],
+      "plate3x": [
+        2265,
+        1275
+      ],
+      "files": {
+        "src": "G:\\exoduser\\assets\\map\\ch1\\master\\production\\Q4_BL_src.png",
+        "plate3x": "G:\\exoduser\\assets\\map\\ch1\\master\\production\\Q4_BL_plate3x.png"
+      }
+    }
+  }
+}

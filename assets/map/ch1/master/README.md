@@ -6,6 +6,10 @@
 |------|------|
 | `CH1_STYLE_VISTA.jpg` | 1장 장소성. 독늪, 철창, 거목, 북쪽에 지옥성 |
 | `HELL_DESCENT_STRIP.jpg` | 카메라. 고각 쿼터뷰, 길이 이어짐. 7장 하강 한 장 |
+| `CH1_MASTER_16x9.jpg` | v1 구도 레퍼런스. 원형 분지. **폐기 아님, 런타임 쓰지 말 것** |
+| `CH1_MASTER_16x9_v2.jpg` | **COMPOSITION SSOT LOCK**. 1280×720. 구도 재생성 금지 |
+| `CH1_MASTER_16x9_v2_PROD.jpg` | v2 고해상 조립. 2176×1224 (16:9). 4플레이트 overlap 18% 블렌드. 4K native 불가 |
+| `production/Q1_TL_hires.jpg` … `Q4_BL_hires.jpg` | 시계방향 2×2 플레이트 각 1280×720 |
 
 ## 12장 넣는 곳
 
