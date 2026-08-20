@@ -1,12 +1,17 @@
-# CH1-1 Compose 초안 (200×200)
+# CH1-1 Compose — DESIGN LOCK
 
-> 2026-08-19 | **설계만. 코드·에셋 없음.** 승인 후에만 `game.html` / `_MAP_COMPOSE[0]`으로 옮긴다.  
-> Option B LOCK. v2는 룩 레퍼런스. 월드 = `FIXED_MAPS[0]` 200×200, `T=40`, `tileRLE [1,40000]` 통바닥.  
-> `_CH_DECO` 살포 금지, 살점 scatter 금지, `hand` 배치.
+> 2026-08-20 | **DESIGN LOCK.** 코드·에셋 없음. 구현은 별도 지시.  
+> Option B. v2는 룩 레퍼런스. 월드 = `FIXED_MAPS[0]` 200×200, `T=40`, `tileRLE [1,40000]` 통바닥.  
+> 플래그(`hand:1`, keepDragon off, `_CH_DECO` off, 살점 scatter off)는 **si0 / CH1-1만.** 다른 맵·장 동작 변경 금지.
 
-좌표는 **타일**. 픽셀 안 씀. (월드 px = 타일×40. `empty.r`만 엔진이 px라서 옆에 환산.)
+좌표는 **타일**. (`empty.r`만 엔진이 px. 월드 px = 타일×40.)
 
-숫자를 LOCK하지 않음. `FIXED_MAPS[0]` 방·복도·소환굴과 겹치게 맞춘 **제안**.
+방 박스·empty r는 `FIXED_MAPS[0]`에 맞춘 설계값. 구현 때 1~2타일 다듬기는 가능. 아래 **LOCK** 항목은 바꾸지 않음:
+
+- START/EXIT 스폰 vs empty 중심 **의도적 offset**
+- WEST ↔ CENTRAL+LOWER, EAST ↔ CENTRAL+UPPER, 연결 폭 ≥10
+- mega_ribs **시작 900 / QA 최대 1000** (1100 기본 제외)
+- 플래그 **CH1-1 국소**
 
 ---
 
@@ -30,7 +35,7 @@
 
 통바닥이라 복도는 벽이 아니다. “길”은 **empty + 림 소품이 비워 둔 띠**.
 
-`keepDragon:1`은 이 초안에서 **끈다.** 중앙 3D 용해골(sz 3000)이 주 전투공간을 먹는다. 랜드마크는 아래 1개만.
+`keepDragon` off / `hand:1` / `_CH_DECO` 살포 off / 살점 scatter off 는 **CH1-1(`_MAP_COMPOSE[0]`, `G.stage===0` 본편)에만** 적용한다. `_CH_DECO` 배열·다른 si·다른 hell은 그대로. 랜드마크는 ribs 1개만.
 
 ---
 
@@ -45,12 +50,12 @@
 | CENTRAL | 46–158, 62–146 | forge (92–108, 115–125) + r2 동쪽 가장자리. 완전 원 아님 (가로가 김) |
 | UPPER | 56–140, 22–82 | r3 (104–136, 41–59)을 동쪽 덩어리로 품음. 후보는 60–145,25–85 |
 | EXIT | 80–120, 4–36 | boss 방 (80–120, 6–30) + SSOT 게이트원 `(0.50,0.14)` r400px≈10타일 |
-| WEST POCKET | 18–52, 88–136 | alcove (35,140)에서 남으로 내림. CENTRAL에 폭 10+로 붙음 |
-| EAST POCKET | 156–188, 74–124 | alcove (165,110) |
+| WEST POCKET | 18–58, 90–142 | alcove (35,140). **CENTRAL+LOWER** 둘 다 폭≥10 |
+| EAST POCKET | 142–188, 58–122 | alcove (165,110). **CENTRAL+UPPER** 둘 다 폭≥10 |
 
 남북 진행축은 유지하되 중심선 x=100을 LOWER→CENTRAL→UPPER에서 **서(88) → 동(118) → 서(92)** 로 꺾는다. 데이터상 r2=80, r3=120과 같음.
 
-주요 연결 최소 폭: **10타일** (기존 corridor width). 줄이면 안 됨.
+주요 연결 최소 폭: **10타일** (기존 corridor width + 포켓 2연결). 줄이지 않음.
 
 ---
 
@@ -67,12 +72,21 @@
 | lower | 0.46 | 0.75 | 880 | 22 | 서쪽 치우친 하단 분지 |
 | central | 0.54 | 0.51 | 1080 | 27 | 동쪽 치우침. 지름≈54타일, 원 하나가 맵을 먹지 않음 |
 | upper | 0.48 | 0.26 | 820 | 20.5 | 서쪽 치우친 상단 |
-| west | 0.17 | 0.55 | 500 | 12.5 | 서 포켓 |
-| east | 0.85 | 0.49 | 460 | 11.5 | 동 포켓 |
+| west | 0.19 | 0.58 | 520 | 13 | WEST. CENTRAL+LOWER 목 덮음 |
+| east | 0.83 | 0.45 | 500 | 12.5 | EAST. CENTRAL+UPPER 목 덮음 |
 
-`hand:1`이면 살포가 꺼지므로 empty는 **안전망 + 문서**. 손으로 올린 대형만 empty 밖·림에 둔다.
+`hand:1`(CH1-1만)이면 살포가 꺼지므로 empty는 **안전망 + 문서**. 손으로 올린 대형만 empty 밖·림에 둔다.
 
-START 여유: 시작원 r480 안에 충돌 대형 없음. 소환굴도 원 밖 (기존 홀 `70,170` 등은 원 가장자리 — 구현 시 시작원 밖으로 밀지 검토).
+### START / EXIT vs empty 중심 offset — LOCK
+
+스폰 좌표와 empty 원 중심을 **일부러 어긋난다.** 스폰을 원에 정중앙에 두면 여유의 절반이 맵 밖·남/북 림으로 버려진다.
+
+| | 스폰 (FIXED_MAPS) | empty 중심 (정규화→타일) | offset | 이유 |
+|---|---|---|---|---|
+| START | (100, **185**) | (0.50, 0.88) → (100, **176**) | empty가 스폰보다 **9타일 북** | 시작원 r480이 남 림이 아니라 **북(LOWER로 나가는 첫 걸음)** 을 덮음. 스폰/소환 앞 안전여유 |
+| EXIT | (100, **18**) | (0.50, 0.14) → (100, **28**) | empty가 문보다 **10타일 남** | 게이트원 r400이 북 끝 보이드가 아니라 **문 앞 접근로** 를 덮음. 문 앞 대형 금지 |
+
+스폰 자체는 6시/12시 축 (x=100)에 둔다. 분지 empty(lower 0.46, central 0.54, upper 0.48)의 x 어긋남은 **루트 꺾임**이지 스폰 offset이 아님.
 
 ---
 
@@ -94,14 +108,18 @@ EXIT GATE (100, 18)
 
 ---
 
-## SIDE POCKETS
+## SIDE POCKETS — LOCK
 
-| | 타일 | 연결 |
-|---|---|---|
-| WEST | 18–52, 88–136 | CENTRAL 서벽 x46–52, y100–130, 폭≥10 |
-| EAST | 156–188, 74–124 | CENTRAL 동벽 x156–162, y88–118, 폭≥10 |
+막다른 길 아님 = **출입 2곳.** CENTRAL에만 붙이면 막다른 포켓이 된다.
 
-둘 다 전투 가능. 막다른 골목 아님. 좌우 대칭 아님 (서는 더 남쪽, 동은 더 북쪽).
+| | 타일 | 연결 1 (폭≥10) | 연결 2 (폭≥10) |
+|---|---|---|---|
+| WEST | 18–58, 90–142 | **CENTRAL** 겹침 x46–58 (12), y90–142 | **LOWER** 겹침 x48–58 (10), y124–142 |
+| EAST | 142–188, 58–122 | **CENTRAL** 겹침 x142–158 (16), y62–122 | **UPPER** 겹침 x142–152 (10), y58–82 |
+
+- WEST = CENTRAL↔LOWER 우회. 서는 LOWER 쪽에 붙음 (더 남쪽).
+- EAST = CENTRAL↔UPPER 우회. 동은 UPPER 쪽에 붙음 (더 북쪽).
+- 좌우 대칭 아님. 두 번째 목도 10타일 미만이면 배치 실패.
 
 ---
 
@@ -141,7 +159,7 @@ EXIT GATE (100, 18)
 - 소환굴 `(140,45)`와 ~32타일  
 - 현재 코드 `(0.84, 0.22)`=(168,44)와 가깝고, 전투분지에서 한 줄 북동으로만 밀어 림에 앉힘  
 
-sz는 지금 1400이 큼. 초안은 **900~1100** 권장 (메타 기본 900에 가깝게). 구현 때 숫자 확정.
+**size LOCK:** 시작 **900**. QA에서만 **최대 1000**. **1100 기본값 제외** (1400도 제외). 메타 기본 900과 같게 시작.
 
 중앙·LOWER·START에 안 둔다. “뼈가 있는 북동”이 방향 기억.
 
@@ -164,7 +182,7 @@ sz는 지금 1400이 큼. 초안은 **900~1100** 권장 (메타 기본 900에 �
 
 ## EXISTING ASSET PLACEMENT LIST
 
-손 배치만. `_CH_DECO` 자동·살점 scatter 없음. 신규 거목 없음.
+손 배치만. `_CH_DECO` 자동·살점 scatter 없음 — **CH1-1만.** 신규 거목 없음. ribs **sz 900** (QA≤1000).
 
 | 에셋 | 개수(제안) | 어디 | col |
 |---|---|---|---|
@@ -205,8 +223,9 @@ sz는 지금 1400이 큼. 초안은 **900~1100** 권장 (메타 기본 900에 �
 
 | | |
 |---|---|
-| keepDragon | 안 끄면 중앙 용해골이 이 설계를 박살냄 |
-| mega_ribs sz 1400 | UPPER/EAST를 먹음. 900~1100로 |
+| keepDragon | CH1-1에서만 끔. 안 끄면 중앙 용해골이 전투를 먹음. 다른 장 keepDragon 없음/무관 |
+| mega_ribs 1400/1100 | 금지. 시작 900, QA 최대 1000 |
+| 플래그 전역화 | `hand`/`_CH_DECO` off를 hell 0 전체에 걸면 1-2~1-4가 죽음. **si0만** |
 | empty가 원 | 너무 큰 원 하나 = 아레나. 겹원 유지 |
 | 통바닥+손 배치 | 림이 약하면 공허. 너무 촘촘하면 통로 잠식 |
 | `hand:1` 미설정 | `_CH_DECO`가 살점 스캐터를 뿌림 |
@@ -227,10 +246,10 @@ sz는 지금 1400이 큼. 초안은 **900~1100** 권장 (메타 기본 900에 �
      ~~RR    UUUUUUUUUUUU    RRRRRR~~             U UPPER
      RRR    UUUUUUUUUUUUUU     RRRR
      RR    UUUUU====UUUUUU      RR                = main route
-     R    WWW   ====  CCCCCCC   EE                W west pocket
-     R   WWWWW  ====CCCCCCCCCC EEEE               E east pocket
-     R   WWWWW====CCCCCCCCCCCCCC EE               C CENTRAL
-     R    WW   ====CCCCCCCCCCCC  EE
+     R     UUU  ==U==  EEEEE                      E↔UPPER
+     R    WWW   ====  CCCCCCC  EEEE               W west  E east
+     R   WWWWW====CCCCCCCCCCCCCC EE               W↔CENTRAL, E↔CENTRAL
+     R    WW==LLLLL====CCCCCC    RR               W↔LOWER
      RR      LLLLLL====CCCCCC    RR               L LOWER
      RRR   LLLLLLLLLL====        RRR
      ~~RR LLLLLLLLLLLLL   SSSS  RR~~              S START
@@ -243,12 +262,23 @@ sz는 지금 1400이 큼. 초안은 **900~1100** 권장 (메타 기본 900에 �
 
 ---
 
+## SCOPE ISOLATION — LOCK
+
+| 플래그 | CH1-1 (si 0 본편) | 다른 맵 |
+|---|---|---|
+| `hand:1` | on | 1-2 기존 `hand:1` 유지. 그 외 기존 값 |
+| `keepDragon` | **off** | 다른 스테이지는 이 플래그 없음. 건드리지 않음 |
+| `_CH_DECO` 살포 | **이 맵만 끔** (`_testbed`가 아님. compose `hand`로 차단) | hell 0의 1-2~1-4, CH2~7 살포 로직 수정 금지 |
+| 살점 scatter | CH1-1 배치 목록에 안 올림 | `_CH_DECO[0]` 배열에서 항목 삭제 금지 |
+
+구현할 때 `_CH_DECO` 전역 배열을 비우거나 `initMapObjects` 공통 분기를 바꾸지 않는다. `_MAP_COMPOSE[0]`과 `G.stage===0` 본편 경로만.
+
+---
+
 ## FINAL VERDICT
 
-**DRAFT — 승인 대기.**
+**DESIGN LOCK.** 코드 없음.
 
-`FIXED_MAPS[0]`의 꺾인 방 배치·10타일 복도·alcove와 충돌 없음.  
-시각만 손 배치 + empty 겹원 + 랜드마크 1개(`mega_ribs` 1~2시).  
-구현 시 필수 플래그: `hand:1`, `keepDragon` 제거, `_CH_DECO` 살포 없음.
-
-승인 전 코드 금지.
+`FIXED_MAPS[0]` 꺾인 방·10타일 복도·alcove와 맞음.  
+START/EXIT empty offset은 스폰·문 앞 여유.  
+포켓은 우회 2연결. ribs 900 (QA≤1000). 플래그는 si0만.

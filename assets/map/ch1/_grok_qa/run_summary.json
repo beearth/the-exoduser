@@ -1,0 +1,32 @@
+{
+  "draft": true,
+  "model": "grok-imagine-image-2.0",
+  "available_image_models": [
+    "grok-imagine-image",
+    "grok-imagine-image-2.0",
+    "grok-imagine-image-quality"
+  ],
+  "resolution": "2k",
+  "api_calls": 2,
+  "outputs": 8,
+  "results": [
+    {
+      "preset": "ch1-crack",
+      "files": [
+        "assets/map/ch1/_grok_qa/crack/crack_v01.png",
+        "assets/map/ch1/_grok_qa/crack/crack_v02.png",
+        "assets/map/ch1/_grok_qa/crack/crack_v03.png",
+        "assets/map/ch1/_grok_qa/crack/crack_v04.png"
+      ]
+    },
+    {
+      "preset": "ch1-root-edge",
+      "files": [
+        "assets/map/ch1/_grok_qa/root_edge/root_edge_v01.png",
+        "assets/map/ch1/_grok_qa/root_edge/root_edge_v02.png",
+        "assets/map/ch1/_grok_qa/root_edge/root_edge_v03.png",
+        "assets/map/ch1/_grok_qa/root_edge/root_edge_v04.png"
+      ]
+    }
+  ]
+}

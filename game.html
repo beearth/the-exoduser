@@ -14048,9 +14048,22 @@ const _CH_DECO={
 // 한 장씩만 채운다. 없으면 균등 살포(구 동작). 기획: docs/4.1맵디자인+설정/맵구성_1장.md
 // hand:1 = 중심 타일(통바닥) + compose에 적힌 커스텀만. 자동 살포/페인트맵 없음
 const _MAP_COMPOSE={
-  0:{keepDragon:1,mega:[
-    {id:'m_mega_ribs',x:.84,y:.22,sz:1400}
-  ]},
+  // CH1-1 (si0 본편) COMPOSE — DESIGN LOCK (docs/4.1맵디자인+설정/CH1_1_COMPOSE_초안.md)
+  // hand:1=자동 살포/데코/uni/wall/scatter off. keepDragon 제거=1-1 용해골 off.
+  // lm:[]=중앙 기본 랜드마크 fall-through 차단(중앙 대형 금지). empty=전투 분지 겹원(hand시 안전망+문서).
+  // mega=1~2시 림 랜드마크 ribs sz900(QA≤1000). 플래그는 si0 국소 — 다른 맵·장 무변경.
+  0:{hand:1,lm:[],
+    empty:[
+      {x:.50,y:.88,r:480}, // START 시작원
+      {x:.50,y:.14,r:400}, // EXIT 게이트원
+      {x:.46,y:.75,r:880}, // LOWER 서쪽 치우친 하단 분지
+      {x:.54,y:.51,r:1080},// CENTRAL 동쪽 치우침(가로 김)
+      {x:.48,y:.26,r:820}, // UPPER 서쪽 치우친 상단
+      {x:.19,y:.58,r:520}, // WEST 포켓(CENTRAL+LOWER 목)
+      {x:.83,y:.45,r:500}  // EAST 포켓(CENTRAL+UPPER 목)
+    ],
+    mega:[{id:'m_mega_ribs',x:.85,y:.17,sz:900}]
+  },
   1:{
     hand:1,vista:1,
     basin:{cx:100,cy:122,rx:80,ry:64},
@@ -20401,7 +20414,8 @@ function initMapObjects(){
       _placeFromPool(_lgCenter,_lgCenterMax);
     }
     // ── 필드 랜드마크: 1-1 용해골, 구성표 lm, 그 외 장/층 1기 ──
-    if(G.stage===0&&!G._testbed){
+    // keepDragon 게이팅: CH1-1(si0) COMPOSE는 keepDragon 미설정 → 용해골 off. _cmp.lm(빈배열이라도)이 있으면 중앙 기본 랜드마크 fall-through 차단.
+    if(G.stage===0&&!G._testbed&&_cmp&&_cmp.keepDragon){
       const _dsMidX=~~(G.mw/2),_dsMidY=~~(G.mh/2);
       const _dsNear=_nearFloor(_dsMidX,_dsMidY);
       if(_dsNear){const _dsx=(_dsNear.x+.5)*T,_dsy=(_dsNear.y+.5)*T;

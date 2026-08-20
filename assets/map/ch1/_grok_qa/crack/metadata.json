@@ -1,0 +1,56 @@
+{
+  "draft": true,
+  "production": false,
+  "preset": "ch1-crack",
+  "model": "grok-imagine-image-2.0",
+  "resolution": "2k",
+  "endpoint": "/images/edits",
+  "reference": "assets/map/ch1/ground_dark_soil.png",
+  "created": "2026-08-19T20:42:34.078Z",
+  "files": [
+    {
+      "file": "assets/map/ch1/_grok_qa/crack/crack_v01.png",
+      "bytes": 7425483,
+      "format": "png",
+      "corrupted": false,
+      "width": 2048,
+      "height": 2048,
+      "aspect": 1,
+      "sha256": "94989adc3b99d82a25647d2535fb6e974d7e25c6415f1d958da0a15c8d1cdac4",
+      "duplicate": false
+    },
+    {
+      "file": "assets/map/ch1/_grok_qa/crack/crack_v02.png",
+      "bytes": 7322476,
+      "format": "png",
+      "corrupted": false,
+      "width": 2048,
+      "height": 2048,
+      "aspect": 1,
+      "sha256": "17639103480ca202f72dd037c4e24566cc2ef6bdaa8d0124a69aa115b45497d5",
+      "duplicate": false
+    },
+    {
+      "file": "assets/map/ch1/_grok_qa/crack/crack_v03.png",
+      "bytes": 7782442,
+      "format": "png",
+      "corrupted": false,
+      "width": 2048,
+      "height": 2048,
+      "aspect": 1,
+      "sha256": "f4b446356308fe40fa6ff78f6dda31f894332a81b800e7c048ce7bb9f8216e61",
+      "duplicate": false
+    },
+    {
+      "file": "assets/map/ch1/_grok_qa/crack/crack_v04.png",
+      "bytes": 7610888,
+      "format": "png",
+      "corrupted": false,
+      "width": 2048,
+      "height": 2048,
+      "aspect": 1,
+      "sha256": "2b83e58c87a7c1bf089af7bce5eb454ccb2e2c54c62de215dca9df233a1f132f",
+      "duplicate": false
+    }
+  ]
+}

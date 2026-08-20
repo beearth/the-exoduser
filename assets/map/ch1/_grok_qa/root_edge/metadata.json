@@ -1,0 +1,56 @@
+{
+  "draft": true,
+  "production": false,
+  "preset": "ch1-root-edge",
+  "model": "grok-imagine-image-2.0",
+  "resolution": "2k",
+  "endpoint": "/images/edits",
+  "reference": "assets/map/ch1/ground_dark_soil.png",
+  "created": "2026-08-19T20:43:21.357Z",
+  "files": [
+    {
+      "file": "assets/map/ch1/_grok_qa/root_edge/root_edge_v01.png",
+      "bytes": 7322462,
+      "format": "png",
+      "corrupted": false,
+      "width": 2048,
+      "height": 2048,
+      "aspect": 1,
+      "sha256": "ac87ab07547e3bdb025cadee293a15125a1db119abef95835aea1e434122275b",
+      "duplicate": false
+    },
+    {
+      "file": "assets/map/ch1/_grok_qa/root_edge/root_edge_v02.png",
+      "bytes": 7459011,
+      "format": "png",
+      "corrupted": false,
+      "width": 2048,
+      "height": 2048,
+      "aspect": 1,
+      "sha256": "06872b6814d45f9648eedf0567c42266aca29a1e750aae8170c117fcc889bdfd",
+      "duplicate": false
+    },
+    {
+      "file": "assets/map/ch1/_grok_qa/root_edge/root_edge_v03.png",
+      "bytes": 7303449,
+      "format": "png",
+      "corrupted": false,
+      "width": 2048,
+      "height": 2048,
+      "aspect": 1,
+      "sha256": "fb29455a6e60175e72254171db38d7ae1d6f33afe0d7826fccb2c6fa044b432c",
+      "duplicate": false
+    },
+    {
+      "file": "assets/map/ch1/_grok_qa/root_edge/root_edge_v04.png",
+      "bytes": 6909165,
+      "format": "png",
+      "corrupted": false,
+      "width": 2048,
+      "height": 2048,
+      "aspect": 1,
+      "sha256": "61f70b6334ee0e0337a7a72bd0fe31f7839f2b11350c21f8cdf6d85bd2a28137",
+      "duplicate": false
+    }
+  ]
+}

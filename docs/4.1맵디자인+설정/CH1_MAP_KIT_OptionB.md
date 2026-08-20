@@ -241,7 +241,7 @@ v2 룩(갈흑 흙, 독녹 늪, 검은 뿌리, 외곽 철창/제단)에 **거의 
 | gallows | 교수대 | R | hang_cage 키우기 또는 N 512 | col | — | — |
 | corrupted altar | 오염 제단 | R | skull_altar / penta 350 | col | — | — |
 | ruined gate | 폐허 문 | R | bone_arch 300, boss_gate, mega_chapel | col | 문만 FG 후보 | — |
-| mega ribs | 거대 뼈 | R | 이미 1-1. 림에만 | colW380 | — | — |
+| mega ribs | 거대 뼈 | R | 1-1 림. **sz 900, QA≤1000** (1100/1400 금지) | colW380 | — | — |
 
 용해골은 1-1 기존 장면용. Option B 키트의 **필수 랜드마크는 아님.** 구역 문장이 용해골이면 유지.
 
