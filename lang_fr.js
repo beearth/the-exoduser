@@ -763,6 +763,8 @@
 '사슬을 땅에 꽂으면 끌려간다.':'Plante le harpon dans le sol et fais-toi tracter.',
 'Shift로 사슬 던져봐!':'Essaie de lancer le harpon avec Shift !',
 '패링 성공하면 ST가 회복된다. 공짜 자원이야.':'La parade restaure le ST. Ressources gratuites.',
+"패링은 타이밍이다. 헛치면 빈틈이 생겨.":"La parade, c'est le timing. Rate-la et tu es à découvert.",
+"잘못 패링하면 그로기가 쌓인다!":"Une parade ratée remplit ta jauge d'étourdissement !",
 '패링 많이 하면 ST 걱정 없어~':'Pare souvent et le ST n\'est plus un problème~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Démanteler l\'équipement donne de la Malice. Même le rebut, c\'est des ressources.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Ouvre TAB et démantèle l\'équipement inutile !',

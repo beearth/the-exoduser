@@ -762,6 +762,8 @@
 '사슬을 땅에 꽂으면 끌려간다.':'Crava o Corrente no chão e é puxado.',
 'Shift로 사슬 던져봐!':'Tenta lançar o Corrente com Shift!',
 '패링 성공하면 ST가 회복된다. 공짜 자원이야.':'Aparar com sucesso recupera ST. Recurso grátis.',
+"패링은 타이밍이다. 헛치면 빈틈이 생겨.":"O parry é questão de tempo. Se errar, fica todo aberto.",
+"잘못 패링하면 그로기가 쌓인다!":"Um parry errado enche sua barra de atordoamento!",
 '패링 많이 하면 ST 걱정 없어~':'Apara bastante e ST nunca é problema~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Desmontar equipamento dá Malícia. Até lixo é recurso.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Abre TAB e desmonta equip. que não usa!',

@@ -1179,6 +1179,8 @@ const _VI={
 '사슬을 땅에 꽂으면 끌려간다.':'Stick the Xích in the ground and get pulled.',
 'Shift로 사슬 던져봐!':'Try throwing the Xích with Shift!',
 '패링 성공하면 ST가 회복된다. 공짜 자원이야.':'Đỡ thành công hồi ST. Tài nguyên miễn phí.',
+"패링은 타이밍이다. 헛치면 빈틈이 생겨.":"Đỡ đòn là vấn đề thời điểm. Trượt là hở toang.",
+"잘못 패링하면 그로기가 쌓인다!":"Đỡ đòn sai sẽ tích đầy thanh choáng!",
 '패링 많이 하면 ST 걱정 없어~':'Đỡ nhiều là không lo ST~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Tháo trang bị được Ác Ý. Rác cũng là tài nguyên.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Mở TAB tháo trang bị không dùng!',

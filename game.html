@@ -6072,6 +6072,8 @@ const _EN={
 '사슬을 땅에 꽂으면 끌려간다.':'Throw the chain into the ground and get pulled.',
 'Shift로 사슬 던져봐!':'Try throwing the chain with Shift!',
 '패링 성공하면 ST가 회복된다. 공짜 자원이야.':'Parry restores ST. Free resources.',
+'패링은 타이밍이다. 헛치면 빈틈이 생겨.':"Parry is all timing. Whiff it and you're wide open.",
+'잘못 패링하면 그로기가 쌓인다!':'A mistimed parry builds your groggy gauge!',
 '패링 많이 하면 ST 걱정 없어~':'Parry a lot and ST is never a problem~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Dismantling gear gives Malice. Even junk is resources.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Open TAB and salvage unused gear!',
@@ -8306,7 +8308,7 @@ function _checkPetDialogue(){
         const _nags=[['시간이 없어. 움직여.','멍하게 서있으면 안 돼!'],['…뭘 기다리는 거야?','가자가자! 몬스터가 기다려!'],['여기 오래 있으면 위험해.','가만있으면 둘러싸여!'],['쉬는 건 죽고 나서 해.','살아있을 때 쉬면 안 돼!'],['적이 몰려오고 있어.','냄새 맡고 올 거야. 빨리!'],['…아직 살아있는 거 맞지?','혹시 잠든 거야…?']];
         const _ni=_petBagNext(_petNagBag,_nags.length);_petBidCD('idle_nag'+_ni,'crow',_nags[_ni][0],4,30,'cat',_nags[_ni][1],4);
       }else if(Math.random()<.5){
-        const _tips=[['사슬을 땅에 꽂으면 끌려간다.','Shift로 사슬 던져봐!'],['패링 성공하면 ST가 회복된다.','패링 많이 하면 ST 걱정 없어~'],['장비 분해하면 악의를 얻는다.','TAB 열어서 안 쓰는 장비 분해!'],['그로기 적은 1.5배 데미지.','무릎 꿇으면 전력으로 때려!'],['화염은 빙결, 암전은 암흑에 약하다.','무기 속성 바꿔가며 싸워!'],['빙결 적은 1.5배 데미지.','얼리고 때리는 게 기본!'],['보스 빨강은 패링, 보라는 회피만.','빨강 받아치고 무지개는 피해!'],['VIT 올리면 최대 HP.','STR 근접, DEX 활, INT 마법!'],['우클릭 길게 = 빔, 짧게 = 투사체.','MP 잘 봐! 빔은 연속으로 깎여!'],['R키로 아이템을 줍는다.','R 눌러서 다 주워!'],['LCK 올리면 레어 드롭률.','운빨 게임! LCK 올려봐!'],['G 누르면 대장간.','강화하면 공격력 쭉쭉!'],['강화 +1에서 99%. 높을수록 떨어져.','실패해도 장비 안 부서져!'],['대장간 제작도 가능. 악의 30000개+.','영웅급 이상 나올 수 있어!'],['쉴드는 추가 HP다. 쉴드부터 깎인다.','쉴드 있으면 HP 안 닳아!'],['영웅급+ 장비에 접두/접미사.','좋은 거 나오면 강화!'],['강화는 장비 바꿔도 자동 이전.','더 좋은 거 나오면 바로 장착!']];
+        const _tips=[['사슬을 땅에 꽂으면 끌려간다.','Shift로 사슬 던져봐!'],['패링 성공하면 ST가 회복된다.','패링 많이 하면 ST 걱정 없어~'],['장비 분해하면 악의를 얻는다.','TAB 열어서 안 쓰는 장비 분해!'],['그로기 적은 1.5배 데미지.','무릎 꿇으면 전력으로 때려!'],['화염은 빙결, 암전은 암흑에 약하다.','무기 속성 바꿔가며 싸워!'],['빙결 적은 1.5배 데미지.','얼리고 때리는 게 기본!'],['보스 빨강은 패링, 보라는 회피만.','빨강 받아치고 무지개는 피해!'],['VIT 올리면 최대 HP.','STR 근접, DEX 활, INT 마법!'],['우클릭 길게 = 빔, 짧게 = 투사체.','MP 잘 봐! 빔은 연속으로 깎여!'],['R키로 아이템을 줍는다.','R 눌러서 다 주워!'],['LCK 올리면 레어 드롭률.','운빨 게임! LCK 올려봐!'],['G 누르면 대장간.','강화하면 공격력 쭉쭉!'],['강화 +1에서 99%. 높을수록 떨어져.','실패해도 장비 안 부서져!'],['대장간 제작도 가능. 악의 30000개+.','영웅급 이상 나올 수 있어!'],['쉴드는 추가 HP다. 쉴드부터 깎인다.','쉴드 있으면 HP 안 닳아!'],['영웅급+ 장비에 접두/접미사.','좋은 거 나오면 강화!'],['강화는 장비 바꿔도 자동 이전.','더 좋은 거 나오면 바로 장착!'],['패링은 타이밍이다. 헛치면 빈틈이 생겨.','잘못 패링하면 그로기가 쌓인다!']];
         const ti=_petBagNext(_petTipBag,_tips.length);_petBidCD('idle_tip'+ti,'crow',_tips[ti][0],5,30,'cat',_tips[ti][1],5);
       }
     }
@@ -28554,13 +28556,14 @@ function update(){
     const _sbPW=P.s==='sBlock'&&P._sbParryT>0;
     const _sbPWDet=_sbPW&&P.skills.detonate>=1;
     const _anyPW=_sbPW||(P._sbParryT>0&&P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent');
-    const _normalR=P.s==='sBash'?_pCollR*3+12:_sbPWDet?_pCollR*3+12:_anyPW?_pCollR*3+8:_pCollR+4;
+    const _sbActive=P.s==='sBash'&&P.st2>10; // 칼등치기 앞10틱만 패링, 뒤10틱 후딜(무방비→피격 시 포이즈 소모)
+    const _normalR=_sbActive?_pCollR*3+12:_sbPWDet?_pCollR*3+12:_anyPW?_pCollR*3+8:_pCollR+4;
     // redBean 전용: 방패스킬 공격범위와 동일한 넓은 판정
     const _sdLvD=P.skills.maliceSwipe||0;
     const _isAtkState=P.s==='wSwing'||P.s==='wWindup'||P.s==='wRecover'||P.s==='whirlwind'||P.s==='charge'||P.s==='charging';
     const _parryR=Math.min(100,70+(sh().bonusRange||0)*4+(PASSIVES.pParry||0)*2+~~(_eqAffix('parryBonus')*20));
     const _parryRDet=Math.min(180,120+(sh().bonusRange||0)*6+(PASSIVES.pParry||0)*3+~~(_eqAffix('parryBonus')*30));
-    const _rbDeflR=P.s==='sBash'?_parryR:_sbPWDet?_parryRDet:_sbPW?_parryR:isPWin()?_parryR:_isAtkState?((wp().wRange||50)+(wp().bonusRange||0)*4)*2+60:_pCollR+20;
+    const _rbDeflR=_sbActive?_parryR:_sbPWDet?_parryRDet:_sbPW?_parryR:isPWin()?_parryR:_isAtkState?((wp().wRange||50)+(wp().bonusRange||0)*4)*2+60:_pCollR+20;
     // 스윕 충돌: 이전→현재 선분과 플레이어 원의 최근접 거리 (현재+이전 위치 모두 체크)
     let _pDist=Math.sqrt(_pDist2);
     // 플레이어 이전 위치와의 거리도 비교 (이동 중 빗나감 방지)
@@ -28591,7 +28594,7 @@ function update(){
       for(let k=0;k<12;k++){const sa=Math.PI*2*k/12;poolPart(p.x,p.y,Math.cos(sa)*4,Math.sin(sa)*4,'#ff4422',3,10)}
       _pHit=true;
     }
-    if(p.redBean&&!_pHit&&_pDist<_rbDeflR&&P.s==='sBash'){
+    if(p.redBean&&!_pHit&&_pDist<_rbDeflR&&_sbActive){
       addTxt(P.x,P.y-28,_T('🛡️💎 빨콩→블루콩!'),'#00e5ff',60);
       let _rbTgt=null,_rbMin=360000;
       {const _rbNe=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_rbNe.length;_ri++){const e=_rbNe[_ri];if(!e.alive)continue;const d=dst2(P.x,P.y,e.x,e.y);if(d<_rbMin){_rbMin=d;_rbTgt=e}}}
@@ -28605,7 +28608,7 @@ function update(){
     }
     // ══ 무지개콩탄: Q(sBlock)만 패링 가능, 우클릭(sBash) 시 데미지 ══
     const _wwDetAbs=P.s==='whirlwind'&&_isFused('whirlDet');
-    const _bkHitR=P.s==='sBash'||_anyPW||(P._sbParryT>0)?_rbDeflR:_pCollR+16;
+    const _bkHitR=_sbActive||_anyPW||(P._sbParryT>0)?_rbDeflR:_pCollR+16;
     // 우클릭(sBash)으로 무지개탄 패링 시도 → 잘못된 입력, 데미지
     if(p.blackBean&&!_pHit&&_pDist<_wrongR&&P.s==='sBash'&&!P._ioActive&&P.iframes<=0){
       // 우클릭 패링 시도 → 잘못된 입력: 풀뎀 + 넉백
@@ -31911,7 +31914,7 @@ function _bossAI(e,sp,d){
   _bossStartPattern(e,bestMv,d,e._bossPhase,extraDelay);
 }
 
-function isPWin(){return P.s==='sBash'||(P.s==='sBlock'&&P._sbParryT>0)||(P.s==='peaceShield'&&P._sbParryT>0)||(P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent'&&P._sbParryT>0)} // 칼등치기 + 보호막 + 평화보호 패링윈도우
+function isPWin(){return (P.s==='sBash'&&P.st2>10)||(P.s==='sBlock'&&P._sbParryT>0)||(P.s==='peaceShield'&&P._sbParryT>0)||(P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent'&&P._sbParryT>0)} // 칼등치기 앞10틱만 패링(뒤10틱 후딜) + 보호막 + 평화보호 패링윈도우
 function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(_py===undefined)_py=P.y;if(_parryEl===undefined)_parryEl=0;_petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;const _isQ=_forceQ||P.s==='sBlock'||P.s==='peaceShield'||P._sbParryT>0;if(_isQ){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1));playSample(['sword_back','sword_back2','sword_back3'][~~(Math.random()*3)],.5,_r(1.1,.1))}if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
   P.iframes=Math.max(P.iframes,18);
   // 패링 성공 → 그로기 해제 + 포이즈 복원

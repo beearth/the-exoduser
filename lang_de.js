@@ -728,6 +728,8 @@
 '사슬을 땅에 꽂으면 끌려간다.':'Ramm die Kette in den Boden und lass dich ziehen.',
 'Shift로 사슬 던져봐!':'Wirf die Kette mit Shift!',
 '패링 성공하면 ST가 회복된다. 공짜 자원이야.':'Erfolgreiche Parade stellt ST wieder her. Kostenlose Ressourcen.',
+"패링은 타이밍이다. 헛치면 빈틈이 생겨.":"Parieren ist Timing. Daneben und du stehst völlig offen.",
+"잘못 패링하면 그로기가 쌓인다!":"Eine verfehlte Parade füllt deine Groggy-Leiste!",
 '패링 많이 하면 ST 걱정 없어~':'Pariere viel und ST ist nie ein Problem~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Zerlegte Ausrüstung gibt Bosheit. Selbst Schrott ist Ressource.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Öffne TAB und zerlege ungenutzte Ausrüstung!',

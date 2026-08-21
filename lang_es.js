@@ -745,6 +745,8 @@ const _ES={
 '사슬을 땅에 꽂으면 끌려간다.':'Clava el Cadena en el suelo y serás arrastrado.',
 'Shift로 사슬 던져봐!':'¡Lanza el Cadena con Shift!',
 '패링 성공하면 ST가 회복된다. 공짜 자원이야.':'Parar restaura Resistencia. Recurso gratis.',
+"패링은 타이밍이다. 헛치면 빈틈이 생겨.":"El parry es cuestión de tiempo. Si fallas, quedas expuesto.",
+"잘못 패링하면 그로기가 쌓인다!":"¡Un parry fallido llena tu barra de aturdimiento!",
 '패링 많이 하면 ST 걱정 없어~':'¡Para mucho y nunca te faltará Resistencia~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Desmontar equipo da Malicia. Hasta la basura es recurso.',
 'TAB 열어서 안 쓰는 장비 분해해!':'¡Abre TAB y desmonta equipo que no uses!',
