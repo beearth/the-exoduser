@@ -768,6 +768,7 @@ const _PL={
 '패링 성공하면 ST가 회복된다. 공짜 자원이야.':'Parowanie przywraca ST. Darmowe zasoby.',
 "패링은 타이밍이다. 헛치면 빈틈이 생겨.":"Parowanie to kwestia wyczucia. Chybisz i jesteś odsłonięty.",
 "잘못 패링하면 그로기가 쌓인다!":"Nieudane parowanie napełnia pasek oszołomienia!",
+"여기가 지옥인가":"Więc to jest piekło",
 '패링 많이 하면 ST 걱정 없어~':'Paruj często i ST nigdy nie będzie problemem~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Rozkładanie ekwipunku daje Złość. Nawet śmieci to zasoby.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Otwórz TAB i rozłóż nieużywany ekwipunek!',

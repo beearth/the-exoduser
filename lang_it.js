@@ -1199,6 +1199,7 @@ const _IT={
 '패링 성공하면 ST가 회복된다. 공짜 자원이야.':'Parare recupera ST. Risorse gratuite.',
 "패링은 타이밍이다. 헛치면 빈틈이 생겨.":"La parata è tempismo. Se sbagli, resti scoperto.",
 "잘못 패링하면 그로기가 쌓인다!":"Una parata sbagliata riempie la barra di stordimento!",
+"여기가 지옥인가":"Quindi è questo l'inferno",
 '패링 많이 하면 ST 걱정 없어~':'Para spesso e niente problemi di ST~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Smontare equipaggiamento dà Malizia. Anche la spazzatura è risorsa.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Apri TAB e smonta l\'equipaggiamento inutilizzato!',

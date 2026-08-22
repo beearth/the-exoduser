@@ -1181,6 +1181,7 @@ const _ID={
 '패링 성공하면 ST가 회복된다. 공짜 자원이야.':'Parry berhasil memulihkan ST. Sumber daya gratis.',
 "패링은 타이밍이다. 헛치면 빈틈이 생겨.":"Parry itu soal timing. Meleset, kamu terbuka lebar.",
 "잘못 패링하면 그로기가 쌓인다!":"Parry yang salah mengisi meteran pusingmu!",
+"여기가 지옥인가":"Jadi ini neraka",
 '패링 많이 하면 ST 걱정 없어~':'Sering parry dan ST tidak pernah masalah~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Bongkar perlengkapan untuk dapat Kebencian. Bahkan sampah pun sumber daya.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Buka TAB dan bongkar perlengkapan yang tidak dipakai!',

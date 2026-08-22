@@ -1199,6 +1199,7 @@ const _TR={
 '패링 성공하면 ST가 회복된다. 공짜 자원이야.':'Savuşturma ST yeniler. Bedava.',
 "패링은 타이밍이다. 헛치면 빈틈이 생겨.":"Parry zamanlama işidir. Iskalarsan savunmasız kalırsın.",
 "잘못 패링하면 그로기가 쌓인다!":"Hatalı parry sersemleme göstergeni doldurur!",
+"여기가 지옥인가":"Demek cehennem burası",
 '패링 많이 하면 ST 걱정 없어~':'Çok savuştur, ST sorun olmaz~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Ekipman sökmek Kötülük verir. Çöp bile kaynak.',
 'TAB 열어서 안 쓰는 장비 분해해!':'TAB aç kullanılmayanları sök!',

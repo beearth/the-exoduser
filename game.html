@@ -6074,6 +6074,7 @@ const _EN={
 '패링 성공하면 ST가 회복된다. 공짜 자원이야.':'Parry restores ST. Free resources.',
 '패링은 타이밍이다. 헛치면 빈틈이 생겨.':"Parry is all timing. Whiff it and you're wide open.",
 '잘못 패링하면 그로기가 쌓인다!':'A mistimed parry builds your groggy gauge!',
+'여기가 지옥인가':'So this is hell',
 '패링 많이 하면 ST 걱정 없어~':'Parry a lot and ST is never a problem~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Dismantling gear gives Malice. Even junk is resources.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Open TAB and salvage unused gear!',
@@ -7534,6 +7535,7 @@ function _T(s){
 // 스턴 상수: 미니스턴 1초, 풀스턴 3초
 const _MINI_STUN=60;
 const _FULL_STUN=180;
+var _PARRY_WIN=12; // sBash 20틱 중 패링 활성 틱수 (뒤 20-_PARRY_WIN틱=후딜). DEMO 14 / EA 12 / 1.0 10
 const _HS={
   blink:2,charge:2,chargeHit:3,chargeWall:3,finisher:5,galeSlam:5,
   melee:4,meleeSh:3,meleeUn:3, // weapon/shield/unarmed
@@ -28089,6 +28091,7 @@ function update(){
     if(P._bdTrigger!=null&&_canBladeDash()&&!(P._seaParalyzed>0)){P.st2=0;activateBladeDash(P._bdTrigger);P._bdTrigger=null;break}
     if(P.st2<=0)P.s='idle';break;}
   case 'pStun':{
+    if(_gameFrame-(P._pStunSayF||0)>=480){P._pStunSayF=_gameFrame;addTxt(P.x,P.y-40,_T('여기가 지옥인가'),'#ffcc44',48)} // 기절 순간 대사 1회(480f=8초 쿨)
     // ═══ 기절: Shift/Ctrl/전격이동(더블탭) 탈출기로 즉시 해제 ═══
     if(isJust('charge')){P.s='idle';P.iframes=30;P.poise=4;P.poiseR=0;break}
     if(isJust('skill7')){P.s='idle';P.iframes=30;P.poise=4;P.poiseR=0;break}
@@ -28556,7 +28559,7 @@ function update(){
     const _sbPW=P.s==='sBlock'&&P._sbParryT>0;
     const _sbPWDet=_sbPW&&P.skills.detonate>=1;
     const _anyPW=_sbPW||(P._sbParryT>0&&P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent');
-    const _sbActive=P.s==='sBash'&&P.st2>10; // 칼등치기 앞10틱만 패링, 뒤10틱 후딜(무방비→피격 시 포이즈 소모)
+    const _sbActive=P.s==='sBash'&&P.st2>(20-_PARRY_WIN); // 칼등치기 앞 _PARRY_WIN틱만 패링, 뒤 후딜(무방비→피격 시 포이즈 소모)
     const _normalR=_sbActive?_pCollR*3+12:_sbPWDet?_pCollR*3+12:_anyPW?_pCollR*3+8:_pCollR+4;
     // redBean 전용: 방패스킬 공격범위와 동일한 넓은 판정
     const _sdLvD=P.skills.maliceSwipe||0;
@@ -31914,7 +31917,7 @@ function _bossAI(e,sp,d){
   _bossStartPattern(e,bestMv,d,e._bossPhase,extraDelay);
 }
 
-function isPWin(){return (P.s==='sBash'&&P.st2>10)||(P.s==='sBlock'&&P._sbParryT>0)||(P.s==='peaceShield'&&P._sbParryT>0)||(P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent'&&P._sbParryT>0)} // 칼등치기 앞10틱만 패링(뒤10틱 후딜) + 보호막 + 평화보호 패링윈도우
+function isPWin(){return (P.s==='sBash'&&P.st2>(20-_PARRY_WIN))||(P.s==='sBlock'&&P._sbParryT>0)||(P.s==='peaceShield'&&P._sbParryT>0)||(P.s!=='whirlwind'&&P.s!=='beam'&&P.s!=='elecRepent'&&P._sbParryT>0)} // 칼등치기 앞 _PARRY_WIN틱만 패링(뒤 후딜) + 보호막 + 평화보호 패링윈도우
 function doParry(_inDmg,_px,_py,_forceQ,_parryEl){if(_px===undefined)_px=P.x;if(_py===undefined)_py=P.y;if(_parryEl===undefined)_parryEl=0;_petOnParry();if(G._pStats)G._pStats._pH++;if(G._sStats)G._sStats.parries++;const _isQ=_forceQ||P.s==='sBlock'||P.s==='peaceShield'||P._sbParryT>0;if(_isQ){playSample('q_parry',.9,_r(1,.08))}else{playSample('sword_parry',1,_r(1,.1));playSample(['sword_back','sword_back2','sword_back3'][~~(Math.random()*3)],.5,_r(1.1,.1))}if(Math.random()<.5)playSample(['voice_parry1','voice_parry2','voice_parry3','voice_parry4'][~~(Math.random()*4)],1,_r(1,.03));else playSample('male_grunt',1,_r(1,.15));
   P.iframes=Math.max(P.iframes,18);
   // 패링 성공 → 그로기 해제 + 포이즈 복원
