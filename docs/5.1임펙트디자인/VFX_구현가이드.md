@@ -294,3 +294,9 @@ PixelLab에서 8프레임 애니메이션도 생성 완료했으나, MCP API로 
 - **G.chapter 부재** → `SI_TO_HELL[G.stage||0]`로 챕터 산출.
 - **BOOTH 공존**: `_boothDraw()`는 별도 DOM 오버레이 캔버스(z9999) → ATMOS(메인 캔버스)와 합성 무충돌. 순서=ATMOS 3-3→UI→booth.
 - **동시세션 주의**: 저쪽 조명 시스템(_litColCvs/_COL_PRESET/_initColStamps, 챕터 틴트)과 도메인 인접 — ATMOS는 독립 후처리 패스라 공존하나, 렌더순서/이중틴트 과다 시 조율 필요.
+
+### ATMOS 알파 상수화 + 튜닝 HUD + 자동승격 차단 (2026-08-22)
+- **알파 상수화**: 3패스 하드코딩 알파 8개 → `_ATM_A=new Float32Array([.22,.10,.11,.06,.12,.55,.045,.05])` (0헤이즈틴트/1원경안개A/2갓레이1/3갓레이2/4근경안개B/5부유입자/6그레이드Hi/7그레이드Lo). `_ATM_A_DEF`=R복원용.
+- **A1 이중틴트 완화**: 그레이드Hi .09→**.045**, Lo .10→**.05** (타세션 컬러조명과 색영역 중복 → 색은 조명 소유, ATMOS는 깊이 담당). 조명 합성지점: game.html 라이트패스 `X.globalAlpha=LIT_COL_MIX` lighter.
+- **A2 자동승격 차단**: `_atmUserSet`(사용자 atmos 수동변경 시 1). STEP5 복구조건 `else if(OPT.atmos===1&&!_atmUserSet)`. 자동강등(부스 안전장치)은 유지.
+- **튜닝 HUD**(디버그 전용): `_ATM_TUNE=false`(소스 마스터, false시 100% 무영향)·`_atmHudOn`(F9 가시성 토글)·`_atmSel`. 키(게임 keydown 분기, 새 리스너 없음): F9 토글 / ↑↓ 선택 / ←→ ±.005 / PgUp·Dn ±.05(0~1 클램프) / C 배열 console 출력(`.220` 붙여넣기형) / R 초기값. 전용 DOM 오버레이 캔버스(z100000, booth와 분리해 clearRect 충돌 방지). 영문 고정(번역 제외).
