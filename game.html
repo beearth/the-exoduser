@@ -11158,13 +11158,18 @@ const _GP_KEY_DEFAULT={
   // 12~15(D-pad)는 패널 토글 직접 처리 — 키 주입 없음
 };
 let _GP_KEY=Object.assign({},_GP_KEY_DEFAULT);
+let _GP_KEYIDX={}; // [release-sync] 키코드→버튼인덱스 역맵 (누르기=엣지, 떼기=레벨 동기화용). _GP_KEY 변경 시 _rebuildGpKeyIdx로 갱신
+function _rebuildGpKeyIdx(){_GP_KEYIDX={};for(var _rk in _GP_KEY)_GP_KEYIDX[_GP_KEY[_rk]]=+_rk;}
 // 저장된 패드 매핑 로드
 try{const _s=localStorage.getItem('gpKeyMap');if(_s){const _m=JSON.parse(_s);for(const k in _m){const _ki=+k;if(_ki>=12&&_ki<=15)continue;_GP_KEY[_ki]=_m[k]}}}catch(e){}
 // 2026-07-27 키스왑 마이그레이션: 구 기본 패드맵(X=mouse2, R3=KeyE) → 신 기본(X=KeyE, R3=mouse2)
 if(_GP_KEY[2]==='mouse2'&&_GP_KEY[11]==='KeyE'){_GP_KEY[2]='KeyE';_GP_KEY[11]='mouse2';_saveGpKeyMap()}
-function _saveGpKeyMap(){try{localStorage.setItem('gpKeyMap',JSON.stringify(_GP_KEY))}catch(e){}}
+_rebuildGpKeyIdx(); // 초기 역맵 빌드 (로드/마이그레이션 반영 후 1회)
+function _saveGpKeyMap(){_rebuildGpKeyIdx();try{localStorage.setItem('gpKeyMap',JSON.stringify(_GP_KEY))}catch(e){}}
 function _resetGpKeyMap(){_GP_KEY=Object.assign({},_GP_KEY_DEFAULT);_saveGpKeyMap()}
+var _gpInjHeld={}; // [release-sync] 게임패드가 주입해 현재 눌림으로 기록한 키코드 (falling-edge 유실 대비 레벨 동기화용)
 function _gpInjectKey(kc,pressed){
+  _gpInjHeld[kc]=pressed;
   if(kc.startsWith('mouse')){const mn=+kc.slice(5);MB[mn]=pressed;if(pressed)MBjust[mn]=true;}
   else{K[kc]=pressed;const ev=new KeyboardEvent(pressed?'keydown':'keyup',{code:kc,key:kc,bubbles:true});ev._fromGp=true;document.dispatchEvent(ev);}
 }
@@ -11180,6 +11185,9 @@ function _gpClearAll(){
   if(_gpBtnsPrev['sL']){K['KeyA']=false;_gpBtnsPrev['sL']=false;}
   if(_gpBtnsPrev['sR']){K['KeyD']=false;_gpBtnsPrev['sR']=false;}
   if(_gpBtnsPrev['kRS']){_gpInjectKey('mouse2',false);_gpBtnsPrev['kRS']=false;}
+  // [release-sync] 주입-held 키 전부 해제 후 초기화 (패드→KBM 전환/해제 시 잔류 방지)
+  for(var _ich in _gpInjHeld){if(_gpInjHeld[_ich])_gpInjectKey(_ich,false);}
+  _gpInjHeld={};
 }
 
 // ═══ 범용 UI 게임패드 네비게이션 (엘든링/디아4 스타일) ═══
@@ -11672,6 +11680,14 @@ function _pollGamepad(){
     }
     if(!pressed&&wasPrev)_gpInjectKey(kc,false);
     _gpBtnsPrev['k'+idx]=pressed;
+  }
+
+  // [release-sync] 게임패드 주입 키의 falling-edge 유실 방지 — 엣지 아닌 '현재 레벨'로 강제 해제만 (누르기는 위 엣지 로직 유지)
+  for(var _ic in _gpInjHeld){
+    if(!_gpInjHeld[_ic])continue;
+    var _bi=_GP_KEYIDX[_ic];
+    if(_bi===undefined)continue;
+    if(!_gpBtns[_bi]){ _gpInjectKey(_ic,false); }
   }
 
   // RT→Z(필살기), LT+RT→X(처형)
