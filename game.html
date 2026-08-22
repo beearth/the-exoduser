@@ -14501,6 +14501,18 @@ function shQuery(x,y,r){
   }
   return result;
 }
+// 패링 유도 타겟: 한 프레임(탄막 패링 pass) 내 "플레이어 기준 최근접 적"을 1회만 shQuery(600)로 계산·공유.
+// dense 탄막을 한 프레임에 다발 패링할 때 N×shQuery(600) → 1×로 축소 (탄막 패링 스파이크 완화).
+let _phtDone=false,_phtTgt=null;
+function _resetParryHomingCache(){_phtDone=false;_phtTgt=null}
+function _parryHomingTarget(){
+  if(_phtDone)return _phtTgt;
+  _phtDone=true;
+  let _t=null,_m=360000;
+  const _ne=shQuery(P.x,P.y,600);
+  for(let _i=0;_i<_ne.length;_i++){const e=_ne[_i];if(!e.alive)continue;const d=dst2(P.x,P.y,e.x,e.y);if(d<_m){_m=d;_t=e}}
+  _phtTgt=_t;return _t;
+}
 let _deadPool=[];
 function rebuildDeadPool(){_deadPool.length=0;for(let i=0;i<ens.length;i++){if(!ens[i].alive&&!ens[i]._absorbed)_deadPool.push(ens[i])}}
 let _impacts=[],_impNext=0;
@@ -28554,7 +28566,7 @@ function update(){
       if(_rp.life/_rp.ml<.3){_recycleProj(_rp);projs[_ri]=projs[projs.length-1];projs.length--;_ri--;_killCnt--}
     }
   }
-  {let pw=0;const _camX=G.cam?G.cam.x:P.x,_camY=G.cam?G.cam.y:P.y;
+  {let pw=0;_resetParryHomingCache();const _camX=G.cam?G.cam.x:P.x,_camY=G.cam?G.cam.y:P.y;
   for(let i=0;i<projs.length;i++){
     const p=projs[i];
     // 카메라에서 2500px 이상 떨어진 탄 즉사 (정적 장판 제외) — 화면 밖 큰 여유
@@ -28726,8 +28738,8 @@ function update(){
     // redBean 전용: 방패스킬 공격범위와 동일한 넓은 판정
     const _sdLvD=P.skills.maliceSwipe||0;
     const _isAtkState=P.s==='wSwing'||P.s==='wWindup'||P.s==='wRecover'||P.s==='whirlwind'||P.s==='charge'||P.s==='charging';
-    const _parryR=Math.min(100,70+(sh().bonusRange||0)*4+(PASSIVES.pParry||0)*2+~~(_eqAffix('parryBonus')*20));
-    const _parryRDet=Math.min(180,120+(sh().bonusRange||0)*6+(PASSIVES.pParry||0)*3+~~(_eqAffix('parryBonus')*30));
+    const _parryR=Math.min(140,110+(sh().bonusRange||0)*4+(PASSIVES.pParry||0)*2+~~(_eqAffix('parryBonus')*20)); // 판정 반경 70→110(cap 100→140) 완화(빡빡 해소)
+    const _parryRDet=Math.min(200,140+(sh().bonusRange||0)*6+(PASSIVES.pParry||0)*3+~~(_eqAffix('parryBonus')*30)); // Q기폭 120→140(cap 180→200)
     const _rbDeflR=_sbActive?_parryR:_sbPWDet?_parryRDet:_sbPW?_parryR:isPWin()?_parryR:_isAtkState?((wp().wRange||50)+(wp().bonusRange||0)*4)*2+60:_pCollR+20;
     // 스윕 충돌: 이전→현재 선분과 플레이어 원의 최근접 거리 (현재+이전 위치 모두 체크)
     let _pDist=Math.sqrt(_pDist2);
@@ -28761,8 +28773,7 @@ function update(){
     }
     if(p.redBean&&!_pHit&&_pDist<_rbDeflR&&_sbActive){
       addTxt(P.x,P.y-28,_T('🛡️💎 빨콩→블루콩!'),'#00e5ff',60);
-      let _rbTgt=null,_rbMin=360000;
-      {const _rbNe=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_rbNe.length;_ri++){const e=_rbNe[_ri];if(!e.alive)continue;const d=dst2(P.x,P.y,e.x,e.y);if(d<_rbMin){_rbMin=d;_rbTgt=e}}}
+      let _rbTgt=_parryHomingTarget(); // 프레임당 1회 캐싱 공유
       if(_rbTgt){const _rbAng=Math.atan2(_rbTgt.y-P.y,_rbTgt.x-P.x);p.vx=Math.cos(_rbAng)*7;p.vy=Math.sin(_rbAng)*7}
       else{p.vx*=-4;p.vy*=-4}
       {p.friendly=true;p.life=240;p.ml=240;p.dmg=~~(pParryProjDmg(p.dmg,false)*1.5);p._aoeR=160;p._aoeDmg=p.dmg*2;}
@@ -28803,8 +28814,7 @@ function update(){
       const _bkParry=_anyPW; // 무지개탄: Q(sBlock) 패링 + 해제 패링 모두 가능, 우클릭(sBash) 불가
       if(_bkParry){
         // Q 패링 성공: 반사 + 유도
-        let _bkTgt=null,_bkMin=360000;
-        {const _bkNe2=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_bkNe2.length;_ri++){const e=_bkNe2[_ri];if(!e.alive)continue;const dd=dst2(P.x,P.y,e.x,e.y);if(dd<_bkMin){_bkMin=dd;_bkTgt=e}}}
+        let _bkTgt=_parryHomingTarget(); // 프레임당 1회 캐싱 공유
         if(_bkTgt){const _bkA=Math.atan2(_bkTgt.y-P.y,_bkTgt.x-P.x);const _bkSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_bkA)*_bkSpd;p.vy=Math.sin(_bkA)*_bkSpd}
         else{p.vx*=-2;p.vy*=-2}
         {p.dmg=~~(pParryProjDmg(p.dmg,true)*3);}
@@ -28848,8 +28858,7 @@ function update(){
     // ══ 화이트볼: isPWin()으로 패링 (빨콩과 동일 로직) ══
     if(p.bwBean&&!_pHit&&_pDist<_normalR&&P.iframes<=0&&!P._ioActive){
       if(_sbActive&&_pDist<_rbDeflR){ // 흰색볼=물리→E 전용 패링
-        let _bwTgt=null,_bwMin=360000;
-        {const _bwNe=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_bwNe.length;_ri++){const e=_bwNe[_ri];if(!e.alive)continue;const d=dst2(P.x,P.y,e.x,e.y);if(d<_bwMin){_bwMin=d;_bwTgt=e}}}
+        let _bwTgt=_parryHomingTarget(); // 프레임당 1회 캐싱 공유
         if(_bwTgt){const _bwA=Math.atan2(_bwTgt.y-P.y,_bwTgt.x-P.x);const _bwSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_bwA)*_bwSpd;p.vy=Math.sin(_bwA)*_bwSpd}
         else{p.vx*=-2;p.vy*=-2}
         {p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,_sbPW)*1.5);p.life=180;p.ml=180;p.bwBean=false;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;}
@@ -28864,8 +28873,7 @@ function update(){
     // ══ 다크볼: isPWin()으로 패링 (빨콩과 동일 로직) ══
     if(p.gbBean&&!_pHit&&_pDist<_normalR&&P.iframes<=0&&!P._ioActive){
       if(_anyPW){ // 초록볼=색/원소→Q 전용 패링
-        let _gbTgt=null,_gbMin=360000;
-        {const _gbNe=shQuery(P.x,P.y,600);for(let _gi=0;_gi<_gbNe.length;_gi++){const e=_gbNe[_gi];if(!e.alive)continue;const d=dst2(P.x,P.y,e.x,e.y);if(d<_gbMin){_gbMin=d;_gbTgt=e}}}
+        let _gbTgt=_parryHomingTarget(); // 프레임당 1회 캐싱 공유
         if(_gbTgt){const _ga=Math.atan2(_gbTgt.y-P.y,_gbTgt.x-P.x);const _gaSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_ga)*_gaSpd;p.vy=Math.sin(_ga)*_gaSpd}
         else{p.vx*=-2;p.vy*=-2}
         {p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,_sbPW)*2);p.life=200;p.ml=200;p.gbBean=false;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;}
@@ -28896,8 +28904,7 @@ function update(){
         poolPart(P.x,P.y,0,0,'#ffdd00',28,6);
         poolPart(P.x,P.y,0,0,'#ffffff',18,4);
         // 유도 반사 (빨콩과 동일)
-        let _npTgt=null,_npMin=360000;
-        {const _npNe=shQuery(P.x,P.y,600);for(let _ri=0;_ri<_npNe.length;_ri++){const e=_npNe[_ri];if(!e.alive)continue;const d=dst2(P.x,P.y,e.x,e.y);if(d<_npMin){_npMin=d;_npTgt=e}}}
+        let _npTgt=_parryHomingTarget(); // 프레임당 1회 캐싱 공유
         if(_npTgt){const _npA=Math.atan2(_npTgt.y-P.y,_npTgt.x-P.x);const _npSpd=Math.max(5,Math.sqrt(p.vx*p.vx+p.vy*p.vy));p.vx=Math.cos(_npA)*_npSpd;p.vy=Math.sin(_npA)*_npSpd}
         else{p.vx*=-2;p.vy*=-2}
         {p.friendly=true;p.dmg=~~(pParryProjDmg(p.dmg,_sbPW)*1.5);p.life=180;p.ml=180;p.blueBean=true;p.parryBlueBean=true;p.magic=true;p.homing=true;p.col='#00e5ff';p._aoeR=0;p._aoeDmg=0;}
