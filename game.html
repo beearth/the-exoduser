@@ -11051,11 +11051,21 @@ function _clearHeldInput(){
 addEventListener('blur',_clearHeldInput);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)_clearHeldInput()});
 addEventListener('mousemove',e=>{
+  // [sticky-keys] Windows 고정키 등으로 Shift keyup 유실 시 KH 잔류 강제해제 (패드 정상 홀드/주입은 보호)
+  if(!_gpActive && !_gpInjHeld['ShiftLeft'] && e.getModifierState && !e.getModifierState('Shift')){
+    if(KH['ShiftLeft'])KH['ShiftLeft']=false;
+    if(KH['ShiftRight'])KH['ShiftRight']=false;
+  }
   if(_BOOTH_MODE)_boothIdle=0;
   _setMousePosition(e);
   _setMouseFacing();
 });
 addEventListener('mousedown',e=>{
+  // [sticky-keys] Windows 고정키 등으로 Shift keyup 유실 시 KH 잔류 강제해제 (패드 정상 홀드/주입은 보호)
+  if(!_gpActive && !_gpInjHeld['ShiftLeft'] && e.getModifierState && !e.getModifierState('Shift')){
+    if(KH['ShiftLeft'])KH['ShiftLeft']=false;
+    if(KH['ShiftRight'])KH['ShiftRight']=false;
+  }
   if(_BOOTH_MODE)_boothIdle=0;
   _setMousePosition(e);
   _setMouseFacing();
