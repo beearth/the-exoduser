@@ -263,3 +263,34 @@ PixelLab에서 8프레임 애니메이션도 생성 완료했으나, MCP API로 
 - **캐시 버스팅** — 스프라이트 교체 시 `?v=날짜` 쿼리 필수
 - **GIF 1프레임만 쓰지 않기** — 반드시 전 프레임 추출해서 애니메이션 시트 구성
 - **drawImage 비율** — `al.range`로 강제 스트레칭하면 찌그러짐, `drawH * (FW/FH)`로 비율 유지
+
+---
+
+## ATMOS 후처리 레이어 (Ori 분위기) — 2026-08-22 신설
+
+`game.html` 3패스 스크린공간 후처리. **OPT.atmos** 3단(0=끔/1=간략/2=전체), 기본 2(구저장본 호환 `if(OPT.atmos===undefined)OPT.atmos=2`). 티어 프리셋 S/A=2, B=1, 기타=0. 합성은 source-over·lighter만(GL 프록시 미지원 screen/overlay 회피).
+
+### 캔버스 6장 (부팅 1회 `_atmBuild()`, draw 진입부 lazy guard)
+| 캔버스 | 크기 | 내용 |
+|---|---|---|
+| _atmFogA | 512² | radial arc 40개 rgba(120,150,190,.05) r60-180, wrap 이음매 제거(9-offset) |
+| _atmFogB | 512² | rgba(90,120,160,.07) r30-90 (시드 다름) |
+| _atmRay | 1024×512 | 사선 -22° 스트라이프 7개, rgba(255,238,200,0→.10→0) 폭40-110 |
+| _atmVig | C.width×C.height | radial 중심투명, .55~1 rgba(0,0,0,.62). **리사이즈 재생성 + `_glVer++` 필수**(GL 텍스처 캐시 고정 방지) |
+| _atmGradeHi | 1×256 | 상단 rgb(70,110,140)→검정 (lighter .09) |
+| _atmGradeLo | 1×256 | 검정→하단 rgb(60,20,45) (source-over .10) |
+| _atmMote | Float32Array(96×5) | x,y,vx,vy(-0.12~.12),phase — 부유입자 |
+
+### 3패스 (draw 내, screen-space)
+- **3-1 DEPTH HAZE** (맵/데코 후·엔티티 전, atmos≥2): #121a2a .22 + FogA lighter .10 파랄럭스(cam×.15) 커버타일
+- **3-2 RAY+FOG+MOTE** (엔티티 후·토치 전, atmos≥2): 갓레이 2패스(.11 cam×.05+sin흔들 / .06 cam×.09 ×1.4확대) + FogB 근경(.12 cam×.45) + 부유입자 96개(챕터 `HELL_PALETTES[SI_TO_HELL[G.stage]].bright` 색, wrap 값대입)
+- **3-3 VIGNETTE+GRADE** (토치 후·UI 전, atmos≥1): GradeHi lighter .09 + GradeLo source-over .10 + Vignette
+
+### 성능 자동 강등 (전역 var 2개 _atmLoF/_atmHiF)
+55fps<180f → atmos 2→1 / 70fps>300f → 1→2. loop fps 히스테리시스 직후.
+
+### 구현 메모/적응
+- **2x2 타일 → 커버-타일링**: SSAA로 C.width가 커서(백킹픽셀) 2x2(1024px)론 대화면 미커버 → `for` wrap 커버타일로 보정.
+- **G.chapter 부재** → `SI_TO_HELL[G.stage||0]`로 챕터 산출.
+- **BOOTH 공존**: `_boothDraw()`는 별도 DOM 오버레이 캔버스(z9999) → ATMOS(메인 캔버스)와 합성 무충돌. 순서=ATMOS 3-3→UI→booth.
+- **동시세션 주의**: 저쪽 조명 시스템(_litColCvs/_COL_PRESET/_initColStamps, 챕터 틴트)과 도메인 인접 — ATMOS는 독립 후처리 패스라 공존하나, 렌더순서/이중틴트 과다 시 조율 필요.

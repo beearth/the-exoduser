@@ -2540,6 +2540,7 @@ canvas{display:block;position:fixed;inset:0}
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optDeathFx" checked style="width:16px;height:16px;accent-color:#ff4444"><span class="set-name">사망 이펙트</span></label></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optLighting" checked style="width:16px;height:16px;accent-color:#ffdd66"><span class="set-name">동적 조명</span></label></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optTorch" checked style="width:16px;height:16px;accent-color:#ff8844"><span class="set-name">횃불 조명 (어둠)</span></label></div>
+          <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px"><span class="set-name">분위기 효과</span><select id="optAtmos" style="margin-left:auto"><option value="0" data-ko="끔">끔</option><option value="1" data-ko="간략">간략</option><option value="2" data-ko="전체" selected>전체</option></select></label></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optAmbPart" checked style="width:16px;height:16px;accent-color:#88ccff"><span class="set-name">앰비언트 파티클</span></label></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optFog" checked style="width:16px;height:16px;accent-color:#8899aa"><span class="set-name">안개 효과</span></label></div>
           <div class="set-range-row"><label style="display:flex;align-items:center;gap:8px;cursor:pointer"><input type="checkbox" id="optGrain" checked style="width:16px;height:16px;accent-color:#aa9977"><span class="set-name">필름 그레인</span></label></div>
@@ -4013,13 +4014,13 @@ var _lights=[],_lightCnt=0,_litCamX=0,_litCamY=0;
 var _lightStamps={}; // {radius: canvas} 프리베이크 스탬프
 // 지옥별 어둠 레벨 (r,g,b,alpha) — 0~6지옥
 var _HELL_AMBIENT=[
-  [8,25,8,.06],     // 0지옥: 은은한 녹색 (썩은 숲)
-  [8,20,3,.06],     // 1지옥: 은은한 녹색
-  [30,3,0,.07],     // 2지옥: 은은한 적색
-  [18,0,22,.07],    // 3지옥: 은은한 보라
-  [24,18,0,.06],    // 4지옥: 은은한 황색
-  [18,12,3,.07],    // 5지옥: 은은한 갈색
-  [12,0,20,.08]     // 6지옥: 약간 짙은 보라
+  [6,16,9,.60],     // 0지옥: 은은한 녹색 (썩은 숲)
+  [6,13,4,.62],     // 1지옥: 은은한 녹색
+  [26,4,0,.64],     // 2지옥: 은은한 적색
+  [14,0,20,.64],    // 3지옥: 은은한 보라
+  [20,15,0,.60],    // 4지옥: 은은한 황색
+  [16,10,3,.64],    // 5지옥: 은은한 갈색
+  [10,0,18,.68]     // 6지옥: 약간 짙은 보라
 ];
 var _HELL_AMB_STR=_HELL_AMBIENT.map(function(a){return 'rgba('+a[0]+','+a[1]+','+a[2]+','+a[3]+')'});
 // 속성별 광원 RGB (물리/화/빙/암/뇌/신성)
@@ -4029,6 +4030,28 @@ var _rarLightCol=[[140,140,140],[68,204,68],[68,136,255],[187,68,255],[255,170,0
 // 소환굴 등급별 RGB (균열/구멍/심연/나락)
 var _shLightCol=[170,68,68];
 var _LIGHT_RADII=IS_MOBILE?[15,30,63,125,250]:[10,15,20,25,30,40,50,63,88,125,175,250,400];
+var _litColCvs=null,_litColCtx=null,_colStamps=null;
+var _COL_PRESET=[[255,172,72],[92,192,255],[178,92,255],[255,72,40],[110,255,142],[255,242,214]];
+function _initColStamps(){
+ if(_colStamps)return;_colStamps=[];
+ for(var i=0;i<6;i++){var p=_COL_PRESET[i];var c=document.createElement('canvas');c.width=256;c.height=256;
+  var x=c.getContext('2d');var g=x.createRadialGradient(128,128,0,128,128,128);
+  g.addColorStop(0,'rgba('+p[0]+','+p[1]+','+p[2]+',.95)');
+  g.addColorStop(.28,'rgba('+p[0]+','+p[1]+','+p[2]+',.52)');
+  g.addColorStop(.58,'rgba('+~~(p[0]*.7)+','+~~(p[1]*.6)+','+~~(p[2]*.5)+',.20)');
+  g.addColorStop(.82,'rgba('+~~(p[0]*.4)+','+~~(p[1]*.3)+','+~~(p[2]*.2)+',.05)');
+  g.addColorStop(1,'rgba(0,0,0,0)');
+  x.fillStyle=g;x.fillRect(0,0,256,256);_colStamps[i]=c}
+}
+function _colIdx(r,g,b){
+ if(r>200&&g>200&&b>190)return 5;
+ if(r>190&&g<110&&b<90)return 3;
+ if(r>190&&g>130&&b<140)return 0;
+ if(b>180&&r<150)return g>170?4:1;
+ if(r>140&&b>180)return 2;
+ if(g>180&&r<160)return 4;
+ return 0;
+}
 function _initLightStamps(){
   _lightStamps={};
   for(var i=0;i<_LIGHT_RADII.length;i++){
@@ -4100,7 +4123,23 @@ function _pushLight(wx,wy,r,intensity,cr,cg,cb){
   var l=_lights[_lightCnt++];
   l.sx=(dx+C.width/2)*.5; l.sy=(dy+C.height/2)*.5;
   l.r=~~(r*.5); l.a=intensity;
-  l.cr=cr;l.cg=cg;l.cb=cb;
+  l.cr=cr;l.cg=cg;l.cb=cb;l.ci=_colIdx(cr,cg,cb);
+}
+var LIT_COL_MIX=.62;
+var LIT_PLAYER_R=470,LIT_PLAYER_A=.86;
+var _slArr=[],_slStage=-1,_slDirty=true;
+function _buildStaticLights(){
+ _slArr.length=0;_slStage=G.stage;_slDirty=false;
+ if(typeof MAP_OBJS==='undefined'||!MAP_OBJS)return;
+ for(var i=0;i<MAP_OBJS.length;i++){
+  var o=MAP_OBJS[i];if(!o)continue;var t=o.type;
+  if(t==='m_fblue')_slArr.push({x:o.x,y:o.y,r:240,a:.58,cr:92,cg:192,cb:255,f:.9});
+  else if(t==='m_fyellow')_slArr.push({x:o.x,y:o.y,r:240,a:.58,cr:255,cg:220,cb:110,f:.9});
+  else if(t==='bonfire')_slArr.push({x:o.x,y:o.y,r:440,a:.82,cr:255,cg:168,cb:70,f:1});
+  else if(t==='altar')_slArr.push({x:o.x,y:o.y,r:290,a:.50,cr:178,cg:92,cb:255,f:.5});
+  else if(t==='m_penta_circle'||t==='m_skull_altar'||t==='m_obelisk')_slArr.push({x:o.x,y:o.y,r:310,a:.46,cr:255,cg:72,cb:44,f:.6});
+  else if(t==='m_eye_tree'||t==='m_flesh_maw'||t==='m_flesh_ball')_slArr.push({x:o.x,y:o.y,r:270,a:.38,cr:255,cg:72,cb:44,f:.4});
+ }
 }
 function _collectLights(){
   _lightCnt=0;
@@ -4108,6 +4147,23 @@ function _collectLights(){
   // 1) 플레이어 등불 — 비활성화 (요정 글로우만 사용)
   // 2~8) 기타 광원 비활성화 — 플레이어+요정 글로우만 사용
   // 9.5) 유령불꽃 → 요정 위치에서 은은한 등불 광원
+  _pushLight(P.x,P.y-6,LIT_PLAYER_R,LIT_PLAYER_A+Math.sin(_gameFrame*.07)*.03,255,214,158);
+  if(G.bossAlive&&G._bossRef&&G._bossRef.x!=null){
+   var _bel=G._bossRef.el||0;var _bc=_elLightCol[_bel]||_elLightCol[0];
+   _pushLight(G._bossRef.x,G._bossRef.y,520,.62+Math.sin(_gameFrame*.05)*.08,_bc[0],_bc[1],_bc[2]);
+  }
+  if(G._fireZones){
+   for(var _fzL=0;_fzL<G._fireZones.length;_fzL++){
+    var _fz=G._fireZones[_fzL];if(!_fz)continue;
+    if(_fz.type==='iceStorm')_pushLight(_fz.x,_fz.y,_fz.r*2.4,.55,68,200,255);
+    else _pushLight(_fz.x,_fz.y,_fz.r*2.6,.68+Math.sin(_gameFrame*.13+_fzL)*.10,255,140,50);
+   }
+  }
+  if(_slStage!==G.stage||_slDirty)_buildStaticLights();
+  for(var _sl=0;_sl<_slArr.length;_sl++){
+   var _s=_slArr[_sl];
+   _pushLight(_s.x,_s.y,_s.r,_s.a*(1+Math.sin(_gameFrame*.09+_sl*1.7)*.10*_s.f),_s.cr,_s.cg,_s.cb);
+  }
   if(G.pets&&G.pets.iris&&!G._irisOff){
     var _irPet=G.pets.iris;
     var _irFlk=.45+Math.sin(_gameFrame*.1)*.08+Math.sin(_gameFrame*.17)*.05;
@@ -4137,6 +4193,19 @@ function _renderLighting(){
   }
   // CH1 amber glow tint — 제거됨 (중앙글로우 원인)
   lx.globalCompositeOperation='source-over';lx.globalAlpha=1;
+  if(OPT.quality!=='low'){
+   _initColStamps();
+   if(!_litColCvs){_litColCvs=document.createElement('canvas');_litColCtx=_litColCvs.getContext('2d')}
+   if(_litColCvs.width!==_lightW){_litColCvs.width=_lightW;_litColCvs.height=_lightH}
+   var cx2=_litColCtx;cx2.clearRect(0,0,_lightW,_lightH);
+   cx2.globalCompositeOperation='lighter';
+   for(var ci=0;ci<_lightCnt;ci++){
+    var cl=_lights[ci];var cst=_colStamps[cl.ci||0];if(!cst)continue;
+    var cd=cl.r*2;cx2.globalAlpha=cl.a*.85;
+    cx2.drawImage(cst,cl.sx-cl.r,cl.sy-cl.r,cd,cd);
+   }
+   cx2.globalCompositeOperation='source-over';cx2.globalAlpha=1;
+  }
   // 메인 합성은 draw()에서 통일 — 여기서 직접 그리지 않음 (깜빡임 방지)
 }
 
@@ -5329,7 +5398,7 @@ function keyName(code,forceKbm){
 }
 
 // Options
-let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:5,minPickRar:0,minPickLvTier:0,fpsCap:0,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,ssaa:1,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false};
+let OPT={shake:80,hitStop:0,parts:IS_ELECTRON?100:80,sfxVol:60,bgmVol:60,diff:5,minPickRar:0,minPickLvTier:0,fpsCap:0,petAuto:true,bossDebug:false,bloom:true,trail:true,slash:true,postfx:true,deathFx:true,lighting:true,torch:true,ambPart:false,fog:true,bossFog:true,grain:true,autoPotThr:0.99,cursor:0,cursorSize:50,quality:'high',resScale:100,ssaa:1,outline:true,bgmTrack:'auto',lang:'ko',crAutoFuse:-1,crAutoEnh:-1,showFps:false,atmos:2};
 rz(); // 캔버스 초기 리사이즈 (OPT 선언 후 호출)
 
 // ═══ [LANG] 다국어 번역 시스템 ═══
@@ -6901,6 +6970,7 @@ const _EN={
 '블룸 효과':'Bloom Effect','잔상 트레일':'Afterimage Trail','슬래시 이펙트':'Slash Effect',
 '후처리 효과':'Post-Process Effect','사망 이펙트':'Death Effect','동적 조명':'Dynamic Lighting',
 '횃불 조명 (어둠)':'Torch Lighting (Dark)','앰비언트 파티클':'Ambient Particles','안개 효과':'Fog Effect',
+'분위기 효과':'Atmosphere','끔':'Off','간략':'Brief',
 '필름 그레인':'Film Grain','캐릭터 외곽선':'Character Outline','프레임 표시 (FPS)':'Show FPS',
 '리롤':'Reroll','물약':'Potion',
 '기절!':'Stunned!','으로 탈출!':'to escape!','Shift 사슬':'Shift Chain',
@@ -7938,10 +8008,10 @@ function _benchTick(){
 }
 let _gpuScoreCache=2;
 function _applyTierPreset(tier){
-  if(tier==='S'){OPT.bloom=true;OPT.trail=true;OPT.slash=true;OPT.postfx=true;OPT.deathFx=true;OPT.lighting=true;OPT.parts=100;OPT.torch=true;OPT.ambPart=true;OPT.fog=true;OPT.grain=true}
-  else if(tier==='A'){OPT.bloom=true;OPT.trail=true;OPT.slash=true;OPT.postfx=true;OPT.deathFx=true;OPT.lighting=true;OPT.parts=80;OPT.torch=true;OPT.ambPart=true;OPT.fog=true;OPT.grain=true}
-  else if(tier==='B'){OPT.bloom=false;OPT.trail=true;OPT.slash=true;OPT.postfx=false;OPT.deathFx=true;OPT.lighting=false;OPT.parts=60;OPT.torch=true;OPT.ambPart=true;OPT.fog=false;OPT.grain=false}
-  else{OPT.bloom=false;OPT.trail=false;OPT.slash=false;OPT.postfx=false;OPT.deathFx=false;OPT.lighting=false;OPT.parts=40;OPT.torch=false;OPT.ambPart=false;OPT.fog=false;OPT.grain=false}
+  if(tier==='S'){OPT.bloom=true;OPT.trail=true;OPT.slash=true;OPT.postfx=true;OPT.deathFx=true;OPT.lighting=true;OPT.parts=100;OPT.torch=true;OPT.ambPart=true;OPT.fog=true;OPT.grain=true;OPT.atmos=2}
+  else if(tier==='A'){OPT.bloom=true;OPT.trail=true;OPT.slash=true;OPT.postfx=true;OPT.deathFx=true;OPT.lighting=true;OPT.parts=80;OPT.torch=true;OPT.ambPart=true;OPT.fog=true;OPT.grain=true;OPT.atmos=2}
+  else if(tier==='B'){OPT.bloom=false;OPT.trail=true;OPT.slash=true;OPT.postfx=false;OPT.deathFx=true;OPT.lighting=false;OPT.parts=60;OPT.torch=true;OPT.ambPart=true;OPT.fog=false;OPT.grain=false;OPT.atmos=1}
+  else{OPT.bloom=false;OPT.trail=false;OPT.slash=false;OPT.postfx=false;OPT.deathFx=false;OPT.lighting=false;OPT.parts=40;OPT.torch=false;OPT.ambPart=false;OPT.fog=false;OPT.grain=false;OPT.atmos=0}
   saveSettings();syncSettingsUI();
   if($('diagTier'))$('diagTier').textContent=_hwTier;
   if($('diagGpu'))$('diagGpu').textContent=_hwGPU;
@@ -13745,24 +13815,25 @@ function _aggroXY(ex,ey){
   }
   return best;
 }
-let _blCnt=0; // 적 이동탄 개수 드랍용 모듈로 카운터(3발 중 1발 통과, 랜덤 아님)
+let _eProjDropCnt=0; // 적 이동탄 개수 드랍용 모듈로 카운터(3발 중 1발 통과, 랜덤 아님) — _blCnt는 blast-light용으로 선점됨
 function spawnProj(props){
   let p;
   if(_projFree.length>0){p=_projFree.pop();_resetProj(p)}
   else{p=_mkProj()}
   for(const k in props)p[k]=props[k];
   if(!p.ml&&p.life)p.ml=p.life;
-  // 적 탄막: 이동탄 밀도 1/3(2/3 드랍) + 크기·피격판정 2배 + 속도 총 ×2.0 + 데미지 2배
+  // 적 탄막: 이동탄 개수 1/3(모듈로 드랍, 랜덤 아님) + sz 2배·r 1.3배 + 속도 최종 ×1.2 + 이동탄 dmg ×1.6 (정지 위험물은 배율 미적용)
   if(!p.friendly){
     const _moving=(p.vx*p.vx+p.vy*p.vy)>0;
     if(_moving){
-      // 탄막 밀도 1/3 — 이동 탄만 2/3 확률로 스킵(장판·정지 위험물은 유지)
-      if(Math.random()<0.6667){_recycleProj(p);return null;}
-      p.sz*=2;p.r*=2;      // 크기·피격판정 2배 (적탄 충돌은 p.sz 기반: _pCollR=P.r+sz*3)
-      p.vx*=2.0;p.vy*=2.0; // 속도 총 ×2.0 (기존 ×1.6에서 상향)
+      // 탄막 밀도 1/3 — 이동 탄만 3발 중 1발 통과(모듈로 카운터)
+      _eProjDropCnt=(_eProjDropCnt+1)%3;if(_eProjDropCnt!==0){_recycleProj(p);return null;}
+      p.sz*=2;p.r*=1.3;    // 크기·피격판정(sz) 2배, r 1.3배
+      p.vx*=1.8;p.vy*=1.8; // 속도 최종 ×1.8
+      p.dmg=~~(p.dmg*2.0); // 이동 탄 데미지 ×2.0
+      if(p.redBean)p.dmg=~~(p.dmg*0.5); // 빨콩 데미지 반감 (패링데미지) — 무변경
     }
-    p.dmg=~~(p.dmg*2);
-    if(p.redBean)p.dmg=~~(p.dmg*0.5); // 빨콩 데미지 반감 (패링데미지)
+    // 정지 위험물(vx=vy=0): 데미지 배율 미적용(원본 유지)
     // 허수아비: 가까운 대상으로 발사 방향 변경 (무지개콩 제외, 보스탄 포함)
     if((G._voidScarecrow&&G._voidScarecrow.aggroOn||G._explodeScarecrow&&G._explodeScarecrow.aggroOn)&&!p.blackBean){
       const _t=_aggroXY(p.x,p.y);
@@ -20363,13 +20434,14 @@ function initMapObjects(){
   // }
 
   // ── 챕터별 맵 장식 자동 배치 ──
+  function _dcFloorOK(m,x,y){var v=m[y][x];return v===0||v===4}
   const _chDecoRaw=G._testbed?null:_CH_DECO[hell];
   const _chDeco=_chDecoRaw?.filter(d=>(!d.stageMin||G.stage>=d.stageMin)&&(!d.stageMax||G.stage<=d.stageMax))||[];
   if(_chDeco&&_chDeco.length>0){
     const _dcSeed=_tseed(G.stage*13+7,hell*97+3);
     // 바닥 타일 수집
   const _dcFloors=[];
-  for(let y=3;y<G.mh-3;y++)for(let x=3;x<G.mw-3;x++){if(map[y][x]===0)_dcFloors.push({x,y})}
+  for(let y=3;y<G.mh-3;y++)for(let x=3;x<G.mw-3;x++){if(_dcFloorOK(map,x,y))_dcFloors.push({x,y})}
     const _providedFloorDeco=_chDeco.filter(d=>d.userProvided&&d.floorMount);
     const _providedWallDeco=_chDeco.filter(d=>d.userProvided&&d.wallMount);
     const _baseDeco=_chDeco.filter(d=>!d.userProvided);
@@ -20413,13 +20485,13 @@ function initMapObjects(){
         let nearWall=false;
         for(let dy=-4;dy<=4&&!nearWall;dy++)for(let dx=-4;dx<=4&&!nearWall;dx++){
           const tx=f.x+dx,ty=f.y+dy;
-          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0)nearWall=true;
+          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||!_dcFloorOK(map,tx,ty))nearWall=true;
         }
         // 바로 붙은 벽은 제외 (2타일 이내 벽이면 배치 불가)
         let tooClose=false;
         for(let dy=-2;dy<=2&&!tooClose;dy++)for(let dx=-2;dx<=2&&!tooClose;dx++){
           const tx=f.x+dx,ty=f.y+dy;
-          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0)tooClose=true;
+          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||!_dcFloorOK(map,tx,ty))tooClose=true;
         }
         if(tooClose)continue;
         if(nearWall)_lgSide.push(f);else _lgCenter.push(f);
@@ -20448,7 +20520,7 @@ function initMapObjects(){
           // 소환굴 근처 200px 이내 배치 금지
           {let _shNear=false;for(let _si=0;_si<G.spawnHoles.length;_si++){if(dst(px,py,G.spawnHoles[_si].x,G.spawnHoles[_si].y)<200){_shNear=true;break}}if(_shNear){pool.splice(fi,1);continue}}
           // 복도(좁은 통로) 배치 금지: 주변 8타일 범위에 바닥이 충분해야 함
-          if(!(_cmp&&_cmp.path)){{let _flCnt=0;for(let dy=-8;dy<=8;dy++)for(let dx=-8;dx<=8;dx++){const tx=f.x+dx,ty=f.y+dy;if(tx>=0&&ty>=0&&tx<G.mw&&ty<G.mh&&map[ty][tx]===0)_flCnt++}if(_flCnt<220){pool.splice(fi,1);continue}}}
+          if(!(_cmp&&_cmp.path)){{let _flCnt=0;for(let dy=-8;dy<=8;dy++)for(let dx=-8;dx<=8;dx++){const tx=f.x+dx,ty=f.y+dy;if(tx>=0&&ty>=0&&tx<G.mw&&ty<G.mh&&_dcFloorOK(map,tx,ty))_flCnt++}if(_flCnt<220){pool.splice(fi,1);continue}}}
           // 같은 타입 근거리 중복 방지 (800px 내 동일 타입 금지)
           let pick;
           for(let _try=0;_try<5;_try++){
@@ -20542,7 +20614,7 @@ function initMapObjects(){
         const f=_dcFloors[fi];let wallOk=true;
         for(let dy=-4;dy<=4&&wallOk;dy++)for(let dx=-4;dx<=4&&wallOk;dx++){
           const tx=f.x+dx,ty=f.y+dy;
-          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0)wallOk=false;
+          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||!_dcFloorOK(map,tx,ty))wallOk=false;
         }
         if(wallOk)_uniCenter.push(f);
       }
@@ -20586,7 +20658,7 @@ function initMapObjects(){
         let wallOk=true;
         for(let dy=-2;dy<=2&&wallOk;dy++)for(let dx=-2;dx<=2&&wallOk;dx++){
           const tx=f.x+dx,ty=f.y+dy;
-          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0)wallOk=false;
+          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||!_dcFloorOK(map,tx,ty))wallOk=false;
         }
         if(!wallOk)continue;
         let ok=true;
@@ -20616,10 +20688,10 @@ function initMapObjects(){
         if(map[y][x]!==1)continue;
         let adjFloor=false,ox=0,oy=0;
         const _wallInset=T*0.18;
-        if(y<G.mh-1&&map[y+1][x]===0){adjFloor=true;oy=-_wallInset}
-        else if(y>0&&map[y-1][x]===0){adjFloor=true;oy=_wallInset}
-        else if(x<G.mw-1&&map[y][x+1]===0){adjFloor=true;ox=-_wallInset}
-        else if(x>0&&map[y][x-1]===0){adjFloor=true;ox=_wallInset}
+        if(y<G.mh-1&&_dcFloorOK(map,x,y+1)){adjFloor=true;oy=-_wallInset}
+        else if(y>0&&_dcFloorOK(map,x,y-1)){adjFloor=true;oy=_wallInset}
+        else if(x<G.mw-1&&_dcFloorOK(map,x+1,y)){adjFloor=true;ox=-_wallInset}
+        else if(x>0&&_dcFloorOK(map,x-1,y)){adjFloor=true;ox=_wallInset}
         if(adjFloor)_wallCells.push({x,y,ox,oy});
       }
       const _providedWallTarget=Math.max(3,~~(_wallCells.length/25));
@@ -20668,7 +20740,7 @@ function initMapObjects(){
         // 바닥 후보를 다시 모은다 (기존 _dcFloors는 다른 배치용이므로 그대로 둔다)
         const _fbFloors=_dcFloors.length>0?_dcFloors.slice():[];
         if(_fbFloors.length===0){
-          for(let y=2;y<G.mh-2;y++)for(let x=2;x<G.mw-2;x++){if(map[y][x]===0)_fbFloors.push({x,y})}
+          for(let y=2;y<G.mh-2;y++)for(let x=2;x<G.mw-2;x++){if(_dcFloorOK(map,x,y))_fbFloors.push({x,y})}
         }
         for(let pi=0;pi<_fbTarget*80&&_providedWallPlaced<_fbTarget&&_fbFloors.length>0;pi++){
           const ci=~~(_dcSeed()*_fbFloors.length);
@@ -20722,7 +20794,7 @@ function initMapObjects(){
         let wallOk=true;
         for(let dy=-3;dy<=3&&wallOk;dy++)for(let dx=-3;dx<=3&&wallOk;dx++){
           const tx=f.x+dx,ty=f.y+dy;
-          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0)wallOk=false;
+          if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||!_dcFloorOK(map,tx,ty))wallOk=false;
         }
         if(!wallOk)continue;
         // 같은 타입 근거리 중복 방지 (800px 내 동일 타입 금지)
@@ -20756,7 +20828,7 @@ function initMapObjects(){
       let _wallOk=true;
       for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++){
         const tx=_ft.x+dx,ty=_ft.y+dy;
-        if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||map[ty][tx]!==0){if(Math.abs(dx)<=1&&Math.abs(dy)<=1)_wallOk=false}
+        if(tx<0||ty<0||tx>=G.mw||ty>=G.mh||!_dcFloorOK(map,tx,ty)){if(Math.abs(dx)<=1&&Math.abs(dy)<=1)_wallOk=false}
       }
       if(!_wallOk){_dcFloors.splice(_fi,1);di--;continue}
       // 기존 오브젝트와 겹침 방지
@@ -20776,7 +20848,7 @@ function initMapObjects(){
       if(_dMeta&&(_dMeta.collision||_dMeta.col)){
         let _dBlk=false;
         for(let _si=0;_si<G.spawnHoles.length;_si++){if(dst(_px,_py,G.spawnHoles[_si].x,G.spawnHoles[_si].y)<200){_dBlk=true;break}}
-        if(!_dBlk){let _fc=0;for(let dy=-4;dy<=4;dy++)for(let dx=-4;dx<=4;dx++){const tx=_ft.x+dx,ty=_ft.y+dy;if(tx>=0&&ty>=0&&tx<G.mw&&ty<G.mh&&map[ty][tx]===0)_fc++}if(_fc<60)_dBlk=true}
+        if(!_dBlk){let _fc=0;for(let dy=-4;dy<=4;dy++)for(let dx=-4;dx<=4;dx++){const tx=_ft.x+dx,ty=_ft.y+dy;if(tx>=0&&ty>=0&&tx<G.mw&&ty<G.mh&&_dcFloorOK(map,tx,ty))_fc++}if(_fc<60)_dBlk=true}
         if(_dBlk){_dcFloors.splice(_fi,1);di--;continue}
       }
       MAP_OBJS.push({type:_dObj.id,x:_px,y:_py,hell});
@@ -40901,6 +40973,7 @@ function _applyLang(){try{
   const _dm=$('optDispMode');if(_dm){Array.from(_dm.options).forEach(o=>{const ko=o.dataset.ko||(o.textContent);if(!o.dataset.ko)o.dataset.ko=ko;const tr=_T(ko);o.textContent=tr!==ko?tr:ko})}
   // SSAA select options (only '끄기 (1x)' needs translation; 1.5x/2x are numeric)
   const _ss=$('optSsaa');if(_ss){Array.from(_ss.options).forEach(o=>{const ko=o.dataset.ko||(o.textContent);if(!o.dataset.ko)o.dataset.ko=ko;const tr=_T(ko);o.textContent=tr!==ko?tr:ko})}
+  const _asel=$('optAtmos');if(_asel){Array.from(_asel.options).forEach(o=>{const ko=o.dataset.ko||(o.textContent);if(!o.dataset.ko)o.dataset.ko=ko;const tr=_T(ko);o.textContent=tr!==ko?tr:ko})}
   // Buttons
   const _btns={saveP1:'세팅1 저장',loadP1:'세팅1',saveP2:'세팅2 저장',loadP2:'세팅2',btnRedetect:'재진단',resetBtn:'게임 리셋 (처음부터)',toLobbyBtn2:'캐릭터 선택 (로비)',setClose:'닫기 [ESC]',resetYes:'확인',resetNo:'취소',diagTierLabel:'성능 등급:',diagBenchLabel:'벤치 FPS:',quitBtn:'게임 종료'};
   for(const[id,ko]of Object.entries(_btns)){const el=$(id);if(el)el.textContent=_T(ko)}
@@ -41086,6 +41159,7 @@ $('optPostfx').onchange=function(){OPT.postfx=this.checked;_renderPresetBtns();s
 $('optDeathFx').onchange=function(){OPT.deathFx=this.checked;_renderPresetBtns();saveSettings()};
 $('optLighting').onchange=function(){OPT.lighting=this.checked;_renderPresetBtns();saveSettings()};
 $('optTorch').onchange=function(){OPT.torch=this.checked;_renderPresetBtns();saveSettings()};
+if($('optAtmos'))$('optAtmos').onchange=function(){OPT.atmos=+this.value||0;saveSettings()};
 $('optAmbPart').onchange=function(){OPT.ambPart=this.checked;_renderPresetBtns();saveSettings()};
 $('optFog').onchange=function(){OPT.fog=this.checked;_renderPresetBtns();saveSettings()};
 $('optGrain').onchange=function(){OPT.grain=this.checked;_renderPresetBtns();saveSettings()};
@@ -41267,6 +41341,7 @@ function _loadPreset(slot){
     if(data.binds){for(const k in data.binds){if(k in BINDS)BINDS[k]=data.binds[k]}}
     if(data.binds2){for(const k in data.binds2){if(k in BINDS2||k in BINDS)BINDS2[k]=data.binds2[k]}}
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
+    if(OPT.atmos===undefined)OPT.atmos=2; // ATMOS 구저장본 호환
     syncSettingsUI();
     renderSettings();saveSettings();
     $('saveMsg').style.color='#6699cc';$('saveMsg').textContent=_L('세팅'+slot+' 불러오기 완료!','Preset '+slot+' loaded!');
@@ -41340,6 +41415,7 @@ function syncSettingsUI(){
   if($('optDeathFx'))$('optDeathFx').checked=!!OPT.deathFx;
   if($('optLighting'))$('optLighting').checked=!!OPT.lighting;
   if($('optTorch'))$('optTorch').checked=!!OPT.torch;
+  if($('optAtmos'))$('optAtmos').value=String(OPT.atmos==null?2:OPT.atmos);
   if($('optAmbPart'))$('optAmbPart').checked=!!OPT.ambPart;
   if($('optFog'))$('optFog').checked=!!OPT.fog;
   if($('optShowFps'))$('optShowFps').checked=!!OPT.showFps;
@@ -41354,6 +41430,7 @@ try{
     if(data.binds){for(const k in data.binds){if(k in BINDS)BINDS[k]=data.binds[k]}}
     if(data.binds2){for(const k in data.binds2){if(k in BINDS2||k in BINDS)BINDS2[k]=data.binds2[k]}}
     if(data.opt){for(const k in data.opt)OPT[k]=data.opt[k]}
+    if(OPT.atmos===undefined)OPT.atmos=2; // ATMOS 구저장본 호환
     // 2026-07-30 난이도 개편 마이그레이션: 구 0~10(0=일반) → 신 0~10(5=일반, -5~+5단)
     if(!OPT.diffV2){OPT.diff=Math.min(10,(+OPT.diff||0)+5);OPT.diffV2=1}
     // 2026-05-19 마이그레이션: 기본 커서 다크커서 강제
@@ -43075,6 +43152,10 @@ const _kgEl=$('keyGuide');if(_kgEl)_kgEl.onclick=()=>{_kgEl.style.display='none'
 
 // ═══ [S19.5] ORI-STYLE ATMOSPHERE SYSTEM ═══
 // 반딧불이 풀 (20개, new 금지)
+// ═══ ATMOS 후처리 레이어 (Ori 분위기) — 전역 ═══
+var _atmReady=false,_atmFogA=null,_atmFogB=null,_atmRay=null,_atmVig=null,_atmGradeHi=null,_atmGradeLo=null;
+var _atmMote=new Float32Array(96*5);
+var _atmT=0,_atmVigW=0,_atmVigH=0,_atmLoF=0,_atmHiF=0;
 const _oriFireflies=[];for(let _fi=0;_fi<20;_fi++)_oriFireflies[_fi]={x:0,y:0,vx:0,vy:0,phase:_fi*0.31,bright:0,r:1.5+(_fi%3)*0.5};
 // 연기 풀 (10개)
 const _oriSmoke=[];for(let _si=0;_si<10;_si++)_oriSmoke[_si]={x:0,y:0,vx:0,vy:0,alpha:0,r:30+(_si%4)*15,phase:_si*0.63};
@@ -43088,8 +43169,60 @@ function _oriInitParticles(){
 // ═══════════════════════════════════════
 //  [S20] DRAW — Full Render Pipeline
 // ═══════════════════════════════════════
+// ═══ ATMOS 후처리: 캔버스 6장 부팅 1회 빌드 (Math.random은 부팅 1회 실행이라 게임루프 규칙 무관) ═══
+function _atmBuildVig(){ // 비네트만 리사이즈 재생성 (GL _glVer 필수)
+  const c=_atmVig||document.createElement('canvas');c.width=C.width;c.height=C.height;const g=c.getContext('2d');
+  g.clearRect(0,0,c.width,c.height);
+  const cx=c.width/2,cy=c.height/2,rr=Math.max(cx,cy)*1.15;
+  const rg=g.createRadialGradient(cx,cy,0,cx,cy,rr);
+  rg.addColorStop(0,'rgba(0,0,0,0)');rg.addColorStop(.55,'rgba(0,0,0,0)');rg.addColorStop(1,'rgba(0,0,0,.62)');
+  g.fillStyle=rg;g.fillRect(0,0,c.width,c.height);
+  c._glVer=(c._glVer||0)+1;_atmVig=c;_atmVigW=C.width;_atmVigH=C.height;
+}
+function _atmBuild(){
+  // 안개 A (512, rgba(120,150,190,.05), r60-180, wrap 이음매 제거)
+  {const c=document.createElement('canvas');c.width=512;c.height=512;const g=c.getContext('2d');
+   for(let i=0;i<40;i++){const x=Math.random()*512,y=Math.random()*512,r=60+Math.random()*120;
+     for(let dy=-512;dy<=512;dy+=512)for(let dx=-512;dx<=512;dx+=512){
+       if(x+dx+r<0||x+dx-r>512||y+dy+r<0||y+dy-r>512)continue;
+       const rg=g.createRadialGradient(x+dx,y+dy,0,x+dx,y+dy,r);
+       rg.addColorStop(0,'rgba(120,150,190,.05)');rg.addColorStop(1,'rgba(120,150,190,0)');
+       g.fillStyle=rg;g.fillRect(x+dx-r,y+dy-r,r*2,r*2);}}
+   _atmFogA=c;}
+  // 안개 B (512, rgba(90,120,160,.07), r30-90, 시드 다름)
+  {const c=document.createElement('canvas');c.width=512;c.height=512;const g=c.getContext('2d');
+   for(let i=0;i<40;i++){const x=Math.random()*512,y=Math.random()*512,r=30+Math.random()*60;
+     for(let dy=-512;dy<=512;dy+=512)for(let dx=-512;dx<=512;dx+=512){
+       if(x+dx+r<0||x+dx-r>512||y+dy+r<0||y+dy-r>512)continue;
+       const rg=g.createRadialGradient(x+dx,y+dy,0,x+dx,y+dy,r);
+       rg.addColorStop(0,'rgba(90,120,160,.07)');rg.addColorStop(1,'rgba(90,120,160,0)');
+       g.fillStyle=rg;g.fillRect(x+dx-r,y+dy-r,r*2,r*2);}}
+   _atmFogB=c;}
+  // 갓레이 (1024x512, 사선 -22도 스트라이프 7개)
+  {const c=document.createElement('canvas');c.width=1024;c.height=512;const g=c.getContext('2d');
+   g.save();g.translate(512,256);g.rotate(-22*Math.PI/180);g.translate(-512,-256);
+   for(let i=0;i<7;i++){const cxp=Math.random()*1024,w=40+Math.random()*70;
+     const lg=g.createLinearGradient(cxp-w/2,0,cxp+w/2,0);
+     lg.addColorStop(0,'rgba(255,238,200,0)');lg.addColorStop(.5,'rgba(255,238,200,.10)');lg.addColorStop(1,'rgba(255,238,200,0)');
+     g.fillStyle=lg;g.fillRect(cxp-w/2,-300,w,1112);}
+   g.restore();_atmRay=c;}
+  // 비네트
+  _atmBuildVig();
+  // 컬러그레이드 상 (1x256, 상단 청색 -> 하단 검정)
+  {const c=document.createElement('canvas');c.width=1;c.height=256;const g=c.getContext('2d');
+   const lg=g.createLinearGradient(0,0,0,256);lg.addColorStop(0,'rgb(70,110,140)');lg.addColorStop(1,'rgb(0,0,0)');
+   g.fillStyle=lg;g.fillRect(0,0,1,256);_atmGradeHi=c;}
+  // 컬러그레이드 하 (1x256, 상단 검정 -> 하단 자주)
+  {const c=document.createElement('canvas');c.width=1;c.height=256;const g=c.getContext('2d');
+   const lg=g.createLinearGradient(0,0,0,256);lg.addColorStop(0,'rgb(0,0,0)');lg.addColorStop(1,'rgb(60,20,45)');
+   g.fillStyle=lg;g.fillRect(0,0,1,256);_atmGradeLo=c;}
+  // 부유입자 96개 (x,y,vx,vy,phase)
+  for(let i=0;i<96;i++){const b=i*5;_atmMote[b]=Math.random()*C.width;_atmMote[b+1]=Math.random()*C.height;_atmMote[b+2]=(Math.random()-.5)*.24;_atmMote[b+3]=(Math.random()-.5)*.24;_atmMote[b+4]=Math.random()*6.28;}
+  _atmReady=true;
+}
 function draw(){
   if(!X)return;
+  if(!_atmReady)_atmBuild(); else if(_atmVigW!==C.width||_atmVigH!==C.height)_atmBuildVig(); // ATMOS 부팅1회 빌드 + 비네트 리사이즈 재생성
   if(_DCP.on){_DCP.drawInvokes++;_DCP._entry.draw++;_DCP._entry.map++;_DCP._setSource(_DCP_SRC.MAP_CACHE)} // 프레임당 draw() 호출 횟수 — 중복 scene traversal 감지
   X.imageSmoothingEnabled=false;
   const _drawStart=performance.now();
@@ -43910,6 +44043,15 @@ function draw(){
   if(_fc2d){var _dSnap=_PERF_PROF._delta({di:0,st:0,fr:0,ga:0});_PERF_PROF._map_di=_dSnap.di;_PERF_PROF._map_st=_dSnap.st;_PERF_PROF._map_fr=_dSnap.fr;_PERF_PROF._map_ga=_dSnap.ga;var _snapEns=_PERF_PROF._snap()}
   // [EDITOR] 에디터 모드: 맵+MAP_OBJS까지만 그리고 종료
   if(_EDITOR_MODE){X.restore();return}
+  // ═══ ATMOS 3-1 DEPTH HAZE (맵/데코 후, 엔티티 전) ═══
+  if(OPT.atmos>=2&&_atmReady){
+    X.save();X.setTransform(1,0,0,1,0,0);
+    X.globalAlpha=.22;X.fillStyle='#121a2a';X.fillRect(0,0,C.width,C.height);
+    X.globalCompositeOperation='lighter';X.globalAlpha=.10;
+    var _ox=-((G.cam.x*.15)%512),_oy=-((G.cam.y*.15)%512);
+    for(var _ty=_oy-512;_ty<C.height;_ty+=512)for(var _tx=_ox-512;_tx<C.width;_tx+=512)X.drawImage(_atmFogA,_tx,_ty,512,512);
+    X.restore();
+  }
   // Enemies (화면 내만 렌더, 최대 렌더 수 제한)
   const _eVpad=_hiFPS?120:200;
   const _vl=G.cam.x-VW/2-_eVpad,_vr=G.cam.x+VW/2+_eVpad,_vt=G.cam.y-VH/2-_eVpad,_vb=G.cam.y+VH/2+_eVpad;
@@ -45432,7 +45574,7 @@ function draw(){
       X.globalAlpha=.8;X.fillStyle='#bb66ff';X.beginPath();X.arc(p.x,p.y,3,0,Math.PI*2);X.fill();
       X.globalAlpha=1;continue;
     }
-    const _ps=Math.max(1.2,Math.min(2.0,(p.sz||1)*1.5))*.7; // 탄막 크기 30% 축소
+    const _ps=Math.max(1.2,Math.min(4.0,(p.sz||1)*1.5))*.7; // 탄막 크기 상한 2.0→4.0 (sz 2배 시각 반영)
     const ra=Math.atan2(p.vy,p.vx);
     // ── 회전 애니메이션 (크기 고정) ──
     const _spin=p.redBean?.005:p.blackBean?.005:p.blueBean?.004:.002;
@@ -46459,10 +46601,35 @@ function draw(){
     X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore();G._chromaT-=_dtSp}}
   // ═══ 동적 조명 패스 (3프레임마다 계산) ═══
   if(!G._litFrame)G._litFrame=0;G._litFrame++;
-  {const _l0=performance.now();if(_gameFrame%3===0){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
+  {const _l0=performance.now();if(_gameFrame%3===0){if(_useGPU||_useGL)_glFlush();_collectLights();_renderLighting();_litCamX=G.cam.x;_litCamY=G.cam.y}if(_lightCvs){X.save();X.setTransform(1,0,0,1,0,0);X.drawImage(_lightCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);if(_litColCvs&&OPT.quality!=='low'){X.globalCompositeOperation='lighter';X.globalAlpha=LIT_COL_MIX;X.drawImage(_litColCvs,_litCamX-G.cam.x,_litCamY-G.cam.y,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1}X.restore()}if(_DEBUG_PERF){_dbgLight=performance.now()-_l0;_dbgDLit=_dbgLight}}
   // ═══ 블룸 패스 (3프레임마다 계산 — 라이팅과 1프레임 오프셋) ═══
   {const _bl0=performance.now();const _hasGlow=G.bossAlive||_blCnt>0||(G.pets&&G.pets.iris&&!G._irisOff);if(_hasGlow){if(_gameFrame%3===1){if(_useGPU||_useGL)_glFlush();_renderBloom()}else if(_bloomCvs&&OPT.bloom&&OPT.quality!=='low'&&OPT.quality!=='mid'){X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';X.globalAlpha=G.bossAlive?.15:.08;X.drawImage(_bloomCvs,0,0,C.width,C.height);X.globalCompositeOperation='source-over';X.globalAlpha=1;X.restore()}}if(_DEBUG_PERF)_dbgDBloom=performance.now()-_bl0}
   // [TORCH] 횃불 조명 어둠 오버레이 (_gameFrame%3===0 만 재계산)
+  // ═══ ATMOS 3-2 RAY + NEAR FOG + MOTE (엔티티 후, 토치 합성 전) ═══
+  if(OPT.atmos>=2&&_atmReady){
+    X.save();X.setTransform(1,0,0,1,0,0);X.globalCompositeOperation='lighter';
+    _atmT++;
+    X.globalAlpha=.11;
+    var _ax=-((G.cam.x*.05+Math.sin(_atmT*.0004)*18)%1024);
+    for(var _art=_ax-1024;_art<C.width;_art+=1024)X.drawImage(_atmRay,_art,0,1024,512);
+    X.globalAlpha=.06;
+    var _ax2=-((G.cam.x*.09)%1024),_arw=1024*1.4,_arh=512*1.4;
+    for(var _art2=_ax2-_arw;_art2<C.width;_art2+=_arw)X.drawImage(_atmRay,_art2,0,_arw,_arh);
+    X.globalAlpha=.12;
+    var _afx=-((G.cam.x*.45)%512),_afy=-((G.cam.y*.45)%512);
+    for(var _afty=_afy-512;_afty<C.height;_afty+=512)for(var _aftx=_afx-512;_aftx<C.width;_aftx+=512)X.drawImage(_atmFogB,_aftx,_afty,512,512);
+    var _ahell=SI_TO_HELL[G.stage||0]||0,_apal=HELL_PALETTES[_ahell]||HELL_PALETTES[0],_apb=_apal.bright;
+    X.fillStyle='rgb('+_apb[0]+','+_apb[1]+','+_apb[2]+')';
+    for(var _ami=0;_ami<96;_ami++){var _amb=_ami*5;
+      _atmMote[_amb]+=_atmMote[_amb+2];_atmMote[_amb+1]+=_atmMote[_amb+3];_atmMote[_amb+4]+=.014;
+      if(_atmMote[_amb]<0)_atmMote[_amb]=C.width;else if(_atmMote[_amb]>C.width)_atmMote[_amb]=0;
+      if(_atmMote[_amb+1]<0)_atmMote[_amb+1]=C.height;else if(_atmMote[_amb+1]>C.height)_atmMote[_amb+1]=0;
+      var _ama=.25+Math.sin(_atmMote[_amb+4])*.25;
+      X.globalAlpha=_ama*.55;X.fillRect(_atmMote[_amb]-1,_atmMote[_amb+1]-1,2,2);
+      X.globalAlpha=_ama;X.fillRect(_atmMote[_amb],_atmMote[_amb+1],1,1);
+    }
+    X.restore();
+  }
   const _tc0=performance.now();
   if(OPT.torch&&OPT.postfx&&OPT.quality!=='low'){X.save();X.setTransform(1,0,0,1,0,0);
   const _torchStale=!_torchCache||_torchW!==C.width||_torchH!==C.height;
@@ -46505,6 +46672,16 @@ function draw(){
     _tc.globalCompositeOperation='source-over';
     _torchCamX=G.cam.x;_torchCamY=G.cam.y;
     X.drawImage(_torchCache,0,0);X.restore()}}
+  // ═══ ATMOS 3-3 VIGNETTE + GRADE (토치 합성 후, 게임 UI 전) ═══
+  if(OPT.atmos>=1&&_atmReady){
+    X.save();X.setTransform(1,0,0,1,0,0);
+    X.globalCompositeOperation='lighter';X.globalAlpha=.09;
+    X.drawImage(_atmGradeHi,0,0,1,256,0,0,C.width,C.height);
+    X.globalCompositeOperation='source-over';X.globalAlpha=.10;
+    X.drawImage(_atmGradeLo,0,0,1,256,0,0,C.width,C.height);
+    X.globalAlpha=1;X.drawImage(_atmVig,0,0);
+    X.restore();
+  }
   if(_DEBUG_PERF)_dbgDTorch=performance.now()-_tc0;
   // ── 탄막 광원 패스: 비활성화 (눈부심 제거) ──
   // ── 유령불꽃 스프라이트 (조명은 토치 캐시에서 처리, 여기선 코어+날개+파티클만) ──
@@ -51441,6 +51618,11 @@ function loop(timestamp){
   if(_acc>_accCap)_acc=_accCap;
   // _hiFPS 히스테리시스: 80 이상에서 켜지고, 55 이하에서 꺼짐 — 녹화 시 토글 방지
   if(_fpsCur>80)_hiFPS=true;else if(_fpsCur<55)_hiFPS=false;
+  // ATMOS 성능 자동 강등(2→1, 55fps미만 180f)/복구(1→2, 70fps이상 300f). 전역 var 2개만.
+  if(_atmReady){
+    if(OPT.atmos>=2){ if(_fpsCur<55)_atmLoF++;else _atmLoF=0; if(_atmLoF>=180){OPT.atmos=1;_atmLoF=0} }
+    else if(OPT.atmos===1){ if(_fpsCur>70)_atmHiF++;else _atmHiF=0; if(_atmHiF>=300){OPT.atmos=2;_atmHiF=0} }
+  }
   _skipShadow=_hiFPS&&!_useGPU&&!_useGL;
   _drawOdd=(_drawOdd+1)&1;
   _fpsUpdate();_benchTick();
