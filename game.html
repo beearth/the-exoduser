@@ -11097,6 +11097,7 @@ let _gpVibRef=null; // vibrationActuator 용 원본 gamepad 객체 캐시
 let _gpConnected=false; // 패드 하드웨어 연결됨
 let _gpActive=false;    // 패드 모드 활성 (실제 입력 감지 시 true, 키마 입력 시 false)
 let _gpHasRStick=false; // 우스틱 실재 확인 (좌스틱과 독립적인 움직임 감지 시 true)
+let _gpSynced=false;    // [팬텀차단] 패드모드 재진입 시 held-버튼 prev 재동기화 필요 플래그 (조이스틱 드리프트 stuck-key 방지)
 // 자동 감지: localStorage 힌트로 초기값 설정, 이후 실시간 전환
 if(localStorage.getItem('inputMode')==='pad'){_gpActive=true;document.body.style.cursor='none'}
 addEventListener('gamepadconnected',e=>{
@@ -11160,6 +11161,7 @@ function _gpInjectKey(kc,pressed){
   else{K[kc]=pressed;const ev=new KeyboardEvent(pressed?'keydown':'keyup',{code:kc,key:kc,bubbles:true});ev._fromGp=true;document.dispatchEvent(ev);}
 }
 function _gpClearAll(){
+  _gpSynced=false; // [팬텀차단] 다음 패드모드 진입 시 held-버튼 재스냅샷 강제
   // 패드→키마 전환 시 패드가 주입한 키 전부 해제
   for(const bi in _GP_KEY){const kc=_GP_KEY[bi];if(_gpBtnsPrev['k'+bi]){_gpInjectKey(kc,false);_gpBtnsPrev['k'+bi]=false;}}
   if(_gpBtnsPrev['kLT']){K['KeyF']=false;_gpBtnsPrev['kLT']=false;}
@@ -11507,11 +11509,17 @@ function _pollGamepad(){
   }
   if(_gpAxes[0]||_gpAxes[1]||_gpAxes[2]||_gpAxes[3])_anyInput=true;
 
-  // ── 2단계: 입력 감지 → 패드모드 활성화 ──
-  if(_anyInput&&!_gpActive){_gpActive=true;document.body.style.cursor='none';C.style.cursor='none';}
+  // ── 2단계: 입력 감지 → 패드모드 활성화 (드리프트/아날로그 잔압 무시 — 조이스틱 팬텀 자동전환 방지) ──
+  // 자동전환은 "의도적 입력"만 인정: 디지털 버튼 실제 press 또는 스틱 0.5 이상 큰 편향. (idle 스틱 드리프트/트리거 잔압으로 패드모드 켜지지 않게)
+  let _gpDeliberate=false;
+  for(let _di=0;_di<_gpad.buttons.length;_di++){if(_gpad.buttons[_di]&&_gpad.buttons[_di].pressed){_gpDeliberate=true;break}}
+  if(!_gpDeliberate&&(Math.abs(_gpAxes[0])>0.5||Math.abs(_gpAxes[1])>0.5||Math.abs(_gpAxes[2])>0.5||Math.abs(_gpAxes[3])>0.5))_gpDeliberate=true;
+  if(_gpDeliberate&&!_gpActive){_gpActive=true;document.body.style.cursor='none';C.style.cursor='none';}
 
   // ── 3단계: 패드모드 아니면 K[]/MB[] 절대 안 건드림 ──
   if(!_gpActive)return;
+  // [팬텀차단] 패드모드 재진입 첫 폴링: 이미 눌려있는(드리프트) 버튼을 prev에 스냅샷 → rising-edge 오인주입(ShiftLeft stuck) 방지
+  if(!_gpSynced){for(let _si=0;_si<_gpad.buttons.length;_si++)_gpBtnsPrev['k'+_si]=!!_gpBtns[_si];_gpSynced=true;}
 
   // ── 3a단계: 컷씬 진행 중이면 A=advance, B=skip홀드, Start=즉시스킵 ──
   if(typeof _cutsceneState!=='undefined'&&_cutsceneState==='INTRO_CUTSCENE'){
