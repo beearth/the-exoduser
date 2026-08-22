@@ -19119,6 +19119,24 @@ const _whiteBallImg=new Image();_whiteBallImg.src='img/balls/proj_bolt_phys.png'
 _whiteBallImg.onload=function(){_whiteBallReady=true};
 const _darkBallImg=new Image();_darkBallImg.src='img/balls/proj_bolt_dark.png';let _darkBallReady=false;
 _darkBallImg.onload=function(){_darkBallReady=true};
+// ── 흰색 물리탄(redBean) 바버폴(꽈배기) 스프라이트: 흰 바탕 + 45° 검은 줄무늬 (1회 생성, 회전은 drawImage에서) ──
+let _barberCv=null;
+function _getBarberBall(){
+  if(_barberCv)return _barberCv;
+  const S=48,cv=document.createElement('canvas');cv.width=S;cv.height=S;
+  const c=cv.getContext('2d');const cx=S/2,cy=S/2,r=S*.42;
+  c.save();c.beginPath();c.arc(cx,cy,r,0,Math.PI*2);c.clip();
+  c.fillStyle='#ffffff';c.fillRect(0,0,S,S);
+  c.translate(cx,cy);c.rotate(Math.PI/4); // 45° 대각
+  c.fillStyle='#161616';const bw=r*.52;
+  for(let x=-S;x<S;x+=bw*2)c.fillRect(x,-S,bw,S*2);
+  c.restore();
+  c.strokeStyle='#ffffff';c.lineWidth=Math.max(1.5,r*.14); // 흰 테두리(가독)
+  c.beginPath();c.arc(cx,cy,r,0,Math.PI*2);c.stroke();
+  c.globalAlpha=.85;c.fillStyle='#ffffff'; // 밝은 핫스팟
+  c.beginPath();c.arc(cx-r*.3,cy-r*.3,r*.26,0,Math.PI*2);c.fill();
+  _barberCv=cv;return cv;
+}
 // 속성별 볼트 스프라이트 (일반탄/빠른탄용)
 const _boltImgs={};
 ['phys','fire','ice','dark','ltn','holy'].forEach(function(n,i){
@@ -45669,39 +45687,22 @@ function draw(){
     }
     // ── 빨간콩탄: 위협적인 화염구 ──
     if(p.redBean){ // 흰색 물리탄(구 빨콩) — E 전용 패링. 색만 흰색으로 재색
+      // ── 바버폴(꽈배기) 흑백 트위스트: 무지개탄과 확실히 구분 ──
       const _rb=3.5*_sSc; // 기본 반지름
       const _pulse=.8+Math.sin(_now/50+p.x*.3)*.2;
-      const _flk=Math.sin(_now/35+p.y*.2)>.1?1:.6; // 명멸
-      // 1) 넓은 오라
+      // 1) 넓은 흰 오라 (위험 가시성)
       X.globalAlpha=fa*.12*_pulse;X.fillStyle='#ffffff';
-      X.beginPath();X.arc(p.x,p.y,_rb*3.5,0,Math.PI*2);X.fill();
-      // 2) 중간 오라
-      X.globalAlpha=fa*.2*_flk;X.fillStyle='#cfd6dd';
-      X.beginPath();X.arc(p.x,p.y,_rb*2.2,0,Math.PI*2);X.fill();
-      // 3) 본체 (밝은 회백)
-      X.globalAlpha=fa*.85*_flk;X.fillStyle='#e6e6e6';
-      X.beginPath();X.arc(p.x,p.y,_rb,0,Math.PI*2);X.fill();
-      // 4) 밝은 코어
-      X.globalAlpha=fa*.9;X.fillStyle='#ffffff';
-      X.beginPath();X.arc(p.x,p.y,_rb*.6,0,Math.PI*2);X.fill();
-      // 5) 핫스팟
-      X.globalAlpha=fa*.7*_flk;X.fillStyle='#ffffff';
-      X.beginPath();X.arc(p.x-_rb*.15,p.y-_rb*.2,_rb*.3,0,Math.PI*2);X.fill();
-      // 6) 꼬리 (3겹)
+      X.beginPath();X.arc(p.x,p.y,_rb*3.2,0,Math.PI*2);X.fill();
+      // 2) 흰 꼬리 (2겹)
       const _tvx=p.vx,_tvy=p.vy;
-      X.globalAlpha=fa*.15;X.strokeStyle='#aab0b8';X.lineWidth=_rb*1.8;
-      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_tvx*7,p.y-_tvy*7);X.stroke();
-      X.globalAlpha=fa*.25*_flk;X.strokeStyle='#d8dde2';X.lineWidth=_rb*1.1;
-      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_tvx*5,p.y-_tvy*5);X.stroke();
-      X.globalAlpha=fa*.35;X.strokeStyle='#ffffff';X.lineWidth=_rb*.5;
-      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_tvx*3,p.y-_tvy*3);X.stroke();
-      // 7) 파편 (4개)
-      for(let _fi=0;_fi<4;_fi++){
-        const _fa=_now/25+_fi*Math.PI/2+p.x*.2;
-        const _fr=_rb*1.5+Math.sin(_now/30+_fi*3)*_rb*.5;
-        X.globalAlpha=fa*(.2+Math.sin(_now/40+_fi)*.1);X.fillStyle='#c8ced4';
-        X.fillRect(p.x+Math.cos(_fa)*_fr-1,p.y+Math.sin(_fa)*_fr-1,2,2);
-      }
+      X.globalAlpha=fa*.16;X.strokeStyle='#ffffff';X.lineWidth=_rb*1.5;
+      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_tvx*6,p.y-_tvy*6);X.stroke();
+      X.globalAlpha=fa*.3;X.strokeStyle='#e8ecf0';X.lineWidth=_rb*.7;
+      X.beginPath();X.moveTo(p.x,p.y);X.lineTo(p.x-_tvx*4,p.y-_tvy*4);X.stroke();
+      // 3) 바버폴 본체: 흰+검 대각 줄무늬 스프라이트를 회전(=제자리서 꼬임) + 진행각 정렬
+      const _bball=_getBarberBall();const _bd=_rb*2.7;
+      X.save();X.translate(p.x,p.y);X.rotate(Math.atan2(p.vy,p.vx)+_now*.01);X.globalAlpha=fa;
+      X.drawImage(_bball,-_bd/2,-_bd/2,_bd,_bd);X.restore();
       X.globalAlpha=1;continue;
     }
     // ── 무지개탄: 리얼블랙 코어 + 화이트/네온 무지개 ──
