@@ -6,6 +6,8 @@
 // Whirlwind=Torbellino, Forge=Forja de Venganza, Enhancement=Mejora
 // Affix=Afijo, Crystal=Cristal, Poise=Postura
 const _ES={
+'잘못 때렸군. 실수야.':"Golpe fallido. Ni lo rozaste.",
+'타이밍이야. 탄이 닿기 직전에 눌러.':"Es cuestión de tiempo. Golpea justo antes de que te alcance.",
 // --- v7 신규 펫/UI 8종 (2026-07-05) ---
 '다섯 번째군. 이번엔 바뀐 게 있어야지.':"La quinta vez. Esta vez algo debería cambiar.",
 '또 와?! 이번엔 진짜 패턴 외웠어!':"¿¡Otra vez!? ¡Esta vez sí me aprendí el patrón!",
@@ -745,9 +747,21 @@ const _ES={
 '사슬을 땅에 꽂으면 끌려간다.':'Clava el Cadena en el suelo y serás arrastrado.',
 'Shift로 사슬 던져봐!':'¡Lanza el Cadena con Shift!',
 '패링 성공하면 ST가 회복된다. 공짜 자원이야.':'Parar restaura Resistencia. Recurso gratis.',
+'흰색은 E! Q는 안 돼!':"¡Blanco = E! ¡Q no sirve!",
+'색있는 탄은 Q 패링이다. E는 안 통해.':"Los disparos de color piden parada con Q. E no funciona.",
+'흰색 탄은 E 패링. 색있는 탄은 Q 패링.':"Balas blancas: parada E. De color: parada Q.",
+'흰색=E, 색탄=Q 패링. 나머진 다 쳐내.':"Blanco=E, color=Q. Desvía el resto.",
+'색있는 탄은 Q! 흰색은 E!':"¡De color con Q! ¡Blanco con E!",
+'색있는 탄은 전부 Q로 막아!':"¡Para todos los disparos de color con Q!",
+'색있는 탄은 전부 Q!':"Todo lo de color: ¡Q!",
+'흰색 탄은 E. 색있는 탄은 Q.':"Disparos blancos: E. De color: Q.",
+'흰색=E, 색탄=Q.':"Blanco = E, color = Q.",
+'흰색 탄을 무서워하지 마. 악의가 강하다.':"No temas las balas blancas. La malicia es fuerte.",
 "패링은 타이밍이다. 헛치면 빈틈이 생겨.":"El parry es cuestión de tiempo. Si fallas, quedas expuesto.",
 "잘못 패링하면 그로기가 쌓인다!":"¡Un parry fallido llena tu barra de aturdimiento!",
 "여기가 지옥인가":"¿Esto es el infierno?",
+"심연의 앵글러":"Rape abisal",
+"필드보스 처치!":"¡Jefe de campo abatido!",
 "아무 키나 눌러 시작":"Pulsa cualquier tecla",
 "다시 시작":"Reiniciar",
 '패링 많이 하면 ST 걱정 없어~':'¡Para mucho y nunca te faltará Resistencia~',
