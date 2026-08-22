@@ -1182,6 +1182,8 @@ const _RO={
 "패링은 타이밍이다. 헛치면 빈틈이 생겨.":"Parada ține de sincronizare. Dacă ratezi, rămâi descoperit.",
 "잘못 패링하면 그로기가 쌓인다!":"O parare greșită îți umple bara de amețeală!",
 "여기가 지옥인가":"Deci ăsta e iadul",
+"아무 키나 눌러 시작":"Apasă orice tastă",
+"다시 시작":"Repornire",
 '패링 많이 하면 ST 걱정 없어~':'Parează mult și ST nu e niciodată o problemă~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Dezasamblarea echipamentului dă Malicie. Și gunoiul e resursă.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Deschide TAB și dezasamblează echipamentul nefolosit!',

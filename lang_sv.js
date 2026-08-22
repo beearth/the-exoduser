@@ -749,6 +749,8 @@ const _SV={
 "패링은 타이밍이다. 헛치면 빈틈이 생겨.":"Parering handlar om timing. Missar du står du helt öppen.",
 "잘못 패링하면 그로기가 쌓인다!":"En missad parering fyller din groggy-mätare!",
 "여기가 지옥인가":"Så det här är helvetet",
+"아무 키나 눌러 시작":"Tryck på valfri tangent",
+"다시 시작":"Börja om",
 '패링 많이 하면 ST 걱정 없어~':'Parera mycket och ST är aldrig ett problem~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Demontera utrustning för Ondska. Även skräp är resurser.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Öppna TAB och demontera oanvänd utrustning!',

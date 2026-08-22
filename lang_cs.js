@@ -598,6 +598,8 @@ const _CS={
 "패링은 타이밍이다. 헛치면 빈틈이 생겨.":"Vykrytí je o načasování. Když mineš, jsi úplně odkrytý.",
 "잘못 패링하면 그로기가 쌓인다!":"Špatné vykrytí ti plní ukazatel omráčení!",
 "여기가 지옥인가":"Tak tohle je peklo",
+"아무 키나 눌러 시작":"Stiskni libovolnou klávesu",
+"다시 시작":"Restart",
 '패링 많이 하면 ST 걱정 없어~':'Hodně paríruj — ST nebude problém~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Rozebrání vybavení dá zlost. I odpad je zdroj.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Otevři TAB a rozeber nepoužívané vybavení!',

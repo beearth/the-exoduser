@@ -746,6 +746,8 @@ const _DA={
 "패링은 타이밍이다. 헛치면 빈틈이 생겨.":"Parering handler om timing. Rammer du forbi, står du helt åben.",
 "잘못 패링하면 그로기가 쌓인다!":"En forfejlet parering fylder din groggy-måler!",
 "여기가 지옥인가":"Så det her er helvede",
+"아무 키나 눌러 시작":"Tryk på en vilkårlig tast",
+"다시 시작":"Genstart",
 '패링 많이 하면 ST 걱정 없어~':'Parér meget og ST er aldrig et problem~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Demonter udstyr for Ondskab. Selv skrald er ressourcer.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Åbn TAB og demonter ubrugt udstyr!',

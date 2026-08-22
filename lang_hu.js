@@ -1182,6 +1182,8 @@ const _HU={
 "패링은 타이밍이다. 헛치면 빈틈이 생겨.":"A hárítás időzítés kérdése. Ha elvéted, teljesen kitárulkozol.",
 "잘못 패링하면 그로기가 쌓인다!":"Az elrontott hárítás tölti a kábulatmérődet!",
 "여기가 지옥인가":"Hát ez a pokol",
+"아무 키나 눌러 시작":"Nyomj meg egy gombot",
+"다시 시작":"Újrakezdés",
 '패링 많이 하면 ST 걱정 없어~':'Sokat hárítva soha nem fogy el az ST~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Felszerelés szétszedése rosszindulatot ad. A szemét is erőforrás.',
 'TAB 열어서 안 쓰는 장비 분해해!':'TAB-bal bontsd szét a felesleges felszerelést!',

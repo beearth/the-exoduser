@@ -6075,6 +6075,8 @@ const _EN={
 '패링은 타이밍이다. 헛치면 빈틈이 생겨.':"Parry is all timing. Whiff it and you're wide open.",
 '잘못 패링하면 그로기가 쌓인다!':'A mistimed parry builds your groggy gauge!',
 '여기가 지옥인가':'So this is hell',
+'아무 키나 눌러 시작':'Press any key to start',
+'다시 시작':'Restart',
 '패링 많이 하면 ST 걱정 없어~':'Parry a lot and ST is never a problem~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Dismantling gear gives Malice. Even junk is resources.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Open TAB and salvage unused gear!',
@@ -7536,6 +7538,9 @@ function _T(s){
 const _MINI_STUN=60;
 const _FULL_STUN=180;
 var _PARRY_WIN=12; // sBash 20틱 중 패링 활성 틱수 (뒤 20-_PARRY_WIN틱=후딜). DEMO 14 / EA 12 / 1.0 10
+// ═══ BOOTH_MODE: 인게임 부스 어트랙트/자동리셋/조작HUD (기본 false, GXG 빌드에서 sed true) ═══
+var _BOOTH_MODE=false;
+var _boothIdle=0,_boothHUD=null,_boothCtx=null,_boothRunF=0,_boothDeadF=-1,_boothReloading=false,_boothW=0,_boothH=0;
 const _HS={
   blink:2,charge:2,chargeHit:3,chargeWall:3,finisher:5,galeSlam:5,
   melee:4,meleeSh:3,meleeUn:3, // weapon/shield/unarmed
@@ -10835,6 +10840,7 @@ function _dispatchCtSkill(){
 }
 
 document.addEventListener('keydown',(e)=>{
+ if(_BOOTH_MODE)_boothIdle=0;
  if(e.key==='F2'){
   e.preventDefault();
   const cv=document.querySelector('canvas');
@@ -11045,10 +11051,12 @@ function _clearHeldInput(){
 addEventListener('blur',_clearHeldInput);
 document.addEventListener('visibilitychange',()=>{if(document.hidden)_clearHeldInput()});
 addEventListener('mousemove',e=>{
+  if(_BOOTH_MODE)_boothIdle=0;
   _setMousePosition(e);
   _setMouseFacing();
 });
 addEventListener('mousedown',e=>{
+  if(_BOOTH_MODE)_boothIdle=0;
   _setMousePosition(e);
   _setMouseFacing();
   if(listeningBind){
@@ -13711,6 +13719,7 @@ function _aggroXY(ex,ey){
   }
   return best;
 }
+let _blCnt=0; // 적 이동탄 개수 드랍용 모듈로 카운터(3발 중 1발 통과, 랜덤 아님)
 function spawnProj(props){
   let p;
   if(_projFree.length>0){p=_projFree.pop();_resetProj(p)}
@@ -26002,6 +26011,11 @@ function update(){
   // 백그라운드 초기화는 update() 끝에서 버짓 기반 처리 (게임 로직 스킵 안 함)
   _shBufI=0; // shQuery 깊이 버퍼 리셋 (이전 프레임 예외로 인한 누적 방지)
   _gameFrame++;
+  if(_BOOTH_MODE){ // 부스: 유휴 카운터 + 자동 리셋 (60s 어트랙트 / 90s 풀리로드 / 사망 3s 리로드)
+    _boothIdle++;_boothRunF++;
+    if(_boothDeadF>0){_boothDeadF--;if(_boothDeadF<=0&&!_boothReloading){_boothReloading=true;location.reload()}}
+    else if(_boothIdle>=5400&&!_boothReloading){_boothReloading=true;location.reload()}
+  }
   _twRecord(); // 시간왜곡 링버퍼 기록
   // 충돌 분리 Worker (이전 프레임 결과 적용 + 새 디스패치)
   _applyColResult();
@@ -36890,6 +36904,7 @@ function die(){
   if(_eqAffix('reviveOnce')>0&&!P._reviveOnceUsed){P._reviveOnceUsed=true;P.hp=~~(P.mhp*_eqAffix('reviveOnce'));P.iframes=120;playSample('voice_second_wind',1,1);addTxt(P.x,P.y-25,_T('💀 1회부활!'),'#44ff88',60);return}
   // ── 쓰러짐 → 5초 카운트다운 → 부활 판정 (스킬 미습득이어도 자연부활력으로 부활 가능) ──
   P.hp=0;P.s='fallen';P.st2=300; // 5초(300f) 카운트다운
+  if(_BOOTH_MODE&&_boothDeadF<0)_boothDeadF=180; // 부스: 사망 3초 후 자동 리로드 (중복 설정 방지)
   P.iframes=9999; // 쓰러진 동안 무적
   P._fallenAng=P.facing+Math.PI; // 쓰러지는 방향
   G.slowMo=Math.max(G.slowMo,30); // 슬로모 연출
@@ -51319,6 +51334,46 @@ function _perfFrameTick(){
   }
   _PERF_PROF._aiAcc=0;_PERF_PROF._collAcc=0;_PERF_PROF._renderAcc=0;_PERF_PROF._domAcc=0;
 }
+// ═══ BOOTH_MODE 렌더: 전용 최상단 오버레이 캔버스 (부팅 1회 생성, false면 미생성=회귀0) ═══
+function _boothRR(g,x,y,w,h,r){g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()}
+function _boothDraw(){
+  if(!_boothHUD){ // 1회 생성 (guard)
+    _boothHUD=document.createElement('canvas');
+    _boothHUD.id='boothOverlay';
+    _boothHUD.style.cssText='position:fixed;left:0;top:0;width:100vw;height:100vh;pointer-events:none;z-index:99999';
+    document.body.appendChild(_boothHUD);
+    _boothCtx=_boothHUD.getContext('2d');
+    _boothW=0;_boothH=0;
+  }
+  const w=innerWidth,h=innerHeight,g=_boothCtx;
+  if(_boothW!==w||_boothH!==h){_boothW=w;_boothH=h;_boothHUD.width=w;_boothHUD.height=h} // 리사이즈 시 재생성
+  g.clearRect(0,0,w,h);
+  // ── 조작 HUD (하단 72px, 5칸 균등) ──
+  const barH=72,by=h-barH,cw=w/5;
+  g.fillStyle='rgba(0,0,0,.55)';g.fillRect(0,by,w,barH);
+  const COLS=[['WASD','이동','Move'],['Q','무지개 패링','Rainbow Parry'],['E','빨강 패링','Red Parry'],['SHIFT','체인 드라이브','Chain Drive'],['우클릭','마법','Magic']];
+  g.textAlign='center';g.textBaseline='middle';
+  for(let i=0;i<5;i++){
+    const cx=cw*i+cw*.5,kw=Math.min(130,cw*.52),kh=26,kx=cx-kw*.5,ky=by+9;
+    g.fillStyle='rgba(255,255,255,.14)';g.strokeStyle='rgba(255,255,255,.5)';g.lineWidth=1.5;
+    _boothRR(g,kx,ky,kw,kh,6);g.fill();g.stroke();
+    g.fillStyle='#ffe08a';g.font='bold 15px "Malgun Gothic",sans-serif';g.fillText(COLS[i][0],cx,ky+kh*.5+1);
+    g.fillStyle='#ffffff';g.font='13px "Malgun Gothic",sans-serif';g.fillText(COLS[i][1],cx,by+48);
+    g.fillStyle='#9fb4c8';g.font='11px "Malgun Gothic",sans-serif';g.fillText(COLS[i][2],cx,by+62);
+  }
+  // ── 사망 카운트다운 (남은 초 크게) ──
+  if(_boothDeadF>0){
+    g.fillStyle='rgba(0,0,0,.6)';g.fillRect(0,0,w,h);
+    g.fillStyle='#ff5544';g.font='bold 128px "Malgun Gothic",sans-serif';g.fillText(String(Math.ceil(_boothDeadF/60)),w*.5,h*.5);
+    g.fillStyle='#ffffff';g.font='bold 26px "Malgun Gothic",sans-serif';g.fillText(_T('다시 시작')+' · RESTARTING',w*.5,h*.5+92);
+  } else if(_boothIdle>=3600){ // ── 어트랙트 오버레이 (유휴 60초) ──
+    g.fillStyle='rgba(0,0,0,.72)';g.fillRect(0,0,w,h);
+    g.globalAlpha=0.55+0.45*Math.sin(_gameFrame*.05);
+    g.fillStyle='#ffffff';g.font='bold 60px "Malgun Gothic",sans-serif';g.fillText(_T('아무 키나 눌러 시작'),w*.5,h*.5-16);
+    g.fillStyle='#ffcc66';g.font='bold 32px "Malgun Gothic",sans-serif';g.fillText('PRESS ANY KEY',w*.5,h*.5+52);
+    g.globalAlpha=1;
+  }
+}
 function loop(timestamp){
   if(_DCP.on)_DCP._entry.raf++;
   if(!_bootLoadKilled) hideBootLoading();
@@ -51442,6 +51497,7 @@ function loop(timestamp){
   if(G.mats!==_matsPrev){_matsPrev=G.mats;_matsDirty()}
   }catch(_loopErr){console.error('[LOOP CRASH]',_loopErr.message,_loopErr.stack);document.title='ERR: '+_loopErr.message+' @'+(_loopErr.stack||'').match(/:(\d+):/)?.[1]}
   _perfFrameTick();
+  if(_BOOTH_MODE)_boothDraw();
   requestAnimationFrame(loop);
 }
 // ═══ DEMO TEST 자동 캐릭터 로드 (_DEMO_MODE=true 전용) ═══

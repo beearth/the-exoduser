@@ -765,6 +765,8 @@
 "패링은 타이밍이다. 헛치면 빈틈이 생겨.":"O parry é questão de tempo. Se errar, fica todo aberto.",
 "잘못 패링하면 그로기가 쌓인다!":"Um parry errado enche sua barra de atordoamento!",
 "여기가 지옥인가":"Então isto é o inferno",
+"아무 키나 눌러 시작":"Pressione qualquer tecla",
+"다시 시작":"Reiniciar",
 '패링 많이 하면 ST 걱정 없어~':'Apara bastante e ST nunca é problema~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Desmontar equipamento dá Malícia. Até lixo é recurso.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Abre TAB e desmonta equip. que não usa!',

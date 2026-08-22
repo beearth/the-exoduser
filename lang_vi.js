@@ -1182,6 +1182,8 @@ const _VI={
 "패링은 타이밍이다. 헛치면 빈틈이 생겨.":"Đỡ đòn là vấn đề thời điểm. Trượt là hở toang.",
 "잘못 패링하면 그로기가 쌓인다!":"Đỡ đòn sai sẽ tích đầy thanh choáng!",
 "여기가 지옥인가":"Vậy đây là địa ngục",
+"아무 키나 눌러 시작":"Nhấn phím bất kỳ để bắt đầu",
+"다시 시작":"Chơi lại",
 '패링 많이 하면 ST 걱정 없어~':'Đỡ nhiều là không lo ST~',
 '장비 분해하면 악의를 얻는다. 쓰레기도 자원이야.':'Tháo trang bị được Ác Ý. Rác cũng là tài nguyên.',
 'TAB 열어서 안 쓰는 장비 분해해!':'Mở TAB tháo trang bị không dùng!',
