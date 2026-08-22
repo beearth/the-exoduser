@@ -51662,7 +51662,7 @@ function _fbTick(){
   if(!G.on||!P){return}
   if(G.stage!==0){if(G._fieldBoss)G._fieldBoss=null;return} // 1-1 전용
   if(G._fbStage!==G.stage){G._fbStage=G.stage;G._fbSpawnX=P.x;G._fbSpawnY=P.y;G._fbSpawned=false;G._fieldBoss=null} // 진입 기준점
-  if(!G._fbSpawned&&!G._fieldBoss&&!G._fbDone&&dst(P.x,P.y,G._fbSpawnX,G._fbSpawnY)>500){
+  if(!G._fbSpawned&&!G._fieldBoss&&!G._fbDone&&dst(P.x,P.y,G._fbSpawnX,G._fbSpawnY)>2500){ // 진입점 2500px 이동해야 등장(구 500=시작하자마자 → 조금 진행 후)
     var _hp=~~(1800+P.lv*350);
     G._fieldBoss={x:P.x+(P.x>=G._fbSpawnX?440:-440),y:P.y,r:120,hp:_hp,mhp:_hp,t:0,frame:0,atk:~~(20+P.lv*3),hitCd:0,shotCd:60};
     G._fbSpawned=true;showPH('심연의 앵글러','#66ddff');shake(14);
@@ -51708,7 +51708,8 @@ const _wmImg=[new Image(),new Image()];_wmImg[0].src='img/worm_burrow1.png';_wmI
 var _wmSheet=[null,null]; // 표시크기 프리스케일 캐시(600x450, 프레임 150)
 function _wmTick(){
   if(!G.on||!P||!G.map){return}
-  if(G._wmStage!==G.stage){G._wmStage=G.stage;G._worms=null} // 스테이지 변경 시 재배치
+  if(G._wmStage!==G.stage){G._wmStage=G.stage;G._worms=null;G._wmEntryX=P.x;G._wmEntryY=P.y;G._wmReady=false} // 스테이지 변경 시 재배치+진입점 기록
+  if(!G._wmReady){if(dst(P.x,P.y,G._wmEntryX==null?P.x:G._wmEntryX,G._wmEntryY==null?P.y:G._wmEntryY)<1500){return}G._wmReady=true} // 진입점 1500px 이동해야 배치(조금 진행 후)
   if(!G._worms){
     G._worms=[];var _n=7;
     for(var _i=0;_i<_n;_i++){var _wx=0,_wy=0,_ok=false;
