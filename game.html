@@ -43287,6 +43287,40 @@ function _atmBuild(){
   for(let i=0;i<96;i++){const b=i*5;_atmMote[b]=Math.random()*C.width;_atmMote[b+1]=Math.random()*C.height;_atmMote[b+2]=(Math.random()-.5)*.24;_atmMote[b+3]=(Math.random()-.5)*.24;_atmMote[b+4]=Math.random()*6.28;}
   _atmReady=true;
 }
+// ═══ 대기 포스트프로세싱 (PP) — 월드 드로우 완료 직후 / HUD 드로우 직전, 프레임당 1회 ═══
+// 신규 self-contained 레이어 (기존 _ATM_A ATMOS와 독립). 그라디언트는 모듈 스코프 캐시, 캔버스 크기 변경시에만 재생성.
+const PP_TONE=['rgb(92,104,120)','rgb(120,64,72)','rgb(112,96,72)','rgb(72,104,128)','rgb(136,72,48)','rgb(64,64,96)','rgb(128,48,48)'];
+let PP_GRAD_TOP=null,PP_GRAD_VIG=null,PP_GRAD_W=0,PP_GRAD_H=0;
+function drawAtmosphere(ctx,w,h){
+  if(!ctx||!w||!h)return;
+  // 그라디언트 객체 캐시: 캔버스 크기 변경시에만 재생성 (게임루프 내 재할당 금지)
+  if(w!==PP_GRAD_W||h!==PP_GRAD_H||!PP_GRAD_TOP){
+    PP_GRAD_W=w;PP_GRAD_H=h;
+    PP_GRAD_TOP=ctx.createLinearGradient(0,0,0,h*0.4);
+    PP_GRAD_TOP.addColorStop(0,'rgba(255,255,255,1)');
+    PP_GRAD_TOP.addColorStop(1,'rgba(255,255,255,0)');
+    const _pcx=w*0.5,_pcy=h*0.5,_pr0=Math.min(w,h)*0.34,_pr1=Math.max(w,h)*0.72;
+    PP_GRAD_VIG=ctx.createRadialGradient(_pcx,_pcy,_pr0,_pcx,_pcy,_pr1);
+    PP_GRAD_VIG.addColorStop(0,'rgba(0,0,0,0)');
+    PP_GRAD_VIG.addColorStop(1,'rgba(0,0,0,0.55)');
+  }
+  const _ti=SI_TO_HELL[G.stage|0]||0;
+  const _tone=PP_TONE[_ti]||PP_TONE[0];
+  ctx.save();
+  ctx.setTransform(1,0,0,1,0,0);
+  // L1 그레이딩 — 챕터 톤 컬러 multiply
+  ctx.globalCompositeOperation='multiply';ctx.globalAlpha=0.18;
+  ctx.fillStyle=_tone;ctx.fillRect(0,0,w,h);
+  // L2 라이트리프트 — 상단 40% screen 선형 그라디언트
+  ctx.globalCompositeOperation='screen';ctx.globalAlpha=0.10;
+  ctx.fillStyle=PP_GRAD_TOP;ctx.fillRect(0,0,w,h*0.4);
+  // L3 비네트 — 방사형 중심 투명→가장자리 rgba(0,0,0,0.55)
+  ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;
+  ctx.fillStyle=PP_GRAD_VIG;ctx.fillRect(0,0,w,h);
+  // L4 원복
+  ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;
+  ctx.restore();
+}
 function draw(){
   if(!X)return;
   if(!_atmReady)_atmBuild(); else if(_atmVigW!==C.width||_atmVigH!==C.height)_atmBuildVig(); // ATMOS 부팅1회 빌드 + 비네트 리사이즈 재생성
@@ -46374,6 +46408,8 @@ function draw(){
   const _dd4=performance.now();
   if(_DCP.on){_DCP._mark('particles');_DCP._setSource(_DCP_SRC.UI_HUD)} // [DCPROF] 파티클/VFX 구간 종료
   if(_fc2d){var _dPart=_PERF_PROF._delta(_snapPart);_PERF_PROF._part_di=_dPart.di;_PERF_PROF._part_st=_dPart.st;_PERF_PROF._part_fr=_dPart.fr;_PERF_PROF._part_ga=_dPart.ga;var _snapPost=_PERF_PROF._snap()}
+  // ── 대기 포스트프로세싱: 월드 완료 직후 / HUD 직전 1회 ──
+  drawAtmosphere(X,C.width,C.height);
   const _pA0=performance.now();
   // ═══ 공성쇠뇌 터렛 상태 HUD ═══
   if(P.skills.ghostXbowTurret>=1&&P.activeBowSk==='ghostXbowTurret'){
