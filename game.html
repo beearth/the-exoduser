@@ -43220,6 +43220,12 @@ var _atmT=0,_atmVigW=0,_atmVigH=0,_atmLoF=0,_atmHiF=0;
 // ATMOS 알파 상수 (0헤이즈틴트 1원경안개A 2갓레이1 3갓레이2 4근경안개B 5부유입자 6그레이드Hi 7그레이드Lo). [6][7]=이중틴트 완화(.09→.045/.10→.05)
 var _ATM_A=new Float32Array([.22,.10,.11,.06,.12,.55,.045,.05,.45,.55]); // +8 cutR(0~1→0~700px) +9 cutSoft(구멍 가장자리)
 var _ATM_A_DEF=[.22,.10,.11,.06,.12,.55,.045,.05,.45,.55]; // R 복원용
+// ═══ 대기 그레이딩 단일 파이프라인 (PP) — 알파 예산 단일 테이블 (PHASE2 파티클 알파 여기 추가 예정, 리터럴 금지) ═══
+var ATMO_LEGACY_GRADE=false; // 레거시 ATMOS 그레이딩(A군: 3-1 haze + 3-3 grade/vignette) 게이트. false=비활성(PP가 유일 그레이딩)
+var PP_ON=true;              // PP 그레이딩 마스터 토글 (콘솔 PP_ON=false로 즉시 비교, 키바인딩 없음)
+var PP_A_GRADE=0.18;         // L1 그레이딩 multiply 알파
+var PP_A_LIFT=0.10;          // L2 라이트리프트 screen 알파
+var PP_A_VIG=0.55;           // L3 비네트 방사형 세기(globalAlpha)
 var _atmCut=null,_atmCutX=null,_atmCutW=0,_atmCutH=0; // 광원 홀펀치 전용 합성 캔버스(순수 2D, 부팅/리사이즈 1회 생성)
 var _atmUserSet=0;      // A2: 사용자가 atmos 수동변경 시 1 → 자동승격 차단
 var _ATM_TUNE=false,_atmSel=0,_atmHudOn=false; // 튜닝 HUD (디버그 전용, _ATM_TUNE=false시 기존동작 100% 동일). F9=HUD가시성 토글
@@ -43286,6 +43292,40 @@ function _atmBuild(){
   // 부유입자 96개 (x,y,vx,vy,phase)
   for(let i=0;i<96;i++){const b=i*5;_atmMote[b]=Math.random()*C.width;_atmMote[b+1]=Math.random()*C.height;_atmMote[b+2]=(Math.random()-.5)*.24;_atmMote[b+3]=(Math.random()-.5)*.24;_atmMote[b+4]=Math.random()*6.28;}
   _atmReady=true;
+}
+// ═══ 대기 포스트프로세싱 (PP) — 유일 그레이딩 소스. 월드 드로우 완료 직후 / HUD 직전 1회 ═══
+const PP_TONE=['rgb(92,104,120)','rgb(120,64,72)','rgb(112,96,72)','rgb(72,104,128)','rgb(136,72,48)','rgb(64,64,96)','rgb(128,48,48)'];
+let PP_GRAD_TOP=null,PP_GRAD_VIG=null,PP_GRAD_W=0,PP_GRAD_H=0;
+function drawAtmosphere(ctx,w,h){
+  if(!PP_ON)return; // 비교 토글: 콘솔 PP_ON=false로 즉시 OFF
+  if(!ctx||!w||!h)return;
+  // 그라디언트 객체 캐시: 캔버스 크기 변경시에만 재생성 (게임루프 내 재할당 금지)
+  if(w!==PP_GRAD_W||h!==PP_GRAD_H||!PP_GRAD_TOP){
+    PP_GRAD_W=w;PP_GRAD_H=h;
+    PP_GRAD_TOP=ctx.createLinearGradient(0,0,0,h*0.4);
+    PP_GRAD_TOP.addColorStop(0,'rgba(255,255,255,1)');
+    PP_GRAD_TOP.addColorStop(1,'rgba(255,255,255,0)');
+    const _pcx=w*0.5,_pcy=h*0.5,_pr0=Math.min(w,h)*0.34,_pr1=Math.max(w,h)*0.72;
+    PP_GRAD_VIG=ctx.createRadialGradient(_pcx,_pcy,_pr0,_pcx,_pcy,_pr1);
+    PP_GRAD_VIG.addColorStop(0,'rgba(0,0,0,0)');
+    PP_GRAD_VIG.addColorStop(1,'rgba(0,0,0,1)'); // 가장자리 solid → 세기는 globalAlpha=PP_A_VIG로 조절
+  }
+  const _ti=SI_TO_HELL[G.stage|0]||0;
+  const _tone=PP_TONE[_ti]||PP_TONE[0];
+  ctx.save();
+  ctx.setTransform(1,0,0,1,0,0);
+  // L1 그레이딩 — 챕터 톤 컬러 multiply (알파=PP_A_GRADE)
+  ctx.globalCompositeOperation='multiply';ctx.globalAlpha=PP_A_GRADE;
+  ctx.fillStyle=_tone;ctx.fillRect(0,0,w,h);
+  // L2 라이트리프트 — 상단 40% screen 선형 그라디언트 (알파=PP_A_LIFT)
+  ctx.globalCompositeOperation='screen';ctx.globalAlpha=PP_A_LIFT;
+  ctx.fillStyle=PP_GRAD_TOP;ctx.fillRect(0,0,w,h*0.4);
+  // L3 비네트 — 방사형 중심 투명→가장자리 검정 (세기=PP_A_VIG)
+  ctx.globalCompositeOperation='source-over';ctx.globalAlpha=PP_A_VIG;
+  ctx.fillStyle=PP_GRAD_VIG;ctx.fillRect(0,0,w,h);
+  // L4 원복
+  ctx.globalCompositeOperation='source-over';ctx.globalAlpha=1;
+  ctx.restore();
 }
 function draw(){
   if(!X)return;
@@ -44116,8 +44156,8 @@ function draw(){
     if(_atmCutW!==C.width||_atmCutH!==C.height){_atmCut.width=C.width;_atmCut.height=C.height;_atmCutW=C.width;_atmCutH=C.height;_atmCut._glVer=(_atmCut._glVer||0)+1;}
     var _cg=_atmCutX;
     _cg.clearRect(0,0,C.width,C.height);
-    // 1) haze 틴트
-    _cg.globalCompositeOperation='source-over';_cg.globalAlpha=_ATM_A[0];_cg.fillStyle='#121a2a';_cg.fillRect(0,0,C.width,C.height);
+    // 1) haze 틴트 (A군 레거시 그레이딩 — ATMO_LEGACY_GRADE 게이트, 기본 OFF)
+    if(ATMO_LEGACY_GRADE){_cg.globalCompositeOperation='source-over';_cg.globalAlpha=_ATM_A[0];_cg.fillStyle='#121a2a';_cg.fillRect(0,0,C.width,C.height);}
     // 2) 원경안개 A (lighter 커버타일)
     _cg.globalCompositeOperation='lighter';_cg.globalAlpha=_ATM_A[1];
     var _ox=-((G.cam.x*.15)%512),_oy=-((G.cam.y*.15)%512);
@@ -46374,6 +46414,8 @@ function draw(){
   const _dd4=performance.now();
   if(_DCP.on){_DCP._mark('particles');_DCP._setSource(_DCP_SRC.UI_HUD)} // [DCPROF] 파티클/VFX 구간 종료
   if(_fc2d){var _dPart=_PERF_PROF._delta(_snapPart);_PERF_PROF._part_di=_dPart.di;_PERF_PROF._part_st=_dPart.st;_PERF_PROF._part_fr=_dPart.fr;_PERF_PROF._part_ga=_dPart.ga;var _snapPost=_PERF_PROF._snap()}
+  // ── PP 대기 그레이딩: 월드 완료 직후 / HUD 직전, 유일 그레이딩 소스 ──
+  drawAtmosphere(X,C.width,C.height);
   const _pA0=performance.now();
   // ═══ 공성쇠뇌 터렛 상태 HUD ═══
   if(P.skills.ghostXbowTurret>=1&&P.activeBowSk==='ghostXbowTurret'){
@@ -46751,8 +46793,8 @@ function draw(){
     _tc.globalCompositeOperation='source-over';
     _torchCamX=G.cam.x;_torchCamY=G.cam.y;
     X.drawImage(_torchCache,0,0);X.restore()}}
-  // ═══ ATMOS 3-3 VIGNETTE + GRADE (토치 합성 후, 게임 UI 전) ═══
-  if(OPT.atmos>=1&&_atmReady){
+  // ═══ ATMOS 3-3 VIGNETTE + GRADE (A군 레거시 그레이딩 — ATMO_LEGACY_GRADE 게이트, 기본 OFF) ═══
+  if(ATMO_LEGACY_GRADE&&OPT.atmos>=1&&_atmReady){
     X.save();X.setTransform(1,0,0,1,0,0);
     X.globalCompositeOperation='lighter';X.globalAlpha=_ATM_A[6];
     X.drawImage(_atmGradeHi,0,0,1,256,0,0,C.width,C.height);
