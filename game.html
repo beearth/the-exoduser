@@ -20005,6 +20005,15 @@ function _clearDeathDecals(){
 // ── 시체 잔해 시스템 (모든 사망) — 물리 기반 래그돌 ──
 const _CORPSE_MAX=15;const _corpses=[];
 for(let i=0;i<_CORPSE_MAX;i++){const _cc=document.createElement('canvas');_cc.width=128;_cc.height=128;_corpses.push({x:0,y:0,vx:0,vy:0,r:0,rv:0,sz:0,t:0,mt:0,c:_cc,ctx:_cc.getContext('2d'),active:false,bounced:0})}
+// 일반 etype 몹 스프라이트 캡처 (렌더가 쓰는 _atlasE UV와 동일 소스) — 8dir/보스 미해당 몹 시체·gib가 빨간 원("적고구마") 되던 것 수정
+function _captureEtypeSprite(ctx,e,sz){
+  if(!_atlasEReady||!_atlasE)return false;
+  const _et=e.etype>=0&&e.etype<ATLAS_ENEMY_LAYOUT.length?e.etype:0;
+  const _met=_getMappedEtype(_et),_pal=_getPalIdx(e.el!=null?e.el:0);
+  const _uv=_atlasEUV[_met]&&_atlasEUV[_met][_pal]&&_atlasEUV[_met][_pal][0];
+  if(!_uv)return false;
+  ctx.drawImage(_atlasE,_uv.sx,_uv.sy,_uv.sw,_uv.sh,0,0,sz,sz);return true;
+}
 function _addCorpse(e,killAng,power){
   if(!OPT.deathFx)return;
   e._corpseSpawned=true;
@@ -20070,6 +20079,7 @@ function _addCorpse(e,killAng,power){
       }
     }
   }
+  if(!_cDrawn&&_captureEtypeSprite(c.ctx,e,128))_cDrawn=true; // 일반 몹 실제 스프라이트 (적고구마 방지)
   if(!_cDrawn){c.ctx.fillStyle=e.col||'#cc0000';c.ctx.beginPath();c.ctx.arc(64,64,54,0,Math.PI*2);c.ctx.fill();}
   }
   // 내장 오버레이 (선홍색 얼룩 + 짙은 핏줄)
@@ -20362,6 +20372,7 @@ function _addSplitGibs(e,killAng){
       _drawn=true;
     }
   }
+  if(!_drawn&&_captureEtypeSprite(_gibX,e,48))_drawn=true; // 일반 몹 실제 스프라이트 (적고구마 방지)
   if(!_drawn){_gibX.fillStyle=e.col||'#cc0000';_gibX.beginPath();_gibX.arc(24,24,20,0,Math.PI*2);_gibX.fill()}}
   // 패턴 선택
   const roll=Math.random();
@@ -20418,6 +20429,7 @@ function _addHeadGib(e,killAng){
       _hdrawn=true;
     }
   }
+  if(!_hdrawn&&_captureEtypeSprite(_gibX,e,48))_hdrawn=true; // 일반 몹 실제 스프라이트 (적고구마 방지)
   if(!_hdrawn){_gibX.fillStyle=e.col||'#cc0000';_gibX.beginPath();_gibX.arc(24,12,10,0,Math.PI*2);_gibX.fill()}}
   // _splits 풀에서 슬롯 확보
   let oldest=0,minL=Infinity;
